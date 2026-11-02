@@ -11,7 +11,7 @@ static inline ov006_Slot *ov006_SlotManager_GetSlot(ov006_SlotManager *self, u32
     return &self->slots[idx];
 }
 
-void func_ov006_021db1b8(u16 a) {
+void ov006_BroadcastSlotEntries(u16 a) {
     u8 i;
     if (!data_ov006_021ec860->unk1C) {
         return;

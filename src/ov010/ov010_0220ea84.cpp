@@ -20,11 +20,11 @@ static inline EffectObj *Ov010_SpawnFx192(Actor *self, u16 a, u16 b) {
     return fx;
 }
 
-EffectObj *func_ov010_0220ea84(Actor *self, u16 a, u16 b) {
+EffectObj *Ov010_SpawnAimFx(Actor *self, u16 a, u16 b) {
     return Ov010_SpawnFx192(self, a, b);
 }
 
-EffectObj *func_ov010_0220eaf0(Actor *self, const VecFx32 *a, const VecFx32 *b) {
+EffectObj *Ov010_SpawnAimFxAt(Actor *self, const VecFx32 *a, const VecFx32 *b) {
     VecFx32 d;
     u16 ra, rb;
     d.x = b->x - a->x;

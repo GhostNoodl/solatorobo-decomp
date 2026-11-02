@@ -49,10 +49,10 @@ typedef struct ov006_Unk021e000c {
 
 extern "C" {
 
-EffectObj *func_ov006_021e37d0(int type, const VecFx32 *pos);
+EffectObj *ov006_CreateEffect(int type, const VecFx32 *pos);
 s32 Interp_SinLerp(fx32 t, s32 a, s32 b);
 BOOL func_02054f10(void *a, int b);
-void func_ov006_021df44c(ov006_Win021e000c *self);
+void ov006_Unk021df44c_Update(ov006_Win021e000c *self);
 
 static inline void ov006_Unk021e000c_Kill(int id) {
     if (id != -1) {
@@ -82,7 +82,7 @@ static inline void ov006_Loader021e000c_Update(ov006_Loader021e000c *self) {
     }
 }
 
-void func_ov006_021e000c(ov006_Unk021e000c *self) {
+void ov006_Unk021e000c_Update(ov006_Unk021e000c *self) {
     int zero = 0;
     if (self->state == 0) {
         return;
@@ -93,11 +93,11 @@ void func_ov006_021e000c(ov006_Unk021e000c *self) {
         v.x = zero;
         v.y = -0x19a;
         v.z = -0x2000;
-        self->id1 = func_ov006_021e37d0(0xc, &v)->id;
+        self->id1 = ov006_CreateEffect(0xc, &v)->id;
         v.x = zero;
         v.y = zero;
         v.z = -0x1666;
-        self->id2 = func_ov006_021e37d0(self->unk11 + 0xc, &v)->id;
+        self->id2 = ov006_CreateEffect(self->unk11 + 0xc, &v)->id;
         self->unk20->b0 = 1;
         self->b1 = 0;
         self->timer = 0x1e;
@@ -193,7 +193,7 @@ void func_ov006_021e000c(ov006_Unk021e000c *self) {
         ov006_Loader021e000c_Update(p->unk18);
     }
 skip:
-    func_ov006_021df44c(self->unk20);
+    ov006_Unk021df44c_Update(self->unk20);
 }
 
 }

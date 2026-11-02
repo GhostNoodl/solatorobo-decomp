@@ -35,11 +35,11 @@ void *Ov003Vt_021f7d2c_Ctor(void *p);
 extern void *data_02097e4c;
 extern const VecFx32 data_ov011_022072b4;
 
-void func_ov011_0220121c(void *o, s32 a);
+void Ov011Npc_SetVisible(void *o, s32 a);
 void *__cxa_vec_new(u32 count, u32 size, u32 hdr, void *ctor, void *dtor);
-Ov011E40b *func_ov011_021fc0a0(Ov011E40b *self);
-BOOL func_ov011_02201f28(void *self, u16 id, const VecFx32 *off, s16 c, s16 d, s16 e);
-void func_ov011_02202464(void *self);
+Ov011E40b *Ov011E40b_Ctor(Ov011E40b *self);
+BOOL Ov011Chr_Init(void *self, u16 id, const VecFx32 *off, s16 c, s16 d, s16 e);
+void Ov011Chr_StartMode1(void *self);
 void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 
 static inline Ov011Npc *Ov011_Find(u16 id) {
@@ -49,7 +49,7 @@ static inline Ov011Npc *Ov011_Find(u16 id) {
 static inline BOOL Ov011_NodeOk(Ov011Node *p) {
     if (p != NULL) {
         Ov011Npc *o = Ov011_Find(p->id);
-        if (o != NULL && func_ov011_02201244(o)) {
+        if (o != NULL && Ov011Npc_IsTracking(o)) {
             return TRUE;
         }
     }
@@ -75,11 +75,11 @@ void func_ov011_021fbe08(Ov011Mgr3 *self) {
         }
         cnt = n;
         self->count = cnt;
-        self->arr8 = (Ov011E40b *)__cxa_vec_new(self->count, 0x40, 8, (void *)func_ov011_021fc0a0, (void *)func_ov011_021fb66c);
+        self->arr8 = (Ov011E40b *)__cxa_vec_new(self->count, 0x40, 8, (void *)Ov011E40b_Ctor, (void *)Ov011E40_Dtor);
         i = 0;
         for (p = head; p != NULL; p = p->next) {
             Ov011Npc *o = Ov011_Find(p->id);
-            if (func_ov011_02201244(o)) {
+            if (Ov011Npc_IsTracking(o)) {
                 u16 id = o->id;
                 Ov011E40b *e = &self->arr8[i];
                 e->b0 = 0;
@@ -87,14 +87,14 @@ void func_ov011_021fbe08(Ov011Mgr3 *self) {
                 e->unk_02 = id;
                 e->unk_04 = 0;
                 e->mover.v08();
-                func_ov011_0220121c(o, 0);
+                Ov011Npc_SetVisible(o, 0);
                 i++;
             }
         }
         *(Ov011Blk12 *)&v = *(const Ov011Blk12 *)&data_ov011_022072b4;
         a = self->list->actor;
-        func_ov011_02201f28(self->unk_28, a->id, &v, cnt, 0x1000, 0x2333);
-        func_ov011_02202464(self->unk_28);
+        Ov011Chr_Init(self->unk_28, a->id, &v, cnt, 0x1000, 0x2333);
+        Ov011Chr_StartMode1(self->unk_28);
         w.x = a->pos.x;
         w.y = a->pos.y;
         w.z = a->pos.z;
@@ -116,7 +116,7 @@ void func_ov011_021fbe08(Ov011Mgr3 *self) {
         z = actor->pos.z;
         for (p = head; p != NULL; p = p->next) {
             Ov011Npc *o = Ov011_Find(p->id);
-            if (func_ov011_02201244(o)) {
+            if (Ov011Npc_IsTracking(o)) {
                 o->pos.x = x;
                 o->pos.y = y + 0x6800;
                 o->pos.z = z;
@@ -128,7 +128,7 @@ void func_ov011_021fbe08(Ov011Mgr3 *self) {
 }
 
 #pragma force_active on
-Ov011E40b *func_ov011_021fc0a0(Ov011E40b *self) {
+Ov011E40b *Ov011E40b_Ctor(Ov011E40b *self) {
     Ov003Vt_021f7d2c_Ctor(&self->mover);
     return self;
 }
@@ -136,11 +136,11 @@ Ov011E40b *func_ov011_021fc0a0(Ov011E40b *self) {
 }
 
 #ifdef NONMATCHING
-// Status (round drA): func_ov011_021fc0b8 is 26 / 17 (raw / register-masked, dsi/1.3 with the project flags); this
+// Status (round drA): Ov011Ctl_Update is 26 / 17 (raw / register-masked, dsi/1.3 with the project flags); this
 // is the best clean draft. Blocker: one move-constant-loads step: the list-removal zero is hoisted past the n !=
 // NULL guard (refusing it under gdb gives 0 / 0). History: docs/MATCHING.md rounds hzR, hzZ, raG, hzA, svC, cvA
 // (search for the address); the full list is docs/UNMATCHED.md.
-// func_ov011_021fc0b8: 13 raw / 3 register-masked diffs, real signature (self only).
+// Ov011Ctl_Update: 13 raw / 3 register-masked diffs, real signature (self only).
 // In case 2 the ROM keeps the 1 passed as on in sl and sets the list-removal zero in the inner preheader; this draft hoists the zero further.
 // Rounds hzZ/hzR: the whole difference is one refused step of the move-constant-loads pass (the removal zero, inner
 // preheader to the n != NULL guard); forcing that refusal in the compiler gives 0 / 0. See docs/MATCHING.md.
@@ -202,19 +202,19 @@ extern "C" {
 extern const VecFx32 data_ov011_02207278;
 void Ov003Mover_SetSpeed(void *p, s32 a);
 void Ov003Mover_SetMaxDist(void *p, s32 a);
-void func_ov003_021d7c08(void *p, VecFx32 *v);
+void Ov003Mover_SetTarget(void *p, VecFx32 *v);
 VecFx32 *Ov003Mover_GetDir(void *p);
 u16 Ov003Vec_Pitch(VecFx32 *v);
 u16 Ov003Vec_Yaw(VecFx32 *v);
 BOOL Ov003Mover_Start(void *p, VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e);
 void func_ov011_022011fc(void *a, s32 b);
-void func_ov011_022011c8(void *a, s32 b);
+void Ov011Npc_SetTracking(void *a, s32 b);
 s32 Rand_PlusMinus(s32 max);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-void func_ov011_02202488(void *self, s16 v);
-void func_ov011_022024ac(void *self, s16 v);
-VecFx32 func_ov011_022024d4(const void *self);
-Ov011LNode *func_ov011_021fa790(Ov011LNode *head, Ov011LNode *item);
+void Ov011Chr_StartMode3(void *self, s16 v);
+void Ov011Chr_StartMode5(void *self, s16 v);
+VecFx32 Ov011Chr_GetPos(const void *self);
+Ov011LNode *Ov011LNode_Remove(Ov011LNode *head, Ov011LNode *item);
 void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
 BOOL func_ov000_021b4738(void *pl);
 }
@@ -237,7 +237,7 @@ static inline void Ov011Ent_Remove(Ov011Ent *e, void *k) {
         Ov011PNode *n;
         for (n = e->nodes; n != NULL; n = n->next) {
             if (k == n) {
-                e->nodes = (Ov011PNode *)func_ov011_021fa790((Ov011LNode *)e->nodes, (Ov011LNode *)n);
+                e->nodes = (Ov011PNode *)Ov011LNode_Remove((Ov011LNode *)e->nodes, (Ov011LNode *)n);
                 if (n != NULL) {
                     Heap_Free(n);
                 }
@@ -283,7 +283,7 @@ static inline BOOL Ov011_PlBusy(void) {
 }
 
 static inline void Ov011_Act(Ov011Ctl *self, Ov011Npc *a, BOOL on) {
-    func_ov011_0220121c(a, on);
+    Ov011Npc_SetVisible(a, on);
     func_ov011_022011fc(a, on);
     {
         Ov011Ent *ent = self->ent;
@@ -293,7 +293,7 @@ static inline void Ov011_Act(Ov011Ctl *self, Ov011Npc *a, BOOL on) {
 }
 extern "C" {
 
-void func_ov011_021fc0b8(Ov011Ctl *self) {
+void Ov011Ctl_Update(Ov011Ctl *self) {
     s32 i;
     Ov011Npc *a;
     Ov011Node *n;
@@ -347,7 +347,7 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                 w.z = m->check.z;
                 VEC_Add(&w, &v, &w);
                 w.y += 0x1000;
-                func_ov003_021d7c08(&self->slots[i].obj, &w);
+                Ov003Mover_SetTarget(&self->slots[i].obj, &w);
                 if (self->slots[i].timer == 0x50) {
                     VecFx32 t = *(VecFx32 *)self->slots[i].obj.v10();
                     EffectObj *e = func_02065f88(0x192, &t);
@@ -369,7 +369,7 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                 p.x = a->pos.x;
                 p.y = a->pos.y;
                 p.z = a->pos.z;
-                func_ov011_022011c8(a, 0);
+                Ov011Npc_SetTracking(a, 0);
                 p.y -= a->hit->radius;
                 ang = Ov003Vec_Yaw(Ov003Mover_GetDir(&self->slots[i].obj)) + 0x7fff;
                 e = func_02065f88(0x67, &p);
@@ -405,7 +405,7 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                 cnt++;
             }
         }
-        func_ov011_02202488(self->chr, cnt);
+        Ov011Chr_StartMode3(self->chr, cnt);
         self->state = 1;
         break;
     }
@@ -424,7 +424,7 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                 cnt++;
             }
         } }
-        func_ov011_022024ac(self->chr, cnt);
+        Ov011Chr_StartMode5(self->chr, cnt);
         BOOL on;
         found = NULL;
         on = TRUE;
@@ -442,7 +442,7 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
             VecFx32 c;
             VecFx32 pp;
             Actor *pl;
-            c = func_ov011_022024d4(self->chr);
+            c = Ov011Chr_GetPos(self->chr);
             pl = (Actor *)func_ov000_0219bf90();
             pp.x = pl->pos.x;
             pp.y = pl->pos.y;

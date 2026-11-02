@@ -28,7 +28,7 @@ extern const Ov011Tbl63 data_ov011_0220752c;
 extern u8 data_ov011_02207610[];
 u32 Rand_UpTo(u32 max);
 
-void func_ov011_022063b0(Ov011Act7da4 *self) {
+void Ov011Act7da4_StateAttack(Ov011Act7da4 *self) {
     VecFx32 v;
     Ov011Tbl63 tbl;
     VecFx32 w;
@@ -146,7 +146,7 @@ void func_ov011_022063b0(Ov011Act7da4 *self) {
     }
 }
 
-void func_ov011_02206920(Ov011Act7da4 *self) {
+void Ov011Act7da4_StateAttack2(Ov011Act7da4 *self) {
     VecFx32 v;
     ActorSub40 *s = self->fsm;
     switch (s->st) {
@@ -247,7 +247,7 @@ void func_ov011_02206920(Ov011Act7da4 *self) {
     }
 }
 
-void func_ov011_02206e18(Ov011Act7da4 *self) {
+void Ov011Act7da4_StateDie(Ov011Act7da4 *self) {
     ActorSub40 *s = self->fsm;
     switch (s->st) {
     case 0: {
@@ -325,7 +325,7 @@ void func_ov011_02206e18(Ov011Act7da4 *self) {
             s->timer--;
         }
         if (s->timer == 0) {
-            func_ov003_021d6a3c(self, 0, 1, 1);
+            Ov003Actor_Defeat(self, 0, 1, 1);
             self->fsm->st = 0xffff;
         }
         break;
@@ -333,39 +333,39 @@ void func_ov011_02206e18(Ov011Act7da4 *self) {
 }
 
 #pragma force_active on
-void func_ov011_022071b4(Ov011Act7da4 *self) {
+void Ov011Act7da4_StateKnockBack(Ov011Act7da4 *self) {
     self->vfunc_7c();
 }
 
 void *Ov011Act7cf8_Dtor(Ov011Act7cf8 *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
 void *Ov011Act7cf8_DtorDelete(Ov011Act7cf8 *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 void *Ov011Act7e50_Dtor(Ov011Act7e50 *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
 void *Ov011Act7e50_DtorDelete(Ov011Act7e50 *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 void *Ov011Act7c4c_Dtor(Ov011Act7c4c *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
 void *Ov011Act7c4c_DtorDelete(Ov011Act7c4c *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }

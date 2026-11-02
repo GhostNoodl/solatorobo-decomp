@@ -53,9 +53,9 @@ extern ov006_Unk02097e48 *data_02097e48;
 extern Task *data_ov000_021ccd40;
 extern int data_ov000_021ccd38;
 
-void func_ov006_021ccda0(ov006_Task *self);
+void ov006_Task_Ctor(ov006_Task *self);
 void func_ov006_021ccddc(ov006_Task *self);
-void func_ov006_021cd580(int a, int b, int c);
+void ov006_Manager_DispatchMenuCb(int a, int b, int c);
 void func_ov000_02180754(void);
 void func_ov000_02180660(int a, int b);
 bool func_ov000_021735e8(void);
@@ -63,7 +63,7 @@ void func_ov000_021c2310(void *self);
 void func_0204aab0(ov006_Unk02097e48 *a);
 
 ov006_Task0 *func_ov006_021d54b0(ov006_Task0 *self) {
-    func_ov006_021ccda0(self);
+    ov006_Task_Ctor(self);
     *(void **)self = &data_ov006_021ebc98;
     self->unk10 = 1;
     return self;
@@ -88,7 +88,7 @@ ov006_Task0 *Ov006Vt_021ebc98_DtorDelete(ov006_Task0 *self) {
     return self;
 }
 
-BOOL func_ov006_021d55b8(void) {
+BOOL Ov006Vt_021ebc98_Load(void) {
     ov006_Unk02097e48 *p = data_02097e48;
     if (p->active) {
         if (p->unk6 != 0xffff || p->unk4 != 0x25) {
@@ -111,11 +111,11 @@ BOOL func_ov006_021d55b8(void) {
     return TRUE;
 }
 
-BOOL func_ov006_021d5678(void) {
+BOOL Ov006Vt_021ebc98_IsLoaded(void) {
     return ((func_02035b90(data_0208cc94, 7) != 0) & func_02035b90(data_ov006_021ec864, 7)) != 0;
 }
 
-BOOL func_ov006_021d56bc(ov006_Task0 *self) {
+BOOL Ov006Vt_021ebc98_Setup(ov006_Task0 *self) {
     switch (self->subState) {
     case 0:
         func_ov000_02180660(0x23, 0);
@@ -123,7 +123,7 @@ BOOL func_ov006_021d56bc(ov006_Task0 *self) {
     case 1:
         if (data_ov000_021ccd40 != NULL) {
             data_ov000_021ccd40->vfunc_4c();
-            func_ov006_021cd580(2, 0, 0);
+            ov006_Manager_DispatchMenuCb(2, 0, 0);
             data_ov006_021ec888->unk15E = 2;
             return TRUE;
         }
@@ -132,7 +132,7 @@ BOOL func_ov006_021d56bc(ov006_Task0 *self) {
     return FALSE;
 }
 
-BOOL func_ov006_021d5748(void) {
+BOOL Ov006Vt_021ebc98_Update(void) {
     BOOL result = TRUE;
     if (!func_ov000_021735e8()) {
         result = FALSE;
@@ -140,12 +140,12 @@ BOOL func_ov006_021d5748(void) {
     return result;
 }
 
-BOOL func_ov006_021d5764(void) {
+BOOL Ov006Vt_021ebc98_Exit(void) {
     data_ov006_021ec860->taskType = 3;
     return TRUE;
 }
 
-void func_ov006_021d5780(void) {
+void Ov006Vt_021ebc98_Draw(void) {
 }
 
 static inline void ov006_SetUnk021ccd40(Task *p) {
@@ -157,11 +157,11 @@ static inline void ov006_SetUnk021ccd40(Task *p) {
     data_ov000_021ccd40 = p;
 }
 
-void func_ov006_021d5784(Task *p) {
+void ov006_Task_SetCurrent(Task *p) {
     ov006_SetUnk021ccd40(p);
 }
 
-void func_ov006_021d57b8(Task *self) {
+void ov006_Task_ReleaseCurrent(Task *self) {
     if (self->vfunc_54()) {
         ov006_SetUnk021ccd40(NULL);
     }
@@ -215,7 +215,7 @@ BOOL func_ov006_021d58c0(void) {
     return TRUE;
 }
 
-void func_ov006_021d58c8(void) {
+void ov006_Emblem_UpdateActive(void) {
 }
 
 static inline void ov006_Emblem_Dtor(ov006_Emblem *self) {
@@ -264,7 +264,7 @@ ov006_MsgBox *func_ov006_021d5ae4(ov006_MsgBox *self) {
 
 ov006_Task1 *func_ov006_021d5b04(ov006_Task1 *self) {
     int i;
-    func_ov006_021ccda0(self);
+    ov006_Task_Ctor(self);
     *(void **)self = &data_ov006_021ebfc0;
     self->unk10 = 0;
     self->unk12 = 0;

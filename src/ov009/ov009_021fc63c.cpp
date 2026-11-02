@@ -5,8 +5,8 @@ extern "C" {
 
 extern void SndMgr_LoadHeapState(SndMgr *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
-void func_ov009_021fc63c(Ov003Actor *self) {
-    func_ov003_021d0fc0(self);
+void Ov009ActVt_022167fc_Init(Ov003Actor *self) {
+    Ov003Actor_Init(self);
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     switch (self->kind) {
     case 0x5000:

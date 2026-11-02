@@ -11,7 +11,7 @@ void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 void func_ov000_02182590(void *p);
 
-void func_ov014_0220bd64(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_State22(Ov014Act_02209280 *self) {
     ActorSub40 *s = self->fsm;
     switch (s->st) {
     case 0: {
@@ -134,7 +134,7 @@ extern Ov003Actor *func_ov000_0219bf90(void);
 extern Ov003Actor *Target_Get(void *p);
 extern void func_ov000_0218a358(void *a, const VecFx32 *b, Rot16 *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
-extern EffectObj *func_ov014_0220f7f0(s32 k, VecFx32 *pos);
+extern EffectObj *Ov014_CreateEffect(s32 k, VecFx32 *pos);
 extern BOOL func_ov000_0219a8bc(void *p, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *pos, s16 e, s32 f, s32 g);
 
 static inline Ov003Actor *Ov014e_FindById(u16 id) {
@@ -420,7 +420,7 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
         }
         r = Interp_SinLerp(k, 0x9000, 0x5000);
         if (t == 0x78) {
-            EffectObj *e = func_ov014_0220f7f0(3, &self->unk_84);
+            EffectObj *e = Ov014_CreateEffect(3, &self->unk_84);
             e->SetScaleAll(r);
             e->speed = 0x800;
             EffectObj_AddSndCue(e, 0x56, 4);

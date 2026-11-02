@@ -16,7 +16,7 @@ extern void *data_ov000_021ccd64;
 extern Save02196258 *data_0214a424;
 void func_0203f364(void *a);
 void *Target_Get(void *p);
-void func_ov003_021f0c60(void *self, s32 a);
+void Ov003Pickup_Update(void *self, s32 a);
 void Actor_Move(Actor *self, s32 a);
 void func_ov000_0218bed8(void *a, s32 b, void *c);
 void func_02062764(s32 a, s32 b);
@@ -152,7 +152,7 @@ void func_ov000_02196258(VObj *obj) {
             s->timer--;
         }
         if (s->timer == 0) {
-            func_ov003_021f0c60(self, 0);
+            Ov003Pickup_Update(self, 0);
             Die02196258(obj);
             return;
         }
@@ -196,7 +196,7 @@ void func_ov000_02196258(VObj *obj) {
         }
         return;
     case 0x14:
-        func_ov003_021f0c60(self, 0);
+        Ov003Pickup_Update(self, 0);
         func_02065f88(0xc8, &self->pos);
         Die02196258(obj);
         return;

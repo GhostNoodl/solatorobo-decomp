@@ -25,7 +25,7 @@ void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8
 void Actor_Move(Actor *self, s32 a);
 void func_ov000_021b1fac(Robo021ca458 *self, BOOL a, s32 b);
 BOOL func_ov000_02198360(void *st, s32 state, s32 x);
-s32 func_ov003_021ce5b8(u32 color);
+s32 Ov003_SurfaceSoundId(u32 color);
 void func_ov000_021915a0(void *a);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
@@ -95,7 +95,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
             self->fsm->timer = 6;
             self->unk_b24_19 = 0;
             name = data_ov000_021cc630;
-            se = func_ov003_021ce5b8(self->hit->unk_50);
+            se = Ov003_SurfaceSoundId(self->hit->unk_50);
             if (self->unk_b24_1) {
                 name = data_ov000_021ca060[self->unk_b24_5];
                 if (self->unk_b24_5 != 0) {

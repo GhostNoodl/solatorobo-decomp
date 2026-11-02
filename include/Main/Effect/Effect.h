@@ -42,7 +42,7 @@ struct EffectObj {
     virtual BOOL Step();
     virtual void Loop();
     virtual void Draw();
-    /* 0x04 */ s32 unk_04; // countdown kept by onUpdate callbacks (func_ov010_02209074 compares it signed)
+    /* 0x04 */ s32 unk_04; // countdown kept by onUpdate callbacks (Ov010_DelayKillFxCallback compares it signed)
     /* 0x08 */ u32 unk_08;
     /* 0x0c */ u32 unk_0c;
     /* 0x10 */ u32 unk_10;

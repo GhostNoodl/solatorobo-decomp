@@ -14,7 +14,7 @@ typedef struct {
 } Ov003LampMsg;
 
 // The lamp (vtable data_ov003_021f80f0, 0x104 bytes: NEW_BASIC in func_ov000_02192b24). Its
-// model's render callback (func_ov003_021e0370 / 021e02e8) copies the matrix of node joint into
+// model's render callback (Ov003Obj_StartLampCapture / 021e02e8) copies the matrix of node joint into
 // mtx; the actor of kind 0x404f is found and read the same way.
 class Ov003Lamp : public ActorEx {
 public:
@@ -97,7 +97,7 @@ BOOL Ov003ActVt_021f8220_Draw(ActorEx *self) {
     return TRUE;
 }
 
-void func_ov003_021e02e8(Ov003Obj *self) {
+void Ov003Obj_CaptureLampMtx(Ov003Obj *self) {
     MtxFx43 buf;
     Ov003Lamp *p;
     s32 id;
@@ -122,8 +122,8 @@ void func_ov003_021e02e8(Ov003Obj *self) {
     MI_Copy48B(&buf, &p->mtx);
 }
 
-void func_ov003_021e0370(Ov003Obj *self) {
-    self->func = (void (*)(void *))func_ov003_021e02e8;
+void Ov003Obj_StartLampCapture(Ov003Obj *self) {
+    self->func = (void (*)(void *))Ov003Obj_CaptureLampMtx;
     self->unk_92 = 3;
 }
 
@@ -139,7 +139,7 @@ void Ov003ActVt_021f80f0_Start(Ov003Lamp *self) {
     func_ov000_02194758(self);
     self->joint = func_ov000_021909a8(self->model, 0, data_ov003_021f851c);
     m = self->model;
-    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->renderObj, (NNSG3dSbcCallBackFunc)func_ov003_021e0370);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->renderObj, (NNSG3dSbcCallBackFunc)Ov003Obj_StartLampCapture);
     m->clearInit = 0;
     self->model->flushVP = 1;
     func_ov000_02190cb0(self->model, data_ov003_021f8525, 0x1000, 0);
@@ -155,7 +155,7 @@ extern s32 Rand_PlusMinus(s32 max);
 extern void HitMesh_SetMtx(void *p, MtxFx43 *m);
 extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, void *e);
 
-void func_ov003_021e0448(Ov003Lamp *self) {
+void Ov003ActVt_021f80f0_StateIdle(Ov003Lamp *self) {
     Ov003Lamp *p;
     ActorSub40 *w;
     MtxFx43 m;
@@ -219,7 +219,7 @@ void func_ov003_021e0448(Ov003Lamp *self) {
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 
-void func_ov003_021e06a8(Ov003Lamp *self) {
+void Ov003ActVt_021f80f0_State21(Ov003Lamp *self) {
     ActorSub40 *w = self->fsm;
     s32 a;
     s32 b;

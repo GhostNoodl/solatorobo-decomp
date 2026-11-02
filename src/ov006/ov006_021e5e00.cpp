@@ -14,14 +14,14 @@ extern "C" {
 extern void *data_ov006_021ec414;
 extern ov006_Unk02097e40 *data_02097e40;
 
-BOOL func_ov006_021e46e8(ov006_Unk021ec888 *self, const ov006_MenuData *data);
+BOOL ov006_Menu_UpdateNode(ov006_Unk021ec888 *self, const ov006_MenuData *data);
 u16 func_02046ab4(ov006_Unk02097e40 *a);
 BOOL func_020469d4(ov006_Unk02097e40 *a, ov006_MenuEntry *entry);
 int Wh_GetError(ov006_Unk02097e40 *a);
 ov006_MenuEntry *Wh_GetSharedData(ov006_Unk02097e40 *a, int idx);
 void OS_GetOwnerInfo(void *a);
 
-void func_ov006_021e5e00(ov006_Unk021ec888 *self) {
+void ov006_Menu_ShowObj(ov006_Unk021ec888 *self) {
     ov006_ObjectHolder *holder = self->unk1D8;
     Lo021cad50 *obj;
     if (holder != NULL && (obj = holder->obj) != NULL) {
@@ -45,11 +45,11 @@ ov006_ObjectHolder *ov006_ObjectHolder_DtorDelete(ov006_ObjectHolder *self) {
     return self;
 }
 
-BOOL func_ov006_021e5ef0(const ov006_MenuData *data) {
+BOOL ov006_Menu_ReceiveData(const ov006_MenuData *data) {
     if (data->unk44 != 0x401336) {
         return FALSE;
     }
-    return func_ov006_021e46e8(data_ov006_021ec888, data);
+    return ov006_Menu_UpdateNode(data_ov006_021ec888, data);
 }
 
 static inline ov006_MenuEntry *ov006_Menu_GetEntry(ov006_Unk021ec888 *self, u32 idx) {
@@ -77,13 +77,13 @@ static inline void ov006_Menu_UpdateConnection(void) {
     }
 }
 
-void func_ov006_021e5f24(void) {
-    data_02097dd0->vblankFunc = func_ov006_021e5f24;
+void ov006_Menu_VBlankA(void) {
+    data_02097dd0->vblankFunc = ov006_Menu_VBlankA;
     ov006_Menu_UpdateConnection();
 }
 
-void func_ov006_021e5fec(void) {
-    data_02097dd0->vblankFunc = func_ov006_021e5fec;
+void ov006_Menu_VBlankB(void) {
+    data_02097dd0->vblankFunc = ov006_Menu_VBlankB;
     ov006_Menu_UpdateConnection();
 }
 
@@ -111,7 +111,7 @@ static inline u16 ov006_Menu_GetEntryMask(int type, u16 mask) {
     return result;
 }
 
-u16 func_ov006_021e60e8(int type, u16 mask) {
+u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask) {
     u16 result = 0;
     u16 i;
     if (data_ov006_021ec888 != NULL) {
@@ -128,14 +128,14 @@ u16 func_ov006_021e60e8(int type, u16 mask) {
     return result;
 }
 
-BOOL func_ov006_021e616c(int type, u16 mask) {
+BOOL ov006_Menu_AllEntriesMatch(int type, u16 mask) {
     return mask == ov006_Menu_GetEntryMask(type, mask);
 }
 
 void func_ov006_021e61f8(void) {
 }
 
-void *func_ov006_021e61fc(void *self) {
+void *Ov006Vt_021ec444_DtorDelete(void *self) {
     Heap_Free(self);
     return self;
 }

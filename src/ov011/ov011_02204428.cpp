@@ -8,7 +8,7 @@ extern char data_ov011_022075d4[];
 s32 Rand_PlusMinus(s32 max);
 Actor *func_ov000_0219be1c(s32 id, VecFx32 *pos, u16 *rot, u16 a, u16 b);
 
-void func_ov011_02204428(Ov011Act7c4c *self) {
+void Ov011Act7c4c_StateIdle(Ov011Act7c4c *self) {
     VecFx32 v;
     ActorSub40 *s = self->fsm;
     switch (s->st) {

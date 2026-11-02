@@ -34,8 +34,8 @@ extern u8 data_ov006_021ec2dc[];
 extern char data_0214b105[];
 void PlayTime_Clear(void *p);
 void func_02041c34(Model *m, int a, void *cb, int b);
-void *func_ov006_021dd5dc(void *self, u16 *flag, void *oam, u16 *count);
-void *func_ov006_021deea4(void *self, const u16 *mode, void *oam, u16 *count);
+void *ov006_OamCb_TimeDigits(void *self, u16 *flag, void *oam, u16 *count);
+void *ov006_Counter_OamCb(void *self, const u16 *mode, void *oam, u16 *count);
 
 static inline void ov006_Unk021def9c_dtor(ov006_Unk021def9c *self) {
     self->vtbl = data_ov006_021ec26c;
@@ -55,7 +55,7 @@ ov006_Unk021def9c *Ov006Vt_021ec26c_DtorDelete(ov006_Unk021def9c *self) {
     return self;
 }
 
-void func_ov006_021df19c(ov006_Unk021def9c *self) {
+void ov006_Unk021def9c_Load(ov006_Unk021def9c *self) {
     ov006_Icon021df19c *icon;
     Model *m1;
     Model *m2;
@@ -82,11 +82,11 @@ void func_ov006_021df19c(ov006_Unk021def9c *self) {
     func_020417e0(m1, res);
     icon->unk1C->flags |= 2;
     func_02041d9c(icon->unk1C, 0, 0x1e);
-    func_02041c34(icon->unk1C, 0x1e, (void *)func_ov006_021dd5dc, 0);
+    func_02041c34(icon->unk1C, 0x1e, (void *)ov006_OamCb_TimeDigits, 0);
     func_02041d9c(icon->unk1C, 0, 0x1f);
-    func_02041c34(icon->unk1C, 0x1f, (void *)func_ov006_021dd5dc, 0);
+    func_02041c34(icon->unk1C, 0x1f, (void *)ov006_OamCb_TimeDigits, 0);
     func_02041d9c(icon->unk1C, 0, 0x24);
-    func_02041c34(icon->unk1C, 0x24, (void *)func_ov006_021dd5dc, 0);
+    func_02041c34(icon->unk1C, 0x24, (void *)ov006_OamCb_TimeDigits, 0);
     icon->unk1C->flags |= 0x80000;
     icon->unk1C->flags = (icon->unk1C->flags & ~0x7c) | 0x78;
     m2 = (Model *)Heap_Alloc(sizeof(Model));
@@ -112,7 +112,7 @@ void func_ov006_021df19c(ov006_Unk021def9c *self) {
     self->unk90->flags |= 2;
     self->unk90->flags |= 0x80000;
     func_02041d9c(self->unk90, 0, 0x1e);
-    func_02041c34(self->unk90, 0x1e, (void *)func_ov006_021deea4, 0);
+    func_02041c34(self->unk90, 0x1e, (void *)ov006_Counter_OamCb, 0);
     self->unk4 = 6;
     self->unk8 = 0;
     self->unk84 = 0;

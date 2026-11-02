@@ -58,7 +58,7 @@ static inline void ov006_FinderQuery_Init(ov006_FinderQuery021e7fe4 *fq) {
     fq->q.exclude = 0xffff;
 }
 
-void func_ov006_021e7fe4(Ov006Racer *self) {
+void Ov006Racer_CheckItems(Ov006Racer *self) {
     BOOL found = FALSE;
     if (self->unk_19c_0 & 1) {
         ov006_FinderQuery021e7fe4 fq;

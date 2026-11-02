@@ -9,7 +9,7 @@ extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecF
 
 void Ov009ActVt_02216750_Init(Ov009ActVt_02216750 *self) {
     GroupNode *p;
-    func_ov003_021d0fc0(self);
+    Ov003Actor_Init(self);
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     if (self->kind != 0x5038 && self->kind != 0x5044) {
         return;
@@ -31,7 +31,7 @@ void Ov009ActVt_02216750_Init(Ov009ActVt_02216750 *self) {
 
 void Ov009ActVt_02216750_Start(Ov009ActVt_02216750 *self) {
     ActorSub48 *s48;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     self->unk_f0 = self->pos;
     self->unk_fc = self->pos;
     if (data_ov000_021ccd54->unk_ca.c[0] != 0x11) {
@@ -164,7 +164,7 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
                     time = 0x190;
                     break;
                 }
-                e = func_ov003_021d69a0(self, id, 0x20);
+                e = Ov003Actor_SpawnAtSelf(self, id, 0x20);
                 if (e != NULL) {
                     func_01ffc9fc(&ofs, &ofs, self->rot_y);
                     VEC_Add(&ofs, &self->pos, &ofs);

@@ -46,7 +46,7 @@ void Ov009ActVt_022178f0_Update(Ov009ActVt_022178f0 *self) {
     self->unk_b6 = 0;
 }
 
-void func_ov009_02206bb4(Ov009ActVt_022178f0 *self) {
+void Ov009ActVt_022178f0_State20(Ov009ActVt_022178f0 *self) {
     VecFx32 d;
     ActorSub40 *st = self->fsm;
     switch (st->st) {
@@ -67,7 +67,7 @@ void func_ov009_02206bb4(Ov009ActVt_022178f0 *self) {
     }
 }
 
-void func_ov009_02206c84(Ov009ActVt_022178f0 *self) {
+void Ov009ActVt_022178f0_State21(Ov009ActVt_022178f0 *self) {
     VecFx32 t;
     Ov009Rot r;
     Ov003Actor *a;
@@ -108,7 +108,7 @@ void func_ov009_02206c84(Ov009ActVt_022178f0 *self) {
     }
 }
 
-void func_ov009_02206e30(Ov009ActVt_022178f0 *self) {
+void Ov009ActVt_022178f0_State22(Ov009ActVt_022178f0 *self) {
     VecFx32 d;
     ActorSub40 *st;
     EffectObj *e;
@@ -156,7 +156,7 @@ void func_ov009_02206e30(Ov009ActVt_022178f0 *self) {
     }
 }
 
-void func_ov009_0220703c(Ov009ActVt_022178f0 *self) {
+void Ov009ActVt_022178f0_StateIdle(Ov009ActVt_022178f0 *self) {
     VecFx32 d;
     ActorSub40 *st = self->fsm;
     VecFx32 *t = &self->unk_fc;
@@ -186,7 +186,7 @@ void func_ov009_0220703c(Ov009ActVt_022178f0 *self) {
     self->unk_10c = -1;
 }
 
-void func_ov009_02207164(Ov009ActVt_022178f0 *self) {
+void Ov009ActVt_022178f0_StateShoot(Ov009ActVt_022178f0 *self) {
     VecFx32 p;
     Ov009Rot r;
     Ov003Actor *t;
@@ -230,7 +230,7 @@ extern const u16 data_ov009_02215ef0[3];
 extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void func_0203f364(ActorSub48 *p);
-void func_ov009_02207314(Ov009ActVt_022178f0 *self) {
+void Ov009ActVt_022178f0_StateHurt(Ov009ActVt_022178f0 *self) {
     VecFx32 d;
     switch (self->fsm->st) {
     case 0: {
@@ -274,7 +274,7 @@ void func_ov009_02207314(Ov009ActVt_022178f0 *self) {
                 self->unk_ea_6 = 1;
                 self->fsm->timer = 0;
                 self->fsm->st = 10;
-                func_ov003_021d6a3c(self, 0, 0, 1);
+                Ov003Actor_Defeat(self, 0, 0, 1);
                 return;
             }
             func_ov000_02198360(self->fsm, 1, 0);

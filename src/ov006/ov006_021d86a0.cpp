@@ -10,9 +10,9 @@ typedef struct ov006_Task021d86a0 {
 extern "C" {
 
 ov006_ListWin *ov006_Window_Ctor(ov006_ListWin *self);
-BOOL func_ov006_021d88f8(UiList *self, UiListItem *item);
+BOOL ov006_ListCb_StoreId2(UiList *self, UiListItem *item);
 
-void func_ov006_021d86a0(ov006_Task021d86a0 *self, u16 a, char *text) {
+void ov006_ShowListWin(ov006_Task021d86a0 *self, u16 a, char *text) {
     ov006_ListWin *w;
     OV006_DELETE_OBJECT(self->unk34);
     w = (ov006_ListWin *)Heap_Alloc(0x1e8);
@@ -24,7 +24,7 @@ void func_ov006_021d86a0(ov006_Task021d86a0 *self, u16 a, char *text) {
     self->unk34->text = text;
     self->unk34->key = 0;
     self->unk34->flags |= 0x4000000;
-    self->unk34->onDecide = func_ov006_021d88f8;
+    self->unk34->onDecide = ov006_ListCb_StoreId2;
     self->unk34->owner = self->unk38;
     self->unk34->vfunc_08();
     self->unk34->posZ = -0x1666;

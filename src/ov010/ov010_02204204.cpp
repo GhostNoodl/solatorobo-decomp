@@ -12,36 +12,36 @@ extern void *Ov003Vt_021f7d10_Ctor(void *p);
 extern void *Ov003Vt_021f7d10_Dtor(void *p);
 extern void *Ov003Vt_021f7cd8_Ctor(void *p);
 extern void *Ov003Vt_021f7cd8_Dtor(void *p);
-extern void func_ov010_02207520(Ov010Obj02210154 *self);
-extern void func_ov010_022075bc(Ov010Obj02210154 *self);
+extern void Ov010Obj02210154_ClearFields(Ov010Obj02210154 *self);
+extern void Ov010Obj02210154_Release(Ov010Obj02210154 *self);
 extern void func_02049678(SndMgr *a, s32 b, s32 c, s32 d);
 extern BOOL SndMgr_IsLoadDone(SndMgr *a);
 
 void *Ov010ActVt_02210154_Ctor(Ov010Obj02210154 *self) {
-    func_ov003_021d0c1c(self);
+    Ov003Actor_Ctor(self);
     *(void * *)self = data_ov010_02210154;
-    func_ov003_021d8f24(&self->seq);
-    func_ov010_0220d79c(&self->coll);
+    Ov003Flag_Deactivate(&self->seq);
+    Ov010Coll_Ctor(&self->coll);
     Ov003Vt_021f7d10_Ctor(&self->ticker);
     Ov003Vt_021f7cd8_Ctor(&self->timer);
-    func_ov003_021cf340(data_ov010_0220ff84);
+    Ov003_DupString(data_ov010_0220ff84);
     func_ov003_021cf3fc(1);
-    func_ov003_021cf39c(2, data_ov010_0220ff91);
-    func_ov003_021cf39c(0, data_ov010_0220ffa1);
-    func_ov003_021cf39c(1, data_ov010_0220ffae);
-    func_ov010_02207520(self);
+    Ov003_DupString2(2, data_ov010_0220ff91);
+    Ov003_DupString2(0, data_ov010_0220ffa1);
+    Ov003_DupString2(1, data_ov010_0220ffae);
+    Ov010Obj02210154_ClearFields(self);
     return self;
 }
 
 static inline void Ov010_02204294_Body(Ov010Obj02210154 *self) {
     *(void * *)self = data_ov010_02210154;
     func_ov003_021cf3fc(0);
-    func_ov010_022075bc(self);
+    Ov010Obj02210154_Release(self);
     Ov003Vt_021f7cd8_Dtor(&self->timer);
     Ov003Vt_021f7d10_Dtor(&self->ticker);
     Ov010Coll_Dtor(&self->coll);
-    func_ov003_021d8f34(&self->seq);
-    func_ov003_021d0edc(self);
+    Ov003Flag_Stop(&self->seq);
+    Ov003Actor_DtorBase(self);
 }
 
 void *Ov010ActVt_02210154_Dtor(Ov010Obj02210154 *self) {
@@ -55,7 +55,7 @@ void *Ov010ActVt_02210154_DtorDelete(Ov010Obj02210154 *self) {
     return self;
 }
 
-BOOL func_ov010_02204344(Ov010Obj02210154 *self) {
+BOOL Ov010Obj02210154_IsReady(Ov010Obj02210154 *self) {
     BOOL r = func_ov000_0218cf5c(self);
     if (self->unk_f0 == 0) {
         self->unk_f0 = 1;
@@ -69,11 +69,11 @@ BOOL func_ov010_02204344(Ov010Obj02210154 *self) {
     return r;
 }
 
-BOOL func_ov010_022043c4(Ov010Obj02210154 *self) {
+BOOL Ov010Obj02210154_Draw(Ov010Obj02210154 *self) {
     VecFx32 saved = self->pos;
     BOOL r;
-    func_ov003_021d883c(&self->ticker, &self->pos, &self->pos, 0x480);
-    r = func_ov003_021d16cc(self);
+    Ov003TickerSet_Apply(&self->ticker, &self->pos, &self->pos, 0x480);
+    r = Ov003Actor_Draw(self);
     self->pos = saved;
     return r;
 }

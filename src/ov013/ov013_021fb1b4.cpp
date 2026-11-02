@@ -98,7 +98,7 @@ static inline void Ov013_Show(Ov003Actor *self) {
 
 extern "C" {
 
-void func_ov013_021fb1b4(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, VecFx32 *cur) {
+void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, VecFx32 *cur) {
     BOOL shake = FALSE;
     VecFx32 v_1;
     s32 z_0;

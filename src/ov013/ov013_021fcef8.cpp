@@ -22,7 +22,7 @@ static inline s32 Ov013_DistXZ(const VecFx32 *a, const VecFx32 *b) {
     return Ov013_Sqrt64(sq);
 }
 
-void func_ov013_021fcef8(Ov013ActVt_0220b5e0 *self) {
+void Ov013ActVt_0220b5e0_StateMove(Ov013ActVt_0220b5e0 *self) {
     switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov013_0220b5ca, 0x2ab, 0);
@@ -68,21 +68,21 @@ void func_ov013_021fcef8(Ov013ActVt_0220b5e0 *self) {
     }
 }
 
-void func_ov013_021fd06c(Ov013ActVt_0220b5e0 *self) {
+void Ov013ActVt_0220b5e0_StateHeld(Ov013ActVt_0220b5e0 *self) {
     if (self->fsm->st == 0) {
         EffectMgr_Kill(data_0214a420, self->unk_f4);
     }
-    func_ov003_021d36fc(self);
+    Ov003Actor_StateHeld(self);
 }
 
-void func_ov013_021fd0a4(Ov013ActVt_0220b5e0 *self) {
+void Ov013ActVt_0220b5e0_StateThrown(Ov013ActVt_0220b5e0 *self) {
     if (self->fsm->st == 0) {
         self->hit->unk_30 = 0;
     }
-    func_ov003_021d3a88(self);
+    Ov003Actor_StateThrown(self);
 }
 
-void func_ov013_021fd0c8(Ov013ActVt_0220b5e0 *self) {
+void Ov013ActVt_0220b5e0_StateFly(Ov013ActVt_0220b5e0 *self) {
     ActorSub48 *m;
     if (self->fsm->st == 0) {
         if (self->fsm->history[0] == 0xb) {
@@ -108,7 +108,7 @@ void func_ov013_021fd0c8(Ov013ActVt_0220b5e0 *self) {
         m->unk_9a_5 = 1;
         self->unk_b6 = 300;
     }
-    func_ov003_021d3d28(self);
+    Ov003Actor_StateFly(self);
 }
 
 }

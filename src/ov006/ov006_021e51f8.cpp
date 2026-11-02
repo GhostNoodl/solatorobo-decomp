@@ -40,7 +40,7 @@ void func_02045950(ov006_Net021e51f8 *net, void *data, u32 size);
 BOOL func_020459cc(ov006_Net021e51f8 *net, int a, u16 tgid, u16 b);
 BOOL Wh_SetEntry(ov006_Net021e51f8 *net, BOOL enabled);
 u16 WM_GetNextTgid(void);
-void func_ov006_021e5f24(void);
+void ov006_Menu_VBlankA(void);
 
 static inline void ov006_Menu_Advance(ov006_Unk021ec888 *self) {
     if (self->stateTime < 0xff) {
@@ -166,7 +166,7 @@ void func_ov006_021e51f8(ov006_Unk021ec888 *self) {
             return;
         }
         ov006_Menu_SetEntry(data_ov006_021ec888, TRUE);
-        data_02097dd0->vblankFunc = func_ov006_021e5f24;
+        data_02097dd0->vblankFunc = ov006_Menu_VBlankA;
         self->stateTime = 0x1e;
         return;
     }

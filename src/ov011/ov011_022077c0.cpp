@@ -55,7 +55,7 @@ static inline u32 Ov011_ChrBusy(Ov011Scene *c) {
 }
 
 #pragma force_active on
-void func_ov011_021ffb58(Ov011SceneActor *self) {
+void Ov011SceneActor_StateAttack(Ov011SceneActor *self) {
     switch (self->fsm->st) {
     case 0:
         if (self->unk_f0_1) {
@@ -74,7 +74,7 @@ void func_ov011_021ffb58(Ov011SceneActor *self) {
     self->unk_f4.y = 0x3e69;
 }
 
-void func_ov011_021ffc38(Ov011SceneActor *self) {
+void Ov011SceneActor_StateAttack2(Ov011SceneActor *self) {
     switch (self->fsm->st) {
     case 0:
         Ov011_ChrKick(self->scene, 4);
@@ -88,7 +88,7 @@ void func_ov011_021ffc38(Ov011SceneActor *self) {
     }
 }
 
-void func_ov011_021ffcd0(Ov011SceneActor *self) {
+void Ov011SceneActor_StateDown(Ov011SceneActor *self) {
     if (self->fsm->st == 0) {
         Ov011Scene *c;
         Ov011Sa108 *p;
@@ -105,7 +105,7 @@ void func_ov011_021ffcd0(Ov011SceneActor *self) {
         p->unk_04 = 0x1000;
         o = self->unk_104;
         if (o != NULL) {
-            func_ov003_021da48c(o, 0);
+            Ov003ActorSub40_ForceState(o, 0);
             o->tw.v08();
             if (o->unk_38 != 0) {
                 EffectMgr_Kill(data_0214a420, o->unk_38);
@@ -118,31 +118,31 @@ void func_ov011_021ffcd0(Ov011SceneActor *self) {
             ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4812, 0x15);
         }
     }
-    func_ov003_021d5900(self);
+    Ov003Actor_StateDown(self);
 }
 
-void func_ov011_021ffdd0(Ov011SceneActor *self) {
+void Ov011SceneActor_StateHurt(Ov011SceneActor *self) {
     if (self->fsm->st == 0) {
         func_02049f44(data_02097e4c, 0x42, &self->pos, 0);
     }
-    func_ov003_021d4fd8(self);
+    Ov003Actor_StateHurt(self);
 }
 
-void func_ov011_021ffe10(Ov011SceneActor *self) {
+void Ov011SceneActor_StateKnockBack(Ov011SceneActor *self) {
     if (self->fsm->st == 0) {
         func_02049f44(data_02097e4c, 0x42, &self->pos, 0);
     }
-    func_ov003_021d5348(self);
+    Ov003Actor_StateKnockBack(self);
 }
 
-void func_ov011_021ffe50(Ov011SceneActor *self) {
+void Ov011SceneActor_StateDie(Ov011SceneActor *self) {
     if (self->fsm->st == 0) {
         Ov011Sa104 *o;
         EffectObj *v;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4812, 0x15);
         o = self->unk_104;
         if (o != NULL) {
-            func_ov003_021da48c(o, 0);
+            Ov003ActorSub40_ForceState(o, 0);
             o->tw.v08();
             if (o->unk_38 != 0) {
                 EffectMgr_Kill(data_0214a420, o->unk_38);
@@ -157,7 +157,7 @@ void func_ov011_021ffe50(Ov011SceneActor *self) {
             v->AddPosXYZ(0, 0x1000, 0);
         }
     }
-    func_ov003_021d6054(self);
+    Ov003Actor_StateDie(self);
 }
 
 BOOL Ov011TwB_Start(void *self, const VecFx32 *to, const VecFx32 *from, s16 speed);
@@ -254,7 +254,7 @@ void func_ov011_021fff38(Ov011SceneActor *self) {
         }
         break;
     }
-    func_ov003_021da40c(self->unk_104);
+    Ov003ActorSub40_ApplyFlags(self->unk_104);
     self->unk_104->tw.v0c();
 }
 #pragma force_active reset
@@ -419,14 +419,14 @@ namespace m_0220068c {
 extern "C" {
 
 void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
-void func_ov003_021d7800(void *p);
-void func_ov011_02201688(void *p);
-void func_ov011_0220205c(void *p);
-void func_ov011_02202fbc(void *p);
-void func_ov011_021fa7dc(void *p);
-void func_ov011_02202f04(void *p);
-void *func_ov011_02201d10(void *p);
-void *func_ov011_0220154c(void *p);
+void Ov003_FreeIfSet(void *p);
+void Ov011Fx_Release(void *p);
+void Ov011Chr_Reset_0220205c(void *p);
+void Ov011Mov_Stop_02202fbc(void *p);
+void Ov011Mgr_Release(void *p);
+void Ov011Mov_Stop(void *p);
+void *Ov011Chr_Dtor(void *p);
+void *Ov011Fx_Dtor(void *p);
 void *Ov011Vt_022079b0_Dtor(void *p);
 
 static inline void Ov011B_FreeBuf(Ov011Scene *b) {
@@ -449,13 +449,13 @@ static inline void Ov011B_FreeVec(Ov011Scene *b) {
             void *saved = data_02097dd0->cur;
             data_02097dd0->cur = data_02097dd0->heapHi;
             if (b->mgr2.arr8 != NULL) {
-                __cxa_vec_delete(b->mgr2.arr8, 0x40, 8, func_ov011_021fb66c);
+                __cxa_vec_delete(b->mgr2.arr8, 0x40, 8, Ov011E40_Dtor);
                 b->mgr2.arr8 = NULL;
             }
             data_02097dd0->cur = saved;
         }
-        func_ov011_0220205c(b->mgr2.unk_28);
-        func_ov011_02202fbc(&b->mgr2.mov);
+        Ov011Chr_Reset_0220205c(b->mgr2.unk_28);
+        Ov011Mov_Stop_02202fbc(&b->mgr2.mov);
     }
 }
 
@@ -483,15 +483,15 @@ static inline void Ov011B_Free(Ov011Scene *b) {
         b->b0 = 0;
         for (p = b->head; p != NULL; p = next) {
             next = p->next;
-            func_ov003_021d7800(p);
+            Ov003_FreeIfSet(p);
         }
         Ov011B_FreeBuf(b);
-        func_ov011_02201688(&b->fx);
+        Ov011Fx_Release(&b->fx);
         Ov011B_FreeVec(b);
         if (b->s1b4.b0) {
             b->s1b4.b0 = 0;
         }
-        func_ov011_021fa7dc(&b->mgr);
+        Ov011Mgr_Release(&b->mgr);
         Ov011B_FreeList(b);
     }
 }
@@ -499,21 +499,21 @@ static inline void Ov011B_Free(Ov011Scene *b) {
 static inline void Ov011B_Dtor(Ov011Scene *b) {
     Ov011B_Free(b);
     Ov011B_FreeList(b);
-    func_ov011_021fa7dc(&b->mgr);
+    Ov011Mgr_Release(&b->mgr);
     if (b->s1b4.b0) {
         b->s1b4.b0 = 0;
     }
     Ov011B_FreeVec(b);
-    func_ov011_02202f04(&b->mgr2.mov);
-    func_ov011_02201d10(b->mgr2.unk_28);
-    func_ov011_0220154c(&b->fx);
+    Ov011Mov_Stop(&b->mgr2.mov);
+    Ov011Chr_Dtor(b->mgr2.unk_28);
+    Ov011Fx_Dtor(&b->fx);
     Ov011B_FreeBuf(b);
 }
 
 void func_ov011_0220068c(Ov011SceneActor *self) {
     Ov011Sa104 *a = self->unk_104;
     if (a != NULL) {
-        func_ov003_021da48c(a, 0);
+        Ov003ActorSub40_ForceState(a, 0);
         a->tw.v08();
         if (a->unk_38 != 0) {
             EffectMgr_Kill(data_0214a420, a->unk_38);

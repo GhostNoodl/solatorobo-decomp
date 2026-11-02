@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov014_02208d90(Ov014ActEx_02208618 *self) {
+void Ov014ActEx_02208618_StateFly(Ov014ActEx_02208618 *self) {
     self->unk_d0 |= 0x1000;
     func_ov000_02198360(self->fsm, 0x15, 0);
 }
@@ -10,7 +10,7 @@ extern void func_ov000_02198c8c(void *p, s32 a);
 extern void func_0203f364(ActorSub48 *p);
 extern void func_ov000_0218996c(u8 a, u8 b);
 
-void func_ov014_02208db4(Ov014ActEx_02208618 *self) {
+void Ov014ActEx_02208618_StateDie(Ov014ActEx_02208618 *self) {
     switch (self->fsm->st) {
     case 0: {
         EffectObj *a;
@@ -33,10 +33,10 @@ void func_ov014_02208db4(Ov014ActEx_02208618 *self) {
         self->model->visible = 0;
         a = func_02065f88(0x69, &self->pos);
         a->SetScaleAll(0x40);
-        func_ov003_021da9ac(((Ov003FxList *)self->unk_d8), 0xff, a);
+        Ov003FxList_Add(((Ov003FxList *)self->unk_d8), 0xff, a);
         a = func_02065f88(5, &self->pos);
         a->SetScaleAll(0x40);
-        func_ov003_021da9ac(((Ov003FxList *)self->unk_d8), 0xfe, a);
+        Ov003FxList_Add(((Ov003FxList *)self->unk_d8), 0xfe, a);
         func_ov000_0218996c(0xf, 0xf);
         func_02049f44(data_02097e4c, 0x7f, &self->pos, 0);
         func_02049f44(data_02097e4c, 0x56, &self->pos, 0);

@@ -5,12 +5,12 @@
 extern "C" {
 
 
-void func_ov009_022117ac(Ov009ActVt_02217aac *self) {
+void Ov009ActVt_02217aac_StateHurt(Ov009ActVt_02217aac *self) {
     if (self->fsm->st == 0) {
         self->unk_fc = FLD(u8, ((u8 *)self->unk_100) + self->unk_fc * 16, 0xc);
         self->unk_fe = 0;
     }
-    func_ov003_021d4fd8(self);
+    Ov003Actor_StateHurt(self);
 }
 
 extern Ov003Actor *func_ov000_0219bf90(void);
@@ -20,7 +20,7 @@ extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern void func_ov000_021911c8(Model0218fe1c *m, s16 a);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
-void func_ov009_022117e4(Ov009ActVt_02217aac *self) {
+void Ov009ActVt_02217aac_StateDie(Ov009ActVt_02217aac *self) {
     VecFx32 p;
     VecFx32 v;
     VecFx32 q;
@@ -65,7 +65,7 @@ void func_ov009_022117e4(Ov009ActVt_02217aac *self) {
                 if (self->unk_ff != 0) {
                     b = 1;
                 }
-                func_ov003_021d6a3c(self, b, 1, 1);
+                Ov003Actor_Defeat(self, b, 1, 1);
             }
             self->fsm->timer = 0;
             self->fsm->st++;

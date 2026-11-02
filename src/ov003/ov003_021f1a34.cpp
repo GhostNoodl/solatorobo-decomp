@@ -146,7 +146,7 @@ static inline BOOL Ov003_MsgBusy(void) {
     return func_ov000_021700c4(m->unk_11c);
 }
 
-void func_ov003_021f1b1c(Ov003Pd *self) {
+void Ov003ActVt_021fa1b8_RunState(Ov003Pd *self) {
     BOOL show = TRUE;
     if (self->unk_5c != NULL) {
         Ov003PdSub44 *s;

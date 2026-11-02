@@ -3,31 +3,31 @@
 extern "C" {
 
 #pragma force_active on
-void func_ov011_021fd4a4(Ov011Sub1b4 *self) {
+void Ov011Sub1b4_Reset(Ov011Sub1b4 *self) {
     self->b1 = 0;
     self->id = 0xffff;
     self->ent = NULL;
-    func_ov003_021da48c(&self->seq, 1);
+    Ov003ActorSub40_ForceState(&self->seq, 1);
 }
 #pragma force_active reset
 
-extern BOOL func_ov011_02201578(void *p);
-extern BOOL func_ov011_021fa720(Ov011Ent *e, s32 a, s32 b, s32 c, s32 d);
+extern BOOL Ov011Fx_Init(void *p);
+extern BOOL Ov011Ent_Init(Ov011Ent *e, s32 a, s32 b, s32 c, s32 d);
 
-BOOL func_ov011_021fd4d8(Ov011Scene *self, Actor *owner) {
+BOOL Ov011Scene_Init(Ov011Scene *self, Actor *owner) {
     self->b0 = 1;
     self->b1 = 0;
     self->b2 = 1;
     self->unk_04 = 0;
     self->actor = owner;
     self->head = NULL;
-    func_ov003_021da48c(&self->seq, 1);
+    Ov003ActorSub40_ForceState(&self->seq, 1);
     self->ring.b0 = 1;
     self->ring.idx = 0;
     self->ring.cap = 0x10;
     self->ring.buf = (s32 *)Heap_AllocArray(self->ring.cap * 4);
     self->ring.count = 0;
-    func_ov011_02201578(&self->fx);
+    Ov011Fx_Init(&self->fx);
     self->mgr2.b0 = 1;
     self->mgr2.b1 = 0;
     self->mgr2.count = 0;
@@ -35,7 +35,7 @@ BOOL func_ov011_021fd4d8(Ov011Scene *self, Actor *owner) {
     self->mgr2.arr8 = NULL;
     self->mgr2.list = NULL;
     self->mgr2.ent = NULL;
-    func_ov003_021da48c(&self->mgr2.state, 0);
+    Ov003ActorSub40_ForceState(&self->mgr2.state, 0);
     self->s1b4.b0 = 1;
     self->s1b4.b1 = 0;
     self->s1b4.id = 0;
@@ -51,20 +51,20 @@ BOOL func_ov011_021fd4d8(Ov011Scene *self, Actor *owner) {
     self->mgr.ids = NULL;
     self->mgr.list = NULL;
     self->mgr.ent = NULL;
-    func_ov003_021da48c(&self->mgr.state, 0);
-    func_ov011_021fa720(&self->ent, 1, 0x3333, 0x71c, 0x2000);
+    Ov003ActorSub40_ForceState(&self->mgr.state, 0);
+    Ov011Ent_Init(&self->ent, 1, 0x3333, 0x71c, 0x2000);
     return TRUE;
 }
 
 }
 
 #ifdef NONMATCHING
-// Status (round drA): func_ov011_021fd638 is 56 / 34 (raw / register-masked, dsi/1.3 with the project flags); this
+// Status (round drA): Ov011Scene_Update is 56 / 34 (raw / register-masked, dsi/1.3 with the project flags); this
 // is the best clean draft. Blocker: the Ov011Ent_Remove zero is hoisted to the entry (move-constant-loads 82 -> 9),
 // plus the ring loop's FX_Mul temps and ang colouring. History: docs/MATCHING.md rounds bigM, hzR, cvZ, raF,
 // hzA, svC, cvA (search for the address); the full list is docs/UNMATCHED.md.
-// func_ov011_021fd638: 56 raw diffs (round raF's draft, landed by round hzA). Two problems, as in
-// func_ov011_021fc0b8 (src/ov011/ov011_021fc0a0.cpp), which shares Ov011Ent_Remove:
+// Ov011Scene_Update: 56 raw diffs (round raF's draft, landed by round hzA). Two problems, as in
+// Ov011Ctl_Update (src/ov011/ov011_021fc0a0.cpp), which shares Ov011Ent_Remove:
 // (1) the Remove zero (e->unk_08 = 0) is hoisted to the function entry, where the ROM builds it in the
 // inner loop's preheader (mov r7, #0 after the guard); refusing the move-constant-loads step 82 -> 9
 // in the compiler (rounds hzR/cvZ) leaves 22 / 0 masked. (2) the ring loop's FX_Mul temps and the
@@ -94,14 +94,14 @@ extern const Ov011TopEntry data_ov011_022073a0[];
 extern const Ov011Sub1b4Entry data_ov011_02207308[];
 extern const VecFx32 data_ov011_02207284;
 
-void func_ov011_021fdb28(Ov011Scene *self);
-BOOL func_ov003_021d7814(void *p);
-void func_ov003_021d7800(void *p);
-Ov011PNode *func_ov011_021fa790(Ov011PNode *head, Ov011PNode *item);
-Ov011Node *func_ov011_021fdadc(Ov011Node *head, Ov011Node *n);
-void func_ov011_02201758(void *p);
-void func_ov011_021fb684(void *p);
-void func_ov011_021fa8c8(void *p);
+void Ov011Scene_SelectState(Ov011Scene *self);
+BOOL Ov003_ActorExists(void *p);
+void Ov003_FreeIfSet(void *p);
+Ov011PNode *Ov011LNode_Remove(Ov011PNode *head, Ov011PNode *item);
+Ov011Node *Ov011Link_Remove(Ov011Node *head, Ov011Node *n);
+void Ov011Fx_Update(void *p);
+void Ov011Mgr2_Update(void *p);
+void Ov011Mgr_Update(void *p);
 void Ov003Vec_RotY(VecFx32 *out, const VecFx32 *in, s32 angle);
 
 static inline void Ov011Ent_Remove(Ov011Ent *e, void *k) {
@@ -109,7 +109,7 @@ static inline void Ov011Ent_Remove(Ov011Ent *e, void *k) {
     if (e->active) {
         for (n = e->nodes; n != NULL; n = n->next) {
             if (k == n) {
-                e->nodes = func_ov011_021fa790(e->nodes, n);
+                e->nodes = Ov011LNode_Remove(e->nodes, n);
                 if (n != NULL) {
                     Heap_Free(n);
                 }
@@ -137,7 +137,7 @@ static inline void Ov011Sub1b4_Update(Ov011Sub1b4 *s) {
             break;
         }
     }
-    func_ov003_021da40c(&s->seq);
+    Ov003ActorSub40_ApplyFlags(&s->seq);
 }
 
 static inline void Ov011_MoveTo(Ov011PNode *n, const VecFx32 *v, s32 t) {
@@ -162,24 +162,24 @@ static inline s32 Ov011Ent_Count(Ov011Ent *e) {
 
 #define E (self->ent)
 
-void func_ov011_021fd638(Ov011Scene *self) {
+void Ov011Scene_Update(Ov011Scene *self) {
     Ov011Node *next;
     Ov011Node *n;
     if (!self->b0) {
         return;
     }
-    func_ov011_021fdb28(self);
+    Ov011Scene_SelectState(self);
     n = self->head;
     while (n != NULL) {
         next = n->next;
-        if (!func_ov003_021d7814(n)) {
+        if (!Ov003_ActorExists(n)) {
             Ov011Npc *a = Ov011_FindNpc(n->id);
             if (a != NULL) {
                 Ov011Ent_Remove(&self->ent, func_ov011_02201254(a));
                 func_ov011_02201214(a, NULL);
             }
-            self->head = func_ov011_021fdadc(self->head, n);
-            func_ov003_021d7800(n);
+            self->head = Ov011Link_Remove(self->head, n);
+            Ov003_FreeIfSet(n);
         }
         n = next;
     }
@@ -193,10 +193,10 @@ void func_ov011_021fd638(Ov011Scene *self) {
             }
         }
     }
-    func_ov011_02201758(&self->fx);
-    func_ov011_021fb684(&self->mgr2);
+    Ov011Fx_Update(&self->fx);
+    Ov011Mgr2_Update(&self->mgr2);
     Ov011Sub1b4_Update(&self->s1b4);
-    func_ov011_021fa8c8(&self->mgr);
+    Ov011Mgr_Update(&self->mgr);
     {
 
     s32 d;

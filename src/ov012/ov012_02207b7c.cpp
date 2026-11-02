@@ -5,7 +5,7 @@ extern "C" {
 extern char data_ov012_0220b324[];
 extern char data_ov012_0220b32e[];
 
-void func_ov012_02207b7c(Ov012Names *self, void *res) {
+void Ov012Names_Fill(Ov012Names *self, void *res) {
     char *a = func_0207011c(res);
     char *b = func_020701d4(res);
     u8 *c = func_02070558(res);

@@ -6,7 +6,7 @@ extern "C" {
 
 int FX_Div(int a, int b);
 
-void func_ov006_021e139c(ov006_Gauge *self, int a, int b, u8 c) {
+void ov006_Gauge_SetRatio(ov006_Gauge *self, int a, int b, u8 c) {
     if (a > b) {
         return;
     }

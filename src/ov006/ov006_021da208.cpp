@@ -26,7 +26,7 @@ extern const ov006_Price021da208 data_ov006_021eb7e4;
 
 void func_ov000_021c22d8(void *self);
 void func_ov000_021c5bac(void *self);
-BOOL func_ov006_021da19c(UiList *self, UiListItem *item);
+BOOL ov006_ListCb_StoreIdOrCancel(UiList *self, UiListItem *item);
 
 static inline u8 ov006_SlotManager_GetItem(ov006_SlotManager *self, u8 i) {
     if (i < 3) {
@@ -72,7 +72,7 @@ static inline void ov006_Entry_Set(ov006_Entry021da208 *e, void *res, const ov00
     e->unk40 = price * cnt;
 }
 
-void func_ov006_021da208(ov006_Task021ec040 *self) {
+void ov006_Task021ec040_BuildShopList(ov006_Task021ec040 *self) {
     void *res = ov006_GetRes();
     u8 n = data_ov006_021ec884->lap;
     const ov006_Price021da208 *base;
@@ -179,7 +179,7 @@ void func_ov006_021da208(ov006_Task021ec040 *self) {
     self->unk28->msgId = 0x8d;
     self->unk28->text = (char *)MsgRes_GetString(ov006_GetRes(), 0x26);
     self->unk28->key = 0;
-    self->unk28->onDecide = func_ov006_021da19c;
+    self->unk28->onDecide = ov006_ListCb_StoreIdOrCancel;
     self->unk28->owner = &self->unk2C;
     self->unk28->vfunc_08();
     self->unk28->posZ = -0x1666;

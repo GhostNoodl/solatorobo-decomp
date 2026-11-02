@@ -3,17 +3,17 @@
 extern "C" {
 
 void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
-void func_ov011_02201b28(void *p);
-void func_ov011_0220205c(void *p);
-void func_ov011_02202fbc(void *p);
-void func_ov011_021fab74(Ov011Mgr *p);
+void Ov011Fx_Stop(void *p);
+void Ov011Chr_Reset_0220205c(void *p);
+void Ov011Mov_Stop_02202fbc(void *p);
+void Ov011Mgr_Reset(Ov011Mgr *p);
 
 void func_ov011_021febd8(Ov011Scene *self) {
     Ov011Node *n;
     if (self->seq.st != 0) {
         return;
     }
-    func_ov011_02201b28(&self->fx);
+    Ov011Fx_Stop(&self->fx);
     self->mgr2.b1 = 0;
     self->mgr2.count = 0;
     self->mgr2.unk_04 = -1;
@@ -21,19 +21,19 @@ void func_ov011_021febd8(Ov011Scene *self) {
         void *saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->mgr2.arr8 != NULL) {
-            __cxa_vec_delete(self->mgr2.arr8, 0x40, 8, func_ov011_021fb66c);
+            __cxa_vec_delete(self->mgr2.arr8, 0x40, 8, Ov011E40_Dtor);
             self->mgr2.arr8 = NULL;
         }
         data_02097dd0->cur = saved;
     }
-    func_ov003_021da48c(&self->mgr2.state, 0);
-    func_ov011_0220205c(self->mgr2.unk_28);
-    func_ov011_02202fbc(&self->mgr2.mov);
+    Ov003ActorSub40_ForceState(&self->mgr2.state, 0);
+    Ov011Chr_Reset_0220205c(self->mgr2.unk_28);
+    Ov011Mov_Stop_02202fbc(&self->mgr2.mov);
     self->s1b4.b1 = 0;
     self->s1b4.id = 0xffff;
     self->s1b4.ent = NULL;
-    func_ov003_021da48c(&self->s1b4.seq, 1);
-    func_ov011_021fab74(&self->mgr);
+    Ov003ActorSub40_ForceState(&self->s1b4.seq, 1);
+    Ov011Mgr_Reset(&self->mgr);
     if (self->ent.active) {
         Ov011PNode *p = self->ent.nodes;
         while (p != NULL) {
@@ -58,14 +58,14 @@ void func_ov011_021febd8(Ov011Scene *self) {
 
 extern u8 data_ov011_022078f0[];
 
-u32 func_ov011_02202ecc(void *p);
-void func_ov011_02202260(void *p);
-void func_ov011_0220192c(void *p);
+u32 Ov011TwB_IsActive(void *p);
+void Ov011Chr_Draw(void *p);
+void Ov011Fx_Draw(void *p);
 extern s32 data_ov011_02207258[];
 
 #pragma force_active on
 Ov011SceneActor *Ov011SceneActor_Ctor(Ov011SceneActor *self) {
-    func_ov003_021d0c1c(self);
+    Ov003Actor_Ctor(self);
     *(void **)self = data_ov011_022078f0;
     self->unk_f0_0 = 0;
     self->unk_f0_1 = 0;
@@ -83,14 +83,14 @@ Ov011SceneActor *Ov011SceneActor_Ctor(Ov011SceneActor *self) {
 void *Ov011SceneActor_Dtor(Ov011SceneActor *self) {
     *(void **)self = data_ov011_022078f0;
     func_ov011_0220068c(self);
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
 void *Ov011SceneActor_DtorDelete(Ov011SceneActor *self) {
     *(void **)self = data_ov011_022078f0;
     func_ov011_0220068c(self);
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
@@ -100,19 +100,19 @@ s32 Ov011SceneActor_Draw(Ov011SceneActor *self) {
     s32 old;
     s32 ret;
     Ov011Scene *c;
-    if (self->unk_104 != NULL && func_ov011_02202ecc(&self->unk_104->tw)) {
+    if (self->unk_104 != NULL && Ov011TwB_IsActive(&self->unk_104->tw)) {
         self->pos.y += ((s32 *)self->unk_104->tw.v10())[1];
     }
     old = self->unk_3c->unk_14;
     self->unk_3c->unk_14 = old >> 1;
-    ret = func_ov003_021d16cc(self);
+    ret = Ov003Actor_Draw(self);
     self->unk_3c->unk_14 = old;
     c = self->scene;
     if (c->b0) {
         if (c->mgr2.b0 && c->mgr2.b1) {
-            func_ov011_02202260(c->mgr2.unk_28);
+            Ov011Chr_Draw(c->mgr2.unk_28);
         }
-        func_ov011_0220192c(&c->fx);
+        Ov011Fx_Draw(&c->fx);
     }
     self->pos.x = save.x;
     self->pos.y = save.y;

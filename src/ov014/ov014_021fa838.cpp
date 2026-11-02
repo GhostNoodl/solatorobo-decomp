@@ -9,7 +9,7 @@ extern void SndMgr_LoadHeapState(SndMgr *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
 
 void Ov014Act_021fa6a0_Init(Ov014Act_021fa6a0 *self) {
-    func_ov003_021d0fc0(self);
+    Ov003Actor_Init(self);
     {
         const char *a = data_ov014_022170e7;
         const char *b = data_ov014_022170f4;

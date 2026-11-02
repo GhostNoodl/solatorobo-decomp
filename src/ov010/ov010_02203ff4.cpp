@@ -4,7 +4,7 @@ extern "C" {
 
 extern s32 func_0203db40(void *p);
 extern void func_ov000_02190a80(void *p, s32 a);
-void func_ov010_02203f08(EffectObj *fx);
+void Ov010_GrowFxCallback(EffectObj *fx);
 
 static inline s32 Ov010_Clamp(s32 v, s32 lo, s32 hi) {
     if (v > hi) {
@@ -16,27 +16,27 @@ static inline s32 Ov010_Clamp(s32 v, s32 lo, s32 hi) {
     return v;
 }
 
-void func_ov010_02203ff4(Actor *self) {
+void Ov010ActorEx_Animate(Actor *self) {
     if (self->model == NULL) {
         return;
     }
     func_ov000_02190a80(self->model, func_0203db40((u8 *)self + 0x24));
 }
 
-void func_ov010_02204020(void) {
+void Ov010ActorEx_UpdateMode1(void) {
 }
 
 void func_ov010_02204024(void) {
 }
 
-void func_ov010_02204028(void) {
+void Ov010ActorEx_State0e(void) {
 }
 
-void func_ov010_0220402c(void) {
+void Ov010ActorEx_StateMove(void) {
 }
 
 #ifdef NONMATCHING
-// func_ov010_02204030 (0x1d4 bytes, picks the point of a ring around c nearest to tgt): 26 / 23 (raw / masked).
+// Ov010_PickRingPoint (0x1d4 bytes, picks the point of a ring around c nearest to tgt): 26 / 23 (raw / masked).
 // This file's .text ends at 0x02204030, so it goes here once it matches. Blocker: pressure-mode register
 // allocation of the loop's LICM'd preheader values; two of the misses are bl against the ROM's blx to the Thumb
 // MTX_RotY33_ (only the link resolves that). History: docs/MATCHING.md rounds qpA, pmA, nmA, mtA; docs/UNMATCHED.md.
@@ -61,7 +61,7 @@ static inline void Ov010_RotY33(MtxFx33 *m, s32 s, s32 c) {
     MTX_RotY33_(m, s, c);
 }
 
-void func_ov010_02204030(VecFx32 *out, const Ov010Ring4030 *c, const VecFx32 *tgt, s32 n, u16 ang) {
+void Ov010_PickRingPoint(VecFx32 *out, const Ov010Ring4030 *c, const VecFx32 *tgt, s32 n, u16 ang) {
     VecFx32 v;
     VecFx32 t;
     MtxFx33 m;

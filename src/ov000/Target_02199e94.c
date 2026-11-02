@@ -45,7 +45,7 @@ typedef struct ActorMgr ActorMgr;
 
 extern u16 data_ov000_021c9fd0[][5];
 
-u8 func_ov003_021cee68(void);
+u8 Ov003_GetMaxCombo(void);
 
 extern ActorMgr *data_ov000_021ccd68;
 
@@ -90,7 +90,7 @@ u8 func_ov000_02199f08(Target *self) {
     u8 a = self->unk_19;
 
     if (a != 0) {
-        u16 n = func_ov003_021cee68();
+        u16 n = Ov003_GetMaxCombo();
         if (a == 1) {
             n--;
         }

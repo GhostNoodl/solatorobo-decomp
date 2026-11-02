@@ -15,9 +15,9 @@ BOOL func_ov000_02198360(ActorSub40 *a, s32 b, s32 c);
 void func_ov000_021911c8(void *a, s32 b);
 s32 Rand_PlusMinus(s32 range);
 u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
-void func_ov006_021e96cc(Ov006Racer *self);
+void Ov006Racer_Move(Ov006Racer *self);
 
-void func_ov006_021e8408(Ov006Racer *self) {
+void Ov006Racer_StateCrash(Ov006Racer *self) {
     self->unk_44->unk_22_1 = 0;
     switch (self->fsm->st) {
     case 0: {
@@ -69,7 +69,7 @@ void func_ov006_021e8408(Ov006Racer *self) {
     self->look2.x = func_01ffc128(self->rot.x, self->look2.x, 0x466, 1, 0x8000);
     self->look.y = func_01ffc128(self->look2.y, self->look.y, 0x466, 1, 0x8000);
     self->rot.y = func_01ffc128(self->look2.y, self->rot.y, 0x466, 1, 0x8000);
-    func_ov006_021e96cc(self);
+    Ov006Racer_Move(self);
     func_ov000_021911c8(self->model, (s16)(self->runSpeed + 0x333));
 }
 

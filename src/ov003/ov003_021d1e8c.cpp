@@ -131,7 +131,7 @@ static inline u16 Ov003Ag_Dec(Ov003Actor *self) {
     return self->unk_b6;
 }
 
-extern "C" void func_ov003_021d1e8c(Ov003Actor *self) {
+extern "C" void Ov003Actor_Update(Ov003Actor *self) {
     Ov003AgPl *pl;
     Ov003Actor *tgt;
     Ov003AgParam *p;

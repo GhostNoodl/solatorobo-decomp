@@ -73,7 +73,7 @@ static inline void Ov011Bar_Init(Ov011Bar *b) {
 }
 
 #pragma force_active on
-void func_ov011_022051ec(Ov011Act7da4 *self) {
+void Ov011Act7da4_State20(Ov011Act7da4 *self) {
     if (self->unk_394 != 0) {
         Ov011Bar *b;
         if (!Ov011Bar_FadeIdle()) {

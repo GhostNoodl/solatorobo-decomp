@@ -105,7 +105,7 @@ static inline void Dispatch(Ov003Actor *self, u32 kind) {
     }
 }
 
-void func_ov003_021d3008(Ov003Actor *self) {
+void Ov003Actor_RunState(Ov003Actor *self) {
     u16 *p50;
     u8 kind;
     s32 i;

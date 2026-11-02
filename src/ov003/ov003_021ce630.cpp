@@ -183,9 +183,9 @@ extern "C" {
 extern Ov003Save *data_0214a424;
 extern Ov003Player *func_ov000_0219bf90(void);
 extern s16 *func_ov000_02191f18(s16 *p, Ov003Hit *hit);
-extern s32 func_ov003_021ce5b8(u32 color);
+extern s32 Ov003_SurfaceSoundId(u32 color);
 extern u8 func_0206d37c(Ov003Save *save, s32 a);
-extern u16 func_ov003_021ce6fc(u16 v);
+extern u16 Ov003_ScaleDamage(u16 v);
 extern u8 data_ov000_021c9fe4;
 extern void *data_02149ef8;
 extern BOOL func_020621f8(void);
@@ -194,7 +194,7 @@ extern s32 func_02049bdc(void *mgr, s32 a, s32 b);
 extern void func_02040a98(char *buf, u16 v);
 extern u32 *func_ov000_0219bf7c(void);
 extern const char *MsgRes_GetString(void *mgr, s32 id);
-extern void func_ov003_021cebe8(s32 n);
+extern void Ov003_AddLevels(s32 n);
 
 s16 *func_ov003_021ce630(s16 *p, Ov003Hit *hit) {
     Ov003Player *pl;
@@ -212,7 +212,7 @@ s16 *func_ov003_021ce630(s16 *p, Ov003Hit *hit) {
             if (pl->hard) {
                 func_02049f44(data_02097e4c, 0, &pos, 0);
             }
-            id = func_ov003_021ce5b8(color);
+            id = Ov003_SurfaceSoundId(color);
             if (id >= 0) {
                 func_0204a028(data_02097e4c, id, &pos, -5);
             }
@@ -233,7 +233,7 @@ static inline u16 Ov003Save_Bonus(Ov003Save *save) {
     return n;
 }
 
-u16 func_ov003_021ce6fc(u16 v) {
+u16 Ov003_ScaleDamage(u16 v) {
     u16 n;
     if (v == 0) {
         return v;
@@ -259,8 +259,8 @@ u16 func_ov003_021ce6fc(u16 v) {
     return v;
 }
 
-u16 func_ov003_021ce79c(u16 v) {
-    u16 r = func_ov003_021ce6fc(v);
+u16 Ov003_ScaleDamageHalf(u16 v) {
+    u16 r = Ov003_ScaleDamage(v);
     if (r == 0) {
         return r;
     }
@@ -271,7 +271,7 @@ u16 func_ov003_021ce79c(u16 v) {
     return r;
 }
 
-u16 func_ov003_021ce7c0(u16 v) {
+u16 Ov003_ScaleReward(u16 v) {
     u16 base;
     Ov003Player *pl;
     BOOL hard;
@@ -308,7 +308,7 @@ u16 func_ov003_021ce7c0(u16 v) {
     return 1;
 }
 
-void func_ov003_021ce8c8(Ov003SlotUser *self) {
+void Ov003SlotUser_CaptureMtx(Ov003SlotUser *self) {
     Ov003Slot3 *slots = self->owner->slots;
     s32 slot = (self->flags & 0x10) ? self->slot : -1;
     if (slot == slots->id[0] && slots->want0) {
@@ -329,12 +329,12 @@ void func_ov003_021ce8c8(Ov003SlotUser *self) {
     }
 }
 
-void func_ov003_021ce9ac(Ov003SlotUser *self) {
-    self->func = func_ov003_021ce8c8;
+void Ov003SlotUser_StartCapture(Ov003SlotUser *self) {
+    self->func = Ov003SlotUser_CaptureMtx;
     self->state = 3;
 }
 
-void func_ov003_021ce9c4(u16 exp) {
+void Ov003_AddExp(u16 exp) {
     Ov003Area *area;
     u16 bonus;
     BOOL boosted;
@@ -388,11 +388,11 @@ void func_ov003_021ce9c4(u16 exp) {
             }
             n++;
         }
-        func_ov003_021cebe8(n);
+        Ov003_AddLevels(n);
     }
 }
 
-void func_ov003_021cebe8(s32 n) {
+void Ov003_AddLevels(s32 n) {
     u8 lv;
     Ov003Player *pl;
     if (n == 0) {

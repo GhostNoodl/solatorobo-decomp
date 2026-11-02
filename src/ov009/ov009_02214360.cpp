@@ -6,7 +6,7 @@ extern BOOL func_ov000_021950e8(Actor *self, ActorMsg *msg);
 extern void func_ov000_02194758(Actor *self);
 extern Actor *Target_Get(ActorSub4c *p);
 
-void func_ov009_02214360(Ov009ActExVt_0221828c *self, ActorMsg *msg) {
+void Ov009ActExVt_0221828c_HandleMsg(Ov009ActExVt_0221828c *self, ActorMsg *msg) {
     if (msg->type == 6) {
         self->unk_ce_u = msg->unk_08;
         self->msg_flags |= 1 << msg->type;

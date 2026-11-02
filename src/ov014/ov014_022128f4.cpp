@@ -2,16 +2,16 @@
 
 extern "C" {
 
-extern s32 func_ov003_021d1c00(Ov003Actor *self, Ov014Msg *msg);
+extern s32 Ov003Actor_HandleMsg(Ov003Actor *self, Ov014Msg *msg);
 
-s32 func_ov014_022128f4(Ov014Act_0221267c *self, Ov014Msg *msg) {
+s32 Ov014Act_0221267c_HandleMsg(Ov014Act_0221267c *self, Ov014Msg *msg) {
     s32 r = 0;
     if (msg->type == 6) {
         self->unk_310 |= msg->idx;
         self->msg_flags |= 1 << msg->type;
         msg->type = 0;
     } else {
-        r = func_ov003_021d1c00(self, msg);
+        r = Ov003Actor_HandleMsg(self, msg);
     }
     return r;
 }

@@ -21,7 +21,7 @@ void Ov006ActVt_021ec4f4_Start(Ov006Racer *self) {
     s32 v;
     AnimCtrl *a;
     ov006_Slot *slot;
-    slot = func_ov006_021db060(data_ov006_021ec884, self->idx);
+    slot = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, self->idx);
     self->flags_0 = 1;
     info = (u8 *)func_0206fef8(self->kind);
     self->radius = *(s16 *)(info + 0x14) << 4;
@@ -96,9 +96,9 @@ void Ov006ActVt_021ec4f4_Start(Ov006Racer *self) {
             p = Ov006Vt_021ec28c_Ctor(p);
         }
         self->marker = p;
-        func_ov006_021dc8f8(p);
+        Ov006Marker_Load(p);
     }
-    func_ov006_021dcc9c(self->marker, self->idx, slot->type == 0);
+    Ov006Marker_SetFrame(self->marker, self->idx, slot->type == 0);
     {
         Ov006Marker *q = self->marker;
         s32 z = q->ofs.z;

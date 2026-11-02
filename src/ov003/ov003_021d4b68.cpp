@@ -50,7 +50,7 @@ static inline BOOL Ov003KbCtl_Bit4(ActorSub48 *c) {
     return c->unk_9a_4 ? TRUE : FALSE;
 }
 
-void func_ov003_021d4b68(Ov003Actor *self) {
+void Ov003Actor_StateShoot(Ov003Actor *self) {
     Actor *pl = Ov003Kb_FindUnit(self->target);
     ActorSub40 *w = self->fsm;
     switch (w->st) {
@@ -187,7 +187,7 @@ extern void func_ov000_021911c8(Model0218fe1c *model, s16 v);
 extern BOOL func_ov000_02191508(Model0218fe1c *model);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 step, u32 a, u16 b);
 
-void func_ov003_021d4fd8(Ov003Actor *self) {
+void Ov003Actor_StateHurt(Ov003Actor *self) {
     self->hit->unk_9a_5 = 1;
     switch (self->fsm->st) {
     case 0: {
@@ -302,7 +302,7 @@ static inline u16 Ov003Kb_Angle(Ov003Actor *self) {
     return ang;
 }
 
-void func_ov003_021d5348(Ov003Actor *self) {
+void Ov003Actor_StateKnockBack(Ov003Actor *self) {
     switch (self->fsm->st) {
     case 0:
         if (!func_ov000_02190cb0(self->model, data_ov003_021f7a97, 0x800, 1)) {
@@ -465,7 +465,7 @@ typedef struct {
 } Ov003KbFxEnt;
 
 extern char data_ov003_021f7a7f[];
-extern u8 func_ov003_021cee68(void);
+extern u8 Ov003_GetMaxCombo(void);
 extern void HitSphere_Link(ActorSub48 *ctl);
 extern Ov003KbPlayer *func_ov000_0219bf90(void);
 extern void func_020627a0(u16 a, u16 b);
@@ -493,7 +493,7 @@ static inline BOOL Ov003Kb_GameIdle(void) {
     return TRUE;
 }
 
-void func_ov003_021d5900(Ov003Actor *self) {
+void Ov003Actor_StateDown(Ov003Actor *self) {
     u8 n;
     BOOL z = self->hpObj->cur == 0;
     switch (self->fsm->st) {
@@ -566,7 +566,7 @@ void func_ov003_021d5900(Ov003Actor *self) {
         if (self->hpObj->kind2 == 0x41 || self->hpObj->kind2 == 0) {
             u8 max;
             n++;
-            max = func_ov003_021cee68();
+            max = Ov003_GetMaxCombo();
             if (n > max) {
                 n = max;
             }

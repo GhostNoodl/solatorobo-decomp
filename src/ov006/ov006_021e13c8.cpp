@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov006_021e13c8(ov006_Gauge *self, int a) {
+void ov006_Gauge_SetText(ov006_Gauge *self, int a) {
     if (self->text == NULL) {
         return;
     }

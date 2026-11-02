@@ -6,24 +6,24 @@ extern "C" {
 
 extern const s16 data_ov011_0220726e[4];
 void *History_Init(void *p);
-void *func_ov011_02201510(void *p);
-void *func_ov011_02201c18(void *p);
+void *Ov011Fx_Ctor(void *p);
+void *Ov011Chr_Ctor(void *p);
 void Ov011Mov_Init(void *p);
 void *Ov011Vt_022079b0_Ctor(void *p);
-BOOL func_ov011_021fd4d8(Ov011Scene *p, Actor *owner);
+BOOL Ov011Scene_Init(Ov011Scene *p, Actor *owner);
 BOOL func_020621c4(void);
 
 void Ov011SceneActor_Start(Ov011SceneActor *self) {
     Ov011Scene *p;
     Ov011Sa104 *q;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     p = (Ov011Scene *)Heap_Alloc(0x23c);
     if (p != NULL) {
         p->ring.b0 = 0;
         History_Init(&p->seq);
-        func_ov011_02201510(&p->fx);
+        Ov011Fx_Ctor(&p->fx);
         History_Init(&p->mgr2.state);
-        func_ov011_02201c18(p->mgr2.unk_28);
+        Ov011Chr_Ctor(p->mgr2.unk_28);
         Ov011Mov_Init(&p->mgr2.mov);
         p->mgr2.b0 = 0;
         History_Init(&p->s1b4.seq);
@@ -34,7 +34,7 @@ void Ov011SceneActor_Start(Ov011SceneActor *self) {
         p->b0 = 0;
     }
     self->scene = p;
-    func_ov011_021fd4d8(p, self);
+    Ov011Scene_Init(p, self);
     q = (Ov011Sa104 *)Heap_Alloc(0x3c);
     if (q != NULL) {
         History_Init(q);
@@ -45,7 +45,7 @@ void Ov011SceneActor_Start(Ov011SceneActor *self) {
     self->unk_10c = (Ov011Sa10c *)Heap_Alloc(4);
     {
         Ov011Sa104 *s = self->unk_104;
-        func_ov003_021da48c(s, 0);
+        Ov003ActorSub40_ForceState(s, 0);
         s->unk_38 = 0;
     }
     {
@@ -65,16 +65,16 @@ void Ov011SceneActor_Start(Ov011SceneActor *self) {
     self->hit->unk_30 = 0x60000000;
     self->target = ((Actor *)func_ov000_0219bf90())->id;
     if (func_020621c4()) {
-        func_ov003_021d6bac(self, data_ov011_0220726e);
+        Ov003Actor_ScaleStats(self, data_ov011_0220726e);
     }
     self->mode = 2;
 }
 
 extern const char *const data_ov011_02207258;
-BOOL func_ov003_021d1c00(Ov003Actor *self, Ov011ActMsg *msg);
+BOOL Ov003Actor_HandleMsg(Ov003Actor *self, Ov011ActMsg *msg);
 
 
-BOOL func_ov011_021ff084(Ov011SceneActor *self, Ov011ActMsg *msg) {
+BOOL Ov011SceneActor_HandleMsg(Ov011SceneActor *self, Ov011ActMsg *msg) {
     if (msg->type == 0xe) {
         switch (msg->cmd) {
         case 1: {
@@ -131,7 +131,7 @@ BOOL func_ov011_021ff084(Ov011SceneActor *self, Ov011ActMsg *msg) {
         msg->type = 0;
         return TRUE;
     }
-    return func_ov003_021d1c00(self, msg);
+    return Ov003Actor_HandleMsg(self, msg);
 }
 
 }

@@ -38,7 +38,7 @@ typedef struct {
     Ov003PartB b;
 } Ov003PartSrc;
 
-// The Target object (Actor::targetObj, ActorSub4c) as func_ov003_021eb818 refills it from the spawn
+// The Target object (Actor::targetObj, ActorSub4c) as Ov003ActExSway_StateDie refills it from the spawn
 // info record of func_020704b4: the first 0x18 bytes are copied as two records.
 typedef struct {
     Ov003PartA a;
@@ -161,7 +161,7 @@ static inline BOOL Ov003_GameIdle2(void) {
 }
 
 extern void HitSphere_Link(ActorSub48 *ctl);
-extern void func_ov003_021f0c60(ActorEx *self, s32 a);
+extern void Ov003Pickup_Update(ActorEx *self, s32 a);
 extern const Ov003Ids data_ov003_021f6bcc;
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 extern Ov003PartSrc *func_020704b4(u16 id);
@@ -235,7 +235,7 @@ static inline void Ov003PartB_Assign(Ov003PartB *d, const Ov003PartB *s) {
     }
 }
 
-void func_ov003_021eb818(Ov003ActExSway *self) {
+void Ov003ActExSway_StateDie(Ov003ActExSway *self) {
     s32 sfxOn;
     if (self->hasModel) {
         EffectObj *fx;
@@ -285,7 +285,7 @@ void func_ov003_021eb818(Ov003ActExSway *self) {
     Ov003Sub44_Clear(self->unk_44);
 }
 
-void func_ov003_021eba54(Ov003ActExSway *self) {
+void Ov003ActExSway_State0a(Ov003ActExSway *self) {
     if (self->hasModel) {
         ActorSub48_Enable(self);
         func_ov000_02198360(self->fsm, 4, 0);
@@ -295,12 +295,12 @@ void func_ov003_021eba54(Ov003ActExSway *self) {
     Ov003Sub44_Clear(self->unk_44);
 }
 
-void func_ov003_021ebae4(Ov003ActExSway *self) {
+void Ov003ActExSway_StateHeld(Ov003ActExSway *self) {
     if (!self->hasModel && ++self->unk_30c == 30) {
         Ov003Ids ids = data_ov003_021f6bcc;
         if (!Ov003Game_HasEvent(data_ov000_021ccd54, ids.v)) {
             if (self->unk_18 >= 0) {
-                func_ov003_021f0c60(self, 0);
+                Ov003Pickup_Update(self, 0);
             }
             func_ov000_02197dec(self, 0xf, 5);
             func_0204a20c(data_02097e4c, 0x7e);

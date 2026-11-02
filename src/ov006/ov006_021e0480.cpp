@@ -36,7 +36,7 @@ typedef struct ov006_Unk021e0480 {
 extern "C" {
 
 void func_02041c18(Model *model, const char *name);
-void func_ov006_021df5a0(void *win);
+void ov006_Unk021df5a0_Draw(void *win);
 
 static inline void ov006_Sub021e0480_SetPos(ov006_Sub021e0480 *self, s16 x, s16 y, s32 z) {
     self->x = x << 12;
@@ -44,7 +44,7 @@ static inline void ov006_Sub021e0480_SetPos(ov006_Sub021e0480 *self, s16 x, s16 
     self->z = z;
 }
 
-void func_ov006_021e0480(ov006_Unk021e0480 *self) {
+void ov006_Unk021e0480_Draw(ov006_Unk021e0480 *self) {
     int x;
     int y;
     ov006_Pic021e0480 *pic;
@@ -85,7 +85,7 @@ void func_ov006_021e0480(ov006_Unk021e0480 *self) {
             Model_PlayPart(pic->model, 0xf);
         }
     }
-    func_ov006_021df5a0(self->win);
+    ov006_Unk021df5a0_Draw(self->win);
 }
 
 }

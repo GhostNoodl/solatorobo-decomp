@@ -33,7 +33,7 @@ static inline void Ov014_TimerTick(ActorSub40 *s) {
     }
 }
 
-void func_ov014_02212f8c(Ov014Act_0221267c *self) {
+void Ov014Act_0221267c_StateIdle(Ov014Act_0221267c *self) {
     ActorSub40 *s = self->fsm;
     switch (ActorSub40_State(s)) {
     case 0:
@@ -63,7 +63,7 @@ void func_ov014_02212f8c(Ov014Act_0221267c *self) {
     }
 }
 
-void func_ov014_0221308c(Ov014Act_0221267c *self) {
+void Ov014Act_0221267c_StateAttack(Ov014Act_0221267c *self) {
     ActorSub40 *s = self->fsm;
     switch (ActorSub40_State(s)) {
     case 0:
@@ -125,7 +125,7 @@ void func_ov014_0221308c(Ov014Act_0221267c *self) {
 
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
-void func_ov014_02213318(Ov014Act_0221267c *self) {
+void Ov014Act_0221267c_StateAttack2(Ov014Act_0221267c *self) {
     ActorSub40 *s = self->fsm;
     switch (ActorSub40_State(s)) {
     case 0: {

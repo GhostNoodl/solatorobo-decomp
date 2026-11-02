@@ -79,12 +79,12 @@ extern void MTX_RotX33_(Ov003MultiMtx33 *m, s32 s, s32 c);
 extern void MTX_RotY33_(Ov003MultiMtx33 *m, s32 s, s32 c);
 extern void MTX_RotZ33_(Ov003MultiMtx33 *m, s32 s, s32 c);
 extern void MTX_Concat33(Ov003MultiMtx33 *a, Ov003MultiMtx33 *b, Ov003MultiMtx33 *out);
-void func_ov003_021f23e0(Ov003Multi *self);
+void Ov003Multi_StartCapture(Ov003Multi *self);
 
 #define OV003MU_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003MU_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
-void func_ov003_021f2374(Ov003Multi *self) {
+void Ov003Multi_CaptureMtx(Ov003Multi *self) {
     Ov003MultiMgr *mgr = data_ov003_021fa680;
     Ov003MultiTarget *t;
     s32 group;
@@ -108,8 +108,8 @@ void func_ov003_021f2374(Ov003Multi *self) {
     self->state = 0;
 }
 
-void func_ov003_021f23e0(Ov003Multi *self) {
-    self->func = func_ov003_021f2374;
+void Ov003Multi_StartCapture(Ov003Multi *self) {
+    self->func = Ov003Multi_CaptureMtx;
     self->state = 3;
 }
 
@@ -179,7 +179,7 @@ void Ov003ActVt_021fa390_Start(Ov003Multi *self) {
             self->mtx[i].unk_30 = r;
         }
         MTX_Identity43_(&self->mtx[i]);
-        NNS_G3dRenderObjSetInitFunc(m->rob, func_ov003_021f23e0);
+        NNS_G3dRenderObjSetInitFunc(m->rob, Ov003Multi_StartCapture);
         m->unk_c2_5 = 0;
         m->unk_c2_8 = 1;
     }

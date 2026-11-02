@@ -5,7 +5,7 @@ extern "C" {
 
 extern Ov003Actor *func_ov000_0219bf90(void);
 void Ov009ActVt_022165f8_Start(Ov009ActVt_022165f8 *self) {
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     switch (self->unk_1a) {
     case 0: {
         FieldCam *g = &data_ov000_021ccd54->cam;

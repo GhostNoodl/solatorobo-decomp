@@ -22,7 +22,7 @@ s32 RTC_GetDate(ov006_Date *date);
 void OS_GetMacAddress(u8 *macAddr);
 extern const u8 data_ov006_021eb7f0[][2];
 
-void func_ov006_021d8f44(void) {
+void ov006_InitOwnerSlot(void) {
     u8 n;
     int i;
     u8 sum;

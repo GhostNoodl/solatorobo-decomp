@@ -23,14 +23,14 @@ typedef struct ov006_Disp021e6eb0 {
 extern "C" {
 
 extern ov006_Disp021e6eb0 *data_0214a424;
-const ov006_Sub021e6eb0 *func_ov006_021dab98(ov006_Slot *self);
-ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
+const ov006_Sub021e6eb0 *ov006_Slot_GetSub2C(ov006_Slot *self);
+ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 
-void func_ov006_021e6eb0(Ov006Racer *self) {
+void Ov006ActVt_021ec4f4_UpdateMode1(Ov006Racer *self) {
     const ov006_Sub021e6eb0 *sub;
-    sub = func_ov006_021dab98(func_ov006_021db060(data_ov006_021ec884, 0));
+    sub = ov006_Slot_GetSub2C(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, 0));
     self->rank = (sub->bits >> (self->idx * 2)) & 3;
-    sub = func_ov006_021dab98(func_ov006_021db060(data_ov006_021ec884, self->idx));
+    sub = ov006_Slot_GetSub2C(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, self->idx));
     {
         u16 old = self->held;
         u16 cur = sub->buttons;
@@ -62,11 +62,11 @@ void func_ov006_021e6eb0(Ov006Racer *self) {
 }
 
 #ifdef NONMATCHING
-// Status (round drA): func_ov006_021e7004 is 22 / 13 (raw / register-masked, dsi/1.3 with the project flags); this
+// Status (round drA): Ov006Racer_ReadKeys is 22 / 13 (raw / register-masked, dsi/1.3 with the project flags); this
 // is the best clean draft. Blocker: the ROM issues the dz smull before the t->x load and builds hy + curYaw before
 // hp + curPitch (the 20-21 drafts start with a junk store). History: docs/MATCHING.md rounds rtG, pmB, qpL, nmA, cvA
 // (search for the address); the full list is docs/UNMATCHED.md.
-// func_ov006_021e7004: 23 raw / 12 register-masked (round rtG; the older 21 / 10 drafts start with
+// Ov006Racer_ReadKeys: 23 raw / 12 register-masked (round rtG; the older 21 / 10 drafts start with
 // a junk `kq = 1; if ((u32)self & 3) kq = 1;` store). Left: the target issues the dz `smull`
 // before the `t->x` load, and builds `hy + curYaw` before `hp + curPitch` (its `unk19C_8` test
 // is also read earlier). Statement order of the squares, temporaries, a squaring inline and the
@@ -82,7 +82,7 @@ void func_ov006_021e6eb0(Ov006Racer *self) {
 
 extern "C" {
 
-u8 func_ov006_021d8cb8(void);
+u8 ov006_CountFinished(void);
 u16 FX_Atan2(s32 y, s32 x);
 
 static inline u16 ov006_HalfAngle(u16 d) {
@@ -92,7 +92,7 @@ static inline u16 ov006_HalfAngle(u16 d) {
     return -(u16)((u16)-d >> 1);
 }
 
-void func_ov006_021e7004(Ov006Racer *self, u16 *keys) {
+void Ov006Racer_ReadKeys(Ov006Racer *self, u16 *keys) {
 //DB
     u16 up;
     u16 hy;
@@ -185,7 +185,7 @@ void func_ov006_021e7004(Ov006Racer *self, u16 *keys) {
             return;
         }
     }
-    if (func_ov006_021d8cb8() <= 1) {
+    if (ov006_CountFinished() <= 1) {
         return;
     }
     if (self->boost != 0) {

@@ -23,9 +23,9 @@ extern ActorMgr *data_ov000_021ccd68;
 GroupActor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Heap_Free(void *p);
 void func_ov000_0218b4b4(GroupNode *node, s32 a, GroupActor *actor);
-GroupActor *func_ov003_021f1420(const GroupActorDesc *desc);
+GroupActor *Ov003Prop_New(const GroupActorDesc *desc);
 GroupActor *func_ov000_02192b24(const GroupActorDesc *desc);
-GroupActor *func_ov003_021cfab4(const GroupActorDesc *desc);
+GroupActor *Ov003_NewActor(const GroupActorDesc *desc);
 GroupActor *func_ov000_021b4828(const GroupActorDesc *desc);
 
 static inline Group *Group_Init(Group *g) {
@@ -207,17 +207,17 @@ GroupActor *Group_SpawnActor(Group *g, const GroupActorDesc *desc, const VecFx32
     s32 i;
     switch ((u16)(desc->kind & 0xf000)) {
     case 0x1000:
-        actor = func_ov003_021f1420(desc);
+        actor = Ov003Prop_New(desc);
         break;
     case 0x2000:
     case 0x3000:
-        actor = func_ov003_021f1420(desc);
+        actor = Ov003Prop_New(desc);
         break;
     case 0x4000:
         actor = func_ov000_02192b24(desc);
         break;
     case 0x5000:
-        actor = func_ov003_021cfab4(desc);
+        actor = Ov003_NewActor(desc);
         break;
     case 0x6000:
         actor = func_ov000_021b4828(desc);

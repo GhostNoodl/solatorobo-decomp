@@ -14,13 +14,13 @@ extern const VecFx32 data_ov006_021eb8a4;
 extern const VecFx32 data_ov006_021eb8b0;
 
 BOOL func_01ffc318(VecFx32 *col, const VecFx32 *pos, VecFx32 *min, VecFx32 *max, Rot16 *rot);
-struct EffectObj *func_ov006_021e37d0(int type, const VecFx32 *pos);
+struct EffectObj *ov006_CreateEffect(int type, const VecFx32 *pos);
 
 static inline s64 ov006_Sq021e9f80(s32 v) {
     return (s64)v * v;
 }
 
-void func_ov006_021e9f80(Ov006Racer *self) {
+void Ov006Racer_UpdateCheckpoint(Ov006Racer *self) {
     s32 sqrtBusy;
     Ov006RacerPt *p;
     Ov006RacerPt *goal;
@@ -99,7 +99,7 @@ void func_ov006_021e9f80(Ov006Racer *self) {
                         v.x = 0;
                         v.y = 0;
                         v.z = -0x1000;
-                        func_ov006_021e37d0(type, &v);
+                        ov006_CreateEffect(type, &v);
                     }
                 }
             }

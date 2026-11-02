@@ -47,7 +47,7 @@ extern "C" {
 
 extern u32 data_ov003_021f7cf4;
 extern u32 data_ov003_021f7cd8;
-extern s16 func_ov003_021d7e58(Ov003Ticker *t);
+extern s16 Ov003Ticker_GetValue(Ov003Ticker *t);
 extern void Heap_Free(void *p);
 extern void *Heap_Alloc(u32 size);
 extern void *History_Init(void *p);
@@ -78,7 +78,7 @@ static inline void Ov003Ticker_Start(Ov003Ticker *t, s16 count, s16 interval, bo
 }
 
 // b2 is volatile because the target reloads it from the stack for each ticker.
-void func_ov003_021d85c8(Ov003TickerSet *self, s16 count, s16 interval, bool loop, volatile bool b2) {
+void Ov003TickerSet_Start(Ov003TickerSet *self, s16 count, s16 interval, bool loop, volatile bool b2) {
     if (!self->active) {
         return;
     }
@@ -93,20 +93,20 @@ void func_ov003_021d85c8(Ov003TickerSet *self, s16 count, s16 interval, bool loo
 }
 
 
-void func_ov003_021d87d0(Ov003TickerSet *self, bool v) {
+void Ov003TickerSet_SetPaused(Ov003TickerSet *self, bool v) {
     if (self->active) {
         self->b2 = v;
         self->b3 = v;
     }
 }
 
-void func_ov003_021d8800(Ov003TickerSet *self, bool v) {
+void Ov003TickerSet_SetHold(Ov003TickerSet *self, bool v) {
     if (self->active) {
         self->b3 = v;
     }
 }
 
-BOOL func_ov003_021d8820(Ov003TickerSet *self) {
+BOOL Ov003TickerSet_IsHeld(Ov003TickerSet *self) {
     BOOL r = FALSE;
     if (self->active) {
         r = self->b3;

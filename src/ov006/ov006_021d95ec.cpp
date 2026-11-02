@@ -4,10 +4,10 @@
 extern "C" {
 
 void func_ov000_02180660(int a, int b);
-void func_ov006_021da098(ov006_Task021ec040 *self);
-void func_ov006_021da208(ov006_Task021ec040 *self);
+void ov006_Task021ec040_SetupPrices(ov006_Task021ec040 *self);
+void ov006_Task021ec040_BuildShopList(ov006_Task021ec040 *self);
 
-BOOL func_ov006_021d95ec(ov006_Task021ec040 *self) {
+BOOL Ov006Vt_021ec040_Setup(ov006_Task021ec040 *self) {
     switch (self->subState) {
     case 0:
         func_ov000_02180660(0x23, 0);
@@ -18,8 +18,8 @@ BOOL func_ov006_021d95ec(ov006_Task021ec040 *self) {
         if (data_ov000_021ccd40 != NULL) {
             data_ov000_021ccd40->vfunc_4c();
             data_ov006_021ec888->unk15E = 2;
-            func_ov006_021da098(self);
-            func_ov006_021da208(self);
+            ov006_Task021ec040_SetupPrices(self);
+            ov006_Task021ec040_BuildShopList(self);
             return TRUE;
         }
         break;

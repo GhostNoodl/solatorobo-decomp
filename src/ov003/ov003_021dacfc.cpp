@@ -17,7 +17,7 @@ static inline void Ov003_HeapDelete(void *p) {
     data_02097dd0->cur = old;
 }
 
-void func_ov003_021dacfc(Ov003FxList *self) {
+void Ov003FxList_Prune(Ov003FxList *self) {
     Ov003FxNode *n = self->head;
     Ov003FxNode *prev = NULL;
     while (n != NULL) {

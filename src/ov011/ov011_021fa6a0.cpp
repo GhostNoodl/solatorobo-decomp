@@ -15,11 +15,11 @@ struct Ov011MgrEntry {
 
 extern "C" {
 
-BOOL func_ov011_021fa6a0(Ov011Node *n) {
+BOOL Ov011Node_IsValid(Ov011Node *n) {
     return Ov011_NodeValid(n);
 }
 
-BOOL func_ov011_021fa720(Ov011Ent *e, s32 a, s32 b, s32 c, s32 d) {
+BOOL Ov011Ent_Init(Ov011Ent *e, s32 a, s32 b, s32 c, s32 d) {
     e->active = 1;
     e->settled = 1;
     e->radiusLerp = 0;
@@ -40,7 +40,7 @@ BOOL func_ov011_021fa720(Ov011Ent *e, s32 a, s32 b, s32 c, s32 d) {
     return TRUE;
 }
 
-Ov011LNode *func_ov011_021fa790(Ov011LNode *head, Ov011LNode *item) {
+Ov011LNode *Ov011LNode_Remove(Ov011LNode *head, Ov011LNode *item) {
     Ov011LNode *n;
     Ov011LNode *prev;
     if (head == NULL || item == NULL) {
@@ -70,7 +70,7 @@ void *Ov011Vt_022079d0_Dtor(void *p);
 void *Ov011Vt_022079d0_Ctor(void *p);
 void func_ov011_022011fc(void *a, u8 b);
 
-void func_ov011_021fa7dc(Ov011Mgr *self) {
+void Ov011Mgr_Release(Ov011Mgr *self) {
     void *saved;
     if (!self->b0) {
         return;
@@ -99,7 +99,7 @@ void func_ov011_021fa7dc(Ov011Mgr *self) {
     self->b0 = 0;
 }
 
-void func_ov011_021fa8c8(Ov011Mgr *self) {
+void Ov011Mgr_Update(Ov011Mgr *self) {
     u32 i;
     s32 j;
     u8 key;
@@ -126,7 +126,7 @@ void func_ov011_021fa8c8(Ov011Mgr *self) {
             self->arrC[j].v0c();
         }
     }
-    func_ov003_021da40c(&self->state);
+    Ov003ActorSub40_ApplyFlags(&self->state);
 }
 
 void func_ov011_021fa9d8(Ov011Mgr *self) {
@@ -140,7 +140,7 @@ void func_ov011_021fa9d8(Ov011Mgr *self) {
     } else {
         cnt = 0;
         for (n = head; n != NULL; n = n->next) {
-            if (func_ov011_021fa6a0(n) == TRUE) {
+            if (Ov011Node_IsValid(n) == TRUE) {
                 cnt++;
             }
         }
@@ -158,7 +158,7 @@ void func_ov011_021fa9d8(Ov011Mgr *self) {
     self->flags |= 8;
 }
 
-void func_ov011_021fab74(Ov011Mgr *self) {
+void Ov011Mgr_Reset(Ov011Mgr *self) {
     s32 i;
     void *saved;
     if (self->ids != NULL) {
@@ -193,7 +193,7 @@ void func_ov011_021fab74(Ov011Mgr *self) {
         self->ids = NULL;
     }
     data_02097dd0->cur = saved;
-    func_ov003_021da48c(&self->state, 0);
+    Ov003ActorSub40_ForceState(&self->state, 0);
 }
 
 }
@@ -207,8 +207,8 @@ struct Ov011Msg {
 };
 
 void ActorMgr_SendMsg(u16 a, u16 b, u8 c, BOOL d, u32 e, const void *f);
-void func_ov011_022011c8(void *a, s32 b);
-BOOL func_ov011_02202ac8(void *p, VecFx32 *a, VecFx32 *b, s32 c, u8 d);
+void Ov011Npc_SetTracking(void *a, s32 b);
+BOOL Ov011TwA_Start(void *p, VecFx32 *a, VecFx32 *b, s32 c, u8 d);
 
 static inline void Ov011_Send(u16 id, s32 a, s32 b) {
     Ov011Msg m;
@@ -245,7 +245,7 @@ void func_ov011_021facc4(Ov011Mgr *self) {
             a = Ov011_FindActor(self->ids[i]);
             if (a != NULL) {
                 func_ov011_022011fc(a, 0);
-                func_ov011_022011c8(a, 1);
+                Ov011Npc_SetTracking(a, 1);
             }
         }
         Ov011_Send(actor->id, 1, 1);
@@ -259,7 +259,7 @@ void func_ov011_021facc4(Ov011Mgr *self) {
                 v2.x = v1.x;
                 v2.y = v1.y + 0x4000;
                 v2.z = v1.z;
-                func_ov011_02202ac8(&self->arrC[i], &v2, &v1, 0x4cd, 0);
+                Ov011TwA_Start(&self->arrC[i], &v2, &v1, 0x4cd, 0);
             }
         }
         self->state = 3;
@@ -289,7 +289,7 @@ void func_ov011_021facc4(Ov011Mgr *self) {
 extern "C" {
 
 BOOL Ov003Mover_Start(void *self, const VecFx32 *target, const VecFx32 *start, s32 speed, s32 maxDist, u8 noSnap);
-void func_ov003_021d7c08(void *self, const VecFx32 *target);
+void Ov003Mover_SetTarget(void *self, const VecFx32 *target);
 
 static inline Ov011PNode *Ov011_NewPNode(const VecFx32 *v) {
     Ov011PNode *n = (Ov011PNode *)Heap_Alloc(0x10);
@@ -327,7 +327,7 @@ void func_ov011_021fb02c(Ov011Mgr *self) {
     v2 = actor->pos;
     v2.y += 0x6800;
     for (s32 k = 0; k < self->count; k++) {
-        func_ov003_021d7c08(&self->arr8[k], &v2);
+        Ov003Mover_SetTarget(&self->arr8[k], &v2);
     }
     ok = TRUE;
     for (i = 0; i < self->count; i++) {

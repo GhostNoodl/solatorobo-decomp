@@ -113,7 +113,7 @@ static inline void Ov003Fv_Bgm(SndQueue *q, u16 id) {
     q->unk_70 = 0;
 }
 
-void func_ov003_021df8fc(Ov003Fv *self) {
+void Ov003ActVt_021f8220_State21(Ov003Fv *self) {
     u8 r;
     FieldState *gm;
     Ov003FvPlayer *pl;
@@ -215,7 +215,7 @@ void func_ov003_021df8fc(Ov003Fv *self) {
 }
 
 
-void func_ov003_021dfcf4(Ov003Fv *self) {
+void Ov003ActVt_021f8220_State22(Ov003Fv *self) {
     u8 r;
     FieldState *gm;
     Ov003FvPlayer *pl;

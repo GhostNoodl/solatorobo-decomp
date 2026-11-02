@@ -20,7 +20,7 @@ extern "C" {
 
 extern void func_ov000_021984f4(void *a, void *b, s32 c);
 
-void func_ov014_02210854(Ov014Act_0220f9d0 *self) {
+void Ov014Act_0220f9d0_UpdateSub44(Ov014Act_0220f9d0 *self) {
     if (self->unk_44 != NULL) {
         func_ov000_021984f4(self->unk_44, (u8 *)self + 0x118, 0);
     }

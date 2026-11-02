@@ -28,7 +28,7 @@ void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 void *ActorMgr_GetGroup(void *mgr, u16 kind);
 void ActorGroup_SendMsg(void *obj, u16 a, int b, int c, int d, int e);
 
-void func_ov006_021e9c5c(Ov006Racer *self) {
+void Ov006Racer_UseItem(Ov006Racer *self) {
     u8 a;
     u8 b;
     const ov006_Ent021e9c5c *ent;

@@ -10,7 +10,7 @@ extern void *data_ov000_021ccd64;
 extern u8 data_ov000_021cc456[];
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
-void *func_ov003_021f0868(void *a, s32 r, s32 h);
+void *Ov003_FindPlayerInRange(void *a, s32 r, s32 h);
 void Target_Set(void *body, void *p);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 void func_ov000_0218bed8(void *a, s32 b, void *c);
@@ -84,7 +84,7 @@ void func_ov000_02195848(VObj *obj) {
         break;
     case 1:
         if (self->targetObj != NULL && self->targetObj->type == 2) {
-            void *r = func_ov003_021f0868((u8 *)self + 0x70, self->radius, self->height);
+            void *r = Ov003_FindPlayerInRange((u8 *)self + 0x70, self->radius, self->height);
             if (r != NULL) {
                 Target_Set(((u8 *)self->targetObj), r);
                 func_ov000_02198360(((u8 *)self->fsm), 0xd, 0);

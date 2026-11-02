@@ -31,7 +31,7 @@ extern Ov003SdUnit *Group_FindNode(void *mgr, u16 id);
 extern Ov003SdObj *ActorMgr_GetActor(void *mgr, u16 id);
 extern s32 FX_Div(s32 a, s32 b);
 extern void NNS_G3dRenderObjSetInitFunc(void *rob, void *func);
-extern void func_ov003_021d0c04(void *rs);
+extern void Ov003Obj_StartCapture(void *rs);
 extern u16 func_ov000_0218cea4(Ov003Actor *self);
 extern u16 func_ov000_021903b4(Model0218fe1c *m);
 extern void func_01ffc9fc(VecFx32 *out, VecFx32 *in, u16 ang);
@@ -108,7 +108,7 @@ static inline Ov003SdObj *Ov003Sd_FindObj(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-extern "C" u16 func_ov003_021d16cc(Ov003Actor *self) {
+extern "C" u16 Ov003Actor_Draw(Ov003Actor *self) {
     s32 i;
     Model0218fe1c *sub;
     u8 buf[0x24];
@@ -163,7 +163,7 @@ extern "C" u16 func_ov003_021d16cc(Ov003Actor *self) {
                 Model0218fe1c *m;
                 self->model->renderUser = self->unk_d0;
                 m = self->model;
-                NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov003_021d0c04);
+                NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)Ov003Obj_StartCapture);
                 m->unk_c2 |= 0x20;
                 self->model->unk_c2 |= 0x100;
                 break;

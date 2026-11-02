@@ -4,16 +4,16 @@
 extern "C" {
 
 extern void __cxa_vec_cleanup(void *arr, int count, int size, void *dtor);
-Ov003HitMesh *func_ov003_021e75bc(Ov003HitMesh *self);
+Ov003HitMesh *Ov003HitMesh_Dtor(Ov003HitMesh *self);
 
 extern void Heap_Free(void *p);
 extern void HitMesh_Detach(Ov003HitMesh *p);
 
-void func_ov003_021e72cc(ActorEx *self) {
+void Ov003ActVt_021f8f20_StateThrown(ActorEx *self) {
     self->vfunc_60();
 }
 
-void func_ov003_021e72e0(ActorEx *self) {
+void Ov003ActVt_021f8f20_StateFly(ActorEx *self) {
     self->vfunc_60();
 }
 
@@ -136,9 +136,9 @@ ActorEx *Ov003ActVt_021f8b90_DtorDelete(ActorEx *self) {
 }
 
 Ov003ActExMesh *Ov003ActVt_021f8af8_Dtor(Ov003ActExMesh *self) {
-    __cxa_vec_cleanup(self->meshC, 3, sizeof(Ov003HitMesh), (void *)func_ov003_021e75bc);
-    __cxa_vec_cleanup(self->meshB, 4, sizeof(Ov003HitMesh), (void *)func_ov003_021e75bc);
-    __cxa_vec_cleanup(self->meshA, 4, sizeof(Ov003HitMesh), (void *)func_ov003_021e75bc);
+    __cxa_vec_cleanup(self->meshC, 3, sizeof(Ov003HitMesh), (void *)Ov003HitMesh_Dtor);
+    __cxa_vec_cleanup(self->meshB, 4, sizeof(Ov003HitMesh), (void *)Ov003HitMesh_Dtor);
+    __cxa_vec_cleanup(self->meshA, 4, sizeof(Ov003HitMesh), (void *)Ov003HitMesh_Dtor);
     func_ov000_0218fee4(&self->mdl);
     func_ov000_0218ea20(&self->res2);
     func_ov000_0218ea20(&self->res);
@@ -146,15 +146,15 @@ Ov003ActExMesh *Ov003ActVt_021f8af8_Dtor(Ov003ActExMesh *self) {
     return self;
 }
 
-Ov003HitMesh *func_ov003_021e75bc(Ov003HitMesh *self) {
+Ov003HitMesh *Ov003HitMesh_Dtor(Ov003HitMesh *self) {
     HitMesh_Detach(self);
     return self;
 }
 
 Ov003ActExMesh *Ov003ActVt_021f8af8_DtorDelete(Ov003ActExMesh *self) {
-    __cxa_vec_cleanup(self->meshC, 3, sizeof(Ov003HitMesh), (void *)func_ov003_021e75bc);
-    __cxa_vec_cleanup(self->meshB, 4, sizeof(Ov003HitMesh), (void *)func_ov003_021e75bc);
-    __cxa_vec_cleanup(self->meshA, 4, sizeof(Ov003HitMesh), (void *)func_ov003_021e75bc);
+    __cxa_vec_cleanup(self->meshC, 3, sizeof(Ov003HitMesh), (void *)Ov003HitMesh_Dtor);
+    __cxa_vec_cleanup(self->meshB, 4, sizeof(Ov003HitMesh), (void *)Ov003HitMesh_Dtor);
+    __cxa_vec_cleanup(self->meshA, 4, sizeof(Ov003HitMesh), (void *)Ov003HitMesh_Dtor);
     func_ov000_0218fee4(&self->mdl);
     func_ov000_0218ea20(&self->res2);
     func_ov000_0218ea20(&self->res);

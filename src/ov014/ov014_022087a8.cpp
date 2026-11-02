@@ -5,13 +5,13 @@ extern "C" {
 extern Ov003Actor *Target_Get(void *p);
 extern void func_0203f364(ActorSub48 *p);
 extern void func_ov014_02208a9c(Ov014ActEx_02208618 *self);
-extern void func_ov014_02208fe4(Ov014ActEx_02208618 *self);
+extern void Ov014ActEx_02208618_HitNearby(Ov014ActEx_02208618 *self);
 
 #define OV014_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV014_SQRT_RESULT (*(volatile u32 *)0x40002b4)
 #define OV014_SQRT_PARAM (*(volatile u64 *)0x40002b8)
 
-void func_ov014_022087a8(Ov014ActEx_02208618 *self) {
+void Ov014ActEx_02208618_StateThrown(Ov014ActEx_02208618 *self) {
     Ov003Actor *o = Target_Get(self->targetObj);
     if (o != NULL) {
         {
@@ -66,7 +66,7 @@ void func_ov014_022087a8(Ov014ActEx_02208618 *self) {
         }
         case 1:
             Actor_Move(self, 0);
-            func_ov014_02208fe4(self);
+            Ov014ActEx_02208618_HitNearby(self);
             if ((self->hit->unk_50 & 0x20000000) || ++self->unk_d4 >= 200) {
                 self->unk_d0 |= 0x1000;
                 func_ov000_02198360(self->fsm, 0x15, 0);

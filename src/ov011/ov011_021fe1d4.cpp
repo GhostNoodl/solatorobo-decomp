@@ -116,7 +116,7 @@ void func_ov011_021fe1d4(Ov011Scene *self) {
     }
     for (n = self->head; n != NULL; n = n->next) {
         Ov011Npc *a = Ov011_FindNpc(n->id);
-        if (func_ov011_02201244(a)) {
+        if (Ov011Npc_IsTracking(a)) {
             Actor *owner = self->actor;
             if (Ov011Ent_Find(&self->ent, func_ov011_02201254(a)) != NULL) {
                 Ov011PNode *p = Ov011Ent_Find(&self->ent, func_ov011_02201254(a));

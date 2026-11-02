@@ -13,9 +13,9 @@ extern ov006_Unk02097e40 *data_02097e40;
 
 u16 func_02046ab4(ov006_Unk02097e40 *a);
 BOOL Wh_SetEntry(ov006_Unk02097e40 *a, BOOL enabled);
-int func_ov006_021e4674(ov006_Unk021ec888 *self);
+int ov006_Menu_NextUniqueId(ov006_Unk021ec888 *self);
 
-void func_ov006_021e49bc(ov006_Unk021ec888 *self) {
+void ov006_Menu_SortNodes(ov006_Unk021ec888 *self) {
     ov006_MenuNode *head;
     ov006_MenuNode *cur;
     ov006_MenuNode *p;
@@ -118,7 +118,7 @@ static inline void ov006_Menu_SetState(ov006_Unk021ec888 *self, int state) {
     self->stateTime = 0;
 }
 
-BOOL func_ov006_021e4c38(ov006_Unk021ec888 *self) {
+BOOL ov006_Menu_RequestStart(ov006_Unk021ec888 *self) {
     if (self->state != 1) {
         return FALSE;
     }
@@ -126,7 +126,7 @@ BOOL func_ov006_021e4c38(ov006_Unk021ec888 *self) {
     return TRUE;
 }
 
-BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self) {
+BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *self) {
     if (self->state == 1 || self->state == 7) {
         return FALSE;
     }

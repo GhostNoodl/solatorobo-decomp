@@ -56,10 +56,10 @@ extern void MTX_RotZ33_(Ov010Mtx33 *m, s32 s, s32 c);
 extern void MTX_MultVec33(const VecFx32 *v, const Ov010Mtx33 *m, VecFx32 *o);
 extern void VEC_Add(VecFx32 *a, const VecFx32 *b, VecFx32 *c);
 extern void Ov003Vec_ToRot(Ov010Col *out, const void *p);
-extern void func_ov010_022024c4(Obj022020c8 *e, u16 a, VecFx32 *b, VecFx32 *c, Ov010Col *d);
-extern void func_ov010_02202560(Obj022020c8 *e, u16 a, VecFx32 *b, VecFx32 *c, Ov010Rot *d);
-extern void func_ov010_02202600(Obj022020c8 *e, BOOL (*fn)(u16 id, const VecFx32 *a, const VecFx32 *b));
-extern BOOL func_ov010_022018c4(u16 id, const VecFx32 *a, const VecFx32 *b);
+extern void Ov010Obj022020c8_Launch(Obj022020c8 *e, u16 a, VecFx32 *b, VecFx32 *c, Ov010Col *d);
+extern void Ov010Obj022020c8_Launch2(Obj022020c8 *e, u16 a, VecFx32 *b, VecFx32 *c, Ov010Rot *d);
+extern void Ov010Obj022020c8_SetHitTest(Obj022020c8 *e, BOOL (*fn)(u16 id, const VecFx32 *a, const VecFx32 *b));
+extern BOOL Ov010_IsPlayerNear(u16 id, const VecFx32 *a, const VecFx32 *b);
 
 static inline Actor *Ov010_FindObjById(u16 id) {
     if (data_ov000_021ccd68 != NULL) {
@@ -69,7 +69,7 @@ static inline Actor *Ov010_FindObjById(u16 id) {
 }
 
 static inline Obj022020c8 *Ov010_SpawnShot(Ov010Task *t) {
-    Obj022020c8 *e = (Obj022020c8 *)func_ov003_021da32c(0x4829);
+    Obj022020c8 *e = (Obj022020c8 *)Ov003_SpawnById(0x4829);
     e->flags_0 = 1;
     if (e->targetObj != NULL) {
         e->targetObj->target = t->id;
@@ -77,7 +77,7 @@ static inline Obj022020c8 *Ov010_SpawnShot(Ov010Task *t) {
     return e;
 }
 
-Obj022020c8 *func_ov010_02201cc8(Ov010Task *t) {
+Obj022020c8 *Ov010Vt_0220fe08_Spawn(Ov010Task *t) {
     Obj022020c8 *e = NULL;
     if (t->b0) {
         Actor *obj = Ov010_FindObjById(t->id);
@@ -104,14 +104,14 @@ Obj022020c8 *func_ov010_02201cc8(Ov010Task *t) {
             MTX_MultVec33(&o, &mx, &o);
             MTX_MultVec33(&o, &my, &o);
             Ov003Vec_ToRot(&c, &data_ov010_0220efb0);
-            func_ov010_022024c4(e, t->unk_06, &p, &o, &c);
-            func_ov010_02202600(e, func_ov010_022018c4);
+            Ov010Obj022020c8_Launch(e, t->unk_06, &p, &o, &c);
+            Ov010Obj022020c8_SetHitTest(e, Ov010_IsPlayerNear);
         }
     }
     return e;
 }
 
-void func_ov010_02201eac(Ov010Task *t, u16 a, u16 id, const VecFx32 *v0, const VecFx32 *v1) {
+void Ov010Task_Setup(Ov010Task *t, u16 a, u16 id, const VecFx32 *v0, const VecFx32 *v1) {
     t->b0 = 1;
     t->unk_06 = a;
     t->id = id;
@@ -122,7 +122,7 @@ void func_ov010_02201eac(Ov010Task *t, u16 a, u16 id, const VecFx32 *v0, const V
 void func_ov010_02201f00(void) {
 }
 
-void *func_ov010_02201f04(void *o) {
+void *Ov010Vt_0220fdf4_DtorDelete(void *o) {
     Heap_Free(o);
     return o;
 }
@@ -136,7 +136,7 @@ Ov010Task *Ov010Vt_0220fdf4_New(void) {
     return p;
 }
 
-Obj022020c8 *func_ov010_02201f44(Ov010Task *t) {
+Obj022020c8 *Ov010Vt_0220fdf4_Spawn(Ov010Task *t) {
     Obj022020c8 *e = NULL;
     if (t->b0) {
         Actor *obj = Ov010_FindObjById(t->id);
@@ -148,20 +148,20 @@ Obj022020c8 *func_ov010_02201f44(Ov010Task *t) {
             e = Ov010_SpawnShot(t);
             p = obj->pos;
             OV010_BLKCPY(&d, &t->v18);
-            func_ov003_021d9980(&d, obj->rot_y, &d);
+            Ov003Vec_RotateY(&d, obj->rot_y, &d);
             VEC_Add(&p, &d, &p);
             r = obj->rot;
             r.x = 0;
             r.z = 0;
-            func_ov003_021d9980(&o, obj->rot_y, &t->v0c);
-            func_ov010_02202560(e, t->unk_06, &p, &o, &r);
-            func_ov010_02202600(e, func_ov010_022018c4);
+            Ov003Vec_RotateY(&o, obj->rot_y, &t->v0c);
+            Ov010Obj022020c8_Launch2(e, t->unk_06, &p, &o, &r);
+            Ov010Obj022020c8_SetHitTest(e, Ov010_IsPlayerNear);
         }
     }
     return e;
 }
 
-void func_ov010_02202074(Ov010Task *t, u16 a, u16 id, const VecFx32 *v0, const VecFx32 *v1) {
+void Ov010Task_Setup_02202074(Ov010Task *t, u16 a, u16 id, const VecFx32 *v0, const VecFx32 *v1) {
     t->b0 = 1;
     t->unk_06 = a;
     t->id = id;

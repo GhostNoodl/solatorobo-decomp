@@ -46,13 +46,13 @@ extern "C" {
 
 extern u32 data_ov003_021f7cf4;
 extern u32 data_ov003_021f7cd8;
-extern s16 func_ov003_021d7e58(Ov003Ticker *t);
+extern s16 Ov003Ticker_GetValue(Ov003Ticker *t);
 extern void Heap_Free(void *p);
 extern void *Heap_Alloc(u32 size);
 extern void *History_Init(void *p);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
-void func_ov003_021d88ec(u32 *p) {
+void Ov003_ClearWords4(u32 *p) {
     u32 i;
     if (p == NULL) {
         return;
@@ -88,7 +88,7 @@ BOOL Ov003StateMachine_Init(Ov003StateMachine *self) {
     return TRUE;
 }
 
-void func_ov003_021d899c(Ov003StateMachine *self) {
+void Ov003StateMachine_Stop(Ov003StateMachine *self) {
     Ov003StateNode *n;
     Ov003StateNode *next;
     if (!self->active) {
@@ -114,7 +114,7 @@ void Ov003StateMachine_Update(Ov003StateMachine *self) {
     }
 }
 
-void func_ov003_021d8a30(Ov003StateMachine *self, u8 id, Ov003State *state) {
+void Ov003StateMachine_AddState(Ov003StateMachine *self, u8 id, Ov003State *state) {
     Ov003StateNode *n;
     Ov003StateNode *head;
     if (!self->active) {
@@ -132,7 +132,7 @@ void func_ov003_021d8a30(Ov003StateMachine *self, u8 id, Ov003State *state) {
     self->list = head;
 }
 
-void func_ov003_021d8a7c(Ov003StateMachine *self, u8 id) {
+void Ov003StateMachine_ChangeState(Ov003StateMachine *self, u8 id) {
     Ov003StateNode *n;
     if (!self->active) {
         return;
@@ -192,7 +192,7 @@ Ov003Timer *Ov003Vt_021f7cd8_DtorDelete(Ov003Timer *self) {
     return self;
 }
 
-BOOL func_ov003_021d8c10(Ov003Timer *self) {
+BOOL Ov003Timer_Init(Ov003Timer *self) {
     self->active = 1;
     self->b1 = 0;
     self->b2 = 0;

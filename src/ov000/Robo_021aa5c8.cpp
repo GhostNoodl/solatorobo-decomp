@@ -21,7 +21,7 @@ extern FieldId data_ov000_021c9fe8;
 extern void *data_02097e4c;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
-void func_ov003_021cedf4(u16 n);
+void Ov003_AddMeter_021cedf4(u16 n);
 s32 Rand_UpTo(s32 max);
 s32 func_02049bdc(void *a, s32 b, s32 c);
 void func_ov000_021aa978(u8 *self);
@@ -84,7 +84,7 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
             if (self->unk_ba4 != NULL) {
                 n += self->unk_ba4->unk_05_4;
             }
-            func_ov003_021cedf4(n);
+            Ov003_AddMeter_021cedf4(n);
         }
         if (FieldId_Eq(&data_ov000_021ccd54->unk_ca, data_ov000_021c9fe8)) {
             func_02049bdc(data_02097e4c, 0x5e, Rand_UpTo(3));

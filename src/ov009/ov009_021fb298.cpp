@@ -6,18 +6,18 @@ extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 
-void func_ov009_021fb298(Ov009ActVt_022164a0 *self) {
+void Ov009ActVt_022164a0_StateDown(Ov009ActVt_022164a0 *self) {
     if (self->fsm->st == 0 && *self->hp == 0) {
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5404, 0x15);
     }
-    func_ov003_021d5900(self);
+    Ov003Actor_StateDown(self);
 }
 
-void func_ov009_021fb2e4(Ov003Actor *self) {
+void Ov009ActVt_022168a8_StateAttack(Ov003Actor *self) {
     s32 range;
     ActorGroup *g;
     Actor *o;
-    func_ov003_021d452c(self);
+    Ov003Actor_StateAttack(self);
     if (self->fsm->current != 0x13) {
         return;
     }
@@ -34,7 +34,7 @@ void func_ov009_021fb2e4(Ov003Actor *self) {
         return;
     }
     do {
-        o = func_ov003_021d69a0(self, 0x5407, 4);
+        o = Ov003Actor_SpawnAtSelf(self, 0x5407, 4);
         if (o != NULL) {
             s32 z = Rand_PlusMinus(range);
             s32 x = Rand_PlusMinus(range);
@@ -45,18 +45,18 @@ void func_ov009_021fb2e4(Ov003Actor *self) {
     } while (g->count <= 2);
 }
 
-void func_ov009_021fb3a8(Ov003Actor *self) {
+void Ov009ActVt_022168a8_StateDown(Ov003Actor *self) {
     if (self->fsm->st == 0 && *self->hp == 0) {
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5407, 0x15);
     }
-    func_ov003_021d5900(self);
+    Ov003Actor_StateDown(self);
 }
 
 extern char data_ov009_02216ab6[];
 
 void Ov009ActVt_022166a4_Start(Ov009ActVt_022166a4 *self) {
     VecFx32 *v = &self->unk_f4;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     self->unk_f0 = self->rot_y + Rand_PlusMinus(0x3400);
     *v = self->pos;
     if ((u16)(self->kind + 0xabf6) <= 1) {

@@ -31,7 +31,7 @@ static inline void Ov003_ScaleU16(u16 *v, s16 f) {
     }
 }
 
-extern "C" void func_ov003_021d6bac(Ov003Actor *self, const void *scale) {
+extern "C" void Ov003Actor_ScaleStats(Ov003Actor *self, const void *scale) {
     const Ov003StScale *sc = (const Ov003StScale *)scale;
     Ov003Stat *p = (Ov003Stat *)self->targetObj;
     ActorHp *g;

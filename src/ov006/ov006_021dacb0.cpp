@@ -30,7 +30,7 @@ static inline void ov006_Slot_ClearGuarded(ov006_Slot *self) {
 
 extern "C" {
 
-void func_ov006_021dacb0(void) {
+void ov006_SlotManager_Create(void) {
     ov006_SlotManager *p;
     OV006_DELETE_OBJECT(data_ov006_021ec884);
     p = (ov006_SlotManager *)Heap_Alloc(0x150);

@@ -83,7 +83,7 @@ static inline fx32 ov006_Clamp021df5a0(fx32 t) {
     return t;
 }
 
-void func_ov006_021df5a0(ov006_Unk021df5a0 *self) {
+void ov006_Unk021df5a0_Draw(ov006_Unk021df5a0 *self) {
     VecFx32 from;
     VecFx32 out;
     int n;

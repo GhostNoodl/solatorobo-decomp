@@ -40,7 +40,7 @@ extern u32 data_ov000_021cc060;
 extern const char *MsgRes_GetString(void *mgr, s32 id);
 extern void Heap_Free(void *p);
 
-void func_ov003_021ce2a8(void *self, char *dst, u32 size, const char *arg) {
+void Ov003_FormatMsg(void *self, char *dst, u32 size, const char *arg) {
     u32 n = 0;
     const char *fmt;
     u32 max;
@@ -62,12 +62,12 @@ void func_ov003_021ce2a8(void *self, char *dst, u32 size, const char *arg) {
     *dst = 0;
 }
 
-bool func_ov003_021ce344(void *p) {
+bool Ov003TaskVt_021f78f4_IsCurrent(void *p) {
     BOOL r = (data_ov000_021ccd40 == p);
     return r;
 }
 
-void func_ov003_021ce36c(Ov003Current *p) {
+void Ov003TaskVt_021f78f4_SetCurrent(Ov003Current *p) {
     if (data_ov000_021ccd40 != NULL) {
         data_ov000_021ccd38 = data_ov000_021ccd40->unk_14;
     } else {
@@ -76,7 +76,7 @@ void func_ov003_021ce36c(Ov003Current *p) {
     data_ov000_021ccd40 = p;
 }
 
-BOOL func_ov003_021ce3a0(Ov003Scene *self) {
+BOOL Ov003TaskVt_021f78f4_TryReleaseCurrent(Ov003Scene *self) {
     if (self->IsDone()) {
         if (data_ov000_021ccd40 != NULL) {
             data_ov000_021ccd38 = data_ov000_021ccd40->unk_14;
@@ -88,7 +88,7 @@ BOOL func_ov003_021ce3a0(Ov003Scene *self) {
     return TRUE;
 }
 
-void func_ov003_021ce3f4(Ov003Scene *self) {
+void Ov003TaskVt_021f78f4_ReleaseCurrent(Ov003Scene *self) {
     if (self->IsDone()) {
         if (data_ov000_021ccd40 != NULL) {
             data_ov000_021ccd38 = data_ov000_021ccd40->unk_14;
@@ -160,12 +160,12 @@ Ov003Scene *Ov003TaskVt_021f78f4_Dtor(Ov003Scene *self) {
 }
 
 // The deleting destructor (slot 0x04) of the object at 0x60 of Ov003Scene (vtable data_ov003_021f78e4).
-void *func_ov003_021ce5a4(VObj *self) {
+void *Ov003Vt_021f78e4_DtorDelete(VObj *self) {
     Heap_Free(self);
     return self;
 }
 
-s32 func_ov003_021ce5b8(u32 color) {
+s32 Ov003_SurfaceSoundId(u32 color) {
     u32 c = color & 0xf0f0f0;
     if (c == 0xb06010) {
         return 3;

@@ -114,7 +114,7 @@ extern char data_ov003_021f9fd0[];
 extern char data_ov003_021f9fd6[];
 extern s32 func_ov000_021993fc(Ov003LfFinder *f, Ov003LfQuery *q, Ov003LfHit **out, s32 max);
 extern Ov003LfTgt *func_ov000_021985c0(Ov003LfHit *h);
-extern BOOL func_ov003_021f0a38(Ov003LfTgt *t, void *def);
+extern BOOL Ov003Switch_IsTarget(Ov003LfTgt *t, void *def);
 extern BOOL func_ov000_02199d40(void *t);
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
 extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
@@ -229,7 +229,7 @@ static inline void Ov003Lf_Approach(Ov003LfWarp *w, Ov003LfTgt *t, Ov003Lift *se
     w->rot[2] = t->rot[2];
 }
 
-void func_ov003_021ed6b8(Ov003Lift *self) {
+void Ov003ActVt_021f9f40_StateIdle(Ov003Lift *self) {
     switch (self->work->st) {
     case 0: {
         Ov003LfQuery q;
@@ -282,7 +282,7 @@ void func_ov003_021ed6b8(Ov003Lift *self) {
             if (o == NULL) {
                 continue;
             }
-            if (self->unk_4c != NULL && !func_ov003_021f0a38(o, self->unk_4c)) {
+            if (self->unk_4c != NULL && !Ov003Switch_IsTarget(o, self->unk_4c)) {
                 continue;
             }
             if ((u16)(o->unk_0c & 0xf000) == 0x4000) {

@@ -20,7 +20,7 @@ static inline BOOL Ov010_Begin(u16 *st) {
     return FALSE;
 }
 
-void func_ov010_022089d8(Ov003Actor *self) {
+void Ov010ActVt_0221009c_State20(Ov003Actor *self) {
     BOOL anim = FALSE;
     switch (self->unk_18) {
     case 0: {
@@ -46,8 +46,8 @@ void func_ov010_022089d8(Ov003Actor *self) {
                         self->friction = 0xf00;
                     }
                 }
-                func_ov003_021d9dbc(&self->pos, t, &self->pos, self->speed, self->velY);
-                func_ov003_021da2c8(self, self->speed, self->velY, self->friction, self->gravity);
+                Ov003Vec_ApproachWithin(&self->pos, t, &self->pos, self->speed, self->velY);
+                Ov003Actor_SetMotion(self, self->speed, self->velY, self->friction, self->gravity);
                 self->moveYaw = FX_Atan2(t->x - self->pos.x, t->z - self->pos.z);
             } else {
                 if (st->timer == 0) {
@@ -59,10 +59,10 @@ void func_ov010_022089d8(Ov003Actor *self) {
                     self->velY = 0;
                     self->friction = 0;
                     self->gravity = 0;
-                    func_ov003_021d64f0(self);
+                    Ov003Actor_State20(self);
                 } else {
-                    func_ov003_021d9dbc(&self->pos, t, &self->pos, self->speed, self->velY);
-                    func_ov003_021da2c8(self, self->speed, self->velY, self->friction, self->gravity);
+                    Ov003Vec_ApproachWithin(&self->pos, t, &self->pos, self->speed, self->velY);
+                    Ov003Actor_SetMotion(self, self->speed, self->velY, self->friction, self->gravity);
                     self->moveYaw = FX_Atan2(t->x - self->pos.x, t->z - self->pos.z);
                 }
             }

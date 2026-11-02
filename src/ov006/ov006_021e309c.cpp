@@ -67,7 +67,7 @@ static inline void ov006_Caption_Draw2(ov006_Caption *self) {
     }
 }
 
-void func_ov006_021e309c(ov006_CaptionPanel *self) {
+void ov006_CaptionPanel_Draw(ov006_CaptionPanel *self) {
     ov006_Caption *c;
     const ov006_CaptionEntry *e;
     s32 x;

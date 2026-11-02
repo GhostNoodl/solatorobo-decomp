@@ -33,7 +33,7 @@ void func_02044a0c(ov006_NetParam021e5604 *param);
 BOOL func_020464e0(ov006_Net021e5604 *net, int a, ov006_MenuData *data);
 void func_02045094(ov006_Net021e5604 *net);
 int Wh_GetError(ov006_Net021e5604 *net);
-void func_ov006_021e5fec(void);
+void ov006_Menu_VBlankB(void);
 
 static inline void ov006_Menu_Advance(ov006_Unk021ec888 *self) {
     if (self->stateTime < 0xff) {
@@ -100,7 +100,7 @@ void func_ov006_021e5604(ov006_Unk021ec888 *self) {
         }
     case 12:
         if (data_02097e40->state == 5) {
-            data_02097dd0->vblankFunc = func_ov006_021e5fec;
+            data_02097dd0->vblankFunc = ov006_Menu_VBlankB;
             self->stateTime = 0x1e;
         } else if (data_02097e40->state == 8) {
             Wh_GetError(data_02097e40);

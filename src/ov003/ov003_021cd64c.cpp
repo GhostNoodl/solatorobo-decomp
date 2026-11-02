@@ -82,10 +82,10 @@ bool Ov003TaskVt_021f78f4_GetFlag4(Ov003FlagSet *self) {
     return r;
 }
 
-void func_ov003_021cd670(void) {
+void Ov003TaskVt_021f78f4_UpdateActive(void) {
 }
 
-void func_ov003_021cd674(Ov003Menu *self) {
+void Ov003TaskVt_021f78f4_PreUpdate(Ov003Menu *self) {
     switch (self->state) {
     case 0xc:
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
@@ -103,7 +103,7 @@ void func_ov003_021cd674(Ov003Menu *self) {
     func_ov003_021cd91c(self);
 }
 
-void func_ov003_021cd740(void) {
+void Ov003TaskVt_021f78f4_PostUpdate(void) {
 }
 
 }

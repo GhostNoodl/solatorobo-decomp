@@ -94,7 +94,7 @@ static inline Ov003Actor *Ov009_FindActor5b(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-void func_ov009_021fa934(Ov009ActVt_02216a00 *self) {
+void Ov009ActVt_02216a00_StateAttack(Ov009ActVt_02216a00 *self) {
     Ov003Actor *t = Ov009_FindActor5b(self->target);
     ActorSub40 *st = self->fsm;
     switch (st->st) {
@@ -154,7 +154,7 @@ void func_ov009_021fa934(Ov009ActVt_02216a00 *self) {
                 k = 0x541f;
                 flag = 1;
             }
-            o = func_ov003_021d69a0(self, k, 4);
+            o = Ov003Actor_SpawnAtSelf(self, k, 4);
             if (o != NULL) {
                 VecFx32 v;
                 s32 z = self->radius;

@@ -20,9 +20,9 @@ typedef struct ov006_SlotSubBits {
 
 extern "C" {
 
-u8 func_ov006_021d8cb8(void);
-void func_ov006_021e7004(Ov006Racer *self, ov006_SlotSubBits *sub);
-void func_ov006_021daba0(ov006_Slot *self, const ov006_SlotSubBits *src);
+u8 ov006_CountFinished(void);
+void Ov006Racer_ReadKeys(Ov006Racer *self, ov006_SlotSubBits *sub);
+void ov006_Slot_SetSub3C(ov006_Slot *self, const ov006_SlotSubBits *src);
 
 static inline void Ov006Racer_Commit(Ov006Racer *self, ov006_Slot *slot, ov006_SlotSubBits *sub) {
     sub->unk2.bits.b0 = self->unk_1ab;
@@ -30,11 +30,11 @@ static inline void Ov006Racer_Commit(Ov006Racer *self, ov006_Slot *slot, ov006_S
     sub->unk4 = self->unk_1c0.x;
     sub->unk8 = self->unk_1c0.y;
     sub->unkC = self->unk_1c0.z;
-    func_ov006_021daba0(slot, sub);
+    ov006_Slot_SetSub3C(slot, sub);
 }
 
-void func_ov006_021e6210(Ov006Racer *self) {
-    ov006_Slot *slot = func_ov006_021db060(data_ov006_021ec884, self->idx);
+void Ov006Racer_SyncSlot(Ov006Racer *self) {
+    ov006_Slot *slot = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, self->idx);
     ov006_SlotSubBits sub;
     sub.unk0 = 0;
     sub.unk2.raw = 0;
@@ -54,9 +54,9 @@ void func_ov006_021e6210(Ov006Racer *self) {
         if (self->unk_19f > info->unkB) {
             over = TRUE;
         }
-        if (over || func_ov006_021d8cb8() <= 1) {
+        if (over || ov006_CountFinished() <= 1) {
             if (info->unkB != 0) {
-                func_ov006_021e7004(self, &sub);
+                Ov006Racer_ReadKeys(self, &sub);
             }
         } else {
             sub.unk0 = data_02097dc8->cur;
@@ -66,7 +66,7 @@ void func_ov006_021e6210(Ov006Racer *self) {
         if (data_ov006_021ec884->unk5 != 0) {
             return;
         }
-        func_ov006_021e7004(self, &sub);
+        Ov006Racer_ReadKeys(self, &sub);
         Ov006Racer_Commit(self, slot, &sub);
     }
 }

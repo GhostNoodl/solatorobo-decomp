@@ -57,13 +57,13 @@ static inline void Ov003Ticker_Clear(Ov003Ticker *self) {
     self->cur = 0;
 }
 
-void func_ov003_021d7ae8(Ov003Mover *self) {
+void Ov003Mover_Stop(Ov003Mover *self) {
     if (self->active) {
         self->active = 0;
     }
 }
 
-void func_ov003_021d7b00(Ov003Mover *self) {
+void Ov003Mover_Update(Ov003Mover *self) {
     BOOL reached;
     s32 d;
     if (!self->active) {
@@ -115,7 +115,7 @@ BOOL Ov003Mover_IsDone(Ov003Mover *self) {
     return r;
 }
 
-void func_ov003_021d7c08(Ov003Mover *self, const Ov003Vec *target) {
+void Ov003Mover_SetTarget(Ov003Mover *self, const Ov003Vec *target) {
     if (!self->active) {
         return;
     }

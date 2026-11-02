@@ -109,7 +109,7 @@ BOOL Ov003ActVt_021f98cc_Draw(ActorEx *self) {
     return r;
 }
 
-void func_ov003_021eabcc(ActorEx *self) {
+void Ov003ActVt_021f98cc_StateIdle(ActorEx *self) {
     if (self->unk_cc_7) {
         return;
     }

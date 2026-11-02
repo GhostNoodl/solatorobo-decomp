@@ -20,7 +20,7 @@ static const VecFx32 data_ov012_0220aefc = data_ov012_0220a534;
 // ---- merged from ov012_02201c70.cpp
 namespace m_02201c70 {
 extern "C" {
-void func_ov012_02201c70(Ov003Actor *self) {
+void Ov012ActorBase_UpdateSub44(Ov003Actor *self) {
     if (self->unk_44 != NULL) {
         func_ov000_021984f4(self->unk_44, 0, 0);
     }
@@ -28,7 +28,7 @@ void func_ov012_02201c70(Ov003Actor *self) {
 }
 
 extern "C" {
-void func_ov012_02201c90(Ov003Actor *self) {
+void Ov012Actor_UpdateHit(Ov003Actor *self) {
     if (self->hit != NULL) {
         func_ov000_0219864c(self->hit, 0, 0);
     }
@@ -36,12 +36,12 @@ void func_ov012_02201c90(Ov003Actor *self) {
 }
 
 extern "C" {
-void func_ov012_02201cb0(void) {
+void Ov012ActorBase_UpdateMode1(void) {
 }
 }
 
 extern "C" {
-void func_ov012_02201cb4(void) {
+void Ov012ActorBase_UpdateMode3(void) {
 }
 }
 
@@ -51,52 +51,52 @@ void func_ov012_02201cb8(void) {
 }
 
 extern "C" {
-void func_ov012_02201cbc(void) {
+void Ov012Actor_State25(void) {
 }
 }
 
 extern "C" {
-void func_ov012_02201cc0(void) {
+void Ov012Actor_State24(void) {
 }
 }
 
 extern "C" {
-void func_ov012_02201cc4(void) {
+void Ov012Actor_State23(void) {
 }
 }
 
 extern "C" {
-void func_ov012_02201cc8(void) {
+void Ov012Actor_State22(void) {
 }
 }
 
 extern "C" {
-void func_ov012_02201ccc(void) {
+void Ov012Actor_State21(void) {
 }
 }
 
 extern "C" {
-void func_ov012_02201cd0(Ov003Actor *self) {
+void Ov012Actor_State16(Ov003Actor *self) {
     self->vfunc_54();
 }
 }
 
 extern "C" {
-void func_ov012_02201ce4(Ov003Actor *self) {
+void Ov012Actor_Shoot2(Ov003Actor *self) {
     self->unk_ee_5 = 1;
     self->vfunc_70();
 }
 }
 
 extern "C" {
-void func_ov012_02201d04(Ov003Actor *self) {
+void Ov012Actor_StateAttack3(Ov003Actor *self) {
     self->unk_ee_2 = 2;
     self->vfunc_64();
 }
 }
 
 extern "C" {
-void func_ov012_02201d28(Ov003Actor *self) {
+void Ov012Act_021fee1c_StateAttack2(Ov003Actor *self) {
     self->unk_ee_2 = 1;
     self->vfunc_64();
 }
@@ -104,7 +104,7 @@ void func_ov012_02201d28(Ov003Actor *self) {
 
 extern "C" {
 Ov012Act_021fee1c *Ov012Act_021fee1c_DtorDelete(Ov012Act_021fee1c *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
@@ -112,7 +112,7 @@ Ov012Act_021fee1c *Ov012Act_021fee1c_DtorDelete(Ov012Act_021fee1c *self) {
 
 extern "C" {
 Ov012Act_021fee1c *Ov012Act_021fee1c_Dtor(Ov012Act_021fee1c *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 }
@@ -211,7 +211,7 @@ static inline void Ov012_FxMid(Ov012ActExVt_0220af10 *self) {
     e->SetScaleAll(self->radius + (self->radius >> 2));
 }
 
-void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
+void Ov012ActExVt_0220af10_StateThrown(Ov012ActExVt_0220af10 *self) {
     Ov003Actor *o;
     VecFx32 w;
     VecFx32 tp;

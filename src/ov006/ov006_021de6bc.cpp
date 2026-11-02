@@ -88,7 +88,7 @@ static inline void ov006_Model_PlayPartChk(Model *model, int idx) {
     func_02042628(model, anim, part, 0);
 }
 
-void func_ov006_021de6bc(ov006_Hud021de6bc *self) {
+void ov006_Hud021de6bc_Draw(ov006_Hud021de6bc *self) {
     Model *m0;
     ov006_Pair021de6bc *pair;
     ov006_Item021de6bc *item;

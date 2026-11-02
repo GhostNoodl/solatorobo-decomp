@@ -62,7 +62,7 @@ static inline void Ov003DwCtl_Clear(ActorSub48 *c) {
     }
 }
 
-void func_ov003_021d36fc(Ov003Actor *self) {
+void Ov003Actor_StateHeld(Ov003Actor *self) {
     Ov003DwTgt *t;
     ActorSub48 *ctl;
     Ov003DwCtl_Clear(self->hit);

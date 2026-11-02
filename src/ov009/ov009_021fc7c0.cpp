@@ -5,9 +5,9 @@
 extern "C" {
 
 
-void func_ov009_021fc7c0(Ov003Actor *self) {
+void Ov009ActVt_022167fc_Start(Ov003Actor *self) {
     GroupNode *p;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     if (self->unk_1a == 0) {
         return;
     }
@@ -20,7 +20,7 @@ void func_ov009_021fc7c0(Ov003Actor *self) {
     self->targetObj->unk_18 |= 2;
 }
 
-void func_ov009_021fc834(Ov003Actor *self) {
+void Ov009ActVt_022167fc_State20(Ov003Actor *self) {
     switch (self->fsm->st) {
     case 0:
         self->model->visible = 0;
@@ -40,7 +40,7 @@ extern char data_ov009_02216ab0[];
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 extern void func_ov000_0218999c(u8 a, u8 b);
-void func_ov009_021fc8f4(Ov003Actor *self) {
+void Ov009ActVt_022167fc_State21(Ov003Actor *self) {
     ActorSub40 *st = self->fsm;
     Model0218fe1c *m;
     switch (st->st) {
@@ -93,12 +93,12 @@ extern void func_0203f364(ActorSub48 *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern void func_ov000_0219b5dc(u16 id, const VecFx32 *pos, const u16 *rot);
-extern void func_ov003_021ce9c4(u16 id);
-void func_ov009_021fcad0(Ov003Actor *self) {
+extern void Ov003_AddExp(u16 id);
+void Ov009ActVt_022167fc_StateDie(Ov003Actor *self) {
     VecFx32 p;
     ActorSub40 *st;
     if (self->unk_1a == 0) {
-        func_ov003_021d6054(self);
+        Ov003Actor_StateDie(self);
         return;
     }
     st = self->fsm;
@@ -133,7 +133,7 @@ void func_ov009_021fcad0(Ov003Actor *self) {
             o->SetScaleXYZ(s, s, s);
         }
         func_ov000_0219b5dc(self->unk_b0->unk_06, &p, &self->rot_x);
-        func_ov003_021ce9c4(self->unk_b0->unk_04);
+        Ov003_AddExp(self->unk_b0->unk_04);
         n = data_0214a424->unk_00a + 1;
         if (n >= 0xffff) {
             n = 0xffff;
@@ -147,13 +147,13 @@ void func_ov009_021fcad0(Ov003Actor *self) {
     case 1:
         st->timer++;
         if (st->timer > 0x78) {
-            func_ov003_021d6a3c(self, 1, 1, 1);
+            Ov003Actor_Defeat(self, 1, 1, 1);
         } else {
             u16 h = (u16)(self->fsm->timer >> 1);
             if (h > 0x1f) {
                 h = 0x1f;
             }
-            func_ov003_021d6954(self, 0x1f - h);
+            Ov003Actor_SetAlpha(self, 0x1f - h);
         }
         break;
     }

@@ -37,7 +37,7 @@ typedef struct ov006_Counter {
 
 extern "C" {
 
-void func_ov006_021dee68(ov006_Unk021dee68 *self, const ov006_Rect16 *rect, u8 a, u8 b) {
+void ov006_Unk021dee68_SetRect(ov006_Unk021dee68 *self, const ov006_Rect16 *rect, u8 a, u8 b) {
     ov006_Unk021dee68_Sub *sub = self->unk18;
     if (sub == NULL) {
         return;
@@ -50,7 +50,7 @@ void func_ov006_021dee68(ov006_Unk021dee68 *self, const ov006_Rect16 *rect, u8 a
     self->unk5 = b;
 }
 
-ov006_OamEnt *func_ov006_021deea4(ov006_Counter *self, const u16 *mode, ov006_OamEnt *oam, u16 *count) {
+ov006_OamEnt *ov006_Counter_OamCb(ov006_Counter *self, const u16 *mode, ov006_OamEnt *oam, u16 *count) {
     u16 n;
     ov006_OamEnt *last;
     u32 base;

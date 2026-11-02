@@ -19,9 +19,9 @@ extern void *data_ov000_021ccd64;
 extern const MtxFx43 data_02092844;
 extern const MtxFx44 data_02092800;
 
-void func_ov006_021e9f80(Ov006Racer *self);
-void func_ov006_021e7fe4(Ov006Racer *self);
-void func_ov006_021e76d8(Ov006Racer *self);
+void Ov006Racer_UpdateCheckpoint(Ov006Racer *self);
+void Ov006Racer_CheckItems(Ov006Racer *self);
+void Ov006Racer_UpdateCamera(Ov006Racer *self);
 void Obj0218c208_AddPoint(void *a, const VecFx32 *pos, u16 rot);
 
 static inline void Ov006Racer_Dispatch(Ov006Racer *self, u32 kind) {
@@ -35,7 +35,7 @@ static inline void Ov006Racer_Dispatch(Ov006Racer *self, u32 kind) {
     }
 }
 
-void func_ov006_021e742c(Ov006Racer *self) {
+void Ov006ActVt_021ec4f4_RunState(Ov006Racer *self) {
     BOOL was;
     VecFx32 p;
     Ov006Racer_Dispatch(self, self->fsm->current);
@@ -69,13 +69,13 @@ void func_ov006_021e742c(Ov006Racer *self) {
             if (!was) {
                 flag = TRUE;
             }
-            func_ov006_021dccc8(self->marker, &p, &data_02092844, &data_02092800, flag);
+            Ov006Marker_Project(self->marker, &p, &data_02092844, &data_02092800, flag);
         }
-        func_ov006_021dc9c8(self->marker);
+        Ov006Marker_Update(self->marker);
     }
-    func_ov006_021e9f80(self);
-    func_ov006_021e7fe4(self);
-    func_ov006_021e76d8(self);
+    Ov006Racer_UpdateCheckpoint(self);
+    Ov006Racer_CheckItems(self);
+    Ov006Racer_UpdateCamera(self);
     Obj0218c208_AddPoint(data_ov000_021ccd64, &self->pos, self->rot_y);
     {
         ActorSub40 *w = self->fsm;

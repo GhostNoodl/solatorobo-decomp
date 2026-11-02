@@ -14,7 +14,7 @@ extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 
-void func_ov003_021d64f0(Ov003Actor *self) {
+void Ov003Actor_State20(Ov003Actor *self) {
     if (self->unk_b0->unk_0a_5) {
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
@@ -33,14 +33,14 @@ extern const u8 data_ov003_021f4432[];
 extern const u8 data_ov003_021f4437[];
 extern const u8 data_ov003_021f443c[];
 extern const u8 data_ov003_021f4441[];
-extern void func_ov003_021cedf4(u16 n);
+extern void Ov003_AddMeter_021cedf4(u16 n);
 extern Ov003EvPlayer *func_ov000_0219bf90(void);
 
 static inline BOOL Ov003EvPlayer_Flag(Ov003EvPlayer *pl) {
     return pl->unk_b24_1 ? TRUE : FALSE;
 }
 
-u8 func_ov003_021d6548(Ov003Actor *self, ActorMsgHit *hit) {
+u8 Ov003Actor_ApplyHit(Ov003Actor *self, ActorMsgHit *hit) {
     ActorHp *hp;
     u16 old;
     u8 res;
@@ -92,7 +92,7 @@ u8 func_ov003_021d6548(Ov003Actor *self, ActorMsgHit *hit) {
             }
         }
         if (dmg != 0) {
-            func_ov003_021cedf4(8);
+            Ov003_AddMeter_021cedf4(8);
         }
     }
     if (res == 0 && kind2 != 2 && kind2 != 1) {

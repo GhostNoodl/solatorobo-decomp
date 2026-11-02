@@ -8,13 +8,13 @@ void *func_ov000_0218084c(void *a, int b, int c);
 void func_ov000_021736dc(void);
 void *func_0206ec48(u32 id);
 void func_0203cb78(s32 a, int b, int c);
-void func_ov006_021db65c(void);
+void ov006_SetupDefaultSlots(void);
 void func_ov006_021cd5a8(int type, UiList *obj);
 
 void func_ov006_021cddf8(int type, UiList *obj, int arg) {
     switch (type) {
     case 2:
-        func_ov006_021db65c();
+        ov006_SetupDefaultSlots();
         func_ov000_0218084c(data_ov000_021ccd44, 0x29, 0);
         break;
     case 3:

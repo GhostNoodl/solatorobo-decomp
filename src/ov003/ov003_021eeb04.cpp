@@ -87,7 +87,7 @@ BOOL Ov003ActVt_021f9e10_Draw(Ov003Bridge *self) {
     return r;
 }
 
-void func_ov003_021eecd8(Ov003Bridge *self) {
+void Ov003Bridge_Animate(Ov003Bridge *self) {
     if (self->model != NULL) {
         func_ov000_02190a80(self->model, func_0203db40(&self->pause));
     }

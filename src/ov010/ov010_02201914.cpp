@@ -10,11 +10,11 @@ extern void *Ov003Pool_Dtor(void *p);
 extern void Ov003Pool_Release(void *p);
 extern Ov010TaskNode *Ov003Pool_Alloc(void *p);
 extern void Ov003Pool_Free(void *p, Ov010TaskNode *n);
-void func_ov010_02201b48(Ov010TaskList *o);
+void Ov010TaskList_Clear(Ov010TaskList *o);
 
 Ov010TaskList *Ov010Vt_0220fe1c_Ctor(Ov010TaskList *o) {
     o->vtbl = data_ov010_0220fe1c;
-    func_ov003_021d7848(o->pool);
+    Ov003Pool_Deactivate(o->pool);
     o->b0 = 0;
     return o;
 }
@@ -49,7 +49,7 @@ BOOL Ov010TaskList_Init(Ov010TaskList *o) {
     o->b2 = 0;
     o->time = 0;
     o->head = NULL;
-    func_ov003_021d7894(o->pool, 0xc, 0x10);
+    Ov003Pool_Init(o->pool, 0xc, 0x10);
     return TRUE;
 }
 

@@ -260,7 +260,7 @@ u8 *func_02070558(void *res);
 }
 extern "C" {
 void func_ov000_021953b4(ActorEx *self);
-void func_ov003_021dacfc(Ov003FxList *p);
+void Ov003FxList_Prune(Ov003FxList *p);
 s32 func_0203db40(void *p);
 void func_ov000_02190a80(void *a, s32 b);
 }
@@ -273,7 +273,7 @@ static inline void Ov012_FreeFx(Ov003FxList **slot) {
     if (*slot != NULL) {
         Ov003FxList *p = *slot;
         if (p != NULL) {
-            func_ov003_021da940(p);
+            Ov003FxList_Dtor(p);
             Heap_Free(p);
         }
         *slot = NULL;
@@ -302,7 +302,7 @@ extern void func_ov000_02187a20(void *a, s32 b);
 extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
 extern BOOL func_ov000_021903b4(void *p);
-extern s32 func_ov003_021d1c00(Ov003Actor *self, Ov012Msg *msg);
+extern s32 Ov003Actor_HandleMsg(Ov003Actor *self, Ov012Msg *msg);
 extern BOOL func_020621c4(void);
 extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 }
@@ -406,7 +406,7 @@ struct Ov012VecC {
 extern "C" {
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list);
 extern void *func_ov000_021985c0(void *p);
-extern void func_ov003_021f0c60(void *self, s32 a);
+extern void Ov003Pickup_Update(void *self, s32 a);
 extern void func_ov000_0218996c(u8 a, u8 b);
 }
 
@@ -521,7 +521,7 @@ extern void func_ov000_02191418(Model0218fe1c *p, u16 a, BOOL b);
 
 
 extern "C" {
-extern s32 func_ov003_021d9edc(u16 kind);
+extern s32 Ov003_CountActorsOfKind(u16 kind);
 }
 
 

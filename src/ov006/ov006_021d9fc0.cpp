@@ -2,9 +2,9 @@
 
 extern "C" {
 
-void func_ov006_021e463c(ov006_Unk021ec888 *self);
+void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
 
-void func_ov006_021d9fc0(ov006_Task021ec040 *self) {
+void Ov006Vt_021ec040_Draw(ov006_Task021ec040 *self) {
     if (self->unk10 != NULL) {
         self->unk10->vfunc_20();
     }
@@ -30,7 +30,7 @@ void func_ov006_021d9fc0(ov006_Task021ec040 *self) {
         return;
     }
     if (data_ov006_021ec888 != NULL) {
-        func_ov006_021e463c(data_ov006_021ec888);
+        ov006_Menu_ReleaseObj(data_ov006_021ec888);
     }
 }
 

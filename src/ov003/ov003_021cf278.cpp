@@ -47,12 +47,12 @@ extern "C" {
 extern u32 data_ov003_021f79a8;
 extern void *Heap_AllocArray(u32 size);
 extern void Heap_Free(void *p);
-void func_ov003_021cf5e8(Ov003Group *self);
+void Ov003Group_Sweep(Ov003Group *self);
 
 extern u8 data_ov003_021f7984[];
 extern void *Heap_Alloc(u32 size);
 
-void func_ov003_021cf1f0(Ov003ScriptList *self, u16 id, u16 max, const Ov003Step *steps) {
+void Ov003ScriptList_AddTrack(Ov003ScriptList *self, u16 id, u16 max, const Ov003Step *steps) {
     Ov003Track *e = (Ov003Track *)Heap_Alloc(sizeof(Ov003Track));
     Ov003Track *p;
     if (e != NULL) {
@@ -79,7 +79,7 @@ void func_ov003_021cf1f0(Ov003ScriptList *self, u16 id, u16 max, const Ov003Step
     self->count++;
 }
 
-Ov003Track *func_ov003_021cf278(Ov003ScriptList *self, u16 id, u16 val) {
+Ov003Track *Ov003ScriptList_SelectTrack(Ov003ScriptList *self, u16 id, u16 val) {
     Ov003Track *e;
     for (e = self->head; e != NULL; e = e->next) {
         if (id == e->id) {
@@ -124,7 +124,7 @@ void func_ov003_021cf338() {
 void func_ov003_021cf33c(Ov003FlagObj *self, void *arg) {
 }
 
-void func_ov003_021cf340(const char *str) {
+void Ov003_DupString(const char *str) {
     void *old = data_02097dd0->cur;
     char *buf;
     u32 n;
@@ -135,7 +135,7 @@ void func_ov003_021cf340(const char *str) {
     STD_CopyLString(buf, str, STD_GetStringLength(str) + 1);
 }
 
-void func_ov003_021cf39c(void *self, const char *str) {
+void Ov003_DupString2(void *self, const char *str) {
     void *old = data_02097dd0->cur;
     char *buf;
     u32 n;
@@ -167,13 +167,13 @@ void func_ov003_021cf410() {
 void func_ov003_021cf414() {
 }
 
-void func_ov003_021cf418(Ov003Group *self) {
+void Ov003Group_Deactivate(Ov003Group *self) {
     self->active = 0;
 }
 
 Ov003Group *Ov003Group_Dtor(Ov003Group *self) {
     if (self->active) {
-        func_ov003_021cf5e8(self);
+        Ov003Group_Sweep(self);
         self->active = 0;
     }
     return self;
@@ -191,13 +191,13 @@ BOOL Ov003Group_Init(Ov003Group *self) {
 
 void Ov003Group_Release(Ov003Group *self) {
     if (self->active) {
-        func_ov003_021cf5e8(self);
+        Ov003Group_Sweep(self);
         self->active = 0;
     }
 }
 
 #pragma force_active on
-void func_ov003_021cf4ac(Ov003Group *self) {
+void Ov003Group_UpdateAll(Ov003Group *self) {
     Ov003Link *l;
     if (self->active) {
         for (l = self->list4; l != NULL; l = l->next) {
@@ -207,7 +207,7 @@ void func_ov003_021cf4ac(Ov003Group *self) {
 }
 #pragma force_active reset
 
-void func_ov003_021cf4ec(Ov003Group *self) {
+void Ov003Group_DrawAll(Ov003Group *self) {
     Ov003Link *l;
     if (self->active) {
         for (l = self->list8; l != NULL; l = l->next) {
@@ -216,9 +216,9 @@ void func_ov003_021cf4ec(Ov003Group *self) {
     }
 }
 
-Ov003Link *func_ov003_021cf6e8(Ov003Link *head, Ov003Link *n);
+Ov003Link *Ov003Link_InsertSorted(Ov003Link *head, Ov003Link *n);
 
-void *func_ov003_021cf52c(Ov003Group *self, void *obj, u16 key4, u16 key8) {
+void *Ov003Group_Add(Ov003Group *self, void *obj, u16 key4, u16 key8) {
     void *ret = NULL;
     if (self->active) {
         Ov003Item *item;
@@ -238,13 +238,13 @@ void *func_ov003_021cf52c(Ov003Group *self, void *obj, u16 key4, u16 key8) {
         b->key = key8;
         b->next = NULL;
         self->unk_02++;
-        self->list4 = func_ov003_021cf6e8(self->list4, a);
-        self->list8 = func_ov003_021cf6e8(self->list8, b);
+        self->list4 = Ov003Link_InsertSorted(self->list4, a);
+        self->list8 = Ov003Link_InsertSorted(self->list8, b);
     }
     return ret;
 }
 
-void func_ov003_021cf5e8(Ov003Group *self) {
+void Ov003Group_Sweep(Ov003Group *self) {
     Ov003Link *next;
     Ov003Link *l;
     if (!self->active) {
@@ -283,7 +283,7 @@ void func_ov003_021cf5e8(Ov003Group *self) {
     self->unk_02 = 0;
 }
 
-Ov003Link *func_ov003_021cf6e8(Ov003Link *head, Ov003Link *n) {
+Ov003Link *Ov003Link_InsertSorted(Ov003Link *head, Ov003Link *n) {
     Ov003Link *ret = NULL;
     Ov003Link *prev = NULL;
     Ov003Link *cur;

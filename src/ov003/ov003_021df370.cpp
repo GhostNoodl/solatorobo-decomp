@@ -34,7 +34,7 @@ extern void SndMgr_StopSeqArc(SndMgr *mgr, s32 id);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern void func_ov000_0218b700(Ov003Unit *u, s32 a, s32 b);
 
-void func_ov003_021df0c8(ActorEx *self) {
+void Ov003Prop_State22(ActorEx *self) {
     ActorSub40 *w = self->fsm;
     switch (w->st) {
     case 0:
@@ -146,7 +146,7 @@ void Ov003ActVt_021f8350_Start(Ov003ActExSeq *self) {
     self->seq = func_02049afc(data_02097e4c, 0x3f);
 }
 
-void func_ov003_021df484(Ov003ActExSeq *self) {
+void Ov003ActExSeq_Bob(Ov003ActExSeq *self) {
     s32 d;
     s32 diff;
     u16 a;
@@ -170,15 +170,15 @@ void func_ov003_021df484(Ov003ActExSeq *self) {
     }
 }
 
-void func_ov003_021df528(Ov003ActExSeq *self) {
-    func_ov003_021df484(self);
+void Ov003ActExSeq_StateIdle(Ov003ActExSeq *self) {
+    Ov003ActExSeq_Bob(self);
 }
 
 static inline s32 Ov003DfKind_Get(ActorSub40 *k) {
     return k != NULL ? k->current : 0;
 }
 
-void func_ov003_021df534(Ov003ActExSeq *self) {
+void Ov003ActExSeq_State21(Ov003ActExSeq *self) {
     switch (self->fsm->st) {
     case 0: {
         VecFx32 v;
@@ -224,14 +224,14 @@ void func_ov003_021df534(Ov003ActExSeq *self) {
     }
     }
 end:
-    func_ov003_021df484(self);
+    Ov003ActExSeq_Bob(self);
 }
 
 static inline u16 Camera_GetAngle(Camera *cam) {
     return cam->mode != 0 ? cam->yaw : Camera_GetYaw(cam);
 }
 
-void func_ov003_021df6f4(Ov003ActExSeq *self) {
+void Ov003ActExSeq_State22(Ov003ActExSeq *self) {
     Camera *cam = &data_ov000_021ccd54->cam.base;
     switch (self->fsm->st) {
     case 0: {

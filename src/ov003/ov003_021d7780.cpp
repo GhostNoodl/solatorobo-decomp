@@ -12,23 +12,23 @@ extern void Heap_Free(void *p);
 extern void *ActorMgr_GetActor(void *mgr, u16 id);
 
 Ov003Actor *Ov003ActVt_021f7c0c_Dtor(Ov003Actor *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
 Ov003Actor *Ov003ActVt_021f7c0c_DtorDelete(Ov003Actor *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 Ov003Actor *Ov003ActVt_021f7b60_Dtor(Ov003Actor *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
 Ov003Actor *Ov003ActVt_021f7b60_DtorDelete(Ov003Actor *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
@@ -41,13 +41,13 @@ Ov003Node8 *Ov003NodeSrc_NewNode(Ov003NodeSrc *self) {
     return node;
 }
 
-void func_ov003_021d7800(void *p) {
+void Ov003_FreeIfSet(void *p) {
     if (p != NULL) {
         Heap_Free(p);
     }
 }
 
-BOOL func_ov003_021d7814(u16 *self) {
+BOOL Ov003_ActorExists(u16 *self) {
     void *r;
     u16 id = *self;
     if (data_ov000_021ccd68 == NULL) {
@@ -58,7 +58,7 @@ BOOL func_ov003_021d7814(u16 *self) {
     return r != NULL;
 }
 
-void func_ov003_021d7848(Ov003Pool *self) {
+void Ov003Pool_Deactivate(Ov003Pool *self) {
     self->active = 0;
 }
 
@@ -72,7 +72,7 @@ Ov003Pool *Ov003Pool_Dtor(Ov003Pool *self) {
     return self;
 }
 
-BOOL func_ov003_021d7894(Ov003Pool *self, s32 size, s32 count) {
+BOOL Ov003Pool_Init(Ov003Pool *self, s32 size, s32 count) {
     s32 pad = size % 4 == 0 ? 0 : 4 - size % 4;
     u32 stride;
     u8 *p;

@@ -13,7 +13,7 @@ void Ov009ActVt_02217aac_Start(Ov009ActVt_02217aac *self) {
     GroupNode *p;
     Ov003Actor *a;
     FieldState *g;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
         p->flags.unk_0 = 0;

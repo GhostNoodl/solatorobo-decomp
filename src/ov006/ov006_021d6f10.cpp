@@ -14,29 +14,29 @@ struct ov006_Task021d6f10 : public ov006_Task {
 
 extern "C" {
 
-void func_ov006_021de6bc(void *a);
-void func_ov006_021e0480(void *a);
-void func_ov006_021e28b4(void *a);
-void func_ov006_021e1bb4(void *a);
-void func_ov006_021e2490(void *a);
-void func_ov006_021e463c(ov006_Unk021ec888 *self);
+void ov006_Hud021de6bc_Draw(void *a);
+void ov006_Unk021e0480_Draw(void *a);
+void ov006_Marks_Draw(void *a);
+void ov006_Unk021e1bb4_Draw(void *a);
+void ov006_MarkerSet_Draw(void *a);
+void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
 
-void func_ov006_021d6f10(ov006_Task021d6f10 *self) {
+void Ov006Vt_021ebfc0_Draw(ov006_Task021d6f10 *self) {
     if (self->state == 3) {
-        func_ov006_021de6bc(self->unk1C);
+        ov006_Hud021de6bc_Draw(self->unk1C);
         if (self->unk20 != NULL) {
-            func_ov006_021e0480(self->unk20);
+            ov006_Unk021e0480_Draw(self->unk20);
         }
-        func_ov006_021e28b4(self->unk30);
-        func_ov006_021e1bb4(self->unk28);
-        func_ov006_021e2490(self->unk2C);
+        ov006_Marks_Draw(self->unk30);
+        ov006_Unk021e1bb4_Draw(self->unk28);
+        ov006_MarkerSet_Draw(self->unk2C);
         Model_PlayPart(self->unk24, 0);
         if (self->unk34 != NULL) {
             self->unk34->vfunc_20();
         }
     }
     if (data_ov006_021ec888 != NULL) {
-        func_ov006_021e463c(data_ov006_021ec888);
+        ov006_Menu_ReleaseObj(data_ov006_021ec888);
     }
 }
 

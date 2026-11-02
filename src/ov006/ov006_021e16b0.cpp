@@ -74,7 +74,7 @@ static inline void ov006_Lbl_SetMove(ov006_Label *l, int x, int y, int z, int s,
     l->unkD8 = d;
 }
 
-void func_ov006_021e16b0(ov006_Unk021e16b0 *self) {
+void ov006_Unk021e16b0_Load(ov006_Unk021e16b0 *self) {
     int zero = 0;
     ov006_Caption *s;
     ov006_Label *l;

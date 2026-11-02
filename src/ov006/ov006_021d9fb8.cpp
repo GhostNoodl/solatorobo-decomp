@@ -2,7 +2,7 @@
 
 extern "C" {
 
-BOOL func_ov006_021d9fb8(void) {
+BOOL Ov006Vt_021ec040_Exit(void) {
     return TRUE;
 }
 

@@ -7,7 +7,7 @@ extern VecFx32 data_ov013_0220b3f8;
 extern VecFx32 data_ov013_0220b404;
 extern Ov003Actor *func_ov000_0219bf90(void);
 
-void func_ov013_0220a940(Ov013ActEx_0220a4e0 *self) {
+void Ov013ActEx_0220a4e0_State0a(Ov013ActEx_0220a4e0 *self) {
     Model0218fe1c *s;
     ActorSub40 *q;
     u8 v;
@@ -71,7 +71,7 @@ static inline Ov003Actor *Ov013_FindActorA(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-void func_ov013_0220aa7c(Ov013ActEx_0220a9a8 *self) {
+void Ov013ActEx_0220a9a8_StateIdle(Ov013ActEx_0220a9a8 *self) {
     Ov003Actor *t;
     switch (self->fsm->st) {
     case 0:

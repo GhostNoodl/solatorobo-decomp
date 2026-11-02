@@ -10,7 +10,7 @@ BOOL func_ov014_02213e18(Ov014Watch *self);
 BOOL func_ov014_02213f74(Ov014Watch *self);
 BOOL func_ov014_02214138(Ov014Watch *self);
 
-BOOL func_ov014_02213cfc(Ov014Watch *self) {
+BOOL Ov014Watch_CountAlive(Ov014Watch *self) {
     u16 prev = self->count;
     u16 n = 0;
     u16 i;

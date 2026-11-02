@@ -13,7 +13,7 @@ static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->event != 0;
 }
 
-void func_ov009_022088d8(Ov003Actor *self) {
+void Ov009ActVt_02217798_Update(Ov003Actor *self) {
     ActorSub40 *st;
     if (!Ov009_GameIdle()) {
         return;
@@ -42,7 +42,7 @@ void func_ov009_022088d8(Ov003Actor *self) {
 
 extern void *data_ov009_02215ee4[];
 
-void func_ov009_02208a84(Ov003Actor *self) {
+void Ov009ActVt_02217798_StateIdle(Ov003Actor *self) {
     switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, (char *)data_ov009_02215ee4[0], 0x111, 0);
@@ -91,7 +91,7 @@ extern void func_ov000_021911c8(Model0218fe1c *m, s16 a);
 extern s16 *func_ov000_02191318(Model0218fe1c *m, s32 a);
 extern void func_ov000_02191780(Model0218fe1c *m);
 
-void func_ov009_02208b24(Ov003Actor *self) {
+void Ov009ActVt_02217798_StateAttack(Ov003Actor *self) {
     VecFx32 v;
     VecFx32 v3;
     VecFx32 d;

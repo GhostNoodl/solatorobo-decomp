@@ -29,7 +29,7 @@ extern Ov003Area *func_0206ef10(u16 id);
 extern void Heap_Free(void *p);
 extern s32 Rand_UpTo(s32 max);
 
-void func_ov003_021cedf4(u16 add) {
+void Ov003_AddMeter_021cedf4(u16 add) {
     u16 c;
     if (data_0214a424->mode != 1) {
         return;
@@ -47,7 +47,7 @@ void func_ov003_021cedf4(u16 add) {
     data_0214a424->meter = c;
 }
 
-u8 func_ov003_021cee68(void) {
+u8 Ov003_GetMaxCombo(void) {
     u8 r = 3;
     if (data_0214a424->mode == 1) {
         Ov003Area *area = func_0206ef10(data_0214a424->area | 0x8000);
@@ -61,7 +61,7 @@ u8 func_ov003_021cee68(void) {
 void func_ov003_021ceec4(void) {
 }
 
-void *func_ov003_021ceec8(Ov003Track *self) {
+void *Ov003Track_DtorDelete(Ov003Track *self) {
     Heap_Free(self);
     return self;
 }
@@ -138,7 +138,7 @@ static inline void Ov003Track_Advance(Ov003Track *t) {
     t->val = (u32)t->val % t->max;
 }
 
-const Ov003Step *func_ov003_021ceff4(Ov003ScriptList *self) {
+const Ov003Step *Ov003ScriptList_Step(Ov003ScriptList *self) {
     const Ov003Step *step;
     Ov003Track *cur;
     if (self->func != NULL && self->enabled) {

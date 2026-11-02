@@ -109,7 +109,7 @@ void func_ov000_02182590(void *p);
 void func_ov011_02205460(Ov011Act7da4 *self, u16 t, s32 c);
 
 #pragma force_active on
-void func_ov011_02205674(Ov011Act7da4 *self) {
+void Ov011Act7da4_State21(Ov011Act7da4 *self) {
     ActorSub40 *st = self->fsm;
     switch (st->st) {
     case 0:
@@ -135,7 +135,7 @@ void func_ov011_02205674(Ov011Act7da4 *self) {
 
 extern const VecFx32 data_02092a50;
 
-void func_ov011_0220576c(Ov011Act7da4 *self) {
+void Ov011Act7da4_State23(Ov011Act7da4 *self) {
     ActorSub40 *st = self->fsm;
     switch (st->st) {
     case 0: {
@@ -186,7 +186,7 @@ void func_ov011_0220576c(Ov011Act7da4 *self) {
     func_ov011_02205460(self, self->fsm->timer, 1);
 }
 
-void func_ov011_022059f8(Ov011Act7da4 *self) {
+void Ov011Act7da4_State24(Ov011Act7da4 *self) {
     ActorSub40 *st = self->fsm;
     switch (st->st) {
     case 0: {
@@ -240,7 +240,7 @@ void NNSi_G3dModifyPolygonAttrMask(void *mdl, u32 a, u32 mask);
 
 #define OV011_F32_TO_FX32(f) ((s32)(((f) > 0) ? (f) * 4096.0f + 0.5f : (f) * 4096.0f - 0.5f))
 
-void func_ov011_02205bc4(Ov011Act7da4 *self) {
+void Ov011Act7da4_State22(Ov011Act7da4 *self) {
     ActorSub40 *st = self->fsm;
     switch (st->st) {
     case 0: {

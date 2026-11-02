@@ -6,7 +6,7 @@ extern u8 data_ov009_02216aaa[];
 extern u8 data_ov009_02216abc[];
 extern void Actor_MoveToPos(Ov003Actor *self, VecFx32 *v, s32 a);
 
-void func_ov009_021fb890(Ov009ActVt_022166a4 *self) {
+void Ov009ActVt_022166a4_StateMove(Ov009ActVt_022166a4 *self) {
     VecFx32 v;
     Ov003Param *p;
     if (self->fsm->st == 0) {
@@ -44,7 +44,7 @@ static inline Ov003Actor *Ov009_FindActor(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-void func_ov009_021fb9b0(Ov009ActVt_022166a4 *self) {
+void Ov009ActVt_022166a4_StateAttack(Ov009ActVt_022166a4 *self) {
     ActorSub40 *st;
     s32 g;
     if (!Ov009_GameIdle()) {

@@ -31,7 +31,7 @@ extern BOOL func_ov000_02191120(void *model);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
-void func_ov003_021e0b7c(ActorEx *self) {
+void Ov003ActVt_021f82b8_State20(ActorEx *self) {
     switch (self->fsm->st) {
     case 0: {
         ActorSub44 *p;

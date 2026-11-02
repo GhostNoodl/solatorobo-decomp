@@ -41,7 +41,7 @@ static inline void G3Cmd1(u32 op, u32 v) {
     NNS_G3dGeBufferOP_N(op, &a, 1);
 }
 
-void func_ov006_021ce048(void *self, s32 x, s32 y, s32 z, s32 unused, Oam021ce048 *oam,
+void ov006_DrawSprite3D(void *self, s32 x, s32 y, s32 z, s32 unused, Oam021ce048 *oam,
                          const ImgAttr021ce048 *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs) {
     s32 mv[3];
     s32 tv[3];

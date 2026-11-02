@@ -19,7 +19,7 @@ static inline void ov006_Limit(u16 *p, u16 d, u16 lim) {
     }
 }
 
-void func_ov006_021e8ef8(Ov006Racer *self) {
+void Ov006Racer_UpdateSteer(Ov006Racer *self) {
     u32 kind2;
     u16 h2v;
     u32 mode;

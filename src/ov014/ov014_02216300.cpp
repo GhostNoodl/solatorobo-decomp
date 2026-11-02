@@ -8,7 +8,7 @@ extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
 
 extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
-extern void func_ov003_021f0c60(Actor *self, s32 a);
+extern void Ov003Pickup_Update(Actor *self, s32 a);
 extern BOOL func_ov014_02216324(Actor *self);
 
 #define OV014Z_SQRTCNT (*(volatile u16 *)0x40002b0)
@@ -79,7 +79,7 @@ void func_ov014_02215ffc(Ov014ActEx_022152e8 *self) {
         VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
         self->unk_f4++;
         if ((self->hit->unk_50 & 0xe0000000) || func_ov014_02216324(self) || self->unk_f4 >= 0xf0) {
-            func_ov003_021f0c60(self, 0);
+            Ov003Pickup_Update(self, 0);
             func_ov000_02198360(self->fsm, 0x15, 0);
         }
         break;
@@ -87,11 +87,11 @@ void func_ov014_02215ffc(Ov014ActEx_022152e8 *self) {
     self->unk_3c->unk_14 = 0x2000;
 }
 
-void func_ov014_02216300(Ov014ActEx_022152e8 *self) {
+void Ov014ActEx_022152e8_StateHeld(Ov014ActEx_022152e8 *self) {
     func_ov000_02195d88(self);
 }
 
-void func_ov014_0221630c(Ov014ActEx_022152e8 *self) {
+void Ov014ActEx_022152e8_State0a(Ov014ActEx_022152e8 *self) {
     func_ov000_02198360(self->fsm, 0x15, 0);
 }
 
@@ -131,7 +131,7 @@ BOOL func_ov014_02216324(Actor *self) {
     return r;
 }
 
-void func_ov014_0221641c(Ov014ActEx_022142fc *self) {
+void Ov014ActEx_022142fc_State0a(Ov014ActEx_022142fc *self) {
     self->vfunc_74();
 }
 

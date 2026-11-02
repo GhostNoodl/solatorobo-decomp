@@ -13,7 +13,7 @@ struct Ov009Bits16 {
     u16 b1 : 15;
 };
 
-void func_ov009_02207aa0(Ov009ActVt_02217844 *self) {
+void Ov009ActVt_02217844_StateIdle(Ov009ActVt_02217844 *self) {
     if (self->fsm->st == 0) {
         self->model->visible = 0;
         self->modelObj.visible = 0;
@@ -21,7 +21,7 @@ void func_ov009_02207aa0(Ov009ActVt_02217844 *self) {
     }
 }
 
-void func_ov009_02207ae4(Ov009ActVt_02217844 *self) {
+void Ov009ActVt_02217844_StateAttack(Ov009ActVt_02217844 *self) {
     switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov009_022172af, 0x1000, 1);
@@ -41,7 +41,7 @@ void func_ov009_02207ae4(Ov009ActVt_02217844 *self) {
     }
 }
 
-void func_ov009_02207bd4(Ov009ActVt_02217844 *self) {
+void Ov009ActVt_02217844_StateAttack2(Ov009ActVt_02217844 *self) {
     switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov009_022172b5, 0x1000, 1);
@@ -69,7 +69,7 @@ s32 func_ov009_02207cc4(s32 dmg) {
 static inline void Set(Ov009Multi *self, VecFx32 p, u16 r) { self->unk_494.x = p.x; self->unk_492 = r; self->unk_494.y = p.y; self->unk_494.z = p.z; }
 void Ov009Multi_Start(Ov009Multi *self) {
     s32 i;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     self->unk_492 = self->rot_y;
     self->unk_494 = self->pos;
     for (i = 0; i < 4; i++) {

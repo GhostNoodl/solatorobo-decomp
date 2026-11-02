@@ -32,7 +32,7 @@ static inline const ov006_Price021da098 *ov006_GetItemPrice(u8 item) {
     return p;
 }
 
-void func_ov006_021da098(ov006_Task021ec040 *self) {
+void ov006_Task021ec040_SetupPrices(ov006_Task021ec040 *self) {
     u8 n = data_ov006_021ec884->lap;
     u8 i;
     if (n < 1) {

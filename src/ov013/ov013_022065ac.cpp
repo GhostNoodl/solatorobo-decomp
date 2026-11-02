@@ -15,16 +15,16 @@ Ov013ActEx_022065ac *Ov013ActEx_022065ac_Ctor(Ov013ActEx_022065ac *self) {
     return self;
 }
 
-void func_ov013_022065d8(Ov013ActEx_022065ac *self, u16 a) {
+void Ov013ActEx_022065ac_SetF6(Ov013ActEx_022065ac *self, u16 a) {
     self->unk_f6 = a;
 }
 
-void func_ov013_022065e0(Ov013ActEx_022065ac *self, u8 a) {
+void Ov013ActEx_022065ac_SetF4(Ov013ActEx_022065ac *self, u8 a) {
     self->unk_f4 = a;
 }
 
-void func_ov013_022065e8(Ov013ActEx_022065ac *self) {
-    func_ov003_021db244(self);
+void Ov013ActEx_022065ac_StateThrown(Ov013ActEx_022065ac *self) {
+    Ov003Shot_StateThrown(self);
     if (self->unk_f6 != 0) {
         self->rot_y += self->unk_f6;
     } else {
@@ -39,12 +39,12 @@ void func_ov013_022065e8(Ov013ActEx_022065ac *self) {
 }
 
 Ov013ActEx_022065ac *Ov013ActEx_022065ac_Dtor(Ov013ActEx_022065ac *self) {
-    func_ov003_021dae44(self);
+    Ov003ActorEx_Ctor(self);
     return self;
 }
 
 Ov013ActEx_022065ac *Ov013ActEx_022065ac_DtorDelete(Ov013ActEx_022065ac *self) {
-    func_ov003_021dae44(self);
+    Ov003ActorEx_Ctor(self);
     Heap_Free(self);
     return self;
 }
@@ -53,7 +53,7 @@ void Ov013ActVt_0220bdd8_Start(Ov013ActVt_0220bdd8 *self) {
     ActorSub48 *m;
     ActorSub44 *n;
     Ov003Actor *p;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     self->pos.x = -0x3000;
     self->pos.y = 0x5333;
     self->pos.z = -0xe000;
@@ -73,7 +73,7 @@ void Ov013ActVt_0220bdd8_Start(Ov013ActVt_0220bdd8 *self) {
     self->unk_b6 = 0x5a;
     self->unk_fe = 0x1000;
     if (func_020621c4()) {
-        func_ov003_021d6bac(self, data_ov013_0220b360);
+        Ov003Actor_ScaleStats(self, data_ov013_0220b360);
         self->unk_fe = 0x1800;
     }
 }

@@ -24,7 +24,7 @@ void Ov009ActVt_02217594_Start(Ov009ActVt_02217594 *self) {
     ActorSub48 *s48;
     ActorSub44 *s44;
     Ov003Actor *t;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     func_ov000_0218ffdc(&self->modelObj, &self->anim, 0, 1);
     self->modelObj.actor_id = self->id;
     switch (self->unk_1a) {

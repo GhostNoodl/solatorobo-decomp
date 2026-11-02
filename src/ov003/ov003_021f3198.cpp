@@ -17,7 +17,7 @@ extern s32 Rand_PlusMinus(s32 max);
 extern Ov003BlinkInfo *func_0206fef8(u16 id);
 extern BOOL func_ov000_021903b4(void *model);
 
-void func_ov003_021f3198(Ov003PropBlink *self) {
+void Ov003PropBlink_Apply(Ov003PropBlink *self) {
     u16 v = (u16)self->unk_18 >> ((3 - self->phase) * 4);
     u32 n = v & 0xf;
     u16 a;
@@ -60,7 +60,7 @@ void Ov003ActVt_021fa3e8_Start(Ov003PropDrift *self) {
     func_ov000_021915a0(self->model);
 }
 
-void func_ov003_021f32c0(Ov003PropDrift *self) {
+void Ov003ActVt_021fa3e8_RunState(Ov003PropDrift *self) {
     VecFx32 v;
     s32 z;
     self->phase += Rand_PlusMinus(0xe1) + 0x9a;

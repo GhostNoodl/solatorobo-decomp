@@ -12,7 +12,7 @@ typedef enum { OV003_SPARK_KIND = 0x325 } Ov003SparkKind;
    The spark kind is an enum-typed local: the optimizer does not constant-propagate
    enum variables, so it stays a named value and is coloured after the scale vector
    constants (docs/MATCHING.md, round lfA). */
-void func_ov003_021de6b4(Ov003Bomb *self) {
+void Ov003ActVt_021f8480_StateIdle(Ov003Bomb *self) {
     VecFx32 sc;
     VObj *e;
     ActorSub40 *w;

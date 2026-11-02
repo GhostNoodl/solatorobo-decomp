@@ -10,7 +10,7 @@ extern "C" {
 extern char data_ov006_021ec864[];
 extern char data_ov006_021ec1a9[];
 
-void func_ov006_021e279c(ov006_Unk021e279c *self) {
+void ov006_Unk021e279c_Load(ov006_Unk021e279c *self) {
     Model *model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec1a9;

@@ -2,11 +2,11 @@
 #include "Main/Math/Rot16.h"
 
 extern "C" {
-void func_ov012_0220824c(Ov012ActVt_0220b280 *self) {
+void Ov012ActVt_0220b280_StateAttack(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0 && self->unk_1a == 0) {
         func_02049f44(data_02097e4c, 0x600, &self->pos, 0);
     }
-    func_ov003_021d452c(self);
+    Ov003Actor_StateAttack(self);
 }
 
 extern char data_ov012_0220b335[];
@@ -19,7 +19,7 @@ static inline u16 Ov012_HpPct8294(Ov003Actor *self) {
     return self->hp[0] * 100 / self->hp[1];
 }
 
-void func_ov012_02208294(Ov012ActVt_0220b280 *self) {
+void Ov012ActVt_0220b280_StateAttack2(Ov012ActVt_0220b280 *self) {
     Ov003Actor *pl = Ov012_FindActor(self->target);
     ActorSub40 *s = self->fsm;
     VecFx32 t;

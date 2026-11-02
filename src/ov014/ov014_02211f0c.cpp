@@ -7,7 +7,7 @@ extern char data_ov014_02217d82[];
 extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
 extern void func_ov000_02191618(Model0218fe1c *a);
 
-void func_ov014_02211f0c(Ov014Act_0220f9d0 *self) {
+void Ov014Act_0220f9d0_StateHurt(Ov014Act_0220f9d0 *self) {
     switch (self->fsm->st) {
     case 0: {
         ActorSub44 *n;
@@ -60,7 +60,7 @@ extern void func_ov000_0218996c(u8 a, u8 b);
 
 // *(&data_02097e4c) keeps the global's address in a saved register (r7) across the
 // switch, as in the target; a plain data_02097e4c reloads it from the pool each time.
-void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
+void Ov014Act_0220f9d0_StateDie(Ov014Act_0220f9d0 *self) {
     u16 t;
     VecFx32 v1;
     VecFx32 v3;
@@ -177,7 +177,7 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
         break;
     }
     case 2:
-        func_ov003_021d6a3c(self, 0, 1, 1);
+        Ov003Actor_Defeat(self, 0, 1, 1);
         func_ov000_02190cb0(self->model, data_ov014_02217d88, 0x19a, 0);
         func_ov000_02191618(self->model);
         func_ov000_021911c8(self->model, 0x1000);

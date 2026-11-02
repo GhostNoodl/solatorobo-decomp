@@ -21,9 +21,9 @@
         data_02097dd0->cur = saved_;                             \
     } while (0)
 
-/* The overlay's task base (vtable data_ov006_021ebb58, ctor func_ov006_021ccda0, which sets type 3).
-   func_ov006_021cd2c8 creates the task data_ov006_021ec860->taskType names and steps it through
-   slots 0x08, 0x0c, 0x10, 0x14 (while it returns TRUE) and 0x18; func_ov006_021cd264 calls slot
+/* The overlay's task base (vtable data_ov006_021ebb58, ctor ov006_Task_Ctor, which sets type 3).
+   ov006_Manager_SwitchTask creates the task data_ov006_021ec860->taskType names and steps it through
+   slots 0x08, 0x0c, 0x10, 0x14 (while it returns TRUE) and 0x18; ov006_Manager_Draw calls slot
    0x1c once state reaches 3. */
 struct ov006_Task : public VObj {
     int type;
@@ -58,7 +58,7 @@ typedef struct ov006_MenuData {
     u8 unk48[0x78];
 } ov006_MenuData;
 
-/* A menu entry node (vtable data_ov006_021ec434, func_ov006_021e46e8). */
+/* A menu entry node (vtable data_ov006_021ec434, ov006_Menu_UpdateNode). */
 struct ov006_MenuNode : public VObj {
     int id;
     u32 count;

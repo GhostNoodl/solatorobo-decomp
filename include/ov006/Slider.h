@@ -13,7 +13,7 @@ BOOL func_02054f10(void *a, int b);
 }
 #endif
 
-// The caption update (func_ov006_021e0af4): once the model is loaded, visible becomes 1 and
+// The caption update (ov006_Caption_Update): once the model is loaded, visible becomes 1 and
 // ofsY moves toward 0; with visible 2 it moves back toward -0x1e.
 static inline void ov006_Slider_Update(ov006_Caption *self) {
     switch (self->visible) {

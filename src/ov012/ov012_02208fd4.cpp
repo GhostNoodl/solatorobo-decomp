@@ -67,7 +67,7 @@ extern s32 func_ov000_02199128(s32 *out, Ov012Query *q, void **list, s32 max);
 #define OV012Q_SQRT_RESULT (*(volatile u32 *)0x40002b4)
 #define OV012Q_SQRT_PARAM (*(volatile u64 *)0x40002b8)
 
-void func_ov012_02208858(Ov012ActVt_0220b280 *self) {
+void Ov012ActVt_0220b280_StateAttack3(Ov012ActVt_0220b280 *self) {
     switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov012_0220b347, 0x1000, 0);
@@ -138,7 +138,7 @@ void func_ov012_02208858(Ov012ActVt_0220b280 *self) {
                         sq_r = (s32)(OV012Q_SQRT_RESULT + 1) >> 1;
                         r.x = FX_Atan2(v.y, sq_r);
                     }
-                    o = func_ov003_021d69f0(self, 0x480e, &v, &r, tgt);
+                    o = Ov003Actor_SpawnChild(self, 0x480e, &v, &r, tgt);
                     if (o != NULL) {
                         o->unk_60 = data_ov012_0220a88c;
                         if (func_020621c4()) {
@@ -178,7 +178,7 @@ static inline u16 Ov012_HpPct(Ov003Actor *self) {
     return self->hp[0] * 100 / self->hp[1];
 }
 
-void func_ov012_02208c0c(Ov012ActVt_0220b280 *self) {
+void Ov012ActVt_0220b280_StateShoot(Ov012ActVt_0220b280 *self) {
     VecFx32 v;
     Rot16 r;
     Ov003Actor *pl;
@@ -262,7 +262,7 @@ void func_ov012_02208c0c(Ov012ActVt_0220b280 *self) {
             r.x = FX_Atan2(v.y, sq_r);
         }
         {
-            Actor *o = func_ov003_021d69f0(self, 0x480e, &v, &r, pl);
+            Actor *o = Ov003Actor_SpawnChild(self, 0x480e, &v, &r, pl);
             if (o != NULL) {
                 o->unk_60 = data_ov012_0220a88c;
                 if (func_020621c4()) {
@@ -304,7 +304,7 @@ void func_ov012_02208c0c(Ov012ActVt_0220b280 *self) {
 
 
 extern "C" {
-void func_ov012_02208fd4(Ov012ActVt_0220b280 *self) {
+void Ov012ActVt_0220b280_StateDown(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0) {
         if (*self->hp == 0) {
             if (self->unk_1a == 0) {
@@ -316,30 +316,30 @@ void func_ov012_02208fd4(Ov012ActVt_0220b280 *self) {
             }
         }
     }
-    func_ov003_021d5900(self);
+    Ov003Actor_StateDown(self);
 }
 }
 
 extern "C" {
-void func_ov012_0220904c(Ov012ActVt_0220b280 *self) {
+void Ov012ActVt_0220b280_StateHurt(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0 && self->unk_1a == 0) {
         func_02049f44(data_02097e4c, 0x602, &self->pos, 0);
     }
-    func_ov003_021d4fd8(self);
+    Ov003Actor_StateHurt(self);
 }
 }
 
 extern "C" {
-void func_ov012_02209098(Ov012ActVt_0220b280 *self) {
+void Ov012ActVt_0220b280_StateKnockBack(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0 && self->unk_1a == 0) {
         func_02049f44(data_02097e4c, 0x603, &self->pos, 0);
     }
-    func_ov003_021d5348(self);
+    Ov003Actor_StateKnockBack(self);
 }
 }
 
 extern "C" {
-void func_ov012_022090e4(Ov012ActVt_0220b280 *self) {
+void Ov012ActVt_0220b280_StateDie(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0) {
         EffectObj *e;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x480e, 0x15);
@@ -349,37 +349,37 @@ void func_ov012_022090e4(Ov012ActVt_0220b280 *self) {
             e->AddPosXYZ(0, self->centerY, 0);
         }
     }
-    func_ov003_021d6054(self);
+    Ov003Actor_StateDie(self);
 }
 }
 
 extern "C" {
-Ov012ActVt_0220b280 *func_ov012_02209164(Ov012ActVt_0220b280 *self) {
+Ov012ActVt_0220b280 *Ov012ActVt_0220b280_Dtor(Ov012ActVt_0220b280 *self) {
     func_ov000_0218ea20(&self->unk_f0);
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 }
 
 extern "C" {
-Ov012ActVt_0220b280 *func_ov012_02209184(Ov012ActVt_0220b280 *self) {
+Ov012ActVt_0220b280 *Ov012ActVt_0220b280_DtorDelete(Ov012ActVt_0220b280 *self) {
     func_ov000_0218ea20(&self->unk_f0);
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 }
 
 extern "C" {
-void func_ov012_022091ac(Ov003Actor *self) {
-    func_ov003_021d0fc0(self);
+void Ov012ActVt_0220b35c_Init(Ov003Actor *self) {
+    Ov003Actor_Init(self);
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     func_02049678(data_02097e4c, 4, 7, -1);
 }
 }
 
 extern "C" {
-BOOL func_ov012_022091e4(Ov003Actor *self) {
+BOOL Ov012ActVt_0220b35c_IsReady(Ov003Actor *self) {
     BOOL r = func_ov000_0218cf5c(self);
     if (r && !SndMgr_IsLoadDone(data_02097e4c)) {
         r = FALSE;
@@ -391,14 +391,14 @@ BOOL func_ov012_022091e4(Ov003Actor *self) {
 extern "C" {
 extern const u8 data_ov012_0220a8d0[];
 extern const u8 data_ov012_0220a8c8[];
-void func_ov012_02209214(Ov003Actor *self) {
-    func_ov003_021d112c(self);
+void Ov012ActVt_0220b35c_Start(Ov003Actor *self) {
+    Ov003Actor_Start(self);
     if (func_020621c4()) {
-        func_ov003_021d6bac(self, data_ov012_0220a8d0);
+        Ov003Actor_ScaleStats(self, data_ov012_0220a8d0);
         return;
     }
     if (self->kind == 0x5036) {
-        func_ov003_021d6bac(self, data_ov012_0220a8c8);
+        Ov003Actor_ScaleStats(self, data_ov012_0220a8c8);
     }
 }
 }

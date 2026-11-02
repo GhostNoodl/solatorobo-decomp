@@ -58,7 +58,7 @@ typedef struct {
 extern Ov003HitPlr *func_ov000_0219bf90(void);
 extern BOOL Hit_DiffInCylinder(void *a, Ov003HitVec *v, s32 r, s32 h);
 
-Ov003HitPlr *func_ov003_021f0868(void *a, s32 r, s32 h) {
+Ov003HitPlr *Ov003_FindPlayerInRange(void *a, s32 r, s32 h) {
     Ov003HitPlr *ret;
     Ov003HitPlr *p;
     BOOL big;
@@ -125,7 +125,7 @@ typedef struct {
 extern void *data_ov000_021ccd68;
 extern Ov003CntGroup *ActorMgr_GetGroup(void *mgr, u16 key);
 
-s32 func_ov003_021f093c(Ov003CntSelf *self) {
+s32 Ov003CntSelf_CountLiving(Ov003CntSelf *self) {
     Ov003CntGroup *g;
     Ov003CntActor *head;
     Ov003CntActor *a;

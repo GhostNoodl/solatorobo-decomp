@@ -15,7 +15,7 @@ extern char data_ov014_02217d1d[];
 extern void *History_Init(void *p);
 extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern BOOL func_ov003_021d1c00(Ov003Actor *self, Ov014Msg *msg);
+extern BOOL Ov003Actor_HandleMsg(Ov003Actor *self, Ov014Msg *msg);
 extern u8 data_ov014_02217d2c[];
 extern u8 data_ov014_02217d33[];
 extern u8 data_ov014_02217db0[];
@@ -26,7 +26,7 @@ extern const Ov003Step data_ov014_02216f00[];
 extern void func_0203f2b8(void *p);
 extern s32 func_ov000_021909a8(void *a, const void *b, const void *c);
 
-EffectObj *func_ov014_0220f7f0(s32 k, VecFx32 *pos) {
+EffectObj *Ov014_CreateEffect(s32 k, VecFx32 *pos) {
     EffectObj *r = NULL;
     switch (k) {
     case 0:
@@ -53,7 +53,7 @@ EffectObj *func_ov014_0220f7f0(s32 k, VecFx32 *pos) {
     return r;
 }
 
-void func_ov014_0220f8a4(u8 *self) {
+void Ov014Part_CaptureMtx_0220f8a4(u8 *self) {
     u8 *t = FLD(u8 *, FLD(u8 *, self, 4), 0x2c);
     s32 k;
     if (t == NULL) {
@@ -69,13 +69,13 @@ void func_ov014_0220f8a4(u8 *self) {
     }
 }
 
-void func_ov014_0220f8e4(u8 *self) {
-    FLD(void *, self, 0x24) = (void *)func_ov014_0220f8a4;
+void Ov014Part_StartCapture_0220f8e4(u8 *self) {
+    FLD(void *, self, 0x24) = (void *)Ov014Part_CaptureMtx_0220f8a4;
     FLD(u8, self, 0x92) = 3;
 }
 
 // arg is the actor that owns the list.
-void func_ov014_0220f8fc(Ov003ScriptList *self, Ov014Act_0220f9d0 *a) {
+void Ov014_SelectTrackByHp_0220f8fc(Ov003ScriptList *self, Ov014Act_0220f9d0 *a) {
     u16 pct = a->hp[0] * 100 / a->hp[1];
     u16 s;
     if (a->unk_154 != NULL) {
@@ -86,27 +86,27 @@ void func_ov014_0220f8fc(Ov003ScriptList *self, Ov014Act_0220f9d0 *a) {
     if (pct < 40) {
         if (s == 0) {
             if (self->cur->id != 3) {
-                func_ov003_021cf278(self, 3, 0);
+                Ov003ScriptList_SelectTrack(self, 3, 0);
             }
         } else {
             if (self->cur->id != 2) {
-                func_ov003_021cf278(self, 2, 0);
+                Ov003ScriptList_SelectTrack(self, 2, 0);
             }
         }
     } else if (pct < 80) {
         if (self->cur->id != 1) {
-            func_ov003_021cf278(self, 1, 0);
+            Ov003ScriptList_SelectTrack(self, 1, 0);
         }
     } else {
         if (self->cur->id != 0) {
-            func_ov003_021cf278(self, 0, 0);
+            Ov003ScriptList_SelectTrack(self, 0, 0);
         }
     }
 }
 
 #pragma force_active on
 Ov003Actor *Ov014Act_0220f9d0_Ctor(Ov014Act_0220f9d0 *self) {
-    func_ov003_021d0c1c(self);
+    Ov003Actor_Ctor(self);
     *(void **)self = data_ov014_02217e6c;
     Ov003ScriptList_Init(&self->scripts);
     self->unk_15c.unk_b4 = 0;
@@ -148,7 +148,7 @@ Ov014Act_0220f9d0 *Ov014Act_0220f9d0_Dtor(Ov014Act_0220f9d0 *self) {
     Ov014_Free154(self);
     Ov014_StopSnd();
     Ov003Vt_021f7974_Dtor(&self->scripts);
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
@@ -157,13 +157,13 @@ Ov014Act_0220f9d0 *Ov014Act_0220f9d0_DtorDelete(Ov014Act_0220f9d0 *self) {
     Ov014_Free154(self);
     Ov014_StopSnd();
     Ov003Vt_021f7974_Dtor(&self->scripts);
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 void Ov014Act_0220f9d0_Init(Ov014Act_0220f9d0 *self) {
-    func_ov003_021d0fc0(self);
+    Ov003Actor_Init(self);
     func_020359d0(data_ov014_02217d1d, 7, 0);
 }
 
@@ -172,7 +172,7 @@ BOOL Ov014Act_0220f9d0_IsReady(Ov014Act_0220f9d0 *self) {
     return (r & func_02035b90(data_ov014_02217d1d, 7)) ? TRUE : FALSE;
 }
 
-void func_ov014_0220fc00(Ov014Act_0220f9d0 *self, Ov014Msg *msg) {
+void Ov014Act_0220f9d0_HandleMsg(Ov014Act_0220f9d0 *self, Ov014Msg *msg) {
     if (msg->type == 9) {
         Ov003Actor *a;
         u16 id = msg->unk_0c;
@@ -184,13 +184,13 @@ void func_ov014_0220fc00(Ov014Act_0220f9d0 *self, Ov014Msg *msg) {
         }
         self->unk_150 = a->kind;
     }
-    func_ov003_021d1c00(self, msg);
+    Ov003Actor_HandleMsg(self, msg);
 }
 
 void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
     Model0218fe1c *m;
     Ov014Watch *p;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     self->pos.x = 0;
     self->pos.y = 0;
     self->pos.z = 0;
@@ -231,7 +231,7 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
     self->unk_f0.joint = func_ov000_021909a8(self->model, data_ov014_02217d2c, data_ov014_02217d33);
     MTX_Identity43_(&self->unk_f0.mtx);
     m = self->model;
-    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)func_ov014_0220f8e4);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)Ov014Part_StartCapture_0220f8e4);
     m->clearInit = 0;
     self->model->flushVP = 1;
     self->model->renderUser = &self->unk_f0;
@@ -248,12 +248,12 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
         p->wait = 0;
     }
     self->unk_154 = p;
-    func_ov003_021cf1f0(&self->scripts, 0, 7, data_ov014_02216c80);
-    func_ov003_021cf1f0(&self->scripts, 1, 11, data_ov014_02216e50);
-    func_ov003_021cf1f0(&self->scripts, 2, 11, data_ov014_02216ea8);
-    func_ov003_021cf1f0(&self->scripts, 3, 12, data_ov014_02216f00);
+    Ov003ScriptList_AddTrack(&self->scripts, 0, 7, data_ov014_02216c80);
+    Ov003ScriptList_AddTrack(&self->scripts, 1, 11, data_ov014_02216e50);
+    Ov003ScriptList_AddTrack(&self->scripts, 2, 11, data_ov014_02216ea8);
+    Ov003ScriptList_AddTrack(&self->scripts, 3, 12, data_ov014_02216f00);
     self->scripts.arg = self;
-    self->scripts.func = (Ov003ScriptFunc)func_ov014_0220f8fc;
+    self->scripts.func = (Ov003ScriptFunc)Ov014_SelectTrackByHp_0220f8fc;
 }
 
 struct Ov014SpawnDescB {
@@ -275,7 +275,7 @@ static inline void Ov014SpawnB_Init(Ov014SpawnDescB *d, u16 k) {
 
 extern VecFx32 data_ov014_02216c18[];
 extern Ov003Actor *func_ov000_0219bf90(void);
-extern BOOL func_ov014_02213cfc(Ov014Watch *self);
+extern BOOL Ov014Watch_CountAlive(Ov014Watch *self);
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDescB *d, VecFx32 *pos, Ov014Vec16 *rot, u16 a);
 
 static inline BOOL Ov014_WaitB6(Ov003Actor *self) {
@@ -339,7 +339,7 @@ void Ov014Act_0220f9d0_Update(Ov014Act_0220f9d0 *self) {
             *self->hp = 0;
         }
     }
-    func_ov014_02213cfc(self->unk_154);
+    Ov014Watch_CountAlive(self->unk_154);
     switch (self->unk_b4) {
     case 0:
         self->fsm->flags |= 0x100000000ULL;
@@ -381,7 +381,7 @@ void Ov014Act_0220f9d0_Update(Ov014Act_0220f9d0 *self) {
         if (!Ov014_WaitB6(self)) {
             break;
         }
-        func_ov003_021ceff4(&self->scripts);
+        Ov003ScriptList_Step(&self->scripts);
         self->unk_b4++;
     }
     case 11: {

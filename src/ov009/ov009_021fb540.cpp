@@ -7,14 +7,14 @@ extern char data_ov009_02216ab6[];
 void Ov009ActVt_022166a4_Update(Ov009ActVt_022166a4 *self) {
     if (self->unk_1a != 0 || (self->kind != 0x540a && self->kind != 0x540b)) {
         self->unk_c8 = 0xf000;
-        func_ov003_021d1e8c(self);
+        Ov003Actor_Update(self);
     }
     if (!self->unk_93_4) {
         self->unk_b8 = self->unk_f4;
     }
 }
 
-void func_ov009_021fb5ac(Ov009ActVt_022166a4 *self) {
+void Ov009ActVt_022166a4_State20(Ov009ActVt_022166a4 *self) {
     VecFx32 d;
     ActorSub40 *st;
     switch (self->fsm->st) {
@@ -40,7 +40,7 @@ void func_ov009_021fb5ac(Ov009ActVt_022166a4 *self) {
     func_ov000_021987b8(self->hit, 0, 0, 0);
 }
 
-void func_ov009_021fb6b0(Ov009ActVt_022166a4 *self) {
+void Ov009ActVt_022166a4_StateIdle(Ov009ActVt_022166a4 *self) {
     VecFx32 d;
     ActorSub40 *st;
     switch (self->fsm->st) {

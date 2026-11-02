@@ -19,10 +19,10 @@ extern "C" {
 u8 Gfx3DState_NextPolyId(void *p);
 
 BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
-void func_ov006_021dbbac(ov006_ResLoader *self);
+void ov006_ResLoader_Update(ov006_ResLoader *self);
 BOOL func_02054f10(void *a, int b);
 
-void func_ov006_021dc054(ov006_Label *self) {
+void ov006_Label_Update(ov006_Label *self) {
     VecFx32 v = {0, 0, 0};
     fx32 t;
     u16 id;
@@ -136,7 +136,7 @@ void func_ov006_021dc054(ov006_Label *self) {
         t = 0;
     }
     self->alpha = FX_Mul(t, 0x1f000) >> 12;
-    func_ov006_021dbbac(&self->loader);
+    ov006_ResLoader_Update(&self->loader);
 }
 
 }

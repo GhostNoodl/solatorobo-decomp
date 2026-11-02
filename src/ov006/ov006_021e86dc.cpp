@@ -15,8 +15,8 @@ extern char data_ov006_021ec4c8[];
 extern char data_ov006_021ec4d4[];
 extern u8 data_ov006_021eb908[];
 extern s32 data_ov006_021eb8f8[];
-ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
-ov006_SlotSub *func_ov006_021dab98(ov006_Slot *self);
+ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
+ov006_SlotSub *ov006_Slot_GetSub2C(ov006_Slot *self);
 
 #define MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
@@ -31,7 +31,7 @@ static inline void ov006_ModeDown(Ov006Racer *self) {
     }
 }
 
-void func_ov006_021e86dc(Ov006Racer *self) {
+void Ov006Racer_UpdateSpeed(Ov006Racer *self) {
     u16 drain;
     s32 accel;
     s32 max;
@@ -151,7 +151,7 @@ void func_ov006_021e86dc(Ov006Racer *self) {
             }
             if (data_ov006_021ec860->unk1C == 0) {
                 ov006_SlotManager *mgr = data_ov006_021ec884;
-                if (self->idx != mgr->unk5 && (func_ov006_021dab98(func_ov006_021db060(mgr, mgr->unk5))->unk3 & 3) < (u32)self->rank) {
+                if (self->idx != mgr->unk5 && (ov006_Slot_GetSub2C(ov006_SlotManager_GetSlot_021db060(mgr, mgr->unk5))->unk3 & 3) < (u32)self->rank) {
                     accel += 0x60;
                 }
             }

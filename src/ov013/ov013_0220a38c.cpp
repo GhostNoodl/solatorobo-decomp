@@ -21,7 +21,7 @@ static inline void Ov013_SetPair(Ov013Pair89 *d, const Ov013Pair89 *s, u8 b) {
     d->b = b;
 }
 
-void func_ov013_0220a38c(Ov013ActVt_0220bc80 *self) {
+void Ov013ActVt_0220bc80_StateKnockBack(Ov013ActVt_0220bc80 *self) {
     ActorSub40 *q;
     if ((((Ov013Sub50a *)self->hp)->unk_04 >> 12) == 5) {
         func_ov000_02198360(self->fsm, 0x15, 0);
@@ -36,49 +36,49 @@ void func_ov013_0220a38c(Ov013ActVt_0220bc80 *self) {
             Ov013_SetPair(&p->unk_08, &p->unk_08, 0x20);
         }
     }
-    func_ov003_021d5348(self);
+    Ov003Actor_StateKnockBack(self);
     if (self->fsm->current == 4) {
         func_ov000_02198360(self->fsm, 1, 0);
     }
 }
 
-void func_ov013_0220a428(Ov013ActVt_0220bc80 *self) {
+void Ov013ActVt_0220bc80_StateHurt(Ov013ActVt_0220bc80 *self) {
     self->vfunc_80();
 }
 
 Ov013Act_02207968 *Ov013Act_02207968_DtorDelete(Ov013Act_02207968 *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 Ov013Act_02207968 *Ov013Act_02207968_Dtor(Ov013Act_02207968 *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
-void func_ov013_0220a46c(Ov013ActVt_0220bdd8 *self) {
+void Ov013ActVt_0220bdd8_StateKnockBack(Ov013ActVt_0220bdd8 *self) {
     self->vfunc_7c();
 }
 
 Ov013ActVt_0220bdd8 *Ov013ActVt_0220bdd8_Dtor(Ov013ActVt_0220bdd8 *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
 Ov013ActVt_0220bdd8 *Ov013ActVt_0220bdd8_DtorDelete(Ov013ActVt_0220bdd8 *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 Ov013ActVt_0220bc80 *Ov013ActVt_0220bc80_Dtor(Ov013ActVt_0220bc80 *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
 Ov013ActVt_0220bc80 *Ov013ActVt_0220bc80_DtorDelete(Ov013ActVt_0220bc80 *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
@@ -138,7 +138,7 @@ static inline Ov003Actor *Ov013_GetActor(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-void func_ov013_0220a554(Ov013ActEx_0220a4e0 *self) {
+void Ov013ActEx_0220a4e0_StateThrown(Ov013ActEx_0220a4e0 *self) {
     if (Ov013_GetActor(self->target) == NULL) {
         return;
     }

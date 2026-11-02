@@ -15,7 +15,7 @@ extern VecFx32 data_ov010_0220f120;
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 
-void func_ov010_022085d0(Ov010Obj0220ffe4 *self) {
+void Ov010ActVt_0220ffe4_State23(Ov010Obj0220ffe4 *self) {
     ActorSub40 *w = self->fsm;
     switch (w->st) {
     case 0:
@@ -43,12 +43,12 @@ void func_ov010_022085d0(Ov010Obj0220ffe4 *self) {
         Ov010Rot r;
         Actor *o;
         r = FLD(Ov010Rot, data_ov010_0220f024, 0x3e);
-        o = func_ov003_021da32c(0x5816);
+        o = Ov003_SpawnById(0x5816);
         Ov010_VecSet(&o->pos, 0x2ee1, -0xc000, -0x2000);
         o->rot_x = r.v[0];
         o->rot_y = r.v[1];
         o->rot_z = r.v[2];
-        o = func_ov003_021da32c(0x5816);
+        o = Ov003_SpawnById(0x5816);
         Ov010_VecSet(&o->pos, -0x2571, -0xc000, -0x2000);
         o->rot_x = r.v[0];
         o->rot_y = r.v[1];

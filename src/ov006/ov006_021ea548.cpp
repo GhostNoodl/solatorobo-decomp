@@ -11,8 +11,8 @@ extern "C" {
 
 int func_ov000_0219a510(Actor *self, int a, VecFx32 *pos, s32 r, int b, void **out);
 Ov006Racer *func_ov000_021985c0(void *p);
-BOOL func_ov006_021ea3e8(Ov006Racer *p);
-void func_ov006_021ea244(Ov006Racer *p);
+BOOL Ov006Racer_IsFinished(Ov006Racer *p);
+void Ov006Racer_UpdateCpuItem(Ov006Racer *p);
 
 static inline void ov006_Model_SetScaleAll(Model0218fe1c *m, fx32 s) {
     m->scale.x = s;
@@ -25,7 +25,7 @@ static inline void ov006_Item_Next(ActorEx *self) {
     self->fsm->timer = 0;
 }
 
-void func_ov006_021ea548(ActorEx *self) {
+void Ov006ActVt_021ec7ac_StateIdle(ActorEx *self) {
     ActorSub40 *fsm = self->fsm;
     switch (fsm->st) {
     case 0:
@@ -54,10 +54,10 @@ void func_ov006_021ea548(ActorEx *self) {
             if (p == NULL) {
                 continue;
             }
-            if (func_ov006_021ea3e8(p)) {
+            if (Ov006Racer_IsFinished(p)) {
                 continue;
             }
-            func_ov006_021ea244(p);
+            Ov006Racer_UpdateCpuItem(p);
             self->vel = p->pos;
             func_02065f88(0x57a, &self->pos);
             ov006_Item_Next(self);

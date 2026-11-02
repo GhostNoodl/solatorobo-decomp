@@ -49,7 +49,7 @@ Ov003Actor *Ov011Act7da4_Dtor(Ov011Act7da4 *self) {
     Ov011_FreeTwl(&self->unk_368);
     func_02036838(data_02097cdc, data_ov011_02207c35, 7, 0);
     __cxa_vec_cleanup(self->unk_f4, 2, 0x138, (void *)func_ov000_0218ea20);
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
@@ -59,13 +59,13 @@ Ov003Actor *Ov011Act7da4_DtorDelete(Ov011Act7da4 *self) {
     Ov011_FreeTwl(&self->unk_368);
     func_02036838(data_02097cdc, data_ov011_02207c35, 7, 0);
     __cxa_vec_cleanup(self->unk_f4, 2, 0x138, (void *)func_ov000_0218ea20);
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 void Ov011Act7da4_Init(Ov011Act7da4 *self) {
-    func_ov003_021d0fc0(self);
+    Ov003Actor_Init(self);
     func_020359d0(data_ov011_02207c35, 7, 0);
     if (OS_IsRunOnTwl()) {
         void *p = Heap_Alloc(0x1c);
@@ -112,7 +112,7 @@ BOOL Ov011Act7da4_IsReady(Ov011Act7da4 *self) {
 }
 
 void Ov011Act7da4_Start(Ov011Act7da4 *self) {
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     {
         void *saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->heapHi;

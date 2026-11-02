@@ -20,7 +20,7 @@ static inline void Ov003_SetColor(Model0218fe1c *m, u16 c0, u16 c1) {
     m->blendMax = 0xa;
 }
 
-void func_ov003_021d1b88(Ov003Actor *self) {
+void Ov003Actor_Animate(Ov003Actor *self) {
     s32 i;
     if (self->model != NULL) {
         func_ov000_02190a80(self->model, func_0203db40(&self->pause));
@@ -35,7 +35,7 @@ void func_ov003_021d1b88(Ov003Actor *self) {
     }
 }
 
-BOOL func_ov003_021d1c00(Ov003Actor *self, ActorMsg *ev) {
+BOOL Ov003Actor_HandleMsg(Ov003Actor *self, ActorMsg *ev) {
     BOOL ret = FALSE;
     BOOL base = TRUE;
     switch (ev->type) {
@@ -51,7 +51,7 @@ BOOL func_ov003_021d1c00(Ov003Actor *self, ActorMsg *ev) {
             u16 c1;
             s32 i;
             st->unk_04 = ev->id;
-            n = func_ov003_021d6548(self, &ev->hit);
+            n = Ov003Actor_ApplyHit(self, &ev->hit);
             b = self->hpObj->kind2;
             if (n != 0) {
                 self->fsm->flags |= (1ULL << n);

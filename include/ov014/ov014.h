@@ -292,7 +292,7 @@ u8 *func_02070558(void *res);
 }
 extern "C" {
 void func_ov000_021953b4(ActorEx *self);
-void func_ov003_021dacfc(void *p);
+void Ov003FxList_Prune(void *p);
 void func_ov000_0219763c(Actor *self);
 s32 func_0203db40(void *p);
 void func_ov000_02190a80(void *a, s32 b);
@@ -306,7 +306,7 @@ static inline void Ov014_FreeFx(Ov003FxList **slot) {
     if (*slot != NULL) {
         Ov003FxList *p = *slot;
         if (p != NULL) {
-            func_ov003_021da940(p);
+            Ov003FxList_Dtor(p);
             Heap_Free(p);
         }
         *slot = NULL;
@@ -353,16 +353,16 @@ public:
     u8 unk_f8;
     u8 unk_f9;
     u8 unk_fa[0x2];
-    Ov003FxList *unk_fc; // effect list (func_ov003_021da940 frees it)
+    Ov003FxList *unk_fc; // effect list (Ov003FxList_Dtor frees it)
     u8 unk_100[0x2c];
     VecFx32 unk_12c;
     u8 unk_138;
     u8 unk_139;
     s16 unk_13a;
     const Ov003Step *step; // current step of scripts
-    Ov003ScriptList scripts; // tracks 0..3, picked by hp (func_ov014_021fd37c)
+    Ov003ScriptList scripts; // tracks 0..3, picked by hp (Ov014_SelectTrackByHp)
     const Ov003Step *step2; // current step of scripts2
-    Ov003ScriptList scripts2; // tracks 10..12, picked by hp (func_ov014_021fd43c)
+    Ov003ScriptList scripts2; // tracks 10..12, picked by hp (Ov014_SelectTrackByHp_021fd43c)
 };
 SIZE_ASSERT(Ov014Act_021fd4d4, 0x17c);
 
@@ -378,7 +378,7 @@ public:
     u16 unk_fc;
     u8 unk_fe;
     u8 unk_ff;
-    Ov003FxList *unk_100; // effect list (func_ov003_021da940 frees it)
+    Ov003FxList *unk_100; // effect list (Ov003FxList_Dtor frees it)
     const Ov003Step *step; // current step of scripts
     Ov003ScriptList scripts;
 };
@@ -393,7 +393,7 @@ public:
     u8 unk_f8;
     u8 unk_f9;
     u8 unk_fa[0x2];
-    Ov003FxList *unk_fc; // effect list (func_ov003_021da940 frees it)
+    Ov003FxList *unk_fc; // effect list (Ov003FxList_Dtor frees it)
     u8 unk_100[0x2c];
     s16 unk_12c;
     u8 unk_12e;
@@ -415,7 +415,7 @@ public:
 };
 SIZE_ASSERT(Ov014Act_02201b94, 0x370);
 
-// Render user data of a model: the draw callback (func_ov014_0220f8a4) stores the current
+// Render user data of a model: the draw callback (Ov014Part_CaptureMtx_0220f8a4) stores the current
 // matrix of the joint into mtx.
 struct Ov014JointMtx {
     s32 joint; // func_ov000_021909a8 result
@@ -484,7 +484,7 @@ public:
     s32 unk_1ac;
     s32 unk_1b0;
     VecFx32 unk_1b4;
-    Ov003ScriptList scripts; // tracks 0..2, picked by hp (func_ov014_022091ec)
+    Ov003ScriptList scripts; // tracks 0..2, picked by hp (Ov014_SelectTrackByHp_022091ec)
     u32 unk_1dc;
     u32 unk_1e0;
     s32 unk_1e4;
@@ -497,7 +497,7 @@ public:
 SIZE_ASSERT(Ov014Act_02209280, 0x1f8);
 
 // Watches two actors (vtable data_ov014_02217db0, 0x1c bytes, made by Ov014Act_0220f9d0's init and
-// updated by func_ov014_02213cfc): ids are cleared to 0xffff as the actors go, count is how many are left.
+// updated by Ov014Watch_CountAlive): ids are cleared to 0xffff as the actors go, count is how many are left.
 class Ov014Watch : public VObj {
 public:
     u16 ids[2];
@@ -515,7 +515,7 @@ SIZE_ASSERT(Ov014Watch, 0x1c);
 class Ov014Act_0220f9d0 : public Ov003Actor {
 public:
     Ov014JointMtx unk_f0; // the model's renderUser
-    Ov003ScriptList scripts; // tracks 0..3, picked by hp (func_ov014_0220f8fc)
+    Ov003ScriptList scripts; // tracks 0..3, picked by hp (Ov014_SelectTrackByHp_0220f8fc)
     const Ov003Step *step; // current step of scripts
     s32 unk_144;
     u16 unk_148;
@@ -569,7 +569,7 @@ SIZE_ASSERT(Ov014ActEx_0220dcf4, 0xdc);
 // Actor class of Ov014ActEx_021fbd64_Ctor (vtable data_ov014_022172c4).
 class Ov014ActEx_021fbd64 : public ActorEx {
 public:
-    Ov003FxList *unk_d0; // effect list (func_ov003_021da940 frees it)
+    Ov003FxList *unk_d0; // effect list (Ov003FxList_Dtor frees it)
 };
 SIZE_ASSERT(Ov014ActEx_021fbd64, 0xd4);
 
@@ -587,7 +587,7 @@ public:
     u8 unk_fd;
     u8 unk_fe;
     u8 unk_ff;
-    Ov003FxList *unk_100; // effect list (func_ov003_021da940 frees it)
+    Ov003FxList *unk_100; // effect list (Ov003FxList_Dtor frees it)
 };
 SIZE_ASSERT(Ov014ActEx_021fc24c, 0x104);
 
@@ -598,7 +598,7 @@ public:
     s32 unk_d4;
     u16 unk_d8;
     u8 unk_da[0x2];
-    Ov003FxList *unk_dc; // effect list (func_ov003_021da940 frees it)
+    Ov003FxList *unk_dc; // effect list (Ov003FxList_Dtor frees it)
 };
 SIZE_ASSERT(Ov014ActEx_02206c68, 0xe0);
 
@@ -607,7 +607,7 @@ class Ov014ActEx_0220774c : public ActorEx {
 public:
     u32 unk_d0;
     s32 unk_d4;
-    Ov003FxList *unk_d8; // effect list (func_ov003_021da940 frees it)
+    Ov003FxList *unk_d8; // effect list (Ov003FxList_Dtor frees it)
 };
 SIZE_ASSERT(Ov014ActEx_0220774c, 0xdc);
 

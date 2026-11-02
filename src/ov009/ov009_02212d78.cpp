@@ -40,7 +40,7 @@ struct Ov009Bit84 {
     u16 b1 : 15;
 };
 
-void func_ov009_02212d78(Ov009ActVt_02217d5c *self) {
+void Ov009ActVt_02217d5c_RunState(Ov009ActVt_02217d5c *self) {
     Ov009PosMsg msg;
     Ov003Actor *a;
     if (self->unk_ea_13) {
@@ -54,7 +54,7 @@ void func_ov009_02212d78(Ov009ActVt_02217d5c *self) {
             Ov009_Notify(self->id, self->hp[0], self->hp[1], &self->unk_11c);
         }
     }
-    func_ov003_021d3008(self);
+    Ov003Actor_RunState(self);
     if (self->hitMesh != NULL) {
         HitMesh_SetMtx(self->hitMesh, &self->unk_f8);
         if (self->unk_93_4) {

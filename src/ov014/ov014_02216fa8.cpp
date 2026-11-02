@@ -30,7 +30,7 @@ extern "C" {
 extern u8 data_ov014_0221722c[];
 extern void func_0203f364(ActorSub48 *p);
 
-void func_ov014_021fc220(Ov014ActEx_021fbd64 *self) {
+void Ov014ActEx_021fbd64_StateDie(Ov014ActEx_021fbd64 *self) {
     if (self->fsm->st == 0) {
         Ov003FxList_KillAll(self->unk_d0);
     }
@@ -55,7 +55,7 @@ static inline void Ov014_Free100(Ov014ActEx_021fc24c *self) {
     if (self->unk_100 != NULL) {
         Ov003FxList *p = self->unk_100;
         if (p != NULL) {
-            func_ov003_021da940(p);
+            Ov003FxList_Dtor(p);
             Heap_Free(p);
         }
         self->unk_100 = NULL;
@@ -123,7 +123,7 @@ static inline s32 Ov014f_FxMul64(s32 a, s64 b) {
     return (a * b + 0x800) >> 12;
 }
 
-void func_ov014_021fc464(Ov014ActEx_021fc24c *self) {
+void Ov014ActEx_021fc24c_StateIdle(Ov014ActEx_021fc24c *self) {
     switch (self->unk_fc) {
     case 0: {
         ActorSub40 *s = self->fsm;
@@ -136,7 +136,7 @@ void func_ov014_021fc464(Ov014ActEx_021fc24c *self) {
             u16 a;
             e = func_02065f88(0x322, &self->pos);
             e->speed = 0x2000;
-            func_ov003_021da9ac(self->unk_100, 0, e);
+            Ov003FxList_Add(self->unk_100, 0, e);
             {
                 VecFx32 v = {0, 0, 0};
                 v.x = Rand_PlusMinus(0x9000);
@@ -201,7 +201,7 @@ void func_ov014_021fc464(Ov014ActEx_021fc24c *self) {
             e = func_02065f88(0x322, &self->pos);
             e->SetScaleAll(0x2000);
             e->loopCount = -1;
-            func_ov003_021da9ac(self->unk_100, 0xff, e);
+            Ov003FxList_Add(self->unk_100, 0xff, e);
             {
                 ActorSub44 *n = self->unk_44;
                 n->unk_22_0 = 0;
@@ -281,7 +281,7 @@ void func_ov014_021fc464(Ov014ActEx_021fc24c *self) {
         break;
     }
     }
-    func_ov003_021dacfc(self->unk_100);
+    Ov003FxList_Prune(self->unk_100);
 }
 
 
@@ -292,12 +292,12 @@ extern void func_ov014_021fcf00(Ov014ActEx_021fc24c *self);
 extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
-extern void func_ov003_021f0c60(Actor *self, s32 a);
+extern void Ov003Pickup_Update(Actor *self, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern BOOL func_ov000_0219aca8(Actor *a, Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 
-void func_ov014_021fc9c8(Ov014ActEx_021fc24c *self) {
+void Ov014ActEx_021fc24c_StateThrown(Ov014ActEx_021fc24c *self) {
     Ov003Actor *list[0x20];
     Ov003Actor *o = Target_Get(self->targetObj);
     if (o != NULL) {
@@ -334,7 +334,7 @@ void func_ov014_021fc9c8(Ov014ActEx_021fc24c *self) {
                 s32 n;
                 if (self->unk_fc != 0) {
                     ActorSub40 *w;
-                    func_ov003_021daae4(self->unk_100, 0xff, &self->pos, NULL, 0, 0, 0);
+                    Ov003FxList_Place(self->unk_100, 0xff, &self->pos, NULL, 0, 0, 0);
                     w = self->fsm;
                     w->timer++;
                     if (w->timer % 15 == 0) {
@@ -359,7 +359,7 @@ void func_ov014_021fc9c8(Ov014ActEx_021fc24c *self) {
                             if (a->targetObj == NULL || (u16)(a->targetObj->target & 0xf000) != team ||
                                 self->unk_fe >= 200) {
                                 if (self->unk_fc == 0) {
-                                    func_ov003_021f0c60(self, 0);
+                                    Ov003Pickup_Update(self, 0);
                                 }
                                 func_ov000_02198360(self->fsm, 0x15, 0);
                                 break;
@@ -390,7 +390,7 @@ void func_ov014_021fc9c8(Ov014ActEx_021fc24c *self) {
                 e->SetScaleAll(0x8800);
                 e->unk_28 = 0;
                 MIi_CpuClear32(-1, (u8 *)e + 0x84, 0x40);
-                func_ov003_021da9ac(self->unk_100, 0xfe, e);
+                Ov003FxList_Add(self->unk_100, 0xfe, e);
                 func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
                 func_02049f44(data_02097e4c, 0x5a, &self->pos, 0);
                 {
@@ -429,7 +429,7 @@ void func_ov014_021fc9c8(Ov014ActEx_021fc24c *self) {
         func_ov000_02198360(self->fsm, 0x15, 0);
         return;
     }
-    func_ov003_021dacfc(self->unk_100);
+    Ov003FxList_Prune(self->unk_100);
 }
 }
 }  // namespace m_021fc220
@@ -441,7 +441,7 @@ extern "C" {
 extern Ov003Actor *Target_Get(void *p);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
-extern void func_ov003_021f0c60(Actor *self, s32 a);
+extern void Ov003Pickup_Update(Actor *self, s32 a);
 
 #define OV014_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV014_SQRT_RESULT (*(volatile u32 *)0x40002b4)
@@ -521,7 +521,7 @@ void func_ov014_021fcf00(Ov014ActEx_021fc24c *self) {
                 if (list[i] != NULL && (a = func_ov000_021985c0(list[i])) != NULL) {
                     if (a->targetObj == NULL || (u16)(a->targetObj->target & 0xf000) != team ||
                         ++self->unk_fe >= 200) {
-                        func_ov003_021f0c60(self, 0);
+                        Ov003Pickup_Update(self, 0);
                         func_ov000_02198360(self->fsm, 0x15, 0);
                         break;
                     }

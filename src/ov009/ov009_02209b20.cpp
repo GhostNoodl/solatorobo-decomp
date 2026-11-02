@@ -6,16 +6,16 @@ extern "C" {
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern void func_ov000_02199f48(void *p, Ov003Actor *a);
 
-void func_ov009_02209b20(Ov009ActVt_02217594 *self) {
+void Ov009ActVt_02217594_StateDie(Ov009ActVt_02217594 *self) {
     if (self->fsm->st != 0) {
         return;
     }
     func_ov000_02199f48(self->hp, func_ov000_0219bf90());
-    func_ov003_021d6a3c(self, 0, 1, 1);
+    Ov003Actor_Defeat(self, 0, 1, 1);
     self->fsm->st++;
 }
 
-void func_ov009_02209b70(Ov009ActVt_02217594 *self) {
+void Ov009ActVt_02217594_State21(Ov009ActVt_02217594 *self) {
     if (self->fsm->st == 0) {
         self->unk_312 = 1;
     }
@@ -43,7 +43,7 @@ extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s3
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 
-void func_ov009_02209bdc(Ov009ActVt_02217594 *self) {
+void Ov009ActVt_02217594_State22(Ov009ActVt_02217594 *self) {
     VecFx32 p;
     VecFx32 v;
     VecFx32 p2;

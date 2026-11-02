@@ -6,7 +6,7 @@ extern "C" {
 
 BOOL func_02054f10(void *a, int b);
 
-void func_ov006_021e0f00(ov006_Gauge *self) {
+void ov006_Gauge_Load(ov006_Gauge *self) {
     Model *model;
     const char *text;
 
@@ -51,7 +51,7 @@ static inline s32 ov006_ApproachFx(s32 cur, s32 target, fx32 rate) {
     return cur;
 }
 
-void func_ov006_021e10d0(ov006_Gauge *self) {
+void ov006_Gauge_Update(ov006_Gauge *self) {
     if (!self->unk4) {
         if (self->model == NULL) {
             return;

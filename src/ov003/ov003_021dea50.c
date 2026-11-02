@@ -84,7 +84,7 @@ void Ov003ActVt_021f83e8_Start(Ov003Prop *self) {
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern void *func_ov000_0219b71c(Ov003PropVec *pos, Ov003PropVec *v, s32 a, s32 b, s32 c, s32 d);
 
-void func_ov003_021deb80(Ov003Prop *self) {
+void Ov003ActVt_021f83e8_StateIdle(Ov003Prop *self) {
     ActorSub40 *w;
     s32 a;
     s32 b;

@@ -18,10 +18,10 @@ extern void *data_02097e4c;
 extern ov006_Ofs021e76d8 data_ov006_021eb954[];
 AnimCtrl *func_ov000_02190a30(Model0218fe1c *a, int b);
 void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
+ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
 
-void func_ov006_021e76d8(Ov006Racer *self) {
+void Ov006Racer_UpdateCamera(Ov006Racer *self) {
     VecFx32 v1;
     VecFx32 p1;
     MtxFx33 m;
@@ -168,7 +168,7 @@ void func_ov006_021e76d8(Ov006Racer *self) {
     }
     if (self->unk_1d8 != 0 || self->unk_1dc != 0) {
         BOOL set;
-        u16 idx = func_ov006_021db060(data_ov006_021ec884, self->idx)->unkC & 0xfff;
+        u16 idx = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, self->idx)->unkC & 0xfff;
         u16 rz = self->rot.z;
         u16 ry = self->rot.y;
         u16 rx = self->rot.x;

@@ -14,7 +14,7 @@ static inline void Ov003Sequence_Step(Ov003Sequence *self) {
     self->b4 = 0;
 }
 
-void func_ov003_021d95e8(Ov003Sequence *self, Ov003SeqEntry *entries, u16 length) {
+void Ov003Sequence_SetEntries(Ov003Sequence *self, Ov003SeqEntry *entries, u16 length) {
     if (!self->active || entries == NULL) {
         return;
     }
@@ -30,7 +30,7 @@ void func_ov003_021d95e8(Ov003Sequence *self, Ov003SeqEntry *entries, u16 length
     self->unk_04 = 0;
 }
 
-Ov003BytePair func_ov003_021d9644(Ov003Sequence *self) {
+Ov003BytePair Ov003Sequence_GetPair(Ov003Sequence *self) {
     Ov003BytePair r;
     BOOL ok = FALSE;
     if (self->active) {

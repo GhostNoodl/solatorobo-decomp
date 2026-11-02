@@ -4,7 +4,7 @@ extern "C" {
 
 
 #pragma force_active on
-void func_ov011_021ff87c(Ov011SceneActor *self) {
+void Ov011SceneActor_StateIdle(Ov011SceneActor *self) {
     if (self->fsm->st == 0) {
         Ov011Scene *c = self->scene;
         if (c->b0 && c->b2) {
@@ -19,7 +19,7 @@ void func_ov011_021ff87c(Ov011SceneActor *self) {
         p->unk_02 = 0x1000;
         p->unk_04 = 0x1000;
     }
-    func_ov003_021d3524(self);
+    Ov003Actor_StateIdle(self);
 }
 #pragma force_active reset
 }

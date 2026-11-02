@@ -54,14 +54,14 @@ extern const Ov013Pmf data_ov013_0220bc60;
 extern Ov013Pmf data_ov013_0220bc68;
 extern Ov013Pmf data_ov013_0220bc70;
 extern void HitSphere_Link(ActorSub48 *p);
-extern void func_ov003_021f0c60(Actor *self, s32 a);
+extern void Ov003Pickup_Update(Actor *self, s32 a);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void *func_ov000_0218fe1c(void *p);
 extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 extern void func_0203f364(ActorSub48 *p);
 extern int func_ov003_021cf330(void *p, const char *name, u8 a);
 extern void func_ov013_02205760(Ov013ActEx_02204454 *self);
-extern void func_ov003_021da40c(void *p);
+extern void Ov003ActorSub40_ApplyFlags(void *p);
 extern void func_ov000_0218d7e8(Actor *self, u8 arg);
 extern BOOL func_ov000_021950e8(Actor *self, Ov013Msg *msg);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
@@ -136,7 +136,7 @@ void Ov013ActEx_02204454_Update(Ov013ActEx_02204454 *self) {
     self->rot_x += self->unk_d0;
 }
 
-void func_ov013_02204b88(Ov013ActEx_02204454 *self) {
+void Ov013Cls_SelectState(Ov013ActEx_02204454 *self) {
     ActorSub40 *s = self->fsm;
     u8 k = s->current;
     if (k != 0x15) {
@@ -148,13 +148,13 @@ void func_ov013_02204b88(Ov013ActEx_02204454 *self) {
         } else if (s->flags & 0x200) {
             func_ov000_02198360(s, 9, 0);
         } else {
-            func_ov003_021da40c(s);
+            Ov003ActorSub40_ApplyFlags(s);
         }
     }
     func_ov000_0218d7e8(self, self->fsm->current);
 }
 
-BOOL func_ov013_02204c20(Ov013ActEx_02204454 *self, Ov013Msg *msg) {
+BOOL Ov013Cls_HandleMsg(Ov013ActEx_02204454 *self, Ov013Msg *msg) {
     BOOL r;
     if (msg->type == 0xe) {
         r = TRUE;
@@ -188,11 +188,11 @@ BOOL func_ov013_02204c20(Ov013ActEx_02204454 *self, Ov013Msg *msg) {
     return r;
 }
 
-void func_ov013_02204dbc(Ov013ActEx_02204454 *self) {
+void Ov013Cls_State0e(Ov013ActEx_02204454 *self) {
     func_ov013_02205098(self);
 }
 
-void func_ov013_02204dc8(Ov013ActEx_02204454 *self) {
+void Ov013Cls_StateHeld(Ov013ActEx_02204454 *self) {
     if (self->fsm->st == 0) {
         self->unk_d0 = 0;
     }
@@ -203,7 +203,7 @@ static inline BOOL Ov013_IsSolid(ActorSub44 *n) {
     return n->unk_22_0 == 1 && n->unk_22_1 == 1;
 }
 
-void func_ov013_02204de8(Ov013ActEx_02204454 *self) {
+void Ov013Cls_StateThrown(Ov013ActEx_02204454 *self) {
     ActorSub44 *n;
     ActorSub48 *m;
     switch (self->fsm->st) {
@@ -242,7 +242,7 @@ void func_ov013_02204de8(Ov013ActEx_02204454 *self) {
             m = self->hit;
             m->unk_9a_1 = 0;
             m->unk_9a_4 = 0;
-            func_ov003_021f0c60(self, 0);
+            Ov003Pickup_Update(self, 0);
             func_ov000_02198360(self->fsm, 0x15, 0);
             return;
         }
@@ -273,11 +273,11 @@ void func_ov013_02204de8(Ov013ActEx_02204454 *self) {
     }
 }
 
-void func_ov013_02205054(Ov013ActEx_02204454 *self) {
+void Ov013Cls_State0a(Ov013ActEx_02204454 *self) {
     func_ov000_02198360(self->fsm, 0x15, 1);
 }
 
-void func_ov013_0220506c(Ov013ActEx_02204454 *self) {
+void Ov013Cls_StateDie(Ov013ActEx_02204454 *self) {
     (((Ov013Cls *)self)->*self->unk_e4)();
 }
 
@@ -288,7 +288,7 @@ static inline void Ov013_RotZero(Ov013Rot *p) {
 }
 
 static inline Actor *Ov013_SpawnAt(u16 kind, const VecFx32 *pos, const Ov013Rot *rot) {
-    Actor *b = func_ov003_021da32c(kind);
+    Actor *b = Ov003_SpawnById(kind);
     if (b != NULL) {
         b->pos = *pos;
         b->rot = *rot;
@@ -306,7 +306,7 @@ static inline BOOL Ov013_PrmB0(const Ov013ActEx_02204454 *self) {
 
 
 extern void *Target_Get(void *p);
-extern void func_ov003_021d9980(VecFx32 *out, u16 ang, const void *b);
+extern void Ov003Vec_RotateY(VecFx32 *out, u16 ang, const void *b);
 extern u16 Ov003Vec_Yaw(VecFx32 *v);
 extern void *data_02097e4c;
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
@@ -397,7 +397,7 @@ void func_ov013_02205098(Ov013ActEx_02204454 *self) {
         d.y = self->unk_84.y - self->pos.y;
         d.z = self->unk_84.z - self->pos.z;
         VEC_Normalize(&d, &d);
-        func_ov003_021d9980(&f, self->moveYaw, data_ov013_0220b2cc);
+        Ov003Vec_RotateY(&f, self->moveYaw, data_ov013_0220b2cc);
         dist = VEC_Distance(&tp, &self->pos);
         ahead = Ov013_Dot(&d, &f) < 0x800;
         if (dist > 0x6000 && ahead) {
@@ -550,14 +550,14 @@ extern const Ov013Pmf data_ov013_0220bc60;
 extern Ov013Pmf data_ov013_0220bc68;
 extern Ov013Pmf data_ov013_0220bc70;
 extern void HitSphere_Link(ActorSub48 *p);
-extern void func_ov003_021f0c60(Actor *self, s32 a);
+extern void Ov003Pickup_Update(Actor *self, s32 a);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void *func_ov000_0218fe1c(void *p);
 extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 extern void func_0203f364(ActorSub48 *p);
 extern int func_ov003_021cf330(void *p, const char *name, u8 a);
 extern void func_ov013_02205760(Ov013ActEx_02204454 *self);
-extern void func_ov003_021da40c(void *p);
+extern void Ov003ActorSub40_ApplyFlags(void *p);
 extern void func_ov000_0218d7e8(Actor *self, u8 arg);
 extern BOOL func_ov000_021950e8(Actor *self, Ov013Msg *msg);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
@@ -599,7 +599,7 @@ void func_ov013_02205760(Ov013ActEx_02204454 *self) {
         Actor *c;
         Ov013Rot r = {0, 0, 0};
         r.y = ang + offs.v[i];
-        c = func_ov003_021da32c(0x480a);
+        c = Ov003_SpawnById(0x480a);
         if (c != NULL) {
             c->pos = self->pos;
             c->rot = r;
@@ -617,7 +617,7 @@ void func_ov013_022058d4(Ov013ActEx_02204454 *self) {
     self->vfunc_08();
 }
 
-void func_ov013_02205914(Ov013ActEx_02204454 *self) {
+void Ov013ActEx_02204454_StateDie(Ov013ActEx_02204454 *self) {
     self->radius = 0x1000;
     func_ov000_0219763c(self);
 }
@@ -654,7 +654,7 @@ void func_ov013_02205928(Ov013ActEx_02204454 *self) {
     case 1:
         Ov013_SetAlpha(self->model, 31 - self->fsm->timer);
         if (self->fsm->timer % 10 == 0) {
-            func_ov003_021da108(self, 0x2800, 0x38b, 0x1000, 0x1000);
+            Ov003Actor_SpawnScatterFx(self, 0x2800, 0x38b, 0x1000, 0x1000);
             func_02049f44(data_02097e4c, 0x1a, &self->pos, 0);
         }
         if (self->fsm->timer == 0) {
@@ -721,14 +721,14 @@ extern const Ov013Pmf data_ov013_0220bc60;
 extern Ov013Pmf data_ov013_0220bc68;
 extern Ov013Pmf data_ov013_0220bc70;
 extern void HitSphere_Link(ActorSub48 *p);
-extern void func_ov003_021f0c60(Actor *self, s32 a);
+extern void Ov003Pickup_Update(Actor *self, s32 a);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void *func_ov000_0218fe1c(void *p);
 extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 extern void func_0203f364(ActorSub48 *p);
 extern int func_ov003_021cf330(void *p, const char *name, u8 a);
 extern void func_ov013_02205760(Ov013ActEx_02204454 *self);
-extern void func_ov003_021da40c(void *p);
+extern void Ov003ActorSub40_ApplyFlags(void *p);
 extern void func_ov000_0218d7e8(Actor *self, u8 arg);
 extern BOOL func_ov000_021950e8(Actor *self, Ov013Msg *msg);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
@@ -759,7 +759,7 @@ extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern void *data_02097e4c;
 extern void *data_ov013_0220ba88[];
 extern const u8 data_ov013_0220b2cc[];
-extern void func_ov003_021d9980(void *out, u16 rot, const void *v);
+extern void Ov003Vec_RotateY(void *out, u16 rot, const void *v);
 extern void *Ov003Vt_021f79a8_Ctor(void *p);
 extern void *Ov003Vt_021f79a8_Dtor(void *p);
 extern void func_ov003_021cf33c(void *p, void *q);
@@ -798,7 +798,7 @@ BOOL Ov013ActEx_02205ae4_Draw(Ov013ActEx_02205ae4 *self) {
     return func_ov000_02194c08(self);
 }
 
-void func_ov013_02205bec(Ov013ActEx_02205ae4 *self, const VecFx32 *v, u16 id, u16 plid, u16 r, u16 rot) {
+void Ov013ActEx_02205ae4_Launch(Ov013ActEx_02205ae4 *self, const VecFx32 *v, u16 id, u16 plid, u16 r, u16 rot) {
     self->unk_ce_0 = 0;
     self->unk_ce_1 = 0;
     self->pos = *v;
@@ -806,7 +806,7 @@ void func_ov013_02205bec(Ov013ActEx_02205ae4 *self, const VecFx32 *v, u16 id, u1
     self->target = plid;
     self->moveYaw = r;
     self->rot_y = rot;
-    func_ov003_021d9980((u8 *)self + 0xd4, self->moveYaw, data_ov013_0220b2cc);
+    Ov003Vec_RotateY((u8 *)self + 0xd4, self->moveYaw, data_ov013_0220b2cc);
     self->unk_d2 = 0x280;
     func_ov000_02198360(self->fsm, 0xe, 0);
 }
@@ -850,14 +850,14 @@ extern const Ov013Pmf data_ov013_0220bc60;
 extern Ov013Pmf data_ov013_0220bc68;
 extern Ov013Pmf data_ov013_0220bc70;
 extern void HitSphere_Link(ActorSub48 *p);
-extern void func_ov003_021f0c60(Actor *self, s32 a);
+extern void Ov003Pickup_Update(Actor *self, s32 a);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void *func_ov000_0218fe1c(void *p);
 extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 extern void func_0203f364(ActorSub48 *p);
 extern int func_ov003_021cf330(void *p, const char *name, u8 a);
 extern void func_ov013_02205760(Ov013ActEx_02204454 *self);
-extern void func_ov003_021da40c(void *p);
+extern void Ov003ActorSub40_ApplyFlags(void *p);
 extern void func_ov000_0218d7e8(Actor *self, u8 arg);
 extern BOOL func_ov000_021950e8(Actor *self, Ov013Msg *msg);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
@@ -884,7 +884,7 @@ static inline u16 Ov013_FaceAngle(Actor *self, Actor *a) {
     return self->moveYaw + 0x7fff;
 }
 
-u32 func_ov013_02205c64(Ov013ActEx_02205ae4 *self) {
+u32 Ov013ActEx_02205ae4_IsDone(Ov013ActEx_02205ae4 *self) {
     return self->unk_ce_0;
 }
 
@@ -916,7 +916,7 @@ static inline void Ov013_Cross(const VecFx32 *a, const VecFx32 *b, VecFx32 *o) {
     o->z = z;
 }
 
-void func_ov013_02205c74(VecFx32 *out, const VecFx32 *a, const VecFx32 *b, const VecFx32 *v, u16 ang) {
+void Ov013_RotateAboutAxis(VecFx32 *out, const VecFx32 *a, const VecFx32 *b, const VecFx32 *v, u16 ang) {
     VecFx32 d;
     VecFx32 axis;
     Ov013Mtx33 m1;
@@ -980,7 +980,7 @@ void Ov013ActEx_02205ae4_Start(Ov013ActEx_02205ae4 *self) {
     func_ov003_021cf330((u8 *)self + 0xe0, data_ov013_0220ba79, data_ov003_021f4344);
 }
 
-BOOL func_ov013_02206074(Ov013ActEx_02205ae4 *self, Ov013Msg *msg) {
+BOOL Ov013ActEx_02205ae4_HandleMsg(Ov013ActEx_02205ae4 *self, Ov013Msg *msg) {
     BOOL r;
     if (msg->type == 0xe) {
         if (msg->idx == 1) {
@@ -995,16 +995,16 @@ BOOL func_ov013_02206074(Ov013ActEx_02205ae4 *self, Ov013Msg *msg) {
     return r;
 }
 
-void func_ov013_022060c8(void) {
+void Ov013ActEx_02205ae4_State20(void) {
 }
 
 
 extern void *data_02097e4c;
 extern const VecFx32 data_ov013_0220b2cc;
-extern void func_ov003_021d9980(VecFx32 *out, u16 rot, const VecFx32 *v);
+extern void Ov003Vec_RotateY(VecFx32 *out, u16 rot, const VecFx32 *v);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern Ov003Actor *Target_Get(void *p);
-extern void func_ov013_02205c74(VecFx32 *dir, VecFx32 *target, VecFx32 *pos, VecFx32 *n, u16 rate);
+extern void Ov013_RotateAboutAxis(VecFx32 *dir, VecFx32 *target, VecFx32 *pos, VecFx32 *n, u16 rate);
 extern void func_ov000_0219bd20(u16 kind, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, VecFx32 *v, s32 e, s32 f, s32 g, s32 h, s32 i);
@@ -1032,10 +1032,10 @@ static inline s32 Ov013_DistXZ3(const VecFx32 *a, const VecFx32 *b) {
 static inline void Ov013_Steer(Ov013ActEx_02205ae4 *self, VecFx32 *t, u16 rate) {
     VecFx32 n;
     VEC_Normalize(&self->unk_d4, &n);
-    func_ov013_02205c74(&self->unk_d4, t, &self->pos, &n, rate);
+    Ov013_RotateAboutAxis(&self->unk_d4, t, &self->pos, &n, rate);
 }
 
-void func_ov013_022060cc(Ov013ActEx_02205ae4 *self) {
+void Ov013ActEx_02205ae4_State0e(Ov013ActEx_02205ae4 *self) {
     ActorSub40 *st = self->fsm;
     switch (st->st) {
     case 0: {
@@ -1046,7 +1046,7 @@ void func_ov013_022060cc(Ov013ActEx_02205ae4 *self) {
         self->velY = 0;
         self->friction = 0;
         self->gravity = 0;
-        func_ov003_021d9980(&v, self->rot_y, &data_ov013_0220b2cc);
+        Ov003Vec_RotateY(&v, self->rot_y, &data_ov013_0220b2cc);
         VEC_MultAdd(0x14000, &v, &self->pos, &self->unk_84);
         o = Actor_GetTarget(self);
         if (o == NULL || o->hit == NULL) {

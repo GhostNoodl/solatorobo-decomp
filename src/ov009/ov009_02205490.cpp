@@ -26,7 +26,7 @@ static inline s32 Ov009_MaxScaleX(const Ov009ActVt_02216bc8 *a) {
     return a->unk_100.x;
 }
 
-void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
+void Ov009ActVt_02216bc8_StateAttack2(Ov009ActVt_02216bc8 *self) {
     VecFx32 r;
     VecFx32 v1;
     VecFx32 v2;

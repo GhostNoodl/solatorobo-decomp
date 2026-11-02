@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void func_ov012_022065d8(Ov012ActExVt_0220b1e8 *self);
+extern void Ov012ActExVt_0220b1e8_HitNearby(Ov012ActExVt_0220b1e8 *self);
 
 void func_ov012_02206098(Ov012ActExVt_0220b1e8 *self) {
     VecFx32 d;
@@ -67,7 +67,7 @@ void func_ov012_02206098(Ov012ActExVt_0220b1e8 *self) {
         } else {
             Actor_Move(self, 0);
         }
-        func_ov012_022065d8(self);
+        Ov012ActExVt_0220b1e8_HitNearby(self);
         func_ov000_021987b8(self->hit, 1, 0, 0);
         if (self->hit->unk_50 & 0x60000000) {
             func_ov000_02198360(self->fsm, 0x15, 0);

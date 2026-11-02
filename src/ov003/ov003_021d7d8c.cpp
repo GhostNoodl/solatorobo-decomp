@@ -57,7 +57,7 @@ static inline void Ov003Ticker_Clear(Ov003Ticker *self) {
     self->cur = 0;
 }
 
-void func_ov003_021d7d8c(Ov003Ticker *self) {
+void Ov003Ticker_Release_021d7d8c(Ov003Ticker *self) {
     if (self->active) {
         self->active = 0;
         self->loop = 0;
@@ -70,7 +70,7 @@ void func_ov003_021d7d8c(Ov003Ticker *self) {
     }
 }
 
-void func_ov003_021d7dd0(Ov003Ticker *self) {
+void Ov003Ticker_Update_021d7dd0(Ov003Ticker *self) {
     BOOL run;
     if (!self->active) {
         return;
@@ -95,7 +95,7 @@ void func_ov003_021d7dd0(Ov003Ticker *self) {
 
 
 static inline s32 FxMul(s32 a, s32 b) { return (s32)(((s64)a * b + 0x800) >> 12); }
-s16 func_ov003_021d7e58(Ov003Ticker *self) {
+s16 Ov003Ticker_GetValue(Ov003Ticker *self) {
     s16 v;
     s32 cur;
     s16 r = 0;

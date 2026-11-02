@@ -22,7 +22,7 @@ void Ov003Sequence_Update(Ov003Sequence *self) {
     Ov003Sequence_Step(self);
 }
 
-void func_ov003_021d9740(Ov003Sequence *self, u8 id) {
+void Ov003Sequence_SkipTo(Ov003Sequence *self, u8 id) {
     Ov003SeqEntry e;
     if (!self->active) {
         return;
@@ -33,14 +33,14 @@ void func_ov003_021d9740(Ov003Sequence *self, u8 id) {
     } while (id != e.id);
 }
 
-void func_ov003_021d97fc(Ov003Sequence *self, u8 v) {
+void Ov003Sequence_SetPaused(Ov003Sequence *self, u8 v) {
     if (self->active) {
         self->b5 = v;
         self->b6 = v;
     }
 }
 
-void func_ov003_021d982c(Ov003Sequence *self, u8 v) {
+void Ov003Sequence_SetHold(Ov003Sequence *self, u8 v) {
     if (self->active) {
         self->b6 = v;
     }
@@ -56,7 +56,7 @@ BOOL Ov003Sequence_HasEntries(Ov003Sequence *self, Ov003SeqEntry *entries) {
     return r;
 }
 
-BOOL func_ov003_021d9878(Ov003Sequence *self) {
+BOOL Ov003Sequence_IsReady(Ov003Sequence *self) {
     BOOL r = FALSE;
     if (self->active) {
         if (!self->b5) {
@@ -66,7 +66,7 @@ BOOL func_ov003_021d9878(Ov003Sequence *self) {
     return r;
 }
 
-BOOL func_ov003_021d98a0(Ov003Sequence *self) {
+BOOL Ov003Sequence_IsHeld(Ov003Sequence *self) {
     return self->active ? self->b6 : 0;
 }
 

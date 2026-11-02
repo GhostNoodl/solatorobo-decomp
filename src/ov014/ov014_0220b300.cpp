@@ -4,19 +4,19 @@ extern "C" {
 
 extern void func_ov014_0220d274(Ov014Act_02209280 *self);
 
-void func_ov014_0220b300(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_StateAttack3(Ov014Act_02209280 *self) {
     func_ov014_0220d274(self);
 }
 
-void func_ov014_0220b30c(Ov014Act_02209280 *self) {
-    func_ov003_021d4fd8(self);
+void Ov014Act_02209280_StateHurt(Ov014Act_02209280 *self) {
+    Ov003Actor_StateHurt(self);
 }
 
-void func_ov014_0220b318(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_StateDown(Ov014Act_02209280 *self) {
     if (self->fsm->st == 0) {
         self->targetObj->type = 0xf;
     }
-    func_ov003_021d5900(self);
+    Ov003Actor_StateDown(self);
 }
 
 
@@ -25,7 +25,7 @@ extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
 extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
 
-void func_ov014_0220b33c(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_StateDie(Ov014Act_02209280 *self) {
     switch (self->fsm->st) {
     case 0:
         self->unk_fc = 0;
@@ -110,7 +110,7 @@ void func_ov014_0220b33c(Ov014Act_02209280 *self) {
         break;
     }
     case 2:
-        func_ov003_021d6a3c(self, 0, 1, 1);
+        Ov003Actor_Defeat(self, 0, 1, 1);
         self->unk_ea_6 = 1;
         self->fsm->st++;
         self->fsm->timer = 0x190;
@@ -136,7 +136,7 @@ static inline s32 Ov014b_Mul64(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-void func_ov014_0220b74c(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_State21(Ov014Act_02209280 *self) {
     switch (ActorSub40_State(self->fsm)) {
     case 0:
         // The target reloads the state it just switched on (the switch reads it through the const view).

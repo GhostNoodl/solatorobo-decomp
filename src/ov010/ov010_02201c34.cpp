@@ -10,7 +10,7 @@ extern void *Ov003Pool_Dtor(void *p);
 extern void Ov003Pool_Release(void *p);
 extern Ov010TaskNode *Ov003Pool_Alloc(void *p);
 extern void Ov003Pool_Free(void *p, Ov010TaskNode *n);
-void func_ov010_02201b48(Ov010TaskList *o);
+void Ov010TaskList_Clear(Ov010TaskList *o);
 
 #define OV010_TASKLIST_IDLE(o) ((o)->b0 && !(o)->b1)
 
@@ -22,14 +22,14 @@ static inline Ov010TaskNode *Ov010TaskList_Push(Ov010TaskNode *head, Ov010TaskNo
     return head;
 }
 
-BOOL func_ov010_02201c34(Ov010TaskList *o) {
+BOOL Ov010TaskList_IsIdle(Ov010TaskList *o) {
     if (o->b0 && !o->b1) {
         return TRUE;
     }
     return FALSE;
 }
 
-BOOL func_ov010_02201c5c(Ov010TaskList *o) {
+BOOL Ov010TaskList_IsFinished(Ov010TaskList *o) {
     if (o->b0 && o->b2) {
         return TRUE;
     }
@@ -39,7 +39,7 @@ BOOL func_ov010_02201c5c(Ov010TaskList *o) {
 void func_ov010_02201c84(void) {
 }
 
-void *func_ov010_02201c88(void *o) {
+void *Ov010Vt_0220fe08_DtorDelete(void *o) {
     Heap_Free(o);
     return o;
 }

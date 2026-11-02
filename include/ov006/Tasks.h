@@ -81,8 +81,8 @@ struct ov006_TaskD1F : public ov006_TaskBase {
 };
 
 /* Task with vtable data_ov006_021ec040 (0x44 bytes, ctor Ov006Vt_021ec040_Ctor), created by
-   func_ov006_021cd2c8 for task type 2. func_ov006_021da208 builds its windows, func_ov006_021da098
-   sums unk38 from the price tables, func_ov006_021d96a8 runs it and func_ov006_021d9fc0 draws it. */
+   ov006_Manager_SwitchTask for task type 2. ov006_Task021ec040_BuildShopList builds its windows, ov006_Task021ec040_SetupPrices
+   sums unk38 from the price tables, Ov006Vt_021ec040_Update runs it and Ov006Vt_021ec040_Draw draws it. */
 struct ov006_Task021ec040 : public ov006_Task {
     UiList021cb4a8 *unk10;
     ov006_HudList *unk14;
@@ -91,7 +91,7 @@ struct ov006_Task021ec040 : public ov006_Task {
     Lo021cb5a8 *unk20;
     Lo021cad50 *unk24;
     Lo021cb0b8 *unk28;
-    int unk2C;          // the unk28 dialog's owner: func_ov006_021da19c writes the choice here
+    int unk2C;          // the unk28 dialog's owner: ov006_ListCb_StoreIdOrCancel writes the choice here
     int unk30;
     int unk34;
     u32 unk38;
@@ -169,7 +169,7 @@ extern void *data_ov006_021ebc70;
 extern char data_ov006_021ebbd1[];
 extern char data_ov006_021ebbde[];
 
-ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
+ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 
 extern void *data_ov000_021ccd44;
 extern Task *data_ov000_021ccd40; // the task that is finishing

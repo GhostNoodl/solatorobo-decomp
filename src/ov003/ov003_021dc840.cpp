@@ -26,7 +26,7 @@ static inline void Ov003_RotX(VecFx32 *out, const VecFx32 *in, u16 ang) {
     out->z = z;
 }
 
-BOOL func_ov003_021dc840(Ov003Beam *self) {
+BOOL Ov003Beam_Fire(Ov003Beam *self) {
     u16 size;
     BOOL ok;
     Robo021ca458 *pl;

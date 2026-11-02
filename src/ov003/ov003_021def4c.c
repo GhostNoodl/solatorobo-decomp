@@ -35,7 +35,7 @@ extern void func_ov000_0218996c(u8 a, u8 b);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
-void func_ov003_021def90(Ov003Prop *self) {
+void Ov003Prop_State21(Ov003Prop *self) {
     ActorSub40 *w = self->work;
     switch (w->st) {
     case 0:

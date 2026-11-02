@@ -18,7 +18,7 @@ extern ov006_Fade021d8790 data_02097d78;
 void func_0203cb78(s32 a, int b, int c);
 void func_0203cc58(s32 a, int b, int c);
 void func_0203cd10(void);
-void func_ov006_021e5e00(ov006_Unk021ec888 *p);
+void ov006_Menu_ShowObj(ov006_Unk021ec888 *p);
 
 static inline BOOL ov006_FadeIdle(void) {
     BOOL r;
@@ -40,7 +40,7 @@ static inline BOOL ov006_FadeDone(int ch) {
     return r;
 }
 
-u8 func_ov006_021d8790(ov006_Scene021d8790 *self) {
+u8 ov006_Scene_UpdateFade(ov006_Scene021d8790 *self) {
     switch (self->unk6E) {
     case 0:
         if (data_ov006_021ec888->state == 9) {
@@ -52,7 +52,7 @@ u8 func_ov006_021d8790(ov006_Scene021d8790 *self) {
         }
         break;
     case 1:
-        func_ov006_021e5e00(data_ov006_021ec888);
+        ov006_Menu_ShowObj(data_ov006_021ec888);
         self->unk6E = 2;
         break;
     case 2:

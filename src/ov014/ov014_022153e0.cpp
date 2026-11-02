@@ -22,10 +22,10 @@ extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
 extern void Interp_SinLerpVec(VecFx32 *out, s32 t, const VecFx32 *a, const VecFx32 *b);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
-extern void func_ov003_021f0c60(Actor *self, s32 a);
+extern void Ov003Pickup_Update(Actor *self, s32 a);
 
 static inline void Ov014z_Set(VecFx32 *v, s32 x, s32 y, s32 z) { v->x = x; v->y = y; v->z = z; }
-void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
+void Ov014ActEx_022152e8_StateThrown(Ov014ActEx_022152e8 *self) {
     Ov014Mtx33 m;
     VecFx32 v0;
     VecFx32 v1;
@@ -312,7 +312,7 @@ void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
         func_ov000_02198360(self->fsm, 0x15, 0);
         self->radius = Ov014y_FxMul64(self->radius, 0xb33);
         self->height = Ov014y_FxMul64(self->height, 0xb33);
-        func_ov003_021f0c60(self, 0);
+        Ov003Pickup_Update(self, 0);
         break;
     }
     }

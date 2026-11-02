@@ -33,7 +33,7 @@ static inline void ov006_Marker_Move(ov006_Marker *self) {
     }
 }
 
-void func_ov006_021e1f80(ov006_Marker *self) {
+void ov006_Marker_Update(ov006_Marker *self) {
     if (self->state == 0) {
         return;
     }

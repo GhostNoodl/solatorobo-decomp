@@ -135,7 +135,7 @@ extern void *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern void func_0203cc58(s32 a, s32 b, s32 c);
 extern void func_ov000_02188140(void *g, s32 a, s32 b, s32 c);
 extern void func_ov000_02188ca0(Ov003MCol *c, s32 a);
-void func_ov003_021f23e0(Ov003Multi *self);
+void Ov003Multi_StartCapture(Ov003Multi *self);
 
 static inline void VSub(const VecFx32 *a, const VecFx32 *b, VecFx32 *o) { o->x = a->x - b->x; o->y = a->y - b->y; o->z = a->z - b->z; }
 static inline u8 Ov003M_Level(Ov003MLv *lv) {
@@ -146,7 +146,7 @@ static inline BOOL Ov003M_Busy(Ov003MGame *g) {
     return g->unk_90 != g->unk_94;
 }
 
-void func_ov003_021f27ec(Ov003Multi *self) {
+void Ov003ActVt_021fa390_RunState(Ov003Multi *self) {
     const Ov003MultiDef *def;
     Ov003MultiModel *m;
     s32 idx;
@@ -194,7 +194,7 @@ void func_ov003_021f27ec(Ov003Multi *self) {
         self->mtx[self->unk_1119].unk_30 = func_ov000_021909a8(m, 0, data_ov003_021fa2ce);
         MI_Copy36B(&self->mtx[self->unk_1119], &self->rot);
         MTX_Identity43_(&self->mtx[self->unk_1119].mtx);
-        NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->rob, (NNSG3dSbcCallBackFunc)func_ov003_021f23e0);
+        NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->rob, (NNSG3dSbcCallBackFunc)Ov003Multi_StartCapture);
         m->unk_c2_5 = 0;
         m->unk_c2_8 = 1;
         if (++self->unk_1119 >= 6) {

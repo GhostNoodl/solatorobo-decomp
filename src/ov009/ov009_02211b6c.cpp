@@ -13,7 +13,7 @@ static inline void Ov009_NextState(Ov009ActVt_02217aac *self) {
     self->fsm->timer = 0;
 }
 
-void func_ov009_02211b6c(Ov009ActVt_02217aac *self) {
+void Ov009ActVt_02217aac_State21(Ov009ActVt_02217aac *self) {
     VecFx32 d;
     ActorSub40 *st;
     switch (self->fsm->st) {
@@ -64,7 +64,7 @@ void func_ov009_02211b6c(Ov009ActVt_02217aac *self) {
         } else {
             a = 0x1f - h;
         }
-        func_ov003_021d6954(self, a);
+        Ov003Actor_SetAlpha(self, a);
         st = self->fsm;
         st->timer++;
         if (st->timer > 0x3c) {

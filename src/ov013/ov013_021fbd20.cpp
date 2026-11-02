@@ -36,7 +36,7 @@ static inline Ov003Actor *Ov013_FindActor(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-void func_ov013_021fbd20(Ov013Boss *self) {
+void Ov013Boss_StateShoot(Ov013Boss *self) {
     ActorSub40 *w;
     Ov003Actor *a = Ov013_FindActor(self->target);
     if (a == NULL) {
@@ -110,7 +110,7 @@ extern void func_0203f364(ActorSub48 *p);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 
-void func_ov013_021fbf84(Ov013Boss *self) {
+void Ov013Boss_StateDie(Ov013Boss *self) {
     ActorSub40 *w = self->fsm;
     switch (w->st) {
     case 0: {
@@ -208,13 +208,13 @@ void func_ov013_021fbf84(Ov013Boss *self) {
     case 0x64:
         w->timer++;
         if (w->timer > 0x78) {
-            func_ov003_021d6a3c(self, 1, 1, 1);
+            Ov003Actor_Defeat(self, 1, 1, 1);
             break;
         }
         if (self->fsm->timer <= 0x3c) {
-            func_ov003_021d6954(self, 0x1f - (self->fsm->timer >> 1));
+            Ov003Actor_SetAlpha(self, 0x1f - (self->fsm->timer >> 1));
         } else {
-            func_ov003_021d6954(self, 0);
+            Ov003Actor_SetAlpha(self, 0);
         }
         break;
     }

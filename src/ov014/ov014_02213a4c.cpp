@@ -37,7 +37,7 @@ static inline void Ov014_TimerDec(ActorSub40 *s) {
     }
 }
 
-void func_ov014_022136b4(Ov014Act_0221267c *self) {
+void Ov014Act_0221267c_StateAttack3(Ov014Act_0221267c *self) {
     ActorSub40 *s = self->fsm;
     switch (ActorSub40_State(s)) {
     case 0: {
@@ -122,7 +122,7 @@ void func_ov014_022136b4(Ov014Act_0221267c *self) {
     }
 }
 
-void func_ov014_02213a4c(Ov014Act_0221267c *self) {
+void Ov014Act_0221267c_StateHurt(Ov014Act_0221267c *self) {
     switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov014_02217d7c, 0x1000, 0);
@@ -142,7 +142,7 @@ void func_ov014_02213a4c(Ov014Act_0221267c *self) {
     }
 }
 
-void func_ov014_02213afc(Ov014Act_0221267c *self) {
+void Ov014Act_0221267c_StateDie(Ov014Act_0221267c *self) {
     switch (self->fsm->st) {
     case 0: {
         u8 c;

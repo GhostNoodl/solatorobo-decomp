@@ -36,9 +36,9 @@ u16 func_ov000_02199e94(ActorSub4c *t);
 u8 func_ov000_02199f08(ActorSub4c *t);
 void func_ov000_02199f48(ActorHp *t, Actor *a);
 s32 Filter_Apply(ActorHp *a, Ov003HtSlot *b, s32 value);
-u8 func_ov003_021cee68(void);
+u8 Ov003_GetMaxCombo(void);
 
-void func_ov003_021d3d28(Ov003Actor *self) {
+void Ov003Actor_StateFly(Ov003Actor *self) {
     BOOL hit;
     u16 c;
     s32 h;
@@ -87,7 +87,7 @@ void func_ov003_021d3d28(Ov003Actor *self) {
                     }
                     break;
                 case 4:
-                    u8 n = func_ov003_021cee68();
+                    u8 n = Ov003_GetMaxCombo();
                     if (self->targetObj->unk_1a < n) {
                         c = 0;
                     }

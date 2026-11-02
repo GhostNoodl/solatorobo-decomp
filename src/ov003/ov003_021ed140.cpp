@@ -20,7 +20,7 @@ extern Actor *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, VecFx32 *pos, co
 extern void func_ov000_0218d46c(Actor *o, u16 a, u8 b);
 extern u32 Rand_UpTo(u32 n);
 
-void func_ov003_021ed058(ActorEx *self) {
+void Ov003ActVt_021f9b18_StateDie(ActorEx *self) {
     if (self->fsm->st == 0 && self->unk_18 != 0) {
         Ov003SpawnInfo info;
         Actor *o;
@@ -46,10 +46,10 @@ void func_ov003_021ed058(ActorEx *self) {
 }
 
 extern Ov003ShotDef data_ov003_021f6c04;
-extern void func_ov003_021dae58(ActorEx *self);
+extern void Ov003Shot_Init(ActorEx *self);
 
 void Ov003ActVt_021f9a80_Init(Ov003HomingShot *self) {
-    func_ov003_021dae58(self);
+    Ov003Shot_Init(self);
     self->shotDef = &data_ov003_021f6c04;
 }
 

@@ -18,13 +18,13 @@ extern void *data_ov006_021ec424;
 extern void *data_ov006_021ec414;
 extern ov006_Unk02097e40 *data_02097e40;
 
-void func_ov006_021e3dd4(ov006_ModelHolder *self, int a);
+void ov006_ModelHolder_Load(ov006_ModelHolder *self, int a);
 BOOL func_02044e38(ov006_Unk02097e40 *a, int b);
 void Wh_SetGgid(ov006_Unk02097e40 *a, u32 b);
 void func_02046a78(ov006_Unk02097e40 *a, void *b, u32 c);
 void OS_GetOwnerInfo(void *a);
 int WM_GetLinkLevel(void);
-BOOL func_ov006_021e5ef0(const ov006_MenuData *data);
+BOOL ov006_Menu_ReceiveData(const ov006_MenuData *data);
 void func_ov006_021e5050(ov006_Unk021ec888 *self);
 void func_ov006_021e5604(ov006_Unk021ec888 *self);
 void func_ov006_021e51f8(ov006_Unk021ec888 *self);
@@ -48,7 +48,7 @@ static inline BOOL ov006_Stateful_IsDone(UiObj *s) {
     return s->state == 5 ? TRUE : FALSE;
 }
 
-void func_ov006_021e4348(ov006_Unk021ec888 *self) {
+void ov006_Menu_Load(ov006_Unk021ec888 *self) {
     ov006_ObjectHolder *h;
     switch (self->state) {
     case 0: {
@@ -61,7 +61,7 @@ void func_ov006_021e4348(ov006_Unk021ec888 *self) {
             mh->unkC = 0;
         }
         self->unk1D4 = mh;
-        func_ov006_021e3dd4(self->unk1D4, 2);
+        ov006_ModelHolder_Load(self->unk1D4, 2);
         oh = (ov006_ObjectHolder *)Heap_Alloc(sizeof(ov006_ObjectHolder));
         if (oh != NULL) {
             oh->vtbl = &data_ov006_021ec414;
@@ -75,7 +75,7 @@ void func_ov006_021e4348(ov006_Unk021ec888 *self) {
         func_02044e38(data_02097e40, 0);
         Wh_SetGgid(data_02097e40, 0x401336);
         func_02046a78(data_02097e40, self->unkF4, ov006_GetOwnerName(self->unkF4, 0x16));
-        data_02097e40->unk80 = (void *)func_ov006_021e5ef0;
+        data_02097e40->unk80 = (void *)ov006_Menu_ReceiveData;
         data_02097dd0->vblankFunc = NULL;
         ov006_Menu_SetState(self, 3);
         break;

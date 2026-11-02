@@ -11,7 +11,7 @@
 #include "ov000/ActorParts.h"
 #include "ov000/Model0218fe1c.h"
 
-// Payload of a hit message (ActorMsg type 9, applied by func_ov003_021d6548).
+// Payload of a hit message (ActorMsg type 9, applied by Ov003Actor_ApplyHit).
 typedef struct ActorMsgHit {
     u16 dmg;
     u8 kind;
@@ -129,7 +129,7 @@ public:
     PauseNode pause;
     ActorMsg *msgs;
     u32 msg_flags;
-    void *unk_34; // resource names (0x138 bytes, ctor func_ov000_0218e9c4; filled by func_ov003_021d0a2c)
+    void *unk_34; // resource names (0x138 bytes, ctor func_ov000_0218e9c4; filled by Ov003Res_SetNames)
     Model0218fe1c *model;
     ActorShadow *unk_3c;
     ActorSub40 *fsm; // state block (func_ov000_02198360 switches state)

@@ -49,8 +49,8 @@ void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const vo
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
-void func_ov003_021cedf4(u16 add);
-u8 func_ov003_021cee68(void);
+void Ov003_AddMeter_021cedf4(u16 add);
+u8 Ov003_GetMaxCombo(void);
 
 static inline Actor *FindActor_021a6280(u16 id) {
     Actor *r;
@@ -195,7 +195,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
                 if (self->unk_ba4 != NULL) {
                     n += self->unk_ba4->unk_05_4;
                 }
-                func_ov003_021cedf4(n);
+                Ov003_AddMeter_021cedf4(n);
             }
         } else if (self->unk_b24_26) {
             func_ov000_02191418(self->model, 0x32, 0);
@@ -338,7 +338,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
                         }
                         s2->unk_19 = self->unk_b24_22;
                         s2->unk_1b = lv;
-                        n = func_ov003_021cee68();
+                        n = Ov003_GetMaxCombo();
                         if (self->unk_b24_22 < 2) {
                             n--;
                         }

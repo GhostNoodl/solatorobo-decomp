@@ -29,7 +29,7 @@ static inline EffectObj *Ov003Sl_GetFx(Ov003Beam *self, s32 i) {
     return func_020657b0(data_0214a420, self->layers[i]);
 }
 
-void func_ov003_021dc3fc(Ov003Beam *self, s32 i, s32 mode) {
+void Ov003Beam_UpdateLayer(Ov003Beam *self, s32 i, s32 mode) {
     EffectObj *fx;
     Ov003BeamDef *def;
     VecFx32 a;

@@ -6,7 +6,7 @@ extern char data_ov013_0220be7c[];
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *t, s32 a);
 
-void func_ov013_02206ca8(Ov013ActVt_0220bdd8 *self) {
+void Ov013ActVt_0220bdd8_StateIdle(Ov013ActVt_0220bdd8 *self) {
     Ov003Actor *t;
     if (self->fsm->st == 0) {
         func_ov000_02190cb0(self->model, data_ov013_0220be7c, 0x19a, 0);
@@ -34,7 +34,7 @@ static inline Ov003Actor *Ov013_FindActor(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-void func_ov013_02206d28(Ov013ActVt_0220bdd8 *self) {
+void Ov013ActVt_0220bdd8_StateAttack(Ov013ActVt_0220bdd8 *self) {
     Ov003Actor *t = Ov013_FindActor(self->target);
     if (t == NULL) {
         return;
@@ -92,7 +92,7 @@ extern u16 ActorGroup_CountKind(void *p, s32 a);
 extern void func_ov000_0219a210(VecFx32 *p, const VecFx32 *o, s32 rot);
 extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
 
-void func_ov013_02206edc(Ov013ActVt_0220bdd8 *self) {
+void Ov013ActVt_0220bdd8_StateAttack2(Ov013ActVt_0220bdd8 *self) {
     s32 flip;
     Actor *a;
     void *mgr;
@@ -118,7 +118,7 @@ void func_ov013_02206edc(Ov013ActVt_0220bdd8 *self) {
                     VecFx32 o;
                     Ov013Blk12 base = data_ov013_0220b3e0;
                     do {
-                        a = func_ov003_021d69a0(self, 0x540c, 0x20);
+                        a = Ov003Actor_SpawnAtSelf(self, 0x540c, 0x20);
                         if (a != NULL) {
                             *(Ov013Blk12 *)&p = *(Ov013Blk12 *)&self->pos;
                             *(Ov013Blk12 *)&o = base;
@@ -187,7 +187,7 @@ static inline s32 Ov013_Sqrt2(s64 sq) {
     return (s32)(OV013_SQRT_RESULT + 1) >> 1;
 }
 
-void func_ov013_02207180(Ov013ActVt_0220bdd8 *self) {
+void Ov013ActVt_0220bdd8_StateShoot(Ov013ActVt_0220bdd8 *self) {
     s16 r;
     s32 tx;
     s32 ty;

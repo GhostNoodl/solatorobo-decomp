@@ -1,7 +1,7 @@
 #ifndef OV003_ACTOR_H
 #define OV003_ACTOR_H
 
-// The ov003 actor class (ctor func_ov003_021d0c1c, 0xf0 bytes): an ov000 Actor with the fields
+// The ov003 actor class (ctor Ov003Actor_Ctor, 0xf0 bytes): an ov000 Actor with the fields
 // 0xac..0xef that the ov003 actor code sets up. The actor classes of ov009 and ov011..ov014
 // derive from it; their own fields start at 0xf0. The ov003 actor code (ctor, dtor, update,
 // message, hit and spawn helpers) uses it directly; a few ov003 TUs still keep local views of
@@ -36,7 +36,7 @@ struct Ov003Param {
     const char *unk_10[2];
 };
 
-// An entry of the ov003 actor table (0x10 bytes) that func_ov003_021d1e30 looks up by id
+// An entry of the ov003 actor table (0x10 bytes) that Ov003_LookupEntry looks up by id
 // (Ov003Actor::unk_c4).
 struct Ov003Entry {
     u8 idx : 4;
@@ -92,12 +92,12 @@ public:
     Ov003Entry *unk_c4;
     s32 unk_c8;
     s32 unk_cc;
-    // 0xd0..0xee as func_ov003_021d0c1c sets them.
+    // 0xd0..0xee as Ov003Actor_Ctor sets them.
     Ov003SubD0 *unk_d0;
     void *unk_d4;
     union {
         void *unk_d8;
-        void (*nameFunc)(void *names, u16 kind); // fills Actor::unk_34 in place of func_ov003_021d0a2c
+        void (*nameFunc)(void *names, u16 kind); // fills Actor::unk_34 in place of Ov003Res_SetNames
     };
     u16 unk_dc;
     u16 target_id;  // id of the actor this one tracks; 0xffff for none
@@ -148,43 +148,43 @@ public:
 SIZE_ASSERT(Ov003Actor, 0xf0);
 
 // The ov003 actor API (defined in src/ov003), declared once for the overlays.
-// func_ov003_021d0edc keeps void *: the overlay dtors that call it take void *self.
+// Ov003Actor_DtorBase keeps void *: the overlay dtors that call it take void *self.
 extern "C" {
-Ov003Actor *func_ov003_021d0c1c(Ov003Actor *self);
-Ov003Entry *func_ov003_021d1e30(u32 id);
-void *func_ov003_021d0edc(void *self);
-void func_ov003_021d0fc0(Ov003Actor *self);
-void func_ov003_021d112c(Ov003Actor *self);
-u16 func_ov003_021d16cc(Ov003Actor *self);
-void func_ov003_021d1b88(Ov003Actor *self);
-void func_ov003_021d1e8c(Ov003Actor *self);
-void func_ov003_021d2e28(Ov003Actor *self);
-void func_ov003_021d3008(Ov003Actor *self);
-void func_ov003_021d3524(Ov003Actor *self);
-void func_ov003_021d3600(Ov003Actor *self);
-void func_ov003_021d36fc(Ov003Actor *self);
-void func_ov003_021d3a88(Ov003Actor *self);
-void func_ov003_021d3d28(Ov003Actor *self);
-void func_ov003_021d452c(Ov003Actor *self);
-void func_ov003_021d4b68(Ov003Actor *self);
-void func_ov003_021d4fd8(Ov003Actor *self);
-void func_ov003_021d5348(Ov003Actor *self);
-void func_ov003_021d5900(Ov003Actor *self);
-void func_ov003_021d6054(Ov003Actor *self);
-void func_ov003_021d64f0(Ov003Actor *self);
-u8 func_ov003_021d6548(Ov003Actor *self, ActorMsgHit *hit);
-void func_ov003_021d6868(Ov003Actor *self, u16 color);
-void func_ov003_021d68e0(Ov003Actor *self, u16 color, u16 color2, u16 frames);
-void func_ov003_021d6954(Ov003Actor *self, u8 alpha);
-Actor *func_ov003_021d69a0(Actor *self, s32 kind, s32 v);
-Actor *func_ov003_021d69f0(Ov003Actor *self, s32 kind, const VecFx32 *pos, const void *rot, Actor *other);
-void func_ov003_021d6a3c(Ov003Actor *self, BOOL release, BOOL mark, BOOL sound);
-void func_ov003_021d6bac(Ov003Actor *self, const void *scale);
-BOOL func_ov003_021da03c(Ov003Actor *self);
-void func_ov003_021da108(Actor *self, s32 range, s32 fx, s32 base, s32 top);
-void func_ov003_021da2c8(Actor *self, s32 speed, s32 velY, s32 friction, s32 gravity);
-ActorEx *func_ov003_021dae44(ActorEx *self);
-Actor *func_ov003_021da32c(u16 id);
+Ov003Actor *Ov003Actor_Ctor(Ov003Actor *self);
+Ov003Entry *Ov003_LookupEntry(u32 id);
+void *Ov003Actor_DtorBase(void *self);
+void Ov003Actor_Init(Ov003Actor *self);
+void Ov003Actor_Start(Ov003Actor *self);
+u16 Ov003Actor_Draw(Ov003Actor *self);
+void Ov003Actor_Animate(Ov003Actor *self);
+void Ov003Actor_Update(Ov003Actor *self);
+void Ov003Actor_SelectState(Ov003Actor *self);
+void Ov003Actor_RunState(Ov003Actor *self);
+void Ov003Actor_StateIdle(Ov003Actor *self);
+void Ov003Actor_StateMove(Ov003Actor *self);
+void Ov003Actor_StateHeld(Ov003Actor *self);
+void Ov003Actor_StateThrown(Ov003Actor *self);
+void Ov003Actor_StateFly(Ov003Actor *self);
+void Ov003Actor_StateAttack(Ov003Actor *self);
+void Ov003Actor_StateShoot(Ov003Actor *self);
+void Ov003Actor_StateHurt(Ov003Actor *self);
+void Ov003Actor_StateKnockBack(Ov003Actor *self);
+void Ov003Actor_StateDown(Ov003Actor *self);
+void Ov003Actor_StateDie(Ov003Actor *self);
+void Ov003Actor_State20(Ov003Actor *self);
+u8 Ov003Actor_ApplyHit(Ov003Actor *self, ActorMsgHit *hit);
+void Ov003Actor_SetColor(Ov003Actor *self, u16 color);
+void Ov003Actor_FadeColor(Ov003Actor *self, u16 color, u16 color2, u16 frames);
+void Ov003Actor_SetAlpha(Ov003Actor *self, u8 alpha);
+Actor *Ov003Actor_SpawnAtSelf(Actor *self, s32 kind, s32 v);
+Actor *Ov003Actor_SpawnChild(Ov003Actor *self, s32 kind, const VecFx32 *pos, const void *rot, Actor *other);
+void Ov003Actor_Defeat(Ov003Actor *self, BOOL release, BOOL mark, BOOL sound);
+void Ov003Actor_ScaleStats(Ov003Actor *self, const void *scale);
+BOOL Ov003Actor_CanAct(Ov003Actor *self);
+void Ov003Actor_SpawnScatterFx(Actor *self, s32 range, s32 fx, s32 base, s32 top);
+void Ov003Actor_SetMotion(Actor *self, s32 speed, s32 velY, s32 friction, s32 gravity);
+ActorEx *Ov003ActorEx_Ctor(ActorEx *self);
+Actor *Ov003_SpawnById(u16 id);
 }
 
 #endif

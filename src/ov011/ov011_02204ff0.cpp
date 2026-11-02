@@ -84,7 +84,7 @@ void Ov011Act7da4_Draw(Ov011Act7da4 *self) {
     u8 v = data_02097d48->unk_8b0[3];
     func_02043d9c(data_02097d48->unk_8b0);
     self->model->polyId = v;
-    func_ov003_021d16cc(self);
+    Ov003Actor_Draw(self);
 }
 #pragma force_active reset
 }

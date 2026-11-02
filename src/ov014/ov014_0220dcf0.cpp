@@ -17,7 +17,7 @@ extern void func_0203f364(ActorSub48 *p);
 extern void func_ov000_02191690(Model0218fe1c *p);
 extern void func_ov000_02191618(Model0218fe1c *p);
 
-void func_ov014_0220dcf0(void) {
+void Ov014ActEx_0220d70c_StateThrown(void) {
 }
 
 #pragma force_active on
@@ -69,7 +69,7 @@ void Ov014ActEx_0220dcf4_Start(Ov014ActEx_0220dcf4 *self) {
     self->unk_d4 = self->unk_18 != 0 ? 1 : 0;
 }
 
-extern EffectObj *func_ov014_0220f7f0(s32 k, VecFx32 *pos);
+extern EffectObj *Ov014_CreateEffect(s32 k, VecFx32 *pos);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern void Math_DirToAngles(u16 *ang, VecFx32 *v);
@@ -79,7 +79,7 @@ extern void func_ov000_02191708(Model0218fe1c *p);
 extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
 extern void HitSphere_Link(ActorSub48 *p);
 
-void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
+void Ov014ActEx_0220dcf4_StateIdle(Ov014ActEx_0220dcf4 *self) {
     ActorSub40 *st = self->fsm;
     Ov014Mtx33 m;
     VecFx32 dir;
@@ -129,7 +129,7 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
         self->speed = (s32)(((s64)self->speed * 0x29 + 0x800) >> 12);
         self->velY = (s32)(((s64)self->velY * 0x29 + 0x800) >> 12);
         self->friction = (s32)(((s64)self->friction * 0x29 + 0x800) >> 12);
-        self->unk_d0 = func_ov014_0220f7f0(0, &self->pos)->id;
+        self->unk_d0 = Ov014_CreateEffect(0, &self->pos)->id;
         self->fsm->st++;
         self->fsm->timer = 0x1e;
         func_02049f44(data_02097e4c, 0x82, &self->pos, 0);
@@ -172,7 +172,7 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
         if (st->timer != 0) {
             return;
         }
-        q = func_ov014_0220f7f0(0, &self->pos);
+        q = Ov014_CreateEffect(0, &self->pos);
         q->SetScaleAll(0x1000);
         self->unk_d0 = q->id;
         self->fsm->st = 0x14;

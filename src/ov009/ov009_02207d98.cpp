@@ -14,7 +14,7 @@ struct Ov009Bits16 {
 };
 
 BOOL Ov009Multi_Draw(Ov009Multi *self) {
-    BOOL r = func_ov003_021d16cc(self);
+    BOOL r = Ov003Actor_Draw(self);
     s32 i;
     for (i = 0; i < 4; i++) {
         func_ov000_021903b4(&self->models[i]);
@@ -141,14 +141,14 @@ static inline void Ov009m_VecScale(VecFx32 *v, s32 k) {
     v->z = Ov009m_Mul(v->z, k);
 }
 
-void func_ov009_02207fd8(Ov009Multi *self) {
+void Ov009Multi_RunState(Ov009Multi *self) {
     VecFx32 p;
     VecFx32 d;
     s32 i;
     s32 len;
     s32 s;
     u16 rot[3];
-    func_ov003_021d3008(self);
+    Ov003Actor_RunState(self);
     Ov009m_VecSub(&self->pos, &self->unk_494, &d);
     Ov009m_VecScale(&d, 0x555);
     p = self->unk_494;

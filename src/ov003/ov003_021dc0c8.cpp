@@ -9,7 +9,7 @@ extern "C" {
 extern Ov003BeamDef data_ov003_021f49ec[];
 extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 
-void func_ov003_021dc0c8(Ov003Shot *self) {
+void Ov003Shot_ResetTimers(Ov003Shot *self) {
     self->age = 0;
     self->trailTimer = 0;
     self->stepTimer = 0;
@@ -17,11 +17,11 @@ void func_ov003_021dc0c8(Ov003Shot *self) {
     self->lockTimer = 0;
 }
 
-void func_ov003_021dc0e4(Ov003Shot *self) {
+void Ov003Shot_State0a(Ov003Shot *self) {
     func_ov000_02198360(self->fsm, 0x15, 0);
 }
 
-void func_ov003_021dc0fc(Ov003Shot *self) {
+void Ov003Shot_StateDie(Ov003Shot *self) {
     if (self->fsm->st == 0) {
         s32 v = self->def->hitRadius;
         if (v >= 0) {
@@ -36,7 +36,7 @@ void func_ov003_021dc0fc(Ov003Shot *self) {
     func_ov000_0219763c(self);
 }
 
-void func_ov003_021dc148(Ov003Shot *self) {
+void Ov003Shot_StateHeld(Ov003Shot *self) {
     if (self->fsm->st == 0) {
         if (self->def->stopFly && self->unk_bc != NULL) {
             EffectMgr_Kill(data_0214a420, self->unk_bc);
@@ -73,16 +73,16 @@ void Ov003ActVt_021f7d4c_Start(Ov003Beam *self) {
     func_ov000_02198360(self->fsm, 0xb, 0);
 }
 
-void func_ov003_021dc27c(Ov003Beam *self) {
+void Ov003Beam_StateThrown(Ov003Beam *self) {
     u8 i;
     ActorSub40 *t;
     u16 st = self->fsm->st;
     switch (st) {
     case 0:
-        func_ov003_021dc3fc(self, 1, st);
-        func_ov003_021dc3fc(self, 0, st);
+        Ov003Beam_UpdateLayer(self, 1, st);
+        Ov003Beam_UpdateLayer(self, 0, st);
         if (self->fsm->timer >= 3) {
-            func_ov003_021dc840(self);
+            Ov003Beam_Fire(self);
         }
         t = self->fsm;
         t->timer++;
@@ -92,8 +92,8 @@ void func_ov003_021dc27c(Ov003Beam *self) {
         }
         break;
     case 1:
-        func_ov003_021dc3fc(self, 1, st);
-        func_ov003_021dc3fc(self, 0, st);
+        Ov003Beam_UpdateLayer(self, 1, st);
+        Ov003Beam_UpdateLayer(self, 0, st);
         if (self->scales[1].x == 0 && self->scales[1].y == 0) {
             for (i = 0; i < 2; i++) {
                 EffectObj *fx = func_020657b0(data_0214a420, self->layers[i]);
@@ -108,7 +108,7 @@ void func_ov003_021dc27c(Ov003Beam *self) {
     }
 }
 
-void func_ov003_021dc3b8(Ov003Beam *self) {
+void Ov003Beam_StateDie(Ov003Beam *self) {
     if (self->fsm->st == 0) {
         EffectMgr_Kill(data_0214a420, self->layers[1]);
         EffectMgr_Kill(data_0214a420, self->layers[0]);

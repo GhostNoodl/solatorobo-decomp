@@ -93,7 +93,7 @@ struct ov006_Task021d6ff0 : public ov006_Task {
     u8 unk24[8];
     ov006_Rank021d6ff0 *ranks;
     ov006_Map021d6ff0 *map;
-    ov006_ListWin *win; // func_ov006_021d86a0
+    ov006_ListWin *win; // ov006_ShowListWin
     int unk38;
     int unk3C;
     int splits[10];
@@ -123,19 +123,19 @@ extern u8 *data_0214a424;
 extern ov006_E40021d6ff0 *data_02097e40;
 extern ov006_Speed021d6ff0 data_ov006_021eb85c[];
 
-ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
+ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 void *ActorMgr_GetActor(void *a, u16 id);
 typedef struct ov006_RaceInfo021d6ff0 {
     u16 unk0;
     u8 unk2;
     u8 ranks;
 } ov006_RaceInfo021d6ff0;
-ov006_RaceInfo021d6ff0 *func_ov006_021dab98(ov006_Slot *self);
-void func_ov006_021dd5b8(void *p, u16 v, int a, int b);
-void func_ov006_021dd2d8(void *p, s8 v);
+ov006_RaceInfo021d6ff0 *ov006_Slot_GetSub2C(ov006_Slot *self);
+void ov006_Unk021dd5b8_SetText(void *p, u16 v, int a, int b);
+void ov006_Unk021dd2d8_Show(void *p, s8 v);
 void func_0203cb78(s32 a, int b, int c);
 void func_0203cc58(s32 a, int b, int c);
-struct EffectObj *func_ov006_021e37d0(int type, const VecFx32 *pos);
+struct EffectObj *ov006_CreateEffect(int type, const VecFx32 *pos);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_020498ac(void *p, s32 a);
 void SndMgr_StopSeqNo(void *p, int a, int b);
@@ -143,17 +143,17 @@ void *ActorMgr_GetGroup(void *mgr, u16 id);
 void ActorGroup_BroadcastKind(void *p, u16 a, int b);
 void func_ov000_0216da78(ov006_GObj021d6ff0 *p);
 void *MsgRes_GetString(void *a, int id);
-void func_ov006_021d86a0(ov006_Task021d6ff0 *self, u16 a, char *text);
+void ov006_ShowListWin(ov006_Task021d6ff0 *self, u16 a, char *text);
 ov006_Result021d6ff0 *Ov006Vt_021ec23c_Ctor(ov006_Result021d6ff0 *p);
-void func_ov006_021dfce8(ov006_Result021d6ff0 *p);
-void func_ov006_021dee68(void *p, PlayTime *t, BOOL a, BOOL b);
-void func_ov006_021df9e8(ov006_ResSub021d6ff0 *p, PlayTime *t, u8 i, BOOL hl);
-u8 func_ov006_021d8e30(const PlayTime *t);
+void ov006_Unk021dfce8_Load(ov006_Result021d6ff0 *p);
+void ov006_Unk021dee68_SetRect(void *p, PlayTime *t, BOOL a, BOOL b);
+void ov006_Unk021df9e8_SetRect(ov006_ResSub021d6ff0 *p, PlayTime *t, u8 i, BOOL hl);
+u8 ov006_CountRepeatDigits(const PlayTime *t);
 BOOL func_ov006_021cd2a8(ov006_Manager *m);
-BOOL func_ov006_021e616c(int a, u16 b);
+BOOL ov006_Menu_AllEntriesMatch(int a, u16 b);
 
 static inline Ov006Racer *ov006_GetRacer(u8 i) {
-    u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
+    u16 id = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i)->actorId;
     return data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
 }
 
@@ -167,16 +167,16 @@ static inline u8 ov006_CountRemaining(void) {
     }
     count = 0;
     for (i = 0; i < num; i++) {
-        u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
+        u16 id = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i)->actorId;
         Ov006Racer *prop = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
-        if (prop != NULL && func_ov006_021ea3e8(prop)) {
+        if (prop != NULL && Ov006Racer_IsFinished(prop)) {
             count++;
         }
     }
     return num - count;
 }
 
-/* Same as func_ov006_021d8cb8; the declaration order differs from ov006_CountRemaining
+/* Same as ov006_CountFinished; the declaration order differs from ov006_CountRemaining
  * above and decides the register allocation at each inlined call site. */
 static inline u8 ov006_CountRemainingB(void) {
     u8 count;
@@ -188,9 +188,9 @@ static inline u8 ov006_CountRemainingB(void) {
     }
     count = 0;
     for (i = 0; i < num; i++) {
-        u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
+        u16 id = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i)->actorId;
         Ov006Racer *prop = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
-        if (prop != NULL && func_ov006_021ea3e8(prop)) {
+        if (prop != NULL && Ov006Racer_IsFinished(prop)) {
             count++;
         }
     }
@@ -198,7 +198,7 @@ static inline u8 ov006_CountRemainingB(void) {
 }
 
 static inline u8 ov006_GetRank(u8 i) {
-    return (func_ov006_021dab98(func_ov006_021db060(data_ov006_021ec884, 0))->ranks >> (i * 2)) & 3;
+    return (ov006_Slot_GetSub2C(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, 0))->ranks >> (i * 2)) & 3;
 }
 
 static inline void ov006_UpdateRanks(ov006_Task021d6ff0 *self) {
@@ -207,7 +207,7 @@ static inline void ov006_UpdateRanks(ov006_Task021d6ff0 *self) {
         return;
     }
     for (i = 0; i < 4; i++) {
-        if (func_ov006_021db060(data_ov006_021ec884, i)->active) {
+        if (ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i)->active) {
             self->ranks[i].rank = ov006_GetRank(i) + 1;
         } else {
             self->ranks[i].rank = 0;
@@ -233,7 +233,7 @@ static inline void ov006_UpdateMap(ov006_Task021d6ff0 *self) {
             u8 f;
             ov006_Map021d6ff0 *map;
             p = r->pos;
-            fin = func_ov006_021ea3e8(r);
+            fin = Ov006Racer_IsFinished(r);
             f = (multi & !fin) ? 1 : 0;
             map = self->map;
             *(VecFx32 *)&map->marks[i] = p;
@@ -253,7 +253,7 @@ static inline void ov006_Gauge_SetCount(ov006_Gauge021d6ff0 *g, u8 cur, u8 n) {
 
 static inline void ov006_Gauge_SetSpeed(ov006_Gauge021d6ff0 *g, u16 v, int flag) {
     if (g->unk18 != NULL) {
-        func_ov006_021dd5b8(g->unk18, v, 0x7530, flag);
+        ov006_Unk021dd5b8_SetText(g->unk18, v, 0x7530, flag);
     }
 }
 
@@ -284,7 +284,7 @@ static inline int ov006_Gauge_Split(ov006_Gauge021d6ff0 *g) {
 
 static inline void ov006_Gauge_SetTilt(ov006_Gauge021d6ff0 *g, s8 v) {
     if (g->unk14 != NULL) {
-        func_ov006_021dd2d8(g->unk14, v);
+        ov006_Unk021dd2d8_Show(g->unk14, v);
     }
 }
 
@@ -349,7 +349,7 @@ static inline void ov006_SetBest(u8 *save, u8 idx, int v) {
     }
 }
 
-BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
+BOOL ov006_Race_Update(ov006_Task021d6ff0 *self) {
     BOOL result = TRUE;
     u8 lap;
     BOOL finished;
@@ -374,7 +374,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
     u8 cnt;
     u8 j;
     {
-        u16 id = func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->actorId;
+        u16 id = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->actorId;
         me = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
     }
     info = (ov006_Info021d6ff0 *)data_ov006_021ec884->info;
@@ -388,7 +388,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             self->gauge->lap = data_ov006_021ec884->unk5 + 1;
             ov006_Gauge_SetSpeed(self->gauge, me->boost, 0);
             for (i = 0; i < 4; i++) {
-                self->ranks[i].rank = func_ov006_021db060(data_ov006_021ec884, i)->active ? i + 1 : 0;
+                self->ranks[i].rank = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i)->active ? i + 1 : 0;
             }
             ov006_UpdateMap(self);
             self->subStep++;
@@ -421,7 +421,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 v.x = 0;
                 v.y = 0;
                 v.z = -0x1000;
-                func_ov006_021e37d0(0, &v);
+                ov006_CreateEffect(0, &v);
                 func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
                 self->timer = 0;
                 self->subStep++;
@@ -470,8 +470,8 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
         }
         if (data_ov006_021ec860->unk1C == 0) {
             if (self->win == NULL) {
-                if (func_ov006_021dab98(func_ov006_021db060(data_ov006_021ec884, 0))->unk0 & 8) {
-                    func_ov006_021d86a0(self, 0x8d, (char *)MsgRes_GetString(data_02149ef8, 0x28));
+                if (ov006_Slot_GetSub2C(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, 0))->unk0 & 8) {
+                    ov006_ShowListWin(self, 0x8d, (char *)MsgRes_GetString(data_02149ef8, 0x28));
                     break;
                 }
             } else {
@@ -489,12 +489,12 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
         }
         lap = me->rank + 1;
         finished = FALSE;
-        if (func_ov006_021ea3e8(me)) {
+        if (Ov006Racer_IsFinished(me)) {
             finished = TRUE;
         } else if (data_ov006_021ec884->numActive != 1 && ov006_CountRemainingB() <= 1) {
             u8 n = data_ov006_021ec884->numActive;
             if (lap != n) {
-                func_ov006_021ea410(me);
+                Ov006Racer_SetFinished(me);
                 finished = TRUE;
             } else {
                 data_ov006_021ec884->lap = n;
@@ -514,7 +514,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             v.x = 0;
             v.y = 0;
             v.z = -0x1000;
-            func_ov006_021e37d0(0xb, &v);
+            ov006_CreateEffect(0xb, &v);
             data_ov006_021ec884->lap = lap;
             data_ov006_021ec884->time = ov006_Gauge_Time(self->gauge);
             data_ov006_021ec884->unk13D = 1;
@@ -570,7 +570,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 res = Ov006Vt_021ec23c_Ctor(res);
             }
             self->result = res;
-            func_ov006_021dfce8(res);
+            ov006_Unk021dfce8_Load(res);
             self->result->unk11 = data_ov006_021ec884->lap;
             kind = self->gauge->obj != NULL ? self->gauge->obj->kind : 0;
             n = info->laps;
@@ -614,7 +614,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 func_02048e74(&split[laps - 1], &split[laps - 1], &diff);
             }
             if (self->result->unk1C != NULL) {
-                func_ov006_021dee68(self->result->unk1C, &total, mode == 1, kind == 2);
+                ov006_Unk021dee68_SetRect(self->result->unk1C, &total, mode == 1, kind == 2);
             }
             if (self->result->sub != NULL) {
                 self->result->sub->count = ov006_Min10(n);
@@ -624,15 +624,15 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 func_02048bfc(&split[i], TRUE);
                 if (self->result->sub != NULL) {
                     /* Byte arithmetic keeps MWCC from reusing the &split[i] above. */
-                    func_ov006_021df9e8(self->result->sub, (PlayTime *)((u8 *)split + i * 8), i, hl);
+                    ov006_Unk021df9e8_SetRect(self->result->sub, (PlayTime *)((u8 *)split + i * 8), i, hl);
                 }
             }
             data_ov006_021ec884->unk148 = kind;
             data_ov006_021ec884->time = time;
             data_ov006_021ec884->unk144 = best;
-            cnt = func_ov006_021d8e30(&total);
+            cnt = ov006_CountRepeatDigits(&total);
             for (i = 0; i < info->laps; i++) {
-                cnt += func_ov006_021d8e30(&split[i]);
+                cnt += ov006_CountRepeatDigits(&split[i]);
             }
             me->unk_21e[6] = cnt;
             for (j = 0; j < 3; j++) {
@@ -679,8 +679,8 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             if (self->unk6E != 0) {
                 break;
             }
-            if (func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->aid == 0) {
-                if (func_ov006_021e616c(9, data_02097e40->unk32 & ~1) && (data_02097dc8->trig & 3)) {
+            if (ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->aid == 0) {
+                if (ov006_Menu_AllEntriesMatch(9, data_02097e40->unk32 & ~1) && (data_02097dc8->trig & 3)) {
                     self->unk6D = 9;
                     self->subStep++;
                     self->timer = 0;
@@ -695,7 +695,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             if (self->unk6E != 0) {
                 break;
             }
-            if (!func_ov006_021e616c(9, data_02097e40->unk32)) {
+            if (!ov006_Menu_AllEntriesMatch(9, data_02097e40->unk32)) {
                 break;
             }
             self->result->bits.b1 = 1;

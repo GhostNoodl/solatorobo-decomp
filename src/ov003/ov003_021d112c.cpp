@@ -152,7 +152,7 @@ static inline Ov003InObj54 *Ov003In_NewObj54(void) {
     return p;
 }
 
-extern "C" void func_ov003_021d112c(Ov003Actor *self) {
+extern "C" void Ov003Actor_Start(Ov003Actor *self) {
     Ov003InParam *param;
     Ov003InInfo *info;
     u8 n;

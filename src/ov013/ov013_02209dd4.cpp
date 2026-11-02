@@ -23,7 +23,7 @@ extern u16 ActorGroup_CountKind(ActorGroup *p, u16 a);
 extern BOOL func_ov000_021983b0(ActorSub40 *a, u8 b, s32 c, BOOL d);
 
 
-s32 func_ov013_02209b44(Ov013Act_02207968 *self) {
+s32 Ov013Act_02207968_ChooseAttack(Ov013Act_02207968 *self) {
     s32 rnd;
     s32 st;
     u16 pct;
@@ -74,7 +74,7 @@ s32 func_ov013_02209b44(Ov013Act_02207968 *self) {
 void Ov013ActVt_0220bc80_Start(Ov013ActVt_0220bc80 *self) {
     s32 r;
     VecFx32 *v;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     self->unk_f0 = self->rot_y + Rand_PlusMinus(0x3400);
     v = &self->unk_f4;
     Ov013_VecCopy(v, &self->pos);
@@ -100,7 +100,7 @@ void Ov013ActVt_0220bc80_Start(Ov013ActVt_0220bc80 *self) {
     self->unk_cc = 0x5000;
 }
 
-void func_ov013_02209dd4(Ov013ActVt_0220bc80 *self) {
+void Ov013ActVt_0220bc80_State20(Ov013ActVt_0220bc80 *self) {
     VecFx32 d;
     switch (self->fsm->st) {
     case 0:
@@ -126,7 +126,7 @@ void func_ov013_02209dd4(Ov013ActVt_0220bc80 *self) {
     func_ov000_021987b8(self->hit, 0, 0, 0);
 }
 
-void func_ov013_02209ed8(Ov013ActVt_0220bc80 *self) {
+void Ov013ActVt_0220bc80_StateIdle(Ov013ActVt_0220bc80 *self) {
     VecFx32 d;
     switch (self->fsm->st) {
     case 0:
@@ -159,7 +159,7 @@ void func_ov013_02209ed8(Ov013ActVt_0220bc80 *self) {
     func_ov000_021987b8(self->hit, 1, 0, 0);
 }
 
-void func_ov013_0220a080(Ov013ActVt_0220bc80 *self) {
+void Ov013ActVt_0220bc80_StateMove(Ov013ActVt_0220bc80 *self) {
     VecFx32 v;
     if (self->fsm->st == 0) {
         const char *name = data_ov013_0220bea0;
@@ -180,7 +180,7 @@ void func_ov013_0220a080(Ov013ActVt_0220bc80 *self) {
     func_ov000_021987b8(self->hit, 1, 0, 0);
 }
 
-void func_ov013_0220a17c(Ov013ActVt_0220bc80 *self) {
+void Ov013ActVt_0220bc80_StateAttack(Ov013ActVt_0220bc80 *self) {
     ActorSub40 *q;
     if (!Ov013_GameIdle()) {
         func_ov000_02198360(self->fsm, 1, 0);

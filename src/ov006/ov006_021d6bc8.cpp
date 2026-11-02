@@ -26,28 +26,28 @@ extern void *data_ov000_021ccd6c;
 extern void *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
 
-u8 func_ov006_021d8790(ov006_Scene021d6bc8 *self);
-void func_ov006_021db0d8(void);
-void func_ov006_021de2e0(void *p);
-void func_ov006_021e000c(void *p);
-void func_ov006_021e1af0(void *p);
-void func_ov006_021e2430(void *p);
-void func_ov006_021e2878(void *p);
+u8 ov006_Scene_UpdateFade(ov006_Scene021d6bc8 *self);
+void ov006_SyncSlotEntries(void);
+void ov006_Unk021de2e0_Update(void *p);
+void ov006_Unk021e000c_Update(void *p);
+void ov006_Unk021e1af0_Update(void *p);
+void ov006_MarkerSet_Update(void *p);
+void ov006_Unk021e2878_Update(void *p);
 void func_ov000_021b5110(void *p);
 void func_ov000_0218be54(void *p);
 void ActorMgr_Update(void *p);
-int func_ov006_021d6ff0(ov006_Scene021d6bc8 *self);
+int ov006_Race_Update(ov006_Scene021d6bc8 *self);
 void *ActorMgr_GetGroup(void *mgr, u16 kind);
 void func_ov000_0218e0bc(void *p);
-void func_ov006_021d8914(void);
-void func_ov006_021db1b8(u16 a);
+void ov006_ComputeRanks(void);
+void ov006_BroadcastSlotEntries(u16 a);
 
-int func_ov006_021d6bc8(ov006_Scene021d6bc8 *self) {
+int Ov006Vt_021ebfc0_Update(ov006_Scene021d6bc8 *self) {
     int r = 0;
     u8 state = 0;
 
     if (data_ov006_021ec860->unk1C) {
-        state = func_ov006_021d8790(self);
+        state = ov006_Scene_UpdateFade(self);
         if (state == 4) {
             return r;
         }
@@ -56,16 +56,16 @@ int func_ov006_021d6bc8(ov006_Scene021d6bc8 *self) {
         }
     }
     if (state == 0) {
-        func_ov006_021db0d8();
+        ov006_SyncSlotEntries();
     }
     if (self->unk34 == 0) {
-        func_ov006_021de2e0(self->unk1C);
+        ov006_Unk021de2e0_Update(self->unk1C);
         if (self->unk20 != NULL) {
-            func_ov006_021e000c(self->unk20);
+            ov006_Unk021e000c_Update(self->unk20);
         }
-        func_ov006_021e1af0(self->unk28);
-        func_ov006_021e2430(self->unk2C);
-        func_ov006_021e2878(self->unk30);
+        ov006_Unk021e1af0_Update(self->unk28);
+        ov006_MarkerSet_Update(self->unk2C);
+        ov006_Unk021e2878_Update(self->unk30);
         {
             VObj *sub = &data_ov000_021ccd54->sub;
             if (sub != NULL) {
@@ -83,14 +83,14 @@ int func_ov006_021d6bc8(ov006_Scene021d6bc8 *self) {
         }
         func_02065ac0(data_0214a420);
     }
-    r = func_ov006_021d6ff0(self);
+    r = ov006_Race_Update(self);
     if (state == 0 && data_ov006_021ec888->state != 9) {
         void *obj = ActorMgr_GetGroup(data_ov000_021ccd68, 0x7000);
         if (obj != NULL) {
             func_ov000_0218e0bc(obj);
         }
-        func_ov006_021d8914();
-        func_ov006_021db1b8(self->unk6D);
+        ov006_ComputeRanks();
+        ov006_BroadcastSlotEntries(self->unk6D);
     }
     return r;
 }

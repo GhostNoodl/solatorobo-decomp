@@ -13,7 +13,7 @@ static inline Ov003Actor *Ov013_FindActor(u16 id) {
 }
 
 
-void func_ov013_0220aca0(Ov013ActEx_0220a9a8 *self) {
+void Ov013ActEx_0220a9a8_State0a(Ov013ActEx_0220a9a8 *self) {
     s32 v = 0;
     EffectObj *p;
     Ov003Actor *t;

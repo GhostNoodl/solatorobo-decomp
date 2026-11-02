@@ -7,18 +7,18 @@ extern "C" {
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern Ov003Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 
-void func_ov009_021facf0(Ov009ActVt_02216a00 *self) {
+void Ov009ActVt_02216a00_StateDie(Ov009ActVt_02216a00 *self) {
     if (self->fsm->st == 0) {
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5401, 0x15);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x541f, 0x15);
         self->unk_ea_10 = 1;
     }
-    func_ov003_021d6054(self);
+    Ov003Actor_StateDie(self);
 }
 
-void func_ov009_021fad54(Ov003Actor *self) {
+void Ov009ActVt_02216954_Start(Ov003Actor *self) {
     Ov003Actor *a;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     if (self->unk_1a == 0) {
         return;
     }
@@ -36,7 +36,7 @@ void func_ov009_021fad54(Ov003Actor *self) {
 extern char data_ov009_02216ab0[];
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
-void func_ov009_021fada8(Ov009ActVt_022164a0 *self) {
+void Ov009ActVt_022164a0_State20(Ov009ActVt_022164a0 *self) {
     ActorSub40 *st = self->fsm;
     ActorSub44 *s44;
     switch (st->st) {
@@ -90,7 +90,7 @@ static inline Ov003Actor *Ov009_FindActor5(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-void func_ov009_021faf48(Ov009ActVt_022164a0 *self) {
+void Ov009ActVt_022164a0_StateAttack2(Ov009ActVt_022164a0 *self) {
     Ov003Actor *t = Ov009_FindActor5(self->target);
     ActorSub40 *st;
     switch (self->fsm->st) {
@@ -146,7 +146,7 @@ void func_ov009_021faf48(Ov009ActVt_022164a0 *self) {
         g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
         if (g != NULL && g->count <= 3) {
             do {
-                Actor *o = func_ov003_021d69a0(self, 0x5404, 4);
+                Actor *o = Ov003Actor_SpawnAtSelf(self, 0x5404, 4);
                 if (o != NULL) {
                     VecFx32 v;
                     v.z = self->radius;

@@ -58,7 +58,7 @@ extern void *Heap_Alloc(u32 size);
 extern void func_ov000_021c2208(void *p);
 
 #pragma force_active on
-Ov003Scene *func_ov003_021ccda0(void) {
+Ov003Scene *Ov003TaskVt_021f78f4_New(void) {
     Ov003Scene *p = (Ov003Scene *)Heap_Alloc(0xcc);
     if (p != NULL) {
         *(void **)p = data_ov000_021cc060;
@@ -76,7 +76,7 @@ Ov003Scene *func_ov003_021ccda0(void) {
 void func_ov003_021cce1c(void) {
 }
 
-Ov003OamEntry *func_ov003_021cce20(Ov003OamOwner *owner, u16 *flip, Ov003OamEntry *oam, u16 *count) {
+Ov003OamEntry *Ov003Oam_Offset(Ov003OamOwner *owner, u16 *flip, Ov003OamEntry *oam, u16 *count) {
     s32 i;
     u16 f = *flip;
     u32 w = owner->offsetWord;

@@ -96,7 +96,7 @@ void Ov003ActVt_021f979c_Start(Ov003Lift *self) {
     self->unk_302 = 0;
 }
 
-void func_ov003_021ebe08(Ov003Lift *self) {
+void Ov003ActVt_021f979c_Animate(Ov003Lift *self) {
     if (self->unk_cc_7) {
         if (self->unk_bc != NULL) {
             EffectMgr_Kill(data_0214a420, self->unk_bc);

@@ -36,7 +36,7 @@ extern void VEC_MultAdd(s32 scale, const VecFx32 *dir, const VecFx32 *base, VecF
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 a, u16 b);
 
-void func_ov003_021d6e04(Ov003Act *self) {
+void Ov003ActVt_021f7c0c_State20(Ov003Act *self) {
     const char *run = "run00";
     const Ov003Route *r;
     VecFx32 t;
@@ -114,7 +114,7 @@ void func_ov003_021d6e04(Ov003Act *self) {
     }
 }
 
-void func_ov003_021d71c8(Ov003Act *self) {
+void Ov003ActVt_021f7c0c_StateDie(Ov003Act *self) {
     if (self->fsm->st == 0 && self->kind == 0x5815) {
         EffectObj *fx = func_02065f88(6, &self->pos);
         fx->AddPosXYZ(0, self->centerY, 0);
@@ -123,13 +123,13 @@ void func_ov003_021d71c8(Ov003Act *self) {
         fx->AddPosXYZ(0, self->centerY, 0);
         func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
     }
-    func_ov003_021d6054(self);
+    Ov003Actor_StateDie(self);
 }
 
 void Ov003ActVt_021f7b60_Update(Ov003Act *self) {
     u8 a;
     Ov003Pl *p;
-    func_ov003_021d1e8c(self);
+    Ov003Actor_Update(self);
     if (self->fsm->current == 0x15) {
         return;
     }
@@ -153,7 +153,7 @@ void Ov003ActVt_021f7b60_Update(Ov003Act *self) {
     self->model->alpha = a;
 }
 
-void func_ov003_021d732c(Ov003Act *self) {
+void Ov003ActVt_021f7b60_State20(Ov003Act *self) {
     switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, "nut00", 0x1000, 0);
@@ -181,7 +181,7 @@ extern void func_0203f364(ActorSub48 *ctl);
 extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 extern void func_ov000_0218996c(u8 a, u8 b);
 
-void func_ov003_021d73dc(Ov003Act *self) {
+void Ov003ActVt_021f7b60_StateDie(Ov003Act *self) {
     switch (self->fsm->st) {
     case 0: {
         ActorSub48 *ctl;
@@ -249,10 +249,10 @@ void func_ov003_021d73dc(Ov003Act *self) {
         w = self->fsm;
         w->timer++;
         if (w->timer > 0x3c) {
-            func_ov003_021d6a3c(self, 1, 1, 1);
+            Ov003Actor_Defeat(self, 1, 1, 1);
             return;
         }
-        func_ov003_021d6954(self, 0x1f - (self->fsm->timer >> 1));
+        Ov003Actor_SetAlpha(self, 0x1f - (self->fsm->timer >> 1));
         break;
     }
     }

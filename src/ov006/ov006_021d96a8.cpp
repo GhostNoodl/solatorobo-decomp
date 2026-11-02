@@ -6,9 +6,9 @@ extern "C" {
 
 extern u8 *data_02097e40;
 void *Wh_GetSharedData(void *a, int idx);
-u16 func_ov006_021e60e8(int type, u16 mask);
-BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self);
-void func_ov006_021e5e00(ov006_Unk021ec888 *p);
+u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
+BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *self);
+void ov006_Menu_ShowObj(ov006_Unk021ec888 *p);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 
 static inline BOOL ov006_FadeIdle(void) {
@@ -45,7 +45,7 @@ static inline void ov006_HideAll(ov006_Task021ec040 *self) {
     self->unk28->flags |= 2;
 }
 
-BOOL func_ov006_021d96a8(ov006_Task021ec040 *self) {
+BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
     BOOL ret = TRUE;
     BOOL send = FALSE;
     if (data_ov006_021ec860->unk1C != 0 && data_ov006_021ec888->state != 9) {
@@ -135,7 +135,7 @@ BOOL func_ov006_021d96a8(ov006_Task021ec040 *self) {
             if (self->unk2C != 0) {
                 ov006_HideAll(self);
                 if (send) {
-                    func_ov006_021e4c5c(data_ov006_021ec888);
+                    ov006_Menu_RequestShutdown(data_ov006_021ec888);
                 }
                 data_ov006_021ec860->unk20 = 1;
                 self->subState = 0x1e;
@@ -165,9 +165,9 @@ BOOL func_ov006_021d96a8(ov006_Task021ec040 *self) {
     case 0x16:
         if (data_ov006_021ec888->state == 9) {
             self->subState = 0x32;
-        } else if (func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->aid == 0) {
+        } else if (ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->aid == 0) {
             u16 k = *(u16 *)(data_02097e40 + 0x32);
-            if (k == func_ov006_021e60e8(10, k)) {
+            if (k == ov006_Menu_GetEntryMask_021e60e8(10, k)) {
                 self->unk3C = 0xb;
                 self->subState++;
             }
@@ -178,7 +178,7 @@ BOOL func_ov006_021d96a8(ov006_Task021ec040 *self) {
     case 0x17:
         if (data_ov006_021ec888->state == 9) {
             self->subState = 0x32;
-        } else if (func_ov006_021e60e8(0xb, 1) != 0) {
+        } else if (ov006_Menu_GetEntryMask_021e60e8(0xb, 1) != 0) {
             ov006_HideAll(self);
             data_ov006_021ec860->unk20 = 2;
             self->subState = 0x1e;
@@ -201,7 +201,7 @@ BOOL func_ov006_021d96a8(ov006_Task021ec040 *self) {
         self->unk28->flags |= 2;
         func_0203cb78(0x1000, 0, 0);
         func_0203cb78(0x1000, 0, 1);
-        func_ov006_021e5e00(data_ov006_021ec888);
+        ov006_Menu_ShowObj(data_ov006_021ec888);
         self->subState++;
     case 0x33:
         if (data_ov006_021ec888->state != 9) {

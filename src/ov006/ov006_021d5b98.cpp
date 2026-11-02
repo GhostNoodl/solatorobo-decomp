@@ -129,7 +129,7 @@ static inline void ov006_Game_SetColor(u8 r, u8 g, u8 b) {
     game->unk_ca = game->unk_cd;
 }
 
-BOOL func_ov006_021d6140(ov006_Task021d6140 *self) {
+BOOL Ov006Vt_021ebfc0_Load(ov006_Task021d6140 *self) {
     char buf[0x21];
     int i;
     func_020359d0(data_0214b105, 7, 0);
@@ -218,8 +218,8 @@ BOOL func_ov000_0218f110(void *p);
 BOOL func_ov000_021b5578(void *p);
 void func_ov000_021b5dc0(void *p);
 int func_0206e264(ov006_Party *party);
-ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
-Ov006Racer *func_ov006_021ea430(u32 id, u8 a, const VecFx32 *pos, const Rot16 *rot);
+ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
+Ov006Racer *Ov006Racer_New(u32 id, u8 a, const VecFx32 *pos, const Rot16 *rot);
 BOOL ActorMgr_IsReady(void *p);
 void func_0204a2f0(void *a, u16 b);
 BOOL SndMgr_IsLoadDone(void *a);
@@ -231,7 +231,7 @@ static inline int ov006_GetPartyValue(ov006_Unk021ccd6c *self) {
     return func_0206e264(self->party);
 }
 
-BOOL func_ov006_021d630c(ov006_Task021d630c *self) {
+BOOL Ov006Vt_021ebfc0_IsLoaded(ov006_Task021d630c *self) {
     BOOL result;
     int i;
     int zero;
@@ -323,9 +323,9 @@ BOOL func_ov006_021d630c(ov006_Task021d630c *self) {
                 rot.y = zero;
                 rot.z = zero;
             }
-            slot = func_ov006_021db060(data_ov006_021ec884, j);
+            slot = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, j);
             if (slot->active) {
-                Ov006Racer *prop = func_ov006_021ea430(slot->unkC, j, &pos, &rot);
+                Ov006Racer *prop = Ov006Racer_New(slot->unkC, j, &pos, &rot);
                 if (prop != NULL) {
                     slot->actorId = prop->id;
                     Obj0218c208_AddPoint(data_ov000_021ccd64, &pos, rot.y);
@@ -435,24 +435,24 @@ extern "C" {
 extern ov006_Unk02097e40 *data_02097e40;
 
 ov006_SlotManager *ov006_GetSlotManager(void);
-void func_ov006_021cd580(int a, void *b, int c);
+void ov006_Manager_DispatchMenuCb(int a, void *b, int c);
 ov006_Gauge021d6724 *Ov006Vt_021ec2bc_Ctor(void *p);
-void func_ov006_021de008(ov006_Gauge021d6724 *p);
+void ov006_Unk021ddcc0_Load(ov006_Gauge021d6724 *p);
 void func_ov000_0216da2c(void *p, int a, int b, int c);
 VecFx32021d6724 *Ov006Vt_021ec1fc_Ctor(void *p);
-void func_ov006_021e16b0(VecFx32021d6724 *p);
+void ov006_Unk021e16b0_Load(VecFx32021d6724 *p);
 void *func_0206ec48(u32 id);
-void func_ov006_021e1e6c(VecFx32021d6724 *a, const void *b);
-void func_ov006_021e1ddc(VecFx32021d6724 *a, const char *b, int c, int d);
+void ov006_Unk021e1e6c_PlayText(VecFx32021d6724 *a, const void *b);
+void ov006_Unk021e1ddc_SetLabel(VecFx32021d6724 *a, const char *b, int c, int d);
 VecFx32021d6724 *Ov006Vt_021ec2cc_Ctor(void *p);
-void func_ov006_021e22e4(VecFx32021d6724 *p);
+void ov006_MarkerSet_Load(VecFx32021d6724 *p);
 VecFx32021d6724 *Ov006Vt_021ec2ac_Ctor(void *p);
-void func_ov006_021e279c(VecFx32021d6724 *p);
+void ov006_Unk021e279c_Load(VecFx32021d6724 *p);
 BOOL func_0203e688(void);
 void func_02039518(void *p);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 u16 func_02046ab4(ov006_Unk02097e40 *a);
-u16 func_ov006_021e60e8(int type, u16 mask);
+u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
 void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self);
 
 static inline void ov006_Gauge_Init(ov006_Gauge021d6724 *g, int a, int b, int c) {
@@ -473,7 +473,7 @@ static inline void VecFx32_Set3(VecFx32021d6724 *p, int x, int y, int z) {
 }
 
 static inline void ov006_Gauge_Set(u8 n, ov006_Gauge021d6724 *g) { g->cur = OV006_MIN((u8)(n ? 1 : 0), n); g->max = n; }
-BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
+BOOL Ov006Vt_021ebfc0_Setup(ov006_Task021d6724 *self) {
     int zero = 0;
     BOOL result = zero;
     switch (self->subState) {
@@ -483,13 +483,13 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         Model *model;
         VecFx32021d6724 *p;
         u8 n;
-        func_ov006_021cd580(7, ov006_GetSlotManager(), result);
+        ov006_Manager_DispatchMenuCb(7, ov006_GetSlotManager(), result);
         g = (ov006_Gauge021d6724 *)Heap_Alloc(0x38);
         if (g != NULL) {
             g = Ov006Vt_021ec2bc_Ctor(g);
         }
         self->unk1C = g;
-        func_ov006_021de008(g);
+        ov006_Unk021ddcc0_Load(g);
         ov006_Gauge_Init(self->unk1C, data_ov006_021ec884->unk13C ? 2 : 1, data_ov006_021ec884->time, data_ov006_021ec884->unk144);
         ov006_Gauge_Set(data_ov006_021ec884->info->unkB, self->unk1C);
         model = (Model *)Heap_Alloc(sizeof(Model));
@@ -510,23 +510,23 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
             p = Ov006Vt_021ec1fc_Ctor(p);
         }
         self->unk28 = p;
-        func_ov006_021e16b0(p);
-        func_ov006_021e1e6c(self->unk28, func_0206ec48(data_ov006_021ec884->unk6));
-        func_ov006_021e1ddc(self->unk28, "menu/skyrace_map", info->unk4, zero);
+        ov006_Unk021e16b0_Load(p);
+        ov006_Unk021e1e6c_PlayText(self->unk28, func_0206ec48(data_ov006_021ec884->unk6));
+        ov006_Unk021e1ddc_SetLabel(self->unk28, "menu/skyrace_map", info->unk4, zero);
         VecFx32_SetXY(self->unk28, -0x2c, 0xc);
         p = (VecFx32021d6724 *)Heap_Alloc(0xa4);
         if (p != NULL) {
             p = Ov006Vt_021ec2cc_Ctor(p);
         }
         self->unk2C = p;
-        func_ov006_021e22e4(p);
+        ov006_MarkerSet_Load(p);
         VecFx32_SetXY(self->unk2C, 0x24, -0x2c);
         p = (VecFx32021d6724 *)Heap_Alloc(0x64);
         if (p != NULL) {
             p = Ov006Vt_021ec2ac_Ctor(p);
         }
         self->unk30 = p;
-        func_ov006_021e279c(p);
+        ov006_Unk021e279c_Load(p);
         VecFx32_SetXY(self->unk30, -0x2d, 9);
         self->unk30->unk50 = (info->unkC << 12) / 100;
         VecFx32_Set3(self->unk30, info->unkE << 12, zero, info->unk10 << 12);
@@ -570,7 +570,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
             break;
         }
         mask = data_02097e40->unk32;
-        if (mask == func_ov006_021e60e8(7, mask)) {
+        if (mask == ov006_Menu_GetEntryMask_021e60e8(7, mask)) {
             ov006_Msg021d6724 msg;
             msg.unk0 = 0;
             msg.unk2 = 0;
@@ -593,7 +593,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
             break;
         }
         mask = data_02097e40->unk32;
-        if (mask != func_ov006_021e60e8(8, mask)) {
+        if (mask != ov006_Menu_GetEntryMask_021e60e8(8, mask)) {
             break;
         }
         self->subState = 40;

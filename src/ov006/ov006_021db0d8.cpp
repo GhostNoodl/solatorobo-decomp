@@ -23,7 +23,7 @@ static inline void ov006_SlotSub_Copy(ov006_SlotSub *dst, const ov006_SlotSub *s
     }
 }
 
-void func_ov006_021db0d8(void) {
+void ov006_SyncSlotEntries(void) {
     u8 i;
     if (data_ov006_021ec860->unk1C) {
         if (data_ov006_021ec888 == NULL) {

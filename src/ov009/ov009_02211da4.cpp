@@ -10,7 +10,7 @@ struct Ov009Bits16 {
     u16 b2 : 14;
 };
 
-void func_ov009_02211da4(Ov009Names *self, void *res) {
+void Ov009Names_Fill_02211da4(Ov009Names *self, void *res) {
     char *a = func_0207011c(res);
     char *b = func_020701d4(res);
     u8 *c = func_0206fef8(res);
@@ -39,13 +39,13 @@ struct Ov009SpawnDesc {
 
 extern Ov003Actor *func_ov000_02192b24(void *desc);
 
-void func_ov009_02211e6c(Ov009ActSpin *self) {
+void Ov009ActSpin_Init(Ov009ActSpin *self) {
     Ov009SpawnDesc desc;
     Ov003Actor *o;
     s32 i;
     s32 k;
-    self->unk_d8 = (void *)func_ov009_02211da4;
-    func_ov003_021d0fc0(self);
+    self->unk_d8 = (void *)Ov009Names_Fill_02211da4;
+    Ov003Actor_Init(self);
     k = 0x4091;
     if (self->kind == 0x5050) {
         k++;

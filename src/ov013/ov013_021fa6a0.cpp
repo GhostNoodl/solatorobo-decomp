@@ -9,14 +9,14 @@ extern char data_ov013_0220b5b8[];
 extern char data_ov013_0220b5ca[];
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern BOOL func_020621c4(void);
-extern BOOL func_ov003_021d1c00(Ov003Actor *self, Ov013Msg *msg);
+extern BOOL Ov003Actor_HandleMsg(Ov003Actor *self, Ov013Msg *msg);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *t, s32 a);
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(ActorGroup *group, u16 kind);
 extern Ov003Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern BOOL func_ov000_021983b0(ActorSub40 *a, u8 b, s32 c, BOOL d);
-s32 func_ov013_021fc400(Ov013Boss *self);
+s32 Ov013Boss_ChooseAttack(Ov013Boss *self);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
@@ -24,7 +24,7 @@ void Ov013Boss_Start(Ov013Boss *self) {
     ActorSub48 *m;
     ActorSub44 *n;
     Ov003Actor *p;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     self->hit->unk_30 = 0;
     m = self->hit;
     m->unk_9a_1 = 0;
@@ -48,7 +48,7 @@ void Ov013Boss_Start(Ov013Boss *self) {
     self->unk_f8 = 0;
     self->unk_b6 = 0x3c;
     if (func_020621c4()) {
-        func_ov003_021d6bac(self, data_ov013_0220ae4e);
+        Ov003Actor_ScaleStats(self, data_ov013_0220ae4e);
         self->unk_f4 = 0x1800;
     }
 }
@@ -73,7 +73,7 @@ void Ov013Boss_Update(Ov013Boss *self) {
     if (self->unk_b6 != 0) {
         return;
     }
-    n = func_ov013_021fc400(self);
+    n = Ov013Boss_ChooseAttack(self);
     self->fsm->flags |= 1ull << n;
     self->unk_b6 = 0x96;
     if (n == 0x10) {
@@ -81,15 +81,15 @@ void Ov013Boss_Update(Ov013Boss *self) {
     }
 }
 
-void func_ov013_021fa888(Ov013Boss *self, Ov013Msg *msg) {
+void Ov013Boss_HandleMsg(Ov013Boss *self, Ov013Msg *msg) {
     if (msg->type == 9) {
         func_02049f44(data_02097e4c, 0x41, &self->pos, 0);
         func_02049f44(data_02097e4c, 0x40, &self->pos, 0);
     }
-    func_ov003_021d1c00(self, msg);
+    Ov003Actor_HandleMsg(self, msg);
 }
 
-void func_ov013_021fa8e4(Ov013Boss *self) {
+void Ov013Boss_State20(Ov013Boss *self) {
     ActorSub40 *s = self->fsm;
     ActorSub44 *n;
     switch (s->st) {
@@ -131,7 +131,7 @@ void func_ov013_021fa8e4(Ov013Boss *self) {
     }
 }
 
-void func_ov013_021faa40(Ov013Boss *self) {
+void Ov013Boss_StateIdle(Ov013Boss *self) {
     Ov003Actor *t;
     if (self->fsm->st == 0) {
         ActorSub44 *n;
@@ -185,7 +185,7 @@ static inline s32 Ov013_DistXZ(const VecFx32 *a, const VecFx32 *b) {
     return Ov013_Sqrt64(sq);
 }
 
-void func_ov013_021faae8(Ov013Boss *self) {
+void Ov013Boss_StateAttack(Ov013Boss *self) {
     VecFx32 v;
     v.x = self->unk_b8.x;
     v.y = self->unk_b8.y;

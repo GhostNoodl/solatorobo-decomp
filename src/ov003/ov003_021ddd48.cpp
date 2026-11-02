@@ -3,8 +3,8 @@
 
 extern "C" {
 
-extern s32 func_ov003_021f093c(void *p);
-extern BOOL func_ov003_021f0abc(void *p, BOOL deep);
+extern s32 Ov003CntSelf_CountLiving(void *p);
+extern BOOL Ov003Switch_AreTargetsDone(void *p, BOOL deep);
 extern void func_020627b4(void);
 
 static inline BOOL Ov003SwPart_IsOn(ActorSub44 *p) {
@@ -19,7 +19,7 @@ void Ov003ActVt_021f7e7c_Update(ActorEx *self) {
     s32 v = -1;
     switch (self->unk_1a) {
     case 3:
-        switch (func_ov003_021f093c(self->targetObj)) {
+        switch (Ov003CntSelf_CountLiving(self->targetObj)) {
         case 3:
         case 4:
             if (self->unk_18 == 0) {
@@ -37,7 +37,7 @@ void Ov003ActVt_021f7e7c_Update(ActorEx *self) {
         }
         break;
     case 2:
-        if (func_ov003_021f0abc(self->targetObj, TRUE)) {
+        if (Ov003Switch_AreTargetsDone(self->targetObj, TRUE)) {
             if (self->unk_18 == 0) {
                 changed = TRUE;
                 v = 1;

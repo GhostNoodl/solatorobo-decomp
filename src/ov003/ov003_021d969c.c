@@ -14,7 +14,7 @@ static inline void Ov003Sequence_Step(Ov003Sequence *self) {
     self->b4 = 0;
 }
 
-void func_ov003_021d969c(Ov003Sequence *self, u8 v) {
+void Ov003Sequence_Signal(Ov003Sequence *self, u8 v) {
     if (!self->active) {
         return;
     }

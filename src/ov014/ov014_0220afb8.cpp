@@ -16,7 +16,7 @@ static inline void Ov014_TickA(ActorSub40 *st) {
     }
 }
 
-void func_ov014_0220abf8(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_StateShoot(Ov014Act_02209280 *self) {
     switch (self->fsm->st) {
     case 0: {
         u32 mask = 0;
@@ -142,7 +142,7 @@ void func_ov014_0220abf8(Ov014Act_02209280 *self) {
 extern void func_ov014_0220c09c(Ov014Act_02209280 *self);
 extern void func_ov014_0220cd74(Ov014Act_02209280 *self);
 
-void func_ov014_0220afb8(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_StateAttack(Ov014Act_02209280 *self) {
     switch (self->step->op) {
     case 9:
         func_ov014_0220c09c(self);
@@ -162,7 +162,7 @@ extern void func_ov000_02191618(void *p);
 extern void func_ov000_021911c8(void *a, s32 b);
 extern void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 b);
 
-void func_ov014_0220afe8(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_StateAttack2(Ov014Act_02209280 *self) {
     ActorSub40 *st = self->fsm;
     switch (st->st) {
     case 0:

@@ -54,8 +54,8 @@ struct Ov003ShotDef {
 };
 
 // The ov003 shot (vtable data_ov003_021f7de4, 0xf4 bytes): a projectile that flies by its def
-// record, drops trail effects and hits what it touches (start func_ov003_021daec0, update
-// func_ov003_021db244, hit test func_ov003_021dbd80, explosion func_ov003_021dc0fc).
+// record, drops trail effects and hits what it touches (start Ov003Shot_Start, update
+// Ov003Shot_StateThrown, hit test Ov003Shot_CheckHits, explosion Ov003Shot_StateDie).
 class Ov003Shot : public ActorEx {
 public:
     Ov003ShotDef *def;
@@ -72,7 +72,7 @@ public:
 SIZE_ASSERT(Ov003Shot, 0xf4);
 
 // The homing shot (vtable data_ov003_021f9a80, def data_ov003_021f6c04, update
-// func_ov003_021ed15c): flies after the actor Actor::target, and like Ov003Shot when the player
+// Ov003ActVt_021f9a80_StateThrown): flies after the actor Actor::target, and like Ov003Shot when the player
 // fired it.
 class Ov003HomingShot : public Ov003Shot {
 };
@@ -107,8 +107,8 @@ struct Ov003BeamDef {
 };
 
 // The ov003 beam (vtable data_ov003_021f7d4c, 0xfc bytes): two growing effect layers along rot
-// and a hit test along them (start Ov003ActVt_021f7d4c_Start, update func_ov003_021dc27c, layers
-// func_ov003_021dc3fc, hit test func_ov003_021dc840).
+// and a hit test along them (start Ov003ActVt_021f7d4c_Start, update Ov003Beam_StateThrown, layers
+// Ov003Beam_UpdateLayer, hit test Ov003Beam_Fire).
 class Ov003Beam : public ActorEx {
 public:
     Ov003BeamDef *def;
@@ -119,12 +119,12 @@ public:
 SIZE_ASSERT(Ov003Beam, 0xfc);
 
 extern "C" {
-void func_ov003_021daec0(Ov003Shot *self);
-void func_ov003_021db244(Ov003Shot *self);
-BOOL func_ov003_021dbd80(Ov003Shot *self);
-void func_ov003_021dc0c8(Ov003Shot *self);
-void func_ov003_021dc3fc(Ov003Beam *self, s32 layer, s32 mode);
-BOOL func_ov003_021dc840(Ov003Beam *self);
+void Ov003Shot_Start(Ov003Shot *self);
+void Ov003Shot_StateThrown(Ov003Shot *self);
+BOOL Ov003Shot_CheckHits(Ov003Shot *self);
+void Ov003Shot_ResetTimers(Ov003Shot *self);
+void Ov003Beam_UpdateLayer(Ov003Beam *self, s32 layer, s32 mode);
+BOOL Ov003Beam_Fire(Ov003Beam *self);
 }
 
 #endif

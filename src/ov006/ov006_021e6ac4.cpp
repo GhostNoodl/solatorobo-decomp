@@ -14,7 +14,7 @@ static inline void Ov006Racer_Ack(Ov006Racer *self, ActorMsg *msg) {
     msg->type = 0;
 }
 
-BOOL func_ov006_021e6ac4(Ov006Racer *self, ActorMsg *msg) {
+BOOL Ov006ActVt_021ec4f4_HandleMsg(Ov006Racer *self, ActorMsg *msg) {
     BOOL pass;
     if (!self->vfunc_14()) {
         Ov006Racer_Ack(self, msg);

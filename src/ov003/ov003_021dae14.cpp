@@ -20,12 +20,12 @@ Ov003Shot *Ov003ActVt_021f7de4_DtorDelete(Ov003Shot *self) {
     return self;
 }
 
-ActorEx *func_ov003_021dae44(ActorEx *self) {
+ActorEx *Ov003ActorEx_Ctor(ActorEx *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void func_ov003_021dae58(ActorEx *self) {
+void Ov003Shot_Init(ActorEx *self) {
     VecFx32 v;
     func_ov000_0219433c(self);
     v.x = 0;

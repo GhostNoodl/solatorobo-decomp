@@ -19,7 +19,7 @@ BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 u8 *Target_Get(void *a);
 u16 func_ov000_02199bc8(void *a, void *pos, u16 t, s32 n);
 Robo021ca458 *func_ov000_0219bf90(void);
-void func_ov003_021f0c60(void *self, s32 a);
+void Ov003Pickup_Update(void *self, s32 a);
 
 void func_ov000_02195d88(ActorEx *self) {
     ActorSub40 *s = self->fsm;
@@ -107,7 +107,7 @@ void func_ov000_02195d88(ActorEx *self) {
                 }
                 if (self->targetObj->unk_03 != 0) {
                     self->targetObj->target = 0xffff;
-                    func_ov003_021f0c60(self, 0);
+                    Ov003Pickup_Update(self, 0);
                 }
             }
             func_ov000_02198360(self->fsm, 0x15, 0);

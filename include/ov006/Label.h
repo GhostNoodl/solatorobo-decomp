@@ -15,7 +15,7 @@ struct ov006_ResHandle : public VObj {
     u8 loaded;          // 0x48
 };
 
-// A file loader (vtable data_ov006_021ec25c, 0x98 bytes): func_ov006_021dbbac opens arcName/name
+// A file loader (vtable data_ov006_021ec25c, 0x98 bytes): ov006_ResLoader_Update opens arcName/name
 // through res once request is set.
 struct ov006_ResLoader : public VObj {
     u8 step;              // 0x04
@@ -26,8 +26,8 @@ struct ov006_ResLoader : public VObj {
 };
 
 // A model part loaded from a file and slid into place (vtable data_ov006_021ec2fc, 0xec bytes,
-// ctor Ov006Vt_021ec2fc_Ctor). ov006_Label_Set names the file and the part; func_ov006_021dc054
-// runs it and func_ov006_021dc578 draws the part at origin + pos.
+// ctor Ov006Vt_021ec2fc_Ctor). ov006_Label_Set names the file and the part; ov006_Label_Update
+// runs it and ov006_Label_Draw draws the part at origin + pos.
 struct ov006_Label : public VObj {
     s32 state;            // 0x04
     s16 timer;            // 0x08

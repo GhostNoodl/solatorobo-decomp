@@ -4,7 +4,7 @@ extern "C" {
 
 extern u8 data_ov014_02217f18[];
 
-void func_ov014_022152d4(Ov014ActEx_022142fc *self) {
+void Ov014ActEx_022142fc_StateDie(Ov014ActEx_022142fc *self) {
     self->vfunc_08();
 }
 

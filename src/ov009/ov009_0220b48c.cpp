@@ -6,13 +6,13 @@ extern "C" {
 
 
 void Ov009ActVt_022176ec_Start(Ov009ActVt_022176ec *self) {
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     self->unk_f0 = self->pos;
     self->unk_ea |= 0x1000;
     if (self->hit->unk_54 & 0x400) {
         return;
     }
-    func_ov003_021d6a3c(self, 1, 1, 0);
+    Ov003Actor_Defeat(self, 1, 1, 0);
 }
 
 extern void func_0203f364(ActorSub48 *p);

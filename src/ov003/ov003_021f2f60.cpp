@@ -49,7 +49,7 @@ static inline s32 Ov003_DistXZ(const VecFx32 *a, const VecFx32 *b) {
     return Ov003_Dist2D(sq);
 }
 
-void func_ov003_021f3198(Ov003PropBlink *self);
+void Ov003PropBlink_Apply(Ov003PropBlink *self);
 
 void Ov003ActVt_021fa440_Start(Ov003PropBlink *self) {
     Ov000ActVt_021cc7cc_Start(self);
@@ -57,12 +57,12 @@ void Ov003ActVt_021fa440_Start(Ov003PropBlink *self) {
     if (!(self->unk_18 & 0xff00)) {
         self->phase = 2;
     }
-    func_ov003_021f3198(self);
+    Ov003PropBlink_Apply(self);
     self->model->boxTest = 0;
     self->radius = self->unk_1e << 4;
 }
 
-void func_ov003_021f2fac(Ov003PropBlink *self) {
+void Ov003ActVt_021fa440_RunState(Ov003PropBlink *self) {
     Ov003BlinkTarget *t = func_ov000_0219bf90();
     switch (self->phase) {
     case 0:
@@ -71,7 +71,7 @@ void func_ov003_021f2fac(Ov003PropBlink *self) {
         }
         if (Ov003_DistXZ(&self->pos, &t->pos) < self->radius) {
             self->phase++;
-            func_ov003_021f3198(self);
+            Ov003PropBlink_Apply(self);
         }
         break;
     case 1:
@@ -80,7 +80,7 @@ void func_ov003_021f2fac(Ov003PropBlink *self) {
         }
         if (self->unk_18 & 0xff) {
             self->phase++;
-            func_ov003_021f3198(self);
+            Ov003PropBlink_Apply(self);
         } else {
             self->model->visible = 0;
             self->phase = 10;
@@ -92,7 +92,7 @@ void func_ov003_021f2fac(Ov003PropBlink *self) {
         }
         if (Ov003_DistXZ(&self->pos, &t->pos) > self->radius) {
             self->phase++;
-            func_ov003_021f3198(self);
+            Ov003PropBlink_Apply(self);
         }
         break;
     case 3:
@@ -101,7 +101,7 @@ void func_ov003_021f2fac(Ov003PropBlink *self) {
         }
         if (self->unk_18 & 0xff00) {
             self->phase = 0;
-            func_ov003_021f3198(self);
+            Ov003PropBlink_Apply(self);
         } else {
             self->model->visible = 0;
             self->phase = 10;

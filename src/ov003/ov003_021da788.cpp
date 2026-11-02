@@ -17,7 +17,7 @@ struct Ov003Follow {
     void (*callback)(Ov003Follow *self);
 };
 
-// The same object for the scaling callback (func_ov003_021da854): EffectObj::unk_04 is the scale,
+// The same object for the scaling callback (Ov003Scaled_ApplyScale): EffectObj::unk_04 is the scale,
 // 0x10 is EffectObj::SetScale and 0x40 its base scale.
 class Ov003Scaled {
 public:
@@ -39,8 +39,8 @@ extern void func_01ffc9fc(Ov003Vec *out, const Ov003Vec *in, u16 ang);
 extern const VecFx32 data_ov003_021f7cc4;
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *p);
-extern void func_ov003_021da520(Ov003Follow *self);
-extern void func_ov003_021da620(Ov003Follow *self);
+extern void Ov003Follower_Follow(Ov003Follow *self);
+extern void Ov003Follower_FollowRot(Ov003Follow *self);
 
 static inline Ov003Follow *Ov003_SpawnFollow(s32 fxId, Ov003Src *src, const Ov003Vec *offset) {
     Ov003Follow *p = NULL;
@@ -49,23 +49,23 @@ static inline Ov003Follow *Ov003_SpawnFollow(s32 fxId, Ov003Src *src, const Ov00
         if (p != NULL) {
             p->id = src->id;
             p->offset = *offset;
-            p->callback = func_ov003_021da520;
+            p->callback = Ov003Follower_Follow;
         }
     }
     return p;
 }
 
-Ov003Follow *func_ov003_021da788(s32 fxId, Ov003Src *src, const Ov003Vec *offset) {
+Ov003Follow *Ov003_SpawnFollowFx(s32 fxId, Ov003Src *src, const Ov003Vec *offset) {
     return Ov003_SpawnFollow(fxId, src, offset);
 }
 
-Ov003Follow *func_ov003_021da7e8(s32 fxId, Ov003Src *src, const Ov003Vec *offset) {
+Ov003Follow *Ov003_SpawnFollowRotFx(s32 fxId, Ov003Src *src, const Ov003Vec *offset) {
     Ov003Follow *p = Ov003_SpawnFollow(fxId, src, offset);
-    p->callback = func_ov003_021da620;
+    p->callback = Ov003Follower_FollowRot;
     return p;
 }
 
-void func_ov003_021da854(Ov003Scaled *self) {
+void Ov003Scaled_ApplyScale(Ov003Scaled *self) {
     if (self == NULL) {
         return;
     }
@@ -77,20 +77,20 @@ void func_ov003_021da854(Ov003Scaled *self) {
     self->SetScale(&v);
 }
 
-Ov003Follow *func_ov003_021da8e4(s32 fxId, const VecFx32 *pos, s32 scale) {
+Ov003Follow *Ov003_SpawnScaledFx(s32 fxId, const VecFx32 *pos, s32 scale) {
     Ov003Follow *p = (Ov003Follow *)func_02065f88(fxId, pos);
     p->id = scale;
-    p->callback = (void (*)(Ov003Follow *))func_ov003_021da854;
+    p->callback = (void (*)(Ov003Follow *))Ov003Scaled_ApplyScale;
     return p;
 }
 
-void func_ov003_021da904(Ov003Follow *p, Ov003Src *src, const Ov003Vec *offset) {
+void Ov003Follow_Attach(Ov003Follow *p, Ov003Src *src, const Ov003Vec *offset) {
     if (p == NULL) {
         return;
     }
     p->id = src->id;
     p->offset = *offset;
-    p->callback = func_ov003_021da520;
+    p->callback = Ov003Follower_Follow;
 }
 
 static inline void Ov003_HeapDelete(void *p) {
@@ -102,7 +102,7 @@ static inline void Ov003_HeapDelete(void *p) {
     data_02097dd0->cur = old;
 }
 
-Ov003FxList *func_ov003_021da940(Ov003FxList *self) {
+Ov003FxList *Ov003FxList_Dtor(Ov003FxList *self) {
     Ov003FxNode *n = self->head;
     while (n != NULL) {
         Ov003FxNode *next = n->next;
@@ -113,7 +113,7 @@ Ov003FxList *func_ov003_021da940(Ov003FxList *self) {
     return self;
 }
 
-void func_ov003_021da9ac(Ov003FxList *self, u8 id, EffectObj *obj) {
+void Ov003FxList_Add(Ov003FxList *self, u8 id, EffectObj *obj) {
     Ov003FxNode *node = (Ov003FxNode *)Heap_Alloc(sizeof(Ov003FxNode));
     node->id = id;
     node->handle = obj->id;
@@ -185,7 +185,7 @@ static inline void Ov003_RotX(Ov003Vec *out, const Ov003Vec *in, u16 ang) {
     out->z = z;
 }
 
-void func_ov003_021daae4(Ov003FxList *self, u8 id, const VecFx32 *pos, const EffectRot *rot, const VecFx32 *scale, const VecFx32 *ofs, const u16 *angles) {
+void Ov003FxList_Place(Ov003FxList *self, u8 id, const VecFx32 *pos, const EffectRot *rot, const VecFx32 *scale, const VecFx32 *ofs, const u16 *angles) {
     Ov003FxNode *n;
     for (n = self->head; n != NULL; n = n->next) {
         if (id == n->id) {

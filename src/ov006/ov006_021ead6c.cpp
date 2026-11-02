@@ -66,7 +66,7 @@ static inline void RotYXZ(MtxFx33 *m, const ActorRot *rot) {
 
 #define MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
-void func_ov006_021ead6c(ActorEx *self) {
+void Ov006ActVt_021ec67c_StateIdle(ActorEx *self) {
     VecFx32 d;
     MtxFx33 m;
     ov006_Msg021ead6c msg;

@@ -8,7 +8,7 @@ extern char data_ov009_022172af[];
 extern char data_ov009_022172bb[];
 extern void func_ov000_02191418(Model0218fe1c *m, u16 a, BOOL b);
 extern BOOL func_ov000_02191508(Model0218fe1c *m);
-void func_ov009_0220b258(Ov009ActVt_022172e4 *self) {
+void Ov009ActVt_022172e4_StateAttack(Ov009ActVt_022172e4 *self) {
     ActorSub40 *st = self->fsm;
     ActorSub44 *s44;
     switch (st->st) {

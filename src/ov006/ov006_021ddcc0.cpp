@@ -59,8 +59,8 @@ extern char data_ov006_021ec178[];
 extern char data_ov006_021ec185[];
 extern char data_ov006_021ec191[];
 void func_0206e900(char *dst, const char *src);
-void func_ov006_021dcf7c(ov006_ObjA021de008 *p);
-void func_ov006_021dd450(ov006_ObjB021de008 *p);
+void ov006_Unk021dcf7c_Load(ov006_ObjA021de008 *p);
+void ov006_Unk021dd450_Load(ov006_ObjB021de008 *p);
 
 static inline void ov006_Unk021ddcc0_dtor(ov006_Unk021ddcc0 *self) {
     self->vtbl = data_ov006_021ec2bc;
@@ -95,7 +95,7 @@ ov006_Unk021ddcc0 *Ov006Vt_021ec2bc_DtorDelete(ov006_Unk021ddcc0 *self) {
     return self;
 }
 
-void func_ov006_021de008(ov006_Unk021ddcc0 *self) {
+void ov006_Unk021ddcc0_Load(ov006_Unk021ddcc0 *self) {
     char file[0x20];
     ov006_ObjA021de008 *a;
     ov006_ObjB021de008 *b;
@@ -116,7 +116,7 @@ void func_ov006_021de008(ov006_Unk021ddcc0 *self) {
         a->unk1C = 0;
     }
     self->unk14 = a;
-    func_ov006_021dcf7c(a);
+    ov006_Unk021dcf7c_Load(a);
     self->unk14->unk1C = -0x2000;
     b = (ov006_ObjB021de008 *)Heap_Alloc(sizeof(ov006_ObjB021de008));
     if (b != NULL) {
@@ -128,7 +128,7 @@ void func_ov006_021de008(ov006_Unk021ddcc0 *self) {
         b->unk1C = 0;
     }
     self->unk18 = b;
-    func_ov006_021dd450(b);
+    ov006_Unk021dd450_Load(b);
     self->unk18->unk14 = -0x2000;
     c = (ov006_ObjC021de008 *)Heap_Alloc(sizeof(ov006_ObjC021de008));
     if (c != NULL) {

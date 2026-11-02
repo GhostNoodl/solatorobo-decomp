@@ -28,25 +28,25 @@ extern "C" {
 extern char data_ov006_021ec864[];
 extern char *data_0208ccc0;
 
-void func_ov006_021ce048(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
-void func_ov006_021ce3f0(ov006_Emblem *self);
+void ov006_DrawSprite3D(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
+void ov006_Emblem_LoadModels(ov006_Emblem *self);
 void func_ov000_02173648(Task *self);
 void func_02041c20(Model *self, int a, void *b);
 BOOL func_02054f10(Model *a, int b);
 
-void func_ov006_021ce374(void) {
+void ov006_Emblem_LoadRes(void) {
 }
 
-BOOL func_ov006_021ce378(void) {
+BOOL ov006_Emblem_IsResLoaded(void) {
     return TRUE;
 }
 
-void func_ov006_021ce380(ov006_Emblem *self) {
+void ov006_Emblem_Setup(ov006_Emblem *self) {
     self->unk_04_1 = 0;
     if (self->vfunc_28()) {
         return;
     }
-    func_ov006_021ce3f0(self);
+    ov006_Emblem_LoadModels(self);
     self->unk44 = 1;
     self->parent = NULL;
     func_ov000_02173648(self);
@@ -60,7 +60,7 @@ BOOL Ov006Task_GetFlag4(ov006_Emblem *self) {
     return ov006_Emblem_Bit4(self) ? TRUE : FALSE;
 }
 
-void func_ov006_021ce3f0(ov006_Emblem *self) {
+void ov006_Emblem_LoadModels(ov006_Emblem *self) {
     Model *model;
     Model *model2;
 
@@ -90,7 +90,7 @@ void func_ov006_021ce3f0(ov006_Emblem *self) {
     func_02041d9c(self->unk40, 0, 0);
     ov006_Model_SetPos(self->unk40, 0, 0, 0);
     self->unk40->unk_150 = 0xfffe019a;
-    self->unk40->unk_158 = (void *)func_ov006_021ce048;
+    self->unk40->unk_158 = (void *)ov006_DrawSprite3D;
     func_02041c20(self->unk40, 0, &self->unk48);
 }
 
@@ -105,16 +105,16 @@ extern "C" {
 extern char data_ov006_021ec864[];
 extern char *data_0208ccc0;
 
-void func_ov006_021ce3f0(ov006_Emblem *self);
-void func_ov006_021ce048(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
+void ov006_Emblem_LoadModels(ov006_Emblem *self);
+void ov006_DrawSprite3D(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 void func_ov000_02173648(Task *self);
 void func_02041c20(Model *self, int a, void *b);
 BOOL func_02054f10(Model *a, int b);
 
-void func_ov006_021ce560(void) {
+void ov006_Emblem_PreUpdate(void) {
 }
 
-void func_ov006_021ce564(ov006_Emblem *self) {
+void ov006_Emblem_Animate(ov006_Emblem *self) {
     int v = 0;
     if (self->unk48 < 0x1000000) {
         v = self->unk48 + 0x8000;
@@ -153,7 +153,7 @@ extern "C" {
 
 extern void *data_ov006_021ebd40;
 
-void func_ov006_021cf360(ov006_TaskCE *self, u16 a);
+void ov006_TaskCE_ShowHelp(ov006_TaskCE *self, u16 a);
 
 static inline void ov006_TaskCE_Init(ov006_TaskCE *self) {
     OV006_TASKBASE_CTOR(self);
@@ -167,7 +167,7 @@ static inline void ov006_TaskCE_Init(ov006_TaskCE *self) {
     self->unk54 = NULL;
 }
 
-ov006_TaskCE *func_ov006_021ce6bc(void) {
+ov006_TaskCE *ov006_TaskCE_New(void) {
     ov006_TaskCE *self = (ov006_TaskCE *)Heap_Alloc(sizeof(ov006_TaskCE));
     if (self != NULL) {
         ov006_TaskCE_Init(self);
@@ -222,7 +222,7 @@ BOOL func_ov006_021ce734(UiList *list, UiListItem *arg) {
 BOOL func_ov006_021ce954(UiList *list, UiListItem *arg) {
     ov006_TaskCE *self = (ov006_TaskCE *)list->owner;
     if (arg != NULL) {
-        func_ov006_021cf360(self, arg->id);
+        ov006_TaskCE_ShowHelp(self, arg->id);
     }
     return TRUE;
 }
@@ -263,10 +263,10 @@ namespace m_021cec5c {
 
 extern "C" {
 
-void func_ov006_021cec5c(void) {
+void ov006_TaskCE_LoadRes(void) {
 }
 
-BOOL func_ov006_021cec60(void) {
+BOOL ov006_TaskCE_IsResLoaded(void) {
     return TRUE;
 }
 
@@ -296,14 +296,14 @@ void *MsgRes_GetString(void *a, int id);
 void func_02043904(void *p);
 void func_02043b20(void *p);
 void func_ov000_02173648(Task *self);
-void func_ov006_021daea0(ov006_SlotManager *a);
-u8 func_ov006_021db078(ov006_SlotManager *self);
-void func_ov006_021d8f44(void);
+void ov006_SlotManager_Reset_021daea0(ov006_SlotManager *a);
+u8 ov006_SlotManager_CountItems(ov006_SlotManager *self);
+void ov006_InitOwnerSlot(void);
 ov006_Entry021cec68 *ov006_GetPriceEntry(u32 id);
 void func_ov000_021c22d8(void *self);
 void func_ov000_021c5fc4(void *self);
 void func_ov000_021c5fd0(void *self, const void *s);
-void func_ov006_021e341c(ov006_CaptionPanel *self, const void *s);
+void ov006_CaptionPanel_PlayText(ov006_CaptionPanel *self, const void *s);
 BOOL func_ov006_021ce734(UiList *list, UiListItem *arg);
 BOOL func_ov006_021ce954(UiList *list, UiListItem *arg);
 }
@@ -320,7 +320,7 @@ static inline u8 ov006_SlotManager_Get14A(ov006_SlotManager *self, u8 i) {
 
 // The list items are constructed in place through `item` (round jkH): with a `NewItem` inline
 // the inline's result is a compiler temp, numbered below `res`, and the two swap registers.
-void func_ov006_021cec68(ov006_TaskCE *self) {
+void ov006_TaskCE_Setup(ov006_TaskCE *self) {
     u8 n;
     u8 i;
     u8 k;
@@ -339,7 +339,7 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
         func_02043b20(g->unk_8b0);
     }
     self->unk_04 &= ~2;
-    func_ov006_021daea0(data_ov006_021ec884);
+    ov006_SlotManager_Reset_021daea0(data_ov006_021ec884);
     self->fadeLen = 0x19000;
     self->vfunc_3c();
     void *res = data_02149ef8;
@@ -382,8 +382,8 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
     self->unk48->vfunc_08();
     self->unk48->flags |= 4;
     ov006_TaskCE_ShowMenus(self);
-    func_ov006_021d8f44();
-    n = func_ov006_021db078(data_ov006_021ec884);
+    ov006_InitOwnerSlot();
+    n = ov006_SlotManager_CountItems(data_ov006_021ec884);
     if (n != 0) {
         if (data_ov006_021ec884->unk149 == 0) {
             self->unk50 = ov006_NewHudList();
@@ -418,8 +418,8 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
             }
             self->unk54 = p;
         }
-        func_ov006_021e2c14(self->unk54);
-        func_ov006_021e341c(self->unk54, MsgRes_GetString(res, 0x183));
+        ov006_CaptionPanel_Load(self->unk54);
+        ov006_CaptionPanel_PlayText(self->unk54, MsgRes_GetString(res, 0x183));
         {
             k = 0;
             for (i = 0; i < 3; i++) {
@@ -472,14 +472,14 @@ void func_ov006_021cf7c8(ov006_TaskCE *self);
 void func_ov006_021cf89c(ov006_TaskCE *self);
 void func_ov006_021cfa80(ov006_TaskCE *self);
 void func_ov006_021cfc60(ov006_TaskCE *self);
-void func_ov006_021db65c(void);
+void ov006_SetupDefaultSlots(void);
 void *func_0205976c(ov006_DataRes *res, u32 idx);
 u32 func_0205975c(ov006_DataRes *res, u32 idx);
 u16 func_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
-ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
-void func_ov006_021e2f3c(ov006_CaptionPanel *a);
+ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
+void ov006_Unk021e2f3c_Update(ov006_CaptionPanel *a);
 
-void func_ov006_021cf360(ov006_TaskCE *self, u16 id) {
+void ov006_TaskCE_ShowHelp(ov006_TaskCE *self, u16 id) {
     const void *str;
     void *res = data_02149ef8;
     switch (id) {
@@ -520,7 +520,7 @@ namespace m_021cf414 {
 extern "C" {
 
 // Both tests have no effect, so MWCC drops the second load and compare but keeps the first.
-void func_ov006_021cf414(ov006_TaskCE *self) {
+void ov006_TaskCE_UpdateActive(ov006_TaskCE *self) {
     if (self->unk4C == NULL) {
         return;
     }
@@ -547,14 +547,14 @@ void func_ov006_021cf7c8(ov006_TaskCE *self);
 void func_ov006_021cf89c(ov006_TaskCE *self);
 void func_ov006_021cfa80(ov006_TaskCE *self);
 void func_ov006_021cfc60(ov006_TaskCE *self);
-void func_ov006_021db65c(void);
+void ov006_SetupDefaultSlots(void);
 void *func_0205976c(ov006_DataRes *res, u32 idx);
 u32 func_0205975c(ov006_DataRes *res, u32 idx);
 u16 func_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
-ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
-void func_ov006_021e2f3c(ov006_CaptionPanel *a);
+ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
+void ov006_Unk021e2f3c_Update(ov006_CaptionPanel *a);
 
-void func_ov006_021cf420(ov006_TaskCE *self) {
+void ov006_TaskCE_PreUpdate(ov006_TaskCE *self) {
     u8 *block;
     u16 n;
     u16 i;
@@ -599,13 +599,13 @@ void func_ov006_021cf420(ov006_TaskCE *self) {
         func_ov006_021cfa80(self);
         break;
     case 4: {
-        func_ov006_021db65c();
+        ov006_SetupDefaultSlots();
         block = data_02fe152c->unk4C + 0x1d0;
         ent = func_0205976c(data_02fe152c, 0xe);
         n = func_0205975c(data_02fe152c, 0xe);
         for (i = 0; i < n; i++) {
             if (func_02059544(data_02fe152c, block, ent, 1, i)) {
-                func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC = i | 0x7000;
+                ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC = i | 0x7000;
                 break;
             }
         }
@@ -640,7 +640,7 @@ void func_ov006_021cf420(ov006_TaskCE *self) {
     if (self->unk50 != NULL) {
         self->unk50->vfunc_1c();
     }
-    func_ov006_021e2f3c(self->unk54);
+    ov006_Unk021e2f3c_Update(self->unk54);
 }
 
 }
@@ -651,7 +651,7 @@ namespace m_021cf7c4 {
 
 extern "C" {
 
-void func_ov006_021cf7c4(void) {
+void ov006_TaskCE_PostUpdate(void) {
 }
 
 }
@@ -662,13 +662,13 @@ namespace m_021cf7c8 {
 
 extern "C" {
 
-BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self);
-void func_ov006_021cf360(ov006_TaskCE *self, u16 id);
+BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *self);
+void ov006_TaskCE_ShowHelp(ov006_TaskCE *self, u16 id);
 
 void func_ov006_021cf7c8(ov006_TaskCE *self) {
     switch (self->subStep) {
     case 0:
-        func_ov006_021e4c5c(data_ov006_021ec888);
+        ov006_Menu_RequestShutdown(data_ov006_021ec888);
         self->subStep++;
         break;
     case 1:
@@ -719,7 +719,7 @@ void func_ov006_021cf89c(ov006_TaskCE *self) {
             return;
         }
         ov006_TaskCE_HideMenus(self);
-        func_ov006_021cf360(self, UiList_GetCurrent(self->unk44)->id);
+        ov006_TaskCE_ShowHelp(self, UiList_GetCurrent(self->unk44)->id);
         self->step = 3;
         self->subStep = 0;
         break;
@@ -738,7 +738,7 @@ void func_ov006_021cfa80(ov006_TaskCE *self) {
     switch (self->subStep) {
     case 0:
         ov006_TaskCE_HideMenus(self);
-        func_ov006_021cf360(self, UiList_GetCurrent(self->unk44)->id);
+        ov006_TaskCE_ShowHelp(self, UiList_GetCurrent(self->unk44)->id);
         self->subStep++;
         break;
     case 1:
@@ -762,7 +762,7 @@ void func_ov006_021cfa80(ov006_TaskCE *self) {
         OV006_DELETE_OBJECT(self->unk4C);
         self->unk44->flags &= ~4;
         self->unk48->flags &= ~2;
-        func_ov006_021cf360(self, UiList_GetCurrent(self->unk44)->id);
+        ov006_TaskCE_ShowHelp(self, UiList_GetCurrent(self->unk44)->id);
         self->subStep = 1;
         break;
     }
@@ -811,7 +811,7 @@ void func_ov006_021cfc60(ov006_TaskCE *self) {
     }
 }
 
-BOOL func_ov006_021cfe08(ov006_TaskCE *self) {
+BOOL ov006_Task_TryReleaseCurrent(ov006_TaskCE *self) {
     if (self->vfunc_54()) {
         ov006_SetCurrent021ccd40(NULL);
     }
@@ -822,7 +822,7 @@ static inline BOOL ov006_IsCurrent(void *p) {
     return data_ov000_021ccd40 == p;
 }
 
-BOOL func_ov006_021cfe5c(void *p) {
+BOOL ov006_Task_IsCurrent(void *p) {
     return ov006_IsCurrent(p) ? TRUE : FALSE;
 }
 
@@ -836,7 +836,7 @@ extern "C" {
 
 extern void *data_ov006_021ebcc0;
 
-void func_ov006_021e309c(ov006_CaptionPanel *a);
+void ov006_CaptionPanel_Draw(ov006_CaptionPanel *a);
 
 void func_ov006_021cfe84(ov006_TaskCE *self) {
     if (self->unk44 != NULL) {
@@ -852,7 +852,7 @@ void func_ov006_021cfe84(ov006_TaskCE *self) {
         self->unk50->vfunc_20();
     }
     if (self->step == 3) {
-        func_ov006_021e309c(self->unk54);
+        ov006_CaptionPanel_Draw(self->unk54);
     }
 }
 
@@ -868,7 +868,7 @@ static inline void ov006_TaskD0_Init(ov006_TaskD0 *self) {
     self->unk110 = 0;
 }
 
-ov006_TaskD0 *func_ov006_021cfefc(void) {
+ov006_TaskD0 *ov006_TaskD0_New(void) {
     ov006_TaskD0 *self = (ov006_TaskD0 *)Heap_Alloc(sizeof(ov006_TaskD0));
     if (self != NULL) {
         ov006_TaskD0_Init(self);
@@ -904,11 +904,11 @@ namespace m_021d0188 {
 
 extern "C" {
 
-BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self);
+BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *self);
 
-void func_ov006_021d0188(void) {
+void ov006_TaskD0_LoadRes(void) {
     if (data_ov006_021ec888->state != 1) {
-        func_ov006_021e4c5c(data_ov006_021ec888);
+        ov006_Menu_RequestShutdown(data_ov006_021ec888);
     }
 }
 
@@ -930,19 +930,19 @@ extern void *data_ov000_021cadcc;
 extern void *data_ov006_021ebf40;
 
 BOOL func_0201fd04(void);
-BOOL func_ov006_021e4c38(ov006_Unk021ec888 *self);
+BOOL ov006_Menu_RequestStart(ov006_Unk021ec888 *self);
 BOOL func_ov006_021e4c84(ov006_Unk021ec888 *self);
-BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self);
+BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *self);
 BOOL func_ov006_021e4cb4(ov006_Unk021ec888 *self);
 BOOL func_ov006_021e4ce8(ov006_Unk021ec888 *self, ov006_MenuData *data);
-void func_ov006_021e463c(ov006_Unk021ec888 *self);
+void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
 ov006_MenuNode *ov006_Menu_FindNode(ov006_Unk021ec888 *self, int id);
 void *MsgRes_GetString(void *a, int id);
 void func_ov000_02173648(Task *self);
 void func_02040b0c(void *dst, int *dstLen, const void *src, int *srcLen);
-void func_ov006_021d0ab8(ov006_TaskD0 *self);
+void ov006_TaskD0_RefreshList(ov006_TaskD0 *self);
 
-BOOL func_ov006_021d01ac(ov006_TaskD0 *self) {
+BOOL ov006_TaskD0_IsResLoaded(ov006_TaskD0 *self) {
     BOOL r = FALSE;
     switch (self->step) {
     case 0:
@@ -951,7 +951,7 @@ BOOL func_ov006_021d01ac(ov006_TaskD0 *self) {
             r = TRUE;
             self->unk110 = TRUE;
         } else if (data_ov006_021ec888->state == 1) {
-            func_ov006_021e4c38(data_ov006_021ec888);
+            ov006_Menu_RequestStart(data_ov006_021ec888);
             self->step = 1;
         }
         break;
@@ -968,7 +968,7 @@ BOOL func_ov006_021d01ac(ov006_TaskD0 *self) {
     return r;
 }
 
-void func_ov006_021d023c(ov006_TaskD0 *self) {
+void ov006_TaskD0_Setup(ov006_TaskD0 *self) {
     UiListItem *item;
     u16 i;
     void *res;
@@ -1042,7 +1042,7 @@ static inline void ov006_TaskD0_Close(ov006_TaskD0 *self) {
     self->unk_04_0 = 1;
 }
 
-void func_ov006_021d065c(ov006_TaskD0 *self) {
+void ov006_TaskD0_UpdateActive(ov006_TaskD0 *self) {
     u16 trg = data_02097dc8->trig;
     if (self->unk110) {
         if (trg & 1) {
@@ -1054,7 +1054,7 @@ void func_ov006_021d065c(ov006_TaskD0 *self) {
         self->unk104->flags &= ~0x2000000;
         ov006_TaskD0_Close(self);
         ov006_TaskD0_HideWindows(self);
-        func_ov006_021e4c5c(data_ov006_021ec888);
+        ov006_Menu_RequestShutdown(data_ov006_021ec888);
     } else if (trg & 1) {
         UiListItem *node = UiList_GetCurrent(self->unk104);
         if (node->unk_10 == 0) {
@@ -1081,26 +1081,26 @@ void func_ov006_021d065c(ov006_TaskD0 *self) {
                 ov006_TaskD0_HideWindows(self);
             } else {
                 func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
-                func_ov006_021d0ab8(self);
+                ov006_TaskD0_RefreshList(self);
             }
         }
     }
 }
 
-void func_ov006_021d0938(ov006_TaskD0 *self) {
+void ov006_TaskD0_PreUpdate(ov006_TaskD0 *self) {
     if (self->unk110) {
         self->unk10C->vfunc_1c();
         return;
     }
     if (!data_ov006_021ec888->unk2C && data_ov006_021ec888->unk26) {
-        func_ov006_021d0ab8(self);
+        ov006_TaskD0_RefreshList(self);
         data_ov006_021ec888->unk26 = 0;
     }
     self->unk104->vfunc_1c();
     self->unk108->vfunc_1c();
 }
 
-void func_ov006_021d09b8(ov006_TaskD0 *self) {
+void ov006_TaskD0_PostUpdate(ov006_TaskD0 *self) {
     if (self->state != 0) {
         return;
     }
@@ -1132,11 +1132,11 @@ void func_ov006_021d0a40(ov006_TaskD0 *self) {
     self->unk104->vfunc_20();
     self->unk108->vfunc_20();
     if (data_ov006_021ec888 != NULL) {
-        func_ov006_021e463c(data_ov006_021ec888);
+        ov006_Menu_ReleaseObj(data_ov006_021ec888);
     }
 }
 
-void func_ov006_021d0ab8(ov006_TaskD0 *self) {
+void ov006_TaskD0_RefreshList(ov006_TaskD0 *self) {
     u16 j;
     UiListItem *item;
     int id;
@@ -1204,7 +1204,7 @@ static inline void ov006_TaskD0C_Init(ov006_TaskD0C *self) {
     self->unk124 = NULL;
 }
 
-ov006_TaskD0C *func_ov006_021d0c64(void) {
+ov006_TaskD0C *ov006_TaskD0C_New(void) {
     ov006_TaskD0C *self = (ov006_TaskD0C *)Heap_Alloc(sizeof(ov006_TaskD0C));
     if (self != NULL) {
         ov006_TaskD0C_Init(self);
@@ -1240,10 +1240,10 @@ namespace m_021d0f44 {
 
 extern "C" {
 
-void func_ov006_021d0f44(void) {
+void ov006_TaskD0C_LoadRes(void) {
 }
 
-BOOL func_ov006_021d0f48(void) {
+BOOL ov006_TaskD0C_IsResLoaded(void) {
     return TRUE;
 }
 
@@ -1257,8 +1257,8 @@ extern u8 *data_02097e40;
 
 void *MsgRes_GetString(void *a, int id);
 void func_ov000_02173648(Task *self);
-void func_ov006_021daea0(ov006_SlotManager *a);
-BOOL func_ov006_021db0a8(ov006_SlotManager *a, int b);
+void ov006_SlotManager_Reset_021daea0(ov006_SlotManager *a);
+BOOL ov006_SlotManager_HasItem(ov006_SlotManager *a, int b);
 u32 ov006_CopyOwnerInfo(void *a, int b);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 
@@ -1275,7 +1275,7 @@ static inline void *ov006_GetRes(void) {
     return data_02149ef8;
 }
 
-void func_ov006_021d0f50(ov006_TaskD0C *self) {
+void ov006_TaskD0C_Setup(ov006_TaskD0C *self) {
     u16 i;
     void *res;
     if (self->vfunc_28()) {
@@ -1320,7 +1320,7 @@ void func_ov006_021d0f50(ov006_TaskD0C *self) {
     self->unk124->flags |= 0x20000;
     self->unk124->flags |= 2;
     func_ov000_0215c1bc(self->unk124, 0x8000, MsgRes_GetString(res, 0x198));
-    func_ov006_021daea0(data_ov006_021ec884);
+    ov006_SlotManager_Reset_021daea0(data_ov006_021ec884);
     data_ov006_021ec860->unk1C = 1;
     MI_CpuFill8(data_02097e40 + 0x18e0, 0, 0x200);
     ov006_SlotPacked_Clear(&self->unk102);
@@ -1329,9 +1329,9 @@ void func_ov006_021d0f50(ov006_TaskD0C *self) {
     self->unk102.isType1 = 1;
     self->unk102.unkC = 0;
     self->unk102.unk10 = 0;
-    if (func_ov006_021db0a8(data_ov006_021ec884, 9)) {
+    if (ov006_SlotManager_HasItem(data_ov006_021ec884, 9)) {
         self->unk102.unk10 = 1;
-    } else if (func_ov006_021db0a8(data_ov006_021ec884, 10)) {
+    } else if (ov006_SlotManager_HasItem(data_ov006_021ec884, 10)) {
         self->unk102.unk10 = 2;
     }
     ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk101, 1, &self->unk102, 0x18);
@@ -1355,19 +1355,19 @@ extern "C" {
 
 extern void *data_02149ef8;
 
-u16 func_ov006_021e60e8(int type, u16 mask);
+u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
-void func_ov006_021db258(void);
-void func_ov006_021d1b8c(ov006_TaskD0C *self);
+void ov006_UpdateNetSlots(void);
+void ov006_TaskD0C_RefreshSlots(ov006_TaskD0C *self);
 void *MsgRes_GetString(void *a, int id);
 
-void func_ov006_021d1490(ov006_TaskD0C *self) {
+void ov006_TaskD0C_UpdateActive(ov006_TaskD0C *self) {
     u16 trg = data_02097dc8->trig;
     if (self->unk3C) {
         return;
     }
     if (trg & 2) {
-        if (self->param == 2 && func_ov006_021e60e8(1, 1)) {
+        if (self->param == 2 && ov006_Menu_GetEntryMask_021e60e8(1, 1)) {
             return;
         }
         self->unk3C = 0x32;
@@ -1389,15 +1389,15 @@ void func_ov006_021d1490(ov006_TaskD0C *self) {
     func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
 }
 
-void func_ov006_021d1570(ov006_TaskD0C *self) {
+void ov006_TaskD0C_PreUpdate(ov006_TaskD0C *self) {
     if (self->state == 9 || self->state == 0xd) {
         if (data_ov006_021ec888->state != 9) {
             u8 n;
             ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk101, 1, &self->unk102, 0x18);
-            func_ov006_021db258();
+            ov006_UpdateNetSlots();
             n = data_ov006_021ec884->numActive;
             if (self->unk40 != n) {
-                func_ov006_021d1b8c(self);
+                ov006_TaskD0C_RefreshSlots(self);
                 if (self->param == 1) {
                     void *res = data_02149ef8;
                     if (self->unk40 <= 1 && n >= 2) {
@@ -1427,7 +1427,7 @@ extern "C" {
 
 void func_ov006_021d16a0(ov006_TaskD0C *self);
 
-void func_ov006_021d1694(ov006_TaskD0C *self) {
+void ov006_TaskD0C_PostUpdate(ov006_TaskD0C *self) {
     func_ov006_021d16a0(self);
 }
 
@@ -1442,10 +1442,10 @@ extern "C" {
 extern void *data_02149ef8;
 extern u8 data_ov000_021ccd34;
 
-u16 func_ov006_021e60e8(int type, u16 mask);
+u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
 BOOL func_ov006_021e4bec(ov006_Unk021ec888 *self, int a);
-BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self);
-void func_ov006_021e5e00(ov006_Unk021ec888 *self);
+BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *self);
+void ov006_Menu_ShowObj(ov006_Unk021ec888 *self);
 void *MsgRes_GetString(void *a, int id);
 
 static inline void ov006_TaskD0C_ShowAll(ov006_TaskD0C *self) {
@@ -1460,7 +1460,7 @@ static inline u8 ov006_SlotManager_MinUnk10(void) {
     u8 mn;
     mn = 0;
     for (i = 0; i < data_ov006_021ec884->numActive; i++) {
-        ov006_Slot *slot = func_ov006_021db060(data_ov006_021ec884, i);
+        ov006_Slot *slot = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i);
         u8 v;
         if (slot == NULL) {
             continue;
@@ -1490,7 +1490,7 @@ void func_ov006_021d16a0(ov006_TaskD0C *self) {
         if (self->param != 2) {
             return;
         }
-        if (!func_ov006_021e60e8(1, 1)) {
+        if (!ov006_Menu_GetEntryMask_021e60e8(1, 1)) {
             return;
         }
         self->unk3C = 5;
@@ -1543,7 +1543,7 @@ void func_ov006_021d16a0(ov006_TaskD0C *self) {
         self->unk3C = 60;
         break;
     case 30:
-        func_ov006_021e5e00(data_ov006_021ec888);
+        ov006_Menu_ShowObj(data_ov006_021ec888);
         self->unk3C++;
     case 31:
         if (data_ov006_021ec888->state != 9) {
@@ -1554,7 +1554,7 @@ void func_ov006_021d16a0(ov006_TaskD0C *self) {
         ov006_TaskD0C_ShowAll(self);
         self->unk_04 |= 6;
         func_ov000_0218084c(data_ov000_021ccd44, 0x26, 0);
-        func_ov006_021e4c5c(data_ov006_021ec888);
+        ov006_Menu_RequestShutdown(data_ov006_021ec888);
         self->unk3C = 70;
         break;
     case 60:
@@ -1590,12 +1590,12 @@ extern const u8 data_ov006_021eb710[][3];
 extern const u16 data_ov006_021eb78c[];
 extern void *data_ov006_021ebec0;
 
-void func_ov006_021e463c(ov006_Unk021ec888 *self);
+void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
 void func_02040b0c(void *dst, int *dstLen, const void *src, int *srcLen);
 void *MsgRes_GetString(void *a, int id);
 void func_ov006_021d3498(ov006_TaskD1F *self, u16 id, BOOL dir);
 ov006_Unk020706a0 *func_020706a0(u16 id);
-void func_ov006_021e139c(ov006_Gauge *self, int a, int b, u8 c);
+void ov006_Gauge_SetRatio(ov006_Gauge *self, int a, int b, u8 c);
 ov006_TaskD1F *func_ov006_021d1f68(ov006_TaskD1F *self);
 
 void func_ov006_021d1b24(ov006_TaskD0C *self) {
@@ -1606,7 +1606,7 @@ void func_ov006_021d1b24(ov006_TaskD0C *self) {
     self->unk120->vfunc_20();
     self->unk124->vfunc_20();
     if (data_ov006_021ec888 != NULL) {
-        func_ov006_021e463c(data_ov006_021ec888);
+        ov006_Menu_ReleaseObj(data_ov006_021ec888);
     }
 }
 
@@ -1618,12 +1618,12 @@ static inline BOOL ov006_Window_IsBit1(UiList *self) {
     return ov006_Window_Bit1(self) ? TRUE : FALSE;
 }
 
-void func_ov006_021d1b8c(ov006_TaskD0C *self) {
+void ov006_TaskD0C_RefreshSlots(ov006_TaskD0C *self) {
     u8 i;
     ov006_Slot *slot;
     UiListItem *item;
     for (i = 0; i < 4; i++) {
-        slot = func_ov006_021db060(data_ov006_021ec884, i);
+        slot = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i);
         item = (UiListItem *)func_ov000_02154b58(self->unk11C, i);
         if (slot->active) {
             int srcLen = 0xb;
@@ -1654,7 +1654,7 @@ void func_ov006_021d1b8c(ov006_TaskD0C *self) {
     }
 }
 
-ov006_TaskD1F *func_ov006_021d1dbc(void) {
+ov006_TaskD1F *ov006_TaskD1F_New(void) {
     ov006_TaskD1F *obj = (ov006_TaskD1F *)Heap_Alloc(sizeof(ov006_TaskD1F));
     if (obj != NULL) {
         obj = func_ov006_021d1f68(obj);
@@ -1681,15 +1681,15 @@ BOOL func_ov006_021d1df8(UiList *window, UiListItem *node) {
         }
         func_ov006_021d3498(t, id, old > id);
         p = func_020706a0(id);
-        func_ov006_021e139c(t->gauges[0], p->unk4 << 12, 0xa000, 1);
-        func_ov006_021e139c(t->gauges[1], p->unk5 << 12, 0xa000, 1);
-        func_ov006_021e139c(t->gauges[2], p->unk6 << 12, 0xa000, 1);
-        func_ov006_021e139c(t->gauges[3], p->unk7 << 12, 0xa000, 1);
+        ov006_Gauge_SetRatio(t->gauges[0], p->unk4 << 12, 0xa000, 1);
+        ov006_Gauge_SetRatio(t->gauges[1], p->unk5 << 12, 0xa000, 1);
+        ov006_Gauge_SetRatio(t->gauges[2], p->unk6 << 12, 0xa000, 1);
+        ov006_Gauge_SetRatio(t->gauges[3], p->unk7 << 12, 0xa000, 1);
     }
     return TRUE;
 }
 
-BOOL func_ov006_021d1f00(UiList *window, UiListItem *node) {
+BOOL ov006_ListCb_StoreId(UiList *window, UiListItem *node) {
     int *out = (int *)window->owner;
     if (node != NULL) {
         func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
@@ -1711,7 +1711,7 @@ ov006_TaskD1F *func_ov006_021d1f68(ov006_TaskD1F *self) {
     self->unk48 = 1;
     self->unk49 = 0;
     self->unk4A = 0xffff;
-    slot = func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5);
+    slot = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5);
     if (slot != NULL) {
         self->unk4A = slot->unkC;
     }

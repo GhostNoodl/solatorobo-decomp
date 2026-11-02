@@ -18,7 +18,7 @@ extern BOOL func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(void);
 extern u32 Rand_UpTo(u32 v);
 
-void func_ov003_021d9dbc(Ov003Vec *out, const Ov003Vec *a, const Ov003Vec *b, s32 dist, s32 yoff) {
+void Ov003Vec_ApproachWithin(Ov003Vec *out, const Ov003Vec *a, const Ov003Vec *b, s32 dist, s32 yoff) {
     Ov003Vec d;
     Ov003Vec r;
     if (VEC_Distance(a, b) <= dist) {
@@ -45,7 +45,7 @@ void Ov003Vec_MultAdd(Ov003Vec *out, const Ov003Vec *dir, const Ov003Vec *base, 
     *out = r;
 }
 
-s32 func_ov003_021d9edc(u16 id) {
+s32 Ov003_CountActorsOfKind(u16 id) {
     return ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, id), id);
 }
 
@@ -55,7 +55,7 @@ void Ov003Vec_ToRot(Ov003Rot *out, const Ov003Vec *v) {
     out->z = 0;
 }
 
-void func_ov003_021d9f80(Ov003Rot *out, const Ov003Vec *a, const Ov003Vec *b) {
+void Ov003Rot_LookAt(Ov003Rot *out, const Ov003Vec *a, const Ov003Vec *b) {
     Ov003Vec d;
     d.x = a->x - b->x;
     d.y = a->y - b->y;
@@ -88,7 +88,7 @@ static inline BOOL Ov003_GameIdle(void) {
     return true;
 }
 
-BOOL func_ov003_021da03c(Ov003Actor *self) {
+BOOL Ov003Actor_CanAct(Ov003Actor *self) {
     if (!Ov003_GameIdle()) {
         return FALSE;
     }
@@ -116,7 +116,7 @@ static inline EffectObj *Ov003_SpawnScatter(const Ov003Vec *base, s32 range, s32
     return func_02065f88(fx, &p);
 }
 
-void func_ov003_021da108(Actor *self, s32 range, s32 fx, s32 base, s32 top) {
+void Ov003Actor_SpawnScatterFx(Actor *self, s32 range, s32 fx, s32 base, s32 top) {
     Ov003Vec pos;
     VecFx32 off = data_ov003_021f4988;
     pos = *(Ov003Vec *)&self->pos; // copied as an Ov003Vec (see ov003/Vec.h)
@@ -145,7 +145,7 @@ static inline void Ov003_RotY(VecFx32 *out, s32 angle, const VecFx32 *in) {
     MTX_MultVec33(in, &m, out);
 }
 
-VecFx32 func_ov003_021da214(Ov003Actor *actor) {
+VecFx32 Ov003Actor_GetSub44Offset(Ov003Actor *actor) {
     VecFx32 v = data_ov003_021f4988;
     if (actor != NULL && actor->unk_44 != NULL) {
         v = *&actor->unk_44->unk_0c;

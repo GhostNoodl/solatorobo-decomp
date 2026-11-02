@@ -53,7 +53,7 @@ extern void func_ov000_021c8408(u32 a, u32 b, u32 c, u32 d, u16 e, u32 f, u32 g,
 extern void func_ov000_021c2208(void *p);
 extern u32 func_02035bd4(const void *a, const void *b, s32 c);
 
-void func_ov003_021cd0f4(Ov003Title *self) {
+void Ov003TaskVt_021f78f4_LoadRes(Ov003Title *self) {
     if (self->unk_0c != 0) {
         u16 id = self->unk_0c;
         void *res;
@@ -68,7 +68,7 @@ void func_ov003_021cd0f4(Ov003Title *self) {
     func_020359fc(data_ov003_021f78c4, data_ov003_021f78cd, 2, 0);
 }
 
-BOOL func_ov003_021cd198(Ov003Title *self) {
+BOOL Ov003TaskVt_021f78f4_IsResLoaded(Ov003Title *self) {
     BOOL a = (func_02035bd4((void *)self->unk_50, (void *)self->unk_54, 2) & 1) ? TRUE : FALSE;
     return (a & func_02035bd4(data_ov003_021f78c4, data_ov003_021f78cd, 2)) ? TRUE : FALSE;
 }

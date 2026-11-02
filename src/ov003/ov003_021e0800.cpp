@@ -31,7 +31,7 @@ extern u32 Rand_UpTo(u32 max);
 
 #define OV003_FX32_CONST(x) ((s32)(((x) > 0) ? ((x) * 4096.0f + 0.5f) : ((x) * 4096.0f - 0.5f)))
 
-void func_ov003_021e0848(ActorEx *self) {
+void Ov003ActVt_021f8058_StateIdle(ActorEx *self) {
     ActorSub40 *w = self->fsm;
     switch (w->st) {
     case 0: {

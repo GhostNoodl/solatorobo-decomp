@@ -2,7 +2,7 @@
 
 extern "C" {
 
-BOOL func_ov012_0220574c(Ov012ActExVt_0220b1e8 *self) {
+BOOL Ov012ActExVt_0220b1e8_Draw(Ov012ActExVt_0220b1e8 *self) {
     BOOL r;
     if (!(self->unk_d0 & 0x100000)) {
         self->mdl.trans.x = self->pos.x;
@@ -31,7 +31,7 @@ BOOL func_ov012_0220574c(Ov012ActExVt_0220b1e8 *self) {
     return r;
 }
 
-void func_ov012_02205818(Ov012ActExVt_0220b1e8 *self) {
+void Ov012ActExVt_0220b1e8_Animate(Ov012ActExVt_0220b1e8 *self) {
     if (self->model != NULL) {
         func_ov000_02190a80(self->model, func_0203db40((u8 *)self + 0x24));
     }
@@ -43,7 +43,7 @@ void func_ov012_02205818(Ov012ActExVt_0220b1e8 *self) {
 
 extern "C" {
 extern char data_ov012_0220b0a7[];
-void func_ov012_02205864(Ov012ActExVt_0220b1e8 *self) {
+void Ov012ActExVt_0220b1e8_Start(Ov012ActExVt_0220b1e8 *self) {
     func_ov000_02194758(self);
     self->unk_d0 = 0;
     self->unk_2f8 = 1;
@@ -79,7 +79,7 @@ void func_ov012_02205864(Ov012ActExVt_0220b1e8 *self) {
 }
 
 extern "C" {
-extern void func_ov012_022065d8(Ov012ActExVt_0220b1e8 *self);
+extern void Ov012ActExVt_0220b1e8_HitNearby(Ov012ActExVt_0220b1e8 *self);
 extern void func_ov012_02206508(Ov012ActExVt_0220b1e8 *self);
 extern void func_ov012_02206098(Ov012ActExVt_0220b1e8 *self);
 extern const VecFx32 data_ov012_0220a84c[];
@@ -97,7 +97,7 @@ static inline s32 Ov012_Dist84(Actor *self) {
     return Ov012_Sqrt2(sq);
 }
 
-void func_ov012_02205990(Ov012ActExVt_0220b1e8 *self) {
+void Ov012ActExVt_0220b1e8_StateThrown(Ov012ActExVt_0220b1e8 *self) {
     VecFx32 v;
     u8 b;
     Ov003Actor *g;
@@ -140,7 +140,7 @@ void func_ov012_02205990(Ov012ActExVt_0220b1e8 *self) {
     case 1:
         Actor_TurnToPos(self, &self->unk_84, 0x1000);
         Actor_MoveToPos(self, &self->unk_84, 0);
-        func_ov012_022065d8(self);
+        Ov012ActExVt_0220b1e8_HitNearby(self);
         func_ov000_021987b8(self->hit, 1, 0, 0);
         if (VEC_Distance(&self->pos, &self->unk_84) <= 0x800) {
             ActorSub48 *m;
@@ -191,7 +191,7 @@ void func_ov012_02205990(Ov012ActExVt_0220b1e8 *self) {
         Actor_TurnToPos(self, &self->unk_84, 0x7b);
         self->moveYaw = self->rot_y;
         Actor_Move(self, 0);
-        func_ov012_022065d8(self);
+        Ov012ActExVt_0220b1e8_HitNearby(self);
         s = self->fsm;
         s->timer++;
         if (s->timer > self->unk_d4 * 0x28 + 100) {
@@ -220,7 +220,7 @@ void func_ov012_02205990(Ov012ActExVt_0220b1e8 *self) {
         Actor_TurnToPos(self, &self->unk_84, 0x19a);
         self->moveYaw = self->rot_y;
         Actor_Move(self, 0);
-        func_ov012_022065d8(self);
+        Ov012ActExVt_0220b1e8_HitNearby(self);
         func_ov000_021987b8(self->hit, 1, 0, 0);
         if (self->hit->unk_50 & 0x60000000) {
             func_ov000_02198360(self->fsm, 0x15, 0);

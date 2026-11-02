@@ -13,8 +13,8 @@ extern char data_ov006_021ec4ad[];
 extern char data_ov006_021ec4e0[];
 void func_ov000_021987b8(ActorSub48 *col, s32 a, VecFx32 *b, Rot16 *c);
 void func_ov000_02198e34(ActorSub48 *col, Rot16 *out, VecFx32 *v, s32 a);
-ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
-ov006_SlotSub *func_ov006_021dab98(ov006_Slot *self);
+ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
+ov006_SlotSub *ov006_Slot_GetSub2C(ov006_Slot *self);
 
 #define SC(r) FX_SinCosTable_[((r) >> 4) * 2], FX_SinCosTable_[((r) >> 4) * 2 + 1]
 #define MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
@@ -60,7 +60,7 @@ static inline void ov006_Approach(VecFx32 *cur, const VecFx32 *tgt, fx32 k) {
     VEC_MultAdd(k, &d, cur, cur);
 }
 
-void func_ov006_021e96cc(Ov006Racer *self) {
+void Ov006Racer_Move(Ov006Racer *self) {
     VecFx32 v;
     MtxFx33 m;
     VecFx32 p;
@@ -131,7 +131,7 @@ void func_ov006_021e96cc(Ov006Racer *self) {
             self->runSpeed -= self->runSpeed * dd / 0x8000;
         }
         if (data_ov006_021ec860->unk1C == 0 && self->idx != data_ov006_021ec884->unk5) {
-            if ((func_ov006_021dab98(func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5))->unk3 & 3) < (u32)self->rank) {
+            if ((ov006_Slot_GetSub2C(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5))->unk3 & 3) < (u32)self->rank) {
                 f = 0;
             }
         }

@@ -74,12 +74,12 @@ extern "C" {
 extern const Ov011Mgr2Entry data_ov011_022072d8[];
 void *Ov003Vt_021f7d2c_Dtor(void *p);
 void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
-void func_ov011_0220205c(void *p);
-void func_ov011_02202130(void *p);
-void func_ov011_02202fbc(void *p);
+void Ov011Chr_Reset_0220205c(void *p);
+void Ov011Chr_Update(void *p);
+void Ov011Mov_Stop_02202fbc(void *p);
 void Ov011Mov_Update(void *p);
 
-void *func_ov011_021fb66c(Ov011E40 *self) {
+void *Ov011E40_Dtor(Ov011E40 *self) {
     Ov003Vt_021f7d2c_Dtor(&self->mover);
     return self;
 }
@@ -92,16 +92,16 @@ static inline void Ov011Mgr2_Reset(Ov011Mgr2 *self) {
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->arr8 != NULL) {
-        __cxa_vec_delete(self->arr8, 0x40, 8, func_ov011_021fb66c);
+        __cxa_vec_delete(self->arr8, 0x40, 8, Ov011E40_Dtor);
         self->arr8 = NULL;
     }
     data_02097dd0->cur = saved;
-    func_ov003_021da48c(&self->state, 0);
-    func_ov011_0220205c(self->unk_28);
-    func_ov011_02202fbc(&self->mov);
+    Ov003ActorSub40_ForceState(&self->state, 0);
+    Ov011Chr_Reset_0220205c(self->unk_28);
+    Ov011Mov_Stop_02202fbc(&self->mov);
 }
 
-void func_ov011_021fb684(Ov011Mgr2 *self) {
+void Ov011Mgr2_Update(Ov011Mgr2 *self) {
     u32 i;
     s32 j;
     u8 key;
@@ -129,8 +129,8 @@ void func_ov011_021fb684(Ov011Mgr2 *self) {
             break;
         }
     }
-    func_ov003_021da40c(&self->state);
-    func_ov011_02202130(self->unk_28);
+    Ov003ActorSub40_ApplyFlags(&self->state);
+    Ov011Chr_Update(self->unk_28);
     Ov011Mov_Update(&self->mov);
     for (j = 0; j < self->count; j++) {
         Ov011E40 *p = &self->arr8[j];
@@ -141,7 +141,7 @@ void func_ov011_021fb684(Ov011Mgr2 *self) {
     }
 }
 
-void func_ov011_021fb8d4(Ov011Mgr2 *self, s32 a, Ov011List *list, Ov011Ent *ent) {
+void Ov011Mgr2_Start(Ov011Mgr2 *self, s32 a, Ov011List *list, Ov011Ent *ent) {
     if (!self->b0) {
         return;
     }
@@ -150,9 +150,9 @@ void func_ov011_021fb8d4(Ov011Mgr2 *self, s32 a, Ov011List *list, Ov011Ent *ent)
     self->list = list;
     self->ent = ent;
     if (a == 0) {
-        func_ov003_021da48c(&self->state, 3);
+        Ov003ActorSub40_ForceState(&self->state, 3);
     } else if (a == 1) {
-        func_ov003_021da48c(&self->state, 2);
+        Ov003ActorSub40_ForceState(&self->state, 2);
     }
 }
 
@@ -301,7 +301,7 @@ void func_ov011_021fb9b8(Ov011Mgr2 *self, Actor *owner) {
     case 0: {
         any = FALSE;
         for (n = head; n != NULL; n = n->next) {
-            if (func_ov011_02201244(Ov011_FindNpc(n->id))) {
+            if (Ov011Npc_IsTracking(Ov011_FindNpc(n->id))) {
                 any = TRUE;
             }
         }
@@ -312,7 +312,7 @@ void func_ov011_021fb9b8(Ov011Mgr2 *self, Actor *owner) {
         {
             VecFx32 a = data_ov011_0220729c;
             VecFx32 b = data_ov011_022072a8;
-            func_ov011_02202fbc(&self->mov);
+            Ov011Mov_Stop_02202fbc(&self->mov);
             Ov011Mov_Start(&self->mov, &a, &b, 0x500, 0x80);
         }
         if (self->ent->active) {
@@ -325,7 +325,7 @@ void func_ov011_021fb9b8(Ov011Mgr2 *self, Actor *owner) {
         ok = TRUE;
         for (n = head; n != NULL; n = n->next) {
             Ov011Npc *a = Ov011_FindNpc(n->id);
-            if (func_ov011_02201244(a)) {
+            if (Ov011Npc_IsTracking(a)) {
                 s32 y;
                 Ov011Ent *e;
                 if (Ov011Mov_GetPos(&self->mov)->y > 0x6800) {

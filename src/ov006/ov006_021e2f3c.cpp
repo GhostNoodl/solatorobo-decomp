@@ -9,7 +9,7 @@ typedef struct ov006_Unk021e2f3c {
     ov006_Caption *unk18[3];
 } ov006_Unk021e2f3c;
 
-extern "C" void func_ov006_021e2f3c(ov006_Unk021e2f3c *self) {
+extern "C" void ov006_Unk021e2f3c_Update(ov006_Unk021e2f3c *self) {
     int i;
 
     if (!self->unk4 && self->unk10 != NULL && func_02054f10(self->unk10, 0xffff)) {

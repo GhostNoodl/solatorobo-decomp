@@ -203,7 +203,7 @@ void func_02041c5c(void *m, void *fn);
 void *Heap_Alloc(u32 size);
 void *MsgRes_GetString(void *a, int id);
 void func_ov000_0215c1bc(void *a, int b, const void *c);
-void func_ov003_021cce20(void);
+void Ov003Oam_Offset(void);
 
 static inline void Ov003Cd_SetSprite(Ov003CdSprite *o, const VecFx32 *p, fx32 s, u16 ang) {
     MtxFx22 r;
@@ -262,7 +262,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
         Ov003CdSprite *spr = self->unk44;
         self->unk48->alpha = a;
         self->unk4C->alpha = a;
-        func_02041c5c(spr, (void *)func_ov003_021cce20);
+        func_02041c5c(spr, (void *)Ov003Oam_Offset);
         zero.x = 0;
         zero.y = 0;
         zero.z = 0;

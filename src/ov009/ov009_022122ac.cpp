@@ -33,7 +33,7 @@ struct Ov009PosMsg {
     u32 unk_14;
 };
 
-void func_ov009_022122ac(Ov009ActVt_02217a00 *self) {
+void Ov009ActSpin_RunState(Ov009ActVt_02217a00 *self) {
     Ov009PosMsg msg;
     u8 mtx[0x30];
     Ov003Actor *a;
@@ -48,7 +48,7 @@ void func_ov009_022122ac(Ov009ActVt_02217a00 *self) {
             Ov009_Notify(self->id, self->hp[0], self->hp[1], &self->unk_11c);
         }
     }
-    func_ov003_021d3008(self);
+    Ov003Actor_RunState(self);
     if (self->hitMesh != NULL) {
         HitMesh_SetMtx(self->hitMesh, &self->unk_f8);
     }

@@ -24,7 +24,7 @@ static inline void ov006_SetPos021dd450(ObjBase021cac0c_021cb6f0 *o, fx32 x, fx3
     o->unk_40 = z;
 }
 
-void func_ov006_021dd450(ov006_Unk021dd450 *self) {
+void ov006_Unk021dd450_Load(ov006_Unk021dd450 *self) {
     char file[0x20];
     ObjBase021cac0c_021cb6f0 *text;
     Model *model;

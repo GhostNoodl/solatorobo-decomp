@@ -14,7 +14,7 @@ extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
 
-void func_ov009_021fd71c(Ov009ActVt_02216750 *self) {
+void Ov009ActVt_02216750_StateShoot(Ov009ActVt_02216750 *self) {
     VecFx32 p;
     Ov003Actor *o;
     Ov003Actor *t;
@@ -74,7 +74,7 @@ static inline void Ov009_ReleaseFx(Ov009ActVt_02216750 *self) {
     ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x482d, 0x15);
 }
 
-void func_ov009_021fd830(Ov009ActVt_02216750 *self) {
+void Ov009ActVt_02216750_StateDie(Ov009ActVt_02216750 *self) {
     ActorSub48 *s48;
     ActorSub44 *s44;
     Model0218fe1c *m;
@@ -150,11 +150,11 @@ void func_ov009_021fd830(Ov009ActVt_02216750 *self) {
         }
         if (st->timer == 0) {
             Ov009_ReleaseFx(self);
-            func_ov003_021d6a3c(self, 1, 1, 1);
+            Ov003Actor_Defeat(self, 1, 1, 1);
             return;
         }
         if ((u8)self->fsm->timer < 0x1f) {
-            func_ov003_021d6954(self, self->fsm->timer);
+            Ov003Actor_SetAlpha(self, self->fsm->timer);
         }
         VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
         break;

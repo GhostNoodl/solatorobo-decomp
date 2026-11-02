@@ -94,12 +94,12 @@ extern u8 data_ov013_0220bdd8[];
 extern u8 *data_ov000_021ccd54;
 void *Heap_Alloc(u32 size);
 s32 func_0206ffa0(u16 id);
-s32 func_ov003_021cf77c(Spawn021cfab4 *s);
+s32 Ov003_OverlayForKind(Spawn021cfab4 *s);
 void *func_ov000_0218e9c4(void *p);
 ResSet *func_ov000_0218ea20(ResSet *p);
 void *func_ov000_0218fe1c(void *p);
 Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *p);
-void *func_ov003_021d0c94(void *p);
+void *Ov003Actor_Ctor_021d0c94(void *p);
 void Actor_JoinGroup(void *p, u16 sub, u16 id, s32 a);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void *Ov012Lift_Ctor(void *p);
@@ -122,7 +122,7 @@ void *Ov014Act_02209280_Ctor(void *p);
 void *Ov014Act_0220f9d0_Ctor(void *p);
 void *Ov014Act_0221267c_Ctor(void *p);
 
-#define Base(p) func_ov003_021d0c1c((Ov003Actor *)(p))
+#define Base(p) Ov003Actor_Ctor((Ov003Actor *)(p))
 
 #define NEW_CTOR(size, ctor)                   \
     {                                          \
@@ -153,12 +153,12 @@ void *Ov014Act_0221267c_Ctor(void *p);
         p = t;                                 \
     }
 
-u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
+u8 *Ov003_NewActor(Spawn021cfab4 *s) {
     u8 *p;
-    func_ov003_021cf77c(s);
+    Ov003_OverlayForKind(s);
     switch (s->id) {
     default:
-        NEW_CTOR(0xf0, func_ov003_021d0c94);
+        NEW_CTOR(0xf0, Ov003Actor_Ctor_021d0c94);
         break;
     case 0x5035:
     case 0x503f:

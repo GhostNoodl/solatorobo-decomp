@@ -15,7 +15,7 @@ extern s32 Rand_PlusMinus(s32 max);
 extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 
-void func_ov003_021d3524(Ov003Actor *self) {
+void Ov003Actor_StateIdle(Ov003Actor *self) {
     if (self->fsm->st == 0) {
         const char *name = data_ov003_021f7a60;
         if (self->unk_ee_0) {
@@ -38,7 +38,7 @@ void func_ov003_021d3524(Ov003Actor *self) {
     }
 }
 
-void func_ov003_021d3600(Ov003Actor *self) {
+void Ov003Actor_StateMove(Ov003Actor *self) {
     Ov003Param *p;
     VecFx32 v;
     if (self->fsm->st == 0) {

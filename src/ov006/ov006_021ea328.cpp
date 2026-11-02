@@ -8,7 +8,7 @@
 extern "C" {
 
 
-void func_ov006_021ea328(Ov006Racer *self) {
+void Ov006Racer_AddBoost(Ov006Racer *self) {
     self->boost += 3000;
     if (self->boost > 30000) {
         self->boost = 30000;

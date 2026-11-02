@@ -11,10 +11,10 @@ extern void func_020627dc(s32 a);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov003Actor *a);
 extern void func_ov000_02182590(void *p);
-extern void func_ov003_021ce9c4(u16 a);
+extern void Ov003_AddExp(u16 a);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern BOOL func_ov000_021983b0(ActorSub40 *a, u8 b, s32 c, BOOL d);
-extern s32 func_ov013_02209b44(Ov013Act_02207968 *self);
+extern s32 Ov013Act_02207968_ChooseAttack(Ov013Act_02207968 *self);
 
 void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
     Ov003Actor *pl;
@@ -40,7 +40,7 @@ void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
             g = data_ov000_021ccd54;
             g->stageFlags = 1;
             func_ov000_02182590(&g->stageFlags);
-            func_ov003_021ce9c4(self->unk_b0->unk_04);
+            Ov003_AddExp(self->unk_b0->unk_04);
             {
                 ActorSub44 *n = self->unk_44;
                 n->unk_22_0 = 0;
@@ -75,11 +75,11 @@ void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
         self->unk_b6 = 0x23;
         return;
     }
-    self->fsm->flags |= 1ull << func_ov013_02209b44(self);
+    self->fsm->flags |= 1ull << Ov013Act_02207968_ChooseAttack(self);
     self->unk_b6 = 0x46;
 }
 
-void func_ov013_02207d00(Ov013Act_02207968 *self) {
+void Ov013Act_02207968_State20(Ov013Act_02207968 *self) {
     ActorSub40 *st = self->fsm;
     switch (st->st) {
     case 0:
@@ -132,7 +132,7 @@ void func_ov013_02207d00(Ov013Act_02207968 *self) {
 extern ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 a);
 extern u16 ActorGroup_CountKind(ActorGroup *p, u16 a);
 
-void func_ov013_02207eac(Ov013Act_02207968 *self) {
+void Ov013Act_02207968_StateIdle(Ov013Act_02207968 *self) {
     if (self->fsm->st == 0) {
         func_ov000_02190cb0(self->model, data_ov013_0220be7c, 0x155, 0);
         func_ov000_021915a0(self->model);
@@ -249,7 +249,7 @@ static inline s32 Ov013_DistXZc(s32 x, s32 z, const VecFx32 *b) {
     return Dist2D(sq);
 }
 
-void func_ov013_022080bc(Ov013Act_02207968 *self) {
+void Ov013Act_02207968_StateMove(Ov013Act_02207968 *self) {
     Ov003Actor *t = Ov013_GetActor(self->target);
     VecFx32 tpos;
     VecFx32 v;
@@ -332,7 +332,7 @@ static inline VecFx32 Ov013_ApproachPointK(Ov003Actor *self, s32 k) {
     return res;
 }
 
-void func_ov013_02208500(Ov013Act_02207968 *self) {
+void Ov013Act_02207968_StateAttack(Ov013Act_02207968 *self) {
     Ov003Actor *t = Ov013_GetActor(self->target);
     VecFx32 v;
     if (t == NULL) {
@@ -476,7 +476,7 @@ extern Ov003Actor *func_ov000_0219be1c(s32 kind, VecFx32 *pos, u16 *rot, u16 id,
 extern void func_ov000_0219bebc(Actor *a, s32 b);
 extern u8 *func_0206fef8(u16 kind);
 
-void func_ov013_02208bfc(Ov013Act_02207968 *self) {
+void Ov013Act_02207968_StateShoot(Ov013Act_02207968 *self) {
     Ov003Actor *t = Ov013_GetActor(self->target);
     ActorSub40 *st;
     if (t == NULL) {
@@ -588,7 +588,7 @@ void func_ov013_02208bfc(Ov013Act_02207968 *self) {
     }
 }
 
-void func_ov013_022090ac(Ov013Act_02207968 *self) {
+void Ov013Act_02207968_StateAttack2(Ov013Act_02207968 *self) {
     Ov003Actor *t = Ov013_GetActor(self->target);
     ActorSub40 *st;
     if (t == NULL) {

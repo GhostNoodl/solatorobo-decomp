@@ -9,7 +9,7 @@ extern void func_ov000_0219864c(ActorSub48 *p, VecFx32 *a, u16 *b);
 void Ov009ActVt_02217390_Start(Ov009ActVt_02217390 *self) {
     Ov003Actor *a;
     ActorSub44 *s44;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     self->unk_ea_6 = 1;
     self->target = 0xffff;
     a = func_ov000_0219bf90();

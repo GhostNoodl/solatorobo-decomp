@@ -105,7 +105,7 @@ extern u8 data_ov014_02217a54[];
 extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
 extern BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
 
-void func_ov014_0220a588(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_StateIdle(Ov014Act_02209280 *self) {
     if (self->fsm->st == 0) {
         const void *anim;
         anim = data_ov014_02217a48;
@@ -150,7 +150,7 @@ static inline Ov003Actor *Ov014h_FindById(u16 id) {
     return data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
 }
 
-void func_ov014_0220a67c(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_StateMove(Ov014Act_02209280 *self) {
     switch (self->fsm->st) {
     case 0: {
         const Ov003Step *p = self->step;

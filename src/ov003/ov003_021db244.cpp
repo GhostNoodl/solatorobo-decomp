@@ -43,7 +43,7 @@ static inline void Ov003Pj_SetMtx(Model0218fe1c *o, MtxFx43 *m) {
     o->trans = *(VecFx32 *)m->m[3]; // the translation row, copied as one struct
 }
 
-void func_ov003_021db244(Ov003Shot *self) {
+void Ov003Shot_StateThrown(Ov003Shot *self) {
     MtxFx33 m33;
     VecFx32 d2;
     VecFx32 o;
@@ -201,7 +201,7 @@ void func_ov003_021db244(Ov003Shot *self) {
         self->fsm->st++;
     }
     case 1: {
-        if (func_ov003_021dbd80(self)) {
+        if (Ov003Shot_CheckHits(self)) {
             return;
         }
         cfg = self->def;

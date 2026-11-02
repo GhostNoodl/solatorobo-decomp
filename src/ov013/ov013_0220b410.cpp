@@ -3,7 +3,7 @@
 
 // Two vectors built at startup at the start of the overlay's .data. The stub stores every member
 // as an immediate: the original computed them with an expression MWCC folds in __sinit, which the
-// inline identity reproduces. func_ov013_021fc7e0 indexes the pair, so it loads the array's
+// inline identity reproduces. Ov013ActVt_0220b5e0_StateAttack indexes the pair, so it loads the array's
 // address and the address of its first .y as two pool words. That function's file,
 // ov013_021fc400.cpp (0x021fc400..0x021fcef8), joined this TU in round dtD.
 static inline fx32 K(fx32 v) { return v; }
@@ -56,7 +56,7 @@ extern u16 ActorGroup_CountKind(ActorGroup *group, u16 kind);
 extern Ov003Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
 
-s32 func_ov013_021fc400(Ov013Boss *self) {
+s32 Ov013Boss_ChooseAttack(Ov013Boss *self) {
     s32 r = 0x10;
     s32 a = ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000), 0x4823);
     s32 b = ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000), 0x5c17);
@@ -90,7 +90,7 @@ void Ov013ActVt_0220b5e0_Start(Ov013ActVt_0220b5e0 *self) {
     ActorSub48 *m;
     s32 n;
     Ov003Actor *a;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     self->hit->unk_30 = 0;
     m = self->hit;
     m->unk_9a_2 = 0;
@@ -145,7 +145,7 @@ void Ov013ActVt_0220b5e0_Update(Ov013ActVt_0220b5e0 *self) {
     self->unk_b6 = 300;
 }
 
-void func_ov013_021fc71c(Ov013ActVt_0220b5e0 *self) {
+void Ov013ActVt_0220b5e0_StateIdle(Ov013ActVt_0220b5e0 *self) {
     ActorSub40 *s = self->fsm;
     Ov003Actor *t;
     if (s->history[0] == 4 && s->history[1] == 10 && s->history[2] == 9) {
@@ -196,7 +196,7 @@ static inline s32 Ov013_DistXZ(const VecFx32 *a, const VecFx32 *b) {
 // the sound pitch are built where they are assigned (rounds o4B, cmA).
 typedef enum { OV013_EF_KIND_FC7E0 = 0x192 } Ov013EfKind;
 typedef enum { OV013_SND_PITCH_NONE = 0 } Ov013SndPitch;
-void func_ov013_021fc7e0(Ov013ActVt_0220b5e0 *self) {
+void Ov013ActVt_0220b5e0_StateAttack(Ov013ActVt_0220b5e0 *self) {
     Ov013SndPitch pitch;
     Ov013EfKind kind;
     Ov003Actor *pl = Actor_GetTarget(self);

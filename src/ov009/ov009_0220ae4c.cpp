@@ -6,7 +6,7 @@ extern "C" {
 
 void Ov009ActVt_022172e4_Start(Ov009ActVt_022172e4 *self) {
     ActorSub44 *s44;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     self->unk_fc = self->rot_y;
     self->unk_f0 = self->pos;
     self->unk_b8 = self->pos;

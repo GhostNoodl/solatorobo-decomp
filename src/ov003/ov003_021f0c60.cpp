@@ -83,7 +83,7 @@ BOOL func_ov000_0219aae8(Ov003Pickup *self, Ov003PkOwner *owner, u16 a, u8 b, u1
 void Actor_SendMsg(Ov003PkOwner *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_02040a98(void *buf, u32 n);
 s32 func_02049bdc(SndMgr *a, s32 b, s32 c);
-void func_ov003_021ce9c4(u16 id);
+void Ov003_AddExp(u16 id);
 u32 func_0205975c(Ov003DataRes *res, u32 idx);
 void *func_0205976c(Ov003DataRes *res, u32 idx);
 u16 func_02059544(Ov003DataRes *res, void *block, void *entries, int packed, u32 id);
@@ -137,7 +137,7 @@ static inline u16 Ov003Pk_Mask(Ov003PkOwner *o, u16 mask) {
     return mask;
 }
 
-extern "C" void func_ov003_021f0c60(Ov003Pickup *self, u16 mask) {
+extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
     Ov003PkItem *item = self->item;
     Ov003PkOwner *owner = Target_Get(item);
     switch (item->type) {
@@ -199,7 +199,7 @@ extern "C" void func_ov003_021f0c60(Ov003Pickup *self, u16 mask) {
         break;
     }
     case 6:
-        func_ov003_021ce9c4(item->amount);
+        Ov003_AddExp(item->amount);
         break;
     case 5: {
         char buf[0x20];

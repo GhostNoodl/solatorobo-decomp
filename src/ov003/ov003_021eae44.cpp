@@ -116,7 +116,7 @@ static inline BOOL Ov003_GameIdle2(void) {
     return TRUE;
 }
 
-void func_ov003_021eae44(Ov003ActExHome *self) {
+void Ov003ActExHome_Animate(Ov003ActExHome *self) {
     if (!self->unk_cc_7) {
         return;
     }
@@ -296,7 +296,7 @@ static inline void Ov003Sub44_Clear(ActorSub44 *s) {
     }
 }
 
-void func_ov003_021eb48c(Ov003ActExSway *self) {
+void Ov003ActExSway_StateIdle(Ov003ActExSway *self) {
     if (self->fsm->st == 0) {
         func_ov000_02190cb0(self->model, data_ov003_021f9983, 0x1000, 0);
         func_ov000_021915a0(self->model);
@@ -324,7 +324,7 @@ static inline BOOL Ov003Player_Flag(Ov003Player *pl) {
     return pl->unk_93_4 ? TRUE : FALSE;
 }
 
-void func_ov003_021eb5ec(Ov003ActExSway *self) {
+void Ov003ActExSway_StateMove(Ov003ActExSway *self) {
     VecFx32 a;
     VecFx32 b;
     VecFx32 v;

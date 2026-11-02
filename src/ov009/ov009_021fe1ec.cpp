@@ -6,7 +6,7 @@
 extern "C" {
 
 
-void func_ov009_021fe1ec(Ov009ActVt_022165f8 *self) {
+void Ov009ActVt_022165f8_State20(Ov009ActVt_022165f8 *self) {
     ActorSub40 *st = self->fsm;
     if (st->st != 0) {
         return;
@@ -25,7 +25,7 @@ void func_ov009_021fe1ec(Ov009ActVt_022165f8 *self) {
 extern char data_ov009_02216ab6[];
 extern void func_ov000_021911c8(Model0218fe1c *model, s16 a);
 
-void func_ov009_021fe2c8(Ov009ActVt_022165f8 *self) {
+void Ov009ActVt_022165f8_StateIdle(Ov009ActVt_022165f8 *self) {
     switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov009_02216ab6, 0x2ab, 0);
@@ -44,7 +44,7 @@ void func_ov009_021fe2c8(Ov009ActVt_022165f8 *self) {
 }
 
 extern BOOL Actor_DespawnIfFar(Ov003Actor *self);
-void func_ov009_021fe3d4(Ov009ActVt_022165f8 *self) {
+void Ov009ActVt_022165f8_StateMove(Ov009ActVt_022165f8 *self) {
     VecFx32 d;
     VecFx32 e;
     VecFx32 t;
@@ -97,7 +97,7 @@ static inline Ov003Actor *Ov009_FindActor(void *mgr, u16 id) {
     return ActorMgr_GetActor(mgr, id);
 }
 
-void func_ov009_021fe55c(Ov009ActVt_022165f8 *self) {
+void Ov009ActVt_022165f8_StateAttack(Ov009ActVt_022165f8 *self) {
     Ov003Actor *tgt;
     ActorSub40 *st;
     EffectObj *e;

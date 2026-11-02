@@ -120,7 +120,7 @@ extern void HitSphere_Link(ActorSub48 *p);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern void func_ov000_0218996c(u8 a, u8 b);
 
-void func_ov014_022144f8(Ov014ActEx_022142fc *self) {
+void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
     Ov014Mtx33 m;
     VecFx32 q;
     VecFx32 w;

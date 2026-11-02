@@ -12,7 +12,7 @@ struct Ov009Bits16 {
 };
 
 BOOL Ov009ActVt_02217844_Draw(Ov009ActVt_02217844 *self) {
-    BOOL r = func_ov003_021d16cc(self);
+    BOOL r = Ov003Actor_Draw(self);
     if (r) {
         VecFx32 p;
         p = self->pos;
@@ -23,8 +23,8 @@ BOOL Ov009ActVt_02217844_Draw(Ov009ActVt_02217844 *self) {
     return r;
 }
 
-void func_ov009_02207910(Ov009ActVt_02217844 *self) {
-    func_ov003_021d1b88(self);
+void Ov009ActVt_02217844_Animate(Ov009ActVt_02217844 *self) {
+    Ov003Actor_Animate(self);
     func_ov000_02190a80(&self->modelObj, 0x1000);
 }
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);

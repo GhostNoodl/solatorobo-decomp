@@ -18,7 +18,7 @@ static inline void Ov011_FreeSub48(Ov003Actor *self) {
 }
 
 void Ov011Act7e50_Start(Ov011Act7e50 *self) {
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     Ov011_FreeSub48(self);
     Ov011_VecSet(&self->unk_44->unk_0c, 0, -0xccd, -self->radius >> 1);
     self->unk_f0.x = 0;
@@ -31,7 +31,7 @@ void Ov011Act7e50_Start(Ov011Act7e50 *self) {
     self->unk_ea_6 = 1;
 }
 
-void func_ov011_02203e94(Ov011Act7e50 *self) {
+void Ov011Act7e50_SelectState(Ov011Act7e50 *self) {
     ActorSub40 *s = self->fsm;
     u64 f = s->flags;
     if (f == 0) {

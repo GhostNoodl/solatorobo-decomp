@@ -26,7 +26,7 @@ static inline void Ov003LpModel_SetMode(Model0218fe1c *m, s32 mode) {
     }
 }
 
-void func_ov003_021dec88(Ov003ActExSeq *self) {
+void Ov003ActVt_021f83e8_State06(Ov003ActExSeq *self) {
     ActorSub40 *w;
     switch (self->fsm->st) {
     case 0: {

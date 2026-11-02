@@ -54,22 +54,22 @@ extern s32 func_ov000_0219b808(u16 id, void *pos, Ov003FlickerHit *entry, u16 *i
 #define OV003FL_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003FL_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
-void func_ov003_021f1d6c(Ov003PropFlicker *self);
+void Ov003PropFlicker_Randomize(Ov003PropFlicker *self);
 
-void func_ov003_021f1ce0(Ov003PropFlicker *self) {
+void Ov003PropFlicker_SelectState(Ov003PropFlicker *self) {
 }
 
-void func_ov003_021f1ce4(Ov003PropFlicker *self) {
+void Ov003PropFlicker_Update(Ov003PropFlicker *self) {
 }
 
 void Ov003ActVt_021fa4f0_Start(Ov003PropFlicker *self) {
     Ov000ActVt_021cc7cc_Start(self);
-    func_ov003_021f1d6c(self);
+    Ov003PropFlicker_Randomize(self);
     self->model->boxTest = 0;
     self->timer = 0;
 }
 
-void func_ov003_021f1d18(Ov003PropFlicker *self) {
+void Ov003ActVt_021fa4f0_RunState(Ov003PropFlicker *self) {
     s32 period;
     u16 t;
     if (!func_ov000_02191120(self->model)) {
@@ -83,11 +83,11 @@ void func_ov003_021f1d18(Ov003PropFlicker *self) {
     self->timer = t + 1;
     if (t > (u16)period) {
         self->timer = Rand_UpTo(0x3c);
-        func_ov003_021f1d6c(self);
+        Ov003PropFlicker_Randomize(self);
     }
 }
 
-void func_ov003_021f1d6c(Ov003PropFlicker *self) {
+void Ov003PropFlicker_Randomize(Ov003PropFlicker *self) {
     s32 r = self->unk_18;
     u8 a = r & 0xff;
     u8 b = (r >> 8) & 0xff;
@@ -155,7 +155,7 @@ static inline void Ov003Fl_Scale(VecFx32 *v, s32 k) {
     v->z = (s32)(((s64)v->z * k + 0x800) >> 12);
 }
 
-void func_ov003_021f1f00(Ov003PropFlicker *self) {
+void Ov003ActVt_021fa498_RunState(Ov003PropFlicker *self) {
     VecFx32 tgt;
     Ov003FlickerHit hit;
     const Ov003FlickerEntry *e = &data_ov003_021f7560[self->unk_18];

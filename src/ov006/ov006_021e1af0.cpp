@@ -11,14 +11,14 @@ typedef struct ov006_Unk021e1af0 {
 
 extern "C" {
 
-void func_ov006_021dc054(void *a);
+void ov006_Label_Update(void *a);
 
-void func_ov006_021e1af0(ov006_Unk021e1af0 *self) {
+void ov006_Unk021e1af0_Update(ov006_Unk021e1af0 *self) {
     if (!self->unk4 && self->unk28 != NULL && func_02054f10(self->unk28, 0xffff)) {
         self->unk4 = 1;
     }
     ov006_Slider_Update(self->unk24);
-    func_ov006_021dc054(self->unk2C);
+    ov006_Label_Update(self->unk2C);
 }
 
 }

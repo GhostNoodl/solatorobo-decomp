@@ -106,7 +106,7 @@ extern char data_ov003_021f78c4[];
 extern char data_ov003_021f78cd[];
 extern void *Heap_Alloc(u32 size);
 extern const char *func_0206ec48(u16 id);
-extern void func_ov003_021ce2a8(void *self, char *dst, u32 size, const char *arg);
+extern void Ov003_FormatMsg(void *self, char *dst, u32 size, const char *arg);
 extern void func_ov000_0215bb14(Ov003TlLabel *l, char *s);
 extern ResList *func_02035f30(const char *a, const char *b, u16 c);
 extern void func_02041c5c(Model *s, void *cb);
@@ -114,7 +114,7 @@ extern void func_02041c18(Model *s, s32 a);
 extern void func_02041c20(Model *s, u16 a, u16 b);
 extern void func_ov000_02173648(Ov003Tl *self);
 extern void func_ov003_021cceb4(u32 a, u32 b, u32 c, u32 d, u32 unused, u32 e, u32 f, u32 g, u32 h, u32 i, u32 j);
-extern void *func_ov003_021cce20(void *owner, u16 *flip, void *oam, u16 *count);
+extern void *Ov003Oam_Offset(void *owner, u16 *flip, void *oam, u16 *count);
 extern void func_ov000_021c8408(void *self, int x, int y, int z, u16 color, const void *oam, const void *tex, u32 texBase, u32 plttBase, const void *mtx, u32 arg);
 
 static inline void Ov003Model_Init(Model *s, const char *file, const char *name) {
@@ -127,7 +127,7 @@ static inline void Ov003Model_Load(Model *s, const char *file, const char *name)
     func_020417e0(s, func_02034d88(func_02035f30(file, name, 2), name));
 }
 
-void func_ov003_021cd1e4(Ov003Tl *self) {
+void Ov003TaskVt_021f78f4_Setup(Ov003Tl *self) {
     Ov003TlLabel *l;
     void *res;
     if (self->v28()) {
@@ -156,7 +156,7 @@ void func_ov003_021cd1e4(Ov003Tl *self) {
         p->unk_60 = -0x1000;
     }
     self->unk_3c->unk_2c = 1;
-    func_ov003_021ce2a8(self, self->unk_8c, 0x40, func_0206ec48(self->unk_64));
+    Ov003_FormatMsg(self, self->unk_8c, 0x40, func_0206ec48(self->unk_64));
     func_ov000_0215bb14(self->unk_3c, self->unk_8c);
     self->unk_3c->v70();
     self->unk_3c->unk_84->unk_04 |= 0x4000000;
@@ -203,7 +203,7 @@ void func_ov003_021cd1e4(Ov003Tl *self) {
     self->unk_48->flags |= 2;
     self->unk_48->flags |= 0x80000;
     self->unk_48->unk_150 = -0x2000;
-    func_02041c5c(self->unk_48, (void *)func_ov003_021cce20);
+    func_02041c5c(self->unk_48, (void *)Ov003Oam_Offset);
     func_02041c18(self->unk_48, 0xa0a);
     self->unk_48->unk_158 = (void *)func_ov000_021c8408;
 
@@ -227,7 +227,7 @@ void func_ov003_021cd1e4(Ov003Tl *self) {
     self->unk_4c->flags |= 2;
     self->unk_4c->flags |= 0x80000;
     self->unk_4c->unk_150 = -0x2000;
-    func_02041c5c(self->unk_4c, (void *)func_ov003_021cce20);
+    func_02041c5c(self->unk_4c, (void *)Ov003Oam_Offset);
     func_02041c18(self->unk_4c, 0xa0a);
     self->unk_4c->unk_158 = (void *)func_ov000_021c8408;
     {

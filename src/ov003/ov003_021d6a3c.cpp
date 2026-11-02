@@ -24,7 +24,7 @@ BOOL func_ov000_021b4738(void);
 void func_020627a0(u16 kind, u16 id);
 void func_020627dc(u16 sfx);
 void func_ov000_02182590(u8 *p);
-void func_ov003_021ce9c4(u16 id);
+void Ov003_AddExp(u16 id);
 void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 
 }
@@ -56,7 +56,7 @@ static inline void Obj_StoreValue(Ov003Actor *self, u8 value) {
     }
 }
 
-extern "C" void func_ov003_021d6a3c(Ov003Actor *self, BOOL release, BOOL mark, BOOL sound) {
+extern "C" void Ov003Actor_Defeat(Ov003Actor *self, BOOL release, BOOL mark, BOOL sound) {
     Ov003Player *pl = func_ov000_0219bf90();
     if (pl != NULL && !func_ov000_021b4738()) {
         if (sound) {
@@ -81,7 +81,7 @@ extern "C" void func_ov003_021d6a3c(Ov003Actor *self, BOOL release, BOOL mark, B
         }
         if (self->hpObj->unk_04 == pl->unk_0c || self->hpObj->unk_04 == self->id) {
             u32 n;
-            func_ov003_021ce9c4(self->unk_b0->unk_04);
+            Ov003_AddExp(self->unk_b0->unk_04);
             n = data_0214a424->unk_0a + 1;
             if (n >= 0xffff) {
                 n = 0xffff;

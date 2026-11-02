@@ -157,7 +157,7 @@ void func_ov014_0220d274(Ov014Act_02209280 *self) {
     }
 }
 
-void func_ov014_0220d6f8(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_StateKnockBack(Ov014Act_02209280 *self) {
     self->vfunc_7c();
 }
 
@@ -220,7 +220,7 @@ void Ov014ActEx_0220d70c_Start(Ov014ActEx_0220d70c *self) {
 }
 
 extern BOOL func_ov000_021b4738(Ov003Actor *p);
-extern EffectObj *func_ov014_0220f7f0(s32 k, VecFx32 *pos);
+extern EffectObj *Ov014_CreateEffect(s32 k, VecFx32 *pos);
 extern void *Target_Get(void *p);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 
@@ -239,7 +239,7 @@ static inline void Ov014_d890Fire(Ov014ActEx_0220d70c *self) {
 
 // The durations in unk_d8 are read unsigned here. (u16)self->unk_d8.x loads them signed
 // (ldrsh) and changes the code, so these reads stay FLD.
-void func_ov014_0220d890(Ov014ActEx_0220d70c *self) {
+void Ov014ActEx_0220d70c_StateIdle(Ov014ActEx_0220d70c *self) {
     BOOL noPl = FALSE;
     Ov003Actor *pl = func_ov000_0219bf90();
     if (pl == NULL || func_ov000_021b4738(pl)) {
@@ -264,7 +264,7 @@ void func_ov014_0220d890(Ov014ActEx_0220d70c *self) {
             EffectObj *o;
             v = self->pos;
             v.z += 0x1800;
-            o = func_ov014_0220f7f0(2, &v);
+            o = Ov014_CreateEffect(2, &v);
             o->SetScaleXYZ(0x1ccd, 0x1666, 0x1ccd);
             o->loopCount = -2;
             o->unk_50 = -0x64000;
@@ -282,7 +282,7 @@ void func_ov014_0220d890(Ov014ActEx_0220d70c *self) {
         }
         if (self->fsm->timer == 0) {
             if (!noPl) {
-                EffectObj *o = func_ov014_0220f7f0(1, &self->pos);
+                EffectObj *o = Ov014_CreateEffect(1, &self->pos);
                 EffectObj *e;
                 self->unk_d4 = o->id;
                 o->SetScaleXYZ(0x1400, 0x2400, 0x1400);

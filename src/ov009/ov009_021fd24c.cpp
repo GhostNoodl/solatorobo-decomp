@@ -16,14 +16,14 @@ static inline void Ov009_Notify(u16 id, u16 a, u16 b, const VecFx32 *pos) {
 }
 
 BOOL Ov009ActVt_02216750_Draw(Ov009ActVt_02216750 *self) {
-    BOOL r = func_ov003_021d16cc(self);
+    BOOL r = Ov003Actor_Draw(self);
     if (r) {
         Ov009_Notify(self->id, self->hp[0], self->hp[1], &self->pos);
     }
     return r;
 }
 
-void func_ov009_021fd2b4(Ov009ActVt_02216750 *self) {
+void Ov009ActVt_02216750_State20(Ov009ActVt_02216750 *self) {
     VecFx32 d;
     Ov009Path *path = &data_ov009_02215cf4[self->unk_1a - 1];
     u8 *anim = data_ov009_02216ab6;
@@ -66,7 +66,7 @@ void func_ov009_021fd2b4(Ov009ActVt_02216750 *self) {
     }
 }
 
-void func_ov009_021fd430(Ov009ActVt_02216750 *self) {
+void Ov009ActVt_02216750_StateIdle(Ov009ActVt_02216750 *self) {
     VecFx32 d;
     ActorSub40 *st = self->fsm;
     VecFx32 *t = &self->unk_fc;
@@ -94,7 +94,7 @@ static inline u16 Ov009_AngleTo(Ov003Actor *a, Ov003Actor *b) {
     return b->rot_y;
 }
 
-void func_ov009_021fd510(Ov009ActVt_02216750 *self) {
+void Ov009ActVt_02216750_StateHurt(Ov009ActVt_02216750 *self) {
     VecFx32 d;
     ActorSub40 *st;
     switch (self->fsm->st) {

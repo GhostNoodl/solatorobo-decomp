@@ -24,7 +24,7 @@ int func_02043d9c(void *p);
 void func_ov000_02190758(void *model, void *rot, s32 a);
 BOOL func_ov000_021903b4(void *model);
 void NNS_G3dRenderObjSetInitFunc(void *obj, void *fn);
-void func_ov003_021ce9ac(void *p);
+void Ov003SlotUser_StartCapture(void *p);
 void func_ov000_021b4130(Robo021ca458 *self, BOOL a);
 void func_ov000_021bd7a0(void *p);
 void func_ov000_02191c24(void *shadow, void *pos);
@@ -234,7 +234,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
         }
         if (self->unk_ae4 != 0) {
             self->mdl1.renderUser = (u8 *)self + 0xa50;
-            NNS_G3dRenderObjSetInitFunc((u8 *)self + 0x38c, (void *)func_ov003_021ce9ac);
+            NNS_G3dRenderObjSetInitFunc((u8 *)self + 0x38c, (void *)Ov003SlotUser_StartCapture);
             self->mdl1.unk_c2 |= 0x20;
         }
         p = self->unk_75c;
@@ -274,7 +274,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
             if (self->unk_b22_0) {
                 self->unk_ae4 |= 4;
                 self->mdl1.renderUser = (u8 *)self + 0xa50;
-                NNS_G3dRenderObjSetInitFunc((u8 *)self + 0x38c, (void *)func_ov003_021ce9ac);
+                NNS_G3dRenderObjSetInitFunc((u8 *)self + 0x38c, (void *)Ov003SlotUser_StartCapture);
                 self->mdl1.unk_c2 |= 0x20;
             }
             if (func_ov000_021903b4(&self->mdl1)) {
@@ -286,7 +286,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
         if (self->unk_b24_21) {
             LFLD(Bit0_0219d9fc, self, 0xa4c).b0 = 1;
             self->mdl0.renderUser = (u8 *)self + 0x9b8;
-            NNS_G3dRenderObjSetInitFunc((u8 *)self + 0xd0, (void *)func_ov003_021ce9ac);
+            NNS_G3dRenderObjSetInitFunc((u8 *)self + 0xd0, (void *)Ov003SlotUser_StartCapture);
             self->mdl0.unk_c2 |= 0x20;
         }
         if (!self->unk_93_0) {

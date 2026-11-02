@@ -16,7 +16,7 @@ static inline void ov006_Model_SetAlpha(Model *m, u8 a) {
     MODEL_FLAGS(m)->alpha = a;
 }
 
-void func_ov006_021dc578(ov006_Label *self) {
+void ov006_Label_Draw(ov006_Label *self) {
     int alpha;
     int x;
     int y;

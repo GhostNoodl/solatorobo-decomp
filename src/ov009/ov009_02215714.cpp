@@ -5,7 +5,7 @@ extern "C" {
 extern VecFx32 *func_ov000_0218d2e0(Actor *self);
 extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
 extern void HitSphere_Link(ActorSub48 *p);
-extern void func_ov009_02215a6c(Ov009ActExVt_0221802c *self);
+extern void Ov009ActExVt_0221802c_HitNearby(Ov009ActExVt_0221802c *self);
 
 #define OV009_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV009_SQRT_RESULT (*(volatile u32 *)0x40002b4)
@@ -85,7 +85,7 @@ void func_ov009_02215714(Ov009ActExVt_0221802c *self) {
         } else {
             Actor_Move(self, 0);
         }
-        func_ov009_02215a6c(self);
+        Ov009ActExVt_0221802c_HitNearby(self);
         func_ov000_021987b8(self->hit, 1, 0, 0);
         if ((self->hit->unk_50 & 0x60000000) || ++self->unk_d4 >= 150) {
             func_ov000_02198360(self->fsm, 0x15, 0);

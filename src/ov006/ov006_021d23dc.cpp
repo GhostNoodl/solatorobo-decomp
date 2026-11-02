@@ -18,19 +18,19 @@ extern const u8 data_ov006_021eb728[];
 extern const u8 data_ov006_021eb770[];
 extern const u8 data_ov006_021eb740[];
 
-void func_ov006_021cd580(int a, void *b, int c);
+void ov006_Manager_DispatchMenuCb(int a, void *b, int c);
 UiListItem *ListOwner_GetNth(UiList *self, int n);
 void *func_ov000_02162124(void *p);
 void func_ov000_021627ac(void *p);
 void func_ov000_02162910(void *p, const void *a, const void *b, const void *c);
 void func_ov000_0216295c(void *p, const void *v, int s);
 ov006_Caption *ov006_Caption_Ctor(ov006_Caption *self);
-void func_ov006_021e0954(ov006_Caption *self);
-void func_ov006_021e0ca8(ov006_Caption *self, void *text, int b);
+void ov006_Caption_Init_021e0954(ov006_Caption *self);
+void ov006_TextHolder_Play_021e0ca8(ov006_Caption *self, void *text, int b);
 ov006_Gauge *Ov006Vt_021ec20c_Ctor(ov006_Gauge *self);
-void func_ov006_021e0f00(ov006_Gauge *self);
-void func_ov006_021e13c8(ov006_Gauge *self, void *text);
-void func_ov006_021e139c(ov006_Gauge *self, int a, int b, u8 c);
+void ov006_Gauge_Load(ov006_Gauge *self);
+void ov006_Gauge_SetText(ov006_Gauge *self, void *text);
+void ov006_Gauge_SetRatio(ov006_Gauge *self, int a, int b, u8 c);
 void ov006_Slot_Pack(ov006_Slot *self, void *buf);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 void func_ov006_021d3498(ov006_TaskD1F *self, u16 id, BOOL dir);
@@ -39,7 +39,7 @@ void func_02043904(void *p);
 void func_02043b20(void *p);
 void func_ov000_02173648(Task *self);
 BOOL func_ov006_021d1df8(UiList *window, UiListItem *node);
-BOOL func_ov006_021d1f00(UiList *window, UiListItem *node);
+BOOL ov006_ListCb_StoreId(UiList *window, UiListItem *node);
 
 static inline void ov006_Caption_SetPos(ov006_Caption *c, int x, int y) {
     c->x = x;
@@ -56,7 +56,7 @@ static inline void ov006_Gauge_SetPos(ov006_Gauge *g, int x, int y) {
     g->y = y;
 }
 
-void func_ov006_021d23dc(ov006_TaskD1F *self) {
+void ov006_TaskD1F_Setup(ov006_TaskD1F *self) {
     int y;
     int i;
     void *res;
@@ -78,7 +78,7 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     self->unk54->flags |= 0x40000;
     self->unk54->flags &= ~0x800000;
     self->unk54->flags |= 0x10000;
-    func_ov006_021cd580(3, self->unk54, 0);
+    ov006_Manager_DispatchMenuCb(3, self->unk54, 0);
     self->unk54->vfunc_08();
     func_ov000_021548cc(self->unk54, data_ov006_021eb6fe[data_ov006_021ec884->unk5]);
     if (self->unk4A != 0xffff) {
@@ -110,7 +110,7 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     self->unk60->msgId = 0x12c;
     self->unk60->text = (char *)MsgRes_GetString(res, 0x18);
     self->unk60->key = 1;
-    self->unk60->onDecide = func_ov006_021d1f00;
+    self->unk60->onDecide = ov006_ListCb_StoreId;
     self->unk60->owner = &self->unk4C;
     self->unk60->vfunc_08();
     self->unk60->posZ = -0x1666;
@@ -128,8 +128,8 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
         self->unk68 = p;
     }
     self->unk68->kind = 1;
-    func_ov006_021e0954(self->unk68);
-    func_ov006_021e0ca8(self->unk68, MsgRes_GetString(res, 0x128), 4);
+    ov006_Caption_Init_021e0954(self->unk68);
+    ov006_TextHolder_Play_021e0ca8(self->unk68, MsgRes_GetString(res, 0x128), 4);
     ov006_Caption_SetPos(self->unk68, -0xa0, -0x61);
     ov006_Caption_SetTextPos(self->unk68, 0xf, 0);
     self->unk68->ofsY = -0x1e;
@@ -140,18 +140,18 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
             p = Ov006Vt_021ec20c_Ctor(p);
         }
         self->gauges[i] = p;
-        func_ov006_021e0f00(self->gauges[i]);
+        ov006_Gauge_Load(self->gauges[i]);
         ov006_Gauge_SetPos(self->gauges[i], -0x50, y);
         y += 0x20;
         self->gauges[i]->unk10 = i;
     }
-    func_ov006_021e13c8(self->gauges[0], MsgRes_GetString(res, 0x13a));
-    func_ov006_021e13c8(self->gauges[1], MsgRes_GetString(res, 0x13b));
-    func_ov006_021e13c8(self->gauges[2], MsgRes_GetString(res, 0x13c));
-    func_ov006_021e13c8(self->gauges[3], MsgRes_GetString(res, 0x13e));
+    ov006_Gauge_SetText(self->gauges[0], MsgRes_GetString(res, 0x13a));
+    ov006_Gauge_SetText(self->gauges[1], MsgRes_GetString(res, 0x13b));
+    ov006_Gauge_SetText(self->gauges[2], MsgRes_GetString(res, 0x13c));
+    ov006_Gauge_SetText(self->gauges[3], MsgRes_GetString(res, 0x13e));
     {
         u8 buf[0x18];
-        ov006_Slot_Pack(func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5), buf);
+        ov006_Slot_Pack(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5), buf);
         ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk49, 1, buf, 0x18);
     }
     if (self->param != 0) {
@@ -177,10 +177,10 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
         }
         func_ov006_021d3498(self, id, FALSE);
         p = func_020706a0(id);
-        func_ov006_021e139c(self->gauges[0], p->unk4 << 12, 0xa000, 1);
-        func_ov006_021e139c(self->gauges[1], p->unk5 << 12, 0xa000, 1);
-        func_ov006_021e139c(self->gauges[2], p->unk6 << 12, 0xa000, 1);
-        func_ov006_021e139c(self->gauges[3], p->unk7 << 12, 0xa000, 1);
+        ov006_Gauge_SetRatio(self->gauges[0], p->unk4 << 12, 0xa000, 1);
+        ov006_Gauge_SetRatio(self->gauges[1], p->unk5 << 12, 0xa000, 1);
+        ov006_Gauge_SetRatio(self->gauges[2], p->unk6 << 12, 0xa000, 1);
+        ov006_Gauge_SetRatio(self->gauges[3], p->unk7 << 12, 0xa000, 1);
     }
     self->fadeLen += self->unk54->openLen;
     self->unk_04 &= ~2;

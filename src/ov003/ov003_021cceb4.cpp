@@ -83,7 +83,7 @@ void func_ov003_021cceb4(u32 a, u32 b, u32 c, u32 d, u32 unused, u32 e, u32 f, u
     func_ov000_021c8408(a, b, c, d, j, e, f, g, h, i, j);
 }
 
-void func_ov003_021ccf00(Ov003Title *self) {
+void Ov003TaskVt_021f78f4_ClearFields(Ov003Title *self) {
     self->unk_3c = NULL;
     self->unk_40 = NULL;
     self->unk_44 = NULL;
@@ -105,7 +105,7 @@ void func_ov003_021ccf00(Ov003Title *self) {
     MIi_CpuClear32(0, self->unk_8c, 0x40);
 }
 
-void func_ov003_021ccf6c(Ov003Title *self) {
+void Ov003TaskVt_021f78f4_FreeRes(Ov003Title *self) {
     OV003_DELETE_V(self->unk_3c);
     OV003_DELETE_V(self->unk_40);
     OV003_DELETE_RES(self->unk_44);

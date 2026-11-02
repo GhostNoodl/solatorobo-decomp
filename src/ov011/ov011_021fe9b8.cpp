@@ -48,7 +48,7 @@ void func_ov011_021fe9b8(Ov011Scene *self) {
             self->mgr.unk_04 = v;
             self->mgr.list = self;
             self->mgr.ent = &self->ent;
-            func_ov003_021da48c(&self->mgr.state, 1);
+            Ov003ActorSub40_ForceState(&self->mgr.state, 1);
         }
         self->seq.st = 1;
         break;
@@ -67,7 +67,7 @@ void func_ov011_021fe9b8(Ov011Scene *self) {
     case 2:
         for (n = self->head; n != NULL; n = n->next) {
             Ov011Npc *a = Ov011_FindNpc(n->id);
-            if (func_ov011_02201244(a)) {
+            if (Ov011Npc_IsTracking(a)) {
                 Actor *owner = self->actor;
                 if (Ov011Ent_Find(&self->ent, func_ov011_02201254(a)) != NULL) {
                     Ov011PNode *p = Ov011Ent_Find(&self->ent, func_ov011_02201254(a));

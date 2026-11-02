@@ -30,7 +30,7 @@ static inline void ov006_Loader021df44c_Update(ov006_Loader021df44c *self) {
     }
 }
 
-void func_ov006_021df44c(ov006_Unk021df44c *self) {
+void ov006_Unk021df44c_Update(ov006_Unk021df44c *self) {
     if (self->state == 0) {
         return;
     }

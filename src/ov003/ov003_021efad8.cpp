@@ -26,7 +26,7 @@ extern char data_ov003_021fa1a4[];
 extern void func_ov000_02196c40(ActorEx *self);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern void func_0203f364(ActorSub48 *ctl);
-extern void func_ov003_021f0c60(ActorEx *self, s32 a);
+extern void Ov003Pickup_Update(ActorEx *self, s32 a);
 extern BOOL func_ov000_02198360(ActorSub40 *p, s32 a, s32 b);
 extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(Model0218fe1c *model);
@@ -106,7 +106,7 @@ static inline void Ov003Bx_SetScale(Model0218fe1c *m, s32 s) {
     m->scale.z = s;
 }
 
-void func_ov003_021ef70c(ActorEx *self) {
+void Ov003ActVt_021fa07c_State20(ActorEx *self) {
     BOOL ok = FALSE;
     Actor *pl;
     switch (self->fsm->st) {
@@ -224,7 +224,7 @@ static inline BOOL Ov003Bx_Flag(ActorSub4c *p) {
     return p->unk_18_2 ? TRUE : FALSE;
 }
 
-void func_ov003_021efad8(ActorEx *self) {
+void Ov003ActVt_021fa07c_StateFly(ActorEx *self) {
     ActorSub40 *w;
     u32 flags;
     if (self->param->unk_01 == 0) {
@@ -285,7 +285,7 @@ void func_ov003_021efad8(ActorEx *self) {
                 ctl->unk_9a_4 = 0;
             }
             if (self->targetObj->unk_03 != 0) {
-                func_ov003_021f0c60(self, 0);
+                Ov003Pickup_Update(self, 0);
             }
             self->radius *= 2;
             func_ov000_02198360(self->fsm, 0x15, 0);
@@ -332,7 +332,7 @@ static inline s32 Ov003Bx_MaxDist2(const VecFx32 *a, const VecFx32 *b) {
     return dx;
 }
 
-void func_ov003_021efde8(ActorEx *self) {
+void Ov003ActVt_021fa114_StateIdle(ActorEx *self) {
     const Ov003BxDef *def = &data_ov003_021f6e60[self->param->unk_01];
     Actor *pl = func_ov000_0219bf90();
     s32 d = Ov003Bx_MaxDist2(&self->pos, &pl->pos);

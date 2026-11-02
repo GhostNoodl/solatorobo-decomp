@@ -37,9 +37,9 @@ extern void func_0203f920(void *p);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern Actor *Target_Get(ActorSub4c *p);
 extern void Actor_SendMsg(Actor *p, u16 id, s32 a, s32 b, s32 c, s32 d);
-extern s32 func_ov003_021f093c(ActorSub4c *p);
+extern s32 Ov003CntSelf_CountLiving(ActorSub4c *p);
 extern BOOL func_ov000_02198360(ActorSub40 *w, s32 a, s32 b);
-extern BOOL func_ov003_021f0abc(ActorSub4c *p, s32 a);
+extern BOOL Ov003Switch_AreTargetsDone(ActorSub4c *p, s32 a);
 extern void *func_ov000_02191318(void *model, s32 a);
 extern Ov003SwPlayer *func_ov000_0219bf90(void);
 extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
@@ -120,7 +120,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
         if (self->unk_ce != 0) {
             self->unk_ce--;
         } else {
-            res = func_ov003_021f093c(self->targetObj);
+            res = Ov003CntSelf_CountLiving(self->targetObj);
         }
         snd = 0xffff;
         switch (res) {
@@ -153,7 +153,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
         if (self->unk_ce != 0) {
             self->unk_ce--;
         } else {
-            res = func_ov003_021f093c(self->targetObj);
+            res = Ov003CntSelf_CountLiving(self->targetObj);
         }
         snd = 0xffff;
         switch (res) {
@@ -179,7 +179,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
         break;
     case 2:
     case 7:
-        if (func_ov003_021f0abc(self->targetObj, res)) {
+        if (Ov003Switch_AreTargetsDone(self->targetObj, res)) {
             if (self->unk_1a == 7) {
                 if (self->unk_18 != 2) {
                     self->unk_1a = 0;
@@ -203,7 +203,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
         }
         break;
     case 10:
-        if (func_ov003_021f0abc(self->targetObj, res)) {
+        if (Ov003Switch_AreTargetsDone(self->targetObj, res)) {
             if (self->unk_18 == 3) {
                 next = 10;
                 func_ov000_02190cb0(self->model, data_ov003_021f8046, 0x1000, 0);
@@ -335,7 +335,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
     }
 }
 
-void func_ov003_021dd478(Ov003Switch *self) {
+void Ov003ActVt_021f7fac_StateIdle(Ov003Switch *self) {
     ActorSub40 *w = self->fsm;
     switch (w->st) {
     case 0:

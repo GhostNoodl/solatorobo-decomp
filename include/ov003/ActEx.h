@@ -9,7 +9,7 @@
 #include "ov000/ObjLayouts.h"
 #include "ov000/Model0218fe1c.h"
 
-// A HitMesh embedded in an actor (0x98 bytes; its dtor func_ov003_021e75bc detaches it with
+// A HitMesh embedded in an actor (0x98 bytes; its dtor Ov003HitMesh_Dtor detaches it with
 // HitMesh_Detach).
 typedef struct Ov003HitMesh {
     u8 unk_00[0x98];
@@ -64,7 +64,7 @@ public:
     Rot16 rotOfs;
     Rot16 rotGoal;
     Ov003AiState ai;
-    s32 unk_30c; // frames counted by func_ov003_021ebae4
+    s32 unk_30c; // frames counted by Ov003ActExSway_StateHeld
     u8 hasModel;
 };
 SIZE_ASSERT(Ov003ActExSway, 0x314);
@@ -132,8 +132,8 @@ SIZE_ASSERT(Ov003Bridge, 0xd4);
 
 // The gimmick (vtable 021f99e8, ctor Ov003ActVt_021f99e8_Ctor, 0x214 bytes: NEW_CTOR in
 // func_ov000_02192b24; ov003_021ec130.cpp, ov003_021ec9e0.cpp). Kinds 0x4064 and 0x4065.
-// ActorEx::unk_ce_u is a counter (func_ov003_021ecc68 counts it down) and unk_cf_u the state
-// (1 once func_ov003_021ecc68 has swapped the model; 0, 2, 3 follow the 0x4064 model's direction).
+// ActorEx::unk_ce_u is a counter (Ov003ActVt_021f99e8_StateDie counts it down) and unk_cf_u the state
+// (1 once Ov003ActVt_021f99e8_StateDie has swapped the model; 0, 2, 3 follow the 0x4064 model's direction).
 class Ov003Gimmick : public ActorEx {
 public:
     Rot16 rotOfs; // added to rot for the 0x4064 effect

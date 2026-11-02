@@ -17,7 +17,7 @@ typedef struct {
 extern Ov003Range data_ov003_021f45e8[];
 extern Ov003RangePtr data_ov003_021f45ec[];
 
-Ov003Entry *func_ov003_021d1e30(u32 id) {
+Ov003Entry *Ov003_LookupEntry(u32 id) {
     Ov003Entry *ret = NULL;
     s32 i;
     for (i = 0; i < 11; i++) {

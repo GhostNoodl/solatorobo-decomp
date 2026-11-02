@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov006_021dcc9c(Ov006Marker *self, int idx, u8 flag) {
+void Ov006Marker_SetFrame(Ov006Marker *self, int idx, u8 flag) {
     if (idx < 0 || idx > 4) {
         return;
     }

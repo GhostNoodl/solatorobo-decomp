@@ -29,7 +29,7 @@ static inline s32 Ov014y_FxMul64(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-void func_ov014_0220e72c(Ov014ActEx_0220dcf4 *self) {
+void Ov014ActEx_0220dcf4_StateThrown(Ov014ActEx_0220dcf4 *self) {
     switch (self->fsm->st) {
     case 0: {
         VecFx32 *p;
@@ -105,7 +105,7 @@ void func_ov014_0220e72c(Ov014ActEx_0220dcf4 *self) {
     }
 }
 
-void func_ov014_0220ea94(Ov014ActEx_0220dcf4 *self) {
+void Ov014ActEx_0220dcf4_StateHeld(Ov014ActEx_0220dcf4 *self) {
     if (self->fsm->st == 0) {
         EffectMgr_StopLoop(data_0214a420, self->unk_d0);
         self->unk_d0 = NULL;
@@ -113,7 +113,7 @@ void func_ov014_0220ea94(Ov014ActEx_0220dcf4 *self) {
     func_ov000_02195d88(self);
 }
 
-void func_ov014_0220ead4(Ov014ActEx_0220dcf4 *self) {
+void Ov014ActEx_0220dcf4_StateDie(Ov014ActEx_0220dcf4 *self) {
     if (self->fsm->st == 0) {
         EffectMgr_StopLoop(data_0214a420, self->unk_d0);
         self->unk_d0 = NULL;

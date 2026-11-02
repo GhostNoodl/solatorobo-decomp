@@ -14,7 +14,7 @@ extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 #define OV003AK_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003AK_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
-void func_ov003_021daec0(Ov003Shot *self) {
+void Ov003Shot_Start(Ov003Shot *self) {
     func_ov000_02194758(self);
     func_ov000_02198360(self->fsm, 0xb, 0);
     if (self->shotDef != NULL) {

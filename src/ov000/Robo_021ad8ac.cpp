@@ -37,7 +37,7 @@ void Actor_Move(Actor *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 void func_ov000_021b1fac(Robo021ca458 *self, s32 a, s32 b);
-s32 func_ov003_021ce5b8(u32 a);
+s32 Ov003_SurfaceSoundId(u32 a);
 
 static inline BOOL GBusy_021ad8ac(FieldState *g) {
     return g->head != g->tail ? TRUE : FALSE;
@@ -295,7 +295,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             func_ov000_02190cb0(self->model, data_ov000_021cc630, 0x1000, 0);
             Kill_021ad8ac(self);
             func_02049f44(data_02097e4c, 8, &self->pos, 0);
-            r = func_ov003_021ce5b8(self->hit->unk_50);
+            r = Ov003_SurfaceSoundId(self->hit->unk_50);
             if (r >= 0) {
                 func_0204a028(data_02097e4c, r, &self->pos, -5);
                 if ((self->hit->unk_50 & 0xf0f0f0) == 0xe0e000) {

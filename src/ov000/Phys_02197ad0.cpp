@@ -38,7 +38,7 @@ extern void *data_02097e4c;
 extern char data_ov000_021cc46f[];
 u16 func_ov000_02198da8(Body02197ad0 *b, u16 angle);
 void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
-void func_ov003_021f0c60(Actor *self, s32 a);
+void Ov003Pickup_Update(Actor *self, s32 a);
 
 static inline s32 DistXZSq(const VecFx32 *a, const VecFx32 *b) {
     s32 dx = a->x - b->x;
@@ -102,7 +102,7 @@ void func_ov000_02197ad0(Actor *self, BOOL b) {
         self->speed = FX_MUL(self->speed, e->ma);
     }
     if (b && ((Def02197ad0 *)self->targetObj)->unk_03 != 0) {
-        func_ov003_021f0c60(self, 0);
+        Ov003Pickup_Update(self, 0);
     }
 }
 }

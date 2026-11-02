@@ -24,7 +24,7 @@ static inline MtxFx22 *ov006_Model_Mtx22(Model *m) {
     return m->mtx;
 }
 
-void func_ov006_021dd0e4(ov006_Unk021dd0e4 *self) {
+void ov006_Unk021dd0e4_Update(ov006_Unk021dd0e4 *self) {
     if (self->state == 0) {
         if (self->unkC == NULL) {
             return;

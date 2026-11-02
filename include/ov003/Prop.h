@@ -74,7 +74,7 @@ SIZE_ASSERT(Ov003PropResMdl, 0x2d0);
 // Vtable 021fa5a0 (kind 0x6b00; ov003_021f3954.cpp, ov003_021f3a94.cpp, Init in ov003_021f371c.cpp).
 class Ov003Prop021fa5a0 : public Ov003PropResMdl {
 public:
-    u16 unk_2d0; // frames; cleared by Start, counted by func_ov003_021f3b30 for its effects
+    u16 unk_2d0; // frames; cleared by Start, counted by Ov003ActVt_021fa5a0_RunState for its effects
 };
 SIZE_ASSERT(Ov003Prop021fa5a0, 0x2d4);
 

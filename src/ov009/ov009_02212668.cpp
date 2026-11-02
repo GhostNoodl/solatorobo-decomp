@@ -4,7 +4,7 @@ extern "C" {
 
 extern void func_ov000_021984f4(void *a, void *b, s32 c);
 
-void func_ov009_02212668(Ov003Actor *self) {
+void Ov009ActSpin_UpdateSub44(Ov003Actor *self) {
     if (self->unk_44 == NULL) {
         return;
     }
@@ -14,7 +14,7 @@ void func_ov009_02212668(Ov003Actor *self) {
 extern char data_ov009_022179b4[];
 extern void func_ov000_021911c8(Model0218fe1c *model, s16 a);
 
-void func_ov009_0221268c(Ov009ActSpin *self) {
+void Ov009ActSpin_StateIdle(Ov009ActSpin *self) {
     VecFx32 d;
     s32 x, y, z;
     int s;

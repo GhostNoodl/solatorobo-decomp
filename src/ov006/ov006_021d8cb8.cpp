@@ -22,11 +22,11 @@ extern void *data_ov000_021ccd68;
 extern ov006_Unk021ccd6c *data_ov000_021ccd6c;
 extern ov006_PriceEntry data_ov006_021eb7c4[];
 
-ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
+ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 void *ActorMgr_GetActor(void *a, u16 id);
 int func_0206e264(ov006_Party *party);
 
-u8 func_ov006_021d8cb8(void) {
+u8 ov006_CountFinished(void) {
     u8 count;
     u8 i;
     u8 num;
@@ -36,9 +36,9 @@ u8 func_ov006_021d8cb8(void) {
     }
     count = 0;
     for (i = 0; i < num; i++) {
-        u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
+        u16 id = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i)->actorId;
         Ov006Racer *prop = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
-        if (prop != NULL && func_ov006_021ea3e8(prop)) {
+        if (prop != NULL && Ov006Racer_IsFinished(prop)) {
             count++;
         }
     }
@@ -80,7 +80,7 @@ int func_ov006_021d8de0(void) {
     return result;
 }
 
-u8 func_ov006_021d8e30(const u16 *digits) {
+u8 ov006_CountRepeatDigits(const u16 *digits) {
     u8 count = 0;
     BOOL started = FALSE;
     int v;

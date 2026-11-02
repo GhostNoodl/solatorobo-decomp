@@ -26,8 +26,8 @@ BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 Robo021ca458 *func_ov000_0219bf90(void);
 Actor *Target_Get(ActorSub4c *p);
 void Target_Set(void *a, void *b);
-void func_ov003_021f0c60(void *self, s32 a);
-void *func_ov003_021f0868(void *pos, s32 a, s32 b);
+void Ov003Pickup_Update(void *self, s32 a);
+void *Ov003_FindPlayerInRange(void *pos, s32 a, s32 b);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 void func_ov000_02197ad0(Actor *self, BOOL b);
 void Actor_Move(Actor *self, s32 a);
@@ -127,7 +127,7 @@ void func_ov000_02196c40(ActorEx *self) {
                     g->unk_016 = n;
                 }
                 if (self->targetObj->unk_03 != 0) {
-                    func_ov003_021f0c60(self, 0);
+                    Ov003Pickup_Update(self, 0);
                 }
                 func_ov000_02198360(self->fsm, 0x15, 0);
                 break;
@@ -210,7 +210,7 @@ void func_ov000_02196c40(ActorEx *self) {
         }
     }
     if (self->targetObj != NULL && self->targetObj->type == 2) {
-        void *r = func_ov003_021f0868(&self->pos, self->radius, self->height);
+        void *r = Ov003_FindPlayerInRange(&self->pos, self->radius, self->height);
         if (r != NULL) {
             Target_Set(self->targetObj, r);
             func_ov000_02198360(self->fsm, 0xd, 0);

@@ -5,7 +5,7 @@
 extern "C" {
 
 
-void func_ov009_021fc51c(Ov009ActVt_02216348 *self) {
+void Ov009ActVt_02216348_StateFly(Ov009ActVt_02216348 *self) {
     ActorSub40 *st;
     switch (ActorSub40_State(self->fsm)) {
     case 0:

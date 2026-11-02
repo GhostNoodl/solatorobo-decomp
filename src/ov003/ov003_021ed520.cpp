@@ -63,12 +63,12 @@ ActorEx *Ov003ActVt_021f9b18_DtorDelete(ActorEx *self) {
 }
 
 Ov003HomingShot *Ov003ActVt_021f9a80_Dtor(Ov003HomingShot *self) {
-    func_ov003_021dae44(self);
+    Ov003ActorEx_Ctor(self);
     return self;
 }
 
 Ov003HomingShot *Ov003ActVt_021f9a80_DtorDelete(Ov003HomingShot *self) {
-    func_ov003_021dae44(self);
+    Ov003ActorEx_Ctor(self);
     Heap_Free(self);
     return self;
 }

@@ -7,7 +7,7 @@ extern Ov003Actor *func_ov000_0219bf90(void);
 void Ov009ActVt_02217cb0_Start(Ov009ActVt_02217cb0 *self) {
     GroupNode *p;
     Ov003Actor *a;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
         p->flags.unk_0 = 0;

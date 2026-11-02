@@ -10,18 +10,18 @@ extern void *Ov003Pool_Dtor(void *p);
 extern void Ov003Pool_Release(void *p);
 extern Ov010TaskNode *Ov003Pool_Alloc(void *p);
 extern void Ov003Pool_Free(void *p, Ov010TaskNode *n);
-void func_ov010_02201b48(Ov010TaskList *o);
+void Ov010TaskList_Clear(Ov010TaskList *o);
 
-void func_ov010_022019f4(Ov010TaskList *o) {
+void Ov010TaskList_Release(Ov010TaskList *o) {
     if (!o->b0) {
         return;
     }
-    func_ov010_02201b48(o);
+    Ov010TaskList_Clear(o);
     Ov003Pool_Release(o->pool);
     o->b0 = 0;
 }
 
-void func_ov010_02201a28(Ov010TaskList *o) {
+void Ov010TaskList_Update(Ov010TaskList *o) {
     u32 max;
     Ov010TaskNode *n;
     if (!o->b0) {
@@ -72,7 +72,7 @@ static inline const Ov010TLFlags *Ov010TL_Flags(const Ov010TaskList *o) {
     return (const Ov010TLFlags *)((const u8 *)o + 4);
 }
 
-VObj *func_ov010_02201ad4(Ov010TaskList *o, VObj *(*fn)(void), u32 time) {
+VObj *Ov010TaskList_Add(Ov010TaskList *o, VObj *(*fn)(void), u32 time) {
     VObj *obj = NULL;
     Ov010TaskNode *n;
     if (o->b0 && Ov010TL_Flags(o)->b0 && !Ov010TL_Flags(o)->b1) {
@@ -86,7 +86,7 @@ VObj *func_ov010_02201ad4(Ov010TaskList *o, VObj *(*fn)(void), u32 time) {
     return obj;
 }
 
-void func_ov010_02201b48(Ov010TaskList *o) {
+void Ov010TaskList_Clear(Ov010TaskList *o) {
     Ov010TaskNode *next;
     Ov010TaskNode *n;
     void *saved;
@@ -113,7 +113,7 @@ void func_ov010_02201b48(Ov010TaskList *o) {
     o->head = NULL;
 }
 
-void func_ov010_02201bf4(Ov010TaskList *o) {
+void Ov010TaskList_Run(Ov010TaskList *o) {
     if (!o->b0) {
         return;
     }

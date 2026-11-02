@@ -3,7 +3,7 @@
 
 // The ov003 behaviour script list (Ov003ScriptList_Init, vtable data_ov003_021f7974, 0x1c bytes),
 // embedded in the actors that pick their next move from a table: tracks of steps added with
-// func_ov003_021cf1f0, chosen by id with func_ov003_021cf278 and stepped by func_ov003_021ceff4.
+// Ov003ScriptList_AddTrack, chosen by id with Ov003ScriptList_SelectTrack and stepped by Ov003ScriptList_Step.
 
 #include "types.h"
 
@@ -19,7 +19,7 @@ struct Ov003Step {
     u16 b;
 };
 
-// A track (vtable data_ov003_021f7984, 0x14 bytes, built by func_ov003_021cf1f0): val is the
+// A track (vtable data_ov003_021f7984, 0x14 bytes, built by Ov003ScriptList_AddTrack): val is the
 // current step, wrapping at max.
 class Ov003Track {
 public:
@@ -51,9 +51,9 @@ extern "C" {
 void Ov003ScriptList_Init(Ov003ScriptList *self);
 Ov003ScriptList *Ov003Vt_021f7974_Dtor(Ov003ScriptList *self);
 Ov003ScriptList *Ov003Vt_021f7974_DtorDelete(Ov003ScriptList *self);
-const Ov003Step *func_ov003_021ceff4(Ov003ScriptList *self);
-void func_ov003_021cf1f0(Ov003ScriptList *self, u16 id, u16 max, const Ov003Step *steps);
-Ov003Track *func_ov003_021cf278(Ov003ScriptList *self, u16 id, u16 val);
+const Ov003Step *Ov003ScriptList_Step(Ov003ScriptList *self);
+void Ov003ScriptList_AddTrack(Ov003ScriptList *self, u16 id, u16 max, const Ov003Step *steps);
+Ov003Track *Ov003ScriptList_SelectTrack(Ov003ScriptList *self, u16 id, u16 val);
 }
 
 #endif

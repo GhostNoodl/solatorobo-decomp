@@ -8,7 +8,7 @@ extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *c);
 extern void ActorMgr_SendMsg(u16 a, u16 b, u8 c, BOOL d, u32 e, const void *f);
 extern BOOL func_ov000_02198360(ActorSub40 *a, u8 b, BOOL c);
 
-BOOL func_ov010_0220e740(Ov010Path *self, Actor *owner, const void *msg, s32 size, const VecFx32 *offset, s32 fxId) {
+BOOL Ov010Path_Init(Ov010Path *self, Actor *owner, const void *msg, s32 size, const VecFx32 *offset, s32 fxId) {
     self->b0 = 1;
     self->b1 = 0;
     self->owner = owner;
@@ -19,7 +19,7 @@ BOOL func_ov010_0220e740(Ov010Path *self, Actor *owner, const void *msg, s32 siz
     self->unk_10 = 0x1000;
     self->offset = *offset;
     MI_CpuCopy8(msg, self->msg, size);
-    func_ov003_021da48c(&self->sm, 1);
+    Ov003ActorSub40_ForceState(&self->sm, 1);
     return TRUE;
 }
 
@@ -34,7 +34,7 @@ static inline u16 Ov010_SubClamp(u16 a, s32 b) {
     return r;
 }
 
-void func_ov010_0220e7c8(Ov010Path *self) {
+void Ov010Path_Update(Ov010Path *self) {
     if (!self->b0) {
         return;
     }
@@ -65,7 +65,7 @@ void func_ov010_0220e7c8(Ov010Path *self) {
             e->SetScaleAll(0xf00);
             e->AddPos(&self->offset);
             e->loopCount = -1;
-            func_ov003_021da904(e, self->owner, &self->offset);
+            Ov003Follow_Attach(e, self->owner, &self->offset);
             self->fxHandle = e->id;
             self->sm.st++;
         } else {
@@ -86,7 +86,7 @@ void func_ov010_0220e7c8(Ov010Path *self) {
             p.x = self->owner->pos.x;
             p.y = self->owner->pos.y;
             p.z = self->owner->pos.z;
-            e = func_ov003_021da8e4(self->fxId, &p, 0xe66);
+            e = Ov003_SpawnScaledFx(self->fxId, &p, 0xe66);
             e->SetScaleAll(self->scale);
             e->AddPos(&self->offset);
             e->speed = self->unk_10;

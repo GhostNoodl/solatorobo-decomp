@@ -23,7 +23,7 @@ static inline void ov006_Put(ov006_Oam021dd5dc *o, u16 x) {
     o->y = 0;
 }
 
-ov006_Oam021dd5dc *func_ov006_021dd5dc(void *self, u16 *flag, ov006_Oam021dd5dc *oam, u16 *count) {
+ov006_Oam021dd5dc *ov006_OamCb_TimeDigits(void *self, u16 *flag, ov006_Oam021dd5dc *oam, u16 *count) {
     u16 n = *count;
     s16 x = 0x2a;
     ov006_Oam021dd5dc *last = &oam[n - 1];

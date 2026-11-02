@@ -14,7 +14,7 @@ extern const char data_ov006_021ec1da[];
 extern const char data_ov006_021ec1e6[];
 extern const char *const data_ov006_021ec144[];
 
-EffectObj *func_ov006_021e37d0(int type, const VecFx32 *pos) {
+EffectObj *ov006_CreateEffect(int type, const VecFx32 *pos) {
     char path[0x20];
     EffectObj *eff = NULL;
 

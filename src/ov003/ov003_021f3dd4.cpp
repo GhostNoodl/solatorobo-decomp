@@ -164,7 +164,7 @@ void Ov003ActVt_021fa548_Start(Ov003Prop021fa548 *self) {
     self->fsm = task;
 }
 
-void func_ov003_021f3f5c(Ov003Prop021fa548 *self) {
+void Ov003ActVt_021fa548_RunState(Ov003Prop021fa548 *self) {
     Ov003Save *save = data_0214a424;
     u16 a = save->unk_18_3;
     u16 b = save->unk_18_1;

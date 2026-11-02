@@ -27,7 +27,7 @@ static inline void ov006_Model_PlayPart16(Model *model, u16 idx) {
 
 extern "C" {
 
-void func_ov006_021e2490(ov006_MarkerSet *self) {
+void ov006_MarkerSet_Draw(ov006_MarkerSet *self) {
     int i;
     u32 x;
     u32 y;

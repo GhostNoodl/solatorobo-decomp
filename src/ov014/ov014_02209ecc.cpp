@@ -5,7 +5,7 @@ extern "C" {
 extern void func_ov000_0219864c(ActorSub48 *a, VecFx32 *b, u16 *c);
 extern void func_ov000_021984f4(void *a, VecFx32 *b, s32 c);
 
-void func_ov014_02209ecc(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_UpdateHit(Ov014Act_02209280 *self) {
     u16 k = self->unk_b4;
     if (k != 100 && k != 110) {
         self->hit->offset.y = self->centerY >> 1;
@@ -17,7 +17,7 @@ void func_ov014_02209ecc(Ov014Act_02209280 *self) {
     func_ov000_0219864c(self->hit, 0, 0);
 }
 
-void func_ov014_02209f24(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_UpdateSub44(Ov014Act_02209280 *self) {
     VecFx32 v;
     u16 k;
     Ov014_VecCopy(&v, &self->pos);

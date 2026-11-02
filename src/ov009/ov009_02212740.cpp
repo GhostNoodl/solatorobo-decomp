@@ -13,7 +13,7 @@ extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern void func_ov000_0219a210(VecFx32 *v, const void *a, u16 b);
 extern Ov003Actor *func_ov000_0219be1c(u16 kind, const VecFx32 *pos, const void *rot, u16 id, u16 parent);
 
-void func_ov009_02212740(Ov009ActVt_02217a00 *self) {
+void Ov009ActSpin_StateShoot(Ov009ActVt_02217a00 *self) {
     VecFx32 p;
     Ov009Rot r;
     Ov003Actor *o;

@@ -15,7 +15,7 @@ typedef struct ov006_Unk021df9e8 {
 
 extern "C" {
 
-void func_ov006_021df9e8(ov006_Unk021df9e8 *self, const ov006_Rect16 *rect, u32 idx, u8 value) {
+void ov006_Unk021df9e8_SetRect(ov006_Unk021df9e8 *self, const ov006_Rect16 *rect, u32 idx, u8 value) {
     if (idx >= 10) {
         return;
     }

@@ -21,7 +21,7 @@ static const VecFx32 data_ov011_0220799c = data_ov011_02207438;
 namespace m_02200aac {
 extern "C" {
 
-s16 func_ov003_021d7e58(void *p);
+s16 Ov003Ticker_GetValue(void *p);
 void func_ov000_021984f4(void *p, s32 a, s32 b);
 void func_ov000_0219864c(void *p, s32 a, s32 b);
 s32 func_0206fef8(u32 id);
@@ -29,61 +29,61 @@ void *func_ov000_0218fe1c(void *p);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 void func_ov000_0219badc(void *a, void *b, s32 c);
 
-s32 func_ov011_02200aac(void *p, s32 b) {
-    return FX_Mul(func_ov003_021d7e58(p), b);
+s32 Ov011Ticker_ScaledValue(void *p, s32 b) {
+    return FX_Mul(Ov003Ticker_GetValue(p), b);
 }
 
-void func_ov011_02200ad0(Ov003Actor *self) {
+void Ov011ActorBase_UpdateSub44(Ov003Actor *self) {
     if (self->unk_44 != NULL) {
         func_ov000_021984f4(self->unk_44, 0, 0);
     }
 }
 
-void func_ov011_02200af0(Ov003Actor *self) {
+void Ov011Actor_UpdateHit(Ov003Actor *self) {
     if (self->hit != NULL) {
         func_ov000_0219864c(self->hit, 0, 0);
     }
 }
 
-void func_ov011_02200b10(Ov003Actor *self) {
+void Ov011ActorBase_UpdateMode1(Ov003Actor *self) {
 }
 
-void func_ov011_02200b14(Ov003Actor *self) {
+void Ov011ActorBase_UpdateMode3(Ov003Actor *self) {
 }
 
 void func_ov011_02200b18(Ov003Actor *self) {
 }
 
-void func_ov011_02200b1c(Ov003Actor *self) {
+void Ov011Actor_State25(Ov003Actor *self) {
 }
 
-void func_ov011_02200b20(Ov003Actor *self) {
+void Ov011Actor_State24(Ov003Actor *self) {
 }
 
-void func_ov011_02200b24(Ov003Actor *self) {
+void Ov011Actor_State23(Ov003Actor *self) {
 }
 
-void func_ov011_02200b28(Ov003Actor *self) {
+void Ov011Actor_State22(Ov003Actor *self) {
 }
 
-void func_ov011_02200b2c(Ov003Actor *self) {
+void Ov011Actor_State21(Ov003Actor *self) {
 }
 
-void func_ov011_02200b30(Ov011V *self) {
+void Ov011Actor_State16(Ov011V *self) {
     self->v54();
 }
 
-void func_ov011_02200b44(Ov003Actor *self) {
+void Ov011Actor_Shoot2(Ov003Actor *self) {
     self->unk_ee_5 = 1;
     self->vfunc_70();
 }
 
-void func_ov011_02200b64(Ov003Actor *self) {
+void Ov011Actor_StateAttack3(Ov003Actor *self) {
     self->unk_ee_2 = 2;
     self->vfunc_64();
 }
 
-BOOL func_ov011_02200b88(Ov011Model2 *self, void *a, void *b) {
+BOOL Ov011Model2_Init(Ov011Model2 *self, void *a, void *b) {
     s32 r;
     void *p;
     self->b0 = 1;
@@ -146,7 +146,7 @@ static inline void Ov011Tw_InitB(Ov011Tw *t, s32 from, s32 to, u16 speed, s32 mu
     t->unk_04 = FX_Mul(VEC_Distance(&t->v14, &t->v08), mul);
 }
 
-void func_ov011_02200c30(Ov011Model2 *self) {
+void Ov011Model2_Update(Ov011Model2 *self) {
     VecFx32 a;
     VecFx32 b;
     s16 v2;
@@ -187,16 +187,16 @@ extern "C" {
 extern u8 data_ov011_022079f0[];
 void *ActorEx_Ctor(void *p);
 void *func_ov000_0219429c(void *p);
-void func_ov003_021d7ca8(void *p);
-void func_ov003_021d7d8c(void *p);
-void func_ov003_021d7ce0(void *p);
+void Ov003Ticker_Clear_021d7ca8(void *p);
+void Ov003Ticker_Release_021d7d8c(void *p);
+void Ov003Ticker_Release_021d7ce0(void *p);
 
 void *Ov011Npc_Ctor(Ov011Npc *self) {
     ActorEx_Ctor(self);
     *(void **)self = data_ov011_022079f0;
-    func_ov003_021d7ca8(self->unk_d8);
-    func_ov003_021d7ca8(self->unk_e4);
-    func_ov003_021d7ca8(self->unk_f0);
+    Ov003Ticker_Clear_021d7ca8(self->unk_d8);
+    Ov003Ticker_Clear_021d7ca8(self->unk_e4);
+    Ov003Ticker_Clear_021d7ca8(self->unk_f0);
     self->unk_ce_0 = 0;
     self->unk_ce_1 = 0;
     self->unk_d0 = 0xffff;
@@ -206,39 +206,39 @@ void *Ov011Npc_Ctor(Ov011Npc *self) {
 
 void *Ov011Npc_Dtor(Ov011Npc *self) {
     *(void **)self = data_ov011_022079f0;
-    func_ov003_021d7d8c(self->unk_d8);
-    func_ov003_021d7d8c(self->unk_e4);
-    func_ov003_021d7d8c(self->unk_f0);
+    Ov003Ticker_Release_021d7d8c(self->unk_d8);
+    Ov003Ticker_Release_021d7d8c(self->unk_e4);
+    Ov003Ticker_Release_021d7d8c(self->unk_f0);
     self->unk_ce_0 = 0;
     self->unk_ce_1 = 0;
     self->unk_d0 = 0xffff;
     self->unk_d4 = NULL;
-    func_ov003_021d7ce0(self->unk_f0);
-    func_ov003_021d7ce0(self->unk_e4);
-    func_ov003_021d7ce0(self->unk_d8);
+    Ov003Ticker_Release_021d7ce0(self->unk_f0);
+    Ov003Ticker_Release_021d7ce0(self->unk_e4);
+    Ov003Ticker_Release_021d7ce0(self->unk_d8);
     func_ov000_0219429c(self);
     return self;
 }
 
 void *Ov011Npc_DtorDelete(Ov011Npc *self) {
     *(void **)self = data_ov011_022079f0;
-    func_ov003_021d7d8c(self->unk_d8);
-    func_ov003_021d7d8c(self->unk_e4);
-    func_ov003_021d7d8c(self->unk_f0);
+    Ov003Ticker_Release_021d7d8c(self->unk_d8);
+    Ov003Ticker_Release_021d7d8c(self->unk_e4);
+    Ov003Ticker_Release_021d7d8c(self->unk_f0);
     self->unk_ce_0 = 0;
     self->unk_ce_1 = 0;
     self->unk_d0 = 0xffff;
     self->unk_d4 = NULL;
-    func_ov003_021d7ce0(self->unk_f0);
-    func_ov003_021d7ce0(self->unk_e4);
-    func_ov003_021d7ce0(self->unk_d8);
+    Ov003Ticker_Release_021d7ce0(self->unk_f0);
+    Ov003Ticker_Release_021d7ce0(self->unk_e4);
+    Ov003Ticker_Release_021d7ce0(self->unk_d8);
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;
 }
 
 extern u16 data_ov011_02207f00;
-s32 func_ov011_02200aac(void *p, s32 b);
+s32 Ov011Ticker_ScaledValue(void *p, s32 b);
 s32 func_ov000_02194c08(void *p);
 
 #define OV011_ABS(x) ((x) < 0 ? -(x) : (x))
@@ -267,8 +267,8 @@ s32 Ov011Npc_Draw(Ov011Npc *self) {
     b0 = m->scale.z;
     if (self->unk_ce_1) {
         OV011_BLKCPY(&v, &saved);
-        v.x += func_ov011_02200aac(self->unk_e4, 0x266);
-        v.y += func_ov011_02200aac(self->unk_f0, 0x266);
+        v.x += Ov011Ticker_ScaledValue(self->unk_e4, 0x266);
+        v.y += Ov011Ticker_ScaledValue(self->unk_f0, 0x266);
         self->pos = v;
     }
     if (self->unk_ce_0) {
@@ -292,7 +292,7 @@ void func_ov011_022011c0(Ov011Npc *self, u16 v) {
     self->unk_d0 = v;
 }
 
-void func_ov011_022011c8(Ov011Npc *self, BOOL on) {
+void Ov011Npc_SetTracking(Ov011Npc *self, BOOL on) {
     if (on) {
         self->unk_ce_0 = 1;
         self->targetObj->target = self->unk_d0;
@@ -310,7 +310,7 @@ void func_ov011_02201214(Ov011Npc *self, void *p) {
     self->unk_d4 = p;
 }
 
-void func_ov011_0220121c(Ov011Npc *self, BOOL on) {
+void Ov011Npc_SetVisible(Ov011Npc *self, BOOL on) {
     Model0218fe1c *m = self->model;
     if (m == NULL) {
         return;
@@ -322,7 +322,7 @@ void func_ov011_0220121c(Ov011Npc *self, BOOL on) {
     }
 }
 
-u32 func_ov011_02201244(Ov011Npc *self) {
+u32 Ov011Npc_IsTracking(Ov011Npc *self) {
     return self->unk_ce_0;
 }
 
@@ -353,9 +353,9 @@ struct Ov011Bits94 {
 extern "C" {
 
 void func_ov000_02194758(void *p);
-BOOL func_ov003_021d7d24(void *p, s32 a, s32 b, s32 c, s32 d);
+BOOL Ov003Ticker_Start_021d7d24(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_021953b4(void *p);
-void func_ov003_021d7dd0(void *p);
+void Ov003Ticker_Update_021d7dd0(void *p);
 void func_ov000_02195848(void *p);
 void *Target_Get(void *p);
 Actor *Actor_GetTarget(void *p);
@@ -364,14 +364,14 @@ void func_ov000_02196c40(void *p);
 void func_ov000_02196060(void *p);
 void func_ov000_0219763c(void *p);
 void *History_Init(void *p);
-void func_ov011_02201688(Ov011Fx *p);
+void Ov011Fx_Release(Ov011Fx *p);
 
 void Ov011Npc_Start(Ov011Npc *self) {
     ActorSub44 *p;
     func_ov000_02194758(self);
-    func_ov003_021d7d24(self->unk_d8, 0, 0, 1, 1);
-    func_ov003_021d7d24(self->unk_e4, 0, 0, 1, 1);
-    func_ov003_021d7d24(self->unk_f0, 0, 0, 1, 1);
+    Ov003Ticker_Start_021d7d24(self->unk_d8, 0, 0, 1, 1);
+    Ov003Ticker_Start_021d7d24(self->unk_e4, 0, 0, 1, 1);
+    Ov003Ticker_Start_021d7d24(self->unk_f0, 0, 0, 1, 1);
     self->unk_cc.b4 = 0;
     self->hit->unk_9a_7 = 1;
     self->hit->radius = 0x800;
@@ -390,12 +390,12 @@ void Ov011Npc_Update(Ov011Npc *self) {
     } else {
         self->unk_94_1 = 0;
     }
-    func_ov003_021d7dd0(self->unk_d8);
-    func_ov003_021d7dd0(self->unk_e4);
-    func_ov003_021d7dd0(self->unk_f0);
+    Ov003Ticker_Update_021d7dd0(self->unk_d8);
+    Ov003Ticker_Update_021d7dd0(self->unk_e4);
+    Ov003Ticker_Update_021d7dd0(self->unk_f0);
 }
 
-void func_ov011_022013a8(Ov011Npc *self) {
+void Ov011Npc_StateIdle(Ov011Npc *self) {
     u16 mask;
     void *a;
     if (!self->unk_ce_0) {
@@ -422,7 +422,7 @@ void func_ov011_022013a8(Ov011Npc *self) {
                         self->radius, self->height, 100, 0x1000);
 }
 
-void func_ov011_022014ac(Ov011Npc *self) {
+void Ov011Npc_StateThrown(Ov011Npc *self) {
     if (self->fsm->st == 1) {
         self->friction = 0;
         self->gravity = 0;
@@ -433,7 +433,7 @@ void func_ov011_022014ac(Ov011Npc *self) {
     }
 }
 
-void func_ov011_022014e0(Ov011Npc *self) {
+void Ov011Npc_StateDie(Ov011Npc *self) {
     if (self->fsm->st == 0) {
         self->unk_ce_0 = 0;
         self->radius = 0xb33;
@@ -441,20 +441,20 @@ void func_ov011_022014e0(Ov011Npc *self) {
     func_ov000_0219763c(self);
 }
 
-void *func_ov011_02201510(Ov011Fx *self) {
+void *Ov011Fx_Ctor(Ov011Fx *self) {
     History_Init(&self->state);
-    func_ov003_021d7ca8(self->s5c);
-    func_ov003_021d7ca8(self->s68);
-    func_ov003_021d7ca8(self->s74);
+    Ov003Ticker_Clear_021d7ca8(self->s5c);
+    Ov003Ticker_Clear_021d7ca8(self->s68);
+    Ov003Ticker_Clear_021d7ca8(self->s74);
     self->b0 = 0;
     return self;
 }
 
-void *func_ov011_0220154c(Ov011Fx *self) {
-    func_ov011_02201688(self);
-    func_ov003_021d7ce0(self->s74);
-    func_ov003_021d7ce0(self->s68);
-    func_ov003_021d7ce0(self->s5c);
+void *Ov011Fx_Dtor(Ov011Fx *self) {
+    Ov011Fx_Release(self);
+    Ov003Ticker_Release_021d7ce0(self->s74);
+    Ov003Ticker_Release_021d7ce0(self->s68);
+    Ov003Ticker_Release_021d7ce0(self->s5c);
     return self;
 }
 
@@ -469,7 +469,7 @@ void *func_ov000_0218fee4(void *p);
 void func_ov000_02193e5c(void *p, s32 a);
 BOOL func_ov000_0218f110(void *p);
 
-BOOL func_ov011_02201578(Ov011Fx *self) {
+BOOL Ov011Fx_Init(Ov011Fx *self) {
     void *p;
     self->b0 = 1;
     self->b1 = 0;
@@ -501,11 +501,11 @@ BOOL func_ov011_02201578(Ov011Fx *self) {
         self->v18.z = z;
     }
     MTX_Identity33_(&self->mtx);
-    func_ov003_021da48c(&self->state, 0);
+    Ov003ActorSub40_ForceState(&self->state, 0);
     func_ov000_02193e5c(self->anim, 0x4812);
-    func_ov003_021d7d24(self->s5c, 0, 0, 1, 0);
-    func_ov003_021d7d24(self->s68, 0, 0, 1, 0);
-    func_ov003_021d7d24(self->s74, 0, 0, 1, 0);
+    Ov003Ticker_Start_021d7d24(self->s5c, 0, 0, 1, 0);
+    Ov003Ticker_Start_021d7d24(self->s68, 0, 0, 1, 0);
+    Ov003Ticker_Start_021d7d24(self->s74, 0, 0, 1, 0);
     return TRUE;
 }
 
@@ -537,19 +537,19 @@ static inline void Ov011_FreeModel(Ov011Fx *self) {
     data_02097dd0->cur = saved;
 }
 
-void func_ov011_02201688(Ov011Fx *self) {
+void Ov011Fx_Release(Ov011Fx *self) {
     if (!self->b0) {
         return;
     }
     Ov011_FreeAnim(self);
     Ov011_FreeModel(self);
-    func_ov003_021d7d8c(self->s5c);
-    func_ov003_021d7d8c(self->s68);
-    func_ov003_021d7d8c(self->s74);
+    Ov003Ticker_Release_021d7d8c(self->s5c);
+    Ov003Ticker_Release_021d7d8c(self->s68);
+    Ov003Ticker_Release_021d7d8c(self->s74);
     self->b0 = 0;
 }
 
-void func_ov011_02201758(Ov011Fx *self) {
+void Ov011Fx_Update(Ov011Fx *self) {
     VecFx32 a;
     VecFx32 b;
     if (!self->b0) {
@@ -599,11 +599,11 @@ void func_ov011_02201758(Ov011Fx *self) {
             }
             break;
         }
-        func_ov003_021da40c(&self->state);
+        Ov003ActorSub40_ApplyFlags(&self->state);
     }
-    func_ov003_021d7dd0(self->s5c);
-    func_ov003_021d7dd0(self->s68);
-    func_ov003_021d7dd0(self->s74);
+    Ov003Ticker_Update_021d7dd0(self->s5c);
+    Ov003Ticker_Update_021d7dd0(self->s68);
+    Ov003Ticker_Update_021d7dd0(self->s74);
 }
 
 }
@@ -613,7 +613,7 @@ extern "C" {
 extern u8 data_ov011_02207468[];
 BOOL func_ov000_021903b4(void *p);
 
-void func_ov011_0220192c(Ov011Fx *self) {
+void Ov011Fx_Draw(Ov011Fx *self) {
     VecFx32 p;
     VecFx32 q;
     VecFx32 s;
@@ -638,9 +638,9 @@ void func_ov011_0220192c(Ov011Fx *self) {
     OV011_BLKCPY(&s, data_ov011_02207468);
     s.x = self->unk_02;
     s.y = self->unk_02;
-    q.x += func_ov011_02200aac(self->s68, 0x266);
-    q.y += func_ov011_02200aac(self->s74, 0x266);
-    s.x += func_ov011_02200aac(self->s5c, 0x333);
+    q.x += Ov011Ticker_ScaledValue(self->s68, 0x266);
+    q.y += Ov011Ticker_ScaledValue(self->s74, 0x266);
+    s.x += Ov011Ticker_ScaledValue(self->s5c, 0x333);
     s.y = s.x;
     if (s.x < 0) {
         s.x = 0;
@@ -660,7 +660,7 @@ void func_ov011_0220192c(Ov011Fx *self) {
     }
 }
 
-void func_ov011_02201aac(Ov011Fx *self, const VecFx32 *pos) {
+void Ov011Fx_Start(Ov011Fx *self, const VecFx32 *pos) {
     if (!self->b0) {
         return;
     }
@@ -671,16 +671,16 @@ void func_ov011_02201aac(Ov011Fx *self, const VecFx32 *pos) {
     self->v0c = *pos;
     self->v18 = data_ov011_02207438;
     MTX_Identity33_(&self->mtx);
-    func_ov003_021da48c(&self->state, 0);
+    Ov003ActorSub40_ForceState(&self->state, 0);
 }
 
-void func_ov011_02201b28(Ov011Fx *self) {
+void Ov011Fx_Stop(Ov011Fx *self) {
     if (self->b0) {
         self->b2 = 0;
     }
 }
 
-BOOL func_ov011_02201b40(Ov011Fx *self) {
+BOOL Ov011Fx_IsStopped(Ov011Fx *self) {
     BOOL r = FALSE;
     if (!self->b0) {
         return r;
@@ -691,7 +691,7 @@ BOOL func_ov011_02201b40(Ov011Fx *self) {
     return r;
 }
 
-u32 func_ov011_02201b64(Ov011Fx *self) {
+u32 Ov011Fx_IsLoaded(Ov011Fx *self) {
     u32 r = 0;
     if (self->b0) {
         r = self->b1;
@@ -699,14 +699,14 @@ u32 func_ov011_02201b64(Ov011Fx *self) {
     return r;
 }
 
-void func_ov011_02201b80(Ov011Fx *self, const VecFx32 *v) {
+void Ov011Fx_SetVec18(Ov011Fx *self, const VecFx32 *v) {
     if (!self->b0) {
         return;
     }
     self->v18 = *v;
 }
 
-void func_ov011_02201bac(Ov011Fx *self, u16 ang) {
+void Ov011Fx_SetYaw(Ov011Fx *self, u16 ang) {
     MtxFx33 m;
     if (self == NULL) {
         return;
@@ -755,11 +755,11 @@ extern "C" {
 extern u8 data_ov011_022079d0[];
 extern u8 data_ov011_022079b0[];
 extern const Ov011ChrEntry data_ov011_022074b0[];
-void func_ov003_021d7ca8(void *p);
-void func_ov003_021d7ce0(void *p);
-void func_ov003_021d7d8c(void *p);
-void func_ov003_021d7dd0(void *p);
-BOOL func_ov003_021d7d24(void *p, s32 a, s32 b, s32 c, s32 d);
+void Ov003Ticker_Clear_021d7ca8(void *p);
+void Ov003Ticker_Release_021d7ce0(void *p);
+void Ov003Ticker_Release_021d7d8c(void *p);
+void Ov003Ticker_Update_021d7dd0(void *p);
+BOOL Ov003Ticker_Start_021d7d24(void *p, s32 a, s32 b, s32 c, s32 d);
 void __cxa_vec_ctor(void *arr, s32 count, u32 size, void *ctor, void *dtor);
 void *func_ov000_0218e9c4(void *p);
 void *func_ov000_0218fe1c(void *p);
@@ -769,9 +769,9 @@ void func_ov000_02193e5c(void *p, s32 a);
 BOOL func_ov000_0218f110(void *p);
 s32 func_0206fef8(u32 id);
 void func_ov000_0219badc(void *a, void *b, s32 c);
-BOOL func_ov011_02200b88(Ov011Model2 *self, void *a, u32 b);
-void func_ov011_02200c30(Ov011Model2 *self);
-s32 func_ov011_02200aac(void *p, s32 b);
+BOOL Ov011Model2_Init(Ov011Model2 *self, void *a, u32 b);
+void Ov011Model2_Update(Ov011Model2 *self);
+s32 Ov011Ticker_ScaledValue(void *p, s32 b);
 BOOL func_ov000_021903b4(void *p);
 }
 
@@ -826,9 +826,9 @@ static inline void Ov011Chr_Reset(Ov011Chr *self) {
         return;
     }
     Ov011Model2_Reset(&self->m28);
-    func_ov003_021d7d8c(self->s88);
+    Ov003Ticker_Release_021d7d8c(self->s88);
     for (i = 0; i < 3; i++) {
-        func_ov003_021d7d8c(self->s94[i]);
+        Ov003Ticker_Release_021d7d8c(self->s94[i]);
     }
     self->b0 = 0;
 }
@@ -865,13 +865,13 @@ static inline void Ov011TwB_Ctor(void *obj) {
 
 extern "C" {
 
-Ov011Chr *func_ov011_02201c18(Ov011Chr *self) {
+Ov011Chr *Ov011Chr_Ctor(Ov011Chr *self) {
     void *p;
     Ov011TwA_Ctor(self->m28.m0c);
     Ov011TwB_Ctor(self->m28.m3c);
     self->m28.b0 = 0;
-    func_ov003_021d7ca8(self->s88);
-    __cxa_vec_ctor(self->s94, 3, 0xc, func_ov003_021d7ca8, func_ov003_021d7ce0);
+    Ov003Ticker_Clear_021d7ca8(self->s88);
+    __cxa_vec_ctor(self->s94, 3, 0xc, Ov003Ticker_Clear_021d7ca8, Ov003Ticker_Release_021d7ce0);
     self->b0 = 0;
     self->b1 = 0;
     p = Heap_Alloc(0x138);
@@ -902,19 +902,19 @@ static inline void Ov011TwA_Dtor(void *obj) {
 extern "C" {
 
 
-Ov011Chr *func_ov011_02201d10(Ov011Chr *self) {
+Ov011Chr *Ov011Chr_Dtor(Ov011Chr *self) {
     Ov011Chr_Reset(self);
     Ov011_FreeAnimP(&self->anim);
     Ov011_FreeModelP(&self->model);
-    __cxa_vec_cleanup(self->s94, 3, 0xc, func_ov003_021d7ce0);
-    func_ov003_021d7ce0(self->s88);
+    __cxa_vec_cleanup(self->s94, 3, 0xc, Ov003Ticker_Release_021d7ce0);
+    Ov003Ticker_Release_021d7ce0(self->s88);
     Ov011Model2_Reset(&self->m28);
     Ov011TwB_Dtor(self->m28.m3c);
     Ov011TwA_Dtor(self->m28.m0c);
     return self;
 }
 
-BOOL func_ov011_02201f28(Ov011Chr *self, u16 id, const VecFx32 *off, u16 c, s16 d, s16 e) {
+BOOL Ov011Chr_Init(Ov011Chr *self, u16 id, const VecFx32 *off, u16 c, s16 d, s16 e) {
     Actor *a;
     u32 i;
     self->id = id;
@@ -934,18 +934,18 @@ BOOL func_ov011_02201f28(Ov011Chr *self, u16 id, const VecFx32 *off, u16 c, s16 
         VEC_Add(&p, &self->off, &p);
         self->model->trans = p;
     }
-    func_ov003_021d7d24(self->s88, 0, 0, 1, 0);
+    Ov003Ticker_Start_021d7d24(self->s88, 0, 0, 1, 0);
     for (i = 0; i < 3; i++) {
-        func_ov003_021d7d24(self->s94[i], 0, 0, 1, 0);
+        Ov003Ticker_Start_021d7d24(self->s94[i], 0, 0, 1, 0);
     }
     return TRUE;
 }
 
-void func_ov011_0220205c(Ov011Chr *self) {
+void Ov011Chr_Reset_0220205c(Ov011Chr *self) {
     Ov011Chr_Reset(self);
 }
 
-void func_ov011_02202130(Ov011Chr *self) {
+void Ov011Chr_Update(Ov011Chr *self) {
     s32 key;
     u32 i;
     if (!self->b0) {
@@ -960,7 +960,7 @@ void func_ov011_02202130(Ov011Chr *self) {
             self->model->actor_id = 0xffff;
             func_ov000_0219badc(self->model, self->anim, r);
             self->model->visible = 0;
-            func_ov011_02200b88(&self->m28, self->anim, 0x4812);
+            Ov011Model2_Init(&self->m28, self->anim, 0x4812);
         } else {
             func_ov000_0218f110(self->anim);
         }
@@ -973,14 +973,14 @@ void func_ov011_02202130(Ov011Chr *self) {
             break;
         }
     }
-    func_ov003_021d7dd0(self->s88);
+    Ov003Ticker_Update_021d7dd0(self->s88);
     for (i = 0; i < 3; i++) {
-        func_ov003_021d7dd0(self->s94[i]);
+        Ov003Ticker_Update_021d7dd0(self->s94[i]);
     }
-    func_ov011_02200c30(&self->m28);
+    Ov011Model2_Update(&self->m28);
 }
 
-void func_ov011_02202260(Ov011Chr *self) {
+void Ov011Chr_Draw(Ov011Chr *self) {
     if (!self->b0) {
         return;
     }
@@ -1000,10 +1000,10 @@ void func_ov011_02202260(Ov011Chr *self) {
         sa = self->model->scale;
         OV011_BLKCPY(&q, &sv);
         OV011_BLKCPY(&s, &sa);
-        q.x += func_ov011_02200aac(self->s94[0], 0x19a);
-        q.y += func_ov011_02200aac(self->s94[1], 0x19a);
-        q.z += func_ov011_02200aac(self->s94[2], 0x19a);
-        s.x += func_ov011_02200aac(self->s88, 0x19a);
+        q.x += Ov011Ticker_ScaledValue(self->s94[0], 0x19a);
+        q.y += Ov011Ticker_ScaledValue(self->s94[1], 0x19a);
+        q.z += Ov011Ticker_ScaledValue(self->s94[2], 0x19a);
+        s.x += Ov011Ticker_ScaledValue(self->s88, 0x19a);
         s.y = s.x;
         self->model->trans = q;
         self->model->scale = s;
@@ -1020,7 +1020,7 @@ void func_ov011_02202260(Ov011Chr *self) {
     func_ov000_021903b4(self->m28.model);
 }
 
-void func_ov011_02202464(Ov011Chr *self) {
+void Ov011Chr_StartMode1(Ov011Chr *self) {
     if (self->b0) {
         self->unk_08 = 0;
         self->unk_24 = 0;
@@ -1028,7 +1028,7 @@ void func_ov011_02202464(Ov011Chr *self) {
     }
 }
 
-void func_ov011_02202488(Ov011Chr *self, u16 v) {
+void Ov011Chr_StartMode3(Ov011Chr *self, u16 v) {
     if (self->b0) {
         self->unk_24 = 0;
         self->mode = 3;
@@ -1036,7 +1036,7 @@ void func_ov011_02202488(Ov011Chr *self, u16 v) {
     }
 }
 
-void func_ov011_022024ac(Ov011Chr *self, u16 v) {
+void Ov011Chr_StartMode5(Ov011Chr *self, u16 v) {
     if (self->b0 && v != 0) {
         self->unk_24 = 0;
         self->mode = 5;
@@ -1045,7 +1045,7 @@ void func_ov011_022024ac(Ov011Chr *self, u16 v) {
 }
 
 
-VecFx32 func_ov011_022024d4(const Ov011Chr *self) {
+VecFx32 Ov011Chr_GetPos(const Ov011Chr *self) {
     VecFx32 v = data_ov011_02207438;
     if (self->b0) {
         Model0218fe1c *m = self->model;
@@ -1092,7 +1092,7 @@ static inline s32 Ov011_Progress(Ov011Chr *c, s32 n) {
     return FX_Div(n << 12, ((const Ov011Chr *)c)->unk_06 << 12);
 }
 
-void func_ov011_02202538(Ov011Chr *self) {
+void Ov011Chr_UpdateMode1(Ov011Chr *self) {
     switch (self->mode) {
     case 1: {
         VecFx32 s;
@@ -1138,7 +1138,7 @@ static inline BOOL Ov011Model2_Idle(Ov011Model2 *m) {
     return r;
 }
 
-void func_ov011_022026b4(Ov011Chr *self) {
+void Ov011Chr_UpdateMode3(Ov011Chr *self) {
     switch (self->mode) {
     case 3: {
         VecFx32 s;
@@ -1187,7 +1187,7 @@ void func_ov011_022026b4(Ov011Chr *self) {
     }
 }
 
-void func_ov011_022028a8(Ov011Chr *self) {
+void Ov011Chr_UpdateMode5(Ov011Chr *self) {
     switch (self->mode) {
     case 5: {
         VecFx32 s;
@@ -1294,7 +1294,7 @@ Ov011TwA *Ov011Vt_022079d0_DtorDelete(Ov011TwA *self) {
     return self;
 }
 
-BOOL func_ov011_02202ac8(Ov011TwA *self, const VecFx32 *to, const VecFx32 *from, s32 speed, u8 loop) {
+BOOL Ov011TwA_Start(Ov011TwA *self, const VecFx32 *to, const VecFx32 *from, s32 speed, u8 loop) {
     self->b0 = 1;
     self->b1 = loop;
     self->t = 0;
@@ -1305,7 +1305,7 @@ BOOL func_ov011_02202ac8(Ov011TwA *self, const VecFx32 *to, const VecFx32 *from,
     return TRUE;
 }
 
-void func_ov011_02202b5c(Ov011TwA *self) {
+void Ov011TwA_Stop(Ov011TwA *self) {
     if (self->b0) {
         self->b0 = 0;
     }
@@ -1319,7 +1319,7 @@ static inline void Ov011_Lerp(s32 t, const VecFx32 *a, const VecFx32 *b, VecFx32
     VEC_MultAdd(t, &d, a, out);
 }
 
-void func_ov011_02202b74(Ov011TwA *self) {
+void Ov011TwA_Update(Ov011TwA *self) {
     if (!self->b0) {
         return;
     }
@@ -1392,7 +1392,7 @@ BOOL Ov011TwB_Start(Ov011TwB *self, const VecFx32 *to, const VecFx32 *from, s16 
     return TRUE;
 }
 
-void func_ov011_02202d88(Ov011TwB *self) {
+void Ov011TwB_Stop(Ov011TwB *self) {
     if (!self->b0) {
         return;
     }
@@ -1402,7 +1402,7 @@ void func_ov011_02202d88(Ov011TwB *self) {
     Ov011TwB_SetBoth(self, &data_ov011_02207438);
 }
 
-void func_ov011_02202de0(Ov011TwB *self) {
+void Ov011TwB_Update(Ov011TwB *self) {
     VecFx32 d;
     s32 len;
     if (!self->b0) {
@@ -1430,11 +1430,11 @@ VecFx32 *Ov011Vt_022079b0_GetCur(Ov011TwB *self) {
     return self->b0 ? &self->cur : NULL;
 }
 
-u32 func_ov011_02202ebc(Ov011TwB *self) {
+u32 Ov011TwB_IsArrived(Ov011TwB *self) {
     return self->b1;
 }
 
-u32 func_ov011_02202ecc(Ov011TwB *self) {
+u32 Ov011TwB_IsActive(Ov011TwB *self) {
     return self->b0;
 }
 
@@ -1449,7 +1449,7 @@ void Ov011Mov_Init(Ov011Mov *self) {
     self->vel.z = 0;
 }
 
-void func_ov011_02202f04(Ov011Mov *self) {
+void Ov011Mov_Stop(Ov011Mov *self) {
     if (!self->active) {
         return;
     }
@@ -1473,7 +1473,7 @@ BOOL Ov011Mov_Start(Ov011Mov *self, const VecFx32 *pos, const VecFx32 *vel, s32 
     return TRUE;
 }
 
-void func_ov011_02202fbc(Ov011Mov *self) {
+void Ov011Mov_Stop_02202fbc(Ov011Mov *self) {
     if (!self->active) {
         return;
     }
@@ -1503,38 +1503,38 @@ VecFx32 *Ov011Mov_GetPos(Ov011Mov *self) {
     return r;
 }
 
-void func_ov011_02203040(Actor *self) {
+void Ov011Npc_Animate(Actor *self) {
     if (self->model == NULL) {
         return;
     }
     func_ov000_02190a80(self->model, func_0203db40(&self->pause));
 }
 
-void func_ov011_0220306c(Ov003Actor *self) {
+void Ov011Npc_State23(Ov003Actor *self) {
 }
 
-void func_ov011_02203070(Ov003Actor *self) {
+void Ov011Npc_State22(Ov003Actor *self) {
 }
 
-void func_ov011_02203074(Ov003Actor *self) {
+void Ov011Npc_State21(Ov003Actor *self) {
 }
 
-void func_ov011_02203078(Ov003Actor *self) {
+void Ov011Npc_State20(Ov003Actor *self) {
 }
 
-void func_ov011_0220307c(Ov003Actor *self) {
+void Ov011Npc_StateHurt(Ov003Actor *self) {
 }
 
-void func_ov011_02203080(Ov003Actor *self) {
+void Ov011Npc_State0e(Ov003Actor *self) {
 }
 
-void func_ov011_02203084(Ov003Actor *self) {
+void Ov011Npc_StateMove(Ov003Actor *self) {
 }
 
 void Ov011ActVt_02207b34_Start(Ov003Actor *self) {
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     if (func_020621c4()) {
-        func_ov003_021d6bac(self, data_ov011_022074f8);
+        Ov003Actor_ScaleStats(self, data_ov011_022074f8);
     }
 }
 

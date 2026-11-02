@@ -6,7 +6,7 @@ extern char data_ov009_0221729c[];
 extern char data_ov009_022172a7[];
 
 void Ov009ActVt_02217594_Init(Ov009ActVt_02217594 *self) {
-    func_ov003_021d0fc0(self);
+    Ov003Actor_Init(self);
     {
         const char *a = data_ov009_0221729c;
         const char *b = data_ov009_022172a7;

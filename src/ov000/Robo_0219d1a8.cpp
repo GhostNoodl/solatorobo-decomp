@@ -33,9 +33,9 @@ extern "C" {
 
 extern char data_ov000_021cc60f[];
 s16 *func_ov003_021ce630(s16 *p, void *hit);
-u16 func_ov003_021ce6fc(u16 v);
-u16 func_ov003_021ce79c(u16 v);
-u16 func_ov003_021ce7c0(u16 v);
+u16 Ov003_ScaleDamage(u16 v);
+u16 Ov003_ScaleDamageHalf(u16 v);
+u16 Ov003_ScaleReward(u16 v);
 void *Heap_Alloc(u32 size);
 Info0219d1a8 *func_0206fef8(u16 id);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
@@ -162,9 +162,9 @@ void Robo021ca458_Start(Robo021ca458 *self) {
     ((Gauge0219d1a8 *)self->hp)->max = n;
     ((Gauge0219d1a8 *)self->hp)->cur = n;
     ((Gauge0219d1a8 *)self->hp)->unk_0c = 0x30;
-    ((Gauge0219d1a8 *)self->hp)->fn10 = (void *)func_ov003_021ce6fc;
-    ((Gauge0219d1a8 *)self->hp)->fn14 = (void *)func_ov003_021ce79c;
-    ((Gauge0219d1a8 *)self->hp)->fn18 = (void *)func_ov003_021ce7c0;
+    ((Gauge0219d1a8 *)self->hp)->fn10 = (void *)Ov003_ScaleDamage;
+    ((Gauge0219d1a8 *)self->hp)->fn14 = (void *)Ov003_ScaleDamageHalf;
+    ((Gauge0219d1a8 *)self->hp)->fn18 = (void *)Ov003_ScaleReward;
     self->unk_b34 = n;
     self->unk_54 = NewTrio0219d1a8();
     self->mode = 3;

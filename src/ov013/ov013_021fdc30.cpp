@@ -18,7 +18,7 @@ static inline Ov003Actor *Ov013_FindActor(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-void func_ov013_021fdc30(Ov013ActEx_021fdb70 *self) {
+void Ov013ActEx_021fdb70_State20(Ov013ActEx_021fdb70 *self) {
     Ov003Actor *t = Ov013_FindActor(self->target);
     if (t == NULL) {
         return;
@@ -115,7 +115,7 @@ static inline void Ov013Spawn_Init(Ov013SpawnDesc *d, u16 k) {
 
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov013SpawnDesc *d, VecFx32 *pos, void *rot, u16 a);
 
-void func_ov013_021fdedc(Ov013ActEx_021fdb70 *self) {
+void Ov013ActEx_021fdb70_StateIdle(Ov013ActEx_021fdb70 *self) {
     ActorSub40 *q = self->fsm;
     switch (q->st) {
     case 0: {

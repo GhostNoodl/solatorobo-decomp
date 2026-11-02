@@ -24,7 +24,7 @@ ov006_CaptionPanel *Ov006Vt_021ec29c_DtorDelete(ov006_CaptionPanel *self) {
     return self;
 }
 
-void func_ov006_021e2c14(ov006_CaptionPanel *self) {
+void ov006_CaptionPanel_Load(ov006_CaptionPanel *self) {
     Model *model;
     const char *text;
 

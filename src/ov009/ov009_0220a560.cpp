@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov009_0220a560(Ov009ActVt_02217390 *self) {
+void Ov009ActVt_02217390_State20(Ov009ActVt_02217390 *self) {
     switch (self->fsm->st) {
     case 0:
         self->pos.y = self->unk_f8.y - 0xc00;
@@ -39,11 +39,11 @@ static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->event != 0;
 }
 
-void func_ov009_0220a654(Ov009ActVt_02217390 *self) {
+void Ov009ActVt_02217390_StateHeld(Ov009ActVt_02217390 *self) {
     if (self->fsm->st == 0) {
         self->unk_f0 = 0;
     }
-    func_ov003_021d36fc(self);
+    Ov003Actor_StateHeld(self);
     if (self->fsm->st == 2) {
         self->fsm->timer = 0;
     }
@@ -67,7 +67,7 @@ extern char data_ov009_022172af[];
 extern char data_ov009_022172bb[];
 extern void func_ov000_02191418(Model0218fe1c *m, u16 a, BOOL b);
 extern BOOL func_ov000_02191508(Model0218fe1c *m);
-void func_ov009_0220a750(Ov009ActVt_02217390 *self) {
+void Ov009ActVt_02217390_StateAttack(Ov009ActVt_02217390 *self) {
     ActorSub40 *st = self->fsm;
     Model0218fe1c *m = self->model;
     u32 f = m->unk_e4;
@@ -133,7 +133,7 @@ void func_ov009_0220a750(Ov009ActVt_02217390 *self) {
 
 extern char data_ov009_022172d3[];
 extern s16 *func_ov000_02191318(Model0218fe1c *m, s32 a);
-void func_ov009_0220a984(Ov009ActVt_02217390 *self) {
+void Ov009ActVt_02217390_StateAttack2(Ov009ActVt_02217390 *self) {
     s32 prev;
     switch (self->fsm->st) {
     case 0:

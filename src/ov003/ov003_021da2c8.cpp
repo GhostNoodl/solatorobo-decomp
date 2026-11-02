@@ -12,13 +12,13 @@ struct Ov003SpawnInfo {
 
 extern "C" {
 
-extern Actor *func_ov003_021f1420(Ov003SpawnInfo *info);
+extern Actor *Ov003Prop_New(Ov003SpawnInfo *info);
 extern Actor *func_ov000_02192b24(Ov003SpawnInfo *info);
-extern Actor *func_ov003_021cfab4(Ov003SpawnInfo *info);
+extern Actor *Ov003_NewActor(Ov003SpawnInfo *info);
 extern Actor *func_ov000_021b4828(Ov003SpawnInfo *info);
 extern BOOL func_ov000_02198360(ActorSub40 *self, u8 idx, BOOL flag);
 
-void func_ov003_021da2c8(Actor *self, s32 speed, s32 velY, s32 friction, s32 gravity) {
+void Ov003Actor_SetMotion(Actor *self, s32 speed, s32 velY, s32 friction, s32 gravity) {
     if (self == NULL) {
         return;
     }
@@ -37,7 +37,7 @@ void func_ov003_021da2c8(Actor *self, s32 speed, s32 velY, s32 friction, s32 gra
     self->gravity = gravity;
 }
 
-Actor *func_ov003_021da32c(u16 id) {
+Actor *Ov003_SpawnById(u16 id) {
     Ov003SpawnInfo info;
     Actor *obj = NULL;
     s32 i;
@@ -50,17 +50,17 @@ Actor *func_ov003_021da32c(u16 id) {
     info.unk_0c = -1;
     switch ((u16)kind) {
     case 0x1000:
-        obj = func_ov003_021f1420(&info);
+        obj = Ov003Prop_New(&info);
         break;
     case 0x2000:
     case 0x3000:
-        obj = func_ov003_021f1420(&info);
+        obj = Ov003Prop_New(&info);
         break;
     case 0x4000:
         obj = func_ov000_02192b24(&info);
         break;
     case 0x5000:
-        obj = func_ov003_021cfab4(&info);
+        obj = Ov003_NewActor(&info);
         break;
     case 0x6000:
         obj = func_ov000_021b4828(&info);
@@ -72,7 +72,7 @@ Actor *func_ov003_021da32c(u16 id) {
     return obj;
 }
 
-void func_ov003_021da40c(ActorSub40 *self) {
+void Ov003ActorSub40_ApplyFlags(ActorSub40 *self) {
     u8 idx;
     u8 i;
     if (self->flags == 0) {
@@ -89,12 +89,12 @@ void func_ov003_021da40c(ActorSub40 *self) {
     self->flags = 0;
 }
 
-void func_ov003_021da48c(ActorSub40 *self, u8 idx) {
+void Ov003ActorSub40_ForceState(ActorSub40 *self, u8 idx) {
     self->flags = 0;
     func_ov000_02198360(self, idx, 1);
 }
 
-EffectObj *func_ov003_021da4a8(const Ov003Vec *base, s32 range, s32 fxId) {
+EffectObj *Ov003_SpawnScatterFx(const Ov003Vec *base, s32 range, s32 fxId) {
     Ov003Vec v;
     Ov003Vec p;
     s32 y = Rand_PlusMinus(range);
@@ -182,7 +182,7 @@ static inline void Ov003Follower_Update(Ov003Follower *self) {
     self->SetPos(&p);
 }
 
-void func_ov003_021da520(Ov003Follower *self) {
+void Ov003Follower_Follow(Ov003Follower *self) {
     Ov003FollowTgt *t;
     if (self == NULL) {
         return;
@@ -198,7 +198,7 @@ void func_ov003_021da520(Ov003Follower *self) {
     self->SetPos(&p);
 }
 
-void func_ov003_021da620(Ov003Follower *self) {
+void Ov003Follower_FollowRot(Ov003Follower *self) {
     Ov003FollowTgt *t;
     if (self == NULL) {
         return;

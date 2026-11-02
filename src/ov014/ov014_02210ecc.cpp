@@ -44,11 +44,11 @@ static inline void Ov014_TimerTick(ActorSub40 *s) {
     }
 }
 
-void func_ov014_02210ecc(Ov014Act_0220f9d0 *self) {
+void Ov014Act_0220f9d0_State20(Ov014Act_0220f9d0 *self) {
     self->fsm->st = 0xffff;
 }
 
-void func_ov014_02210ee0(Ov014Act_0220f9d0 *self) {
+void Ov014Act_0220f9d0_StateIdle(Ov014Act_0220f9d0 *self) {
     switch (self->fsm->st) {
     case 0: {
         ActorSub44 *n = self->unk_44;
@@ -97,7 +97,7 @@ void func_ov014_02210ee0(Ov014Act_0220f9d0 *self) {
     }
 }
 
-void func_ov014_022110bc(Ov014Act_0220f9d0 *self) {
+void Ov014Act_0220f9d0_StateShoot(Ov014Act_0220f9d0 *self) {
     ActorSub40 *s = self->fsm;
     const Ov003Step *p = self->step;
     switch (ActorSub40_State(s)) {
@@ -164,7 +164,7 @@ void func_ov014_022110bc(Ov014Act_0220f9d0 *self) {
     }
 }
 
-void func_ov014_022112b8(Ov014Act_0220f9d0 *self) {
+void Ov014Act_0220f9d0_StateAttack(Ov014Act_0220f9d0 *self) {
     switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov014_02217d4c, 0xcd, 0);
@@ -231,7 +231,7 @@ extern char data_ov014_02217d70[];
 extern u8 data_ov014_02216d30[];
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDescB *d, VecFx32 *pos, Rot16 *rot, u16 a);
 
-void func_ov014_02211538(Ov014Act_0220f9d0 *self) {
+void Ov014Act_0220f9d0_StateAttack2(Ov014Act_0220f9d0 *self) {
     switch (ActorSub40_State(self->fsm)) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov014_02217d4c, 0xcd, 0);
@@ -347,7 +347,7 @@ extern void func_ov000_02191780(Model0218fe1c *a);
 extern void func_ov000_021917f8(Model0218fe1c *a);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
-void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
+void Ov014Act_0220f9d0_StateAttack3(Ov014Act_0220f9d0 *self) {
     switch (ActorSub40_State(self->fsm)) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov014_02217d4c, 0xcd, 0);

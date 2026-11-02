@@ -5,7 +5,7 @@ extern "C" {
 extern char data_ov009_022179b4[];
 extern void Actor_MoveToPos(Ov003Actor *self, const VecFx32 *v, s32 a);
 
-void func_ov009_0221134c(Ov009ActVt_02217aac *self) {
+void Ov009ActVt_02217aac_StateMove(Ov009ActVt_02217aac *self) {
     VecFx32 v;
     if (self->fsm->st == 0) {
         func_ov000_02190cb0(self->model, data_ov009_022179b4, 0x155, 0);
@@ -43,7 +43,7 @@ extern void func_ov000_0219a210(VecFx32 *v, const void *a, u16 b);
 extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 msg);
 typedef u16 Ov009Row3[3];
 
-void func_ov009_02211470(Ov009ActVt_02217aac *self) {
+void Ov009ActVt_02217aac_StateShoot(Ov009ActVt_02217aac *self) {
     Ov003Actor *t = Actor_GetTarget(self);
     ActorSub40 *st;
     if (t == NULL) {
@@ -95,7 +95,7 @@ void func_ov009_02211470(Ov009ActVt_02217aac *self) {
         p.y = self->pos.y;
         p.z = self->pos.z;
         func_ov000_0219a210(&p, data_ov009_022160b8, self->rot_y);
-        h = static_cast<Ov003Actor *>(func_ov003_021d69f0(self, 0x4802, &p, &self->rot_x, t));
+        h = static_cast<Ov003Actor *>(Ov003Actor_SpawnChild(self, 0x4802, &p, &self->rot_x, t));
         if (h != NULL) {
             func_ov000_0218d46c(h, self->id, 0xb);
             func_02065f88(0x12c, &p)->SetRotXYZ(0, self->rot_y, 0);

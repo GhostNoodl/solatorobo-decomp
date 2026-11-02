@@ -48,7 +48,7 @@ void Ov003ActVt_021fa5f8_Start(Ov003PropResMdl *self) {
     func_ov000_02190758(&self->mdl, &self->rot, 0);
 }
 
-void func_ov003_021f37d0(Ov003PropResMdl *self) {
+void Ov003ActVt_021fa5f8_Animate(Ov003PropResMdl *self) {
     s32 v;
     s32 *p;
     VecFx32 pos;

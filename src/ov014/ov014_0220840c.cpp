@@ -51,9 +51,9 @@ void func_ov014_0220840c(Ov014ActEx_0220774c *self) {
                 e->SetScaleAll(0xb33);
                 MIi_CpuClear32(-1, (u8 *)e + 0x84, 0x40);
                 func_0204a028(data_02097e4c, 0x11, &self->pos, -10);
-                func_ov003_021da9ac(self->unk_d8, 0xfe, e);
+                Ov003FxList_Add(self->unk_d8, 0xfe, e);
             } else {
-                func_ov003_021daae4(self->unk_d8, 0xfe, &p, 0, 0, 0, 0);
+                Ov003FxList_Place(self->unk_d8, 0xfe, &p, 0, 0, 0, 0);
             }
         } else {
             Ov003FxList_Kill(self->unk_d8, 0xfe);
@@ -107,7 +107,7 @@ void Ov014ActEx_02208618_Start(Ov014ActEx_02208618 *self) {
 
 void Ov014ActEx_02208618_Update(Ov014ActEx_02208618 *self) {
     func_ov000_021953b4(self);
-    func_ov003_021dacfc(((void *)self->unk_d8));
+    Ov003FxList_Prune(((void *)self->unk_d8));
 }
 
 }

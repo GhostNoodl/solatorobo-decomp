@@ -27,7 +27,7 @@ static inline u16 Ov009_AngTo(Ov003Actor *self, Ov003Actor *a) {
     return FX_Atan2(a->pos.x - self->pos.x, a->pos.z - self->pos.z);
 }
 
-void func_ov009_02208204(Ov009Multi *self) {
+void Ov009Multi_StateIdle(Ov009Multi *self) {
     VecFx32 off;
     VecFx32 d;
     s32 k = 0x66;
@@ -129,7 +129,7 @@ void func_ov009_02208204(Ov009Multi *self) {
     VEC_MultAdd(k, &d, &self->pos, &self->pos);
 }
 
-void func_ov009_02208574(Ov009Multi *self) {
+void Ov009Multi_StateHurt(Ov009Multi *self) {
     if (self->unk_490 > 1) {
         self->unk_490 -= 2;
     } else {
@@ -140,7 +140,7 @@ void func_ov009_02208574(Ov009Multi *self) {
     func_ov000_02198360(self->fsm, 1, 0);
 }
 
-void func_ov009_022085d0(Ov009Multi *self) {
+void Ov009Multi_StateKnockBack(Ov009Multi *self) {
     if (self->unk_490 > 1) {
         self->unk_490 -= 2;
     } else {
@@ -151,7 +151,7 @@ void func_ov009_022085d0(Ov009Multi *self) {
     func_ov000_02198360(self->fsm, 1, 0);
 }
 
-void func_ov009_0220862c(Ov009Multi *self) {
+void Ov009Multi_StateAttack(Ov009Multi *self) {
     Ov003Actor *a;
     u16 ang;
     switch (self->fsm->st) {
@@ -184,17 +184,17 @@ void func_ov009_0220862c(Ov009Multi *self) {
     Actor_Move(self, 0);
 }
 
-BOOL func_ov009_02208764(Ov003Actor *self) {
-    BOOL r = func_ov003_021d16cc(self);
+BOOL Ov009ActVt_02217798_Draw(Ov003Actor *self) {
+    BOOL r = Ov003Actor_Draw(self);
     if (self->unk_18 == 1 && r == FALSE) {
         self->unk_18 = 2;
     }
     return r;
 }
 
-void func_ov009_02208788(Ov003Actor *self) {
+void Ov009ActVt_02217798_Init(Ov003Actor *self) {
     GroupNode *p;
-    func_ov003_021d0fc0(self);
+    Ov003Actor_Init(self);
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
         GroupNodeFlags *b = &p->flags;
@@ -203,9 +203,9 @@ void func_ov009_02208788(Ov003Actor *self) {
     }
 }
 
-void func_ov009_022087c4(Ov003Actor *self) {
+void Ov009ActVt_02217798_Start(Ov003Actor *self) {
     void *saved;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     {
         VecFx32 v = data_ov009_02215fbc[self->unk_1a].start;
         v.x = self->pos.x;

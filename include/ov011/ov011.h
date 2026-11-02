@@ -199,8 +199,8 @@ extern "C" {
 void Heap_FreeArray(void *p);
 void *Heap_AllocArray(u32 size);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
-void func_ov003_021da40c(void *p);
-void func_ov003_021da48c(void *p, u8 a);
+void Ov003ActorSub40_ApplyFlags(void *p);
+void Ov003ActorSub40_ForceState(void *p, u8 a);
 }
 
 static inline BOOL Ov011Game_IsBusy(FieldState *g) {
@@ -373,7 +373,7 @@ public:
     Ov011Node *head;
 };
 
-// A Ov011Ent-driven group mover (update func_ov011_021fa8c8, table data_ov011_02207344).
+// A Ov011Ent-driven group mover (update Ov011Mgr_Update, table data_ov011_02207344).
 class Ov011Mgr {
 public:
     u8 b0 : 1;
@@ -414,7 +414,7 @@ struct Ov011Mov {
 };
 OV011_SIZE(Ov011Mov, 0x20);
 
-// Second group mover (update func_ov011_021fb684, table data_ov011_022072d8).
+// Second group mover (update Ov011Mgr2_Update, table data_ov011_022072d8).
 class Ov011Mgr2 {
 public:
     u8 b0 : 1;
@@ -436,7 +436,7 @@ public:
 };
 OV011_SIZE(Ov011Mgr2, 0x100);
 
-// Effect with its own model (init func_ov011_02201578, update func_ov011_02201758).
+// Effect with its own model (init Ov011Fx_Init, update Ov011Fx_Update).
 struct Ov011Fx {
     u8 b0 : 1;
     u8 b1 : 1;
@@ -458,7 +458,7 @@ struct Ov011Fx {
 };
 OV011_SIZE(Ov011Fx, 0x80);
 
-// Ring buffer of s32 values (allocated by func_ov011_021fd4d8).
+// Ring buffer of s32 values (allocated by Ov011Scene_Init).
 struct Ov011Ring {
     u8 b0 : 1;
     u8 rest : 7;
@@ -487,7 +487,7 @@ public:
 OV011_SIZE(Ov011Sub1b4, 0x20);
 
 // The 0x23c-byte scene state that the main ov011 actor owns at unk_100 (built by
-// Ov011SceneActor_Start, initialised by func_ov011_021fd4d8, updated by func_ov011_021fd638,
+// Ov011SceneActor_Start, initialised by Ov011Scene_Init, updated by Ov011Scene_Update,
 // handlers in data_ov011_022073a0).
 class Ov011Scene : public Ov011List {
 public:
@@ -553,21 +553,21 @@ public:
 };
 
 // ov003-actor subclasses named after their vtables (only the fields ov011 reads).
-// vtable data_ov011_02207cf8: Ov011Act7cf8_Start, func_ov011_022038ac.
+// vtable data_ov011_02207cf8: Ov011Act7cf8_Start, Ov011Act7cf8_StateIdle.
 class Ov011Act7cf8 : public Ov003Actor {
 public:
     VecFx32 unk_f0;
 };
 
-// vtable data_ov011_02207e50: Ov011Act7e50_Start, func_ov011_02203e94, func_ov011_02203ef0.
+// vtable data_ov011_02207e50: Ov011Act7e50_Start, Ov011Act7e50_SelectState, Ov011Act7e50_StateIdle.
 class Ov011Act7e50 : public Ov003Actor {
 public:
     VecFx32 unk_f0;
     u16 unk_fc;
 };
 
-// vtable data_ov011_02207c4c: Ov011Act7c4c_Start, func_ov011_022043cc, func_ov011_02204428,
-// func_ov011_02204a8c.
+// vtable data_ov011_02207c4c: Ov011Act7c4c_Start, Ov011Act7c4c_SelectState, Ov011Act7c4c_StateIdle,
+// Ov011Act7c4c_StateDie.
 class Ov011Act7c4c : public Ov003Actor {
 public:
     VecFx32 unk_f0;
@@ -579,7 +579,7 @@ public:
 
 class Ov011Bar;
 
-// vtable data_ov011_02207da4: Ov011Act7da4_Dtor .. func_ov011_02206e18 (the photo/boss
+// vtable data_ov011_02207da4: Ov011Act7da4_Dtor .. Ov011Act7da4_StateDie (the photo/boss
 // actor of ov011_02204b94.cpp .. ov011_022071b4.cpp).
 class Ov011Act7da4 : public Ov003Actor {
 public:
@@ -656,11 +656,11 @@ static inline BOOL Ov011_NodeValid(Ov011Node *n) {
 extern "C" {
 void func_ov011_022011c0(Ov011Npc *self, u16 v);
 void func_ov011_02201214(Ov011Npc *self, void *p);
-u32 func_ov011_02201244(Ov011Npc *self);
+u32 Ov011Npc_IsTracking(Ov011Npc *self);
 void *func_ov011_02201254(Ov011Npc *self);
 BOOL Ov011Mov_Start(Ov011Mov *self, const VecFx32 *pos, const VecFx32 *vel, s32 scale, s32 accel);
 VecFx32 *Ov011Mov_GetPos(Ov011Mov *self);
-void *func_ov011_021fb66c(Ov011E40 *self);
+void *Ov011E40_Dtor(Ov011E40 *self);
 void func_ov011_021fff38(Ov011SceneActor *self);
 void func_ov011_0220023c(Ov011SceneActor *self);
 void func_ov011_02200310(Ov011SceneActor *self);

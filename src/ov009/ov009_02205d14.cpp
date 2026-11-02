@@ -9,10 +9,10 @@ extern char data_ov009_02216bb4[];
 extern char data_ov009_02216bba[];
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
-extern void *func_ov003_021da940(void *p);
+extern void *Ov003FxList_Dtor(void *p);
 extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern s16 *func_ov000_02191318(Model0218fe1c *m, s32 a);
-void func_ov009_02205d94(Ov009Names *self, void *res);
+void Ov009Names_Fill_02205d94(Ov009Names *self, void *res);
 
 struct Ov009Rot {
     s16 x;
@@ -20,27 +20,27 @@ struct Ov009Rot {
     s16 z;
 };
 
-void func_ov009_02205d14(Ov009ActVt_02216bc8 *self) {
+void Ov009ActVt_02216bc8_StateDie(Ov009ActVt_02216bc8 *self) {
     if (self->fsm->st == 0 && self->unk_f2 == 0) {
         self->radius >>= 1;
     }
-    func_ov003_021d6054(self);
+    Ov003Actor_StateDie(self);
 }
 
-void func_ov009_02205d40(Ov003Actor *self) {
-    func_ov003_021d0fc0(self);
+void Ov009ActVt_02216fd0_Init(Ov003Actor *self) {
+    Ov003Actor_Init(self);
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     func_ov000_02187a20(data_ov000_021ccd54, 0xe);
 }
 
-void func_ov009_02205d78(Ov003Actor *self) {
+void Ov009ActVt_02216fd0_Update(Ov003Actor *self) {
     if (self->unk_1a != 0) {
         self->unk_cc = 0xc000;
     }
-    func_ov003_021d1e8c(self);
+    Ov003Actor_Update(self);
 }
 
-void func_ov009_02205d94(Ov009Names *self, void *res) {
+void Ov009Names_Fill_02205d94(Ov009Names *self, void *res) {
     char *a = func_0207011c(res);
     char *b = func_020701d4(res);
     u8 *c = func_02070558(res);
@@ -62,11 +62,11 @@ void func_ov009_02205d94(Ov009Names *self, void *res) {
     self->unk_00 = 0;
 }
 
-void func_ov009_02205e54(Ov003Actor *self) {
+void Ov009ActVt_02216f24_Init(Ov003Actor *self) {
     if (self->kind == 0x5051) {
-        self->unk_d8 = (void *)func_ov009_02205d94;
+        self->unk_d8 = (void *)Ov009Names_Fill_02205d94;
     }
-    func_ov003_021d0fc0(self);
+    Ov003Actor_Init(self);
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     switch (self->kind) {
     case 0x5014:
@@ -92,15 +92,15 @@ void func_ov009_02205e54(Ov003Actor *self) {
     self->unk_ea_14 = 1;
 }
 
-void func_ov009_02205ff0(Ov003Actor *self) {
+void Ov009ActVt_02216f24_StateDie(Ov003Actor *self) {
     if (self->fsm->st == 0) {
         self->radius >>= 1;
     }
-    func_ov003_021d6054(self);
+    Ov003Actor_StateDie(self);
 }
 
 void Ov009ActVt_02216dcc_Init(Ov009ActVt_02216dcc *self) {
-    func_ov003_021d0fc0(self);
+    Ov003Actor_Init(self);
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     func_ov000_02187a20(data_ov000_021ccd54, 0xd);
     self->unk_b8 = self->pos;

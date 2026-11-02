@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov009_022127f8(Ov009ActSpin *self) {
+void Ov009ActSpin_StateHurt(Ov009ActSpin *self) {
     VecFx32 d;
     ActorSub40 *st;
     switch (self->fsm->st) {
@@ -64,7 +64,7 @@ static inline void *Ov009_FindActorD68(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-void func_ov009_02212978(Ov009ActVt_02217a00 *self) {
+void Ov009ActSpin_StateDie(Ov009ActVt_02217a00 *self) {
     VecFx32 v;
     VecFx32 w;
     ActorSub40 *st;
@@ -149,11 +149,11 @@ void func_ov009_02212978(Ov009ActVt_02217a00 *self) {
         }
         if (st->timer == 0) {
             func_ov000_02199f48(self->hp, func_ov000_0219bf90());
-            func_ov003_021d6a3c(self, 1, 1, 1);
+            Ov003Actor_Defeat(self, 1, 1, 1);
             return;
         }
         if ((u8)self->fsm->timer < 0x1f) {
-            func_ov003_021d6954(self, self->fsm->timer);
+            Ov003Actor_SetAlpha(self, self->fsm->timer);
         }
         VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
         break;

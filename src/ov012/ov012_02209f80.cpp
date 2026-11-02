@@ -13,7 +13,7 @@ static inline u16 Ov012_AngTo(Ov003Actor *self, Ov003Actor *t) {
     return FX_Atan2(t->pos.x - self->pos.x, t->pos.z - self->pos.z);
 }
 
-void func_ov012_02209bd4(Ov003Actor *self) {
+void Ov012ActVt_0220b35c_StateShoot(Ov003Actor *self) {
     Ov003Actor *o = Ov012_FindActor(self->unk_d0->target_id);
     Ov003Actor *pl = Actor_GetTarget(self);
     ActorSub40 *s = self->fsm;
@@ -35,7 +35,7 @@ void func_ov012_02209bd4(Ov003Actor *self) {
         break;
     case 1:
         if (self->model->anim_state == 1) {
-            Actor *n = func_ov003_021d69a0(self, 0x4009, 9);
+            Actor *n = Ov003Actor_SpawnAtSelf(self, 0x4009, 9);
             if (n != NULL) {
                 self->unk_d0->target_id = n->id;
             }
@@ -104,7 +104,7 @@ void func_ov012_02209bd4(Ov003Actor *self) {
     }
 }
 
-void func_ov012_02209f80(Ov003Actor *self) {
+void Ov012ActVt_0220b35c_State16(Ov003Actor *self) {
     ActorSub40 *s = self->fsm;
     switch (s->st) {
     case 0:
@@ -145,7 +145,7 @@ void func_ov012_02209f80(Ov003Actor *self) {
 }
 
 extern "C" {
-void func_ov012_0220a0f4(Ov003Actor *self) {
+void Ov012ActVt_0220b35c_StateDown(Ov003Actor *self) {
     if (self->fsm->st == 0) {
         Ov003Actor *o = Ov012_FindActor(self->unk_d0->target_id);
         if (o != NULL) {
@@ -161,12 +161,12 @@ void func_ov012_0220a0f4(Ov003Actor *self) {
             func_02049f44(data_02097e4c, 0x704, &self->pos, 0);
         }
     }
-    func_ov003_021d5900(self);
+    Ov003Actor_StateDown(self);
 }
 }
 
 extern "C" {
-void func_ov012_0220a1ac(Ov003Actor *self) {
+void Ov012ActVt_0220b35c_StateDie(Ov003Actor *self) {
     if (self->fsm->st == 0) {
         EffectObj *e;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4009, 0x15);
@@ -177,12 +177,12 @@ void func_ov012_0220a1ac(Ov003Actor *self) {
             e->AddPosXYZ(0, self->centerY, 0);
         }
     }
-    func_ov003_021d6054(self);
+    Ov003Actor_StateDie(self);
 }
 }
 
 extern "C" {
-void func_ov012_0220a244(Ov003Actor *self) {
+void Ov012ActVt_0220b35c_StateHurt(Ov003Actor *self) {
     if (self->fsm->st == 0) {
         Ov003Actor *o = Ov012_FindActor(self->unk_d0->target_id);
         if (o != NULL) {
@@ -196,12 +196,12 @@ void func_ov012_0220a244(Ov003Actor *self) {
         }
         func_02049f44(data_02097e4c, 0x703, &self->pos, 0);
     }
-    func_ov003_021d4fd8(self);
+    Ov003Actor_StateHurt(self);
 }
 }
 
 extern "C" {
-void func_ov012_0220a2ec(Ov003Actor *self) {
+void Ov012ActVt_0220b35c_StateKnockBack(Ov003Actor *self) {
     if (self->fsm->st == 0) {
         Ov003Actor *o = Ov012_FindActor(self->unk_d0->target_id);
         if (o != NULL) {
@@ -215,20 +215,20 @@ void func_ov012_0220a2ec(Ov003Actor *self) {
         }
         func_02049f44(data_02097e4c, 0x704, &self->pos, 0);
     }
-    func_ov003_021d5348(self);
+    Ov003Actor_StateKnockBack(self);
 }
 }
 
 extern "C" {
-Ov003Actor *func_ov012_0220a394(Ov003Actor *self) {
-    func_ov003_021d0edc(self);
+Ov003Actor *Ov012ActVt_0220b35c_Dtor(Ov003Actor *self) {
+    Ov003Actor_DtorBase(self);
     return self;
 }
 }
 
 extern "C" {
-Ov003Actor *func_ov012_0220a3a8(Ov003Actor *self) {
-    func_ov003_021d0edc(self);
+Ov003Actor *Ov012ActVt_0220b35c_DtorDelete(Ov003Actor *self) {
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }

@@ -16,7 +16,7 @@ extern void func_ov000_0218f074(ActorRes *p, void *res, s32 a, s32 b, s32 c, s32
 extern BOOL func_ov000_0218f110(ActorRes *p);
 extern void Heap_Free(void *p);
 
-void func_ov003_021e0c60(ActorEx *self) {
+void Ov003ActVt_021f82b8_State21(ActorEx *self) {
     ActorSub44 *part;
     switch (self->fsm->st) {
     case 0:

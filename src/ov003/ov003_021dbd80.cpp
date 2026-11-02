@@ -11,7 +11,7 @@ extern s32 func_ov000_0219a510(Actor *self, u16 mask, const VecFx32 *pos, s32 r,
 extern Actor *func_ov000_021985c0(void *p);
 extern BOOL func_ov000_0219a8bc(void *a, Actor *b, Actor *c, u16 d, u8 e, VecFx32 *f, s32 g, s32 h, s32 i);
 extern void func_ov000_0218996c(u8 a, u8 b);
-extern void func_ov003_021f0c60(Ov003Shot *self, u16 mask);
+extern void Ov003Pickup_Update(Ov003Shot *self, u16 mask);
 extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 
 static inline u8 Ov003HtPlayer_Kind(Robo021ca458 *pl) {
@@ -21,7 +21,7 @@ static inline u8 Ov003HtPlayer_Kind(Robo021ca458 *pl) {
     return 0;
 }
 
-BOOL func_ov003_021dbd80(Ov003Shot *self) {
+BOOL Ov003Shot_CheckHits(Ov003Shot *self) {
     void *list[32];
     Robo021ca458 *pl = func_ov000_0219bf90();
     Actor *part = Target_Get(self->targetObj);
@@ -119,7 +119,7 @@ BOOL func_ov003_021dbd80(Ov003Shot *self) {
                 self->height = v;
                 self->centerY = v >> 1;
             }
-            func_ov003_021f0c60(self, mask);
+            Ov003Pickup_Update(self, mask);
             func_ov000_02198360(self->fsm, 0x15, 0);
         } else {
             self->vfunc_08();

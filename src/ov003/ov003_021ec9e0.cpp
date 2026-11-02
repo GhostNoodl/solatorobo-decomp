@@ -81,7 +81,7 @@ void func_ov003_021ec9e0(Ov003Gimmick *self) {
     }
 }
 
-void func_ov003_021ecb6c(Ov003Gimmick *self) {
+void Ov003ActVt_021f99e8_StateHeld(Ov003Gimmick *self) {
     if (self->fsm->st == 0) {
         if (self->kind == 0x4064) {
             if (self->unk_cf_u != 1) {
@@ -107,7 +107,7 @@ void func_ov003_021ecb6c(Ov003Gimmick *self) {
     func_ov000_02195d88(self);
 }
 
-void func_ov003_021ecc68(Ov003Gimmick *self) {
+void Ov003ActVt_021f99e8_StateDie(Ov003Gimmick *self) {
     Ov003GmArg arg;
     ActorSub40 *w = self->fsm;
     if (w->st == 0 && w->history[0] != 10 && self->unk_ce_u != 0) {

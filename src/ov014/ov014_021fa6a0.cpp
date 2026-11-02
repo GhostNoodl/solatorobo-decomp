@@ -23,7 +23,7 @@ extern void func_ov000_02187a20(void *a, s32 b);
 #pragma force_active on
 Ov003Actor *Ov014Act_021fa6a0_Ctor(Ov014Act_021fa6a0 *self) {
     u8 i;
-    func_ov003_021d0c1c(self);
+    Ov003Actor_Ctor(self);
     *(void **)self = data_ov014_02217114;
     func_ov000_0218e9c4(&self->unk_124);
     func_ov000_0218fe1c(&self->mdl);
@@ -53,7 +53,7 @@ Ov014Act_021fa6a0 *Ov014Act_021fa6a0_Dtor(Ov014Act_021fa6a0 *self) {
     Ov003Vt_021f7974_Dtor(&self->scripts);
     func_ov000_0218fee4(&self->mdl);
     func_ov000_0218ea20(&self->unk_124);
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
@@ -63,7 +63,7 @@ Ov014Act_021fa6a0 *Ov014Act_021fa6a0_DtorDelete(Ov014Act_021fa6a0 *self) {
     Ov003Vt_021f7974_Dtor(&self->scripts);
     func_ov000_0218fee4(&self->mdl);
     func_ov000_0218ea20(&self->unk_124);
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }

@@ -15,7 +15,7 @@ typedef struct {
 } Ov003Plr;
 
 extern void *data_ov000_021ccd64;
-extern s32 func_ov003_021f093c(void *p);
+extern s32 Ov003CntSelf_CountLiving(void *p);
 extern void func_020627b4(void);
 extern s32 func_0205b1fc(void);
 extern Ov003Plr *func_ov000_0219bf90(void);
@@ -92,7 +92,7 @@ void Ov003ActVt_021f7f14_Update(Ov003Switch *self) {
         BOOL changed;
         s16 v;
         Ov003Plr *p;
-        s32 r = func_ov003_021f093c(self->targetObj);
+        s32 r = Ov003CntSelf_CountLiving(self->targetObj);
         changed = FALSE;
         switch (r) {
         case 3:
@@ -175,7 +175,7 @@ static inline void Model0218fe1c_PlayAnim0(Model0218fe1c *m, const char *name, s
     }
 }
 
-void func_ov003_021de26c(Ov003Switch *self) {
+void Ov003ActVt_021f7f14_StateIdle(Ov003Switch *self) {
     switch (self->fsm->st) {
     case 0:
         break;

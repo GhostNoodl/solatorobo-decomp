@@ -73,7 +73,7 @@ static inline Ov003Actor *Ov009_FindActor4(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-void func_ov009_022139a4(Ov009ActVt_02217cb0 *self) {
+void Ov009ActVt_02217cb0_StateAttack(Ov009ActVt_02217cb0 *self) {
     Ov003Actor *t = Ov009_FindActor4(self->target);
     ActorSub40 *st;
     if (t == NULL) {

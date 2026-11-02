@@ -13,7 +13,7 @@ static inline void Ov014_TimerTick(ActorSub40 *s) {
     }
 }
 
-void func_ov014_02212dd4(Ov014Act_0221267c *self) {
+void Ov014Act_0221267c_State20(Ov014Act_0221267c *self) {
     ActorSub40 *s = self->fsm;
     switch (ActorSub40_State(s)) {
     case 0:

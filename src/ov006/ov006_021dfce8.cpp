@@ -64,8 +64,8 @@ extern u8 data_ov006_021ec26c[];
 extern char data_0214b105[];
 void PlayTime_Clear(void *p);
 void func_02041c34(Model *m, int a, void *cb, int b);
-void *func_ov006_021dd5dc(void *self, u16 *flag, void *oam, u16 *count);
-void func_ov006_021df19c(ov006_Panel021dfce8 *p);
+void *ov006_OamCb_TimeDigits(void *self, u16 *flag, void *oam, u16 *count);
+void ov006_Unk021def9c_Load(ov006_Panel021dfce8 *p);
 
 static inline void ov006_Vec_Set021dfce8(ov006_Vec021dfce8 *v, s32 x, s32 y, s32 z) {
     v->x = x;
@@ -73,7 +73,7 @@ static inline void ov006_Vec_Set021dfce8(ov006_Vec021dfce8 *v, s32 x, s32 y, s32
     v->z = z;
 }
 
-void func_ov006_021dfce8(ov006_Unk021dfce8 *self) {
+void ov006_Unk021dfce8_Load(ov006_Unk021dfce8 *self) {
     ov006_Item021dfce8 *item;
     ov006_Icon021dfce8 *icon;
     ov006_Panel021dfce8 *panel;
@@ -112,11 +112,11 @@ void func_ov006_021dfce8(ov006_Unk021dfce8 *self) {
     func_020417e0(m1, res);
     icon->unk1C->flags |= 2;
     func_02041d9c(icon->unk1C, 0, 0x1e);
-    func_02041c34(icon->unk1C, 0x1e, (void *)func_ov006_021dd5dc, 0);
+    func_02041c34(icon->unk1C, 0x1e, (void *)ov006_OamCb_TimeDigits, 0);
     func_02041d9c(icon->unk1C, 0, 0x1f);
-    func_02041c34(icon->unk1C, 0x1f, (void *)func_ov006_021dd5dc, 0);
+    func_02041c34(icon->unk1C, 0x1f, (void *)ov006_OamCb_TimeDigits, 0);
     func_02041d9c(icon->unk1C, 0, 0x24);
-    func_02041c34(icon->unk1C, 0x24, (void *)func_ov006_021dd5dc, 0);
+    func_02041c34(icon->unk1C, 0x24, (void *)ov006_OamCb_TimeDigits, 0);
     icon->unk1C->flags |= 0x80000;
     icon->unk1C->flags = (icon->unk1C->flags & ~0x7c) | 0x78;
     m1 = (Model *)Heap_Alloc(sizeof(Model));
@@ -155,7 +155,7 @@ void func_ov006_021dfce8(ov006_Unk021dfce8 *self) {
         panel->unk90 = 0;
     }
     self->unk20 = panel;
-    func_ov006_021df19c(panel);
+    ov006_Unk021def9c_Load(panel);
     ov006_Vec_Set021dfce8(&self->unk20->unk10, 0x41000, 0x4e000, self->unk20->unk10.z);
     self->unk20->unk10.z = -0x1ccd;
     self->unk4 = 6;

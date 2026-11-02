@@ -11,7 +11,7 @@ extern Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *p);
 extern ResSet *func_ov000_0218ea20(ResSet *p);
 extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
-extern s32 func_ov003_021d1c00(Ov003Actor *self, Ov014Msg *msg);
+extern s32 Ov003Actor_HandleMsg(Ov003Actor *self, Ov014Msg *msg);
 
 BOOL Ov014Act_0221267c_IsReady(Ov014Act_0221267c *self) {
     BOOL r = func_ov000_0218cf5c(self);
@@ -22,17 +22,17 @@ BOOL Ov014Act_0221267c_IsReady(Ov014Act_0221267c *self) {
 }
 
 BOOL Ov014Act_0221267c_Draw(Ov014Act_0221267c *self) {
-    return func_ov003_021d16cc(self);
+    return Ov003Actor_Draw(self);
 }
 
 extern char data_ov014_02217d9f[];
 extern char data_ov014_02217da0[];
 extern s32 func_ov000_021909a8(void *m, const char *a, const char *b);
-extern void func_ov014_0220f8e4(u8 *self);
+extern void Ov014Part_StartCapture_0220f8e4(u8 *self);
 
 void Ov014Act_0221267c_Start(Ov014Act_0221267c *self) {
     Model0218fe1c *m;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     {
         void *saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->heapHi;
@@ -64,7 +64,7 @@ void Ov014Act_0221267c_Start(Ov014Act_0221267c *self) {
     self->unk_314.joint = func_ov000_021909a8(self->model, data_ov014_02217d9f, data_ov014_02217da0);
     MTX_Identity43_(&self->unk_314.mtx);
     m = self->model;
-    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)func_ov014_0220f8e4);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)Ov014Part_StartCapture_0220f8e4);
     m->clearInit = 0;
     self->model->flushVP = 1;
     self->model->renderUser = &self->unk_314;

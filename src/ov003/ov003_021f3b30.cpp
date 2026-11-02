@@ -9,7 +9,7 @@ extern "C" {
 extern s32 Rand_PlusMinus(s32 max);
 extern u32 Rand_UpTo(u32 max);
 
-void func_ov003_021f3b30(Ov003Prop021fa5a0 *self) {
+void Ov003ActVt_021fa5a0_RunState(Ov003Prop021fa5a0 *self) {
     EffectObj *e;
     s32 id;
     s32 s;

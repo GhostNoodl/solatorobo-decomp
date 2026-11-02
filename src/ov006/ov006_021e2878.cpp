@@ -34,7 +34,7 @@ extern "C" {
 BOOL func_02054f10(void *a, int b);
 s32 FX_Div(s32 numer, s32 denom);
 
-void func_ov006_021e2878(ov006_Unk021e2878 *self) {
+void ov006_Unk021e2878_Update(ov006_Unk021e2878 *self) {
     if (self->unk4) {
         return;
     }
@@ -46,7 +46,7 @@ void func_ov006_021e2878(ov006_Unk021e2878 *self) {
     }
 }
 
-void func_ov006_021e28b4(ov006_Marks *self) {
+void ov006_Marks_Draw(ov006_Marks *self) {
     s32 bx;
     s32 by;
     int i;

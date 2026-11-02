@@ -23,7 +23,7 @@ static inline void Ov003SwSub44_Clear(ActorSub44 *p) {
     p->unk_22_1 = 0;
 }
 
-void func_ov003_021ddaa0(Ov003Switch *self) {
+void Ov003ActVt_021f7fac_State06(Ov003Switch *self) {
     switch (self->fsm->st) {
     case 0:
         if (self->unk_18 == 3) {

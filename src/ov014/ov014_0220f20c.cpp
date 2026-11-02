@@ -15,7 +15,7 @@ extern BOOL func_ov000_0219a8bc(void *p, Actor *a, Actor *b, s32 c, u8 d, VecFx3
 struct Ov014Mtx33 {
     s32 m[9];
 };
-extern s32 func_ov014_0220f3f0(const VecFx32 *a, const VecFx32 *b, const u16 *rot, const s32 *ext);
+extern s32 Ov014_PointInBox(const VecFx32 *a, const VecFx32 *b, const u16 *rot, const s32 *ext);
 
 void func_ov014_0220f20c(Actor *self, s32 a, s32 b, s32 c) {
     Ov003Actor *pl = func_ov000_0219bf90();
@@ -37,7 +37,7 @@ void func_ov014_0220f20c(Actor *self, s32 a, s32 b, s32 c) {
     v.y = pl->pos.y;
     v.z = pl->pos.z;
     rad = pl->radius;
-    if (rad <= func_ov014_0220f3f0(&v, (const VecFx32 *)a, (const u16 *)b, (const s32 *)c)) {
+    if (rad <= Ov014_PointInBox(&v, (const VecFx32 *)a, (const u16 *)b, (const s32 *)c)) {
         return;
     }
     {
@@ -76,7 +76,7 @@ static inline s32 Ov014_AxisDist(const VecFx32 *ax, const VecFx32 *a, const VecF
     }
     return d;
 }
-s32 func_ov014_0220f3f0(const VecFx32 *a, const VecFx32 *b, const u16 *rot, const s32 *ext) {
+s32 Ov014_PointInBox(const VecFx32 *a, const VecFx32 *b, const u16 *rot, const s32 *ext) {
     VecFx32 acc;
     Ov014Mtx33 m;
     VecFx32 ax;

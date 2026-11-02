@@ -3,10 +3,10 @@
 
 extern "C" {
 
-// The decide callback of func_ov006_021d86a0's list: it stores the chosen item's id (-1: none)
+// The decide callback of ov006_ShowListWin's list: it stores the chosen item's id (-1: none)
 // where the list's owner points.
 #pragma force_active on
-BOOL func_ov006_021d88f8(UiList *self, UiListItem *item) {
+BOOL ov006_ListCb_StoreId2(UiList *self, UiListItem *item) {
     s32 *dst = (s32 *)self->owner;
     if (item != NULL) {
         *dst = item->id;

@@ -133,7 +133,7 @@ static inline BOOL Seq_IsValid(const Seq *self) {
     return r;
 }
 
-void func_ov003_021d8fc0(Seq *self) {
+void Ov003Seq_Update(Seq *self) {
     if (!self->active) {
         return;
     }

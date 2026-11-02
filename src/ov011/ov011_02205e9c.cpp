@@ -14,11 +14,11 @@ extern char data_ov011_022075d4[];
 Actor *func_ov000_0219be1c(s32 kind, VecFx32 *pos, Ov011Rot *rot, u16 a, u16 b);
 
 #pragma force_active on
-void func_ov011_02205e9c(Ov011Act7da4 *self) {
+void Ov011Act7da4_StateHurt(Ov011Act7da4 *self) {
     func_ov000_02198360(self->fsm, 1, 0);
 }
 
-void func_ov011_02205eb4(Ov011Act7da4 *self) {
+void Ov011Act7da4_StateShoot(Ov011Act7da4 *self) {
     Ov011Rot rot;
     VecFx32 v;
     switch (self->fsm->st) {
@@ -72,7 +72,7 @@ void func_ov011_02205eb4(Ov011Act7da4 *self) {
         break;
     }
 }
-void func_ov011_02206120(Ov011Act7da4 *self) {
+void Ov011Act7da4_StateAttack3(Ov011Act7da4 *self) {
     Ov011Rot rot;
     VecFx32 v;
     switch (self->fsm->st) {

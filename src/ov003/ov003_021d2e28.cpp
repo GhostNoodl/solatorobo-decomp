@@ -10,7 +10,7 @@ extern s32 func_ov000_0219840c(ActorSub40 *self, s32 *list, s32 count, BOOL push
 extern BOOL func_ov000_02198360(ActorSub40 *self, u8 value, BOOL force);
 extern void func_ov000_0218d7e8(Actor *self, u8 state);
 
-void func_ov003_021d2e28(Ov003Actor *self) {
+void Ov003Actor_SelectState(Ov003Actor *self) {
     ActorSub40 *h = self->fsm;
     if (h->flags != 0 && func_ov000_0219840c(h, data_ov003_021f43f0, 7, TRUE) == 0) {
         h = self->fsm;

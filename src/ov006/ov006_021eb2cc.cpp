@@ -16,7 +16,7 @@ BOOL func_ov000_0219aae8(Actor *a, Actor *b, u16 c, u8 d, u16 mask, const VecFx3
                          s32 r, s32 rr, s16 h, s32 i);
 void func_ov000_0218bed8(void *a, s32 b, Actor *actor);
 
-void func_ov006_021eb2cc(ActorEx *self) {
+void Ov006ActVt_021ec714_StateIdle(ActorEx *self) {
     BOOL any;
     int i;
     Rot16 rot;

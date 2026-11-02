@@ -10,11 +10,11 @@ ov006_SlotManager *ov006_GetSlotManager(void) {
     return data_ov006_021ec884;
 }
 
-void func_ov006_021daea0(ov006_SlotManager *self) {
+void ov006_SlotManager_Reset_021daea0(ov006_SlotManager *self) {
     ov006_SlotManager_Reset(self);
 }
 
-void func_ov006_021daf60(ov006_SlotManager *self) {
+void ov006_SlotManager_ClearState_021daf60(ov006_SlotManager *self) {
     ov006_SlotManager_ClearState(self);
 }
 
@@ -38,14 +38,14 @@ ov006_Slot *ov006_SlotManager_InitSlot(ov006_SlotManager *self, int idx, int typ
     return slot;
 }
 
-ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx) {
+ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx) {
     if (idx >= 4) {
         return NULL;
     }
     return &self->slots[idx];
 }
 
-u8 func_ov006_021db078(ov006_SlotManager *self) {
+u8 ov006_SlotManager_CountItems(ov006_SlotManager *self) {
     u8 count = 0;
     int i;
     for (i = 0; i < 3; i++) {
@@ -56,7 +56,7 @@ u8 func_ov006_021db078(ov006_SlotManager *self) {
     return count;
 }
 
-BOOL func_ov006_021db0a8(ov006_SlotManager *self, u8 value) {
+BOOL ov006_SlotManager_HasItem(ov006_SlotManager *self, u8 value) {
     BOOL found = FALSE;
     int i;
     for (i = 0; i < 3; i++) {

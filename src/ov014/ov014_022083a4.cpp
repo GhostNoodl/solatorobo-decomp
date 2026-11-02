@@ -3,7 +3,7 @@
 extern "C" {
 
 
-void func_ov014_022083a4(Ov014ActEx_0220774c *self) {
+void Ov014ActEx_0220774c_StateDie(Ov014ActEx_0220774c *self) {
     FieldState *g;
     if (self->fsm->st != 0) {
         return;

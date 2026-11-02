@@ -7,7 +7,7 @@ struct Ov009Bits16 {
     u16 b1 : 15;
 };
 
-void func_ov009_022093b4(Ov009ActVt_02217594 *self) {
+void Ov009ActVt_02217594_StateIdle(Ov009ActVt_02217594 *self) {
     if (self->fsm->st != 0) {
         return;
     }
@@ -25,7 +25,7 @@ extern void func_ov000_021917f8(Model0218fe1c *m);
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
-void func_ov009_022093f8(Ov009ActVt_02217594 *self) {
+void Ov009ActVt_02217594_StateAttack(Ov009ActVt_02217594 *self) {
     switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov009_022172b5, 0x1000, 1);
@@ -105,7 +105,7 @@ extern void func_ov000_021911c8(Model0218fe1c *model, s16 a);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
 
-void func_ov009_02209668(Ov009ActVt_02217594 *self) {
+void Ov009ActVt_02217594_StateAttack2(Ov009ActVt_02217594 *self) {
     Ov009Vec3x3 tbl = data_ov009_02215f50;
     VecFx32 v1;
     Ov003Actor *pl = Actor_GetTarget(self);

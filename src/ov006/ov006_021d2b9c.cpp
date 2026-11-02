@@ -10,20 +10,20 @@ void ov006_Slot_Pack(ov006_Slot *self, void *buf);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 void func_ov000_02162a20(ov006_Actor58 *self);
 void func_ov000_02162a58(ov006_Actor58 *self);
-void func_ov006_021e0af4(ov006_Caption *self);
+void ov006_Caption_Update(ov006_Caption *self);
 void func_ov006_021e0b80(ov006_Caption *self);
-void func_ov006_021e10d0(ov006_Gauge *self);
-void func_ov006_021e1180(ov006_Gauge *self);
-void func_ov006_021e463c(ov006_Unk021ec888 *self);
-void func_ov006_021cd580(int a, int b, int c);
+void ov006_Gauge_Update(ov006_Gauge *self);
+void ov006_Gauge_Draw(ov006_Gauge *self);
+void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
+void ov006_Manager_DispatchMenuCb(int a, int b, int c);
 void func_ov006_021d2ff0(ov006_TaskD1F *self);
 void func_ov006_021d30d4(ov006_TaskD1F *self);
 void func_ov006_021d3224(ov006_TaskD1F *self);
-void func_ov006_021db258(void);
-u16 func_ov006_021e60e8(int type, u16 mask);
-void func_ov006_021e5e00(ov006_Unk021ec888 *self);
+void ov006_UpdateNetSlots(void);
+u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
+void ov006_Menu_ShowObj(ov006_Unk021ec888 *self);
 
-void func_ov006_021d2b9c(ov006_TaskD1F *self) {
+void ov006_TaskD1F_UpdateActive(ov006_TaskD1F *self) {
     u16 trg;
     if (self->step != 0) {
         return;
@@ -61,16 +61,16 @@ static inline void ov006_Actor58_SetRot(ov006_Actor58 *self, s16 x, s16 y, s16 z
     self->rot.z = z;
 }
 
-void func_ov006_021d2c84(ov006_TaskD1F *self) {
+void ov006_TaskD1F_PreUpdate(ov006_TaskD1F *self) {
     u8 buf[0x18];
     int i;
     if (self->state == 0xd) {
         if (self->param != 0) {
-            func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC = self->unk4A;
-            ov006_Slot_Pack(func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5), buf);
+            ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC = self->unk4A;
+            ov006_Slot_Pack(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5), buf);
             ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk49, 1, buf, 0x18);
         } else {
-            func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC = self->unk4A;
+            ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC = self->unk4A;
         }
     }
     self->unk54->vfunc_1c();
@@ -88,9 +88,9 @@ void func_ov006_021d2c84(ov006_TaskD1F *self) {
     self->unk5C->vfunc_1c();
     self->unk60->vfunc_1c();
     self->unk64->vfunc_1c();
-    func_ov006_021e0af4(self->unk68);
+    ov006_Caption_Update(self->unk68);
     for (i = 0; i < 4; i++) {
-        func_ov006_021e10d0(self->gauges[i]);
+        ov006_Gauge_Update(self->gauges[i]);
     }
 }
 

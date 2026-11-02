@@ -9,11 +9,11 @@ extern BOOL Ov003Sequence_HasEntries(void *p, void *a);
 
 static inline void Ov010_PlayAnim(Ov010Obj0220ffe4 *self, void *anim, s32 n) {
     if (!Ov003Sequence_HasEntries(&self->seq, anim)) {
-        func_ov003_021d95e8(&self->seq, anim, n);
+        Ov003Sequence_SetEntries(&self->seq, anim, n);
     }
 }
 
-void func_ov010_02208898(Ov010Obj0220ffe4 *self) {
+void Ov010Obj0220ffe4_PlayHpAnim(Ov010Obj0220ffe4 *self) {
     u16 *hp = self->hp;
     s32 r = (hp[0] << 12) / hp[1];
     if (r <= 0x733) {
@@ -25,12 +25,12 @@ void func_ov010_02208898(Ov010Obj0220ffe4 *self) {
     }
 }
 
-BOOL func_ov010_02208968(Ov010Obj0220ffe4 *self, s32 *out) {
+BOOL Ov010Obj0220ffe4_GetType(Ov010Obj0220ffe4 *self, s32 *out) {
     *out = 9;
     return TRUE;
 }
 
-void func_ov010_02208978(Ov010Obj0220ffe4 *self, s32 *out) {
+void Ov010Obj0220ffe4_GetSfxIds(Ov010Obj0220ffe4 *self, s32 *out) {
     out[0] = 0x905;
     out[1] = 0x906;
     out[2] = 0x904;

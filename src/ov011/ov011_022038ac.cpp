@@ -27,7 +27,7 @@ Actor *func_ov000_0219be1c(s32 kind, VecFx32 *pos, Ov011Rot *rot, u16 a, u16 b);
 
 u32 Rand_UpTo(u32 max);
 
-void func_ov011_022038ac(Ov011Act7cf8 *self) {
+void Ov011Act7cf8_StateIdle(Ov011Act7cf8 *self) {
     VecFx32 d;
     VecFx32 v;
     Ov011Rot r;

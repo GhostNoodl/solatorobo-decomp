@@ -101,7 +101,7 @@ static inline void Ov014_Release(Actor *self) {
     func_ov000_02191318(self->model, t + 0x2000);
 }
 
-void func_ov014_0220ee9c(Ov014ActEx_0220eca0 *self) {
+void Ov014ActEx_0220eca0_StateIdle(Ov014ActEx_0220eca0 *self) {
     switch (self->fsm->st) {
     case 0:
         self->fsm->timer = 0x1e;

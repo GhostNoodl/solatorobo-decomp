@@ -9,7 +9,7 @@ static inline void ov006_ResHandle_Close(ov006_ResHandle *res) {
     res->vfunc_08();
 }
 
-void func_ov006_021dbbac(ov006_ResLoader *self) {
+void ov006_ResLoader_Update(ov006_ResLoader *self) {
     switch (self->step) {
     case 0:
         if (!self->request) {

@@ -16,7 +16,7 @@ extern char data_ov006_021ec191[];
 extern char data_ov006_021ec19d[];
 void func_0206e900(char *dst, const char *src);
 
-void func_ov006_021dcf7c(ov006_Unk021dcf7c *self) {
+void ov006_Unk021dcf7c_Load(ov006_Unk021dcf7c *self) {
     char file[0x20];
     Model *model;
 

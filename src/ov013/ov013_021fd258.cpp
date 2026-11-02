@@ -9,90 +9,90 @@ extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 extern void func_ov000_0219864c(ActorSub48 *a, VecFx32 *b, u16 *c);
 extern Ov003Actor *func_ov000_0219bf90(void);
 
-void func_ov013_021fd258(Ov013ActVt_0220b5e0 *self) {
+void Ov013ActVt_0220b5e0_StateDie(Ov013ActVt_0220b5e0 *self) {
     if (self->fsm->st == 0) {
         EffectMgr_Kill(data_0214a420, self->unk_f4);
     }
     if (self->fsm->history[0] == 2) {
-        func_ov003_021d6a3c(self, 1, 1, 1);
+        Ov003Actor_Defeat(self, 1, 1, 1);
         return;
     }
-    func_ov003_021d6054(self);
+    Ov003Actor_StateDie(self);
 }
 
-void func_ov013_021fd2b8(Ov003Actor *self) {
+void Ov013ActorBase_UpdateSub44(Ov003Actor *self) {
     if (self->unk_44 != NULL) {
         func_ov000_021984f4(self->unk_44, 0, 0);
     }
 }
 
-void func_ov013_021fd2d8(Ov003Actor *self) {
+void Ov013Actor_UpdateHit(Ov003Actor *self) {
     if (self->hit != NULL) {
         func_ov000_0219864c(self->hit, 0, 0);
     }
 }
 
-void func_ov013_021fd2f8(void) {
+void Ov013ActorBase_UpdateMode1(void) {
 }
 
-void func_ov013_021fd2fc(void) {
+void Ov013ActorBase_UpdateMode3(void) {
 }
 
 void func_ov013_021fd300(void) {
 }
 
-void func_ov013_021fd304(void) {
+void Ov013Actor_State25(void) {
 }
 
-void func_ov013_021fd308(void) {
+void Ov013Actor_State24(void) {
 }
 
-void func_ov013_021fd30c(void) {
+void Ov013Actor_State23(void) {
 }
 
-void func_ov013_021fd310(void) {
+void Ov013Actor_State22(void) {
 }
 
-void func_ov013_021fd314(void) {
+void Ov013Actor_State21(void) {
 }
 
-void func_ov013_021fd318(Ov003Actor *self) {
+void Ov013Actor_State16(Ov003Actor *self) {
     self->vfunc_54();
 }
 
-void func_ov013_021fd32c(Ov003Actor *self) {
+void Ov013Actor_Shoot2(Ov003Actor *self) {
     self->unk_ee_5 = 1;
     self->vfunc_70();
 }
 
-void func_ov013_021fd34c(Ov003Actor *self) {
+void Ov013Actor_StateAttack3(Ov003Actor *self) {
     self->unk_ee_2 = 2;
     self->vfunc_64();
 }
 
-void func_ov013_021fd370(Ov003Actor *self) {
+void Ov013Actor_StateAttack2(Ov003Actor *self) {
     self->unk_ee_2 = 1;
     self->vfunc_64();
 }
 
 Ov013Boss *Ov013Boss_Dtor(Ov013Boss *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
 Ov013Boss *Ov013Boss_DtorDelete(Ov013Boss *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 Ov013ActVt_0220b5e0 *Ov013ActVt_0220b5e0_Dtor(Ov013ActVt_0220b5e0 *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
 Ov013ActVt_0220b5e0 *Ov013ActVt_0220b5e0_DtorDelete(Ov013ActVt_0220b5e0 *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
@@ -191,7 +191,7 @@ static inline void Ov013_SetAlpha(EffectObj *o, s32 v) {
     o->alpha = v > 0x1000 ? 0x1000 : v;
 }
 
-void func_ov013_021fd5fc(Ov013ActExVt_0220b7d0 *self) {
+void Ov013ActExVt_0220b7d0_StateThrown(Ov013ActExVt_0220b7d0 *self) {
     VecFx32 pos;
     VecFx32 pp;
     Ov013HitBox box;

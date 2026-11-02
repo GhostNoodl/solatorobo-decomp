@@ -5,10 +5,10 @@ extern "C" {
 extern Actor *Target_Get(void *p);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 b, void **out);
 extern Ov003Actor *func_ov000_021985c0(void *p);
-extern void func_ov003_021f0c60(Actor *self, s32 a);
+extern void Ov003Pickup_Update(Actor *self, s32 a);
 extern void func_ov000_02196060(Actor *self);
 
-void func_ov009_022141e0(ActorEx *self) {
+void Ov009ActVt_02218324_StateThrown(ActorEx *self) {
     void *list[32];
     s32 n;
     s32 r;
@@ -38,7 +38,7 @@ void func_ov009_022141e0(ActorEx *self) {
                 if (list[i] != NULL && (a = func_ov000_021985c0(list[i])) != NULL) {
                     ActorSub4c *p = a->targetObj;
                     if (p == NULL || grp != (u16)(p->target & 0xf000)) {
-                        func_ov003_021f0c60(self, 0);
+                        Ov003Pickup_Update(self, 0);
                         func_ov000_02198360(self->fsm, 0x15, 0);
                         return;
                     }

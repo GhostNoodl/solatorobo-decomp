@@ -6,7 +6,7 @@ extern "C" {
 
 BOOL func_02054f10(Model *a, int b);
 
-void func_ov006_021dc9c8(Ov006Marker *self) {
+void Ov006Marker_Update(Ov006Marker *self) {
     VecFx32 d;
     if (!self->active) {
         if (self->model == NULL) {

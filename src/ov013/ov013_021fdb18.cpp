@@ -7,7 +7,7 @@ extern VecFx32 data_ov013_0220aed0;
 extern void func_ov000_0219763c(Actor *self);
 extern Ov003Actor *func_ov000_0219bf90(void);
 
-void func_ov013_021fdb18(Ov013ActExVt_0220b7d0 *self) {
+void Ov013ActExVt_0220b7d0_StateDie(Ov013ActExVt_0220b7d0 *self) {
     s32 i;
     if (self->fsm->st == 0) {
         for (i = 0; i < 2; i++) {

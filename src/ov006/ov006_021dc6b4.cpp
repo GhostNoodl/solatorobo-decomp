@@ -14,7 +14,7 @@ typedef struct ov006_Unk021dc6b4 {
 
 extern "C" {
 
-ov006_Entry021dc6b4 *func_ov006_021dc6b4(ov006_Unk021dc6b4 *self, u16 *type, ov006_Entry021dc6b4 *arr, u16 *count) {
+ov006_Entry021dc6b4 *ov006_Unk021dc6b4_ShiftPalette(ov006_Unk021dc6b4 *self, u16 *type, ov006_Entry021dc6b4 *arr, u16 *count) {
     u16 n = *count;
     if (*type == 0xf) {
         u8 add = self->unk70;

@@ -15,7 +15,7 @@ extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 extern s32 FX_Div(s32 a, s32 b);
 
 
-void func_ov003_021d3a88(Ov003Actor *self) {
+void Ov003Actor_StateThrown(Ov003Actor *self) {
     ActorSub40 *w = self->fsm;
     switch (w->st) {
     case 0: {
@@ -72,7 +72,7 @@ void func_ov003_021d3a88(Ov003Actor *self) {
     }
 }
 
-void func_ov003_021d3c78(Ov003Actor *self) {
+void Ov003Actor_StateBounce(Ov003Actor *self) {
     switch (self->fsm->st) {
     case 0:
         self->unk_b4 = 0;

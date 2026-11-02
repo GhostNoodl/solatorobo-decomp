@@ -205,7 +205,7 @@ public:
     u8 unk_491;
     u16 unk_492;
     VecFx32 unk_494;
-    VecFx32 unk_4a0; // point the actor moves toward (func_ov009_02208204)
+    VecFx32 unk_4a0; // point the actor moves toward (Ov009Multi_StateIdle)
 };
 
 struct Ov009Path {
@@ -447,7 +447,7 @@ SIZE_ASSERT(Ov009ActVt_022178f0, 0x110);
 
 // Actor class with vtable data_ov009_02217a00 (built inline by the ov003 factory).
 // The 0x140 layout shared by the classes with vtables 02217a00 and 02217d5c,
-// which also share their member functions (func_ov009_02211e6c, 02211f9c, 0221268c, 022127f8).
+// which also share their member functions (Ov009ActSpin_Init, 02211f9c, 0221268c, 022127f8).
 class Ov009ActSpin : public Ov003Actor {
 public:
     u16 unk_f0;
@@ -457,7 +457,7 @@ public:
     u8 unk_f9[0x23];
     VecFx32 unk_11c;
     VecFx32 unk_128;
-    VecFx32 unk_134; // pos at setup; func_ov009_0221268c bobs around it
+    VecFx32 unk_134; // pos at setup; Ov009ActSpin_StateIdle bobs around it
 };
 OV009_SIZE(Ov009ActSpin, 0x140);
 
@@ -480,7 +480,7 @@ SIZE_ASSERT(Ov009ActVt_02217aac, 0x108);
 
 // Actor class with vtable data_ov009_02217b58 (built inline by the ov003 factory).
 // The 0x110 layout shared by the classes with vtables 02217b58 and 02217f60,
-// which also share func_ov009_0220d2d8 and func_ov009_0220d5f8.
+// which also share Ov009ActPair110_Start and Ov009ActPair110_State20.
 class Ov009ActPair110 : public Ov003Actor {
 public:
     VecFx32 unk_f0;

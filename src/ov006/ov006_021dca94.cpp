@@ -6,7 +6,7 @@ extern "C" {
 
 void func_02041c18(Model *m, int a);
 
-void func_ov006_021dca94(Ov006Marker *self) {
+void Ov006Marker_Draw(Ov006Marker *self) {
     VecFx32 v;
     s32 y;
     s32 z;

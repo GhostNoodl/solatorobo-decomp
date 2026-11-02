@@ -26,7 +26,7 @@ extern u8 *func_02070558(s32 id);
 extern void func_ov000_0219b400(u8 *a, u8 *b, s32 c, VecFx32 *pos, u16 *rot, s32 d);
 extern void func_ov000_0219b5dc(u16 id, VecFx32 *pos, u16 *rot);
 
-void func_ov003_021d6054(Ov003Actor *self) {
+void Ov003Actor_StateDie(Ov003Actor *self) {
     u16 idx = self->targetObj->unk_06;
     const Ov003DtEnt *e;
     VecFx32 v;
@@ -136,7 +136,7 @@ void func_ov003_021d6054(Ov003Actor *self) {
         w = self->fsm;
         w->timer++;
         if (w->timer > lim) {
-            func_ov003_021d6a3c(self, 1, 1, 1);
+            Ov003Actor_Defeat(self, 1, 1, 1);
             return;
         }
         h = self->fsm->timer >> 1;

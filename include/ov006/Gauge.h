@@ -4,9 +4,9 @@
 #include "ov006/Model.h"
 #include "Main/Gfx/TextWin.h"
 
-/* A gauge (vtable data_ov006_021ec20c, 0x24 bytes, ctor Ov006Vt_021ec20c_Ctor; func_ov006_021e0f00
-   builds its model and text). func_ov006_021e139c sets its ratio unkC = a / b, func_ov006_021e10d0
-   eases unk8 toward it (at once when unk5 is clear) and func_ov006_021e1180 draws it at x, y. */
+/* A gauge (vtable data_ov006_021ec20c, 0x24 bytes, ctor Ov006Vt_021ec20c_Ctor; ov006_Gauge_Load
+   builds its model and text). ov006_Gauge_SetRatio sets its ratio unkC = a / b, ov006_Gauge_Update
+   eases unk8 toward it (at once when unk5 is clear) and ov006_Gauge_Draw draws it at x, y. */
 typedef struct ov006_Gauge {
     void *vtbl;
     u8 unk4;            // set once the model is loaded
@@ -18,7 +18,7 @@ typedef struct ov006_Gauge {
     int x;
     int y;
     Model *model;
-    TextWin *text;      // func_ov006_021e13c8 sets its string
+    TextWin *text;      // ov006_Gauge_SetText sets its string
 } ov006_Gauge;
 
 #endif

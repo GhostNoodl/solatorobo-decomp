@@ -14,22 +14,22 @@ extern char data_ov006_021ebb78[];
 extern char data_ov006_021ec864[];
 extern ov006_StateFunc data_ov006_021eb6d8[];
 
-void func_ov006_021e42ec(void);
+void ov006_Menu_Delete(void);
 int func_02044b20(void);
 void ov006_DeleteSlotManager(void);
 void Wh_Create(void);
-void func_ov006_021e42b4(void);
-void func_ov006_021dacb0(void);
-void func_ov006_021e4348(ov006_Unk021ec888 *a);
-void func_ov006_021e4574(ov006_Unk021ec888 *a);
-BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *a);
+void ov006_Menu_Create(void);
+void ov006_SlotManager_Create(void);
+void ov006_Menu_Load(ov006_Unk021ec888 *a);
+void ov006_Menu_DrawHolder(ov006_Unk021ec888 *a);
+BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *a);
 ov006_Task *func_ov006_021d54b0(void *mem);
 ov006_Task *func_ov006_021d5b04(void *mem);
 ov006_Task *Ov006Vt_021ec040_Ctor(void *mem);
-int func_ov006_021cd2c8(ov006_Manager *self);
+int ov006_Manager_SwitchTask(ov006_Manager *self);
 int func_ov006_021cd4c0(ov006_Manager *self);
 
-void func_ov006_021ccda0(ov006_Task *self) {
+void ov006_Task_Ctor(ov006_Task *self) {
     *(void **)self = &data_ov006_021ebb58;
     self->type = 3;
     self->state = 0;
@@ -39,7 +39,7 @@ void func_ov006_021ccda0(ov006_Task *self) {
 void func_ov006_021ccdc4(void) {
 }
 
-ov006_Task *func_ov006_021ccdc8(ov006_Task *self) {
+ov006_Task *ov006_Task_DtorDelete(ov006_Task *self) {
     Heap_Free(self);
     return self;
 }
@@ -47,27 +47,27 @@ ov006_Task *func_ov006_021ccdc8(ov006_Task *self) {
 void func_ov006_021ccddc(ov006_Task *self) {
 }
 
-int func_ov006_021ccde0(void) {
+int ov006_Task_Load(void) {
     return 1;
 }
 
-int func_ov006_021ccde8(void) {
+int ov006_Task_IsLoaded(void) {
     return 1;
 }
 
-int func_ov006_021ccdf0(void) {
+int ov006_Task_Setup(void) {
     return 1;
 }
 
-int func_ov006_021ccdf8(void) {
+int ov006_Task_Update(void) {
     return 0;
 }
 
-int func_ov006_021cce00(void) {
+int ov006_Task_Exit(void) {
     return 1;
 }
 
-void func_ov006_021cce08(void) {
+void ov006_Task_Draw(void) {
 }
 
 static inline void ov006_Manager_Dtor(ov006_Manager *self) {
@@ -75,7 +75,7 @@ static inline void ov006_Manager_Dtor(ov006_Manager *self) {
     OV006_DELETE_OBJECT(self->task);
     func_02036838(data_02097cdc, data_0208cca0, 7, 0);
     func_02036838(data_02097cdc, data_ov006_021ebb88, 7, 0);
-    func_ov006_021e42ec();
+    ov006_Menu_Delete();
     func_02044b20();
     ov006_DeleteSlotManager();
     func_0201bbfc(1);
@@ -92,7 +92,7 @@ ov006_Manager *Ov006Vt_021ebb48_DtorDelete(ov006_Manager *self) {
     return self;
 }
 
-void func_ov006_021ccf8c(void) {
+void ov006_Manager_Create(void) {
     ov006_Manager *obj;
     OV006_DELETE_OBJECT(data_ov006_021ec860);
     obj = (ov006_Manager *)Heap_Alloc(sizeof(ov006_Manager));
@@ -114,7 +114,7 @@ void func_ov006_021ccf8c(void) {
 
 // Only referenced from overlay 0 through an ambiguous relocation, so keep it from being dead-stripped.
 #pragma force_active on
-void func_ov006_021cd050(void) {
+void ov006_Manager_Delete(void) {
     OV006_DELETE_OBJECT(data_ov006_021ec860);
 }
 #pragma force_active reset
@@ -123,7 +123,7 @@ static inline BOOL ov006_IsLoaded(void) {
     return ((func_02035b90(data_0208cca0, 7) != 0) & func_02035b90(data_ov006_021ebb88, 7)) != 0;
 }
 
-int func_ov006_021cd0ac(ov006_Manager *self) {
+int ov006_Manager_LoadRes(ov006_Manager *self) {
     int one = 1;
     int zero = 0;
     BOOL result = TRUE;
@@ -146,12 +146,12 @@ int func_ov006_021cd0ac(ov006_Manager *self) {
         switch (self->subState) {
         case 0:
             Wh_Create();
-            func_ov006_021e42b4();
-            func_ov006_021dacb0();
+            ov006_Menu_Create();
+            ov006_SlotManager_Create();
             self->subState++;
             break;
         case 1:
-            func_ov006_021e4348(data_ov006_021ec888);
+            ov006_Menu_Load(data_ov006_021ec888);
             if (data_ov006_021ec888->state == 0) {
                 break;
             }
@@ -167,7 +167,7 @@ int func_ov006_021cd0ac(ov006_Manager *self) {
         }
         break;
     case 3:
-        if (func_ov006_021cd2c8(self) == 0) {
+        if (ov006_Manager_SwitchTask(self) == 0) {
             self->state = 4;
             self->subState = zero;
         }
@@ -188,13 +188,13 @@ int func_ov006_021cd0ac(ov006_Manager *self) {
     return result;
 }
 
-void func_ov006_021cd264(ov006_Manager *self) {
+void ov006_Manager_Draw(ov006_Manager *self) {
     ov006_Task *task = self->task;
     if (task != NULL && task->state >= 3) {
         task->vfunc_1c();
     }
     if (data_ov006_021ec888 != NULL) {
-        func_ov006_021e4574(data_ov006_021ec888);
+        ov006_Menu_DrawHolder(data_ov006_021ec888);
     }
 }
 
@@ -207,7 +207,7 @@ BOOL func_ov006_021cd2a8(ov006_Manager *self) {
 }
 
 static inline void ov006_Update021ec888(void) {
-    func_ov006_021e4348(data_ov006_021ec888);
+    ov006_Menu_Load(data_ov006_021ec888);
     if (data_ov006_021ec888->unk15F != 0) {
         data_ov006_021ec888->unk15F--;
     }
@@ -218,7 +218,7 @@ static inline void ov006_Update021ec888(void) {
 
 extern "C" {
 
-BOOL func_ov006_021cd2c8(ov006_Manager *self) {
+BOOL ov006_Manager_SwitchTask(ov006_Manager *self) {
     int zero = 0;
     BOOL result = TRUE;
     ov006_Task *task;
@@ -304,13 +304,13 @@ BOOL func_ov006_021cd4c0(ov006_Manager *self) {
     switch (self->subState) {
     case 0:
         if (data_ov006_021ec888->state != 1) {
-            func_ov006_021e4c5c(data_ov006_021ec888);
+            ov006_Menu_RequestShutdown(data_ov006_021ec888);
         }
         self->subState++;
     case 1:
         ov006_Update021ec888();
         if (data_ov006_021ec888->state == 1) {
-            func_ov006_021e42ec();
+            ov006_Menu_Delete();
             ov006_DeleteSlotManager();
             self->subState++;
         }
@@ -325,7 +325,7 @@ BOOL func_ov006_021cd4c0(ov006_Manager *self) {
     return result;
 }
 
-void func_ov006_021cd580(int a, int b, int c) {
+void ov006_Manager_DispatchMenuCb(int a, int b, int c) {
     data_ov006_021eb6d8[data_ov006_021ec860->unk14](a, b, c);
 }
 

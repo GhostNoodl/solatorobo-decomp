@@ -3,7 +3,7 @@
 extern "C" {
 
 
-void func_ov009_02211f44(Ov003Actor *self) {
+void Ov009Part_CaptureMtx_02211f44(Ov003Actor *self) {
     u8 *p = FLD(u8 *, self->prev, 0x2c);
     s32 v;
     if (p == NULL) {
@@ -20,8 +20,8 @@ void func_ov009_02211f44(Ov003Actor *self) {
     }
 }
 
-void func_ov009_02211f84(Ov003Actor *self) {
-    FLD(void *, self, 0x24) = (void *)func_ov009_02211f44;
+void Ov009Part_StartCapture_02211f84(Ov003Actor *self) {
+    FLD(void *, self, 0x24) = (void *)Ov009Part_CaptureMtx_02211f44;
     self->unk_92 = 3;
 }
 
@@ -42,14 +42,14 @@ struct Ov009Mtx43b {
     VecFx32 t;
 };
 
-void func_ov009_02211f9c(Ov009ActSpin *self) {
+void Ov009ActSpin_Start(Ov009ActSpin *self) {
     Model0218fe1c *m;
     u8 *c;
     u32 *o;
     u32 v;
     void *saved;
     GroupNode *p;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     switch (self->kind) {
     case 0x504f:
         self->unk_f4 = func_ov000_021909a8(self->model, data_ov009_022179c0, data_ov009_022179c7);
@@ -60,7 +60,7 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
     }
     MTX_Identity43_((MtxFx43 *)(&self->unk_f8));
     m = self->model;
-    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)func_ov009_02211f84);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)Ov009Part_StartCapture_02211f84);
     m->clearInit = 0;
     self->model->flushVP = 1;
     self->model->renderUser = &self->unk_f4;

@@ -30,12 +30,12 @@ extern Ov003LvPlayer *func_ov000_0219bf90(void);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern u32 Rand_UpTo(u32 max);
 
-void func_ov003_021ee680(Ov003Lever *self, s16 kind, BOOL notify, s32 sound);
+void Ov003Lever_SetState(Ov003Lever *self, s16 kind, BOOL notify, s32 sound);
 
 void Ov003ActVt_021f9ea8_Start(Ov003Lever *self) {
     func_ov000_02194758(self);
     func_ov000_02197d80(self);
-    func_ov003_021ee680(self, self->unk_18, 0, -1);
+    Ov003Lever_SetState(self, self->unk_18, 0, -1);
     if (self->unk_18 == 1 && self->unk_1a != 0) {
         ActorSub44 *p = self->unk_44;
         p->unk_22_0 = 0;
@@ -44,7 +44,7 @@ void Ov003ActVt_021f9ea8_Start(Ov003Lever *self) {
     self->unk_ce = 0;
 }
 
-void func_ov003_021ee310(Ov003Lever *self) {
+void Ov003ActVt_021f9ea8_StateIdle(Ov003Lever *self) {
     ActorSub40 *w = self->fsm;
     switch (w->st) {
     case 0:
@@ -67,7 +67,7 @@ void func_ov003_021ee310(Ov003Lever *self) {
         if (w->timer != 0) {
             return;
         }
-        func_ov003_021ee680(self, 0, 1, -1);
+        Ov003Lever_SetState(self, 0, 1, -1);
         self->fsm->st--;
         break;
     }
@@ -102,7 +102,7 @@ static inline BOOL Ov003Work_Tick(ActorSub40 *w) {
     return w->timer == 0;
 }
 
-void func_ov003_021ee3dc(Ov003Lever *self) {
+void Ov003ActVt_021f9ea8_State06(Ov003Lever *self) {
     void *sp = Target_Get(self->targetObj);
     ActorSub40 *w = self->fsm;
     switch (w->st) {
@@ -113,9 +113,9 @@ void func_ov003_021ee3dc(Ov003Lever *self) {
             snd = 0x84;
         }
         if (self->unk_18 == 0) {
-            func_ov003_021ee680(self, 1, 1, snd);
+            Ov003Lever_SetState(self, 1, 1, snd);
         } else {
-            func_ov003_021ee680(self, 0, 1, snd);
+            Ov003Lever_SetState(self, 0, 1, snd);
         }
         self->fsm->timer = 2;
         self->fsm->st++;
@@ -131,7 +131,7 @@ void func_ov003_021ee3dc(Ov003Lever *self) {
         if (self->param->unk_01 != 1) {
             self->fsm->timer = 0x78;
         } else {
-            func_ov003_021ee680(self, 0, 1, -1);
+            Ov003Lever_SetState(self, 0, 1, -1);
             self->fsm->timer = 0x3c;
         }
         self->fsm->st++;
@@ -175,7 +175,7 @@ void func_ov003_021ee3dc(Ov003Lever *self) {
     }
 }
 
-void func_ov003_021ee680(Ov003Lever *self, s16 kind, BOOL notify, s32 sound) {
+void Ov003Lever_SetState(Ov003Lever *self, s16 kind, BOOL notify, s32 sound) {
     const char *name;
     if (kind == 1) {
         self->unk_93_1 = 1;
@@ -200,7 +200,7 @@ void func_ov003_021ee680(Ov003Lever *self, s16 kind, BOOL notify, s32 sound) {
     }
 }
 
-void func_ov003_021ee73c(Ov003Lever *self) {
+void Ov003ActVt_021f9ce0_StateIdle(Ov003Lever *self) {
     ActorSub40 *w;
     if (self->unk_18 == 1) {
         ActorSub44 *p;
@@ -242,7 +242,7 @@ void func_ov003_021ee73c(Ov003Lever *self) {
     }
 }
 
-void func_ov003_021ee910(Ov003Lever *self) {
+void Ov003ActVt_021f9ce0_State06(Ov003Lever *self) {
     ActorSub40 *w = self->fsm;
     switch (w->st) {
     case 0: {

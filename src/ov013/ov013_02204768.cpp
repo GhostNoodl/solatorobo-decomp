@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_ov013_0220bbb8[];
 extern char data_ov013_0220ba58[];
 extern char data_ov013_0220ba60[];
-extern void func_ov003_021d9980(VecFx32 *out, u16 rot, const VecFx32 *v);
+extern void Ov003Vec_RotateY(VecFx32 *out, u16 rot, const VecFx32 *v);
 extern void *Ov003Vt_021f79a8_Ctor(void *p);
 extern void *Ov003Vt_021f79a8_Dtor(void *p);
 extern void *func_ov000_0218ea20(void *p);
@@ -154,7 +154,7 @@ BOOL Ov013ActEx_02204454_Draw(Ov013ActEx_02204454 *self) {
     }
 }
 
-void func_ov013_02204910(Ov013ActEx_02204454 *self, u16 a, u16 b, u16 c, u16 d) {
+void Ov013ActEx_02204454_StartMove(Ov013ActEx_02204454 *self, u16 a, u16 b, u16 c, u16 d) {
     if (self->fsm->current == 0x15) {
         return;
     }
@@ -167,11 +167,11 @@ void func_ov013_02204910(Ov013ActEx_02204454 *self, u16 a, u16 b, u16 c, u16 d) 
     func_ov000_02198360(self->fsm, 0xe, 0);
 }
 
-u32 func_ov013_02204968(Ov013ActEx_02204454 *self) {
+u32 Ov013ActEx_02204454_IsDone(Ov013ActEx_02204454 *self) {
     return self->unk_ce_0;
 }
 
-void func_ov013_02204978(Ov013ActEx_02204454 *self, u16 a) {
+void Ov013ActEx_02204454_SetD2(Ov013ActEx_02204454 *self, u16 a) {
     self->unk_d2 = a;
     self->unk_ce_1 = 1;
 }
@@ -187,7 +187,7 @@ struct Ov013Anim10 {
     u32 wc;
 };
 
-void func_ov013_0220498c(Ov013ActEx_02204454 *self, s16 v) {
+void Ov013ActEx_02204454_SetSpeedScale(Ov013ActEx_02204454 *self, s16 v) {
     u8 *p;
     Ov013Anim10 t;
     if (self->state != 2) {

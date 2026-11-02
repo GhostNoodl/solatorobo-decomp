@@ -23,7 +23,7 @@ static inline s32 Ov012_FxMul64(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-void func_ov012_02209268(Ov003Actor *self) {
+void Ov012ActVt_0220b35c_Update(Ov003Actor *self) {
     Ov003Actor *pl;
     Ov003Actor *o;
     VecFx32 v;
@@ -123,18 +123,18 @@ void func_ov012_02209268(Ov003Actor *self) {
     }
 }
 
-void func_ov012_022096fc(Ov003Actor *self) {
+void Ov012ActVt_0220b35c_StateAttack(Ov003Actor *self) {
     if (self->fsm->st == 0) {
         func_02049f44(data_02097e4c, 0x701, &self->pos, 0);
     }
-    func_ov003_021d452c(self);
+    Ov003Actor_StateAttack(self);
 }
 extern char data_ov012_0220b400[];
 extern char data_ov012_0220b406[];
 extern void func_ov000_021911c8(Model0218fe1c *p, s16 a);
 
 
-void func_ov012_02209740(Ov003Actor *self) {
+void Ov012ActVt_0220b35c_StateAttack2(Ov003Actor *self) {
     Ov003Actor *pl = Ov012_FindActor(self->target);
     ActorSub40 *s = self->fsm;
     switch (s->st) {

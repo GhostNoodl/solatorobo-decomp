@@ -9,7 +9,7 @@ extern "C" {
 
 extern const u8 data_ov006_021eb918[][6];
 
-void func_ov006_021ea244(Ov006Racer *self) {
+void Ov006Racer_UpdateCpuItem(Ov006Racer *self) {
     if (self->unk_1aa == 0 && self->unk_1ab == 0) {
         self->unk_1ab = data_ov006_021eb918[self->rank][self->unk_1ac];
         self->unk_1ac++;

@@ -10,7 +10,7 @@ static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->event != 0;
 }
 
-void func_ov009_02211270(Ov009ActVt_02217aac *self) {
+void Ov009ActVt_02217aac_StateIdle(Ov009ActVt_02217aac *self) {
     Ov003Actor *t;
     if (!Ov009_GameIdle()) {
         return;

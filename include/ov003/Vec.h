@@ -6,8 +6,8 @@
 
 // A VecFx32 with a user-declared (empty) default constructor and a member-wise copy constructor.
 // Both are load-bearing: copies such as `Ov003Vec p = t->pos;` are built field by field, which MWCC
-// schedules differently from the 12-byte block copy of a plain VecFx32 (func_ov003_021da520,
-// func_ov003_021ce630, func_ov003_021da854). Being derived from VecFx32, it passes to the SDK without a cast.
+// schedules differently from the 12-byte block copy of a plain VecFx32 (Ov003Follower_Follow,
+// func_ov003_021ce630, Ov003Scaled_ApplyScale). Being derived from VecFx32, it passes to the SDK without a cast.
 struct Ov003Vec : public VecFx32 {
     Ov003Vec() {}
     Ov003Vec(const Ov003Vec &o) {

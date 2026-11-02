@@ -36,11 +36,11 @@ void Ov011ActVt_02207b34_Update(Ov003Actor *self) {
         self->target = pl->id;
         self->fsm->flags |= 0x4000;
     } else {
-        func_ov003_021d1e8c(self);
+        Ov003Actor_Update(self);
     }
 }
 
-void func_ov011_022031a0(Ov003Actor *self) {
+void Ov011ActVt_02207b34_StateAttack2(Ov003Actor *self) {
     ActorSub40 *s;
     u8 a;
     s32 v;
@@ -82,12 +82,12 @@ void func_ov011_022031a0(Ov003Actor *self) {
     self->unk_3c->unk_19 = a;
 }
 
-void func_ov011_022032fc(Ov003Actor *self) {
+void Ov011Actor_StateAttack2(Ov003Actor *self) {
     self->unk_ee_2 = 1;
     self->vfunc_64();
 }
 
-void func_ov011_02203320(Ov003Actor *self) {
+void Ov011ActVt_02207b34_State20(Ov003Actor *self) {
     ActorSub40 *s = self->fsm;
     switch (s->st) {
     case 0:
@@ -129,15 +129,15 @@ void func_ov011_02203320(Ov003Actor *self) {
     }
 }
 
-void func_ov011_022034fc(Ov003Actor *self) {
+void Ov011ActVt_02207b34_StateKnockBack(Ov003Actor *self) {
     if (self->fsm->st == 0) {
         self->unk_3c->unk_14 = self->radius * 2;
         self->unk_3c->unk_19 = 0xff;
     }
-    func_ov003_021d5348(self);
+    Ov003Actor_StateKnockBack(self);
 }
 
-void func_ov011_02203534(Ov003Actor *self) {
+void Ov011ActVt_02207b34_StateDown(Ov003Actor *self) {
     if (self->fsm->st == 0) {
         self->unk_3c->unk_14 = self->radius * 2;
         self->unk_3c->unk_19 = 0xff;
@@ -146,10 +146,10 @@ void func_ov011_02203534(Ov003Actor *self) {
             ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4803, 0x15);
         }
     }
-    func_ov003_021d5900(self);
+    Ov003Actor_StateDown(self);
 }
 
-void func_ov011_022035b8(Ov003Actor *self) {
+void Ov011ActVt_02207b34_StateDie(Ov003Actor *self) {
     if (self->fsm->st == 0) {
         EffectObj *p;
         self->unk_3c->unk_14 = self->radius * 2;
@@ -160,15 +160,15 @@ void func_ov011_022035b8(Ov003Actor *self) {
             p->AddPosXYZ(0, 0x1000, 0);
         }
     }
-    func_ov003_021d6054(self);
+    Ov003Actor_StateDie(self);
 }
 
 void Ov011ActVt_02207a88_Start(Ov003Actor *self) {
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     func_ov000_0218d7e8(self, 0xb);
 }
 
-void func_ov011_02203654(Ov003Actor *self) {
+void Ov011ActVt_02207a88_State20(Ov003Actor *self) {
     ActorSub40 *s = self->fsm;
     switch (s->st) {
     case 0:
@@ -194,30 +194,30 @@ void func_ov011_02203654(Ov003Actor *self) {
 }
 
 Ov003Actor *Ov011ActVt_02207b34_Dtor(Ov003Actor *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
 Ov003Actor *Ov011ActVt_02207b34_DtorDelete(Ov003Actor *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 Ov003Actor *Ov011ActVt_02207a88_Dtor(Ov003Actor *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
 Ov003Actor *Ov011ActVt_02207a88_DtorDelete(Ov003Actor *self) {
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 void Ov011Act7cf8_Start(Ov011Act7cf8 *self) {
     void *saved;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->hit != NULL) {
@@ -239,7 +239,7 @@ void Ov011Act7cf8_Start(Ov011Act7cf8 *self) {
     self->unk_ea_6 = 1;
 }
 
-void func_ov011_0220386c(Ov003Actor *self) {
+void Ov011Act7cf8_SelectState(Ov003Actor *self) {
     ActorSub40 *s = self->fsm;
     u64 f = s->flags;
     if (f == 0) {

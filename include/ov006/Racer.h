@@ -2,7 +2,7 @@
 #define OV006_RACER_H
 
 // The ov006 race actor (round acC): the racer class (vtable data_ov006_021ec4f4, ctor
-// Ov006ActVt_021ec4f4_Ctor, 0x228 bytes, allocated by func_ov006_021ea430) and the marker it
+// Ov006ActVt_021ec4f4_Ctor, 0x228 bytes, allocated by Ov006Racer_New) and the marker it
 // keeps above itself (vtable data_ov006_021ec28c, ctor Ov006Vt_021ec28c_Ctor, 0x34 bytes).
 
 #include "types.h"
@@ -14,35 +14,35 @@
 struct Model;
 
 // The marker drawn over a racer (Ov006Racer::marker): follows target, smoothly when smooth is set
-// (func_ov006_021dc9c8), and is drawn at cur + ofs (func_ov006_021dca94).
+// (Ov006Marker_Update), and is drawn at cur + ofs (Ov006Marker_Draw).
 typedef struct Ov006Marker {
     void *vtbl;
     u8 active : 1; // set once the model is loaded
     u8 smooth : 1;
     u8 alt : 1;
     u8 unk_04_3 : 5;
-    u8 frame; // 0..4 (func_ov006_021dcc9c)
+    u8 frame; // 0..4 (Ov006Marker_SetFrame)
     u8 unk_06[2];
-    VecFx32 target; // func_ov006_021dccc8 fills it from a world position
+    VecFx32 target; // Ov006Marker_Project fills it from a world position
     VecFx32 cur;
     VecFx32 ofs;
-    struct Model *model; // loaded by func_ov006_021dc8f8
+    struct Model *model; // loaded by Ov006Marker_Load
     struct Model *unk_30;
 } Ov006Marker;
 SIZE_ASSERT(Ov006Marker, 0x34);
 
 extern "C" {
 Ov006Marker *Ov006Vt_021ec28c_Ctor(Ov006Marker *self);
-void func_ov006_021dc8f8(Ov006Marker *self); // loads the model
-void func_ov006_021dc9c8(Ov006Marker *self); // moves cur toward target
-void func_ov006_021dca94(Ov006Marker *self); // draws it
-void func_ov006_021dcc9c(Ov006Marker *self, int frame, u8 alt);
-void func_ov006_021dccc8(Ov006Marker *self, const VecFx32 *pos, const MtxFx43 *cam, const MtxFx44 *proj, u8 snap);
+void Ov006Marker_Load(Ov006Marker *self); // loads the model
+void Ov006Marker_Update(Ov006Marker *self); // moves cur toward target
+void Ov006Marker_Draw(Ov006Marker *self); // draws it
+void Ov006Marker_SetFrame(Ov006Marker *self, int frame, u8 alt);
+void Ov006Marker_Project(Ov006Marker *self, const VecFx32 *pos, const MtxFx43 *cam, const MtxFx44 *proj, u8 snap);
 }
 
 // A racer's parameter record (Ov006Racer::prm, the 0xa-byte table entry func_020706a0 returns).
 typedef struct Ov006RacerPrm {
-    s16 unk_00; // scales the model's anim speed (func_ov006_021e81e0)
+    s16 unk_00; // scales the model's anim speed (Ov006Racer_UpdateRun)
     s16 unk_02; // engine sound (func_02049afc)
     s8 unk_04; // acceleration
     s8 unk_05; // top speed
@@ -80,13 +80,13 @@ public:
             u16 unk_19c_15 : 1;
         };
     };
-    u8 idx; // slot index (func_ov006_021db060)
+    u8 idx; // slot index (ov006_SlotManager_GetSlot_021db060)
     u8 unk_19f; // goal crossings; over once past the race's count
     s32 runSpeed;
     u16 held;
     u16 trig;
     u16 release;
-    u8 unk_1aa; // the slot's 3-bit kind (func_ov006_021e6eb0)
+    u8 unk_1aa; // the slot's 3-bit kind (Ov006ActVt_021ec4f4_UpdateMode1)
     u8 unk_1ab;
     u8 unk_1ac;
     u8 rank; // 0 = first; the last place gets the catch-up bonuses
@@ -130,8 +130,8 @@ public:
 SIZE_ASSERT(Ov006Racer, 0x228);
 
 extern "C" {
-BOOL func_ov006_021ea3e8(Ov006Racer *self); // the racer is over (Ov006Racer_IsOver)
-void func_ov006_021ea410(Ov006Racer *self); // ends the racer's race
+BOOL Ov006Racer_IsFinished(Ov006Racer *self); // the racer is over (Ov006Racer_IsOver)
+void Ov006Racer_SetFinished(Ov006Racer *self); // ends the racer's race
 }
 
 // The racer has crossed the goal more often than the race counts.

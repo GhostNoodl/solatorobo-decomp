@@ -29,7 +29,7 @@ struct Ov011KeyVal {
     s32 val;
 };
 extern const Ov011KeyVal data_ov011_02207380[];
-void func_ov011_021fb8d4(Ov011Mgr2 *a, s32 b, Ov011List *c, Ov011Ent *d);
+void Ov011Mgr2_Start(Ov011Mgr2 *a, s32 b, Ov011List *c, Ov011Ent *d);
 
 void func_ov011_021fdfd8(Ov011Scene *self) {
     Ov011Node *n;
@@ -44,7 +44,7 @@ void func_ov011_021fdfd8(Ov011Scene *self) {
                 v = data_ov011_02207380[i].val;
             }
         }
-        func_ov011_021fb8d4(&self->mgr2, v, self, &self->ent);
+        Ov011Mgr2_Start(&self->mgr2, v, self, &self->ent);
         self->seq.st = 1;
         break;
     }
@@ -62,7 +62,7 @@ void func_ov011_021fdfd8(Ov011Scene *self) {
     case 2:
         for (n = self->head; n != NULL; n = n->next) {
             Ov011Npc *a = Ov011_FindNpc(n->id);
-            if (func_ov011_02201244(a)) {
+            if (Ov011Npc_IsTracking(a)) {
                 Actor *owner = self->actor;
                 if (Ov011Ent_Find(&self->ent, func_ov011_02201254(a)) != NULL) {
                     Ov011PNode *p = Ov011Ent_Find(&self->ent, func_ov011_02201254(a));

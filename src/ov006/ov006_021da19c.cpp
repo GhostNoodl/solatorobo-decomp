@@ -3,9 +3,9 @@
 extern "C" {
 
 #pragma force_active on
-// The decide callback of func_ov006_021da208's list: it stores the chosen item's id where the
+// The decide callback of ov006_Task021ec040_BuildShopList's list: it stores the chosen item's id where the
 // list's owner points and plays a sound; with no item it returns TRUE.
-BOOL func_ov006_021da19c(UiList *self, UiListItem *item) {
+BOOL ov006_ListCb_StoreIdOrCancel(UiList *self, UiListItem *item) {
     s32 *dst = (s32 *)self->owner;
     BOOL r = FALSE;
     if (item != NULL) {

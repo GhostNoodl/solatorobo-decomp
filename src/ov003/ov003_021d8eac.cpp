@@ -34,7 +34,7 @@ extern "C" {
 
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
-void func_ov003_021d8eac(Ov003Timer *self, void *target, s16 duration, bool loop) {
+void Ov003Timer_Start(Ov003Timer *self, void *target, s16 duration, bool loop) {
     if (!self->active) {
         return;
     }
@@ -54,18 +54,18 @@ BOOL Ov003Timer_IsStopped(Ov003Timer *self) {
     return FALSE;
 }
 
-void func_ov003_021d8f24(Ov003Flag *self) {
+void Ov003Flag_Deactivate(Ov003Flag *self) {
     self->active = 0;
 }
 
-void func_ov003_021d8f34(Ov003Flag *self) {
+void Ov003Flag_Stop(Ov003Flag *self) {
     if (self->active) {
         self->active = 0;
     }
 }
 
 #pragma force_active on
-BOOL func_ov003_021d8f4c(Ov003Flag *self) {
+BOOL Ov003Flag_Init(Ov003Flag *self) {
     self->active = 1;
     self->b1 = 0;
     self->b2 = 0;
@@ -81,7 +81,7 @@ BOOL func_ov003_021d8f4c(Ov003Flag *self) {
 }
 #pragma force_active reset
 
-void func_ov003_021d8fa8(Ov003Flag *self) {
+void Ov003Flag_Stop_021d8fa8(Ov003Flag *self) {
     if (self->active) {
         self->active = 0;
     }

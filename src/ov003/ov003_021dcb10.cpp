@@ -12,37 +12,37 @@ extern void func_ov000_02190a80(Model0218fe1c *a, void *b);
 extern void Heap_Free(void *p);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 
-void func_ov003_021dcb10(ActorEx *self) {
+void Ov003ActorBase_Animate(ActorEx *self) {
     if (self->model != NULL) {
         func_ov000_02190a80(self->model, func_0203db40(&self->pause));
     }
 }
 
-void func_ov003_021dcb3c(void) {
+void Ov003ActorEx_State23(void) {
 
 }
 
-void func_ov003_021dcb40(void) {
+void Ov003ActorEx_State22(void) {
 
 }
 
-void func_ov003_021dcb44(void) {
+void Ov003ActorEx_State21(void) {
 
 }
 
-void func_ov003_021dcb48(void) {
+void Ov003ActorEx_State20(void) {
 
 }
 
-void func_ov003_021dcb4c(void) {
+void Ov003ActorEx_StateHurt(void) {
 
 }
 
-void func_ov003_021dcb50(void) {
+void Ov003ActorEx_State0e(void) {
 
 }
 
-void func_ov003_021dcb54(void) {
+void Ov003ActorEx_StateMove(void) {
 
 }
 

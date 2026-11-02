@@ -106,7 +106,7 @@ void Ov003ActVt_021f9fe4_Start(Ov003FxProp *self) {
     fx->SetScaleAll(e->frame);
 }
 
-void func_ov003_021f0258(Ov003FxProp *self) {
+void Ov003ActVt_021f9fe4_StateIdle(Ov003FxProp *self) {
     const Ov003FxEntry *e = &data_ov003_021f6fc8[self->unk_1a];
     if (e->path != NULL) {
         ActorSub40 *task = self->fsm;

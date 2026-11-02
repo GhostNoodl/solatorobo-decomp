@@ -48,12 +48,12 @@ extern "C" {
 
 extern u32 data_ov003_021f7cf4;
 extern u32 data_ov003_021f7cd8;
-extern s16 func_ov003_021d7e58(Ov003Ticker *t);
+extern s16 Ov003Ticker_GetValue(Ov003Ticker *t);
 extern void Heap_Free(void *p);
 extern void *Heap_Alloc(u32 size);
 extern ActorSub40 *History_Init(ActorSub40 *p);
 
-void func_ov003_021d8c60(Ov003Timer *self) {
+void Ov003Timer_Stop(Ov003Timer *self) {
     if (self->active) {
         self->active = 0;
     }
@@ -63,7 +63,7 @@ extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern u32 Rand_UpTo(u32 max);
 
-void func_ov003_021d8c78(Ov003Timer *self) {
+void Ov003Timer_Update(Ov003Timer *self) {
     BOOL fire;
     if (!self->active) {
         return;
@@ -131,7 +131,7 @@ void func_ov003_021d8c78(Ov003Timer *self) {
     }
     {
         VecFx32 p;
-        func_ov003_021da108(self->target, self->unk_06, Rand_UpTo(1) != 0 ? 4 : 3, 0x733, 0xe66);
+        Ov003Actor_SpawnScatterFx(self->target, self->unk_06, Rand_UpTo(1) != 0 ? 4 : 3, 0x733, 0xe66);
         p.x = self->target->pos.x;
         p.y = self->target->pos.y;
         p.z = self->target->pos.z;

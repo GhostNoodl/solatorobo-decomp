@@ -54,7 +54,7 @@ struct Ov003Rot16 { s16 x, y, z; };
 extern "C" {
 
 // A header's zero rotation and vector, plus copies made at startup. Other functions of this TU
-// read the vector and its copy, so those two keep their names. func_ov003_021d883c is part of this
+// read the vector and its copy, so those two keep their names. Ov003TickerSet_Apply is part of this
 // TU: it reads the vector through the .rodata base plus an offset.
 extern const Ov003Rot16 data_ov003_021f4980;
 extern const VecFx32 data_ov003_021f4988;
@@ -64,7 +64,7 @@ const VecFx32 data_ov003_021f4988 = {0, 0, 0};
 static const Ov003Rot16 data_ov003_021f7cbc = data_ov003_021f4980;
 const VecFx32 data_ov003_021f7cc4 = data_ov003_021f4988;
 
-extern s16 func_ov003_021d7e58(Ov003Ticker *t);
+extern s16 Ov003Ticker_GetValue(Ov003Ticker *t);
 
 static inline BOOL Ov003TickerSet_IsDone(Ov003TickerSet *self) {
     if (!self->loop && self->count <= 0) {
@@ -73,12 +73,12 @@ static inline BOOL Ov003TickerSet_IsDone(Ov003TickerSet *self) {
     return FALSE;
 }
 
-void func_ov003_021d883c(Ov003TickerSet *self, Ov003Vec *dst, const Ov003Vec *src, s32 scale) {
+void Ov003TickerSet_Apply(Ov003TickerSet *self, Ov003Vec *dst, const Ov003Vec *src, s32 scale) {
     Ov003Vec v;
     if (self->active && !Ov003TickerSet_IsDone(self)) {
-        v.x = func_ov003_021d7e58(&self->tickers[0]);
-        v.y = func_ov003_021d7e58(&self->tickers[1]);
-        v.z = func_ov003_021d7e58(&self->tickers[2]);
+        v.x = Ov003Ticker_GetValue(&self->tickers[0]);
+        v.y = Ov003Ticker_GetValue(&self->tickers[1]);
+        v.z = Ov003Ticker_GetValue(&self->tickers[2]);
     } else {
         v.x = data_ov003_021f4988.x;
         v.y = data_ov003_021f4988.y;

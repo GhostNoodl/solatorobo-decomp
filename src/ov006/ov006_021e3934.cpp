@@ -18,16 +18,16 @@ extern u16 data_ov006_021eb840[];
 
 BOOL func_0203e63c(void *a);
 BOOL func_02054f10(Model *a, int b);
-BOOL func_ov006_021e3be0(ov006_ListWin *self);
-BOOL func_ov006_021e3c18(ov006_ListWin *self);
+BOOL ov006_ListWin_IsReadyB(ov006_ListWin *self);
+BOOL ov006_ListWin_IsReadyA(ov006_ListWin *self);
 
-void func_ov006_021e3934(ov006_ListWin *self, void *arg, void *arg2) {
+void ov006_ListWin_DrawItem(ov006_ListWin *self, void *arg, void *arg2) {
     if (self->onDrawItem != NULL) {
         self->onDrawItem(arg, self, arg2);
     }
 }
 
-int func_ov006_021e3958(ov006_ListWin *self) {
+int ov006_ListWin_GetLineHeight(ov006_ListWin *self) {
     s8 base;
     data_02097ce0->unk_004 = self->font;
     base = ((ov006_Unk0203a4c0 *)GfxMgr_GetFont(data_02097ce0))->unk0[1];
@@ -68,7 +68,7 @@ static inline int ov006_Window_CalcSize(ov006_ListWin *self) {
     return rows + top + self->vfunc_38();
 }
 
-int func_ov006_021e3a44(ov006_ListWin *self) {
+int ov006_ListWin_CalcSize(ov006_ListWin *self) {
     if (self->flags & 0x20000) {
         int size;
         self->rows += 2;
@@ -123,8 +123,8 @@ static inline BOOL ov006_TextWin_IsReady(TextWin *self) {
     return TRUE;
 }
 
-BOOL func_ov006_021e3b74(ov006_ListWin *self) {
-    BOOL result = func_ov006_021e3be0(self);
+BOOL ov006_ListWin_IsReady(ov006_ListWin *self) {
+    BOOL result = ov006_ListWin_IsReadyB(self);
     TextWin *text = self->title2;
     if (text != NULL && !ov006_TextWin_IsReady(text)) {
         result = FALSE;
@@ -132,15 +132,15 @@ BOOL func_ov006_021e3b74(ov006_ListWin *self) {
     return result;
 }
 
-BOOL func_ov006_021e3be0(ov006_ListWin *self) {
-    BOOL result = func_ov006_021e3c18(self);
+BOOL ov006_ListWin_IsReadyB(ov006_ListWin *self) {
+    BOOL result = ov006_ListWin_IsReadyA(self);
     if (self->unk_b4 != NULL && !func_02054f10(self->unk_b4, 0xffff)) {
         result = FALSE;
     }
     return result;
 }
 
-BOOL func_ov006_021e3c18(ov006_ListWin *self) {
+BOOL ov006_ListWin_IsReadyA(ov006_ListWin *self) {
     BOOL result = TRUE;
     if (self->model != NULL && !func_02054f10(self->model, 0xffff)) {
         result = FALSE;
@@ -170,7 +170,7 @@ ov006_ModelHolder *ov006_ModelHolder_DtorDelete(ov006_ModelHolder *self) {
     return self;
 }
 
-void func_ov006_021e3dd4(ov006_ModelHolder *self, int a) {
+void ov006_ModelHolder_Load(ov006_ModelHolder *self, int a) {
     const char *file = "menu/net";
     const char *name = "wireless_slv";
     Model *model;

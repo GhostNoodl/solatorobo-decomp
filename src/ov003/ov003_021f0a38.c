@@ -28,7 +28,7 @@ typedef struct {
     Ov003SwTargets targets;
 } Ov003Switch;
 
-BOOL func_ov003_021f0a38(Ov003Switch *self, Ov003Switch *def) {
+BOOL Ov003Switch_IsTarget(Ov003Switch *self, Ov003Switch *def) {
     BOOL r = FALSE;
     s32 i;
     Ov003SwTargets *t = &def->targets;
@@ -86,7 +86,7 @@ extern Ov003SwObjList *data_ov000_021ccd64;
 extern Ov003SwGroup *ActorMgr_GetGroup(void *mgr, u16 key);
 extern Ov003SwPlayer *func_ov000_0219bf90(void);
 
-BOOL func_ov003_021f0abc(Ov003Switch *self, BOOL deep) {
+BOOL Ov003Switch_AreTargetsDone(Ov003Switch *self, BOOL deep) {
     BOOL r = TRUE;
     s32 i;
     Ov003SwTargets *t = &self->targets;

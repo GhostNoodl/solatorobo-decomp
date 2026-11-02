@@ -14,7 +14,7 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 extern BOOL Ov003Vec_Equal(void *a, const Ov013Spot *b);
 
-void func_ov013_021fe730(Ov013ActEx_021fdb70 *self) {
+void Ov013ActEx_021fdb70_StateHeld(Ov013ActEx_021fdb70 *self) {
     if (self->fsm->st == 0) {
         func_ov000_02190cb0(self->model, data_ov013_0220b88d, 0x2ab, 0);
         func_ov000_021915a0(self->model);
@@ -39,7 +39,7 @@ static inline s32 Ov013_DistXZ(const VecFx32 *a, const VecFx32 *b) {
     return Ov013_Sqrt64(sq);
 }
 
-void func_ov013_021fe778(Ov013ActEx_021fdb70 *self) {
+void Ov013ActEx_021fdb70_StateThrown(Ov013ActEx_021fdb70 *self) {
     if (self->fsm->st == 0) {
         Ov003Actor *t = NULL;
         func_ov000_02190cb0(self->model, data_ov013_0220b88d, 0x2ab, 0);

@@ -8,7 +8,7 @@ static inline void ov006_SetVec021dccc8(VecFx32 *v, fx32 x, fx32 y, fx32 z) {
     v->z = z;
 }
 
-extern "C" void func_ov006_021dccc8(Ov006Marker *out, const VecFx32 *pos, const MtxFx43 *cam, const MtxFx44 *proj, u8 flag) {
+extern "C" void Ov006Marker_Project(Ov006Marker *out, const VecFx32 *pos, const MtxFx43 *cam, const MtxFx44 *proj, u8 flag) {
     VecFx32 v;
     MtxFx43 m;
     fx32 w;

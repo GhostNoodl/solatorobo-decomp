@@ -10,7 +10,7 @@ extern "C" {
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 extern BOOL Ov003Vec_Equal(void *a, const Ov013Spot *b);
 
-void func_ov013_021fe948(VecFx32 *outPos, u16 *outRot, const Ov013Spot *list, u32 count, void *exclude) {
+void Ov013_PickRandomSpot(VecFx32 *outPos, u16 *outRot, const Ov013Spot *list, u32 count, void *exclude) {
     s32 n = 0;
     Ov013Spot tmp[8];
     u32 i;
@@ -34,7 +34,7 @@ static inline Ov003Actor *Ov013_ListNext(ActorGroup *list, Ov003Actor *a) {
     return static_cast<Ov003Actor *>(list->head);
 }
 
-u32 func_ov013_021fe9f8(Ov003Actor **out, u32 max, u16 kind, const VecFx32 *pos, s32 dist) {
+u32 Ov013_FindActorsNear(Ov003Actor **out, u32 max, u16 kind, const VecFx32 *pos, s32 dist) {
     u32 n = 0;
     ActorGroup *list = ActorMgr_GetGroup(data_ov000_021ccd68, kind);
     Ov003Actor *a = static_cast<Ov003Actor *>(list->head);

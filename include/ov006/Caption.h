@@ -26,8 +26,8 @@ typedef struct ov006_Caption {
 } ov006_Caption;
 
 /* A model with a title caption and up to three captions (vtable data_ov006_021ec29c, 0x24 bytes;
-   ctor Ov006Vt_021ec29c_Ctor, built by func_ov006_021e2c14; ov006_CaptionSet_SetText fills
-   captions[idx], func_ov006_021e341c plays the title's text). */
+   ctor Ov006Vt_021ec29c_Ctor, built by ov006_CaptionPanel_Load; ov006_CaptionSet_SetText fills
+   captions[idx], ov006_CaptionPanel_PlayText plays the title's text). */
 typedef struct ov006_CaptionPanel {
     void *vtbl;
     u8 unk4;
@@ -51,7 +51,7 @@ extern u8 data_ov006_021ec22c[];
 extern u8 data_ov006_021ec29c[];
 
 ov006_CaptionPanel *Ov006Vt_021ec29c_Ctor(ov006_CaptionPanel *self);
-void func_ov006_021e2c14(ov006_CaptionPanel *self);
+void ov006_CaptionPanel_Load(ov006_CaptionPanel *self);
 void ov006_CaptionSet_SetText(ov006_CaptionPanel *self, const char *text, int idx);
 
 #ifdef __cplusplus

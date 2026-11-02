@@ -7,7 +7,7 @@ extern s16 *func_ov000_02191318(Model0218fe1c *m, s32 a);
 extern void func_ov000_02191618(Model0218fe1c *model);
 extern void func_0203f364(ActorSub48 *p);
 
-void func_ov009_02209a08(Ov009ActVt_02217594 *self) {
+void Ov009ActVt_02217594_StateHurt(Ov009ActVt_02217594 *self) {
     switch (self->fsm->st) {
     case 0: {
         ActorSub44 *s44;

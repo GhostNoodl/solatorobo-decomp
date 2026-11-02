@@ -52,7 +52,7 @@ extern Ov003PropShadow *func_ov000_021919c8(void *p);
 extern void Shadow_Load(Ov003PropShadow *p);
 extern void func_ov000_0218f074(Ov003PropRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
 
-Ov003Prop *func_ov003_021f1420(Ov003PropDef *def) {
+Ov003Prop *Ov003Prop_New(Ov003PropDef *def) {
     Ov003Prop *p = (Ov003Prop *)Heap_Alloc(0xb4);
     if (p != NULL) {
         Actor_Ctor(p);

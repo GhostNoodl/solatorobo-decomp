@@ -24,12 +24,12 @@ extern "C" {
 extern void *data_ov000_021ccd68;
 extern ov006_Unk021ccd6c *data_ov000_021ccd6c;
 
-ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
+ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 void *ActorMgr_GetActor(void *a, u16 id);
 int func_0206e264(ov006_Party *party);
-ov006_RaceInfo *func_ov006_021dab98(ov006_Slot *self);
-void func_ov006_021daba0(ov006_Slot *self, const ov006_RaceInfo *src);
-ov006_RaceInfo *func_ov006_021dabc4(ov006_Slot *self);
+ov006_RaceInfo *ov006_Slot_GetSub2C(ov006_Slot *self);
+void ov006_Slot_SetSub3C(ov006_Slot *self, const ov006_RaceInfo *src);
+ov006_RaceInfo *ov006_Slot_GetSub3C(ov006_Slot *self);
 
 static inline u8 ov006_CountRemaining(void) {
     u8 count;
@@ -41,9 +41,9 @@ static inline u8 ov006_CountRemaining(void) {
     }
     count = 0;
     for (i = 0; i < num; i++) {
-        u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
+        u16 id = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i)->actorId;
         Ov006Racer *prop = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
-        if (prop != NULL && func_ov006_021ea3e8(prop)) {
+        if (prop != NULL && Ov006Racer_IsFinished(prop)) {
             count++;
         }
     }
@@ -69,7 +69,7 @@ static inline int ov006_GetCheckpoints(void) {
     return result;
 }
 
-void func_ov006_021d8914(void) {
+void ov006_ComputeRanks(void) {
     ov006_Slot *slot;
     u8 ai;
     u8 i;
@@ -87,14 +87,14 @@ void func_ov006_021d8914(void) {
     if (data_ov006_021ec884->unk5 != 0) {
         return;
     }
-    slot = func_ov006_021db060(data_ov006_021ec884, 0);
+    slot = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, 0);
     num = data_ov006_021ec884->numActive;
     remaining = ov006_CountRemaining();
     for (i = 0; i < num; i++) {
-        u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
+        u16 id = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i)->actorId;
         Ov006Racer *racer = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
-        if ((racer != NULL && func_ov006_021ea3e8(racer)) || remaining <= 1) {
-            rank[i] = (func_ov006_021dab98(slot)->ranks >> (i * 2)) & 3;
+        if ((racer != NULL && Ov006Racer_IsFinished(racer)) || remaining <= 1) {
+            rank[i] = (ov006_Slot_GetSub2C(slot)->ranks >> (i * 2)) & 3;
             a[i] = 0xff;
         } else {
             rank[i] = 0xff;
@@ -140,11 +140,11 @@ void func_ov006_021d8914(void) {
         }
         rank[i] = n;
     }
-    sub = *func_ov006_021dabc4(slot);
+    sub = *ov006_Slot_GetSub3C(slot);
     for (i = 0; i < num; i++) {
         sub.ranks = (sub.ranks & (u8)~(3 << (i * 2))) | (u8)((rank[i] & 3) << (i * 2));
     }
-    func_ov006_021daba0(slot, &sub);
+    ov006_Slot_SetSub3C(slot, &sub);
 }
 
 }

@@ -6,7 +6,7 @@ extern "C" {
 BOOL func_ov000_02198360(ActorSub40 *a, int b, int c);
 void func_ov000_0218d7e8(Actor *a, u8 b);
 
-void func_ov006_021e73b0(Ov006Racer *self) {
+void Ov006ActVt_021ec4f4_SelectState(Ov006Racer *self) {
     ActorSub40 *p = self->fsm;
     if (p->flags & 2) {
         func_ov000_02198360(p, 1, 0);

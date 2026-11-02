@@ -13,7 +13,7 @@ void *func_0206ffa0(s32 id);
 void *func_0205976c(ov006_DataRes *res, u32 idx);
 u32 func_0205975c(ov006_DataRes *res, u32 idx);
 u16 func_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
-void func_ov006_021daf60(ov006_SlotManager *self);
+void ov006_SlotManager_ClearState_021daf60(ov006_SlotManager *self);
 
 static inline u16 ov006_SlotId(ov006_SlotManager *m) {
     return m->unk6 & 0xfff;
@@ -35,11 +35,11 @@ void func_ov006_021cd5a8(int type, UiList *obj, int arg) {
         case 2:
             if (data_ov006_021ec860->unk1C) {
                 func_ov000_0218084c(data_ov000_021ccd44, 0x29,
-                                    func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->aid == 0 ? 1 : 2);
+                                    ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->aid == 0 ? 1 : 2);
             } else {
                 func_ov000_0218084c(data_ov000_021ccd44, 0x29, 0);
             }
-            func_ov006_021daf60(data_ov006_021ec884);
+            ov006_SlotManager_ClearState_021daf60(data_ov006_021ec884);
             break;
         case 1:
         default:

@@ -47,7 +47,7 @@ ov006_Unk021ec888 *Ov006Vt_021ec404_DtorDelete(ov006_Unk021ec888 *self) {
     return self;
 }
 
-void func_ov006_021e42b4(void) {
+void ov006_Menu_Create(void) {
     if (data_ov006_021ec888 == NULL) {
         ov006_Unk021ec888 *obj = (ov006_Unk021ec888 *)Heap_Alloc(sizeof(ov006_Unk021ec888));
         if (obj != NULL) {
@@ -57,7 +57,7 @@ void func_ov006_021e42b4(void) {
     }
 }
 
-void func_ov006_021e42ec(void) {
+void ov006_Menu_Delete(void) {
     OV006_DELETE_OBJECT(data_ov006_021ec888);
 }
 

@@ -28,7 +28,7 @@ void MTX_Concat43(const MtxFx43 *a, const MtxFx43 *b, MtxFx43 *ab);
 #define OV006_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV006_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
-void func_ov006_021eab60(ov006_Obj021eab60 *self) {
+void Ov006ActVt_021ec5e4_StateIdle(ov006_Obj021eab60 *self) {
     BOOL set;
     u16 rz;
     u16 ry;

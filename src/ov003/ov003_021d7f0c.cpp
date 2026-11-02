@@ -98,7 +98,7 @@ BOOL Ov003TickerSet_Init(Ov003TickerSet *self) {
     return TRUE;
 }
 
-void func_ov003_021d81d0(Ov003TickerSet *self) {
+void Ov003TickerSet_Stop(Ov003TickerSet *self) {
     if (!self->active) {
         return;
     }
@@ -139,7 +139,7 @@ static inline void Ov003Ticker_Update(Ov003Ticker *t) {
     }
 }
 
-void func_ov003_021d82b0(Ov003TickerSet *self) {
+void Ov003TickerSet_Update(Ov003TickerSet *self) {
     if (!self->active) {
         return;
     }

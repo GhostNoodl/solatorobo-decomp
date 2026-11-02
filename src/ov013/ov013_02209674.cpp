@@ -28,13 +28,13 @@ static inline void Ov013_Land(Ov013Act_02207968 *self) {
     self->fsm->st = 7;
 }
 
-void func_ov013_02209674(Ov013Act_02207968 *self) {
+void Ov013Act_02207968_StateHeld(Ov013Act_02207968 *self) {
     ActorSub48 *m;
     ActorSub44 *n;
     if (self->fsm->st == 0) {
         self->unk_110 = 0;
     }
-    func_ov003_021d36fc(self);
+    Ov003Actor_StateHeld(self);
     if (self->fsm->current != 10) {
         return;
     }
@@ -49,9 +49,9 @@ void func_ov013_02209674(Ov013Act_02207968 *self) {
     Ov013_Land(self);
 }
 
-void func_ov013_0220976c(Ov013Act_02207968 *self) {
+void Ov013Act_02207968_StateFly(Ov013Act_02207968 *self) {
     Ov003Actor *t;
-    func_ov003_021d3d28(self);
+    Ov003Actor_StateFly(self);
     if (self->fsm->current != 1) {
         return;
     }
@@ -63,14 +63,14 @@ void func_ov013_0220976c(Ov013Act_02207968 *self) {
     Ov013_Land(self);
 }
 
-void func_ov013_02209830(Ov013Act_02207968 *self) {
+void Ov013Act_02207968_StateHurt(Ov013Act_02207968 *self) {
     if (self->fsm->st == 0) {
         if (self->pos.y < 0x4800) {
             self->pos.y = 0x4800;
         }
         func_02049f44(data_02097e4c, 0x63, &self->pos, 0);
     }
-    func_ov003_021d4fd8(self);
+    Ov003Actor_StateHurt(self);
     if (self->pos.y < 0x4800) {
         self->pos.y = 0x4800;
     }
@@ -80,14 +80,14 @@ void func_ov013_02209830(Ov013Act_02207968 *self) {
     Ov013_Land(self);
 }
 
-void func_ov013_02209908(Ov013Act_02207968 *self) {
+void Ov013Act_02207968_StateKnockBack(Ov013Act_02207968 *self) {
     if (self->fsm->st == 0) {
         if (self->pos.y < 0x4800) {
             self->pos.y = 0x4800;
         }
         func_02049f44(data_02097e4c, 0x63, &self->pos, 0);
     }
-    func_ov003_021d4fd8(self);
+    Ov003Actor_StateHurt(self);
     if (self->pos.y < 0x4800) {
         self->pos.y = 0x4800;
     }
@@ -97,7 +97,7 @@ void func_ov013_02209908(Ov013Act_02207968 *self) {
     Ov013_Land(self);
 }
 
-void func_ov013_022099e0(Ov013Act_02207968 *self) {
+void Ov013Act_02207968_StateDown(Ov013Act_02207968 *self) {
     ActorSub48 *m;
     if (self->fsm->st == 0) {
         m = self->hit;
@@ -106,14 +106,14 @@ void func_ov013_022099e0(Ov013Act_02207968 *self) {
         self->rot_x = 0;
         func_02049f44(data_02097e4c, 0x63, &self->pos, 0);
     }
-    func_ov003_021d5900(self);
+    Ov003Actor_StateDown(self);
     if (self->fsm->current == 0x14) {
         return;
     }
     Ov013_Land(self);
 }
 
-void func_ov013_02209aac(Ov013Act_02207968 *self) {
+void Ov013Act_02207968_StateDie(Ov013Act_02207968 *self) {
     if (self->fsm->st == 0) {
         EffectObj *fx;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4811, 10);
@@ -124,7 +124,7 @@ void func_ov013_02209aac(Ov013Act_02207968 *self) {
             fx->AddPosXYZ(0, self->centerY, 0);
         }
     }
-    func_ov003_021d6054(self);
+    Ov003Actor_StateDie(self);
 }
 
 }

@@ -74,8 +74,8 @@ SIZE_ASSERT(Ov003Patrol, 0x104);
 // A header's zero rotation and vector, plus copies made at startup, among this TU's motion
 // names, the pointers to them, two angle tables and six vectors. Other functions read the
 // pointers, the tables and the named vectors; the unnamed ones are read through offsets.
-// The functions after the data, func_ov003_021e83d0 to func_ov003_021ea588, are part of this TU:
-// func_ov003_021e83d0 and func_ov003_021ea588 copy data_ov003_021f6ae4 through the .rodata base
+// The functions after the data, Ov003ActExMdl_DoAttack to Ov003ActVt_021f92dc_State06, are part of this TU:
+// Ov003ActExMdl_DoAttack and Ov003ActVt_021f92dc_State06 copy data_ov003_021f6ae4 through the .rodata base
 // plus an offset. The files in between were merged in, each in its own namespace so that their
 // local types and inlines keep their names; their functions are extern "C" either way.
 // Round dtB: ov003_021e7780.cpp and ov003_021e8030.cpp (0x021e7780..0x021e83d0) were merged in
@@ -179,7 +179,7 @@ void Ov003ActVt_021f966c_Start(ActorEx *self) {
     func_ov000_02198360(self->fsm, 1, 0);
 }
 
-void func_ov003_021e77b4(ActorEx *self) {
+void Ov003ActVt_021f966c_StateIdle(ActorEx *self) {
     void *list[0x20];
     s32 n;
     s32 i;
@@ -210,7 +210,7 @@ void func_ov003_021e77b4(ActorEx *self) {
     }
 }
 
-void func_ov003_021e7900(ActorEx *self) {
+void Ov003ActVt_021f966c_State06(ActorEx *self) {
     ActorSub40 *w = self->fsm;
     switch (w->st) {
     case 0:
@@ -256,7 +256,7 @@ void func_ov003_021e7900(ActorEx *self) {
     }
 }
 
-void func_ov003_021e7bac(Ov003Cannon *self) {
+void Ov003ActVt_021f95d4_StateIdle(Ov003Cannon *self) {
     switch (self->fsm->st) {
     case 0:
         self->speed = 0;
@@ -311,7 +311,7 @@ void func_ov003_021e7bac(Ov003Cannon *self) {
     }
 }
 
-void func_ov003_021e7e18(ActorEx *self) {
+void Ov003ActVt_021f9244_StateIdle(ActorEx *self) {
     switch (self->fsm->st) {
     case 0:
         self->speed = 0;
@@ -355,7 +355,7 @@ extern BOOL func_ov000_02190cb0(Model0218fe1c *p, const char *name, s32 a, s32 b
 extern void func_ov000_021915a0(Model0218fe1c *p);
 extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
 extern void func_ov000_0218996c(s32 a, s32 b);
-BOOL func_ov003_021e83d0(Ov003ActExMdl *self);
+BOOL Ov003ActExMdl_DoAttack(Ov003ActExMdl *self);
 
 extern s32 **func_ov000_02190a30(Model0218fe1c *model, s32 a);
 
@@ -465,7 +465,7 @@ BOOL Ov003ActVt_021f953c_Draw(Ov003ActExMdl *self) {
     return r;
 }
 
-void func_ov003_021e8210(Ov003ActExMdl *self) {
+void Ov003ActExMdl_StateIdle(Ov003ActExMdl *self) {
     Robo021ca458 *pl = func_ov000_0219bf90();
     ActorSub40 *w = self->fsm;
     switch (w->st) {
@@ -510,12 +510,12 @@ void func_ov003_021e8210(Ov003ActExMdl *self) {
     }
     case 3:
         self->turnAngle += self->turnSpeed;
-        func_ov003_021e83d0(self);
+        Ov003ActExMdl_DoAttack(self);
         break;
     }
 }
 
-void func_ov003_021e83a0(Ov003ActExMdl *self) {
+void Ov003ActExMdl_StateFly(Ov003ActExMdl *self) {
     func_ov000_02196c40(self);
     if (!(self->hit->unk_50 & 0x60000000)) {
         return;
@@ -551,7 +551,7 @@ static inline BOOL Ov003_Game54Idle(void) {
     return TRUE;
 }
 
-BOOL func_ov003_021e83d0(Ov003ActExMdl *self) {
+BOOL Ov003ActExMdl_DoAttack(Ov003ActExMdl *self) {
     BOOL r = FALSE;
     if (func_ov000_0219bf90()->hp[0] != 0 && Ov003_Game54Idle()) {
         VecFx32 v;
@@ -669,7 +669,7 @@ static inline s32 Ov003_FxMulL(s32 a, s64 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
-void func_ov003_021e86d8(Ov003Swing *self) {
+void Ov003ActVt_021f9374_StateIdle(Ov003Swing *self) {
     switch (self->fsm->st) {
     case 0: {
         EffectObj *fx = func_02065f88(0x25a, &self->pos);
@@ -755,7 +755,7 @@ extern BOOL func_ov000_02198360(ActorSub40 *p, s32 a, s32 b);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern s32 Rand_UpTo(s32 max);
 
-void func_ov003_021e8a70(ActorEx *self) {
+void Ov003ActVt_021f9374_StateFly(ActorEx *self) {
     func_ov000_02196c40(self);
     if (!(self->hit->unk_50 & 0x60000000)) {
         return;
@@ -849,7 +849,7 @@ static inline s32 Ov003_DistXZ(const VecFx32 *a, const VecFx32 *b) {
     return Ov003_Dist2D(sq);
 }
 
-void func_ov003_021e8b70(Ov003Mover *self) {
+void Ov003ActVt_021f91ac_StateIdle(Ov003Mover *self) {
     ActorSub40 *w = self->fsm;
     switch (w->st) {
     case 0:
@@ -1006,7 +1006,7 @@ static inline void Ov003Gate_Anim(Ov003Gate *self, s32 a) {
     }
 }
 
-void func_ov003_021e8f24(Ov003Gate *self) {
+void Ov003ActVt_021f9114_State06(Ov003Gate *self) {
     Robo021ca458 *pl = func_ov000_0219bf90();
     switch (self->fsm->st) {
     case 0:
@@ -1177,7 +1177,7 @@ void Ov003ActVt_021f94a4_Start(Ov003Hover *self) {
     func_ov000_02198360(self->fsm, 1, 0);
 }
 
-void func_ov003_021e9448(Ov003Hover *self) {
+void Ov003ActVt_021f94a4_StateIdle(Ov003Hover *self) {
     VecFx32 pp;
     VecFx32 d;
     ActorSub40 *w;
@@ -1226,7 +1226,7 @@ void func_ov003_021e9448(Ov003Hover *self) {
     func_ov000_02198360(self->fsm, 6, 0);
 }
 
-void func_ov003_021e9628(Ov003Hover *self) {
+void Ov003ActVt_021f94a4_State06(Ov003Hover *self) {
     ActorSub40 *w = self->fsm;
     s32 top = self->unk_84.y;
     switch (w->st) {
@@ -1355,7 +1355,7 @@ void Ov003ActVt_021f940c_Start(Ov003Patrol *self) {
 namespace m_021e9af4 {
 extern "C" {
 
-extern void func_ov003_021ea234(Actor *self, MtxFx33 *m, Rot16 *rot, s32 ang);
+extern void Ov003_BuildRotMtx(Actor *self, MtxFx33 *m, Rot16 *rot, s32 ang);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 
 BOOL Ov003ActVt_021f940c_Draw(Ov003Patrol *self) {
@@ -1363,7 +1363,7 @@ BOOL Ov003ActVt_021f940c_Draw(Ov003Patrol *self) {
     VecFx32 v;
     Model0218fe1c *model;
     self->unk_93_0 = 1;
-    func_ov003_021ea234(self, &m, &self->rot, self->baseYaw);
+    Ov003_BuildRotMtx(self, &m, &self->rot, self->baseYaw);
     MI_Copy36B(&m, &self->model->rot);
     VEC_Add(&self->mdlOfs, &self->pos, &v);
     model = self->model;
@@ -1470,7 +1470,7 @@ static inline void Ov003_RotZ2(VecFx32 *out, const VecFx32 *in, u16 ang) {
     out->z = in->z;
 }
 
-void func_ov003_021e9b74(Ov003Patrol *self) {
+void Ov003ActVt_021f940c_State06(Ov003Patrol *self) {
     const Ov003FlyParam *prm = &data_ov003_021f6b5c[self->unk_1a];
     switch (self->fsm->st) {
     case 0:
@@ -1545,7 +1545,7 @@ extern "C" {
 
 extern BOOL func_ov000_02198360(ActorSub40 *p, s32 a, s32 b);
 
-void func_ov003_021ea234(Actor *self, MtxFx33 *m, Rot16 *rot, s32 ang) {
+void Ov003_BuildRotMtx(Actor *self, MtxFx33 *m, Rot16 *rot, s32 ang) {
     MtxFx33 t;
     BOOL set = FALSE;
     MTX_Identity33_(m);
@@ -1644,7 +1644,7 @@ void Ov003ActVt_021f92dc_Start(ActorEx *self) {
 }
 }  // namespace m_021ea3d0
 
-// ---- func_ov003_021ea588
+// ---- Ov003ActVt_021f92dc_State06
 namespace m_021ea588 {
 extern "C" {
 
@@ -1679,7 +1679,7 @@ static inline void VecCopy_a588(const VecFx32 *src, VecFx32 *dst) {
     dst->z = src->z;
 }
 
-void func_ov003_021ea588(ActorEx *self) {
+void Ov003ActVt_021f92dc_State06(ActorEx *self) {
     s32 y;
     ActorSub40 *w = self->fsm;
     if (w->st == 0) {

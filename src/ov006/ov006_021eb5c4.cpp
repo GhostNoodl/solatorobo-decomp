@@ -8,31 +8,31 @@ extern "C" {
 
 ActorEx *func_ov000_0219429c(ActorEx *self);
 
-void func_ov006_021eb5c4(void) {
+void Ov006ActorEx_UpdateMode1(void) {
 }
 
 void func_ov006_021eb5c8(void) {
 }
 
-void func_ov006_021eb5cc(void) {
+void Ov006ActorEx_State23(void) {
 }
 
-void func_ov006_021eb5d0(void) {
+void Ov006ActorEx_State22(void) {
 }
 
-void func_ov006_021eb5d4(void) {
+void Ov006ActorEx_State21(void) {
 }
 
-void func_ov006_021eb5d8(void) {
+void Ov006ActorEx_State20(void) {
 }
 
-void func_ov006_021eb5dc(void) {
+void Ov006ActorEx_StateHurt(void) {
 }
 
-void func_ov006_021eb5e0(void) {
+void Ov006ActorEx_State0e(void) {
 }
 
-void func_ov006_021eb5e4(void) {
+void Ov006ActorEx_StateMove(void) {
 }
 
 ActorEx *Ov006ActVt_021ec7ac_Dtor(ActorEx *self) {

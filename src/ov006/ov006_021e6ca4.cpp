@@ -51,7 +51,7 @@ BOOL Ov006ActVt_021ec4f4_Draw(Ov006Racer *self) {
         }
     }
     if (ret && self->unk_19c_13) {
-        func_ov006_021dca94(self->marker);
+        Ov006Marker_Draw(self->marker);
     }
     return ret;
 }

@@ -14,8 +14,8 @@ extern ov006_Net021e5050 *data_02097e40;
 extern u8 data_ov006_021eb840[];
 BOOL func_02046070(ov006_Net021e5050 *net, void *data, int a);
 BOOL func_020463c8(ov006_Net021e5050 *net);
-void func_ov006_021e48fc(ov006_Unk021ec888 *self);
-void func_ov006_021e49bc(ov006_Unk021ec888 *self);
+void ov006_Menu_PruneNodes(ov006_Unk021ec888 *self);
+void ov006_Menu_SortNodes(ov006_Unk021ec888 *self);
 
 static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
     ov006_MenuNode *node = self->nodes;
@@ -66,9 +66,9 @@ void func_ov006_021e5050(ov006_Unk021ec888 *self) {
         func_020463c8(data_02097e40);
         self->unk2C = 0;
         self->unk28++;
-        func_ov006_021e48fc(self);
+        ov006_Menu_PruneNodes(self);
         if ((u32)self->unk28 % 10 == 0) {
-            func_ov006_021e49bc(self);
+            ov006_Menu_SortNodes(self);
         }
         self->stateTime = 30;
         self->unk10 = 30;

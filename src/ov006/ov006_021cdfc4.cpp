@@ -5,7 +5,7 @@ extern "C" {
 
 extern void *data_ov006_021ebe40;
 
-ov006_Emblem *func_ov006_021cdfc4(void) {
+ov006_Emblem *ov006_Emblem_New(void) {
     ov006_Emblem *self = (ov006_Emblem *)Heap_Alloc(sizeof(ov006_Emblem));
     if (self != NULL) {
         OV006_TASKBASE_CTOR(self);

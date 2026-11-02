@@ -12,12 +12,12 @@ extern char data_ov014_02217a0c[];
 extern Ov003Actor *Target_Get(void *p);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
-extern void func_ov003_021f0c60(Actor *self, s32 a);
+extern void Ov003Pickup_Update(Actor *self, s32 a);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern void func_02049678(SndMgr *a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
 extern BOOL SndMgr_IsLoadDone(SndMgr *a);
-extern BOOL func_ov003_021d1c00(Ov003Actor *self, Ov014Msg *msg);
+extern BOOL Ov003Actor_HandleMsg(Ov003Actor *self, Ov014Msg *msg);
 extern const Ov003Step data_ov014_02216a60[];
 extern const Ov003Step data_ov014_02216afc[];
 extern const Ov003Step data_ov014_02216b6c[];
@@ -27,7 +27,7 @@ extern u8 data_ov014_02217a28[];
 extern u8 data_ov014_02217a38[];
 extern s32 func_ov000_021909a8(void *a, const void *b, const void *c);
 
-void func_ov014_02208fe4(Ov014ActEx_02208618 *self) {
+void Ov014ActEx_02208618_HitNearby(Ov014ActEx_02208618 *self) {
     Ov003Actor *list[0x20];
     s32 r;
     s32 n;
@@ -48,7 +48,7 @@ void func_ov014_02208fe4(Ov014ActEx_02208618 *self) {
         if (list[i] != NULL && (q = func_ov000_021985c0(list[i])) != NULL) {
             ActorSub4c *s = q->targetObj;
             if (s == NULL || k != (u16)(s->target & 0xf000)) {
-                func_ov003_021f0c60(self, 0);
+                Ov003Pickup_Update(self, 0);
                 self->unk_d0 |= 0x1000;
                 func_ov000_02198360(self->fsm, 0x15, 0);
                 func_ov000_0218996c(5, 8);
@@ -80,7 +80,7 @@ Ov014ActExGrow *Ov014ActExGrow_Dtor(Ov014ActExGrow *self) {
     return self;
 }
 
-void func_ov014_0220915c(u8 *self) {
+void Ov014Part_CaptureMtx(u8 *self) {
     u8 *t = FLD(u8 *, FLD(u8 *, self, 4), 0x2c);
     s32 k;
     u32 i;
@@ -102,27 +102,27 @@ void func_ov014_0220915c(u8 *self) {
     }
 }
 
-void func_ov014_022091d4(u8 *self) {
-    FLD(void *, self, 0x24) = (void *)func_ov014_0220915c;
+void Ov014Part_StartCapture(u8 *self) {
+    FLD(void *, self, 0x24) = (void *)Ov014Part_CaptureMtx;
     FLD(u8, self, 0x92) = 3;
 }
 
-void func_ov014_022091ec(Ov003ScriptList *self, Ov003Actor *a) {
+void Ov014_SelectTrackByHp_022091ec(Ov003ScriptList *self, Ov003Actor *a) {
     u16 *hp = a->hp;
     u32 cur = hp[0];
     u32 max = hp[1];
     Ov003Track *q = self->cur;
     if (cur >= max * 80 / 100) {
         if (q->id != 0) {
-            func_ov003_021cf278(self, 0, 0);
+            Ov003ScriptList_SelectTrack(self, 0, 0);
         }
     } else if (cur >= max * 35 / 100) {
         if (q->id != 1) {
-            func_ov003_021cf278(self, 1, 0);
+            Ov003ScriptList_SelectTrack(self, 1, 0);
         }
     } else {
         if (q->id != 2) {
-            func_ov003_021cf278(self, 2, 0);
+            Ov003ScriptList_SelectTrack(self, 2, 0);
         }
     }
 }
@@ -130,7 +130,7 @@ void func_ov014_022091ec(Ov003ScriptList *self, Ov003Actor *a) {
 #pragma force_active on
 Ov003Actor *Ov014Act_02209280_Ctor(Ov014Act_02209280 *self) {
     s32 i;
-    func_ov003_021d0c1c(self);
+    Ov003Actor_Ctor(self);
     *(void **)self = data_ov014_02217968;
     Ov003ScriptList_Init(&self->scripts);
     self->step = 0;
@@ -180,7 +180,7 @@ Ov014Act_02209280 *Ov014Act_02209280_Dtor(Ov014Act_02209280 *self) {
     Ov014_Kill1f0(self);
     func_02036838(data_02097cdc, data_ov014_02217a0c, 7, 0);
     Ov003Vt_021f7974_Dtor(&self->scripts);
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     return self;
 }
 
@@ -189,13 +189,13 @@ Ov014Act_02209280 *Ov014Act_02209280_DtorDelete(Ov014Act_02209280 *self) {
     Ov014_Kill1f0(self);
     func_02036838(data_02097cdc, data_ov014_02217a0c, 7, 0);
     Ov003Vt_021f7974_Dtor(&self->scripts);
-    func_ov003_021d0edc(self);
+    Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 void Ov014Act_02209280_Init(Ov014Act_02209280 *self) {
-    func_ov003_021d0fc0(self);
+    Ov003Actor_Init(self);
     func_020359d0(data_ov014_02217a0c, 7, 0);
     func_02049678(data_02097e4c, 4, 0xc, -1);
 }
@@ -207,13 +207,13 @@ BOOL Ov014Act_02209280_IsReady(Ov014Act_02209280 *self) {
     return (r & SndMgr_IsLoadDone(data_02097e4c)) ? TRUE : FALSE;
 }
 
-void func_ov014_02209520(Ov014Act_02209280 *self, Ov014Msg *msg) {
-    func_ov003_021d1c00(self, msg);
+void Ov014Act_02209280_HandleMsg(Ov014Act_02209280 *self, Ov014Msg *msg) {
+    Ov003Actor_HandleMsg(self, msg);
 }
 
 void Ov014Act_02209280_Start(Ov014Act_02209280 *self) {
     Model0218fe1c *m;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     {
         ActorSub48 *q = self->hit;
         q->unk_9a_1 = 0;
@@ -236,18 +236,18 @@ void Ov014Act_02209280_Start(Ov014Act_02209280 *self) {
         n->unk_22_0 = 1;
         n->unk_22_1 = 1;
     }
-    func_ov003_021cf1f0(&self->scripts, 0, 9, data_ov014_02216a60);
-    func_ov003_021cf1f0(&self->scripts, 1, 14, data_ov014_02216afc);
-    func_ov003_021cf1f0(&self->scripts, 2, 17, data_ov014_02216b6c);
+    Ov003ScriptList_AddTrack(&self->scripts, 0, 9, data_ov014_02216a60);
+    Ov003ScriptList_AddTrack(&self->scripts, 1, 14, data_ov014_02216afc);
+    Ov003ScriptList_AddTrack(&self->scripts, 2, 17, data_ov014_02216b6c);
     self->unk_fc = 0;
     self->scripts.arg = self;
-    self->scripts.func = (Ov003ScriptFunc)func_ov014_022091ec;
+    self->scripts.func = (Ov003ScriptFunc)Ov014_SelectTrackByHp_022091ec;
     self->unk_100 = 3;
     self->unk_104 = func_ov000_021909a8(self->model, data_ov014_02217a1b, data_ov014_02217a1c);
     self->unk_138 = func_ov000_021909a8(self->model, data_ov014_02217a1b, data_ov014_02217a28);
     self->unk_16c = func_ov000_021909a8(self->model, data_ov014_02217a1b, data_ov014_02217a38);
     m = self->model;
-    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)func_ov014_022091d4);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)Ov014Part_StartCapture);
     m->clearInit = 0;
     self->model->flushVP = 1;
     self->model->renderUser = &self->unk_fc;
@@ -323,7 +323,7 @@ void Ov014Act_02209280_Update(Ov014Act_02209280 *self) {
         self->unk_b6 = 0xc8;
         break;
     case 0x14:
-        func_ov003_021ceff4(&self->scripts);
+        Ov003ScriptList_Step(&self->scripts);
         self->unk_b4++;
     case 0x15: {
         Ov003Track *t;

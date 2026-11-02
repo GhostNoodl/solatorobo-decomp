@@ -123,14 +123,14 @@ struct Ov011MsgB {
 extern "C" {
 
 void ActorMgr_SendMsg(u16 a, u16 b, u8 c, BOOL d, u32 e, const void *f);
-u32 func_ov011_02201b64(void *p);
-BOOL func_ov011_02201b40(void *p);
-void func_ov011_02201aac(void *p, const VecFx32 *v);
-void func_ov011_02201b80(void *p, const VecFx32 *v);
-void func_ov011_02201bac(void *p, u16 ang);
+u32 Ov011Fx_IsLoaded(void *p);
+BOOL Ov011Fx_IsStopped(void *p);
+void Ov011Fx_Start(void *p, const VecFx32 *v);
+void Ov011Fx_SetVec18(void *p, const VecFx32 *v);
+void Ov011Fx_SetYaw(void *p, u16 ang);
 extern const VecFx32 data_ov011_02207290;
 void *Group_SpawnActor(void *mgr, Ov011SpawnDesc *d, VecFx32 *pos, Ov011Rot *rot, u16 a);
-void func_ov011_022011c8(void *a, s32 b);
+void Ov011Npc_SetTracking(void *a, s32 b);
 Ov011Node *Ov003NodeSrc_NewNode(void *self);
 
 static inline void Ov011_Send(u16 id, s32 a, s32 b) {
@@ -143,7 +143,7 @@ static inline void Ov011_Send(u16 id, s32 a, s32 b) {
 static inline BOOL Ov011_NodeAlive(Ov011Node *n) {
     if (n != NULL) {
         Ov011Npc *a = Ov011_FindNpc(n->id);
-        if (a != NULL && func_ov011_02201244(a)) {
+        if (a != NULL && Ov011Npc_IsTracking(a)) {
             return TRUE;
         }
     }
@@ -205,7 +205,7 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
         }
         break;
     case 2:
-        if (func_ov011_02201b64(&self->fx)) {
+        if (Ov011Fx_IsLoaded(&self->fx)) {
             if (e->active) {
                 Ov011Ent_Lerp4(e, 0x2000, 1);
             }
@@ -215,12 +215,12 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
             if (e->active) {
                 Ov011Ent_Lerp2(e, 0x3333, 1);
             }
-            func_ov011_02201aac(&self->fx, &data_ov011_02207290);
+            Ov011Fx_Start(&self->fx, &data_ov011_02207290);
             self->seq.st = 3;
         }
         break;
     case 3:
-        if (func_ov011_02201b40(&self->fx)) {
+        if (Ov011Fx_IsStopped(&self->fx)) {
             Actor *owner = self->actor;
             s32 i;
             MTX_RotY33_(&m, OV011_SIN(owner->rot_y), OV011_COS(owner->rot_y));
@@ -240,7 +240,7 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
                 rot.z = 0;
                 ob = (Ov011Npc *)Group_SpawnActor(data_ov000_021ccd64, &d, &p, &rot, 0xffff);
                 func_ov011_022011c0(ob, self->actor->id);
-                func_ov011_022011c8(ob, 1);
+                Ov011Npc_SetTracking(ob, 1);
                 ob->targetObj->target = self->actor->id;
                 func_ov011_02201214(ob, NULL);
                 ob->flags_0 = 1;
@@ -289,7 +289,7 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
     }
     for (Ov011Node *n2 = self->head; n2 != NULL; n2 = n2->next) {
         Ov011Npc *a = Ov011_FindNpc(n2->id);
-        if (func_ov011_02201244(a)) {
+        if (Ov011Npc_IsTracking(a)) {
             Actor *owner = self->actor;
             if (Ov011Ent_Find(e, func_ov011_02201254(a)) != NULL) {
                 Ov011PNode *pp = Ov011Ent_Find(e, func_ov011_02201254(a));
@@ -306,13 +306,13 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
             }
         }
     }
-    if (!func_ov011_02201b40(&self->fx)) {
+    if (!Ov011Fx_IsStopped(&self->fx)) {
         Actor *owner = self->actor;
         t.x = owner->pos.x;
         t.y = owner->pos.y;
         t.z = owner->pos.z;
-        func_ov011_02201b80(&self->fx, &t);
-        func_ov011_02201bac(&self->fx, self->actor->rot_y);
+        Ov011Fx_SetVec18(&self->fx, &t);
+        Ov011Fx_SetYaw(&self->fx, self->actor->rot_y);
     }
 }
 

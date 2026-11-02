@@ -14,7 +14,7 @@
 // with Count's const read across the count loop (jkF/jkG), the flag byte is re-read as in the ROM, `l` is not live
 // across the search loop, and the &data_ov000_021ccd68 pool load is hoisted into fp. All three are needed: a
 // non-const Count, a plain GetRing read or `F24c_SetState(l, 5)` gives 360+ / 53+. `cnt` declared before `nd`.
-// Round raD moved the draft here from the end of ov011_021fef00.cpp: func_ov011_021ff084 there needs a const view
+// Round raD moved the draft here from the end of ov011_021fef00.cpp: Ov011SceneActor_HandleMsg there needs a const view
 // of the 0x02207258 block (its name-pointer load is hoisted above the `s->a = 0` store; non-const gives 6 / 6),
 // while this function needs a non-const one (the ROM interleaves the three +0x20 loads with their stores; const
 // gives 61 / 4). MWCC decides this per declared object, not per lvalue (a const member, a const-struct cast, CFLD
@@ -77,7 +77,7 @@ struct F24cList {
 extern "C" {
 
 void func_ov011_02202a38(void);
-void func_ov011_021fd638(void *p);
+void Ov011Scene_Update(void *p);
 
 static inline u32 F24c_Active(const F24cList *l) {
     u32 r = 0;
@@ -165,7 +165,7 @@ static inline u32 F24c_CountBusy(const F24cList *l) {
         for (nd = l->head; nd != NULL; nd = nd->next) {
             BOOL busy;
             Ov011Npc *a;
-            if (nd != NULL && (a = Ov011_FindNpc(nd->id)) != NULL && func_ov011_02201244(a)) {
+            if (nd != NULL && (a = Ov011_FindNpc(nd->id)) != NULL && Ov011Npc_IsTracking(a)) {
                 busy = TRUE;
             } else {
                 busy = FALSE;
@@ -218,7 +218,7 @@ static inline BOOL F24c_IsMove(s32 e) {
 
 void Ov011SceneActor_Update(Ov011SceneActor *self) {
     VecFx32 v;
-    if (!func_ov003_021da03c(self)) {
+    if (!Ov003Actor_CanAct(self)) {
         self->unk_b4 = 0;
         self->unk_b6 = 0;
         self->unk_f2 = 0;
@@ -261,7 +261,7 @@ void Ov011SceneActor_Update(Ov011SceneActor *self) {
                 if (l->f.b0) {
                     for (nd = l->head; nd != NULL; nd = nd->next) {
                         Ov011Npc *a = Ov011_FindNpc(nd->id);
-                        if (a != NULL && !func_ov011_02201244(a) && F24c_Valid(a)) {
+                        if (a != NULL && !Ov011Npc_IsTracking(a) && F24c_Valid(a)) {
                             found = TRUE;
                             break;
                         }
@@ -313,7 +313,7 @@ void Ov011SceneActor_Update(Ov011SceneActor *self) {
     self->unk_f4.x = data_ov011_02207258.pos.x;
     self->unk_f4.y = data_ov011_02207258.pos.y;
     self->unk_f4.z = data_ov011_02207258.pos.z;
-    func_ov011_021fd638(self->scene);
+    Ov011Scene_Update(self->scene);
 }
 }
 #endif
@@ -325,7 +325,7 @@ void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 s32 Rand_PlusMinus(s32 max);
 
-void func_ov011_021ff8fc(Ov011SceneActor *self) {
+void Ov011SceneActor_State20(Ov011SceneActor *self) {
     ActorSub40 *s = self->fsm;
     switch (s->st) {
     case 0:

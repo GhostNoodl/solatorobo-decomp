@@ -49,7 +49,7 @@ void func_0203cc58(s32 a, int b, int c);
 void func_0203cd10(void);
 BOOL func_ov006_021cd2a8(ov006_Manager *m);
 void *ov006_GetSlotManager(void);
-void func_ov006_021cd580(int a, void *b, int c);
+void ov006_Manager_DispatchMenuCb(int a, void *b, int c);
 
 
 static inline void ov006_Game_SetColor(u8 r, u8 g, u8 b) {
@@ -72,7 +72,7 @@ static inline BOOL ov006_FadeIdle(void) {
     return r;
 }
 
-BOOL func_ov006_021d6d3c(ov006_Scene021d6d3c *self) {
+BOOL Ov006Vt_021ebfc0_Exit(ov006_Scene021d6d3c *self) {
     BOOL r = FALSE;
 
     switch (self->unkC) {
@@ -109,7 +109,7 @@ BOOL func_ov006_021d6d3c(ov006_Scene021d6d3c *self) {
         break;
     case 2:
         data_ov006_021ec860->unk18++;
-        func_ov006_021cd580(8, ov006_GetSlotManager(), self->unk3C);
+        ov006_Manager_DispatchMenuCb(8, ov006_GetSlotManager(), self->unk3C);
         r = TRUE;
         break;
     }

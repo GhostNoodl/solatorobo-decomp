@@ -32,7 +32,7 @@ extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 extern void func_ov000_02190758(void *a, const void *b, s32 c);
 void Ov009ActVt_02217844_Start(Ov009ActVt_02217844 *self) {
     void *saved;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     func_ov000_0218ffdc(&self->modelObj, &self->anim, 0, 1);
     self->modelObj.actor_id = self->id;
     if (self->unk_1a == 0) {

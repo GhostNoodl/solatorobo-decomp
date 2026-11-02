@@ -13,7 +13,7 @@ static inline void ov006_Slot_Setup(ov006_Slot *self, int unk8, const char *name
     self->unkC = unkC;
 }
 
-void func_ov006_021db65c(void) {
+void ov006_SetupDefaultSlots(void) {
     ov006_SlotManager *mgr;
     int i;
     data_ov006_021ec884->unk5 = 0;

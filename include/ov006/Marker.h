@@ -5,7 +5,7 @@
 #include "nitro/fx.h"
 
 /* One slot marker (vtable data_ov006_021ec2ec, 0x24 bytes; ctor Ov006Vt_021ec2ec_Ctor,
-   updated by func_ov006_021e1f80). state 0 is idle; the update slides pos from slot unkA to
+   updated by ov006_Marker_Update). state 0 is idle; the update slides pos from slot unkA to
    slot unkB over 10 frames (timer) until unkA reaches unkC. */
 typedef struct ov006_Marker {
     void *vtbl;
@@ -21,8 +21,8 @@ typedef struct ov006_Marker {
 } ov006_Marker;
 
 /* Four markers drawn with one model (vtable data_ov006_021ec2cc, 0xa4 bytes; ctor
-   Ov006Vt_021ec2cc_Ctor, built by func_ov006_021e22e4, updated by func_ov006_021e2430,
-   drawn at (unk8, unkC) by func_ov006_021e2490). */
+   Ov006Vt_021ec2cc_Ctor, built by ov006_MarkerSet_Load, updated by ov006_MarkerSet_Update,
+   drawn at (unk8, unkC) by ov006_MarkerSet_Draw). */
 typedef struct ov006_MarkerSet {
     void *vtbl;
     u8 unk4;
@@ -38,7 +38,7 @@ extern "C" {
 
 ov006_Marker *Ov006Vt_021ec2ec_Ctor(ov006_Marker *self);
 void func_ov006_021e1f68(ov006_Marker *self);
-void func_ov006_021e1f80(ov006_Marker *self);
+void ov006_Marker_Update(ov006_Marker *self);
 
 #ifdef __cplusplus
 }

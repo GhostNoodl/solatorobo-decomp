@@ -9,7 +9,7 @@ extern "C" {
 extern u8 data_ov006_021ec434[];
 extern u8 data_ov006_021eb840[];
 
-int func_ov006_021e4674(ov006_Unk021ec888 *self);
+int ov006_Menu_NextUniqueId(ov006_Unk021ec888 *self);
 
 static inline BOOL ov006_KeyEq(const u8 *a, const u8 *b) {
     BOOL e2;
@@ -60,7 +60,7 @@ static inline ov006_MenuNode *ov006_MenuNode_New(void) {
     return n;
 }
 
-BOOL func_ov006_021e46e8(ov006_Unk021ec888 *self, ov006_MenuData *data) {
+BOOL ov006_Menu_UpdateNode(ov006_Unk021ec888 *self, ov006_MenuData *data) {
     ov006_MenuNode *n;
     for (n = self->nodes; n != NULL; n = n->next) {
         if (ov006_KeyEq(n->data.key.b, data->key.b)) {
@@ -78,7 +78,7 @@ BOOL func_ov006_021e46e8(ov006_Unk021ec888 *self, ov006_MenuData *data) {
     }
     n = ov006_MenuNode_New();
     MI_CpuCopy8(data, &n->data, sizeof(n->data));
-    n->id = func_ov006_021e4674(self);
+    n->id = ov006_Menu_NextUniqueId(self);
     n->timer = 8;
     if (self->nodes != NULL) {
         n->next = self->nodes;

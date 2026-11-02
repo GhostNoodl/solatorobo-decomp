@@ -9,7 +9,7 @@ void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 
 
-void func_ov013_022069ec(Ov013ActVt_0220bdd8 *self) {
+void Ov013ActVt_0220bdd8_State20(Ov013ActVt_0220bdd8 *self) {
     ActorSub40 *w = self->fsm;
     switch (w->st) {
     case 0: {

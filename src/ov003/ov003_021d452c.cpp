@@ -53,7 +53,7 @@ static inline Actor *Ov003Kb_FindUnit(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-void func_ov003_021d452c(Ov003Actor *self) {
+void Ov003Actor_StateAttack(Ov003Actor *self) {
     Actor *pl;
     ActorSub40 *w;
     BOOL f;

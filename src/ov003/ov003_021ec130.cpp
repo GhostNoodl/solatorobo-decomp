@@ -46,7 +46,7 @@ static inline void Ov003Gimmick_Finish(Ov003Gimmick *self) {
     func_ov000_02198360(self->fsm, 1, 0);
 }
 
-void func_ov003_021ec130(Ov003Gimmick *self) {
+void Ov003ActVt_021f9c48_State21(Ov003Gimmick *self) {
     ActorSub40 *w = self->fsm;
     u16 t;
     w->timer++;
@@ -77,7 +77,7 @@ void func_ov003_021ec130(Ov003Gimmick *self) {
     }
 }
 
-void func_ov003_021ec270(Ov003Gimmick *self) {
+void Ov003ActVt_021f9bb0_State06(Ov003Gimmick *self) {
     void *p;
     if (self->fsm->st != 0) {
         return;
@@ -148,7 +148,7 @@ void Ov003ActVt_021f99e8_Start(Ov003Gimmick *self) {
     }
 }
 
-void func_ov003_021ec4ac(Ov003Gimmick *self, ActorMsg *msg) {
+void Ov003ActVt_021f99e8_HandleMsg(Ov003Gimmick *self, ActorMsg *msg) {
     if (msg->type == 0xe) {
         self->vals[msg->unk_08] = msg->unk_09;
         self->msg_flags |= 1 << msg->type;
@@ -185,7 +185,7 @@ void Ov003ActVt_021f99e8_Update(Ov003Gimmick *self) {
     }
 }
 
-void func_ov003_021ec580(Ov003Gimmick *self) {
+void Ov003ActVt_021f99e8_StateIdle(Ov003Gimmick *self) {
     if (self->unk_cf_u == 1) {
         ActorSub40 *w = self->fsm;
         w->timer++;

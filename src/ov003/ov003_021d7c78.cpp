@@ -69,7 +69,7 @@ void Ov003Mover_SetSpeed(Ov003Mover *self, s32 speed) {
     }
 }
 
-void func_ov003_021d7ca8(Ov003Ticker *self) {
+void Ov003Ticker_Clear_021d7ca8(Ov003Ticker *self) {
     self->active = 0;
     self->loop = 0;
     self->b2 = 0;
@@ -80,7 +80,7 @@ void func_ov003_021d7ca8(Ov003Ticker *self) {
     self->cur = 0;
 }
 
-void func_ov003_021d7ce0(Ov003Ticker *self) {
+void Ov003Ticker_Release_021d7ce0(Ov003Ticker *self) {
     if (self->active) {
         self->active = 0;
         self->loop = 0;
@@ -93,7 +93,7 @@ void func_ov003_021d7ce0(Ov003Ticker *self) {
     }
 }
 
-BOOL func_ov003_021d7d24(Ov003Ticker *self, s16 count, s16 interval, bool loop, bool b2) {
+BOOL Ov003Ticker_Start_021d7d24(Ov003Ticker *self, s16 count, s16 interval, bool loop, bool b2) {
     self->active = 1;
     self->loop = loop;
     self->b3 = 0;

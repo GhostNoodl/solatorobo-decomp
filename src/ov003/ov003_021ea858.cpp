@@ -153,7 +153,7 @@ void Ov003ActVt_021f98cc_Start(ActorEx *self) {
     self->targetObj->unk_02 = 0;
 }
 
-void func_ov003_021eaad8(ActorEx *self) {
+void Ov003ActVt_021f98cc_Animate(ActorEx *self) {
     if (self->unk_cc_7 && self->model != NULL) {
         func_ov000_02190a80(self->model, func_0203db40(&self->pause));
     }

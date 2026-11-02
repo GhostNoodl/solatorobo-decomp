@@ -7,12 +7,12 @@ extern const char data_ov006_021ebb94[];
 extern const char data_ov006_021ebb9b[];
 extern const char data_ov006_021ebba0[];
 
-void func_ov006_021db65c(void);
-ov006_SlotManagerInfo *func_ov006_021daaa8(u32 id);
+void ov006_SetupDefaultSlots(void);
+ov006_SlotManagerInfo *ov006_GetCourseInfo(u32 id);
 void ov006_SlotManager_CountActive(ov006_SlotManager *self);
 ov006_Slot *ov006_SlotManager_InitSlot(ov006_SlotManager *self, int idx, int type, const char *name, u8 unk12);
-void func_ov006_021dab74(ov006_Slot *self, const ov006_SlotSub *src);
-void func_ov006_021daba0(ov006_Slot *self, const ov006_SlotSub *src);
+void ov006_Slot_SetSub2C(ov006_Slot *self, const ov006_SlotSub *src);
+void ov006_Slot_SetSub3C(ov006_Slot *self, const ov006_SlotSub *src);
 u16 func_020594bc(void *res, int a, int b, u32 idx);
 void func_020592c4(void *res, int a, int b, u32 idx, u16 v);
 void func_020627fc(u8 v);
@@ -20,7 +20,7 @@ void func_0206280c(u16 v);
 void func_ov000_02182590(u8 *p);
 
 static inline void ov006_SetInfo(u16 id) {
-    ov006_SlotManagerInfo *info = func_ov006_021daaa8(id);
+    ov006_SlotManagerInfo *info = ov006_GetCourseInfo(id);
     ov006_SlotManager *m = data_ov006_021ec884;
     m->unk6 = id;
     m->info = info;
@@ -55,7 +55,7 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
         case 0:
         case 1:
         default:
-            func_ov006_021db65c();
+            ov006_SetupDefaultSlots();
             ov006_SetInfo(0xb005);
             break;
         case 2:
@@ -73,7 +73,7 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
             break;
         case 4:
         case 5:
-            func_ov006_021db65c();
+            ov006_SetupDefaultSlots();
             slot = ov006_SlotManager_InitSlot(data_ov006_021ec884, 0, 1, data_ov006_021ebb91, 0xff);
             slot->unkC = data_ov006_021ec860->unk14 == 4 ? 0x7003 : 0x7001;
             slot = ov006_SlotManager_InitSlot(data_ov006_021ec884, 1, 0, data_ov006_021ebb9b, 0xff);
@@ -88,7 +88,7 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
             ov006_SetInfo(0xb009);
             break;
         case 7:
-            func_ov006_021db65c();
+            ov006_SetupDefaultSlots();
             ov006_SetInfo(0xb00a);
             break;
         }
@@ -143,8 +143,8 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
             sub.unk8 = 0;
             sub.unkC = 0;
             for (i = 0; i < 4; i++) {
-                func_ov006_021dab74(func_ov006_021db060(data_ov006_021ec884, i), &sub);
-                func_ov006_021daba0(func_ov006_021db060(data_ov006_021ec884, i), &sub);
+                ov006_Slot_SetSub2C(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i), &sub);
+                ov006_Slot_SetSub3C(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i), &sub);
             }
         } else {
             u8 b;

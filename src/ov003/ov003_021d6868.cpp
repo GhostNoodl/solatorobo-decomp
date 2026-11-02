@@ -6,7 +6,7 @@ extern "C" {
 extern Actor *func_ov000_0219be1c(s32 kind, const VecFx32 *pos, const void *rot, u16 owner, u16 target);
 extern void func_ov000_0218d46c(Actor *p, u16 id, s32 v);
 
-void func_ov003_021d6868(Ov003Actor *self, u16 color) {
+void Ov003Actor_SetColor(Ov003Actor *self, u16 color) {
     Model0218fe1c *a = self->model;
     s32 i;
     a->color = color;
@@ -30,7 +30,7 @@ void func_ov003_021d6868(Ov003Actor *self, u16 color) {
     }
 }
 
-void func_ov003_021d68e0(Ov003Actor *self, u16 color, u16 color2, u16 frames) {
+void Ov003Actor_FadeColor(Ov003Actor *self, u16 color, u16 color2, u16 frames) {
     Model0218fe1c *a = self->model;
     s32 i;
     a->color = color;
@@ -54,7 +54,7 @@ void func_ov003_021d68e0(Ov003Actor *self, u16 color, u16 color2, u16 frames) {
     }
 }
 
-void func_ov003_021d6954(Ov003Actor *self, u8 alpha) {
+void Ov003Actor_SetAlpha(Ov003Actor *self, u8 alpha) {
     Model0218fe1c *a = self->model;
     s32 i;
     a->alpha = alpha;
@@ -72,7 +72,7 @@ void func_ov003_021d6954(Ov003Actor *self, u8 alpha) {
     }
 }
 
-Actor *func_ov003_021d69a0(Actor *self, s32 kind, s32 v) {
+Actor *Ov003Actor_SpawnAtSelf(Actor *self, s32 kind, s32 v) {
     Actor *p = func_ov000_0219be1c(kind, &self->pos, &self->rot_x, 0xffff, 0xffff);
     if (p != NULL && v != 0) {
         func_ov000_0218d46c(p, self->id, v);
@@ -80,7 +80,7 @@ Actor *func_ov003_021d69a0(Actor *self, s32 kind, s32 v) {
     return p;
 }
 
-Actor *func_ov003_021d69f0(Ov003Actor *self, s32 kind, const VecFx32 *pos, const void *rot, Actor *other) {
+Actor *Ov003Actor_SpawnChild(Ov003Actor *self, s32 kind, const VecFx32 *pos, const void *rot, Actor *other) {
     u16 o = 0xffff;
     Actor *p;
     if (other != NULL) {

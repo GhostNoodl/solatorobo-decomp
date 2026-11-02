@@ -8,7 +8,7 @@ static inline void ov006_TextWin_SetScreenPos(TextWin *a, s32 x, s32 y) {
     a->unk_vf20(x + 0x80, y);
 }
 
-void func_ov006_021e1180(ov006_Gauge *self) {
+void ov006_Gauge_Draw(ov006_Gauge *self) {
     s32 x;
     s32 y;
     if (!self->unk4) {

@@ -6,7 +6,7 @@ extern void *data_ov013_0220bd2c;
 extern Ov003Actor *func_ov000_0219bf90(void);
 
 Ov013Act_02207968 *Ov013Act_02207968_Ctor(Ov013Act_02207968 *self) {
-    func_ov003_021d0c1c(self);
+    Ov003Actor_Ctor(self);
     *(void **)self = &data_ov013_0220bd2c;
     self->unk_f0 = 0;
     self->unk_f4 = 0;
@@ -26,7 +26,7 @@ Ov013Act_02207968 *Ov013Act_02207968_Ctor(Ov013Act_02207968 *self) {
 void Ov013Act_02207968_Start(Ov013Act_02207968 *self) {
     ActorSub48 *m;
     Ov003Actor *p;
-    func_ov003_021d112c(self);
+    Ov003Actor_Start(self);
     self->pos.x = -0x3000;
     self->pos.y = -0x32000;
     self->pos.z = -0x8000;

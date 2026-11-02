@@ -24,17 +24,17 @@ extern BOOL Ov003Sequence_HasEntries(void *p, void *d);
 extern Robo021ca458 *func_ov000_0219bf90(void);
 extern void func_ov000_0218a358(void *a, const void *b, void *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern s32 FX_Div(s32 a, s32 b);
-extern void func_ov010_022075bc(Ov010Obj02210154 *p);
+extern void Ov010Obj02210154_Release(Ov010Obj02210154 *p);
 extern void *Ov003Vt_021f7cd8_Dtor(void *p);
 extern void *Ov003Vt_021f7d10_Dtor(void *p);
 
 static inline void Ov010_PlayIfIdle(Ov010Obj0221009c *self, void *anim, s32 n) {
     if (!Ov003Sequence_HasEntries(&self->seq, anim)) {
-        func_ov003_021d95e8(&self->seq, anim, n);
+        Ov003Sequence_SetEntries(&self->seq, anim, n);
     }
 }
 
-void func_ov010_02208c3c(Ov010Obj0221009c *self) {
+void Ov010Obj0221009c_PlayHpAnim(Ov010Obj0221009c *self) {
     u16 *p = self->hp;
     s32 r = (p[0] << 12) / p[1];
     if (r <= 0x554) {
@@ -46,12 +46,12 @@ void func_ov010_02208c3c(Ov010Obj0221009c *self) {
     }
 }
 
-BOOL func_ov010_02208d10(Ov010Obj0221009c *self, s32 *out) {
+BOOL Ov010Obj0221009c_GetType(Ov010Obj0221009c *self, s32 *out) {
     *out = 10;
     return TRUE;
 }
 
-void func_ov010_02208d20(Ov010Obj0221009c *self, s32 *out) {
+void Ov010Obj0221009c_GetSfxIds(Ov010Obj0221009c *self, s32 *out) {
     out[0] = 0xa05;
     out[1] = 0xa06;
     out[2] = 0xa04;
@@ -79,12 +79,12 @@ void *Ov010Vt_0220ffc4_DtorDelete(Obj02208d60 *self) {
     return self;
 }
 
-BOOL func_ov010_02208db8(Ov010Sw *self) {
+BOOL Ov010Sw_Init(Ov010Sw *self) {
     self->b0 = 1;
     return TRUE;
 }
 
-void func_ov010_02208dd0(Ov010Sw *self) {
+void Ov010Sw_Stop(Ov010Sw *self) {
     if (self->b0) {
         self->b0 = 0;
     }
@@ -94,7 +94,7 @@ static inline BOOL Ov010_PlayerBusy(Robo021ca458 *p) {
     return p->unk_b24_0 ? TRUE : FALSE;
 }
 
-void func_ov010_02208de8(Ov010Sw *self) {
+void Ov010Sw_Update(Ov010Sw *self) {
     Robo021ca458 *p;
     if (!self->b0) {
         return;
@@ -112,7 +112,7 @@ void func_ov010_02208de8(Ov010Sw *self) {
     func_ov000_0218a358(&data_ov000_021ccd54->cam, &self->unk_08, self->unk_14, self->unk_1c, 0, 0x1000, 0x1000, 1);
 }
 
-u16 func_ov010_02208e90(s32 a, s32 b) {
+u16 Ov010_PhaseAngle(s32 a, s32 b) {
     s32 period = Ov010_FxMul(a, 0x3243) * 2;
     if (period == 0) {
         return 0;
@@ -126,12 +126,12 @@ u16 func_ov010_02208e90(s32 a, s32 b) {
 static inline void Ov010_02208f14_Body(Ov010Obj02210154 *self) {
     *(void **)self = data_ov010_02210154;
     func_ov003_021cf3fc(0);
-    func_ov010_022075bc(self);
+    Ov010Obj02210154_Release(self);
     Ov003Vt_021f7cd8_Dtor(&self->timer);
     Ov003Vt_021f7d10_Dtor(&self->ticker);
     Ov010Coll_Dtor(&self->coll);
-    func_ov003_021d8f34(&self->seq);
-    func_ov003_021d0edc(self);
+    Ov003Flag_Stop(&self->seq);
+    Ov003Actor_DtorBase(self);
 }
 
 void *Ov010ActVt_0220ffe4_Dtor(Ov010Obj0220ffe4 *self) {
@@ -156,7 +156,7 @@ void *Ov010ActVt_0221009c_DtorDelete(Ov010Obj0221009c *self) {
     return self;
 }
 
-void func_ov010_02209074(EffectObj *p) {
+void Ov010_DelayKillFxCallback(EffectObj *p) {
     if (p == NULL) {
         return;
     }
@@ -169,7 +169,7 @@ void func_ov010_02209074(EffectObj *p) {
 }
 
 extern s32 Ov003Vec_DistSq(const VecFx32 *a, const VecFx32 *b);
-BOOL func_ov010_022090b4(s32 type, const s32 *rect, const Ov010Circle *circ, const VecFx32 *p) {
+BOOL Ov010_IsOutsideArea(s32 type, const s32 *rect, const Ov010Circle *circ, const VecFx32 *p) {
     BOOL r;
     switch (type) {
     case 0: {

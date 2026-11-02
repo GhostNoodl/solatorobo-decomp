@@ -25,7 +25,7 @@ ov006_MarkerSet *Ov006Vt_021ec2cc_DtorDelete(ov006_MarkerSet *self) {
     return self;
 }
 
-void func_ov006_021e22e4(ov006_MarkerSet *self) {
+void ov006_MarkerSet_Load(ov006_MarkerSet *self) {
     Model *model;
     int i;
 

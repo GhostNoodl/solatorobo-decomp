@@ -43,7 +43,7 @@ extern const s16 FX_SinCosTable_[];
 extern char data_ov003_021f9fd6[];
 extern s32 func_ov000_021993fc(Ov003BrFinder *f, Ov003BrQuery *q, Ov003BrHit **out, s32 max);
 extern Actor *func_ov000_021985c0(Ov003BrHit *h);
-extern BOOL func_ov003_021f0a38(Actor *t, void *def);
+extern BOOL Ov003Switch_IsTarget(Actor *t, void *def);
 extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern void func_ov000_021911c8(void *p, s32 a);
@@ -122,7 +122,7 @@ static inline void Ov003Br_Approach(Ov003BrWarp *w, Actor *t, Ov003Bridge *self)
     w->rot[2] = t->rot_z;
 }
 
-void func_ov003_021eeecc(Ov003Bridge *self) {
+void Ov003Bridge_StateIdle(Ov003Bridge *self) {
     switch (self->fsm->st) {
     case 0: {
         Ov003BrHit *list[0x20];
@@ -155,7 +155,7 @@ void func_ov003_021eeecc(Ov003Bridge *self) {
             Ov003BrHit *h = list[i];
             if (h != NULL && h->pos.y - h->unk_10 - self->pos.y - self->height <= 0x666) {
                 Actor *o = func_ov000_021985c0(h);
-                if (o != NULL && self->targetObj != NULL && func_ov003_021f0a38(o, self->targetObj)) {
+                if (o != NULL && self->targetObj != NULL && Ov003Switch_IsTarget(o, self->targetObj)) {
                     found = o;
                     break;
                 }

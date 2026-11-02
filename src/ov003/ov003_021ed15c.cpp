@@ -30,7 +30,7 @@ static inline void Ov003Hm_Show(ActorSub48 *a) {
     HitSphere_Link(a);
 }
 
-void func_ov003_021ed15c(Ov003HomingShot *self) {
+void Ov003ActVt_021f9a80_StateThrown(Ov003HomingShot *self) {
     VecFx32 ofs = data_ov003_021f6bd8;
     Actor *t;
     s32 speed;
@@ -38,7 +38,7 @@ void func_ov003_021ed15c(Ov003HomingShot *self) {
         if (self->fsm->st == 0) {
             self->hit->unk_30 = self->def->sphereFlags;
         }
-        func_ov003_021db244(self);
+        Ov003Shot_StateThrown(self);
         return;
     }
     t = Ov003Hm_FindActor(self->target);
@@ -49,7 +49,7 @@ void func_ov003_021ed15c(Ov003HomingShot *self) {
     switch (self->fsm->st) {
     case 0: {
         EffectObj *e;
-        func_ov003_021dc0c8(self);
+        Ov003Shot_ResetTimers(self);
         self->vel.x = 0;
         self->vel.y = 0;
         self->vel.z = 0;
@@ -131,7 +131,7 @@ void func_ov003_021ed15c(Ov003HomingShot *self) {
         }
         func_ov000_021987b8(self->hit, 0, 0, 0);
     }
-    func_ov003_021dbd80(self);
+    Ov003Shot_CheckHits(self);
 }
 
 }

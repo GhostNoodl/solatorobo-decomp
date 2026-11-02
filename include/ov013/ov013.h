@@ -263,7 +263,7 @@ u8 *func_02070558(void *res);
 }
 extern "C" {
 void func_ov000_021953b4(ActorEx *self);
-void func_ov003_021dacfc(void *p);
+void Ov003FxList_Prune(void *p);
 // ov000 ActorEx members used by the ov013 classes (declared once, round acD).
 ActorEx *ActorEx_Ctor(ActorEx *self);
 ActorEx *func_ov000_0219429c(ActorEx *self);

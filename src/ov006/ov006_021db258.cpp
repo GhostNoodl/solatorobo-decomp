@@ -26,7 +26,7 @@ static inline void ov006_Slot_Unpack(ov006_Slot *self, const ov006_SlotPacked *s
     STD_CopyLString(self->name, src->name, sizeof(self->name));
 }
 
-void func_ov006_021db258(void) {
+void ov006_UpdateNetSlots(void) {
     u16 j;
     ov006_SlotManager *mgr;
     ov006_NetSlot *p;

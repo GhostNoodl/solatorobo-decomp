@@ -30,7 +30,7 @@ static inline u16 Camera_GetAngle(Camera *cam) {
     return cam->mode != 0 ? cam->yaw : Camera_GetYaw(cam);
 }
 
-void func_ov003_021de778(Ov003Bomb *self) {
+void Ov003ActVt_021f8480_State21(Ov003Bomb *self) {
     switch (self->fsm->st) {
     case 0:
         if (self->unk_1a == 0) {

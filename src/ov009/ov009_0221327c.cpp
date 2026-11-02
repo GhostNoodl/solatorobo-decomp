@@ -5,7 +5,7 @@ extern "C" {
 extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 extern void func_ov000_0218996c(u8 a, u8 b);
 
-void func_ov009_0221327c(Ov009ActVt_02217d5c *self) {
+void Ov009ActVt_02217d5c_StateDie(Ov009ActVt_02217d5c *self) {
     VecFx32 p;
     EffectObj *e;
     ActorSub40 *st;
@@ -25,7 +25,7 @@ void func_ov009_0221327c(Ov009ActVt_02217d5c *self) {
         break;
     }
     case 1:
-        func_ov003_021d6a3c(self, 0, 1, 1);
+        Ov003Actor_Defeat(self, 0, 1, 1);
         self->fsm->st++;
         break;
     }
@@ -62,7 +62,7 @@ static inline Ov003Actor *Ov009_FindActor4(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-void func_ov009_02213460(Ov009ActVt_02217d5c *self) {
+void Ov009ActVt_02217d5c_State21(Ov009ActVt_02217d5c *self) {
     VecFx32 p;
     VecFx32 v;
     ActorSub40 *st = self->fsm;
@@ -117,7 +117,7 @@ void func_ov009_02213460(Ov009ActVt_02217d5c *self) {
             return;
         }
         if ((u8)self->fsm->timer < 0x1f) {
-            func_ov003_021d6954(self, self->fsm->timer);
+            Ov003Actor_SetAlpha(self, self->fsm->timer);
         }
         VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
         break;

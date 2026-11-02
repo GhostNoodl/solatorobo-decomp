@@ -2134,7 +2134,7 @@ void EffectMgr_FreeAll(void *p);
 void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(ActorMgr *p);
 void MessageQueue_RemoveAll(Mgr021ccd30 *p, s32 a, s32 b, s32 c);
-void func_ov003_021cfa30(void);
+void Ov003_LoadKindOverlay(void);
 void func_ov000_0218c25c(void *p);
 void func_ov000_0218be54(void *p);
 BOOL ActorMgr_IsReady(ActorMgr *p);
@@ -2309,7 +2309,7 @@ s32 func_ov000_02183db8(SceneCmd *self) {
             if (func_ov000_021b5578(data_ov000_021ccd6c)) {
                 func_ov000_021b5dc0(data_ov000_021ccd6c);
                 func_ov000_021b628c(data_ov000_021ccd6c);
-                func_ov003_021cfa30();
+                Ov003_LoadKindOverlay();
                 func_ov000_0218c25c(data_ov000_021ccd64);
                 if (data_ov000_021ccd64 != NULL) {
                     func_ov000_0218be54(data_ov000_021ccd64);
@@ -3876,8 +3876,8 @@ extern u8 data_ov006_021ec860[];
 extern u8 data_ov015_02213320[];
 u32 func_ov004_021cd050();
 void func_ov015_021fa868();
-int func_ov006_021cd0ac(void *a);
-void func_ov006_021cd264(void *a);
+int ov006_Manager_LoadRes(void *a);
+void ov006_Manager_Draw(void *a);
 BOOL func_ov015_021faba0(void *a);
 void func_ov015_021fb088(void *a);
 
@@ -3898,11 +3898,11 @@ void func_ov000_0218611c(void) {
 }
 
 void func_ov000_02186128(void) {
-    func_ov006_021cd0ac(*(void **)(data_ov006_021ec860 + 0x0));
+    ov006_Manager_LoadRes(*(void **)(data_ov006_021ec860 + 0x0));
 }
 
 void func_ov000_02186140(void) {
-    func_ov006_021cd264(*(void **)(data_ov006_021ec860 + 0x0));
+    ov006_Manager_Draw(*(void **)(data_ov006_021ec860 + 0x0));
 }
 
 }
@@ -4019,7 +4019,7 @@ extern u8 OVERLAY_15_ID[];
 void func_0204b270(void *p, s32 a, s32 b);
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_ov015_021fa77c(void);
-void func_ov006_021ccf8c(void);
+void ov006_Manager_Create(void);
 void func_ov000_021860e0(void);
 void func_ov000_021860ec(void);
 void func_ov000_02186104(void);
@@ -4063,7 +4063,7 @@ s32 func_ov000_021862b0(SceneCmd *self) {
             data_ov000_021ccd58 = func_ov000_02186128;
             data_ov000_021ccd60 = func_ov000_02186140;
             func_0204b270(data_02149ef0, (s32)OVERLAY_6_ID, 0);
-            func_ov006_021ccf8c();
+            ov006_Manager_Create();
             data_ov006_021ec860->unk_14 = self->unk_a4;
             self->step++;
             return 0;
@@ -4712,7 +4712,7 @@ namespace m_Stub_02187114 {
 
 extern "C" {
 
-void *func_ov006_021ccdc8();
+void *ov006_Task_DtorDelete();
 extern void *data_ov007_021cfc60;
 s32 func_ov007_021cd270(void *p);
 void func_ov007_021cf1d8(void *p);
@@ -4736,7 +4736,7 @@ extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 void func_ov000_02187114(void) {
-    func_ov006_021ccdc8();
+    ov006_Task_DtorDelete();
 }
 
 void func_ov000_02187120(void) {

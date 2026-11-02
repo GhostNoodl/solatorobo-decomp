@@ -18,7 +18,7 @@ extern BOOL func_ov000_021903b4(Model0218fe1c *anim);
 extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void func_ov000_02191c24(ActorShadow *shadow, VecFx32 *pos);
 
-void func_ov003_021f3a94(Ov003Prop021fa5a0 *self) {
+void Ov003ActVt_021fa5a0_Animate(Ov003Prop021fa5a0 *self) {
     if (self->model != NULL) {
         func_ov000_02190a80(self->model, func_0203db40(&self->pause));
     }
