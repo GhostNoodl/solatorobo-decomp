@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 
 struct Ov003Save {
     u8 unk_00[0x18];
@@ -67,8 +69,6 @@ struct Ov003ScriptList {
 extern "C" {
 
 extern Ov003Save *data_0214a424;
-extern void *data_02097e4c;
-extern Ov003HeapCtx *data_02097dd0;
 extern u8 data_ov003_021f7974[];
 extern s32 func_02049bdc(void *mgr, s32 a, s32 b);
 extern Ov003Area *func_0206ef10(u16 id);
@@ -129,7 +129,7 @@ static inline void Ov003ScriptList_Clear(Ov003ScriptList *self) {
         Ov003Script *next;
         next = s->next;
         old = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->alt;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (s != NULL) {
             if (s != NULL) {
                 s->Delete();

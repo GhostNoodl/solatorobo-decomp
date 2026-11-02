@@ -5,15 +5,12 @@
 
 #include "types.h"
 #include "ov000/Vec.h"
+#include "Main/Math/Rot16.h"
 
 #define HISTORY_LEN 7
 
 // An actor's rotation (Actor::rot, three binary angles).
-typedef struct ActorRot {
-    u16 x;
-    u16 y;
-    u16 z;
-} ActorRot;
+typedef Rot16 ActorRot;
 
 // The actor's state block (Actor::fsm, ctor History_Init, 0x14 bytes): the step and
 // frame timer of the current state, flag bits, and the last states. func_ov000_02198360

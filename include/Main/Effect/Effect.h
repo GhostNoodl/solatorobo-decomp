@@ -2,18 +2,16 @@
 #define MAIN_EFFECT_EFFECT_H
 
 #include "types.h"
-#include "Main/Snd/SndMgr.h"
-#include "Main/Res/ResMgr.h"
+#include "Main/Math/Rot16.h"
+#include "nitro/fx.h"
 #include "nnsys/g3d.h"
+#include "Main/Sys/SysState.h"
 
-// Effect system ("ef/effect3d"): timeline-driven 3D effects with sound cues.
-// The vtables stay in asm.
+// Effect system ("ef/effect3d"): timeline-driven 3D effects with sound cues. This is the part the
+// overlays use (objects, groups, the manager and the API); the effect TUs' own types are in
+// Main/Effect/EffectInt.h. The vtables stay in asm.
 
-typedef struct EffectRot {
-    u16 x;
-    u16 y;
-    u16 z;
-} EffectRot;
+typedef Rot16 EffectRot;
 
 typedef struct EffectSndCue {
     /* 0x0 */ s32 id;
@@ -28,15 +26,15 @@ struct EffectObj {
     virtual void Dtor();
     virtual void Delete();
     virtual void SetParam(s32 param);
-    virtual void vf0c();
+    virtual void SetScaleAll(s32 scale); // func_020669f8: SetScaleXYZ(scale, scale, scale)
     virtual void SetScale(const VecFx32 *scale);
     virtual void SetScaleXYZ(s32 x, s32 y, s32 z);
     virtual void SetPos(const VecFx32 *pos);
     virtual void SetPosXYZ(s32 x, s32 y, s32 z);
     virtual void AddPos(const VecFx32 *delta);
     virtual void AddPosXYZ(s32 x, s32 y, s32 z);
-    virtual void vf28();
-    virtual void vf2c();
+    virtual void SetOffset(const VecFx32 *offset);  // func_020669cc
+    virtual void SetOffsetXYZ(s32 x, s32 y, s32 z); // func_020669e8
     virtual void SetRot(const EffectRot *rot);
     virtual void SetRotXYZ(u16 x, u16 y, u16 z);
     virtual BOOL Load();
@@ -44,7 +42,7 @@ struct EffectObj {
     virtual BOOL Step();
     virtual void Loop();
     virtual void Draw();
-    /* 0x04 */ u32 unk_04;
+    /* 0x04 */ s32 unk_04; // countdown kept by onUpdate callbacks (func_ov010_02209074 compares it signed)
     /* 0x08 */ u32 unk_08;
     /* 0x0c */ u32 unk_0c;
     /* 0x10 */ u32 unk_10;
@@ -68,7 +66,7 @@ struct EffectObj {
     /* 0x64 */ EffectRot rot;
     /* 0x6c */ VecFx32 *posPtr;
     /* 0x70 */ VecFx32 offset;
-    /* 0x7c */ s32 unk_7c;
+    /* 0x7c */ s32 alpha; // 0..0x1000 (a group passes its own to its children)
     /* 0x80 */ s32 unk_80;
     /* 0x84 */ EffectSndCue cues[8];
     /* 0xc4 */ u8 unk_c4;
@@ -86,34 +84,9 @@ struct EffectObj {
     /* 0xf4 */ struct EffectObj *parent;
 };
 
-// Minimal NitroSystem G3D types.
-typedef struct EffectResDict {
-    /* 0x0 */ u8 revision;
-    /* 0x1 */ u8 numEntry;
-    /* 0x2 */ u16 sizeDictBlk;
-    /* 0x4 */ u16 unk_04;
-    /* 0x6 */ u16 ofsEntry;
-} EffectResDict;
-
 typedef struct EffectFile {
     NNSG3dResFileHeader *data;
 } EffectFile;
-
-// NNSG3dResTex.
-typedef struct EffectResTex {
-    /* 0x00 */ u8 header[8];
-    /* 0x08 */ u32 texVramKey;
-    /* 0x0c */ u8 unk_0c[0xc];
-    /* 0x18 */ u32 tex4x4VramKey;
-    /* 0x1c */ u8 unk_1c[0x10];
-    /* 0x2c */ u32 plttVramKey;
-    /* 0x30 */ u16 sizePltt;
-    /* 0x32 */ u16 plttFlag;
-    /* 0x34 */ u16 plttOfsDict;
-    /* 0x36 */ u16 unk_36;
-    /* 0x38 */ u32 ofsPlttData;
-    /* 0x3c */ EffectResDict dict;
-} EffectResTex;
 
 #define EFFECT_ANM_MAX 5
 
@@ -141,143 +114,6 @@ struct EffectGroup : public EffectObj {
     /* 0x134 */ struct EffectSetup *setup;
 };
 
-// Parses an effect setup script and spawns its effects.
-struct EffectSetup {
-    virtual void Dtor();
-    virtual void Delete();
-    /* 0x04 */ u8 *data;
-    /* 0x08 */ VecFx32 pos;
-    /* 0x14 */ u8 *objChunk;
-    /* 0x18 */ u8 *chunk18;
-    /* 0x1c */ u8 *chunk1c;
-    /* 0x20 */ u8 *chunk20;
-    /* 0x24 */ u8 *chunk24;
-};
-
-// Entry of the setup script's object table.
-typedef struct EffectDef {
-    /* 0x00 */ char arcName[0x18];
-    /* 0x18 */ char mdlName[0x10];
-    /* 0x28 */ s32 type;
-    /* 0x2c */ s32 delay;
-    /* 0x30 */ s32 loopCount;
-    /* 0x34 */ s32 cueId;
-    /* 0x38 */ u8 unk_38;
-    /* 0x3c */ s32 paramId;
-    /* 0x40 */ char emitName[0x10];
-    /* 0x50 */ u8 partIds[4];
-} EffectDef;
-
-typedef struct EffectPtmf {
-    u32 func;
-    u32 adj;
-} EffectPtmf;
-
-// Particle command: animates one property over [start, start + len).
-typedef struct EffectPtclCmd {
-    /* 0x00 */ s32 type;
-    /* 0x04 */ s32 start;
-    /* 0x08 */ s32 len;
-    /* 0x0c */ s32 mode;
-    /* 0x10 */ VecFx32 a;
-    /* 0x1c */ VecFx32 b;
-} EffectPtclCmd; // size 0x28
-
-typedef struct EffectPtcl {
-    virtual void Dtor();
-    virtual void Delete();
-    /* 0x04 */ VecFx32 dir;
-    /* 0x10 */ s32 speed;
-    /* 0x14 */ s16 unk_14;
-    /* 0x16 */ s16 unk_16;
-    /* 0x18 */ s16 unk_18;
-    /* 0x1c */ VecFx32 origin;
-    /* 0x28 */ VecFx32 pos;
-    /* 0x34 */ VecFx32 scale;
-    /* 0x40 */ EffectRot rot;
-    /* 0x48 */ s32 alpha;
-    /* 0x4c */ u16 color;
-    /* 0x50 */ s32 unk_50;
-    /* 0x54 */ s32 texIdx;
-    /* 0x58 */ s32 unk_58;
-    /* 0x5c */ u32 dl[14];
-    /* 0x94 */ struct EffectResTex *tex;
-    /* 0x98 */ s32 texAddr;
-    /* 0x9c */ u32 polyAttr;
-    /* 0xa0 */ s32 unk_a0;
-    /* 0xa4 */ s32 depth;
-    /* 0xa8 */ EffectPtclCmd *cmds;
-    /* 0xac */ s32 numCmds;
-    /* 0xb0 */ s32 time;
-    /* 0xb4 */ s32 unk_b4;
-    /* 0xb8 */ s32 unk_b8;
-    /* 0xbc */ struct EffectPtcl *next;
-    /* 0xc0 */ struct EffectPtcl *prev;
-} EffectPtcl;
-
-struct EffectEmitterSub;
-typedef BOOL (EffectEmitterSub::*EffectPtclHandler)(EffectPtcl *ptcl, EffectPtclCmd *cmd);
-
-struct EffectEmitterSub {
-    virtual void Dtor();
-    virtual void Delete();
-    /* 0x04 */ EffectPtclHandler funcs[8];
-};
-
-typedef struct EffectPartSlot {
-    /* 0x00 */ u32 unk_00;
-    /* 0x04 */ s32 type;
-    /* 0x08 */ s32 start;
-    /* 0x0c */ s32 len;
-    /* 0x10 */ u32 unk_10;
-    /* 0x14 */ s32 rate;
-    /* 0x18 */ VecFx32 vec;
-    /* 0x24 */ VecFx32 vec2;
-    /* 0x30 */ u8 used;
-} EffectPartSlot; // size 0x34
-
-struct EffectPartSet;
-typedef BOOL (EffectPartSet::*EffectPartHandler)(EffectPartSlot *slot);
-
-struct EffectPartSet {
-    virtual void Dtor();
-    virtual void Delete();
-    virtual void vf08();
-    virtual BOOL Step();
-    /* 0x004 */ EffectPtcl *ptcls;
-    /* 0x008 */ s32 time;
-    /* 0x00c */ VecFx32 pos;
-    /* 0x018 */ EffectPartHandler funcs[7];
-    /* 0x050 */ EffectPartSlot slots[4];
-    /* 0x120 */ s32 localTime;
-    /* 0x124 */ s32 period;
-    /* 0x128 */ s32 duration;
-};
-
-typedef struct EffectEmitParams {
-    /* 0x00 */ u8 unk_00[0x10];
-    /* 0x10 */ s32 duration;
-    /* 0x14 */ u8 unk_14[0x20];
-    /* 0x34 */ s32 unk_34;
-    /* 0x38 */ u8 unk_38[0x18];
-} EffectEmitParams; // size 0x50
-
-// Particle emitter effect.
-struct EffectEmitter : public EffectObj {
-    /* 0x0f8 */ EffectDef *nameDef;
-    /* 0x0fc */ void *arc;
-    /* 0x100 */ EffectFile *file;
-    /* 0x104 */ EffectDef *def;
-    /* 0x108 */ EffectResTex *tex;
-    /* 0x10c */ EffectPtcl *ptcls;
-    /* 0x110 */ EffectPtclCmd *emitData;
-    /* 0x114 */ s32 emitCount;
-    /* 0x118 */ EffectEmitterSub sub;
-    /* 0x15c */ EffectPartSet *parts;
-    /* 0x160 */ EffectEmitParams params;
-    /* 0x1b0 */ s32 emitTime;
-    /* 0x1b4 */ MtxFx33 mtx;
-}; // size 0x1d8
 
 #ifdef __cplusplus
 extern "C" {
@@ -307,27 +143,23 @@ typedef struct EffectMgr {
     /* 0x5c */ MtxFx44 proj;
 } EffectMgr; // size 0x9c
 
-// The effect TU's .bss objects (Effect.cpp): the polygon ID base and counter and the manager.
-extern u8 data_0214a41c;
-extern u8 data_0214a41d;
+// The effect manager (Effect.cpp .bss).
 extern EffectMgr *data_0214a420;
-extern SndMgr *data_02097e4c;
 
-extern s32 FX_Div(s32 a, s32 b);
-extern void MIi_CpuClear32(u32 value, void *dst, u32 size);
-extern SndHandle *func_02049a48(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
-extern SndHandle *func_02049f44(SndMgr *mgr, s32 id, const void *pos, s32 pitch);
-extern BOOL func_0204a118(SndMgr *mgr, s32 id);
-extern void func_02049de8(SndMgr *mgr, s32 id);
 
-static inline s32 Effect_FxMul(s32 a, s32 b) {
-    return (s32)(((s64)a * b + 0x800) >> 12);
-}
-
-static inline u8 Effect_NextPolyId(void) {
-    u8 n = data_0214a41d++;
-    return data_0214a41c + (u8)((s32)n % 16);
-}
+// Effect API used by the overlays (defined in Effect.cpp, Effect_4.cpp and Effect_5.cpp).
+EffectObj *func_02065f88(s32 id, const VecFx32 *pos);
+EffectObj *func_020657b0(EffectMgr *m, u32 id);
+BOOL EffectMgr_Contains(EffectMgr *m, EffectObj *obj);
+void EffectMgr_Kill(EffectMgr *m, u32 id);
+void EffectMgr_StopLoop(EffectMgr *m, u32 id);
+void EffectMgr_FreeAll(EffectMgr *m);
+EffectObj *func_020658cc(EffectMgr *m, s32 v);
+void func_02065ac0(EffectMgr *m);
+struct Effect3D *Effect3D_Create(const char *arc, const char *mdl, const char *anm, const VecFx32 *pos);
+struct Effect3D *func_0206682c(const char *arc, const char *mdl, const char *anm, const VecFx32 *pos);
+struct EffectGroup *EffectGroup_Create(const char *arc, const char *name, const VecFx32 *pos);
+void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
 
 void func_02063cac(struct EffectObj *obj);
 BOOL func_020637d0(struct EffectObj *obj);
@@ -376,28 +208,6 @@ static inline struct EffectObj *Effect_Find(EffectMgr *mgr, u32 id) {
     return NULL;
 }
 
-extern void *func_020359d0(const char *arc, s32 b, s32 c);
-extern BOOL func_02035b90(const char *arc, s32 b);
-extern void *func_02035d5c(const char *arc);
-extern EffectFile *func_02034ec0(void *arc, const char *name);
-extern EffectFile *func_02034ff8(void *arc, const char *name);
-extern void func_02036838(ResMgr *mgr, const char *arc, s32 c, s32 d);
-extern BOOL func_0203ed04(const char *name, void *data);
-extern void func_0203f0b4(void *data);
-extern void *Heap_AllocHi(u32 size, u32 align);
-extern void Heap_FreeHi(void *ptr);
-extern void Heap_Free(void *ptr);
-extern void *Heap_Alloc(u32 size);
-extern char data_0208c330[];
-
-// NNS_G3dGlb.projMtx, .cameraMtx, .prmBaseRot, .prmBaseTrans and .prmBaseScale, reached through their own
-// symbols. They stay byte arrays: declaring them MtxFx44 / MtxFx43 / ... changes func_02064410's code.
-extern u8 data_02092800[];
-extern u8 data_02092844[];
-extern u8 data_020928b4[];
-extern u8 data_020928d8[];
-extern u8 data_020928e4[];
-extern char data_0208c33c[];
 
 #ifdef __cplusplus
 }

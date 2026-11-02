@@ -1,8 +1,8 @@
 #include "ov000/VObj.h"
+#include "nitro/fx.h"
 extern "C" {
 #include "types.h"
 
-typedef struct Ov003BmVec { s32 x, y, z; } Ov003BmVec;
 typedef struct Ov003Bomb {
     void *vt;
     u8 unk_04[0xa];
@@ -10,10 +10,10 @@ typedef struct Ov003Bomb {
     u8 unk_10[0x30];
     u16 *work;
     u8 unk_44[0x2c];
-    Ov003BmVec pos;
+    VecFx32 pos;
 } Ov003Bomb;
 
-VObj *func_ov000_0219b71c(Ov003BmVec *pos, Ov003BmVec *sc, s32 a, s32 b, s32 c, s32 d);
+VObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *sc, s32 a, s32 b, s32 c, s32 d);
 s32 Rand_UpTo(s32 max);
 
 typedef enum { OV003_SPARK_KIND = 0x325 } Ov003SparkKind;
@@ -23,7 +23,7 @@ typedef enum { OV003_SPARK_KIND = 0x325 } Ov003SparkKind;
    enum variables, so it stays a named value and is coloured after the scale vector
    constants (docs/MATCHING.md, round lfA). */
 void func_ov003_021de6b4(Ov003Bomb *self) {
-    Ov003BmVec sc;
+    VecFx32 sc;
     VObj *e;
     u16 *w;
     Ov003SparkKind kind;

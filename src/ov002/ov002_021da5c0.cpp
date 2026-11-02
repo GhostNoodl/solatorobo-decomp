@@ -40,7 +40,7 @@ static inline void ov002_AnimSetC(u8 *a, char *name, char *file) {
 void func_ov002_021da5c0(void *self) {
     void *p;
     void *q;
-    func_020359d0((char *)data_ov002_021efdf6, 7, 0);
+    func_020359d0(data_ov002_021efdf6, 7, 0);
     p = Heap_Alloc(0xc8);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021efe6c;

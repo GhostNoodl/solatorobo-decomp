@@ -1,13 +1,8 @@
 #include "types.h"
+#include "ov003/Vec.h"
 #include "ov003/Ticker.h"
 #include "ov003/StateMachine.h"
 
-struct Ov003Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-    Ov003Vec() {}
-};
 
 class Ov003TickerSet {
 public:
@@ -37,15 +32,10 @@ public:
     u32 unk_14;
 };
 
-struct Ov003VecP {
-    s32 x;
-    s32 y;
-    s32 z;
-};
 
 typedef struct {
     u8 unk_00[8];
-    Ov003VecP v;
+    VecFx32 v;
 } Ov003Defaults;
 
 static inline Ov003StateNode *Ov003StateMachine_Find(Ov003StateMachine *self, u8 id) {
@@ -67,15 +57,14 @@ extern "C" {
 // read the vector and its copy, so those two keep their names. func_ov003_021d883c is part of this
 // TU: it reads the vector through the .rodata base plus an offset.
 extern const Ov003Rot16 data_ov003_021f4980;
-extern const Ov003VecP data_ov003_021f4988;
-extern const Ov003VecP data_ov003_021f7cc4;
+extern const VecFx32 data_ov003_021f4988;
+extern const VecFx32 data_ov003_021f7cc4;
 const Ov003Rot16 data_ov003_021f4980 = {0, 0, 0};
-const Ov003VecP data_ov003_021f4988 = {0, 0, 0};
+const VecFx32 data_ov003_021f4988 = {0, 0, 0};
 static const Ov003Rot16 data_ov003_021f7cbc = data_ov003_021f4980;
-const Ov003VecP data_ov003_021f7cc4 = data_ov003_021f4988;
+const VecFx32 data_ov003_021f7cc4 = data_ov003_021f4988;
 
 extern s16 func_ov003_021d7e58(Ov003Ticker *t);
-extern void VEC_MultAdd(s32 scale, const Ov003Vec *dir, const Ov003Vec *src, Ov003Vec *dst);
 
 static inline BOOL Ov003TickerSet_IsDone(Ov003TickerSet *self) {
     if (!self->loop && self->count <= 0) {

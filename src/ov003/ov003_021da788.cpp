@@ -1,4 +1,5 @@
 #include "ov003/Vec.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/FxList.h"
 
 struct Ov003Src {
@@ -6,6 +7,8 @@ struct Ov003Src {
     u16 id;
 };
 
+// Callback-side view of an EffectObj that follows an actor: its onUpdate callback (0xdc) reads the
+// actor's id (or a scale) and the offset from the object's user words at 0x04..0x13.
 struct Ov003Follow {
     void *vtable;
     s32 id;
@@ -14,6 +17,8 @@ struct Ov003Follow {
     void (*callback)(Ov003Follow *self);
 };
 
+// The same object for the scaling callback (func_ov003_021da854): EffectObj::unk_04 is the scale,
+// 0x10 is EffectObj::SetScale and 0x40 its base scale.
 class Ov003Scaled {
 public:
     virtual void v00();
@@ -26,62 +31,21 @@ public:
     Ov003Vec base;
 };
 
-struct Ov003Handled {
-    u8 unk_00[0x24];
-    void *handle;
-};
-
-struct Ov003HeapCtx {
-    void *cur;
-    u32 unk_04;
-    void *alt;
-};
-
-
-struct Ov003VecP {
-    s32 x;
-    s32 y;
-    s32 z;
-};
-
-class Ov003FxObj {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10(s32 a);
-    virtual void v14();
-    virtual void v18();
-    virtual void v1c();
-    virtual void SetPos(Ov003Vec *v);
-    virtual void v24();
-    virtual void v28();
-    virtual void v2c();
-    virtual void v30(s32 a);
-    u8 unk_04[0x54];
-    Ov003Vec base;
-};
 
 extern "C" {
 
-extern Ov003HeapCtx *data_02097dd0;
-extern void *data_0214a420;
-extern const Ov003VecP data_ov003_021f4988;
-extern Ov003FxObj *func_020657b0(void *mgr, void *handle);
+extern const VecFx32 data_ov003_021f4988;
 extern void func_01ffc9fc(Ov003Vec *out, const Ov003Vec *in, u16 ang);
-extern const Ov003VecP data_ov003_021f7cc4;
-extern void *func_02065f88(void *mgr, const void *arg);
-extern void EffectMgr_Kill(void *mgr, void *handle);
+extern const VecFx32 data_ov003_021f7cc4;
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *p);
 extern void func_ov003_021da520(Ov003Follow *self);
 extern void func_ov003_021da620(Ov003Follow *self);
 
-static inline Ov003Follow *Ov003_SpawnFollow(void *mgr, Ov003Src *src, const Ov003Vec *offset) {
+static inline Ov003Follow *Ov003_SpawnFollow(s32 fxId, Ov003Src *src, const Ov003Vec *offset) {
     Ov003Follow *p = NULL;
     if (src != NULL && offset != NULL) {
-        p = (Ov003Follow *)func_02065f88(mgr, &data_ov003_021f7cc4);
+        p = (Ov003Follow *)func_02065f88(fxId, &data_ov003_021f7cc4);
         if (p != NULL) {
             p->id = src->id;
             p->offset = *offset;
@@ -91,12 +55,12 @@ static inline Ov003Follow *Ov003_SpawnFollow(void *mgr, Ov003Src *src, const Ov0
     return p;
 }
 
-Ov003Follow *func_ov003_021da788(void *mgr, Ov003Src *src, const Ov003Vec *offset) {
-    return Ov003_SpawnFollow(mgr, src, offset);
+Ov003Follow *func_ov003_021da788(s32 fxId, Ov003Src *src, const Ov003Vec *offset) {
+    return Ov003_SpawnFollow(fxId, src, offset);
 }
 
-Ov003Follow *func_ov003_021da7e8(void *mgr, Ov003Src *src, const Ov003Vec *offset) {
-    Ov003Follow *p = Ov003_SpawnFollow(mgr, src, offset);
+Ov003Follow *func_ov003_021da7e8(s32 fxId, Ov003Src *src, const Ov003Vec *offset) {
+    Ov003Follow *p = Ov003_SpawnFollow(fxId, src, offset);
     p->callback = func_ov003_021da620;
     return p;
 }
@@ -113,8 +77,8 @@ void func_ov003_021da854(Ov003Scaled *self) {
     self->SetScale(&v);
 }
 
-Ov003Follow *func_ov003_021da8e4(void *mgr, const void *arg, s32 scale) {
-    Ov003Follow *p = (Ov003Follow *)func_02065f88(mgr, arg);
+Ov003Follow *func_ov003_021da8e4(s32 fxId, const VecFx32 *pos, s32 scale) {
+    Ov003Follow *p = (Ov003Follow *)func_02065f88(fxId, pos);
     p->id = scale;
     p->callback = (void (*)(Ov003Follow *))func_ov003_021da854;
     return p;
@@ -131,7 +95,7 @@ void func_ov003_021da904(Ov003Follow *p, Ov003Src *src, const Ov003Vec *offset) 
 
 static inline void Ov003_HeapDelete(void *p) {
     void *old = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->alt;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (p != NULL) {
         Heap_Free(p);
     }
@@ -149,10 +113,10 @@ Ov003FxList *func_ov003_021da940(Ov003FxList *self) {
     return self;
 }
 
-void func_ov003_021da9ac(Ov003FxList *self, u8 id, Ov003Handled *obj) {
+void func_ov003_021da9ac(Ov003FxList *self, u8 id, EffectObj *obj) {
     Ov003FxNode *node = (Ov003FxNode *)Heap_Alloc(sizeof(Ov003FxNode));
     node->id = id;
-    node->handle = obj->handle;
+    node->handle = obj->id;
     node->next = NULL;
     if (self->head == NULL) {
         self->head = node;
@@ -176,14 +140,14 @@ BOOL Ov003FxList_Has(Ov003FxList *self, u8 id) {
     return FALSE;
 }
 
-void *Ov003FxList_Get(Ov003FxList *self, u8 id) {
+u32 Ov003FxList_Get(Ov003FxList *self, u8 id) {
     Ov003FxNode *n;
     for (n = self->head; n != NULL; n = n->next) {
         if (id == n->id) {
             return n->handle;
         }
     }
-    return NULL;
+    return 0;
 }
 
 void Ov003FxList_Kill(Ov003FxList *self, u8 id) {
@@ -221,33 +185,33 @@ static inline void Ov003_RotX(Ov003Vec *out, const Ov003Vec *in, u16 ang) {
     out->z = z;
 }
 
-void func_ov003_021daae4(Ov003FxList *self, u8 id, const Ov003Vec *pos, s32 a, s32 b, const Ov003Vec *ofs, const u16 *rot) {
+void func_ov003_021daae4(Ov003FxList *self, u8 id, const VecFx32 *pos, const EffectRot *rot, const VecFx32 *scale, const VecFx32 *ofs, const u16 *angles) {
     Ov003FxNode *n;
     for (n = self->head; n != NULL; n = n->next) {
         if (id == n->id) {
-            Ov003FxObj *o = func_020657b0(data_0214a420, n->handle);
+            EffectObj *o = func_020657b0(data_0214a420, n->handle);
             if (o != NULL) {
-                Ov003VecP vp = data_ov003_021f4988;
+                VecFx32 vp = data_ov003_021f4988;
                 if (ofs != NULL) {
-                    *(Ov003Vec *)&vp = *ofs;
+                    vp = *ofs;
                 }
-                if (rot != NULL) {
-                    Ov003_RotX((Ov003Vec *)&vp, (Ov003Vec *)&vp, rot[0]);
-                    func_01ffc9fc((Ov003Vec *)&vp, (Ov003Vec *)&vp, rot[1]);
+                if (angles != NULL) {
+                    Ov003_RotX((Ov003Vec *)&vp, (Ov003Vec *)&vp, angles[0]);
+                    func_01ffc9fc((Ov003Vec *)&vp, (Ov003Vec *)&vp, angles[1]);
                 }
-                VEC_Add((VecFx32 *)&vp, (VecFx32 *)pos, (VecFx32 *)&vp);
+                VEC_Add(&vp, pos, &vp);
                 {
-                    Ov003Vec base = o->base;
+                    Ov003Vec base(o->pos);
                     vp.x -= base.x;
                     vp.y -= base.y;
                     vp.z -= base.z;
                 }
-                o->SetPos((Ov003Vec *)&vp);
-                if (a != 0) {
-                    o->v30(a);
+                o->AddPos(&vp);
+                if (rot != NULL) {
+                    o->SetRot(rot);
                 }
-                if (b != 0) {
-                    o->v10(b);
+                if (scale != NULL) {
+                    o->SetScale(scale);
                 }
             }
         }

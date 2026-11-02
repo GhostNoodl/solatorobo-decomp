@@ -10,6 +10,8 @@
 #include "Main/Sys/SysState.h"
 #include "Main/Res/ResMgr.h"
 #include "Main/Effect/Effect.h"
+#include "Main/Res/ResArc.h"
+#include "Main/Gfx/G3dGlbSyms.h"
 #include "Main/Res/StageRes.h"
 #include "Main/Res/StageCmd.h"
 #include "Main/Gfx/Model.h"
@@ -26,6 +28,14 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+// Resource lookups ov002 used to get from Effect.h, at the types Effect.h gave them. The defining TUs say
+// void *(ResList *, const char *) (Main/Res/ResList.c) and (const char *, u32 *) (Main/Sys/NamePool.cpp);
+// ov002's callers pass untyped FIELD() values, so these stay as they were.
+extern EffectFile *func_02034ec0(void *arc, const char *name);
+extern EffectFile *func_02034ff8(void *arc, const char *name);
+extern BOOL func_0203ed04(const char *name, void *data);
+extern void func_0203f0b4(void *data);
 
 #ifdef __cplusplus
 typedef int (*VFunc)(...);
@@ -125,7 +135,7 @@ typedef struct Unk021f0f80 {
 } Unk021f0f80;
 
 extern Unk021f0f80 *data_ov002_021f0f80;
-extern void *data_0208cc94;
+extern char *data_0208cc94; // an archive name
 extern char data_0214b105[];
 
 
@@ -694,14 +704,12 @@ extern Ov002StaffCfg data_ov002_021f0d88;
 
 extern VecFx32 data_ov002_021ef110;
 
-extern u8 data_ov002_021f00cc[];
-extern u8 data_ov002_021f00d8[];
-VObject *Effect3D_Create(void *a, void *b, int c, void *d);
+extern char data_ov002_021f00cc[];
+extern char data_ov002_021f00d8[];
 
 extern VFunc data_ov002_021f07d4[];
 void func_ov002_021e51f8(void *self);
 void func_ov002_021d9728(void *p);
-void func_02065ac0(void *p);
 
 void func_ov002_021e391c(s32 *m, int rot);
 
@@ -713,7 +721,7 @@ extern u8 data_ov002_021f064c[];
 extern u8 data_ov002_021f0647[];
 
 BOOL func_ov000_0218f110(void *p);
-extern u8 data_ov002_021efdf6[];
+extern char data_ov002_021efdf6[];
 
 void func_ov002_021d9504(void *self);
 void func_ov002_021ebfd0(void *p);
@@ -798,7 +806,6 @@ void *func_0206ec48(u16 id);
 void func_ov002_021e019c(void *self, u8 a, u8 b);
 
 void func_ov000_0216f844(void *p, int a);
-VObject *func_020657b0(void *a, void *b);
 extern VFunc data_ov002_021f070c[];
 
 extern const u8 data_ov002_021eef74[];

@@ -6,11 +6,9 @@ extern Ov015Obj290 *data_ov015_0221336c;
 BOOL func_ov000_021903b4(void *a);
 BOOL func_ov000_02191120(void *p);
 void func_ov000_02190a80(void *a, s32 b);
-void *func_02065f88(s32 id, void *pos);
-extern u8 data_ov015_02213286[];
-extern u8 data_ov015_0221329a[];
+extern char data_ov015_02213286[];
+extern char data_ov015_0221329a[];
 extern u8 data_ov015_022132a6[];
-u8 *Effect3D_Create(void *a, void *b, int c, void *d);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void *func_ov000_02191318(void *a, s32 b);
 void func_ov000_021911c8(void *a, s32 b);
@@ -47,9 +45,9 @@ void func_ov015_02211ca0(Ov015Obj290 *self) {
     data_ov015_0221336c = self;
     self->model.trans = self->unk_27c;
     MI_Copy36B(&self->rot, &self->model.rot);
-    self->model.scaleX = 0x1000;
-    self->model.scaleY = 0x1000;
-    self->model.scaleZ = 0x1000;
+    self->model.scale.x = 0x1000;
+    self->model.scale.y = 0x1000;
+    self->model.scale.z = 0x1000;
     func_ov000_021903b4(&self->model);
     data_ov015_0221336c = NULL;
 }
@@ -75,9 +73,9 @@ BOOL func_ov015_02211d14(Ov015Obj290 *self) {
         }
     }
     if (self->unk_10 % 10 == 0) {
-        u8 *e = (u8 *)func_02065f88(0x12d, &self->unk_234);
-        FLD(s32, e, 0xd4) = 3;
-        FLD(s32, e, 0x50) = 0xa000;
+        EffectObj *e = func_02065f88(0x12d, &self->unk_234);
+        e->unk_d4 = 3;
+        e->unk_50 = 0xa000;
     }
     self->unk_10 = (u16)(self->unk_10 + 1);
     func_ov000_02190a80(&self->model, 0x1000);
@@ -89,14 +87,14 @@ BOOL func_ov015_02211d14(Ov015Obj290 *self) {
 }
 
 BOOL func_ov015_02211e88(Ov015Obj290 *self) {
-    Ov015VecC v;
-    u8 *o;
+    Ov015Vec v;
+    EffectObj *o;
     v = self->unk_27c;
     v.y = 0;
     o = Effect3D_Create(data_ov015_02213286, data_ov015_0221329a, 0, &v);
-    FLD(s32, o, 0xd4) = 1;
-    FLD(u8, o, 0x28) = 1;
-    FLD(s32, o, 0x50) = -0xc8000;
+    o->unk_d4 = 1;
+    o->unk_28 = 1;
+    o->unk_50 = -0xc8000;
     VCALL(o)->v14(0x59a, 0x59a, 0x59a);
     func_ov000_02190cb0(&self->model, data_ov015_022132a6, 0x1000, 0);
     func_ov000_02191318(&self->model, 0);
@@ -119,7 +117,7 @@ BOOL func_ov015_02211f54(Ov015Obj290 *self) {
 }
 
 void func_ov000_02191618(void *a);
-void func_ov015_02211fc0(Ov015Obj290 *self, const Ov015VecC *to, const Ov015VecC *from) {
+void func_ov015_02211fc0(Ov015Obj290 *self, const Ov015Vec *to, const Ov015Vec *from) {
     Ov015Vec d;
     s32 x, y, z;
     if (from != NULL) {
@@ -129,12 +127,12 @@ void func_ov015_02211fc0(Ov015Obj290 *self, const Ov015VecC *to, const Ov015VecC
         self->unk_270.y = 0;
         self->unk_270.z = 0;
     }
-    Ov015VecC t(*to);
+    Ov015Vec t(*to);
     self->unk_27c = t;
     d.x = t.x - self->unk_270.x;
     d.y = t.y - self->unk_270.y;
     d.z = t.z - self->unk_270.z;
-    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)&d);
+    VEC_Normalize(&d, &d);
     self->yaw = FX_Atan2(d.x, d.z) + 0x7fff;
     func_ov000_02190cb0(&self->model, data_ov015_02213280, 0x1000, 0);
     func_ov000_021911c8(&self->model, (s16)self->animSpeed);

@@ -40,7 +40,8 @@ typedef struct ov006_Prop6ac4 {
     u8 unk3C[4];
     ov006_Flags6ac4 *unk40;
     u8 unk44[0x2c];
-    u8 unk70[0x12e];
+    VecFx32 unk70; // position passed to the effect and the sound
+    u8 unk7C[0x122];
     u8 unk19E;
     u8 unk19F[0xe];
     u8 unk1AD;
@@ -62,7 +63,6 @@ BOOL func_ov000_0218d494(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg);
 ov006_Effect6ac4 *func_02065f88(int id, void *pos);
 void *func_020657b0(void *a, int b);
 void EffectObj_StopLoop(void *p);
-void *func_02049f44(void *a, int b, void *c, int d);
 
 static inline void ov006_Prop6ac4_Ack(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg) {
     self->unk30 |= 1 << msg->unk5;
@@ -98,7 +98,7 @@ BOOL func_ov006_021e6ac4(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg) {
                 self->unk1FA = v;
             }
             if (self->unk19E == data_ov006_021ec884->unk5) {
-                ov006_Effect6ac4 *e = func_02065f88(0x648, self->unk70);
+                ov006_Effect6ac4 *e = func_02065f88(0x648, &self->unk70);
                 if (e != NULL) {
                     void *old;
                     VCALL(e, 0c, 0x1800);
@@ -110,7 +110,7 @@ BOOL func_ov006_021e6ac4(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg) {
                     }
                     self->unk1EC = e->unk24;
                 }
-                func_02049f44(data_02097e4c, 0x41, self->unk70, 0);
+                func_02049f44(data_02097e4c, 0x41, &self->unk70, 0);
             }
         }
         break;

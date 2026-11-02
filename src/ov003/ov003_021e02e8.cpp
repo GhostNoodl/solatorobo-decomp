@@ -1,4 +1,7 @@
 #include "types.h"
+#include "Main/Math/Rot16.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u8 unk_00[0x13];
@@ -16,62 +19,19 @@ typedef struct {
     u8 unk_100;
 } Ov003Spot;
 
-typedef struct {
-    s32 x, y, z;
-} Ov003LampVec;
 
 typedef struct {
     s32 m[12];
 } Ov003LampMtx;
 
 typedef struct {
-    Ov003LampVec pos;
+    VecFx32 pos;
     u16 rx;
     u16 ry;
     u16 rz;
     s32 unk_14;
 } Ov003LampMsg;
 
-typedef struct {
-    u16 x;
-    u16 y;
-    u16 z;
-} Ov003LampRot;
-
-class Ov003LampPtcl {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10();
-    virtual void v14();
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void v24();
-    virtual void v28();
-    virtual void v2c();
-    virtual void SetRot(Ov003LampRot *r);
-};
-
-class Ov003LampFx {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10();
-    virtual void v14();
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void SetRot(s32 x, s32 y, s32 z);
-    virtual void v28();
-    virtual void v2c();
-    virtual void v30();
-    virtual void v34(s32 x, s32 y, s32 z);
-};
 
 extern "C" {
 
@@ -89,20 +49,12 @@ typedef struct {
 
 extern void *data_ov000_021ccd68;
 extern Ov003Spot *ActorMgr_FindKind(void *mgr, s32 a, s32 b);
-extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
-extern void MI_Copy48B(void *a, void *b);
 
-typedef struct {
-    s32 x, y, z;
-} Ov003LnVec;
 
-typedef struct {
-    s32 m[9];
-} Ov003LnMtx;
 
 typedef struct {
     u8 unk_00[0x78];
-    Ov003LnVec pos;
+    VecFx32 pos;
 } Ov003LnModel;
 
 typedef struct {
@@ -116,22 +68,20 @@ typedef struct {
     u8 unk_3c[4];
     Ov003LnKind *unk_40;
     u8 unk_44[0x2c];
-    Ov003LnVec pos;
+    VecFx32 pos;
     u8 unk_7c[2];
     u16 rotY;
     u8 unk_80[4];
-    Ov003LnVec offset;
+    VecFx32 offset;
 } Ov003Line;
 
 
 extern const s16 FX_SinCosTable_[];
-extern void VEC_Add(const Ov003LnVec *a, const Ov003LnVec *b, Ov003LnVec *out);
-extern void MTX_RotY33_(Ov003LnMtx *m, s32 s, s32 c);
-extern void MTX_MultVec33(const Ov003LnVec *v, const Ov003LnMtx *m, Ov003LnVec *out);
+extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern BOOL func_ov000_021903b4(Ov003LnModel *model);
 extern BOOL func_ov000_02194c08(void *self);
 
-static inline void Ov003Ln_Draw(Ov003Line *self, const Ov003LnVec *p) {
+static inline void Ov003Ln_Draw(Ov003Line *self, const VecFx32 *p) {
     Ov003LnModel *m = self->model;
     m->pos.x = p->x;
     m->pos.y = p->y;
@@ -139,16 +89,16 @@ static inline void Ov003Ln_Draw(Ov003Line *self, const Ov003LnVec *p) {
     func_ov000_021903b4(self->model);
 }
 
-static inline void Ov003Ln_Sub(const Ov003LnVec *a, const Ov003LnVec *b, Ov003LnVec *o) {
+static inline void Ov003Ln_Sub(const VecFx32 *a, const VecFx32 *b, VecFx32 *o) {
     o->x = a->x - b->x;
     o->y = a->y - b->y;
     o->z = a->z - b->z;
 }
 
 BOOL Ov003ActVt_021f8220_Draw(Ov003Line *self) {
-    Ov003LnVec p;
-    Ov003LnVec d;
-    Ov003LnMtx m;
+    VecFx32 p;
+    VecFx32 d;
+    MtxFx33 m;
     VEC_Add(&self->pos, &self->offset, &p);
     MTX_RotY33_(&m, FX_SinCosTable_[(self->rotY >> 4) * 2], FX_SinCosTable_[(self->rotY >> 4) * 2 + 1]);
     d.x = 0xc800;
@@ -178,7 +128,7 @@ BOOL Ov003ActVt_021f8220_Draw(Ov003Line *self) {
 }
 
 void func_ov003_021e02e8(Ov003Obj *self) {
-    u8 buf[0x30];
+    MtxFx43 buf;
     Ov003Spot *p;
     s32 id;
     u8 b;
@@ -198,8 +148,8 @@ void func_ov003_021e02e8(Ov003Obj *self) {
     if (b != id) {
         return;
     }
-    NNS_G3dGetCurrentMtx(buf, 0);
-    MI_Copy48B(buf, p->unk_d0);
+    NNS_G3dGetCurrentMtx(&buf, NULL);
+    MI_Copy48B(&buf, p->unk_d0);
 }
 
 void func_ov003_021e0370(Ov003Obj *self) {
@@ -231,52 +181,41 @@ typedef struct {
     u8 unk_44[0x14];
     void *unk_58;
     u8 unk_5c[0x14];
-    Ov003LampVec pos;
+    VecFx32 pos;
     u16 unk_7c;
     u16 unk_7e;
     u16 unk_80;
     u8 unk_82[0x4e];
     u8 unk_d0[0x24];
-    Ov003LampVec unk_f4;
+    VecFx32 unk_f4;
     u8 unk_100;
 } Ov003Lamp;
 
-typedef struct {
-    u16 unk_00_0 : 1;
-    u8 unk_02[0x6e];
-    u16 unk_70;
-    u16 unk_72;
-    u16 unk_74;
-} Ov003Game48;
-
-extern Ov003Game48 *data_02097e48;
 extern char data_ov003_021f851c[];
 extern char data_ov003_021f8525[];
 extern void func_ov000_02194758(void *self);
 extern s32 func_ov000_021909a8(void *model, s32 a, const char *name);
-extern void NNS_G3dRenderObjSetInitFunc(void *p, void *fn);
 extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 
 void Ov003ActVt_021f80f0_Start(Ov003Lamp *self) {
     Ov003LampModel *m;
-    Ov003Game48 *g;
+    SndQueue *g;
     func_ov000_02194758(self);
     self->unk_100 = func_ov000_021909a8(self->model, 0, data_ov003_021f851c);
     m = self->model;
-    NNS_G3dRenderObjSetInitFunc(m->unk_24, func_ov003_021e0370);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)func_ov003_021e0370);
     m->unk_c2_5 = 0;
     self->model->unk_c2_8 = 1;
     func_ov000_02190cb0(self->model, data_ov003_021f8525, 0x1000, 0);
     func_ov000_021915a0(self->model);
-    g = data_02097e48;
-    if (g->unk_00_0 != 1 || g->unk_74 != 0xffff || g->unk_72 != 0x4e) {
+    g = data_02097e48.queue;
+    if (g->flag0 != 1 || g->unk_74 != 0xffff || g->unk_72 != 0x4e) {
         g->unk_74 = 0x4e;
         g->unk_70 = 0;
     }
 }
 
-extern Ov003LampFx *func_02065f88(s32 id, const Ov003LampVec *pos);
 extern s32 Rand_PlusMinus(s32 max);
 extern void HitMesh_SetMtx(void *p, Ov003LampMtx *m);
 extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, void *e);
@@ -303,15 +242,15 @@ void func_ov003_021e0448(Ov003Lamp *self) {
         }
         w->timer++;
         if ((w->timer & 0x3f) == 0) {
-            Ov003LampFx *fx = func_02065f88(0x325, &self->unk_f4);
-            fx->SetRot(Rand_PlusMinus(0x1800), Rand_PlusMinus(0x800) - 0x800, Rand_PlusMinus(0x1800));
-            fx->v34(0, 0x4000, 0);
+            EffectObj *fx = func_02065f88(0x325, &self->unk_f4);
+            fx->AddPosXYZ(Rand_PlusMinus(0x1800), Rand_PlusMinus(0x800) - 0x800, Rand_PlusMinus(0x1800));
+            fx->SetRotXYZ(0, 0x4000, 0);
         }
         break;
     case 1:
         if ((w->timer & 0x3f) == 0) {
-            Ov003LampFx *fx = func_02065f88(0x322, &self->unk_f4);
-            fx->SetRot(Rand_PlusMinus(0x1800), Rand_PlusMinus(0x800) - 0x800, Rand_PlusMinus(0x1800));
+            EffectObj *fx = func_02065f88(0x322, &self->unk_f4);
+            fx->AddPosXYZ(Rand_PlusMinus(0x1800), Rand_PlusMinus(0x800) - 0x800, Rand_PlusMinus(0x1800));
         }
         self->work->timer++;
         break;
@@ -342,19 +281,17 @@ void func_ov003_021e0448(Ov003Lamp *self) {
     Actor_SendMsg(p, self->unk_0c, 8, 1, sizeof(m2), &m2);
 }
 
-extern void *data_02097e4c;
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void *func_02049f44(void *mgr, s32 id, Ov003LampVec *pos, s32 a);
-extern Ov003LampPtcl *func_ov000_0219b71c(Ov003LampVec *pos, Ov003LampVec *v, s32 a, s32 b, s32 c, s32 d);
+extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov003_021e06a8(Ov003Lamp *self) {
     Ov003LampWork *w = self->work;
     s32 a;
     s32 b;
-    Ov003LampVec sc;
-    Ov003LampVec p;
-    Ov003LampRot r;
-    Ov003LampPtcl *fx;
+    VecFx32 sc;
+    VecFx32 p;
+    Rot16 r;
+    EffectObj *fx;
     w->timer++;
     if (w->timer & 0xf) {
         return;

@@ -145,7 +145,7 @@ void func_ov012_02205990(Ov003Actor *self) {
         if (VEC_Distance(&self->pos, &self->unk_84) <= 0x800) {
             ActorSub48 *m;
             ActorSub44 *n;
-            Ov012V *o;
+            EffectObj *o;
             FLD(u32, self, 0xd0) = 0x100000;
             FLD(Ov012Flags, self, 0x2d2).b0 = 0;
             self->model->visible = 1;
@@ -160,9 +160,9 @@ void func_ov012_02205990(Ov003Actor *self) {
             m->unk_9a_2 = 0;
             m->unk_9a_5 = 0;
             o = func_02065f88(0x57c, &self->pos);
-            o->v0c(0x2000);
+            o->SetScaleAll(0x2000);
             o = func_02065f88(0x6b, &self->pos);
-            o->v0c(0x2000);
+            o->SetScaleAll(0x2000);
             func_02049f44(data_02097e4c, 0x1a, &self->pos, 0);
             func_02049a48(data_02097e4c, 0x4f, 0x6e, -1, -1);
             func_ov012_02206508(self);
@@ -175,7 +175,7 @@ void func_ov012_02205990(Ov003Actor *self) {
     case 10: {
         s32 d;
         u16 a;
-        func_01ffc9fc(&v, (VecFx32 *)&data_ov012_0220a84c[FLD(u8, self, 0xd4)], self->rot_y);
+        func_01ffc9fc(&v, &data_ov012_0220a84c[FLD(u8, self, 0xd4)], self->rot_y);
         VEC_Add(&v, &self->pos, &self->unk_84);
         d = Ov012_Dist84(self);
         a = FX_Atan2(d, self->unk_84.y - self->pos.y);

@@ -5,7 +5,6 @@ extern "C" {
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 void func_ov002_021e398c(void *m, u8 dir);
 void *func_ov002_021e3874(s32 *pos, u8 type, u8 a);
-void *func_02065f88(s32 id, s32 *pos);
 
 typedef struct {
     u16 lo : 8;
@@ -49,7 +48,7 @@ void func_ov002_021d8860(void *self) {
         out[2] += v[2];
         func_ov002_021e3874(out, FIELD(self, 0x4a, u8), FIELD(self, 0x50, Bits50).x);
         {
-            void *p = func_02065f88(0x6d, out);
+            void *p = func_02065f88(0x6d, (VecFx32 *)out); // out is s32[3]
             if (p != NULL) {
                 FIELD(p, 0x3c, s32) = 0x800;
             }

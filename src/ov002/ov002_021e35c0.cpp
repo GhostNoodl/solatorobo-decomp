@@ -101,12 +101,12 @@ VObject *Ov002Vt_021f0044_Dtor(VObject *self) {
     return self;
 }
 
-VObject *func_ov002_021e3874(void *self, int unused, s32 n) {
-    VObject *o = Effect3D_Create(data_ov002_021f00cc, data_ov002_021f00d8, 0, self);
+EffectObj *func_ov002_021e3874(const VecFx32 *pos, int unused, s32 n) {
+    EffectObj *o = Effect3D_Create(data_ov002_021f00cc, data_ov002_021f00d8, 0, pos);
     s32 s = (s32)(((s64)((n - 1) << 12) * 0x4cd + 0x800) >> 12);
-    o->v0x14(s + 0x1000, s + 0x1000, s + 0x1000);
-    FIELD(o, 0x54, s32) = 0x20;
-    FIELD(o, 0x28, u8) = 0;
+    o->SetScaleXYZ(s + 0x1000, s + 0x1000, s + 0x1000);
+    o->unk_54 = 0x20;
+    o->unk_28 = 0;
     return o;
 }
 

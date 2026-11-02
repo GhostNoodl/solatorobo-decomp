@@ -1,4 +1,4 @@
-#include "Main/Effect/Effect.h"
+#include "Main/Effect/EffectInt.h"
 
 extern "C" {
 
@@ -367,12 +367,12 @@ void func_0206b484(EffectEmitter *em) {
     for (p = func_0206b340(em); p != NULL; p = p->next) {
         p->unk_a0 = func_0206379c();
         if (em->unk_28 == 1) {
-            func_02068e68(p, em->unk_28, &bb, em->unk_7c);
+            func_02068e68(p, em->unk_28, &bb, em->alpha);
         } else if (em->unk_28 == 4) {
             Effect_Billboard(&m, &p->dir);
-            func_02068e68(p, em->unk_28, &m, em->unk_7c);
+            func_02068e68(p, em->unk_28, &m, em->alpha);
         } else {
-            func_02068e68(p, em->unk_28, NULL, em->unk_7c);
+            func_02068e68(p, em->unk_28, NULL, em->alpha);
         }
     }
 }

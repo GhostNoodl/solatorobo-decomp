@@ -136,7 +136,6 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a, Ov015CamPair *b, Ov015L
 BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamPair *c, Ov015Info38 *d);
 BOOL func_ov015_021fb5d4(u8 *self);
 void func_ov015_0220101c(Ov015Game *self);
-void EffectMgr_FreeAll(void *p);
 BOOL func_ov015_0220f568(u8 *self);
 
 static inline BOOL Ov015_SysB4(void) {

@@ -1,25 +1,15 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/Shot.h"
 
 extern "C" {
 
-// The effect object func_020657b0 returns (Main EffectObj; only the member used here).
-typedef struct {
-    u8 unk_00[0x7c];
-    s32 alpha;
-} Ov003EmFx;
-
-extern void *data_0214a420;
-extern void *data_02097e4c;
 extern Ov003BeamDef data_ov003_021f49ec[];
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_ov000_0219763c(void *self);
 extern void func_ov000_02195d88(void *self);
 extern void func_ov000_02194758(void *self);
-extern void EffectMgr_Kill(void *mgr, void *handle);
-extern Ov003EmFx *func_020657b0(void *mgr, void *handle);
-extern void EffectObj_StopLoop(Ov003EmFx *fx);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 
 void func_ov003_021dc0c8(Ov003Shot *self) {
     self->age = 0;
@@ -108,7 +98,7 @@ void func_ov003_021dc27c(Ov003Beam *self) {
         func_ov003_021dc3fc(self, 0, st);
         if (self->scales[1].x == 0 && self->scales[1].y == 0) {
             for (i = 0; i < 2; i++) {
-                Ov003EmFx *fx = func_020657b0(data_0214a420, self->layers[i]);
+                EffectObj *fx = func_020657b0(data_0214a420, self->layers[i]);
                 if (fx != NULL) {
                     fx->alpha = FX_Div(0, 0x1f000);
                     EffectObj_StopLoop(fx);

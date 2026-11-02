@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u8 unk_00[0x3c];
@@ -63,9 +65,7 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern Ov003Sys *data_02fe152c;
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern s32 func_0205976c(Ov003Sys *sys, s32 a);
 extern void func_02059360(Ov003Sys *sys, void *p, s32 a, s32 b, u16 c, s32 d);
 extern void func_ov003_021cd91c(Ov003Menu *self);

@@ -167,14 +167,14 @@ void func_ov015_0220e434(u8 *self) {
         s32 x = FX_Mul(FLD(s32, self, 0x500), k);
         s32 y = FX_Mul(FLD(s32, self, 0x504), k);
         s32 z = FX_Mul(FLD(s32, self, 0x508), k);
-        *(Ov015VecC *)(self + 0x1fc) = *(Ov015VecC *)(self + 0x4d0);
+        *(Ov015Vec *)(self + 0x1fc) = *(Ov015Vec *)(self + 0x4d0);
         MI_Copy36B(self + 0x4dc, self + 0x208);
         FLD(s32, self, 0x22c) = x;
         FLD(s32, self, 0x230) = y;
         FLD(s32, self, 0x234) = z;
     }
     func_ov000_021903b4(self + 0x184);
-    *(Ov015VecC *)(self + 0x420) = *(Ov015VecC *)(self + 0x4c0);
+    *(Ov015Vec *)(self + 0x420) = *(Ov015Vec *)(self + 0x4c0);
     MI_Copy36B(self + 0x49c, self + 0x42c);
     func_ov000_021903b4(self + 0x3a8);
     NNS_G3dGeFlushBuffer();

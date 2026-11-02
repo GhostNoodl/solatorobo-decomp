@@ -9,6 +9,7 @@
 #include "Main/Sys/Field.h"
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
+#include "Main/Gfx/G3dGlbSyms.h"
 #include "ov000/TaskList.h"
 
 typedef volatile u16 vu16;
@@ -153,14 +154,19 @@ public:
     virtual s32 v1fc(...);
 };
 
-// Laid out as VecFx32 (nitro/fx.h), which the SDK calls take through casts. Kept as its own type:
-// its user-declared constructor changes how locals initialised by copy are built (see
-// func_ov015_021fd0f4, func_ov015_02203d64), so VecFx32 here would not match.
-struct Ov015Vec {
-    s32 x;
-    s32 y;
-    s32 z;
+// The overlay's vector: a VecFx32 with a user-declared (empty) default constructor and a member-wise
+// copy constructor. Both are load-bearing: copy-initialised locals (func_ov015_021fd0f4,
+// func_ov015_02203d64, func_ov015_021ffb90, ...) are built field by field, where a plain VecFx32 (or a
+// class with only the implicit copy) is copied as one 12-byte block. Being derived from VecFx32, it
+// passes to the SDK's VecFx32 * parameters without a cast. (Ov015Vec, which spelled the copy as a
+// mem-initialiser list, gives the same code and is merged into it.)
+struct Ov015Vec : public VecFx32 {
     Ov015Vec() {}
+    Ov015Vec(const Ov015Vec &o) {
+        x = o.x;
+        y = o.y;
+        z = o.z;
+    }
 };
 
 #define FLD(type, p, off) (*(type *)((u8 *)(p) + (off)))
@@ -451,15 +457,6 @@ struct Ov015Flags18 {
     u16 b3 : 13;
 };
 
-struct Ov015VecC {
-    s32 x;
-    s32 y;
-    s32 z;
-    Ov015VecC() {}
-    Ov015VecC(const Ov015VecC &o) : x(o.x), y(o.y), z(o.z) {}
-};
-
-
 u64 _u32_div_f(u32 a, u32 b);
 
 }
@@ -503,16 +500,15 @@ struct Ov015Slot524 {
 };
 struct Ov015SlotHost { u8 pad[0x524]; Ov015Slot524 slots[8]; };
 
-Ov015V *func_020657b0(void *a, void *b);
 
-static inline void Ov015_DeleteFound(void *heap, void *key) {
-    Ov015V *o = func_020657b0(heap, key);
+static inline void Ov015_DeleteFound(EffectMgr *mgr, u32 key) {
+    EffectObj *o = func_020657b0(mgr, key);
     void *saved;
     if (o != NULL) {
         HEAP_PUSH(saved);
         if (o != NULL) {
             if (o != NULL) {
-                o->v04();
+                o->Delete();
             }
         }
         HEAP_POP(saved);
@@ -607,11 +603,9 @@ OV015_SIZE(Ov015FishInfo, 0x2c);
 struct Ov015Model {
     u8 unk_00[0x24];
     Ov015RenderObj renderObj;
-    Ov015VecC trans;
+    Ov015Vec trans;
     Ov015Vec rot[3];
-    s32 scaleX;
-    s32 scaleY;
-    s32 scaleZ;
+    VecFx32 scale;
     u8 unk_b4[0x2];
     s16 color;
     s16 color2;
@@ -652,9 +646,7 @@ struct Ov015Fish {
     s32 unk_3c;
     Ov015Vec pos;
     Ov015Vec rot[3];
-    s32 scaleX;
-    s32 scaleY;
-    s32 scaleZ;
+    VecFx32 scale;
     s32 scaleMul;
     s32 radius;
     s32 unk_84;
@@ -692,7 +684,7 @@ OV015_SIZE(Ov015Fish, 0x5b0);
 // Fishing phase state (0x34 bytes, func_ov015_0220015c / func_ov015_02200194).
 struct Ov015Obj34 {
     void *vt;
-    u8 *fx;
+    EffectObj *fx;
     s32 step;
     s32 unk_0c;
     s32 unk_10;
@@ -722,9 +714,9 @@ struct Ov015Ship {
     u16 rotY;
     u16 rotZ;
     u8 unk_d26[0x2];
-    Ov015V *fx;
+    EffectObj *fx;
     s32 fxTimer;
-    Ov015V *fx2;
+    EffectObj *fx2;
     s32 fxTimer2;
     u16 loadStep;
     u16 unk_d3a;
@@ -902,7 +894,7 @@ struct Ov015FishState18 : public Ov015FishState {
     s32 step;
     s32 timer;
     s32 duration;
-    void *fxKey;
+    u32 fxKey;
 };
 SIZE_ASSERT(Ov015FishState18, 0x18);
 
@@ -921,8 +913,8 @@ struct Ov015FishState2c : public Ov015FishState {
     s16 unk_1c;
     u8 unk_1e[0x2];
     Ov015Fish *fish;
-    void *unk_24;
-    void *unk_28;
+    u32 unk_24;
+    u32 unk_28;
 };
 SIZE_ASSERT(Ov015FishState2c, 0x2c);
 
@@ -940,7 +932,7 @@ SIZE_ASSERT(Ov015FishState1c, 0x1c);
 // Fish state, vtable data_ov015_02212ee8 (0x40 bytes, ctor Ov015FishState40_Ctor).
 struct Ov015FishState40 : public Ov015FishState {
     s32 step;
-    void *unk_08;
+    u32 unk_08;
     s32 unk_0c;
     s32 unk_10;
     s32 unk_14;
@@ -1050,7 +1042,7 @@ struct Ov015Msg {
     u16 msgIdx;
     u8 unk_0e[0x2];
     void *msgRes;
-    u8 *model; // model (0x160 bytes)
+    Model *model;
     u8 *textWin; // text window (0xb8 bytes, vtable data_0208ba70)
     s32 posX;
     s32 posY;
@@ -1068,12 +1060,15 @@ struct Ov015Msg {
 SIZE_ASSERT(Ov015Msg, 0x144);
 
 // Text window with a portrait model (0xb4 bytes, vtables data_ov000_021cac60 -> data_ov015_02212d3c, init func_ov015_02208544).
+typedef void (*Ov015Cb3)(void *arg, void *self, s32 c);
+
 struct Ov015UiText : public Ov015Ui {
-    u8 unk_80[0x4];
-    u8 *unk_84;
-    u8 unk_88[0x24];
+    Ov015Cb3 onEvent; // called by func_ov015_02208d8c (vtable slot 0x48)
+    u8 *unk_84; // the text model object (deleted and rebuilt by func_ov015_02208a28)
+    char text[0x20]; // filled by func_ov015_02208bac
+    s32 textId;
     s32 unk_ac;
-    s32 unk_b0;
+    s32 unk_b0; // redraw countdown (the text is rebuilt when it reaches 7)
 };
 SIZE_ASSERT(Ov015UiText, 0xb4);
 
@@ -1126,11 +1121,11 @@ struct Ov015Obj290 {
     s32 unk_10;
     Ov015Anim res;
     Ov015Model model;
-    Ov015VecC unk_234;
-    Ov015VecC unk_240;
+    Ov015Vec unk_234;
+    Ov015Vec unk_240;
     Ov015Mtx33 rot;
-    Ov015VecC unk_270;
-    Ov015VecC unk_27c;
+    Ov015Vec unk_270;
+    Ov015Vec unk_27c;
     u16 yaw;
     u16 unk_28a;
     s32 animSpeed;
@@ -1140,7 +1135,7 @@ SIZE_ASSERT(Ov015Obj290, 0x290);
 // Object holding a spawned effect (0x34 bytes, vtable data_ov015_0221292c, init func_ov015_022120c0).
 struct Ov015Obj292c {
     void *vt;
-    u8 *fx; // effect object
+    EffectObj *fx; // effect object
     void *unk_08;
     Ov015Vec pos; // position
     Ov015Vec scale; // scale
@@ -1150,5 +1145,62 @@ struct Ov015Obj292c {
     s32 unk_30;
 };
 SIZE_ASSERT(Ov015Obj292c, 0x34);
+
+
+// Model helpers shared by the ov015 HUD TUs (021fb758, 021fce4c, 0220f7a8).
+static inline ModelPart *Ov015Model_GetPart(Model *self, int idx) {
+    if (idx >= self->numParts) {
+        return NULL;
+    }
+    return &self->parts[idx];
+}
+
+static inline void Ov015Model_PlayPart(Model *model, int idx, int flag) {
+    ModelRes *res = model->res;
+    ModelPart *part;
+    void *anim;
+    if (res == NULL) {
+        return;
+    }
+    part = Ov015Model_GetPart(model, idx);
+    if (part != NULL && part->res != NULL) {
+        anim = part->res->tex;
+    } else {
+        anim = NNS_G2dGetCellDataByIdx(res->texRes, **(u16 **)FLD(void *, NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx), 0xc));
+    }
+    func_02042628(model, anim, part, flag);
+}
+
+static inline s32 Ov015c_Sin(s32 t) {
+    return FX_SinCosTable_[(FX_Mul(t, 0x3fff000) >> 16) * 2];
+}
+
+static inline s32 Ov015c_SinIdx(s32 idx) {
+    return FX_SinCosTable_[idx * 2];
+}
+
+static inline s32 Ov015c_Sin2(s32 t) {
+    return Ov015c_SinIdx(FX_Mul(t, 0x3fff000) >> 16);
+}
+
+static inline void Ov015c_SetV(VecFx32 *v, s32 x, s32 y, s32 z) {
+    v->x = x;
+    v->y = y;
+    v->z = z;
+}
+
+static inline s32 Ov015c_Sub(s32 a, s32 b) {
+    return a - b;
+}
+
+static inline void Ov015Model_SetPosV(Model *m, const VecFx32 *v) {
+    m->x = v->x;
+    m->y = v->y;
+}
+
+static inline void Ov015Model_SetPos(Model *m, s32 x, s32 y) {
+    m->x = x;
+    m->y = y;
+}
 
 #endif

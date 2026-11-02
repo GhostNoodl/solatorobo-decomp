@@ -64,7 +64,7 @@ void func_ov015_02211890(Ov015Info38 *self, u16 id, s32 mode) {
 
 struct Ov015Info30 {
     u8 pad[0x24];
-    Ov015VecC v;
+    Ov015Vec v;
 };
 void func_ov015_02211954(u8 *self) {
     Ov015Obj290 *g = data_ov015_0221336c;

@@ -7,7 +7,7 @@ void func_ov015_0220afcc(Ov015FishState2c *self);
 void func_ov015_0220b1b8(Ov015FishState2c *self);
 
 BOOL Ov015FishState2c_Exit(Ov015FishState2c *self, Ov015Fish *a) {
-    Ov015V *o;
+    EffectObj *o;
     void *saved;
     self->fish = a;
     o = func_020657b0(data_0214a420, self->unk_24);
@@ -15,7 +15,7 @@ BOOL Ov015FishState2c_Exit(Ov015FishState2c *self, Ov015Fish *a) {
         HEAP_PUSH(saved);
         if (o != NULL) {
             if (o != NULL) {
-                o->v04();
+                o->Delete();
             }
         }
         HEAP_POP(saved);
@@ -25,7 +25,7 @@ BOOL Ov015FishState2c_Exit(Ov015FishState2c *self, Ov015Fish *a) {
         HEAP_PUSH(saved);
         if (o != NULL) {
             if (o != NULL) {
-                o->v04();
+                o->Delete();
             }
         }
         HEAP_POP(saved);
@@ -34,8 +34,8 @@ BOOL Ov015FishState2c_Exit(Ov015FishState2c *self, Ov015Fish *a) {
 }
 
 void func_ov015_0220ac40(Ov015FishState2c *self, Ov015Fish *p) {
-    Ov015VecC pos(*(Ov015VecC *)&p->pos);
-    Ov015VecC dir(*(Ov015VecC *)&p->dir);
+    Ov015Vec pos(*(Ov015Vec *)&p->pos);
+    Ov015Vec dir(*(Ov015Vec *)&p->dir);
     s32 m[9];
     s32 t = FX_Div(self->unk_06 << 12, 0x14000);
     s32 b = FX_Mul((self->fish)->info.unk_0a << 4, 0x19a) + 0x800;
@@ -45,15 +45,15 @@ void func_ov015_0220ac40(Ov015FishState2c *self, Ov015Fish *p) {
     p->pos.y = pos.y;
     p->pos.z = pos.z;
     MTX_RotY33_((MtxFx33 *)m, FX_SinCosTable_[0xfbb * 2], FX_SinCosTable_[0xfbb * 2 + 1]);
-    MTX_MultVec33((VecFx32 *)&dir, (MtxFx33 *)m, (VecFx32 *)&dir);
-    VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)(&p->dir));
+    MTX_MultVec33(&dir, (MtxFx33 *)m, &dir);
+    VEC_Normalize(&dir, (&p->dir));
     func_ov015_0220afcc(self);
     func_ov015_0220b1b8(self);
 }
 
 void func_ov015_0220ad68(Ov015FishState2c *self, Ov015Fish *p) {
-    Ov015VecC pos(*(Ov015VecC *)&p->pos);
-    Ov015VecC dir(*(Ov015VecC *)&p->dir);
+    Ov015Vec pos(*(Ov015Vec *)&p->pos);
+    Ov015Vec dir(*(Ov015Vec *)&p->dir);
     s32 m[9];
     s32 t = FX_Div(self->unk_06 << 12, 0x14000);
     s32 b = FX_Mul((self->fish)->info.unk_0a << 4, 0x19a) + 0x800;
@@ -63,8 +63,8 @@ void func_ov015_0220ad68(Ov015FishState2c *self, Ov015Fish *p) {
     p->pos.y = pos.y;
     p->pos.z = pos.z;
     MTX_RotY33_((MtxFx33 *)m, FX_SinCosTable_[0x44 * 2], FX_SinCosTable_[0x44 * 2 + 1]);
-    MTX_MultVec33((VecFx32 *)&dir, (MtxFx33 *)m, (VecFx32 *)&dir);
-    VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)(&p->dir));
+    MTX_MultVec33(&dir, (MtxFx33 *)m, &dir);
+    VEC_Normalize(&dir, (&p->dir));
     func_ov015_0220afcc(self);
     func_ov015_0220b1b8(self);
 }

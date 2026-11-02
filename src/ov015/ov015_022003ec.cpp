@@ -64,13 +64,13 @@ BOOL func_ov015_022003ec(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
         func_ov015_021fd00c(c, 0, &b->pos);
     }
     {
-        Ov015VecC t(*(Ov015VecC *)&b->pos);
+        Ov015Vec t(*(Ov015Vec *)&b->pos);
         t.y += 0x8000;
-        *(Ov015VecC *)&a->unk_d4c = t;
+        *(Ov015Vec *)&a->unk_d4c = t;
     }
     if (self->fx != NULL) {
         if (g->unk_00 > 0x96000) {
-            FLD(s32, self->fx, 0xd4) = 1;
+            self->fx->unk_d4 = 1;
             {
                 Ov015Ship *p = self->ship;
                 u.x = p->unk_d08.x;
@@ -91,7 +91,6 @@ BOOL func_ov015_022003ec(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
 
 
 extern u8 *data_02097dc8;
-Ov015V *func_02065f88(s32 id, void *pos);
 void func_ov015_02200a18(Ov015Obj34 *self, Ov015Stat *g);
 s32 func_ov015_022090bc(Ov015FishInfo *p);
 s32 func_ov015_02200d50(Ov015Obj34 *self, Ov015Stat *g, s32 v);
@@ -121,7 +120,7 @@ void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b) {
     if (self->unk_10 == 6) {
         func_02049a48(data_02097e4c, 0, 0x7f, -1, -1);
         // m[3] as a byte offset from the matrix: a field path folds to one constant and changes the code.
-        func_02065f88(0x6d, &FLD(Ov015Vec, &a->nodeMtx, 0x24))->v14(0x800, 0x800, 0x800);
+        func_02065f88(0x6d, &FLD(Ov015Vec, &a->nodeMtx, 0x24))->SetScaleXYZ(0x800, 0x800, 0x800);
     }
     g->unk_1c = self->unk_10 > 0;
     g->unk_1d = self->unk_10 == 6;
@@ -200,7 +199,7 @@ void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b) {
             }
         }
         {
-            s32 v70 = b->scaleX;
+            s32 v70 = b->scale.x;
             a->unk_d42 = (ok & (self->unk_10 > -0x1e)) ? 1 : 0;
             a->unk_d44 = v70;
         }

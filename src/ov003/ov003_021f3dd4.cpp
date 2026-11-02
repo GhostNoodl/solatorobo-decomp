@@ -1,29 +1,7 @@
 #include "types.h"
+#include "Main/Effect/Effect.h"
 #include "nitro/std.h"
 
-struct Ov003Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-};
-
-class Ov003Effect {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10();
-    virtual void SetScale(s32 x, s32 y, s32 z);
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void SetRot(s32 x, s32 y, s32 z);
-    virtual void v28();
-    virtual void v2c();
-    virtual void v30();
-    virtual void SetColor(s32 a, s32 b, s32 c);
-};
 
 struct Ov003Res {
     s16 handle;
@@ -114,7 +92,7 @@ struct Ov003Prop {
     Ov003Shadow *shadow;
     void *task;
     u8 unk_44[0x2c];
-    Ov003Vec pos;
+    VecFx32 pos;
     u8 unk_7c[0x30];
     s32 unk_ac;
     Ov003Res altRes;
@@ -127,7 +105,6 @@ struct Ov003Prop {
 };
 
 extern "C" {
-extern Ov003Effect *func_02065f88(s32 id, const Ov003Vec *pos);
 extern s32 Rand_PlusMinus(s32 max);
 extern s32 Rand_UpTo(s32 max);
 extern Ov003FxPlayer *func_ov000_0219bf90(void);
@@ -235,7 +212,7 @@ void func_ov003_021f3f5c(Ov003Prop *self) {
     switch (*(u16 *)self->task) {
     case 0: {
         Ov003PropDef *def;
-        Ov003Vec v;
+        VecFx32 v;
         if (self->unk_1ea == b && self->unk_1ec == a) {
             return;
         }

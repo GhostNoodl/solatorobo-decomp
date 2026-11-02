@@ -5,7 +5,6 @@ extern "C" {
 extern Ov003Actor *Target_Get(void *p);
 extern void func_0203f364(ActorSub48 *p);
 extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
-extern Ov014V *func_02065f88(s32 id, VecFx32 *pos);
 extern void func_ov014_02208a9c(Ov014ActEx_02208618 *self);
 extern void func_ov014_02208fe4(Ov014ActEx_02208618 *self);
 
@@ -75,12 +74,12 @@ void func_ov014_022087a8(Ov014ActEx_02208618 *self) {
             }
             if (self->hit->unk_50 & 0x20000000) {
                 VecFx32 v;
-                Ov014V *e;
+                EffectObj *e;
                 v = self->pos;
                 v.y = 0x47800;
                 e = func_02065f88(0x67, &v);
-                e->v0c(0x2000);
-                e->v34(0, (u16)(self->rot_y + 0x7fff), 0);
+                e->SetScaleAll(0x2000);
+                e->SetRotXYZ(0, (u16)(self->rot_y + 0x7fff), 0);
             }
             break;
         }

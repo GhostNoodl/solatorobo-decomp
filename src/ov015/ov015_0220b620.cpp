@@ -34,9 +34,8 @@ BOOL Ov015FishState18_Enter(Ov015FishState18 *self, Ov015Fish *p) {
     return TRUE;
 }
 
-u8 *Effect3D_Create(void *a, void *b, int c, void *d);
-extern u8 data_ov015_02212e20[];
-extern u8 data_ov015_02212e55[];
+extern char data_ov015_02212e20[];
+extern char data_ov015_02212e55[];
 extern u8 data_ov015_02212e4e[];
 extern u8 data_ov015_02212e61[];
 BOOL func_ov000_02191120(void *p);
@@ -72,18 +71,18 @@ BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
         }
         break;
     case 1: {
-        Ov015V *e;
+        EffectObj *e;
         Ov015Fish *q;
         {
             s32 c = self->timer;
             s32 t = self->duration;
-            Ov015VecC v(*(Ov015VecC *)&p->pos);
+            Ov015Vec v(*(Ov015Vec *)&p->pos);
             if (t - c >= 0x3c) {
                 s32 r = FX_Div(c << 12, t >> 12);
                 u16 idx = FX_Mul(0x1000 - r, 0x2ffff) >> 12;
                 v.y = FX_Mul(FX_SinCosTable_[(idx >> 4) * 2], 0xccd) + 0x4000;
             }
-            *(Ov015VecC *)&p->pos = v;
+            *(Ov015Vec *)&p->pos = v;
         }
         q = self->fish;
         a.x = q->pos.x;
@@ -91,24 +90,24 @@ BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
         a.z = q->pos.z;
         e = func_020657b0(data_0214a420, self->fxKey);
         if (e == NULL) {
-            e = (Ov015V *)Effect3D_Create(data_ov015_02212e20, data_ov015_02212e55, 0, &self->fish->pos);
-            FLD(s32, e, 0xd4) = 1;
-            FLD(u8, e, 0x28) = 0;
-            FLD(s32, e, 0x3c) = 0x800;
-            FLD(s32, e, 0xc8) = -1;
-            FLD(s32, e, 0x50) = -0xc8000;
-            e->v34(0, 0x3fff, 0);
-            self->fxKey = FLD(void *, e, 0x24);
+            e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e55, 0, &self->fish->pos);
+            e->unk_d4 = 1;
+            e->unk_28 = 0;
+            e->speed = 0x800;
+            e->loopCount = -1;
+            e->unk_50 = -0xc8000;
+            e->SetRotXYZ(0, 0x3fff, 0);
+            self->fxKey = e->id;
         }
-        e->v18(&a);
+        e->SetPos(&a);
         q = self->fish;
         {
             s32 k = q->scaleMul;
-            b.x = FX_Mul(q->scaleX, k);
-            b.y = FX_Mul(q->scaleY, k);
-            b.z = FX_Mul(q->scaleZ, k);
+            b.x = FX_Mul(q->scale.x, k);
+            b.y = FX_Mul(q->scale.y, k);
+            b.z = FX_Mul(q->scale.z, k);
         }
-        e->v10(&b);
+        e->SetScale(&b);
         if (self->timer % 50 == 0) {
             func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         }
@@ -125,7 +124,7 @@ BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
                 HEAP_PUSH(saved);
                 if (e != NULL) {
                     if (e != NULL) {
-                        e->v04();
+                        e->Delete();
                     }
                 }
                 HEAP_POP(saved);

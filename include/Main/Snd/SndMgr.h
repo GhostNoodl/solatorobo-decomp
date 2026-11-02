@@ -2,6 +2,7 @@
 #define MAIN_SND_SNDMGR_H
 
 #include "types.h"
+#include "nitro/fx.h"
 #include "nnsys/snd/heap.h"
 #include "nnsys/snd/sndarc.h"
 #include "nnsys/snd/sndarc_stream.h"
@@ -85,6 +86,7 @@ typedef struct SndGlobal {
 #ifndef SND_DEFINE_GLOBALS
 extern SndGlobal data_02097e48;
 #endif
+extern SndMgr *data_02097e4c; // data_02097e48.mgr, reached through its own symbol
 extern const s8 data_0208b778[];
 extern const s32 data_0208b688[];
 
@@ -95,6 +97,11 @@ void SndQueue_StopSeqArcs(SndQueue *queue);
 void func_02049690(SndMgr *mgr);
 SndHandle *func_02049984(SndMgr *mgr, s32 id, s32 *outSeqArc, s32 *outIndex);
 s32 func_02049afc(SndMgr *mgr, s32 id);
+SndHandle *func_02049a48(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
+SndHandle *func_02049f44(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch);
+SndHandle *func_0204a028(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch);
+BOOL func_0204a118(SndMgr *mgr, s32 id);
+void func_02049de8(SndMgr *mgr, s32 id);
 
 static inline s32 SndMgr_GetSeqVolume(s32 seq) {
     return (u32)seq >= 0x4f ? 0 : data_0208b778[seq];

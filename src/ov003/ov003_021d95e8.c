@@ -1,11 +1,6 @@
 #include "types.h"
 #include "ov003/Sequence.h"
 
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Ov003Vec;
 
 static inline void Ov003Sequence_Step(Ov003Sequence *self) {
     self->index++;

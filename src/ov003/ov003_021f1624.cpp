@@ -2,9 +2,6 @@
 #include "nitro/std.h"
 #include "Main/Sys/FieldState.h"
 
-typedef struct {
-    s32 x, y, z;
-} Ov003InVec;
 
 typedef struct {
     u8 unk_00[0x12];
@@ -103,7 +100,7 @@ typedef struct {
     s32 unk_64;
     s32 unk_68;
     s32 unk_6c;
-    Ov003InVec pos;
+    VecFx32 pos;
     u16 rot[3];
     u8 unk_82[0x2a];
     Ov003InIcon *unk_ac;
@@ -124,7 +121,7 @@ extern Ov003InModel *func_ov000_0218fe1c(void *p);
 extern void func_ov000_0219badc(Ov003InModel *model, void *p, Ov003InRes *res);
 extern s32 Rand_PlusMinus(s32 max);
 extern void func_ov000_021911c8(Ov003InModel *model, s32 v);
-extern s32 func_ov000_0219a2f4(Ov003InVec *pos, s32 a, s32 b);
+extern s32 func_ov000_0219a2f4(VecFx32 *pos, s32 a, s32 b);
 extern void func_ov000_02191ec4(Ov003InS3c *p, s32 a, u32 b);
 extern char *Tbl_GetEntryData(u16 id, s32 n);
 extern Ov003InCtl *func_ov000_021985e8(void *p);

@@ -1,11 +1,11 @@
 #include <nitro/fx.h>
+#include "Main/Math/Rot16.h"
 
 // This TU's .rodata from its base to the last vector the static initialiser copies, and its .data
 // up to the copies (the string table after them stays in the gap). All objects are the TU's
 // size-sorted group (definition order found with solve2.py). The two copied vectors and their
 // sources are weak: the stub loads each through its own pool word, not from the section base.
 
-struct Ov003Rot { u16 x, y, z; };
 
 extern "C" {
 
@@ -32,8 +32,8 @@ __declspec(weak) const VecFx32 data_ov003_021f4394 = {0, 0x1000, 0};
 char data_ov003_021f79e2[] = "att00";
 char data_ov003_021f79d0[] = "gun01";
 char data_ov003_021f79d6[] = "att11";
-static const Ov003Rot data_ov003_021f4374 = {0, 0, 0};
-static const Ov003Rot data_ov003_021f7a0c = data_ov003_021f4374;
+static const Rot16 data_ov003_021f4374 = {0, 0, 0};
+static const Rot16 data_ov003_021f7a0c = data_ov003_021f4374;
 const VecFx32 data_ov003_021f437c = {0xb, 4, 0xa};
 __declspec(weak) const VecFx32 data_ov003_021f4388 = {0, 0, 0};
 __declspec(weak) const VecFx32 data_ov003_021f7a20 = data_ov003_021f4388;

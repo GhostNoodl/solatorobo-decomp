@@ -207,8 +207,8 @@ static inline void Ov012_FxMid(Ov012ActExVt_0220af10 *self) {
     v.y = self->pos.y;
     v.z = self->pos.z;
     v.y = v.y + (self->height >> 1);
-    Ov012V *e = func_02065f88(1, &v);
-    e->v0c(self->radius + (self->radius >> 2));
+    EffectObj *e = func_02065f88(1, &v);
+    e->SetScaleAll(self->radius + (self->radius >> 2));
 }
 
 void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
@@ -257,9 +257,9 @@ void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
             t = q->timer;
         }
         if (t == 5) {
-            Ov012V *e = func_02065f88(0x68, &self->pos);
-            e->v34(0x3fff, 0, 0);
-            e->v0c(0xccd);
+            EffectObj *e = func_02065f88(0x68, &self->pos);
+            e->SetRotXYZ(0x3fff, 0, 0);
+            e->SetScaleAll(0xccd);
         }
         if (t >= 0x28) {
             self->fsm->st++;
@@ -414,9 +414,9 @@ void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
             self->unk_1c = (self->unk_1c >> 3) * 7;
         }
         if (t == 0x38) {
-            Ov012V *e = func_02065f88(0x196, &self->pos);
-            e->v0c(0x800);
-            e->v24(0, 0x800, 0);
+            EffectObj *e = func_02065f88(0x196, &self->pos);
+            e->SetScaleAll(0x800);
+            e->AddPosXYZ(0, 0x800, 0);
             func_02049f44(data_02097e4c, 0x44, &self->pos, 0);
         }
         if (t == 0) {
@@ -426,8 +426,8 @@ void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
     }
     case 8: {
         func_ov000_0218996c(10, 0x14);
-        func_02065f88(5, &self->pos)->v0c(0x4000);
-        func_02065f88(0x6d, &self->pos)->v0c(0x2000);
+        func_02065f88(5, &self->pos)->SetScaleAll(0x4000);
+        func_02065f88(0x6d, &self->pos)->SetScaleAll(0x2000);
         Ov012_FxMid(self);
         func_02049f44(data_02097e4c, 0x1a, &self->pos, 0);
         self->fsm->timer = 0;

@@ -5,10 +5,8 @@ extern "C" {
 extern char data_ov014_022170d8[];
 extern char data_ov014_022170e7[];
 extern char data_ov014_022170f4[];
-extern void *data_02097e4c;
 extern void SndMgr_LoadHeapState(void *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
-extern void *func_020359d0(const char *a, s32 b, s32 c);
 
 void Ov014Act_021fa6a0_Init(Ov014Act_021fa6a0 *self) {
     func_ov003_021d0fc0(self);

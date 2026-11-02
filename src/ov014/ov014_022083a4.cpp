@@ -2,7 +2,6 @@
 
 extern "C" {
 
-extern void Ov003FxList_KillAll(void *p);
 
 void func_ov014_022083a4(Ov014ActEx_0220774c *self) {
     FieldState *g;

@@ -2,19 +2,15 @@
 
 extern "C" {
 
-extern void *data_0214a420;
 extern u8 data_ov014_02217bdc[];
 extern u8 data_ov014_02217b44[];
 extern void *ActorEx_Ctor(void *self);
 extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02194c08(void *self);
-extern void EffectMgr_Kill(void *a, void *b);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 
 extern char data_ov014_02217a4e[];
 extern char data_ov014_02217a9c[];
-extern void EffectMgr_StopLoop(void *a, void *b);
-extern Ov014V *func_02065f88(s32 id, VecFx32 *pos);
 extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_02191618(void *p);
 extern void func_ov000_021911c8(void *a, s32 b);
@@ -41,21 +37,21 @@ void func_ov014_0220d274(Ov014Act_02209280 *self) {
             p.x = self->unk_160;
             p.y = self->unk_164;
             p.z = self->unk_168;
-            func_02065f88(0x648, &p)->v0c(0x4000);
+            func_02065f88(0x648, &p)->SetScaleAll(0x4000);
             p.x = self->unk_194;
             p.y = self->unk_198;
             p.z = self->unk_19c;
-            func_02065f88(0x648, &p)->v0c(0x4000);
+            func_02065f88(0x648, &p)->SetScaleAll(0x4000);
         } else if (self->fsm->timer == 0x28) {
             VecFx32 p;
             p.x = self->unk_160;
             p.y = self->unk_164;
             p.z = self->unk_168;
-            func_02065f88(0x258, &p)->v0c(0x5000);
+            func_02065f88(0x258, &p)->SetScaleAll(0x5000);
             p.x = self->unk_194;
             p.y = self->unk_198;
             p.z = self->unk_19c;
-            func_02065f88(0x258, &p)->v0c(0x5000);
+            func_02065f88(0x258, &p)->SetScaleAll(0x5000);
         }
         {
             ActorSub40 *s = self->fsm;
@@ -226,11 +222,8 @@ void Ov014ActEx_0220d70c_Start(Ov014ActEx_0220d70c *self) {
     }
 }
 
-extern void *data_02097e4c;
 extern BOOL func_ov000_021b4738(u8 *p);
-extern u8 *func_ov014_0220f7f0(s32 k, VecFx32 *pos);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
-extern u8 *func_020657b0(void *a, void *b);
+extern EffectObj *func_ov014_0220f7f0(s32 k, VecFx32 *pos);
 extern void *Target_Get(void *p);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 
@@ -271,15 +264,15 @@ void func_ov014_0220d890(Ov014ActEx_0220d70c *self) {
         }
         if (!noPl) {
             VecFx32 v;
-            u8 *o;
+            EffectObj *o;
             v = self->pos;
             v.z += 0x1800;
             o = func_ov014_0220f7f0(2, &v);
-            ((Ov014V *)o)->v14(0x1ccd, 0x1666, 0x1ccd);
-            FLD(s32, o, 0xc8) = -2;
-            FLD(s32, o, 0x50) = -0x64000;
+            o->SetScaleXYZ(0x1ccd, 0x1666, 0x1ccd);
+            o->loopCount = -2;
+            o->unk_50 = -0x64000;
             func_02049f44(data_02097e4c, 0x82, &self->pos, 0);
-            self->unk_d0 = FLD(void *, o, 0x24);
+            self->unk_d0 = o->id;
         }
         self->fsm->st++;
         self->fsm->timer = FLD(u16, self, 0xda);
@@ -292,14 +285,14 @@ void func_ov014_0220d890(Ov014ActEx_0220d70c *self) {
         }
         if (self->fsm->timer == 0) {
             if (!noPl) {
-                u8 *o = func_ov014_0220f7f0(1, &self->pos);
-                Ov014V *e;
-                self->unk_d4 = FLD(void *, o, 0x24);
-                ((Ov014V *)o)->v14(0x1400, 0x2400, 0x1400);
-                FLD(s32, o, 0x50) = -0x64000;
+                EffectObj *o = func_ov014_0220f7f0(1, &self->pos);
+                EffectObj *e;
+                self->unk_d4 = o->id;
+                o->SetScaleXYZ(0x1400, 0x2400, 0x1400);
+                o->unk_50 = -0x64000;
                 e = func_02065f88(0x66, &self->pos);
-                e->v0c(0x2400);
-                FLD(s32, e, 0x50) = -0x64000;
+                e->SetScaleAll(0x2400);
+                e->unk_50 = -0x64000;
                 func_02049f44(data_02097e4c, 0x19, &self->pos, 0);
                 {
                     FieldState *g = data_ov000_021ccd54;
@@ -336,7 +329,7 @@ void func_ov014_0220d890(Ov014ActEx_0220d70c *self) {
         break;
     }
     case 4: {
-        u8 *o = func_020657b0(data_0214a420, self->unk_d4);
+        EffectObj *o = func_020657b0(data_0214a420, self->unk_d4);
         ActorSub40 *s;
         if (o == NULL) {
             func_ov000_02198360(self->fsm, 0x15, 0);
@@ -348,7 +341,7 @@ void func_ov014_0220d890(Ov014ActEx_0220d70c *self) {
             s->timer--;
         }
         if (s->timer == 0) {
-            FLD(s32, o, 0x1c) = 4;
+            o->state = 4;
             self->unk_d4 = NULL;
             func_ov000_02198360(self->fsm, 0x15, 0);
         }

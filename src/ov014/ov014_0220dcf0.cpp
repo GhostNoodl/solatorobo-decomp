@@ -12,12 +12,10 @@ struct Ov014Mtx33 {
 
 extern "C" {
 
-extern void *data_0214a420;
 extern u8 data_ov014_02217b44[];
 extern void *ActorEx_Ctor(void *self);
 extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02194c08(void *self);
-extern void EffectMgr_Kill(void *a, void *b);
 extern void func_0203f364(ActorSub48 *p);
 extern void func_ov000_02191690(void *p);
 extern void func_ov000_02191618(void *p);
@@ -74,15 +72,10 @@ void Ov014ActEx_0220dcf4_Start(Ov014ActEx_0220dcf4 *self) {
     self->unk_d4 = self->unk_18 != 0 ? 1 : 0;
 }
 
-extern void *data_02097e4c;
-extern u8 *func_ov014_0220f7f0(s32 k, VecFx32 *pos);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
-extern Ov014V *func_020657b0(void *a, void *b);
+extern EffectObj *func_ov014_0220f7f0(s32 k, VecFx32 *pos);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void Math_DirToAngles(u16 *ang, VecFx32 *v);
-extern Ov014V *func_02065f88(s32 id, VecFx32 *pos);
-extern void EffectMgr_StopLoop(void *a, void *b);
 extern void *Target_Get(void *p);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern void func_ov000_02191708(void *p);
@@ -139,19 +132,19 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
         self->speed = (s32)(((s64)self->speed * 0x29 + 0x800) >> 12);
         self->velY = (s32)(((s64)self->velY * 0x29 + 0x800) >> 12);
         self->friction = (s32)(((s64)self->friction * 0x29 + 0x800) >> 12);
-        self->unk_d0 = FLD(void *, func_ov014_0220f7f0(0, &self->pos), 0x24);
+        self->unk_d0 = func_ov014_0220f7f0(0, &self->pos)->id;
         self->fsm->st++;
         self->fsm->timer = 0x1e;
         func_02049f44(data_02097e4c, 0x82, &self->pos, 0);
     }
     case 1: {
-        Ov014V *e;
+        EffectObj *e;
         self->pos.y -= 0xcd;
         e = func_020657b0(data_0214a420, self->unk_d0);
         if (e != NULL) {
             s32 s = Interp_SinLerp(FX_Div(self->fsm->timer << 12, 0x1e000), 0x19a, 0x3000);
-            e->v1c(self->pos.x, self->pos.y - 0x1000, self->pos.z);
-            e->v14(s, s, s);
+            e->SetPosXYZ(self->pos.x, self->pos.y - 0x1000, self->pos.z);
+            e->SetScaleXYZ(s, s, s);
         }
         if (self->fsm->timer == 0xf) {
             func_ov000_0218996c(10, 10);
@@ -170,7 +163,7 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
         break;
     }
     case 10: {
-        u8 *q;
+        EffectObj *q;
         self->pos.y += (0x1e - st->timer) * 0x7b;
         if (st->timer == 0xf) {
             func_02049f44(data_02097e4c, 0x50, &self->pos, 0);
@@ -183,14 +176,14 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
             return;
         }
         q = func_ov014_0220f7f0(0, &self->pos);
-        ((Ov014V *)q)->v0c(0x1000);
-        self->unk_d0 = FLD(void *, q, 0x24);
+        q->SetScaleAll(0x1000);
+        self->unk_d0 = q->id;
         self->fsm->st = 0x14;
         self->fsm->timer = 0;
         break;
     }
     case 0x14: {
-        Ov014V *e;
+        EffectObj *e;
         s32 oldy = self->pos.y;
         s32 mag = VEC_Mag((VecFx32 *)&self->speed);
         s32 sp;
@@ -217,9 +210,9 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
         n.z = -dir.z;
         e = func_020657b0(data_0214a420, self->unk_d0);
         if (e != NULL) {
-            e->v18(&self->pos);
+            e->SetPos(&self->pos);
             Math_DirToAngles(ang, &n);
-            e->v30(ang);
+            e->SetRot((const EffectRot *)ang); // ang is u16[4]: Rot16 would shrink the frame
         }
         if (self->pos.y < 0x5000 && oldy >= 0x5000) {
             func_02049f44(data_02097e4c, 0x57, &self->pos, 0);
@@ -230,7 +223,7 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
         }
         self->pos.y = self->height >> 3;
         func_ov000_0218996c(0x14, 0x14);
-        func_02065f88(5, &self->pos)->v0c(0x4000);
+        func_02065f88(5, &self->pos)->SetScaleAll(0x4000);
         func_02049f44(data_02097e4c, 0x19, &self->pos, 0);
         EffectMgr_StopLoop(data_0214a420, self->unk_d0);
         self->unk_d0 = NULL;

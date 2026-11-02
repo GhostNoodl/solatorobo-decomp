@@ -1,13 +1,11 @@
 #include "types.h"
+#include "Main/Math/Rot16.h"
 #include "ov003/Actor.h"
 #include "ov000/ObjLayouts.h"
 #include "ov003/Shot.h"
 
 extern "C" {
 
-typedef struct {
-    u16 x, y, z;
-} Ov003Rot3;
 
 typedef struct {
     u16 id;

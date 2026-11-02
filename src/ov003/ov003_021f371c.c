@@ -1,10 +1,6 @@
 #include "types.h"
+#include "nitro/fx.h"
 
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Ov003Vec;
 
 typedef struct {
     s16 x;
@@ -19,12 +15,12 @@ typedef struct {
     u8 unk_24[0x14];
     void *unk_38;
     u8 unk_3c[0x34];
-    Ov003Vec pos;
+    VecFx32 pos;
     u8 unk_7c[0x34];
     s16 unk_b0;
     u8 unk_b2[0x136];
     u8 anim[0x78];
-    Ov003Vec effectPos;
+    VecFx32 effectPos;
 } Ov003Prop;
 
 extern char data_ov003_021fa652[];
@@ -43,7 +39,7 @@ extern void func_ov000_02190758(void *anim, void *p, s32 a);
 extern void *func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, void *b);
 extern s32 **func_ov000_02190a30(void *a, s32 b);
-extern void *func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern BOOL func_ov000_0218cea4(void *self);
 extern BOOL func_ov000_021903b4(void *anim);
 
@@ -71,7 +67,7 @@ void Ov003ActVt_021fa5f8_Start(Ov003Prop *self) {
 void func_ov003_021f37d0(Ov003Prop *self) {
     s32 v;
     s32 *p;
-    Ov003Vec pos;
+    VecFx32 pos;
     if (self->unk_38 != NULL) {
         func_ov000_02190a80(self->unk_38, func_0203db40(self->unk_24));
     }

@@ -2,15 +2,11 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern char data_ov014_02217a4e[];
 extern char data_ov014_02217a48[];
 extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_021911c8(void *a, s32 b);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern Ov014V *func_02065f88(s32 id, VecFx32 *pos);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 void func_ov000_02182590(void *p);
@@ -39,7 +35,7 @@ void func_ov014_0220bd64(Ov014Act_02209280 *self) {
         break;
     }
     case 1: {
-        Ov014V *e;
+        EffectObj *e;
         if (!Ov014_GameIdle()) {
             break;
         }
@@ -51,7 +47,7 @@ void func_ov014_0220bd64(Ov014Act_02209280 *self) {
         func_02049f44(data_02097e4c, 0x52, &self->pos, 0);
         func_ov000_0218996c(0xf, 0x3c);
         e = func_02065f88(0x66, &self->pos);
-        e->v14(0x2800, 0x4800, 0x2800);
+        e->SetScaleXYZ(0x2800, 0x4800, 0x2800);
         self->fsm->st++;
         self->unk_1a5 = 1;
         break;
@@ -124,7 +120,6 @@ static inline void Ov014Spawn_Init(Ov014SpawnDesc *d, u16 k) {
 
 extern "C" {
 
-extern void *data_0214a420;
 extern char data_ov014_02217a8a[];
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnClamped(Ov003Actor *self, u16 a, u16 b, s32 c, s32 d);
@@ -138,11 +133,8 @@ extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 msg);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern Ov003Actor *Target_Get(void *p);
 extern void func_ov000_0218a358(void *a, const VecFx32 *b, Ov014Rot16 *c, s32 d, s32 e, s32 f, s32 g, s32 h);
-extern void func_02049de8(void *a, s32 b);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
-extern Ov003Actor *func_ov014_0220f7f0(s32 k, VecFx32 *pos);
-extern void EffectObj_AddSndCue(void *e, s32 a, s32 b);
-extern Ov014V *func_020657b0(void *a, s32 b);
+extern EffectObj *func_ov014_0220f7f0(s32 k, VecFx32 *pos);
 extern BOOL func_ov000_0219a8bc(void *p, Actor *a, Actor *b, s32 c, s32 d, const VecFx32 *pos, s32 e, s32 f, s32 g);
 
 static inline Ov003Actor *Ov014e_FindById(u16 id) {
@@ -187,10 +179,10 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
     ActorSub40 *s = self->fsm;
     switch (s->st) {
     case 0: {
-        Ov014V *e = (Ov014V *)func_02065f88(0x391, &self->pos);
-        e->v0c(0x3800);
-        e->v24(0, 0x5000, 0);
-        FLD(s32, e, 0x3c) = 0x2000;
+        EffectObj *e = func_02065f88(0x391, &self->pos);
+        e->SetScaleAll(0x3800);
+        e->AddPosXYZ(0, 0x5000, 0);
+        e->speed = 0x2000;
         func_02049f44(data_02097e4c, 0x5b, &self->pos, 0);
         func_02049f44(data_02097e4c, 0xc03, &self->pos, 0);
         self->fsm->timer = 0x1e;
@@ -245,8 +237,8 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
             o->flags_0 = 1;
             func_ov000_0218d46c(o, self->id, 1);
             self->target_id = o->id;
-            ((Ov014V *)func_02065f88(0x66, &self->unk_84))->v0c(0x159a);
-            ((Ov014V *)func_02065f88(0x2bd, &self->unk_84))->v0c(0x2000);
+            (func_02065f88(0x66, &self->unk_84))->SetScaleAll(0x159a);
+            (func_02065f88(0x2bd, &self->unk_84))->SetScaleAll(0x2000);
         }
         self->fsm->st++;
         self->fsm->timer = 2;
@@ -428,18 +420,18 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
         }
         r = Interp_SinLerp(k, 0x9000, 0x5000);
         if (t == 0x78) {
-            Ov003Actor *e = func_ov014_0220f7f0(3, &self->unk_84);
-            e->vfunc_0c(r);
-            FLD(s32, e, 0x3c) = 0x800;
+            EffectObj *e = func_ov014_0220f7f0(3, &self->unk_84);
+            e->SetScaleAll(r);
+            e->speed = 0x800;
             EffectObj_AddSndCue(e, 0x56, 4);
             EffectObj_AddSndCue(e, 0x53, 0x14);
             EffectObj_AddSndCue(e, 0x53, 0x28);
-            self->unk_1e4 = FLD(s32, e, 0x24);
-            ((Ov014V *)func_02065f88(0x69, &self->unk_84))->v0c(0x3000);
+            self->unk_1e4 = e->id;
+            (func_02065f88(0x69, &self->unk_84))->SetScaleAll(0x3000);
         } else {
-            Ov014V *e = func_020657b0(data_0214a420, self->unk_1e4);
+            EffectObj *e = func_020657b0(data_0214a420, self->unk_1e4);
             if (e != NULL) {
-                e->v0c(r);
+                e->SetScaleAll(r);
             }
         }
         if (t % 10 == 0) {
@@ -447,7 +439,7 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
             p.x = self->unk_84.x + FX_Mul(OV014_SIN(a), r);
             p.y = self->unk_84.y;
             p.z = self->unk_84.z + FX_Mul(OV014_COS(a), r);
-            ((Ov014V *)func_02065f88(0x6d, &p))->v0c(0x1000);
+            (func_02065f88(0x6d, &p))->SetScaleAll(0x1000);
         }
         if (t % 4 == 0) {
             s32 rad;
@@ -489,7 +481,6 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
 extern char data_ov014_02217a60[];
 extern char data_ov014_02217a90[];
 extern char data_ov014_02217a96[];
-extern void EffectMgr_StopLoop(void *a, void *b);
 extern void Actor_TurnToActor(Actor *self, Actor *t, s32 a);
 extern void Actor_MoveToPos(Actor *self, VecFx32 *p, s32 a);
 
@@ -516,14 +507,14 @@ void func_ov014_0220cd74(Ov014Act_02209280 *self) {
         ActorSub40 *w;
         if (self->fsm->timer == 0x14) {
             u16 a;
-            Ov014V *e;
+            EffectObj *e;
             p2 = self->hit->check;
             if (t != NULL) {
                 a = (t != NULL && t != self) ? FX_Atan2(t->pos.x - self->pos.x, t->pos.z - self->pos.z) : self->rot_y;
             }
-            e = (Ov014V *)func_02065f88(0x67, &p2);
-            e->v34(0, a, 0);
-            e->v0c(0x2000);
+            e = func_02065f88(0x67, &p2);
+            e->SetRotXYZ(0, a, 0);
+            e->SetScaleAll(0x2000);
         }
         FLD(u16, self->hit, 0x9a) |= 0x20;
         FLD(u16, self->hit, 0x9a) |= 0x20;
@@ -541,7 +532,7 @@ void func_ov014_0220cd74(Ov014Act_02209280 *self) {
             break;
         }
         p0 = self->hit->check;
-        ((Ov014V *)func_02065f88(0x6d, &p0))->v0c(0x2000);
+        (func_02065f88(0x6d, &p0))->SetScaleAll(0x2000);
         self->fsm->st = 10;
         break;
     }

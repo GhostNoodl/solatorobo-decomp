@@ -35,7 +35,7 @@ struct ActorEx : public Actor {
     u8 unk_af;
     ActorExParam *param;
     ResSet *res[2];
-    void *unk_bc; // effect handle that follows the actor (killed by the dtor)
+    u32 unk_bc; // id of the effect that follows the actor (EffectObj::id; killed by the dtor)
     union {
         struct {
             s32 unk_c0;

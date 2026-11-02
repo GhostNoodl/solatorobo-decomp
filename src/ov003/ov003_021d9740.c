@@ -1,11 +1,7 @@
 #include "types.h"
+#include "nitro/fx.h"
 #include "ov003/Sequence.h"
 
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Ov003Vec;
 
 static inline void Ov003Sequence_Step(Ov003Sequence *self) {
     self->index++;
@@ -74,7 +70,7 @@ BOOL func_ov003_021d98a0(Ov003Sequence *self) {
     return self->active ? self->b6 : 0;
 }
 
-BOOL Ov003Vec_Equal(Ov003Vec *a, Ov003Vec *b) {
+BOOL Ov003Vec_Equal(VecFx32 *a, VecFx32 *b) {
     BOOL r = FALSE;
     if (a != NULL && b != NULL) {
         r = (a->x == b->x && a->y == b->y && a->z == b->z);

@@ -16,11 +16,9 @@ extern "C" {
 
 extern u8 data_ov014_02217114[];
 extern const VecFx32 data_ov014_02216468[];
-extern u8 data_ov014_022170d8[];
+extern char data_ov014_022170d8[];
 extern char data_ov014_022170e7[];
 extern char data_ov014_022170f4[];
-extern void *data_02097cdc;
-extern void *data_02097e4c;
 
 extern void *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_0218fe1c(void *p);
@@ -28,11 +26,8 @@ extern void Ov003ScriptList_Init(void *p);
 extern void *Ov003Vt_021f7974_Dtor(void *p);
 extern void *func_ov000_0218fee4(void *p);
 extern void *func_ov000_0218ea20(void *p);
-extern BOOL func_02035b90(void *a, s32 b);
-extern void func_02036838(void *a, void *b, s32 c, s32 d);
 extern void SndMgr_LoadHeapState(void *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
-extern void *func_020359d0(void *a, s32 b, s32 c);
 
 #pragma force_active on
 Ov003Actor *Ov014Act_021fa6a0_Ctor(Ov014Act_021fa6a0 *self) {

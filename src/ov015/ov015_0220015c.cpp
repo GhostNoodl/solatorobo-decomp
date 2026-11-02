@@ -2,9 +2,7 @@
 
 extern "C" {
 
-s32 EffectMgr_Contains(void *a, void *b);
 s32 func_ov015_02209fb8(s32 x);
-u8 *Effect3D_Create(void *a, void *b, int c, void *d);
 void *Ov015FishState2c_Ctor(Ov015FishState2c *self);
 extern char data_ov015_022128c1[];
 extern char data_ov015_022128d5[];
@@ -12,7 +10,7 @@ u8 *func_02066df0(void);
 void func_ov015_02207c30(Ov015Ship *p);
 BOOL func_ov015_022003ec(Ov015Obj34 *self);
 void Ov015Fish_SetNextState(Ov015Fish *self, s32 a, s32 b);
-void func_ov015_021fd00c(Ov015CamPair *self, s32 mode, const Ov015VecC *v);
+void func_ov015_021fd00c(Ov015CamPair *self, s32 mode, const Ov015Vec *v);
 
 void func_ov015_0220015c(Ov015Obj34 *self) {
     self->fx = NULL;
@@ -70,16 +68,16 @@ BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
             }
             func_ov015_02207c30(a);
             busy = TRUE;
-            func_ov015_021fd00c(c, busy, (const Ov015VecC *)&b->pos);
+            func_ov015_021fd00c(c, busy, (const Ov015Vec *)&b->pos);
             self->unk_0c += 0x1000;
         }
         if (!busy) {
             Ov015Vec v = a->unk_d08;
             self->fx = Effect3D_Create(data_ov015_022128c1, data_ov015_022128d5, 0, &v);
-            FLD(s32, self->fx, 0xd4) = 3;
-            FLD(s32, self->fx, 0x50) = -0x32000;
+            self->fx->unk_d4 = 3;
+            self->fx->unk_50 = -0x32000;
             VCALL(self->fx)->v14(0x333, 0x333, 0x333);
-            FLD(s32, self->fx, 0xc8) = -1;
+            self->fx->loopCount = -1;
             self->unk_0c = 0;
             self->step = 2;
         }

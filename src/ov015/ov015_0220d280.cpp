@@ -4,16 +4,15 @@ extern "C" {
 
 extern void *data_ov015_02212db8[];
 void func_0203f364(void *a);
-u8 *Effect3D_Create(void *a, void *b, int c, void *d);
-extern u8 data_ov015_02212e20[];
-extern u8 data_ov015_02212e34[];
+extern char data_ov015_02212e20[];
+extern char data_ov015_02212e34[];
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 extern u8 data_ov015_02212ecc[];
 extern u8 data_ov015_02212eb0[];
 extern u8 data_ov015_02212e47[];
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void *func_ov000_02191318(void *a, s32 b);
-extern u8 data_ov015_02212e68[];
+extern char data_ov015_02212e68[];
 extern u8 data_ov015_02212e0d[];
 BOOL func_ov000_02191120(void *p);
 void *Ov015FishState2c_Ctor(Ov015FishState2c *self);
@@ -37,33 +36,33 @@ void func_ov015_0220d328(Ov015FishState40 *self, Ov015Fish *o) {
     Ov015Vec d;
     Ov015Vec p;
     Ov015Vec q;
-    Ov015V *e;
+    EffectObj *e;
     s32 t = 0x1000 - FX_Div(self->unk_10 << 12, 0x5a000);
     d = self->unk_1c;
     d.y = FX_Mul(FX_SinCosTable_[((FX_Mul(t, 0x7fff000) >> 12) >> 4) * 2], 0x800);
-    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)&d);
-    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)(&o->dir));
+    VEC_Normalize(&d, &d);
+    VEC_Normalize(&d, (&o->dir));
     p = o->pos;
-    VEC_MultAdd(self->unk_0c, (VecFx32 *)(&self->unk_1c), (VecFx32 *)&p, (VecFx32 *)&p);
+    VEC_MultAdd(self->unk_0c, (&self->unk_1c), &p, &p);
     p.y = Interp_SinLerp(t, -0x32000, 0x1ccd);
     if (p.y > 0) p.y = 0;
     o->pos = p;
     o->drawMode = 2;
     e = func_020657b0(data_0214a420, self->unk_08);
     if (e == NULL) {
-        e = (Ov015V *)Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &o->pos);
-        FLD(s32, e, 0xd4) = 3;
-        FLD(u8, e, 0x28) = 0;
-        FLD(s32, e, 0xc8) = -1;
-        FLD(s32, e, 0x50) = -0xc8000;
-        self->unk_08 = FLD(void *, e, 0x24);
+        e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &o->pos);
+        e->unk_d4 = 3;
+        e->unk_28 = 0;
+        e->loopCount = -1;
+        e->unk_50 = -0xc8000;
+        self->unk_08 = e->id;
     }
     q.x = o->pos.x;
     q.y = o->pos.y > 0 ? 0 : o->pos.y;
     q.z = o->pos.z;
-    e->v18(&q);
-    e->v10(&o->scaleX);
-    e->v34(0, FX_Atan2(o->dir.x, o->dir.z), 0);
+    e->SetPos(&q);
+    e->SetScale(&o->scale);
+    e->SetRotXYZ(0, FX_Atan2(o->dir.x, o->dir.z), 0);
     if (self->unk_10 == 0x3c) {
         func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         func_02049a48(data_02097e4c, 0x55, -1, -1, -1);
@@ -74,14 +73,14 @@ void func_ov015_0220d578(Ov015FishState40 *self, Ov015Fish *o) {
     Ov015Vec d;
     Ov015Vec p;
     Ov015Vec q;
-    Ov015V *e;
+    EffectObj *e;
     s32 t = 0x1000 - FX_Div(self->unk_10 << 12, 0x5a000);
     d = self->unk_1c;
     d.y = FX_Mul(FX_SinCosTable_[(((FX_Mul(t, 0x7fff000) >> 12) + 0x7fff) >> 4) * 2], 0x800);
-    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)&d);
-    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)(&o->dir));
+    VEC_Normalize(&d, &d);
+    VEC_Normalize(&d, (&o->dir));
     p = o->pos;
-    VEC_MultAdd(self->unk_0c, (VecFx32 *)(&self->unk_1c), (VecFx32 *)&p, (VecFx32 *)&p);
+    VEC_MultAdd(self->unk_0c, (&self->unk_1c), &p, &p);
     p.y = Interp_SinLerp(t, 0x1ccd, -0x32000);
     if (p.y < -0x32000) p.y = -0x32000;
     o->pos = p;
@@ -92,19 +91,19 @@ void func_ov015_0220d578(Ov015FishState40 *self, Ov015Fish *o) {
     }
     e = func_020657b0(data_0214a420, self->unk_08);
     if (e == NULL) {
-        e = (Ov015V *)Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &o->pos);
-        FLD(s32, e, 0xd4) = 3;
-        FLD(u8, e, 0x28) = 0;
-        FLD(s32, e, 0xc8) = -1;
-        FLD(s32, e, 0x50) = -0xc8000;
-        self->unk_08 = FLD(void *, e, 0x24);
+        e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &o->pos);
+        e->unk_d4 = 3;
+        e->unk_28 = 0;
+        e->loopCount = -1;
+        e->unk_50 = -0xc8000;
+        self->unk_08 = e->id;
     }
     q.x = o->pos.x;
     q.y = o->pos.y > 0 ? 0 : o->pos.y;
     q.z = o->pos.z;
-    e->v18(&q);
-    e->v10(&o->scaleX);
-    e->v34(0, FX_Atan2(o->dir.x, o->dir.z), 0);
+    e->SetPos(&q);
+    e->SetScale(&o->scale);
+    e->SetRotXYZ(0, FX_Atan2(o->dir.x, o->dir.z), 0);
 }
 
 static inline void Ov015_VecSet(Ov015Vec *v, s32 x, s32 y, s32 z) { v->x = x; v->y = y; v->z = z; }
@@ -147,13 +146,13 @@ void *Ov015FishState08_DtorDelete(void *self) {
 }
 
 BOOL Ov015FishState08_Enter(Ov015FishState08 *self, Ov015Fish *p) {
-    Ov015VecC v;
+    Ov015Vec v;
     func_ov000_02190cb0(&p->model, data_ov015_02212e47, 0x19a, 0);
     func_ov000_02191318(&p->model, 0x7000);
     p->animSpeed = 0x800;
-    v = *(Ov015VecC *)&p->dir;
+    v = *(Ov015Vec *)&p->dir;
     v.y = 0;
-    VEC_Normalize((VecFx32 *)&v, (VecFx32 *)(&p->dir));
+    VEC_Normalize(&v, (&p->dir));
     self->step = 1;
     return TRUE;
 }
@@ -168,18 +167,18 @@ BOOL Ov015FishState08_Update(Ov015FishState08 *self, Ov015Fish *p) {
         p->pos.y = 0;
         p->pos.z = z;
         if (p->model.unk_c4 == 1) {
-            u8 *o;
+            EffectObj *o;
             Ov015Vec v;
             p->model.unk_c4 = 0;
             v.x = x;
             v.z = z;
             v.y = 0;
             o = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e68, 0, &v);
-            VCALL(o)->v10(&p->scaleX);
-            FLD(s32, o, 0xd4) = 3;
-            FLD(u8, o, 0x28) = 0;
-            FLD(s32, o, 0x50) = -0xc8000;
-            FLD(s32, o, 0x3c) = 0x800;
+            VCALL(o)->v10(&p->scale);
+            o->unk_d4 = 3;
+            o->unk_28 = 0;
+            o->unk_50 = -0xc8000;
+            o->speed = 0x800;
             func_02049a48(data_02097e4c, 0x1b, -1, -1, -1);
             func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         }
@@ -276,16 +275,16 @@ void func_ov015_0220daf4(Ov015Shadow *self, const Ov015Vec *pos, s32 sx, s32 sz,
         s.x = sx;
         s.y = 0x1000;
         s.z = sz;
-        NNS_G3dGlbSetBaseScale((VecFx32 *)&s);
+        NNS_G3dGlbSetBaseScale(&s);
     }
     {
-        Ov015VecC t(*(const Ov015VecC *)pos);
+        Ov015Vec t(*(const Ov015Vec *)pos);
         if (self->type <= 1) {
             t.y += 0x800 - self->unk_10;
         } else {
             t.y += 0xcd - self->unk_10;
         }
-        NNS_G3dGlbSetBaseTrans((VecFx32 *)&t);
+        NNS_G3dGlbSetBaseTrans(&t);
     }
     {
         s32 m[9];

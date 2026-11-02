@@ -2,14 +2,11 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern char data_ov014_02217a4e[];
 extern char data_ov014_02217a72[];
 extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_02191618(void *p);
 extern void func_ov000_021911c8(void *a, s32 b);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-extern Ov014V *func_02065f88(s32 id, VecFx32 *pos);
 extern void func_ov014_0220a2d0(Ov014Act_02209280 *self, s32 a);
 
 static inline void Ov014_TickA(ActorSub40 *st) {
@@ -87,20 +84,20 @@ void func_ov014_0220abf8(Ov014Act_02209280 *self) {
     }
     case 1: {
         FieldState *g;
-        Ov014V *e;
+        EffectObj *e;
         if (self->model->anim_state == 3) {
             e = func_02065f88(0x648, &self->pos);
-            e->v0c(0x3000);
-            FLD(s32, e, 0xc8) = 2;
+            e->SetScaleAll(0x3000);
+            e->loopCount = 2;
             func_02049f44(data_02097e4c, 0xc00, &self->pos, 0);
         }
         if (self->model->anim_state != 1) {
             return;
         }
         e = func_02065f88(0x66, &self->pos);
-        e->v24(0, 0x4000, 0);
-        e->v0c(0x4000);
-        e->v34(0x3fff, 0, 0);
+        e->AddPosXYZ(0, 0x4000, 0);
+        e->SetScaleAll(0x4000);
+        e->SetRotXYZ(0x3fff, 0, 0);
         func_02049f44(data_02097e4c, 0xc06, &self->pos, 0);
         g = data_ov000_021ccd54;
         g->cam.base.shakeX = 1;
@@ -157,14 +154,12 @@ void func_ov014_0220afb8(Ov014Act_02209280 *self) {
 }
 
 
-extern void *data_02097e4c;
 extern char data_ov014_02217a4e[];
 extern char data_ov014_02217a78[];
 extern char data_ov014_02217a7e[];
 extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_02191618(void *p);
 extern void func_ov000_021911c8(void *a, s32 b);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern void func_ov014_02209fa0(Ov014Act_02209280 *self, s32 a, s32 b);
 
 void func_ov014_0220afe8(Ov014Act_02209280 *self) {

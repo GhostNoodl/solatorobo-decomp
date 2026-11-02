@@ -14,14 +14,11 @@ static inline s32 Ov014y_Abs(s32 x) {
 
 extern "C" {
 
-extern void *data_02097e4c;
 
 extern Ov003Actor *Target_Get(void *p);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void func_ov014_02215ffc(Ov014ActEx_022152e8 *self);
 extern void func_ov000_021911c8(void *a, s32 b);
-extern Ov014V *func_02065f88(s32 id, VecFx32 *pos);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void Interp_SinLerpVec(VecFx32 *out, s32 t, VecFx32 *a, VecFx32 *b);
 extern void Actor_TurnToActor(Actor *self, Actor *target, s32 a);
 extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
@@ -95,7 +92,7 @@ void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
             f = 0x2d;
         }
         self->unk_f0 = f;
-        func_02065f88(0x69, &self->pos)->v0c(0x1800);
+        func_02065f88(0x69, &self->pos)->SetScaleAll(0x1800);
         func_02049f44(data_02097e4c, 0x82, &self->pos, 0);
         func_02049f44(data_02097e4c, 0x57, &self->pos, 0);
         self->fsm->timer = 0x3c;
@@ -121,15 +118,15 @@ void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
             func_ov000_021911c8(self->model, 0x1000);
         }
         if (self->fsm->timer == 0xf) {
-            Ov014V *e;
-            Ov014V *e2;
+            EffectObj *e;
+            EffectObj *e2;
             FieldState *g;
             e = func_02065f88(0x66, &self->pos);
-            e->v0c(0x2800);
-            e->v30(&self->rot_x);
+            e->SetScaleAll(0x2800);
+            e->SetRot(&self->rot);
             e2 = func_02065f88(0x3ea, &self->pos);
-            e2->v0c(0x3800);
-            e2->v30(&self->rot_x);
+            e2->SetScaleAll(0x3800);
+            e2->SetRot(&self->rot);
             g = data_ov000_021ccd54;
             g->cam.base.shakeX = 1;
             g->cam.base.shakeY = 1;

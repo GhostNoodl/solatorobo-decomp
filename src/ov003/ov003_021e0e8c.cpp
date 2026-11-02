@@ -1,6 +1,9 @@
 #pragma pool_strings on
 #pragma dont_reuse_strings off
 #include "types.h"
+#include "Main/Math/Rot16.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/GmObj.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorParts.h"
@@ -351,14 +354,11 @@ typedef struct {
     s16 args[8];
 } Ov003TableEntry;
 
-typedef struct {
-    s32 x, y, z;
-} Ov003EvVec;
 
 typedef struct {
-    Ov003EvVec min;
-    Ov003EvVec max;
-    Ov003EvVec ofs;
+    VecFx32 min;
+    VecFx32 max;
+    VecFx32 ofs;
     Ov003TableEntry *entries;
 } Ov003Table;
 
@@ -384,7 +384,7 @@ typedef struct {
 
 typedef struct {
     u8 unk_00[0x70];
-    Ov003EvVec pos;
+    VecFx32 pos;
 } Ov003EvPlayer;
 
 typedef struct {
@@ -429,7 +429,7 @@ typedef struct {
     Ov003Part48 *unk_48;
     Ov003Part *unk_4c;
     u8 unk_50[0x20];
-    Ov003EvVec unk_70;
+    VecFx32 unk_70;
     u8 unk_7c[0x14];
     u16 unk_90;
     u8 unk_92;
@@ -453,7 +453,7 @@ typedef struct {
     u8 unk_00[0x15];
     u8 unk_15;
     u8 unk_16[0x5a];
-    Ov003EvVec pos;
+    VecFx32 pos;
     u8 unk_7c[0xaac];
     u8 unk_b28_0 : 2;
     u8 unk_b28_2 : 1;
@@ -522,10 +522,10 @@ void Ov003ActVt_021f8638_Start(Ov003Event *self) {
 extern void *data_ov000_021ccd68;
 extern Ov003EvUnit *ActorMgr_GetActor(void *mgr, u16 id);
 extern Ov003EvGroup *ActorMgr_GetGroup(void *mgr, u16 key);
-extern BOOL Hit_DiffInBox(Ov003EvVec *a, Ov003EvVec *b, Ov003EvVec *min, Ov003EvVec *max);
-extern Ov003EvUnit *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, Ov003EvVec *pos, void *rot, u16 a);
+extern BOOL Hit_DiffInBox(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max);
+extern Ov003EvUnit *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, VecFx32 *pos, void *rot, u16 a);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
-extern void VEC_Add(const Ov003EvVec *a, const Ov003EvVec *b, Ov003EvVec *ab);
+extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline Ov003EvUnit *Ov003Ev_GetUnit(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -629,7 +629,7 @@ void func_ov003_021e1340(Ov003Event *self) {
         }
         {
             Ov003SpawnInfo info;
-            Ov003EvVec pos;
+            VecFx32 pos;
             Ov003EvUnit *u;
             s32 j;
             info.id = (&e->unk_16)[self->unk_20c];
@@ -729,9 +729,6 @@ namespace m_021e1914 {
 
 extern "C" {
 
-typedef struct {
-    s32 x, y, z;
-} VecFx32;
 
 typedef struct {
     u8 unk_00[0xc];
@@ -759,9 +756,6 @@ typedef struct {
     u8 unk_0e[2];
 } Ov003SpawnInfo;
 
-typedef struct {
-    u16 x, y, z;
-} Ov003Rot3;
 
 typedef struct {
     u8 unk_00[0x13];
@@ -788,7 +782,7 @@ typedef struct {
     Ov003SpotSub *unk_40;
     u8 unk_44[0x2c];
     VecFx32 pos;
-    Ov003Rot3 rot;
+    Rot16 rot;
 } Ov003SpotUnit;
 
 typedef struct {
@@ -902,12 +896,10 @@ void Ov003ActVt_021f8df0_Start(Ov003Prop *self) {
 }
 
 extern void *data_ov000_021ccd68;
-extern void *data_02097e4c;
 extern void VEC_Normalize(const VecFx32 *a, VecFx32 *out);
-extern Ov003SpotUnit *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, VecFx32 *pos, Ov003Rot3 *rot, u16 a);
+extern Ov003SpotUnit *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, VecFx32 *pos, Rot16 *rot, u16 a);
 extern Ov003SpotUnit *ActorMgr_GetActor(void *mgr, u16 id);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void Actor_SendMsg(Ov003SpotUnit *u, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 extern void func_ov000_0218d46c(Ov003SpotUnit *u, u16 id, s32 m);
@@ -970,7 +962,7 @@ void func_ov003_021e1a68(Ov003Prop *self) {
         if (Hit_DiffInBox(&v, &self->unk_84, def, def->unk_0c)) {
             Ov003SpawnInfo info;
             VecFx32 pos;
-            Ov003Rot3 rot;
+            Rot16 rot;
             Ov003SpotUnit *u;
             s32 i;
             u16 k;
@@ -1174,17 +1166,14 @@ BOOL Ov003ActVt_021f8c28_IsReady(Ov003Prop *self) {
     return r;
 }
 
-typedef struct {
-    s32 x, y, z;
-} Ov003LtVec;
 
 typedef struct {
     s32 m[9];
-    Ov003LtVec t;
+    VecFx32 t;
 } Ov003LtMtx;
 
 typedef struct {
-    Ov003LtVec ofs;
+    VecFx32 ofs;
     s32 speed;
     const char *name;
     const char *name1;
@@ -1208,7 +1197,7 @@ typedef struct {
     u16 rot[3];
     u16 kind;
     s32 unk_20;
-    Ov003LtVec ofs;
+    VecFx32 ofs;
     s32 unk_30;
 } Ov003LtHit;
 
@@ -1260,16 +1249,16 @@ typedef struct {
     u8 unk_5c[8];
     s32 unk_64;
     u8 unk_68[8];
-    Ov003LtVec pos;
+    VecFx32 pos;
     u16 rot_x;
     u16 rot_y;
     u16 rot_z;
     u8 unk_82[2];
-    Ov003LtVec prev;
+    VecFx32 prev;
     u8 unk_90[3];
     Ov003LtBits unk_93;
     u8 unk_94[8];
-    Ov003LtVec vel;
+    VecFx32 vel;
     u8 unk_a8[8];
     Ov003PropDef *unk_b0;
     u8 unk_b4[0xa0];
@@ -1279,7 +1268,7 @@ typedef struct {
 extern const s16 FX_SinCosTable_[];
 extern const Ov003LtDef data_ov003_021f67c0[];
 extern void func_ov000_02194758(void *self);
-extern void VEC_Add(const Ov003LtVec *a, const Ov003LtVec *b, Ov003LtVec *out);
+extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern void MTX_Identity43_(Ov003LtMtx *m);
 extern void MTX_RotX43_(Ov003LtMtx *m, s32 s, s32 c);
 extern void MTX_RotY43_(Ov003LtMtx *m, s32 s, s32 c);
@@ -1347,8 +1336,7 @@ void Ov003ActVt_021f8c28_Start(Ov003Lt *self) {
 }
 
 extern Ov003LtShape data_ov003_021f5c70[];
-extern void *data_02097e4c;
-extern void VEC_Normalize(const Ov003LtVec *a, Ov003LtVec *out);
+extern void VEC_Normalize(const VecFx32 *a, VecFx32 *out);
 extern void HitMesh_SetRes(void *obj, u32 a);
 extern void HitMesh_SetScale(void *obj, s32 a);
 extern Ov003LtInfo *func_0206fef8(u16 id);
@@ -1360,12 +1348,11 @@ extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern s32 func_0205b1fc(void);
 extern Ov003LtPlayer *func_ov000_0219bf90(void);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void *func_0204a028(void *mgr, s32 id, void *pos, s32 a);
-extern BOOL Hit_DiffInSphere(Ov003LtVec *a, Ov003LtVec *b, s32 r);
+extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 
 void func_ov003_021e2360(Ov003Lt *self) {
     const Ov003LtDef *def = &data_ov003_021f67c0[self->unk_1a];
-    Ov003LtVec v;
+    VecFx32 v;
     Ov003LtHit hit;
     Ov003LtMtx t;
     Ov003LtMtx m;
@@ -1640,17 +1627,14 @@ typedef struct {
     u16 unk_02_3 : 1;
 } Ov003PropDef;
 
-typedef struct {
-    s32 x, y, z;
-} Ov003LtVec;
 
 typedef struct {
     s32 m[9];
-    Ov003LtVec t;
+    VecFx32 t;
 } Ov003LtMtx;
 
 typedef struct {
-    Ov003LtVec ofs;
+    VecFx32 ofs;
     s32 speed;
     const char *name;
     const char *name1;
@@ -1674,7 +1658,7 @@ typedef struct {
     u16 rot[3];
     u16 kind;
     s32 unk_20;
-    Ov003LtVec ofs;
+    VecFx32 ofs;
     s32 unk_30;
 } Ov003LtHit;
 
@@ -1695,14 +1679,14 @@ typedef struct {
     u8 unk_10[6];
     u8 unk_16;
     u8 unk_17[0x59];
-    Ov003LtVec pos;
+    VecFx32 pos;
 } Ov003LtUnit;
 
 typedef struct {
     u8 unk_00[0xc];
     u16 unk_0c;
     u8 unk_0e[0x74e];
-    Ov003LtVec pos;
+    VecFx32 pos;
 } Ov003LtPlayer;
 
 typedef struct {
@@ -1732,12 +1716,12 @@ typedef struct {
     u8 unk_5c[8];
     s32 unk_64;
     u8 unk_68[8];
-    Ov003LtVec pos;
+    VecFx32 pos;
     u16 rot[3];
     u8 unk_82[2];
-    Ov003LtVec prev;
+    VecFx32 prev;
     u8 unk_90[0xc];
-    Ov003LtVec vel;
+    VecFx32 vel;
     u8 unk_a8[8];
     Ov003PropDef *unk_b0;
     u8 unk_b4[0xa0];
@@ -1748,8 +1732,8 @@ extern const s16 FX_SinCosTable_[];
 extern const Ov003LtDef data_ov003_021f67c0[];
 extern Ov003LtShape data_ov003_021f5c70[];
 extern void func_ov000_02194758(void *self);
-extern void VEC_Add(const Ov003LtVec *a, const Ov003LtVec *b, Ov003LtVec *out);
-extern void VEC_Normalize(const Ov003LtVec *a, Ov003LtVec *out);
+extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
+extern void VEC_Normalize(const VecFx32 *a, VecFx32 *out);
 extern void MTX_Identity43_(Ov003LtMtx *m);
 extern void MTX_RotX43_(Ov003LtMtx *m, s32 s, s32 c);
 extern void MTX_RotY43_(Ov003LtMtx *m, s32 s, s32 c);
@@ -1767,13 +1751,11 @@ extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern BOOL func_ov000_02191120(void *model);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void *func_0204a028(void *mgr, s32 id, void *pos, s32 a);
-extern BOOL Hit_DiffInSphere(Ov003LtVec *a, Ov003LtVec *b, s32 r);
-extern void *data_02097e4c;
+extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern Ov003LtField *data_ov000_021ccd6c;
 extern void *data_ov000_021ccd68;
 extern Ov003LtUnit *ActorMgr_GetActor(void *mgr, u16 id);
-extern void func_ov000_021b6b4c(Ov003LtField *f, u16 id, Ov003LtVec *v);
+extern void func_ov000_021b6b4c(Ov003LtField *f, u16 id, VecFx32 *v);
 extern Ov003LtPlayer *func_ov000_0219bf90(void);
 
 #define OV003LT_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
@@ -1952,10 +1934,10 @@ static inline Ov003LtUnit *Ov003Lt_GetUnit(u16 id) {
 
 void func_ov003_021e2f54(Ov003Lt *self) {
     const Ov003LtDef *def = &data_ov003_021f67c0[self->unk_1a];
-    Ov003LtVec v;
+    VecFx32 v;
     Ov003LtHit hitB;
     u16 ids[0x20];
-    Ov003LtVec d;
+    VecFx32 d;
     Ov003LtHit hitA;
     Ov003LtMtx tB;
     Ov003LtMtx mB;
@@ -2150,7 +2132,7 @@ typedef struct {
     u8 unk_48[4];
     Ov003Prop4c *unk_4c;
     u8 unk_50[0x20];
-    s32 pos[3];
+    VecFx32 pos;
     u16 unk_7c;
     u16 unk_7e;
     u8 unk_80[0x18];
@@ -2166,7 +2148,6 @@ typedef struct {
     u16 unk_cc_0 : 1;
 } Ov003Prop;
 
-extern void *data_02097e4c;
 extern void func_ov000_02194758(void *self);
 extern void *data_ov000_021ccd64;
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
@@ -2177,8 +2158,6 @@ extern void func_ov000_021911c8(void *model, s32 v);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern void func_ov000_021975b4(void *self);
 extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
-extern void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
-extern void *func_0204a028(void *mgr, s32 id, void *pos, s32 a);
 
 void Ov003ActVt_021f8800_Start(Ov003Prop *self) {
     s16 a;
@@ -2241,10 +2220,10 @@ void func_ov003_021e3900(Ov003Prop *self) {
         if (self->unk_4c != NULL) {
             self->unk_4c->unk_1e = self->unk_1c;
         }
-        func_02049f44(data_02097e4c, 0x73, self->pos, 0);
+        func_02049f44(data_02097e4c, 0x73, &self->pos, 0);
         break;
     case 6:
-        func_0204a028(data_02097e4c, 8, self->pos, -5);
+        func_0204a028(data_02097e4c, 8, &self->pos, -5);
         break;
     }
 }
@@ -2369,7 +2348,7 @@ typedef struct {
     Ov003Prop4c *unk_4c;
     Ov003Prop50 *unk_50;
     u8 unk_54[0x1c];
-    s32 pos[3];
+    VecFx32 pos;
     u16 unk_7c;
     u16 unk_7e;
     u8 unk_80[0x18];
@@ -2394,7 +2373,6 @@ public:
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern void func_ov000_02194758(void *self);
 extern void *data_ov000_021ccd64;
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
@@ -2405,8 +2383,6 @@ extern void func_ov000_021911c8(void *model, s32 v);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern void func_ov000_021975b4(void *self);
 extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
-extern void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
-extern void *func_0204a028(void *mgr, s32 id, void *pos, s32 a);
 
 extern void *data_ov000_021ccd68;
 extern void *func_ov000_02191318(void *m, s32 a);
@@ -2465,7 +2441,7 @@ void func_ov003_021e3d34(Ov003Prop *self) {
         s32 v = self->unk_a0;
         v += (0x466 - v) >> 7;
         self->unk_a0 = v;
-        self->pos[1] += v;
+        self->pos.y += v;
         self->unk_7c = func_01ffc128(0, self->unk_7c, 0x400, 1, 0x8000);
         w = self->work;
         w->timer++;
@@ -2591,7 +2567,7 @@ void func_ov003_021e40d4(Ov003Prop *self) {
     }
     self->unk_18 = n;
     func_ov000_02190cb0(self->model, "act00", 0x1000, 0);
-    func_02049f44(data_02097e4c, 0x6a, self->pos, 0);
+    func_02049f44(data_02097e4c, 0x6a, &self->pos, 0);
     func_ov000_0218996c(8, 0xf);
     func_ov000_02198360(self->work, 1, 0);
 }
@@ -2783,12 +2759,10 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021911c8(void *model, s32 a);
 extern BOOL func_ov000_02191120(void *model);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern Ov003Spawned *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, VecFx32 *pos, void *rot, u16 a);
 extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
@@ -3151,11 +3125,9 @@ extern void HitMesh_SetScale(Ov003BigRObj *o, s32 a);
 extern void HitMesh_Link(Ov003BigRObj *o);
 extern void func_0203f920(Ov003BigRObj *o);
 extern s32 func_ov000_0219a2f4(VecFx32 *pos, s32 a, s32 b);
-extern void *data_02097e4c;
 extern s32 func_ov000_021993fc(Ov003BigFinder *f, Ov003BigQuery *q, Ov003BigHit **out, s32 max);
 extern Ov003BigTgt *func_ov000_021985c0(Ov003BigHit *h);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
-extern void *func_0204a028(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void Actor_SendMsg(Ov003BigTgt *o, u16 id, s32 a, s32 b, s32 c, void *p);
 extern Ov003BigTgt *Actor_GetTarget(Ov003Big *self);
 extern void VEC_MultAdd(s32 a, VecFx32 *v1, VecFx32 *v2, VecFx32 *dst);
@@ -3487,9 +3459,6 @@ void func_ov003_021e51f8(Ov003Big *self, u32 t) {
 // ---- merged from ov003_021e57b8.cpp
 namespace m_021e57b8 {
 
-typedef struct {
-    s32 x, y, z;
-} VecFx32;
 
 typedef struct {
     u8 unk_00[0x50];
@@ -4071,9 +4040,6 @@ void func_ov003_021e5e70(Ov003Obj *self) {
 // ---- merged from ov003_021e6274.cpp
 namespace m_021e6274 {
 
-typedef struct {
-    s32 x, y, z;
-} VecFx32;
 
 extern "C" void NNS_G3dRenderObjRemoveAnmObj(void *a, void *b);
 
@@ -4226,7 +4192,6 @@ static inline void Ov003Model_ResetAnim(Ov003Model *m) {
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
 extern Ov003PathPt *const data_ov003_021f85c0[];
 extern Ov003Part *Target_Get(Ov003Part *p);
@@ -4237,7 +4202,6 @@ extern void func_ov000_021915a0(void *model);
 extern void func_ov000_02191618(void *model);
 extern void *func_ov000_02191318(void *model, s32 a);
 extern BOOL func_ov000_02191120(void *model);
-extern void *func_0204a028(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
@@ -4595,7 +4559,6 @@ namespace m_021e6cb8 {
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
@@ -4604,12 +4567,10 @@ extern void func_ov000_021911c8(void *model, s32 a);
 extern BOOL func_ov000_02191120(void *model);
 extern void HitSphere_Link(Ov003Ctl *ctl);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
-extern Ov003Fx *func_02065f88(s32 id, const VecFx32 *pos);
 extern void func_ov000_02195d88(void *self);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 extern Ov003Part *Target_Get(Ov003Part *p);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern s32 Rand_PlusMinus(s32 max);
 extern void *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToActor(void *self, void *other, s32 a);
@@ -4625,7 +4586,7 @@ void func_ov003_021e6cb8(Ov003Obj *self) {
     switch (self->work->st) {
     case 0: {
         Ov003Ctl *ctl;
-        Ov003Fx *fx;
+        EffectObj *fx;
         self->unk_4c->unk_1c = 0xffff;
         func_ov000_02190cb0(self->model, "nut00", 0x1000, 0);
         func_ov000_021915a0(self->model);
@@ -4643,8 +4604,8 @@ void func_ov003_021e6cb8(Ov003Obj *self) {
         }
         self->unk_cc_8 = 0;
         fx = func_02065f88(0x322, &self->pos);
-        fx->SetRot(0, self->unk_6c, 0);
-        fx->SetScale(self->unk_64, self->unk_64, self->unk_64);
+        fx->AddPosXYZ(0, self->unk_6c, 0);
+        fx->SetScaleXYZ(self->unk_64, self->unk_64, self->unk_64);
         self->work->st++;
         break;
     }
@@ -4673,7 +4634,7 @@ void func_ov003_021e6e20(Ov003Obj *self) {
         Ov003Part *p;
         u8 k;
         if (self->kind == 1) {
-            func_02065f88(0x12f, &self->pos)->SetSpeed(0xa66);
+            func_02065f88(0x12f, &self->pos)->SetScaleAll(0xa66);
             func_ov000_02197dec(self, 0xf, -1);
             func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
             Ov003Obj_Destroy(self);
@@ -4701,10 +4662,10 @@ void func_ov003_021e6e20(Ov003Obj *self) {
         return;
     }
     {
-        Ov003Fx *fx = func_02065f88(0x44d, &self->pos);
+        EffectObj *fx = func_02065f88(0x44d, &self->pos);
         s32 a = Rand_PlusMinus(0x4cd);
         s32 b = Rand_PlusMinus(0x4cd);
-        fx->SetRot(a, -0x19a, b);
+        fx->AddPosXYZ(a, -0x19a, b);
     }
 }
 

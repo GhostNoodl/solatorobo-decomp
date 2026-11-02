@@ -168,13 +168,13 @@ void func_ov012_0220a0f4(Ov003Actor *self) {
 extern "C" {
 void func_ov012_0220a1ac(Ov003Actor *self) {
     if (self->fsm->st == 0) {
-        Ov012V *e;
+        EffectObj *e;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4009, 0x15);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4801, 0x15);
         e = func_02065f88(0x69, &self->pos);
         if (e != NULL) {
-            e->v0c(0x2400);
-            e->v24(0, self->centerY, 0);
+            e->SetScaleAll(0x2400);
+            e->AddPosXYZ(0, self->centerY, 0);
         }
     }
     func_ov003_021d6054(self);

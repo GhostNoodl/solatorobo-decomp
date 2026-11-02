@@ -20,7 +20,7 @@ void func_ov000_0219af3c(u8 *self, void *p);
 void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
 void func_ov000_021bd624(void *p);
 void func_ov000_021bd300(void *p);
-VObj *func_020657b0(void *mgr, void *h);
+VObj *func_020657b0(void *mgr, u32 id);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline BOOL PlayerIdle02195618(void) {

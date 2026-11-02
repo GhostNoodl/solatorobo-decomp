@@ -84,7 +84,7 @@ BOOL func_ov015_02209500(Ov015Fish *self) {
     self->shadow.prev = self->shadow.type;
     self->shadow.type = 3;
     self->pos.z = (0x800 - 0x37800) - FX_Mul(FX_Div(data_ov015_0221332c.unk_00, 0x3e8000), 0x73000);
-    { s32 v = FLD(s16, func_0206fef8(self->info.id), 0x10); self->scaleX = v; self->scaleY = v; self->scaleZ = v; }
+    { s32 v = FLD(s16, func_0206fef8(self->info.id), 0x10); self->scale.x = v; self->scale.y = v; self->scale.z = v; }
     if (self->hit.active != 0) func_0203f364(&self->hit);
     self->hit.group = 0x100;
     self->hit.mask = 0x100;
@@ -224,16 +224,16 @@ void func_ov015_02209c90(Ov015Fish *self) {
     Ov015Vec x;
     Ov015Vec z;
     s32 k = self->scaleMul;
-    s32 sx = FX_Mul(self->scaleX, k);
-    s32 sy = FX_Mul(self->scaleY, k);
-    s32 sz = FX_Mul(self->scaleZ, k);
+    s32 sx = FX_Mul(self->scale.x, k);
+    s32 sy = FX_Mul(self->scale.y, k);
+    s32 sz = FX_Mul(self->scale.z, k);
     if (self->dir.x != 0 || self->dir.y != 0 || self->dir.z == 0) {
         *(Ov015Blk09c90 *)&up = data_ov015_02212644;
-        VEC_Normalize((VecFx32 *)(&self->dir), (VecFx32 *)&z);
+        VEC_Normalize((&self->dir), &z);
         Ov015_Cross09c90(&up, &z, &x);
-        VEC_Normalize((VecFx32 *)&x, (VecFx32 *)&x);
+        VEC_Normalize(&x, &x);
         Ov015_Cross09c90(&z, &x, &up);
-        VEC_Normalize((VecFx32 *)&up, (VecFx32 *)&up);
+        VEC_Normalize(&up, &up);
         self->rot[0] = x;
         self->rot[1] = up;
         self->rot[2] = z;
@@ -248,13 +248,13 @@ void func_ov015_02209c90(Ov015Fish *self) {
         self->model2.blend = 0xb;
         self->model2.blendMax = 0xa;
     }
-    self->model.trans = *(Ov015VecC *)&self->pos;
+    self->model.trans = *(Ov015Vec *)&self->pos;
     MI_Copy36B(&self->rot[0].x, &self->model.rot[0].x);
-    self->model.scaleX = sx;
-    self->model.scaleY = sy;
-    self->model.scaleZ = sz;
+    self->model.scale.x = sx;
+    self->model.scale.y = sy;
+    self->model.scale.z = sz;
     func_ov000_021903b4(&self->model);
-    self->model2.trans = *(Ov015VecC *)&self->pos2;
+    self->model2.trans = *(Ov015Vec *)&self->pos2;
     MI_Copy36B(&self->rot2[0].x, &self->model2.rot[0].x);
     func_ov000_021903b4(&self->model2);
     NNS_G3dGeFlushBuffer();
@@ -278,12 +278,12 @@ BOOL func_ov015_0220a028(Ov015Fish *self, void *a) {
 }
 
 void func_ov015_0220a058(Ov015Fish *self, void *out) {
-    s32 z = FX_Mul(self->scaleX, 0xa000);
+    s32 z = FX_Mul(self->scale.x, 0xa000);
     Ov015Vec v;
     v.x = 0;
     v.y = 0;
     v.z = z;
-    MTX_MultVec33((VecFx32 *)&v, (MtxFx33 *)(&self->rot2[0].x), (VecFx32 *)&v);
+    MTX_MultVec33(&v, (MtxFx33 *)(&self->rot2[0].x), &v);
     VEC_Add((VecFx32 *)&v, (VecFx32 *)(&self->pos2), (VecFx32 *)out);
 }
 

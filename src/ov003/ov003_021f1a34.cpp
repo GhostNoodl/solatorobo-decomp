@@ -1,19 +1,16 @@
 #include "types.h"
 #include "Main/Sys/FieldState.h"
 
-typedef struct {
-    s32 x, y, z;
-} Ov003PdVec;
 
 typedef struct {
     u8 unk_00[0x78];
-    Ov003PdVec pos;
+    VecFx32 pos;
 } Ov003PdModel;
 
 typedef struct {
     u32 flags;
     u8 unk_04[0x4c];
-    Ov003PdVec pos;
+    VecFx32 pos;
 } Ov003PdIcon;
 
 typedef struct {
@@ -49,7 +46,7 @@ typedef struct {
     u8 unk_48[0x14];
     Ov003PdIcon *unk_5c;
     u8 unk_60[0x10];
-    Ov003PdVec pos;
+    VecFx32 pos;
     u8 unk_7c[0x17];
     u8 unk_93_0 : 1;
     u8 unk_94[0x18];
@@ -129,7 +126,7 @@ extern void func_ov000_021bd624(Ov003PdIcon *p);
 extern BOOL func_ov000_021bd314(Ov003PdIcon *p, s32 id);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *self);
 
-static inline void Ov003Icon_SetPos(Ov003PdIcon *ic, Ov003PdVec *v) {
+static inline void Ov003Icon_SetPos(Ov003PdIcon *ic, VecFx32 *v) {
     ic->pos.x = v->x;
     ic->pos.y = v->y;
     ic->pos.z = v->z;

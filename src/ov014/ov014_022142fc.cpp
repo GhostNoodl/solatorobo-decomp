@@ -114,19 +114,12 @@ BOOL func_ov014_022143f4(Actor *self) {
     return r;
 }
 
-extern void *data_02097e4c;
 extern char data_ov014_02218040[];
 extern char data_ov014_0221804f[];
 extern char data_ov014_0221805b[];
-extern void *data_0214a420;
 extern void *Actor_GetTarget(void *self);
 extern void func_ov014_02214f10(Actor *self);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void HitSphere_Link(ActorSub48 *p);
-extern Ov014V *Effect3D_Create(void *a, void *b, s32 c, VecFx32 *d);
-extern Ov014V *EffectGroup_Create(void *a, void *b, VecFx32 *d);
-extern Ov014V *func_02065f88(s32 id, VecFx32 *pos);
-extern Ov014V *func_020657b0(void *a, void *b);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern void func_ov000_0218996c(s32 a, s32 b);
 
@@ -229,7 +222,7 @@ void func_ov014_022144f8(Ov014ActEx_022142fc *self) {
         s32 x = self->unk_d0.x;
         s32 y = self->unk_d0.y;
         s32 z = self->unk_d0.z;
-        Ov014V *e;
+        EffectObj *e;
         ActorSub44 *q4;
         ActorSub48 *q8;
         self->pos.x = x;
@@ -251,8 +244,8 @@ void func_ov014_022144f8(Ov014ActEx_022142fc *self) {
         q.z = self->unk_84.z;
         q.y += 0xd9a;
         e = Effect3D_Create(data_ov014_02218040, data_ov014_0221804f, 0, &q);
-        e->v14(0x1ccd, 0xccd, 0x1ccd);
-        FLD(s32, e, 0x3c) = 0x1400;
+        e->SetScaleXYZ(0x1ccd, 0xccd, 0x1ccd);
+        e->speed = 0x1400;
         self->fsm->st++;
         break;
     }
@@ -265,15 +258,15 @@ void func_ov014_022144f8(Ov014ActEx_022142fc *self) {
         VEC_Add((VecFx32 *)&self->speed, &self->pos, &self->pos);
         if (self->pos.y < 0xa000 && oldy >= 0xa000) {
             func_02049f44(data_02097e4c, 0x32, &self->pos, 0);
-            Ov014V *e = func_02065f88(0x4b0, &self->pos);
-            e->v14(0x59a, 0x1333, 0x59a);
-            e->v34(0x3fff, 0, 0);
-            self->unk_e0 = FLD(s32, e, 0x24);
+            EffectObj *e = func_02065f88(0x4b0, &self->pos);
+            e->SetScaleXYZ(0x59a, 0x1333, 0x59a);
+            e->SetRotXYZ(0x3fff, 0, 0);
+            self->unk_e0 = e->id;
         }
         {
-            Ov014V *e2 = func_020657b0(data_0214a420, ((void *)self->unk_e0));
+            EffectObj *e2 = func_020657b0(data_0214a420, self->unk_e0);
             if (e2 != NULL) {
-                e2->v18(&self->pos);
+                e2->SetPos(&self->pos);
             }
         }
         if (self->hit->unk_50 & 0xe0000000) {
@@ -304,14 +297,14 @@ void func_ov014_022144f8(Ov014ActEx_022142fc *self) {
         self->targetObj->target = 0xffff;
         {
             s32 sc = self->radius;
-            Ov014V *f = EffectGroup_Create(data_ov014_02218040, data_ov014_0221805b, &self->pos);
-            f->v14(sc, sc, sc);
+            EffectObj *f = EffectGroup_Create(data_ov014_02218040, data_ov014_0221805b, &self->pos);
+            f->SetScaleXYZ(sc, sc, sc);
         }
         func_ov000_02198360(self->fsm, 0x15, 0);
         break;
     }
     case 0x1e: {
-        Ov014V *e;
+        EffectObj *e;
         ActorSub44 *q4;
         self->model->visible = 0;
         q4 = self->unk_44;
@@ -322,7 +315,7 @@ void func_ov014_022144f8(Ov014ActEx_022142fc *self) {
         w.z = self->pos.z;
         w.y = self->hit->check.y;
         e = Effect3D_Create(data_ov014_02218040, data_ov014_0221804f, 0, &w);
-        e->v14(0x24cd, 0x299a, 0x24cd);
+        e->SetScaleXYZ(0x24cd, 0x299a, 0x24cd);
         func_02049f44(data_02097e4c, 0x56, &w, 0);
         func_ov000_0218996c(0xc, 0x19);
         self->fsm->st++;
@@ -447,8 +440,8 @@ void func_ov014_02214f10(Actor *self) {
         self->targetObj->target = 0xffff;
         {
             s32 sc = self->radius;
-            Ov014V *f = EffectGroup_Create(data_ov014_02218040, data_ov014_0221805b, &self->pos);
-            f->v14(sc, sc, sc);
+            EffectObj *f = EffectGroup_Create(data_ov014_02218040, data_ov014_0221805b, &self->pos);
+            f->SetScaleXYZ(sc, sc, sc);
         }
         func_ov000_02198360(self->fsm, 0x15, 0);
         break;

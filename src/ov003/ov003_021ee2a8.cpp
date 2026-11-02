@@ -1,12 +1,9 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorParts.h"
 
-struct Ov003Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-};
 
 struct Ov003SwPart {
     u8 unk_00[0x1c];
@@ -25,17 +22,7 @@ struct Ov003LvPlayer {
     u8 unk_00[0x64];
     s32 radius;
     u8 unk_68[8];
-    Ov003Vec pos;
-};
-
-class Ov003LvEffect {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10();
-    virtual void SetScale(s32 x, s32 y, s32 z);
+    VecFx32 pos;
 };
 
 struct Ov003Lever {
@@ -54,7 +41,7 @@ struct Ov003Lever {
     u8 unk_48[4];
     void *link;
     u8 unk_50[0x20];
-    Ov003Vec pos;
+    VecFx32 pos;
     u8 unk_7c[0x17];
     u8 unk_93_0 : 1;
     u8 state : 3;
@@ -66,7 +53,6 @@ struct Ov003Lever {
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern char data_ov003_021f9fd6[];
 extern char data_ov003_021f9fd0[];
 extern void func_ov000_02194758(void *self);
@@ -74,7 +60,6 @@ extern void func_ov000_02197d80(void *self);
 extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern void func_ov000_021911c8(void *p, s32 a);
-extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern void func_020627b4(void);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern void *Target_Get(void *p);
@@ -82,8 +67,7 @@ extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
 extern BOOL func_ov000_02191120(void *p);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern Ov003LvPlayer *func_ov000_0219bf90(void);
-extern BOOL Hit_DiffInSphere(Ov003Vec *a, Ov003Vec *b, s32 r);
-extern Ov003LvEffect *func_02065f88(s32 id, const Ov003Vec *pos);
+extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern s32 Rand_UpTo(s32 max);
 extern BOOL func_ov000_0219aae8(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 
@@ -274,8 +258,8 @@ void func_ov003_021ee73c(Ov003Lever *self) {
         if (!(w->timer & 0x7f)) {
             Ov003LvPlayer *pl = func_ov000_0219bf90();
             if (pl != NULL && Hit_DiffInSphere(&pl->pos, &self->pos, pl->radius + 0xf000)) {
-                Ov003LvEffect *e = func_02065f88(0x322, &self->pos);
-                e->SetScale(0xe66, 0xe66, 0xe66);
+                EffectObj *e = func_02065f88(0x322, &self->pos);
+                e->SetScaleXYZ(0xe66, 0xe66, 0xe66);
                 func_02049f44(data_02097e4c, Rand_UpTo(1) + 0x79, &self->pos, 0);
                 self->work->st++;
                 self->work->timer = 0;

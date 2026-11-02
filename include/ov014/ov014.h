@@ -9,6 +9,10 @@
 #include "ov000/Actor.h"
 #include "ov000/ObjLayouts.h"
 #include "ov003/Actor.h"
+#include "ov003/FxList.h"
+#include "Main/Effect/Effect.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Res/ResArc.h"
 #include "nitro/std.h"
 
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
@@ -236,30 +240,6 @@ struct Ov014Step {
     u16 unk_06;
 };
 
-// View of the Main EffectObj (Main/Effect/Effect.h) with its real virtual signatures, for the
-// objects returned by func_02065f88 (Main/Effect/Effect.h is not included: its globals clash with
-// the local views some ov014 files keep). vf0c takes one argument at these call sites.
-class Ov014Eff {
-public:
-    virtual void Dtor();
-    virtual void Delete();
-    virtual void SetParam(s32 param);
-    virtual void vf0c(s32 v);
-    virtual void SetScale(const VecFx32 *scale);
-    virtual void SetScaleXYZ(s32 x, s32 y, s32 z);
-    virtual void SetPos(const VecFx32 *pos);
-    virtual void SetPosXYZ(s32 x, s32 y, s32 z);
-    virtual void AddPos(const VecFx32 *delta);
-    virtual void AddPosXYZ(s32 x, s32 y, s32 z);
-    virtual void vf28();
-    virtual void vf2c();
-    virtual void SetRot(const u16 *rot);
-    virtual void SetRotXYZ(u16 x, u16 y, u16 z);
-    u8 unk_04[0x20];
-    u32 id; // EffectObj::id
-    u8 unk_28[0xa0];
-    s32 loopCount; // EffectObj::loopCount
-};
 
 struct Ov014Names {
     u16 unk_00;
@@ -338,14 +318,13 @@ s32 func_0203db40(void *p);
 void func_ov000_02190a80(void *a, s32 b);
 }
 
-extern "C" void *func_ov003_021da940(void *p);
 
 // Frees the effect handle at self+off with the default heap selected.
 static inline void Ov014_FreeFx(void *self, u32 off) {
     void *saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     if (FLD(void *, self, off) != NULL) {
-        void *p = FLD(void *, self, off);
+        Ov003FxList *p = FLD(Ov003FxList *, self, off);
         if (p != NULL) {
             func_ov003_021da940(p);
             Heap_Free(p);
@@ -355,10 +334,10 @@ static inline void Ov014_FreeFx(void *self, u32 off) {
     data_02097dd0->cur = saved;
 }
 
-static inline s32 *Ov014_NewFx(void) {
-    s32 *p = (s32 *)Heap_Alloc(4);
+static inline Ov003FxList *Ov014_NewFx(void) {
+    Ov003FxList *p = (Ov003FxList *)Heap_Alloc(4);
     if (p != NULL) {
-        *p = 0;
+        p->head = NULL;
     }
     return p;
 }
@@ -409,7 +388,7 @@ public:
     u8 unk_f8;
     u8 unk_f9;
     u8 unk_fa[0x2];
-    void *unk_fc;
+    Ov003FxList *unk_fc; // effect list (func_ov003_021da940 frees it)
     u8 unk_100[0x2c];
     VecFx32 unk_12c;
     u8 unk_138;
@@ -442,7 +421,7 @@ public:
     u16 unk_fc;
     u8 unk_fe;
     u8 unk_ff;
-    void *unk_100;
+    Ov003FxList *unk_100; // effect list (func_ov003_021da940 frees it)
     u8 *unk_104;
     u8 unk_108[0xc];
     u8 *unk_114;
@@ -459,7 +438,7 @@ public:
     u8 unk_f8;
     u8 unk_f9;
     u8 unk_fa[0x2];
-    void *unk_fc;
+    Ov003FxList *unk_fc; // effect list (func_ov003_021da940 frees it)
     u8 unk_100[0x2c];
     s16 unk_12c;
     u8 unk_12e;
@@ -541,8 +520,8 @@ public:
     void *unk_1d0;
     void *unk_1d4;
     u8 unk_1d8[0x4];
-    void *unk_1dc;
-    void *unk_1e0;
+    u32 unk_1dc;
+    u32 unk_1e0;
     s32 unk_1e4;
     s32 unk_1e8;
     s32 unk_1ec;
@@ -572,7 +551,7 @@ public:
     u16 unk_150;
     u8 unk_152[0x2];
     void *unk_154;
-    void *unk_158;
+    u32 unk_158;
     u8 unk_15c[0x2];
     s16 unk_15e;
     u8 unk_160[0xc];
@@ -589,15 +568,15 @@ public:
     u32 unk_d0;
     u8 unk_d4;
     u8 unk_d5[0x3];
-    s32 *unk_d8;
+    Ov003FxList *unk_d8; // effect list
 };
 SIZE_ASSERT(Ov014ActEx_02208618, 0xdc);
 
 // Actor class of Ov014ActEx_0220d70c_Ctor (vtable data_ov014_02217bdc).
 class Ov014ActEx_0220d70c : public ActorEx {
 public:
-    void *unk_d0;
-    void *unk_d4;
+    u32 unk_d0;
+    u32 unk_d4;
     Ov014Vec16 unk_d8; // state durations, copied from the spawn data at 0x18
     u8 unk_de[0x2];
 };
@@ -606,7 +585,7 @@ SIZE_ASSERT(Ov014ActEx_0220d70c, 0xe0);
 // Actor class of Ov014ActEx_0220dcf4_Ctor (vtable data_ov014_02217b44).
 class Ov014ActEx_0220dcf4 : public ActorEx {
 public:
-    void *unk_d0;
+    u32 unk_d0;
     u8 unk_d4;
     u8 unk_d5;
     s16 unk_d6;
@@ -618,7 +597,7 @@ SIZE_ASSERT(Ov014ActEx_0220dcf4, 0xdc);
 // Actor class of Ov014ActEx_021fbd64_Ctor (vtable data_ov014_022172c4).
 class Ov014ActEx_021fbd64 : public ActorEx {
 public:
-    void *unk_d0;
+    Ov003FxList *unk_d0; // effect list (func_ov003_021da940 frees it)
 };
 SIZE_ASSERT(Ov014ActEx_021fbd64, 0xd4);
 
@@ -636,7 +615,7 @@ public:
     u8 unk_fd;
     u8 unk_fe;
     u8 unk_ff;
-    void *unk_100;
+    Ov003FxList *unk_100; // effect list (func_ov003_021da940 frees it)
 };
 SIZE_ASSERT(Ov014ActEx_021fc24c, 0x104);
 
@@ -647,7 +626,7 @@ public:
     s32 unk_d4;
     u16 unk_d8;
     u8 unk_da[0x2];
-    void *unk_dc;
+    Ov003FxList *unk_dc; // effect list (func_ov003_021da940 frees it)
 };
 SIZE_ASSERT(Ov014ActEx_02206c68, 0xe0);
 
@@ -656,7 +635,7 @@ class Ov014ActEx_0220774c : public ActorEx {
 public:
     u32 unk_d0;
     s32 unk_d4;
-    void *unk_d8;
+    Ov003FxList *unk_d8; // effect list (func_ov003_021da940 frees it)
 };
 SIZE_ASSERT(Ov014ActEx_0220774c, 0xdc);
 
@@ -712,7 +691,7 @@ SIZE_ASSERT(Ov014ActExGrow, 0xe8);
 
 class Ov014ActExVt_02217838 : public Ov014ActExGrow {
 public:
-    void *fx; // handle of the effect spawned at full size
+    u32 fx; // handle of the effect spawned at full size
 };
 SIZE_ASSERT(Ov014ActExVt_02217838, 0xec);
 

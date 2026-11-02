@@ -1,13 +1,8 @@
 #include "types.h"
+#include "ov003/Vec.h"
 #include "ov003/Ticker.h"
 #include "ov003/StateMachine.h"
 
-struct Ov003Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-    Ov003Vec() {}
-};
 
 class Ov003TickerSet {
 public:
@@ -37,11 +32,6 @@ public:
     u32 unk_14;
 };
 
-struct Ov003VecP {
-    s32 x;
-    s32 y;
-    s32 z;
-};
 
 static inline Ov003StateNode *Ov003StateMachine_Find(Ov003StateMachine *self, u8 id) {
     Ov003StateNode *n;
@@ -58,7 +48,6 @@ extern "C" {
 extern u32 data_ov003_021f7cf4;
 extern u32 data_ov003_021f7cd8;
 extern s16 func_ov003_021d7e58(Ov003Ticker *t);
-extern void VEC_MultAdd(s32 scale, const Ov003Vec *dir, const Ov003Vec *src, Ov003Vec *dst);
 extern void Heap_Free(void *p);
 extern void *Heap_Alloc(u32 size);
 extern void *History_Init(void *p);

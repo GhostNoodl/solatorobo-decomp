@@ -1,35 +1,15 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/Shot.h"
-
-// The effect object func_02065f88 returns (Main EffectObj; only the methods used here).
-class Ov003AkFx {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10();
-    virtual void SetScaleXYZ(s32 x, s32 y, s32 z);
-    virtual void v18();
-    virtual void v1c();
-    virtual void AddPos(VecFx32 *v);
-    virtual void v24();
-    virtual void v28();
-    virtual void v2c();
-    virtual void SetRot(ActorRot *r);
-};
 
 extern "C" {
 
 extern Ov003ShotDef data_ov003_021f4a34[];
 extern Ov003ShotStep data_ov003_021f49c4[];
 extern VecFx32 data_02092a50;
-extern void *data_02097e4c;
 extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
-extern MtxFx43 *NNS_G3dGlbGetInvV(void);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
-extern Ov003AkFx *func_02065f88(s32 id, VecFx32 *pos);
 
 #define OV003AK_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003AK_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
@@ -47,7 +27,7 @@ void func_ov003_021daec0(Ov003Shot *self) {
         self->steps = data_ov003_021f49c4;
     }
     if (self->def->viewSpace) {
-        MtxFx43 *m;
+        const MtxFx43 *m;
         s32 x;
         s32 y;
         s32 z;
@@ -67,7 +47,7 @@ void func_ov003_021daec0(Ov003Shot *self) {
         func_02049f44(data_02097e4c, self->def->sound, &self->pos, 0);
     }
     if (self->def->spawn.id != -1) {
-        Ov003AkFx *e = func_02065f88(self->def->spawn.id, &self->pos);
+        EffectObj *e = func_02065f88(self->def->spawn.id, &self->pos);
         VecFx32 v;
         MtxFx33 m;
         MtxFx33 t;

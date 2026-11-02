@@ -1,25 +1,6 @@
 #include "types.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/Shot.h"
-
-// The effect object func_02065f88 returns (Main EffectObj; only the members used here).
-class Ov003PjFx {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10();
-    virtual void SetScaleXYZ(s32 x, s32 y, s32 z);
-    virtual void v18();
-    virtual void v1c();
-    virtual void AddPos(VecFx32 *v);
-    virtual void v24();
-    virtual void v28();
-    virtual void v2c();
-    virtual void SetRot(ActorRot *r);
-    u8 unk_04[0x20];
-    void *id; // handle (EffectMgr_Kill / func_020657b0)
-};
 
 extern "C" {
 
@@ -28,11 +9,9 @@ extern VecFx32 data_02092a50;
 extern Robo021ca458 *func_ov000_0219bf90(void);
 extern Actor *Target_Get(ActorSub4c *t);
 extern VecFx32 *func_ov000_0218d2e0(Actor *self);
-extern Ov003PjFx *func_02065f88(s32 id, VecFx32 *pos);
 extern void func_01ffc9fc(VecFx32 *dst, VecFx32 *src, u16 ry);
 extern void HitSphere_Link(ActorSub48 *a);
 extern void func_ov000_021987b8(ActorSub48 *a, s32 b, s32 c, s32 d);
-extern MtxFx43 *NNS_G3dGlbGetInvV(void);
 
 #define OV003PJ_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003PJ_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
@@ -191,7 +170,7 @@ void func_ov003_021db244(Ov003Shot *self) {
         }
         self->curSpeed = self->steps->speed;
         if (self->def->fly.id != -1 && self->unk_bc == NULL) {
-            Ov003PjFx *e = func_02065f88(self->def->fly.id, &self->pos);
+            EffectObj *e = func_02065f88(self->def->fly.id, &self->pos);
             s32 s = self->def->fly.scale << 4;
             e->SetScaleXYZ(s, s, s);
             e->SetRot(&self->rot);
@@ -229,7 +208,7 @@ void func_ov003_021db244(Ov003Shot *self) {
         if (cfg->trail.id != -1) {
             self->trailTimer++;
             if (self->trailTimer > cfg->trailInterval) {
-                Ov003PjFx *e;
+                EffectObj *e;
                 s32 s;
                 self->trailTimer = 0;
                 e = func_02065f88(cfg->trail.id, &self->pos);
@@ -297,7 +276,7 @@ void func_ov003_021db244(Ov003Shot *self) {
             VEC_MultAdd(ent->homing, &d, &self->vel, &self->vel);
         }
         if (self->def->viewSpace) {
-            MtxFx43 *iv;
+            const MtxFx43 *iv;
             s32 x;
             s32 y;
             s32 z;

@@ -6,6 +6,7 @@
 #include "ov000/HeapScope.h"
 #include "Main/Gfx/Model.h"
 #include "nitro/std.h"
+#include "Main/Res/ResArc.h"
 
 // The ov000 task base (vtable data_ov000_021cc060, 0x3c bytes; func_ov000_021731a0 clears it).
 // Tasks are kept in a list sorted by priority (data_ov000_021ccd3c, func_ov000_02173648) and
@@ -79,7 +80,6 @@ void *Heap_Alloc(u32 size);
 void Heap_Free(void *ptr);
 void func_02043d20(void *a, s32 b);
 void func_ov000_0214c1ac(void);
-void *func_02035d5c(const char *a);
 void *func_02034d88(void *a, void *b);
 void func_02041c20(Model *model, s32 a, void *b);
 void func_ov000_02173d9c(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);

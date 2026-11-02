@@ -253,7 +253,7 @@ void Ov009ActExVt_022181f4_Update(Ov009ActExVt_022181f4 *self) {
                 Ov009V *e = func_02065f88(0x196, &self->pos);
                 FLD(s32, e, 0x30) = 0x2a000;
                 e->v0c(0xe66);
-                self->unk_bc = FLD(void *, e, 0x24);
+                self->unk_bc = FLD(u32, e, 0x24);
                 func_02049f44(data_02097e4c, 0x44, &self->pos, 0);
             }
         }

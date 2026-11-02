@@ -1,4 +1,5 @@
 #include "ov012/ov012.h"
+#include "Main/Math/Rot16.h"
 
 extern "C" {
 void func_ov012_0220824c(Ov003Actor *self) {
@@ -12,13 +13,7 @@ extern char data_ov012_0220b335[];
 extern char data_ov012_0220b33b[];
 extern char data_ov012_0220b341[];
 extern void func_ov000_021911c8(void *p, s32 a);
-extern void func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
 
-struct Ov012Rot8294 {
-    u16 x;
-    u16 y;
-    u16 z;
-};
 
 static inline u16 Ov012_HpPct8294(Ov003Actor *self) {
     return self->hp[0] * 100 / self->hp[1];
@@ -42,12 +37,12 @@ void func_ov012_02208294(Ov003Actor *self) {
     case 1:
         s->timer++;
         if (s->timer > 0x14) {
-            Ov012V *e;
+            EffectObj *e;
             func_02049f44(data_02097e4c, 0x29, &self->pos, 0);
             e = func_02065f88(0x192, &self->pos);
-            e->v24(0, 0x1333, 0);
-            e->v0c(0x1333);
-            e->v34(0, self->moveYaw, 0);
+            e->AddPosXYZ(0, 0x1333, 0);
+            e->SetScaleAll(0x1333);
+            e->SetRotXYZ(0, self->moveYaw, 0);
             self->speed = 0x533;
             self->fsm->timer = 0;
             self->fsm->st++;
@@ -73,9 +68,9 @@ void func_ov012_02208294(Ov003Actor *self) {
         Actor_TurnToActor(self, pl, 0x400);
         self->fsm->timer++;
         if (self->fsm->timer == 5 || self->fsm->timer == 0x23) {
-            Ov012V *e = func_02065f88(0x384, &self->pos);
-            e->v24(0, 0x1333, 0);
-            e->v0c(0xe66);
+            EffectObj *e = func_02065f88(0x384, &self->pos);
+            e->AddPosXYZ(0, 0x1333, 0);
+            e->SetScaleAll(0xe66);
         }
         if (self->model->anim_state == 1) {
             self->speed = 0;
@@ -114,23 +109,23 @@ void func_ov012_02208294(Ov003Actor *self) {
     case 5:
         s->timer++;
         if (s->timer > 0x14) {
-            Ov012V *e;
-            Ov012Rot8294 r;
+            EffectObj *e;
+            Rot16 r;
             func_0204a028(data_02097e4c, 0x54, &self->pos, 3);
             e = func_02065f88(0x25d, &self->pos);
-            e->v24(0, 0x1333, 0);
-            e->v0c(0xb33);
+            e->AddPosXYZ(0, 0x1333, 0);
+            e->SetScaleAll(0xb33);
             r.y = self->rot_y + 0x6000;
             r.x = 0x800;
             r.z = 0;
-            e->v30(&r);
+            e->SetRot(&r);
             e = func_02065f88(0x25d, &self->pos);
-            e->v24(0, 0x1333, 0);
-            e->v0c(0xb33);
+            e->AddPosXYZ(0, 0x1333, 0);
+            e->SetScaleAll(0xb33);
             r.y = self->rot_y - 0x6000;
             r.x = 0x800;
             r.z = 0;
-            e->v30(&r);
+            e->SetRot(&r);
             self->fsm->timer = 0;
             self->fsm->st++;
         }

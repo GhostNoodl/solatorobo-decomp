@@ -1,25 +1,6 @@
 #include "types.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/Shot.h"
-
-// The effect object func_02065f88 returns (Main EffectObj; only the members used here).
-class Ov003HmFx {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void SetScale(s32 s);
-    virtual void v10();
-    virtual void v14();
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void v24();
-    virtual void v28();
-    virtual void v2c();
-    virtual void SetRot(ActorRot *r);
-    u8 unk_04[0x20];
-    void *id; // handle
-};
 
 extern "C" {
 
@@ -28,7 +9,6 @@ extern void *data_ov000_021ccd68;
 extern Actor *Target_Get(ActorSub4c *t);
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
-extern Ov003HmFx *func_02065f88(s32 id, VecFx32 *pos);
 extern void func_01ffc9fc(VecFx32 *dst, const VecFx32 *src, u16 ry);
 extern void HitSphere_Link(ActorSub48 *a);
 extern void func_ov000_021987b8(ActorSub48 *a, s32 b, s32 c, s32 d);
@@ -68,7 +48,7 @@ void func_ov003_021ed15c(Ov003HomingShot *self) {
     speed = 0;
     switch (self->fsm->st) {
     case 0: {
-        Ov003HmFx *e;
+        EffectObj *e;
         func_ov003_021dc0c8(self);
         self->vel.x = 0;
         self->vel.y = 0;
@@ -77,7 +57,7 @@ void func_ov003_021ed15c(Ov003HomingShot *self) {
         speed = 0x333;
         e = func_02065f88(0x324, &self->pos);
         func_01ffc9fc(&self->fxOffset, &ofs, self->rot_y);
-        e->SetScale(0x2333);
+        e->SetScaleAll(0x2333);
         self->unk_bc = e->id;
         self->fsm->timer = 0;
         self->fsm->st++;
@@ -142,7 +122,7 @@ void func_ov003_021ed15c(Ov003HomingShot *self) {
         self->trailTimer = 0;
         func_02065f88(0x12d, &self->pos)->SetRot(&self->rot);
     }
-    if (self->unk_bc != (void *)-1) { // the homing shot compares its effect handle with -1
+    if (self->unk_bc != (u32)-1) { // the homing shot compares its effect id with -1
         func_01ffc9fc(&self->fxOffset, &ofs, self->rot_y);
     }
     if (self->hit != NULL) {

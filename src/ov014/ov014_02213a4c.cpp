@@ -2,14 +2,11 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern char data_ov014_02217d7c[];
 extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_02191618(void *p);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern void func_ov000_021911c8(void *a, s32 b);
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
-extern Ov014V *func_02065f88(s32 id, VecFx32 *pos);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
 
 struct Ov014SpawnDesc {
@@ -62,8 +59,8 @@ void func_ov014_022136b4(Ov014Act_0221267c *self) {
         break;
     }
     case 10: {
-        Ov014V *e = func_02065f88(0x5e1, &self->unk_33c);
-        e->v14(0x2000, 0x2000, 0x2000);
+        EffectObj *e = func_02065f88(0x5e1, &self->unk_33c);
+        e->SetScaleXYZ(0x2000, 0x2000, 0x2000);
         self->fsm->st++;
         self->fsm->timer = 0x3c;
         break;

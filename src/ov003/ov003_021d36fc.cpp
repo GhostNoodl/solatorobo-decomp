@@ -1,12 +1,10 @@
 #include "types.h"
+#include "Main/Math/Rot16.h"
 #include "nitro/std.h"
 #include "ov003/Actor.h"
 
 extern "C" {
 
-typedef struct {
-    u16 x, y, z;
-} Ov003DwRot;
 
 typedef struct {
     s32 m[9];
@@ -15,7 +13,7 @@ typedef struct {
 
 typedef struct {
     u8 unk_00[0x7c];
-    Ov003DwRot rot;
+    Rot16 rot;
 } Ov003DwTgt;
 
 typedef struct {

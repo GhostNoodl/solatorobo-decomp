@@ -13,7 +13,7 @@ void func_ov002_021da430(void *self) {
     HEAP_PUSH(saved);
     DELETE_VOBJ(FIELD(self, 4, VObject *));
     HEAP_POP(saved);
-    func_02036838(data_02097cdc, (char *)data_ov002_021efdf6, 7, 0);
+    func_02036838(data_02097cdc, data_ov002_021efdf6, 7, 0);
     if (FIELD(self, 0x10, u8)) {
         EffectMgr_RestoreList(data_0214a420);
         if (data_ov000_021ccd54 != NULL) {

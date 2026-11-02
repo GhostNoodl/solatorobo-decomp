@@ -28,7 +28,7 @@ void func_ov002_021ccde4(void) {
         if (p != NULL) {
             if (p->unk_04 >= 1) {
                 func_02036838(data_02097cdc, data_0208cca0, 7, 0);
-                func_02036838(data_02097cdc, (char *)data_0208cc94, 7, 0);
+                func_02036838(data_02097cdc, data_0208cc94, 7, 0);
                 func_02036838(data_02097cdc, data_0214b105, 7, 0);
             }
             Heap_Free(p);
@@ -46,12 +46,12 @@ void func_ov002_021cceb4(Unk021cceb4 *self) {
             data_0214a424->bits18.flag9 = 0;
         }
         func_020359d0(data_0208cca0, 7, 0);
-        func_020359d0((char *)data_0208cc94, 7, 0);
+        func_020359d0(data_0208cc94, 7, 0);
         func_020359d0(data_0214b105, 7, 0);
         self->state = 1;
     case 1:
         func_02035b90(data_0208cca0, 7);
-        func_02035b90((char *)data_0208cc94, 7);
+        func_02035b90(data_0208cc94, 7);
         if (func_02035b90(data_0214b105, 7) == 0) {
             return;
         }

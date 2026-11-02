@@ -9,16 +9,9 @@ struct Ov014HitArg {
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
-extern BOOL Ov003FxList_Has(void *p, s32 a);
-extern void func_ov003_021da9ac(void *p, s32 a, void *e);
-extern void func_ov003_021daae4(void *p, s32 a, VecFx32 *v, s32 b, s32 c, s32 d, s32 e);
-extern void Ov003FxList_Kill(void *p, s32 a);
-extern Ov014V *func_02065f88(s32 id, VecFx32 *v);
-extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 
 static inline BOOL Ov014_AnyHit(Ov014ActEx_0220774c *self) {
@@ -53,9 +46,9 @@ void func_ov014_0220840c(Ov014ActEx_0220774c *self) {
             Actor_SendMsg(t, self->id, 0xb, 1, 6, &arg);
             p.y += 0x1800;
             if (!Ov003FxList_Has(self->unk_d8, 0xfe)) {
-                Ov014V *e = func_02065f88(0xcb, &p);
-                e->v34(0, 0, 0x7fff);
-                e->v0c(0xb33);
+                EffectObj *e = func_02065f88(0xcb, &p);
+                e->SetRotXYZ(0, 0, 0x7fff);
+                e->SetScaleAll(0xb33);
                 MIi_CpuClear32(-1, (u8 *)e + 0x84, 0x40);
                 func_0204a028(data_02097e4c, 0x11, &self->pos, -10);
                 func_ov003_021da9ac(self->unk_d8, 0xfe, e);

@@ -1,20 +1,8 @@
 #include "ov003/Vec.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/Actor.h"
 #include "Main/Sys/FieldState.h"
 
-struct Ov003VecP {
-    s32 x;
-    s32 y;
-    s32 z;
-};
-
-class Ov003Effect {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void SetTime(s32 t);
-};
 
 static inline s32 Ov003Kind_Get(ActorSub40 *k) {
     return k != NULL ? k->current : 0;
@@ -23,27 +11,25 @@ static inline s32 Ov003Kind_Get(ActorSub40 *k) {
 extern "C" {
 
 extern void *data_ov000_021ccd68;
-extern const Ov003VecP data_ov003_021f4988;
+extern const VecFx32 data_ov003_021f4988;
 extern void *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(void *obj, u16 id);
 extern BOOL func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(void);
 extern s32 Rand_UpTo(s32 v);
-extern Ov003Mtx33 *NNS_G3dGlbGetInvV(void);
-extern Ov003Effect *func_02065f88(s32 fx, const Ov003Vec *pos);
 
 void func_ov003_021d9dbc(Ov003Vec *out, const Ov003Vec *a, const Ov003Vec *b, s32 dist, s32 yoff) {
     Ov003Vec d;
     Ov003Vec r;
-    if (VEC_Distance((VecFx32 *)a, (VecFx32 *)b) <= dist) {
+    if (VEC_Distance(a, b) <= dist) {
         *out = *a;
         return;
     }
     d.x = a->x - b->x;
     d.y = a->y - b->y;
     d.z = a->z - b->z;
-    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)&d);
-    VEC_MultAdd(dist, (VecFx32 *)&d, (VecFx32 *)b, (VecFx32 *)&r);
+    VEC_Normalize(&d, &d);
+    VEC_MultAdd(dist, &d, b, &r);
     if (yoff != 0) {
         r.y += yoff;
     }
@@ -52,7 +38,7 @@ void func_ov003_021d9dbc(Ov003Vec *out, const Ov003Vec *a, const Ov003Vec *b, s3
 
 void Ov003Vec_MultAdd(Ov003Vec *out, const Ov003Vec *dir, const Ov003Vec *base, s32 scale, s32 yoff) {
     Ov003Vec r;
-    VEC_MultAdd(scale, (VecFx32 *)dir, (VecFx32 *)base, (VecFx32 *)&r);
+    VEC_MultAdd(scale, dir, base, &r);
     if (yoff != 0) {
         r.y += yoff;
     }
@@ -74,7 +60,7 @@ void func_ov003_021d9f80(Ov003Rot *out, const Ov003Vec *a, const Ov003Vec *b) {
     d.x = a->x - b->x;
     d.y = a->y - b->y;
     d.z = a->z - b->z;
-    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)&d);
+    VEC_Normalize(&d, &d);
     out->x = Ov003_Pitch(d.y);
     out->y = FX_Atan2(d.x, d.z);
     out->z = 0;
@@ -118,51 +104,51 @@ BOOL func_ov003_021da03c(Ov003Actor *self) {
     return TRUE;
 }
 
-static inline Ov003Effect *Ov003_SpawnScatter(const Ov003Vec *base, s32 range, s32 fx) {
+static inline EffectObj *Ov003_SpawnScatter(const Ov003Vec *base, s32 range, s32 fx) {
     Ov003Vec v;
     Ov003Vec p;
     s32 y = Rand_PlusMinus(range);
     v.x = Rand_PlusMinus(range);
     v.y = y;
     v.z = 0;
-    MTX_MultVec33((VecFx32 *)&v, NNS_G3dGlbGetInvV(), (VecFx32 *)&v);
-    VEC_Add((VecFx32 *)base, (VecFx32 *)&v, (VecFx32 *)&p);
+    MTX_MultVec33(&v, (const MtxFx33 *)NNS_G3dGlbGetInvV(), &v); // the inverse view matrix's rotation rows
+    VEC_Add(base, &v, &p);
     return func_02065f88(fx, &p);
 }
 
 void func_ov003_021da108(Ov003Actor *self, s32 range, s32 fx, s32 base, s32 top) {
     Ov003Vec pos;
-    Ov003VecP off = data_ov003_021f4988;
+    VecFx32 off = data_ov003_021f4988;
     pos = *(Ov003Vec *)&self->pos; // copied as an Ov003Vec (see ov003/Vec.h)
     s32 r;
-    Ov003Effect *e;
+    EffectObj *e;
     if (self->unk_44 != NULL) {
         off.x = self->unk_44->unk_0c.x;
         off.y = self->unk_44->unk_0c.y;
         off.z = self->unk_44->unk_0c.z;
     }
-    VEC_Add((VecFx32 *)&pos, (VecFx32 *)&off, (VecFx32 *)&pos);
+    VEC_Add(&pos, &off, &pos);
     r = Rand_UpTo(top - base);
     e = Ov003_SpawnScatter(&pos, range, fx);
     if (e != NULL) {
-        e->SetTime(base + r);
+        e->SetScaleAll(base + r);
     }
 }
 
-static inline void Ov003_RotY(Ov003VecP *out, s32 angle, const Ov003VecP *in) {
+static inline void Ov003_RotY(VecFx32 *out, s32 angle, const VecFx32 *in) {
     Ov003Mtx33 m;
     if (angle == 0) {
         *out = *in;
         return;
     }
     MTX_RotY33_(&m, OV003_SIN(angle), OV003_COS(angle));
-    MTX_MultVec33((VecFx32 *)in, &m, (VecFx32 *)out);
+    MTX_MultVec33(in, &m, out);
 }
 
-Ov003VecP func_ov003_021da214(Ov003Actor *actor) {
-    Ov003VecP v = data_ov003_021f4988;
+VecFx32 func_ov003_021da214(Ov003Actor *actor) {
+    VecFx32 v = data_ov003_021f4988;
     if (actor != NULL && actor->unk_44 != NULL) {
-        v = *(Ov003VecP *)&actor->unk_44->unk_0c;
+        v = *&actor->unk_44->unk_0c;
         Ov003_RotY(&v, actor->rot_y, &v);
     }
     return v;

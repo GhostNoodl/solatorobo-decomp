@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 
 #define FIELD(p, off, T) (*(T *)((u8 *)(p) + (off)))
 
@@ -171,12 +173,6 @@ typedef struct Ov003CdWin {
     u32 flags;
 } Ov003CdWin;
 
-typedef struct Ov003CdHeap {
-    void *current;
-    u8 unk4[4];
-    void *unk8;
-} Ov003CdHeap;
-
 typedef struct Ov003CdTask {
     void *vtbl;
     u8 unk4[0x38];
@@ -199,15 +195,12 @@ typedef struct Ov003CdTask {
 extern "C" {
 
 extern Ov003CdPad *data_02097dc8;
-extern void *data_02097e4c;
 extern void *data_02149ef8;
-extern Ov003CdHeap *data_02097dd0;
 extern void *data_ov000_021cac60;
 extern void *data_ov000_021cad50;
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
 s32 func_02049bdc(void *a, s32 b, s32 c);
-void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_02041c18(void *m, u16 c);
 void func_02041c20(void *m, u16 a, u16 b);
 void func_02041c5c(void *m, void *fn);
@@ -362,15 +355,15 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
             break;
         }
         {
-            void *saved = data_02097dd0->current;
-            data_02097dd0->current = data_02097dd0->unk8;
+            void *saved = data_02097dd0->cur;
+            data_02097dd0->cur = data_02097dd0->heapHi;
             if (self->unk40 != NULL) {
                 if (self->unk40 != NULL) {
                     OV003_VCALL(self->unk40, 04);
                 }
                 self->unk40 = NULL;
             }
-            data_02097dd0->current = saved;
+            data_02097dd0->cur = saved;
         }
         self->state = 0x32;
         break;

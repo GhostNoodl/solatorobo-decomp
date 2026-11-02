@@ -1,15 +1,10 @@
 #include "types.h"
 #include "Main/Sys/FieldState.h"
 
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Ov003Vec;
 
 typedef struct {
     u8 unk_00[0x70];
-    Ov003Vec pos;
+    VecFx32 pos;
 } Ov003Spot;
 
 extern void func_ov000_02194758(void *self);

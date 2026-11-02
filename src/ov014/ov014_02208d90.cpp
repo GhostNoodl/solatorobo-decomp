@@ -6,22 +6,14 @@ void func_ov014_02208d90(Ov014ActEx_02208618 *self) {
     self->unk_d0 |= 0x1000;
     func_ov000_02198360(self->fsm, 0x15, 0);
 }
-extern void *data_02097e4c;
-extern void *data_0214a420;
 extern void func_ov000_02198c8c(void *p, s32 a);
 extern void func_0203f364(ActorSub48 *p);
-extern Ov014V *func_02065f88(s32 id, VecFx32 *pos);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-extern Ov014V *func_020657b0(void *a, void *b);
-extern void func_ov003_021da9ac(void *p, u8 id, void *obj);
-extern BOOL Ov003FxList_Has(void *p, u8 id);
-extern void *Ov003FxList_Get(void *p, u8 id);
 extern void func_ov000_0218996c(s32 a, s32 b);
 
 void func_ov014_02208db4(Ov014ActEx_02208618 *self) {
     switch (self->fsm->st) {
     case 0: {
-        Ov014V *a;
+        EffectObj *a;
         if (self->unk_44 != NULL) {
             ActorSub44 *n = self->unk_44;
             n->unk_22_0 = 0;
@@ -40,11 +32,11 @@ void func_ov014_02208db4(Ov014ActEx_02208618 *self) {
         }
         self->model->visible = 0;
         a = func_02065f88(0x69, &self->pos);
-        a->v0c(0x40);
-        func_ov003_021da9ac(((void *)self->unk_d8), 0xff, a);
+        a->SetScaleAll(0x40);
+        func_ov003_021da9ac(((Ov003FxList *)self->unk_d8), 0xff, a);
         a = func_02065f88(5, &self->pos);
-        a->v0c(0x40);
-        func_ov003_021da9ac(((void *)self->unk_d8), 0xfe, a);
+        a->SetScaleAll(0x40);
+        func_ov003_021da9ac(((Ov003FxList *)self->unk_d8), 0xfe, a);
         func_ov000_0218996c(0xf, 0xf);
         func_02049f44(data_02097e4c, 0x7f, &self->pos, 0);
         func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
@@ -52,16 +44,16 @@ void func_ov014_02208db4(Ov014ActEx_02208618 *self) {
         break;
     }
     case 1: {
-        Ov014V *o;
-        o = func_020657b0(data_0214a420, Ov003FxList_Get(((void *)self->unk_d8), 0xff));
+        EffectObj *o;
+        o = func_020657b0(data_0214a420, Ov003FxList_Get(((Ov003FxList *)self->unk_d8), 0xff));
         if (o != NULL) {
-            o->v0c(FLD(s32, o, 0x40) + 0x148);
+            o->SetScaleAll(o->scale.x + 0x148);
         }
-        o = func_020657b0(data_0214a420, Ov003FxList_Get(((void *)self->unk_d8), 0xfe));
+        o = func_020657b0(data_0214a420, Ov003FxList_Get(((Ov003FxList *)self->unk_d8), 0xfe));
         if (o != NULL) {
-            o->v0c(FLD(s32, o, 0x40) + 0xcd);
+            o->SetScaleAll(o->scale.x + 0xcd);
         }
-        if (!Ov003FxList_Has(((void *)self->unk_d8), 0xff)) {
+        if (!Ov003FxList_Has(((Ov003FxList *)self->unk_d8), 0xff)) {
             self->fsm->st++;
         }
         break;

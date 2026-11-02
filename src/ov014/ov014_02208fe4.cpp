@@ -7,26 +7,18 @@ struct Ov014Slot {
 
 extern "C" {
 
-extern void *data_02097cdc;
-extern void *data_02097e4c;
-extern void *data_0214a420;
 extern u8 data_ov014_02217968[];
-extern u8 data_ov014_02217a0c[];
+extern char data_ov014_02217a0c[];
 extern Ov003Actor *Target_Get(void *p);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
 extern void func_ov003_021f0c60(Actor *self, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void Ov003ScriptList_Init(void *p);
 extern void *Ov003Vt_021f7974_Dtor(void *p);
-extern Ov014V *func_020657b0(void *a, void *b);
-extern void func_02036838(void *a, void *b, s32 c, s32 d);
-extern void *func_020359d0(void *a, s32 b, s32 c);
 extern void func_02049678(void *a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
-extern BOOL func_02035b90(void *a, s32 b);
 extern BOOL SndMgr_IsLoadDone(void *a);
 extern BOOL func_ov003_021d1c00(Ov003Actor *self, Ov014Msg *msg);
 extern u8 data_ov014_02216a60[];
@@ -38,7 +30,6 @@ extern u8 data_ov014_02217a28[];
 extern u8 data_ov014_02217a38[];
 extern void func_ov003_021cf1f0(void *p, s32 a, s32 b, const void *c);
 extern s32 func_ov000_021909a8(void *a, const void *b, const void *c);
-extern void NNS_G3dRenderObjSetInitFunc(void *a, void *b);
 
 void func_ov014_02208fe4(Ov014ActEx_02208618 *self) {
     Ov003Actor *list[0x20];
@@ -109,7 +100,7 @@ void func_ov014_0220915c(u8 *self) {
     n = FLD(u32, t, 4);
     for (i = 0; i < n; i++) {
         if (k == FLD(s32, t + i * 0x34, 8)) {
-            NNS_G3dGetCurrentMtx(t + 0xc + i * 0x34, 0);
+            NNS_G3dGetCurrentMtx((MtxFx43 *)(t + 0xc + i * 0x34), 0);
             return;
         }
     }
@@ -175,13 +166,13 @@ Ov003Actor *Ov014Act_02209280_Ctor(Ov014Act_02209280 *self) {
 #pragma force_active reset
 
 static inline void Ov014_Kill1f0(Ov014Act_02209280 *self) {
-    Ov014V *o;
-    if (data_0214a420 != NULL && (o = func_020657b0(data_0214a420, ((void *)self->unk_1f0))) != NULL) {
+    EffectObj *o;
+    if (data_0214a420 != NULL && (o = func_020657b0(data_0214a420, self->unk_1f0)) != NULL) {
         void *saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->heapHi;
         if (o != NULL) {
             if (o != NULL) {
-                o->v04();
+                o->Delete();
             }
         }
         data_02097dd0->cur = saved;
@@ -260,7 +251,7 @@ void Ov014Act_02209280_Start(Ov014Act_02209280 *self) {
     self->unk_138 = func_ov000_021909a8(self->model, data_ov014_02217a1b, data_ov014_02217a28);
     self->unk_16c = func_ov000_021909a8(self->model, data_ov014_02217a1b, data_ov014_02217a38);
     m = self->model;
-    NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov014_022091d4);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)func_ov014_022091d4);
     m->clearInit = 0;
     self->model->flushVP = 1;
     self->model->renderUser = &self->unk_fc;
@@ -272,7 +263,6 @@ void Ov014Act_02209280_Start(Ov014Act_02209280 *self) {
 }
 
 extern u8 *func_ov000_0219bf90(void);
-extern void EffectMgr_StopLoop(void *a, void *b);
 extern void *func_ov003_021ceff4(void *p);
 extern BOOL func_ov000_021983b0(void *p, s32 a, s32 b, s32 c);
 
@@ -312,7 +302,7 @@ void Ov014Act_02209280_Update(Ov014Act_02209280 *self) {
         self->unk_1dc = NULL;
         EffectMgr_StopLoop(data_0214a420, self->unk_1e0);
         self->unk_1e0 = NULL;
-        EffectMgr_StopLoop(data_0214a420, ((void *)self->unk_1e4));
+        EffectMgr_StopLoop(data_0214a420, self->unk_1e4);
         self->unk_1e4 = 0;
     }
     switch (self->unk_b4) {

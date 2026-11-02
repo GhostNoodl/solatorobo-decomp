@@ -2,11 +2,9 @@
 
 extern "C" {
 
-s32 EffectMgr_Contains(void *a, void *b);
 void func_ov000_021bd228(void *p);
-extern u8 data_ov015_022132ac[];
-extern u8 data_ov015_022132bb[];
-u8 *Effect3D_Create(void *a, void *b, int c, void *d);
+extern char data_ov015_022132ac[];
+extern char data_ov015_022132bb[];
 void func_ov000_021bd198(void *p);
 void func_ov015_02212430(Ov015Obj292c *self);
 void func_ov000_021bd624(void *p);
@@ -37,7 +35,7 @@ void func_ov015_022120fc(Ov015Obj292c *self) {
     void *saved;
     void *o;
     if (EffectMgr_Contains(data_0214a420, self->fx)) {
-        FLD(s32, self->fx, 0x1c) = 4;
+        self->fx->state = 4;
         FLD(void *, self, 0x4) = NULL;
     }
     HEAP_PUSH(saved);
@@ -53,22 +51,22 @@ void func_ov015_022120fc(Ov015Obj292c *self) {
 }
 
 void func_ov015_02212180(Ov015Obj292c *self) {
-    func_020359d0((char *)data_ov015_022132ac, 7, 0);
+    func_020359d0(data_ov015_022132ac, 7, 0);
 }
 
 int func_ov015_0221219c(Ov015Obj292c *self) {
-    return func_02035b90((char *)data_ov015_022132ac, 7);
+    return func_02035b90(data_ov015_022132ac, 7);
 }
 
 BOOL func_ov015_022121b4(Ov015Obj292c *self) {
     u8 *q;
     self->fx = Effect3D_Create(data_ov015_022132ac, data_ov015_022132bb, 0, &self->pos);
-    FLD(s32, self->fx, 0xd4) = 3;
-    FLD(s32, self->fx, 0x54) = 0;
-    FLD(s32, self->fx, 0x50) = -0xc8000;
-    FLD(s32, self->fx, 0xc8) = -1;
-    FLD(u8, self->fx, 0x28) = 0;
-    FLD(s32, self->fx, 0x3c) = 0x800;
+    self->fx->unk_d4 = 3;
+    self->fx->unk_54 = 0;
+    self->fx->unk_50 = -0xc8000;
+    self->fx->loopCount = -1;
+    self->fx->unk_28 = 0;
+    self->fx->speed = 0x800;
     q = (u8 *)Heap_Alloc(0xa8);
     if (q != NULL) {
         func_ov000_021bd198(q);
@@ -95,8 +93,8 @@ void func_ov015_02212264(Ov015Obj292c *self) {
         v.x = 0;
         v.y = 0;
         v.z = 0xa000;
-        MTX_MultVec33((VecFx32 *)&v, (MtxFx33 *)m, (VecFx32 *)&v);
-        VEC_Add((VecFx32 *)&v, (VecFx32 *)(&self->pos), (VecFx32 *)&w);
+        MTX_MultVec33(&v, (MtxFx33 *)m, &v);
+        VEC_Add(&v, (&self->pos), &w);
         VCALL(self->fx)->v18(&w);
         VCALL(self->fx)->v10(&self->scale);
         VCALL(self->fx)->v34(0xe00, FX_Atan2(v.x, v.z), 0);
@@ -123,7 +121,7 @@ void func_ov015_0221234c(Ov015Obj292c *self) {
     ((Ov015ObjFlags *)self->unk_08)->b1 = 1;
     func_02049bdc(data_02097e4c, 0xe, 5);
     if (self->fx != NULL) {
-        FLD(s32, self->fx, 0x3c) = 0x2000;
+        self->fx->speed = 0x2000;
     }
 }
 
@@ -138,7 +136,7 @@ void func_ov015_022123c4(Ov015Obj292c *self) {
     o->b1 = 0;
     func_02049bdc(data_02097e4c, 0x1f, -3);
     if (self->fx != NULL) {
-        FLD(s32, self->fx, 0x3c) = 0x800;
+        self->fx->speed = 0x800;
     }
 }
 

@@ -1,35 +1,18 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/Actor.h"
-
-class Ov003Fx {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10();
-    virtual void SetScale(s32 x, s32 y, s32 z);
-    u8 unk_04[0x20];
-    void *unk_24;
-    u8 unk_28[0x54];
-    s32 unk_7c;
-};
 
 extern "C" {
 
 extern s32 Rand_PlusMinus(s32 max);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
-extern void *data_02097e4c;
-extern void *data_0214a420;
 extern void HitSphere_Link(ActorSub48 *ctl);
-extern void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 extern void func_ov000_02199dc0(ActorSub4c *p, void *self);
 extern void Actor_Move(void *self, s32 a);
 extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 extern s32 FX_Div(s32 a, s32 b);
-extern void EffectMgr_Kill(void *mgr, void *p);
-extern Ov003Fx *func_02065f88(s32 id, void *pos);
 
 
 void func_ov003_021d3a88(Ov003Actor *self) {
@@ -64,14 +47,14 @@ void func_ov003_021d3a88(Ov003Actor *self) {
             self->unk_e4 = NULL;
         }
         if (self->unk_e4 == NULL) {
-            Ov003Fx *fx = func_02065f88(0x321, &self->pos);
+            EffectObj *fx = func_02065f88(0x321, &self->pos);
             s32 r;
             s32 t;
-            self->unk_e4 = fx->unk_24;
+            self->unk_e4 = fx->id;
             r = self->radius;
             t = (r >> 2) + (r >> 3);
-            fx->SetScale(r + t, r + t, r + t);
-            fx->unk_7c = FX_Div(0x10000, 0x1f000);
+            fx->SetScaleXYZ(r + t, r + t, r + t);
+            fx->alpha = FX_Div(0x10000, 0x1f000);
         }
         break;
     }

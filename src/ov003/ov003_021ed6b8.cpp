@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorParts.h"
 
@@ -70,20 +72,6 @@ typedef struct {
     s32 unk_14;
 } Ov003LfWarp;
 
-class Ov003LfFx {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10();
-    virtual void v14();
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void SetScale(s32 x, s32 y, s32 z);
-};
-
 struct Ov003Lift {
     void *vtbl;
     u8 unk_04[8];
@@ -122,7 +110,6 @@ struct Ov003Lift {
 extern "C" {
 
 extern const s16 FX_SinCosTable_[];
-extern void *data_02097e4c;
 extern char data_ov003_021f9fd0[];
 extern char data_ov003_021f9fd6[];
 extern s32 func_ov000_021993fc(Ov003LfFinder *f, Ov003LfQuery *q, Ov003LfHit **out, s32 max);
@@ -134,12 +121,9 @@ extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern void func_ov000_021911c8(void *p, s32 a);
 extern void *func_ov000_02191318(void *p, s32 a);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void Actor_SendMsg(Ov003LfTgt *o, u16 id, s32 a, s32 b, s32 c, void *p);
 extern Ov003LfTgt *func_ov000_0219bf90(void);
-extern Ov003LfFx *func_02065f88(s32 id, VecFx32 *pos);
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern Ov003LfTgt *Actor_GetTarget(Ov003Lift *self);
 extern void HitMesh_SetMtx(void *o, MtxFx43 *m);
 extern BOOL func_ov000_021b4738(void);
@@ -433,7 +417,7 @@ void func_ov003_021ed6b8(Ov003Lift *self) {
             v.x = pl->pos.x;
             v.y = pl->pos.y;
             v.z = pl->pos.z;
-            func_02065f88(0x44f, &v)->SetScale(0, pl->unk_68, 0);
+            func_02065f88(0x44f, &v)->AddPosXYZ(0, pl->unk_68, 0);
             func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
         }
         return;

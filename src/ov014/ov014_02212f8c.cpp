@@ -25,7 +25,6 @@ extern void Actor_TurnToActor(Actor *self, Actor *target, s32 a);
 extern char data_ov014_02217d4c[];
 extern u8 data_ov014_02216dc0[];
 extern Ov003Actor *Actor_GetTarget(Actor *self);
-extern Ov014Eff *func_02065f88(s32 id, const VecFx32 *pos);
 extern void func_ov000_02191618(void *a);
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, void *pos, void *rot, u16 a);
 

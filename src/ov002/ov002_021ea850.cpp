@@ -6,12 +6,12 @@ void *Ov002Vt_021f070c_DtorDelete(void *self) {
     int i;
     *(VFunc **)self = data_ov002_021f070c;
     for (i = 0; i < 4; i++) {
-        VObject *o = func_020657b0(data_0214a420, ((void **)((u8 *)self + 0x50))[i]);
+        EffectObj *o = func_020657b0(data_0214a420, ((u32 *)((u8 *)self + 0x50))[i]);
         void *saved;
         HEAP_PUSH(saved);
         if (o != NULL) {
             if (o != NULL) {
-                o->v0x4();
+                o->Delete();
             }
         }
         HEAP_POP(saved);
@@ -26,12 +26,12 @@ void *Ov002Vt_021f070c_Dtor(void *self) {
     int i;
     *(VFunc **)self = data_ov002_021f070c;
     for (i = 0; i < 4; i++) {
-        VObject *o = func_020657b0(data_0214a420, ((void **)((u8 *)self + 0x50))[i]);
+        EffectObj *o = func_020657b0(data_0214a420, ((u32 *)((u8 *)self + 0x50))[i]);
         void *saved;
         HEAP_PUSH(saved);
         if (o != NULL) {
             if (o != NULL) {
-                o->v0x4();
+                o->Delete();
             }
         }
         HEAP_POP(saved);

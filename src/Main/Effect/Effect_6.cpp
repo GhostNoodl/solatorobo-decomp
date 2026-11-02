@@ -1,4 +1,4 @@
-#include "Main/Effect/Effect.h"
+#include "Main/Effect/EffectInt.h"
 
 #define EFFECT_STR(s) ((const char *)(u32)(s))
 

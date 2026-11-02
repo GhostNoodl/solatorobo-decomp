@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "nitro/std.h"
 
 typedef struct {
@@ -19,11 +21,6 @@ typedef struct {
     u16 unk_1c;
 } Ov003PkItem;
 
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Ov003PkVec;
 
 typedef struct {
     u8 unk_00[0xc];
@@ -79,14 +76,12 @@ extern "C" {
 extern Ov003Game30 *data_ov000_021ccd30;
 extern void *data_ov000_021ccd54;
 extern Ov003Save *data_0214a424;
-extern void *data_02097e4c;
 extern Ov003DataRes *data_02fe152c;
 extern void *data_02149ef8;
 Ov003PkOwner *Target_Get(Ov003PkItem *item);
-BOOL func_ov000_0219aae8(Ov003Pickup *self, Ov003PkOwner *owner, u16 a, u8 b, u16 mask, Ov003PkVec *v, s32 c, s32 d, s32 e, s32 f, s32 g);
+BOOL func_ov000_0219aae8(Ov003Pickup *self, Ov003PkOwner *owner, u16 a, u8 b, u16 mask, VecFx32 *v, s32 c, s32 d, s32 e, s32 f, s32 g);
 void Actor_SendMsg(Ov003PkOwner *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_02040a98(void *buf, u32 n);
-void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 s32 func_02049bdc(void *a, s32 b, s32 c);
 void func_ov003_021ce9c4(u16 id);
 u32 func_0205975c(Ov003DataRes *res, u32 idx);
@@ -129,7 +124,7 @@ static inline void Ov003Log_PushEmpty(s32 type) {
     }
 }
 
-static inline void Ov003Pk_VecSet(Ov003PkVec *v, s32 x, s32 y, s32 z) { v->x = x; v->y = y; v->z = z; }
+static inline void Ov003Pk_VecSet(VecFx32 *v, s32 x, s32 y, s32 z) { v->x = x; v->y = y; v->z = z; }
 
 
 static inline u16 Ov003Pk_Mask(Ov003PkOwner *o, u16 mask) {
@@ -148,7 +143,7 @@ extern "C" void func_ov003_021f0c60(Ov003Pickup *self, u16 mask) {
     switch (item->type) {
     case 1: {
         s32 y = self->unk_64 + 0xccd;
-        Ov003PkVec v;
+        VecFx32 v;
         Ov003PkOwner *o;
         s32 f;
         if (y < 0x199a) {

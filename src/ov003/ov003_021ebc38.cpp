@@ -1,18 +1,10 @@
 #include "types.h"
+#include "Main/Math/Rot16.h"
+#include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorParts.h"
 
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Ov003Vec;
 
-typedef struct {
-    u16 x;
-    u16 y;
-    u16 z;
-} Ov003Rot;
 
 typedef struct {
     s16 handle;
@@ -33,7 +25,7 @@ typedef struct {
     u8 unk_00[0x64];
     s32 radius;
     u8 unk_68[8];
-    Ov003Vec pos;
+    VecFx32 pos;
 } Ov003LiftPlayer;
 
 typedef struct {
@@ -51,17 +43,17 @@ typedef struct {
     u8 unk_4c[0x10];
     void *unk_5c;
     u8 unk_60[0x10];
-    Ov003Vec pos;
-    Ov003Rot rot;
+    VecFx32 pos;
+    Rot16 rot;
     u8 unk_82[0x3a];
-    void *fx;
-    Ov003Vec dir;
+    u32 fx; // effect id (EffectObj::id)
+    VecFx32 dir;
     u16 unk_cc_0 : 7;
     u16 active : 1;
     u8 unk_ce[2];
     Ov003LiftRes res;
     u8 anim[0x78];
-    Ov003Vec animPos;
+    VecFx32 animPos;
     u8 unk_28c[0x24];
     s32 scaleX;
     s32 scaleY;
@@ -70,8 +62,8 @@ typedef struct {
     u8 unk_2be[8];
     u8 alpha;
     u8 unk_2c7[0x29];
-    Ov003Vec savedPos;
-    Ov003Rot savedRot;
+    VecFx32 savedPos;
+    Rot16 savedRot;
     u16 timer;
 } Ov003Lift;
 
@@ -83,8 +75,6 @@ typedef struct {
 
 extern "C" {
 
-extern Ov003HeapCtx *data_02097dd0;
-extern void *data_0214a420;
 extern char data_ov003_021f998f[];
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_0218f074(Ov003LiftRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
@@ -97,13 +87,11 @@ extern void func_ov000_02190e98(void *anim, s32 a, s32 b, s32 c);
 extern void func_ov000_021915a0(void *anim);
 extern void func_0203f2b8(void *p);
 extern void Heap_Free(void *p);
-extern void func_01ffc9fc(Ov003Vec *src, Ov003Vec *dst, u16 angle);
-extern void EffectMgr_Kill(void *mgr, void *handle);
+extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void *func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, void *b);
 extern Ov003LiftPlayer *func_ov000_0219bf90(void);
-extern BOOL Hit_DiffInSphere(Ov003Vec *a, Ov003Vec *b, s32 r);
-extern Ov003LiftFx *func_02065f88(s32 id, const Ov003Vec *pos);
+extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern BOOL func_ov000_02194c08(void *self);
 extern void func_ov000_02190758(void *anim, void *p, s32 a);
 extern BOOL func_ov000_021903b4(void *anim);
@@ -148,7 +136,7 @@ void Ov003ActVt_021f979c_Start(Ov003Lift *self) {
     } else {
         void *p;
         void *old = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->alt;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         p = self->obj;
         if (p != NULL) {
             if (p != NULL) {
@@ -183,9 +171,9 @@ void func_ov003_021ebe08(Ov003Lift *self) {
     if (!(self->timer & 0x7f)) {
         Ov003LiftPlayer *pl = func_ov000_0219bf90();
         if (pl != NULL && Hit_DiffInSphere(&pl->pos, &self->pos, pl->radius + 0xf000)) {
-            Ov003LiftFx *fx = func_02065f88(0xcc, &self->pos);
+            EffectObj *fx = func_02065f88(0xcc, &self->pos);
             if (fx != NULL) {
-                self->fx = fx->handle;
+                self->fx = fx->id;
             }
         }
     }

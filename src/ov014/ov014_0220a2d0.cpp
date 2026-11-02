@@ -143,7 +143,6 @@ extern u8 data_ov014_02217a66[];
 extern u8 data_ov014_02217a6c[];
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, s32 c, s32 d);
 extern void func_ov000_02191618(void *p);
-extern Ov014V *func_02065f88(s32 id, VecFx32 *pos);
 extern BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToActor(Actor *self, Actor *t, s32 a);
@@ -162,7 +161,7 @@ void func_ov014_0220a67c(Ov014Act_02209280 *self) {
         u16 ang;
         s32 d;
         const void *anim;
-        Ov014V *e;
+        EffectObj *e;
         if (p->kind == 0xb) {
             self->unk_b8 = data_ov014_02216aa8[p->unk_04];
         } else {
@@ -198,8 +197,8 @@ void func_ov014_0220a67c(Ov014Act_02209280 *self) {
         c = self->hit->check;
         ang = FX_Atan2(b.x - self->pos.x, b.z - self->pos.z);
         e = func_02065f88(0x67, &c);
-        e->v0c(0x2000);
-        e->v34(0, ang, 0);
+        e->SetScaleAll(0x2000);
+        e->SetRotXYZ(0, ang, 0);
         self->fsm->st = 0xa;
         self->fsm->timer = 0x5a;
         break;
@@ -230,9 +229,9 @@ void func_ov014_0220a67c(Ov014Act_02209280 *self) {
             near = TRUE;
         }
         if (self->fsm->timer == 0x46) {
-            Ov014V *e = func_02065f88(0x192, &self->pos);
-            e->v0c(0x3000);
-            e->v34(0, FX_Atan2(t.x - self->pos.x, t.z - self->pos.z), 0);
+            EffectObj *e = func_02065f88(0x192, &self->pos);
+            e->SetScaleAll(0x3000);
+            e->SetRotXYZ(0, FX_Atan2(t.x - self->pos.x, t.z - self->pos.z), 0);
         }
         if (near) {
             self->unk_1e4 = 0;

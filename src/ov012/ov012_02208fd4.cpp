@@ -1,4 +1,5 @@
 #include "ov012/ov012.h"
+#include "Main/Math/Rot16.h"
 
 extern "C" {
 
@@ -9,11 +10,6 @@ extern u8 data_ov012_0220a88c[];
 extern void func_ov000_021911c8(void *p, s32 a);
 extern s32 func_ov000_02191318(void *a, s32 b);
 
-struct Ov012Rot16T {
-    u16 x;
-    u16 y;
-    u16 z;
-};
 
 #define OV012T_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV012T_SQRT_RESULT (*(volatile u32 *)0x40002b4)
@@ -94,7 +90,7 @@ void func_ov012_02208858(Ov003Actor *self) {
         Ov012Query q;
         VecFx32 v;
         s32 out;
-        Ov012Rot16T r;
+        Rot16 r;
         Ov003Actor *tgt;
         s32 n;
         s32 i;
@@ -149,7 +145,7 @@ void func_ov012_02208858(Ov003Actor *self) {
                             func_ov000_0219bebc(o, 0x1800);
                         }
                     }
-                    func_02065f88(0x69, &v)->v0c(0xccd);
+                    func_02065f88(0x69, &v)->SetScaleAll(0xccd);
                     func_02049f44(data_02097e4c, 0x2c, &self->pos, 0);
                 }
             }
@@ -184,7 +180,7 @@ static inline u16 Ov012_HpPct(Ov003Actor *self) {
 
 void func_ov012_02208c0c(Ov003Actor *self) {
     VecFx32 v;
-    Ov012Rot16T r;
+    Rot16 r;
     Ov003Actor *pl;
     BOOL on;
     u16 add;
@@ -239,7 +235,7 @@ void func_ov012_02208c0c(Ov003Actor *self) {
         if (!on) {
             break;
         }
-        r = *(Ov012Rot16T *)&self->rot_x;
+        r = *(Rot16 *)&self->rot_x;
         r.y += add;
         {
         s32 y = self->centerY;
@@ -345,12 +341,12 @@ void func_ov012_02209098(Ov003Actor *self) {
 extern "C" {
 void func_ov012_022090e4(Ov003Actor *self) {
     if (self->fsm->st == 0) {
-        Ov012V *e;
+        EffectObj *e;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x480e, 0x15);
         e = func_02065f88(0x69, &self->pos);
         if (e != NULL) {
-            e->v0c(0x2400);
-            e->v24(0, self->centerY, 0);
+            e->SetScaleAll(0x2400);
+            e->AddPosXYZ(0, self->centerY, 0);
         }
     }
     func_ov003_021d6054(self);

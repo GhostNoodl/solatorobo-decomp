@@ -32,7 +32,7 @@ Ov015FishState40 *Ov015FishState40_Ctor(Ov015FishState40 *self) {
 
 void *Ov015FishState40_Dtor(Ov015FishState40 *self) {
     s32 i;
-    Ov015V *o;
+    EffectObj *o;
     void *saved;
     SET_VT(self, data_ov015_02212ee8);
     for (i = 0; i < 1; i++) {
@@ -46,7 +46,7 @@ void *Ov015FishState40_Dtor(Ov015FishState40 *self) {
         HEAP_PUSH(saved);
         if (o != NULL) {
             if (o != NULL) {
-                o->v04();
+                o->Delete();
             }
         }
         HEAP_POP(saved);
@@ -58,7 +58,7 @@ void *Ov015FishState40_Dtor(Ov015FishState40 *self) {
 
 void *Ov015FishState40_DtorDelete(Ov015FishState40 *self) {
     s32 i;
-    Ov015V *o;
+    EffectObj *o;
     void *saved;
     SET_VT(self, data_ov015_02212ee8);
     for (i = 0; i < 1; i++) {
@@ -72,7 +72,7 @@ void *Ov015FishState40_DtorDelete(Ov015FishState40 *self) {
         HEAP_PUSH(saved);
         if (o != NULL) {
             if (o != NULL) {
-                o->v04();
+                o->Delete();
             }
         }
         HEAP_POP(saved);
@@ -95,8 +95,8 @@ BOOL Ov015FishState40_Enter(Ov015FishState40 *self, Ov015Fish *p) {
     self->unk_1c.x = Rand_PlusMinus(0x1000);
     self->unk_1c.z = a;
     self->unk_1c.y = 0;
-    VEC_Normalize((VecFx32 *)(&self->unk_1c), (VecFx32 *)(&self->unk_1c));
-    VEC_Normalize((VecFx32 *)(&self->unk_1c), (VecFx32 *)(&p->dir));
+    VEC_Normalize((&self->unk_1c), (&self->unk_1c));
+    VEC_Normalize((&self->unk_1c), (&p->dir));
     p->pos.y = -0x32000;
     Ov015_SetXZ((s32 *)&p->pos, p->pos.x, p->pos.z);
     HitSphere_Link(&p->hit);
@@ -110,9 +110,8 @@ BOOL Ov015FishState40_Enter(Ov015FishState40 *self, Ov015Fish *p) {
 BOOL func_ov015_0220d7d0(Ov015FishState40 *self, Ov015Vec *out, Ov015Vec *pos);
 void func_ov015_0220d328(Ov015FishState40 *self, Ov015Fish *o);
 void func_ov015_0220d578(Ov015FishState40 *self, Ov015Fish *o);
-u8 *Effect3D_Create(void *a, void *b, int c, void *d);
-extern u8 data_ov015_02212e20[];
-extern u8 data_ov015_02212e34[];
+extern char data_ov015_02212e20[];
+extern char data_ov015_02212e34[];
 
 static inline void Ov015_Turn(Ov015FishState40 *self, Ov015Vec *v) {
     s32 r;
@@ -167,32 +166,32 @@ BOOL Ov015FishState40_Update(Ov015FishState40 *self, Ov015Fish *p) {
         if (p->hit.unk_44 != 0) {
             Ov015Sub568 *sub = &((Ov015Owner568 *)p)->sub;
             v0 = p->pos;
-            VEC_MultAdd(self->unk_0c, (VecFx32 *)(&self->unk_1c), (VecFx32 *)&v0, (VecFx32 *)&v0);
+            VEC_MultAdd(self->unk_0c, (&self->unk_1c), &v0, &v0);
             p->pos = v0;
             self->unk_28.x = self->unk_1c.x;
             self->unk_28.z = self->unk_1c.z;
             self->unk_28.y = 0;
-            VEC_Normalize((VecFx32 *)(&self->unk_28), (VecFx32 *)(&self->unk_28));
+            VEC_Normalize((&self->unk_28), (&self->unk_28));
             a = sub->dir;
-            VEC_Normalize((VecFx32 *)&a, (VecFx32 *)&a);
-            VEC_Add((VecFx32 *)&a, (VecFx32 *)(&self->unk_1c), (VecFx32 *)&b);
+            VEC_Normalize(&a, &a);
+            VEC_Add(&a, (&self->unk_1c), &b);
             b.y = 0;
-            VEC_Normalize((VecFx32 *)&b, (VecFx32 *)&b);
+            VEC_Normalize(&b, &b);
             Ov015_Turn(self, &b);
         } else {
             s32 dot;
-            VEC_MultAdd(self->unk_0c, (VecFx32 *)(&self->unk_1c), (VecFx32 *)(&p->pos), (VecFx32 *)&q);
+            VEC_MultAdd(self->unk_0c, (&self->unk_1c), (&p->pos), &q);
             if (func_ov015_0220d7d0(self, &n, &q)) goto clamp;
             self->unk_28.x = self->unk_1c.x;
             self->unk_28.y = self->unk_1c.y;
             self->unk_28.z = self->unk_1c.z;
             w = p->dir;
             w.y = 0;
-            VEC_Normalize((VecFx32 *)&w, (VecFx32 *)&w);
+            VEC_Normalize(&w, &w);
             dot = (s32)(((s64)n.x * w.x + (s64)n.y * w.y + (s64)n.z * w.z + 0x800) >> 12);
             if (dot < 0) dot = -dot;
-            VEC_MultAdd(dot * 2, (VecFx32 *)&n, (VecFx32 *)&w, (VecFx32 *)&u);
-            VEC_Normalize((VecFx32 *)&u, (VecFx32 *)&u);
+            VEC_MultAdd(dot * 2, &n, &w, &u);
+            VEC_Normalize(&u, &u);
             Ov015_Turn(self, &u);
         }
     }
@@ -214,8 +213,8 @@ clamp:
         BOOL found;
         p->unk_a8 = self->unk_0c;
         v1 = pos;
-        VEC_MultAdd(self->unk_0c, (VecFx32 *)(&self->unk_1c), (VecFx32 *)&v1, (VecFx32 *)&v1);
-        VEC_Normalize((VecFx32 *)(&self->unk_1c), (VecFx32 *)(&p->dir));
+        VEC_MultAdd(self->unk_0c, (&self->unk_1c), &v1, &v1);
+        VEC_Normalize((&self->unk_1c), (&p->dir));
         if (v1.y > -0x32000) {
             v1.y -= 0x80;
         } else {
@@ -250,32 +249,32 @@ clamp:
         }
         break;
     case 2: {
-        Ov015V *e;
+        EffectObj *e;
         p->unk_a8 = self->unk_0c;
         v2 = pos;
-        VEC_MultAdd(self->unk_0c, (VecFx32 *)(&self->unk_1c), (VecFx32 *)&v2, (VecFx32 *)&v2);
+        VEC_MultAdd(self->unk_0c, (&self->unk_1c), &v2, &v2);
         if (v2.y < 0) {
             v2.y += 0x19a;
         } else {
             v2.y = 0;
         }
         p->pos = v2;
-        VEC_Normalize((VecFx32 *)(&self->unk_1c), (VecFx32 *)(&p->dir));
+        VEC_Normalize((&self->unk_1c), (&p->dir));
         e = func_020657b0(data_0214a420, self->unk_08);
         if (e == NULL) {
-            e = (Ov015V *)Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &p->pos);
-            FLD(s32, e, 0xd4) = 3;
-            FLD(u8, e, 0x28) = 0;
-            FLD(s32, e, 0xc8) = -1;
-            FLD(s32, e, 0x50) = -0xc8000;
-            self->unk_08 = FLD(void *, e, 0x24);
+            e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &p->pos);
+            e->unk_d4 = 3;
+            e->unk_28 = 0;
+            e->loopCount = -1;
+            e->unk_50 = -0xc8000;
+            self->unk_08 = e->id;
         }
         v3.x = p->pos.x;
         v3.y = p->pos.y > 0 ? 0 : p->pos.y;
         v3.z = p->pos.z;
-        e->v18(&v3);
-        e->v10(&p->scaleX);
-        e->v34(0, FX_Atan2(p->dir.x, p->dir.z), 0);
+        e->SetPos(&v3);
+        e->SetScale(&p->scale);
+        e->SetRotXYZ(0, FX_Atan2(p->dir.x, p->dir.z), 0);
         if (self->unk_10 == 0) {
             self->step = 3;
             self->unk_10 = 0x5a;

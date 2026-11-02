@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/Actor.h"
 #include "Main/Sys/FieldState.h"
 
@@ -10,7 +12,6 @@ typedef struct {
 extern "C" {
 
 extern void *data_ov000_021ccd68;
-extern void *data_02097e4c;
 extern const char *data_ov003_021f7a48[][2];
 extern char data_ov003_021f7a60[];
 extern char data_ov003_021f7a66[];
@@ -24,8 +25,6 @@ extern void func_ov000_02191418(void *model, s32 a, s32 b);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern u16 func_ov000_02198da8(ActorSub48 *ctl, u16 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
-extern void *func_02065f88(s32 id, VecFx32 *pos);
 extern void Actor_Move(void *self, s32 a);
 extern void Actor_MoveToPos(void *self, VecFx32 *v, s32 a);
 extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);

@@ -2,9 +2,8 @@
 
 extern "C" {
 
-u8 *Effect3D_Create(void *a, void *b, int c, void *d);
-extern u8 data_ov015_02212e20[];
-extern u8 data_ov015_02212e34[];
+extern char data_ov015_02212e20[];
+extern char data_ov015_02212e34[];
 struct Ov015Blk0afcc { s32 w[3]; };
 extern const Ov015Blk0afcc data_ov015_02212650;
 
@@ -15,14 +14,14 @@ void func_ov015_0220afcc(Ov015FishState2c *self) {
     Ov015Vec base;
     Ov015Vec sc;
     u16 ang;
-    Ov015V *e = func_020657b0(data_0214a420, self->unk_24);
+    EffectObj *e = func_020657b0(data_0214a420, self->unk_24);
     if (e == NULL) {
-        e = (Ov015V *)Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &self->fish->pos);
-        FLD(s32, e, 0xd4) = 1;
-        FLD(u8, e, 0x28) = 0;
-        FLD(s32, e, 0xc8) = -1;
-        FLD(s32, e, 0x50) = -0xc8000;
-        self->unk_24 = FLD(void *, e, 0x24);
+        e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &self->fish->pos);
+        e->unk_d4 = 1;
+        e->unk_28 = 0;
+        e->loopCount = -1;
+        e->unk_50 = -0xc8000;
+        self->unk_24 = e->id;
     }
     {
         Ov015Fish *o = self->fish;
@@ -31,26 +30,24 @@ void func_ov015_0220afcc(Ov015FishState2c *self) {
         v.z = o->pos.z;
         v.y = v.y < -0x2000 ? -0x2000 : v.y;
     }
-    e->v18(&v);
+    e->SetPos(&v);
     *(Ov015Blk0afcc *)&base = data_ov015_02212650;
     dir = (self->fish)->dir;
     dir.y = 0;
-    VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)&dir);
+    VEC_Normalize(&dir, &dir);
     ang = FX_AcosIdx(Ov015_Dot0afcc(&dir, &base));
     if (dir.x < 0) ang = 0xffff - ang;
-    e->v34(0, ang, 0);
+    e->SetRotXYZ(0, ang, 0);
     {
         Ov015Fish *o = self->fish;
         s32 s = o->scaleMul;
-        sc.x = FX_Mul(o->scaleX, s);
-        sc.y = FX_Mul(o->scaleY, s);
-        sc.z = FX_Mul(o->scaleZ, s);
-        e->v10(&sc);
+        sc.x = FX_Mul(o->scale.x, s);
+        sc.y = FX_Mul(o->scale.y, s);
+        sc.z = FX_Mul(o->scale.z, s);
+        e->SetScale(&sc);
     }
 }
 
-Ov015V *func_02065f88(s32 id, void *pos);
-void EffectMgr_StopLoop(void *a, void *b);
 s32 Rand_PlusMinus(s32 n);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
@@ -58,14 +55,14 @@ extern u8 data_ov015_02212e40[];
 extern u8 data_ov015_02212e0d[];
 
 static inline void Ov015_Spark(Ov015Vec *a, Ov015Vec *s) {
-    Ov015V *e = func_02065f88(0x44d, a);
+    EffectObj *e = func_02065f88(0x44d, a);
     u16 rr;
-    e->v10(s);
-    FLD(s32, e, 0x50) = -0xa000;
-    FLD(s32, e, 0xd4) = 1;
-    FLD(u8, e, 0x28) = 3;
+    e->SetScale(s);
+    e->unk_50 = -0xa000;
+    e->unk_d4 = 1;
+    e->unk_28 = 3;
     rr = Rand_PlusMinus(0xfff);
-    e->v34(0, 0, rr);
+    e->SetRotXYZ(0, 0, rr);
 }
 
 void func_ov015_0220b1b8(Ov015FishState2c *self) {
@@ -119,7 +116,7 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
         Ov015Vec s;
         Ov015Fish *o = self->fish;
         a = o->pos;
-        a.z += FX_Mul(o->scaleX, 0xc000);
+        a.z += FX_Mul(o->scale.x, 0xc000);
         a.y -= 0x4000;
         s.x = 0x1333;
         s.y = 0x1333;
@@ -136,22 +133,22 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
     }
     if (r < 0x4cd) {
         Ov015Vec b;
-        Ov015V *e;
+        EffectObj *e;
         Ov015Fish *o = self->fish;
         b = o->pos;
         b.y += 0x8000;
-        b.z += FX_Mul(o->scaleX, 0xc000);
+        b.z += FX_Mul(o->scale.x, 0xc000);
         e = func_020657b0(data_0214a420, self->unk_28);
         if (e == NULL) {
             e = func_02065f88(0x325, &b);
-            FLD(s32, e, 0xd4) = 1;
-            FLD(s32, e, 0xc8) = -2;
-            e->v34(0xbffd, 0, 0);
-            e->v0c(0x5000);
-            FLD(s32, e, 0x50) = -0xc8000;
-            self->unk_28 = FLD(void *, e, 0x24);
+            e->unk_d4 = 1;
+            e->loopCount = -2;
+            e->SetRotXYZ(0xbffd, 0, 0);
+            e->SetScaleAll(0x5000);
+            e->unk_50 = -0xc8000;
+            self->unk_28 = e->id;
         }
-        e->v18(&b);
+        e->SetPos(&b);
     } else {
         EffectMgr_StopLoop(data_0214a420, self->unk_28);
     }

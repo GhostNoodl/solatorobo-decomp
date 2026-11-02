@@ -1,9 +1,9 @@
 #include "types.h"
+#include "Main/Math/Rot16.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
 
-typedef struct {
-    u16 x, y, z;
-} Ov003BxRot;
 
 typedef struct {
     u16 state;
@@ -44,25 +44,6 @@ typedef struct {
     u8 unk_01;
 } Ov003BxSb0;
 
-class Ov003BxFx {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void SetSize(s32 size);
-    virtual void v10();
-    virtual void v14();
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void v24();
-    virtual void v28();
-    virtual void v2c();
-    virtual void SetRot(Ov003BxRot *rot);
-    u8 unk_04[0x20];
-    void *unk_24;
-};
-
 typedef struct {
     s16 id;
     s16 size;
@@ -96,7 +77,7 @@ typedef struct {
     s32 unk_64;
     u8 unk_68[8];
     VecFx32 pos;
-    Ov003BxRot rot;
+    Rot16 rot;
     u8 unk_82[0x10];
     u8 state;
     u8 unk_93[5];
@@ -107,7 +88,7 @@ typedef struct {
     u8 unk_a4[0xc];
     Ov003BxSb0 *unk_b0;
     u8 unk_b4[8];
-    void *unk_bc;
+    u32 unk_bc; // effect id (EffectObj::id)
     u8 unk_c0[0xc];
     u16 unk_cc_0 : 6;
     u16 unk_cc_6 : 1;
@@ -115,11 +96,8 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern char data_ov003_021fa1a4[];
 extern void func_ov000_02196c40(Ov003Bx *self);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
-extern Ov003BxFx *func_02065f88(s32 id, VecFx32 *pos);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_0203f364(Ov003BxCtl *ctl);
 extern void func_ov003_021f0c60(Ov003Bx *self, s32 a);
@@ -129,12 +107,9 @@ extern void func_ov000_021915a0(void *model);
 extern void Actor_Move(void *self, s32 a);
 extern void func_ov000_021987b8(Ov003BxCtl *ctl, s32 a, s32 b, s32 c);
 
-extern void *data_0214a420;
 extern const Ov003BxDef data_ov003_021f6e60[];
 extern Ov003BxPlayer *func_ov000_0219bf90(void);
-extern void EffectMgr_StopLoop(void *mgr, void *p);
-extern void *func_0204a028(void *mgr, s32 id, VecFx32 *pos, s32 a);
-extern BOOL func_ov000_0219aae8(Ov003Bx *a, Ov003Bx *b, u16 c, u8 d, s32 e, VecFx32 *pos, Ov003BxRot *rot, s32 f, s32 g, s32 h, s32 i);
+extern BOOL func_ov000_0219aae8(Ov003Bx *a, Ov003Bx *b, u16 c, u8 d, s32 e, VecFx32 *pos, Rot16 *rot, s32 f, s32 g, s32 h, s32 i);
 
 static inline BOOL Ov003Game_IsBusy(FieldState *g) {
     return g->head != g->tail;
@@ -206,7 +181,7 @@ extern s32 Rand_UpTo(s32 n);
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, s32 r, s32 h);
 extern void HitSphere_Link(Ov003BxCtl *ctl);
 extern void *func_0206fef8(u16 id);
-extern Ov003BxSpawned *Group_SpawnActor(void *mgr, Ov003BxSpawnInfo *info, void *pos, Ov003BxRot *rot, u16 a);
+extern Ov003BxSpawned *Group_SpawnActor(void *mgr, Ov003BxSpawnInfo *info, void *pos, Rot16 *rot, u16 a);
 
 static inline void Ov003Bx_SetScale(void *m, s32 s) {
     BXF(s32, m, 0xa8) = s;
@@ -350,7 +325,7 @@ void func_ov003_021efad8(Ov003Bx *self) {
     case 1:
         flags = self->ctl->flags;
         if (flags & 0x400) {
-            Ov003BxFx *e;
+            EffectObj *e;
             if (self->unk_cc_6) {
                 break;
             }
@@ -360,7 +335,7 @@ void func_ov003_021efad8(Ov003Bx *self) {
             func_02049f44(data_02097e4c, 0x3d, &self->pos, 0);
             e = func_02065f88(0x2bd, &self->pos);
             if (self->unk_64 > 0x1000) {
-                e->SetSize(self->unk_64);
+                e->SetScaleAll(self->unk_64);
             }
             break;
         }
@@ -371,7 +346,7 @@ void func_ov003_021efad8(Ov003Bx *self) {
                 }
                 self->unk_a0 = (3 - self->state) * 0x133 + 0x266;
                 func_ov000_0218996c(8, 0xc);
-                func_02065f88(0x12e, &self->pos)->SetSize(self->unk_64);
+                func_02065f88(0x12e, &self->pos)->SetScaleAll(self->unk_64);
                 func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
             }
             self->state++;
@@ -461,13 +436,13 @@ void func_ov003_021efde8(Ov003Bx *self) {
         self->work->state = 10;
         return;
     case 10: {
-        Ov003BxFx *e = func_02065f88(def->id, &self->pos);
+        EffectObj *e = func_02065f88(def->id, &self->pos);
         if (e == NULL) {
             return;
         }
-        self->unk_bc = e->unk_24;
+        self->unk_bc = e->id;
         e->SetRot(&self->rot);
-        e->SetSize(def->size);
+        e->SetScaleAll(def->size);
         if (self->unk_1a != 0 && d <= 0xc000 && Ov003_GameIdle()) {
             s32 snd = 0x54;
             s32 a = 3;
@@ -497,7 +472,7 @@ void func_ov003_021efde8(Ov003Bx *self) {
         }
         {
             VecFx32 pos;
-            Ov003BxRot rot;
+            Rot16 rot;
             rot.x = self->rot.x + def->rx;
             rot.y = self->rot.y + def->ry;
             rot.z = self->rot.z + def->rz;

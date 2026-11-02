@@ -1,4 +1,5 @@
 #include "ov003/Vec.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/FxList.h"
 
 struct Ov003HeapCtx {
@@ -7,22 +8,14 @@ struct Ov003HeapCtx {
     void *alt;
 };
 
-struct Ov003VecP {
-    s32 x;
-    s32 y;
-    s32 z;
-};
 
 extern "C" {
 
-extern Ov003HeapCtx *data_02097dd0;
-extern void *data_0214a420;
-extern void *func_020657b0(void *mgr, void *handle);
 extern void Heap_Free(void *p);
 
 static inline void Ov003_HeapDelete(void *p) {
     void *old = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->alt;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (p != NULL) {
         Heap_Free(p);
     }
@@ -50,12 +43,12 @@ void func_ov003_021dacfc(Ov003FxList *self) {
     }
 }
 
-Ov003VecP Ov003Vec_DirXZ(const Ov003Vec *a, const Ov003Vec *b) {
-    Ov003VecP d;
+VecFx32 Ov003Vec_DirXZ(const Ov003Vec *a, const Ov003Vec *b) {
+    VecFx32 d;
     d.x = b->x - a->x;
     d.z = b->z - a->z;
     d.y = 0;
-    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)&d);
+    VEC_Normalize(&d, &d);
     return d;
 }
 

@@ -2,12 +2,9 @@
 
 extern "C" {
 
-extern void *data_0214a420;
-extern void *data_02097e4c;
 extern u8 *data_02097d48;
 extern u8 data_ov014_02217aac[];
 extern u8 data_ov014_02217c6c[];
-extern void EffectMgr_StopLoop(void *a, void *b);
 extern void func_ov000_02195d88(void *self);
 extern void func_ov000_0219763c(void *self);
 extern Ov003Actor *Target_Get(void *p);
@@ -21,7 +18,6 @@ extern s32 func_ov014_0220ec18(s16 *a, u8 *b);
 extern void *ActorEx_Ctor(void *self);
 extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02194c08(void *self);
-extern void func_02049de8(void *a, s32 b);
 extern u8 Gfx3DState_NextPolyId(void *p);
 extern void func_ov000_02191920(void *a, s32 b, s32 c, s32 d);
 extern void func_ov000_02191618(void *p);
@@ -30,7 +26,6 @@ extern void func_ov000_02191708(void *p);
 extern VecFx32 *func_ov000_0218d2e0(void *self);
 extern BOOL func_ov014_0220eb14(Actor *self);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 
 #define OV014Y_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV014Y_SQRT_RESULT (*(volatile u32 *)0x40002b4)

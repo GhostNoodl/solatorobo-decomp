@@ -1,8 +1,7 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 
-typedef struct {
-    s32 x, y, z;
-} Ov003SwVec;
 
 typedef struct {
     u8 unk_00[0x22];
@@ -61,7 +60,7 @@ public:
     u8 unk_50[8];
     void *unk_58;
     u8 unk_5c[0x14];
-    Ov003SwVec pos;
+    VecFx32 pos;
     u8 unk_7c[0x17];
     u8 unk_93_0 : 1;
     u8 unk_93_1 : 3;
@@ -76,7 +75,7 @@ typedef struct {
     u8 unk_00[0x15];
     u8 unk_15;
     u8 unk_16[0x5a];
-    Ov003SwVec pos;
+    VecFx32 pos;
     u8 unk_7c[0xaac];
     u8 unk_b28_0 : 2;
     u8 unk_b28_2 : 1;
@@ -84,12 +83,10 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern char data_ov003_021f803c[];
 extern char data_ov003_021f8041[];
 extern char data_ov003_021f8046[];
 extern char data_ov003_021f804b[];
-extern void *func_02049f44(void *mgr, s32 id, Ov003SwVec *pos, s32 a);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021911c8(void *model, s32 v);
 extern BOOL func_ov000_02191120(void *model);
@@ -104,7 +101,7 @@ extern BOOL func_ov000_02198360(Ov003SwWork *w, s32 a, s32 b);
 extern BOOL func_ov003_021f0abc(Ov003SwPart *p, s32 a);
 extern void *func_ov000_02191318(void *model, s32 a);
 extern Ov003SwPlayer *func_ov000_0219bf90(void);
-extern s32 VEC_Distance(const Ov003SwVec *a, const Ov003SwVec *b);
+extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern void func_020627b4(void);
 extern s32 func_0205b1fc(void);

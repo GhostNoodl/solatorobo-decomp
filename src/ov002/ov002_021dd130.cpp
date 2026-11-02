@@ -12,7 +12,6 @@ void func_ov002_021d9ed8(void *a, void *b, int c);
 
 void *func_ov002_021e3874(s32 *v, int a, int b);
 
-void *func_02065f88(int a, s32 *v);
 
 void func_ov002_021dd7f0(void *self, void *a, void *b, int c);
 
@@ -43,7 +42,7 @@ void func_ov002_021dd130(void *self) {
         func_ov002_021e3b0c(out, a, b);
         out[1] = 0x266;
         func_ov002_021e3874(out, 0x80, 1);
-        func_02065f88(0x6d, out);
+        func_02065f88(0x6d, (VecFx32 *)out); // out is s32[3]
         func_ov002_021dd7f0(self, (u8 *)self + 0x24, (u8 *)self + 0x24, 1);
     } else {
         func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);

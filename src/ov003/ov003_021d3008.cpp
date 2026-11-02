@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Effect/Effect.h"
 #include "nitro/fx.h"
 #include "ov003/Actor.h"
 #include "Main/Sys/FieldState.h"
@@ -30,23 +31,6 @@ typedef struct {
     Ov003Mgr11c *unk_11c;
 } Ov003Game30;
 
-class Ov003EnFx {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10();
-    virtual void v14();
-    virtual void SetPos(const VecFx32 *pos);
-    virtual void v1c();
-    virtual void v20();
-    virtual void SetScale(s32 x, s32 y, s32 z);
-    u8 unk_04[0x18];
-    s32 unk_1c;
-    s32 unk_20;
-};
-
 typedef void (Ov003Actor::*Ov003EnPmf)();
 
 typedef struct {
@@ -58,7 +42,6 @@ extern "C" {
 
 extern const Ov003EnEntry data_ov003_021f4750[];
 extern Ov003Game30 *data_ov000_021ccd30;
-extern void *data_0214a420;
 extern u8 *func_02070558(u16 id);
 extern void func_ov000_0219a088(void *p);
 extern void func_ov000_0219af3c(Ov003Actor *self, void *icon);
@@ -67,7 +50,6 @@ extern void func_ov000_021bd624(void *p);
 extern void func_ov000_021697dc(void *p, u16 a, u16 b);
 extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
 extern Ov003EnPl *func_ov000_0219bf90(void);
-extern Ov003EnFx *func_020657b0(void *mgr, void *h);
 
 static inline BOOL Ov003Game_IsBusy(FieldState *g) {
     return g->head != g->tail;
@@ -210,10 +192,10 @@ void func_ov003_021d3008(Ov003Actor *self) {
         }
     }
     if (self->unk_e4 != NULL) {
-        Ov003EnFx *fx = func_020657b0(data_0214a420, self->unk_e4);
+        EffectObj *fx = func_020657b0(data_0214a420, self->unk_e4);
         if (fx != NULL) {
             if (self->unk_e8 == 0 || (self->fsm->current != 0x14 && self->fsm->current != 0xb && self->fsm->current != 4)) {
-                fx->unk_1c = 4;
+                fx->state = 4;
                 self->unk_e4 = NULL;
             } else {
                 s32 s;
@@ -231,19 +213,19 @@ void func_ov003_021d3008(Ov003Actor *self) {
                 case 0x388:
                     break;
                 }
-                fx->SetScale(0, s, 0);
+                fx->AddPosXYZ(0, s, 0);
             }
         } else {
             self->unk_e4 = NULL;
         }
     }
     if (self->unk_e0 != NULL) {
-        Ov003EnFx *fx = func_020657b0(data_0214a420, self->unk_e0);
+        EffectObj *fx = func_020657b0(data_0214a420, self->unk_e0);
         if (fx == NULL) {
             self->unk_e0 = NULL;
         } else {
             fx->SetPos(&self->pos);
-            fx->SetScale(0, self->centerY, 0);
+            fx->AddPosXYZ(0, self->centerY, 0);
         }
     }
     if (self->unk_b0->unk_0a_6) {

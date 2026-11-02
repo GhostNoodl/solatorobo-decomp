@@ -1,4 +1,4 @@
-#include "Main/Effect/Effect.h"
+#include "Main/Effect/EffectInt.h"
 #include "Main/Gfx/GfxMgr.h"
 
 extern "C" {
@@ -172,7 +172,7 @@ void func_02063a34(EffectObj *obj) {
     obj->offset.y = 0;
     obj->offset.z = 0;
     obj->unk_80 = 0;
-    obj->unk_7c = 0x1000;
+    obj->alpha = 0x1000;
     MIi_CpuClear32(-1, obj->cues, sizeof(obj->cues));
     obj->unk_c4 = 1;
     obj->loopCount = 0;
@@ -851,9 +851,9 @@ BOOL func_02064e98(EffectGroup *g) {
                 c->SetPos(&g->pos);
                 c->SetRot(&g->rot);
                 c->SetScale(&g->scale);
-                a = g->unk_7c;
-                c->unk_7c = a < 0 ? 0 : a;
-                c->unk_7c = a > 0x1000 ? 0x1000 : a;
+                a = g->alpha;
+                c->alpha = a < 0 ? 0 : a;
+                c->alpha = a > 0x1000 ? 0x1000 : a;
                 c->unk_54 = g->unk_54;
                 c->unk_50 = g->unk_50;
                 c->SetParam(g->unk_d4);

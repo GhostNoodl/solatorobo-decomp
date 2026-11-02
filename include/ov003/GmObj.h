@@ -177,20 +177,6 @@ typedef struct Ov003Obj {
     s32 unk_210;
 } Ov003Obj;
 
-class Ov003Fx {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void SetSpeed(s32 v);
-    virtual void v10();
-    virtual void SetScale(s32 x, s32 y, s32 z);
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void SetRot(s32 x, s32 y, s32 z);
-};
-
 class Ov003ObjV {
 public:
     virtual void v00();

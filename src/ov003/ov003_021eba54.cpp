@@ -1,15 +1,12 @@
 #include "types.h"
+#include "Main/Math/Rot16.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorParts.h"
 #include "ov003/Unit.h"
 
-typedef struct {
-    s32 x, y, z;
-} Ov003Vec3;
 
-typedef struct {
-    u16 x, y, z;
-} Ov003Rot3;
 
 struct Ov003Pair {
     u16 x;
@@ -93,7 +90,7 @@ typedef struct {
     s32 radius;
     u8 unk_68[4];
     s32 unk_6c;
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u8 unk_7c[0x14];
     u16 unk_90;
     u8 unk_92;
@@ -123,7 +120,7 @@ typedef struct {
 
 typedef struct {
     u8 unk_00[0x78];
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u8 unk_84[0x24];
     s32 scale[3];
     u8 unk_b4[0xa];
@@ -155,8 +152,8 @@ typedef struct {
     u8 unk_50[0xc];
     void *unk_5c;
     u8 unk_60[0x10];
-    Ov003Vec3 pos;
-    Ov003Rot3 rot;
+    VecFx32 pos;
+    Rot16 rot;
     u8 unk_82[0x4a];
     u16 unk_cc_0 : 7;
     u16 unk_cc_7 : 1;
@@ -170,8 +167,8 @@ typedef struct {
     Ov003AnimTbl *unk_2d8;
     void *unk_2dc;
     u8 unk_2e0[0x10];
-    Ov003Vec3 unk_2f0;
-    Ov003Rot3 unk_2fc;
+    VecFx32 unk_2f0;
+    Rot16 unk_2fc;
 } Ov003Obj;
 
 typedef struct {
@@ -200,8 +197,8 @@ typedef struct {
     s32 unk_64;
     s32 unk_68;
     u8 unk_6c[4];
-    Ov003Vec3 pos;
-    Ov003Rot3 rot;
+    VecFx32 pos;
+    Rot16 rot;
     u8 unk_82[0xe];
     u16 unk_90;
     u8 unk_92;
@@ -218,7 +215,7 @@ typedef struct {
     u8 unk_2d0[0x20];
     u16 unk_2f0[6];
     u8 unk_2fc[4];
-    Ov003Vec3 unk_300;
+    VecFx32 unk_300;
     s32 unk_30c;
     u8 unk_310;
 } Ov003ObjB;
@@ -234,7 +231,7 @@ extern char data_ov003_021f9978[];
 extern Ov003Player *func_ov000_0219bf90(void);
 extern void func_ov000_021bd7a0(void *p);
 extern BOOL func_ov000_02194c08(void *self);
-extern BOOL Hit_DiffInSphere(Ov003Vec3 *a, Ov003Vec3 *b, s32 r);
+extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern s32 Rand_UpTo(s32 max);
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
@@ -247,7 +244,7 @@ extern void *Heap_Alloc(u32 size);
 extern Ov003Part *func_ov000_02199b00(void *p);
 extern void *func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, void *b);
-extern void func_ov000_02190758(Ov003Anim *anim, Ov003Rot3 *rot, s32 a);
+extern void func_ov000_02190758(Ov003Anim *anim, Rot16 *rot, s32 a);
 extern BOOL func_ov000_021903b4(Ov003Anim *anim);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern Ov003Snd *data_02fe152c;
@@ -266,8 +263,8 @@ extern void func_ov000_02195848(void *self);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern char data_ov003_021f9983[];
 extern char data_ov003_021f9989[];
-extern s32 func_01ffbd6c(Ov003Vec3 *a, Ov003Vec3 *b, s32 c, s32 d, s32 e, s32 f);
-extern void Actor_MoveToPos(void *self, Ov003Vec3 *v, s32 a);
+extern s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
+extern void Actor_MoveToPos(void *self, VecFx32 *v, s32 a);
 extern void func_ov000_021987b8(Ov003Ctl *ctl, s32 a, s32 b, s32 c);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
@@ -321,8 +318,6 @@ extern void HitSphere_Link(Ov003Ctl *ctl);
 extern void func_ov000_02196860(void *self);
 extern void func_ov003_021f0c60(void *self, s32 a);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
-extern void func_0204a20c(void *mgr, s32 id);
-extern void *data_02097e4c;
 extern const Ov003Ids data_ov003_021f6bcc;
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 extern void func_ov000_02195d88(void *self);
@@ -331,20 +326,6 @@ extern void func_020627b4(void);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
-class Ov003Fx {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void SetSpeed(s32 v);
-    virtual void v10();
-    virtual void SetScale(s32 x, s32 y, s32 z);
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void SetRot(s32 x, s32 y, s32 z);
-};
-
 class Ov003ObjV {
 public:
     virtual void v00();
@@ -352,7 +333,6 @@ public:
     virtual void Destroy();
 };
 
-extern Ov003Fx *func_02065f88(s32 id, const Ov003Vec3 *pos);
 
 static inline void Ov003Sub44_Clear(ActorSub44 *s) {
     if (s != NULL) {
@@ -423,15 +403,15 @@ static inline void Ov003PartB_Assign(Ov003PartB *d, const Ov003PartB *s) {
 void func_ov003_021eb818(Ov003ObjB *self) {
     s32 sfxOn;
     if (self->unk_310) {
-        Ov003Fx *fx;
+        EffectObj *fx;
         Ov003PartSrc *src;
         Ov003Part *p;
         Ov003Ctl *c;
         self->unk_310 = 0;
         fx = func_02065f88(0x1f4, &self->pos);
-        fx->SetScale(0x1800, 0x1800, 0x1800);
-        fx->SetRot(0, 0xccd, 0);
-        func_02065f88(0x44c, &self->pos)->SetRot(0, 0x2000, 0);
+        fx->SetScaleXYZ(0x1800, 0x1800, 0x1800);
+        fx->AddPosXYZ(0, 0xccd, 0);
+        func_02065f88(0x44c, &self->pos)->AddPosXYZ(0, 0x2000, 0);
         func_0204a20c(data_02097e4c, Rand_UpTo(1) + 0x7c);
         src = func_020704b4(self->unk_0e);
         p = self->unk_4c;
@@ -489,7 +469,7 @@ void func_ov003_021ebae4(Ov003ObjB *self) {
             }
             func_ov000_02197dec(self, 0xf, 5);
             func_0204a20c(data_02097e4c, 0x7e);
-            func_02065f88(0x12f, &self->pos)->SetSpeed(0x800);
+            func_02065f88(0x12f, &self->pos)->SetScaleAll(0x800);
             func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
             ((Ov003ObjV *)self)->Destroy();
         } else {

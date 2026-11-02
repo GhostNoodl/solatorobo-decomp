@@ -1198,9 +1198,9 @@ BOOL func_ov002_021e65ac(void *self) {
         func_ov002_021e6784(self);
     }
     for (i = 0; i < 4; i++) {
-        VObject *o = func_020657b0(data_0214a420, ((void **)((u8 *)self + 0x50))[i]);
+        EffectObj *o = func_020657b0(data_0214a420, ((u32 *)((u8 *)self + 0x50))[i]);
         if (o == NULL) {
-            ((void **)((u8 *)self + 0x50))[i] = NULL;
+            ((u32 *)((u8 *)self + 0x50))[i] = 0;
         } else {
             VecFx32 dir;
             VecFx32 scale;
@@ -1218,32 +1218,31 @@ BOOL func_ov002_021e65ac(void *self) {
             dir.z = 0x1000;
             MTX_MultVec33(&dir, (MtxFx33 *)(m + 0xb8), &dir);
             Math_DirToAngles(rot, &dir);
-            o->v0x18(&pos);
-            o->v0x10(&scale);
-            o->v0x30(rot);
+            o->SetPos(&pos);
+            o->SetScale(&scale);
+            o->SetRot((const EffectRot *)rot); // rot is s32[2]: Rot16 would shrink the frame
         }
     }
     return TRUE;
 }
 
-VObject *func_02065f88(void *a, VecFx32 *b);
 
 void func_ov002_021e6784(void *self) {
     s32 i;
     for (i = 0; i < 4; i++) {
-        if (((void **)((u8 *)self + 0x50))[i] == NULL) {
+        if (((u32 *)((u8 *)self + 0x50))[i] == 0) {
             VecFx32 zero;
             VecFx32 dir;
             VecFx32 scale;
             VecFx32 pos;
             s32 rot[2];
-            VObject *o;
+            EffectObj *o;
             u8 *m;
             s32 k;
             zero.x = 0;
             zero.y = 0;
             zero.z = 0;
-            o = func_02065f88(FIELD(self, 0x4c, void *), &zero);
+            o = func_02065f88(FIELD(self, 0x4c, s32), &zero);
             m = FIELD(self, 0x60, u8 *);
             pos.x = FIELD(m, 0xdc, s32);
             pos.y = FIELD(m, 0xe0, s32);
@@ -1256,19 +1255,19 @@ void func_ov002_021e6784(void *self) {
             dir.z = 0x1000;
             MTX_MultVec33(&dir, (MtxFx33 *)(m + 0xb8), &dir);
             Math_DirToAngles(rot, &dir);
-            o->v0x18(&pos);
-            o->v0x10(&scale);
-            o->v0x30(rot);
-            o->v0x8(FIELD(self, 0x8, void *));
-            FIELD(o, 0x50, s32) = 0xfb1e0000;
-            FIELD(o, 0x54, s32) = 0;
+            o->SetPos(&pos);
+            o->SetScale(&scale);
+            o->SetRot((const EffectRot *)rot); // rot is s32[2]: Rot16 would shrink the frame
+            o->SetParam(FIELD(self, 0x8, s32));
+            o->unk_50 = 0xfb1e0000;
+            o->unk_54 = 0;
             k = FIELD(self, 0x64, s32);
             if (k == -1) {
-                FIELD(o, 0xc8, s32) = -1;
+                o->loopCount = -1;
             } else if (k == -2) {
-                FIELD(o, 0xc8, s32) = -2;
+                o->loopCount = -2;
             }
-            ((void **)((u8 *)self + 0x50))[i] = FIELD(o, 0x24, void *);
+            ((u32 *)((u8 *)self + 0x50))[i] = o->id;
             return;
         }
     }
@@ -2119,7 +2118,6 @@ static inline void GXS_SetMasterBrightness(int b) { GXx_SetMasterBrightness_((vu
 
 int func_0203ca84(int a);
 void func_02043904(void *p);
-void EffectMgr_FreeAll(void *p);
 BOOL func_ov002_021e828c(void *self);
 BOOL func_ov002_021e86a0(void *self);
 BOOL func_ov002_021e8828(void *self);
@@ -2394,7 +2392,6 @@ extern "C" {
 
 extern void *data_ov002_021f0104[];
 
-extern void *data_02097e4c;
 
 void func_02041c34(void *a, int b, void *c, int d);
 

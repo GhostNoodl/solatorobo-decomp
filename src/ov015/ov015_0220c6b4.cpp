@@ -2,9 +2,8 @@
 
 extern "C" {
 
-extern u8 data_ov015_02212e20[];
-extern u8 data_ov015_02212e68[];
-u8 *Effect3D_Create(void *a, void *b, int c, void *d);
+extern char data_ov015_02212e20[];
+extern char data_ov015_02212e68[];
 
 BOOL Ov015FishState1c_Exit(Ov015FishState1c *self, Ov015Fish *p) {
     self->fish = p;
@@ -13,26 +12,26 @@ BOOL Ov015FishState1c_Exit(Ov015FishState1c *self, Ov015Fish *p) {
 }
 
 void func_ov015_0220c6c8(Ov015FishState1c *self, Ov015Fish *p) {
-    Ov015VecC pos(*(Ov015VecC *)&p->pos);
+    Ov015Vec pos(*(Ov015Vec *)&p->pos);
     if (pos.y >= 0) {
         pos.y = 0;
     } else {
         pos.y += FX_Div(0x28000, 0x5a000);
     }
-    *(Ov015VecC *)&p->pos = pos;
+    *(Ov015Vec *)&p->pos = pos;
     if (self->timer == 0x5a) {
-        u8 *o;
+        EffectObj *o;
         Ov015Vec v;
         func_02049a48(data_02097e4c, 0x19, -1, -1, -1);
         func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         o = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e68, 0, &self->fish->pos);
-        FLD(s32, o, 0xd4) = 1;
-        FLD(u8, o, 0x28) = 1;
-        FLD(s32, o, 0x50) = -0xc8000;
+        o->unk_d4 = 1;
+        o->unk_28 = 1;
+        o->unk_50 = -0xc8000;
         v = self->fish->pos;
         v.y = 0;
         VCALL(o)->v18(&v);
-        VCALL(o)->v10(&self->fish->scaleX);
+        VCALL(o)->v10(&self->fish->scale);
     } else if (self->timer == 1) {
         func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
     }
@@ -58,14 +57,14 @@ BOOL func_ov015_0220c810(Ov015FishState1c *self) {
         self->unk_10 = max;
     }
     {
-        Ov015VecC pos(*(Ov015VecC *)&(self->fish)->pos);
+        Ov015Vec pos(*(Ov015Vec *)&(self->fish)->pos);
         pos.y += self->unk_10;
         if (pos.y < -0x32000) {
             pos.y = -0x32000;
         } else if (pos.y > -0xa000) {
             pos.y = -0xa000;
         }
-        *(Ov015VecC *)&(self->fish)->pos = pos;
+        *(Ov015Vec *)&(self->fish)->pos = pos;
     }
     s32 c = --self->unk_0c;
     s32 y = (self->fish)->pos.y;

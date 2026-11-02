@@ -1,17 +1,19 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/MultiModel.h"
 
 extern "C" {
 
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Ov003MVec;
 
 typedef struct {
-    s32 m[9];
-    Ov003MVec t;
+    union {
+        MtxFx43 mtx;
+        struct {
+            s32 m[9];
+            VecFx32 t;
+        };
+    };
     u8 unk_30;
     u8 unk_31[3];
 } Ov003MultiMtx;
@@ -25,7 +27,7 @@ struct Ov003Multi {
     u8 unk_1a[0xa];
     void (*func)(Ov003Multi *self);
     u8 unk_28[0x48];
-    Ov003MVec pos;
+    VecFx32 pos;
     u16 rotX;
     u16 rotY;
     u16 rotZ;
@@ -43,8 +45,8 @@ struct Ov003Multi {
     u8 unk_1119;
     u8 unk_111a[2];
     Ov003MultiMtx33 rot;
-    Ov003MVec unk_1140;
-    Ov003MVec unk_114c;
+    VecFx32 unk_1140;
+    VecFx32 unk_114c;
 };
 
 typedef struct {
@@ -112,12 +114,11 @@ typedef struct {
 
 extern const Ov003MultiDef data_ov003_021f7470[];
 extern char data_ov003_021fa2ce[];
-extern void *data_02097e4c;
 extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 extern Ov003MCtx *data_ov000_021ccd6c;
 
-extern BOOL Hit_DiffInSphere(Ov003MVec *a, Ov003MVec *b, s32 r);
+extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
 extern BOOL func_ov000_0218ffdc(Ov003MultiModel *m, Ov003MultiSlot *slot, s32 a, s32 b);
 extern void func_ov000_02190e98(Ov003MultiModel *m, s32 a, s32 b, s32 c);
@@ -126,13 +127,9 @@ extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, BOOL on, u32 mask);
 extern void NNSi_G3dModifyMatFlag(void *mdl, BOOL on, u32 flag);
 extern s32 func_ov000_021909a8(Ov003MultiModel *m, const void *a, const void *b);
 extern void MI_Copy36B(const void *src, void *dst);
-extern void MTX_Identity43_(Ov003MultiMtx *m);
-extern void NNS_G3dRenderObjSetInitFunc(void *rob, void *func);
-extern void VEC_Add(const Ov003MVec *a, const Ov003MVec *b, Ov003MVec *out);
-extern void VEC_MultAdd(s32 scale, const Ov003MVec *dir, const Ov003MVec *base, Ov003MVec *out);
-extern void MTX_MultVec43(const Ov003MVec *v, const Ov003MultiMtx *m, Ov003MVec *out);
+extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
+extern void VEC_MultAdd(s32 scale, const VecFx32 *dir, const VecFx32 *base, VecFx32 *out);
 extern u16 FX_Atan2(s32 y, s32 x);
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern Ov003MActor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern void *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern void func_0203cc58(s32 a, s32 b, s32 c);
@@ -140,7 +137,7 @@ extern void func_ov000_02188140(void *g, s32 a, s32 b, s32 c);
 extern void func_ov000_02188ca0(Ov003MCol *c, s32 a);
 void func_ov003_021f23e0(Ov003Multi *self);
 
-static inline void VSub(const Ov003MVec *a, const Ov003MVec *b, Ov003MVec *o) { o->x = a->x - b->x; o->y = a->y - b->y; o->z = a->z - b->z; }
+static inline void VSub(const VecFx32 *a, const VecFx32 *b, VecFx32 *o) { o->x = a->x - b->x; o->y = a->y - b->y; o->z = a->z - b->z; }
 static inline u8 Ov003M_Level(Ov003MLv *lv) {
     return lv != NULL ? lv->unk_14 : 0;
 }
@@ -153,9 +150,9 @@ void func_ov003_021f27ec(Ov003Multi *self) {
     const Ov003MultiDef *def;
     Ov003MultiModel *m;
     s32 idx;
-    Ov003MVec v;
-    Ov003MVec d;
-    Ov003MVec w;
+    VecFx32 v;
+    VecFx32 d;
+    VecFx32 w;
     Ov003MCam *cam;
     Ov003MCtx *ctx;
     Ov003MArea *area;
@@ -196,8 +193,8 @@ void func_ov003_021f27ec(Ov003Multi *self) {
         NNSi_G3dModifyPolygonAttrMask(m->mdl, TRUE, 0x1f0000);
         self->mtx[self->unk_1119].unk_30 = func_ov000_021909a8(m, 0, data_ov003_021fa2ce);
         MI_Copy36B(&self->mtx[self->unk_1119], &self->rot);
-        MTX_Identity43_(&self->mtx[self->unk_1119]);
-        NNS_G3dRenderObjSetInitFunc(m->rob, func_ov003_021f23e0);
+        MTX_Identity43_(&self->mtx[self->unk_1119].mtx);
+        NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->rob, (NNSG3dSbcCallBackFunc)func_ov003_021f23e0);
         m->unk_c2_5 = 0;
         m->unk_c2_8 = 1;
         if (++self->unk_1119 >= 6) {
@@ -231,7 +228,7 @@ void func_ov003_021f27ec(Ov003Multi *self) {
         v.z = 0x1000;
         v.x = 0;
         v.y = 0;
-        MTX_MultVec43(&v, &self->mtx[self->unk_1119], &v);
+        MTX_MultVec43(&v, &self->mtx[self->unk_1119].mtx, &v);
         ang = FX_Atan2(v.x, v.z);
         if (ang != ry) {
             ang = func_01ffc128(ang, ry, 0x400, 1, 0x8000);

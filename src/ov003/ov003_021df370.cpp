@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
 #include "ov003/Unit.h"
 
@@ -30,24 +32,6 @@ typedef struct {
     u8 unk_90[0x40];
     s32 unk_d0;
 } Ov003Prop;
-
-class Ov003DfEffect {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void SetSpeed(s32 v);
-    virtual void v10();
-    virtual void SetScaleAll(s32 x, s32 y, s32 z);
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void SetOffset(s32 x, s32 y, s32 z);
-    virtual void v28();
-    virtual void v2c();
-    virtual void v30();
-    virtual void SetScale(s32 x, s32 y, s32 z);
-};
 
 typedef struct {
     u8 unk_00[0x18];
@@ -99,9 +83,7 @@ extern void *data_ov000_021ccd68;
 extern const VecFx32 data_ov003_021f4c58;
 extern const u8 data_ov003_021f4c50[];
 extern Ov003DfSpawn *func_ov000_0219be1c(s32 id, const void *pos, const void *rot, u16 a, u16 b);
-extern Ov003DfEffect *func_02065f88(s32 id, const VecFx32 *pos);
 extern Ov003DfActor *ActorMgr_FindKind(void *mgr, s32 a, s32 b);
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern u16 Camera_GetYaw(Camera *cam);
@@ -110,7 +92,6 @@ extern void func_ov000_02191008(void *p);
 extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
-extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
 extern char data_ov003_021f8350[];
 extern void Heap_Free(void *p);
@@ -119,7 +100,6 @@ extern void func_ov000_02194758(void *p);
 extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void SndMgr_StopSeqArc(void *mgr, s32 id);
-extern s32 func_02049afc(void *mgr, s32 v);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern void func_ov000_0218b700(Ov003Unit *u, s32 a, s32 b);
 
@@ -129,13 +109,13 @@ void func_ov003_021df0c8(Ov003BgProp *self) {
     case 0:
         w->timer++;
         if (w->timer > 0x3c) {
-            Ov003DfEffect *e;
+            EffectObj *e;
             ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4035, 0x15);
             func_ov000_0218996c(0x3c, 0x78);
             e = func_02065f88(5, &self->pos);
             if (e != NULL) {
-                e->SetScaleAll(0x9800, 0x9800, 0x9800);
-                e->SetOffset(0, -0x32000, 0x1e000);
+                e->SetScaleXYZ(0x9800, 0x9800, 0x9800);
+                e->AddPosXYZ(0, -0x32000, 0x1e000);
                 ((Ov003DfEffectData *)e)->unk_3c = 0xccd;
             }
             func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
@@ -276,7 +256,7 @@ void func_ov003_021df534(Ov003Prop *self) {
         sp = func_ov000_0219be1c(0x480b, &v, data_ov003_021f4c50, self->unk_0c, 0xffff);
         if (sp != NULL) {
             sp->unk_18 = 7;
-            func_02065f88(0x325, &v)->SetScale(0, 0x3800, 0);
+            func_02065f88(0x325, &v)->SetRotXYZ(0, 0x3800, 0);
         }
         self->unk_40[0]++;
         break;
@@ -294,14 +274,14 @@ void func_ov003_021df534(Ov003Prop *self) {
         func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
         if (a != NULL) {
             VecFx32 p;
-            Ov003DfEffect *e;
+            EffectObj *e;
             p.x = a->pos.x;
             p.y = a->pos.y;
             p.z = a->pos.z;
             e = func_02065f88(0x325, &p);
             if (e != NULL) {
-                e->SetSpeed(0x1c00);
-                e->SetScale(0, 0x3800, 0);
+                e->SetScaleAll(0x1c00);
+                e->SetRotXYZ(0, 0x3800, 0);
             }
             func_02065f88(3, &p);
         }

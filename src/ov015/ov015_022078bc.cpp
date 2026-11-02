@@ -101,9 +101,9 @@ BOOL func_ov015_02207adc(Ov015Ship *self) {
         func_ov000_02190e98(&self->subModels[i], 0, 0x1000, 0);
         func_ov000_021915a0(&self->subModels[i]);
         func_ov000_021911c8(&self->subModels[i], 0);
-        self->subModels[i].scaleX = 0x1333;
-        self->subModels[i].scaleY = 0x1333;
-        self->subModels[i].scaleZ = 0x1c00;
+        self->subModels[i].scale.x = 0x1333;
+        self->subModels[i].scale.y = 0x1333;
+        self->subModels[i].scale.z = 0x1c00;
     }
     func_ov000_0218ffdc(&self->model3, &self->res3, 0, 1);
     self->shadow.prev = self->shadow.type;
@@ -123,8 +123,6 @@ void func_ov000_021917f8(void *a);
 u16 func_01ffc128(u16 a, u16 b, s32 c, s32 d, s32 e);
 s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
-Ov015V *func_02065f88(s32 id, void *pos);
-s32 EffectMgr_Contains(void *a, void *b);
 
 void func_ov015_02207c30(Ov015Ship *self) {
     u16 ang = 0x8000;
@@ -165,35 +163,35 @@ void func_ov015_02207c30(Ov015Ship *self) {
     }
     if (self->unk_d42) {
         if (self->fx == NULL) {
-            Ov015VecC p = *(Ov015VecC *)&self->nodeMtx.m[3];
-            Ov015V *e = func_02065f88(0x322, &p);
+            Ov015Vec p = *(Ov015Vec *)&self->nodeMtx.m[3];
+            EffectObj *e = func_02065f88(0x322, &p);
             self->fx = e;
-            e->v14(0x1333, 0x1333, 0x1333);
-            self->fx->v34(0, 0, (u16)Rand_UpTo(0x3fff));
-            FLD(s32, self->fx, 0xc8) = -1;
-            self->fx->v08(3);
-            FLD(s32, self->fx, 0x3c) = 0x2000;
+            e->SetScaleXYZ(0x1333, 0x1333, 0x1333);
+            self->fx->SetRotXYZ(0, 0, (u16)Rand_UpTo(0x3fff));
+            self->fx->loopCount = -1;
+            self->fx->SetParam(3);
+            self->fx->speed = 0x2000;
             self->fxTimer = 0x5a;
         } else {
             if (Rand_UpTo(100) < 5) {
-                Ov015VecC p = FLD(Ov015VecC, self->fx, 0x58);
-                Ov015V *e = func_02065f88(0x320, &p);
-                e->v14(0x800, 0x800, 0x800);
-                e->v08(3);
+                Ov015Vec p = FLD(Ov015Vec, self->fx, 0x58);
+                EffectObj *e = func_02065f88(0x320, &p);
+                e->SetScaleXYZ(0x800, 0x800, 0x800);
+                e->SetParam(3);
             }
             if (--self->fxTimer < 0) {
-                self->fx->v34(0, 0, (u16)Rand_UpTo(0x3fff));
+                self->fx->SetRotXYZ(0, 0, (u16)Rand_UpTo(0x3fff));
                 self->fxTimer = 0x5a;
             }
         }
         if (self->fx2 == NULL) {
-            Ov015V *e = func_02065f88(0x322, &self->unk_d4c);
+            EffectObj *e = func_02065f88(0x322, &self->unk_d4c);
             self->fx2 = e;
-            e->v34(0, 0, 0x3fff);
-            FLD(s32, self->fx2, 0xc8) = -1;
-            self->fx2->v08(1);
-            FLD(s32, self->fx2, 0x50) = -0xaa000;
-            FLD(s32, self->fx2, 0x54) = -0x37000;
+            e->SetRotXYZ(0, 0, 0x3fff);
+            self->fx2->loopCount = -1;
+            self->fx2->SetParam(1);
+            self->fx2->unk_50 = -0xaa000;
+            self->fx2->unk_54 = -0x37000;
             self->fxTimer2 = 10;
         } else {
             if (--self->fxTimer2 < 0) {

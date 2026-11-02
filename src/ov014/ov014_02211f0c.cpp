@@ -1,10 +1,5 @@
 #include "ov014/ov014.h"
 
-struct Ov014BgmC {
-    u16 active : 1;
-    u16 rest : 15;
-};
-
 extern "C" {
 
 extern char data_ov014_02217d7c[];
@@ -54,9 +49,6 @@ void func_ov014_02211f0c(Ov014Act_0220f9d0 *self) {
     }
 }
 
-extern void *data_02097e4c;
-extern u8 *data_02097e48;
-extern void *data_0214a420;
 extern char data_ov014_02217d88[];
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
@@ -64,10 +56,6 @@ extern void func_ov000_02182590(void *p);
 extern void func_ov000_021911c8(void *a, s32 b);
 extern s32 **func_ov000_02190a30(void *a, s32 b);
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
-extern Ov014Eff *func_02065f88(s32 id, const VecFx32 *pos);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
-extern void EffectMgr_StopLoop(void *a, void *b);
 extern void func_ov000_0218996c(s32 a, s32 b);
 
 // *(&data_02097e4c) keeps the global's address in a saved register (r7) across the
@@ -81,7 +69,7 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
     case 0: {
         FieldState *g;
         ActorSub44 *n;
-        Ov014Eff *e;
+        EffectObj *e;
         func_020627a0(self->kind, self->id);
         func_020627dc(5);
         g = data_ov000_021ccd54;
@@ -105,7 +93,7 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
         e = func_02065f88(0x69, &self->pos);
         if (e != NULL) {
             e->AddPosXYZ(0, 0x6000, 0x4000);
-            e->vf0c(0x6000);
+            e->SetScaleAll(0x6000);
         }
         func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
         func_ov000_0218996c(0xc, 0x5a);
@@ -117,10 +105,10 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
         t = self->fsm->timer;
         if (t != 0) {
         if (t == 0x21c) {
-            Ov014Eff *e = func_02065f88(0x390, &self->pos);
+            EffectObj *e = func_02065f88(0x390, &self->pos);
             e->AddPosXYZ(0, 0x6000, 0x2000);
-            e->vf0c(0x3000);
-            self->unk_158 = ((void *)e->id);
+            e->SetScaleAll(0x3000);
+            self->unk_158 = e->id;
             func_02049f44(*(&data_02097e4c), 0x44, &self->pos, 0);
         }
         if (t == 0x1fe || t == 0x1e0 || t == 0x1c2 || t == 0x1a4) {
@@ -131,7 +119,7 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
         }
         if (t == 0x140) {
             FieldState *g = data_ov000_021ccd54;
-            u8 *h;
+            SndQueue *h;
             g->cam.base.shakeX = 1;
             g->cam.base.shakeY = 0;
             g->cam.base.shakeZ = 0;
@@ -139,14 +127,14 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
             g->cam.base.shakeLen = 0x1e;
             g->cam.base.shakeCur = 0x1e;
             g->cam.base.shakeRandom = 1;
-            h = data_02097e48;
-            if (FLD(Ov014BgmC, h, 0).active != 1 || FLD(u16, h, 0x74) != 0xffff || FLD(u16, h, 0x72) != 0x38) {
-                FLD(u16, h, 0x74) = 0x38;
-                FLD(u16, h, 0x70) = 0;
+            h = data_02097e48.queue;
+            if (h->flag0 != 1 || h->unk_74 != 0xffff || h->unk_72 != 0x38) {
+                h->unk_74 = 0x38;
+                h->unk_70 = 0;
             }
         }
         if (t <= 0xc8 && t % 30 == 0) {
-            Ov014Eff *e;
+            EffectObj *e;
             s32 r;
             v1 = self->pos;
             v1.x += Rand_PlusMinus(0x4000);

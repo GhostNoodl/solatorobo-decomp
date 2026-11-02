@@ -25,7 +25,6 @@ void *func_ov000_0218fe1c(void *p);
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_021919c8(void *p);
 void __cxa_vec_ctor(void *p, s32 n, s32 size, void *ctor, void *dtor);
-s32 EffectMgr_Contains(void *a, void *b);
 void *Ov000Vt_021cc438_Dtor(void *p);
 void *func_ov000_0218ea20(void *p);
 void __cxa_vec_cleanup(void *p, s32 n, s32 size, void *dtor);

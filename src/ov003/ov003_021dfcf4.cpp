@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
 
 typedef struct {
@@ -39,14 +41,6 @@ typedef struct {
 } Ov003FvPlayer;
 
 typedef struct {
-    u16 flag0 : 1;
-    u8 unk_02[0x6e];
-    u16 unk_70;
-    u16 unk_72;
-    u16 unk_74;
-} Ov003FvSnd;
-
-typedef struct {
     u8 unk_00[0xc];
     u16 unk_0c;
     u16 unk_0e;
@@ -68,14 +62,11 @@ typedef struct {
 extern "C" {
 
 extern Ov003FvCtx *data_ov000_021ccd6c;
-extern Ov003FvSnd *data_02097e48;
-extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
 extern void SndMgr_LoadHeapState(void *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
 extern void func_ov000_0218999c(s32 a, s32 b);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern Ov003FvPlayer *func_ov000_0219bf90(void);
 extern void func_ov000_021b6b4c(Ov003FvCtx *ctx, u16 a, VecFx32 *v);
 extern void func_020627a0(u16 a, u16 b);
@@ -114,7 +105,7 @@ static inline BOOL Ov003Fv_SameCol(const FieldId *a, const FieldId *b) {
     return r;
 }
 
-static inline void Ov003Fv_Bgm(Ov003FvSnd *q, u16 id) {
+static inline void Ov003Fv_Bgm(SndQueue *q, u16 id) {
     if (q->flag0 == 1 && q->unk_74 == 0xffff && q->unk_72 == id) {
         return;
     }
@@ -198,7 +189,7 @@ void func_ov003_021df8fc(Ov003Fv *self) {
             self->work->state++;
         }
         if (self->work->timer == 0x20) {
-            Ov003Fv_Bgm(data_02097e48, 0x222);
+            Ov003Fv_Bgm(data_02097e48.queue, 0x222);
         }
         if (self->work->timer == 0x60) {
             func_02049a48(data_02097e4c, 0x223, -1, -1, -1);
@@ -300,7 +291,7 @@ void func_ov003_021dfcf4(Ov003Fv *self) {
             self->work->state++;
         }
         if (self->work->timer == 0x20) {
-            Ov003Fv_Bgm(data_02097e48, 0x222);
+            Ov003Fv_Bgm(data_02097e48.queue, 0x222);
         }
         if (self->work->timer == 0x60) {
             func_02049a48(data_02097e4c, 0x223, -1, -1, -1);

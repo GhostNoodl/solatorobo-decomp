@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/Actor.h"
 #include "Main/Sys/FieldState.h"
 
@@ -11,22 +13,6 @@ typedef struct {
     u8 unk_00[0x112];
     s16 unk_112;
 } Ov003KbAnim;
-
-class Ov003KbFx {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void SetSize(s32 size);
-    virtual void v10();
-    virtual void v14(s32 x, s32 y, s32 z);
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void SetRot(s32 x, s32 y, s32 z);
-    u8 unk_04[0x20];
-    void *unk_24;
-};
 
 typedef struct {
     u8 unk_00[0xc];
@@ -205,7 +191,6 @@ extern u16 FX_Atan2(s32 y, s32 x);
 extern void func_ov000_02199f88(ActorHp *t, Ov003Actor *self);
 extern Ov003KbAnim *func_ov000_02190a30(void *model, s32 n);
 extern void func_ov000_021911c8(void *model, s32 v);
-extern Ov003KbFx *func_02065f88(s32 id, VecFx32 *pos);
 extern BOOL func_ov000_02191508(void *model);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
@@ -269,10 +254,10 @@ void func_ov003_021d4fd8(Ov003Actor *self) {
             func_ov000_02190cb0(self->model, data_ov003_021f7a60, 0x200, 0);
             self->fsm->st++;
             if (self->unk_ea_11) {
-                Ov003KbFx *e = func_02065f88(0x322, &self->pos);
-                self->unk_e0 = e->unk_24;
-                e->SetRot(0, self->centerY, 0);
-                e->SetSize(self->radius);
+                EffectObj *e = func_02065f88(0x322, &self->pos);
+                self->unk_e0 = e->id;
+                e->AddPosXYZ(0, self->centerY, 0);
+                e->SetScaleAll(self->radius);
             }
         }
     case 3: {
@@ -306,10 +291,8 @@ void func_ov003_021d4fd8(Ov003Actor *self) {
 extern char data_ov003_021f7a97[];
 extern char data_ov003_021f7a9d[];
 extern char data_ov003_021f7aa3[];
-extern void *data_02097e4c;
 extern s32 Rand_PlusMinus(s32 max);
 extern u16 func_ov000_02198da8(ActorSub48 *ctl, u16 a);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 
 static inline u16 Ov003Kb_Angle(Ov003Actor *self) {
     u16 ang;
@@ -436,12 +419,12 @@ void func_ov003_021d5348(Ov003Actor *self) {
                 }
             }
             if (self->unk_ea_11) {
-                Ov003KbFx *e;
+                EffectObj *e;
                 self->fsm->timer = 0x78;
                 e = func_02065f88(0x322, &self->pos);
-                self->unk_e0 = e->unk_24;
-                e->SetRot(0, self->centerY, 0);
-                e->SetSize(self->radius);
+                self->unk_e0 = e->id;
+                e->AddPosXYZ(0, self->centerY, 0);
+                e->SetScaleAll(self->radius);
                 self->unk_ea_11 = 0;
             }
             self->fsm->st++;
@@ -489,14 +472,11 @@ typedef struct {
 } Ov003KbFxEnt;
 
 extern char data_ov003_021f7a7f[];
-extern void *data_0214a420;
 extern u8 func_ov003_021cee68(void);
 extern void HitSphere_Link(ActorSub48 *ctl);
 extern Ov003KbPlayer *func_ov000_0219bf90(void);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
-extern void EffectMgr_Kill(void *mgr, void *e);
-extern Ov003KbFxEnt *func_020657b0(void *mgr, void *e);
 
 static inline BOOL Ov003Kb_GameBusy(FieldState *g) {
     return g->head != g->tail;
@@ -630,14 +610,14 @@ void func_ov003_021d5900(Ov003Actor *self) {
             self->unk_e4 = NULL;
         }
         if (self->unk_e4 == NULL && !z) {
-            Ov003KbFx *e = func_02065f88(0x387, &self->pos);
+            EffectObj *e = func_02065f88(0x387, &self->pos);
             s32 s;
-            self->unk_e4 = e->unk_24;
+            self->unk_e4 = e->id;
             s = self->radius + (self->radius >> 2);
             if (s < 0x1000) {
                 s = 0x1000;
             }
-            e->v14(s, s * 2, s);
+            e->SetScaleXYZ(s, s * 2, s);
         }
         self->fsm->st++;
         return;
@@ -690,21 +670,21 @@ void func_ov003_021d5900(Ov003Actor *self) {
                     }
                 }
                 if (self->unk_e4 != NULL) {
-                    Ov003KbFxEnt *f = func_020657b0(data_0214a420, self->unk_e4);
+                    EffectObj *f = func_020657b0(data_0214a420, self->unk_e4);
                     if (f != NULL && (f->unk_20 != 0x388 || self->hpObj->cur == 0)) {
-                        f->unk_1c = 4;
+                        f->state = 4;
                         self->unk_e4 = NULL;
                     }
                 }
                 if (self->unk_e4 == NULL && self->hpObj->cur != 0) {
-                    Ov003KbFx *e = func_02065f88(0x388, &self->pos);
+                    EffectObj *e = func_02065f88(0x388, &self->pos);
                     s32 s;
-                    self->unk_e4 = e->unk_24;
+                    self->unk_e4 = e->id;
                     s = self->radius + (self->radius >> 1);
                     if (s < 0x1000) {
                         s = 0x1000;
                     }
-                    e->v14(s, s, s);
+                    e->SetScaleXYZ(s, s, s);
                 }
             }
         }

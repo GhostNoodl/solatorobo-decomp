@@ -81,7 +81,7 @@ SIZE_ASSERT(Ov003HomingShot, 0xf4);
 // One of the two effect layers of a beam: an Effect3D model of the def's archive, or an effect id;
 // its scale grows by inc up to max, and shrinks by dec when the beam ends (all << 4).
 struct Ov003BeamLayer {
-    void *mdl;
+    const char *mdl; // model name in the def's archive
     s16 fx;
     u8 alpha;
     u8 unk_07;
@@ -95,14 +95,14 @@ struct Ov003BeamLayer {
 
 // A beam's def record (data_ov003_021f49ec[], 0x48 bytes).
 struct Ov003BeamDef {
-    void *arc; // effect archive of the layers and the hit effect (NULL: effect ids)
+    const char *arc; // effect archive of the layers and the hit effect (NULL: effect ids)
     u16 duration; // frames before it shrinks away
     u8 unk_06[2];
     VecFx32 offset; // from the beam's position (Actor::unk_84)
     s16 sound;
     u8 unk_16[2];
     Ov003BeamLayer layers[2];
-    void *hitFx; // effect group shown on the player when it hits
+    const char *hitFx; // effect group shown on the player when it hits
     s32 hitFxSize;
 };
 
@@ -112,7 +112,7 @@ struct Ov003BeamDef {
 class Ov003Beam : public ActorEx {
 public:
     Ov003BeamDef *def;
-    void *layers[2]; // effect handles
+    u32 layers[2]; // effect ids (EffectObj::id)
     VecFx32 scales[2]; // current scale of each layer
     u8 unk_f4[8];
 };

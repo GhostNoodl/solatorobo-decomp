@@ -271,7 +271,6 @@ BOOL func_ov015_0220a028(Ov015Fish *self, void *a);
 void func_ov015_0221234c(Ov015Obj292c *self);
 void func_ov015_02212250(Ov015Obj292c *self, s32 a);
 void func_ov015_02207c30(Ov015Ship *p);
-Ov015V *func_02065f88(s32 id, void *pos);
 
 BOOL func_ov015_021ffb90(Ov015Obj30 *self) {
     BOOL r = FALSE;
@@ -281,13 +280,13 @@ BOOL func_ov015_021ffb90(Ov015Obj30 *self) {
     if (self->unk_0c != 0) return r;
     if (FLD(u16, data_02097dc8, 0x12) & 1) {
         Ov015Vec v = self->unk_10->pos;
-        Ov015V *e;
+        EffectObj *e;
         VCALL(self->unk_14)->v28(&v, r);
         r = TRUE;
         self->ship->unk_d3c = r;
         // m[3] as a byte offset from the matrix: a field path folds to one constant and changes the code.
         e = func_02065f88(0x325, &FLD(Ov015Vec, &self->ship->nodeMtx, 0x24));
-        FLD(s32, e, 0xd4) = 3;
+        e->unk_d4 = 3;
         func_02049a48(data_02097e4c, 0x19, -1, -1, -1);
     }
     found = NULL;
@@ -303,11 +302,11 @@ BOOL func_ov015_021ffb90(Ov015Obj30 *self) {
         }
     }
     if (found != NULL) {
-        s32 d = Ov015_FxMul64(found->scaleX, 0x14000);
-        Ov015VecC t(*(Ov015VecC *)&found->pos);
+        s32 d = Ov015_FxMul64(found->scale.x, 0x14000);
+        Ov015Vec t(*(Ov015Vec *)&found->pos);
         t.y += d;
         if (t.y < 0) t.y = 0;
-        FLD(Ov015VecC, self->unk_10, 0x24) = t;
+        FLD(Ov015Vec, self->unk_10, 0x24) = t;
         func_ov015_0221234c(self->unk_10);
     } else {
         func_ov015_022123c4(self->unk_10);

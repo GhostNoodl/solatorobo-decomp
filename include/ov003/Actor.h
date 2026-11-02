@@ -101,8 +101,8 @@ public:
     };
     u16 unk_dc;
     u16 target_id;  // id of the actor this one tracks; 0xffff for none
-    void *unk_e0;
-    void *unk_e4;
+    u32 unk_e0; // effect ids (EffectObj::id), killed by the dtor
+    u32 unk_e4;
     u16 unk_e8;
     union {
         u16 unk_ea; // or-ed whole by several ov009 members

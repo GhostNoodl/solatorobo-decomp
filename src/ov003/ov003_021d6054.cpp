@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/Actor.h"
 
 typedef struct {
@@ -10,21 +12,8 @@ typedef struct {
     s16 unk_0a;
 } Ov003DtEnt;
 
-class Ov003DtFx {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10();
-    virtual void SetScale(s32 x, s32 y, s32 z);
-    u8 pad_04[0x38];
-    s32 unk_3c;
-};
-
 extern "C" {
 
-extern void *data_02097e4c;
 extern const Ov003DtEnt data_ov003_021f4648[];
 extern char data_ov003_021f7a7f[];
 extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s32 a, s32 b);
@@ -32,9 +21,7 @@ extern void func_ov000_021915a0(Model0218fe1c *model);
 extern void func_0203f364(ActorSub48 *c);
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 on, u32 mask);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
-extern Ov003DtFx *func_02065f88(s32 id, VecFx32 *pos);
 extern u8 *func_02070558(u16 id);
 extern void func_ov000_0219b400(u8 *a, u8 *b, s32 c, VecFx32 *pos, u16 *rot, s32 d);
 extern void func_ov000_0219b5dc(u16 id, VecFx32 *pos, u16 *rot);
@@ -113,20 +100,20 @@ void func_ov003_021d6054(Ov003Actor *self) {
         v.z = self->pos.z;
         v.y += (self->height >> 1) - (self->height >> 3);
         if (e->fx != -1) {
-            Ov003DtFx *fx = func_02065f88(e->fx, &v);
+            EffectObj *fx = func_02065f88(e->fx, &v);
             s32 sc = e->scale << 4;
             if (sc == 0) {
                 sc = self->radius;
                 if (idx != 0) {
                     if (idx == 5) {
-                        fx->unk_3c = 0xccd;
+                        fx->speed = 0xccd;
                         sc = (sc >> 1) + 0x3800;
                     }
                 } else {
                     sc = sc + (sc >> 1);
                 }
             }
-            fx->SetScale(sc, sc, sc);
+            fx->SetScaleXYZ(sc, sc, sc);
         }
         if (e->sound >= 0 && self->hpObj->unk_04 != 0xffff) {
             func_02049f44(data_02097e4c, e->sound, &v, 0);

@@ -1,4 +1,6 @@
 #include "ov003/Vec.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "nitro/std.h"
 
 struct Ov003Save {
@@ -52,7 +54,7 @@ struct Ov003Game30;
 extern "C" Ov003Game30 *data_ov000_021ccd30;
 
 struct Ov003Slot3 {
-    u8 sub[3][0x30];
+    MtxFx43 sub[3]; // current matrices captured during the draw
     u8 id[3];
     union {
         u8 doneMask;
@@ -127,16 +129,6 @@ struct Ov003Hp {
     u16 unk_0a;
 };
 
-class Ov003Effect {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void SetTime(s32 t);
-    u8 unk_04[0x20];
-    s32 handle;
-};
-
 static inline void Ov003Log_Add(s32 type, const char *text) {
     Ov003Log *log;
     if (data_ov000_021ccd30->hud != NULL && (log = data_ov000_021ccd30->hud->log) != NULL) {
@@ -154,7 +146,6 @@ static inline void Ov003Log_Add(s32 type, const char *text) {
 }
 
 extern "C" Ov003Save *data_0214a424;
-extern "C" void *data_02097e4c;
 extern "C" s32 func_02049bdc(void *mgr, s32 a, s32 b);
 
 static inline void Ov003_AddMeter(u16 add) {
@@ -190,15 +181,11 @@ static inline void Ov003Log_AddEmpty(s32 type) {
 extern "C" {
 
 extern Ov003Save *data_0214a424;
-extern void *data_02097e4c;
 extern Ov003Player *func_ov000_0219bf90(void);
 extern s16 *func_ov000_02191f18(s16 *p, Ov003Hit *hit);
 extern s32 func_ov003_021ce5b8(u32 color);
-extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
-extern void *func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern u8 func_0206d37c(Ov003Save *save, s32 a);
 extern u16 func_ov003_021ce6fc(u16 v);
-extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern u8 data_ov000_021c9fe4;
 extern void *data_02149ef8;
 extern BOOL func_020621f8(void);
@@ -206,7 +193,6 @@ extern Ov003Area *func_0206ef10(u16 id);
 extern s32 func_02049bdc(void *mgr, s32 a, s32 b);
 extern void func_02040a98(char *buf, u16 v);
 extern u32 *func_ov000_0219bf7c(void);
-extern Ov003Effect *func_02065f88(s32 id, const Ov003Vec *pos);
 extern const char *MsgRes_GetString(void *mgr, s32 id);
 extern void func_ov003_021cebe8(s32 n);
 
@@ -326,13 +312,13 @@ void func_ov003_021ce8c8(Ov003SlotUser *self) {
     Ov003Slot3 *slots = self->owner->slots;
     s32 slot = (self->flags & 0x10) ? self->slot : -1;
     if (slot == slots->id[0] && slots->want0) {
-        NNS_G3dGetCurrentMtx(slots->sub[0], 0);
+        NNS_G3dGetCurrentMtx(&slots->sub[0], NULL);
         slots->done0 = 1;
     } else if (slot == slots->id[1] && slots->want1) {
-        NNS_G3dGetCurrentMtx(slots->sub[1], 0);
+        NNS_G3dGetCurrentMtx(&slots->sub[1], NULL);
         slots->done1 = 1;
     } else if (slot == slots->id[2] && slots->want2) {
-        NNS_G3dGetCurrentMtx(slots->sub[2], 0);
+        NNS_G3dGetCurrentMtx(&slots->sub[2], NULL);
         slots->done2 = 1;
     }
     if (slots->doneMask == slots->wantMask) {
@@ -422,10 +408,10 @@ void func_ov003_021cebe8(s32 n) {
     pl = func_ov000_0219bf90();
     if (pl != NULL) {
         Ov003Vec pos = pl->pos;
-        Ov003Effect *fx = func_02065f88(0x191, &pos);
+        EffectObj *fx = func_02065f88(0x191, &pos);
         Ov003Hp *hp;
-        fx->SetTime(0x1400);
-        pl->unk_b44 = fx->handle;
+        fx->SetScaleAll(0x1400);
+        pl->unk_b44 = fx->id;
         Ov003Log_AddEmpty(7);
         if (data_02149ef8 != NULL) {
             Ov003Log_Add(0, MsgRes_GetString(data_02149ef8, 0x4e));

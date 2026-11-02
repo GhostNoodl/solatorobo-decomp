@@ -1,14 +1,10 @@
 #include "types.h"
+#include "Main/Math/Rot16.h"
+#include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
 #include "ov003/Unit.h"
 
-typedef struct {
-    s32 x, y, z;
-} Ov003Vec3;
 
-typedef struct {
-    u16 x, y, z;
-} Ov003Rot3;
 
 typedef struct {
     u8 unk_00;
@@ -24,7 +20,7 @@ typedef struct {
     u8 unk_17[0x4d];
     s32 radius;
     u8 unk_68[8];
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u8 unk_7c[0x14];
     u16 unk_90;
 } Ov003Player;
@@ -41,7 +37,7 @@ typedef struct {
 
 typedef struct {
     u8 unk_00[0x78];
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u8 unk_84[0x30];
     u16 unk_b4;
     u8 unk_b6[0x8];
@@ -73,8 +69,8 @@ typedef struct {
     u8 unk_50[0xc];
     void *unk_5c;
     u8 unk_60[0x10];
-    Ov003Vec3 pos;
-    Ov003Rot3 rot;
+    VecFx32 pos;
+    Rot16 rot;
     u8 unk_82[0x4a];
     u16 unk_cc_0 : 7;
     u16 unk_cc_7 : 1;
@@ -88,8 +84,8 @@ typedef struct {
     Ov003AnimTbl *unk_2d8;
     void *unk_2dc;
     u8 unk_2e0[0x10];
-    Ov003Vec3 unk_2f0;
-    Ov003Rot3 unk_2fc;
+    VecFx32 unk_2f0;
+    Rot16 unk_2fc;
 } Ov003Obj;
 
 typedef struct {
@@ -117,8 +113,7 @@ extern char data_ov003_021f9978[];
 extern Ov003Player *func_ov000_0219bf90(void);
 extern void func_ov000_021bd7a0(void *p);
 extern BOOL func_ov000_02194c08(void *self);
-extern BOOL Hit_DiffInSphere(Ov003Vec3 *a, Ov003Vec3 *b, s32 r);
-extern void *func_02065f88(s32 id, const Ov003Vec3 *pos);
+extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_021946f8(void *self);
@@ -130,7 +125,7 @@ extern void *Heap_Alloc(u32 size);
 extern Ov003Part *func_ov000_02199b00(void *p);
 extern void *func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, void *b);
-extern void func_ov000_02190758(Ov003Anim *anim, Ov003Rot3 *rot, s32 a);
+extern void func_ov000_02190758(Ov003Anim *anim, Rot16 *rot, s32 a);
 extern BOOL func_ov000_021903b4(Ov003Anim *anim);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 

@@ -24,8 +24,6 @@ struct Ov014Mtx33 {
     s32 m[9];
 };
 extern s32 func_ov014_0220f3f0(const VecFx32 *a, const VecFx32 *b, const u16 *rot, const s32 *ext);
-extern Ov014Eff *func_02065f88(s32 id, const VecFx32 *pos);
-extern void EffectObj_AddSndCue(void *e, s32 a, s32 b);
 
 void func_ov014_0220f20c(Actor *self, s32 a, s32 b, s32 c) {
     Ov003Actor *pl = func_ov000_0219bf90();
@@ -60,11 +58,11 @@ void func_ov014_0220f20c(Actor *self, s32 a, s32 b, s32 c) {
         }
     }
     if (FLD(Ov014Bits93, pl, 0x93).b5) {
-        func_02065f88(0x327, &v)->vf0c(pl->radius * 2);
+        func_02065f88(0x327, &v)->SetScaleAll(pl->radius * 2);
     } else {
-        Ov014Eff *e = func_02065f88(0x325, &v);
-        e->vf0c(0x1400);
-        FLD(s32, e, 0x50) = -0x64000;
+        EffectObj *e = func_02065f88(0x325, &v);
+        e->SetScaleAll(0x1400);
+        e->unk_50 = -0x64000;
         EffectObj_AddSndCue(e, 0x19, 4);
     }
 }

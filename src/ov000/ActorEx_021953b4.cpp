@@ -15,7 +15,7 @@ void *Actor_Ctor(void *self);
 void *func_ov000_0218c928(void *self);
 ResSet *func_ov000_0218ea20(ResSet *self);
 void Heap_Free(void *ptr);
-void EffectMgr_Kill(void *mgr, void *handle);
+void EffectMgr_Kill(void *mgr, u32 id);
 BOOL func_ov000_0218cf5c(void *self);
 BOOL func_ov000_0218f110(AnimRes *res);
 BOOL Actor_DespawnIfFar(void *self);

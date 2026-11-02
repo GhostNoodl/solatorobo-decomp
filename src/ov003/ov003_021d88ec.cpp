@@ -1,12 +1,8 @@
 #include "types.h"
+#include "nitro/fx.h"
 #include "ov003/Ticker.h"
 #include "ov003/StateMachine.h"
 
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Ov003Vec;
 
 class Ov003TickerSet {
 public:
@@ -51,7 +47,6 @@ extern "C" {
 extern u32 data_ov003_021f7cf4;
 extern u32 data_ov003_021f7cd8;
 extern s16 func_ov003_021d7e58(Ov003Ticker *t);
-extern void VEC_MultAdd(s32 scale, Ov003Vec *dir, Ov003Vec *src, Ov003Vec *dst);
 extern void Heap_Free(void *p);
 extern void *Heap_Alloc(u32 size);
 extern void *History_Init(void *p);

@@ -1,40 +1,9 @@
 #include "types.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/Shot.h"
-
-// The effect object the effect functions return (Main EffectObj; only the members used here).
-class Ov003SlFx {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void SetScale(VecFx32 *s);
-    virtual void v14();
-    virtual void v18();
-    virtual void v1c();
-    virtual void AddPos(VecFx32 *p);
-    virtual void v24();
-    virtual void v28();
-    virtual void v2c();
-    virtual void SetRot(ActorRot *r);
-
-    u8 unk_04[0x20];
-    void *id; // handle
-    u8 active;
-    u8 unk_29[0x2f];
-    VecFx32 pos;
-    u8 unk_64[0x18];
-    s32 alpha;
-    u8 unk_80[0x48];
-    s32 unk_c8;
-};
 
 extern "C" {
 
-extern void *data_0214a420;
-extern Ov003SlFx *Effect3D_Create(void *arc, void *mdl, s32 c, VecFx32 *pos);
-extern Ov003SlFx *func_02065f88(s32 id, VecFx32 *pos);
-extern Ov003SlFx *func_020657b0(void *mgr, void *handle);
 extern void func_01ffc9fc(VecFx32 *out, VecFx32 *in, u16 ang);
 
 static inline void Ov003Sl_RotX(VecFx32 *out, const VecFx32 *in, u16 ang) {
@@ -56,18 +25,18 @@ static inline void Ov003Sl_RotX(VecFx32 *out, const VecFx32 *in, u16 ang) {
     out->z = z;
 }
 
-static inline Ov003SlFx *Ov003Sl_GetFx(Ov003Beam *self, s32 i) {
+static inline EffectObj *Ov003Sl_GetFx(Ov003Beam *self, s32 i) {
     return func_020657b0(data_0214a420, self->layers[i]);
 }
 
 void func_ov003_021dc3fc(Ov003Beam *self, s32 i, s32 mode) {
-    Ov003SlFx *fx;
+    EffectObj *fx;
     Ov003BeamDef *def;
     VecFx32 a;
     VecFx32 b;
     s32 y;
     s32 z;
-    Ov003SlFx *nfx;
+    EffectObj *nfx;
     u32 al;
     Ov003BeamLayer *ent;
     def = self->def;
@@ -93,8 +62,8 @@ void func_ov003_021dc3fc(Ov003Beam *self, s32 i, s32 mode) {
                 al = 0x1f;
             }
             nfx->alpha = FX_Div((u8)al << 12, 0x1f000);
-            nfx->unk_c8 = -1;
-            nfx->active = 0;
+            nfx->loopCount = -1;
+            nfx->unk_28 = 0;
             self->layers[i] = nfx->id;
         }
     }

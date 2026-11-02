@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/Actor.h"
 #include "ov003/Ticker.h"
 #include "ov003/StateMachine.h"
@@ -32,16 +34,6 @@ public:
     u32 unk_14;
 };
 
-class Ov003TmFx {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10();
-    virtual void SetScale(s32 x, s32 y, s32 z);
-};
-
 static inline Ov003StateNode *Ov003StateMachine_Find(Ov003StateMachine *self, u8 id) {
     Ov003StateNode *n;
     for (n = self->list; n != NULL; n = n->next) {
@@ -67,11 +59,7 @@ void func_ov003_021d8c60(Ov003Timer *self) {
     }
 }
 
-extern void *data_02097e4c;
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
-extern Ov003TmFx *func_02065f88(s32 id, const VecFx32 *pos);
-extern void *func_0204a028(void *mgr, s32 id, VecFx32 *pos, s32 a);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern s32 Rand_UpTo(s32 max);
 
@@ -111,7 +99,7 @@ void func_ov003_021d8c78(Ov003Timer *self) {
     case 3: {
         Ov003Actor *t = self->target;
         VecFx32 p;
-        Ov003TmFx *fx;
+        EffectObj *fx;
         s16 sc;
         ActorSub44 *sub;
         p.x = t->pos.x;
@@ -127,7 +115,7 @@ void func_ov003_021d8c78(Ov003Timer *self) {
         }
         fx = func_02065f88(5, &p);
         sc = self->unk_06 + 0x3800;
-        fx->SetScale(sc, sc, sc);
+        fx->SetScaleXYZ(sc, sc, sc);
         func_0204a028(data_02097e4c, 0x56, &p, -3);
         func_ov000_0218996c(0x10, 0x5a);
         self->state = 4;

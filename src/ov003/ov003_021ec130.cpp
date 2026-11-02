@@ -1,4 +1,7 @@
 #include "types.h"
+#include "Main/Math/Rot16.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorParts.h"
 
@@ -20,36 +23,10 @@ struct Ov003GmModel {
     s16 dir;
 };
 
-struct Ov003GmRot {
-    u16 x;
-    u16 y;
-    u16 z;
-};
 
 struct Ov003GmSig {
     u8 idx;
     u8 on;
-};
-
-class Ov003GmFx {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10();
-    virtual void v14();
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void v24();
-    virtual void v28();
-    virtual void v2c();
-    virtual void SetRot(const Ov003GmRot *r);
-    u8 unk_04[0x18];
-    s32 unk_1c;
-    u8 unk_20[4];
-    void *handle;
 };
 
 struct Ov003GmRes {
@@ -67,22 +44,6 @@ struct Ov003GmMsg {
 
 struct Ov003GmTable {
     void *res[4];
-};
-
-class Ov003GmEffect {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10();
-    virtual void SetScale(s32 x, s32 y, s32 z);
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void SetRot(s32 x, s32 y, s32 z);
-    u8 unk_04[0x38];
-    s32 unk_3c;
 };
 
 struct Ov003Gimmick {
@@ -109,9 +70,9 @@ struct Ov003Gimmick {
     u8 unk_68[4];
     s32 rotY;
     VecFx32 pos;
-    Ov003GmRot rot;
+    Rot16 rot;
     u8 unk_82[0x3a];
-    void *fx;
+    u32 fx;
     VecFx32 ofs;
     u8 unk_cc[2];
     u8 count;
@@ -127,7 +88,6 @@ struct Ov003Gimmick {
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern u8 data_ov003_021f99e8[];
 extern char data_ov003_021f99d8[];
 extern const Ov003GmTable data_ov003_021f99c8;
@@ -137,7 +97,6 @@ extern void func_020627b4(void);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *Target_Get(Ov003GmPart *p);
 extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
 extern void *ActorEx_Ctor(void *self);
@@ -151,13 +110,8 @@ extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern BOOL func_ov000_021950e8(void *self, Ov003GmMsg *msg);
 extern s32 Rand_UpTo(s32 max);
-extern Ov003GmEffect *func_02065f88(s32 id, const VecFx32 *pos);
 extern void func_ov003_021ec668(Ov003Gimmick *self);
-extern void *data_0214a420;
-extern void EffectMgr_Kill(void *mgr, void *handle);
-extern Ov003GmFx *func_020657b0(void *mgr, void *handle);
 extern void func_ov000_0219bd20(u16 id, u16 a, s32 type, s32 b, s32 c, Ov003GmSig *sig);
-extern void *func_0204a028(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, const void *f, const void *g, s32 h, s32 i, s32 j, s32 k);
 extern void func_ov003_021ec9e0(Ov003Gimmick *self);
 
@@ -312,12 +266,12 @@ void func_ov003_021ec580(Ov003Gimmick *self) {
         ActorSub40 *w = self->work;
         w->timer++;
         if (w->timer >= 0x96) {
-            Ov003GmEffect *e;
+            EffectObj *e;
             self->work->timer = Rand_UpTo(0xf);
             e = func_02065f88(0x322, &self->pos);
-            e->SetRot(0, self->rotY, 0);
-            e->SetScale(self->scale, self->scale, self->scale);
-            e->unk_3c = 0x4000;
+            e->AddPosXYZ(0, self->rotY, 0);
+            e->SetScaleXYZ(self->scale, self->scale, self->scale);
+            e->speed = 0x4000;
         }
     } else {
         switch (self->id) {
@@ -362,10 +316,10 @@ static inline BOOL Ov003GmGlobal_Flag(FieldState *g) {
 
 void func_ov003_021ec668(Ov003Gimmick *self) {
     VecFx32 v;
-    Ov003GmRot r;
+    Rot16 r;
     Ov003GmSig sig0;
     Ov003GmSig sig1;
-    Ov003GmFx *fx;
+    EffectObj *fx;
     if (!Ov003Gm_GameIdle() || Ov003GmGlobal_Flag(data_ov000_021ccd54)) {
         if (self->fx != NULL) {
             EffectMgr_Kill(data_0214a420, self->fx);
@@ -397,14 +351,14 @@ void func_ov003_021ec668(Ov003Gimmick *self) {
         self->ofs.y = 0x1333;
         self->ofs.z = 0;
         VEC_Add(&self->pos, &self->ofs, &v);
-        fx = (Ov003GmFx *)func_02065f88(0x25e, &v);
+        fx = (EffectObj *)func_02065f88(0x25e, &v);
         if (fx == NULL) {
             return;
         }
         r.x = self->unk_d0 + self->rot.x;
         r.y = self->unk_d2 + self->rot.y;
         r.z = self->unk_d4 + self->rot.z;
-        self->fx = fx->handle;
+        self->fx = fx->id;
         fx->SetRot(&r);
         self->work->st++;
         sig0.idx = self->unk_1c;
@@ -425,7 +379,7 @@ void func_ov003_021ec668(Ov003Gimmick *self) {
         }
         {
             if (fx != NULL) {
-                fx->unk_1c = 4;
+                fx->state = 4;
             }
             self->fx = NULL;
             self->work->st = 0;

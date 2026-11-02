@@ -1,12 +1,7 @@
 #include "types.h"
+#include "ov003/Vec.h"
 #include "ov003/Ticker.h"
 
-struct Ov003Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-    Ov003Vec() {}
-};
 
 typedef struct {
     u32 unk_00;
@@ -23,9 +18,6 @@ typedef struct {
 
 extern "C" {
 
-extern s32 VEC_Distance(Ov003Vec *a, Ov003Vec *b);
-extern void VEC_MultAdd(s32 scale, Ov003Vec *dir, Ov003Vec *src, Ov003Vec *dst);
-extern void VEC_Normalize(Ov003Vec *src, Ov003Vec *dst);
 extern int Rand_PlusMinus(s32 max);
 extern s32 func_0200b184(s32 a, s32 b);
 extern u32 data_ov003_021f7d10;

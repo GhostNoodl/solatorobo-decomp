@@ -1,15 +1,12 @@
 #include "types.h"
+#include "Main/Effect/Effect.h"
 #include "nitro/std.h"
 #include "ov003/Actor.h"
 
 extern "C" {
 
 typedef struct {
-    u8 unk_00[0x30];
-} Ov003Slot30;
-
-typedef struct {
-    Ov003Slot30 slots[2];
+    MtxFx43 slots[2]; // current matrices captured during the draw
     u8 ids[2];
 } Ov003SlotTable;
 
@@ -31,7 +28,6 @@ typedef struct {
     u8 unk_ae;
 } Ov003Obj;
 
-extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void *Actor_Ctor(Actor *self);
 extern char data_ov003_021f7ab4[];
 
@@ -165,12 +161,9 @@ typedef struct {
     void *alt;
 } Ov003HeapCtx;
 
-extern Ov003HeapCtx *data_02097dd0;
-extern void *data_0214a420;
 extern void *func_ov000_0218fee4(void *p);
 extern void Heap_Free(void *p);
 extern void Heap_FreeHi(void *p);
-extern void EffectMgr_Kill(void *mgr, void *p);
 extern void *func_ov000_0218c928(Actor *self);
 
 static inline void Ov003Actor_DtorBody(Ov003Actor *self) {
@@ -180,7 +173,7 @@ static inline void Ov003Actor_DtorBody(Ov003Actor *self) {
         for (i = 0; i < 2; i++) {
             void *old = data_02097dd0->cur;
             void *m;
-            data_02097dd0->cur = data_02097dd0->alt;
+            data_02097dd0->cur = data_02097dd0->heapHi;
             m = self->unk_d0->models[i];
             if (m != NULL) {
                 if (m != NULL) {

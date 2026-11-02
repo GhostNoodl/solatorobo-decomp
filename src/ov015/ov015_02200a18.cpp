@@ -2,7 +2,6 @@
 
 extern "C" {
 
-void *func_02065f88(s32 id, void *pos);
 s32 func_ov015_02200bf4(Ov015Obj34 *self, u8 *b, s32 c);
 s32 func_ov015_022090f0(Ov015FishInfo *p);
 
@@ -13,12 +12,12 @@ void func_ov015_02200a18(Ov015Obj34 *self, u8 *b) {
     case 3:
         spd = -0x666;
         if ((self->unk_0c >> 12) % 20 == 0) {
-            Ov015V *e;
+            EffectObj *e;
             func_02049a48(data_02097e4c, 0x59, -1, -1, -1);
             // m[3] as a byte offset from the matrix: a field path folds to one constant and changes the code.
-            e = (Ov015V *)func_02065f88(0x325, &FLD(Ov015Vec, &self->ship->nodeMtx, 0x24));
-            e->v14(0x800, 0x800, 0x800);
-            FLD(s32, e, 0xd4) = 2;
+            e = func_02065f88(0x325, &FLD(Ov015Vec, &self->ship->nodeMtx, 0x24));
+            e->SetScaleXYZ(0x800, 0x800, 0x800);
+            e->unk_d4 = 2;
         }
         if (pos <= 0) {
             pos = 0;

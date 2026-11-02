@@ -3,7 +3,7 @@
 extern "C" {
 
 BOOL func_ov002_021da800(void *self) {
-    BOOL a = func_02035b90((char *)data_ov002_021efdf6, 7) != 0 ? TRUE : FALSE;
+    BOOL a = func_02035b90(data_ov002_021efdf6, 7) != 0 ? TRUE : FALSE;
     BOOL b;
     u8 *d = FIELD(FIELD(self, 4, u8 *), 4, u8 *);
     b = TRUE;

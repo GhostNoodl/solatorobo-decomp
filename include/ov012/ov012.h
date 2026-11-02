@@ -9,10 +9,12 @@
 #include "ov000/Actor.h"
 #include "ov000/ObjLayouts.h"
 #include "ov003/Actor.h"
+#include "ov003/FxList.h"
 #include "Main/Res/ResMgr.h"
 #include "Main/Res/StageCmd.h"
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
+#include "Main/Res/ResArc.h"
 #include "Main/Hit/HitSphere.h"
 #include "nitro/std.h"
 
@@ -294,14 +296,13 @@ s32 func_0203db40(void *p);
 void func_ov000_02190a80(void *a, s32 b);
 }
 
-extern "C" void *func_ov003_021da940(void *p);
 
 // Frees the effect handle at self+off with the default heap selected.
 static inline void Ov012_FreeFx(void *self, u32 off) {
     void *saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     if (FLD(void *, self, off) != NULL) {
-        void *p = FLD(void *, self, off);
+        Ov003FxList *p = FLD(Ov003FxList *, self, off);
         if (p != NULL) {
             func_ov003_021da940(p);
             Heap_Free(p);
@@ -347,13 +348,11 @@ static inline void Ov012_StopSnd(void) {
 extern "C" {
 extern void func_0203f364(ActorSub48 *p);
 extern void *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
-extern void Ov003FxList_Kill(void *p, s32 a);
 extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void func_ov000_021984f4(void *p, s32 a, s32 b);
 extern void func_ov000_0219864c(void *p, s32 a, s32 b);
 extern void func_ov000_02196860(Actor *self);
 extern void func_ov000_0219763c(Actor *self);
-extern Ov012V *func_02065f88(s32 id, VecFx32 *pos);
 }
 
 #define VCALL(p) ((Ov012V *)(p))
@@ -368,7 +367,6 @@ extern BOOL SndMgr_IsLoadDone(void *a);
 
 
 extern "C" {
-extern void Ov003FxList_KillAll(void *p);
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_0218f074(void *a, const void *b, s32 c, s32 d, s32 e, s32 f);
 extern BOOL func_ov000_021946f8(void *self);
@@ -380,7 +378,6 @@ extern void func_ov000_02194758(void *self);
 
 
 extern "C" {
-extern void *func_020657b0(void *a, void *b);
 extern void *ActorEx_Ctor(void *self);
 }
 
@@ -437,7 +434,6 @@ struct Ov012Nib {
 extern "C" {
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov012SpawnDesc *d, void *pos, void *rot, u16 a);
 extern void Target_Set(void *a, void *b);
-extern BOOL Ov003FxList_Has(void *p, s32 a);
 extern void func_ov000_02190758(void *a, void *b, s32 c);
 extern void func_ov000_02191c24(void *a, VecFx32 *b);
 extern BOOL func_ov000_02194c08(void *self);
@@ -457,7 +453,6 @@ extern "C" {
 extern s32 func_ov000_0219a510(void *self, u16 mask, VecFx32 *pos, s32 r, s32 a, void **list);
 extern void *func_ov000_021985c0(void *p);
 extern void func_ov003_021f0c60(void *self, s32 a);
-extern void EffectObj_AddSndCue(void *e, s32 a, s32 b);
 extern void func_ov000_0218996c(u8 a, u8 b);
 }
 
@@ -555,8 +550,6 @@ extern const char *const data_ov012_0220a57c;
 extern "C" {
 extern u16 FX_AsinIdx(s32 a);
 extern u16 FX_Atan2(s32 a, s32 b);
-extern void func_ov003_021da9ac(void *p, s32 a, void *e);
-extern void *Ov003FxList_Get(void *p, s32 a);
 }
 
 

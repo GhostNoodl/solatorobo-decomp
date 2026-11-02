@@ -1,4 +1,6 @@
 #include "ov003/Vec.h"
+#include "Main/Math/Rot16.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/Actor.h"
 
 struct Ov003SpawnInfo {
@@ -15,8 +17,6 @@ extern Actor *func_ov000_02192b24(Ov003SpawnInfo *info);
 extern Actor *func_ov003_021cfab4(Ov003SpawnInfo *info);
 extern Actor *func_ov000_021b4828(Ov003SpawnInfo *info);
 extern void func_ov000_02198360(ActorSub40 *self, u8 idx, s32 flag);
-extern Ov003Mtx33 *NNS_G3dGlbGetInvV(void);
-extern void *func_02065f88(void *mgr, const void *arg);
 
 void func_ov003_021da2c8(Actor *self, s32 speed, s32 velY, s32 friction, s32 gravity) {
     if (self == NULL) {
@@ -94,23 +94,18 @@ void func_ov003_021da48c(ActorSub40 *self, u8 idx) {
     func_ov000_02198360(self, idx, 1);
 }
 
-void *func_ov003_021da4a8(const Ov003Vec *base, s32 range, void *mgr) {
+EffectObj *func_ov003_021da4a8(const Ov003Vec *base, s32 range, s32 fxId) {
     Ov003Vec v;
     Ov003Vec p;
     s32 y = Rand_PlusMinus(range);
     v.x = Rand_PlusMinus(range);
     v.y = y;
     v.z = 0;
-    MTX_MultVec33((VecFx32 *)&v, NNS_G3dGlbGetInvV(), (VecFx32 *)&v);
-    VEC_Add((VecFx32 *)base, (VecFx32 *)&v, (VecFx32 *)&p);
-    return func_02065f88(mgr, &p);
+    MTX_MultVec33(&v, (const MtxFx33 *)NNS_G3dGlbGetInvV(), &v); // the inverse view matrix's rotation rows
+    VEC_Add(base, &v, &p);
+    return func_02065f88(fxId, &p);
 }
 
-struct Ov003URot {
-    u16 x;
-    u16 y;
-    u16 z;
-};
 
 class Ov003Follower {
 public:
@@ -126,17 +121,17 @@ public:
     virtual void v24();
     virtual void v28();
     virtual void v2c();
-    virtual void SetRot(Ov003URot *rot);
+    virtual void SetRot(Rot16 *rot);
     u32 target;
     Ov003Vec offset;
     u8 unk_14[0x50];
-    Ov003URot rot;
+    Rot16 rot;
 };
 
 struct Ov003FollowTgt {
     u8 unk_00[0x70];
     Ov003Vec pos;
-    Ov003URot rot;
+    Rot16 rot;
 };
 
 extern void *data_ov000_021ccd68;
@@ -156,7 +151,7 @@ static inline void Ov003_RotY(Ov003Vec *out, s32 angle, const Ov003Vec *in) {
         return;
     }
     MTX_RotY33_(&m, OV003_SIN(angle), OV003_COS(angle));
-    MTX_MultVec33((VecFx32 *)in, &m, (VecFx32 *)out);
+    MTX_MultVec33(in, &m, out);
 }
 
 static inline void Ov003_RotYM(Ov003Vec *out, s32 angle, const Ov003Vec *in, Ov003Mtx33 *m) {
@@ -165,7 +160,7 @@ static inline void Ov003_RotYM(Ov003Vec *out, s32 angle, const Ov003Vec *in, Ov0
         return;
     }
     MTX_RotY33_(m, OV003_SIN(angle), OV003_COS(angle));
-    MTX_MultVec33((VecFx32 *)in, m, (VecFx32 *)out);
+    MTX_MultVec33(in, m, out);
 }
 
 static inline void Ov003Follower_Update(Ov003Follower *self) {
@@ -183,7 +178,7 @@ static inline void Ov003Follower_Update(Ov003Follower *self) {
     p = t->pos;
     off = self->offset;
     Ov003_RotYM(&off, (u16)t->rot.y, &off, &m);
-    VEC_Add((VecFx32 *)&p, (VecFx32 *)&off, (VecFx32 *)&p);
+    VEC_Add(&p, &off, &p);
     self->SetPos(&p);
 }
 
@@ -199,7 +194,7 @@ void func_ov003_021da520(Ov003Follower *self) {
     Ov003Vec p = t->pos;
     Ov003Vec off = self->offset;
     Ov003_RotY(&off, (u16)t->rot.y, &off);
-    VEC_Add((VecFx32 *)&p, (VecFx32 *)&off, (VecFx32 *)&p);
+    VEC_Add(&p, &off, &p);
     self->SetPos(&p);
 }
 
@@ -213,7 +208,7 @@ void func_ov003_021da620(Ov003Follower *self) {
     if (t == NULL) {
         return;
     }
-    Ov003URot r;
+    Rot16 r;
     r.x = self->rot.x;
     r.y = self->rot.y;
     r.z = self->rot.z;

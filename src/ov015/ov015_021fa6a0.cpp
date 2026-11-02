@@ -33,7 +33,6 @@ void func_ov015_021ff350(void *p);
 void func_ov015_0220015c(void *p);
 void func_ov015_02211828(Ov015Info38 *p);
 void func_ov015_02200f74(Ov015Game *p);
-void func_02065ac0(void *p);
 void func_ov015_021ff380(void *p);
 void func_ov015_02200194(void *p);
 u8 Gfx3DState_NextPolyId(void *p);
@@ -452,7 +451,7 @@ void *func_ov015_021fb230(void *self) {
 }
 
 
-void func_ov015_021fb240(Ov015VecC *dst, const Ov015VecC *src) {
+void func_ov015_021fb240(Ov015Vec *dst, const Ov015Vec *src) {
     *dst = *src;
 }
 

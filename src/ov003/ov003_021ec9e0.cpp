@@ -1,11 +1,8 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "ov000/ActorParts.h"
 
-struct Ov003Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-};
 
 struct Ov003GmPart {
     u8 unk_00[0x18];
@@ -77,22 +74,6 @@ struct Ov003GmTable {
     void *res[4];
 };
 
-class Ov003GmEffect {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10();
-    virtual void SetScale(s32 x, s32 y, s32 z);
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void SetRot(s32 x, s32 y, s32 z);
-    u8 unk_04[0x38];
-    s32 unk_3c;
-};
-
 struct Ov003Gimmick {
     void *vtbl;
     u8 unk_04[8];
@@ -116,13 +97,13 @@ struct Ov003Gimmick {
     s32 scale;
     s32 unk_68_s;
     s32 rotY;
-    Ov003Vec pos;
+    VecFx32 pos;
     u8 unk_7c[0x24];
     s32 unk_a0;
     u8 unk_a4[4];
     s32 unk_a8;
     u8 unk_ac[0x10];
-    void *fx;
+    u32 fx;
     u8 unk_c0[0xe];
     u8 count;
     u8 state;
@@ -137,7 +118,6 @@ struct Ov003Gimmick {
 
 extern "C" {
 
-extern void *data_0214a420;
 extern char data_ov003_021f99d8[];
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021911c8(void *model, s32 v);
@@ -149,16 +129,12 @@ extern BOOL func_ov000_02191120(void *model);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern Ov003GmPlayer *func_ov000_0219bf90(void);
 extern BOOL func_ov000_0219aae8(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
-extern BOOL func_ov000_0219a8bc(void *a, void *b, void *c, s32 d, s32 e, Ov003Vec *f, s32 g, s32 h, s32 i);
-extern void EffectMgr_Kill(void *mgr, void *handle);
+extern BOOL func_ov000_0219a8bc(void *a, void *b, void *c, s32 d, s32 e, VecFx32 *f, s32 g, s32 h, s32 i);
 extern void func_ov000_0219bd20(s32 id, u16 a, s32 b, s32 c, s32 d, Ov003GmArg *arg);
 extern void func_ov000_02195d88(void *self);
-extern void *data_02097e4c;
 extern void func_ov000_0219763c(void *self);
 extern void *func_0206fef8(u16 id);
 extern void func_ov000_0219badc(void *model, void *p, void *info);
-extern Ov003GmEffect *func_02065f88(s32 id, const Ov003Vec *pos);
-extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern void HitSphere_Link(Ov003GmCtl *ctl);
 extern void func_ov000_02197ad0(void *self, s32 a);
 extern void Actor_Move(void *self, s32 a);
@@ -241,7 +217,7 @@ void func_ov003_021ecc68(Ov003Gimmick *self) {
     case 0:
         if (self->count == 0) {
             s16 m;
-            Ov003GmEffect *e;
+            EffectObj *e;
             if (self->fx != NULL) {
                 EffectMgr_Kill(data_0214a420, self->fx);
                 self->fx = NULL;
@@ -258,10 +234,10 @@ void func_ov003_021ecc68(Ov003Gimmick *self) {
             }
             func_ov000_0219badc(self->model, (u8 *)self + 0xdc, func_0206fef8(self->id));
             e = func_02065f88(0x6d, &self->pos);
-            e->SetScale(self->scale + (self->scale >> 3), self->scale + (self->scale >> 3), self->scale + (self->scale >> 3));
+            e->SetScaleXYZ(self->scale + (self->scale >> 3), self->scale + (self->scale >> 3), self->scale + (self->scale >> 3));
             e = func_02065f88(4, &self->pos);
-            e->SetScale(self->scale + (self->scale >> 3), self->scale + (self->scale >> 3), self->scale + (self->scale >> 3));
-            e->SetRot(0, self->rotY, 0);
+            e->SetScaleXYZ(self->scale + (self->scale >> 3), self->scale + (self->scale >> 3), self->scale + (self->scale >> 3));
+            e->AddPosXYZ(0, self->rotY, 0);
             func_02049f44(data_02097e4c, 0x16, &self->pos, 0);
             func_02049f44(data_02097e4c, 0x19, &self->pos, 0);
         }

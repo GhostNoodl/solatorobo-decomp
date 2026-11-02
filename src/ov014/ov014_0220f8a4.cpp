@@ -2,7 +2,6 @@
 
 extern "C" {
 
-extern void *data_02097cdc;
 extern char data_ov014_02217c72[];
 extern char data_ov014_02217c81[];
 extern char data_ov014_02217c93[];
@@ -11,18 +10,11 @@ extern char data_ov014_02217cb1[];
 extern char data_ov014_02217cbd[];
 extern char data_ov014_02217ccf[];
 extern u8 data_ov014_02217e6c[];
-extern u8 data_ov014_02217d1d[];
-extern u8 *EffectGroup_Create(const char *a, const char *b, VecFx32 *pos);
-extern u8 *Effect3D_Create(const char *a, const char *b, s32 c, VecFx32 *pos);
-extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
+extern char data_ov014_02217d1d[];
 extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void Ov003ScriptList_Init(void *p);
 extern void *Ov003Vt_021f7974_Dtor(void *p);
 extern void *History_Init(void *p);
-extern void MIi_CpuClear32(s32 v, void *p, u32 n);
-extern BOOL func_02035b90(void *a, s32 b);
-extern void func_02036838(void *a, void *b, s32 c, s32 d);
-extern void *func_020359d0(void *a, s32 b, s32 c);
 extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern BOOL func_ov003_021d1c00(Ov003Actor *self, Ov014Msg *msg);
@@ -35,32 +27,30 @@ extern u8 data_ov014_02216ea8[];
 extern u8 data_ov014_02216f00[];
 extern void func_0203f2b8(void *p);
 extern s32 func_ov000_021909a8(void *a, const void *b, const void *c);
-extern void NNS_G3dRenderObjSetInitFunc(void *a, void *b);
-extern void MIi_CpuClear16(s32 v, void *p, u32 n);
 extern void func_ov003_021cf1f0(void *p, s32 a, s32 b, const void *c);
 
-u8 *func_ov014_0220f7f0(s32 k, VecFx32 *pos) {
-    u8 *r = NULL;
+EffectObj *func_ov014_0220f7f0(s32 k, VecFx32 *pos) {
+    EffectObj *r = NULL;
     switch (k) {
     case 0:
-        r = EffectGroup_Create((const char *)data_ov014_02217c72, (const char *)data_ov014_02217c81, pos);
+        r = EffectGroup_Create(data_ov014_02217c72, data_ov014_02217c81, pos);
         break;
     case 1:
-        r = Effect3D_Create((const char *)data_ov014_02217c72, (const char *)data_ov014_02217c93, 0, pos);
-        r[0x28] = 2;
+        r = Effect3D_Create(data_ov014_02217c72, data_ov014_02217c93, 0, pos);
+        r->unk_28 = 2;
         break;
     case 2:
-        r = EffectGroup_Create((const char *)data_ov014_02217c72, (const char *)data_ov014_02217c9f, pos);
+        r = EffectGroup_Create(data_ov014_02217c72, data_ov014_02217c9f, pos);
         break;
     case 3:
-        r = Effect3D_Create((const char *)data_ov014_02217c72, (const char *)data_ov014_02217cb1, 0, pos);
-        r[0x28] = 2;
+        r = Effect3D_Create(data_ov014_02217c72, data_ov014_02217cb1, 0, pos);
+        r->unk_28 = 2;
         break;
     case 4:
-        r = EffectGroup_Create((const char *)data_ov014_02217c72, (const char *)data_ov014_02217cbd, pos);
+        r = EffectGroup_Create(data_ov014_02217c72, data_ov014_02217cbd, pos);
         break;
     case 5:
-        r = EffectGroup_Create((const char *)data_ov014_02217c72, (const char *)data_ov014_02217ccf, pos);
+        r = EffectGroup_Create(data_ov014_02217c72, data_ov014_02217ccf, pos);
         break;
     }
     return r;
@@ -78,7 +68,7 @@ void func_ov014_0220f8a4(u8 *self) {
         k = -1;
     }
     if (k == FLD(s32, t, 0)) {
-        NNS_G3dGetCurrentMtx(t + 4, 0);
+        NNS_G3dGetCurrentMtx((MtxFx43 *)(t + 4), 0);
     }
 }
 
@@ -243,7 +233,7 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
     FLD(s32, self, 0xf0) = func_ov000_021909a8(self->model, data_ov014_02217d2c, data_ov014_02217d33);
     MTX_Identity43_((MtxFx43 *)((u8 *)self + 0xf4));
     m = self->model;
-    NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov014_0220f8e4);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)func_ov014_0220f8e4);
     m->clearInit = 0;
     self->model->flushVP = 1;
     self->model->renderUser = &FLD(u8, self, 0xf0);

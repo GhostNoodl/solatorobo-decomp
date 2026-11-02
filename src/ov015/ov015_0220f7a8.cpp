@@ -225,11 +225,11 @@ void *Ov015Msg_Dtor(Ov015Msg *self) {
     void *saved2;
     HEAP_PUSH(saved2);
     {
-    u8 *o = self->model;
+    Model *o = self->model;
     if (o != NULL) {
         if (o != NULL) {
-            func_02041558((Model *)o);
-            func_02041278((PlttRes *)(o + 0x88));
+            func_02041558(o);
+            func_02041278(&o->pltt);
             Heap_Free(o);
         }
         self->model = NULL;
@@ -261,11 +261,11 @@ void *Ov015Msg_DtorDelete(Ov015Msg *self) {
     void *saved2;
     HEAP_PUSH(saved2);
     {
-    u8 *o = self->model;
+    Model *o = self->model;
     if (o != NULL) {
         if (o != NULL) {
-            func_02041558((Model *)o);
-            func_02041278((PlttRes *)(o + 0x88));
+            func_02041558(o);
+            func_02041278(&o->pltt);
             Heap_Free(o);
         }
         self->model = NULL;
@@ -334,27 +334,6 @@ BOOL func_ov015_02210014(Ov015Msg *self) {
     return r;
 }
 
-static inline u8 *Ov015_ModelGetPart(u8 *m, s32 idx) {
-    if (idx >= FLD(s32, m, 0x80)) {
-        return NULL;
-    }
-    return FLD(u8 *, m, 0x78) + idx * 0x28;
-}
-static inline void Ov015_ModelPlayPart(u8 *m, s32 idx) {
-    u8 *res = FLD(u8 *, m, 0x28);
-    u8 *part;
-    void *anim;
-    if (res == NULL) {
-        return;
-    }
-    part = Ov015_ModelGetPart(m, idx);
-    if (part != NULL && FLD(u8 *, part, 0x4) != NULL) {
-        anim = FLD(void *, FLD(u8 *, part, 0x4), 0x30);
-    } else {
-        anim = NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **FLD(u16 **, NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), idx), 0xc));
-    }
-    func_02042628((Model *)m, anim, (ModelPart *)part, 0);
-}
 void func_ov015_0221015c(Ov015Msg *self) {
     u8 *p;
     if (!data_02097d48->unk_a30_4) {
@@ -367,10 +346,10 @@ void func_ov015_0221015c(Ov015Msg *self) {
         VCALL(self->textBox)->v20();
     }
     if (self->model != NULL) {
-        u8 *m = self->model;
-        FLD(s32, m, 0xfc) = self->posX;
-        FLD(s32, m, 0x100) = self->posY;
-        Ov015_ModelPlayPart(self->model, 0x1d);
+        Model *m = self->model;
+        m->x = self->posX;
+        m->y = self->posY;
+        Ov015Model_PlayPart(self->model, 0x1d, 0);
     }
     p = self->textWin;
     if (p == NULL) {
@@ -446,9 +425,9 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
         func_02041440((Model *)p, (char *)name, 0);
         STD_CopyString((char *)(p + 0x2c), (char *)file);
     }
-    self->model = p;
-    func_020417e0((Model *)(self->model), func_02035de0(data_0208cc94, data_0208cc88));
-    FLD(u32, self->model, 0x6c) |= 2;
+    self->model = (Model *)p;
+    func_020417e0(self->model, func_02035de0(data_0208cc94, data_0208cc88));
+    self->model->flags |= 2;
     func_02041d9c((Model *)(self->model), 0, 0x1d);
     FLD(s32, self->model, 0x150) = -0xccd;
     p = (u8 *)Heap_Alloc(0xb8);

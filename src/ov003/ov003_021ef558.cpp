@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/fx.h"
 
 class Ov003VObj {
 public:
@@ -7,26 +8,21 @@ public:
     virtual void Release();
 };
 
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Ov003Vec;
 
 typedef struct {
     u32 unk_00;
     u64 flags;
 } Ov003ActorState;
 
-// View of Ov003Actor (ov003/Actor.h) with Ov003Vec positions: the Ov003Vec constructor is
+// View of Ov003Actor (ov003/Actor.h) with VecFx32 positions: the VecFx32 constructor is
 // load-bearing in this file (round hdB), so it does not use the shared class.
 typedef struct {
     u8 unk_00[0x40];
     Ov003ActorState *state;
     u8 unk_44[0x2c];
-    Ov003Vec pos;
+    VecFx32 pos;
     u8 unk_7c[8];
-    Ov003Vec lastPos;
+    VecFx32 lastPos;
 } Ov003ActorP;
 
 typedef struct {

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 typedef int (*VFunc)();
@@ -13,8 +14,6 @@ typedef struct Task50 {
 #define FIELD(p, off, T) (*(T *)((u8 *)(p) + (off)))
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 extern const s16 FX_SinCosTable_[];
-extern void *data_02097e4c;
-void *func_02049a48(void *a, int b, int c, int d, int e);
 
 void func_ov002_021d1cf8(Task50 *self) {
     void *o;

@@ -1,16 +1,13 @@
 #include "ov000/VObj.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Math/Rot16.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
     u8 r, g, b;
 } Rgb8;
-
-typedef struct {
-    u16 x, y, z;
-} Rot16;
 
 typedef struct {
     u16 id;

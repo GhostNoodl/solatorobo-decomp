@@ -63,7 +63,7 @@ void Ov013ActEx_0220a9a8_Start(Ov013ActEx_0220a9a8 *self) {
     FLD(s32, self, 0xbc) = FLD(s32, fx, 0x24);
 }
 extern void *data_0214a420;
-extern Ov013V *func_020657b0(void *a, void *b);
+extern Ov013V *func_020657b0(void *a, u32 b);
 extern void func_0203f364(void *p);
 extern BOOL func_ov000_021b4738(Ov003Actor *a);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);

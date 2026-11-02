@@ -1,24 +1,8 @@
 #include "types.h"
+#include "Main/Math/Rot16.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
-
-class Ov003FxObj {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void SetFrame(s32 frame);
-    virtual void v10();
-    virtual void v14();
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void v24();
-    virtual void v28();
-    virtual void v2c();
-    virtual void SetRot(void *rot);
-    u8 unk_04[0x20];
-    u32 unk_24;
-};
 
 typedef struct {
     VecFx32 pos;
@@ -26,11 +10,6 @@ typedef struct {
     s16 next;
 } Ov003FxWaypoint;
 
-typedef struct {
-    u16 x;
-    u16 y;
-    u16 z;
-} Ov003FxRot;
 
 typedef struct {
     u16 unk_00;
@@ -75,7 +54,7 @@ typedef struct {
     Ov003FxTask *task;
     u8 unk_44[0x2c];
     VecFx32 pos;
-    Ov003FxRot rot;
+    Rot16 rot;
     u8 unk_82[2];
     VecFx32 target;
     u8 unk_90[0xc];
@@ -93,17 +72,13 @@ extern void *data_ov000_021ccd64;
 extern const Ov003FxEntry data_ov003_021f6fc8[];
 extern void func_ov000_02194758(void *self);
 extern Ov003FxUnit *Group_FindNode(void *mgr, u16 id);
-extern Ov003FxObj *func_02065f88(s32 id, VecFx32 *pos);
-extern void *data_02097e4c;
 extern const char data_ov003_021fa1aa[];
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern s32 Rand_UpTo(s32 max);
 extern s32 func_02049bdc(void *mgr, s32 a, s32 b);
-extern void *func_0204a028(void *mgr, s32 id, VecFx32 *pos, s32 a);
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *shape, Ov003FxRot *rot, s32 f, s32 g, s32 h, s32 i);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *shape, Rot16 *rot, s32 f, s32 g, s32 h, s32 i);
 
 static inline BOOL Ov003FxGame_IsBusy(FieldState *g) {
     BOOL r = g->head != g->tail;
@@ -131,7 +106,7 @@ static inline BOOL Ov003Fx_GameIdle(void) {
 void Ov003ActVt_021f9fe4_Start(Ov003FxProp *self) {
     Ov003FxUnit *u;
     const Ov003FxEntry *e;
-    Ov003FxObj *fx;
+    EffectObj *fx;
     func_ov000_02194758(self);
     u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u != NULL) {
@@ -147,9 +122,9 @@ void Ov003ActVt_021f9fe4_Start(Ov003FxProp *self) {
     if (fx == NULL) {
         return;
     }
-    self->unk_bc = fx->unk_24;
+    self->unk_bc = fx->id;
     fx->SetRot(&self->rot);
-    fx->SetFrame(e->frame);
+    fx->SetScaleAll(e->frame);
 }
 
 void func_ov003_021f0258(Ov003FxProp *self) {
@@ -221,7 +196,7 @@ void func_ov003_021f0258(Ov003FxProp *self) {
         }
     }
     if (Ov003Fx_GameIdle()) {
-        Ov003FxRot rot;
+        Rot16 rot;
         VecFx32 shape;
         rot = self->rot;
         rot.x += e->rot[0];

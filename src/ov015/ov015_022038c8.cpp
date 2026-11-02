@@ -113,10 +113,10 @@ void func_ov015_02203ab8(Ov015Scene2a08 *self) {
     v.x = -0x64a4;
     v.y = 0;
     v.z = 0x3ae1;
-    VEC_Normalize((VecFx32 *)&v, (VecFx32 *)&v);
-    VEC_MultAdd(k, (VecFx32 *)&v, (VecFx32 *)&data_ov015_02212614, (VecFx32 *)&out);
+    VEC_Normalize(&v, &v);
+    VEC_MultAdd(k, &v, &data_ov015_02212614, &out);
     self->camView.eye = out;
-    VEC_MultAdd(k, (VecFx32 *)&v, (VecFx32 *)&data_ov015_02212620, (VecFx32 *)&out);
+    VEC_MultAdd(k, &v, &data_ov015_02212620, &out);
     self->camView.at = out;
     if (self->unk_8c != NULL && !func_ov000_021633ac(self->unk_8c)) {
         void *saved;
@@ -169,10 +169,10 @@ void func_ov015_02203d60(void) {
 }
 
 static inline void Ov015_02203d64_Cam(Ov015Scene2a08 *self) {
-    NNS_G3dGlb.camPos = *(VecFx32 *)&self->camView.eye;
-    NNS_G3dGlb.camUp = *(VecFx32 *)&self->camView.up;
-    NNS_G3dGlb.camTarget = *(VecFx32 *)&self->camView.at;
-    MTX_LookAt((VecFx32 *)(&self->camView.eye), (VecFx32 *)(&self->camView.up), (VecFx32 *)(&self->camView.at), (MtxFx43 *)data_02092844);
+    NNS_G3dGlb.camPos = *&self->camView.eye;
+    NNS_G3dGlb.camUp = *&self->camView.up;
+    NNS_G3dGlb.camTarget = *&self->camView.at;
+    MTX_LookAt((&self->camView.eye), (&self->camView.up), (&self->camView.at), (MtxFx43 *)data_02092844);
     NNS_G3dGlb.flag &= ~0xe8;
     if (self->camView.projDirty == 1) {
         MTX_PerspectiveW(self->camView.aspect, self->camView.nearClip, self->camView.farClip, self->camView.fovSin,

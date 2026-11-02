@@ -1,29 +1,7 @@
 #include "types.h"
+#include "Main/Effect/Effect.h"
 #include "nitro/std.h"
 
-struct Ov003Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-};
-
-class Ov003Effect {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0c();
-    virtual void v10();
-    virtual void SetScale(s32 x, s32 y, s32 z);
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void SetRot(s32 x, s32 y, s32 z);
-    virtual void v28();
-    virtual void v2c();
-    virtual void v30();
-    virtual void SetColor(s32 a, s32 b, s32 c);
-};
 
 struct Ov003Res {
     s16 handle;
@@ -103,7 +81,7 @@ struct Ov003Prop {
     Ov003Shadow *shadow;
     void *task;
     u8 unk_44[0x2c];
-    Ov003Vec pos;
+    VecFx32 pos;
     u8 unk_7c[0x30];
     s32 unk_ac;
     Ov003Res altRes;
@@ -116,7 +94,6 @@ struct Ov003Prop {
 };
 
 extern "C" {
-extern Ov003Effect *func_02065f88(s32 id, const Ov003Vec *pos);
 extern s32 Rand_PlusMinus(s32 max);
 extern s32 Rand_UpTo(s32 max);
 extern Ov003FxPlayer *func_ov000_0219bf90(void);
@@ -138,7 +115,7 @@ extern void func_ov000_02191920(void *model, s32 a, s32 b, s32 c);
 extern void *History_Init(void *p);
 
 void func_ov003_021f3b30(Ov003Prop *self) {
-    Ov003Effect *e;
+    EffectObj *e;
     s32 id;
     s32 s;
     s32 a;
@@ -147,11 +124,11 @@ void func_ov003_021f3b30(Ov003Prop *self) {
     if (!(self->timer & 0x3f)) {
         e = func_02065f88(0x325, &self->pos);
         if (e != NULL) {
-            e->SetColor(0xc000, 0, 0);
-            e->SetScale(0x666, 0x733, 0x666);
+            e->SetRotXYZ(0xc000, 0, 0);
+            e->SetScaleXYZ(0x666, 0x733, 0x666);
             a = Rand_PlusMinus(0x8cd);
             b = Rand_PlusMinus(0x8cd);
-            e->SetRot(a, 0x59a, b);
+            e->AddPosXYZ(a, 0x59a, b);
         }
     }
     if ((self->timer & 0x7f) != 0x10) {
@@ -166,10 +143,10 @@ void func_ov003_021f3b30(Ov003Prop *self) {
         return;
     }
     s = Rand_PlusMinus(0x19a) + 0x666;
-    e->SetScale(s, s, s);
+    e->SetScaleXYZ(s, s, s);
     a = Rand_PlusMinus(0xb33);
     b = Rand_UpTo(0x1000 - 0xb33);
-    e->SetRot(a, b + 0x800, Rand_PlusMinus(0xb33));
+    e->AddPosXYZ(a, b + 0x800, Rand_PlusMinus(0xb33));
 }
 
 }

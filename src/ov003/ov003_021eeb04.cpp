@@ -2,11 +2,6 @@
 #include "ov000/ActorParts.h"
 #include "ov003/Unit.h"
 
-struct Ov003Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-};
 
 struct Ov003HeapCtx {
     void *cur;
@@ -16,7 +11,7 @@ struct Ov003HeapCtx {
 
 struct Ov003BrAnim {
     u8 unk_00[0x78];
-    Ov003Vec pos;
+    VecFx32 pos;
 };
 
 struct Ov003BrCtl {
@@ -55,7 +50,7 @@ struct Ov003Bridge {
     s32 unk_64;
     u8 unk_68[4];
     s32 unk_6c;
-    Ov003Vec pos;
+    VecFx32 pos;
     u8 rot[0x17];
     u8 unk_93_0 : 1;
     u8 state : 3;
@@ -203,7 +198,7 @@ void Ov003ActVt_021f9e10_Start(Ov003Bridge *self) {
             }
             self->anim = a;
             func_ov000_0218ffdc(a, res, 0, 1);
-            { Ov003Vec v; v.x = self->pos.x; v.y = self->pos.y; v.z = self->pos.z; v.y += self->height << 4; self->anim->pos = v; }
+            { VecFx32 v; v.x = self->pos.x; v.y = self->pos.y; v.z = self->pos.z; v.y += self->height << 4; self->anim->pos = v; }
             func_ov000_02190758(self->anim, self->rot, 0);
         }
         func_ov000_02198360(self->work, 1, 1);

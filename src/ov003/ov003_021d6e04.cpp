@@ -1,11 +1,13 @@
 #include "types.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/Actor.h"
 
 #pragma pool_strings on
 #pragma dont_reuse_strings off
 
 struct Ov003Act : public Ov003Actor {
-    void *unk_f0;
+    u32 unk_f0;
 };
 
 typedef struct {
@@ -15,37 +17,12 @@ typedef struct {
     u32 unk_b24_0 : 1;
 } Ov003Pl;
 
-class Ov003Eff {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void SetSize(s32 v);
-    virtual void v10();
-    virtual void v14();
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void SetRot(s32 x, s32 y, s32 z);
-    virtual void v28();
-    virtual void v2c();
-    virtual void v30();
-    virtual void SetDir(u16 x, u16 y, u16 z);
-    u8 pad_04[0x20];
-    void *unk_24;
-    u8 pad_28[0x14];
-    s32 unk_3c;
-};
-
 extern "C" {
 
-extern void *data_02097e4c;
 extern Ov003Pl *func_ov000_0219bf90(void);
 extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
-extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
-extern Ov003Eff *func_02065f88(s32 id, const VecFx32 *pos);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 typedef struct {
@@ -64,7 +41,7 @@ void func_ov003_021d6e04(Ov003Act *self) {
     VecFx32 t;
     VecFx32 d;
     VecFx32 d2;
-    Ov003Eff *fx;
+    EffectObj *fx;
     ActorSub44 *s;
     ActorSub40 *w;
     switch (self->fsm->st) {
@@ -109,8 +86,8 @@ void func_ov003_021d6e04(Ov003Act *self) {
             return;
         }
         fx = func_02065f88(0x192, &self->pos);
-        fx->SetRot(0, self->centerY, 0);
-        fx->SetDir(0, FX_Atan2(t.x - self->pos.x, t.z - self->pos.z), 0);
+        fx->AddPosXYZ(0, self->centerY, 0);
+        fx->SetRotXYZ(0, FX_Atan2(t.x - self->pos.x, t.z - self->pos.z), 0);
         func_02049f44(data_02097e4c, 0x57, &self->pos, 0);
         func_ov000_02190cb0(self->model, run, 0x2ab, 0);
         func_ov000_021915a0(self->model);
@@ -138,11 +115,11 @@ void func_ov003_021d6e04(Ov003Act *self) {
 
 void func_ov003_021d71c8(Ov003Act *self) {
     if (self->fsm->st == 0 && self->kind == 0x5815) {
-        Ov003Eff *fx = func_02065f88(6, &self->pos);
-        fx->SetRot(0, self->centerY, 0);
-        fx->unk_3c = 0xc00;
+        EffectObj *fx = func_02065f88(6, &self->pos);
+        fx->AddPosXYZ(0, self->centerY, 0);
+        fx->speed = 0xc00;
         fx = func_02065f88(0x69, &self->pos);
-        fx->SetRot(0, self->centerY, 0);
+        fx->AddPosXYZ(0, self->centerY, 0);
         func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
     }
     func_ov003_021d6054(self);
@@ -198,14 +175,11 @@ void func_ov003_021d732c(Ov003Act *self) {
     }
 }
 
-extern void *data_0214a420;
 extern void func_ov000_021911c8(void *model, s32 v);
 extern void func_0203f364(ActorSub48 *ctl);
 extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
-extern void EffectObj_AddSndCue(Ov003Eff *e, s32 a, s32 b);
-extern void *func_020657b0(void *mgr, void *handle);
 
 void func_ov003_021d73dc(Ov003Act *self) {
     switch (self->fsm->st) {
@@ -226,7 +200,7 @@ void func_ov003_021d73dc(Ov003Act *self) {
         self->fsm->st++;
     }
     case 1: {
-        Ov003Eff *e;
+        EffectObj *e;
         if (self->fsm->timer % 20 == 0) {
             VecFx32 p;
             VecFx32 v;
@@ -246,11 +220,11 @@ void func_ov003_021d73dc(Ov003Act *self) {
             return;
         }
         e = func_02065f88(0x384, &self->pos);
-        e->SetRot(0, self->centerY, 0);
-        e->SetSize(0x1800);
+        e->AddPosXYZ(0, self->centerY, 0);
+        e->SetScaleAll(0x1800);
         MIi_CpuClear32(-1, (u8 *)e + 0x84, 0x40);
         EffectObj_AddSndCue(e, 0x42, 5);
-        self->unk_f0 = e->unk_24;
+        self->unk_f0 = e->id;
         self->fsm->timer = 0;
         self->fsm->st++;
         break;
@@ -258,16 +232,16 @@ void func_ov003_021d73dc(Ov003Act *self) {
     case 2: {
         ActorSub40 *w;
         if (self->unk_1a == 0 && func_020657b0(data_0214a420, self->unk_f0) == NULL) {
-            Ov003Eff *e = func_02065f88(6, &self->pos);
-            e->SetRot(0, self->centerY, 0);
-            e->SetSize(0x2000);
-            e->unk_3c = 0xc00;
+            EffectObj *e = func_02065f88(6, &self->pos);
+            e->AddPosXYZ(0, self->centerY, 0);
+            e->SetScaleAll(0x2000);
+            e->speed = 0xc00;
             e = func_02065f88(0x69, &self->pos);
-            e->SetRot(0, self->centerY, 0);
-            e->SetSize(0x2000);
+            e->AddPosXYZ(0, self->centerY, 0);
+            e->SetScaleAll(0x2000);
             e = func_02065f88(0x57d, &self->pos);
-            e->SetRot(0, self->centerY, 0);
-            e->SetSize(0x2000);
+            e->AddPosXYZ(0, self->centerY, 0);
+            e->SetScaleAll(0x2000);
             func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
             func_ov000_0218996c(0xc, 0x14);
             self->unk_1a = 1;
