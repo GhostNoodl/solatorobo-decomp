@@ -60,6 +60,8 @@ The first `ninja` run builds the patched dsd, which takes a few minutes.
 
 [`docs/MATCHING.md`](docs/MATCHING.md) collects every compiler quirk and matching trick we've found so far, from register colouring to string pools. Start there before tackling a function.
 
+[`docs/UNMATCHED.md`](docs/UNMATCHED.md) lists the functions that don't match yet; each has a draft in an `#ifdef NONMATCHING` block that the default build leaves out. After a refactor (types, names, headers), run `ninja` and then `python tools/check_drafts.py --score`, which compiles every draft with its file's build flags and flags compile errors and drafts that score worse than their entry.
+
 ## Credits
 
 The build scripts are adapted from the [Phantom Hourglass decompilation](https://github.com/zeldaret/ph) (CC0).

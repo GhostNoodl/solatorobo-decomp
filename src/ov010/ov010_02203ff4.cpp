@@ -66,13 +66,7 @@ typedef struct Ov010Ring4030 {
     s32 r;
 } Ov010Ring4030;
 
-typedef struct Ov010Mtx33_4030 {
-    s32 m[9];
-} Ov010Mtx33_4030;
-
-extern void MTX_RotY33_(Ov010Mtx33_4030 *m, s32 s, s32 c);
-extern void MTX_MultVec33(const Ov010Vec *v, const Ov010Mtx33_4030 *m, Ov010Vec *o);
-extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *c);
+// MTX_RotY33_, MTX_MultVec33 and VEC_Add come from nitro/fx.h (through ov010/ov010.h).
 extern s32 Ov003Vec_DistSq(const Ov010Vec *a, const Ov010Vec *b);
 
 static inline s16 Ov010_SinIdx(int idx) {
@@ -83,15 +77,15 @@ static inline s16 Ov010_CosIdx(int idx) {
     return FX_SinCosTable_[idx * 2 + 1];
 }
 
-static inline void Ov010_RotY33(Ov010Mtx33_4030 *m, s32 s, s32 c) {
+static inline void Ov010_RotY33(MtxFx33 *m, s32 s, s32 c) {
     MTX_RotY33_(m, s, c);
 }
 
 void func_ov010_02204030(Ov010Vec *out, const Ov010Ring4030 *c, const Ov010Vec *tgt, s32 n, u16 ang) {
     Ov010Vec v;
     Ov010Vec t;
-    Ov010Mtx33_4030 m;
-    Ov010Mtx33_4030 m2;
+    MtxFx33 m;
+    MtxFx33 m2;
     u16 cur = ang;
     u16 step = 0xffff / n;
     s32 best;

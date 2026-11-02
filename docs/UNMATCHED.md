@@ -28,6 +28,19 @@ only register colouring differs. Round cvA (`docs/MATCHING.md`) swept 17 compile
 pragma settings over every draft. None scores better than the default, so each blocker is in the source shape, not
 in the compiler choice.
 
+## Checking the drafts after a refactor
+
+The default build leaves every `NONMATCHING` block out, so a retyped struct, a rename or a header change can break a
+draft without `ninja` noticing. After such a change, run `ninja` and then `python3 tools/check_drafts.py --score`.
+It compiles every file that has a `NONMATCHING` block with that file's exact `build.ninja` command (compiler version,
+flags and include paths) and `NONMATCHING` defined, into a temporary directory, and prints each compile error. With
+`--score` it also scores every draft function (the functions the object defines that the built object does not) the
+way `tools/match.py` counts, raw and register-masked, and compares each with the table below: `WORSE` is a draft that
+scores higher than its entry and `NODRAFT` an entry whose draft is missing. It exits non-zero on either, and on a
+compile error. Pass files or directories to check only those. It reads the ROM from `extract/` at run time and
+writes nothing to the tree. Fix a broken draft by adapting it to the current types and names, and bring it back to
+its score here; if a draft gets better, update its row.
+
 ## The list
 
 | Address | Module | Size | File | Raw / masked | Blocker | Main rounds |
