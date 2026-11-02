@@ -8,19 +8,6 @@
 #include "Main/Effect/Effect.h"
 
 typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 rest : 12;
-} Ba4_021a6280;
-
-typedef struct {
-    u8 lo : 4;
-    u8 hi : 4;
-} Nib_021a6280;
-
-typedef struct {
     VecFx32 pos;
     ActorRot rot;
     s32 x;
@@ -30,8 +17,6 @@ typedef struct {
     u8 pad_00[6];
     FieldId rgb;
 } Def_021a6280;
-
-#define BA4(self) LFLD(Ba4_021a6280, LFLD(u8 *, self, 0xba4), 6)
 
 #define SQRTCNT_021a6280 (*(volatile u16 *)0x40002b0)
 #define SQRT_RESULT_021a6280 (*(volatile u32 *)0x40002b4)
@@ -146,18 +131,18 @@ void func_ov000_021a6280(Robo021ca458 *self) {
             self->unk_b2c_3_f = 0;
             self->unk_b2c_7 = 0;
             if (self->unk_ba4 != NULL && self->unk_b24_22 != 0) {
-                if (BA4(self).b0 && (self->padCur & 0xf0) && (self->hit->unk_50 & 0x20000000) &&
-                    (!BA4(self).b2 || (self->padCur & 0x30))) {
+                if (self->unk_ba4->unk_06_0 && (self->padCur & 0xf0) && (self->hit->unk_50 & 0x20000000) &&
+                    (!self->unk_ba4->unk_06_2 || (self->padCur & 0x30))) {
                     self->unk_b2c_0 = true;
                     func_ov000_02198360(self->fsm, 0x11, 0);
                     goto end;
                 }
-                if (BA4(self).b2 && (self->padCur & 0xf0) && (self->hit->unk_50 & 0x20000000)) {
+                if (self->unk_ba4->unk_06_2 && (self->padCur & 0xf0) && (self->hit->unk_50 & 0x20000000)) {
                     self->unk_b2c_2 = 1;
                     func_ov000_02198360(self->fsm, 0x11, 0);
                     goto end;
                 }
-                if (BA4(self).b1 && (self->padCur & 0xf0) && !(self->hit->unk_50 & 0x20000000)) {
+                if (self->unk_ba4->unk_06_1 && (self->padCur & 0xf0) && !(self->hit->unk_50 & 0x20000000)) {
                     self->unk_b2c_1 = 1;
                     func_ov000_02198360(self->fsm, 0x11, 0);
                     if (self->unk_b24_22 >= 2 && sub->unk_1a >= 3) {
@@ -208,7 +193,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
                     n += (u16)(sub->unk_1a << 1);
                 }
                 if (self->unk_ba4 != NULL) {
-                    n += LFLD(Nib_021a6280, self->unk_ba4, 5).hi;
+                    n += self->unk_ba4->unk_05_4;
                 }
                 func_ov003_021cedf4(n);
             }
@@ -248,7 +233,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
         }
         self->rot_y = func_01ffc128(ang, self->rot_y, 0x59a, 1, 0x8000);
         self->unk_b2c_3_f = 0;
-        if (self->unk_b24_22 != 0 && self->unk_ba4 != NULL && BA4(self).b3 && (self->padTrig & 1) &&
+        if (self->unk_b24_22 != 0 && self->unk_ba4 != NULL && self->unk_ba4->unk_06_3 && (self->padTrig & 1) &&
             self->unk_b2c_7 < 5 && sub != NULL) {
             EffectObj *e;
             p.x = sub->dest.x;
@@ -348,7 +333,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
                     if (self->unk_b24_22 != 0) {
                         u8 lv = 0;
                         u8 n;
-                        if (self->unk_ba4 != NULL && BA4(self).b3) {
+                        if (self->unk_ba4 != NULL && self->unk_ba4->unk_06_3) {
                             lv = self->unk_b2c_7 << 1;
                         }
                         s2->unk_19 = self->unk_b24_22;

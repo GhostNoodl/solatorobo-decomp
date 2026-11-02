@@ -12,17 +12,17 @@ extern const char *data_0208cc94;
 void func_02041c5c(void *m, void *fn);
 void func_02041c20(void *m, s32 a, void *b);
 BOOL func_ov000_02152e5c(void *self);
-void func_ov000_0215ec44(void *self);
-void func_ov000_0215e8b0(void *self);
+void func_ov000_0215ec44(UiPanel *self);
+void func_ov000_0215e8b0(UiPanel *self);
 void *func_ov000_021c77bc(u8 *self, u16 *cmd, void *arr, u16 *count);
 void *func_ov000_021c782c(u8 *self, void *req, void *buf, u16 *count);
 
-void func_ov000_021c3d20(UnitBase021ccb54_021ccbe0 *self) {
-    void *p;
+void func_ov000_021c3d20(LoBase021ccb54_021ccbe0 *self) {
+    ListRow *p;
     Model *m;
-    u8 *o;
+    UiPanel *o;
 
-    LBIT(self, 0xc).b1 = 0;
+    self->hidden = 0;
     self->slideMode = 1;
     {
         s32 z = self->posZ;
@@ -32,7 +32,7 @@ void func_ov000_021c3d20(UnitBase021ccb54_021ccbe0 *self) {
     self->slideY = 0;
     p = self->unk_94;
     if (p != NULL) {
-        self->height = self->rows * LFLD(s32, p, 0x18);
+        self->height = self->rows * p->height;
     } else {
         self->height = self->rows * 0xc;
     }
@@ -86,16 +86,16 @@ void func_ov000_021c3d20(UnitBase021ccb54_021ccbe0 *self) {
         }
         func_02041c5c(self->unk_84, (void *)func_ov000_021c782c);
     }
-    if ((void *)self->unk_90 == NULL) {
-        o = (u8 *)Heap_Alloc(0x2c);
+    if (self->unk_90 == NULL) {
+        o = (UiPanel *)Heap_Alloc(sizeof(UiPanel));
         if (o != NULL) {
             func_ov000_0215ec44(o);
         }
         self->unk_90 = o;
         func_ov000_0215e8b0(o);
-        LFLD(s32, self->unk_90, 0x10) = self->unk_b0 << 12;
-        LFLD(u32, LFLD(u8 *, self->unk_90, 0x28), 0x6c) &= ~0x200000;
+        self->unk_90->unk_10 = self->unk_b0 << 12;
+        self->unk_90->model->flags &= ~0x200000;
     }
-    LBIT(self, 0xc).b0 = 1;
+    self->busy = 1;
 }
 }

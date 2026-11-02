@@ -14,26 +14,25 @@ void func_01ffc9fc(VecFx32 *out, void *a, u16 ang);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 
 void func_ov000_0219d730(Robo021ca458 *self) {
-    void *zero = NULL;
     s32 t = func_0203db40((u8 *)self + 0x24);
     EffectObj *o;
     if (self->unk_b24_2) {
-        func_ov000_02190a80((u8 *)self + 0xac, t);
-        func_ov000_02191418((u8 *)self + 0x368, 1, (BOOL)zero);
+        func_ov000_02190a80(&self->mdl0, t);
+        func_ov000_02191418(&self->mdl1, 1, FALSE);
     } else {
         if (!self->unk_b24_1) {
-            func_ov000_02190a80((u8 *)self + 0xac, t);
+            func_ov000_02190a80(&self->mdl0, t);
             if (self->unk_b24_21) {
-                func_ov000_02190a80((u8 *)self + 0x778, 0x1000);
+                func_ov000_02190a80(&self->mdl2, 0x1000);
             }
-            func_ov000_02191418((u8 *)self + 0x368, 1, 0);
+            func_ov000_02191418(&self->mdl1, 1, 0);
         }
         if (self->unk_b22_0 && self->unk_998 != NULL) {
             func_ov000_02190a80(self->unk_998, 0x1000);
         }
     }
-    func_ov000_02190a80((u8 *)self + 0x368, t);
-    if (LFLD(void *, self, 0xb40) != NULL) {
+    func_ov000_02190a80(&self->mdl1, t);
+    if (self->unk_b40 != 0) {
         o = func_020657b0(data_0214a420, self->unk_b40);
         if (o != NULL) {
             VecFx32 v;
@@ -53,21 +52,21 @@ void func_ov000_0219d730(Robo021ca458 *self) {
                 o->SetRot(&self->rot);
             }
         } else {
-            LFLD(void *, self, 0xb40) = zero;
+            self->unk_b40 = 0;
         }
     }
-    if (LFLD(void *, self, 0xb44) != NULL) {
+    if (self->unk_b44 != 0) {
         o = func_020657b0(data_0214a420, self->unk_b44);
         if (o == NULL) {
-            LFLD(void *, self, 0xb44) = zero;
+            self->unk_b44 = 0;
         } else {
             o->SetPos(&self->pos);
         }
     }
-    if (LFLD(void *, self, 0xb48) != NULL) {
+    if (self->unk_b48 != 0) {
         o = func_020657b0(data_0214a420, self->unk_b48);
         if (o == NULL) {
-            LFLD(void *, self, 0xb48) = zero;
+            self->unk_b48 = 0;
             return;
         }
         {

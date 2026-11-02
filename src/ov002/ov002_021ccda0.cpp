@@ -104,7 +104,7 @@ int func_ov002_021cd104(void) {
 extern "C" {
 extern VFunc data_ov000_021cadcc[];
 extern VFunc data_ov000_021cb920[];
-void func_0204aab0(void *p);
+void func_0204aab0(SndQueue *p);
 void func_ov000_021547e8(void *a, void *b, const char *c, int d);
 BOOL func_020624d8(void);
 BOOL func_ov000_02188dfc(void);
@@ -112,32 +112,25 @@ void func_ov000_0216f144(void *p);
 void func_ov000_0216f828(void *p);
 void *func_ov000_0216f398(void *a, void *b, s32 c, void *d);
 
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 1;
-    u32 rest : 29;
-} Flags021cd124;
-
 void func_ov002_021cd124(Task021ef530 *self) {
     void *g;
     void *res;
-    void *m;
+    Model *m;
     UiObj *o;
     {
-        u8 *mm = (u8 *)data_02097e48.queue;
-        if (FIELD(mm, 0x0, Bits16).b0) {
-            if (FIELD(mm, 0x6, u16) != 0xffff || FIELD(mm, 0x4, u16) != 13) {
-                if (FIELD(mm, 0x2, u16) != 10 && FIELD(mm, 0x2, u16) != 0) {
-                    if (FIELD(mm, 0x6, u16) != 0xffff) {
+        SndQueue *mm = data_02097e48.queue;
+        if (mm->flag0) {
+            if (mm->unk_06 != 0xffff || mm->unk_04 != 13) {
+                if (mm->unk_02 != 10 && mm->unk_02 != 0) {
+                    if (mm->unk_06 != 0xffff) {
                         func_0204aab0(mm);
                     }
-                    FIELD(mm, 0x2, u16) = 1;
+                    mm->unk_02 = 1;
                 } else {
-                    FIELD(mm, 0x2, u16) = 0;
+                    mm->unk_02 = 0;
                 }
-                FIELD(mm, 0x6, u16) = 13;
-                FIELD(mm, 0x8, u16) = 10;
+                mm->unk_06 = 13;
+                mm->unk_08 = 10;
             }
         }
     }
@@ -147,15 +140,15 @@ void func_ov002_021cd124(Task021ef530 *self) {
     }
     g = data_02149ef8;
     res = func_02034d88(func_02035f30(data_ov002_021ef3e4, data_ov002_021ef3ec, 2), data_ov002_021ef3ec);
-    m = Heap_Alloc(0x160);
+    m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
-        func_02041218((PlttRes *)((u8 *)m + 0x88));
-        func_02041440((Model *)m, NULL, 0);
+        func_02041218(&m->pltt);
+        func_02041440(m, NULL, 0);
     }
-    self->unk_3c = (Model *)m;
-    func_020417e0((Model *)m, res);
+    self->unk_3c = m;
+    func_020417e0(m, res);
     self->unk_3c->flags |= 2;
-    func_02041d9c((Model *)self->unk_3c, 0, 0);
+    func_02041d9c(self->unk_3c, 0, 0);
     o = (UiObj *)Heap_Alloc(0xd4);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;

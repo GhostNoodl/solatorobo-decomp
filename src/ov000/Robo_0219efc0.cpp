@@ -5,20 +5,10 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
-
-typedef struct {
-    u16 b0 : 4;
-    u16 b4 : 1;
-    u16 b5 : 1;
-    u16 b6 : 1;
-    u16 b7 : 1;
-    u16 b8 : 1;
-    u16 rest : 7;
-} Ba4_0219efc0;
+#include "Main/Sys/Pad.h"
 
 extern "C" {
 extern MessageQueue021cb980 *data_ov000_021ccd30;
-extern void *data_02097dc8;
 extern void *data_02097e4c;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 key);
@@ -160,7 +150,7 @@ static inline BOOL CanMove_0219efc0(Robo021ca458 *self) {
 }
 
 void func_ov000_0219efc0(Robo021ca458 *self) {
-    u8 *p;
+    Param0206ef10 *p;
     Actor *t9;
     BOOL x;
 
@@ -182,9 +172,9 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
     }
     if (!self->unk_b29_1 && !self->unk_b28_2 && self->unk_b2e == 0 &&
         !self->unk_b29_3) {
-        self->padCur = LFLD(u16, data_02097dc8, 0x10);
-        self->padTrig = LFLD(u16, data_02097dc8, 0x12);
-        self->padRelease = LFLD(u16, data_02097dc8, 0x14);
+        self->padCur = data_02097dc8->cur;
+        self->padTrig = data_02097dc8->trig;
+        self->padRelease = data_02097dc8->release;
         self->padDir = Pad_LookupDir(data_02097dc8, (u8 *)self + 0xb70);
     }
     if ((self->padCur & 1) && !self->unk_b24_18) {
@@ -210,7 +200,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
     func_ov000_021b2d48(self);
     p = self->unk_ba4;
     if (p != NULL && self->unk_b24_1 && self->unk_b24_12 == 0) {
-        if (LFLD(Ba4_0219efc0, p, 6).b4) {
+        if (p->unk_06_4) {
             if (self->unk_b1c == 0xffff && (u8)(self->fsm->current + 0xff) <= 1) {
                 u16 n = self->unk_b36;
                 if (n == 0) {
@@ -264,9 +254,9 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
         if (self->unk_93_5 != 2) {
             self->unk_93_5 = 0;
             p = self->unk_ba4;
-            if (LFLD(Ba4_0219efc0, p, 6).b8 && self->unk_b36 >= 8 && self->unk_b1c == 0xffff) {
+            if (p->unk_06_8 && self->unk_b36 >= 8 && self->unk_b1c == 0xffff) {
                 self->unk_93_5 = 1;
-                if (!LFLD(Ba4_0219efc0, p, 6).b4) {
+                if (!p->unk_06_4) {
                     self->fsm->flags |= 0x10000000;
                 }
             }
@@ -425,9 +415,9 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
                 }
                 p = self->unk_ba4;
                 if (p != NULL && self->unk_b24_12 == 0) {
-                    if ((LFLD(Ba4_0219efc0, p, 6).b7 && self->fsm->current == 4 &&
+                    if ((p->unk_06_7 && self->fsm->current == 4 &&
                          !(self->hit->unk_50 & 0x20000000) && self->unk_b38 >= 10) ||
-                        (LFLD(Ba4_0219efc0, p, 6).b6 && self->fsm->current != 3 && self->unk_b38 > 6 &&
+                        (p->unk_06_6 && self->fsm->current != 3 && self->unk_b38 > 6 &&
                          (self->hit->unk_50 & 0x20000000))) {
                         self->fsm->flags |= 8;
                     }

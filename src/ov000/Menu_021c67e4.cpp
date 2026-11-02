@@ -1,13 +1,7 @@
 #include "types.h"
 #include "nitro/fx.h"
 #include "ov000/VObj.h"
-
-typedef struct {
-    u8 pad_00[0x12];
-    u16 trg;
-    u8 pad_14[2];
-    u16 rep;
-} Pad021c67e4;
+#include "Main/Sys/Pad.h"
 
 class Node021c67e4 {
 public:
@@ -81,7 +75,6 @@ struct Obj021c67e4 : public VObj {
 
 extern "C" {
 
-extern Pad021c67e4 *data_02097dc8;
 extern void *data_02097e4c;
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 
@@ -112,8 +105,8 @@ static inline void Body(Obj021c67e4 *self) {
     }
     d = zero;
     cur = d;
-    trg = data_02097dc8->trg;
-    rep = data_02097dc8->rep;
+    trg = data_02097dc8->trig;
+    rep = data_02097dc8->repeat;
     if (trg & 1) {
         if (self->onPress != NULL) {
             self->onPress(self, self->cur);

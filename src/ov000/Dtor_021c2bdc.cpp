@@ -1,17 +1,18 @@
 #include "ov000/VObj.h"
+#include "ov000/ListRow.h"
 
 extern "C" {
 
 extern u8 data_ov000_021cac0c[];
 void Heap_Free(void *ptr);
 
-void func_ov000_021c2bb0(void *self) {
-    *(s32 *)((u8 *)self + 0x18) = 0xf;
-    *(s32 *)((u8 *)self + 0x30) = 0;
-    *(s32 *)((u8 *)self + 0x34) = 0;
-    *(s32 *)((u8 *)self + 0x38) = 0x64;
-    *(s32 *)((u8 *)self + 0x3c) = 0x24;
-    *(u8 *)((u8 *)self + 0x40) = 0;
+void func_ov000_021c2bb0(ListRowGauge *self) {
+    self->height = 0xf;
+    self->bar = 0;
+    self->label = 0;
+    self->max = 0x64;
+    self->value = 0x24;
+    self->built = 0;
 }
 
 VObj *Ov000Vt_021cca88_DtorDelete(VObj *self) {

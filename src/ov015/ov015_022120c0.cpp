@@ -1,23 +1,19 @@
 #include "ov015/ov015.h"
+#include "ov000/ActorMarker.h"
 
 extern "C" {
 
-void func_ov000_021bd228(void *p);
 extern char data_ov015_022132ac[];
 extern char data_ov015_022132bb[];
-void func_ov000_021bd198(void *p);
 void func_ov015_02212430(Ov015Obj292c *self);
-void func_ov000_021bd624(void *p);
-void func_ov000_021bd7a0(void *p);
 s32 func_02049bdc(void *a, s32 b, s32 c);
-BOOL func_ov000_021bd314(void *o, s32 a);
 extern u8 data_ov015_022132e0[];
 void *func_ov000_0218fee4(void *a);
 void *func_ov000_0218ea20(void *a);
 
 void func_ov015_022120c0(Ov015Obj292c *self) {
     self->fx = NULL;
-    self->unk_08 = NULL;
+    self->marker = NULL;
     self->pos.x = 0;
     self->pos.y = 0;
     self->pos.z = 0;
@@ -32,19 +28,19 @@ void func_ov015_022120c0(Ov015Obj292c *self) {
 
 void func_ov015_022120fc(Ov015Obj292c *self) {
     void *saved;
-    void *o;
+    ActorMarker *o;
     if (EffectMgr_Contains(data_0214a420, self->fx)) {
         self->fx->state = 4;
         self->fx = NULL;
     }
     HEAP_PUSH(saved);
-    o = self->unk_08;
+    o = self->marker;
     if (o != NULL) {
         if (o != NULL) {
             func_ov000_021bd228(o);
             Heap_Free(o);
         }
-        self->unk_08 = NULL;
+        self->marker = NULL;
     }
     HEAP_POP(saved);
 }
@@ -58,7 +54,7 @@ int func_ov015_0221219c(Ov015Obj292c *self) {
 }
 
 BOOL func_ov015_022121b4(Ov015Obj292c *self) {
-    u8 *q;
+    ActorMarker *q;
     self->fx = Effect3D_Create(data_ov015_022132ac, data_ov015_022132bb, 0, &self->pos);
     self->fx->unk_d4 = 3;
     self->fx->unk_54 = 0;
@@ -66,12 +62,12 @@ BOOL func_ov015_022121b4(Ov015Obj292c *self) {
     self->fx->loopCount = -1;
     self->fx->unk_28 = 0;
     self->fx->speed = 0x800;
-    q = (u8 *)Heap_Alloc(0xa8);
+    q = (ActorMarker *)Heap_Alloc(0xa8);
     if (q != NULL) {
         func_ov000_021bd198(q);
     }
-    self->unk_08 = (void *)q;
-    FLD(u32, q, 0x0) &= ~2;
+    self->marker = q;
+    q->show = 0;
     self->unk_30 = 0x800;
     return TRUE;
 }
@@ -83,7 +79,7 @@ void func_ov015_02212250(Ov015Obj292c *self, s32 a) {
 }
 
 void func_ov015_02212264(Ov015Obj292c *self) {
-    u8 *o;
+    ActorMarker *o;
     if (self->fx != NULL) {
         const MtxFx43 *m = NNS_G3dGlbGetInvV();
         Ov015Vec w;
@@ -98,26 +94,30 @@ void func_ov015_02212264(Ov015Obj292c *self) {
         self->fx->SetScale(&self->scale);
         self->fx->SetRotXYZ(0xe00, FX_Atan2(v.x, v.z), 0);
     }
-    o = ((u8 *)self->unk_08);
+    o = self->marker;
     if (o != NULL) {
-        FLD(s32, o, 0x50) = self->unk_24.x;
-        FLD(s32, o, 0x54) = self->unk_24.y;
-        FLD(s32, o, 0x58) = self->unk_24.z;
-        func_ov000_021bd624(self->unk_08);
-        func_ov000_021bd7a0(self->unk_08);
+        o->unk_50.x = self->unk_24.x;
+        o->unk_50.y = self->unk_24.y;
+        o->unk_50.z = self->unk_24.z;
+        func_ov000_021bd624(self->marker);
+        func_ov000_021bd7a0(self->marker);
     }
 }
 
+static inline BOOL Ov015_MarkerShown(ActorMarker *m) {
+    return m->show == 1 ? TRUE : FALSE;
+}
+
 void func_ov015_0221234c(Ov015Obj292c *self) {
-    Ov015ObjFlags *o = ((Ov015ObjFlags *)self->unk_08);
+    ActorMarker *o = self->marker;
     if (o == NULL) {
         return;
     }
-    if (Ov015_ObjIsB1(o)) {
+    if (Ov015_MarkerShown(o)) {
         return;
     }
     func_ov000_021bd314(o, 4);
-    ((Ov015ObjFlags *)self->unk_08)->b1 = 1;
+    self->marker->show = 1;
     func_02049bdc(data_02097e4c, 0xe, 5);
     if (self->fx != NULL) {
         self->fx->speed = 0x2000;
@@ -125,14 +125,14 @@ void func_ov015_0221234c(Ov015Obj292c *self) {
 }
 
 void func_ov015_022123c4(Ov015Obj292c *self) {
-    Ov015ObjFlags *o = ((Ov015ObjFlags *)self->unk_08);
+    ActorMarker *o = self->marker;
     if (o == NULL) {
         return;
     }
-    if (!Ov015_ObjIsB1(o)) {
+    if (!Ov015_MarkerShown(o)) {
         return;
     }
-    o->b1 = 0;
+    o->show = 0;
     func_02049bdc(data_02097e4c, 0x1f, -3);
     if (self->fx != NULL) {
         self->fx->speed = 0x800;

@@ -1,11 +1,5 @@
 #include "types.h"
-
-typedef struct {
-    u8 pad_00[0x12];
-    u16 trg;
-    u8 pad_14[2];
-    u16 rep;
-} Pad02161280;
+#include "Main/Sys/Pad.h"
 
 typedef struct {
     u32 b0 : 2;
@@ -16,7 +10,6 @@ typedef struct {
 typedef void (*Cb02161280)(u8 *self, BOOL ok);
 
 extern "C" {
-extern Pad02161280 *data_02097dc8;
 extern void *data_02097e4c;
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 
@@ -39,8 +32,8 @@ void func_ov000_02161280(Obj02161280 *self) {
     if (self->unk_0c.b2) {
         return;
     }
-    trg = data_02097dc8->trg;
-    rep = data_02097dc8->rep;
+    trg = data_02097dc8->trig;
+    rep = data_02097dc8->repeat;
     if (trg & 1) {
         func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
         if (self->unk_90 != NULL) {

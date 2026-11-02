@@ -73,11 +73,11 @@ void func_ov000_021692e0(Lo021cb7ec *self) {
 
 BOOL func_ov000_021693e0(Lo021cb7ec *self) {
     if (!LoGIdle() || !LoD78Idle()) {
-        LBIT(self, 0xc).b1 = 1;
+        self->unk_0c_1 = 1;
     }
     switch (self->unk_04) {
     case 6:
-        if (!LBIT(self, 0xc).b1 ? TRUE : FALSE) {
+        if (!self->unk_0c_1 ? TRUE : FALSE) {
             self->unk_04 = 0;
             return TRUE;
         }
@@ -86,7 +86,7 @@ BOOL func_ov000_021693e0(Lo021cb7ec *self) {
         if (!func_02054f10(self->unk_9c, 0xffff)) {
             return FALSE;
         }
-        LBIT(self, 0xc).b3 = 1;
+        self->unk_0c_3 = 1;
         break;
     }
     return TRUE;

@@ -24,7 +24,7 @@ static inline BOOL LoadModel9aac(Lo021cb5a8 *self) {
     if (self->model) {
         return TRUE;
     }
-    if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
+    if (self->flag6 ? TRUE : FALSE) {
         MODEL_NEW(self->model, data_0208cb84, data_0208cc8c);
     } else {
         MODEL_NEW(self->model, data_0208cb74, data_0208cca0);
@@ -115,7 +115,7 @@ void func_ov000_02159aac(Lo021cb5a8 *self) {
     } else if (fl & 0x80000000) {
         self->posY = 0xbd - self->height;
     }
-    LBIT(self, 0xc).b0 = 1;
+    self->busy = 1;
 }
 
 }

@@ -8708,3 +8708,28 @@ Readability only; every function stays byte-identical. Each step was checked fun
 - **Main.** `func_0206ecd4`'s unused first parameter is `u32 dstSize` (callers pass 0x100).
 - **Kept forms (unchanged from round acA):** ov012's `pos - FLD(s32, self, 0x70)` and `feacc`/`fec58` (`u8 *self`, the `0220a4a4/a8/ac` reads), ov014 `0220d6f8` and the render callbacks `02208fe4`/`0220f8a4`, ov013 `0220b444`'s `info` record.
 - **Renames:** none (fields and types only).
+
+### Round acO (ov000 row lists and records typed, LBIT bit views on their classes; ov002 row/sound/param records; ov015 records)
+
+Readability only; every function stays byte-identical. Each step was checked function by function (code and relocations) against a baseline built first (`a0e1ab73`, rebuilt at `45c348ac` after acN landed); at the end all 1906 objects were compared again (0 differ), then the full gate passed: 0 FAILED with 19/19 ROM checks and `check symbols` OK, `ninja report` at 8138 matched, and `check_drafts.py --score` exits 0 with all 30 drafts unchanged.
+
+**Counts** (src + include of each overlay)
+
+| | before | after |
+|---|---|---|
+| ov000 `LFLD` | 789 | 483 |
+| ov000 `LBIT` | 215 | 36 |
+| ov000 `void *self` | 172 | 156 |
+| ov002 `FIELD(` / `(u8 *)` / `void *self` | 344 / 258 / 63 | 302 / 252 / 59 |
+| ov015 `FLD(` / `(u8 *)` | 57 / 22 | 40 / 20 |
+
+- **Row lists (new untracked `include/ov000/ListRow.h`).** `ListRow : VObj` (0x30, base vtable `021cbac8`: index, draw position, height/width, `shown`, `next`/`prev`) and its subclasses `Hud021cca10` (0x48), `ListRowGauge` (`021cc9f8`), `ListRowText` (`021cca58`) and `ListRow021cca70` (0x7c, with `ListRowItem`). `LoBase021ccb54_021ccbe0` in `ObjLayouts.h` now covers its 0xf4 bytes (rows, count, cursor rows, `onDecide`/`onCursor`), `Lo021ccb54` adds the three labels; `ov006_HudList` drops the fields the base now has. The ov000 row files (`Stub_021c22d8` .. `Lo_021c56c0`, `Dtor_021c8be8`) and ov002's level/text lists use them; ov002's `Ov002Row*` copies are gone, and `Ov002TextList::unk_84/unk_88` are `ListRow *`.
+- **ov000 records.**
+  - `LBIT(x, 0xc).bN` on UI objects became `UiObj` flag names (`busy`, `hidden`, `flagN`) or `ObjBase021cac0c_021cb6f0::unk_0c_N`; `LBIT(x, 4)` on tasks `Task::unk_04_N`; `LBIT(self, 0xb24)` the robot's `unk_b24_N`.
+  - `Lo0216b474` (`MessageQueue.h`, `ListBuffer021cb940::unk_68`): the sliding 2D model asked for each frame by `func_ov000_0216b508` (`want`/`asked`/`part22`, state, model, slide ratio); `Stub_0216b474`, `Lo_0216b490`, `Lo_0216b550`, `Model_0216b880` and the robot callers use it.
+  - `Param0206ef10` / `RoboDef` (`ObjLayouts.h`): the 0x2c record of `func_0206ef10` (robot kind `| 0x8000`, kept in `Robo021ca458::unk_ba4`) with its move bits at 0x06 and the robot definition (three resource name/extension pairs) at 0x0c, also the type of `data_ov000_021ca398`. The robot files' `Ba4_*`/`Nib*` views, ov002's `ov002_Info021e1148` and `FIELD(info, ...)` reads, and `Stub_021c95ac` use it.
+  - `ActorHp::unk_10/unk_18` are the dealt/taken damage callbacks (`Hit_0219a8bc`; ov009 `02207aa0`'s callback now has that type). `ObjPool::playerPos` (Main) is the robot position stored by `func_ov000_021a0d4c`. `Menu_021763c8`: the message windows of `Task021cbee0`/`Task021cbb60` are `Lo021cad50 *`, the `0217df5c`/`0217e560` model views use `Model_PlayPart`/`MODEL_FLAGS` (the pmA `NNS_G3dGeBufferOP_N` view is untouched).
+  - Pad users include `Main/Sys/Pad.h`; `Robo*` raw `(u8 *)self + off` became `&self->mdl0/res0/...`; ten unused static inlines with raw offsets were removed.
+- **ov002.** `021ccda0`/`021d0270`/`021d0810` read the sound queue as `SndQueue` and build the model as `Model`; `021e0420` is an SBC material callback on `NNSG3dRS`/`NNSG3dMatAnmResult`; `021e046c` is a `UiItemFn`; `021d1970`/`021d1e44` build and read `ListRow021cca70` rows.
+- **ov015.** `Ov015MsgMgr::unk_08` bits; `Ov015PickTable` (`func_0206f040`); `Ov015ObjInfo` (`func_0206fef8`: scale, height); `Ov015Obj292c::marker` is the `ActorMarker` (the `Ov015ObjFlags` view is gone).
+- Left: `Mdl_021b70c0`'s render-object writes (its prototypes are `void *` versions of the NNS ones), the GameSave-related `0x48`/`0x40` fields in `Menu_021763c8` (`GameSave.h` mixes two objects), the ov000 text list `021ccadc` family (`Stub_021c6140` .. `Stub_021c6714`; ov000 and ov002 disagree on the `0xc4` bit widths), `func_ov002_021cd068` (unreferenced), ov003's own `func_0206ef10` views.

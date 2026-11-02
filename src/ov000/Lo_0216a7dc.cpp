@@ -39,12 +39,12 @@ BOOL func_02054f10(void *a, s32 b);
 
 BOOL func_ov000_0216a7dc(Lo021cb744 *self) {
     if (!LoGIdle() || !LoD78Idle()) {
-        LBIT(self, 0xc).b1 = 1;
+        self->unk_0c_1 = 1;
     }
     switch (self->unk_04) {
     case 6:
         self->unk_a4 = 0;
-        if (!LBIT(self, 0xc).b1 ? TRUE : FALSE) {
+        if (!self->unk_0c_1 ? TRUE : FALSE) {
             self->unk_04 = 0;
             return TRUE;
         }
@@ -55,8 +55,8 @@ BOOL func_ov000_0216a7dc(Lo021cb744 *self) {
         }
         self->unk_a6 = 0;
         self->unk_a8 = 0;
-        LBIT(self, 0xc).b3 = 1;
-        LBIT(self, 0xc).b10 = 1;
+        self->unk_0c_3 = 1;
+        self->unk_0c_10 = 1;
         break;
     }
     return TRUE;

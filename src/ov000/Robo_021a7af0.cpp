@@ -8,11 +8,6 @@
 #include "Main/Effect/Effect.h"
 #include "ov000/FieldMgr.h"
 
-typedef struct {
-    u16 b0 : 8;
-    u16 b8 : 1;
-    u16 rest : 7;
-} Ba4_021a7af0;
 
 extern "C" {
 extern MessageQueue021cb980 *data_ov000_021ccd30;
@@ -549,8 +544,8 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
             return;
         }
         {
-            u8 *p = self->unk_ba4;
-            if (p != NULL && LFLD(Ba4_021a7af0, p, 6).b8 && self->unk_b36 >= 0x10) {
+            Param0206ef10 *p = self->unk_ba4;
+            if (p != NULL && p->unk_06_8 && self->unk_b36 >= 0x10) {
                 self->unk_b24_5 = 0;
                 self->unk_b1c = 0xffff;
                 self->unk_b1e = 0xffff;

@@ -22,14 +22,6 @@ void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 Robo021ca458 *func_ov000_0219bf90(void);
 void func_02062764(s32 a, s32 b);
 
-static inline void Set54(u8 *t, u8 n, s32 c) {
-    LFLD(u16, LFLD(u8 *, t, 0x54), 0x8a) = n <= 1 ? 1 : n;
-    LFLD(s32, LFLD(u8 *, t, 0x54), 0x8c) = c;
-}
-static inline void Set54b(u8 *t, s32 c, u8 n) {
-    LFLD(u16, LFLD(u8 *, t, 0x54), 0x8a) = n <= 1 ? 1 : n;
-    LFLD(s32, LFLD(u8 *, t, 0x54), 0x8c) = c;
-}
 
 void func_ov000_021b1740(Robo021ca458 *self, BOOL flag) {
     u32 st;

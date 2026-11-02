@@ -2,8 +2,8 @@
 
 extern "C" {
 
-Ov002Row *func_ov000_021c4014(LoBase021ccb54_021ccbe0 *list, int idx);
-void func_ov000_021c414c(LoBase021ccb54_021ccbe0 *list, Ov002Row *item);
+ListRow *func_ov000_021c4014(LoBase021ccb54_021ccbe0 *list, int idx);
+void func_ov000_021c414c(LoBase021ccb54_021ccbe0 *list, ListRow *item);
 void func_ov000_021c403c(LoBase021ccb54_021ccbe0 *list, int idx);
 void func_ov002_021e331c(Obj021f002c *self);
 Ov002RowList *func_ov002_021def98(Obj021efef0 *self, u32 kind);
@@ -96,7 +96,7 @@ void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
         } else if (self->unk_21) {
             LoBase021ccb54_021ccbe0 *l = self->unk_08;
             self->unk_21 = 0;
-            self->unk_28 = ((Ov002Row *)l->unk_a4)->index;
+            self->unk_28 = l->unk_a4->index;
             ov002_SetFlag1(l);
             self->unk_1c = 10;
         }

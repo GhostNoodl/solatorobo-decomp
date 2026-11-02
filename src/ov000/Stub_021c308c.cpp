@@ -1,27 +1,11 @@
 #include "Main/Res/StageRes.h"
-
-typedef struct {
-    u8 unk_00[4];
-    u16 unk_04;
-    u16 unk_06;
-    u8 unk_08;
-    u8 unk_09;
-    u8 unk_0a;
-} Sub021c308c;
+#include "ov000/ListRow.h"
 
 typedef struct {
     u8 pad_00[4];
-    s32 unk_04;
-    s32 unk_08;
+    char *unk_04;
+    char *unk_08;
 } Info021c308c;
-
-typedef struct {
-    u8 pad_00[0x30];
-    s32 unk_30;
-    s32 unk_34;
-    u8 pad_38[0x10];
-    Sub021c308c unk_48;
-} Obj021c308c;
 
 extern "C" {
 
@@ -31,22 +15,22 @@ u16 func_02059688(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed
 u32 func_0205975c(DataRes *res, u32 idx);
 SaveEntry *func_0205976c(DataRes *res, u32 idx);
 
-void func_ov000_021c308c(Obj021c308c *self, u32 id) {
+void func_ov000_021c308c(ListRow021cca70 *self, u32 id) {
     Info021c308c *info = func_0206eed0(id);
-    Sub021c308c *sub;
+    ListRowItem *sub;
     s32 i;
     SaveLayout *layout;
     SaveEntry *entries;
-    self->unk_30 = info->unk_04;
-    self->unk_34 = info->unk_08;
-    sub = &self->unk_48;
-    sub->unk_04 = id;
-    sub->unk_06 = func_0206f788(id);
-    sub->unk_09 = 4;
-    sub->unk_08 = 0;
-    for (i = 0; i < sub->unk_09; i++) {
-        if (sub->unk_06 & (1 << i)) {
-            sub->unk_08++;
+    self->arc = info->unk_04;
+    self->name = info->unk_08;
+    sub = &self->item;
+    sub->id = id;
+    sub->mask = func_0206f788(id);
+    sub->n = 4;
+    sub->count = 0;
+    for (i = 0; i < sub->n; i++) {
+        if (sub->mask & (1 << i)) {
+            sub->count++;
         }
     }
     layout = (SaveLayout *)data_02fe152c->data;

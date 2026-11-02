@@ -1,36 +1,15 @@
 #include "ov000/VObj.h"
 #include "ov000/ModelPart.h"
 #include "nitro/fx.h"
-
-typedef struct {
-    u8 unk_00[0xc];
-    s32 x;
-    s32 y;
-    u8 unk_14[0x24];
-    Model *a;
-    Model *b;
-    u8 unk_40[0xe];
-    u16 mask;
-    u8 b50;
-    u8 n;
-    u8 b52;
-    u8 unk_53;
-    u8 alpha;
-    u8 unk_55[3];
-    s32 scale;
-    s32 ox;
-    s32 oy;
-    s32 z;
-} Obj021c34fc;
-
+#include "ov000/ListRow.h"
 
 extern "C" {
 
 BOOL func_02054f10(void *p, s32 a);
-void func_ov000_021c34fc(Obj021c34fc *self);
+void func_ov000_021c34fc(ListRow021cca70 *self);
 
-void func_ov000_021c34cc(Obj021c34fc *self) {
-    void *p = *(void **)((u8 *)self + 0x38);
+void func_ov000_021c34cc(ListRow021cca70 *self) {
+    void *p = self->unk_38;
     if (p == NULL) {
         return;
     }
@@ -56,32 +35,32 @@ static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
     func_02042628(model, anim, part, flag);
 }
 
-static inline void Put(Obj021c34fc *self, Model **pm, VecFx32 *p, s32 i) {
+static inline void Put(ListRow021cca70 *self, Model **pm, VecFx32 *p, s32 i) {
     MODEL_FLAGS(*pm)->alpha = self->alpha;
     (*pm)->unk_150 = p->z;
-    MTX_Identity22((MtxFx22 *)((u8 *)*pm + 0x114));
+    MTX_Identity22((*pm)->mtx);
     {
-        u8 *m = (u8 *)*pm + 0x114;
-        MTX_ScaleApply22((MtxFx22 *)m, (MtxFx22 *)m, self->scale, self->scale);
+        MtxFx22 *m = (*pm)->mtx;
+        MTX_ScaleApply22(m, m, self->scale, self->scale);
     }
     (*pm)->pos[0] = *(ModelPos *)p;
     Model_PlayPartEx(*pm, i, 1);
 }
 
-void func_ov000_021c34fc(Obj021c34fc *self) {
+void func_ov000_021c34fc(ListRow021cca70 *self) {
     BOOL on;
     u16 mask;
     s32 i;
     s32 n;
-    on = self->b50 == self->n && self->b52 != 0;
+    on = self->item.count == self->item.n && self->item.unk_0a != 0;
     if (!on) {
-        self->a->color = 0x2108;
-        self->b->color = 0x2108;
+        self->unk_38->color = 0x2108;
+        self->unk_3c->color = 0x2108;
     }
-    n = self->n;
-    mask = self->mask;
+    n = self->item.n;
+    mask = self->item.mask;
     for (i = 0; i < n; i++) {
-        VecFx32 p = {self->ox + self->x, self->oy + self->y, self->z};
+        VecFx32 p = {self->ox + self->x, self->oy + self->y, self->partZ};
         if (!on) {
             switch (i) {
             case 0:
@@ -103,9 +82,9 @@ void func_ov000_021c34fc(Obj021c34fc *self) {
             }
         }
         if (mask & (1 << i)) {
-            Put(self, &self->a, &p, i);
+            Put(self, &self->unk_38, &p, i);
         } else {
-            Put(self, &self->b, &p, i);
+            Put(self, &self->unk_3c, &p, i);
         }
     }
 }

@@ -20,12 +20,6 @@ typedef struct {
 } C_021afaf8;
 
 typedef struct {
-    s32 w[6];
-    u8 alt;
-    u8 pad[7];
-} Def_021afaf8;
-
-typedef struct {
     VecFx32 pos;
     u16 rx;
     u16 ry;
@@ -41,9 +35,9 @@ extern "C" const char data_ov000_021cc747[];
 }
 
 extern "C" {
-extern Def_021afaf8 data_ov000_021ca398[];
-extern Def_021afaf8 data_ov000_021ca248[];
-u8 *func_0206ef10(u16 id);
+extern RoboDef data_ov000_021ca398[];
+extern RoboDef data_ov000_021ca248[];
+Param0206ef10 *func_0206ef10(u16 id);
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
 void *func_ov000_0218e9c4(void *p);
@@ -51,9 +45,9 @@ Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Actor_SendMsg(void *a, u16 id, s32 b, s32 c, s32 d, void *e);
 void func_ov000_0218d46c(void *a, u16 id, s32 b);
 void func_ov000_02191008(void *p);
-void func_ov000_0218ec60(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_0218edf0(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_0218ef10(void *p, s32 a, s32 b, s32 c, s32 d);
+void func_ov000_0218ec60(void *p, const char *name, const char *ext, s32 c, s32 d);
+void func_ov000_0218edf0(void *p, const char *name, const char *ext, s32 c, s32 d);
+void func_ov000_0218ef10(void *p, const char *name, const char *ext, s32 c, s32 d);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 static inline BOOL GBusy_021afaf8(FieldState *g) {
@@ -119,7 +113,7 @@ static inline void FreeModels_021afaf8(Robo021ca458 *self) {
     }
 }
 
-void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
+void func_ov000_021afaf8(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
     Robo021ca458 *self = (Robo021ca458 *)self_;
     BOOL big;
     anm = NULL;
@@ -167,7 +161,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
             }
             anm = func_0206ef10(id | 0x8000);
             if (anm != NULL) {
-                def = (Def_021afaf8 *)(anm + 0xc);
+                def = &anm->def;
             }
             ofs = 0x1000;
             break;
@@ -177,7 +171,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
             }
             anm = func_0206ef10(id | 0x8000);
             if (anm != NULL) {
-                def = (Def_021afaf8 *)(anm + 0xc);
+                def = &anm->def;
             }
             big = TRUE;
             if (self->unk_b22_0 != 0) {
@@ -307,11 +301,11 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
                 NNSG3dResFileHeader **res = (NNSG3dResFileHeader **)self->mdl0.res->mdl_handle;
                 NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet(res != NULL ? *res : NULL));
             }
-            func_ov000_0218ec60((u8 *)self + 0x450, def->w[0], def->w[1], 1, 1);
-            func_ov000_0218edf0((u8 *)self + 0x450, def->w[2], def->w[3], 1, 1);
-            func_ov000_0218ef10((u8 *)self + 0x450, def->w[4], def->w[5], 1, 1);
-            if (def->alt != 0) {
-                func_ov000_0218edf0((u8 *)self + 0x588, def->w[0], def->w[1], 1, 1);
+            func_ov000_0218ec60((u8 *)self + 0x450, def->name[0], def->name[1], 1, 1);
+            func_ov000_0218edf0((u8 *)self + 0x450, def->name[2], def->name[3], 1, 1);
+            func_ov000_0218ef10((u8 *)self + 0x450, def->name[4], def->name[5], 1, 1);
+            if (def->unk_18 != 0) {
+                func_ov000_0218edf0((u8 *)self + 0x588, def->name[0], def->name[1], 1, 1);
             }
             self->unk_b22_11 = 1;
             self->unk_b22_12 = 1;

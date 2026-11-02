@@ -113,14 +113,6 @@ void func_ov015_02210d04(Ov015MsgMgr *self) {
     }
 }
 
-struct Ov015Bits10d24 {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 1;
-    u8 b3 : 1;
-    u8 b4 : 1;
-    u8 rest : 3;
-};
 static inline Ov015Msg *Ov015_NewMsg(void) {
     Ov015Msg *o = (Ov015Msg *)Heap_Alloc(0x144);
     if (o != NULL) o = (Ov015Msg *)Ov015Msg_Ctor(o);
@@ -130,16 +122,16 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, Ov015Stat *b, s32 msg) {
     Ov015Msg *r = NULL;
     switch (msg) {
     case 0x28:
-        if (!FLD(Ov015Bits10d24, self, 0x8).b0) {
+        if (!self->unk_08_0) {
             r = Ov015_NewMsg();
             r->msgIdx = 0;
             r->unk_08 = 0x5a;
             r->unk_04 = 1;
-            FLD(Ov015Bits10d24, self, 0x8).b0 = 1;
+            self->unk_08_0 = 1;
         }
         break;
     case 0x32:
-        if (!FLD(Ov015Bits10d24, self, 0x8).b4 && b->unk_08 == 3) {
+        if (!self->unk_08_4 && b->unk_08 == 3) {
             r = Ov015_NewMsg();
             r->msgIdx = 4;
             r->unk_08 = 0x3c;
@@ -148,7 +140,7 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, Ov015Stat *b, s32 msg) {
             self->unk_08 |= 0x10;
             break;
         }
-        if (!FLD(Ov015Bits10d24, self, 0x8).b1) {
+        if (!self->unk_08_1) {
             if ((u32)(b->unk_10 - 2) <= 1) {
                 r = Ov015_NewMsg();
                 r->msgIdx = 1;
@@ -157,7 +149,7 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, Ov015Stat *b, s32 msg) {
                 self->unk_08 |= 0x2;
                 break;
             }
-        } else if (!FLD(Ov015Bits10d24, self, 0x8).b2) {
+        } else if (!self->unk_08_2) {
             s32 t4;
             s32 t3;
             BOOL x;
@@ -183,7 +175,7 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, Ov015Stat *b, s32 msg) {
                 break;
             }
         }
-        if (!FLD(Ov015Bits10d24, self, 0x8).b3 && b->unk_24 > 0x1e000) {
+        if (!self->unk_08_3 && b->unk_24 > 0x1e000) {
             r = Ov015_NewMsg();
             r->msgIdx = 3;
             r->unk_08 = 0;
@@ -267,7 +259,15 @@ void *func_ov015_0221114c(Ov015Shared *self) {
     return self;
 }
 
-extern u8 *func_0206f040(u16 id);
+// A 0x12-byte record of func_0206f040: up to four ids, each picked with weight[k] percent.
+typedef struct Ov015PickTable {
+    u8 unk_00;
+    u8 count;
+    u16 id[4];
+    u16 weight[4];
+} Ov015PickTable;
+
+extern Ov015PickTable *func_0206f040(u16 id);
 extern s32 Rand_UpTo(s32 max);
 
 u32 func_ov015_02211160(Ov015Shared *self, u16 *out, u32 n) {
@@ -304,13 +304,13 @@ u32 func_ov015_02211160(Ov015Shared *self, u16 *out, u32 n) {
             s32 rnd;
             s32 acc;
             u32 m;
-            u8 *e;
+            Ov015PickTable *e;
             e = func_0206f040(self->unk_0a);
-            m = e[1];
+            m = e->count;
             rnd = Rand_UpTo(0x1000);
             acc = 0;
             for (k = 0; k < m; k++) {
-                u16 w = FLD(u16, e + k * 2, 0xa);
+                u16 w = e->weight[k];
                 float f;
                 if (w > 0) {
                     f = (float)(w << 12) + 0.5f;
@@ -325,7 +325,7 @@ u32 func_ov015_02211160(Ov015Shared *self, u16 *out, u32 n) {
             if (k >= m) {
                 k = m - 1;
             }
-            out[j] = FLD(u16, e + k * 2, 0x2);
+            out[j] = e->id[k];
             cnt++;
         }
         break;

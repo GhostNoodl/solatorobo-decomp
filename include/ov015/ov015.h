@@ -448,15 +448,6 @@ static inline void Ov015_DeleteFound(EffectMgr *mgr, u32 key) {
     }
 }
 
-struct Ov015ObjFlags {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 rest : 30;
-};
-static inline BOOL Ov015_ObjIsB1(Ov015ObjFlags *f) {
-    return f->b1 == 1 ? TRUE : FALSE;
-}
-
 struct Ov015AnimFlags {
     u16 visible : 1;
     u16 b1 : 1;
@@ -973,7 +964,17 @@ SIZE_ASSERT(Ov015UiText, 0xb4);
 // Event message manager, vtable data_ov015_02213198 (0x14 bytes, init func_ov015_02210b3c).
 struct Ov015MsgMgr : public VObj {
     VObj *unk_04;
-    u8 unk_08;
+    union {
+        u8 unk_08; // one bit per message already shown (func_ov015_02210d24)
+        struct {
+            u8 unk_08_0 : 1;
+            u8 unk_08_1 : 1;
+            u8 unk_08_2 : 1;
+            u8 unk_08_3 : 1;
+            u8 unk_08_4 : 1;
+            u8 unk_08_5 : 3;
+        };
+    };
     u8 unk_09;
     u8 unk_0a[0x2];
     s32 unk_0c;
@@ -1039,10 +1040,10 @@ SIZE_ASSERT(Ov015Obj290, 0x290);
 // Object holding a spawned effect (0x34 bytes, vtable data_ov015_0221292c, init func_ov015_022120c0).
 struct Ov015Obj292c : public VObj {
     EffectObj *fx; // effect object
-    void *unk_08;
+    struct ActorMarker *marker; // 0x08 (ov000/ActorMarker.h), made by func_ov015_022121b4
     Ov015Vec pos; // position
     Ov015Vec scale; // scale
-    Ov015Vec unk_24; // a found fish's position (func_ov015_021fffc4); func_ov015_02212264 copies it to unk_08 + 0x50
+    Ov015Vec unk_24; // a found fish's position (func_ov015_021fffc4); func_ov015_02212264 copies it to marker->unk_50
     s32 unk_30;
 };
 SIZE_ASSERT(Ov015Obj292c, 0x34);

@@ -70,14 +70,14 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
         } else {
             switch (sub->type) {
             case 6:
-                if (LBIT(self, 0xb24).b1) {
+                if (self->unk_b24_1) {
                     r = 0;
                     func_0205c234(0x64, 0);
                 }
                 break;
             case 0xc:
             case 0xd:
-                if (!LBIT(self, 0xb24).b1) {
+                if (!self->unk_b24_1) {
                     r = 0;
                     func_0205c234(0x65, 0);
                 }
@@ -104,7 +104,7 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
         if (done) {
             r = 0;
             self->unk_b2c_4 = 0;
-        } else if (!LBIT(self, 0xb24).b1) {
+        } else if (!self->unk_b24_1) {
             r = 0;
             func_0205c234(0x65, 0);
         }
@@ -124,7 +124,7 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
         }
         if (done) {
             r = 0;
-        } else if (LBIT(self, 0xb24).b1) {
+        } else if (self->unk_b24_1) {
             r = 0;
             func_0205c234(0x64, 0);
         }
@@ -147,13 +147,13 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
         } else {
             switch (sub->type) {
             case 8:
-                if (LBIT(self, 0xb24).b1) {
+                if (self->unk_b24_1) {
                     func_0205c234(0x64, 0);
                     r = 0;
                 }
                 break;
             case 0x10:
-                if (!LBIT(self, 0xb24).b1) {
+                if (!self->unk_b24_1) {
                     func_0205c234(0x65, 0);
                     r = 0;
                 }

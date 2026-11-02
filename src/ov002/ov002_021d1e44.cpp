@@ -20,14 +20,14 @@ void func_ov002_021d1e48(Task021ef69c *self) {
         func_ov000_021c701c(self->unk_3c);
         func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
     } else {
-        void *m;
+        ListRow *m;
         if (!(keys & 2)) {
             return;
         }
         self->unk_3c->flags |= 4;
-        m = ((void *)self->unk_3c->unk_88);
+        m = self->unk_3c->unk_88;
         if (m != NULL) {
-            data_ov002_021f0f84[2] = FIELD(m, 0x4, s32);
+            data_ov002_021f0f84[2] = m->index;
         }
         func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
         self->vfunc_0c(0);
@@ -89,19 +89,19 @@ void func_ov002_021d1f70(Task021ef69c *self) {
     s32 n;
     Model *m;
     s32 x;
-    u8 *o;
+    ListRow021cca70 *o;
     s32 y;
     s32 z;
     s32 bx;
     Model *num;
     ModelRes *res;
     s32 fy;
-    o = ((u8 *)self->unk_3c->unk_88);
+    o = (ListRow021cca70 *)self->unk_3c->unk_88;
     x = self->unk_50 - 0x6c;
     y = self->unk_54 - 0x44;
-    v44 = FIELD(o, 0x44, s32);
-    n = o[0x51];
-    d = n - o[0x50];
+    v44 = o->unk_44;
+    n = o->item.n;
+    d = n - o->item.count;
     z = self->unk_58 + 0x20;
     ov002_SetPos(self->unk_4c, x << 12, (y + 9) << 12);
     self->unk_4c->unk_150 = z;

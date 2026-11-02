@@ -23,7 +23,7 @@ Task021ef99c *func_ov002_021d22cc(void) {
     return p;
 }
 
-BOOL func_ov002_021d2390(UiObj *self, Ov002Row *arg) {
+BOOL func_ov002_021d2390(UiObj *self, ListRow *arg) {
     Task021ef99c *owner = (Task021ef99c *)self->owner;
     if (arg != NULL) {
         u16 i = arg->index;

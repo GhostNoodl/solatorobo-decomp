@@ -4,19 +4,13 @@
 #include "ov000/ObjLayouts.h"
 
 
-typedef struct {
-    char *name[6];
-    u8 unk_18;
-    u8 pad_19[7];
-} Entry0219c54c;
-
 extern "C" {
-extern Entry0219c54c data_ov000_021ca398[];
+extern RoboDef data_ov000_021ca398[];
 extern char data_ov000_021cc5d2[];
 extern char data_ov000_021cc5d9[];
 void *func_0207011c(u16 id);
 s32 func_020701d4(u16 id);
-u8 *func_0206ef10(u16 id);
+Param0206ef10 *func_0206ef10(u16 id);
 void *Heap_Alloc(u32 size);
 void *func_ov000_021919c8(void *p);
 void Shadow_Load(void *s);
@@ -30,12 +24,12 @@ static inline void SetNames0219c54c(char *d0, char *d1, const char *a, const cha
 void Robo021ca458_Init(Robo021ca458 *self) {
     void *res;
     void *p;
-    Entry0219c54c *e;
+    RoboDef *e;
     u32 kind;
 
     res = func_0207011c(self->kind);
     func_020701d4(self->kind);
-    func_ov000_0218f074((u8 *)self + 0x194, res, TRUE, TRUE, 1, FALSE);
+    func_ov000_0218f074(&self->res0, res, TRUE, TRUE, 1, FALSE);
     self->res0.unk_00 = 0;
     {
         const char *b = data_ov000_021cc5d2;
@@ -55,10 +49,10 @@ void Robo021ca458_Init(Robo021ca458 *self) {
     kind = self->unk_b22_6;
     e = &data_ov000_021ca398[kind];
     if ((u16)(kind + 0xfffe) <= 1) {
-        u8 *x = func_0206ef10(data_0214a424->bits18.unk_3 | 0x8000);
+        Param0206ef10 *x = func_0206ef10(data_0214a424->bits18.unk_3 | 0x8000);
         if (x != NULL) {
             self->unk_ba4 = x;
-            e = (Entry0219c54c *)(x + 0xc);
+            e = &x->def;
         }
     }
     self->unk_ba0 = (u8 *) e;

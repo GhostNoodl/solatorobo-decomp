@@ -2,23 +2,15 @@
 #include "ov000/ActorMgr.h"
 #include "ov000/VObj.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/ActorMarker.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define SC(r) FX_SinCosTable_[((r) >> 4) * 2], FX_SinCosTable_[((r) >> 4) * 2 + 1]
-
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 rest : 30;
-} Flags_021b3738;
 
 extern "C" {
 Actor *func_ov000_021985c0(ActorSub44 *hit);
 void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
 BOOL func_ov000_0219b3b4(void *p);
-BOOL func_ov000_021bd314(void *p, s32 x);
-void func_ov000_021bd438(void *p, VecFx32 *v, s32 dy);
-void func_ov000_021bd624(void *p);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 
 static inline void RotYXZ_021b3738(MtxFx33 *m, const ActorRot *rot) {
@@ -59,12 +51,12 @@ static inline s32 State_021b3738(Actor *a) {
     return s != NULL ? s->current : 0;
 }
 
-static inline BOOL IsB1_021b3738(void *p) {
-    return LFLD(Flags_021b3738, p, 0).b1 == 1 ? TRUE : FALSE;
+static inline BOOL Shown_021b3738(ActorMarker *p) {
+    return p->show == 1 ? TRUE : FALSE;
 }
 
-static inline BOOL IsLocked_021b3738(void *p) {
-    return IsB1_021b3738(p) ? TRUE : FALSE;
+static inline BOOL IsShown_021b3738(ActorMarker *p) {
+    return Shown_021b3738(p) ? TRUE : FALSE;
 }
 
 void func_ov000_021b3738(Robo021ca458 *self, ActorSub44 *hit) {
@@ -104,12 +96,12 @@ void func_ov000_021b3738(Robo021ca458 *self, ActorSub44 *hit) {
             }
         }
         func_ov000_021bd314(self->unk_5c, 0);
-        if (LFLD(s32, self->unk_5c, 0x44) == 0) {
+        if (self->unk_5c->kind == 0) {
             LFLD(s32, self->unk_5c, 0x98) = flag;
         } else {
-            LFLD(s32, self->unk_5c, 0x28) = flag;
+            self->unk_5c->unk_28[0] = flag;
         }
-        LFLD(u32, self->unk_5c, 0) |= 2;
+        self->unk_5c->show = 1;
     } else if (self->unk_b24_12 == 3) {
         u16 id = self->unk_b20;
         Actor *o = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, id);
@@ -135,23 +127,23 @@ void func_ov000_021b3738(Robo021ca458 *self, ActorSub44 *hit) {
             VEC_Add(&pos, &self->pos, &pos);
             func_ov000_021bd314(self->unk_5c, 2);
         }
-        LFLD(u32, self->unk_5c, 0) |= 2;
+        self->unk_5c->show = 1;
     } else {
         pos = self->pos;
         r = self->centerY;
-        LFLD(u32, self->unk_5c, 0) &= ~2;
+        self->unk_5c->show = 0;
         func_ov000_021bd438(self->unk_5c, &self->pos, 0);
     }
 end:
-    LFLD(s32, self->unk_5c, 0x5c) = r;
-    LFLD(VecFx32, self->unk_5c, 0x50) = pos;
+    self->unk_5c->height = r;
+    self->unk_5c->unk_50 = pos;
     func_ov000_021bd624(self->unk_5c);
-    if (self->unk_b24_4 && !IsLocked_021b3738(self->unk_5c) && (data_ov000_021ccd68->frame & 0x3f) < 0x2c) {
-        LFLD(u32, self->unk_9b0, 0) |= 2;
+    if (self->unk_b24_4 && !IsShown_021b3738(self->unk_5c) && (data_ov000_021ccd68->frame & 0x3f) < 0x2c) {
+        self->unk_9b0->show = 1;
     } else {
-        LFLD(u32, self->unk_9b0, 0) &= ~2;
+        self->unk_9b0->show = 0;
     }
-    LFLD(VecFx32, self->unk_9b0, 0x50) = self->unk_75c;
+    self->unk_9b0->unk_50 = self->unk_75c;
     func_ov000_021bd624(self->unk_9b0);
 }
 }

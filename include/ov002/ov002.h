@@ -330,8 +330,8 @@ extern VFunc data_ov000_021caec8[];
 extern VFunc data_ov000_021cac60[];
 
 void *func_0206ec8c(u32 id);
-u8 *func_0206ef10(u32 id);
-void func_ov000_02162b40(void *a, s32 b, s32 c, const char *d, s32 e, const char *f, s32 g, s16 h);
+Param0206ef10 *func_0206ef10(u32 id);
+void func_ov000_02162b40(void *a, const char *mdlArc, const char *mdlName, const char *anmArc, const char *anmName, const char *anim, s32 frame, s16 speed);
 void func_ov000_021c95ac(void *a, u16 id);
 void func_ov002_021e2754(Ov002Hud *self, u16 id);
 extern char data_ov002_021efaeb[];
@@ -506,7 +506,7 @@ void func_ov000_02153c48(UiListItem *item, s32 font, BOOL show, BOOL center, u8 
 extern VFunc data_ov002_021efeb8[];
 extern VFunc data_ov002_021f0674[];
 void func_ov002_021e7dac(Ov002Stage *self);
-void func_ov002_021e0420(void *self);
+void func_ov002_021e0420(NNSG3dRS *rs);
 void func_ov000_021c524c(void *a, void *b, VecFx32 *pos, s32 d);
 
 extern VFunc data_ov000_021ccbe0[];

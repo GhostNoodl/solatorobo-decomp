@@ -1,16 +1,11 @@
 #include "ov000/LoCommon.h"
 #include "ov000/MessageQueue.h"
-
-typedef struct {
-    u8 pad_00[0x12];
-    u16 trg;
-} Pad021bb8dc;
+#include "Main/Sys/Pad.h"
 
 extern "C" {
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern char *data_ov000_021cc858;
 extern char data_ov000_021cc894[];
-extern Pad021bb8dc *data_02097dc8;
 extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
 void func_0206e900(char *dst, const char *src);
@@ -95,7 +90,7 @@ BOOL func_ov000_021bb8dc(Obj021bb8dc *self) {
         self->unk_68 = FX_SinCosTable_[((t << 14) >> 16) * 2];
         break;
     case 11:
-        if (data_02097dc8->trg & 2) {
+        if (data_02097dc8->trig & 2) {
             func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
             self->unk_50 = 12;
             break;

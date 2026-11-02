@@ -9,7 +9,7 @@ extern char data_ov000_021cc456[];
 extern void *data_02097e4c;
 BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
-void func_ov000_02199dc0(void *a, void *b);
+void func_ov000_02199dc0(ActorSub4c *self, Actor *out);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 void HitSphere_Link(void *a);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
@@ -29,7 +29,7 @@ void func_ov000_02196060(ActorEx *self) {
         func_ov000_02190cb0(self->model, data_ov000_021cc456, 0x1000, 0);
         func_ov000_021915a0(self->model);
         if (self->targetObj->unk_01 == 1) {
-            func_ov000_02199dc0(((u8 *)self->targetObj), self);
+            func_ov000_02199dc0(self->targetObj, self);
             func_02049f44(data_02097e4c, 0xb, (u8 *)self + 0x70, 0);
             self->fsm->st++;
         } else {

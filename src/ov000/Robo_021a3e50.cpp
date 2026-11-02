@@ -87,7 +87,7 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
         }
         {
             u8 *anim = data_ov000_021cc5e3;
-            if (!LBIT(self, 0xb24).b1) {
+            if (!self->unk_b24_1) {
                 anim = data_ov000_021cc648;
             }
             func_ov000_02190cb0(self->model, anim, 0x400, 0);

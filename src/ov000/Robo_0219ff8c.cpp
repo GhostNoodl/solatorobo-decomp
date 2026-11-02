@@ -1,17 +1,11 @@
 #include "ov000/Actor.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/ActorMarker.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 rest : 30;
-} Bits32_0219ff8c;
-
 extern "C" {
 
-void func_ov000_021bd300(void *p);
 void func_ov000_021b1a54(u8 *self, BOOL flag);
 void func_0203f364(void *p);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
@@ -38,10 +32,10 @@ void func_ov000_0219ff8c(Robo021ca458 *self) {
     self->unk_b36 = 0;
     self->unk_b38 = 0;
     self->unk_b2c_4 = 0;
-    LFLD(Bits32_0219ff8c, self->unk_5c, 0).b1 = 0;
-    func_ov000_021bd300(((u8 *)self->unk_5c));
-    LFLD(Bits32_0219ff8c, self->unk_9b0, 0).b1 = 0;
-    func_ov000_021bd300(((u8 *)self->unk_9b0));
+    self->unk_5c->show = 0;
+    func_ov000_021bd300(self->unk_5c);
+    self->unk_9b0->show = 0;
+    func_ov000_021bd300(self->unk_9b0);
     if (self->unk_b24_0) {
         self->unk_b24_0 = 0;
         if (*self->hp == 0) {

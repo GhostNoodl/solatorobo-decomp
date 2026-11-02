@@ -4,12 +4,6 @@
 #include "Main/Effect/Effect.h"
 
 typedef struct {
-    u16 b0 : 7;
-    u16 b7 : 1;
-    u16 b8 : 8;
-} Ba4_021a2d64;
-
-typedef struct {
     u16 state;
     u16 sub;
 } St_021a2d64;
@@ -82,7 +76,7 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
             }
             ((St_021a2d64 *)self->fsm)->sub = 2;
             ((St_021a2d64 *)self->fsm)->state++;
-        } else if (idle && (Ba4_021a2d64 *)self->unk_ba4 != NULL && ((Ba4_021a2d64 *)self->unk_ba4)[3].b7 &&
+        } else if (idle && self->unk_ba4 != NULL && self->unk_ba4->unk_06_7 &&
                    self->unk_b38 >= 10) {
             u16 prev;
             func_ov000_02190cb0(self->model, data_ov000_021cc63c, 0x400, 0);

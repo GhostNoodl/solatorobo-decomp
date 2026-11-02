@@ -17,13 +17,9 @@
 
 #ifdef __cplusplus
 
-// Row list (0xf4 bytes; vtable data_ov000_021ccbe0, init func_ov000_021c3af4; ov002's subclass
-// vtable data_ov002_021f0044 keeps the size). onDecide is called with the chosen row, onCursor with
-// the row under the cursor (func_ov002_021d2410 / func_ov002_021d2390 for the level list).
+// ov002's row list (vtable data_ov002_021f0044 over ov000's LoBase021ccb54_021ccbe0, the same 0xf4
+// bytes). onDecide is func_ov002_021d2410 and onCursor func_ov002_021d2390 for the level list.
 struct Ov002RowList : public LoBase021ccb54_021ccbe0 {
-    void *onDecide;
-    void *onCursor;
-    u8 unk_ec[0x8];
 };
 SIZE_ASSERT(Ov002RowList, 0xf4);
 
@@ -31,8 +27,8 @@ SIZE_ASSERT(Ov002RowList, 0xf4);
 // func_ov000_021c6474). onDecide gets the chosen row (func_ov002_021d18e8), onCursor the row under
 // the cursor (func_ov002_021d18d4).
 struct Ov002TextList : public UiObj {
-    VObj *unk_84;
-    VObj *unk_88; // a row: func_ov002_021d1970 shows its text at 0x40
+    ListRow *unk_84; // the first row (func_ov000_021c6474 appends)
+    ListRow *unk_88; // the row under the cursor; func_ov002_021d1970's rows are ListRow021cca70s
     u8 unk_8c[0x8];
     s32 unk_94;   // index of the row under the cursor (func_ov002_021d3530)
     u8 unk_98[0xc];
@@ -398,52 +394,14 @@ struct Ov002Text2 : public VObj {
     s32 unk_78;
 };
 
-// Row of an ov000 item list (vtable data_ov002_021ef684, 0x30 bytes; ctor func_ov000_021c22d8, dtor
-// func_ov000_021c2310, which unlinks it). func_ov000_021c3fd4 appends a row to a list; the list keeps
-// the first row and func_ov002_021e35c0 walks the rows through next.
-struct Ov002Row : public VObj {
-    s32 index; // set by the creator
-    u8 unk_08[0x4];
-    s32 unk_0c;
-    s32 unk_10;
-    s32 unk_14;
-    s32 unk_18;
-    s32 unk_1c;
-    u8 shown : 1; // cleared while the row is scrolled out
-    u8 unk_20_1 : 7;
-    u8 unk_21[0x3];
-    s32 unk_24;
-    struct Ov002Row *next;
-    struct Ov002Row *prev;
-};
-SIZE_ASSERT(Ov002Row, 0x30);
-
-// Gauge row (0x44 bytes; vtable data_ov000_021cc9f8 over Ov002Row, init func_ov000_021c2bb0). The
-// level list (func_ov002_021d278c) fills one per level: unk_3c is level * 100 + the percent of the
-// way to the next threshold, unk_38 the maximum (300).
-struct Ov002GaugeRow : public Ov002Row {
-    u8 unk_30[0x8];
-    s32 unk_38;
-    s32 unk_3c;
-    u8 unk_40[0x4];
-};
-SIZE_ASSERT(Ov002GaugeRow, 0x44);
-
-// Two-text row (0x44 bytes; vtable data_ov000_021cca58 over Ov002Row, init func_ov000_021c37bc):
-// func_ov002_021d2fdc sets both strings from its Ov002StrTable.
-struct Ov002TextRow : public Ov002Row {
-    u8 unk_30[0x4];
-    char *unk_34;
-    char *unk_38;
-    u8 unk_3c[0x8];
-};
-SIZE_ASSERT(Ov002TextRow, 0x44);
+// The rows of ov000's row lists are ov000/ListRow.h's ListRow classes; ov002 builds them over its own
+// copy of the row base vtable, data_ov002_021ef684.
 
 // Board item row (vtable data_ov002_021f002c, 0x4c bytes; ctor func_ov002_021e2f54, dtors
 // Ov002Vt_021f002c_Dtor/DtorDelete). Slot 0x08 (func_ov002_021e2fb4) steps state: 0 builds the
 // item model (when hasModel is set) and the name text, 1 frees them once the row is hidden, 2 waits
 // to be shown again. Slot 0x0c (func_ov002_021e31fc) draws both at the row's position.
-struct Obj021f002c : public Ov002Row {
+struct Obj021f002c : public ListRow {
     Model *model;
     Ov002Text2 *text; // func_ov002_021e331c builds it from str
     u16 id;           // item id (0xffff: none)

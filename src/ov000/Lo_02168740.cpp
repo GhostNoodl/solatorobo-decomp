@@ -38,17 +38,17 @@ static inline s32 LoApproach(s32 cur, s32 target, s32 rate) {
 
 BOOL func_ov000_02168740(Lo021cb894 *self) {
     if (!LoGIdle() || !LoD78Idle()) {
-        LBIT(self, 0xc).b1 = 1;
+        self->unk_0c_1 = 1;
     }
     switch (self->unk_04) {
     case 6:
-        if (!LBIT(self, 0xc).b1 ? TRUE : FALSE) {
+        if (!self->unk_0c_1 ? TRUE : FALSE) {
             self->unk_04 = 0;
             return TRUE;
         }
         return FALSE;
     case 1:
-        LBIT(self, 0xc).b3 = 1;
+        self->unk_0c_3 = 1;
         break;
     }
     return TRUE;

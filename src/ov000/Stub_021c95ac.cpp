@@ -1,5 +1,6 @@
 #include "ov000/VObj.h"
 #include "nitro/mi.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u8 unk_00[0xa];
@@ -12,7 +13,7 @@ typedef struct {
 
 extern "C" {
 
-s8 *func_0206ef10(u16 a);
+Param0206ef10 *func_0206ef10(u16 a);
 
 typedef struct Node021c9544 {
     u8 unk_00[0x48];
@@ -37,24 +38,24 @@ void func_ov000_021c9544(s16 *out, Node021c9544 *n) {
 }
 
 static inline void Obj021c95ac_Init(Obj021c95ac *self, u16 a) {
-    s8 *p;
+    Param0206ef10 *p;
     MI_CpuFill8(&self->unk_0a, 0, 10);
     p = func_0206ef10(a);
-    self->unk_0a = p[0];
-    self->unk_0c = p[1];
-    self->unk_0e = p[2];
-    self->unk_10 = p[3];
+    self->unk_0a = p->unk_00[0];
+    self->unk_0c = p->unk_00[1];
+    self->unk_0e = p->unk_00[2];
+    self->unk_10 = p->unk_00[3];
     self->unk_12 = 0;
 }
 
 static inline void Obj021c95ac_InitKind(Obj021c95ac *self, u32 kind) {
-    s8 *p;
+    Param0206ef10 *p;
     MI_CpuFill8(&self->unk_0a, 0, 10);
     p = func_0206ef10(kind | 0x8000);
-    self->unk_0a = p[0];
-    self->unk_0c = p[1];
-    self->unk_0e = p[2];
-    self->unk_10 = p[3];
+    self->unk_0a = p->unk_00[0];
+    self->unk_0c = p->unk_00[1];
+    self->unk_0e = p->unk_00[2];
+    self->unk_10 = p->unk_00[3];
     self->unk_12 = 0;
 }
 

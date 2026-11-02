@@ -2,6 +2,7 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/ActorMarker.h"
 #include "Main/Effect/Effect.h"
 
 class Act02195618Cls;
@@ -18,8 +19,6 @@ extern Act02195618Entry data_ov000_021c9e18[];
 void func_0203f920(void *p);
 void func_ov000_0219af3c(u8 *self, void *p);
 void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
-void func_ov000_021bd624(void *p);
-void func_ov000_021bd300(void *p);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline BOOL PlayerIdle02195618(void) {
@@ -83,12 +82,12 @@ void func_ov000_02195618(ActorEx *self) {
                         r = self->radius;
                     }
                 }
-                LFLD(VecFx32, self->unk_5c, 0x50) = pos;
-                LFLD(s32, self->unk_5c, 0x5c) = r;
+                self->unk_5c->unk_50 = pos;
+                self->unk_5c->height = r;
             }
             func_ov000_021bd624(self->unk_5c);
         } else {
-            LFLD(u32, self->unk_5c, 0) &= ~2;
+            self->unk_5c->show = 0;
             func_ov000_021bd300(self->unk_5c);
         }
     }

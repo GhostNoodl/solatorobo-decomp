@@ -1,10 +1,10 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Sys/Pad.h"
 
 extern "C" {
 
 BOOL func_02054f10(void *a, s32 b);
-extern u8 *data_02097dc8;
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *data_02097e4c;
 void func_ov000_02152294(UiList *self, s32 a, s32 b, void *cb);
@@ -24,7 +24,7 @@ void func_ov000_02150f24(Lo021ca9c4 *self) {
     if (!(p->busy ? FALSE : TRUE)) {
         return;
     }
-    k = LFLD(u16, data_02097dc8, 0x12);
+    k = data_02097dc8->trig;
     if (k & 1) {
         if (self->unk_42 == 0xffff) {
             return;

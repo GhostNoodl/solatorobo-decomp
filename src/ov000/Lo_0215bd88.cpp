@@ -16,7 +16,7 @@ VObj *func_ov000_02176208(void);
 void func_ov000_0215bd88(Lo021cadcc *self) {
     self->height = self->vfunc_44();
     if ((s32)self->title != 0 && self->model == NULL) {
-        if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
+        if (self->flag6 ? TRUE : FALSE) {
             self->model = new ModelObj(data_0208cb84, data_0208cc8c);
         } else {
             self->model = new ModelObj(data_0208cb74, data_0208cca0);
@@ -34,7 +34,7 @@ void func_ov000_0215bd88(Lo021cadcc *self) {
     if (self->flags & 0x20000) {
         self->posY = (0xc0 - self->height) >> 1;
     }
-    LBIT(self, 0xc).b0 = 1;
+    self->busy = 1;
 }
 
 }

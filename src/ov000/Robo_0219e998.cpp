@@ -132,14 +132,14 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
         }
         break;
     case 10: {
-        u8 *p;
+        ActorHp *p;
         EffectObj *e;
         callBase = FALSE;
         s->hpObj->unk_04 = msg->id;
-        p = ((u8 *)s->hp);
-        LFLD(u16, p, 0) += *(u16 *)msg->data;
-        if (LFLD(u16, p, 0) > LFLD(u16, p, 2)) {
-            LFLD(u16, p, 0) = LFLD(u16, p, 2);
+        p = s->hpObj;
+        p->cur += *(u16 *)msg->data;
+        if (p->cur > p->max) {
+            p->cur = p->max;
         }
         {
             Model0218fe1c *m = s->model;

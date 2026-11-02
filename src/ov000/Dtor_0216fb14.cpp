@@ -14,7 +14,7 @@ void func_ov000_021bbcac(void *p);
 void __cxa_vec_cleanup(void *arr, int n, u32 size, void (*dtor)(void *));
 void func_020507d8(void *p);
 void func_ov000_0216ad34(void *p);
-void func_ov000_0216b490(void *p);
+void func_ov000_0216b490(Lo0216b474 *p);
 void func_ov000_0216c9b0(void *p);
 void func_ov000_021b8800(void *p);
 void func_ov000_021b88d8(void *p);
@@ -40,7 +40,7 @@ void func_ov000_0216fb14(ListBuffer021cb940 *self) {
     HEAP_DELETE(VObj *, self->unk_5c, p->vfunc_04());
     HEAP_DELETE(VObj *, self->unk_60, p->vfunc_04());
     HEAP_DELETE(VObj *, self->unk_64, p->vfunc_04());
-    HEAP_DELETE_FN(self->unk_68, func_ov000_0216b490);
+    HEAP_DELETE(Lo0216b474 *, self->unk_68, func_ov000_0216b490(p); Heap_Free(p));
     HEAP_DELETE(VObj *, self->unk_6c, p->vfunc_04());
     HEAP_DELETE(VObj *, self->unk_70, p->vfunc_04());
     HEAP_DELETE(VObj *, self->unk_74, p->vfunc_04());

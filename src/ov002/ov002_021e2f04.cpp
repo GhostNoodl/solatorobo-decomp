@@ -14,8 +14,8 @@ void *func_ov002_021e2f04(Model *self, void *unused, u8 *entries, u16 *count) {
 }
 
 void func_ov002_021e2f54(Obj021f002c *self) {
-    self->unk_18 = 0xf;
-    self->unk_1c = 0x78;
+    self->height = 0xf;
+    self->width = 0x78;
     self->model = NULL;
     self->text = NULL;
     self->id = 0xffff;

@@ -39,7 +39,7 @@ void func_ov000_0219cbf8(Robo021ca458 *self, VecFx32 *pos, u16 *rot) {
         self->rot_z = rot[2];
         self->moveYaw = ry;
     }
-    if (LBIT(self, 0xb24).b1) {
+    if (self->unk_b24_1) {
         self->unk_75c.x = self->pos.x;
         self->unk_75c.y = self->pos.y;
         self->unk_75c.z = self->pos.z;
@@ -55,16 +55,16 @@ void func_ov000_0219cbf8(Robo021ca458 *self, VecFx32 *pos, u16 *rot) {
         func_ov000_021bd300(self->unk_9b0);
         func_ov000_021bd438(self->unk_9b0, &self->unk_75c, 0);
     }
-    Body_SetPos((u8 *)self + 0x2cc, &self->pos, self->rot_y);
+    Body_SetPos(&self->hit0, &self->pos, self->rot_y);
     self->hit0.unk_50 = 0;
     self->hit0.unk_54 = 0;
     self->hit0.unk_58 = 0;
-    Body_SetPos((u8 *)self + 0x6c0, &self->unk_75c, self->unk_76e);
+    Body_SetPos(&self->hit1, &self->unk_75c, self->unk_76e);
     self->hit1.unk_50 = 0;
     self->hit1.unk_54 = 0;
     self->hit1.unk_58 = 0;
     self->vfunc_44();
-    LBIT(self, 0xb24).b20 = 0;
+    self->unk_b24_20_f = 0;
     if (data_ov000_021ccd6c->curExit == 0xff) {
         self->unk_b22_13 = 1;
     }
@@ -190,18 +190,18 @@ void func_ov000_0219cdb8(Robo021ca458 *self) {
             self->unk_b22_12 = 0;
             self->mdl1.visible = 0;
             t = ((s32 *)self->unk_ba0);
-            func_ov000_02191008((u8 *)self + 0x368);
+            func_ov000_02191008(&self->mdl1);
             if ((u8 *)self->unk_998 != NULL) {
                 LFLD(H1_0219cdb8, self->unk_998, 0xc2).b0 = 0;
             }
             self->mdl0.visible = 0;
             res = (void **)self->mdl0.res->mdl_handle;
             NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet(res != NULL ? *res : NULL));
-            func_ov000_0218ec60((u8 *)self + 0x450, t[0], t[1], 1, 1);
-            func_ov000_0218edf0((u8 *)self + 0x450, t[2], t[3], 1, 1);
-            func_ov000_0218ef10((u8 *)self + 0x450, t[4], t[5], 1, 1);
+            func_ov000_0218ec60(&self->res1, t[0], t[1], 1, 1);
+            func_ov000_0218edf0(&self->res1, t[2], t[3], 1, 1);
+            func_ov000_0218ef10(&self->res1, t[4], t[5], 1, 1);
             if (LFLD(u8, t, 0x18) != 0) {
-                func_ov000_0218edf0((u8 *)self + 0x588, t[0], t[1], 1, 1);
+                func_ov000_0218edf0(&self->res2, t[0], t[1], 1, 1);
             }
             self->unk_b22_11 = 1;
         }

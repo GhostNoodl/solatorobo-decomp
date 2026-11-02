@@ -9,7 +9,6 @@ extern "C" {
 extern u8 NNS_G3dGlb[];
 extern u8 data_02092844[];
 extern u8 data_02092800[];
-extern u8 *data_02097dc8;
 void func_ov000_02190758(void *m, void *p, s32 a);
 BOOL func_ov000_021903b4(void *m);
 

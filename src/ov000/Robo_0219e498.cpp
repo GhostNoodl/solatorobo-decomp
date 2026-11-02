@@ -86,11 +86,11 @@ void func_ov000_0219e498(Robo021ca458 *self) {
         if (!On2_0219e498(self, 0x6c0)) {
             self->hit1.unk_9a |= 0x12;
         }
-        func_ov000_0219864c((u8 *)self + 0x6c0, NULL, NULL);
+        func_ov000_0219864c(&self->hit1, NULL, NULL);
         self->unk_75c = self->pos;
         Hide0219e498((u8 *)self, 0x2cc);
         Hide2_0219e498(self, 0x2cc);
-        func_ov000_0219864c((u8 *)self + 0x2cc, NULL, NULL);
+        func_ov000_0219864c(&self->hit0, NULL, NULL);
         return;
     }
     if (!G9_0219e498() && RgbEq0219e498(&data_ov000_021ccd54->unk_ca, &self->fieldId)) {
@@ -110,13 +110,13 @@ void func_ov000_0219e498(Robo021ca458 *self) {
         }
         if (self->unk_b24_24 || self->unk_768 != 0) {
             self->unk_b24_24 = 0;
-            func_ov000_021987b8((u8 *)self + 0x6c0, 0, (u8 *)self + 0x75c, (u8 *)self + 0x76c);
+            func_ov000_021987b8(&self->hit1, 0, (u8 *)self + 0x75c, (u8 *)self + 0x76c);
         }
     } else {
         Hide0219e498((u8 *)self, 0x6c0);
         Hide2_0219e498(self, 0x6c0);
     }
-    func_ov000_0219864c((u8 *)self + 0x6c0, (u8 *)self + 0x75c, (u8 *)self + 0x76c);
+    func_ov000_0219864c(&self->hit1, (u8 *)self + 0x75c, (u8 *)self + 0x76c);
     if (self->unk_b24_2 != 1) {
         if (self->hit0.unk_50 & 0x400) {
             self->hit0.radius = (self->radius >> 1) + (self->radius >> 2);
@@ -132,6 +132,6 @@ void func_ov000_0219e498(Robo021ca458 *self) {
         self->hit0.unk_58 = 0;
         Hide2_0219e498(self, 0x2cc);
     }
-    func_ov000_0219864c((u8 *)self + 0x2cc, NULL, NULL);
+    func_ov000_0219864c(&self->hit0, NULL, NULL);
 }
 }

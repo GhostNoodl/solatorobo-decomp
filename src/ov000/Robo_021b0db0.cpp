@@ -4,9 +4,9 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Sys/Pad.h"
 
 extern "C" {
-extern void *data_02097dc8;
 extern const VecFx32 data_02092a50;
 extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc751[];

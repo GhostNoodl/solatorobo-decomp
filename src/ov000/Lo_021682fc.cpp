@@ -15,7 +15,7 @@ extern u8 data_ov000_021c9b2e[];
 void func_ov000_021682fc(Lo021cb6f0 *self) {
     s32 s = self->unk_04;
     if (s == 1 || s == 8 || s == 3 || s == 0xa) {
-        if (LBIT(self, 0xc).b1 ? TRUE : FALSE) {
+        if (self->unk_0c_1 ? TRUE : FALSE) {
             self->unk_04 = 2;
         }
     }
@@ -23,9 +23,9 @@ void func_ov000_021682fc(Lo021cb6f0 *self) {
         return;
     }
     if (!((self->unk_0c & 0x10000) ? TRUE : FALSE)) {
-        LBIT(self, 0xc).b1 = 1;
+        self->unk_0c_1 = 1;
     }
-    LBIT(self, 0xc).b16 = 0;
+    self->unk_0c_16 = 0;
 }
 
 }

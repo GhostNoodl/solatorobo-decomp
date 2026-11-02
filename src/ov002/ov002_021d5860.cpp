@@ -56,9 +56,9 @@ static inline void ov002_021d58b8_setName(Task021efc24 *self, u16 id) {
 
 static inline void ov002_021d58b8_setInfo(Task021efc24 *self, u16 id) {
     if (self->unk_58 != NULL) {
-        u8 *info = func_0206ef10(id);
-        func_ov000_02162b40(self->unk_58, FIELD(info, 0xc, s32), FIELD(info, 0x10, s32), data_ov002_021efae1,
-                            FIELD(info, 0x28, s32), data_ov002_021efaeb, info[0x24], 0x1000);
+        Param0206ef10 *info = func_0206ef10(id);
+        func_ov000_02162b40(self->unk_58, info->def.name[0], info->def.name[1], data_ov002_021efae1,
+                            info->def.unk_1c, data_ov002_021efaeb, info->def.unk_18, 0x1000);
     }
 }
 

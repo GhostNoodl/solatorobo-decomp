@@ -5,19 +5,13 @@
 
 extern "C" {
 
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *data_02097e4c;
 extern s32 data_02097d78[5];
-BOOL func_02054f10(void *a, s32 b);
 
 typedef struct {
     u8 pad[0x98];
     VObj *o[12];
 } LoArr98;
-
-static inline BOOL LoIsState5(void *o) {
-    return LFLD(s32, o, 4) == 5 ? TRUE : FALSE;
-}
 
 static inline BOOL LoGBusy(FieldState *g) {
     return g->head != g->tail ? TRUE : FALSE;
@@ -46,7 +40,7 @@ void func_ov000_0215d3bc(Lo021cad50 *self, void *a, s32 *pos, s32 d) {
     if (a == NULL) {
         return;
     }
-    if (LBIT(self, 0xc).b3 ? TRUE : FALSE) {
+    if (self->flag3 ? TRUE : FALSE) {
         self->vfunc_68(a, pos, d);
     } else {
         self->vfunc_64(a, pos, d);

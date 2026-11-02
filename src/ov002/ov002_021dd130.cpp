@@ -182,7 +182,7 @@ extern VFunc data_ov000_021cb1b0[];
 
 extern VFunc data_ov000_021cb0b8[];
 
-BOOL func_ov002_021e046c(void *self, void *ev);
+BOOL func_ov002_021e046c(UiList *self, UiListItem *item);
 
 void *func_ov002_021dd6a4(Obj021eff10 *self, s32 a, u16 b) {
     UiObj *p;
@@ -207,7 +207,7 @@ void *func_ov002_021dd6a4(Obj021eff10 *self, s32 a, u16 b) {
     FIELD(p, 0x1d8, u16) = b;
     FIELD(self->unk_0c, 0x1dc, s32) = a;
     FIELD(self->unk_0c, 0x1e0, u16) = 1;
-    self->unk_0c->onDecide = (UiItemFn)func_ov002_021e046c;
+    self->unk_0c->onDecide = func_ov002_021e046c;
     self->unk_0c->owner = (u8 *)self + 0x1c;
     self->unk_0c->vfunc_08();
     self->unk_0c->posZ = -0x1666;

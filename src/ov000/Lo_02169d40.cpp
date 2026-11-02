@@ -11,7 +11,7 @@ void func_ov000_02169d40(Lo021cb798 *self) {
     s32 s = self->unk_04;
     s32 v;
     if (s == 1 || s == 8 || s == 3 || s == 0xa) {
-        if (LBIT(self, 0xc).b1 ? TRUE : FALSE) {
+        if (self->unk_0c_1 ? TRUE : FALSE) {
             self->unk_04 = 2;
         }
     }
@@ -28,10 +28,10 @@ void func_ov000_02169d40(Lo021cb798 *self) {
     if (self->unk_04 == 0xa) {
         if (++self->unk_a9 > 0x1e) {
             if (!((self->unk_0c & 0x10000) ? TRUE : FALSE)) {
-                LBIT(self, 0xc).b1 = 1;
+                self->unk_0c_1 = 1;
             }
         }
-        LBIT(self, 0xc).b16 = 0;
+        self->unk_0c_16 = 0;
     }
     if (self->unk_ac == 0) {
         return;

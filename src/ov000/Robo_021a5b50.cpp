@@ -41,7 +41,7 @@ void func_ov000_021a5b50(Robo021ca458 *self) {
             }
         }
         func_ov000_021b1fac(self, FALSE, 1);
-        if (!LBIT(self, 0xb24).b1) {
+        if (!self->unk_b24_1) {
             return;
         }
         if (!(self->hit->unk_54 & 0x400)) {
@@ -51,11 +51,11 @@ void func_ov000_021a5b50(Robo021ca458 *self) {
                                          self->unk_af0.z - self->pos.z);
         self->speed = 0x66;
         self->friction = 0;
-        if (!LBIT(self, 0xb24).b17 || (self->hit->unk_50 & 0x40000000)) {
+        if (!self->unk_b24_17 || (self->hit->unk_50 & 0x40000000)) {
             self->velY = 0x200;
         }
         self->gravity = 0x52;
-        LBIT(self, 0xb24).b17 = 1;
+        self->unk_b24_17 = 1;
         break;
     }
 }

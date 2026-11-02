@@ -59,7 +59,7 @@ static inline BOOL LoadModel0215429c(UiList *self) {
     if (self->model != NULL) {
         return TRUE;
     }
-    if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
+    if (self->flag6 ? TRUE : FALSE) {
         self->model = new ModelObj(data_0208cb84, data_0208cc8c);
     } else {
         self->model = new ModelObj(data_0208cb74, data_0208cca0);
@@ -114,7 +114,7 @@ void func_ov000_0215429c(UiList *self) {
     }
     if ((Panel0215429c *)self->panel == NULL) {
         self->panel = (UiPanel *)new Panel0215429c();
-        if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
+        if (self->flag6 ? TRUE : FALSE) {
             ((Panel0215429c *)self->panel)->flags.b4 = 1;
         }
         func_ov000_0215e8b0((Panel0215429c *)self->panel);
@@ -129,7 +129,7 @@ void func_ov000_0215429c(UiList *self) {
     self->slideY = 0;
     self->slideZ = 0;
     self->slideX = -(self->width + 0x10);
-    LBIT(self, 0xc).b0 = 1;
+    self->busy = 1;
     self->vfunc_48(0, 0);
 }
 

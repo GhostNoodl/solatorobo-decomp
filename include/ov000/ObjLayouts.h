@@ -11,6 +11,7 @@
 #include "Main/Sys/FieldId.h"
 #include "ov000/UiObj.h"
 #include "ov000/Task.h"
+#include "ov000/ListRow.h"
 
 struct Model;
 #include "Main/Gfx/TextWin.h"
@@ -84,6 +85,45 @@ struct ActorEx : public Actor {
     };
 };
 SIZE_ASSERT(ActorEx, 0xd0);
+
+// A robot definition (the entries of data_ov000_021ca398, indexed by Robo021ca458::unk_b22_6, and of
+// data_ov000_021ca248; also Param0206ef10::def). Robo021ca458_Init copies the names into the robot's
+// resource sets, func_ov000_021afaf8 loads them with func_ov000_0218ec60 / 0218edf0 / 0218ef10.
+typedef struct RoboDef {
+    const char *name[6]; // three (name, ext) pairs
+    u8 unk_18; // func_ov000_021afaf8 also loads the first pair into res2 when set
+    u8 unk_19[0x3];
+    const char *unk_1c; // the anmName ov002 hands func_ov000_02162b40 with the first pair
+} RoboDef;
+
+// A 0x2c-byte parameter record returned by func_0206ef10 (Main/Lang/ParamTbl.cpp). The robot keeps the one
+// of its kind (func_0206ef10(kind | 0x8000), Robo021ca458_Init / func_ov000_021afaf8) in unk_ba4; the
+// bits at 0x06 enable its moves.
+typedef struct Param0206ef10 {
+    s8 unk_00[0x4]; // copied by func_ov000_021c95ac
+    u8 unk_04_0 : 4;
+    u8 unk_04_4 : 4; // times 10: the robot's gauge (func_ov000_021a0d4c)
+    u8 unk_05_0 : 4;
+    u8 unk_05_4 : 4; // added to a count (func_ov000_021a6280, func_ov000_021aa5c8)
+    union {
+        u16 unk_06;
+        struct {
+            u16 unk_06_0 : 1;
+            u16 unk_06_1 : 1;
+            u16 unk_06_2 : 1;
+            u16 unk_06_3 : 1;
+            u16 unk_06_4 : 1;
+            u16 unk_06_5 : 1;
+            u16 unk_06_6 : 1;
+            u16 unk_06_7 : 1;
+            u16 unk_06_8 : 1;
+            u16 unk_06_9 : 7;
+        };
+    };
+    u8 unk_08[0x4];
+    RoboDef def; // 0x0c
+} Param0206ef10;
+SIZE_ASSERT(Param0206ef10, 0x2c);
 
 // The robot actor (ctor Robo021ca458_Ctor, vtable data_ov000_021cc774, 0xbb0 bytes; its state
 // handlers are the pointer-to-member table data_ov000_021ca458). Methods in Robo_*.cpp and others.
@@ -282,7 +322,7 @@ struct Robo021ca458 : public Actor {
     VecFx32 unk_b90;
     s32 unk_b9c;
     u8 *unk_ba0;
-    u8 *unk_ba4;
+    Param0206ef10 *unk_ba4;
     s32 unk_ba8;
     u16 unk_bac;
 };
@@ -566,24 +606,6 @@ struct Lo021cb894 : public ObjBase021cac0c_021cb6f0 {
     s32 unk_b8;
 };
 
-// Vtable data_ov000_021cca10; methods in Hud_021c2450.cpp, Hud_021c28cc.cpp.
-struct Hud021cca10 {
-    u8 unk_00[0xc];
-    s32 unk_0c;
-    s32 unk_10;
-    s32 unk_14;
-    s32 unk_18;
-    u8 unk_1c[0x4];
-    u8 unk_20;  // bit fields, read through per-file views
-    u8 unk_21[0xf];
-    Model *unk_30;
-    Model *unk_34;
-    TextWin *unk_38;
-    void *unk_3c;
-    char *unk_40;
-    u8 unk_44;
-};
-
 // Vtable data_ov000_021cca40; methods in Lo_021c5bd4.cpp, Win_021c5d9c.cpp.
 struct Lo021cca40 {
     u8 unk_00[0xc];
@@ -600,45 +622,58 @@ struct Lo021cca40 {
     u8 unk_44;
 };
 
-// Vtable data_ov000_021ccb54, data_ov000_021ccbe0; methods in Text_021c524c.cpp, Unit_021c3d20.cpp.
-struct UnitBase021ccb54_021ccbe0 : public UiObj {
-    Model *unk_84;
-    u8 unk_88[0x8];
-    u8 *unk_90;
-    void *unk_94;
-    s32 unk_98;
+// Row list: vtable data_ov000_021ccbe0 (0xf4 bytes; the constructor calls UiObj_Init through slot 0x28,
+// then func_ov000_021c3af4) over the base vtable data_ov000_021ccb54; ov002's subclass data_ov002_021f0044
+// keeps the size. Both dtors release it with func_ov000_021c3bb0. Methods in Lo_021c4d90.cpp, Lo_021c5028.cpp,
+// Lo_021c5128.cpp, Text_021c524c.cpp, Unit_021c3d20.cpp and the files of func_ov000_021c3aa0 .. 021c56c0.
+struct LoBase021ccb54_021ccbe0 : public UiObj {
+    Model *unk_84; // the three models and the object freed by func_ov000_021c3bb0 (both dtors)
+    Model *unk_88;
+    Model *unk_8c;
+    UiPanel *unk_90; // made by slot 0x08 (func_ov000_021c3d20), released with func_ov000_0215ec80
+    ListRow *unk_94; // the rows (ov000/ListRow.h), appended by func_ov000_021c3fd4
+    s32 unk_98; // row count
     s32 unk_9c;
-    void *unk_a0;
-    u8 unk_a4[0xc];
+    ListRow *unk_a0; // a row (ov002 reads its id and texts)
+    ListRow *unk_a4; // a row (ov002 reads its index)
+    s32 unk_a8;
+    u16 unk_ac;
+    u8 unk_ae[0x2];
     s32 unk_b0;
     s32 unk_b4;
     s32 unk_b8;
-    u8 unk_bc[0x4];
+    s32 unk_bc;
     s32 unk_c0;
     s32 unk_c4;
     s32 unk_c8;
-};
-
-// Vtable data_ov000_021ccb54, data_ov000_021ccbe0, data_ov002_021f0044; methods in Lo_021c4d90.cpp, Lo_021c5028.cpp, Lo_021c5128.cpp, Text_021c524c.cpp.
-struct LoBase021ccb54_021ccbe0 : public UiObj {
-    u8 unk_84[0x10];
-    VObj *unk_94;
-    u8 unk_98[0x4];
-    s32 unk_9c;
-    VObj *unk_a0; // a row (ov002 reads its id and texts)
-    VObj *unk_a4; // a row (ov002 reads its index)
-    u8 unk_a8[0x10];
-    s32 unk_b8;
-    u8 unk_bc[0x4];
-    s32 unk_c0;
-    u8 unk_c4[0x8];
     s8 unk_cc;
     s8 unk_cd;
-    u8 unk_ce[0x2];
+    u8 unk_ce;
+    u8 unk_cf;
     s32 unk_d0;
-    u8 unk_d4[0xb];
+    s8 unk_d4; // frame counter of the unk_d8 pulse (slot 0x54)
+    u8 unk_d5[0x3];
+    s32 unk_d8;
+    u8 unk_dc;
+    u8 unk_dd;
+    u8 unk_de;
     u8 unk_df;
     s32 unk_e0;
+    void *onDecide; // 0xe4 called with the chosen row
+    void *onCursor; // 0xe8 called with the row under the cursor
+    s32 unk_ec;
+    u8 unk_f0;
+    u8 unk_f1[0x3];
 };
+SIZE_ASSERT(LoBase021ccb54_021ccbe0, 0xf4);
+
+// Vtable data_ov000_021ccb54 (0x100 bytes; ov006 builds it): the row list with three labels, cleared by
+// func_ov000_021c54f4, ticked by slot 0x54 (func_ov000_021c56c0) and released by func_ov000_021c5508.
+struct Lo021ccb54 : public LoBase021ccb54_021ccbe0 {
+    UiLabel *unk_f4;
+    UiLabel *unk_f8;
+    UiLabel *unk_fc;
+};
+SIZE_ASSERT(Lo021ccb54, 0x100);
 
 #endif

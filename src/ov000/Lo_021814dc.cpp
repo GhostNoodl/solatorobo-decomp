@@ -20,6 +20,7 @@
 #include "Main/Gfx/GfxMgr.h"
 #include "nitro/mi.h"
 #include "Main/Res/ResArc.h"
+#include "Main/Sys/Pad.h"
 
 extern "C" {
 
@@ -3586,11 +3587,6 @@ typedef struct {
 } Obj02097e3c;
 
 typedef struct {
-    u8 pad_00[0x12];
-    u16 unk_12;
-} Obj02097dc8;
-
-typedef struct {
     u8 pad_00[4];
     s32 unk_04;
 } Ov002Obj021f0f9c;
@@ -3613,7 +3609,6 @@ extern const char *data_0208cca0;
 extern const char *data_0208cc94;
 extern char data_0214b105[];
 extern Obj02097e3c *data_02097e3c;
-extern Obj02097dc8 *data_02097dc8;
 extern void *data_02149ef0;
 extern Ov002Obj021f0f9c *data_ov002_021f0f9c;
 extern Obj02097e4c *data_02097e4c;
@@ -3757,7 +3752,7 @@ s32 func_ov000_021859c4(SceneCmd *self) {
                 LangRes2_Create();
                 LangData_CreateRes();
                 self->step++;
-            } else if (data_02097dc8->unk_12 & 8) {
+            } else if (data_02097dc8->trig & 8) {
                 Movie_RequestStop(data_02097e3c);
             }
             break;
@@ -5582,14 +5577,8 @@ typedef struct {
     u16 unk_06;
 } Obj0205b31c;
 
-typedef struct {
-    u8 pad_00[0x12];
-    u16 unk_12;
-} Pad02097dc8;
-
 extern "C" {
 extern s32 data_02097d78[5];
-extern Pad02097dc8 *data_02097dc8;
 Robo021ca458 *func_ov000_0219bf90(void);
 Obj0205b31c *func_0205b31c(void);
 
@@ -5635,7 +5624,7 @@ s32 func_ov000_0218819c(SceneCmd *self) {
             kind = 0;
         }
         if (kind == 0xff) {
-            if (data_02097dc8->unk_12 & 1) {
+            if (data_02097dc8->trig & 1) {
                 CmdObj_Done(self);
                 CmdObj_Push(self, 0x28, 0);
             }
@@ -5649,7 +5638,7 @@ s32 func_ov000_0218819c(SceneCmd *self) {
                     done = TRUE;
                 }
             }
-            if (done || ((kind == 1 || kind == 0xb) && (data_02097dc8->unk_12 & 3))) {
+            if (done || ((kind == 1 || kind == 0xb) && (data_02097dc8->trig & 3))) {
                 CmdObj_Done(self);
                 if (kind >= 10) {
                     CmdObj_Push(self, 0x28, 0);

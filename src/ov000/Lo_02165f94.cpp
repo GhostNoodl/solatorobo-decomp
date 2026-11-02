@@ -2,6 +2,7 @@
 #include "ov000/LoCommon.h"
 #include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
+#include "Main/Sys/Pad.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/MapCtx.h"
 #include "nitro/mi.h"
@@ -11,7 +12,6 @@ extern "C" {
 extern u8 NNS_G3dGlb[];
 extern u8 data_02092844[];
 extern u8 data_02092800[];
-extern u8 *data_02097dc8;
 void func_ov000_02190758(void *m, void *p, s32 a);
 BOOL func_ov000_021903b4(void *m);
 
@@ -26,9 +26,9 @@ u8 *func_ov000_02165f94(Lo021cb6b0 *self) {
     LoAnimC *p = self->unk_30->anim;
     FieldState *g = data_ov000_021ccd54;
     if (!LoAnimValid(p)) {
-        return (u8 *)g + 0xca;
+        return g->unk_ca.c;
     }
-    if (LFLD(u16, data_02097dc8, 0x12) & 2) {
+    if (data_02097dc8->trig & 2) {
         p->timer = p->period;
         p->idx = 0;
     }
@@ -44,8 +44,8 @@ u8 *func_ov000_02165f94(Lo021cb6b0 *self) {
             p->state = 0xffff;
         }
     }
-    p->rgb[0] = ((u8 *)g)[0xca];
-    p->rgb[1] = ((u8 *)g)[0xcb];
+    p->rgb[0] = g->unk_ca.c[0];
+    p->rgb[1] = g->unk_ca.c[1];
     p->rgb[2] = p->frames[p->idx]->slot;
     return p->rgb;
 }
@@ -121,47 +121,6 @@ Node0216607c *func_ov000_0216607c(Lo021cb6b0 *self, Node0216607c *node, u8 *outI
 // or a struct copy, first loop or both loops) is 111-357, because oams then takes r7 and the whole function shifts.
 
 typedef struct {
-    u32 y : 8;
-    u32 a0 : 8;
-    u32 x : 9;
-    u32 a1 : 3;
-    u32 hf : 1;
-    u32 vf : 1;
-    u32 sz : 2;
-} Oam0_6180;
-
-typedef struct {
-    u32 tile : 10;
-    u32 prio : 2;
-    u32 pal : 4;
-    u32 hi : 16;
-} Oam1_6180;
-
-typedef struct {
-    Oam0_6180 w0;
-    Oam1_6180 w1;
-} Oam6180;
-
-typedef struct {
-    u32 f0 : 1;
-    u32 f1 : 1;
-    u32 f2 : 1;
-    u32 f3 : 2;
-    u32 a : 8;
-    u32 b : 8;
-} RBits6180;
-
-typedef struct {
-    u32 b0 : 3;
-    u32 b3 : 1;
-} QBits6180;
-
-typedef struct {
-    s32 x;
-    s32 y;
-} Pos6180;
-
-typedef struct {
     u8 a;
     u8 b;
     u8 c;
@@ -174,51 +133,51 @@ extern const Dir2_6180 data_ov000_021c9b40[];
 extern const s8 data_ov000_021c9b41[];
 Robo021ca458 *func_ov000_0219bf90(void);
 
-static inline void SetXY6180(Oam6180 *o, u16 x, u16 y) {
+static inline void SetXY6180(MapOam *o, u16 x, u16 y) {
     o->w0.x = x;
     o->w0.y = y & 0x1ff;
 }
 
 #define PUTM(o, X, Y) if ((X) < 8 || (X) > 0xf8 || (Y) < 8 || (Y) > 0xb8) { SetXY6180(o, 0, 0xc0); } else { SetXY6180(o, X, Y); }
-static inline Oam6180 *OamAt6180(Oam6180 *o, u32 j) {
+static inline MapOam *OamAt6180(MapOam *o, u32 j) {
     return &o[j];
 }
 
-static inline u32 PalIdx6180(u8 *p) {
-    return LFLD(Oam6180, p, 0x2c).w1.pal;
+static inline u32 PalIdx6180(Ctx0216607c *p) {
+    return p->oams[0].w1.pal;
 }
 
-static inline u8 *FindNode6180(Lo021cb6b0 *self, u8 c, u8 d) {
-    u8 *q = (u8 *)self->unk_30;
-    u8 n = q[8];
-    u8 *e = LFLD(u8 *, q, 0xc84);
+static inline Node0216607c *FindNode6180(Lo021cb6b0 *self, u8 c, u8 d) {
+    Ctx0216607c *q = self->unk_30;
+    u8 n = q->count;
+    Node0216607c *e = q->nodes;
     u32 s;
-    for (s = 0; s < n; s = (u8)(s + 1), e += 0x1c) {
-        if (c == LFLD(RBits6180, e, 0).a && d == LFLD(RBits6180, e, 0).b) {
+    for (s = 0; s < n; s = (u8)(s + 1), e++) {
+        if (c == e->a && d == e->b) {
             return e;
         }
     }
     return NULL;
 }
 
-static inline u8 *GetNode6180(Lo021cb6b0 *self, u8 d) {
-    u8 *q = (u8 *)self->unk_30;
-    if (d >= q[8]) {
+static inline Node0216607c *GetNode6180(Lo021cb6b0 *self, u8 d) {
+    Ctx0216607c *q = self->unk_30;
+    if (d >= q->count) {
         return NULL;
     }
-    return LFLD(u8 *, q, 0xc84) + d * 0x1c;
+    return &q->nodes[d];
 }
 
 void func_ov000_02166180(Lo021cb6b0 *self) {
     s16 y;
-    u8 *e;
-    Oam6180 *oams;
+    Item0216607c *e;
+    MapOam *oams;
     s32 oy;
     LoAnimC *h;
     u8 sec;
-    Oam6180 *o;
+    MapOam *o;
     s32 ox;
-    u8 *pt;
+    MapPart *pt;
     u16 a;
     u8 j;
     u8 kind;
@@ -232,65 +191,65 @@ void func_ov000_02166180(Lo021cb6b0 *self) {
     Node0216607c *nd;
     s16 x;
     FieldState *g;
-    u8 *p;
-    u8 *r;
-    u8 *en;
+    Ctx0216607c *p;
+    Node0216607c *r;
+    Node0216607c *en;
     s32 yy;
     Robo021ca458 *pl;
     s8 *pal;
-    Oam6180 *ob;
+    MapOam *ob;
     FieldCam *cam;
-    u8 *anim;
+    Slot0216607c *anim;
     u8 d;
     s32 off;
     u8 i;
     u8 busy;
-    u8 *it;
+    Item0216607c *it;
 
 
-    p = (u8 *)self->unk_30;
+    p = self->unk_30;
     tbl2 = (Ent6180 *)data_0214a424->slots;
-    kind = LFLD(u8 *, p, 0xcb4)[0x14];
-    anim = LFLD(u8 *, p, 0xc88) + kind * 8;
+    kind = p->cur->key;
+    anim = &p->slots[kind];
     g = data_ov000_021ccd54;
-    if (LFLD(LoAnimC *, p, 0xcdc) == NULL || LFLD(LoAnimC *, p, 0xcdc)->state == 0) {
+    if (p->anim == NULL || p->anim->state == 0) {
         busy = FALSE;
     } else {
         busy = TRUE;
     }
-    ox = LFLD(s32, p, 0xcbc);
-    oy = LFLD(s32, p, 0xcc0);
-    pal = LFLD(s8 *, LFLD(u8 *, p, 0xc8c), 0x58);
-    p[2] = 0;
-    SetXY6180(&LFLD(Oam6180, p, 0xc), 0, 0xc0);
-    for (i = 0; i < p[8]; i++) {
+    ox = p->ox;
+    oy = p->oy;
+    pal = p->pltt->maps[2];
+    p->markCount = 0;
+    SetXY6180(&p->unk_0c, 0, 0xc0);
+    for (i = 0; i < p->count; i++) {
         s32 ex;
         s32 ey;
-        Pos6180 *pos;
-        e = LFLD(u8 **, anim, 4)[i];
+        MapPos *pos;
+        e = anim->list[i];
         if (e == NULL) {
             continue;
         }
-        ex = LFLD(s32, e, 0xc) - (ox >> 12);
-        ey = LFLD(s32, e, 0x10) - (oy >> 12);
-        r = LFLD(u8 *, e, 0);
+        ex = e->a - (ox >> 12);
+        ey = e->b - (oy >> 12);
+        r = e->node;
         if (busy) {
-            f = r == LFLD(u8 *, p, 0xcb8);
+            f = r == p->sel;
         } else {
-            f = LFLD(RBits6180, r, 0).a == ((u8 *)g)[0xcb] && LFLD(RBits6180, r, 0).b == ((u8 *)g)[0xcc];
+            f = r->a == g->unk_ca.c[1] && r->b == g->unk_ca.c[2];
         }
         if (f) {
-            for (j = 0; j < r[0xa]; j++) {
-                pt = LFLD(u8 *, r, 0x14) + j * 0x14;
-                pos = LFLD(Pos6180 *, pt, 0);
-                o = LFLD(Oam6180 *, pt, 4);
+            for (j = 0; j < r->nPart; j++) {
+                pt = &r->parts[j];
+                pos = pt->pos;
+                o = pt->oam;
                 xx = pos->x + ex; yy = pos->y + ey; PUTM(o, xx, yy)
                 o->w1.pal = pal[PalIdx6180(p)];
             }
         }
-        oams = LFLD(Oam6180 *, r, 0x10);
-        pos = LFLD(Pos6180 *, r, 0xc);
-        for (j = 0; j < r[9]; j++) {
+        oams = r->oam;
+        pos = r->pos;
+        for (j = 0; j < r->n; j++) {
             yy = pos[j].y;
             xx = pos[j].x;
             yy += ey;
@@ -300,49 +259,49 @@ void func_ov000_02166180(Lo021cb6b0 *self) {
             } else {
                 SetXY6180(OamAt6180(oams, j), xx, yy);
             }
-            if (LFLD(RBits6180, r, 0).a == ((u8 *)g)[0xcb] && LFLD(RBits6180, r, 0).b == ((u8 *)g)[0xcc]) {
-                xx = ex - 4; yy = ey - 4; PUTM(&LFLD(Oam6180, p, 0xc), xx, yy)
-                LFLD(Oam6180, p, 0xc).w1.pal = *(LFLD(s8 *, p, 0xc90) + PalIdx6180(p) - 2);
+            if (r->a == g->unk_ca.c[1] && r->b == g->unk_ca.c[2]) {
+                xx = ex - 4; yy = ey - 4; PUTM(&p->unk_0c, xx, yy)
+                p->unk_0c.w1.pal = *(p->palMap + PalIdx6180(p) - 2);
                 OamAt6180(oams, j)->w1.pal = pal[PalIdx6180(p)];
-            } else if (LFLD(RBits6180, r, 0).f0) {
-                OamAt6180(oams, j)->w1.pal = *(LFLD(s8 *, p, 0xc90) + PalIdx6180(p) + 2);
-            } else if (LFLD(RBits6180, r, 0).f2) {
-                OamAt6180(oams, j)->w1.pal = *(LFLD(s8 *, p, 0xc90) + PalIdx6180(p) + 1);
+            } else if (r->f0) {
+                OamAt6180(oams, j)->w1.pal = *(p->palMap + PalIdx6180(p) + 2);
+            } else if (r->f2) {
+                OamAt6180(oams, j)->w1.pal = *(p->palMap + PalIdx6180(p) + 1);
             } else {
-                OamAt6180(oams, j)->w1.pal = LFLD(s8 *, p, 0xc90)[PalIdx6180(p)];
+                OamAt6180(oams, j)->w1.pal = p->palMap[PalIdx6180(p)];
             }
         }
     }
     if (busy) {
         h = self->unk_30->anim;
         for (i = 0; i < h->cnt; i++) {
-            r = (u8 *)h->frames[i];
+            r = h->frames[i];
             off = (i == h->cnt - 1) ? 0 : 2;
-            for (j = 0; j < r[0xa]; j++) {
-                o = LFLD(Oam6180 *, LFLD(u8 *, r, 0x14) + j * 0x14, 4);
+            for (j = 0; j < r->nPart; j++) {
+                o = r->parts[j].oam;
                 o->w1.pal = (pal + off)[PalIdx6180(p)];
             }
-            oams = LFLD(Oam6180 *, r, 0x10);
-            for (j = 0; j < r[9]; j++) {
+            oams = r->oam;
+            for (j = 0; j < r->n; j++) {
                 oams[j].w1.pal = (pal + off)[PalIdx6180(p)];
             }
         }
         nd = func_ov000_0216607c(self, h->frames[0], &j, TRUE);
         if (nd != NULL) {
-            k = p[2]++;
-            o = &((Oam6180 *)(p + 0x64c))[k];
-            *o = LFLD(Oam6180, p, 0x1c);
-            it = ((u8 *)nd->items) + j * 0x18;
-            xx = LFLD(s32, it, 0xc) - (ox >> 12) - 4; yy = LFLD(s32, it, 0x10) - (oy >> 12) - 0xc; PUTM(o, xx, yy)
-            LFLD(u32, o, 0) = (LFLD(u32, o, 0) & 0x3fff3fff) | 0x40000000;
-            o->w1.pal = *(LFLD(s8 *, p, 0xc90) + PalIdx6180(p) - 2);
+            k = p->markCount++;
+            o = &p->marks[k];
+            *o = p->unk_1c;
+            it = &nd->items[j];
+            xx = it->a - (ox >> 12) - 4; yy = it->b - (oy >> 12) - 0xc; PUTM(o, xx, yy)
+            o->w0.raw = (o->w0.raw & 0x3fff3fff) | 0x40000000;
+            o->w1.pal = *(p->palMap + PalIdx6180(p) - 2);
         }
     } else {
         for (i = 0; i < 2; i++) {
             if (tbl2[i].a == 0xff || tbl2[i].a == 2) {
                 continue;
             }
-            if (p[4] != tbl2[i].b) {
+            if (LFLD(u8, p, 4) != tbl2[i].b) {
                 continue;
             }
             c = tbl2[i].c;
@@ -355,33 +314,33 @@ void func_ov000_02166180(Lo021cb6b0 *self) {
             if (en == NULL) {
                 continue;
             }
-            nd = func_ov000_0216607c(self, (Node0216607c *)en, &j, FALSE);
+            nd = func_ov000_0216607c(self, en, &j, FALSE);
             if (nd == NULL) {
                 continue;
             }
-            k = p[2]++;
-            o = &((Oam6180 *)(p + 0x64c))[k];
-            *o = LFLD(Oam6180, p, 0x1c);
-            if (LFLD(QBits6180, LFLD(u8 *, p, 0xcb8), 0).b3) {
+            k = p->markCount++;
+            o = &p->marks[k];
+            *o = p->unk_1c;
+            if (p->sel->f3) {
                 continue;
             }
-            it = ((u8 *)nd->items) + j * 0x18;
-            xx = LFLD(s32, it, 0xc) - (ox >> 12) - 4; yy = LFLD(s32, it, 0x10) - (oy >> 12) - 0xc; PUTM(o, xx, yy)
+            it = &nd->items[j];
+            xx = it->a - (ox >> 12) - 4; yy = it->b - (oy >> 12) - 0xc; PUTM(o, xx, yy)
             switch (tbl2[i].a) {
             case 0:
             case 1:
-                LFLD(u32, o, 0) = (LFLD(u32, o, 0) & 0x3fff3fff) | 0x40000000;
-                o->w1.pal = *(LFLD(s8 *, p, 0xc90) + PalIdx6180(p) - 2);
+                o->w0.raw = (o->w0.raw & 0x3fff3fff) | 0x40000000;
+                o->w1.pal = *(p->palMap + PalIdx6180(p) - 2);
                 break;
             }
         }
     }
     pl = func_ov000_0219bf90();
-    if (pl != NULL && LFLD(u8 *, p, 0xcb8) != NULL) {
+    if (pl != NULL && p->sel != NULL) {
         cam = &data_ov000_021ccd54->cam;
-        if (!LFLD(QBits6180, LFLD(u8 *, p, 0xcb8), 0).b3) {
-            xx = LFLD(Oam6180, p, 0xc).w0.x;
-            yy = LFLD(Oam6180, p, 0xc).w0.y;
+        if (!p->sel->f3) {
+            xx = p->unk_0c.w0.x;
+            yy = p->unk_0c.w0.y;
             pa = pl->rot_y;
             ca = FieldCam_GetYaw(cam);
             a = ca - pa;
@@ -393,12 +352,12 @@ void func_ov000_02166180(Lo021cb6b0 *self) {
         sec = ((a + 0x1000) / 0x2000) & 7;
         x = xx + data_ov000_021c9b40[sec].dx;
         y = yy + data_ov000_021c9b41[sec * 4];
-        ob = &LFLD(Oam6180, p, 0x14);
-        ob->w1.pal = *(LFLD(s8 *, p, 0xc90) + PalIdx6180(p) - 2);
+        ob = &p->unk_14;
+        ob->w1.pal = *(p->palMap + PalIdx6180(p) - 2);
         SetXY6180(ob, x, y);
         ob->w0.hf = data_ov000_021c9b40[sec].hf;
         ob->w0.vf = data_ov000_021c9b40[sec].vf;
-        ob->w1.tile = LFLD(u16, p + data_ov000_021c9b40[sec].idx * 2, 0x24);
+        ob->w1.tile = p->tiles[data_ov000_021c9b40[sec].idx];
     }
 }
 

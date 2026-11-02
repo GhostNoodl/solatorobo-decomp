@@ -114,7 +114,7 @@ static inline TaskHost *GetCur02172f7c(void) {
 
 void func_ov000_02172f7c(Task *self, void *arg) {
     BOOL fl = FALSE;
-    if (LBIT(self, 4).b7 == 1) {
+    if (self->unk_04_7 == 1) {
         fl = TRUE;
     }
     self->unk_04 |= 4;
@@ -1715,13 +1715,13 @@ void func_ov000_021752f0(Task021cbbe0 *self) {
     case 8:
         self->parent = (Task *)LoFindTask(1);
         if ((void *)self->unk_40 != NULL) {
-            LBIT(self->unk_40, 0xc).b1 = 0;
+            self->unk_40->hidden = 0;
         }
         if ((void *)self->unk_44 != NULL) {
-            LBIT(self->unk_44, 0xc).b1 = 0;
+            self->unk_44->hidden = 0;
         }
         if ((void *)self->unk_48 != NULL) {
-            LBIT(self->unk_48, 0xc).b1 = 0;
+            self->unk_48->hidden = 0;
         }
         break;
     case 0xa:
@@ -1752,19 +1752,19 @@ void func_ov000_021753a0(Task021cbbe0 *self) {
             self->unk_54 = 0;
             self->unk_4c = -1;
             if ((void *)self->unk_40 != NULL) {
-                LBIT(self->unk_40, 0xc).b1 = 1;
+                self->unk_40->hidden = 1;
             }
             if ((void *)self->unk_44 != NULL) {
-                LBIT(self->unk_44, 0xc).b1 = 1;
+                self->unk_44->hidden = 1;
             }
             if ((void *)self->unk_48 != NULL) {
-                LBIT(self->unk_48, 0xc).b1 = 1;
+                self->unk_48->hidden = 1;
             }
         }
     }
     if (self->unk_40 != NULL) {
         self->unk_40->vfunc_1c();
-        LBIT(self->unk_40, 0xc).b2 = 1;
+        self->unk_40->flag2 = 1;
     }
     if (self->unk_44 != NULL) {
         self->unk_44->vfunc_1c();
@@ -2031,7 +2031,7 @@ BOOL func_ov000_02175e6c(UiList *self, UiListItem *msg) {
 }
 
 void Task021cbfe0_Start(Task021cbfe0 *self) {
-    LBIT(self, 4).b1 = 0;
+    self->unk_04_1 = 0;
     if (self->vfunc_28()) {
         return;
     }
@@ -2162,7 +2162,7 @@ void func_ov000_02176030(Task021cbfe0 *self) {
             a = TRUE;
         }
     }
-    if (LBIT(self, 4).b2) {
+    if (self->unk_04_2) {
         return;
     }
     if (a) {
@@ -2342,7 +2342,6 @@ extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
 extern void *data_02097e4c;
-extern u16 *data_02097dc8;
 extern const s16 FX_SinCosTable_[];
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
@@ -2462,7 +2461,6 @@ extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
 extern void *data_02097e4c;
-extern u16 *data_02097dc8;
 extern const s16 FX_SinCosTable_[];
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
@@ -3048,7 +3046,7 @@ static inline UiListItem *List021774a4_Cur(UiList021cb4a8 *list) {
     return p;
 }
 
-#define SET_HIDE(x) if ((x) != NULL) LFLD(u32, (x), 0xc) |= 2
+#define SET_HIDE(x) if ((x) != NULL) (x)->hidden = 1
 
 BOOL func_ov000_021774a4(Self021774a4 *self, BOOL ok) {
     Task021cbee0 *m = self->unk_08;
@@ -3062,12 +3060,12 @@ BOOL func_ov000_021774a4(Self021774a4 *self, BOOL ok) {
         SET_HIDE(m->unk_48);
         SET_HIDE(m->unk_4c);
         SET_HIDE(m->unk_50);
-        SET_HIDE((u8 *)m->unk_58);
+        SET_HIDE(m->unk_58);
         return FALSE;
     }
     if (((s32)item->unk_0c) == -1 ? TRUE : FALSE) {
         if (m->unk_58 == NULL) {
-            VObj *o = (VObj *)Heap_Alloc(0xe8);
+            Lo021cad50 *o = (Lo021cad50 *)Heap_Alloc(0xe8);
             if (o != NULL) {
                 VOBJ_SET_VTABLE(o, data_ov000_021cac60);
                 o->vfunc_28();
@@ -3076,11 +3074,11 @@ BOOL func_ov000_021774a4(Self021774a4 *self, BOOL ok) {
             }
             m->unk_58 = o;
         }
-        LFLD(s32, m->unk_58, 0x1c) = 4;
+        m->unk_58->font = 4;
         m->unk_58->vfunc_08();
-        LFLD(u32, m->unk_58, 0xc) |= 0x20000;
+        m->unk_58->flags |= 0x20000;
         func_ov000_0215c1bc(m->unk_58, 0x8000, MsgRes_GetString(data_02149ef8, 0x9f));
-        LFLD(s16, m->unk_58, 0x68) = -0x199a;
+        m->unk_58->posZ = -0x199a;
         m->unk_58->vfunc_70();
     } else {
         func_ov000_02152294(self, 0x90, 0x18, (void *)func_ov000_02177bd8);
@@ -3201,7 +3199,7 @@ void func_ov000_02153c48(UiListItem *self, s32 a, BOOL show, BOOL center, u8 d);
 
 static inline void ShowMsg021778f0(Task021cbee0 *self, s32 msg) {
     if (self->unk_58 == NULL) {
-        VObj *o = (VObj *)Heap_Alloc(0xe8);
+        Lo021cad50 *o = (Lo021cad50 *)Heap_Alloc(0xe8);
         if (o != NULL) {
             VOBJ_SET_VTABLE(o, data_ov000_021cac60);
             o->vfunc_28();
@@ -3210,16 +3208,12 @@ static inline void ShowMsg021778f0(Task021cbee0 *self, s32 msg) {
         }
         self->unk_58 = o;
     }
-    LFLD(s32, self->unk_58, 0x1c) = 4;
+    self->unk_58->font = 4;
     self->unk_58->vfunc_08();
-    LFLD(u32, self->unk_58, 0xc) |= 0x20000;
+    self->unk_58->flags |= 0x20000;
     func_ov000_0215c1bc(self->unk_58, 0x8000, MsgRes_GetString(data_02149ef8, msg));
-    LFLD(s16, self->unk_58, 0x68) = -0x199a;
+    self->unk_58->posZ = -0x199a;
     self->unk_58->vfunc_70();
-}
-
-static inline BOOL IsUnset021778f0(u8 *p) {
-    return LFLD(s32, p, 0xc) == -1;
 }
 
 static inline BOOL IsCost021778f0(u32 c) {
@@ -3230,9 +3224,9 @@ static inline void Snd021778f0(s32 id) {
     func_02049a48(data_02097e4c, id, -1, -1, -1);
 }
 
-static inline void SetBit021778f0(void *p) {
+static inline void SetBit021778f0(UiObj *p) {
     if (p != NULL) {
-        LFLD(u32, p, 0xc) |= 2;
+        p->hidden = 1;
     }
 }
 
@@ -3301,14 +3295,14 @@ BOOL func_ov000_021778f0(Task021cbee0 *self, UiListItem *item) {
     return FALSE;
 }
 
-static inline u8 *GetObj02177bd8(Task021cbee0 *o) {
-    return (u8 *)o->unk_40;
+static inline Lo021cae48 *GetObj02177bd8(Task021cbee0 *o) {
+    return o->unk_40;
 }
 
-s32 func_ov000_02177bd8(VObj *self, UiListItem *item) {
-    Task021cbee0 *o = LFLD(Task021cbee0 *, self, 8);
+s32 func_ov000_02177bd8(UiObj *self, UiListItem *item) {
+    Task021cbee0 *o = (Task021cbee0 *)self->owner;
     UiList021cb4a8 *m = o->unk_4c;
-    u8 *obj = GetObj02177bd8(o);
+    Lo021cae48 *obj = GetObj02177bd8(o);
     UiListItem *node = GetNth(m);
     u16 type;
     if (item == NULL) {
@@ -3320,7 +3314,7 @@ s32 func_ov000_02177bd8(VObj *self, UiListItem *item) {
         u32 cost = node->unk_0c;
         if (IsCost021778f0(cost)) {
             ShowMsg021778f0(o, 0x9f);
-        } else if (LFLD(u32, obj, 0x8c) >= cost) {
+        } else if (obj->unk_8c >= cost) {
             if (func_ov000_021778f0(o, node)) {
                 SetBit021778f0(o->unk_3c);
                 SetBit021778f0(o->unk_40);
@@ -3359,7 +3353,6 @@ extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
 extern void *data_02097e4c;
-extern u16 *data_02097dc8;
 extern const s16 FX_SinCosTable_[];
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
@@ -3424,10 +3417,10 @@ BOOL func_ov000_02177f40(UiList *self, UiListItem *msg) {
             *p = v > 1 ? v : 1;
         }
         LFLD(s32, o->unk_54, 0x8c) = c;
-        LBIT(o->unk_54, 0xc).b2 = 0;
-        LBIT(o->unk_54, 0xc).b1 = 0;
+        o->unk_54->flag2 = 0;
+        o->unk_54->hidden = 0;
         o->unk_54->unk_88 = 1;
-        LBIT(o->unk_3c, 0xc).b2 = 1;
+        o->unk_3c->flag2 = 1;
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
     }
     return TRUE;
@@ -3448,7 +3441,6 @@ extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
 extern void *data_02097e4c;
-extern u16 *data_02097dc8;
 extern const s16 FX_SinCosTable_[];
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
@@ -3814,7 +3806,6 @@ extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
 extern void *data_02097e4c;
-extern u16 *data_02097dc8;
 extern const s16 FX_SinCosTable_[];
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
@@ -3834,7 +3825,7 @@ void func_ov000_02178a5c(Task021cbe60 *self) {
     if (self->unk_54->state != 5) {
         return;
     }
-    v = data_02097dc8[9];
+    v = data_02097dc8->trig;
     if (v & 1) {
         func_ov000_0215d980(self->unk_44, self->unk_44->unk_8c, 1);
         return;
@@ -3842,16 +3833,16 @@ void func_ov000_02178a5c(Task021cbe60 *self) {
     if (!(v & 2)) {
         return;
     }
-    LBIT(self->unk_3c, 0xc).b1 = 1;
-    LBIT(self->unk_40, 0xc).b1 = 1;
-    LBIT(self->unk_44, 0xc).b1 = 1;
+    self->unk_3c->hidden = 1;
+    self->unk_40->hidden = 1;
+    self->unk_44->hidden = 1;
     if ((void *)self->unk_48 != NULL) {
-        LBIT(self->unk_48, 0xc).b1 = 1;
+        self->unk_48->hidden = 1;
     }
     if ((void *)self->unk_4c != NULL) {
-        LBIT(self->unk_4c, 0xc).b1 = 1;
+        self->unk_4c->hidden = 1;
     }
-    LBIT(self->unk_50, 0xc).b1 = 1;
+    self->unk_50->hidden = 1;
 }
 
 }
@@ -3926,7 +3917,6 @@ extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
 extern void *data_02097e4c;
-extern u16 *data_02097dc8;
 extern const s16 FX_SinCosTable_[];
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
@@ -4055,7 +4045,6 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern u16 *data_02097dc8;
 extern void *data_02097e4c;
 void func_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
@@ -4101,10 +4090,10 @@ void func_ov000_02173648(void *self);
 BOOL func_0204c030(void *p);
 void *MsgRes_GetString(void *g, s32 id);
 void func_ov000_021c3af4(void *self);
-void func_ov000_021c22d8(void *self);
-void func_ov000_021c2334(void *self);
-void func_ov000_021c2a88(void *self, void *a);
-void func_ov000_021c3fd4(void *list, void *item);
+void func_ov000_021c22d8(ListRow *self);
+void func_ov000_021c2334(Hud021cca10 *self);
+void func_ov000_021c2a88(Hud021cca10 *self, char *str);
+void func_ov000_021c3fd4(LoBase021ccb54_021ccbe0 *list, ListRow *row);
 BOOL func_ov000_02179910(void);
 void *func_0205976c(void *mgr, s32 kind);
 u32 func_0205975c(void *mgr, s32 kind);
@@ -4165,7 +4154,7 @@ void Task021cbde0_Start(Task021cbde0 *self) {
     s->posX = 4;
     s->posY = 0x23;
     s->posZ = -0x1ccd;
-    LFLD(void *, self->unk_44, 0xe4) = (void *)func_ov000_02179910;
+    self->unk_44->onDecide = (void *)func_ov000_02179910;
     {
         u8 *base = LFLD(u8 *, data_02fe152c, 0x4c);
         u16 i;
@@ -4180,16 +4169,16 @@ void Task021cbde0_Start(Task021cbde0 *self) {
         }
         for (i = 0; i < 0x40; i++) {
             if (used[i] != 0) {
-                u8 *it = (u8 *)Heap_Alloc(0x48);
+                Hud021cca10 *it = (Hud021cca10 *)Heap_Alloc(sizeof(Hud021cca10));
                 if (it != NULL) {
                     VOBJ_SET_VTABLE(it, data_ov000_021cbac8);
                     func_ov000_021c22d8(it);
                     VOBJ_SET_VTABLE(it, data_ov000_021cca10);
                     func_ov000_021c2334(it);
                 }
-                LFLD(s32, it, 0x4) = i;
-                LFLD(s32, it, 0x3c) = i + 1;
-                func_ov000_021c2a88(it, func_02062138(i));
+                it->index = i;
+                it->unk_3c = i + 1;
+                func_ov000_021c2a88(it, (char *)func_02062138(i));
                 func_ov000_021c3fd4(self->unk_44, it);
             }
         }
@@ -4208,7 +4197,6 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern u16 *data_02097dc8;
 extern void *data_02097e4c;
 void func_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
@@ -4267,7 +4255,6 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern u16 *data_02097dc8;
 extern void *data_02097e4c;
 void func_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
@@ -4282,13 +4269,13 @@ void func_ov000_021795a4(Task021cbde0 *self) {
         return;
     }
     LBIT(p, 0xc).b2 = 0;
-    if ((LBIT(self->unk_44, 0xc).b0 == 0 ? TRUE : FALSE) == FALSE) {
+    if ((self->unk_44->busy == 0 ? TRUE : FALSE) == FALSE) {
         return;
     }
     if (self->unk_4c != 0xffff) {
         return;
     }
-    v = data_02097dc8[9];
+    v = data_02097dc8->trig;
     if (v & 1) {
         return;
     }
@@ -4297,10 +4284,10 @@ void func_ov000_021795a4(Task021cbde0 *self) {
     }
     func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
     if ((void *)self->unk_40 != NULL) {
-        LBIT(self->unk_40, 0xc).b1 = 1;
+        self->unk_40->hidden = 1;
     }
     if ((void *)self->unk_44 != NULL) {
-        LBIT(self->unk_44, 0xc).b1 = 1;
+        self->unk_44->hidden = 1;
     }
 }
 
@@ -4437,10 +4424,10 @@ BOOL func_ov000_02179910(UiList *self, UiListItem *msg) {
     }
     o->unk_4c = LFLD(s32, msg, 4);
     if (o->unk_40 != NULL) {
-        LBIT(o->unk_40, 0xc).b1 = 1;
+        o->unk_40->hidden = 1;
     }
     if (o->unk_44 != NULL) {
-        LBIT(o->unk_44, 0xc).b1 = 1;
+        o->unk_44->hidden = 1;
     }
     func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
     return TRUE;
@@ -4482,7 +4469,6 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern u16 *data_02097dc8;
 extern void *data_02097e4c;
 void func_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
@@ -4626,7 +4612,6 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern u16 *data_02097dc8;
 extern void *data_02097e4c;
 void func_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
@@ -4648,17 +4633,17 @@ void Task021cbd60_Release(Task021cbd60 *self) {
 }
 
 void func_ov000_02179e68(Task021cbd60 *self) {
-    if (!(data_02097dc8[9] & 2)) {
+    if (!(data_02097dc8->trig & 2)) {
         return;
     }
     func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
     if ((void *)self->unk_40 != NULL) {
-        LBIT(self->unk_40, 0xc).b1 = 1;
+        self->unk_40->hidden = 1;
     }
     if ((void *)self->unk_44 != NULL) {
-        LBIT(self->unk_44, 0xc).b1 = 1;
+        self->unk_44->hidden = 1;
     }
-    LBIT(self, 4).b0 = 1;
+    self->unk_04_0 = 1;
 }
 
 }
@@ -4684,7 +4669,6 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern u16 *data_02097dc8;
 extern void *data_02097e4c;
 void func_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
@@ -4862,7 +4846,6 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern u16 *data_02097dc8;
 extern void *data_02097e4c;
 void func_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
@@ -4923,7 +4906,6 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern u16 *data_02097dc8;
 extern void *data_02097e4c;
 void func_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
@@ -4979,10 +4961,10 @@ void func_ov000_0217a328(Task021cbc60 *self, s32 a, s32 b) {
     if (self->param != 1) {
         self->unk_48->color = 0x2803;
     } else {
-        VObj *o = self->unk_48;
-        LFLD(u32, o, 0xc) |= 8;
-        LFLD(u16, o, 0x48) = 0x14a5;
-        LFLD(s32, o, 0x54) = 0x1c;
+        Lo021cad50 *o = self->unk_48;
+        o->flags |= 8;
+        o->color = 0x14a5;
+        o->unk_54 = 0x1c;
     }
     self->unk_48->font = 4;
     self->unk_48->vfunc_08();
@@ -5061,7 +5043,7 @@ void func_ov000_0217a480(Task021cbc60 *self) {
         }
         break;
     case 1:
-        if (LBIT(self, 4).b1 ? TRUE : FALSE) {
+        if (self->unk_04_1 ? TRUE : FALSE) {
             return;
         }
         if (!((VObj *)self)->vfunc_54()) {
@@ -5848,26 +5830,6 @@ void func_ov000_0217b324(Self *self, s32 idx) {
 
 namespace m_Win_0217bd88 {
 
-class Win0217bd88 : public VObj {
-public:
-    u8 pad04[8];
-    u32 flags;
-    u8 pad10[0xc];
-    s32 unk_1c;
-    u8 pad20[0x28];
-    u16 unk_48;
-    u8 pad4a[0xa];
-    s32 unk_54;
-    u8 pad58[0x10];
-    s16 unk_68;
-};
-
-typedef struct {
-    u8 pad[0x64];
-    Win0217bd88 *win;
-    s32 timer;
-} Obj0217bd88;
-
 extern "C" {
 
 extern void *data_02149ef8;
@@ -5875,56 +5837,56 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
 void *MsgRes_GetString(void *a, u16 b);
 void *Heap_Alloc(u32 size);
-void func_ov000_0215c1bc(Win0217bd88 *w, s32 a, void *b);
-void func_ov000_0215ce8c(Win0217bd88 *w, s32 a);
+void func_ov000_0215c1bc(Lo021cad50 *w, s32 a, void *b);
+void func_ov000_0215ce8c(Lo021cad50 *w, s32 a);
 
-static inline BOOL Win_IsHidden(Win0217bd88 *w) {
+static inline BOOL Win_IsHidden(Lo021cad50 *w) {
     return (w->flags & 0x10000) == 0 ? TRUE : FALSE;
 }
 
-BOOL func_ov000_0217bd88(Obj0217bd88 *self, s32 a, s32 id) {
-    Win0217bd88 *w;
-    if (self->win != NULL) {
+BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 id) {
+    Lo021cad50 *w;
+    if (self->unk_64 != NULL) {
         BOOL busy = FALSE;
-        if (self->timer != 0) {
+        if (self->unk_68 != 0) {
             busy = TRUE;
         }
-        if (self->win != NULL && Win_IsHidden(self->win)) {
+        if (self->unk_64 != NULL && Win_IsHidden(self->unk_64)) {
             busy = TRUE;
         }
         if (!busy) {
-            self->win->flags |= 0x40000;
+            self->unk_64->flags |= 0x40000;
         }
         return FALSE;
     }
-    self->timer = 0x3c;
-    w = (Win0217bd88 *)Heap_Alloc(0xe8);
+    self->unk_68 = 0x3c;
+    w = (Lo021cad50 *)Heap_Alloc(0xe8);
     if (w != NULL) {
         VOBJ_SET_VTABLE(w, data_ov000_021cac60);
         w->vfunc_28();
         VOBJ_SET_VTABLE(w, data_ov000_021cad50);
         w->vfunc_28();
     }
-    self->win = w;
+    self->unk_64 = w;
     if (id == 0x6f || id == 0x74 || id == 0x86 || id == 0x82 || id == 0x84 || id == 0x75 || id == 0x76 || id == 0x6d) {
-        self->win->flags |= 0x10000;
+        self->unk_64->flags |= 0x10000;
     } else {
         w->flags &= ~0x10000;
     }
-    w = self->win;
+    w = self->unk_64;
     w->flags |= 8;
-    w->unk_48 = 0x14a5;
+    w->color = 0x14a5;
     w->unk_54 = 0x1c;
-    self->win->flags |= 0x20000;
-    self->win->unk_1c = 4;
-    self->win->vfunc_08();
+    self->unk_64->flags |= 0x20000;
+    self->unk_64->font = 4;
+    self->unk_64->vfunc_08();
     if (id != -1) {
-        func_ov000_0215c1bc(self->win, 0x8000, MsgRes_GetString(data_02149ef8, id));
+        func_ov000_0215c1bc(self->unk_64, 0x8000, MsgRes_GetString(data_02149ef8, id));
     } else {
-        func_ov000_0215ce8c(self->win, a);
+        func_ov000_0215ce8c(self->unk_64, a);
     }
-    self->win->unk_68 = -0x199a;
-    self->win->vfunc_70();
+    self->unk_64->posZ = -0x199a;
+    self->unk_64->vfunc_70();
     return TRUE;
 }
 
@@ -5991,7 +5953,6 @@ namespace m_Lo_0217c008 {
 extern "C" {
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 BOOL func_ov000_0217a8f4(void);
-typedef void (*LoCb0217c008)(void *self, void *arg);
 BOOL func_ov000_0217bf34(Task021cbb60 *self);
 void func_ov000_0217c3b0(Task021cbb60 *self);
 void func_ov000_0217c5a8(Task021cbb60 *self);
@@ -6000,20 +5961,20 @@ void func_ov000_0217cddc(Task021cbb60 *self);
 void func_ov000_0217cf10(Task021cbb60 *self);
 void func_ov000_0217d0c4(Task021cbb60 *self);
 void func_ov000_0217d66c(Task021cbb60 *self);
-void func_ov000_0217dba4(u8 *self);
+void func_ov000_0217dba4(Task021cbb60 *self);
 void func_ov000_0217ddd4(Task021cbb60 *self);
 extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208c994[];
 
 static inline BOOL Lo0217c3b0_Busy(Task021cbb60 *self) {
-    u8 *p = (u8 *)self->unk_64;
+    Lo021cad50 *p = self->unk_64;
     if (p == NULL) {
         return FALSE;
     }
     if (self->unk_68 == 0) {
-        if (!((LFLD(u32, p, 0xc) & 0x10000) == 0 ? TRUE : FALSE)) {
-            LFLD(u32, p, 0xc) |= 0x40000;
+        if (!((p->flags & 0x10000) == 0 ? TRUE : FALSE)) {
+            p->flags |= 0x40000;
         }
     }
     return TRUE;
@@ -6056,10 +6017,10 @@ void func_ov000_0217c008(Task021cbb60 *self) {
             self->unk_50 = 1;
             break;
         case 1:
-            if (!(LBIT(self, 0x4).b0 == 0 ? TRUE : FALSE)) {
+            if (!(self->unk_04_0 == 0 ? TRUE : FALSE)) {
                 break;
             }
-            if (LBIT(self, 0x4).b1 ? TRUE : FALSE) {
+            if (self->unk_04_1 ? TRUE : FALSE) {
                 break;
             }
             if (!((VObj *)self)->vfunc_54()) {
@@ -6108,7 +6069,7 @@ void func_ov000_0217c008(Task021cbb60 *self) {
         func_ov000_0217d66c(self);
         break;
     case 5:
-        func_ov000_0217dba4((u8 *)self);
+        func_ov000_0217dba4(self);
         break;
     case 6:
         if (self->unk_48 != 0) {
@@ -6117,8 +6078,8 @@ void func_ov000_0217c008(Task021cbb60 *self) {
         if (Lo0217c3b0_Busy(self)) {
             break;
         }
-        if (LFLD(LoCb0217c008, self, 0xbc) != NULL) {
-            LFLD(LoCb0217c008, self, 0xbc)(self, (void *)self->unk_c0);
+        if (self->unk_bc != NULL) {
+            self->unk_bc(self, self->unk_c0);
         }
         ((VObj *)self)->vfunc_0c(0);
         Lo0217c008_SetMode(self, 8);
@@ -6146,10 +6107,10 @@ void func_ov000_0217c3b0(Task021cbb60 *self) {
         self->unk_50 = 3;
         break;
     case 3:
-        if (!(LBIT(self, 0x4).b0 == 0 ? TRUE : FALSE)) {
+        if (!(self->unk_04_0 == 0 ? TRUE : FALSE)) {
             return;
         }
-        if (LBIT(self, 0x4).b1 ? TRUE : FALSE) {
+        if (self->unk_04_1 ? TRUE : FALSE) {
             return;
         }
         if (!((VObj *)self)->vfunc_54()) {
@@ -6192,10 +6153,10 @@ void func_ov000_0217c5a8(Task021cbb60 *self) {
         self->unk_50 = 3;
         break;
     case 3:
-        if (!(LBIT(self, 0x4).b0 == 0 ? TRUE : FALSE)) {
+        if (!(self->unk_04_0 == 0 ? TRUE : FALSE)) {
             return;
         }
-        if (LBIT(self, 0x4).b1 ? TRUE : FALSE) {
+        if (self->unk_04_1 ? TRUE : FALSE) {
             return;
         }
         if (!((VObj *)self)->vfunc_54()) {
@@ -6223,19 +6184,6 @@ static inline void Lo0217c7b8_Reset(Task021cbb60 *self) {
     self->unk_54 = 0;
 }
 
-static inline BOOL Lo0217c7b8_Ready(u8 *self) {
-    if (!(LBIT(self, 0x4).b0 == 0 ? TRUE : FALSE)) {
-        return FALSE;
-    }
-    if (LBIT(self, 0x4).b1 ? TRUE : FALSE) {
-        return FALSE;
-    }
-    if (!((VObj *)self)->vfunc_54()) {
-        return FALSE;
-    }
-    return TRUE;
-}
-
 void func_ov000_0217c7b8(Task021cbb60 *self) {
     switch (self->unk_50) {
     case 0:
@@ -6255,10 +6203,10 @@ void func_ov000_0217c7b8(Task021cbb60 *self) {
         self->unk_50 = 2;
         break;
     case 2:
-        if (!(LBIT(self, 0x4).b0 == 0 ? TRUE : FALSE)) {
+        if (!(self->unk_04_0 == 0 ? TRUE : FALSE)) {
             return;
         }
-        if (LBIT(self, 0x4).b1 ? TRUE : FALSE) {
+        if (self->unk_04_1 ? TRUE : FALSE) {
             return;
         }
         if (!((VObj *)self)->vfunc_54()) {
@@ -6277,10 +6225,10 @@ void func_ov000_0217c7b8(Task021cbb60 *self) {
         self->unk_50 = 4;
         break;
     case 4:
-        if (!(LBIT(self, 0x4).b0 == 0 ? TRUE : FALSE)) {
+        if (!(self->unk_04_0 == 0 ? TRUE : FALSE)) {
             return;
         }
-        if (LBIT(self, 0x4).b1 ? TRUE : FALSE) {
+        if (self->unk_04_1 ? TRUE : FALSE) {
             return;
         }
         if (!((VObj *)self)->vfunc_54()) {
@@ -6508,18 +6456,18 @@ void func_020473ac(void *s, s32 state);
 void func_0206c4c4(void *p);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
-static inline BOOL Ready0217d0c4(void *o) {
-    return (LFLD(u32, o, 0xc) & 0x10000) ? FALSE : TRUE;
+static inline BOOL Ready0217d0c4(Lo021cad50 *o) {
+    return (o->flags & 0x10000) ? FALSE : TRUE;
 }
 
 static inline BOOL Busy0217d0c4(Task021cbb60 *self) {
-    void *o = self->unk_64;
+    Lo021cad50 *o = self->unk_64;
     if (o == NULL) {
         return FALSE;
     }
     if (self->unk_68 == 0) {
         if (!Ready0217d0c4(o)) {
-            LFLD(u32, o, 0xc) |= 0x40000;
+            o->flags |= 0x40000;
         }
     }
     return TRUE;
@@ -6594,7 +6542,7 @@ void func_ov000_0217d0c4(Task021cbb60 *self) {
     }
     case 2: {
         BOOL busy = FALSE;
-        void *o = self->unk_64;
+        Lo021cad50 *o = self->unk_64;
         if (self->unk_68 != 0) {
             busy = TRUE;
         }
@@ -6604,7 +6552,7 @@ void func_ov000_0217d0c4(Task021cbb60 *self) {
         if (busy) {
             return;
         }
-        LFLD(u32, o, 0xc) |= 0x40000;
+        o->flags |= 0x40000;
         self->unk_04 |= 0x100000;
         func_0206c4c4(data_0214a424);
         Exit0217d0c4(self, 5);
@@ -6744,18 +6692,18 @@ void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_ov000_0217b324(void *self, s32 a);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
-static inline BOOL Ready0217d66c(void *o) {
-    return (LFLD(u32, o, 0xc) & 0x10000) ? FALSE : TRUE;
+static inline BOOL Ready0217d66c(Lo021cad50 *o) {
+    return (o->flags & 0x10000) ? FALSE : TRUE;
 }
 
 static inline BOOL Busy0217d66c(Task021cbb60 *self) {
-    void *o = self->unk_64;
+    Lo021cad50 *o = self->unk_64;
     if (o == NULL) {
         return FALSE;
     }
     if (self->unk_68 == 0) {
         if (!Ready0217d66c(o)) {
-            LFLD(u32, o, 0xc) |= 0x40000;
+            o->flags |= 0x40000;
         }
     }
     return TRUE;
@@ -6916,7 +6864,7 @@ void func_ov000_0217d66c(Task021cbb60 *self) {
     case 11:
         if (self->unk_64 != NULL && self->unk_64->vfunc_0c() &&
             (data_02097dc8->cur & 0x548) == 0x548) {
-            LFLD(u32, self->unk_64, 0xc) |= 0x40000;
+            self->unk_64->flags |= 0x40000;
             self->unk_48 = 0xc;
             return;
         }
@@ -6963,42 +6911,42 @@ static inline BOOL Bit(u32 f, u32 m) {
     return (f & m) ? TRUE : FALSE;
 }
 
-static inline BOOL IsFree(u8 *sub) {
-    return (LFLD(u32, sub, 0xc) & 0x10000) ? FALSE : TRUE;
+static inline BOOL IsFree(Lo021cad50 *sub) {
+    return (sub->flags & 0x10000) ? FALSE : TRUE;
 }
 
-static inline BOOL CheckSub(u8 *self) {
-    u8 *sub = LFLD(u8 *, self, 0x64);
+static inline BOOL CheckSub(Task021cbb60 *self) {
+    Lo021cad50 *sub = self->unk_64;
     if (sub == NULL) {
         return FALSE;
     }
-    if (LFLD(s32, self, 0x68) == 0) {
+    if (self->unk_68 == 0) {
         if (!IsFree(sub)) {
-            LFLD(u32, sub, 0xc) |= 0x40000;
+            sub->flags |= 0x40000;
         }
     }
     return TRUE;
 }
 
-void func_ov000_0217dba4(VObj *self) {
+void func_ov000_0217dba4(Task021cbb60 *self) {
     u32 f;
-    LFLD(u32, self, 4) |= 0x10000;
-    if (CheckSub((u8 *)self)) {
+    self->unk_04 |= 0x10000;
+    if (CheckSub(self)) {
         return;
     }
-    if (LFLD(s32, self, 0xa4) != 0) {
-        LFLD(s32, self, 0xa4) -= 0x1000;
-        if (LFLD(s32, self, 0xa4) <= 0) {
-            LFLD(s32, self, 0xa4) = 0;
+    if (self->unk_a4 != 0) {
+        self->unk_a4 -= 0x1000;
+        if (self->unk_a4 <= 0) {
+            self->unk_a4 = 0;
         }
         return;
     }
-    LFLD(VObj *, self, 0x5c)->vfunc_74();
-    f = LFLD(u32, self, 4);
+    self->unk_5c->vfunc_74();
+    f = self->unk_04;
     if (f & 0x10000000) {
-        if (LFLD(s32, self, 0x44) != 7) {
-            LFLD(s32, self, 0x44) = 1;
-            LFLD(s32, self, 0x48) = 0;
+        if (self->unk_44 != 7) {
+            self->unk_44 = 1;
+            self->unk_48 = 0;
         }
         return;
     }
@@ -7026,9 +6974,9 @@ void func_ov000_0217dba4(VObj *self) {
         data_ov000_021ccd44->unk_00_0 = 1;
     }
     self->vfunc_0c(0);
-    if (LFLD(s32, self, 0x44) != 7) {
-        LFLD(s32, self, 0x44) = 8;
-        LFLD(s32, self, 0x48) = 0;
+    if (self->unk_44 != 7) {
+        self->unk_44 = 8;
+        self->unk_48 = 0;
     }
 }
 }
@@ -7118,17 +7066,6 @@ void Task021cbb60_Draw(Task021cbb60 *self) {
 // ---- Lo_0217df5c
 namespace m_Lo_0217df5c {
 
-typedef struct {
-    u32 b0 : 2;
-    u32 f2 : 5;
-    u32 f7 : 6;
-    u32 pad13 : 6;
-    u32 b19 : 1;
-    u32 b20 : 1;
-    u32 b21 : 1;
-    u32 rest : 10;
-} LoMdlFlags0217df5c;
-
 extern "C" {
 
 extern u8 data_0208b3d0[];
@@ -7143,37 +7080,10 @@ void NNS_G3dGeSendDL(const void *dl, u32 size);
 s32 func_ov000_0214b8ec(void *p);
 void func_ov000_0214b1a0(VecFx32 *pos, VecFx32 *col, s32 a, s32 b);
 
-static inline void *LoModelGetPart(void *self, int idx) {
-    if (idx >= LFLD(s32, self, 0x80)) {
-        return NULL;
-    }
-    return (u8 *)LFLD(void *, self, 0x78) + idx * 0x28;
-}
-
-static inline void LoModelPlayPart(void *model, int idx) {
-    void *res = LFLD(void *, model, 0x28);
-    void *part;
-    void *anim;
-    if (res == NULL) {
-        return;
-    }
-    part = LoModelGetPart(model, idx);
-    if (part != NULL && LFLD(void *, part, 0x4) != NULL) {
-        anim = LFLD(void *, LFLD(void *, part, 0x4), 0x30);
-    } else {
-        anim = NNS_G2dGetCellDataByIdx(LFLD(void *, res, 0x4), **(u16 **)LFLD(void *, NNS_G2dGetAnimSequenceByIdx(LFLD(void *, res, 0xc), idx), 0xc));
-    }
-    func_02042628(model, anim, part, 0);
-}
-
-static inline void LoSetPosFx0217df5c(void *m, s32 x, s32 y) {
-    LFLD(s32, m, 0xfc) = x;
-    LFLD(s32, m, 0x100) = y;
-}
-
-static inline void LoSetPosV0217df5c(void *m, VecFx32 *p) {
-    LFLD(s32, m, 0xfc) = p->x;
-    LFLD(s32, m, 0x100) = p->y;
+// Model_SetPos from a vector, storing each coordinate as it is read.
+static inline void SetPosV0217df5c(Model *m, VecFx32 *p) {
+    m->x = p->x;
+    m->y = p->y;
 }
 
 static inline void G3_Vec(int cmd, int x, int y, int z) {
@@ -7194,26 +7104,26 @@ void func_ov000_0217df5c(Task021cbb60 *self, VecFx32 *pos) {
     u8 *g = (u8 *)data_02097d48;
     u32 size;
     u8 i;
-    LFLD(LoMdlFlags0217df5c, self->unk_a0, 0x6c).b19 = 1;
-    LFLD(LoMdlFlags0217df5c, self->unk_a0, 0x6c).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
-    LFLD(LoMdlFlags0217df5c, self->unk_a0, 0x6c).f2 = 0x1c;
-    LoSetPosV0217df5c(self->unk_a0, pos);
+    MODEL_FLAGS(self->unk_a0)->unk_19 = 1;
+    MODEL_FLAGS(self->unk_a0)->polygon_id = Gfx3DState_NextPolyId(g + 0x8b0);
+    MODEL_FLAGS(self->unk_a0)->alpha = 0x1c;
+    SetPosV0217df5c(self->unk_a0, pos);
     self->unk_a0->unk_150 = -0x1ccd;
-    LoModelPlayPart(self->unk_a0, 1);
+    Model_PlayPart(self->unk_a0, 1);
     if (self->unk_71 != 0) {
         v.x = pos->x - 0x6f000;
         v.y = pos->y - 0x4a000;
         v.z = pos->z;
-        LFLD(LoMdlFlags0217df5c, self->unk_a0, 0x6c).b19 = 0;
-        LFLD(LoMdlFlags0217df5c, self->unk_a0, 0x6c).f2 = 0x1f;
+        MODEL_FLAGS(self->unk_a0)->unk_19 = 0;
+        MODEL_FLAGS(self->unk_a0)->alpha = 0x1f;
         for (i = 0; i < 3; i++) {
             self->unk_a0->unk_150 = -0x1c8d;
-            LoSetPosV0217df5c(self->unk_a0, &v);
-            LoModelPlayPart(self->unk_a0, 2);
+            SetPosV0217df5c(self->unk_a0, &v);
+            Model_PlayPart(self->unk_a0, 2);
             if (i < self->unk_71) {
                 self->unk_a0->unk_150 = -0x1c4d;
-                LoSetPosV0217df5c(self->unk_a0, &v);
-                LoModelPlayPart(self->unk_a0, 3);
+                SetPosV0217df5c(self->unk_a0, &v);
+                Model_PlayPart(self->unk_a0, 3);
             }
             v.x += 0xc000;
         }
@@ -7265,17 +7175,6 @@ void func_ov000_0217df5c(Task021cbb60 *self, VecFx32 *pos) {
 // ---- Lo_0217e560
 namespace m_Lo_0217e560 {
 
-typedef struct {
-    u32 b0 : 2;
-    u32 f2 : 5;
-    u32 f7 : 6;
-    u32 pad13 : 6;
-    u32 b19 : 1;
-    u32 b20 : 1;
-    u32 b21 : 1;
-    u32 rest : 10;
-} LoMdlFlags0217e560;
-
 extern "C" {
 
 u8 Gfx3DState_NextPolyId(void *p);
@@ -7284,34 +7183,6 @@ s32 FX_Div(s32 a, s32 b);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void func_02042628(void *a, void *b, void *c, int d);
-
-static inline void *LoModelGetPart(void *self, int idx) {
-    if (idx >= LFLD(s32, self, 0x80)) {
-        return NULL;
-    }
-    return (u8 *)LFLD(void *, self, 0x78) + idx * 0x28;
-}
-
-static inline void LoModelPlayPart(void *model, int idx) {
-    void *res = LFLD(void *, model, 0x28);
-    void *part;
-    void *anim;
-    if (res == NULL) {
-        return;
-    }
-    part = LoModelGetPart(model, idx);
-    if (part != NULL && LFLD(void *, part, 0x4) != NULL) {
-        anim = LFLD(void *, LFLD(void *, part, 0x4), 0x30);
-    } else {
-        anim = NNS_G2dGetCellDataByIdx(LFLD(void *, res, 0x4), **(u16 **)LFLD(void *, NNS_G2dGetAnimSequenceByIdx(LFLD(void *, res, 0xc), idx), 0xc));
-    }
-    func_02042628(model, anim, part, 0);
-}
-
-static inline void LoSetPosFx0217e560(void *m, s32 x, s32 y) {
-    LFLD(s32, m, 0xfc) = x;
-    LFLD(s32, m, 0x100) = y;
-}
 
 // The menu items (func_ov000_0217b230) are 0xb8-byte TextWins. Main/Gfx/TextWin.h clashes with
 // LoCommon.h, so this is its vtable up to Render (0x90). SetPos (0x20) and Render return void.
@@ -7424,13 +7295,13 @@ void func_ov000_0217e560(Task021cbb60 *self, s32 *pos) {
     }
     {
         s32 py = (self->unk_ba * step + y0 - 0x5a) << 12;
-        LFLD(LoMdlFlags0217e560, self->unk_a0, 0x6c).b19 = 1;
-        LFLD(LoMdlFlags0217e560, self->unk_a0, 0x6c).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
-        LFLD(LoMdlFlags0217e560, self->unk_a0, 0x6c).f2 = (u8)a;
-        LoSetPosFx0217e560(self->unk_a0, (lx - 0x80) << 12, py);
+        MODEL_FLAGS(self->unk_a0)->unk_19 = 1;
+        MODEL_FLAGS(self->unk_a0)->polygon_id = Gfx3DState_NextPolyId(g + 0x8b0);
+        MODEL_FLAGS(self->unk_a0)->alpha = (u8)a;
+        Model_SetPos(self->unk_a0, (lx - 0x80) << 12, py);
     }
     self->unk_a0->unk_150 = -0x1c8d;
-    LoModelPlayPart(self->unk_a0, 4);
+    Model_PlayPart(self->unk_a0, 4);
 }
 
 }
@@ -7616,7 +7487,7 @@ void Task021cbae0_IsLoaded(void) {
 }
 
 void Task021cbae0_Start(Task021cbae0 *self) {
-    LBIT(self, 4).b1 = 0;
+    self->unk_04_1 = 0;
     if (self->vfunc_28()) {
         return;
     }
@@ -7675,7 +7546,6 @@ extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd64;
 extern u8 data_0208b318[];
 extern void *data_02097e4c;
-extern u8 *data_02097dc8;
 u16 func_02059454(void *p, s32 a, s32 b, s32 c);
 s32 func_ov000_0217ea30(VObj *self, s32 msg);
 void MessageQueue_FreeBuffer(void *a, void *b);
@@ -7753,7 +7623,7 @@ static inline void SndStop(void) {
 }
 
 static inline BOOL LoBit1(Task021cbae0 *self) {
-    return LBIT(self, 4).b1 ? TRUE : FALSE;
+    return self->unk_04_1 ? TRUE : FALSE;
 }
 
 static inline VObj *NewLoader(void) {
@@ -7898,7 +7768,7 @@ void func_ov000_0217ef3c(Task021cbae0 *self) {
             return;
         }
         if (++self->unk_40 <= 600) {
-            if (!(LFLD(u16, data_02097dc8, 0x12) & 3)) {
+            if (!(data_02097dc8->trig & 3)) {
                 return;
             }
         }
@@ -8040,9 +7910,9 @@ BOOL func_ov000_0217f958(UiList *self, UiListItem *msg) {
     if (msg != NULL) {
         Task021cbf60 *o = (Task021cbf60 *)self->owner;
         VObj *p;
-        LBIT(o->unk_3c, 0xc).b2 = 1;
-        LBIT(o->unk_44, 0xc).b1 = 0;
-        LBIT(o->unk_44, 0xc).b2 = 0;
+        o->unk_3c->flag2 = 1;
+        o->unk_44->hidden = 0;
+        o->unk_44->flag2 = 0;
         p = o->unk_44;
         p->vfunc_a8(func_ov000_02154b58(p, 1));
         func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
@@ -8084,15 +7954,15 @@ BOOL func_ov000_0217fa34(UiList *self, UiListItem *msg) {
                     func_0206f21c(o->unk_5c, 1);
                 }
             }
-            LBIT(o->unk_44, 0xc).b1 = 1;
+            o->unk_44->hidden = 1;
             o->unk_5e = 1;
         }
-        LBIT(o->unk_44, 0xc).b1 = 1;
-        LBIT(o->unk_44, 0xc).b2 = 1;
+        o->unk_44->hidden = 1;
+        o->unk_44->flag2 = 1;
         func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
     } else {
-        LBIT(o->unk_44, 0xc).b1 = 1;
-        LBIT(o->unk_44, 0xc).b2 = 1;
+        o->unk_44->hidden = 1;
+        o->unk_44->flag2 = 1;
         func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
     }
     return FALSE;
@@ -8469,7 +8339,7 @@ void func_ov000_02180524(Task021cbf60 *self) {
     }
     p = self->unk_44;
     ok = 0;
-    if (LBIT(p, 0xc).b1 ? 1 : 0) {
+    if (p->hidden ? 1 : 0) {
         if (p->state == 5 ? 1 : 0) {
             ok = 1;
         }

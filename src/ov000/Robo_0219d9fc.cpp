@@ -204,10 +204,10 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
     u8 alpha = Begin_0219d9fc();
     if (self->unk_b24_2) {
         self->mdl1.trans = self->unk_75c;
-        func_ov000_02190758((u8 *)self + 0x368, (u8 *)self + 0x76c, 1);
+        func_ov000_02190758(&self->mdl1, (u8 *)self + 0x76c, 1);
         self->mdl1.alpha = 0x1f;
         self->mdl1.polyId = alpha;
-        if (func_ov000_021903b4((u8 *)self + 0x368)) {
+        if (func_ov000_021903b4(&self->mdl1)) {
             res = 1;
         }
         self->mdl0.trans = self->pos;
@@ -251,9 +251,9 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
             }
         }
         self->mdl1.trans = p;
-        func_ov000_02190758((u8 *)self + 0x368, (u8 *)self + 0x76c, 1);
+        func_ov000_02190758(&self->mdl1, (u8 *)self + 0x76c, 1);
         self->mdl1.polyId = alpha;
-        if (func_ov000_021903b4((u8 *)self + 0x368)) {
+        if (func_ov000_021903b4(&self->mdl1)) {
             res = 1;
         }
         h = self->hit1.check.y;
@@ -268,7 +268,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
     } else {
         if (!PadB9_0219d9fc() && RgbEq_0219d9fc(data_ov000_021ccd54, (RgbEq_0219d9fcSelf *)self)) {
             self->mdl1.trans = self->unk_75c;
-            func_ov000_02190758((u8 *)self + 0x368, (u8 *)self + 0x76c, 1);
+            func_ov000_02190758(&self->mdl1, (u8 *)self + 0x76c, 1);
             self->mdl1.alpha = 0x1f;
             self->mdl1.polyId = alpha;
             if (self->unk_b22_0) {
@@ -277,7 +277,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
                 NNS_G3dRenderObjSetInitFunc((u8 *)self + 0x38c, (void *)func_ov003_021ce9ac);
                 self->mdl1.unk_c2 |= 0x20;
             }
-            if (func_ov000_021903b4((u8 *)self + 0x368)) {
+            if (func_ov000_021903b4(&self->mdl1)) {
                 res = 1;
             }
         } else {
@@ -298,7 +298,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
             self->mdl2.trans = self->unk_9dc;
             MI_Copy36B((u8 *)self + 0x9b8, (u8 *)self + 0x7fc);
             self->mdl2.polyId = alpha;
-            func_ov000_021903b4((u8 *)self + 0x778);
+            func_ov000_021903b4(&self->mdl2);
         }
         h = self->hit0.check.y;
         if (self->unk_b24_5) {

@@ -65,13 +65,13 @@ void func_ov000_0214f090(Lo021caa44 *self, void *arg) {
         LBIT(q, 0xc).b1 = 1;
     }
     if (self->unk_50) {
-        LBIT(self->unk_50, 0xc).b1 = 1;
+        self->unk_50->hidden = 1;
     }
     if (self->unk_5c) {
         LBIT(self->unk_5c, 0xc).b1 = 1;
     }
     if (self->unk_60) {
-        LBIT(self->unk_60, 0xc).b1 = 1;
+        self->unk_60->hidden = 1;
     }
 }
 

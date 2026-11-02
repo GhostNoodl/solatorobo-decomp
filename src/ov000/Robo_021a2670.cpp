@@ -9,11 +9,6 @@ typedef struct {
     u16 timer;
 } St021a2670;
 
-typedef struct {
-    u16 b0 : 6;
-    u16 b6 : 1;
-    u16 rest : 9;
-} Ba4_021a2670;
 
 extern "C" {
 extern u8 *data_ov000_021ccd30;
@@ -108,7 +103,7 @@ void func_ov000_021a2670(Robo021ca458 *self) {
         }
         ((St021a2670 *)self->fsm)->timer = 0;
         if (self->unk_b24_1 && self->unk_b24_12 == 0 &&
-            self->unk_ba4 != NULL && LFLD(Ba4_021a2670, self->unk_ba4, 6).b6 &&
+            self->unk_ba4 != NULL && self->unk_ba4->unk_06_6 &&
             self->unk_b38 >= thr) {
             func_ov000_02190cb0(self->model, data_ov000_021ca030[self->unk_b24_5], 0x19a, 1);
             self->speed = 0;

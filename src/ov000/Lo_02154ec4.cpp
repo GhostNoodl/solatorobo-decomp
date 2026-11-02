@@ -48,7 +48,7 @@ static inline BOOL LoIsLoaded24(void) {
 
 
 void func_ov000_02154ec4(UiList *self) {
-    if (!LBIT(self, 0xc).b4) {
+    if (!self->flag4) {
         return;
     }
     switch (self->state) {
@@ -82,7 +82,7 @@ static inline void VecAdd(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab) {
 }
 
 static inline BOOL NoB5(UiList *self) {
-    return !LBIT(self, 0xc).b5 ? TRUE : FALSE;
+    return !self->flag5 ? TRUE : FALSE;
 }
 
 void func_ov000_02154fb0(UiList *self, s32 a, VecFx32 *pos, s32 d) {

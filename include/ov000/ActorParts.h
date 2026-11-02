@@ -39,7 +39,7 @@ typedef struct ActorSub44 {
     VecFx32 pos;
     VecFx32 unk_0c;
     u8 unk_18[0x4];
-    s32 unk_1c;
+    s32 unk_1c; // added to the hit distance (func_ov000_0219aca8)
     u16 unk_20;
     union {
         u16 unk_22; // or-ed whole by the ov003 shot
@@ -64,9 +64,9 @@ typedef struct ActorHp {
     u16 unk_0a;
     u16 unk_0c;
     u16 unk_0e;
-    u32 unk_10;
+    s32 (*unk_10)(s32 dmg); // applied to the damage this actor deals (func_ov000_0219a8bc)
     u32 unk_14;
-    u32 unk_18;
+    s32 (*unk_18)(s32 dmg); // applied to the damage this actor takes (func_ov000_0219a8bc)
 } ActorHp;
 
 // The actor's collision sphere (Actor::hit, ctor func_ov000_021985e8, 0x9c bytes). It starts with a

@@ -1,6 +1,5 @@
 #include "ov000/Actor.h"
 #include "Main/Effect/Effect.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
     u16 val;
@@ -9,29 +8,27 @@ typedef struct {
     u16 id;
 } Hit0219a8bc;
 
-typedef s32 (*Fn0219a8bc)(s32 v);
-
 extern "C" {
 Actor *func_ov000_021985c0(void *hit);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
 
-static inline BOOL IsLocked(u8 *s) {
-    return LFLD(u16, s, 0xa) != 0 ? TRUE : FALSE;
+static inline BOOL IsLocked(ActorHp *s) {
+    return s->unk_0a != 0 ? TRUE : FALSE;
 }
 
 BOOL func_ov000_0219a8bc(void *hit, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *pos, s16 h, s32 i, s32 scale) {
     BOOL ret = FALSE;
     Actor *t;
-    u8 *s50;
+    ActorHp *s50;
     t = func_ov000_021985c0(hit);
     if (t != NULL && t != b && t->vfunc_14()) {
-        s50 = ((u8 *)t->hp);
+        s50 = t->hpObj;
         if (s50 == NULL || !IsLocked(s50)) {
-            if (b->hp != NULL && LFLD(Fn0219a8bc, b->hpObj, 0x10) != NULL) {
-                c = LFLD(Fn0219a8bc, b->hpObj, 0x10)(c);
+            if (b->hp != NULL && b->hpObj->unk_10 != NULL) {
+                c = b->hpObj->unk_10(c);
             }
-            if (s50 != NULL && LFLD(Fn0219a8bc, s50, 0x18) != NULL) {
-                c = LFLD(Fn0219a8bc, s50, 0x18)(c);
+            if (s50 != NULL && s50->unk_18 != NULL) {
+                c = s50->unk_18(c);
             }
             {
                 Hit0219a8bc msg;
@@ -131,20 +128,14 @@ BOOL func_ov000_0219aae8(Actor *a, Actor *b, u16 c, u8 d, u16 mask, VecFx32 *ofs
     return ret;
 }
 
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 14;
-} Bits22_0219aca8;
-
 void *Actor_GetTarget(Actor *a);
-u8 *func_ov000_0218d2e0(Actor *a);
+ActorSub44 *func_ov000_0218d2e0(Actor *a);
 BOOL Hit_DiffInCylinder(void *hit, VecFx32 *pos, s32 r, s32 h);
 BOOL func_01ffc624(void *hit, VecFx32 *pos, u16 *box, s32 r, s32 h);
 
-static inline BOOL IsSolid0219aca8(u8 *hit) {
+static inline BOOL IsSolid0219aca8(ActorSub44 *hit) {
     BOOL ret = FALSE;
-    if (LFLD(Bits22_0219aca8, hit, 0x22).b0 == 1 && LFLD(Bits22_0219aca8, hit, 0x22).b1 == 1) {
+    if (hit->unk_22_0 == 1 && hit->unk_22_1 == 1) {
         ret = TRUE;
     }
     return ret;
@@ -152,7 +143,7 @@ static inline BOOL IsSolid0219aca8(u8 *hit) {
 
 BOOL func_ov000_0219aca8(Actor *a, Actor *b, u16 c, u8 d, VecFx32 *ofs, u16 *box, s32 r, s32 hgt, s16 h, s32 i) {
     VecFx32 pos;
-    u8 *hit;
+    ActorSub44 *hit;
     BOOL ok;
     u16 ang;
     if (a == NULL || b == NULL) {
@@ -194,19 +185,19 @@ BOOL func_ov000_0219aca8(Actor *a, Actor *b, u16 c, u8 d, VecFx32 *ofs, u16 *box
         if (!IsSolid0219aca8(hit)) {
             ok = FALSE;
         } else {
-            ok = Hit_DiffInSphere((VecFx32 *)hit, &pos, r + LFLD(s32, hit, 0x1c));
+            ok = Hit_DiffInSphere(&hit->pos, &pos, r + hit->unk_1c);
         }
     } else if (box == NULL || (box[0] == 0 && box[1] == 0 && box[2] == 0)) {
         if (!IsSolid0219aca8(hit)) {
             ok = FALSE;
         } else {
-            ok = Hit_DiffInCylinder(hit, &pos, r + LFLD(s32, hit, 0x1c), hgt);
+            ok = Hit_DiffInCylinder(hit, &pos, r + hit->unk_1c, hgt);
         }
     } else {
         if (!IsSolid0219aca8(hit)) {
             ok = FALSE;
         } else {
-            ok = func_01ffc624(hit, &pos, box, r + LFLD(s32, hit, 0x1c), hgt);
+            ok = func_01ffc624(hit, &pos, box, r + hit->unk_1c, hgt);
         }
     }
     if (!ok) {

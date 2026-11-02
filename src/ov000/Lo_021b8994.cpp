@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "Main/Gfx/Model.h"
+#include "Main/Sys/Pad.h"
 
 typedef struct {
     u32 cnt : 16;
@@ -9,7 +10,6 @@ typedef struct {
 
 extern "C" {
 extern int data_02097d78[];
-extern u16 *data_02097dc8;
 extern u8 data_0208b318[];
 extern char data_ov000_021cc885[];
 void func_0206e900(char *dst, const char *src);
@@ -132,7 +132,7 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
         break;
     case 12:
         self->unk_00.cnt++;
-        if (self->unk_00.cnt <= 0x78 && !(data_02097dc8[9] & 3)) {
+        if (self->unk_00.cnt <= 0x78 && !(data_02097dc8->trig & 3)) {
             break;
         }
         self->unk_28 = 0xd;

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_0204aab0(void *p);
+void func_0204aab0(SndQueue *p);
 
 static inline BOOL ov002_isState5(void *o) {
     return FIELD(o, 0x4, s32) == 5 ? TRUE : FALSE;
@@ -23,31 +23,31 @@ void func_ov002_021d0810(Task021efa1c *self) {
     case 11:
         if (ov002_isState5(self->unk_3c) && ov002_isState5(self->unk_40)) {
             {
-                u8 *m = (u8 *)data_02097e48.queue;
-                FIELD(m, 0x80, u16) = 0x8000;
-                FIELD(m, 0x7c, u16) = 0;
+                SndQueue *m = data_02097e48.queue;
+                m->unk_80 = 0x8000;
+                m->unk_7c = 0;
             }
             {
-                u8 *m;
+                SndQueue *m;
                 u16 id;
                 data_02097e48.queue->flag0 = 1;
-                FIELD(data_02097e48.queue, 0x0, u16) |= 8;
-                m = (u8 *)data_02097e48.queue;
+                data_02097e48.queue->flag3 = 1;
+                m = data_02097e48.queue;
                 id = 0xd;
-                if (FIELD(m, 0x0, Bits16).b0) {
-                    if (FIELD(m, 0x6, u16) != 0xffff || FIELD(m, 0x4, u16) != id) {
+                if (m->flag0) {
+                    if (m->unk_06 != 0xffff || m->unk_04 != id) {
                         u16 st;
-                        if (FIELD(m, 0x2, u16) != 10 && FIELD(m, 0x2, u16) != 0) {
-                            if (FIELD(m, 0x6, u16) != 0xffff) {
+                        if (m->unk_02 != 10 && m->unk_02 != 0) {
+                            if (m->unk_06 != 0xffff) {
                                 func_0204aab0(m);
                             }
                             st = 1;
                         } else {
                             st = 0;
                         }
-                        FIELD(m, 0x2, u16) = st;
-                        FIELD(m, 0x6, u16) = id;
-                        FIELD(m, 0x8, u16) = 10;
+                        m->unk_02 = st;
+                        m->unk_06 = id;
+                        m->unk_08 = 10;
                     }
                 }
             }

@@ -2,6 +2,7 @@
 #define MAIN_GFX_OBJPOOL_H
 
 #include "types.h"
+#include "nitro/fx.h"
 #include "Main/Res/ResMgr.h"
 
 // Fixed pool of 16 entries (point/sphere shapes with a color) linked into a list.
@@ -34,9 +35,7 @@ typedef struct ObjPoolEntry {
 } ObjPoolEntry;
 
 typedef struct ObjPool {
-    /* 0x000 */ u32 unk_00;
-    /* 0x004 */ u32 unk_04;
-    /* 0x008 */ u32 unk_08;
+    /* 0x000 */ VecFx32 playerPos; // the robot's position, stored each frame by func_ov000_021a0d4c
     /* 0x00c */ ObjPoolEntry *head;
     /* 0x010 */ ObjPoolEntry entries[16];
 } ObjPool;
@@ -131,9 +130,9 @@ static inline s32 ObjPool_FxMul(s32 a, s32 b) {
 
 static inline void ObjPool_Init(ObjPool *pool) {
     int i;
-    pool->unk_00 = 0;
-    pool->unk_04 = 0;
-    pool->unk_08 = 0;
+    pool->playerPos.x = 0;
+    pool->playerPos.y = 0;
+    pool->playerPos.z = 0;
     for (i = 0; i < 16; i++) {
         pool->entries[i].active = 0;
         pool->entries[i].kind = 0;

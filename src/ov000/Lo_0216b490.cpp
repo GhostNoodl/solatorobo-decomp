@@ -1,31 +1,23 @@
 #include "ov000/LoCommon.h"
+#include "ov000/MessageQueue.h"
 
 extern "C" {
 
 u32 func_0204045c(void);
 
-struct Obj0216b490 {
-    s32 unk_00;
-    s32 unk_04;
-    s32 unk_08;
-    u8 unk_0c[0x8];
-    s32 unk_14;
-    s32 unk_18;
-};
-
-void func_ov000_0216b490(Obj0216b490 *self) {
+void func_ov000_0216b490(Lo0216b474 *self) {
     LO_FREE_M(self, 0x8);
-    self->unk_00 = 0;
-    self->unk_04 = 2;
-    self->unk_08 = 0;
-    self->unk_14 = 0;
-    self->unk_18 = 0;
+    self->flags = 0;
+    self->state = 2;
+    self->model = NULL;
+    self->frame = 0;
+    self->ratio = 0;
 }
 
-void func_ov000_0216b508(void *self, s32 a, s32 b) {
-    LBIT(self, 0).b1 = a != 0 ? 1 : 0;
-    LBIT(self, 0).b3 = b != 0 ? 1 : 0;
-    LBIT(self, 0).b2 = 1;
+void func_ov000_0216b508(Lo0216b474 *self, s32 want, s32 part22) {
+    self->want = want != 0 ? 1 : 0;
+    self->part22 = part22 != 0 ? 1 : 0;
+    self->asked = 1;
 }
 
 }

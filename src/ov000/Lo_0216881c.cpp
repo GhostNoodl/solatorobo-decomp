@@ -14,7 +14,7 @@ typedef BOOL (*LoMsgFn)(void *, void *);
 void func_ov000_0216881c(Lo021cb894 *self) {
     s32 s = self->unk_04;
     if (s == 1 || s == 8 || s == 3 || s == 0xa) {
-        if (LBIT(self, 0xc).b1 ? TRUE : FALSE) {
+        if (self->unk_0c_1 ? TRUE : FALSE) {
             self->unk_04 = 2;
         }
     }
@@ -24,12 +24,12 @@ void func_ov000_0216881c(Lo021cb894 *self) {
         break;
     case 0xa:
         if (!((self->unk_0c & 0x10000) ? TRUE : FALSE)) {
-            LBIT(self, 0xc).b1 = 1;
+            self->unk_0c_1 = 1;
         }
         if (--self->unk_b8 < -8) {
             self->unk_b8 = 4;
         }
-        LBIT(self, 0xc).b16 = 0;
+        self->unk_0c_16 = 0;
         break;
     }
 }

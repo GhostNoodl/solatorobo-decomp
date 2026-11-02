@@ -1,10 +1,6 @@
 #include "ov000/LoCommon.h"
-
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 rest : 6;
-} NodeBits;
+#include "ov000/ObjLayouts.h"
+#include "Main/Sys/Pad.h"
 
 extern "C" {
 struct Win021c4460;
@@ -15,37 +11,19 @@ void func_ov000_021c4c10(void *self);
 extern void *data_02097e4c;
 void *func_02049a48(void *a, int b, int c, int d, int e);
 
-struct Obj021c4230 {
-    u8 unk_00[0x4];
-    s32 unk_04;
-    u8 unk_08[0x18];
-    s32 unk_20;
-    u8 unk_24[0x70];
-    u8 *unk_94;
-    u8 unk_98[0x4];
-    s32 unk_9c;
-    u8 *unk_a0;
-    u8 unk_a4[0x30];
-    s8 unk_d4;
-    u8 unk_d5[0x3];
-    s32 unk_d8;
-    u8 unk_dc[0x3];
-    u8 unk_df;
-};
-
-void func_ov000_021c4230(Obj021c4230 *self) {
+void func_ov000_021c4230(LoBase021ccb54_021ccbe0 *self) {
     s32 i;
-    u8 *n;
+    ListRow *n;
 
-    switch (self->unk_04) {
+    switch (self->state) {
     case 0:
-        if (LBIT(self, 0xc).b4) {
+        if (self->flag4) {
             func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
         }
         break;
     case 2:
-        if (LBIT(self, 0xc).b1) {
-            self->unk_04 = 1;
+        if (self->hidden) {
+            self->state = 1;
         }
         func_ov000_021c4460((struct Win021c4460 *)self);
         func_ov000_021c4b00(self);
@@ -60,32 +38,32 @@ void func_ov000_021c4230(Obj021c4230 *self) {
         }
         break;
     case 1:
-        if (LBIT(self, 0xc).b4) {
+        if (self->flag4) {
             func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
         }
         break;
     }
     i = 0;
-    for (n = self->unk_94; n != NULL; n = LFLD(u8 *, n, 0x28)) {
+    for (n = self->unk_94; n != NULL; n = n->next) {
         BOOL on = FALSE;
         switch (self->unk_df) {
         case 0:
-            on = i >= self->unk_9c && i <= self->unk_9c + (self->unk_20 - 1);
+            on = i >= self->unk_9c && i <= self->unk_9c + (self->rows - 1);
             break;
         case 1:
-            on = i >= self->unk_9c && i <= self->unk_9c + self->unk_20;
+            on = i >= self->unk_9c && i <= self->unk_9c + self->rows;
             break;
         case 2:
-            on = i >= self->unk_9c - 1 && i <= self->unk_9c + self->unk_20 - 1;
+            on = i >= self->unk_9c - 1 && i <= self->unk_9c + self->rows - 1;
             break;
         }
-        if (on) LFLD(NodeBits, n, 0x20).b0 = 1; else LFLD(NodeBits, n, 0x20).b0 = 0;
-        LFLD(NodeBits, n, 0x20).b1 = 0;
-        ((VObj *)n)->vfunc_08();
+        if (on) n->shown = 1; else n->shown = 0;
+        n->unk_20_1 = 0;
+        n->vfunc_08();
         i++;
     }
     if (self->unk_a0 != NULL) {
-        LFLD(NodeBits, self->unk_a0, 0x20).b1 = 1;
+        self->unk_a0->unk_20_1 = 1;
     }
     func_ov000_021c4c10(self);
 }
@@ -131,23 +109,16 @@ typedef struct Win021c4460 {
     void (*unk_e8)(struct Win021c4460 *self, Line021c4460 *line);
 } Win021c4460;
 
-typedef struct {
-    u8 pad[0x10];
-    u16 trg;
-    u16 cont;
-} Pad021c4460;
-
 extern "C" {
 
-extern Pad021c4460 *data_02097dc8;
 extern void *data_02097e4c;
 void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_ov000_021c47bc(Win021c4460 *self, s32 up, u8 *moved, u8 *scrolled);
 s32 func_ov000_021c4964(Win021c4460 *self, s32 n);
 
 void func_ov000_021c4460(Win021c4460 *self) {
-    u16 trg;
-    u16 cont;
+    u16 cur;
+    u16 trig;
     u32 key;
     u8 moved;
     u8 scrolled;
@@ -160,9 +131,9 @@ void func_ov000_021c4460(Win021c4460 *self) {
     if (self->b1 || self->unk_de != 0) {
         return;
     }
-    trg = data_02097dc8->trg;
-    cont = data_02097dc8->cont;
-    key = self->unk_dd == 0 ? trg : 0;
+    cur = data_02097dc8->cur;
+    trig = data_02097dc8->trig;
+    key = self->unk_dd == 0 ? cur : 0;
     done = FALSE;
     moved = 0;
     scrolled = 0;
@@ -205,7 +176,7 @@ void func_ov000_021c4460(Win021c4460 *self) {
     if (!moved && !changed && !scrolled) {
         busy = FALSE;
     }
-    if ((cont & 1) && !busy) {
+    if ((trig & 1) && !busy) {
         Line021c4460 *n;
         s32 idx;
         s32 i;
@@ -242,7 +213,7 @@ void func_ov000_021c4460(Win021c4460 *self) {
         } else {
             self->unk_dc += 1;
         }
-    } else if (trg == 0) {
+    } else if (cur == 0) {
         self->unk_dc = 0;
     }
     if (self->unk_dc > 4) {

@@ -2,83 +2,57 @@
 #include "Main/Sys/SysState.h"
 #include "Main/Gfx/Model.h"
 #include "ov000/HeapScope.h"
-
-typedef struct Obj021c22d8 {
-    u8 unk_00[4];
-    s32 unk_04;
-    u8 unk_08[4];
-    s32 unk_0c;
-    s32 unk_10;
-    s32 unk_14;
-    s32 unk_18;
-    s32 unk_1c;
-    u8 unk_20;
-    s32 unk_24;
-    struct Obj021c22d8 *unk_28;
-    struct Obj021c22d8 *unk_2c;
-} Obj021c22d8;
-
-typedef struct {
-    u8 unk_00[0x18];
-    s32 unk_18;
-    u8 unk_1c[0x14];
-    Model *unk_30;
-    Model *unk_34;
-    s32 unk_38;
-    s32 unk_3c;
-    void *unk_40;
-    u8 unk_44;
-} Obj021c2334;
+#include "ov000/ListRow.h"
 
 extern "C" {
 
-extern u8 data_ov000_021cc9bc[];
+extern char data_ov000_021cc9bc[];
 
-void func_ov000_021c22d8(Obj021c22d8 *self) {
-    self->unk_04 = 0;
-    self->unk_0c = 0;
-    self->unk_10 = 0;
-    self->unk_14 = 0;
-    self->unk_1c = 0xa0;
-    self->unk_18 = 0xc;
-    self->unk_28 = NULL;
-    self->unk_2c = NULL;
+void func_ov000_021c22d8(ListRow *self) {
+    self->index = 0;
+    self->x = 0;
+    self->y = 0;
+    self->z = 0;
+    self->width = 0xa0;
+    self->height = 0xc;
+    self->next = NULL;
+    self->prev = NULL;
     self->unk_20 = 0;
     self->unk_24 = 0;
 }
 
-void func_ov000_021c2310(Obj021c22d8 *self) {
-    if (self->unk_2c != NULL) {
-        self->unk_2c->unk_28 = self->unk_28;
+void func_ov000_021c2310(ListRow *self) {
+    if (self->prev != NULL) {
+        self->prev->next = self->next;
     }
-    if (self->unk_28 != NULL) {
-        self->unk_28->unk_2c = self->unk_2c;
+    if (self->next != NULL) {
+        self->next->prev = self->prev;
     }
 }
 
-void func_ov000_021c2334(Obj021c2334 *self) {
-    self->unk_18 = 0xf;
+void func_ov000_021c2334(Hud021cca10 *self) {
+    self->height = 0xf;
     self->unk_30 = 0;
     self->unk_34 = 0;
-    self->unk_38 = 0;
+    self->text = 0;
     self->unk_3c = 0;
-    self->unk_40 = data_ov000_021cc9bc;
-    self->unk_44 = 0;
+    self->str = data_ov000_021cc9bc;
+    self->built = 0;
 }
 
-void func_ov000_021c2364(Obj021c2334 *self) {
+void func_ov000_021c2364(Hud021cca10 *self) {
     HEAP_DELETE_MODEL(self->unk_30);
     HEAP_DELETE_MODEL(self->unk_34);
     {
         void *saved = data_02097dd0->cur;
         VObj *p;
         data_02097dd0->cur = data_02097dd0->heapHi;
-        p = (VObj *)self->unk_38;
+        p = (VObj *)self->text;
         if (p != NULL) {
             if (p != NULL) {
                 p->vfunc_04();
             }
-            self->unk_38 = 0;
+            self->text = 0;
         }
         data_02097dd0->cur = saved;
     }

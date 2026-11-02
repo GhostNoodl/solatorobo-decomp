@@ -9,10 +9,10 @@ void func_ov000_0219c8e0(Robo021ca458 *self);
 
 BOOL Robo021ca458_IsReady(Robo021ca458 *self) {
     BOOL ret = TRUE;
-    if (self->res0.unk_00 >= 0 && !func_ov000_0218f110((u8 *)self + 0x194)) {
+    if (self->res0.unk_00 >= 0 && !func_ov000_0218f110(&self->res0)) {
         ret = FALSE;
     }
-    if (self->res3.unk_00 >= 0 && !func_ov000_0218f110((u8 *)self + 0x860)) {
+    if (self->res3.unk_00 >= 0 && !func_ov000_0218f110(&self->res3)) {
         ret = FALSE;
     }
     {
@@ -25,12 +25,12 @@ BOOL Robo021ca458_IsReady(Robo021ca458 *self) {
             ret = FALSE;
         }
     }
-    if (self->res1.unk_00 >= 0 && !func_ov000_0218f110((u8 *)self + 0x450)) {
+    if (self->res1.unk_00 >= 0 && !func_ov000_0218f110(&self->res1)) {
         ret = FALSE;
     }
     {
         u8 *p = self->unk_ba0;
-        if (p != NULL && p[0x18] != 0 && self->res2.unk_00 >= 0 && !func_ov000_0218f110((u8 *)self + 0x588)) {
+        if (p != NULL && p[0x18] != 0 && self->res2.unk_00 >= 0 && !func_ov000_0218f110(&self->res2)) {
             ret = FALSE;
         }
     }

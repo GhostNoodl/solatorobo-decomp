@@ -5,20 +5,6 @@
 
 extern "C" {
 
-BOOL func_02054f10(void *p, s32 a);
-BOOL func_0203e63c(void *p);
-
-static inline BOOL LoSubReady(void *p) {
-    if (LFLD(void *, p, 0x6c) == NULL) {
-        return TRUE;
-    }
-    if (func_0203e63c(LFLD(void *, p, 0x6c))) {
-        LFLD(void *, p, 0x6c) = NULL;
-    } else {
-        return LBIT(p, 4).b6 == 0 ? TRUE : FALSE;
-    }
-    return TRUE;
-}
 
 void func_ov000_02158f30(Lo021cb3a8 *self, s32 n, s32 b) {
     s8 old = self->cursor;

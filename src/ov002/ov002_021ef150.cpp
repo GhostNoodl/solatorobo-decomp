@@ -34,7 +34,7 @@ extern VFunc data_ov000_021cad50[];
 
 extern void *data_ov002_021ef634[];
 
-BOOL func_ov002_021d2410(UiObj *self, Ov002Row *ev) {
+BOOL func_ov002_021d2410(UiObj *self, ListRow *ev) {
     Task021ef99c *owner = (Task021ef99c *)self->owner;
     if (ev != NULL) {
         u16 idx = ev->index;
@@ -126,12 +126,12 @@ void func_ov002_021e4814(Ov002LevelTable *self, u8 *src);
 u32 func_ov002_021e4c30(int which);
 u32 func_ov002_021e4960(Ov002LevelTable *self, s32 val);
 void func_ov000_021c3af4(Ov002RowList *self);
-void func_ov000_021c22d8(Ov002Row *self);
-void func_ov000_021c2bb0(Ov002GaugeRow *self);
-void func_ov000_021c2c0c(Ov002GaugeRow *self, void *a);
+void func_ov000_021c22d8(ListRow *self);
+void func_ov000_021c2bb0(ListRowGauge *self);
+void func_ov000_021c2c0c(ListRowGauge *self, void *a);
 void func_ov000_021c3fd4(void *list, void *item);
-BOOL func_ov002_021d2390(UiObj *self, Ov002Row *arg);
-BOOL func_ov002_021d2410(UiObj *self, Ov002Row *ev);
+BOOL func_ov002_021d2390(UiObj *self, ListRow *arg);
+BOOL func_ov002_021d2410(UiObj *self, ListRow *ev);
 
 static inline s32 ov002_Thresh(Ov002LevelTable *e, s32 idx) {
     s32 *arr = e->thresholds;
@@ -181,8 +181,8 @@ void func_ov002_021d278c(Task021ef99c *self) {
     for (i = 0; i < 7; i++) {
         u32 val;
         u32 lvl;
-        Ov002GaugeRow *q;
-        q = (Ov002GaugeRow *)Heap_Alloc(sizeof(Ov002GaugeRow));
+        ListRowGauge *q;
+        q = (ListRowGauge *)Heap_Alloc(sizeof(ListRowGauge));
         if (q != NULL) {
             *(VFunc **)q = data_ov002_021ef684;
             func_ov000_021c22d8(q);
@@ -200,11 +200,11 @@ void func_ov002_021d278c(Task021ef99c *self) {
                 lo = ov002_Thresh(&self->unk_4c[i], lvl - 1);
             }
             hi = ov002_Thresh(&self->unk_4c[i], lvl);
-            q->unk_3c = (s32)((val - lo) * 100) / (hi - lo) + lvl * 100;
+            q->value = (s32)((val - lo) * 100) / (hi - lo) + lvl * 100;
         } else {
-            q->unk_3c = 300;
+            q->value = 300;
         }
-        q->unk_38 = 300;
+        q->max = 300;
         func_ov000_021c3fd4(self->unk_3c, q);
     }
     self->unk_3c->owner = self;
@@ -309,7 +309,7 @@ void func_ov002_021d2ca4(Task021ef99c *self) {
         self->unk_44->flags &= ~2;
         break;
     case 12: {
-        void *x = self->unk_4c[((Ov002Row *)self->unk_3c->unk_a0)->index].desc;
+        void *x = self->unk_4c[self->unk_3c->unk_a0->index].desc;
         if (self->unk_40 != NULL) {
             func_ov000_0215bb14(self->unk_40, x);
             self->unk_40->vfunc_70();
@@ -405,8 +405,8 @@ void func_ov002_021e4814(Ov002LevelTable *self, u8 *src);
 void func_ov002_021e4a78(Ov002StrTable *self, u8 *src);
 char *func_ov002_021e4bd0(Ov002StrTable *self, u32 idx);
 char *func_ov002_021e4c00(Ov002StrTable *self, u32 idx);
-void func_ov000_021c22d8(Ov002Row *self);
-void func_ov000_021c37bc(Ov002TextRow *self);
+void func_ov000_021c22d8(ListRow *self);
+void func_ov000_021c37bc(ListRowText *self);
 void func_ov000_021c6140(UiObj *self);
 void func_ov000_021c6474(void *list, void *item);
 
@@ -479,7 +479,7 @@ void func_ov002_021d2fdc(Task021ef91c *self) {
     self->unk_3c->unk_c4 &= ~2;
     self->unk_3c->unk_c4 &= ~1;
     for (i = 0; i < ((u32)self->unk_c0); i++) {
-        Ov002TextRow *q = (Ov002TextRow *)Heap_Alloc(sizeof(Ov002TextRow));
+        ListRowText *q = (ListRowText *)Heap_Alloc(sizeof(ListRowText));
         if (q != NULL) {
             *(VFunc **)q = data_ov002_021ef684;
             func_ov000_021c22d8(q);

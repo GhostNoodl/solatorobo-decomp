@@ -93,7 +93,7 @@ void func_ov000_021532d0(UiObj *self, s32 a1, s32 *pos, s32 a3) {
     }
     NNS_G3dGeBufferOP_N(0x41, NULL, 0);
     G3_Cmd1(0x12, 1);
-    if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
+    if (self->flag6 ? TRUE : FALSE) {
         ((VObj *)self)->vfunc_6c(a1, pos, a3);
     }
 }

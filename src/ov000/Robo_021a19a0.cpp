@@ -22,13 +22,13 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
     s16 spd;
     s32 speed;
     s32 frame;
-    LBIT(self, 0xb24).b17 = 0;
+    self->unk_b24_17 = 0;
     rate = 0x400;
     frame = rate;
     target = self->unk_b08;
     name = data_ov000_021cc61e;
     speed = 0x1000;
-    if (LBIT(self, 0xb24).b1) {
+    if (self->unk_b24_1) {
         if (!self->unk_b22_3) {
             name = data_ov000_021ca050[self->unk_b24_5];
         } else {
@@ -58,7 +58,7 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
     if (!self->unk_b22_3) {
         // The repeated (s16)(v * 2) terms keep MWCC from folding the else branch into one multiply.
         s16 v = self->speed;
-        if (LBIT(self, 0xb24).b1) {
+        if (self->unk_b24_1) {
             spd = (s16)(v * 2) * 5;
         } else {
             spd = (s16)(v * 2) * 4 + (s16)(v * 2) * 2 + (s16)(v * 2);
@@ -70,16 +70,16 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
         self->unk_b10 = self->pos;
     }
     turned = FALSE;
-    if (LBIT(self, 0xb24).b1 && (self->hit->unk_54 & 0x400)) {
+    if (self->unk_b24_1 && (self->hit->unk_54 & 0x400)) {
         self->moveYaw = FX_Atan2(self->unk_af0.x - self->pos.x,
                                          self->unk_af0.z - self->pos.z);
         self->speed = 0x66;
         self->friction = 0;
-        if (!LBIT(self, 0xb24).b17 || (self->hit->unk_50 & 0x40000000)) {
+        if (!self->unk_b24_17 || (self->hit->unk_50 & 0x40000000)) {
             self->velY = 0x200;
         }
         self->gravity = 0x52;
-        LBIT(self, 0xb24).b17 = 1;
+        self->unk_b24_17 = 1;
         turned = TRUE;
     }
     if (!turned) {

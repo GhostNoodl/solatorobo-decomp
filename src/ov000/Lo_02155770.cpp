@@ -1,14 +1,10 @@
 #include "ov000/LoCommon.h"
-
-typedef struct {
-    u8 unk_00[0x10];
-    u16 cont;
-    u16 trig;
-} LoPad02155770;
+#include "ov000/UiObj.h"
+#include "ov000/ObjLayouts.h"
+#include "Main/Sys/Pad.h"
 
 extern "C" {
 
-extern LoPad02155770 *data_02097dc8;
 extern void *data_02149ef8;
 void *MsgRes_GetString(void *a, s32 b);
 extern u8 data_ov000_021cac60[];
@@ -17,35 +13,10 @@ extern u8 data_ov000_021cb1b0[];
 extern u8 data_ov000_021cb0b8[];
 BOOL func_ov000_021521ec(void *self, void *msg);
 
-struct Obj02155770 : public VObj {
-    s32 unk_04;
-    s32 unk_08;
-    u32 unk_0c;
-    u8 unk_10[0x10];
-    s32 unk_20;
-    u8 unk_24[0x44];
-    s16 unk_68;
-    u8 unk_6a[0xa];
-    VObj *unk_74;
-    u8 unk_78[0x14];
-    void *unk_8c;
-    void *unk_90;
-    void *unk_94;
-    void *unk_98;
-    s16 unk_9c;
-    s16 unk_9e;
-    u8 unk_a0[0x4];
-    void *unk_a4;
-    u8 unk_a8[0x9];
-    s8 unk_b1;
-    s8 unk_b2;
-    s8 unk_b3;
-};
-
-static inline void Lo_OpenSub02155770(Obj02155770 *self, u16 a, s32 b, s32 c) {
+static inline void Lo_OpenSub02155770(UiList *self, u16 a, s32 b, UiItemFn c) {
     void *res = data_02149ef8;
-    VObj *p;
-    p = (VObj *)Heap_Alloc(0x1e4);
+    Lo021cb0b8 *p;
+    p = (Lo021cb0b8 *)Heap_Alloc(sizeof(Lo021cb0b8));
     if (p) {
         *(void **)p = data_ov000_021cac60;
         p->vfunc_28();
@@ -56,53 +27,53 @@ static inline void Lo_OpenSub02155770(Obj02155770 *self, u16 a, s32 b, s32 c) {
         *(void **)p = data_ov000_021cb0b8;
         p->vfunc_28();
     }
-    self->unk_74 = p;
-    LFLD(u16, p, 0x1d8) = a;
-    LFLD(void *, self->unk_74, 0x1dc) = MsgRes_GetString(res, b);
-    LFLD(u16, self->unk_74, 0x1e0) = 0;
-    LFLD(s32, self->unk_74, 8) = self->unk_08;
-    LFLD(s32, self->unk_74, 0x84) = c;
-    self->unk_74->vfunc_08();
-    LFLD(s16, self->unk_74, 0x68) = self->unk_68 + 0x200;
-    LBIT(self, 0xc).b0 = 1;
+    self->child = p;
+    p->msgId = a;
+    ((Lo021cb0b8 *)self->child)->text = (char *)MsgRes_GetString(res, b);
+    ((Lo021cb0b8 *)self->child)->key = 0;
+    ((Lo021cb0b8 *)self->child)->owner = self->owner;
+    ((Lo021cb0b8 *)self->child)->onDecide = c;
+    self->child->vfunc_08();
+    ((Lo021cb0b8 *)self->child)->posZ = self->posZ + 0x200;
+    self->busy = 1;
 }
 
-static inline BOOL Lo_Active02155770(Obj02155770 *self) {
-    return LBIT(self, 0xc).b0 ? FALSE : TRUE;
+static inline BOOL Lo_Active02155770(UiList *self) {
+    return self->busy ? FALSE : TRUE;
 }
 
-static inline BOOL Lo_Settled02155770(Obj02155770 *self) {
+static inline BOOL Lo_Settled02155770(UiList *self) {
     BOOL r = FALSE;
-    if (self->unk_98 == self->unk_a4 && self->unk_b3 == 0) {
+    if (self->topItem == self->unk_a4 && self->unk_b3 == 0) {
         r = TRUE;
     }
     return r;
 }
 
-static inline BOOL Lo_Busy02155770(Obj02155770 *self) {
+static inline BOOL Lo_Busy02155770(UiList *self) {
     return Lo_Settled02155770(self) ? FALSE : TRUE;
 }
 
-void func_ov000_02155770(Obj02155770 *self) {
+void func_ov000_02155770(UiList *self) {
     u16 cont;
     u16 trig;
     if (!Lo_Active02155770(self)) {
         return;
     }
-    if (self->unk_98 == self->unk_a4 && LBIT(self, 0xc).b1) {
-        LBIT(self, 0xc).b0 = 1;
-        self->unk_04 = 1;
+    if (self->topItem == self->unk_a4 && self->hidden) {
+        self->busy = 1;
+        self->state = 1;
         return;
     }
-    if (LBIT(self, 0xc).b2) {
+    if (self->flag2) {
         return;
     }
-    if (LBIT(self, 0xc).b1) {
+    if (self->hidden) {
         return;
     }
-    cont = data_02097dc8->cont;
+    cont = data_02097dc8->cur;
     trig = data_02097dc8->trig;
-    if (self->unk_94 != NULL) {
+    if (self->items != NULL) {
         if (cont == 0) {
             self->unk_b3 = 0;
         }
@@ -115,11 +86,11 @@ void func_ov000_02155770(Obj02155770 *self) {
                 } else if (cont & 0x80) {
                     self->vfunc_b4(1, 0);
                 } else {
-                    if (self->unk_9c > self->unk_20 && (self->unk_0c & 0x10000)) {
+                    if (self->itemCount > self->rows && (self->flags & 0x10000)) {
                         if (cont & 0x200) {
-                            self->vfunc_b0(self->unk_20, 0);
+                            self->vfunc_b0(self->rows, 0);
                         } else if (cont & 0x100) {
-                            self->vfunc_b8(self->unk_20, 0);
+                            self->vfunc_b8(self->rows, 0);
                         }
                     }
                     self->unk_b3 = 0;
@@ -132,34 +103,34 @@ void func_ov000_02155770(Obj02155770 *self) {
     if (Lo_Busy02155770(self)) {
         return;
     }
-    if (self->unk_94 != NULL && (trig & 1)) {
-        u8 *item = (u8 *)self->unk_98;
+    if (self->items != NULL && (trig & 1)) {
+        UiListItem *item = self->topItem;
         if (item == NULL) {
             item = NULL;
         } else {
-            s32 n = self->unk_b1;
+            s32 n = self->cursor;
             while (n-- != 0) {
-                item = LFLD(u8 *, item, 0x2c);
+                item = item->next;
             }
         }
         if (!self->vfunc_98(item)) {
-            self->unk_0c |= 2;
+            self->flags |= 2;
         }
         return;
     }
     if (trig & 2) {
         if (!self->vfunc_98(NULL)) {
-            self->unk_0c |= 2;
+            self->flags |= 2;
         }
         return;
     }
-    if (self->unk_94 == NULL) {
+    if (self->items == NULL) {
         return;
     }
     if (!(trig & 0x400) || self->unk_8c == NULL) {
         return;
     }
-    Lo_OpenSub02155770(self, 0x8f, 0x18, (s32)func_ov000_021521ec);
+    Lo_OpenSub02155770(self, 0x8f, 0x18, (UiItemFn)func_ov000_021521ec);
     self->unk_90 = self->unk_8c;
 }
 

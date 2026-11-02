@@ -1,19 +1,13 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/UiObj.h"
-
-typedef struct {
-    u8 unk_00[0x10];
-    u16 cont;
-    u16 trig;
-} LoPad021597dc;
+#include "Main/Sys/Pad.h"
 
 extern "C" {
 
-extern LoPad021597dc *data_02097dc8;
 
 static inline BOOL Lo_Active021597dc(Lo021cb3a8 *self) {
-    return LBIT(self, 0xc).b0 ? FALSE : TRUE;
+    return self->busy ? FALSE : TRUE;
 }
 
 static inline BOOL Lo_Settled021597dc(Lo021cb3a8 *self) {
@@ -35,21 +29,21 @@ void func_ov000_021597dc(Lo021cb3a8 *self) {
     if (!Lo_Active021597dc(self)) {
         return;
     }
-    if (self->topItem == self->unk_a4 && LBIT(self, 0xc).b1) {
-        LBIT(self, 0xc).b0 = 1;
+    if (self->topItem == self->unk_a4 && self->hidden) {
+        self->busy = 1;
         self->state = 1;
         return;
     }
     if (self->items == NULL) {
         return;
     }
-    if (LBIT(self, 0xc).b2) {
+    if (self->flag2) {
         return;
     }
-    if (LBIT(self, 0xc).b1) {
+    if (self->hidden) {
         return;
     }
-    cont = data_02097dc8->cont;
+    cont = data_02097dc8->cur;
     trig = data_02097dc8->trig;
     if (cont == 0) {
         self->unk_b3 = 0;

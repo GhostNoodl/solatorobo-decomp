@@ -7,19 +7,6 @@ extern "C" {
 
 BOOL func_ov000_02152a58(UiObj *self);
 BOOL func_02054f10(void *p, s32 a);
-BOOL func_0203e63c(void *p);
-
-static inline BOOL LoSubReady(void *p) {
-    if (LFLD(void *, p, 0x6c) == NULL) {
-        return TRUE;
-    }
-    if (func_0203e63c(LFLD(void *, p, 0x6c))) {
-        LFLD(void *, p, 0x6c) = NULL;
-    } else {
-        return LBIT(p, 4).b6 == 0 ? TRUE : FALSE;
-    }
-    return TRUE;
-}
 
 
 BOOL func_ov000_021580e8(UiList *self) {

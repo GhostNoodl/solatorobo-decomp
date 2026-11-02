@@ -69,7 +69,7 @@ void func_ov000_0215a4f4(Lo021cb5a8 *self, s32 enable, s32 *pos) {
     sx = (self->width - 4) << 12;
     sy = (self->height - 0xe) << 12;
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
-    if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
+    if (self->flag6 ? TRUE : FALSE) {
         G3_Vec(0x1c, pos[0] + 0x4000, pos[1] + 0x7000, z);
         G3_Vec(0x1b, sx - 0x4000, sy, 0x1000);
         G3_Cmd1(0x40, 1);

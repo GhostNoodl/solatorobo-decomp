@@ -9,7 +9,7 @@ typedef struct BgmInfo {
 
 BgmInfo *func_0206ee58(u16 id);
 
-void func_0204aab0(void *p);
+void func_0204aab0(SndQueue *p);
 
 BOOL func_ov002_021d0270(void *self, void *ev) {
     BgmInfo *info = func_0206ee58(FIELD(ev, 0x8, u32));
@@ -38,7 +38,7 @@ BOOL func_ov002_021d0270(void *self, void *ev) {
             SndQueue *m;
             u16 id;
             data_02097e48.queue->flag0 = 1;
-            FIELD(data_02097e48.queue, 0x0, u16) |= 8;
+            data_02097e48.queue->flag3 = 1;
             m = data_02097e48.queue;
             id = info->id;
             if (m->flag0) {

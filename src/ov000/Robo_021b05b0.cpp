@@ -10,8 +10,8 @@ void func_ov000_0218d7e8(Actor *self, u8 arg);
 
 void func_ov000_021b05b0(Robo021ca458 *self) {
     ActorSub40 *s;
-    self->model = (Model0218fe1c *)((u8 *)self + 0x368);
-    self->hit = (ActorSub48 *)((u8 *)self + 0x6c0);
+    self->model = (Model0218fe1c *)&self->mdl1;
+    self->hit = (ActorSub48 *)&self->hit1;
     self->unk_b08 = 0x2cd;
     s = self->fsm;
     if (s->flags != 0) {

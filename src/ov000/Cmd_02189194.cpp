@@ -5,6 +5,7 @@
 #include "Main/Effect/Effect.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "ov000/FieldMgr.h"
+#include "Main/Sys/Pad.h"
 
 typedef struct {
     u8 b0 : 2;
@@ -54,11 +55,6 @@ typedef struct {
 } Mgr021ccd30;
 
 
-typedef struct {
-    u8 pad_00[0x12];
-    u16 unk_12;
-} Obj02097dc8;
-
 // One entry of the command table data_ov000_021cc1a0 (Ov000ScpEnt in ov000_021ca70c.cpp).
 typedef struct {
     s32 key;
@@ -72,7 +68,6 @@ extern s32 data_02097d78[];
 extern CmdEntry data_ov000_021cc1a0[];
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-extern Obj02097dc8 *data_02097dc8;
 extern void *data_ov000_021ccd64;
 
 void func_0203cb78(s32 a, s32 b, s32 c);
@@ -265,7 +260,7 @@ s32 func_ov000_02189194(SceneCmd *self) {
         {
             Robo021ca458 *p = func_ov000_0219bf90();
             if (p != NULL) {
-                u16 trg = data_02097dc8->unk_12;
+                u16 trg = data_02097dc8->trig;
                 if (trg & 0x400) {
                     func_ov000_021721f4(data_ov000_021ccd30);
                 } else if (trg & 8) {

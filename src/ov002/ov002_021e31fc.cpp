@@ -14,9 +14,9 @@ void func_ov002_021e31fc(Obj021f002c *self) {
     if (!self->shown) {
         return;
     }
-    y = self->unk_10 + ((self->unk_18 - self->text->height) << 11);
-    z = self->unk_14;
-    x = self->unk_0c;
+    y = self->y + ((self->height - self->text->height) << 11);
+    z = self->z;
+    x = self->x;
     if (self->model != NULL) {
         Model_SetPos(self->model, ((x >> 12) - 0x7b) << 12, ((y >> 12) - 0x59) << 12);
         self->model->unk_150 = z;

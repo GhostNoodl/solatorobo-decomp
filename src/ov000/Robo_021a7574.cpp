@@ -8,7 +8,7 @@ extern "C" {
 
 extern u8 data_ov000_021cc696[];
 extern u8 data_ov000_021cc672[];
-extern u8 data_ov000_021ca0a4[];
+extern s16 data_ov000_021ca0a4[]; // animation event script (Model0218fe1c::evScript)
 extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc618[];
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
@@ -16,7 +16,7 @@ BOOL func_ov000_02191120(void *a);
 BOOL func_ov000_02198360(ActorSub40 *st, s32 state, s32 x);
 void func_ov000_021b1fac(Robo021ca458 *self, BOOL a, s32 b);
 void func_ov000_021b03c8(Robo021ca458 *self);
-u8 *Actor_GetTarget(Actor *self);
+Actor *Actor_GetTarget(Actor *self);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_0218d46c(void *a, u16 id, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
@@ -28,12 +28,12 @@ static inline Actor *FindActor021a783c(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-static inline u16 AngleTo(Robo021ca458 *self, u8 *other) {
+static inline u16 AngleTo(Robo021ca458 *self, Actor *other) {
     u16 angle;
-    if (other == NULL || other == (u8 *)self) {
+    if (other == NULL || other == self) {
         angle = self->rot_y;
     } else {
-        angle = FX_Atan2(LFLD(s32, other, 0x70) - self->pos.x, LFLD(s32, other, 0x78) - self->pos.z);
+        angle = FX_Atan2(other->pos.x - self->pos.x, other->pos.z - self->pos.z);
     }
     return angle;
 }
@@ -45,7 +45,7 @@ static inline s32 FxMul64(s64 a, s64 b) {
 extern u8 data_ov000_021cc64e[];
 extern u8 data_ov000_021cc68a[];
 extern u8 data_ov000_021cc690[];
-extern u8 data_ov000_021ca090[];
+extern s16 data_ov000_021ca090[]; // animation event script (Model0218fe1c::evScript)
 extern void *data_02097e4c;
 void *func_ov000_02191318(void *a, s32 frame);
 void func_ov000_02191780(void *a);
@@ -54,12 +54,8 @@ s32 func_01ffbd6c(void *a, void *b, s32 c, s32 d, s32 e, s32 f);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 
 typedef struct {
-    u16 x, y, z;
-} Rot021a70b0;
-
-typedef struct {
     VecFx32 pos;
-    Rot021a70b0 rot;
+    ActorRot rot;
     u8 pad[2];
     s32 unk_14;
 } Msg021a70b0;
@@ -77,8 +73,8 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
             func_ov000_02190cb0(self->model, data_ov000_021cc690, 0x333, 0);
             {
                 Model0218fe1c *m = self->model;
-                LFLD(void *, m, 0xd8) = data_ov000_021ca090;
-                LFLD(void *, m, 0xdc) = data_ov000_021ca090;
+                m->evScript = data_ov000_021ca090;
+                m->evCursor = data_ov000_021ca090;
             }
         }
         if (self->velY > 0) {
@@ -90,7 +86,7 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
         break;
     case 1: {
         u16 ang;
-        u8 *t = Actor_GetTarget(self);
+        Actor *t = Actor_GetTarget(self);
         if (t != NULL) {
             ang = AngleTo(self, t);
         } else {
@@ -121,7 +117,7 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
                         v.z -= self->pos.z;
                         VEC_MultAdd(0xc00, &v, &self->pos, &v);
                         m.pos = v;
-                        m.rot = LFLD(Rot021a70b0, a, 0x7c);
+                        m.rot = a->rot;
                         m.unk_14 = 0;
                         Actor_SendMsg(a, self->id, 7, TRUE, sizeof(Msg021a70b0), &m);
                     }
@@ -153,7 +149,7 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
     }
     }
     func_ov000_021b1fac(self, FALSE, 0);
-    if (!LBIT(self, 0xb24).b1) {
+    if (!self->unk_b24_1) {
         return;
     }
     if (!(self->hit->unk_54 & 0x400)) {
@@ -163,11 +159,11 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
                                      self->unk_af0.z - self->pos.z);
     self->speed = 0x66;
     self->friction = 0;
-    if (!LBIT(self, 0xb24).b17 || (self->hit->unk_50 & 0x40000000)) {
+    if (!self->unk_b24_17 || (self->hit->unk_50 & 0x40000000)) {
         self->velY = 0x200;
     }
     self->gravity = 0x52;
-    LBIT(self, 0xb24).b17 = 1;
+    self->unk_b24_17 = 1;
 }
 
 void func_ov000_021a7574(Robo021ca458 *self) {
@@ -176,8 +172,8 @@ void func_ov000_021a7574(Robo021ca458 *self) {
         func_ov000_02190cb0(self->model, data_ov000_021cc672, 0x800, 0);
         if (self->unk_b24_5 != 2) {
             Model0218fe1c *m = self->model;
-            LFLD(void *, m, 0xd8) = data_ov000_021ca0a4;
-            LFLD(void *, m, 0xdc) = data_ov000_021ca0a4;
+            m->evScript = data_ov000_021ca0a4;
+            m->evCursor = data_ov000_021ca0a4;
         }
         if (self->velY > 0) {
             self->velY = 0;
@@ -229,7 +225,7 @@ void func_ov000_021a7574(Robo021ca458 *self) {
     }
     }
     func_ov000_021b1fac(self, FALSE, 1);
-    if (!LBIT(self, 0xb24).b1) {
+    if (!self->unk_b24_1) {
         return;
     }
     if (!(self->hit->unk_54 & 0x400)) {
@@ -239,11 +235,11 @@ void func_ov000_021a7574(Robo021ca458 *self) {
                                      self->unk_af0.z - self->pos.z);
     self->speed = 0x66;
     self->friction = 0;
-    if (!LBIT(self, 0xb24).b17 || (self->hit->unk_50 & 0x40000000)) {
+    if (!self->unk_b24_17 || (self->hit->unk_50 & 0x40000000)) {
         self->velY = 0x200;
     }
     self->gravity = 0x52;
-    LBIT(self, 0xb24).b17 = 1;
+    self->unk_b24_17 = 1;
 }
 
 void func_ov000_021a783c(Robo021ca458 *self) {
@@ -263,7 +259,7 @@ void func_ov000_021a783c(Robo021ca458 *self) {
         break;
     case 1: {
         u16 ang;
-        u8 *t = Actor_GetTarget(self);
+        Actor *t = Actor_GetTarget(self);
         if (t != NULL) {
             ang = AngleTo(self, t);
         } else {
@@ -300,7 +296,7 @@ void func_ov000_021a783c(Robo021ca458 *self) {
     }
     }
     func_ov000_021b1fac(self, FALSE, 1);
-    if (!LBIT(self, 0xb24).b1) {
+    if (!self->unk_b24_1) {
         return;
     }
     if (!(self->hit->unk_54 & 0x400)) {
@@ -310,11 +306,11 @@ void func_ov000_021a783c(Robo021ca458 *self) {
                                      self->unk_af0.z - self->pos.z);
     self->speed = 0x66;
     self->friction = 0;
-    if (!LBIT(self, 0xb24).b17 || (self->hit->unk_50 & 0x40000000)) {
+    if (!self->unk_b24_17 || (self->hit->unk_50 & 0x40000000)) {
         self->velY = 0x200;
     }
     self->gravity = 0x52;
-    LBIT(self, 0xb24).b17 = 1;
+    self->unk_b24_17 = 1;
 }
 
 }

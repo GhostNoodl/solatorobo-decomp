@@ -2,36 +2,7 @@
 #include "Main/Sys/SysState.h"
 #include "Main/Gfx/Model.h"
 #include "ov000/HeapScope.h"
-
-typedef struct {
-    u8 unk_00[0x18];
-    s32 unk_18;
-    s32 unk_1c;
-    u8 unk_20[0x10];
-    s32 unk_30;
-    s32 unk_34;
-    Model *unk_38;
-    Model *unk_3c;
-    void *unk_40;
-    s32 unk_44;
-    u8 unk_48[0x4];
-    u16 unk_4c;
-    u16 unk_4e;
-    u8 unk_50;
-    u8 unk_51;
-    u8 unk_52;
-    u8 unk_53;
-    u8 unk_54;
-    s32 unk_58;
-    s32 unk_5c;
-    s32 unk_60;
-    s32 unk_64;
-    s32 unk_68;
-    u8 unk_6c;
-    s32 unk_70;
-    s32 unk_74;
-    s32 unk_78;
-} Obj021c2f10;
+#include "ov000/ListRow.h"
 
 extern "C" {
 
@@ -40,25 +11,25 @@ extern u8 data_ov000_021cc9d3[];
 extern u8 data_ov000_021cc9dc[];
 void func_02035acc(void *a, void *b, s32 c);
 
-void func_ov000_021c2f10(Obj021c2f10 *self) {
-    self->unk_1c = 0xc8;
-    self->unk_18 = 0x8c;
-    self->unk_30 = 0;
-    self->unk_34 = 0;
+void func_ov000_021c2f10(ListRow021cca70 *self) {
+    self->width = 0xc8;
+    self->height = 0x8c;
+    self->arc = 0;
+    self->name = 0;
     self->unk_38 = 0;
     self->unk_3c = 0;
     self->unk_40 = data_ov000_021cc9bc;
     self->unk_44 = 0;
-    self->unk_4c = 0;
-    self->unk_4e = 0;
-    self->unk_50 = 0;
-    self->unk_51 = 0;
-    self->unk_52 = 0;
-    self->unk_54 = 0;
-    self->unk_58 = 0x99a;
-    self->unk_5c = 0;
-    self->unk_60 = 0;
-    self->unk_64 = 0;
+    self->item.id = 0;
+    self->item.mask = 0;
+    self->item.count = 0;
+    self->item.n = 0;
+    self->item.unk_0a = 0;
+    self->alpha = 0;
+    self->scale = 0x99a;
+    self->ox = 0;
+    self->oy = 0;
+    self->partZ = 0;
     self->unk_68 = 0;
     self->unk_6c = 0;
     self->unk_70 = 0;
@@ -66,16 +37,16 @@ void func_ov000_021c2f10(Obj021c2f10 *self) {
     self->unk_78 = 0;
 }
 
-void func_ov000_021c2f90(Obj021c2f10 *self) {
+void func_ov000_021c2f90(ListRow021cca70 *self) {
     HEAP_DELETE_MODEL(self->unk_38);
     HEAP_DELETE_MODEL(self->unk_3c);
     if (self->unk_68 != 0) {
-        func_02035acc((void *)self->unk_30, (void *)self->unk_34, 2);
+        func_02035acc(self->arc, self->name, 2);
         func_02035acc(data_ov000_021cc9d3, data_ov000_021cc9dc, 2);
     }
     self->unk_6c = 0;
-    self->unk_54 = 0;
-    self->unk_58 = 0x99a;
+    self->alpha = 0;
+    self->scale = 0x99a;
 }
 
 }

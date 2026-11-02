@@ -45,6 +45,28 @@ struct Lo021cb798;
 struct Lo021cb7ec;
 struct Lo021cb840;
 struct Lo021cb894;
+struct Model;
+
+// 0x1c bytes, ListBuffer021cb940::unk_68 (init func_ov000_0216b474, release func_ov000_0216b490): a 2D model
+// that slides in while something keeps asking for it each frame (func_ov000_0216b508, from the robot's
+// update) and slides out once it stops. func_ov000_0216b550 updates it, func_ov000_0216b880 places it.
+struct Lo0216b474 {
+    union {
+        u32 flags;
+        struct {
+            u32 opening : 1; // sliding in (else out)
+            u32 want : 1; // set by func_ov000_0216b508; cleared when the field is busy
+            u32 asked : 1; // set by each func_ov000_0216b508 call; want is dropped after a frame without one
+            u32 part22 : 1; // show model part 0x22 (else 0x23)
+            u32 unk_00_4 : 28;
+        };
+    };
+    s32 state; // 0x04 2: start, 3: free the model, 4: wait for want, 5: load, 6: wait for the load, 7/8: slide
+    Model *model; // 0x08
+    u8 unk_0c[0x8];
+    s32 frame; // 0x14 frames into the slide (0xc frames)
+    s32 ratio; // 0x18 fx32 slide position, 0..0x1000
+};
 
 // Vtable data_ov000_021cb940 (0x80 bytes; base vtable data_ov000_021cb6d0, init func_ov000_0216faac,
 // dtor func_ov000_0216fb14): the field's sub-object holder, data_ov000_021ccd30's 0x11c buffer, made by
@@ -77,7 +99,7 @@ public:
     Lo021cb798 *unk_5c;
     Lo021cb7ec *unk_60;
     Lo021cb744 *unk_64;
-    void *unk_68;
+    Lo0216b474 *unk_68;
     Lo021cb6f0 *unk_6c;
     Lo021cb840 *unk_70;
     Lo021cb894 *unk_74;

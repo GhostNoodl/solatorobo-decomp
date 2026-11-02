@@ -30,10 +30,10 @@ void func_ov000_02150b78(Lo021ca9c4 *self, void *arg) {
         LBIT(q, 0xc).b1 = 1;
     }
     if (self->unk_50) {
-        LBIT(self->unk_50, 0xc).b1 = 1;
+        self->unk_50->hidden = 1;
     }
     if (self->unk_58) {
-        LBIT(self->unk_58, 0xc).b1 = 1;
+        self->unk_58->hidden = 1;
     }
 }
 

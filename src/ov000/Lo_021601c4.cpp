@@ -18,7 +18,7 @@ static inline void G3_Vec021601c4(int cmd, int x, int y, int z) {
 }
 
 static inline BOOL IsB3_021601c4(ObjBase021cac0c_021cb6f0 *self) {
-    return LBIT(self, 0xc).b3 ? TRUE : FALSE;
+    return self->unk_0c_3 ? TRUE : FALSE;
 }
 
 static inline void VecAdd021601c4(const VecFx32 *a, const VecFx32 *b, VecFx32 *o) {
@@ -61,7 +61,7 @@ void func_ov000_021601c4(ObjBase021cac0c_021cb6f0 *self) {
         d.z = 0;
         VecAdd021601c4(&pos, &d, &pos);
     }
-    if (LBIT(self, 0xc).b9) {
+    if (self->unk_0c_9) {
         pos.x -= (self->unk_50 >> 1) << 12;
     }
     pos.z = self->unk_7c;

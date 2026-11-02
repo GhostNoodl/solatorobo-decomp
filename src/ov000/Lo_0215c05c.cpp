@@ -23,7 +23,7 @@ void func_ov000_0215c05c(Lo021cadcc *self) {
     if (self->state != 2) {
         return;
     }
-    if (LBIT(self, 0xc).b1 == 1) {
+    if (self->hidden == 1) {
         self->state = 1;
     }
     self->openTime = self->openLen;

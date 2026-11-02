@@ -18,7 +18,7 @@ extern u8 data_ov000_021cb6f0[];
 extern u8 data_ov000_021cb840[];
 extern u8 data_ov000_021cb894[];
 void *Heap_Alloc(u32 size);
-void func_ov000_0216b474(void *p);
+void func_ov000_0216b474(Lo0216b474 *p);
 void func_ov000_0216ad04(void *p);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void func_ov000_021bce90(void);
@@ -32,7 +32,7 @@ BOOL func_ov000_021bb33c(void *p);
 BOOL func_ov000_021b8284(void *p);
 BOOL func_ov000_0216ca70(void *p);
 void func_ov000_02182524(SceneStage *self);
-void func_ov000_0216b550(void *p);
+void func_ov000_0216b550(Lo0216b474 *p);
 void func_ov000_0216adf8(void *p);
 void func_ov000_021bbcac(void *p);
 void func_020507d8(void *p);
@@ -67,6 +67,7 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
     case 1: {
         Lo021cb798 *p;
         u8 *q;
+        Lo0216b474 *r;
         LoTicker *tk;
         if (LFLD(Bit0, c, 0x114).b0) {
             break;
@@ -90,11 +91,11 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
         }
         self->unk_5c = p;
         self->unk_60 = (Lo021cb7ec *)NewObj2(sizeof(Lo021cb7ec), data_ov000_021cb7ec);
-        q = (u8 *)Heap_Alloc(0x1c);
-        if (q != NULL) {
-            func_ov000_0216b474(q);
+        r = (Lo0216b474 *)Heap_Alloc(sizeof(Lo0216b474));
+        if (r != NULL) {
+            func_ov000_0216b474(r);
         }
-        self->unk_68 = q;
+        self->unk_68 = r;
         self->unk_64 = (Lo021cb744 *)NewObj2(sizeof(Lo021cb744), data_ov000_021cb744);
         self->unk_6c = (Lo021cb6f0 *)NewObj2(sizeof(Lo021cb6f0), data_ov000_021cb6f0);
         self->unk_70 = (Lo021cb840 *)NewObj2(sizeof(Lo021cb840), data_ov000_021cb840);

@@ -12,9 +12,6 @@
 // ov000's 0x100-byte list with vtable data_ov000_021ccb54 (func_ov000_021c54f4 clears unk_f4..unk_fc);
 // the ov006 menus fill it with func_ov000_021c3fd4.
 struct ov006_HudList : public LoBase021ccb54_021ccbe0 {
-    u8 unk_e4[0xc];
-    u8 unk_f0;
-    u8 unk_f1[0x3];
     s32 unk_f4;
     s32 unk_f8;
     s32 unk_fc;

@@ -5,6 +5,7 @@
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
+#include "Main/Sys/Pad.h"
 
 typedef struct {
     u16 st;
@@ -20,7 +21,6 @@ extern char data_ov000_021cc62a[];
 extern char data_ov000_021cc636[];
 extern char data_ov000_021cc5e3[];
 extern void *data_02097e4c;
-extern void *data_02097dc8;
 void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
 void Actor_Move(Actor *self, s32 a);
 void func_ov000_021b1fac(Robo021ca458 *self, BOOL a, s32 b);
@@ -209,7 +209,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
                 self->unk_76c = self->rot_x;
                 self->unk_76e = self->rot_y;
                 self->unk_770 = self->rot_z;
-                func_ov000_02190cb0((u8 *)self + 0x368, data_ov000_021cc5e3, 0x1000, 1);
+                func_ov000_02190cb0(&self->mdl1, data_ov000_021cc5e3, 0x1000, 1);
                 q = self->mdl1.unk_1c;
                 if (q != NULL) {
                     NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)self->mdl1.unk_24, (NNSG3dAnmObj *)q->cur);

@@ -65,8 +65,8 @@ void func_ov000_021a0268(Robo021ca458 *self) {
         return;
     }
     if (self->unk_b24_1) {
-        self->model = (Model0218fe1c *)((u8 *)self + 0x368);
-        self->hit = (ActorSub48 *)((u8 *)self + 0x6c0);
+        self->model = (Model0218fe1c *)&self->mdl1;
+        self->hit = (ActorSub48 *)&self->hit1;
         if (self->unk_b24_5 == 2) {
             self->unk_b08 = 0x15c;
         } else {
@@ -78,7 +78,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
         self->unk_b08 += func_0206d37c(data_0214a424, 3) * 4;
     } else {
         self->model = (Model0218fe1c *)&self->mdl0;
-        self->hit = (ActorSub48 *)((u8 *)self + 0x2cc);
+        self->hit = (ActorSub48 *)&self->hit0;
         self->unk_b08 = 0x19a;
     }
     if (self->unk_b0c != 0x1000) {

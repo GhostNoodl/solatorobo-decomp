@@ -1,6 +1,5 @@
 #include "ov000/ModelPart.h"
 #include "ov000/ObjLayouts.h"
-#include "ov000/ObjLayouts.h"
 #include "ov000/UiObj.h"
 
 
@@ -29,7 +28,7 @@ static inline s32 PosX021c524c(Pos021c524c *p) {
     return p->x;
 }
 
-void func_ov000_021c524c(UnitBase021ccb54_021ccbe0 *self, s32 unused, Pos021c524c *pos, s32 arg) {
+void func_ov000_021c524c(LoBase021ccb54_021ccbe0 *self, s32 unused, Pos021c524c *pos, s32 arg) {
     s32 x = (PosX021c524c(pos) >> 12) + ((self->width << 12) - self->unk_b8 >> 12) + 6;
     s32 y = pos->y >> 12;
     Model *m;

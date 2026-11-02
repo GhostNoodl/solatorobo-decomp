@@ -1,18 +1,5 @@
 #include "ov002/ov002.h"
 
-typedef struct ov002_Info021e1148 {
-    u8 unk0[6];
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 b4 : 1;
-    u16 b5 : 1;
-    u16 b6 : 1;
-    u16 b7 : 1;
-    u16 b8 : 1;
-} ov002_Info021e1148;
-
 extern "C" {
 
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
@@ -47,7 +34,7 @@ static inline void ov002_Slot1148(Ov002HudInfo *self, s32 *n, s32 text) {
 void func_ov002_021e1148(Ov002HudInfo *self, u16 id) {
     void *mgr;
     int i;
-    ov002_Info021e1148 *info;
+    Param0206ef10 *info;
     for (i = 0; i < 4; i++) {
         Ov002Text2 *o = self->lines[i];
         if (o != NULL) {
@@ -58,7 +45,7 @@ void func_ov002_021e1148(Ov002HudInfo *self, u16 id) {
     if (id == 0xffff) {
         return;
     }
-    info = (ov002_Info021e1148 *)func_0206ef10(id);
+    info = func_0206ef10(id);
     mgr = data_02149ef8;
     if (id == 0x8008) {
         s32 text = (s32)MsgRes_GetString(data_02149ef8, 0x15f);
@@ -68,31 +55,31 @@ void func_ov002_021e1148(Ov002HudInfo *self, u16 id) {
         }
     } else {
         s32 n = 0;
-        if (info->b0) {
+        if (info->unk_06_0) {
             ov002_Slot1148(self, &n, (s32)MsgRes_GetString(data_02149ef8, 0x156));
         }
-        if (info->b1) {
+        if (info->unk_06_1) {
             ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x157));
         }
-        if (info->b2) {
+        if (info->unk_06_2) {
             ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x158));
         }
-        if (info->b3) {
+        if (info->unk_06_3) {
             ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x159));
         }
-        if (info->b4) {
+        if (info->unk_06_4) {
             ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x15a));
         }
-        if (info->b5) {
+        if (info->unk_06_5) {
             ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x15b));
         }
-        if (info->b6) {
+        if (info->unk_06_6) {
             ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x15c));
         }
-        if (info->b7) {
+        if (info->unk_06_7) {
             ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x15d));
         }
-        if (info->b8) {
+        if (info->unk_06_8) {
             ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x15e));
         }
     }

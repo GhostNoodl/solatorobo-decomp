@@ -21,7 +21,7 @@ static inline BOOL EnsureModel(Lo021cacd8 *self) {
     if (self->model) {
         return TRUE;
     }
-    if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
+    if (self->flag6 ? TRUE : FALSE) {
         MODEL_NEW(self->model, data_0208cb84, data_0208cc8c);
     } else {
         MODEL_NEW(self->model, data_0208cb74, data_0208cca0);

@@ -31,7 +31,7 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         s32 dx;
         s32 dz;
         self->unk_b24_2 = 1;
-        func_ov000_02190cb0((u8 *)self + 0xac, data_ov000_021cc62a, 0x800, 0);
+        func_ov000_02190cb0(&self->mdl0, data_ov000_021cc62a, 0x800, 0);
         dx = self->unk_75c.x - self->pos.x;
         dz = self->unk_75c.z - self->pos.z;
         self->mdl0.unk_cc = -1;
@@ -77,23 +77,23 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         self->velY = 0;
         self->friction = 0;
         self->gravity = 0;
-        func_ov000_02190cb0((u8 *)self + 0xac, data_ov000_021cc6c0, 0x400, 0);
+        func_ov000_02190cb0(&self->mdl0, data_ov000_021cc6c0, 0x400, 0);
         self->fsm->st++;
         break;
     }
     case 2:
-        if (func_ov000_02191120((u8 *)self + 0xac)) {
+        if (func_ov000_02191120(&self->mdl0)) {
             AnimCtrl *p;
             self->pos = self->unk_75c;
             self->rot_x = self->unk_76c;
             self->rot_y = self->unk_76e;
             self->rot_z = self->unk_770;
-            Body_SetPos((u8 *)self + 0x2cc, (VecFx32 *)((u8 *)self + 0x70), self->rot_y);
-            Body_SetPos((u8 *)self + 0x6c0, (VecFx32 *)((u8 *)self + 0x75c), self->unk_76e);
+            Body_SetPos(&self->hit0, (VecFx32 *)((u8 *)self + 0x70), self->rot_y);
+            Body_SetPos(&self->hit1, (VecFx32 *)((u8 *)self + 0x75c), self->unk_76e);
             self->unk_b24_2 = 0;
             self->unk_b24_1 = 1;
             self->unk_b36 = 0;
-            func_ov000_02190cb0((u8 *)self + 0x368, data_ov000_021cc5e3, 0x155, 0);
+            func_ov000_02190cb0(&self->mdl1, data_ov000_021cc5e3, 0x155, 0);
             p = self->mdl1.unk_1c;
             if (p != NULL) {
                 NNS_G3dRenderObjRemoveAnmObj((u8 *)self + 0x38c, ((void *)p->cur));

@@ -2,6 +2,7 @@
 #include "Main/Res/StageCmd.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/MessageQueue.h"
 
 class Robo021b06dcCls;
 typedef void (Robo021b06dcCls::*Robo021b06dcPmf)();
@@ -14,8 +15,8 @@ typedef struct {
 extern "C" {
 
 extern Robo021b06dcEntry data_ov000_021ca1b0[];
-void func_ov000_021697dc(void *p, u16 a, u16 b);
-void func_ov000_0216b508(void *p, s32 a, BOOL b);
+void func_ov000_021697dc(Lo021cb798 *p, u16 a, u16 b);
+void func_ov000_0216b508(Lo0216b474 *p, s32 want, BOOL part22);
 
 static inline BOOL PlayerIdle021b06dc(void) {
     FieldState *pl = data_ov000_021ccd54;
@@ -32,10 +33,11 @@ static inline BOOL PlayerIdle021b06dc(void) {
 }
 
 static inline void SetGauge021b06dc(u16 a, u16 b) {
-    FieldActor *o = (FieldActor *)((u8 *)data_ov000_021ccd30->unk_11c);
-    if (o != NULL && LFLD(void *, o, 0x58) != NULL) {
-        func_ov000_021697dc(LFLD(void *, o, 0x58), a, b);
-        LFLD(u32, LFLD(u8 *, o, 0x58), 0xc) |= 0x80;
+    // data_ov000_021ccd30 is the field's MessageQueue021cb980 (Main/Sys/Field.h's view of it is FieldPlayer)
+    ListBuffer021cb940 *o = (ListBuffer021cb940 *)data_ov000_021ccd30->unk_11c;
+    if (o != NULL && o->unk_58 != NULL) {
+        func_ov000_021697dc(o->unk_58, a, b);
+        o->unk_58->unk_0c |= 0x80;
     }
 }
 
@@ -66,9 +68,9 @@ void func_ov000_021b06dc(Robo021ca458 *self) {
     }
     {
         BOOL f = data_0214a424->bits18.flag10 ? TRUE : FALSE;
-        FieldActor *o = (FieldActor *)((u8 *)data_ov000_021ccd30->unk_11c);
+        ListBuffer021cb940 *o = (ListBuffer021cb940 *)data_ov000_021ccd30->unk_11c;
         if (o != NULL) {
-            func_ov000_0216b508(LFLD(void *, o, 0x68), 1, f);
+            func_ov000_0216b508(o->unk_68, 1, f);
         }
     }
 }

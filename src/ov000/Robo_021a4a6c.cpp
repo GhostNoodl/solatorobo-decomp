@@ -100,10 +100,6 @@ static inline u16 AngleTo_021a4a6c(Robo021ca458 *self, Actor *other) {
     return FX_Atan2(other->pos.x - self->pos.x, other->pos.z - self->pos.z);
 }
 
-static inline BOOL Both_021a4a6c(u8 *c) {
-    return (LFLD(H22_021a4a6c, c, 0x22).b0 == 1 && LFLD(H22_021a4a6c, c, 0x22).b1 == 1) ? TRUE : FALSE;
-}
-
 static inline s32 FxMul_021a4a6c(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }

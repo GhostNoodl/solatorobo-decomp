@@ -9,7 +9,18 @@ extern u8 data_ov015_02212e0d[];
 extern char data_ov015_02212e14[];
 extern char data_ov015_02212e15[];
 s32 func_ov000_021909a8(void *a, const void *b, const void *c);
-u8 *func_0206fef8(u16 id);
+// The object record func_0206fef8 returns (Main/Lang/TblEntry.cpp; Main/Res/Stage.cpp reads height).
+typedef struct Ov015ObjInfo {
+    u8 unk_00[0x10];
+    s16 scale; // 0x10 fx scale of the model
+    u16 unk_12_0 : 5;
+    u16 unk_12_5 : 3; // nonzero: the second model plays data_ov015_02212db0's animation
+    u16 unk_12_8 : 8;
+    s16 unk_14;
+    s16 height; // 0x16
+} Ov015ObjInfo;
+
+Ov015ObjInfo *func_0206fef8(u16 id);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
@@ -49,7 +60,6 @@ BOOL func_ov015_0220947c(Ov015Fish *self) {
     return r;
 }
 
-struct Ov015Bits09500 { u16 b0 : 5; u16 b5 : 3; u16 b8 : 8; };
 BOOL func_ov015_02209500(Ov015Fish *self) {
     u8 *p;
     u32 n;
@@ -71,7 +81,7 @@ BOOL func_ov015_02209500(Ov015Fish *self) {
     self->model.renderObj.ptrUser = &self->rot2[0].x;
     self->unk_3c = func_ov000_021909a8(&self->model, data_ov015_02212e14, data_ov015_02212e15);
     func_ov000_0218ffdc(&self->model2, &self->res2, 0, 1);
-    n = FLD(Ov015Bits09500, func_0206fef8(self->id), 0x12).b5;
+    n = func_0206fef8(self->id)->unk_12_5;
     if (n != 0) {
         func_ov000_02190cb0(&self->model2, data_ov015_02212db0.name, 0x1000, 0);
         func_ov000_02191618(&self->model2);
@@ -83,12 +93,12 @@ BOOL func_ov015_02209500(Ov015Fish *self) {
     self->shadow.prev = self->shadow.type;
     self->shadow.type = 3;
     self->pos.z = (0x800 - 0x37800) - FX_Mul(FX_Div(data_ov015_0221332c.unk_00, 0x3e8000), 0x73000);
-    { s32 v = FLD(s16, func_0206fef8(self->info.id), 0x10); self->scale.x = v; self->scale.y = v; self->scale.z = v; }
+    { s32 v = func_0206fef8(self->info.id)->scale; self->scale.x = v; self->scale.y = v; self->scale.z = v; }
     if (self->hit.active != 0) func_0203f364(&self->hit);
     self->hit.group = 0x100;
     self->hit.mask = 0x100;
-    self->unk_94 = FLD(s16, func_0206fef8(self->info.id), 0x16) << 4;
-    self->unk_98 = FLD(s16, func_0206fef8(self->info.id), 0x14) << 4;
+    self->unk_94 = func_0206fef8(self->info.id)->height << 4;
+    self->unk_98 = func_0206fef8(self->info.id)->unk_14 << 4;
     m = (VObj *)Heap_Alloc(0x2c);
     if (m != NULL) m = (VObj *)Ov015FishState2c_Ctor((Ov015FishState2c *)m);
     self->state = m;
@@ -172,7 +182,7 @@ void func_ov015_02209a50(Ov015Fish *self) {
         self->unk_8c = 0x666;
         self->shadowAlpha = 10;
     }
-    f = FX_Mul(self->unk_8c, FLD(s16, func_0206fef8(self->info.id), 0x10));
+    f = FX_Mul(self->unk_8c, func_0206fef8(self->info.id)->scale);
     self->unk_8c = f;
     self->radius = 0x28000;
     self->unk_84 = 0x1000;

@@ -48,7 +48,7 @@ void func_ov002_021d1970(Task021ef69c *self) {
     {
         u16 i;
         u16 id;
-        u8 *q;
+        ListRow021cca70 *q;
         Pair021d1970 *tbl;
         u32 count;
         tbl = (Pair021d1970 *)func_0205976c(data_02fe152c, 11);
@@ -57,19 +57,19 @@ void func_ov002_021d1970(Task021ef69c *self) {
             id = tbl[i].b;
             if (func_0206f788(id)) {
                 func_0206eed0(id);
-                q = (u8 *)Heap_Alloc(0x7c);
+                q = (ListRow021cca70 *)Heap_Alloc(sizeof(ListRow021cca70));
                 if (q != NULL) {
                     *(VFunc **)q = data_ov002_021ef684;
                     func_ov000_021c22d8(q);
                     *(VFunc **)q = data_ov000_021cca70;
-                    *(VFunc **)(q + 0x48) = data_ov002_021ef674;
-                    func_ov000_021c2208(q + 0x48);
+                    *(VFunc **)&q->item = data_ov002_021ef674;
+                    func_ov000_021c2208(&q->item);
                     func_ov000_021c2f10(q);
                 }
-                FIELD(q, 0x4, s32) = ((u32)tbl[i].b << 4) >> 16;
+                q->index = ((u32)tbl[i].b << 4) >> 16;
                 func_ov000_021c308c(q, id);
-                FIELD(q, 0x44, s32) = i + 1;
-                FIELD(q, 0x40, void *) = func_0206ec48(id);
+                q->unk_44 = i + 1;
+                q->unk_40 = func_0206ec48(id);
                 func_ov000_021c6474(self->unk_3c, q);
             }
         }
@@ -79,7 +79,7 @@ void func_ov002_021d1970(Task021ef69c *self) {
     self->unk_3c->owner = self;
     self->unk_3c->vfunc_08();
     func_ov000_021c65e0(self->unk_3c, data_ov002_021f0f84[2]);
-    func_ov000_021c64b4(self->unk_3c, FIELD(((void *)self->unk_3c->unk_88), 0x40, void *));
+    func_ov000_021c64b4(self->unk_3c, ((ListRow021cca70 *)self->unk_3c->unk_88)->unk_40);
     p = (UiObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
         *(VFunc **)p = data_ov000_021cac60;

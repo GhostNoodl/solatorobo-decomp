@@ -38,8 +38,8 @@ public:
     s32 unk_58;
     VObj *unk_5c;
     VObj *unk_60;
-    VObj *unk_64;
-    s32 unk_68;
+    Lo021cad50 *unk_64; // message window (func_ov000_0217bd88)
+    s32 unk_68; // frames before the message window can be closed
     void *unk_6c;
     u8 unk_70;
     u8 unk_71;
@@ -60,8 +60,8 @@ public:
     u8 unk_a8[0x10];
     s16 unk_b8;
     s16 unk_ba;
-    s32 unk_bc;
-    s32 unk_c0;
+    void (*unk_bc)(void *self, void *arg); // called with unk_c0 when the task closes (func_ov000_0217c008)
+    void *unk_c0;
 };
 SIZE_ASSERT(Task021cbb60, 0xc4);
 
@@ -153,7 +153,7 @@ public:
     UiList021cb4a8 *unk_4c;
     Lo021cadcc *unk_50;
     s32 unk_54;
-    VObj *unk_58;
+    Lo021cad50 *unk_58; // message window (vtable data_ov000_021cad50)
     u8 unk_5c[0x100]; // text buffer, filled by func_0206ecd4(0x100, ...)
 };
 SIZE_ASSERT(Task021cbee0, 0x15c);

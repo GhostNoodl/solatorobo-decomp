@@ -61,8 +61,9 @@ void func_ov009_02207bd4(Ov009ActVt_02217844 *self) {
     }
 }
 
-BOOL func_ov009_02207cc4(void) {
-    return FALSE;
+// ActorHp::unk_18 of this actor: it takes no damage.
+s32 func_ov009_02207cc4(s32 dmg) {
+    return 0;
 }
 
 static inline void Set(Ov009Multi *self, VecFx32 p, u16 r) { self->unk_494.x = p.x; self->unk_492 = r; self->unk_494.y = p.y; self->unk_494.z = p.z; }
@@ -79,7 +80,7 @@ void Ov009Multi_Start(Ov009Multi *self) {
         func_ov000_02190758(&self->models[i], &self->rot_x, 0);
     }
     self->unk_490 = 4;
-    self->hpObj->unk_18 = (u32)func_ov009_02207cc4;
+    self->hpObj->unk_18 = func_ov009_02207cc4;
     self->unk_ea_6 = 1;
 }
 

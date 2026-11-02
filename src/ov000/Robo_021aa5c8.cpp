@@ -15,11 +15,6 @@ typedef struct {
     u8 rest : 3;
 } Bits8021aa5c8;
 
-typedef struct {
-    u8 lo : 4;
-    u8 hi : 4;
-} Nib021aa5c8;
-
 extern "C" {
 
 extern FieldId data_ov000_021c9fe8;
@@ -87,7 +82,7 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
                 n += (u16)(sub->unk_1a * 2);
             }
             if (self->unk_ba4 != NULL) {
-                n += LFLD(Nib021aa5c8, self->unk_ba4, 5).hi;
+                n += self->unk_ba4->unk_05_4;
             }
             func_ov003_021cedf4(n);
         }

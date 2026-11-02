@@ -25,13 +25,13 @@ void func_ov000_0215d30c(Lo021cad50 *self) {
             LFLD(u32, o, 4) |= 0x4000000;
         }
         self->unk_98[0]->vfunc_8c();
-        if (!LBIT(self, 0xc).b1) {
+        if (!self->hidden) {
             if (self->unk_98[0]->vfunc_10() || (self->flags & 0x40000)) {
-                LBIT(self, 0xc).b1 = 1;
+                self->hidden = 1;
             }
         }
     }
-    if (LBIT(self, 0xc).b1 == 1) {
+    if (self->hidden == 1) {
         self->state = 1;
     }
 }

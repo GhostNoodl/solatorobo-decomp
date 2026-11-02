@@ -10,12 +10,6 @@ typedef struct {
     s32 y;
 } Lim0216b880;
 
-typedef struct {
-    u32 b0 : 3;
-    u32 b3 : 1;
-    u32 b4 : 28;
-} Bits0216b880;
-
 extern "C" {
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern u8 data_ov000_021c9a9c[];
@@ -48,25 +42,17 @@ static inline Lo021cb744 *GetB0216b880(MessageQueue021cb980 *mgr) {
     return mgr->unk_11c != NULL ? mgr->unk_11c->unk_64 : NULL;
 }
 
-struct Obj0216b880 {
-    Bits0216b880 unk_00;
-    s32 unk_04;
-    Model *unk_08;
-    u8 unk_0c[0xc];
-    s32 unk_18;
-};
-
-void func_ov000_0216b880(Obj0216b880 *self) {
+void func_ov000_0216b880(Lo0216b474 *self) {
     s32 off;
     Model *m;
     Lo021cb798 *a;
     Lo021cb744 *b;
     s32 y;
     s32 v;
-    if (self->unk_04 != 7 && self->unk_04 != 8) {
+    if (self->state != 7 && self->state != 8) {
         return;
     }
-    v = self->unk_18;
+    v = self->ratio;
     y = LO_FX_MUL(v, 0x40000) + 0x55000;
     y -= 0xb000;
     a = GetA0216b880(data_ov000_021ccd30);
@@ -89,12 +75,12 @@ void func_ov000_0216b880(Obj0216b880 *self) {
     } else if (y > lim.y) {
         y += off;
     }
-    Model_SetPos(self->unk_08, -0x7d000, y & ~0xfff);
-    self->unk_08->unk_150 = -0x2000;
-    if (self->unk_00.b3) {
-        Model_PlayPartEx(self->unk_08, 0x22, 0);
+    Model_SetPos(self->model, -0x7d000, y & ~0xfff);
+    self->model->unk_150 = -0x2000;
+    if (self->part22) {
+        Model_PlayPartEx(self->model, 0x22, 0);
     } else {
-        Model_PlayPartEx(self->unk_08, 0x23, 0);
+        Model_PlayPartEx(self->model, 0x23, 0);
     }
 }
 

@@ -2,18 +2,11 @@
 #include "Main/Gfx/FieldMsg.h"
 #include "ov000/ObjLayouts.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
 typedef struct {
     u32 b0 : 2;
     u32 lay : 5;
     u32 rest : 25;
 } MdlFlags021c2450;
-
-typedef struct {
-    u8 b0 : 1;
-    u8 rest : 7;
-} F021c2450;
 
 extern "C" {
 extern char *data_0208cc88;
@@ -31,34 +24,34 @@ static inline BOOL Txt_IsVis021c2450(TextWin *t) {
 static inline void SetText021c2450(Hud021cca10 *self, char *str0) {
     TextWin *t;
     char *str = str0;
-    if (self->unk_38 == NULL) {
+    if (self->text == NULL) {
         t = (TextWin *)Heap_Alloc(0xb8);
         if (t != NULL) {
             VOBJ_SET_VTABLE(t, data_0208ba70);
             func_0204c7d0(t);
         }
-        self->unk_38 = t;
+        self->text = t;
     }
-    self->unk_38->unk_vf08();
-    self->unk_38->font = 8;
-    t = self->unk_38;
+    self->text->unk_vf08();
+    self->text->font = 8;
+    t = self->text;
     t->str = (u32)str;
     t->unk_4c = Text_Measure(t->font, t->spacing, t->str, &t->width, &t->height, (s8)t->unk_37 != 0);
     data_02097ce0->unk_004 = t->font;
-    self->unk_38->unk_4_8 = 0x1e;
-    self->unk_38->unk_vf14();
-    self->unk_38->flags |= 0x40;
-    self->unk_38->flags |= 0x1000000;
-    self->unk_38->flags |= 0x400000;
-    self->unk_38->flags |= 0x200000;
-    self->unk_38->flags |= 0x4;
-    self->unk_40 = str;
+    self->text->unk_4_8 = 0x1e;
+    self->text->unk_vf14();
+    self->text->flags |= 0x40;
+    self->text->flags |= 0x1000000;
+    self->text->flags |= 0x400000;
+    self->text->flags |= 0x200000;
+    self->text->flags |= 0x4;
+    self->str = str;
 }
 
 void func_ov000_021c2450(Hud021cca10 *self) {
     Model *m;
     Model *m2;
-    if (self->unk_44 == 0) {
+    if (self->built == 0) {
         m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
             char *name = data_0208cc94;
@@ -71,7 +64,7 @@ void func_ov000_021c2450(Hud021cca10 *self) {
         func_020417e0(self->unk_30, func_02034d88(func_02035d5c(m->name), self->unk_30->unk_04c));
         self->unk_30->flags |= 2;
         func_02041d9c(self->unk_30, 0, 6);
-        func_02041c20(self->unk_30, 6, self->unk_3c);
+        func_02041c20(self->unk_30, 6, (void *)self->unk_3c);
         func_02041c5c(self->unk_30, (void *)func_ov000_021c7608);
         self->unk_30->flags |= 0x80000;
         ((MdlFlags021c2450 *)&self->unk_30->flags)->lay = 0x1e;
@@ -91,23 +84,23 @@ void func_ov000_021c2450(Hud021cca10 *self) {
         self->unk_34->flags |= 0x80000;
         ((MdlFlags021c2450 *)&self->unk_34->flags)->lay = 0x1e;
         self->unk_34->flags |= 0x100000;
-        if (self->unk_38 == NULL) {
+        if (self->text == NULL) {
             SetText021c2450(self, data_ov000_021cc9bc);
         }
-        self->unk_44 = 1;
+        self->built = 1;
         return;
     }
-    if (LFLD(F021c2450, self, 0x20).b0) {
-        if (Txt_IsVis021c2450(self->unk_38)) {
+    if (self->shown) {
+        if (Txt_IsVis021c2450(self->text)) {
             return;
         }
-        SetText021c2450(self, self->unk_40);
+        SetText021c2450(self, self->str);
     } else {
-        if (!Txt_IsVis021c2450(self->unk_38)) {
+        if (!Txt_IsVis021c2450(self->text)) {
             return;
         }
-        self->unk_38->unk_vf08();
-        self->unk_38->rendering = 0;
+        self->text->unk_vf08();
+        self->text->rendering = 0;
     }
 }
 }

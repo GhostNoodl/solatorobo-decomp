@@ -40,7 +40,7 @@ void func_ov000_02161238(Lo021cacd8 *self) {
     case 1:
         break;
     case 2:
-        if (LBIT(self, 0xc).b1) {
+        if (self->hidden) {
             self->state = 1;
         }
         break;

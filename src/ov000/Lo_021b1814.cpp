@@ -30,7 +30,7 @@ static inline void Reset12c0(Robo021ca458 *self, BOOL flag) {
     self->unk_76c = self->rot_x;
     self->unk_76e = self->rot_y;
     self->unk_770 = self->rot_z;
-    func_ov000_02190cb0((u8 *)self + 0x368, data_ov000_021cc5e3, 0x1000, 1);
+    func_ov000_02190cb0(&self->mdl1, data_ov000_021cc5e3, 0x1000, 1);
     anm = ((Anm021b12c0 *)self->mdl1.unk_1c);
     if (anm != NULL) {
         NNS_G3dRenderObjRemoveAnmObj((u8 *)self + 0x38c, *(void **)anm);
@@ -142,7 +142,7 @@ void func_ov000_021b1b88(Robo021ca458 *self, s32 mode) {
             self->unk_76c = self->rot_x;
             self->unk_76e = self->rot_y;
             self->unk_770 = self->rot_z;
-            func_ov000_02190cb0((u8 *)self + 0x368, data_ov000_021cc5e3, 0x1000, 1);
+            func_ov000_02190cb0(&self->mdl1, data_ov000_021cc5e3, 0x1000, 1);
             anm = (Anm021b12c0 *)self->mdl1.unk_1c;
             if (anm != NULL) {
                 NNS_G3dRenderObjRemoveAnmObj((u8 *)self + 0x38c, *(void **)anm);

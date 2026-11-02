@@ -113,7 +113,7 @@ void func_ov000_0214c2d0(Menu021ca94c *self) {
     self->unk_14c |= 0x1000000;
     self->unk_14c |= 0x40000004;
     func_0204ca70((u8 *)self + 0x148);
-    LBIT(self, 0xc).b0 = 1;
+    self->busy = 1;
 }
 
 }
