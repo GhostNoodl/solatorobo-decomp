@@ -67,6 +67,10 @@ struct ActorEx : public Actor {
     };
     union {
         u16 unk_ce;
+        struct { // both bytes whole and unsigned (the ov003 gimmick)
+            u8 unk_ce_u;
+            u8 unk_cf_u;
+        };
         struct { // bytes as some ov010/ov011/ov013 classes use them
             u8 unk_ce_0 : 1;
             u8 unk_ce_1 : 1;

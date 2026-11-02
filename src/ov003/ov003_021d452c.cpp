@@ -2,12 +2,8 @@
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
 #include "ov003/Actor.h"
+#include "ov003/ActorApi.h"
 #include "Main/Sys/FieldState.h"
-
-typedef struct {
-    u8 unk_00[0x70];
-    VecFx32 pos;
-} Ov003KbUnit;
 
 extern "C" {
 
@@ -15,8 +11,7 @@ extern void *data_ov000_021ccd68;
 extern const char *data_ov003_021f7a48[][2];
 extern char data_ov003_021f7a60[];
 extern char data_ov003_021f7a66[];
-extern Ov003KbUnit *ActorMgr_GetActor(void *mgr, u16 id);
-extern void Actor_TurnToActor(void *self, Ov003KbUnit *target, s32 a);
+extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s16 a, u8 b);
 extern void func_ov000_021915a0(Model0218fe1c *model);
 extern BOOL func_ov000_02191120(Model0218fe1c *model);
@@ -51,7 +46,7 @@ static inline BOOL Ov003Kb_GameIdle(void) {
     return TRUE;
 }
 
-static inline Ov003KbUnit *Ov003Kb_FindUnit(u16 id) {
+static inline Actor *Ov003Kb_FindUnit(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
@@ -59,7 +54,7 @@ static inline Ov003KbUnit *Ov003Kb_FindUnit(u16 id) {
 }
 
 void func_ov003_021d452c(Ov003Actor *self) {
-    Ov003KbUnit *pl;
+    Actor *pl;
     ActorSub40 *w;
     BOOL f;
     if (!Ov003Kb_GameIdle()) {

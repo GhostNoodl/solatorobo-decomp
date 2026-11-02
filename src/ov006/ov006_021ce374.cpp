@@ -8,6 +8,7 @@
 #include <nitro/fx.h>
 #include "ov006/Emblem.h"
 #include "ov006/Tasks.h"
+#include "ov006/Caption.h"
 #include "ov006/ov006.h"
 #include "ov006/SlotManager.h"
 #include "Main/Res/ResArc.h"
@@ -308,10 +309,7 @@ void func_ov000_021c22d8(void *self);
 void func_ov000_021c5fc4(void *self);
 void func_ov000_021c5fd0(void *self, const void *s);
 void func_ov000_021c3fd4(void *list, void *item);
-void *Ov006Vt_021ec29c_Ctor(void *self);
-void func_ov006_021e2c14(void *self);
-void func_ov006_021e341c(void *self, const void *s);
-void ov006_CaptionSet_SetText(void *self, const void *s, int idx);
+void func_ov006_021e341c(ov006_CaptionPanel *self, const void *s);
 BOOL func_ov006_021ce734(ov006_TaskOwner *owner, ov006_ListNode *arg);
 BOOL func_ov006_021ce954(ov006_TaskOwner *owner, ov006_ListNode *arg);
 }
@@ -455,11 +453,11 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
             self->unk50->flags |= 2;
         }
         {
-            void *p = Heap_Alloc(0x24);
+            ov006_CaptionPanel *p = (ov006_CaptionPanel *)Heap_Alloc(0x24);
             if (p != NULL) {
                 p = Ov006Vt_021ec29c_Ctor(p);
             }
-            self->unk54 = (Object *)p;
+            self->unk54 = p;
         }
         func_ov006_021e2c14(self->unk54);
         func_ov006_021e341c(self->unk54, MsgRes_GetString(res, 0x183));
@@ -468,7 +466,7 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
             for (i = 0; i < 3; i++) {
                 e = ov006_GetPriceEntry(ov006_SlotManager_Get14A(data_ov006_021ec884, i));
                 if (e != NULL) {
-                    ov006_CaptionSet_SetText(self->unk54, MsgRes_GetString(res, e->name), k);
+                    ov006_CaptionSet_SetText(self->unk54, (const char *)MsgRes_GetString(res, e->name), k);
                     k++;
                 }
             }
@@ -529,7 +527,7 @@ void *func_0205976c(ov006_DataRes *res, u32 idx);
 u32 func_0205975c(ov006_DataRes *res, u32 idx);
 u16 func_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
-void func_ov006_021e2f3c(Object *a);
+void func_ov006_021e2f3c(ov006_CaptionPanel *a);
 
 void func_ov006_021cf360(ov006_TaskCE *self, u16 id) {
     const void *str;
@@ -604,7 +602,7 @@ void *func_0205976c(ov006_DataRes *res, u32 idx);
 u32 func_0205975c(ov006_DataRes *res, u32 idx);
 u16 func_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
-void func_ov006_021e2f3c(Object *a);
+void func_ov006_021e2f3c(ov006_CaptionPanel *a);
 
 void func_ov006_021cf420(ov006_TaskCE *self) {
     u8 *block;
@@ -888,7 +886,7 @@ extern "C" {
 
 extern void *data_ov006_021ebcc0;
 
-void func_ov006_021e309c(Object *a);
+void func_ov006_021e309c(ov006_CaptionPanel *a);
 
 void func_ov006_021cfe84(ov006_TaskCE *self) {
     if (self->unk44 != NULL) {
@@ -1557,9 +1555,9 @@ namespace m_021d1694 {
 
 extern "C" {
 
-void func_ov006_021d16a0(void *self);
+void func_ov006_021d16a0(ov006_TaskD0C *self);
 
-void func_ov006_021d1694(void *self) {
+void func_ov006_021d1694(ov006_TaskD0C *self) {
     func_ov006_021d16a0(self);
 }
 

@@ -31,7 +31,7 @@ extern Ov003SdUnit *Group_FindNode(void *mgr, u16 id);
 extern Ov003SdObj *ActorMgr_GetActor(void *mgr, u16 id);
 extern s32 FX_Div(s32 a, s32 b);
 extern void NNS_G3dRenderObjSetInitFunc(void *rob, void *func);
-extern void func_ov003_021d0c04(void *self);
+extern void func_ov003_021d0c04(void *rs);
 extern u16 func_ov000_0218cea4(Ov003Actor *self);
 extern u16 func_ov000_021903b4(Model0218fe1c *m);
 extern void func_01ffc9fc(VecFx32 *out, VecFx32 *in, u16 ang);

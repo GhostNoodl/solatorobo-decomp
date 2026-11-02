@@ -1,20 +1,8 @@
 #include "types.h"
 #include "Main/Effect/Effect.h"
 #include "nitro/std.h"
+#include "ov003/Prop.h"
 
-
-struct Ov003Res {
-    s16 handle;
-    u8 unk_02;
-    u8 unk_03_0 : 1;
-    u8 hasName : 1;
-    u8 hasAltName : 1;
-    u8 unk_04[0xc];
-    char name[0x20];
-    char name2[0x1c];
-    char altName[0x20];
-    char altName2[0xcc];
-};
 
 struct Ov003Names {
     const char *name;
@@ -34,18 +22,6 @@ struct Ov003Info {
     u8 unk_00[0x12];
     u16 unk_12_0 : 12;
     u16 shadow : 2;
-};
-
-struct Ov003Shadow {
-    u8 unk_00[0x1b];
-    u8 state;
-};
-
-struct Ov003Model {
-    u8 unk_00[0xc2];
-    u16 visible : 1;
-    u16 unk_c2_1 : 5;
-    u16 unk_c2_6 : 1;
 };
 
 struct Ov003PropDef {
@@ -83,27 +59,6 @@ struct Ov003Save {
     u16 unk_18_3 : 4;
 };
 
-struct Ov003Prop {
-    u8 unk_00[0xe];
-    u16 id;
-    u8 unk_10[0x24];
-    Ov003Res *res;
-    Ov003Model *model;
-    Ov003Shadow *shadow;
-    void *task;
-    u8 unk_44[0x2c];
-    VecFx32 pos;
-    u8 unk_7c[0x30];
-    s32 unk_ac;
-    Ov003Res altRes;
-    u8 count;
-    u8 unk_1e9;
-    u16 unk_1ea;
-    u16 unk_1ec;
-    u8 unk_1ee[0xe2];
-    u16 timer;
-};
-
 extern "C" {
 extern s32 Rand_PlusMinus(s32 max);
 extern u32 Rand_UpTo(u32 max);
@@ -111,25 +66,29 @@ extern Ov003FxPlayer *func_ov000_0219bf90(void);
 extern Ov003Info *func_0206fef8(u16 id);
 extern u8 *func_020705fc(s32 id);
 extern void *Heap_Alloc(u32 size);
-extern Ov003Res *func_ov000_0218e9c4(void *p);
-extern Ov003Shadow *func_ov000_021919c8(void *p);
-extern void Shadow_Load(Ov003Shadow *p);
-extern BOOL func_ov000_02191b9c(Ov003Shadow *p);
-extern BOOL func_ov000_0218f110(s16 *p);
+extern ActorRes *func_ov000_0218e9c4(void *p);
+extern ActorShadow *func_ov000_021919c8(void *p);
+extern void Shadow_Load(ActorShadow *p);
+extern BOOL func_ov000_02191b9c(ActorShadow *p);
+extern BOOL func_ov000_0218f110(ActorRes *p);
 extern Ov003Save *data_0214a424;
 extern char data_ov003_021fa662[];
-extern void Ov000ActVt_021cc7cc_Start(void *self);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
-extern void func_ov000_02191870(void *model, Ov003Res *res);
+extern void func_ov000_02191870(void *model, ActorRes *res);
 extern Ov003AnimLayer *func_ov000_02190a30(void *model, s32 n);
 extern void func_ov000_02191920(void *model, s32 a, s32 b, s32 c);
-extern void *History_Init(void *p);
+extern ActorSub40 *History_Init(void *p);
 extern u8 *func_0206ef10(u16 id);
-extern void func_ov000_02191008(Ov003Model *model);
-extern void func_ov000_0218ec60(Ov003Res *res, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov000_0218edf0(Ov003Res *res, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov000_0218ef10(Ov003Res *res, s32 a, s32 b, s32 c, s32 d);
-extern BOOL func_ov000_0218ffdc(Ov003Model *model, Ov003Res *res, s32 a, s32 b);
+extern void func_ov000_02191008(Model0218fe1c *model);
+extern void func_ov000_0218ec60(ActorRes *res, s32 a, s32 b, s32 c, s32 d);
+extern void func_ov000_0218edf0(ActorRes *res, s32 a, s32 b, s32 c, s32 d);
+extern void func_ov000_0218ef10(ActorRes *res, s32 a, s32 b, s32 c, s32 d);
+extern BOOL func_ov000_0218ffdc(Model0218fe1c *model, ActorRes *res, s32 a, s32 b);
+
+// Actor::unk_34 is the actor's main ActorRes (built by func_ov000_0218e9c4).
+static inline ActorRes *Ov003Prop_MainRes(Ov003Prop021fa548 *self) {
+    return (ActorRes *)self->unk_34;
+}
 
 static inline Ov003PropDef *Ov003_GetDef(u16 a) {
     Ov003PropDef *def = NULL;
@@ -140,48 +99,48 @@ static inline Ov003PropDef *Ov003_GetDef(u16 a) {
     return def;
 }
 
-static inline void Ov003Model_SetVisible(Ov003Model *m, BOOL v) {
+static inline void Model0218fe1c_SetVisible(Model0218fe1c *m, BOOL v) {
     m->visible = v;
 }
 
-static inline BOOL Ov003Shadow_IsIdle(Ov003Shadow *sh) {
+static inline BOOL ActorShadow_IsIdle(ActorShadow *sh) {
     BOOL r = TRUE;
-    if (sh->state != 3 && sh->state != 0) {
+    if (sh->unk_1b != 3 && sh->unk_1b != 0) {
         r = FALSE;
     }
     return r;
 }
 
-BOOL Ov003ActVt_021fa548_IsReady(Ov003Prop *self) {
+BOOL Ov003ActVt_021fa548_IsReady(Ov003Prop021fa548 *self) {
     BOOL r = TRUE;
-    if (self->res->handle >= 0 && !func_ov000_0218f110(&self->res->handle)) {
+    if (Ov003Prop_MainRes(self)->unk_00 >= 0 && !func_ov000_0218f110(Ov003Prop_MainRes(self))) {
         r = FALSE;
     }
-    if (self->count != 0 && self->altRes.handle >= 0 && !func_ov000_0218f110(&self->altRes.handle)) {
+    if (self->altFrame != 0 && self->res.unk_00 >= 0 && !func_ov000_0218f110(&self->res)) {
         r = FALSE;
     }
-    if (self->shadow != NULL && !Ov003Shadow_IsIdle(self->shadow)) {
-        if (!func_ov000_02191b9c(self->shadow)) {
+    if (self->unk_3c != NULL && !ActorShadow_IsIdle(self->unk_3c)) {
+        if (!func_ov000_02191b9c(self->unk_3c)) {
             r = FALSE;
         }
     }
     return r;
 }
 
-void Ov003ActVt_021fa548_Start(Ov003Prop *self) {
+void Ov003ActVt_021fa548_Start(Ov003Prop021fa548 *self) {
     Ov003AnimLayer *layer;
     Ov000ActVt_021cc7cc_Start(self);
     func_ov000_02190cb0(self->model, data_ov003_021fa662, 0x1000, 1);
-    if (self->count != 0) {
-        func_ov000_02191870(self->model, &self->altRes);
+    if (self->altFrame != 0) {
+        func_ov000_02191870(self->model, &self->res);
         layer = func_ov000_02190a30(self->model, 3);
         if (layer != NULL) {
             s32 frame;
             s32 n;
             Ov003AnimCtl *ctl;
             func_ov000_02191920(self->model, 0, 0x1000, 0);
-            n = self->count << 12;
-            if (self->count != 0) {
+            n = self->altFrame << 12;
+            if (self->altFrame != 0) {
                 frame = (s32)((float)n + 0.5f);
             } else {
                 frame = (s32)((float)n - 0.5f);
@@ -198,18 +157,18 @@ void Ov003ActVt_021fa548_Start(Ov003Prop *self) {
         }
         self->model->unk_c2_6 = 1;
     }
-    void *task = Heap_Alloc(0x14);
+    ActorSub40 *task = (ActorSub40 *)Heap_Alloc(0x14);
     if (task != NULL) {
         task = History_Init(task);
     }
-    self->task = task;
+    self->fsm = task;
 }
 
-void func_ov003_021f3f5c(Ov003Prop *self) {
+void func_ov003_021f3f5c(Ov003Prop021fa548 *self) {
     Ov003Save *save = data_0214a424;
     u16 a = save->unk_18_3;
     u16 b = save->unk_18_1;
-    switch (*(u16 *)self->task) {
+    switch (self->fsm->st) {
     case 0: {
         Ov003PropDef *def;
         VecFx32 v;
@@ -228,43 +187,43 @@ void func_ov003_021f3f5c(Ov003Prop *self) {
         v.y += 0xccd;
         func_02065f88(0x5dc, &v);
         func_02065f88(0x384, &v);
-        Ov003Model_SetVisible(self->model, FALSE);
+        Model0218fe1c_SetVisible(self->model, FALSE);
         func_ov000_02191008(self->model);
-        func_ov000_0218ec60(self->res, def->a, def->b, 1, 0);
-        func_ov000_0218edf0(self->res, def->c, def->d, 1, 0);
-        func_ov000_0218ef10(self->res, def->e, def->f, 1, 0);
+        func_ov000_0218ec60(Ov003Prop_MainRes(self), def->a, def->b, 1, 0);
+        func_ov000_0218edf0(Ov003Prop_MainRes(self), def->c, def->d, 1, 0);
+        func_ov000_0218ef10(Ov003Prop_MainRes(self), def->e, def->f, 1, 0);
         if (def->alt != 0) {
-            func_ov000_0218edf0(&self->altRes, def->a, def->b, 1, 0);
+            func_ov000_0218edf0(&self->res, def->a, def->b, 1, 0);
         }
-        self->count = def->alt;
-        (*(u16 *)self->task)++;
+        self->altFrame = def->alt;
+        (self->fsm->st)++;
         break;
     }
     case 1: {
         BOOL r = TRUE;
-        if (self->res->handle >= 0 && !func_ov000_0218f110(&self->res->handle)) {
+        if (Ov003Prop_MainRes(self)->unk_00 >= 0 && !func_ov000_0218f110(Ov003Prop_MainRes(self))) {
             r = FALSE;
         }
-        if (self->count != 0 && self->altRes.handle >= 0 && !func_ov000_0218f110(&self->altRes.handle)) {
+        if (self->altFrame != 0 && self->res.unk_00 >= 0 && !func_ov000_0218f110(&self->res)) {
             r = FALSE;
         }
         if (!r) {
             return;
         }
-        func_ov000_0218ffdc(self->model, self->res, 0, 1);
-        Ov003Model_SetVisible(self->model, TRUE);
+        func_ov000_0218ffdc(self->model, Ov003Prop_MainRes(self), 0, 1);
+        Model0218fe1c_SetVisible(self->model, TRUE);
         func_ov000_02190cb0(self->model, data_ov003_021fa662, 0x1000, 1);
-        if (self->count != 0) {
+        if (self->altFrame != 0) {
             Ov003AnimLayer *layer;
-            func_ov000_02191870(self->model, &self->altRes);
+            func_ov000_02191870(self->model, &self->res);
             layer = func_ov000_02190a30(self->model, 3);
             if (layer != NULL) {
                 s32 frame;
                 s32 n;
                 Ov003AnimCtl *ctl;
                 func_ov000_02191920(self->model, 0, 0x1000, 0);
-                n = self->count << 12;
-                if (self->count != 0) {
+                n = self->altFrame << 12;
+                if (self->altFrame != 0) {
                     frame = (s32)((float)n + 0.5f);
                 } else {
                     frame = (s32)((float)n - 0.5f);
@@ -281,7 +240,7 @@ void func_ov003_021f3f5c(Ov003Prop *self) {
             }
             self->model->unk_c2_6 = 1;
         }
-        *(u16 *)self->task = 0;
+        self->fsm->st = 0;
         break;
     }
     }

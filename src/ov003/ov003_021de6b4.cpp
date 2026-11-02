@@ -1,17 +1,7 @@
-#include "ov000/VObj.h"
+#include "ov003/ActEx.h"
 #include "nitro/fx.h"
 extern "C" {
 #include "types.h"
-
-typedef struct Ov003Bomb {
-    void *vt;
-    u8 unk_04[0xa];
-    u16 unk_0e;
-    u8 unk_10[0x30];
-    u16 *work;
-    u8 unk_44[0x2c];
-    VecFx32 pos;
-} Ov003Bomb;
 
 VObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *sc, s32 a, s32 b, s32 c, s32 d);
 u32 Rand_UpTo(u32 max);
@@ -25,14 +15,14 @@ typedef enum { OV003_SPARK_KIND = 0x325 } Ov003SparkKind;
 void func_ov003_021de6b4(Ov003Bomb *self) {
     VecFx32 sc;
     VObj *e;
-    u16 *w;
+    ActorSub40 *w;
     Ov003SparkKind kind;
-    if (self->unk_0e != 0x4032) {
+    if (self->kind != 0x4032) {
         return;
     }
-    w = self->work;
-    w[1]++;
-    if ((w[1] & 0x7f) != 0) {
+    w = self->fsm;
+    w->timer++;
+    if ((w->timer & 0x7f) != 0) {
         return;
     }
     kind = OV003_SPARK_KIND;

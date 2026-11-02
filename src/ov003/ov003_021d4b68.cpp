@@ -2,6 +2,7 @@
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
 #include "ov003/Actor.h"
+#include "ov003/ActorApi.h"
 #include "Main/Sys/FieldState.h"
 
 typedef struct {
@@ -15,13 +16,6 @@ typedef struct {
 } Ov003KbAnim;
 
 typedef struct {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u8 unk_0e[0xa];
-    s16 unk_18;
-} Ov003KbUnit;
-
-typedef struct {
     u16 id;
     s8 unk_02;
 } Ov003KbSpawn;
@@ -32,13 +26,12 @@ extern void *data_ov000_021ccd68;
 extern const char *data_ov003_021f7a38[2][2];
 extern char data_ov003_021f7a60[];
 extern char data_ov003_021f7a66[];
-extern Ov003KbUnit *ActorMgr_GetActor(void *mgr, u16 id);
-extern void Actor_TurnToActor(void *self, Ov003KbUnit *target, s32 a);
+extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern u8 *func_02070558(s32 id);
 extern void func_01ffc9fc(VecFx32 *out, VecFx32 *in, u16 ang);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
-extern Ov003KbUnit *func_ov000_0219be1c(u16 id, VecFx32 *pos, void *rot, u16 a, s32 b);
-extern void func_ov000_0218d46c(Ov003KbUnit *u, u16 a, s32 b);
+extern Actor *func_ov000_0219be1c(u16 id, VecFx32 *pos, void *rot, u16 a, s32 b);
+extern void func_ov000_0218d46c(Actor *u, u16 a, s32 b);
 extern BOOL func_ov000_02191120(Model0218fe1c *model);
 extern void func_ov000_021915a0(Model0218fe1c *model);
 extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
@@ -46,7 +39,7 @@ extern void Actor_Move(Actor *self, s32 a);
 extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s16 a, u8 b);
 
-static inline Ov003KbUnit *Ov003Kb_FindUnit(u16 id) {
+static inline Actor *Ov003Kb_FindUnit(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
@@ -58,7 +51,7 @@ static inline BOOL Ov003KbCtl_Bit4(ActorSub48 *c) {
 }
 
 void func_ov003_021d4b68(Ov003Actor *self) {
-    Ov003KbUnit *pl = Ov003Kb_FindUnit(self->target);
+    Actor *pl = Ov003Kb_FindUnit(self->target);
     ActorSub40 *w = self->fsm;
     switch (w->st) {
     case 0:
@@ -80,7 +73,7 @@ void func_ov003_021d4b68(Ov003Actor *self) {
             u8 *rec = func_02070558(self->kind);
             Ov003KbSpawn *sp = NULL;
             u16 id;
-            Ov003KbUnit *o;
+            Actor *o;
             if (rec != NULL) {
                 sp = (Ov003KbSpawn *)(rec + 0x3a);
             }
@@ -96,12 +89,12 @@ void func_ov003_021d4b68(Ov003Actor *self) {
             {
                 u16 b = 0xffff;
                 if (pl != NULL) {
-                    b = pl->unk_0c;
+                    b = pl->id;
                 }
                 o = func_ov000_0219be1c(id, &v, &self->rot_x, self->id, b);
             }
             if (o != NULL) {
-                self->target_id = o->unk_0c;
+                self->target_id = o->id;
             }
             if (o != NULL && sp != NULL) {
                 o->unk_18 = sp->unk_02;
@@ -111,7 +104,7 @@ void func_ov003_021d4b68(Ov003Actor *self) {
     case 20: {
         s16 k = self->model->anim_state;
         if ((u16)(s16)(k - 3) <= 1) {
-            Ov003KbUnit *o = Ov003Kb_FindUnit(self->target_id);
+            Actor *o = Ov003Kb_FindUnit(self->target_id);
             if (o != NULL) {
                 func_ov000_0218d46c(o, self->id, 0xb);
                 self->target_id = 0xffff;

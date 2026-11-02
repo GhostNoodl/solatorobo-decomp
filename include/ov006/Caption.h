@@ -25,6 +25,19 @@ typedef struct ov006_Caption {
     TextWin *label;
 } ov006_Caption;
 
+/* A model with a title caption and up to three captions (vtable data_ov006_021ec29c, 0x24 bytes;
+   ctor Ov006Vt_021ec29c_Ctor, built by func_ov006_021e2c14; ov006_CaptionSet_SetText fills
+   captions[idx], func_ov006_021e341c plays the title's text). */
+typedef struct ov006_CaptionPanel {
+    void *vtbl;
+    u8 unk4;
+    int unk8;
+    int unkC;
+    Model *model;
+    ov006_Caption *title;
+    ov006_Caption *captions[3];
+} ov006_CaptionPanel;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -35,6 +48,11 @@ extern char data_ov006_021ec864[];
 extern const ov006_CaptionEntry data_ov006_021eb824[];
 extern const u32 data_0208ba70[];
 extern u8 data_ov006_021ec22c[];
+extern u8 data_ov006_021ec29c[];
+
+ov006_CaptionPanel *Ov006Vt_021ec29c_Ctor(ov006_CaptionPanel *self);
+void func_ov006_021e2c14(ov006_CaptionPanel *self);
+void ov006_CaptionSet_SetText(ov006_CaptionPanel *self, const char *text, int idx);
 
 #ifdef __cplusplus
 }

@@ -1,19 +1,4 @@
-#include "ov006/Model.h"
-
-typedef struct ov006_Marker {
-    void *vtbl;
-    u16 state;
-    u16 unk6;
-    s16 timer;
-    u8 unkA;
-    u8 unkB;
-    u8 unkC;
-    int unk10;
-    int unk14;
-    int unk18;
-    int unk1C;
-    int unk20;
-} ov006_Marker;
+#include "ov006/Marker.h"
 
 extern "C" {
 
@@ -29,8 +14,8 @@ ov006_Marker *Ov006Vt_021ec2ec_Ctor(ov006_Marker *self) {
     self->unkC = 1;
     self->unk10 = 0;
     self->unk14 = 0;
-    self->unk18 = 0;
-    self->unk1C = 0;
+    self->pos.x = 0;
+    self->pos.y = 0;
     return self;
 }
 

@@ -1,42 +1,25 @@
 #include "types.h"
+#include "ov003/ActorApi.h"
 
-typedef struct {
-    u8 unk_00[0x22];
-    u16 unk_22_0 : 1;
-    u16 unk_22_1 : 1;
-} Ov003SwPart;
-
-typedef struct {
-    u8 unk_00[0x18];
-    s16 unk_18;
-    s16 unk_1a;
-    u8 unk_1c[0x28];
-    Ov003SwPart *unk_44;
-    u8 unk_48[4];
-    void *unk_4c;
-    u8 unk_50[0x43];
-    u8 unk_93_0 : 1;
-    u8 unk_93_1 : 3;
-} Ov003SwProp;
+extern "C" {
 
 extern s32 func_ov003_021f093c(void *p);
 extern BOOL func_ov003_021f0abc(void *p, BOOL deep);
-extern void func_ov000_02197dec(void *self, s32 a, s32 b);
 extern void func_020627b4(void);
 
-static inline BOOL Ov003SwPart_IsOn(Ov003SwPart *p) {
+static inline BOOL Ov003SwPart_IsOn(ActorSub44 *p) {
     if (p->unk_22_0 == 1 && p->unk_22_1 == 1) {
         return TRUE;
     }
     return FALSE;
 }
 
-void Ov003ActVt_021f7e7c_Update(Ov003SwProp *self) {
-    BOOL changed = FALSE;
+void Ov003ActVt_021f7e7c_Update(ActorEx *self) {
+    u8 changed = FALSE;
     s32 v = -1;
     switch (self->unk_1a) {
     case 3:
-        switch (func_ov003_021f093c(self->unk_4c)) {
+        switch (func_ov003_021f093c(self->targetObj)) {
         case 3:
         case 4:
             if (self->unk_18 == 0) {
@@ -54,7 +37,7 @@ void Ov003ActVt_021f7e7c_Update(Ov003SwProp *self) {
         }
         break;
     case 2:
-        if (func_ov003_021f0abc(self->unk_4c, TRUE)) {
+        if (func_ov003_021f0abc(self->targetObj, TRUE)) {
             if (self->unk_18 == 0) {
                 changed = TRUE;
                 v = 1;
@@ -75,7 +58,7 @@ void Ov003ActVt_021f7e7c_Update(Ov003SwProp *self) {
     }
     switch (v) {
     case 0: {
-        Ov003SwPart *p = self->unk_44;
+        ActorSub44 *p = self->unk_44;
         if (p->unk_22_0 == 1 && p->unk_22_1 == 1) {
             p->unk_22_0 = 0;
             p->unk_22_1 = 0;
@@ -84,7 +67,7 @@ void Ov003ActVt_021f7e7c_Update(Ov003SwProp *self) {
         break;
     }
     case 1: {
-        Ov003SwPart *p = self->unk_44;
+        ActorSub44 *p = self->unk_44;
         if (!Ov003SwPart_IsOn(p)) {
             p->unk_22_0 = 1;
             p->unk_22_1 = 1;
@@ -99,3 +82,5 @@ void Ov003ActVt_021f7e7c_Update(Ov003SwProp *self) {
         func_ov000_02197dec(self, changed, changed);
     }
 }
+
+} // extern "C"

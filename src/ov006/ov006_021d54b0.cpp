@@ -1,5 +1,6 @@
 #include "ov006/ov006.h"
 #include "ov006/Model.h"
+#include "ov006/MsgBox.h"
 #include "Main/Res/ResArc.h"
 #include "Main/Res/ArcName.h"
 
@@ -86,7 +87,6 @@ void func_ov000_02180754(void);
 void func_ov000_02180660(int a, int b);
 bool func_ov000_021735e8(void);
 void func_ov000_021c2310(void *self);
-void func_ov000_02163254(void *self);
 void func_0204aab0(ov006_Unk02097e48 *a);
 
 ov006_Task0 *func_ov006_021d54b0(ov006_Task0 *self) {
@@ -284,8 +284,8 @@ void *Ov006Vt_021ebc80_Dtor(void **self) {
     return self;
 }
 
-void *func_ov006_021d5ae4(void **self) {
-    *self = &data_ov006_021ebc70;
+ov006_MsgBox *func_ov006_021d5ae4(ov006_MsgBox *self) {
+    self->vtbl = &data_ov006_021ebc70;
     func_ov000_02163254(self);
     return self;
 }

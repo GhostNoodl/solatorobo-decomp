@@ -2,6 +2,7 @@
 #include "ov003/ActorApi.h"
 #include "ov003/Actor.h"
 #include "ov000/ObjLayouts.h"
+#include "ov003/ActEx.h"
 #include "ov003/Shot.h"
 #include "ov003/Unit.h"
 
@@ -14,18 +15,16 @@ extern BOOL func_ov000_02190cb0(Model0218fe1c *p, const char *name, s16 a, u8 b)
 extern void func_ov000_021915a0(Model0218fe1c *p);
 extern void func_ov000_021911c8(Model0218fe1c *p, s16 a);
 extern void Heap_Free(void *p);
-extern void *func_ov000_0218ea20(void *p);
 
-// 021f99e8 is Ov003Gimmick (ov003_021ec130.cpp), whose ActorRes sits at 0xdc.
-ActorEx *Ov003ActVt_021f99e8_DtorDelete(ActorEx *self) {
-    func_ov000_0218ea20((u8 *)self + 0xdc);
+Ov003Gimmick *Ov003ActVt_021f99e8_DtorDelete(Ov003Gimmick *self) {
+    func_ov000_0218ea20(&self->res);
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;
 }
 
-ActorEx *Ov003ActVt_021f99e8_Dtor(ActorEx *self) {
-    func_ov000_0218ea20((u8 *)self + 0xdc);
+Ov003Gimmick *Ov003ActVt_021f99e8_Dtor(Ov003Gimmick *self) {
+    func_ov000_0218ea20(&self->res);
     func_ov000_0219429c(self);
     return self;
 }

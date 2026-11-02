@@ -1,19 +1,20 @@
 #include "types.h"
 #include "nitro/fx.h"
 #include "ov003/Blink.h"
+#include "ov003/Prop.h"
+
+extern "C" {
 
 extern void *data_ov003_021f738c[];
 extern Ov003BlinkTarget *func_ov000_0219bf90(void);
 extern BOOL func_ov000_02191120(void *model);
 extern char data_ov003_021fa2d2[];
 
-extern void Ov000ActVt_021cc7cc_Start(void *self);
 extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_021911c8(void *model, s32 v);
 extern s32 Rand_PlusMinus(s32 max);
 extern Ov003BlinkInfo *func_0206fef8(u16 id);
-extern BOOL func_ov000_0218cea4(void *self);
 extern BOOL func_ov000_021903b4(void *model);
 
 static inline void Ov003_SetSqrtImm64(u64 param) {
@@ -48,28 +49,28 @@ static inline s32 Ov003_DistXZ(const VecFx32 *a, const VecFx32 *b) {
     return Ov003_Dist2D(sq);
 }
 
-void func_ov003_021f3198(Ov003Blink *self);
+void func_ov003_021f3198(Ov003PropBlink *self);
 
-void Ov003ActVt_021fa440_Start(Ov003Blink *self) {
+void Ov003ActVt_021fa440_Start(Ov003PropBlink *self) {
     Ov000ActVt_021cc7cc_Start(self);
-    self->u.blink.phase = 0;
-    if (!((s16)self->pattern & 0xff00)) {
-        self->u.blink.phase = 2;
+    self->phase = 0;
+    if (!(self->unk_18 & 0xff00)) {
+        self->phase = 2;
     }
     func_ov003_021f3198(self);
-    self->model->shadow = 0;
-    self->u.blink.radius = self->unk_1e << 4;
+    self->model->boxTest = 0;
+    self->radius = self->unk_1e << 4;
 }
 
-void func_ov003_021f2fac(Ov003Blink *self) {
+void func_ov003_021f2fac(Ov003PropBlink *self) {
     Ov003BlinkTarget *t = func_ov000_0219bf90();
-    switch (self->u.blink.phase) {
+    switch (self->phase) {
     case 0:
         if (!func_ov000_02191120(self->model)) {
             return;
         }
-        if (Ov003_DistXZ(&self->pos, &t->pos) < self->u.blink.radius) {
-            self->u.blink.phase++;
+        if (Ov003_DistXZ(&self->pos, &t->pos) < self->radius) {
+            self->phase++;
             func_ov003_021f3198(self);
         }
         break;
@@ -77,20 +78,20 @@ void func_ov003_021f2fac(Ov003Blink *self) {
         if (!func_ov000_02191120(self->model)) {
             return;
         }
-        if ((s16)self->pattern & 0xff) {
-            self->u.blink.phase++;
+        if (self->unk_18 & 0xff) {
+            self->phase++;
             func_ov003_021f3198(self);
         } else {
             self->model->visible = 0;
-            self->u.blink.phase = 10;
+            self->phase = 10;
         }
         break;
     case 2:
         if (!func_ov000_02191120(self->model)) {
             return;
         }
-        if (Ov003_DistXZ(&self->pos, &t->pos) > self->u.blink.radius) {
-            self->u.blink.phase++;
+        if (Ov003_DistXZ(&self->pos, &t->pos) > self->radius) {
+            self->phase++;
             func_ov003_021f3198(self);
         }
         break;
@@ -98,13 +99,15 @@ void func_ov003_021f2fac(Ov003Blink *self) {
         if (!func_ov000_02191120(self->model)) {
             return;
         }
-        if ((s16)self->pattern & 0xff00) {
-            self->u.blink.phase = 0;
+        if (self->unk_18 & 0xff00) {
+            self->phase = 0;
             func_ov003_021f3198(self);
         } else {
             self->model->visible = 0;
-            self->u.blink.phase = 10;
+            self->phase = 10;
         }
         break;
     }
 }
+
+} // extern "C"

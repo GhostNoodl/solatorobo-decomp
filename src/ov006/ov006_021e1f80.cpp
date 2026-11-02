@@ -1,18 +1,4 @@
-#include "ov006/Model.h"
-#include "nitro/fx.h"
-
-typedef struct ov006_Marker {
-    void *vtbl;
-    u16 state;
-    u16 unk6;
-    s16 timer;
-    u8 unkA;
-    u8 unkB;
-    u8 unkC;
-    int unk10;
-    int unk14;
-    VecFx32 pos;
-} ov006_Marker;
+#include "ov006/Marker.h"
 
 extern "C" {
 

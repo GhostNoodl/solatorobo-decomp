@@ -93,15 +93,15 @@ src/ov003/ov003_021f34b0.cpp:
     complete
     .text       start:0x021f34b0 end:0x021f371c
 
-src/ov003/ov003_021f371c.c:
+src/ov003/ov003_021f371c.cpp:
     complete
     .text       start:0x021f371c end:0x021f3954
 
-src/ov003/ov003_021f3954.c:
+src/ov003/ov003_021f3954.cpp:
     complete
     .text       start:0x021f3954 end:0x021f3a94
 
-src/ov003/ov003_021f3a94.c:
+src/ov003/ov003_021f3a94.cpp:
     complete
     .text       start:0x021f3a94 end:0x021f3b30
 
@@ -217,7 +217,7 @@ src/ov003/ov003_021cedf4.cpp:
     complete
     .text       start:0x021cedf4 end:0x021cf1f0
 
-src/ov003/ov003_021f1ce0.c:
+src/ov003/ov003_021f1ce0.cpp:
     complete
     .text       start:0x021f1ce0 end:0x021f2374
 
@@ -225,11 +225,11 @@ src/ov003/ov003_021f2374.c:
     complete
     .text       start:0x021f2374 end:0x021f27ec
 
-src/ov003/ov003_021f3198.c:
+src/ov003/ov003_021f3198.cpp:
     complete
     .text       start:0x021f3198 end:0x021f34b0
 
-src/ov003/ov003_021f2f60.c:
+src/ov003/ov003_021f2f60.cpp:
     complete
     .text       start:0x021f2f60 end:0x021f3198
 
@@ -305,7 +305,7 @@ src/ov003/ov003_021f7848.cpp:
     .ctor       start:0x021f78a8 end:0x021f78ac
     .data       start:0x021f90e0 end:0x021f910c
 
-src/ov003/ov003_021e7274.c:
+src/ov003/ov003_021e7274.cpp:
     complete
     .text       start:0x021e7274 end:0x021e72cc
 
@@ -345,11 +345,11 @@ src/ov003/ov003_021e02e8.cpp:
     complete
     .text       start:0x021e00e8 end:0x021e0800
 
-src/ov003/ov003_021e0b20.c:
+src/ov003/ov003_021e0b20.cpp:
     complete
     .text       start:0x021e0b20 end:0x021e0c60
 
-src/ov003/ov003_021e0800.c:
+src/ov003/ov003_021e0800.cpp:
     complete
     .text       start:0x021e0800 end:0x021e0b20
 
@@ -394,7 +394,7 @@ src/ov003/ov003_021d3a88.cpp:
     complete
     .text       start:0x021d3a88 end:0x021d3d28
 
-src/ov003/ov003_021ddf00.c:
+src/ov003/ov003_021ddf00.cpp:
     complete
     .text       start:0x021ddf00 end:0x021de624
 
@@ -414,7 +414,7 @@ src/ov003/ov003_021d3008.cpp:
     complete
     .text       start:0x021d3008 end:0x021d3524
 
-src/ov003/ov003_021ddd48.c:
+src/ov003/ov003_021ddd48.cpp:
     complete
     .text       start:0x021ddd48 end:0x021ddf00
 

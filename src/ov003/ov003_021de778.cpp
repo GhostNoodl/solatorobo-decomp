@@ -4,23 +4,9 @@
 #include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
 #include "Main/Res/StageCmd.h"
+#include "ov003/ActEx.h"
+#include "ov003/ActorApi.h"
 
-
-class Ov003Bomb {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void Destroy();
-    u8 unk_04[0xa];
-    u16 unk_0e;
-    u8 unk_10[0xa];
-    s16 unk_1a;
-    u8 unk_1c[0x24];
-    u16 *work;
-    u8 unk_44[0x2c];
-    VecFx32 pos;
-    Rot16 rot;
-};
 
 typedef struct {
     u8 unk_00[0x20];
@@ -36,7 +22,6 @@ extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 extern Ov003BmInfo *func_020704b4(u16 id);
 extern void func_ov000_0219b400(void *a, void *b, s32 c, VecFx32 *pos, Rot16 *rot, s32 d);
-extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *sc, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218996c(u8 a, u8 b);
@@ -46,7 +31,7 @@ static inline u16 Camera_GetAngle(Camera *cam) {
 }
 
 void func_ov003_021de778(Ov003Bomb *self) {
-    switch (self->work[0]) {
+    switch (self->fsm->st) {
     case 0:
         if (self->unk_1a == 0) {
             VecFx32 v;
@@ -74,23 +59,23 @@ void func_ov003_021de778(Ov003Bomb *self) {
         }
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4030, 0x15);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4031, 0x15);
-        self->work[1] = 1;
-        self->work[0]++;
+        self->fsm->timer = 1;
+        self->fsm->st++;
         break;
     case 1:
-        if (self->work[1] >= 0x120) {
-            Ov003BmInfo *inf = func_020704b4(self->unk_0e);
+        if (self->fsm->timer >= 0x120) {
+            Ov003BmInfo *inf = func_020704b4(self->kind);
             func_ov000_0219b400(inf->unk_20, inf->unk_24, 2, &self->pos, &self->rot, 0);
             func_ov000_02197dec(self, 0xf, 4);
             func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
-            self->Destroy();
+            self->vfunc_08();
             return;
         }
-        if ((self->work[1] & 0xf) == 0) {
+        if ((self->fsm->timer & 0xf) == 0) {
             VecFx32 sc;
             s32 a = -1;
             s32 b = 100;
-            switch (self->work[1] & 0x3f) {
+            switch (self->fsm->timer & 0x3f) {
             case 0:
                 a = 1;
                 break;
@@ -110,7 +95,7 @@ void func_ov003_021de778(Ov003Bomb *self) {
             func_ov000_0219b71c(&self->pos, &sc, 0x1000, 0x2800, a, b);
             func_ov000_0218996c(0xf, 0x1e);
         }
-        self->work[1]++;
+        self->fsm->timer++;
         break;
     }
 }

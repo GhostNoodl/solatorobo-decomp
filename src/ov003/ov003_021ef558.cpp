@@ -1,53 +1,21 @@
 #include "types.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
-
-class Ov003VObj {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void Release();
-};
-
-
-typedef struct {
-    u32 unk_00;
-    u64 flags;
-} Ov003ActorState;
-
-// View of Ov003Actor (ov003/Actor.h) with VecFx32 positions: the VecFx32 constructor is
-// load-bearing in this file (round hdB), so it does not use the shared class.
-typedef struct {
-    u8 unk_00[0x40];
-    Ov003ActorState *state;
-    u8 unk_44[0x2c];
-    VecFx32 pos;
-    u8 unk_7c[8];
-    VecFx32 lastPos;
-} Ov003ActorP;
-
-typedef struct {
-    u8 unk_00[0x18];
-    s16 mode;
-    s16 unk_1a;
-} Ov003Obj;
+#include "ov003/ActorApi.h"
 
 extern "C" {
 
 extern void *data_ov000_021ccd64;
-extern void func_ov000_02197d80(void *self);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
-extern void func_ov000_02194758(void *self);
 extern void Heap_Free(void *p);
-extern ActorEx *func_ov000_0219429c(ActorEx *self);
 
-void Ov003ActVt_021f9d78_Start(Ov003Obj *self) {
+void Ov003ActVt_021f9d78_Start(ActorEx *self) {
     BOOL keep;
     s16 sub;
     s16 mode;
     func_ov000_02197d80(self);
     sub = self->unk_1a;
-    mode = self->mode;
+    mode = self->unk_18;
     keep = TRUE;
     if (sub == 0) {
         if (mode == 1 || mode == 3 || (u16)(s16)(mode - 5) <= 1) {
@@ -60,7 +28,7 @@ void Ov003ActVt_021f9d78_Start(Ov003Obj *self) {
     }
     if (!keep) {
         func_ov000_0218bed8(data_ov000_021ccd64, 2, self);
-        ((Ov003VObj *)self)->Release();
+        self->vfunc_08();
         return;
     }
     func_ov000_02194758(self);
@@ -110,12 +78,12 @@ ActorEx *Ov003ActVt_021f9d78_DtorDelete(ActorEx *self) {
     return self;
 }
 
-void Ov003ActVt_021fa07c_Start(Ov003ActorP *self) {
+void Ov003ActVt_021fa07c_Start(ActorEx *self) {
     func_ov000_02194758(self);
-    self->state->flags |= 0x100000000ULL;
-    self->lastPos.x = self->pos.x;
-    self->lastPos.y = self->pos.y;
-    self->lastPos.z = self->pos.z;
+    self->fsm->flags |= 0x100000000ULL;
+    self->unk_84.x = self->pos.x;
+    self->unk_84.y = self->pos.y;
+    self->unk_84.z = self->pos.z;
 }
 
 }

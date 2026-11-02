@@ -1,15 +1,5 @@
 #include "ov006/Caption.h"
 
-typedef struct ov006_Unk021e309c {
-    void *vtbl;
-    u8 unk4;
-    int unk8;
-    int unkC;
-    Model *unk10;
-    ov006_Caption *unk14;
-    ov006_Caption *unk18[3];
-} ov006_Unk021e309c;
-
 extern "C" {
 
 static inline void ov006_Caption_Draw(ov006_Caption *self) {
@@ -77,7 +67,7 @@ static inline void ov006_Caption_Draw2(ov006_Caption *self) {
     }
 }
 
-void func_ov006_021e309c(ov006_Unk021e309c *self) {
+void func_ov006_021e309c(ov006_CaptionPanel *self) {
     ov006_Caption *c;
     const ov006_CaptionEntry *e;
     s32 x;
@@ -86,15 +76,15 @@ void func_ov006_021e309c(ov006_Unk021e309c *self) {
     if (!self->unk4) {
         return;
     }
-    c = self->unk14;
+    c = self->title;
     i = c->kind;
     x = self->unk8;
     y = self->unkC;
     c->x = x - (data_ov006_021eb824[i].width >> 1);
     c->y = y - ((data_ov006_021eb824[i].height / 2) + 0x20);
-    ov006_Caption_Draw(self->unk14);
+    ov006_Caption_Draw(self->title);
     for (i = 0; i < 3; i++) {
-        c = self->unk18[i];
+        c = self->captions[i];
         if (c == NULL) {
             continue;
         }
@@ -105,10 +95,10 @@ void func_ov006_021e309c(ov006_Unk021e309c *self) {
             c->x = x - (w >> 1);
             c->y = y - (12 - i * 14 + h);
         }
-        ov006_Caption_Draw2(self->unk18[i]);
+        ov006_Caption_Draw2(self->captions[i]);
     }
-    ov006_Model_SetPos(self->unk10, 2, x << 12, y << 12);
-    Model_PlayPart(self->unk10, 9);
+    ov006_Model_SetPos(self->model, 2, x << 12, y << 12);
+    Model_PlayPart(self->model, 9);
 }
 
 }

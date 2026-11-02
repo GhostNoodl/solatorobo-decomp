@@ -1,29 +1,19 @@
 #include "ov006/ov006.h"
-
-typedef struct ov006_Unk021e29c4 {
-    void *vtbl;
-    u8 unk4;
-    int unk8;
-    int unkC;
-    int unk10;
-    int unk14;
-    int unk18[3];
-} ov006_Unk021e29c4;
+#include "ov006/Caption.h"
 
 extern "C" {
 
-extern u8 data_ov006_021ec29c[];
 
-ov006_Unk021e29c4 *Ov006Vt_021ec29c_Ctor(ov006_Unk021e29c4 *self) {
+ov006_CaptionPanel *Ov006Vt_021ec29c_Ctor(ov006_CaptionPanel *self) {
     int i;
     self->vtbl = data_ov006_021ec29c;
     self->unk4 = 0;
     self->unk8 = 0;
     self->unkC = 0;
-    self->unk10 = 0;
-    self->unk14 = 0;
+    self->model = 0;
+    self->title = 0;
     for (i = 0; i < 3; i++) {
-        self->unk18[i] = 0;
+        self->captions[i] = 0;
     }
     return self;
 }

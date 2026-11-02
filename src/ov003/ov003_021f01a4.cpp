@@ -3,6 +3,8 @@
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
+#include "ov000/ObjLayouts.h"
+#include "ov003/ActorApi.h"
 
 typedef struct {
     VecFx32 pos;
@@ -29,48 +31,26 @@ typedef struct {
 } Ov003FxEntry;
 
 typedef struct {
-    u16 state;
-    u16 timer;
-} Ov003FxTask;
-
-typedef struct {
     u8 unk_00[0xa2];
     u8 unk_a2_0 : 5;
     u8 unk_a2_5 : 1;
 } Ov003FxUnit;
 
-typedef struct {
-    void *vtbl;
-    u8 unk_04[0xa];
-    u16 id;
-    u8 unk_10[0xa];
-    s16 unk_1a;
-    u16 unk_1c;
-    u16 unk_1e;
-    u16 unk_20;
-    u8 unk_22[0x16];
-    void *model;
-    u8 unk_3c[4];
-    Ov003FxTask *task;
-    u8 unk_44[0x2c];
-    VecFx32 pos;
-    Rot16 rot;
-    u8 unk_82[2];
-    VecFx32 target;
-    u8 unk_90[0xc];
-    VecFx32 vel;
-    u8 unk_a8[0x14];
-    u32 unk_bc;
-    u8 unk_c0[0x10];
-    VecFx32 basePos;
-    s16 unk_dc;
-} Ov003FxProp;
+// A prop that moves along a path of waypoints (vtable data_ov003_021f9fe4, 0xe0 bytes: NEW_BASIC in
+// func_ov000_02192b24). Actor::unk_1a picks its data_ov003_021f6fc8 entry; unk_84 is the waypoint
+// it moves to, with vel per frame.
+class Ov003FxProp : public ActorEx {
+public:
+    VecFx32 basePos; // pos at the start; the waypoints are offsets from it
+    s16 point; // index of the current waypoint in the entry's path
+    u8 unk_de[2];
+};
+SIZE_ASSERT(Ov003FxProp, 0xe0);
 
 extern "C" {
 
 extern void *data_ov000_021ccd64;
 extern const Ov003FxEntry data_ov003_021f6fc8[];
-extern void func_ov000_02194758(void *self);
 extern Ov003FxUnit *Group_FindNode(void *mgr, u16 id);
 extern const char data_ov003_021fa1aa[];
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
@@ -113,7 +93,7 @@ void Ov003ActVt_021f9fe4_Start(Ov003FxProp *self) {
         u->unk_a2_5 = 1;
     }
     self->basePos = self->pos;
-    self->unk_dc = 1;
+    self->point = 1;
     e = &data_ov003_021f6fc8[self->unk_1a];
     if (e->effect == -1) {
         return;
@@ -130,23 +110,23 @@ void Ov003ActVt_021f9fe4_Start(Ov003FxProp *self) {
 void func_ov003_021f0258(Ov003FxProp *self) {
     const Ov003FxEntry *e = &data_ov003_021f6fc8[self->unk_1a];
     if (e->path != NULL) {
-        Ov003FxTask *task = self->task;
-        switch (task->state) {
+        ActorSub40 *task = self->fsm;
+        switch (task->st) {
         case 0:
         case 10: {
             Ov003FxWaypoint *wp;
             s32 spd;
             func_ov000_02190cb0(self->model, data_ov003_021fa1aa, 0x400, 0);
             func_ov000_021915a0(self->model);
-            wp = &e->path[self->unk_dc];
+            wp = &e->path[self->point];
             spd = wp->speed;
-            self->target = self->basePos;
-            if (self->task->state == 0) {
-                VEC_Add(&self->target, &wp->pos, &self->target);
+            self->unk_84 = self->basePos;
+            if (self->fsm->st == 0) {
+                VEC_Add(&self->unk_84, &wp->pos, &self->unk_84);
             }
-            self->vel.x = self->target.x - self->pos.x;
-            self->vel.y = self->target.y - self->pos.y;
-            self->vel.z = self->target.z - self->pos.z;
+            self->vel.x = self->unk_84.x - self->pos.x;
+            self->vel.y = self->unk_84.y - self->pos.y;
+            self->vel.z = self->unk_84.z - self->pos.z;
             VEC_Normalize(&self->vel, &self->vel);
             self->vel.x = (s32)(((s64)self->vel.x * spd + 0x800) >> 12);
             self->vel.y = (s32)(((s64)self->vel.y * spd + 0x800) >> 12);
@@ -156,35 +136,35 @@ void func_ov003_021f0258(Ov003FxProp *self) {
                 if (e->volumeRand != 0) {
                     vol += (s16)Rand_UpTo(e->volumeRand);
                 }
-                if (self->id == 0x4048) {
+                if (self->kind == 0x4048) {
                     func_02049bdc(data_02097e4c, e->sound, vol);
                 } else {
                     func_0204a028(data_02097e4c, e->sound, &self->pos, vol);
                 }
             }
-            self->task->state++;
+            self->fsm->st++;
         }
         case 1:
         case 11:
             VEC_Add(&self->pos, &self->vel, &self->pos);
-            if (Hit_DiffInSphere(&self->pos, &self->target, e->path[self->unk_dc].speed)) {
-                self->pos = self->target;
-                self->task->state++;
-                self->task->timer = 0;
+            if (Hit_DiffInSphere(&self->pos, &self->unk_84, e->path[self->point].speed)) {
+                self->pos = self->unk_84;
+                self->fsm->st++;
+                self->fsm->timer = 0;
             }
             break;
         case 2:
         case 12:
             task->timer++;
             if (task->timer > e->wait) {
-                self->unk_dc = e->path[self->unk_dc].next;
-                if (self->unk_dc == 0) {
-                    self->task->state = 10;
+                self->point = e->path[self->point].next;
+                if (self->point == 0) {
+                    self->fsm->st = 10;
                 } else {
-                    self->task->state = 0;
+                    self->fsm->st = 0;
                 }
-            } else if (self->task->state == 12 && self->id == 0x4048 && Ov003Fx_GameIdle()) {
-                if (self->task->timer % 120 == 30) {
+            } else if (self->fsm->st == 12 && self->kind == 0x4048 && Ov003Fx_GameIdle()) {
+                if (self->fsm->timer % 120 == 30) {
                     func_02049a48(data_02097e4c, 0x3e, 0x28, -1, -1);
                 }
             }

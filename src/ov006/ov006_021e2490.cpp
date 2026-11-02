@@ -1,28 +1,4 @@
-#include "ov006/Model.h"
-
-typedef struct ov006_Marker2490 {
-    void *vtbl;
-    u16 state;
-    u16 unk6;
-    s16 timer;
-    u8 unkA;
-    u8 unkB;
-    u8 unkC;
-    s32 unk10;
-    s32 unk14;
-    s32 unk18;
-    s32 unk1C;
-    s32 unk20;
-} ov006_Marker2490;
-
-typedef struct ov006_Unk021e2490 {
-    void *vtbl;
-    u8 unk4;
-    s32 unk8;
-    s32 unkC;
-    ov006_Marker2490 markers[4];
-    Model *unkA0;
-} ov006_Unk021e2490;
+#include "ov006/Marker.h"
 
 typedef void *(*ov006_SeqFn16)(void *res, u16 idx);
 
@@ -51,7 +27,7 @@ static inline void ov006_Model_PlayPart16(Model *model, u16 idx) {
 
 extern "C" {
 
-void func_ov006_021e2490(ov006_Unk021e2490 *self) {
+void func_ov006_021e2490(ov006_MarkerSet *self) {
     int i;
     u32 x;
     u32 y;
@@ -61,16 +37,16 @@ void func_ov006_021e2490(ov006_Unk021e2490 *self) {
     x = self->unk8;
     y = self->unkC;
     for (i = 0; i < 4; i++) {
-        ov006_Model_SetPos(self->unkA0, 2, x << 12, (y + i * 32) << 12);
-        ov006_Model_PlayPart16(self->unkA0, i + 0x10);
+        ov006_Model_SetPos(self->model, 2, x << 12, (y + i * 32) << 12);
+        ov006_Model_PlayPart16(self->model, i + 0x10);
     }
     for (i = 0; i < 4; i++) {
-        ov006_Marker2490 *m = &self->markers[i];
+        ov006_Marker *m = &self->markers[i];
         if (m->unkA) {
             m->unk10 = x + 0x1c;
             m->unk14 = y;
-            ov006_Model_SetPos(self->unkA0, 2, ((x + 0x1c) + (m->unk18 >> 12)) << 12, (y + (m->unk1C >> 12)) << 12);
-            ov006_Model_PlayPart16(self->unkA0, i + 0x14);
+            ov006_Model_SetPos(self->model, 2, ((x + 0x1c) + (m->pos.x >> 12)) << 12, (y + (m->pos.y >> 12)) << 12);
+            ov006_Model_PlayPart16(self->model, i + 0x14);
         }
     }
 }

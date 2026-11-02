@@ -1,16 +1,7 @@
 #include "types.h"
+#include "ov003/Prop.h"
 
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Ov003Vec;
-
-typedef struct {
-    u8 unk_00[0xc2];
-    u16 unk_c2_0 : 4;
-    u16 visible : 1;
-} Ov003FlickerModel;
+extern "C" {
 
 typedef struct {
     s32 box[6];
@@ -26,21 +17,16 @@ typedef struct {
     s16 speed;
     s16 unk_0c;
     s16 rate;
-    Ov003Vec offset[2];
+    VecFx32 offset[2];
     Ov003FlickerBox *box;
 } Ov003FlickerEntry;
-
-typedef struct {
-    s32 m[9];
-    Ov003Vec t;
-} Ov003FlickerMtx;
 
 typedef struct {
     s32 box[6];
     u16 rot[3];
     u16 kind;
     s32 unk_20;
-    Ov003Vec ofs;
+    VecFx32 ofs;
     s32 unk_30;
 } Ov003FlickerHit;
 
@@ -50,43 +36,8 @@ typedef struct {
     u16 rotate : 1;
 } Ov003FlickerInfo;
 
-typedef struct {
-    u16 state;
-    u16 timer;
-} Ov003FlickerTask;
-
-typedef struct {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u16 id;
-    u8 unk_10[8];
-    s16 range;
-    s16 lo;
-    s16 hi;
-    s16 period;
-    u8 unk_20[0x18];
-    Ov003FlickerModel *model;
-    u8 unk_3c[4];
-    Ov003FlickerTask *task;
-    u8 unk_44[0x14];
-    void *obj;
-    u8 unk_5c[8];
-    s32 unk_64;
-    u8 unk_68[8];
-    Ov003Vec pos;
-    u16 rot[3];
-    u8 unk_82[2];
-    Ov003Vec origin;
-    u8 unk_90[0xc];
-    Ov003Vec vel;
-    u8 unk_a8[8];
-    u16 timer;
-    s16 unk_b2;
-} Ov003Flicker;
-
 extern const Ov003FlickerEntry data_ov003_021f7560[];
 
-extern void Ov000ActVt_021cc7cc_Start(void *self);
 extern BOOL func_ov000_02191120(void *model);
 extern u32 Rand_UpTo(u32 max);
 extern void func_ov000_02190e98(void *model, s32 a, s32 b, s32 c);
@@ -94,44 +45,37 @@ extern void func_ov000_02191618(void *model);
 extern void func_ov000_021911c8(void *model, s32 v);
 extern Ov003FlickerInfo *func_0206fef8(u16 id);
 extern void *Heap_Alloc(u32 size);
-extern void *History_Init(void *p);
-extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
-extern void VEC_Normalize(const Ov003Vec *a, Ov003Vec *out);
-extern BOOL Hit_DiffInSphere(Ov003Vec *a, Ov003Vec *b, s32 r);
+extern ActorSub40 *History_Init(void *p);
+extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern const s16 FX_SinCosTable_[];
-extern void MTX_Identity43_(Ov003FlickerMtx *m);
-extern void MTX_RotX43_(Ov003FlickerMtx *m, s32 s, s32 c);
-extern void MTX_RotY43_(Ov003FlickerMtx *m, s32 s, s32 c);
-extern void MTX_RotZ43_(Ov003FlickerMtx *m, s32 s, s32 c);
-extern void MTX_Concat43(Ov003FlickerMtx *a, Ov003FlickerMtx *b, Ov003FlickerMtx *out);
-extern void HitMesh_SetMtx(void *obj, Ov003FlickerMtx *m);
+extern void HitMesh_SetMtx(void *obj, MtxFx43 *m);
 extern s32 func_ov000_0219b808(u16 id, void *pos, Ov003FlickerHit *entry, u16 *ids, s32 max);
 
 #define OV003FL_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003FL_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
-void func_ov003_021f1d6c(Ov003Flicker *self);
+void func_ov003_021f1d6c(Ov003PropFlicker *self);
 
-void func_ov003_021f1ce0(Ov003Flicker *self) {
+void func_ov003_021f1ce0(Ov003PropFlicker *self) {
 }
 
-void func_ov003_021f1ce4(Ov003Flicker *self) {
+void func_ov003_021f1ce4(Ov003PropFlicker *self) {
 }
 
-void Ov003ActVt_021fa4f0_Start(Ov003Flicker *self) {
+void Ov003ActVt_021fa4f0_Start(Ov003PropFlicker *self) {
     Ov000ActVt_021cc7cc_Start(self);
     func_ov003_021f1d6c(self);
-    self->model->visible = 0;
+    self->model->boxTest = 0;
     self->timer = 0;
 }
 
-void func_ov003_021f1d18(Ov003Flicker *self) {
+void func_ov003_021f1d18(Ov003PropFlicker *self) {
     s32 period;
     u16 t;
     if (!func_ov000_02191120(self->model)) {
         return;
     }
-    period = self->period;
+    period = self->unk_1e;
     if (period < 0) {
         period = 0;
     }
@@ -143,8 +87,8 @@ void func_ov003_021f1d18(Ov003Flicker *self) {
     }
 }
 
-void func_ov003_021f1d6c(Ov003Flicker *self) {
-    s32 r = self->range;
+void func_ov003_021f1d6c(Ov003PropFlicker *self) {
+    s32 r = self->unk_18;
     u8 a = r & 0xff;
     u8 b = (r >> 8) & 0xff;
     s16 lo;
@@ -158,13 +102,13 @@ void func_ov003_021f1d6c(Ov003Flicker *self) {
     }
     func_ov000_02190e98(self->model, a, 0x1000, 1);
     func_ov000_02191618(self->model);
-    lo = self->lo;
+    lo = self->unk_1a;
     if (lo < 0) {
         lo = 0;
     } else if (lo > 0x4000) {
         lo = 0x4000;
     }
-    hi = self->hi;
+    hi = self->unk_1c;
     if (hi < 0) {
         hi = 0;
     } else if (hi > 0x4000) {
@@ -180,54 +124,54 @@ void func_ov003_021f1d6c(Ov003Flicker *self) {
     func_ov000_021911c8(self->model, lo);
 }
 
-void Ov003ActVt_021fa498_Start(Ov003Flicker *self) {
+void Ov003ActVt_021fa498_Start(Ov003PropFlicker *self) {
     const Ov003FlickerEntry *e;
-    void *p;
+    ActorSub40 *p;
     Ov000ActVt_021cc7cc_Start(self);
-    e = &data_ov003_021f7560[self->range];
-    if (func_0206fef8(self->id)->rotate) {
+    e = &data_ov003_021f7560[self->unk_18];
+    if (func_0206fef8(self->kind)->rotate) {
         func_ov000_021911c8(self->model, e->angle);
         if (e->kind != 1) {
             func_ov000_02191618(self->model);
         }
     }
-    p = Heap_Alloc(0x14);
+    p = (ActorSub40 *)Heap_Alloc(0x14);
     if (p != NULL) {
         p = History_Init(p);
     }
-    self->task = p;
-    self->task->timer = Rand_UpTo(0x28);
+    self->fsm = p;
+    self->fsm->timer = Rand_UpTo(0x28);
     self->timer = 1;
-    self->origin.x = self->pos.x;
-    self->origin.y = self->pos.y;
-    self->origin.z = self->pos.z;
+    self->unk_84.x = self->pos.x;
+    self->unk_84.y = self->pos.y;
+    self->unk_84.z = self->pos.z;
     VEC_Add(&self->pos, &e->offset[0], &self->pos);
     self->unk_b2 = e->unk_0c;
 }
 
-static inline void Ov003Fl_Scale(Ov003Vec *v, s32 k) {
+static inline void Ov003Fl_Scale(VecFx32 *v, s32 k) {
     v->x = (s32)(((s64)v->x * k + 0x800) >> 12);
     v->y = (s32)(((s64)v->y * k + 0x800) >> 12);
     v->z = (s32)(((s64)v->z * k + 0x800) >> 12);
 }
 
-void func_ov003_021f1f00(Ov003Flicker *self) {
-    Ov003Vec tgt;
+void func_ov003_021f1f00(Ov003PropFlicker *self) {
+    VecFx32 tgt;
     Ov003FlickerHit hit;
-    const Ov003FlickerEntry *e = &data_ov003_021f7560[self->range];
-    Ov003FlickerTask *task;
+    const Ov003FlickerEntry *e = &data_ov003_021f7560[self->unk_18];
+    ActorSub40 *task;
     void *obj;
     Ov003FlickerBox *box;
-    VEC_Add(&self->origin, &e->offset[self->timer], &tgt);
-    task = self->task;
-    switch (task->state) {
+    VEC_Add(&self->unk_84, &e->offset[self->timer], &tgt);
+    task = self->fsm;
+    switch (task->st) {
     case 0:
         if (task->timer != 0) {
             task->timer--;
         }
         if (task->timer == 0) {
-            if (Hit_DiffInSphere(&self->pos, &tgt, e->radius + self->unk_64)) {
-                self->task->state = 10;
+            if (Hit_DiffInSphere(&self->pos, &tgt, e->radius + self->radius)) {
+                self->fsm->st = 10;
             }
             self->vel.x = tgt.x - self->pos.x;
             self->vel.y = tgt.y - self->pos.y;
@@ -248,8 +192,8 @@ void func_ov003_021f1f00(Ov003Flicker *self) {
         self->vel.z = (s32)(((s64)self->vel.z * spd + 0x800) >> 12);
         task->timer++;
         if (task->timer > e->duration) {
-            self->task->timer = 0;
-            self->task->state = 0;
+            self->fsm->timer = 0;
+            self->fsm->st = 0;
             self->timer++;
             if (self->timer >= e->count) {
                 self->timer = 0;
@@ -267,17 +211,17 @@ void func_ov003_021f1f00(Ov003Flicker *self) {
     }
     }
     VEC_Add(&self->pos, &self->vel, &self->pos);
-    obj = self->obj;
+    obj = self->hitMesh;
     if (obj != NULL) {
-        Ov003FlickerMtx t;
-        Ov003FlickerMtx m;
+        MtxFx43 t;
+        MtxFx43 m;
         u16 rx;
         u16 ry;
         u16 rz;
         BOOL set = FALSE;
-        rz = self->rot[2];
-        ry = self->rot[1];
-        rx = self->rot[0];
+        rz = self->rot_z;
+        ry = self->rot_y;
+        rx = self->rot_x;
         MTX_Identity43_(&m);
         if (rz != 0) {
             MTX_RotZ43_(&m, OV003FL_SIN(rz), OV003FL_COS(rz));
@@ -301,9 +245,9 @@ void func_ov003_021f1f00(Ov003Flicker *self) {
                 set = TRUE;
             }
         }
-        m.t.x = self->pos.x;
-        m.t.y = self->pos.y;
-        m.t.z = self->pos.z;
+        m._30 = self->pos.x;
+        m._31 = self->pos.y;
+        m._32 = self->pos.z;
         HitMesh_SetMtx(obj, &m);
     }
     box = e->box;
@@ -314,15 +258,17 @@ void func_ov003_021f1f00(Ov003Flicker *self) {
         hit.box[3] = box->box[3];
         hit.box[4] = box->box[4];
         hit.box[5] = box->box[5];
-        hit.rot[0] = self->rot[0];
-        hit.rot[1] = self->rot[1];
-        hit.rot[2] = self->rot[2];
+        hit.rot[0] = self->rot_x;
+        hit.rot[1] = self->rot_y;
+        hit.rot[2] = self->rot_z;
         hit.kind = 0x32;
         hit.unk_20 = 0x20040000;
         hit.ofs.x = self->vel.x;
         hit.ofs.y = self->vel.y;
         hit.ofs.z = self->vel.z;
         hit.unk_30 = -1;
-        func_ov000_0219b808(self->unk_0c, &self->pos, &hit, NULL, 0);
+        func_ov000_0219b808(self->id, &self->pos, &hit, NULL, 0);
     }
 }
+
+} // extern "C"

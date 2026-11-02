@@ -8,12 +8,8 @@
 #include "Main/Res/StageCmd.h"
 #include "Main/Gfx/Camera.h"
 #include "ov000/Model0218fe1c.h"
-
-/* Holds a message box object built by func_ov000_02163224 (vtable data_ov006_021ebc70, 0x2c bytes). */
-typedef struct ov006_MsgBox {
-    void *vtbl;
-    u8 unk4[0x28];
-} ov006_MsgBox;
+#include "ov006/MsgBox.h"
+#include "ov006/Caption.h"
 
 /* Task with vtable data_ov006_021ebd40 (0x58 bytes). */
 typedef struct ov006_TaskCE {
@@ -22,7 +18,7 @@ typedef struct ov006_TaskCE {
     ov006_Window *unk48;
     ov006_MsgBox *unk4C;
     ov006_Window *unk50;
-    Object *unk54;
+    ov006_CaptionPanel *unk54;
 } ov006_TaskCE;
 
 /* Task with vtable data_ov006_021ebcc0 (0x114 bytes). */
@@ -184,11 +180,6 @@ extern char data_ov006_021ebbd1[];
 extern char data_ov006_021ebbde[];
 
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
-void func_ov000_02163224(void *self);
-void func_ov000_02163254(void *self);
-void func_ov000_021632f0(void *self, int a, const char *b, const char *c, u8 d);
-BOOL func_ov000_021633ac(void *self);
-void func_ov000_02163594(void *self);
 
 extern void *data_ov000_021ccd44;
 extern void *data_ov000_021ccd40;

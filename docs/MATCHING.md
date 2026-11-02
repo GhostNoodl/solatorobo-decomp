@@ -8402,3 +8402,56 @@ Cleanup only, over `src/ov000` and `include/ov000`, and every function is still 
 - **Codegen notes.** `Task_GetFlag4` and `func_ov000_02172a3c` need the test in a `static inline` returning `BOOL` (a direct `return x != 0` in the `bool` function changes the code).
 - **Left, and why:** `Menu_021763c8` (round pmA). The `Lo_021814dc.cpp` scene-command object (`data_ov000_021ccd54`, 0x214 bytes) has no class yet, so `021824d0`, `021837f8`, `02183858/386c`, `02184498..02184548` and `Queue_Push` keep `void *self`. `Stub_0215c1a8`'s `Obj0215c1bc`/`Text0215c1bc` views (the `Lo021cad50` text setter) and `Obj_02163648` stay. The `.c` files `Obj_02160344.c`/`Obj_0215fdfc.c` keep their views (C cannot use the class). Records with no ctor, vtable or caller evidence (`Stub_02163224/3594`, `Stub_021c7000`, `Stub_021c414c`, `Sys_02189068`, the OAM/glyph list builders) are unchanged.
 - **Scratch:** session scratchpad `acG/`: `vmap.py` (function -> vtables/slots and loading functions, from `relocs.txt`), `rt.py NAME TYPE` (retype local prototypes, compare, revert per file), plus acE's `mksig.py`/`chk.py`/`vt.py`.
+
+### Round acH (ov003 gimmick/prop views on ActorEx and the Prop classes; ov006 caption panel, marker set and message box headers)
+
+Cleanup only, over `src/ov003`, `src/ov006`, `include/ov003` and `include/ov006` (plus one union member in `include/ov000/ObjLayouts.h`), and every function is still byte-identical.
+
+**How it was checked.** After every step, each rebuilt object was compared function by function, on code bytes and relocations, with a baseline. The first baseline was `58084f49`. `origin/main` then moved once (round acG, `6bf23e45`), so the work was rebased, the baseline rebuilt at `6bf23e45`, and all 1906 objects compared again at the end: 0 differ.
+
+**Gate.** 0 FAILED, with 19/19 ROM checks and `check symbols` OK; `ninja report` 8138 matched (unchanged); `check_drafts.py --score` exits 0 (30 files, none worse). No symbols were renamed.
+
+**Counts.** Occurrences, `git grep -o 'void \*self'` over `src/<ov>` (and `include/<ov>`), and raw-offset macro uses (`LFLD/FLD/FIELD/ST_FLD/F/BXF`, excluding `#define`s) over the same paths:
+
+| | before | after |
+|---|---|---|
+| ov003 `void *self` (src / src+include) | 173 / 176 | 87 / 90 |
+| ov003 raw offsets | 17 | 17 |
+| ov006 `void *self` (src / src+include) | 60 / 65 | 51 / 51 |
+| ov006 raw offsets | 28 | 28 |
+
+- **ov003 flat views onto `ActorEx`.**
+  - `Ov003Lever`, `Ov003Switch` and `Ov003Bomb` are `typedef ActorEx` (they add no fields).
+  - `ActEx.h` keeps the derived records that the ctors/dtors show:
+    - `Ov003ActExResMdl` (res + mdl, 0x2f0);
+    - `Ov003ActExHome` (home pos/rot, 0x304, vtables `021f9834`/`021f979c`; `Ov003Lift` in `021ebc38`);
+    - `Ov003ActExSway` (0x314, `021f9704`) with `Ov003AiState`;
+    - `Ov003ActExSeq` (0xd4, `021f8350`/`021f83e8`);
+    - `Ov003Bridge` (0xd4, `021f9e10`);
+    - `Ov003Gimmick` (0x214, `021f99e8`).
+  - The Lever, Bridge, Switch, Bomb, Gimmick, lift, sway and sequence files use members instead of local views, and their callers take the ov000 actor API from `ov003/ActorApi.h`. `ActorApi.h` now includes `ActEx.h` and declares the `ActorEx`/`Actor` forms of `0219429c..021953b4`, `Actor_TurnToActor`/`MoveToPos`/`Move`/`GetTarget`, `02197ad0`, `0219763c`, `0218cea4`, `02197ee0` (`Ov003AiState *`) and `02195848` (`VObj *`).
+  - Two file-local classes were added: `Ov003FxProp` in `021f01a4` and `Ov003Lamp` in `021e02e8`.
+  - `021d452c`/`021d4b68` use `Actor` instead of `Ov003KbUnit`.
+- **ov003 props.** `Prop.h` gained:
+  - `Ov003PropFlicker` (0xb4), `Ov003PropBlink` (0xb8) and `Ov003PropDrift` (0xc0);
+  - `Ov003Prop021fa548` (0x1f0) and `Ov003Prop021fa5a0` (0x2d4);
+  - the prototypes `Ov000ActVt_021cc7cc_Start`, `0218cea4`, `0218cf5c` and `021b4adc`.
+
+  `021f1ce0`, `021f2f60`, `021f3198`, `021f371c`, `021f3954`, `021f3a94`, `021f3b30` and `021f3dd4` use them. `Blink.h` lost the `Ov003BlinkModel`/`Ov003Blink` views.
+- **C to C++.** The C files could not use the classes, so these were `git mv`'d to `.cpp`, with `delinks.txt` updated: `021ddd48`, `021ddf00`, `021e0800`, `021e0b20`, `021e7274`, `021f1ce0`, `021f2f60`, `021f3198`, `021f371c`, `021f3954` and `021f3a94`.
+- **`ObjLayouts.h` (ov000).** The `ActorEx::unk_ce` union has a new member, `{ u8 unk_ce_u; u8 unk_cf_u; }`. `Ov003Gimmick` reads 0xcf as an unsigned byte; the existing signed view emits `ldrsb`.
+- **ov006.**
+  - New `include/ov006/MsgBox.h`: `ov006_MsgBox` moved out of `Tasks.h`, plus typed `02163224/3254/32f0/33ac/3594`.
+  - `Caption.h` has `ov006_CaptionPanel` (vtable `021ec29c`, 0x24), used by `021e29c4`, `021e2a04`, `021e309c`, `021e341c`, `021e34d8` and `021ce374`; `ov006_TaskCE::unk54` is now an `ov006_CaptionPanel *`.
+  - New `include/ov006/Marker.h`: `ov006_Marker` (vtable `021ec2ec`, 0x24) and `ov006_MarkerSet` (vtable `021ec2cc`, 0xa4) replace the six local views in `021e1f28`, `021e1f80`, `021e2174`, `021e21cc`, `021e2430` and `021e2490`.
+  - `021d1694` takes `ov006_TaskD0C *` and the `021d5ae4` dtor takes `ov006_MsgBox *`.
+- **Codegen notes.**
+  - `021ddd48` needs its change flag as a `u8` local; a `BOOL` adds masking at the narrowed call.
+  - The `Ov003PropBlink` callers pass `(u16)` casts of `unk_18/1a/1c`.
+  - Model bit 4 (`c2`) is `boxTest`, not a "visible" bit.
+- **Left, and why:**
+  - **Merged ov003 files.** `ov003_021e0e8c.cpp` (51) and `ov003_021f7848.cpp` (26) redeclare the actor API per namespace, and an `extern "C"` prototype must agree across all namespaces before `ActorApi.h` can be included. These files are left for a namespace-by-namespace pass. The event record seen there (vtables `021f8a60/9050/8638`) would be `Ov003ActExRes` + table/indices, 0x218.
+  - **Other ov003 `void *self`.** `021cf278` (stubs), `021ce2a8`/`021cd1e4` (unused self, single caller), `021ce5a4`/`021ceec8` (generic delete), `021d0edc` (shared by ov010-ov014 dtors) and `021cd744` (round acC form).
+  - **`021eba54` pointer-bit test.** `func_ov003_021eb818` still has `if ((u32)self & 3)`. Removing it changes the scheduling.
+  - **ov006 window copy.** The ov006 window code (`VCALL`, the raw offsets in `021d23dc`/`021d3498`/`021ce374`, and the `func_ov000_021c*` UI prototypes in `ce374`/`da208`) is not on ov000 `UiObj`/`UiList` yet.
+  - **Shared task ctor/dtor.** `021ccda0`/`021ccddc` keep `void *`.

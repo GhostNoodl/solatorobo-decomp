@@ -1,36 +1,9 @@
 #include "types.h"
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
+#include "ov003/ActEx.h"
+#include "ov003/ActorApi.h"
 
-
-typedef struct {
-    u8 unk_00[0x22];
-    u16 unk_22_0 : 1;
-    u16 unk_22_1 : 1;
-} Ov003SwSub44;
-
-typedef struct {
-    u8 unk_00[2];
-    u8 unk_02;
-    u8 unk_03[3];
-    u16 unk_06;
-    u16 unk_08;
-    u16 unk_0a;
-    u8 unk_0c[0x10];
-    u16 unk_1c;
-} Ov003SwPart;
-
-typedef struct {
-    u16 state;
-    u16 timer;
-    s32 unk_04;
-    s32 unk_08;
-} Ov003SwWork;
-
-typedef struct {
-    u8 unk_00;
-    u8 unk_01;
-} Ov003SwInfo;
 
 typedef struct {
     u8 unk_00[0x111];
@@ -38,38 +11,6 @@ typedef struct {
     u8 unk_111_2 : 1;
     s16 unk_112;
 } Ov003SwAnim;
-
-class Ov003Switch {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void Destroy();
-    u8 unk_04[0x8];
-    u16 unk_0c;
-    u8 unk_0e[0xa];
-    s16 unk_18;
-    s16 unk_1a;
-    s16 unk_1c;
-    u8 unk_1e[0x1a];
-    void *model;
-    u8 unk_3c[4];
-    Ov003SwWork *work;
-    Ov003SwSub44 *unk_44;
-    u8 unk_48[4];
-    Ov003SwPart *unk_4c;
-    u8 unk_50[8];
-    void *unk_58;
-    u8 unk_5c[0x14];
-    VecFx32 pos;
-    u8 unk_7c[0x17];
-    u8 unk_93_0 : 1;
-    u8 unk_93_1 : 3;
-    u8 unk_94[0x1c];
-    Ov003SwInfo *unk_b0;
-    u8 unk_b4[0x18];
-    u16 unk_cc_0 : 1;
-    u16 unk_ce;
-};
 
 typedef struct {
     u8 unk_00[0x15];
@@ -94,29 +35,27 @@ extern Ov003SwAnim *func_ov000_02190a30(void *model, s32 n);
 extern void HitMesh_Link(void *p);
 extern void func_0203f920(void *p);
 extern void func_ov000_0218996c(u8 a, u8 b);
-extern Ov003SwPart *Target_Get(Ov003SwPart *p);
-extern void Actor_SendMsg(Ov003SwPart *p, u16 id, s32 a, s32 b, s32 c, s32 d);
-extern s32 func_ov003_021f093c(Ov003SwPart *p);
-extern BOOL func_ov000_02198360(Ov003SwWork *w, s32 a, s32 b);
-extern BOOL func_ov003_021f0abc(Ov003SwPart *p, s32 a);
+extern Actor *Target_Get(ActorSub4c *p);
+extern void Actor_SendMsg(Actor *p, u16 id, s32 a, s32 b, s32 c, s32 d);
+extern s32 func_ov003_021f093c(ActorSub4c *p);
+extern BOOL func_ov000_02198360(ActorSub40 *w, s32 a, s32 b);
+extern BOOL func_ov003_021f0abc(ActorSub4c *p, s32 a);
 extern void *func_ov000_02191318(void *model, s32 a);
 extern Ov003SwPlayer *func_ov000_0219bf90(void);
 extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
-extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern void func_020627b4(void);
 extern s32 func_0205b1fc(void);
 
-static inline void Ov003SwWork_Clear(Ov003SwWork *w) {
-    w->unk_04 = 0;
-    w->unk_08 = 0;
+static inline void Ov003SwFsm_Clear(ActorSub40 *w) {
+    w->flags = 0;
 }
 
-static inline void Ov003SwSub44_Set(Ov003SwSub44 *p) {
+static inline void Ov003SwSub44_Set(ActorSub44 *p) {
     p->unk_22_0 = 1;
     p->unk_22_1 = 1;
 }
 
-static inline void Ov003SwSub44_Clear(Ov003SwSub44 *p) {
+static inline void Ov003SwSub44_Clear(ActorSub44 *p) {
     p->unk_22_0 = 0;
     p->unk_22_1 = 0;
 }
@@ -131,7 +70,7 @@ static inline void Ov003Sw_Anim2(Ov003Switch *self) {
 
 static inline void Ov003Sw_Play(Ov003Switch *self, const char *name, s32 slow) {
     if (self->model != NULL) {
-        u8 k = self->unk_b0->unk_01;
+        u8 k = self->param->unk_01;
         s32 speed = 0x1000;
         s32 frame = 0x1000;
         if (k != 1 && k != 2) {
@@ -148,18 +87,18 @@ static inline void Ov003Sw_Play(Ov003Switch *self, const char *name, s32 slow) {
 
 static inline void Ov003Sw_On(Ov003Switch *self) {
     self->unk_cc_0 = 1;
-    if (self->unk_58 != NULL) {
-        HitMesh_Link(self->unk_58);
+    if (self->hitMesh != NULL) {
+        HitMesh_Link(self->hitMesh);
     }
 }
 
 static inline void Ov003Sw_Next(Ov003Switch *self) {
-    self->work->timer = 0;
-    self->work->state++;
+    self->fsm->timer = 0;
+    self->fsm->st++;
 }
 
 static inline void Ov003Sw_Sound(Ov003Switch *self) {
-    if (self->unk_b0->unk_01 == 3) {
+    if (self->param->unk_01 == 3) {
         func_ov000_0218996c(7, 0x14);
         func_02049f44(data_02097e4c, 0x47, &self->pos, 0);
     }
@@ -181,26 +120,26 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
         if (self->unk_ce != 0) {
             self->unk_ce--;
         } else {
-            res = func_ov003_021f093c(self->unk_4c);
+            res = func_ov003_021f093c(self->targetObj);
         }
         snd = 0xffff;
         switch (res) {
         case 3:
         case 4:
             if (self->unk_18 != 2) {
-                snd = self->unk_4c->unk_08;
+                snd = self->targetObj->unk_08;
                 next = 20;
             }
             break;
         case 1:
             if (self->unk_18 != 3) {
-                snd = self->unk_4c->unk_08;
+                snd = self->targetObj->unk_08;
                 next = 40;
             }
             break;
         case 2:
             if (self->unk_18 != 1) {
-                snd = self->unk_4c->unk_08;
+                snd = self->targetObj->unk_08;
                 next = 30;
             }
             break;
@@ -214,7 +153,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
         if (self->unk_ce != 0) {
             self->unk_ce--;
         } else {
-            res = func_ov003_021f093c(self->unk_4c);
+            res = func_ov003_021f093c(self->targetObj);
         }
         snd = 0xffff;
         switch (res) {
@@ -222,14 +161,14 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
         case 4:
             if (self->unk_18 == 3) {
                 self->unk_ce = 10;
-                snd = self->unk_4c->unk_08;
+                snd = self->targetObj->unk_08;
                 next = 20;
                 if (self->unk_1a == 8) {
                     self->unk_1a = 0;
                 }
             } else if (self->unk_18 == 2) {
                 self->unk_ce = 10;
-                snd = self->unk_4c->unk_08;
+                snd = self->targetObj->unk_08;
                 next = 40;
             }
             break;
@@ -240,7 +179,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
         break;
     case 2:
     case 7:
-        if (func_ov003_021f0abc(self->unk_4c, res)) {
+        if (func_ov003_021f0abc(self->targetObj, res)) {
             if (self->unk_1a == 7) {
                 if (self->unk_18 != 2) {
                     self->unk_1a = 0;
@@ -264,7 +203,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
         }
         break;
     case 10:
-        if (func_ov003_021f0abc(self->unk_4c, res)) {
+        if (func_ov003_021f0abc(self->targetObj, res)) {
             if (self->unk_18 == 3) {
                 next = 10;
                 func_ov000_02190cb0(self->model, data_ov003_021f8046, 0x1000, 0);
@@ -306,7 +245,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
         switch (res) {
         case 3:
             if (self->unk_18 != 2) {
-                snd = self->unk_4c->unk_08;
+                snd = self->targetObj->unk_08;
                 next = 20;
                 if (self->unk_1a == 9) {
                     self->unk_1a = 0;
@@ -315,7 +254,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
             break;
         case 2:
             if (self->unk_18 != 0) {
-                snd = self->unk_4c->unk_08;
+                snd = self->targetObj->unk_08;
                 next = 10;
                 if (self->unk_1a == 9) {
                     self->unk_1a = 0;
@@ -333,22 +272,22 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
             snd = 0xffff;
             switch (self->unk_18) {
             case 3:
-                Ov003SwWork_Clear(self->work);
-                func_ov000_02198360(self->work, 1, 0);
-                self->work->state = 40;
-                snd = self->unk_4c->unk_06;
+                Ov003SwFsm_Clear(self->fsm);
+                func_ov000_02198360(self->fsm, 1, 0);
+                self->fsm->st = 40;
+                snd = self->targetObj->unk_06;
                 break;
             case 0:
-                Ov003SwWork_Clear(self->work);
-                func_ov000_02198360(self->work, 1, 0);
-                self->work->state = 10;
-                snd = self->unk_4c->unk_06;
+                Ov003SwFsm_Clear(self->fsm);
+                func_ov000_02198360(self->fsm, 1, 0);
+                self->fsm->st = 10;
+                snd = self->targetObj->unk_06;
                 break;
             case 2:
-                Ov003SwWork_Clear(self->work);
-                func_ov000_02198360(self->work, 1, 0);
-                self->work->state = 20;
-                snd = self->unk_4c->unk_06;
+                Ov003SwFsm_Clear(self->fsm);
+                func_ov000_02198360(self->fsm, 1, 0);
+                self->fsm->st = 20;
+                snd = self->targetObj->unk_06;
                 if (self->unk_44 != NULL) {
                     Ov003SwSub44_Clear(self->unk_44);
                 }
@@ -365,19 +304,19 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
     if (next != 0) {
         switch (next) {
         case 20:
-            self->work->state = 20;
+            self->fsm->st = 20;
             self->unk_18 = 2;
             break;
         case 10:
-            self->work->state = 10;
+            self->fsm->st = 10;
             self->unk_18 = 0;
             break;
         case 30:
-            self->work->state = 30;
+            self->fsm->st = 30;
             self->unk_18 = 1;
             break;
         case 40:
-            self->work->state = 40;
+            self->fsm->st = 40;
             self->unk_18 = 3;
             break;
         }
@@ -397,8 +336,8 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
 }
 
 void func_ov003_021dd478(Ov003Switch *self) {
-    Ov003SwWork *w = self->work;
-    switch (w->state) {
+    ActorSub40 *w = self->fsm;
+    switch (w->st) {
     case 0:
         return;
     case 10:
@@ -420,11 +359,11 @@ void func_ov003_021dd478(Ov003Switch *self) {
             Ov003SwSub44_Set(self->unk_44);
         }
         Ov003Sw_Sound(self);
-        self->work->state = 0x32;
+        self->fsm->st = 0x32;
         break;
     case 40:
         if (self->model != NULL) {
-            u8 k = self->unk_b0->unk_01;
+            u8 k = self->param->unk_01;
             s32 speed = 0x1000;
             s32 frame = 0x1000;
             if (k != 1 && k != 2) {
@@ -452,7 +391,7 @@ void func_ov003_021dd478(Ov003Switch *self) {
             }
         }
         Ov003Sw_Sound(self);
-        self->work->state = 0x32;
+        self->fsm->st = 0x32;
         break;
     case 20:
         Ov003Sw_Play(self, data_ov003_021f803c, 0x89);
@@ -469,14 +408,14 @@ void func_ov003_021dd478(Ov003Switch *self) {
             }
         }
         self->unk_cc_0 = 0;
-        if (self->unk_58 != NULL) {
-            func_0203f920(self->unk_58);
+        if (self->hitMesh != NULL) {
+            func_0203f920(self->hitMesh);
         }
         if (self->unk_44 != NULL) {
             Ov003SwSub44_Clear(self->unk_44);
         }
         Ov003Sw_Sound(self);
-        self->work->state = 0x32;
+        self->fsm->st = 0x32;
         break;
     case 30:
         Ov003Sw_Play(self, data_ov003_021f8041, 0x89);
@@ -496,15 +435,15 @@ void func_ov003_021dd478(Ov003Switch *self) {
         if (self->unk_44 != NULL) {
             Ov003SwSub44_Set(self->unk_44);
         }
-        self->work->state = 0x32;
+        self->fsm->st = 0x32;
         break;
     case 50:
-        if (self->unk_4c->unk_02 != 6) {
-            Ov003SwPart *p = Target_Get(self->unk_4c);
+        if (self->targetObj->unk_02 != 6) {
+            Actor *p = Target_Get(self->targetObj);
             if (p != NULL) {
-                Actor_SendMsg(p, self->unk_0c, 3, 1, 0, 0);
+                Actor_SendMsg(p, self->id, 3, 1, 0, 0);
             }
-            self->unk_4c->unk_1c = 0xffff;
+            self->targetObj->target = 0xffff;
         }
         break;
     }

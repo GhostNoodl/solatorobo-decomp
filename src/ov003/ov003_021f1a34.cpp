@@ -124,7 +124,7 @@ extern void *Task_FindById(s32 id);
 extern Ov003PdPlr *func_ov000_0219bf90(void);
 extern void func_ov000_021bd624(Ov003PdIcon *p);
 extern BOOL func_ov000_021bd314(Ov003PdIcon *p, s32 id);
-extern void func_ov000_0218bed8(void *mgr, s32 a, void *self);
+extern void func_ov000_0218bed8(void *mgr, s32 a, void *actor);
 
 static inline void Ov003Icon_SetPos(Ov003PdIcon *ic, VecFx32 *v) {
     ic->pos.x = v->x;

@@ -5,6 +5,8 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorParts.h"
 #include "ov003/Unit.h"
+#include "ov003/ActorApi.h"
+#include "ov000/ActorMgr.h"
 #include "Main/Res/StageRes.h"
 
 
@@ -36,6 +38,8 @@ typedef struct {
     Ov003PartB b;
 } Ov003PartSrc;
 
+// The Target object (Actor::targetObj, ActorSub4c) as func_ov003_021eb818 refills it from the spawn
+// info record of func_020704b4: the first 0x18 bytes are copied as two records.
 typedef struct {
     Ov003PartA a;
     Ov003PartB b;
@@ -44,39 +48,6 @@ typedef struct {
     u8 unk_19[3];
     u16 unk_1c;
 } Ov003Part;
-
-typedef struct {
-    u8 unk_00[0x13];
-    u8 kind;
-} Ov003Kind;
-
-typedef struct {
-    u8 unk_00[0x38];
-    s32 unk_38;
-    u8 unk_3c[0x14];
-    union {
-        u32 flags;
-        void *unk_50[3];
-    };
-    u8 unk_5c[0x3e];
-    union {
-        struct {
-            u16 unk_9a_0 : 1;
-            u16 unk_9a_1 : 2;
-            u16 unk_9a_3 : 1;
-            u16 unk_9a_4 : 1;
-            u16 unk_9a_5 : 1;
-        };
-        u16 unk_9a;
-    };
-} Ov003Ctl;
-
-typedef struct {
-    s32 *unk_00;
-    u8 unk_04[0x10d];
-    u8 unk_111_0 : 3;
-    u8 unk_111_3 : 1;
-} Ov003SubAnim;
 
 typedef struct {
     u8 unk_00[0x4c];
@@ -106,124 +77,8 @@ typedef struct {
     s32 v[3];
 } Ov003Ids;
 
-typedef struct {
-    u8 unk_00[0xa];
-    u16 unk_0a;
-} Ov003Game68;
-
-typedef struct {
-    u8 unk_00[0xbe];
-    u8 alpha;
-    u8 unk_bf[3];
-    u16 unk_c2_0 : 6;
-    u16 unk_c2_6 : 1;
-} Ov003Mdl;
-
-typedef struct {
-    u8 unk_00[0x78];
-    VecFx32 pos;
-    u8 unk_84[0x24];
-    s32 scale[3];
-    u8 unk_b4[0xa];
-    u8 alpha;
-    u8 unk_bf[0x9];
-} Ov003Anim;
-
-typedef struct {
-    u16 count;
-    u16 flag;
-    u8 entries[1][0xc];
-} Ov003AnimTbl;
-
-typedef struct {
-    u8 unk_00[8];
-    Ov003AnimTbl tbl;
-} Ov003AnimRes;
-
-typedef struct {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u8 unk_0e[0xc];
-    s16 unk_1a;
-    u8 unk_1c[0x8];
-    u8 unk_24[0x14];
-    Ov003Mdl *model;
-    u8 unk_3c[0x10];
-    Ov003Part *unk_4c;
-    u8 unk_50[0xc];
-    void *unk_5c;
-    u8 unk_60[0x10];
-    VecFx32 pos;
-    Rot16 rot;
-    u8 unk_82[0x4a];
-    u16 unk_cc_0 : 7;
-    u16 unk_cc_7 : 1;
-    u16 unk_ce;
-    s16 res;
-    u8 unk_d2[0xbe];
-    Ov003AnimRes **unk_190;
-    u8 unk_194[0x74];
-    Ov003Anim anim;
-    u8 unk_2d0[0x8];
-    Ov003AnimTbl *unk_2d8;
-    void *unk_2dc;
-    u8 unk_2e0[0x10];
-    VecFx32 unk_2f0;
-    Rot16 unk_2fc;
-} Ov003Obj;
-
-typedef struct {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u16 unk_0e;
-    u8 unk_10[7];
-    u8 unk_17;
-    s16 unk_18;
-    s16 unk_1a;
-    u8 unk_1c[4];
-    u16 unk_20;
-    u8 unk_22[0x16];
-    Ov003Mdl *model;
-    u8 unk_3c[4];
-    union {
-        Ov003Kind *unk_40;
-        ActorSub40 *work;
-    };
-    ActorSub44 *unk_44;
-    Ov003Ctl *ctl;
-    Ov003Part *unk_4c;
-    u8 unk_50[0xc];
-    void *unk_5c;
-    u8 unk_60[0x4];
-    s32 unk_64;
-    s32 unk_68;
-    u8 unk_6c[4];
-    VecFx32 pos;
-    Rot16 rot;
-    u8 unk_82[0xe];
-    u16 unk_90;
-    u8 unk_92;
-    u8 unk_93_0 : 1;
-    u8 unk_94[0x8];
-    s32 unk_9c;
-    s32 unk_a0;
-    s32 unk_a4;
-    s32 unk_a8;
-    u8 unk_ac[0x24];
-    s16 res;
-    u8 unk_d2[0x136];
-    Ov003Anim anim;
-    u8 unk_2d0[0x20];
-    u16 unk_2f0[6];
-    u8 unk_2fc[4];
-    VecFx32 unk_300;
-    s32 unk_30c;
-    u8 unk_310;
-} Ov003ObjB;
-
 extern "C" {
 
-extern Ov003Game68 *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
 extern char data_ov003_021f995c[];
 extern char data_ov003_021f9967[];
@@ -231,41 +86,32 @@ extern char data_ov003_021f996d[];
 extern char data_ov003_021f9978[];
 extern Ov003Player *func_ov000_0219bf90(void);
 extern void func_ov000_021bd7a0(void *p);
-extern BOOL func_ov000_02194c08(void *self);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern u32 Rand_UpTo(u32 max);
-extern void func_ov000_0219433c(void *self);
-extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
-extern BOOL func_ov000_021946f8(void *self);
-extern BOOL func_ov000_0218f110(s16 *res);
-extern void func_ov000_02194758(void *self);
-extern BOOL func_ov000_0218ffdc(Ov003Anim *anim, s16 *res, s32 a, s32 b);
+extern void func_ov000_0218f074(ActorRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
+extern BOOL func_ov000_0218f110(ActorRes *res);
+extern BOOL func_ov000_0218ffdc(Model0218fe1c *anim, ActorRes *res, s32 a, s32 b);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void *Heap_Alloc(u32 size);
-extern Ov003Part *func_ov000_02199b00(void *p);
+extern ActorSub4c *func_ov000_02199b00(void *p);
 extern void *func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, void *b);
-extern void func_ov000_02190758(Ov003Anim *anim, Rot16 *rot, s32 a);
-extern BOOL func_ov000_021903b4(Ov003Anim *anim);
+extern void func_ov000_02190758(Model0218fe1c *anim, Rot16 *rot, s32 a);
+extern BOOL func_ov000_021903b4(Model0218fe1c *anim);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern s32 func_0205976c(Ov003Snd *s, s32 a);
 extern u16 func_02059544(Ov003Snd *s, u8 *p, s32 a, s32 b, u16 c);
-extern Ov003SubAnim *func_ov000_02190a30(Ov003Mdl *m, s32 a);
-extern void func_ov000_02191920(Ov003Mdl *m, s32 a, s32 b, s32 c);
-extern void *Actor_GetTarget(void *self);
-extern void Actor_TurnToActor(void *self, void *other, s32 a);
-extern void func_ov000_02197ee0(void *self, void *p, s32 a, s32 b, s32 c);
-extern void func_0203f364(Ov003Ctl *ctl);
+extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *m, s32 a);
+extern void func_ov000_02191920(Model0218fe1c *m, s32 a, s32 b, s32 c);
+extern void func_0203f364(ActorSub48 *ctl);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_021911c8(void *model, s32 a);
 extern s32 Rand_PlusMinus(s32 max);
-extern void func_ov000_02195848(void *self);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 step, u32 a, u16 b);
 extern char data_ov003_021f9983[];
 extern char data_ov003_021f9989[];
 extern s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 c, s32 d, s32 e, s32 f);
-extern void Actor_MoveToPos(void *self, VecFx32 *v, s32 a);
-extern void func_ov000_021987b8(Ov003Ctl *ctl, s32 a, s32 b, s32 c);
+extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 
 static inline BOOL Ov003Game_IsBusy(FieldState *g) {
@@ -314,25 +160,14 @@ static inline BOOL Ov003_GameIdle2(void) {
     return TRUE;
 }
 
-extern void HitSphere_Link(Ov003Ctl *ctl);
-extern void func_ov000_02196860(void *self);
-extern void func_ov003_021f0c60(void *self, s32 a);
-extern void func_ov000_02197dec(void *self, u8 a, s16 b);
+extern void HitSphere_Link(ActorSub48 *ctl);
+extern void func_ov003_021f0c60(ActorEx *self, s32 a);
 extern const Ov003Ids data_ov003_021f6bcc;
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
-extern void func_ov000_02195d88(void *self);
 extern Ov003PartSrc *func_020704b4(u16 id);
 extern void func_020627b4(void);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
-
-class Ov003ObjV {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void Destroy();
-};
-
 
 static inline void Ov003Sub44_Clear(ActorSub44 *s) {
     if (s != NULL) {
@@ -341,13 +176,13 @@ static inline void Ov003Sub44_Clear(ActorSub44 *s) {
     }
 }
 
-static inline void Ov003Ctl_Enable(Ov003ObjB *self) {
-    Ov003Ctl *c = self->ctl;
+static inline void ActorSub48_Enable(Ov003ActExSway *self) {
+    ActorSub48 *c = self->hit;
     if (c != NULL) {
         c->unk_9a_0 = 1;
         c->unk_9a_3 = 1;
         HitSphere_Link(c);
-        self->ctl->unk_9a |= 0x12;
+        self->hit->unk_9a |= 0x12;
     }
 }
 
@@ -400,44 +235,44 @@ static inline void Ov003PartB_Assign(Ov003PartB *d, const Ov003PartB *s) {
     }
 }
 
-void func_ov003_021eb818(Ov003ObjB *self) {
+void func_ov003_021eb818(Ov003ActExSway *self) {
     s32 sfxOn;
-    if (self->unk_310) {
+    if (self->hasModel) {
         EffectObj *fx;
         Ov003PartSrc *src;
         Ov003Part *p;
-        Ov003Ctl *c;
-        self->unk_310 = 0;
+        ActorSub48 *c;
+        self->hasModel = 0;
         fx = func_02065f88(0x1f4, &self->pos);
         fx->SetScaleXYZ(0x1800, 0x1800, 0x1800);
         fx->AddPosXYZ(0, 0xccd, 0);
         func_02065f88(0x44c, &self->pos)->AddPosXYZ(0, 0x2000, 0);
         func_0204a20c(data_02097e4c, Rand_UpTo(1) + 0x7c);
-        src = func_020704b4(self->unk_0e);
-        p = self->unk_4c;
+        src = func_020704b4(self->kind);
+        p = (Ov003Part *)self->targetObj;
         Ov003PartA_Assign(&p->a, &src->a);
         Ov003PartB_Assign(&p->b, &src->b);
-        self->unk_4c->unk_18_1 = 1;
-        p = self->unk_4c;
-        self->unk_90 = p->unk_1c;
+        self->targetObj->unk_18_1 = 1;
+        p = (Ov003Part *)self->targetObj;
+        self->target = p->unk_1c;
         p->unk_1c = 0xffff;
-        self->unk_9c = 0x66;
-        self->unk_a0 = 0x400;
-        self->unk_a4 = 0;
-        self->unk_a8 = 0x52;
-        c = self->ctl;
-        c->unk_50[0] = 0;
-        c->unk_50[1] = 0;
-        c->unk_50[2] = 0;
-        func_ov000_02198360(self->work, 4, 1);
-        c = self->ctl;
+        self->speed = 0x66;
+        self->velY = 0x400;
+        self->friction = 0;
+        self->gravity = 0x52;
+        c = self->hit;
+        c->unk_50 = 0;
+        c->unk_54 = 0;
+        c->unk_58 = 0;
+        func_ov000_02198360(self->fsm, 4, 1);
+        c = self->hit;
         c->unk_9a_0 = 1;
         c->unk_9a_3 = 1;
         HitSphere_Link(c);
-        self->ctl->unk_9a |= 0x12;
-        self->ctl->unk_38 = self->unk_64;
+        self->hit->unk_9a |= 0x12;
+        self->hit->radius = self->radius;
         func_020627b4();
-        func_020627a0(self->unk_0e, self->unk_0c);
+        func_020627a0(self->kind, self->id);
         func_020627dc(0x8001);
         sfxOn = 1;
         if ((u32)self & 3) {
@@ -445,23 +280,23 @@ void func_ov003_021eb818(Ov003ObjB *self) {
         }
         data_ov000_021ccd54->stageFlags = sfxOn;
     } else {
-        func_ov000_02198360(self->work, 4, 0);
+        func_ov000_02198360(self->fsm, 4, 0);
     }
     Ov003Sub44_Clear(self->unk_44);
 }
 
-void func_ov003_021eba54(Ov003ObjB *self) {
-    if (self->unk_310) {
-        Ov003Ctl_Enable(self);
-        func_ov000_02198360(self->work, 4, 0);
+void func_ov003_021eba54(Ov003ActExSway *self) {
+    if (self->hasModel) {
+        ActorSub48_Enable(self);
+        func_ov000_02198360(self->fsm, 4, 0);
     } else {
         func_ov000_02196860(self);
     }
     Ov003Sub44_Clear(self->unk_44);
 }
 
-void func_ov003_021ebae4(Ov003ObjB *self) {
-    if (!self->unk_310 && ++self->unk_30c == 30) {
+void func_ov003_021ebae4(Ov003ActExSway *self) {
+    if (!self->hasModel && ++self->unk_30c == 30) {
         Ov003Ids ids = data_ov003_021f6bcc;
         if (!Ov003Game_HasEvent(data_ov000_021ccd54, ids.v)) {
             if (self->unk_18 >= 0) {
@@ -471,7 +306,7 @@ void func_ov003_021ebae4(Ov003ObjB *self) {
             func_0204a20c(data_02097e4c, 0x7e);
             func_02065f88(0x12f, &self->pos)->SetScaleAll(0x800);
             func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
-            ((Ov003ObjV *)self)->Destroy();
+            self->vfunc_08();
         } else {
             self->unk_30c--;
         }

@@ -1,66 +1,10 @@
 #include "types.h"
 #include "ov003/Unit.h"
 #include "Main/Gfx/SlidePanel.h"
+#include "ov003/ActEx.h"
+#include "ov003/ActorApi.h"
 
-typedef struct {
-    u8 unk_00[0x111];
-    u8 unk_111_0 : 2;
-    u8 unk_111_2 : 1;
-    s16 unk_112;
-} Ov003SubAnim;
-
-typedef struct {
-    void *list[1];
-} Ov003AnimList;
-
-typedef struct {
-    u8 unk_00[0x48];
-    Ov003AnimList *anims;
-} Ov003MdlRes;
-
-typedef struct {
-    Ov003MdlRes *res;
-    void *unk_04;
-    u8 unk_08[4];
-    void *unk_0c;
-    u8 unk_10[0x14];
-    u8 unk_24[0x9a];
-    u8 unk_be;
-} Ov003Mdl;
-
-typedef struct {
-    u16 state;
-    u16 timer;
-} Ov003Wk;
-
-typedef struct {
-    u8 unk_00[0x1c];
-    u16 unk_1c;
-} Ov003PropDef;
-
-typedef struct {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u8 unk_0e[0xa];
-    s16 unk_18;
-    s16 unk_1a;
-    s16 unk_1c;
-    s16 unk_1e;
-    u16 unk_20;
-    u8 unk_22[0x16];
-    Ov003Mdl *model;
-    u8 unk_3c[4];
-    Ov003Wk *work;
-    u8 unk_44[8];
-    Ov003PropDef *unk_4c;
-    u8 unk_50[8];
-    void *unk_58;
-    u8 unk_5c[0x37];
-    u8 unk_93_0 : 1;
-    u8 unk_93_1 : 3;
-    u8 unk_94[0x38];
-    u16 unk_cc_0 : 1;
-} Ov003Prop;
+extern "C" {
 
 typedef struct {
     u8 unk_00[0x15];
@@ -73,23 +17,19 @@ typedef struct {
 extern void *data_ov000_021ccd64;
 extern s32 func_ov003_021f093c(void *p);
 extern void func_020627b4(void);
-extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern s32 func_0205b1fc(void);
 extern Ov003Plr *func_ov000_0219bf90(void);
 extern char data_ov003_021f803c[];
 extern char data_ov003_021f8046[];
-extern void func_ov000_0219433c(void *p);
-extern void func_ov000_02194758(void *p);
-extern void func_ov000_02197d80(void *p);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void func_0203f920(void *p);
 extern void HitMesh_Link(void *p);
-extern void *func_ov000_02191318(Ov003Mdl *m, s32 a);
-extern Ov003SubAnim *func_ov000_02190a30(Ov003Mdl *m, s32 a);
+extern void *func_ov000_02191318(Model0218fe1c *m, s32 a);
+extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *m, s32 a);
 
-void Ov003ActVt_021f7f14_Init(Ov003Prop *self) {
+void Ov003ActVt_021f7f14_Init(Ov003Switch *self) {
     Ov003Unit *u;
     func_ov000_0219433c(self);
     u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
@@ -98,21 +38,21 @@ void Ov003ActVt_021f7f14_Init(Ov003Prop *self) {
     }
 }
 
-void Ov003ActVt_021f7f14_Start(Ov003Prop *self) {
-    Ov003SubAnim *a;
+void Ov003ActVt_021f7f14_Start(Ov003Switch *self) {
+    AnimCtrl *a;
     func_ov000_02194758(self);
     func_ov000_02197d80(self);
     switch (self->unk_18) {
     case 2:
         func_ov000_02190cb0(self->model, data_ov003_021f803c, 0x1000, 0);
         if (self->unk_1c == 1) {
-            NNSi_G3dModifyPolygonAttrMask(self->model->unk_04, 0, 0x1f0000);
-            self->model->unk_be = 0;
+            NNSi_G3dModifyPolygonAttrMask(self->model->mdl, 0, 0x1f0000);
+            self->model->alpha = 0;
         }
         if (self->unk_1c != 2) {
             self->unk_cc_0 = 0;
-            if (self->unk_58 != NULL) {
-                func_0203f920(self->unk_58);
+            if (self->hitMesh != NULL) {
+                func_0203f920(self->hitMesh);
             }
         }
         break;
@@ -121,52 +61,52 @@ void Ov003ActVt_021f7f14_Start(Ov003Prop *self) {
     case 3:
         func_ov000_02190cb0(self->model, data_ov003_021f8046, 0x1000, 0);
         if (self->unk_1c == 1) {
-            NNSi_G3dModifyPolygonAttrMask(self->model->unk_04, 1, 0x1f0000);
+            NNSi_G3dModifyPolygonAttrMask(self->model->mdl, 1, 0x1f0000);
         }
         self->unk_cc_0 = 1;
-        if (self->unk_58 != NULL) {
-            HitMesh_Link(self->unk_58);
+        if (self->hitMesh != NULL) {
+            HitMesh_Link(self->hitMesh);
         }
         break;
     }
     func_ov000_02191318(self->model, -1);
-    self->work->state = 0;
+    self->fsm->st = 0;
     a = func_ov000_02190a30(self->model, 2);
     if (a != NULL) {
         s16 s;
-        a->unk_111_2 = 1;
+        a->loop = 1;
         s = self->unk_1e;
         if (s != 0 && s != 0x1000) {
             s = (s16)((s * 0x800) >> 12);
         } else {
             s = 0x800;
         }
-        a->unk_112 = s;
+        a->speed = s;
     }
     self->unk_93_1 = (u16)self->unk_18;
 }
 
-void Ov003ActVt_021f7f14_Update(Ov003Prop *self) {
+void Ov003ActVt_021f7f14_Update(Ov003Switch *self) {
     switch (self->unk_1a) {
     case 3: {
         BOOL changed;
         s16 v;
         Ov003Plr *p;
-        s32 r = func_ov003_021f093c(self->unk_4c);
+        s32 r = func_ov003_021f093c(self->targetObj);
         changed = FALSE;
         switch (r) {
         case 3:
         case 4:
-            if (self->unk_18 != 2 && self->work->state != 0x14) {
-                self->work->state = 0x14;
+            if (self->unk_18 != 2 && self->fsm->st != 0x14) {
+                self->fsm->st = 0x14;
                 self->unk_18 = 2;
                 changed = TRUE;
             }
             break;
         case 1:
         case 2:
-            if (self->unk_18 != 0 && self->work->state != 10) {
-                self->work->state = 10;
+            if (self->unk_18 != 0 && self->fsm->st != 10) {
+                self->fsm->st = 10;
                 self->unk_18 = 0;
                 changed = TRUE;
             }
@@ -201,16 +141,16 @@ void Ov003ActVt_021f7f14_Update(Ov003Prop *self) {
         }
         switch (self->unk_18) {
         case 2:
-            if (self->work->state != 0x14) {
-                self->work->state = 0x14;
+            if (self->fsm->st != 0x14) {
+                self->fsm->st = 0x14;
                 self->unk_18 = 2;
             }
             break;
         case 0:
         case 1:
         case 3:
-            if (self->work->state != 10) {
-                self->work->state = 10;
+            if (self->fsm->st != 10) {
+                self->fsm->st = 10;
                 self->unk_18 = 0;
             }
             break;
@@ -222,100 +162,102 @@ void Ov003ActVt_021f7f14_Update(Ov003Prop *self) {
     }
 }
 
-extern BOOL func_ov000_0218fa28(void *ctrl, void *obj, Ov003MdlRes *res, void *file, const char *name, s16 blend, u8 force);
+extern BOOL func_ov000_0218fa28(void *ctrl, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
 extern void func_ov000_0218996c(u8 a, u8 b);
-extern BOOL func_ov000_02191120(Ov003Mdl *m);
-extern void *Target_Get(Ov003PropDef *def);
+extern BOOL func_ov000_02191120(Model0218fe1c *m);
+extern void *Target_Get(ActorSub4c *def);
 extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
 
-static inline void Ov003Mdl_PlayAnim0(Ov003Mdl *m, const char *name, s16 blend, u8 force) {
+static inline void Model0218fe1c_PlayAnim0(Model0218fe1c *m, const char *name, s16 blend, u8 force) {
     const char *n = name;
     if (m->unk_0c != NULL) {
-        func_ov000_0218fa28(m->unk_0c, m->unk_24, m->res, m->res->anims->list[0], n, blend, force);
+        func_ov000_0218fa28(m->unk_0c, m->renderObj, m->res, m->res->anims->list[0], n, blend, force);
     }
 }
 
-void func_ov003_021de26c(Ov003Prop *self) {
-    switch (self->work->state) {
+void func_ov003_021de26c(Ov003Switch *self) {
+    switch (self->fsm->st) {
     case 0:
         break;
     case 10:
-        Ov003Mdl_PlayAnim0(self->model, data_ov003_021f8046, 0x22, 0);
-        func_ov000_02190a30(self->model, 2)->unk_112 = 0x800;
-        if (self->unk_1c == 1 && self->work->timer == 0) {
-            NNSi_G3dModifyPolygonAttrMask(self->model->unk_04, 0, 0x1f0000);
-            self->model->unk_be = 0;
+        Model0218fe1c_PlayAnim0(self->model, data_ov003_021f8046, 0x22, 0);
+        func_ov000_02190a30(self->model, 2)->speed = 0x800;
+        if (self->unk_1c == 1 && self->fsm->timer == 0) {
+            NNSi_G3dModifyPolygonAttrMask(self->model->mdl, 0, 0x1f0000);
+            self->model->alpha = 0;
         }
         self->unk_cc_0 = 1;
-        if (self->unk_58 != NULL) {
-            HitMesh_Link(self->unk_58);
+        if (self->hitMesh != NULL) {
+            HitMesh_Link(self->hitMesh);
         }
         func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         func_ov000_0218996c(2, 0x3c);
-        self->work->timer = 0x50;
-        self->work->state++;
+        self->fsm->timer = 0x50;
+        self->fsm->st++;
         break;
     case 11:
         if (self->unk_1c == 1) {
-            Ov003Wk *w = self->work;
+            ActorSub40 *w = self->fsm;
             if (w->timer != 0) {
                 w->timer--;
             }
             if (w->timer < 0x2c) {
-                u8 a = 0x2c - self->work->timer;
-                NNSi_G3dModifyPolygonAttrMask(self->model->unk_04, 0, 0x1f0000);
-                self->model->unk_be = a / 2;
+                u8 a = 0x2c - self->fsm->timer;
+                NNSi_G3dModifyPolygonAttrMask(self->model->mdl, 0, 0x1f0000);
+                self->model->alpha = a / 2;
             }
         }
         if (!func_ov000_02191120(self->model)) {
             return;
         }
-        NNSi_G3dModifyPolygonAttrMask(self->model->unk_04, 1, 0x1f0000);
-        self->work->state = 0x32;
+        NNSi_G3dModifyPolygonAttrMask(self->model->mdl, 1, 0x1f0000);
+        self->fsm->st = 0x32;
         break;
     case 20:
-        Ov003Mdl_PlayAnim0(self->model, data_ov003_021f803c, 0x1b, 0);
-        func_ov000_02190a30(self->model, 2)->unk_112 = 0xc00;
+        Model0218fe1c_PlayAnim0(self->model, data_ov003_021f803c, 0x1b, 0);
+        func_ov000_02190a30(self->model, 2)->speed = 0xc00;
         if (self->unk_1c != 2) {
             self->unk_cc_0 = 0;
-            if (self->unk_58 != NULL) {
-                func_0203f920(self->unk_58);
+            if (self->hitMesh != NULL) {
+                func_0203f920(self->hitMesh);
             }
         }
         func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         func_ov000_0218996c(2, 0x3c);
-        self->work->timer = 0x50;
-        self->work->state++;
+        self->fsm->timer = 0x50;
+        self->fsm->st++;
         break;
     case 21:
         if (self->unk_1c == 1) {
-            Ov003Wk *w = self->work;
+            ActorSub40 *w = self->fsm;
             if (w->timer != 0) {
                 w->timer--;
             }
             if (w->timer <= 0x2c) {
-                NNSi_G3dModifyPolygonAttrMask(self->model->unk_04, 0, 0x1f0000);
-                self->model->unk_be = self->work->timer >> 1;
+                NNSi_G3dModifyPolygonAttrMask(self->model->mdl, 0, 0x1f0000);
+                self->model->alpha = self->fsm->timer >> 1;
             }
         }
         if (!func_ov000_02191120(self->model)) {
             return;
         }
         if (self->unk_1c == 1) {
-            NNSi_G3dModifyPolygonAttrMask(self->model->unk_04, 0, 0x1f0000);
-            self->model->unk_be = 0;
+            NNSi_G3dModifyPolygonAttrMask(self->model->mdl, 0, 0x1f0000);
+            self->model->alpha = 0;
         }
-        self->work->state = 0x32;
-        self->work->timer = 0;
+        self->fsm->st = 0x32;
+        self->fsm->timer = 0;
         break;
     case 0x32: {
-        void *p = Target_Get(self->unk_4c);
+        void *p = Target_Get(self->targetObj);
         if (p != NULL) {
-            Actor_SendMsg(p, self->unk_0c, 3, 1, 0, 0);
-            self->work->state = 0;
+            Actor_SendMsg(p, self->id, 3, 1, 0, 0);
+            self->fsm->st = 0;
         }
-        self->unk_4c->unk_1c = 0xffff;
+        self->targetObj->target = 0xffff;
         break;
     }
     }
 }
+
+} // extern "C"

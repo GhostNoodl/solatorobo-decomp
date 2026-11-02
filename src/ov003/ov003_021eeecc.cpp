@@ -3,6 +3,8 @@
 #include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorParts.h"
+#include "ov003/ActEx.h"
+#include "ov003/ActorApi.h"
 
 typedef struct {
     VecFx32 pos;
@@ -30,72 +32,24 @@ typedef struct {
 } Ov003BrHit;
 
 typedef struct {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u16 unk_0e;
-    u8 unk_10[0xa];
-    s16 mode;
-    u8 unk_1c[0x4c];
-    s32 unk_68;
-    u8 unk_6c[4];
-    VecFx32 pos;
-    u16 rot[3];
-} Ov003BrTgt;
-
-typedef struct {
     VecFx32 pos;
     u16 rot[3];
     s32 unk_14;
 } Ov003BrWarp;
-
-struct Ov003Bridge {
-    void *vtbl;
-    u8 unk_04[8];
-    u16 unk_0c;
-    u16 unk_0e;
-    u8 unk_10[8];
-    s16 kind;
-    s16 mode;
-    s16 height;
-    u8 unk_1e[0x1a];
-    void *model;
-    u8 unk_3c[4];
-    ActorSub40 *work;
-    u8 unk_44[8];
-    void *unk_4c;
-    u8 unk_50[8];
-    void *unk_58;
-    u8 unk_5c[8];
-    s32 unk_64;
-    s32 unk_68;
-    s32 unk_6c;
-    VecFx32 pos;
-    u16 rot[3];
-    u8 unk_82[0xe];
-    u16 unk_90;
-    u8 unk_92;
-    u8 unk_93_0 : 1;
-    u8 state : 3;
-    u8 unk_94[0x38];
-    u16 unk_cc_0 : 1;
-};
 
 extern "C" {
 
 extern const s16 FX_SinCosTable_[];
 extern char data_ov003_021f9fd6[];
 extern s32 func_ov000_021993fc(Ov003BrFinder *f, Ov003BrQuery *q, Ov003BrHit **out, s32 max);
-extern Ov003BrTgt *func_ov000_021985c0(Ov003BrHit *h);
-extern BOOL func_ov003_021f0a38(Ov003BrTgt *t, void *def);
+extern Actor *func_ov000_021985c0(Ov003BrHit *h);
+extern BOOL func_ov003_021f0a38(Actor *t, void *def);
 extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern void func_ov000_021911c8(void *p, s32 a);
 extern void func_ov000_0218996c(u8 a, u8 b);
-extern void Actor_SendMsg(Ov003BrTgt *o, u16 id, s32 a, s32 b, s32 c, void *p);
-extern Ov003BrTgt *func_ov000_0219bf90(void);
-extern Ov003BrTgt *Actor_GetTarget(Ov003Bridge *self);
-extern void func_ov000_02197d80(void *self);
-extern void func_ov000_02197dec(void *self, u8 a, s16 b);
+extern void Actor_SendMsg(Actor *o, u16 id, s32 a, s32 b, s32 c, void *p);
+extern Actor *func_ov000_0219bf90(void);
 extern void HitMesh_SetMtx(void *o, MtxFx43 *m);
 extern BOOL func_ov000_021b4738(void);
 extern void func_020627b4(void);
@@ -153,23 +107,23 @@ static inline void Ov003Br_SetMtx(void *o, s32 x, s32 y, s32 z, u16 rx, u16 ry, 
     HitMesh_SetMtx(o, &m);
 }
 
-static inline void Ov003Br_Approach(Ov003BrWarp *w, Ov003BrTgt *t, Ov003Bridge *self) {
+static inline void Ov003Br_Approach(Ov003BrWarp *w, Actor *t, Ov003Bridge *self) {
     VecFx32 d;
     w->pos.x = t->pos.x;
     w->pos.y = t->pos.y;
     w->pos.z = t->pos.z;
-    w->pos.y += self->height << 4;
+    w->pos.y += self->unk_1c << 4;
     d.x = self->pos.x - w->pos.x;
     d.y = self->pos.y - w->pos.y;
     d.z = self->pos.z - w->pos.z;
     VEC_MultAdd(0x59a, &d, &w->pos, &w->pos);
-    w->rot[0] = t->rot[0];
-    w->rot[1] = t->rot[1];
-    w->rot[2] = t->rot[2];
+    w->rot[0] = t->rot_x;
+    w->rot[1] = t->rot_y;
+    w->rot[2] = t->rot_z;
 }
 
 void func_ov003_021eeecc(Ov003Bridge *self) {
-    switch (self->work->st) {
+    switch (self->fsm->st) {
     case 0: {
         Ov003BrHit *list[0x20];
         Ov003BrQuery q;
@@ -177,16 +131,16 @@ void func_ov003_021eeecc(Ov003Bridge *self) {
         Ov003BrFinder f;
         u8 b;
         s32 n;
-        Ov003BrTgt *found = NULL;
+        Actor *found = NULL;
         s32 i;
-        Ov003BrTgt *pl;
+        Actor *pl;
         Ov003BrQuery_Init(&q);
         q.pos.x = self->pos.x;
         q.pos.y = self->pos.y;
         q.pos.z = self->pos.z;
         q.unk_0c = 0;
-        q.unk_28 = self->unk_0c;
-        q.unk_1c = self->unk_64 + 0x400;
+        q.unk_28 = self->id;
+        q.unk_1c = self->radius + 0x400;
         q.unk_18 = 0;
         q.unk_20 = 0;
         q.unk_24 = 0x2800;
@@ -199,9 +153,9 @@ void func_ov003_021eeecc(Ov003Bridge *self) {
         n = func_ov000_021993fc(&f, &q, list, 0x20);
         for (i = 0; i < n; i++) {
             Ov003BrHit *h = list[i];
-            if (h != NULL && h->pos.y - h->unk_10 - self->pos.y - self->unk_68 <= 0x666) {
-                Ov003BrTgt *o = func_ov000_021985c0(h);
-                if (o != NULL && self->unk_4c != NULL && func_ov003_021f0a38(o, self->unk_4c)) {
+            if (h != NULL && h->pos.y - h->unk_10 - self->pos.y - self->height <= 0x666) {
+                Actor *o = func_ov000_021985c0(h);
+                if (o != NULL && self->targetObj != NULL && func_ov003_021f0a38(o, self->targetObj)) {
                     found = o;
                     break;
                 }
@@ -210,7 +164,7 @@ void func_ov003_021eeecc(Ov003Bridge *self) {
         if (found == NULL) {
             return;
         }
-        self->unk_90 = found->unk_0c;
+        self->target = found->id;
         if (self->model != NULL) {
             func_ov000_02190cb0(self->model, data_ov003_021f9fd6, 0x111, 0);
             func_ov000_021915a0(self->model);
@@ -219,26 +173,26 @@ void func_ov003_021eeecc(Ov003Bridge *self) {
         func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
         func_ov000_0218996c(5, 10);
         b = 0;
-        Actor_SendMsg(found, self->unk_0c, 0xd, 1, 1, &b);
+        Actor_SendMsg(found, self->id, 0xd, 1, 1, &b);
         pl = func_ov000_0219bf90();
         if (pl != NULL) {
             v.x = pl->pos.x;
             v.y = pl->pos.y;
             v.z = pl->pos.z;
-            func_02065f88(0x44f, &v)->AddPosXYZ(0, pl->unk_68, 0);
+            func_02065f88(0x44f, &v)->AddPosXYZ(0, pl->height, 0);
             func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
         }
-        self->work->st++;
-        self->work->timer = 0;
+        self->fsm->st++;
+        self->fsm->timer = 0;
         break;
     }
     case 1: {
-        ActorSub40 *w = self->work;
-        Ov003BrTgt *t;
+        ActorSub40 *w = self->fsm;
+        Actor *t;
         w->timer++;
         if (w->timer >= 0xf) {
             self->unk_cc_0 = 0;
-            self->work->timer = 0;
+            self->fsm->timer = 0;
             t = Actor_GetTarget(self);
             if (t != NULL) {
                 Ov003BrWarp wp;
@@ -246,53 +200,53 @@ void func_ov003_021eeecc(Ov003Bridge *self) {
                 wp.pos.x = self->pos.x;
                 wp.pos.y = self->pos.y;
                 wp.pos.z = self->pos.z;
-                wp.pos.y = self->pos.y + (self->height << 4);
-                wp.rot[0] = t->rot[0];
-                wp.rot[1] = t->rot[1];
-                wp.rot[2] = t->rot[2];
+                wp.pos.y = self->pos.y + (self->unk_1c << 4);
+                wp.rot[0] = t->rot_x;
+                wp.rot[1] = t->rot_y;
+                wp.rot[2] = t->rot_z;
                 wp.unk_14 = 0;
-                Actor_SendMsg(t, self->unk_0c, 7, 1, 0x18, &wp);
+                Actor_SendMsg(t, self->id, 7, 1, 0x18, &wp);
                 func_ov000_02197d80(self);
                 mode = 1;
-                if (self->kind == 0) {
-                    if (self->mode == 0) {
-                        if (t->mode != 0) {
+                if (self->unk_18 == 0) {
+                    if (self->unk_1a == 0) {
+                        if (t->unk_1a != 0) {
                             mode = 2;
                         }
-                    } else if (t->mode == 0) {
+                    } else if (t->unk_1a == 0) {
                         mode = 3;
                     } else {
                         mode = 4;
                     }
-                } else if (self->mode == 0) {
-                    if (t->mode == 0) {
+                } else if (self->unk_1a == 0) {
+                    if (t->unk_1a == 0) {
                         mode = 5;
                     } else {
                         mode = 6;
                     }
                 } else {
                     mode = 6;
-                    if (t->mode != 0) {
+                    if (t->unk_1a != 0) {
                         mode = 5;
                     }
                 }
-                self->kind = mode;
+                self->unk_18 = mode;
                 func_ov000_02197dec(self, mode, -1);
             }
-            self->state = 1;
-            if (self->unk_58 != NULL) {
+            self->unk_93_1 = 1;
+            if (self->hitMesh != NULL) {
                 func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
                 func_ov000_0218996c(5, 10);
             }
-            self->work->st = 10;
+            self->fsm->st = 10;
             return;
         }
-        if (self->unk_58 != NULL) {
+        if (self->hitMesh != NULL) {
             VecFx32 p;
             p.x = self->pos.x;
-            p.y = self->pos.y - self->work->timer * 0xcd;
+            p.y = self->pos.y - self->fsm->timer * 0xcd;
             p.z = self->pos.z;
-            Ov003Br_SetMtx(self->unk_58, p.x, p.y, p.z, self->rot[0], self->rot[1], self->rot[2]);
+            Ov003Br_SetMtx(self->hitMesh, p.x, p.y, p.z, self->rot_x, self->rot_y, self->rot_z);
 
         }
         t = Actor_GetTarget(self);
@@ -300,19 +254,19 @@ void func_ov003_021eeecc(Ov003Bridge *self) {
             Ov003BrWarp wp;
             Ov003Br_Approach(&wp, t, self);
             wp.unk_14 = 0;
-            Actor_SendMsg(t, self->unk_0c, 7, 1, 0x18, &wp);
+            Actor_SendMsg(t, self->id, 7, 1, 0x18, &wp);
         }
         break;
     }
     case 10:
         if (func_ov000_0219bf90() != NULL && !func_ov000_021b4738()) {
             u16 id = 0;
-            Ov003BrTgt *t = Actor_GetTarget(self);
+            Actor *t = Actor_GetTarget(self);
             if (t != NULL) {
-                id = t->unk_0e;
+                id = t->kind;
             }
             func_020627b4();
-            func_020627a0(self->unk_0e, self->unk_0c);
+            func_020627a0(self->kind, self->id);
             func_020627dc(1);
             func_020627ec(id);
             {
@@ -321,7 +275,7 @@ void func_ov003_021eeecc(Ov003Bridge *self) {
                 func_ov000_02182590(ac);
             }
         }
-        self->work->st++;
+        self->fsm->st++;
         break;
     }
 }
