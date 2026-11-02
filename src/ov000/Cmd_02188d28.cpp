@@ -1,4 +1,5 @@
 #include "ov000/CmdQueue.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u8 unk_00[0x4];
@@ -23,7 +24,7 @@ extern Data021ccd50 data_ov000_021ccd50;
 extern Obj02097e48 *data_02097e48;
 extern void *data_02fe152c;
 extern Data02fe1534 data_02fe1534;
-void *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 u16 func_020594bc(void *a, int b, int c, int d);
 u32 func_0205975c(void *a, int idx);
 void *func_0205976c(void *a, int idx);

@@ -51,7 +51,7 @@ void func_020627dc(u16 sfx);
 void func_020627c8(void);
 void func_ov000_02182590(u8 *p);
 u16 func_0206e7ec(u32 a, u32 b);
-void *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_021b4738(void);
 void MIi_CpuClear32(u32 data, void *dst, u32 size);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
@@ -157,7 +157,7 @@ void func_ov000_0219763c(VObj *obj) {
                 Spawn0219763c(self, e->fx1, &e->scale1, &p);
             }
             if (e->snd >= 0 && self->unk_cc_5) {
-                func_02049f44(data_02097e4c, e->snd, (u8 *)self + 0x70, 0);
+                func_02049f44(data_02097e4c, e->snd, &self->pos, 0);
             }
             if (e->a != 0 && e->b != 0) {
                 func_ov000_0218996c(e->a, e->b);
@@ -177,11 +177,11 @@ void func_ov000_0219763c(VObj *obj) {
             func_ov000_02198c8c(self->unk_48, 0xffff);
             q = self->unk_48;
             LFLD(Bits0219763c, q, 0x9a).b0 = 0;
-            LFLD(Bits0219763c, q, 0x9a).b3 = 0;
+            q->unk_9a_3 = 0;
             func_0203f364(q);
             q = self->unk_48;
             LFLD(Bits0219763c, q, 0x9a).b1 = 0;
-            LFLD(Bits0219763c, q, 0x9a).b4 = 0;
+            q->unk_9a_4 = 0;
         }
         if (self->unk_58 != NULL) {
             self->unk_cc_0 = 0;

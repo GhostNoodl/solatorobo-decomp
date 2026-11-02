@@ -37,7 +37,7 @@ extern u8 *data_ov000_021ccd30;
 extern void *data_02097e4c;
 extern char data_ov000_021cc68a[];
 extern char data_ov000_021ca12c[];
-u8 *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL func_ov000_02190cb0(void *p, void *a, s32 b, s32 c);
@@ -59,7 +59,7 @@ void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
 u16 func_0204bfa8(void *cam);
 void func_ov000_02168e18(void *self, s32 a, s32 b, VecFx32 *p);
 
-static inline u8 *FindActor_021a9be8(u16 id) {
+static inline Actor *FindActor_021a9be8(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
@@ -78,7 +78,7 @@ static inline u16 AngleTo_021a9be8(Robo021ca458 *self, u8 *other) {
     if (other == NULL || other == (u8 *)self) {
         return self->rot_y;
     }
-    return FX_Atan2(LFLD(s32, other, 0x70) - LFLD(s32, self, 0x70), LFLD(s32, other, 0x78) - LFLD(s32, self, 0x78));
+    return FX_Atan2(LFLD(s32, other, 0x70) - self->pos.x, LFLD(s32, other, 0x78) - self->pos.z);
 }
 
 static inline u16 CamYaw_021a9be8(u8 *cam) {
@@ -100,9 +100,9 @@ static inline s32 Frame_021a9be8(void *m) {
 static inline void SetFx_021a9be8(Robo021ca458 *self, u8 *o, s32 rz) {
     self->unk_b48 = LFLD(s32, o, 0x24);
     LFLD(s32, o, 0x3c) = 0x2000;
-    self->unk_b4c = self->unk_a74 - LFLD(s32, self, 0x70);
-    self->unk_b50 = self->unk_a78 - LFLD(s32, self, 0x74);
-    self->unk_b54 = self->unk_a7c - LFLD(s32, self, 0x78);
+    self->unk_b4c = self->unk_a74 - self->pos.x;
+    self->unk_b50 = self->unk_a78 - self->pos.y;
+    self->unk_b54 = self->unk_a7c - self->pos.z;
     self->unk_b58 = 0;
     self->unk_b5a = -self->rot_y;
     self->unk_b5c = 0;
@@ -110,11 +110,11 @@ static inline void SetFx_021a9be8(Robo021ca458 *self, u8 *o, s32 rz) {
 }
 
 static inline void Bump_021a9be8(Robo021ca458 *self) {
-    if (self->unk_b24_1 && (LFLD(u32, self->unk_48, 0x54) & 0x400)) {
-        self->unk_98 = FX_Atan2(self->unk_af0 - LFLD(s32, self, 0x70), self->unk_af8 - LFLD(s32, self, 0x78));
+    if (self->unk_b24_1 && (self->unk_48->unk_54 & 0x400)) {
+        self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
         self->unk_9c = 0x66;
         self->unk_a4 = 0;
-        if (!self->unk_b24_17 || (LFLD(u32, self->unk_48, 0x50) & 0x40000000)) {
+        if (!self->unk_b24_17 || (self->unk_48->unk_50 & 0x40000000)) {
             self->unk_a0 = 0x200;
         }
         self->unk_a8 = 0x52;
@@ -127,7 +127,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
     VecFx32 z;
     Pose_021a9be8 m;
     VecFx32 t;
-    u8 *tg;
+    Actor *tg;
     u8 *a;
     u8 *o;
     s32 lim;
@@ -137,26 +137,26 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
 
     tg = FindActor_021a9be8(self->target);
     if (tg != NULL) {
-        u8 *c = LFLD(u8 *, tg, 0x44);
-        if (!(c != NULL && Both_021a9be8(c) && (u16)(LFLD(u16, tg, 0xc) & 0xf000) == 0x5000 && Has_021a9be8(c))) {
+        u8 *c = tg->unk_44;
+        if (!(c != NULL && Both_021a9be8(c) && (u16)(tg->id & 0xf000) == 0x5000 && Has_021a9be8(c))) {
             tg = NULL;
         } else if (self->unk_b2f == 0) {
             self->unk_b2f++;
         }
     }
     fall = FALSE;
-    if (!(LFLD(u32, self->unk_48, 0x54) & 0x20000000)) {
+    if (!(self->unk_48->unk_54 & 0x20000000)) {
         lim = -0xf000;
         if (self->unk_b22_0 || self->unk_b24_12 || self->unk_b24_19) {
             lim = -0x2d000;
         }
-        if (LFLD(s32, self, 0x74) - self->unk_b00 < lim) {
+        if (self->pos.y - self->unk_b00 < lim) {
             fall = TRUE;
         }
     }
     if (fall) {
         self->unk_b36 = 0;
-        LFLD(u32, self, 0xb24) |= 0x40000;
+        self->unk_b24 |= 0x40000;
     }
     switch (self->unk_40->st) {
     case 0:
@@ -191,8 +191,8 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         if (s->timer >= 0x20) {
             s32 i;
             self->unk_40->timer = 0x20;
-            func_0204a028(data_02097e4c, 0x44, (u8 *)self + 0x70, 2);
-            func_02049f44(data_02097e4c, 0x78, (u8 *)self + 0x70, 0);
+            func_0204a028(data_02097e4c, 0x44, &self->pos, 2);
+            func_02049f44(data_02097e4c, 0x78, &self->pos, 0);
             desc.a = 0x480c;
             desc.b = 0x4000;
             for (i = 0; i < 4; i++) {
@@ -213,7 +213,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
                 self->unk_b24_5 = 1;
                 self->unk_b24_7 = 0;
                 self->unk_b1c = LFLD(u16, a, 0xc);
-                o = func_02065f88(0x195, (u8 *)self + 0x70);
+                o = func_02065f88(0x195, &self->pos);
                 if (o != NULL) {
                     SetFx_021a9be8(self, o, -0x7b);
                 }
@@ -226,7 +226,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
             func_ov000_0219122c(self->unk_38, 0x14000);
         }
         if (self->unk_b36 == 0) {
-            a = FindActor_021a9be8(self->unk_b1c);
+            a = (u8 *)FindActor_021a9be8(self->unk_b1c);
             if (a == NULL || (LFLD(u8 *, a, 0x40) != NULL ? LFLD(u8, LFLD(u8 *, a, 0x40), 0x13) : 0) == 9) {
                 self->unk_40->timer = 0;
                 self->unk_40->st = 10;
@@ -234,7 +234,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         }
         break;
     case 10:
-        a = FindActor_021a9be8(self->unk_b1c);
+        a = (u8 *)FindActor_021a9be8(self->unk_b1c);
         if (a != NULL) {
             u16 ang;
             func_ov000_0218d46c(a, self->id, 0xb);
@@ -250,9 +250,9 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
                     t.z = LFLD(s32, a, 0x78);
                 }
                 if (func_01ffbd6c((VecFx32 *)((u8 *)self + 0x70), &t, -1, 0, 0, -1) != -0x1000) {
-                    t.x -= LFLD(s32, self, 0x70);
-                    t.y -= LFLD(s32, self, 0x74);
-                    t.z -= LFLD(s32, self, 0x78);
+                    t.x -= self->pos.x;
+                    t.y -= self->pos.y;
+                    t.z -= self->pos.z;
                     VEC_MultAdd(0xc00, &t, (VecFx32 *)((u8 *)self + 0x70), &t);
                     m.pos = t;
                     m.rx = LFLD(u16, a, 0x7c);
@@ -264,10 +264,10 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
             }
             ang = self->rot_y;
             if (tg != NULL) {
-                if (LFLD(void *, tg, 0x44) != NULL) {
-                    ang = func_ov000_0218d8f4(self, LFLD(void *, tg, 0x44));
+                if (((void *)tg->unk_44) != NULL) {
+                    ang = func_ov000_0218d8f4(self, ((void *)tg->unk_44));
                 } else {
-                    ang = AngleTo_021a9be8(self, tg);
+                    ang = AngleTo_021a9be8(self,(u8 *)tg);
                 }
             }
             {
@@ -284,7 +284,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
             LFLD(u16, a, 0x80) = 0;
             LFLD(u16, a, 0x90) = self->target;
             self->rot_y = func_01ffc128(ang, self->rot_y, 0x400, 1, 0x8000);
-            func_02049f44(data_02097e4c, 0x5c, (u8 *)self + 0x70, 0);
+            func_02049f44(data_02097e4c, 0x5c, &self->pos, 0);
         }
         self->unk_b1c = 0xffff;
         self->unk_b1e = 0xffff;
@@ -320,10 +320,10 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
             ang = self->rot_y;
         }
         if (tg != NULL) {
-            if (LFLD(void *, tg, 0x44) != NULL) {
-                ang = func_ov000_0218d8f4(self, LFLD(void *, tg, 0x44));
+            if (((void *)tg->unk_44) != NULL) {
+                ang = func_ov000_0218d8f4(self, ((void *)tg->unk_44));
             } else {
-                ang = AngleTo_021a9be8(self, tg);
+                ang = AngleTo_021a9be8(self,(u8 *)tg);
             }
         }
         self->rot_y = func_01ffc128(ang, self->rot_y, 0x400, 1, 0x8000);
@@ -331,7 +331,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         func_ov000_0218dbe0(self, 0);
     }
     func_ov000_021987b8(self->unk_48, 1, 0, 0);
-    if (self->unk_a0 < 0 && (LFLD(u32, self->unk_48, 0x50) & 0x20000000)) {
+    if (self->unk_a0 < 0 && (self->unk_48->unk_50 & 0x20000000)) {
         self->unk_a0 = 0;
         LFLD(u16, self->unk_48, 0x9a) |= 0x20;
         if (self->unk_b24_17) {

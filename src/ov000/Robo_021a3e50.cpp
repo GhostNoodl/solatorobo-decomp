@@ -14,7 +14,7 @@ extern u8 *data_ov000_021ccd54;
 extern u8 *data_0214a424;
 extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc648[];
-void *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 void func_ov000_0218d398(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_ov000_0218d988(void *self, void *other, s32 step);
 BOOL func_ov000_02190cb0(void *p, void *a, s32 b, s32 c);
@@ -25,7 +25,7 @@ BOOL func_ov000_021700c4(void *p);
 void *func_ov000_02173610(s32 kind);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
-static inline void *FindActor021a3e50(u16 id) {
+static inline Actor *FindActor021a3e50(u16 id) {
     void *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
@@ -49,15 +49,15 @@ static inline BOOL IsBusy021a3e50(void) {
 }
 
 void func_ov000_021a3e50(Robo021ca458 *self) {
-    u8 *t;
-    u8 *sub;
+    Actor *t;
+    ActorSub40 *sub;
     LFLD(u16, self->unk_48, 0x9a) |= 0x20;
     if (self->unk_b2f == 0) {
         self->unk_b2f++;
     }
-    t = (u8 *)FindActor021a3e50(self->target);
-    sub = (u8 *)self->unk_40;
-    switch (LFLD(u16, sub, 0)) {
+    t = FindActor021a3e50(self->target);
+    sub = self->unk_40;
+    switch (sub->st) {
     case 0:
         if (t != NULL) {
             Msg021a3e50 m;
@@ -65,7 +65,7 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
             m.b = 0x19a;
             m.c = 1;
             func_ov000_0218d398(t, self->id, 5, TRUE, 6, &m);
-            if (LFLD(u16, t, 0xe) == 0x2003) {
+            if (t->kind == 0x2003) {
                 u16 v;
                 self->unk_40->st++;
                 v = LFLD(u16, ((u8 *)self->hp), 2);
@@ -100,22 +100,22 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
         self->unk_a8 = 0;
         break;
     case 1:
-        LFLD(u16, sub, 2)++;
-        if (LFLD(u16, sub, 2) > 0x1e) {
+        sub->timer++;
+        if (sub->timer > 0x1e) {
             self->unk_40->st = 10;
             self->unk_40->timer = 0;
         }
         break;
     case 10:
         if (t != NULL) {
-            func_020627a0(LFLD(u16, t, 0xe), LFLD(u16, t, 0xc));
+            func_020627a0(t->kind, t->id);
             LFLD(u8, data_ov000_021ccd54, 0xac) = 1;
         }
         self->unk_40->st++;
         break;
     case 11:
-        LFLD(u16, sub, 2)++;
-        if (LFLD(u16, sub, 2) > 0x14) {
+        sub->timer++;
+        if (sub->timer > 0x14) {
             self->unk_40->st++;
             self->unk_40->timer = 0;
         }

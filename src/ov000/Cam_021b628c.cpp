@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
@@ -74,7 +75,7 @@ BOOL func_02062648(void);
 u16 func_020625ac(void);
 BOOL func_02062670(void);
 s32 func_020625d0(void);
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 void func_ov000_0219cbf8(u8 *pl, VecFx32 *pos, u16 *rot);
 void func_0203d45c(void *q, u16 a, u16 b, u16 c, u16 d);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
@@ -167,7 +168,7 @@ void func_ov000_021b628c(Obj021b628c *self) {
         ((Cam021b628c *)cam)->vfunc_00();
         LFLD(Bit0_021b628c, cam, 0x9c).b0 = 1;
     }
-    pl = func_ov000_0219bf90();
+    pl = (u8 *)func_ov000_0219bf90();
     if (pl == NULL) {
         return;
     }

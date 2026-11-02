@@ -11,7 +11,7 @@ typedef struct {
 
 extern "C" {
 extern u8 *data_ov000_021ccd68;
-void *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u16 angle);
 
 static inline void VecSet_021b4130(VecFx32 *v, s32 x, s32 y, s32 z) {
@@ -20,29 +20,29 @@ static inline void VecSet_021b4130(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->z = z;
 }
 
-static inline u8 *FindActor_021b4130(u16 id) {
+static inline Actor *FindActor_021b4130(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return (u8 *)func_ov000_0218e640(data_ov000_021ccd68, id);
+    return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
 void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
     VecFx32 v;
     MtxFx43 m;
-    u8 *a;
+    Actor *a;
     u8 *o;
     a = FindActor_021b4130(self->unk_b1c);
     if (a == NULL) {
         return;
     }
-    o = LFLD(u8 *, a, 0x4c);
+    o = ((u8 *)a->unk_4c);
     switch (self->unk_b24_7) {
     default:
         MTX_Identity43_(&m);
         if (flag) {
             MI_Copy48B((u8 *)self + 0xa50, &m);
-            VEC_Add(&LFLD(VecFx32, self, 0xa74), &LFLD(VecFx32, self, 0xaa4), &v);
+            VEC_Add(&LFLD(VecFx32, self, 0xa74), &self->unk_aa4, &v);
             v.x = FX_Mul(v.x, 0x800);
             v.y = FX_Mul(v.y, 0x800);
             v.z = FX_Mul(v.z, 0x800);
@@ -55,7 +55,7 @@ void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
                 v.z += FX_SinCosTable_[(self->rot_y >> 4) * 2 + 1] >> 1;
             } else if (self->unk_b2c_1) {
                 VecFx32 t;
-                t.x = LFLD(s32, a, 0x64) >> 1;
+                t.x = a->unk_64 >> 1;
                 t.y = 0;
                 t.z = 0;
                 MTX_MultVec33(&t, (MtxFx33 *)&m, &t);
@@ -68,7 +68,7 @@ void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
                 u16 r = self->rot_y;
                 s32 sn = FX_SinCosTable_[(r >> 4) * 2];
                 s32 cs = FX_SinCosTable_[(r >> 4) * 2 + 1];
-                s32 d = LFLD(s32, a, 0x64);
+                s32 d = a->unk_64;
                 sn = FX_Mul(d, sn);
                 cs = FX_Mul(d, cs);
                 v.x += sn;
@@ -76,7 +76,7 @@ void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
                 v.y -= 0x800;
             } else if (self->unk_b2c_2) {
                 VecFx32 t;
-                t.x = LFLD(s32, a, 0x64);
+                t.x = a->unk_64;
                 t.y = -0xc00;
                 t.z = 0;
                 MTX_MultVec33(&t, (MtxFx33 *)&m, &t);

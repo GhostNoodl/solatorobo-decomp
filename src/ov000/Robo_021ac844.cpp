@@ -24,7 +24,7 @@ extern char data_ov000_021cc6cc[];
 extern char data_ov000_021cc6d2[];
 extern char data_ov000_021cc6d8[];
 extern char data_ov000_021cc6de[];
-u8 *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL func_ov000_02190cb0(void *p, void *a, s32 b, s32 c);
@@ -45,7 +45,7 @@ u16 func_ov000_02198da8(void *body, u16 angle);
 u8 func_0206d204(void *p, s32 a);
 void func_ov000_021b1fac(void *self, s32 a, s32 b);
 
-static inline u8 *FindActor_021ac844(u16 id) {
+static inline Actor *FindActor_021ac844(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
@@ -71,11 +71,11 @@ static inline BOOL GIdle_021ac844(void) {
 }
 
 static inline void Bump_021ac844(Robo021ca458 *self) {
-    if (self->unk_b24_1 && (LFLD(u32, self->unk_48, 0x54) & 0x400)) {
+    if (self->unk_b24_1 && (self->unk_48->unk_54 & 0x400)) {
         self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
         self->unk_9c = 0x66;
         self->unk_a4 = 0;
-        if (!self->unk_b24_17 || (LFLD(u32, self->unk_48, 0x50) & 0x40000000)) {
+        if (!self->unk_b24_17 || (self->unk_48->unk_50 & 0x40000000)) {
             self->unk_a0 = 0x200;
         }
         self->unk_a8 = 0x52;
@@ -85,7 +85,7 @@ static inline void Bump_021ac844(Robo021ca458 *self) {
 
 void func_ov000_021ac844(Robo021ca458 *self) {
     BOOL upd = FALSE;
-    u8 *a;
+    Actor *a;
     Pose_021ac844 pose;
 
     switch (self->unk_40->st) {
@@ -129,14 +129,14 @@ void func_ov000_021ac844(Robo021ca458 *self) {
             pose.pos.y = self->pos.y;
             pose.pos.z = self->pos.z;
             pose.pos.y += self->unk_6c;
-            pose.rx = LFLD(u16, a, 0x7c);
-            pose.ry = LFLD(u16, a, 0x7e);
-            pose.rz = LFLD(u16, a, 0x80);
+            pose.rx = a->rot_x;
+            pose.ry = a->rot_y;
+            pose.rz = a->rot_z;
             pose.unk = 0;
             func_ov000_0218d398(a, self->id, 7, 1, 0x18, &pose);
             func_ov000_0218d46c(a, self->id, 0xa);
-            if (LFLD(u8 *, a, 0x4c) != NULL) {
-                LFLD(B8_021ac844, LFLD(u8 *, a, 0x4c), 0x18).b0 = 0;
+            if (((u8 *)a->unk_4c) != NULL) {
+                LFLD(B8_021ac844, ((u8 *)a->unk_4c), 0x18).b0 = 0;
             }
         }
         self->unk_b1c = 0xffff;
@@ -202,19 +202,19 @@ void func_ov000_021ac844(Robo021ca458 *self) {
     }
     case 2:
         if (self->unk_a0 > 0) {
-            if (LFLD(u32, self->unk_48, 0x50) & 0x80000000) {
+            if (self->unk_48->unk_50 & 0x80000000) {
                 self->unk_a0 = 0;
             }
         } else {
             u32 fl;
-            if ((LFLD(u32, self->unk_48, 0x50) & 0x40000000) || LFLD(s32, self->unk_48, 0x58) != 0) {
+            if ((self->unk_48->unk_50 & 0x40000000) || ((s32)self->unk_48->unk_58) != 0) {
                 self->unk_98 = func_ov000_02198da8(self->unk_48, self->unk_98);
                 self->unk_9c = 0x114;
                 if (self->unk_a0 < -0xcd) {
                     self->unk_a0 = -0xcd;
                 }
             }
-            fl = LFLD(u32, self->unk_48, 0x50);
+            fl = self->unk_48->unk_50;
             if (fl & 0x20000000) {
                 if (fl & 0x400) {
                     self->unk_9c = 0;
@@ -255,21 +255,21 @@ void func_ov000_021ac844(Robo021ca458 *self) {
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
         Bump_021ac844(self);
         {
-            u8 *s = (u8 *)self->unk_40;
-            LFLD(u16, s, 2)++;
-            if (LFLD(u16, s, 2) > 0x3c) {
+            ActorSub40 *s = self->unk_40;
+            s->timer++;
+            if (s->timer > 0x3c) {
                 func_ov000_02198360(self->unk_40, 4, 0);
             }
         }
         break;
     case 10: {
-        u8 *s = (u8 *)self->unk_40;
+        ActorSub40 *s = self->unk_40;
         if (self->unk_b24_0) {
             func_ov000_021987b8(self->unk_48, 0, 0, 0);
             func_ov000_02198360(self->unk_40, 0x14, 0);
         } else {
-            LFLD(u16, s, 2)++;
-            if (LFLD(u16, s, 2) > 0x19 || (self->unk_b68 & 2)) {
+            s->timer++;
+            if (s->timer > 0x19 || (self->unk_b68 & 2)) {
                 func_ov000_02190cb0(self->unk_38, data_ov000_021cc6d8, 0x800, 0);
                 self->unk_40->st++;
             }

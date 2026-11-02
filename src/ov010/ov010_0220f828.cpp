@@ -1,7 +1,7 @@
 #include "ov010/ov010.h"
+#include "ov000/ObjLayouts.h"
 
 typedef s16 fx16;
-typedef Ov010Vec VecFx32;
 struct VecFx16 { fx16 x, y, z; };
 #define FX32_ONE 0x1000
 
@@ -155,25 +155,25 @@ void func_ov010_02200040(void) {
 void func_ov010_02200044(void) {
 }
 
-BOOL func_ov010_02200048(u8 *o, u16 a, u16 b, u8 c, u16 d) {
-    FLD(Ov010Flags8, o, 0).b0 = 1;
-    FLD(Ov010Flags8, o, 0).b1 = 0;
-    FLD(u8, o, 1) = c;
-    FLD(u16, o, 2) = b;
-    FLD(u16, o, 4) = d;
-    FLD(u16, o, 6) = 0;
-    FLD(u16, o, 8) = 0;
-    FLD(u16, o, 0xa) = 0;
-    FLD(u16, o, 0xc) = 0;
-    FLD(u16, o, 0xe) = 0;
-    FLD(u16, o, 0x10) = 0;
-    FLD(u16, o, 0x12) = a;
-    FLD(s32, o, 0x14) = 0;
-    FLD(s32, o, 0x18) = 0;
-    FLD(s32, o, 0x1c) = 0;
-    FLD(s32, o, 0x20) = 0;
-    FLD(Ov010Vec, o, 0x24) = data_ov010_0220ef8c;
-    func_ov003_021da48c(o + 0x30, 0);
+BOOL func_ov010_02200048(Ov010FxObj *o, u16 a, u16 b, u8 c, u16 d) {
+    o->b0 = 1;
+    o->b1 = 0;
+    o->unk_01 = c;
+    o->unk_02 = b;
+    o->unk_04 = d;
+    o->unk_06 = 0;
+    o->unk_08 = 0;
+    o->unk_0a = 0;
+    o->unk_0c = 0;
+    o->unk_0e = 0;
+    o->unk_10 = 0;
+    o->unk_12 = a;
+    o->unk_14 = 0;
+    o->unk_18 = 0;
+    o->unk_1c = 0;
+    o->unk_20 = 0;
+    o->pos = data_ov010_0220ef8c;
+    func_ov003_021da48c(&o->st, 0);
     return TRUE;
 }
 
@@ -192,34 +192,6 @@ struct Ov010FxBits {
     u8 hi : 1;
 };
 
-struct Ov010FxSw {
-    u16 state;
-    u8 pad[0x11];
-    u8 mode;
-};
-
-struct Ov010FxObj {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 6;
-    u8 unk_01;
-    u16 unk_02;
-    u16 unk_04;
-    s16 unk_06;
-    s16 unk_08;
-    s16 unk_0a;
-    u16 unk_0c;
-    u16 unk_0e;
-    u16 unk_10;
-    u16 unk_12;
-    s32 unk_14;
-    s32 unk_18;
-    s32 unk_1c;
-    s32 unk_20;
-    Ov010Vec pos;
-    Ov010FxSw sw;
-};
-
 extern "C" {
 
 extern void *data_ov000_021ccd68;
@@ -231,7 +203,7 @@ extern Ov010V *func_020657b0(void *mgr, s32 h);
 extern void func_02065804(void *mgr, s32 h);
 extern void func_02065860(void *mgr, s32 h);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
-extern void *func_ov000_0218e640(void *mgr, u16 id);
+extern Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern void *func_ov000_021985c0(void *p);
 extern s32 func_ov000_0219a5c8(void *self, u16 mask, Ov010Vec *pos, Ov010FxRot *rot, s32 r, s32 a, Ov010Vec **list);
 extern BOOL func_ov000_0219a8bc(void *hit, void *a, void *b, s32 c, u8 d, const Ov010Vec *pos, s16 h, s32 i, s32 scale);
@@ -240,7 +212,7 @@ static inline s32 Ov010g_FxMul(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-static inline void *Ov010g_Find(u16 id) {
+static inline Actor *Ov010g_Find(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
@@ -249,7 +221,7 @@ static inline void *Ov010g_Find(u16 id) {
 
 static inline BOOL Ov010g_Idle(const Ov010FxObj *o) {
     BOOL r = TRUE;
-    if (o->b0 && o->sw.mode != 0) {
+    if (o->b0 && o->st.current != 0) {
         r = FALSE;
     }
     return r;
@@ -263,8 +235,8 @@ void func_ov010_022000d8(Ov010FxObj *o) {
         return;
     }
     o->unk_20 = 0;
-    if (o->sw.mode == 1) {
-        switch (o->sw.state) {
+    if (o->st.current == 1) {
+        switch (o->st.st) {
         case 0: {
             const char *m = data_ov010_0220ef68;
             Ov010V *e;
@@ -277,13 +249,13 @@ void func_ov010_022000d8(Ov010FxObj *o) {
             FLD(s32, e, 0xc8) = -1;
             o->unk_18 = FLD(s32, e, 0x24);
             o->unk_08 = 0x80;
-            o->sw.state = 0xa;
+            o->st.st = 0xa;
             break;
         }
         case 0xa: {
             s32 v;
             s32 t;
-            void *a;
+            Actor *a;
             o->unk_08 += (s16)Ov010g_FxMul(o->unk_06 - o->unk_08, 0x4cd);
             v = o->unk_08;
             o->unk_08 = (v > o->unk_06) ? o->unk_06 : ((v < 0) ? 0 : v);
@@ -335,28 +307,28 @@ void func_ov010_022000d8(Ov010FxObj *o) {
                 }
             }
             if (!o->b1 && o->unk_0c == 0) {
-                o->sw.state = 0x64;
+                o->st.st = 0x64;
             }
             break;
         }
         case 0x64:
-            func_ov000_02198360(&o->sw, 2, 1);
+            func_ov000_02198360(&o->st, 2, 1);
             break;
         }
-    } else if (o->sw.mode == 2) {
-        switch (o->sw.state) {
+    } else if (o->st.current == 2) {
+        switch (o->st.st) {
         case 0:
         case 1:
-            if (o->sw.state == 0) {
+            if (o->st.st == 0) {
                 o->unk_20 = 1;
-                o->sw.state = 1;
+                o->st.st = 1;
             }
             o->unk_08 = Ov010g_FxMul(o->unk_08, 0xb33);
             if (o->unk_08 < 0x80) {
                 o->unk_08 = 0;
                 func_02065804(data_0214a420, o->unk_14);
                 func_02065804(data_0214a420, o->unk_18);
-                o->sw.state = 0x14;
+                o->st.st = 0x14;
             }
             break;
         case 0xa: {
@@ -365,12 +337,12 @@ void func_ov010_022000d8(Ov010FxObj *o) {
             e->v14(o->unk_06, o->unk_06, o->unk_0a);
             e->v34(0, o->unk_10, 0);
             o->unk_1c = FLD(s32, e, 0x24);
-            o->sw.state = 0xb;
+            o->st.st = 0xb;
             break;
         }
         case 0xb:
             if (func_020657b0(data_0214a420, o->unk_1c) == NULL) {
-                o->sw.state = 0x14;
+                o->st.st = 0x14;
             }
             break;
         case 0x14:
@@ -380,7 +352,7 @@ void func_ov010_022000d8(Ov010FxObj *o) {
             o->unk_14 = 0;
             o->unk_18 = 0;
             o->unk_1c = 0;
-            func_ov000_02198360(&o->sw, 0, 1);
+            func_ov000_02198360(&o->st, 0, 1);
             break;
         }
     }
@@ -410,48 +382,48 @@ extern "C" {
 extern void func_ov003_021da48c(void *p, s32 a);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern void *func_ov000_02198328(void *p);
-extern void func_ov010_02200ee0(void *p);
-BOOL func_ov010_022006fc(u8 *o, u16 a, u16 b, u8 c, u16 d);
+extern void func_ov010_02200ee0(Ov010BeamSet *p);
+BOOL func_ov010_022006fc(Ov010Beam *o, u16 a, u16 b, u8 c, u16 d);
 
-void func_ov010_02200670(u8 *o, const Ov010Vec *v, u16 a, u16 b, s16 c, s16 d, u8 e, u16 g) {
-    if (!FLD(Ov010Flags8, o, 0).b0) {
+void func_ov010_02200670(Ov010FxObj *o, const Ov010Vec *v, u16 a, u16 b, s16 c, s16 d, u8 e, u16 g) {
+    if (!o->b0) {
         return;
     }
-    if (FLD(u8, o, 0x43) != 0) {
+    if (o->st.current != 0) {
         return;
     }
-    FLD(Ov010Flags8, o, 0).b1 = e;
-    FLD(s16, o, 6) = c;
-    FLD(u16, o, 8) = 0;
-    FLD(s16, o, 0xa) = d;
-    FLD(u16, o, 0xc) = g;
-    FLD(u16, o, 0xe) = a;
-    FLD(u16, o, 0x10) = b;
-    FLD(s32, o, 0x14) = 0;
-    FLD(s32, o, 0x18) = 0;
-    FLD(s32, o, 0x1c) = 0;
-    FLD(Ov010Vec, o, 0x24) = *v;
-    func_ov003_021da48c(o + 0x30, 1);
+    o->b1 = e;
+    o->unk_06 = c;
+    o->unk_08 = 0;
+    o->unk_0a = d;
+    o->unk_0c = g;
+    o->unk_0e = a;
+    o->unk_10 = b;
+    o->unk_14 = 0;
+    o->unk_18 = 0;
+    o->unk_1c = 0;
+    o->pos = *v;
+    func_ov003_021da48c(&o->st, 1);
 }
 
-BOOL func_ov010_022006fc(u8 *o, u16 a, u16 b, u8 c, u16 d) {
-    FLD(u8, o, 0) = 1;
-    FLD(u8, o, 1) = 0;
-    FLD(u8, o, 2) = c;
-    FLD(u16, o, 4) = a;
-    FLD(u16, o, 6) = b;
-    FLD(u16, o, 8) = d;
-    FLD(u16, o, 0xa) = 0;
-    FLD(u16, o, 0xc) = 0;
-    FLD(u16, o, 0xe) = 0;
-    FLD(u16, o, 0x10) = 0;
-    FLD(u16, o, 0x12) = 0;
-    FLD(s32, o, 0x14) = 0;
-    FLD(s32, o, 0x18) = 0;
-    FLD(Ov010Vec, o, 0x1c) = data_ov010_0220fd90;
-    func_ov003_021da48c(o + 0x6c, 0);
-    FLD(u16, o, 0x6e) = 0;
-    func_ov000_02198360(o + 0x6c, 5, 0);
+BOOL func_ov010_022006fc(Ov010Beam *o, u16 a, u16 b, u8 c, u16 d) {
+    o->on = 1;
+    o->unk_01 = 0;
+    o->unk_02 = c;
+    o->unk_04 = a;
+    o->unk_06 = b;
+    o->unk_08 = d;
+    o->unk_0a = 0;
+    o->unk_0c = 0;
+    o->len = 0;
+    o->rx = 0;
+    o->ry = 0;
+    o->alpha = 0;
+    o->mode = 0;
+    o->pos = data_ov010_0220fd90;
+    func_ov003_021da48c(&o->st, 0);
+    o->st.timer = 0;
+    func_ov000_02198360(&o->st, 5, 0);
     return TRUE;
 }
 
@@ -459,89 +431,89 @@ extern void *data_0214a420;
 extern u8 *data_ov000_021ccd54;
 extern void *data_02097e4c;
 extern void func_02065804(void *a, s32 b);
-extern BOOL func_ov010_02200048(u8 *o, u16 a, u16 b, u8 c, u16 d);
-extern BOOL func_ov010_02200c98(u8 *o);
+extern BOOL func_ov010_02200048(Ov010FxObj *o, u16 a, u16 b, u8 c, u16 d);
+extern BOOL func_ov010_02200c98(Ov010Beam *o);
 extern void *func_0204a028(void *a, s32 b, void *c, s32 d);
-extern void func_ov010_022000d8(u8 *o);
+extern void func_ov010_022000d8(Ov010FxObj *o);
 
-static inline BOOL Ov010Beam_IsDone(u8 *s) {
+static inline BOOL Ov010Beam_IsDone(Ov010FxObj *s) {
     BOOL r = TRUE;
-    if (FLD(Ov010Flags8, s, 0).b0 && FLD(u8, s, 0x43) != 0) {
+    if (s->b0 && s->st.current != 0) {
         r = FALSE;
     }
     return r;
 }
 
-void func_ov010_0220078c(u8 *o) {
+void func_ov010_0220078c(Ov010Beam *o) {
     s32 k;
-    if (FLD(u8, o, 0) == 0) {
+    if (o->on == 0) {
         return;
     }
-    FLD(s32, o, 0x18) = 0;
-    switch (FLD(u8, o, 0x7f)) {
+    o->mode = 0;
+    switch (o->st.current) {
     case 5:
-        FLD(s32, o, 0x14) = 0;
+        o->alpha = 0;
         break;
     case 0:
-        if (FLD(Ov010Flags8, o, 0x28).b0) {
-            FLD(Ov010Flags8, o, 0x28).b0 = 0;
-            func_02065804(data_0214a420, FLD(s32, o, 0x3c));
-            func_02065804(data_0214a420, FLD(s32, o, 0x40));
-            func_02065804(data_0214a420, FLD(s32, o, 0x44));
-            FLD(s32, o, 0x3c) = 0;
-            FLD(s32, o, 0x40) = 0;
-            FLD(s32, o, 0x44) = 0;
+        if (o->fx.b0) {
+            o->fx.b0 = 0;
+            func_02065804(data_0214a420, o->fx.unk_14);
+            func_02065804(data_0214a420, o->fx.unk_18);
+            func_02065804(data_0214a420, o->fx.unk_1c);
+            o->fx.unk_14 = 0;
+            o->fx.unk_18 = 0;
+            o->fx.unk_1c = 0;
         }
-        func_ov010_02200048(o + 0x28, FLD(u16, o, 4), FLD(u16, o, 6), FLD(u8, o, 2), FLD(u16, o, 8));
-        func_ov000_02198360(o + 0x6c, 1, 0);
+        func_ov010_02200048(&o->fx, o->unk_04, o->unk_06, o->unk_02, o->unk_08);
+        func_ov000_02198360(&o->st, 1, 0);
         break;
     case 1:
         if (func_ov010_02200c98(o)) {
-            func_ov000_02198360(o + 0x6c, 2, 0);
+            func_ov000_02198360(&o->st, 2, 0);
         }
         break;
     case 2:
-        FLD(u16, o, 0x6e)++;
-        if (FLD(u16, o, 0x6e) > 10) {
-            FLD(u16, o, 0x6e) = 0;
-            func_ov000_02198360(o + 0x6c, 3, 0);
+        o->st.timer++;
+        if (o->st.timer > 10) {
+            o->st.timer = 0;
+            func_ov000_02198360(&o->st, 3, 0);
         }
         break;
     case 3:
-        if (FLD(u16, o, 0x6c) == 0) {
-            FLD(s32, o, 0x18) = 1;
-            func_ov010_02200670(o + 0x28, (Ov010Vec *)(o + 0x1c), FLD(u16, o, 0x10), FLD(u16, o, 0x12), FLD(s16, o, 0xc), FLD(s16, o, 0xe), 0, FLD(u16, o, 0xa));
-            if (FLD(u8, o, 1) != 0) {
+        if (o->st.st == 0) {
+            o->mode = 1;
+            func_ov010_02200670(&o->fx, &o->pos, o->rx, o->ry, o->unk_0c, o->len, 0, o->unk_0a);
+            if (o->unk_01 != 0) {
                 u8 *g = data_ov000_021ccd54;
                 FLD(u8, g, 0x190) |= 0x1c;
                 FLD(u8, g, 0x18d) = 0xf;
                 FLD(u8, g, 0x18e) = 10;
                 FLD(u8, g, 0x18f) = 10;
-                func_0204a028(data_02097e4c, 0x5c, o + 0x1c, 5);
+                func_0204a028(data_02097e4c, 0x5c, &o->pos, 5);
             }
-            FLD(u16, o, 0x6c)++;
-        } else if (Ov010Beam_IsDone(o + 0x28)) {
-            FLD(s32, o, 0x18) = 2;
-            func_ov000_02198360(o + 0x6c, 4, 0);
+            o->st.st++;
+        } else if (Ov010Beam_IsDone(&o->fx)) {
+            o->mode = 2;
+            func_ov000_02198360(&o->st, 4, 0);
         }
         break;
     case 4:
-        if (FLD(Ov010Flags8, o, 0x28).b0 && FLD(u8, o, 0x6b) == 1) {
-            func_ov003_021da48c(o + 0x58, 2);
+        if (o->fx.b0 && o->fx.st.current == 1) {
+            func_ov003_021da48c(&o->fx.st, 2);
         }
-        func_ov000_02198360(o + 0x6c, 5, 0);
+        func_ov000_02198360(&o->st, 5, 0);
         break;
     }
     k = 0;
-    if (FLD(Ov010Flags8, o, 0x28).b0) {
-        if (!Ov010Beam_IsDone(o + 0x28)) {
-            k = FLD(s32, o, 0x48);
+    if (o->fx.b0) {
+        if (!Ov010Beam_IsDone(&o->fx)) {
+            k = o->fx.unk_20;
         }
     }
     if (k == 1) {
-        FLD(s32, o, 0x18) = 2;
+        o->mode = 2;
     }
-    func_ov010_022000d8(o + 0x28);
+    func_ov010_022000d8(&o->fx);
 }
 
 extern u8 data_020928b4[];
@@ -568,17 +540,6 @@ static inline void Ov010_G3End(void) {
 // ---- merged from ov010_02200a00.cpp
 namespace m_02200a00 {
 #include "nnsys/g3d.h"
-
-struct Ov010Beam {
-    u8 on;
-    u8 unk_01[0xd];
-    s16 len;
-    u16 rx;
-    u16 ry;
-    s32 alpha;
-    u8 unk_18[4];
-    VecFx32 pos;
-};
 
 extern "C" {
 
@@ -645,44 +606,44 @@ static inline s32 Ov010_ClampS(s32 x, s32 lo, s32 hi) {
     return x;
 }
 
-BOOL func_ov010_02200c98(u8 *o) {
+BOOL func_ov010_02200c98(Ov010Beam *o) {
     BOOL r = FALSE;
     s32 v;
-    switch (FLD(u16, o, 0x6c)) {
+    switch (o->st.st) {
     case 0:
-        FLD(s32, o, 0x14) = 0;
-        FLD(u16, o, 0x6e) = 0;
-        FLD(u16, o, 0x6c) = 1;
+        o->alpha = 0;
+        o->st.timer = 0;
+        o->st.st = 1;
     case 1:
-        if (FLD(u16, o, 0x6e) < 9) {
-            FLD(s32, o, 0x14) += 0x238e;
-            v = Ov010_ClampS(FLD(s32, o, 0x14), 0, 0x14000);
-            FLD(s32, o, 0x14) = v;
-            FLD(u16, o, 0x6e)++;
+        if (o->st.timer < 9) {
+            o->alpha += 0x238e;
+            v = Ov010_ClampS(o->alpha, 0, 0x14000);
+            o->alpha = v;
+            o->st.timer++;
             break;
         }
-        FLD(u16, o, 0x6c) = 2;
+        o->st.st = 2;
     case 2:
-        if (FLD(u16, o, 0x6e) < 0xb) {
+        if (o->st.timer < 0xb) {
             v = 0x14000;
-            FLD(s32, o, 0x14) = v;
-            FLD(u16, o, 0x6e) = FLD(const u16, o, 0x6e) + 1;
+            o->alpha = v;
+            o->st.timer = ((const Ov010Beam *)o)->st.timer + 1;
             break;
         }
-        FLD(u16, o, 0x6c) = 3;
+        o->st.st = 3;
     case 3:
-        if (FLD(u16, o, 0x6e) < 0x14) {
-            FLD(s32, o, 0x14) -= 0x238e;
-            v = Ov010_ClampS(FLD(s32, o, 0x14), 0, 0x14000);
-            FLD(s32, o, 0x14) = v;
-            FLD(u16, o, 0x6e)++;
+        if (o->st.timer < 0x14) {
+            o->alpha -= 0x238e;
+            v = Ov010_ClampS(o->alpha, 0, 0x14000);
+            o->alpha = v;
+            o->st.timer++;
             break;
         }
-        FLD(u16, o, 0x6e) = 0;
-        FLD(u16, o, 0x6c) = 4;
+        o->st.timer = 0;
+        o->st.st = 4;
         break;
     case 4:
-        FLD(s32, o, 0x14) = 0;
+        o->alpha = 0;
         r = TRUE;
         break;
     }
@@ -698,8 +659,8 @@ extern "C" {
 
 extern void func_ov003_021da48c(void *p, s32 a);
 extern void *func_ov000_02198328(void *p);
-extern void func_ov010_02200ee0(void *p);
-extern BOOL func_ov010_022006fc(u8 *o, u16 a, u16 b, u8 c, u16 d);
+extern void func_ov010_02200ee0(Ov010BeamSet *p);
+extern BOOL func_ov010_022006fc(Ov010Beam *o, u16 a, u16 b, u8 c, u16 d);
 
 static inline s32 Ov010_ClampS(s32 x, s32 lo, s32 hi) {
     if (x > hi) {
@@ -716,58 +677,58 @@ struct Ov010BeamSt {
     u16 timer;
 };
 
-u8 *func_ov010_02200d94(u8 *o) {
-    FLD(Ov010Flags8, o, 0).b0 = 0;
-    func_ov000_02198328(o + 0x2c);
+Ov010BeamSet *func_ov010_02200d94(Ov010BeamSet *o) {
+    o->flags.b0 = 0;
+    func_ov000_02198328(&o->st);
     return o;
 }
 
-u8 *func_ov010_02200db8(u8 *o) {
+Ov010BeamSet *func_ov010_02200db8(Ov010BeamSet *o) {
     func_ov010_02200ee0(o);
     return o;
 }
 
-static inline u8 *Ov010Beam_New(void) {
-    u8 *n = (u8 *)func_0203dd9c(0x8c);
+static inline Ov010BeamNode *Ov010Beam_New(void) {
+    Ov010BeamNode *n = (Ov010BeamNode *)func_0203dd9c(0x8c);
     if (n != NULL) {
-        FLD(u8, n, 0xc) = 0;
-        FLD(Ov010Flags8, n, 0x34).b0 = 0;
-        func_ov000_02198328(n + 0x64);
-        func_ov000_02198328(n + 0x78);
+        n->beam.on = 0;
+        n->beam.fx.b0 = 0;
+        func_ov000_02198328(&n->beam.fx.st);
+        func_ov000_02198328(&n->beam.st);
     }
     return n;
 }
 
-static inline u8 *Ov010List_Push(u8 *head, u8 *n) {
+static inline Ov010BeamNode *Ov010List_Push(Ov010BeamNode *head, Ov010BeamNode *n) {
     if (n != NULL) {
-        FLD(u8 *, n, 8) = head;
+        n->next = head;
         return n;
     }
     return head;
 }
 
-BOOL func_ov010_02200dcc(u8 *o, u16 a, u16 b, u8 c, u16 d) {
+BOOL func_ov010_02200dcc(Ov010BeamSet *o, u16 a, u16 b, u8 c, u16 d) {
     s32 i;
-    FLD(Ov010Flags8, o, 0).b0 = 1;
-    FLD(u8, o, 1) = c;
-    FLD(u16, o, 2) = a;
-    FLD(u16, o, 4) = b;
-    FLD(u16, o, 6) = d;
-    FLD(u16, o, 8) = 0;
-    FLD(u16, o, 0xa) = 0;
-    FLD(u16, o, 0xc) = 0;
-    FLD(void *, o, 0x10) = NULL;
-    FLD(Ov010Vec, o, 0x14) = data_ov010_0220fd90;
-    FLD(Ov010Vec, o, 0x20) = FLD(Ov010Vec, o, 0x14);
-    func_ov003_021da48c(o + 0x2c, 0);
-    FLD(u16, o, 0x2c) = 0x65;
+    o->flags.b0 = 1;
+    o->unk_01 = c;
+    o->unk_02 = a;
+    o->unk_04 = b;
+    o->unk_06 = d;
+    o->unk_08 = 0;
+    o->unk_0a = 0;
+    o->unk_0c = 0;
+    o->beams = NULL;
+    o->unk_14 = data_ov010_0220fd90;
+    o->unk_20 = o->unk_14;
+    func_ov003_021da48c(&o->st, 0);
+    o->st.st = 0x65;
     for (i = 0; i < 3; i++) {
-        u8 *n = Ov010Beam_New();
-        func_ov010_022006fc(n + 0xc, a, b, c, d);
-        FLD(u8 *, n, 8) = NULL;
-        FLD(u8 *, o, 0x10) = Ov010List_Push(FLD(u8 *, o, 0x10), n);
+        Ov010BeamNode *n = Ov010Beam_New();
+        func_ov010_022006fc(&n->beam, a, b, c, d);
+        n->next = NULL;
+        o->beams = Ov010List_Push(o->beams, n);
         if (i == 0) {
-            FLD(u8, n, 0xd) = 1;
+            n->beam.unk_01 = 1;
         }
     }
     return TRUE;
@@ -797,52 +758,52 @@ extern Ov010Heap *data_02097dd0;
 extern void func_02065804(void *a, s32 b);
 extern void func_ov003_021da48c(void *p, s32 a);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-extern void func_ov010_02200a00(u8 *o);
-extern u8 *func_ov000_0219bf90(void);
+extern void func_ov010_02200a00(Ov010Beam *o);
+extern Robo021ca458 *func_ov000_0219bf90(void);
 extern s32 func_ov003_021d9a80(const Ov010Vec *a, const Ov010Vec *b);
 
-static inline void Ov010Fx_Free(u8 *s) {
-    if (FLD(Ov010Flags8, s, 0).b0) {
-        FLD(Ov010Flags8, s, 0).b0 = 0;
-        func_02065804(data_0214a420, FLD(s32, s, 0x14));
-        func_02065804(data_0214a420, FLD(s32, s, 0x18));
-        func_02065804(data_0214a420, FLD(s32, s, 0x1c));
-        FLD(s32, s, 0x14) = 0;
-        FLD(s32, s, 0x18) = 0;
-        FLD(s32, s, 0x1c) = 0;
+static inline void Ov010Fx_Free(Ov010FxObj *s) {
+    if (s->b0) {
+        s->b0 = 0;
+        func_02065804(data_0214a420, s->unk_14);
+        func_02065804(data_0214a420, s->unk_18);
+        func_02065804(data_0214a420, s->unk_1c);
+        s->unk_14 = 0;
+        s->unk_18 = 0;
+        s->unk_1c = 0;
     }
 }
 
-static inline void Ov010Beam_Reset(u8 *b) {
-    if (FLD(u8, b, 0) != 0) {
-        Ov010Fx_Free(b + 0x28);
-        FLD(u8, b, 0) = 0;
+static inline void Ov010Beam_Reset(Ov010Beam *b) {
+    if (b->on != 0) {
+        Ov010Fx_Free(&b->fx);
+        b->on = 0;
     }
 }
 
-void func_ov010_02200ee0(u8 *o) {
-    u8 *next;
-    u8 *n;
-    if (!FLD(Ov010Flags8, o, 0).b0) {
+void func_ov010_02200ee0(Ov010BeamSet *o) {
+    Ov010BeamNode *next;
+    Ov010BeamNode *n;
+    if (!o->flags.b0) {
         return;
     }
-    for (n = FLD(u8 *, o, 0x10); n != NULL; n = next) {
+    for (n = o->beams; n != NULL; n = next) {
         u32 saved;
-        next = FLD(u8 *, n, 8);
-        Ov010Beam_Reset(n + 0xc);
+        next = n->next;
+        Ov010Beam_Reset(&n->beam);
         saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->def;
         if (n != NULL) {
             if (n != NULL) {
-                Ov010Beam_Reset(n + 0xc);
-                Ov010Fx_Free(n + 0x34);
+                Ov010Beam_Reset(&n->beam);
+                Ov010Fx_Free(&n->beam.fx);
                 func_0203de1c(n);
             }
         }
         data_02097dd0->cur = saved;
     }
-    FLD(u8 *, o, 0x10) = NULL;
-    FLD(Ov010Flags8, o, 0).b0 = 0;
+    o->beams = NULL;
+    o->flags.b0 = 0;
 }
 
 }
@@ -862,104 +823,92 @@ extern u16 func_ov003_021d9c74(Ov010Vec *v);
 extern u16 func_ov003_021d9c38(Ov010Vec *v);
 extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *c);
 extern void VEC_Normalize(const Ov010Vec *a, Ov010Vec *b);
-extern void func_ov010_0220078c(void *p);
+extern void func_ov010_0220078c(Ov010Beam *p);
 
 static inline s32 Ov010k_Mul(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-static inline BOOL Ov010Beam_Idle(u8 *b) {
+// Idle/Mode/GetA/GetB keep the FLD read of `on`: as b->on they change the code of
+// func_ov010_02201064 (SetA/SetB take the member).
+static inline BOOL Ov010Beam_Idle(Ov010Beam *b) {
     BOOL r = TRUE;
     if (FLD(u8, b, 0) != 0) {
-        r = FLD(u8, b, 0x7f) == 5;
+        r = b->st.current == 5;
     }
     return r;
 }
 
-static inline s32 Ov010Beam_Mode(u8 *b) {
+static inline s32 Ov010Beam_Mode(Ov010Beam *b) {
     s32 r = 0;
     if (FLD(u8, b, 0) != 0) {
-        r = FLD(s32, b, 0x18);
+        r = b->mode;
     }
     return r;
 }
 
-static inline u16 Ov010Beam_GetA(u8 *b) {
+static inline u16 Ov010Beam_GetA(Ov010Beam *b) {
     u16 r = 0;
     if (FLD(u8, b, 0) != 0 && !Ov010Beam_Idle(b)) {
-        r = FLD(u16, b, 0x10);
+        r = b->rx;
     }
     return r;
 }
 
-static inline void Ov010Beam_SetA(u8 *b, u16 v) {
-    if (*b != 0 && !Ov010Beam_Idle(b)) {
-        FLD(u16, b, 0x10) = v;
-        if (FLD(Ov010Flags8, b, 0x28).b0) {
-            FLD(u16, b, 0x36) = v;
+static inline void Ov010Beam_SetA(Ov010Beam *b, u16 v) {
+    if (b->on != 0 && !Ov010Beam_Idle(b)) {
+        b->rx = v;
+        if (b->fx.b0) {
+            b->fx.unk_0e = v;
         }
     }
 }
 
-static inline u16 Ov010Beam_GetB(u8 *b) {
+static inline u16 Ov010Beam_GetB(Ov010Beam *b) {
     u16 r = 0;
     if (FLD(u8, b, 0) != 0 && !Ov010Beam_Idle(b)) {
-        r = FLD(u16, b, 0x12);
+        r = b->ry;
     }
     return r;
 }
 
-static inline void Ov010Beam_SetB(u8 *b, u16 v) {
-    if (*b != 0 && !Ov010Beam_Idle(b)) {
-        FLD(u16, b, 0x12) = v;
-        if (FLD(Ov010Flags8, b, 0x28).b0) {
-            FLD(u16, b, 0x38) = v;
+static inline void Ov010Beam_SetB(Ov010Beam *b, u16 v) {
+    if (b->on != 0 && !Ov010Beam_Idle(b)) {
+        b->ry = v;
+        if (b->fx.b0) {
+            b->fx.unk_10 = v;
         }
     }
 }
 
-struct Obj02201064 {
-    Ov010Flags8 unk_00;
-    u8 unk_01[0x7];
-    u16 unk_08;
-    u16 unk_0a;
-    u16 unk_0c;
-    u8 unk_0e[0x2];
-    u8 *unk_10;
-    Ov010Vec unk_14;
-    Ov010Vec unk_20;
-    u16 unk_2c;
-    u16 unk_2e;
-};
-
-void func_ov010_02201064(Obj02201064 *self) {
+void func_ov010_02201064(Ov010BeamSet *self) {
     BOOL all;
     u16 ang;
-    u8 *n;
-    u8 *n1;
-    u8 *n2;
+    Ov010BeamNode *n;
+    Ov010BeamNode *n1;
+    Ov010BeamNode *n2;
     Ov010Vec tmp;
     Ov010Vec res;
     Ov010Vec d;
     Ov010Vec v;
-    if (!self->unk_00.b0) {
+    if (!self->flags.b0) {
         return;
     }
-    switch (self->unk_2c) {
+    switch (self->st.st) {
     case 0:
         self->unk_0a = 0;
         self->unk_0c = 0;
-        self->unk_2c = 10;
+        self->st.st = 10;
         break;
     case 10: {
-        u8 *last = NULL;
-        for (n1 = self->unk_10; n1 != NULL; n1 = FLD(u8 *, n1, 8)) {
-            if (Ov010Beam_Idle(n1 + 0xc)) {
+        Ov010BeamNode *last = NULL;
+        for (n1 = self->beams; n1 != NULL; n1 = n1->next) {
+            if (Ov010Beam_Idle(&n1->beam)) {
                 last = n1;
             }
         }
         if (last != NULL) {
-            BOOL flag = self->unk_2e % 3 == 0;
+            BOOL flag = self->st.timer % 3 == 0;
             s32 len;
             u16 ry;
             u16 rx;
@@ -1009,78 +958,78 @@ void func_ov010_02201064(Obj02201064 *self) {
             {
                 s32 s = func_02040528(2);
                 s = s > 0 ? s + 0x16 : s - 0x16;
-                FLD(u8, last, 0) = 0;
-                FLD(u16, last, 2) = 0;
-                FLD(u16, last, 4) = 0;
-                FLD(u16, last, 6) = s;
+                last->unk_00 = 0;
+                last->unk_02 = 0;
+                last->unk_04 = 0;
+                last->unk_06 = s;
             }
-            if (FLD(u8, last, 0xc) != 0 && FLD(u8, last, 0x8b) == 5) {
-                FLD(u16, last, 0x7a) = 0;
-                func_ov000_02198360(last + 0x78, 0, 0);
-                FLD(s32, last, 0x28) = self->unk_20.x;
-                FLD(s32, last, 0x2c) = self->unk_20.y;
-                FLD(s32, last, 0x30) = self->unk_20.z;
-                FLD(u16, last, 0x1c) = ry;
-                FLD(u16, last, 0x1e) = rx;
-                FLD(u16, last, 0x18) = 0xc20;
-                FLD(u16, last, 0x1a) = 0x4000;
-                FLD(u16, last, 0x16) = t;
+            if (last->beam.on != 0 && last->beam.st.current == 5) {
+                last->beam.st.timer = 0;
+                func_ov000_02198360(&last->beam.st, 0, 0);
+                last->beam.pos.x = self->unk_20.x;
+                last->beam.pos.y = self->unk_20.y;
+                last->beam.pos.z = self->unk_20.z;
+                last->beam.rx = ry;
+                last->beam.ry = rx;
+                last->beam.unk_0c = 0xc20;
+                last->beam.len = 0x4000;
+                last->beam.unk_0a = t;
             }
         }
-        for (n2 = self->unk_10; n2 != NULL; n2 = FLD(u8 *, n2, 8)) {
-            u8 *b = n2 + 0xc;
+        for (n2 = self->beams; n2 != NULL; n2 = n2->next) {
+            Ov010Beam *b = &n2->beam;
             if (Ov010Beam_Idle(b)) {
                 continue;
             }
             if (Ov010Beam_Mode(b) == 1) {
-                FLD(u8, n2, 0) = 1;
+                n2->unk_00 = 1;
             } else if (Ov010Beam_Mode(b) == 2) {
-                FLD(u8, n2, 0) = 0;
+                n2->unk_00 = 0;
             }
-            if (FLD(u8, n2, 0) != 0) {
-                FLD(u16, n2, 2) += 4;
-                FLD(u16, n2, 2) = FLD(u16, n2, 2) > 0x24 ? 0x24 : FLD(u16, n2, 2);
-                FLD(u16, n2, 4) = FLD(u16, n2, 6);
+            if (n2->unk_00 != 0) {
+                n2->unk_02 += 4;
+                n2->unk_02 = n2->unk_02 > 0x24 ? 0x24 : n2->unk_02;
+                n2->unk_04 = n2->unk_06;
             } else {
-                FLD(u16, n2, 2) = Ov010k_Mul(FLD(u16, n2, 2) << 12, 0x1000) >> 12;
-                FLD(u16, n2, 4) = 0;
+                n2->unk_02 = Ov010k_Mul(n2->unk_02 << 12, 0x1000) >> 12;
+                n2->unk_04 = 0;
             }
             {
-                u16 dd = 0xffff - FLD(u16, n2, 2);
+                u16 dd = 0xffff - n2->unk_02;
                 u16 cur = Ov010Beam_GetA(b);
                 Ov010Beam_SetA(b, cur + dd);
             }
             {
-                u16 dd = FLD(u16, n2, 4);
+                u16 dd = n2->unk_04;
                 u16 cur = Ov010Beam_GetB(b);
                 Ov010Beam_SetB(b, cur + dd);
             }
         }
-        if (self->unk_08 < CFLD(u16, self, 0x2e)) {
-            self->unk_2e = 0;
-            self->unk_2c = 100;
+        if (self->unk_08 < ((const Ov010BeamSet *)self)->st.timer) {
+            self->st.timer = 0;
+            self->st.st = 100;
         } else {
-            self->unk_2e++;
+            self->st.timer++;
         }
         break;
     }
     case 100: {
         all = TRUE;
-        for (n = self->unk_10; n != NULL; n = FLD(u8 *, n, 8)) {
-            if (!Ov010Beam_Idle(n + 0xc)) {
+        for (n = self->beams; n != NULL; n = n->next) {
+            if (!Ov010Beam_Idle(&n->beam)) {
                 all = FALSE;
             }
         }
         if (all) {
-            self->unk_2c = 101;
+            self->st.st = 101;
         }
         break;
     }
     case 101:
         break;
     }
-    for (n = self->unk_10; n != NULL; n = FLD(u8 *, n, 8)) {
-        func_ov010_0220078c(n + 0xc);
+    for (n = self->beams; n != NULL; n = n->next) {
+        func_ov010_0220078c(&n->beam);
     }
 }
 

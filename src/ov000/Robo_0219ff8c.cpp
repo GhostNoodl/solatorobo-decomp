@@ -61,8 +61,8 @@ void func_ov000_0219ff8c(Robo021ca458 *self) {
     }
     if (self->unk_b28_0 != 0) {
         {
-            u8 *p = (u8 *)self->unk_48;
-            LFLD(Bits16_0219ff8c, p, 0x9a).b3 = 0;
+            ActorSub48 *p = self->unk_48;
+            p->unk_9a_3 = 0;
             func_0203f364(p);
         }
         switch (self->unk_b28_0) {

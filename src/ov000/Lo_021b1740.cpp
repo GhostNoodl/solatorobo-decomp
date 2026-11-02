@@ -37,7 +37,7 @@ extern Obj02097e48 *data_02097e48;
 extern u8 *data_0214a424;
 extern void *data_02097e4c;
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-void *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 void func_02062764(s32 a, s32 b);
 
 static inline void Set54(u8 *t, u8 n, s32 c) {

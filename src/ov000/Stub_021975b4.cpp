@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u8 unk_00[0x15];

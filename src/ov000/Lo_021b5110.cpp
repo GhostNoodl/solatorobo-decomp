@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov000/ObjLayouts.h"
 #include "ov000/Vec.h"
 
 class Mgr021b5110Cls;

@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 #include "ov000/Vec.h"
 #include "Main/Snd/SndMgr.h"
 

@@ -1,4 +1,5 @@
 #include "ov000/CmdObj.h"
+#include "ov000/ObjLayouts.h"
 #include "ov000/VObj.h"
 
 typedef struct {

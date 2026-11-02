@@ -25,11 +25,11 @@ BOOL func_ov000_021950e8(ActorEx *self, ActorMsg *msg) {
     BOOL callBase = TRUE;
     switch (msg->type) {
     case 9: {
-        u8 *sub = (u8 *)self->unk_4c;
+        ActorSub4c *sub = self->unk_4c;
         callBase = FALSE;
         if (sub != NULL) {
-            u8 k = LFLD(u8, sub, 0);
-            u8 k2 = LFLD(u8, sub, 2);
+            u8 k = sub->unk_00;
+            u8 k2 = sub->unk_02;
             if (k == 0x15) {
                 if (LFLD(u16, msg->data, 0) != 0) {
                     ((ActorSub40 *)self->unk_40)->flags |= 0x40;
@@ -52,7 +52,7 @@ BOOL func_ov000_021950e8(ActorEx *self, ActorMsg *msg) {
                         ((ActorSub40 *)self->unk_40)->flags |= 0x200000;
                     }
                 }
-            } else if (LFLD(u16, msg->data, 0) == 0 && LFLD(u16, sub, 0x1c) == 0xffff) {
+            } else if (LFLD(u16, msg->data, 0) == 0 && sub->unk_1c == 0xffff) {
                 Actor *p = func_ov000_0219bf90();
                 if (p != NULL && !IsB1021950e8(p) && msg->id == p->id && p->target == self->id &&
                     func_ov000_0219b3b4(self->unk_4c) && ((void *)self->unk_48) != NULL &&

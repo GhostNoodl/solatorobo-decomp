@@ -1,4 +1,5 @@
 #include "ov000/Actor.h"
+#include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -42,7 +43,7 @@ extern "C" {
 
 extern ActorMgr *data_ov000_021ccd68;
 extern void *data_02fe152c;
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 Actor *func_ov000_0218e640(ActorMgr *mgr, u16 id);
 void func_ov000_021b13cc(u8 *pl, s32 a);
 void func_ov000_021b12c0(u8 *pl, s32 a);
@@ -56,11 +57,11 @@ static inline Actor *FindActor021b65ec(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-static inline void PlSetPos021b65ec(u8 *pl, const VecFx32 *pos, s16 rx, s16 ry, s16 rz) {
-    LFLD(VecFx32, pl, 0x75c) = *pos;
-    LFLD(s16, pl, 0x76c) = rx;
-    LFLD(s16, pl, 0x76e) = ry;
-    LFLD(s16, pl, 0x770) = rz;
+static inline void PlSetPos021b65ec(Robo021ca458 *pl, const VecFx32 *pos, s16 rx, s16 ry, s16 rz) {
+    pl->unk_75c = *pos;
+    pl->unk_76c = rx;
+    pl->unk_76e = ry;
+    pl->unk_770 = rz;
 }
 
 static inline void PlSetCol021b65ec(u8 *pl, u8 r, u8 g, u8 b) {
@@ -69,7 +70,7 @@ static inline void PlSetCol021b65ec(u8 *pl, u8 r, u8 g, u8 b) {
     LFLD(u8, pl, 0x774) = b;
 }
 
-static inline Rgb021b65ec *PlCol021b65ec(u8 *pl) {
+static inline Rgb021b65ec *PlCol021b65ec(Robo021ca458 *pl) {
     return &LFLD(Rgb021b65ec, pl, 0x772);
 }
 
@@ -90,7 +91,7 @@ struct Obj021b65ec {
 
 void func_ov000_021b65ec(Obj021b65ec *self) {
     u8 *g;
-    u8 *pl;
+    Robo021ca458 *pl;
     Item021b65ec *item;
     // DECL-END
     pl = func_ov000_0219bf90();
@@ -99,22 +100,22 @@ void func_ov000_021b65ec(Obj021b65ec *self) {
     }
     item = &self->unk_18[self->unk_0b];
     g = (u8 *)data_ov000_021ccd54;
-    if (item->bits.b1 && LFLD(B24_021b65ec, pl, 0xb24).b5) {
-        Actor *a = FindActor021b65ec(LFLD(u16, pl, 0xb1c));
+    if (item->bits.b1 && pl->unk_b24_5) {
+        Actor *a = FindActor021b65ec(pl->unk_b1c);
         if (a != NULL && ((u8 *)a->unk_4c) != NULL) {
-            LFLD(u16, ((u8 *)a->unk_4c), 0x1c) = 0xffff;
+            a->unk_4c->unk_1c = 0xffff;
         }
-        LFLD(u16, pl, 0xb1c) = 0xffff;
-        LFLD(u16, pl, 0xb1e) = 0xffff;
-        LFLD(B24_021b65ec, pl, 0xb24).b5 = 0;
-        LFLD(B24_021b65ec, pl, 0xb24).b7 = LFLD(B24_021b65ec, pl, 0xb24).b9;
+        pl->unk_b1c = 0xffff;
+        pl->unk_b1e = 0xffff;
+        pl->unk_b24_5 = 0;
+        pl->unk_b24_7 = pl->unk_b24_9;
     }
     switch (item->bits.b2) {
     case 1:
-        if (!LFLD(B24_021b65ec, pl, 0xb24).b1) {
+        if (!pl->unk_b24_1) {
             return;
         }
-        func_ov000_021b13cc(pl, 0);
+        func_ov000_021b13cc((u8 *)pl, 0);
         { typedef struct { u8 c[3]; } C3; LFLD(C3, pl, 0x772) = LFLD(C3, g, 0xd0); }
         {
             VecFx32 v;
@@ -127,7 +128,7 @@ void func_ov000_021b65ec(Obj021b65ec *self) {
         break;
     case 2: {
         Rgb021b65ec c;
-        if (LFLD(B24_021b65ec, pl, 0xb24).b1 ? TRUE : FALSE) {
+        if (pl->unk_b24_1 ? TRUE : FALSE) {
             return;
         }
         c.r = item->col.r;
@@ -145,7 +146,7 @@ void func_ov000_021b65ec(Obj021b65ec *self) {
         if (!SameCol021b65ec(&c, PlCol021b65ec(pl))) {
             return;
         }
-        func_ov000_021b12c0(pl, 0);
+        func_ov000_021b12c0((u8 *)pl, 0);
         break;
     }
     case 3: {
@@ -153,10 +154,10 @@ void func_ov000_021b65ec(Obj021b65ec *self) {
         if (func_020594bc(data_02fe152c, 5, 1, 0) != 1) {
             return;
         }
-        if (LFLD(B24_021b65ec, pl, 0xb24).b1 ? TRUE : FALSE) {
+        if (pl->unk_b24_1 ? TRUE : FALSE) {
             return;
         }
-        func_ov000_021b12c0(pl, 0);
+        func_ov000_021b12c0((u8 *)pl, 0);
         ((u8 *)&c)[0] = ((u8 *)&item->col)[0];
         if (((u8 *)&c)[0] == 0xff) {
             ((u8 *)&c)[0] = LFLD(u8, g, 0xd0);

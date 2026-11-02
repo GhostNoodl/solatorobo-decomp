@@ -1,7 +1,7 @@
 #include "ov010/ov010.h"
+#include "ov000/ActorBase.h"
 
 typedef s32 fx32;
-typedef Ov010Vec VecFx32;
 
 // This TU's .rodata (all of it) and its .data up to the copies the static initialiser makes. The
 // copied vectors and their sources are weak: the stub loads each through its own pool word, not
@@ -66,7 +66,7 @@ extern "C" {
 
 extern void *data_ov000_021ccd68;
 extern u8 data_ov010_0220fdf4[];
-extern void *func_ov000_0218e640(void *a, u16 b);
+extern Actor *func_ov000_0218e640(void *a, u16 b);
 extern u8 *func_ov003_021da32c(s32 kind);
 extern void MTX_RotX33_(Ov010Mtx33 *m, s32 s, s32 c);
 extern void MTX_RotY33_(Ov010Mtx33 *m, s32 s, s32 c);
@@ -79,7 +79,7 @@ extern void func_ov010_02202560(u8 *e, u16 a, Ov010Vec *b, Ov010Vec *c, Ov010Rot
 extern void func_ov010_02202600(u8 *e, void *fn);
 extern BOOL func_ov010_022018c4(u16 id, const Ov010Vec *a, const Ov010Vec *b);
 
-static inline void *Ov010_FindObjById(u16 id) {
+static inline Actor *Ov010_FindObjById(u16 id) {
     if (data_ov000_021ccd68 != NULL) {
         return func_ov000_0218e640(data_ov000_021ccd68, id);
     }
@@ -98,7 +98,7 @@ static inline u8 *Ov010_SpawnShot(Ov010Task *t) {
 u8 *func_ov010_02201cc8(Ov010Task *t) {
     u8 *e = NULL;
     if (t->b0) {
-        u8 *obj = (u8 *)Ov010_FindObjById(t->id);
+        Actor *obj = Ov010_FindObjById(t->id);
         if (obj != NULL) {
             Ov010Mtx33 mx;
             Ov010Mtx33 my;
@@ -157,7 +157,7 @@ void *func_ov010_02201f18(void) {
 u8 *func_ov010_02201f44(Ov010Task *t) {
     u8 *e = NULL;
     if (t->b0) {
-        u8 *obj = (u8 *)Ov010_FindObjById(t->id);
+        Actor *obj = Ov010_FindObjById(t->id);
         if (obj != NULL) {
             Ov010Vec p;
             Ov010Vec d;
@@ -166,12 +166,12 @@ u8 *func_ov010_02201f44(Ov010Task *t) {
             e = Ov010_SpawnShot(t);
             p = FLD(Ov010Vec, obj, 0x70);
             OV010_BLKCPY(&d, &t->v18);
-            func_ov003_021d9980(&d, FLD(u16, obj, 0x7e), &d);
+            func_ov003_021d9980(&d, obj->rot_y, &d);
             VEC_Add(&p, &d, &p);
             r = FLD(Ov010Rot, obj, 0x7c);
             r.x = 0;
             r.z = 0;
-            func_ov003_021d9980(&o, FLD(u16, obj, 0x7e), &t->v0c);
+            func_ov003_021d9980(&o, obj->rot_y, &t->v0c);
             func_ov010_02202560(e, t->unk_06, &p, &o, &r);
             func_ov010_02202600(e, (void *)func_ov010_022018c4);
         }

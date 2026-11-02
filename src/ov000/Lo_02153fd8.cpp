@@ -1,9 +1,10 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
 extern u8 *data_ov000_021ccd54;
-void *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_021b4738(void *self);
 void func_020627fc(u16 a);
 void func_0206280c(u16 a);

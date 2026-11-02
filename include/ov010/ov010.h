@@ -183,6 +183,14 @@ struct Ov010Vec {
     s32 z;
 };
 
+// ov000's VecFx32 is this layout; a TU that has not seen nitro/fx.h gets it as Ov010Vec (as the
+// merged TUs spelled it locally), so the ov000 part structs below share one vector type.
+#ifndef VECFX32_DEFINED
+#define VECFX32_DEFINED
+typedef Ov010Vec VecFx32;
+#endif
+#include "ov000/ActorParts.h"
+
 // The ov000 actor base (ov000 Actor, ctor func_ov000_0218c2d4, 0xac bytes) as ov010 uses it.
 class Ov010Obj : public Ov010V {
 public:
@@ -204,9 +212,9 @@ public:
     s32 unk_34;
     void *unk_38;
     void *unk_3c;
-    u16 *unk_40;
+    ActorSub40 *unk_40; // state block (ov000 Actor::unk_40)
     void *unk_44;
-    void *unk_48;
+    ActorSub48 *unk_48; // movement/collision body (ov000 Actor::unk_48)
     u8 *unk_4c;
     u16 *hp; // hp gauge (ov000 Actor::hp)
     void *unk_54;
@@ -236,6 +244,83 @@ public:
     s32 unk_a8;
 };
 SIZE_ASSERT(Ov010Obj, 0xac);
+
+// The beam effect of ov010_0220f828.cpp (round svG). An Ov010BeamSet (0x40, func_ov010_02200dcc)
+// keeps a list of three Ov010BeamNode (0x8c); each node holds an Ov010Beam (0x80, drawn by
+// func_ov010_02200a00 and stepped by func_ov010_0220078c), which holds its hit effect
+// Ov010FxObj (0x44, func_ov010_02200048 / func_ov010_022000d8). The st members are the ov000
+// state blocks (func_ov000_02198328 / func_ov000_02198360).
+struct Ov010FxObj {
+    u8 b0 : 1;
+    u8 b1 : 1;
+    u8 b2 : 6;
+    u8 unk_01;
+    u16 unk_02;
+    u16 unk_04;
+    s16 unk_06;
+    s16 unk_08;
+    s16 unk_0a;
+    u16 unk_0c;
+    u16 unk_0e;
+    u16 unk_10;
+    u16 unk_12; // id of the actor the effect follows
+    s32 unk_14; // effect handles
+    s32 unk_18;
+    s32 unk_1c;
+    s32 unk_20;
+    Ov010Vec pos;
+    ActorSub40 st;
+};
+SIZE_ASSERT(Ov010FxObj, 0x44);
+
+struct Ov010Beam {
+    u8 on;
+    u8 unk_01;
+    u8 unk_02;
+    u8 unk_03;
+    u16 unk_04;
+    u16 unk_06;
+    u16 unk_08;
+    u16 unk_0a;
+    s16 unk_0c;
+    s16 len;
+    u16 rx;
+    u16 ry;
+    s32 alpha;
+    s32 mode;
+    Ov010Vec pos;
+    Ov010FxObj fx;
+    ActorSub40 st;
+};
+SIZE_ASSERT(Ov010Beam, 0x80);
+
+struct Ov010BeamNode {
+    u8 unk_00;
+    u8 unk_01;
+    u16 unk_02;
+    u16 unk_04;
+    u16 unk_06;
+    struct Ov010BeamNode *next;
+    Ov010Beam beam;
+};
+SIZE_ASSERT(Ov010BeamNode, 0x8c);
+
+struct Ov010BeamSet {
+    Ov010Flags8 flags;
+    u8 unk_01;
+    u16 unk_02;
+    u16 unk_04;
+    u16 unk_06;
+    u16 unk_08;
+    u16 unk_0a;
+    u16 unk_0c;
+    u8 unk_0e[0x2];
+    Ov010BeamNode *beams;
+    Ov010Vec unk_14;
+    Ov010Vec unk_20;
+    ActorSub40 st;
+};
+SIZE_ASSERT(Ov010BeamSet, 0x40);
 
 // 12-byte block: assigning one copies with ldm/stm (a plain Vec copies word by word)
 struct Ov010Blk12 {

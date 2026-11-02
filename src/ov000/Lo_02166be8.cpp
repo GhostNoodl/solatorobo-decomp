@@ -1,15 +1,11 @@
 #include "ov000/LoCommon.h"
 #include "ov000/CmdQueue.h"
+#include "ov000/MapCtx.h"
 
 typedef struct {
     s32 x;
     s32 y;
 } Pos02166be8;
-
-typedef struct {
-    u32 b0 : 3;
-    u32 b3 : 1;
-} Bits02166be8;
 
 extern "C" {
 
@@ -69,24 +65,24 @@ static inline BOOL Skip02166be8(void) {
 
 struct Obj02166be8 {
     u8 unk_00[0x30];
-    u8 *unk_30;
+    Ctx0216607c *unk_30;
     s32 unk_34;
     s32 unk_38;
     s32 unk_3c;
 };
 
 void func_ov000_02166be8(Obj02166be8 *self) {
-    u8 *area;
+    Node0216607c *area;
     u8 *rgb;
     s32 k;
     s32 sq;
     u8 *tgt;
-    u8 *w;
+    Ctx0216607c *w;
     s32 dx;
     s32 dz;
     s32 ox;
     u8 *ctx = data_ov000_021ccd6c;
-    u8 *e;
+    Item0216607c *e;
     tgt = LFLD(u8 *, ctx, 0xc);
     Pos02166be8 c = LFLD(Pos02166be8, data_ov000_021c9a9c, 0x28);
     k = 0x1000;
@@ -105,7 +101,7 @@ void func_ov000_02166be8(Obj02166be8 *self) {
     case 3:
         tgt = NULL;
     case 8:
-        if (tgt == NULL || LFLD(u16, self->unk_30, 4) != LFLD(u16, tgt, 8)) {
+        if (tgt == NULL || self->unk_30->unk_04 != LFLD(u16, tgt, 8)) {
             self->unk_38 -= 0x1000;
         } else {
             self->unk_38 += 0x1000;
@@ -127,79 +123,79 @@ void func_ov000_02166be8(Obj02166be8 *self) {
         rgb = func_ov000_02165f94(self);
         w = self->unk_30;
         k = 0x19a;
-        if (LFLD(void *, w, 0xcb8) == NULL || !LFLD(Bits02166be8, LFLD(void *, w, 0xcb8), 0).b3) {
-            if (tgt == NULL || LFLD(u16, w, 4) != LFLD(u16, tgt, 8)) {
+        if (w->sel == NULL || !w->sel->f3) {
+            if (tgt == NULL || w->unk_04 != LFLD(u16, tgt, 8)) {
                 self->unk_34 = 3;
                 return;
             }
         } else {
-            if (Skip02166be8() || tgt == NULL || LFLD(u16, self->unk_30, 4) != LFLD(u16, tgt, 8)) {
+            if (Skip02166be8() || tgt == NULL || self->unk_30->unk_04 != LFLD(u16, tgt, 8)) {
                 self->unk_34 = 4;
                 return;
             }
         }
-        LFLD(s32, w, 0xcc4) += 0x1000;
-        LFLD(s32, w, 0xcc8) = FX_Div(LFLD(s32, w, 0xcc4), 0x20000);
-        if (LFLD(s32, w, 0xcc8) >= 0x1000) {
-            LFLD(s32, w, 0xcc4) = 0;
-            LFLD(s32, w, 0xcc8) = 0x1000;
+        w->unk_cc4 += 0x1000;
+        w->unk_cc8 = FX_Div(w->unk_cc4, 0x20000);
+        if (w->unk_cc8 >= 0x1000) {
+            w->unk_cc4 = 0;
+            w->unk_cc8 = 0x1000;
         }
-        LFLD(s32, w, 0xcd4) += 0x1000;
-        LFLD(s32, w, 0xcd8) = FX_Div(LFLD(s32, w, 0xcd4), 0x40000);
-        if (LFLD(s32, w, 0xcd8) >= 0x1000) {
-            LFLD(s32, w, 0xcd4) = 0;
-            LFLD(s32, w, 0xcd8) = 0x1000;
+        w->unk_cd4 += 0x1000;
+        w->unk_cd8 = FX_Div(w->unk_cd4, 0x40000);
+        if (w->unk_cd8 >= 0x1000) {
+            w->unk_cd4 = 0;
+            w->unk_cd8 = 0x1000;
         }
-        LFLD(s32, w, 0xccc) += 0x1000;
-        LFLD(s32, w, 0xcd0) = FX_Div(LFLD(s32, w, 0xccc), 0x40000);
-        if (LFLD(s32, w, 0xcd0) >= 0x1000) {
-            LFLD(s32, w, 0xccc) = 0;
-            LFLD(s32, w, 0xcd0) = 0x1000;
+        w->unk_ccc += 0x1000;
+        w->unk_cd0 = FX_Div(w->unk_ccc, 0x40000);
+        if (w->unk_cd0 >= 0x1000) {
+            w->unk_ccc = 0;
+            w->unk_cd0 = 0x1000;
         }
         if (IsMode0_02166be8() || IsMode1_02166be8()) {
             u8 idx = rgb[2];
-            u8 *w2 = self->unk_30;
-            area = idx >= w2[8] ? NULL : LFLD(u8 *, w2, 0xc84) + idx * 0x1c;
-            if (area != LFLD(u8 *, w, 0xcb8)) {
-                LFLD(s32, w, 0xcc4) = 0;
-                LFLD(s32, w, 0xcc8) = 0;
-                if (LFLD(void *, w, 0xcdc) == NULL) {
-                    LFLD(s32, w, 0xccc) = 0;
-                    LFLD(s32, w, 0xcd0) = 0;
+            Ctx0216607c *w2 = self->unk_30;
+            area = idx >= w2->count ? NULL : &w2->nodes[idx];
+            if (area != w->sel) {
+                w->unk_cc4 = 0;
+                w->unk_cc8 = 0;
+                if (w->anim == NULL) {
+                    w->unk_ccc = 0;
+                    w->unk_cd0 = 0;
                 }
             }
-            LFLD(u8 *, w, 0xcb8) = area;
+            w->sel = area;
             if (area == NULL) {
                 return;
             }
-            e = (u8 *)func_ov000_02165e2c(self, area);
-            if (e != LFLD(u8 *, w, 0xcb4)) {
-                if (e == NULL || LFLD(u8 *, w, 0xcb4) == NULL) {
+            e = (Item0216607c *)func_ov000_02165e2c(self, area);
+            if (e != w->cur) {
+                if (e == NULL || w->cur == NULL) {
                     if (!CmdQueue_Has02166be8(data_ov000_021ccd54, 0x14)) {
                         k = 0x1000;
                     }
                 }
-                LFLD(u8 *, w, 0xcb4) = e;
-                LFLD(s32, w, 0xcc4) = 0;
-                LFLD(s32, w, 0xcc8) = 0;
-                LFLD(s32, w, 0xccc) = 0;
-                LFLD(s32, w, 0xcd0) = 0;
+                w->cur = e;
+                w->unk_cc4 = 0;
+                w->unk_cc8 = 0;
+                w->unk_ccc = 0;
+                w->unk_cd0 = 0;
             }
-            w[0] = 0;
+            w->unk_00 = 0;
         }
-        e = LFLD(u8 *, w, 0xcb4);
+        e = w->cur;
         if (e == NULL) {
             return;
         }
-        dz = ((LFLD(s32, e, 0x10) - c.y) << 12) - LFLD(s32, w, 0xcc0);
-        ox = LFLD(s32, w, 0xcbc);
-        dx = ((LFLD(s32, e, 0xc) - c.x) << 12) - ox;
+        dz = ((e->b - c.y) << 12) - w->oy;
+        ox = w->ox;
+        dx = ((e->a - c.x) << 12) - ox;
         { s64 t = (s64)dx * dx; t += (s64)dz * dz; sq = (s32)((t + 0x800) >> 12); }
         if (sq < 0x100) {
             k = 0x1000;
         }
-        LFLD(s32, w, 0xcbc) = ox + FxMulS64_02166be8(k, dx);
-        LFLD(s32, w, 0xcc0) += FxMulS64_02166be8(k, dz);
+        w->ox = ox + FxMulS64_02166be8(k, dx);
+        w->oy += FxMulS64_02166be8(k, dz);
         func_ov000_02166180(self);
         break;
     }

@@ -12,13 +12,13 @@ typedef struct {
 extern "C" {
 extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd54;
-void *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 u16 func_0204bfa8(void *cam);
 void func_ov000_0218db58(void *self, u16 angle, u16 center, u16 range, s32 step);
 void func_ov000_0218d398(void *t, u16 id, s32 a, s32 b, s32 c, void *arg);
 
-static inline void *FindActor021b2b08(u16 id) {
+static inline Actor *FindActor021b2b08(u16 id) {
     void *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
@@ -27,14 +27,14 @@ static inline void *FindActor021b2b08(u16 id) {
 }
 
 void func_ov000_021b2b08(Robo021ca458 *self) {
-    u8 *a = (u8 *)FindActor021b2b08(self->unk_b20);
+    Actor *a = FindActor021b2b08(self->unk_b20);
     void *sub = NULL;
     u8 *cam;
     u16 ang;
     u16 ry;
     u16 rx;
     if (a != NULL) {
-        sub = LFLD(void *, a, 0x4c);
+        sub = ((void *)a->unk_4c);
     }
     if (self->unk_b2f == 0) {
         self->unk_b2f = 1;
@@ -87,7 +87,7 @@ void func_ov000_021b2b08(Robo021ca458 *self) {
     self->rot_x = rx;
     if (self->unk_b20 != 0xffff) {
         Msg021b2b08 msg;
-        msg.pos = LFLD(VecFx32, a, 0x70);
+        msg.pos = a->pos;
         msg.rot[0] = self->rot_x;
         msg.rot[1] = self->rot_y;
         msg.rot[2] = self->rot_z;

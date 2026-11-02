@@ -69,7 +69,7 @@ void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
 void *func_ov000_0218e9c4(void *p);
 void *STD_CopyString(void *dst, const char *src);
-u8 *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 void func_ov000_0218d398(void *a, u16 id, s32 b, s32 c, s32 d, void *e);
 void func_ov000_0218d46c(void *a, u16 id, s32 b);
 void func_ov000_02191008(void *p);
@@ -98,7 +98,7 @@ static inline BOOL GIdle_021afaf8(void) {
     return TRUE;
 }
 
-static inline u8 *FindActor_021afaf8(u16 id) {
+static inline Actor *FindActor_021afaf8(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
@@ -288,20 +288,20 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
         }
         if (def != NULL) {
             {
-                u8 *a = FindActor_021afaf8(self->unk_b1c);
+                Actor *a = FindActor_021afaf8(self->unk_b1c);
                 if (a != NULL) {
                     st.pos.x = self->pos.x;
                     st.pos.y = self->pos.y;
                     st.pos.z = self->pos.z;
                     st.pos.y += self->unk_6c;
-                    st.rx = LFLD(u16, a, 0x7c);
-                    st.ry = LFLD(u16, a, 0x7e);
-                    st.rz = LFLD(u16, a, 0x80);
+                    st.rx = a->rot_x;
+                    st.ry = a->rot_y;
+                    st.rz = a->rot_z;
                     st.unk = 0;
                     func_ov000_0218d398(a, self->id, 7, 1, 0x18, &st);
                     func_ov000_0218d46c(a, self->id, 0xa);
-                    if (LFLD(u8 *, a, 0x4c) != NULL) {
-                        LFLD(C_021afaf8, LFLD(u8 *, a, 0x4c), 0x18).b0 = 0;
+                    if (((u8 *)a->unk_4c) != NULL) {
+                        LFLD(C_021afaf8, ((u8 *)a->unk_4c), 0x18).b0 = 0;
                     }
                 }
             }
@@ -321,12 +321,12 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
                     func_02065f88(0x384, &v);
                 }
             }
-            LFLD(H_021afaf8, self, 0x42a).b0 = 0;
+            self->unk_42a_0 = 0;
             func_ov000_02191008((u8 *)self + 0x368);
             if ((u8 *)self->unk_998 != NULL) {
                 LFLD(H_021afaf8, self->unk_998, 0xc2).b0 = 0;
             }
-            LFLD(H_021afaf8, self, 0x16e).b0 = 0;
+            self->unk_16e_0 = 0;
             {
                 void **res = LFLD(void **, self->unk_ac, 0xc);
                 NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet(res != NULL ? *res : NULL));

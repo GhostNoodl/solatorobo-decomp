@@ -40,7 +40,11 @@ typedef struct ActorSub48 {
     u32 unk_58;
     VecFx32 offset;
     VecFx32 check;
-    u8 unk_74[0x24];
+    u8 unk_74[0xc];
+    s32 unk_80;
+    u8 unk_84[0x4];
+    s32 unk_88;
+    u8 unk_8c[0xc];
     u16 unk_98;
     u16 unk_9a_0 : 3;
     u16 unk_9a_3 : 1;

@@ -28,7 +28,7 @@ typedef struct {
 extern "C" {
 extern void *data_02097e4c;
 extern char data_ov000_021cc6ae[];
-void *func_ov000_0218e640(ActorMgr *mgr, u16 id);
+Actor *func_ov000_0218e640(ActorMgr *mgr, u16 id);
 BOOL func_ov000_02191508(void *a);
 void *func_ov000_02191318(void *a, s32 b);
 void func_ov000_0218999c(u8 a, u8 b);
@@ -114,12 +114,12 @@ static inline void Release021aa978(Robo021ca458 *self, s32 next) {
 void func_ov000_021aa978(Robo021ca458 *self) {
     Actor *a = FindActor021aa978(self->unk_b1c);
     ActorSub40 *st;
-    u8 *sub;
+    ActorSub4c *sub;
     BOOL hit;
     s32 eff;
     sub = NULL;
     if (a != NULL) {
-        sub = (u8 *)a->unk_4c;
+        sub = a->unk_4c;
     }
     eff = 0;
     hit = FALSE;
@@ -198,8 +198,8 @@ void func_ov000_021aa978(Robo021ca458 *self) {
         LFLD(s32, sub, 0x58) = 0;
         {
             u8 v = self->unk_b2c_7 * 5;
-            LFLD(u8, sub, 0x19) = self->unk_b24_22;
-            LFLD(u8, sub, 0x1b) = v;
+            sub->unk_19 = self->unk_b24_22;
+            sub->unk_1b = v;
         }
         if (a != NULL) {
             Msg021aa978 m;
@@ -225,7 +225,7 @@ void func_ov000_021aa978(Robo021ca458 *self) {
                 func_ov000_0218d398(a, self->id, 7, 1, sizeof(Msg021aa978), &m);
             }
         }
-        func_02049f44(data_02097e4c, 0x32, (u8 *)self + 0x70, 0);
+        func_02049f44(data_02097e4c, 0x32, &self->pos, 0);
         self->unk_b1c = 0xffff;
         self->unk_b1e = 0xffff;
         self->unk_b24_5 = 0;
@@ -264,7 +264,7 @@ void func_ov000_021aa978(Robo021ca458 *self) {
         return;
     }
     func_ov000_0218996c(8, 0xa);
-    func_02049f44(data_02097e4c, 0x7d, (u8 *)self + 0x70, 0);
+    func_02049f44(data_02097e4c, 0x7d, &self->pos, 0);
     func_ov000_02191418(self->unk_38, 3, 0);
 }
 

@@ -1,4 +1,5 @@
 #include "ov000/Vec.h"
+#include "ov000/ActorBase.h"
 #include "ov000/VObj.h"
 
 typedef struct {
@@ -116,7 +117,7 @@ extern "C" {
 extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern u8 *data_ov000_021ccd54;
-u8 *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 func_02040498(s32 n);
@@ -130,18 +131,18 @@ void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 u16 func_0204bfa8(void *cam);
 
-static inline u8 *FindActor_02191f18(u16 id) {
+static inline Actor *FindActor_02191f18(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-static inline void SetOfs_02191f18(u8 *a, s32 w, s32 x, s32 y, s32 z) {
-    LFLD(s32, a, 0x9c) = w;
-    LFLD(s32, a, 0xa0) = x;
-    LFLD(s32, a, 0xa4) = y;
-    LFLD(s32, a, 0xa8) = z;
+static inline void SetOfs_02191f18(Actor *a, s32 w, s32 x, s32 y, s32 z) {
+    a->unk_9c = w;
+    a->unk_a0 = x;
+    a->unk_a4 = y;
+    a->unk_a8 = z;
 }
 
 static inline u16 CamYaw_02191f18(u8 *cam) {
@@ -160,7 +161,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
     AnimCtrl *a;
     s32 prev;
     s32 op = *p++;
-    u8 *actor = FindActor_02191f18(m->unk_b4);
+    Actor *actor = FindActor_02191f18(m->unk_b4);
 
     switch (op) {
     case 0:
@@ -171,9 +172,9 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
     case 25:
         if (actor != NULL) {
             VecFx32 v;
-            v.x = LFLD(s32, actor, 0x70);
-            v.y = LFLD(s32, actor, 0x74);
-            v.z = LFLD(s32, actor, 0x78);
+            v.x = actor->pos.x;
+            v.y = actor->pos.y;
+            v.z = actor->pos.z;
             func_02049f44(data_02097e4c, (u16)p[0], &v, 0);
         } else {
             func_02049a48(data_02097e4c, (u16)p[0], -1, -1, -1);
@@ -190,9 +191,9 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
         }
         if (actor != NULL) {
             VecFx32 v;
-            v.x = LFLD(s32, actor, 0x70);
-            v.y = LFLD(s32, actor, 0x74);
-            v.z = LFLD(s32, actor, 0x78);
+            v.x = actor->pos.x;
+            v.y = actor->pos.y;
+            v.z = actor->pos.z;
             func_02049f44(data_02097e4c, id, &v, 0);
         } else {
             func_02049a48(data_02097e4c, id, -1, -1, -1);
@@ -255,20 +256,20 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
     }
     case 7:
         if (actor != NULL) {
-            LFLD(u16, actor, 0x98) = (u16)p[0] + LFLD(u16, actor, 0x7e);
+            actor->unk_98 = (u16)p[0] + actor->rot_y;
             SetOfs_02191f18(actor, p[1] << 4, p[2] << 4, p[3] << 4, p[4] << 4);
         }
         p += 5;
         break;
     case 23:
         if (actor != NULL) {
-            LFLD(u16, actor, 0x98) = (u16)p[0] + CamYaw_02191f18(data_ov000_021ccd54 + 0xf4);
+            actor->unk_98 = (u16)p[0] + CamYaw_02191f18(data_ov000_021ccd54 + 0xf4);
             SetOfs_02191f18(actor, p[1] << 4, p[2] << 4, p[3] << 4, p[4] << 4);
         }
         p += 5;
         break;
     case 8:
-        if (actor != NULL && (LFLD(u16 *, actor, 0x50) == NULL || *LFLD(u16 *, actor, 0x50) != 0)) {
+        if (actor != NULL && (actor->hp == NULL || *actor->hp != 0)) {
             VecFx32 v;
             s32 h;
             BOOL k;
@@ -295,7 +296,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
         p += 6;
         break;
     case 9:
-        if (actor != NULL && (LFLD(u16 *, actor, 0x50) == NULL || *LFLD(u16 *, actor, 0x50) != 0)) {
+        if (actor != NULL && (actor->hp == NULL || *actor->hp != 0)) {
             VecFx32 v;
             s32 h;
             BOOL k;
@@ -322,7 +323,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
         p += 7;
         break;
     case 10:
-        if (actor != NULL && (LFLD(u16 *, actor, 0x50) == NULL || *LFLD(u16 *, actor, 0x50) != 0)) {
+        if (actor != NULL && (actor->hp == NULL || *actor->hp != 0)) {
             VecFx32 v;
             s32 h;
             BOOL k;
@@ -349,8 +350,8 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
         p += 10;
         break;
     case 11:
-        if (actor != NULL && (LFLD(u16 *, actor, 0x50) == NULL || *LFLD(u16 *, actor, 0x50) != 0)) {
-            s32 mask = LFLD(u16 *, actor, 0x50) != NULL ? LFLD(u16 *, actor, 0x50)[6] : 0;
+        if (actor != NULL && (actor->hp == NULL || *actor->hp != 0)) {
+            s32 mask = actor->hp != NULL ? actor->hp[6] : 0;
             VecFx32 v;
             s32 h;
             BOOL k;
@@ -377,8 +378,8 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
         p += 6;
         break;
     case 12:
-        if (actor != NULL && (LFLD(u16 *, actor, 0x50) == NULL || *LFLD(u16 *, actor, 0x50) != 0)) {
-            s32 mask = LFLD(u16 *, actor, 0x50) != NULL ? LFLD(u16 *, actor, 0x50)[6] : 0;
+        if (actor != NULL && (actor->hp == NULL || *actor->hp != 0)) {
+            s32 mask = actor->hp != NULL ? actor->hp[6] : 0;
             VecFx32 v;
             s32 h;
             BOOL k;
@@ -405,8 +406,8 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
         p += 7;
         break;
     case 13:
-        if (actor != NULL && (LFLD(u16 *, actor, 0x50) == NULL || *LFLD(u16 *, actor, 0x50) != 0)) {
-            s32 mask = LFLD(u16 *, actor, 0x50) != NULL ? LFLD(u16 *, actor, 0x50)[6] : 0;
+        if (actor != NULL && (actor->hp == NULL || *actor->hp != 0)) {
+            s32 mask = actor->hp != NULL ? actor->hp[6] : 0;
             VecFx32 v;
             s32 h;
             BOOL k;
@@ -454,10 +455,10 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
             ofs.x = p[1] << 4;
             ofs.y = p[2] << 4;
             ofs.z = p[3] << 4;
-            pos.x = LFLD(s32, actor, 0x70);
-            pos.y = LFLD(s32, actor, 0x74);
-            pos.z = LFLD(s32, actor, 0x78);
-            func_ov000_0219a210(&pos, &ofs, LFLD(u16, actor, 0x7e));
+            pos.x = actor->pos.x;
+            pos.y = actor->pos.y;
+            pos.z = actor->pos.z;
+            func_ov000_0219a210(&pos, &ofs, actor->rot_y);
             e = func_02065f88(p[0], &pos);
             r = LFLD(Rot_02191f18, actor, 0x7c);
             r.x += p[4];
@@ -483,7 +484,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
         break;
     case 24:
         if (actor != NULL) {
-            func_020627a0(LFLD(u16, actor, 0xe), LFLD(u16, actor, 0xc));
+            func_020627a0(actor->kind, actor->id);
             func_020627dc(5);
             LFLD(u8, data_ov000_021ccd54, 0xac) = 1;
         }

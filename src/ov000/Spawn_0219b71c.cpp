@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 #include "ov000/Vec.h"
 
 extern "C" {
@@ -75,12 +76,12 @@ typedef struct {
 
 extern "C" {
 
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 ActorGroup *func_ov000_0218e4cc(ActorMgr *mgr, u16 kind);
 BOOL func_01ffc318(VecFx32 *pos, void *a, const VecFx32 *min, const VecFx32 *max, const Rot0219b808 *rot);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
-static inline Rgb0219b808 *PlCol0219b808(u8 *pl) {
+static inline Rgb0219b808 *PlCol0219b808(Robo021ca458 *pl) {
     return &LFLD(Rgb0219b808, pl, 0x772);
 }
 
@@ -93,7 +94,7 @@ static inline BOOL SameCol0219b808(const Rgb0219b808 *a, const Rgb0219b808 *b) {
 }
 
 u16 func_ov000_0219b808(u16 id, void *a1, const Shape0219b808 *q, u16 *out, u32 max) {
-    u8 *pl;
+    Robo021ca458 *pl;
     u16 n = 0;
     s32 i;
     VecFx32 p1;
@@ -104,18 +105,18 @@ u16 func_ov000_0219b808(u16 id, void *a1, const Shape0219b808 *q, u16 *out, u32 
     Actor *a;
     if (q->mask & 2) {
         pl = func_ov000_0219bf90();
-        if (pl != NULL && !(LFLD(u32, pl, 0xb24) << 30 >> 31 ? TRUE : FALSE) &&
+        if (pl != NULL && !(pl->unk_b24 << 30 >> 31 ? TRUE : FALSE) &&
             SameCol0219b808(&LFLD(Rgb0219b808, data_ov000_021ccd54, 0xca), PlCol0219b808(pl)) &&
-            q->flags == (q->flags & LFLD(u32, pl, 0x710))) {
-            p1.x = LFLD(VecFx32, pl, 0x75c).x;
-            p1.y = LFLD(VecFx32, pl, 0x75c).y;
-            p1.z = LFLD(VecFx32, pl, 0x75c).z;
+            q->flags == (q->flags & pl->unk_710)) {
+            p1.x = pl->unk_75c.x;
+            p1.y = pl->unk_75c.y;
+            p1.z = pl->unk_75c.z;
             if (func_01ffc318(&p1, a1, &q->min, &q->max, &q->rot)) {
                 VEC_Add(&p1, &q->ofs, &p1);
-                LFLD(VecFx32, pl, 0x75c) = p1;
-                LFLD(u32, pl, 0xb24) |= 0x1000000;
+                pl->unk_75c = p1;
+                pl->unk_b24 |= 0x1000000;
                 if (out != NULL && max != 0) {
-                    out[n] = LFLD(u16, pl, 0xc);
+                    out[n] = pl->id;
                 }
                 n++;
             }

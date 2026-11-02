@@ -10,7 +10,7 @@ typedef struct {
 extern "C" {
 extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
-void *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 s32 func_ov000_0219840c(void *s, s32 *list, s32 count, BOOL push);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void func_020627a0(u16 a, u16 b);
@@ -19,7 +19,7 @@ void func_ov000_02182590(void *p);
 BOOL func_0205b1fc(void);
 void func_0205c234(s32 a, s32 b);
 
-static inline void *FindActor021a09b8(u16 id) {
+static inline Actor *FindActor021a09b8(u16 id) {
     void *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
@@ -34,7 +34,7 @@ static inline void Ping021a09b8(void) {
 }
 
 s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
-    u8 *a;
+    Actor *a;
     u8 kind;
     s32 r;
     u8 *sub;
@@ -45,10 +45,10 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
     if (r == 0) {
         return r;
     }
-    a = (u8 *)FindActor021a09b8(self->target);
+    a = FindActor021a09b8(self->target);
     sub = NULL;
     if (a != NULL) {
-        sub = LFLD(u8 *, a, 0x4c);
+        sub = ((u8 *)a->unk_4c);
     }
     kind = 0;
     if (sub != NULL) {
@@ -64,8 +64,8 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
             break;
         }
         if (LFLD(Bits021a09b8_18, sub, 0x18).b1 && sub[3] != 0xa && sub[3] != 0xb) {
-            func_020627a0(LFLD(u16, a, 0xe), LFLD(u16, a, 0xc));
-            func_020627dc(LFLD(u16, a, 0x18));
+            func_020627a0(a->kind, a->id);
+            func_020627dc(a->unk_18[0]);
             Ping021a09b8();
             if (func_0205b1fc()) {
                 done = TRUE;
@@ -100,8 +100,8 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
             break;
         }
         if (LFLD(Bits021a09b8_18, sub, 0x18).b1) {
-            func_020627a0(LFLD(u16, a, 0xe), LFLD(u16, a, 0xc));
-            func_020627dc(LFLD(u16, a, 0x18));
+            func_020627a0(a->kind, a->id);
+            func_020627dc(a->unk_18[0]);
             Ping021a09b8();
             if (func_0205b1fc()) {
                 done = TRUE;
@@ -121,8 +121,8 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
             break;
         }
         if (LFLD(Bits021a09b8_18, sub, 0x18).b1 && sub[3] != 0xa && sub[3] != 0xb) {
-            func_020627a0(LFLD(u16, a, 0xe), LFLD(u16, a, 0xc));
-            func_020627dc(LFLD(u16, a, 0x18));
+            func_020627a0(a->kind, a->id);
+            func_020627dc(a->unk_18[0]);
             Ping021a09b8();
             if (func_0205b1fc()) {
                 done = TRUE;
@@ -139,14 +139,14 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
         if (a == NULL) {
             break;
         }
-        func_020627a0(LFLD(u16, a, 0xe), LFLD(u16, a, 0xc));
+        func_020627a0(a->kind, a->id);
         Ping021a09b8();
         if (func_0205b1fc()) {
             r = 0;
         }
         break;
     case 0x1d:
-        func_020627a0(LFLD(u16, a, 0xe), LFLD(u16, a, 0xc));
+        func_020627a0(a->kind, a->id);
         Ping021a09b8();
         if (func_0205b1fc()) {
             r = 0;

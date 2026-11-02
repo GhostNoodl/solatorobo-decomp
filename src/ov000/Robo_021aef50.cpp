@@ -34,7 +34,7 @@ extern char data_ov000_021cc62a[];
 extern char data_ov000_021cc630[];
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02198360(St_021aef50 *st, s32 state, s32 x);
-u8 *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 void func_ov000_0218d918(void *self, void *v, s32 a);
 void func_ov000_0218ddd4(void *self, const void *target, s32 turn);
 void func_ov000_0218dbe0(void *self, s32 turn);
@@ -45,7 +45,7 @@ void *func_0204a028(void *a, s32 b, void *c, s32 d);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 void VEC_MultAdd(s32 a, const void *v1, const void *v2, void *out);
 
-static inline u8 *FindActor021aef50(u16 id) {
+static inline Actor *FindActor021aef50(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
@@ -64,7 +64,7 @@ static inline s32 Dist021aef50(s32 dx, s32 dz) {
 
 void func_ov000_021aef50(Robo021ca458 *self) {
     u16 id;
-    u8 *a;
+    Actor *a;
     u8 *info;
     Vec_021aef50 pos;
     id = self->unk_b20;
@@ -74,7 +74,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
     a = FindActor021aef50(id);
     info = NULL;
     if (a != NULL) {
-        info = LFLD(u8 *, a, 0x4c);
+        info = ((u8 *)a->unk_4c);
         pos = LFLD(Vec_021aef50, a, 0x70);
     }
     if (self->unk_b2f == 0) {
@@ -107,7 +107,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
             self->unk_a4 = 0;
             self->unk_a8 = 0x52;
         }
-        func_02049f44(data_02097e4c, 7, (u8 *)self + 0x70, 0);
+        func_02049f44(data_02097e4c, 7, &self->pos, 0);
         ((St_021aef50 *)self->unk_40)->state++;
         break;
     case 1:
@@ -132,7 +132,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
             e->vfunc_0c(0xb33);
             e->vfunc_34(0xf000, 0, 0);
         } else if (self->unk_b24_12 == 3) {
-            func_0204a028(data_02097e4c, 0xe, (u8 *)self + 0x70, -5);
+            func_0204a028(data_02097e4c, 0xe, &self->pos, -5);
         }
         break;
     case 2: {
@@ -142,9 +142,9 @@ void func_ov000_021aef50(Robo021ca458 *self) {
             if (a != NULL) {
                 LFLD(Vec_021aef50, self, 0x70) = pos;
                 {
-                    u16 ry = LFLD(u16, a, 0x7e);
-                    u16 rz = LFLD(u16, a, 0x80);
-                    u16 rx = LFLD(u16, a, 0x7c);
+                    u16 ry = a->rot_y;
+                    u16 rz = a->rot_z;
+                    u16 rx = a->rot_x;
                     self->rot_x = rx;
                     self->rot_y = ry;
                     self->rot_z = rz;
@@ -154,7 +154,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
             func_ov000_02198360(((St_021aef50 *)self->unk_40), 1, 0);
         } else {
             Vec_021aef50 d;
-            self->rot_y = func_01ffc128(LFLD(u16, a, 0x7e), self->rot_y, 0x800, 1, 0x8000);
+            self->rot_y = func_01ffc128(a->rot_y, self->rot_y, 0x800, 1, 0x8000);
             self->unk_9c = 0;
             self->unk_a0 = 0;
             self->unk_a4 = 0;
@@ -162,7 +162,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
             d.x = pos.x - self->pos.x;
             d.y = pos.y - self->pos.y;
             d.z = pos.z - self->pos.z;
-            VEC_MultAdd(0x800, &d, (u8 *)self + 0x70, (u8 *)self + 0x70);
+            VEC_MultAdd(0x800, &d, &self->pos, &self->pos);
         }
         break;
     }
@@ -170,7 +170,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
         self->unk_b20 = 0xffff;
         self->unk_b24_12 = 0;
         self->rot_x = 0;
-        func_02049f44(data_02097e4c, 7, (u8 *)self + 0x70, 0);
+        func_02049f44(data_02097e4c, 7, &self->pos, 0);
         ((St_021aef50 *)self->unk_40)->state++;
     case 101:
         self->unk_b29 |= 2;
@@ -178,7 +178,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
         if (self->unk_a0 >= 0) {
             break;
         }
-        if (func_ov000_0219a2f4((u8 *)self + 0x70, self->unk_68 << 1, -0x66) == -0x1000) {
+        if (func_ov000_0219a2f4(&self->pos, self->unk_68 << 1, -0x66) == -0x1000) {
             break;
         }
         LFLD(B190_021aef50, data_ov000_021ccd54, 0x190).b5 = 0;

@@ -32,8 +32,8 @@ void func_ov010_022089d8(Obj022089d8 *self) {
     BOOL anim = FALSE;
     switch (self->unk_18[0]) {
     case 0: {
-        u16 *st = self->unk_40;
-        if (st[0] == 0) {
+        ActorSub40 *st = self->unk_40;
+        if (st->st == 0) {
             Ov010_VecSet(&self->pos, -0xd9e, 0x2a35, -0x8687);
             self->pos.y += 0xd000;
             self->rot_x = 0;
@@ -45,7 +45,7 @@ void func_ov010_022089d8(Obj022089d8 *self) {
             self->unk_9c = 0x200;
             anim = TRUE;
             func_02049f44(data_02097e4c, 0x51, &self->pos, 0);
-            self->unk_40[0]++;
+            self->unk_40->st++;
         } else {
             const Ov010Vec *t = &data_ov010_0220f144;
             if (self->unk_9c >= 0x40) {
@@ -58,11 +58,11 @@ void func_ov010_022089d8(Obj022089d8 *self) {
                 func_ov003_021da2c8(self, self->unk_9c, self->unk_a0, self->unk_a4, self->unk_a8);
                 self->unk_98 = FX_Atan2(t->x - self->pos.x, t->z - self->pos.z);
             } else {
-                if (st[1] == 0) {
+                if (st->timer == 0) {
                     func_02065f88(0x12f, &self->pos)->v0c(0xe66);
                 }
-                self->unk_40[1]++;
-                if (self->unk_40[1] > 0x5a) {
+                self->unk_40->timer++;
+                if (self->unk_40->timer > 0x5a) {
                     self->unk_9c = 0;
                     self->unk_a0 = 0;
                     self->unk_a4 = 0;
@@ -80,7 +80,7 @@ void func_ov010_022089d8(Obj022089d8 *self) {
     case 1:
     case 2: {
         if (((const u16 *)self->unk_40)[0] == 0) {
-            self->unk_40[0]++;
+            self->unk_40->st++;
             anim = TRUE;
         }
         Ov010_VecSet(&self->pos, -0xd9e, 0x2a35, -0x8687);

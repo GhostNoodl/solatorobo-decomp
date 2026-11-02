@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u8 pad_00[0x10];

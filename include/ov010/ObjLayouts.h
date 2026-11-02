@@ -16,7 +16,11 @@ struct Ov010Obj0220ffe4 : public Ov010Obj {
     Ov010Vec unk_b8;
     u8 unk_c4[0x2f];
     u8 unk_f3;
-    u8 unk_f4[0x5c];
+    u8 unk_f4[0x24];
+    Ov010V *unk_118;
+    u8 unk_11c[0x8];
+    s16 *unk_124;
+    u8 unk_128[0x28];
     Ov010Vec unk_150;
     u8 unk_15c[0xa0];
     u8 unk_1fc;

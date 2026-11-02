@@ -86,7 +86,7 @@ extern u8 *data_ov000_021ccd30;
 extern u8 *data_0214a424;
 extern void *data_02097dc8;
 extern void *data_02097e4c;
-u8 *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 void *func_ov000_0218e4cc(void *mgr, u16 key);
 u16 func_0203d434(void *pad, void *p);
 void func_ov000_021b3738(void *self, void *t);
@@ -99,7 +99,7 @@ void func_ov000_021b1814(void *self, s32 a, s32 b);
 BOOL func_ov000_021b3e90(void *self);
 void func_ov000_021b1a54(void *self, s32 a);
 
-static inline u8 *FindActor_0219efc0(u16 id) {
+static inline Actor *FindActor_0219efc0(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
@@ -227,7 +227,7 @@ static inline BOOL CanMove_0219efc0(Robo021ca458 *self) {
 
 void func_ov000_0219efc0(Robo021ca458 *self) {
     u8 *p;
-    u8 *t9;
+    Actor *t9;
     BOOL x;
 
     self->unk_b68 = 0;
@@ -281,11 +281,11 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
                 u16 n = self->unk_b36;
                 if (n == 0) {
                     if (B2C(self).b4 != 0) {
-                        u8 *a = FindActor_0219efc0(self->target);
+                        Actor *a = FindActor_0219efc0(self->target);
                         u8 *i = NULL;
                         s32 k;
                         if (a != NULL) {
-                            i = LFLD(u8 *, a, 0x4c);
+                            i = ((u8 *)a->unk_4c);
                         }
                         k = 0;
                         if (i != NULL) {
@@ -347,7 +347,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
         KEYS(self) |= 0x80;
     }
     if (self->unk_b6a & 1) {
-        u8 *a;
+        Actor *a;
         u8 *i;
         t9 = FindActor_0219efc0(self->target);
         if (t9 != NULL) {
@@ -359,7 +359,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
             a = FindActor_0219efc0(self->unk_b1c);
             i = NULL;
             if (a != NULL) {
-                i = LFLD(u8 *, a, 0x4c);
+                i = ((u8 *)a->unk_4c);
             }
             if (i == NULL || LFLD(u16, i, 0x1c) != self->id) {
                 B24(self).b5 = 0;
@@ -371,7 +371,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
         }
         i = NULL;
         if (a != NULL) {
-            u8 *j = LFLD(u8 *, a, 0x4c);
+            u8 *j = ((u8 *)a->unk_4c);
             if (j != NULL) {
                 switch (j[1]) {
                 case 1:
@@ -401,7 +401,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
             }
         } else {
             if (t9 != NULL) {
-                i = LFLD(u8 *, t9, 0x4c);
+                i = ((u8 *)t9->unk_4c);
             }
             if (i != NULL) {
                 BOOL hold = (self->msg_flags & 0x80) ? TRUE : FALSE;
@@ -433,7 +433,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
                     break;
                 case 14:
                 case 15:
-                    if (!B24(self).b1 && ((LFLD(u16, t9, 0xe) >> 12) == 5 || i[2] == 1 || func_ov000_0219b3b4(i))) {
+                    if (!B24(self).b1 && ((t9->kind >> 12) == 5 || i[2] == 1 || func_ov000_0219b3b4(i))) {
                         KEYS(self) |= 0x10000;
                     } else if (B24(self).b12 != 3) {
                         if (B2C(self).b4 == 0) {
@@ -445,7 +445,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
                     break;
                 case 17:
                 case 19:
-                    if (!B24(self).b1 && ((LFLD(u16, t9, 0xe) >> 12) == 5 || func_ov000_0219b3b4(i))) {
+                    if (!B24(self).b1 && ((t9->kind >> 12) == 5 || func_ov000_0219b3b4(i))) {
                         KEYS(self) |= 0x10000;
                         break;
                     }
@@ -469,7 +469,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
                 }
             } else if (B24(self).b1) {
                 LockKeys_0219efc0(self);
-            } else if (!(LFLD(u32, self->unk_48, 0x54) & 0x400)) {
+            } else if (!(self->unk_48->unk_54 & 0x400)) {
                 if (B93(self).b4 || LFLD(u16, func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000), 0x16) != 0) {
                     KEYS(self) |= 0x10000;
                 }
@@ -492,9 +492,9 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
                 p = self->unk_ba4;
                 if (p != NULL && B24(self).b12 == 0) {
                     if ((LFLD(Ba4_0219efc0, p, 6).b7 && ST(self)->kind == 4 &&
-                         !(LFLD(u32, self->unk_48, 0x50) & 0x20000000) && self->unk_b38 >= 10) ||
+                         !(self->unk_48->unk_50 & 0x20000000) && self->unk_b38 >= 10) ||
                         (LFLD(Ba4_0219efc0, p, 6).b6 && ST(self)->kind != 3 && self->unk_b38 > 6 &&
-                         (LFLD(u32, self->unk_48, 0x50) & 0x20000000))) {
+                         (self->unk_48->unk_50 & 0x20000000))) {
                         KEYS(self) |= 8;
                     }
                 }

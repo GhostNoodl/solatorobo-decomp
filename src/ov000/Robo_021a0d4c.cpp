@@ -45,7 +45,7 @@ extern u8 *data_ov000_021ccd6c;
 extern u8 *data_02149f0c;
 extern u8 *data_0214a424;
 void func_ov000_021b06dc(u8 *self);
-u8 *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 void func_ov000_0216adc0(void *p, s32 a, u16 b);
 void func_ov000_021b3d78(u8 *self);
 void func_ov000_0218c208(void *a, void *pos, u16 ang);
@@ -58,7 +58,7 @@ void func_ov000_021b1110(u8 *self, s32 a);
 void func_ov000_021697dc(void *p, u16 a, u16 b);
 void func_ov000_0216a438(void *p, u16 a, s32 b, BOOL c);
 
-static inline u8 *GetObj021a0d4c(u16 id) {
+static inline Actor *GetObj021a0d4c(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
@@ -73,7 +73,7 @@ static inline void Reset021a0d4c(Robo021ca458 *self) {
 }
 
 static inline u8 *Target021a0d4c(Robo021ca458 *self) {
-    u8 *o = GetObj021a0d4c(self->unk_b1c);
+    u8 *o = (u8 *)GetObj021a0d4c(self->unk_b1c);
     u8 *p = NULL;
     if (o != NULL) {
         p = LFLD(u8 *, o, 0x4c);
@@ -207,7 +207,7 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
         }
     }
     if (!self->unk_b24_1) {
-        self->unk_38 = (u8 *)self + 0xac;
+        self->unk_38 = &self->unk_ac;
         self->unk_48 = (ActorSub48 *)((u8 *)self + 0x2cc);
     } else {
         self->unk_38 = (u8 *)self + 0x368;
@@ -219,7 +219,7 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
         self->unk_770 = self->rot_z;
         self->unk_48 = (ActorSub48 *)((u8 *)self + 0x6c0);
     }
-    if (LFLD(B9a_021a0d4c, self->unk_48, 0x9a).b8) {
+    if (self->unk_48->unk_9a_8) {
         u32 f = self->unk_48->unk_50;
         if ((f & 0x20000000) && !(f & 0x40400) && !(f & 0x40000000)) {
             self->unk_af0 = self->pos.x;
@@ -250,10 +250,10 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
         }
     }
     if (self->unk_b24_12 == 3) {
-        u8 *o = GetObj021a0d4c(self->unk_b20);
+        Actor *o = GetObj021a0d4c(self->unk_b20);
         u8 *p = NULL;
         if (o != NULL) {
-            p = LFLD(u8 *, o, 0x4c);
+            p = ((u8 *)o->unk_4c);
         }
         if (p != NULL) {
             Gauge021a0d4c(LFLD(u16, p, 0x1e));
@@ -263,7 +263,7 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
         }
     }
     func_ov000_021b3d78((u8 *)self);
-    func_ov000_0218c208(data_ov000_021ccd64, (u8 *)self + 0x70, self->rot_y);
+    func_ov000_0218c208(data_ov000_021ccd64, &self->pos, self->rot_y);
     if (self->unk_b24_2 != 1) {
         u8 *c = data_ov000_021ccd6c;
         LFLD(s32, c, 0x24) = self->pos.x;

@@ -28,7 +28,7 @@ typedef struct {
 extern "C" {
 extern void *data_02097e4c;
 extern char data_ov000_021cc6b4[];
-void *func_ov000_0218e640(ActorMgr *mgr, u16 id);
+Actor *func_ov000_0218e640(ActorMgr *mgr, u16 id);
 BOOL func_ov000_02191508(void *a);
 void *func_ov000_02191318(void *a, s32 b);
 void func_ov000_0218999c(u8 a, u8 b);
@@ -107,9 +107,9 @@ static inline void Release021aaf80(Robo021ca458 *self, s32 next) {
 
 void func_ov000_021aaf80(Robo021ca458 *self) {
     Actor *a = FindActor021aaf80(self->unk_b1c);
-    u8 *sub = NULL;
+    ActorSub4c *sub = NULL;
     if (a != NULL) {
-        sub = (u8 *)a->unk_4c;
+        sub = a->unk_4c;
     }
     switch (self->unk_40->st) {
     case 0:
@@ -135,7 +135,7 @@ void func_ov000_021aaf80(Robo021ca458 *self) {
             self->unk_40->st++;
             break;
         }
-        if (LFLD(u32, self->unk_48, 0x50) & 0x20000000) {
+        if (self->unk_48->unk_50 & 0x20000000) {
             VecFx32 p;
             VObj *o;
             s32 sc;
@@ -143,8 +143,8 @@ void func_ov000_021aaf80(Robo021ca458 *self) {
             p = a->pos;
             p.y = self->pos.y;
             func_ov000_0218999c(0xe, 0x19);
-            func_02049f44(data_02097e4c, 0x1b, (u8 *)self + 0x70, 0);
-            func_02049f44(data_02097e4c, 0x53, (u8 *)self + 0x70, 0);
+            func_02049f44(data_02097e4c, 0x1b, &self->pos, 0);
+            func_02049f44(data_02097e4c, 0x53, &self->pos, 0);
             sc = a->unk_64;
             if (sc < 0xccd) {
                 sc = 0xccd;
@@ -157,9 +157,9 @@ void func_ov000_021aaf80(Robo021ca458 *self) {
             LFLD(s32, sub, 0x50) = 0x19a;
             LFLD(s32, sub, 0x54) = -0x1000;
             LFLD(s32, sub, 0x58) = 0;
-            v = LFLD(u8, sub, 0x1a) * 5;
-            LFLD(u8, sub, 0x19) = self->unk_b24_22;
-            LFLD(u8, sub, 0x1b) = v;
+            v = sub->unk_1a * 5;
+            sub->unk_19 = self->unk_b24_22;
+            sub->unk_1b = v;
             if (a != NULL) {
                 Msg021aaf80 m;
                 VecFx32 t;
@@ -198,7 +198,7 @@ void func_ov000_021aaf80(Robo021ca458 *self) {
         } else {
             s32 lim;
             BOOL fall = FALSE;
-            if (!(LFLD(u32, self->unk_48, 0x54) & 0x20000000)) {
+            if (!(self->unk_48->unk_54 & 0x20000000)) {
                 lim = -0xf000;
                 if (self->unk_b22_0 || self->unk_b24_12 || self->unk_b24_19) {
                     lim = -0x2d000;

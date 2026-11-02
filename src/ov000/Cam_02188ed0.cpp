@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 #include "ov000/Vec.h"
 
 typedef struct {
@@ -96,7 +97,7 @@ void func_ov000_02188ed0(Obj02188ed0 *self) {
                 self->unk_d4 = 1;
             }
         }
-        func_ov000_0218a358(s, (u8 *)self + 0xd8, (u8 *)self + 0xe4, self->unk_ec, 0, self->unk_f0, self->unk_f0, 4);
+        func_ov000_0218a358(s, &self->unk_d8, (u8 *)self + 0xe4, self->unk_ec, 0, self->unk_f0, self->unk_f0, 4);
     } else {
         self->unk_d4 = 0;
     }

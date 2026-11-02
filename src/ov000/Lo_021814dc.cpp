@@ -4,6 +4,7 @@
 // 0x021899d8 in the ROM (its functions still read these objects through the 0x021ccd50 pool),
 // but func_ov000_0218867c is not matched, so the files after it stay separate.
 #include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 #include "ov000/HeapScope.h"
 #include "ov000/LoCommon.h"
 #include "nitro/std.h"
@@ -1674,7 +1675,7 @@ extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_0218e470(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
@@ -1777,7 +1778,7 @@ extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_0218e470(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
@@ -1991,7 +1992,7 @@ extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_0218e470(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
@@ -2861,7 +2862,7 @@ extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_0218e470(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
@@ -2915,7 +2916,7 @@ typedef struct {
 
 extern "C" {
 
-void *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 
 void func_ov000_021848d0(CmdQueue *self) {
     if (func_ov000_0219bf90() == NULL || self->unk_ca == 0xfe) {
@@ -2983,7 +2984,7 @@ extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_0218e470(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
@@ -3084,7 +3085,7 @@ extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_0218e470(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
@@ -3222,7 +3223,7 @@ extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_0218e470(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
@@ -3367,7 +3368,7 @@ extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_0218e470(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
@@ -5026,7 +5027,7 @@ extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_0218e470(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
@@ -5492,7 +5493,7 @@ extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_0218e470(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
@@ -5707,7 +5708,7 @@ extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_0218e470(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
@@ -6323,7 +6324,7 @@ u32 func_0205975c(void *res, u32 idx);
 u16 func_02059544(void *res, void *block, void *entries, int packed, u32 id);
 VObj *func_ov000_0218e640(void *mgr, u16 id);
 void func_0206228c(void);
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 s32 FX_Div(s32 a, s32 b);
 
 static inline BOOL Busy0218867c(VObj *v) {
@@ -6448,7 +6449,7 @@ s32 func_ov000_0218867c(CmdObj *self) {
             self->step++;
             return 0;
         case 1: {
-            u8 *pl_0 = func_ov000_0219bf90();
+            Robo021ca458 *pl_0 = func_ov000_0219bf90();
             LFLD(u16, g_3, 0x80) = 0;
             if (pl_0 != NULL) {
                 const u8 *y = (const u8 *)&((Plyr0218867c *)pl_0)->map;
@@ -6464,9 +6465,9 @@ s32 func_ov000_0218867c(CmdObj *self) {
         break;
     }
     case 7: {
-        u8 *pl_1 = func_ov000_0219bf90();
+        Robo021ca458 *pl_1 = func_ov000_0219bf90();
         if (pl_1 != NULL) {
-            VObj *o_0 = Find0218867c(LFLD(u16, pl_1, 0xb1c));
+            VObj *o_0 = Find0218867c(pl_1->unk_b1c);
             if (o_0 != NULL) {
                 o_0->vfunc_08();
             }

@@ -29,7 +29,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern char data_ov000_021cc6ba[];
 extern char data_ov000_021cc5e3[];
-void *func_ov000_0218e640(ActorMgr *mgr, u16 id);
+Actor *func_ov000_0218e640(ActorMgr *mgr, u16 id);
 BOOL func_ov000_02191508(void *a);
 void *func_ov000_02191318(void *a, s32 b);
 void func_ov000_0218999c(s32 a, s32 b);
@@ -71,12 +71,12 @@ static inline void Charge021ab68c(Robo021ca458 *self) {
 
 void func_ov000_021ab68c(Robo021ca458 *self) {
     Actor *a = FindActor021ab68c(self->unk_b1c);
-    u8 *sub = NULL;
+    ActorSub4c *sub = NULL;
     ActorSub40 *st;
     BOOL hit;
     u8 lvl2;
     if (a != NULL) {
-        sub = (u8 *)a->unk_4c;
+        sub = a->unk_4c;
     }
     st = self->unk_40;
     switch (st->st) {
@@ -126,7 +126,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
             hit = FALSE;
         }
         func_ov000_0218999c(0x14, 0x28);
-        func_02049f44(data_02097e4c, 0x52, (u8 *)self + 0x70, 0);
+        func_02049f44(data_02097e4c, 0x52, &self->pos, 0);
         if (!hit) {
             VecFx32 p;
             VObj *o;
@@ -154,8 +154,8 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
             LFLD(s32, sub, 0x50) = 0x19a;
             LFLD(s32, sub, 0x54) = -0x1000;
             LFLD(s32, sub, 0x58) = 0;
-            LFLD(u8, sub, 0x19) = self->unk_b24_22;
-            LFLD(u8, sub, 0x1b) = lvl2;
+            sub->unk_19 = self->unk_b24_22;
+            sub->unk_1b = lvl2;
         }
         LFLD(B18_021ab68c, sub, 0x18).b0 = 0;
         if (a != NULL) {

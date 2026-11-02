@@ -86,7 +86,7 @@ extern u8 *data_ov000_021ccd54;
 extern u8 *data_ov000_021ccd30;
 extern u8 *data_ov000_021ccd6c;
 extern void *data_02097e4c;
-u8 *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 void func_ov000_02191008(void *p);
 void func_02049bb4(void *mgr, s32 id);
 void func_ov000_021697dc(void *p, u16 a, u16 b);
@@ -96,7 +96,7 @@ void func_ov000_0218ef10(void *p, s32 a, s32 b, s32 c, s32 d);
 void *NNS_G3dGetMdlSet(void *file);
 void NNS_G3dReleaseMdlSet(void *mdl);
 
-static inline u8 *GetObj0219cdb8(u16 id) {
+static inline Actor *GetObj0219cdb8(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
@@ -112,19 +112,19 @@ static inline void Reset0219cdb8(Robo021ca458 *self) {
 
 void func_ov000_0219cdb8(Robo021ca458 *self) {
     if (self->unk_b24_12 == 3) {
-        u8 *o = GetObj0219cdb8(self->unk_b20);
+        Actor *o = GetObj0219cdb8(self->unk_b20);
         if (o != NULL) {
-            LFLD(C1_0219cdb8, o, 0x16).b0 = 1;
+            o->flags_0 = 1;
         }
         self->unk_b20 = 0xffff;
         self->rot_x = 0;
         self->unk_b24_12 = 0;
     }
     if (self->unk_b24_5 != 0) {
-        u8 *o = GetObj0219cdb8(self->unk_b1c);
+        Actor *o = GetObj0219cdb8(self->unk_b1c);
         u8 *p = NULL;
         if (o != NULL) {
-            p = LFLD(u8 *, o, 0x4c);
+            p = ((u8 *)o->unk_4c);
         }
         if (p == NULL || LFLD(u16, p, 0x1c) != self->id) {
             if (p != NULL) {

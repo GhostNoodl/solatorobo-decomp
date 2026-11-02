@@ -19,11 +19,11 @@ void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 
 void func_ov010_022085d0(Ov010Obj0220ffe4 *self) {
-    u16 *w = self->unk_40;
-    switch (w[0]) {
+    ActorSub40 *w = self->unk_40;
+    switch (w->st) {
     case 0:
-        w[1] = 0;
-        self->unk_40[0] = 0x1e;
+        w->timer = 0;
+        self->unk_40->st = 0x1e;
         break;
     case 0x1e:
         func_02065f88(0x389, &data_ov010_0220f114)->v0c(0x2000);
@@ -31,15 +31,15 @@ void func_ov010_022085d0(Ov010Obj0220ffe4 *self) {
         func_02065f88(0x389, &data_ov010_0220f120)->v0c(0x2000);
         func_02065f88(0x322, &data_ov010_0220f114)->v0c(0x1800);
         func_02049f44(data_02097e4c, 0x79, &self->pos, 0);
-        self->unk_40[0] = 0x1f;
-        self->unk_40[1] = 0x28;
+        self->unk_40->st = 0x1f;
+        self->unk_40->timer = 0x28;
         break;
     case 0x1f:
-        if (w[1] != 0) {
-            w[1]--;
+        if (w->timer != 0) {
+            w->timer--;
         }
-        if (w[1] == 0) {
-            self->unk_40[0] = 0x28;
+        if (w->timer == 0) {
+            self->unk_40->st = 0x28;
         }
         break;
     case 0x28: {
@@ -55,14 +55,14 @@ void func_ov010_022085d0(Ov010Obj0220ffe4 *self) {
         func_02065f88(0x579, &data_ov010_0220f114)->v0c(0x2000);
         func_02065f88(0x579, &data_ov010_0220f120)->v0c(0x2000);
         func_02049f44(data_02097e4c, 0x5c, &self->pos, 0);
-        self->unk_40[0] = 100;
+        self->unk_40->st = 100;
         break;
     }
     case 100:
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
         FLD(u8, data_ov000_021ccd54, 0xac) = 1;
-        self->unk_40[0] = 0x65;
+        self->unk_40->st = 0x65;
         self->unk_1fc = 1;
         break;
     case 0x65:

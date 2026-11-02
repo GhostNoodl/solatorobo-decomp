@@ -51,7 +51,7 @@ BOOL func_ov000_02191120(void *a);
 void func_0203f324(void *a);
 void func_0203f364(void *a);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
-void *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 void *func_ov000_02199ba0(void *p);
 void func_ov000_02199b88(void *a, void *b);
 void func_ov003_021f0c60(void *self, s32 a);
@@ -73,7 +73,7 @@ static inline BOOL IsB2_02196c40(u8 *m) {
 
 void func_ov000_02196c40(ActorEx *self) {
     BOOL flag = TRUE;
-    LFLD(Bits02196c40, self->unk_48, 0x9a).b6 = 0;
+    self->unk_48->unk_9a_6 = 0;
     switch (((State02196c40 *)self->unk_40)->st) {
     case 0:
         if (self->unk_a8 == 0) {
@@ -100,14 +100,14 @@ void func_ov000_02196c40(ActorEx *self) {
             self->unk_cc_6 = 1;
             self->unk_9c = 0;
             self->unk_92 = 3;
-            func_02049f44(data_02097e4c, 0x3d, (u8 *)self + 0x70, 0);
-            o = func_02065f88(0x2bd, (u8 *)self + 0x70);
+            func_02049f44(data_02097e4c, 0x3d, &self->pos, 0);
+            o = func_02065f88(0x2bd, &self->pos);
             if (self->unk_64 > 0x1000) {
                 o->vfunc_0c(self->unk_64);
             }
             break;
         }
-        hit = func_ov000_021b68b8(data_ov000_021ccd6c, (u8 *)self + 0x70);
+        hit = func_ov000_021b68b8(data_ov000_021ccd6c, &self->pos);
         if (hit != NULL) {
             u16 ang = LFLD(u16, hit, 0x1a);
             self->unk_9c = FxMul02196c40(self->unk_9c, 0x59a);
@@ -124,31 +124,31 @@ void func_ov000_02196c40(ActorEx *self) {
             BOOL got = FALSE;
             ((State02196c40 *)self->unk_40)->timer = 0;
             if (hit != NULL || self->unk_4c->unk_1c != 0xffff) {
-                if (LFLD(u8, ((u8 *)self->unk_4c), 1) == 1) {
-                    kind = LFLD(u8, ((u8 *)self->unk_4c), 2);
+                if (self->unk_4c->unk_01 == 1) {
+                    kind = self->unk_4c->unk_02;
                     got = TRUE;
                 }
             }
             switch (kind) {
             case 1:
             case 2: {
-                u8 *p;
+                Robo021ca458 *p;
                 if (self->unk_44 != NULL) {
                     u8 *q = self->unk_44;
                     LFLD(Bits02196c40, q, 0x22).b0 = 0;
                     LFLD(Bits02196c40, q, 0x22).b1 = 0;
                 }
                 if (self->unk_48 != NULL) {
-                    u8 *q = (u8 *)self->unk_48;
+                    ActorSub48 *q = self->unk_48;
                     LFLD(Bits02196c40, q, 0x9a).b0 = 0;
-                    LFLD(Bits02196c40, q, 0x9a).b3 = 0;
+                    q->unk_9a_3 = 0;
                     func_0203f364(q);
-                    q = (u8 *)self->unk_48;
+                    q = self->unk_48;
                     LFLD(Bits02196c40, q, 0x9a).b1 = 0;
-                    LFLD(Bits02196c40, q, 0x9a).b4 = 0;
+                    q->unk_9a_4 = 0;
                 }
-                p = (u8 *)func_ov000_0219bf90();
-                if (LFLD(u16, p, 0xc) == self->unk_4c->unk_1c) {
+                p = func_ov000_0219bf90();
+                if (p->id == self->unk_4c->unk_1c) {
                     u8 *g = data_0214a424;
                     u32 n = LFLD(u16, g, 0x16) + 1;
                     if (n >= 0xffff) {
@@ -156,7 +156,7 @@ void func_ov000_02196c40(ActorEx *self) {
                     }
                     LFLD(u16, g, 0x16) = n;
                 }
-                if (LFLD(u8, ((u8 *)self->unk_4c), 3) != 0) {
+                if (self->unk_4c->unk_03 != 0) {
                     func_ov003_021f0c60(self, 0);
                 }
                 func_ov000_02198360(((State02196c40 *)self->unk_40), 0x15, 0);
@@ -190,7 +190,7 @@ void func_ov000_02196c40(ActorEx *self) {
     }
     case 2: {
         State02196c40 *st;
-        LFLD(Bits02196c40, self->unk_48, 0x9a).b5 = 1;
+        self->unk_48->unk_9a_5 = 1;
         st = ((State02196c40 *)self->unk_40);
         st->timer++;
         if (st->timer < 6) {
@@ -213,7 +213,7 @@ void func_ov000_02196c40(ActorEx *self) {
         if (LFLD(Mode02196c40, self->unk_b0, 2).mode == 2) {
             ActorSub48 *q = self->unk_48;
             LFLD(Bits02196c40, q, 0x9a).b0 = 1;
-            LFLD(Bits02196c40, q, 0x9a).b3 = 1;
+            q->unk_9a_3 = 1;
             func_0203f324(q);
         }
         m = ((u8 *)self->unk_4c);
@@ -239,8 +239,8 @@ void func_ov000_02196c40(ActorEx *self) {
             func_0203f324(other);
         }
     }
-    if (((u8 *)self->unk_4c) != NULL && LFLD(u8, ((u8 *)self->unk_4c), 0) == 2) {
-        void *r = func_ov003_021f0868((u8 *)self + 0x70, self->unk_64, self->unk_68);
+    if (((u8 *)self->unk_4c) != NULL && self->unk_4c->unk_00 == 2) {
+        void *r = func_ov003_021f0868(&self->pos, self->unk_64, self->unk_68);
         if (r != NULL) {
             func_ov000_02199b88(((u8 *)self->unk_4c), r);
             func_ov000_02198360(((State02196c40 *)self->unk_40), 0xd, 0);

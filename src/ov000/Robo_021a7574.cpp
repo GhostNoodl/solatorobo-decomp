@@ -29,7 +29,7 @@ BOOL func_ov000_02198360(State021a783c *st, s32 state, s32 x);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 void func_ov000_021b03c8(void *self);
 u8 *func_ov000_0218d240(void *self);
-u8 *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 void func_ov000_0218d46c(void *a, u16 id, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 u16 func_0204bfa8(Cam021a783c *cam);
@@ -42,7 +42,7 @@ static inline u16 CamYaw(Cam021a783c *cam) {
     return func_0204bfa8(cam);
 }
 
-static inline u8 *FindActor021a783c(u16 id) {
+static inline Actor *FindActor021a783c(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
@@ -128,7 +128,7 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
         self->rot_y = func_01ffc128(ang, self->rot_y, 0x59a, 1, 0x8000);
         if (self->unk_b24_5 != 0 &&
             (LFLD(s16, self->unk_38, 0xc4) == 1 || self->unk_b22_3)) {
-            u8 *a;
+            Actor *a;
             func_02049a48(data_02097e4c, 0x301, -1, -1, -1);
             a = FindActor021a783c(self->unk_b1c);
             if (a != NULL) {
@@ -136,16 +136,16 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
                 if (a != NULL) {
                     Msg021a70b0 m;
                     Vec021a70b0 v;
-                    if (LFLD(Vec021a70b0 *, a, 0x48) != NULL) {
-                        v = *LFLD(Vec021a70b0 *, a, 0x48);
+                    if (((Vec021a70b0 *)a->unk_48) != NULL) {
+                        v = *((Vec021a70b0 *)a->unk_48);
                     } else {
                         v = LFLD(Vec021a70b0, a, 0x70);
                     }
-                    if (func_01ffbd6c((u8 *)self + 0x70, &v, -1, 0, 0, -1) != -0x1000) {
+                    if (func_01ffbd6c(&self->pos, &v, -1, 0, 0, -1) != -0x1000) {
                         v.x -= self->pos.x;
                         v.y -= self->pos.y;
                         v.z -= self->pos.z;
-                        VEC_MultAdd(0xc00, &v, (u8 *)self + 0x70, &v);
+                        VEC_MultAdd(0xc00, &v, &self->pos, &v);
                         m.pos = v;
                         m.rot = LFLD(Rot021a70b0, a, 0x7c);
                         m.unk_14 = 0;
@@ -182,14 +182,14 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
     if (!LBIT(self, 0xb24).b1) {
         return;
     }
-    if (!(LFLD(u32, self->unk_48, 0x54) & 0x400)) {
+    if (!(self->unk_48->unk_54 & 0x400)) {
         return;
     }
     self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x,
                                      self->unk_af8 - self->pos.z);
     self->unk_9c = 0x66;
     self->unk_a4 = 0;
-    if (!LBIT(self, 0xb24).b17 || (LFLD(u32, self->unk_48, 0x50) & 0x40000000)) {
+    if (!LBIT(self, 0xb24).b17 || (self->unk_48->unk_50 & 0x40000000)) {
         self->unk_a0 = 0x200;
     }
     self->unk_a8 = 0x52;
@@ -211,13 +211,13 @@ void func_ov000_021a7574(Robo021ca458 *self) {
         self->unk_a4 = 0xccd;
         self->unk_a8 = 10;
         self->unk_b24_7 = 2;
-        LFLD(State021a783c *, self, 0x40)->state++;
+        ((State021a783c *)self->unk_40)->state++;
         break;
     case 1:
         if (LFLD(s16, self->unk_38, 0xc4) == 1 || func_ov000_02191120(self->unk_38)) {
             if (self->unk_b24_5 != 0) {
                 VObj *e;
-                u8 *a = FindActor021a783c(self->unk_b1c);
+                u8 *a = (u8 *)FindActor021a783c(self->unk_b1c);
                 if (a != NULL) {
                     func_ov000_0218d46c(a, self->id, 0xd);
                 }
@@ -225,7 +225,7 @@ void func_ov000_021a7574(Robo021ca458 *self) {
                 self->unk_b1c = 0xffff;
                 self->unk_b1e = 0xffff;
                 self->unk_b24_7 = self->unk_b24_9;
-                e = func_02065f88(0xc9, (u8 *)self + 0x70);
+                e = func_02065f88(0xc9, &self->pos);
                 LFLD(void *, self, 0xb48) = LFLD(void *, e, 0x24);
                 self->unk_b5e = 0;
                 self->unk_b4c = 0;
@@ -238,7 +238,7 @@ void func_ov000_021a7574(Robo021ca458 *self) {
             }
             func_ov000_02190cb0(self->unk_38, data_ov000_021cc5e3, 0x155, 0);
             self->unk_a8 = 0x52;
-            LFLD(State021a783c *, self, 0x40)->state++;
+            ((State021a783c *)self->unk_40)->state++;
         }
         break;
     case 2: {
@@ -249,7 +249,7 @@ void func_ov000_021a7574(Robo021ca458 *self) {
         }
         st->timer++;
         if (st->timer > lim) {
-            func_ov000_02198360(LFLD(State021a783c *, self, 0x40), 1, 0);
+            func_ov000_02198360(((State021a783c *)self->unk_40), 1, 0);
         }
         break;
     }
@@ -258,14 +258,14 @@ void func_ov000_021a7574(Robo021ca458 *self) {
     if (!LBIT(self, 0xb24).b1) {
         return;
     }
-    if (!(LFLD(u32, self->unk_48, 0x54) & 0x400)) {
+    if (!(self->unk_48->unk_54 & 0x400)) {
         return;
     }
-    self->unk_98 = FX_Atan2(self->unk_af0 - LFLD(s32, self, 0x70),
-                                     self->unk_af8 - LFLD(s32, self, 0x78));
+    self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x,
+                                     self->unk_af8 - self->pos.z);
     self->unk_9c = 0x66;
     self->unk_a4 = 0;
-    if (!LBIT(self, 0xb24).b17 || (LFLD(u32, self->unk_48, 0x50) & 0x40000000)) {
+    if (!LBIT(self, 0xb24).b17 || (self->unk_48->unk_50 & 0x40000000)) {
         self->unk_a0 = 0x200;
     }
     self->unk_a8 = 0x52;
@@ -300,7 +300,7 @@ void func_ov000_021a783c(Robo021ca458 *self) {
         }
         self->rot_y = func_01ffc128(ang, self->rot_y, 0x8cd, 1, 0x8000);
         if (self->unk_b24_5 != 0 && LFLD(s16, self->unk_38, 0xc4) == 1) {
-            u8 *a = FindActor021a783c(self->unk_b1c);
+            u8 *a = (u8 *)FindActor021a783c(self->unk_b1c);
             if (a != NULL) {
                 func_ov000_0218d46c(a, self->id, 0xe);
             }
@@ -329,14 +329,14 @@ void func_ov000_021a783c(Robo021ca458 *self) {
     if (!LBIT(self, 0xb24).b1) {
         return;
     }
-    if (!(LFLD(u32, self->unk_48, 0x54) & 0x400)) {
+    if (!(self->unk_48->unk_54 & 0x400)) {
         return;
     }
     self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x,
                                      self->unk_af8 - self->pos.z);
     self->unk_9c = 0x66;
     self->unk_a4 = 0;
-    if (!LBIT(self, 0xb24).b17 || (LFLD(u32, self->unk_48, 0x50) & 0x40000000)) {
+    if (!LBIT(self, 0xb24).b17 || (self->unk_48->unk_50 & 0x40000000)) {
         self->unk_a0 = 0x200;
     }
     self->unk_a8 = 0x52;

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 #include "nitro/std.h"
 
 extern "C" {
@@ -11,7 +12,7 @@ extern void *data_02097e4c;
 extern void *data_ov000_021ccd54;
 void func_ov000_0215ce8c(void *self, s32 id);
 void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 void func_ov000_021b4774(void *p);
 char *func_02061f08(u16 id);
 int func_02060898(u16 a, s32 b, s32 c);
@@ -70,7 +71,7 @@ BOOL func_ov000_02151664(void *p, u8 *msg) {
             Beep02151664();
             Show02151664(o, 0x6c);
         } else {
-            u8 *pl = func_ov000_0219bf90();
+            Robo021ca458 *pl = func_ov000_0219bf90();
             if (pl != NULL) {
                 func_ov000_021b4774(pl);
             }

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
@@ -80,10 +81,10 @@ s32 func_0206e340(Rect021b5dc0 *r);
 Ent021b5dc0 *func_0206e2ec(Rect021b5dc0 *r);
 void *func_ov000_0218b9ec(Spawn021b5dc0 *s, u8 *a, u8 *b, s32 c, s32 d);
 void func_ov000_0218b7c0(void *o, u16 kind, s32 mode);
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_0218c040(void *mgr, s32 a, VecFx32 *out, s32 b, s32 c);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
-u8 *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 void func_ov000_02198d28(u8 *a, VecFx32 *v, u16 b);
 void **func_02035edc(const char *a, const char *b);
 void *NNS_G3dGetAnmByIdx(void *p, s32 idx);
@@ -125,7 +126,7 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
     u16 id;
     u8 v;
     s32 mode;
-    u8 *pl;
+    Robo021ca458 *pl;
     u8 *a;
     Node021b5dc0 *n;
 
@@ -182,12 +183,12 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
                 if (id == 0xffff) {
                     continue;
                 }
-                if (pl != NULL && id == LFLD(u16, pl, 0xc)) {
+                if (pl != NULL && id == pl->id) {
                     VEC_Add(&base, &self->unk_70[i], &out);
-                    LFLD(VecFx32, pl, 0x75c) = out;
+                    pl->unk_75c = out;
                     LFLD(Rgb021b5dc0, pl, 0x772) = LFLD(Rgb021b5dc0, data_ov000_021ccd54, 0xca);
                 } else {
-                    a = data_ov000_021ccd68 == NULL ? NULL : func_ov000_0218e640(data_ov000_021ccd68, id);
+                    a = data_ov000_021ccd68 == NULL ? NULL : (u8 *)func_ov000_0218e640(data_ov000_021ccd68, id);
                     if (a != NULL) {
                         VEC_Add(&base, &self->unk_70[i], &out);
                         LFLD(VecFx32, a, 0x70) = out;

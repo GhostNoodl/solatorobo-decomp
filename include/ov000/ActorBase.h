@@ -26,7 +26,16 @@ typedef struct PauseNode {
 } PauseNode;
 
 typedef struct {
-    u8 unk_00[0x1c];
+    u8 unk_00;
+    u8 unk_01;
+    u8 unk_02;
+    u8 unk_03;
+    u8 unk_04[0x8];
+    char *unk_0c;
+    u8 unk_10[0x9];
+    u8 unk_19;
+    u8 unk_1a;
+    u8 unk_1b;
     u16 unk_1c;
 } ActorSub4c;
 

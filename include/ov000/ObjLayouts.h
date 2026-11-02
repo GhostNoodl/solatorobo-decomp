@@ -185,7 +185,9 @@ struct Robo021ca458 : public Actor {
     s32 unk_a74;
     s32 unk_a78;
     s32 unk_a7c;
-    u8 unk_a80[0x64];
+    u8 unk_a80[0x24];
+    VecFx32 unk_aa4;
+    u8 unk_ab0[0x34];
     union {
         u8 unk_ae4;
         struct {
@@ -324,7 +326,9 @@ struct Robo021ca458 : public Actor {
     u16 unk_b6a;
     u16 unk_b6c;
     u16 unk_b6e;
-    u8 unk_b70[0x30];
+    u8 unk_b70[0x20];
+    VecFx32 unk_b90;
+    s32 unk_b9c;
     u8 *unk_ba0;
     u8 *unk_ba4;
     s32 unk_ba8;
@@ -518,17 +522,28 @@ struct Lo021caac8 : public VObj {
 
 // Vtable data_ov000_021caac8, data_ov000_021caec8, data_ov000_021cafc0, data_ov000_021cb0b8, data_ov000_021cb1b0, data_ov000_021cb2a8, data_ov000_021cb3a8, data_ov000_021cb4a8, data_ov000_021cb5a8, data_ov002_021efca4, data_ov006_021ec30c, data_ov008_021d0368; methods in 6 files, Lo_02155ac4.cpp .. Lo_02156d48.cpp.
 struct LoBase021caac8_021caec8 : public VObj {
-    u8 unk_04[0x8];
+    u8 unk_04[0x4];
+    void *unk_08;
     u32 unk_0c;
     void *unk_10;
     u8 unk_14[0xc];
     s32 unk_20;
     s32 unk_24;
     s32 unk_28;
-    u8 unk_2c[0x3a];
+    u8 unk_2c[0x8];
+    s32 unk_34;
+    u8 unk_38[0x2c];
+    s16 unk_64;
     s16 unk_66;
     s16 unk_68;
-    u8 unk_6a[0x2a];
+    u8 unk_6a[0x2];
+    void *unk_6c;
+    s32 unk_70;
+    u8 unk_74[0x4];
+    void *unk_78;
+    u8 unk_7c[0x8];
+    void *unk_84;
+    u8 unk_88[0xc];
     void *unk_94;
     u8 *unk_98;
     s16 unk_9c;
@@ -552,27 +567,33 @@ struct LoBase021caac8_021caec8 : public VObj {
 
 // Vtable data_ov000_021caac8, data_ov000_021cb2a8, data_ov000_021cb4a8; methods in 6 files, Lo_02157fc0.cpp .. Menu_021581d4.cpp.
 struct LoBase021caac8_021cb2a8 : public VObj {
-    u8 unk_04[0x8];
+    u8 unk_04[0x4];
+    void *unk_08;
     u32 unk_0c;
     u8 unk_10[0xc];
     s32 unk_1c;
     s32 unk_20;
     s32 unk_24;
     s32 unk_28;
-    u8 unk_2c[0x1c];
+    s32 unk_2c;
+    u8 unk_30[0x18];
     u16 unk_48;
     u8 unk_4a[0xa];
     s32 unk_54;
-    u8 unk_58[0xc];
+    s32 unk_58;
+    s32 unk_5c;
+    s32 unk_60;
     s16 unk_64;
-    u8 unk_66[0x2];
+    s16 unk_66;
     s16 unk_68;
     u8 unk_6a[0x2];
     void *unk_6c;
     s32 unk_70;
     u8 unk_74[0xc];
     void *unk_80;
-    u8 unk_84[0x10];
+    void *unk_84;
+    void *unk_88;
+    u8 unk_8c[0x8];
     void *unk_94;
     void *unk_98;
     s16 unk_9c;
@@ -584,7 +605,10 @@ struct LoBase021caac8_021cb2a8 : public VObj {
     void *unk_ac;
     s8 unk_b0;
     s8 unk_b1;
-    u8 unk_b2[0x22];
+    u8 unk_b2[0xe];
+    u8 unk_c0;
+    u8 unk_c1;
+    u8 unk_c2[0x12];
     u8 *unk_d4;
     u8 *unk_d8;
 };
@@ -619,7 +643,7 @@ struct ObjBase021cac0c_021cb6f0 : public VObj {
 // Vtable data_ov000_021cacd8; methods in 5 files, Lo_02160ff8.cpp .. Lo_0216150c.cpp.
 struct Lo021cacd8 : public VObj {
     s32 unk_04;
-    u8 unk_08[0x4];
+    void *unk_08;
     u32 unk_0c;
     u8 *unk_10;
     u8 unk_14[0x10];
@@ -673,17 +697,27 @@ struct Lo021cadcc : public VObj {
     u32 unk_0c;
     Model *unk_10;
     void *unk_14;
-    u8 unk_18[0xc];
+    u8 unk_18[0x8];
+    s32 unk_20;
     s32 unk_24;
     s32 unk_28;
-    u8 unk_2c[0x4];
+    s32 unk_2c;
     s32 unk_30;
     s32 unk_34;
     s32 unk_38;
-    u8 unk_3c[0x28];
+    u8 unk_3c[0xc];
+    s16 unk_48;
+    u8 unk_4a[0xe];
+    s32 unk_58;
+    s32 unk_5c;
+    s32 unk_60;
     s16 unk_64;
     s16 unk_66;
-    u8 unk_68[0x1c];
+    s16 unk_68;
+    u8 unk_6a[0x2];
+    void *unk_6c;
+    s32 unk_70;
+    u8 unk_74[0x10];
     VObj *unk_84;
 };
 
@@ -695,7 +729,7 @@ struct Lo021cae48 : public VObj {
     u8 unk_10[0x14];
     s32 unk_24;
     s32 unk_28;
-    u8 unk_2c[0x4];
+    s32 unk_2c;
     s32 unk_30;
     s32 unk_34;
     s32 unk_38;
@@ -703,7 +737,11 @@ struct Lo021cae48 : public VObj {
     u16 unk_48;
     u8 unk_4a[0xa];
     s32 unk_54;
-    u8 unk_58[0x10];
+    s32 unk_58;
+    s32 unk_5c;
+    s32 unk_60;
+    s16 unk_64;
+    s16 unk_66;
     s16 unk_68;
     u8 unk_6a[0x1a];
     s32 unk_84;
@@ -774,7 +812,7 @@ struct LoBase021caec8_021efca4 : public VObj {
 // Vtable data_ov000_021cafc0, data_ov000_021cb0b8, data_ov000_021cb1b0, data_ov006_021ec30c; methods in 6 files, G3_0215b2e4.cpp .. Text_0215b8f0.cpp.
 struct LoBase021cafc0_021cb0b8 : public VObj {
     s32 unk_04;
-    u8 unk_08[0x4];
+    void *unk_08;
     u32 unk_0c;
     void *unk_10;
     u8 unk_14[0x8];
@@ -792,7 +830,9 @@ struct LoBase021cafc0_021cb0b8 : public VObj {
     s32 unk_54;
     u8 unk_58[0x10];
     s16 unk_68;
-    u8 unk_6a[0x2a];
+    u8 unk_6a[0x1a];
+    void *unk_84;
+    u8 unk_88[0xc];
     u8 *unk_94;
     u8 unk_98[0x14];
     u8 *unk_ac;
@@ -876,7 +916,11 @@ struct Lo021cb5a8 : public VObj {
     s32 unk_20;
     s32 unk_24;
     s32 unk_28;
-    u8 unk_2c[0x38];
+    s32 unk_2c;
+    u8 unk_30[0x28];
+    s32 unk_58;
+    s32 unk_5c;
+    s32 unk_60;
     s16 unk_64;
     s16 unk_66;
     s16 unk_68;

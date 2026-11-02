@@ -1,4 +1,5 @@
 #include "ov010/ov010.h"
+#include "ov000/ObjLayouts.h"
 #include "ov010/ObjLayouts.h"
 
 struct Ov010Sw {
@@ -23,7 +24,7 @@ extern u8 *data_ov000_021ccd54;
 extern void *data_0214a420;
 extern BOOL func_ov003_021d984c(void *p, void *d);
 extern void func_ov003_021d95e8(void *p, void *d, s32 n);
-extern void *func_ov000_0219bf90(void);
+extern Robo021ca458 *func_ov000_0219bf90(void);
 extern void func_ov000_0218a358(void *a, const void *b, void *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern s32 FX_Div(s32 a, s32 b);
 extern void func_ov003_021cf3fc(s32 a);
@@ -97,12 +98,12 @@ void func_ov010_02208dd0(Ov010Sw *self) {
     }
 }
 
-static inline BOOL Ov010_PlayerBusy(void *p) {
-    return FLD(Ov010Flags32, p, 0xb24).b0 ? TRUE : FALSE;
+static inline BOOL Ov010_PlayerBusy(Robo021ca458 *p) {
+    return p->unk_b24_0 ? TRUE : FALSE;
 }
 
 void func_ov010_02208de8(Ov010Sw *self) {
-    void *p;
+    Robo021ca458 *p;
     if (!self->b0) {
         return;
     }

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 #include "ov000/MessageQueue.h"
 #include "ov000/CmdQueue.h"
 
@@ -76,7 +77,7 @@ static inline void ListBuffer_Init02171478(ListBuffer *b) {
     b->next = NULL;
 }
 
-static inline ListBuffer *AddBuffer02171478(MessageQueue *self, ListBuffer *buf, u32 priority, void *owner) {
+static inline ListBuffer *AddBuffer02171478(MessageQueue *self, ListBuffer *buf, u32 priority, Mgr02171478 *owner) {
     ListBuffer *b = buf;
     BOOL allocated = FALSE;
     if (b == NULL) {

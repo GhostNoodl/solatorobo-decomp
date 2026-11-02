@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "ov000/ActorBase.h"
 #include "ov000/Vec.h"
 
 typedef struct {

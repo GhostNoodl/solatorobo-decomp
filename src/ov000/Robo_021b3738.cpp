@@ -30,7 +30,7 @@ BOOL func_ov000_0219b3b4(void *p);
 BOOL func_ov000_021bd314(void *p, s32 x);
 void func_ov000_021bd438(void *p, VecFx32 *v, s32 dy);
 void func_ov000_021bd624(void *p);
-void *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 
 static inline void RotYXZ_021b3738(MtxFx33 *m, const u16 *rot) {
     MtxFx33 t;

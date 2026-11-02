@@ -1,12 +1,13 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorBase.h"
 #include "ov000/Vec.h"
 
 extern "C" {
 extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
-void *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 
-static inline void *FindActor0218c040(u16 id) {
+static inline Actor *FindActor0218c040(u16 id) {
     void *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
@@ -41,12 +42,12 @@ s32 func_ov000_0218c040(u8 **list, s32 max, VecFx32 *out, s32 kind, u16 id) {
         if (e[0xb] != 0) {
             for (i = 0; i < e[0xb]; i++) {
                 u8 *ent = e + i * 0x24;
-                u8 *a = (u8 *)FindActor0218c040(LFLD(u16, ent, 0xe));
+                Actor *a = FindActor0218c040(LFLD(u16, ent, 0xe));
                 if (a != NULL) {
-                    if (id == 0xffff || id == LFLD(u16, a, 0xe)) {
-                        out[n].x = LFLD(s32, a, 0x70);
-                        out[n].y = LFLD(s32, a, 0x74);
-                        out[n].z = LFLD(s32, a, 0x78);
+                    if (id == 0xffff || id == a->kind) {
+                        out[n].x = a->pos.x;
+                        out[n].y = a->pos.y;
+                        out[n].z = a->pos.z;
                         n++;
                     }
                 } else if (LFLD(u16, ent, 0xe) != 0xffff && (id == 0xffff || id == LFLD(u16, ent, 0xc))) {

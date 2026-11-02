@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 void *func_ov000_0218d2e0(void *self);
-void *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 void *func_ov000_02199d78(void *p);
 void *func_ov000_021b2f08(void *self, void *a, void *b, BOOL c);
 void *func_02049a48(void *p, s32 id, s32 a, s32 b, s32 c);
@@ -14,7 +14,7 @@ BOOL func_ov000_02190a30(void *p, s32 a);
 void func_ov000_021b3bd8(void *self);
 void func_ov000_021b3738(void *self, void *t);
 
-static inline void *FindActor021b2d48(u16 id) {
+static inline Actor *FindActor021b2d48(u16 id) {
     void *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
@@ -32,11 +32,11 @@ void func_ov000_021b2d48(Robo021ca458 *self) {
     if (self->unk_b2f != 0) {
         self->unk_b2f--;
         res = (u8 *)func_ov000_0218d2e0(self);
-    } else if ((LFLD(u32, self->unk_48, 0x54) & 0x400) || self->unk_b22_0 > 1) {
+    } else if ((self->unk_48->unk_54 & 0x400) || self->unk_b22_0 > 1) {
         self->unk_b2f = 0;
     } else {
-        u8 *a = (u8 *)FindActor021b2d48(self->unk_b1c);
-        if (a != NULL && (sub = LFLD(u8 *, a, 0x4c)) != NULL) {
+        Actor *a = FindActor021b2d48(self->unk_b1c);
+        if (a != NULL && (sub = ((u8 *)a->unk_4c)) != NULL) {
             if (sub[1] == 6) {
                 tgt = (u8 *)func_ov000_02199d78(sub);
             } else if (sub[1] == 1 || sub[1] == 5) {

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
 #include "ov000/ActorBase.h"
 
@@ -36,8 +37,8 @@ typedef struct {
 
 extern "C" {
 extern void *data_ov000_021ccd68;
-u8 *func_ov000_0219bf90(void);
-u8 *func_ov000_0218e640(void *mgr, u16 id);
+Robo021ca458 *func_ov000_0219bf90(void);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 BOOL func_ov000_02199cd8(Tgt0219af3c *self, u16 id);
 BOOL func_01ffc198(VecFx32 *a, VecFx32 *b, s32 r);
 BOOL func_ov000_021bd314(void *p, s32 x);
@@ -47,7 +48,7 @@ static inline s32 Cur0219af3c(Actor *self) {
     return h != NULL ? h[0x13] : 0;
 }
 
-static inline u8 *FindActor0219af3c(u16 id) {
+static inline Actor *FindActor0219af3c(u16 id) {
     void *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
@@ -81,7 +82,7 @@ static inline BOOL Special0219af3c(Tgt0219af3c *t) {
 }
 
 void func_ov000_0219af3c(Actor *self, u8 *p) {
-    u8 *pl;
+    Robo021ca458 *pl;
     Tgt0219af3c *tgt;
     u8 type;
     s32 r4;
@@ -92,7 +93,7 @@ void func_ov000_0219af3c(Actor *self, u8 *p) {
     if (pl == NULL) {
         return;
     }
-    if (LFLD(PlBits0219af3c, pl, 0xb24).b0 || LFLD(u16, pl, 0xb1e) != 0xffff) {
+    if (pl->unk_b24_0 || pl->unk_b1e != 0xffff) {
         return;
     }
     if (Cur0219af3c(self) == 9) {
@@ -101,12 +102,12 @@ void func_ov000_0219af3c(Actor *self, u8 *p) {
     if (Cur0219af3c(self) == 6 || self->unk_44 == NULL) {
         return;
     }
-    if (!Both0219af3c(self->unk_44) || self->id == LFLD(u16, pl, 0xb20) ||
-        (tgt = ((Tgt0219af3c *)self->unk_4c)) == NULL || tgt->target == LFLD(u16, pl, 0xc)) {
+    if (!Both0219af3c(self->unk_44) || self->id == pl->unk_b20 ||
+        (tgt = ((Tgt0219af3c *)self->unk_4c)) == NULL || tgt->target == pl->id) {
         return;
     }
     type = tgt->type;
-    if (LFLD(u16, pl, 0x90) != self->id) {
+    if (pl->target != self->id) {
         if (Cur0219af3c(self) == 0xb || type == 0 || type == 2 || type == 9 || type == 0xa || type == 0xb ||
             type == 0x11 || Kind0219af3c(self->id) == 0x5000) {
             return;
@@ -114,7 +115,7 @@ void func_ov000_0219af3c(Actor *self, u8 *p) {
         if (tgt->b5) {
             return;
         }
-        if (!(LFLD(PlBits0219af3c, pl, 0xb24).b1 ? TRUE : FALSE)) {
+        if (!(pl->unk_b24_1 ? TRUE : FALSE)) {
             if (type == 1) {
                 return;
             }
@@ -122,15 +123,15 @@ void func_ov000_0219af3c(Actor *self, u8 *p) {
                 return;
             }
         } else if (type == 1) {
-            u8 *a;
-            if (LFLD(u16, pl, 0xb1c) == 0xffff) {
+            Actor *a;
+            if (pl->unk_b1c == 0xffff) {
                 return;
             }
-            a = FindActor0219af3c(LFLD(u16, pl, 0xb1c));
+            a = FindActor0219af3c(pl->unk_b1c);
             if (a == NULL) {
                 return;
             }
-            if (!func_ov000_02199cd8(tgt, LFLD(u16, a, 0xe))) {
+            if (!func_ov000_02199cd8(tgt, a->kind)) {
                 return;
             }
         }
@@ -139,14 +140,14 @@ void func_ov000_0219af3c(Actor *self, u8 *p) {
             v.x = self->pos.x;
             v.y = self->pos.y;
             v.z = self->pos.z;
-            if (!func_01ffc198(&LFLD(VecFx32, pl, 0x70), &v, LFLD(s32, pl, 0x64) + 0x6000)) {
+            if (!func_01ffc198(&pl->pos, &v, pl->unk_64 + 0x6000)) {
                 return;
             }
         }
         r4 = 1;
         if ((u8)(type + 0xfa) <= 2) {
             r4 = 0;
-        } else if (!(LFLD(PlBits0219af3c, pl, 0xb24).b1 ? TRUE : FALSE)) {
+        } else if (!(pl->unk_b24_1 ? TRUE : FALSE)) {
             if (type == 5 || type == 4 || ((u8)(type + 0xf2) <= 1 && tgt->unk_02 == 1) || Special0219af3c(tgt)) {
                 r4 = 0;
             }
@@ -161,8 +162,8 @@ void func_ov000_0219af3c(Actor *self, u8 *p) {
         return;
     }
     act = -1;
-    if (LFLD(PlBits0219af3c, pl, 0xb24).b1) {
-        if (LFLD(PlBits0219af3c, pl, 0xb24).b5) {
+    if (pl->unk_b24_1) {
+        if (pl->unk_b24_5) {
             act = 4;
         } else if (type == 4 || type == 0xc || type == 0xd || (u8)(type + 0xef) <= 3) {
             act = 4;

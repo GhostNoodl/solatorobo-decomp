@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -12,7 +13,7 @@ u16 func_02059544(void *a, void *b, void *c, s32 d, s32 e);
 BOOL func_0205a9c8(void *p);
 void func_0204c7d0(void *p);
 void *func_ov000_02173610(s32 kind);
-void *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 typedef struct {
@@ -45,7 +46,7 @@ struct Obj0215158c {
 
 void func_ov000_0215158c(Obj0215158c *self) {
     void *t = func_ov000_02173610(0xe);
-    void *m;
+    Robo021ca458 *m;
     void *s;
     if (t == NULL) {
         return;
@@ -57,10 +58,10 @@ void func_ov000_0215158c(Obj0215158c *self) {
         LFLD(u32, s, 0xc) |= 0x20;
         break;
     case 3:
-        LFLD(LoBits8, m, 0xb28).b3 = 1;
+        m->unk_b28_3 = 1;
         break;
     case 1:
-        LFLD(LoBits8, m, 0xb28).b3 = 0;
+        m->unk_b28_3 = 0;
         break;
     case 2:
         break;

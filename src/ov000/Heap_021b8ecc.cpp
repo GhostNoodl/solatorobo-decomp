@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 #include "ov000/HeapScope.h"
 #include "nitro/fx.h"
 
@@ -109,9 +110,9 @@ static inline VObj *NewTextWin_021b9010(void) {
     return (VObj *)p;
 }
 
-static inline void TextWinStart_021b9010(u8 *w, void *text) {
+static inline void TextWinStart_021b9010(VObj *w, void *text) {
     LFLD(void *, w, 0x24) = text;
-    LFLD(s32, w, 0x4c) = func_0204c4fc(LFLD(s32, w, 0x28), LFLD(s32, w, 0x38), LFLD(s32, w, 0x24), w + 0x44, w + 0x48, LFLD(s8, w, 0x37) != 0);
+    LFLD(s32, w, 0x4c) = func_0204c4fc(LFLD(s32, w, 0x28), LFLD(s32, w, 0x38), LFLD(s32, w, 0x24), (u8 *)w + 0x44, (u8 *)w + 0x48, LFLD(s8, w, 0x37) != 0);
     LFLD(s32, data_02097ce0, 0x4) = LFLD(s32, w, 0x28);
 }
 
@@ -185,7 +186,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         self->unk_18 = NewTextWin_021b9010();
         LFLD(s32, self->unk_18, 0x28) = 4;
         LFLD(s32, self->unk_18, 0x2c) = 0;
-        TextWinStart_021b9010((u8 *)self->unk_18, text1);
+        TextWinStart_021b9010(self->unk_18, text1);
         self->unk_18->vfunc_14();
         LFLD(u32, self->unk_18, 4) |= 0x40;
         LFLD(u32, self->unk_18, 4) |= 0x40000000;
@@ -198,7 +199,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         self->unk_1c = NewTextWin_021b9010();
         LFLD(s32, self->unk_1c, 0x28) = 8;
         LFLD(s32, self->unk_1c, 0x2c) = 0;
-        TextWinStart_021b9010((u8 *)self->unk_1c, text);
+        TextWinStart_021b9010(self->unk_1c, text);
         self->unk_1c->vfunc_14();
         LFLD(u32, self->unk_1c, 4) |= 0x40;
         LFLD(u32, self->unk_1c, 4) |= 0x40000000;

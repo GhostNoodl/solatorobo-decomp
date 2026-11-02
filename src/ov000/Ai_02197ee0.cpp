@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
 #include "ov000/ActorBase.h"
 
@@ -24,7 +25,7 @@ typedef struct {
 extern "C" {
 extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd6c;
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 void func_ov000_0218d988(void *self, void *other, s32 a);
 u8 *func_ov000_021b68b8(void *a, void *pos);
 s32 func_02040498(s32 max);
@@ -73,7 +74,7 @@ static inline void Polar02197ee0(VecFx32 *p, s32 r, s16 sn, s16 cs) {
 void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s32 radius) {
     Hist02197ee0 *h;
     u8 cur;
-    u8 *obj;
+    Robo021ca458 *obj;
     s32 dist;
     if (!GIdle02197ee0()) {
         return;
@@ -90,11 +91,11 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
         self->target = 0xffff;
         obj = func_ov000_0219bf90();
         if (obj != NULL) {
-            self->target = LFLD(u16, obj, 0xc);
+            self->target = obj->id;
         }
         {
-            s32 dx = self->pos.x - LFLD(s32, obj, 0x70);
-            s32 dz = self->pos.z - LFLD(s32, obj, 0x78);
+            s32 dx = self->pos.x - obj->pos.x;
+            s32 dz = self->pos.z - obj->pos.z;
             s64 sq = (s64)dx * dx;
             sq += (s64)dz * dz;
             REG_SQRTCNT = 1;
@@ -126,8 +127,8 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
             func_ov000_0218d988(self, obj, arg);
             return;
         }
-        p = LFLD(VecFx32, obj, 0x70);
-        o = func_ov000_021b68b8(data_ov000_021ccd6c, (u8 *)self + 0x70);
+        p = obj->pos;
+        o = func_ov000_021b68b8(data_ov000_021ccd6c, &self->pos);
         if (o != NULL) {
             ang = LFLD(u16, o, 0x1a);
         } else {
@@ -143,11 +144,11 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
     }
     case 2:
         st->timer++;
-        if (LFLD(s32, self->unk_48, 0x58) != 0 || st->timer >= 0x78 ||
+        if (((s32)self->unk_48->unk_58) != 0 || st->timer >= 0x78 ||
             near + (near >> 2) > Dist02197ee0(self->pos.x - st->pos.x, self->pos.z - st->pos.z)) {
             st->st = 0;
         }
-        if ((LFLD(u32, self->unk_48, 0x50) & 0x40000000) && st->timer >= 0x14) {
+        if ((self->unk_48->unk_50 & 0x40000000) && st->timer >= 0x14) {
             st->st = 0;
         }
         ((Hist02197ee0 *)self->unk_40)->mask |= 4;

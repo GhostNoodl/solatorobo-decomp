@@ -7348,3 +7348,27 @@ FLD cleanup in `src/ov015` / `include/ov015`. **`FLD`/`CFLD`/`LFLD` accesses in 
   - The panel helper class in `0220ec40.cpp` and the classes behind vtables `02212f3c`/`02212f64` (`0220e024`, `0220dde8`; fields 0x3a4-0x520) were not converted.
   - The ov000 effect objects reached through `func_02066774`, the sprite code (`021fb758`, `021fb408`, `021fce4c`), the bit-field views (`Ov015ObjFlags`, `Ov015Bits10d24`, `Ov015Nib`) and the globals stay `FLD`.
 - **Not a base field in ov014:** `Ov014Actor` 0xd4-0xdf is different in each subclass. It is a `u16` id at 0xde in about ten classes, an `Ov014Vec` at 0xd4 in `02217050`, and a pointer at 0xdc. It therefore stays padding in the base. Typing it needs one intermediate class per layout.
+
+### Round svG
+
+FLD cleanup in `src/ov000`, `src/ov010`, `include/ov000` and `include/ov010`. **`FLD`/`CFLD`/`LFLD` accesses: ov000 4000 -> 3381, ov010 1329 -> 693** (counted over src and include). Every function is byte-identical, checked by a per-function hash of code plus relocations against a baseline taken at the start. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, and `ninja report` 8138 matched. No `NONMATCHING` draft changed codegen: the two files that hold drafts were compiled with `NONMATCHING` defined and compared, and both were the same. No data was added. The scratch is in the session scratchpad `svG/`.
+
+- **How the types were chosen:** from getter returns (`func_ov000_0218e640`/`0218e6d0` return `Actor *`, `0219bf90` returns `Robo021ca458 *`), from allocation plus the final vtable store for widget fields (`Menu_021763c8.cpp`), from call-site types for static params, and from locals whose every assignment has one struct type.
+- **Types added or changed:**
+  - `include/ov000/MapCtx.h` (new) holds the map-screen work area `Ctx0216607c` with `Node0216607c`, `Item0216607c`, `Slot0216607c` and `LoAnimC`. These used to be local copies in `Lo_02165f94.cpp` and `Lo_02166be8.cpp`, and both files now share them.
+  - `ov010.h`:
+    - `Ov010Obj::unk_40`/`unk_48` are now `ActorSub40 *`/`ActorSub48 *`.
+    - New beam and effect types `Ov010FxObj` (0x44), `Ov010Beam` (0x80), `Ov010BeamNode` (0x8c) and `Ov010BeamSet` (0x40), taken from the local copies in `0220f828.cpp`.
+    - `VecFx32` is a guarded typedef of `Ov010Vec`, so ov010 can include `ov000/ActorParts.h`.
+  - `ov000/ObjLayouts.h`: split pads in `Robo021ca458` and several `Lo*` classes into the fields used.
+  - The ov010 state-handler class `Ov010Cls` is now complete in each file: it derives from the object type, and the pointer-to-member size is unchanged.
+- **Kept forms:**
+  - `Ov010Beam_Idle`/`Mode`/`GetA`/`GetB` keep `FLD(u8, b, 0)`, because mixing it with member access changes codegen. The code has a comment on this.
+  - Const reads stay const casts, for example `((const Ov010Beam *)o)->st.timer`.
+- **Left as FLD:**
+  - The `ActorEx_*.cpp` local views. The files split the bits differently, and `unk_4c` is a 0x5c sub-struct in some of them, so they do not fit one shared `ActorEx`.
+  - `Actor::unk_38` (the model). `Model0218fe1c` is defined the same way in 5 files, but sharing it hits header conflicts.
+  - The `TextWin` 0xb8 allocations. `Main/Gfx/TextWin.h` and `ov000/HeapScope.h` give `data_02097dd0` different types.
+  - The `(u8 *)self` aliases in Robo code and some `unk_48` reads. Converting them changes the code.
+  - The ov010 `void *` FindActor helpers, written as a ternary or with a local.
+  - `data_ov000_021ccd54` (`Obj02188ba0`).

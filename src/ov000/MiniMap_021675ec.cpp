@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 #include "ov000/CmdQueue.h"
 #include "nitro/fx.h"
 // Mini-map markers: quest targets, visible actors and point markers.
@@ -46,7 +47,7 @@ extern void *data_ov000_021ccd64;
 // In .rodata; declaring it const lets the 0x74 copy load both words before either store.
 extern const u8 data_ov000_021c9a9c[];
 extern u8 *data_ov000_021ccd6c;
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 void *func_0203bbfc(void *sys, int which);
 s32 func_ov000_0218c040(void *mgr, s32 max, VecFx32 *out, s32 kind, u16 id);
 BOOL NNS_G2dEntryOamManagerOam(void *mgr, const void *oam, u16 num);
@@ -138,8 +139,8 @@ static inline BOOL Vis021675ec(u8 *o) {
     return LFLD(H12_021675ec, o, 0x12).b8 == 1 ? TRUE : FALSE;
 }
 
-static inline BOOL Bit2_021675ec(u8 *pl) {
-    return LFLD(Flags021675ec, pl, 0xb28).b == 1 ? TRUE : FALSE;
+static inline BOOL Bit2_021675ec(Robo021ca458 *pl) {
+    return pl->unk_b28_2 == 1 ? TRUE : FALSE;
 }
 
 struct Obj021675ec {
@@ -152,7 +153,7 @@ void func_ov000_021675ec(Obj021675ec *self, u8 *w) {
     VecFx32 pos;
     u8 *o;
     VecFx32 pts[8];
-    u8 *pl;
+    Robo021ca458 *pl;
     s32 j;
     Ent021675ec *ents;
     void *oam;
@@ -171,7 +172,7 @@ void func_ov000_021675ec(Obj021675ec *self, u8 *w) {
     }
     oam = func_0203bbfc(data_02097d48, 1);
     pl = func_ov000_0219bf90();
-    Ctr021675ec c(LFLD(s32, pl, 0x70), LFLD(s32, pl, 0x78));
+    Ctr021675ec c(pl->pos.x, pl->pos.z);
     Pos021675ec m;
     ents = (Ent021675ec *)(data_0214a424 + 0x60c);
     w[2] = 0;
@@ -198,7 +199,7 @@ void func_ov000_021675ec(Obj021675ec *self, u8 *w) {
     if (w[2] != 0 && LFLD(s32, w, 0xcd8) > 0x800) {
         NNS_G2dEntryOamManagerOam(oam, w + 0x64c, w[2]);
     }
-    if (LFLD(Flags021675ec, pl, 0xb28).a == 0 && !Bit2_021675ec(pl) && w[0] == 0) {
+    if (pl->unk_b28_0 == 0 && !Bit2_021675ec(pl) && w[0] == 0) {
         LFLD(Pos021675ec, self->unk_24, 0x10c) = LFLD(const Pos021675ec, data_ov000_021c9a9c, 0x74);
         PlayPart021675ec(self->unk_24, 3, 0);
         NNS_G2dEntryOamManagerOam(oam, w + 0x14, 1);

@@ -6,7 +6,7 @@ extern "C" {
 extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern VecFx32 data_ov000_021ca000;
-void *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u16 ang);
 void *func_ov000_0219be1c(s32 kind, VecFx32 *pos, void *rot, u16 a, u16 b);
 void func_ov000_0218996c(u8 a, u8 b);
@@ -15,7 +15,7 @@ void *func_02049f44(void *a, s32 b, void *c, s32 d);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void func_ov000_021b2b08(void *self);
 
-static inline void *FindActor021b03c8(u16 id) {
+static inline Actor *FindActor021b03c8(u16 id) {
     void *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
@@ -30,7 +30,7 @@ static inline void Next021b03c8(Robo021ca458 *self) {
 
 void func_ov000_021b03c8(Robo021ca458 *self) {
     ActorSub40 *s = self->unk_40;
-    void *a;
+    Actor *a;
     u8 *sub;
     void *o;
     VecFx32 v;
@@ -46,10 +46,10 @@ void func_ov000_021b03c8(Robo021ca458 *self) {
         a = FindActor021b03c8(self->unk_b20);
         sub = NULL;
         if (a != NULL) {
-            sub = LFLD(u8 *, a, 0x4c);
+            sub = ((u8 *)a->unk_4c);
         }
         if (sub == NULL || LFLD(u16, sub, 0x1e) == 0) {
-            func_0204a028(data_02097e4c, 0x48, (u8 *)self + 0x70, -5);
+            func_0204a028(data_02097e4c, 0x48, &self->pos, -5);
             Next021b03c8(self);
             return;
         }
@@ -65,7 +65,7 @@ void func_ov000_021b03c8(Robo021ca458 *self) {
         }
         LFLD(u16, sub, 0x1e)--;
         func_ov000_0218996c(3, 6);
-        func_02049f44(data_02097e4c, 0x66, (u8 *)self + 0x70, 0);
+        func_02049f44(data_02097e4c, 0x66, &self->pos, 0);
         Next021b03c8(self);
         break;
     case 1:

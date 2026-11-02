@@ -30,14 +30,14 @@ extern s32 data_ov000_021ca100[];
 extern s32 data_ov000_021ca168[];
 void func_ov000_021b05b0(u8 *self);
 u8 func_0206d37c(void *save, s32 a);
-u8 *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 
 void func_ov000_0218d46c(void *self, u16 id, u8 value);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 s32 func_ov000_021a09b8(u8 *self, s32 *list, s32 count);
 void func_ov000_0218d7e8(void *self, u8 arg);
 
-static inline u8 *GetObj021a0268(u16 id) {
+static inline Actor *GetObj021a0268(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
@@ -92,7 +92,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
         }
         self->unk_b08 += func_0206d37c(data_0214a424, 3) * 4;
     } else {
-        self->unk_38 = (u8 *)self + 0xac;
+        self->unk_38 = &self->unk_ac;
         self->unk_48 = (ActorSub48 *)((u8 *)self + 0x2cc);
         self->unk_b08 = 0x19a;
     }
@@ -115,19 +115,19 @@ void func_ov000_021a0268(Robo021ca458 *self) {
     s = ((ActorSub40 *)self->unk_40);
     if (s->current != 0x1f) {
         if (s->flags & 1) {
-            u8 *o = GetObj021a0268(self->unk_b1c);
+            Actor *o = GetObj021a0268(self->unk_b1c);
             if (o != NULL) {
                 Msg021a0268 m;
                 m.pos = LFLD(Vec021a0268, self, 0x70);
                 m.pos.y += self->unk_6c;
-                m.rot[0] = LFLD(u16, o, 0x7c);
-                m.rot[1] = LFLD(u16, o, 0x7e);
-                m.rot[2] = LFLD(u16, o, 0x80);
+                m.rot[0] = o->rot_x;
+                m.rot[1] = o->rot_y;
+                m.rot[2] = o->rot_z;
                 m.z = 0;
                 func_ov000_0218d398((Actor *)o, self->id, 7, 1, 0x18, &m);
                 func_ov000_0218d46c(o, self->id, 10);
-                if (LFLD(u8 *, o, 0x4c) != NULL) {
-                    LFLD(C18_021a0268, LFLD(u8 *, o, 0x4c), 0x18).b0 = 0;
+                if (((u8 *)o->unk_4c) != NULL) {
+                    LFLD(C18_021a0268, ((u8 *)o->unk_4c), 0x18).b0 = 0;
                 }
             }
             Reset021a0268(self);

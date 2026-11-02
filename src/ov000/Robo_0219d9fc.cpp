@@ -67,7 +67,7 @@ extern u8 *data_ov000_021ccd30;
 extern u8 *data_0214a424;
 extern u8 *data_02097d48;
 extern u8 data_ov000_021ca320[];
-u8 *func_ov000_0218e640(void *mgr, u16 id);
+Actor *func_ov000_0218e640(void *mgr, u16 id);
 void func_ov000_02191ec4(void *a, s32 b, u32 c);
 int func_02043d9c(void *p);
 void func_ov000_02190758(void *model, void *rot, s32 a);
@@ -86,7 +86,7 @@ void MTX_RotZ33_(Mtx33_0219d9fc *m, s32 s, s32 c);
 void MTX_Concat33(void *a, void *b, void *c);
 void func_ov000_02167fac(void *p, s32 a, s32 b);
 
-static inline u8 *FindActor_0219d9fc(u16 id) {
+static inline Actor *FindActor_0219d9fc(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
@@ -166,10 +166,10 @@ BOOL func_ov000_0219d9fc(Robo021ca458 *self) {
     if (self->unk_b28_3) {
         return FALSE;
     }
-    func_ov000_02191ec4(((void *)self->unk_3c), 1, LFLD(u32, self->unk_48, 0x54));
+    func_ov000_02191ec4(((void *)self->unk_3c), 1, self->unk_48->unk_54);
     m = ((u8 *)self->unk_38);
     v = LFLD(u8, m, 0xbf);
-    if (LFLD(u32, self->unk_48, 0x54) & 0x80000) {
+    if (self->unk_48->unk_54 & 0x80000) {
         if (B24(self).b20) {
             if (v > 5) {
                 LFLD(u8, m, 0xbf) = v - 3;
@@ -267,9 +267,9 @@ BOOL func_ov000_0219d9fc(Robo021ca458 *self) {
             res = 1;
         }
         VEC(self, 0x124) = VEC(self, 0x70);
-        func_ov000_02190758((u8 *)self + 0xac, (u8 *)self + 0x7c, 1);
+        func_ov000_02190758(&self->unk_ac, (u8 *)self + 0x7c, 1);
         self->unk_16d = alpha;
-        func_ov000_021903b4((u8 *)self + 0xac);
+        func_ov000_021903b4(&self->unk_ac);
         h = self->unk_338;
     } else {
     if (B24(self).b1) {
@@ -295,7 +295,7 @@ BOOL func_ov000_0219d9fc(Robo021ca458 *self) {
         }
         p = VEC(self, 0x75c);
         if (B24(self).b12) {
-            a = FindActor_0219d9fc(self->unk_b20);
+            a = (u8 *)FindActor_0219d9fc(self->unk_b20);
             u8 *s;
             if (a != NULL && (s = LFLD(u8 *, a, 0x4c)) != NULL) {
                 s16 *e = (s16 *)(data_ov000_021ca320 + LFLD(u16, s, 6) * 0x18);
@@ -347,10 +347,10 @@ BOOL func_ov000_0219d9fc(Robo021ca458 *self) {
         }
         if (!B93(self).b0) {
             VEC(self, 0x124) = VEC(self, 0x70);
-            func_ov000_02190758((u8 *)self + 0xac, (u8 *)self + 0x7c, 1);
+            func_ov000_02190758(&self->unk_ac, (u8 *)self + 0x7c, 1);
         }
         self->unk_16d = alpha;
-        if (func_ov000_021903b4((u8 *)self + 0xac) && B24(self).b21) {
+        if (func_ov000_021903b4(&self->unk_ac) && B24(self).b21) {
             VEC(self, 0x7f0) = VEC(self, 0x9dc);
             MI_Copy36B((u8 *)self + 0x9b8, (u8 *)self + 0x7fc);
             self->unk_839 = alpha;
@@ -358,9 +358,9 @@ BOOL func_ov000_0219d9fc(Robo021ca458 *self) {
         }
         h = self->unk_338;
         if (B24(self).b5) {
-            u8 *a = FindActor_0219d9fc(self->unk_b1c);
+            Actor *a = FindActor_0219d9fc(self->unk_b1c);
             if (a != NULL) {
-                u8 *s = LFLD(u8 *, a, 0x4c);
+                u8 *s = ((u8 *)a->unk_4c);
                 s32 q[3];
                 LFLD(u16, s, 0x1c) = self->id;
                 q[0] = self->pos.x;
@@ -380,7 +380,7 @@ BOOL func_ov000_0219d9fc(Robo021ca458 *self) {
         }
     }
     }
-    fl = LFLD(u32, self->unk_48, 0x54);
+    fl = self->unk_48->unk_54;
     if ((fl & 0xf0f0f0) != 0xe0e000 && (fl & 0x20000) != 0x20000) {
         LFLD(s32, ((void *)self->unk_3c), 0x14) = off;
         LFLD(s32, ((void *)self->unk_3c), 0x10) = self->pos.y - h;
@@ -392,10 +392,10 @@ BOOL func_ov000_0219d9fc(Robo021ca458 *self) {
             w.z = self->unk_12c;
             func_ov000_02191c24(((void *)self->unk_3c), &w);
         } else {
-            func_ov000_02191c24(((void *)self->unk_3c), (u8 *)self + 0x70);
+            func_ov000_02191c24(((void *)self->unk_3c), &self->pos);
         }
     }
-    if (B22(self).b0 && ((u8 *)self->unk_998) != NULL && res >= 0 && LFLD(H0_0219d9fc, self, 0x42a).b0) {
+    if (B22(self).b0 && ((u8 *)self->unk_998) != NULL && res >= 0 && self->unk_42a_0) {
         if (res != 0) {
             BOOL set;
             u16 rz;

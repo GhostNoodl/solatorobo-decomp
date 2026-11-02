@@ -1,4 +1,6 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
+#include "ov000/MapCtx.h"
 
 extern "C" {
 
@@ -12,18 +14,6 @@ void MIi_CpuCopyFast(void *a, void *b, s32 c);
 void func_ov000_02190758(void *m, void *p, s32 a);
 BOOL func_ov000_021903b4(void *m);
 
-typedef struct LoAnimC {
-    u8 rgb[4];
-    u8 pad[0x84];
-    u8 *frames[0x20];
-    u8 cnt;
-    u8 pad2;
-    u16 state;
-    u16 idx;
-    u16 timer;
-    u16 period;
-} LoAnimC;
-
 static inline BOOL LoAnimValid(LoAnimC *p) {
     if (p == NULL || p->state == 0) {
         return FALSE;
@@ -33,11 +23,11 @@ static inline BOOL LoAnimValid(LoAnimC *p) {
 
 struct Obj02165f94 {
     u8 unk_00[0x30];
-    u8 *unk_30;
+    Ctx0216607c *unk_30;
 };
 
 u8 *func_ov000_02165f94(Obj02165f94 *self) {
-    LoAnimC *p = LFLD(LoAnimC *, self->unk_30, 0xcdc);
+    LoAnimC *p = self->unk_30->anim;
     u8 *g = data_ov000_021ccd54;
     if (!LoAnimValid(p)) {
         return g + 0xca;
@@ -63,38 +53,6 @@ u8 *func_ov000_02165f94(Obj02165f94 *self) {
     p->rgb[2] = p->frames[p->idx][8];
     return p->rgb;
 }
-
-typedef struct Item0216607c Item0216607c;
-
-typedef struct {
-    u8 pad_00[0xb];
-    u8 count;
-    u8 pad_0c[0xc];
-    Item0216607c *items;
-} Node0216607c;
-
-struct Item0216607c {
-    Node0216607c *node;
-    u8 pad_04[8];
-    s32 a;
-    s32 b;
-    u8 key;
-    u8 pad_15[3];
-};
-
-typedef struct {
-    u32 unk_00;
-    Item0216607c **list;
-} Slot0216607c;
-
-typedef struct {
-    u8 pad_00[8];
-    u8 count;
-    u8 pad_09[0xc7f];
-    Slot0216607c *slots;
-    u8 pad_c8c[0x28];
-    Item0216607c *cur;
-} Ctx0216607c;
 
 struct Obj0216607c {
     u8 unk_00[0x30];
@@ -224,7 +182,7 @@ extern u8 *data_0214a424;
 typedef struct { s8 dx; s8 dy; u16 hf : 1; u16 vf : 1; u16 idx : 4; } Dir2_6180;
 extern const Dir2_6180 data_ov000_021c9b40[];
 extern const s8 data_ov000_021c9b41[];
-u8 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 u16 func_0204bfa8(void *cam);
 
 static inline void SetXY6180(Oam6180 *o, u16 x, u16 y) {
@@ -282,14 +240,14 @@ void func_ov000_02166180(Obj0216607c *self) {
     s32 xx;
     u8 k;
     u8 c;
-    u8 *nd;
+    Node0216607c *nd;
     s16 x;
     u8 *g;
     u8 *p;
     u8 *r;
     u8 *en;
     s32 yy;
-    u8 *pl;
+    Robo021ca458 *pl;
     s8 *pal;
     Oam6180 *ob;
     u8 *cam;
@@ -367,7 +325,7 @@ void func_ov000_02166180(Obj0216607c *self) {
         }
     }
     if (busy) {
-        h = LFLD(LoAnimC *, self->unk_30, 0xcdc);
+        h = self->unk_30->anim;
         for (i = 0; i < h->cnt; i++) {
             r = h->frames[i];
             off = (i == h->cnt - 1) ? 0 : 2;
@@ -380,12 +338,12 @@ void func_ov000_02166180(Obj0216607c *self) {
                 oams[j].w1.pal = (pal + off)[PalIdx6180(p)];
             }
         }
-        nd = (u8 *)func_ov000_0216607c(self, (Node0216607c *)h->frames[0], &j, TRUE);
+        nd = func_ov000_0216607c(self, (Node0216607c *)h->frames[0], &j, TRUE);
         if (nd != NULL) {
             k = p[2]++;
             o = &((Oam6180 *)(p + 0x64c))[k];
             *o = LFLD(Oam6180, p, 0x1c);
-            it = LFLD(u8 *, nd, 0x18) + j * 0x18;
+            it = ((u8 *)nd->items) + j * 0x18;
             xx = LFLD(s32, it, 0xc) - (ox >> 12) - 4; yy = LFLD(s32, it, 0x10) - (oy >> 12) - 0xc; PUTM(o, xx, yy)
             LFLD(u32, o, 0) = (LFLD(u32, o, 0) & 0x3fff3fff) | 0x40000000;
             o->w1.pal = *(LFLD(s8 *, p, 0xc90) + PalIdx6180(p) - 2);
@@ -408,7 +366,7 @@ void func_ov000_02166180(Obj0216607c *self) {
             if (en == NULL) {
                 continue;
             }
-            nd = (u8 *)func_ov000_0216607c(self, (Node0216607c *)en, &j, FALSE);
+            nd = func_ov000_0216607c(self, (Node0216607c *)en, &j, FALSE);
             if (nd == NULL) {
                 continue;
             }
@@ -418,7 +376,7 @@ void func_ov000_02166180(Obj0216607c *self) {
             if (LFLD(QBits6180, LFLD(u8 *, p, 0xcb8), 0).b3) {
                 continue;
             }
-            it = LFLD(u8 *, nd, 0x18) + j * 0x18;
+            it = ((u8 *)nd->items) + j * 0x18;
             xx = LFLD(s32, it, 0xc) - (ox >> 12) - 4; yy = LFLD(s32, it, 0x10) - (oy >> 12) - 0xc; PUTM(o, xx, yy)
             switch (tbl2[i].a) {
             case 0:
@@ -435,7 +393,7 @@ void func_ov000_02166180(Obj0216607c *self) {
         if (!LFLD(QBits6180, LFLD(u8 *, p, 0xcb8), 0).b3) {
             xx = LFLD(Oam6180, p, 0xc).w0.x;
             yy = LFLD(Oam6180, p, 0xc).w0.y;
-            pa = LFLD(u16, pl, 0x7e);
+            pa = pl->rot_y;
             if (LFLD(u16, cam, 0x40) != 0) {
                 ca = LFLD(u16, cam, 0x44);
             } else {
@@ -443,7 +401,7 @@ void func_ov000_02166180(Obj0216607c *self) {
             }
             a = ca - pa;
         } else {
-            a = 0x8000 - LFLD(u16, pl, 0x7e);
+            a = 0x8000 - pl->rot_y;
             xx = 0x7c;
             yy = 0x64;
         }

@@ -1,4 +1,5 @@
 #include "nitro/fx.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u8 b0 : 4;
