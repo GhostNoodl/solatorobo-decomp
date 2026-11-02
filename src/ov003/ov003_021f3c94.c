@@ -73,7 +73,7 @@ extern Ov003NmLabel *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_021919c8(void *p);
 extern void func_ov000_02191b70(void *p);
 
-void func_ov003_021f3c94(Ov003NmObj *self) {
+void Ov003ActVt_021fa548_Init(Ov003NmObj *self) {
     Ov003NmInfo *info;
     Ov003NameSet *names;
     void *p;

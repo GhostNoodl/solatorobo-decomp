@@ -7,7 +7,7 @@ void func_ov002_021dbd08(void *self, s32 a, s32 b) {
     FIELD(self, 0xc, s32) = b;
 }
 
-void *func_ov002_021dbd14(void *self) {
+void *Ov002Vt_021eff10_Ctor(void *self) {
     *(VFunc **)self = data_ov002_021eff10;
     FIELD(self, 0x4, s32) = 0;
     FIELD(self, 0x8, s32) = 0;

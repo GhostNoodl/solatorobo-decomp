@@ -390,7 +390,7 @@ void func_ov002_021e49a0(void *p);
 extern VFunc data_ov002_021ef91c[];
 
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
-void *func_ov002_021e473c(void *p);
+void *Ov002Vt_021f00fc_Dtor(void *p);
 void MI_CpuFill8(void *dst, int val, u32 size);
 
 extern VFunc data_ov002_021ef99c[];
@@ -403,7 +403,7 @@ u32 func_ov000_02176538(void);
 u32 func_ov000_02180838(void *a);
 void func_ov002_021d3ccc(void *self);
 
-void *func_ov002_021e49c0(void *p);
+void *Ov002Vt_021f00ec_Dtor(void *p);
 void func_ov002_021d25ec(Task50 *self);
 void __cxa_vec_cleanup(void *arr, int n, u32 size, void (*dtor)(void *));
 extern VFunc data_ov002_021ef684[];
@@ -487,7 +487,7 @@ extern VFunc data_ov002_021efe3c[];
 void func_0203df0c(void *p);
 void func_0203f0b4(void *p);
 
-void *func_ov002_021d74c0(void *self);
+void *Ov002Vt_021efe3c_Dtor(void *self);
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 u8 *func_0206ef50(u32 id);
@@ -830,7 +830,7 @@ void *func_ov002_021e9974(s32 a, s32 b, s16 c, void *d);
 void *func_02035fe8(void *a, void *b);
 void func_ov002_021ec010(void *p, const void *src);
 extern VFunc data_ov002_021f07ac[];
-void *func_ov002_021ebf28(void *p);
+void *Ov002Vt_021f0ce8_Dtor(void *p);
 
 extern u8 data_ov002_021ef655[];
 extern u8 data_ov002_021ef659[];
@@ -861,7 +861,7 @@ void G3X_SetFog(int a, void *b, void *c, int d);
 void func_02043b20(void *p);
 void func_ov002_021e5d0c(void *self);
 
-void *func_ov002_021ebedc(void *p);
+void *Ov002Vt_021f0ce8_Ctor(void *p);
 void func_ov002_021e6a14(void *self);
 void func_ov002_021ec1e0(void *self, void *src);
 

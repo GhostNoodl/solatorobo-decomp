@@ -203,7 +203,7 @@ void func_ov003_021d71c8(Ov003Act *self) {
     func_ov003_021d6054(self);
 }
 
-void func_ov003_021d7270(Ov003Act *self) {
+void Ov003ActVt_021f7b60_Update(Ov003Act *self) {
     u8 a;
     Ov003Pl *p;
     func_ov003_021d1e8c(self);

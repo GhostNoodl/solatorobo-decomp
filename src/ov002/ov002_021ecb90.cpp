@@ -1030,7 +1030,7 @@ BOOL func_ov002_021ee55c(void *self, s32 start, s32 count) {
 namespace m_021ee7c8 {
 extern "C" {
 
-VObject *func_ov002_021ee7c8(VObject *self) {
+VObject *Ov002Vt_021f0ef4_DtorDelete(VObject *self) {
     *(VFunc **)self = data_ov002_021f0ef4;
     self->v0x14();
     func_0203de1c(self);

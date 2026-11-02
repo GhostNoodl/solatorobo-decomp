@@ -161,7 +161,7 @@ static inline BOOL Ov003In_SameCol(const Ov003InCol *a, Ov003InCol b) {
     return r;
 }
 
-void func_ov003_021f1624(Ov003In *self) {
+void Ov003ActVt_021fa1b8_Start(Ov003In *self) {
     Ov003InRes *res = func_0206fef8(self->unk_0e);
     Ov003InIcon *icon;
     char *name;

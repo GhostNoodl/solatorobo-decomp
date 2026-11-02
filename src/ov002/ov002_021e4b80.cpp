@@ -2013,7 +2013,7 @@ void func_ov002_021e7b58(void) {
     data_ov002_021f0f9c = p;
 }
 
-void *func_ov002_021e7bfc(void *self) {
+void *Ov002Vt_021f0684_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021f0684;
     func_ov002_021eae3c(self);
     return self;
@@ -2026,7 +2026,7 @@ void func_ov002_021e7c1c(void) {
     HEAP_POP(saved);
 }
 
-void *func_ov002_021e7c78(void *self) {
+void *Ov002Vt_021f0674_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f0674;
     func_ov002_021e7dac(self);
     *(VFunc **)((u8 *)self + 0x6c) = data_ov002_021f0684;
@@ -2546,7 +2546,7 @@ BOOL func_ov002_021e8828(void *self) {
 namespace m_021e8aac {
 extern "C" {
 
-void *func_ov002_021e8aac(void *self) {
+void *Ov002Vt_021f0734_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
     func_0203de1c(self);
@@ -3182,7 +3182,7 @@ void *func_ov002_021e9a50(void *a, void *b) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline3(p);
         *(VFunc **)p = data_ov002_021f07ac;
-        func_ov002_021ebedc((u8 *)p + 0x8c);
+        Ov002Vt_021f0ce8_Ctor((u8 *)p + 0x8c);
         func_ov002_021e6a14(p);
     }
     STD_CopyLString((u8 *)p + 0x4c, a, 0x20);
@@ -3254,7 +3254,7 @@ static inline void func_ov002_021e4cd8_inline2(void *self) {
 
 extern VFunc data_ov002_021f06bc[];
 
-void *func_ov002_021ec13c(void *p);
+void *Ov002Vt_021f0cf8_Ctor(void *p);
 
 void func_ov002_021ec1c4(void *p);
 
@@ -3264,7 +3264,7 @@ void *func_ov002_021e9bd8(void *a, void *b) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
         *(VFunc **)p = data_ov002_021f06bc;
-        func_ov002_021ec13c((u8 *)p + 0x94);
+        Ov002Vt_021f0cf8_Ctor((u8 *)p + 0x94);
         FIELD(p, 0x4, s32) = 4;
         MI_CpuFill8((u8 *)p + 0x4c, 0, 0x20);
         MI_CpuFill8((u8 *)p + 0x6c, 0, 0x20);

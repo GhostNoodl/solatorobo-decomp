@@ -70,7 +70,7 @@ u16 func_ov003_021d16cc(void *p);
 extern s32 data_ov011_02207258[];
 
 #pragma force_active on
-Ov011SceneActor *func_ov011_021fed5c(Ov011SceneActor *self) {
+Ov011SceneActor *Ov011SceneActor_Ctor(Ov011SceneActor *self) {
     func_ov003_021d0c1c(self);
     *(void **)self = data_ov011_022078f0;
     self->unk_f0_0 = 0;
@@ -86,14 +86,14 @@ Ov011SceneActor *func_ov011_021fed5c(Ov011SceneActor *self) {
     return self;
 }
 
-void *func_ov011_021fedc8(void *self) {
+void *Ov011SceneActor_Dtor(void *self) {
     *(void **)self = data_ov011_022078f0;
     func_ov011_0220068c(self);
     func_ov003_021d0edc(self);
     return self;
 }
 
-void *func_ov011_021fedf0(void *self) {
+void *Ov011SceneActor_DtorDelete(void *self) {
     *(void **)self = data_ov011_022078f0;
     func_ov011_0220068c(self);
     func_ov003_021d0edc(self);
@@ -101,7 +101,7 @@ void *func_ov011_021fedf0(void *self) {
     return self;
 }
 
-s32 func_ov011_021fee20(Ov011SceneActor *self) {
+s32 Ov011SceneActor_Draw(Ov011SceneActor *self) {
     Ov011Vec save = self->pos;
     s32 old;
     s32 ret;

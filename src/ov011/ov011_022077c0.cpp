@@ -11,7 +11,7 @@ struct VecFx16 { fx16 x, y, z; };
 // .rodata base plus an offset, and name them (data_ov011_02207258/725c/7260/7264, 7278.x/y/z)
 // instead of a data_ov011_02207258[n] array view. With the TU's own objects func_ov011_021fff38
 // keeps the ROM's load order without a volatile. The other readers (021fc0b8..021ff8fc) are cut
-// off from this range by the unmatched func_ov011_021ff24c.
+// off from this range by the unmatched Ov011SceneActor_Update.
 extern const char *const data_ov011_02207258;
 extern const fx16 data_ov011_0220726e[4];
 extern const VecFx32 data_ov011_02207278;
@@ -451,7 +451,7 @@ void func_ov011_021fa7dc(void *p);
 void func_ov011_02202f04(void *p);
 void *func_ov011_02201d10(void *p);
 void *func_ov011_0220154c(void *p);
-void *func_ov011_02202cac(void *p);
+void *Ov011Vt_022079b0_Dtor(void *p);
 
 static inline void Ov011B_FreeBuf(Ov011Scene *b) {
     if (b->ring.b0) {
@@ -570,7 +570,7 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
         if (self->unk_104 != NULL) {
             Ov011Sa104 *b = self->unk_104;
             if (b != NULL) {
-                func_ov011_02202cac(&b->tw);
+                Ov011Vt_022079b0_Dtor(&b->tw);
                 func_0203de1c(b);
             }
             self->unk_104 = NULL;

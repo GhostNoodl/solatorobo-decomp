@@ -47,7 +47,7 @@ void func_ov003_021d8eac(Ov003Timer *self, void *target, s16 duration, bool loop
     func_ov000_02198360(self->unk_0c, 0, 1);
 }
 
-BOOL func_ov003_021d8efc(Ov003Timer *self) {
+BOOL Ov003Timer_IsStopped(Ov003Timer *self) {
     if (self->active && !self->running) {
         return TRUE;
     }

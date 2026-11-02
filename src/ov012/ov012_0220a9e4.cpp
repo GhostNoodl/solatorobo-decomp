@@ -180,7 +180,7 @@ extern u8 data_ov012_0220afe4[];
 void *Ov012Act_02202b10_Dtor(void *self) {
     FLD(void *, self, 0) = data_ov012_0220afe4;
     Ov012_FreeFx(self, 0x100);
-    func_ov003_021cef0c((u8 *)self + 0x108);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x108);
     func_ov003_021d0edc(self);
     return self;
 }
@@ -191,7 +191,7 @@ extern u8 data_ov012_0220afe4[];
 void *Ov012Act_02202b10_DtorDelete(void *self) {
     FLD(void *, self, 0) = data_ov012_0220afe4;
     Ov012_FreeFx(self, 0x100);
-    func_ov003_021cef0c((u8 *)self + 0x108);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x108);
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;

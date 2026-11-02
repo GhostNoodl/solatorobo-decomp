@@ -123,18 +123,18 @@ static inline void Ov003Bridge_Dtor(Ov003Bridge *self) {
     func_ov000_0219429c(self);
 }
 
-Ov003Bridge *func_ov003_021eeb04(Ov003Bridge *self) {
+Ov003Bridge *Ov003ActVt_021f9e10_Dtor(Ov003Bridge *self) {
     Ov003Bridge_Dtor(self);
     return self;
 }
 
-Ov003Bridge *func_ov003_021eeb74(Ov003Bridge *self) {
+Ov003Bridge *Ov003ActVt_021f9e10_DtorDelete(Ov003Bridge *self) {
     Ov003Bridge_Dtor(self);
     func_0203de1c(self);
     return self;
 }
 
-void func_ov003_021eebec(Ov003Bridge *self) {
+void Ov003ActVt_021f9e10_Init(Ov003Bridge *self) {
     Ov003Unit *u;
     func_ov000_0219433c(self);
     u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unitId);
@@ -155,7 +155,7 @@ void func_ov003_021eebec(Ov003Bridge *self) {
     self->anim = NULL;
 }
 
-BOOL func_ov003_021eecb0(Ov003Bridge *self) {
+BOOL Ov003ActVt_021f9e10_Draw(Ov003Bridge *self) {
     BOOL r = func_ov000_02194c08(self);
     if (r && self->anim != NULL) {
         func_ov000_021903b4(self->anim);
@@ -172,7 +172,7 @@ void func_ov003_021eecd8(Ov003Bridge *self) {
     }
 }
 
-void func_ov003_021eed24(Ov003Bridge *self) {
+void Ov003ActVt_021f9e10_Start(Ov003Bridge *self) {
     const char *name;
     func_ov000_02194758(self);
     if (self->state != 0) {

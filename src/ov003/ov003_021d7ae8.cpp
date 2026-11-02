@@ -112,21 +112,21 @@ void func_ov003_021d7b00(Ov003Mover *self) {
     }
 }
 
-Ov003Vec *func_ov003_021d7bbc(Ov003Mover *self) {
+Ov003Vec *Ov003Mover_GetPos(Ov003Mover *self) {
     if (self->active) {
         return &self->pos;
     }
     return NULL;
 }
 
-Ov003Vec *func_ov003_021d7bd4(Ov003Mover *self) {
+Ov003Vec *Ov003Mover_GetDir(Ov003Mover *self) {
     if (self->active) {
         return &self->dir;
     }
     return NULL;
 }
 
-BOOL func_ov003_021d7bec(Ov003Mover *self) {
+BOOL Ov003Mover_IsDone(Ov003Mover *self) {
     BOOL r = FALSE;
     if (self->active) {
         r = self->done;

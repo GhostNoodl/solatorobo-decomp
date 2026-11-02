@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void *func_ov002_021ea850(void *self) {
+void *Ov002Vt_021f070c_DtorDelete(void *self) {
     int i;
     *(VFunc **)self = data_ov002_021f070c;
     for (i = 0; i < 4; i++) {
@@ -22,7 +22,7 @@ void *func_ov002_021ea850(void *self) {
     return self;
 }
 
-void *func_ov002_021ea938(void *self) {
+void *Ov002Vt_021f070c_Dtor(void *self) {
     int i;
     *(VFunc **)self = data_ov002_021f070c;
     for (i = 0; i < 4; i++) {
@@ -41,7 +41,7 @@ void *func_ov002_021ea938(void *self) {
     return self;
 }
 
-void *func_ov002_021eaa18(void *self) {
+void *Ov002Vt_021f075c_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f075c;
     func_ov002_021e5d88(self);
     *(VFunc **)self = data_ov002_021f0734;
@@ -53,7 +53,7 @@ void *func_ov002_021eaa18(void *self) {
 void func_ov002_021eaaa4(void) {
 }
 
-void *func_ov002_021eaaa8(void *self) {
+void *Ov002Vt_021f075c_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021f075c;
     func_ov002_021e5d88(self);
     *(VFunc **)self = data_ov002_021f0734;
@@ -61,7 +61,7 @@ void *func_ov002_021eaaa8(void *self) {
     return self;
 }
 
-void *func_ov002_021eab2c(void *self) {
+void *Ov002Vt_021f07d4_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f07d4;
     func_ov002_021e51f8(self);
     *(VFunc **)self = data_ov002_021f0734;
@@ -70,7 +70,7 @@ void *func_ov002_021eab2c(void *self) {
     return self;
 }
 
-void *func_ov002_021eabb8(void *self) {
+void *Ov002Vt_021f07d4_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021f07d4;
     func_ov002_021e51f8(self);
     *(VFunc **)self = data_ov002_021f0734;
@@ -78,13 +78,13 @@ void *func_ov002_021eabb8(void *self) {
     return self;
 }
 
-void *func_ov002_021eac3c(void *self) {
+void *Ov002Vt_021f0734_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
     return self;
 }
 
-void *func_ov002_021eaca8(void *self) {
+void *Ov002Vt_021f0684_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f0684;
     func_ov002_021eae3c(self);
     func_0203de1c(self);

@@ -115,7 +115,7 @@ static inline s32 Ov003_DistXZ(const Ov003Vec *a, const Ov003Vec *b) {
 
 void func_ov003_021f3198(Ov003Blink *self);
 
-void func_ov003_021f2f60(Ov003Blink *self) {
+void Ov003ActVt_021fa440_Start(Ov003Blink *self) {
     func_ov000_021b4c60(self);
     self->u.blink.phase = 0;
     if (!((s16)self->pattern & 0xff00)) {

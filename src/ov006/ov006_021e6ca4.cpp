@@ -41,7 +41,7 @@ void func_ov000_02190758(void *a, void *b, int c);
 BOOL func_ov000_021903b4(void *a);
 void func_ov006_021dca94(void *p);
 
-BOOL func_ov006_021e6ca4(ov006_Prop6ca4 *self) {
+BOOL Ov006ActVt_021ec4f4_Draw(ov006_Prop6ca4 *self) {
     VecFx32 d;
     BOOL ret;
     BOOL done;

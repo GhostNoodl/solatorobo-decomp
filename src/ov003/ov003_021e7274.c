@@ -21,7 +21,7 @@ typedef struct {
 extern Ov003Game54 *data_ov000_021ccd54;
 extern void func_ov000_02194758(void *self);
 
-void func_ov003_021e7274(Ov003Spot *self) {
+void Ov003ActVt_021f8d58_Start(Ov003Spot *self) {
     Ov003Game54 *g;
     func_ov000_02194758(self);
     g = data_ov000_021ccd54;

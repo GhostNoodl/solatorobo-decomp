@@ -28,7 +28,7 @@ void func_ov002_021da39c(void) {
     HEAP_POP(saved);
 }
 
-void *func_ov002_021da3f8(void *self) {
+void *Ov002Vt_021efe7c_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021efe7c;
     func_ov002_021da430(self);
     func_0203de1c(self);

@@ -28,7 +28,7 @@ extern void func_ov000_0219433c(void *p);
 extern void func_ov000_02194758(void *p);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 
-void func_ov003_021ddcb0(Ov003Prop *self) {
+void Ov003ActVt_021f7e7c_Init(Ov003Prop *self) {
     Ov003Unit *u;
     func_ov000_0219433c(self);
     u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
@@ -37,7 +37,7 @@ void func_ov003_021ddcb0(Ov003Prop *self) {
     }
 }
 
-void func_ov003_021ddce4(Ov003Prop *self) {
+void Ov003ActVt_021f7e7c_Start(Ov003Prop *self) {
     Ov003Part44 *p;
     func_ov000_02194758(self);
     p = self->unk_44;

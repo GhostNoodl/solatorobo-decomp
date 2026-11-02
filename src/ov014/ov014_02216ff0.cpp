@@ -153,10 +153,10 @@ extern void func_ov000_0218bed8(void *a, s32 b, void *c);
 extern void func_ov000_0219763c(void *self);
 extern void func_ov003_021daa6c(void *p, s32 a);
 extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
-extern void *func_ov003_021d7f0c(void *p);
-extern void *func_ov003_021d7fc0(void *p);
+extern void *Ov003Vt_021f7d10_Ctor(void *p);
+extern void *Ov003Vt_021f7d10_Dtor(void *p);
 extern void func_ov003_021ceedc(void *p);
-extern void *func_ov003_021cef0c(void *p);
+extern void *Ov003Vt_021f7974_Dtor(void *p);
 extern void *func_ov003_021da940(void *p);
 extern void func_02049de8(void *a, s32 b);
 extern BOOL func_02035b90(void *a, s32 b);
@@ -253,7 +253,7 @@ void func_ov014_021fd43c(void *self, Ov014Actor *a) {
 Ov014Actor *Ov014Act_021fd4d4_Ctor(Ov014Act_021fd4d4 *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov014_02217588;
-    func_ov003_021d7f0c((u8 *)self + 0x100);
+    Ov003Vt_021f7d10_Ctor((u8 *)self + 0x100);
     func_ov003_021ceedc((u8 *)self + 0x140);
     func_ov003_021ceedc((u8 *)self + 0x160);
     self->unk_f4 = 0;
@@ -294,9 +294,9 @@ Ov014Act_021fd4d4 *Ov014Act_021fd4d4_Dtor(Ov014Act_021fd4d4 *self) {
     ((Ov014V *)((u8 *)self + 0x100))->v08();
     func_02049de8(data_02097e4c, 0x38);
     Ov014_StopSnd();
-    func_ov003_021cef0c((u8 *)self + 0x160);
-    func_ov003_021cef0c((u8 *)self + 0x140);
-    func_ov003_021d7fc0((u8 *)self + 0x100);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x160);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x140);
+    Ov003Vt_021f7d10_Dtor((u8 *)self + 0x100);
     func_ov003_021d0edc(self);
     return self;
 }
@@ -307,9 +307,9 @@ Ov014Act_021fd4d4 *Ov014Act_021fd4d4_DtorDelete(Ov014Act_021fd4d4 *self) {
     ((Ov014V *)((u8 *)self + 0x100))->v08();
     func_02049de8(data_02097e4c, 0x38);
     Ov014_StopSnd();
-    func_ov003_021cef0c((u8 *)self + 0x160);
-    func_ov003_021cef0c((u8 *)self + 0x140);
-    func_ov003_021d7fc0((u8 *)self + 0x100);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x160);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x140);
+    Ov003Vt_021f7d10_Dtor((u8 *)self + 0x100);
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
@@ -1702,7 +1702,7 @@ extern u8 data_ov014_0221665c[];
 extern u8 data_ov014_0221666c[];
 extern u8 data_ov014_0221667c[];
 extern void func_ov003_021ceedc(void *p);
-extern void *func_ov003_021cef0c(void *p);
+extern void *Ov003Vt_021f7974_Dtor(void *p);
 extern void *func_ov003_021da940(void *p);
 extern BOOL func_ov003_021d1c00(Ov014Actor *self, Ov014Msg *msg);
 extern Ov014Actor *func_ov000_0218bd5c(void *mgr, u16 id);
@@ -1741,7 +1741,7 @@ static inline void Ov014_Free100(Ov014Act_0220011c *self) {
 Ov014Act_0220011c *Ov014Act_0220011c_Dtor(Ov014Act_0220011c *self) {
     FLD(void *, self, 0) = data_ov014_022174dc;
     Ov014_Free100(self);
-    func_ov003_021cef0c((u8 *)self + 0x108);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x108);
     func_ov003_021d0edc(self);
     return self;
 }
@@ -1749,7 +1749,7 @@ Ov014Act_0220011c *Ov014Act_0220011c_Dtor(Ov014Act_0220011c *self) {
 Ov014Act_0220011c *Ov014Act_0220011c_DtorDelete(Ov014Act_0220011c *self) {
     FLD(void *, self, 0) = data_ov014_022174dc;
     Ov014_Free100(self);
-    func_ov003_021cef0c((u8 *)self + 0x108);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x108);
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
@@ -2550,10 +2550,10 @@ void func_ov014_02201a28(Ov014Act_0220011c *self) {
 
 extern u8 data_ov014_02217430[];
 extern void func_ov003_021ceedc(void *p);
-extern void *func_ov003_021cef0c(void *p);
+extern void *Ov003Vt_021f7974_Dtor(void *p);
 extern void *func_ov003_021da940(void *p);
-extern void *func_ov003_021d7f0c(void *p);
-extern void *func_ov003_021d7fc0(void *p);
+extern void *Ov003Vt_021f7d10_Ctor(void *p);
+extern void *Ov003Vt_021f7d10_Dtor(void *p);
 extern void *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_0218fe1c(void *p);
 extern void *func_ov000_0218fee4(void *p);
@@ -2570,7 +2570,7 @@ extern BOOL func_ov003_021d1c00(Ov014Actor *self, Ov014Msg *msg);
 Ov014Actor *Ov014Act_02201b94_Ctor(Ov014Act_02201b94 *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov014_02217430;
-    func_ov003_021d7f0c((u8 *)self + 0x100);
+    Ov003Vt_021f7d10_Ctor((u8 *)self + 0x100);
     func_ov003_021ceedc((u8 *)self + 0x134);
     func_ov000_0218e9c4((u8 *)self + 0x150);
     func_ov000_0218fe1c((u8 *)self + 0x288);
@@ -2605,8 +2605,8 @@ Ov014Act_02201b94 *Ov014Act_02201b94_Dtor(Ov014Act_02201b94 *self) {
     ((Ov014V *)((u8 *)self + 0x100))->v08();
     func_ov000_0218fee4((u8 *)self + 0x288);
     func_ov000_0218ea20((u8 *)self + 0x150);
-    func_ov003_021cef0c((u8 *)self + 0x134);
-    func_ov003_021d7fc0((u8 *)self + 0x100);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x134);
+    Ov003Vt_021f7d10_Dtor((u8 *)self + 0x100);
     func_ov003_021d0edc(self);
     return self;
 }
@@ -2617,8 +2617,8 @@ Ov014Act_02201b94 *Ov014Act_02201b94_DtorDelete(Ov014Act_02201b94 *self) {
     ((Ov014V *)((u8 *)self + 0x100))->v08();
     func_ov000_0218fee4((u8 *)self + 0x288);
     func_ov000_0218ea20((u8 *)self + 0x150);
-    func_ov003_021cef0c((u8 *)self + 0x134);
-    func_ov003_021d7fc0((u8 *)self + 0x100);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x134);
+    Ov003Vt_021f7d10_Dtor((u8 *)self + 0x100);
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
@@ -2651,10 +2651,10 @@ extern "C" {
 
 extern u8 data_ov014_02217430[];
 extern void func_ov003_021ceedc(void *p);
-extern void *func_ov003_021cef0c(void *p);
+extern void *Ov003Vt_021f7974_Dtor(void *p);
 extern void *func_ov003_021da940(void *p);
-extern void *func_ov003_021d7f0c(void *p);
-extern void *func_ov003_021d7fc0(void *p);
+extern void *Ov003Vt_021f7d10_Ctor(void *p);
+extern void *Ov003Vt_021f7d10_Dtor(void *p);
 extern void *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_0218fe1c(void *p);
 extern void *func_ov000_0218fee4(void *p);

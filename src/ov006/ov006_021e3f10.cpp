@@ -32,7 +32,7 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
     self->unk26 = 1;
 }
 
-ov006_Unk021ec888 *func_ov006_021e3f10(ov006_Unk021ec888 *self) {
+ov006_Unk021ec888 *Ov006Vt_021ec404_Ctor(ov006_Unk021ec888 *self) {
     int i;
     self->vtbl = &data_ov006_021ec404;
     self->vtbl2 = &data_ov006_021ec444;

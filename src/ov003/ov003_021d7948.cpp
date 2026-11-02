@@ -72,7 +72,7 @@ void *func_ov003_021d7980(Ov003Pool *self) {
     return r;
 }
 
-void func_ov003_021d79ac(Ov003Pool *self, void *p) {
+void Ov003Pool_Free(Ov003Pool *self, void *p) {
     if (self->active && p != NULL) {
         Ov003FreeNode *node = (Ov003FreeNode *)p - 1;
         node->next = self->freeList;
@@ -80,19 +80,19 @@ void func_ov003_021d79ac(Ov003Pool *self, void *p) {
     }
 }
 
-Ov003PoolOwner *func_ov003_021d79d0(Ov003PoolOwner *self) {
+Ov003PoolOwner *Ov003Vt_021f7d2c_Ctor(Ov003PoolOwner *self) {
     *(void **)self = &data_ov003_021f7d2c;
     self->active = 0;
     return self;
 }
 
-Ov003PoolOwner *func_ov003_021d79ec(Ov003PoolOwner *self) {
+Ov003PoolOwner *Ov003Vt_021f7d2c_Dtor(Ov003PoolOwner *self) {
     *(void **)self = &data_ov003_021f7d2c;
     self->Release();
     return self;
 }
 
-Ov003PoolOwner *func_ov003_021d7a14(Ov003PoolOwner *self) {
+Ov003PoolOwner *Ov003Vt_021f7d2c_DtorDelete(Ov003PoolOwner *self) {
     *(void **)self = &data_ov003_021f7d2c;
     self->Release();
     func_0203de1c(self);

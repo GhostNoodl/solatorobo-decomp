@@ -92,7 +92,7 @@ extern void func_0203f8d8(void *p);
 extern void *func_ov000_02191318(Ov003Mdl *m, s32 a);
 extern Ov003SubAnim *func_ov000_02190a30(Ov003Mdl *m, s32 a);
 
-void func_ov003_021ddf00(Ov003Prop *self) {
+void Ov003ActVt_021f7f14_Init(Ov003Prop *self) {
     Ov003Unit *u;
     func_ov000_0219433c(self);
     u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
@@ -101,7 +101,7 @@ void func_ov003_021ddf00(Ov003Prop *self) {
     }
 }
 
-void func_ov003_021ddf34(Ov003Prop *self) {
+void Ov003ActVt_021f7f14_Start(Ov003Prop *self) {
     Ov003SubAnim *a;
     func_ov000_02194758(self);
     func_ov000_02197d80(self);
@@ -149,7 +149,7 @@ void func_ov003_021ddf34(Ov003Prop *self) {
     self->unk_93_1 = (u16)self->unk_18;
 }
 
-void func_ov003_021de0a4(Ov003Prop *self) {
+void Ov003ActVt_021f7f14_Update(Ov003Prop *self) {
     switch (self->unk_1a) {
     case 3: {
         BOOL changed;

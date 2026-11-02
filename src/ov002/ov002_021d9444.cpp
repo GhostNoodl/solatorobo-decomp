@@ -29,7 +29,7 @@ void func_ov002_021d9444(void *self) {
     FIELD(self, 0xc4, s32) = 0;
 }
 
-void *func_ov002_021d94dc(void *self) {
+void *Ov002Vt_021efe4c_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021efe4c;
     func_ov002_021d6ec4(self);
     func_0203de1c(self);

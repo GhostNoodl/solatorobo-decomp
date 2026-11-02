@@ -25,7 +25,7 @@ extern void *data_02097e4c;
 extern void *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_0218fe1c(void *p);
 extern void func_ov003_021ceedc(void *p);
-extern void *func_ov003_021cef0c(void *p);
+extern void *Ov003Vt_021f7974_Dtor(void *p);
 extern void *func_ov000_0218fee4(void *p);
 extern void *func_ov000_0218ea20(void *p);
 extern BOOL func_02035b90(void *a, s32 b);
@@ -64,7 +64,7 @@ static inline void Ov014_StopSnd(void) {
 void *Ov014Act_021fa6a0_Dtor(void *self) {
     FLD(void *, self, 0) = data_ov014_02217114;
     Ov014_StopSnd();
-    func_ov003_021cef0c((u8 *)self + 0x348);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x348);
     func_ov000_0218fee4((u8 *)self + 0x25c);
     func_ov000_0218ea20((u8 *)self + 0x124);
     func_ov003_021d0edc(self);
@@ -74,7 +74,7 @@ void *Ov014Act_021fa6a0_Dtor(void *self) {
 void *Ov014Act_021fa6a0_DtorDelete(void *self) {
     FLD(void *, self, 0) = data_ov014_02217114;
     Ov014_StopSnd();
-    func_ov003_021cef0c((u8 *)self + 0x348);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x348);
     func_ov000_0218fee4((u8 *)self + 0x25c);
     func_ov000_0218ea20((u8 *)self + 0x124);
     func_ov003_021d0edc(self);

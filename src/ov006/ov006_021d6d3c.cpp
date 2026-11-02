@@ -49,7 +49,7 @@ void func_020656b4(void *p);
 void func_0203cc58(s32 a, int b, int c);
 void func_0203cd10(void);
 BOOL func_ov006_021cd2a8(ov006_Manager *m);
-void *func_ov006_021dae90(void);
+void *ov006_GetSlotManager(void);
 void func_ov006_021cd580(int a, void *b, int c);
 
 
@@ -110,7 +110,7 @@ BOOL func_ov006_021d6d3c(ov006_Scene021d6d3c *self) {
         break;
     case 2:
         data_ov006_021ec860->unk18++;
-        func_ov006_021cd580(8, func_ov006_021dae90(), self->unk3C);
+        func_ov006_021cd580(8, ov006_GetSlotManager(), self->unk3C);
         r = TRUE;
         break;
     }

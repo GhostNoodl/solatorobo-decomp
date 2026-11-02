@@ -341,7 +341,7 @@ static inline BOOL Ov013_PrmB0(const Ov013Actor *self) {
 extern void *func_ov000_02199ba0(void *p);
 extern void VEC_Normalize(const Ov013Vec *src, Ov013Vec *dst);
 extern void func_ov003_021d9980(Ov013Vec *out, u16 ang, const void *b);
-extern u16 func_ov003_021d9c38(Ov013Vec *v);
+extern u16 Ov003Vec_Yaw(Ov013Vec *v);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
 extern void *data_02097e4c;
 extern void *func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
@@ -532,7 +532,7 @@ void func_ov013_02205098(Ov013Actor *self) {
             dv.y = y - self->pos.y;
             dv.z = z - self->pos.z;
         }
-        self->unk_98 = func_ov003_021d9c38(&dv);
+        self->unk_98 = Ov003Vec_Yaw(&dv);
         self->rot[1] = self->unk_98 + 0x7fff;
         break;
     }
@@ -819,8 +819,8 @@ extern void *data_02097e4c;
 extern void *data_ov013_0220ba88[];
 extern const u8 data_ov013_0220b2cc[];
 extern void func_ov003_021d9980(void *out, u16 rot, const void *v);
-extern void *func_ov003_021cf2bc(void *p);
-extern void *func_ov003_021cf2d8(void *p);
+extern void *Ov003Vt_021f79a8_Ctor(void *p);
+extern void *Ov003Vt_021f79a8_Dtor(void *p);
 extern void func_ov003_021cf33c(void *p, void *q);
 extern void *func_ov000_02194074(void *self);
 extern BOOL func_ov000_02194c08(void *self);
@@ -828,7 +828,7 @@ extern BOOL func_ov000_02194c08(void *self);
 void *Ov013ActEx_02205ae4_Ctor(Ov013ActEx_02205ae4 *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = data_ov013_0220ba88;
-    func_ov003_021cf2bc((u8 *)self + 0xe0);
+    Ov003Vt_021f79a8_Ctor((u8 *)self + 0xe0);
     FLD(Ov013Flags8, self, 0xce).b0 = 0;
     FLD(Ov013Flags8, self, 0xce).b1 = 0;
     self->unk_d0 = 0;
@@ -840,7 +840,7 @@ void *Ov013ActEx_02205ae4_Ctor(Ov013ActEx_02205ae4 *self) {
 void *Ov013ActEx_02205ae4_Dtor(Ov013Actor *self) {
     FLD(void *, self, 0) = data_ov013_0220ba88;
     ((Ov013V *)((u8 *)self + 0xe0))->v08();
-    func_ov003_021cf2d8((u8 *)self + 0xe0);
+    Ov003Vt_021f79a8_Dtor((u8 *)self + 0xe0);
     func_ov000_0219429c(self);
     return self;
 }
@@ -848,7 +848,7 @@ void *Ov013ActEx_02205ae4_Dtor(Ov013Actor *self) {
 void *Ov013ActEx_02205ae4_DtorDelete(Ov013Actor *self) {
     FLD(void *, self, 0) = data_ov013_0220ba88;
     ((Ov013V *)((u8 *)self + 0xe0))->v08();
-    func_ov003_021cf2d8((u8 *)self + 0xe0);
+    Ov003Vt_021f79a8_Dtor((u8 *)self + 0xe0);
     func_ov000_0219429c(self);
     func_0203de1c(self);
     return self;

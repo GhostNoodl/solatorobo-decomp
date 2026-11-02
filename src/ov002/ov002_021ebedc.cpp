@@ -29,7 +29,7 @@ typedef struct ov002_Msg021ec010 {
 
 extern "C" {
 
-void *func_ov002_021ebedc(void *self) {
+void *Ov002Vt_021f0ce8_Ctor(void *self) {
     *(VFunc **)self = data_ov002_021f0ce8;
     FIELD(self, 0x4, s32) = 0;
     FIELD(self, 0x8, s16) = 0;
@@ -47,7 +47,7 @@ void *func_ov002_021ebedc(void *self) {
     return self;
 }
 
-void *func_ov002_021ebf28(void *self) {
+void *Ov002Vt_021f0ce8_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021f0ce8;
     FIELD(self, 0x4, s32) = 0;
     FIELD(self, 0x8, s16) = 0;
@@ -65,7 +65,7 @@ void *func_ov002_021ebf28(void *self) {
     return self;
 }
 
-void *func_ov002_021ebf74(void *self) {
+void *Ov002Vt_021f0ce8_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f0ce8;
     FIELD(self, 0x4, s32) = 0;
     FIELD(self, 0x8, s16) = 0;

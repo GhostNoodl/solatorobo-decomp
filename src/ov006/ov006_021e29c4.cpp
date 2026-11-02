@@ -14,7 +14,7 @@ extern "C" {
 
 extern u8 data_ov006_021ec29c[];
 
-ov006_Unk021e29c4 *func_ov006_021e29c4(ov006_Unk021e29c4 *self) {
+ov006_Unk021e29c4 *Ov006Vt_021ec29c_Ctor(ov006_Unk021e29c4 *self) {
     int i;
     self->vtbl = data_ov006_021ec29c;
     self->unk4 = 0;

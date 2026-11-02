@@ -18,7 +18,7 @@ extern "C" {
 extern u8 data_ov006_021ec25c[];
 extern u8 data_0208b318[];
 
-ov006_Unk021dbacc *func_ov006_021dbb38(ov006_Unk021dbacc *self) {
+ov006_Unk021dbacc *Ov006Vt_021ec25c_DtorDelete(ov006_Unk021dbacc *self) {
     self->vtbl = data_ov006_021ec25c;
     if (self->sub.unk24 != 0 || self->sub.unk4 != 0) {
         VCALL(&self->sub, 0C);

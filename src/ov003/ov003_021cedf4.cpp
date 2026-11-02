@@ -140,13 +140,13 @@ static inline void Ov003ScriptList_Clear(Ov003ScriptList *self) {
     }
 }
 
-Ov003ScriptList *func_ov003_021cef0c(Ov003ScriptList *self) {
+Ov003ScriptList *Ov003Vt_021f7974_Dtor(Ov003ScriptList *self) {
     self->vtbl = data_ov003_021f7974;
     Ov003ScriptList_Clear(self);
     return self;
 }
 
-Ov003ScriptList *func_ov003_021cef7c(Ov003ScriptList *self) {
+Ov003ScriptList *Ov003Vt_021f7974_DtorDelete(Ov003ScriptList *self) {
     self->vtbl = data_ov003_021f7974;
     Ov003ScriptList_Clear(self);
     func_0203de1c(self);

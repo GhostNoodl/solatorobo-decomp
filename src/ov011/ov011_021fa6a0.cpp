@@ -64,10 +64,10 @@ Ov011LNode *func_ov011_021fa790(Ov011LNode *head, Ov011LNode *item) {
 extern const Ov011MgrEntry data_ov011_02207344[];
 void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
 void *__cxa_vec_new(u32 count, u32 size, u32 hdr, void *ctor, void *dtor);
-void *func_ov003_021d79ec(void *p);
-void *func_ov003_021d79d0(void *p);
-void *func_ov011_02202a70(void *p);
-void *func_ov011_02202a54(void *p);
+void *Ov003Vt_021f7d2c_Dtor(void *p);
+void *Ov003Vt_021f7d2c_Ctor(void *p);
+void *Ov011Vt_022079d0_Dtor(void *p);
+void *Ov011Vt_022079d0_Ctor(void *p);
 void func_ov003_021da40c(void *p);
 void func_ov003_021da48c(void *p, u8 a);
 void func_ov011_022011fc(void *a, u8 b);
@@ -80,14 +80,14 @@ void func_ov011_021fa7dc(Ov011Mgr *self) {
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
     if (self->arr8 != NULL) {
-        __cxa_vec_delete(self->arr8, 0x38, 8, func_ov003_021d79ec);
+        __cxa_vec_delete(self->arr8, 0x38, 8, Ov003Vt_021f7d2c_Dtor);
         self->arr8 = NULL;
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
     if (self->arrC != NULL) {
-        __cxa_vec_delete(self->arrC, 0x30, 8, func_ov011_02202a70);
+        __cxa_vec_delete(self->arrC, 0x30, 8, Ov011Vt_022079d0_Dtor);
         self->arrC = NULL;
     }
     data_02097dd0->cur = saved;
@@ -147,8 +147,8 @@ void func_ov011_021fa9d8(Ov011Mgr *self) {
             }
         }
         self->count = cnt;
-        self->arr8 = (Ov011E38 *)__cxa_vec_new(self->count, 0x38, 8, func_ov003_021d79d0, func_ov003_021d79ec);
-        self->arrC = (Ov011E30 *)__cxa_vec_new(self->count, 0x30, 8, func_ov011_02202a54, func_ov011_02202a70);
+        self->arr8 = (Ov011E38 *)__cxa_vec_new(self->count, 0x38, 8, Ov003Vt_021f7d2c_Ctor, Ov003Vt_021f7d2c_Dtor);
+        self->arrC = (Ov011E30 *)__cxa_vec_new(self->count, 0x30, 8, Ov011Vt_022079d0_Ctor, Ov011Vt_022079d0_Dtor);
         self->ids = (u16 *)func_0203dddc(self->count * 2);
         j = 0;
         for (n = head; n != NULL; n = n->next) {
@@ -177,14 +177,14 @@ void func_ov011_021fab74(Ov011Mgr *self) {
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
     if (self->arr8 != NULL) {
-        __cxa_vec_delete(self->arr8, 0x38, 8, func_ov003_021d79ec);
+        __cxa_vec_delete(self->arr8, 0x38, 8, Ov003Vt_021f7d2c_Dtor);
         self->arr8 = NULL;
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
     if (self->arrC != NULL) {
-        __cxa_vec_delete(self->arrC, 0x30, 8, func_ov011_02202a70);
+        __cxa_vec_delete(self->arrC, 0x30, 8, Ov011Vt_022079d0_Dtor);
         self->arrC = NULL;
     }
     data_02097dd0->cur = saved;

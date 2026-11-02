@@ -2,7 +2,7 @@
 
 extern "C" {
 
-Task50 *func_ov002_021d69d4(Task50 *self) {
+Task50 *Ov002TaskVt_021efb24_DtorDelete(Task50 *self) {
     *(VFunc **)self = data_ov002_021efb24;
     func_ov002_021da39c();
     TaskBase_dtor(self);
@@ -10,7 +10,7 @@ Task50 *func_ov002_021d69d4(Task50 *self) {
     return self;
 }
 
-Task50 *func_ov002_021d6a18(Task50 *self) {
+Task50 *Ov002TaskVt_021efb24_Dtor(Task50 *self) {
     *(VFunc **)self = data_ov002_021efb24;
     func_ov002_021da39c();
     TaskBase_dtor(self);
@@ -179,19 +179,19 @@ BOOL func_ov002_021d6cf0(void *self) {
     return r;
 }
 
-void *func_ov002_021d6dc4(void *self) {
+void *Ov002Vt_021efb14_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021efb14;
     func_ov002_021e1d28(self);
     return self;
 }
 
-void *func_ov002_021d6de4(void *self) {
+void *Ov002Vt_021efb04_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021efb04;
     func_ov000_02163254(self);
     return self;
 }
 
-VObject *func_ov002_021d6e04(VObject *self) {
+VObject *Ov002Vt_021efca4_Dtor(VObject *self) {
     *(VFunc **)self = data_ov000_021caec8;
     self->v0x2c();
     *(VFunc **)self = data_ov000_021cac60;

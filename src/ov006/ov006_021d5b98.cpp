@@ -70,12 +70,12 @@ static inline void ov006_Unk021d5b98_dtor(ov006_Unk021d5b98 *self) {
     func_ov006_021ccddc(self);
 }
 
-ov006_Unk021d5b98 *func_ov006_021d5b98(ov006_Unk021d5b98 *self) {
+ov006_Unk021d5b98 *Ov006Vt_021ebfc0_Dtor(ov006_Unk021d5b98 *self) {
     ov006_Unk021d5b98_dtor(self);
     return self;
 }
 
-ov006_Unk021d5b98 *func_ov006_021d5e68(ov006_Unk021d5b98 *self) {
+ov006_Unk021d5b98 *Ov006Vt_021ebfc0_DtorDelete(ov006_Unk021d5b98 *self) {
     ov006_Unk021d5b98_dtor(self);
     func_0203de1c(self);
     return self;
@@ -489,19 +489,19 @@ extern "C" {
 
 extern ov006_Unk02097e40 *data_02097e40;
 
-ov006_SlotManager *func_ov006_021dae90(void);
+ov006_SlotManager *ov006_GetSlotManager(void);
 void func_ov006_021cd580(int a, void *b, int c);
-ov006_Gauge021d6724 *func_ov006_021ddc70(void *p);
+ov006_Gauge021d6724 *Ov006Vt_021ec2bc_Ctor(void *p);
 void func_ov006_021de008(ov006_Gauge021d6724 *p);
 void func_ov000_0216da2c(void *p, int a, int b, int c);
-ov006_Pos021d6724 *func_ov006_021e1484(void *p);
+ov006_Pos021d6724 *Ov006Vt_021ec1fc_Ctor(void *p);
 void func_ov006_021e16b0(ov006_Pos021d6724 *p);
 const void *func_0206ec48(u16 id);
 void func_ov006_021e1e6c(ov006_Pos021d6724 *a, const void *b);
 void func_ov006_021e1ddc(ov006_Pos021d6724 *a, const char *b, int c, int d);
-ov006_Pos021d6724 *func_ov006_021e2174(void *p);
+ov006_Pos021d6724 *Ov006Vt_021ec2cc_Ctor(void *p);
 void func_ov006_021e22e4(ov006_Pos021d6724 *p);
-ov006_Pos021d6724 *func_ov006_021e264c(void *p);
+ov006_Pos021d6724 *Ov006Vt_021ec2ac_Ctor(void *p);
 void func_ov006_021e279c(ov006_Pos021d6724 *p);
 BOOL func_0203e688(void);
 void func_02039518(void *p);
@@ -538,10 +538,10 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         ov006_Model *model;
         ov006_Pos021d6724 *p;
         u8 n;
-        func_ov006_021cd580(7, func_ov006_021dae90(), result);
+        func_ov006_021cd580(7, ov006_GetSlotManager(), result);
         g = (ov006_Gauge021d6724 *)func_0203dd9c(0x38);
         if (g != NULL) {
-            g = func_ov006_021ddc70(g);
+            g = Ov006Vt_021ec2bc_Ctor(g);
         }
         self->unk1C = g;
         func_ov006_021de008(g);
@@ -562,7 +562,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         info = (ov006_Info021d6724 *)data_ov006_021ec884->unk8;
         p = (ov006_Pos021d6724 *)func_0203dd9c(0x30);
         if (p != NULL) {
-            p = func_ov006_021e1484(p);
+            p = Ov006Vt_021ec1fc_Ctor(p);
         }
         self->unk28 = p;
         func_ov006_021e16b0(p);
@@ -571,14 +571,14 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         ov006_Pos_SetXY(self->unk28, -0x2c, 0xc);
         p = (ov006_Pos021d6724 *)func_0203dd9c(0xa4);
         if (p != NULL) {
-            p = func_ov006_021e2174(p);
+            p = Ov006Vt_021ec2cc_Ctor(p);
         }
         self->unk2C = p;
         func_ov006_021e22e4(p);
         ov006_Pos_SetXY(self->unk2C, 0x24, -0x2c);
         p = (ov006_Pos021d6724 *)func_0203dd9c(0x64);
         if (p != NULL) {
-            p = func_ov006_021e264c(p);
+            p = Ov006Vt_021ec2ac_Ctor(p);
         }
         self->unk30 = p;
         func_ov006_021e279c(p);

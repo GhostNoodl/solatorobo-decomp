@@ -47,7 +47,7 @@ BOOL func_ov002_021cf4bc(void) {
     return TRUE;
 }
 
-Task50 *func_ov002_021cf4c4(Task50 *self) {
+Task50 *Ov002TaskVt_021ef4b0_DtorDelete(Task50 *self) {
     u32 saved;
     *(VFunc **)self = data_ov002_021ef4b0;
     HEAP_PUSH(saved);
@@ -73,7 +73,7 @@ BOOL func_ov002_021cf5a8(void) {
 void func_ov002_021cf5b0(void) {
 }
 
-Task50 *func_ov002_021cf5b4(Task50 *self) {
+Task50 *Ov002TaskVt_021ef4b0_Dtor(Task50 *self) {
     u32 saved;
     *(VFunc **)self = data_ov002_021ef4b0;
     HEAP_PUSH(saved);
@@ -94,7 +94,7 @@ Task50 *func_ov002_021cf5b4(Task50 *self) {
 void func_ov002_021cf690(void) {
 }
 
-Task50 *func_ov002_021cf694(Task50 *self) {
+Task50 *Ov002TaskVt_021ef430_DtorDelete(Task50 *self) {
     u32 saved;
     *(VFunc **)self = data_ov002_021ef430;
     HEAP_PUSH(saved);
@@ -109,7 +109,7 @@ Task50 *func_ov002_021cf694(Task50 *self) {
     return self;
 }
 
-Task50 *func_ov002_021cf754(Task50 *self) {
+Task50 *Ov002TaskVt_021ef430_Dtor(Task50 *self) {
     u32 saved;
     *(VFunc **)self = data_ov002_021ef430;
     HEAP_PUSH(saved);
@@ -123,7 +123,7 @@ Task50 *func_ov002_021cf754(Task50 *self) {
     return self;
 }
 
-Task50 *func_ov002_021cf80c(Task50 *self) {
+Task50 *Ov002TaskVt_021ef530_DtorDelete(Task50 *self) {
     *(VFunc **)self = data_ov002_021ef530;
     self->v0x5c();
     TaskBase_dtor(self);
@@ -138,14 +138,14 @@ BOOL func_ov002_021cf858(Task50 *self) {
     return TRUE;
 }
 
-Task50 *func_ov002_021cf8ac(Task50 *self) {
+Task50 *Ov002TaskVt_021ef530_Dtor(Task50 *self) {
     *(VFunc **)self = data_ov002_021ef530;
     self->v0x5c();
     TaskBase_dtor(self);
     return self;
 }
 
-void *func_ov002_021cf8f0(void *self) {
+void *Ov002Vt_021ef410_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021ef410;
     func_ov000_0216f168(self);
     func_0203de1c(self);
@@ -176,7 +176,7 @@ BOOL func_ov002_021cf990(void) {
     return FALSE;
 }
 
-void *func_ov002_021cf998(void *self) {
+void *Ov002Vt_021ef410_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021ef410;
     func_ov000_0216f168(self);
     return self;
@@ -195,7 +195,7 @@ Task50 *func_ov002_021cf9b8(void) {
     return p;
 }
 
-Task50 *func_ov002_021cfa20(Task50 *self) {
+Task50 *Ov002TaskVt_021ef79c_Dtor(Task50 *self) {
     u32 saved;
     *(VFunc **)self = data_ov002_021ef79c;
     HEAP_PUSH(saved);
@@ -208,7 +208,7 @@ Task50 *func_ov002_021cfa20(Task50 *self) {
     return self;
 }
 
-Task50 *func_ov002_021cfae0(Task50 *self) {
+Task50 *Ov002TaskVt_021ef79c_DtorDelete(Task50 *self) {
     u32 saved;
     *(VFunc **)self = data_ov002_021ef79c;
     HEAP_PUSH(saved);

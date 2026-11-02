@@ -38,7 +38,7 @@ void func_ov006_021dacb0(void) {
         u16 j;
         int i;
         p->vtbl = &data_ov006_021ec068;
-        __cxa_vec_ctor(p->slots, 4, sizeof(ov006_Slot), (void *)func_ov006_021daad8, (void *)func_ov006_021dab5c);
+        __cxa_vec_ctor(p->slots, 4, sizeof(ov006_Slot), (void *)Ov006Vt_021ec078_Ctor, (void *)func_ov006_021dab5c);
         p->numActive = 0;
         p->unk5 = 0xff;
         for (j = 0; j < 4; j++) {

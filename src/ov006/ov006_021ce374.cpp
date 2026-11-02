@@ -243,14 +243,14 @@ ov006_TaskCE *func_ov006_021ce974(ov006_TaskCE *self) {
     return self;
 }
 
-ov006_MsgBox *func_ov006_021cead0(ov006_MsgBox *self) {
+ov006_MsgBox *ov006_MsgBox_DtorDelete(ov006_MsgBox *self) {
     self->vtbl = &data_ov006_021ebc70;
     func_ov000_02163254(self);
     func_0203de1c(self);
     return self;
 }
 
-ov006_TaskCE *func_ov006_021ceaf8(ov006_TaskCE *self) {
+ov006_TaskCE *ov006_TaskCE_DtorDelete(ov006_TaskCE *self) {
     ov006_TaskCE_Dtor(self);
     func_0203de1c(self);
     return self;
@@ -312,7 +312,7 @@ void func_ov000_02173648(void *self);
 void func_ov006_021daea0(ov006_SlotManager *a);
 u8 func_ov006_021db078(ov006_SlotManager *self);
 void func_ov006_021d8f44(void);
-ov006_Entry021cec68 *func_ov006_021d8f20(u32 id);
+ov006_Entry021cec68 *ov006_GetPriceEntry(u32 id);
 void func_ov000_021546ec(void *w, const char *a, const char *b, int c);
 void func_ov000_021c3af4(void *self);
 void func_ov000_021c54f4(void *self);
@@ -321,7 +321,7 @@ void func_ov000_021c22d8(void *self);
 void func_ov000_021c5fc4(void *self);
 void func_ov000_021c5fd0(void *self, const void *s);
 void func_ov000_021c3fd4(void *list, void *item);
-void *func_ov006_021e29c4(void *self);
+void *Ov006Vt_021ec29c_Ctor(void *self);
 void func_ov006_021e2c14(void *self);
 void func_ov006_021e341c(void *self, const void *s);
 void func_ov006_021e34d8(void *self, const void *s, int idx);
@@ -448,7 +448,7 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
             self->unk50->unk24 = 0xc0;
             ov006_Window_SetRot(self->unk50, 0x20, 0x3c, -0x1ccd);
             for (i = 0; i < 3; i++) {
-                e = func_ov006_021d8f20(ov006_SlotManager_Get14A(data_ov006_021ec884, i));
+                e = ov006_GetPriceEntry(ov006_SlotManager_Get14A(data_ov006_021ec884, i));
                 if (e != NULL) {
                     item = func_0203dd9c(0x34);
                     if (item != NULL) {
@@ -470,7 +470,7 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
         {
             void *p = func_0203dd9c(0x24);
             if (p != NULL) {
-                p = func_ov006_021e29c4(p);
+                p = Ov006Vt_021ec29c_Ctor(p);
             }
             self->unk54 = (Object *)p;
         }
@@ -479,7 +479,7 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
         {
             k = 0;
             for (i = 0; i < 3; i++) {
-                e = func_ov006_021d8f20(ov006_SlotManager_Get14A(data_ov006_021ec884, i));
+                e = ov006_GetPriceEntry(ov006_SlotManager_Get14A(data_ov006_021ec884, i));
                 if (e != NULL) {
                     func_ov006_021e34d8(self->unk54, func_0204c0e8(res, e->name), k);
                     k++;
@@ -956,7 +956,7 @@ ov006_TaskD0 *func_ov006_021cff80(ov006_TaskD0 *self) {
     return self;
 }
 
-ov006_TaskD0 *func_ov006_021d0080(ov006_TaskD0 *self) {
+ov006_TaskD0 *ov006_TaskD0_DtorDelete(ov006_TaskD0 *self) {
     ov006_TaskD0_Dtor(self);
     func_0203de1c(self);
     return self;
@@ -1334,7 +1334,7 @@ ov006_TaskD0C *func_ov006_021d0d3c(ov006_TaskD0C *self) {
     return self;
 }
 
-ov006_TaskD0C *func_ov006_021d0e3c(ov006_TaskD0C *self) {
+ov006_TaskD0C *ov006_TaskD0C_DtorDelete(ov006_TaskD0C *self) {
     ov006_TaskD0C_Dtor(self);
     func_0203de1c(self);
     return self;
@@ -1371,7 +1371,7 @@ void func_ov000_02157d2c(void *a, const void *b);
 void func_ov000_02173648(void *self);
 void func_ov006_021daea0(ov006_SlotManager *a);
 BOOL func_ov006_021db0a8(ov006_SlotManager *a, int b);
-u32 func_ov006_021e60b4(void *a, int b);
+u32 ov006_CopyOwnerInfo(void *a, int b);
 void func_ov006_021e4a80(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 
 static inline ov006_Window *ov006_NewWindow_cad50(void) {
@@ -1471,7 +1471,7 @@ void func_ov006_021d0f50(ov006_TaskD0C *self) {
     data_ov006_021ec860->unk1C = 1;
     MI_CpuFill8(data_02097e40 + 0x18e0, 0, 0x200);
     ov006_SlotPacked_Clear(&self->unk102);
-    func_ov006_021e60b4(self->unk102.name, sizeof(self->unk102.name));
+    ov006_CopyOwnerInfo(self->unk102.name, sizeof(self->unk102.name));
     self->unk102.active = 1;
     self->unk102.isType1 = 1;
     self->unk102.unkC = 0;
@@ -1897,7 +1897,7 @@ ov006_TaskD1F *func_ov006_021d2000(ov006_TaskD1F *self) {
     return self;
 }
 
-ov006_TaskD1F *func_ov006_021d21e4(ov006_TaskD1F *self) {
+ov006_TaskD1F *ov006_TaskD1F_DtorDelete(ov006_TaskD1F *self) {
     ov006_TaskD1F_Dtor(self);
     func_0203de1c(self);
     return self;

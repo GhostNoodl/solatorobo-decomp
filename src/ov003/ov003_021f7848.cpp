@@ -209,7 +209,7 @@ static inline BOOL Ov003_GameIdle(void) {
     return true;
 }
 
-void func_ov003_021e7780(Ov003Sensor *self) {
+void Ov003ActVt_021f966c_Start(Ov003Sensor *self) {
     func_ov000_02194758(self);
     self->wait = self->kind;
     if (self->kind == 0) {
@@ -603,7 +603,7 @@ BOOL func_ov003_021e7ee4(Ov003Rotor *self) {
     return FALSE;
 }
 
-void func_ov003_021e8030(Ov003Rotor *self) {
+void Ov003ActVt_021f953c_Init(Ov003Rotor *self) {
     Ov003Unit *u;
     func_ov000_0219433c(self);
     u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unitId);
@@ -612,7 +612,7 @@ void func_ov003_021e8030(Ov003Rotor *self) {
     }
 }
 
-void func_ov003_021e8064(Ov003Rotor *self) {
+void Ov003ActVt_021f953c_Start(Ov003Rotor *self) {
     s16 m;
     func_ov000_02194758(self);
     func_ov000_0218ffdc(self->anim, self->res, 1, 0);
@@ -637,7 +637,7 @@ void func_ov003_021e8064(Ov003Rotor *self) {
     func_ov000_02198360(self->work, 1, 0);
 }
 
-BOOL func_ov003_021e812c(Ov003Rotor *self) {
+BOOL Ov003ActVt_021f953c_Draw(Ov003Rotor *self) {
     BOOL r = func_ov000_02194c08(self);
     if (r) {
         Ov003Rot rot;
@@ -1059,7 +1059,7 @@ extern Ov003SwFx *func_020657b0(void *mgr, void *handle);
 extern void *func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 BOOL func_ov003_021e83d0(Ov003Rotor *self);
 
-void func_ov003_021e8544(Ov003Swing *self) {
+void Ov003ActVt_021f9374_Start(Ov003Swing *self) {
     Ov003Unit2 *u;
     s16 m;
     func_ov000_02194758(self);
@@ -1109,7 +1109,7 @@ void func_ov003_021e8544(Ov003Swing *self) {
     func_ov000_02198360(self->work, 1, 0);
 }
 
-void func_ov003_021e8698(Ov003Swing *self) {
+void Ov003ActVt_021f9374_Update(Ov003Swing *self) {
     func_ov000_021953b4(self);
     if (self->work->unk_13 != 1 && self->fx != NULL) {
         func_02065804(data_0214a420, self->fx);
@@ -1344,7 +1344,7 @@ void func_ov003_021e8a70(Ov003Mover *self) {
     func_ov000_02198360(self->work, 0x15, 0);
 }
 
-void func_ov003_021e8aa0(Ov003Mover *self) {
+void Ov003ActVt_021f91ac_Start(Ov003Mover *self) {
     func_ov000_02194758(self);
     switch (self->id) {
     case 0x405c:
@@ -1628,7 +1628,7 @@ extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_ov000_02194758(void *self);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 
-void func_ov003_021e8eb0(Ov003Mover2 *self) {
+void Ov003ActVt_021f9114_Start(Ov003Mover2 *self) {
     Ov003Unit *u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unitId);
     Ov003MvPart *p;
     if (u != NULL) {
@@ -1955,7 +1955,7 @@ static inline BOOL Ov003_GameIdle(void) {
     return true;
 }
 
-void func_ov003_021e93d8(Ov003Fly *self) {
+void Ov003ActVt_021f94a4_Init(Ov003Fly *self) {
     Ov003Unit *u;
     func_ov000_0219433c(self);
     u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unitId);
@@ -1964,7 +1964,7 @@ void func_ov003_021e93d8(Ov003Fly *self) {
     }
 }
 
-void func_ov003_021e940c(Ov003Fly *self) {
+void Ov003ActVt_021f94a4_Start(Ov003Fly *self) {
     func_ov000_02194758(self);
     self->home.x = self->pos.x;
     self->home.z = self->pos.z;
@@ -2062,7 +2062,7 @@ void func_ov003_021e9628(Ov003Fly *self) {
     func_ov000_0218dbe0(self, 0);
 }
 
-void func_ov003_021e9824(Ov003Fly *self) {
+void Ov003ActVt_021f940c_Init(Ov003Fly *self) {
     Ov003Unit *u;
     func_ov000_0219433c(self);
     u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unitId);
@@ -2102,7 +2102,7 @@ static inline s32 Ov003_Dist2D(s64 sq) {
     return (s32)(*(volatile u32 *)0x040002b4 + 1) >> 1;
 }
 
-void func_ov003_021e9858(Ov003Fly *self) {
+void Ov003ActVt_021f940c_Start(Ov003Fly *self) {
     const Ov003FlyParam *prm;
     s32 dx, dz;
     s64 sq;
@@ -2184,7 +2184,7 @@ extern void MI_Copy36B(Ov003Mtx33 *src, void *dst);
 extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 extern BOOL func_ov000_02194c08(void *self);
 
-BOOL func_ov003_021e9af4(Ov003Spin *self) {
+BOOL Ov003ActVt_021f940c_Draw(Ov003Spin *self) {
     Ov003Mtx33 m;
     Ov003Vec v;
     Ov003SpinModel *model;
@@ -2519,7 +2519,7 @@ void func_ov003_021ea234(void *self, Ov003EaMtx *m, Ov003EaRot *rot, s32 ang) {
     }
 }
 
-BOOL func_ov003_021ea3d0(Ov003Spin2 *self) {
+BOOL Ov003ActVt_021f92dc_Draw(Ov003Spin2 *self) {
     BOOL r = func_ov000_02194c08(self);
     if (self->kind == 1 && r == FALSE) {
         func_ov000_02198360(self->work, 0x15, 0);
@@ -2594,7 +2594,7 @@ static inline u16 Ov003EaCam_Angle(Ov003EaCam *cam) {
     return func_0204bfa8(cam);
 }
 
-void func_ov003_021ea408(Ov003EaObj *self) {
+void Ov003ActVt_021f92dc_Start(Ov003EaObj *self) {
     Ov003EaCtl *ctl;
     func_ov000_02194758(self);
     ctl = self->ctl;

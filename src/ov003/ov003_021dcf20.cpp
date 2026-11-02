@@ -168,7 +168,7 @@ static inline void Ov003Sw_Sound(Ov003Switch *self) {
     }
 }
 
-void func_ov003_021dcf20(Ov003Switch *self) {
+void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
     s32 next;
     s32 res;
     u16 snd;

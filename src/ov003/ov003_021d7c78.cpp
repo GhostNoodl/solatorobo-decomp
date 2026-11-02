@@ -75,13 +75,13 @@ static inline void Ov003Ticker_Clear(Ov003Ticker *self) {
     self->cur = 0;
 }
 
-void func_ov003_021d7c78(Ov003Mover *self, s32 maxDist) {
+void Ov003Mover_SetMaxDist(Ov003Mover *self, s32 maxDist) {
     if (self->active == 1) {
         self->maxDist = maxDist;
     }
 }
 
-void func_ov003_021d7c90(Ov003Mover *self, s32 speed) {
+void Ov003Mover_SetSpeed(Ov003Mover *self, s32 speed) {
     if (self->active == 1) {
         self->speed = speed;
     }

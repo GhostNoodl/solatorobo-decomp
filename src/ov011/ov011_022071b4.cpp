@@ -356,34 +356,34 @@ void func_ov011_022071b4(Ov011Act7da4 *self) {
     self->v7c();
 }
 
-void *func_ov011_022071c8(void *self) {
+void *Ov011Act7cf8_Dtor(void *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-void *func_ov011_022071dc(void *self) {
-    func_ov003_021d0edc(self);
-    func_0203de1c(self);
-    return self;
-}
-
-void *func_ov011_022071f8(void *self) {
-    func_ov003_021d0edc(self);
-    return self;
-}
-
-void *func_ov011_0220720c(void *self) {
+void *Ov011Act7cf8_DtorDelete(void *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
 }
 
-void *func_ov011_02207228(void *self) {
+void *Ov011Act7e50_Dtor(void *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-void *func_ov011_0220723c(void *self) {
+void *Ov011Act7e50_DtorDelete(void *self) {
+    func_ov003_021d0edc(self);
+    func_0203de1c(self);
+    return self;
+}
+
+void *Ov011Act7c4c_Dtor(void *self) {
+    func_ov003_021d0edc(self);
+    return self;
+}
+
+void *Ov011Act7c4c_DtorDelete(void *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;

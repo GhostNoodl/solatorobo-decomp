@@ -6,7 +6,7 @@ void func_ov002_021d7424(int se) {
     func_02049a48(data_02097e4c, se, -1, -1, -1);
 }
 
-void *func_ov002_021d744c(void *self) {
+void *Ov002Vt_021efe3c_Ctor(void *self) {
     *(VFunc **)self = data_ov002_021efe3c;
     FIELD(self, 0x4, s32) = 0;
     FIELD(self, 0x8, s32) = 0;
@@ -30,7 +30,7 @@ void *func_ov002_021d744c(void *self) {
     return self;
 }
 
-void *func_ov002_021d74c0(void *self) {
+void *Ov002Vt_021efe3c_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021efe3c;
     {
         u32 saved;
@@ -57,7 +57,7 @@ void *func_ov002_021d74c0(void *self) {
     return self;
 }
 
-void *func_ov002_021d756c(void *self) {
+void *Ov002Vt_021efe3c_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021efe3c;
     {
         u32 saved;

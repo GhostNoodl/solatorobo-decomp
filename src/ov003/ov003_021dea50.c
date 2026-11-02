@@ -51,7 +51,7 @@ extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void *func_ov000_02191318(void *p, s32 v);
 extern void func_ov000_021915a0(void *p);
 
-Ov003Prop *func_ov003_021dea50(Ov003Prop *self) {
+Ov003Prop *Ov003ActVt_021f83e8_Dtor(Ov003Prop *self) {
     self->vtbl = data_ov003_021f83e8;
     if (self->unk_d0 >= 0) {
         func_02049bb4(data_02097e4c, self->unk_d0);
@@ -60,7 +60,7 @@ Ov003Prop *func_ov003_021dea50(Ov003Prop *self) {
     return self;
 }
 
-Ov003Prop *func_ov003_021dea90(Ov003Prop *self) {
+Ov003Prop *Ov003ActVt_021f83e8_DtorDelete(Ov003Prop *self) {
     self->vtbl = data_ov003_021f83e8;
     if (self->unk_d0 >= 0) {
         func_02049bb4(data_02097e4c, self->unk_d0);
@@ -70,7 +70,7 @@ Ov003Prop *func_ov003_021dea90(Ov003Prop *self) {
     return self;
 }
 
-void func_ov003_021dead8(Ov003Prop *self) {
+void Ov003ActVt_021f83e8_Start(Ov003Prop *self) {
     func_ov000_02194758(self);
     if (self->unk_18 >= 3) {
         func_ov000_02190cb0(self->unk_38, data_ov003_021f8510, 0x1000, 0);

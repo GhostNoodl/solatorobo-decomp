@@ -29,7 +29,7 @@ typedef struct ov006_Pos {
 
 extern "C" {
 
-ov006_Prop *func_ov006_021e63c8(ov006_Prop *self);
+ov006_Prop *Ov006ActVt_021ec4f4_Ctor(ov006_Prop *self);
 void *func_0206ffa0(u32 id);
 void func_ov000_0218d1c0(ov006_Prop *self, u16 type, u32 id, void *res);
 void func_ov000_021984f4(void *a, int b, int c);
@@ -52,7 +52,7 @@ void func_ov006_021ea410(ov006_Prop *self) {
 ov006_Prop *func_ov006_021ea430(u32 id, u8 a, const ov006_Pos *pos, const u16 *rot) {
     ov006_Prop *prop = (ov006_Prop *)func_0203dd9c(sizeof(ov006_Prop));
     if (prop != NULL) {
-        prop = func_ov006_021e63c8(prop);
+        prop = Ov006ActVt_021ec4f4_Ctor(prop);
     }
     if (prop != NULL) {
         func_ov000_0218d1c0(prop, id & 0xf000, id, func_0206ffa0(id));
@@ -89,7 +89,7 @@ void func_ov006_021ea514(ov006_Prop *self) {
 void func_ov006_021ea540(void) {
 }
 
-void func_ov006_021ea544(void) {
+void Ov006ActVt_021ec4f4_Update(void) {
 }
 
 }

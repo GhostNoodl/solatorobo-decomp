@@ -2,13 +2,13 @@
 
 extern "C" {
 
-void *func_ov002_021d7854(void *self) {
-    func_ov002_021d74c0((u8 *)self + 0x4);
+void *Ov002Vt_021efe8c_Dtor(void *self) {
+    Ov002Vt_021efe3c_Dtor((u8 *)self + 0x4);
     return self;
 }
 
-void *func_ov002_021d786c(void *self) {
-    func_ov002_021d74c0((u8 *)self + 0x4);
+void *Ov002Vt_021efe8c_DtorDelete(void *self) {
+    Ov002Vt_021efe3c_Dtor((u8 *)self + 0x4);
     func_0203de1c(self);
     return self;
 }
@@ -27,17 +27,17 @@ void func_ov002_021d788c(void *self) {
     FIELD(self, 0x30, s32) = (FIELD(self, 0x30, s32) + 0x1000) % FIELD(self, 0x34, s32);
 }
 
-void *func_ov002_021d78d4(void *self) {
+void *Ov002Vt_021efe5c_Dtor(void *self) {
     func_02041558((u8 *)self + 0x74);
     func_02041278((u8 *)self + 0xfc);
-    func_ov002_021d74c0((u8 *)self + 0x4);
+    Ov002Vt_021efe3c_Dtor((u8 *)self + 0x4);
     return self;
 }
 
-void *func_ov002_021d78fc(void *self) {
+void *Ov002Vt_021efe5c_DtorDelete(void *self) {
     func_02041558((u8 *)self + 0x74);
     func_02041278((u8 *)self + 0xfc);
-    func_ov002_021d74c0((u8 *)self + 0x4);
+    Ov002Vt_021efe3c_Dtor((u8 *)self + 0x4);
     func_0203de1c(self);
     return self;
 }

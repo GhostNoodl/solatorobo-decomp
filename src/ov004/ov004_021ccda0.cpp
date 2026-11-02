@@ -93,7 +93,7 @@ void func_ov004_021ccf10(void) {
     data_02097dd0->cur = saved;
 }
 
-void *func_ov004_021ccf94(void *p) {
+void *Ov004ActVt_021cf808_DtorDelete(void *p) {
     func_ov000_0218c928(p);
     func_0203de1c(p);
     return p;
@@ -121,12 +121,12 @@ void func_ov004_021cd01c(void) {}
 void func_ov004_021cd020(void) {}
 void func_ov004_021cd024(void) {}
 void func_ov004_021cd028(void) {}
-void func_ov004_021cd02c(void) {}
-void func_ov004_021cd030(void) {}
+void Ov004ActVt_021cf808_Update(void) {}
+void Ov004ActVt_021cf808_Start(void) {}
 void func_ov004_021cd034(void) {}
-void func_ov004_021cd038(void) {}
+void Ov004ActVt_021cf808_Init(void) {}
 
-void *func_ov004_021cd03c(void *p) {
+void *Ov004ActVt_021cf808_Dtor(void *p) {
     func_ov000_0218c928(p);
     return p;
 }

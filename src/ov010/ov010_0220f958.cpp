@@ -282,17 +282,17 @@ extern void func_ov003_021d112c(void *self);
 extern void func_ov003_021cf404(s32 a);
 extern void func_ov003_021cf400(s32 a);
 extern void *func_0203dd9c(u32 size);
-extern void *func_ov010_022092c8(void *p);
-extern void *func_ov010_022095a8(void *p);
-extern void *func_ov010_02209860(void *p);
-extern void *func_ov010_0220a078(void *p);
-extern void *func_ov010_0220a2a8(void *p);
-extern void *func_ov003_021d8910(void *p);
+extern void *Ov010Vt_02210280_Ctor(void *p);
+extern void *Ov010Vt_022102c0_Ctor(void *p);
+extern void *Ov010Vt_022102a0_Ctor(void *p);
+extern void *Ov010Vt_02210260_Ctor(void *p);
+extern void *Ov010Vt_02210240_Ctor(void *p);
+extern void *Ov003Vt_021f7cf4_Ctor(void *p);
 extern BOOL func_ov003_021d8f4c(void *p);
 extern BOOL func_ov010_0220d7f8(void *p);
 extern BOOL func_ov003_021d8198(void *p);
 extern BOOL func_ov003_021d8c10(void *p);
-extern BOOL func_ov003_021d8980(void *p);
+extern BOOL Ov003StateMachine_Init(void *p);
 extern void func_ov003_021d8a30(void *p, u8 id, void *st);
 extern Robo021ca458 *func_ov000_0219bf90(void);
 extern BOOL func_020621c4(void);
@@ -341,7 +341,7 @@ struct Obj022046ac : public Ov010Obj {
     s32 unk_15c;
 };
 
-void func_ov010_022046ac(Obj022046ac *self) {
+void Ov010ActVt_02210154_Start(Obj022046ac *self) {
     void *o;
     u16 *p;
     u32 i;
@@ -351,32 +351,32 @@ void func_ov010_022046ac(Obj022046ac *self) {
     self->unk_f3 = 1;
     o = func_0203dd9c(0x30);
     if (o != NULL) {
-        o = func_ov010_022092c8(o);
+        o = Ov010Vt_02210280_Ctor(o);
     }
     self->unk_104 = o;
     o = func_0203dd9c(0x20);
     if (o != NULL) {
-        o = func_ov010_022095a8(o);
+        o = Ov010Vt_022102c0_Ctor(o);
     }
     self->unk_108 = o;
     o = func_0203dd9c(0x34);
     if (o != NULL) {
-        o = func_ov010_02209860(o);
+        o = Ov010Vt_022102a0_Ctor(o);
     }
     self->unk_10c = o;
     o = func_0203dd9c(0xc);
     if (o != NULL) {
-        o = func_ov010_0220a078(o);
+        o = Ov010Vt_02210260_Ctor(o);
     }
     self->unk_110 = o;
     o = func_0203dd9c(0x20);
     if (o != NULL) {
-        o = func_ov010_0220a2a8(o);
+        o = Ov010Vt_02210240_Ctor(o);
     }
     self->unk_114 = o;
     o = func_0203dd9c(0x10);
     if (o != NULL) {
-        o = func_ov003_021d8910(o);
+        o = Ov003Vt_021f7cf4_Ctor(o);
     }
     self->unk_118 = o;
     self->unk_11c = Ov010Cam_New();
@@ -411,7 +411,7 @@ void func_ov010_022046ac(Obj022046ac *self) {
         FLD(s32, (u8 *)self + i * 4, 0x12c) = -1;
     }
     self->vac((u8 *)self + 0x12c, 9);
-    func_ov003_021d8980(self->unk_118);
+    Ov003StateMachine_Init(self->unk_118);
     func_ov003_021d8a30(self->unk_118, 0, self->unk_120);
     func_ov003_021d8a30(self->unk_118, 1, self->unk_11c);
     FLD(Ov010Bits16, self->unk_38, 0xc2).b0 = 0;
@@ -599,13 +599,13 @@ struct Ov010Mtx33 {
 extern void *data_02097e4c;
 extern BOOL func_ov010_0220d77c(void *p);
 extern void func_ov010_0220d918(void *p, void (*fn)(void));
-extern s32 func_ov010_0220d9a4(void *p);
+extern s32 Ov010Coll_GetCount(void *p);
 extern void func_ov010_0220d9c0(void *p, void *h);
 extern BOOL func_ov010_0220da4c(void *p);
 extern Robo021ca458 *func_ov000_0219bf90(void);
 extern void func_ov010_02209578(void *t, s32 a, s32 b, s32 c, u16 d, u16 e);
 extern void func_ov010_02204030(Ov010Vec *out, void *c, const Ov010Vec *target, s32 n, u16 ang);
-extern u16 func_ov003_021d9c38(Ov010Vec *v);
+extern u16 Ov003Vec_Yaw(Ov010Vec *v);
 extern u32 func_02040420(void);
 extern s32 func_02040528(s32 n);
 extern void MTX_RotY33_(Ov010Mtx33 *m, s32 s, s32 c);
@@ -653,7 +653,7 @@ void func_ov010_02204d44(Obj02204aac *self) {
     switch (self->unk_40->st) {
     case 0:
         func_ov010_0220d918((u8 *)self + 0x174, (void (*)(void))func_ov010_0220d77c);
-        if (func_ov010_0220d9a4((u8 *)self + 0x174) >= 5) {
+        if (Ov010Coll_GetCount((u8 *)self + 0x174) >= 5) {
             self->unk_40->st = 0x32;
             break;
         }
@@ -692,7 +692,7 @@ void func_ov010_02204d44(Obj02204aac *self) {
         d.x = q.x - c->x;
         d.y = q.y - c->y;
         d.z = q.z - c->z;
-        r = func_ov003_021d9c38(&d);
+        r = Ov003Vec_Yaw(&d);
         if (!(func_02040420() & 1)) {
             r += 0x3fff;
         } else {
@@ -785,7 +785,7 @@ extern void func_ov010_0220a040(void *self, u16 a, s32 b, s32 c, s32 d, u16 e, u
 extern void func_ov010_0220d9c0(void *p, void *h);
 extern BOOL func_ov010_0220da4c(void *p);
 extern void func_ov003_021d8a7c(void *p, s32 a);
-extern void func_ov003_021d8afc(void *p);
+extern void Ov003StateMachine_Leave(void *p);
 extern void func_ov003_021d969c(void *p, s32 a);
 
 void func_ov010_0220522c(Obj02204aac *self) {
@@ -826,7 +826,7 @@ void func_ov010_0220522c(Obj02204aac *self) {
         break;
     case 0x31:
         if (func_ov010_0220da4c((u8 *)self + 0x174)) {
-            func_ov003_021d8afc(self->unk_118);
+            Ov003StateMachine_Leave(self->unk_118);
             self->unk_40->st = 0x40;
         }
         break;
@@ -873,7 +873,7 @@ extern Robo021ca458 *func_ov000_0219bf90(void);
 extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
 extern void func_ov003_021d8a7c(void *p, s32 a);
 extern void func_ov003_021d969c(void *p, s32 a);
-extern u16 func_ov003_021d9c38(Ov010Vec *v);
+extern u16 Ov003Vec_Yaw(Ov010Vec *v);
 extern void MTX_RotY33_(Ov010Mtx33 *m, s32 s, s32 c);
 extern void MTX_MultVec33(Ov010Vec *v, Ov010Mtx33 *m, Ov010Vec *out);
 extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *out);
@@ -946,7 +946,7 @@ void func_ov010_02205444(Obj02204aac *self) {
         d.x = self->pos.x - t->x;
         d.y = self->pos.y - t->y;
         d.z = self->pos.z - t->z;
-        ang = func_ov003_021d9c38(&d);
+        ang = Ov003Vec_Yaw(&d);
         t = self->unk_f8;
         y = t->y;
         Ov010f_SetRot(&v, FLD(s32, t, 0x10), ang);
@@ -1223,17 +1223,17 @@ extern void func_ov000_02191618(void *a);
 extern u8 *func_ov000_02199f60(void *p);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern s32 func_02040528(s32 max);
-extern void func_ov003_021d8afc(void *p);
+extern void Ov003StateMachine_Leave(void *p);
 extern void func_ov010_0220da14(void *p);
 extern void func_ov003_021d9e90(Ov010Vec *a, Ov010Vec *b, Ov010Vec *c, s32 d, s32 e);
 extern void func_ov003_021da2c8(void *self, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218dbe0(void *self, s32 a);
-extern s32 func_ov003_021d9a80(const Ov010Vec *a, const Ov010Vec *b);
+extern s32 Ov003Vec_DistSq(const Ov010Vec *a, const Ov010Vec *b);
 extern void func_ov003_021d9dbc(Ov010Vec *out, const Ov010Vec *a, const Ov010Vec *b, s32 dist, s32 yoff);
 extern void func_ov000_0218d918(void *self, void *t, s32 a);
 
 static inline BOOL Ov010f_Arrived(const Ov010Vec *a, const Ov010Vec *b) {
-    return func_ov003_021d9a80(a, b) == 0 ? TRUE : FALSE;
+    return Ov003Vec_DistSq(a, b) == 0 ? TRUE : FALSE;
 }
 
 void func_ov010_02205f40(Obj02204aac *self) {
@@ -1266,7 +1266,7 @@ void func_ov010_02205f40(Obj02204aac *self) {
         }
         self->unk_96 = ang;
         self->unk_98 = self->unk_96 + 0x8000 + func_02040528(0x2000);
-        func_ov003_021d8afc(self->unk_118);
+        Ov003StateMachine_Leave(self->unk_118);
         func_ov010_0220da14((u8 *)self + 0x174);
         func_ov003_021d969c((u8 *)self + 0x160, 0);
         switch (self->unk_171) {
@@ -1341,7 +1341,7 @@ void func_ov010_02205f40(Obj02204aac *self) {
         t.x = self->unk_b8.x;
         t.y = self->unk_b8.y;
         t.z = self->unk_b8.z;
-        if (func_ov003_021d9a80(&t, &self->pos) < 0x9000) {
+        if (Ov003Vec_DistSq(&t, &self->pos) < 0x9000) {
             self->unk_a4 = 0x1000;
         }
         func_ov003_021d9dbc(&self->pos, &t, &self->pos, self->unk_9c, self->unk_a0);
@@ -1388,7 +1388,7 @@ extern void func_0203f364(Ov010Sub48 *p);
 extern void func_0203cb78(s32 a, s32 b, s32 c);
 extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
 extern void func_ov003_021d8eac(void *a, void *b, s32 c, s32 d);
-extern BOOL func_ov003_021d8efc(void *a);
+extern BOOL Ov003Timer_IsStopped(void *a);
 extern u8 *func_ov000_02190a30(void *p, s32 a);
 extern void func_ov003_021d6a3c(void *self, s32 a, s32 b, s32 c);
 
@@ -1425,7 +1425,7 @@ void func_ov010_0220640c(Obj02204aac *self) {
         n->b22_0 = 0;
         n->b22_1 = 0;
         FLD(u16, self->unk_4c, 0x1c) = 0xffff;
-        func_ov003_021d8afc(self->unk_118);
+        Ov003StateMachine_Leave(self->unk_118);
         func_ov000_02190cb0(self->unk_38, data_ov010_0220f038, 0x800, 1);
         func_ov000_02191418(self->unk_38, 5, 1);
         scr = OV010_FADE_SCREEN_MAIN;
@@ -1451,7 +1451,7 @@ void func_ov010_0220640c(Obj02204aac *self) {
             self->unk_a8 = 0;
             self->unk_a0 = Ov010g_Mul(self->unk_a0, 0xf80);
         }
-        if (self->unk_40->timer >= 0x5a && func_ov003_021d8efc((u8 *)self + 0x1dc)) {
+        if (self->unk_40->timer >= 0x5a && Ov003Timer_IsStopped((u8 *)self + 0x1dc)) {
             Ov010V *o = func_02065f88(0x69, &self->pos);
             if (o != NULL) {
                 o->v0c(0x5000);
@@ -1574,7 +1574,7 @@ extern void MTX_RotY33_(Ov010Mtx33f *m, s32 s, s32 c);
 extern void MTX_MultVec33(const Ov010Vec *v, const Ov010Mtx33f *m, Ov010Vec *o);
 extern u16 func_ov010_02208e90(s32 a, s32 b);
 extern void func_ov003_021d9d28(Ov010Vec *out, Ov010Vec *pos, u16 ang, void *c);
-extern u16 func_ov003_021d9c38(Ov010Vec *v);
+extern u16 Ov003Vec_Yaw(Ov010Vec *v);
 extern void func_ov003_021da2c8(void *self, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov003_021d9e90(Ov010Vec *a, Ov010Vec *b, Ov010Vec *c, s32 d, s32 e);
 
@@ -1639,7 +1639,7 @@ void func_ov010_02206974(Obj02204aac *self) {
         d.x = self->pos.x - t->x;
         d.y = self->pos.y - t->y;
         d.z = self->pos.z - t->z;
-        r = func_ov003_021d9c38(&d);
+        r = Ov003Vec_Yaw(&d);
         t = self->unk_f8;
         y = t->y;
         Ov010f_SetRot(&v, FLD(s32, t, 0x10), r);
@@ -1723,7 +1723,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern void func_ov003_021d8a7c(void *p, s32 a);
-extern void func_ov003_021d8afc(void *p);
+extern void Ov003StateMachine_Leave(void *p);
 extern void func_ov003_021d969c(void *p, s32 a);
 extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
 extern void func_ov010_0220d9c0(void *p, void *h);
@@ -1801,7 +1801,7 @@ void func_ov010_02206fd0(Obj02206f54 *self) {
         return;
     }
     m->st++;
-    func_ov003_021d8afc(self->unk_118);
+    Ov003StateMachine_Leave(self->unk_118);
 }
 
 void func_ov010_02207004(Obj02206f54 *self) {

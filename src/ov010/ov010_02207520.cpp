@@ -169,7 +169,7 @@ void func_ov010_022075bc(Obj022075bc *self) {
 extern s32 func_ov000_02199128(s32 *out, Ov010Query *q, void **list, s32 max);
 
 extern s32 VEC_Distance(const Ov010Vec *a, const Ov010Vec *b);
-extern BOOL func_ov003_021d98bc(Ov010Vec *a, Ov010Vec *b);
+extern BOOL Ov003Vec_Equal(Ov010Vec *a, Ov010Vec *b);
 extern void func_ov003_021d9e90(Ov010Vec *a, Ov010Vec *b, Ov010Vec *c, s32 d, s32 e);
 extern void func_ov003_021da2c8(void *self, s32 a, s32 b, s32 c, s32 d);
 
@@ -216,7 +216,7 @@ void func_ov010_02207828(Obj02207828 *self) {
         if (self->unk_9c >= 0x40) {
             slow = FALSE;
         }
-        if (func_ov003_021d98bc(&self->pos, &t) || slow) {
+        if (Ov003Vec_Equal(&self->pos, &t) || slow) {
             self->unk_9c = 0;
             return;
         }
@@ -285,13 +285,13 @@ extern char data_ov010_0220ffae[];
 extern void func_ov003_021d0c1c(void *self);
 extern void func_ov003_021d8f24(void *p);
 extern void *func_ov010_0220d79c(void *p);
-extern void *func_ov003_021d7f0c(void *p);
-extern void *func_ov003_021d8b88(void *p);
+extern void *Ov003Vt_021f7d10_Ctor(void *p);
+extern void *Ov003Vt_021f7cd8_Ctor(void *p);
 extern void func_ov003_021cf340(const char *p);
 extern void func_ov003_021cf3fc(s32 a);
 extern void func_ov003_021cf39c(s32 a, const char *b);
 extern void func_ov010_02207520(Obj02207520 *self);
-extern void func_ov010_022046ac(void *self);
+extern void Ov010ActVt_02210154_Start(void *self);
 extern BOOL func_ov010_0220441c(void *self, void *msg);
 
 struct Ov010_02204204_BodySelf {
@@ -303,8 +303,8 @@ static inline void Ov010_02204204_Body(Ov010_02204204_BodySelf *self) {
     self->unk_00 = data_ov010_02210154;
     func_ov003_021d8f24((u8 *)self + 0x160);
     func_ov010_0220d79c((u8 *)self + 0x174);
-    func_ov003_021d7f0c((u8 *)self + 0x1b0);
-    func_ov003_021d8b88((u8 *)self + 0x1dc);
+    Ov003Vt_021f7d10_Ctor((u8 *)self + 0x1b0);
+    Ov003Vt_021f7cd8_Ctor((u8 *)self + 0x1dc);
     func_ov003_021cf340(data_ov010_0220ff84);
     func_ov003_021cf3fc(1);
     func_ov003_021cf39c(2, data_ov010_0220ff91);
@@ -321,7 +321,7 @@ u16 func_ov010_02207a44(s32 i) {
     return t.v[5] + (u16)((i - 5) * 0x5a);
 }
 
-void *func_ov010_02207ac4(Obj02207828 *self) {
+void *Ov010ActVt_0220ffe4_Ctor(Obj02207828 *self) {
     Ov010_02204204_Body((Ov010_02204204_BodySelf *)self);
     self->unk_1fc = 0;
     self->unk_200 = 0;
@@ -329,8 +329,8 @@ void *func_ov010_02207ac4(Obj02207828 *self) {
     return self;
 }
 
-void func_ov010_02207b6c(Obj02207828 *self) {
-    func_ov010_022046ac(self);
+void Ov010ActVt_0220ffe4_Start(Obj02207828 *self) {
+    Ov010ActVt_02210154_Start(self);
     self->unk_f3 = self->unk_18[0] == 3;
 }
 

@@ -107,7 +107,7 @@ static inline BOOL Ov003_GameHasD4(void) {
     return Ov003Game_HasD4(data_ov000_021ccd54) ? TRUE : FALSE;
 }
 
-BOOL func_ov003_021f1a34(Ov003Pd *self) {
+BOOL Ov003ActVt_021fa1b8_Draw(Ov003Pd *self) {
     BOOL r = FALSE;
     Ov003PdModel *m = self->model;
     if (m != NULL) {

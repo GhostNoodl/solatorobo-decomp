@@ -565,7 +565,7 @@ public:
 };
 OV011_SIZE(Ov011Actor, 0xf0);
 
-// The ov011 NPC class (constructor func_ov011_02200e84, vtable data_ov011_022079f0),
+// The ov011 NPC class (constructor Ov011Npc_Ctor, vtable data_ov011_022079f0),
 // derived straight from the object base.
 class Ov011Npc : public Ov011Obj {
 public:
@@ -709,7 +709,7 @@ public:
 OV011_SIZE(Ov011Sub1b4, 0x20);
 
 // The 0x23c-byte scene state that the main ov011 actor owns at unk_100 (built by
-// func_ov011_021fef00, initialised by func_ov011_021fd4d8, updated by func_ov011_021fd638,
+// Ov011SceneActor_Start, initialised by func_ov011_021fd4d8, updated by func_ov011_021fd638,
 // handlers in data_ov011_022073a0).
 class Ov011Scene : public Ov011List {
 public:
@@ -723,7 +723,7 @@ public:
 };
 OV011_SIZE(Ov011Scene, 0x23c);
 
-// Tween object with a 0x24-byte layout (func_ov011_02202c54 constructs one).
+// Tween object with a 0x24-byte layout (Ov011Vt_022079b0_Ctor constructs one).
 struct Ov011E24 : public Ov011V {
     u8 unk_04[0x20];
 };
@@ -758,8 +758,8 @@ struct Ov011Sa10c {
 };
 OV011_SIZE(Ov011Sa10c, 4);
 
-// The ov011 actor that owns the scene (constructor func_ov011_021fed5c, vtable
-// data_ov011_022078f0, setup func_ov011_021fef00).
+// The ov011 actor that owns the scene (constructor Ov011SceneActor_Ctor, vtable
+// data_ov011_022078f0, setup Ov011SceneActor_Start).
 class Ov011SceneActor : public Ov011Actor {
 public:
     u8 unk_f0_0 : 1;
@@ -775,20 +775,20 @@ public:
 };
 
 // ov003-actor subclasses named after their vtables (only the fields ov011 reads).
-// vtable data_ov011_02207cf8: func_ov011_022037c0, func_ov011_022038ac.
+// vtable data_ov011_02207cf8: Ov011Act7cf8_Start, func_ov011_022038ac.
 class Ov011Act7cf8 : public Ov011Actor {
 public:
     Ov011Vec unk_f0;
 };
 
-// vtable data_ov011_02207e50: func_ov011_02203de4, func_ov011_02203e94, func_ov011_02203ef0.
+// vtable data_ov011_02207e50: Ov011Act7e50_Start, func_ov011_02203e94, func_ov011_02203ef0.
 class Ov011Act7e50 : public Ov011Actor {
 public:
     Ov011Vec unk_f0;
     u16 unk_fc;
 };
 
-// vtable data_ov011_02207c4c: func_ov011_022042fc, func_ov011_022043cc, func_ov011_02204428,
+// vtable data_ov011_02207c4c: Ov011Act7c4c_Start, func_ov011_022043cc, func_ov011_02204428,
 // func_ov011_02204a8c.
 class Ov011Act7c4c : public Ov011Actor {
 public:
@@ -801,7 +801,7 @@ public:
 
 class Ov011Bar;
 
-// vtable data_ov011_02207da4: func_ov011_02204b94 .. func_ov011_02206e18 (the photo/boss
+// vtable data_ov011_02207da4: Ov011Act7da4_Dtor .. func_ov011_02206e18 (the photo/boss
 // actor of ov011_02204b94.cpp .. ov011_022071b4.cpp).
 class Ov011Act7da4 : public Ov011Actor {
 public:

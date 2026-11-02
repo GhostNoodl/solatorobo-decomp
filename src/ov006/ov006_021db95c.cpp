@@ -22,12 +22,12 @@ static inline void ov006_Unk021db95c_dtor(ov006_Unk021db95c *self) {
     VCALL(self, 2C);
 }
 
-ov006_Unk021db95c *func_ov006_021db95c(ov006_Unk021db95c *self) {
+ov006_Unk021db95c *ov006_Window_Dtor(ov006_Unk021db95c *self) {
     ov006_Unk021db95c_dtor(self);
     return self;
 }
 
-ov006_Unk021db95c *func_ov006_021db9d8(ov006_Unk021db95c *self) {
+ov006_Unk021db95c *ov006_Window_DtorDelete(ov006_Unk021db95c *self) {
     ov006_Unk021db95c_dtor(self);
     func_0203de1c(self);
     return self;

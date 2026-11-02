@@ -4,8 +4,8 @@ extern "C" {
 
 extern Ov010V *func_02065f88(s32 a, Ov010Vec *b);
 extern void VEC_Normalize(Ov010Vec *a, Ov010Vec *b);
-extern u16 func_ov003_021d9c74(Ov010Vec *a);
-extern u16 func_ov003_021d9c38(Ov010Vec *a);
+extern u16 Ov003Vec_Pitch(Ov010Vec *a);
+extern u16 Ov003Vec_Yaw(Ov010Vec *a);
 
 static inline Ov010V *Ov010_SpawnFx192(void *self, u16 a, u16 b) {
     Ov010Vec p;
@@ -33,8 +33,8 @@ Ov010V *func_ov010_0220eaf0(void *self, const Ov010Vec *a, const Ov010Vec *b) {
     d.y = b->y - a->y;
     d.z = b->z - a->z;
     VEC_Normalize(&d, &d);
-    ra = func_ov003_021d9c74(&d);
-    rb = func_ov003_021d9c38(&d);
+    ra = Ov003Vec_Pitch(&d);
+    rb = Ov003Vec_Yaw(&d);
     return Ov010_SpawnFx192(self, ra, rb);
 }
 

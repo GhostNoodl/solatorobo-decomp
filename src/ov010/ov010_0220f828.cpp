@@ -760,7 +760,7 @@ extern void func_ov003_021da48c(void *p, s32 a);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern void func_ov010_02200a00(Ov010Beam *o);
 extern Robo021ca458 *func_ov000_0219bf90(void);
-extern s32 func_ov003_021d9a80(const Ov010Vec *a, const Ov010Vec *b);
+extern s32 Ov003Vec_DistSq(const Ov010Vec *a, const Ov010Vec *b);
 
 static inline void Ov010Fx_Free(Ov010FxObj *s) {
     if (s->b0) {
@@ -819,8 +819,8 @@ extern s32 func_02040528(s32 n);
 extern s32 func_020404e0(void);
 extern void func_ov003_021d9a00(Ov010Vec *out, s32 angle, const Ov010Vec *in);
 extern u16 func_ov003_021d9c50(Ov010Vec *a, Ov010Vec *b);
-extern u16 func_ov003_021d9c74(Ov010Vec *v);
-extern u16 func_ov003_021d9c38(Ov010Vec *v);
+extern u16 Ov003Vec_Pitch(Ov010Vec *v);
+extern u16 Ov003Vec_Yaw(Ov010Vec *v);
 extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *c);
 extern void VEC_Normalize(const Ov010Vec *a, Ov010Vec *b);
 extern void func_ov010_0220078c(Ov010Beam *p);
@@ -952,8 +952,8 @@ void func_ov010_02201064(Ov010BeamSet *self) {
             d.y = res.y - self->unk_20.y;
             d.z = res.z - self->unk_20.z;
             VEC_Normalize(&d, &d);
-            ry = func_ov003_021d9c74(&d);
-            rx = func_ov003_021d9c38(&d);
+            ry = Ov003Vec_Pitch(&d);
+            rx = Ov003Vec_Yaw(&d);
             t = func_02040498(10) + 10;
             {
                 s32 s = func_02040528(2);

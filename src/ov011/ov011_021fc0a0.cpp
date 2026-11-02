@@ -30,7 +30,7 @@ struct Ov011Mgr3 {
 
 extern "C" {
 
-void *func_ov003_021d79d0(void *p);
+void *Ov003Vt_021f7d2c_Ctor(void *p);
 
 extern void *data_02097e4c;
 extern const Ov011Vec data_ov011_022072b4;
@@ -131,7 +131,7 @@ void func_ov011_021fbe08(Ov011Mgr3 *self) {
 
 #pragma force_active on
 void *func_ov011_021fc0a0(void *self) {
-    func_ov003_021d79d0((u8 *)self + 8);
+    Ov003Vt_021f7d2c_Ctor((u8 *)self + 8);
     return self;
 }
 #pragma force_active reset
@@ -202,12 +202,12 @@ struct Ov011Msg2 {
 extern "C" {
 
 extern const Ov011Vec data_ov011_02207278;
-void func_ov003_021d7c90(void *p, s32 a);
-void func_ov003_021d7c78(void *p, s32 a);
+void Ov003Mover_SetSpeed(void *p, s32 a);
+void Ov003Mover_SetMaxDist(void *p, s32 a);
 void func_ov003_021d7c08(void *p, Ov011Vec *v);
-Ov011Vec *func_ov003_021d7bd4(void *p);
-u16 func_ov003_021d9c74(Ov011Vec *v);
-u16 func_ov003_021d9c38(Ov011Vec *v);
+Ov011Vec *Ov003Mover_GetDir(void *p);
+u16 Ov003Vec_Pitch(Ov011Vec *v);
+u16 Ov003Vec_Yaw(Ov011Vec *v);
 BOOL func_ov003_021d7a44(void *p, Ov011Vec *a, Ov011Vec *b, s32 c, s32 d, s32 e);
 void func_ov011_022011fc(void *a, s32 b);
 void func_ov011_022011c8(void *a, s32 b);
@@ -340,8 +340,8 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                 Ov011Vec w;
                 Ov011Sub48 *m;
                 if (self->slots[i].timer == 0x50) {
-                    func_ov003_021d7c90(&self->slots[i].obj, 0x66);
-                    func_ov003_021d7c78(&self->slots[i].obj, 0x948);
+                    Ov003Mover_SetSpeed(&self->slots[i].obj, 0x66);
+                    Ov003Mover_SetMaxDist(&self->slots[i].obj, 0x948);
                     func_ov011_022011fc(a, 0);
                     func_02049f44(data_02097e4c, 0x2f, (Ov011Vec *)self->slots[i].obj.v10(), 0);
                     v.x = func_02040528(0x1000);
@@ -357,8 +357,8 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                 if (self->slots[i].timer == 0x50) {
                     Ov011Vec t = *(Ov011Vec *)self->slots[i].obj.v10();
                     Ov011V *e = func_02065f88(0x192, &t);
-                    Ov011Vec d = *func_ov003_021d7bd4(&self->slots[i].obj);
-                    e->v34(func_ov003_021d9c74(&d), func_ov003_021d9c38(&d), 0);
+                    Ov011Vec d = *Ov003Mover_GetDir(&self->slots[i].obj);
+                    e->v34(Ov003Vec_Pitch(&d), Ov003Vec_Yaw(&d), 0);
                     e->v14(0x1ccd, 0x1ccd, 0x1ccd);
                 }
                 continue;
@@ -377,7 +377,7 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                 p.z = a->pos.z;
                 func_ov011_022011c8(a, 0);
                 p.y -= a->unk_48->unk_38;
-                ang = func_ov003_021d9c38(func_ov003_021d7bd4(&self->slots[i].obj)) + 0x7fff;
+                ang = Ov003Vec_Yaw(Ov003Mover_GetDir(&self->slots[i].obj)) + 0x7fff;
                 e = func_02065f88(0x67, &p);
                 e->v34(0, ang, 0);
                 e->v14(0x1ccd, 0x1ccd, 0x1ccd);

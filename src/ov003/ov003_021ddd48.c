@@ -31,7 +31,7 @@ static inline BOOL Ov003SwPart_IsOn(Ov003SwPart *p) {
     return FALSE;
 }
 
-void func_ov003_021ddd48(Ov003SwProp *self) {
+void Ov003ActVt_021f7e7c_Update(Ov003SwProp *self) {
     BOOL changed = FALSE;
     s32 v = -1;
     switch (self->unk_1a) {

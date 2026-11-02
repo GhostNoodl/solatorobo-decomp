@@ -88,18 +88,18 @@ static inline void Ov003Prop_Dtor(Ov003Prop *self) {
     func_ov000_0218c928(self);
 }
 
-Ov003Prop *func_ov003_021f1478(Ov003Prop *self) {
+Ov003Prop *Ov003ActVt_021fa1b8_Dtor(Ov003Prop *self) {
     Ov003Prop_Dtor(self);
     return self;
 }
 
-Ov003Prop *func_ov003_021f14e8(Ov003Prop *self) {
+Ov003Prop *Ov003ActVt_021fa1b8_DtorDelete(Ov003Prop *self) {
     Ov003Prop_Dtor(self);
     func_0203de1c(self);
     return self;
 }
 
-void func_ov003_021f1560(Ov003Prop *self) {
+void Ov003ActVt_021fa1b8_Init(Ov003Prop *self) {
     Ov003PropInfo *info = func_0206fef8(self->id);
     void *data = func_0207011c(self->id);
     Ov003PropRes *res;

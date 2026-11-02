@@ -18,7 +18,7 @@ extern u8 *func_02066774(const char *a, const char *b, s32 c, Ov014Vec *pos);
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void func_ov003_021ceedc(void *p);
-extern void *func_ov003_021cef0c(void *p);
+extern void *Ov003Vt_021f7974_Dtor(void *p);
 extern void *func_ov000_02198328(void *p);
 extern void MIi_CpuClear32(s32 v, void *p, u32 n);
 extern BOOL func_02035b90(void *a, s32 b);
@@ -162,7 +162,7 @@ Ov014Act_0220f9d0 *Ov014Act_0220f9d0_Dtor(Ov014Act_0220f9d0 *self) {
     FLD(void *, self, 0) = data_ov014_02217e6c;
     Ov014_Free154(self);
     Ov014_StopSnd();
-    func_ov003_021cef0c((u8 *)self + 0x124);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x124);
     func_ov003_021d0edc(self);
     return self;
 }
@@ -171,7 +171,7 @@ Ov014Act_0220f9d0 *Ov014Act_0220f9d0_DtorDelete(Ov014Act_0220f9d0 *self) {
     FLD(void *, self, 0) = data_ov014_02217e6c;
     Ov014_Free154(self);
     Ov014_StopSnd();
-    func_ov003_021cef0c((u8 *)self + 0x124);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x124);
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;

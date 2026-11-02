@@ -58,18 +58,18 @@ void func_ov003_021dcb54(void) {
 
 }
 
-void *func_ov003_021dcb58(void *self) {
+void *Ov003ActVt_021f7d4c_DtorDelete(void *self) {
     func_ov000_0219429c(self);
     func_0203de1c(self);
     return self;
 }
 
-void *func_ov003_021dcb74(void *self) {
+void *Ov003ActVt_021f7d4c_Dtor(void *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void func_ov003_021dcb88(Ov003Obj24 *self) {
+void Ov003ActVt_021f7fac_Init(Ov003Obj24 *self) {
     Ov003Unit *unit;
     func_ov000_0219433c(self);
     unit = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
@@ -180,7 +180,7 @@ static inline void Ov003GtS44_Clear(Ov003GtS44 *s) {
     }
 }
 
-void func_ov003_021dcbc8(Ov003Gate *self) {
+void Ov003ActVt_021f7fac_Start(Ov003Gate *self) {
     void *obj;
     func_ov000_02194758(self);
     obj = self->unk_58;

@@ -79,7 +79,7 @@ void func_ov003_021ed058(Ov003Obj *self) {
 extern u32 data_ov003_021f6c04;
 extern void func_ov003_021dae58(void *self);
 
-void func_ov003_021ed140(Ov003Obj *self) {
+void Ov003ActVt_021f9a80_Init(Ov003Obj *self) {
     func_ov003_021dae58(self);
     self->unk_60 = &data_ov003_021f6c04;
 }

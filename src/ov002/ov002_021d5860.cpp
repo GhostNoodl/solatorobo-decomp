@@ -2,7 +2,7 @@
 
 extern "C" {
 
-VObject *func_ov002_021d5860(VObject *self) {
+VObject *Ov002Vt_021efca4_DtorDelete(VObject *self) {
     *(VFunc **)self = data_ov000_021caec8;
     self->v0x2c();
     *(VFunc **)self = data_ov000_021cac60;

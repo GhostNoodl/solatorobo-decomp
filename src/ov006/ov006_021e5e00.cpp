@@ -43,7 +43,7 @@ ov006_ObjectHolder *func_ov006_021e5e20(ov006_ObjectHolder *self) {
     return self;
 }
 
-ov006_ObjectHolder *func_ov006_021e5e84(ov006_ObjectHolder *self) {
+ov006_ObjectHolder *ov006_ObjectHolder_DtorDelete(ov006_ObjectHolder *self) {
     ov006_ObjectHolder_Dtor(self);
     func_0203de1c(self);
     return self;
@@ -91,7 +91,7 @@ void func_ov006_021e5fec(void) {
     ov006_Menu_UpdateConnection();
 }
 
-u32 func_ov006_021e60b4(void *dst, u32 size) {
+u32 ov006_CopyOwnerInfo(void *dst, u32 size) {
     ov006_TempBuffer buf;
     OS_GetOwnerInfo(&buf);
     MI_CpuCopy8(buf.data, dst, size);

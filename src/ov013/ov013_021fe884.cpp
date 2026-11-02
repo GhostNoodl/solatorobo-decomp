@@ -16,7 +16,7 @@ extern void func_ov000_02195d88(Ov013Obj *self);
 extern void func_ov000_02196060(Ov013Actor *self);
 extern Ov013Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern Ov013Actor *func_ov000_0218e4cc(void *mgr, u16 id);
-extern BOOL func_ov003_021d98bc(void *a, const Ov013Spot *b);
+extern BOOL Ov003Vec_Equal(void *a, const Ov013Spot *b);
 
 void func_ov013_021fe884(Ov013ActEx_021fdb70 *self) {
     if (self->unk_40->state == 0) {

@@ -42,7 +42,7 @@ extern void func_ov000_02194758(void *self);
 extern void func_0203de1c(void *p);
 extern void *func_ov000_0219429c(void *p);
 
-void func_ov003_021ef558(Ov003Obj *self) {
+void Ov003ActVt_021f9d78_Start(Ov003Obj *self) {
     BOOL keep;
     s16 sub;
     s16 mode;
@@ -67,51 +67,51 @@ void func_ov003_021ef558(Ov003Obj *self) {
     func_ov000_02194758(self);
 }
 
-void *func_ov003_021ef60c(void *self) {
+void *Ov003ActVt_021f9f40_Dtor(void *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void *func_ov003_021ef620(void *self) {
-    func_ov000_0219429c(self);
-    func_0203de1c(self);
-    return self;
-}
-
-void *func_ov003_021ef63c(void *self) {
-    func_ov000_0219429c(self);
-    return self;
-}
-
-void *func_ov003_021ef650(void *self) {
+void *Ov003ActVt_021f9f40_DtorDelete(void *self) {
     func_ov000_0219429c(self);
     func_0203de1c(self);
     return self;
 }
 
-void *func_ov003_021ef66c(void *self) {
+void *Ov003ActVt_021f9ea8_Dtor(void *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void *func_ov003_021ef680(void *self) {
-    func_ov000_0219429c(self);
-    func_0203de1c(self);
-    return self;
-}
-
-void *func_ov003_021ef69c(void *self) {
-    func_ov000_0219429c(self);
-    return self;
-}
-
-void *func_ov003_021ef6b0(void *self) {
+void *Ov003ActVt_021f9ea8_DtorDelete(void *self) {
     func_ov000_0219429c(self);
     func_0203de1c(self);
     return self;
 }
 
-void func_ov003_021ef6cc(Ov003Actor *self) {
+void *Ov003ActVt_021f9ce0_Dtor(void *self) {
+    func_ov000_0219429c(self);
+    return self;
+}
+
+void *Ov003ActVt_021f9ce0_DtorDelete(void *self) {
+    func_ov000_0219429c(self);
+    func_0203de1c(self);
+    return self;
+}
+
+void *Ov003ActVt_021f9d78_Dtor(void *self) {
+    func_ov000_0219429c(self);
+    return self;
+}
+
+void *Ov003ActVt_021f9d78_DtorDelete(void *self) {
+    func_ov000_0219429c(self);
+    func_0203de1c(self);
+    return self;
+}
+
+void Ov003ActVt_021fa07c_Start(Ov003Actor *self) {
     func_ov000_02194758(self);
     self->state->flags |= 0x100000000ULL;
     self->lastPos.x = self->pos.x;

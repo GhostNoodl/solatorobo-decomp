@@ -32,7 +32,7 @@ void func_ov003_021d9a00(Ov003Vec *out, s32 angle, const Ov003Vec *in) {
     MTX_MultVec33(in, &m, out);
 }
 
-s32 func_ov003_021d9a80(const Ov003Vec *a, const Ov003Vec *b) {
+s32 Ov003Vec_DistSq(const Ov003Vec *a, const Ov003Vec *b) {
     s32 dx = b->x - a->x;
     s32 dy = b->y - a->y;
     s32 dz = b->z - a->z;
@@ -68,7 +68,7 @@ void func_ov003_021d9b8c(Ov003Vec *out, const Ov003Vec *in, s32 max, s32 sub) {
     }
 }
 
-u16 func_ov003_021d9c38(const Ov003Vec *v) {
+u16 Ov003Vec_Yaw(const Ov003Vec *v) {
     return FX_Atan2(v->x, v->z);
 }
 
@@ -76,11 +76,11 @@ u16 func_ov003_021d9c50(const Ov003Vec *a, const Ov003Vec *b) {
     return FX_Atan2(a->x - b->x, a->z - b->z);
 }
 
-u16 func_ov003_021d9c74(const Ov003Vec *v) {
+u16 Ov003Vec_Pitch(const Ov003Vec *v) {
     return Ov003_Pitch(v->y);
 }
 
-void func_ov003_021d9cd0(Ov003Vec *out, const Ov003Vec *in, s32 angle) {
+void Ov003Vec_RotY(Ov003Vec *out, const Ov003Vec *in, s32 angle) {
     Ov003Mtx33 m;
     MTX_RotY33_(&m, OV003_SIN(angle), OV003_COS(angle));
     MTX_MultVec33(in, &m, out);

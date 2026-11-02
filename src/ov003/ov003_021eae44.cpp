@@ -307,7 +307,7 @@ void func_ov003_021eae44(Ov003Obj *self) {
     func_ov000_02190a80(&self->anim, (void *)0x1000);
 }
 
-BOOL func_ov003_021eae8c(Ov003Obj *self) {
+BOOL Ov003ActVt_021f9834_Draw(Ov003Obj *self) {
     BOOL r;
     BOOL done = FALSE;
     if (self->unk_cc_7) {
@@ -327,7 +327,7 @@ BOOL func_ov003_021eae8c(Ov003Obj *self) {
     return r;
 }
 
-void func_ov003_021eaf78(Ov003ObjB *self) {
+void Ov003ActVt_021f9704_Init(Ov003ObjB *self) {
     func_ov000_0219433c(self);
     self->unk_310 = 0;
     if (self->unk_1a != 0) {
@@ -349,7 +349,7 @@ void func_ov003_021eaf78(Ov003ObjB *self) {
     self->unk_30c = 0;
 }
 
-BOOL func_ov003_021eb028(Ov003ObjB *self) {
+BOOL Ov003ActVt_021f9704_IsReady(Ov003ObjB *self) {
     BOOL r = func_ov000_021946f8(self);
     Ov003Unit *u;
     if (self->unk_310 && self->res >= 0 && !func_ov000_0218f110(&self->res)) {
@@ -363,7 +363,7 @@ BOOL func_ov003_021eb028(Ov003ObjB *self) {
     return r;
 }
 
-void func_ov003_021eb090(Ov003ObjB *self) {
+void Ov003ActVt_021f9704_Start(Ov003ObjB *self) {
     u8 *x;
     BOOL f;
     s32 v;
@@ -412,7 +412,7 @@ void func_ov003_021eb090(Ov003ObjB *self) {
     self->unk_18 = -1;
 }
 
-BOOL func_ov003_021eb1f8(Ov003ObjB *self) {
+BOOL Ov003ActVt_021f9704_Draw(Ov003ObjB *self) {
     BOOL r = FALSE;
     if (self->unk_310) {
         Ov003Rot3 rot;
@@ -438,7 +438,7 @@ BOOL func_ov003_021eb1f8(Ov003ObjB *self) {
     return r;
 }
 
-void func_ov003_021eb380(Ov003ObjB *self) {
+void Ov003ActVt_021f9704_Update(Ov003ObjB *self) {
     Ov003Player *pl;
     Ov003Ctl *ctl;
     if (self->unk_310) {

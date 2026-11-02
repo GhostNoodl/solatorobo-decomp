@@ -119,19 +119,19 @@ Ov003Entry *func_ov003_021cf278(Ov003EntryList *self, u16 id, u16 val) {
     return self->cur;
 }
 
-Ov003FlagObj *func_ov003_021cf2bc(Ov003FlagObj *self) {
+Ov003FlagObj *Ov003Vt_021f79a8_Ctor(Ov003FlagObj *self) {
     *(void **)self = &data_ov003_021f79a8;
     self->active = 0;
     return self;
 }
 
-Ov003FlagObj *func_ov003_021cf2d8(Ov003FlagObj *self) {
+Ov003FlagObj *Ov003Vt_021f79a8_Dtor(Ov003FlagObj *self) {
     *(void **)self = &data_ov003_021f79a8;
     self->Release();
     return self;
 }
 
-Ov003FlagObj *func_ov003_021cf300(Ov003FlagObj *self) {
+Ov003FlagObj *Ov003Vt_021f79a8_DtorDelete(Ov003FlagObj *self) {
     *(void **)self = &data_ov003_021f79a8;
     self->Release();
     func_0203de1c(self);
@@ -204,7 +204,7 @@ Ov003Group *func_ov003_021cf428(Ov003Group *self) {
 }
 
 #pragma force_active on
-BOOL func_ov003_021cf458(Ov003Group *self) {
+BOOL Ov003Group_Init(Ov003Group *self) {
     self->active = 1;
     self->unk_02 = 0;
     self->list4 = NULL;

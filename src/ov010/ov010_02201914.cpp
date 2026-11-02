@@ -33,7 +33,7 @@ extern void *func_ov003_021d7858(void *p);
 extern BOOL func_ov003_021d7894(void *p, s32 a, s32 b);
 extern void func_ov003_021d7948(void *p);
 extern Ov010TaskNode *func_ov003_021d7980(void *p);
-extern void func_ov003_021d79ac(void *p, Ov010TaskNode *n);
+extern void Ov003Pool_Free(void *p, Ov010TaskNode *n);
 void func_ov010_02201b48(Ov010TaskList *o);
 
 Ov010TaskList *func_ov010_02201914(Ov010TaskList *o) {

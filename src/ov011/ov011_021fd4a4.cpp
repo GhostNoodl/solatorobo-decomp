@@ -106,7 +106,7 @@ Ov011Node *func_ov011_021fdadc(Ov011Node *head, Ov011Node *n);
 void func_ov011_02201758(void *p);
 void func_ov011_021fb684(void *p);
 void func_ov011_021fa8c8(void *p);
-void func_ov003_021d9cd0(Ov011Vec *out, const Ov011Vec *in, s32 angle);
+void Ov003Vec_RotY(Ov011Vec *out, const Ov011Vec *in, s32 angle);
 void VEC_MultAdd(s32 scale, const Ov011Vec *dir, const Ov011Vec *base, Ov011Vec *out);
 
 static inline void Ov011Ent_Remove(Ov011Ent *e, void *k) {
@@ -251,7 +251,7 @@ void func_ov011_021fd638(Ov011Scene *self) {
                     ang = 0xffff - ang;
                 }
             }
-            func_ov003_021d9cd0(&v, &data_ov011_02207284, ang);
+            Ov003Vec_RotY(&v, &data_ov011_02207284, ang);
             v.x = Ov011_FxMul(v.x, sc);
             v.z = Ov011_FxMul(v.z, sc);
             v.y = y;

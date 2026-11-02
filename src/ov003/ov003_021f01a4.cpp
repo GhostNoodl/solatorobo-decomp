@@ -143,7 +143,7 @@ static inline BOOL Ov003Fx_GameIdle(void) {
     return TRUE;
 }
 
-void func_ov003_021f01a4(Ov003FxProp *self) {
+void Ov003ActVt_021f9fe4_Start(Ov003FxProp *self) {
     Ov003FxUnit *u;
     const Ov003FxEntry *e;
     Ov003FxObj *fx;

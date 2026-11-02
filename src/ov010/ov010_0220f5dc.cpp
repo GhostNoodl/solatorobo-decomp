@@ -235,7 +235,7 @@ extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
 extern void func_ov000_0218a358(void *a, const void *b, Ov010Rot *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern Robo021ca458 *func_ov000_0219bf90(void);
-extern u16 func_ov003_021d9c38(const Ov010Vec *v);
+extern u16 Ov003Vec_Yaw(const Ov010Vec *v);
 extern void func_ov003_021d9dbc(void *out, const Ov010Vec *a, const void *b, s32 dist, s32 yoff);
 extern Ov010V *func_ov010_02203ee0(s32 a, const void *v);
 
@@ -338,11 +338,11 @@ extern void *data_0214a420;
 
 extern void func_ov003_021d0c1c(void *self);
 extern void *func_ov003_021d0edc(void *self);
-extern void *func_ov003_021d7f0c(void *p);
+extern void *Ov003Vt_021f7d10_Ctor(void *p);
 extern void *func_ov010_02201914(void *p);
-extern void *func_ov003_021cf2bc(void *p);
+extern void *Ov003Vt_021f79a8_Ctor(void *p);
 extern void func_ov003_021d8f24(void *p);
-extern void *func_ov003_021d8910(void *p);
+extern void *Ov003Vt_021f7cf4_Ctor(void *p);
 extern void func_ov003_021cf418(void *p);
 extern void func_ov003_021cf340(const char *p);
 extern void func_ov003_021cf3fc(s32 a);
@@ -351,26 +351,26 @@ extern void func_ov010_021fedd4(Obj021fa860 *self);
 extern void func_02049bb4(void *a, s32 b);
 extern void func_ov010_021fee70(Obj021fa860 *self);
 extern void *func_ov003_021cf428(void *p);
-extern void *func_ov003_021d8928(void *p);
+extern void *Ov003Vt_021f7cf4_Dtor(void *p);
 extern void func_ov003_021d8f34(void *p);
-extern void *func_ov003_021cf2d8(void *p);
+extern void *Ov003Vt_021f79a8_Dtor(void *p);
 extern void *func_ov010_02201944(void *p);
-extern void *func_ov003_021d7fc0(void *p);
+extern void *Ov003Vt_021f7d10_Dtor(void *p);
 extern void func_02065804(void *a, s32 b);
 extern BOOL func_ov000_0218cf5c(void *self);
 extern void func_02049564(void *a, s32 b, s32 c);
 extern void func_02049678(void *a, s32 b, s32 c, s32 d);
 extern BOOL func_0204985c(void *a);
 
-void *func_ov010_021fa860(Obj021fa860 *self) {
+void *Ov010ActVt_0220fccc_Ctor(Obj021fa860 *self) {
     func_ov003_021d0c1c(self);
     *(void * *)self = data_ov010_0220fccc;
     self->unk_138.b0 = 0;
-    func_ov003_021d7f0c((u8 *)self + 0x150);
+    Ov003Vt_021f7d10_Ctor((u8 *)self + 0x150);
     func_ov010_02201914((u8 *)self + 0x17c);
-    func_ov003_021cf2bc((u8 *)self + 0x19c);
+    Ov003Vt_021f79a8_Ctor((u8 *)self + 0x19c);
     func_ov003_021d8f24((u8 *)self + 0x1ac);
-    func_ov003_021d8910((u8 *)self + 0x1c0);
+    Ov003Vt_021f7cf4_Ctor((u8 *)self + 0x1c0);
     func_ov003_021cf418((u8 *)self + 0x1d0);
     func_ov003_021cf340(data_ov010_0220fbd0);
     func_ov003_021cf3fc(1);
@@ -388,11 +388,11 @@ static inline void Ov010_021fa91c_Body(Obj021fa860 *self) {
     func_02049bb4(data_02097e4c, self->unk_11c);
     func_ov010_021fee70(self);
     func_ov003_021cf428((u8 *)self + 0x1d0);
-    func_ov003_021d8928((u8 *)self + 0x1c0);
+    Ov003Vt_021f7cf4_Dtor((u8 *)self + 0x1c0);
     func_ov003_021d8f34((u8 *)self + 0x1ac);
-    func_ov003_021cf2d8((u8 *)self + 0x19c);
+    Ov003Vt_021f79a8_Dtor((u8 *)self + 0x19c);
     func_ov010_02201944((u8 *)self + 0x17c);
-    func_ov003_021d7fc0((u8 *)self + 0x150);
+    Ov003Vt_021f7d10_Dtor((u8 *)self + 0x150);
     if (self->unk_138.b0) {
         func_02065804(data_0214a420, self->unk_148);
         self->unk_138.b0 = 0;
@@ -400,18 +400,18 @@ static inline void Ov010_021fa91c_Body(Obj021fa860 *self) {
     func_ov003_021d0edc(self);
 }
 
-void *func_ov010_021fa91c(Obj021fa860 *self) {
+void *Ov010ActVt_0220fccc_Dtor(Obj021fa860 *self) {
     Ov010_021fa91c_Body(self);
     return self;
 }
 
-void *func_ov010_021fa9c4(Obj021fa860 *self) {
+void *Ov010ActVt_0220fccc_DtorDelete(Obj021fa860 *self) {
     Ov010_021fa91c_Body(self);
     func_0203de1c(self);
     return self;
 }
 
-BOOL func_ov010_021faa74(Obj021fa860 *self) {
+BOOL Ov010ActVt_0220fccc_IsReady(Obj021fa860 *self) {
     BOOL r = func_ov000_0218cf5c(self);
     if (!self->unk_f0.b0) {
         self->unk_f0.b0 = 1;
@@ -434,7 +434,7 @@ extern void MI_Copy36B(void *m, void *b);
 extern u16 func_ov003_021d16cc(void *self);
 extern void func_ov010_0220166c(void *p);
 
-BOOL func_ov010_021faaf0(Obj021fa860 *self) {
+BOOL Ov010ActVt_0220fccc_Draw(Obj021fa860 *self) {
     BOOL r;
     u8 m1[0x24];
     u8 m2[0x24];
@@ -656,15 +656,15 @@ extern BOOL func_ov010_022019ac(void *p);
 extern BOOL func_ov003_021d8f4c(void *p);
 extern void func_ov003_021d95e8(void *p, void *tbl, u16 n);
 extern void func_0203f2b8(void *p);
-extern BOOL func_ov003_021d8980(void *p);
+extern BOOL Ov003StateMachine_Init(void *p);
 extern void func_ov003_021d8a30(void *p, u8 id, void *st);
 extern void *func_ov010_02200d94(void *p);
 extern BOOL func_ov010_02200dcc(void *p, u16 a, u16 b, u8 c, u16 d);
 extern void *func_ov000_02198328(void *p);
 extern void func_ov003_021da48c(void *p, s32 a);
-extern void *func_ov003_021d8b88(void *p);
+extern void *Ov003Vt_021f7cd8_Ctor(void *p);
 extern BOOL func_ov003_021d8c10(void *p);
-extern BOOL func_ov003_021cf458(void *p);
+extern BOOL Ov003Group_Init(void *p);
 extern void *func_ov003_021cf52c(void *g, void *obj, u16 a, u16 b);
 extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
 extern void func_ov000_0218b700(void *u, s32 a, s32 b);
@@ -747,7 +747,7 @@ static inline void Ov010e_StartE(u8 *o) {
     }
 }
 
-void func_ov010_021fb018(Obj021fa860 *self) {
+void Ov010ActVt_0220fccc_Start(Obj021fa860 *self) {
     u32 saved;
     void *o;
     u16 k;
@@ -796,7 +796,7 @@ void func_ov010_021fb018(Obj021fa860 *self) {
     self->unk_110 = Ov010e_NewVt(8, data_ov010_0220fcac);
     self->unk_114 = Ov010e_NewVt(8, data_ov010_0220fc8c);
     self->unk_118 = Ov010e_NewC();
-    func_ov003_021d8980((u8 *)self + 0x1c0);
+    Ov003StateMachine_Init((u8 *)self + 0x1c0);
     func_ov003_021d8a30((u8 *)self + 0x1c0, 1, self->unk_110);
     func_ov003_021d8a30((u8 *)self + 0x1c0, 2, self->unk_114);
     func_ov003_021d8a30((u8 *)self + 0x1c0, 3, self->unk_118);
@@ -812,11 +812,11 @@ void func_ov010_021fb018(Obj021fa860 *self) {
     Ov010e_StartE((u8 *)o);
     o = func_0203dd9c(0x20);
     if (o != NULL) {
-        o = func_ov003_021d8b88(o);
+        o = Ov003Vt_021f7cd8_Ctor(o);
     }
     self->unk_10c = o;
     func_ov003_021d8c10(o);
-    func_ov003_021cf458((u8 *)self + 0x1d0);
+    Ov003Group_Init((u8 *)self + 0x1d0);
     k = data_ov003_021f435c;
     func_ov003_021cf52c((u8 *)self + 0x1d0, self->unk_104, k, k);
     func_ov003_021cf52c((u8 *)self + 0x1d0, self->unk_108, k, k);
@@ -923,7 +923,7 @@ extern Robo021ca458 *func_ov000_0219bf90(void);
 extern void func_ov003_021d9a00(Ov010Vec *out, s32 angle, const Ov010Vec *in);
 extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *out);
 extern void func_ov003_021d88ec(Ov010Cmd *c);
-extern void func_ov003_021d8b60(void *p, Ov010Cmd *c);
+extern void Ov003StateMachine_SendMessage(void *p, Ov010Cmd *c);
 extern void func_ov003_021cf4ac(void *p);
 extern void func_ov010_021ffa6c(void *p);
 extern void func_ov010_02201064(void *p);
@@ -1035,13 +1035,13 @@ void func_ov010_021fb5c8(Ov010Cls *self) {
         func_ov003_021d88ec(&cmd);
         cmd.a = 1;
         cmd.b = 0;
-        func_ov003_021d8b60((u8 *)self + 0x1c0, &cmd);
+        Ov003StateMachine_SendMessage((u8 *)self + 0x1c0, &cmd);
     } else {
         Ov010Cmd cmd;
         func_ov003_021d88ec(&cmd);
         cmd.a = 1;
         cmd.b = 1;
-        func_ov003_021d8b60((u8 *)self + 0x1c0, &cmd);
+        Ov003StateMachine_SendMessage((u8 *)self + 0x1c0, &cmd);
     }
     func_ov003_021cf4ac((u8 *)self + 0x1d0);
     func_ov010_021ffa6c(&self->unk_138);
@@ -1074,7 +1074,7 @@ extern void func_ov003_021da48c(void *p, s32 a);
 extern BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
 
-void func_ov010_021fb95c(Obj021fa860 *self) {
+void Ov010ActVt_0220fccc_Update(Obj021fa860 *self) {
     BOOL a;
     BOOL b;
     if (!func_ov003_021da03c(self)) {
@@ -1180,11 +1180,11 @@ extern void *data_02097e4c;
 extern BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
 extern void func_ov003_021d88ec(Ov010Cmd *c);
-extern void func_ov003_021d8b60(void *p, Ov010Cmd *c);
+extern void Ov003StateMachine_SendMessage(void *p, Ov010Cmd *c);
 extern void func_ov003_021d969c(void *p, s32 a);
 extern s32 VEC_Distance(const Ov010Vec *a, const Ov010Vec *b);
 extern void func_ov003_021d9dbc(void *out, Ov010Vec *dir, void *in, s32 speed, s32 e);
-extern BOOL func_ov003_021d98bc(Ov010Vec *a, void *b);
+extern BOOL Ov003Vec_Equal(Ov010Vec *a, void *b);
 extern void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 static inline void Ov010_Cmd(void *dst, s32 a, s32 b) {
@@ -1192,7 +1192,7 @@ static inline void Ov010_Cmd(void *dst, s32 a, s32 b) {
     func_ov003_021d88ec(&cmd);
     cmd.a = a;
     cmd.b = b;
-    func_ov003_021d8b60(dst, &cmd);
+    Ov003StateMachine_SendMessage(dst, &cmd);
 }
 
 static inline s32 Ov010_Clamp(s32 v, s32 max) {
@@ -1258,7 +1258,7 @@ void func_ov010_021fbb40(void *self) {
         }
         FLD(s32, self, 0x9c) = v;
         func_ov003_021d9dbc((u8 *)self + 0x70, &p->target, (u8 *)self + 0x70, FLD(s32, self, 0x9c), 0);
-        if (func_ov003_021d98bc(&p->target, (u8 *)self + 0x70) || FLD(s32, self, 0x9c) < p->min) {
+        if (Ov003Vec_Equal(&p->target, (u8 *)self + 0x70) || FLD(s32, self, 0x9c) < p->min) {
             FLD(u16, FLD(u8 *, self, 0x40), 0) = 100;
         }
         break;
@@ -1297,10 +1297,10 @@ extern const s16 data_ov010_0220fa24;
 extern s16 data_ov010_0220fa20;
 extern u16 data_ov010_0220fa28;
 extern void func_ov003_021d88ec(Ov010Cmd *c);
-extern void func_ov003_021d8b60(void *p, Ov010Cmd *c);
+extern void Ov003StateMachine_SendMessage(void *p, Ov010Cmd *c);
 extern BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-extern u16 func_ov003_021d9c74(Ov010Vec *a);
-extern BOOL func_ov003_021d98bc(void *a, const Ov010Vec *b);
+extern u16 Ov003Vec_Pitch(Ov010Vec *a);
+extern BOOL Ov003Vec_Equal(void *a, const Ov010Vec *b);
 extern void func_ov010_02201b48(void *p);
 extern void *func_ov010_02201ad4(void *p, void *fn, u32 time);
 extern void func_ov010_02201c9c(void);
@@ -1365,7 +1365,7 @@ static inline void Ov010e_Cmd(void *dst, s32 a, s32 b) {
     func_ov003_021d88ec(&cmd);
     cmd.a = a;
     cmd.b = b;
-    func_ov003_021d8b60(dst, &cmd);
+    Ov003StateMachine_SendMessage(dst, &cmd);
 }
 
 static inline s32 Ov010e_Clamp(s32 v, s32 max) {
@@ -1425,8 +1425,8 @@ void func_ov010_021fbda0(Obj021fa860 *self) {
         q.y = self->pos.y + 0x6000;
         q.z = self->pos.z;
         e = func_02065f88(0x192, &q);
-        a = func_ov003_021d9c74(&d10);
-        e->v34(a, func_ov003_021d9c38(&d10), 0);
+        a = Ov003Vec_Pitch(&d10);
+        e->v34(a, Ov003Vec_Yaw(&d10), 0);
         e->v0c(0x3000);
         self->unk_40->st = 11;
         func_02049f44(data_02097e4c, 0x29, &self->pos, 0);
@@ -1443,7 +1443,7 @@ void func_ov010_021fbda0(Obj021fa860 *self) {
             func_ov000_02190cb0(self->unk_38, self->unk_fc->anim1, data_ov010_0220fa24, 0);
         }
         func_ov003_021d9dbc(&self->pos, &self->unk_fc->a, &self->pos, self->unk_9c, 0);
-        if (func_ov003_021d98bc(&self->pos, &self->unk_fc->a) || self->unk_9c < 0x10) {
+        if (Ov003Vec_Equal(&self->pos, &self->unk_fc->a) || self->unk_9c < 0x10) {
             self->unk_40->st = 0x14;
         }
         break;
@@ -2117,7 +2117,7 @@ void func_ov010_021fd694(Obj021fa860 *self) {
         VEC_MultAdd(10, &data_ov010_0220ec44, &self->unk_120, &self->unk_120);
         func_ov003_021d9aec(&self->unk_120, &self->unk_120, 0x180);
         VEC_Add(&self->pos, &self->unk_120, &self->pos);
-        self->rot_y = func_01ffc128(func_ov003_021d9c38(&data_ov010_0220ed04), self->rot_y, 0x80, 1, 0x8000);
+        self->rot_y = func_01ffc128(Ov003Vec_Yaw(&data_ov010_0220ed04), self->rot_y, 0x80, 1, 0x8000);
         if (self->unk_40->timer > 0x28) {
             self->unk_93.b4 = 0;
         }
@@ -2139,7 +2139,7 @@ void func_ov010_021fd694(Obj021fa860 *self) {
         func_02065f88(4, &pos2)->v0c(0x3000);
         e = func_02065f88(0x131, &pos2);
         e->v0c(0x2800);
-        e->v34(0, func_ov003_021d9c38(&data_ov010_0220fa64), 0);
+        e->v34(0, Ov003Vec_Yaw(&data_ov010_0220fa64), 0);
         func_02065f88(0x68, &pos2)->v0c(0x4800);
         func_02049a48(data_02097e4c, 0xb05, -1, -1, -1);
         func_02049f44(data_02097e4c, 0x19, &pos2, 0);
@@ -2297,7 +2297,7 @@ void func_ov010_021fe084(Obj021fe084 *self) {
         func_ov003_021d88ec(&cmd);
         cmd.a = 4;
         cmd.b = 1;
-        func_ov003_021d8b60((u8 *)self + 0x1c0, &cmd);
+        Ov003StateMachine_SendMessage((u8 *)self + 0x1c0, &cmd);
         Ov010_SetAnim(self, self->unk_38, data_ov010_0220ebdc, 0x266);
         self->unk_40->st = 10;
         break;
@@ -2383,7 +2383,7 @@ static inline void Ov010h_Cmd(Obj021fe084 *self) {
     func_ov003_021d88ec(&cmd);
     cmd.a = 4;
     cmd.b = 1;
-    func_ov003_021d8b60((u8 *)self + 0x1c0, &cmd);
+    Ov003StateMachine_SendMessage((u8 *)self + 0x1c0, &cmd);
 }
 
 void func_ov010_021fe2a4(Obj021fe084 *self) {
@@ -2602,7 +2602,7 @@ void func_ov010_021fe9c8(Obj021fe084 *self) {
         func_ov003_021d88ec(&cmd);
         cmd.a = 2;
         cmd.b = 1;
-        func_ov003_021d8b60((u8 *)self + 0x1c0, &cmd);
+        Ov003StateMachine_SendMessage((u8 *)self + 0x1c0, &cmd);
         self->unk_40->st++;
     }
     self->unk_40->timer++;
@@ -2641,7 +2641,7 @@ void func_ov010_021febfc(Obj021fe084 *self) {
         func_ov003_021d88ec(&cmd);
         cmd.a = 4;
         cmd.b = 1;
-        func_ov003_021d8b60((u8 *)self + 0x1c0, &cmd);
+        Ov003StateMachine_SendMessage((u8 *)self + 0x1c0, &cmd);
         break;
     case 2:
         func_ov003_021d8a7c((u8 *)self + 0x1c0, 1);
@@ -2879,7 +2879,7 @@ void func_ov010_021ff21c(Obj021ff124 *self) {
     Ov010Vec d;
     Ov010_VecSub(&self->unk_0c, &pp, &d);
     Ov010Rot r = data_ov010_0220ebea;
-    r.y = func_ov003_021d9c38(&d);
+    r.y = Ov003Vec_Yaw(&d);
     s32 dist = VEC_Distance(&pp, &self->unk_0c);
     func_ov000_0218a358((u8 *)data_ov000_021ccd54 + 0xf4, &self->unk_0c, &r, self->unk_08 + dist + 0x10000, 0, 0x1000, 0x1000, 1);
 }
@@ -2907,7 +2907,7 @@ void func_ov010_021ff404(Ov010Shake *self) {
     if (self->active) {
         switch (self->state) {
         case 0: {
-            u16 r = func_ov003_021d9c38(&self->dir);
+            u16 r = Ov003Vec_Yaw(&self->dir);
             self->a.x = Ov010s_Mul64(self->dir.x, -0x1000);
             self->a.y = Ov010s_Mul64(self->dir.y, -0x1000);
             self->a.z = Ov010s_Mul64(self->dir.z, -0x1000);

@@ -41,23 +41,23 @@ extern void func_0203df0c(void *p);
 extern void *func_0203de84(u32 size, s32 align);
 extern void *func_ov000_0218e640(void *mgr, u16 id);
 
-void *func_ov003_021d7780(void *self) {
+void *Ov003ActVt_021f7c0c_Dtor(void *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-void *func_ov003_021d7794(void *self) {
+void *Ov003ActVt_021f7c0c_DtorDelete(void *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
 }
 
-void *func_ov003_021d77b0(void *self) {
+void *Ov003ActVt_021f7b60_Dtor(void *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-void *func_ov003_021d77c4(void *self) {
+void *Ov003ActVt_021f7b60_DtorDelete(void *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;

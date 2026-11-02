@@ -2,6 +2,6 @@
 
 extern "C" {
 
-void func_ov002_021d8b18(Vec2 *dst, const Vec2 &src) { *dst = src; }
+void Ov002_CopyVec2(Vec2 *dst, const Vec2 &src) { *dst = src; }
 
 }

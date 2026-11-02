@@ -135,7 +135,7 @@ void func_ov000_0214c1ac(void);
 BOOL func_ov000_0214bc6c(void);
 BOOL func_ov000_0214c270(void);
 
-Ov008V *func_ov008_021cdab4(Ov008V *self) {
+Ov008V *Ov008Menu_DtorDelete(Ov008V *self) {
     OV008_SET_VT(self, &data_ov000_021caec8);
     self->v2c();
     OV008_SET_VT(self, &data_ov000_021cac60);

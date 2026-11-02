@@ -217,7 +217,7 @@ void func_ov003_021df0c8(Ov003BgProp *self) {
     }
 }
 
-Ov003Prop *func_ov003_021df370(Ov003Prop *self) {
+Ov003Prop *Ov003ActVt_021f8350_Dtor(Ov003Prop *self) {
     self->vtbl = data_ov003_021f8350;
     if (self->unk_d0 >= 0) {
         func_02049bb4(data_02097e4c, self->unk_d0);
@@ -226,7 +226,7 @@ Ov003Prop *func_ov003_021df370(Ov003Prop *self) {
     return self;
 }
 
-Ov003Prop *func_ov003_021df3b0(Ov003Prop *self) {
+Ov003Prop *Ov003ActVt_021f8350_DtorDelete(Ov003Prop *self) {
     self->vtbl = data_ov003_021f8350;
     if (self->unk_d0 >= 0) {
         func_02049bb4(data_02097e4c, self->unk_d0);
@@ -236,7 +236,7 @@ Ov003Prop *func_ov003_021df3b0(Ov003Prop *self) {
     return self;
 }
 
-void func_ov003_021df3f8(Ov003Prop *self) {
+void Ov003ActVt_021f8350_Start(Ov003Prop *self) {
     Ov003Unit *u;
     s32 s;
     func_ov000_02194758(self);

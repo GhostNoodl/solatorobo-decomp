@@ -24,7 +24,7 @@ typedef struct ov006_Task021d86a0 {
 
 extern "C" {
 
-ov006_Win021d86a0 *func_ov006_021db8c4(ov006_Win021d86a0 *self);
+ov006_Win021d86a0 *ov006_Window_Ctor(ov006_Win021d86a0 *self);
 int func_ov006_021d88f8(void *a, void *b);
 
 void func_ov006_021d86a0(ov006_Task021d86a0 *self, u16 a, int b) {
@@ -32,7 +32,7 @@ void func_ov006_021d86a0(ov006_Task021d86a0 *self, u16 a, int b) {
     OV006_DELETE_OBJECT(self->unk34);
     w = (ov006_Win021d86a0 *)func_0203dd9c(0x1e8);
     if (w != NULL) {
-        w = func_ov006_021db8c4(w);
+        w = ov006_Window_Ctor(w);
     }
     self->unk34 = w;
     self->unk34->unk1D8 = a;

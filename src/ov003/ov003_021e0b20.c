@@ -45,7 +45,7 @@ extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_ov000_02191008(void *p);
 
-void func_ov003_021e0b20(Ov003Prop *self) {
+void Ov003ActVt_021f8058_Draw(Ov003Prop *self) {
     Ov003Save *s = data_02097d48;
     u8 v = s->unk_8b3;
     func_02043d9c(s->unk_8b0);
@@ -53,7 +53,7 @@ void func_ov003_021e0b20(Ov003Prop *self) {
     func_ov000_02194c08(self);
 }
 
-void func_ov003_021e0b54(Ov003Prop *self) {
+void Ov003ActVt_021f82b8_Start(Ov003Prop *self) {
     func_ov000_02194758(self);
     func_ov000_02198360(self->unk_40, 0x20, 0);
     func_ov000_02191008(self->unk_38);

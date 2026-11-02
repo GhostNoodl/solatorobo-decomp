@@ -123,7 +123,7 @@ void func_ov003_021dc148(Ov003EmA *self) {
     func_ov000_02195d88(self);
 }
 
-void func_ov003_021dc1a8(Ov003EmB *self) {
+void Ov003ActVt_021f7d4c_Start(Ov003EmB *self) {
     Ov003EmDefB *def;
     u8 i;
     func_ov000_02194758(self);

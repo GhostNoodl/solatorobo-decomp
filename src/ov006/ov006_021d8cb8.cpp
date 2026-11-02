@@ -108,7 +108,7 @@ u8 func_ov006_021d8e30(const u16 *digits) {
     return count;
 }
 
-ov006_PriceEntry *func_ov006_021d8f20(u32 id) {
+ov006_PriceEntry *ov006_GetPriceEntry(u32 id) {
     ov006_PriceEntry *entry = NULL;
     if (id != 0 && id < 11) {
         entry = &data_ov006_021eb7c4[id];

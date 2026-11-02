@@ -16,7 +16,7 @@ void func_ov002_021ec0cc(void *self) {
     FIELD(self, 0x8, s16)++;
 }
 
-void *func_ov002_021ec13c(void *self) {
+void *Ov002Vt_021f0cf8_Ctor(void *self) {
     *(VFunc **)self = data_ov002_021f0cf8;
     FIELD(self, 0x4, s32) = 0;
     FIELD(self, 0x8, u16) = 0;
@@ -26,7 +26,7 @@ void *func_ov002_021ec13c(void *self) {
     return self;
 }
 
-void *func_ov002_021ec164(void *self) {
+void *Ov002Vt_021f0cf8_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021f0cf8;
     FIELD(self, 0x4, s32) = 0;
     FIELD(self, 0x8, u16) = 0;
@@ -36,7 +36,7 @@ void *func_ov002_021ec164(void *self) {
     return self;
 }
 
-void *func_ov002_021ec18c(void *self) {
+void *Ov002Vt_021f0cf8_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f0cf8;
     FIELD(self, 0x4, s32) = 0;
     FIELD(self, 0x8, u16) = 0;

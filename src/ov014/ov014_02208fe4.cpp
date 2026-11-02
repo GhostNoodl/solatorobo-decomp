@@ -20,7 +20,7 @@ extern void func_ov000_0218996c(s32 a, s32 b);
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void func_ov003_021ceedc(void *p);
-extern void *func_ov003_021cef0c(void *p);
+extern void *Ov003Vt_021f7974_Dtor(void *p);
 extern void MTX_Identity43_(void *p);
 extern Ov014V *func_020657b0(void *a, void *b);
 extern void func_02036838(void *a, void *b, s32 c, s32 d);
@@ -194,7 +194,7 @@ Ov014Act_02209280 *Ov014Act_02209280_Dtor(Ov014Act_02209280 *self) {
     FLD(void *, self, 0) = data_ov014_02217968;
     Ov014_Kill1f0(self);
     func_02036838(data_02097cdc, data_ov014_02217a0c, 7, 0);
-    func_ov003_021cef0c((u8 *)self + 0x1c0);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x1c0);
     func_ov003_021d0edc(self);
     return self;
 }
@@ -203,7 +203,7 @@ Ov014Act_02209280 *Ov014Act_02209280_DtorDelete(Ov014Act_02209280 *self) {
     FLD(void *, self, 0) = data_ov014_02217968;
     Ov014_Kill1f0(self);
     func_02036838(data_02097cdc, data_ov014_02217a0c, 7, 0);
-    func_ov003_021cef0c((u8 *)self + 0x1c0);
+    Ov003Vt_021f7974_Dtor((u8 *)self + 0x1c0);
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;

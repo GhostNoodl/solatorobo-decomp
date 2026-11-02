@@ -33,11 +33,11 @@ void func_ov000_02198c8c(void *p, u16 id);
 void func_0203f324(void *p);
 void *func_ov000_021984c8(void *p);
 void *func_ov000_02198328(void *p);
-void *func_ov006_021dc714(void *p);
+void *Ov006Vt_021ec28c_Ctor(void *p);
 void func_ov006_021dc8f8(void *p);
 void func_ov006_021dcc9c(void *p, int idx, u8 flag);
 
-void func_ov006_021e6740(u8 *self) {
+void Ov006ActVt_021ec4f4_Start(u8 *self) {
     u8 *info;
     void *p;
     s32 v;
@@ -106,7 +106,7 @@ void func_ov006_021e6740(u8 *self) {
     self[0x15] = 1;
     p = func_0203dd9c(0x34);
     if (p != NULL) {
-        p = func_ov006_021dc714(p);
+        p = Ov006Vt_021ec28c_Ctor(p);
     }
     FIELD(self, 0x198, void *) = p;
     func_ov006_021dc8f8(p);

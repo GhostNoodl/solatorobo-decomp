@@ -27,7 +27,7 @@ void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void *func_ov003_021d0edc(void *p);
 void func_0203f2b8(void *p);
 
-void func_ov011_022030b4(Ov011Actor *self) {
+void Ov011ActVt_02207b34_Update(Ov011Actor *self) {
     BOOL ok;
     void *g;
     if (!Ov011_GameIdle()) {
@@ -176,7 +176,7 @@ void func_ov011_022035b8(Ov011Actor *self) {
     func_ov003_021d6054(self);
 }
 
-void func_ov011_02203638(Ov011Actor *self) {
+void Ov011ActVt_02207a88_Start(Ov011Actor *self) {
     func_ov003_021d112c(self);
     func_ov000_0218d7e8(self, 0xb);
 }
@@ -206,29 +206,29 @@ void func_ov011_02203654(Ov011Actor *self) {
     }
 }
 
-Ov011Actor *func_ov011_02203760(Ov011Actor *self) {
+Ov011Actor *Ov011ActVt_02207b34_Dtor(Ov011Actor *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov011Actor *func_ov011_02203774(Ov011Actor *self) {
-    func_ov003_021d0edc(self);
-    func_0203de1c(self);
-    return self;
-}
-
-Ov011Actor *func_ov011_02203790(Ov011Actor *self) {
-    func_ov003_021d0edc(self);
-    return self;
-}
-
-Ov011Actor *func_ov011_022037a4(Ov011Actor *self) {
+Ov011Actor *Ov011ActVt_02207b34_DtorDelete(Ov011Actor *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
 }
 
-void func_ov011_022037c0(Ov011Act7cf8 *self) {
+Ov011Actor *Ov011ActVt_02207a88_Dtor(Ov011Actor *self) {
+    func_ov003_021d0edc(self);
+    return self;
+}
+
+Ov011Actor *Ov011ActVt_02207a88_DtorDelete(Ov011Actor *self) {
+    func_ov003_021d0edc(self);
+    func_0203de1c(self);
+    return self;
+}
+
+void Ov011Act7cf8_Start(Ov011Act7cf8 *self) {
     u32 saved;
     func_ov003_021d112c(self);
     saved = data_02097dd0->cur;

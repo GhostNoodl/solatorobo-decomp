@@ -118,7 +118,7 @@ void func_ov003_021f1ce0(Ov003Flicker *self) {
 void func_ov003_021f1ce4(Ov003Flicker *self) {
 }
 
-void func_ov003_021f1ce8(Ov003Flicker *self) {
+void Ov003ActVt_021fa4f0_Start(Ov003Flicker *self) {
     func_ov000_021b4c60(self);
     func_ov003_021f1d6c(self);
     self->model->visible = 0;
@@ -180,7 +180,7 @@ void func_ov003_021f1d6c(Ov003Flicker *self) {
     func_ov000_021911c8(self->model, lo);
 }
 
-void func_ov003_021f1e44(Ov003Flicker *self) {
+void Ov003ActVt_021fa498_Start(Ov003Flicker *self) {
     const Ov003FlickerEntry *e;
     void *p;
     func_ov000_021b4c60(self);

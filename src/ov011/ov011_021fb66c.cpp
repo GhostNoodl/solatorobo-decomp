@@ -72,7 +72,7 @@ static inline void Ov011Ent_RestoreC(Ov011Ent *e, s32 to, s32 frames) {
 extern "C" {
 
 extern const Ov011Mgr2Entry data_ov011_022072d8[];
-void *func_ov003_021d79ec(void *p);
+void *Ov003Vt_021f7d2c_Dtor(void *p);
 void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
 void func_ov003_021da40c(void *p);
 void func_ov003_021da48c(void *p, u8 a);
@@ -82,7 +82,7 @@ void func_ov011_02202fbc(void *p);
 void Ov011Mov_Update(void *p);
 
 void *func_ov011_021fb66c(Ov011E40 *self) {
-    func_ov003_021d79ec(&self->mover);
+    Ov003Vt_021f7d2c_Dtor(&self->mover);
     return self;
 }
 

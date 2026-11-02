@@ -103,26 +103,26 @@ void func_ov003_021d88ec(u32 *p) {
     }
 }
 
-Ov003StateMachine *func_ov003_021d8910(Ov003StateMachine *self) {
+Ov003StateMachine *Ov003Vt_021f7cf4_Ctor(Ov003StateMachine *self) {
     *(void **)self = &data_ov003_021f7cf4;
     self->active = 0;
     return self;
 }
 
-Ov003StateMachine *func_ov003_021d8928(Ov003StateMachine *self) {
+Ov003StateMachine *Ov003Vt_021f7cf4_Dtor(Ov003StateMachine *self) {
     *(void **)self = &data_ov003_021f7cf4;
     self->Release();
     return self;
 }
 
-Ov003StateMachine *func_ov003_021d8950(Ov003StateMachine *self) {
+Ov003StateMachine *Ov003Vt_021f7cf4_DtorDelete(Ov003StateMachine *self) {
     *(void **)self = &data_ov003_021f7cf4;
     self->Release();
     func_0203de1c(self);
     return self;
 }
 
-BOOL func_ov003_021d8980(Ov003StateMachine *self) {
+BOOL Ov003StateMachine_Init(Ov003StateMachine *self) {
     self->active = 1;
     self->cur = NULL;
     self->list = NULL;
@@ -149,7 +149,7 @@ void func_ov003_021d899c(Ov003StateMachine *self) {
     self->active = 0;
 }
 
-void func_ov003_021d8a04(Ov003StateMachine *self) {
+void Ov003StateMachine_Update(Ov003StateMachine *self) {
     if (self->active && self->cur != NULL) {
         self->cur->state->Update();
     }
@@ -190,7 +190,7 @@ void func_ov003_021d8a7c(Ov003StateMachine *self, u8 id) {
     n->state->Enter();
 }
 
-void func_ov003_021d8afc(Ov003StateMachine *self) {
+void Ov003StateMachine_Leave(Ov003StateMachine *self) {
     if (self->active && self->cur != NULL) {
         self->cur->state->Leave();
         self->cur = NULL;
@@ -207,26 +207,26 @@ BOOL func_ov003_021d8b34(Ov003StateMachine *self, u8 id) {
     return r;
 }
 
-void func_ov003_021d8b60(Ov003StateMachine *self, void *arg) {
+void Ov003StateMachine_SendMessage(Ov003StateMachine *self, void *arg) {
     if (arg != NULL && self->cur != NULL) {
         self->cur->state->Message(arg);
     }
 }
 
-Ov003Timer *func_ov003_021d8b88(Ov003Timer *self) {
+Ov003Timer *Ov003Vt_021f7cd8_Ctor(Ov003Timer *self) {
     *(void **)self = &data_ov003_021f7cd8;
     self->active = 0;
     func_ov000_02198328(self->unk_0c);
     return self;
 }
 
-Ov003Timer *func_ov003_021d8bb8(Ov003Timer *self) {
+Ov003Timer *Ov003Vt_021f7cd8_Dtor(Ov003Timer *self) {
     *(void **)self = &data_ov003_021f7cd8;
     self->Release();
     return self;
 }
 
-Ov003Timer *func_ov003_021d8be0(Ov003Timer *self) {
+Ov003Timer *Ov003Vt_021f7cd8_DtorDelete(Ov003Timer *self) {
     *(void **)self = &data_ov003_021f7cd8;
     self->Release();
     func_0203de1c(self);

@@ -53,7 +53,7 @@ void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218c928(void *self);
 void func_0203de1c(void *p);
 
-ov006_Prop63c8 *func_ov006_021e63c8(ov006_Prop63c8 *self) {
+ov006_Prop63c8 *Ov006ActVt_021ec4f4_Ctor(ov006_Prop63c8 *self) {
     int i;
     func_ov000_0218c2d4(self);
     self->vtbl = data_ov006_021ec4f4;
@@ -129,12 +129,12 @@ static inline void ov006_Prop63c8_Dtor(ov006_Prop63c8 *self) {
     func_ov000_0218c928(self);
 }
 
-ov006_Prop63c8 *func_ov006_021e650c(ov006_Prop63c8 *self) {
+ov006_Prop63c8 *Ov006ActVt_021ec4f4_Dtor(ov006_Prop63c8 *self) {
     ov006_Prop63c8_Dtor(self);
     return self;
 }
 
-ov006_Prop63c8 *func_ov006_021e65a0(ov006_Prop63c8 *self) {
+ov006_Prop63c8 *Ov006ActVt_021ec4f4_DtorDelete(ov006_Prop63c8 *self) {
     ov006_Prop63c8_Dtor(self);
     func_0203de1c(self);
     return self;

@@ -40,7 +40,7 @@ void func_ov002_021e49a0(void *self) {
     FIELD(self, 0xc, s32) = 0;
 }
 
-void *func_ov002_021e49c0(void *self) {
+void *Ov002Vt_021f00ec_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021f00ec;
     {
         u32 saved;
@@ -54,7 +54,7 @@ void *func_ov002_021e49c0(void *self) {
     return self;
 }
 
-void *func_ov002_021e4a18(void *self) {
+void *Ov002Vt_021f00ec_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f00ec;
     {
         u32 saved;

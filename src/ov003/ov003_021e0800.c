@@ -32,7 +32,7 @@ extern void *data_ov000_021ccd68;
 extern void func_ov000_02194758(void *self);
 extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
 
-void func_ov003_021e0800(Ov003Prop *self) {
+void Ov003ActVt_021f8058_Start(Ov003Prop *self) {
     func_ov000_02194758(self);
     self->unk_38->unk_c2_0 = 0;
     func_ov000_0218e8ec(data_ov000_021ccd68, 0x400c, 0x15);

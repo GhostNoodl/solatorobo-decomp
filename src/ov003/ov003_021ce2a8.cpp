@@ -141,7 +141,7 @@ BOOL func_ov003_021ce50c(void) {
     return TRUE;
 }
 
-Ov003Scene *func_ov003_021ce514(Ov003Scene *self) {
+Ov003Scene *Ov003TaskVt_021f78f4_DtorDelete(Ov003Scene *self) {
     *(void **)self = &data_ov003_021f78f4;
     self->Release();
     *(void **)self = &data_ov000_021cc060;
@@ -150,7 +150,7 @@ Ov003Scene *func_ov003_021ce514(Ov003Scene *self) {
     return self;
 }
 
-Ov003Scene *func_ov003_021ce560(Ov003Scene *self) {
+Ov003Scene *Ov003TaskVt_021f78f4_Dtor(Ov003Scene *self) {
     *(void **)self = &data_ov003_021f78f4;
     self->Release();
     *(void **)self = &data_ov000_021cc060;

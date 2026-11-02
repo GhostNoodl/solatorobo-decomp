@@ -8,12 +8,12 @@ void *func_ov000_02198328(void *p);
 void *func_ov011_02201510(void *p);
 void *func_ov011_02201c18(void *p);
 void Ov011Mov_Init(void *p);
-void *func_ov011_02202c54(void *p);
+void *Ov011Vt_022079b0_Ctor(void *p);
 BOOL func_ov011_021fd4d8(void *p, void *owner);
 BOOL func_020621c4(void);
 void func_ov003_021d6bac(void *p, const void *data);
 
-void func_ov011_021fef00(Ov011SceneActor *self) {
+void Ov011SceneActor_Start(Ov011SceneActor *self) {
     Ov011Scene *p;
     Ov011Sa104 *q;
     func_ov003_021d112c(self);
@@ -38,7 +38,7 @@ void func_ov011_021fef00(Ov011SceneActor *self) {
     q = (Ov011Sa104 *)func_0203dd9c(0x3c);
     if (q != NULL) {
         func_ov000_02198328(q);
-        func_ov011_02202c54(&q->tw);
+        Ov011Vt_022079b0_Ctor(&q->tw);
     }
     self->unk_104 = q;
     self->unk_108 = (Ov011Sa108 *)func_0203dd9c(6);

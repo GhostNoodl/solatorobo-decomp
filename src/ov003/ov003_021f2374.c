@@ -146,7 +146,7 @@ void func_ov003_021f23e0(Ov003Multi *self) {
     self->state = 3;
 }
 
-void func_ov003_021f23f8(Ov003Multi *self) {
+void Ov003ActVt_021fa390_Init(Ov003Multi *self) {
     const Ov003MultiDef *def = &data_ov003_021f7470[self->kind];
     s32 i;
     u16 n = def->count;
@@ -159,7 +159,7 @@ void func_ov003_021f23f8(Ov003Multi *self) {
     }
 }
 
-BOOL func_ov003_021f247c(Ov003Multi *self) {
+BOOL Ov003ActVt_021fa390_IsReady(Ov003Multi *self) {
     const Ov003MultiDef *def = &data_ov003_021f7470[self->kind];
     BOOL r = TRUE;
     s32 i = 0;
@@ -174,7 +174,7 @@ BOOL func_ov003_021f247c(Ov003Multi *self) {
 }
 
 
-void func_ov003_021f24ec(Ov003Multi *self) {
+void Ov003ActVt_021fa390_Start(Ov003Multi *self) {
     const Ov003MultiDef *def = &data_ov003_021f7470[self->kind];
     Ov003MultiRes *res;
     s8 *map;

@@ -15,10 +15,10 @@ extern void func_ov003_021d8f24(void *p);
 extern void func_ov003_021d8f34(void *p);
 extern void *func_ov010_0220d79c(void *p);
 extern void *func_ov010_0220d7c0(void *p);
-extern void *func_ov003_021d7f0c(void *p);
-extern void *func_ov003_021d7fc0(void *p);
-extern void *func_ov003_021d8b88(void *p);
-extern void *func_ov003_021d8bb8(void *p);
+extern void *Ov003Vt_021f7d10_Ctor(void *p);
+extern void *Ov003Vt_021f7d10_Dtor(void *p);
+extern void *Ov003Vt_021f7cd8_Ctor(void *p);
+extern void *Ov003Vt_021f7cd8_Dtor(void *p);
 extern void func_ov003_021cf340(const char *p);
 extern void func_ov003_021cf3fc(s32 a);
 extern void func_ov003_021cf39c(s32 a, const char *b);
@@ -30,13 +30,13 @@ extern BOOL func_0204985c(void *a);
 extern void func_ov003_021d883c(void *a, Ov010Vec *b, Ov010Vec *c, s32 d);
 extern u16 func_ov003_021d16cc(void *self);
 
-void *func_ov010_02204204(Ov010ObjBase0220ffe4_0221009c *self) {
+void *Ov010ActVt_02210154_Ctor(Ov010ObjBase0220ffe4_0221009c *self) {
     func_ov003_021d0c1c(self);
     *(void * *)self = data_ov010_02210154;
     func_ov003_021d8f24((u8 *)self + 0x160);
     func_ov010_0220d79c((u8 *)self + 0x174);
-    func_ov003_021d7f0c((u8 *)self + 0x1b0);
-    func_ov003_021d8b88((u8 *)self + 0x1dc);
+    Ov003Vt_021f7d10_Ctor((u8 *)self + 0x1b0);
+    Ov003Vt_021f7cd8_Ctor((u8 *)self + 0x1dc);
     func_ov003_021cf340(data_ov010_0220ff84);
     func_ov003_021cf3fc(1);
     func_ov003_021cf39c(2, data_ov010_0220ff91);
@@ -50,19 +50,19 @@ static inline void Ov010_02204294_Body(Ov010ObjBase0220ffe4_0221009c *self) {
     *(void * *)self = data_ov010_02210154;
     func_ov003_021cf3fc(0);
     func_ov010_022075bc(self);
-    func_ov003_021d8bb8((u8 *)self + 0x1dc);
-    func_ov003_021d7fc0((u8 *)self + 0x1b0);
+    Ov003Vt_021f7cd8_Dtor((u8 *)self + 0x1dc);
+    Ov003Vt_021f7d10_Dtor((u8 *)self + 0x1b0);
     func_ov010_0220d7c0((u8 *)self + 0x174);
     func_ov003_021d8f34((u8 *)self + 0x160);
     func_ov003_021d0edc(self);
 }
 
-void *func_ov010_02204294(Ov010ObjBase0220ffe4_0221009c *self) {
+void *Ov010ActVt_02210154_Dtor(Ov010ObjBase0220ffe4_0221009c *self) {
     Ov010_02204294_Body(self);
     return self;
 }
 
-void *func_ov010_022042e8(Ov010ObjBase0220ffe4_0221009c *self) {
+void *Ov010ActVt_02210154_DtorDelete(Ov010ObjBase0220ffe4_0221009c *self) {
     Ov010_02204294_Body(self);
     func_0203de1c(self);
     return self;

@@ -73,7 +73,7 @@ extern void MTX_RotY33_(Ov010Mtx33 *m, s32 s, s32 c);
 extern void MTX_RotZ33_(Ov010Mtx33 *m, s32 s, s32 c);
 extern void MTX_MultVec33(const Ov010Vec *v, const Ov010Mtx33 *m, Ov010Vec *o);
 extern void VEC_Add(Ov010Vec *a, const Ov010Vec *b, Ov010Vec *c);
-extern void func_ov003_021d9f04(Ov010Col *out, const void *p);
+extern void Ov003Vec_ToRot(Ov010Col *out, const void *p);
 extern void func_ov010_022024c4(u8 *e, u16 a, Ov010Vec *b, Ov010Vec *c, Ov010Col *d);
 extern void func_ov010_02202560(u8 *e, u16 a, Ov010Vec *b, Ov010Vec *c, Ov010Rot *d);
 extern void func_ov010_02202600(u8 *e, void *fn);
@@ -121,7 +121,7 @@ u8 *func_ov010_02201cc8(Ov010Task *t) {
             MTX_MultVec33(&t->v0c, &mz, &o);
             MTX_MultVec33(&o, &mx, &o);
             MTX_MultVec33(&o, &my, &o);
-            func_ov003_021d9f04(&c, &data_ov010_0220efb0);
+            Ov003Vec_ToRot(&c, &data_ov010_0220efb0);
             func_ov010_022024c4(e, t->unk_06, &p, &o, &c);
             func_ov010_02202600(e, (void *)func_ov010_022018c4);
         }

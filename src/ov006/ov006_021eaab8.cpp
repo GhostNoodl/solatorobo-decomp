@@ -31,7 +31,7 @@ BOOL func_01ffc198(ov006_Vec021eacd8 *a, ov006_Vec021eacd8 *b, s32 r);
 void func_ov000_02190758(ov006_Model021eacd8 *a, void *b, int c);
 int func_ov000_021903b4(ov006_Model021eacd8 *a);
 
-int func_ov006_021eaab8(ov006_Obj021eacd8 *self) {
+int Ov006ActVt_021ec54c_Draw(ov006_Obj021eacd8 *self) {
     ov006_Model021eacd8 *m;
     ov006_Vec021eacd8 target;
     int r = 0;

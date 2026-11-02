@@ -15,7 +15,7 @@ u8 func_ov002_021d8b48(void *self) {
     return FIELD(self, 0x52, Bits021d8b48).mode;
 }
 
-void func_ov002_021d8b5c(void *a, void *b, void *c) {
+void Ov002_MultVec33(void *a, void *b, void *c) {
     MTX_MultVec33(c, b, a);
 }
 

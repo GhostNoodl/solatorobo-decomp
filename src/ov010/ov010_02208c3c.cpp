@@ -29,8 +29,8 @@ extern void func_ov000_0218a358(void *a, const void *b, void *c, s32 d, s32 e, s
 extern s32 FX_Div(s32 a, s32 b);
 extern void func_ov003_021cf3fc(s32 a);
 extern void func_ov010_022075bc(void *p);
-extern void *func_ov003_021d8bb8(void *p);
-extern void *func_ov003_021d7fc0(void *p);
+extern void *Ov003Vt_021f7cd8_Dtor(void *p);
+extern void *Ov003Vt_021f7d10_Dtor(void *p);
 extern void *func_ov010_0220d7c0(void *p);
 extern void func_ov003_021d8f34(void *p);
 extern void *func_ov003_021d0edc(void *p);
@@ -74,13 +74,13 @@ struct Obj02208d60 {
     void *unk_00;
 };
 
-void *func_ov010_02208d60(Obj02208d60 *self) {
+void *Ov010Vt_0220ffc4_Dtor(Obj02208d60 *self) {
     self->unk_00 = data_ov010_0220ffc4;
     ((Ov010V *)self)->v0c();
     return self;
 }
 
-void *func_ov010_02208d88(Obj02208d60 *self) {
+void *Ov010Vt_0220ffc4_DtorDelete(Obj02208d60 *self) {
     self->unk_00 = data_ov010_0220ffc4;
     ((Ov010V *)self)->v0c();
     func_0203de1c(self);
@@ -135,30 +135,30 @@ static inline void Ov010_02208f14_Body(void *self) {
     FLD(void *, self, 0) = data_ov010_02210154;
     func_ov003_021cf3fc(0);
     func_ov010_022075bc(self);
-    func_ov003_021d8bb8((u8 *)self + 0x1dc);
-    func_ov003_021d7fc0((u8 *)self + 0x1b0);
+    Ov003Vt_021f7cd8_Dtor((u8 *)self + 0x1dc);
+    Ov003Vt_021f7d10_Dtor((u8 *)self + 0x1b0);
     func_ov010_0220d7c0((u8 *)self + 0x174);
     func_ov003_021d8f34((u8 *)self + 0x160);
     func_ov003_021d0edc(self);
 }
 
-void *func_ov010_02208f14(void *self) {
+void *Ov010ActVt_0220ffe4_Dtor(void *self) {
     Ov010_02208f14_Body(self);
     return self;
 }
 
-void *func_ov010_02208f68(void *self) {
+void *Ov010ActVt_0220ffe4_DtorDelete(void *self) {
     Ov010_02208f14_Body(self);
     func_0203de1c(self);
     return self;
 }
 
-void *func_ov010_02208fc4(Ov010Obj0221009c *self) {
+void *Ov010ActVt_0221009c_Dtor(Ov010Obj0221009c *self) {
     Ov010_02208f14_Body(self);
     return self;
 }
 
-void *func_ov010_02209018(Ov010Obj0221009c *self) {
+void *Ov010ActVt_0221009c_DtorDelete(Ov010Obj0221009c *self) {
     Ov010_02208f14_Body(self);
     func_0203de1c(self);
     return self;
@@ -176,7 +176,7 @@ void func_ov010_02209074(void *p) {
     FLD(s32, p, 0xdc) = 0;
 }
 
-extern s32 func_ov003_021d9a80(const Ov010Vec *a, const Ov010Vec *b);
+extern s32 Ov003Vec_DistSq(const Ov010Vec *a, const Ov010Vec *b);
 BOOL func_ov010_022090b4(s32 type, const s32 *rect, const s32 *circ, const Ov010Vec *p) {
     BOOL r;
     switch (type) {
@@ -194,7 +194,7 @@ BOOL func_ov010_022090b4(s32 type, const s32 *rect, const s32 *circ, const Ov010
         Ov010Vec b = {0, 0, 0};
         b.x = circ[0];
         b.z = circ[2];
-        if (func_ov003_021d9a80(&a, &b) > Ov010_FxMul(circ[3], circ[3])) {
+        if (Ov003Vec_DistSq(&a, &b) > Ov010_FxMul(circ[3], circ[3])) {
             r = TRUE;
         }
         break;

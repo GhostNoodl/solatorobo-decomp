@@ -12,7 +12,7 @@ void *func_ov006_021daaa8(u32 id) {
     return result;
 }
 
-ov006_Slot *func_ov006_021daad8(ov006_Slot *self) {
+ov006_Slot *Ov006Vt_021ec078_Ctor(ov006_Slot *self) {
     self->vtbl = &data_ov006_021ec078;
     ov006_Slot_Clear(self);
     self->unkC = 0xffff;

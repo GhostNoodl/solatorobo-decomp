@@ -197,7 +197,7 @@ void func_ov003_021d7ca8(void *p);
 void func_ov003_021d7d8c(void *p);
 void func_ov003_021d7ce0(void *p);
 
-void *func_ov011_02200e84(Ov011Npc *self) {
+void *Ov011Npc_Ctor(Ov011Npc *self) {
     func_ov000_02194074(self);
     *(void **)self = data_ov011_022079f0;
     func_ov003_021d7ca8(self->unk_d8);
@@ -210,7 +210,7 @@ void *func_ov011_02200e84(Ov011Npc *self) {
     return self;
 }
 
-void *func_ov011_02200ee4(Ov011Npc *self) {
+void *Ov011Npc_Dtor(Ov011Npc *self) {
     *(void **)self = data_ov011_022079f0;
     func_ov003_021d7d8c(self->unk_d8);
     func_ov003_021d7d8c(self->unk_e4);
@@ -226,7 +226,7 @@ void *func_ov011_02200ee4(Ov011Npc *self) {
     return self;
 }
 
-void *func_ov011_02200f60(Ov011Npc *self) {
+void *Ov011Npc_DtorDelete(Ov011Npc *self) {
     *(void **)self = data_ov011_022079f0;
     func_ov003_021d7d8c(self->unk_d8);
     func_ov003_021d7d8c(self->unk_e4);
@@ -255,7 +255,7 @@ static inline void Ov011_ScaleV(Ov011Vec *v, s32 x, s32 y, s32 z, s32 s) {
     v->z = Ov011_FxMul(z, s);
 }
 
-s32 func_ov011_02200fe4(Ov011Npc *self) {
+s32 Ov011Npc_Draw(Ov011Npc *self) {
     s32 r;
     Ov011Vec saved;
     Ov011Vec v;
@@ -372,7 +372,7 @@ void func_ov000_0219763c(void *p);
 void *func_ov000_02198328(void *p);
 void func_ov011_02201688(Ov011Fx *p);
 
-void func_ov011_0220125c(Ov011Npc *self) {
+void Ov011Npc_Start(Ov011Npc *self) {
     Ov011Sub44 *p;
     func_ov000_02194758(self);
     func_ov003_021d7d24(self->unk_d8, 0, 0, 1, 1);
@@ -385,7 +385,7 @@ void func_ov011_0220125c(Ov011Npc *self) {
     p->unk_1c = Ov011_FxMul(p->unk_1c, 0x1a00);
 }
 
-void func_ov011_02201318(Ov011Npc *self) {
+void Ov011Npc_Update(Ov011Npc *self) {
     func_ov000_021953b4(self);
     if (self->unk_ce_0) {
         self->unk_40->flags |= 2;
@@ -1301,19 +1301,19 @@ void func_ov011_02202a38(void) {
     data_ov011_02207f00 += 0x51e;
 }
 
-Ov011TwA *func_ov011_02202a54(Ov011TwA *self) {
+Ov011TwA *Ov011Vt_022079d0_Ctor(Ov011TwA *self) {
     self->vt = (Ov011V *)data_ov011_022079d0;
     self->b0 = 0;
     return self;
 }
 
-Ov011TwA *func_ov011_02202a70(Ov011TwA *self) {
+Ov011TwA *Ov011Vt_022079d0_Dtor(Ov011TwA *self) {
     self->vt = (Ov011V *)data_ov011_022079d0;
     ((Ov011V *)self)->v08();
     return self;
 }
 
-Ov011TwA *func_ov011_02202a98(Ov011TwA *self) {
+Ov011TwA *Ov011Vt_022079d0_DtorDelete(Ov011TwA *self) {
     self->vt = (Ov011V *)data_ov011_022079d0;
     ((Ov011V *)self)->v08();
     func_0203de1c(self);
@@ -1387,7 +1387,7 @@ static inline void Ov011TwB_SetBoth(Ov011TwB *t, const Ov011Vec *src) {
     t->to.z = z;
 }
 
-Ov011TwB *func_ov011_02202c54(Ov011TwB *self) {
+Ov011TwB *Ov011Vt_022079b0_Ctor(Ov011TwB *self) {
     self->vt = (Ov011V *)data_ov011_022079b0;
     self->b0 = 0;
     self->b1 = 0;
@@ -1396,13 +1396,13 @@ Ov011TwB *func_ov011_02202c54(Ov011TwB *self) {
     return self;
 }
 
-Ov011TwB *func_ov011_02202cac(Ov011TwB *self) {
+Ov011TwB *Ov011Vt_022079b0_Dtor(Ov011TwB *self) {
     self->vt = (Ov011V *)data_ov011_022079b0;
     ((Ov011V *)self)->v08();
     return self;
 }
 
-Ov011TwB *func_ov011_02202cd4(Ov011TwB *self) {
+Ov011TwB *Ov011Vt_022079b0_DtorDelete(Ov011TwB *self) {
     self->vt = (Ov011V *)data_ov011_022079b0;
     ((Ov011V *)self)->v08();
     func_0203de1c(self);
@@ -1557,7 +1557,7 @@ void func_ov011_02203080(void *self) {
 void func_ov011_02203084(void *self) {
 }
 
-void func_ov011_02203088(void *self) {
+void Ov011ActVt_02207b34_Start(void *self) {
     func_ov003_021d112c(self);
     if (func_020621c4()) {
         func_ov003_021d6bac(self, data_ov011_022074f8);

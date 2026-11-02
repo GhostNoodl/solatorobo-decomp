@@ -16,7 +16,7 @@ extern ov006_StateFunc data_ov006_021eb6d8[];
 void func_02036838(void *a, void *b, int c, int d);
 void func_ov006_021e42ec(void);
 int func_02044b20(void);
-void func_ov006_021dae34(void);
+void ov006_DeleteSlotManager(void);
 void func_0206e900(void *a, void *b);
 void *func_020359d0(void *a, int b, int c);
 int func_02035b90(void *a, int b);
@@ -28,7 +28,7 @@ void func_ov006_021e4574(ov006_Unk021ec888 *a);
 BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *a);
 ov006_Task *func_ov006_021d54b0(void *mem);
 ov006_Task *func_ov006_021d5b04(void *mem);
-ov006_Task *func_ov006_021d908c(void *mem);
+ov006_Task *Ov006Vt_021ec040_Ctor(void *mem);
 int func_ov006_021cd2c8(ov006_Manager *self);
 int func_ov006_021cd4c0(ov006_Manager *self);
 
@@ -87,16 +87,16 @@ static inline void ov006_Manager_Dtor(ov006_Manager *self) {
     func_02036838(data_02097cdc, data_ov006_021ebb88, 7, 0);
     func_ov006_021e42ec();
     func_02044b20();
-    func_ov006_021dae34();
+    ov006_DeleteSlotManager();
     func_0201bbfc(1);
 }
 
-ov006_Manager *func_ov006_021cce0c(ov006_Manager *self) {
+ov006_Manager *Ov006Vt_021ebb48_Dtor(ov006_Manager *self) {
     ov006_Manager_Dtor(self);
     return self;
 }
 
-ov006_Manager *func_ov006_021ccec8(ov006_Manager *self) {
+ov006_Manager *Ov006Vt_021ebb48_DtorDelete(ov006_Manager *self) {
     ov006_Manager_Dtor(self);
     func_0203de1c(self);
     return self;
@@ -264,7 +264,7 @@ BOOL func_ov006_021cd2c8(ov006_Manager *self) {
         case 2:
             task = (ov006_Task *)func_0203dd9c(0x44);
             if (task != NULL) {
-                task = func_ov006_021d908c(task);
+                task = Ov006Vt_021ec040_Ctor(task);
             }
             break;
         default:
@@ -332,7 +332,7 @@ BOOL func_ov006_021cd4c0(ov006_Manager *self) {
         ov006_Update021ec888();
         if (data_ov006_021ec888->unk8 == 1) {
             func_ov006_021e42ec();
-            func_ov006_021dae34();
+            ov006_DeleteSlotManager();
             self->subState++;
         }
         break;

@@ -3,7 +3,7 @@
 extern "C" {
 
 #pragma force_active on
-void func_ov011_02204ff0(Ov011Act7da4 *self) {
+void Ov011Act7da4_Update(Ov011Act7da4 *self) {
     Ov011Actor *pl;
     u16 pct;
     self->unk_93_4 = 1;
@@ -81,7 +81,7 @@ int func_02043d9c(void *p);
 u16 func_ov003_021d16cc(void *p);
 
 #pragma force_active on
-void func_ov011_022051b8(Ov011Act7da4 *self) {
+void Ov011Act7da4_Draw(Ov011Act7da4 *self) {
     u8 v = data_02097d48[0x8b3];
     func_02043d9c(data_02097d48 + 0x8b0);
     self->unk_38->unk_c1 = v;

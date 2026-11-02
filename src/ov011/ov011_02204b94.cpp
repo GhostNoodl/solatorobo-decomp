@@ -51,7 +51,7 @@ static inline void Ov011_FreeTwl(void **slot) {
     data_02097dd0->cur = saved;
 }
 
-Ov011Actor *func_ov011_02204b94(Ov011Act7da4 *self) {
+Ov011Actor *Ov011Act7da4_Dtor(Ov011Act7da4 *self) {
     *(void **)self = data_ov011_02207da4;
     Ov011_FreeTwl(&self->unk_364);
     Ov011_FreeTwl(&self->unk_368);
@@ -61,7 +61,7 @@ Ov011Actor *func_ov011_02204b94(Ov011Act7da4 *self) {
     return self;
 }
 
-Ov011Actor *func_ov011_02204c80(Ov011Act7da4 *self) {
+Ov011Actor *Ov011Act7da4_DtorDelete(Ov011Act7da4 *self) {
     *(void **)self = data_ov011_02207da4;
     Ov011_FreeTwl(&self->unk_364);
     Ov011_FreeTwl(&self->unk_368);
@@ -72,7 +72,7 @@ Ov011Actor *func_ov011_02204c80(Ov011Act7da4 *self) {
     return self;
 }
 
-void func_ov011_02204d74(Ov011Act7da4 *self) {
+void Ov011Act7da4_Init(Ov011Act7da4 *self) {
     func_ov003_021d0fc0(self);
     func_020359d0(data_ov011_02207c35, 7, 0);
     if (OS_IsRunOnTwl()) {
@@ -93,7 +93,7 @@ void func_ov011_02204d74(Ov011Act7da4 *self) {
     self->unk_394 = 0;
 }
 
-BOOL func_ov011_02204dfc(Ov011Act7da4 *self) {
+BOOL Ov011Act7da4_IsReady(Ov011Act7da4 *self) {
     BOOL r = func_ov000_0218cf5c(self);
     r = (r & func_02035b90(data_ov011_02207c35, 7)) ? TRUE : FALSE;
     if (self->unk_364 != NULL && self->unk_394 == 0) {
@@ -119,7 +119,7 @@ BOOL func_ov011_02204dfc(Ov011Act7da4 *self) {
     return r;
 }
 
-void func_ov011_02204ef8(Ov011Act7da4 *self) {
+void Ov011Act7da4_Start(Ov011Act7da4 *self) {
     func_ov003_021d112c(self);
     {
         u32 saved = data_02097dd0->cur;

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void *func_ov002_021dcee0(void *self) {
+void *Ov002Vt_021efef0_Ctor(void *self) {
     *(VFunc **)self = data_ov002_021efef0;
     func_ov002_021ddd80(self);
     return self;

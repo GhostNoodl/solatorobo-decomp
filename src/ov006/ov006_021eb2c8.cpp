@@ -3,7 +3,7 @@
 extern "C" {
 
 #pragma force_active on
-void func_ov006_021eb2c8(void) {
+void Ov006ActVt_021ec714_Update(void) {
 }
 #pragma force_active reset
 

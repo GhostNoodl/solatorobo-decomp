@@ -22,7 +22,7 @@ extern void func_ov003_021da48c(void *p, s32 a);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern void func_ov010_02200a00(Ov010Beam *o);
 extern Robo021ca458 *func_ov000_0219bf90(void);
-extern s32 func_ov003_021d9a80(const Ov010Vec *a, const Ov010Vec *b);
+extern s32 Ov003Vec_DistSq(const Ov010Vec *a, const Ov010Vec *b);
 
 static inline void Ov010Fx_Free(Ov010FxObj *s) {
     if (s->b0) {
@@ -130,7 +130,7 @@ BOOL func_ov010_022018c4(u16 id, const Ov010Vec *a, const Ov010Vec *b) {
     BOOL r = FALSE;
     Robo021ca458 *pl = func_ov000_0219bf90();
     if (id == pl->id && pl->unk_b24_12 == 0) {
-        if (func_ov003_021d9a80(a, b) < 0x51000) {
+        if (Ov003Vec_DistSq(a, b) < 0x51000) {
             r = TRUE;
         }
     }

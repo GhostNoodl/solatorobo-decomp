@@ -29,7 +29,7 @@ void func_ov010_02208898(Ov010Obj0220ffe4 *self) {
 }
 
 
-extern void func_ov010_022046ac(void *self);
+extern void Ov010ActVt_02210154_Start(void *self);
 
 BOOL func_ov010_02208968(Ov010Obj0220ffe4 *self, s32 *out) {
     *out = 9;
@@ -46,8 +46,8 @@ void func_ov010_02208978(Ov010Obj0220ffe4 *self, s32 *out) {
     out[7] = 0x902;
 }
 
-void func_ov010_022089b4(Ov010Obj0221009c *self) {
-    func_ov010_022046ac(self);
+void Ov010ActVt_0221009c_Start(Ov010Obj0221009c *self) {
+    Ov010ActVt_02210154_Start(self);
     self->unk_f3 = self->unk_18[0] == 2;
 }
 

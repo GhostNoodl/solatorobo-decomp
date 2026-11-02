@@ -660,7 +660,7 @@ extern Ov012V *func_02065f88(s32 id, Ov012Vec *pos);
 
 extern "C" {
 extern void func_ov003_021ceedc(void *p);
-extern void *func_ov003_021cef0c(void *p);
+extern void *Ov003Vt_021f7974_Dtor(void *p);
 extern void func_02049678(void *a, s32 b, s32 c, s32 d);
 extern BOOL func_0204985c(void *a);
 }

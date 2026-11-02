@@ -180,7 +180,7 @@ void func_ov000_0218e044(void *p, u16 a, int b);
 void func_ov000_0216da78(ov006_GObj021d6ff0 *p);
 void *func_0204c0e8(void *a, int id);
 void func_ov006_021d86a0(ov006_Task021d6ff0 *self, u16 a, int b);
-ov006_Result021d6ff0 *func_ov006_021dfa24(ov006_Result021d6ff0 *p);
+ov006_Result021d6ff0 *Ov006Vt_021ec23c_Ctor(ov006_Result021d6ff0 *p);
 void func_ov006_021dfce8(ov006_Result021d6ff0 *p);
 void func_ov006_021dee68(void *p, PlayTime *t, BOOL a, BOOL b);
 void func_ov006_021df9e8(ov006_ResSub021d6ff0 *p, PlayTime *t, u8 i, BOOL hl);
@@ -603,7 +603,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             self->sub++;
             res = (ov006_Result021d6ff0 *)func_0203dd9c(0x24);
             if (res != NULL) {
-                res = func_ov006_021dfa24(res);
+                res = Ov006Vt_021ec23c_Ctor(res);
             }
             self->result = res;
             func_ov006_021dfce8(res);

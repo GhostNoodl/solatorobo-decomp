@@ -36,64 +36,64 @@ extern void *func_ov000_0218ea20(void *p);
 extern void *func_ov000_0219429c(void *p);
 extern void *func_ov003_021dae44(void *p);
 
-void *func_ov003_021ed520(void *self) {
+void *Ov003ActVt_021f99e8_DtorDelete(void *self) {
     func_ov000_0218ea20((u8 *)self + 0xdc);
     func_ov000_0219429c(self);
     func_0203de1c(self);
     return self;
 }
 
-void *func_ov003_021ed548(void *self) {
+void *Ov003ActVt_021f99e8_Dtor(void *self) {
     func_ov000_0218ea20((u8 *)self + 0xdc);
     func_ov000_0219429c(self);
     return self;
 }
 
-void *func_ov003_021ed568(void *self) {
+void *Ov003ActVt_021f9bb0_DtorDelete(void *self) {
     func_ov000_0219429c(self);
     func_0203de1c(self);
     return self;
 }
 
-void *func_ov003_021ed584(void *self) {
+void *Ov003ActVt_021f9bb0_Dtor(void *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void *func_ov003_021ed598(void *self) {
-    func_ov000_0219429c(self);
-    func_0203de1c(self);
-    return self;
-}
-
-void *func_ov003_021ed5b4(void *self) {
-    func_ov000_0219429c(self);
-    return self;
-}
-
-void *func_ov003_021ed5c8(void *self) {
-    func_ov000_0219429c(self);
-    return self;
-}
-
-void *func_ov003_021ed5dc(void *self) {
+void *Ov003ActVt_021f9c48_DtorDelete(void *self) {
     func_ov000_0219429c(self);
     func_0203de1c(self);
     return self;
 }
 
-void *func_ov003_021ed5f8(void *self) {
+void *Ov003ActVt_021f9c48_Dtor(void *self) {
+    func_ov000_0219429c(self);
+    return self;
+}
+
+void *Ov003ActVt_021f9b18_Dtor(void *self) {
+    func_ov000_0219429c(self);
+    return self;
+}
+
+void *Ov003ActVt_021f9b18_DtorDelete(void *self) {
+    func_ov000_0219429c(self);
+    func_0203de1c(self);
+    return self;
+}
+
+void *Ov003ActVt_021f9a80_Dtor(void *self) {
     func_ov003_021dae44(self);
     return self;
 }
 
-void *func_ov003_021ed60c(void *self) {
+void *Ov003ActVt_021f9a80_DtorDelete(void *self) {
     func_ov003_021dae44(self);
     func_0203de1c(self);
     return self;
 }
 
-void func_ov003_021ed628(Ov003Obj *self) {
+void Ov003ActVt_021f9f40_Init(Ov003Obj *self) {
     Ov003Unit *unit;
     func_ov000_0219433c(self);
     self->unk_ce = 0;
@@ -103,7 +103,7 @@ void func_ov003_021ed628(Ov003Obj *self) {
     }
 }
 
-void func_ov003_021ed664(Ov003Obj *self) {
+void Ov003ActVt_021f9f40_Start(Ov003Obj *self) {
     func_ov000_02194758(self);
     if (self->unk_38 != NULL) {
         func_ov000_02190cb0(self->unk_38, data_ov003_021f9fd0, 0x1000, 0);

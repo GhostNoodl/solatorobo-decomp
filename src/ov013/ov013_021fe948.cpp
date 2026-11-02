@@ -9,7 +9,7 @@ extern "C" {
 
 extern void *data_ov000_021ccd68;
 extern Ov013Actor *func_ov000_0218e4cc(void *mgr, u16 id);
-extern BOOL func_ov003_021d98bc(void *a, const Ov013Spot *b);
+extern BOOL Ov003Vec_Equal(void *a, const Ov013Spot *b);
 
 void func_ov013_021fe948(Ov013Vec *outPos, u16 *outRot, const Ov013Spot *list, u32 count, void *exclude) {
     s32 n = 0;
@@ -17,7 +17,7 @@ void func_ov013_021fe948(Ov013Vec *outPos, u16 *outRot, const Ov013Spot *list, u
     u32 i;
     s32 r;
     for (i = 0; i < count; i++) {
-        if (exclude != NULL && func_ov003_021d98bc(exclude, &list[i])) {
+        if (exclude != NULL && Ov003Vec_Equal(exclude, &list[i])) {
             continue;
         }
         tmp[n] = list[i];

@@ -175,7 +175,7 @@ static inline BOOL Ov003Shadow_IsIdle(Ov003Shadow *sh) {
     return r;
 }
 
-BOOL func_ov003_021f3dd4(Ov003Prop *self) {
+BOOL Ov003ActVt_021fa548_IsReady(Ov003Prop *self) {
     BOOL r = TRUE;
     if (self->res->handle >= 0 && !func_ov000_0218f110(&self->res->handle)) {
         r = FALSE;
@@ -191,7 +191,7 @@ BOOL func_ov003_021f3dd4(Ov003Prop *self) {
     return r;
 }
 
-void func_ov003_021f3e60(Ov003Prop *self) {
+void Ov003ActVt_021fa548_Start(Ov003Prop *self) {
     Ov003AnimLayer *layer;
     func_ov000_021b4c60(self);
     func_ov000_02190cb0(self->model, data_ov003_021fa662, 0x1000, 1);

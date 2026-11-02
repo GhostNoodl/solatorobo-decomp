@@ -44,7 +44,7 @@ BOOL func_ov002_021e36a0(void) {
     return FALSE;
 }
 
-void *func_ov002_021e36a8(void *self) {
+void *Ov002Vt_021f002c_DtorDelete(void *self) {
     u32 saved;
     *(VFunc **)self = data_ov002_021f002c;
     HEAP_PUSH(saved);
@@ -69,7 +69,7 @@ void *func_ov002_021e36a8(void *self) {
     return self;
 }
 
-void *func_ov002_021e3774(void *self) {
+void *Ov002Vt_021f002c_Dtor(void *self) {
     u32 saved;
     *(VFunc **)self = data_ov002_021f002c;
     HEAP_PUSH(saved);
@@ -93,7 +93,7 @@ void *func_ov002_021e3774(void *self) {
     return self;
 }
 
-VObject *func_ov002_021e3838(VObject *self) {
+VObject *Ov002Vt_021f0044_Dtor(VObject *self) {
     *(VFunc **)self = data_ov000_021ccbe0;
     func_ov000_021c3bb0(self);
     *(VFunc **)self = data_ov000_021cac60;

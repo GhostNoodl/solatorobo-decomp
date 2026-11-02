@@ -73,7 +73,7 @@ typedef struct Ov010Mtx33_4030 {
 extern void MTX_RotY33_(Ov010Mtx33_4030 *m, s32 s, s32 c);
 extern void MTX_MultVec33(const Ov010Vec *v, const Ov010Mtx33_4030 *m, Ov010Vec *o);
 extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *c);
-extern s32 func_ov003_021d9a80(const Ov010Vec *a, const Ov010Vec *b);
+extern s32 Ov003Vec_DistSq(const Ov010Vec *a, const Ov010Vec *b);
 
 static inline s16 Ov010_SinIdx(int idx) {
     return FX_SinCosTable_[idx * 2];
@@ -104,7 +104,7 @@ void func_ov010_02204030(Ov010Vec *out, const Ov010Ring4030 *c, const Ov010Vec *
     MTX_MultVec33(&v, &m, &v);
     VEC_Add(&v, &c->pos, &v);
     v.y = y;
-    best = func_ov003_021d9a80(&v, tgt);
+    best = Ov003Vec_DistSq(&v, tgt);
     for (i = 1; i < n; i++) {
         cur += step;
         Ov010_VecSet(&t, 0, 0, Ov010_FxMul(c->r, 0x1000));
@@ -112,7 +112,7 @@ void func_ov010_02204030(Ov010Vec *out, const Ov010Ring4030 *c, const Ov010Vec *
         MTX_MultVec33(&t, &m2, &t);
         VEC_Add(&t, &c->pos, &t);
         t.y = y;
-        d = func_ov003_021d9a80(&t, tgt);
+        d = Ov003Vec_DistSq(&t, tgt);
         if (best > d) {
             best = d;
             v = t;

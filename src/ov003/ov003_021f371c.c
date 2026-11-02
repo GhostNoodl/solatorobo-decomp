@@ -47,7 +47,7 @@ extern void *func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern BOOL func_ov000_0218cea4(void *self);
 extern BOOL func_ov000_021903b4(void *anim);
 
-BOOL func_ov003_021f371c(Ov003Prop *self) {
+BOOL Ov003ActVt_021fa5f8_IsReady(Ov003Prop *self) {
     BOOL r = func_ov000_0218cf5c(self);
     if (self->kind != 0x6a01 && self->unk_b0 >= 0) {
         if (!func_ov000_0218f110(&self->unk_b0)) {
@@ -57,7 +57,7 @@ BOOL func_ov003_021f371c(Ov003Prop *self) {
     return r;
 }
 
-void func_ov003_021f3764(Ov003Prop *self) {
+void Ov003ActVt_021fa5f8_Start(Ov003Prop *self) {
     func_ov000_021b4c60(self);
     if (self->kind == 0x6a01) {
         return;
@@ -92,7 +92,7 @@ void func_ov003_021f37d0(Ov003Prop *self) {
     func_ov000_02190a80(self->anim, func_0203db40(self->unk_24));
 }
 
-BOOL func_ov003_021f388c(Ov003Prop *self) {
+BOOL Ov003ActVt_021fa5f8_Draw(Ov003Prop *self) {
     BOOL r = func_ov000_0218cea4(self);
     int i;
     if (r && self->kind != 0x6a01) {
@@ -109,7 +109,7 @@ BOOL func_ov003_021f388c(Ov003Prop *self) {
     return r;
 }
 
-void func_ov003_021f3914(Ov003Prop *self) {
+void Ov003ActVt_021fa5a0_Init(Ov003Prop *self) {
     func_ov000_021b4adc(self);
     func_ov000_0218f074(&self->unk_b0, &data_ov003_021fa658, 1, 1, 0, 0);
     self->unk_b0 = 0;

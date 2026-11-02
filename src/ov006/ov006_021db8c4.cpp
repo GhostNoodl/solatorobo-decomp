@@ -15,7 +15,7 @@ extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov006_021ec30c[];
 
-ov006_Unk021db8c4 *func_ov006_021db8c4(ov006_Unk021db8c4 *self) {
+ov006_Unk021db8c4 *ov006_Window_Ctor(ov006_Unk021db8c4 *self) {
     self->vtbl = data_ov000_021cac60;
     VCALL(self, 28);
     self->vtbl = data_ov000_021caec8;

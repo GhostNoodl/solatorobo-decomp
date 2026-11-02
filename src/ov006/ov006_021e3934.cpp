@@ -171,7 +171,7 @@ ov006_ModelHolder *func_ov006_021e3cec(ov006_ModelHolder *self) {
     return self;
 }
 
-ov006_ModelHolder *func_ov006_021e3d5c(ov006_ModelHolder *self) {
+ov006_ModelHolder *ov006_ModelHolder_DtorDelete(ov006_ModelHolder *self) {
     ov006_ModelHolder_Dtor(self);
     func_0203de1c(self);
     return self;

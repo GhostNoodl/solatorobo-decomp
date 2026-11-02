@@ -132,7 +132,7 @@ BOOL func_ov008_021d01b0(Ov008Menu *self) {
     return r;
 }
 
-Ov008V *func_ov008_021d0284(Ov008Menu *self) {
+Ov008V *Ov008Menu_Dtor(Ov008Menu *self) {
     OV008_SET_VT(self, &data_ov000_021caec8);
     self->v2c();
     OV008_SET_VT(self, &data_ov000_021cac60);

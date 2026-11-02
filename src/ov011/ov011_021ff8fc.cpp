@@ -1,11 +1,11 @@
 #include "ov011/ov011.h"
 
 #ifdef NONMATCHING
-// Status (round drA): func_ov011_021ff24c is 26 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is
+// Status (round drA): Ov011SceneActor_Update is 26 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is
 // the best clean draft. Blocker: register colouring of the ring loop only (head, p and pos share r3 in the ROM).
 // History: docs/MATCHING.md rounds qpJ, raD, raF, svC, mtA, cvA (search for the address); the full list is
 // docs/UNMATCHED.md.
-// func_ov011_021ff24c: 26 / 0 (raw / aligned register-masked, round raF; 56 / 0 in round raD; 61 / 4 at the
+// Ov011SceneActor_Update: 26 / 0 (raw / aligned register-masked, round raF; 56 / 0 in round raD; 61 / 4 at the
 // end of ov011_021fef00.cpp in round qpJ, 114 / 4 in round ovreg).
 // The read-only list and ring accessors take const pointers (F24c_Count, F24c_Active,
 // F24c_CountBusy, the ring readers and F24c_GetRing), so their b0 tests are const reads, and the final
@@ -221,7 +221,7 @@ static inline BOOL F24c_IsMove(s32 e) {
     return FALSE;
 }
 
-void func_ov011_021ff24c(Ov011SceneActor *self) {
+void Ov011SceneActor_Update(Ov011SceneActor *self) {
     Ov011Vec v;
     if (!func_ov003_021da03c(self)) {
         self->unk_b4 = 0;

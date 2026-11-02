@@ -100,7 +100,7 @@ extern BOOL func_ov000_0219aae8(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s3
 
 void func_ov003_021ee680(Ov003Lever *self, s16 kind, BOOL notify, s32 sound);
 
-void func_ov003_021ee2a8(Ov003Lever *self) {
+void Ov003ActVt_021f9ea8_Start(Ov003Lever *self) {
     func_ov000_02194758(self);
     func_ov000_02197d80(self);
     func_ov003_021ee680(self, self->kind, 0, -1);

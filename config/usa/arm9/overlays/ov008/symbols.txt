@@ -7,7 +7,7 @@ func_ov008_021cd448 kind:function(arm,size=0x44) addr:0x021cd448
 func_ov008_021cd48c kind:function(arm,size=0x74) addr:0x021cd48c
 func_ov008_021cd500 kind:function(arm,size=0x84) addr:0x021cd500
 func_ov008_021cd584 kind:function(arm,size=0x530) addr:0x021cd584
-func_ov008_021cdab4 kind:function(arm,size=0x4c) addr:0x021cdab4
+Ov008Menu_DtorDelete kind:function(arm,size=0x4c) addr:0x021cdab4
 func_ov008_021cdb00 kind:function(arm,size=0x2c8) addr:0x021cdb00
 func_ov008_021cddc8 kind:function(arm,size=0xf4) addr:0x021cddc8
 func_ov008_021cdebc kind:function(arm,size=0x65c) addr:0x021cdebc
@@ -40,7 +40,7 @@ func_ov008_021d0158 kind:function(arm,size=0x14) addr:0x021d0158
 func_ov008_021d016c kind:function(arm,size=0xc) addr:0x021d016c
 func_ov008_021d0178 kind:function(arm,size=0x38) addr:0x021d0178
 func_ov008_021d01b0 kind:function(arm,size=0xd4) addr:0x021d01b0
-func_ov008_021d0284 kind:function(arm,size=0x44) addr:0x021d0284
+Ov008Menu_Dtor kind:function(arm,size=0x44) addr:0x021d0284
 data_ov008_021d02c8 kind:data(any) addr:0x021d02c8
 data_ov008_021d02d0 kind:data(any) addr:0x021d02d0
 data_ov008_021d02dc kind:data(any) addr:0x021d02dc

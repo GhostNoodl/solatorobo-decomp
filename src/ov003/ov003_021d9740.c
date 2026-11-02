@@ -103,7 +103,7 @@ BOOL func_ov003_021d98a0(Ov003Sequence *self) {
     return self->active ? self->b6 : 0;
 }
 
-BOOL func_ov003_021d98bc(Ov003Vec *a, Ov003Vec *b) {
+BOOL Ov003Vec_Equal(Ov003Vec *a, Ov003Vec *b) {
     BOOL r = FALSE;
     if (a != NULL && b != NULL) {
         r = (a->x == b->x && a->y == b->y && a->z == b->z);

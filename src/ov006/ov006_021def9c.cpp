@@ -47,12 +47,12 @@ static inline void ov006_Unk021def9c_dtor(ov006_Unk021def9c *self) {
     OV006_DELETE_MODEL(self->unk90);
 }
 
-ov006_Unk021def9c *func_ov006_021def9c(ov006_Unk021def9c *self) {
+ov006_Unk021def9c *Ov006Vt_021ec26c_Dtor(ov006_Unk021def9c *self) {
     ov006_Unk021def9c_dtor(self);
     return self;
 }
 
-ov006_Unk021def9c *func_ov006_021df098(ov006_Unk021def9c *self) {
+ov006_Unk021def9c *Ov006Vt_021ec26c_DtorDelete(ov006_Unk021def9c *self) {
     ov006_Unk021def9c_dtor(self);
     func_0203de1c(self);
     return self;

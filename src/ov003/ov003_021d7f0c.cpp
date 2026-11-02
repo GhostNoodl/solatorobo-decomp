@@ -79,7 +79,7 @@ static inline void Ov003Ticker_Clear(Ov003Ticker *self) {
     self->cur = 0;
 }
 
-Ov003TickerSet *func_ov003_021d7f0c(Ov003TickerSet *self) {
+Ov003TickerSet *Ov003Vt_021f7d10_Ctor(Ov003TickerSet *self) {
     *(void **)self = &data_ov003_021f7d10;
     Ov003Ticker_Clear(&self->tickers[0]);
     Ov003Ticker_Clear(&self->tickers[1]);
@@ -88,7 +88,7 @@ Ov003TickerSet *func_ov003_021d7f0c(Ov003TickerSet *self) {
     return self;
 }
 
-Ov003TickerSet *func_ov003_021d7fc0(Ov003TickerSet *self) {
+Ov003TickerSet *Ov003Vt_021f7d10_Dtor(Ov003TickerSet *self) {
     *(void **)self = &data_ov003_021f7d10;
     self->Release();
     Ov003Ticker_Release(&self->tickers[2]);
@@ -97,7 +97,7 @@ Ov003TickerSet *func_ov003_021d7fc0(Ov003TickerSet *self) {
     return self;
 }
 
-Ov003TickerSet *func_ov003_021d80a8(Ov003TickerSet *self) {
+Ov003TickerSet *Ov003Vt_021f7d10_DtorDelete(Ov003TickerSet *self) {
     *(void **)self = &data_ov003_021f7d10;
     self->Release();
     Ov003Ticker_Release(&self->tickers[2]);

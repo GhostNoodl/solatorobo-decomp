@@ -13,7 +13,7 @@ extern "C" {
 
 extern u8 data_ov006_021ec2bc[];
 
-ov006_Unk021ddc70 *func_ov006_021ddc70(ov006_Unk021ddc70 *self) {
+ov006_Unk021ddc70 *Ov006Vt_021ec2bc_Ctor(ov006_Unk021ddc70 *self) {
     self->vtbl = data_ov006_021ec2bc;
     self->unk4 = 0;
     self->unkC = 0;

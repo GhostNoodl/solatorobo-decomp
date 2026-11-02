@@ -236,7 +236,7 @@ void func_ov003_021ec270(Ov003Gimmick *self) {
     Ov003Gimmick_Finish(self);
 }
 
-Ov003Gimmick *func_ov003_021ec31c(Ov003Gimmick *self) {
+Ov003Gimmick *Ov003ActVt_021f99e8_Ctor(Ov003Gimmick *self) {
     func_ov000_02194074(self);
     self->vtbl = data_ov003_021f99e8;
     func_ov000_0218e9c4(&self->res);
@@ -245,14 +245,14 @@ Ov003Gimmick *func_ov003_021ec31c(Ov003Gimmick *self) {
     return self;
 }
 
-void func_ov003_021ec354(Ov003Gimmick *self) {
+void Ov003ActVt_021f99e8_Init(Ov003Gimmick *self) {
     Ov003GmTable tbl = data_ov003_021f99c8;
     func_ov000_0219433c(self);
     func_ov000_0218f074(&self->res, tbl.res[self->id - 0x4063], 1, 0, 0, 0);
     self->res.handle = 0;
 }
 
-BOOL func_ov003_021ec3b8(Ov003Gimmick *self) {
+BOOL Ov003ActVt_021f99e8_IsReady(Ov003Gimmick *self) {
     BOOL r = func_ov000_021946f8(self);
     if (self->res.handle >= 0 && !func_ov000_0218f110(&self->res)) {
         r = FALSE;
@@ -260,7 +260,7 @@ BOOL func_ov003_021ec3b8(Ov003Gimmick *self) {
     return r;
 }
 
-void func_ov003_021ec3ec(Ov003Gimmick *self) {
+void Ov003ActVt_021f99e8_Start(Ov003Gimmick *self) {
     s16 k;
     u8 i;
     func_ov000_02194758(self);
@@ -301,7 +301,7 @@ void func_ov003_021ec4ac(Ov003Gimmick *self, Ov003GmMsg *msg) {
     func_ov000_021950e8(self, msg);
 }
 
-void func_ov003_021ec4f0(Ov003Gimmick *self) {
+void Ov003ActVt_021f99e8_Update(Ov003Gimmick *self) {
     if (self->id != 0x4064) {
         return;
     }

@@ -106,10 +106,10 @@ void *Ov012Lift_Ctor(void *p);
 void *Ov014Act_021fa6a0_Ctor(void *p);
 void *Ov009Act_02200b48_Ctor(void *p);
 void *Ov009Act_02202788_Ctor(void *p);
-void *func_ov010_021fa860(void *p);
-void *func_ov010_02204204(void *p);
-void *func_ov010_02207ac4(void *p);
-void *func_ov011_021fed5c(void *p);
+void *Ov010ActVt_0220fccc_Ctor(void *p);
+void *Ov010ActVt_02210154_Ctor(void *p);
+void *Ov010ActVt_0220ffe4_Ctor(void *p);
+void *Ov011SceneActor_Ctor(void *p);
 void *Ov012Act_021fee1c_Ctor(void *p);
 void *Ov012Act_021ffa68_Ctor(void *p);
 void *Ov012Act_02202b10_Ctor(void *p);
@@ -313,7 +313,7 @@ u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
         NEW_BASIC(0xf0, data_ov011_02207b34);
         break;
     case 0x5805:
-        NEW_CTOR(0x110, func_ov011_021fed5c);
+        NEW_CTOR(0x110, Ov011SceneActor_Ctor);
         break;
     case 0x580c:
     case 0x580d:
@@ -381,13 +381,13 @@ u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
         NEW_CTOR(0x368, Ov014Act_021fa6a0_Ctor);
         break;
     case 0x5c04:
-        NEW_CTOR(0x204, func_ov010_02207ac4);
+        NEW_CTOR(0x204, Ov010ActVt_0220ffe4_Ctor);
         break;
     case 0x5c05:
-        NEW_DERIV(0x1fc, func_ov010_02204204, data_ov010_0221009c);
+        NEW_DERIV(0x1fc, Ov010ActVt_02210154_Ctor, data_ov010_0221009c);
         break;
     case 0x5c06:
-        NEW_CTOR(0x1dc, func_ov010_021fa860);
+        NEW_CTOR(0x1dc, Ov010ActVt_0220fccc_Ctor);
         break;
     case 0x5c0f:
         NEW_CTOR(0x1f8, Ov014Act_02209280_Ctor);

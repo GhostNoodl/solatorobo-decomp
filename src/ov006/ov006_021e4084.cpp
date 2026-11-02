@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_ov006_021ec404;
 
-ov006_Unk021ec888 *func_ov006_021e3f10(ov006_Unk021ec888 *self);
+ov006_Unk021ec888 *Ov006Vt_021ec404_Ctor(ov006_Unk021ec888 *self);
 
 static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
     ov006_MenuNode *node = self->nodes;
@@ -36,12 +36,12 @@ static inline void ov006_Menu_Dtor(ov006_Unk021ec888 *self) {
     OV006_DELETE_OBJECT(self->unk1D8);
 }
 
-ov006_Unk021ec888 *func_ov006_021e4084(ov006_Unk021ec888 *self) {
+ov006_Unk021ec888 *Ov006Vt_021ec404_Dtor(ov006_Unk021ec888 *self) {
     ov006_Menu_Dtor(self);
     return self;
 }
 
-ov006_Unk021ec888 *func_ov006_021e4198(ov006_Unk021ec888 *self) {
+ov006_Unk021ec888 *Ov006Vt_021ec404_DtorDelete(ov006_Unk021ec888 *self) {
     ov006_Menu_Dtor(self);
     func_0203de1c(self);
     return self;
@@ -51,7 +51,7 @@ void func_ov006_021e42b4(void) {
     if (data_ov006_021ec888 == NULL) {
         ov006_Unk021ec888 *obj = (ov006_Unk021ec888 *)func_0203dd9c(sizeof(ov006_Unk021ec888));
         if (obj != NULL) {
-            obj = func_ov006_021e3f10(obj);
+            obj = Ov006Vt_021ec404_Ctor(obj);
         }
         data_ov006_021ec888 = obj;
     }

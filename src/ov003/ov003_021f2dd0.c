@@ -59,7 +59,7 @@ extern BOOL func_ov000_021903b4(Ov003TrailModel *model);
 extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 
 static inline void VSub(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *o) { o->x = a->x - b->x; o->y = a->y - b->y; o->z = a->z - b->z; }
-BOOL func_ov003_021f2dd0(Ov003Trail *self) {
+BOOL Ov003ActVt_021fa390_Draw(Ov003Trail *self) {
     Ov003Mtx43 m;
     Ov003Vec d;
     u8 idx;

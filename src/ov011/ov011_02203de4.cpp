@@ -20,7 +20,7 @@ static inline void Ov011_FreeSub48(Ov011Actor *self) {
     data_02097dd0->cur = saved;
 }
 
-void func_ov011_02203de4(Ov011Act7e50 *self) {
+void Ov011Act7e50_Start(Ov011Act7e50 *self) {
     func_ov003_021d112c(self);
     Ov011_FreeSub48(self);
     Ov011_VecSet(&self->unk_44->unk_0c, 0, -0xccd, -self->unk_64 >> 1);

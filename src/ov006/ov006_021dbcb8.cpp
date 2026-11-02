@@ -66,7 +66,7 @@ static inline void ov006_Unk021dbdb0_dtor(ov006_Unk021dbdb0 *self) {
     ov006_Unk021dbacc_dtor(&self->base);
 }
 
-ov006_Unk021dbdb0 *func_ov006_021dbcb8(ov006_Unk021dbdb0 *self) {
+ov006_Unk021dbdb0 *Ov006Vt_021ec2fc_Ctor(ov006_Unk021dbdb0 *self) {
     self->vtbl = data_ov006_021ec2fc;
     self->base.vtbl = data_ov006_021ec25c;
     self->base.sub.vtbl = data_0208b318;
@@ -99,12 +99,12 @@ ov006_Unk021dbdb0 *func_ov006_021dbcb8(ov006_Unk021dbdb0 *self) {
     return self;
 }
 
-ov006_Unk021dbdb0 *func_ov006_021dbdb0(ov006_Unk021dbdb0 *self) {
+ov006_Unk021dbdb0 *Ov006Vt_021ec2fc_Dtor(ov006_Unk021dbdb0 *self) {
     ov006_Unk021dbdb0_dtor(self);
     return self;
 }
 
-ov006_Unk021dbdb0 *func_ov006_021dbeb0(ov006_Unk021dbdb0 *self) {
+ov006_Unk021dbdb0 *Ov006Vt_021ec2fc_DtorDelete(ov006_Unk021dbdb0 *self) {
     ov006_Unk021dbdb0_dtor(self);
     func_0203de1c(self);
     return self;

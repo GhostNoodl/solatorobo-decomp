@@ -95,7 +95,7 @@ void func_ov003_021d6dac(Ov003Actor *self) {
     self->v64();
 }
 
-void func_ov003_021d6dd0(Ov003Actor *self) {
+void Ov003ActVt_021f7c0c_Start(Ov003Actor *self) {
     func_ov003_021d112c(self);
     if (self->unk_1a != 0) {
         self->state->flags |= 0x100000000ULL;

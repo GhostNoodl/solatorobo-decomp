@@ -14,7 +14,7 @@ typedef struct { u16 lo : 8; u16 rot : 2; u16 hi : 6; } Bits52;
 
 extern VFunc data_ov002_021efe5c[];
 extern VFunc data_ov002_021efe8c[];
-void *func_ov002_021d744c(void *self);
+void *Ov002Vt_021efe3c_Ctor(void *self);
 void func_ov002_021d7620(void *self);
 void *func_02035de0(void *file, void *name);
 void MTX_Identity22_(void *m);
@@ -137,7 +137,7 @@ void func_ov002_021df2ec(void *self, u8 *own, s32 y, s32 x, u16 id, u8 *w) {
         c = (u8 *)func_0203dd9c(0x8c);
         if (c != NULL) {
             *(VFunc **)c = data_ov002_021efe8c;
-            func_ov002_021d744c(c + 4);
+            Ov002Vt_021efe3c_Ctor(c + 4);
             FIELD(c, 0x78, s32) = 0;
             FIELD(c, 0x74, s32) = 0;
             FIELD(c, 0x80, s32) = 0;
@@ -160,7 +160,7 @@ void func_ov002_021df2ec(void *self, u8 *own, s32 y, s32 x, u16 id, u8 *w) {
     m = (u8 *)func_0203dd9c(0x1e8);
     if (m != NULL) {
         *(VFunc **)m = data_ov002_021efe5c;
-        func_ov002_021d744c(m + 4);
+        Ov002Vt_021efe3c_Ctor(m + 4);
         func_02041218(m + 0x74 + 0x88);
         func_02041440(m + 0x74, NULL, 0);
         m[0x1d4] = 0;

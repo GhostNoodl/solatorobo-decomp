@@ -25,7 +25,7 @@ static inline void ov002_Model_PlayPart(void *model, int idx) {
     func_02042628(model, anim, part, 0);
 }
 
-void *func_ov002_021e0e78(void *self) {
+void *Ov002Vt_021f000c_Dtor(void *self) {
     int i;
     *(VFunc **)self = data_ov002_021f000c;
     for (i = 0; i < 4; i++) {
@@ -43,7 +43,7 @@ void *func_ov002_021e0e78(void *self) {
     return self;
 }
 
-void *func_ov002_021e0f34(void *self) {
+void *Ov002Vt_021f000c_DtorDelete(void *self) {
     int i;
     *(VFunc **)self = data_ov002_021f000c;
     for (i = 0; i < 4; i++) {

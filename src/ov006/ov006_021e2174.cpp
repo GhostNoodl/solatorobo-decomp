@@ -15,12 +15,12 @@ typedef struct ov006_Unk021e2174 {
 extern "C" {
 
 extern u8 data_ov006_021ec2cc[];
-void *func_ov006_021e1f28(void *self);
+void *Ov006Vt_021ec2ec_Ctor(void *self);
 void func_ov006_021e1f68(void *self);
 
-ov006_Unk021e2174 *func_ov006_021e2174(ov006_Unk021e2174 *self) {
+ov006_Unk021e2174 *Ov006Vt_021ec2cc_Ctor(ov006_Unk021e2174 *self) {
     self->vtbl = data_ov006_021ec2cc;
-    __cxa_vec_ctor(self->elems, 4, sizeof(ov006_Elem021e1f28), (void *)func_ov006_021e1f28, (void *)func_ov006_021e1f68);
+    __cxa_vec_ctor(self->elems, 4, sizeof(ov006_Elem021e1f28), (void *)Ov006Vt_021ec2ec_Ctor, (void *)func_ov006_021e1f68);
     self->unk4 = 0;
     self->unk8 = 0;
     self->unkC = 0;

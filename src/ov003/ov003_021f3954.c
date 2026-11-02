@@ -67,7 +67,7 @@ extern void func_01ffc9fc(Ov003Vec *src, Ov003Vec *dst, u16 angle);
 extern void VEC_Add(Ov003Vec *a, Ov003Vec *b, Ov003Vec *dst);
 extern void func_ov000_02191c24(Ov003Shadow *shadow, Ov003Vec *pos);
 
-BOOL func_ov003_021f3954(Ov003Prop *self) {
+BOOL Ov003ActVt_021fa5a0_IsReady(Ov003Prop *self) {
     BOOL r = func_ov000_0218cf5c(self);
     if (self->unk_b0 >= 0) {
         if (!func_ov000_0218f110(&self->unk_b0)) {
@@ -77,7 +77,7 @@ BOOL func_ov003_021f3954(Ov003Prop *self) {
     return r;
 }
 
-void func_ov003_021f3988(Ov003Prop *self) {
+void Ov003ActVt_021fa5a0_Start(Ov003Prop *self) {
     s32 *res;
     s32 a;
     Ov003Vec v;

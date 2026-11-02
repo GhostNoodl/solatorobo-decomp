@@ -44,7 +44,7 @@ int func_0207011c(u16 id);
 ov006_Obj021e663c *func_ov000_0218e9c4(void *p);
 void func_ov000_0218f074(ov006_Obj021e663c *a, int b, int c, int d, int e, int f);
 
-void func_ov006_021e663c(ov006_Prop021e663c *self) {
+void Ov006ActVt_021ec4f4_Init(ov006_Prop021e663c *self) {
     int res;
     ov006_Obj021e663c *obj;
     func_0206fef8(self->unkE);

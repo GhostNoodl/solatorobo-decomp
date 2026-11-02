@@ -34,12 +34,12 @@ static inline void ov006_MarkerSet_Dtor(ov006_MarkerSet *self) {
     __cxa_vec_cleanup(self->markers, 4, sizeof(self->markers[0]), func_ov006_021e1f68);
 }
 
-ov006_MarkerSet *func_ov006_021e21cc(ov006_MarkerSet *self) {
+ov006_MarkerSet *Ov006Vt_021ec2cc_Dtor(ov006_MarkerSet *self) {
     ov006_MarkerSet_Dtor(self);
     return self;
 }
 
-ov006_MarkerSet *func_ov006_021e2254(ov006_MarkerSet *self) {
+ov006_MarkerSet *Ov006Vt_021ec2cc_DtorDelete(ov006_MarkerSet *self) {
     ov006_MarkerSet_Dtor(self);
     func_0203de1c(self);
     return self;

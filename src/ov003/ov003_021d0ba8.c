@@ -227,12 +227,12 @@ static inline void Ov003Obj_DtorBody(Ov003Obj *self) {
     func_ov000_0218c928(self);
 }
 
-Ov003Obj *func_ov003_021d0d0c(Ov003Obj *self) {
+Ov003Obj *Ov003ActVt_021f7ab4_Dtor(Ov003Obj *self) {
     Ov003Obj_DtorBody(self);
     return self;
 }
 
-Ov003Obj *func_ov003_021d0df0(Ov003Obj *self) {
+Ov003Obj *Ov003ActVt_021f7ab4_DtorDelete(Ov003Obj *self) {
     Ov003Obj_DtorBody(self);
     func_0203de1c(self);
     return self;

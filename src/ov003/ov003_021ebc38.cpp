@@ -122,7 +122,7 @@ extern void func_ov000_02190758(void *anim, void *p, s32 a);
 extern BOOL func_ov000_021903b4(void *anim);
 extern void func_ov000_021bd7a0(void *p);
 
-void func_ov003_021ebc38(Ov003Lift *self) {
+void Ov003ActVt_021f979c_Init(Ov003Lift *self) {
     func_ov000_0219433c(self);
     if (self->mode != 0) {
         func_ov000_0218f074(&self->res, data_ov003_021f998f, 1, 1, 0, 0);
@@ -137,7 +137,7 @@ void func_ov003_021ebc38(Ov003Lift *self) {
     func_ov000_02198360(self->work, 1, 0);
 }
 
-BOOL func_ov003_021ebccc(Ov003Lift *self) {
+BOOL Ov003ActVt_021f979c_IsReady(Ov003Lift *self) {
     BOOL r = func_ov000_021946f8(self);
     if (self->mode != 0 && self->res.handle >= 0 && !func_ov000_0218f110(&self->res)) {
         r = FALSE;
@@ -145,7 +145,7 @@ BOOL func_ov003_021ebccc(Ov003Lift *self) {
     return r;
 }
 
-void func_ov003_021ebd0c(Ov003Lift *self) {
+void Ov003ActVt_021f979c_Start(Ov003Lift *self) {
     func_ov000_02194758(self);
     if (self->mode != 0) {
         func_ov000_0218ffdc(self->anim, &self->res, 0, 1);
@@ -235,7 +235,7 @@ static inline BOOL Ov003_GameHasD4(void) {
     return Ov003Game_HasD4(data_ov000_021ccd54) ? TRUE : FALSE;
 }
 
-BOOL func_ov003_021ebee4(Ov003Lift *self) {
+BOOL Ov003ActVt_021f979c_Draw(Ov003Lift *self) {
     BOOL r = TRUE;
     BOOL done = FALSE;
     if (self->active) {

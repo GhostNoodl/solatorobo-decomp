@@ -114,12 +114,12 @@ static inline void ov006_Task0_Dtor(ov006_Task0 *self) {
     func_ov006_021ccddc(self);
 }
 
-ov006_Task0 *func_ov006_021d54d8(ov006_Task0 *self) {
+ov006_Task0 *Ov006Vt_021ebc98_Dtor(ov006_Task0 *self) {
     ov006_Task0_Dtor(self);
     return self;
 }
 
-ov006_Task0 *func_ov006_021d5544(ov006_Task0 *self) {
+ov006_Task0 *Ov006Vt_021ebc98_DtorDelete(ov006_Task0 *self) {
     ov006_Task0_Dtor(self);
     func_0203de1c(self);
     return self;
@@ -280,18 +280,18 @@ static inline void ov006_Unk021d58cc_Dtor(ov006_Unk021d58cc *self) {
     VCALL(self, 5C);
 }
 
-ov006_Unk021d58cc *func_ov006_021d58cc(ov006_Unk021d58cc *self) {
+ov006_Unk021d58cc *Ov006TaskVt_021ebe40_DtorDelete(ov006_Unk021d58cc *self) {
     ov006_Unk021d58cc_Dtor(self);
     func_0203de1c(self);
     return self;
 }
 
-ov006_Unk021d58cc *func_ov006_021d59b4(ov006_Unk021d58cc *self) {
+ov006_Unk021d58cc *Ov006TaskVt_021ebe40_Dtor(ov006_Unk021d58cc *self) {
     ov006_Unk021d58cc_Dtor(self);
     return self;
 }
 
-void *func_ov006_021d5a94(void **self) {
+void *Ov006Vt_021ebc80_DtorDelete(void **self) {
     *self = &data_ov006_021ebc80;
     func_ov000_021c2310(self);
     func_0203de1c(self);
@@ -304,7 +304,7 @@ void func_ov006_021d5abc(void) {
 void func_ov006_021d5ac0(void) {
 }
 
-void *func_ov006_021d5ac4(void **self) {
+void *Ov006Vt_021ebc80_Dtor(void **self) {
     *self = &data_ov006_021ebc80;
     func_ov000_021c2310(self);
     return self;

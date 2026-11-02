@@ -11,13 +11,13 @@ void func_ov002_021e4714(void *self) {
     FIELD(self, 0x14, s32) = 0;
 }
 
-void *func_ov002_021e473c(void *self) {
+void *Ov002Vt_021f00fc_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021f00fc;
     func_ov002_021e4904_inline(self);
     return self;
 }
 
-void *func_ov002_021e47a4(void *self) {
+void *Ov002Vt_021f00fc_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f00fc;
     func_ov002_021e4904_inline(self);
     func_0203de1c(self);

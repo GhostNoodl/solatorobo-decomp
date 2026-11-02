@@ -19,7 +19,7 @@ void func_ov002_021e2f54(void *self);
 void func_ov000_021c3fd4(void *list, void *item);
 BOOL func_ov002_021ddcbc(void *self, void *ev);
 BOOL func_ov002_021ddd30(void *self, void *ev);
-void *func_ov002_021d744c(void *self);
+void *Ov002Vt_021efe3c_Ctor(void *self);
 void func_ov002_021d7620(void *self);
 
 static inline void ov002_AddItem(void *list, s32 k, void *a, void *b) {
@@ -41,7 +41,7 @@ static inline u8 *ov002_NewCursor(void) {
     u8 *c = (u8 *)func_0203dd9c(0x8c);
     if (c != NULL) {
         *(VFunc **)c = data_ov002_021efe8c;
-        func_ov002_021d744c(c + 4);
+        Ov002Vt_021efe3c_Ctor(c + 4);
         FIELD(c, 0x78, s32) = 0;
         FIELD(c, 0x74, s32) = 0;
         FIELD(c, 0x80, s32) = 0;

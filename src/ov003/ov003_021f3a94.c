@@ -74,7 +74,7 @@ void func_ov003_021f3a94(Ov003Prop *self) {
     func_ov000_02190a80(&self->anim, func_0203db40(self->unk_24));
 }
 
-BOOL func_ov003_021f3ad4(Ov003Prop *self) {
+BOOL Ov003ActVt_021fa5a0_Draw(Ov003Prop *self) {
     Ov003Vec pos;
     BOOL r;
     self->shadow->unk_14 = self->unk_64 << 1;

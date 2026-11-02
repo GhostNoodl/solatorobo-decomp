@@ -22,12 +22,12 @@ extern void VEC_Add(Ov003Vec *a, Ov003Vec *b, Ov003Vec *dst);
 extern void func_0203de1c(void *p);
 extern void *func_ov000_0219429c(void *p);
 
-void *func_ov003_021dae14(void *self) {
+void *Ov003ActVt_021f7de4_Dtor(void *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void *func_ov003_021dae28(void *self) {
+void *Ov003ActVt_021f7de4_DtorDelete(void *self) {
     func_ov000_0219429c(self);
     func_0203de1c(self);
     return self;

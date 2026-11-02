@@ -153,7 +153,7 @@ extern BOOL func_ov000_0218f110(s16 *p);
 extern void func_0203de1c(void *p);
 extern void *func_ov000_0219429c(void *p);
 
-BOOL func_ov003_021e0e8c(Ov003Event *self) {
+BOOL Ov003ActVt_021f8a60_IsReady(Ov003Event *self) {
     BOOL r = func_ov000_021946f8(self);
     if (self->unk_d0 >= 0) {
         if (!func_ov000_0218f110(&self->unk_d0)) {
@@ -211,7 +211,7 @@ void func_ov003_021e0fa8(Ov003Event *self) {
     func_ov000_02196060(self);
 }
 
-void func_ov003_021e1000(Ov003Event *self) {
+void Ov003ActVt_021f9050_Init(Ov003Event *self) {
     Ov003Unit *unit;
     func_ov000_0219433c(self);
     unit = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
@@ -220,7 +220,7 @@ void func_ov003_021e1000(Ov003Event *self) {
     }
 }
 
-void func_ov003_021e1034(Ov003Event *self) {
+void Ov003ActVt_021f9050_Start(Ov003Event *self) {
     func_ov000_02194758(self);
     func_ov000_02197d80(self);
     if (self->unk_1a == 0) {
@@ -243,7 +243,7 @@ void func_ov003_021e1034(Ov003Event *self) {
     }
 }
 
-void func_ov003_021e10c4(Ov003Event *self) {
+void Ov003ActVt_021f9050_Update(Ov003Event *self) {
     BOOL changed = FALSE;
     Ov003Player *player;
     switch (self->unk_1a) {
@@ -298,7 +298,7 @@ void func_ov003_021e11c4(Ov003Event *self) {
     func_ov000_0219b808(self->unk_0c, self->unk_70, &data_ov003_021f62f0[(s16)self->unk_1c], 0, 0);
 }
 
-void func_ov003_021e1204(Ov003Event *self) {
+void Ov003ActVt_021f8638_Init(Ov003Event *self) {
     Ov003TableEntry *e;
     Ov003Unit *unit;
     func_ov000_0219433c(self);
@@ -531,7 +531,7 @@ extern BOOL func_ov000_0218f110(s16 *p);
 extern void func_0203de1c(void *p);
 extern void *func_ov000_0219429c(void *p);
 
-BOOL func_ov003_021e12b0(Ov003Event *self) {
+BOOL Ov003ActVt_021f8638_IsReady(Ov003Event *self) {
     BOOL r = func_ov000_021946f8(self);
     if (self->unk_d0 >= 0) {
         if (!func_ov000_0218f110(&self->unk_d0)) {
@@ -541,7 +541,7 @@ BOOL func_ov003_021e12b0(Ov003Event *self) {
     return r;
 }
 
-void func_ov003_021e12e4(Ov003Event *self) {
+void Ov003ActVt_021f8638_Start(Ov003Event *self) {
     int i;
     func_ov000_02194758(self);
     self->unk_20c = 0;
@@ -914,7 +914,7 @@ void func_ov003_021e1914(Ov003Prop *self) {
     data_ov000_021ccd54->unk_ac = 1;
 }
 
-void func_ov003_021e195c(Ov003Prop *self) {
+void Ov003ActVt_021f8df0_Init(Ov003Prop *self) {
     const Ov003SpotDef *def;
     Ov003Player *pl;
     Ov003Vec3 v;
@@ -935,7 +935,7 @@ void func_ov003_021e195c(Ov003Prop *self) {
     }
 }
 
-void func_ov003_021e19e8(Ov003Prop *self) {
+void Ov003ActVt_021f8df0_Start(Ov003Prop *self) {
     Ov003Unit *u;
     func_ov000_02194758(self);
     u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
@@ -1194,7 +1194,7 @@ extern void *STD_CopyString(char *dst, const char *src);
 extern void *STD_ConcatenateString(char *dst, const char *s);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 
-void func_ov003_021e2090(Ov003Prop *self) {
+void Ov003ActVt_021f8c28_Init(Ov003Prop *self) {
     Ov003PropDef *def;
     Ov003Unit *u;
     func_ov000_0219433c(self);
@@ -1217,7 +1217,7 @@ void func_ov003_021e2090(Ov003Prop *self) {
 
 extern BOOL func_ov000_0218f110(s16 *p);
 
-BOOL func_ov003_021e2148(Ov003Prop *self) {
+BOOL Ov003ActVt_021f8c28_IsReady(Ov003Prop *self) {
     BOOL r = func_ov000_021946f8(self);
     Ov003PropDef *def = self->unk_b0;
     if (def->unk_02_3 && def->unk_01 == 1 && self->unk_d0 >= 0) {
@@ -1346,7 +1346,7 @@ extern void func_ov000_021915a0(void *model);
 #define OV003LT_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003LT_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
-void func_ov003_021e219c(Ov003Lt *self) {
+void Ov003ActVt_021f8c28_Start(Ov003Lt *self) {
     const Ov003LtDef *def;
     void *obj;
     func_ov000_02194758(self);
@@ -1653,7 +1653,7 @@ extern void *STD_CopyString(char *dst, const char *src);
 extern void *STD_ConcatenateString(char *dst, const char *s);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 
-void func_ov003_021e2a44(Ov003Prop *self) {
+void Ov003ActVt_021f89c8_Init(Ov003Prop *self) {
     Ov003PropDef *def;
     Ov003Unit *u;
     func_ov000_0219433c(self);
@@ -1676,7 +1676,7 @@ void func_ov003_021e2a44(Ov003Prop *self) {
 
 extern BOOL func_ov000_0218f110(s16 *p);
 
-BOOL func_ov003_021e2afc(Ov003Prop *self) {
+BOOL Ov003ActVt_021f89c8_IsReady(Ov003Prop *self) {
     BOOL r = func_ov000_021946f8(self);
     Ov003PropDef *def = self->unk_b0;
     if (def->unk_02_3 && def->unk_01 == 1 && self->unk_d0 >= 0) {
@@ -1839,7 +1839,7 @@ extern Ov003LtPlayer *func_ov000_0219bf90(void);
 #define OV003LT_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003LT_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
-void func_ov003_021e2b50(Ov003Lt *self) {
+void Ov003ActVt_021f89c8_Start(Ov003Lt *self) {
     const Ov003LtDef *def;
     u16 rx;
     u16 ry;
@@ -2245,7 +2245,7 @@ extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 extern void *func_0204a028(void *mgr, s32 id, void *pos, s32 a);
 
-void func_ov003_021e3890(Ov003Prop *self) {
+void Ov003ActVt_021f8800_Start(Ov003Prop *self) {
     s16 a;
     s16 b;
     func_ov000_02194758(self);
@@ -2314,7 +2314,7 @@ void func_ov003_021e3900(Ov003Prop *self) {
     }
 }
 
-void func_ov003_021e3a90(Ov003Prop *self) {
+void Ov003ActVt_021f8fb8_Start(Ov003Prop *self) {
     func_ov000_02194758(self);
     if (self->unk_18 >= self->unk_1a) {
         self->unk_4c->unk_00 = 0x10;
@@ -2549,7 +2549,7 @@ void func_ov003_021e3d34(Ov003Prop *self) {
     }
 }
 
-void func_ov003_021e3e78(Ov003Prop *self) {
+void Ov003ActVt_021f8cc0_Start(Ov003Prop *self) {
     s16 n;
     s16 lim;
     Ov003Prop50 *q;
@@ -2666,7 +2666,7 @@ void func_ov003_021e40d4(Ov003Prop *self) {
     func_ov000_02198360(self->work, 1, 0);
 }
 
-void func_ov003_021e41bc(Ov003Prop *self) {
+void Ov003ActVt_021f8b90_Start(Ov003Prop *self) {
     Ov003Prop44 *p;
     func_ov000_02194758(self);
     p = self->unk_44;
@@ -2870,7 +2870,7 @@ extern void *STD_CopyString(void *dst, const void *src);
 extern BOOL func_ov000_021946f8(void *self);
 extern BOOL func_ov000_0218f110(s16 *res);
 
-void func_ov003_021e44dc(Ov003Big *self) {
+void Ov003ActVt_021f8af8_Init(Ov003Big *self) {
     func_ov000_0219433c(self);
     const char *name = "gm/g1plt01";
     const char *ext;
@@ -2887,7 +2887,7 @@ void func_ov003_021e44dc(Ov003Big *self) {
         self->unk_b18 = self->unk_93_1 - 1;
     }
 }
-BOOL func_ov003_021e4588(Ov003Big *self) {
+BOOL Ov003ActVt_021f8af8_IsReady(Ov003Big *self) {
     BOOL r = func_ov000_021946f8(self);
     if (self->res >= 0 && !func_ov000_0218f110(&self->res)) {
         r = FALSE;
@@ -2959,7 +2959,7 @@ static inline void *Ov003Big_Res(Ov003BigRes *r) {
     return r->unk_84 != NULL ? *r->unk_84 : NULL;
 }
 
-void func_ov003_021e45dc(Ov003Big *self) {
+void Ov003ActVt_021f8af8_Start(Ov003Big *self) {
     s32 i;
     func_ov000_02194758(self);
     self->unk_cc_0 = 0;
@@ -3057,7 +3057,7 @@ extern "C" {
 extern BOOL func_ov000_02194c08(void *self);
 extern BOOL func_ov000_021903b4(Ov003Model *m);
 
-BOOL func_ov003_021e4a94(Ov003Big *self) {
+BOOL Ov003ActVt_021f8af8_Draw(Ov003Big *self) {
     BOOL r = func_ov000_02194c08(self);
     s32 i;
     for (i = 0; i < 4; i++) {
@@ -3747,7 +3747,7 @@ static inline BOOL Ov003_GameHasD4(void) {
     return Ov003Game_HasD4(data_ov000_021ccd54) ? TRUE : FALSE;
 }
 
-void func_ov003_021e57b8(Ov003Obj *self) {
+void Ov003ActVt_021f8930_Start(Ov003Obj *self) {
     func_ov000_02194758(self);
     if (func_ov000_0219a2f4(&self->pos, 0x1000, -0xa000) == -0x1000) {
         return;
@@ -3755,7 +3755,7 @@ void func_ov003_021e57b8(Ov003Obj *self) {
     self->ctl->unk_54 |= data_02fe0f14.unk_2c;
 }
 
-void func_ov003_021e5804(Ov003Obj *self) {
+void Ov003ActVt_021f8898_Update(Ov003Obj *self) {
     if (self->work->kind == 9) {
         return;
     }
@@ -3785,7 +3785,7 @@ void func_ov003_021e5838(Ov003Obj *self) {
     func_ov000_02198360(self->work, 4, 0);
 }
 
-Ov003Obj *func_ov003_021e5920(Ov003Obj *self) {
+Ov003Obj *Ov003ActVt_021f8768_Dtor(Ov003Obj *self) {
     void *old;
     void *p;
     self->vtbl = data_ov003_021f8768;
@@ -3805,7 +3805,7 @@ Ov003Obj *func_ov003_021e5920(Ov003Obj *self) {
     return self;
 }
 
-Ov003Obj *func_ov003_021e5998(Ov003Obj *self) {
+Ov003Obj *Ov003ActVt_021f8768_DtorDelete(Ov003Obj *self) {
     void *old;
     void *p;
     self->vtbl = data_ov003_021f8768;
@@ -3826,7 +3826,7 @@ Ov003Obj *func_ov003_021e5998(Ov003Obj *self) {
     return self;
 }
 
-void func_ov003_021e5a18(Ov003Obj *self) {
+void Ov003ActVt_021f8768_Init(Ov003Obj *self) {
     u8 buf[0x20];
     func_ov000_0219433c(self);
     if (self->kind != 0) {
@@ -3866,7 +3866,7 @@ void func_ov003_021e5a18(Ov003Obj *self) {
     self->unk_20c = 0;
 }
 
-BOOL func_ov003_021e5b34(Ov003Obj *self) {
+BOOL Ov003ActVt_021f8768_IsReady(Ov003Obj *self) {
     BOOL r = func_ov000_021946f8(self);
     if (self->kind != 0 && self->unk_20c == 0) {
         if (self->res >= 0 && !func_ov000_0218f110(&self->res)) {
@@ -3886,7 +3886,7 @@ BOOL func_ov003_021e5b34(Ov003Obj *self) {
     return r;
 }
 
-void func_ov003_021e5bc4(Ov003Obj *self) {
+void Ov003ActVt_021f8768_Start(Ov003Obj *self) {
     Ov003Unit *u;
     func_ov000_02194758(self);
     if (self->kind != 0 && self->unk_20c == 0) {
@@ -3957,7 +3957,7 @@ void func_ov003_021e5bc4(Ov003Obj *self) {
     }
 }
 
-BOOL func_ov003_021e5dd0(Ov003Obj *self) {
+BOOL Ov003ActVt_021f8768_Draw(Ov003Obj *self) {
     BOOL r = func_ov000_02194c08(self);
     if (self->unk_5c != NULL && Ov003_GameIdle() && !Ov003_GameHasD4()) {
         func_ov000_021bd7a0(self->unk_5c);
@@ -4488,7 +4488,7 @@ void func_ov003_021e651c(Ov003Obj *self) {
     }
 }
 
-void func_ov003_021e661c(Ov003Obj *self) {
+void Ov003ActVt_021f86d0_Start(Ov003Obj *self) {
     func_ov000_02194758(self);
     func_ov000_02198360(self->work, 0x20, 0);
     func_ov000_02191008(self->model);
@@ -4578,7 +4578,7 @@ extern Ov003PathPt *data_ov003_021f85c0[];
 extern void func_ov000_02194758(void *self);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 
-void func_ov003_021e68b4(Ov003Obj *self) {
+void Ov003ActVt_021f8f20_Start(Ov003Obj *self) {
     Ov003Unit *u;
     Ov003PathPt *p;
     func_ov000_02194758(self);
@@ -4602,7 +4602,7 @@ void func_ov003_021e68b4(Ov003Obj *self) {
 
 
 
-BOOL func_ov003_021e694c(Ov003Obj *self) {
+BOOL Ov003ActVt_021f8f20_Draw(Ov003Obj *self) {
     BOOL r = FALSE;
     if (self->model->unk_be != 0) {
         r = func_ov000_02194c08(self);

@@ -22,12 +22,12 @@ static inline void ov006_Unk021e2a04_dtor(ov006_Unk021e2a04 *self) {
     }
 }
 
-ov006_Unk021e2a04 *func_ov006_021e2a04(ov006_Unk021e2a04 *self) {
+ov006_Unk021e2a04 *Ov006Vt_021ec29c_Dtor(ov006_Unk021e2a04 *self) {
     ov006_Unk021e2a04_dtor(self);
     return self;
 }
 
-ov006_Unk021e2a04 *func_ov006_021e2b08(ov006_Unk021e2a04 *self) {
+ov006_Unk021e2a04 *Ov006Vt_021ec29c_DtorDelete(ov006_Unk021e2a04 *self) {
     ov006_Unk021e2a04_dtor(self);
     func_0203de1c(self);
     return self;

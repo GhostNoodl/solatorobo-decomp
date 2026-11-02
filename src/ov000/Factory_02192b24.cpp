@@ -106,12 +106,12 @@ void *func_ov000_02193e34(void *p);
 void *func_ov000_02193e48(void *p);
 void func_ov000_0218d1c0(void *p, u16 sub, u16 id, s32 a);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
-void *func_ov003_021ec31c(void *p);
-void *func_ov010_022020c8(void *p);
-void *func_ov010_0220a6b0(void *p);
+void *Ov003ActVt_021f99e8_Ctor(void *p);
+void *Ov010ActVt_0220fe6c_Ctor(void *p);
+void *Ov010ActVt_02210378_Ctor(void *p);
 void *Ov013ActEx_0220a9a8_Ctor(void *p);
-void *func_ov010_0220dd60(void *p);
-void *func_ov011_02200e84(void *p);
+void *Ov010ActVt_022102e0_Ctor(void *p);
+void *Ov011Npc_Ctor(void *p);
 void *Ov012ActEx_02207018_Ctor(void *p);
 void *Ov013ActEx_021fdb70_Ctor(void *p);
 void *Ov013ActEx_02204454_Ctor(void *p);
@@ -200,7 +200,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             NEW_CTOR(0xd8, Ov013ActEx_0220a9a8_Ctor);
             break;
         case 0x4812:
-            NEW_CTOR(0xfc, func_ov011_02200e84);
+            NEW_CTOR(0xfc, Ov011Npc_Ctor);
             break;
         case 0x4815:
             NEW_CTOR(0xe4, Ov014ActEx_022142fc_Ctor);
@@ -218,10 +218,10 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             NEW_CTOR(0xf8, Ov014ActEx_0220eca0_Ctor);
             break;
         case 0x4817:
-            NEW_CTOR(0x19c, func_ov010_0220a6b0);
+            NEW_CTOR(0x19c, Ov010ActVt_02210378_Ctor);
             break;
         case 0x4818:
-            NEW_CTOR(0x100, func_ov010_0220dd60);
+            NEW_CTOR(0x100, Ov010ActVt_022102e0_Ctor);
             break;
         case 0x4820:
             NEW_BASIC(0xdc, data_ov013_0220b7d0);
@@ -269,7 +269,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             NEW_CTOR(0xdc, Ov014ActEx_0220774c_Ctor);
             break;
         case 0x4829:
-            NEW_CTOR(0x114, func_ov010_022020c8);
+            NEW_CTOR(0x114, Ov010ActVt_0220fe6c_Ctor);
             break;
         case 0x482d:
             NEW_BASIC(0xdc, data_ov009_0221802c);
@@ -395,7 +395,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
         case 0x4064:
         case 0x4065:
         case 0x4066:
-            NEW_CTOR(0x214, func_ov003_021ec31c);
+            NEW_CTOR(0x214, Ov003ActVt_021f99e8_Ctor);
             break;
         case 0x4075:
             NEW_BASIC(0xd0, data_ov003_021f9b18);

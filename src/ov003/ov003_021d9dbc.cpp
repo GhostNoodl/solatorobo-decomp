@@ -96,7 +96,7 @@ s32 func_ov003_021d9edc(u16 id) {
     return func_ov000_0218dfb4(func_ov000_0218e4cc(data_ov000_021ccd68, id), id);
 }
 
-void func_ov003_021d9f04(Ov003Rot *out, const Ov003Vec *v) {
+void Ov003Vec_ToRot(Ov003Rot *out, const Ov003Vec *v) {
     out->x = Ov003_Pitch(v->y);
     out->y = FX_Atan2(v->x, v->z);
     out->z = 0;

@@ -37,14 +37,14 @@ void func_ov000_02162910(void *p, const void *a, const void *b, const void *c);
 void func_ov000_0216295c(void *p, const void *v, int s);
 void func_ov000_0215c1bc(void *a, int b, const void *c);
 void func_ov000_0215bb14(void *a, const void *b);
-void *func_ov006_021e07b0(void *p);
+void *ov006_Caption_Ctor(void *p);
 void func_ov006_021e0954(void *p);
 void func_ov006_021e0ca8(void *p, void *a, int b);
-void *func_ov006_021e0d64(void *p);
+void *Ov006Vt_021ec20c_Ctor(void *p);
 void func_ov006_021e0f00(void *p);
 void func_ov006_021e13c8(void *p, void *s);
 void func_ov006_021e139c(ov006_Unk021e139c *self, int a, int b, u8 c);
-void func_ov006_021dabcc(ov006_Slot *self, void *buf);
+void ov006_Slot_Pack(ov006_Slot *self, void *buf);
 void func_ov006_021e4a80(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 void func_ov006_021d3498(ov006_TaskD1F *self, u16 id, BOOL dir);
 ov006_Unk020706a0 *func_020706a0(u16 id);
@@ -184,7 +184,7 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     {
         void *p = func_0203dd9c(0x2c);
         if (p != NULL) {
-            p = func_ov006_021e07b0(p);
+            p = ov006_Caption_Ctor(p);
         }
         self->unk68 = (ov006_Unk68 *)p;
     }
@@ -198,7 +198,7 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     for (i = 0; i < 4; i++) {
         void *p = func_0203dd9c(0x24);
         if (p != NULL) {
-            p = func_ov006_021e0d64(p);
+            p = Ov006Vt_021ec20c_Ctor(p);
         }
         self->gauges[i] = (ov006_Unk021e139c *)p;
         func_ov006_021e0f00(self->gauges[i]);
@@ -212,7 +212,7 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     func_ov006_021e13c8(self->gauges[3], func_0204c0e8(res, 0x13e));
     {
         u8 buf[0x18];
-        func_ov006_021dabcc(func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5), buf);
+        ov006_Slot_Pack(func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5), buf);
         func_ov006_021e4a80(data_ov006_021ec888, self->unk49, 1, buf, 0x18);
     }
     if (self->base.unkC != 0) {

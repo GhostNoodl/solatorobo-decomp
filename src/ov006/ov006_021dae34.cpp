@@ -2,11 +2,11 @@
 
 extern "C" {
 
-void func_ov006_021dae34(void) {
+void ov006_DeleteSlotManager(void) {
     OV006_DELETE_OBJECT(data_ov006_021ec884);
 }
 
-ov006_SlotManager *func_ov006_021dae90(void) {
+ov006_SlotManager *ov006_GetSlotManager(void) {
     return data_ov006_021ec884;
 }
 

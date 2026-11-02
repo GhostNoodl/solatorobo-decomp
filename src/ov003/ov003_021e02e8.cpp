@@ -145,7 +145,7 @@ static inline void Ov003Ln_Sub(const Ov003LnVec *a, const Ov003LnVec *b, Ov003Ln
     o->z = a->z - b->z;
 }
 
-BOOL func_ov003_021e00e8(Ov003Line *self) {
+BOOL Ov003ActVt_021f8220_Draw(Ov003Line *self) {
     Ov003LnVec p;
     Ov003LnVec d;
     Ov003LnMtx m;
@@ -258,7 +258,7 @@ extern void NNS_G3dRenderObjSetInitFunc(void *p, void *fn);
 extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 
-void func_ov003_021e0388(Ov003Lamp *self) {
+void Ov003ActVt_021f80f0_Start(Ov003Lamp *self) {
     Ov003LampModel *m;
     Ov003Game48 *g;
     func_ov000_02194758(self);

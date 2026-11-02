@@ -3,7 +3,7 @@ func_ov004_021ccdfc kind:function(arm,size=0x60) addr:0x021ccdfc
 func_ov004_021cce5c kind:function(arm,size=0x2c) addr:0x021cce5c
 func_ov004_021cce88 kind:function(arm,size=0x88) addr:0x021cce88
 func_ov004_021ccf10 kind:function(arm,size=0x84) addr:0x021ccf10
-func_ov004_021ccf94 kind:function(arm,size=0x1c) addr:0x021ccf94
+Ov004ActVt_021cf808_DtorDelete kind:function(arm,size=0x1c) addr:0x021ccf94
 func_ov004_021ccfb0 kind:function(arm,size=0x20) addr:0x021ccfb0
 func_ov004_021ccfd0 kind:function(arm,size=0x20) addr:0x021ccfd0
 func_ov004_021ccff0 kind:function(arm,size=0x2c) addr:0x021ccff0
@@ -11,11 +11,11 @@ func_ov004_021cd01c kind:function(arm,size=0x4) addr:0x021cd01c
 func_ov004_021cd020 kind:function(arm,size=0x4) addr:0x021cd020
 func_ov004_021cd024 kind:function(arm,size=0x4) addr:0x021cd024
 func_ov004_021cd028 kind:function(arm,size=0x4) addr:0x021cd028
-func_ov004_021cd02c kind:function(arm,size=0x4) addr:0x021cd02c
-func_ov004_021cd030 kind:function(arm,size=0x4) addr:0x021cd030
+Ov004ActVt_021cf808_Update kind:function(arm,size=0x4) addr:0x021cd02c
+Ov004ActVt_021cf808_Start kind:function(arm,size=0x4) addr:0x021cd030
 func_ov004_021cd034 kind:function(arm,size=0x4) addr:0x021cd034
-func_ov004_021cd038 kind:function(arm,size=0x4) addr:0x021cd038
-func_ov004_021cd03c kind:function(arm,size=0x14) addr:0x021cd03c
+Ov004ActVt_021cf808_Init kind:function(arm,size=0x4) addr:0x021cd038
+Ov004ActVt_021cf808_Dtor kind:function(arm,size=0x14) addr:0x021cd03c
 func_ov004_021cd050 kind:function(arm,size=0x11c,dsprot=(0x110,0xfa8fd0ea)) addr:0x021cd050
 func_ov004_021cd16c kind:function(arm,size=0x11c,dsprot=(0x110,0xfa8fd0ea)) addr:0x021cd16c
 func_ov004_021cd288 kind:function(arm,size=0x11c,dsprot=(0x110,0xfa8fd0ea)) addr:0x021cd288

@@ -114,7 +114,7 @@ void func_ov003_021f3198(Ov003Blink *self) {
     func_ov000_021911c8(self->model, (s16)((u8)a << 6));
 }
 
-void func_ov003_021f3280(Ov003Blink *self) {
+void Ov003ActVt_021fa3e8_Start(Ov003Blink *self) {
     func_ov000_021b4c60(self);
     self->u.drift.offset.x = 0;
     self->u.drift.offset.y = 0;
@@ -138,7 +138,7 @@ void func_ov003_021f32c0(Ov003Blink *self) {
     VEC_MultAdd(0x400, &v, &self->u.drift.offset, &self->u.drift.offset);
 }
 
-BOOL func_ov003_021f3348(Ov003Blink *self) {
+BOOL Ov003ActVt_021fa3e8_Draw(Ov003Blink *self) {
     s32 s = func_0206fef8(self->id)->scale;
     BOOL r;
     Ov003Vec v;
@@ -170,7 +170,7 @@ BOOL func_ov003_021f3348(Ov003Blink *self) {
     return r;
 }
 
-void func_ov003_021f3440(Ov003Blink *self) {
+void Ov003ActVt_021fa338_Start(Ov003Blink *self) {
     s16 rot;
     func_ov000_021b4c60(self);
     if (func_0206fef8(self->id)->flip) {

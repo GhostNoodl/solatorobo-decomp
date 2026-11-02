@@ -251,7 +251,7 @@ ov006_TaskD37 *func_ov006_021d3914(ov006_TaskD37 *self) {
     return self;
 }
 
-ov006_TaskD37 *func_ov006_021d3c08(ov006_TaskD37 *self) {
+ov006_TaskD37 *ov006_TaskD37_DtorDelete(ov006_TaskD37 *self) {
     ov006_TaskD37_Dtor(self);
     func_0203de1c(self);
     return self;
@@ -414,7 +414,7 @@ void *func_ov000_02154b80(void *a, int b);
 BOOL func_ov006_021d37d0(ov006_Window *window, ov006_ListNode *node);
 BOOL func_ov006_021d1f00(ov006_Window *window, ov006_ListNode *node);
 void func_ov000_0215bb14(void *a, const void *b);
-ov006_Obj58 *func_ov006_021dbcb8(void *p);
+ov006_Obj58 *Ov006Vt_021ec2fc_Ctor(void *p);
 ov006_Model64 *func_ov000_0218fe1c(void *p);
 BOOL func_ov000_0218ffdc(ov006_Model64 *a, ov006_Model60 *b, int c, int d);
 BOOL func_ov000_02190cb0(void *a, const void *b, int c, int d);
@@ -423,10 +423,10 @@ void *func_ov000_02190a30(void *a, int b);
 void func_ov000_021911c8(void *a, int b);
 ov006_Unk020706a0 *func_020706a0(u16 id);
 void func_ov006_021d526c(ov006_TaskD37 *self, const char *name, s16 speed, u8 loop);
-void *func_ov006_021e07b0(void *p);
+void *ov006_Caption_Ctor(void *p);
 void func_ov006_021e0954(void *p);
 void func_ov006_021e0ca8(void *p, void *a, int b);
-ov006_Obj13C *func_ov006_021e1484(void *p);
+ov006_Obj13C *Ov006Vt_021ec1fc_Ctor(void *p);
 void func_ov006_021e16b0(ov006_Obj13C *p);
 ov006_Info021daaa8 *func_ov006_021daaa8(u16 id);
 const void *func_0206ec8c(u16 id);
@@ -585,7 +585,7 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
     {
         void *p = func_0203dd9c(0xec);
         if (p != NULL) {
-            p = func_ov006_021dbcb8(p);
+            p = Ov006Vt_021ec2fc_Ctor(p);
         }
         self->unk58 = (ov006_Obj58 *)p;
     }
@@ -613,7 +613,7 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
     {
         void *p = func_0203dd9c(0x2c);
         if (p != NULL) {
-            p = func_ov006_021e07b0(p);
+            p = ov006_Caption_Ctor(p);
         }
         self->unk138 = (ov006_Unk68 *)p;
     }
@@ -626,7 +626,7 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
     {
         void *p = func_0203dd9c(0x30);
         if (p != NULL) {
-            p = func_ov006_021e1484(p);
+            p = Ov006Vt_021ec1fc_Ctor(p);
         }
         self->unk13C = (ov006_Obj13C *)p;
     }

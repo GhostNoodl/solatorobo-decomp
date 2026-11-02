@@ -193,7 +193,7 @@ static inline BOOL Ov003_GameIdle2(void) {
     return TRUE;
 }
 
-BOOL func_ov003_021eab10(Ov003Obj *self) {
+BOOL Ov003ActVt_021f98cc_Draw(Ov003Obj *self) {
     BOOL r = TRUE;
     if (!self->unk_cc_7) {
         if (self->unk_5c != NULL && Ov003_GameIdle()) {
@@ -230,7 +230,7 @@ void func_ov003_021eabcc(Ov003Obj *self) {
     self->unk_ce++;
 }
 
-void func_ov003_021eaca4(Ov003Obj *self) {
+void Ov003ActVt_021f9834_Init(Ov003Obj *self) {
     func_ov000_0219433c(self);
     func_ov000_0218f074(&self->res, data_ov003_021f995c, 1, 1, 1, 0);
     self->res = 0;
@@ -242,7 +242,7 @@ void func_ov003_021eaca4(Ov003Obj *self) {
     self->unk_2fc.z = self->rot.z;
 }
 
-BOOL func_ov003_021ead1c(Ov003Obj *self) {
+BOOL Ov003ActVt_021f9834_IsReady(Ov003Obj *self) {
     BOOL r = func_ov000_021946f8(self);
     if (self->res >= 0 && !func_ov000_0218f110(&self->res)) {
         r = FALSE;
@@ -250,7 +250,7 @@ BOOL func_ov003_021ead1c(Ov003Obj *self) {
     return r;
 }
 
-void func_ov003_021ead50(Ov003Obj *self) {
+void Ov003ActVt_021f9834_Start(Ov003Obj *self) {
     Ov003AnimTbl *tbl;
     Ov003Player *pl;
     func_ov000_02194758(self);

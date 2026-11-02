@@ -15,8 +15,8 @@ extern char data_ov013_0220ba58[];
 extern char data_ov013_0220ba60[];
 extern void func_ov003_021d9980(Ov013Vec *out, u16 rot, const Ov013Vec *v);
 extern void *func_ov000_02194074(void *self);
-extern void *func_ov003_021cf2bc(void *p);
-extern void *func_ov003_021cf2d8(void *p);
+extern void *Ov003Vt_021f79a8_Ctor(void *p);
+extern void *Ov003Vt_021f79a8_Dtor(void *p);
 extern void *func_ov000_0218ea20(void *p);
 extern void *func_ov000_0218fee4(void *p);
 extern void *func_ov000_0218e9c4(void *p);
@@ -64,7 +64,7 @@ static inline void Ov013_DtorDc(void *self) {
     }
     data_02097dd0->cur = saved;
     Ov013_InitDc(self);
-    func_ov003_021cf2d8((u8 *)self + 0xec);
+    Ov003Vt_021f79a8_Dtor((u8 *)self + 0xec);
     func_ov000_0219429c(self);
 }
 
@@ -119,7 +119,7 @@ static inline void Ov013_SetShadow(Ov013Shadow *s, u8 a, u8 b, u8 c, u8 d, u16 s
 void *Ov013ActEx_02204454_Ctor(void *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = data_ov013_0220bbb8;
-    func_ov003_021cf2bc((u8 *)self + 0xec);
+    Ov003Vt_021f79a8_Ctor((u8 *)self + 0xec);
     Ov013_InitDc(self);
     return self;
 }
