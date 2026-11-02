@@ -1,6 +1,7 @@
 #include "ov006/SlotManager.h"
 #include "ov006/ov006.h"
 #include "nitro/fx.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct ov006_Rot021e96cc {
     u16 x;
@@ -49,8 +50,6 @@ extern "C" {
 extern void *data_02097e4c;
 extern char data_ov006_021ec4ad[];
 extern char data_ov006_021ec4e0[];
-void *func_02065f88(s32 id, VecFx32 *pos);
-void *Effect3D_Create(const char *a, const char *b, const char *c, VecFx32 *pos);
 void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 void func_ov000_021987b8(ov006_Col021e96cc *col, s32 a, VecFx32 *b, VecFx32 *c);
 void func_ov000_02198e34(ov006_Col021e96cc *col, ov006_Rot021e96cc *out, VecFx32 *v, s32 a);

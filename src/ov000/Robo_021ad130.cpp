@@ -3,6 +3,7 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/CmdQueue.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u16 state;
@@ -33,7 +34,6 @@ const Ids16_021ad130 data_ov000_021c9ff2 = {{0x127, 0x310, 0}};
 extern Ids021ad130 data_ov000_021ca018;
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 u8 func_0206d204(void *p, s32 a);
-VObj *func_02065f88(s32 id, void *pos);
 void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 on, u32 mask);
 u8 *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 s32 Rand_UpTo(s32 max);
@@ -74,13 +74,13 @@ static inline BOOL QHas021ad130(const s32 *w) {
 }
 
 static inline void Spawn021ad130(Robo021ca458 *self, s32 id, s32 scale) {
-    VObj *e = func_02065f88(id, (u8 *)self + 0x70);
+    EffectObj *e = func_02065f88(id, &self->pos);
     if (e != NULL) {
-        e->vfunc_0c(scale);
-        LFLD(s32, e, 0x3c) = 0xb33;
+        e->SetScaleAll(scale);
+        e->speed = 0xb33;
         if (self->unk_b22_6 == 5) {
-            e->vfunc_24(0, 0x1800, 0);
-            e->vfunc_0c(0x3000);
+            e->AddPosXYZ(0, 0x1800, 0);
+            e->SetScaleAll(0x3000);
         }
     }
 }
@@ -96,7 +96,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
             ((St021ad130 *)self->fsm)->state = 10;
             p = ((u8 *)self->hp);
             LFLD(u16, p, 0) = (s32)(r * LFLD(u16, p, 2)) / 100;
-            func_02065f88(0xcb, (u8 *)self + 0x70)->vfunc_14(0x99a, 0x1800, 0x99a);
+            func_02065f88(0xcb, &self->pos)->SetScaleXYZ(0x99a, 0x1800, 0x99a);
             break;
         }
         if (self->unk_b24_1) {
@@ -154,22 +154,22 @@ void func_ov000_021ad130(Robo021ca458 *self) {
                     }
                 }
             } else if (t == 0x118) {
-                VObj *e = func_02065f88(5, (u8 *)self + 0x70);
+                EffectObj *e = func_02065f88(5, &self->pos);
                 if (e != NULL) {
-                    e->vfunc_0c(0x2800);
-                    LFLD(s32, e, 0x3c) = 0x800;
+                    e->SetScaleAll(0x2800);
+                    e->speed = 0x800;
                     if (self->unk_b22_6 == 5) {
-                        e->vfunc_24(0, 0x1800, 0);
-                        e->vfunc_0c(0x3000);
+                        e->AddPosXYZ(0, 0x1800, 0);
+                        e->SetScaleAll(0x3000);
                     }
                 }
-                e = func_02065f88(0x66, (u8 *)self + 0x70);
+                e = func_02065f88(0x66, &self->pos);
                 if (e != NULL) {
-                    e->vfunc_0c(0x28cd);
-                    LFLD(s32, e, 0x3c) = 0xb33;
+                    e->SetScaleAll(0x28cd);
+                    e->speed = 0xb33;
                     if (self->unk_b22_6 == 5) {
-                        e->vfunc_24(0, 0x1800, 0);
-                        e->vfunc_0c(0x3000);
+                        e->AddPosXYZ(0, 0x1800, 0);
+                        e->SetScaleAll(0x3000);
                     }
                 }
                 func_0204a028(data_02097e4c, 0x56, (u8 *)self + 0x70, -5);
@@ -205,13 +205,13 @@ void func_ov000_021ad130(Robo021ca458 *self) {
             St021ad130 *st = (St021ad130 *)self->fsm;
             st->timer++;
             if (st->timer > 0x3c) {
-                VObj *e = func_02065f88(0xc9, (u8 *)self + 0x70);
+                EffectObj *e = func_02065f88(0xc9, &self->pos);
                 s32 sc = 0x4800;
-                self->unk_b44 = LFLD(s32, e, 0x24);
+                self->unk_b44 = e->id;
                 if (self->unk_b22_6 == 5) {
                     sc = 0x8000;
                 }
-                e->vfunc_0c(sc);
+                e->SetScaleAll(sc);
                 self->unk_44->unk_22_1 = 0;
                 ((St021ad130 *)self->fsm)->timer = 0;
                 goto next;
@@ -223,7 +223,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
         st->timer++;
         if (st->timer > 0x14) {
             u8 *anm;
-            func_02065f88(0x190, (u8 *)self + 0x70);
+            func_02065f88(0x190, &self->pos);
             anm = data_ov000_021cc5e3;
             if (!self->unk_b24_1 && (self->hit->unk_50 & 0x400)) {
                 anm = data_ov000_021cc618;

@@ -5,8 +5,6 @@ extern "C" {
 extern u8 data_ov015_022132d0[];
 u8 *func_0206ef88(u16 id);
 extern Ov015Obj290 *data_ov015_0221336c;
-void func_ov015_02211954(u8 *self);
-extern Ov015Shared *data_ov015_02213368;
 extern const char *data_ov015_02213228[];
 extern const char *data_ov015_02213230[];
 extern const char *data_ov015_02213208[];
@@ -32,10 +30,10 @@ void func_ov015_02211828(Ov015Info38 *self) {
     self->unk_34 = 0;
 }
 
-void func_ov015_02211878(void *self) {
+void func_ov015_02211878(Ov015Info38 *self) {
 }
 
-void *func_ov015_0221187c(void *self) {
+void *func_ov015_0221187c(Ov015Info38 *self) {
     Heap_Free(self);
     return self;
 }
@@ -66,26 +64,26 @@ struct Ov015Info30 {
     u8 pad[0x24];
     Ov015Vec v;
 };
-void func_ov015_02211954(u8 *self) {
+void func_ov015_02211954(NNSG3dRS *rs) {
     Ov015Obj290 *g = data_ov015_0221336c;
     s32 k;
     Ov015Info30 info;
     if (g == NULL) {
         return;
     }
-    k = (FLD(u32, self, 0x8) & 0x10) ? FLD(u8, self, 0xae) : -1;
+    k = (rs->flag & 0x10) ? rs->currentNodeDesc : -1;
     if (k != g->unk_0c) {
         return;
     }
     NNS_G3dGetCurrentMtx((MtxFx43 *)&info, (MtxFx33 *)0);
     g->unk_234 = info.v;
-    FLD(void *, self, 0x24) = NULL;
-    FLD(u8, self, 0x92) = 0;
+    rs->cbVecFunc[NNS_G3D_SBC_NODEDESC] = NULL;
+    rs->cbVecTiming[NNS_G3D_SBC_NODEDESC] = 0;
 }
 
-void func_ov015_022119d0(u8 *self) {
-    FLD(void *, self, 0x24) = (void *)func_ov015_02211954;
-    FLD(u8, self, 0x92) = 3;
+void func_ov015_022119d0(NNSG3dRS *rs) {
+    rs->cbVecFunc[NNS_G3D_SBC_NODEDESC] = func_ov015_02211954;
+    rs->cbVecTiming[NNS_G3D_SBC_NODEDESC] = NNS_G3D_SBC_CALLBACK_TIMING_C;
 }
 
 void func_ov015_022119e8(Ov015Obj290 *self) {
@@ -153,7 +151,7 @@ BOOL func_ov015_02211b2c(Ov015Obj290 *self) {
     self->model.flags.boxTest = 0;
     self->model.flags.invV = 0;
     self->model.flags.visible = 0;
-    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->model.renderObj), (NNSG3dSbcCallBackFunc)func_ov015_022119d0);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->model.renderObj), func_ov015_022119d0);
     self->model.flags.clearInit = 0;
     self->model.flags.flushVP = 1;
     s32 r = data_ov015_02213368->unk_2c;

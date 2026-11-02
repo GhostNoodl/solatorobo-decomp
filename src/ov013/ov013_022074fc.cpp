@@ -31,7 +31,6 @@ extern char data_ov013_0220be7c[];
 extern char data_ov013_0220be9a[];
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);
 extern void func_0203f364(void *p);
-extern Ov013V *func_02065f88(s32 id, VecFx32 *pos);
 extern void func_ov000_021911c8(void *a, s32 b);
 extern void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
@@ -42,7 +41,7 @@ void func_ov013_022075b8(Ov003Actor *self) {
     ActorSub40 *st = self->fsm;
     switch (st->st) {
     case 0: {
-        Ov013V *e;
+        EffectObj *e;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x540c, 0x15);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4811, 10);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4813, 10);
@@ -63,8 +62,8 @@ void func_ov013_022075b8(Ov003Actor *self) {
         func_0204a028(data_02097e4c, 0x6a, &self->pos, -3);
         e = func_02065f88(0x69, &self->pos);
         if (e != NULL) {
-            e->v0c(0x5800);
-            e->v24(0, self->centerY, 0);
+            e->SetScaleAll(0x5800);
+            e->AddPosXYZ(0, self->centerY, 0);
         }
         self->fsm->timer = 0;
         self->fsm->st = 1;

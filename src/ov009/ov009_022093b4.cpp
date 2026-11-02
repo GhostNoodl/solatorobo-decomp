@@ -101,12 +101,9 @@ struct Ov009Vec3x3 {
 
 extern const Ov009Vec3x3 data_ov009_02215f50;
 extern char data_ov009_022172af[];
-extern void *data_0214a420;
 extern void func_ov000_021911c8(void *model, s32 a);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern BOOL Hit_DiffInCylinder(const VecFx32 *a, const VecFx32 *b, s32 r, s32 h);
-extern void *func_020657b0(void *mgr, s32 id);
 
 void func_ov009_02209668(Ov009ActVt_02217594 *self) {
     Ov009Vec3x3 tbl = data_ov009_02215f50;
@@ -118,7 +115,7 @@ void func_ov009_02209668(Ov009ActVt_02217594 *self) {
     switch (self->fsm->st) {
     case 0: {
         u8 i;
-        Ov009V *e;
+        EffectObj *e;
         self->unk_318 = 3;
         for (i = 0; i < 3; i++) {
             if (Hit_DiffInCylinder(&pl->pos, &tbl.v[i], pl->radius + 0x2400, 0xf000)) {
@@ -138,9 +135,9 @@ void func_ov009_02209668(Ov009ActVt_02217594 *self) {
             v1.y = 0x7000;
         }
         e = func_02065f88(0x2bd, &v1);
-        e->v0c(0x5000);
-        FLD(s32, e, 0xc8) = -1;
-        self->unk_314 = FLD(s32, e, 0x24);
+        e->SetScaleAll(0x5000);
+        e->loopCount = -1;
+        self->unk_314 = e->id;
         self->fsm->st = 1;
         self->fsm->timer = 0;
         break;
@@ -159,11 +156,11 @@ void func_ov009_02209668(Ov009ActVt_02217594 *self) {
     }
     case 2:
         if (self->model->anim_state == 1) {
-            void *e = func_020657b0(data_0214a420, self->unk_314);
+            EffectObj *e = func_020657b0(data_0214a420, self->unk_314);
             ActorSub44 *s44;
             ActorSub48 *s48;
             if (e != NULL) {
-                FLD(s32, e, 0xc8) = 1;
+                e->loopCount = 1;
                 self->unk_314 = 0;
             }
             s44 = self->unk_44;

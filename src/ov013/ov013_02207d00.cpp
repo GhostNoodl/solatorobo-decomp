@@ -476,7 +476,6 @@ extern void func_ov000_0219a210(VecFx32 *p, VecFx32 *o, u16 rot);
 extern Ov003Actor *func_ov000_0219be1c(s32 kind, VecFx32 *pos, u16 *rot, u16 id, u16 owner);
 extern void func_ov000_0219bebc(Actor *a, s32 b);
 extern u8 *func_0206fef8(u16 kind);
-extern Ov013V *func_02065f88(s32 id, VecFx32 *pos);
 
 void func_ov013_02208bfc(Ov013Act_02207968 *self) {
     Ov003Actor *t = Ov013_GetActor(self->target);
@@ -563,12 +562,12 @@ void func_ov013_02208bfc(Ov013Act_02207968 *self) {
     case 4:
         if (st->timer == 0) {
             VecFx32 p;
-            Ov013V *e;
+            EffectObj *e;
             *(Ov013Blk12 *)&p = *(Ov013Blk12 *)&self->pos;
             func_ov000_0219a210(&p, &data_ov013_0220b38c, self->rot_y);
             e = func_02065f88(0x12c, &p);
-            e->v10(&data_ov013_0220b380);
-            e->v34(0, self->rot_y, 0);
+            e->SetScale(&data_ov013_0220b380);
+            e->SetRotXYZ(0, self->rot_y, 0);
             self->fsm->timer++;
         }
         if (!func_ov000_02191120(self->model)) {
@@ -685,12 +684,12 @@ void func_ov013_022090ac(Ov013Act_02207968 *self) {
     case 4:
         if (st->timer == 0) {
             VecFx32 p;
-            Ov013V *e;
+            EffectObj *e;
             *(Ov013Blk12 *)&p = *(Ov013Blk12 *)&self->pos;
             func_ov000_0219a210(&p, &data_ov013_0220b38c, self->rot_y);
             e = func_02065f88(0x12c, &p);
-            e->v10(&data_ov013_0220b380);
-            e->v34(0, self->rot_y, 0);
+            e->SetScale(&data_ov013_0220b380);
+            e->SetRotXYZ(0, self->rot_y, 0);
             self->fsm->timer++;
         }
         if (!func_ov000_02191120(self->model)) {

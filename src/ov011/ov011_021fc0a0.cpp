@@ -214,7 +214,6 @@ void func_ov011_022011c8(void *a, s32 b);
 void func_ov011_02201214(void *a, void *b);
 void *func_ov011_02201254(void *self);
 s32 Rand_PlusMinus(s32 max);
-Ov011V *func_02065f88(s32 id, VecFx32 *pos);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void func_ov011_02202488(void *self, s16 v);
 void func_ov011_022024ac(void *self, s16 v);
@@ -355,10 +354,10 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                 func_ov003_021d7c08(&self->slots[i].obj, &w);
                 if (self->slots[i].timer == 0x50) {
                     VecFx32 t = *(VecFx32 *)self->slots[i].obj.v10();
-                    Ov011V *e = func_02065f88(0x192, &t);
+                    EffectObj *e = func_02065f88(0x192, &t);
                     VecFx32 d = *Ov003Mover_GetDir(&self->slots[i].obj);
-                    e->v34(Ov003Vec_Pitch(&d), Ov003Vec_Yaw(&d), 0);
-                    e->v14(0x1ccd, 0x1ccd, 0x1ccd);
+                    e->SetRotXYZ(Ov003Vec_Pitch(&d), Ov003Vec_Yaw(&d), 0);
+                    e->SetScaleXYZ(0x1ccd, 0x1ccd, 0x1ccd);
                 }
                 continue;
             }
@@ -369,7 +368,7 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
             {
                 VecFx32 p;
                 u16 ang;
-                Ov011V *e;
+                EffectObj *e;
                 Camera *q;
                 p.x = a->pos.x;
                 p.y = a->pos.y;
@@ -378,8 +377,8 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                 p.y -= a->hit->radius;
                 ang = Ov003Vec_Yaw(Ov003Mover_GetDir(&self->slots[i].obj)) + 0x7fff;
                 e = func_02065f88(0x67, &p);
-                e->v34(0, ang, 0);
-                e->v14(0x1ccd, 0x1ccd, 0x1ccd);
+                e->SetRotXYZ(0, ang, 0);
+                e->SetScaleXYZ(0x1ccd, 0x1ccd, 0x1ccd);
                 func_02049f44(data_02097e4c, 0x1a, &p, 0);
                 q = &data_ov000_021ccd54->cam.base;
                 if (q != NULL) {

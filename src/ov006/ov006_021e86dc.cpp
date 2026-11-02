@@ -1,33 +1,12 @@
 #include "ov006/SlotManager.h"
 #include "ov006/ov006.h"
 #include "nitro/fx.h"
-
-typedef struct ov006_Rot021e86dc {
-    u16 x;
-    u16 y;
-    u16 z;
-} ov006_Rot021e86dc;
-
-typedef struct ov006_Eff021e86dc {
-    u8 unk0[0x24];
-    int unk24;
-    u8 unk28;
-    u8 unk29;
-    u8 unk2A[0x12];
-    fx32 unk3C;
-    u8 unk40[0x3c];
-    fx32 unk7C;
-} ov006_Eff021e86dc;
-
-typedef struct ov006_Old021e86dc {
-    u8 unk0[0x1c];
-    int unk1C;
-} ov006_Old021e86dc;
+#include "Main/Effect/Effect.h"
 
 typedef struct ov006_Car021e86dc {
     u8 unk0[0x70];
     VecFx32 pos;
-    ov006_Rot021e86dc rot;
+    Rot16 rot;
     u8 unk82[0x2a];
     s8 *unkAC;
     u8 unkB0[0xec];
@@ -65,16 +44,12 @@ typedef struct ov006_Car021e86dc {
 extern "C" {
 
 extern void *data_02097e4c;
-extern void *data_0214a420;
 extern char data_ov006_021ec4ad[];
 extern char data_ov006_021ec4bc[];
 extern char data_ov006_021ec4c8[];
 extern char data_ov006_021ec4d4[];
 extern u8 data_ov006_021eb908[];
 extern s32 data_ov006_021eb8f8[];
-ov006_Eff021e86dc *func_02065f88(s32 id, VecFx32 *pos);
-ov006_Eff021e86dc *Effect3D_Create(const char *a, const char *b, const char *c, VecFx32 *pos);
-ov006_Old021e86dc *func_020657b0(void *a, int b);
 void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
@@ -97,7 +72,7 @@ void func_ov006_021e86dc(ov006_Car021e86dc *self) {
     u16 drain;
     s32 accel;
     s32 max;
-    ov006_Eff021e86dc *e;
+    EffectObj *e;
 
     self->boosting = 0;
     if ((self->held & 1) || ((self->held & 2) && self->boost != 0)) {
@@ -109,27 +84,27 @@ void func_ov006_021e86dc(ov006_Car021e86dc *self) {
                 if ((self->unk19C_0 & 1) && data_ov006_021ec884->unk13D == 0) {
                     func_02049f44(data_02097e4c, 0x32, &self->pos, 0);
                     if (self->unk1D4 != 0) {
-                        ov006_Old021e86dc *old = func_020657b0(data_0214a420, self->unk1D4);
+                        EffectObj *old = func_020657b0(data_0214a420, self->unk1D4);
                         if (old != NULL) {
-                            old->unk1C = 4;
+                            old->state = 4;
                             self->unk1D4 = 0;
                         }
                     }
                     e = Effect3D_Create(data_ov006_021ec4ad, data_ov006_021ec4bc, data_ov006_021ec4bc, &self->pos);
                     if (e != NULL) {
-                        self->unk1D4 = e->unk24;
-                        e->unk3C = 0x2000;
-                        VCALL(e, 0c, 0x4000);
-                        VCALL(e, 30, &self->rot);
+                        self->unk1D4 = e->id;
+                        e->speed = 0x2000;
+                        e->SetScaleAll(0x4000);
+                        e->SetRot(&self->rot);
                     }
                 }
             } else if (self->unk1D4 == 0 && (self->unk19C_0 & 1) && data_ov006_021ec884->unk13D == 0) {
                 e = func_02065f88(0x4b0, &self->pos);
                 if (e != NULL) {
-                    self->unk1D4 = e->unk24;
-                    VCALL(e, 0c, 0x1ccd);
-                    VCALL(e, 30, &self->rot);
-                    e->unk7C = FX_Div(0x15000, 0x1f000);
+                    self->unk1D4 = e->id;
+                    e->SetScaleAll(0x1ccd);
+                    e->SetRot(&self->rot);
+                    e->alpha = FX_Div(0x15000, 0x1f000);
                 }
             }
             if (self->unk1AD >= data_ov006_021ec884->numActive - 1) {
@@ -174,22 +149,22 @@ void func_ov006_021e86dc(ov006_Car021e86dc *self) {
                 }
             } else if (data_ov006_021ec884->unk13D == 0) {
                 if (self->unk1D8 == 0 && (self->unk19C_0 & 1)) {
-                    ov006_Eff021e86dc *e;
+                    EffectObj *e;
                     e = Effect3D_Create(data_ov006_021ec4ad, data_ov006_021ec4c8, data_ov006_021ec4c8, &self->pos);
                     if (e != NULL) {
-                        self->unk1D8 = e->unk24;
-                        e->unk28 = 0;
-                        e->unk3C = 0x2000;
-                        VCALL(e, 14, 0x1000, 0x1000, 0x2000);
-                        e->unk29 = 1;
+                        self->unk1D8 = e->id;
+                        e->unk_28 = 0;
+                        e->speed = 0x2000;
+                        e->SetScaleXYZ(0x1000, 0x1000, 0x2000);
+                        e->unk_29 = 1;
                     }
                     e = Effect3D_Create(data_ov006_021ec4ad, data_ov006_021ec4c8, data_ov006_021ec4c8, &self->pos);
                     if (e != NULL) {
-                        self->unk1DC = e->unk24;
-                        e->unk28 = 0;
-                        e->unk3C = 0x2000;
-                        VCALL(e, 14, 0x1000, 0x1000, 0x2000);
-                        e->unk29 = 1;
+                        self->unk1DC = e->id;
+                        e->unk_28 = 0;
+                        e->speed = 0x2000;
+                        e->SetScaleXYZ(0x1000, 0x1000, 0x2000);
+                        e->unk_29 = 1;
                     }
                     if (self->unk19E == data_ov006_021ec884->unk5) {
                         func_02049a48(data_02097e4c, 0x51, -1, -1, -1);
@@ -293,20 +268,20 @@ void func_ov006_021e86dc(ov006_Car021e86dc *self) {
         if (e == NULL) {
             return;
         }
-        self->unk1D4 = e->unk24;
-        VCALL(e, 30, &self->rot);
-        e->unk28 = 0;
-        VCALL(e, 0c, self->speed * 2 < 0x666 ? 0x666 : self->speed * 2);
+        self->unk1D4 = e->id;
+        e->SetRot(&self->rot);
+        e->unk_28 = 0;
+        e->SetScaleAll(self->speed * 2 < 0x666 ? 0x666 : self->speed * 2);
         {
             s32 s = self->speed;
             if (s < 0xe66) {
                 s32 d = 0xe66 - s;
                 s = d + (d >> 1) + 0xe66;
             }
-            e->unk3C = s;
+            e->speed = s;
         }
         if (self->speed >= 0xa70) {
-            e->unk7C = FX_Div(0x10000, 0x1f000);
+            e->alpha = FX_Div(0x10000, 0x1f000);
         }
     } else {
         BOOL c;

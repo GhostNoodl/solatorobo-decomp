@@ -4,15 +4,10 @@ extern "C" {
 
 extern void *const data_ov009_02215d0c[];
 extern void *data_02097e4c;
-extern void *data_0214a420;
-extern Ov009Eff *func_02065f88(s32 id, const VecFx32 *pos);
 extern void func_01ffc9fc(VecFx32 *dst, const VecFx32 *src, s32 angle);
-extern void EffectObj_AddSndCue(Ov009Eff *o, s32 a, s32 b);
 extern void HitSphere_Link(ActorSub48 *p);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
-extern void EffectMgr_Kill(void *mgr, s32 h);
-extern void *func_020657b0(void *mgr, s32 id);
 extern void func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, const void *f, const void *g, s32 h, s32 i, s32 j, s32 k);
@@ -48,7 +43,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
     Ov003Actor *pl;
     s32 ply;
     ActorSub40 *st;
-    Ov009Eff *o;
+    EffectObj *o;
     ActorSub44 *s44;
     ActorSub48 *s48;
     s32 t;
@@ -80,7 +75,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
         if (t % 15 == 0) {
             o = func_02065f88(0x12c, &self->unk_84);
             o->AddPosXYZ(0, 0x800, 0);
-            o->vf0c(0x1800);
+            o->SetScaleAll(0x1800);
         }
         if (t == 0x32) {
             self->model->visible = 1;
@@ -111,7 +106,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
             self->unk_f8 = 0;
             o = func_02065f88(0x68, &self->pos);
             o->AddPosXYZ(0, 0x400, 0);
-            FLD(s32, o, 0x7c) = FX_Div(0x1e000, 0x1f000);
+            o->alpha = FX_Div(0x1e000, 0x1f000);
             func_02049f44(data_02097e4c, 0x80, &self->pos, 0);
             s48 = self->hit;
             s48->unk_9a_0 = 1;
@@ -171,7 +166,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
         self->pos.y += FX_Mul(v2.y - self->pos.y, 0x1000);
         VEC_Distance(&self->pos, &v2);
         o = func_02065f88(0x389, &self->pos);
-        o->vf0c(0x3000);
+        o->SetScaleAll(0x3000);
         h = Ov009_GetAng((Ov009AngSrc *)((u8 *)data_ov000_021ccd54 + 0xf4));
         r.x = 0;
         r.y = 0;
@@ -191,7 +186,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
         if (h >= FLD(s32, self, 0x100)) {
             h = FLD(u32, self, 0x100);
             o = func_02065f88(0x69, &self->pos);
-            o->vf0c(0xccd);
+            o->SetScaleAll(0xccd);
             func_02065f88(0x38a, &self->pos);
             s48 = self->hit;
             s48->unk_9a_0 = 1;
@@ -213,8 +208,8 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
         t2 = st->timer;
         if (t2 == 10) {
             o = func_02065f88(0x322, &self->pos);
-            self->unk_f8 = FLD(s32, o, 0x24);
-            o->vf0c(0x199a);
+            self->unk_f8 = o->id;
+            o->SetScaleAll(0x199a);
             EffectObj_AddSndCue(o, 0x7a, 0);
         }
         if (t2 >= 10) {

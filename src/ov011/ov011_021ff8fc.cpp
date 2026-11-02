@@ -326,7 +326,6 @@ extern "C" {
 extern void *data_02097e4c;
 extern const char data_ov011_022078e1[];
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
-Ov011V *func_02065f88(s32 id, VecFx32 *v);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 s32 Rand_PlusMinus(s32 max);
@@ -341,12 +340,12 @@ void func_ov011_021ff8fc(Ov011SceneActor *self) {
         self->fsm->st++;
         break;
     case 1: {
-        Ov011V *p;
+        EffectObj *p;
         if (++s->timer > 100) {
             func_02049a48(data_02097e4c, 50, 100, -1, -1);
             p = func_02065f88(50 + 0x358, &self->pos);
-            p->v14(0x1666, 0x1666, 0x1666);
-            p->v24(0, 0x1000, 0);
+            p->SetScaleXYZ(0x1666, 0x1666, 0x1666);
+            p->AddPosXYZ(0, 0x1000, 0);
             self->model->visible = 1;
             self->model->alpha = 0;
             self->fsm->timer = 0;
@@ -359,12 +358,12 @@ void func_ov011_021ff8fc(Ov011SceneActor *self) {
                 s32 a;
                 s32 b;
                 p = func_02065f88(0x398 - 15, &self->pos);
-                p->v14(0x1666, 0x1666, 0x1666);
+                p->SetScaleXYZ(0x1666, 0x1666, 0x1666);
                 x = self->radius;
                 z = self->centerY;
                 a = Rand_PlusMinus(x);
                 b = Rand_PlusMinus(z);
-                p->v24(a, z + 0x1000 + b, x);
+                p->AddPosXYZ(a, z + 0x1000 + b, x);
             }
         }
         break;

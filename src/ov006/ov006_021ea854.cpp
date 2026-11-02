@@ -1,5 +1,6 @@
 #include "ov006/SlotManager.h"
 #include "nitro/fx.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct ov006_Model021ea854 {
     u8 unk0[0xa8];
@@ -42,7 +43,6 @@ int func_ov000_0219a510(void *self, int a, VecFx32 *pos, s32 r, int b, void **ou
 ov006_Prop021ea854 *func_ov000_021985c0(void *p);
 BOOL func_ov006_021ea3e8(ov006_Prop021ea854 *p);
 void func_ov006_021ea328(ov006_Prop021ea854 *p);
-void *func_02065f88(int id, void *pos);
 
 static inline void ov006_Model021ea854_SetScale(ov006_Model021ea854 *m, fx32 s) {
     m->scale.x = s;

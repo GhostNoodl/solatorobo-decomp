@@ -1,4 +1,5 @@
 #include "ov006/Tasks.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct ov006_Msg6ac4 {
     u8 unk0[5];
@@ -21,13 +22,6 @@ typedef struct ov006_Color6ac4 {
     u16 unkBA;
     u16 unkBC;
 } ov006_Color6ac4;
-
-typedef struct ov006_Effect6ac4 {
-    u8 unk0[0x24];
-    int unk24;
-    u8 unk28[0x14];
-    int unk3C;
-} ov006_Effect6ac4;
 
 typedef struct ov006_Prop6ac4 {
     void *vtbl;
@@ -56,13 +50,9 @@ typedef struct ov006_Prop6ac4 {
 
 extern "C" {
 
-extern void *data_0214a420;
 extern const u16 data_ov006_021eb89c[];
 
 BOOL func_ov000_0218d494(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg);
-ov006_Effect6ac4 *func_02065f88(int id, void *pos);
-void *func_020657b0(void *a, int b);
-void EffectObj_StopLoop(void *p);
 
 static inline void ov006_Prop6ac4_Ack(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg) {
     self->unk30 |= 1 << msg->unk5;
@@ -98,17 +88,17 @@ BOOL func_ov006_021e6ac4(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg) {
                 self->unk1FA = v;
             }
             if (self->unk19E == data_ov006_021ec884->unk5) {
-                ov006_Effect6ac4 *e = func_02065f88(0x648, &self->unk70);
+                EffectObj *e = func_02065f88(0x648, &self->unk70);
                 if (e != NULL) {
-                    void *old;
-                    VCALL(e, 0c, 0x1800);
-                    e->unk3C = 0x1800;
+                    EffectObj *old;
+                    e->SetScaleAll(0x1800);
+                    e->speed = 0x1800;
                     old = func_020657b0(data_0214a420, self->unk1EC);
                     if (old != NULL) {
                         EffectObj_StopLoop(old);
-                        *(int *)((u8 *)old + 0x1c) = 4;
+                        old->state = 4;
                     }
-                    self->unk1EC = e->unk24;
+                    self->unk1EC = e->id;
                 }
                 func_02049f44(data_02097e4c, 0x41, &self->unk70, 0);
             }

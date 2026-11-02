@@ -1,12 +1,7 @@
 #include "ov006/SlotManager.h"
 #include "ov006/ov006.h"
 #include "nitro/fx.h"
-
-typedef struct ov006_Rot021e76d8 {
-    u16 x;
-    u16 y;
-    u16 z;
-} ov006_Rot021e76d8;
+#include "Main/Effect/Effect.h"
 
 typedef struct ov006_Mdl021e76d8 {
     u8 unk0[0xb6];
@@ -22,16 +17,6 @@ typedef struct ov006_Hit021e76d8 {
     u8 unk111;
 } ov006_Hit021e76d8;
 
-typedef struct ov006_Eff021e76d8 {
-    u8 unk0[0x1c];
-    int unk1C;
-    u8 unk20[4];
-    int unk24;
-    u8 unk28[0x14];
-    fx32 unk3C;
-    VecFx32 unk40;
-} ov006_Eff021e76d8;
-
 typedef struct ov006_Ofs021e76d8 {
     VecFx32 a;
     VecFx32 b;
@@ -43,7 +28,7 @@ typedef struct ov006_Car021e76d8 {
     u8 unk3C[0x30];
     s32 unk6C;
     VecFx32 pos;
-    ov006_Rot021e76d8 rot;
+    Rot16 rot;
     u8 unk82[0x11a];
     u16 unk19C_0 : 2;
     u16 mode : 4;
@@ -90,12 +75,8 @@ typedef struct ov006_CamRot021e76d8 {
 extern "C" {
 
 extern void *data_02097e4c;
-extern void *data_0214a420;
 extern u8 *data_ov000_021ccd54;
 extern ov006_Ofs021e76d8 data_ov006_021eb954[];
-ov006_Eff021e76d8 *func_020657b0(void *a, int b);
-ov006_Eff021e76d8 *func_02065f88(s32 id, VecFx32 *pos);
-void EffectObj_StopLoop(ov006_Eff021e76d8 *e);
 ov006_Hit021e76d8 *func_ov000_02190a30(void *a, int b);
 void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
@@ -111,9 +92,9 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
     VecFx32 o3;
     VecFx32 p4;
     MtxFx33 t;
-    ov006_Rot021e76d8 r;
-    ov006_Rot021e76d8 cr;
-    ov006_Eff021e76d8 *e;
+    Rot16 r;
+    Rot16 cr;
+    EffectObj *e;
     if (self->unk1F5 != 0) {
         self->unk1F5--;
     }
@@ -123,7 +104,7 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
             e = func_020657b0(data_0214a420, self->unk1E8);
             if (e != NULL) {
                 EffectObj_StopLoop(e);
-                e->unk1C = 4;
+                e->state = 4;
                 self->unk1E8 = 0;
             }
             {
@@ -176,7 +157,7 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
             if (e == NULL) {
                 self->unk1E8 = 0;
             } else {
-                VCALL(e, 18, &self->pos);
+                e->SetPos(&self->pos);
             }
         }
     }
@@ -195,8 +176,8 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
             if (self->unk19C_0 & 1) {
                 e = func_02065f88(0x38a, &self->pos);
                 if (e != NULL) {
-                    VCALL(e, 0c, 0x1800);
-                    self->unk1EC = e->unk24;
+                    e->SetScaleAll(0x1800);
+                    self->unk1EC = e->id;
                     if (self->unk19E == data_ov006_021ec884->unk5) {
                         func_02049f44(data_02097e4c, 0x82, &self->pos, 0);
                     }
@@ -206,12 +187,12 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
             e = func_02065f88(0x38c, &self->pos);
             if (e != NULL) {
                 if (self->unk19E == data_ov006_021ec884->unk5) {
-                    VCALL(e, 0c, 0x1266);
+                    e->SetScaleAll(0x1266);
                 } else {
-                    VCALL(e, 0c, 0xa66);
+                    e->SetScaleAll(0xa66);
                 }
-                e->unk3C = 0x800;
-                self->unk1EC = e->unk24;
+                e->speed = 0x800;
+                self->unk1EC = e->id;
             }
         }
     }
@@ -219,10 +200,10 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
         e = func_020657b0(data_0214a420, self->unk1EC);
         if (e != NULL) {
             if (!(self->unk19C_0 & 1)) {
-                e->unk1C = 4;
+                e->state = 4;
                 self->unk1EC = 0;
             } else {
-                VCALL(e, 18, &self->pos);
+                e->SetPos(&self->pos);
             }
         } else {
             self->unk1EC = 0;
@@ -233,17 +214,17 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
         if (e == NULL) {
             self->unk1D4 = 0;
         } else {
-            v1.x = e->unk40.x;
-            v1.y = e->unk40.y;
-            v1.z = e->unk40.z;
+            v1.x = e->scale.x;
+            v1.y = e->scale.y;
+            v1.z = e->scale.z;
             v1.x += 0x52;
             v1.y += 0x52;
             v1.z += 0xa4;
-            VCALL(e, 10, &v1);
+            e->SetScale(&v1);
             p1 = self->pos;
             p1.y += self->unk6C;
-            VCALL(e, 18, &p1);
-            VCALL(e, 30, &self->rot);
+            e->SetPos(&p1);
+            e->SetRot(&self->rot);
         }
     }
     if (self->unk1D8 != 0 || self->unk1DC != 0) {
@@ -283,17 +264,17 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
             if (e == NULL) {
                 self->unk1D8 = 0;
             } else {
-                v2.x = e->unk40.x;
-                v2.y = e->unk40.y;
-                v2.z = e->unk40.z;
+                v2.x = e->scale.x;
+                v2.y = e->scale.y;
+                v2.z = e->scale.z;
                 v2.x += 0x29;
                 v2.y += 0x29;
                 v2.z += 0xa4;
-                VCALL(e, 10, &v2);
+                e->SetScale(&v2);
                 MTX_MultVec33(&data_ov006_021eb954[idx].a, &m, &o2);
                 VEC_Add(&o2, &self->pos, &o2);
-                VCALL(e, 18, &o2);
-                VCALL(e, 30, &r);
+                e->SetPos(&o2);
+                e->SetRot(&r);
             }
         }
         if (self->unk1DC != 0) {
@@ -301,17 +282,17 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
             if (e == NULL) {
                 self->unk1DC = 0;
             } else {
-                v3.x = e->unk40.x;
-                v3.y = e->unk40.y;
-                v3.z = e->unk40.z;
+                v3.x = e->scale.x;
+                v3.y = e->scale.y;
+                v3.z = e->scale.z;
                 v3.x += 0x29;
                 v3.y += 0x29;
                 v3.z += 0xa4;
-                VCALL(e, 10, &v3);
+                e->SetScale(&v3);
                 MTX_MultVec33(&data_ov006_021eb954[idx].b, &m, &o3);
                 VEC_Add(&o3, &self->pos, &o3);
-                VCALL(e, 18, &o3);
-                VCALL(e, 30, &r);
+                e->SetPos(&o3);
+                e->SetRot(&r);
             }
         }
     }
@@ -320,7 +301,7 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
         if (e == NULL) {
             self->unk1D0 = 0;
         } else {
-            VCALL(e, 18, &self->pos);
+            e->SetPos(&self->pos);
         }
     }
     if (self->unk1E0 != 0) {
@@ -328,7 +309,7 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
         if (e == NULL) {
             self->unk1E0 = 0;
         } else {
-            VCALL(e, 18, &self->pos);
+            e->SetPos(&self->pos);
         }
     }
     if (self->unk1E4 != 0) {
@@ -336,7 +317,7 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
         if (e == NULL) {
             self->unk1E4 = 0;
         } else {
-            VCALL(e, 18, &self->pos);
+            e->SetPos(&self->pos);
         }
     }
     if (self->unk1F0 != 0) {
@@ -347,20 +328,20 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
             s32 s;
             p4 = self->pos;
             p4.y += 0x800;
-            VCALL(e, 18, &p4);
+            e->SetPos(&p4);
             c = (ov006_CamRot021e76d8 *)(data_ov000_021ccd54 + 0xf4);
             cr.x = c->x;
             cr.y = c->y;
             cr.z = c->z;
             cr.x += 0xc000;
-            VCALL(e, 30, &cr);
+            e->SetRot(&cr);
             s = 0x2000;
             if (self->unk1FC < 10) {
                 s += (10 - self->unk1FC) * 0x2800 / 10;
             }
-            VCALL(e, 0c, s);
+            e->SetScaleAll(s);
             } else {
-                e->unk1C = 4;
+                e->state = 4;
                 self->unk1F0 = 0;
             }
         } else {

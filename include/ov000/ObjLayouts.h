@@ -245,9 +245,9 @@ struct Robo021ca458 : public Actor {
     u16 unk_b3a;
     u16 unk_b3c;
     u8 unk_b3e[0x2];
-    s32 unk_b40;
-    s32 unk_b44;
-    s32 unk_b48;
+    u32 unk_b40; // effect handles
+    u32 unk_b44;
+    u32 unk_b48;
     s32 unk_b4c;
     s32 unk_b50;
     s32 unk_b54;

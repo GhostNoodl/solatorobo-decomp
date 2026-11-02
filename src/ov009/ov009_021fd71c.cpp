@@ -50,7 +50,6 @@ extern void func_0203f364(ActorSub48 *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 
 static inline void Ov009_VecSet(VecFx32 *v, s32 x, s32 y, s32 z) {
@@ -79,7 +78,7 @@ void func_ov009_021fd830(Ov009ActVt_02216750 *self) {
     ActorSub48 *s48;
     ActorSub44 *s44;
     Model0218fe1c *m;
-    Ov009V *e;
+    EffectObj *e;
     s32 spd;
     ActorSub40 *st = self->fsm;
     switch (st->st) {
@@ -112,7 +111,7 @@ void func_ov009_021fd830(Ov009ActVt_02216750 *self) {
             if (self->kind != 0x5012) {
                 spd = 0x4800;
             }
-            e->v0c(spd);
+            e->SetScaleAll(spd);
             self->fsm->timer = 0x29;
             self->fsm->st++;
             return;

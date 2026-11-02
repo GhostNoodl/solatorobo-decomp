@@ -2,14 +2,11 @@
 
 extern "C" {
 
-extern void *data_0214a420;
 extern void *data_02097cdc;
 extern char data_ov013_0220b860[];
 extern void *data_ov013_0220b7d0[];
-extern void EffectMgr_Kill(void *a, s32 b);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 extern void func_ov000_0219864c(void *a, s32 b, s32 c);
-extern void *func_020657b0(void *a, s32 b);
 extern BOOL func_02035b90(void *a, s32 b);
 extern void func_02036838(void *a, void *b, s32 c, s32 d);
 extern void *func_020359d0(void *a, s32 b, s32 c);
@@ -173,9 +170,6 @@ extern const VecFx32 data_ov013_0220aeb8;
 extern char data_ov013_0220b86f[];
 extern char data_ov013_0220b87b[];
 extern void func_ov000_0219a210(VecFx32 *v, const VecFx32 *off, u16 rot);
-extern Ov013V *Effect3D_Create(const void *a, const void *b, s32 c, VecFx32 *pos);
-extern Ov013V *EffectGroup_Create(const void *a, const void *b, VecFx32 *pos);
-extern void EffectObj_AddSndCue(Ov013V *o, s32 a, s32 b);
 extern BOOL func_ov000_021b4738(Ov003Actor *p);
 extern void Actor_TurnToPos(Actor *self, VecFx32 *p, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
@@ -198,9 +192,9 @@ static inline Ov003Actor *Ov013_FindActor(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-static inline void Ov013_SetAlpha(void *o, s32 v) {
-    FLD(s32, o, 0x7c) = v < 0 ? 0 : v;
-    FLD(s32, o, 0x7c) = v > 0x1000 ? 0x1000 : v;
+static inline void Ov013_SetAlpha(EffectObj *o, s32 v) {
+    o->alpha = v < 0 ? 0 : v;
+    o->alpha = v > 0x1000 ? 0x1000 : v;
 }
 
 void func_ov013_021fd5fc(Ov013ActExVt_0220b7d0 *self) {
@@ -218,21 +212,21 @@ void func_ov013_021fd5fc(Ov013ActExVt_0220b7d0 *self) {
     switch (self->fsm->st) {
     case 0: {
         const char *f;
-        Ov013V *o;
+        EffectObj *o;
         pos.x = self->pos.x;
         pos.y = self->pos.y;
         pos.z = self->pos.z;
         func_ov000_0219a210(&pos, &data_ov013_0220aeb8, self->rot_y);
         f = data_ov013_0220b860;
         o = Effect3D_Create(f, data_ov013_0220b86f, 0, &pos);
-        FLD(s32, o, 0xc8) = -1;
-        o->v0c(self->unk_d8);
+        o->loopCount = -1;
+        o->SetScaleAll(self->unk_d8);
         EffectObj_AddSndCue(o, 0x3e, 6);
-        self->unk_d0 = FLD(s32, o, 0x24);
+        self->unk_d0 = o->id;
         o = EffectGroup_Create(f, data_ov013_0220b87b, &pos);
-        FLD(s32, o, 0xc8) = -1;
-        o->v0c(self->unk_d8 >> 1);
-        self->unk_d4 = FLD(s32, o, 0x24);
+        o->loopCount = -1;
+        o->SetScaleAll(self->unk_d8 >> 1);
+        self->unk_d4 = o->id;
         self->fsm->st++;
         self->fsm->timer = 0;
         break;
@@ -253,11 +247,11 @@ void func_ov013_021fd5fc(Ov013ActExVt_0220b7d0 *self) {
         break;
     }
     case 2: {
-        void *o = func_020657b0(data_0214a420, self->unk_d0);
+        EffectObj *o = func_020657b0(data_0214a420, self->unk_d0);
         s32 v = 0;
         if (o != NULL) {
-            void *o2;
-            v = FLD(s32, o, 0x7c);
+            EffectObj *o2;
+            v = o->alpha;
             if (v > 0) {
                 v -= 0x52;
             }
@@ -267,8 +261,8 @@ void func_ov013_021fd5fc(Ov013ActExVt_0220b7d0 *self) {
             Ov013_SetAlpha(o, v);
             o2 = func_020657b0(data_0214a420, self->unk_d4);
             Ov013_SetAlpha(o2, v);
-            if (FLD(void *, o2, 0xf0) != NULL) {
-                Ov013_SetAlpha(FLD(void *, o2, 0xf0), v);
+            if (o2->child != NULL) {
+                Ov013_SetAlpha(o2->child, v);
             }
         }
         if (v <= 0) {

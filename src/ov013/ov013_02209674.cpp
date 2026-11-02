@@ -11,7 +11,6 @@ extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *t, s32 a);
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 a);
-extern Ov013V *func_02065f88(s32 id, VecFx32 *pos);
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -116,13 +115,13 @@ void func_ov013_022099e0(Ov003Actor *self) {
 
 void func_ov013_02209aac(Ov003Actor *self) {
     if (self->fsm->st == 0) {
-        Ov013V *fx;
+        EffectObj *fx;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4811, 10);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4813, 10);
         fx = func_02065f88(0x69, &self->pos);
         if (fx != NULL) {
-            fx->v0c(0x3000);
-            fx->v24(0, self->centerY, 0);
+            fx->SetScaleAll(0x3000);
+            fx->AddPosXYZ(0, self->centerY, 0);
         }
     }
     func_ov003_021d6054(self);

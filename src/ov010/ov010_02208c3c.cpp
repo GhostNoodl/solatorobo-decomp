@@ -20,7 +20,6 @@ extern u8 data_ov010_0220f448[];
 extern u8 data_ov010_0220f298[];
 extern u8 data_ov010_0220ffc4[];
 extern u8 data_ov010_02210154[];
-extern void *data_0214a420;
 extern BOOL Ov003Sequence_HasEntries(void *p, void *d);
 extern Robo021ca458 *func_ov000_0219bf90(void);
 extern void func_ov000_0218a358(void *a, const void *b, void *c, s32 d, s32 e, s32 f, s32 g, s32 h);
@@ -28,7 +27,6 @@ extern s32 FX_Div(s32 a, s32 b);
 extern void func_ov010_022075bc(void *p);
 extern void *Ov003Vt_021f7cd8_Dtor(void *p);
 extern void *Ov003Vt_021f7d10_Dtor(void *p);
-extern void EffectMgr_Kill(void *a, s32 b);
 
 static inline void Ov010_PlayIfIdle(Ov010Obj0221009c *self, void *anim, s32 n) {
     if (!Ov003Sequence_HasEntries(&self->seq, anim)) {

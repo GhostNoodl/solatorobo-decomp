@@ -1058,12 +1058,6 @@ void func_ov010_0220a374(Ov010Trig2 *self) {
 // Obj0220a6b0 (the 0x4817 actor) is in ov010.h.
 
 namespace m_0220a6a0 {
-struct Ov010Heap {
-    u32 cur;
-    u32 unk_04;
-    u32 def;
-};
-
 extern "C" {
 
 extern u8 data_ov010_02210378[];
@@ -1087,10 +1081,7 @@ void *Ov010ActVt_02210378_Ctor(Obj0220a6b0 *self) {
 }
 
 
-extern Ov010Heap *data_02097dd0;
-extern void *data_0214a420;
 extern u8 data_ov010_02210378[];
-extern void EffectMgr_Kill(void *a, s32 b);
 extern void *Ov003Vt_021f7d2c_Dtor(void *p);
 extern void *func_ov000_0219429c(void *self);
 extern void func_ov010_0220c49c(Obj0220a6b0 *self);
@@ -1111,8 +1102,8 @@ static inline void Ov010FxB_Dtor(Ov010Path *p) {
 }
 
 static inline void Ov010_FreeFxA(Obj0220a6b0 *self) {
-    u32 saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->trail != NULL) {
         Ov010Trail *p = self->trail;
         if (p != NULL) {
@@ -1125,8 +1116,8 @@ static inline void Ov010_FreeFxA(Obj0220a6b0 *self) {
 }
 
 static inline void Ov010_FreeFxB(Obj0220a6b0 *self) {
-    u32 saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->path != NULL) {
         Ov010Path *p = self->path;
         if (p != NULL) {
@@ -1329,8 +1320,6 @@ void Ov010ActVt_02210378_Draw(Obj0220a6b0 *self) {
 // ---- merged from ov010_0220adb8.cpp
 namespace m_0220adb8 {
 extern "C" {
-extern void *data_0214a420;
-extern void EffectMgr_StopLoop(void *a, s32 b);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern BOOL func_ov000_021950e8(void *self, u8 *msg);
 
@@ -1589,7 +1578,6 @@ extern "C" {
 
 extern void *data_ov000_021ccd68;
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern VObj *func_02065f88(s32 a, VecFx32 *b);
 extern void func_ov010_02209074(void *p);
 extern void Actor_SendMsg(void *obj, u16 id, s32 a, s32 b, s32 c, u8 *d);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
@@ -1614,8 +1602,6 @@ struct Ov010AnMsg {
     u16 id;
 };
 
-extern void *data_0214a420;
-extern void EffectMgr_StopLoop(void *a, s32 b);
 extern void *ActorMgr_GetGroup(void *mgr, s32 a);
 extern s32 Filter_Apply(void *a, void *b, s32 c);
 extern u16 func_ov010_02207a44(s32 i);
@@ -1695,7 +1681,7 @@ void func_ov010_0220b40c(Obj0220a6b0 *self) {
     case 3: {
         Actor *a;
         Actor *b;
-        VObj *e;
+        EffectObj *e;
         self->unk_d6++;
         a = Ov010_FindObjById(self->unk_180);
         b = Ov010_FindObjById(self->unk_182);
@@ -1711,14 +1697,14 @@ void func_ov010_0220b40c(Obj0220a6b0 *self) {
             p.y = a->pos.y;
             p.z = a->pos.z;
             e = func_02065f88(0x38f, &p);
-            e->vfunc_0c(0x2800);
-            e->vfunc_24(0, a->height >> 1, 0);
+            e->SetScaleAll(0x2800);
+            e->AddPosXYZ(0, a->height >> 1, 0);
         }
         q = *(const Ov010Blk12 *)&self->pos;
         e = func_02065f88(0x321, (VecFx32 *)&q);
-        e->vfunc_0c(0x1000);
+        e->SetScaleAll(0x1000);
         FLD(void *, e, 0xdc) = (void *)func_ov010_02209074;
-        FLD(s32, e, 4) = 6;
+        e->unk_04 = 6;
         self->model->visible = 0;
         self->fsm->st = 4;
         return;
@@ -1735,12 +1721,12 @@ void func_ov010_0220b7b0(Obj0220a6b0 *self) {
         return;
     }
     VecFx32 p = self->pos;
-    VObj *fx;
+    EffectObj *fx;
     void *obj;
     fx = func_02065f88(0x321, &p);
-    fx->vfunc_0c(0x1000);
+    fx->SetScaleAll(0x1000);
     FLD(void *, fx, 0xdc) = (void *)func_ov010_02209074;
-    FLD(s32, fx, 4) = 6;
+    fx->unk_04 = 6;
     obj = Ov010_FindObjById(self->unk_180);
     if (obj != NULL) {
         u8 c = 1;
@@ -2092,7 +2078,6 @@ extern void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 extern void Actor_SendMsg(void *obj, u16 id, s32 a, s32 b, s32 c, u8 *d);
 extern void Actor_Move(void *self, s32 a);
 extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
-extern VObj *func_02065f88(s32 a, void *b);
 extern void func_ov000_0219763c(void *self);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, VecFx32 *v, s32 e, s32 f, s32 g, s32 h, s32 i);
 
@@ -2127,7 +2112,7 @@ void func_ov010_0220c2a4(Obj0220a6b0 *self) {
 void func_ov010_0220c390(Obj0220a6b0 *self) {
     if (self->fsm->st == 0) {
         FieldState *g;
-        VObj *fx;
+        EffectObj *fx;
         if (self->unk_cf != 0) {
             func_02049f44(data_02097e4c, 0x19, &self->pos, 0);
         }
@@ -2139,8 +2124,8 @@ void func_ov010_0220c390(Obj0220a6b0 *self) {
         ((u8 *)g)[0x18e] = 0xf;
         ((u8 *)g)[0x18f] = 0xf;
         fx = func_02065f88(0x38f, &self->pos);
-        fx->vfunc_24(0, 0x800, 0);
-        fx->vfunc_0c(0x1800);
+        fx->AddPosXYZ(0, 0x800, 0);
+        fx->SetScaleAll(0x1800);
     }
     func_ov000_0219763c(self);
     func_ov000_0219aae8(self, self, self->targetObj->unk_08, self->targetObj->unk_0a, 2, NULL, 0, 0x1b33, 0, 0x57e, 0x1000);
@@ -2405,7 +2390,6 @@ extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern BOOL Ov003Mover_Start(void *self, const VecFx32 *target, const VecFx32 *start, s32 speed, s32 maxDist, u8 noSnap);
 extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern VObj *func_02065f88(s32 id, const VecFx32 *pos);
 extern void func_ov010_02209074(void *p);
 
 static inline Actor *Ov010_FindActorD(u16 id) {
@@ -2428,12 +2412,12 @@ extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
 
 static inline void Ov010_Puff(Obj0220a6b0 *self) {
     VecFx32 q;
-    VObj *e;
+    EffectObj *e;
     OV010_BLKCPY(&q, &self->pos);
     e = func_02065f88(0x321, &q);
-    e->vfunc_0c(0x1000);
+    e->SetScaleAll(0x1000);
     FLD(void *, e, 0xdc) = (void *)func_ov010_02209074;
-    FLD(s32, e, 4) = 6;
+    e->unk_04 = 6;
 }
 
 static inline void Ov010_Dust(Obj0220a6b0 *self) {
@@ -2445,7 +2429,7 @@ static inline void Ov010_Dust(Obj0220a6b0 *self) {
     p.x = self->pos.x;
     p.y = y + self->height / 2;
     p.z = z;
-    func_02065f88(0x192, &p)->vfunc_34(rx, ry, 0);
+    func_02065f88(0x192, &p)->SetRotXYZ(rx, ry, 0);
 }
 
 void func_ov010_0220cba0(Obj0220a6b0 *self) {
@@ -2506,7 +2490,7 @@ void func_ov010_0220cba0(Obj0220a6b0 *self) {
     case 0x15: {
         VecFx32 a;
         VecFx32 b;
-        VObj *e;
+        EffectObj *e;
         self->fsmB.timer++;
         if (self->fsmB.timer == 10) {
             Ov010_Dust(self);
@@ -2543,8 +2527,8 @@ void func_ov010_0220cba0(Obj0220a6b0 *self) {
             *(Ov010Blk12 *)&b = data_ov010_0220f588;
             ang = Ov003Vec_Yaw(Ov003Mover_GetDir(&self->mover)) + 0x7fff;
             e = func_02065f88(0x67, &a);
-            e->vfunc_34(0, ang, 0);
-            e->vfunc_10(&b);
+            e->SetRotXYZ(0, ang, 0);
+            e->SetScale(&b);
             Ov010_Puff(self);
             g = data_ov000_021ccd54;
             g->cam.base.flags |= 0x1c;
@@ -2585,7 +2569,7 @@ void func_ov010_0220d1c4(Obj0220a6b0 *self) {
         if (t != NULL && self->unk_d8 == 1) {
             VecFx32 p;
             VecFx32 q;
-            VObj *e;
+            EffectObj *e;
             self->unk_d8 = 3;
             Ov010_VecCopy(&self->pos, &t->pos);
             VEC_Add(&self->pos, &self->unk_fc, &self->pos);
@@ -2598,9 +2582,9 @@ void func_ov010_0220d1c4(Obj0220a6b0 *self) {
             func_0204a028(data_02097e4c, 0x29, &self->pos, 5);
             OV010_BLKCPY(&q, &self->pos);
             e = func_02065f88(0x321, &q);
-            e->vfunc_0c(0x1000);
+            e->SetScaleAll(0x1000);
             FLD(void *, e, 0xdc) = (void *)func_ov010_02209074;
-            FLD(s32, e, 4) = 6;
+            e->unk_04 = 6;
             self->fsmB.st = 1;
         } else {
             self->fsmB.st = 2;
@@ -2652,7 +2636,7 @@ void func_ov010_0220d3d8(Obj0220a6b0 *self) {
         VecFx32 b;
         VecFx32 q;
         VecFx32 q2;
-        VObj *e;
+        EffectObj *e;
         VecFx32 *v = (VecFx32 *)self->mover.vfunc_10();
         self->pos.x = v->x;
         self->pos.y = v->y;
@@ -2667,9 +2651,9 @@ void func_ov010_0220d3d8(Obj0220a6b0 *self) {
         if (func_ov000_0219aae8(self, x, c, d, mask, NULL, NULL, 0x400, 0, 0x38f, 0x1000)) {
             OV010_BLKCPY(&q, &self->pos);
             e = func_02065f88(0x321, &q);
-            e->vfunc_0c(0x1000);
+            e->SetScaleAll(0x1000);
             FLD(void *, e, 0xdc) = (void *)func_ov010_02209074;
-            FLD(s32, e, 4) = 6;
+            e->unk_04 = 6;
             func_ov000_02198360(self->fsm, 0x15, 0);
             return;
         }
@@ -2684,13 +2668,13 @@ void func_ov010_0220d3d8(Obj0220a6b0 *self) {
             *(Ov010Blk12 *)&b = data_ov010_0220f570;
             ang = Ov003Vec_Yaw(Ov003Mover_GetDir(&self->mover)) + 0x7fff;
             e = func_02065f88(0x66, &a);
-            e->vfunc_34(0, ang, 0);
-            e->vfunc_10(&b);
+            e->SetRotXYZ(0, ang, 0);
+            e->SetScale(&b);
             OV010_BLKCPY(&q2, &self->pos);
             e = func_02065f88(0x321, &q2);
-            e->vfunc_0c(0x1000);
+            e->SetScaleAll(0x1000);
             FLD(void *, e, 0xdc) = (void *)func_ov010_02209074;
-            FLD(s32, e, 4) = 6;
+            e->unk_04 = 6;
             g = data_ov000_021ccd54;
             g->cam.base.flags |= 0x1c;
             g->cam.base.shakeTime = 5;
@@ -3015,12 +2999,10 @@ namespace m_0220dd60 {
 extern "C" {
 
 extern u8 data_ov010_022102e0[];
-extern void *data_0214a420;
 extern void *ActorEx_Ctor(void *self);
 extern void *func_ov000_0219429c(void *self);
 extern void func_ov000_02194758(void *self);
 extern void MTX_Identity33_(void *m);
-extern void EffectMgr_StopLoop(void *a, s32 b);
 extern void MTX_RotZ33_(void *m, s32 s, s32 c);
 extern void MTX_RotY33_(void *m, s32 s, s32 c);
 extern void MTX_Concat33(void *a, void *b, void *c);
@@ -3144,9 +3126,6 @@ struct Ov010Rot16 {
 
 extern void Actor_Move(void *self, s32 a);
 extern s32 func_ov000_0219a2f4(VecFx32 *p, s32 a, s32 b);
-extern VObj *func_020657b0(void *a, s32 b);
-extern VObj *func_02065f88(s32 a, VecFx32 *b);
-extern void EffectObj_StopLoop(VObj *p);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, const void *f, void *g, s32 h, s32 i, s32 j, s32 k);
 
 void func_ov010_0220e06c(Obj0220dd60 *self) {
@@ -3189,7 +3168,7 @@ void func_ov010_0220e06c(Obj0220dd60 *self) {
     }
     case 1: {
         s32 h;
-        VObj *o;
+        EffectObj *o;
         BOOL near;
         rb.x = 0x7fff;
         ra.x = 0;
@@ -3207,13 +3186,13 @@ void func_ov010_0220e06c(Obj0220dd60 *self) {
         if (h != -0x1000 && near) {
             p.y += 0x800;
             if (o != NULL) {
-                o->vfunc_18(&p);
-                o->vfunc_34(0, (u16)(self->rot_y + 0x7fff), 0);
+                o->SetPos(&p);
+                o->SetRotXYZ(0, (u16)(self->rot_y + 0x7fff), 0);
             } else {
-                VObj *n = func_02065f88(0x25e, &p);
-                n->vfunc_34(0, (u16)(self->rot_y + 0x7fff), 0);
-                n->vfunc_14(0x1800, 0x1800, 0x1800);
-                self->unk_d4 = FLD(s32, n, 0x24);
+                EffectObj *n = func_02065f88(0x25e, &p);
+                n->SetRotXYZ(0, (u16)(self->rot_y + 0x7fff), 0);
+                n->SetScaleXYZ(0x1800, 0x1800, 0x1800);
+                self->unk_d4 = n->id;
             }
         } else if (o != NULL) {
             EffectObj_StopLoop(o);
@@ -3229,20 +3208,18 @@ void func_ov010_0220e06c(Obj0220dd60 *self) {
 
 extern void *data_02097e4c;
 extern s32 FX_Div(s32 a, s32 b);
-extern void EffectMgr_Kill(void *a, s32 b);
-extern VObj *Effect3D_Create(const void *a, const void *b, s32 c, VecFx32 *pos);
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 
-static inline void Ov010_TrailApply(VObj *o, s16 s, u32 n) {
-    o->vfunc_14(s, s, s);
+static inline void Ov010_TrailApply(EffectObj *o, s16 s, u32 n) {
+    o->SetScaleXYZ(s, s, s);
     if (n > 0x1f) {
         n = 0x1f;
     }
-    FLD(s32, o, 0x7c) = FX_Div((u8)n << 12, 0x1f000);
+    o->alpha = FX_Div((u8)n << 12, 0x1f000);
 }
 
 void func_ov010_0220e38c(Ov010Trail *self) {
-    VObj *o;
+    EffectObj *o;
     s32 s;
     s32 n;
     s16 sc;
@@ -3256,11 +3233,11 @@ void func_ov010_0220e38c(Ov010Trail *self) {
     switch (self->st.st) {
     case 0:
         o = Effect3D_Create(data_ov010_0220f538, data_ov010_0220f53c, 0, &self->pos);
-        FLD(u8, o, 0x28) = 0;
-        FLD(s32, o, 0xc8) = -1;
-        self->key = FLD(s32, o, 0x24);
-        o->vfunc_14(0x6000, 0x6000, 0x6000);
-        FLD(s32, o, 0x7c) = FX_Div(0xa000, 0x1f000);
+        o->unk_28 = 0;
+        o->loopCount = -1;
+        self->key = o->id;
+        o->SetScaleXYZ(0x6000, 0x6000, 0x6000);
+        o->alpha = FX_Div(0xa000, 0x1f000);
         func_02049f44(data_02097e4c, 0x72, &self->pos, 0);
         self->st.st = 1;
         break;
@@ -3272,14 +3249,14 @@ void func_ov010_0220e38c(Ov010Trail *self) {
         } else if (o == NULL) {
             self->st.st = 30;
         } else {
-            s = FLD(s32, o, 0x40) - 0xaaa;
+            s = o->scale.x - 0xaaa;
             if (s > 0x6000) {
                 s = 0x6000;
             } else if (s < 0x2000) {
                 s = 0x2000;
             }
             sc = s;
-        n = (u8)(Ov010_FxMul(FLD(s32, o, 0x7c), 0x1f000) >> 12) + 6;
+        n = (u8)(Ov010_FxMul(o->alpha, 0x1f000) >> 12) + 6;
             if (n > 0x1e) {
                 n = 0x1e;
             } else if (n < 1) {
@@ -3295,8 +3272,8 @@ void func_ov010_0220e38c(Ov010Trail *self) {
             self->st.st = 30;
             break;
         }
-        o->vfunc_14(0x2000, 0x2000, 0x2000);
-        FLD(s32, o, 0x7c) = FX_Div(0x1e000, 0x1f000);
+        o->SetScaleXYZ(0x2000, 0x2000, 0x2000);
+        o->alpha = FX_Div(0x1e000, 0x1f000);
         if (self->life - self->st.timer <= 6) {
             self->st.st = 20;
         }
@@ -3308,8 +3285,8 @@ void func_ov010_0220e38c(Ov010Trail *self) {
             self->st.st = 30;
             break;
         }
-        o->vfunc_14(0x2000, 0x2000, 0x2000);
-        FLD(s32, o, 0x7c) = FX_Div(0x1e000, 0x1f000);
+        o->SetScaleXYZ(0x2000, 0x2000, 0x2000);
+        o->alpha = FX_Div(0x1e000, 0x1f000);
         self->st.st = 21;
         break;
     case 21:
@@ -3321,14 +3298,14 @@ void func_ov010_0220e38c(Ov010Trail *self) {
         if (o == NULL) {
             break;
         }
-        s = FLD(s32, o, 0x40) + 0xaaa;
+        s = o->scale.x + 0xaaa;
         if (s > 0x6000) {
             s = 0x6000;
         } else if (s < 0x2000) {
             s = 0x2000;
         }
         sc = s;
-        n = (u8)(Ov010_FxMul(FLD(s32, o, 0x7c), 0x1f000) >> 12) - 6;
+        n = (u8)(Ov010_FxMul(o->alpha, 0x1f000) >> 12) - 6;
         if (n > 0x1e) {
             n = 0x1e;
         } else if (n < 1) {
@@ -3345,7 +3322,7 @@ void func_ov010_0220e38c(Ov010Trail *self) {
     self->st.timer++;
     o = func_020657b0(data_0214a420, self->key);
     if (o != NULL) {
-        o->vfunc_1c(self->pos.x, self->pos.y + 0x200, self->pos.z);
+        o->SetPosXYZ(self->pos.x, self->pos.y + 0x200, self->pos.z);
     }
 }
 

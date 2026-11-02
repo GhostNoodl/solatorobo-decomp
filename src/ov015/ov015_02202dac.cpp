@@ -18,25 +18,24 @@ void *func_ov015_0220765c(Ov015Ship *p);
 void func_ov015_02207858(Ov015Ship *p);
 void *func_ov000_0219196c(void *p);
 void Shadow_Load(void *p);
-extern Ov015Shared *data_ov015_02213368;
 BOOL func_ov015_022078bc(Ov015Ship *p);
 BOOL func_ov000_02191b9c(void *p);
 
-static inline bool Ov015Task_Flag4(Ov015Task *t) {
-    return t->flag4;
+static inline bool Ov015Task_Flag4(Task *t) {
+    return t->unk_04_4;
 }
 
-bool Ov015Task_GetFlag4(Ov015Task *self) {
+bool Ov015Task_GetFlag4(Task *self) {
     BOOL r = Ov015Task_Flag4(self);
     return r;
 }
 
-void func_ov015_02202dd0(Ov015Task *self) {
+void func_ov015_02202dd0(Task *self) {
     u8 *o;
-    if (self->unk_08 == 8) {
+    if (self->state == 8) {
         return;
     }
-    if (self->unk_08 != 0xc) {
+    if (self->state != 0xc) {
         return;
     }
     o = func_ov000_0218084c(data_ov000_021ccd44, 0x1f, 0);
@@ -44,7 +43,7 @@ void func_ov015_02202dd0(Ov015Task *self) {
     VCALL(self)->v4c();
 }
 
-BOOL func_ov015_02202e20(Ov015Task *self) {
+BOOL func_ov015_02202e20(Task *self) {
     if (VCALL(self)->v54()) {
         if (data_ov000_021ccd40 != NULL) {
             data_ov000_021ccd38 = FLD(void *, data_ov000_021ccd40, 0x14);
@@ -60,7 +59,7 @@ static inline bool Ov015_IsCurrent(void *p) {
     return data_ov000_021ccd40 == p;
 }
 
-bool func_ov015_02202e74(void *self) {
+bool func_ov015_02202e74(Task *self) {
     BOOL r = Ov015_IsCurrent(self);
     return r;
 }
@@ -101,7 +100,7 @@ void func_ov015_02202ec8(Ov015Scene2a88 *self) {
     func_02042628((Model *)model, arg, (ModelPart *)anim, 0);
 }
 
-BOOL func_ov015_02202f44(Ov015Menu *self, Ov015MenuItem *ev) {
+BOOL func_ov015_02202f44(UiList *self, UiListItem *ev) {
     if (ev != NULL) {
         if (ev->unk_10 != -1) {
             FLD(u8, self->owner, 0xa4) = 1;
@@ -113,7 +112,7 @@ BOOL func_ov015_02202f44(Ov015Menu *self, Ov015MenuItem *ev) {
     return TRUE;
 }
 
-BOOL func_ov015_02202fa8(Ov015Menu *self, Ov015MenuItem *ev) {
+BOOL func_ov015_02202fa8(UiList *self, UiListItem *ev) {
     Ov015Scene2a08 *o = (Ov015Scene2a08 *)self->owner;
     void *d = data_02149ef8;
     void *m;
@@ -173,7 +172,7 @@ void *func_ov015_0220318c(void *self) {
     return self;
 }
 
-void *func_ov015_022031b4(void *self) {
+void *func_ov015_022031b4(Ov015Shadow *self) {
     func_ov000_02191b04(self);
     Heap_Free(self);
     return self;
@@ -232,13 +231,13 @@ struct Ov015Nib {
     u8 hi : 4;
 };
 
-static inline void Ov015_SetUiPos(Ov015Ui *o, s16 x, s16 y, s16 z) {
+static inline void Ov015_SetUiPos(UiObj *o, s16 x, s16 y, s16 z) {
     o->posX = x;
     o->posY = y;
     o->posZ = z;
 }
 
-static inline void Ov015_SetUiSlide(Ov015Ui *o, s32 x, s32 y, s32 z) {
+static inline void Ov015_SetUiSlide(UiObj *o, s32 x, s32 y, s32 z) {
     o->slideX = x;
     o->slideY = y;
     o->slideZ = z;
@@ -288,7 +287,7 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
         SET_VT(p, data_ov000_021cb5a8);
         VCALL(p)->v28();
     }
-    self->unk_88 = (Ov015Menu *)p;
+    self->unk_88 = (UiList *)p;
     self->unk_88->flags |= 0x4000000;
     self->unk_88->slideMode = 1;
     Ov015_SetUiPos(self->unk_88, 0x91, 0x12, -0x333);
@@ -303,7 +302,7 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
         SET_VT(p, data_ov000_021caec8);
         VCALL(p)->v28();
     }
-    self->unk_80 = (Ov015Menu *)p;
+    self->unk_80 = (UiList *)p;
     VCALL(self->unk_80)->v10(MsgRes_GetString(res, 0xc4));
     VCALL(self->unk_80)->v14(MsgRes_GetString(res, 0xc5));
     self->unk_80->width = 0x88;
@@ -321,12 +320,12 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
     VCALL(self->unk_80)->v74(MsgRes_GetString(res, 0xca), 1, 0xffff, 0xffff);
     VCALL(self->unk_80)->v74(MsgRes_GetString(res, 0xd4), 2, 0xffff, 0xffff);
     {
-        Ov015Menu *o = self->unk_80;
+        UiList *o = self->unk_80;
         VCALL(o)->va8(func_ov000_02154b58(o, 0));
     }
-    self->unk_80->onDecide = (void *)func_ov015_02202f44;
-    self->unk_80->onCursor = (void *)func_ov015_02202fa8;
-    self->unk_80->owner = (u8 *)self;
+    self->unk_80->onDecide = func_ov015_02202f44;
+    self->unk_80->onCursor = func_ov015_02202fa8;
+    self->unk_80->owner = self;
     VCALL(self->unk_80)->v08();
     p = (u8 *)Heap_Alloc(0x8c);
     if (p != NULL) {

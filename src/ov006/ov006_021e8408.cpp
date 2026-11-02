@@ -1,6 +1,7 @@
 #include "ov006/SlotManager.h"
 #include "ov006/ov006.h"
 #include "nitro/fx.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct ov006_State021e8408 {
     u16 state;
@@ -12,18 +13,6 @@ typedef struct ov006_Body021e8408 {
     u16 unk22_1 : 1;
     u16 unk22_2 : 14;
 } ov006_Body021e8408;
-
-typedef struct ov006_Eff021e8408 {
-    u8 unk0[0x24];
-    int unk24;
-    u8 unk28[0x14];
-    fx32 unk3C;
-} ov006_Eff021e8408;
-
-typedef struct ov006_Old021e8408 {
-    u8 unk0[0x1c];
-    int unk1C;
-} ov006_Old021e8408;
 
 typedef struct ov006_Prop021e8408 {
     u8 unk0[0x38];
@@ -57,12 +46,8 @@ typedef struct ov006_Prop021e8408 {
 
 extern "C" {
 
-extern void *data_0214a420;
 extern void *data_02097e4c;
 
-ov006_Eff021e8408 *func_02065f88(int id, VecFx32 *pos);
-ov006_Old021e8408 *func_020657b0(void *a, int b);
-void EffectObj_StopLoop(ov006_Old021e8408 *p);
 void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 void func_ov000_0218996c(s32 a, s32 b);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
@@ -75,18 +60,18 @@ void func_ov006_021e8408(ov006_Prop021e8408 *self) {
     self->body->unk22_1 = 0;
     switch (self->st->state) {
     case 0: {
-        ov006_Eff021e8408 *eff;
+        EffectObj *eff;
         self->unk1A0 >>= 1;
         self->unk19C_2 = 0;
         eff = func_02065f88(0x322, &self->pos);
         if (eff != NULL) {
-            ov006_Old021e8408 *old = func_020657b0(data_0214a420, self->unk1E0);
+            EffectObj *old = func_020657b0(data_0214a420, self->unk1E0);
             if (old != NULL) {
                 EffectObj_StopLoop(old);
-                old->unk1C = 4;
+                old->state = 4;
             }
-            self->unk1E0 = eff->unk24;
-            eff->unk3C = 0x1800;
+            self->unk1E0 = eff->id;
+            eff->speed = 0x1800;
         }
         func_02049f44(data_02097e4c, 0x79, &self->pos, 0);
         if (self->unk19E == data_ov006_021ec884->unk5) {
@@ -105,7 +90,7 @@ void func_ov006_021e8408(ov006_Prop021e8408 *self) {
         }
         if (self->unk1F5 % 25 == 0) {
             VecFx32 at;
-            ov006_Eff021e8408 *eff;
+            EffectObj *eff;
             at = self->pos;
             at.x += Rand_PlusMinus(0x1000);
             at.z += Rand_PlusMinus(0x1000);

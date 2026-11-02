@@ -17,8 +17,8 @@ void *func_ov000_0218fee4(void *a);
 void *func_ov000_0218ea20(void *a);
 
 void func_ov015_022120c0(Ov015Obj292c *self) {
-    FLD(s32, self, 0x4) = 0;
-    FLD(s32, self, 0x8) = 0;
+    self->fx = NULL;
+    self->unk_08 = NULL;
     self->pos.x = 0;
     self->pos.y = 0;
     self->pos.z = 0;

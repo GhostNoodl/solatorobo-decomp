@@ -3,13 +3,8 @@
 #include "ov000/ActorBase.h"
 #include "ov000/VObj.h"
 #include "ov000/Model0218fe1c.h"
+#include "Main/Effect/Effect.h"
 
-
-typedef struct {
-    u16 x;
-    u16 y;
-    u16 z;
-} Rot_02191f18;
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -24,7 +19,6 @@ s16 *func_ov000_0219122c(Model0218fe1c *self, s32 frame);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 mask, VecFx32 *ofs, void *rot, s32 r, s32 rr, s32 h, s32 i);
 BOOL func_ov000_0219aca8(void *a, void *b, u16 c, u8 d, VecFx32 *ofs, u16 *box, s32 r, s32 hgt, s32 h, s32 i);
 void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
-VObj *func_02065f88(s32 id, VecFx32 *pos);
 void func_ov000_0218996c(s32 a, s32 b);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
@@ -349,8 +343,8 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
             VecFx32 pos;
             VecFx32 ofs;
             VecFx32 sc;
-            Rot_02191f18 r;
-            VObj *e;
+            Rot16 r;
+            EffectObj *e;
             ofs.x = p[1] << 4;
             ofs.y = p[2] << 4;
             ofs.z = p[3] << 4;
@@ -359,15 +353,15 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
             pos.z = actor->pos.z;
             func_ov000_0219a210(&pos, &ofs, actor->rot_y);
             e = func_02065f88(p[0], &pos);
-            r = LFLD(Rot_02191f18, actor, 0x7c);
+            r = LFLD(Rot16, actor, 0x7c);
             r.x += p[4];
             r.y += p[5];
             r.z += p[6];
-            e->vfunc_30(&r);
+            e->SetRot(&r);
             sc.x = p[7] << 4;
             sc.y = p[8] << 4;
             sc.z = p[9] << 4;
-            e->vfunc_10(&sc);
+            e->SetScale(&sc);
         }
         p += 10;
         break;

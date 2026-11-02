@@ -2,7 +2,6 @@
 
 extern "C" {
 
-extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 
 void func_ov009_02211f44(Ov003Actor *self) {
     u8 *p = FLD(u8 *, self->prev, 0x2c);
@@ -17,7 +16,7 @@ void func_ov009_02211f44(Ov003Actor *self) {
         v = -1;
     }
     if (v == FLD(s32, p, 0)) {
-        NNS_G3dGetCurrentMtx(p + 4, 0);
+        NNS_G3dGetCurrentMtx((MtxFx43 *)(p + 4), NULL);
     }
 }
 
@@ -31,7 +30,6 @@ extern char data_ov009_022179c7[];
 extern char data_ov009_022179d1[];
 extern char data_ov009_022179d8[];
 extern s32 func_ov000_021909a8(Model0218fe1c *m, const char *a, const char *b);
-extern void NNS_G3dRenderObjSetInitFunc(void *p, void *cb);
 extern void func_0203f2b8(void *p);
 extern u8 *func_0206fef8(void *res);
 extern void HitMesh_Init(void *p);
@@ -69,7 +67,7 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
     }
     MTX_Identity43_((MtxFx43 *)(&self->unk_f8));
     m = self->model;
-    NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov009_02211f84);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)func_ov009_02211f84);
     m->clearInit = 0;
     self->model->flushVP = 1;
     self->model->renderUser = &self->unk_f4;

@@ -8,13 +8,11 @@ extern "C" {
 extern const s32 data_ov015_02212524[];
 
 u8 Gfx3DState_NextPolyId(void *p);
-void func_ov015_021fcb1c(void *self);
-void func_ov015_021fc40c(void *self, s32 a);
 
-static inline void Ov015b_Place(u8 *self, s32 z, const s32 *v) {
+static inline void Ov015b_Place(Ov015Hud *self, s32 z, const s32 *v) {
     s32 x = v[0];
-    FLD(Model *, self, 0x24)->unk_150 = z;
-    Ov015Model_SetPos(FLD(Model *, self, 0x24), x, v[1]);
+    self->mdl0->unk_150 = z;
+    Ov015Model_SetPos(self->mdl0, x, v[1]);
 }
 
 static inline void Ov015b_Begin(u32 prim) {
@@ -87,7 +85,7 @@ static inline void Ov015b_Quad(s32 sc, u32 c1, u32 c2) {
 }
 
 
-void func_ov015_021fb758(u8 *self) {
+void func_ov015_021fb758(Ov015Hud *self) {
     VecFx32 off = {0, 0, 0};
     s32 trans[3];
     s32 mtxMode;
@@ -96,12 +94,12 @@ void func_ov015_021fb758(u8 *self) {
     s32 sc;
     Ov015Stat *g = &Dup::data_ov015_0221332c;
     s32 a = data_ov015_0221332c.unk_10;
-    switch (FLD(s32, self, 0x10)) {
+    switch (self->unk_10) {
     case 3:
-        if (FLD(s32, self, 0x8) % 30 > 0xf) {
-            FLD(Model *, self, 0x24)->unk_150 = -0x1666;
-            Ov015Model_SetPos(FLD(Model *, self, 0x24), 0, 0);
-            Ov015Model_PlayPart(FLD(Model *, self, 0x24), 5, 0);
+        if (self->frame % 30 > 0xf) {
+            self->mdl0->unk_150 = -0x1666;
+            Ov015Model_SetPos(self->mdl0, 0, 0);
+            Ov015Model_PlayPart(self->mdl0, 5, 0);
         }
         break;
     case 1:
@@ -110,10 +108,10 @@ void func_ov015_021fb758(u8 *self) {
             func_ov015_021fcb1c(self);
             break;
         }
-        if (FLD(s32, self, 0x8) % 20 > 10) {
-            FLD(Model *, self, 0x24)->unk_150 = -0x1666;
-            Ov015Model_SetPos(FLD(Model *, self, 0x24), data_ov015_02212524[0x21], data_ov015_02212524[0x22]);
-            Ov015Model_PlayPart(FLD(Model *, self, 0x24), 6, 0);
+        if (self->frame % 20 > 10) {
+            self->mdl0->unk_150 = -0x1666;
+            Ov015Model_SetPos(self->mdl0, data_ov015_02212524[0x21], data_ov015_02212524[0x22]);
+            Ov015Model_PlayPart(self->mdl0, 6, 0);
         }
         break;
     case 0:
@@ -124,11 +122,11 @@ void func_ov015_021fb758(u8 *self) {
         }
         break;
     }
-    FLD(Model *, self, 0x24)->unk_150 = -0x2000;
-    Ov015Model_SetPosV(FLD(Model *, self, 0x24), &off);
-    Ov015Model_PlayPart(FLD(Model *, self, 0x24), 0, 0);
-    FLD(Model *, self, 0x24)->unk_150 = -0x1fe0;
-    Ov015Model_PlayPart(FLD(Model *, self, 0x24), 1, 0);
+    self->mdl0->unk_150 = -0x2000;
+    Ov015Model_SetPosV(self->mdl0, &off);
+    Ov015Model_PlayPart(self->mdl0, 0, 0);
+    self->mdl0->unk_150 = -0x1fe0;
+    Ov015Model_PlayPart(self->mdl0, 1, 0);
     func_02043d20(data_02097d48->unk_8b0, 1);
     mtxMode = 2;
     NNS_G3dGeBufferOP_N(0x10, (unsigned int *)&mtxMode, 1);
@@ -143,10 +141,10 @@ void func_ov015_021fb758(u8 *self) {
     trans[2] = -0x1fc0;
     NNS_G3dGeBufferOP_N(0x1c, (unsigned int *)trans, 3);
     sc = FX_Mul(FX_Div(g->unk_24, 0x64000), 0x6e000);
-    if (FLD(s32, self, 0x10) == 3) {
+    if (self->unk_10 == 3) {
         Ov015b_Quad(sc, 0x201c, 0x2a1f);
-    } else if (FLD(s32, self, 0x10) == 1) {
-        if (FLD(s32, self, 0x8) % 10 < 5) {
+    } else if (self->unk_10 == 1) {
+        if (self->frame % 10 < 5) {
             Ov015b_Quad(sc, 0x201c, 0x2a1f);
         } else {
             Ov015b_Quad(sc, 0x27f, 0x3bf);
@@ -155,33 +153,33 @@ void func_ov015_021fb758(u8 *self) {
         Ov015b_Quad(sc, 0x27f, 0x3bf);
     }
     Ov015b_PopMtx(1);
-    Ov015Model_SetPos(FLD(Model *, self, 0x24), -0x79000, Ov015c_Sub(0x97000, sc) - 0x60000);
-    Ov015Model_PlayPart(FLD(Model *, self, 0x24), 0x11, 0);
-    if (FLD(s32, self, 0x10) == 1) {
+    Ov015Model_SetPos(self->mdl0, -0x79000, Ov015c_Sub(0x97000, sc) - 0x60000);
+    Ov015Model_PlayPart(self->mdl0, 0x11, 0);
+    if (self->unk_10 == 1) {
         s32 t;
         s32 x;
         s32 y;
-        FLD(Model *, self, 0x24)->unk_150 = -0x199a;
+        self->mdl0->unk_150 = -0x199a;
         x = off.x;
         y = off.y;
-        t = FX_Div((30 - FLD(s32, self, 0x8) % 30) << 12, 0x1e000);
+        t = FX_Div((30 - self->frame % 30) << 12, 0x1e000);
         t = 0x1000 - FX_Mul(t, t);
         x -= FX_Mul(t, 0x4000);
-        Ov015Model_SetPos(FLD(Model *, self, 0x24), x, y);
-        Ov015Model_PlayPart(FLD(Model *, self, 0x24), 0x15, 0);
+        Ov015Model_SetPos(self->mdl0, x, y);
+        Ov015Model_PlayPart(self->mdl0, 0x15, 0);
     }
-    if (FLD(s32, self, 0xc) == 1) {
-        u8 k = FLD(s32, self, 0x8) % 30;
-        FLD(u16, FLD(Model *, self, 0x24), 0x154) = 0x1f | (k << 5) | (k << 10);
+    if (self->unk_0c == 1) {
+        u8 k = self->frame % 30;
+        self->mdl0->color = 0x1f | (k << 5) | (k << 10);
     }
-    FLD(Model *, self, 0x24)->unk_150 = -0x1666;
-    Ov015Model_SetPos(FLD(Model *, self, 0x24), 0, -0x34000);
-    Ov015Model_PlayPart(FLD(Model *, self, 0x24), 0x10, 0);
-    Ov015Model_SetPos(FLD(Model *, self, 0x24), 0, -0x30000);
-    Ov015Model_PlayPart(FLD(Model *, self, 0x24), 0xf, 0);
-    Ov015Model_SetPos(FLD(Model *, self, 0x24), 0, -0x30000);
-    Ov015Model_PlayPart(FLD(Model *, self, 0x24), 0xe, 0);
-    FLD(u16, FLD(Model *, self, 0x24), 0x154) = 0x7fff;
+    self->mdl0->unk_150 = -0x1666;
+    Ov015Model_SetPos(self->mdl0, 0, -0x34000);
+    Ov015Model_PlayPart(self->mdl0, 0x10, 0);
+    Ov015Model_SetPos(self->mdl0, 0, -0x30000);
+    Ov015Model_PlayPart(self->mdl0, 0xf, 0);
+    Ov015Model_SetPos(self->mdl0, 0, -0x30000);
+    Ov015Model_PlayPart(self->mdl0, 0xe, 0);
+    self->mdl0->color = 0x7fff;
 }
 }
 
@@ -224,7 +222,7 @@ static inline s32 Ov015c_Bob(s32 n) {
     return 0x14000;
 }
 
-void func_ov015_021fc40c(void *self, s32 mode) {
+void func_ov015_021fc40c(Ov015Hud *self, s32 mode) {
     VecFx32 c;
     VecFx32 a;
     VecFx32 b;
@@ -245,7 +243,7 @@ void func_ov015_021fc40c(void *self, s32 mode) {
         mainIdx = 8;
         flip = TRUE;
         Ov015c_SetV(&a, -0x3c000, -0x1c000, 0);
-        cnt = FLD(s32, self, 0x8);
+        cnt = self->frame;
         n = cnt % 20;
         Ov015c_SetV(&b, -Ov015c_Bob(n), 0, 0);
         break;
@@ -254,7 +252,7 @@ void func_ov015_021fc40c(void *self, s32 mode) {
         alphaIdx = 0x17;
         mainIdx = 8;
         Ov015c_SetV(&a, 0x3c000, -0x1c000, 0);
-        cnt = FLD(s32, self, 0x8);
+        cnt = self->frame;
         n = cnt % 20;
         Ov015c_SetV(&b, Ov015c_Bob(n), 0, 0);
         break;
@@ -263,14 +261,14 @@ void func_ov015_021fc40c(void *self, s32 mode) {
         alphaIdx = 0x19;
         mainIdx = 9;
         Ov015c_SetV(&a, 0, 0x1a000, 0);
-        cnt = FLD(s32, self, 0x8);
+        cnt = self->frame;
         n = cnt % 20;
         Ov015c_SetV(&b, 0, Ov015c_Bob(n), 0);
         break;
     default:
         return;
     }
-    n = FLD(s32, self, 0x1c);
+    n = self->unk_1c;
     blink = FALSE;
     if (n < 12) {
         if (n % 6 < 3) {
@@ -281,35 +279,35 @@ void func_ov015_021fc40c(void *self, s32 mode) {
     }
     if (blink) {
         Ov015c_SetV(&c, 0, -0x1d000, 0);
-        FLD(Model *, self, 0x24)->unk_150 = -0x1666;
-        Ov015Model_SetPosV(FLD(Model *, self, 0x24), &c);
-        Ov015Model_PlayPart(FLD(Model *, self, 0x24), blinkIdx, 0);
+        self->mdl0->unk_150 = -0x1666;
+        Ov015Model_SetPosV(self->mdl0, &c);
+        Ov015Model_PlayPart(self->mdl0, blinkIdx, 0);
     }
-    if (FLD(s32, self, 0x20) <= 0) {
+    if (self->unk_20 <= 0) {
         u32 al;
         u8 old;
         Model *m;
-        n = FLD(s32, self, 0x8) % 20;
+        n = self->frame % 20;
         al = (u8)(FX_Mul(FX_SinCosTable_[(FX_Mul(0x7fff, FX_Div(n << 12, 0x14000)) >> 4) * 2], 0x3c000) >> 12);
         if (al > 30) {
             al = 30;
         }
-        old = Ov015c_SetAlpha(FLD(Model *, self, 0x24), al);
-        Ov015Model_SetPos(FLD(Model *, self, 0x24), 0, -0x1c000);
-        FLD(Model *, self, 0x24)->unk_150 = -0x1666;
-        m = FLD(Model *, self, 0x24);
+        old = Ov015c_SetAlpha(self->mdl0, al);
+        Ov015Model_SetPos(self->mdl0, 0, -0x1c000);
+        self->mdl0->unk_150 = -0x1666;
+        m = self->mdl0;
         Ov015Model_PlayPart(m, alphaIdx, 0);
-        FLD(Model *, self, 0x24)->unk_150 = -0x199a;
-        Ov015Model_PlayPart(FLD(Model *, self, 0x24), 0x16, 0);
-        FLD(Ov015cFlags, FLD(Model *, self, 0x24), 0x6c).alpha = old;
+        self->mdl0->unk_150 = -0x199a;
+        Ov015Model_PlayPart(self->mdl0, 0x16, 0);
+        FLD(Ov015cFlags, self->mdl0, 0x6c).alpha = old;
     }
     VEC_Add((VecFx32 *)&b, (VecFx32 *)&a, (VecFx32 *)&a);
     if (flip) {
-        FLD(u32, FLD(Model *, self, 0x24), 0x6c) |= 0x20000;
+        self->mdl0->flags |= 0x20000;
     }
-    Ov015Model_SetPosV(FLD(Model *, self, 0x24), &a);
-    Ov015Model_PlayPart(FLD(Model *, self, 0x24), mainIdx, 0);
-    FLD(u32, FLD(Model *, self, 0x24), 0x6c) &= ~0x20000;
+    Ov015Model_SetPosV(self->mdl0, &a);
+    Ov015Model_PlayPart(self->mdl0, mainIdx, 0);
+    self->mdl0->flags &= ~0x20000;
     {
         s32 p = g->unk_14;
         s32 q = g->unk_10;
@@ -322,16 +320,16 @@ void func_ov015_021fc40c(void *self, s32 mode) {
     }
     Ov015c_SetV(&c, 0, -0x34000, 0);
     c.y -= 0x10000;
-    cnt = FLD(s32, self, 0x8);
-    FLD(Model *, self, 0x28)->unk_150 = -0x199a;
+    cnt = self->frame;
+    self->mdl1->unk_150 = -0x199a;
     VEC_Add((VecFx32 *)&c, (VecFx32 *)&data_ov015_02212584, (VecFx32 *)&v);
-    Ov015Model_SetPosV(FLD(Model *, self, 0x28), &v);
-    Ov015Model_PlayPart(FLD(Model *, self, 0x28), 0x10, 0);
+    Ov015Model_SetPosV(self->mdl1, &v);
+    Ov015Model_PlayPart(self->mdl1, 0x10, 0);
     if (cnt % 8 < 4) {
         VEC_Add((VecFx32 *)&c, (VecFx32 *)&data_ov015_02212590, (VecFx32 *)&v2);
-        FLD(Model *, self, 0x24)->unk_150 = -0x1ccd;
-        Ov015Model_SetPosV(FLD(Model *, self, 0x24), &v2);
-        Ov015Model_PlayPart(FLD(Model *, self, 0x24), 0xd, 0);
+        self->mdl0->unk_150 = -0x1ccd;
+        Ov015Model_SetPosV(self->mdl0, &v2);
+        Ov015Model_PlayPart(self->mdl0, 0xd, 0);
     }
 }
 

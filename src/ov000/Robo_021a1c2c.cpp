@@ -3,6 +3,7 @@
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u16 st;
@@ -26,14 +27,12 @@ BOOL func_ov000_02198360(void *st, s32 state, s32 x);
 s32 func_ov003_021ce5b8(u32 color);
 void func_ov000_021915a0(void *a);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
-VObj *func_02065f88(s32 id, void *pos);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_021b468c(void *self);
 u16 Camera_GetYaw(void *cam);
 u16 Pad_LookupDir(void *rng, void *p);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 void func_02062764(s32 a, s32 b);
-void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
 void Body_SetPos(void *body, VecFx32 *pos, u32 angle);
 BOOL func_ov000_02191120(void *a);
 
@@ -112,17 +111,17 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
                 }
                 func_02049f44(data_02097e4c, 8, (u8 *)self + 0x70, 0);
                 if (self->unk_b24_12 == 1) {
-                    VObj *o = func_02065f88(0x6d, (u8 *)self + 0x70);
-                    o->vfunc_0c(0x99a);
-                    o->vfunc_34(0xf000, 0, 0);
+                    EffectObj *o = func_02065f88(0x6d, &self->pos);
+                    o->SetScaleAll(0x99a);
+                    o->SetRotXYZ(0xf000, 0, 0);
                 } else if (!self->unk_b22_3 && (self->hit->unk_50 & 0xf0f0f0) != 0xe0e000) {
-                    func_02065f88(0x12f, (u8 *)self + 0x70)->vfunc_0c(0x666);
+                    func_02065f88(0x12f, &self->pos)->SetScaleAll(0x666);
                 }
             } else if (self->hit->unk_50 & 0x400) {
                 se = 0x2bc;
                 name = data_ov000_021cc618;
-                func_02065f88(se, (u8 *)self + 0x70);
-                func_02065f88(se + 1, (u8 *)self + 0x70);
+                func_02065f88(se, &self->pos);
+                func_02065f88(se + 1, &self->pos);
                 ((State_021a1c2c *)self->fsm)->timer = 0xc;
                 se = -1;
             }
@@ -133,7 +132,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
                     p = self->pos;
                     p.y += 0xccd;
                     func_02065f88(0x2bc, &p);
-                    func_02065f88(0x2bd, &p)->vfunc_0c(0x1800);
+                    func_02065f88(0x2bd, &p)->SetScaleAll(0x1800);
                 }
             }
             ((State_021a1c2c *)self->fsm)->st++;
@@ -220,7 +219,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
                 func_ov000_02190cb0((u8 *)self + 0x368, data_ov000_021cc5e3, 0x1000, 1);
                 q = self->mdl1.unk_1c;
                 if (q != NULL) {
-                    NNS_G3dRenderObjRemoveAnmObj((u8 *)self + 0x38c, ((void *)q->cur));
+                    NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)self->mdl1.unk_24, (NNSG3dAnmObj *)q->cur);
                     q->name[0] = 0;
                     q->index = 0xff;
                     q->playing = 0;

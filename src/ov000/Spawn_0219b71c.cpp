@@ -2,19 +2,19 @@
 #include "ov000/ObjLayouts.h"
 #include "ov000/Vec.h"
 #include "nitro/fx.h"
+#include "Main/Effect/Effect.h"
 
 extern "C" {
 
 s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
 const MtxFx43 *NNS_G3dGlbGetInvV(void);
-VObj *func_02065f88(s32 kind, VecFx32 *pos);
 
-VObj *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 kind, u8 chance) {
+EffectObj *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 kind, u8 chance) {
     VecFx32 v;
     s32 scale;
     BOOL big;
-    VObj *obj;
+    EffectObj *obj;
     s32 z = range->z;
     s32 y = Rand_PlusMinus(range->y);
     v.x = Rand_PlusMinus(range->x);
@@ -35,7 +35,7 @@ VObj *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 k
         scale += scale >> 2;
     }
     obj = func_02065f88(kind, &v);
-    obj->vfunc_14(scale, scale, scale);
+    obj->SetScaleXYZ(scale, scale, scale);
     return obj;
 }
 

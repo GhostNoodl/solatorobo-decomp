@@ -5,7 +5,6 @@ extern "C" {
 
 
 
-extern u8 *data_ov015_02213368;
 extern void *data_02149ef8;
 extern u8 *data_0214a424;
 extern u8 data_ov000_021cac60[];
@@ -34,21 +33,17 @@ void func_ov000_021c5630(void *a, void *b);
 void func_ov000_021c5678(void *a, void *b);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
 
-struct Ov015ItemEnt {
-    u16 id;
-    s32 cnt;
-};
 
-static inline void Ov015_SetUiPos(u8 *o, s16 x, s16 y, s16 z) {
-    FLD(s16, o, 0x64) = x;
-    FLD(s16, o, 0x66) = y;
-    FLD(s16, o, 0x68) = z;
+static inline void Ov015_SetUiPos(UiObj *o, s16 x, s16 y, s16 z) {
+    o->posX = x;
+    o->posY = y;
+    o->posZ = z;
 }
 
-static inline void Ov015_SetUiSlide(u8 *o, s32 x, s32 y, s32 z) {
-    FLD(s32, o, 0x58) = x;
-    FLD(s32, o, 0x5c) = y;
-    FLD(s32, o, 0x60) = z;
+static inline void Ov015_SetUiSlide(UiObj *o, s32 x, s32 y, s32 z) {
+    o->slideX = x;
+    o->slideY = y;
+    o->slideZ = z;
 }
 
 static inline void *GetRes0220e634(void) {
@@ -56,15 +51,15 @@ static inline void *GetRes0220e634(void) {
 }
 
 void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
-    u8 *sh;
+    Ov015Shared *sh;
     s32 i;
-    u8 *p;
+    UiObj *p;
     Ov015ItemEnt *items;
     void *res;
     res = GetRes0220e634();
     sh = data_ov015_02213368;
     self->mode = mode;
-    p = (u8 *)Heap_Alloc(0xf0);
+    p = (UiObj *)Heap_Alloc(0xf0);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -75,12 +70,12 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
         SET_VT(p, data_ov000_021cb3a8);
         VCALL(p)->v28();
     }
-    FLD(u8 *, self, 0x4) = p;
-    FLD(s32, p, 0x24) = 0xf8;
+    self->unk_04 = (UiList *)p;
+    p->width = 0xf8;
     self->unk_04->rows = 1;
-    Ov015_SetUiPos(((u8 *)self->unk_04), 0, 0x19, -0xccd);
-    FLD(u16, self->unk_04, 0x48) = 0x28;
-    Ov015_SetUiSlide(((u8 *)self->unk_04), -0x100, 0, -0xccd);
+    Ov015_SetUiPos(self->unk_04, 0, 0x19, -0xccd);
+    self->unk_04->color = 0x28;
+    Ov015_SetUiSlide(self->unk_04, -0x100, 0, -0xccd);
     self->unk_04->flags &= ~0x40000;
     self->unk_04->flags &= ~0x20000;
     VCALL(self->unk_04)->v10(MsgRes_GetString(res, 0xcc));
@@ -92,16 +87,16 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
         break;
     case 1:
         func_ov000_02157c90(self->unk_04, MsgRes_GetString(res, 0xce));
-        STD_CopyLString(self->name, func_0206ffa0(FLD(u16, sh, 0xc)), 0x40);
+        STD_CopyLString(self->name, func_0206ffa0(sh->catchId), 0x40);
         break;
     default:
         STD_CopyLString(self->name, data_ov015_02213100, 0x40);
         break;
     }
-    FLD(u8 *, self->unk_04, 0xe0) = (u8 *)self->name;
+    FLD(char *, self->unk_04, 0xe0) = self->name;
     VCALL(self->unk_04)->v08();
-    items = (Ov015ItemEnt *)(sh + 0x10);
-    p = (u8 *)Heap_Alloc(0x100);
+    items = sh->items;
+    p = (UiObj *)Heap_Alloc(0x100);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -111,12 +106,12 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
         func_ov000_021c54f4(p);
     }
     self->unk_08 = p;
-    FLD(s32, p, 0x24) = 0xf8;
-    FLD(s32, self->unk_08, 0x20) = 3;
+    p->width = 0xf8;
+    self->unk_08->rows = 3;
     Ov015_SetUiPos(self->unk_08, 2, 0x3c, -0xccd);
     Ov015_SetUiSlide(self->unk_08, -0x100, 0, -0xccd);
-    FLD(s32, self->unk_08, 0x2c) = 1;
-    FLD(u32, self->unk_08, 0xc) &= ~0x40000;
+    self->unk_08->slideMode = 1;
+    self->unk_08->flags &= ~0x40000;
     FLD(u8, self->unk_08, 0xf0) = 0;
     if (mode == 1) {
         for (i = 0; i < 3; i++) {
@@ -125,7 +120,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
             u16 k;
             u8 *e;
             u8 *d;
-            if (items[i].cnt == 0) {
+            if (items[i].count == 0) {
                 break;
             }
             e = (u8 *)Heap_Alloc(0x48);
@@ -141,7 +136,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
             if (d != NULL) {
                 k = FLD(u16, d, 2);
             }
-            n = items[i].cnt;
+            n = items[i].count;
             FLD(void *, e, 0x38) = name;
             FLD(u16, e, 0x3c) = n;
             FLD(s32, e, 0x40) = k * n;
@@ -152,8 +147,8 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     func_ov000_021c5630(self->unk_08, MsgRes_GetString(res, 0xd3));
     func_ov000_021c5678(self->unk_08, MsgRes_GetString(res, 0x3f));
     VCALL(self->unk_08)->v08();
-    FLD(u32, self->unk_08, 0xc) |= 4;
-    p = (u8 *)Heap_Alloc(0xe0);
+    self->unk_08->flags |= 4;
+    p = (UiObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -162,45 +157,45 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
         SET_VT(p, data_ov000_021cb5a8);
         VCALL(p)->v28();
     }
-    FLD(u8 *, self, 0x14) = p;
-    FLD(u32, p, 0xc) |= 0x4000000;
+    self->unk_14 = (UiList *)p;
+    p->flags |= 0x4000000;
     self->unk_14->slideMode = 1;
     self->unk_14->flags |= 0x20000000;
     self->unk_14->flags |= 0x80000000;
-    Ov015_SetUiSlide(((u8 *)self->unk_14), 0x100, 0, -0xcd);
+    Ov015_SetUiSlide(self->unk_14, 0x100, 0, -0xcd);
     VCALL(self->unk_14)->vf4(1, MsgRes_GetString(res, 0x36));
     VCALL(self->unk_14)->v08();
     self->unk_14->flags |= 2;
-    p = (u8 *)Heap_Alloc(0x98);
+    p = (UiObj *)Heap_Alloc(0x98);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
         SET_VT(p, data_ov000_021cae48);
         VCALL(p)->v28();
     }
-    FLD(u8 *, self, 0xc) = p;
+    self->unk_0c = (Ov015UiNum *)p;
     Ov015_SetUiPos(p, 0x92, 0x78, -0x99a);
-    Ov015_SetUiSlide(((u8 *)self->unk_0c), 0x100, 0, -0x99a);
+    Ov015_SetUiSlide(self->unk_0c, 0x100, 0, -0x99a);
     self->unk_0c->slideMode = 1;
-    FLD(s32, self->unk_0c, 0x84) = 1;
+    self->unk_0c->unk_84 = 1;
     VCALL(self->unk_0c)->v08();
     if (mode == 1) {
-        func_ov000_0215d980(self->unk_0c, FLD(s32, sh, 0x28), 0);
+        func_ov000_0215d980(self->unk_0c, sh->total, 0);
     } else {
         func_ov000_0215d980(self->unk_0c, 0, 0);
     }
-    p = (u8 *)Heap_Alloc(0x98);
+    p = (UiObj *)Heap_Alloc(0x98);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
         SET_VT(p, data_ov000_021cae48);
         VCALL(p)->v28();
     }
-    FLD(u8 *, self, 0x10) = p;
+    self->unk_10 = (Ov015UiNum *)p;
     Ov015_SetUiPos(p, 0x92, 0x8c, -0x99a);
-    Ov015_SetUiSlide(((u8 *)self->unk_10), 0x100, 0, -0x99a);
+    Ov015_SetUiSlide(self->unk_10, 0x100, 0, -0x99a);
     self->unk_10->slideMode = 1;
-    FLD(s32, self->unk_10, 0x84) = 1;
+    self->unk_10->unk_84 = 1;
     VCALL(self->unk_10)->v08();
     func_ov000_0215d980(self->unk_10, FLD(s32, data_0214a424, 0x618), 0);
 }

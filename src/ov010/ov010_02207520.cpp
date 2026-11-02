@@ -12,12 +12,6 @@ struct Ov010StEnt {
 };
 
 
-struct Ov010Heap {
-    u32 cur;
-    u32 unk_04;
-    u32 def;
-};
-
 struct Ov010Query {
     VecFx32 pos;
     u16 rot;
@@ -55,14 +49,13 @@ struct Ov010U16x6 {
 
 extern "C" {
 
-extern Ov010Heap *data_02097dd0;
 
 }
 
 // Deletes the object a field points to (vfunc_04) and clears the field.
 template <class T> static inline void Ov010_FreeV(T **pp) {
-    u32 saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (*pp != NULL) {
         VObj *p = *pp;
         if (p != NULL) {
@@ -76,7 +69,6 @@ template <class T> static inline void Ov010_FreeV(T **pp) {
 extern "C" {
 
 extern u8 data_ov010_0220f024[];
-extern void MI_CpuFill8(void *p, s32 v, s32 n);
 
 void func_ov010_02207520(Ov010Obj02210154 *self) {
     self->unk_f0 = 0;
@@ -105,7 +97,7 @@ void func_ov010_02207520(Ov010Obj02210154 *self) {
 }
 
 void func_ov010_022075bc(Ov010Obj02210154 *self) {
-    u32 saved;
+    void *saved;
     func_ov003_021cf404(0);
     func_ov003_021cf400(0);
     Ov010_FreeV(&self->unk_104);
@@ -117,7 +109,7 @@ void func_ov010_022075bc(Ov010Obj02210154 *self) {
     Ov010_FreeV(&self->unk_11c);
     Ov010_FreeV(&self->unk_120);
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_124 != NULL) {
         Heap_Free(self->unk_124);
         self->unk_124 = NULL;
@@ -325,7 +317,6 @@ extern const VecFx32 data_ov010_0220f0fc;
 extern BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-extern VObj *func_02065f88(s32 id, VecFx32 *pos);
 extern u16 FX_Atan2(s32 y, s32 x);
 
 void func_ov010_02207d2c(Ov010Obj0220ffe4 *self) {
@@ -362,7 +353,7 @@ void func_ov010_02207d2c(Ov010Obj0220ffe4 *self) {
                 self->moveYaw = FX_Atan2(t->x - self->pos.x, t->z - self->pos.z);
                 return;
             }
-            func_02065f88(0x12f, &self->pos)->vfunc_0c(0xe66);
+            func_02065f88(0x12f, &self->pos)->SetScaleAll(0xe66);
             self->fsm->st = 2;
             return;
         case 2:
@@ -482,7 +473,7 @@ void func_ov010_0220813c(Ov010Obj0220ffe4 *self) {
         g->cam.base.shakeTime = 0xf;
         g->cam.base.shakeLen = 0x28;
         g->cam.base.shakeCur = 0x28;
-        func_ov010_0220ea84(self, 0, self->moveYaw)->vfunc_0c(0x2000);
+        func_ov010_0220ea84(self, 0, self->moveYaw)->SetScaleAll(0x2000);
         func_02049f44(data_02097e4c, 0x32, &self->pos, 0);
         self->fsm->st = 0x15;
     }
@@ -501,10 +492,10 @@ void func_ov010_0220813c(Ov010Obj0220ffe4 *self) {
         Ov010_VecSet(&self->pos, 0x19a, 0x1b3b, -0x3a77);
         return;
     case 0x1e:
-        func_02065f88(0x389, &data_ov010_0220f114)->vfunc_0c(0x2000);
-        func_02065f88(0x322, &data_ov010_0220f114)->vfunc_0c(0x1800);
-        func_02065f88(0x389, &data_ov010_0220f120)->vfunc_0c(0x2000);
-        func_02065f88(0x322, &data_ov010_0220f114)->vfunc_0c(0x1800);
+        func_02065f88(0x389, &data_ov010_0220f114)->SetScaleAll(0x2000);
+        func_02065f88(0x322, &data_ov010_0220f114)->SetScaleAll(0x1800);
+        func_02065f88(0x389, &data_ov010_0220f120)->SetScaleAll(0x2000);
+        func_02065f88(0x322, &data_ov010_0220f114)->SetScaleAll(0x1800);
         func_02049f44(data_02097e4c, 0x79, &self->pos, 0);
         self->fsm->st = 0x1f;
         self->fsm->timer = 0x28;
@@ -533,8 +524,8 @@ void func_ov010_0220813c(Ov010Obj0220ffe4 *self) {
         FLD(u16, o, 0x7c) = r.v[0];
         FLD(u16, o, 0x7e) = r.v[1];
         FLD(u16, o, 0x80) = r.v[2];
-        func_02065f88(0x579, &data_ov010_0220f114)->vfunc_0c(0x2000);
-        func_02065f88(0x579, &data_ov010_0220f120)->vfunc_0c(0x2000);
+        func_02065f88(0x579, &data_ov010_0220f114)->SetScaleAll(0x2000);
+        func_02065f88(0x579, &data_ov010_0220f120)->SetScaleAll(0x2000);
         func_02049f44(data_02097e4c, 0x5c, &self->pos, 0);
         self->fsm->st = 0x64;
         return;

@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u8 pad_00[0x40];
@@ -15,7 +16,6 @@ extern u8 data_ov000_021cc696[];
 extern u8 data_ov000_021cc672[];
 extern u8 data_ov000_021ca0a4[];
 extern u8 data_ov000_021cc5e3[];
-VObj *func_02065f88(s32 id, void *pos);
 extern u8 data_ov000_021cc618[];
 extern void *data_ov000_021ccd68;
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
@@ -205,7 +205,7 @@ void func_ov000_021a7574(Robo021ca458 *self) {
     case 1:
         if (self->model->anim_state == 1 || func_ov000_02191120(self->model)) {
             if (self->unk_b24_5 != 0) {
-                VObj *e;
+                EffectObj *e;
                 u8 *a = (u8 *)FindActor021a783c(self->unk_b1c);
                 if (a != NULL) {
                     func_ov000_0218d46c(a, self->id, 0xd);
@@ -215,7 +215,7 @@ void func_ov000_021a7574(Robo021ca458 *self) {
                 self->unk_b1e = 0xffff;
                 self->unk_b24_7 = self->unk_b24_9;
                 e = func_02065f88(0xc9, &self->pos);
-                LFLD(void *, self, 0xb48) = LFLD(void *, e, 0x24);
+                self->unk_b48 = e->id;
                 self->unk_b5e = 0;
                 self->unk_b4c = 0;
                 self->unk_b50 = FxMul64(self->height, 0xa66);
@@ -223,7 +223,7 @@ void func_ov000_021a7574(Robo021ca458 *self) {
                 self->unk_b58 = 0xe000;
                 self->unk_b5a = 0;
                 self->unk_b5c = 0;
-                e->vfunc_14(0x2800, 0x2000, 0x2800);
+                e->SetScaleXYZ(0x2800, 0x2000, 0x2800);
             }
             func_ov000_02190cb0(self->model, data_ov000_021cc5e3, 0x155, 0);
             self->gravity = 0x52;

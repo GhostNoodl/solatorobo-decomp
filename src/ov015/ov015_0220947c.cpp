@@ -11,7 +11,6 @@ extern char data_ov015_02212e15[];
 s32 func_ov000_021909a8(void *a, const void *b, const void *c);
 u8 *func_0206fef8(u16 id);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-void func_ov015_022090fc(u8 *self);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void func_ov000_02191618(void *a);
@@ -66,7 +65,7 @@ BOOL func_ov015_02209500(Ov015Fish *self) {
     self->model.flags.boxTest = 0;
     func_ov000_021915a0(&self->model);
     self->model.flags.visible = 1;
-    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->model.renderObj), (NNSG3dSbcCallBackFunc)func_ov015_022090fc);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->model.renderObj), func_ov015_022090fc);
     self->model.flags.clearInit = 0;
     self->model.flags.flushVP = 1;
     self->model.renderObj.ptrUser = &self->rot2[0].x;
@@ -305,14 +304,14 @@ void *Ov015FishState2c_Ctor(Ov015FishState2c *self) {
     return self;
 }
 
-void *Ov015FishState2c_Dtor(void *self) {
+void *Ov015FishState2c_Dtor(Ov015FishState2c *self) {
     SET_VT(self, data_ov015_02212e94);
     VCALL(self)->v10(0);
     SET_VT(self, data_ov015_02212eb0);
     return self;
 }
 
-void *Ov015FishState2c_DtorDelete(void *self) {
+void *Ov015FishState2c_DtorDelete(Ov015FishState2c *self) {
     SET_VT(self, data_ov015_02212e94);
     VCALL(self)->v10(0);
     SET_VT(self, data_ov015_02212eb0);

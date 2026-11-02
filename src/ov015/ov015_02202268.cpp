@@ -5,14 +5,11 @@ extern "C" {
 extern Ov015Globals data_ov015_02213320;
 void func_ov015_02208070(Ov015Ship *p);
 void func_ov015_02209b8c(Ov015Fish *self);
-void func_ov015_0220f7a8(u8 *self);
 void func_ov015_02210d04(u8 *self);
 void func_ov015_02212264(Ov015Obj292c *self);
-void func_ov015_021fb758(u8 *self);
 BOOL func_ov000_021903b4(void *a);
-void func_ov015_021fa6cc(void *p);
 void func_ov015_0220101c(Ov015Game *self);
-void func_ov015_02211878(void *p);
+void func_ov015_02211878(Ov015Info38 *p);
 extern u8 data_ov015_0221296c[];
 extern u8 data_ov015_0221280c[];
 extern u8 data_ov015_022127dc[];
@@ -25,14 +22,13 @@ extern u8 data_ov015_0221294c[];
 void *func_ov000_0218fee4(void *a);
 void *func_ov000_0218ea20(void *a);
 extern u8 data_ov015_022128ec[];
-void func_ov015_0220f4d4(void *p);
 extern u8 data_ov015_022128fc[];
 void func_ov015_02209270(Ov015Fish *p);
 void func_0203f2b8(void *p);
 void *func_ov000_02191b04(void *p);
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
-void func_ov015_0220900c(void *p);
+void func_ov015_0220900c(Ov015FishInfo *p);
 extern u8 data_ov015_0221292c[];
 void func_ov015_022120fc(Ov015Obj292c *self);
 extern u8 data_ov015_0221290c[];
@@ -61,7 +57,7 @@ static inline void Ov015_022022ac_Draw(Ov015Game *self) {
     func_ov000_021903b4(p + 0x35c);
     func_ov000_021903b4(p + 0x57c);
     NNS_G3dGeFlushBuffer();
-    for (n = FLD(u8 *, self->fishList, 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
+    for (n = ((u8 *)self->fishList->head); n != NULL; n = FLD(u8 *, n, 0xc)) {
         func_ov015_02209b8c(FLD(Ov015Fish *, n, 0x4));
     }
 }
@@ -83,14 +79,14 @@ void func_ov015_022022ac(Ov015Game *self) {
     case 0x32:
     case 0x3c:
         if (data_02097d48->unk_a30_4) {
-            func_ov015_021fb758(self->unk_28);
+            func_ov015_021fb758(self->hud);
         }
         Ov015_022022ac_Draw(self);
         if (self->unk_90 != NULL) func_ov015_02210d04(self->unk_90);
         NNS_G3dGeFlushBuffer();
         break;
     case 0x46:
-        func_ov015_0220f7a8(self->unk_2c);
+        func_ov015_0220f7a8(self->result);
         break;
     }
 }
@@ -101,7 +97,7 @@ void *Ov015Game_DtorDelete(Ov015Game *self) {
     func_ov015_0220101c(self);
     func_02036838(data_02097cdc, data_ov015_022128c1, 7, 0);
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_2c);
+    DELETE_V(self->result);
     HEAP_POP(saved);
     EffectMgr_FreeAll(data_0214a420);
     data_0214a420->drawFilter = 0;
@@ -142,7 +138,7 @@ void *Ov015Game_Dtor(Ov015Game *self) {
     func_ov015_0220101c(self);
     func_02036838(data_02097cdc, data_ov015_022128c1, 7, 0);
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_2c);
+    DELETE_V(self->result);
     HEAP_POP(saved);
     EffectMgr_FreeAll(data_0214a420);
     data_0214a420->drawFilter = 0;
@@ -176,21 +172,21 @@ void *Ov015Game_Dtor(Ov015Game *self) {
     return self;
 }
 
-void *func_ov015_022027e8(u8 *self) {
+void *func_ov015_022027e8(Ov015Hud *self) {
     char buf[0x20];
     SET_VT(self, data_ov015_0221293c);
     {
         void *saved;
         HEAP_PUSH(saved);
         {
-            u8 *o = FLD(u8 *, self, 0x24);
+            Model *o = self->mdl0;
             if (o != NULL) {
                 if (o != NULL) {
-                    func_02041558((Model *)o);
-                    func_02041278((PlttRes *)(o + 0x88));
+                    func_02041558(o);
+                    func_02041278(&o->pltt);
                     Heap_Free(o);
                 }
-                FLD(void *, self, 0x24) = NULL;
+                self->mdl0 = NULL;
             }
         }
         HEAP_POP(saved);
@@ -199,14 +195,14 @@ void *func_ov015_022027e8(u8 *self) {
         void *saved;
         HEAP_PUSH(saved);
         {
-            u8 *o = FLD(u8 *, self, 0x28);
+            Model *o = self->mdl1;
             if (o != NULL) {
                 if (o != NULL) {
-                    func_02041558((Model *)o);
-                    func_02041278((PlttRes *)(o + 0x88));
+                    func_02041558(o);
+                    func_02041278(&o->pltt);
                     Heap_Free(o);
                 }
-                FLD(void *, self, 0x28) = NULL;
+                self->mdl1 = NULL;
             }
         }
         HEAP_POP(saved);
@@ -228,7 +224,7 @@ void *func_ov015_022028dc(u8 *self) {
     return self;
 }
 
-void *Ov015Result_Dtor(void *self) {
+void *Ov015Result_Dtor(Ov015Result *self) {
     SET_VT(self, data_ov015_022128ec);
     func_ov015_0220f4d4(self);
     return self;

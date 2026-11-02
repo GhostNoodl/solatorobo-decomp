@@ -30,7 +30,6 @@ void func_ov009_0220ac74(Ov009ActVt_02217390 *self) {
 extern "C" {
 
 extern void func_0203f364(ActorSub48 *p);
-extern Ov009V *func_02065f88(s32 id, VecFx32 *pos);
 extern u16 func_ov000_02199e94(void *p);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, const VecFx32 *v, void *e, s32 f, s32 g, s16 h, s32 i);
 extern void func_ov000_0218996c(s32 a, s32 b);
@@ -64,7 +63,8 @@ void func_ov009_0220acb8(Ov009ActVt_02217390 *self) {
         s44 = self->unk_44;
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
-        e = func_02065f88(3, &self->pos);
+        // Called through the variadic Ov009V view: the typed EffectObj calls (SetScaleAll, AddPos) score 17 / 15.
+        e = (Ov009V *)func_02065f88(3, &self->pos);
         y = self->radius + self->unk_f0 * 8;
         e->v0c(y);
         v.x = 0;

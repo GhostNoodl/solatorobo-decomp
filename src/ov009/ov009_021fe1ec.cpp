@@ -78,7 +78,6 @@ void func_ov009_021fe3d4(Ov009ActVt_022165f8 *self) {
 
 #define OV009_FXMUL_K(a, k) ((s32)(((s64)(a) * (k) + 0x800) >> 12))
 
-extern void *data_0214a420;
 extern void *data_02097e4c;
 extern VecFx32 data_ov009_02215cd0;
 extern VecFx32 data_ov009_02215cdc;
@@ -87,12 +86,9 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern void func_01ffc9fc(VecFx32 *dst, VecFx32 *src, u16 angle);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, const VecFx32 *v, s32 e, s32 f, s32 g, s32 h, s32 i);
-extern Ov009V *func_020657b0(void *mgr, s32 h);
-extern void EffectMgr_Kill(void *mgr, s32 h);
 extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
 
 static inline Ov003Actor *Ov009_FindActor(void *mgr, u16 id) {
@@ -105,7 +101,7 @@ static inline Ov003Actor *Ov009_FindActor(void *mgr, u16 id) {
 void func_ov009_021fe55c(Ov009ActVt_022165f8 *self) {
     Ov003Actor *tgt;
     ActorSub40 *st;
-    Ov009V *e;
+    EffectObj *e;
     VecFx32 v;
     if (!Ov009_GameIdle()) {
         return;
@@ -153,11 +149,11 @@ void func_ov009_021fe55c(Ov009ActVt_022165f8 *self) {
                 self->fsm->timer = 0;
                 self->fsm->st++;
                 e = func_02065f88(0x3ea, &self->pos);
-                e->v20(&data_ov009_02215ce8);
-                e->v0c(0x3000);
-                e->v34(0x1000, self->rot_y, 0x8000);
-                FLD(s32, e, 0x3c) = 0x1800;
-                self->unk_f8 = FLD(s32, e, 0x24);
+                e->AddPos(&data_ov009_02215ce8);
+                e->SetScaleAll(0x3000);
+                e->SetRotXYZ(0x1000, self->rot_y, 0x8000);
+                e->speed = 0x1800;
+                self->unk_f8 = e->id;
                 return;
             }
             self->rot_x = func_01ffc128(0x1000, self->rot_x, 0x19a, 1, 0x8000);
@@ -192,7 +188,7 @@ void func_ov009_021fe55c(Ov009ActVt_022165f8 *self) {
                 return;
             }
             VEC_Add(&self->pos, &data_ov009_02215ce8, &v);
-            e->v18(&v);
+            e->SetPos(&v);
             break;
         case 3:
             st->timer++;
@@ -250,11 +246,11 @@ void func_ov009_021fe55c(Ov009ActVt_022165f8 *self) {
                     v.x = -v.x;
                 }
                 func_01ffc9fc(&v, &v, self->rot_y);
-                e->v20(&v);
-                e->v0c(0x800);
+                e->AddPos(&v);
+                e->SetScaleAll(0x800);
                 MIi_CpuClear32(-1, (u8 *)e + 0x84, 0x40);
             }
-            self->unk_f8 = FLD(s32, e, 0x24);
+            self->unk_f8 = e->id;
             func_02049f44(data_02097e4c, 0x7a, &self->pos, 0);
             self->fsm->st++;
             break;
@@ -264,19 +260,19 @@ void func_ov009_021fe55c(Ov009ActVt_022165f8 *self) {
                 return;
             }
             e = func_02065f88(0x321, &self->pos);
-            e->v20(&data_ov009_02215cd0);
-            e->v0c(0x19a);
+            e->AddPos(&data_ov009_02215cd0);
+            e->SetScaleAll(0x19a);
             MIi_CpuClear32(-1, (u8 *)e + 0x84, 0x40);
-            FLD(s32, e, 0x7c) = FX_Div(0x10000, 0x1f000);
-            self->unk_f8 = FLD(s32, e, 0x24);
+            e->alpha = FX_Div(0x10000, 0x1f000);
+            self->unk_f8 = e->id;
             func_0204a028(data_02097e4c, 0x79, &self->pos, -10);
             self->fsm->st++;
             break;
         case 3:
             e = func_020657b0(data_0214a420, self->unk_f8);
             if (e != NULL) {
-                s32 s = FLD(s32, e, 0x40);
-                e->v0c(s + 0x333);
+                s32 s = e->scale.x;
+                e->SetScaleAll(s + 0x333);
                 if (s + 0x333 >= 0x2800) {
                     Model0218fe1c *m = self->model;
                     FLD(u16, m, 0xb6) = 0x7c00;
@@ -293,9 +289,9 @@ void func_ov009_021fe55c(Ov009ActVt_022165f8 *self) {
             if (st->timer > 0x3c) {
                 EffectMgr_Kill(data_0214a420, self->unk_f8);
                 e = func_02065f88(0x322, &self->pos);
-                e->v20(&data_ov009_02215cdc);
-                e->v0c(0xccd);
-                self->unk_f8 = FLD(s32, e, 0x24);
+                e->AddPos(&data_ov009_02215cdc);
+                e->SetScaleAll(0xccd);
+                self->unk_f8 = e->id;
                 func_ov000_021911c8(self->model, 0x1000);
                 self->fsm->timer = 0;
                 self->fsm->st++;

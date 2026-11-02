@@ -44,7 +44,7 @@ void Ov011SceneActor_Start(Ov011SceneActor *self) {
     {
         Ov011Sa104 *s = self->unk_104;
         func_ov003_021da48c(s, 0);
-        s->unk_38 = NULL;
+        s->unk_38 = 0;
     }
     {
         Ov011Sa108 *s = self->unk_108;

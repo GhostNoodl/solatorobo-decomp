@@ -1,5 +1,6 @@
 #include "ov006/ov006.h"
 #include "nitro/fx.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct ov006_Loader021e000c {
     void *vtbl;
@@ -29,17 +30,6 @@ typedef struct ov006_Win021e000c {
     u32 rest : 30;
 } ov006_Win021e000c;
 
-typedef struct ov006_Eff021e000c {
-    u8 unk0[0x24];
-    int id;
-} ov006_Eff021e000c;
-
-typedef struct ov006_Vec021e000c {
-    s32 x;
-    s32 y;
-    s32 z;
-} ov006_Vec021e000c;
-
 typedef struct ov006_Unk021e000c {
     void *vtbl;
     s16 state;
@@ -59,9 +49,7 @@ typedef struct ov006_Unk021e000c {
 
 extern "C" {
 
-extern void *data_0214a420;
-VObj *func_020657b0(void *a, int id);
-ov006_Eff021e000c *func_ov006_021e37d0(int type, ov006_Vec021e000c *arg);
+EffectObj *func_ov006_021e37d0(int type, const VecFx32 *pos);
 s32 Interp_SinLerp(fx32 t, s32 a, s32 b);
 BOOL func_02054f10(void *a, int b);
 void func_ov006_021df44c(ov006_Win021e000c *self);
@@ -101,7 +89,7 @@ void func_ov006_021e000c(ov006_Unk021e000c *self) {
     }
     switch (self->state) {
     case 1: {
-        ov006_Vec021e000c v;
+        VecFx32 v;
         v.x = zero;
         v.y = -0x19a;
         v.z = -0x2000;
@@ -158,13 +146,13 @@ void func_ov006_021e000c(ov006_Unk021e000c *self) {
         break;
     case 5: {
         fx32 t = (self->timer << 12) / 20;
-        VObj *o = func_020657b0(data_0214a420, self->id1);
+        EffectObj *o = func_020657b0(data_0214a420, self->id1);
         if (o != NULL) {
-            o->vfunc_14(0x1000, FX_Mul(t, 0x800) + 0x1000, 0x1000);
+            o->SetScaleXYZ(0x1000, FX_Mul(t, 0x800) + 0x1000, 0x1000);
         }
         o = func_020657b0(data_0214a420, self->id2);
         if (o != NULL) {
-            o->vfunc_1c(FX_Mul(t, -0x80000), 0, *(s32 *)((u8 *)o + 0x60));
+            o->SetPosXYZ(FX_Mul(t, -0x80000), 0, o->pos.z);
         }
         self->fade += 0xcc;
         if (self->fade > 0x1000) {

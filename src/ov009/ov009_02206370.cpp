@@ -8,33 +8,26 @@ extern char data_ov009_02216bb4[];
 extern char data_ov009_02216bba[];
 extern void *func_ov003_021da940(void *p);
 extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern void *func_ov000_02191318(Model0218fe1c *m, s32 a);
 
-struct Ov009Rot {
-    s16 x;
-    s16 y;
-    s16 z;
-};
-
 static inline void Ov009_SpawnSparks(Ov009ActVt_02216dcc *self) {
-    Ov009V *e;
-    Ov009Rot r;
+    EffectObj *e;
+    Rot16 r;
     func_0204a028(data_02097e4c, 0x54, &self->pos, 3);
     e = func_02065f88(0x25d, &self->pos);
-    e->v24(0, 0x1333, 0);
-    e->v0c(0xb33);
+    e->AddPosXYZ(0, 0x1333, 0);
+    e->SetScaleAll(0xb33);
     r.y = self->rot_y + 0x6000;
     r.x = 0x800;
     r.z = 0;
-    e->v30(&r);
+    e->SetRot(&r);
     e = func_02065f88(0x25d, &self->pos);
-    e->v24(0, 0x1333, 0);
-    e->v0c(0xb33);
+    e->AddPosXYZ(0, 0x1333, 0);
+    e->SetScaleAll(0xb33);
     r.y = self->rot_y - 0x6000;
     r.x = 0x800;
     r.z = 0;
-    e->v30(&r);
+    e->SetRot(&r);
 }
 
 void func_ov009_02206370(Ov009ActVt_02216dcc *self) {

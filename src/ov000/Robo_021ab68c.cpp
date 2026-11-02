@@ -1,5 +1,6 @@
 #include "ov000/Actor.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -29,7 +30,6 @@ BOOL func_ov000_02191508(void *a);
 void *func_ov000_02191318(void *a, s32 b);
 void func_ov000_0218999c(s32 a, s32 b);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
-VObj *func_02065f88(s32 id, VecFx32 *pos);
 u16 FX_Atan2(s32 a, s32 b);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 void func_ov000_0218d46c(Actor *o, u16 id, s32 m);
@@ -124,12 +124,12 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
         func_02049f44(data_02097e4c, 0x52, &self->pos, 0);
         if (!hit) {
             VecFx32 p;
-            VObj *o;
+            EffectObj *o;
             p = sub->dest;
             p.y = self->pos.y;
             o = func_02065f88(0x67, &p);
-            o->vfunc_0c(0x1800);
-            o->vfunc_34(0, AngleTo021ab68c(a, (Actor *)self), 0);
+            o->SetScaleAll(0x1800);
+            o->SetRotXYZ(0, AngleTo021ab68c(a, (Actor *)self), 0);
         }
         lvl2 = self->unk_b2c_7 * 2;
         func_ov000_0219aae8(a, self, lvl2 * 3, 0x31, 0x30, NULL, 0, a->radius + 0x2333, 0, 0x64, 0x1000);

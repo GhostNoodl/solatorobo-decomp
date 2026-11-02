@@ -2,12 +2,9 @@
 
 extern "C" {
 
-extern void *data_0214a420;
 extern VecFx32 data_02092a50;
 extern VecFx32 data_02092a38;
 extern char data_ov011_022075d4[];
-Ov011Eff *func_02065f88(s32 id, VecFx32 *v);
-Ov011Eff *func_020657b0(void *mgr, s32 h);
 s32 Rand_PlusMinus(s32 max);
 Actor *func_ov000_0219be1c(s32 id, VecFx32 *pos, u16 *rot, u16 a, u16 b);
 
@@ -36,7 +33,7 @@ void func_ov011_02204428(Ov011Act7c4c *self) {
             s->timer--;
         }
         if (s->timer == 0) {
-            Ov011Eff *e;
+            EffectObj *e;
             self->unk_104 = self->unk_84;
             if (self->unk_fe & 1) {
                 self->unk_104.x += 0x5800;
@@ -51,9 +48,9 @@ void func_ov011_02204428(Ov011Act7c4c *self) {
             VEC_Add(&v, &data_02092a50, &v);
             e = func_02065f88(0x389, &v);
             if (e != NULL) {
-                self->unk_100 = e->unk_24;
-                e->v0c(0x4800);
-                e->unk_3c = 0x1ccd;
+                self->unk_100 = e->id;
+                e->SetScaleAll(0x4800);
+                e->speed = 0x1ccd;
             }
             self->fsm->st++;
             self->fsm->timer = 0x14;
@@ -64,15 +61,15 @@ void func_ov011_02204428(Ov011Act7c4c *self) {
             self->fsm->timer--;
         }
         if (self->unk_100 != 0) {
-            Ov011Eff *e = func_020657b0(data_0214a420, self->unk_100);
+            EffectObj *e = func_020657b0(data_0214a420, self->unk_100);
             if (e != NULL) {
                 if (self->fsm->timer == 0) {
-                    e->unk_1c = 4;
+                    e->state = 4;
                     self->unk_100 = 0;
                 } else {
                     Ov011_MulVec33(&self->unk_104, NNS_G3dGlbGetInvV(), &v);
                     VEC_Add(&v, &data_02092a50, &v);
-                    e->v18(&v);
+                    e->SetPos(&v);
                 }
             }
         }

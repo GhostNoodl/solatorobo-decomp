@@ -208,7 +208,6 @@ void func_ov011_021fcd00(Ov011Tut *self) {
         break;
     }
 }
-extern Ov011V *func_02065f88(s32 id, const VecFx32 *pos);
 
 static inline void Ov011_SendC(u16 id, s32 kind, BOOL b0) {
     Ov011ArgB b;
@@ -289,7 +288,7 @@ void func_ov011_021fce2c(Ov011Tut *self) {
             v.x = a->pos.x;
             v.y = a->pos.y;
             v.z = a->pos.z;
-            func_02065f88(0x12e, &v)->v14(0x1400, 0x600, 0x1400);
+            func_02065f88(0x12e, &v)->SetScaleXYZ(0x1400, 0x600, 0x1400);
         }
         break;
     }

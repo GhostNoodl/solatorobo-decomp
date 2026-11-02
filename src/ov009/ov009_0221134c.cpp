@@ -41,7 +41,6 @@ extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void func_ov000_0219a210(VecFx32 *v, const void *a, u16 b);
 extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 msg);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 typedef u16 Ov009Row3[3];
 
 void func_ov009_02211470(Ov009ActVt_02217aac *self) {
@@ -99,7 +98,7 @@ void func_ov009_02211470(Ov009ActVt_02217aac *self) {
         h = static_cast<Ov003Actor *>(func_ov003_021d69f0(self, 0x4802, &p, &self->rot_x, t));
         if (h != NULL) {
             func_ov000_0218d46c(h, self->id, 0xb);
-            func_02065f88(0x12c, &p)->v34(0, self->rot_y, 0);
+            func_02065f88(0x12c, &p)->SetRotXYZ(0, self->rot_y, 0);
         }
         if (--self->unk_fd == 0) {
             if (++self->unk_fe >= 2) {

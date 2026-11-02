@@ -62,7 +62,6 @@ extern void *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_02199f48(void *p, Ov003Actor *a);
 extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern Ov003Actor *func_ov000_0219bf90(void);
 
 static inline void *Ov009_FindActorD68(u16 id) {
@@ -117,7 +116,7 @@ void func_ov009_02212978(Ov009ActVt_02217a00 *self) {
             }
             func_ov000_0218996c(10, 0x28);
             func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
-            func_02065f88(5, &self->pos)->v14(0x7800, 0x7800, 0x7800);
+            func_02065f88(5, &self->pos)->SetScaleXYZ(0x7800, 0x7800, 0x7800);
             self->fsm->timer = 0x29;
             self->fsm->st++;
             return;
@@ -142,12 +141,12 @@ void func_ov009_02212978(Ov009ActVt_02217a00 *self) {
             return;
         }
         if (self->fsm->timer % 35 == 0) {
-            Ov009V *e = func_02065f88(0x325, &self->pos);
+            EffectObj *e = func_02065f88(0x325, &self->pos);
             s32 a;
-            e->v34(0, (u16)(self->rot_y + 0x8000), 0);
-            e->v14(0x1ccd, 0x1ccd, 0x1ccd);
+            e->SetRotXYZ(0, (u16)(self->rot_y + 0x8000), 0);
+            e->SetScaleXYZ(0x1ccd, 0x1ccd, 0x1ccd);
             a = Rand_UpTo(0x4000);
-            e->v24(-0x3800, a - 0x1000, Rand_UpTo(0x3000));
+            e->AddPosXYZ(-0x3800, a - 0x1000, Rand_UpTo(0x3000));
         }
         break;
     case 2:

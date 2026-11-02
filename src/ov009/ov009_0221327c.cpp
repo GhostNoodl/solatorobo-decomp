@@ -5,11 +5,10 @@ extern void *data_02097e4c;
 extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 
 void func_ov009_0221327c(Ov009ActVt_02217d5c *self) {
     VecFx32 p;
-    Ov009V *e;
+    EffectObj *e;
     ActorSub40 *st;
     switch (self->fsm->st) {
     case 0: {
@@ -22,7 +21,7 @@ void func_ov009_0221327c(Ov009ActVt_02217d5c *self) {
         func_ov000_0218996c(10, 0x28);
         func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
         e = func_02065f88(5, &self->pos);
-        e->v14(0x7800, 0x7800, 0x7800);
+        e->SetScaleXYZ(0x7800, 0x7800, 0x7800);
         self->fsm->st++;
         break;
     }
@@ -47,8 +46,8 @@ void func_ov009_0221327c(Ov009ActVt_02217d5c *self) {
     p.y += Rand_PlusMinus(self->height);
     p.z += Rand_PlusMinus(0x4000) + 0x3000;
     e = func_02065f88(0x325, &p);
-    e->v34(0, (u16)(self->rot_y + 0x8000), 0);
-    e->v14(0x1ccd, 0x1ccd, 0x1ccd);
+    e->SetRotXYZ(0, (u16)(self->rot_y + 0x8000), 0);
+    e->SetScaleXYZ(0x1ccd, 0x1ccd, 0x1ccd);
     self->fsm->timer = 0;
 }
 
@@ -88,7 +87,7 @@ void func_ov009_02213460(Ov009ActVt_02217d5c *self) {
             }
             func_ov000_0218996c(0xf, 0x50);
             func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
-            func_02065f88(5, &self->pos)->v14(0x8000, 0x8000, 0x8000);
+            func_02065f88(5, &self->pos)->SetScaleXYZ(0x8000, 0x8000, 0x8000);
             self->fsm->timer = 0x29;
             self->fsm->st++;
             return;

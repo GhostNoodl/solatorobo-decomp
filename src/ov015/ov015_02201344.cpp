@@ -24,7 +24,6 @@ struct Ov015MdlSet {
 
 extern "C" {
 
-extern Ov015Shared *data_ov015_02213368;
 extern u8 data_ov015_0221294c[];
 extern u8 data_ov015_0221293c[];
 extern char data_ov015_0221283b[];
@@ -39,14 +38,12 @@ u8 *func_ov015_0220765c(Ov015Ship *p);
 void func_ov015_02207858(Ov015Ship *p);
 void *func_ov000_0218e9c4(void *p);
 void *func_ov000_0218fe1c(void *p);
-void *Ov015Result_Ctor(void *p);
-void func_ov015_0220f470(void *p);
 
-static inline void *Ov015_NewTex(void) {
-    u8 *t = (u8 *)Heap_Alloc(0x160);
+static inline Model *Ov015_NewTex(void) {
+    Model *t = (Model *)Heap_Alloc(0x160);
     if (t != NULL) {
-        func_02041218((PlttRes *)(t + 0x88));
-        func_02041440((Model *)t, (char *)NULL, 0);
+        func_02041218(&t->pltt);
+        func_02041440(t, (char *)NULL, 0);
     }
     return t;
 }
@@ -54,7 +51,7 @@ static inline void *Ov015_NewTex(void) {
 BOOL func_ov015_02201344(Ov015Game *self) {
     Ov015Ship *s;
     u8 *o;
-    u8 *q;
+    Ov015Hud *q;
     s = (Ov015Ship *)Heap_Alloc(0xd58);
     if (s != NULL) {
         s = (Ov015Ship *)func_ov015_0220765c(s);
@@ -130,29 +127,29 @@ BOOL func_ov015_02201344(Ov015Game *self) {
         }
         s->p[2].mdl.unk_00 = 0;
     }
-    q = (u8 *)Heap_Alloc(0x30);
+    q = (Ov015Hud *)Heap_Alloc(0x30);
     if (q != NULL) {
         SET_VT(q, data_ov015_0221293c);
-        FLD(s32, q, 0x4) = 0;
-        FLD(s32, q, 0x8) = 0;
-        FLD(s32, q, 0xc) = 0;
-        FLD(s32, q, 0x10) = 3;
-        FLD(s32, q, 0x14) = 1;
-        FLD(s32, q, 0x1c) = 0;
-        FLD(s32, q, 0x20) = 0x28;
-        FLD(s32, q, 0x24) = 0;
-        FLD(s32, q, 0x28) = 0;
-        FLD(s32, q, 0x2c) = 0;
+        q->unk_04 = 0;
+        q->frame = 0;
+        q->unk_0c = 0;
+        q->unk_10 = 3;
+        q->unk_14 = 1;
+        q->unk_1c = 0;
+        q->unk_20 = 0x28;
+        q->mdl0 = NULL;
+        q->mdl1 = NULL;
+        q->unk_2c = 0;
     }
-    self->unk_28 = q;
-    FLD(void *, q, 0x24) = Ov015_NewTex();
-    FLD(void *, q, 0x28) = Ov015_NewTex();
+    self->hud = q;
+    q->mdl0 = Ov015_NewTex();
+    q->mdl1 = Ov015_NewTex();
     {
-        void *f = Heap_Alloc(0x14);
+        Ov015Result *f = (Ov015Result *)Heap_Alloc(sizeof(Ov015Result));
         if (f != NULL) {
             f = Ov015Result_Ctor(f);
         }
-        self->unk_2c = (u8 *)f;
+        self->result = f;
         func_ov015_0220f470(f);
     }
     func_020359d0(data_ov015_022128c1, 7, 0);

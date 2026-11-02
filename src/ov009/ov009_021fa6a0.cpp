@@ -87,7 +87,6 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_021911c8(void *model, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 static inline Ov003Actor *Ov009_FindActor5b(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
@@ -141,7 +140,7 @@ void func_ov009_021fa934(Ov009ActVt_02216a00 *self) {
         if (t != NULL) {
             func_ov000_0219aae8(self, self, self->unk_f0, 0x20, (u16)(1 << (t->id >> 12)), NULL, 0, 0x3400, 0x2800, 0x64, 0x1000);
         }
-        func_02065f88(0x66, &self->pos)->v0c(0x1c00);
+        func_02065f88(0x66, &self->pos)->SetScaleAll(0x1c00);
         g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
         lim = 4;
         if (data_ov000_021ccd54->unk_ca.c[0] == 2) {

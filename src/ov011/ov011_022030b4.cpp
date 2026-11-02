@@ -8,7 +8,6 @@ u16 ActorGroup_CountKind(void *g, u16 id);
 void Actor_TurnToActor(void *self, void *target, s32 c);
 void func_ov000_021911c8(void *a, s32 b);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
-Ov011V *func_02065f88(s32 id, VecFx32 *v);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);
@@ -98,14 +97,14 @@ void func_ov011_02203320(Ov003Actor *self) {
         self->fsm->st++;
         break;
     case 1: {
-        Ov011V *p;
+        EffectObj *p;
         if (++s->timer <= 120) {
             return;
         }
         func_02049a48(data_02097e4c, 50, 100, -1, -1);
         p = func_02065f88(50 + 0x358, &self->pos);
-        p->v14(0x1666, 0x1666, 0x1666);
-        p->v24(0, 0x1000, 0);
+        p->SetScaleXYZ(0x1666, 0x1666, 0x1666);
+        p->AddPosXYZ(0, 0x1000, 0);
         self->model->visible = 1;
         self->model->alpha = 0;
         self->fsm->timer = 0;
@@ -152,13 +151,13 @@ void func_ov011_02203534(Ov003Actor *self) {
 
 void func_ov011_022035b8(Ov003Actor *self) {
     if (self->fsm->st == 0) {
-        Ov011V *p;
+        EffectObj *p;
         self->unk_3c->unk_14 = self->radius * 2;
         self->unk_3c->unk_19 = 0xff;
         p = func_02065f88(0x69, &self->pos);
         if (p != NULL) {
-            p->v0c(0x2400);
-            p->v24(0, 0x1000, 0);
+            p->SetScaleAll(0x2400);
+            p->AddPosXYZ(0, 0x1000, 0);
         }
     }
     func_ov003_021d6054(self);

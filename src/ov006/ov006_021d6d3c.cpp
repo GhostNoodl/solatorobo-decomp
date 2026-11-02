@@ -1,4 +1,5 @@
 #include "ov006/ov006.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct ov006_Color021d6d3c {
     u8 c[3];
@@ -39,13 +40,11 @@ extern ov006_Game021d6d3c *data_ov000_021ccd54;
 extern void *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd6c;
-extern void *data_0214a420;
 extern ov006_Fade021d6d3c data_02097d78;
 void SndMgr_StopAll(void *a, int b);
 void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(void *p);
 void func_ov000_021b53f4(void *p);
-void EffectMgr_FreeAll(void *p);
 void func_0203cc58(s32 a, int b, int c);
 void func_0203cd10(void);
 BOOL func_ov006_021cd2a8(ov006_Manager *m);

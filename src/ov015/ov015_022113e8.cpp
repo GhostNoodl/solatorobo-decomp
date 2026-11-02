@@ -10,11 +10,6 @@ extern const u16 data_ov015_02212660[];
 extern const u16 data_ov015_0221267a[];
 extern const u16 data_ov015_0221266a[];
 
-struct Ov015ItemEnt {
-    u16 id;
-    u16 pad;
-    s32 count;
-};
 
 static inline s32 Ov015_Pick(const u16 *tbl, s32 max, s32 mod, s32 amt, s32 id) {
     s32 start = Rand_UpTo(max);
@@ -51,7 +46,7 @@ static inline BOOL Ov015_InTable(const u16 *tbl, s32 n, s32 id) {
     return found;
 }
 
-void func_ov015_022113e8(void *self, Ov015ItemEnt *list, s32 n, u16 a, s32 budget) {
+void func_ov015_022113e8(Ov015Shared *self, Ov015ItemEnt *list, s32 n, u16 a, s32 budget) {
     s32 cnt;
     s32 i;
     s32 j;

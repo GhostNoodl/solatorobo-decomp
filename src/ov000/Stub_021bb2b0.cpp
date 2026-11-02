@@ -2,6 +2,7 @@
 #include "ov000/ObjLayouts.h"
 #include "ov000/Vec.h"
 #include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u8 unk_00[0x70];
@@ -9,20 +10,11 @@ typedef struct {
 } Obj0219bf90;
 
 typedef struct {
-    u8 unk_00[0x1c];
-    s32 state;
-    u8 unk_20[0x1c];
-    s32 unk_3c;
-    u8 unk_40[0x180];
-    void (*unk_1c0)(void *);
-} Fx021bb33c;
-
-typedef struct {
     s32 state;
     s32 unk_04;
     u8 unk_08;
     s32 unk_0c;
-    Fx021bb33c *fx;
+    EffectObj *fx;
     VecFx32 pos;
 } Obj021bb2b0;
 
@@ -31,20 +23,11 @@ extern "C" {
 Obj0219bf90 *func_ov000_0219bf90(void);
 extern void *data_02fe152c;
 extern s32 data_02097d78[];
-extern void *data_0214a420;
 void func_ov000_021bb298(void *self);
 u16 func_020594bc(void *res, u32 idx, int packed, int sub);
 void func_0204aab0(SndQueue *queue, u16 value);
 u16 SndQueue_Peek(SndQueue *queue);
 void SndQueue_Pop(SndQueue *queue);
-Fx021bb33c *func_02066df0(void);
-Fx021bb33c *func_02066ec8(void);
-Fx021bb33c *func_02066f90(void);
-Fx021bb33c *func_02066c58(void);
-Fx021bb33c *func_02067058(void);
-Fx021bb33c *func_02067120(void);
-Fx021bb33c *func_02065f88(s32 id, const VecFx32 *pos);
-BOOL EffectMgr_Contains(void *mgr, Fx021bb33c *fx);
 void func_0203cb78(int duration, int mode, int ch);
 
 void func_ov000_021bb2b0(Obj021bb2b0 *self, s32 a, s16 *v, u8 c) {
@@ -116,7 +99,7 @@ static inline void Bgm021bb33c_Start(void) {
     }
 }
 
-static inline BOOL Fx021bb33c_Ready(Fx021bb33c *fx) {
+static inline BOOL Fx021bb33c_Ready(EffectObj *fx) {
     return fx->state == 3 ? TRUE : FALSE;
 }
 
@@ -130,7 +113,7 @@ static inline BOOL Game021bb33c_Is4(void) {
 BOOL func_ov000_021bb33c(Obj021bb2b0 *self) {
     switch (self->state) {
     case 1: {
-        Fx021bb33c *fx = NULL;
+        Effect3D *fx = NULL;
         switch (self->unk_04) {
         case 0:
             fx = func_02066df0();
@@ -188,9 +171,9 @@ BOOL func_ov000_021bb33c(Obj021bb2b0 *self) {
             break;
         }
         if (fx != NULL) {
-            fx->unk_1c0 = func_ov000_021bb298;
+            fx->initCallback = (NNSG3dSbcCallBackFunc)func_ov000_021bb298;
         }
-        self->fx->unk_3c = 0;
+        self->fx->speed = 0;
         self->state = 10;
         break;
     }
@@ -199,7 +182,7 @@ BOOL func_ov000_021bb33c(Obj021bb2b0 *self) {
             if (Game021bb33c_Is4()) {
                 func_0203cb78(0xa000, 2, 0);
             }
-            self->fx->unk_3c = 0x1000;
+            self->fx->speed = 0x1000;
             self->state = 0xb;
         }
         break;

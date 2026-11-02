@@ -34,7 +34,6 @@ void func_ov009_021fad54(Ov003Actor *self) {
 extern void *data_02097e4c;
 extern char data_ov009_02216ab0[];
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 void func_ov009_021fada8(Ov009ActVt_022164a0 *self) {
@@ -61,7 +60,7 @@ void func_ov009_021fada8(Ov009ActVt_022164a0 *self) {
             return;
         }
         func_ov000_02190cb0(self->model, data_ov009_02216ab0, 0x200, 0);
-        func_02065f88(0x12e, &self->pos)->v0c(0x1400);
+        func_02065f88(0x12e, &self->pos)->SetScaleAll(0x1400);
         s44 = self->unk_44;
         s44->unk_22_0 = 1;
         s44->unk_22_1 = 1;
@@ -143,7 +142,7 @@ void func_ov009_021faf48(Ov009ActVt_022164a0 *self) {
         if (t != NULL) {
             func_ov000_0219aae8(self, self, self->unk_f0, 0x20, (u16)(1 << (t->id >> 12)), NULL, 0, 0x3400, 0x2800, 0x64, 0x1000);
         }
-        func_02065f88(0x66, &self->pos)->v0c(0x1c00);
+        func_02065f88(0x66, &self->pos)->SetScaleAll(0x1c00);
         g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
         if (g != NULL && FLD(u16, g, 0x16) <= 3) {
             do {

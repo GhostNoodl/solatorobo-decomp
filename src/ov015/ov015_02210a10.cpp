@@ -13,7 +13,6 @@ extern u8 data_ov015_02213188[];
 void func_ov015_0220ec40(Ov015ResultPanel *self);
 extern u8 data_ov015_022131ac[];
 void func_ov000_021c2310(void *self);
-extern Ov015Shared *data_ov015_02213368;
 extern u8 data_ov015_02213200[];
 
 void func_ov015_02210a10(Ov015Msg *self) {
@@ -22,8 +21,8 @@ void func_ov015_02210a10(Ov015Msg *self) {
     func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
 }
 
-static inline BOOL Ov015_IsState5(Ov015Ui *o) {
-    return o->unk_04 == 5 ? TRUE : FALSE;
+static inline BOOL Ov015_IsState5(UiObj *o) {
+    return o->state == 5 ? TRUE : FALSE;
 }
 BOOL func_ov015_02210a58(Ov015Msg *self) {
     BOOL r = FALSE;
@@ -51,7 +50,7 @@ BOOL func_ov015_02210a58(Ov015Msg *self) {
 }
 
 void func_ov015_02210b3c(Ov015MsgMgr *self) {
-    FLD(s32, self, 0x4) = 0;
+    self->unk_04 = NULL;
     self->unk_08 = 0;
     self->unk_09 = 0;
     self->unk_0c = 0;
@@ -235,25 +234,25 @@ void *func_ov015_0221100c(void *self) {
 }
 
 void func_ov015_0221102c(void) {
-    u8 *p;
+    Ov015Shared *p;
     if (data_ov015_02213368 != NULL) {
         void *saved;
         HEAP_PUSH(saved);
         DELETE_V(data_ov015_02213368);
         HEAP_POP(saved);
     }
-    p = (u8 *)Heap_Alloc(0x30);
+    p = (Ov015Shared *)Heap_Alloc(sizeof(Ov015Shared));
     if (p != NULL) {
         SET_VT(p, data_ov015_02213200);
-        FLD(s32, p, 0x4) = 0;
-        FLD(u16, p, 0x8) = 0xa000;
-        FLD(u16, p, 0xa) = 0xd000;
-        FLD(u16, p, 0xc) = 0xffff;
-        MIi_CpuClearFast(0, p + 0x10, 0x18);
-        FLD(s32, p, 0x28) = 0;
-        FLD(s32, p, 0x2c) = 0;
+        p->unk_04 = 0;
+        p->unk_08 = 0xa000;
+        p->unk_0a = 0xd000;
+        p->catchId = 0xffff;
+        MIi_CpuClearFast(0, p->items, sizeof(p->items));
+        p->total = 0;
+        p->unk_2c = 0;
     }
-    data_ov015_02213368 = (Ov015Shared *)p;
+    data_ov015_02213368 = p;
 }
 
 void func_ov015_022110f0(void) {
@@ -263,7 +262,7 @@ void func_ov015_022110f0(void) {
     HEAP_POP(saved);
 }
 
-void *func_ov015_0221114c(void *self) {
+void *func_ov015_0221114c(Ov015Shared *self) {
     Heap_Free(self);
     return self;
 }
@@ -271,22 +270,22 @@ void *func_ov015_0221114c(void *self) {
 extern u8 *func_0206f040(u16 id);
 extern s32 Rand_UpTo(s32 max);
 
-u32 func_ov015_02211160(u8 *self, u16 *out, u32 n) {
+u32 func_ov015_02211160(Ov015Shared *self, u16 *out, u32 n) {
     u32 cnt = 0;
     MIi_CpuClearFast(0xffff, out, n * 2);
-    switch (FLD(u32, self, 0x4)) {
+    switch ((u32)self->unk_04) {
     case 3:
         cnt++;
         out[0] = 0x800b;
         break;
     case 4:
         cnt++;
-        FLD(u16, self, 0x8) = 0xa005;
+        self->unk_08 = 0xa005;
         out[0] = 0x8008;
         break;
     case 5:
         cnt++;
-        FLD(u16, self, 0x8) = 0xa005;
+        self->unk_08 = 0xa005;
         out[0] = 0x8003;
         break;
     case 1:
@@ -306,7 +305,7 @@ u32 func_ov015_02211160(u8 *self, u16 *out, u32 n) {
             s32 acc;
             u32 m;
             u8 *e;
-            e = func_0206f040(FLD(u16, self, 0xa));
+            e = func_0206f040(self->unk_0a);
             m = e[1];
             rnd = Rand_UpTo(0x1000);
             acc = 0;

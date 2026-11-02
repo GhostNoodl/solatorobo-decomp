@@ -1,15 +1,10 @@
 #include "ov006/SlotManager.h"
-
-typedef struct ov006_Fx021ea244 {
-    u8 unk0[0x24];
-    int unk24;
-    u8 unk28[0x14];
-    int unk3C;
-} ov006_Fx021ea244;
+#include "Main/Effect/Effect.h"
 
 typedef struct ov006_Prop021ea244 {
     u8 unk0[0x70];
-    u8 unk70[0x12c];
+    VecFx32 pos;
+    u8 unk7C[0x120];
     u16 unk19C_0 : 2;
     u16 unk19C_2 : 14;
     u8 unk19E[0xc];
@@ -27,7 +22,6 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern const u8 data_ov006_021eb918[][6];
-ov006_Fx021ea244 *func_02065f88(int id, void *pos);
 void *func_02049f44(void *a, int b, void *c, int d);
 
 void func_ov006_021ea244(ov006_Prop021ea244 *self) {
@@ -45,12 +39,12 @@ void func_ov006_021ea244(ov006_Prop021ea244 *self) {
         self->unk220 = 99;
     }
     if (self->unk19C_0 & 1) {
-        ov006_Fx021ea244 *fx = func_02065f88(0x196, self->unk70);
+        EffectObj *fx = func_02065f88(0x196, &self->pos);
         if (fx != NULL) {
-            self->unk1D0 = fx->unk24;
-            fx->unk3C = 0x2800;
+            self->unk1D0 = fx->id;
+            fx->speed = 0x2800;
         }
-        func_02049f44(data_02097e4c, 0x85, self->unk70, 0);
+        func_02049f44(data_02097e4c, 0x85, &self->pos, 0);
     }
 }
 

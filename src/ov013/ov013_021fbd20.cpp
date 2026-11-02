@@ -105,13 +105,10 @@ void func_ov013_021fbd20(Ov013Boss *self) {
 
 extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern void func_0203f364(ActorSub48 *p);
-extern Ov013V *func_02065f88(s32 id, VecFx32 *pos);
 extern void *data_02097e4c;
-extern void *data_0214a420;
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void EffectMgr_StopLoop(void *a, s32 b);
 extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov013_021fbf84(Ov013Boss *self) {
@@ -120,7 +117,7 @@ void func_ov013_021fbf84(Ov013Boss *self) {
     case 0: {
         ActorSub48 *m48;
         ActorSub44 *n;
-        Ov013V *o;
+        EffectObj *o;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5c17, 0x15);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4823, 0x15);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4820, 0x15);
@@ -141,14 +138,14 @@ void func_ov013_021fbf84(Ov013Boss *self) {
         self->targetObj->target = 0xffff;
         o = func_02065f88(0x390, &self->pos);
         if (o != NULL) {
-            self->unk_f8 = FLD(s32, o, 0x24);
-            o->v24(0, self->height, 0);
-            o->v0c(0x1800);
+            self->unk_f8 = o->id;
+            o->AddPosXYZ(0, self->height, 0);
+            o->SetScaleAll(0x1800);
         }
         o = func_02065f88(0x69, &self->pos);
         if (o != NULL) {
-            o->v24(0, self->height, 0);
-            o->v0c(0x5000);
+            o->AddPosXYZ(0, self->height, 0);
+            o->SetScaleAll(0x5000);
         }
         func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
         func_ov000_0218996c(0xc, 0x28);
@@ -189,19 +186,19 @@ void func_ov013_021fbf84(Ov013Boss *self) {
     }
     case 0x63: {
         VecFx32 p;
-        Ov013V *o;
+        EffectObj *o;
         p.x = self->pos.x;
         p.y = self->pos.y;
         p.z = self->pos.z;
         p.y += self->height;
         o = func_02065f88(0x38b, &p);
         if (o != NULL) {
-            o->v0c(0x3000);
+            o->SetScaleAll(0x3000);
         }
         o = func_02065f88(0x69, &p);
         if (o != NULL) {
-            o->v0c(0x5000);
-            FLD(s32, o, 0x3c) = 0xccd;
+            o->SetScaleAll(0x5000);
+            o->speed = 0xccd;
         }
         func_0204a028(data_02097e4c, 0x56, &self->pos, -8);
         func_0204a028(data_02097e4c, 0x41, &self->pos, 4);

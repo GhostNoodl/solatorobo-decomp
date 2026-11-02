@@ -1,4 +1,5 @@
 #include "ov000/Actor.h"
+#include "Main/Effect/Effect.h"
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
@@ -13,7 +14,6 @@ typedef s32 (*Fn0219a8bc)(s32 v);
 extern "C" {
 Actor *func_ov000_021985c0(void *hit);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
-VObj *func_02065f88(s32 id, VecFx32 *pos);
 
 static inline BOOL IsLocked(u8 *s) {
     return LFLD(u16, s, 0xa) != 0 ? TRUE : FALSE;
@@ -52,7 +52,7 @@ BOOL func_ov000_0219a8bc(void *hit, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *po
                 ActorSub4c *s4c = t->targetObj;
                 if (s50 != NULL || s4c == NULL || *(u8 *)s4c == 0xb) {
                     VecFx32 p;
-                    VObj *e;
+                    EffectObj *e;
                     u16 ang;
                     p = *(VecFx32 *)hit;
                     if (scale != 0x1000) {
@@ -62,14 +62,14 @@ BOOL func_ov000_0219a8bc(void *hit, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *po
                     }
                     e = func_02065f88(h, &p);
                     if (i != 0x1000) {
-                        e->vfunc_14(i, i, i);
+                        e->SetScaleXYZ(i, i, i);
                     }
                     if (t == NULL || t == b) {
                         ang = b->rot_y;
                     } else {
                         ang = FX_Atan2(t->pos.x - b->pos.x, t->pos.z - b->pos.z);
                     }
-                    e->vfunc_34(0, ang, 0);
+                    e->SetRotXYZ(0, ang, 0);
                 }
             }
             ret = TRUE;

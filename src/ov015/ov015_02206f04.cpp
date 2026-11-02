@@ -12,7 +12,6 @@ extern u8 data_ov015_02212b08[];
 extern u8 data_ov015_022129e0[];
 extern u8 data_ov015_0221280c[];
 void func_ov000_02180754(void);
-void func_ov015_021fa6cc(void *p);
 extern void *data_ov000_021ccd40;
 extern void *data_ov000_021ccd38;
 void func_ov015_02205c7c(Ov015Scene2b08 *self);
@@ -134,7 +133,7 @@ void *func_ov015_02207138(void) {
     return p;
 }
 
-void *func_ov015_022071c4(void *self) {
+void *func_ov015_022071c4(Ov015SceneSeq *self) {
     SET_VT(self, data_ov015_022129e0);
     func_ov000_02180754();
     SET_VT(self, data_ov015_0221280c);
@@ -143,7 +142,7 @@ void *func_ov015_022071c4(void *self) {
     return self;
 }
 
-void *func_ov015_02207200(void *self) {
+void *func_ov015_02207200(Ov015SceneSeq *self) {
     SET_VT(self, data_ov015_022129e0);
     func_ov000_02180754();
     SET_VT(self, data_ov015_0221280c);
@@ -160,7 +159,7 @@ void func_ov015_02207234(void *p) {
     data_ov000_021ccd40 = p;
 }
 
-void func_ov015_02207268(Ov015Task *self) {
+void func_ov015_02207268(Task *self) {
     if (VCALL(self)->v54() == 0) {
         return;
     }
@@ -172,55 +171,55 @@ void func_ov015_02207268(Ov015Task *self) {
     data_ov000_021ccd40 = NULL;
 }
 
-static inline bool Ov015Task_Test(Ov015Task *t, u32 mask) {
-    return FLD(u32, t, 0x4) & mask;
+static inline bool Ov015Task_Test(Task *t, u32 mask) {
+    return t->unk_04 & mask;
 }
 
-bool Ov015Task_TestFlags(Ov015Task *self, u32 mask) {
+bool Ov015Task_TestFlags(Task *self, u32 mask) {
     BOOL r = Ov015Task_Test(self, mask);
     return r;
 }
 
-void Ov015Task_ClearFlag7(Ov015Task *self) {
-    self->flag7 = 0;
+void Ov015Task_ClearFlag7(Task *self) {
+    self->unk_04_7 = 0;
 }
 
-void Ov015Task_SetFlag7(Ov015Task *self) {
-    self->flag7 = 1;
+void Ov015Task_SetFlag7(Task *self) {
+    self->unk_04_7 = 1;
 }
 
-static inline bool Ov015Task_Get_flag6(Ov015Task *t) {
-    return t->flag6;
+static inline bool Ov015Task_Get_flag6(Task *t) {
+    return t->unk_04_6;
 }
 
-bool Ov015Task_GetFlag6(Ov015Task *self) {
+bool Ov015Task_GetFlag6(Task *self) {
     BOOL r = Ov015Task_Get_flag6(self);
     return r;
 }
 
-void Ov015Task_SetFlag6(Ov015Task *self) {
-    self->flag6 = 1;
+void Ov015Task_SetFlag6(Task *self) {
+    self->unk_04_6 = 1;
 }
 
-static inline bool Ov015Task_Get_flag5(Ov015Task *t) {
-    return t->flag5;
+static inline bool Ov015Task_Get_flag5(Task *t) {
+    return t->unk_04_5;
 }
 
-bool Ov015Task_GetFlag5(Ov015Task *self) {
+bool Ov015Task_GetFlag5(Task *self) {
     BOOL r = Ov015Task_Get_flag5(self);
     return r;
 }
 
-void Ov015Task_SetFlag5(Ov015Task *self) {
-    self->flag5 = 1;
+void Ov015Task_SetFlag5(Task *self) {
+    self->unk_04_5 = 1;
 }
 
-void Ov015Task_ClearFlag4(Ov015Task *self) {
-    self->flag4 = 0;
+void Ov015Task_ClearFlag4(Task *self) {
+    self->unk_04_4 = 0;
 }
 
-void Ov015Task_SetFlag4(Ov015Task *self) {
-    self->flag4 = 1;
+void Ov015Task_SetFlag4(Task *self) {
+    self->unk_04_4 = 1;
 }
 
 s32 func_ov015_02207380(void) {

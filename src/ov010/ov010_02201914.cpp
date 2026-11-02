@@ -1,18 +1,11 @@
 #include "ov010/ov010.h"
 
-struct Ov010Heap {
-    u32 cur;
-    u32 unk_04;
-    u32 def;
-};
-
 // Ov010TaskList is in ov010.h.
 
 extern "C" {
 
 extern u8 data_ov010_0220fe1c[];
 extern u8 data_ov010_0220fe08[];
-extern Ov010Heap *data_02097dd0;
 extern void *Ov003Pool_Dtor(void *p);
 extern void Ov003Pool_Release(void *p);
 extern Ov010TaskNode *Ov003Pool_Alloc(void *p);

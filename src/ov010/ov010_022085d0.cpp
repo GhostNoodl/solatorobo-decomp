@@ -11,7 +11,6 @@ extern void *data_02097e4c;
 extern u8 data_ov010_0220f024[];
 extern VecFx32 data_ov010_0220f114;
 extern VecFx32 data_ov010_0220f120;
-extern VObj *func_02065f88(s32 id, VecFx32 *pos);
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
@@ -24,10 +23,10 @@ void func_ov010_022085d0(Ov010Obj0220ffe4 *self) {
         self->fsm->st = 0x1e;
         break;
     case 0x1e:
-        func_02065f88(0x389, &data_ov010_0220f114)->vfunc_0c(0x2000);
-        func_02065f88(0x322, &data_ov010_0220f114)->vfunc_0c(0x1800);
-        func_02065f88(0x389, &data_ov010_0220f120)->vfunc_0c(0x2000);
-        func_02065f88(0x322, &data_ov010_0220f114)->vfunc_0c(0x1800);
+        func_02065f88(0x389, &data_ov010_0220f114)->SetScaleAll(0x2000);
+        func_02065f88(0x322, &data_ov010_0220f114)->SetScaleAll(0x1800);
+        func_02065f88(0x389, &data_ov010_0220f120)->SetScaleAll(0x2000);
+        func_02065f88(0x322, &data_ov010_0220f114)->SetScaleAll(0x1800);
         func_02049f44(data_02097e4c, 0x79, &self->pos, 0);
         self->fsm->st = 0x1f;
         self->fsm->timer = 0x28;
@@ -50,8 +49,8 @@ void func_ov010_022085d0(Ov010Obj0220ffe4 *self) {
         o = func_ov003_021da32c(0x5816);
         Ov010_VecSet(&FLD(VecFx32, o, 0x70), -0x2571, -0xc000, -0x2000);
         FLD(u16, o, 0x7c) = r.v[0]; FLD(u16, o, 0x7e) = r.v[1]; FLD(u16, o, 0x80) = r.v[2];
-        func_02065f88(0x579, &data_ov010_0220f114)->vfunc_0c(0x2000);
-        func_02065f88(0x579, &data_ov010_0220f120)->vfunc_0c(0x2000);
+        func_02065f88(0x579, &data_ov010_0220f114)->SetScaleAll(0x2000);
+        func_02065f88(0x579, &data_ov010_0220f120)->SetScaleAll(0x2000);
         func_02049f44(data_02097e4c, 0x5c, &self->pos, 0);
         self->fsm->st = 100;
         break;

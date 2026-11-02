@@ -3,7 +3,6 @@
 extern "C" {
 
 extern Ov015Ship *data_ov015_02213364;
-void func_ov015_02208424(u8 *self);
 extern void *data_0208cb74;
 void *func_02035f30(void *a, void *b, int c);
 void func_02041c34(void *a, int b, void *cb, void *arg);
@@ -14,7 +13,7 @@ s32 func_02041b10(void *m, void *anim);
 s32 func_02041bb0(void *m, void *anim);
 extern u8 data_0208ba70[];
 void func_0204c7d0(void *p);
-s32 Text_Measure(s32 a, s32 b, void *c, void *d, void *e, BOOL f);
+u32 Text_Measure(u32 a, u32 b, u32 c, u32 *outW, u32 *outH, BOOL d);
 u8 Gfx3DState_NextPolyId(void *p);
 const char *func_0206ffa0(u16 id);
 s32 func_0201e950(const void *s, const void *t, s32 n);
@@ -23,7 +22,6 @@ int func_02054f10(void *a, int b);
 s32 func_0203e63c(void *p);
 extern u8 data_ov015_02212d3c[];
 extern u8 data_ov000_021cac60[];
-void func_ov015_02208f7c(u8 *self);
 extern u8 data_ov015_022128fc[];
 extern u8 data_ov015_02212e84[];
 extern u8 data_ov015_022129d0[];
@@ -128,20 +126,20 @@ void func_ov015_02208070(Ov015Ship *self) {
     }
 }
 
-void func_ov015_02208424(u8 *self) {
+void func_ov015_02208424(NNSG3dRS *rs) {
     Ov015ShipMtx *t = &data_ov015_02213364->nodeMtx;
-    s32 id = (FLD(u32, self, 0x8) & 0x10) ? FLD(u8, self, 0xae) : -1;
+    s32 id = (rs->flag & 0x10) ? rs->currentNodeDesc : -1;
     if (id != t->id) {
         return;
     }
     NNS_G3dGetCurrentMtx((MtxFx43 *)(t->m), (MtxFx33 *)0);
-    FLD(void *, self, 0x24) = NULL;
-    FLD(u8, self, 0x92) = 0;
+    rs->cbVecFunc[NNS_G3D_SBC_NODEDESC] = NULL;
+    rs->cbVecTiming[NNS_G3D_SBC_NODEDESC] = 0;
 }
 
-void func_ov015_02208474(u8 *self) {
-    FLD(void *, self, 0x24) = (void *)func_ov015_02208424;
-    FLD(u8, self, 0x92) = 3;
+void func_ov015_02208474(NNSG3dRS *rs) {
+    rs->cbVecFunc[NNS_G3D_SBC_NODEDESC] = func_ov015_02208424;
+    rs->cbVecTiming[NNS_G3D_SBC_NODEDESC] = NNS_G3D_SBC_CALLBACK_TIMING_C;
 }
 
 Ov015Glyph *func_ov015_0220848c(void *self, u16 *ctx, Ov015Glyph *e, u16 *count) {
@@ -170,27 +168,27 @@ void func_ov015_02208544(Ov015UiText *self) {
     self->unk_b0 = 0;
 }
 
-static inline void Ov015Label_Ctor(u8 *l, void *name, void *dict) {
-    func_02041218((PlttRes *)(l + 0x88));
-    func_02041440((Model *)l, (char *)dict, 0);
-    STD_CopyString((char *)(l + 0x2c), (char *)name);
+static inline void Ov015Label_Ctor(Model *l, const char *name, void *dict) {
+    func_02041218(&l->pltt);
+    func_02041440(l, (char *)dict, 0);
+    STD_CopyString(l->name, name);
 }
 
 void func_ov015_02208584(Ov015UiText *self) {
-    u8 *l = (u8 *)Heap_Alloc(0x160);
+    Model *l = (Model *)Heap_Alloc(sizeof(Model));
     void *r;
     if (l != NULL) {
-        Ov015Label_Ctor(l, (void *)data_0208cca0, data_0208cb74);
+        Ov015Label_Ctor(l, data_0208cca0, data_0208cb74);
     }
-    FLD(u8 *, self, 0x10) = l;
-    r = func_02034d88(func_02035f30(l + 0x2c, l + 0x4c, 2), ((u8 *)self->unk_10) + 0x4c);
-    func_020417e0((Model *)((void *)self->unk_10), r);
-    FLD(u32, self->unk_10, 0x6c) |= 2;
-    func_02041c34(((void *)self->unk_10), 0, (void *)func_ov015_0220848c, NULL);
-    if (self->unk_14 != 0) {
-        func_02041d9c((Model *)((void *)self->unk_10), 0, 7);
+    self->model = l;
+    r = func_02034d88(func_02035f30(l->name, l->unk_04c, 2), self->model->unk_04c);
+    func_020417e0(self->model, r);
+    self->model->flags |= 2;
+    func_02041c34(self->model, 0, (void *)func_ov015_0220848c, NULL);
+    if (self->title != NULL) {
+        func_02041d9c(self->model, 0, 7);
     }
-    func_02041d9c((Model *)((void *)self->unk_10), 0, 0);
+    func_02041d9c(self->model, 0, 0);
     self->flags &= ~2;
 }
 
@@ -216,11 +214,11 @@ struct Ov015Bits0c {
 };
 
 void func_ov015_022086d0(Ov015UiText *self) {
-    if (self->unk_04 != 2) {
+    if (self->state != 2) {
         return;
     }
     if (self->unk_84 != NULL) {
-        VCALL(self->unk_84)->v8c();
+        self->unk_84->unk_vf8c();
     }
     if (self->flags & 0x10000) {
         if (--self->unk_b0 < 0) {
@@ -231,7 +229,7 @@ void func_ov015_022086d0(Ov015UiText *self) {
         }
     }
     if (((Ov015Bits0c *)&self->flags)->b1 == 1) {
-        self->unk_04 = 1;
+        self->state = 1;
     }
 }
 
@@ -240,41 +238,20 @@ void func_ov015_02208750(Ov015UiText *self, s32 a, s32 b, s32 c) {
     VCALL(self)->v70(a, b, c);
 }
 
-static inline u8 *Ov015_MdlPart0(u8 *m) {
-    if (0 >= FLD(s32, m, 0x80)) {
-        return NULL;
+static inline void *Ov015_MdlAnim0(Model *m) {
+    ModelRes *res = m->res;
+    ModelPart *part = Ov015Model_GetPart(m, 0);
+    if (part != NULL && part->res != NULL) {
+        return part->res->tex;
     }
-    return FLD(u8 *, m, 0x78);
-}
-static inline void *Ov015_MdlAnim0(u8 *m) {
-    u8 *res = FLD(u8 *, m, 0x28);
-    u8 *part = Ov015_MdlPart0(m);
-    if (part != NULL && FLD(u8 *, part, 0x4) != NULL) {
-        return FLD(void *, FLD(u8 *, part, 0x4), 0x30);
-    }
-    return NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **FLD(u16 **, NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), 0), 0xc));
-}
-static inline void Ov015_MdlPlay0(u8 *m) {
-    u8 *res = FLD(u8 *, m, 0x28);
-    u8 *part;
-    void *anim;
-    if (res == NULL) {
-        return;
-    }
-    part = Ov015_MdlPart0(m);
-    if (part != NULL && FLD(u8 *, part, 0x4) != NULL) {
-        anim = FLD(void *, FLD(u8 *, part, 0x4), 0x30);
-    } else {
-        anim = NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **FLD(u16 **, NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), 0), 0xc));
-    }
-    func_02042628((Model *)m, anim, (ModelPart *)part, 0);
+    return NNS_G2dGetCellDataByIdx(res->texRes, **FLD(u16 **, NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0), 0xc));
 }
 void func_ov015_02208790(Ov015UiText *self, s32 b, u8 *p) {
     s32 x;
     s32 w;
     s32 h;
-    Ov015V *o;
-    if (self->unk_10 == NULL || self->unk_84 == NULL) {
+    TextWin *o;
+    if (self->model == NULL || self->unk_84 == NULL) {
         return;
     }
     x = FX_Mul(0x1000 - b, self->slideX << 12);
@@ -283,62 +260,50 @@ void func_ov015_02208790(Ov015UiText *self, s32 b, u8 *p) {
         t = (s32)(((s64)t * 0xffff000 + 0x800) >> 12);
         x += FX_Mul(FX_SinCosTable_[(t >> 16) * 2 + 1], 0x80000) - 0x80000;
     }
-    { u8 *m = ((u8 *)self->unk_10); w = func_02041b10(m, Ov015_MdlAnim0(m)); }
-    { u8 *m = ((u8 *)self->unk_10); h = func_02041bb0(m, Ov015_MdlAnim0(m)); }
-    { s32 py = FLD(s32, p, 0x4) >> 12; u8 *m = ((u8 *)self->unk_10);
-    FLD(s32, m, 0xfc) = (x - 0x20000) & -0x1000;
-    FLD(s32, m, 0x100) = py << 12; }
-    FLD(s32, self->unk_10, 0x150) = self->posZ;
-    func_02041c20((Model *)((u8 *)self->unk_10), 0, (void *)(self->unk_ac));
-    Ov015_MdlPlay0(((u8 *)self->unk_10));
-    o = ((Ov015V *)self->unk_84);
+    { Model *m = self->model; w = func_02041b10(m, Ov015_MdlAnim0(m)); }
+    { Model *m = self->model; h = func_02041bb0(m, Ov015_MdlAnim0(m)); }
+    { s32 py = FLD(s32, p, 0x4) >> 12; Model *m = self->model;
+    m->x = (x - 0x20000) & -0x1000;
+    m->y = py << 12; }
+    self->model->unk_150 = self->posZ;
+    func_02041c20(self->model, 0, (void *)(self->unk_ac));
+    Ov015Model_PlayPart(self->model, 0, 0);
+    o = self->unk_84;
     {
-        s32 ax = (((w - 0x20) - FLD(s32, o, 0x44)) >> 1) + (x >> 12);
-        s32 ay = ((h - FLD(s32, o, 0x48)) >> 1) + (FLD(s32, p, 0x4) >> 12) - 1;
+        s32 ax = (((w - 0x20) - (s32)o->width) >> 1) + (x >> 12);
+        s32 ay = ((h - (s32)o->height) >> 1) + (FLD(s32, p, 0x4) >> 12) - 1;
         if (o == NULL) return;
-        o->v20(ax, ay);
+        o->unk_vf20(ax, ay);
     }
-    FLD(s32, self->unk_84, 0x70) = self->posZ + 0x20;
-    ((Ov015V *)self->unk_84)->v90();
+    self->unk_84->posZ = self->posZ + 0x20;
+    self->unk_84->Render();
 }
 
-struct Ov015Bits08a28 {
-    u32 b0 : 2;
-    u32 b2 : 1;
-    u32 b3 : 3;
-    u32 b6 : 1;
-    u32 b7 : 6;
-    u32 f13 : 8;
-    u32 b21 : 3;
-    u32 b24 : 1;
-    u32 rest : 7;
-};
 void func_ov015_02208a28(Ov015UiText *self, void *name) {
     void *saved;
-    u8 *o;
-    u8 *p;
+    TextWin *o;
+    TextWin *p;
     const char *id;
     if (name == NULL) return;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_84);
     HEAP_POP(saved);
-    o = (u8 *)Heap_Alloc(0xb8);
+    o = (TextWin *)Heap_Alloc(0xb8);
     if (o != NULL) {
         SET_VT(o, data_0208ba70);
         func_0204c7d0(o);
     }
     self->unk_84 = o;
-    FLD(s32, self->unk_84, 0x28) = 4;
-    FLD(s32, self->unk_84, 0x2c) = 0;
+    self->unk_84->font = 4;
+    self->unk_84->unk_2c = 0;
     p = self->unk_84;
-    FLD(void *, p, 0x24) = name;
-    FLD(s32, p, 0x4c) = Text_Measure(FLD(s32, p, 0x28), FLD(s32, p, 0x38), FLD(void *, p, 0x24), p + 0x44, p + 0x48,
-                                      FLD(s8, p, 0x37) != 0);
-    FLD(s32, data_02097ce0, 0x4) = FLD(s32, p, 0x28);
-    FLD(Ov015Bits08a28, self->unk_84, 0x4).f13 = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
-    FLD(Ov015Bits08a28, self->unk_84, 0x4).b24 = 1;
-    FLD(Ov015Bits08a28, self->unk_84, 0x4).b6 = 1;
-    FLD(Ov015Bits08a28, self->unk_84, 0x4).b2 = 1;
+    p->str = (u32)name;
+    p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, (s8)p->unk_37 != 0);
+    data_02097ce0->unk_004 = p->font;
+    self->unk_84->unk_4_13 = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
+    self->unk_84->flag24 = 1;
+    self->unk_84->noVram = 1;
+    self->unk_84->rendering = 1;
     id = func_0206ffa0(0x1000);
     if (func_0201e950(name, id, STD_GetStringLength((char *)name)) == 0) {
         self->unk_ac = 0;
@@ -388,29 +353,29 @@ s32 func_ov015_02208cb0(void) {
     return 1;
 }
 
-static inline BOOL Ov015Res_Ready(u8 *t) {
-    if (FLD(void *, t, 0x6c) == NULL) {
+static inline BOOL Ov015Res_Ready(TextWin *t) {
+    if (t->unk_6c == NULL) {
         return TRUE;
     }
-    if (func_0203e63c(FLD(void *, t, 0x6c)) != 0) {
-        FLD(void *, t, 0x6c) = NULL;
+    if (func_0203e63c(t->unk_6c) != 0) {
+        t->unk_6c = NULL;
     } else {
-        return !((Ov015Task *)t)->flag6;
+        return !t->noVram;
     }
     return TRUE;
 }
 
 BOOL func_ov015_02208cb8(Ov015UiText *self) {
     BOOL r = TRUE;
-    u8 *t;
-    if (((void *)self->unk_10) != NULL && func_02054f10(((void *)self->unk_10), 0xffff) == 0) {
+    TextWin *t;
+    if (self->model != NULL && func_02054f10(self->model, 0xffff) == 0) {
         r = FALSE;
     }
-    t = ((u8 *)self->unk_14);
+    t = (TextWin *)self->title;
     if (t != NULL && !Ov015Res_Ready(t)) {
         r = FALSE;
     }
-    t = self->unk_18;
+    t = (TextWin *)self->caption;
     if (t != NULL && !Ov015Res_Ready(t)) {
         r = FALSE;
     }
@@ -418,14 +383,13 @@ BOOL func_ov015_02208cb8(Ov015UiText *self) {
 }
 
 
-void func_ov015_02208d8c(Ov015UiText *self, void *arg, s32 c) {
-    Ov015Cb3 cb = self->onEvent;
+void func_ov015_02208d8c(Ov015UiText *self, void *arg, void *arg2) {
+    UiDrawItemFn cb = self->onDrawItem;
     if (cb == NULL) {
         return;
     }
-    cb(arg, self, c);
+    cb(arg, self, arg2);
 }
-
 s32 func_ov015_02208db0(Ov015UiText *self) {
     s32 a = VCALL(self)->v40() * self->rows;
     s32 b = VCALL(self)->v34();
@@ -484,10 +448,10 @@ void *func_ov015_02208efc(Ov015UiText *self) {
     return self;
 }
 
-void func_ov015_02208f7c(u8 *self) {
+void func_ov015_02208f7c(NNSG3dRS *rs) {
     u8 m[0x24];
-    s32 id = (FLD(u32, self, 0x8) & 0x10) ? FLD(u8, self, 0xae) : -1;
-    u8 *t = FLD(u8 *, FLD(u8 *, self, 0x4), 0x2c);
+    s32 id = (rs->flag & 0x10) ? rs->currentNodeDesc : -1;
+    u8 *t = (u8 *)rs->pRenderObj->ptrUser;
     if (id != FLD(s32, t, 0x30)) {
         return;
     }
@@ -496,10 +460,10 @@ void func_ov015_02208f7c(u8 *self) {
     MTX_Concat33((MtxFx33 *)t, (MtxFx33 *)m, (MtxFx33 *)t);
 }
 
-void func_ov015_0220900c(void *self) {
+void func_ov015_0220900c(Ov015FishInfo *self) {
 }
 
-void *func_ov015_02209010(void *self) {
+void *func_ov015_02209010(Ov015FishInfo *self) {
     Heap_Free(self);
     return self;
 }
@@ -531,9 +495,9 @@ s32 func_ov015_022090f0(Ov015FishInfo *self) {
     return self->unk_16 << 4;
 }
 
-void func_ov015_022090fc(u8 *self) {
-    FLD(void *, self, 0x24) = (void *)func_ov015_02208f7c;
-    FLD(u8, self, 0x92) = 3;
+void func_ov015_022090fc(NNSG3dRS *rs) {
+    rs->cbVecFunc[NNS_G3D_SBC_NODEDESC] = func_ov015_02208f7c;
+    rs->cbVecTiming[NNS_G3D_SBC_NODEDESC] = NNS_G3D_SBC_CALLBACK_TIMING_C;
 }
 
 void *Ov015Fish_Ctor(Ov015Fish *self) {
@@ -603,7 +567,7 @@ void func_ov015_02209270(Ov015Fish *self) {
     HEAP_POP(saved);
 }
 
-void *Ov015FishState_DtorDelete(void *self) {
+void *Ov015FishState_DtorDelete(Ov015FishState *self) {
     SET_VT(self, data_ov015_02212eb0);
     Heap_Free(self);
     return self;

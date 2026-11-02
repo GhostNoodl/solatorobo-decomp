@@ -4,14 +4,11 @@ extern "C" {
 
 extern u8 *data_ov002_021f0f9c;
 void func_ov002_021e8b3c(void *p);
-extern Ov015Shared *data_ov015_02213368;
 extern char data_ov015_02213111[];
 void func_ov002_021e9e40(s32 a);
-void *func_ov015_0220dde8(u8 *self);
-void *func_0207011c(u16 id);
+char *func_0207011c(u16 id);
 u8 *func_0206fef8(u16 id);
-void func_ov015_0220e570(u8 *self, s32 a, s32 b, u8 c, s16 d);
-u8 *func_ov002_021e92b0(s32 a, s32 b, s32 c, s32 d, s32 e);
+Ov002Obj *func_ov002_021e92b0(s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_ov002_021e4dac(void *a, void *b);
 u8 *func_02070744(u16 id);
 extern char data_ov015_02213123[];
@@ -28,26 +25,26 @@ extern char data_ov015_02213170[];
 void func_0204bfcc(void *p);
 void func_0204bfe4(void *p, const void *a, const void *b);
 
-void func_ov015_0220f7a8(u8 *self) {
-    u8 *o;
+void func_ov015_0220f7a8(Ov015Result *self) {
+    Ov015ResultPanel *o;
     if (data_ov002_021f0f9c != NULL) {
         func_ov002_021e8b3c(data_ov002_021f0f9c);
     }
-    if (FLD(s32, self, 0x4) < 0x14) {
+    if (self->state < 0x14) {
         return;
     }
-    o = FLD(u8 *, self, 0x10);
+    o = self->panel;
     if (o == NULL) {
         return;
     }
     if (data_02097d48->unk_a30_4) {
         return;
     }
-    if (FLD(void *, o, 0x4) != NULL) VCALL(FLD(void *, o, 0x4))->v20();
-    if (FLD(void *, o, 0x8) != NULL) VCALL(FLD(void *, o, 0x8))->v20();
-    if (FLD(void *, o, 0xc) != NULL) VCALL(FLD(void *, o, 0xc))->v20();
-    if (FLD(void *, o, 0x10) != NULL) VCALL(FLD(void *, o, 0x10))->v20();
-    if (FLD(void *, o, 0x14) != NULL) VCALL(FLD(void *, o, 0x14))->v20();
+    if (o->unk_04 != NULL) VCALL(o->unk_04)->v20();
+    if (o->unk_08 != NULL) VCALL(o->unk_08)->v20();
+    if (o->unk_0c != NULL) VCALL(o->unk_0c)->v20();
+    if (o->unk_10 != NULL) VCALL(o->unk_10)->v20();
+    if (o->unk_14 != NULL) VCALL(o->unk_14)->v20();
 }
 
 struct Ov015ItemBitsF878 {
@@ -65,13 +62,13 @@ extern const Ov015Vec2F878 data_ov015_02213088;
 extern const Ov015Vec1F878 data_ov015_02212fb8;
 extern const Ov015Vec1F878 data_ov015_02212fdc;
 extern char data_ov015_0221311c[];
-u8 *func_ov002_021e91c8(s32 a, s32 b, s32 c, s32 d, s32 e);
+Ov002Obj *func_ov002_021e91c8(s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_ov002_021e50d8(void *a, s32 b, s32 c);
 void func_ov015_0220f878(Ov015Result *self) {
-    u8 *o;
+    Ov015StageMdl *o;
     u16 id;
-    void *name;
-    switch (*(u16 *)func_02070744(FLD(u16, data_ov015_02213368, 0xc))) {
+    char *name;
+    switch (*(u16 *)func_02070744(data_ov015_02213368->catchId)) {
     case 0:
         func_ov002_021e9e40(3);
         break;
@@ -83,24 +80,24 @@ void func_ov015_0220f878(Ov015Result *self) {
         func_ov002_021e9e40(5);
         break;
     }
-    o = (u8 *)Heap_Alloc(0x584);
+    o = (Ov015StageMdl *)Heap_Alloc(sizeof(Ov015StageMdl));
     if (o != NULL) {
-        o = (u8 *)func_ov015_0220dde8(o);
+        o = (Ov015StageMdl *)func_ov015_0220dde8(o);
     }
-    FLD(s32, o, 0x18) = 0;
-    FLD(s32, o, 0x1c) = 0x96000;
-    FLD(s32, o, 0x8) = 3;
-    id = FLD(u16, data_ov015_02213368, 0xc);
+    o->unk_18 = 0;
+    o->unk_1c = 0x96000;
+    o->unk_08 = 3;
+    id = data_ov015_02213368->catchId;
     name = func_0207011c(id);
     {
         u8 *info = func_0206fef8(id);
         u16 k = FLD(Ov015ItemBitsF878, info, 0x12).kind;
-        FLD(void *, o, 0x510) = name;
-        FLD(void *, o, 0x514) = data_ov015_02213111;
-        FLD(u16, o, 0x3a4) = k;
+        o->unk_510 = name;
+        o->unk_514 = data_ov015_02213111;
+        o->unk_3a4 = k;
     }
-    FLD(u16, o, 0x498) = id;
-    func_ov015_0220e570(o, (s32)data_ov015_0221311c, 0, 0, 0x1000);
+    o->unk_498 = id;
+    func_ov015_0220e570(o, data_ov015_0221311c, 0, 0, 0x1000);
     {
         Ov015Vec a[2];
         s32 b[2][2];
@@ -109,16 +106,16 @@ void func_ov015_0220f878(Ov015Result *self) {
         Ov015Vec e;
         Ov015Vec f;
         s32 n;
-        u8 *p5;
-        u8 *p4;
-        u8 *t;
+        Ov002Obj *p5;
+        Ov002Obj *p4;
+        Ov002Obj *t;
         *(Ov015Vec2F878 *)a = data_ov015_022130d0;
         *(Ov015Pair2F878 *)b = data_ov015_02213038;
         *(Ov015Pair2F878 *)c = data_ov015_02213048;
         *(Ov015Vec2F878 *)d = data_ov015_02213088;
         *(Ov015Vec1F878 *)&e = data_ov015_02212fb8;
         *(Ov015Vec1F878 *)&f = data_ov015_02212fdc;
-        n = FLD(s32, data_ov015_02213368, 0x2c);
+        n = data_ov015_02213368->unk_2c;
         p5 = func_ov002_021e91c8(0, 0x96000, 3, 0, 0);
         p4 = func_ov002_021e91c8(0, 0x96000, 3, 0, 0);
         FLD(s32, p5, 0x50) = a[n].x;
@@ -126,12 +123,12 @@ void func_ov015_0220f878(Ov015Result *self) {
         FLD(s32, p5, 0x58) = a[n].z;
         t = func_ov002_021e92b0(0, 0x50000, 3, 0, 0x1000);
         FLD(Ov015Vec, t, 0x4c) = e;
-        FLD(u8 *, t, 0x48) = p5;
+        t->owner = p5;
         func_ov002_021e4dac(p5, t);
         t = func_ov002_021e92b0(0, 0x96000, 3, 0, 0x1000);
-        FLD(s32, t, 0x4) = 3;
+        t->unk_04 = 3;
         FLD(Ov015Vec, t, 0x4c) = f;
-        FLD(u8 *, t, 0x48) = p5;
+        t->owner = p5;
         func_ov002_021e4dac(p5, t);
         FLD(s32, p4, 0x50) = b[n][0];
         FLD(s32, p4, 0x54) = b[n][1];
@@ -141,7 +138,7 @@ void func_ov015_0220f878(Ov015Result *self) {
         FLD(s32, t, 0x4c) = d[n].x;
         FLD(s32, t, 0x50) = d[n].y;
         FLD(s32, t, 0x54) = d[n].z;
-        FLD(u8 *, t, 0x48) = p4;
+        t->owner = p4;
         func_ov002_021e4dac(p4, t);
     }
 }
@@ -152,58 +149,58 @@ struct Ov015ItemBits {
     u16 hi : 8;
 };
 void func_ov015_0220fb78(Ov015Result *self) {
-    u8 *o;
-    u8 *t;
+    Ov015StageMdl *o;
+    Ov002Obj *t;
     u16 id;
-    void *name;
+    char *name;
     func_ov002_021e9e40(6);
-    o = (u8 *)Heap_Alloc(0x584);
+    o = (Ov015StageMdl *)Heap_Alloc(sizeof(Ov015StageMdl));
     if (o != NULL) {
-        o = (u8 *)func_ov015_0220dde8(o);
+        o = (Ov015StageMdl *)func_ov015_0220dde8(o);
     }
-    FLD(s32, o, 0x18) = 0;
-    FLD(s32, o, 0x1c) = 0x168000;
-    FLD(s32, o, 0x8) = 3;
-    id = FLD(u16, data_ov015_02213368, 0xc);
+    o->unk_18 = 0;
+    o->unk_1c = 0x168000;
+    o->unk_08 = 3;
+    id = data_ov015_02213368->catchId;
     name = func_0207011c(id);
     {
         u8 *info = func_0206fef8(id);
         u16 k = FLD(Ov015ItemBits, info, 0x12).kind;
-        FLD(void *, o, 0x510) = name;
-        FLD(void *, o, 0x514) = data_ov015_02213111;
-        FLD(u16, o, 0x3a4) = k;
+        o->unk_510 = name;
+        o->unk_514 = data_ov015_02213111;
+        o->unk_3a4 = k;
     }
-    FLD(u16, o, 0x498) = id;
-    func_ov015_0220e570(o, (s32)data_ov015_02213123, 0x78000, 0, 0x800);
-    func_ov015_0220e570(o, (s32)data_ov015_0221312a, 0x168000, 1, 0x1000);
+    o->unk_498 = id;
+    func_ov015_0220e570(o, data_ov015_02213123, 0x78000, 0, 0x800);
+    func_ov015_0220e570(o, data_ov015_0221312a, 0x168000, 1, 0x1000);
     t = func_ov002_021e92b0(0, 0x78000, 3, 0, 0x800);
     FLD(void *, t, 0x4c) = data_ov015_02213131;
     FLD(void *, t, 0x50) = data_ov015_02213147;
     FLD(void *, t, 0x54) = data_ov015_0221314d;
-    FLD(s32, t, 0x4) = 3;
+    t->unk_04 = 3;
     func_ov002_021e4dac(o, t);
-    FLD(u8 *, t, 0x48) = o;
+    t->owner = o;
     t = func_ov002_021e92b0(0x79000, 0x168000, 3, 1, 0x1000);
     FLD(void *, t, 0x4c) = data_ov015_02213131;
     FLD(void *, t, 0x50) = data_ov015_02213147;
     FLD(void *, t, 0x54) = data_ov015_02213158;
-    FLD(s32, t, 0x4) = 3;
+    t->unk_04 = 3;
     func_ov002_021e4dac(o, t);
-    FLD(u8 *, t, 0x48) = o;
+    t->owner = o;
 }
 
 void *Ov015Msg_Ctor(Ov015Msg *self) {
     SET_VT(self, data_ov015_022131c4);
     self->unk_04 = 0;
     self->msgIdx = 0;
-    FLD(s32, self, 0x10) = 0;
-    FLD(s32, self, 0x14) = 0;
-    FLD(s32, self, 0x18) = 0;
+    self->msgRes = NULL;
+    self->model = NULL;
+    self->textWin = NULL;
     self->posX = 0;
     self->posY = -0x100000;
     self->posZ = 0;
-    FLD(s32, self, 0x28) = 0;
-    FLD(s32, self, 0x2c) = 0;
+    self->label = NULL;
+    self->textBox = NULL;
     MIi_CpuClear32(0, self->pages, 0x80);
     self->pageCount = 0;
     self->page = 0;
@@ -335,7 +332,7 @@ BOOL func_ov015_02210014(Ov015Msg *self) {
 }
 
 void func_ov015_0221015c(Ov015Msg *self) {
-    u8 *p;
+    TextWin *p;
     if (!data_02097d48->unk_a30_4) {
         return;
     }
@@ -355,8 +352,8 @@ void func_ov015_0221015c(Ov015Msg *self) {
     if (p == NULL) {
         return;
     }
-    VCALL(p)->v20(((self->posX >> 12) + 0x80) - FLD(s32, p, 0x44) / 2, ((self->posY >> 12) + 0x60) - FLD(s32, p, 0x48) / 2);
-    VCALL(self->textWin)->v90();
+    p->unk_vf20(((self->posX >> 12) + 0x80) - (s32)p->width / 2, ((self->posY >> 12) + 0x60) - (s32)p->height / 2);
+    self->textWin->Render();
 }
 
 void func_ov015_02210298(Ov015Msg *self) {
@@ -388,26 +385,20 @@ s32 func_0204c08c(void *p, u16 id, void *buf, s32 n);
 void *func_02035de0(void *a, void *b);
 void func_0204c7d0(void *p);
 void *MsgRes_GetString(void *a, s32 b);
-s32 Text_Measure(s32 a, s32 b, void *c, void *d, void *e, BOOL f);
+u32 Text_Measure(u32 a, u32 b, u32 c, u32 *outW, u32 *outH, BOOL d);
 void func_0204ca70(void *p);
 void func_ov015_02208544(Ov015UiText *self);
 s32 func_0204c2f4(void *p, s32 n, void *src);
 void func_ov000_0215bb14(void *a, void *b);
 void func_ov015_0220866c(Ov015UiText *self, void *msg);
 
-struct Ov015Bits10314 {
-    u32 b0 : 8;
-    u32 f8 : 5;
-    u32 rest : 19;
-};
-
-static inline void Ov015T_SetPos(Ov015Ui *o, s16 x, s16 y, s16 z) {
+static inline void Ov015T_SetPos(UiObj *o, s16 x, s16 y, s16 z) {
     o->posX = x;
     o->posY = y;
     o->posZ = z;
 }
 
-static inline void Ov015T_SetSlide(Ov015Ui *o, s32 x, s32 y, s32 z) {
+static inline void Ov015T_SetSlide(UiObj *o, s32 x, s32 y, s32 z) {
     o->slideX = x;
     o->slideY = y;
     o->slideZ = z;
@@ -429,31 +420,32 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
     func_020417e0(self->model, func_02035de0(data_0208cc94, data_0208cc88));
     self->model->flags |= 2;
     func_02041d9c((Model *)(self->model), 0, 0x1d);
-    FLD(s32, self->model, 0x150) = -0xccd;
-    p = (u8 *)Heap_Alloc(0xb8);
-    if (p != NULL) {
-        SET_VT(p, data_0208ba70);
-        func_0204c7d0(p);
-    }
-    self->textWin = p;
-    FLD(s32, p, 0x28) = 4;
+    self->model->unk_150 = -0xccd;
     {
-        void *t = MsgRes_GetString(data_02149ef8, 0x118);
-        p = self->textWin;
-        FLD(void *, p, 0x24) = t;
-        FLD(s32, p, 0x4c) = Text_Measure(FLD(s32, p, 0x28), FLD(s32, p, 0x38), FLD(void *, p, 0x24), p + 0x44, p + 0x48,
-                                          FLD(s8, p, 0x37) != 0);
-        FLD(s32, data_02097ce0, 0x4) = FLD(s32, p, 0x28);
+        TextWin *w = (TextWin *)Heap_Alloc(0xb8);
+        if (w != NULL) {
+            SET_VT(w, data_0208ba70);
+            func_0204c7d0(w);
+        }
+        self->textWin = w;
+        w->font = 4;
+        {
+            void *t = MsgRes_GetString(data_02149ef8, 0x118);
+            w = self->textWin;
+            w->str = (u32)t;
+            w->unk_4c = Text_Measure(w->font, w->spacing, w->str, &w->width, &w->height, (s8)w->unk_37 != 0);
+            data_02097ce0->unk_004 = w->font;
+        }
     }
-    FLD(s16, self->textWin, 0x74) = 0x7fff;
-    FLD(s16, self->textWin, 0x76) = 0x67f;
-    FLD(s32, self->textWin, 0x78) = 0x7000;
-    FLD(u32, self->textWin, 0x4) |= 0x40;
-    FLD(u32, self->textWin, 0x4) |= 0x1000000;
-    VCALL(self->textWin)->v14();
-    FLD(Ov015Bits10314, self->textWin, 0x4).f8 = 0x1e;
-    FLD(u32, self->textWin, 0x4) |= 0x40000000;
-    FLD(u32, self->textWin, 0x4) |= 4;
+    self->textWin->color0 = 0x7fff;
+    self->textWin->color1 = 0x67f;
+    self->textWin->unk_78 = 0x7000;
+    self->textWin->flags |= 0x40;
+    self->textWin->flags |= 0x1000000;
+    self->textWin->unk_vf14();
+    self->textWin->unk_4_8 = 0x1e;
+    self->textWin->flags |= 0x40000000;
+    self->textWin->flags |= 4;
     func_0204ca70(self->textWin);
     p = (u8 *)Heap_Alloc(0x8c);
     if (p != NULL) {
@@ -478,7 +470,7 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
         func_ov015_02208544((Ov015UiText *)p);
     }
     self->textBox = (Ov015UiText *)p;
-    Ov015T_SetPos((Ov015Ui *)p, 0, 0x7b, -0x99a);
+    Ov015T_SetPos((UiObj *)p, 0, 0x7b, -0x99a);
     Ov015T_SetSlide(self->textBox, -0x100, 0, -0x99a);
     self->textBox->slideMode = 1;
     self->textBox->flags &= ~0x10000;

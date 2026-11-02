@@ -9,6 +9,7 @@
 #include "ov000/Actor.h"
 #include "ov000/ObjLayouts.h"
 #include "ov003/Actor.h"
+#include "Main/Effect/Effect.h"
 
 #define OV009_SIZE(T, n) typedef char T##_size_check[(sizeof(T) == (n)) ? 1 : -1]
 
@@ -158,27 +159,6 @@ struct Ov009Blk12 {
 #define OV009_SIN(a) (OV009_SINCOS[((a) >> 4) * 2])
 #define OV009_COS(a) (OV009_SINCOS[((a) >> 4) * 2 + 1])
 
-// View of the Main EffectObj (Main/Effect/Effect.h) with its real virtual
-// signatures, for the objects returned by func_02065f88, using ov009's vector
-// type. vf0c takes one argument at these call sites.
-class Ov009Eff {
-public:
-    virtual void Dtor();
-    virtual void Delete();
-    virtual void SetParam(s32 param);
-    virtual void vf0c(s32 v);
-    virtual void SetScale(const VecFx32 *scale);
-    virtual void SetScaleXYZ(s32 x, s32 y, s32 z);
-    virtual void SetPos(const VecFx32 *pos);
-    virtual void SetPosXYZ(s32 x, s32 y, s32 z);
-    virtual void AddPos(const VecFx32 *delta);
-    virtual void AddPosXYZ(s32 x, s32 y, s32 z);
-    virtual void vf28();
-    virtual void vf2c();
-    virtual void SetRot(const void *rot);
-    virtual void SetRotXYZ(u16 x, u16 y, u16 z);
-};
-
 // Two bytes of the unk_50 block (at +8).
 typedef struct Ov009Pair {
     u8 a;
@@ -318,7 +298,7 @@ public:
     u16 unk_f2;
     u16 unk_f4;
     u8 unk_f6[0x2];
-    s32 unk_f8;
+    u32 unk_f8; // effect handle
 };
 SIZE_ASSERT(Ov009ActVt_022165f8, 0xfc);
 
@@ -578,7 +558,7 @@ SIZE_ASSERT(Ov009ActVt_02216348, 0xf4);
 // Actor class with vtable data_ov009_02216c74 (built inline by the ov003 factory).
 class Ov009ActVt_02216c74 : public Ov003Actor {
 public:
-    void *unk_f0;
+    u32 unk_f0; // effect handle
 };
 SIZE_ASSERT(Ov009ActVt_02216c74, 0xf4);
 

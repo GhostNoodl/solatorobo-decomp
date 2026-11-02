@@ -2,11 +2,9 @@
 
 extern "C" {
 
-extern void *data_0214a420;
 extern void *data_ov013_0220bb20;
 extern char data_ov013_0220b360[];
 extern void *ActorEx_Ctor(void *self);
-extern void *func_020657b0(void *a, s32 b);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern BOOL func_020621c4(void);
 

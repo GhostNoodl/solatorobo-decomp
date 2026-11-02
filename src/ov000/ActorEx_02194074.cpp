@@ -2,6 +2,7 @@
 #include "ov000/ObjLayouts.h"
 #include "Main/Sys/SysState.h"
 #include "nitro/fx.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     s16 state;
@@ -10,13 +11,11 @@ typedef struct {
 extern "C" {
 
 extern const u8 data_ov000_021cc480[];
-extern void *data_0214a420;
 
 void *Actor_Ctor(void *self);
 void *func_ov000_0218c928(void *self);
 ResSet *func_ov000_0218ea20(ResSet *self);
 void Heap_Free(void *ptr);
-void EffectMgr_Kill(void *mgr, u32 id);
 BOOL func_ov000_0218cf5c(void *self);
 BOOL func_ov000_0218f110(AnimRes *res);
 BOOL Actor_DespawnIfFar(void *self);

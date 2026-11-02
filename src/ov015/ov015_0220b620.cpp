@@ -8,14 +8,14 @@ extern u8 data_ov015_02212e47[];
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_02191618(void *a);
 
-void *Ov015FishState18_Dtor(void *self) {
+void *Ov015FishState18_Dtor(Ov015FishState18 *self) {
     SET_VT(self, data_ov015_02212f20);
     VCALL(self)->v10(0);
     SET_VT(self, data_ov015_02212eb0);
     return self;
 }
 
-void *Ov015FishState18_DtorDelete(void *self) {
+void *Ov015FishState18_DtorDelete(Ov015FishState18 *self) {
     SET_VT(self, data_ov015_02212f20);
     VCALL(self)->v10(0);
     SET_VT(self, data_ov015_02212eb0);

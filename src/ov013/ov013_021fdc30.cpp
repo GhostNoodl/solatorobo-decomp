@@ -8,7 +8,6 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void HitSphere_Link(ActorSub48 *p);
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
-extern Ov013V *func_02065f88(s32 id, VecFx32 *pos);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 
@@ -73,11 +72,9 @@ void func_ov013_021fdc30(Ov003Actor *self) {
 
 extern char data_ov013_0220b893[];
 extern char data_ov013_0220aec4[];
-extern void *data_0214a420;
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov003Actor *p);
 extern void func_ov000_02191690(void *p);
-extern void *func_020657b0(void *a, s32 b);
 
 struct Ov013Stat8 {
     u16 a;
@@ -174,7 +171,7 @@ void func_ov013_021fdedc(Ov013ActEx_021fdb70 *self) {
         if (self->unk_d4 == 0) {
             ActorSub44 *n;
             VecFx32 v;
-            Ov013V *o;
+            EffectObj *o;
             self->targetObj->type = 1;
             self->unk_94_1 = 1;
             n = self->unk_44;
@@ -186,9 +183,9 @@ void func_ov013_021fdedc(Ov013ActEx_021fdb70 *self) {
             v.z = self->pos.z;
             v.y += self->radius;
             o = func_02065f88(0x390, &v);
-            self->unk_d0 = FLD(s32, o, 0x24);
-            o->v14(0x333, 0x333, 0x333);
-            FLD(s32, o, 0x3c) = 0x14cd;
+            self->unk_d0 = o->id;
+            o->SetScaleXYZ(0x333, 0x333, 0x333);
+            o->speed = 0x14cd;
             self->fsm->st = 0x28;
             self->fsm->timer = 0;
         } else {
@@ -211,7 +208,7 @@ void func_ov013_021fdedc(Ov013ActEx_021fdb70 *self) {
         v.y = self->pos.y;
         v.z = self->pos.z;
         v.y += 0x1000;
-        func_02065f88(0x12c, &v)->v14(0x1800, 0x1800, 0x1800);
+        func_02065f88(0x12c, &v)->SetScaleXYZ(0x1800, 0x1800, 0x1800);
         func_02049f44(data_02097e4c, 0x11, &self->pos, 0);
         self->fsm->st = 0x1e;
         self->fsm->timer = 0;
@@ -243,7 +240,7 @@ void func_ov013_021fdedc(Ov013ActEx_021fdb70 *self) {
     case 0x28: {
         void *p;
         VecFx32 v;
-        Ov013V *o;
+        EffectObj *o;
         q->timer++;
         if (q->timer <= 0x5a) {
             break;
@@ -259,7 +256,7 @@ void func_ov013_021fdedc(Ov013ActEx_021fdb70 *self) {
         v.y += 0x666;
         o = func_02065f88(0x196, &v);
         func_02049f44(data_02097e4c, 0x44, &self->pos, 0);
-        o->v14(0x800, 0x800, 0x800);
+        o->SetScaleXYZ(0x800, 0x800, 0x800);
         self->unk_94_1 = 1;
         self->fsm->st = 0x29;
         self->fsm->timer = 0;
@@ -279,7 +276,7 @@ void func_ov013_021fdedc(Ov013ActEx_021fdb70 *self) {
         v.y = self->pos.y;
         v.z = self->pos.z;
         v.y += 0x666;
-        func_02065f88(5, &v)->v14(0x3000, 0x3000, 0x3000);
+        func_02065f88(5, &v)->SetScaleXYZ(0x3000, 0x3000, 0x3000);
         func_02049f44(data_02097e4c, 0x19, &self->pos, 0);
         func_ov000_0218996c(0xa, 0xf);
         self->fsm->st = 0x33;

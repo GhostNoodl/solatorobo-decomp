@@ -2,8 +2,6 @@
 
 extern "C" {
 
-extern void *data_0214a420;
-extern void EffectMgr_Kill(void *a, s32 b);
 extern Ov003Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern char data_ov013_0220b5ca[];
 

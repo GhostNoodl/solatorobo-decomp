@@ -42,7 +42,7 @@ extern const VecFx32 data_ov006_021eb8a4;
 extern const VecFx32 data_ov006_021eb8b0;
 
 BOOL func_01ffc318(void *col, const VecFx32 *pos, VecFx32 *min, VecFx32 *max, void *rot);
-void *func_ov006_021e37d0(int type, int arg);
+struct EffectObj *func_ov006_021e37d0(int type, const VecFx32 *pos);
 
 static inline BOOL ov006_Racer021e9f80_Done(ov006_Racer021e9f80 *self) {
     BOOL done = FALSE;
@@ -145,7 +145,7 @@ void func_ov006_021e9f80(ov006_Racer021e9f80 *self) {
                         v.x = 0;
                         v.y = 0;
                         v.z = -0x1000;
-                        func_ov006_021e37d0(type, (int)&v);
+                        func_ov006_021e37d0(type, &v);
                     }
                 }
             }

@@ -1,6 +1,7 @@
 #include "ov000/CmdObj.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/VObj.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u8 c[3];
@@ -128,7 +129,6 @@ extern CmdEntry data_ov000_021cc1a0[];
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 extern Obj02097dc8 *data_02097dc8;
-extern void *data_0214a420;
 extern void *data_ov000_021ccd6c;
 extern void *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
@@ -146,7 +146,6 @@ void func_02062424(Id3 *id);
 void func_0204aa10(void *p);
 void func_ov000_0216bcbc(void *p);
 void func_ov000_021645a4(s32 a);
-void EffectMgr_FreeAll(void *p);
 void func_ov000_021b53f4(void *p);
 void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(void *p);

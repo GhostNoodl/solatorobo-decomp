@@ -172,7 +172,6 @@ extern "C" {
 
 extern void HitSphere_Link(ActorSub48 *p);
 extern void *NNS_G3dGlbGetInvV(void);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
 
@@ -226,7 +225,7 @@ void func_ov009_0220bb70(Ov009ActVt_02217640 *self) {
             MTX_MultVec33(&v, (MtxFx33 *)NNS_G3dGlbGetInvV(), &v);
             VEC_Add(&v, &p, &v);
             r = Rand_UpTo(0x1000);
-            func_02065f88(0x389, &v)->v0c(r + 0x1000);
+            func_02065f88(0x389, &v)->SetScaleAll(r + 0x1000);
             self->fsm->timer = 5;
         }
         m = self->model;
@@ -390,8 +389,6 @@ static inline s32 Ov009_DistXZc(const VecFx32 *a, const VecFx32 *b) {
 }
 
 extern void *data_02097e4c;
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
-extern void EffectObj_AddSndCue(Ov009V *o, s32 a, s32 b);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern void func_0203f364(ActorSub48 *p);
 extern void HitSphere_Link(ActorSub48 *p);
@@ -412,7 +409,7 @@ void func_ov009_0220c094(Ov009ActVt_02217640 *self) {
     Ov003Actor *t;
     s32 y0 = 0;
     if (self->unk_f7 == 0) {
-        Ov009V *o;
+        EffectObj *o;
         func_ov003_021d452c(self);
         if (self->model->anim_state != 2) {
             return;
@@ -420,9 +417,9 @@ void func_ov009_0220c094(Ov009ActVt_02217640 *self) {
         o = func_02065f88(0x130, &self->pos);
         *(Ov009Blk12 *)&a = *(const Ov009Blk12 *)&data_ov009_02215f08;
         func_01ffc9fc(&a, &a, self->rot_y);
-        o->v20(&a);
-        o->v34(0x4000, self->rot_y, self->rot_z);
-        o->v0c(0xb33);
+        o->AddPos(&a);
+        o->SetRotXYZ(0x4000, self->rot_y, self->rot_z);
+        o->SetScaleAll(0xb33);
         EffectObj_AddSndCue(o, 0x82, 0);
         return;
     }
@@ -490,7 +487,7 @@ void func_ov009_0220c094(Ov009ActVt_02217640 *self) {
             func_02049f44(data_02097e4c, 0x52, &self->pos, 0);
             w = self->pos;
             w.y = 0;
-            func_02065f88(0x67, &w)->v34(0, (u16)(self->rot_y + 0x7fff), 0);
+            func_02065f88(0x67, &w)->SetRotXYZ(0, (u16)(self->rot_y + 0x7fff), 0);
             {
                 ActorSub48 *s48;
                 ActorSub44 *s44;
@@ -637,8 +634,6 @@ namespace m_0220c970 {
 extern "C" {
 
 extern void func_0203f364(ActorSub48 *p);
-extern void *func_02065f88(s32 id, const VecFx32 *pos);
-extern void EffectObj_AddSndCue(void *p, s32 a, s32 b);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern void Actor_TurnToPos(Ov003Actor *self, const VecFx32 *v, s32 a);
 
@@ -785,7 +780,6 @@ void func_ov009_0220cc24(Ov003Actor *self) {
 extern void *data_02097e4c;
 extern void func_0203f364(ActorSub48 *p);
 extern void *NNS_G3dGlbGetInvV(void);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 void func_ov009_0220cd40(Ov003Actor *self) {
@@ -833,15 +827,15 @@ void func_ov009_0220cd40(Ov003Actor *self) {
             s = Rand_UpTo(0x4cd) + 0x4cd;
             n = self->unk_18;
             if (n % 3 == 0) {
-                func_02065f88(0x69, &self->pos)->v0c(0x1333);
+                func_02065f88(0x69, &self->pos)->SetScaleAll(0x1333);
                 func_02065f88(4, &self->pos);
                 if (n >= 9) {
                     self->fsm->st++;
                 }
             } else {
-                func_02065f88(0x69, &v)->v0c(s);
+                func_02065f88(0x69, &v)->SetScaleAll(s);
                 if (n % 2 == 0) {
-                    func_02065f88(4, &v)->v0c(s);
+                    func_02065f88(4, &v)->SetScaleAll(s);
                 }
                 self->fsm->timer = 5;
             }

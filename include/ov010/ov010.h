@@ -49,6 +49,7 @@ struct Ov010Flags8 {
 // ov010 objects are ov000 actors (ov000/ActorBase.h: Actor, 0xac bytes, ctor Actor_Ctor).
 #include "ov000/ActorBase.h"
 #include "ov003/Actor.h"
+#include "Main/Effect/Effect.h"
 
 // The beam effect of ov010_0220f828.cpp (round svG). An Ov010BeamSet (0x40, func_ov010_02200dcc)
 // keeps a list of three Ov010BeamNode (0x8c); each node holds an Ov010Beam (0x80, drawn by
@@ -216,14 +217,14 @@ void func_ov003_021da40c(void *p);
 void func_ov003_021da48c(void *p, s32 a);
 VObj *func_ov003_021da788(s32 id, void *self, const VecFx32 *ofs);
 VObj *func_ov003_021da7e8(s32 id, void *src, const VecFx32 *ofs);
-VObj *func_ov003_021da8e4(s32 a, VecFx32 *pos, s32 b);
-void func_ov003_021da904(VObj *e, void *src, const VecFx32 *off);
+EffectObj *func_ov003_021da8e4(s32 fxId, const VecFx32 *pos, s32 scale);
+void func_ov003_021da904(EffectObj *e, void *src, const VecFx32 *off);
 void func_ov003_021f0c60(void *self, s32 a);
 extern const VecFx32 data_ov010_0220ec20;
 
 // Effect 0x192 at the actor's centre, turned by (a, b) / along a -> b (ov010_0220ea84.cpp).
-VObj *func_ov010_0220ea84(Actor *self, u16 a, u16 b);
-VObj *func_ov010_0220eaf0(Actor *self, const VecFx32 *a, const VecFx32 *b);
+EffectObj *func_ov010_0220ea84(Actor *self, u16 a, u16 b);
+EffectObj *func_ov010_0220eaf0(Actor *self, const VecFx32 *a, const VecFx32 *b);
 }
 
 // Offset of the actor's attach point (func_ov010_021fa7e0)

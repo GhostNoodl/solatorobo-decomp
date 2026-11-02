@@ -2,6 +2,7 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/VObj.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -18,7 +19,6 @@ void *Target_Get(void *p);
 void func_ov003_021f0c60(void *self, s32 a);
 void Actor_Move(void *self, s32 a);
 void func_ov000_0218bed8(void *a, s32 b, void *c);
-void *func_02065f88(s32 a, void *b);
 void func_02062764(s32 a, s32 b);
 void func_020627a0(u16 kind, u16 id);
 void func_020627c8(void);
@@ -197,7 +197,7 @@ void func_ov000_02196258(VObj *obj) {
         return;
     case 0x14:
         func_ov003_021f0c60(self, 0);
-        func_02065f88(0xc8, (u8 *)self + 0x70);
+        func_02065f88(0xc8, &self->pos);
         Die02196258(obj);
         return;
     }

@@ -107,7 +107,6 @@ extern void *data_02097e4c;
 extern char data_ov013_0220bfdc[];
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void HitSphere_Link(void *p);
-extern Ov013V *func_02065f88(s32 id, VecFx32 *pos);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov003Actor *a);
 extern Ov003Actor *func_ov000_0219be1c(s32 kind, VecFx32 *pos, u16 *rot, u16 id, u16 owner);
@@ -196,9 +195,9 @@ void func_ov013_0220a554(Ov013ActEx_0220a4e0 *self) {
         HitSphere_Link(m);
         func_ov000_021987b8(self->hit, 1, 0, 0);
         if (self->hit->unk_50 & 0x20000000) {
-            Ov013V *e = func_02065f88(0x130, &self->pos);
+            EffectObj *e = func_02065f88(0x130, &self->pos);
             Ov003Actor *pl;
-            e->v0c(self->unk_d0);
+            e->SetScaleAll(self->unk_d0);
             pl = func_ov000_0219bf90();
             if (pl != NULL && !func_ov000_021b4738(pl)) {
                 Ov003Actor *a = func_ov000_0219be1c(0x4813, &self->pos, &self->rot_x, self->targetObj->target, self->target);

@@ -10,7 +10,6 @@ extern s32 func_02049afc(void *mgr, s32 id);
 
 extern VecFx32 data_ov009_02215f98[];
 extern Ov003Actor *func_ov000_0219be1c(u16 kind, const VecFx32 *pos, const void *rot, u16 id, u16 parent);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 extern void func_0204a058(void *mgr, s32 a, s32 b, s32 c);
@@ -79,7 +78,7 @@ void func_ov009_02206c84(Ov009ActVt_022178f0 *self) {
     Ov009Rot r;
     Ov003Actor *a;
     Ov003Actor *o;
-    Ov009V *e;
+    EffectObj *e;
     ActorSub40 *st = self->fsm;
     switch (st->st) {
     case 0:
@@ -97,8 +96,8 @@ void func_ov009_02206c84(Ov009ActVt_022178f0 *self) {
         }
         o->unk_18 = 5;
         e = func_02065f88(0x325, &self->pos);
-        e->v34(0, (u16)(self->rot_y + 0x8000), 0);
-        e->v20(&data_ov009_02215f98[self->unk_108]);
+        e->SetRotXYZ(0, (u16)(self->rot_y + 0x8000), 0);
+        e->AddPos(&data_ov009_02215f98[self->unk_108]);
         self->fsm->st++;
         break;
     case 1:
@@ -118,7 +117,7 @@ void func_ov009_02206c84(Ov009ActVt_022178f0 *self) {
 void func_ov009_02206e30(Ov009ActVt_022178f0 *self) {
     VecFx32 d;
     ActorSub40 *st;
-    Ov009V *e;
+    EffectObj *e;
     VecFx32 *v = &FLD(VecFx32, self, 0x9c);
     switch (self->fsm->st) {
     case 0:
@@ -155,11 +154,11 @@ void func_ov009_02206e30(Ov009ActVt_022178f0 *self) {
         s32 a;
         s32 b;
         e = func_02065f88(0x325, &self->pos);
-        e->v34(0, (u16)(self->rot_y + 0x8000), 0);
-        e->v14(0x1ccd, 0x1ccd, 0x1ccd);
+        e->SetRotXYZ(0, (u16)(self->rot_y + 0x8000), 0);
+        e->SetScaleXYZ(0x1ccd, 0x1ccd, 0x1ccd);
         a = Rand_UpTo(0x4000);
         b = Rand_UpTo(0x4000);
-        e->v24(-0x3800, a + 0x2800, -0x3000 - b);
+        e->AddPosXYZ(-0x3800, a + 0x2800, -0x3000 - b);
     }
 }
 
@@ -198,7 +197,7 @@ void func_ov009_02207164(Ov009ActVt_022178f0 *self) {
     Ov009Rot r;
     Ov003Actor *t;
     Ov003Actor *o;
-    Ov009V *e;
+    EffectObj *e;
     u16 ang;
     t = Actor_GetTarget(self);
     if (t == NULL) {
@@ -227,8 +226,8 @@ void func_ov009_02207164(Ov009ActVt_022178f0 *self) {
     if (o != NULL) {
         o->unk_18 = 5;
         e = func_02065f88(0x325, &self->pos);
-        e->v34(0, (u16)(self->rot_y + 0x8000), 0);
-        e->v20(&data_ov009_02215f98[self->unk_108]);
+        e->SetRotXYZ(0, (u16)(self->rot_y + 0x8000), 0);
+        e->AddPos(&data_ov009_02215f98[self->unk_108]);
     }
     func_ov000_02198360(self->fsm, 1, 0);
 }
@@ -295,14 +294,14 @@ void func_ov009_02207314(Ov009ActVt_022178f0 *self) {
     case 10:
         self->vfunc_50();
         if (self->fsm->timer == 1) {
-            Ov009V *e = func_02065f88(0x325, &self->pos);
+            EffectObj *e = func_02065f88(0x325, &self->pos);
             s32 a;
             s32 b;
-            e->v34(0, (u16)(self->rot_y + 0x8000), 0);
-            e->v14(0x1ccd, 0x1ccd, 0x1ccd);
+            e->SetRotXYZ(0, (u16)(self->rot_y + 0x8000), 0);
+            e->SetScaleXYZ(0x1ccd, 0x1ccd, 0x1ccd);
             a = Rand_UpTo(0x4000);
             b = Rand_UpTo(0x4000);
-            e->v24(-0x3000, a + 0x1800, -0x1800 - b);
+            e->AddPosXYZ(-0x3000, a + 0x1800, -0x1800 - b);
         }
         break;
     }

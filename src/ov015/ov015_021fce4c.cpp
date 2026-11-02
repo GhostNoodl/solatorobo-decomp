@@ -9,14 +9,14 @@ extern const VecFx32 data_ov015_02212584;
 extern const VecFx32 data_ov015_02212590;
 void func_ov000_021c8408(void *self, int x, int y, int z, u16 color, const void *oam, const void *tex, u32 texBase, u32 plttBase, const void *mtx, u32 arg);
 
-void func_ov015_021fcb1c(u8 *self) {
+void func_ov015_021fcb1c(Ov015Hud *self) {
     VecFx32 off;
     VecFx32 v2;
     VecFx32 v;
     s32 cnt;
     s32 x;
     s32 y;
-    if (FLD(s32, self, 0x1c) < 0x3c) {
+    if (self->unk_1c < 0x3c) {
         x = 0;
         y = 0x8000;
         off.x = x;
@@ -26,35 +26,35 @@ void func_ov015_021fcb1c(u8 *self) {
         Ov015c_SetV(&off, 0, -0x34000, 0);
         off.y -= 0x10000;
     }
-    if (FLD(s32, self, 0x1c) < 0x3c) {
+    if (self->unk_1c < 0x3c) {
         s32 sc;
-        FLD(Model *, self, 0x24)->unk_150 = -0x1666;
-        Ov015Model_SetPos(FLD(Model *, self, 0x24), x, y);
-        if (FLD(s32, self, 0x1c) < 0x10) {
-            sc = FX_Mul(FX_SinCosTable_[(FX_Mul(0x3fff000, FX_Div((FLD(s32, self, 0x1c) % 8) << 12, 0x8000)) >> 16) * 2], 0x4cd) + 0xb33;
+        self->mdl0->unk_150 = -0x1666;
+        Ov015Model_SetPos(self->mdl0, x, y);
+        if (self->unk_1c < 0x10) {
+            sc = FX_Mul(FX_SinCosTable_[(FX_Mul(0x3fff000, FX_Div((self->unk_1c % 8) << 12, 0x8000)) >> 16) * 2], 0x4cd) + 0xb33;
         } else {
             sc = 0x1000;
         }
-        FLD(Model *, self, 0x24)->unk_158 = (void *)func_ov000_021c8408;
-        MTX_Identity22_((MtxFx22 *)(FLD(u8 *, self, 0x24) + 0x114));
-        MTX_ScaleApply22((MtxFx22 *)(FLD(u8 *, self, 0x24) + 0x114), (MtxFx22 *)(FLD(u8 *, self, 0x24) + 0x114), sc, sc);
-        Ov015Model_PlayPart(FLD(Model *, self, 0x24), 7, 1);
-        MTX_Identity22_((MtxFx22 *)(FLD(u8 *, self, 0x24) + 0x114));
-        FLD(Model *, self, 0x24)->unk_158 = NULL;
+        self->mdl0->unk_158 = (void *)func_ov000_021c8408;
+        MTX_Identity22_((MtxFx22 *)((u8 *)self->mdl0 + 0x114));
+        MTX_ScaleApply22((MtxFx22 *)((u8 *)self->mdl0 + 0x114), (MtxFx22 *)((u8 *)self->mdl0 + 0x114), sc, sc);
+        Ov015Model_PlayPart(self->mdl0, 7, 1);
+        MTX_Identity22_((MtxFx22 *)((u8 *)self->mdl0 + 0x114));
+        self->mdl0->unk_158 = NULL;
     }
-    cnt = FLD(s32, self, 0x8);
-    FLD(Model *, self, 0x28)->unk_150 = -0x199a;
+    cnt = self->frame;
+    self->mdl1->unk_150 = -0x199a;
     VEC_Add((VecFx32 *)&off, (VecFx32 *)&data_ov015_02212584, (VecFx32 *)&v);
-    Ov015Model_SetPosV(FLD(Model *, self, 0x28), &v);
-    Ov015Model_PlayPart(FLD(Model *, self, 0x28), 0x10, 0);
+    Ov015Model_SetPosV(self->mdl1, &v);
+    Ov015Model_PlayPart(self->mdl1, 0x10, 0);
     if (cnt % 8 < 4) {
         VEC_Add((VecFx32 *)&off, (VecFx32 *)&data_ov015_02212590, (VecFx32 *)&v2);
-        FLD(Model *, self, 0x24)->unk_150 = -0x1ccd;
-        Ov015Model_SetPosV(FLD(Model *, self, 0x24), &v2);
-        Ov015Model_PlayPart(FLD(Model *, self, 0x24), 0xd, 0);
+        self->mdl0->unk_150 = -0x1ccd;
+        Ov015Model_SetPosV(self->mdl0, &v2);
+        Ov015Model_PlayPart(self->mdl0, 0xd, 0);
     }
-    if (FLD(s32, self, 0x1c) > 0x3c) {
-        FLD(s32, self, 0x1c) = 0x3d;
+    if (self->unk_1c > 0x3c) {
+        self->unk_1c = 0x3d;
     }
 }
 

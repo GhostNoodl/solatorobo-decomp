@@ -23,7 +23,7 @@ extern u8 data_ov015_02213360[];
 void func_ov015_02206564(Ov015Scene2b08 *self) {
     u8 *pd = data_02097dc8;
     u16 pad = FLD(u16, pd, 0x12);
-    BOOL on = FLD(Ov015ObjFlags, self->unk_4c, 0xc).b1 ? TRUE : FALSE;
+    BOOL on = self->unk_4c->hidden ? TRUE : FALSE;
     if (!on) {
 
         return;
@@ -39,18 +39,18 @@ void func_ov015_02206564(Ov015Scene2b08 *self) {
     self->unk_48->flags |= 2;
     self->unk_50->flags |= 2;
     func_ov000_0218084c(data_ov000_021ccd44, 0x1f, self->param);
-    FLD(u32, self, 0x4) |= 6;
+    self->unk_04 |= 6;
 }
 
-static inline BOOL Ov015_IsFinished(Ov015Ui *o) {
+static inline BOOL Ov015_IsFinished(UiObj *o) {
     BOOL r = FALSE;
-    if (FLD(Ov015ObjFlags, o, 0xc).b1 ? TRUE : FALSE) {
+    if (o->hidden ? TRUE : FALSE) {
         if (VCALL(o)->v0c() == 0) r = TRUE;
     }
     return r;
 }
 void func_ov015_02206648(Ov015Scene2b08 *self) {
-    switch (self->unk_08) {
+    switch (self->state) {
     case 8:
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
         break;
@@ -110,8 +110,8 @@ void func_ov015_02206800(Ov015Scene2b08 *self) {
     VCALL(self->unk_50)->v20();
 }
 
-static inline Ov015MenuItem *Ov015_ListNth3(Ov015Menu *o) {
-    Ov015MenuItem *p = o->topItem;
+static inline UiListItem *Ov015_ListNth3(UiList *o) {
+    UiListItem *p = o->topItem;
     s32 n;
     if (p == NULL) return NULL;
     n = o->cursor;
@@ -130,12 +130,12 @@ static inline void Ov015_SetMoney24(u16 v) {
     FLD(u16, data_0214a424, 0x24) = v;
 }
 BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
-    Ov015MenuItem *item = Ov015_ListNth3(self->unk_3c);
+    UiListItem *item = Ov015_ListNth3(self->unk_3c);
     u16 id = item->unk_10;
     u8 *def = func_0206f000(id);
     BOOL consume = TRUE;
     BOOL r = TRUE;
-    if (self->unk_40->value < item->price) {
+    if (self->unk_40->value < item->unk_0c) {
         if (self->unk_50 != NULL) Ov015_ShopMsg(self, 0x9c);
         return FALSE;
     }
@@ -157,7 +157,7 @@ BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
     }
     }
     if (r) {
-        func_ov000_0215d980(self->unk_40, self->unk_40->value - item->price, 0);
+        func_ov000_0215d980(self->unk_40, self->unk_40->value - item->unk_0c, 0);
         if (consume) {
             VCALL(self->unk_3c)->v70(item);
             func_0206f5e4(id, 1);
@@ -173,10 +173,10 @@ BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
     return r;
 }
 
-void func_ov015_02206aa0(Ov015Child *self) {
-    FLD(s32, self, 0x8) = 1;
-    FLD(s32, self, 0xc) = 0;
-    FLD(s32, self, 0x10) = 5;
+void func_ov015_02206aa0(Ov015SceneSeq *self) {
+    self->unk_08 = 1;
+    self->scene = NULL;
+    self->next = 5;
 }
 
 BOOL func_ov015_02206abc(void) {
@@ -205,18 +205,18 @@ struct Ov015Flags0 {
     u32 rest : 30;
 };
 
-static inline bool Ov015Task_Flag1(Ov015Task *t) {
-    return t->flag1;
+static inline bool Ov015Task_Flag1(Task *t) {
+    return t->unk_04_1;
 }
 
 static inline bool Ov015Flags0_Flag1(Ov015Flags0 *t) {
     return t->flag1;
 }
 
-BOOL func_ov015_02206b1c(u8 *self) {
+BOOL func_ov015_02206b1c(Ov015SceneSeq *self) {
     BOOL r;
-    u8 *t;
-    FLD(void *, self, 0xc) = data_ov000_021ccd40;
+    Task *t;
+    self->scene = (Task *)data_ov000_021ccd40;
     r = TRUE;
     {
         BOOL b = Ov015Flags0_Flag1((Ov015Flags0 *)data_ov000_021ccd44);
@@ -224,20 +224,20 @@ BOOL func_ov015_02206b1c(u8 *self) {
             r = FALSE;
         }
     }
-    t = FLD(u8 *, self, 0xc);
-    if (t != NULL && Ov015Task_Flag1((Ov015Task *)t) != 0) {
-        switch (FLD(s32, t, 0x14)) {
+    t = self->scene;
+    if (t != NULL && Ov015Task_Flag1(t) != 0) {
+        switch (t->id) {
         case 0x1f:
-            FLD(s32, self, 0x10) = FLD(s32, t, 0x94);
+            self->next = FLD(s32, t, 0x94);
             break;
         case 0x20:
-            FLD(s32, self, 0x10) = FLD(s32, t, 0x58);
+            self->next = FLD(s32, t, 0x58);
             break;
         case 0x21:
-            FLD(s32, self, 0x10) = FLD(s32, t, 0x50);
+            self->next = FLD(s32, t, 0x50);
             break;
         case 0x22:
-            FLD(s32, self, 0x10) = FLD(s32, t, 0x54);
+            self->next = FLD(s32, t, 0x54);
             break;
         }
     }
@@ -247,9 +247,9 @@ BOOL func_ov015_02206b1c(u8 *self) {
 void func_ov015_02206bcc(void) {
 }
 
-s32 func_ov015_02206bd0(u8 *self) {
+s32 func_ov015_02206bd0(Ov015SceneSeq *self) {
     s32 r;
-    switch (FLD(s32, self, 0x10)) {
+    switch (self->next) {
     case 4:
         r = 2;
         break;

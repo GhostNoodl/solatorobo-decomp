@@ -2,13 +2,12 @@
 
 extern "C" {
 
-extern VObj *func_02065f88(s32 a, VecFx32 *b);
 extern u16 Ov003Vec_Pitch(VecFx32 *a);
 extern u16 Ov003Vec_Yaw(VecFx32 *a);
 
-static inline VObj *Ov010_SpawnFx192(Actor *self, u16 a, u16 b) {
+static inline EffectObj *Ov010_SpawnFx192(Actor *self, u16 a, u16 b) {
     VecFx32 p;
-    VObj *fx;
+    EffectObj *fx;
     {
         s32 y = self->pos.y;
         s32 z = self->pos.z;
@@ -17,15 +16,15 @@ static inline VObj *Ov010_SpawnFx192(Actor *self, u16 a, u16 b) {
         p.z = z;
     }
     fx = func_02065f88(0x192, &p);
-    fx->vfunc_34(a, b, 0);
+    fx->SetRotXYZ(a, b, 0);
     return fx;
 }
 
-VObj *func_ov010_0220ea84(Actor *self, u16 a, u16 b) {
+EffectObj *func_ov010_0220ea84(Actor *self, u16 a, u16 b) {
     return Ov010_SpawnFx192(self, a, b);
 }
 
-VObj *func_ov010_0220eaf0(Actor *self, const VecFx32 *a, const VecFx32 *b) {
+EffectObj *func_ov010_0220eaf0(Actor *self, const VecFx32 *a, const VecFx32 *b) {
     VecFx32 d;
     u16 ra, rb;
     d.x = b->x - a->x;

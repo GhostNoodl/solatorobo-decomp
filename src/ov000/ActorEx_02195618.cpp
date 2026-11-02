@@ -2,6 +2,7 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 class Act02195618Cls;
 typedef void (Act02195618Cls::*Act02195618Pmf)();
@@ -14,13 +15,11 @@ typedef struct {
 extern "C" {
 
 extern Act02195618Entry data_ov000_021c9e18[];
-extern void *data_0214a420;
 void func_0203f920(void *p);
 void func_ov000_0219af3c(u8 *self, void *p);
 void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
 void func_ov000_021bd624(void *p);
 void func_ov000_021bd300(void *p);
-VObj *func_020657b0(void *mgr, u32 id);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline BOOL PlayerIdle02195618(void) {
@@ -40,7 +39,7 @@ static inline BOOL PlayerIdle02195618(void) {
 void func_ov000_02195618(ActorEx *self) {
     s32 k;
     s32 i;
-    VObj *o;
+    EffectObj *o;
     VecFx32 pos;
     VecFx32 ofs;
     VecFx32 v;
@@ -102,6 +101,6 @@ void func_ov000_02195618(ActorEx *self) {
         return;
     }
     VEC_Add((VecFx32 *)((u8 *)self + 0xc0), (VecFx32 *)((u8 *)self + 0x70), &v);
-    o->vfunc_18(&v);
+    o->SetPos(&v);
 }
 }

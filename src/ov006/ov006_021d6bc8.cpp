@@ -1,4 +1,5 @@
 #include "ov006/ov006.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct ov006_Game021d6bc8 {
     u8 unk0[0xf4];
@@ -24,7 +25,6 @@ extern ov006_Game021d6bc8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd6c;
 extern void *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
-extern void *data_0214a420;
 
 u8 func_ov006_021d8790(ov006_Scene021d6bc8 *self);
 void func_ov006_021db0d8(void);
@@ -36,7 +36,6 @@ void func_ov006_021e2878(void *p);
 void func_ov000_021b5110(void *p);
 void func_ov000_0218be54(void *p);
 void ActorMgr_Update(void *p);
-void func_02065ac0(void *p);
 int func_ov006_021d6ff0(ov006_Scene021d6bc8 *self);
 void *ActorMgr_GetGroup(void *mgr, u16 kind);
 void func_ov000_0218e0bc(void *p);

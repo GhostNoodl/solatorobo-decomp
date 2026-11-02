@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u16 x;
@@ -27,7 +28,6 @@ void *func_0204a028(void *a, s32 b, void *c, s32 d);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void func_ov000_02168e18(void *self, s32 a, s32 b, VecFx32 *p);
-VObj *func_02065f88(s32 id, VecFx32 *pos);
 
 static inline void SetPal(Model0218fe1c *sub) {
     sub->color = 0x73ea;
@@ -108,13 +108,13 @@ void func_ov000_021b08ec(Robo021ca458 *self) {
             rot.z = 0;
             o = (VObj *)func_ov000_0219be1c(kind, &pos, &rot, self->id, 0xffff);
             if (o != NULL) {
-                VObj *e;
+                EffectObj *e;
                 LFLD(u8 *, o, 0x60) = tbl;
                 if (LFLD(u8 *, o, 0x4c) != NULL) {
                     LFLD(u8, LFLD(u8 *, o, 0x4c), 0x18) |= 0x40;
                 }
                 e = func_02065f88(0x68, &pos);
-                self->unk_b48 = LFLD(s32, e, 0x24);
+                self->unk_b48 = e->id;
                 self->unk_b5e = ang;
                 self->unk_b4c = 0;
                 self->unk_b50 = 0x3400;
@@ -122,8 +122,8 @@ void func_ov000_021b08ec(Robo021ca458 *self) {
                 self->unk_b58 = 0xc000;
                 self->unk_b5a = 0;
                 self->unk_b5c = 0;
-                LFLD(u8, e, 0x29) = 1;
-                e->vfunc_0c(0x666);
+                e->unk_29 = 1;
+                e->SetScaleAll(0x666);
             }
             self->fsm->st++;
         }

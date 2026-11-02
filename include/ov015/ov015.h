@@ -6,11 +6,16 @@
 #include "nnsys/g3d.h"
 #include "Main/Sys/SysState.h"
 #include "Main/Gfx/GfxMgr.h"
+#include "Main/Gfx/TextWin.h"
 #include "Main/Sys/Field.h"
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
 #include "Main/Gfx/G3dGlbSyms.h"
 #include "ov000/TaskList.h"
+#include "ov000/UiObj.h"
+#include "ov000/ActorParts.h"
+#include "ov000/Model0218fe1c.h"
+#include "ov002/StageObj.h"
 
 typedef volatile u16 vu16;
 typedef volatile u32 vu32;
@@ -177,28 +182,6 @@ struct Ov015Vec : public VecFx32 {
 
 extern "C" {
 
-// ov000 task base (0x3c bytes, vtable data_ov000_021cc060; see Ov015TaskBase_Ctor).
-struct Ov015Task {
-    void *vt;
-    u32 flag0 : 1;
-    u32 flag1 : 1;
-    u32 flag2 : 1;
-    u32 flag3 : 1;
-    u32 flag4 : 1;
-    u32 flag5 : 1;
-    u32 flag6 : 1;
-    u32 flag7 : 1;
-    u32 flags_rest : 24;
-    s32 unk_08;
-    s32 param;
-    u8 unk_10[0x10];
-    s32 unk_20;
-    void *unk_24;
-    u8 unk_28[0x4];
-    s32 parent;
-    u8 unk_30[0xc];
-};
-SIZE_ASSERT(Ov015Task, 0x3c);
 
 
 struct Ov015Node {
@@ -438,18 +421,57 @@ struct Ov015Main {
     Ov015V *child;
 };
 
+// Base of the top-level ov015 sequences (vtable data_ov015_0221280c, dtor func_ov015_021fb230):
+// Ov015Main steps state through vtable slots 0x08..0x18; slot 0x18 returns the next sequence
+// (1: Ov015SceneSeq, 2: Ov015Game, 3: quit).
 struct Ov015Child {
     void *vt;
     s32 state;
     s32 unk_08;
 };
 
+// Menu scene sequence (0x14 bytes, vtable data_ov015_022129e0, init func_ov015_02206aa0): runs the
+// ov000 scene tasks and picks the next sequence from the last one.
+struct Ov015SceneSeq : public Ov015Child {
+    Task *scene; // the current scene task (data_ov000_021ccd40)
+    s32 next;    // 4: game, 5: quit
+};
+SIZE_ASSERT(Ov015SceneSeq, 0x14);
+
+void func_ov015_021fa6cc(Ov015Child *self);
+void func_ov015_02206aa0(Ov015SceneSeq *self);
+
+struct Ov015ItemEnt {
+    u16 id;
+    s32 count;
+};
+
+// Data shared by the ov015 sequences (0x30 bytes, vtable data_ov015_02213200, built by
+// func_ov015_0221102c into data_ov015_02213368).
 struct Ov015Shared {
-    u8 unk_00[4];
-    s32 unk_04;
-    u8 unk_08[0x24];
+    void *vt;
+    s32 unk_04; // sequence kind (Ov015Main::unk_04)
+    u16 unk_08; // item id (price from func_0206ef88)
+    u16 unk_0a; // id of the func_0206f040 table that func_ov015_02211160 picks from
+    u16 catchId; // fish caught (func_ov015_02211334)
+    Ov015ItemEnt items[3]; // reward items for catchId
+    s32 total; // value of items
     s32 unk_2c;
 };
+SIZE_ASSERT(Ov015Shared, 0x30);
+extern Ov015Shared *data_ov015_02213368;
+
+// Node callbacks (NNS_G3dRenderObjSetInitFunc installs the one that sets the NODEDESC callback).
+void func_ov015_02208424(NNSG3dRS *rs);
+void func_ov015_02208474(NNSG3dRS *rs);
+void func_ov015_02208f7c(NNSG3dRS *rs);
+void func_ov015_022090fc(NNSG3dRS *rs);
+void func_ov015_02211954(NNSG3dRS *rs);
+void func_ov015_022119d0(NNSG3dRS *rs);
+
+void func_ov015_02211334(Ov015Shared *self, u16 id);
+void func_ov015_022113e8(Ov015Shared *self, Ov015ItemEnt *list, s32 n, u16 a, s32 budget);
+u32 func_ov015_02211160(Ov015Shared *self, u16 *out, u32 n);
 
 struct Ov015Flags18 {
     u16 b0 : 1;
@@ -493,12 +515,43 @@ static inline void Ov015TaskBase_Dtor(void *p) {
 
 extern "C" {
 struct Ov015Slot524 {
-    s32 a;
-    s32 b;
-    u8 c;
-    s16 d;
+    const char *anim; // animation name for mdl0 (NULL: unused slot)
+    s32 endTime;      // used while the stage time is at most this
+    u8 c;             // set: func_ov000_021915a0, clear: func_ov000_02191618
+    s16 speed;
 };
-struct Ov015SlotHost { u8 pad[0x524]; Ov015Slot524 slots[8]; };
+
+// Animated stage model (0x584, vtable data_ov015_02212f3c; ctor func_ov015_0220dde8, base vtable
+// data_ov015_02212f64): two resource sets and models on an ov002 stage object. The model pose
+// (unk_4d0/unk_4dc/unk_500) is copied from the object at unk_520 each frame; slots pick the
+// animation by time (func_ov015_0220e570 adds one).
+struct Ov015StageMdl : public Ov002Obj {
+    ActorRes res0;
+    Model0218fe1c mdl0;
+    ActorRes res1;
+    u16 unk_3a4; // animation frame of mdl1 (0: not animated)
+    Model0218fe1c mdl1;
+    s16 unk_490; // animation speed of both models
+    s32 slot;    // current slot (-1: none)
+    u16 unk_498; // id passed to func_0206fef8
+    MtxFx33 unk_49c; // mdl0's render user data
+    VecFx32 unk_4c0;
+    s32 unk_4cc;
+    VecFx32 unk_4d0;
+    MtxFx33 unk_4dc;
+    VecFx32 unk_500;
+    s32 unk_50c;
+    char *unk_510;
+    char *unk_514;
+    Ov015V *unk_518;
+    Ov015V *unk_51c;
+    Ov002Obj *unk_520;
+    Ov015Slot524 slots[8];
+};
+SIZE_ASSERT(Ov015StageMdl, 0x584);
+
+void *func_ov015_0220dde8(Ov015StageMdl *self);
+void func_ov015_0220e570(Ov015StageMdl *self, const char *anim, s32 endTime, u8 c, s16 speed);
 
 
 static inline void Ov015_DeleteFound(EffectMgr *mgr, u32 key) {
@@ -752,10 +805,32 @@ struct Ov015Info38 {
 };
 OV015_SIZE(Ov015Info38, 0x38);
 // Fishing game controller (0xcc bytes, vtable data_ov015_0221296c, func_ov015_02200f74).
-struct Ov015Game {
+// Fishing HUD (0x30, vtable data_ov015_0221293c; built by func_ov015_02201344, dtor
+// func_ov015_022027e8). func_ov015_021fb5d4 updates the counters from data_ov015_0221332c each frame;
+// func_ov015_021fb758 draws the two 2D models.
+struct Ov015Hud {
     void *vt;
-    s32 state;
-    s32 unk_08;
+    s32 unk_04;
+    s32 frame; // frame counter, wraps at 0x7fff
+    s32 unk_0c;
+    s32 unk_10;
+    s32 unk_14;
+    s32 unk_18;
+    s32 unk_1c;
+    s32 unk_20;
+    Model *mdl0;
+    Model *mdl1;
+    s32 unk_2c;
+};
+OV015_SIZE(Ov015Hud, 0x30);
+
+s32 func_ov015_021fb474(Ov015Hud *self);
+BOOL func_ov015_021fb5d4(Ov015Hud *self);
+void func_ov015_021fb758(Ov015Hud *self);
+void func_ov015_021fc40c(Ov015Hud *self, s32 mode);
+void func_ov015_021fcb1c(Ov015Hud *self);
+
+struct Ov015Game : public Ov015Child {
     s32 step;
     u8 unk_10;
     u8 unk_11[0x3];
@@ -764,8 +839,8 @@ struct Ov015Game {
     Ov015List *fishList;
     u8 *unk_20;
     Ov015CamPair *cam;
-    u8 *unk_28;
-    u8 *unk_2c;
+    Ov015Hud *hud;
+    struct Ov015Result *result;
     Ov015Obj30 phase1;
     Ov015Obj34 phase2;
     u8 *unk_90;
@@ -785,85 +860,25 @@ struct Ov015FishState {
 
 struct Ov015UiText;
 
-// ov000 UI object (base vtable data_ov000_021cac60). Only the fields below 0x80 that ov015 uses
-// are named; the subclasses start at 0x80.
-struct Ov015Ui {
-    void *vt;
-    s32 unk_04;
-    u8 *owner; // owner (read back by the menu callbacks)
-    u32 flags; // flags
-    s32 unk_10;
-    s32 unk_14;
-    u8 *unk_18;
-    s32 font;
-    s32 rows;
-    s32 width;
-    u8 unk_28[0x4];
-    s32 slideMode;
-    u8 unk_30[0x4];
-    s32 unk_34;
-    s32 unk_38;
-    u8 unk_3c[0x1c];
-    s32 slideX; // position (fx32)
-    s32 slideY;
-    s32 slideZ;
-    s16 posX; // screen position
-    s16 posY;
-    s16 posZ;
-    u8 unk_6a[0x16];
-};
-SIZE_ASSERT(Ov015Ui, 0x80);
-
 // ov000 text label (0x8c bytes, vtables data_ov000_021cac60 -> data_ov000_021cadcc).
-struct Ov015UiLabel : public Ov015Ui {
-    u8 unk_80[0x4];
+struct Ov015UiLabel : public UiObj {
     s32 unk_84;
     u8 unk_88[0x4];
 };
 SIZE_ASSERT(Ov015UiLabel, 0x8c);
 
 // ov000 number display (0x98 bytes, vtables data_ov000_021cac60 -> data_ov000_021cae48).
-struct Ov015UiNum : public Ov015Ui {
-    u8 unk_80[0x8];
+struct Ov015UiNum : public UiObj {
+    s32 unk_84;
     s32 unk_88;
     u32 value; // value
     u8 unk_90[0x8];
 };
 SIZE_ASSERT(Ov015UiNum, 0x98);
 
-// ov000 list-menu item (linked through unk_2c).
-struct Ov015MenuItem {
-    u8 unk_00[0x6];
-    u16 id; // id
-    u8 unk_08[0x4];
-    u32 price; // price
-    s32 unk_10;
-    u8 unk_14[0x18];
-    Ov015MenuItem *next; // next
-};
-
-// ov000 list menu (0xd4 bytes, vtables data_ov000_021cac60 -> data_ov000_021caec8; the 0xe0
-// subclasses data_ov000_021cb4a8 and data_ov000_021cb5a8 are reached through this type too).
-struct Ov015Menu : public Ov015Ui {
-    u8 unk_80[0x4];
-    void *onDecide; // decide callback
-    void *onCursor; // cursor callback
-    u8 unk_8c[0x8];
-    Ov015MenuItem *items; // first item
-    Ov015MenuItem *topItem; // first shown item
-    s16 itemCount; // item count
-    u8 unk_9e[0x13];
-    s8 cursor; // cursor (from unk_98)
-    u8 unk_b2[0xe];
-    u8 unk_c0;
-    u8 unk_c1;
-    u8 unk_c2[0x12];
-};
-SIZE_ASSERT(Ov015Menu, 0xd4);
-
 // ov000 yes/no dialog (0x1e4 bytes, vtables data_ov000_021caec8 -> data_ov000_021cb1b0 ->
 // data_ov000_021cb0b8).
-struct Ov015Dialog : public Ov015Menu {
+struct Ov015Dialog : public UiList {
     u8 unk_d4[0x108];
     void *text; // text
     u16 unk_1e0;
@@ -952,7 +967,7 @@ struct Ov015FishState08 : public Ov015FishState {
 SIZE_ASSERT(Ov015FishState08, 0x8);
 
 // Scene task, vtable data_ov015_02212a88 (0x58 bytes, built by func_ov015_02206f04).
-struct Ov015Scene2a88 : public Ov015Task {
+struct Ov015Scene2a88 : public Task {
     u8 *model;
     u8 unk_40;
     u8 unk_41[0x3];
@@ -965,13 +980,13 @@ struct Ov015Scene2a88 : public Ov015Task {
 SIZE_ASSERT(Ov015Scene2a88, 0x58);
 
 // Scene task, vtable data_ov015_02212a08 (0xb0 bytes, built by func_ov015_02206f7c).
-struct Ov015Scene2a08 : public Ov015Task {
+struct Ov015Scene2a08 : public Task {
     Ov015Ship *ship;
     Ov015Shadow *shadow;
     Ov015CamView camView;
-    Ov015Menu *unk_80;
+    UiList *unk_80;
     Ov015UiLabel *unk_84;
-    Ov015Menu *unk_88;
+    UiList *unk_88;
     void *unk_8c;
     s32 unk_90;
     s32 unk_94;
@@ -986,10 +1001,10 @@ struct Ov015Scene2a08 : public Ov015Task {
 SIZE_ASSERT(Ov015Scene2a08, 0xb0);
 
 // Scene task, vtable data_ov015_02212c08 (0x6c bytes, built by func_ov015_02207020).
-struct Ov015Scene2c08 : public Ov015Task {
-    Ov015Menu *unk_3c;
+struct Ov015Scene2c08 : public Task {
+    UiList *unk_3c;
     Ov015UiLabel *unk_40;
-    Ov015Menu *unk_44;
+    UiList *unk_44;
     Ov015UiNum *unk_48;
     void *unk_4c;
     u8 *unk_50;
@@ -1005,10 +1020,10 @@ struct Ov015Scene2c08 : public Ov015Task {
 SIZE_ASSERT(Ov015Scene2c08, 0x6c);
 
 // Scene task, vtable data_ov015_02212b88 (0x58 bytes, built by func_ov015_022070b8).
-struct Ov015Scene2b88 : public Ov015Task {
-    Ov015Menu *unk_3c;
+struct Ov015Scene2b88 : public Task {
+    UiList *unk_3c;
     Ov015UiLabel *unk_40;
-    Ov015Menu *unk_44;
+    UiList *unk_44;
     Ov015Dialog *unk_48;
     u8 *unk_4c;
     s32 unk_50;
@@ -1018,13 +1033,13 @@ struct Ov015Scene2b88 : public Ov015Task {
 SIZE_ASSERT(Ov015Scene2b88, 0x58);
 
 // Scene task, vtable data_ov015_02212b08 (0x164 bytes, built by func_ov015_02207138).
-struct Ov015Scene2b08 : public Ov015Task {
-    Ov015Menu *unk_3c;
+struct Ov015Scene2b08 : public Task {
+    UiList *unk_3c;
     Ov015UiNum *unk_40;
     Ov015UiLabel *unk_44;
-    Ov015Menu *unk_48;
+    UiList *unk_48;
     Ov015Dialog *unk_4c;
-    Ov015Ui *unk_50; // 0xe8 object, vtables data_ov000_021cac60 -> data_ov000_021cad50
+    UiObj *unk_50; // 0xe8 object, vtables data_ov000_021cac60 -> data_ov000_021cad50
     s32 unk_54;
     s32 unk_58;
     s32 unk_5c;
@@ -1043,7 +1058,7 @@ struct Ov015Msg {
     u8 unk_0e[0x2];
     void *msgRes;
     Model *model;
-    u8 *textWin; // text window (0xb8 bytes, vtable data_0208ba70)
+    TextWin *textWin;
     s32 posX;
     s32 posY;
     s32 posZ;
@@ -1060,11 +1075,8 @@ struct Ov015Msg {
 SIZE_ASSERT(Ov015Msg, 0x144);
 
 // Text window with a portrait model (0xb4 bytes, vtables data_ov000_021cac60 -> data_ov015_02212d3c, init func_ov015_02208544).
-typedef void (*Ov015Cb3)(void *arg, void *self, s32 c);
-
-struct Ov015UiText : public Ov015Ui {
-    Ov015Cb3 onEvent; // called by func_ov015_02208d8c (vtable slot 0x48)
-    u8 *unk_84; // the text model object (deleted and rebuilt by func_ov015_02208a28)
+struct Ov015UiText : public UiObj {
+    TextWin *unk_84; // deleted and rebuilt by func_ov015_02208a28
     char text[0x20]; // filled by func_ov015_02208bac
     s32 textId;
     s32 unk_ac;
@@ -1088,11 +1100,11 @@ SIZE_ASSERT(Ov015MsgMgr, 0x14);
 // func_ov015_0220e634).
 struct Ov015ResultPanel {
     void *vt;
-    Ov015Menu *unk_04; // 0xf0 bytes, vtable data_ov000_021cb3a8
-    u8 *unk_08; // 0x100 bytes, vtable data_ov000_021ccb54
+    UiList *unk_04; // 0xf0 bytes, vtable data_ov000_021cb3a8
+    UiObj *unk_08; // 0x100 bytes, vtable data_ov000_021ccb54
     Ov015UiNum *unk_0c;
     Ov015UiNum *unk_10;
-    Ov015Menu *unk_14;
+    UiList *unk_14;
     s32 state; // state
     s32 timer; // timer
     char name[0x40]; // name
@@ -1110,6 +1122,16 @@ struct Ov015Result {
     Ov015ResultPanel *panel;
 };
 SIZE_ASSERT(Ov015Result, 0x14);
+
+extern "C" {
+Ov015Result *Ov015Result_Ctor(Ov015Result *self);
+void *Ov015Result_Dtor(Ov015Result *self);
+void *Ov015Result_DtorDelete(Ov015Result *self);
+void func_ov015_0220f470(Ov015Result *self);
+void func_ov015_0220f4d4(Ov015Result *self);
+BOOL func_ov015_0220f568(Ov015Result *self);
+void func_ov015_0220f7a8(Ov015Result *self);
+}
 
 // Fishing tackle object (0x290 bytes, vtable data_ov015_022132e0, init func_ov015_022119e8), with
 // its own animation and model; data_ov015_0221336c points to it.

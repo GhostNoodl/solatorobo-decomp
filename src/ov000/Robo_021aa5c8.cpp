@@ -2,6 +2,7 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u8 c[3];
@@ -33,7 +34,6 @@ extern void *data_ov000_021ccd68;
 extern Rgb021aa5c8 data_ov000_021c9fe8;
 extern void *data_02097e4c;
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
-VObj *func_02065f88(s32 id, void *pos);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_ov003_021cedf4(u16 n);
 s32 Rand_UpTo(s32 max);
@@ -78,10 +78,10 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
     }
     g = data_ov000_021ccd54;
     if (((State021aa5c8 *)self->fsm)->st == 0) {
-        VObj *e = func_02065f88(0x391, &self->pos);
-        e->vfunc_24(0, self->height - (self->height >> 2), 0);
-        e->vfunc_14(0x159a, 0x159a, 0x159a);
-        LFLD(s32, e, 0x3c) = 0x4000;
+        EffectObj *e = func_02065f88(0x391, &self->pos);
+        e->AddPosXYZ(0, self->height - (self->height >> 2), 0);
+        e->SetScaleXYZ(0x159a, 0x159a, 0x159a);
+        e->speed = 0x4000;
         g->cam.base.shakeX = 1;
         g->cam.base.shakeY = 1;
         g->cam.base.shakeZ = 1;

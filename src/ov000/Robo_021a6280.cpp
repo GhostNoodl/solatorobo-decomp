@@ -3,6 +3,7 @@
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u8 b0 : 7;
@@ -68,7 +69,6 @@ void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 BOOL func_ov000_02198360(void *st, s32 state, s32 x);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 s32 func_02049bdc(void *a, s32 b, s32 c);
-VObj *func_02065f88(s32 id, void *pos);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02191120(void *a);
 BOOL func_ov000_02191508(void *a);
@@ -86,7 +86,6 @@ s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
 void func_ov003_021cedf4(u16 add);
 u8 func_ov003_021cee68(void);
-void *func_02067120(void);
 
 static inline u16 CamYaw_021a6280(u8 *cam) {
     if (LFLD(u16, cam, 0x40) != 0) {
@@ -206,7 +205,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
         if (self->unk_b24_22 != 0) {
             s32 se;
             s32 lvl = 0;
-            VObj *e;
+            EffectObj *e;
             func_ov000_02191418(self->model, 0x14, lvl);
             se = 0x194;
             if (self->unk_b24_22 >= 2 && sub != NULL) {
@@ -221,14 +220,14 @@ void func_ov000_021a6280(Robo021ca458 *self) {
             }
             func_02049bdc(data_02097e4c, 0x44, lvl);
             e = func_02065f88(se, &self->pos);
-            LFLD(s32, e, 0x3c) = 0x1400;
-            e->vfunc_24(0, self->centerY, 0);
+            e->speed = 0x1400;
+            e->AddPosXYZ(0, self->centerY, 0);
             {
                 u32 sc = 0xe66;
                 if (self->unk_b24_22 < 2) {
                     sc >>= 1;
                 }
-                e->vfunc_0c(sc);
+                e->SetScaleAll(sc);
             }
             if (!self->unk_b22_3 && data_0214a424->bits18.mode == 1) {
                 u16 n = 0xc;
@@ -278,12 +277,12 @@ void func_ov000_021a6280(Robo021ca458 *self) {
         self->unk_b2c_3_f = 0;
         if (self->unk_b24_22 != 0 && self->unk_ba4 != NULL && BA4(self).b3 && (self->padTrig & 1) &&
             self->unk_b2c_7 < 5 && sub != NULL) {
-            VObj *e;
+            EffectObj *e;
             p.x = sub->dest.x;
             p.y = sub->dest.y;
             p.z = sub->dest.z;
             e = func_02065f88(0x69, &p);
-            self->unk_b48 = LFLD(s32, e, 0x24);
+            self->unk_b48 = e->id;
             self->unk_b5e = 0x7b;
             self->unk_b4c = p.x - self->pos.x;
             self->unk_b50 = p.y - self->pos.y;
@@ -291,8 +290,8 @@ void func_ov000_021a6280(Robo021ca458 *self) {
             self->unk_b58 = 0;
             self->unk_b5a = 0;
             self->unk_b5c = 0;
-            e->vfunc_0c(0x800);
-            LFLD(s32, e, 0x3c) = 0x2800;
+            e->SetScaleAll(0x800);
+            e->speed = 0x2800;
             func_ov000_0218996c(5, 6);
             func_02049a48(data_02097e4c, 0x7a, -1, -1, -1);
             self->unk_b2c_3_f = 1;

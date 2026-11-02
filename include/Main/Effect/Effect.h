@@ -159,6 +159,15 @@ void func_02065ac0(EffectMgr *m);
 struct Effect3D *Effect3D_Create(const char *arc, const char *mdl, const char *anm, const VecFx32 *pos);
 struct Effect3D *func_0206682c(const char *arc, const char *mdl, const char *anm, const VecFx32 *pos);
 struct EffectGroup *EffectGroup_Create(const char *arc, const char *name, const VecFx32 *pos);
+// Fixed screen effects (Effect_5.cpp: EffectHud_Create with a built-in archive/model name).
+struct Effect3D *func_02066c58(void);
+struct Effect3D *func_02066df0(void);
+struct Effect3D *func_02066ec8(void);
+struct Effect3D *func_02066f90(void);
+struct Effect3D *func_02067058(void);
+struct Effect3D *func_02067120(void);
+void EffectMgr_SaveList(EffectMgr *m);
+void EffectMgr_RestoreList(EffectMgr *m);
 void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
 
 void func_02063cac(struct EffectObj *obj);

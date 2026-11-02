@@ -8,7 +8,6 @@ extern const VecFx32 data_ov010_0220f144;
 extern BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-extern VObj *func_02065f88(s32 id, VecFx32 *pos);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
@@ -52,7 +51,7 @@ void func_ov010_022089d8(Ov003Actor *self) {
                 self->moveYaw = FX_Atan2(t->x - self->pos.x, t->z - self->pos.z);
             } else {
                 if (st->timer == 0) {
-                    func_02065f88(0x12f, &self->pos)->vfunc_0c(0xe66);
+                    func_02065f88(0x12f, &self->pos)->SetScaleAll(0xe66);
                 }
                 self->fsm->timer++;
                 if (self->fsm->timer > 0x5a) {

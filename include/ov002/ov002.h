@@ -570,7 +570,6 @@ void func_ov000_021c524c(void *a, void *b, VecFx32 *pos, s32 d);
 extern VFunc data_ov000_021ccbe0[];
 void func_ov000_021c3bb0(void *self);
 void func_ov002_021d95e0(void *a);
-void EffectMgr_SaveList(void *a);
 
 static inline void *func_ov002_021e0b08_inline(void *self) {
     void *prev;

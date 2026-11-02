@@ -3,6 +3,7 @@
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Res/StageFlags.h"
+#include "Main/Effect/Effect.h"
 
 extern "C" {
 extern void *data_02097e4c;
@@ -30,7 +31,6 @@ s32 func_02049afc(void *mgr, s32 id);
 void SndMgr_StopSeqArc(void *mgr, s32 id);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 void *func_0204a028(void *mgr, s32 id, void *pos, s32 a);
-VObj *func_02065f88(s32 id, void *pos);
 void func_02062790(u16 a);
 u16 Camera_GetYaw(void *cam);
 void Actor_Move(void *self, s32 a);
@@ -131,7 +131,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
                 p.x = m->check.x;
                 p.y = m->check.y;
                 p.z = m->check.z;
-                func_02065f88(0x12f, &p)->vfunc_0c(0x800);
+                func_02065f88(0x12f, &p)->SetScaleAll(0x800);
             }
         }
         func_02062790(1);
@@ -234,7 +234,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
                 p.x = m->check.x;
                 p.y = m->check.y;
                 p.z = m->check.z;
-                func_02065f88(0x12f, &p)->vfunc_0c(0x800);
+                func_02065f88(0x12f, &p)->SetScaleAll(0x800);
             }
         }
                     func_ov000_0219aae8(self, self, 5, 0x11, 0x20, NULL, 0, 0x1000, 0, 0x64, 0x1000);
@@ -312,9 +312,9 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
                     p.z = self->pos.z;
                     p.y += 0xccd;
                     func_02065f88(0x2bc, &p);
-                    func_02065f88(0x2bd, &p)->vfunc_0c(0x1800);
+                    func_02065f88(0x2bd, &p)->SetScaleAll(0x1800);
                 } else {
-                    func_02065f88(0x12f, &self->pos)->vfunc_0c(0x800);
+                    func_02065f88(0x12f, &self->pos)->SetScaleAll(0x800);
                 }
             }
             self->fsm->st++;
@@ -367,7 +367,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
         return;
     }
     case 10: {
-        VObj *e;
+        EffectObj *e;
         self->unk_b22_0 = 3;
         func_ov000_02190cb0(self->model, data_ov000_021cc70b, 0x200, 1);
         func_ov000_021915a0(self->model);
@@ -375,9 +375,9 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
         func_02049f44(data_02097e4c, 0x32, &self->pos, 0);
         StartSnd_021ad8ac(self);
         e = func_02065f88(0x4b0, &self->pos);
-        self->unk_b40 = LFLD(s32, e, 0x24);
-        e->vfunc_30(&self->rot);
-        func_02065f88(0x68, &self->pos)->vfunc_34(0x4000, self->rot_y, 0);
+        self->unk_b40 = e->id;
+        e->SetRot(&self->rot);
+        func_02065f88(0x68, &self->pos)->SetRotXYZ(0x4000, self->rot_y, 0);
         self->unk_9a6 = 0;
         self->unk_9a8 = 0;
         self->unk_9aa = 0;
@@ -417,7 +417,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             self->rot_z = func_01ffc128(0, self->rot_z, 0x266, 1, 0x8000);
         } else if ((self->padTrig & 0x100) && self->unk_9ac != 0) {
             char *anim;
-            VObj *e;
+            EffectObj *e;
             self->unk_b22_0 = 4;
             if (self->unk_9ac > 10) {
                 self->unk_9ac -= 10;
@@ -438,8 +438,8 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             self->unk_9a2 = 0;
             self->unk_9a4 = 0;
             e = func_02065f88(0x4b0, &self->pos);
-            self->unk_b40 = LFLD(s32, e, 0x24);
-            e->vfunc_30(&self->rot);
+            self->unk_b40 = e->id;
+            e->SetRot(&self->rot);
         } else if ((self->padCur & 2) && self->unk_9ac != 0) {
             u16 f;
             s32 tgt;

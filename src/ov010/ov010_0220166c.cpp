@@ -1,12 +1,6 @@
 #include "ov010/ov010.h"
 #include "ov000/ObjLayouts.h"
 
-struct Ov010Heap {
-    u32 cur;
-    u32 unk_04;
-    u32 def;
-};
-
 struct Ov010PlFlags {
     u32 b0 : 12;
     u32 b12 : 2;
@@ -15,9 +9,6 @@ struct Ov010PlFlags {
 
 extern "C" {
 
-extern void *data_0214a420;
-extern Ov010Heap *data_02097dd0;
-extern void EffectMgr_Kill(void *a, s32 b);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern void func_ov010_02200a00(Ov010Beam *o);
 extern Robo021ca458 *func_ov000_0219bf90(void);

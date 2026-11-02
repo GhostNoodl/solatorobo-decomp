@@ -132,12 +132,12 @@ void func_ov015_0220be38(Ov015FishState18 *self, Ov015Fish *p) {
     }
 }
 
-void *Ov015FishState1c_Dtor(void *self) {
+void *Ov015FishState1c_Dtor(Ov015FishState1c *self) {
     SET_VT(self, data_ov015_02212eb0);
     return self;
 }
 
-void *Ov015FishState1c_DtorDelete(void *self) {
+void *Ov015FishState1c_DtorDelete(Ov015FishState1c *self) {
     SET_VT(self, data_ov015_02212eb0);
     Heap_Free(self);
     return self;

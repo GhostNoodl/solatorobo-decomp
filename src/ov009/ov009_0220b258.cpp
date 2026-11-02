@@ -7,7 +7,6 @@ extern char data_ov009_022172af[];
 extern char data_ov009_022172bb[];
 extern void func_ov000_02191418(void *m, s32 a, s32 b);
 extern BOOL func_ov000_02191508(void *m);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 void func_ov009_0220b258(Ov009ActVt_022172e4 *self) {
     ActorSub40 *st = self->fsm;

@@ -6,7 +6,6 @@ s32 func_ov015_02209fb8(s32 x);
 void *Ov015FishState2c_Ctor(Ov015FishState2c *self);
 extern char data_ov015_022128c1[];
 extern char data_ov015_022128d5[];
-u8 *func_02066df0(void);
 void func_ov015_02207c30(Ov015Ship *p);
 BOOL func_ov015_022003ec(Ov015Obj34 *self);
 void Ov015Fish_SetNextState(Ov015Fish *self, s32 a, s32 b);
@@ -64,7 +63,7 @@ BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
             busy = FALSE;
         } else {
             if (self->unk_0c == 0x28000) {
-                FLD(s32, func_02066df0(), 0xd4) = 1;
+                func_02066df0()->unk_d4 = 1;
             }
             func_ov015_02207c30(a);
             busy = TRUE;
@@ -93,7 +92,7 @@ BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
     self->ship = NULL;
     self->fish = NULL;
     self->cam = NULL;
-    FLD(s32, self, 0x30) = 0;
+    self->info = NULL;
     return r;
 }
 

@@ -10,6 +10,7 @@
 #include "Main/Res/StageCmd.h"
 #include "ov000/Actor.h"
 #include "ov003/Actor.h"
+#include "Main/Effect/Effect.h"
 #include "ov000/ObjLayouts.h"
 
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
@@ -509,7 +510,7 @@ struct Ov011E24 : public Ov011V {
 struct Ov011Sa104 {
     ActorSub40 seq;
     Ov011E24 tw;
-    void *unk_38;
+    u32 unk_38; // effect handle
 };
 OV011_SIZE(Ov011Sa104, 0x3c);
 
@@ -592,20 +593,6 @@ public:
     VecFx32 unk_370[3];
     u8 unk_394;
     Ov011Bar *unk_398;
-};
-
-// An effect from the main-module effect manager (func_02065f88 / EffectGroup_Create create one,
-// func_020657b0 looks one up by its handle unk_24).
-class Ov011Eff : public Ov011V {
-public:
-    u8 unk_04[0x18];
-    s32 unk_1c;
-    u8 unk_20[0x4];
-    s32 unk_24;
-    u8 unk_28[0x14];
-    s32 unk_3c;
-    u8 unk_40[0x88];
-    s32 unk_c8;
 };
 
 // An actor message (ov000 ActorMsg); the payload at 0x0c depends on cmd.

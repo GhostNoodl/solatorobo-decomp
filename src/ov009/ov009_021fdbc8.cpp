@@ -78,8 +78,6 @@ struct Ov009PlB22 {
     u16 b3 : 13;
 };
 
-extern void *data_0214a420;
-extern void EffectMgr_Kill(void *mgr, s32 h);
 
 void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
     VecFx32 t;

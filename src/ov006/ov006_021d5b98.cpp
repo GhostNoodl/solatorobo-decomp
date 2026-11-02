@@ -2,6 +2,7 @@
 #pragma dont_reuse_strings off
 #include "ov006/Model.h"
 #include "ov006/SlotManager.h"
+#include "Main/Effect/Effect.h"
 
 extern "C" u8 *data_ov000_021ccd54;
 
@@ -221,11 +222,6 @@ typedef struct ov006_BitsDA {
     u8 b7 : 1;
 } ov006_BitsDA;
 
-typedef struct ov006_Unk0214a420 {
-    u8 unk0[8];
-    int unk8;
-} ov006_Unk0214a420;
-
 typedef struct ov006_Prop {
     u8 unk0[0xc];
     u16 unkC;
@@ -247,21 +243,18 @@ typedef struct ov006_Task021d630c {
 
 extern "C" {
 
-extern ov006_Unk0214a420 *data_0214a420;
 extern u8 *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
 extern ov006_Unk021ccd6c *data_ov000_021ccd6c;
 extern u8 *data_ov000_021ccd54;
 extern void *data_02097e4c;
 
-void EffectMgr_FreeAll(void *p);
 void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(void *p);
 void func_ov000_021b53f4(void *p);
 BOOL func_02035b90(const char *name, int a);
 void func_0206e900(char *dst, const char *src);
 BOOL func_ov000_0218f110(void *p);
-void func_02065ac0(void *p);
 BOOL func_ov000_021b5578(void *p);
 void func_ov000_021b5dc0(void *p);
 int func_0206e264(ov006_Party *party);
@@ -337,7 +330,7 @@ BOOL func_ov006_021d630c(ov006_Task021d630c *self) {
         self->subState++;
         break;
     case 4:
-        if (data_0214a420->unk8 >= 3) {
+        if (data_0214a420->state >= 3) {
             self->subState++;
             break;
         }

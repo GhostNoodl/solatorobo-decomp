@@ -5,7 +5,6 @@
 
 extern "C" {
 
-void func_ov015_02208474(u8 *self);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
@@ -92,7 +91,7 @@ BOOL func_ov015_02207adc(Ov015Ship *self) {
     func_ov000_0218ffdc(&self->model, self, 0, 1);
     func_ov000_02190cb0(&self->model, "ang00", 0x1000, 0);
     func_ov000_021915a0(&self->model);
-    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->model.renderObj), (NNSG3dSbcCallBackFunc)func_ov015_02208474);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->model.renderObj), func_ov015_02208474);
     self->model.flags.clearInit = 0;
     self->model.flags.flushVP = 1;
     self->nodeMtx.id = func_ov000_021909a8(&self->model, self->res.anmName, "ang05");

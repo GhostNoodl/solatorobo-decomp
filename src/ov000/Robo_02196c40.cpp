@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Main/Res/StageFlags.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -52,7 +53,6 @@ void Target_Set(void *a, void *b);
 void func_ov003_021f0c60(void *self, s32 a);
 void *func_ov003_021f0868(void *pos, s32 a, s32 b);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
-VObj02196c40 *func_02065f88(s32 id, void *pos);
 u8 *func_ov000_021b68b8(void *mgr, void *pos);
 void func_ov000_02197ad0(void *self, BOOL b);
 void Actor_Move(void *self, s32 a);
@@ -88,7 +88,7 @@ void func_ov000_02196c40(ActorEx *self) {
             self->speed = 0;
         }
         if (in & 0x400) {
-            VObj02196c40 *o;
+            EffectObj *o;
             if (self->unk_cc_6) {
                 break;
             }
@@ -98,7 +98,7 @@ void func_ov000_02196c40(ActorEx *self) {
             func_02049f44(data_02097e4c, 0x3d, &self->pos, 0);
             o = func_02065f88(0x2bd, &self->pos);
             if (self->radius > 0x1000) {
-                o->vfunc_0c(self->radius);
+                o->SetScaleAll(self->radius);
             }
             break;
         }

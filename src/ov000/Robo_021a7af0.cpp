@@ -3,6 +3,7 @@
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u8 b0 : 1;
@@ -46,7 +47,6 @@ u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
 void func_ov000_021987b8(void *body, u8 keep, VecFx32 *pos, const void *rot);
 BOOL Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);
 s32 **func_ov000_02190a30(void *model, u32 i);
-VObj *func_02065f88(s32 id, void *pos);
 void *func_02049a48(void *mgr, s32 id, s32 volume, s32 targetVolume, s32 frame);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 void func_ov000_021915a0(void *p);
@@ -297,13 +297,13 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
     case 0:
         self->unk_b24_27 = 0;
         if (self->unk_b2c_4 == 3) {
-            VObj *o;
+            EffectObj *o;
             self->unk_b2c_4 = 0;
             func_ov000_02190cb0(self->model, data_ov000_021cc666, 0x800, 1);
             o = func_02065f88(0x391, &self->pos);
-            o->vfunc_24(0, (self->height >> 1) + (self->height >> 3), 0);
-            o->vfunc_0c(0x1333);
-            LFLD(s32, o, 0x3c) = 0x2ccd;
+            o->AddPosXYZ(0, (self->height >> 1) + (self->height >> 3), 0);
+            o->SetScaleAll(0x1333);
+            o->speed = 0x2ccd;
             func_02049a48(data_02097e4c, 0x44, -1, -1, -1);
             self->fsm->st = 0x64;
             return;
@@ -403,7 +403,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
         s32 r;
         s32 h;
         u16 bonus;
-        VObj *o;
+        EffectObj *o;
         if (info == NULL) {
             st->st = 0x1e;
             return;
@@ -469,9 +469,9 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
             }
         }
         o = func_02065f88(0x193, &self->pos);
-        o->vfunc_34(0, self->rot_y, 0);
-        LFLD(s32, o, 0x3c) = 0xccd;
-        self->unk_b48 = LFLD(s32, o, 0x24);
+        o->SetRotXYZ(0, self->rot_y, 0);
+        o->speed = 0xccd;
+        self->unk_b48 = o->id;
         self->unk_b5e = 0;
         self->unk_b4c = 0;
         self->unk_b50 = 0;
@@ -480,7 +480,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
         self->unk_b5a = 0;
         self->unk_b5c = 0;
         if (bonus != 0) {
-            VObj *o2;
+            EffectObj *o2;
             Model0218fe1c *m;
             self->unk_b3a += bonus;
             if (self->unk_b3a >= self->unk_b3c) {
@@ -490,8 +490,8 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
             v = t->pos;
             v.y += t->height + 0x400;
             o2 = func_02065f88(0x44c, &v);
-            LFLD(s32, o2, 0x3c) = 0x99a;
-            o2->vfunc_0c(0x1400);
+            o2->speed = 0x99a;
+            o2->SetScaleAll(0x1400);
             m = self->model;
             m->color = 0x73ff;
             m->color2 = 0x73ff;
@@ -601,12 +601,12 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
             func_ov000_02191318(self->model, self->unk_b60 + 0x3000);
             func_02049a48(data_02097e4c, 0x2a, -1, -1, -1);
             if (!self->unk_b22_3) {
-                VObj *o = func_02065f88(0x44d, &self->pos);
+                EffectObj *o = func_02065f88(0x44d, &self->pos);
                 s32 a = Rand_PlusMinus(0x4cd);
                 s32 b = Rand_UpTo(0x800);
                 s32 c = Rand_PlusMinus(0x4cd);
-                o->vfunc_24(a, b, c);
-                o->vfunc_0c((LFLD(u16, data_ov000_021ccd68, 0xa) & 0xff) + 0xf00);
+                o->AddPosXYZ(a, b, c);
+                o->SetScaleAll((LFLD(u16, data_ov000_021ccd68, 0xa) & 0xff) + 0xf00);
             }
             n = func_0206d37c(data_0214a424, 2);
             if (self->unk_b22_3) {
@@ -651,7 +651,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
                     func_ov000_02198360(self->fsm, 6, 0);
                 } else if (kind == 0x14) {
                     u8 *p;
-                    VObj *o;
+                    EffectObj *o;
                     self->target = 0xffff;
                     func_ov000_0218d46c(t, self->id, 0xb);
                     p = Target_Get(info);
@@ -667,7 +667,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
                     func_ov000_0218996c(8, 0xc);
                     o = func_02065f88(0x69, &self->pos);
                     if (o != NULL) {
-                        o->vfunc_24(0, self->centerY, 0);
+                        o->AddPosXYZ(0, self->centerY, 0);
                     }
                     func_ov000_021911c8(self->model, 0x1000);
                 }
@@ -804,7 +804,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
         func_ov000_02190cb0(self->model, data_ov000_021cc630, 0x800, 0);
         self->friction = 0xe66;
         func_02049f44(data_02097e4c, 0x81, &self->pos, 0);
-        func_02065f88(0x12f, &self->pos)->vfunc_0c(0x800);
+        func_02065f88(0x12f, &self->pos)->SetScaleAll(0x800);
         self->fsm->timer = 0;
         self->fsm->st++;
         return;

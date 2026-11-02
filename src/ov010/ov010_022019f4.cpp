@@ -1,18 +1,11 @@
 #include "ov010/ov010.h"
 
-struct Ov010Heap {
-    u32 cur;
-    u32 unk_04;
-    u32 def;
-};
-
 // Ov010TaskList is in ov010.h.
 
 extern "C" {
 
 extern u8 data_ov010_0220fe1c[];
 extern u8 data_ov010_0220fe08[];
-extern Ov010Heap *data_02097dd0;
 extern void *Ov003Pool_Dtor(void *p);
 extern void Ov003Pool_Release(void *p);
 extern Ov010TaskNode *Ov003Pool_Alloc(void *p);
@@ -96,7 +89,7 @@ VObj *func_ov010_02201ad4(Ov010TaskList *o, VObj *(*fn)(void), u32 time) {
 void func_ov010_02201b48(Ov010TaskList *o) {
     Ov010TaskNode *next;
     Ov010TaskNode *n;
-    u32 saved;
+    void *saved;
     if (!o->b0) {
         return;
     }
@@ -106,7 +99,7 @@ void func_ov010_02201b48(Ov010TaskList *o) {
     for (n = o->head; n != NULL; n = next) {
         next = n->next;
         saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->def;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (n->obj != NULL) {
             VObj *p = n->obj;
             if (p != NULL) {

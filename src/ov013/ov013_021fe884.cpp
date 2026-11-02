@@ -7,9 +7,7 @@ struct Ov013Spot {
 
 extern "C" {
 
-extern void *data_0214a420;
 extern char data_ov013_0220b88d[];
-extern void *func_020657b0(void *a, s32 b);
 extern void func_ov000_0219763c(Actor *self);
 extern void func_ov000_02195d88(Actor *self);
 extern void func_ov000_02196060(Ov003Actor *self);

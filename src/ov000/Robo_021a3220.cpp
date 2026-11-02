@@ -2,6 +2,7 @@
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u16 b0 : 5;
@@ -35,7 +36,6 @@ void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 BOOL func_ov000_02198360(void *st, s32 state, s32 x);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
-VObj *func_02065f88(s32 id, void *pos);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 u16 Camera_GetYaw(void *cam);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
@@ -136,7 +136,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
         ActorSub40 *st = self->fsm;
         st->timer++;
         if (st->timer > 5) {
-            VObj *e;
+            EffectObj *e;
             if (self->unk_b1c == 0xffff && tgt != NULL && (u16)(tgt->id & 0xf000) == 0x5000) {
                 self->velY = (tgt->pos.y - self->pos.y) >> 4;
                 self->moveYaw = AngTo_021a3220(self, tgt);
@@ -163,24 +163,24 @@ void func_ov000_021a3220(Robo021ca458 *self) {
                 self->moveYaw = yaw + self->padDir;
             }
             e = func_02065f88(0x192, &self->pos);
-            self->unk_b40 = LFLD(s32, e, 0x24);
-            e->vfunc_34(0, self->moveYaw, 0);
-            LFLD(s32, e, 0x3c) = 0x800;
+            self->unk_b40 = e->id;
+            e->SetRotXYZ(0, self->moveYaw, 0);
+            e->speed = 0x800;
             if (self->unk_b22_3) {
-                e->vfunc_14(0x1266, 0x1266, 0x1000);
+                e->SetScaleXYZ(0x1266, 0x1266, 0x1000);
             }
             if (Ba4Bit_021a3220(self)) {
                 VecFx32 v;
-                VObj *e2;
+                EffectObj *e2;
                 v.y = self->height >> 2;
                 v.z = 0x1800;
                 v.x = 0;
                 func_01ffc9fc(&v, &v, self->moveYaw);
                 VEC_Add(&v, (VecFx32 *)((u8 *)self + 0x70), &v);
                 e2 = func_02065f88(0x66, &v);
-                e2->vfunc_34(0xc000, self->moveYaw, 0);
-                e2->vfunc_14(0xb33, 0x3000, 0xb33);
-                LFLD(s32, e2, 0x3c) = 0x1ccd;
+                e2->SetRotXYZ(0xc000, self->moveYaw, 0);
+                e2->SetScaleXYZ(0xb33, 0x3000, 0xb33);
+                e2->speed = 0x1ccd;
             }
         }
         self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
@@ -198,10 +198,10 @@ void func_ov000_021a3220(Robo021ca458 *self) {
             func_ov000_021b1dd8((u8 *)self, spd, 0x1000, 0x1000, 0x466, f);
             self->speed = LO_FX_MUL(spd, 0xfc3);
             if ((self->hit->unk_50 & 0x20000000) && (self->fsm->timer & 3) == 1) {
-                VObj *e = func_02065f88(0x67, &self->pos);
-                e->vfunc_34(0, self->moveYaw, 0);
-                e->vfunc_0c(0x800);
-                LFLD(s32, e, 0x3c) = 0x2000;
+                EffectObj *e = func_02065f88(0x67, &self->pos);
+                e->SetRotXYZ(0, self->moveYaw, 0);
+                e->SetScaleAll(0x800);
+                e->speed = 0x2000;
             }
         } else {
             s32 f = 1;
@@ -214,11 +214,11 @@ void func_ov000_021a3220(Robo021ca458 *self) {
         if (self->unk_b2c_6) {
             u16 t = self->fsm->timer;
             if (!(t & 3) && t < 0x14) {
-                VObj *e = func_02065f88(0x322, &self->pos);
-                e->vfunc_24(0, self->height >> 2, 0);
-                e->vfunc_34(0, (u16)Rand_UpTo(0xffff), 0);
-                e->vfunc_0c(((t & 0xfffe) << 7) + 0x800);
-                LFLD(s32, e, 0x3c) = 0x4800;
+                EffectObj *e = func_02065f88(0x322, &self->pos);
+                e->AddPosXYZ(0, self->height >> 2, 0);
+                e->SetRotXYZ(0, (u16)Rand_UpTo(0xffff), 0);
+                e->SetScaleAll(((t & 0xfffe) << 7) + 0x800);
+                e->speed = 0x4800;
             }
         }
         {
@@ -317,7 +317,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
             func_ov000_02190cb0(self->model, data_ov000_021cc630, 0x800, 0);
             self->friction = 0xe66;
             func_02049f44(data_02097e4c, 0x81, &self->pos, 0);
-            func_02065f88(0x12f, &self->pos)->vfunc_0c(0x800);
+            func_02065f88(0x12f, &self->pos)->SetScaleAll(0x800);
             self->fsm->timer = 0;
             self->fsm->st++;
         }

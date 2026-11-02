@@ -38,7 +38,7 @@ BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
         r = TRUE;
     }
     found = NULL;
-    n = FLD(u8 *, self->fishList, 0x4);
+    n = ((u8 *)self->fishList->head);
     while (n != NULL) {
         Ov015Fish *obj = FLD(Ov015Fish *, n, 0x4);
         Ov015Vec v;
@@ -60,7 +60,7 @@ BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
         func_ov015_022123c4(self->unk_10);
     }
     self->ship->unk_d3e = 0x1000;
-    for (n = FLD(u8 *, self->fishList, 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
+    for (n = ((u8 *)self->fishList->head); n != NULL; n = FLD(u8 *, n, 0xc)) {
         func_ov015_02209790(FLD(Ov015Fish *, n, 0x4), 1);
     }
     return r;
@@ -81,7 +81,7 @@ public:
 };
 Ov015Fish *func_ov015_021fffc4(Ov015Obj30 *self) {
     Ov015Fish *found = NULL;
-    u8 *n = FLD(u8 *, self->fishList, 0x4);
+    u8 *n = ((u8 *)self->fishList->head);
     while (n != NULL) {
         Ov015Fish *obj = FLD(Ov015Fish *, n, 0x4);
         n = FLD(u8 *, n, 0xc);

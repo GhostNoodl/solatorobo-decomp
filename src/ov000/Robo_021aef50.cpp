@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u16 state;
@@ -35,7 +36,6 @@ void Actor_TurnToPos(void *self, void *v, s32 a);
 void Actor_MoveToPos(void *self, const void *target, s32 turn);
 void Actor_Move(void *self, s32 turn);
 s32 func_ov000_0219a2f4(void *pos, s32 up, s32 down);
-VObj *func_02065f88(s32 id, void *pos);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 void *func_0204a028(void *a, s32 b, void *c, s32 d);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
@@ -123,9 +123,9 @@ void func_ov000_021aef50(Robo021ca458 *self) {
         ((St_021aef50 *)self->fsm)->timer = 0;
         ((St_021aef50 *)self->fsm)->state++;
         if (self->unk_b24_12 == 1) {
-            VObj *e = func_02065f88(0x6d, &pos);
-            e->vfunc_0c(0xb33);
-            e->vfunc_34(0xf000, 0, 0);
+            EffectObj *e = func_02065f88(0x6d, &pos);
+            e->SetScaleAll(0xb33);
+            e->SetRotXYZ(0xf000, 0, 0);
         } else if (self->unk_b24_12 == 3) {
             func_0204a028(data_02097e4c, 0xe, &self->pos, -5);
         }

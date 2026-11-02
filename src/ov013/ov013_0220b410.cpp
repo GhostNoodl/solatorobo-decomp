@@ -165,13 +165,9 @@ void func_ov013_021fc71c(Ov003Actor *self) {
     }
 }
 
-extern void *data_0214a420;
 extern void *data_02097e4c;
 extern const VecFx32 data_ov013_0220ae64;
 extern u8 data_ov013_0220ae88[];
-extern void EffectMgr_Kill(void *a, s32 b);
-extern Ov013V *func_020657b0(void *a, s32 b);
-extern Ov013V *func_02065f88(s32 id, VecFx32 *pos);
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern VecFx32 Ov003Vec_DirXZ(const VecFx32 *a, const VecFx32 *b);
 extern void func_ov000_0219a210(VecFx32 *v, const VecFx32 *a, s32 b);

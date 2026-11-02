@@ -24,74 +24,73 @@ Ov015Glyph *func_ov015_021fb408(void *self, u16 *ctx, Ov015Glyph *e, u16 *count)
     return e;
 }
 
-static inline void Ov015_LabelInit(u8 *t, void *dict, void *name) {
-    func_02041440((Model *)t, (char *)dict, 0);
-    STD_CopyString((char *)(t + 0x2c), (char *)name);
+static inline void Ov015_LabelInit(Model *t, void *dict, void *name) {
+    func_02041440(t, (char *)dict, 0);
+    STD_CopyString(t->name, (char *)name);
 }
 
-s32 func_ov015_021fb474(u8 *self) {
+s32 func_ov015_021fb474(Ov015Hud *self) {
     char buf[0x20];
     void *res;
-    u8 *t;
     func_0206e900(buf, data_ov015_022128ab);
     res = func_02034d88(func_02035d5c(buf), data_ov015_022128b5);
-    func_02041440((Model *)FLD(void *, self, 0x24), (char *)NULL, 0);
-    func_020417e0((Model *)FLD(void *, self, 0x24), res);
-    func_02041d9c((Model *)FLD(void *, self, 0x24), 0, 0xffff);
-    FLD(u32, FLD(u8 *, self, 0x24), 0x6c) |= 2;
-    FLD(u32, FLD(u8 *, self, 0x24), 0x6c) |= 0x80000;
+    func_02041440(self->mdl0, (char *)NULL, 0);
+    func_020417e0(self->mdl0, res);
+    func_02041d9c(self->mdl0, 0, 0xffff);
+    self->mdl0->flags |= 2;
+    self->mdl0->flags |= 0x80000;
     {
         void *arg = &data_ov015_0221332c;
-        func_02041c34(FLD(void *, self, 0x24), 0xf, (void *)func_ov015_021fb25c, arg);
-        func_02041c34(FLD(void *, self, 0x24), 0xe, (void *)func_ov015_021fb25c, arg);
+        func_02041c34(self->mdl0, 0xf, (void *)func_ov015_021fb25c, arg);
+        func_02041c34(self->mdl0, 0xe, (void *)func_ov015_021fb25c, arg);
     }
     res = func_02034d88(func_02035d5c((char *)data_0208cc94), data_0208cc88);
-    Ov015_LabelInit(FLD(u8 *, self, 0x28), data_0208cc88, data_0208cc94);
-    func_020417e0((Model *)FLD(void *, self, 0x28), res);
-    func_02041d9c((Model *)FLD(void *, self, 0x28), 0, 0x10);
-    FLD(u32, FLD(u8 *, self, 0x28), 0x6c) |= 2;
-    func_02041c34(FLD(void *, self, 0x28), 0x10, (void *)func_ov015_021fb408, NULL);
+    Ov015_LabelInit(self->mdl1, data_0208cc88, data_0208cc94);
+    func_020417e0(self->mdl1, res);
+    func_02041d9c(self->mdl1, 0, 0x10);
+    self->mdl1->flags |= 2;
+    func_02041c34(self->mdl1, 0x10, (void *)func_ov015_021fb408, NULL);
     return 1;
 }
 
-BOOL func_ov015_021fb5d4(u8 *self) {
+BOOL func_ov015_021fb5d4(Ov015Hud *self) {
     Ov015Stat *g;
     s32 t3;
     s32 t4;
     if (!data_02097d48->unk_a30_4) {
         return TRUE;
     }
-    FLD(s32, self, 0x8)++;
-    FLD(s32, self, 0x8) %= 0x7fff;
+    self->frame++;
+    self->frame %= 0x7fff;
     g = &Dup::data_ov015_0221332c;
     if (data_ov015_0221332c.unk_00 >= 0x2bc000) {
-        FLD(s32, self, 0xc) = 1;
+        self->unk_0c = 1;
     } else {
-        FLD(s32, self, 0xc) = 2;
+        self->unk_0c = 2;
     }
-    FLD(s32, self, 0x18) = FLD(s32, self, 0x10);
-    FLD(s32, self, 0x10) = g->unk_28;
-    if (g->unk_10 != FLD(s32, self, 0x14)) {
-        FLD(s32, self, 0x1c) = 0;
-        FLD(s32, self, 0x20) = 0x28;
+    self->unk_18 = self->unk_10;
+    self->unk_10 = g->unk_28;
+    if (g->unk_10 != self->unk_14) {
+        self->unk_1c = 0;
+        self->unk_20 = 0x28;
     } else {
-        FLD(s32, self, 0x1c)++;
-        if (FLD(s32, self, 0x1c) > 0xffff) {
-            FLD(s32, self, 0x1c) = 0xffff;
+        self->unk_1c++;
+        if (self->unk_1c > 0xffff) {
+            self->unk_1c = 0xffff;
         }
         t3 = g->unk_14;
         t4 = g->unk_10;
         if ((t3 == 3 && t4 == 2) || (t3 == 2 && t4 == 3) || (t3 == 4 && t4 == 4) || ((t3 != 1 && t3 != 0) && t4 == 1)) {
-            FLD(s32, self, 0x20) = 0x28;
+            self->unk_20 = 0x28;
         } else {
-            FLD(s32, self, 0x20)--;
-            if (FLD(s32, self, 0x20) < 0) {
-                FLD(s32, self, 0x20) = 0;
+            self->unk_20--;
+            if (self->unk_20 < 0) {
+                self->unk_20 = 0;
             }
         }
     }
-    FLD(s32, self, 0x14) = g->unk_10;
-    FLD(s32, self, 0x2c) = (u16)(FLD(s32, self, 0x2c) + (FX_Mul(-g->unk_04, 0x1388000) >> 12));
+    self->unk_14 = g->unk_10;
+    self->unk_2c = (u16)(self->unk_2c + (FX_Mul(-g->unk_04, 0x1388000) >> 12));
     return TRUE;
 }
 

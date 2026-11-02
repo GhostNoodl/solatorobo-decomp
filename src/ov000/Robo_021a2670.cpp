@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u16 state;
@@ -26,7 +27,6 @@ void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 void func_ov000_021b1dd8(void *self, s32 a, s32 b, s32 c, s32 d, s32 e);
 BOOL func_ov000_02198360(void *st, s32 a, s32 b);
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
-u8 *func_02065f88(s32 id, void *pos);
 void func_ov000_02168e18(void *a, s32 b, s32 c, VecFx32 *v);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
@@ -138,8 +138,8 @@ void func_ov000_021a2670(Robo021ca458 *self) {
         }
         if (t >= 10) {
             if ((t & 0x1f) == 10) {
-                u8 *e = func_02065f88(0x646, &self->pos);
-                self->unk_b48 = LFLD(s32, e, 0x24);
+                EffectObj *e = func_02065f88(0x646, &self->pos);
+                self->unk_b48 = e->id;
                 self->unk_b5e = 0;
                 self->unk_b4c = 0;
                 self->unk_b54 = 0;

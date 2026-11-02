@@ -3,6 +3,7 @@
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u8 b0 : 1;
@@ -40,7 +41,6 @@ void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8
 BOOL func_ov000_02198360(void *st, s32 state, s32 x);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
-VObj *func_02065f88(s32 id, void *pos);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02191120(void *a);
 BOOL func_ov000_02191508(void *a);
@@ -147,14 +147,14 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
     case 0:
         self->unk_b24_17 = 0;
         if (self->unk_b2c_4 == 3) {
-            VObj *e;
+            EffectObj *e;
             self->unk_b24_7 = 2;
             self->unk_b36 = 0;
             func_ov000_02190cb0(self->model, data_ov000_021cc666, 0x800, 1);
             e = func_02065f88(0x391, &self->pos);
-            e->vfunc_24(0, (self->height >> 1) + (self->height >> 3), 0);
-            e->vfunc_0c(0x1333);
-            LFLD(s32, e, 0x3c) = 0x2ccd;
+            e->AddPosXYZ(0, (self->height >> 1) + (self->height >> 3), 0);
+            e->SetScaleAll(0x1333);
+            e->speed = 0x2ccd;
             func_02049a48(data_02097e4c, 0x44, -1, -1, -1);
             self->speed = 0;
             self->friction = 0;

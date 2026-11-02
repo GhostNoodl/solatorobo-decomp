@@ -28,13 +28,7 @@ extern struct Effect3D *func_02067fd4(s32 id, const VecFx32 *pos);
 extern struct EffectGroup *func_0206811c(s32 id, const VecFx32 *pos);
 extern struct EffectGroup *func_02068228(s32 id, const VecFx32 *pos);
 extern struct EffectGroup *func_02068354(s32 id, const VecFx32 *pos);
-extern struct Effect3D *func_02066c58(void);
-extern struct Effect3D *func_02066df0(void);
-extern struct Effect3D *func_02066ec8(void);
-extern struct Effect3D *func_02066f90(void);
 extern struct Effect3D *func_02066d10(const VecFx32 *pos);
-extern struct Effect3D *func_02067058(void);
-extern struct Effect3D *func_02067120(void);
 extern struct EffectGroup *func_020671e8(const VecFx32 *pos);
 
 EffectObj *func_02065f88(s32 id, const VecFx32 *pos) {

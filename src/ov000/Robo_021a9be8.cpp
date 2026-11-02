@@ -2,6 +2,7 @@
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u8 b0 : 1;
@@ -46,7 +47,6 @@ void func_ov000_0218d46c(void *o, u16 id, s32 c);
 u8 *Group_SpawnActor(void *mgr, Desc_021a9be8 *d, void *pos, void *rot, u16 a);
 void *func_0204a028(void *a, s32 b, void *c, s32 d);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
-u8 *func_02065f88(s32 id, void *pos);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
 u16 Camera_GetYaw(void *cam);
@@ -90,9 +90,9 @@ static inline s32 Frame_021a9be8(Model0218fe1c *m) {
     return f;
 }
 
-static inline void SetFx_021a9be8(Robo021ca458 *self, u8 *o, s32 rz) {
-    self->unk_b48 = LFLD(s32, o, 0x24);
-    LFLD(s32, o, 0x3c) = 0x2000;
+static inline void SetFx_021a9be8(Robo021ca458 *self, EffectObj *o, s32 rz) {
+    self->unk_b48 = o->id;
+    o->speed = 0x2000;
     self->unk_b4c = self->unk_a74.x - self->pos.x;
     self->unk_b50 = self->unk_a74.y - self->pos.y;
     self->unk_b54 = self->unk_a74.z - self->pos.z;
@@ -122,7 +122,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
     VecFx32 t;
     Actor *tg;
     u8 *a;
-    u8 *o;
+    EffectObj *o;
     s32 lim;
     BOOL fall;
     ActorSub40 *s;
@@ -174,7 +174,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
             self->unk_ae4_0 = 1;
         }
         if (self->fsm->timer == 0x14) {
-            o = func_02065f88(0x640, (u8 *)self + 0xa74);
+            o = func_02065f88(0x640, &self->unk_a74);
             if (o != NULL) {
                 SetFx_021a9be8(self, o, 0);
             }

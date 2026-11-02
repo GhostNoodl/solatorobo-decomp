@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u16 b0 : 7;
@@ -25,7 +26,6 @@ BOOL func_ov000_02198360(void *st, s32 state, s32 x);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
 u16 FX_Atan2(s32 y, s32 x);
-u8 *func_02065f88(s32 id, void *pos);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 
 static inline BOOL GBusy021a2d64(FieldState *g) {
@@ -75,9 +75,9 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
                 self->velY = 0;
             }
             if (idle) {
-                u8 *e = func_02065f88(0x2bd, (u8 *)self + 0x70);
-                LFLD(s32, e, 0x3c) = 0x2000;
-                (*(void (**)(u8 *, s32))(LFLD(u8 *, e, 0) + 0xc))(e, 0x159a);
+                EffectObj *e = func_02065f88(0x2bd, &self->pos);
+                e->speed = 0x2000;
+                e->SetScaleAll(0x159a);
                 func_02049f44(data_02097e4c, 0x35, (u8 *)self + 0x70, 0);
             }
             ((St_021a2d64 *)self->fsm)->sub = 2;

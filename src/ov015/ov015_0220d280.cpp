@@ -134,12 +134,12 @@ Ov015FishState08 *Ov015FishState08_Ctor(Ov015FishState08 *self) {
     return self;
 }
 
-void *Ov015FishState08_Dtor(void *self) {
+void *Ov015FishState08_Dtor(Ov015FishState08 *self) {
     SET_VT(self, data_ov015_02212eb0);
     return self;
 }
 
-void *Ov015FishState08_DtorDelete(void *self) {
+void *Ov015FishState08_DtorDelete(Ov015FishState08 *self) {
     SET_VT(self, data_ov015_02212eb0);
     Heap_Free(self);
     return self;

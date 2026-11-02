@@ -1,17 +1,10 @@
 #include "ov010/ov010.h"
 
-class Ov010Fx : public VObj {
-public:
-    s32 timer;
-    s32 scale;
-};
-
 extern "C" {
 
-extern Ov010Fx *func_02065f88(s32 a, void *b);
 extern s32 func_0203db40(void *p);
 extern void func_ov000_02190a80(void *p, s32 a);
-void func_ov010_02203f08(Ov010Fx *fx);
+void func_ov010_02203f08(EffectObj *fx);
 
 static inline s32 Ov010_Clamp(s32 v, s32 lo, s32 hi) {
     if (v > hi) {

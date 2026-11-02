@@ -3,7 +3,6 @@
 extern "C" {
 
 
-void EffectMgr_RestoreList(void *p);
 
 void func_ov002_021da430(void *self) {
     void *saved;

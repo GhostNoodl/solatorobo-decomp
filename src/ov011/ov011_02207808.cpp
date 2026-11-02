@@ -468,7 +468,6 @@ void *func_ov000_0218ea20(void *p);
 void *func_ov000_0218fee4(void *p);
 void func_ov000_02193e5c(void *p, s32 a);
 BOOL func_ov000_0218f110(void *p);
-Ov011V *func_02065f88(s32 id, VecFx32 *v);
 
 BOOL func_ov011_02201578(Ov011Fx *self) {
     void *p;
@@ -574,7 +573,7 @@ void func_ov011_02201758(Ov011Fx *self) {
             OV011_BLKCPY(&a, &data_ov011_02207420);
             MTX_MultVec33(&self->v0c, &self->mtx, &b);
             VEC_Add(&b, &self->v18, &b);
-            func_02065f88(0x648, &b)->v10(&a);
+            func_02065f88(0x648, &b)->SetScale(&a);
             break;
         case 1:
             self->timer++;
@@ -1076,7 +1075,7 @@ struct Ov011Chr {
     VecFx32 off;
     Ov011Anim *anim;
     Model0218fe1c *model;
-    Ov011V *unk_24;
+    EffectObj *unk_24;
     Ov011Model2 m28;
     u8 s88[0xc];
     u8 s94[3][0xc];
@@ -1087,9 +1086,6 @@ extern "C" {
 extern VecFx32 data_ov011_02207474;
 extern const VecFx32 data_ov011_02207480;
 extern u8 data_ov011_0220748c[];
-extern void *data_0214a420;
-Ov011V *func_02065f88(s32 id, VecFx32 *v);
-BOOL EffectMgr_Contains(void *mgr, void *p);
 
 // unk_06 is read through a const view; a plain read schedules differently.
 static inline s32 Ov011_Progress(Ov011Chr *c, s32 n) {
@@ -1117,8 +1113,8 @@ void func_ov011_02202538(Ov011Chr *self) {
         pos = self->model->trans;
         OV011_BLKCPY(&c, &data_ov011_02207480);
         self->unk_24 = func_02065f88(0x38a, &pos);
-        self->unk_24->v10(&c);
-        self->unk_24->v24(0, -0x14cd, 0);
+        self->unk_24->SetScale(&c);
+        self->unk_24->AddPosXYZ(0, -0x14cd, 0);
         self->mode = 2;
         break;
     }
@@ -1163,7 +1159,7 @@ void func_ov011_022026b4(Ov011Chr *self) {
         self->model->visible = 1;
         pos = self->model->trans;
         self->unk_24 = func_02065f88(0x648, &pos);
-        self->unk_24->v14(0x2000, 0x2000, 0x2000);
+        self->unk_24->SetScaleXYZ(0x2000, 0x2000, 0x2000);
         b = s.x + 0x1500;
         a = s.x;
         if (self->m28.b0) {
@@ -1221,7 +1217,7 @@ void func_ov011_022028a8(Ov011Chr *self) {
         OV011_BLKCPY(&c, &data_ov011_0220742c);
         pos = self->model->trans;
         self->unk_24 = func_02065f88(0x579, &pos);
-        self->unk_24->v10(&c);
+        self->unk_24->SetScale(&c);
         self->mode = 6;
         break;
     }

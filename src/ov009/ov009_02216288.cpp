@@ -218,7 +218,6 @@ struct Ov009Bits16 {
 extern u8 data_ov009_022160d0[];
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern Ov003Actor *func_ov000_0219be1c(u16 kind, const VecFx32 *pos, const void *rot, u16 id, u16 parent);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 
 void func_ov009_0220d90c(Ov009ActVt_02217f60 *self) {
     Ov003Actor *t;
@@ -239,7 +238,7 @@ void func_ov009_0220d90c(Ov009ActVt_02217f60 *self) {
         o->unk_60 = data_ov009_022160d0;
         FLD(Ov009Bits16, o, 0xcc).b3 = 0;
         VEC_Add(&self->pos, &data_ov009_02216010, &b);
-        func_02065f88(0x325, &b)->v34(0, (u16)(self->rot_y + 0x8000), 0);
+        func_02065f88(0x325, &b)->SetRotXYZ(0, (u16)(self->rot_y + 0x8000), 0);
     }
     func_ov000_02198360(self->fsm, 1, 0);
 }
@@ -293,11 +292,10 @@ extern void *data_02097e4c;
 extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 
 void func_ov009_0220dba4(Ov003Actor *self) {
     VecFx32 p;
-    Ov009V *e;
+    EffectObj *e;
     ActorSub40 *st;
     switch (self->fsm->st) {
     case 0: {
@@ -332,8 +330,8 @@ void func_ov009_0220dba4(Ov003Actor *self) {
     p.y += Rand_PlusMinus(self->height);
     p.z += Rand_UpTo(0x1000) + 0x6000;
     e = func_02065f88(0x325, &p);
-    e->v34(0, (u16)(self->rot_y + 0x8000), 0);
-    e->v14(0x1ccd, 0x1ccd, 0x1ccd);
+    e->SetRotXYZ(0, (u16)(self->rot_y + 0x8000), 0);
+    e->SetScaleXYZ(0x1ccd, 0x1ccd, 0x1ccd);
     self->fsm->timer = 0;
 }
 
@@ -367,7 +365,7 @@ void func_ov009_0220dd84(Ov009ActVt_02217f60 *self) {
         self->vfunc_08();
     }
     if ((t & 0x3f) == 1) {
-        Ov009V *e;
+        EffectObj *e;
         p0.x = self->pos.x;
         p0.y = self->pos.y;
         p0.z = self->pos.z;
@@ -375,8 +373,8 @@ void func_ov009_0220dd84(Ov009ActVt_02217f60 *self) {
         p0.y += Rand_PlusMinus(self->height);
         p0.z += Rand_UpTo(0x1000) + 0x6000;
         e = func_02065f88(0x325, &p0);
-        e->v34(0, (u16)(self->rot_y + 0x8000), 0);
-        e->v14(0x1ccd, 0x1ccd, 0x1ccd);
+        e->SetRotXYZ(0, (u16)(self->rot_y + 0x8000), 0);
+        e->SetScaleXYZ(0x1ccd, 0x1ccd, 0x1ccd);
     }
     if ((t & 0xf) == 0) {
         s32 a = -1;
@@ -616,7 +614,6 @@ void func_ov009_0220e4fc(Ov009ActVt_02217eb4 *self) {
 
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern Ov003Actor *func_ov000_0219be1c(u16 kind, const VecFx32 *pos, const void *rot, u16 id, u16 parent);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 struct Ov009Rot3 {
     u16 x;
     u16 y;
@@ -661,7 +658,7 @@ void func_ov009_0220e5f0(Ov009ActVt_02217eb4 *self) {
         r.x = 0;
         r.z = 0;
         func_ov000_0219be1c(0x482e, &self->pos, &r, self->id, self->target);
-        func_02065f88(0x325, &self->pos)->v34(0, (u16)(self->rot_y + 0x8000), 0);
+        func_02065f88(0x325, &self->pos)->SetRotXYZ(0, (u16)(self->rot_y + 0x8000), 0);
         self->fsm->st++;
         self->fsm->timer = Rand_UpTo(0x14) + 0x46;
         break;
@@ -883,7 +880,6 @@ extern void *data_02097e4c;
 extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 void func_ov009_0220ef1c(Ov009ActVt_02217eb4 *self) {
     VecFx32 v;
     VecFx32 d;
@@ -921,7 +917,7 @@ void func_ov009_0220ef1c(Ov009ActVt_02217eb4 *self) {
         if (t > 0x78) {
             func_ov000_0218996c(10, 0x28);
             func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
-            func_02065f88(5, &self->pos)->v14(0x6000, 0x6000, 0x6000);
+            func_02065f88(5, &self->pos)->SetScaleXYZ(0x6000, 0x6000, 0x6000);
             self->fsm->timer = 0x29;
             self->fsm->st++;
             return;
@@ -1080,7 +1076,6 @@ struct Ov009Bits16 {
 extern VecFx32 data_ov009_02216040;
 extern VecFx32 data_ov009_0221604c;
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 
 void func_ov009_0220f4b0(Ov009ActVt_02217b58 *self) {
     Ov003Actor *t;
@@ -1114,7 +1109,7 @@ void func_ov009_0220f4b0(Ov009ActVt_02217b58 *self) {
         o->unk_18 = 1;
         FLD(Ov009Bits16, o, 0xcc).b3 = 0;
     }
-    func_02065f88(0x325, &b)->v34(0, (u16)(self->rot_y + 0x8000), 0);
+    func_02065f88(0x325, &b)->SetRotXYZ(0, (u16)(self->rot_y + 0x8000), 0);
     func_ov000_02198360(self->fsm, 1, 0);
 }
 
@@ -1131,7 +1126,6 @@ extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, 
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void SndMgr_StopSeqArc(void *mgr, s32 id);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 void func_ov009_0220f5fc(Ov009ActVt_02217b58 *self) {
@@ -1152,7 +1146,7 @@ void func_ov009_0220f5fc(Ov009ActVt_02217b58 *self) {
             func_ov000_0218996c(0x14, 0x3c);
             func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
             SndMgr_StopSeqArc(data_02097e4c, self->unk_10c);
-            func_02065f88(5, &self->pos)->v0c(0x7000);
+            func_02065f88(5, &self->pos)->SetScaleAll(0x7000);
             self->fsm->timer = 0x29;
             self->fsm->st++;
             return;
@@ -1441,7 +1435,6 @@ extern void func_ov000_02191690(void *p);
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 msg);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern BOOL func_ov000_0219aae8(Actor *self, Actor *src, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 extern void func_ov000_0218996c(s32 a, s32 b);
 
@@ -1523,7 +1516,7 @@ void func_ov009_0220fea4(Ov009ActVt_02217e08 *self) {
             self->model->visible = true;
         }
         if (self->hit->unk_50 & 0x20000000) {
-            func_02065f88(0x66, &self->pos)->v14(0x1c00, 0x1c00, 0x1c00);
+            func_02065f88(0x66, &self->pos)->SetScaleXYZ(0x1c00, 0x1c00, 0x1c00);
             if (t != NULL) {
                 func_ov000_0219aae8(self, self, 0x1e, 0x20, (u16)(1 << (t->id >> 12)), 0, 0, 0x3400, 0x2800, 0x64, 0x1000);
             }
@@ -1595,7 +1588,6 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_021911c8(void *m, s32 a);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 msg);
 static inline Ov003Actor *Ov009_FindActor5(u16 id) {
@@ -1655,7 +1647,7 @@ void func_ov009_02210348(Ov009ActVt_02217e08 *self) {
         if (self->velY >= 0) {
             return;
         }
-        func_02065f88(0x66, &self->pos)->v14(0x2000, 0x2000, 0x2000);
+        func_02065f88(0x66, &self->pos)->SetScaleXYZ(0x2000, 0x2000, 0x2000);
         func_ov000_0218996c(0x12, 0x3c);
         func_02049a48(data_02097e4c, 0x17, -1, -1, -1);
         p.x = t->pos.x;

@@ -1,5 +1,6 @@
 #include "ov000/Actor.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -22,7 +23,6 @@ BOOL func_ov000_02191508(void *a);
 void *func_ov000_02191318(void *a, s32 b);
 void func_ov000_0218999c(u8 a, u8 b);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
-VObj *func_02065f88(s32 id, VecFx32 *pos);
 u16 FX_Atan2(s32 a, s32 b);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s16 i, s32 j);
 void func_ov000_0218996c(u8 a, u8 b);
@@ -226,7 +226,7 @@ void func_ov000_021aa978(Robo021ca458 *self) {
     if (eff != 0) {
         s32 sc = 0x4400;
         s32 id;
-        VObj *o;
+        EffectObj *o;
         if (a != NULL) {
             sc += a->radius * 2;
         }
@@ -234,11 +234,11 @@ void func_ov000_021aa978(Robo021ca458 *self) {
         if (eff == 2) {
             id = 0x3e9;
         }
-        o = func_02065f88(id, (VecFx32 *)((u8 *)self + 0x70));
-        o->vfunc_24(0, self->centerY, 0);
-        o->vfunc_0c(sc);
-        o->vfunc_30((u8 *)self + 0x7c);
-        LFLD(s32, o, 0x3c) = 0x99a;
+        o = func_02065f88(id, (VecFx32 *)(&self->pos));
+        o->AddPosXYZ(0, self->centerY, 0);
+        o->SetScaleAll(sc);
+        o->SetRot(&self->rot);
+        o->speed = 0x99a;
     }
     if (!hit || a == NULL) {
         return;

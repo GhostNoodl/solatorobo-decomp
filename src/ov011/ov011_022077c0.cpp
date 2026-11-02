@@ -38,8 +38,6 @@ extern void *data_02097e4c;
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);
-void EffectMgr_Kill(void *a, void *b);
-extern void *data_0214a420;
 
 static inline void Ov011_ChrKick(Ov011Scene *c, s32 v) {
     if (c->b0 && c->b2) {
@@ -109,9 +107,9 @@ void func_ov011_021ffcd0(Ov011SceneActor *self) {
         if (o != NULL) {
             func_ov003_021da48c(o, 0);
             o->tw.v08();
-            if (o->unk_38 != NULL) {
+            if (o->unk_38 != 0) {
                 EffectMgr_Kill(data_0214a420, o->unk_38);
-                o->unk_38 = NULL;
+                o->unk_38 = 0;
             }
         }
         self->unk_3c->unk_14 = self->radius << 1;
@@ -137,35 +135,31 @@ void func_ov011_021ffe10(Ov011SceneActor *self) {
     func_ov003_021d5348(self);
 }
 
-Ov011Eff *func_02065f88(s32 id, VecFx32 *v);
 void func_ov011_021ffe50(Ov011SceneActor *self) {
     if (self->fsm->st == 0) {
         Ov011Sa104 *o;
-        Ov011V *v;
+        EffectObj *v;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4812, 0x15);
         o = self->unk_104;
         if (o != NULL) {
             func_ov003_021da48c(o, 0);
             o->tw.v08();
-            if (o->unk_38 != NULL) {
+            if (o->unk_38 != 0) {
                 EffectMgr_Kill(data_0214a420, o->unk_38);
-                o->unk_38 = NULL;
+                o->unk_38 = 0;
             }
         }
         self->unk_3c->unk_14 = self->radius << 1;
         self->unk_3c->unk_19 = 0xff;
         v = func_02065f88(0x69, &self->pos);
         if (v != NULL) {
-            v->v0c(0x2800);
-            v->v24(0, 0x1000, 0);
+            v->SetScaleAll(0x2800);
+            v->AddPosXYZ(0, 0x1000, 0);
         }
     }
     func_ov003_021d6054(self);
 }
 
-Ov011Eff *EffectGroup_Create(const char *arc, const char *name, const VecFx32 *pos);
-Ov011Eff *func_020657b0(void *m, void *id);
-void EffectMgr_StopLoop(void *m, void *id);
 BOOL Ov011TwB_Start(void *self, const VecFx32 *to, const VecFx32 *from, s16 speed);
 
 static inline void VSet_ff38(VecFx32 *v, s32 x, s32 y, s32 z) {
@@ -212,20 +206,20 @@ void func_ov011_021fff38(Ov011SceneActor *self) {
     }
     case 2:
         if (o->seq.st == 0) {
-            Ov011Eff *g;
+            EffectObj *g;
             o->tw.v08();
             Ov011TwB_Start(&self->unk_104->tw, &t, home, 0x19a);
             self->unk_104->seq.st++;
             spawnPos = self->hit->check;
             g = EffectGroup_Create(data_ov011_02207260, data_ov011_0220725c, &spawnPos);
-            self->unk_104->unk_38 = (void *)g->unk_24;
-            g->unk_c8 = -1;
+            self->unk_104->unk_38 = g->id;
+            g->loopCount = -1;
         }
-        if (self->unk_104->unk_38 != NULL) {
-            Ov011Eff *e = func_020657b0(data_0214a420, self->unk_104->unk_38);
+        if (self->unk_104->unk_38 != 0) {
+            EffectObj *e = func_020657b0(data_0214a420, self->unk_104->unk_38);
             if (e != NULL) {
                 effPos = self->hit->check;
-                e->v18(&effPos);
+                e->SetPos(&effPos);
             }
         }
         self->unk_94_1 = 1;
@@ -235,9 +229,9 @@ void func_ov011_021fff38(Ov011SceneActor *self) {
             o->tw.v08();
             Ov011TwB_Start(&self->unk_104->tw, home, &t, 0x19a);
             self->unk_104->seq.st++;
-            if (self->unk_104->unk_38 != NULL) {
+            if (self->unk_104->unk_38 != 0) {
                 EffectMgr_StopLoop(data_0214a420, self->unk_104->unk_38);
-                self->unk_104->unk_38 = NULL;
+                self->unk_104->unk_38 = 0;
             }
             self->unk_f0_0 = 0;
         } else {
@@ -311,7 +305,6 @@ extern const Ov011Tbl6 data_ov011_022072c0;
 extern void *data_02097e4c;
 void func_ov000_02191618(void *a);
 u16 Ov003Vec_YawTo(VecFx32 *a, VecFx32 *b);
-Ov011Eff *func_02065f88(s32 id, VecFx32 *pos);
 void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 
@@ -344,8 +337,8 @@ void func_ov011_02200310(Ov011SceneActor *self) {
     }
     if (p->b0) {
         if (p->timer == 0) {
-            Ov011Eff *e;
-            s32 r;
+            EffectObj *e;
+            u16 r;
             if (!p->b1) {
                 Ov011_SetTw(self->unk_108, 0, 0x1000);
                 p = self->unk_10c;
@@ -372,8 +365,8 @@ void func_ov011_02200310(Ov011SceneActor *self) {
             v = self->unk_b8;
             r = Ov003Vec_YawTo(&v, &self->pos);
             e = func_02065f88(0x192, &self->pos);
-            e->v34(0, r, 0);
-            e->v14(0x4000, 0x4000, 0x4000);
+            e->SetRotXYZ(0, r, 0);
+            e->SetScaleXYZ(0x4000, 0x4000, 0x4000);
             func_02049f44(data_02097e4c, 0x32, &self->pos, 0);
         } else if (p->b1 == 1) {
             self->hit->unk_9a_5 = 1;
@@ -425,8 +418,6 @@ namespace m_0220068c {
 
 extern "C" {
 
-extern void *data_0214a420;
-void EffectMgr_Kill(void *a, void *b);
 void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
 void *func_ov011_021fb66c(void *self);
 void func_ov003_021d7800(void *p);
@@ -525,9 +516,9 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
     if (a != NULL) {
         func_ov003_021da48c(a, 0);
         a->tw.v08();
-        if (a->unk_38 != NULL) {
+        if (a->unk_38 != 0) {
             EffectMgr_Kill(data_0214a420, a->unk_38);
-            a->unk_38 = NULL;
+            a->unk_38 = 0;
         }
     }
     if (self->unk_108 != NULL) {

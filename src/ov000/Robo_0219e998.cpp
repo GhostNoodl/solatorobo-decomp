@@ -1,6 +1,7 @@
 #include "ov000/Actor.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/LoCommon.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u32 b0 : 1;
@@ -17,7 +18,6 @@ typedef struct {
 extern "C" {
 
 void func_ov000_021bd300(void *p);
-VObj *func_02065f88(s32 id, void *pos);
 BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg);
 
 static inline void MinB32_0219e998(Robo021ca458 *self, u16 n) {
@@ -145,7 +145,7 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
         break;
     case 10: {
         u8 *p;
-        VObj *e;
+        EffectObj *e;
         callBase = FALSE;
         LFLD(u16, ((u8 *)s->hp), 4) = msg->id;
         p = ((u8 *)s->hp);
@@ -161,8 +161,8 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
             m->blendMax = 0xa;
         }
         e = func_02065f88(0xcb, &s->pos);
-        s->unk_b44 = LFLD(s32, e, 0x24);
-        e->vfunc_14(0x99a, 0x1000, 0x99a);
+        s->unk_b44 = e->id;
+        e->SetScaleXYZ(0x99a, 0x1000, 0x99a);
         MinB32_0219e998(s, 0x5a);
         break;
     }

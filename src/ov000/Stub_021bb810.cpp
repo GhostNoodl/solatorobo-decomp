@@ -1,12 +1,13 @@
 #include "ov000/VObj.h"
 #include "Main/Sys/SysState.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     s32 unk_00;
     s32 unk_04;
     u8 unk_08;
     s32 unk_0c;
-    VObj *unk_10;
+    EffectObj *unk_10;
     s32 unk_14;
     s32 unk_18;
     s32 unk_1c;
@@ -15,8 +16,6 @@ SIZE_ASSERT(Obj021bb810, 0x20);
 
 extern "C" {
 
-extern void *data_0214a420;
-BOOL EffectMgr_Contains(void *p, VObj *obj);
 
 static inline void Obj021bb810_Init(Obj021bb810 *self, s32 a) {
     self->unk_00 = 1;
@@ -46,7 +45,7 @@ void func_ov000_021bb840(Obj021bb810 *self) {
         data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->unk_10 != NULL) {
             if (self->unk_10 != NULL) {
-                self->unk_10->vfunc_04();
+                self->unk_10->Delete();
             }
             self->unk_10 = NULL;
         }

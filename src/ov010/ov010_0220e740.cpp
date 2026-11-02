@@ -4,11 +4,6 @@
 
 extern "C" {
 
-extern void *data_0214a420;
-extern void MI_CpuCopy8(const void *src, void *dst, s32 size);
-extern VObj *func_02065f88(s32 a, VecFx32 *b);
-extern void EffectMgr_StopLoop(void *a, s32 b);
-extern VObj *func_020657b0(void *a, s32 b);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *c);
 extern void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
@@ -62,16 +57,16 @@ void func_ov010_0220e7c8(Ov010Path *self) {
     case 3:
         if (self->sm.st == 0) {
             VecFx32 p;
-            VObj *e;
+            EffectObj *e;
             p.x = self->owner->pos.x;
             p.y = self->owner->pos.y;
             p.z = self->owner->pos.z;
             e = func_02065f88(0x322, &p);
-            e->vfunc_0c(0xf00);
-            e->vfunc_20(&self->offset);
-            FLD(s32, e, 0xc8) = -1;
+            e->SetScaleAll(0xf00);
+            e->AddPos(&self->offset);
+            e->loopCount = -1;
             func_ov003_021da904(e, self->owner, &self->offset);
-            self->fxHandle = FLD(s32, e, 0x24);
+            self->fxHandle = e->id;
             self->sm.st++;
         } else {
             u16 lim = Ov010_SubClamp(self->duration, 40);
@@ -84,18 +79,18 @@ void func_ov010_0220e7c8(Ov010Path *self) {
         }
         break;
     case 4: {
-        VObj *fx;
+        EffectObj *fx;
         if (self->sm.st == 0) {
             VecFx32 p;
-            VObj *e;
+            EffectObj *e;
             p.x = self->owner->pos.x;
             p.y = self->owner->pos.y;
             p.z = self->owner->pos.z;
             e = func_ov003_021da8e4(self->fxId, &p, 0xe66);
-            e->vfunc_0c(self->scale);
-            e->vfunc_20(&self->offset);
-            FLD(s32, e, 0x3c) = self->unk_10;
-            self->fxHandle = FLD(s32, e, 0x24);
+            e->SetScaleAll(self->scale);
+            e->AddPos(&self->offset);
+            e->speed = self->unk_10;
+            self->fxHandle = e->id;
             self->sm.st++;
         }
         fx = func_020657b0(data_0214a420, self->fxHandle);
@@ -105,7 +100,7 @@ void func_ov010_0220e7c8(Ov010Path *self) {
             q.y = self->owner->pos.y;
             q.z = self->owner->pos.z;
             VEC_Add(&q, &self->offset, &q);
-            fx->vfunc_18(&q);
+            fx->SetPos(&q);
         }
         if (self->timer < self->duration) {
             return;

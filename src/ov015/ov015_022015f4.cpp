@@ -5,7 +5,6 @@ namespace Dup { extern "C" Ov015Stat data_ov015_0221332c; }
 extern "C" {
 
 extern char data_ov015_022128c1[];
-extern Ov015Shared *data_ov015_02213368;
 extern Ov015Globals data_ov015_02213320;
 extern u8 data_ov015_0221291c[];
 extern u8 data_ov015_02213198[];
@@ -15,7 +14,6 @@ void *func_0204b370(void *p);
 u8 *func_02070744(u16 id);
 void Ov015CamPair_Init(Ov015CamPair *self);
 void func_ov015_02210b3c(u8 *self);
-s32 func_ov015_02211160(u8 *self, u16 *out, u32 n);
 void func_ov015_02211890(Ov015Info38 *self, u16 id, s32 mode);
 void func_ov015_02209024(Ov015FishInfo *self, u16 a, const void *src);
 void *Ov015Fish_Ctor(Ov015Fish *self);
@@ -64,8 +62,8 @@ BOOL func_ov015_02201618(Ov015Game *self) {
         l->count = 0;
     }
     self->fishList = l;
-    n = func_ov015_02211160((u8 *)data_ov015_02213368, ids, 3);
-    func_ov015_02211890(&self->info, FLD(u16, data_ov015_02213368, 0x8), self->ship->modelIdx);
+    n = func_ov015_02211160(data_ov015_02213368, ids, 3);
+    func_ov015_02211890(&self->info, data_ov015_02213368->unk_08, self->ship->modelIdx);
     for (i = 0; i < n; i++) {
         u16 id = ids[i];
         u8 *def = func_02070744(id);
@@ -128,15 +126,12 @@ BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 BOOL func_ov015_02209500(Ov015Fish *self);
-s32 func_ov015_021fb474(u8 *self);
 BOOL func_ov015_02210c28(void);
 void func_ov000_02190a80(void *a, s32 b);
 s32 func_ov015_02210c30(u8 *self, Ov015Stat *a, s32 b);
 BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a, Ov015CamPair *b, Ov015List *c, Ov015Info38 *d);
 BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamPair *c, Ov015Info38 *d);
-BOOL func_ov015_021fb5d4(u8 *self);
 void func_ov015_0220101c(Ov015Game *self);
-BOOL func_ov015_0220f568(u8 *self);
 
 static inline BOOL Ov015_SysB4(void) {
     return data_02097d48->unk_a30_4 ? TRUE : FALSE;
@@ -218,7 +213,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
     case 0x14: {
         Ov015Node *n;
         bool a;
-        u8 *q;
+        Ov015Hud *q;
         u8 *p;
         bool d;
         bool c;
@@ -246,20 +241,20 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
             c &= func_ov015_0220947c((Ov015Fish *)n->key);
         }
         c = b & c;
-        q = self->unk_28;
+        q = self->hud;
         d = false;
         func_0206e900(buf, data_ov015_022128ab);
-        switch (FLD(s32, q, 4)) {
+        switch (q->unk_04) {
         case 0:
             func_020359d0(buf, 7, 0);
-            FLD(s32, q, 4) = 10;
+            q->unk_04 = 10;
         case 10:
             if (func_02035b90(buf, 7) == 0) {
                 break;
             }
-            FLD(s32, q, 4) = 0x1e;
+            q->unk_04 = 0x1e;
         case 0x1e:
-            FLD(s32, q, 4) = 0x1e;
+            q->unk_04 = 0x1e;
             d = true;
             break;
         }
@@ -292,7 +287,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         for (n = self->fishList->head; n != NULL; n = n->next) {
             func_ov015_02209500((Ov015Fish *)n->key);
         }
-        func_ov015_021fb474(self->unk_28);
+        func_ov015_021fb474(self->hud);
         if (self->unk_90 != NULL) {
             func_ov015_02210c28();
         }
@@ -338,7 +333,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         Ov015_ModelsReset(self->unk_20);
         if (self->unk_90 == NULL || self->phase2.step < 2 ||
             !func_ov015_02210c30(self->unk_90, &data_ov015_0221332c, 0x32)) {
-            func_ov015_021fb5d4(self->unk_28);
+            func_ov015_021fb5d4(self->hud);
             if (!func_ov015_02200204((Ov015Obj34 *)&self->phase2, self->ship, (Ov015Fish *)self->fishList->head->key,
                                      self->cam, &self->info)) {
                 self->step = 0x3c;
@@ -381,7 +376,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         break;
     }
     case 0x46:
-        if (!func_ov015_0220f568(self->unk_2c)) {
+        if (!func_ov015_0220f568(self->result)) {
             self->step = 0x50;
         }
         break;

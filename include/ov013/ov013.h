@@ -9,6 +9,7 @@
 #include "ov000/Actor.h"
 #include "ov000/ObjLayouts.h"
 #include "ov003/Actor.h"
+#include "Main/Effect/Effect.h"
 #include "ov003/Shot.h"
 
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.

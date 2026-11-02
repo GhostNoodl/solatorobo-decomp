@@ -7,7 +7,6 @@ void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 s32 Rand_PlusMinus(s32 max);
 extern const VecFx32 data_02092a50;
 extern void *data_02097e4c;
-Ov011Eff *func_02065f88(s32 id, VecFx32 *pos);
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 void func_ov000_0218996c(s32 a, s32 b);
 void *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 kind, s32 chance);
@@ -44,7 +43,7 @@ void func_ov011_022063b0(Ov011Act7da4 *self) {
         self->unk_36f = Rand_UpTo(5);
         self->fsm->st++;
     case 1: {
-        Ov011Eff *e;
+        EffectObj *e;
         ActorSub40 *s1 = self->fsm;
         VecFx32 *arr;
         u8 c;
@@ -65,12 +64,12 @@ void func_ov011_022063b0(Ov011Act7da4 *self) {
         VEC_Add(&v, &data_02092a50, &v);
         e = func_02065f88(0x389, &v);
         if (e != NULL) {
-            e->v0c(0x3000);
-            e->unk_3c = 0xccd;
+            e->SetScaleAll(0x3000);
+            e->speed = 0xccd;
         }
         e = func_02065f88(0x5e4, &v);
         if (e != NULL) {
-            e->v0c(0x2000);
+            e->SetScaleAll(0x2000);
         }
         func_02049f44(data_02097e4c, 0x5b, &v, 0);
         if (++self->unk_36e >= 3) {
@@ -152,22 +151,22 @@ void func_ov011_02206920(Ov011Act7da4 *self) {
     ActorSub40 *s = self->fsm;
     switch (s->st) {
     case 0: {
-        Ov011Eff *e;
+        EffectObj *e;
         Ov011_VecSet(&self->unk_84, 0, 0x3000, -0xf000);
         Ov011_MulVec33(&self->unk_84, NNS_G3dGlbGetInvV(), &v);
         VEC_Add(&v, &data_02092a50, &v);
         e = func_02065f88(0x389, &v);
         if (e != NULL) {
-            e->v0c(0x5000);
-            e->unk_3c = 0xccd;
+            e->SetScaleAll(0x5000);
+            e->speed = 0xccd;
         }
         e = func_02065f88(0x5e4, &v);
         if (e != NULL) {
-            e->v0c(0x3800);
+            e->SetScaleAll(0x3800);
         }
         e = func_02065f88(0x322, &v);
         if (e != NULL) {
-            e->v0c(0x3000);
+            e->SetScaleAll(0x3000);
         }
         func_0204a028(data_02097e4c, 0x5b, &v, -2);
         self->fsm->st++;
@@ -254,7 +253,7 @@ void func_ov011_02206e18(Ov011Act7da4 *self) {
     case 0: {
         ActorSub44 *p;
         Actor *o;
-        Ov011Eff *e;
+        EffectObj *e;
         *self->hp = 0;
         p = self->unk_44;
         p->unk_22_0 = 0;
@@ -268,17 +267,17 @@ void func_ov011_02206e18(Ov011Act7da4 *self) {
             o->unk_1a = 1;
         }
         e = func_02065f88(0x69, &self->pos);
-        e->v14(0x7800, 0x7800, 0x7800);
+        e->SetScaleXYZ(0x7800, 0x7800, 0x7800);
         self->fsm->st++;
     }
     case 1: {
         u16 t = self->fsm->timer;
         if (t > 0x78) {
-            Ov011Eff *e;
+            EffectObj *e;
             func_ov000_0218996c(0xf, 0x3c);
             func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
             e = func_02065f88(0x322, &self->pos);
-            e->v14(0x5800, 0x5800, 0x5800);
+            e->SetScaleXYZ(0x5800, 0x5800, 0x5800);
             self->fsm->timer = 0x29;
             self->fsm->st++;
             return;

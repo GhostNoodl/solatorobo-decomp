@@ -19,7 +19,6 @@ extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern void func_ov000_021911c8(void *m, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 void func_ov009_022117e4(Ov009ActVt_02217aac *self) {
     VecFx32 p;
@@ -48,7 +47,7 @@ void func_ov009_022117e4(Ov009ActVt_02217aac *self) {
         self->fsm->timer++;
         t = self->fsm->timer;
         if (t == 0xdc) {
-            Ov009V *e;
+            EffectObj *e;
             if (self->unk_ff == 0) {
                 return;
             }
@@ -56,8 +55,8 @@ void func_ov009_022117e4(Ov009ActVt_02217aac *self) {
             func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
             func_02049f44(data_02097e4c, 0x53, &self->pos, 0);
             e = func_02065f88(5, &self->pos);
-            e->v24(0, self->centerY + (self->centerY >> 1), 0);
-            e->v14((self->radius >> 1) + 0x3800, (self->radius >> 1) + 0x3800, (self->radius >> 1) + 0x3800);
+            e->AddPosXYZ(0, self->centerY + (self->centerY >> 1), 0);
+            e->SetScaleXYZ((self->radius >> 1) + 0x3800, (self->radius >> 1) + 0x3800, (self->radius >> 1) + 0x3800);
             return;
         }
         if (t >= 0xfa) {
@@ -92,7 +91,7 @@ void func_ov009_022117e4(Ov009ActVt_02217aac *self) {
     }
     case 2: {
         ActorSub40 *st = self->fsm;
-        Ov009V *e;
+        EffectObj *e;
         s32 h;
         if (st->timer != 0) {
             st->timer--;
@@ -108,8 +107,8 @@ void func_ov009_022117e4(Ov009ActVt_02217aac *self) {
         h = self->height;
         q.y += h + Rand_PlusMinus(h >> 2);
         e = func_02065f88(0x325, &q);
-        e->v34(0xc000, 0, 0);
-        e->v0c(0xccd);
+        e->SetRotXYZ(0xc000, 0, 0);
+        e->SetScaleAll(0xccd);
         self->fsm->timer = Rand_UpTo(0x28) + 0x3c;
         return;
     }

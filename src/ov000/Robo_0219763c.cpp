@@ -2,6 +2,7 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/VObj.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -27,7 +28,6 @@ extern Ent0219763c data_ov000_021c9ecc[];
 extern void *data_02097e4c;
 void func_0203f364(void *a);
 void func_ov000_0218bed8(void *a, s32 b, void *c);
-VObj *func_02065f88(s32 a, void *b);
 void func_020627a0(u16 kind, u16 id);
 void func_020627dc(u16 sfx);
 void func_020627c8(void);
@@ -96,12 +96,12 @@ static inline void Die0219763c(VObj *obj) {
 }
 
 static inline void Spawn0219763c(ActorEx *self, s16 id, const s16 *scale, VecFx32 *p) {
-    VObj *fx = func_02065f88(id, p);
+    EffectObj *fx = func_02065f88(id, p);
     s32 s = *scale << 4;
     if (s == 0) {
         s = self->radius + (self->radius >> 3);
     }
-    fx->vfunc_0c(s);
+    fx->SetScaleAll(s);
     if (!self->unk_cc_5) {
         MIi_CpuClear32(-1, (u8 *)fx + 0x84, 0x40);
     }

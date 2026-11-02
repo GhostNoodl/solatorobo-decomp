@@ -11,12 +11,11 @@ extern u8 *data_ov002_021f0f9c;
 void func_ov002_021e7c1c(void);
 void func_ov015_0220ec40(Ov015ResultPanel *self);
 
-extern Ov015Shared *data_ov015_02213368;
 extern u8 *data_0214a424;
 void func_ov000_0215d980(void *a, s32 b, s32 c);
 
-static inline BOOL Ov015_IsKind5f1a4(u8 *o) {
-    return FLD(s32, o, 0x4) == 5 ? TRUE : FALSE;
+static inline BOOL Ov015_IsKind5f1a4(UiObj *o) {
+    return o->state == 5 ? TRUE : FALSE;
 }
 
 static inline void Ov015_SetMoney2(u8 *g, u32 v) {
@@ -48,7 +47,7 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
         }
         break;
     case 10:
-        if (self->timer <= self->unk_04->unk_34) {
+        if (self->timer <= self->unk_04->openLen) {
             self->timer += 0x1000;
         } else {
             self->timer = 0;
@@ -57,7 +56,7 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
         }
         break;
     case 0x14: {
-        s32 n = FLD(s32, data_ov015_02213368, 0x28);
+        s32 n = data_ov015_02213368->total;
         if (n != 0) {
             if (FLD(u16, data_02097dc8, 0x12) & 1) {
                 func_ov000_0215d980(self->unk_10, ((s32)self->unk_10->value) + n, 0);
@@ -95,7 +94,7 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
                 func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
                 Ov015_SetMoney2(data_0214a424, self->unk_10->value);
                 self->unk_04->flags |= 2;
-                FLD(u32, self->unk_08, 0xc) |= 2;
+                self->unk_08->flags |= 2;
                 self->unk_0c->flags |= 2;
                 self->unk_10->flags |= 2;
                 self->unk_14->flags |= 2;
@@ -107,7 +106,7 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
         }
         break;
     case 0x32:
-        if (Ov015_IsKind5f1a4(((u8 *)self->unk_04)) && Ov015_IsKind5f1a4(self->unk_08) && Ov015_IsKind5f1a4(((u8 *)self->unk_14))) {
+        if (Ov015_IsKind5f1a4(self->unk_04) && Ov015_IsKind5f1a4(self->unk_08) && Ov015_IsKind5f1a4(self->unk_14)) {
             self->state = 0x3c;
         }
         break;
@@ -126,7 +125,7 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
     }
     if (self->state >= 10) {
         ((Ov015V *)self->unk_04)->v1c();
-        ((Ov015V *)self->unk_08)->v1c();
+        VCALL(self->unk_08)->v1c();
         ((Ov015V *)self->unk_0c)->v1c();
         ((Ov015V *)self->unk_10)->v1c();
         ((Ov015V *)self->unk_14)->v1c();
@@ -160,12 +159,12 @@ BOOL func_ov015_0220f1a4(Ov015ResultPanel *self) {
         break;
     case 10: {
         u32 t;
-        if (self->timer >= self->unk_14->unk_34 && (t = FLD(u16, data_02097dc8, 0x12) & 1) != 0) {
+        if (self->timer >= self->unk_14->openLen && (t = FLD(u16, data_02097dc8, 0x12) & 1) != 0) {
             if (t) {
                 func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
             }
             self->unk_04->flags |= 2;
-            FLD(u32, self->unk_08, 0xc) |= 2;
+            self->unk_08->flags |= 2;
             self->unk_0c->flags |= 2;
             self->unk_10->flags |= 2;
             self->unk_14->flags |= 2;
@@ -177,7 +176,7 @@ BOOL func_ov015_0220f1a4(Ov015ResultPanel *self) {
         break;
     }
     case 0x14:
-        if (Ov015_IsKind5f1a4(((u8 *)self->unk_04)) && Ov015_IsKind5f1a4(self->unk_08) && Ov015_IsKind5f1a4(((u8 *)self->unk_14))) {
+        if (Ov015_IsKind5f1a4(self->unk_04) && Ov015_IsKind5f1a4(self->unk_08) && Ov015_IsKind5f1a4(self->unk_14)) {
             self->state = 0x1e;
         }
         break;
@@ -196,7 +195,7 @@ BOOL func_ov015_0220f1a4(Ov015ResultPanel *self) {
     }
     if (self->state >= 10) {
         ((Ov015V *)self->unk_04)->v1c();
-        ((Ov015V *)self->unk_08)->v1c();
+        VCALL(self->unk_08)->v1c();
         ((Ov015V *)self->unk_0c)->v1c();
         ((Ov015V *)self->unk_10)->v1c();
         ((Ov015V *)self->unk_14)->v1c();
@@ -209,7 +208,7 @@ Ov015Result *Ov015Result_Ctor(Ov015Result *self) {
     self->state = 0;
     self->mode = 1;
     self->unk_0c = 0;
-    FLD(s32, self, 0x10) = 0;
+    self->panel = NULL;
     return self;
 }
 
@@ -217,11 +216,11 @@ void func_ov015_0220f470(Ov015Result *self) {
     Ov015ResultPanel *p = (Ov015ResultPanel *)Heap_Alloc(0x64);
     if (p != NULL) {
         SET_VT(p, data_ov015_02213188);
-        FLD(s32, p, 0x4) = 0;
-        FLD(s32, p, 0x8) = 0;
-        FLD(s32, p, 0xc) = 0;
-        FLD(s32, p, 0x10) = 0;
-        FLD(s32, p, 0x14) = 0;
+        p->unk_04 = NULL;
+        p->unk_08 = NULL;
+        p->unk_0c = NULL;
+        p->unk_10 = NULL;
+        p->unk_14 = NULL;
         p->state = 0;
         p->timer = 0;
         MI_CpuFill8(p->name, 0, 0x40);
@@ -300,7 +299,7 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
         self->state = 0x14;
     case 0x14: {
         BOOL ok = TRUE;
-        switch (FLD(s32, self->panel, 0x60)) {
+        switch (self->panel->mode) {
         case 1:
             ok = func_ov015_0220ed70(self->panel);
             break;

@@ -100,7 +100,6 @@ void func_ov009_021fc8f4(Ov003Actor *self) {
 extern void func_0203f364(ActorSub48 *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern void func_ov000_0219b5dc(u16 id, const VecFx32 *pos, const u16 *rot);
 extern void func_ov003_021ce9c4(u16 id);
 extern u8 *data_0214a424;
@@ -115,7 +114,7 @@ void func_ov009_021fcad0(Ov003Actor *self) {
     switch (st->st) {
     case 0: {
         Model0218fe1c *m;
-        Ov009V *o;
+        EffectObj *o;
         u32 n;
         self->hp[0] = 0;
         if (self->hit != NULL) {
@@ -140,7 +139,7 @@ void func_ov009_021fcad0(Ov003Actor *self) {
         o = func_02065f88(3, &p);
         if (o != NULL) {
             s32 s = self->radius + (self->radius >> 3);
-            o->v14(s, s, s);
+            o->SetScaleXYZ(s, s, s);
         }
         func_ov000_0219b5dc(FLD(u16, self->unk_b0, 6), &p, &self->rot_x);
         func_ov003_021ce9c4(FLD(u16, self->unk_b0, 4));

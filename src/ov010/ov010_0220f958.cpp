@@ -561,7 +561,7 @@ void func_ov010_02204d44(Ov010Obj02210154 *self) {
         u16 r;
         Ov010Arena *c;
         s32 y;
-        VObj *e;
+        EffectObj *e;
         c = self->arena;
         d.x = q.x - c->center.x;
         d.y = q.y - c->center.y;
@@ -589,7 +589,7 @@ void func_ov010_02204d44(Ov010Obj02210154 *self) {
         self->friction = 0;
         self->gravity = 0;
         e = func_ov010_0220eaf0(self, &self->pos, &v);
-        e->vfunc_0c(0x2000);
+        e->SetScaleAll(0x2000);
         self->fsm->st = 0x15;
         if (self->unk_f1 != 0) {
             self->unk_f1 = 0;
@@ -737,10 +737,8 @@ extern void MTX_MultVec33(VecFx32 *v, Ov010Mtx33 *m, VecFx32 *out);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern void VEC_Normalize(const VecFx32 *in, VecFx32 *out);
 extern u16 FX_Atan2(s32 y, s32 x);
-extern VObj *func_02065f88(s32 id, VecFx32 *pos);
 extern void func_ov010_02207828(void *self);
 extern void Actor_TurnToActor(void *self, void *other, s32 a);
-extern VObj *Effect3D_Create(const char *a, const char *b, s32 c, void *d);
 extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern void Actor_Move(void *self, s32 a);
@@ -820,7 +818,7 @@ void func_ov010_02205444(Ov010Obj02210154 *self) {
         {
             Ov010_ClearSpeed(self);
             VecFx32 c = Ov010_Center(self);
-            func_02065f88(0x5e2, &c)->vfunc_0c(0x3000);
+            func_02065f88(0x5e2, &c)->SetScaleAll(0x3000);
         }
         self->fsm->st = 0xb;
         break;
@@ -828,7 +826,7 @@ void func_ov010_02205444(Ov010Obj02210154 *self) {
     case 0xb:
         func_ov010_02207828(self);
         if (self->fsm->timer % 30 == 0) {
-            func_02065f88(0x66, &self->pos)->vfunc_0c(0x2800);
+            func_02065f88(0x66, &self->pos)->SetScaleAll(0x2800);
         }
         self->fsm->timer++;
         st = self->fsm;
@@ -851,16 +849,16 @@ void func_ov010_02205444(Ov010Obj02210154 *self) {
         VecFx32 a;
         VecFx32 b;
         VecFx32 c2;
-        VObj *o2;
+        EffectObj *o2;
         *(Ov010Blk12 *)&a = data_ov010_0220f0c0;
         *(Ov010Blk12 *)&b = data_ov010_0220f0cc;
         func_ov003_021d9980(&c2, self->rot_y, &b);
         self->moveYaw = self->rot_y;
         o2 = Effect3D_Create(data_ov010_0220f054, data_ov010_0220f04c, 0, &self->pos);
-        FLD(u8, o2, 0x28) = 0;
-        o2->vfunc_34(0, self->moveYaw, 0);
-        o2->vfunc_10(&a);
-        o2->vfunc_20(&c2);
+        o2->unk_28 = 0;
+        o2->SetRotXYZ(0, self->moveYaw, 0);
+        o2->SetScale(&a);
+        o2->AddPos(&c2);
         self->fsm->st = 0x1f;
         func_02049f44(data_02097e4c, 0x44, &self->pos, 0);
         break;
@@ -967,7 +965,6 @@ extern u8 *func_02070558(u16 id);
 extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *o);
 extern void func_ov010_0220de4c(void *p, u8 a);
-extern VObj *func_02065f88(s32 a, VecFx32 *b);
 extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
 
 void func_ov010_02205c30(Ov010Obj02210154 *self) {
@@ -1017,7 +1014,7 @@ void func_ov010_02205c30(Ov010Obj02210154 *self) {
                 func_ov010_0220de4c(o, self->step.b);
             }
             self->fsm->st = 3;
-            func_02065f88(0x12c, &v)->vfunc_0c(0x2000);
+            func_02065f88(0x12c, &v)->SetScaleAll(0x2000);
             func_02049f44(data_02097e4c, 0x65, &self->pos, 0);
             func_02049f44(data_02097e4c, 0x82, &self->pos, 0);
         }
@@ -1235,7 +1232,7 @@ void func_ov010_0220640c(Ov010Obj02210154 *self) {
     case 0: {
         ActorSub48 *m48;
         ActorSub44 *n;
-        VObj *o;
+        EffectObj *o;
         Ov010FadeScreen scr;
         func_ov003_021d97fc(&self->seq, 1);
         m48 = self->hit;
@@ -1255,7 +1252,7 @@ void func_ov010_0220640c(Ov010Obj02210154 *self) {
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4817, 0x15);
         o = func_02065f88(0x69, &self->pos);
         if (o != NULL) {
-            o->vfunc_0c(0x5000);
+            o->SetScaleAll(0x5000);
         }
         func_02049f44(data_02097e4c, self->sfx[1], &self->pos, 0);
         self->fsm->st = 1;
@@ -1273,9 +1270,9 @@ void func_ov010_0220640c(Ov010Obj02210154 *self) {
             self->velY = Ov010g_Mul(self->velY, 0xf80);
         }
         if (self->fsm->timer >= 0x5a && Ov003Timer_IsStopped(&self->timer)) {
-            VObj *o = func_02065f88(0x69, &self->pos);
+            EffectObj *o = func_02065f88(0x69, &self->pos);
             if (o != NULL) {
-                o->vfunc_0c(0x5000);
+                o->SetScaleAll(0x5000);
             }
             self->fsm->timer = 0;
             self->fsm->st = 2;
@@ -1341,7 +1338,7 @@ void func_ov010_02206784(Ov010Obj02210154 *self) {
     switch (self->fsm->st) {
     case 0: {
         VecFx32 p;
-        VObj *e;
+        EffectObj *e;
         u16 d;
         func_ov010_02204030(&p, self->arena, &self->pos, 4, 0);
         Ov010_VecCopy(&self->unk_b8, &p);
@@ -1355,10 +1352,10 @@ void func_ov010_02206784(Ov010Obj02210154 *self) {
         self->friction = 0;
         self->gravity = 0;
         e = func_ov010_0220eaf0(self, &self->pos, &p);
-        e->vfunc_0c(0x2000);
+        e->SetScaleAll(0x2000);
         func_02049f44(data_02097e4c, 0x29, &self->pos, 0);
         self->fsm->st = 1;
-        d = FLD(u16, e, 0x66) - self->rot_y;
+        d = e->rot.y - self->rot_y;
         if (d >= 0x1400 && d <= 0x6c00) {
             func_ov000_02190cb0(self->model, data_ov010_0220f048, 0x800, 0);
             return;
@@ -1479,13 +1476,13 @@ void func_ov010_02206974(Ov010Obj02210154 *self) {
         }
         break;
     case 0x30: {
-        VObj *e;
+        EffectObj *e;
         u16 d;
         Ov010f_ClearVel(self);
         self->speed = Ov010f_FxMul(self->unk_b0->unk_00, 0x1800);
         e = func_ov010_0220eaf0(self, &self->pos, &c);
-        e->vfunc_0c(0x2000);
-        d = FLD(u16, e, 0x66) - self->rot_y;
+        e->SetScaleAll(0x2000);
+        d = e->rot.y - self->rot_y;
         if (d >= 0x1400 && d <= 0x6c00) {
             func_ov000_02190cb0(self->model, data_ov010_0220f048, 0x800, 0);
         } else if (d >= 0x9400 && d <= 0xec00) {
@@ -1540,7 +1537,6 @@ extern "C" {
 extern void *data_02097e4c;
 extern void Ov003StateMachine_Leave(void *p);
 extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
-extern VObj *func_02065f88(s32 a, VecFx32 *b);
 
 static inline VecFx32 Ov010_Center(Actor *self) {
     VecFx32 p;
@@ -1600,9 +1596,9 @@ void func_ov010_02207064(Ov010Obj02210154 *self) {
     case 0: {
         s32 sc = Ov010_FxMul(self->radius, 0x1800);
         VecFx32 q = Ov010_Center(self);
-        VObj *fx = func_02065f88(0x196, &q);
-        fx->vfunc_0c(sc);
-        FLD(s32, fx, 0x3c) = 0x1000;
+        EffectObj *fx = func_02065f88(0x196, &q);
+        fx->SetScaleAll(sc);
+        fx->speed = 0x1000;
         func_02049f44(data_02097e4c, 0x44, &self->pos, 0);
         self->fsm->st = 1;
         break;
@@ -1678,7 +1674,7 @@ void func_ov010_022071a0(Ov010Obj02210154 *self) {
         u16 ang = FX_Atan2(c->center.x - self->pos.x, c->center.z - self->pos.z) + 0x7fff;
         u16 d = func_ov010_02208e90(self->arena->radius, 0x3000);
         s32 y;
-        VObj *e;
+        EffectObj *e;
         u16 diff;
         if (func_0204045c() % 2 == 0) {
             ang += d;
@@ -1697,8 +1693,8 @@ void func_ov010_022071a0(Ov010Obj02210154 *self) {
         Actor_Move(self, 0);
         self->speed = 0x400;
         e = func_ov010_0220eaf0(self, &self->pos, &v);
-        e->vfunc_0c(0x2000);
-        diff = FLD(u16, e, 0x66) - self->rot_y;
+        e->SetScaleAll(0x2000);
+        diff = e->rot.y - self->rot_y;
         if (diff >= 0x1400 && diff <= 0x6c00) {
             func_ov000_02190cb0(self->model, data_ov010_0220f048, 0x800, 0);
         } else if (diff >= 0x9400 && diff <= 0xec00) {

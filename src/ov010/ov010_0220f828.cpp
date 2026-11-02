@@ -170,13 +170,6 @@ struct Ov010FxBits {
 extern "C" {
 
 extern void *data_ov000_021ccd68;
-extern void *data_0214a420;
-extern VObj *Effect3D_Create(const char *a, const char *b, s32 c, VecFx32 *pos);
-extern VObj *EffectGroup_Create(const char *a, const char *b, VecFx32 *pos);
-extern VObj *func_02065f88(s32 id, VecFx32 *pos);
-extern VObj *func_020657b0(void *mgr, s32 h);
-extern void EffectMgr_Kill(void *mgr, s32 h);
-extern void EffectMgr_StopLoop(void *mgr, s32 h);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void *func_ov000_021985c0(void *p);
@@ -214,15 +207,15 @@ void func_ov010_022000d8(Ov010FxObj *o) {
         switch (o->st.st) {
         case 0: {
             const char *m = data_ov010_0220ef68;
-            VObj *e;
-            e = (VObj *)Effect3D_Create(m, data_ov010_0220ef70, 0, &o->pos);
-            FLD(u8, e, 0x28) = 0;
-            FLD(s32, e, 0xc8) = -1;
-            o->fx0 = FLD(s32, e, 0x24);
-            e = (VObj *)Effect3D_Create(m, data_ov010_0220ef6c, 0, &o->pos);
-            FLD(u8, e, 0x28) = 0;
-            FLD(s32, e, 0xc8) = -1;
-            o->fx1 = FLD(s32, e, 0x24);
+            EffectObj *e;
+            e = Effect3D_Create(m, data_ov010_0220ef70, 0, &o->pos);
+            e->unk_28 = 0;
+            e->loopCount = -1;
+            o->fx0 = e->id;
+            e = Effect3D_Create(m, data_ov010_0220ef6c, 0, &o->pos);
+            e->unk_28 = 0;
+            e->loopCount = -1;
+            o->fx1 = e->id;
             o->unk_08 = 0x80;
             o->st.st = 0xa;
             break;
@@ -272,11 +265,11 @@ void func_ov010_022000d8(Ov010FxObj *o) {
                         }
                         p = *list[j];
                         if (FLD(Ov010FxBits, b, 0x93).f) {
-                            VObj *e = func_02065f88(0x327, &p);
-                            e->vfunc_0c(FLD(s32, b, 0x64) << 1);
+                            EffectObj *e = func_02065f88(0x327, &p);
+                            e->SetScaleAll(FLD(s32, b, 0x64) << 1);
                         } else {
-                            VObj *e = EffectGroup_Create(m0, m3, &p);
-                            e->vfunc_14(o->unk_06, o->unk_06, o->unk_06);
+                            EffectObj *e = EffectGroup_Create(m0, m3, &p);
+                            e->SetScaleXYZ(o->unk_06, o->unk_06, o->unk_06);
                         }
                     } while (++j < n);
                 }
@@ -307,11 +300,11 @@ void func_ov010_022000d8(Ov010FxObj *o) {
             }
             break;
         case 0xa: {
-            VObj *e = func_02065f88(0x25d, &o->pos);
-            e->vfunc_18(&o->pos);
-            e->vfunc_14(o->unk_06, o->unk_06, o->unk_0a);
-            e->vfunc_34(0, o->ry, 0);
-            o->fx2 = FLD(s32, e, 0x24);
+            EffectObj *e = func_02065f88(0x25d, &o->pos);
+            e->SetPos(&o->pos);
+            e->SetScaleXYZ(o->unk_06, o->unk_06, o->unk_0a);
+            e->SetRotXYZ(0, o->ry, 0);
+            o->fx2 = e->id;
             o->st.st = 0xb;
             break;
         }
@@ -337,11 +330,11 @@ void func_ov010_022000d8(Ov010FxObj *o) {
     h[0] = o->fx0;
     h[1] = o->fx1;
     for (i = 0; i < 2; i++) {
-        VObj *e = func_020657b0(data_0214a420, h[i]);
+        EffectObj *e = func_020657b0(data_0214a420, h[i]);
         if (e != NULL) {
-            e->vfunc_18(&o->pos);
-            e->vfunc_14(o->unk_08, o->unk_08, o->unk_0a);
-            e->vfunc_34(o->rx, o->ry, 0);
+            e->SetPos(&o->pos);
+            e->SetScaleXYZ(o->unk_08, o->unk_08, o->unk_0a);
+            e->SetRotXYZ(o->rx, o->ry, 0);
         }
     }
     }
@@ -401,9 +394,7 @@ BOOL func_ov010_022006fc(Ov010Beam *o, u16 a, u16 b, u8 c, u16 d) {
     return TRUE;
 }
 
-extern void *data_0214a420;
 extern void *data_02097e4c;
-extern void EffectMgr_Kill(void *a, s32 b);
 extern BOOL func_ov010_02200048(Ov010FxObj *o, u16 a, u16 b, u8 c, u16 d);
 extern BOOL func_ov010_02200c98(Ov010Beam *o);
 extern void *func_0204a028(void *a, s32 b, void *c, s32 d);
@@ -707,12 +698,6 @@ BOOL func_ov010_02200dcc(Ov010BeamSet *o, u16 a, u16 b, u8 c, u16 d) {
 
 // ---- merged from ov010_02200ee0.cpp
 namespace m_02200ee0 {
-struct Ov010Heap {
-    u32 cur;
-    u32 unk_04;
-    u32 def;
-};
-
 struct Ov010PlFlags {
     u32 b0 : 12;
     u32 b12 : 2;
@@ -721,9 +706,6 @@ struct Ov010PlFlags {
 
 extern "C" {
 
-extern void *data_0214a420;
-extern Ov010Heap *data_02097dd0;
-extern void EffectMgr_Kill(void *a, s32 b);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern void func_ov010_02200a00(Ov010Beam *o);
 extern Robo021ca458 *func_ov000_0219bf90(void);
@@ -755,11 +737,11 @@ void func_ov010_02200ee0(Ov010BeamSet *o) {
         return;
     }
     for (n = o->beams; n != NULL; n = next) {
-        u32 saved;
+        void *saved;
         next = n->next;
         Ov010Beam_Reset(&n->beam);
         saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->def;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (n != NULL) {
             if (n != NULL) {
                 Ov010Beam_Reset(&n->beam);

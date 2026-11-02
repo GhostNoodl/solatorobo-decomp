@@ -3,11 +3,7 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
-
-typedef struct {
-    u8 pad[0x258];
-    VecFx32 camPos;
-} Glb_021afaf8;
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u16 b0 : 1;
@@ -44,12 +40,10 @@ extern "C" const char data_ov000_021cc747[];
 }
 
 extern "C" {
-extern Glb_021afaf8 NNS_G3dGlb;
 extern Def_021afaf8 data_ov000_021ca398[];
 extern Def_021afaf8 data_ov000_021ca248[];
 extern void *data_ov000_021ccd68;
 u8 *func_0206ef10(u16 id);
-u8 *func_02065f88(s32 id, void *pos);
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
 void *func_ov000_0218e9c4(void *p);
@@ -61,8 +55,6 @@ void func_ov000_02191008(void *p);
 void func_ov000_0218ec60(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0218edf0(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0218ef10(void *p, s32 a, s32 b, s32 c, s32 d);
-void *NNS_G3dGetMdlSet(void *file);
-void NNS_G3dReleaseMdlSet(void *mdl);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 static inline BOOL GBusy_021afaf8(FieldState *g) {
@@ -215,9 +207,9 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
             }
             sv->bits18.mode = 2;
             def = &data_ov000_021ca398[self->unk_b22_6];
-            self->unk_af0.x = self->pos.x - NNS_G3dGlb.camPos.x;
-            self->unk_af0.y = self->pos.y - NNS_G3dGlb.camPos.y;
-            self->unk_af0.z = self->pos.z - NNS_G3dGlb.camPos.z;
+            self->unk_af0.x = self->pos.x - NNS_G3dGlb.camTarget.x;
+            self->unk_af0.y = self->pos.y - NNS_G3dGlb.camTarget.y;
+            self->unk_af0.z = self->pos.z - NNS_G3dGlb.camTarget.z;
             break;
         }
         self->unk_ba4 = anm;
@@ -313,7 +305,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
             }
             self->mdl0.visible = 0;
             {
-                void **res = (void **)self->mdl0.res->mdl_handle;
+                NNSG3dResFileHeader **res = (NNSG3dResFileHeader **)self->mdl0.res->mdl_handle;
                 NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet(res != NULL ? *res : NULL));
             }
             func_ov000_0218ec60((u8 *)self + 0x450, def->w[0], def->w[1], 1, 1);

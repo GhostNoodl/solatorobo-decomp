@@ -330,7 +330,6 @@ static inline BOOL Ov013_PrmB0(const Ov003Actor *self) {
 extern void *Target_Get(void *p);
 extern void func_ov003_021d9980(VecFx32 *out, u16 ang, const void *b);
 extern u16 Ov003Vec_Yaw(VecFx32 *v);
-extern Ov013V *func_02065f88(s32 id, VecFx32 *pos);
 extern void *data_02097e4c;
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern const u8 data_ov013_0220b2cc[];
@@ -437,9 +436,9 @@ void func_ov013_02205098(Ov003Actor *self) {
         break;
     }
     case 20: {
-        Ov013V *o = func_02065f88(0x192, &self->pos);
-        o->v0c(0x4000);
-        o->v34(0, self->rot_y, 0);
+        EffectObj *o = func_02065f88(0x192, &self->pos);
+        o->SetScaleAll(0x4000);
+        o->SetRotXYZ(0, self->rot_y, 0);
         self->fsm->st = 21;
     }
     case 21: {

@@ -1,6 +1,7 @@
 #include "nitro/fx.h"
 #include "ov000/VObj.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -76,7 +77,6 @@ void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 s32 func_02049afc(void *snd, s32 se);
 void func_0204a0d4(void *snd, s32 h, s32 arg);
 void SndMgr_StopSeqArc(void *snd, s32 h);
-Eff_021b209c *func_02065f88(s32 id, void *pos);
 void func_ov000_0218d46c(void *a, u16 id, s32 b);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
@@ -247,9 +247,9 @@ void func_ov000_021b209c(Robo021ca458 *self) {
     self->friction = 0;
     self->gravity = 0x52;
     if (self->unk_b24_12 == 1) {
-        Eff_021b209c *e = func_02065f88(0x6d, &self->pos);
-        e->v0c(0xccd);
-        e->v34(0x2000, 0, 0);
+        EffectObj *e = func_02065f88(0x6d, &self->pos);
+        e->SetScaleAll(0xccd);
+        e->SetRotXYZ(0x2000, 0, 0);
     }
     if (self->seSlot >= 0) {
         SndMgr_StopSeqArc(data_02097e4c, self->seSlot);

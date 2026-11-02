@@ -82,7 +82,6 @@ void func_ov009_02214508(ActorEx *self) {
 }
 
 extern void func_0203f364(ActorSub48 *p);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(Ov003Actor *a, u16 id);
 extern void func_ov000_02198c8c(void *p, s32 a);
@@ -166,9 +165,9 @@ void func_ov009_02214534(ActorEx *self) {
         p.z = self->pos.z;
         p.y += self->centerY;
         {
-            Ov009V *e2 = func_02065f88(0x1f7, &p);
+            EffectObj *e2 = func_02065f88(0x1f7, &p);
             s = self->radius + (self->radius >> 3);
-            e2->v14(s, s, s);
+            e2->SetScaleXYZ(s, s, s);
         }
         func_ov000_0218996c(0xc, 0x14);
         if (self->unk_44 != NULL) {
@@ -230,7 +229,6 @@ namespace m_0221483c {
 extern "C" {
 
 extern void *data_02097e4c;
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 
 void Ov009ActExVt_022181f4_Update(Ov009ActExVt_022181f4 *self) {
@@ -250,10 +248,10 @@ void Ov009ActExVt_022181f4_Update(Ov009ActExVt_022181f4 *self) {
         }
         if (self->unk_ce <= 0x14) {
             if (self->unk_ce == 0x14) {
-                Ov009V *e = func_02065f88(0x196, &self->pos);
-                FLD(s32, e, 0x30) = 0x2a000;
-                e->v0c(0xe66);
-                self->unk_bc = FLD(u32, e, 0x24);
+                EffectObj *e = func_02065f88(0x196, &self->pos);
+                e->time = 0x2a000;
+                e->SetScaleAll(0xe66);
+                self->unk_bc = e->id;
                 func_02049f44(data_02097e4c, 0x44, &self->pos, 0);
             }
         }
@@ -452,7 +450,6 @@ namespace m_02214e90 {
 extern "C" {
 
 extern void *data_02097e4c;
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
@@ -474,7 +471,7 @@ void func_ov009_02214e90(Ov009ActExVt_022181f4 *self) {
         Ov003Actor *t;
         func_ov000_0218996c(10, 10);
         self->targetObj->unk_02 = 0;
-        func_02065f88(5, &self->pos)->v0c(0x299a);
+        func_02065f88(5, &self->pos)->SetScaleAll(0x299a);
         func_02049f44(data_02097e4c, 0x1a, &self->pos, 0);
         a = Ov009_FindActor(self->unk_d2);
         if (a == NULL) {
@@ -553,7 +550,6 @@ extern void func_0203f364(ActorSub48 *p);
 extern void HitSphere_Link(ActorSub48 *p);
 extern void func_ov009_02215714(Ov009ActExVt_0221802c *self);
 extern void func_ov009_02215a6c(Ov009ActExVt_0221802c *self);
-extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
 extern void Actor_PitchToPos(Actor *self, const VecFx32 *v, s32 a);
@@ -602,7 +598,7 @@ void func_ov009_022150cc(Ov009ActExVt_0221802c *self) {
     }
     switch (self->fsm->st) {
     case 0:
-        func_02065f88(0x6a, &self->pos)->v0c(0xccd);
+        func_02065f88(0x6a, &self->pos)->SetScaleAll(0xccd);
         func_02049f44(data_02097e4c, 0x2b, &self->pos, 0);
         self->unk_d8 = Rand_PlusMinus(0x14) + 0x7b;
         if (self->unk_18 == 1) {
@@ -671,7 +667,7 @@ void func_ov009_022150cc(Ov009ActExVt_0221802c *self) {
             } else {
                 ActorSub44 *s;
                 func_ov000_0218996c(10, 10);
-                func_02065f88(5, &self->pos)->v0c(0x3000);
+                func_02065f88(5, &self->pos)->SetScaleAll(0x3000);
                 func_ov000_0219aae8(self, self, self->targetObj->unk_08, self->targetObj->unk_0a, 2, NULL, 0, 0x4000, 0, 0x64, 0x1000);
                 self->speed = 0;
                 self->velY = 0;

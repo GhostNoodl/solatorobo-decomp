@@ -1,6 +1,7 @@
 #include "ov000/VObj.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u8 unk_00[0x15];
@@ -31,7 +32,6 @@ void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 void func_ov000_02182590(u8 *p);
 s32 func_0205b1fc(void);
-VObj *func_02065f88(s32 kind, s32 *pos);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 extern void *data_02097e4c;
 
@@ -54,11 +54,11 @@ void func_ov000_021974b0(Obj021975b4 *self) {
         return;
     }
     {
-        s32 pos[3];
-        pos[0] = p->unk_70;
-        pos[1] = p->unk_74;
-        pos[2] = p->unk_78;
-        func_02065f88(0x44f, pos)->vfunc_24(0, p->unk_68, 0);
+        VecFx32 pos;
+        pos.x = p->unk_70;
+        pos.y = p->unk_74;
+        pos.z = p->unk_78;
+        func_02065f88(0x44f, &pos)->AddPosXYZ(0, p->unk_68, 0);
     }
     func_02049a48(data_02097e4c, 0x88, -1, -1, -1);
 }

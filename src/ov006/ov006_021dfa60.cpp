@@ -1,4 +1,5 @@
 #include "ov006/Model.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct ov006_Unk021dfa60 {
     void *vtbl;
@@ -12,18 +13,16 @@ typedef struct ov006_Unk021dfa60 {
 extern "C" {
 
 extern u8 data_ov006_021ec23c[];
-extern void *data_0214a420;
-Object *func_020657b0(void *a, int id);
 
 static inline void ov006_Unk021dfa60_Kill(int id) {
     if (id != -1) {
-        Object *o = func_020657b0(data_0214a420, id);
+        EffectObj *o = func_020657b0(data_0214a420, id);
         if (o != NULL) {
             void *saved = data_02097dd0->cur;
             data_02097dd0->cur = data_02097dd0->heapHi;
             if (o != NULL) {
                 if (o != NULL) {
-                    o->vtbl->dtor(o);
+                    o->Delete();
                 }
             }
             data_02097dd0->cur = saved;

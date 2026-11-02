@@ -171,7 +171,7 @@ void func_ov006_021dd5b8(void *p, u16 v, int a, int b);
 void func_ov006_021dd2d8(void *p, s8 v);
 void func_0203cb78(s32 a, int b, int c);
 void func_0203cc58(s32 a, int b, int c);
-void *func_ov006_021e37d0(int a, VecFx32 *v);
+struct EffectObj *func_ov006_021e37d0(int type, const VecFx32 *pos);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_020498ac(void *p, s32 a);
 void SndMgr_StopSeqNo(void *p, int a, int b);

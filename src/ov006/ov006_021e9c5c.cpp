@@ -1,6 +1,7 @@
 #include "ov006/SlotManager.h"
 #include "ov006/ov006.h"
 #include "nitro/fx.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct ov006_Rot021e9c5c {
     u16 x;
@@ -16,21 +17,6 @@ typedef struct ov006_Ent021e9c5c {
     s16 se;
     u8 unk8[4];
 } ov006_Ent021e9c5c;
-
-typedef struct ov006_Eff021e9c5c {
-    struct ov006_EffVtbl021e9c5c *vtbl;
-    u8 unk4[0x20];
-    int unk24;
-    u8 unk28[0x14];
-    fx32 unk3C;
-    u8 unk40[0x88];
-    int unkC8;
-} ov006_Eff021e9c5c;
-
-typedef struct ov006_EffVtbl021e9c5c {
-    void *unk0[3];
-    void (*setScale)(ov006_Eff021e9c5c *self, fx32 s);
-} ov006_EffVtbl021e9c5c;
 
 typedef struct ov006_Hit021e9c5c {
     u8 unk0[0xc];
@@ -84,7 +70,6 @@ extern void *data_ov000_021ccd68;
 s32 func_ov000_0219a5c8(ov006_Prop021e9c5c *self, u16 mask, const VecFx32 *pos, ov006_Rot021e9c5c *rot, s32 r, s32 a, void **list);
 ov006_Hit021e9c5c *func_ov000_021985c0(void *p);
 void *func_ov000_0219be1c(s32 id, VecFx32 *pos, ov006_Rot021e9c5c *rot, u16 a, u16 b);
-ov006_Eff021e9c5c *func_02065f88(int id, VecFx32 *pos);
 void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 void *ActorMgr_GetGroup(void *mgr, u16 kind);
 void ActorGroup_SendMsg(void *obj, u16 a, int b, int c, int d, int e);
@@ -138,9 +123,9 @@ void func_ov006_021e9c5c(ov006_Prop021e9c5c *self) {
         }
         func_ov000_0219be1c(id, &pos, &rot, self->unkC, tgt);
         {
-            ov006_Eff021e9c5c *e = func_02065f88(0x69, &self->pos);
+            EffectObj *e = func_02065f88(0x69, &self->pos);
             if (e != NULL) {
-                self->unk1E4 = e->unk24;
+                self->unk1E4 = e->id;
             }
         }
         if (ent->se >= 0) {
@@ -151,11 +136,11 @@ void func_ov006_021e9c5c(ov006_Prop021e9c5c *self) {
     case 2:
         self->unk1F8 = data_ov006_021eb894[self->unk1AD];
         if (self->unk1E8 == 0) {
-            ov006_Eff021e9c5c *e = func_02065f88(0x391, &self->pos);
+            EffectObj *e = func_02065f88(0x391, &self->pos);
             if (e != NULL) {
-                self->unk1E8 = e->unk24;
-                VCALL(e, 0c, 0x199a);
-                e->unkC8 = -1;
+                self->unk1E8 = e->id;
+                e->SetScaleAll(0x199a);
+                e->loopCount = -1;
             }
         }
         if (ent->se >= 0) {
@@ -172,15 +157,15 @@ void func_ov006_021e9c5c(ov006_Prop021e9c5c *self) {
         break;
     case 3: {
         void *obj = ActorMgr_GetGroup(data_ov000_021ccd68, self->unkC & 0xf000);
-        ov006_Eff021e9c5c *e;
+        EffectObj *e;
         if (obj != NULL) {
             ActorGroup_SendMsg(obj, self->unkC, 0xb, 1, 0, 0);
         }
         e = func_02065f88(0x389, &self->pos);
         if (e != NULL) {
-            self->unk1E4 = e->unk24;
-            VCALL(e, 0c, 0x2800);
-            e->unk3C = 0x3000;
+            self->unk1E4 = e->id;
+            e->SetScaleAll(0x2800);
+            e->speed = 0x3000;
         }
         if (ent->se >= 0) {
             func_02049f44(data_02097e4c, ent->se, &self->pos, 0);
