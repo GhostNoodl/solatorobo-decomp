@@ -20,11 +20,11 @@ static inline Ov015V *Ov015_NewTask18(void) {
     Ov015FishState18 *t = (Ov015FishState18 *)Heap_Alloc(0x18);
     if (t != NULL) {
         SET_VT(t, data_ov015_02212f20);
-        t->unk_04 = 0;
-        t->unk_08 = 0;
-        t->unk_0c = 0;
-        t->unk_10 = 0;
-        t->unk_14 = 0;
+        t->fish = 0;
+        t->step = 0;
+        t->timer = 0;
+        t->duration = 0;
+        t->fxKey = 0;
     }
     return (Ov015V *)t;
 }
@@ -33,11 +33,11 @@ static inline Ov015V *Ov015_NewTask1c(void) {
     Ov015FishState1c *t = (Ov015FishState1c *)Heap_Alloc(0x1c);
     if (t != NULL) {
         SET_VT(t, data_ov015_02212f04);
-        t->unk_04 = 0;
-        t->unk_08 = 0;
+        t->step = 0;
+        t->timer = 0;
         t->unk_0c = 0;
         t->unk_10 = 0;
-        t->unk_18 = 0;
+        t->fish = 0;
     }
     return (Ov015V *)t;
 }
@@ -48,12 +48,12 @@ static inline void Ov015_Sounds(void) {
 }
 
 static inline s32 Ov015_Speed(Ov015FishState2c *self) {
-    s32 b = Ov015_FxMul64((self->unk_20)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
+    s32 b = Ov015_FxMul64((self->fish)->info.unk_0a << 4, 0x19a) + 0x800;
     return Interp_SinLerp(FX_Mul(self->unk_18, self->unk_18), b / 5, b);
 }
 
 static inline s32 Ov015_Wait(Ov015FishState2c *self) {
-    s32 c = (self->unk_20)->unk_c0.unk_0a << 4;
+    s32 c = (self->fish)->info.unk_0a << 4;
     BOOL in;
     s32 b;
     s32 n;
@@ -70,17 +70,17 @@ static inline s32 Ov015_Wait(Ov015FishState2c *self) {
         b = 0;
     }
     n = (s16)((b + Rand_UpTo(a - b)) >> 12);
-    q = self->unk_20;
+    q = self->fish;
     in = FALSE;
     inZ = FALSE;
     inX = FALSE;
-    if (q->unk_40.x >= q->unk_ac && q->unk_40.x <= q->unk_b0) {
+    if (q->pos.x >= q->minX && q->pos.x <= q->maxX) {
         inX = TRUE;
     }
-    if (inX && q->unk_40.z <= q->unk_b4) {
+    if (inX && q->pos.z <= q->maxZ) {
         inZ = TRUE;
     }
-    if (inZ && q->unk_40.z >= q->unk_b8) {
+    if (inZ && q->pos.z >= q->minZ) {
         in = TRUE;
     }
     if (!in && n > 200) {
@@ -91,11 +91,11 @@ static inline s32 Ov015_Wait(Ov015FishState2c *self) {
 
 BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
     Ov015Stat *g = &data_ov015_0221332c;
-    self->unk_20 = p;
+    self->fish = p;
     self->unk_14 = FALSE;
     if (g->unk_28 != 3) {
         self->unk_14 |= g->unk_14 == 3 && p->unk_bc == 2;
-        self->unk_14 |= g->unk_14 == 2 && (self->unk_20)->unk_bc == 3;
+        self->unk_14 |= g->unk_14 == 2 && (self->fish)->unk_bc == 3;
         if (self->unk_14) {
             self->unk_16--;
             if (self->unk_16 <= 0) {
@@ -107,59 +107,59 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
         self->unk_18 = FX_Div(self->unk_16 << 12, 0x5a000);
     }
     if (func_ov015_0220ae90(self)) {
-        p->unk_f0 = Ov015_NewTask18();
-        p->unk_ec = 3;
+        p->nextState = Ov015_NewTask18();
+        p->nextStateId = 3;
         return TRUE;
     }
     if (g->unk_00 < 0xfa000) {
-        p->unk_ac = -0x21555;
-        p->unk_b0 = 0x21555;
+        p->minX = -0x21555;
+        p->maxX = 0x21555;
     } else {
-        p->unk_ac = -0x32000;
-        p->unk_b0 = 0x32000;
+        p->minX = -0x32000;
+        p->maxX = 0x32000;
     }
-    switch (self->unk_04) {
+    switch (self->step) {
     case 0:
         if (self->unk_06 <= 0) {
-            self->unk_04 = Rand_UpTo(1) != 0 ? 5 : 6;
+            self->step = Rand_UpTo(1) != 0 ? 5 : 6;
             self->unk_06 = 0x1e;
         }
         break;
     case 1: {
-        Ov015VecC pos(*(Ov015VecC *)&p->unk_40);
-        Ov015VecC dir(*(Ov015VecC *)&p->unk_9c);
+        Ov015VecC pos(*(Ov015VecC *)&p->pos);
+        Ov015VecC dir(*(Ov015VecC *)&p->dir);
         s32 d = Ov015_Speed(self);
-        p->unk_40.x = pos.x - d;
+        p->pos.x = pos.x - d;
         p->unk_a8 = d;
-        p->unk_40.y = pos.y;
-        p->unk_40.z = pos.z;
+        p->pos.y = pos.y;
+        p->pos.z = pos.z;
         dir.x -= d;
-        VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)(&p->unk_9c));
+        VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)(&p->dir));
         func_ov015_0220afcc(self);
         func_ov015_0220b1b8(self);
-        if (self->unk_06 <= 0 || p->unk_40.x < p->unk_ac) {
+        if (self->unk_06 <= 0 || p->pos.x < p->minX) {
             p->unk_bc = 3;
-            self->unk_04 = 4;
+            self->step = 4;
             self->unk_06 = 0x14;
             Ov015_Sounds();
         }
         break;
     }
     case 2: {
-        Ov015VecC pos(*(Ov015VecC *)&p->unk_40);
-        Ov015VecC dir(*(Ov015VecC *)&p->unk_9c);
+        Ov015VecC pos(*(Ov015VecC *)&p->pos);
+        Ov015VecC dir(*(Ov015VecC *)&p->dir);
         s32 d = Ov015_Speed(self);
-        p->unk_40.x = pos.x + d;
+        p->pos.x = pos.x + d;
         p->unk_a8 = d;
-        p->unk_40.y = pos.y;
-        p->unk_40.z = pos.z;
+        p->pos.y = pos.y;
+        p->pos.z = pos.z;
         dir.x += d;
-        VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)(&p->unk_9c));
+        VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)(&p->dir));
         func_ov015_0220afcc(self);
         func_ov015_0220b1b8(self);
-        if (self->unk_06 <= 0 || p->unk_40.x > p->unk_b0) {
+        if (self->unk_06 <= 0 || p->pos.x > p->maxX) {
             p->unk_bc = 2;
-            self->unk_04 = 3;
+            self->step = 3;
             self->unk_06 = 0x14;
             Ov015_Sounds();
         }
@@ -169,7 +169,7 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
         func_ov015_0220ac40(self, p);
         if (self->unk_06 <= 0) {
             p->unk_bc = 3;
-            self->unk_04 = 5;
+            self->step = 5;
             self->unk_06 = 0x1e;
         }
         break;
@@ -177,23 +177,23 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
         func_ov015_0220ad68(self, p);
         if (self->unk_06 <= 0) {
             p->unk_bc = 2;
-            self->unk_04 = 6;
+            self->step = 6;
             self->unk_06 = 0x1e;
         }
         break;
     case 5: {
-        Ov015VecC pos(*(Ov015VecC *)&p->unk_40);
-        Ov015VecC dir(*(Ov015VecC *)&p->unk_9c);
+        Ov015VecC pos(*(Ov015VecC *)&p->pos);
+        Ov015VecC dir(*(Ov015VecC *)&p->dir);
         s32 t = FX_Div((0x1e - self->unk_06) << 12, 0x1e000);
         s32 d = FX_Mul(Ov015_Speed(self), t);
         BOOL spawn;
-        p->unk_40.x = pos.x - d;
-        p->unk_40.y = pos.y;
-        p->unk_40.z = pos.z;
+        p->pos.x = pos.x - d;
+        p->pos.y = pos.y;
+        p->pos.z = pos.z;
         p->unk_a8 = d;
         dir.z = FX_Mul(dir.z, 0xfae);
         dir.x -= 0x29;
-        VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)(&p->unk_9c));
+        VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)(&p->dir));
         func_ov015_0220afcc(self);
         func_ov015_0220b1b8(self);
         if (self->unk_06 > 0) {
@@ -207,32 +207,32 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
                 self->unk_08 = 0;
             }
         } else {
-            Ov015Fish *q = self->unk_20;
-            if (q->unk_c0.unk_18 != 0 && Rand_UpTo(0x1000) < q->unk_c0.unk_18 << 4) {
+            Ov015Fish *q = self->fish;
+            if (q->info.unk_18 != 0 && Rand_UpTo(0x1000) < q->info.unk_18 << 4) {
                 spawn = TRUE;
             }
         }
         if (spawn) {
-            p->unk_f0 = Ov015_NewTask1c();
-            p->unk_ec = 4;
+            p->nextState = Ov015_NewTask1c();
+            p->nextStateId = 4;
         }
-        self->unk_04 = 1;
+        self->step = 1;
         self->unk_06 = Ov015_Wait(self);
         break;
     }
     case 6: {
-        Ov015VecC pos(*(Ov015VecC *)&p->unk_40);
-        Ov015VecC dir(*(Ov015VecC *)&p->unk_9c);
+        Ov015VecC pos(*(Ov015VecC *)&p->pos);
+        Ov015VecC dir(*(Ov015VecC *)&p->dir);
         s32 t = FX_Div((0x1e - self->unk_06) << 12, 0x1e000);
         s32 d = FX_Mul(Ov015_Speed(self), t);
         BOOL spawn;
-        p->unk_40.x = pos.x + d;
-        p->unk_40.y = pos.y;
-        p->unk_40.z = pos.z;
+        p->pos.x = pos.x + d;
+        p->pos.y = pos.y;
+        p->pos.z = pos.z;
         p->unk_a8 = d;
         dir.z = FX_Mul(dir.z, 0xfae);
         dir.x += 0x29;
-        VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)(&p->unk_9c));
+        VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)(&p->dir));
         func_ov015_0220afcc(self);
         func_ov015_0220b1b8(self);
         if (self->unk_06 > 0) {
@@ -246,16 +246,16 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
                 self->unk_08 = 0;
             }
         } else {
-            Ov015Fish *q = self->unk_20;
-            if (q->unk_c0.unk_18 != 0 && Rand_UpTo(0x1000) < q->unk_c0.unk_18 << 4) {
+            Ov015Fish *q = self->fish;
+            if (q->info.unk_18 != 0 && Rand_UpTo(0x1000) < q->info.unk_18 << 4) {
                 spawn = TRUE;
             }
         }
         if (spawn) {
-            p->unk_f0 = Ov015_NewTask1c();
-            p->unk_ec = 4;
+            p->nextState = Ov015_NewTask1c();
+            p->nextStateId = 4;
         }
-        self->unk_04 = 2;
+        self->step = 2;
         self->unk_06 = Ov015_Wait(self);
         break;
     }

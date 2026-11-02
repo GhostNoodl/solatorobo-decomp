@@ -17,7 +17,7 @@ void func_ov015_0220afcc(Ov015FishState2c *self) {
     u16 ang;
     Ov015V *e = func_020657b0(data_0214a420, self->unk_24);
     if (e == NULL) {
-        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, &self->unk_20->unk_40);
+        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, &self->fish->pos);
         FLD(s32, e, 0xd4) = 1;
         FLD(u8, e, 0x28) = 0;
         FLD(s32, e, 0xc8) = -1;
@@ -25,26 +25,26 @@ void func_ov015_0220afcc(Ov015FishState2c *self) {
         self->unk_24 = FLD(void *, e, 0x24);
     }
     {
-        Ov015Fish *o = self->unk_20;
-        v.x = o->unk_40.x;
-        v.y = o->unk_40.y > 0 ? 0 : o->unk_40.y;
-        v.z = o->unk_40.z;
+        Ov015Fish *o = self->fish;
+        v.x = o->pos.x;
+        v.y = o->pos.y > 0 ? 0 : o->pos.y;
+        v.z = o->pos.z;
         v.y = v.y < -0x2000 ? -0x2000 : v.y;
     }
     e->v18(&v);
     *(Ov015Blk0afcc *)&base = data_ov015_02212650;
-    dir = (self->unk_20)->unk_9c;
+    dir = (self->fish)->dir;
     dir.y = 0;
     VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)&dir);
     ang = FX_AcosIdx(Ov015_Dot0afcc(&dir, &base));
     if (dir.x < 0) ang = 0xffff - ang;
     e->v34(0, ang, 0);
     {
-        Ov015Fish *o = self->unk_20;
-        s32 s = o->unk_7c;
-        sc.x = FX_Mul(o->unk_70, s);
-        sc.y = FX_Mul(o->unk_74, s);
-        sc.z = FX_Mul(o->unk_78, s);
+        Ov015Fish *o = self->fish;
+        s32 s = o->scaleMul;
+        sc.x = FX_Mul(o->scaleX, s);
+        sc.y = FX_Mul(o->scaleY, s);
+        sc.z = FX_Mul(o->scaleZ, s);
         e->v10(&sc);
     }
 }
@@ -78,11 +78,11 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
     s32 px;
     s32 pz;
     s32 py;
-    Ov015Fish *p = self->unk_20;
-    v = p->unk_c0.unk_10 << 12;
-    if (p->unk_c0.unk_28 < 0xe10000) {
+    Ov015Fish *p = self->fish;
+    v = p->info.unk_10 << 12;
+    if (p->info.unk_28 < 0xe10000) {
         lim = FX_Mul(v, 0x1000);
-    } else if (p->unk_c0.unk_28 < 0x1c20000) {
+    } else if (p->info.unk_28 < 0x1c20000) {
         lim = FX_Mul(v, 0xccd);
     } else {
         lim = FX_Mul(v, 0xb33);
@@ -93,10 +93,10 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
         r = 0;
     }
     {
-        Ov015Fish *o = self->unk_20;
-        px = o->unk_40.x;
-        py = o->unk_40.y;
-        pz = o->unk_40.z;
+        Ov015Fish *o = self->fish;
+        px = o->pos.x;
+        py = o->pos.y;
+        pz = o->pos.z;
     }
     if (r > 0x99a) {
         FX_Div(r - 0x99a, 0x666);
@@ -109,17 +109,17 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
     py = ad > 0x4cd ? py + (s32)(((s64)d * 0x4cdLL + 0x800LL) >> 12) : py;
 
     {
-        Ov015Fish *o = self->unk_20;
-        o->unk_40.x = px;
-        o->unk_40.y = py;
-        o->unk_40.z = pz;
+        Ov015Fish *o = self->fish;
+        o->pos.x = px;
+        o->pos.y = py;
+        o->pos.z = pz;
     }
     if (r < 0x99a) {
         Ov015Vec a;
         Ov015Vec s;
-        Ov015Fish *o = self->unk_20;
-        a = o->unk_40;
-        a.z += FX_Mul(o->unk_70, 0xc000);
+        Ov015Fish *o = self->fish;
+        a = o->pos;
+        a.z += FX_Mul(o->scaleX, 0xc000);
         a.y -= 0x4000;
         s.x = 0x1333;
         s.y = 0x1333;
@@ -137,10 +137,10 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
     if (r < 0x4cd) {
         Ov015Vec b;
         Ov015V *e;
-        Ov015Fish *o = self->unk_20;
-        b = o->unk_40;
+        Ov015Fish *o = self->fish;
+        b = o->pos;
         b.y += 0x8000;
-        b.z += FX_Mul(o->unk_70, 0xc000);
+        b.z += FX_Mul(o->scaleX, 0xc000);
         e = func_020657b0(data_0214a420, self->unk_28);
         if (e == NULL) {
             e = func_02065f88(0x325, &b);
@@ -156,13 +156,13 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
         func_02065860(data_0214a420, self->unk_28);
     }
     if (((u8)self->unk_14)) {
-        func_ov000_02190cb0(&self->unk_20->unk_244, data_ov015_02212e40, 0x19a, 0);
-        func_ov000_021915a0(&self->unk_20->unk_244);
-        (self->unk_20)->unk_104 = FX_Mul(r, 0x4cc) + 0x19a;
+        func_ov000_02190cb0(&self->fish->model, data_ov015_02212e40, 0x19a, 0);
+        func_ov000_021915a0(&self->fish->model);
+        (self->fish)->animSpeed = FX_Mul(r, 0x4cc) + 0x19a;
     } else {
-        func_ov000_02190cb0(&self->unk_20->unk_244, data_ov015_02212e0d, 0x19a, 0);
-        func_ov000_021915a0(&self->unk_20->unk_244);
-        (self->unk_20)->unk_104 = 0x99a;
+        func_ov000_02190cb0(&self->fish->model, data_ov015_02212e0d, 0x19a, 0);
+        func_ov000_021915a0(&self->fish->model);
+        (self->fish)->animSpeed = 0x99a;
     }
 }
 

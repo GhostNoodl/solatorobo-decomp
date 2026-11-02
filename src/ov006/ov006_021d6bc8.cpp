@@ -85,7 +85,7 @@ int func_ov006_021d6bc8(ov006_Scene021d6bc8 *self) {
         func_02065ac0(data_0214a420);
     }
     r = func_ov006_021d6ff0(self);
-    if (state == 0 && data_ov006_021ec888->unk8 != 9) {
+    if (state == 0 && data_ov006_021ec888->state != 9) {
         void *obj = ActorMgr_GetGroup(data_ov000_021ccd68, 0x7000);
         if (obj != NULL) {
             func_ov000_0218e0bc(obj);

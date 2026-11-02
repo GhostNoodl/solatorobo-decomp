@@ -17,12 +17,12 @@ void Ov014Act_021fa6a0_Init(Ov014Act_021fa6a0 *self) {
         const char *b = data_ov014_022170f4;
         Ov014Names *n = &self->unk_124;
         if (a) {
-            STD_CopyString(n->unk_10, a);
-            STD_CopyString(n->unk_30, b);
-            n->unk_03_1 = 1;
-            STD_CopyString(n->unk_4c, a);
-            STD_CopyString(n->unk_6c, b);
-            n->unk_03_2 = 1;
+            STD_CopyString(n->mdlDir, a);
+            STD_CopyString(n->mdlName, b);
+            n->ownMdl = 1;
+            STD_CopyString(n->anmDir, a);
+            STD_CopyString(n->anmName, b);
+            n->ownAnm = 1;
         }
         n->unk_00 = 0;
     }

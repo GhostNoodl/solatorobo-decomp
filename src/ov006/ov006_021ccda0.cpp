@@ -162,7 +162,7 @@ int func_ov006_021cd0ac(ov006_Manager *self) {
             break;
         case 1:
             func_ov006_021e4348(data_ov006_021ec888);
-            if (data_ov006_021ec888->unk8 == 0) {
+            if (data_ov006_021ec888->state == 0) {
                 break;
             }
             data_ov006_021eb6d8[data_ov006_021ec860->unk14](1, done, done);
@@ -192,7 +192,7 @@ int func_ov006_021cd0ac(ov006_Manager *self) {
         result = FALSE;
         break;
     }
-    if (data_ov006_021ec888 != NULL && data_ov006_021ec888->unk8 != 0 && data_ov006_021ec888->unk8 != 1) {
+    if (data_ov006_021ec888 != NULL && data_ov006_021ec888->state != 0 && data_ov006_021ec888->state != 1) {
         data_02097dd0->unk_1f = one;
     }
     return result;
@@ -324,13 +324,13 @@ BOOL func_ov006_021cd4c0(ov006_Manager *self) {
     BOOL result = FALSE;
     switch (self->subState) {
     case 0:
-        if (data_ov006_021ec888->unk8 != 1) {
+        if (data_ov006_021ec888->state != 1) {
             func_ov006_021e4c5c(data_ov006_021ec888);
         }
         self->subState++;
     case 1:
         ov006_Update021ec888();
-        if (data_ov006_021ec888->unk8 == 1) {
+        if (data_ov006_021ec888->state == 1) {
             func_ov006_021e42ec();
             ov006_DeleteSlotManager();
             self->subState++;

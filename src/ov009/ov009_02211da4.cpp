@@ -15,14 +15,14 @@ void func_ov009_02211da4(Ov009Names *self, void *res) {
     char *b = func_020701d4(res);
     u8 *c = func_0206fef8(res);
     if (FLD(Ov009Bits16, c, 0x12).b0) {
-        STD_CopyString(self->unk_10, a);
-        STD_CopyString(self->unk_30, b);
-        self->unk_03_1 = 1;
+        STD_CopyString(self->mdlDir, a);
+        STD_CopyString(self->mdlName, b);
+        self->ownMdl = 1;
     }
     if (FLD(Ov009Bits16, c, 0x12).b1) {
-        STD_CopyString(self->unk_4c, a);
-        STD_CopyString(self->unk_6c, b);
-        self->unk_03_2 = 1;
+        STD_CopyString(self->anmDir, a);
+        STD_CopyString(self->anmName, b);
+        self->ownAnm = 1;
     }
     STD_CopyString((char *)self + 0x88, a);
     STD_CopyString((char *)self + 0xa8, b);

@@ -41,11 +41,11 @@ static inline s32 Ov015_FxMul64(s32 a, s64 b) {
 
 BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov015List *a3, Ov015Info38 *a4) {
     BOOL ret = TRUE;
-    self->unk_28 = a4;
-    self->unk_1c = a1;
-    self->unk_20 = a2;
-    self->unk_24 = a3;
-    switch (self->unk_04) {
+    self->info = a4;
+    self->ship = a1;
+    self->cam = a2;
+    self->fishList = a3;
+    switch (self->step) {
     case 0: {
         // One local for both allocations, as in the original.
         u8 *o = (u8 *)Heap_Alloc(0x34);
@@ -58,13 +58,13 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
         o = (u8 *)Heap_Alloc(0x290);
         if (o != NULL) {
             SET_VT(o, data_ov015_022132e0);
-            func_ov000_0218e9c4(&((Ov015Obj290 *)o)->unk_14);
-            func_ov000_0218fe1c(&((Ov015Obj290 *)o)->unk_14c);
+            func_ov000_0218e9c4(&((Ov015Obj290 *)o)->res);
+            func_ov000_0218fe1c(&((Ov015Obj290 *)o)->model);
             func_ov015_022119e8((Ov015Obj290 *)o);
         }
         self->unk_14 = (Ov015Obj290 *)o;
         VCALL(o)->v0c();
-        self->unk_04 = 1;
+        self->step = 1;
     }
     case 1: {
         bool a = func_ov015_0221219c(self->unk_10) & 1;
@@ -72,21 +72,21 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
         if (!ok) {
             break;
         }
-        self->unk_04 = 2;
+        self->step = 2;
     }
     case 2:
         func_ov015_021ff9e8(self);
-        self->unk_04 = 3;
+        self->step = 3;
     case 3:
         if (!func_ov015_021ffb90(self)) {
             break;
         }
-        self->unk_04 = 4;
+        self->step = 4;
     case 4:
         if (!func_ov015_021ffdd4(self)) {
             break;
         }
-        if (self->unk_18 != NULL) {
+        if (self->fish != NULL) {
             u8 *m;
             Ov015Fish *obj;
             u8 *n;
@@ -95,31 +95,31 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
             if (m != NULL) {
                 m = (u8 *)Ov015FishState08_Ctor((Ov015FishState08 *)m);
             }
-            func_ov015_02209b80(self->unk_18, (s32)m, 6);
-            (self->unk_18)->unk_108 = 0;
+            func_ov015_02209b80(self->fish, (s32)m, 6);
+            (self->fish)->drawMode = 0;
             {
-                Ov015Fish *q = self->unk_18;
-                s32 x = q->unk_40.x;
-                s32 t = FX_Div(q->unk_40.z + 0x37000, -0x73000) - a4->unk_14;
+                Ov015Fish *q = self->fish;
+                s32 x = q->pos.x;
+                s32 t = FX_Div(q->pos.z + 0x37000, -0x73000) - a4->unk_14;
                 if (t < 0x266) {
                     t = 0x266;
                 }
                 if (t > 0xa66) {
                     t = 0xa66;
                 }
-                q = self->unk_18;
-                q->unk_40.x = x;
-                q->unk_40.y = -0x32000;
-                q->unk_40.z = Ov015_FxMul64(t, -0x73000) - 0x37000;
+                q = self->fish;
+                q->pos.x = x;
+                q->pos.y = -0x32000;
+                q->pos.z = Ov015_FxMul64(t, -0x73000) - 0x37000;
             }
-            data_ov015_0221332c.unk_00 = func_ov015_02209fb8((self->unk_18)->unk_40.z);
-            func_ov015_02211334(data_ov015_02213368, (self->unk_18)->unk_c0.unk_04);
-            n = FLD(u8 *, self->unk_24, 0x4);
+            data_ov015_0221332c.unk_00 = func_ov015_02209fb8((self->fish)->pos.z);
+            func_ov015_02211334(data_ov015_02213368, (self->fish)->info.id);
+            n = FLD(u8 *, self->fishList, 0x4);
             while (n != NULL) {
                 obj = FLD(Ov015Fish *, n, 0x4);
                 n = FLD(u8 *, n, 0xc);
-                if (obj != self->unk_18) {
-                    func_ov015_022029d4(self->unk_24, obj);
+                if (obj != self->fish) {
+                    func_ov015_022029d4(self->fishList, obj);
                     HEAP_PUSH(saved);
                     if (obj != NULL) {
                         if (obj != NULL) {
@@ -130,26 +130,26 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
                 }
             }
             {
-                Ov015Fish *q = self->unk_18;
-                Ov015Ship *d = self->unk_1c;
-                d->unk_d4c.x = q->unk_40.x;
-                d->unk_d4c.y = q->unk_40.y;
-                d->unk_d4c.z = q->unk_40.z;
+                Ov015Fish *q = self->fish;
+                Ov015Ship *d = self->ship;
+                d->unk_d4c.x = q->pos.x;
+                d->unk_d4c.y = q->pos.y;
+                d->unk_d4c.z = q->pos.z;
             }
             HEAP_PUSH(saved);
             DELETE_V(self->unk_10);
             HEAP_POP(saved);
-            self->unk_04 = 6;
+            self->step = 6;
         } else {
-            self->unk_04 = 5;
+            self->step = 5;
         }
         break;
     case 5: {
         BOOL done = FALSE;
         if (self->unk_0c == 0) {
             u8 *n;
-            func_ov015_021fd00c(self->unk_20, 7, &self->unk_10->unk_0c);
-            for (n = FLD(u8 *, self->unk_24, 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
+            func_ov015_021fd00c(self->cam, 7, &self->unk_10->pos);
+            for (n = FLD(u8 *, self->fishList, 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
                 func_ov015_02209790(FLD(Ov015Fish *, n, 0x4), 1);
             }
             if (VCALL(self->unk_14)->v18() == 0) {
@@ -157,9 +157,9 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
             }
         }
         if (done) {
-            self->unk_1c->unk_d3c = 2;
+            self->ship->unk_d3c = 2;
             VCALL(self->unk_14)->v08();
-            self->unk_04 = 3;
+            self->step = 3;
         }
         break;
     }
@@ -167,11 +167,11 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
         BOOL done = FALSE;
         if (self->unk_0c == 0) {
             Ov015Vec v;
-            func_ov015_0220a058(self->unk_18, &v);
-            func_ov015_021fd00c(self->unk_20, 8, &v);
+            func_ov015_0220a058(self->fish, &v);
+            func_ov015_021fd00c(self->cam, 8, &v);
             VCALL(self->unk_14)->v18();
-            func_ov015_02209790(self->unk_18, 1);
-            if ((self->unk_18)->unk_f4 == 2) {
+            func_ov015_02209790(self->fish, 1);
+            if ((self->fish)->stateId == 2) {
                 done = TRUE;
             }
         }
@@ -183,7 +183,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
             HEAP_PUSH(saved);
             DELETE_V(self->unk_14);
             HEAP_POP(saved);
-            self->unk_04 = 7;
+            self->step = 7;
         }
         break;
     }
@@ -191,12 +191,12 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
         ret = FALSE;
         break;
     }
-    self->unk_1c = NULL;
-    self->unk_20 = NULL;
-    self->unk_24 = NULL;
-    self->unk_28 = NULL;
-    if (--self->unk_08 <= 0) {
-        self->unk_08 = 0;
+    self->ship = NULL;
+    self->cam = NULL;
+    self->fishList = NULL;
+    self->info = NULL;
+    if (--self->timer <= 0) {
+        self->timer = 0;
     }
     return ret;
 }
@@ -204,13 +204,13 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
 void *Ov015Fish_DtorDelete(Ov015Fish *self) {
     SET_VT(self, data_ov015_022128fc);
     func_ov015_02209270(self);
-    func_0203f2b8(&self->unk_568);
-    func_ov000_02191b04(&self->unk_54c);
-    func_ov000_0218fee4(&self->unk_464);
-    func_ov000_0218ea20(&self->unk_32c);
-    func_ov000_0218fee4(&self->unk_244);
-    func_ov000_0218ea20(&self->unk_10c);
-    func_ov015_0220900c(&self->unk_c0);
+    func_0203f2b8(&self->hit);
+    func_ov000_02191b04(&self->shadow);
+    func_ov000_0218fee4(&self->model2);
+    func_ov000_0218ea20(&self->res2);
+    func_ov000_0218fee4(&self->model);
+    func_ov000_0218ea20(&self->res);
+    func_ov015_0220900c(&self->info);
     Heap_Free(self);
     return self;
 }
@@ -228,24 +228,24 @@ void func_ov015_021ff9e8(Ov015Obj30 *self) {
     {
         Ov015Obj292c *p = self->unk_10;
         i = 0;
-        p->unk_0c.x = 0;
-        p->unk_0c.y = 0x1800;
-        p->unk_0c.z = 0x1800 - 0x72000;
+        p->pos.x = 0;
+        p->pos.y = 0x1800;
+        p->pos.z = 0x1800 - 0x72000;
     }
     {
-        s32 v = self->unk_28->unk_10;
+        s32 v = self->info->unk_10;
         Ov015Obj292c *p = self->unk_10;
-        p->unk_18.x = v;
-        p->unk_18.y = v;
-        p->unk_18.z = v;
+        p->scale.x = v;
+        p->scale.y = v;
+        p->scale.z = v;
     }
-    self->unk_10->unk_30 = self->unk_28->unk_08;
+    self->unk_10->unk_30 = self->info->unk_08;
     func_ov015_022123c4(self->unk_10);
-    self->unk_14->unk_28c = self->unk_28->unk_0c;
+    self->unk_14->animSpeed = self->info->unk_0c;
     VCALL(self->unk_14)->v14();
-    self->unk_1c->unk_d3c = 2;
-    n = FLD(u8 *, self->unk_24, 0x4);
-    cnt = FLD(s32, self->unk_24, 0xc);
+    self->ship->unk_d3c = 2;
+    n = FLD(u8 *, self->fishList, 0x4);
+    cnt = FLD(s32, self->fishList, 0xc);
     for (; n != NULL; n = FLD(u8 *, n, 0xc), i++) {
         Ov015Fish *obj = FLD(Ov015Fish *, n, 0x4);
         u8 *m = (u8 *)Heap_Alloc(0x40);
@@ -253,14 +253,14 @@ void func_ov015_021ff9e8(Ov015Obj30 *self) {
         if (m != NULL) m = (u8 *)Ov015FishState40_Ctor((Ov015FishState40 *)m);
         func_ov015_02209b80(obj, (s32)m, 5);
         q = FX_Div(i << 12, cnt << 12);
-        obj->unk_40.x = FX_Mul(q, 0x64000) - 0x32000;
-        obj->unk_40.y = -0x32000;
-        obj->unk_40.z = FX_Mul(q, -0x41000) - 0x4b000;
-        func_ov000_02191318(&obj->unk_244, FX_Mul(q, 0x3c000));
-        obj->unk_ac = -0x32000;
-        obj->unk_b0 = 0x32000;
-        obj->unk_b4 = -0x4b000;
-        obj->unk_b8 = -0x8c000;
+        obj->pos.x = FX_Mul(q, 0x64000) - 0x32000;
+        obj->pos.y = -0x32000;
+        obj->pos.z = FX_Mul(q, -0x41000) - 0x4b000;
+        func_ov000_02191318(&obj->model, FX_Mul(q, 0x3c000));
+        obj->minX = -0x32000;
+        obj->maxX = 0x32000;
+        obj->maxZ = -0x4b000;
+        obj->minZ = -0x8c000;
         func_ov015_02209790(obj, 1);
     }
 }
@@ -277,34 +277,34 @@ BOOL func_ov015_021ffb90(Ov015Obj30 *self) {
     BOOL r = FALSE;
     Ov015Fish *found;
     u8 *n;
-    func_ov015_021fd00c(self->unk_20, 7, &self->unk_10->unk_0c);
+    func_ov015_021fd00c(self->cam, 7, &self->unk_10->pos);
     if (self->unk_0c != 0) return r;
     if (FLD(u16, data_02097dc8, 0x12) & 1) {
-        Ov015Vec v = self->unk_10->unk_0c;
+        Ov015Vec v = self->unk_10->pos;
         Ov015V *e;
         VCALL(self->unk_14)->v28(&v, r);
         r = TRUE;
-        self->unk_1c->unk_d3c = r;
+        self->ship->unk_d3c = r;
         // m[3] as a byte offset from the matrix: a field path folds to one constant and changes the code.
-        e = func_02065f88(0x325, &FLD(Ov015Vec, &self->unk_1c->unk_cd4, 0x24));
+        e = func_02065f88(0x325, &FLD(Ov015Vec, &self->ship->nodeMtx, 0x24));
         FLD(s32, e, 0xd4) = 3;
         func_02049a48(data_02097e4c, 0x19, -1, -1, -1);
     }
     found = NULL;
-    n = FLD(u8 *, self->unk_24, 0x4);
+    n = FLD(u8 *, self->fishList, 0x4);
     while (n != NULL) {
         Ov015Fish *obj = FLD(Ov015Fish *, n, 0x4);
         Ov015Vec v;
         n = FLD(u8 *, n, 0xc);
-        v = self->unk_10->unk_0c;
+        v = self->unk_10->pos;
         if (func_ov015_0220a028(obj, &v)) {
             found = obj;
             break;
         }
     }
     if (found != NULL) {
-        s32 d = Ov015_FxMul64(found->unk_70, 0x14000);
-        Ov015VecC t(*(Ov015VecC *)&found->unk_40);
+        s32 d = Ov015_FxMul64(found->scaleX, 0x14000);
+        Ov015VecC t(*(Ov015VecC *)&found->pos);
         t.y += d;
         if (t.y < 0) t.y = 0;
         FLD(Ov015VecC, self->unk_10, 0x24) = t;
@@ -313,31 +313,31 @@ BOOL func_ov015_021ffb90(Ov015Obj30 *self) {
         func_ov015_022123c4(self->unk_10);
     }
     func_ov015_02212250(self->unk_10, 0);
-    for (n = FLD(u8 *, self->unk_24, 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
+    for (n = FLD(u8 *, self->fishList, 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
         func_ov015_02209790(FLD(Ov015Fish *, n, 0x4), 1);
     }
-    func_ov015_02207c30(self->unk_1c);
+    func_ov015_02207c30(self->ship);
     {
         Ov015Obj292c *q = self->unk_10;
-        Ov015Ship *d = self->unk_1c;
-        d->unk_d4c.x = q->unk_0c.x;
-        d->unk_d4c.y = q->unk_0c.y;
-        d->unk_d4c.z = q->unk_0c.z;
+        Ov015Ship *d = self->ship;
+        d->unk_d4c.x = q->pos.x;
+        d->unk_d4c.y = q->pos.y;
+        d->unk_d4c.z = q->pos.z;
     }
     {
-        Ov015Ship *dd = self->unk_1c;
+        Ov015Ship *dd = self->ship;
         Ov015Obj292c *qq = self->unk_10;
-        s32 dx = dd->unk_d14.x;
-        s32 dz = dd->unk_d14.z;
+        s32 dx = dd->pos.x;
+        s32 dz = dd->pos.z;
         u16 a;
-        dx = qq->unk_0c.x - dx;
-        dz = qq->unk_0c.z - dz;
+        dx = qq->pos.x - dx;
+        dz = qq->pos.z - dz;
         a = FX_Atan2(dx, dz);
         Ov015Ship *d;
-        d = self->unk_1c;
-        d->unk_d20 = 0;
-        d->unk_d22 = a;
-        d->unk_d24 = 0;
+        d = self->ship;
+        d->rotX = 0;
+        d->rotY = a;
+        d->rotZ = 0;
     }
     return r;
 }

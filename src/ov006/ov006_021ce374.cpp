@@ -369,7 +369,7 @@ static inline void *ov006_NewList_ccb54(void) {
 
 static inline u8 ov006_SlotManager_Get14A(ov006_SlotManager *self, u8 i) {
     if (i < 3) {
-        return self->unk14A[i];
+        return self->items[i];
     }
     return 0;
 }
@@ -403,11 +403,11 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
     VCALL(self->unk44, 10, MsgRes_GetString(res, 0x122));
     VCALL(self->unk44, 14, MsgRes_GetString(res, 0x123));
     self->unk44->unk4A = 0x2c00;
-    self->unk44->unk24 = 0xac;
-    self->unk44->unk20 = 4;
+    self->unk44->width = 0xac;
+    self->unk44->rows = 4;
     ov006_Window_SetRot(self->unk44, 0, 0x1e, -0x2000);
     ov006_Window_SetPos(self->unk44, 0, -0x100, -0x2000);
-    self->unk44->unk2C = 1;
+    self->unk44->slideMode = 1;
     self->unk44->flags &= ~0x400000;
     self->unk44->flags &= ~0x800000;
     self->unk44->flags &= ~0x20000;
@@ -425,16 +425,16 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
         ov006_Window *w = self->unk44;
         VCALL(w, a8, func_ov000_02154b58(w, 0));
     }
-    self->unk44->unk84 = (ov006_WindowFunc)func_ov006_021ce734;
-    self->unk44->unk88 = (ov006_WindowFunc)func_ov006_021ce954;
+    self->unk44->onDecide = (ov006_WindowFunc)func_ov006_021ce734;
+    self->unk44->onCursor = (ov006_WindowFunc)func_ov006_021ce954;
     self->unk44->owner = self;
     VCALL(self->unk44, 08);
     self->unk48 = ov006_NewWindow_cadcc();
-    self->unk48->unk24 = 0xf8;
-    self->unk48->unk20 = 2;
+    self->unk48->width = 0xf8;
+    self->unk48->rows = 2;
     ov006_Window_SetRot(self->unk48, 4, 0x95, -0x2000);
     ov006_Window_SetPos(self->unk48, -0x100, 0, -0x2000);
-    self->unk48->unk2C = 1;
+    self->unk48->slideMode = 1;
     VCALL(self->unk48, 08);
     self->unk48->flags |= 4;
     ov006_TaskCE_ShowMenus(self);
@@ -444,8 +444,8 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
         if (data_ov006_021ec884->unk149 == 0) {
             self->unk50 = (ov006_Window *)ov006_NewList_ccb54();
             func_ov000_021c55e8(self->unk50, MsgRes_GetString(res, 0x183));
-            self->unk50->unk20 = (n == 1) ? 2 : n;
-            self->unk50->unk24 = 0xc0;
+            self->unk50->rows = (n == 1) ? 2 : n;
+            self->unk50->width = 0xc0;
             ov006_Window_SetRot(self->unk50, 0x20, 0x3c, -0x1ccd);
             for (i = 0; i < 3; i++) {
                 e = ov006_GetPriceEntry(ov006_SlotManager_Get14A(data_ov006_021ec884, i));
@@ -737,7 +737,7 @@ void func_ov006_021cf7c8(ov006_TaskCE *self) {
         self->base.subState++;
         break;
     case 1:
-        if (data_ov006_021ec888->unk8 == 1) {
+        if (data_ov006_021ec888->state == 1) {
             self->base.subState++;
         }
         break;
@@ -973,7 +973,7 @@ extern "C" {
 BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self);
 
 void func_ov006_021d0188(void) {
-    if (data_ov006_021ec888->unk8 != 1) {
+    if (data_ov006_021ec888->state != 1) {
         func_ov006_021e4c5c(data_ov006_021ec888);
     }
 }
@@ -1023,13 +1023,13 @@ BOOL func_ov006_021d01ac(ov006_TaskD0 *self) {
             self->base.state = 0;
             r = TRUE;
             self->unk110 = TRUE;
-        } else if (data_ov006_021ec888->unk8 == 1) {
+        } else if (data_ov006_021ec888->state == 1) {
             func_ov006_021e4c38(data_ov006_021ec888);
             self->base.state = 1;
         }
         break;
     case 1:
-        if (data_ov006_021ec888->unk8 == 3) {
+        if (data_ov006_021ec888->state == 3) {
             func_ov006_021e4c84(data_ov006_021ec888);
             self->base.state = 2;
         }
@@ -1099,7 +1099,7 @@ void func_ov006_021d023c(ov006_TaskD0 *self) {
     func_ov000_02157c90(self->unk104, MsgRes_GetString(res, 0x12f));
     func_ov000_02157d2c(self->unk104, MsgRes_GetString(res, 0x130));
     self->unk104->unk4A = 0x2c00;
-    self->unk104->unk20 = 5;
+    self->unk104->rows = 5;
     ov006_Window_SetRot(self->unk104, 0, 0x2c, -0x1ccd);
     ov006_Window_SetPos(self->unk104, -0x100, 0, -0x1ccd);
     self->unk104->flags |= 0x400000;
@@ -1123,11 +1123,11 @@ void func_ov006_021d023c(ov006_TaskD0 *self) {
     VCALL(self->unk104, 08);
     self->unk104->flags &= ~2;
     self->unk108 = ov006_NewWindow_cadcc();
-    self->unk108->unk24 = 0xf8;
-    self->unk108->unk20 = 2;
+    self->unk108->width = 0xf8;
+    self->unk108->rows = 2;
     ov006_Window_SetRot(self->unk108, 4, 0x95, -0x199a);
     ov006_Window_SetPos(self->unk108, -0x100, 0, -0x199a);
-    self->unk108->unk2C = 1;
+    self->unk108->slideMode = 1;
     VCALL(self->unk108, 08);
     func_ov000_0215bb14(self->unk108, MsgRes_GetString(res, 0x132));
     VCALL(self->unk108, 70);
@@ -1435,7 +1435,7 @@ void func_ov006_021d0f50(ov006_TaskD0C *self) {
     func_ov000_02157c90(self->unk11C, MsgRes_GetString(res, 0x135));
     func_ov000_02157d2c(self->unk11C, MsgRes_GetString(res, 0x136));
     self->unk11C->unk4A = 0x2c00;
-    self->unk11C->unk20 = 4;
+    self->unk11C->rows = 4;
     ov006_Window_SetRot(self->unk11C, 0, 0x2c, -0x1ccd);
     ov006_Window_SetPos(self->unk11C, -0x100, 0, -0x1ccd);
     self->unk11C->flags |= 0x400000;
@@ -1454,11 +1454,11 @@ void func_ov006_021d0f50(ov006_TaskD0C *self) {
     VCALL(self->unk11C, 08);
     self->unk11C->flags &= ~2;
     self->unk120 = ov006_NewWindow_cadcc();
-    self->unk120->unk24 = 0xf8;
-    self->unk120->unk20 = 2;
+    self->unk120->width = 0xf8;
+    self->unk120->rows = 2;
     ov006_Window_SetRot(self->unk120, 4, 0x95, -0x199a);
     ov006_Window_SetPos(self->unk120, -0x100, 0, -0x199a);
-    self->unk120->unk2C = 1;
+    self->unk120->slideMode = 1;
     VCALL(self->unk120, 08);
     func_ov000_0215bb14(self->unk120, MsgRes_GetString(res, 0x138));
     VCALL(self->unk120, 70);
@@ -1539,7 +1539,7 @@ void func_ov006_021d1490(ov006_TaskD0C *self) {
 
 void func_ov006_021d1570(ov006_TaskD0C *self) {
     if (self->unk8 == 9 || self->unk8 == 0xd) {
-        if (data_ov006_021ec888->unk8 != 9) {
+        if (data_ov006_021ec888->state != 9) {
             u8 n;
             func_ov006_021e4a80(data_ov006_021ec888, self->unk101, 1, &self->unk102, 0x18);
             func_ov006_021db258();
@@ -1630,7 +1630,7 @@ static inline u8 ov006_SlotManager_MinUnk10(void) {
 void func_ov006_021d16a0(ov006_TaskD0C *self) {
     switch (self->unk3C) {
     case 0:
-        if (data_ov006_021ec888->unk8 == 9) {
+        if (data_ov006_021ec888->state == 9) {
             data_ov000_021ccd34 = 1;
             self->unk11C->flags |= 4;
             self->unk120->flags |= 4;
@@ -1656,9 +1656,9 @@ void func_ov006_021d16a0(ov006_TaskD0C *self) {
             return;
         }
         if (mn == 1) {
-            data_ov006_021ec884->unk14A[0] = 9;
+            data_ov006_021ec884->items[0] = 9;
         } else if (mn == 2) {
-            data_ov006_021ec884->unk14A[0] = 10;
+            data_ov006_021ec884->items[0] = 10;
             func_ov000_0215c1bc(self->unk124, 0x8000, MsgRes_GetString(data_02149ef8, 0x199));
         }
         VCALL(self->unk124, 70);
@@ -1669,7 +1669,7 @@ void func_ov006_021d16a0(ov006_TaskD0C *self) {
         break;
     }
     case 11:
-        if (data_ov006_021ec888->unk8 == 9) {
+        if (data_ov006_021ec888->state == 9) {
             self->unk124->flags |= 2;
             self->unk3C = 30;
             return;
@@ -1679,7 +1679,7 @@ void func_ov006_021d16a0(ov006_TaskD0C *self) {
         }
         break;
     case 20:
-        if (data_ov006_021ec888->unk8 == 9) {
+        if (data_ov006_021ec888->state == 9) {
             self->unk3C = 30;
             return;
         }
@@ -1695,7 +1695,7 @@ void func_ov006_021d16a0(ov006_TaskD0C *self) {
         func_ov006_021e5e00(data_ov006_021ec888);
         self->unk3C++;
     case 31:
-        if (data_ov006_021ec888->unk8 != 9) {
+        if (data_ov006_021ec888->state != 9) {
             self->unk3C = 50;
         }
         break;

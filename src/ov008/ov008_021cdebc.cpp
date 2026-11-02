@@ -110,13 +110,13 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     Ov008Caption *c;
     Ov008Panel *pn;
     Ov008Talk *t;
-    m->cam.unk_10 = pos;
-    m->cam.unk_1c = tgt;
-    m->cam.unk_46 = rot.z;
-    m->cam.unk_42 = rot.x;
-    m->cam.unk_44 = rot.y;
-    m->cam.unk_48 = 0x4400;
-    m->cam.unk_40 = 1;
+    m->cam.eye = pos;
+    m->cam.at = tgt;
+    m->cam.roll = rot.z;
+    m->cam.pitch = rot.x;
+    m->cam.yaw = rot.y;
+    m->cam.dist = 0x4400;
+    m->cam.mode = 1;
 
     m->unk_c8 = Ov008_NewMdl();
     func_ov000_0218ffdc(m->unk_c8, m->unk_c4, 0, 1);
@@ -218,10 +218,10 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
         c->pic.v08();
         c->state = 0;
         c->pic.v08();
-        c->unk_50 = 0xffff;
-        c->unk_52 = 0xffff;
+        c->next = 0xffff;
+        c->shown = 0xffff;
     }
-    m->unk_f4 = c;
+    m->caption = c;
 
     pn = (Ov008Panel *)Heap_Alloc(0x6c);
     if (pn != NULL) {
@@ -229,15 +229,15 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
         pn->pic.v08();
         pn->state = 0;
         pn->pic.v08();
-        pn->unk_50 = 0;
-        pn->unk_54 = 0;
+        pn->sprite = 0;
+        pn->offset = 0;
         pn->unk_58 = 0;
         pn->unk_5c = 0;
-        pn->unk_60 = 0;
-        pn->unk_64 = 0;
+        pn->alpha = 0;
+        pn->speed = 0;
         pn->unk_68 = 0;
     }
-    m->unk_f8 = pn;
+    m->panel = pn;
 
     func_0205aa30(m->unk_fc);
     func_ov000_0214bc94();
@@ -247,15 +247,15 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
         OV008_SET_VT(t, &data_ov000_021cac60);
         t->v28();
         OV008_SET_VT(t, &data_ov000_021ca94c);
-        OV008_SET_VT(&t->unk_90, &data_0208ba70);
-        func_0204c7d0(&t->unk_90);
-        OV008_SET_VT(&t->unk_148, &data_0208ba70);
-        func_0204c7d0(&t->unk_148);
+        OV008_SET_VT(&t->win, &data_0208ba70);
+        func_0204c7d0(&t->win);
+        OV008_SET_VT(&t->win2, &data_0208ba70);
+        func_0204c7d0(&t->win2);
         t->v28();
     }
-    m->unk_10c = t;
+    m->talk = t;
     t->v08();
-    m->unk_10c->unk_68 = -0x2000;
+    m->talk->unk_68 = -0x2000;
 
     {
         Ov008Snd *g = data_02097e48;

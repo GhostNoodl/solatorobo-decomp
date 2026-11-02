@@ -39,33 +39,33 @@ struct ov006_Window {
     int unk10;
     ov006_Widget *unk14;
     ov006_Widget *unk18;
-    int unk1C;
-    int unk20;
-    int unk24;
+    int font;
+    int rows;
+    int width;
     u8 unk28[0x4];
-    int unk2C;
+    int slideMode;
     u8 unk30[0x4];
     int unk34;
     u8 unk38[0x10];
     u16 unk48;
     u16 unk4A;
     u8 unk4C[0xc];
-    int unk58;
-    int unk5C;
-    int unk60;
-    s16 unk64;
-    s16 unk66;
-    s16 unk68;
+    int slideX;
+    int slideY;
+    int slideZ;
+    s16 posX;
+    s16 posY;
+    s16 posZ;
     u8 unk6A[0x16];
     void (*unk80)(int arg, ov006_Window *self, int arg2);
-    ov006_WindowFunc unk84;
-    ov006_WindowFunc unk88;
+    ov006_WindowFunc onDecide;
+    ov006_WindowFunc onCursor;
     ov006_WindowFunc unk8C;
     ov006_WindowFunc unk90;
     u8 unk94[0x4];
-    ov006_ListNode *unk98;
+    ov006_ListNode *topItem;
     u8 unk9C[0x15];
-    s8 unkB1;
+    s8 cursor;
     u8 unkB2[0x2];
     int unkB4;
     void *unkB8;
@@ -77,12 +77,12 @@ struct ov006_Window {
 };
 
 static inline ov006_ListNode *ov006_Window_GetSelected(ov006_Window *self) {
-    ov006_ListNode *node = self->unk98;
+    ov006_ListNode *node = self->topItem;
     int i;
     if (node == NULL) {
         return NULL;
     }
-    i = self->unkB1;
+    i = self->cursor;
     while (i-- != 0) {
         node = node->next;
     }
@@ -90,15 +90,15 @@ static inline ov006_ListNode *ov006_Window_GetSelected(ov006_Window *self) {
 }
 
 static inline void ov006_Window_SetRot(ov006_Window *self, s16 x, s16 y, s16 z) {
-    self->unk64 = x;
-    self->unk66 = y;
-    self->unk68 = z;
+    self->posX = x;
+    self->posY = y;
+    self->posZ = z;
 }
 
 static inline void ov006_Window_SetPos(ov006_Window *self, int x, int y, int z) {
-    self->unk58 = x;
-    self->unk5C = y;
-    self->unk60 = z;
+    self->slideX = x;
+    self->slideY = y;
+    self->slideZ = z;
 }
 
 #define OV006_LISTNODE_SETTEXT(node, str)    \

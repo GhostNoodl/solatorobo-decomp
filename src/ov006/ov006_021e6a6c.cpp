@@ -12,7 +12,7 @@ u8 func_ov006_021d8cb8(void);
 
 static inline BOOL ov006_Prop_IsOver(ov006_Prop6a6c *self) {
     BOOL result = FALSE;
-    if (self->unk19F > data_ov006_021ec884->unk8->unkB) {
+    if (self->unk19F > data_ov006_021ec884->info->unkB) {
         result = TRUE;
     }
     return result;

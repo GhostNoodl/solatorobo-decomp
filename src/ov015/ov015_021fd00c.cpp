@@ -19,17 +19,17 @@ void func_ov015_021ff044(Ov015CamPair *self);
 extern u8 data_ov015_0221253c[];
 
 void func_ov015_021fd00c(Ov015CamPair *self, s32 mode, const Ov015VecC *v) {
-    if (self->unk_17c != mode) {
+    if (self->mode != mode) {
         if (mode == 2) {
-            self->unk_19c = 0x78;
+            self->timer = 0x78;
         } else if (mode == 3) {
-            self->unk_19c = 0xf0;
+            self->timer = 0xf0;
         } else {
-            self->unk_19c = 0;
+            self->timer = 0;
         }
     }
-    self->unk_17c = mode;
-    func_ov015_021fb240((Ov015VecC *)&self->unk_180, v);
+    self->mode = mode;
+    func_ov015_021fb240((Ov015VecC *)&self->target, v);
     switch (mode) {
     case 1:
         func_ov015_021fd288(self);
@@ -71,7 +71,7 @@ void func_ov015_021fd0f4(Ov015CamPair *self, Ov015Vec *out) {
 
     Ov015Vec f;
     s32 ld, le, dot, r;
-    VEC_Add((VecFx32 *)(&self->unk_180), (VecFx32 *)data_ov015_0221253c, (VecFx32 *)&c);
+    VEC_Add((VecFx32 *)(&self->target), (VecFx32 *)data_ov015_0221253c, (VecFx32 *)&c);
     d.x = c.x - a.x;
     d.y = c.y - a.y;
     d.z = c.z - a.z;
@@ -136,7 +136,7 @@ void func_ov015_021fd288(Ov015CamPair *self) {
     Ov015Vec up;
     cam = self->cam0.pos;
     tgt = self->cam0.at;
-    a = self->unk_180;
+    a = self->target;
     VEC_Add((VecFx32 *)data_ov015_0221253c, (VecFx32 *)&a, (VecFx32 *)&a);
     d.x = self->unk_18c.x - a.x;
     d.y = self->unk_18c.y - a.y;
@@ -227,7 +227,7 @@ static inline void Ov015Cam_ZoomOut(Ov015CamPair *self) {
     Ov015Vec p;
     Ov015Vec up;
     Ov015Vec t;
-    a = self->unk_180;
+    a = self->target;
     o = self->cam0.at;
     func_02049244(&o, 0x19a, &o, &a, 0x29);
     self->cam0.at = o;
@@ -312,7 +312,7 @@ static inline void Ov015Cam_ZoomIn(Ov015CamPair *self) {
     Ov015Vec p;
     Ov015Vec up;
     Ov015Vec t;
-    a = self->unk_180;
+    a = self->target;
     o = self->cam0.at;
     func_02049244(&o, 0x19a, &o, &a, 0x29);
     self->cam0.at = o;
@@ -346,7 +346,7 @@ static inline void Ov015Cam_ZoomIn(Ov015CamPair *self) {
 }
 
 void func_ov015_021fd900(Ov015CamPair *self) {
-    if (self->unk_19c > 0x1e) {
+    if (self->timer > 0x1e) {
         if (data_ov015_0221332c.unk_00 > 0xfa000) {
             Ov015Cam_ZoomOut(self);
         } else {
@@ -355,9 +355,9 @@ void func_ov015_021fd900(Ov015CamPair *self) {
     } else {
         Ov015Cam_ZoomIn(self);
     }
-    self->unk_19c--;
-    if (self->unk_19c < 0) {
-        self->unk_19c = 0;
+    self->timer--;
+    if (self->timer < 0) {
+        self->timer = 0;
     }
 }
 
@@ -456,7 +456,7 @@ void func_ov015_021fe814(Ov015CamPair *self) {
     Ov015Vec p;
     Ov015Vec up;
     Ov015Vec t;
-    a = self->unk_180;
+    a = self->target;
     o = self->cam0.at;
     func_02049244(&o, 0x19a, &o, &a, 0x29);
     self->cam0.at = o;
@@ -501,7 +501,7 @@ void func_ov015_021feb34(Ov015CamPair *self) {
     Ov015Vec p;
     Ov015Vec up;
     Ov015Vec t;
-    a = self->unk_180;
+    a = self->target;
     o = self->cam0.at;
     func_02049244(&o, 0x19a, &o, &a, 0x29);
     self->cam0.at = o;

@@ -62,11 +62,11 @@ static inline Ov015V *Ov015_NewChild(Ov015Main *self, s32 kind) {
             p->state = 0;
             p->unk_08 = 0;
             SET_VT(p, data_ov015_0221296c);
-            SET_VT(&p->unk_30, data_ov015_022127ec);
-            func_ov015_021ff350(&p->unk_30);
-            SET_VT(&p->unk_5c, data_ov015_022127dc);
-            func_ov015_0220015c(&p->unk_5c);
-            func_ov015_02211828(&p->unk_94);
+            SET_VT(&p->phase1, data_ov015_022127ec);
+            func_ov015_021ff350(&p->phase1);
+            SET_VT(&p->phase2, data_ov015_022127dc);
+            func_ov015_0220015c(&p->phase2);
+            func_ov015_02211828(&p->info);
             func_ov015_02200f74(p);
         }
         c = (Ov015V *)p;
@@ -81,15 +81,15 @@ static inline s32 Ov015_Lerp(s32 from, s32 to, s32 t) {
 }
 
 static inline void Ov015Fade_Update(Ov015Fade *f) {
-    s32 a = f->unk_08;
-    s32 b = f->unk_09;
+    s32 a = f->alphaFrom;
+    s32 b = f->alphaTo;
     s32 to = b << 12;
     s32 from = a << 12;
-    s32 t = FX_Div(f->unk_14, f->unk_0c);
-    f->unk_18 = (from + FX_Mul(-from + to, t)) >> 12;
-    f->unk_14 += 0x1000;
-    if (f->unk_14 >= f->unk_0c) {
-        f->unk_14 = f->unk_0c;
+    s32 t = FX_Div(f->time, f->duration);
+    f->alpha = (from + FX_Mul(-from + to, t)) >> 12;
+    f->time += 0x1000;
+    if (f->time >= f->duration) {
+        f->time = f->duration;
     }
 }
 
@@ -132,36 +132,36 @@ void *func_ov015_021fa6e4(void *self) {
 }
 
 void func_ov015_021fa6f8(Ov015Fade *self, u8 a, u8 b, s32 c, u16 d) {
-    self->unk_08 = a;
-    self->unk_09 = b;
-    self->unk_0c = c;
-    self->unk_10 = d;
-    self->unk_14 = 0;
+    self->alphaFrom = a;
+    self->alphaTo = b;
+    self->duration = c;
+    self->color = d;
+    self->time = 0;
 }
 
 void func_ov015_021fa71c(Ov015Fade *self, s32 c, u16 d) {
-    self->unk_08 = 0x1f;
-    self->unk_09 = 0;
-    self->unk_0c = c;
-    self->unk_10 = d;
-    self->unk_14 = 0;
+    self->alphaFrom = 0x1f;
+    self->alphaTo = 0;
+    self->duration = c;
+    self->color = d;
+    self->time = 0;
 }
 
 void func_ov015_021fa73c(Ov015Fade *self, s32 c, u16 d) {
-    self->unk_08 = 0;
-    self->unk_09 = 0x1f;
-    self->unk_0c = c;
-    self->unk_10 = d;
-    self->unk_14 = 0;
+    self->alphaFrom = 0;
+    self->alphaTo = 0x1f;
+    self->duration = c;
+    self->color = d;
+    self->time = 0;
 }
 
 void func_ov015_021fa75c(Ov015Fade *self) {
-    self->unk_08 = 0;
-    self->unk_09 = 0;
-    self->unk_0c = 0;
-    self->unk_10 = 0;
-    self->unk_14 = 0;
-    self->unk_18 = 0;
+    self->alphaFrom = 0;
+    self->alphaTo = 0;
+    self->duration = 0;
+    self->color = 0;
+    self->time = 0;
+    self->alpha = 0;
 }
 
 void func_ov015_021fa77c(void) {
@@ -181,7 +181,7 @@ void func_ov015_021fa77c(void) {
         p->unk_0c = 1;
         p->unk_10 = 0;
         p->unk_14 = 1;
-        p->unk_18 = NULL;
+        p->child = NULL;
         sys = data_02097d48;
         func_02043904(sys->unk_8b0);
         sys->unk_8b0[0] |= 0x30;
@@ -209,7 +209,7 @@ Ov015Main *func_ov015_021fa8c4(Ov015Main *self) {
 void func_ov015_021fa8ec(Ov015Main *self) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_18);
+    DELETE_V(self->child);
     HEAP_POP(saved);
     func_ov015_022110f0();
     HEAP_PUSH(saved);
@@ -284,13 +284,13 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
         f = (Ov015Fade *)Heap_Alloc(sizeof(Ov015Fade));
         if (f != NULL) {
             SET_VT(f, data_ov015_022127fc);
-            f->unk_04 = -0x1000;
-            f->unk_08 = 0;
-            f->unk_09 = 0;
-            f->unk_0c = 0;
-            f->unk_10 = 0;
-            f->unk_14 = 0;
-            f->unk_18 = 0;
+            f->posZ = -0x1000;
+            f->alphaFrom = 0;
+            f->alphaTo = 0;
+            f->duration = 0;
+            f->color = 0;
+            f->time = 0;
+            f->alpha = 0;
         }
         data_ov015_02213320.unk_04 = (Ov015V *)f;
         switch (self->unk_04) {
@@ -308,13 +308,13 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
         {
             Ov015V *c = Ov015_NewChild(self, kind);
             self->unk_14 = kind;
-            self->unk_18 = c;
+            self->child = c;
         }
         self->unk_0c = 3;
         break;
     }
     case 3: {
-        Ov015Child *c = (Ov015Child *)self->unk_18;
+        Ov015Child *c = (Ov015Child *)self->child;
         s32 res = 0;
         switch (c->state) {
         case 0:
@@ -343,18 +343,18 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
         }
         if (res == 3) {
             HEAP_PUSH(saved);
-            DELETE_V(self->unk_18);
+            DELETE_V(self->child);
             HEAP_POP(saved);
             self->unk_0c = 4;
             r = FALSE;
         } else if (res != 0) {
             HEAP_PUSH(saved);
-            DELETE_V(self->unk_18);
+            DELETE_V(self->child);
             HEAP_POP(saved);
             {
                 Ov015V *n = Ov015_NewChild(self, res);
                 self->unk_14 = res;
-                self->unk_18 = n;
+                self->child = n;
             }
         }
         func_02065ac0(data_0214a420);
@@ -400,12 +400,12 @@ void func_ov015_021fb088(Ov015Main *self) {
     s32 mtxMode;
     s32 texParam;
     s32 trans[3];
-    Ov015Child *c = (Ov015Child *)self->unk_18;
+    Ov015Child *c = (Ov015Child *)self->child;
     if (c != NULL && c->state == 3) {
         VCALL(c)->v1c();
     }
     fd = (Ov015Fade *)data_ov015_02213320.unk_04;
-    if (fd == NULL || fd->unk_18 == 0) {
+    if (fd == NULL || fd->alpha == 0) {
         return;
     }
     func_02043d20(data_02097d48->unk_8b0, 0);
@@ -415,13 +415,13 @@ void func_ov015_021fb088(Ov015Main *self) {
     NNS_G3dGeBufferOP_N(0x15, NULL, 0);
     texParam = 0;
     NNS_G3dGeBufferOP_N(0x2a, (unsigned int *)&texParam, 1);
-    polyAttr = G3_PackPolygonAttr(0, 0, 3, Gfx3DState_NextPolyId(data_02097d48->unk_8b0), fd->unk_18, 0);
+    polyAttr = G3_PackPolygonAttr(0, 0, 3, Gfx3DState_NextPolyId(data_02097d48->unk_8b0), fd->alpha, 0);
     NNS_G3dGeBufferOP_N(0x29, &polyAttr, 1);
-    trans[2] = fd->unk_04;
+    trans[2] = fd->posZ;
     trans[0] = 0;
     trans[1] = 0;
     NNS_G3dGeBufferOP_N(0x1c, (unsigned int *)trans, 3);
-    func_02043db4(1, 0x100000, 0xc0000, fd->unk_10);
+    func_02043db4(1, 0x100000, 0xc0000, fd->color);
     pop = 1;
     NNS_G3dGeBufferOP_N(0x12, (unsigned int *)&pop, 1);
 }

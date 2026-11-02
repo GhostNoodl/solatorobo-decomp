@@ -48,7 +48,7 @@ void func_0204a094(void *a, s16 b, int c);
 
 static inline BOOL ov006_Prop_IsOver(ov006_Prop021e81e0 *self) {
     BOOL r = FALSE;
-    if (self->unk19F > data_ov006_021ec884->unk8->unkB) {
+    if (self->unk19F > data_ov006_021ec884->info->unkB) {
         r = TRUE;
     }
     return r;

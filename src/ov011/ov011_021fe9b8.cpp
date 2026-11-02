@@ -10,8 +10,8 @@ struct Ov011Bit01 {
 static inline Ov011PNode *Ov011Ent_Find(Ov011Ent *e, void *k) {
     Ov011PNode *r = NULL;
     Ov011PNode *n;
-    if (e->b0) {
-        for (n = e->unk_04; n != NULL; n = n->next) {
+    if (e->active) {
+        for (n = e->nodes; n != NULL; n = n->next) {
             if (k == n) {
                 r = n;
                 break;
@@ -49,7 +49,7 @@ void func_ov011_021fe9b8(Ov011Scene *self) {
             self->mgr.b1 = 1;
             self->mgr.unk_04 = v;
             self->mgr.list = self;
-            self->mgr.unk_18 = &self->ent;
+            self->mgr.ent = &self->ent;
             func_ov003_021da48c(&self->mgr.state, 1);
         }
         self->seq.state = 1;

@@ -20,15 +20,15 @@ Ov008Item *func_ov008_021ccda0(Ov008Menu *list, s32 a, s16 b, s16 c, s32 d) {
         n->unk_32 = 0;
     }
     n->unk_00 = a;
-    n->unk_04 = list->unk_9c++;
+    n->serial = list->serial++;
     n->id = b;
     n->unk_08 = c;
     n->unk_0c = d;
-    if (list->unk_94 == NULL) {
-        list->unk_94 = n;
-        list->unk_98 = n;
+    if (list->items == NULL) {
+        list->items = n;
+        list->topItem = n;
     } else {
-        for (p = list->unk_94; p->next != NULL; p = p->next) {
+        for (p = list->items; p->next != NULL; p = p->next) {
         }
         p->next = n;
         n->prev = p;
@@ -43,14 +43,14 @@ void func_ov008_021cce38(Ov008Caption *o) {
         again = FALSE;
         switch (o->state) {
         case 0:
-            if (o->unk_50 == 0xffff) {
+            if (o->next == 0xffff) {
                 break;
             }
             o->state = 1;
         case 1: {
-            u16 v = o->unk_50;
-            o->unk_52 = v;
-            o->unk_50 = 0xffff;
+            u16 v = o->next;
+            o->shown = v;
+            o->next = 0xffff;
             func_02070874(buf, data_ov008_021d0458, func_0206e7d0(v)->unk_04);
             o->pic.v0c();
             o->pic.unk_44 = 2;
@@ -59,7 +59,7 @@ void func_ov008_021cce38(Ov008Caption *o) {
         }
         case 2:
             if (o->pic.v2c() != 0) {
-                if (o->unk_50 != 0xffff) {
+                if (o->next != 0xffff) {
                     again = TRUE;
                     o->state = again;
                 } else {
@@ -86,25 +86,25 @@ void func_ov008_021ccf44(Ov008Panel *o) {
         m = (Model *)Heap_Alloc(0x160);
         if (m != NULL) {
             func_02041218(&m->pltt);
-            func_02041440(m, o->pic.unk_24, 1);
-            STD_CopyString(m->name, o->pic.unk_04);
+            func_02041440(m, o->pic.cell, 1);
+            STD_CopyString(m->name, o->pic.file);
         }
-        o->unk_50 = m;
-        func_020417e0(o->unk_50, (void *)o->pic.v10());
-        o->unk_50->flags |= 2;
-        func_02041d9c(o->unk_50, 0, 0xffff);
-        o->unk_50->unk_150 = 0xfffe0333;
-        o->unk_50->flags |= 0x80000;
+        o->sprite = m;
+        func_020417e0(o->sprite, (void *)o->pic.v10());
+        o->sprite->flags |= 2;
+        func_02041d9c(o->sprite, 0, 0xffff);
+        o->sprite->unk_150 = 0xfffe0333;
+        o->sprite->flags |= 0x80000;
         o->unk_58 = 0;
         o->unk_5c = 0;
-        o->unk_54 = 0x20000;
+        o->offset = 0x20000;
         o->pic.v08();
         o->state = 0x10;
     case 0x10:
-        t = FX_Div(0x24000 - o->unk_54, 0x20000);
-        o->unk_54 = o->unk_54 + FX_Mul(-o->unk_54, 0x333);
-        if (o->unk_54 < 0x800 && o->unk_68 != 0) {
-            o->unk_64 = -0x400;
+        t = FX_Div(0x24000 - o->offset, 0x20000);
+        o->offset = o->offset + FX_Mul(-o->offset, 0x333);
+        if (o->offset < 0x800 && o->unk_68 != 0) {
+            o->speed = -0x400;
             o->state = 9;
         }
         break;
@@ -112,10 +112,10 @@ void func_ov008_021ccf44(Ov008Panel *o) {
         func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
         o->state = 0x12;
     case 0x12:
-        t = FX_Div(o->unk_54 + 0x20000, 0x20000);
-        o->unk_54 = o->unk_54 + FX_Mul(o->unk_54, 0x666);
-        if (o->unk_54 < -0x20000) {
-            OV008_FREE_M(o->unk_50);
+        t = FX_Div(o->offset + 0x20000, 0x20000);
+        o->offset = o->offset + FX_Mul(o->offset, 0x666);
+        if (o->offset < -0x20000) {
+            OV008_FREE_M(o->sprite);
             if (o->pic.v34() != 0) {
                 o->state = 0xf;
             } else {
@@ -124,7 +124,7 @@ void func_ov008_021ccf44(Ov008Panel *o) {
         }
         break;
     case 9:
-        o->unk_54 = o->unk_54 + o->unk_64;
+        o->offset = o->offset + o->speed;
         t = 0x1000;
         break;
     case 8:
@@ -136,7 +136,7 @@ void func_ov008_021ccf44(Ov008Panel *o) {
     } else if (t < 0) {
         t = 0;
     }
-    o->unk_60 = FX_Mul(t, 0x1f000) >> 12;
+    o->alpha = FX_Mul(t, 0x1f000) >> 12;
 }
 
 }

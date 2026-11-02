@@ -187,7 +187,7 @@ void func_ov006_021e96cc(ov006_Car021e96cc *self) {
             }
             if (self->unk19C_0 & 1) {
                 BOOL c = FALSE;
-                if (self->unk19F > data_ov006_021ec884->unk8->unkB) {
+                if (self->unk19F > data_ov006_021ec884->info->unkB) {
                     c = TRUE;
                 }
                 if (!c && data_ov006_021ec884->unk13D == 0) {

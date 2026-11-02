@@ -21,8 +21,8 @@ void func_ov000_021915a0(void *a);
 
 BOOL Ov015FishState40_Exit(Ov015FishState40 *self, Ov015Fish *p) {
     s32 i;
-    p->unk_108 = 0;
-    func_0203f364(&p->unk_568);
+    p->drawMode = 0;
+    func_0203f364(&p->hit);
     Ov015_DeleteFound(data_0214a420, self->unk_08);
     for (i = 0; i < 1; i++) {
         if (data_ov015_02212db8[i] == self) {
@@ -42,28 +42,28 @@ void func_ov015_0220d328(Ov015FishState40 *self, Ov015Fish *o) {
     d = self->unk_1c;
     d.y = FX_Mul(FX_SinCosTable_[((FX_Mul(t, 0x7fff000) >> 12) >> 4) * 2], 0x800);
     VEC_Normalize((VecFx32 *)&d, (VecFx32 *)&d);
-    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)(&o->unk_9c));
-    p = o->unk_40;
+    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)(&o->dir));
+    p = o->pos;
     VEC_MultAdd(self->unk_0c, (VecFx32 *)(&self->unk_1c), (VecFx32 *)&p, (VecFx32 *)&p);
     p.y = Interp_SinLerp(t, -0x32000, 0x1ccd);
     if (p.y > 0) p.y = 0;
-    o->unk_40 = p;
-    o->unk_108 = 2;
+    o->pos = p;
+    o->drawMode = 2;
     e = func_020657b0(data_0214a420, self->unk_08);
     if (e == NULL) {
-        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, &o->unk_40);
+        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, &o->pos);
         FLD(s32, e, 0xd4) = 3;
         FLD(u8, e, 0x28) = 0;
         FLD(s32, e, 0xc8) = -1;
         FLD(s32, e, 0x50) = -0xc8000;
         self->unk_08 = FLD(void *, e, 0x24);
     }
-    q.x = o->unk_40.x;
-    q.y = o->unk_40.y > 0 ? 0 : o->unk_40.y;
-    q.z = o->unk_40.z;
+    q.x = o->pos.x;
+    q.y = o->pos.y > 0 ? 0 : o->pos.y;
+    q.z = o->pos.z;
     e->v18(&q);
-    e->v10(&o->unk_70);
-    e->v34(0, FX_Atan2(o->unk_9c.x, o->unk_9c.z), 0);
+    e->v10(&o->scaleX);
+    e->v34(0, FX_Atan2(o->dir.x, o->dir.z), 0);
     if (self->unk_10 == 0x3c) {
         func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         func_02049a48(data_02097e4c, 0x55, -1, -1, -1);
@@ -79,48 +79,48 @@ void func_ov015_0220d578(Ov015FishState40 *self, Ov015Fish *o) {
     d = self->unk_1c;
     d.y = FX_Mul(FX_SinCosTable_[(((FX_Mul(t, 0x7fff000) >> 12) + 0x7fff) >> 4) * 2], 0x800);
     VEC_Normalize((VecFx32 *)&d, (VecFx32 *)&d);
-    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)(&o->unk_9c));
-    p = o->unk_40;
+    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)(&o->dir));
+    p = o->pos;
     VEC_MultAdd(self->unk_0c, (VecFx32 *)(&self->unk_1c), (VecFx32 *)&p, (VecFx32 *)&p);
     p.y = Interp_SinLerp(t, 0x1ccd, -0x32000);
     if (p.y < -0x32000) p.y = -0x32000;
-    o->unk_40 = p;
-    o->unk_108 = 2;
+    o->pos = p;
+    o->drawMode = 2;
     if (self->unk_10 == 0x3c) {
         func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         func_02049a48(data_02097e4c, 0x55, -1, -1, -1);
     }
     e = func_020657b0(data_0214a420, self->unk_08);
     if (e == NULL) {
-        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, &o->unk_40);
+        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, &o->pos);
         FLD(s32, e, 0xd4) = 3;
         FLD(u8, e, 0x28) = 0;
         FLD(s32, e, 0xc8) = -1;
         FLD(s32, e, 0x50) = -0xc8000;
         self->unk_08 = FLD(void *, e, 0x24);
     }
-    q.x = o->unk_40.x;
-    q.y = o->unk_40.y > 0 ? 0 : o->unk_40.y;
-    q.z = o->unk_40.z;
+    q.x = o->pos.x;
+    q.y = o->pos.y > 0 ? 0 : o->pos.y;
+    q.z = o->pos.z;
     e->v18(&q);
-    e->v10(&o->unk_70);
-    e->v34(0, FX_Atan2(o->unk_9c.x, o->unk_9c.z), 0);
+    e->v10(&o->scaleX);
+    e->v34(0, FX_Atan2(o->dir.x, o->dir.z), 0);
 }
 
 static inline void Ov015_VecSet(Ov015Vec *v, s32 x, s32 y, s32 z) { v->x = x; v->y = y; v->z = z; }
 BOOL func_ov015_0220d7d0(Ov015FishState40 *self, Ov015Vec *out, Ov015Vec *pos) {
-    Ov015Fish *a = self->unk_3c;
+    Ov015Fish *a = self->fish;
     BOOL r = TRUE;
-    if (pos->x > a->unk_b0) {
+    if (pos->x > a->maxX) {
         Ov015_VecSet(out, -0x1000, 0, 0);
         r = FALSE;
-    } else if (pos->x < a->unk_ac) {
+    } else if (pos->x < a->minX) {
         r = FALSE;
         Ov015_VecSet(out, 0x1000, 0, 0);
-    } else if (pos->z > a->unk_b4) {
+    } else if (pos->z > a->maxZ) {
         r = FALSE;
         Ov015_VecSet(out, 0, 0, -0x1000);
-    } else if (pos->z < a->unk_b8) {
+    } else if (pos->z < a->minZ) {
         r = FALSE;
         Ov015_VecSet(out, 0, 0, 0x1000);
     } else {
@@ -131,7 +131,7 @@ BOOL func_ov015_0220d7d0(Ov015FishState40 *self, Ov015Vec *out, Ov015Vec *pos) {
 
 Ov015FishState08 *Ov015FishState08_Ctor(Ov015FishState08 *self) {
     SET_VT(self, data_ov015_02212ecc);
-    self->unk_04 = 0;
+    self->step = 0;
     return self;
 }
 
@@ -148,34 +148,34 @@ void *Ov015FishState08_DtorDelete(void *self) {
 
 BOOL Ov015FishState08_Enter(Ov015FishState08 *self, Ov015Fish *p) {
     Ov015VecC v;
-    func_ov000_02190cb0(&p->unk_244, data_ov015_02212e47, 0x19a, 0);
-    func_ov000_02191318(&p->unk_244, 0x7000);
-    p->unk_104 = 0x800;
-    v = *(Ov015VecC *)&p->unk_9c;
+    func_ov000_02190cb0(&p->model, data_ov015_02212e47, 0x19a, 0);
+    func_ov000_02191318(&p->model, 0x7000);
+    p->animSpeed = 0x800;
+    v = *(Ov015VecC *)&p->dir;
     v.y = 0;
-    VEC_Normalize((VecFx32 *)&v, (VecFx32 *)(&p->unk_9c));
-    self->unk_04 = 1;
+    VEC_Normalize((VecFx32 *)&v, (VecFx32 *)(&p->dir));
+    self->step = 1;
     return TRUE;
 }
 
 BOOL Ov015FishState08_Update(Ov015FishState08 *self, Ov015Fish *p) {
-    switch (self->unk_04) {
+    switch (self->step) {
     case 1: {
-        s32 z = p->unk_40.z;
-        s32 x = p->unk_40.x;
-        p->unk_108 = 0;
-        p->unk_40.x = x;
-        p->unk_40.y = 0;
-        p->unk_40.z = z;
-        if (p->unk_244.unk_c4 == 1) {
+        s32 z = p->pos.z;
+        s32 x = p->pos.x;
+        p->drawMode = 0;
+        p->pos.x = x;
+        p->pos.y = 0;
+        p->pos.z = z;
+        if (p->model.unk_c4 == 1) {
             u8 *o;
             Ov015Vec v;
-            p->unk_244.unk_c4 = 0;
+            p->model.unk_c4 = 0;
             v.x = x;
             v.z = z;
             v.y = 0;
             o = func_02066774(data_ov015_02212e20, data_ov015_02212e68, 0, &v);
-            VCALL(o)->v10(&p->unk_70);
+            VCALL(o)->v10(&p->scaleX);
             FLD(s32, o, 0xd4) = 3;
             FLD(u8, o, 0x28) = 0;
             FLD(s32, o, 0x50) = -0xc8000;
@@ -183,21 +183,21 @@ BOOL Ov015FishState08_Update(Ov015FishState08 *self, Ov015Fish *p) {
             func_02049a48(data_02097e4c, 0x1b, -1, -1, -1);
             func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         }
-        if (func_ov000_02191120(&p->unk_244)) {
-            func_ov000_02190cb0(&p->unk_244, data_ov015_02212e0d, 0x19a, 0);
-            p->unk_104 = 0x800;
-            self->unk_04 = 2;
+        if (func_ov000_02191120(&p->model)) {
+            func_ov000_02190cb0(&p->model, data_ov015_02212e0d, 0x19a, 0);
+            p->animSpeed = 0x800;
+            self->step = 2;
         }
         break;
     }
     case 2:
-        if (func_ov000_02191120(&p->unk_244)) {
+        if (func_ov000_02191120(&p->model)) {
             void *q = Heap_Alloc(0x2c);
             if (q != NULL) {
                 q = Ov015FishState2c_Ctor((Ov015FishState2c *)q);
             }
-            p->unk_f0 = (Ov015V *)q;
-            p->unk_ec = 2;
+            p->nextState = (Ov015V *)q;
+            p->nextStateId = 2;
         }
         break;
     }
@@ -205,10 +205,10 @@ BOOL Ov015FishState08_Update(Ov015FishState08 *self, Ov015Fish *p) {
 }
 
 BOOL Ov015FishState08_Exit(u8 *self, Ov015Fish *p) {
-    func_ov000_02190cb0(&p->unk_244, data_ov015_02212e0d, 0x19a, 0);
-    p->unk_104 = 0x800;
-    func_ov000_021915a0(&p->unk_244);
-    p->unk_108 = 0;
+    func_ov000_02190cb0(&p->model, data_ov015_02212e0d, 0x19a, 0);
+    p->animSpeed = 0x800;
+    func_ov000_021915a0(&p->model);
+    p->drawMode = 0;
     return TRUE;
 }
 

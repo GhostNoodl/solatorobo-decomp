@@ -20,23 +20,23 @@ BOOL func_ov011_021fa6a0(Ov011Node *n) {
 }
 
 BOOL func_ov011_021fa720(Ov011Ent *e, s32 a, s32 b, s32 c, s32 d) {
-    e->b0 = 1;
-    e->b1 = 1;
-    e->b2 = 0;
-    e->b3 = 0;
-    e->b4 = 0;
-    e->unk_04 = NULL;
-    e->unk_08 = 0;
-    e->unk_0c = b;
-    e->unk_10 = 0;
-    e->unk_18 = c;
-    e->unk_1c = 0;
-    e->unk_14 = 0;
-    e->unk_24 = d;
-    e->unk_28 = 0;
-    e->unk_2c = 0;
-    e->unk_30 = 0;
-    e->unk_34 = a;
+    e->active = 1;
+    e->settled = 1;
+    e->radiusLerp = 0;
+    e->spinLerp = 0;
+    e->heightLerp = 0;
+    e->nodes = NULL;
+    e->blend = 0;
+    e->radius = b;
+    e->radiusTo = 0;
+    e->spin = c;
+    e->spinTo = 0;
+    e->radiusStep = 0;
+    e->height = d;
+    e->heightTo = 0;
+    e->heightStep = 0;
+    e->angle = 0;
+    e->dir = a;
     return TRUE;
 }
 
@@ -351,14 +351,14 @@ void func_ov011_021fb02c(Ov011Mgr *self) {
             delta.x = a->pos.x - actor->pos.x;
             delta.y = a->pos.y - actor->pos.y;
             delta.z = a->pos.z - actor->pos.z;
-            e = self->unk_18;
+            e = self->ent;
             n = NULL;
-            if (e->b0) {
+            if (e->active) {
                 Ov011PNode *q = Ov011_NewPNode(&delta);
-                e->unk_04 = Ov011_PushNode(e->unk_04, q);
+                e->nodes = Ov011_PushNode(e->nodes, q);
                 n = q;
-                e->b1 = 0;
-                e->unk_08 = 0;
+                e->settled = 0;
+                e->blend = 0;
             }
             func_ov011_02201214(a, n);
         }

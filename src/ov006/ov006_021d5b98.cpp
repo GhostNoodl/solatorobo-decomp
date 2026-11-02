@@ -160,7 +160,7 @@ BOOL func_ov006_021d6140(ov006_Task021d6140 *self) {
         func_ov000_02193e5c(p, data_ov006_021eb7a8[i]);
     }
     {
-        ov006_Info021d6140 *info = (ov006_Info021d6140 *)data_ov006_021ec884->unk8;
+        ov006_Info021d6140 *info = (ov006_Info021d6140 *)data_ov006_021ec884->info;
         ov006_Game_SetColor(0x12, info->lo, info->hi);
     }
     func_0203cc58(0x1000, 0, 0);
@@ -376,7 +376,7 @@ BOOL func_ov006_021d630c(ov006_Task021d630c *self) {
             if (slot->active) {
                 ov006_Prop *prop = func_ov006_021ea430(slot->unkC, j, &pos, &rot);
                 if (prop != NULL) {
-                    slot->unkE = prop->unkC;
+                    slot->actorId = prop->unkC;
                     func_ov000_0218c208(data_ov000_021ccd64, &pos, rot.y);
                 }
             }
@@ -403,7 +403,7 @@ BOOL func_ov006_021d630c(ov006_Task021d630c *self) {
         if (!ActorMgr_IsReady(data_ov000_021ccd68)) {
             break;
         }
-        func_0204a2f0(data_02097e4c, ((ov006_Info021d630c *)data_ov006_021ec884->unk8)->unk8);
+        func_0204a2f0(data_02097e4c, ((ov006_Info021d630c *)data_ov006_021ec884->info)->unk8);
         self->subState++;
         break;
     case 7:
@@ -543,8 +543,8 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         }
         self->unk1C = g;
         func_ov006_021de008(g);
-        ov006_Gauge_Init(self->unk1C, data_ov006_021ec884->unk13C ? 2 : 1, data_ov006_021ec884->unk140, data_ov006_021ec884->unk144);
-        ov006_Gauge_Set(data_ov006_021ec884->unk8->unkB, self->unk1C);
+        ov006_Gauge_Init(self->unk1C, data_ov006_021ec884->unk13C ? 2 : 1, data_ov006_021ec884->time, data_ov006_021ec884->unk144);
+        ov006_Gauge_Set(data_ov006_021ec884->info->unkB, self->unk1C);
         model = (Model *)Heap_Alloc(sizeof(Model));
         if (model != NULL) {
             const char *name = "cefly1pic00";
@@ -557,7 +557,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         self->unk24->flags |= 2;
         self->unk24->flags |= 0x400000;
         func_02041d9c(self->unk24, 2, 0xffff);
-        info = (ov006_Info021d6724 *)data_ov006_021ec884->unk8;
+        info = (ov006_Info021d6724 *)data_ov006_021ec884->info;
         p = (ov006_Pos021d6724 *)Heap_Alloc(0x30);
         if (p != NULL) {
             p = Ov006Vt_021ec1fc_Ctor(p);
@@ -598,7 +598,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         self->subState = 10;
         break;
     case 10:
-        if (data_ov006_021ec860->unk1C != 0 && data_ov006_021ec888->unk8 != 9) {
+        if (data_ov006_021ec860->unk1C != 0 && data_ov006_021ec888->state != 9) {
             ov006_Msg021d6724 msg;
             msg.unk0 = 0;
             msg.unk2 = 0;
@@ -618,7 +618,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         break;
     case 20: {
         u16 mask;
-        if (data_ov006_021ec888->unk8 == 9) {
+        if (data_ov006_021ec888->state == 9) {
             self->subState = 40;
             break;
         }
@@ -641,7 +641,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         break;
     case 30: {
         u16 mask;
-        if (data_ov006_021ec888->unk8 == 9) {
+        if (data_ov006_021ec888->state == 9) {
             self->subState = 40;
             break;
         }

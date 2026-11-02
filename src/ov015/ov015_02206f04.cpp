@@ -36,7 +36,7 @@ void *func_ov015_02206f04(void) {
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
         SET_VT(p, data_ov015_02212a88);
-        p->unk_3c = 0;
+        p->model = 0;
         p->unk_40 = 0;
         p->unk_44 = 0;
         p->unk_48 = 0;
@@ -53,10 +53,10 @@ void *func_ov015_02206f7c(void) {
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
         SET_VT(p, data_ov015_02212a08);
-        func_02043548(&p->unk_44.eye);
-        func_020434e0(&p->unk_44.fovSin);
-        p->unk_3c = 0;
-        p->unk_40 = 0;
+        func_02043548(&p->camView.eye);
+        func_020434e0(&p->camView.fovSin);
+        p->ship = 0;
+        p->shadow = 0;
         p->unk_80 = 0;
         p->unk_84 = 0;
         p->unk_88 = 0;
@@ -67,7 +67,7 @@ void *func_ov015_02206f7c(void) {
         p->unk_9c = 0;
         p->unk_a0 = 0;
         p->unk_a4 = 0;
-        p->unk_a8 = 0;
+        p->frame = 0;
         p->unk_ac = 0;
     }
     VCALL(p)->v08(0x1f, 0xc8);
@@ -129,7 +129,7 @@ void *func_ov015_02207138(void) {
         p->unk_58 = 0;
         p->unk_5c = 0;
         p->unk_60 = 0;
-        p->unk_64[0] = 0;
+        p->textBuf[0] = 0;
     }
     VCALL(p)->v08(0x22, 0xc8);
     return p;
@@ -284,14 +284,14 @@ void *Ov015Scene2a88_DtorDelete(Ov015Scene2a88 *self) {
     SET_VT(self, data_ov015_02212a88);
     HEAP_PUSH(saved);
     {
-        u8 *p = self->unk_3c;
+        u8 *p = self->model;
         if (p != NULL) {
             if (p != NULL) {
                 func_02041558((Model *)p);
                 func_02041278((PlttRes *)(p + 0x88));
                 Heap_Free(p);
             }
-            self->unk_3c = NULL;
+            self->model = NULL;
         }
     }
     HEAP_POP(saved);
@@ -306,14 +306,14 @@ void *Ov015Scene2a88_Dtor(Ov015Scene2a88 *self) {
     SET_VT(self, data_ov015_02212a88);
     HEAP_PUSH(saved);
     {
-        u8 *p = self->unk_3c;
+        u8 *p = self->model;
         if (p != NULL) {
             if (p != NULL) {
                 func_02041558((Model *)p);
                 func_02041278((PlttRes *)(p + 0x88));
                 Heap_Free(p);
             }
-            self->unk_3c = NULL;
+            self->model = NULL;
         }
     }
     HEAP_POP(saved);
@@ -331,31 +331,31 @@ void *func_ov015_0220763c(void *self) {
 
 void *func_ov015_0220765c(Ov015Ship *self) {
     func_ov000_0218e9c4(self);
-    func_ov000_0218fe1c(&self->unk_138);
-    func_ov000_0218e9c4(&self->unk_220);
-    __cxa_vec_ctor(self->unk_358, 8, 0xe8, (void *)func_ov000_0218fe1c, (void *)func_ov000_0218fee4);
-    func_ov000_0218e9c4(&self->unk_a98);
-    func_ov000_0218fe1c(&self->unk_bd0);
-    func_ov000_021919c8(&self->unk_cb8);
-    self->unk_d14.x = 0;
-    self->unk_d14.z = 0;
+    func_ov000_0218fe1c(&self->model);
+    func_ov000_0218e9c4(&self->res2);
+    __cxa_vec_ctor(self->subModels, 8, 0xe8, (void *)func_ov000_0218fe1c, (void *)func_ov000_0218fee4);
+    func_ov000_0218e9c4(&self->res3);
+    func_ov000_0218fe1c(&self->model3);
+    func_ov000_021919c8(&self->shadow);
+    self->pos.x = 0;
+    self->pos.z = 0;
     self->unk_d08.x = 0;
     self->unk_d08.y = 0;
     self->unk_d08.z = 0;
-    self->unk_d28 = 0;
-    self->unk_d2c = 0;
-    self->unk_d30 = 0;
-    self->unk_d34 = 0;
+    self->fx = 0;
+    self->fxTimer = 0;
+    self->fx2 = 0;
+    self->fxTimer2 = 0;
     self->unk_d42 = 0;
-    self->unk_d14.y = 0x1000;
+    self->pos.y = 0x1000;
     self->unk_d44 = 0x1000;
-    self->unk_d20 = 0;
-    self->unk_d24 = 0;
-    self->unk_d38 = 0;
+    self->rotX = 0;
+    self->rotZ = 0;
+    self->loadStep = 0;
     self->unk_d3a = 0;
     self->unk_d3e = 0;
-    self->unk_d48 = 0;
-    self->unk_d22 = 0x8000;
+    self->modelIdx = 0;
+    self->rotY = 0x8000;
     self->unk_d3c = 1;
     self->unk_d40 = 1;
     self->unk_d41 = 1;
@@ -364,22 +364,22 @@ void *func_ov015_0220765c(Ov015Ship *self) {
 
 void *func_ov015_02207738(Ov015Ship *self) {
     void *saved;
-    if (func_02065748(data_0214a420, self->unk_d28) != 0) {
+    if (func_02065748(data_0214a420, self->fx) != 0) {
         HEAP_PUSH(saved);
-        DELETE_V(self->unk_d28);
+        DELETE_V(self->fx);
         HEAP_POP(saved);
     }
-    if (func_02065748(data_0214a420, self->unk_d30) != 0) {
+    if (func_02065748(data_0214a420, self->fx2) != 0) {
         HEAP_PUSH(saved);
-        DELETE_V(self->unk_d30);
+        DELETE_V(self->fx2);
         HEAP_POP(saved);
     }
-    Ov000Vt_021cc438_Dtor(&self->unk_cb8);
-    func_ov000_0218fee4(&self->unk_bd0);
-    func_ov000_0218ea20(&self->unk_a98);
-    __cxa_vec_cleanup(self->unk_358, 8, 0xe8, (void *)func_ov000_0218fee4);
-    func_ov000_0218ea20(&self->unk_220);
-    func_ov000_0218fee4(&self->unk_138);
+    Ov000Vt_021cc438_Dtor(&self->shadow);
+    func_ov000_0218fee4(&self->model3);
+    func_ov000_0218ea20(&self->res3);
+    __cxa_vec_cleanup(self->subModels, 8, 0xe8, (void *)func_ov000_0218fee4);
+    func_ov000_0218ea20(&self->res2);
+    func_ov000_0218fee4(&self->model);
     func_ov000_0218ea20(self);
     return self;
 }
@@ -389,9 +389,9 @@ void func_ov015_02207858(Ov015Ship *self) {
     v.z = 0xa000;
     v.x = 0;
     v.y = 0;
-    func_01ffc9fc(&v, &v, self->unk_d22);
-    VEC_Add((VecFx32 *)(&self->unk_d14), (VecFx32 *)&v, (VecFx32 *)(&self->unk_d4c));
-    self->unk_d38 = 10;
+    func_01ffc9fc(&v, &v, self->rotY);
+    VEC_Add((VecFx32 *)(&self->pos), (VecFx32 *)&v, (VecFx32 *)(&self->unk_d4c));
+    self->loadStep = 10;
 }
 
 }

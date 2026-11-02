@@ -23,28 +23,28 @@ extern "C" {
 void func_ov006_021dc578(ov006_Lbl021e1bb4 *self);
 
 static inline void ov006_Caption_Draw(ov006_Caption *self) {
-    if (self->unk4) {
-        const ov006_CaptionEntry *e = &data_ov006_021eb824[self->unk20];
-        ov006_Anim *anim = self->unk28;
+    if (self->visible) {
+        const ov006_CaptionEntry *e = &data_ov006_021eb824[self->kind];
+        ov006_Anim *anim = self->label;
         s32 x;
         s32 y;
-        s32 w = e->unk2;
-        s32 bx = self->unk10;
-        s32 by = self->unk14;
+        s32 w = e->width;
+        s32 bx = self->textX;
+        s32 by = self->textY;
         w -= *(int *)anim->unk44;
-        s32 h = e->unk4;
+        s32 h = e->height;
         h -= *(int *)anim->unk48;
         bx += 0x80;
         by += 0x60;
-        x = self->unk8 + self->unk18;
-        y = self->unkC + self->unk1C;
+        x = self->x + self->ofsX;
+        y = self->y + self->ofsY;
         bx += w >> 1;
         by += h >> 1;
         VCALL(anim, 20, x + bx, y + by);
-        VCALL(self->unk28, 90);
-        if (self->unk24 != NULL) {
-            ov006_Model_SetPos(self->unk24, 2, x << 12, y << 12);
-            Model_PlayPart(self->unk24, e->unk0);
+        VCALL(self->label, 90);
+        if (self->model != NULL) {
+            ov006_Model_SetPos(self->model, 2, x << 12, y << 12);
+            Model_PlayPart(self->model, e->part);
         }
     }
 }
@@ -64,12 +64,12 @@ void func_ov006_021e1bb4(ov006_Unk021e1bb4 *self) {
     }
     {
         ov006_Caption *c = self->unk24;
-        int h = data_ov006_021eb824[c->unk20].unk4 / 2;
-        int w = data_ov006_021eb824[c->unk20].unk2;
+        int h = data_ov006_021eb824[c->kind].height / 2;
+        int w = data_ov006_021eb824[c->kind].width;
         x = self->unk8;
         y = self->unkC;
-        c->unk8 = x - (w >> 1);
-        c->unkC = y - (h + 0x50);
+        c->x = x - (w >> 1);
+        c->y = y - (h + 0x50);
     }
     ov006_Caption_Draw(self->unk24);
     ov006_Lbl_SetPos(self->unk2C, (x + 0x80) << 12, (y + 0x5d) << 12, self->unk2C->unkB8);

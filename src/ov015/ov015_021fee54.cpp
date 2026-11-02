@@ -11,7 +11,7 @@ void func_ov015_021fee54(Ov015CamPair *self) {
     Ov015Vec res2;
     Ov015Vec d1;
     Ov015Vec d2;
-    tgt = self->unk_180;
+    tgt = self->target;
     if (tgt.x > 0x207ec) {
         tgt.x = 0x207ec;
     } else if (tgt.x < -0x207ec) {
@@ -21,9 +21,9 @@ void func_ov015_021fee54(Ov015CamPair *self) {
     tgt.z = -0x6b800;
     prev = self->cam0.at;
     func_02049244(&tgt, 0x7b, &prev, &tgt, 0x1000);
-    d1.x = self->unk_18c.x - self->unk_180.x;
-    d1.y = self->unk_18c.y - self->unk_180.y;
-    d1.z = self->unk_18c.z - self->unk_180.z;
+    d1.x = self->unk_18c.x - self->target.x;
+    d1.y = self->unk_18c.y - self->target.y;
+    d1.z = self->unk_18c.z - self->target.z;
     VEC_Normalize((VecFx32 *)&d1, (VecFx32 *)&d1);
     VEC_MultAdd(self->unk_198, (VecFx32 *)&d1, (VecFx32 *)(&self->unk_18c), (VecFx32 *)&res1);
     res1.y += 0x1e000;

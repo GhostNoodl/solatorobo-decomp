@@ -33,12 +33,12 @@ void func_ov015_02206564(Ov015Scene2b08 *self) {
     }
     func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
     self->unk_54 = 0;
-    self->unk_3c->unk_0c |= 2;
-    self->unk_44->unk_0c |= 2;
-    self->unk_40->unk_0c |= 2;
-    self->unk_48->unk_0c |= 2;
-    self->unk_50->unk_0c |= 2;
-    func_ov000_0218084c(data_ov000_021ccd44, 0x1f, self->unk_0c);
+    self->unk_3c->flags |= 2;
+    self->unk_44->flags |= 2;
+    self->unk_40->flags |= 2;
+    self->unk_48->flags |= 2;
+    self->unk_50->flags |= 2;
+    func_ov000_0218084c(data_ov000_021ccd44, 0x1f, self->param);
     FLD(u32, self, 0x4) |= 6;
 }
 
@@ -60,10 +60,10 @@ void func_ov015_02206648(Ov015Scene2b08 *self) {
     }
     if (!Ov015_IsFinished(self->unk_4c) || !Ov015_IsFinished(self->unk_50)) {
         data_ov000_021ccd34 = 1;
-        self->unk_3c->unk_0c |= 4;
+        self->unk_3c->flags |= 4;
     } else {
         data_ov000_021ccd34 = 0;
-        self->unk_3c->unk_0c &= ~4;
+        self->unk_3c->flags &= ~4;
     }
 
     VCALL(self->unk_3c)->v1c();
@@ -111,18 +111,18 @@ void func_ov015_02206800(Ov015Scene2b08 *self) {
 }
 
 static inline Ov015MenuItem *Ov015_ListNth3(Ov015Menu *o) {
-    Ov015MenuItem *p = o->unk_98;
+    Ov015MenuItem *p = o->topItem;
     s32 n;
     if (p == NULL) return NULL;
-    n = o->unk_b1;
+    n = o->cursor;
     while (n-- != 0) {
-        p = p->unk_2c;
+        p = p->next;
     }
     return p;
 }
 static inline void Ov015_ShopMsg(Ov015Scene2b08 *self, s32 id) {
     func_ov000_0215c1bc(self->unk_50, 0x8000, MsgRes_GetString(data_02149ef8, id));
-    self->unk_50->unk_0c &= ~2;
+    self->unk_50->flags &= ~2;
     VCALL(self->unk_50)->v70();
 }
 static inline void Ov015_SetMoney24(u16 v) {
@@ -135,7 +135,7 @@ BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
     u8 *def = func_0206f000(id);
     BOOL consume = TRUE;
     BOOL r = TRUE;
-    if (self->unk_40->unk_8c < item->unk_0c) {
+    if (self->unk_40->value < item->price) {
         if (self->unk_50 != NULL) Ov015_ShopMsg(self, 0x9c);
         return FALSE;
     }
@@ -157,14 +157,14 @@ BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
     }
     }
     if (r) {
-        func_ov000_0215d980(self->unk_40, self->unk_40->unk_8c - item->unk_0c, 0);
+        func_ov000_0215d980(self->unk_40, self->unk_40->value - item->price, 0);
         if (consume) {
             VCALL(self->unk_3c)->v70(item);
             func_0206f5e4(id, 1);
         }
         {
             u8 *save = data_0214a424;
-            u32 m = self->unk_40->unk_8c;
+            u32 m = self->unk_40->value;
             if (m > 99999) m = 99999;
             FLD(u32, save, 0x618) = m;
 

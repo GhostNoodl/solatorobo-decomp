@@ -59,9 +59,9 @@ BOOL func_ov015_02201344(Ov015Game *self) {
     if (s != NULL) {
         s = (Ov015Ship *)func_ov015_0220765c(s);
     }
-    self->unk_18 = s;
+    self->ship = s;
     func_ov015_02207858(s);
-    self->unk_18->unk_d48 = data_ov015_02213368->unk_2c;
+    self->ship->modelIdx = data_ov015_02213368->unk_2c;
     o = (u8 *)Heap_Alloc(0x664);
     if (o != NULL) {
         SET_VT(o, data_ov015_0221294c);

@@ -5,28 +5,28 @@ extern "C" {
 // Same caption draw as the inline in ov006_021e1bb4.cpp, with the statements
 // in the order that reproduces the target's scheduling.
 void func_ov006_021e0b80(ov006_Caption *self) {
-    if (self->unk4) {
-        const ov006_CaptionEntry *e = &data_ov006_021eb824[self->unk20];
-        ov006_Anim *anim = self->unk28;
+    if (self->visible) {
+        const ov006_CaptionEntry *e = &data_ov006_021eb824[self->kind];
+        ov006_Anim *anim = self->label;
         s32 x;
         s32 y;
-        s32 bx = self->unk10;
-        s32 by = self->unk14;
+        s32 bx = self->textX;
+        s32 by = self->textY;
         bx += 0x80;
-        x = self->unk8 + self->unk18;
-        y = self->unkC + self->unk1C;
-        s32 w = e->unk2;
+        x = self->x + self->ofsX;
+        y = self->y + self->ofsY;
+        s32 w = e->width;
         w -= *(int *)anim->unk44;
-        s32 h = e->unk4;
+        s32 h = e->height;
         bx += w >> 1;
         h -= *(int *)anim->unk48;
         by += 0x60;
         by += h >> 1;
         VCALL(anim, 20, x + bx, y + by);
-        VCALL(self->unk28, 90);
-        if (self->unk24 != NULL) {
-            ov006_Model_SetPos(self->unk24, 2, x << 12, y << 12);
-            Model_PlayPart(self->unk24, e->unk0);
+        VCALL(self->label, 90);
+        if (self->model != NULL) {
+            ov006_Model_SetPos(self->model, 2, x << 12, y << 12);
+            Model_PlayPart(self->model, e->part);
         }
     }
 }

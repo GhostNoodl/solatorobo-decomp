@@ -474,9 +474,9 @@ static inline void Ov011B_FreeVec(Ov011Scene *b) {
 }
 
 static inline void Ov011B_FreeList(Ov011Scene *b) {
-    if (b->ent.b0) {
-        if (b->ent.b0) {
-            Ov011PNode *p = b->ent.unk_04;
+    if (b->ent.active) {
+        if (b->ent.active) {
+            Ov011PNode *p = b->ent.nodes;
             while (p != NULL) {
                 Ov011PNode *next = p->next;
                 if (p != NULL) {
@@ -484,9 +484,9 @@ static inline void Ov011B_FreeList(Ov011Scene *b) {
                 }
                 p = next;
             }
-            b->ent.unk_04 = NULL;
+            b->ent.nodes = NULL;
         }
-        b->ent.b0 = 0;
+        b->ent.active = 0;
     }
 }
 

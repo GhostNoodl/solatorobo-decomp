@@ -37,8 +37,8 @@ ov006_Unk021ec888 *Ov006Vt_021ec404_Ctor(ov006_Unk021ec888 *self) {
     self->vtbl = &data_ov006_021ec404;
     self->vtbl2 = &data_ov006_021ec444;
     self->unk10 = 0;
-    self->unk8 = 0;
-    self->unkC = 0;
+    self->state = 0;
+    self->stateTime = 0;
     self->unk14 = 0;
     self->unk18 = 1;
     self->unk1C = 0;

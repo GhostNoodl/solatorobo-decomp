@@ -42,13 +42,13 @@ BOOL func_ov015_0220e074(u8 *self) {
     s32 cur;
     u8 *n;
     func_ov000_0218ffdc(self + 0x184, self + 0x4c, 0, 1);
-    FLD(Ov015AnimFlags, self, 0x246).b4 = 0;
+    FLD(Ov015AnimFlags, self, 0x246).boxTest = 0;
     func_ov000_021915a0(self + 0x184);
-    FLD(Ov015AnimFlags, self, 0x246).b0 = 1;
+    FLD(Ov015AnimFlags, self, 0x246).visible = 1;
     NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(self + 0x1a8), (NNSG3dSbcCallBackFunc)func_ov015_022090fc);
-    FLD(Ov015AnimFlags, self, 0x246).b5 = 0;
+    FLD(Ov015AnimFlags, self, 0x246).clearInit = 0;
     FLD(u8 *, self, 0x1d4) = self + 0x49c;
-    FLD(Ov015AnimFlags, self, 0x246).b8 = 1;
+    FLD(Ov015AnimFlags, self, 0x246).flushVP = 1;
     FLD(s32, self, 0x4cc) = func_ov000_021909a8(self + 0x184, data_ov015_02212e14, data_ov015_02212e15);
     FLD(s32, self, 0x50c) = FLD(s16, func_0206fef8(FLD(u16, self, 0x498)), 0x10);
     func_ov000_0218ffdc(self + 0x3a8, self + 0x26c, 0, 1);
@@ -58,8 +58,8 @@ BOOL func_ov015_0220e074(u8 *self) {
         func_ov000_02191618(self + 0x3a8);
         func_ov000_02191318(self + 0x3a8, FLD(u16, self, 0x3a4) << 12);
     }
-    FLD(Ov015AnimFlags, self, 0x46a).b4 = 0;
-    FLD(Ov015AnimFlags, self, 0x46a).b0 = 1;
+    FLD(Ov015AnimFlags, self, 0x46a).boxTest = 0;
+    FLD(Ov015AnimFlags, self, 0x46a).visible = 1;
     cur = FLD(s32, self, 0x494);
     for (i = 0; i < 8; i++) {
         if (h->slots[i].b >= 0) {

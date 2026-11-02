@@ -15,16 +15,16 @@ BOOL func_ov008_021d01b0(Ov008Menu *self);
 }
 
 static inline BOOL Ov008_IsState2(Ov008Menu *self) {
-    return self->unk_04 == 2;
+    return self->state == 2;
 }
 
 static inline Ov008Item *Ov008_GetItem(Ov008Menu *self) {
-    Ov008Item *p = self->unk_98;
+    Ov008Item *p = self->topItem;
     s32 i;
     if (p == NULL) {
         return NULL;
     }
-    i = self->unk_b1;
+    i = self->cursor;
     while (i-- != 0) {
         p = p->next;
     }
@@ -44,7 +44,7 @@ static inline BOOL Ov008_ModelDone(Ov008MenuRes *p) {
 }
 
 static inline s32 Ov008_Height(Ov008Menu *self) {
-    s32 a = self->v40() * self->unk_20;
+    s32 a = self->v40() * self->rows;
     s32 b = self->v34();
     return a + b + self->v38();
 }
@@ -59,25 +59,25 @@ s32 func_ov008_021d0014(Ov008Menu *self, s32 arg) {
 }
 
 s32 func_ov008_021d0030(Ov008Menu *self, s32 arg) {
-    if (self->unk_88 == NULL) {
+    if (self->onCursor == NULL) {
         return TRUE;
     }
-    return self->unk_88(self, arg);
+    return self->onCursor(self, arg);
 }
 
 s32 func_ov008_021d004c(Ov008Menu *self, s32 arg) {
-    if (self->unk_84 == NULL) {
+    if (self->onDecide == NULL) {
         return TRUE;
     }
-    return self->unk_84(self, arg);
+    return self->onDecide(self, arg);
 }
 
 s32 func_ov008_021d0068(Ov008Menu *self) {
-    if (self->unk_0c & 0x20000) {
+    if (self->flags & 0x20000) {
         s32 r;
-        self->unk_20 += 2;
+        self->rows += 2;
         r = Ov008_Height(self);
-        self->unk_20 -= 2;
+        self->rows -= 2;
         return r;
     }
     return Ov008_Height(self);

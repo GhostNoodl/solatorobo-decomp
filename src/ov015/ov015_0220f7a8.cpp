@@ -195,22 +195,22 @@ void func_ov015_0220fb78(Ov015Result *self) {
 void *Ov015Msg_Ctor(Ov015Msg *self) {
     SET_VT(self, data_ov015_022131c4);
     self->unk_04 = 0;
-    self->unk_0c = 0;
+    self->msgIdx = 0;
     FLD(s32, self, 0x10) = 0;
     FLD(s32, self, 0x14) = 0;
     FLD(s32, self, 0x18) = 0;
-    self->unk_1c = 0;
-    self->unk_20 = -0x100000;
-    self->unk_24 = 0;
+    self->posX = 0;
+    self->posY = -0x100000;
+    self->posZ = 0;
     FLD(s32, self, 0x28) = 0;
     FLD(s32, self, 0x2c) = 0;
-    MIi_CpuClear32(0, self->unk_30, 0x80);
-    self->unk_b0 = 0;
-    self->unk_b4 = 0;
-    MIi_CpuClearFast(0, self->unk_b8, 0x80);
-    self->unk_138 = 0;
-    self->unk_13c = 0;
-    self->unk_140 = 0;
+    MIi_CpuClear32(0, self->pages, 0x80);
+    self->pageCount = 0;
+    self->page = 0;
+    MIi_CpuClearFast(0, self->text, 0x80);
+    self->seq = 0;
+    self->step = 0;
+    self->timer = 0;
     self->unk_08 = 0;
     return self;
 }
@@ -219,33 +219,33 @@ void *Ov015Msg_Dtor(Ov015Msg *self) {
     void *saved;
     SET_VT(self, data_ov015_022131c4);
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_10);
+    DELETE_V(self->msgRes);
     HEAP_POP(saved);
     {
     void *saved2;
     HEAP_PUSH(saved2);
     {
-    u8 *o = self->unk_14;
+    u8 *o = self->model;
     if (o != NULL) {
         if (o != NULL) {
             func_02041558((Model *)o);
             func_02041278((PlttRes *)(o + 0x88));
             Heap_Free(o);
         }
-        self->unk_14 = NULL;
+        self->model = NULL;
     }
     }
     HEAP_POP(saved2);
     }
 
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_18);
+    DELETE_V(self->textWin);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_28);
+    DELETE_V(self->label);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_2c);
+    DELETE_V(self->textBox);
     HEAP_POP(saved);
 
     return self;
@@ -255,33 +255,33 @@ void *Ov015Msg_DtorDelete(Ov015Msg *self) {
     void *saved;
     SET_VT(self, data_ov015_022131c4);
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_10);
+    DELETE_V(self->msgRes);
     HEAP_POP(saved);
     {
     void *saved2;
     HEAP_PUSH(saved2);
     {
-    u8 *o = self->unk_14;
+    u8 *o = self->model;
     if (o != NULL) {
         if (o != NULL) {
             func_02041558((Model *)o);
             func_02041278((PlttRes *)(o + 0x88));
             Heap_Free(o);
         }
-        self->unk_14 = NULL;
+        self->model = NULL;
     }
     }
     HEAP_POP(saved2);
     }
 
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_18);
+    DELETE_V(self->textWin);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_28);
+    DELETE_V(self->label);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_2c);
+    DELETE_V(self->textBox);
     HEAP_POP(saved);
 
     Heap_Free(self);
@@ -289,16 +289,16 @@ void *Ov015Msg_DtorDelete(Ov015Msg *self) {
 }
 
 static inline void Ov015_SetSeq(Ov015Msg *self, s32 n) {
-    self->unk_138 = n;
-    self->unk_13c = 0;
-    self->unk_140 = 0;
+    self->seq = n;
+    self->step = 0;
+    self->timer = 0;
 }
 BOOL func_ov015_02210014(Ov015Msg *self) {
     BOOL r = TRUE;
-    switch (self->unk_138) {
+    switch (self->seq) {
     case 0:
         VCALL(self)->v14();
-        Ov015_SetSeq(self, self->unk_138 + 1);
+        Ov015_SetSeq(self, self->seq + 1);
     case 1:
         if (VCALL(self)->v18()) {
             Ov015_SetSeq(self, 10);
@@ -360,24 +360,24 @@ void func_ov015_0221015c(Ov015Msg *self) {
     if (!data_02097d48->unk_a30_4) {
         return;
     }
-    if (self->unk_28 != NULL) {
-        VCALL(self->unk_28)->v20();
+    if (self->label != NULL) {
+        VCALL(self->label)->v20();
     }
-    if (self->unk_2c != NULL) {
-        VCALL(self->unk_2c)->v20();
+    if (self->textBox != NULL) {
+        VCALL(self->textBox)->v20();
     }
-    if (self->unk_14 != NULL) {
-        u8 *m = self->unk_14;
-        FLD(s32, m, 0xfc) = self->unk_1c;
-        FLD(s32, m, 0x100) = self->unk_20;
-        Ov015_ModelPlayPart(self->unk_14, 0x1d);
+    if (self->model != NULL) {
+        u8 *m = self->model;
+        FLD(s32, m, 0xfc) = self->posX;
+        FLD(s32, m, 0x100) = self->posY;
+        Ov015_ModelPlayPart(self->model, 0x1d);
     }
-    p = self->unk_18;
+    p = self->textWin;
     if (p == NULL) {
         return;
     }
-    VCALL(p)->v20(((self->unk_1c >> 12) + 0x80) - FLD(s32, p, 0x44) / 2, ((self->unk_20 >> 12) + 0x60) - FLD(s32, p, 0x48) / 2);
-    VCALL(self->unk_18)->v90();
+    VCALL(p)->v20(((self->posX >> 12) + 0x80) - FLD(s32, p, 0x44) / 2, ((self->posY >> 12) + 0x60) - FLD(s32, p, 0x48) / 2);
+    VCALL(self->textWin)->v90();
 }
 
 void func_ov015_02210298(Ov015Msg *self) {
@@ -388,12 +388,12 @@ void func_ov015_02210298(Ov015Msg *self) {
         SET_VT(p, data_0208ba30);
         func_0204bfcc(p);
     }
-    self->unk_10 = p;
+    self->msgRes = p;
     func_0204bfe4(p, data_ov015_02213163, data_ov015_02213170);
 }
 
 void func_ov015_022102fc(Ov015Msg *self) {
-    VCALL(self->unk_10)->v2c();
+    VCALL(self->msgRes)->v2c();
 }
 
 
@@ -423,21 +423,21 @@ struct Ov015Bits10314 {
 };
 
 static inline void Ov015T_SetXYZ16(Ov015Ui *o, s16 x, s16 y, s16 z) {
-    o->unk_64 = x;
-    o->unk_66 = y;
-    o->unk_68 = z;
+    o->posX = x;
+    o->posY = y;
+    o->posZ = z;
 }
 
 static inline void Ov015T_SetXYZ32(Ov015Ui *o, s32 x, s32 y, s32 z) {
-    o->unk_58 = x;
-    o->unk_5c = y;
-    o->unk_60 = z;
+    o->slideX = x;
+    o->slideY = y;
+    o->slideZ = z;
 }
 
 BOOL func_ov015_02210314(Ov015Msg *self) {
     u8 *p;
-    func_0204c030(self->unk_10);
-    self->unk_b0 = func_0204c08c(self->unk_10, self->unk_0c, self->unk_30, 0x20);
+    func_0204c030(self->msgRes);
+    self->pageCount = func_0204c08c(self->msgRes, self->msgIdx, self->pages, 0x20);
     p = (u8 *)Heap_Alloc(0x160);
     if (p != NULL) {
         void *file = data_0208cc94;
@@ -446,36 +446,36 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
         func_02041440((Model *)p, (char *)name, 0);
         STD_CopyString((char *)(p + 0x2c), (char *)file);
     }
-    self->unk_14 = p;
-    func_020417e0((Model *)(self->unk_14), func_02035de0(data_0208cc94, data_0208cc88));
-    FLD(u32, self->unk_14, 0x6c) |= 2;
-    func_02041d9c((Model *)(self->unk_14), 0, 0x1d);
-    FLD(s32, self->unk_14, 0x150) = -0xccd;
+    self->model = p;
+    func_020417e0((Model *)(self->model), func_02035de0(data_0208cc94, data_0208cc88));
+    FLD(u32, self->model, 0x6c) |= 2;
+    func_02041d9c((Model *)(self->model), 0, 0x1d);
+    FLD(s32, self->model, 0x150) = -0xccd;
     p = (u8 *)Heap_Alloc(0xb8);
     if (p != NULL) {
         SET_VT(p, data_0208ba70);
         func_0204c7d0(p);
     }
-    self->unk_18 = p;
+    self->textWin = p;
     FLD(s32, p, 0x28) = 4;
     {
         void *t = MsgRes_GetString(data_02149ef8, 0x118);
-        p = self->unk_18;
+        p = self->textWin;
         FLD(void *, p, 0x24) = t;
         FLD(s32, p, 0x4c) = func_0204c4fc(FLD(s32, p, 0x28), FLD(s32, p, 0x38), FLD(void *, p, 0x24), p + 0x44, p + 0x48,
                                           FLD(s8, p, 0x37) != 0);
         FLD(s32, data_02097ce0, 0x4) = FLD(s32, p, 0x28);
     }
-    FLD(s16, self->unk_18, 0x74) = 0x7fff;
-    FLD(s16, self->unk_18, 0x76) = 0x67f;
-    FLD(s32, self->unk_18, 0x78) = 0x7000;
-    FLD(u32, self->unk_18, 0x4) |= 0x40;
-    FLD(u32, self->unk_18, 0x4) |= 0x1000000;
-    VCALL(self->unk_18)->v14();
-    FLD(Ov015Bits10314, self->unk_18, 0x4).f8 = 0x1e;
-    FLD(u32, self->unk_18, 0x4) |= 0x40000000;
-    FLD(u32, self->unk_18, 0x4) |= 4;
-    func_0204ca70(self->unk_18);
+    FLD(s16, self->textWin, 0x74) = 0x7fff;
+    FLD(s16, self->textWin, 0x76) = 0x67f;
+    FLD(s32, self->textWin, 0x78) = 0x7000;
+    FLD(u32, self->textWin, 0x4) |= 0x40;
+    FLD(u32, self->textWin, 0x4) |= 0x1000000;
+    VCALL(self->textWin)->v14();
+    FLD(Ov015Bits10314, self->textWin, 0x4).f8 = 0x1e;
+    FLD(u32, self->textWin, 0x4) |= 0x40000000;
+    FLD(u32, self->textWin, 0x4) |= 4;
+    func_0204ca70(self->textWin);
     p = (u8 *)Heap_Alloc(0x8c);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
@@ -485,12 +485,12 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
     }
     FLD(u8 *, self, 0x28) = p;
     FLD(s32, p, 0x24) = 0xf8;
-    Ov015T_SetXYZ32(self->unk_28, -0x100, 0, -0xccd);
-    self->unk_28->unk_2c = 1;
-    self->unk_28->unk_0c |= 0x80000;
-    self->unk_28->unk_20 = 3;
-    Ov015T_SetXYZ16(self->unk_28, 4, 0x86, -0xccd);
-    VCALL(self->unk_28)->v08();
+    Ov015T_SetXYZ32(self->label, -0x100, 0, -0xccd);
+    self->label->slideMode = 1;
+    self->label->flags |= 0x80000;
+    self->label->rows = 3;
+    Ov015T_SetXYZ16(self->label, 4, 0x86, -0xccd);
+    VCALL(self->label)->v08();
     p = (u8 *)Heap_Alloc(0xb4);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
@@ -498,21 +498,21 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
         SET_VT(p, data_ov015_02212d3c);
         func_ov015_02208544((Ov015UiText *)p);
     }
-    self->unk_2c = (Ov015UiText *)p;
+    self->textBox = (Ov015UiText *)p;
     Ov015T_SetXYZ16((Ov015Ui *)p, 0, 0x7b, -0x99a);
-    Ov015T_SetXYZ32(self->unk_2c, -0x100, 0, -0x99a);
-    self->unk_2c->unk_2c = 1;
-    self->unk_2c->unk_0c &= ~0x10000;
-    VCALL(self->unk_2c)->v08();
-    if (self->unk_28 != NULL && self->unk_30[0] != NULL) {
+    Ov015T_SetXYZ32(self->textBox, -0x100, 0, -0x99a);
+    self->textBox->slideMode = 1;
+    self->textBox->flags &= ~0x10000;
+    VCALL(self->textBox)->v08();
+    if (self->label != NULL && self->pages[0] != NULL) {
         u8 *o;
-        func_0204c2f4(self->unk_b8, 0x80, self->unk_30[0]);
-        func_ov000_0215bb14(self->unk_28, self->unk_b8);
-        VCALL(self->unk_28)->v70();
-        FLD(u32, self->unk_28->unk_84, 0x4) |= 0x4000000;
-        o = ((u8 *)self->unk_28);
+        func_0204c2f4(self->text, 0x80, self->pages[0]);
+        func_ov000_0215bb14(self->label, self->text);
+        VCALL(self->label)->v70();
+        FLD(u32, self->label->unk_84, 0x4) |= 0x4000000;
+        o = ((u8 *)self->label);
         VCALL(FLD(u8 *, o, 0x84))->v1c(FLD(s16, o, 0x64) + FLD(s32, o, 0x24) - 0x14, FLD(s16, o, 0x66) + FLD(s32, o, 0x28) - 0xc, -0xcbd);
-        func_ov015_0220866c(self->unk_2c, self->unk_30[0]);
+        func_ov015_0220866c(self->textBox, self->pages[0]);
     }
     return TRUE;
 }

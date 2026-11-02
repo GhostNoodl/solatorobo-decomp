@@ -35,11 +35,11 @@ void func_ov008_021cf5c8(s32 type, void *list, void *info);
 static inline void Ov008_AddEntry(Ov008Mgr *m, u32 id) {
     Ov008Def *e = func_0206e7d0(id);
     Ov008Item *p;
-    m->unk_100->v74(e->unk_00, id, 0xffff, 0xffff);
+    m->menu->v74(e->unk_00, id, 0xffff, 0xffff);
     if (!func_020594bc(data_02fe152c, 0, 0x201, id)) {
         return;
     }
-    p = func_ov000_02154b58(m->unk_100, id);
+    p = func_ov000_02154b58(m->menu, id);
     if (p != NULL) {
         p->unk_0a = 10;
     }
@@ -81,47 +81,47 @@ void func_ov008_021cfa38(Ov008Mgr *m) {
         p->v28();
         OV008_SET_VT(p, &data_ov008_021d0368);
     }
-    m->unk_100 = p;
-    m->unk_100->v10(MsgRes_GetString(res, 0x96));
-    m->unk_100->v14(MsgRes_GetString(res, 0x97));
-    m->unk_100->unk_08 = m;
-    m->unk_100->unk_24 = 0x7a;
-    m->unk_100->unk_20 = 5;
+    m->menu = p;
+    m->menu->v10(MsgRes_GetString(res, 0x96));
+    m->menu->v14(MsgRes_GetString(res, 0x97));
+    m->menu->owner = m;
+    m->menu->width = 0x7a;
+    m->menu->rows = 5;
     {
-        Ov008Menu *q = m->unk_100;
-        q->unk_64 = 0;
-        q->unk_66 = 0x14;
-        q->unk_68 = -0x1000;
+        Ov008Menu *q = m->menu;
+        q->posX = 0;
+        q->posY = 0x14;
+        q->posZ = -0x1000;
     }
-    m->unk_100->unk_80 = (Ov008Cb)func_ov008_021cf5c8;
-    m->unk_100->unk_84 = (Ov008Cb)func_ov008_021cf790;
-    m->unk_100->unk_88 = (Ov008Cb)func_ov008_021cf844;
+    m->menu->onDrawItem = (Ov008Cb)func_ov008_021cf5c8;
+    m->menu->onDecide = (Ov008Cb)func_ov008_021cf790;
+    m->menu->onCursor = (Ov008Cb)func_ov008_021cf844;
     data_02fe1534.unk_44 = 1;
     m->unk_fc->v38(1);
     data_02fe1534.unk_44 = 0;
     m->unk_110 = data_02fe1534.unk_68;
-    if (m->unk_100->unk_9c == 0) {
+    if (m->menu->serial == 0) {
         Ov008_AddEntry(m, 0);
     }
     if (func_020624d8()) {
-        Ov008Menu *u = m->unk_100;
+        Ov008Menu *u = m->menu;
         u->va8(func_ov000_02154b58(u, data_02fe1534.unk_52));
     } else {
-        Ov008Menu *u = m->unk_100;
-        for (it = u->unk_98; it != NULL; it = it->next) {
+        Ov008Menu *u = m->menu;
+        for (it = u->topItem; it != NULL; it = it->next) {
             if (it->unk_0a == 10) {
                 u->va8(func_ov000_02154b58(u, it->id));
                 break;
             }
         }
         if (it != NULL) {
-            m->unk_100->va8(it);
+            m->menu->va8(it);
         } else {
-            m->unk_100->va8(m->unk_100->unk_98);
+            m->menu->va8(m->menu->topItem);
         }
     }
-    m->unk_100->v08();
-    func_ov000_021547e8(m->unk_100, data_0214b105, data_0208cb7c, 10);
+    m->menu->v08();
+    func_ov000_021547e8(m->menu, data_0214b105, data_0208cb7c, 10);
     base = data_02fe152c->unk_4c;
     ents = func_0205976c(data_02fe152c, 1);
     cnt = func_0205975c(data_02fe152c, 1);
@@ -154,7 +154,7 @@ void func_ov008_021cfa38(Ov008Mgr *m) {
                     }
                 }
                 if (ok == OV008_ENT_NEW) {
-                    e = func_ov000_02154b58(m->unk_100, tag.id);
+                    e = func_ov000_02154b58(m->menu, tag.id);
                     if (e != NULL) {
                         e->unk_32++;
                         if (!Ov008Entry_IsSet(e)) {

@@ -35,8 +35,8 @@ void func_ov011_021febd8(Ov011Scene *self) {
     self->s1b4.ent = NULL;
     func_ov003_021da48c(&self->s1b4.seq, 1);
     func_ov011_021fab74(&self->mgr);
-    if (self->ent.b0) {
-        Ov011PNode *p = self->ent.unk_04;
+    if (self->ent.active) {
+        Ov011PNode *p = self->ent.nodes;
         while (p != NULL) {
             Ov011PNode *next = p->next;
             if (p != NULL) {
@@ -44,7 +44,7 @@ void func_ov011_021febd8(Ov011Scene *self) {
             }
             p = next;
         }
-        self->ent.unk_04 = NULL;
+        self->ent.nodes = NULL;
     }
     for (n = self->head; n != NULL; n = n->next) {
         Ov011Obj *a = Ov011_FindActor(n->id);

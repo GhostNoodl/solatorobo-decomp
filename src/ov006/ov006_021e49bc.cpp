@@ -114,12 +114,12 @@ BOOL func_ov006_021e4bec(ov006_Unk021ec888 *self, u8 v) {
 }
 
 static inline void ov006_Menu_SetState(ov006_Unk021ec888 *self, int state) {
-    self->unk8 = state;
-    self->unkC = 0;
+    self->state = state;
+    self->stateTime = 0;
 }
 
 BOOL func_ov006_021e4c38(ov006_Unk021ec888 *self) {
-    if (self->unk8 != 1) {
+    if (self->state != 1) {
         return FALSE;
     }
     ov006_Menu_SetState(self, 2);
@@ -127,7 +127,7 @@ BOOL func_ov006_021e4c38(ov006_Unk021ec888 *self) {
 }
 
 BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self) {
-    if (self->unk8 == 1 || self->unk8 == 7) {
+    if (self->state == 1 || self->state == 7) {
         return FALSE;
     }
     ov006_Menu_SetState(self, 7);
@@ -135,10 +135,10 @@ BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self) {
 }
 
 BOOL func_ov006_021e4c84(ov006_Unk021ec888 *self) {
-    if (self->unk8 == 4) {
+    if (self->state == 4) {
         return TRUE;
     }
-    if (self->unk8 != 3) {
+    if (self->state != 3) {
         return FALSE;
     }
     ov006_Menu_SetState(self, 4);
@@ -146,10 +146,10 @@ BOOL func_ov006_021e4c84(ov006_Unk021ec888 *self) {
 }
 
 BOOL func_ov006_021e4cb4(ov006_Unk021ec888 *self) {
-    if (self->unk8 == 6) {
+    if (self->state == 6) {
         return TRUE;
     }
-    if (self->unk8 != 3 && self->unk8 != 4) {
+    if (self->state != 3 && self->state != 4) {
         return FALSE;
     }
     ov006_Menu_SetState(self, 6);
@@ -157,10 +157,10 @@ BOOL func_ov006_021e4cb4(ov006_Unk021ec888 *self) {
 }
 
 BOOL func_ov006_021e4ce8(ov006_Unk021ec888 *self, const void *src) {
-    if (self->unk8 == 5) {
+    if (self->state == 5) {
         return TRUE;
     }
-    if (self->unk8 != 3 && self->unk8 != 4) {
+    if (self->state != 3 && self->state != 4) {
         return FALSE;
     }
     ov006_Menu_SetState(self, 5);

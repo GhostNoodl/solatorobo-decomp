@@ -5,15 +5,15 @@ extern "C" {
 
 
 static inline void Ov015Anim_SetA(Ov015Anim *n, const char *a, const char *b) {
-    STD_CopyString(n->unk_10, a);
-    STD_CopyString(n->unk_30, b);
-    n->unk_03_1 = 1;
+    STD_CopyString(n->mdlDir, a);
+    STD_CopyString(n->mdlName, b);
+    n->ownMdl = 1;
 }
 
 static inline void Ov015Anim_SetB(Ov015Anim *n, const char *a, const char *b) {
-    STD_CopyString(n->unk_4c, a);
-    STD_CopyString(n->unk_6c, b);
-    n->unk_03_2 = 1;
+    STD_CopyString(n->anmDir, a);
+    STD_CopyString(n->anmName, b);
+    n->ownAnm = 1;
 }
 
 extern char data_ov015_02212dd9[];

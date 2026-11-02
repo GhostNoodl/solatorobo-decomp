@@ -10,62 +10,62 @@ struct Ov011Mgr2Entry {
 };
 
 static inline s32 Ov011Ent_GetA(Ov011Ent *e) {
-    if (e->b0) {
-        return e->unk_24;
+    if (e->active) {
+        return e->height;
     }
     return 0;
 }
 
 static inline s32 Ov011Ent_GetB(Ov011Ent *e) {
-    if (e->b0) {
-        return e->unk_0c;
+    if (e->active) {
+        return e->radius;
     }
     return 0;
 }
 
 static inline u16 Ov011Ent_GetC(Ov011Ent *e) {
-    if (e->b0) {
-        return e->unk_18;
+    if (e->active) {
+        return e->spin;
     }
     return 0;
 }
 
 static inline void Ov011Ent_LerpA(Ov011Ent *e, s32 from, s32 to, s32 frames) {
-    if (e->b0) {
-        e->b4 = 1;
-        Ov011_SetLerp(&e->unk_24, from, to, frames);
+    if (e->active) {
+        e->heightLerp = 1;
+        Ov011_SetLerp(&e->height, from, to, frames);
     }
 }
 
 static inline void Ov011Ent_LerpB(Ov011Ent *e, s32 from, s32 to, s32 frames) {
-    if (e->b0) {
-        e->b2 = 1;
-        Ov011_SetLerp(&e->unk_0c, from, to, frames);
+    if (e->active) {
+        e->radiusLerp = 1;
+        Ov011_SetLerp(&e->radius, from, to, frames);
     }
 }
 
 static inline void Ov011Ent_LerpC(Ov011Ent *e, s32 from, s32 to, s32 frames) {
-    if (e->b0) {
-        e->b3 = 1;
-        Ov011_SetLerp(&e->unk_18, from, to, frames);
+    if (e->active) {
+        e->spinLerp = 1;
+        Ov011_SetLerp(&e->spin, from, to, frames);
     }
 }
 
 static inline void Ov011Ent_RestoreA(Ov011Ent *e, s32 to, s32 frames) {
-    if (e->b0) {
-        Ov011Ent_LerpA(e, e->unk_24, to, frames);
+    if (e->active) {
+        Ov011Ent_LerpA(e, e->height, to, frames);
     }
 }
 
 static inline void Ov011Ent_RestoreB(Ov011Ent *e, s32 to, s32 frames) {
-    if (e->b0) {
-        Ov011Ent_LerpB(e, e->unk_0c, to, frames);
+    if (e->active) {
+        Ov011Ent_LerpB(e, e->radius, to, frames);
     }
 }
 
 static inline void Ov011Ent_RestoreC(Ov011Ent *e, s32 to, s32 frames) {
-    if (e->b0) {
-        Ov011Ent_LerpC(e, (u16)e->unk_18, to, frames);
+    if (e->active) {
+        Ov011Ent_LerpC(e, (u16)e->spin, to, frames);
     }
 }
 
@@ -163,24 +163,24 @@ void func_ov011_021fb92c(Ov011Mgr2 *self) {
 
 static inline BOOL Ov011Ent_Done4(Ov011Ent *e) {
     BOOL r = FALSE;
-    if (e->b0) {
-        r = !e->b4;
+    if (e->active) {
+        r = !e->heightLerp;
     }
     return r;
 }
 
 static inline BOOL Ov011Ent_Done2(Ov011Ent *e) {
     BOOL r = FALSE;
-    if (e->b0) {
-        r = !e->b2;
+    if (e->active) {
+        r = !e->radiusLerp;
     }
     return r;
 }
 
 static inline BOOL Ov011Ent_Done3(Ov011Ent *e) {
     BOOL r = FALSE;
-    if (e->b0) {
-        r = !e->b3;
+    if (e->active) {
+        r = !e->spinLerp;
     }
     return r;
 }
@@ -201,8 +201,8 @@ static inline BOOL Ov011Ent_AllDone(Ov011Ent *e) {
 static inline Ov011PNode *Ov011Ent_Find(Ov011Ent *e, void *k) {
     Ov011PNode *r = NULL;
     Ov011PNode *n;
-    if (e->b0) {
-        for (n = e->unk_04; n != NULL; n = n->next) {
+    if (e->active) {
+        for (n = e->nodes; n != NULL; n = n->next) {
             if (k == n) {
                 r = n;
                 break;
@@ -214,10 +214,10 @@ static inline Ov011PNode *Ov011Ent_Find(Ov011Ent *e, void *k) {
 
 static inline void Ov011Ent_SetY(Ov011Ent *e, s32 y) {
     Ov011PNode *n;
-    if (e->b0) {
-        e->b4 = 0;
-        e->unk_24 = y;
-        for (n = e->unk_04; n != NULL; n = n->next) {
+    if (e->active) {
+        e->heightLerp = 0;
+        e->height = y;
+        for (n = e->nodes; n != NULL; n = n->next) {
             n->v.y = y;
         }
     }
@@ -253,27 +253,27 @@ static inline void Ov011_SendB(u16 id, s32 kind, s16 x, s16 y) {
 }
 
 static inline void Ov011Ent_Lerp2(Ov011Ent *e, s32 to, s32 frames) {
-    s32 c = e->unk_0c;
-    if (e->b0) {
-        e->b2 = 1;
-        Ov011_SetLerp(&e->unk_0c, c, to, frames);
+    s32 c = e->radius;
+    if (e->active) {
+        e->radiusLerp = 1;
+        Ov011_SetLerp(&e->radius, c, to, frames);
     }
 }
 
 static inline void Ov011Ent_Lerp2X(Ov011Ent *e, s32 frames) {
-    s32 c = e->unk_0c;
-    if (e->b0) {
+    s32 c = e->radius;
+    if (e->active) {
         s32 to;
-        e->b2 = 1;
+        e->radiusLerp = 1;
         to = 0x4cd;
-        (&e->unk_0c)[1] = to;
-        (&e->unk_0c)[0] = c;
-        (&e->unk_0c)[2] = ((&e->unk_0c)[1] - (&e->unk_0c)[0]) / frames;
+        (&e->radius)[1] = to;
+        (&e->radius)[0] = c;
+        (&e->radius)[2] = ((&e->radius)[1] - (&e->radius)[0]) / frames;
     }
 }
 
 static inline void Ov011Ent_RestoreB2(Ov011Ent *e, s32 to, s32 frames) {
-    if (e->b0) {
+    if (e->active) {
         Ov011Ent_Lerp2(e, to, frames);
     }
 }
@@ -319,7 +319,7 @@ void func_ov011_021fb9b8(Ov011Mgr2 *self, Ov011Obj *owner) {
             func_ov011_02202fbc(&self->mov);
             Ov011Mov_Start(&self->mov, &a, &b, 0x500, 0x80);
         }
-        if (self->ent->b0) {
+        if (self->ent->active) {
             Ov011Ent_Lerp2X(self->ent, 0x2d);
         }
         Ov011_SendB(owner->id, 2, 0x1000, 0x1000);

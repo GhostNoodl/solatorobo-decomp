@@ -4,10 +4,10 @@
 // address out of a register across the call (see docs/MATCHING.md, round ovmid9).
 static inline void ov006_Slot_ClearGuarded(ov006_Slot *self) {
     self->active = 0;
-    self->unk8 = 0;
-    self->unkE = 0xffff;
+    self->type = 0;
+    self->actorId = 0xffff;
     self->unk10 = 0;
-    self->unk12 = 0xff;
+    self->aid = 0xff;
     {
         u32 n = sizeof(self->name);
         if (n != 0) {
@@ -47,7 +47,7 @@ void func_ov006_021dacb0(void) {
         ov006_SlotManager_ClearState(p);
         p->unk149 = 0;
         for (i = 0; i < 3; i++) {
-            p->unk14A[i] = 0;
+            p->items[i] = 0;
             p->unk14D[i] = 0;
         }
         p->unk6 = 0xffff;

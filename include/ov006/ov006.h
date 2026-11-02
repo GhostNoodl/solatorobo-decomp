@@ -96,8 +96,8 @@ typedef struct ov006_MenuEntry {
 typedef struct ov006_Unk021ec888 {
     void *vtbl;
     void *vtbl2;
-    int unk8;
-    u16 unkC;
+    int state;
+    u16 stateTime;
     int unk10;
     int unk14;
     u8 unk18;

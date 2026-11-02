@@ -35,7 +35,7 @@ void func_ov006_021cd5a8(int type, void *obj, int arg) {
         case 2:
             if (data_ov006_021ec860->unk1C) {
                 func_ov000_0218084c(data_ov000_021ccd44, 0x29,
-                                    func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unk12 == 0 ? 1 : 2);
+                                    func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->aid == 0 ? 1 : 2);
             } else {
                 func_ov000_0218084c(data_ov000_021ccd44, 0x29, 0);
             }
@@ -92,7 +92,7 @@ void func_ov006_021cd5a8(int type, void *obj, int arg) {
         u32 v = 0;
         u8 *g;
         data_ov006_021ec884->unk13C = 0;
-        data_ov006_021ec884->unk140 = 0;
+        data_ov006_021ec884->time = 0;
         idx = ov006_SlotId(data_ov006_021ec884);
         g = (u8 *)data_0214a424;
         if (idx < 5) {

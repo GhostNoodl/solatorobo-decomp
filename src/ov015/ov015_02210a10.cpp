@@ -17,8 +17,8 @@ extern Ov015Shared *data_ov015_02213368;
 extern u8 data_ov015_02213200[];
 
 void func_ov015_02210a10(Ov015Msg *self) {
-    self->unk_28->unk_0c |= 2;
-    self->unk_2c->unk_0c |= 2;
+    self->label->flags |= 2;
+    self->textBox->flags |= 2;
     func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
 }
 
@@ -27,26 +27,26 @@ static inline BOOL Ov015_IsState5(Ov015Ui *o) {
 }
 BOOL func_ov015_02210a58(Ov015Msg *self) {
     BOOL r = FALSE;
-    switch (self->unk_13c) {
+    switch (self->step) {
     case 0: {
-        s32 t = FX_Div(self->unk_140 << 12, 0x28000);
-        self->unk_1c = 0x50000;
-        self->unk_20 = Interp_QuadLerp(t, -0x46000, -0x66000);
-        self->unk_24 = -0x333;
-        if (++self->unk_140 > 0x28) {
-            self->unk_140 = 0x28;
-            self->unk_13c++;
+        s32 t = FX_Div(self->timer << 12, 0x28000);
+        self->posX = 0x50000;
+        self->posY = Interp_QuadLerp(t, -0x46000, -0x66000);
+        self->posZ = -0x333;
+        if (++self->timer > 0x28) {
+            self->timer = 0x28;
+            self->step++;
         }
         break;
     }
     case 1:
-        if (Ov015_IsState5(self->unk_28) && Ov015_IsState5(self->unk_2c)) {
+        if (Ov015_IsState5(self->label) && Ov015_IsState5(self->textBox)) {
             r = TRUE;
         }
         break;
     }
-    VCALL(self->unk_28)->v1c();
-    VCALL(self->unk_2c)->v1c();
+    VCALL(self->label)->v1c();
+    VCALL(self->textBox)->v1c();
     return r;
 }
 
@@ -133,7 +133,7 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, u8 *b, s32 msg) {
     case 0x28:
         if (!FLD(Ov015Bits10d24, self, 0x8).b0) {
             r = Ov015_NewMsg();
-            r->unk_0c = 0;
+            r->msgIdx = 0;
             r->unk_08 = 0x5a;
             r->unk_04 = 1;
             FLD(Ov015Bits10d24, self, 0x8).b0 = 1;
@@ -142,7 +142,7 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, u8 *b, s32 msg) {
     case 0x32:
         if (!FLD(Ov015Bits10d24, self, 0x8).b4 && FLD(s32, b, 0x8) == 3) {
             r = Ov015_NewMsg();
-            r->unk_0c = 4;
+            r->msgIdx = 4;
             r->unk_08 = 0x3c;
             r->unk_04 = 0;
             self->unk_10 = 0;
@@ -152,7 +152,7 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, u8 *b, s32 msg) {
         if (!FLD(Ov015Bits10d24, self, 0x8).b1) {
             if ((u32)(FLD(s32, b, 0x10) - 2) <= 1) {
                 r = Ov015_NewMsg();
-                r->unk_0c = 1;
+                r->msgIdx = 1;
                 r->unk_08 = 0x28;
                 r->unk_04 = 0;
                 self->unk_08 |= 0x2;
@@ -177,7 +177,7 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, u8 *b, s32 msg) {
             if (self->unk_10 < 0) self->unk_10 = 0;
             if (self->unk_10 > 0x12c000) {
                 r = Ov015_NewMsg();
-                r->unk_0c = 2;
+                r->msgIdx = 2;
                 r->unk_08 = 0x28;
                 r->unk_04 = 0;
                 self->unk_08 |= 0x4;
@@ -186,7 +186,7 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, u8 *b, s32 msg) {
         }
         if (!FLD(Ov015Bits10d24, self, 0x8).b3 && FLD(s32, b, 0x24) > 0x1e000) {
             r = Ov015_NewMsg();
-            r->unk_0c = 3;
+            r->msgIdx = 3;
             r->unk_08 = 0;
             r->unk_04 = 0;
             self->unk_08 |= 0x8;

@@ -12,12 +12,12 @@ void Ov009ActVt_02217594_Init(Ov009ActVt_02217594 *self) {
         const char *b = data_ov009_022172a7;
         Ov009Names *n = &self->anim;
         if (a) {
-            STD_CopyString(n->unk_10, a);
-            STD_CopyString(n->unk_30, b);
-            n->unk_03_1 = 1;
-            STD_CopyString(n->unk_4c, a);
-            STD_CopyString(n->unk_6c, b);
-            n->unk_03_2 = 1;
+            STD_CopyString(n->mdlDir, a);
+            STD_CopyString(n->mdlName, b);
+            n->ownMdl = 1;
+            STD_CopyString(n->anmDir, a);
+            STD_CopyString(n->anmName, b);
+            n->ownAnm = 1;
         }
         n->unk_00 = 0;
     }

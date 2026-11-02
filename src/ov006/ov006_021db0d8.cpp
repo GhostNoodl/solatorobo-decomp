@@ -29,15 +29,15 @@ void func_ov006_021db0d8(void) {
         if (data_ov006_021ec888 == NULL) {
             return;
         }
-        if (data_ov006_021ec888->unk8 != 5 && data_ov006_021ec888->unk8 != 6) {
+        if (data_ov006_021ec888->state != 5 && data_ov006_021ec888->state != 6) {
             return;
         }
     }
     for (i = 0; i < 4; i++) {
         ov006_Slot *slot = ov006_SlotManager_GetSlot(data_ov006_021ec884, i);
         if (slot != NULL && slot->active) {
-            if (slot->unk12 != 0xff) {
-                ov006_Save02046a50 *p = Wh_GetSharedData(data_02097e40, slot->unk12);
+            if (slot->aid != 0xff) {
+                ov006_Save02046a50 *p = Wh_GetSharedData(data_02097e40, slot->aid);
                 if (p != NULL) {
                     ov006_SlotSub_Copy(&slot->sub2C, (ov006_SlotSub *)p->unk2);
                 }

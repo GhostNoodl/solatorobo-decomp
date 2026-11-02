@@ -10,8 +10,8 @@ struct Ov011Bit01 {
 static inline Ov011PNode *Ov011Ent_Find(Ov011Ent *e, void *k) {
     Ov011PNode *r = NULL;
     Ov011PNode *n;
-    if (e->b0) {
-        for (n = e->unk_04; n != NULL; n = n->next) {
+    if (e->active) {
+        for (n = e->nodes; n != NULL; n = n->next) {
             if (k == n) {
                 r = n;
                 break;

@@ -36,7 +36,7 @@ u8 func_ov006_021d8cb8(void) {
     }
     count = 0;
     for (i = 0; i < num; i++) {
-        u16 id = func_ov006_021db060(data_ov006_021ec884, i)->unkE;
+        u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
         void *prop = data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
         if (prop != NULL && func_ov006_021ea3e8(prop)) {
             count++;

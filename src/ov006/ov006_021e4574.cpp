@@ -18,7 +18,7 @@ int func_ov006_021e4674(ov006_Unk021ec888 *self);
 void func_ov006_021e4574(ov006_Unk021ec888 *self) {
     ov006_ModelHolder *holder;
 
-    if (data_ov006_021ec888->unk8 == 0 || (holder = self->unk1D4) == NULL) {
+    if (data_ov006_021ec888->state == 0 || (holder = self->unk1D4) == NULL) {
         return;
     }
     if (holder->unkC >= 4) {
@@ -33,7 +33,7 @@ void func_ov006_021e4574(ov006_Unk021ec888 *self) {
 
 void func_ov006_021e463c(ov006_Unk021ec888 *self) {
     Object *obj;
-    if (data_ov006_021ec888->unk8 != 0 && (obj = self->unk1D8->obj) != NULL) {
+    if (data_ov006_021ec888->state != 0 && (obj = self->unk1D8->obj) != NULL) {
         VCALL(obj, 20);
     }
 }

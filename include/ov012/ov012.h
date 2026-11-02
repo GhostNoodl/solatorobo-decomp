@@ -452,18 +452,18 @@ struct Ov012Names {
     u16 unk_00;
     u8 unk_02;
     u8 unk_03_0 : 1;
-    u8 unk_03_1 : 1;
-    u8 unk_03_2 : 1;
+    u8 ownMdl : 1;
+    u8 ownAnm : 1;
     u8 unk_03_3 : 1;
-    u8 unk_03_4 : 1;
+    u8 ownEv : 1;
     u8 unk_03_5 : 3;
     u8 unk_04[0xc];
-    char unk_10[0x20];
-    char unk_30[0x1c];
-    char unk_4c[0x20];
-    char unk_6c[0x58];
-    char unk_c4[0x20];
-    char unk_e4[0x20];
+    char mdlDir[0x20];
+    char mdlName[0x1c];
+    char anmDir[0x20];
+    char anmName[0x58];
+    char evDir[0x20];
+    char evName[0x20];
 };
 
 class Ov012Multi : public Ov012Actor {

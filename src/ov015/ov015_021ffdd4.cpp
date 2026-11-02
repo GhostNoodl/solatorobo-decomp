@@ -16,43 +16,43 @@ BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
     Ov015Fish *found;
     u8 *n;
     if (self->unk_0c != 0) return r;
-    func_ov015_021fd00c(self->unk_20, 7, (const Ov015VecC *)&self->unk_10->unk_0c);
+    func_ov015_021fd00c(self->cam, 7, (const Ov015VecC *)&self->unk_10->pos);
     VCALL(self->unk_14)->v18();
-    self->unk_18 = func_ov015_021fffc4(self);
-    if (VCALL(self->unk_14)->v20() || self->unk_18 != NULL) {
-        if (self->unk_18 != NULL) {
-            Ov015CamPair *p = self->unk_20;
-            p->cam0.unk_99 = 200;
-            p->cam0.unk_9a = 20;
-            p->cam0.unk_9b = 20;
-            p->cam0.unk_9c.b2 = 1;
-            p->cam0.unk_9c.b3 = 1;
-            p->cam0.unk_9c.b4 = 0;
-            p = self->unk_20;
-            p->cam1.unk_99 = 20;
-            p->cam1.unk_9a = 20;
-            p->cam1.unk_9b = 20;
-            p->cam1.unk_9c.b2 = 1;
-            p->cam1.unk_9c.b3 = 1;
-            p->cam1.unk_9c.b4 = 0;
+    self->fish = func_ov015_021fffc4(self);
+    if (VCALL(self->unk_14)->v20() || self->fish != NULL) {
+        if (self->fish != NULL) {
+            Ov015CamPair *p = self->cam;
+            p->cam0.shakeTime = 200;
+            p->cam0.shakeLen = 20;
+            p->cam0.shakeCur = 20;
+            p->cam0.flags.shakeX = 1;
+            p->cam0.flags.shakeY = 1;
+            p->cam0.flags.shakeZ = 0;
+            p = self->cam;
+            p->cam1.shakeTime = 20;
+            p->cam1.shakeLen = 20;
+            p->cam1.shakeCur = 20;
+            p->cam1.flags.shakeX = 1;
+            p->cam1.flags.shakeY = 1;
+            p->cam1.flags.shakeZ = 0;
         }
         r = TRUE;
     }
     found = NULL;
-    n = FLD(u8 *, self->unk_24, 0x4);
+    n = FLD(u8 *, self->fishList, 0x4);
     while (n != NULL) {
         Ov015Fish *obj = FLD(Ov015Fish *, n, 0x4);
         Ov015Vec v;
         n = FLD(u8 *, n, 0xc);
-        v = self->unk_10->unk_0c;
+        v = self->unk_10->pos;
         if (func_ov015_0220a028(obj, &v)) {
             found = obj;
             break;
         }
     }
     if (found != NULL) {
-        s32 d = FX_Mul(found->unk_70, 0x14000);
-        Ov015VecC t(*(Ov015VecC *)&found->unk_40);
+        s32 d = FX_Mul(found->scaleX, 0x14000);
+        Ov015VecC t(*(Ov015VecC *)&found->pos);
         t.y += d;
         if (t.y < 0) t.y = 0;
         FLD(Ov015VecC, self->unk_10, 0x24) = t;
@@ -60,15 +60,15 @@ BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
     } else {
         func_ov015_022123c4(self->unk_10);
     }
-    self->unk_1c->unk_d3e = 0x1000;
-    for (n = FLD(u8 *, self->unk_24, 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
+    self->ship->unk_d3e = 0x1000;
+    for (n = FLD(u8 *, self->fishList, 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
         func_ov015_02209790(FLD(Ov015Fish *, n, 0x4), 1);
     }
     return r;
 }
 
 BOOL func_ov015_021fffb0(Ov015Obj30 *self) {
-    return self->unk_08 >= 2 ? TRUE : FALSE;
+    return self->timer >= 2 ? TRUE : FALSE;
 }
 
 class Ov015Eff {
@@ -82,7 +82,7 @@ public:
 };
 Ov015Fish *func_ov015_021fffc4(Ov015Obj30 *self) {
     Ov015Fish *found = NULL;
-    u8 *n = FLD(u8 *, self->unk_24, 0x4);
+    u8 *n = FLD(u8 *, self->fishList, 0x4);
     while (n != NULL) {
         Ov015Fish *obj = FLD(Ov015Fish *, n, 0x4);
         n = FLD(u8 *, n, 0xc);

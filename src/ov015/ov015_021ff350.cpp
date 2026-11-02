@@ -34,8 +34,8 @@ void *Ov015Obj292c_DtorDelete(Ov015Obj292c *self) {
 void *Ov015Obj290_DtorDelete(Ov015Obj290 *self) {
     SET_VT(self, data_ov015_022132e0);
     func_ov015_02211a18();
-    func_ov000_0218fee4(&self->unk_14c);
-    func_ov000_0218ea20(&self->unk_14);
+    func_ov000_0218fee4(&self->model);
+    func_ov000_0218ea20(&self->res);
     Heap_Free(self);
     return self;
 }

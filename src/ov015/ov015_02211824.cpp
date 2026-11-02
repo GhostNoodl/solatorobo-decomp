@@ -17,7 +17,7 @@ void func_ov015_02211824(void) {
 
 void func_ov015_02211828(Ov015Info38 *self) {
     SET_VT(self, data_ov015_022132d0);
-    self->unk_04 = 0xffff;
+    self->id = 0xffff;
     self->unk_08 = 0;
     self->unk_0c = 0;
     self->unk_10 = 0;
@@ -43,7 +43,7 @@ void *func_ov015_0221187c(void *self) {
 void func_ov015_02211890(Ov015Info38 *self, u16 id, s32 mode) {
     u8 *info;
     s32 t;
-    self->unk_04 = id;
+    self->id = id;
     info = func_0206ef88(id);
     self->unk_08 = info[2] * 0x333 + 0x4cd;
     self->unk_0c = info[2] * 0x4cd + 0xccd;
@@ -93,28 +93,28 @@ void func_ov015_022119e8(Ov015Obj290 *self) {
     self->unk_04 = 0;
     self->unk_0c = 0;
     self->unk_10 = 0;
-    self->unk_28c = 0x1000;
+    self->animSpeed = 0x1000;
 }
 
 void func_ov015_02211a18(void) {
 }
 
 void func_ov015_02211a1c(Ov015Obj290 *self) {
-    self->unk_08 = 0;
+    self->step = 0;
     self->unk_234.x = 0;
     self->unk_234.y = 0;
     self->unk_234.z = 0;
     self->unk_240.x = 0;
     self->unk_240.y = 0;
     self->unk_240.z = 0;
-    MTX_Identity33_((MtxFx33 *)(&self->unk_24c));
+    MTX_Identity33_((MtxFx33 *)(&self->rot));
     self->unk_270.x = 0;
     self->unk_270.y = 0;
     self->unk_270.z = 0;
     self->unk_27c.x = 0;
     self->unk_27c.y = 0;
     self->unk_27c.z = 0;
-    self->unk_288 = 0;
+    self->yaw = 0;
     self->unk_28a = 0;
 }
 
@@ -125,15 +125,15 @@ static inline void Ov015_SetPairB(u8 *l, s32 i, const void *a, const void *b) {
 }
 void func_ov015_02211a74(Ov015Obj290 *self) {
     s32 idx = data_ov015_02213368->unk_2c;
-    Ov015_SetPairB((u8 *)&self->unk_14, 0, data_ov015_02213230[idx], data_ov015_02213228[idx]);
-    Ov015_SetPairB((u8 *)&self->unk_14, 1, data_ov015_02213230[idx], data_ov015_02213208[idx]);
-    self->unk_14.unk_00 = 0;
+    Ov015_SetPairB((u8 *)&self->res, 0, data_ov015_02213230[idx], data_ov015_02213228[idx]);
+    Ov015_SetPairB((u8 *)&self->res, 1, data_ov015_02213230[idx], data_ov015_02213208[idx]);
+    self->res.unk_00 = 0;
 }
 
 BOOL func_ov015_02211b00(Ov015Obj290 *self) {
     BOOL r = TRUE;
-    if (self->unk_14.unk_00 >= 0) {
-        if ((func_ov000_0218f110(&self->unk_14) & 1) == 0) r = FALSE;
+    if (self->res.unk_00 >= 0) {
+        if ((func_ov000_0218f110(&self->res) & 1) == 0) r = FALSE;
     }
     return r;
 }
@@ -147,17 +147,17 @@ extern u8 data_ov015_02213280[];
 extern const char *data_ov015_02213210[];
 
 BOOL func_ov015_02211b2c(Ov015Obj290 *self) {
-    func_ov000_0218ffdc(&self->unk_14c, &self->unk_14, 0, 1);
-    func_ov000_02190cb0(&self->unk_14c, data_ov015_02213280, 0x1000, 0);
-    func_ov000_02191618(&self->unk_14c);
-    self->unk_14c.unk_c2.b4 = 0;
-    self->unk_14c.unk_c2.b2 = 0;
-    self->unk_14c.unk_c2.b0 = 0;
-    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->unk_14c.unk_24), (NNSG3dSbcCallBackFunc)func_ov015_022119d0);
-    self->unk_14c.unk_c2.b5 = 0;
-    self->unk_14c.unk_c2.b8 = 1;
+    func_ov000_0218ffdc(&self->model, &self->res, 0, 1);
+    func_ov000_02190cb0(&self->model, data_ov015_02213280, 0x1000, 0);
+    func_ov000_02191618(&self->model);
+    self->model.flags.boxTest = 0;
+    self->model.flags.invV = 0;
+    self->model.flags.visible = 0;
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->model.renderObj), (NNSG3dSbcCallBackFunc)func_ov015_022119d0);
+    self->model.flags.clearInit = 0;
+    self->model.flags.flushVP = 1;
     s32 r = data_ov015_02213368->unk_2c;
-    r = func_ov000_021909a8(&self->unk_14c, data_ov015_02213210[r], NULL);
+    r = func_ov000_021909a8(&self->model, data_ov015_02213210[r], NULL);
     self->unk_0c = r;
     return TRUE;
 }

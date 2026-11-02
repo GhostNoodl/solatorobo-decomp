@@ -8,49 +8,49 @@ struct Ov011Bit01 {
 };
 
 static inline void Ov011Ent_Lerp2(Ov011Ent *e, s32 to, s32 frames) {
-    s32 c = e->unk_0c;
-    if (e->b0) {
-        e->b2 = 1;
-        Ov011_SetLerp(&e->unk_0c, c, to, frames);
+    s32 c = e->radius;
+    if (e->active) {
+        e->radiusLerp = 1;
+        Ov011_SetLerp(&e->radius, c, to, frames);
     }
 }
 
 static inline void Ov011Ent_Lerp3(Ov011Ent *e, s32 to, s32 frames) {
-    u16 c = e->unk_18;
-    if (e->b0) {
-        e->b3 = 1;
-        Ov011_SetLerp(&e->unk_18, c, to, frames);
+    u16 c = e->spin;
+    if (e->active) {
+        e->spinLerp = 1;
+        Ov011_SetLerp(&e->spin, c, to, frames);
     }
 }
 
 static inline void Ov011Ent_Lerp4(Ov011Ent *e, s32 to, s32 frames) {
-    s32 c = e->unk_24;
-    if (e->b0) {
-        e->b4 = 1;
-        Ov011_SetLerp(&e->unk_24, c, to, frames);
+    s32 c = e->height;
+    if (e->active) {
+        e->heightLerp = 1;
+        Ov011_SetLerp(&e->height, c, to, frames);
     }
 }
 
 static inline BOOL Ov011Ent_Done4(Ov011Ent *e) {
     BOOL r = FALSE;
-    if (e->b0) {
-        r = !e->b4;
+    if (e->active) {
+        r = !e->heightLerp;
     }
     return r;
 }
 
 static inline BOOL Ov011Ent_Done2(Ov011Ent *e) {
     BOOL r = FALSE;
-    if (e->b0) {
-        r = !e->b2;
+    if (e->active) {
+        r = !e->radiusLerp;
     }
     return r;
 }
 
 static inline BOOL Ov011Ent_Done3(Ov011Ent *e) {
     BOOL r = FALSE;
-    if (e->b0) {
-        r = !e->b3;
+    if (e->active) {
+        r = !e->spinLerp;
     }
     return r;
 }
@@ -71,8 +71,8 @@ static inline BOOL Ov011Ent_AllDone(Ov011Ent *e) {
 static inline Ov011PNode *Ov011Ent_Find(Ov011Ent *e, void *k) {
     Ov011PNode *r = NULL;
     Ov011PNode *n;
-    if (e->b0) {
-        for (n = e->unk_04; n != NULL; n = n->next) {
+    if (e->active) {
+        for (n = e->nodes; n != NULL; n = n->next) {
             if (k == n) {
                 r = n;
                 break;

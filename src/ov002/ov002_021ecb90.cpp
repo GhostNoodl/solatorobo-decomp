@@ -331,21 +331,21 @@ typedef struct Ov002Text2 {
     VFunc *vtbl;
     u32 flags;
     u8 pad08[0x1c];
-    s32 unk_24;
-    s32 unk_28;
+    s32 str;
+    s32 font;
     s32 unk_2c;
     u8 pad30[0x4];
     s16 unk_34;
     u8 pad36;
     s8 unk_37;
-    s32 unk_38;
+    s32 spacing;
     u8 pad3c[0x8];
-    s32 unk_44;
-    s32 unk_48;
+    s32 width;
+    s32 height;
     s32 unk_4c;
     u8 pad50[0x24];
-    u16 unk_74;
-    u16 unk_76;
+    u16 color0;
+    u16 color1;
     s32 unk_78;
 } Ov002Text2;
 
@@ -355,10 +355,10 @@ static inline Ov002Text2 *ov002_021ed270_newText(char *str) {
         t->vtbl = data_0208ba70;
         func_0204c7d0(t);
     }
-    t->unk_28 = 4;
-    t->unk_24 = (s32)str;
-    t->unk_4c = func_0204c4fc(t->unk_28, t->unk_38, t->unk_24, &t->unk_44, &t->unk_48, t->unk_37 != 0);
-    FIELD(data_02097ce0, 0x4, s32) = t->unk_28;
+    t->font = 4;
+    t->str = (s32)str;
+    t->unk_4c = func_0204c4fc(t->font, t->spacing, t->str, &t->width, &t->height, t->unk_37 != 0);
+    FIELD(data_02097ce0, 0x4, s32) = t->font;
     return t;
 }
 
@@ -388,8 +388,8 @@ void func_ov002_021ed270(void *self) {
     switch (FIELD(info, 0xc, u16)) {
     case 0:
         ov002_021ed270_create(self, FIELD(info, 0x8, char *));
-        FIELD(self, 0x34, Ov002Text2 *)->unk_74 = 0x77df;
-        FIELD(self, 0x34, Ov002Text2 *)->unk_76 = 0x67e;
+        FIELD(self, 0x34, Ov002Text2 *)->color0 = 0x77df;
+        FIELD(self, 0x34, Ov002Text2 *)->color1 = 0x67e;
         FIELD(self, 0x34, Ov002Text2 *)->unk_78 = 0x9000;
         FIELD(self, 0x3c, s32) = data_ov002_021f0d88.w24;
         FIELD(self, 0x24, s32) = 0;
@@ -402,23 +402,23 @@ void func_ov002_021ed270(void *self) {
     case 2:
         ov002_021ed270_create(self, FIELD(info, 0x8, char *));
         FIELD(self, 0x34, VObject *)->v0x14();
-        FIELD(self, 0x3c, s32) = 0x60000 - ((FIELD(self, 0x34, Ov002Text2 *)->unk_48 >> 1) << 12);
+        FIELD(self, 0x3c, s32) = 0x60000 - ((FIELD(self, 0x34, Ov002Text2 *)->height >> 1) << 12);
         if (FIELD(self, 0x44, void *) != NULL) {
             s32 h;
             FIELD(self, 0x44, VObject *)->v0x14();
-            h = FIELD(self, 0x44, Ov002Text2 *)->unk_48;
+            h = FIELD(self, 0x44, Ov002Text2 *)->height;
             FIELD(self, 0x4c, s32) = FIELD(self, 0x3c, s32) + h + ((h + 2) << 12);
         }
         FIELD(self, 0x24, s32) = 0;
         break;
     case 3:
         ov002_021ed270_create(self, FIELD(info, 0x8, char *));
-        FIELD(self, 0x34, Ov002Text2 *)->unk_74 = 0x339f;
+        FIELD(self, 0x34, Ov002Text2 *)->color0 = 0x339f;
         FIELD(self, 0x3c, s32) = data_ov002_021f0d88.w24;
         if (FIELD(self, 0x44, void *) != NULL) {
             s32 h;
-            FIELD(self, 0x44, Ov002Text2 *)->unk_74 = 0x7fff;
-            h = FIELD(self, 0x44, Ov002Text2 *)->unk_48;
+            FIELD(self, 0x44, Ov002Text2 *)->color0 = 0x7fff;
+            h = FIELD(self, 0x44, Ov002Text2 *)->height;
             FIELD(self, 0x4c, s32) = FIELD(self, 0x3c, s32) + h + ((h + 2) << 12);
         }
         FIELD(self, 0x24, s32) = 0;
@@ -431,7 +431,7 @@ void func_ov002_021ed270(void *self) {
     }
     if (FIELD(self, 0x34, void *) != NULL) {
         void *m;
-        FIELD(self, 0x38, s32) = data_ov002_021f0d88.w20 - ((FIELD(self, 0x34, Ov002Text2 *)->unk_44 >> 1) << 12);
+        FIELD(self, 0x38, s32) = data_ov002_021f0d88.w20 - ((FIELD(self, 0x34, Ov002Text2 *)->width >> 1) << 12);
         m = FIELD(data_ov002_021f0fa4, 0x28, void *);
         if (m != NULL) {
             FIELD(self, 0x3c, s32) += FIELD(m, 0x3c, s32) & 0xfff;
@@ -440,7 +440,7 @@ void func_ov002_021ed270(void *self) {
     }
     if (FIELD(self, 0x44, void *) != NULL) {
         void *m;
-        FIELD(self, 0x48, s32) = data_ov002_021f0d88.w20 - ((FIELD(self, 0x44, Ov002Text2 *)->unk_44 >> 1) << 12);
+        FIELD(self, 0x48, s32) = data_ov002_021f0d88.w20 - ((FIELD(self, 0x44, Ov002Text2 *)->width >> 1) << 12);
         m = FIELD(data_ov002_021f0fa4, 0x28, void *);
         if (m != NULL) {
             FIELD(self, 0x4c, s32) += FIELD(m, 0x3c, s32) & 0xfff;

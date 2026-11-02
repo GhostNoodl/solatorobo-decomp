@@ -17,7 +17,7 @@ extern const ov006_Price021da098 data_ov006_021eb7c4[];
 
 static inline u8 ov006_SlotManager_GetItem(ov006_SlotManager *self, u8 i) {
     if (i < 3) {
-        return self->unk14A[i];
+        return self->items[i];
     }
     return 0;
 }
@@ -38,7 +38,7 @@ static inline const ov006_Price021da098 *ov006_GetItemPrice(u8 item) {
 }
 
 void func_ov006_021da098(ov006_Task021da098 *self) {
-    u8 n = data_ov006_021ec884->unk13E;
+    u8 n = data_ov006_021ec884->lap;
     u8 i;
     if (n < 1) {
         n = 1;

@@ -8,12 +8,12 @@ extern BOOL func_ov000_0218cf5c(Ov009Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
 
 static inline void Ov009Names_Set(Ov009Names *n, const char *a, const char *b) {
-    STD_CopyString(n->unk_10, a);
-    STD_CopyString(n->unk_30, b);
-    n->unk_03_1 = 1;
-    STD_CopyString(n->unk_4c, a);
-    STD_CopyString(n->unk_6c, b);
-    n->unk_03_2 = 1;
+    STD_CopyString(n->mdlDir, a);
+    STD_CopyString(n->mdlName, b);
+    n->ownMdl = 1;
+    STD_CopyString(n->anmDir, a);
+    STD_CopyString(n->anmName, b);
+    n->ownAnm = 1;
     n->unk_00 = 0;
 }
 

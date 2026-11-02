@@ -43,7 +43,7 @@ static inline BOOL ov006_FadeDone(int ch) {
 u8 func_ov006_021d8790(ov006_Scene021d8790 *self) {
     switch (self->unk6E) {
     case 0:
-        if (data_ov006_021ec888->unk8 == 9) {
+        if (data_ov006_021ec888->state == 9) {
             if (!ov006_FadeIdle()) {
                 func_0203cb78(0x1000, 0, 0);
                 func_0203cb78(0x1000, 0, 1);
@@ -56,7 +56,7 @@ u8 func_ov006_021d8790(ov006_Scene021d8790 *self) {
         self->unk6E = 2;
         break;
     case 2:
-        if (data_ov006_021ec888->unk8 != 9) {
+        if (data_ov006_021ec888->state != 9) {
             func_0203cc58(0x1000, 0, 0);
             func_0203cc58(0x1000, 0, 1);
             self->unk6E = 3;

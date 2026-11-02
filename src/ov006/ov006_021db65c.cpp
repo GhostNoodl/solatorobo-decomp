@@ -7,9 +7,9 @@ extern "C" {
 static inline void ov006_Slot_Setup(ov006_Slot *self, int unk8, const char *name, u16 unkC) {
     ov006_Slot_Clear(self);
     self->active = 1;
-    self->unk8 = unk8;
+    self->type = unk8;
     MI_CpuCopy8(name, self->name, sizeof(self->name));
-    self->unk12 = 0xff;
+    self->aid = 0xff;
     self->unkC = unkC;
 }
 

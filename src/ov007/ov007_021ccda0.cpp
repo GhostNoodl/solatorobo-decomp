@@ -37,7 +37,7 @@ void func_ov007_021cce28(Ov007Scene *s) {
     s->state = 1;
     s->sub = 0;
     s->idx = 0;
-    s->unk_14 = NULL;
+    s->pic = NULL;
     s->unk_18 = NULL;
     s->unk_1c = NULL;
     s->unk_20 = NULL;
@@ -47,8 +47,8 @@ void func_ov007_021cce28(Ov007Scene *s) {
     s->unk_30 = NULL;
     s->unk_34 = NULL;
     s->unk_38 = NULL;
-    s->unk_3c = NULL;
-    s->unk_48 = NULL;
+    s->cam = NULL;
+    s->menu = NULL;
     s->unk_4c = 0;
     s->unk_4d = 0;
     s->unk_4e = 0;
@@ -57,18 +57,18 @@ void func_ov007_021cce28(Ov007Scene *s) {
     s->unk_54 = 0;
     s->unk_58 = 0;
     for (i = 0; i < 2; i++) {
-        s->unk_5c[i] = NULL;
+        s->wins[i] = NULL;
     }
     s->unk_64 = 0;
     s->unk_65 = 0x1f;
     s->unk_66 = 0;
-    s->unk_68 = NULL;
+    s->player = NULL;
 }
 
 void func_ov007_021ccec0(Ov007Scene *s) {
-    OV007_FREE_V(s->unk_14, v04);
-    OV007_FREE_V(s->unk_48, v04);
-    OV007_FREE_V(s->unk_68, v04);
+    OV007_FREE_V(s->pic, v04);
+    OV007_FREE_V(s->menu, v04);
+    OV007_FREE_V(s->player, v04);
     func_ov007_021ccf9c(s);
 }
 
@@ -86,9 +86,9 @@ void func_ov007_021ccf9c(Ov007Scene *s) {
     OV007_FREE_D(s->unk_30, func_ov000_0218fee4);
     OV007_FREE_D(s->unk_34, func_ov000_0218fee4);
     OV007_FREE_D(s->unk_38, func_ov000_0218fee4);
-    OV007_PUSH(saved); OV007_DEL_V(s->unk_3c, v08); OV007_POP(saved);
+    OV007_PUSH(saved); OV007_DEL_V(s->cam, v08); OV007_POP(saved);
     for (i = 0; i < 2; i++) {
-        OV007_PUSH(saved); OV007_DEL_V(s->unk_5c[i], v04); OV007_POP(saved);
+        OV007_PUSH(saved); OV007_DEL_V(s->wins[i], v04); OV007_POP(saved);
     }
 }
 
@@ -96,10 +96,10 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
     Ov007Pic *pic;
     Ov007Player *pl;
     s->timer += 0x1000;
-    if (s->unk_68 != NULL) {
-        if (s->unk_68->v1c() == 0) {
-            OV007_FREE_V(s->unk_68, v04);
-        } else if (s->unk_68->v0c() == 0) {
+    if (s->player != NULL) {
+        if (s->player->v1c() == 0) {
+            OV007_FREE_V(s->player, v04);
+        } else if (s->player->v0c() == 0) {
             return 1;
         }
     }
@@ -121,13 +121,13 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
                 OV007_SET_VT(pic, &data_0208b318);
                 pic->v08();
             }
-            s->unk_14 = pic;
+            s->pic = pic;
             pic->unk_44 = 7;
-            s->unk_14->v20("pic/license_en");
+            s->pic->v20("pic/license_en");
             s->sub = 1;
             break;
         case 1:
-            if (s->unk_14->v2c() != 0) {
+            if (s->pic->v2c() != 0) {
                 s->state = 3;
                 s->sub = 0;
                 s->idx = 0;
@@ -146,12 +146,12 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
         break;
     case 7:
         if (s->sub == 0 && func_ov000_02189068(data_ov000_021ccd54)) {
-            if (s->unk_68 != NULL) {
-                s->unk_68->unk_0c |= 0x40000;
+            if (s->player != NULL) {
+                s->player->flags |= 0x40000;
                 break;
             }
             func_0203cb78(1, 0, 0);
-            if (s->unk_68 == NULL) {
+            if (s->player == NULL) {
                 pl = (Ov007Player *)Heap_Alloc(0xe8);
                 if (pl != NULL) {
                     OV007_SET_VT(pl, &data_ov000_021cac60);
@@ -159,18 +159,18 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
                     OV007_SET_VT(pl, &data_ov000_021cad50);
                     pl->v28();
                 }
-                s->unk_68 = pl;
-                s->unk_68->unk_0c |= 0x10000;
-                pl = s->unk_68;
-                pl->unk_0c |= 0x8;
+                s->player = pl;
+                s->player->flags |= 0x10000;
+                pl = s->player;
+                pl->flags |= 0x8;
                 pl->unk_48 = 0x14a5;
                 pl->unk_54 = 0x1c;
-                s->unk_68->unk_0c |= 0x20000;
-                s->unk_68->unk_1c = 4;
-                s->unk_68->v08();
-                func_ov000_0215c1bc(s->unk_68, 0x8000, (char *)MsgRes_GetString(data_02149ef8, 0x76));
-                s->unk_68->unk_68 = -0x299a;
-                s->unk_68->v70();
+                s->player->flags |= 0x20000;
+                s->player->unk_1c = 4;
+                s->player->v08();
+                func_ov000_0215c1bc(s->player, 0x8000, (char *)MsgRes_GetString(data_02149ef8, 0x76));
+                s->player->posZ = -0x299a;
+                s->player->v70();
             }
             s->sub = 1;
         }
@@ -219,10 +219,10 @@ void func_ov007_021cd628(Ov007Scene *s) {
     Ov007Menu8 *t;
     Ov007Menu *mn;
     s32 res;
-    if (s->unk_48 != NULL) {
-        s->unk_48->v0c();
-        if (Ov007_Flag2(s->unk_48)) {
-            OV007_FREE_V(s->unk_48, v04);
+    if (s->menu != NULL) {
+        s->menu->v0c();
+        if (Ov007_Flag2(s->menu)) {
+            OV007_FREE_V(s->menu, v04);
             s->state = 7;
             s->sub = 0;
             s->idx = 0;
@@ -247,7 +247,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
             s->idx = 3;
         }
     case 2:
-        p = (Ov007V *)s->unk_14->v10();
+        p = (Ov007V *)s->pic->v10();
         if (s->idx >= 3) {
             if (s->idx == 3) {
                 s->sub = 8;
@@ -415,18 +415,18 @@ void func_ov007_021cd628(Ov007Scene *s) {
             OV007_SET_VT(mn, &data_0208c994);
             mn->v14();
         }
-        s->unk_48 = mn;
+        s->menu = mn;
         mn->v08();
-        s->unk_48->unk_48.b0 = 1;
+        s->menu->unk_48.b0 = 1;
         s->sub = 12;
     case 12:
-        mn = s->unk_48;
+        mn = s->menu;
         if (!Ov007_Flag7(mn)) {
             return;
         }
         if (!Ov007_Closed(mn)) {
             mn->unk_48.b3 = 1;
-            if (s->unk_68 == NULL) {
+            if (s->player == NULL) {
                 Ov007_NewPlayer(s, 0x6e);
             }
             func_0203cb78(1, 0, 0);
@@ -439,17 +439,17 @@ void func_ov007_021cd628(Ov007Scene *s) {
         return;
     case 15:
         data_02097dd0->unk_1f = 1;
-        if (Ov007_Flag3(s->unk_48)) {
+        if (Ov007_Flag3(s->menu)) {
             return;
         }
     case 16:
-        if (s->unk_68 != NULL) {
+        if (s->player != NULL) {
             data_02097dd0->unk_1f = 1;
-            if (Ov007_Busy(s->unk_68)) {
+            if (Ov007_Busy(s->player)) {
                 return;
             }
             if (s->timer >= 0x78000) {
-                s->unk_68->unk_0c |= 0x40000;
+                s->player->flags |= 0x40000;
             }
             return;
         }
@@ -549,14 +549,14 @@ BOOL func_ov000_02191120(void *model);
 }
 
 static inline void Ov007_SetMdl(Ov007Anim *m, const char *dir, const char *name) {
-    STD_CopyString(m->unk_10, dir);
-    STD_CopyString(m->unk_30, name);
+    STD_CopyString(m->mdlDir, dir);
+    STD_CopyString(m->mdlName, name);
     m->unk_03 |= 2;
 }
 
 static inline void Ov007_SetAnm(Ov007Anim *m, const char *dir, const char *name) {
-    STD_CopyString(m->unk_4c, dir);
-    STD_CopyString(m->unk_6c, name);
+    STD_CopyString(m->anmDir, dir);
+    STD_CopyString(m->anmName, name);
     m->unk_03 |= 4;
 }
 
@@ -587,11 +587,11 @@ static inline Ov007Win *Ov007_NewWin(void) {
 
 static inline Ov007Win *Ov007_MakeWin(s32 text) {
     Ov007Win *win = Ov007_NewWin();
-    win->unk_28 = 8;
-    win->unk_24 = text;
-    win->unk_4c = func_0204c4fc(win->unk_28, win->unk_38, win->unk_24, &win->unk_44, &win->unk_48, win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->unk_28;
-    win->unk_70 = -0x299a;
+    win->font = 8;
+    win->str = text;
+    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->width, &win->height, win->unk_37 != 0 ? TRUE : FALSE);
+    data_02097ce0->unk_004 = win->font;
+    win->posZ = -0x299a;
     win->flags |= 0x40;
     win->flags |= 0x1000000;
     win->flags |= 0x4;
@@ -663,32 +663,32 @@ static inline void Ov007_Go(Ov007Scene *s, s32 idx, s32 kind) {
 }
 
 static inline void Ov007Cam_SetA(Ov007Cam *o) {
-    o->unk_36 = 0xaaa;
-    o->unk_38 = 0xeff1;
-    o->unk_30 = FX_SinCosTable_[(0x555 >> 4) * 2];
-    o->unk_32 = FX_SinCosTable_[(0x555 >> 4) * 2 + 1];
-    o->unk_3e = 1;
+    o->fovyIdx = 0xaaa;
+    o->fovyDeg = 0xeff1;
+    o->fovySin = FX_SinCosTable_[(0x555 >> 4) * 2];
+    o->fovyCos = FX_SinCosTable_[(0x555 >> 4) * 2 + 1];
+    o->projDirty = 1;
 }
 
 static inline void Ov007Cam_SetB(Ov007Cam *o, u8 a, u8 b, u16 c) {
     o->unk_3c = a;
     o->unk_3d = b;
-    o->unk_34 = c;
-    o->unk_3e = 1;
+    o->aspect = c;
+    o->projDirty = 1;
 }
 
 static inline void Ov007Cam_SetC(Ov007Cam *o, s32 v) {
-    o->unk_28 = v;
-    o->unk_3e = 1;
+    o->nearClip = v;
+    o->projDirty = 1;
 }
 
 static inline void Ov007Cam_SetD(Ov007Cam *o, s32 v) {
-    o->unk_2c = v;
-    o->unk_3e = 1;
+    o->farClip = v;
+    o->projDirty = 1;
 }
 
 static inline void Ov007Cam_SetE(Ov007Cam *o, s32 v) {
-    o->unk_48 = v;
+    o->dist = v;
 }
 
 static inline void Ov007Mdl_SetCb(Ov007Model *m, void *cb) {
@@ -704,16 +704,16 @@ void func_ov007_021ce038(Ov007Scene *s) {
     case 0: {
         void *m;
         Ov007Pic *p;
-        OV007_FREE_V(s->unk_14, v04);
+        OV007_FREE_V(s->pic, v04);
         func_0206e900(buf, "pic/title");
         p = (Ov007Pic *)Heap_Alloc(0x4c);
         if (p != NULL) {
             OV007_SET_VT(p, &data_0208b318);
             p->v08();
         }
-        s->unk_14 = p;
+        s->pic = p;
         p->unk_44 = 7;
-        s->unk_14->v1c(buf);
+        s->pic->v1c(buf);
         s->unk_18 = Ov007_NewRes();
         if (s->unk_4c == 1) {
             Ov007_SetMdl(s->unk_18, "pic/titlemdl", "title1sky00");
@@ -744,7 +744,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
         Ov007V *p;
         Model *m;
         const char *res;
-        if (!s->unk_14->v2c()) {
+        if (!s->pic->v2c()) {
             break;
         }
         if (s->unk_18->unk_00 >= 0 && !func_ov000_0218f110(s->unk_18)) {
@@ -760,7 +760,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
             break;
         }
         tbl = data_ov007_021cfbb4;
-        p = (Ov007V *)s->unk_14->v10();
+        p = (Ov007V *)s->pic->v10();
         m = (Model *)Heap_Alloc(0x160);
         if (m != NULL) {
             res = tbl.s[s->unk_4c - 1];
@@ -799,13 +799,13 @@ void func_ov007_021ce038(Ov007Scene *s) {
         if (o != NULL) {
             o = func_0204b370(o);
         }
-        s->unk_3c = (Ov007Cam *)o;
-        func_0204b8e8(s->unk_3c, NNS_G3dGetAnmByIdx(*(void **)res, 0));
-        Ov007Cam_SetA(s->unk_3c);
-        Ov007Cam_SetB(s->unk_3c, 4, 3, 0x1555);
-        Ov007Cam_SetC(s->unk_3c, 0x2000);
-        Ov007Cam_SetD(s->unk_3c, 0x7d0000);
-        Ov007Cam_SetE(s->unk_3c, -0x1000);
+        s->cam = (Ov007Cam *)o;
+        func_0204b8e8(s->cam, NNS_G3dGetAnmByIdx(*(void **)res, 0));
+        Ov007Cam_SetA(s->cam);
+        Ov007Cam_SetB(s->cam, 4, 3, 0x1555);
+        Ov007Cam_SetC(s->cam, 0x2000);
+        Ov007Cam_SetD(s->cam, 0x7d0000);
+        Ov007Cam_SetE(s->cam, -0x1000);
         s->unk_30 = Ov007_NewMdl();
         func_ov000_0218ffdc(s->unk_30, s->unk_18, 0, 1);
         if (s->unk_4c == 3) {
@@ -836,8 +836,8 @@ void func_ov007_021ce038(Ov007Scene *s) {
         }
         {
             void *mgr = data_02149ef8;
-            s->unk_5c[0] = Ov007_MakeWin((s32)MsgRes_GetString(mgr, 0x51));
-            s->unk_5c[1] = Ov007_MakeWin((s32)MsgRes_GetString(mgr, 0x52));
+            s->wins[0] = Ov007_MakeWin((s32)MsgRes_GetString(mgr, 0x51));
+            s->wins[1] = Ov007_MakeWin((s32)MsgRes_GetString(mgr, 0x52));
         }
         func_0203cb78(0x3c000, 0, -1);
         Ov007_RequestBgm(data_02097e48, 3);
@@ -958,8 +958,8 @@ void func_ov007_021ce038(Ov007Scene *s) {
         }
         break;
     }
-    if (s->unk_3c != NULL) {
-        func_0204b924(s->unk_3c, 0x1000);
+    if (s->cam != NULL) {
+        func_0204b924(s->cam, 0x1000);
     }
     if (s->unk_30 != NULL) {
         if (s->unk_4c != 3 && !(s->timer & 0x3ffff)) {
@@ -1119,7 +1119,7 @@ void func_ov007_021cef80(Ov007Scene *s) {
         if (!func_02036328()) {
             return;
         }
-        OV007_FREE_V(s->unk_14, v04);
+        OV007_FREE_V(s->pic, v04);
         func_0203cb78(0x1e000, 0, -1);
         func_020444b0(data_02097e3c, Ov007_Choice(s), -1, 0);
         s->sub = 2;
@@ -1135,9 +1135,9 @@ void func_ov007_021cef80(Ov007Scene *s) {
                 OV007_SET_VT(p, &data_0208b318);
                 p->v08();
             }
-            s->unk_14 = p;
+            s->pic = p;
             p->unk_44 = 7;
-            s->unk_14->v20(buf);
+            s->pic->v20(buf);
             func_0203cc58(0x3c000, 1, -1);
             s->sub = 3;
             return;
@@ -1151,7 +1151,7 @@ void func_ov007_021cef80(Ov007Scene *s) {
         if (!Ov007_FadeDone()) {
             return;
         }
-        if (s->unk_14->v2c() != 0) {
+        if (s->pic->v2c() != 0) {
             s->state = 5;
             s->sub = 0;
             s->idx = 0;
@@ -1186,8 +1186,8 @@ void func_ov007_021cf1d8(Ov007Scene *s) {
         Ov007_SetupView();
         break;
     }
-    if (s->unk_68 != NULL) {
-        s->unk_68->v20();
+    if (s->player != NULL) {
+        s->player->v20();
     }
 }
 

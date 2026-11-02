@@ -31,7 +31,7 @@ static inline void Ov008_DrawModelIdx(Model *m, int idx) {
 
 static inline BOOL Ov008_ListVisible(Ov008Menu *list, s32 y) {
     BOOL r;
-    if (y < list->v34() + list->unk_66 || y > list->unk_66 + list->unk_28 - list->v38() - 0xc) {
+    if (y < list->v34() + list->posY || y > list->posY + list->height - list->v38() - 0xc) {
         r = FALSE;
     } else {
         r = TRUE;
@@ -74,37 +74,37 @@ void func_ov008_021cf040(Ov008Mgr *m) {
     if (p != NULL) {
         Ov008_DrawModelIdx((Model *)p, 0);
     }
-    p = m->unk_f8;
+    p = m->panel;
     if (p != NULL) {
         switch (((Ov008Panel *)p)->state) {
         case 8:
         case 9:
         case 16:
         case 18:
-            if (func_02054f10(((Ov008Panel *)p)->unk_50, 0xffff)) {
-                s32 a = (u8)((Ov008Panel *)p)->unk_60;
-                s32 px = (((Ov008Panel *)p)->unk_5c + (((Ov008Panel *)p)->unk_54 + 0x3d000)) & ~0xfff;
+            if (func_02054f10(((Ov008Panel *)p)->sprite, 0xffff)) {
+                s32 a = (u8)((Ov008Panel *)p)->alpha;
+                s32 px = (((Ov008Panel *)p)->unk_5c + (((Ov008Panel *)p)->offset + 0x3d000)) & ~0xfff;
                 if (a > 0) {
-                    MODEL_FLAGS(((Ov008Panel *)p)->unk_50)->polygon_id = Gfx3DState_NextPolyId(&data_02097d48->unk_8b0);
-                    MODEL_FLAGS(((Ov008Panel *)p)->unk_50)->alpha = (u8)a;
-                    Ov008_SetXY(((Ov008Panel *)p)->unk_50, px, -0x1a000);
-                    Ov008_DrawModelIdx(((Ov008Panel *)p)->unk_50, 0);
+                    MODEL_FLAGS(((Ov008Panel *)p)->sprite)->polygon_id = Gfx3DState_NextPolyId(&data_02097d48->unk_8b0);
+                    MODEL_FLAGS(((Ov008Panel *)p)->sprite)->alpha = (u8)a;
+                    Ov008_SetXY(((Ov008Panel *)p)->sprite, px, -0x1a000);
+                    Ov008_DrawModelIdx(((Ov008Panel *)p)->sprite, 0);
                 }
             }
             break;
         }
     }
-    if (m->unk_10c == NULL || m->unk_e8 == NULL) {
+    if (m->talk == NULL || m->unk_e8 == NULL) {
         return;
     }
     item = NULL;
-    if (m->unk_100 != NULL && m->unk_112 != 0xffff) {
-        item = func_ov000_02154b58(m->unk_100, m->unk_112);
+    if (m->menu != NULL && m->unk_112 != 0xffff) {
+        item = func_ov000_02154b58(m->menu, m->unk_112);
     }
     v.x = 0;
     v.y = 0;
     v.z = 0;
-    m->unk_10c->v18(&v, 0, -1);
+    m->talk->v18(&v, 0, -1);
     {
         x = v.x;
         y = v.y;
@@ -156,7 +156,7 @@ void func_ov008_021cf5c8(s32 type, Ov008Menu *list, Ov008ListInfo *info) {
     Model *m;
     Ov008Win *pos;
     s32 scroll;
-    mgr = list->unk_08;
+    mgr = list->owner;
     switch (type) {
     case 0:
     case 1:
@@ -165,7 +165,7 @@ void func_ov008_021cf5c8(s32 type, Ov008Menu *list, Ov008ListInfo *info) {
     case 3:
         item = info->item;
         m = mgr->unk_e8;
-        pos = item->unk_1c;
+        pos = item->label;
         if (!Ov008_ItemOn(item)) {
             break;
         }
@@ -175,10 +175,10 @@ void func_ov008_021cf5c8(s32 type, Ov008Menu *list, Ov008ListInfo *info) {
         }
         MODEL_FLAGS(m)->unk_19 = 1;
         MODEL_FLAGS(m)->unk_20 = 0;
-        scroll = list->unk_d0 >> 12;
+        scroll = list->scroll >> 12;
         m->unk_150 = info->z - 0xa0;
-        sx = info->x + pos->unk_44 - 0x78 - scroll;
-        sy = info->y + (pos->unk_48 >> 1) - 0x60;
+        sx = info->x + pos->width - 0x78 - scroll;
+        sy = info->y + (pos->height >> 1) - 0x60;
         m->x = sx << 12;
         m->y = sy << 12;
         MODEL_FLAGS(m)->polygon_id = (u8)info->pid;

@@ -73,7 +73,7 @@ void func_ov000_0218c208(void *a, const VecFx32 *pos, u16 rot);
 
 static inline BOOL ov006_Prop021e742c_IsOver(ov006_Prop021e742c *self) {
     BOOL result = FALSE;
-    if (self->unk19F > data_ov006_021ec884->unk8->unkB) {
+    if (self->unk19F > data_ov006_021ec884->info->unkB) {
         result = TRUE;
     }
     return result;

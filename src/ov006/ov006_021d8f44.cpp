@@ -34,7 +34,7 @@ void func_ov006_021d8f44(void) {
     {
         ov006_SlotManager *g = data_ov006_021ec884;
         for (i = 0; i < 3; i++) {
-            g->unk14A[i] = 0;
+            g->items[i] = 0;
         }
     }
     n = 0;
@@ -42,14 +42,14 @@ void func_ov006_021d8f44(void) {
     RTC_GetDate(&date);
     if (date.month == info.month) {
         if (date.day == info.day) {
-            data_ov006_021ec884->unk14A[n] = 9;
+            data_ov006_021ec884->items[n] = 9;
             n++;
         } else {
-            data_ov006_021ec884->unk14A[n] = 10;
+            data_ov006_021ec884->items[n] = 10;
             n++;
         }
     } else {
-        data_ov006_021ec884->unk14A[n] = n;
+        data_ov006_021ec884->items[n] = n;
         n++;
     }
     OS_GetMacAddress(mac);
@@ -65,7 +65,7 @@ void func_ov006_021d8f44(void) {
         if (p[i] != 0) {
             ov006_SlotManager *g = data_ov006_021ec884;
             if (n < 3) {
-                g->unk14A[n] = p[i];
+                g->items[n] = p[i];
             }
             n++;
         }

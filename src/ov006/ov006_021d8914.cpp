@@ -55,7 +55,7 @@ static inline u8 ov006_CountRemaining(void) {
     }
     count = 0;
     for (i = 0; i < num; i++) {
-        u16 id = func_ov006_021db060(data_ov006_021ec884, i)->unkE;
+        u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
         void *prop = data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
         if (prop != NULL && func_ov006_021ea3e8(prop)) {
             count++;
@@ -105,7 +105,7 @@ void func_ov006_021d8914(void) {
     num = data_ov006_021ec884->numActive;
     remaining = ov006_CountRemaining();
     for (i = 0; i < num; i++) {
-        u16 id = func_ov006_021db060(data_ov006_021ec884, i)->unkE;
+        u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
         ov006_Racer021d8914 *racer = data_ov000_021ccd68 != NULL ? (ov006_Racer021d8914 *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
         if ((racer != NULL && func_ov006_021ea3e8(racer)) || remaining <= 1) {
             rank[i] = (func_ov006_021dab98(slot)->ranks >> (i * 2)) & 3;

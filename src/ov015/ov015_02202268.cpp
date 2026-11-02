@@ -57,27 +57,27 @@ s32 func_ov015_02202268(void) {
 static inline void Ov015_022022ac_Draw(Ov015Game *self) {
     u8 *p;
     u8 *n;
-    func_ov015_02208070(self->unk_18);
+    func_ov015_02208070(self->ship);
     p = self->unk_20;
     func_ov000_021903b4(p + 0x13c);
     func_ov000_021903b4(p + 0x35c);
     func_ov000_021903b4(p + 0x57c);
     NNS_G3dGeFlushBuffer();
-    for (n = FLD(u8 *, self->unk_1c, 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
+    for (n = FLD(u8 *, self->fishList, 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
         func_ov015_02209b8c(FLD(Ov015Fish *, n, 0x4));
     }
 }
 void func_ov015_022022ac(Ov015Game *self) {
-    switch (self->unk_0c) {
+    switch (self->step) {
     case 0:
         break;
 
     case 0x28:
-        if (self->unk_30.unk_04 > 2 && data_02097d48->unk_a30_4) {
-            if (self->unk_30.unk_10 != NULL) func_ov015_02212264(self->unk_30.unk_10);
-            if (self->unk_30.unk_14 != NULL) VCALL(self->unk_30.unk_14)->v1c();
+        if (self->phase1.step > 2 && data_02097d48->unk_a30_4) {
+            if (self->phase1.unk_10 != NULL) func_ov015_02212264(self->phase1.unk_10);
+            if (self->phase1.unk_14 != NULL) VCALL(self->phase1.unk_14)->v1c();
         }
-        if (self->unk_30.unk_04 >= 3) {
+        if (self->phase1.step >= 3) {
             Ov015_022022ac_Draw(self);
         }
         if (self->unk_90 != NULL) func_ov015_02210d04(self->unk_90);
@@ -108,30 +108,30 @@ void *Ov015Game_DtorDelete(Ov015Game *self) {
     func_020656b4(data_0214a420);
     data_0214a420->drawFilter = 0;
     data_02097d48->nextState = 1;
-    func_ov015_02211878(&self->unk_94);
-    SET_VT(&self->unk_5c, data_ov015_022127dc);
-    if (func_02065748(data_0214a420, self->unk_5c.unk_04)) {
+    func_ov015_02211878(&self->info);
+    SET_VT(&self->phase2, data_ov015_022127dc);
+    if (func_02065748(data_0214a420, self->phase2.fx)) {
         HEAP_PUSH(saved);
-        DELETE_V(self->unk_5c.unk_04);
+        DELETE_V(self->phase2.fx);
         HEAP_POP(saved);
     }
-    SET_VT(&self->unk_30, data_ov015_022127ec);
+    SET_VT(&self->phase1, data_ov015_022127ec);
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_30.unk_10);
+    DELETE_V(self->phase1.unk_10);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_30.unk_14);
+    DELETE_V(self->phase1.unk_14);
     HEAP_POP(saved);
-    self->unk_30.unk_04 = 0;
-    self->unk_30.unk_08 = 0;
-    self->unk_30.unk_0c = 0;
-    self->unk_30.unk_10 = 0;
-    self->unk_30.unk_14 = 0;
-    self->unk_30.unk_18 = 0;
-    self->unk_30.unk_1c = 0;
-    self->unk_30.unk_20 = 0;
-    self->unk_30.unk_24 = 0;
-    self->unk_30.unk_28 = 0;
+    self->phase1.step = 0;
+    self->phase1.timer = 0;
+    self->phase1.unk_0c = 0;
+    self->phase1.unk_10 = 0;
+    self->phase1.unk_14 = 0;
+    self->phase1.fish = 0;
+    self->phase1.ship = 0;
+    self->phase1.cam = 0;
+    self->phase1.fishList = 0;
+    self->phase1.info = 0;
     SET_VT(self, data_ov015_0221280c);
     func_ov015_021fa6cc(self);
     Heap_Free(self);
@@ -149,30 +149,30 @@ void *Ov015Game_Dtor(Ov015Game *self) {
     func_020656b4(data_0214a420);
     data_0214a420->drawFilter = 0;
     data_02097d48->nextState = 1;
-    func_ov015_02211878(&self->unk_94);
-    SET_VT(&self->unk_5c, data_ov015_022127dc);
-    if (func_02065748(data_0214a420, self->unk_5c.unk_04)) {
+    func_ov015_02211878(&self->info);
+    SET_VT(&self->phase2, data_ov015_022127dc);
+    if (func_02065748(data_0214a420, self->phase2.fx)) {
         HEAP_PUSH(saved);
-        DELETE_V(self->unk_5c.unk_04);
+        DELETE_V(self->phase2.fx);
         HEAP_POP(saved);
     }
-    SET_VT(&self->unk_30, data_ov015_022127ec);
+    SET_VT(&self->phase1, data_ov015_022127ec);
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_30.unk_10);
+    DELETE_V(self->phase1.unk_10);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_30.unk_14);
+    DELETE_V(self->phase1.unk_14);
     HEAP_POP(saved);
-    self->unk_30.unk_04 = 0;
-    self->unk_30.unk_08 = 0;
-    self->unk_30.unk_0c = 0;
-    self->unk_30.unk_10 = 0;
-    self->unk_30.unk_14 = 0;
-    self->unk_30.unk_18 = 0;
-    self->unk_30.unk_1c = 0;
-    self->unk_30.unk_20 = 0;
-    self->unk_30.unk_24 = 0;
-    self->unk_30.unk_28 = 0;
+    self->phase1.step = 0;
+    self->phase1.timer = 0;
+    self->phase1.unk_0c = 0;
+    self->phase1.unk_10 = 0;
+    self->phase1.unk_14 = 0;
+    self->phase1.fish = 0;
+    self->phase1.ship = 0;
+    self->phase1.cam = 0;
+    self->phase1.fishList = 0;
+    self->phase1.info = 0;
     SET_VT(self, data_ov015_0221280c);
     func_ov015_021fa6cc(self);
     return self;
@@ -239,13 +239,13 @@ void *Ov015Result_Dtor(void *self) {
 void *Ov015Fish_Dtor(Ov015Fish *self) {
     SET_VT(self, data_ov015_022128fc);
     func_ov015_02209270(self);
-    func_0203f2b8(&self->unk_568);
-    func_ov000_02191b04(&self->unk_54c);
-    func_ov000_0218fee4(&self->unk_464);
-    func_ov000_0218ea20(&self->unk_32c);
-    func_ov000_0218fee4(&self->unk_244);
-    func_ov000_0218ea20(&self->unk_10c);
-    func_ov015_0220900c(&self->unk_c0);
+    func_0203f2b8(&self->hit);
+    func_ov000_02191b04(&self->shadow);
+    func_ov000_0218fee4(&self->model2);
+    func_ov000_0218ea20(&self->res2);
+    func_ov000_0218fee4(&self->model);
+    func_ov000_0218ea20(&self->res);
+    func_ov015_0220900c(&self->info);
     return self;
 }
 

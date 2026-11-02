@@ -8,48 +8,48 @@ struct Ov011Bit01 {
 };
 
 static inline void Ov011Ent_LerpB(Ov011Ent *e, s32 from, s32 to, s32 frames) {
-    if (e->b0) {
-        e->b2 = 1;
-        Ov011_SetLerp(&e->unk_0c, from, to, frames);
+    if (e->active) {
+        e->radiusLerp = 1;
+        Ov011_SetLerp(&e->radius, from, to, frames);
     }
 }
 
 static inline void Ov011Ent_LerpC(Ov011Ent *e, s32 from, s32 to, s32 frames) {
-    if (e->b0) {
-        e->b3 = 1;
-        Ov011_SetLerp(&e->unk_18, from, to, frames);
+    if (e->active) {
+        e->spinLerp = 1;
+        Ov011_SetLerp(&e->spin, from, to, frames);
     }
 }
 
 static inline void Ov011Ent_LerpD(Ov011Ent *e, s32 from, s32 to, s32 frames) {
-    if (e->b0) {
-        e->b4 = 1;
-        e->unk_28 = to;
-        e->unk_24 = from;
-        e->unk_2c = (e->unk_28 - e->unk_24) / frames;
+    if (e->active) {
+        e->heightLerp = 1;
+        e->heightTo = to;
+        e->height = from;
+        e->heightStep = (e->heightTo - e->height) / frames;
     }
 }
 
 static inline BOOL Ov011Ent_Done4(Ov011Ent *e) {
     BOOL r = FALSE;
-    if (e->b0) {
-        r = !e->b4;
+    if (e->active) {
+        r = !e->heightLerp;
     }
     return r;
 }
 
 static inline BOOL Ov011Ent_Done2(Ov011Ent *e) {
     BOOL r = FALSE;
-    if (e->b0) {
-        r = !e->b2;
+    if (e->active) {
+        r = !e->radiusLerp;
     }
     return r;
 }
 
 static inline BOOL Ov011Ent_Done3(Ov011Ent *e) {
     BOOL r = FALSE;
-    if (e->b0) {
-        r = !e->b3;
+    if (e->active) {
+        r = !e->spinLerp;
     }
     return r;
 }
@@ -70,8 +70,8 @@ static inline BOOL Ov011Ent_AllDone(Ov011Ent *e) {
 static inline Ov011PNode *Ov011Ent_Find(Ov011Ent *e, void *k) {
     Ov011PNode *r = NULL;
     Ov011PNode *n;
-    if (e->b0) {
-        for (n = e->unk_04; n != NULL; n = n->next) {
+    if (e->active) {
+        for (n = e->nodes; n != NULL; n = n->next) {
             if (k == n) {
                 r = n;
                 break;
@@ -84,8 +84,8 @@ static inline Ov011PNode *Ov011Ent_Find(Ov011Ent *e, void *k) {
 static inline Ov011PNode *Ov011Ent_Find2(Ov011Ent *e, void *k) {
     Ov011PNode *n;
     Ov011PNode *r = NULL;
-    if (e->b0) {
-        for (n = e->unk_04; n != NULL; n = n->next) {
+    if (e->active) {
+        for (n = e->nodes; n != NULL; n = n->next) {
             if (k == n) {
                 r = n;
                 break;
@@ -105,16 +105,16 @@ void func_ov011_021fb38c(Ov011Mgr *self) {
     Ov011Ent *e;
     Ov011Obj *owner = self->list->actor;
     if (self->state == 0) {
-        Ov011Ent_LerpD(self->unk_18, 0x2000 + 0x4800, 0x2000, 40);
-        Ov011Ent_LerpB(self->unk_18, 0x3800 - 0x3333, 0x3333, 40);
-        Ov011Ent_LerpC(self->unk_18, 0x71c, 0x71c, 40);
+        Ov011Ent_LerpD(self->ent, 0x2000 + 0x4800, 0x2000, 40);
+        Ov011Ent_LerpB(self->ent, 0x3800 - 0x3333, 0x3333, 40);
+        Ov011Ent_LerpC(self->ent, 0x71c, 0x71c, 40);
         self->state++;
         return;
     }
     for (n = self->list->head; n != NULL; n = n->next) {
         Ov011Obj *a = Ov011_FindActor(n->id);
         if (func_ov011_02201244(a)) {
-            e = self->unk_18;
+            e = self->ent;
             if (Ov011Ent_Find(e, func_ov011_02201254(a)) != NULL) {
                 Ov011PNode *p = Ov011Ent_Find2(e, func_ov011_02201254(a));
                 VecFx32 r;
@@ -133,7 +133,7 @@ void func_ov011_021fb38c(Ov011Mgr *self) {
             }
         }
     }
-    if (Ov011Ent_AllDone(self->unk_18)) {
+    if (Ov011Ent_AllDone(self->ent)) {
         self->flags |= 4;
     }
 }

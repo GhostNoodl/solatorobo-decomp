@@ -23,7 +23,7 @@ static inline void ov006_SetInfo(u16 id) {
     ov006_SlotManagerInfo *info = func_ov006_021daaa8(id);
     ov006_SlotManager *m = data_ov006_021ec884;
     m->unk6 = id;
-    m->unk8 = info;
+    m->info = info;
 }
 
 static inline u32 ov006_RecordIdx(void) {
@@ -100,27 +100,27 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
         case 2:
             idx = 3;
             data_ov006_021ec884->unk13C = 0;
-            data_ov006_021ec884->unk140 = 0;
+            data_ov006_021ec884->time = 0;
             break;
         case 4:
         case 5:
             idx = 2;
             data_ov006_021ec884->unk13C = 0;
-            data_ov006_021ec884->unk140 = 0;
+            data_ov006_021ec884->time = 0;
             break;
         case 6:
             idx = 5;
             data_ov006_021ec884->unk13C = 0;
-            data_ov006_021ec884->unk140 = 0;
+            data_ov006_021ec884->time = 0;
             break;
         case 7:
             idx = 6;
             data_ov006_021ec884->unk13C = 0;
-            data_ov006_021ec884->unk140 = 0;
+            data_ov006_021ec884->time = 0;
             break;
         default:
             data_ov006_021ec884->unk13C = 0;
-            data_ov006_021ec884->unk140 = 0;
+            data_ov006_021ec884->time = 0;
             break;
         }
         if (idx != 0xffff) {
@@ -154,9 +154,9 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
             ov006_SlotManager *m;
             data_ov006_021ec860->taskType = 3;
             m = data_ov006_021ec884;
-            n = m->unk140;
+            n = m->time;
             b = m->unk148;
-            c = m->unk13E;
+            c = m->lap;
             if (n > 0xffff) {
                 n = 0xffff;
             }

@@ -39,14 +39,14 @@ void func_ov000_02190a80(void *a, void *b);
 
 BOOL func_ov006_021ea3e8(ov006_Prop *self) {
     BOOL result = FALSE;
-    if (self->unk19F > data_ov006_021ec884->unk8->unkB) {
+    if (self->unk19F > data_ov006_021ec884->info->unkB) {
         result = TRUE;
     }
     return result;
 }
 
 void func_ov006_021ea410(ov006_Prop *self) {
-    self->unk19F = data_ov006_021ec884->unk8->unkB + 1;
+    self->unk19F = data_ov006_021ec884->info->unkB + 1;
 }
 
 ov006_Prop *func_ov006_021ea430(u32 id, u8 a, const ov006_Pos *pos, const u16 *rot) {

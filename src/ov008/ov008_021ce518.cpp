@@ -62,9 +62,9 @@ static inline BOOL Ov008_FadeDone(int ch) {
 }
 
 static inline void Ov008_SetRot(Ov008Menu *w, s16 x, s16 y, s16 z) {
-    w->unk_64 = x;
-    w->unk_66 = y;
-    w->unk_68 = z;
+    w->posX = x;
+    w->posY = y;
+    w->posZ = z;
 }
 
 static inline BOOL Ov008_Has200(Ov008Talk *p) {
@@ -109,33 +109,33 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
                 m->flags.b4 = true;
                 m->unk_11c = 0x2000;
             }
-            if (m->unk_100 != NULL) {
-                m->unk_100->unk_0c |= 2;
+            if (m->menu != NULL) {
+                m->menu->flags |= 2;
             }
-            if (m->unk_10c != NULL) {
-                m->unk_10c->unk_0c |= 2;
+            if (m->talk != NULL) {
+                m->talk->flags |= 2;
             }
         }
-        if (m->unk_10c != NULL) {
-            if (!Ov008_Has200(m->unk_10c)) {
+        if (m->talk != NULL) {
+            if (!Ov008_Has200(m->talk)) {
                 if (m->unk_110 == 0xffff) {
-                    m->unk_100->unk_0c &= ~4;
+                    m->menu->flags &= ~4;
                 } else {
                     s32 t;
                     void *r = func_0204c08c(m->unk_fc->unk_bc, m->unk_110, &t, 1);
-                    func_ov000_0214c6b4(m->unk_10c, t, r, 0x3c);
-                    m->unk_100->unk_0c |= 4;
+                    func_ov000_0214c6b4(m->talk, t, r, 0x3c);
+                    m->menu->flags |= 4;
                     m->unk_110 = 0xffff;
                 }
             } else {
-                m->unk_100->unk_0c |= 4;
+                m->menu->flags |= 4;
             }
         }
         n = 0;
-        if (m->unk_100->v1c()) {
+        if (m->menu->v1c()) {
             n++;
         }
-        if (m->unk_10c != NULL && m->unk_10c->v1c()) {
+        if (m->talk != NULL && m->talk->v1c()) {
             n++;
         }
         if (n != 0) {
@@ -168,26 +168,26 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
                 OV008_SET_VT(w, &data_ov000_021cb0b8);
                 w->v28();
             }
-            m->unk_104 = w;
-            m->unk_104->unk_1dc = MsgRes_GetString(res, id);
-            m->unk_104->unk_08 = m;
-            Ov008_SetRot(m->unk_104, 0, 0, 0);
-            m->unk_104->unk_0c |= 0x80000;
-            m->unk_104->unk_84 = (Ov008Cb)func_ov008_021cf878;
-            m->unk_104->v08();
+            m->dialog = w;
+            m->dialog->text = MsgRes_GetString(res, id);
+            m->dialog->owner = m;
+            Ov008_SetRot(m->dialog, 0, 0, 0);
+            m->dialog->flags |= 0x80000;
+            m->dialog->onDecide = (Ov008Cb)func_ov008_021cf878;
+            m->dialog->v08();
             m->state = 12;
         }
     case 12:
         if (m->flags.b2) {
-            m->unk_104->unk_0c |= 2;
+            m->dialog->flags |= 2;
         }
-        if (m->unk_104->v1c()) {
+        if (m->dialog->v1c()) {
             break;
         }
         if (m->flags.b1) {
             m->flags.b0 = true;
         }
-        OV008_FREE_V(m->unk_104, v04);
+        OV008_FREE_V(m->dialog, v04);
         m->state = 10;
         break;
     case 8:
@@ -210,8 +210,8 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
             break;
         }
     case 7:
-        OV008_FREE_V(m->unk_100, v04);
-        OV008_FREE_V(m->unk_10c, v04);
+        OV008_FREE_V(m->menu, v04);
+        OV008_FREE_V(m->talk, v04);
         if (m->flags.b2) {
             m->flags.b2 = 0;
             m->state = 6;
@@ -238,8 +238,8 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
             func_02049a48(data_02097e4c, 0x32, -1, -1, -1);
             break;
         case 20:
-            if (m->unk_f8 != NULL) {
-                m->unk_f8->unk_68 = 1;
+            if (m->panel != NULL) {
+                m->panel->unk_68 = 1;
             }
             break;
         default:
@@ -268,8 +268,8 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
         func_ov000_02190a80(m->unk_c8, 0x1000);
         func_ov000_02190a80(m->unk_d0, 0x1000);
     }
-    if (m->unk_f4 != NULL) {
-        func_ov008_021cce38(m->unk_f4);
+    if (m->caption != NULL) {
+        func_ov008_021cce38(m->caption);
     }
     return 1;
 }

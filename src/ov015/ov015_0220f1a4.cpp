@@ -27,104 +27,104 @@ static inline void Ov015_SetMoney2(u8 *g, u32 v) {
 }
 BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
     BOOL r = TRUE;
-    switch (self->unk_18) {
+    switch (self->state) {
     case 0:
         func_ov015_021fa6f8((Ov015Fade *)func_ov015_021fa6d0(), 0, 0xf, 0x3c000, 0x2639);
-        self->unk_18++;
+        self->state++;
     case 1: {
         Ov015Fade *f = (Ov015Fade *)func_ov015_021fa6d0();
-        if (f->unk_14 >= f->unk_0c) {
-            self->unk_1c = 0;
-            self->unk_18++;
+        if (f->time >= f->duration) {
+            self->timer = 0;
+            self->state++;
         }
         break;
     }
     case 2:
-        if (self->unk_1c > 0x3c000) {
-            self->unk_18 = 10;
-            self->unk_1c = 0;
+        if (self->timer > 0x3c000) {
+            self->state = 10;
+            self->timer = 0;
         } else {
-            self->unk_1c += 0x1000;
+            self->timer += 0x1000;
         }
         break;
     case 10:
-        if (self->unk_1c <= self->unk_04->unk_34) {
-            self->unk_1c += 0x1000;
+        if (self->timer <= self->unk_04->unk_34) {
+            self->timer += 0x1000;
         } else {
-            self->unk_1c = 0;
-            self->unk_18 = 0x14;
-            self->unk_14->unk_0c &= ~2;
+            self->timer = 0;
+            self->state = 0x14;
+            self->unk_14->flags &= ~2;
         }
         break;
     case 0x14: {
         s32 n = FLD(s32, data_ov015_02213368, 0x28);
         if (n != 0) {
             if (FLD(u16, data_02097dc8, 0x12) & 1) {
-                func_ov000_0215d980(self->unk_10, ((s32)self->unk_10->unk_8c) + n, 0);
+                func_ov000_0215d980(self->unk_10, ((s32)self->unk_10->value) + n, 0);
                 func_ov000_0215d980(self->unk_0c, 0, 0);
                 func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
-                self->unk_18 = 0x1e;
+                self->state = 0x1e;
             }
         } else {
-            self->unk_18 = 0x28;
-            self->unk_1c = 0;
+            self->state = 0x28;
+            self->timer = 0;
         }
         break;
     }
     case 0x1e: {
         u8 *a = ((u8 *)self->unk_10);
-        if (FLD(s32, a, 0x8c) != FLD(s32, a, 0x88) || ((s32)self->unk_0c->unk_8c) != self->unk_0c->unk_88) {
+        if (FLD(s32, a, 0x8c) != FLD(s32, a, 0x88) || ((s32)self->unk_0c->value) != self->unk_0c->unk_88) {
             if (FLD(u16, data_02097dc8, 0x12) & 1) {
-                func_ov000_0215d980(self->unk_10, ((s32)self->unk_10->unk_8c), 1);
+                func_ov000_0215d980(self->unk_10, ((s32)self->unk_10->value), 1);
                 func_ov000_0215d980(self->unk_0c, 0, 1);
             } else {
-                if (++self->unk_1c % 4 == 0) {
+                if (++self->timer % 4 == 0) {
                     func_02049a48(data_02097e4c, 0x18, -1, -1, -1);
                 }
                 break;
             }
         }
         func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
-        self->unk_18 = 0x28;
-        self->unk_1c = 0;
+        self->state = 0x28;
+        self->timer = 0;
         break;
     }
     case 0x28:
-        if (self->unk_1c >= 0x14000) {
+        if (self->timer >= 0x14000) {
             if (FLD(u16, data_02097dc8, 0x12) & 1) {
                 func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
-                Ov015_SetMoney2(data_0214a424, self->unk_10->unk_8c);
-                self->unk_04->unk_0c |= 2;
+                Ov015_SetMoney2(data_0214a424, self->unk_10->value);
+                self->unk_04->flags |= 2;
                 FLD(u32, self->unk_08, 0xc) |= 2;
-                self->unk_0c->unk_0c |= 2;
-                self->unk_10->unk_0c |= 2;
-                self->unk_14->unk_0c |= 2;
-                self->unk_18 = 0x32;
-                self->unk_1c = 0;
+                self->unk_0c->flags |= 2;
+                self->unk_10->flags |= 2;
+                self->unk_14->flags |= 2;
+                self->state = 0x32;
+                self->timer = 0;
             }
         } else {
-            self->unk_1c += 0x1000;
+            self->timer += 0x1000;
         }
         break;
     case 0x32:
         if (Ov015_IsKind5f1a4(((u8 *)self->unk_04)) && Ov015_IsKind5f1a4(self->unk_08) && Ov015_IsKind5f1a4(((u8 *)self->unk_14))) {
-            self->unk_18 = 0x3c;
+            self->state = 0x3c;
         }
         break;
     case 0x3c:
-        if (self->unk_1c <= 0xa000) {
-            self->unk_1c += 0x1000;
+        if (self->timer <= 0xa000) {
+            self->timer += 0x1000;
         } else {
-            self->unk_1c = 0;
-            self->unk_18 = -1;
+            self->timer = 0;
+            self->state = -1;
         }
         break;
     default:
-        self->unk_18 = -1;
+        self->state = -1;
         r = FALSE;
         break;
     }
-    if (self->unk_18 >= 10) {
+    if (self->state >= 10) {
         ((Ov015V *)self->unk_04)->v1c();
         ((Ov015V *)self->unk_08)->v1c();
         ((Ov015V *)self->unk_0c)->v1c();
@@ -137,64 +137,64 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
 
 BOOL func_ov015_0220f1a4(Ov015ResultPanel *self) {
     BOOL r = TRUE;
-    switch (self->unk_18) {
+    switch (self->state) {
     case 0:
         func_ov015_021fa6f8((Ov015Fade *)func_ov015_021fa6d0(), 0, 0x14, 0x3c000, 0x2639);
-        self->unk_18++;
+        self->state++;
     case 1: {
         Ov015Fade *f = (Ov015Fade *)func_ov015_021fa6d0();
-        if (f->unk_14 >= f->unk_0c) {
-            self->unk_1c = 0;
-            self->unk_18++;
+        if (f->time >= f->duration) {
+            self->timer = 0;
+            self->state++;
         }
         break;
     }
     case 2:
-        if (self->unk_1c <= 0x3c000) {
-            self->unk_1c += 0x1000;
+        if (self->timer <= 0x3c000) {
+            self->timer += 0x1000;
         } else {
-            self->unk_1c = 0;
-            self->unk_18 = 10;
-            self->unk_14->unk_0c &= ~2;
+            self->timer = 0;
+            self->state = 10;
+            self->unk_14->flags &= ~2;
         }
         break;
     case 10: {
         u32 t;
-        if (self->unk_1c >= self->unk_14->unk_34 && (t = FLD(u16, data_02097dc8, 0x12) & 1) != 0) {
+        if (self->timer >= self->unk_14->unk_34 && (t = FLD(u16, data_02097dc8, 0x12) & 1) != 0) {
             if (t) {
                 func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
             }
-            self->unk_04->unk_0c |= 2;
+            self->unk_04->flags |= 2;
             FLD(u32, self->unk_08, 0xc) |= 2;
-            self->unk_0c->unk_0c |= 2;
-            self->unk_10->unk_0c |= 2;
-            self->unk_14->unk_0c |= 2;
-            self->unk_18 = 0x14;
-            self->unk_1c = 0;
+            self->unk_0c->flags |= 2;
+            self->unk_10->flags |= 2;
+            self->unk_14->flags |= 2;
+            self->state = 0x14;
+            self->timer = 0;
         } else {
-            self->unk_1c += 0x1000;
+            self->timer += 0x1000;
         }
         break;
     }
     case 0x14:
         if (Ov015_IsKind5f1a4(((u8 *)self->unk_04)) && Ov015_IsKind5f1a4(self->unk_08) && Ov015_IsKind5f1a4(((u8 *)self->unk_14))) {
-            self->unk_18 = 0x1e;
+            self->state = 0x1e;
         }
         break;
     case 0x1e:
-        if (self->unk_1c <= 0xa000) {
-            self->unk_1c += 0x1000;
+        if (self->timer <= 0xa000) {
+            self->timer += 0x1000;
         } else {
-            self->unk_1c = 0;
-            self->unk_18 = -1;
+            self->timer = 0;
+            self->state = -1;
         }
         break;
     default:
-        self->unk_18 = -1;
+        self->state = -1;
         r = FALSE;
         break;
     }
-    if (self->unk_18 >= 10) {
+    if (self->state >= 10) {
         ((Ov015V *)self->unk_04)->v1c();
         ((Ov015V *)self->unk_08)->v1c();
         ((Ov015V *)self->unk_0c)->v1c();
@@ -206,8 +206,8 @@ BOOL func_ov015_0220f1a4(Ov015ResultPanel *self) {
 
 Ov015Result *Ov015Result_Ctor(Ov015Result *self) {
     SET_VT(self, data_ov015_022128ec);
-    self->unk_04 = 0;
-    self->unk_08 = 1;
+    self->state = 0;
+    self->mode = 1;
     self->unk_0c = 0;
     FLD(s32, self, 0x10) = 0;
     return self;
@@ -222,18 +222,18 @@ void func_ov015_0220f470(Ov015Result *self) {
         FLD(s32, p, 0xc) = 0;
         FLD(s32, p, 0x10) = 0;
         FLD(s32, p, 0x14) = 0;
-        p->unk_18 = 0;
-        p->unk_1c = 0;
-        MI_CpuFill8(p->unk_20, 0, 0x40);
-        p->unk_60 = -1;
+        p->state = 0;
+        p->timer = 0;
+        MI_CpuFill8(p->name, 0, 0x40);
+        p->mode = -1;
     }
-    self->unk_10 = p;
+    self->panel = p;
 }
 
 void func_ov015_0220f4d4(Ov015Result *self) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_10);
+    DELETE_V(self->panel);
     HEAP_POP(saved);
     if (data_ov002_021f0f9c != NULL) {
         func_ov002_021e7c1c();
@@ -262,14 +262,14 @@ static inline void Ov015_SetCam14(s32 v) {
 }
 BOOL func_ov015_0220f568(Ov015Result *self) {
     BOOL r = TRUE;
-    switch (self->unk_04) {
+    switch (self->state) {
     case 0:
         func_ov002_021e7b58();
         FLD(u8, data_ov002_021f0f9c, 0x1a) = 0;
         FLD(s32, data_ov002_021f0f9c, 0x130) = 1;
         FLD(s32, data_ov002_021f0f9c, 0x134) = 2;
-        self->unk_08 = FLD(s32, data_ov015_02213320.unk_00, 0x8);
-        switch (self->unk_08) {
+        self->mode = FLD(s32, data_ov015_02213320.unk_00, 0x8);
+        switch (self->mode) {
         case 1:
             func_ov015_0220f878(self);
             Ov015_SetCam14(0x51000);
@@ -285,7 +285,7 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
             self->unk_0c = 0;
             break;
         }
-        self->unk_04 = 10;
+        self->state = 10;
     case 10:
         if (data_ov002_021f0f9c != NULL) func_ov002_021e7ea8(data_ov002_021f0f9c);
         {
@@ -295,17 +295,17 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
                 break;
             }
         }
-        func_ov015_0220e634(self->unk_10, self->unk_08);
+        func_ov015_0220e634(self->panel, self->mode);
         FLD(s32, data_ov002_021f0f9c, 0x128) = 0;
-        self->unk_04 = 0x14;
+        self->state = 0x14;
     case 0x14: {
         BOOL ok = TRUE;
-        switch (FLD(s32, self->unk_10, 0x60)) {
+        switch (FLD(s32, self->panel, 0x60)) {
         case 1:
-            ok = func_ov015_0220ed70(self->unk_10);
+            ok = func_ov015_0220ed70(self->panel);
             break;
         case 0:
-            ok = func_ov015_0220f1a4(self->unk_10);
+            ok = func_ov015_0220f1a4(self->panel);
             break;
         case 2:
             ok = FALSE;
@@ -314,11 +314,11 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
         if (!ok) {
             void *saved;
             HEAP_PUSH(saved);
-            DELETE_V(self->unk_10);
+            DELETE_V(self->panel);
             HEAP_POP(saved);
             Ov015_SetCam14(-1);
             func_ov002_021e9b28(FLD(s32, data_ov002_021f0f9c, 0xd0));
-            self->unk_04 = 0x1e;
+            self->state = 0x1e;
         }
         if (data_ov002_021f0f9c != NULL) func_ov002_021e7ea8(data_ov002_021f0f9c);
         break;
@@ -338,7 +338,7 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
         break;
     }
     default:
-        self->unk_04 = 0x1e;
+        self->state = 0x1e;
         break;
     }
     return r;

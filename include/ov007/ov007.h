@@ -164,11 +164,11 @@ struct Ov007Anim {
     u8 unk_02;
     u8 unk_03;
     u8 unk_04[0xc];
-    char unk_10[0x20]; // model directory
-    char unk_30[0x18]; // model name
+    char mdlDir[0x20]; // model directory
+    char mdlName[0x18]; // model name
     void *unk_48;
-    char unk_4c[0x20]; // animation directory
-    char unk_6c[0xcc]; // animation name
+    char anmDir[0x20]; // animation directory
+    char anmName[0xcc]; // animation name
 };
 OV007_SIZE(Ov007Anim, 0x138);
 
@@ -240,7 +240,7 @@ OV007_SIZE(Ov007Menu, 0x58);
 class Ov007Player : public Ov007V {
 public:
     u8 unk_04[0x8];
-    u32 unk_0c;
+    u32 flags;
     u8 unk_10[0xc];
     s32 unk_1c;
     u8 unk_20[0x28];
@@ -248,7 +248,7 @@ public:
     u8 unk_4a[0xa];
     s32 unk_54;
     u8 unk_58[0x10];
-    s16 unk_68;
+    s16 posZ;
     u8 unk_6a[0x7e];
 };
 OV007_SIZE(Ov007Player, 0xe8);
@@ -268,17 +268,17 @@ public:
         Ov007WinAttr attr;
     };
     u8 unk_08[0x1c];
-    s32 unk_24; // text
-    s32 unk_28;
+    s32 str; // text
+    s32 font;
     u8 unk_2c[0xb];
     s8 unk_37;
-    s32 unk_38;
+    s32 spacing;
     u8 unk_3c[0x8];
-    s32 unk_44; // width
-    s32 unk_48;
+    s32 width; // width
+    s32 height;
     s32 unk_4c;
     u8 unk_50[0x20];
-    s32 unk_70;
+    s32 posZ;
     u8 unk_74[0x44];
 };
 OV007_SIZE(Ov007Win, 0xb8);
@@ -287,18 +287,18 @@ OV007_SIZE(Ov007Win, 0xb8);
 class Ov007Cam : public Ov007V {
 public:
     u8 unk_04[0x24];
-    s32 unk_28;
-    s32 unk_2c;
-    s16 unk_30;
-    s16 unk_32;
-    u16 unk_34;
-    u16 unk_36;
-    s32 unk_38;
+    s32 nearClip;
+    s32 farClip;
+    s16 fovySin;
+    s16 fovyCos;
+    u16 aspect;
+    u16 fovyIdx;
+    s32 fovyDeg;
     u8 unk_3c;
     u8 unk_3d;
-    u8 unk_3e;
+    u8 projDirty;
     u8 unk_3f[0x9];
-    s32 unk_48;
+    s32 dist;
     u8 unk_4c[0x70];
 };
 OV007_SIZE(Ov007Cam, 0xbc);
@@ -390,7 +390,7 @@ struct Ov007Scene {
     s32 state;
     s32 sub;
     s32 idx;
-    Ov007Pic *unk_14;
+    Ov007Pic *pic;
     Ov007Anim *unk_18;
     Ov007Anim *unk_1c;
     Ov007Anim *unk_20;
@@ -400,11 +400,11 @@ struct Ov007Scene {
     Ov007Model *unk_30;
     Ov007Model *unk_34;
     Ov007Model *unk_38;
-    Ov007Cam *unk_3c;
+    Ov007Cam *cam;
     s16 unk_40;
     u8 unk_42[0x2];
     s32 unk_44;
-    Ov007Menu *unk_48;
+    Ov007Menu *menu;
     u8 unk_4c;
     u8 unk_4d;
     u8 unk_4e;
@@ -412,11 +412,11 @@ struct Ov007Scene {
     s32 unk_50;
     s32 unk_54;
     s32 unk_58;
-    Ov007Win *unk_5c[2];
+    Ov007Win *wins[2];
     s8 unk_64;
     u8 unk_65;
     u16 unk_66;
-    Ov007Player *unk_68;
+    Ov007Player *player;
 };
 OV007_SIZE(Ov007Scene, 0x6c);
 
@@ -553,7 +553,7 @@ static inline BOOL Ov007_MenuDone(void) {
 }
 
 static inline BOOL Ov007_Busy(Ov007Player *p) {
-    return (p->unk_0c & 0x10000) ? FALSE : TRUE;
+    return (p->flags & 0x10000) ? FALSE : TRUE;
 }
 
 static inline Ov007Player *Ov007_NewPlayer(Ov007Scene *s, s32 id) {
@@ -564,23 +564,23 @@ static inline Ov007Player *Ov007_NewPlayer(Ov007Scene *s, s32 id) {
         OV007_SET_VT(p, &data_ov000_021cad50);
         p->v28();
     }
-    s->unk_68 = p;
-    s->unk_68->unk_0c |= 0x10000;
-    p = s->unk_68;
-    p->unk_0c |= 0x8;
+    s->player = p;
+    s->player->flags |= 0x10000;
+    p = s->player;
+    p->flags |= 0x8;
     p->unk_48 = 0x14a5;
     p->unk_54 = 0x1c;
-    s->unk_68->unk_0c |= 0x20000;
-    s->unk_68->unk_1c = 4;
-    s->unk_68->v08();
-    func_ov000_0215c1bc(s->unk_68, 0x8000, (char *)MsgRes_GetString(data_02149ef8, id));
-    s->unk_68->unk_68 = -0x299a;
-    s->unk_68->v70();
+    s->player->flags |= 0x20000;
+    s->player->unk_1c = 4;
+    s->player->v08();
+    func_ov000_0215c1bc(s->player, 0x8000, (char *)MsgRes_GetString(data_02149ef8, id));
+    s->player->posZ = -0x299a;
+    s->player->v70();
     return p;
 }
 
 static inline void Ov007_FreePage(Ov007Scene *s) {
-    OV007_FREE_V(s->unk_48, v04);
+    OV007_FREE_V(s->menu, v04);
     OV007_FREE_M(s->unk_28);
     OV007_FREE_M(s->unk_2c);
 }

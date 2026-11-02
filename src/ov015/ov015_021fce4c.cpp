@@ -155,7 +155,7 @@ static inline void Ov015Cam_Init(Ov015Cam *c, s32 ay, s32 az) {
     c->near = 0x119a;
     c->far = 0x7d0000;
     c->dirty = 1;
-    c->unk_40 = 0;
+    c->mode = 0;
 }
 
 void func_ov015_021fce94(Ov015CamPair *self) {

@@ -238,16 +238,16 @@ static inline Ov011Slot *Ov011Ctl_Find(Ov011Ctl *self, u16 id) {
 }
 
 static inline void Ov011Ent_Remove(Ov011Ent *e, void *k) {
-    if (e->b0) {
+    if (e->active) {
         Ov011PNode *n;
-        for (n = e->unk_04; n != NULL; n = n->next) {
+        for (n = e->nodes; n != NULL; n = n->next) {
             if (k == n) {
-                e->unk_04 = (Ov011PNode *)func_ov011_021fa790((Ov011LNode *)e->unk_04, (Ov011LNode *)n);
+                e->nodes = (Ov011PNode *)func_ov011_021fa790((Ov011LNode *)e->nodes, (Ov011LNode *)n);
                 if (n != NULL) {
                     Heap_Free(n);
                 }
-                e->b1 = 0;
-                e->unk_08 = 0;
+                e->settled = 0;
+                e->blend = 0;
                 break;
             }
         }

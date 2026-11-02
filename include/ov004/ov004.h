@@ -25,7 +25,7 @@ public:
     u8 unk_17[0xb];
     u16 unk_22;
     u8 unk_24[0x14];
-    void *unk_38;
+    void *model;
     u8 unk_3c[0x8];
     void *unk_44;
     void *unk_48;

@@ -18,8 +18,8 @@ void func_ov006_021db1b8(u16 a) {
     }
     for (i = 0; i < 4; i++) {
         ov006_Slot *slot = ov006_SlotManager_GetSlot(data_ov006_021ec884, i);
-        if (slot != NULL && slot->unk12 != 0xff) {
-            func_ov006_021e4b18(data_ov006_021ec888, slot->unk12, a, 3, &slot->sub3C, 0x10);
+        if (slot != NULL && slot->aid != 0xff) {
+            func_ov006_021e4b18(data_ov006_021ec888, slot->aid, a, 3, &slot->sub3C, 0x10);
         }
     }
 }

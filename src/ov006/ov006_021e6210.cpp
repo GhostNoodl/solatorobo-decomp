@@ -56,14 +56,14 @@ void func_ov006_021e6210(ov006_Prop6210 *self) {
     sub.unk4 = 0;
     sub.unk8 = 0;
     sub.unkC = 0;
-    if (slot->unk8 != 0) {
+    if (slot->type != 0) {
         ov006_SlotManager *mgr = data_ov006_021ec884;
         ov006_SlotManagerInfo *info;
         BOOL over;
         if (self->unk19E != mgr->unk5) {
             return;
         }
-        info = mgr->unk8;
+        info = mgr->info;
         over = FALSE;
         if (self->unk19F > info->unkB) {
             over = TRUE;

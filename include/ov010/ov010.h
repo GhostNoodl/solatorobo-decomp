@@ -262,13 +262,13 @@ struct Ov010FxObj {
     s16 unk_06;
     s16 unk_08;
     s16 unk_0a;
-    u16 unk_0c;
-    u16 unk_0e;
-    u16 unk_10;
-    u16 unk_12; // id of the actor the effect follows
-    s32 unk_14; // effect handles
-    s32 unk_18;
-    s32 unk_1c;
+    u16 timer;
+    u16 rx;
+    u16 ry;
+    u16 targetId; // id of the actor the effect follows
+    s32 fx0; // effect handles
+    s32 fx1;
+    s32 fx2;
     s32 unk_20;
     Ov010Vec pos;
     ActorSub40 st;

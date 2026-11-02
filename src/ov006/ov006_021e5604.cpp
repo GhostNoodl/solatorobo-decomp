@@ -36,23 +36,23 @@ int Wh_GetError(ov006_Net021e5604 *net);
 void func_ov006_021e5fec(void);
 
 static inline void ov006_Menu_Advance(ov006_Unk021ec888 *self) {
-    if (self->unkC < 0xff) {
-        self->unkC++;
+    if (self->stateTime < 0xff) {
+        self->stateTime++;
     }
 }
 
 static inline void ov006_Menu_Error(int code) {
     ov006_Unk021ec888 *menu = data_ov006_021ec888;
-    if (menu->unk8 == 9) {
+    if (menu->state == 9) {
         return;
     }
-    menu->unk8 = 9;
-    menu->unkC = 0;
+    menu->state = 9;
+    menu->stateTime = 0;
     menu->unk1C = code;
 }
 
 void func_ov006_021e5604(ov006_Unk021ec888 *self) {
-    switch (self->unkC) {
+    switch (self->stateTime) {
     case 0:
         data_02097dd0->vblankFunc = NULL;
         if (data_02097e40->state == 3) {
@@ -61,7 +61,7 @@ void func_ov006_021e5604(ov006_Unk021ec888 *self) {
         if (data_02097e40->state == 2) {
             func_020463c8(data_02097e40);
         }
-        self->unkC = 10;
+        self->stateTime = 10;
         return;
     case 10: {
         ov006_Net021e5604 *net = data_02097e40;
@@ -95,13 +95,13 @@ void func_ov006_021e5604(ov006_Unk021ec888 *self) {
             ov006_Menu_Advance(self);
         } else {
             func_02045094(data_02097e40);
-            self->unkC = 10;
+            self->stateTime = 10;
             return;
         }
     case 12:
         if (data_02097e40->state == 5) {
             data_02097dd0->vblankFunc = func_ov006_021e5fec;
-            self->unkC = 0x1e;
+            self->stateTime = 0x1e;
         } else if (data_02097e40->state == 8) {
             Wh_GetError(data_02097e40);
             ov006_Menu_Error(3);

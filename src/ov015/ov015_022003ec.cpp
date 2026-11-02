@@ -33,22 +33,22 @@ BOOL func_ov015_022003ec(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
     n = g->unk_10;
     if ((m == 3 && n == 2) || (m == 2 && n == 3) || (m == 4 && n == 4) || (m != 1 && m != 0 && n == 1)) {
         if ((self->unk_0c >> 32) % 10 == 0) {
-            c->cam0.unk_99 = 1;
-            c->cam0.unk_9a = 10;
-            c->cam0.unk_9b = 10;
-            c->cam0.unk_9c.b2 = 1;
-            c->cam0.unk_9c.b3 = 1;
-            c->cam0.unk_9c.b4 = 0;
-            c->cam1.unk_99 = 1;
-            c->cam1.unk_9a = 10;
-            c->cam1.unk_9b = 10;
-            c->cam1.unk_9c.b2 = 1;
-            c->cam1.unk_9c.b3 = 1;
-            c->cam1.unk_9c.b4 = 0;
+            c->cam0.shakeTime = 1;
+            c->cam0.shakeLen = 10;
+            c->cam0.shakeCur = 10;
+            c->cam0.flags.shakeX = 1;
+            c->cam0.flags.shakeY = 1;
+            c->cam0.flags.shakeZ = 0;
+            c->cam1.shakeTime = 1;
+            c->cam1.shakeLen = 10;
+            c->cam1.shakeCur = 10;
+            c->cam1.flags.shakeX = 1;
+            c->cam1.flags.shakeY = 1;
+            c->cam1.flags.shakeZ = 0;
         }
     }
     if (g->unk_28 == 3) {
-        func_ov015_021fd00c(c, 3, &b->unk_40);
+        func_ov015_021fd00c(c, 3, &b->pos);
     } else if (g->unk_08 == 3) {
         func_ov015_0220a058(b, &v);
         {
@@ -61,25 +61,25 @@ BOOL func_ov015_022003ec(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
         func_ov015_0220a058(b, &w);
         func_ov015_021fd00c(c, 4, &w);
     } else {
-        func_ov015_021fd00c(c, 0, &b->unk_40);
+        func_ov015_021fd00c(c, 0, &b->pos);
     }
     {
-        Ov015VecC t(*(Ov015VecC *)&b->unk_40);
+        Ov015VecC t(*(Ov015VecC *)&b->pos);
         t.y += 0x8000;
         *(Ov015VecC *)&a->unk_d4c = t;
     }
-    if (self->unk_04 != NULL) {
+    if (self->fx != NULL) {
         if (g->unk_00 > 0x96000) {
-            FLD(s32, self->unk_04, 0xd4) = 1;
+            FLD(s32, self->fx, 0xd4) = 1;
             {
-                Ov015Ship *p = self->unk_24;
+                Ov015Ship *p = self->ship;
                 u.x = p->unk_d08.x;
                 u.y = p->unk_d08.y;
                 u.z = p->unk_d08.z;
             }
-            VCALL(self->unk_04)->v18(&u);
+            VCALL(self->fx)->v18(&u);
         } else {
-            VCALL(self->unk_04)->v08(0);
+            VCALL(self->fx)->v08(0);
         }
     }
     func_ov015_02207c30(a);
@@ -121,7 +121,7 @@ void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b) {
     if (self->unk_10 == 6) {
         func_02049a48(data_02097e4c, 0, 0x7f, -1, -1);
         // m[3] as a byte offset from the matrix: a field path folds to one constant and changes the code.
-        func_02065f88(0x6d, &FLD(Ov015Vec, &a->unk_cd4, 0x24))->v14(0x800, 0x800, 0x800);
+        func_02065f88(0x6d, &FLD(Ov015Vec, &a->nodeMtx, 0x24))->v14(0x800, 0x800, 0x800);
     }
     g->unk_1c = self->unk_10 > 0;
     g->unk_1d = self->unk_10 == 6;
@@ -157,13 +157,13 @@ void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b) {
         g->unk_18 = 0x1000;
     }
     g->unk_14 = dir;
-    g->unk_08 = b->unk_f4;
-    g->unk_0c = b->unk_c0.unk_1c;
+    g->unk_08 = b->stateId;
+    g->unk_0c = b->info.unk_1c;
     g->unk_10 = b->unk_bc;
     func_ov015_02200a18(self, g);
-    lim = func_ov015_022090bc(&self->unk_28->unk_c0);
-    mn = self->unk_30->unk_18;
-    switch (self->unk_28->unk_f4) {
+    lim = func_ov015_022090bc(&self->fish->info);
+    mn = self->info->unk_18;
+    switch (self->fish->stateId) {
     case 2:
         self->unk_18 = func_ov015_02200d50(self, g, self->unk_18);
         break;
@@ -190,7 +190,7 @@ void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b) {
     }
     self->unk_18 = mn;
     a->unk_d3e = -mn;
-    if (a->unk_d48 == 1) {
+    if (a->modelIdx == 1) {
         s32 m = g->unk_14;
         s32 n = g->unk_10;
         BOOL ok = TRUE;
@@ -200,7 +200,7 @@ void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b) {
             }
         }
         {
-            s32 v70 = b->unk_70;
+            s32 v70 = b->scaleX;
             a->unk_d42 = (ok & (self->unk_10 > -0x1e)) ? 1 : 0;
             a->unk_d44 = v70;
         }
@@ -221,7 +221,7 @@ void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b) {
         }
     }
     g->unk_2c = self->unk_0c >> 12;
-    b->unk_c0.unk_28 = self->unk_0c;
+    b->info.unk_28 = self->unk_0c;
 }
 
 }

@@ -50,13 +50,13 @@ void func_ov008_021cd500(Ov008Mgr *m) {
     m->unk_e8 = NULL;
     m->unk_ec = NULL;
     m->unk_f0 = NULL;
-    m->unk_f4 = NULL;
-    m->unk_f8 = NULL;
+    m->caption = NULL;
+    m->panel = NULL;
     m->unk_fc = NULL;
-    m->unk_100 = NULL;
-    m->unk_104 = NULL;
-    m->unk_108 = NULL;
-    m->unk_10c = NULL;
+    m->menu = NULL;
+    m->dialog = NULL;
+    m->sel = NULL;
+    m->talk = NULL;
     m->unk_110 = 0xffff;
     m->unk_112 = 0xffff;
     m->unk_114 = 0;
@@ -75,16 +75,16 @@ void func_ov008_021cd584(Ov008Mgr *m) {
     {
         void *saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->heapHi;
-        if (m->unk_f8 != NULL) {
-            Ov008Panel *p = m->unk_f8;
+        if (m->panel != NULL) {
+            Ov008Panel *p = m->panel;
             if (p != NULL) {
                 p->pic.v0c();
-                OV008_FREE_M(p->unk_50);
+                OV008_FREE_M(p->sprite);
                 OV008_SET_VT(&p->pic, &data_0208b318);
                 p->pic.v0c();
                 Heap_Free(p);
             }
-            m->unk_f8 = NULL;
+            m->panel = NULL;
         }
         data_02097dd0->cur = saved;
     }
@@ -93,11 +93,11 @@ void func_ov008_021cd584(Ov008Mgr *m) {
     OV008_FREE_V(m->unk_d4, v04);
     OV008_FREE_V(m->unk_dc, v04);
     OV008_FREE_V(m->unk_e4, v04);
-    OV008_FREE(m->unk_f4, Ov008Caption *, (p_->pic.v0c(), OV008_SET_VT(&p_->pic, &data_0208b318), p_->pic.v0c(), Heap_Free(p_)));
+    OV008_FREE(m->caption, Ov008Caption *, (p_->pic.v0c(), OV008_SET_VT(&p_->pic, &data_0208b318), p_->pic.v0c(), Heap_Free(p_)));
     OV008_FREE_V(m->unk_fc, v04);
-    OV008_FREE_V(m->unk_100, v04);
-    OV008_FREE_V(m->unk_104, v04);
-    OV008_FREE_V(m->unk_10c, v04);
+    OV008_FREE_V(m->menu, v04);
+    OV008_FREE_V(m->dialog, v04);
+    OV008_FREE_V(m->talk, v04);
     func_02036838(data_02097cdc, data_0208cca0, 7, 0);
     func_02036838(data_02097cdc, data_0208cc94, 7, 0);
     func_ov000_0214bc10();
@@ -143,14 +143,14 @@ Ov008V *Ov008Menu_DtorDelete(Ov008V *self) {
 }
 
 static inline void Ov008_SetNameA(Ov008Anim *p, const char *a, const char *b) {
-    STD_CopyString(p->unk_10, a);
-    STD_CopyString(p->unk_30, b);
+    STD_CopyString(p->mdlDir, a);
+    STD_CopyString(p->mdlName, b);
     p->unk_03 |= 2;
 }
 
 static inline void Ov008_SetNameB(Ov008Anim *p, const char *a, const char *b) {
-    STD_CopyString(p->unk_4c, a);
-    STD_CopyString(p->unk_6c, b);
+    STD_CopyString(p->anmDir, a);
+    STD_CopyString(p->anmName, b);
     p->unk_03 |= 4;
 }
 

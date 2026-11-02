@@ -40,12 +40,12 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
 }
 
 void func_ov006_021e5050(ov006_Unk021ec888 *self) {
-    switch (self->unkC) {
+    switch (self->stateTime) {
     case 0:
         self->unk28 = 0;
         data_02097dd0->vblankFunc = NULL;
         ov006_Menu_ClearNodes(self);
-        self->unkC = 10;
+        self->stateTime = 10;
         break;
     case 10:
         if (data_02097e40->unk2C != 1) {
@@ -53,7 +53,7 @@ void func_ov006_021e5050(ov006_Unk021ec888 *self) {
         }
         func_02046070(data_02097e40, data_ov006_021eb840, 0);
         self->unk2C = 1;
-        self->unkC = 20;
+        self->stateTime = 20;
         self->unk10 = 30;
         break;
     case 20:
@@ -70,7 +70,7 @@ void func_ov006_021e5050(ov006_Unk021ec888 *self) {
         if ((u32)self->unk28 % 10 == 0) {
             func_ov006_021e49bc(self);
         }
-        self->unkC = 30;
+        self->stateTime = 30;
         self->unk10 = 30;
         break;
     case 30:
@@ -79,7 +79,7 @@ void func_ov006_021e5050(ov006_Unk021ec888 *self) {
         }
         if (self->unk10 == 0) {
             self->unk26 = 0;
-            self->unkC = 10;
+            self->stateTime = 10;
             self->unk10 = 0;
         }
         break;

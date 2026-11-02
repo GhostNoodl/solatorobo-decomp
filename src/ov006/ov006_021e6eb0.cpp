@@ -242,7 +242,7 @@ void func_ov006_021e7004(ov006_Aim7004 *self, u16 *keys) {
     }
     {
         over = FALSE;
-        if (self->unk19F > data_ov006_021ec884->unk8->unkB) {
+        if (self->unk19F > data_ov006_021ec884->info->unkB) {
             over = TRUE;
         }
         if (over) {

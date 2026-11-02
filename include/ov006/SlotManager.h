@@ -17,11 +17,11 @@ typedef struct ov006_SlotSub {
 typedef struct ov006_Slot {
     void *vtbl;
     u8 active;
-    int unk8;
+    int type;
     u16 unkC;
-    u16 unkE;
+    u16 actorId;
     u8 unk10;
-    u16 unk12;
+    u16 aid;
     char name[0x16];
     ov006_SlotSub sub2C;
     ov006_SlotSub sub3C;
@@ -46,16 +46,16 @@ typedef struct ov006_SlotManager {
     u8 numActive;
     u8 unk5;
     u16 unk6;
-    ov006_SlotManagerInfo *unk8;
+    ov006_SlotManagerInfo *info;
     ov006_Slot slots[4];
     u8 unk13C;
     u8 unk13D;
-    u8 unk13E;
-    int unk140;
+    u8 lap;
+    int time;
     int unk144;
     u8 unk148;
     u8 unk149;
-    u8 unk14A[3];
+    u8 items[3];
     u8 unk14D[3];
 } ov006_SlotManager;
 
@@ -79,10 +79,10 @@ ov006_Slot *Ov006Vt_021ec078_Ctor(ov006_Slot *self);
 
 static inline void ov006_Slot_Clear(ov006_Slot *self) {
     self->active = 0;
-    self->unk8 = 0;
-    self->unkE = 0xffff;
+    self->type = 0;
+    self->actorId = 0xffff;
     self->unk10 = 0;
-    self->unk12 = 0xff;
+    self->aid = 0xff;
     MI_CpuFill8(self->name, 0, sizeof(self->name));
     self->sub2C.unk0 = 0;
     self->sub2C.unk2 = 0;
@@ -99,11 +99,11 @@ static inline void ov006_Slot_Clear(ov006_Slot *self) {
 }
 
 static inline void ov006_SlotManager_ClearState(ov006_SlotManager *self) {
-    self->unk8 = NULL;
+    self->info = NULL;
     self->unk13C = 0;
     self->unk13D = 0;
-    self->unk13E = 0;
-    self->unk140 = 0;
+    self->lap = 0;
+    self->time = 0;
     self->unk144 = 0;
 }
 

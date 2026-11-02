@@ -126,10 +126,10 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     VCALL(self->unk54, 10, MsgRes_GetString(res, 0x128));
     VCALL(self->unk54, 14, MsgRes_GetString(res, 0x129));
     self->unk54->unk4A = 0x2c00;
-    self->unk54->unk20 = 4;
-    self->unk54->unk24 = 0x8c;
+    self->unk54->rows = 4;
+    self->unk54->width = 0x8c;
     ov006_Window_SetRot(self->unk54, 0, 0x1e, -0x199a);
-    self->unk54->unk68 = -0x199a;
+    self->unk54->posZ = -0x199a;
     ov006_Window_SetPos(self->unk54, -0xff, 0, -0x199a);
     self->unk54->flags &= ~0x400000;
     self->unk54->flags &= ~0x80000;
@@ -146,7 +146,7 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
         VCALL(self->unk54, a8, func_ov000_02154b80(self->unk54, 0));
     }
     self->unk54->owner = self;
-    self->unk54->unk88 = func_ov006_021d1df8;
+    self->unk54->onCursor = func_ov006_021d1df8;
     {
         void *p = Heap_Alloc(0x708);
         if (p != NULL) {
@@ -158,20 +158,20 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     func_ov000_02162910(self->unk58, data_ov006_021eb71c, data_ov006_021eb728, data_ov006_021eb770);
     func_ov000_0216295c(self->unk58, data_ov006_021eb740, 0x3d7);
     self->unk5C = ov006_NewWindow_cadcc();
-    self->unk5C->unk24 = 0xf8;
-    self->unk5C->unk20 = 2;
+    self->unk5C->width = 0xf8;
+    self->unk5C->rows = 2;
     ov006_Window_SetRot(self->unk5C, 4, 0x95, -0x199a);
     ov006_Window_SetPos(self->unk5C, -0x100, 0, -0x199a);
-    self->unk5C->unk2C = 1;
+    self->unk5C->slideMode = 1;
     VCALL(self->unk5C, 08);
     self->unk60 = ov006_NewWindow_cb0b8();
     F(self->unk60, 0x1d8, u16) = 0x12c;
     F(self->unk60, 0x1dc, void *) = MsgRes_GetString(res, 0x18);
     F(self->unk60, 0x1e0, u16) = 1;
-    self->unk60->unk84 = func_ov006_021d1f00;
+    self->unk60->onDecide = func_ov006_021d1f00;
     self->unk60->owner = &self->unk4C;
     VCALL(self->unk60, 08);
-    self->unk60->unk68 = -0x1666;
+    self->unk60->posZ = -0x1666;
     self->unk60->flags |= 2;
     self->unk64 = ov006_NewWindow_cad50();
     func_ov000_0215c1bc(self->unk64, 0x74, MsgRes_GetString(res, 0x139));

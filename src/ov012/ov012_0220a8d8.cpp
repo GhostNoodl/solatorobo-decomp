@@ -382,9 +382,9 @@ void Ov012Lift_Init(Ov012Lift *self) {
             const char *b = data_ov012_0220ab08;
             Ov012Names *n = &self->unk_174;
             if (b) {
-                STD_CopyString(n->unk_10, data_ov012_0220ab10);
-                STD_CopyString(n->unk_30, b);
-                n->unk_03_1 = 1;
+                STD_CopyString(n->mdlDir, data_ov012_0220ab10);
+                STD_CopyString(n->mdlName, b);
+                n->ownMdl = 1;
             }
             n->unk_00 = 0;
         }

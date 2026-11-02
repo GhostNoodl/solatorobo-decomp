@@ -47,13 +47,13 @@ s32 func_ov015_02200ec8(Ov015Obj34 *self, Ov015Stat *st, s32 base) {
 
 void func_ov015_02200f74(Ov015Game *self) {
     self->unk_08 = 2;
-    self->unk_0c = 0;
+    self->step = 0;
     self->unk_10 = 0;
     self->unk_14 = 1;
-    self->unk_18 = 0;
-    self->unk_1c = 0;
+    self->ship = 0;
+    self->fishList = 0;
     self->unk_20 = 0;
-    self->unk_24 = 0;
+    self->cam = 0;
     self->unk_28 = 0;
     self->unk_2c = 0;
     self->unk_90 = 0;
@@ -84,30 +84,30 @@ void func_ov015_0220101c(Ov015Game *self) {
     void *saved;
     HEAP_PUSH(saved);
     {
-    Ov015Ship *o = self->unk_18;
+    Ov015Ship *o = self->ship;
     if (o != NULL) {
         if (o != NULL) {
             func_ov015_02207738(o);
             Heap_Free(o);
         }
-        self->unk_18 = NULL;
+        self->ship = NULL;
     }
     }
     HEAP_POP(saved);
     HEAP_PUSH(saved);
     DELETE_V(self->unk_20);
     HEAP_POP(saved);
-    if (self->unk_1c != NULL) {
+    if (self->fishList != NULL) {
         u8 *n;
-        for (n = FLD(u8 *, self->unk_1c, 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
+        for (n = FLD(u8 *, self->fishList, 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
             if (FLD(void *, n, 0x4) != NULL) VCALL(FLD(void *, n, 0x4))->v04();
         }
         HEAP_PUSH(saved);
-        DELETE_V(self->unk_1c);
+        DELETE_V(self->fishList);
         HEAP_POP(saved);
     }
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_24);
+    DELETE_V(self->cam);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
     DELETE_V(self->unk_28);

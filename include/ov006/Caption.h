@@ -5,24 +5,24 @@
 #include "ov006/Anim.h"
 
 typedef struct ov006_CaptionEntry {
-    u16 unk0;
-    u16 unk2;
-    u16 unk4;
+    u16 part;
+    u16 width;
+    u16 height;
 } ov006_CaptionEntry;
 
 /* 0x2c-byte object (vtable data_ov006_021ec22c): a model plus a text anim. */
 typedef struct ov006_Caption {
     void *vtbl;
-    u8 unk4;
-    int unk8;
-    int unkC;
-    int unk10;
-    int unk14;
-    int unk18;
-    int unk1C;
-    int unk20;
-    Model *unk24;
-    ov006_Anim *unk28;
+    u8 visible;
+    int x;
+    int y;
+    int textX;
+    int textY;
+    int ofsX;
+    int ofsY;
+    int kind;
+    Model *model;
+    ov006_Anim *label;
 } ov006_Caption;
 
 #ifdef __cplusplus
@@ -53,16 +53,16 @@ static inline ov006_Caption *ov006_Caption_New(void) {
     ov006_Caption *c = (ov006_Caption *)Heap_Alloc(sizeof(ov006_Caption));
     if (c != NULL) {
         c->vtbl = data_ov006_021ec22c;
-        c->unk4 = 0;
-        c->unk8 = 0;
-        c->unkC = 0;
-        c->unk10 = 0;
-        c->unk14 = 0;
-        c->unk18 = 0;
-        c->unk1C = 0;
-        c->unk20 = 0;
-        c->unk24 = NULL;
-        c->unk28 = NULL;
+        c->visible = 0;
+        c->x = 0;
+        c->y = 0;
+        c->textX = 0;
+        c->textY = 0;
+        c->ofsX = 0;
+        c->ofsY = 0;
+        c->kind = 0;
+        c->model = NULL;
+        c->label = NULL;
     }
     return c;
 }
@@ -71,7 +71,7 @@ static inline void ov006_Caption_Init(ov006_Caption *self) {
     Model *model;
     const char *text;
 
-    if (self->unk20 != 2) {
+    if (self->kind != 2) {
         model = (Model *)Heap_Alloc(sizeof(Model));
         if (model != NULL) {
             const char *name = data_ov006_021ec1a9;
@@ -81,14 +81,14 @@ static inline void ov006_Caption_Init(ov006_Caption *self) {
                 STD_CopyString(model->name, data_ov006_021ec864);
             }
         }
-        self->unk24 = model;
-        func_020417e0(self->unk24, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
-        self->unk24->flags |= 2;
-        self->unk24->flags &= ~0x80000;
-        self->unk24->flags |= 0x400000;
-        func_02041d9c(self->unk24, 2, data_ov006_021eb824[self->unk20].unk0);
+        self->model = model;
+        func_020417e0(self->model, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
+        self->model->flags |= 2;
+        self->model->flags &= ~0x80000;
+        self->model->flags |= 0x400000;
+        func_02041d9c(self->model, 2, data_ov006_021eb824[self->kind].part);
     }
-    self->unk28 = ov006_Anim_New();
+    self->label = ov006_Anim_New();
     text = data_ov006_021ec1b5;
     ov006_AnimHolder_Play((ov006_AnimHolder *)self, (int)text, 4);
 }

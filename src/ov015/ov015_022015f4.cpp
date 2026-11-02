@@ -36,17 +36,17 @@ BOOL func_ov015_02201618(Ov015Game *self) {
         SET_VT(o, data_ov015_0221291c);
         func_0204b370(&o->cam0);
         func_0204b370(&o->cam1);
-        o->unk_17c = 1;
-        o->unk_180.x = 0;
-        o->unk_180.y = 0;
-        o->unk_180.z = 0;
+        o->mode = 1;
+        o->target.x = 0;
+        o->target.y = 0;
+        o->target.z = 0;
         o->unk_18c.x = 0;
         o->unk_18c.y = 0;
         o->unk_18c.z = 0;
         o->unk_198 = 0;
-        o->unk_19c = 0;
+        o->timer = 0;
     }
-    self->unk_24 = o;
+    self->cam = o;
     func_ov015_021fce94(o);
     if ((u32)(FLD(s32, data_ov015_02213320.unk_00, 0x4) - 1) <= 1) {
         u8 *p = (u8 *)Heap_Alloc(0x14);
@@ -63,9 +63,9 @@ BOOL func_ov015_02201618(Ov015Game *self) {
         l->tail = NULL;
         l->count = 0;
     }
-    self->unk_1c = l;
+    self->fishList = l;
     n = func_ov015_02211160((u8 *)data_ov015_02213368, ids, 3);
-    func_ov015_02211890(&self->unk_94, FLD(u16, data_ov015_02213368, 0x8), self->unk_18->unk_d48);
+    func_ov015_02211890(&self->info, FLD(u16, data_ov015_02213368, 0x8), self->ship->modelIdx);
     for (i = 0; i < n; i++) {
         u16 id = ids[i];
         u8 *def = func_02070744(id);
@@ -73,12 +73,12 @@ BOOL func_ov015_02201618(Ov015Game *self) {
         Ov015List *L;
         Ov015Node *nd;
         if (e != NULL) e = (Ov015Fish *)Ov015Fish_Ctor(e);
-        e->unk_04 = id;
-        func_ov015_02209024(&e->unk_c0, e->unk_04, def);
-        e->unk_c0.unk_20 = self->unk_94.unk_20;
-        e->unk_c0.unk_24 = self->unk_94.unk_24;
+        e->id = id;
+        func_ov015_02209024(&e->info, e->id, def);
+        e->info.unk_20 = self->info.unk_20;
+        e->info.unk_24 = self->info.unk_24;
         func_ov015_02209364(e);
-        L = self->unk_1c;
+        L = self->fishList;
         nd = (Ov015Node *)Heap_Alloc(0x10);
         if (nd != NULL) {
             SET_VT(nd, data_ov015_0221295c);
@@ -96,7 +96,7 @@ BOOL func_ov015_02201618(Ov015Game *self) {
         }
         L->count++;
     }
-    self->unk_0c = 10;
+    self->step = 10;
     {
         SndQueue *pad = data_02097e48.queue;
         if (pad->flag3) {
@@ -154,11 +154,11 @@ static inline void Ov015_CamFovy(Ov015Cam *c) {
 
 static inline void Ov015_CamUpdate(Ov015Game *self) {
     if (Ov015_SysB4()) {
-        Ov015CamPair *cp = self->unk_24;
+        Ov015CamPair *cp = self->cam;
         Ov015_CamFovy(&cp->cam0);
         VCALL(&cp->cam0)->v00();
     } else {
-        Ov015CamPair *cp = self->unk_24;
+        Ov015CamPair *cp = self->cam;
         Ov015_CamFovy(&cp->cam1);
         VCALL(&cp->cam1)->v00();
     }
@@ -202,9 +202,9 @@ typedef enum { OV015_SYS_MODE_2 = 2 } Ov015SysMode;
 BOOL func_ov015_0220182c(Ov015Game *self) {
     BOOL ret = TRUE;
     bool a = true;
-    switch (self->unk_0c) {
+    switch (self->step) {
     case 0:
-        self->unk_0c = 10;
+        self->step = 10;
     case 10: {
         GfxSys *sys = data_02097d48;
         if (sys->state == 1) {
@@ -213,7 +213,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
             func_0203cb78(0x1000, 0, v - 3);
         }
         func_ov015_021fa73c((Ov015Fade *)func_ov015_021fa6d0(), 0x1000, 0);
-        self->unk_0c = 0x14;
+        self->step = 0x14;
         break;
     }
     case 0x14: {
@@ -225,7 +225,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         bool c;
         bool b;
         char buf[0x20];
-        if (!(func_ov015_022078bc(self->unk_18) & 1)) {
+        if (!(func_ov015_022078bc(self->ship) & 1)) {
             a = false;
         } else {
             a = true;
@@ -243,7 +243,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         }
         b = a & b;
         c = true;
-        for (n = self->unk_1c->head; n != NULL; n = n->next) {
+        for (n = self->fishList->head; n != NULL; n = n->next) {
             c &= func_ov015_0220947c((Ov015Fish *)n->key);
         }
         c = b & c;
@@ -269,28 +269,28 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
             d &= func_ov015_02210bd8(self->unk_90);
         }
         if (d) {
-            self->unk_0c = 0x1e;
+            self->step = 0x1e;
         }
         break;
     }
     case 0x1e: {
         u8 *p;
         Ov015Node *n;
-        func_ov015_02207adc(self->unk_18);
+        func_ov015_02207adc(self->ship);
         p = self->unk_20;
         func_ov000_0218ffdc(p + 0x13c, p + 0x4, 0, 1);
         func_ov000_02190cb0(p + 0x13c, data_ov015_02212899, 0x1000, 0);
         func_ov000_021915a0(p + 0x13c);
-        ((Ov015AnimFlags *)(p + 0x1fe))->b0 = 1;
+        ((Ov015AnimFlags *)(p + 0x1fe))->visible = 1;
         func_ov000_0218ffdc(p + 0x35c, p + 0x224, 0, 1);
         func_ov000_02190cb0(p + 0x35c, data_ov015_0221289f, 0x1000, 0);
         func_ov000_021915a0(p + 0x35c);
-        ((Ov015AnimFlags *)(p + 0x41e))->b0 = 1;
+        ((Ov015AnimFlags *)(p + 0x41e))->visible = 1;
         func_ov000_0218ffdc(p + 0x57c, p + 0x444, 0, 1);
         func_ov000_02190cb0(p + 0x57c, data_ov015_022128a5, 0x1000, 0);
         func_ov000_021915a0(p + 0x57c);
-        ((Ov015AnimFlags *)(p + 0x63e))->b0 = 1;
-        for (n = self->unk_1c->head; n != NULL; n = n->next) {
+        ((Ov015AnimFlags *)(p + 0x63e))->visible = 1;
+        for (n = self->fishList->head; n != NULL; n = n->next) {
             func_ov015_02209500((Ov015Fish *)n->key);
         }
         func_ov015_021fb474(self->unk_28);
@@ -299,7 +299,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         }
         data_0214a420->drawFilter = 1;
         func_ov015_021fa71c((Ov015Fade *)func_ov015_021fa6d0(), 0x1e000, 0);
-        self->unk_0c = 0x28;
+        self->step = 0x28;
         func_02049a48(data_02097e4c, 0x4f, -1, -1, -1);
         Ov015_BgmFadeTo(0x23);
         break;
@@ -314,18 +314,18 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         data_ov015_02213328 = (data_ov015_02213328 + 1) & 0xff;
         if (m != NULL) {
             if (func_ov015_02210c30(m, &data_ov015_0221332c, 0x28)) {
-                self->unk_30.unk_0c = 1;
+                self->phase1.unk_0c = 1;
             } else {
-                self->unk_30.unk_0c = 0;
+                self->phase1.unk_0c = 0;
             }
         }
         }
-        if (!func_ov015_021ff4a0(&self->unk_30, self->unk_18, self->unk_24, self->unk_1c, &self->unk_94)) {
-            self->unk_0c = 0x32;
+        if (!func_ov015_021ff4a0(&self->phase1, self->ship, self->cam, self->fishList, &self->info)) {
+            self->step = 0x32;
             func_02049de8(data_02097e4c, 0x4f);
         }
         {
-        Ov015CamPair *cp = self->unk_24;
+        Ov015CamPair *cp = self->cam;
         if (Ov015_SysB4()) {
             Ov015_CamFovy(&cp->cam0);
             VCALL(&cp->cam0)->v00();
@@ -337,17 +337,17 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         break;
     case 0x32:
         Ov015_ModelsReset(self->unk_20);
-        if (self->unk_90 == NULL || self->unk_5c.unk_08 < 2 ||
+        if (self->unk_90 == NULL || self->phase2.step < 2 ||
             !func_ov015_02210c30(self->unk_90, &data_ov015_0221332c, 0x32)) {
             func_ov015_021fb5d4(self->unk_28);
-            if (!func_ov015_02200204((Ov015Obj34 *)&self->unk_5c, self->unk_18, (Ov015Fish *)self->unk_1c->head->key,
-                                     self->unk_24, &self->unk_94)) {
-                self->unk_0c = 0x3c;
+            if (!func_ov015_02200204((Ov015Obj34 *)&self->phase2, self->ship, (Ov015Fish *)self->fishList->head->key,
+                                     self->cam, &self->info)) {
+                self->step = 0x3c;
                 func_ov015_021fa73c((Ov015Fade *)func_ov015_021fa6d0(), 0x1e000, 0x7fff);
                 FLD(s32, data_ov015_02213320.unk_00, 8) = Dup::data_ov015_0221332c.unk_30;
                 if (Dup::data_ov015_0221332c.unk_30 == 2) {
                     func_ov015_021fa71c((Ov015Fade *)func_ov015_021fa6d0(), 0x1000, 0x7fff);
-                    self->unk_0c = 0x50;
+                    self->step = 0x50;
                 }
             }
         }
@@ -357,10 +357,10 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         Ov015Fade *f;
         Ov015_CamUpdate(self);
         f = (Ov015Fade *)func_ov015_021fa6d0();
-        if (f->unk_14 < f->unk_0c) {
+        if (f->time < f->duration) {
             break;
         }
-        self->unk_0c = 0x46;
+        self->step = 0x46;
         {
             SndQueue *pad = data_02097e48.queue;
             if (pad->flag3) {
@@ -383,11 +383,11 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
     }
     case 0x46:
         if (!func_ov015_0220f568(self->unk_2c)) {
-            self->unk_0c = 0x50;
+            self->step = 0x50;
         }
         break;
     case 0x50:
-        self->unk_0c = -1;
+        self->step = -1;
         ret = FALSE;
         break;
     default:

@@ -312,7 +312,7 @@ void func_ov006_021e86dc(ov006_Car021e86dc *self) {
         BOOL c;
         self->speed -= 0x28;
         c = FALSE;
-        if (self->unk19F > data_ov006_021ec884->unk8->unkB) {
+        if (self->unk19F > data_ov006_021ec884->info->unkB) {
             c = TRUE;
         }
         if (c) {

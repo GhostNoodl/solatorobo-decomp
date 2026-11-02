@@ -37,8 +37,8 @@ void func_ov006_021e4ed4(ov006_Unk021ec888 *self);
 void func_ov006_021e58e4(ov006_Unk021ec888 *self);
 
 static inline void ov006_Menu_SetState(ov006_Unk021ec888 *self, int state) {
-    self->unk8 = state;
-    self->unkC = 0;
+    self->state = state;
+    self->stateTime = 0;
 }
 
 static inline u32 ov006_GetOwnerName(void *dst, u32 size) {
@@ -54,7 +54,7 @@ static inline BOOL ov006_Stateful_IsDone(ov006_Stateful *s) {
 
 void func_ov006_021e4348(ov006_Unk021ec888 *self) {
     ov006_ObjectHolder *h;
-    switch (self->unk8) {
+    switch (self->state) {
     case 0: {
         ov006_ModelHolder *mh = (ov006_ModelHolder *)Heap_Alloc(sizeof(ov006_ModelHolder));
         ov006_ObjectHolder *oh;
@@ -102,10 +102,10 @@ void func_ov006_021e4348(ov006_Unk021ec888 *self) {
         func_ov006_021e58e4(self);
         break;
     }
-    if (data_ov006_021ec888->unk8 == 0) {
+    if (data_ov006_021ec888->state == 0) {
         return;
     }
-    if ((u16)((u16)self->unk8 + 0xfffc) > 2) {
+    if ((u16)((u16)self->state + 0xfffc) > 2) {
         self->unk1D4->unkC = 0xff;
     } else {
         self->unk1D4->unkC = WM_GetLinkLevel();

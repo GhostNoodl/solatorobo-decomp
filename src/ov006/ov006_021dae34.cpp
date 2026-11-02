@@ -32,9 +32,9 @@ ov006_Slot *func_ov006_021dafb4(ov006_SlotManager *self, int idx, int type, cons
     ov006_Slot *slot = &self->slots[idx];
     ov006_Slot_Clear(slot);
     slot->active = 1;
-    slot->unk8 = type;
+    slot->type = type;
     MI_CpuCopy8(name, slot->name, sizeof(slot->name));
-    slot->unk12 = unk12;
+    slot->aid = unk12;
     return slot;
 }
 
@@ -49,7 +49,7 @@ u8 func_ov006_021db078(ov006_SlotManager *self) {
     u8 count = 0;
     int i;
     for (i = 0; i < 3; i++) {
-        if (self->unk14A[i] != 0) {
+        if (self->items[i] != 0) {
             count++;
         }
     }
@@ -60,7 +60,7 @@ BOOL func_ov006_021db0a8(ov006_SlotManager *self, u8 value) {
     BOOL found = FALSE;
     int i;
     for (i = 0; i < 3; i++) {
-        if (value == self->unk14A[i]) {
+        if (value == self->items[i]) {
             found = TRUE;
             break;
         }

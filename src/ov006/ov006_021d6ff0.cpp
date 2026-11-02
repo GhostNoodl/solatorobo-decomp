@@ -189,7 +189,7 @@ BOOL func_ov006_021cd2a8(ov006_Manager *m);
 BOOL func_ov006_021e616c(int a, u16 b);
 
 static inline ov006_Racer021d6ff0 *ov006_GetRacer(u8 i) {
-    u16 id = func_ov006_021db060(data_ov006_021ec884, i)->unkE;
+    u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
     return data_ov000_021ccd68 != NULL ? (ov006_Racer021d6ff0 *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
 }
 
@@ -203,7 +203,7 @@ static inline u8 ov006_CountRemaining(void) {
     }
     count = 0;
     for (i = 0; i < num; i++) {
-        u16 id = func_ov006_021db060(data_ov006_021ec884, i)->unkE;
+        u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
         void *prop = data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
         if (prop != NULL && func_ov006_021ea3e8(prop)) {
             count++;
@@ -224,7 +224,7 @@ static inline u8 ov006_CountRemainingB(void) {
     }
     count = 0;
     for (i = 0; i < num; i++) {
-        u16 id = func_ov006_021db060(data_ov006_021ec884, i)->unkE;
+        u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
         void *prop = data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
         if (prop != NULL && func_ov006_021ea3e8(prop)) {
             count++;
@@ -360,7 +360,7 @@ static inline BOOL ov006_Gauge_Done(ov006_Gauge021d6ff0 *g) {
 
 static inline u8 ov006_GetBonus(ov006_SlotManager *m, u8 j) {
     if (j < 3) {
-        return m->unk14A[j];
+        return m->items[j];
     }
     return 0;
 }
@@ -410,10 +410,10 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
     u8 cnt;
     u8 j;
     {
-        u16 id = func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkE;
+        u16 id = func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->actorId;
         me = data_ov000_021ccd68 != NULL ? (ov006_Racer021d6ff0 *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
     }
-    info = (ov006_Info021d6ff0 *)data_ov006_021ec884->unk8;
+    info = (ov006_Info021d6ff0 *)data_ov006_021ec884->info;
     switch (self->state) {
     case 0:
         self->gauge->flag13 = ov006_Racer_B8(me);
@@ -533,8 +533,8 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 func_ov006_021ea410(me);
                 finished = TRUE;
             } else {
-                data_ov006_021ec884->unk13E = n;
-                data_ov006_021ec884->unk140 = ov006_Gauge_Time(self->gauge);
+                data_ov006_021ec884->lap = n;
+                data_ov006_021ec884->time = ov006_Gauge_Time(self->gauge);
                 data_ov006_021ec884->unk13D = 2;
                 ov006_Gauge_Finish(self->gauge, FALSE);
                 SndMgr_StopSeqNo(data_02097e4c, info->unk8, 0);
@@ -551,8 +551,8 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             v.y = 0;
             v.z = -0x1000;
             func_ov006_021e37d0(0xb, &v);
-            data_ov006_021ec884->unk13E = lap;
-            data_ov006_021ec884->unk140 = ov006_Gauge_Time(self->gauge);
+            data_ov006_021ec884->lap = lap;
+            data_ov006_021ec884->time = ov006_Gauge_Time(self->gauge);
             data_ov006_021ec884->unk13D = 1;
             ov006_Gauge_Finish(self->gauge, TRUE);
             SndMgr_StopSeqNo(data_02097e4c, info->unk8, 0);
@@ -607,10 +607,10 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             }
             self->result = res;
             func_ov006_021dfce8(res);
-            self->result->unk11 = data_ov006_021ec884->unk13E;
+            self->result->unk11 = data_ov006_021ec884->lap;
             kind = self->gauge->obj != NULL ? self->gauge->obj->kind : 0;
             n = info->laps;
-            time = data_ov006_021ec884->unk140;
+            time = data_ov006_021ec884->time;
             mode = data_ov006_021ec884->unk13D;
             if (n > 10U) {
                 n = 10;
@@ -664,7 +664,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 }
             }
             data_ov006_021ec884->unk148 = kind;
-            data_ov006_021ec884->unk140 = time;
+            data_ov006_021ec884->time = time;
             data_ov006_021ec884->unk144 = best;
             cnt = func_ov006_021d8e30(&total);
             for (i = 0; i < info->laps; i++) {
@@ -715,7 +715,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             if (self->unk6E != 0) {
                 break;
             }
-            if (func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unk12 == 0) {
+            if (func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->aid == 0) {
                 if (func_ov006_021e616c(9, data_02097e40->unk32 & ~1) && (data_02097dc8->trig & 3)) {
                     self->unk6D = 9;
                     self->sub++;

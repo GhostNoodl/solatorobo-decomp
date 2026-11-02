@@ -18,9 +18,9 @@ void Ov013ActEx_02204454_Init(Ov013ActEx_02204454 *self) {
     {
         const char *b = data_ov013_0220ba58;
         if (b) {
-            STD_CopyString(n->unk_10, data_ov013_0220ba60);
-            STD_CopyString(n->unk_30, b);
-            n->unk_03_1 = 1;
+            STD_CopyString(n->mdlDir, data_ov013_0220ba60);
+            STD_CopyString(n->mdlName, b);
+            n->ownMdl = 1;
         }
     }
     self->unk_dc->unk_00 = 0;

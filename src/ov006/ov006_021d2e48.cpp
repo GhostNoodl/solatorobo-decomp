@@ -47,7 +47,7 @@ static inline void ov006_TaskD1F_Exit(ov006_TaskD1F *self, int a) {
 }
 
 void func_ov006_021d2e48(ov006_TaskD1F *self) {
-    if (self->base.state != 3 && data_ov006_021ec888->unk8 == 9) {
+    if (self->base.state != 3 && data_ov006_021ec888->state == 9) {
         self->base.state = 3;
         self->base.subState = 0;
         return;
@@ -169,7 +169,7 @@ void func_ov006_021d3224(ov006_TaskD1F *self) {
         func_ov006_021e5e00(data_ov006_021ec888);
         self->base.subState++;
     case 1:
-        if (data_ov006_021ec888->unk8 == 9) {
+        if (data_ov006_021ec888->state == 9) {
             return;
         }
         func_0203cc58(0x1e000, 0, 0);

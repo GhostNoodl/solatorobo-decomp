@@ -33,16 +33,16 @@ BOOL func_ov008_021cf790(void *self, Ov008Sel *sel) {
             m->flags.b4 = 1;
             m->unk_11c = 0x2000;
         }
-        if (m->unk_100 != NULL) {
-            m->unk_100->unk_0c |= 2;
+        if (m->menu != NULL) {
+            m->menu->flags |= 2;
         }
-        if (m->unk_10c != NULL) {
-            m->unk_10c->unk_0c |= 2;
+        if (m->talk != NULL) {
+            m->talk->flags |= 2;
         }
         func_ov000_021865f8(data_ov000_021ccd54);
         return FALSE;
     }
-    data_ov008_021d0500->unk_108 = sel;
+    data_ov008_021d0500->sel = sel;
     data_ov008_021d0500->state = 0xb;
     return TRUE;
 }
@@ -55,7 +55,7 @@ BOOL func_ov008_021cf844(void *self, Ov008Sel *sel) {
     }
     m = data_ov008_021d0500;
     id = sel->id;
-    m->unk_f4->unk_50 = id;
+    m->caption->next = id;
     m->unk_112 = id;
     return TRUE;
 }
@@ -70,7 +70,7 @@ BOOL func_ov008_021cf878(void *self, Ov008Sel *sel) {
     if (id == 0) {
         BOOL b;
         data_02fe1534.unk_44 = 2;
-        data_02fe1534.unk_68 = data_ov008_021d0500->unk_108->id;
+        data_02fe1534.unk_68 = data_ov008_021d0500->sel->id;
         data_ov008_021d0500->unk_fc->v38(1);
         data_02fe1534.unk_44 = 0;
         data_02fe1534.unk_68 = 0;
@@ -99,11 +99,11 @@ BOOL func_ov008_021cf878(void *self, Ov008Sel *sel) {
 void func_ov008_021cf9b8(Ov008Mgr *m, u32 id) {
     Ov008Def *e = func_0206e7d0(id);
     Ov008Item *p;
-    m->unk_100->v74(e->unk_00, id, 0xffff, 0xffff);
+    m->menu->v74(e->unk_00, id, 0xffff, 0xffff);
     if (!func_020594bc(data_02fe152c, 0, 0x201, id)) {
         return;
     }
-    p = func_ov000_02154b58(m->unk_100, id);
+    p = func_ov000_02154b58(m->menu, id);
     if (p != NULL) {
         p->unk_0a = 10;
     }

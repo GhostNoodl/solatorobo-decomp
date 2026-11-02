@@ -51,19 +51,19 @@ void func_ov015_02208070(Ov015Ship *self) {
     Ov015Vec out;
     Ov015Vec diff;
     u16 rot[3];
-    if (self->unk_d38 != 0x32) {
+    if (self->loadStep != 0x32) {
         return;
     }
     data_ov015_02213364 = self;
     if (self->unk_d41 != 0) {
-        func_ov000_02191c24(&self->unk_cb8, &self->unk_d14);
+        func_ov000_02191c24(&self->shadow, &self->pos);
     }
-    *(Ov015Vec *)&self->unk_138.unk_78 = self->unk_d14;
-    func_ov000_02190758(&self->unk_138, &self->unk_d20, 0);
-    func_ov000_021903b4(&self->unk_138);
+    *(Ov015Vec *)&self->model.trans = self->pos;
+    func_ov000_02190758(&self->model, &self->rotX, 0);
+    func_ov000_021903b4(&self->model);
     {
         s32 h;
-        p = self->unk_cd4.m[3];
+        p = self->nodeMtx.m[3];
         d.x = self->unk_d4c.x - p.x;
         d.y = self->unk_d4c.y - p.y;
         d.z = self->unk_d4c.z - p.z;
@@ -100,9 +100,9 @@ void func_ov015_02208070(Ov015Ship *self) {
             break;
         }
         case 2:
-            MI_Copy36B(self->unk_cd4.m, self->unk_bd0.unk_84);
-            *(Ov015Vec *)&self->unk_bd0.unk_78 = p;
-            func_ov000_021903b4(&self->unk_bd0);
+            MI_Copy36B(self->nodeMtx.m, self->model3.rot);
+            *(Ov015Vec *)&self->model3.trans = p;
+            func_ov000_021903b4(&self->model3);
             break;
         }
     }
@@ -111,25 +111,25 @@ void func_ov015_02208070(Ov015Ship *self) {
     if (self->unk_d42 == 0) {
         return;
     }
-    if (self->unk_d28 != NULL) {
-        s32 t = FX_Div(self->unk_d2c << 12, 0x5a000);
-        diff.x = self->unk_cd4.m[3].x - self->unk_d08.x;
-        diff.y = self->unk_cd4.m[3].y - self->unk_d08.y;
-        diff.z = self->unk_cd4.m[3].z - self->unk_d08.z;
+    if (self->fx != NULL) {
+        s32 t = FX_Div(self->fxTimer << 12, 0x5a000);
+        diff.x = self->nodeMtx.m[3].x - self->unk_d08.x;
+        diff.y = self->nodeMtx.m[3].y - self->unk_d08.y;
+        diff.z = self->nodeMtx.m[3].z - self->unk_d08.z;
         VEC_MultAdd(t, (VecFx32 *)&diff, (VecFx32 *)(&self->unk_d08), (VecFx32 *)&out);
-        self->unk_d28->v18(&out);
+        self->fx->v18(&out);
     }
-    if (self->unk_d30 != NULL) {
-        s32 t = FX_Div(self->unk_d34 << 12, 0xa000);
+    if (self->fx2 != NULL) {
+        s32 t = FX_Div(self->fxTimer2 << 12, 0xa000);
         s32 sc = Ov015_FxMul64(t, 0x6000) + 0xc000;
         s32 v = Ov015_FxMul64(self->unk_d44, sc);
-        self->unk_d30->v14(v, v, v);
-        self->unk_d30->v18(&self->unk_d4c);
+        self->fx2->v14(v, v, v);
+        self->fx2->v18(&self->unk_d4c);
     }
 }
 
 void func_ov015_02208424(u8 *self) {
-    Ov015ShipMtx *t = &data_ov015_02213364->unk_cd4;
+    Ov015ShipMtx *t = &data_ov015_02213364->nodeMtx;
     s32 id = (FLD(u32, self, 0x8) & 0x10) ? FLD(u8, self, 0xae) : -1;
     if (id != t->id) {
         return;
@@ -191,7 +191,7 @@ void func_ov015_02208584(Ov015UiText *self) {
         func_02041d9c((Model *)((void *)self->unk_10), 0, 7);
     }
     func_02041d9c((Model *)((void *)self->unk_10), 0, 0);
-    self->unk_0c &= ~2;
+    self->flags &= ~2;
 }
 
 void func_ov015_0220866c(u8 *self, void *msg) {
@@ -277,8 +277,8 @@ void func_ov015_02208790(Ov015UiText *self, s32 b, u8 *p) {
     if (self->unk_10 == NULL || self->unk_84 == NULL) {
         return;
     }
-    x = FX_Mul(0x1000 - b, self->unk_58 << 12);
-    if (self->unk_0c & 0x10000) {
+    x = FX_Mul(0x1000 - b, self->slideX << 12);
+    if (self->flags & 0x10000) {
         s32 t = FX_Div(self->unk_b0 << 12, 0xf000);
         t = (s32)(((s64)t * 0xffff000 + 0x800) >> 12);
         x += FX_Mul(FX_SinCosTable_[(t >> 16) * 2 + 1], 0x80000) - 0x80000;
@@ -288,7 +288,7 @@ void func_ov015_02208790(Ov015UiText *self, s32 b, u8 *p) {
     { s32 py = FLD(s32, p, 0x4) >> 12; u8 *m = ((u8 *)self->unk_10);
     FLD(s32, m, 0xfc) = (x - 0x20000) & -0x1000;
     FLD(s32, m, 0x100) = py << 12; }
-    FLD(s32, self->unk_10, 0x150) = self->unk_68;
+    FLD(s32, self->unk_10, 0x150) = self->posZ;
     func_02041c20((Model *)((u8 *)self->unk_10), 0, (void *)(self->unk_ac));
     Ov015_MdlPlay0(((u8 *)self->unk_10));
     o = ((Ov015V *)self->unk_84);
@@ -298,7 +298,7 @@ void func_ov015_02208790(Ov015UiText *self, s32 b, u8 *p) {
         if (o == NULL) return;
         o->v20(ax, ay);
     }
-    FLD(s32, self->unk_84, 0x70) = self->unk_68 + 0x20;
+    FLD(s32, self->unk_84, 0x70) = self->posZ + 0x20;
     ((Ov015V *)self->unk_84)->v90();
 }
 
@@ -428,7 +428,7 @@ void func_ov015_02208d8c(u8 *self, void *arg, s32 c) {
 }
 
 s32 func_ov015_02208db0(Ov015UiText *self) {
-    s32 a = VCALL(self)->v40() * self->unk_20;
+    s32 a = VCALL(self)->v40() * self->rows;
     s32 b = VCALL(self)->v34();
     s32 c = VCALL(self)->v38();
     s32 d = a + b;
@@ -437,7 +437,7 @@ s32 func_ov015_02208db0(Ov015UiText *self) {
 
 s32 func_ov015_02208dfc(Ov015UiText *self) {
     s32 a;
-    data_02097ce0->unk_004 = self->unk_1c;
+    data_02097ce0->unk_004 = self->font;
     a = (*(s8 **)func_0203a4c0(data_02097ce0))[1];
     return a + VCALL(self)->v3c();
 }
@@ -509,7 +509,7 @@ void *func_ov015_02209010(void *self) {
 
 void func_ov015_02209024(Ov015FishInfo *self, u16 a, const void *src) {
     s32 v;
-    self->unk_04 = a;
+    self->id = a;
     MI_CpuCopy8(src, &self->unk_06, 0x14);
     v = self->unk_10 << 12;
     s32 lim;
@@ -539,68 +539,68 @@ void func_ov015_022090fc(u8 *self) {
 
 void *Ov015Fish_Ctor(Ov015Fish *self) {
     SET_VT(self, data_ov015_022128fc);
-    SET_VT(&self->unk_c0, data_ov015_02212e84);
-    self->unk_c0.unk_04 = 0xffff;
-    MIi_CpuClearFast(0, &self->unk_c0.unk_06, 0x14);
-    self->unk_c0.unk_1c = 0;
-    self->unk_c0.unk_20 = 0;
-    self->unk_c0.unk_24 = 0;
-    self->unk_c0.unk_28 = 0;
-    func_ov000_0218e9c4(&self->unk_10c);
-    func_ov000_0218fe1c(&self->unk_244);
-    func_ov000_0218e9c4(&self->unk_32c);
-    func_ov000_0218fe1c(&self->unk_464);
-    func_ov000_0219196c(&self->unk_54c);
-    SET_VT(&self->unk_54c, data_ov015_022129d0);
-    func_0203f260(&self->unk_568);
-    self->unk_04 = 0xffff;
+    SET_VT(&self->info, data_ov015_02212e84);
+    self->info.id = 0xffff;
+    MIi_CpuClearFast(0, &self->info.unk_06, 0x14);
+    self->info.unk_1c = 0;
+    self->info.unk_20 = 0;
+    self->info.unk_24 = 0;
+    self->info.unk_28 = 0;
+    func_ov000_0218e9c4(&self->res);
+    func_ov000_0218fe1c(&self->model);
+    func_ov000_0218e9c4(&self->res2);
+    func_ov000_0218fe1c(&self->model2);
+    func_ov000_0219196c(&self->shadow);
+    SET_VT(&self->shadow, data_ov015_022129d0);
+    func_0203f260(&self->hit);
+    self->id = 0xffff;
     self->unk_08 = 0;
-    MIi_CpuClearFast(0, &self->unk_0c[0].x, 0x34);
-    self->unk_40.x = 0;
-    self->unk_40.y = 0;
-    self->unk_40.z = 0;
-    MTX_Identity33_((MtxFx33 *)(&self->unk_4c[0].x));
-    self->unk_80 = 0;
+    MIi_CpuClearFast(0, &self->rot2[0].x, 0x34);
+    self->pos.x = 0;
+    self->pos.y = 0;
+    self->pos.z = 0;
+    MTX_Identity33_((MtxFx33 *)(&self->rot[0].x));
+    self->radius = 0;
     self->unk_84 = 0;
     self->unk_88 = 0;
-    self->unk_90 = 0;
+    self->shadowAlpha = 0;
     self->unk_94 = 0;
     self->unk_98 = 0;
-    self->unk_9c.y = 0;
-    self->unk_9c.z = 0;
+    self->dir.y = 0;
+    self->dir.z = 0;
     self->unk_a8 = 0;
     self->unk_bc = 0;
-    self->unk_f0 = 0;
-    self->unk_f8 = 0;
-    self->unk_100 = 0;
-    self->unk_108 = 0;
-    self->unk_70 = 0x1000;
-    self->unk_74 = 0x1000;
-    self->unk_78 = 0x1000;
-    self->unk_7c = 0x1000;
+    self->nextState = 0;
+    self->state = 0;
+    self->prevState = 0;
+    self->drawMode = 0;
+    self->scaleX = 0x1000;
+    self->scaleY = 0x1000;
+    self->scaleZ = 0x1000;
+    self->scaleMul = 0x1000;
     self->unk_8c = 0x1000;
-    self->unk_9c.x = 0x1000;
-    self->unk_ac = -0x32000;
-    self->unk_b0 = 0x32000;
-    self->unk_b4 = -0x37000;
-    self->unk_b8 = -0xaa000;
-    self->unk_ec = 1;
-    self->unk_f4 = 1;
-    self->unk_fc = 1;
-    self->unk_104 = 0x800;
+    self->dir.x = 0x1000;
+    self->minX = -0x32000;
+    self->maxX = 0x32000;
+    self->maxZ = -0x37000;
+    self->minZ = -0xaa000;
+    self->nextStateId = 1;
+    self->stateId = 1;
+    self->prevStateId = 1;
+    self->animSpeed = 0x800;
     return self;
 }
 
 void func_ov015_02209270(Ov015Fish *self) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_f0);
+    DELETE_V(self->nextState);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_100);
+    DELETE_V(self->prevState);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(self->unk_f8);
+    DELETE_V(self->state);
     HEAP_POP(saved);
 }
 

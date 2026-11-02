@@ -16,7 +16,7 @@ void func_ov015_02200a18(Ov015Obj34 *self, u8 *b) {
             Ov015V *e;
             func_02049a48(data_02097e4c, 0x59, -1, -1, -1);
             // m[3] as a byte offset from the matrix: a field path folds to one constant and changes the code.
-            e = (Ov015V *)func_02065f88(0x325, &FLD(Ov015Vec, &self->unk_24->unk_cd4, 0x24));
+            e = (Ov015V *)func_02065f88(0x325, &FLD(Ov015Vec, &self->ship->nodeMtx, 0x24));
             e->v14(0x800, 0x800, 0x800);
             FLD(s32, e, 0xd4) = 2;
         }
@@ -68,18 +68,18 @@ s32 func_ov015_02200bf4(Ov015Obj34 *self, u8 *b, s32 c) {
     s32 q, d, na, nb, ax, bx;
     Ov015Info38 *o;
     if (FLD(s32, b, 0x14) == 1) flag = FALSE;
-    base = self->unk_30->unk_30;
-    d = func_ov015_022090f0(&self->unk_28->unk_c0) - base;
+    base = self->info->unk_30;
+    d = func_ov015_022090f0(&self->fish->info) - base;
     if (d < 0x800) d = 0x800;
     q = d / 120;
-    o = self->unk_30;
+    o = self->info;
     ax = o->unk_28;
     if (ax < 0) ax = -ax;
     na = -ax;
     bx = o->unk_2c;
     if (bx < 0) bx = -bx;
     nb = -bx;
-    if (self->unk_28->unk_f4 == 3) {
+    if (self->fish->stateId == 3) {
         c = na;
     } else if (FLD(u8, b, 0x1c) != 0) {
         s32 t3 = FLD(s32, b, 0x14);
@@ -161,8 +161,8 @@ s32 func_ov015_02200d50(Ov015Obj34 *self, Ov015Stat *g, s32 v) {
         break;
     }
     }
-    if (v < self->unk_30->unk_1c) {
-        v = self->unk_30->unk_1c;
+    if (v < self->info->unk_1c) {
+        v = self->info->unk_1c;
     }
     return v;
 }

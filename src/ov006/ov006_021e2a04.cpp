@@ -38,7 +38,7 @@ void func_ov006_021e2c14(ov006_Unk021e2a04 *self) {
     const char *text;
 
     self->unk14 = ov006_Caption_New();
-    self->unk14->unk20 = 0;
+    self->unk14->kind = 0;
     ov006_Caption_Init(self->unk14);
     text = data_ov006_021ec1b5;
     ov006_AnimHolder_Play((ov006_AnimHolder *)self->unk14, (int)text, 4);

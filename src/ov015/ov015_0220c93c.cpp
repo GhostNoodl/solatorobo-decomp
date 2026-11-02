@@ -13,7 +13,7 @@ void HitSphere_Link(void *a);
 
 Ov015FishState40 *Ov015FishState40_Ctor(Ov015FishState40 *self) {
     SET_VT(self, data_ov015_02212ee8);
-    self->unk_04 = 0;
+    self->step = 0;
     self->unk_08 = 0;
     self->unk_0c = 0x1000;
     self->unk_10 = 0;
@@ -86,23 +86,23 @@ static inline void Ov015_SetXZ(s32 *v, s32 x, s32 z) { v[0] = x; v[2] = z; }
 BOOL Ov015FishState40_Enter(Ov015FishState40 *self, Ov015Fish *p) {
     s32 a;
     s32 x, z;
-    func_ov000_02190cb0(&p->unk_244, data_ov015_02212e0d, 0x19a, 0);
-    p->unk_104 = 0x59a;
-    func_ov000_021915a0(&p->unk_244);
-    p->unk_108 = 1;
-    self->unk_0c = FX_Mul(p->unk_c0.unk_0a << 4, 0x19a) + 0x23d;
+    func_ov000_02190cb0(&p->model, data_ov015_02212e0d, 0x19a, 0);
+    p->animSpeed = 0x59a;
+    func_ov000_021915a0(&p->model);
+    p->drawMode = 1;
+    self->unk_0c = FX_Mul(p->info.unk_0a << 4, 0x19a) + 0x23d;
     a = Rand_PlusMinus(0x1000);
     self->unk_1c.x = Rand_PlusMinus(0x1000);
     self->unk_1c.z = a;
     self->unk_1c.y = 0;
     VEC_Normalize((VecFx32 *)(&self->unk_1c), (VecFx32 *)(&self->unk_1c));
-    VEC_Normalize((VecFx32 *)(&self->unk_1c), (VecFx32 *)(&p->unk_9c));
-    p->unk_40.y = -0x32000;
-    Ov015_SetXZ((s32 *)&p->unk_40, p->unk_40.x, p->unk_40.z);
-    HitSphere_Link(&p->unk_568);
-    self->unk_14 = p->unk_c0.unk_0c;
-    self->unk_18 = p->unk_c0.unk_0e;
-    self->unk_04 = 0;
+    VEC_Normalize((VecFx32 *)(&self->unk_1c), (VecFx32 *)(&p->dir));
+    p->pos.y = -0x32000;
+    Ov015_SetXZ((s32 *)&p->pos, p->pos.x, p->pos.z);
+    HitSphere_Link(&p->hit);
+    self->unk_14 = p->info.unk_0c;
+    self->unk_18 = p->info.unk_0e;
+    self->step = 0;
     self->unk_10 = self->unk_18;
     return TRUE;
 }
@@ -148,7 +148,7 @@ BOOL Ov015FishState40_Update(Ov015FishState40 *self, Ov015Fish *p) {
     Ov015Vec v2;
     Ov015Vec pos;
     s32 i;
-    self->unk_3c = p;
+    self->fish = p;
     if (self->unk_34 > 0) {
         s32 t = FX_Div(self->unk_34 << 12, 0x3c000);
         s32 s = self->unk_38;
@@ -164,11 +164,11 @@ BOOL Ov015FishState40_Update(Ov015FishState40 *self, Ov015Fish *p) {
         self->unk_34--;
     } else {
         self->unk_34 = 0;
-        if (p->unk_568.unk_44 != 0) {
+        if (p->hit.unk_44 != 0) {
             Ov015Sub568 *sub = &((Ov015Owner568 *)p)->sub;
-            v0 = p->unk_40;
+            v0 = p->pos;
             VEC_MultAdd(self->unk_0c, (VecFx32 *)(&self->unk_1c), (VecFx32 *)&v0, (VecFx32 *)&v0);
-            p->unk_40 = v0;
+            p->pos = v0;
             self->unk_28.x = self->unk_1c.x;
             self->unk_28.z = self->unk_1c.z;
             self->unk_28.y = 0;
@@ -181,12 +181,12 @@ BOOL Ov015FishState40_Update(Ov015FishState40 *self, Ov015Fish *p) {
             Ov015_Turn(self, &b);
         } else {
             s32 dot;
-            VEC_MultAdd(self->unk_0c, (VecFx32 *)(&self->unk_1c), (VecFx32 *)(&p->unk_40), (VecFx32 *)&q);
+            VEC_MultAdd(self->unk_0c, (VecFx32 *)(&self->unk_1c), (VecFx32 *)(&p->pos), (VecFx32 *)&q);
             if (func_ov015_0220d7d0(self, &n, &q)) goto clamp;
             self->unk_28.x = self->unk_1c.x;
             self->unk_28.y = self->unk_1c.y;
             self->unk_28.z = self->unk_1c.z;
-            w = p->unk_9c;
+            w = p->dir;
             w.y = 0;
             VEC_Normalize((VecFx32 *)&w, (VecFx32 *)&w);
             dot = (s32)(((s64)n.x * w.x + (s64)n.y * w.y + (s64)n.z * w.z + 0x800) >> 12);
@@ -197,31 +197,31 @@ BOOL Ov015FishState40_Update(Ov015FishState40 *self, Ov015Fish *p) {
         }
     }
 clamp:
-    pos = p->unk_40;
-    if (pos.x > p->unk_b0) {
+    pos = p->pos;
+    if (pos.x > p->maxX) {
         pos.x = 0x32000;
-    } else if (pos.x < p->unk_ac) {
+    } else if (pos.x < p->minX) {
         pos.x = -0x32000;
     }
-    if (pos.z > p->unk_b4) {
+    if (pos.z > p->maxZ) {
         pos.z = -0x4b000;
-    } else if (pos.z < p->unk_b8) {
+    } else if (pos.z < p->minZ) {
         pos.z = -0x8c000;
     }
-    p->unk_40 = pos;
-    switch (self->unk_04) {
+    p->pos = pos;
+    switch (self->step) {
     case 0: {
         BOOL found;
         p->unk_a8 = self->unk_0c;
         v1 = pos;
         VEC_MultAdd(self->unk_0c, (VecFx32 *)(&self->unk_1c), (VecFx32 *)&v1, (VecFx32 *)&v1);
-        VEC_Normalize((VecFx32 *)(&self->unk_1c), (VecFx32 *)(&p->unk_9c));
+        VEC_Normalize((VecFx32 *)(&self->unk_1c), (VecFx32 *)(&p->dir));
         if (v1.y > -0x32000) {
             v1.y -= 0x80;
         } else {
             v1.y = -0x32000;
         }
-        p->unk_40 = v1;
+        p->pos = v1;
         if (self->unk_10 == 0) {
             found = FALSE;
             for (i = 0; i < 1; i++) {
@@ -232,9 +232,9 @@ clamp:
                 }
             }
             if (found) {
-                self->unk_04 = 1;
+                self->step = 1;
                 self->unk_10 = 0x5a;
-                p->unk_108 = 2;
+                p->drawMode = 2;
             } else {
                 self->unk_18 >>= 1;
                 self->unk_10 = self->unk_18;
@@ -245,7 +245,7 @@ clamp:
     case 1:
         func_ov015_0220d328(self, p);
         if (self->unk_10 == 0) {
-            self->unk_04 = 2;
+            self->step = 2;
             self->unk_10 = self->unk_14;
         }
         break;
@@ -259,25 +259,25 @@ clamp:
         } else {
             v2.y = 0;
         }
-        p->unk_40 = v2;
-        VEC_Normalize((VecFx32 *)(&self->unk_1c), (VecFx32 *)(&p->unk_9c));
+        p->pos = v2;
+        VEC_Normalize((VecFx32 *)(&self->unk_1c), (VecFx32 *)(&p->dir));
         e = func_020657b0(data_0214a420, self->unk_08);
         if (e == NULL) {
-            e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, &p->unk_40);
+            e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, &p->pos);
             FLD(s32, e, 0xd4) = 3;
             FLD(u8, e, 0x28) = 0;
             FLD(s32, e, 0xc8) = -1;
             FLD(s32, e, 0x50) = -0xc8000;
             self->unk_08 = FLD(void *, e, 0x24);
         }
-        v3.x = p->unk_40.x;
-        v3.y = p->unk_40.y > 0 ? 0 : p->unk_40.y;
-        v3.z = p->unk_40.z;
+        v3.x = p->pos.x;
+        v3.y = p->pos.y > 0 ? 0 : p->pos.y;
+        v3.z = p->pos.z;
         e->v18(&v3);
-        e->v10(&p->unk_70);
-        e->v34(0, FX_Atan2(p->unk_9c.x, p->unk_9c.z), 0);
+        e->v10(&p->scaleX);
+        e->v34(0, FX_Atan2(p->dir.x, p->dir.z), 0);
         if (self->unk_10 == 0) {
-            self->unk_04 = 3;
+            self->step = 3;
             self->unk_10 = 0x5a;
         }
         break;
@@ -285,9 +285,9 @@ clamp:
     case 3:
         func_ov015_0220d578(self, p);
         if (self->unk_10 == 0) {
-            self->unk_04 = 0;
-            self->unk_10 = self->unk_18 = p->unk_c0.unk_0e;
-            p->unk_108 = 1;
+            self->step = 0;
+            self->unk_10 = self->unk_18 = p->info.unk_0e;
+            p->drawMode = 1;
             Ov015_DeleteFound(data_0214a420, self->unk_08);
             for (i = 0; i < 1; i++) {
                 if (data_ov015_02212db8[i] == self) {
@@ -298,7 +298,7 @@ clamp:
         }
         break;
     }
-    self->unk_3c = NULL;
+    self->fish = NULL;
     if (--self->unk_10 <= 0) {
         self->unk_10 = 0;
     }

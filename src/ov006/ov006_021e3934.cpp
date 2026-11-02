@@ -28,7 +28,7 @@ void func_ov006_021e3934(ov006_Window *self, int arg, int arg2) {
 
 int func_ov006_021e3958(ov006_Window *self) {
     s8 base;
-    data_02097ce0->unk_004 = self->unk1C;
+    data_02097ce0->unk_004 = self->font;
     base = ((ov006_Unk0203a4c0 *)func_0203a4c0(data_02097ce0))->unk0[1];
     return base + VCALL(self, 3c);
 }
@@ -55,14 +55,14 @@ BOOL func_ov006_021e3a0c(ov006_Window *self, ov006_ListNode *node) {
 }
 
 BOOL func_ov006_021e3a28(ov006_Window *self, ov006_ListNode *node) {
-    if (self->unk88 == NULL) {
+    if (self->onCursor == NULL) {
         return TRUE;
     }
-    return self->unk88(self, node);
+    return self->onCursor(self, node);
 }
 
 static inline int ov006_Window_CalcSize(ov006_Window *self) {
-    int rows = self->unk20 * VCALL(self, 40);
+    int rows = self->rows * VCALL(self, 40);
     int top = VCALL(self, 34);
     return rows + top + VCALL(self, 38);
 }
@@ -70,9 +70,9 @@ static inline int ov006_Window_CalcSize(ov006_Window *self) {
 int func_ov006_021e3a44(ov006_Window *self) {
     if (self->flags & 0x20000) {
         int size;
-        self->unk20 += 2;
+        self->rows += 2;
         size = ov006_Window_CalcSize(self);
-        self->unk20 -= 2;
+        self->rows -= 2;
         return size;
     }
     return ov006_Window_CalcSize(self);

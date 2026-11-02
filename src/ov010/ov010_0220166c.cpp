@@ -27,12 +27,12 @@ extern s32 Ov003Vec_DistSq(const Ov010Vec *a, const Ov010Vec *b);
 static inline void Ov010Fx_Free(Ov010FxObj *s) {
     if (s->b0) {
         s->b0 = 0;
-        func_02065804(data_0214a420, s->unk_14);
-        func_02065804(data_0214a420, s->unk_18);
-        func_02065804(data_0214a420, s->unk_1c);
-        s->unk_14 = 0;
-        s->unk_18 = 0;
-        s->unk_1c = 0;
+        func_02065804(data_0214a420, s->fx0);
+        func_02065804(data_0214a420, s->fx1);
+        func_02065804(data_0214a420, s->fx2);
+        s->fx0 = 0;
+        s->fx1 = 0;
+        s->fx2 = 0;
     }
 }
 
@@ -85,12 +85,12 @@ void func_ov010_0220172c(Ov010BeamSet *o) {
             func_ov003_021da48c(&n->beam.st, 0);
             func_ov000_02198360(&n->beam.st, 5, 0);
             if (n->beam.fx.b0) {
-                func_02065804(data_0214a420, n->beam.fx.unk_14);
-                func_02065804(data_0214a420, n->beam.fx.unk_18);
-                func_02065804(data_0214a420, n->beam.fx.unk_1c);
-                n->beam.fx.unk_14 = 0;
-                n->beam.fx.unk_18 = 0;
-                n->beam.fx.unk_1c = 0;
+                func_02065804(data_0214a420, n->beam.fx.fx0);
+                func_02065804(data_0214a420, n->beam.fx.fx1);
+                func_02065804(data_0214a420, n->beam.fx.fx2);
+                n->beam.fx.fx0 = 0;
+                n->beam.fx.fx1 = 0;
+                n->beam.fx.fx2 = 0;
                 func_ov003_021da48c(&n->beam.fx.st, 0);
                 func_ov000_02198360(&n->beam.fx.st, 0, 1);
             }

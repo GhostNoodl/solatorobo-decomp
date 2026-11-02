@@ -155,10 +155,10 @@ struct Ov008Anim {
     u8 unk_02;
     u8 unk_03;
     u8 unk_04[0xc];
-    char unk_10[0x20]; // model directory
-    char unk_30[0x1c]; // model name
-    char unk_4c[0x20]; // animation directory
-    char unk_6c[0xcc]; // animation name
+    char mdlDir[0x20]; // model directory
+    char mdlName[0x1c]; // model name
+    char anmDir[0x20]; // animation directory
+    char anmName[0xcc]; // animation name
 };
 OV008_SIZE(Ov008Anim, 0x138);
 
@@ -179,8 +179,8 @@ OV008_SIZE(Ov008Model, 0xe8);
 // The picture / text panel (0x4c bytes, vtable data_0208b318).
 class Ov008Pic : public Ov008V {
 public:
-    char unk_04[0x20]; // file
-    char unk_24[0x20]; // cell name
+    char file[0x20]; // file
+    char cell[0x20]; // cell name
     s32 unk_44;
     u8 unk_48[0x4];
 };
@@ -199,8 +199,8 @@ OV008_SIZE(Ov008PicC4, 0xc4);
 struct Ov008Caption {
     s32 state;
     Ov008Pic pic;
-    u16 unk_50; // entry to show next (0xffff = none)
-    u16 unk_52; // entry shown
+    u16 next; // entry to show next (0xffff = none)
+    u16 shown; // entry shown
 };
 OV008_SIZE(Ov008Caption, 0x54);
 
@@ -208,12 +208,12 @@ OV008_SIZE(Ov008Caption, 0x54);
 struct Ov008Panel {
     s32 state;
     Ov008Pic pic;
-    Model *unk_50;
-    s32 unk_54; // offset
+    Model *sprite;
+    s32 offset; // offset
     s32 unk_58;
     s32 unk_5c;
-    s32 unk_60; // alpha
-    s32 unk_64; // speed
+    s32 alpha; // alpha
+    s32 speed; // speed
     u8 unk_68;
     u8 unk_69[0x3];
 };
@@ -223,8 +223,8 @@ OV008_SIZE(Ov008Panel, 0x6c);
 class Ov008Win : public Ov008V {
 public:
     u8 unk_04[0x40];
-    s32 unk_44; // width
-    s32 unk_48; // height
+    s32 width; // width
+    s32 height; // height
     u8 unk_4c[0x6c];
 };
 OV008_SIZE(Ov008Win, 0xb8);
@@ -233,14 +233,14 @@ OV008_SIZE(Ov008Win, 0xb8);
 class Ov008Cam : public Ov008V {
 public:
     u8 unk_04[0xc];
-    VecFx32 unk_10; // position
-    VecFx32 unk_1c; // target
+    VecFx32 eye; // position
+    VecFx32 at; // target
     u8 unk_28[0x18];
-    u16 unk_40;
-    u16 unk_42;
-    u16 unk_44;
-    u16 unk_46;
-    s32 unk_48;
+    u16 mode;
+    u16 pitch;
+    u16 yaw;
+    u16 roll;
+    s32 dist;
     u8 unk_4c[0x70];
 };
 OV008_SIZE(Ov008Cam, 0xbc);
@@ -253,13 +253,13 @@ struct Ov008ItemFlags {
 // ov000 list-menu item (0x34 bytes, func_ov000_02153f90).
 struct Ov008Item {
     s32 unk_00;
-    s16 unk_04; // serial number from the menu's unk_9c
+    s16 serial; // serial number from the menu's unk_9c
     u16 id;
     s16 unk_08;
     u16 unk_0a;
     s32 unk_0c;
     u8 unk_10[0xc];
-    Ov008Win *unk_1c; // label
+    Ov008Win *label; // label
     u8 unk_20[0x8];
     Ov008Item *prev;
     Ov008Item *next;
@@ -299,31 +299,31 @@ struct Ov008Mgr;
 // vtable data_ov008_021d0368).
 class Ov008Menu : public Ov008V {
 public:
-    s32 unk_04; // state
-    Ov008Mgr *unk_08; // owner
-    u32 unk_0c;
+    s32 state; // state
+    Ov008Mgr *owner; // owner
+    u32 flags;
     Model *unk_10;
     Ov008MenuRes *unk_14;
     Ov008MenuRes *unk_18;
-    s32 unk_1c;
-    s32 unk_20; // rows
-    s32 unk_24;
-    s32 unk_28; // height
+    s32 font;
+    s32 rows; // rows
+    s32 width;
+    s32 height; // height
     u8 unk_2c[0x38];
-    s16 unk_64;
-    s16 unk_66;
-    s16 unk_68;
+    s16 posX;
+    s16 posY;
+    s16 posZ;
     u8 unk_6a[0x16];
-    Ov008Cb unk_80; // draw-item callback
-    Ov008Cb unk_84; // decide callback
-    Ov008Cb unk_88; // cursor callback
+    Ov008Cb onDrawItem; // draw-item callback
+    Ov008Cb onDecide; // decide callback
+    Ov008Cb onCursor; // cursor callback
     Ov008Cb unk_8c;
     Ov008Cb unk_90;
-    Ov008Item *unk_94; // first item
-    Ov008Item *unk_98; // first shown item
-    s16 unk_9c; // next serial number
+    Ov008Item *items; // first item
+    Ov008Item *topItem; // first shown item
+    s16 serial; // next serial number
     u8 unk_9e[0x13];
-    s8 unk_b1; // cursor (from unk_98)
+    s8 cursor; // cursor (from unk_98)
     u8 unk_b2[0x2];
     Model *unk_b4;
     void *unk_b8;
@@ -331,7 +331,7 @@ public:
     u8 unk_c0;
     s8 unk_c1;
     u8 unk_c2[0xe];
-    s32 unk_d0; // scroll
+    s32 scroll; // scroll
 };
 OV008_SIZE(Ov008Menu, 0xd4);
 
@@ -339,7 +339,7 @@ OV008_SIZE(Ov008Menu, 0xd4);
 class Ov008Dialog : public Ov008Menu {
 public:
     u8 unk_d4[0x108];
-    s32 unk_1dc; // text
+    s32 text; // text
     u8 unk_1e0[0x4];
 };
 OV008_SIZE(Ov008Dialog, 0x1e4);
@@ -349,12 +349,12 @@ OV008_SIZE(Ov008Dialog, 0x1e4);
 class Ov008Talk : public Ov008V {
 public:
     u8 unk_04[0x8];
-    u32 unk_0c;
+    u32 flags;
     u8 unk_10[0x58];
     s16 unk_68;
     u8 unk_6a[0x26];
-    Ov008Win unk_90;
-    Ov008Win unk_148;
+    Ov008Win win;
+    Ov008Win win2;
     void *unk_200;
     u8 unk_204[0x18];
 };
@@ -436,13 +436,13 @@ struct Ov008Mgr {
     Model *unk_e8;
     Model *unk_ec;
     Model *unk_f0;
-    Ov008Caption *unk_f4;
-    Ov008Panel *unk_f8;
+    Ov008Caption *caption;
+    Ov008Panel *panel;
     Ov008PicC4 *unk_fc;
-    Ov008Menu *unk_100;
-    Ov008Dialog *unk_104;
-    Ov008Sel *unk_108;
-    Ov008Talk *unk_10c;
+    Ov008Menu *menu;
+    Ov008Dialog *dialog;
+    Ov008Sel *sel;
+    Ov008Talk *talk;
     u16 unk_110;
     u16 unk_112;
     s32 unk_114;

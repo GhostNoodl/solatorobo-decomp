@@ -28,14 +28,14 @@ void func_02045094(ov006_Net021e58e4 *net);
 BOOL func_02044f70(ov006_Net021e58e4 *net);
 
 static inline void ov006_Menu_Advance(ov006_Unk021ec888 *self) {
-    if (self->unkC < 0xff) {
-        self->unkC++;
+    if (self->stateTime < 0xff) {
+        self->stateTime++;
     }
 }
 
 static inline void ov006_Menu_SetState(ov006_Unk021ec888 *self, int state) {
-    self->unk8 = state;
-    self->unkC = 0;
+    self->state = state;
+    self->stateTime = 0;
 }
 
 static inline BOOL ov006_Dialog_IsDone(ov006_Dialog021e58e4 *d) {
@@ -95,7 +95,7 @@ static inline void ov006_Menu_Close(ov006_Unk021ec888 *self) {
     if (!done) {
         return;
     }
-    if (self->unk8 != 1 && self->unk8 != 7) {
+    if (self->state != 1 && self->state != 7) {
         ov006_Menu_SetState(self, 7);
     }
     node = self->nodes;
@@ -120,7 +120,7 @@ void func_ov006_021e58e4(ov006_Unk021ec888 *self) {
     switch (self->unk1C) {
     case 1:
     case 4:
-        switch (self->unkC) {
+        switch (self->stateTime) {
         case 0:
             ov006_Menu_OpenDialog(self);
             break;
@@ -134,7 +134,7 @@ void func_ov006_021e58e4(ov006_Unk021ec888 *self) {
         break;
     case 2:
     case 3:
-        switch (self->unkC) {
+        switch (self->stateTime) {
         case 0:
             ov006_Menu_OpenDialog(self);
         case 1:
@@ -147,7 +147,7 @@ void func_ov006_021e58e4(ov006_Unk021ec888 *self) {
         break;
     default:
         self->unk1C = 0;
-        if (self->unk8 != 3 && self->unk8 != 8 && self->unk8 != 1 && self->unk8 != 7) {
+        if (self->state != 3 && self->state != 8 && self->state != 1 && self->state != 7) {
             ov006_Menu_SetState(self, 8);
         }
         break;

@@ -140,7 +140,7 @@ typedef struct ov006_Anm74 {
 /* Task with vtable data_ov006_021ebdc0 (0x140 bytes). */
 typedef struct ov006_TaskD37 {
     ov006_TaskHead head;
-    u8 unk3C;
+    u8 step;
     u8 unk3D;
     u8 unk3E[6];
     u8 unk44;
@@ -159,11 +159,11 @@ typedef struct ov006_TaskD37 {
     ov006_Model60 *unk68;
     ov006_Model64 *unk6C;
     ov006_Model60 *unk70;
-    ov006_Anm74 *unk74;
-    u8 unk78;
+    ov006_Anm74 *anm;
+    u8 animLoop;
     u8 unk79;
-    s16 unk7A;
-    u8 unk7C[0xbc];
+    s16 animSpeed;
+    u8 cam[0xbc];
     ov006_Unk68 *unk138;
     ov006_Obj13C *unk13C;
 } ov006_TaskD37;

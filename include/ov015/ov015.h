@@ -184,12 +184,12 @@ struct Ov015Task {
     u32 flag7 : 1;
     u32 flags_rest : 24;
     s32 unk_08;
-    s32 unk_0c;
+    s32 param;
     u8 unk_10[0x10];
     s32 unk_20;
     void *unk_24;
     u8 unk_28[0x4];
-    s32 unk_2c;
+    s32 parent;
     u8 unk_30[0xc];
 };
 SIZE_ASSERT(Ov015Task, 0x3c);
@@ -220,29 +220,29 @@ struct Ov015Obj292c;
 // Fishing phase state (0x2c bytes, vtable data_ov015_022127ec, func_ov015_021ff350).
 struct Ov015Obj30 {
     void *vt;
-    s32 unk_04;
-    s32 unk_08;
+    s32 step;
+    s32 timer;
     u8 unk_0c;
     Ov015Obj292c *unk_10;
     Ov015Obj290 *unk_14;
-    Ov015Fish *unk_18;
-    Ov015Ship *unk_1c;
-    Ov015CamPair *unk_20;
-    Ov015List *unk_24;
-    Ov015Info38 *unk_28;
+    Ov015Fish *fish;
+    Ov015Ship *ship;
+    Ov015CamPair *cam;
+    Ov015List *fishList;
+    Ov015Info38 *info;
 };
 
 static inline void Ov015Obj30_Clear(Ov015Obj30 *p) {
-    p->unk_04 = 0;
-    p->unk_08 = 0;
+    p->step = 0;
+    p->timer = 0;
     p->unk_0c = 0;
     p->unk_10 = NULL;
     p->unk_14 = NULL;
-    p->unk_18 = 0;
-    p->unk_1c = 0;
-    p->unk_20 = 0;
-    p->unk_24 = 0;
-    p->unk_28 = 0;
+    p->fish = 0;
+    p->ship = 0;
+    p->cam = 0;
+    p->fishList = 0;
+    p->info = 0;
 }
 
 
@@ -259,9 +259,9 @@ struct Ov015Mtx33 {
 // Camera (0xbc bytes, func_0204b370 / func_0204b420).
 struct Ov015Bits8a0 {
     u8 b0 : 2;
-    u8 b2 : 1;
-    u8 b3 : 1;
-    u8 b4 : 1;
+    u8 shakeX : 1;
+    u8 shakeY : 1;
+    u8 shakeZ : 1;
     u8 rest : 3;
 };
 
@@ -280,12 +280,12 @@ struct Ov015Cam {
     u8 unk_3c[2];
     u8 dirty;
     u8 unk_3f;
-    u16 unk_40;
+    u16 mode;
     u8 unk_42[0x99 - 0x42];
-    u8 unk_99;
-    u8 unk_9a;
-    u8 unk_9b;
-    Ov015Bits8a0 unk_9c;
+    u8 shakeTime;
+    u8 shakeLen;
+    u8 shakeCur;
+    Ov015Bits8a0 flags;
     u8 unk_9d[0xbc - 0x9d];
 };
 
@@ -295,11 +295,11 @@ struct Ov015CamPair {
     void *vt;
     Ov015Cam cam0;
     Ov015Cam cam1;
-    s32 unk_17c; // mode
-    Ov015Vec unk_180; // target
+    s32 mode; // mode
+    Ov015Vec target; // target
     Ov015Vec unk_18c;
     s32 unk_198;
-    s32 unk_19c; // timer
+    s32 timer; // timer
 };
 
 // ov000 model resource (0x138 bytes, func_ov000_0218e9c4 / func_ov000_0218ea20).
@@ -307,19 +307,19 @@ struct Ov015Anim {
     s16 unk_00;
     u8 unk_02;
     u8 unk_03_0 : 1;
-    u8 unk_03_1 : 1;
-    u8 unk_03_2 : 1;
+    u8 ownMdl : 1;
+    u8 ownAnm : 1;
     u8 unk_03_3 : 1;
-    u8 unk_03_4 : 1;
+    u8 ownEv : 1;
     u8 unk_03_5 : 3;
     u8 unk_04[0xc];
-    char unk_10[0x20]; // model directory
-    char unk_30[0x1c]; // model name
-    char unk_4c[0x20]; // animation directory
-    char unk_6c[0x54]; // animation name
-    u8 *unk_c0;
-    char unk_c4[0x20];
-    char unk_e4[0x20];
+    char mdlDir[0x20]; // model directory
+    char mdlName[0x1c]; // model name
+    char anmDir[0x20]; // animation directory
+    char anmName[0x54]; // animation name
+    u8 *evHandle;
+    char evDir[0x20];
+    char evName[0x20];
     u8 unk_104[0x34];
 };
 
@@ -330,7 +330,7 @@ struct Ov015Shadow {
     void *mdl;
     s32 unk_0c;
     s32 unk_10;
-    s32 unk_14;
+    s32 scale;
     u8 type : 4;
     u8 prev : 4;
     u8 alpha;
@@ -413,13 +413,13 @@ struct Ov015Globals {
 
 struct Ov015Fade {
     void *vt;
-    u32 unk_04;
-    u8 unk_08;
-    u8 unk_09;
-    s32 unk_0c;
-    u16 unk_10;
-    s32 unk_14;
-    u8 unk_18;
+    u32 posZ;
+    u8 alphaFrom;
+    u8 alphaTo;
+    s32 duration;
+    u16 color;
+    s32 time;
+    u8 alpha;
 };
 
 struct Ov015Main {
@@ -429,7 +429,7 @@ struct Ov015Main {
     s32 unk_0c;
     s32 unk_10;
     s32 unk_14;
-    Ov015V *unk_18;
+    Ov015V *child;
 };
 
 struct Ov015Child {
@@ -529,15 +529,15 @@ static inline BOOL Ov015_ObjIsB1(Ov015ObjFlags *f) {
 }
 
 struct Ov015AnimFlags {
-    u16 b0 : 1;
+    u16 visible : 1;
     u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 b4 : 1;
-    u16 b5 : 1;
+    u16 invV : 1;
+    u16 flipX : 1;
+    u16 boxTest : 1;
+    u16 clearInit : 1;
     u16 b6 : 1;
-    u16 b7 : 1;
-    u16 b8 : 1;
+    u16 restoreMat : 1;
+    u16 flushVP : 1;
     u16 rest : 7;
 };
 
@@ -585,7 +585,7 @@ OV015_SIZE(Ov015ShipMtx, 0x34);
 // Fish data block (0x2c bytes, vtable data_ov015_02212e84).
 struct Ov015FishInfo {
     void *unk_00;
-    u16 unk_04;
+    u16 id;
     u16 unk_06;
     u8 unk_08[0x2];
     s16 unk_0a;
@@ -606,37 +606,37 @@ OV015_SIZE(Ov015FishInfo, 0x2c);
 // ov000 model instance (0xe8 bytes, func_ov000_0218fe1c).
 struct Ov015Model {
     u8 unk_00[0x24];
-    Ov015RenderObj unk_24;
-    Ov015VecC unk_78;
-    Ov015Vec unk_84[3];
-    s32 unk_a8;
-    s32 unk_ac;
-    s32 unk_b0;
+    Ov015RenderObj renderObj;
+    Ov015VecC trans;
+    Ov015Vec rot[3];
+    s32 scaleX;
+    s32 scaleY;
+    s32 scaleZ;
     u8 unk_b4[0x2];
-    s16 unk_b6;
-    s16 unk_b8;
-    s16 unk_ba;
-    s16 unk_bc;
+    s16 color;
+    s16 color2;
+    s16 blend;
+    s16 blendMax;
     u8 unk_be[0x4];
-    Ov015AnimFlags unk_c2;
+    Ov015AnimFlags flags;
     s16 unk_c4;
     u8 unk_c6[0xa];
-    u8 *unk_d0;
-    u8 *unk_d4;
+    u8 *evTable;
+    u8 *evData;
     u8 unk_d8[0x10];
 };
 OV015_SIZE(Ov015Model, 0xe8);
 // Main object (0x48 bytes, func_0203f260 / func_0203f2b8).
 struct Ov015Obj48 {
-    Ov015Vec unk_00;
-    Ov015Vec unk_0c;
-    u8 unk_18[0xc];
-    u8 unk_24;
+    Ov015Vec pos;
+    Ov015Vec prev;
+    u8 push[0xc];
+    u8 active;
     u8 unk_25[0x3];
-    s32 unk_28;
-    s32 unk_2c;
+    s32 group;
+    s32 mask;
     u8 unk_30[0x8];
-    s32 unk_38;
+    s32 radius;
     u8 unk_3c[0x8];
     u32 unk_44;
 };
@@ -644,89 +644,89 @@ OV015_SIZE(Ov015Obj48, 0x48);
 // Fish (0x5b0 bytes, vtable data_ov015_022128fc, ctor Ov015Fish_Ctor).
 struct Ov015Fish {
     void *unk_00;
-    u16 unk_04;
+    u16 id;
     u8 unk_06[0x2];
     s32 unk_08;
-    Ov015Vec unk_0c[3];
-    Ov015Vec unk_30;
+    Ov015Vec rot2[3];
+    Ov015Vec pos2;
     s32 unk_3c;
-    Ov015Vec unk_40;
-    Ov015Vec unk_4c[3];
-    s32 unk_70;
-    s32 unk_74;
-    s32 unk_78;
-    s32 unk_7c;
-    s32 unk_80;
+    Ov015Vec pos;
+    Ov015Vec rot[3];
+    s32 scaleX;
+    s32 scaleY;
+    s32 scaleZ;
+    s32 scaleMul;
+    s32 radius;
     s32 unk_84;
     s32 unk_88;
     s32 unk_8c;
-    u8 unk_90;
+    u8 shadowAlpha;
     u8 unk_91[0x3];
     s32 unk_94;
     s32 unk_98;
-    Ov015Vec unk_9c;
+    Ov015Vec dir;
     s32 unk_a8;
-    s32 unk_ac;
-    s32 unk_b0;
-    s32 unk_b4;
-    s32 unk_b8;
+    s32 minX;
+    s32 maxX;
+    s32 maxZ;
+    s32 minZ;
     s32 unk_bc;
-    Ov015FishInfo unk_c0;
-    s32 unk_ec;
-    Ov015V *unk_f0;
-    s32 unk_f4;
-    Ov015V *unk_f8;
-    s32 unk_fc;
-    Ov015V *unk_100;
-    s16 unk_104;
+    Ov015FishInfo info;
+    s32 nextStateId;
+    Ov015V *nextState;
+    s32 stateId;
+    Ov015V *state;
+    s32 prevStateId;
+    Ov015V *prevState;
+    s16 animSpeed;
     u8 unk_106[0x2];
-    s32 unk_108;
-    Ov015Anim unk_10c;
-    Ov015Model unk_244;
-    Ov015Anim unk_32c;
-    Ov015Model unk_464;
-    Ov015Shadow unk_54c;
-    Ov015Obj48 unk_568;
+    s32 drawMode;
+    Ov015Anim res;
+    Ov015Model model;
+    Ov015Anim res2;
+    Ov015Model model2;
+    Ov015Shadow shadow;
+    Ov015Obj48 hit;
 };
 OV015_SIZE(Ov015Fish, 0x5b0);
 // Fishing phase state (0x34 bytes, func_ov015_0220015c / func_ov015_02200194).
 struct Ov015Obj34 {
     void *vt;
-    u8 *unk_04;
-    s32 unk_08;
+    u8 *fx;
+    s32 step;
     s32 unk_0c;
     s32 unk_10;
     s32 unk_14;
     s32 unk_18;
     s32 unk_1c;
     s32 unk_20;
-    Ov015Ship *unk_24;
-    Ov015Fish *unk_28;
-    Ov015CamPair *unk_2c;
-    Ov015Info38 *unk_30;
+    Ov015Ship *ship;
+    Ov015Fish *fish;
+    Ov015CamPair *cam;
+    Ov015Info38 *info;
 };
 OV015_SIZE(Ov015Obj34, 0x34);
 // Player ship (0xd58 bytes, ctor func_ov015_0220765c, dtor func_ov015_02207738).
 struct Ov015Ship {
-    Ov015Anim unk_00;
-    Ov015Model unk_138;
-    Ov015Anim unk_220;
-    Ov015Model unk_358[8];
-    Ov015Anim unk_a98;
-    Ov015Model unk_bd0;
-    Ov015Shadow unk_cb8;
-    Ov015ShipMtx unk_cd4;  // matrix captured for one node
+    Ov015Anim res;
+    Ov015Model model;
+    Ov015Anim res2;
+    Ov015Model subModels[8];
+    Ov015Anim res3;
+    Ov015Model model3;
+    Ov015Shadow shadow;
+    Ov015ShipMtx nodeMtx;  // matrix captured for one node
     Ov015Vec unk_d08;
-    Ov015Vec unk_d14;
-    u16 unk_d20;
-    u16 unk_d22;
-    u16 unk_d24;
+    Ov015Vec pos;
+    u16 rotX;
+    u16 rotY;
+    u16 rotZ;
     u8 unk_d26[0x2];
-    Ov015V *unk_d28;
-    s32 unk_d2c;
-    Ov015V *unk_d30;
-    s32 unk_d34;
-    u16 unk_d38;
+    Ov015V *fx;
+    s32 fxTimer;
+    Ov015V *fx2;
+    s32 fxTimer2;
+    u16 loadStep;
     u16 unk_d3a;
     u16 unk_d3c;
     s16 unk_d3e;
@@ -735,7 +735,7 @@ struct Ov015Ship {
     u8 unk_d42;
     u8 unk_d43[0x1];
     s32 unk_d44;
-    u16 unk_d48;
+    u16 modelIdx;
     u8 unk_d4a[0x2];
     Ov015Vec unk_d4c;
 };
@@ -743,7 +743,7 @@ OV015_SIZE(Ov015Ship, 0xd58);
 // Fish info block (0x38 bytes, vtable data_ov015_022132d0, ctor func_ov015_02211828).
 struct Ov015Info38 {
     void *vt;
-    u16 unk_04;
+    u16 id;
     u8 unk_06[0x2];
     s32 unk_08;
     s32 unk_0c;
@@ -764,20 +764,20 @@ struct Ov015Game {
     void *vt;
     s32 state;
     s32 unk_08;
-    s32 unk_0c;
+    s32 step;
     u8 unk_10;
     u8 unk_11[0x3];
     s32 unk_14;
-    Ov015Ship *unk_18;
-    Ov015List *unk_1c;
+    Ov015Ship *ship;
+    Ov015List *fishList;
     u8 *unk_20;
-    Ov015CamPair *unk_24;
+    Ov015CamPair *cam;
     u8 *unk_28;
     u8 *unk_2c;
-    Ov015Obj30 unk_30;
-    Ov015Obj34 unk_5c;
+    Ov015Obj30 phase1;
+    Ov015Obj34 phase2;
     u8 *unk_90;
-    Ov015Info38 unk_94;
+    Ov015Info38 info;
 };
 OV015_SIZE(Ov015Game, 0xcc);
 // ---- end struct types (svD) ----
@@ -798,26 +798,26 @@ struct Ov015UiText;
 struct Ov015Ui {
     void *vt;
     s32 unk_04;
-    u8 *unk_08; // owner (read back by the menu callbacks)
-    u32 unk_0c; // flags
+    u8 *owner; // owner (read back by the menu callbacks)
+    u32 flags; // flags
     s32 unk_10;
     s32 unk_14;
     u8 *unk_18;
-    s32 unk_1c;
-    s32 unk_20;
-    s32 unk_24;
+    s32 font;
+    s32 rows;
+    s32 width;
     u8 unk_28[0x4];
-    s32 unk_2c;
+    s32 slideMode;
     u8 unk_30[0x4];
     s32 unk_34;
     s32 unk_38;
     u8 unk_3c[0x1c];
-    s32 unk_58; // position (fx32)
-    s32 unk_5c;
-    s32 unk_60;
-    s16 unk_64; // screen position
-    s16 unk_66;
-    s16 unk_68;
+    s32 slideX; // position (fx32)
+    s32 slideY;
+    s32 slideZ;
+    s16 posX; // screen position
+    s16 posY;
+    s16 posZ;
     u8 unk_6a[0x16];
 };
 SIZE_ASSERT(Ov015Ui, 0x80);
@@ -834,7 +834,7 @@ SIZE_ASSERT(Ov015UiLabel, 0x8c);
 struct Ov015UiNum : public Ov015Ui {
     u8 unk_80[0x8];
     s32 unk_88;
-    u32 unk_8c; // value
+    u32 value; // value
     u8 unk_90[0x8];
 };
 SIZE_ASSERT(Ov015UiNum, 0x98);
@@ -842,26 +842,26 @@ SIZE_ASSERT(Ov015UiNum, 0x98);
 // ov000 list-menu item (linked through unk_2c).
 struct Ov015MenuItem {
     u8 unk_00[0x6];
-    u16 unk_06; // id
+    u16 id; // id
     u8 unk_08[0x4];
-    u32 unk_0c; // price
+    u32 price; // price
     s32 unk_10;
     u8 unk_14[0x18];
-    Ov015MenuItem *unk_2c; // next
+    Ov015MenuItem *next; // next
 };
 
 // ov000 list menu (0xd4 bytes, vtables data_ov000_021cac60 -> data_ov000_021caec8; the 0xe0
 // subclasses data_ov000_021cb4a8 and data_ov000_021cb5a8 are reached through this type too).
 struct Ov015Menu : public Ov015Ui {
     u8 unk_80[0x4];
-    void *unk_84; // decide callback
-    void *unk_88; // cursor callback
+    void *onDecide; // decide callback
+    void *onCursor; // cursor callback
     u8 unk_8c[0x8];
-    Ov015MenuItem *unk_94; // first item
-    Ov015MenuItem *unk_98; // first shown item
-    s16 unk_9c; // item count
+    Ov015MenuItem *items; // first item
+    Ov015MenuItem *topItem; // first shown item
+    s16 itemCount; // item count
     u8 unk_9e[0x13];
-    s8 unk_b1; // cursor (from unk_98)
+    s8 cursor; // cursor (from unk_98)
     u8 unk_b2[0xe];
     u8 unk_c0;
     u8 unk_c1;
@@ -873,7 +873,7 @@ SIZE_ASSERT(Ov015Menu, 0xd4);
 // data_ov000_021cb0b8).
 struct Ov015Dialog : public Ov015Menu {
     u8 unk_d4[0x108];
-    void *unk_1dc; // text
+    void *text; // text
     u16 unk_1e0;
     u8 unk_1e2[0x2];
 };
@@ -898,17 +898,17 @@ SIZE_ASSERT(Ov015CamView, 0x3c);
 
 // Fish state, vtable data_ov015_02212f20 (0x18 bytes; built in Ov015FishState2c_Update).
 struct Ov015FishState18 : public Ov015FishState {
-    Ov015Fish *unk_04;
-    s32 unk_08;
-    s32 unk_0c;
-    s32 unk_10;
-    void *unk_14;
+    Ov015Fish *fish;
+    s32 step;
+    s32 timer;
+    s32 duration;
+    void *fxKey;
 };
 SIZE_ASSERT(Ov015FishState18, 0x18);
 
 // Fish state, vtable data_ov015_02212e94 (0x2c bytes, ctor Ov015FishState2c_Ctor).
 struct Ov015FishState2c : public Ov015FishState {
-    s16 unk_04;
+    s16 step;
     s16 unk_06;
     s16 unk_08;
     s16 unk_0a;
@@ -920,7 +920,7 @@ struct Ov015FishState2c : public Ov015FishState {
     s32 unk_18;
     s16 unk_1c;
     u8 unk_1e[0x2];
-    Ov015Fish *unk_20;
+    Ov015Fish *fish;
     void *unk_24;
     void *unk_28;
 };
@@ -928,18 +928,18 @@ SIZE_ASSERT(Ov015FishState2c, 0x2c);
 
 // Fish state, vtable data_ov015_02212f04 (0x1c bytes; built in Ov015FishState2c_Update).
 struct Ov015FishState1c : public Ov015FishState {
-    s32 unk_04;
-    s32 unk_08;
+    s32 step;
+    s32 timer;
     s32 unk_0c;
     s32 unk_10;
-    s32 unk_14;
-    Ov015Fish *unk_18;
+    s32 targetX;
+    Ov015Fish *fish;
 };
 SIZE_ASSERT(Ov015FishState1c, 0x1c);
 
 // Fish state, vtable data_ov015_02212ee8 (0x40 bytes, ctor Ov015FishState40_Ctor).
 struct Ov015FishState40 : public Ov015FishState {
-    s32 unk_04;
+    s32 step;
     void *unk_08;
     s32 unk_0c;
     s32 unk_10;
@@ -949,19 +949,19 @@ struct Ov015FishState40 : public Ov015FishState {
     Ov015Vec unk_28;
     s32 unk_34;
     s32 unk_38;
-    Ov015Fish *unk_3c;
+    Ov015Fish *fish;
 };
 SIZE_ASSERT(Ov015FishState40, 0x40);
 
 // Fish state, vtable data_ov015_02212ecc (8 bytes, ctor Ov015FishState08_Ctor).
 struct Ov015FishState08 : public Ov015FishState {
-    s32 unk_04;
+    s32 step;
 };
 SIZE_ASSERT(Ov015FishState08, 0x8);
 
 // Scene task, vtable data_ov015_02212a88 (0x58 bytes, built by func_ov015_02206f04).
 struct Ov015Scene2a88 : public Ov015Task {
-    u8 *unk_3c;
+    u8 *model;
     u8 unk_40;
     u8 unk_41[0x3];
     s32 unk_44;
@@ -974,9 +974,9 @@ SIZE_ASSERT(Ov015Scene2a88, 0x58);
 
 // Scene task, vtable data_ov015_02212a08 (0xb0 bytes, built by func_ov015_02206f7c).
 struct Ov015Scene2a08 : public Ov015Task {
-    Ov015Ship *unk_3c;
-    Ov015Shadow *unk_40;
-    Ov015CamView unk_44;
+    Ov015Ship *ship;
+    Ov015Shadow *shadow;
+    Ov015CamView camView;
     Ov015Menu *unk_80;
     Ov015UiLabel *unk_84;
     Ov015Menu *unk_88;
@@ -988,7 +988,7 @@ struct Ov015Scene2a08 : public Ov015Task {
     s32 unk_a0;
     u8 unk_a4;
     u8 unk_a5[0x3];
-    s32 unk_a8;
+    s32 frame;
     s32 unk_ac;
 };
 SIZE_ASSERT(Ov015Scene2a08, 0xb0);
@@ -1037,7 +1037,7 @@ struct Ov015Scene2b08 : public Ov015Task {
     s32 unk_58;
     s32 unk_5c;
     s32 unk_60;
-    u8 unk_64[0x100]; // text buffer
+    u8 textBuf[0x100]; // text buffer
 };
 SIZE_ASSERT(Ov015Scene2b08, 0x164);
 
@@ -1047,23 +1047,23 @@ struct Ov015Msg {
     u8 unk_04;
     u8 unk_05[0x3];
     s32 unk_08;
-    u16 unk_0c;
+    u16 msgIdx;
     u8 unk_0e[0x2];
-    void *unk_10;
-    u8 *unk_14; // model (0x160 bytes)
-    u8 *unk_18; // text window (0xb8 bytes, vtable data_0208ba70)
-    s32 unk_1c;
-    s32 unk_20;
-    s32 unk_24;
-    Ov015UiLabel *unk_28;
-    Ov015UiText *unk_2c;
-    void *unk_30[0x20]; // message pages
-    s32 unk_b0; // page count
-    s32 unk_b4;
-    char unk_b8[0x80]; // text buffer
-    s32 unk_138;
-    s32 unk_13c;
-    s32 unk_140;
+    void *msgRes;
+    u8 *model; // model (0x160 bytes)
+    u8 *textWin; // text window (0xb8 bytes, vtable data_0208ba70)
+    s32 posX;
+    s32 posY;
+    s32 posZ;
+    Ov015UiLabel *label;
+    Ov015UiText *textBox;
+    void *pages[0x20]; // message pages
+    s32 pageCount; // page count
+    s32 page;
+    char text[0x80]; // text buffer
+    s32 seq;
+    s32 step;
+    s32 timer;
 };
 SIZE_ASSERT(Ov015Msg, 0x144);
 
@@ -1098,21 +1098,21 @@ struct Ov015ResultPanel {
     Ov015UiNum *unk_0c;
     Ov015UiNum *unk_10;
     Ov015Menu *unk_14;
-    s32 unk_18; // state
-    s32 unk_1c; // timer
-    char unk_20[0x40]; // name
-    s32 unk_60; // mode
+    s32 state; // state
+    s32 timer; // timer
+    char name[0x40]; // name
+    s32 mode; // mode
 };
 SIZE_ASSERT(Ov015ResultPanel, 0x64);
 
 // Result sequence (0x14 bytes, vtable data_ov015_022128ec, ctor Ov015Result_Ctor).
 struct Ov015Result {
     void *vt;
-    s32 unk_04; // state
-    s8 unk_08; // mode
+    s32 state; // state
+    s8 mode; // mode
     u8 unk_09[0x3];
     s32 unk_0c;
-    Ov015ResultPanel *unk_10;
+    Ov015ResultPanel *panel;
 };
 SIZE_ASSERT(Ov015Result, 0x14);
 
@@ -1121,29 +1121,29 @@ SIZE_ASSERT(Ov015Result, 0x14);
 struct Ov015Obj290 {
     void *vt;
     s32 unk_04;
-    s32 unk_08;
+    s32 step;
     s32 unk_0c;
     s32 unk_10;
-    Ov015Anim unk_14;
-    Ov015Model unk_14c;
+    Ov015Anim res;
+    Ov015Model model;
     Ov015VecC unk_234;
     Ov015VecC unk_240;
-    Ov015Mtx33 unk_24c;
+    Ov015Mtx33 rot;
     Ov015VecC unk_270;
     Ov015VecC unk_27c;
-    u16 unk_288;
+    u16 yaw;
     u16 unk_28a;
-    s32 unk_28c;
+    s32 animSpeed;
 };
 SIZE_ASSERT(Ov015Obj290, 0x290);
 
 // Object holding a spawned effect (0x34 bytes, vtable data_ov015_0221292c, init func_ov015_022120c0).
 struct Ov015Obj292c {
     void *vt;
-    u8 *unk_04; // effect object
+    u8 *fx; // effect object
     void *unk_08;
-    Ov015Vec unk_0c; // position
-    Ov015Vec unk_18; // scale
+    Ov015Vec pos; // position
+    Ov015Vec scale; // scale
     s32 unk_24;
     s32 unk_28;
     s32 unk_2c;

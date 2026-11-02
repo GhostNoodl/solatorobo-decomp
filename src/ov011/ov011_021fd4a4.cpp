@@ -50,7 +50,7 @@ BOOL func_ov011_021fd4d8(Ov011Scene *self, Ov011Obj *owner) {
     self->mgr.b1 = 0;
     self->mgr.ids = NULL;
     self->mgr.list = NULL;
-    self->mgr.unk_18 = NULL;
+    self->mgr.ent = NULL;
     func_ov003_021da48c(&self->mgr.state, 0);
     func_ov011_021fa720(&self->ent, 1, 0x3333, 0x71c, 0x2000);
     return TRUE;
@@ -108,15 +108,15 @@ void Ov003Vec_RotY(VecFx32 *out, const VecFx32 *in, s32 angle);
 
 static inline void Ov011Ent_Remove(Ov011Ent *e, void *k) {
     Ov011PNode *n;
-    if (e->b0) {
-        for (n = e->unk_04; n != NULL; n = n->next) {
+    if (e->active) {
+        for (n = e->nodes; n != NULL; n = n->next) {
             if (k == n) {
-                e->unk_04 = func_ov011_021fa790(e->unk_04, n);
+                e->nodes = func_ov011_021fa790(e->nodes, n);
                 if (n != NULL) {
                     Heap_Free(n);
                 }
-                e->b1 = 0;
-                e->unk_08 = 0;
+                e->settled = 0;
+                e->blend = 0;
                 break;
             }
         }
@@ -153,8 +153,8 @@ static inline void Ov011_MoveTo(Ov011PNode *n, const VecFx32 *v, s32 t) {
 static inline s32 Ov011Ent_Count(Ov011Ent *e) {
     s32 cnt = 0;
     Ov011PNode *n;
-    if (e->b0) {
-        for (n = e->unk_04; n != NULL; n = n->next) {
+    if (e->active) {
+        for (n = e->nodes; n != NULL; n = n->next) {
             cnt++;
         }
     }
@@ -203,48 +203,48 @@ void func_ov011_021fd638(Ov011Scene *self) {
 
     s32 d;
     s32 st;
-    if (!E.b0) {
+    if (!E.active) {
         return;
     }
-    if (E.b3) {
-        E.unk_18 += E.unk_20;
-        st = E.unk_20;
-        d = E.unk_1c - E.unk_18;
+    if (E.spinLerp) {
+        E.spin += E.spinStep;
+        st = E.spinStep;
+        d = E.spinTo - E.spin;
         if ((d < 0 ? -d : d) <= (st < 0 ? -st : st)) {
-            E.unk_18 = E.unk_1c;
-            E.b3 = 0;
+            E.spin = E.spinTo;
+            E.spinLerp = 0;
         }
     }
-    if (E.b2) {
-        E.unk_0c += E.unk_14;
-        st = E.unk_14;
-        d = E.unk_10 - E.unk_0c;
+    if (E.radiusLerp) {
+        E.radius += E.radiusStep;
+        st = E.radiusStep;
+        d = E.radiusTo - E.radius;
         if ((d < 0 ? -d : d) <= (st < 0 ? -st : st)) {
-            E.unk_0c = E.unk_10;
-            E.b2 = 0;
+            E.radius = E.radiusTo;
+            E.radiusLerp = 0;
         }
     }
-    if (E.b4) {
-        E.unk_24 += E.unk_2c;
-        st = E.unk_2c;
-        d = E.unk_28 - E.unk_24;
+    if (E.heightLerp) {
+        E.height += E.heightStep;
+        st = E.heightStep;
+        d = E.heightTo - E.height;
         if ((d < 0 ? -d : d) <= (st < 0 ? -st : st)) {
-            E.unk_24 = E.unk_28;
-            E.b4 = 0;
+            E.height = E.heightTo;
+            E.heightLerp = 0;
         }
     }
     {
         s32 cnt = Ov011Ent_Count(&E);
         s32 i = 0;
         Ov011PNode *n;
-        for (n = E.unk_04; n != NULL; n = n->next) {
-            u16 ang = E.unk_30 + (u16)(i * (0xffff / cnt));
+        for (n = E.nodes; n != NULL; n = n->next) {
+            u16 ang = E.angle + (u16)(i * (0xffff / cnt));
             s32 sc;
-            s32 y = E.unk_24;
-            sc = E.unk_0c;
+            s32 y = E.height;
+            sc = E.radius;
             VecFx32 v;
-            if (E.unk_34 != 0) {
-                if (E.unk_34 == 1) {
+            if (E.dir != 0) {
+                if (E.dir == 1) {
                     ang = 0xffff - ang;
                 }
             }
@@ -253,24 +253,24 @@ void func_ov011_021fd638(Ov011Scene *self) {
             v.z = FX_Mul(v.z, sc);
             v.y = y;
             i++;
-            if (E.b1) {
+            if (E.settled) {
                 n->v = v;
             } else {
-                Ov011_MoveTo(n, &v, E.unk_08);
+                Ov011_MoveTo(n, &v, E.blend);
             }
         }
     }
     {
         Ov011Ent *e = &E;
-        if (!e->b1) {
-            e->unk_08 += 0x29;
-            if (e->unk_08 >= 0x1000) {
-                e->b1 = 1;
-                e->unk_08 = 0x1000;
+        if (!e->settled) {
+            e->blend += 0x29;
+            if (e->blend >= 0x1000) {
+                e->settled = 1;
+                e->blend = 0x1000;
             }
         }
     }
-    self->ent.unk_30 += (u16)self->ent.unk_18;
+    self->ent.angle += (u16)self->ent.spin;
     }
 }
 

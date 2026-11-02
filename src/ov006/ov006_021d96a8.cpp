@@ -99,7 +99,7 @@ static inline void ov006_HideAll(ov006_Task021d96a8 *self) {
 BOOL func_ov006_021d96a8(ov006_Task021d96a8 *self) {
     BOOL ret = TRUE;
     BOOL send = FALSE;
-    if (data_ov006_021ec860->unk1C != 0 && data_ov006_021ec888->unk8 != 9) {
+    if (data_ov006_021ec860->unk1C != 0 && data_ov006_021ec888->state != 9) {
         send = TRUE;
         Wh_GetSharedData(data_02097e40, 0);
     }
@@ -148,7 +148,7 @@ BOOL func_ov006_021d96a8(ov006_Task021d96a8 *self) {
         break;
     case 3:
         if (self->unk1C->unk8C != self->unk1C->unk88 || self->unk18->unk8C != self->unk18->unk88) {
-            if ((data_02097dc8->trig & 1) || data_ov006_021ec888->unk8 == 9) {
+            if ((data_02097dc8->trig & 1) || data_ov006_021ec888->state == 9) {
                 func_ov000_0215d980(self->unk18, 0, 1);
                 func_ov000_0215d980(self->unk1C, *(u32 *)(data_0214a424 + 0x20), 1);
             } else {
@@ -164,7 +164,7 @@ BOOL func_ov006_021d96a8(ov006_Task021d96a8 *self) {
         break;
     case 4:
         if (self->unk34 >= 0x14) {
-            if (data_ov006_021ec888->unk8 == 9) {
+            if (data_ov006_021ec888->state == 9) {
                 self->unkC = 0x32;
             } else if (data_02097dc8->trig & 1) {
                 func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
@@ -180,7 +180,7 @@ BOOL func_ov006_021d96a8(ov006_Task021d96a8 *self) {
         self->unkC++;
         break;
     case 11:
-        if (data_ov006_021ec888->unk8 == 9) {
+        if (data_ov006_021ec888->state == 9) {
             self->unkC = 0x32;
         } else if (ov006_PartIs5(self->unk28)) {
             if (self->unk2C != 0) {
@@ -214,9 +214,9 @@ BOOL func_ov006_021d96a8(ov006_Task021d96a8 *self) {
             break;
         }
     case 0x16:
-        if (data_ov006_021ec888->unk8 == 9) {
+        if (data_ov006_021ec888->state == 9) {
             self->unkC = 0x32;
-        } else if (func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unk12 == 0) {
+        } else if (func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->aid == 0) {
             u16 k = *(u16 *)(data_02097e40 + 0x32);
             if (k == func_ov006_021e60e8(10, k)) {
                 self->unk3C = 0xb;
@@ -227,7 +227,7 @@ BOOL func_ov006_021d96a8(ov006_Task021d96a8 *self) {
         }
         break;
     case 0x17:
-        if (data_ov006_021ec888->unk8 == 9) {
+        if (data_ov006_021ec888->state == 9) {
             self->unkC = 0x32;
         } else if (func_ov006_021e60e8(0xb, 1) != 0) {
             ov006_HideAll(self);
@@ -240,7 +240,7 @@ BOOL func_ov006_021d96a8(ov006_Task021d96a8 *self) {
         func_0203cc58(0x14000, 0, 1);
         self->unkC++;
     case 0x1f:
-        if (data_ov006_021ec888->unk8 == 9) {
+        if (data_ov006_021ec888->state == 9) {
             self->unkC = 0x32;
         } else if (ov006_FadeDone(0) && ov006_FadeDone(1)) {
             ret = FALSE;
@@ -255,7 +255,7 @@ BOOL func_ov006_021d96a8(ov006_Task021d96a8 *self) {
         func_ov006_021e5e00(data_ov006_021ec888);
         self->unkC++;
     case 0x33:
-        if (data_ov006_021ec888->unk8 != 9) {
+        if (data_ov006_021ec888->state != 9) {
             ov006_HideAll(self);
             func_0203cc58(0x1e000, 0, 0);
             func_0203cc58(0x1e000, 0, 1);

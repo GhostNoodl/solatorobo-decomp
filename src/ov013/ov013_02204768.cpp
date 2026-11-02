@@ -74,9 +74,9 @@ static inline void Ov013_DtorDc(void *self) {
 }
 
 static inline void Ov013_SetRes(Ov013Names *p, const char *a, const char *b) {
-    STD_CopyString(p->unk_10, a);
-    STD_CopyString(p->unk_30, b);
-    p->unk_03_1 = 1;
+    STD_CopyString(p->mdlDir, a);
+    STD_CopyString(p->mdlName, b);
+    p->ownMdl = 1;
 }
 
 struct Ov013ShadowGH {

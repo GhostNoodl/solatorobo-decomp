@@ -45,14 +45,14 @@ BOOL func_ov000_0214c270(void);
 }
 
 static inline void Ov008_SetNameA(Ov008Anim *p, const char *a, const char *b) {
-    STD_CopyString(p->unk_10, a);
-    STD_CopyString(p->unk_30, b);
+    STD_CopyString(p->mdlDir, a);
+    STD_CopyString(p->mdlName, b);
     p->unk_03 |= 2;
 }
 
 static inline void Ov008_SetNameB(Ov008Anim *p, const char *a, const char *b) {
-    STD_CopyString(p->unk_4c, a);
-    STD_CopyString(p->unk_6c, b);
+    STD_CopyString(p->anmDir, a);
+    STD_CopyString(p->anmName, b);
     p->unk_03 |= 4;
 }
 

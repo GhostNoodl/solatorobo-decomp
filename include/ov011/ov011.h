@@ -239,27 +239,27 @@ struct Ov011PNode {
 };
 
 struct Ov011Ent {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 1;
-    u8 b3 : 1;
-    u8 b4 : 1;
+    u8 active : 1;
+    u8 settled : 1;
+    u8 radiusLerp : 1;
+    u8 spinLerp : 1;
+    u8 heightLerp : 1;
     u8 b5 : 3;
     u8 unk_01[0x3];
-    Ov011PNode *unk_04;
-    s32 unk_08;
-    s32 unk_0c;
-    s32 unk_10;
-    s32 unk_14;
-    s32 unk_18;
-    s32 unk_1c;
-    s32 unk_20;
-    s32 unk_24;
-    s32 unk_28;
-    s32 unk_2c;
-    u16 unk_30;
+    Ov011PNode *nodes;
+    s32 blend;
+    s32 radius;
+    s32 radiusTo;
+    s32 radiusStep;
+    s32 spin;
+    s32 spinTo;
+    s32 spinStep;
+    s32 height;
+    s32 heightTo;
+    s32 heightStep;
+    u16 angle;
     u8 unk_32[0x2];
-    s32 unk_34;
+    s32 dir;
 };
 OV011_SIZE(Ov011Ent, 0x38);
 
@@ -570,7 +570,7 @@ public:
     Ov011E30 *arrC;
     u16 *ids;
     Ov011List *list;
-    Ov011Ent *unk_18;
+    Ov011Ent *ent;
     u16 state;
     u16 timer;
     u64 flags;

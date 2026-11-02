@@ -43,15 +43,15 @@ void func_ov008_021cec20(Ov008Mgr *m) {
     case 10:
     case 11:
     case 12:
-        if (m->unk_100 != NULL) {
-            m->unk_100->v20();
+        if (m->menu != NULL) {
+            m->menu->v20();
         }
-        if (m->unk_10c != NULL) {
-            m->unk_10c->v20();
+        if (m->talk != NULL) {
+            m->talk->v20();
         }
         if (m->state == 11 || m->state == 12) {
-            if (m->unk_104 != NULL) {
-                m->unk_104->v20();
+            if (m->dialog != NULL) {
+                m->dialog->v20();
             }
         }
         break;
@@ -59,12 +59,12 @@ void func_ov008_021cec20(Ov008Mgr *m) {
 }
 
 void func_ov008_021cee4c(Ov008Mgr *m) {
-    if (m->unk_f8 == NULL || m->unk_f4 == NULL || m->unk_100 == NULL) {
+    if (m->panel == NULL || m->caption == NULL || m->menu == NULL) {
         return;
     }
-    if (m->unk_f4->pic.v34()) {
-        Ov008Panel *a = m->unk_f8;
-        Ov008Caption *b = m->unk_f4;
+    if (m->caption->pic.v34()) {
+        Ov008Panel *a = m->panel;
+        Ov008Caption *b = m->caption;
         if (a->pic.v34()) {
             a->pic.v0c();
         }
@@ -73,14 +73,14 @@ void func_ov008_021cee4c(Ov008Mgr *m) {
             a->state = 0xf;
         } else if (a->state == 0x10) {
             a->state = 0x11;
-            if (a->unk_54 <= 0) {
+            if (a->offset <= 0) {
                 a->unk_5c = 0;
             } else {
-                a->unk_5c = a->unk_54;
+                a->unk_5c = a->offset;
             }
-            a->unk_54 = -0x1000;
+            a->offset = -0x1000;
         }
-        m->unk_f4->pic.v08();
+        m->caption->pic.v08();
         if (!m->flags.b3) {
             m->flags.b4 = 0;
             m->flags.b3 = 1;
@@ -88,7 +88,7 @@ void func_ov008_021cee4c(Ov008Mgr *m) {
             m->unk_11c = 0x80000;
         }
     }
-    func_ov008_021ccf44(m->unk_f8);
+    func_ov008_021ccf44(m->panel);
     if (m->flags.b4 == 1) {
         m->unk_11c += FX_Mul(m->unk_11c, 0x666);
         if (Ov008_Abs(m->unk_11c) > 0x80000) {

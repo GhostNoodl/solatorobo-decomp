@@ -75,7 +75,7 @@ void func_ov007_021cf474(Ov007Scene *s) {
     if (Ov007_FadeDone()) {
         return;
     }
-    if (s->unk_3c == NULL) {
+    if (s->cam == NULL) {
         return;
     }
     st = (Gfx3DState *)data_02097d48->unk_8b0;
@@ -85,7 +85,7 @@ void func_ov007_021cf474(Ov007Scene *s) {
         Ov007_SetToon(st, data_ov007_021cfa98[s->unk_4c - 1]);
         NNS_G3dGlbLightVector(GX_LIGHTID_0, v->x, v->y, v->z);
     }
-    s->unk_3c->v00();
+    s->cam->v00();
     func_ov000_021903b4(s->unk_30);
     func_ov000_021903b4(s->unk_34);
     if (s->unk_38 != NULL) {
@@ -149,12 +149,12 @@ void func_ov007_021cf474(Ov007Scene *s) {
                 Ov007_DrawMdl(s->unk_2c);
             }
             {
-                s32 w = s->unk_5c[i]->unk_44;
-                s->unk_5c[i]->v14();
-                s->unk_5c[i]->attr.pid = Gfx3DState_NextPolyId(st);
-                s->unk_5c[i]->attr.alpha = alpha;
-                s->unk_5c[i]->v20(0x80 - (w >> 1) + (off >> 12), x);
-                s->unk_5c[i]->v90();
+                s32 w = s->wins[i]->width;
+                s->wins[i]->v14();
+                s->wins[i]->attr.pid = Gfx3DState_NextPolyId(st);
+                s->wins[i]->attr.alpha = alpha;
+                s->wins[i]->v20(0x80 - (w >> 1) + (off >> 12), x);
+                s->wins[i]->v90();
             }
         }
         x += 0x10;

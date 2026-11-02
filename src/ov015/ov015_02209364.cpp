@@ -5,21 +5,21 @@ extern "C" {
 
 
 static inline void Ov015Anim_SetA(Ov015Anim *n, const char *a, const char *b) {
-    STD_CopyString(n->unk_10, a);
-    STD_CopyString(n->unk_30, b);
-    n->unk_03_1 = 1;
+    STD_CopyString(n->mdlDir, a);
+    STD_CopyString(n->mdlName, b);
+    n->ownMdl = 1;
 }
 
 static inline void Ov015Anim_SetB(Ov015Anim *n, const char *a, const char *b) {
-    STD_CopyString(n->unk_4c, a);
-    STD_CopyString(n->unk_6c, b);
-    n->unk_03_2 = 1;
+    STD_CopyString(n->anmDir, a);
+    STD_CopyString(n->anmName, b);
+    n->ownAnm = 1;
 }
 
 static inline void Ov015Anim_SetD(Ov015Anim *n, const char *a, const char *b) {
-    STD_CopyString(n->unk_c4, a);
-    STD_CopyString(n->unk_e4, b);
-    n->unk_03_4 = 1;
+    STD_CopyString(n->evDir, a);
+    STD_CopyString(n->evName, b);
+    n->ownEv = 1;
 }
 
 extern char data_ov015_02212dce[];
@@ -31,8 +31,8 @@ char *func_0207011c(u16 id);
 void func_ov000_02191b70(void *p);
 
 void func_ov015_02209364(Ov015Fish *self) {
-    Ov015Anim *n1 = (Ov015Anim *)&self->unk_10c;
-    Ov015Anim *n2 = (Ov015Anim *)&self->unk_32c;
+    Ov015Anim *n1 = (Ov015Anim *)&self->res;
+    Ov015Anim *n2 = (Ov015Anim *)&self->res2;
     {
         const char *a = data_ov015_02212dd9;
         const char *b = data_ov015_02212dce;
@@ -48,7 +48,7 @@ void func_ov015_02209364(Ov015Fish *self) {
         }
     }
     {
-        char *c = func_0207011c(self->unk_c0.unk_04);
+        char *c = func_0207011c(self->info.id);
         const char *a = data_ov015_02212df5;
         if (a) {
             Ov015Anim_SetA(n2, a, c);
@@ -57,7 +57,7 @@ void func_ov015_02209364(Ov015Fish *self) {
     }
     n1->unk_00 = 0;
     n2->unk_00 = 0;
-    func_ov000_02191b70(&self->unk_54c);
+    func_ov000_02191b70(&self->shadow);
 }
 
 }

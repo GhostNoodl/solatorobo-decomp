@@ -109,7 +109,7 @@ void Ov006ActVt_021ec4f4_Start(u8 *self) {
     }
     FIELD(self, 0x198, void *) = p;
     func_ov006_021dc8f8(p);
-    func_ov006_021dcc9c(FIELD(self, 0x198, void *), self[0x19e], slot->unk8 == 0);
+    func_ov006_021dcc9c(FIELD(self, 0x198, void *), self[0x19e], slot->type == 0);
     {
         u8 *q = FIELD(self, 0x198, u8 *);
         s32 z = FIELD(q, 0x28, s32);

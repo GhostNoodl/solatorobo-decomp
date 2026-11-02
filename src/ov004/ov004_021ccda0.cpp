@@ -112,8 +112,8 @@ void func_ov004_021ccfd0(Ov004V *p) {
 }
 
 void func_ov004_021ccff0(Ov004V *p) {
-    if (p->unk_38 != NULL) {
-        func_ov000_02190a80(p->unk_38, func_0203db40(p->unk_24));
+    if (p->model != NULL) {
+        func_ov000_02190a80(p->model, func_0203db40(p->unk_24));
     }
 }
 

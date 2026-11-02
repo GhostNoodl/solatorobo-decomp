@@ -20,7 +20,7 @@ u16 func_02046ab4(ov006_WhState *a);
 
 static inline void ov006_Slot_Unpack(ov006_Slot *self, const ov006_SlotPacked *src) {
     self->active = src->active ? 1 : 0;
-    self->unk8 = src->isType1 ? 1 : 0;
+    self->type = src->isType1 ? 1 : 0;
     self->unkC = src->unkC | 0x7000;
     self->unk10 = src->unk10;
     STD_CopyLString(self->name, src->name, sizeof(self->name));
@@ -59,9 +59,9 @@ void func_ov006_021db258(void) {
             slot = &data_ov006_021ec884->slots[n];
             ov006_Slot_Clear(slot);
             slot->active = 1;
-            slot->unk8 = 1;
+            slot->type = 1;
             MI_CpuCopy8(p->packed.name, slot->name, sizeof(slot->name));
-            slotRef->unk12 = i;
+            slotRef->aid = i;
             ov006_Slot_Unpack(slot, &p->packed);
             if (i == func_02046ab4(data_02097e40)) {
                 data_ov006_021ec884->unk5 = n;
@@ -75,9 +75,9 @@ void func_ov006_021db258(void) {
             slot2 = &data_ov006_021ec884->slots[n++];
             ov006_Slot_Clear(slot2);
             slot2->active = 1;
-            slot2->unk8 = 0;
+            slot2->type = 0;
             MI_CpuCopy8(p2->packed.name, slot2->name, sizeof(slot2->name));
-            slot2->unk12 = i2;
+            slot2->aid = i2;
             ov006_Slot_Unpack(slot2, &p2->packed);
         }
     }

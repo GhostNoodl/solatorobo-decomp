@@ -30,7 +30,7 @@ void Ov011SceneActor_Start(Ov011SceneActor *self) {
         p->s1b4.b0 = 0;
         func_ov000_02198328(&p->mgr.state);
         p->mgr.b0 = 0;
-        p->ent.b0 = 0;
+        p->ent.active = 0;
         p->b0 = 0;
     }
     self->scene = p;

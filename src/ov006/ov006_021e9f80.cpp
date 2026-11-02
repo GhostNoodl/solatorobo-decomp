@@ -46,7 +46,7 @@ void *func_ov006_021e37d0(int type, int arg);
 
 static inline BOOL ov006_Racer021e9f80_Done(ov006_Racer021e9f80 *self) {
     BOOL done = FALSE;
-    if (self->unk19F > data_ov006_021ec884->unk8->unkB) {
+    if (self->unk19F > data_ov006_021ec884->info->unkB) {
         done = TRUE;
     }
     return done;
@@ -75,7 +75,7 @@ void func_ov006_021e9f80(ov006_Racer021e9f80 *self) {
     ov006_SlotManagerInfo *info;
     VecFx32 min = data_ov006_021eb8a4;
     VecFx32 max = data_ov006_021eb8b0;
-    info = data_ov006_021ec884->unk8;
+    info = data_ov006_021ec884->info;
     p = &self->pts[self->cur];
 
     if (p != NULL) {

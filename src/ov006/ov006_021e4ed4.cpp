@@ -49,20 +49,20 @@ static inline void ov006_MenuEntry_Clear(ov006_MenuEntry *e) {
 void func_ov006_021e4ed4(ov006_Unk021ec888 *self) {
     int i;
 
-    switch (self->unkC) {
+    switch (self->stateTime) {
     case 0:
         data_02097dd0->vblankFunc = NULL;
         func_02045094(data_02097e40);
-        if (self->unkC < 0xff) {
-            self->unkC++;
+        if (self->stateTime < 0xff) {
+            self->stateTime++;
         }
         if (self->unk1D8 != NULL && self->unk1D8->obj != NULL) {
             ((ov006_Obj021e4ed4 *)self->unk1D8->obj)->unkC |= 2;
         }
     case 1:
         if (data_02097e40->unk2C == 1) {
-            if (self->unkC < 0xff) {
-                self->unkC++;
+            if (self->stateTime < 0xff) {
+                self->stateTime++;
             }
         } else if (data_02097e40->unk2C == 8 || data_02097e40->unk2C == 9) {
             func_02045498(data_02097e40, 0);
@@ -73,8 +73,8 @@ void func_ov006_021e4ed4(ov006_Unk021ec888 *self) {
         for (i = 0; i < 4; i++) {
             ov006_MenuEntry_Clear(&self->entries[i]);
         }
-        self->unk8 = 3;
-        self->unkC = 0;
+        self->state = 3;
+        self->stateTime = 0;
         break;
     }
 }
