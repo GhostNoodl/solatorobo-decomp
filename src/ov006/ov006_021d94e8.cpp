@@ -1,4 +1,6 @@
 #include "ov006/ov006.h"
+#include "Main/Res/ResArc.h"
+#include "Main/Res/ArcName.h"
 
 typedef struct ov006_Bgm021d94e8 {
     u16 active : 1;
@@ -12,10 +14,8 @@ typedef struct ov006_Bgm021d94e8 {
 extern "C" {
 
 extern ov006_Bgm021d94e8 *data_02097e48;
-extern void *data_0208cc94;
-extern u8 data_ov006_021ec864[];
+extern char data_ov006_021ec864[];
 void func_0204aab0(ov006_Bgm021d94e8 *a);
-void *func_020359d0(void *a, int b, int c);
 
 BOOL func_ov006_021d94e8(void) {
     ov006_Bgm021d94e8 *s = data_02097e48;

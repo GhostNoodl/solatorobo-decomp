@@ -8,7 +8,7 @@ s32 Rand_PlusMinus(s32 max);
 extern const VecFx32 data_02092a50;
 extern void *data_02097e4c;
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
-void func_ov000_0218996c(s32 a, s32 b);
+void func_ov000_0218996c(u8 a, u8 b);
 void *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 kind, s32 chance);
 
 struct Ov011RotB {
@@ -26,7 +26,7 @@ struct Ov011Tbl63 {
 
 extern const Ov011Tbl63 data_ov011_0220752c;
 extern u8 data_ov011_02207610[];
-s32 Rand_UpTo(s32 max);
+u32 Rand_UpTo(u32 max);
 
 void func_ov011_022063b0(Ov011Act7da4 *self) {
     VecFx32 v;

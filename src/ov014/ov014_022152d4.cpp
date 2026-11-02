@@ -3,9 +3,9 @@
 extern "C" {
 
 extern u8 data_ov014_02217f18[];
-extern void *ActorEx_Ctor(void *self);
+extern ActorEx *ActorEx_Ctor(ActorEx *self);
 extern void func_ov000_02194758(void *self);
-extern BOOL func_ov000_02194c08(void *self);
+extern BOOL func_ov000_02194c08(ActorEx *self);
 
 void func_ov014_022152d4(Ov014ActEx_022142fc *self) {
     self->vfunc_08();
@@ -54,7 +54,7 @@ void Ov014ActEx_022152e8_Start(Ov014ActEx_022152e8 *self) {
     n->unk_22_1 = 0;
     self->hit->unk_30 = 0x60000000;
     self->hit->unk_4c = 0x9000;
-    FLD(Ov014Flags, self->model, 0xc2).b4 = 0;
+    self->model->boxTest = 0;
 }
 
 }

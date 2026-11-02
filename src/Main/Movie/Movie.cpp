@@ -1,12 +1,12 @@
 #include "Main/Movie/Movie.h"
 #include "nnsys/snd/heap.h"
+#include "nitro/mi.h"
 
 extern "C" {
 
 Movie *data_02097e3c;
 
 extern void *Heap_Alloc(u32 size);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void PM_AppendPreSleepCallback(MovieSleepCb *cb);
 extern void PM_AppendPostSleepCallback(MovieSleepCb *cb);
 extern BOOL OS_IsRunOnTwl(void);

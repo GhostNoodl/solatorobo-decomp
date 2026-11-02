@@ -2,6 +2,8 @@
 #include "Main/Effect/Effect.h"
 #include "nitro/std.h"
 #include "ov003/Actor.h"
+#include "Main/Gfx/PlttRes.h"
+#include "Main/Sys/SysState.h"
 
 extern "C" {
 
@@ -28,7 +30,7 @@ typedef struct {
     u8 unk_ae;
 } Ov003Obj;
 
-extern void *Actor_Ctor(Actor *self);
+extern Actor *Actor_Ctor(Actor *self);
 extern char data_ov003_021f7ab4[];
 
 typedef struct {
@@ -155,15 +157,8 @@ Ov003Actor *name(Ov003Actor *self) {         \
 OV003_OBJ_CTOR(func_ov003_021d0c1c)
 OV003_OBJ_CTOR(func_ov003_021d0c94)
 
-typedef struct {
-    void *cur;
-    u32 unk_04;
-    void *alt;
-} Ov003HeapCtx;
-
 extern void *func_ov000_0218fee4(void *p);
 extern void Heap_Free(void *p);
-extern void Heap_FreeHi(void *p);
 extern void *func_ov000_0218c928(Actor *self);
 
 static inline void Ov003Actor_DtorBody(Ov003Actor *self) {

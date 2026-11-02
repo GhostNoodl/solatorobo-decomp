@@ -1,6 +1,7 @@
 #include "types.h"
 #include "ov003/Actor.h"
 #include "Main/Sys/FieldState.h"
+#include "nitro/mi.h"
 
 typedef struct {
     u8 unk_00[0x74];
@@ -31,8 +32,6 @@ extern Ov003SdObj *ActorMgr_GetActor(void *mgr, u16 id);
 extern s32 FX_Div(s32 a, s32 b);
 extern void NNS_G3dRenderObjSetInitFunc(void *rob, void *func);
 extern void func_ov003_021d0c04(void *self);
-extern void MI_Copy36B(const void *src, void *dst);
-extern void MI_Copy48B(const void *src, void *dst);
 extern u16 func_ov000_0218cea4(Ov003Actor *self);
 extern u16 func_ov000_021903b4(Model0218fe1c *m);
 extern void func_01ffc9fc(VecFx32 *out, VecFx32 *in, u16 ang);

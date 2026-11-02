@@ -1,4 +1,5 @@
 #include "ov006/Tasks.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define F(p, off, T) (*(T *)((u8 *)(p) + (off)))
 
@@ -216,11 +217,11 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
         self->unk48 = 0;
     }
     {
-        u8 *g = (u8 *)data_02097d48;
-        func_02043904(g + 0x8b0);
-        g[0x8b0] |= 0x30;
+        GfxSys *g = data_02097d48;
+        func_02043904(g->unk_8b0);
+        g->unk_8b0[0] |= 0x30;
         *(vu16 *)0x4000060 = (*(vu16 *)0x4000060 & ~0x3000) | 0x20;
-        func_02043b20(g + 0x8b0);
+        func_02043b20(g->unk_8b0);
     }
     if (F(self->unk54, 0x94, void *) != NULL) {
         ov006_ListNode *node = ov006_Window_GetSelected(self->unk54);

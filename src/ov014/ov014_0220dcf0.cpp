@@ -13,12 +13,12 @@ struct Ov014Mtx33 {
 extern "C" {
 
 extern u8 data_ov014_02217b44[];
-extern void *ActorEx_Ctor(void *self);
+extern ActorEx *ActorEx_Ctor(ActorEx *self);
 extern void func_ov000_02194758(void *self);
-extern BOOL func_ov000_02194c08(void *self);
+extern BOOL func_ov000_02194c08(ActorEx *self);
 extern void func_0203f364(ActorSub48 *p);
-extern void func_ov000_02191690(void *p);
-extern void func_ov000_02191618(void *p);
+extern void func_ov000_02191690(Model0218fe1c *p);
+extern void func_ov000_02191618(Model0218fe1c *p);
 
 void func_ov014_0220dcf0(void) {
 }
@@ -74,12 +74,12 @@ void Ov014ActEx_0220dcf4_Start(Ov014ActEx_0220dcf4 *self) {
 
 extern EffectObj *func_ov014_0220f7f0(s32 k, VecFx32 *pos);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern void Math_DirToAngles(u16 *ang, VecFx32 *v);
 extern void *Target_Get(void *p);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
-extern void func_ov000_02191708(void *p);
-extern void func_ov000_021911c8(void *a, s32 b);
+extern void func_ov000_02191708(Model0218fe1c *p);
+extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
 extern void HitSphere_Link(ActorSub48 *p);
 
 void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {

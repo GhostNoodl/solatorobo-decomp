@@ -38,15 +38,15 @@ typedef struct {
 extern "C" {
 
 extern void *data_ov000_021ccd68;
-extern char data_ov003_021f8510[];
+extern const char data_ov003_021f8510[];
 extern char data_ov003_021f8516[];
 extern BOOL func_ov000_02190cb0(Ov003LpModel *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021911c8(Ov003LpModel *model, s32 v);
 extern void func_ov000_021915a0(Ov003LpModel *model);
 extern BOOL func_ov000_0218ffdc(Ov003LpModel *model, void *res, s32 a, s32 b);
-extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
-extern void SndMgr_StopSeqArc(void *mgr, s32 id);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
+extern void SndMgr_StopSeqArc(SndMgr *mgr, s32 id);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern BOOL func_ov000_02198360(Ov003LpWork *w, s32 a, s32 b);
 extern void *func_ov000_0219bf90(void);

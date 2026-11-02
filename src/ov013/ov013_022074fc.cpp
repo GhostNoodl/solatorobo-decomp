@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern char data_ov013_0220be94[];
-extern void func_ov000_02191418(void *a, s32 b, s32 c);
+extern void func_ov000_02191418(Model0218fe1c *a, u16 b, BOOL c);
 extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
 
 void func_ov013_022074fc(Ov003Actor *self) {
@@ -31,10 +31,10 @@ extern char data_ov013_0220be7c[];
 extern char data_ov013_0220be9a[];
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);
 extern void func_0203f364(void *p);
-extern void func_ov000_021911c8(void *a, s32 b);
+extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
 extern void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 
 void func_ov013_022075b8(Ov003Actor *self) {

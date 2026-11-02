@@ -126,7 +126,7 @@ extern void *func_ov000_02191318(void *model, s32 v);
 extern void func_ov000_02191708(void *model);
 extern void func_ov000_02191690(void *model);
 extern BOOL func_ov000_02191120(void *model);
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 extern Ov003GmPlayer *func_ov000_0219bf90(void);
 extern BOOL func_ov000_0219aae8(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern BOOL func_ov000_0219a8bc(void *a, void *b, void *c, s32 d, s32 e, VecFx32 *f, s32 g, s32 h, s32 i);
@@ -140,7 +140,7 @@ extern void func_ov000_02197ad0(void *self, s32 a);
 extern void Actor_Move(void *self, s32 a);
 extern void func_ov000_021987b8(Ov003GmCtl *ctl, s32 a, s32 b, s32 c);
 extern void func_ov000_021915a0(void *model);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 
 void func_ov003_021ec9e0(Ov003Gimmick *self) {
     ActorSub40 *w = self->work;

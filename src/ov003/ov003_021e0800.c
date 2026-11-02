@@ -27,7 +27,7 @@ typedef struct {
 
 extern void *data_ov000_021ccd68;
 extern void func_ov000_02194758(void *self);
-extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 
 void Ov003ActVt_021f8058_Start(Ov003Prop *self) {
     func_ov000_02194758(self);
@@ -47,7 +47,7 @@ extern BOOL func_ov000_021b4738(void *p);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_ov000_02182590(u8 *p);
-extern s32 Rand_UpTo(s32 max);
+extern u32 Rand_UpTo(u32 max);
 
 #define OV003_FX32_CONST(x) ((s32)(((x) > 0) ? ((x) * 4096.0f + 0.5f) : ((x) * 4096.0f - 0.5f)))
 

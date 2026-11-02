@@ -33,7 +33,7 @@ extern void CARD_LockRom(u16 id);
 extern void CARD_UnlockRom(u16 id);
 extern Ov004RomHeader *CARD_GetRomHeader(void);
 extern void func_0200d6d4(s32 dma, u32 src, void *dst, u32 len, u32 e, u32 f, u32 g);
-extern u32 func_ov004_021cea18(const void *p, u32 n);
+extern u32 func_ov004_021cea18(const u8 *p, u32 n);
 
 #define REG_EXMEMCNT (*(vu16 *)0x04000204)
 #define REG_MCCNT0_HI (*(vu8 *)(reg + 0x1a1))

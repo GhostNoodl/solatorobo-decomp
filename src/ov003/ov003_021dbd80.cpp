@@ -7,12 +7,12 @@ extern "C" {
 extern Robo021ca458 *func_ov000_0219bf90(void);
 extern Actor *Target_Get(ActorSub4c *t);
 extern BOOL func_ov000_0218d2e0(Actor *self);
-extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, void **list);
+extern s32 func_ov000_0219a510(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list);
 extern Actor *func_ov000_021985c0(void *p);
 extern BOOL func_ov000_0219a8bc(void *a, Actor *b, Actor *c, u16 d, u8 e, VecFx32 *f, s32 g, s32 h, s32 i);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern void func_ov003_021f0c60(Ov003Shot *self, u16 mask);
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 
 static inline u8 Ov003HtPlayer_Kind(Robo021ca458 *pl) {
     if (pl->fsm != NULL) {

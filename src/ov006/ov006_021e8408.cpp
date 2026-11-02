@@ -2,6 +2,8 @@
 #include "ov006/ov006.h"
 #include "nitro/fx.h"
 #include "Main/Effect/Effect.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 typedef struct ov006_State021e8408 {
     u16 state;
@@ -46,10 +48,8 @@ typedef struct ov006_Prop021e8408 {
 
 extern "C" {
 
-extern void *data_02097e4c;
 
-void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-void func_ov000_0218996c(s32 a, s32 b);
+void func_ov000_0218996c(u8 a, u8 b);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 void func_ov000_021911c8(void *a, s32 b);
 s32 Rand_PlusMinus(s32 range);

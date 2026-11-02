@@ -1,9 +1,9 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
 
 extern "C" {
 
-extern void *data_02097e4c;
-extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
+extern void SndMgr_LoadHeapState(SndMgr *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 void func_ov009_021fc63c(Ov003Actor *self) {
     func_ov003_021d0fc0(self);

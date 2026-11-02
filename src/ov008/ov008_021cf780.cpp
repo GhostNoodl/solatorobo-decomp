@@ -1,15 +1,13 @@
 #include "ov008/ov008.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Sys/FieldState.h"
+#include "Main/Gfx/ObjPool.h"
+#include "Main/Res/StageRes.h"
+#include "Main/Res/StageCmd.h"
 
 extern "C" {
 
 extern Ov008Mgr *data_ov008_021d0500;
-extern void *data_02097e4c;
-extern void *data_ov000_021ccd54;
-extern Ov008Shared data_02fe1534;
-extern s32 data_02149efc;
-extern Ov008Save *data_02fe152c;
-void *func_02049a48(void *a, int b, int c, int d, int e);
-void func_ov000_021865f8(void *p);
 void func_02062524(void);
 void func_ov000_02187b50(void *p);
 Ov008Def *Lang_GetGroup(u8 id);

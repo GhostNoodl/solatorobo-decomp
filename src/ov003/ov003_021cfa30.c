@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Sys/Scene.h"
 
 typedef struct {
     u16 unk_00;
@@ -17,14 +18,13 @@ typedef struct {
 } Ov003NodeList;
 
 extern Ov003NodeList *data_ov000_021ccd64;
-extern void *data_02149ef0;
 extern u8 OVERLAY_9_ID[];
 extern u8 OVERLAY_10_ID[];
 extern u8 OVERLAY_11_ID[];
 extern u8 OVERLAY_12_ID[];
 extern u8 OVERLAY_13_ID[];
 extern u8 OVERLAY_14_ID[];
-extern void func_0204b270(void *a, s32 b, s32 c);
+extern void func_0204b270(SceneMgr *a, s32 b, s32 c);
 
 s32 func_ov003_021cf77c(Ov003NodeSub *sub) {
     s32 r;

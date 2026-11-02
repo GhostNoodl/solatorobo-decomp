@@ -26,7 +26,7 @@ extern void *func_0206fef8(u16 kind);
 extern void __cxa_vec_cleanup(void *arr, int count, int size, void *dtor);
 extern void *func_ov000_0218fee4(void *p);
 extern void *func_ov000_0218ea20(void *p);
-extern void *func_ov000_0218c928(void *p);
+extern u8 *func_ov000_0218c928(u8 *p);
 extern void func_ov000_021b4adc(void *self);
 extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_0218cf5c(void *self);

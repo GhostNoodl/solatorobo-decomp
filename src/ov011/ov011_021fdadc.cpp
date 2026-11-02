@@ -49,11 +49,11 @@ Ov011Link *func_ov011_021fdadc(Ov011Link *head, Ov011Link *n) {
 }
 
 void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
-void *func_ov011_021fb66c(void *self);
+void *func_ov011_021fb66c(Ov011E40 *self);
 void func_ov011_02201b28(void *p);
 void func_ov011_0220205c(void *p);
 void func_ov011_02202fbc(void *p);
-void func_ov011_021fab74(void *p);
+void func_ov011_021fab74(Ov011Mgr *p);
 
 void func_ov011_021fdb28(Ov011Scene *self) {
     s32 bit = self->seq.current;

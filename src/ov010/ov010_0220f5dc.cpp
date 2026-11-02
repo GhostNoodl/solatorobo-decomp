@@ -2,6 +2,7 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "nitro/std.h"
+#include "nitro/mi.h"
 
 typedef s32 fx32;
 
@@ -349,7 +350,6 @@ extern void MTX_RotZ33_(void *m, s32 s, s32 c);
 extern void MTX_RotX33_(void *m, s32 s, s32 c);
 extern void MTX_RotY33_(void *m, s32 s, s32 c);
 extern void MTX_Concat33(void *a, void *b, void *c);
-extern void MI_Copy36B(void *m, void *b);
 extern void func_ov010_0220166c(void *p);
 
 BOOL Ov010ActVt_0220fccc_Draw(Obj021fa860 *self) {
@@ -1167,14 +1167,14 @@ extern void func_ov003_021d88ec(Ov010Cmd *c);
 extern void Ov003StateMachine_SendMessage(void *p, Ov010Cmd *c);
 extern BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 extern u16 Ov003Vec_Pitch(VecFx32 *a);
-extern BOOL Ov003Vec_Equal(void *a, const VecFx32 *b);
-extern void func_ov010_02201b48(void *p);
+extern BOOL Ov003Vec_Equal(VecFx32 *a, VecFx32 *b);
+extern void func_ov010_02201b48(Ov010TaskList *p);
 extern void *func_ov010_02201ad4(void *p, void *fn, u32 time);
-extern void Ov010Vt_0220fe08_New(void);
+extern void *Ov010Vt_0220fe08_New(void);
 extern void func_ov010_02201eac(void *t, u16 a, u16 id, const VecFx32 *v0, const VecFx32 *v1);
-extern void func_ov010_02201bf4(void *p);
-extern BOOL func_ov010_02201c5c(void *p);
-extern BOOL func_ov010_02201c34(void *p);
+extern void func_ov010_02201bf4(Ov010TaskList *p);
+extern BOOL func_ov010_02201c5c(Ov010TaskList *p);
+extern BOOL func_ov010_02201c34(Ov010TaskList *p);
 
 static inline void Ov010e_StartE(Ov010Shake *s) {
     if (s->active == 0) {
@@ -1373,22 +1373,22 @@ void func_ov010_021fbda0(Obj021fa860 *self) {
 // A non-const view of the attach offset: loads from it must stay after earlier stores
 
 extern void *data_02097e4c;
-extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(ActorSub40 *a, u8 b, BOOL c);
 extern void *Ov010Vt_0220fdf4_New(void);
 extern void func_ov010_02202074(void *t, u16 a, u16 id, const VecFx32 *v0, const VecFx32 *v1);
 extern void VEC_MultAdd(s32 s, const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern s32 VEC_Mag(const VecFx32 *v);
 
 extern void *data_ov000_021ccd68;
-extern void func_ov000_021915a0(void *a);
-extern BOOL func_ov000_02191120(void *p);
+extern void func_ov000_021915a0(Model0218fe1c *a);
+extern BOOL func_ov000_02191120(Model0218fe1c *p);
 extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
-extern void func_ov010_022016a0(void *p, VecFx32 *a, VecFx32 *b, s32 c);
-extern void func_ov010_02201830(void *p, VecFx32 *a);
-extern void func_ov010_02201898(void *p, VecFx32 *a);
-extern void Ov010BeamSet_Stop(void *p);
-extern BOOL Ov010BeamSet_IsDone(void *p);
-extern void Actor_TurnToPos(void *self, void *t, s32 a);
+extern void func_ov010_022016a0(Ov010BeamSet *p, const VecFx32 *a, const VecFx32 *b, u16 c);
+extern void func_ov010_02201830(Ov010BeamSet *p, const VecFx32 *a);
+extern void func_ov010_02201898(Ov010BeamSet *p, const VecFx32 *a);
+extern void Ov010BeamSet_Stop(Ov010BeamSet *p);
+extern BOOL Ov010BeamSet_IsDone(Ov010BeamSet *p);
+extern void Actor_TurnToPos(Actor *self, VecFx32 *t, s32 a);
 
 struct Ov010Bits16 {
     u16 b0 : 1;
@@ -1697,11 +1697,11 @@ struct Ov010Flags8b {
 extern void *func_ov000_02199f60(void *p);
 extern u16 FX_Atan2(s32 x, s32 z);
 extern s32 Rand_PlusMinus(s32 n);
-extern s32 Rand_UpTo(s32 max);
-extern void func_ov010_0220172c(void *p);
-extern void func_ov000_02191418(void *a, s32 b, s32 c);
+extern u32 Rand_UpTo(u32 max);
+extern void func_ov010_0220172c(Ov010BeamSet *p);
+extern void func_ov000_02191418(Model0218fe1c *a, u16 b, BOOL c);
 extern BOOL Ov003Sequence_HasEntries(void *p, void *tbl);
-extern u16 func_01ffc128(u16 a, u16 b, s32 c, s32 d, s32 e);
+extern u16 func_01ffc128(u16 a, u16 b, s32 c, u32 d, u16 e);
 extern char data_ov010_0220fc19[];
 extern char data_ov010_0220fc1f[];
 extern u8 data_ov010_0220edd4[];
@@ -1866,10 +1866,10 @@ void func_ov010_021fcf70(Obj021fa860 *self) {
 }
 
 extern BOOL Ov003StateMachine_IsState(void *p, s32 a);
-extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 extern void func_0203cb78(s32 a, s32 b, s32 c);
-extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *s, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *s, s32 a, s32 b, s32 c, u8 d);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern void SndMgr_StopSeqArc(void *a, s32 b);
 extern char data_ov010_0220fc25[];
 

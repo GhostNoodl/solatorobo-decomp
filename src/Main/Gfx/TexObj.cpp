@@ -3,6 +3,7 @@
 #include "Main/Res/ResMgr.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/PlttRes.h"
+#include "Main/Res/ResArc.h"
 
 extern "C" {
 
@@ -67,8 +68,7 @@ extern int NNS_G2dGetImageLocation(TexObj *obj, int idx);
 extern void func_0203bd40(GfxSys *sys, u32 offset, BOOL sub);
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(u32 key);
 extern void func_0203e58c(u32 id);
-extern void func_02035acc(char *arc, char *name, int mode);
-extern void func_02036838(ResMgr *mgr, char *name, int mode, int opt);
+extern void func_02035acc(const char *arc, const char *name, u16 mode);
 
 
 void func_020416b4(TexObj *obj, int i);
@@ -199,10 +199,10 @@ typedef struct TexObjAnim {
     /* 0x0c */ int unk_0c;
 } TexObjAnim;
 
-extern u16 *NNS_G2dGetAnimSequenceByIdx(u16 *dict, int idx);
 extern void NNS_G2dInitCellAnimation(TexObjAnim *anim, u16 *data, void *res);
 extern void NNS_G2dSetCellAnimationSequence(TexObjAnim *anim, u16 *data);
 extern void NNS_G2dSetAnimCtrlCallBackFunctor(TexObjAnim *anim, int type, TexObj *obj, void (*cb)(TexObj *));
+extern u16 *NNS_G2dGetAnimSequenceByIdx(u16 *dict, int idx);
 extern void NNS_G2dTickCellAnimation(TexObjAnim *anim, int frame);
 extern void func_020435e8(GfxPltt *pltt, void *src, u32 size);
 void func_02041c90(TexObj *obj);
@@ -226,8 +226,8 @@ typedef struct OamRes {
 
 typedef int OamShape;
 
-extern int data_02082898[][4];
-extern int data_020828c8[][4];
+extern const int data_02082898[][4];
+extern const int data_020828c8[][4];
 
 static inline OamShape Oam_GetShape(const OamAttrs *attr) {
     return (OamShape)(*(u32 *)attr & 0xc000c000);
@@ -268,7 +268,7 @@ typedef struct TexObjRes2 {
     /* 0x1c */ TexObjImage *image0;
 } TexObjRes2;
 
-extern void func_02040dd8(PlttRes *res, int idx, int load);
+extern void func_02040dd8(PlttRes *res, int idx, bool load);
 void func_02041e74(TexObj *obj, int idx);
 
 

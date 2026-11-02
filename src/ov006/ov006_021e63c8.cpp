@@ -1,4 +1,5 @@
 #include "ov006/ov006.h"
+#include "Main/Gfx/SlidePanel.h"
 
 typedef struct ov006_Prop63c8 {
     void *vtbl;
@@ -47,8 +48,7 @@ void *func_ov000_0218fe1c(void *p);
 u8 func_ov006_021d8d9c(void);
 int func_ov006_021d8d4c(void);
 int func_ov006_021d8de0(void);
-extern void *data_02097e4c;
-void SndMgr_StopSeqArc(void *a, s32 b);
+void SndMgr_StopSeqArc(SndMgr *a, s32 b);
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218c928(void *self);
 

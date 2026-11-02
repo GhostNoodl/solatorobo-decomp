@@ -10,7 +10,7 @@ typedef struct {
 
 extern s32 func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, s32 b);
-extern void func_ov000_02191418(void *m, s32 a, s32 b);
+extern void func_ov000_02191418(Model0218fe1c *m, u16 a, BOOL b);
 extern BOOL func_ov000_0218d494(Ov003Actor *self, ActorMsg *ev);
 
 static inline void Ov003_SetColor(Model0218fe1c *m, u16 c0, u16 c1) {

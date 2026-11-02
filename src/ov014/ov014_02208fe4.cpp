@@ -13,13 +13,13 @@ extern Ov003Actor *Target_Get(void *p);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
 extern void func_ov003_021f0c60(Actor *self, s32 a);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void Ov003ScriptList_Init(void *p);
 extern void *Ov003Vt_021f7974_Dtor(void *p);
-extern void func_02049678(void *a, s32 b, s32 c, s32 d);
+extern void func_02049678(SndMgr *a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
-extern BOOL SndMgr_IsLoadDone(void *a);
+extern BOOL SndMgr_IsLoadDone(SndMgr *a);
 extern BOOL func_ov003_021d1c00(Ov003Actor *self, Ov014Msg *msg);
 extern u8 data_ov014_02216a60[];
 extern u8 data_ov014_02216afc[];
@@ -255,7 +255,7 @@ void Ov014Act_02209280_Start(Ov014Act_02209280 *self) {
     m->clearInit = 0;
     self->model->flushVP = 1;
     self->model->renderUser = &self->unk_fc;
-    FLD(Ov014Flags, self->model, 0xc2).b4 = 0;
+    self->model->boxTest = 0;
     self->targetObj->unk_18 |= 0x10;
     self->unk_1a8 = self->pos.x;
     self->unk_1ac = self->pos.y;
@@ -264,7 +264,7 @@ void Ov014Act_02209280_Start(Ov014Act_02209280 *self) {
 
 extern u8 *func_ov000_0219bf90(void);
 extern void *func_ov003_021ceff4(void *p);
-extern BOOL func_ov000_021983b0(void *p, s32 a, s32 b, s32 c);
+extern BOOL func_ov000_021983b0(ActorSub40 *p, u8 a, s32 b, BOOL c);
 
 static inline BOOL Ov014_TickB6(Ov014Act_02209280 *self) {
     BOOL r = FALSE;

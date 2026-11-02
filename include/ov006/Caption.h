@@ -22,7 +22,7 @@ typedef struct ov006_Caption {
     int ofsY;
     int kind;
     Model *model;
-    ov006_Anim *label;
+    TextWin *label;
 } ov006_Caption;
 
 #ifdef __cplusplus
@@ -40,11 +40,11 @@ extern u8 data_ov006_021ec22c[];
 }
 #endif
 
-static inline ov006_Anim *ov006_Anim_New(void) {
-    ov006_Anim *anim = (ov006_Anim *)Heap_Alloc(0xb8);
+static inline TextWin *ov006_TextWin_New(void) {
+    TextWin *anim = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (anim != NULL) {
         *(const u32 **)anim = data_0208ba70;
-        func_0204c7d0((TextWin *)anim);
+        func_0204c7d0(anim);
     }
     return anim;
 }
@@ -88,9 +88,9 @@ static inline void ov006_Caption_Init(ov006_Caption *self) {
         self->model->flags |= 0x400000;
         func_02041d9c(self->model, 2, data_ov006_021eb824[self->kind].part);
     }
-    self->label = ov006_Anim_New();
+    self->label = ov006_TextWin_New();
     text = data_ov006_021ec1b5;
-    ov006_AnimHolder_Play((ov006_AnimHolder *)self, (int)text, 4);
+    ov006_TextHolder_Play((ov006_TextHolder *)self, (int)text, 4);
 }
 
 #endif

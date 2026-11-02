@@ -1,4 +1,5 @@
 #include "Main/Res/ResMgr.h"
+#include "Main/Res/ResArc.h"
 
 extern "C" {
 
@@ -30,7 +31,6 @@ extern void func_02036b30(ResMgr *mgr, ResNode *node);
 extern void Sys_WaitVBlank(UnkSys *sys);
 extern void *func_02034b98(ResList *list, const char *name);
 extern void *func_02034cec(ResList *list, const char *name);
-extern void *func_02034d88(ResList *list, const char *name);
 extern void *func_02034e24(ResList *list, const char *name);
 extern void *func_02034ec0(ResList *list, const char *name);
 extern void *func_02034f5c(ResList *list, const char *name);

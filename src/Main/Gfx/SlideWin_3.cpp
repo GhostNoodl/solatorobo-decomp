@@ -3,6 +3,7 @@
 #include "Main/Sys/Field.h"
 #include "Main/Gfx/FieldMsg.h"
 #include "nnsys/g2d/g2d_Font.h"
+#include "Main/Gfx/GfxMgr.h"
 
 // Name box and glyph cache of a slide window (at 0xc0).
 struct SlideMsg {
@@ -70,7 +71,6 @@ struct SlideModel : Model {
 
 extern "C" {
 
-extern void *GfxMgr_GetFont(GfxMgr *mgr);
 extern void func_0203a4dc(GfxMgr *mgr, void *arg);
 extern void func_0203a5a4(GfxMgr *mgr, u16 c);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
@@ -80,7 +80,7 @@ extern void func_02051f70(SlideWinX *win);
 extern const char *func_0206ffa0(u16 id);
 extern void func_020708fc(u16 id, char *out);
 extern void func_02070b98(u16 id, char *out, u16 a, u16 b);
-extern void func_020359fc(const char *a, const void *b, int c, int d);
+extern void func_020359fc(const char *a, const char *b, u16 c, u8 d);
 extern const char *data_0208b9cc[];
 extern const char *data_0208cc90;
 

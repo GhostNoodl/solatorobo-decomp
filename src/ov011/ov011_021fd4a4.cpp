@@ -12,7 +12,7 @@ void func_ov011_021fd4a4(Ov011Sub1b4 *self) {
 #pragma force_active reset
 
 extern BOOL func_ov011_02201578(void *p);
-extern BOOL func_ov011_021fa720(void *e, s32 a, s32 b, s32 c, s32 d);
+extern BOOL func_ov011_021fa720(Ov011Ent *e, s32 a, s32 b, s32 c, s32 d);
 
 BOOL func_ov011_021fd4d8(Ov011Scene *self, Actor *owner) {
     self->b0 = 1;

@@ -2,6 +2,8 @@
 #include "Main/Snd/SndMgr.h"
 #include "Main/Res/ResMgr.h"
 #include "nitro/fx.h"
+#include "Main/Gfx/PlttRes.h"
+#include "Main/Res/ResLoader.h"
 
 extern "C" {
 
@@ -454,8 +456,6 @@ extern void DC_StoreRange(const void *startAddr, u32 nBytes);
 extern void OS_Terminate(void);
 extern void OS_Sleep(u32 msec);
 extern BOOL OS_IsRunOnTwl(void);
-extern void *Heap_AllocHi(u32 size, u32 align);
-extern void Heap_FreeHi(void *ptr);
 extern char data_0208b6e0[];
 /* TWL only */
 extern void func_0228ee0c(u32 a, u32 b);
@@ -578,7 +578,6 @@ extern "C" {
 #define SND_MGR data_02097e4c
 
 extern void *Heap_Alloc(u32 size);
-extern void *Heap_AllocLo(u32 size, int align);
 extern SndMgr *func_020492e0(SndMgr *mgr);
 extern void func_02049344(SndMgr *mgr);
 void func_0204a924(SndQueue *queue);

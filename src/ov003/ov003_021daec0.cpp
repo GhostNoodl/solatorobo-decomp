@@ -7,9 +7,9 @@ extern "C" {
 
 extern Ov003ShotDef data_ov003_021f4a34[];
 extern Ov003ShotStep data_ov003_021f49c4[];
-extern VecFx32 data_02092a50;
+extern const VecFx32 data_02092a50;
 extern void func_ov000_02194758(void *self);
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 
 #define OV003AK_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003AK_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])

@@ -1,4 +1,7 @@
 #include "ov006/ov006.h"
+#include "Main/Res/ResArc.h"
+#include "Main/Res/ArcName.h"
+#include "Main/Res/DataRes.h"
 
 extern "C" {
 
@@ -6,20 +9,14 @@ typedef void (*ov006_StateFunc)(int a, int b, int c);
 
 extern void *data_ov006_021ebb58;
 extern void *data_ov006_021ebb48;
-extern void *data_02097cdc;
-extern void *data_0208cca0;
 extern char data_ov006_021ebb88[];
 extern char data_ov006_021ebb78[];
-extern u8 data_ov006_021ec864[];
+extern char data_ov006_021ec864[];
 extern ov006_StateFunc data_ov006_021eb6d8[];
 
-void func_02036838(void *a, void *b, int c, int d);
 void func_ov006_021e42ec(void);
 int func_02044b20(void);
 void ov006_DeleteSlotManager(void);
-void func_0206e900(void *a, void *b);
-void *func_020359d0(void *a, int b, int c);
-int func_02035b90(void *a, int b);
 void Wh_Create(void);
 void func_ov006_021e42b4(void);
 void func_ov006_021dacb0(void);

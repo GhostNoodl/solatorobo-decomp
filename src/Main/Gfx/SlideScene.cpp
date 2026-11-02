@@ -1,4 +1,7 @@
 #include "Main/Gfx/SlidePanel.h"
+#include "Main/Gfx/Model.h"
+#include "Main/Res/ResArc.h"
+#include "Main/Res/ArcName.h"
 
 // HUD block of the field scene (at 0xc0; the one func_02056e74 draws).
 struct SlideHud {
@@ -84,16 +87,9 @@ public:
 };
 
 extern "C" {
-
-extern char *data_0208cca0;
-extern char *data_0208cc8c;
-extern char *data_0208cb84;
-extern char *data_0208cb74;
-
 extern u16 Pad_GetCur(void);
 extern u16 Pad_GetRelease(void);
 extern void func_02051a34(SlideScene *scene);
-extern void *func_02035d5c(const char *name);
 extern void *Heap_GetCurrent(void);
 extern void Heap_SetCurrentHi(void);
 extern Model *func_0204c9f8(Model *model);
@@ -102,8 +98,6 @@ extern BOOL func_0204e218(SlideScene *scene);
 extern Model *func_0204e238(void *model, const char *name, const char *file, int a);
 extern char *Model_GetName(Model *model);
 extern void *func_0204e294(Model *model);
-extern void *func_02034d88(void *a, void *b);
-extern void func_020417e0(Model *model, void *res);
 extern void func_0204e29c(Model *model);
 extern void func_02054254(SlidePanel *panel);
 extern void Obj3DLayer_SetCur(SlidePanel *panel, u32 v);
@@ -117,8 +111,7 @@ extern void *func_0204e278(void *pltt);
 extern void PlttRes_Load(void *res, Model *src);
 extern u32 *func_02054b90(void *pltt);
 extern void func_02054b98(void *dst, u32 size);
-extern void DC_FlushRange(const void *addr, u32 size);
-extern void func_02040dd8(void *res, int idx, bool load);
+extern void func_02040dd8(PlttRes *res, int idx, bool load);
 extern void func_02054bac(Model *model, void *pltt);
 extern void func_02054bb4(SlidePanel *panel);
 extern BOOL func_02054b4c(int ch);
@@ -195,13 +188,13 @@ BOOL func_020534dc(SlideScene *scene) {
         }
         Heap_SetCurrent(heap);
         if (func_0204e218(scene)) {
-            model = (Model *)Heap_Alloc(0x160);
+            model = (Model *)Heap_Alloc(sizeof(Model));
             if (model != NULL) {
                 model = func_0204e238(model, data_0208cc8c, data_0208cb84, 0);
             }
             scene->model = model;
         } else {
-            model = (Model *)Heap_Alloc(0x160);
+            model = (Model *)Heap_Alloc(sizeof(Model));
             if (model != NULL) {
                 model = func_0204e238(model, data_0208cca0, data_0208cb74, 0);
             }

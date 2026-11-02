@@ -30,7 +30,7 @@ typedef struct ov006_Pos {
 extern "C" {
 
 ov006_Prop *Ov006ActVt_021ec4f4_Ctor(ov006_Prop *self);
-void *func_0206ffa0(u32 id);
+void *func_0206ffa0(s32 id);
 void Actor_JoinGroup(ov006_Prop *self, u16 type, u32 id, void *res);
 void func_ov000_021984f4(void *a, int b, int c);
 void func_ov000_0219864c(void *a, int b, int c);

@@ -1,4 +1,5 @@
 #include "ov011/ov011.h"
+#include "Main/Gfx/GfxMgr.h"
 
 extern "C" {
 
@@ -76,13 +77,12 @@ void Ov011Act7da4_Update(Ov011Act7da4 *self) {
 #pragma force_active reset
 
 
-extern u8 *data_02097d48;
 int func_02043d9c(void *p);
 
 #pragma force_active on
 void Ov011Act7da4_Draw(Ov011Act7da4 *self) {
-    u8 v = data_02097d48[0x8b3];
-    func_02043d9c(data_02097d48 + 0x8b0);
+    u8 v = data_02097d48->unk_8b0[3];
+    func_02043d9c(data_02097d48->unk_8b0);
     self->model->polyId = v;
     func_ov003_021d16cc(self);
 }

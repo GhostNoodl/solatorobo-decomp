@@ -1,21 +1,23 @@
 #include "Main/Sys/SysTask.h"
 #include "nitro/fx.h"
+#include "nitro/mi.h"
 
 extern "C" {
 
 void func_02063374(Unk0214a418 *self) {
     void *saved;
     void *p;
+    Model *m;
     SysTaskVObj *v;
 
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
-    p = self->unk_14;
-    if (p != NULL) {
-        if (p != NULL) {
-            func_02041558((struct Model *)p);
-            func_02041278((struct PlttRes *)((u8 *)p + 0x88));
-            Heap_Free(p);
+    m = self->unk_14;
+    if (m != NULL) {
+        if (m != NULL) {
+            func_02041558(m);
+            func_02041278(&m->pltt);
+            Heap_Free(m);
         }
         self->unk_14 = NULL;
     }
@@ -199,8 +201,6 @@ extern SysG3dGlb NNS_G3dGlb;
 extern const VecFx32 data_02082b98;
 
 extern void NNS_G3dGeFlushBuffer(void);
-extern void MI_Copy64B(const void *src, void *dst);
-extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
 extern void NNS_G3dGlbPolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 extern void func_ov000_02190a80(void *a, s32 b);
 extern BOOL func_ov000_021903b4(void *a);

@@ -1,11 +1,10 @@
 #include "ov011/ov011.h"
+#include "Main/Gfx/SlidePanel.h"
 
 extern "C" {
 
-extern void *data_02097e4c;
-extern VecFx32 data_02092a50;
-void func_ov000_0218996c(s32 a, s32 b);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+extern const VecFx32 data_02092a50;
+void func_ov000_0218996c(u8 a, u8 b);
 
 #pragma force_active on
 void func_ov011_02204a8c(Ov011Act7c4c *self) {

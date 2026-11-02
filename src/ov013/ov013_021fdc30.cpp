@@ -8,7 +8,7 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void HitSphere_Link(ActorSub48 *p);
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
@@ -74,7 +74,7 @@ extern char data_ov013_0220b893[];
 extern char data_ov013_0220aec4[];
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov003Actor *p);
-extern void func_ov000_02191690(void *p);
+extern void func_ov000_02191690(Model0218fe1c *p);
 
 struct Ov013Stat8 {
     u16 a;

@@ -1,5 +1,7 @@
 #include "types.h"
 #include "nitro/std.h"
+#include "Main/Gfx/Model.h"
+#include "Main/Res/ResArc.h"
 
 class Ov003TlSub {
 public:
@@ -75,26 +77,14 @@ public:
     Ov003TlSub *unk_84;
 };
 
-typedef struct {
-    u8 unk_00[0x2c];
-    char unk_2c[0x40];
-    u32 unk_6c;
-    u8 unk_70[0x18];
-    u8 unk_88[0xc8];
-    s32 unk_150;
-    u8 unk_154[4];
-    void *unk_158;
-    u8 unk_15c[4];
-} Ov003TlSpr;
-
 class Ov003Tl : public Ov003TlObj {
 public:
     u8 unk_04[0x38];
     Ov003TlLabel *unk_3c;
     u8 unk_40[4];
-    Ov003TlSpr *unk_44;
-    Ov003TlSpr *unk_48;
-    Ov003TlSpr *unk_4c;
+    Model *unk_44;
+    Model *unk_48;
+    Model *unk_4c;
     char *unk_50;
     char *unk_54;
     u8 unk_58[4];
@@ -118,27 +108,22 @@ extern void *Heap_Alloc(u32 size);
 extern const char *func_0206ec48(u16 id);
 extern void func_ov003_021ce2a8(void *self, char *dst, u32 size, const char *arg);
 extern void func_ov000_0215bb14(Ov003TlLabel *l, char *s);
-extern void func_02041218(void *p);
-extern void func_02041440(Ov003TlSpr *s, const char *name, s32 a);
-extern void *func_02035f30(const char *a, const char *b, s32 c);
-extern void *func_02034d88(void *a, const char *b);
-extern void func_020417e0(Ov003TlSpr *s, void *res);
-extern void func_02041c5c(Ov003TlSpr *s, void *cb);
-extern void func_02041c18(Ov003TlSpr *s, s32 a);
-extern void func_02041c20(Ov003TlSpr *s, u16 a, u16 b);
-extern void func_02041d9c(Ov003TlSpr *s, s32 a, u16 b);
+extern ResList *func_02035f30(const char *a, const char *b, u16 c);
+extern void func_02041c5c(Model *s, void *cb);
+extern void func_02041c18(Model *s, s32 a);
+extern void func_02041c20(Model *s, u16 a, u16 b);
 extern void func_ov000_02173648(Ov003Tl *self);
 extern void func_ov003_021cceb4(u32 a, u32 b, u32 c, u32 d, u32 unused, u32 e, u32 f, u32 g, u32 h, u32 i, u32 j);
 extern void *func_ov003_021cce20(void *owner, u16 *flip, void *oam, u16 *count);
 extern void func_ov000_021c8408(void *self, int x, int y, int z, u16 color, const void *oam, const void *tex, u32 texBase, u32 plttBase, const void *mtx, u32 arg);
 
-static inline void Ov003TlSpr_Init(Ov003TlSpr *s, const char *file, const char *name) {
-    func_02041218(s->unk_88);
+static inline void Ov003Model_Init(Model *s, const char *file, const char *name) {
+    func_02041218(&s->pltt);
     func_02041440(s, name, 0);
-    STD_CopyString(s->unk_2c, file);
+    STD_CopyString(s->name, file);
 }
 
-static inline void Ov003TlSpr_Load(Ov003TlSpr *s, const char *file, const char *name) {
+static inline void Ov003Model_Load(Model *s, const char *file, const char *name) {
     func_020417e0(s, func_02034d88(func_02035f30(file, name, 2), name));
 }
 
@@ -189,58 +174,58 @@ void func_ov003_021cd1e4(Ov003Tl *self) {
     self->unk_3c->flags &= ~2;
 
     {
-        Ov003TlSpr *s = (Ov003TlSpr *)Heap_Alloc(0x160);
+        Model *s = (Model *)Heap_Alloc(sizeof(Model));
         if (s != NULL) {
-            Ov003TlSpr_Init(s, self->unk_50, self->unk_54);
+            Ov003Model_Init(s, self->unk_50, self->unk_54);
         }
         self->unk_44 = s;
     }
     res = func_02035f30(self->unk_50, self->unk_54, 2);
     func_020417e0(self->unk_44, func_02034d88(res, self->unk_54));
-    self->unk_44->unk_6c |= 2;
-    self->unk_44->unk_6c |= 0x80000;
+    self->unk_44->flags |= 2;
+    self->unk_44->flags |= 0x80000;
     self->unk_44->unk_150 = -0x1ccd;
     func_02041c5c(self->unk_44, NULL);
     func_02041c18(self->unk_44, 0xa0a);
     self->unk_44->unk_158 = (void *)func_ov003_021cceb4;
     func_02041c20(self->unk_44, self->unk_5c, 0x7fff);
-    func_02041d9c(self->unk_44, 0, self->unk_5c);
+    func_02041d9c(self->unk_44, 0, (u16)self->unk_5c);
 
     {
-        Ov003TlSpr *s = (Ov003TlSpr *)Heap_Alloc(0x160);
+        Model *s = (Model *)Heap_Alloc(sizeof(Model));
         if (s != NULL) {
-            Ov003TlSpr_Init(s, self->unk_50, self->unk_54);
+            Ov003Model_Init(s, self->unk_50, self->unk_54);
         }
         self->unk_48 = s;
     }
     res = func_02035f30(self->unk_50, self->unk_54, 2);
     func_020417e0(self->unk_48, func_02034d88(res, self->unk_54));
-    self->unk_48->unk_6c |= 2;
-    self->unk_48->unk_6c |= 0x80000;
+    self->unk_48->flags |= 2;
+    self->unk_48->flags |= 0x80000;
     self->unk_48->unk_150 = -0x2000;
     func_02041c5c(self->unk_48, (void *)func_ov003_021cce20);
     func_02041c18(self->unk_48, 0xa0a);
     self->unk_48->unk_158 = (void *)func_ov000_021c8408;
 
     {
-        Ov003TlSpr *s = (Ov003TlSpr *)Heap_Alloc(0x160);
+        Model *s = (Model *)Heap_Alloc(sizeof(Model));
         if (s != NULL) {
             const char *name = data_ov003_021f78cd;
             const char *file = data_ov003_021f78c4;
-            func_02041218(s->unk_88);
+            func_02041218(&s->pltt);
             // fake match: the always-true check splits the block so name/file stay in
             // callee-saved registers instead of being rematerialized after the call
             if (name) {
                 func_02041440(s, name, 0);
             }
-            STD_CopyString(s->unk_2c, file);
+            STD_CopyString(s->name, file);
         }
         self->unk_4c = s;
     }
     res = func_02035f30(data_ov003_021f78c4, data_ov003_021f78cd, 2);
     func_020417e0(self->unk_4c, func_02034d88(res, data_ov003_021f78cd));
-    self->unk_4c->unk_6c |= 2;
-    self->unk_4c->unk_6c |= 0x80000;
+    self->unk_4c->flags |= 2;
+    self->unk_4c->flags |= 0x80000;
     self->unk_4c->unk_150 = -0x2000;
     func_02041c5c(self->unk_4c, (void *)func_ov003_021cce20);
     func_02041c18(self->unk_4c, 0xa0a);

@@ -3,7 +3,7 @@
 extern "C" {
 
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
 
 void func_ov009_021fb298(Ov009ActVt_022164a0 *self) {
@@ -52,7 +52,7 @@ void func_ov009_021fb3a8(Ov003Actor *self) {
     func_ov003_021d5900(self);
 }
 
-extern u8 data_ov009_02216ab6[];
+extern char data_ov009_02216ab6[];
 
 void Ov009ActVt_022166a4_Start(Ov009ActVt_022166a4 *self) {
     VecFx32 *v = &self->unk_f4;

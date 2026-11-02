@@ -1,9 +1,10 @@
 #include "ov008/ov008.h"
+#include "Main/Res/ArcName.h"
+#include "Main/Sys/FieldState.h"
+#include "Main/Gfx/ObjPool.h"
 typedef struct Ov008Tag { u8 unk_00[0x30]; u16 id; u16 unk_32; u16 unk_34; u16 unk_36; } Ov008Tag;
 typedef struct Ov008SaveEnt { u16 unk_00; u16 id; } Ov008SaveEnt;
 extern "C" {
-extern void *data_ov000_021ccd54;
-extern Ov008Shared data_02fe1534;
 extern Ov008Save *data_02fe152c;
 Ov008Def *Lang_GetGroup(u8 id);
 u16 func_020594bc(void *a, int b, int c, int d);
@@ -14,19 +15,18 @@ extern void *data_02149ef8;
 extern void *data_ov000_021cac60;
 extern void *data_ov000_021caec8;
 extern void *data_ov008_021d0368;
-extern char *data_0208cb7c;
 extern char data_0214b105[];
 extern u8 *data_0214a424;
 s32 MsgRes_GetString(void *p, s32 id);
 BOOL func_020624d8(void);
-void func_ov000_021547e8(void *a, void *b, void *c, int d);
+void func_ov000_021547e8(void *list, const char *arc, const char *file, int part);
 Ov008SaveEnt *func_0205976c(void *res, u32 idx);
 u32 func_0205975c(void *res, u32 idx);
 u16 func_02059544(void *res, void *block, Ov008SaveEnt *entries, int packed, u32 id);
 Ov008Chr *func_ov000_021824d0(void *p, s32 a);
 void func_ov000_02153f90(Ov008Tag *t);
 void func_ov000_02153fd8(Ov008Tag *t);
-u32 func_ov000_0214c01c(u8 a);
+u32 func_ov000_0214c01c(u16 a);
 u32 func_ov000_0214bf2c(u16 id);
 const char *func_ov000_0214c064(u16 id);
 void func_0204c6bc(const char *str, s32 maxLines, void *arg, void (*cb)(void *arg, s32 *tag));

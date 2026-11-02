@@ -10,7 +10,7 @@ extern const char data_ov006_021ebba0[];
 void func_ov006_021db65c(void);
 ov006_SlotManagerInfo *func_ov006_021daaa8(u32 id);
 void ov006_SlotManager_CountActive(ov006_SlotManager *self);
-ov006_Slot *ov006_SlotManager_InitSlot(ov006_SlotManager *self, int idx, int type, const char *name, u16 unk12);
+ov006_Slot *ov006_SlotManager_InitSlot(ov006_SlotManager *self, int idx, int type, const char *name, u8 unk12);
 void func_ov006_021dab74(ov006_Slot *self, const ov006_SlotSub *src);
 void func_ov006_021daba0(ov006_Slot *self, const ov006_SlotSub *src);
 u16 func_020594bc(void *res, int a, int b, u32 idx);

@@ -4,17 +4,17 @@
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/PlttRes.h"
 #include "Main/Gfx/TexObj.h"
+#include "nitro/fx.h"
+#include "Main/Res/ResArc.h"
 
 extern "C" {
 
-extern void MTX_Identity22_(TexObjVec *v);
 extern void NNS_G2dInitImageProxy(TexObj *obj);
 extern int NNS_G2dGetImageLocation(TexObj *obj, int idx);
 extern void func_0203bd40(GfxSys *sys, u32 offset, BOOL sub);
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(u32 key);
 extern void func_0203e58c(u32 id);
-extern void func_02035acc(char *arc, char *name, int mode);
-extern void func_02036838(ResMgr *mgr, char *name, int mode, int opt);
+extern void func_02035acc(const char *arc, const char *name, u16 mode);
 
 
 void func_020416b4(TexObj *obj, int i);
@@ -39,7 +39,7 @@ extern void NNS_G2dInitCellAnimation(TexObjAnim *anim, u16 *data, void *res);
 extern void NNS_G2dSetCellAnimationSequence(TexObjAnim *anim, u16 *data);
 extern void NNS_G2dSetAnimCtrlCallBackFunctor(TexObjAnim *anim, int type, TexObj *obj, void (*cb)(TexObj *));
 extern void NNS_G2dTickCellAnimation(TexObjAnim *anim, int frame);
-extern void func_020435e8(GfxPltt *pltt, void *src, u32 size);
+extern void func_020435e8(GfxPltt *pltt, u16 *src, u32 size);
 void func_02041c90(TexObj *obj);
 
 
@@ -61,8 +61,8 @@ typedef struct OamRes {
 
 typedef int OamShape;
 
-extern int data_02082898[][4];
-extern int data_020828c8[][4];
+extern const int data_02082898[][4];
+extern const int data_020828c8[][4];
 
 static inline OamShape Oam_GetShape(const OamAttrs *attr) {
     return (OamShape)(*(u32 *)attr & 0xc000c000);

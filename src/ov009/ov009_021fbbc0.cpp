@@ -1,4 +1,6 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 
@@ -6,7 +8,7 @@ extern char data_ov009_02216ab6[];
 extern void func_ov000_02190758(Model0218fe1c *m, u16 *rot, s32 a);
 extern void func_0203f364(ActorSub48 *p);
 extern char data_ov009_02216ac2[];
-extern u8 data_ov009_02216aaa[];
+extern char data_ov009_02216aaa[];
 extern u8 data_ov009_02216abc[];
 extern void Actor_MoveToPos(Ov003Actor *self, VecFx32 *v, s32 a);
 
@@ -209,10 +211,8 @@ void Ov009ActVt_02216348_Start(Ov009ActVt_02216348 *self) {
     self->unk_ea_6 = 1;
 }
 
-extern void *data_02097e4c;
-extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
-extern BOOL Hit_DiffInCylinder(const VecFx32 *a, const VecFx32 *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
 struct Ov009HitMsg {
     u8 a;
     u16 b;

@@ -1,14 +1,13 @@
 #include "ov008/ov008.h"
+#include "Main/Gfx/GfxMgr.h"
 
 
 
 extern "C" {
 
-extern Ov008Ce0 *data_02097ce0;
 extern void *data_ov000_021caec8;
 extern void *data_ov000_021cac60;
-void *GfxMgr_GetFont(void *p);
-BOOL func_02054f10(void *a, int b);
+BOOL func_02054f10(Model *a, u32 b);
 BOOL func_0203e63c(void *p);
 BOOL func_ov008_021d01b0(Ov008Menu *self);
 
@@ -60,7 +59,7 @@ void Ov008Menu_DrawItem(Ov008Menu *self, s32 arg, s32 b) {
 
 s32 func_ov008_021cff40(Ov008Menu *self) {
     s32 a;
-    data_02097ce0->unk_04 = self->font;
+    data_02097ce0->unk_004 = self->font;
     a = (*(s8 **)GfxMgr_GetFont(data_02097ce0))[1];
     return a + self->v3c();
 }

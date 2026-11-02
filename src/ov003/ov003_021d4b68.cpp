@@ -34,17 +34,17 @@ extern char data_ov003_021f7a60[];
 extern char data_ov003_021f7a66[];
 extern Ov003KbUnit *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToActor(void *self, Ov003KbUnit *target, s32 a);
-extern u8 *func_02070558(u16 id);
+extern u8 *func_02070558(s32 id);
 extern void func_01ffc9fc(VecFx32 *out, VecFx32 *in, u16 ang);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern Ov003KbUnit *func_ov000_0219be1c(u16 id, VecFx32 *pos, void *rot, u16 a, s32 b);
 extern void func_ov000_0218d46c(Ov003KbUnit *u, u16 a, s32 b);
-extern BOOL func_ov000_02191120(void *model);
-extern void func_ov000_021915a0(void *model);
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
-extern void Actor_Move(void *self, s32 a);
+extern BOOL func_ov000_02191120(Model0218fe1c *model);
+extern void func_ov000_021915a0(Model0218fe1c *model);
+extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
+extern void Actor_Move(Actor *self, s32 a);
 extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
-extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s16 a, u8 b);
 
 static inline Ov003KbUnit *Ov003Kb_FindUnit(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -185,14 +185,14 @@ void func_ov003_021d4b68(Ov003Actor *self) {
 }
 
 extern char data_ov003_021f7a91[];
-extern void func_ov000_02191418(void *model, s32 a, s32 b);
+extern void func_ov000_02191418(Model0218fe1c *model, u16 a, BOOL b);
 extern Ov003KbObj *func_ov000_02199f60(ActorHp *t);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern void func_ov000_02199f88(ActorHp *t, Ov003Actor *self);
 extern Ov003KbAnim *func_ov000_02190a30(void *model, s32 n);
-extern void func_ov000_021911c8(void *model, s32 v);
-extern BOOL func_ov000_02191508(void *model);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+extern void func_ov000_021911c8(Model0218fe1c *model, s16 v);
+extern BOOL func_ov000_02191508(Model0218fe1c *model);
+extern u16 func_01ffc128(u16 target, u16 cur, s32 step, u32 a, u16 b);
 
 void func_ov003_021d4fd8(Ov003Actor *self) {
     self->hit->unk_9a_5 = 1;

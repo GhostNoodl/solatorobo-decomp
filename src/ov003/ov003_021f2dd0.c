@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/mi.h"
 
 typedef struct {
     s32 x;
@@ -53,8 +54,6 @@ typedef struct {
 extern Ov003Trail *data_ov003_021fa680;
 extern void MTX_Copy33To43_(const Ov003Mtx33 *src, Ov003Mtx43 *dst);
 extern void NNSi_G3dModifyPolygonAttrMask(void *res, BOOL on, u32 mask);
-extern void MI_Copy36B(const void *src, void *dst);
-extern void MI_Copy48B(const void *src, void *dst);
 extern BOOL func_ov000_021903b4(Ov003TrailModel *model);
 extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 

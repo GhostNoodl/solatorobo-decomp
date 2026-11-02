@@ -1,4 +1,6 @@
 #include "ov006/Model.h"
+#include "Main/Res/ResArc.h"
+#include "Main/Res/ArcName.h"
 
 typedef struct ov006_Icon021df19c {
     void *vtbl;
@@ -29,13 +31,8 @@ extern "C" {
 
 extern u8 data_ov006_021ec26c[];
 extern u8 data_ov006_021ec2dc[];
-extern char *data_0208cc94;
-extern char *data_0208cc88;
-extern char *data_0208cb7c;
 extern char data_0214b105[];
 void PlayTime_Clear(void *p);
-void *func_02035d5c(const char *a);
-void *func_02034d88(void *a, const char *b);
 void func_02041c34(Model *m, int a, void *cb, int b);
 void *func_ov006_021dd5dc(void *self, u16 *flag, void *oam, u16 *count);
 void *func_ov006_021deea4(void *self, const u16 *mode, void *oam, u16 *count);

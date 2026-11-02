@@ -12,7 +12,7 @@ extern void *data_02097e4c;
 extern Ov003Actor *func_ov000_0219be1c(u16 kind, const VecFx32 *pos, const void *rot, u16 id, u16 parent);
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
-extern BOOL Hit_DiffInCylinder(const VecFx32 *a, const VecFx32 *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
 
 void func_ov009_021fd71c(Ov009ActVt_02216750 *self) {
     VecFx32 p;
@@ -48,7 +48,7 @@ void func_ov009_021fd71c(Ov009ActVt_02216750 *self) {
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern void func_0203f364(ActorSub48 *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 

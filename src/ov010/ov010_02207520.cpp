@@ -314,8 +314,8 @@ void func_ov010_02207bb4(Ov010Cls *self) {
 
 extern void *data_02097e4c;
 extern const VecFx32 data_ov010_0220f0fc;
-extern BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
-extern void func_ov000_021915a0(void *a);
+extern BOOL func_ov000_02190cb0(Model0218fe1c *a, const char *b, s16 c, u8 d);
+extern void func_ov000_021915a0(Model0218fe1c *a);
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern u16 FX_Atan2(s32 y, s32 x);
 
@@ -397,7 +397,7 @@ void func_ov010_02207d2c(Ov010Obj0220ffe4 *self) {
 extern void VEC_Normalize(const VecFx32 *src, VecFx32 *dst);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
-extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(ActorSub40 *a, u8 b, BOOL c);
 
 static inline void Ov010_VecSub(const VecFx32 *a, const VecFx32 *b, VecFx32 *o) {
     o->x = a->x - b->x;
@@ -433,12 +433,12 @@ void func_ov010_02208018(Ov010Obj0220ffe4 *self) {
     }
 }
 
-extern void func_ov000_021911c8(void *a, s32 b);
-extern BOOL func_ov000_02191120(void *a);
+extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
+extern BOOL func_ov000_02191120(Model0218fe1c *a);
 extern const VecFx32 data_ov010_0220f108;
 extern VecFx32 data_ov010_0220f114;
 extern VecFx32 data_ov010_0220f120;
-extern void Actor_Move(void *self, s32 a);
+extern void Actor_Move(Actor *self, s32 a);
 
 struct Ov010Rot3 {
     s16 v[3];

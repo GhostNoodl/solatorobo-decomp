@@ -131,7 +131,7 @@ void func_ov012_022096fc(Ov003Actor *self) {
 }
 extern char data_ov012_0220b400[];
 extern char data_ov012_0220b406[];
-extern void func_ov000_021911c8(void *p, s32 a);
+extern void func_ov000_021911c8(Model0218fe1c *p, s16 a);
 
 
 void func_ov012_02209740(Ov003Actor *self) {

@@ -1,6 +1,7 @@
 #include "ov010/ov010.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "nitro/mi.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -146,7 +147,6 @@ extern void MTX_RotZ33_(void *m, s32 s, s32 c);
 extern void MTX_RotX33_(void *m, s32 s, s32 c);
 extern void MTX_RotY33_(void *m, s32 s, s32 c);
 extern void MTX_Concat33(void *a, void *b, void *c);
-extern void MI_Copy36B(void *m, void *b);
 extern BOOL func_ov000_0218cea4(void *self);
 
 static inline void Ov010_022020c8_Init(Obj022020c8 *self) {
@@ -573,8 +573,8 @@ void func_ov010_02202d9c(Obj022020c8 *self) {
     case 0: {
         Model0218fe1c *m = self->model;
         Ov010Trail *s;
-        FLD(u16, m, 0xb6) = 0x7fff;
-        FLD(u16, m, 0xb8) = 0x7fff;
+        m->color = 0x7fff;
+        m->color2 = 0x7fff;
         m->blend = 0x10;
         m->blendMax = 0xf;
         self->model->alpha = 0x1f;
@@ -708,8 +708,8 @@ void func_ov010_02202d9c(Obj022020c8 *self) {
         }
         col = (t << 5) | 0x1f | (t << 10);
         m = self->model;
-        FLD(u16, m, 0xb6) = col;
-        FLD(u16, m, 0xb8) = col;
+        m->color = col;
+        m->color2 = col;
         m->blend = 2;
         m->blendMax = 1;
         dir = TRUE;

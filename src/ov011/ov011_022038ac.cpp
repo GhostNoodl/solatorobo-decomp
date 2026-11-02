@@ -25,7 +25,7 @@ extern const Ov011PathEnt data_ov011_022076a0[];
 extern u8 data_ov011_02207598[];
 Actor *func_ov000_0219be1c(s32 kind, VecFx32 *pos, Ov011Rot *rot, u16 a, u16 b);
 
-s32 Rand_UpTo(s32 max);
+u32 Rand_UpTo(u32 max);
 
 void func_ov011_022038ac(Ov011Act7cf8 *self) {
     VecFx32 d;

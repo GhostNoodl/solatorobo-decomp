@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern char data_ov013_0220be82[];
 extern void HitSphere_Link(ActorSub48 *p);
-extern void *func_ov000_02191318(void *a, s32 b);
+extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
 extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);

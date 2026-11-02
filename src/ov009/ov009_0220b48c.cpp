@@ -1,4 +1,6 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 
@@ -13,11 +15,9 @@ void Ov009ActVt_022176ec_Start(Ov009ActVt_022176ec *self) {
     func_ov003_021d6a3c(self, 1, 1, 0);
 }
 
-extern void *data_02097e4c;
-extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void func_0203f364(ActorSub48 *p);
 extern Ov003Actor *func_ov000_0219bf90(void);
-extern BOOL Hit_DiffInCylinder(const VecFx32 *a, const VecFx32 *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
 void Ov009ActVt_022176ec_Update(Ov009ActVt_022176ec *self) {
     ActorSub40 *st = self->fsm;
     ActorSub48 *s48;

@@ -1,4 +1,6 @@
 #include "Main/Gfx/GfxMgr.h"
+#include "nitro/mi.h"
+#include "Main/Res/ResLoader.h"
 
 extern "C" {
 
@@ -14,7 +16,6 @@ typedef struct GfxFadeCtx {
 typedef int (*GfxFadeFunc)(GfxFadeCtx *ctx);
 
 extern u32 data_02097d44;
-extern GfxSys *data_02097d48;
 extern GfxFadeFunc data_02097d4c;
 extern int data_02097d50[5];
 extern int data_02097d64[5];
@@ -69,7 +70,6 @@ extern void *G2S_GetBG1ScrPtr(void);
 extern void *G2S_GetBG0ScrPtr(void);
 extern void *G2_GetBG1ScrPtr(void);
 extern void *G2_GetBG2ScrPtr(void);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 
 }
 
@@ -79,8 +79,6 @@ extern "C" {
 
 extern "C" {
 
-extern void *Heap_AllocLo(u32 size, int align);
-extern void MI_CpuFill8(void *dst, u32 value, u32 size);
 extern void GX_SetBankForTex(int a);
 extern void GX_SetBankForTexPltt(int a);
 extern void NNS_GfdInitLnkTexVramManager(u32 a, u32 b, void *c, void *d, BOOL e);
@@ -220,7 +218,7 @@ extern "C" {
 extern void func_0203d040(int v);
 extern u8 Gfx3DState_NextPolyId(void *obj);
 extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
-extern void func_02043db4(int a, int b, int c, int d);
+extern void func_02043db4(int a, int b, int c, u32 d);
 
 static inline u32 G3_PackPolygonAttr(int light, int polyMode, int cullMode, int polygonID, int alpha, int misc) {
     return (u32)(light | (polyMode << 4) | (cullMode << 6) | misc | (polygonID << 24) | (alpha << 16));

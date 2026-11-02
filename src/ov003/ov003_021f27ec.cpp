@@ -2,6 +2,7 @@
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
 #include "ov003/MultiModel.h"
+#include "nitro/mi.h"
 
 extern "C" {
 
@@ -119,14 +120,13 @@ extern void *data_ov000_021ccd68;
 extern Ov003MCtx *data_ov000_021ccd6c;
 
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
+extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 a, u16 b);
 extern BOOL func_ov000_0218ffdc(Ov003MultiModel *m, Ov003MultiSlot *slot, s32 a, s32 b);
 extern void func_ov000_02190e98(Ov003MultiModel *m, s32 a, s32 b, s32 c);
 extern void func_ov000_021915a0(Ov003MultiModel *m);
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, BOOL on, u32 mask);
 extern void NNSi_G3dModifyMatFlag(void *mdl, BOOL on, u32 flag);
 extern s32 func_ov000_021909a8(Ov003MultiModel *m, const void *a, const void *b);
-extern void MI_Copy36B(const void *src, void *dst);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern void VEC_MultAdd(s32 scale, const VecFx32 *dir, const VecFx32 *base, VecFx32 *out);
 extern u16 FX_Atan2(s32 y, s32 x);

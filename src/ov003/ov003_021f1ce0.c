@@ -88,7 +88,7 @@ extern const Ov003FlickerEntry data_ov003_021f7560[];
 
 extern void Ov000ActVt_021cc7cc_Start(void *self);
 extern BOOL func_ov000_02191120(void *model);
-extern s32 Rand_UpTo(s32 max);
+extern u32 Rand_UpTo(u32 max);
 extern void func_ov000_02190e98(void *model, s32 a, s32 b, s32 c);
 extern void func_ov000_02191618(void *model);
 extern void func_ov000_021911c8(void *model, s32 v);

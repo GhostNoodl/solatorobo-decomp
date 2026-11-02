@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
+#include "Main/Sys/SysState.h"
 
 struct Ov003Save {
     u8 unk_00[0x18];
@@ -16,12 +17,6 @@ struct Ov003Save {
 struct Ov003Area {
     u8 unk_00[4];
     u8 bonus : 4;
-};
-
-struct Ov003HeapCtx {
-    void *cur;
-    u32 unk_04;
-    void *alt;
 };
 
 class Ov003Script {
@@ -70,7 +65,7 @@ extern "C" {
 
 extern Ov003Save *data_0214a424;
 extern u8 data_ov003_021f7974[];
-extern s32 func_02049bdc(void *mgr, s32 a, s32 b);
+extern s32 func_02049bdc(SndMgr *mgr, s32 a, s32 b);
 extern Ov003Area *func_0206ef10(u16 id);
 extern void Heap_Free(void *p);
 extern s32 Rand_UpTo(s32 max);

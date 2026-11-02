@@ -1,11 +1,11 @@
 #include "Main/Res/StageCmd.h"
+#include "Main/Res/ResLoader.h"
 
 extern "C" {
 
 extern StageFlags data_0214aa68;
-extern void *Heap_AllocLo(u32 size, int align);
 extern u8 data_0214a428[0x640];
-extern void func_0206ccb8(StageFlags *f, u32 a);
+extern void func_0206ccb8(StageFlags *f, u16 a);
 extern u16 func_0206d02c(StageFlags *f);
 
 extern s32 func_020591a4(DataRes *res, u8 *buf, s32 a);

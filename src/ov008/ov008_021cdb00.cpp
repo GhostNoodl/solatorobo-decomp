@@ -1,10 +1,9 @@
 #include "ov008/ov008.h"
 #include "nitro/std.h"
+#include "Main/Res/ResArc.h"
+#include "Main/Res/ArcName.h"
 
 extern "C" {
-
-extern const char *data_0208cca0;
-extern const char *data_0208cc94;
 extern void *data_0208b318;
 extern void *data_0208bf54;
 extern char data_ov008_021d0462[];
@@ -18,7 +17,6 @@ extern char data_ov008_021d04c5[];
 extern char data_ov008_021d04d1[];
 extern char data_ov008_021d04d9[];
 extern char data_ov008_021d04e1[];
-void *func_020359d0(const char *name, s32 type, u8 toFront);
 void *func_ov000_0218e9c4(void *p);
 void func_0206e900(char *dst, const char *src);
 void func_0205a6a0(void *p);

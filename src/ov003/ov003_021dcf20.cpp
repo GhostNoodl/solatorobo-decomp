@@ -93,7 +93,7 @@ extern BOOL func_ov000_02191120(void *model);
 extern Ov003SwAnim *func_ov000_02190a30(void *model, s32 n);
 extern void HitMesh_Link(void *p);
 extern void func_0203f920(void *p);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern Ov003SwPart *Target_Get(Ov003SwPart *p);
 extern void Actor_SendMsg(Ov003SwPart *p, u16 id, s32 a, s32 b, s32 c, s32 d);
 extern s32 func_ov003_021f093c(Ov003SwPart *p);

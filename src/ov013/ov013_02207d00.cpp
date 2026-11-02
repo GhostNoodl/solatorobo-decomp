@@ -1,10 +1,10 @@
 #include "ov013/ov013.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern char data_ov013_0220be7c[];
-extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
@@ -13,7 +13,7 @@ extern BOOL func_ov000_021b4738(Ov003Actor *a);
 extern void func_ov000_02182590(void *p);
 extern void func_ov003_021ce9c4(u16 a);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
-extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
+extern BOOL func_ov000_021983b0(ActorSub40 *a, u8 b, s32 c, BOOL d);
 extern s32 func_ov013_02209b44(Ov013Act_02207968 *self);
 
 void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
@@ -129,8 +129,8 @@ void func_ov013_02207d00(Ov003Actor *self) {
     }
 }
 
-extern void *ActorMgr_GetGroup(void *mgr, s32 a);
-extern u16 ActorGroup_CountKind(void *p, s32 a);
+extern ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 a);
+extern u16 ActorGroup_CountKind(ActorGroup *p, u16 a);
 
 void func_ov013_02207eac(Ov013Act_02207968 *self) {
     if (self->fsm->st == 0) {
@@ -307,11 +307,10 @@ void func_ov013_022080bc(Ov013Act_02207968 *self) {
 }
 
 extern char data_ov013_0220be82[];
-extern BOOL Hit_DiffInCylinder(const VecFx32 *a, const VecFx32 *b, s32 c, s32 d);
-extern void func_ov000_0218996c(s32 a, s32 b);
-extern void *func_ov000_02191318(void *a, s32 b);
+extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 c, fx32 d);
+extern void func_ov000_0218996c(u8 a, u8 b);
+extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
 extern void Actor_TurnToPos(Ov003Actor *self, VecFx32 *p, s32 a);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 
 static inline VecFx32 Ov013_ApproachPointK(Ov003Actor *self, s32 k) {
     VecFx32 res;
@@ -472,7 +471,7 @@ extern char data_ov013_0220be8e[];
 extern VecFx32 data_ov013_0220b398;
 extern VecFx32 data_ov013_0220b38c;
 extern VecFx32 data_ov013_0220b380;
-extern void func_ov000_0219a210(VecFx32 *p, VecFx32 *o, u16 rot);
+extern void func_ov000_0219a210(VecFx32 *p, const VecFx32 *o, s32 rot);
 extern Ov003Actor *func_ov000_0219be1c(s32 kind, VecFx32 *pos, u16 *rot, u16 id, u16 owner);
 extern void func_ov000_0219bebc(Actor *a, s32 b);
 extern u8 *func_0206fef8(u16 kind);

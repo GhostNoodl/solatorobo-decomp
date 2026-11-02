@@ -1,15 +1,15 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern char data_ov009_02216ab6[];
 extern char data_ov009_02216ace[];
-extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
+extern void SndMgr_LoadHeapState(SndMgr *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
-extern void func_ov000_0219864c(void *a, s32 b, s32 c);
+extern void func_ov000_0219864c(ActorSub48 *a, VecFx32 *b, u16 *c);
 
 void func_ov009_021ff040(Ov009ActVt_022165f8 *self) {
     func_ov003_021d5348(self);

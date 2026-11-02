@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
+#include "nitro/mi.h"
 
 typedef struct {
     u8 unk_00[0x3c];
@@ -74,8 +75,7 @@ extern char data_ov003_021f78c4[];
 extern char data_ov003_021f78cd[];
 extern void func_ov000_021c8408(u32 a, u32 b, u32 c, u32 d, u16 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k);
 extern void func_ov000_021c2208(void *p);
-extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
-extern u32 func_02035bd4(const void *a, const void *b, s32 c);
+extern BOOL func_02035bd4(const char *a, const char *b, u16 c);
 
 bool Ov003TaskVt_021f78f4_GetFlag4(Ov003FlagSet *self) {
     BOOL r = self->b4 ? TRUE : FALSE;

@@ -1,14 +1,14 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern char data_ov009_022179f1[];
 extern char data_ov009_022179b4[];
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void func_ov000_021911c8(void *model, s32 a);
-extern void *func_ov000_02191318(Model0218fe1c *m, s32 a);
-extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
+extern void func_ov000_021911c8(Model0218fe1c *model, s16 a);
+extern s16 *func_ov000_02191318(Model0218fe1c *m, s32 a);
 extern void Actor_MoveToPos(Ov003Actor *self, VecFx32 *v, s32 a);
 
 static inline Ov003Actor *Ov009_FindActor3(u16 id) {

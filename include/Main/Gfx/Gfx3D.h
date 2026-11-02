@@ -63,10 +63,10 @@ typedef struct Gfx3DState {
     /* 0x07c */ u16 edgeTable[8];
     /* 0x08c */ GfxLight light;
     /* 0x0b4 */ u8 unk_0b4[0x80];
-    /* 0x134 */ int unk_134;
+    /* 0x134 */ int unk_134; // GfxSys.pltt.id when this is GfxSys.unk_8b0
     /* 0x138 */ int unk_138;
     /* 0x13c */ MtxFx44 unk_13c;
-    /* 0x17c */ int unk_17c;
+    /* 0x17c */ s32 *nearClip; // &Camera.nearClip of the camera last applied (GfxSys.nearClip)
 } Gfx3DState;
 
 typedef struct GfxOamTex {

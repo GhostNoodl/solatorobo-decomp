@@ -7953,3 +7953,44 @@ Cleanup only, every function byte-identical: each `build/usa` object (1906) was 
   - `021e6fbc` keeps `(char *)FIELD(self, 0xc4, Buf80) + 0x7e`: the member form folds the offset differently.
   - The model record at +4 of the ov002 windows (vtable `021efe3c`, 0x70: names, render object, three anim objects, frame, trans/scale/rot; `021d7424`, `021d7620`, `021d7854`, `021ddf18`, `021dbec8`, `021df2ec`) is the next large block of `FIELD`.
 - **Scratch:** session scratchpad `rsB/`: the rsA tools re-pointed, plus `cmpdir.py` (per-object compare against the baseline sigs), `dis.sh` (objdump diff against the baseline worktree), `castdrop.py` (bisect-verified cast removal), `tryedit.py` (apply-check-revert edits) and `gglob.py` (`FIELD` uses of one global).
+
+### Round pdB (ov001, ov003-ov014 and Main on the shared Model/TextWin/GfxSys headers; prototypes aligned with their definitions)
+
+Cleanup only, every function byte-identical: each `build/usa` object (1906) was compared function by function (code bytes and relocations) with a baseline built at `ebefd1ab`, and again after rebasing onto `8e170ed5` (round rsB). Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` 8138 matched (unchanged), `check_drafts.py --score` exit 0 (30 files, 0 failed, 0 worse). No renames. ov000, ov002 and ov015 were not touched.
+
+`declaudit.py` conflicting names, measured on `8e170ed5` and on this round: **all 1758 -> 1662** (func 1415 -> 1346, var 188 -> 164, record 97 -> 96, typedef 58 -> 56), **`--scope hs` 589 -> 565**, **`--scope hh` 16 -> 22**. The `hh` rise comes from overlay headers that now carry the definition's type while an out-of-scope header still has the old one (`ov002.h`: `Gfx3DState_NextPolyId`, `func_02054f10`, `data_0208cc94`; `Main/Sys/GameScene.h`'s `s32 Rand_UpTo(s32)` against `MathUtil.cpp`'s `u32 Rand_UpTo(u32)`; `ov004.h`/`ov011.h` copies whose callers pass other types). These names were already conflicting; they changed bucket, not count.
+
+Raw-offset macro uses (`FLD`/`FIELD`/`LFLD`/`ST_FLD`/`F`/`BXF`, `src` + `include`, before -> after): ov003 36 -> 36, ov004 0 -> 0, ov006 113 -> 113, ov007 0 -> 0, ov008 0 -> 0, ov009 169 -> 120, ov010 148 -> 144, ov011 0 -> 0, ov012 209 -> 209, ov013 313 -> 293, ov014 325 -> 288, Main 11 -> 2. Most of what is left is on actors, not on Model/TextWin/GfxSys. In ov003-ov008 the Model/TextWin/GfxSys accesses were TU-local view structs rather than macros, so they show up as removed views, not as a lower count.
+
+- **Shared headers adopted.** In-scope TUs dropped their local copies of the Model / PlttRes / ResArc / GfxMgr / SysState / `nitro/std.h` / `nitro/mi.h` prototypes and include the headers. `data_02097d48` is `GfxSys *` (`->unk_8b0`, `->unk_8b0[3]`, `unk_8b0_4/5`), and `data_02097dd0` is `UnkSys *` (`->heapHi`). Model allocations use `sizeof(Model)`. There is one new header, `Main/Res/ArcName.h`: the `const char *` archive / file name externs `data_0208cb74 ... data_0208cca0`.
+- **27 local view structs removed:**
+  - `Ov003HeapCtx` (x4, plus `GmObj.h`'s use), `Ov003Save`, `Ov003TlSpr` and `ov003_021cceb4`'s `Ov003Res` (now `Model`);
+  - `ov006_Anim`/`AnimHolder` (now `ov006_TextHolder` holding a `TextWin *`), `ov006_Bits8b0`, `ov006_ModelFlags` (now `MODEL_FLAGS`), `ov006_Anim021e1180`, `ov006_Txt021e16b0` and three pad/state views;
+  - `Ov007Win`/`Ov007WinAttr` (now `TextWin *wins[2]`), `Ov007Game` (now `Movie`);
+  - `Ov008Ce0`/`G3`/`Sys`/`Win`/`Shared` (`TextWin` is embedded in `Ov008Talk`);
+  - Main's `LangGame54` (x4) and `ScenePad`.
+- **TextWin members.** ov006 (Caption, `e0b80`-`e309c`), ov007 (`ccda0`, `cf474`) and ov008 (`cdebc`, `cf040`, `cff1c`) use `str`/`font`/`spacing`/`width`/`height`/`unk_37`, `unk_4_8` (alpha), `unk_4_13` (polygon id) and the virtuals `unk_vf04/14/20`/`Render`.
+- **Model0218fe1c members (ov009/ov010/ov013/ov014).** The colour-blend writes are now `color`/`color2`/`blend`/`blendMax`, plus `alpha`, `scale.x/y/z`, `rot`, `evScript`/`evCursor`, and `boxTest`/`unk_c2_6` (formerly `FLD(Ov014Flags, model, 0xc2).b4/.b6`). The `void *m`/`u8 *m` locals that held `self->model` are `Model0218fe1c *`. `Ov009_PlayAnim` calls `func_ov000_0218fa28(m->unk_1c, m->renderObj, m->res, m->res->anims->list[4], ...)`, with the prototype's first and third parameters typed as in its definition.
+- **Prototype alignment.** 628 local declarations in in-scope files were changed: either dropped for the shared header that owns them, or rewritten to the definition's type. Each object that depends on an edited file was rebuilt and compared after the change.
+  - Only changes that keep or add information were taken: same type, integer width or sign, `void *` or integer becoming a typed pointer, or `const`. A typed pointer is never turned into `void *` or into another struct.
+  - Edits that changed codegen were bisected out and left as they were.
+- **Main header edits (minimal).**
+  - `GfxMgr.h`: `GfxSys` gained `s32 *nearClip` at 0xa2c, and `Gfx3D.h` gained the same at `Gfx3DState` 0x17c. `Camera.cpp` and `Gfx3D_2.cpp` use them.
+  - `SysTask.h` holds a `Model *`.
+  - `GameMain.cpp`'s prototypes are typed (`GfxSys`/`GfxMgr`/`ResMgr`/`UnkSys`/`Pad`/`Movie`).
+- **Kept forms.**
+  - `ov003_021cd744` keeps its local NNS / `func_02042628` prototypes (`Model.h`'s `int`/`u16` signatures change register allocation there).
+  - `func_02041d9c` is passed `(u16)` in `ov003_021cd1e4`. `(s8)win->unk_37` and `(s32)win->height >> 1` are cast where the old views had those types.
+  - `TexObj.cpp` keeps its local `NNS_G2dGetAnimSequenceByIdx(u16 *, int)` and `func_020435e8(..., void *, ...)` for the `NONMATCHING` draft of `func_020417e0`.
+  - `ov006_ce374` keeps a local `char *data_0208ccc0`, and `ov000/TaskList.h` is unchanged: retyping it breaks ov002/ov015.
+  - `ov006_e0f00`'s fader keeps `VCALL` (its member is `void *`).
+- **Left, and why:**
+  - TexObj and Model stay separate views of the same 0x160 object: ov000, ov002 and ov015 still disagree.
+  - `Ov007Cam`/`Ov008Cam` and the `Ov003Title` duplicates were not touched.
+  - Two `FLD` blocks in `ov013_0220b544`/`ov013_02204768` hold the model in a `void *` that is also reused for other objects.
+  - `TextWin.cpp`'s `win + 4` word clear (the bit-field word) and `TextWinEx`'s +0xb8 stay raw.
+- **Scratch:** session scratchpad `pdB/`:
+  - the pdA tools re-pointed (`adopt.py`, `hown.json`, `mksig.py`/`objsiglib.py`, `rb.sh`/`e.sh`/`dd.sh`);
+  - `protofix2.py` (aligns local prototypes and externs with the definition or the owning shared header; builds, compares and bisects each file);
+  - `mdlfld.py` (retypes Model0218fe1c locals and converts their `FLD`s to members; checked per declaration);
+  - `fldscan.py` (libclang: the base type of every raw offset) and `rawcnt.sh` (raw-offset counts per overlay).

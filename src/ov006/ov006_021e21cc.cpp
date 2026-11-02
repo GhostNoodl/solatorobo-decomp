@@ -26,7 +26,7 @@ extern char data_ov006_021ec1a9[];
 extern char data_ov006_021ec864[];
 
 void __cxa_vec_cleanup(void *arr, int count, u32 size, void *dtor);
-void func_ov006_021e1f68(void *self);
+void func_ov006_021e1f68(ov006_Marker *self);
 
 static inline void ov006_MarkerSet_Dtor(ov006_MarkerSet *self) {
     self->vtbl = &data_ov006_021ec2cc;

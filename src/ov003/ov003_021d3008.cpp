@@ -42,10 +42,10 @@ extern "C" {
 
 extern const Ov003EnEntry data_ov003_021f4750[];
 extern Ov003Game30 *data_ov000_021ccd30;
-extern u8 *func_02070558(u16 id);
+extern u8 *func_02070558(s32 id);
 extern void func_ov000_0219a088(void *p);
 extern void func_ov000_0219af3c(Ov003Actor *self, void *icon);
-extern void func_ov000_0219a210(VecFx32 *v, const VecFx32 *a, u16 rot);
+extern void func_ov000_0219a210(VecFx32 *v, const VecFx32 *a, s32 rot);
 extern void func_ov000_021bd624(void *p);
 extern void func_ov000_021697dc(void *p, u16 a, u16 b);
 extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);

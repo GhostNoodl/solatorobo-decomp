@@ -49,12 +49,12 @@ extern Ov003AgPl *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov003AgPl *pl);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Ov003AgUnit *Group_FindNode(void *mgr, u16 id);
-extern u8 *func_02070558(u16 id);
+extern u8 *func_02070558(s32 id);
 extern BOOL func_ov000_021983b0(ActorSub40 *w, u8 a, s32 b, s32 c);
-extern s32 Rand_UpTo(s32 max);
+extern u32 Rand_UpTo(u32 max);
 extern u16 FX_Atan2(s32 x, s32 z);
-extern u16 func_ov000_0219a36c(VecFx32 *pos, s32 r, u16 ang, s32 a, s32 b, s32 c);
-extern void Actor_TurnToActor(void *self, void *target, s32 a);
+extern u16 func_ov000_0219a36c(VecFx32 *pos, s32 r, u16 ang, s32 a, u8 b, u32 c);
+extern void Actor_TurnToActor(Actor *self, Actor *target, s32 a);
 
 }
 

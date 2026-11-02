@@ -4,16 +4,16 @@ extern "C" {
 
 extern u8 data_ov014_02217bdc[];
 extern u8 data_ov014_02217b44[];
-extern void *ActorEx_Ctor(void *self);
+extern ActorEx *ActorEx_Ctor(ActorEx *self);
 extern void func_ov000_02194758(void *self);
-extern BOOL func_ov000_02194c08(void *self);
+extern BOOL func_ov000_02194c08(ActorEx *self);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 
 extern char data_ov014_02217a4e[];
 extern char data_ov014_02217a9c[];
-extern void *func_ov000_02191318(void *a, s32 b);
-extern void func_ov000_02191618(void *p);
-extern void func_ov000_021911c8(void *a, s32 b);
+extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
+extern void func_ov000_02191618(Model0218fe1c *p);
+extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
 extern u8 *func_ov000_0219bf90(void);
 extern void func_ov014_0220a490(Ov014Act_02209280 *self, VecFx32 *vel, u16 a, u16 b, u16 c);
 

@@ -18,9 +18,9 @@ extern char data_ov013_0220bea6[];
 extern void Actor_MoveToPos(Ov003Actor *self, VecFx32 *v, s32 a);
 
 
-extern void *ActorMgr_GetGroup(void *mgr, s32 a);
-extern u16 ActorGroup_CountKind(void *p, s32 a);
-extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
+extern ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 a);
+extern u16 ActorGroup_CountKind(ActorGroup *p, u16 a);
+extern BOOL func_ov000_021983b0(ActorSub40 *a, u8 b, s32 c, BOOL d);
 
 
 s32 func_ov013_02209b44(Ov013Act_02207968 *self) {

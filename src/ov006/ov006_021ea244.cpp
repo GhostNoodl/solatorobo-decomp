@@ -1,5 +1,7 @@
 #include "ov006/SlotManager.h"
 #include "Main/Effect/Effect.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 typedef struct ov006_Prop021ea244 {
     u8 unk0[0x70];
@@ -20,9 +22,7 @@ typedef struct ov006_Prop021ea244 {
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern const u8 data_ov006_021eb918[][6];
-void *func_02049f44(void *a, int b, void *c, int d);
 
 void func_ov006_021ea244(ov006_Prop021ea244 *self) {
     if (self->unk1AA == 0 && self->unk1AB == 0) {

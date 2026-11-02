@@ -1,4 +1,5 @@
 #include "Main/Res/ResMgr.h"
+#include "Main/Gfx/PlttRes.h"
 
 extern "C" {
 
@@ -9,14 +10,12 @@ typedef struct ResData {
 
 extern void FS_InitFile(FSFile *file);
 extern BOOL FS_CloseFile(FSFile *file);
-extern int FS_ReadFileAsync(FSFile *file, void *buf, u32 size);
+extern int FS_ReadFileAsync(FSFile *file, void *buf, int size);
 extern BOOL FS_OpenFile(FSFile *file, const char *path);
 extern u32 FS_GetLength(FSFile *file);
 extern ResList *ResList_Dtor(ResList *list);
 extern void func_0203835c(ResData *data);
 extern void Heap_Free(void *ptr);
-extern void *Heap_AllocHi(u32 size, int align);
-extern void Heap_FreeHi(void *ptr);
 extern void Heap_FreeLo(void *ptr);
 
 void func_020381cc(ResMgr *mgr, ResNode *node) {

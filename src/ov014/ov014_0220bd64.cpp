@@ -4,9 +4,9 @@ extern "C" {
 
 extern char data_ov014_02217a4e[];
 extern char data_ov014_02217a48[];
-extern void *func_ov000_02191318(void *a, s32 b);
-extern void func_ov000_021911c8(void *a, s32 b);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
+extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 void func_ov000_02182590(void *p);
@@ -123,10 +123,10 @@ extern "C" {
 extern char data_ov014_02217a8a[];
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnClamped(Ov003Actor *self, u16 a, u16 b, s32 c, s32 d);
-extern void func_ov000_02191618(void *a);
-extern void func_ov000_02191418(void *a, s32 b, s32 c);
-extern void func_ov000_02191690(void *a);
-extern void func_ov000_02191708(void *a);
+extern void func_ov000_02191618(Model0218fe1c *a);
+extern void func_ov000_02191418(Model0218fe1c *a, u16 b, BOOL c);
+extern void func_ov000_02191690(Model0218fe1c *a);
+extern void func_ov000_02191708(Model0218fe1c *a);
 extern s32 **func_ov000_02190a30(void *a, s32 b);
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, VecFx32 *pos, u16 *rot, u16 a);
 extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 msg);
@@ -135,7 +135,7 @@ extern Ov003Actor *Target_Get(void *p);
 extern void func_ov000_0218a358(void *a, const VecFx32 *b, Ov014Rot16 *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
 extern EffectObj *func_ov014_0220f7f0(s32 k, VecFx32 *pos);
-extern BOOL func_ov000_0219a8bc(void *p, Actor *a, Actor *b, s32 c, s32 d, const VecFx32 *pos, s32 e, s32 f, s32 g);
+extern BOOL func_ov000_0219a8bc(void *p, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *pos, s16 e, s32 f, s32 g);
 
 static inline Ov003Actor *Ov014e_FindById(u16 id) {
     return data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
@@ -482,7 +482,7 @@ extern char data_ov014_02217a60[];
 extern char data_ov014_02217a90[];
 extern char data_ov014_02217a96[];
 extern void Actor_TurnToActor(Actor *self, Actor *t, s32 a);
-extern void Actor_MoveToPos(Actor *self, VecFx32 *p, s32 a);
+extern void Actor_MoveToPos(Actor *self, const VecFx32 *p, s32 a);
 
 void func_ov014_0220cd74(Ov014Act_02209280 *self) {
     VecFx32 p2;

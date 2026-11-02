@@ -7,8 +7,8 @@ typedef struct ov006_Unk021e279c {
 
 extern "C" {
 
-extern const char data_ov006_021ec864[];
-extern const char data_ov006_021ec1a9[];
+extern char data_ov006_021ec864[];
+extern char data_ov006_021ec1a9[];
 
 void func_ov006_021e279c(ov006_Unk021e279c *self) {
     Model *model = (Model *)Heap_Alloc(sizeof(Model));

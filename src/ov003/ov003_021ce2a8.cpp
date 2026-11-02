@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/mi.h"
 
 #define V(n) virtual void v##n();
 
@@ -35,7 +36,6 @@ extern Ov003Current *data_ov000_021ccd40;
 extern u32 data_ov000_021ccd38;
 extern u32 data_ov003_021f78f4;
 extern u32 data_ov000_021cc060;
-extern void MI_CpuFill8(char *dst, s32 c);
 extern const char *MsgRes_GetString(void *mgr, s32 id);
 extern void Heap_Free(void *p);
 
@@ -43,7 +43,7 @@ void func_ov003_021ce2a8(void *self, char *dst, u32 size, const char *arg) {
     u32 n = 0;
     const char *fmt;
     u32 max;
-    MI_CpuFill8(dst, n);
+    MI_CpuFill8(dst, 0, size);
     max = size - 1;
     fmt = MsgRes_GetString(data_02149ef8, 0x5c);
     while (*fmt != 0 && n < max) {

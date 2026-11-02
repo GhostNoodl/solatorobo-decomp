@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_ov000_021ccd44;
 void *func_ov000_0218084c(void *a, int b, int c);
 void func_ov000_021736dc(void);
-void *func_0206ec48(u16 id);
+void *func_0206ec48(u32 id);
 void func_0203cb78(s32 a, int b, int c);
 void func_ov006_021db65c(void);
 void func_ov006_021cd5a8(int type, void *obj);

@@ -236,10 +236,10 @@ void Ov009ActExVt_022181f4_Update(Ov009ActExVt_022181f4 *self) {
         self->unk_ce--;
         if (self->unk_ce <= self->unk_d0) {
             Model0218fe1c *m = self->model;
-            FLD(u16, m, 0xb6) = 0x14bf;
-            FLD(u16, m, 0xb8) = 0x73ff;
-            FLD(u16, m, 0xba) = 9;
-            FLD(u16, m, 0xbc) = 8;
+            m->color = 0x14bf;
+            m->color2 = 0x73ff;
+            m->blend = 9;
+            m->blendMax = 8;
             if (self->unk_d0 >= 0x46) {
                 self->unk_d0 -= 0x14;
             } else if (self->unk_d0 >= 0x28) {

@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Main/Effect/Effect.h"
 #include "nitro/std.h"
+#include "Main/Res/StageFlags.h"
 
 
 struct Ov003Res {
@@ -65,12 +66,6 @@ struct Ov003AnimLayer {
     u8 loop : 1;
 };
 
-struct Ov003Save {
-    u8 unk_00[0x18];
-    u16 unk_18_0 : 1;
-    u16 unk_18_1 : 2;
-    u16 unk_18_3 : 4;
-};
 
 struct Ov003Prop {
     u8 unk_00[0xe];
@@ -95,17 +90,16 @@ struct Ov003Prop {
 
 extern "C" {
 extern s32 Rand_PlusMinus(s32 max);
-extern s32 Rand_UpTo(s32 max);
+extern u32 Rand_UpTo(u32 max);
 extern Ov003FxPlayer *func_ov000_0219bf90(void);
 extern Ov003Info *func_0206fef8(u16 id);
-extern s32 func_020705fc(u16 id);
+extern u8 *func_020705fc(s32 id);
 extern void *Heap_Alloc(u32 size);
 extern void *func_ov000_0218e9c4(void *p);
 extern Ov003Shadow *func_ov000_021919c8(void *p);
 extern void Shadow_Load(Ov003Shadow *p);
 extern BOOL func_ov000_02191b9c(Ov003Shadow *p);
 extern BOOL func_ov000_0218f110(s16 *p);
-extern Ov003Save *data_0214a424;
 extern char data_ov003_021fa662[];
 extern void Ov000ActVt_021cc7cc_Start(void *self);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);

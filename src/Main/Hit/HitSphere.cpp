@@ -445,8 +445,8 @@ BOOL func_0203fc60(HitMesh *mesh) {
     return mesh->unk_84_1 ? TRUE : FALSE;
 }
 
-extern int func_01ffbd6c(VecFx32 *from, VecFx32 *to, int a, int b, int c, int d);
-extern int func_01ffbf40(VecFx32 *pos, int radius, int a, int b, int c, int d);
+extern s32 func_01ffbd6c(VecFx32 *from, VecFx32 *to, u32 a, s32 b, s32 c, s32 d);
+extern s32 func_01ffbf40(VecFx32 *pos, s32 radius, u32 a, s32 b, s32 c, s32 d);
 
 static inline BOOL HitVec_Equal(const VecFx32 *a, const VecFx32 *b) {
     return (a->x == b->x && a->y == b->y && a->z == b->z) ? TRUE : FALSE;

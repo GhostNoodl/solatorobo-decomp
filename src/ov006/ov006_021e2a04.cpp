@@ -41,7 +41,7 @@ void func_ov006_021e2c14(ov006_Unk021e2a04 *self) {
     self->unk14->kind = 0;
     ov006_Caption_Init(self->unk14);
     text = data_ov006_021ec1b5;
-    ov006_AnimHolder_Play((ov006_AnimHolder *)self->unk14, (int)text, 4);
+    ov006_TextHolder_Play((ov006_TextHolder *)self->unk14, (int)text, 4);
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec1a9;

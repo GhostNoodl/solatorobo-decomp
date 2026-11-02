@@ -10,6 +10,10 @@
 #include "ov006/Tasks.h"
 #include "ov006/ov006.h"
 #include "ov006/SlotManager.h"
+#include "Main/Res/ResArc.h"
+#include "nitro/mi.h"
+#include "Main/Res/ArcName.h"
+#include "Main/Gfx/GfxMgr.h"
 
 // ---- merged from ov006_021ebabc.cpp
 static const fx32 data_ov006_021ebba8 = FX_Div(256 * FX32_ONE, 15 * FX32_ONE);
@@ -22,13 +26,10 @@ extern "C" {
 
 extern char data_ov006_021ec864[];
 extern char *data_0208ccc0;
-extern char *data_0208cca0;
 
 void func_ov006_021ce048(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 void func_ov006_021ce3f0(ov006_Emblem *self);
 void func_ov000_02173648(ov006_Emblem *self);
-void *func_02035d5c(const char *a);
-void *func_02034d88(void *a, const char *b);
 void func_02041c20(Model *self, int a, void *b);
 BOOL func_02054f10(Model *a, int b);
 
@@ -102,13 +103,10 @@ extern "C" {
 
 extern char data_ov006_021ec864[];
 extern char *data_0208ccc0;
-extern char *data_0208cca0;
 
 void func_ov006_021ce3f0(ov006_Emblem *self);
 void func_ov006_021ce048(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 void func_ov000_02173648(ov006_Emblem *self);
-void *func_02035d5c(const char *a);
-void *func_02034d88(void *a, const char *b);
 void func_02041c20(Model *self, int a, void *b);
 BOOL func_02054f10(Model *a, int b);
 
@@ -283,20 +281,9 @@ typedef struct ov006_Entry021cec68 {
     u16 name;
 } ov006_Entry021cec68;
 
-typedef struct ov006_Bits8b0 {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 1;
-    u8 b3 : 1;
-    u8 b4 : 1;
-    u8 b5 : 1;
-    u8 b6 : 1;
-    u8 b7 : 1;
-} ov006_Bits8b0;
 extern "C" {
 
 extern void *data_02149ef8;
-extern u8 *data_02097d48;
 extern void *data_ov000_021cac60;
 extern void *data_ov000_021caec8;
 extern void *data_ov000_021cadcc;
@@ -382,17 +369,17 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
     u8 k;
     ov006_Entry021cec68 *e;
     void *item;
-    u8 *g;
+    GfxSys *g;
     if (VCALL(self, 28)) {
         return;
     }
     {
         g = data_02097d48;
-        func_02043904(g + 0x8b0);
-        ((ov006_Bits8b0 *)(g + 0x8b0))->b4 = 1;
-        ((ov006_Bits8b0 *)(g + 0x8b0))->b5 = 1;
+        func_02043904(g->unk_8b0);
+        g->unk_8b0_4 = 1;
+        g->unk_8b0_5 = 1;
         *(vu16 *)0x4000060 = (*(vu16 *)0x4000060 & ~0x3000) | 0x20;
-        func_02043b20(g + 0x8b0);
+        func_02043b20(g->unk_8b0);
     }
     self->base.flags &= ~2;
     func_ov006_021daea0(data_ov006_021ec884);
@@ -902,7 +889,6 @@ extern "C" {
 extern void *data_ov006_021ebcc0;
 
 void func_ov006_021e309c(Object *a);
-void MI_CpuFill8(void *dst, u8 value, u32 size);
 
 void func_ov006_021cfe84(ov006_TaskCE *self) {
     if (self->unk44 != NULL) {
@@ -1010,9 +996,7 @@ void func_ov000_02157c90(void *a, const void *b);
 void func_ov000_02157d2c(void *a, const void *b);
 void func_ov000_02173648(void *self);
 void func_ov000_02153c48(ov006_ListNode *a, int b, int c, int d, int e);
-void MIi_CpuClear32(int value, void *dst, u32 size);
 void func_02040b0c(void *dst, int *dstLen, const void *src, int *srcLen);
-int STD_CopyLString(void *dst, const void *src, u32 size);
 void func_ov006_021d0ab8(ov006_TaskD0 *self);
 
 BOOL func_ov006_021d01ac(ov006_TaskD0 *self) {

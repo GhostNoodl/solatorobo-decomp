@@ -65,10 +65,10 @@ extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern void *Target_Get(void *p);
 extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
 extern BOOL func_ov000_02191120(void *p);
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 extern Ov003LvPlayer *func_ov000_0219bf90(void);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
-extern s32 Rand_UpTo(s32 max);
+extern u32 Rand_UpTo(u32 max);
 extern BOOL func_ov000_0219aae8(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 
 void func_ov003_021ee680(Ov003Lever *self, s16 kind, BOOL notify, s32 sound);

@@ -51,7 +51,7 @@ extern u32 data_ov003_021f7cd8;
 extern s16 func_ov003_021d7e58(Ov003Ticker *t);
 extern void Heap_Free(void *p);
 extern void *Heap_Alloc(u32 size);
-extern void *History_Init(void *p);
+extern ActorSub40 *History_Init(ActorSub40 *p);
 
 void func_ov003_021d8c60(Ov003Timer *self) {
     if (self->active) {
@@ -60,8 +60,8 @@ void func_ov003_021d8c60(Ov003Timer *self) {
 }
 
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
-extern void func_ov000_0218996c(s32 a, s32 b);
-extern s32 Rand_UpTo(s32 max);
+extern void func_ov000_0218996c(u8 a, u8 b);
+extern u32 Rand_UpTo(u32 max);
 
 void func_ov003_021d8c78(Ov003Timer *self) {
     BOOL fire;

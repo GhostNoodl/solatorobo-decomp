@@ -16,7 +16,7 @@ extern Actor *func_ov003_021f1420(Ov003SpawnInfo *info);
 extern Actor *func_ov000_02192b24(Ov003SpawnInfo *info);
 extern Actor *func_ov003_021cfab4(Ov003SpawnInfo *info);
 extern Actor *func_ov000_021b4828(Ov003SpawnInfo *info);
-extern void func_ov000_02198360(ActorSub40 *self, u8 idx, s32 flag);
+extern BOOL func_ov000_02198360(ActorSub40 *self, u8 idx, BOOL flag);
 
 void func_ov003_021da2c8(Actor *self, s32 speed, s32 velY, s32 friction, s32 gravity) {
     if (self == NULL) {

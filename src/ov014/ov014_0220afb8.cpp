@@ -160,7 +160,7 @@ extern char data_ov014_02217a7e[];
 extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_02191618(void *p);
 extern void func_ov000_021911c8(void *a, s32 b);
-extern void func_ov014_02209fa0(Ov014Act_02209280 *self, s32 a, s32 b);
+extern void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 b);
 
 void func_ov014_0220afe8(Ov014Act_02209280 *self) {
     ActorSub40 *st = self->fsm;

@@ -1,12 +1,7 @@
 #include "types.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorParts.h"
-
-typedef struct {
-    u8 unk_00[0x8b0];
-    u8 unk_8b0[3];
-    u8 unk_8b3;
-} Ov003Save;
+#include "Main/Gfx/GfxMgr.h"
 
 typedef struct {
     u8 unk_00[0xc1];
@@ -30,16 +25,15 @@ typedef struct {
     Ov003Prop44 *unk_44;
 } Ov003Prop;
 
-extern Ov003Save *data_02097d48;
 extern int func_02043d9c(void *p);
 extern BOOL func_ov000_02194c08(void *self);
 extern void func_ov000_02194758(void *self);
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 extern void func_ov000_02191008(void *p);
 
 void Ov003ActVt_021f8058_Draw(Ov003Prop *self) {
-    Ov003Save *s = data_02097d48;
-    u8 v = s->unk_8b3;
+    GfxSys *s = data_02097d48;
+    u8 v = s->unk_8b0[3];
     func_02043d9c(s->unk_8b0);
     self->unk_38->unk_c1 = v;
     func_ov000_02194c08(self);

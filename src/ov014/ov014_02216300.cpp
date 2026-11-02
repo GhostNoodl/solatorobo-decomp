@@ -2,13 +2,13 @@
 
 extern "C" {
 
-extern void func_ov000_02195d88(void *self);
+extern void func_ov000_02195d88(ActorEx *self);
 extern Ov003Actor *Target_Get(void *p);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
 
-extern void func_ov000_021911c8(void *a, s32 b);
+extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
 extern VecFx32 *func_ov000_0218d2e0(void *self);
 extern void func_ov003_021f0c60(Actor *self, s32 a);
 extern BOOL func_ov014_02216324(Actor *self);

@@ -5,6 +5,7 @@
 #include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorParts.h"
+#include "nitro/mi.h"
 
 // A header's zero rotation and vector, plus copies made at startup, among this TU's motion
 // names, the pointers to them, two angle tables and six vectors. Other functions read the
@@ -1982,7 +1983,6 @@ typedef struct {
 } Ov003Spin;
 
 extern void func_ov003_021ea234(Ov003Spin *self, Ov003Mtx33 *m, void *rot, u16 angle);
-extern void MI_Copy36B(Ov003Mtx33 *src, void *dst);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern BOOL func_ov000_02194c08(void *self);
 

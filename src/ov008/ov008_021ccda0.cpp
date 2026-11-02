@@ -83,7 +83,7 @@ void func_ov008_021ccf44(Ov008Panel *o) {
         break;
     case 0xf:
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
-        m = (Model *)Heap_Alloc(0x160);
+        m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
             func_02041218(&m->pltt);
             func_02041440(m, o->pic.cell, 1);

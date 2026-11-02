@@ -5,7 +5,7 @@ extern "C" {
 
 void func_0206e900(char *dst, const char *src);
 
-extern const char data_ov006_021ec178[];
+extern char data_ov006_021ec178[];
 extern const char data_ov006_021ec1b6[];
 extern const char data_ov006_021ec1c2[];
 extern const char *const data_ov006_021ec154[];

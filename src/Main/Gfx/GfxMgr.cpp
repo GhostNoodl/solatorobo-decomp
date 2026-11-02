@@ -1,11 +1,11 @@
 #include "Main/Gfx/GfxMgr.h"
+#include "Main/Res/ResLoader.h"
 
 extern "C" {
 
 extern u8 data_02097ce4[];
 
 
-extern void *Heap_AllocLo(u32 size, int align);
 extern void func_02039a34(GfxMgr *mgr);
 extern void *func_0203a408(GfxMgr *mgr, void *arg1, void *arg2, void *arg3);
 extern void *func_0203a984(GfxMgr *mgr, void *arg1, void *arg2);

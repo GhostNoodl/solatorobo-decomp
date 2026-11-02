@@ -1,5 +1,6 @@
 #include "Main/Snd/SndMgr.h"
 #include "nitro/fx.h"
+#include "Main/Sys/FieldState.h"
 
 extern "C" {
 
@@ -20,7 +21,6 @@ typedef struct SndListener {
 } SndListener;
 
 extern s32 data_0208b700;
-extern SndListener *data_ov000_021ccd54;
 extern SndAreaEntry data_0208b7c8[];
 extern s32 data_0208b704;
 extern s32 data_0208b744[];

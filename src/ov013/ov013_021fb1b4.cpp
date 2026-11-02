@@ -44,7 +44,7 @@ extern void Actor_TurnToPos(Ov003Actor *self, VecFx32 *p, s32 a);
 extern void Actor_MoveToPos(Ov003Actor *self, VecFx32 *v, s32 a);
 extern void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 extern void func_02049de8(void *p, s32 a);
-extern s32 Rand_Fx(void);
+extern u32 Rand_Fx(void);
 extern u32 Rand_Get(void);
 extern void HitSphere_Link(ActorSub48 *p);
 extern void func_0203f364(ActorSub48 *p);

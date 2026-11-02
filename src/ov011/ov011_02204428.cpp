@@ -2,8 +2,8 @@
 
 extern "C" {
 
-extern VecFx32 data_02092a50;
-extern VecFx32 data_02092a38;
+extern const VecFx32 data_02092a50;
+extern const VecFx32 data_02092a38;
 extern char data_ov011_022075d4[];
 s32 Rand_PlusMinus(s32 max);
 Actor *func_ov000_0219be1c(s32 id, VecFx32 *pos, u16 *rot, u16 a, u16 b);

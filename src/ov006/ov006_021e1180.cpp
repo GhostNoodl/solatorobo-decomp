@@ -1,11 +1,6 @@
 #include "ov006/Model.h"
 #include "nitro/fx.h"
-
-typedef struct ov006_Anim021e1180 {
-    void *vtbl;
-    u8 unk4[0x40];
-    s32 unk44;
-} ov006_Anim021e1180;
+#include "Main/Gfx/TextWin.h"
 
 typedef struct ov006_Gauge021e1180 {
     void *vtbl;
@@ -18,13 +13,13 @@ typedef struct ov006_Gauge021e1180 {
     s32 x;
     s32 y;
     Model *model;
-    ov006_Anim021e1180 *anim;
+    TextWin *anim;
 } ov006_Gauge021e1180;
 
 extern "C" {
 
-static inline void ov006_Anim_SetScreenPos(ov006_Anim021e1180 *a, s32 x, s32 y) {
-    VCALL(a, 20, x + 0x80, y);
+static inline void ov006_TextWin_SetScreenPos(TextWin *a, s32 x, s32 y) {
+    a->unk_vf20(x + 0x80, y);
 }
 
 void func_ov006_021e1180(ov006_Gauge021e1180 *self) {
@@ -35,8 +30,8 @@ void func_ov006_021e1180(ov006_Gauge021e1180 *self) {
     }
     x = self->x;
     y = self->y + 0x10;
-    ov006_Anim_SetScreenPos(self->anim, x + 0x28 - (self->anim->unk44 >> 1), y + 0x54);
-    VCALL(self->anim, 90);
+    ov006_TextWin_SetScreenPos(self->anim, x + 0x28 - ((s32)self->anim->width >> 1), y + 0x54);
+    self->anim->Render();
     ov006_Model_SetPos(self->model, 2, x << 12, y << 12);
     Model_PlayPart(self->model, (u16)(self->unk10 + 2));
     ov006_Model_SetPos(self->model, 2, (x + (s16)(FX_Whole(FX_Mul(self->unk8, 0x4b000)) - 0x4b) + 0x50) << 12, y << 12);

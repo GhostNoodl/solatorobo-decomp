@@ -1,6 +1,7 @@
 #include "ov006/SlotManager.h"
 #include "nitro/fx.h"
 #include "Main/Effect/Effect.h"
+#include "Main/Gfx/SlidePanel.h"
 
 typedef struct ov006_Query021e7fe4 {
     VecFx32 pos;
@@ -58,12 +59,11 @@ typedef struct ov006_Prop021e7fe4 {
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern const char data_ov006_021ec48c[];
 extern const char data_ov006_021ec49b[];
 
 s32 func_ov000_02199128(ov006_Finder021e7fe4 *self, ov006_Query021e7fe4 *q, void **out, s32 max);
-s32 func_02049bdc(void *a, int b, int c);
+s32 func_02049bdc(SndMgr *a, s32 b, s32 c);
 
 static inline void ov006_FinderQuery_Init(ov006_FinderQuery021e7fe4 *fq) {
     fq->q.mask = 0;

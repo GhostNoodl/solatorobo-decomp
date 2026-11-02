@@ -2,6 +2,7 @@
 #include "nitro/std.h"
 #include "ov003/Actor.h"
 #include "Main/Sys/FieldState.h"
+#include "Main/Gfx/PlttRes.h"
 
 typedef struct {
     u16 a;
@@ -72,7 +73,6 @@ typedef struct {
 
 extern "C" {
 void *Heap_Alloc(u32 size);
-void *Heap_AllocHi(u32 size, s32 align);
 Ov003InInfo *func_0206fef8(u16 id);
 Ov003InParam *func_02070558(u16 id);
 Model0218fe1c *func_ov000_0218fe1c(void *p);
@@ -80,7 +80,7 @@ void func_ov000_0219badc(Model0218fe1c *m, void *res, Ov003InInfo *info);
 ActorSub48 *func_ov000_021985e8(void *p);
 void func_ov000_02198c8c(ActorSub48 *o, u16 id);
 void HitSphere_Link(ActorSub48 *o);
-void func_ov000_0219864c(ActorSub48 *o, void *a, s32 b);
+void func_ov000_0219864c(ActorSub48 *o, VecFx32 *a, u16 *b);
 ActorSub44 *func_ov000_021984c8(void *p);
 void func_ov000_021984f4(ActorSub44 *o, void *a, s32 b);
 Ov003InObj4c *func_ov000_02199b00(void *p);
@@ -89,7 +89,7 @@ BOOL func_ov000_021bd314(Ov003InObj5c *p, s32 a);
 s32 NNS_G3dGetResDictIdxByName(const void *dict, const void *name);
 BOOL func_ov000_0218ffdc(Model0218fe1c *m, void *res, s32 idx, s32 b);
 Ov003InAnm *func_ov000_02190a30(Model0218fe1c *m, s32 n);
-void func_ov000_02191920(Model0218fe1c *m, s32 idx, s32 a, s32 b);
+void func_ov000_02191920(Model0218fe1c *m, s32 idx, s16 a, u8 b);
 }
 
 static inline Model0218fe1c *Ov003In_NewModel(void) {

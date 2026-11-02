@@ -15,7 +15,7 @@ extern "C" {
 static inline void ov006_Caption_Draw(ov006_Caption *self) {
     if (self->visible) {
         const ov006_CaptionEntry *e = &data_ov006_021eb824[self->kind];
-        ov006_Anim *anim = self->label;
+        TextWin *anim = self->label;
         s32 x;
         s32 y;
         s32 w;
@@ -24,18 +24,18 @@ static inline void ov006_Caption_Draw(ov006_Caption *self) {
         s32 h;
         w = e->width;
         x = self->x + self->ofsX;
-        w -= *(int *)anim->unk44;
+        w -= anim->width;
         y = self->y + self->ofsY;
         h = e->height;
-        h -= *(int *)anim->unk48;
+        h -= anim->height;
         bx = self->textX;
         bx += 0x80;
         bx += w >> 1;
         by = self->textY;
         by += 0x60;
         by += h >> 1;
-        VCALL(anim, 20, x + bx, y + by);
-        VCALL(self->label, 90);
+        anim->unk_vf20(x + bx, y + by);
+        self->label->Render();
         if (self->model != NULL) {
             ov006_Model_SetPos(self->model, 2, x << 12, y << 12);
             Model_PlayPart(self->model, e->part);
@@ -49,7 +49,7 @@ static inline void ov006_Caption_Draw2(ov006_Caption *self) {
         s32 x;
         s32 y;
         const ov006_CaptionEntry *e;
-        ov006_Anim *anim;
+        TextWin *anim;
         s32 w;
         s32 bx;
         s32 by;
@@ -59,17 +59,17 @@ static inline void ov006_Caption_Draw2(ov006_Caption *self) {
         x = self->x + self->ofsX;
         y = self->y + self->ofsY;
         w = e->width;
-        w -= *(int *)anim->unk44;
+        w -= anim->width;
         h = e->height;
-        h -= *(int *)anim->unk48;
+        h -= anim->height;
         bx = self->textX;
         bx += 0x80;
         bx += w >> 1;
         by = self->textY;
         by += 0x60;
         by += h >> 1;
-        VCALL(anim, 20, x + bx, y + by);
-        VCALL(self->label, 90);
+        anim->unk_vf20(x + bx, y + by);
+        self->label->Render();
         if (self->model != NULL) {
             ov006_Model_SetPos(self->model, 2, x << 12, y << 12);
             Model_PlayPart(self->model, e->part);

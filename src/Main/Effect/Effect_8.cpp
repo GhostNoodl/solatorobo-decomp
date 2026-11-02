@@ -70,7 +70,7 @@ extern void EffectEmitter_ResetParams(EffectEmitter *em);
 extern void EffectPartSet_Init(EffectPartSet *parts);
 extern void func_0206a138(EffectPartSet *parts);
 extern void func_0206a0d8(EffectPartSet *parts);
-extern BOOL EffectPartSet_AddSlot(EffectPartSet *parts, u8 *data);
+extern BOOL EffectPartSet_AddSlot(EffectPartSet *parts, const u8 *data);
 extern void func_02069248(EffectEmitterSub *sub);
 
 void func_02068c40(EffectSetup *setup, EffectObj *obj, s32 id);

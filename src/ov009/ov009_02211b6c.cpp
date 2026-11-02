@@ -5,7 +5,7 @@ extern "C" {
 extern char data_ov009_022179b4[];
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern void Actor_TurnToPos(Ov003Actor *self, const VecFx32 *v, s32 a);
-extern void func_ov000_021911c8(void *m, s32 a);
+extern void func_ov000_021911c8(Model0218fe1c *m, s16 a);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 static inline void Ov009_NextState(Ov009ActVt_02217aac *self) {

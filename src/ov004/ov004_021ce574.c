@@ -4,7 +4,7 @@
 
 // DSProtect runtime: decrypts protected code in place and flushes the caches.
 
-extern u8 DSProt_BSS[];
+extern char DSProt_BSS[];
 extern u8 *data_ov004_021cf7a0;
 extern u8 *data_ov004_021cf7b8;
 

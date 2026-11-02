@@ -105,7 +105,7 @@ EffectPtcl *func_0206b81c(EffectEmitter *em) {
     return head;
 }
 
-extern s32 Rand_UpTo(s32 max);
+extern u32 Rand_UpTo(u32 max);
 
 static inline void *Effect_ResDataByIdx(EffectResDict *dict, u32 idx) {
     if (dict != NULL && idx < dict->numEntry) {

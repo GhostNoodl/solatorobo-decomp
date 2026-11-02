@@ -5,8 +5,8 @@
 extern "C" {
 
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *c);
-extern void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
-extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+extern void ActorMgr_SendMsg(u16 a, u16 b, u8 c, BOOL d, u32 e, const void *f);
+extern BOOL func_ov000_02198360(ActorSub40 *a, u8 b, BOOL c);
 
 BOOL func_ov010_0220e740(Ov010Path *self, Actor *owner, const void *msg, s32 size, const VecFx32 *offset, s32 fxId) {
     self->b0 = 1;

@@ -2,6 +2,7 @@
 #define MAIN_SYS_SYSTASK_H
 
 #include "Main/Res/ResMgr.h"
+#include "Main/Gfx/Model.h"
 
 struct SysTaskVObj {
     virtual void vf00(void);
@@ -18,7 +19,7 @@ typedef struct Unk0214a418 {
     void *unk_08;
     void *unk_0c;
     SysTaskVObj *unk_10;
-    void *unk_14;
+    Model *unk_14;
 } Unk0214a418;
 
 typedef s32 (*Unk02097d4cFunc)(s32 arg);
@@ -29,10 +30,6 @@ extern u32 data_02097d44;
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *ptr);
 extern void func_02063374(Unk0214a418 *p);
-struct Model;
-struct PlttRes;
-extern void func_02041558(struct Model *model); // Main/Gfx/Model.h
-extern void func_02041278(struct PlttRes *res); // Main/Gfx/PlttRes.h
 extern void *func_ov000_0218fee4(void *p);
 extern void *func_ov000_0218ea20(void *p);
 extern s32 func_02062ac8(Unk0214a418 *p, s32 arg);

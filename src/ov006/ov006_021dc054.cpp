@@ -1,5 +1,6 @@
 #include "ov006/Model.h"
 #include "nitro/fx.h"
+#include "Main/Gfx/GfxMgr.h"
 
 typedef struct ov006_Unk021dc054 {
     void *vtbl;
@@ -40,16 +41,8 @@ static inline void ov006_VecScale(const VecFx32 *a, fx32 s, VecFx32 *out) {
     out->z = FX_Mul(a->z, s);
 }
 
-typedef struct ov006_ModelFlags {
-    u32 b0 : 2;
-    u32 prio : 5;
-    u32 pal : 6;
-    u32 rest : 19;
-} ov006_ModelFlags;
-
 extern "C" {
 
-extern u8 *data_02097d48;
 u8 Gfx3DState_NextPolyId(void *p);
 
 BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);

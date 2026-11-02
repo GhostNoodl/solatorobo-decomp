@@ -7,7 +7,7 @@ extern "C" {
 void func_ov006_021e0b80(ov006_Caption *self) {
     if (self->visible) {
         const ov006_CaptionEntry *e = &data_ov006_021eb824[self->kind];
-        ov006_Anim *anim = self->label;
+        TextWin *anim = self->label;
         s32 x;
         s32 y;
         s32 bx = self->textX;
@@ -16,14 +16,14 @@ void func_ov006_021e0b80(ov006_Caption *self) {
         x = self->x + self->ofsX;
         y = self->y + self->ofsY;
         s32 w = e->width;
-        w -= *(int *)anim->unk44;
+        w -= anim->width;
         s32 h = e->height;
         bx += w >> 1;
-        h -= *(int *)anim->unk48;
+        h -= anim->height;
         by += 0x60;
         by += h >> 1;
-        VCALL(anim, 20, x + bx, y + by);
-        VCALL(self->label, 90);
+        anim->unk_vf20(x + bx, y + by);
+        self->label->Render();
         if (self->model != NULL) {
             ov006_Model_SetPos(self->model, 2, x << 12, y << 12);
             Model_PlayPart(self->model, e->part);

@@ -5,10 +5,10 @@ extern "C" {
 extern u8 data_ov014_02217dc0[];
 extern char data_ov014_02217d8e[];
 extern char data_ov014_02217d95[];
-extern void *func_ov000_0218e9c4(void *p);
-extern void *func_ov000_0218fe1c(void *p);
-extern void *func_ov000_0218fee4(void *p);
-extern void *func_ov000_0218ea20(void *p);
+extern ResSet *func_ov000_0218e9c4(ResSet *p);
+extern Model0218fe1c *func_ov000_0218fe1c(Model0218fe1c *p);
+extern Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *p);
+extern ResSet *func_ov000_0218ea20(ResSet *p);
 extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
 extern s32 func_ov003_021d1c00(Ov003Actor *self, Ov014Msg *msg);
@@ -69,7 +69,7 @@ void Ov014Act_0221267c_Start(Ov014Act_0221267c *self) {
     self->model->flushVP = 1;
     self->model->renderUser = &FLD(u8, self, 0x314);
     self->model->alpha = 0;
-    FLD(Ov014Flags, self->model, 0xc2).b4 = 0;
+    self->model->boxTest = 0;
 }
 
 }

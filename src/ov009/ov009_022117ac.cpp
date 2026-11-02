@@ -1,4 +1,6 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 
@@ -11,15 +13,13 @@ void func_ov009_022117ac(Ov009ActVt_02217aac *self) {
     func_ov003_021d4fd8(self);
 }
 
-extern void *data_02097e4c;
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern void func_0203f364(ActorSub48 *p);
 extern void func_ov000_02199f48(void *p, Ov003Actor *a);
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
-extern void func_ov000_021911c8(void *m, s32 a);
-extern void func_ov000_0218996c(s32 a, s32 b);
-extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
+extern void func_ov000_021911c8(Model0218fe1c *m, s16 a);
+extern void func_ov000_0218996c(u8 a, u8 b);
+extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 void func_ov009_022117e4(Ov009ActVt_02217aac *self) {
     VecFx32 p;
     VecFx32 v;

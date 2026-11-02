@@ -6,12 +6,12 @@ extern void *data_02097e4c;
 extern const char data_ov011_02207bd8[];
 u16 ActorGroup_CountKind(void *g, u16 id);
 void Actor_TurnToActor(void *self, void *target, s32 c);
-void func_ov000_021911c8(void *a, s32 b);
+void func_ov000_021911c8(Model0218fe1c *a, s16 b);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);
-void func_ov000_0218d7e8(void *self, s32 a);
+void func_ov000_0218d7e8(Actor *self, u8 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 
 void Ov011ActVt_02207b34_Update(Ov003Actor *self) {

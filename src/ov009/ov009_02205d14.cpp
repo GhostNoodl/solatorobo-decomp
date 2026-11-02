@@ -5,13 +5,13 @@ extern "C" {
 extern void *data_02097e4c;
 extern void *data_ov009_02215d0c[];
 extern void *data_ov009_0221707c;
-extern u8 data_ov009_02216bb4[];
-extern u8 data_ov009_02216bba[];
+extern char data_ov009_02216bb4[];
+extern char data_ov009_02216bba[];
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 extern void *func_ov003_021da940(void *p);
 extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern void *func_ov000_02191318(Model0218fe1c *m, s32 a);
+extern s16 *func_ov000_02191318(Model0218fe1c *m, s32 a);
 void func_ov009_02205d94(Ov009Names *self, void *res);
 
 struct Ov009Rot {

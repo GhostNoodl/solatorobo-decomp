@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void func_ov000_0219864c(void *a, s32 b, s32 c);
+extern void func_ov000_0219864c(ActorSub48 *a, VecFx32 *b, u16 *c);
 extern void func_ov000_021984f4(void *a, VecFx32 *b, s32 c);
 
 void func_ov014_02209ecc(Ov014Act_02209280 *self) {

@@ -1,5 +1,7 @@
 #include "ov010/ov010.h"
 #include "Main/Sys/FieldState.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 struct Ov010Rot {
     s16 v[3];
@@ -7,11 +9,9 @@ struct Ov010Rot {
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern u8 data_ov010_0220f024[];
 extern VecFx32 data_ov010_0220f114;
 extern VecFx32 data_ov010_0220f120;
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 

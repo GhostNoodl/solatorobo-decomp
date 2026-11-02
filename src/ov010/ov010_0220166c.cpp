@@ -9,7 +9,7 @@ struct Ov010PlFlags {
 
 extern "C" {
 
-extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(ActorSub40 *a, u8 b, BOOL c);
 extern void func_ov010_02200a00(Ov010Beam *o);
 extern Robo021ca458 *func_ov000_0219bf90(void);
 extern s32 Ov003Vec_DistSq(const VecFx32 *a, const VecFx32 *b);

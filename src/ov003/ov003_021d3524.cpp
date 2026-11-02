@@ -7,12 +7,12 @@ extern char data_ov003_021f7a60[];
 extern char data_ov003_021f7a66[];
 extern char data_ov003_021f7a6c[];
 extern char data_ov003_021f7a72[];
-extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
-extern void func_ov000_021915a0(void *model);
-extern void func_ov000_021911c8(void *model, s32 v);
+extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s16 a, u8 b);
+extern void func_ov000_021915a0(Model0218fe1c *model);
+extern void func_ov000_021911c8(Model0218fe1c *model, s16 v);
 extern s32 Rand_PlusMinus(s32 max);
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
-extern void Actor_MoveToPos(void *self, VecFx32 *v, s32 a);
+extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
+extern void Actor_MoveToPos(Actor *self, const VecFx32 *v, s32 a);
 extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 
 void func_ov003_021d3524(Ov003Actor *self) {

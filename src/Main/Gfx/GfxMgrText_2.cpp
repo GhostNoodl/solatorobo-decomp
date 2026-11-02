@@ -1,11 +1,11 @@
 #include "Main/Gfx/GfxMgr.h"
 #include "nnsys/g2d/g2d_Font.h"
+#include "nitro/mi.h"
+#include "Main/Res/ResLoader.h"
 
 extern "C" {
 
-extern void *Heap_AllocLo(u32 size, int align);
 extern void Heap_FreeLo(void *ptr);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 
 // Renders a string into a 1/2/4/8 bpp bitmap buffer (mgr->unk_67c), growing the buffer as needed.
 // The bit position is built in `pos` and multiplied in both of its uses, so the product is a

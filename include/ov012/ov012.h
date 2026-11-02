@@ -280,16 +280,16 @@ void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 void func_ov000_021915a0(void *a);
 s32 Rand_PlusMinus(s32 max);
-s32 Rand_UpTo(s32 max);
+u32 Rand_UpTo(u32 max);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 s32 func_ov000_0219a2f4(VecFx32 *v, s32 y, s32 b);
-BOOL func_ov000_02191120(void *p);
+BOOL func_ov000_02191120(Model0218fe1c *p);
 char *func_0207011c(void *res);
 char *func_020701d4(void *res);
 u8 *func_02070558(void *res);
 }
 extern "C" {
-void func_ov000_021953b4(void *self);
+void func_ov000_021953b4(ActorEx *self);
 void func_ov003_021dacfc(void *p);
 void *func_ov000_0219429c(void *self);
 s32 func_0203db40(void *p);
@@ -328,7 +328,7 @@ extern void *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_0218fe1c(void *p);
 extern void *func_ov000_0218fee4(void *p);
 extern void *func_ov000_0218ea20(void *p);
-extern void SndMgr_LoadHeapState(void *a, s32 b, s32 c);
+extern void SndMgr_LoadHeapState(SndMgr *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
 extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
@@ -350,7 +350,7 @@ extern void func_0203f364(ActorSub48 *p);
 extern void *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void func_ov000_021984f4(void *p, s32 a, s32 b);
-extern void func_ov000_0219864c(void *p, s32 a, s32 b);
+extern void func_ov000_0219864c(ActorSub48 *p, VecFx32 *a, u16 *b);
 extern void func_ov000_02196860(Actor *self);
 extern void func_ov000_0219763c(Actor *self);
 }
@@ -361,8 +361,8 @@ extern void func_ov000_0219763c(Actor *self);
 extern "C" {
 extern void Ov003ScriptList_Init(void *p);
 extern void *Ov003Vt_021f7974_Dtor(void *p);
-extern void func_02049678(void *a, s32 b, s32 c, s32 d);
-extern BOOL SndMgr_IsLoadDone(void *a);
+extern void func_02049678(SndMgr *a, s32 b, s32 c, s32 d);
+extern BOOL SndMgr_IsLoadDone(SndMgr *a);
 }
 
 
@@ -378,7 +378,7 @@ extern void func_ov000_02194758(void *self);
 
 
 extern "C" {
-extern void *ActorEx_Ctor(void *self);
+extern ActorEx *ActorEx_Ctor(ActorEx *self);
 }
 
 
@@ -387,7 +387,7 @@ extern "C" {
 
 
 extern "C" {
-extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 }
 
 
@@ -403,7 +403,7 @@ static inline Ov003Actor *Ov012_FindActor(u16 id) {
 
 
 extern "C" {
-extern void Actor_MoveToPos(void *self, VecFx32 *v, s32 a);
+extern void Actor_MoveToPos(Actor *self, const VecFx32 *v, s32 a);
 extern Ov003Actor *Actor_GetTarget(void *self);
 extern void Actor_TurnToActor(void *self, Ov003Actor *a, s32 b);
 }
@@ -450,7 +450,7 @@ struct Ov012VecC {
 
 
 extern "C" {
-extern s32 func_ov000_0219a510(void *self, u16 mask, VecFx32 *pos, s32 r, s32 a, void **list);
+extern s32 func_ov000_0219a510(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list);
 extern void *func_ov000_021985c0(void *p);
 extern void func_ov003_021f0c60(void *self, s32 a);
 extern void func_ov000_0218996c(u8 a, u8 b);
@@ -575,8 +575,8 @@ extern "C" {
 
 
 extern "C" {
-extern BOOL func_ov000_021983b0(void *p, s32 a, s32 b, s32 c);
-extern void func_ov000_02191418(void *p, u16 a, s32 b);
+extern BOOL func_ov000_021983b0(ActorSub40 *p, u8 a, s32 b, BOOL c);
+extern void func_ov000_02191418(Model0218fe1c *p, u16 a, BOOL b);
 }
 
 

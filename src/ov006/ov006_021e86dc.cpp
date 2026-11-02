@@ -2,6 +2,8 @@
 #include "ov006/ov006.h"
 #include "nitro/fx.h"
 #include "Main/Effect/Effect.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 typedef struct ov006_Car021e86dc {
     u8 unk0[0x70];
@@ -43,15 +45,12 @@ typedef struct ov006_Car021e86dc {
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern char data_ov006_021ec4ad[];
 extern char data_ov006_021ec4bc[];
 extern char data_ov006_021ec4c8[];
 extern char data_ov006_021ec4d4[];
 extern u8 data_ov006_021eb908[];
 extern s32 data_ov006_021eb8f8[];
-void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 ov006_SlotSub *func_ov006_021dab98(ov006_Slot *self);
 

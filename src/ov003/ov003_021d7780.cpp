@@ -1,6 +1,7 @@
 #include "types.h"
 #include "ov003/Actor.h"
 #include "ov003/Pool.h"
+#include "Main/Gfx/PlttRes.h"
 
 extern "C" {
 
@@ -8,8 +9,6 @@ extern u32 data_ov003_021f7d2c;
 extern void *data_ov000_021ccd68;
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *p);
-extern void Heap_FreeHi(void *p);
-extern void *Heap_AllocHi(u32 size, s32 align);
 extern void *ActorMgr_GetActor(void *mgr, u16 id);
 
 void *Ov003ActVt_021f7c0c_Dtor(void *self) {

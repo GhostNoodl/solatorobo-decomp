@@ -1,5 +1,8 @@
 #include "Main/Res/ResMgr.h"
 #include "Main/Res/ResLoader.h"
+#include "Main/Gfx/PlttRes.h"
+#include "Main/Res/ResArc.h"
+#include "Main/Save/SysCard.h"
 
 extern "C" {
 
@@ -8,7 +11,6 @@ extern BOOL FS_CloseFile(FSFile *file);
 extern u32 FS_TryLoadTable(void *buf, u32 size);
 extern void FS_Init(int arg);
 extern void MATHi_CRC16InitTableRev(u16 *table, u32 poly);
-extern void MI_CpuFill8(void *dst, u8 value, u32 size);
 extern ResLoader *ResLoader_Init(ResLoader *loader);
 extern void func_02035670(ResLoader *loader);
 extern void func_0203584c(ResLoader *loader);
@@ -47,7 +49,6 @@ extern BOOL NNS_G2dGetUnpackedPaletteCompressInfo(void *data, void *out);
 extern void *Heap_Alloc(u32 size);
 extern void Heap_FreeLo(void *ptr);
 extern BOOL func_02046e28(void *arg);
-extern void *data_02097e44;
 
 
 extern ResNode *func_0203657c(ResMgr *mgr, const char *name, int type);
@@ -57,7 +58,6 @@ extern void func_02036b30(ResMgr *mgr, ResNode *node);
 extern void Sys_WaitVBlank(UnkSys *sys);
 
 extern void *func_02034b98(ResList *list, const char *name);
-extern void *func_02034d88(ResList *list, const char *name);
 extern void *func_02034ec0(ResList *list, const char *name);
 extern void *func_02034f5c(ResList *list, const char *name);
 extern void *func_02034ff8(ResList *list, const char *name);
@@ -826,8 +826,7 @@ extern BOOL func_02035740(ResLoader *loader, ResRequest *req);
 extern void func_0203581c(ResLoader *loader);
 extern u8 *func_02035890(ResRing *ring);
 extern u32 func_02035904(ResRing *ring);
-extern BOOL FS_SeekFile(FSFile *file, s32 offset, int whence);
-extern void Heap_FreeHi(void *ptr);
+extern BOOL FS_SeekFile(FSFile *file, int offset, u32 whence);
 
 static inline BOOL ResName_Match(const char *a, const char *b) {
     int i;

@@ -1,4 +1,7 @@
 #include "ov009/ov009.h"
+#include "nitro/mi.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 
@@ -20,7 +23,7 @@ void func_ov009_021fe1ec(Ov009ActVt_022165f8 *self) {
 }
 
 extern char data_ov009_02216ab6[];
-extern void func_ov000_021911c8(void *model, s32 a);
+extern void func_ov000_021911c8(Model0218fe1c *model, s16 a);
 
 void func_ov009_021fe2c8(Ov009ActVt_022165f8 *self) {
     switch (self->fsm->st) {
@@ -78,18 +81,14 @@ void func_ov009_021fe3d4(Ov009ActVt_022165f8 *self) {
 
 #define OV009_FXMUL_K(a, k) ((s32)(((s64)(a) * (k) + 0x800) >> 12))
 
-extern void *data_02097e4c;
 extern VecFx32 data_ov009_02215cd0;
 extern VecFx32 data_ov009_02215cdc;
 extern VecFx32 data_ov009_02215ce8;
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Ov003Actor *func_ov000_0219bf90(void);
-extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void func_01ffc9fc(VecFx32 *dst, VecFx32 *src, u16 angle);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, const VecFx32 *v, s32 e, s32 f, s32 g, s32 h, s32 i);
-extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
 
 static inline Ov003Actor *Ov009_FindActor(void *mgr, u16 id) {
     if (mgr == NULL) {
@@ -275,10 +274,10 @@ void func_ov009_021fe55c(Ov009ActVt_022165f8 *self) {
                 e->SetScaleAll(s + 0x333);
                 if (s + 0x333 >= 0x2800) {
                     Model0218fe1c *m = self->model;
-                    FLD(u16, m, 0xb6) = 0x7c00;
-                    FLD(u16, m, 0xb8) = 0x7c00;
-                    FLD(u16, m, 0xba) = 0x3d;
-                    FLD(u16, m, 0xbc) = 0x3c;
+                    m->color = 0x7c00;
+                    m->color2 = 0x7c00;
+                    m->blend = 0x3d;
+                    m->blendMax = 0x3c;
                     self->fsm->st++;
                 }
             }

@@ -1,10 +1,10 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern u8 *Group_FindNode(void *mgr, u16 id);
-extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
+extern void SndMgr_LoadHeapState(SndMgr *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
 

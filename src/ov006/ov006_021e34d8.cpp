@@ -14,7 +14,7 @@ void ov006_CaptionSet_SetText(ov006_CaptionSet *self, const char *text, int idx)
     self->captions[idx] = ov006_Caption_New();
     self->captions[idx]->kind = 2;
     ov006_Caption_Init(self->captions[idx]);
-    ov006_AnimHolder_Play((ov006_AnimHolder *)self->captions[idx], (int)text, 5);
+    ov006_TextHolder_Play((ov006_TextHolder *)self->captions[idx], (int)text, 5);
 }
 
 }

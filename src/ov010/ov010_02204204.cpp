@@ -1,4 +1,5 @@
 #include "ov010/ov010.h"
+#include "Main/Gfx/SlidePanel.h"
 
 extern "C" {
 
@@ -7,16 +8,15 @@ extern char data_ov010_0220ff84[];
 extern char data_ov010_0220ff91[];
 extern char data_ov010_0220ffa1[];
 extern char data_ov010_0220ffae[];
-extern void *data_02097e4c;
 extern void *Ov003Vt_021f7d10_Ctor(void *p);
 extern void *Ov003Vt_021f7d10_Dtor(void *p);
 extern void *Ov003Vt_021f7cd8_Ctor(void *p);
 extern void *Ov003Vt_021f7cd8_Dtor(void *p);
-extern void func_ov010_02207520(void *self);
-extern void func_ov010_022075bc(void *self);
+extern void func_ov010_02207520(Ov010Obj02210154 *self);
+extern void func_ov010_022075bc(Ov010Obj02210154 *self);
 extern BOOL func_ov000_0218cf5c(void *self);
-extern void func_02049678(void *a, s32 b, s32 c, s32 d);
-extern BOOL SndMgr_IsLoadDone(void *a);
+extern void func_02049678(SndMgr *a, s32 b, s32 c, s32 d);
+extern BOOL SndMgr_IsLoadDone(SndMgr *a);
 
 void *Ov010ActVt_02210154_Ctor(Ov010Obj02210154 *self) {
     func_ov003_021d0c1c(self);

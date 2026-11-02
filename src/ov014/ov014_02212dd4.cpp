@@ -3,7 +3,7 @@
 extern "C" {
 
 extern char data_ov014_02217d3a[];
-extern void *func_ov000_02191318(void *a, s32 b);
+extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern void Actor_TurnToActor(Actor *self, Actor *target, s32 a);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);

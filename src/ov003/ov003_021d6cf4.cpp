@@ -4,7 +4,7 @@
 extern "C" {
 
 extern void func_ov000_021984f4(void *p, int a, int b);
-extern void func_ov000_0219864c(void *p, int a, int b);
+extern void func_ov000_0219864c(ActorSub48 *p, VecFx32 *a, u16 *b);
 
 void func_ov003_021d6cf4(Ov003Actor *self) {
     if (self->unk_44 != NULL) {

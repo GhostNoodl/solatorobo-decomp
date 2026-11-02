@@ -1,17 +1,14 @@
 #include "ov013/ov013.h"
+#include "Main/Res/ResArc.h"
 
 extern "C" {
 
-extern void *data_02097cdc;
 extern char data_ov013_0220b860[];
 extern void *data_ov013_0220b7d0[];
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
-extern void func_ov000_0219864c(void *a, s32 b, s32 c);
-extern BOOL func_02035b90(void *a, s32 b);
-extern void func_02036838(void *a, void *b, s32 c, s32 d);
-extern void *func_020359d0(void *a, s32 b, s32 c);
+extern void func_ov000_0219864c(ActorSub48 *a, VecFx32 *b, u16 *c);
 extern void func_ov000_0219433c(void *self);
-extern BOOL func_ov000_021946f8(void *self);
+extern BOOL func_ov000_021946f8(ActorEx *self);
 extern void func_ov000_02194758(void *self);
 extern Ov003Actor *func_ov000_0219bf90(void);
 
@@ -169,10 +166,10 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern const VecFx32 data_ov013_0220aeb8;
 extern char data_ov013_0220b86f[];
 extern char data_ov013_0220b87b[];
-extern void func_ov000_0219a210(VecFx32 *v, const VecFx32 *off, u16 rot);
+extern void func_ov000_0219a210(VecFx32 *v, const VecFx32 *off, s32 rot);
 extern BOOL func_ov000_021b4738(Ov003Actor *p);
 extern void Actor_TurnToPos(Actor *self, VecFx32 *p, s32 a);
-extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
+extern BOOL func_ov000_0219aae8(Actor *a, Actor *b, u16 c, u8 d, u16 e, VecFx32 *f, void *g, s32 h, s32 i, s16 j, s32 k);
 extern void func_ov000_0219b808(u16 id, VecFx32 *pos, void *box, s32 a, s32 b);
 
 struct Ov013HitBox {

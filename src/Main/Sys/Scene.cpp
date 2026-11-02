@@ -2,28 +2,24 @@
 #include "Main/Res/ResMgr.h"
 #include "Main/Movie/Movie.h"
 #include "Main/Snd/SndMgr.h"
+#include "Main/Sys/Pad.h"
+#include "Main/Res/StageFlags.h"
+#include "Main/Res/ResLoader.h"
 
 extern "C" {
 
-typedef struct ScenePad {
-    /* 0x00 */ u8 unk_00[0x10];
-    /* 0x10 */ u16 cur;
-} ScenePad;
 
-extern ScenePad *data_02097dc8;
-extern void *data_0214a424;
 extern SndMgr *data_02097e4c;
 extern const char *data_0208cb28[];
 
-extern void *Heap_AllocLo(u32 size, int align);
 extern void G2x_SetBlendBrightness_(volatile void *reg, int a, int b);
 extern void StageFlags_Create(void);
 extern void func_0206e858(void);
 extern BOOL PauseNode_IsUpdatePaused(UnkSysNode *node, BOOL recurse);
 extern BOOL PauseNode_IsDrawPaused(UnkSysNode *node, BOOL recurse);
-extern void func_0201bbfc(int a);
+extern void func_0201bbfc(u32 a);
 extern void func_0203caf8(int a);
-extern void func_0206c4c4(void *obj);
+extern void func_0206c4c4(StageFlags *obj);
 extern void func_0204a904(void);
 extern void func_02039e0c(GfxMgr *mgr);
 extern void GfxSys_SetBackdrop(GfxSys *sys, u16 color);

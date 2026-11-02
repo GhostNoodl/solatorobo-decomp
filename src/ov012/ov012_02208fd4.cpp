@@ -7,8 +7,8 @@ extern char data_ov012_0220b34d[];
 extern char data_ov012_0220b341[];
 extern char data_ov012_0220b335[];
 extern u8 data_ov012_0220a88c[];
-extern void func_ov000_021911c8(void *p, s32 a);
-extern s32 func_ov000_02191318(void *a, s32 b);
+extern void func_ov000_021911c8(Model0218fe1c *p, s16 a);
+extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
 
 
 #define OV012T_SQRTCNT (*(volatile u16 *)0x40002b0)

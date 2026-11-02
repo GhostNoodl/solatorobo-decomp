@@ -98,7 +98,7 @@ extern "C" {
 
 extern char data_ov003_021fa1a4[];
 extern void func_ov000_02196c40(Ov003Bx *self);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern void func_0203f364(Ov003BxCtl *ctl);
 extern void func_ov003_021f0c60(Ov003Bx *self, s32 a);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
@@ -177,7 +177,7 @@ typedef struct {
 
 extern void *data_ov000_021ccd64;
 extern s32 Rand_PlusMinus(s32 n);
-extern s32 Rand_UpTo(s32 n);
+extern u32 Rand_UpTo(u32 n);
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, s32 r, s32 h);
 extern void HitSphere_Link(Ov003BxCtl *ctl);
 extern void *func_0206fef8(u16 id);

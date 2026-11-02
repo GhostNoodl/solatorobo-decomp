@@ -67,7 +67,7 @@ typedef struct {
 extern Ov003NmSave *data_0214a424;
 extern Ov003NmPlayer *func_ov000_0219bf90(void);
 extern Ov003NmInfo *func_0206fef8(u16 id);
-extern u32 func_020705fc(u16 id);
+extern u8 *func_020705fc(s32 id);
 extern void *Heap_Alloc(u32 size);
 extern Ov003NmLabel *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_021919c8(void *p);

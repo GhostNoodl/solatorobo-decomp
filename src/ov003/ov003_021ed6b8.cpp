@@ -116,12 +116,12 @@ extern s32 func_ov000_021993fc(Ov003LfFinder *f, Ov003LfQuery *q, Ov003LfHit **o
 extern Ov003LfTgt *func_ov000_021985c0(Ov003LfHit *h);
 extern BOOL func_ov003_021f0a38(Ov003LfTgt *t, void *def);
 extern BOOL func_ov000_02199d40(void *t);
-extern BOOL Hit_DiffInCylinder(const VecFx32 *a, const VecFx32 *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
 extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern void func_ov000_021911c8(void *p, s32 a);
 extern void *func_ov000_02191318(void *p, s32 a);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern void Actor_SendMsg(Ov003LfTgt *o, u16 id, s32 a, s32 b, s32 c, void *p);
 extern Ov003LfTgt *func_ov000_0219bf90(void);
 extern Ov003LfTgt *Actor_GetTarget(Ov003Lift *self);

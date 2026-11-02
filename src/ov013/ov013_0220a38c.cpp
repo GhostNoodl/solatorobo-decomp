@@ -3,7 +3,7 @@
 extern "C" {
 
 extern void *data_ov013_0220bf4c;
-extern void *ActorEx_Ctor(void *self);
+extern ActorEx *ActorEx_Ctor(ActorEx *self);
 extern void func_ov000_02194758(void *self);
 
 struct Ov013Pair89 {

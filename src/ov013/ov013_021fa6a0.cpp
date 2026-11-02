@@ -1,21 +1,21 @@
 #include "ov013/ov013.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern char data_ov013_0220ae4e[];
 extern char data_ov013_0220b5b8[];
 extern char data_ov013_0220b5ca[];
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern BOOL func_020621c4(void);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern BOOL func_ov003_021d1c00(Ov003Actor *self, Ov013Msg *msg);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *t, s32 a);
 extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(Ov003Actor *a, u16 id);
 extern Ov003Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
-extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
+extern BOOL func_ov000_021983b0(ActorSub40 *a, u8 b, s32 c, BOOL d);
 s32 func_ov013_021fc400(Ov003Actor *self);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);

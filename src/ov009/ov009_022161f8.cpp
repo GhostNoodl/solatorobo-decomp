@@ -1,4 +1,6 @@
 #include "ov009/ov009.h"
+#include "Main/Res/ResArc.h"
+#include "nitro/mi.h"
 
 
 // A header's zero rotation and vector, plus copies made at startup, among this TU's motion
@@ -624,7 +626,6 @@ extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
 extern Ov003Actor *func_ov000_0219bf90(void);
-extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
 extern Ov003Actor *func_ov000_02192b24(void *desc);
 extern s32 func_ov000_021909a8(Model0218fe1c *m, const char *a, const char *b);
 extern void NNS_G3dRenderObjSetInitFunc(void *p, void *cb);
@@ -850,7 +851,7 @@ extern void Actor_MoveToPos(Ov003Actor *self, VecFx32 *v, s32 a);
 extern void *func_ov000_02191318(Model0218fe1c *m, s32 a);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 msg);
-extern BOOL func_ov000_0218fa28(Model0218fe1c *m, void *a, void *b, void *c, const void *anim, s32 d, s32 e);
+extern BOOL func_ov000_0218fa28(AnimCtrl *ctrl, void *obj, ResSet *res, void *file, const void *anim, s32 blend, s32 force);
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 extern void func_ov009_0220189c(Ov009ActVt_0221707c *self);
@@ -981,7 +982,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 msg);
-extern BOOL func_ov000_0218fa28(Model0218fe1c *m, void *a, void *b, void *c, const void *anim, s32 d, s32 e);
+extern BOOL func_ov000_0218fa28(AnimCtrl *ctrl, void *obj, ResSet *res, void *file, const void *anim, s32 blend, s32 force);
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 extern void func_ov009_0220189c(Ov009ActVt_0221707c *self);
@@ -1004,8 +1005,8 @@ void func_ov009_022013ac(Ov009Act_02200b48 *self) {
 }
 
 static inline void Ov009_PlayAnim(Model0218fe1c *m, const void *anim) {
-    if (FLD(void *, m, 0x1c) != NULL) {
-        func_ov000_0218fa28((Model0218fe1c *)FLD(void *, m, 0x1c), &FLD(u8, m, 0x24), FLD(u8 *, m, 0), FLD(void *, FLD(u8 *, FLD(u8 *, m, 0), 0x48), 0x10), anim, 0x1000, 0);
+    if (m->unk_1c != NULL) {
+        func_ov000_0218fa28(m->unk_1c, m->renderObj, m->res, m->res->anims->list[4], anim, 0x1000, 0);
     }
 }
 
@@ -1026,7 +1027,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 msg);
-extern BOOL func_ov000_0218fa28(Model0218fe1c *m, void *a, void *b, void *c, const void *anim, s32 d, s32 e);
+extern BOOL func_ov000_0218fa28(AnimCtrl *ctrl, void *obj, ResSet *res, void *file, const void *anim, s32 blend, s32 force);
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 extern void func_ov009_0220189c(Ov009ActVt_0221707c *self);
@@ -1300,10 +1301,10 @@ void func_ov009_0220189c(Ov009ActVt_0221707c *self) {
             self->unk_f4 = 0;
             func_02049f44(data_02097e4c, 0x73, &self->pos, 0);
         } else if (st->timer == 300) {
-            void *m = self->model;
-            self->unk_f8 = FLD(s32, m, 0xa8);
-            self->unk_fc = FLD(s32, m, 0xac);
-            self->unk_100 = FLD(s32, m, 0xb0);
+            Model0218fe1c *m = self->model;
+            self->unk_f8 = m->scale.x;
+            self->unk_fc = m->scale.y;
+            self->unk_100 = m->scale.z;
             self->unk_f4 = 1;
             o = func_02065f88(0x12f, &self->pos);
             o->AddPosXYZ(0, 0x2000, 0);
@@ -1311,10 +1312,10 @@ void func_ov009_0220189c(Ov009ActVt_0221707c *self) {
             {
                 s32 a = FX_Mul(self->unk_f8, 0x14cd);
                 s32 b = self->unk_fc;
-                void *mm = self->model;
-                FLD(s32, mm, 0xa8) = a;
-                FLD(s32, mm, 0xac) = b;
-                FLD(s32, mm, 0xb0) = a;
+                Model0218fe1c *mm = self->model;
+                mm->scale.x = a;
+                mm->scale.y = b;
+                mm->scale.z = a;
             }
             func_02049f44(data_02097e4c, 0x72, &self->pos, 0);
             self->fsm->st = 0x1e;
@@ -1407,10 +1408,10 @@ void func_ov009_02201eac(Ov009ActVt_0221707c *self) {
         }
         self->unk_108 = func_02049afc(data_02097e4c, 0x76);
         m = self->model;
-        FLD(u16, m, 0xb6) = 0x7c00;
-        FLD(u16, m, 0xb8) = 0x7c00;
-        FLD(u16, m, 0xba) = 0xc9;
-        FLD(u16, m, 0xbc) = 0xc8;
+        m->color = 0x7c00;
+        m->color2 = 0x7c00;
+        m->blend = 0xc9;
+        m->blendMax = 0xc8;
         m = self->model;
         m->cull = 2;
         NNSi_G3dModifyPolygonAttrMask(m->mdl, 0, 0xc0);
@@ -1426,10 +1427,10 @@ void func_ov009_02201eac(Ov009ActVt_0221707c *self) {
         } else {
             self->fsm->timer = 200;
             m = self->model;
-            FLD(u16, m, 0xb6) = 0x7c00;
-            FLD(u16, m, 0xb8) = 0x7c00;
-            FLD(u16, m, 0xba) = 2;
-            FLD(u16, m, 0xbc) = 1;
+            m->color = 0x7c00;
+            m->color2 = 0x7c00;
+            m->blend = 2;
+            m->blendMax = 1;
         }
         {
         ActorSub40 *st = self->fsm;
@@ -1495,10 +1496,6 @@ extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void func_ov000_02191618(Model0218fe1c *m);
 extern void *data_ov009_02216e78;
 extern char data_ov009_02216b98[];
-extern void *data_02097cdc;
-extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
-extern BOOL func_02035b90(const char *name, s32 a);
-extern void func_02036838(void *mgr, const char *name, s32 a, s32 b);
 extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
 extern void func_ov000_0219864c(void *a, s32 b, s32 c);
 extern void HitMesh_Link(void *p);
@@ -1637,7 +1634,6 @@ extern void *data_02097e4c;
 extern char data_ov009_02216b98[];
 extern Ov003Actor *func_ov000_02192b24(void *desc);
 extern u8 *Group_FindNode(void *mgr, u16 id);
-extern void *func_020359d0(const char *name, s32 a, s32 b);
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 void func_ov009_022026c8(Ov009Names *self, void *res);
@@ -1736,7 +1732,6 @@ namespace m_02202acc {
 extern "C" {
 
 extern char data_ov009_02216b98[];
-extern BOOL func_02035b90(const char *name, s32 a);
 extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
 extern void func_ov000_0219864c(void *a, s32 b, s32 c);
 extern void HitMesh_Link(void *p);
@@ -1878,10 +1873,10 @@ void Ov009Act_02202788_Update(Ov009Act_02202788 *self) {
     }
     *p = v;
     m = self->model;
-    FLD(u16, m, 0xb6) = 0x14bf;
-    FLD(u16, m, 0xb8) = 0x14bf;
-    FLD(u16, m, 0xba) = 1;
-    FLD(u16, m, 0xbc) = 0;
+    m->color = 0x14bf;
+    m->color2 = 0x14bf;
+    m->blend = 1;
+    m->blendMax = 0;
 }
 
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);

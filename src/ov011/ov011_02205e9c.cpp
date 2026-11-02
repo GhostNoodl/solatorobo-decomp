@@ -6,11 +6,11 @@ struct Ov011Rot {
 
 extern "C" {
 
-s32 Rand_UpTo(s32 max);
+u32 Rand_UpTo(u32 max);
 s32 Rand_PlusMinus(s32 max);
 extern const VecFx32 data_02092a50;
 extern u8 data_ov011_0220755c[];
-extern u8 data_ov011_022075d4[];
+extern char data_ov011_022075d4[];
 Actor *func_ov000_0219be1c(s32 kind, VecFx32 *pos, Ov011Rot *rot, u16 a, u16 b);
 
 #pragma force_active on

@@ -97,9 +97,9 @@ extern char data_ov003_021f8350[];
 extern void Heap_Free(void *p);
 extern void *func_ov000_0219429c(void *p);
 extern void func_ov000_02194758(void *p);
-extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
-extern void func_ov000_0218996c(s32 a, s32 b);
-extern void SndMgr_StopSeqArc(void *mgr, s32 id);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
+extern void SndMgr_StopSeqArc(SndMgr *mgr, s32 id);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern void func_ov000_0218b700(Ov003Unit *u, s32 a, s32 b);
 

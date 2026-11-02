@@ -1,13 +1,8 @@
 #include "types.h"
 #include "ov000/ActorParts.h"
 #include "ov003/Unit.h"
+#include "Main/Sys/SysState.h"
 
-
-struct Ov003HeapCtx {
-    void *cur;
-    u32 unk_04;
-    void *alt;
-};
 
 struct Ov003BrAnim {
     u8 unk_00[0x78];
@@ -64,7 +59,6 @@ struct Ov003Bridge {
 
 extern "C" {
 
-extern Ov003HeapCtx *data_02097dd0;
 extern void *data_ov000_021ccd64;
 extern u8 data_ov003_021f9e10[];
 extern char data_ov003_021f9fd6[];
@@ -87,7 +81,7 @@ extern void HitSphere_Link(Ov003BrCtl *p);
 extern Ov003BrAnim *func_ov000_0218fe1c(void *p);
 extern BOOL func_ov000_0218ffdc(Ov003BrAnim *anim, void *res, s32 a, s32 b);
 extern void func_ov000_02190758(Ov003BrAnim *anim, void *p, s32 a);
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern void func_ov000_021911c8(void *p, s32 a);
@@ -97,7 +91,7 @@ static inline void Ov003Bridge_Dtor(Ov003Bridge *self) {
     void *old;
     self->vtbl = data_ov003_021f9e10;
     old = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->alt;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     p = self->anim;
     if (p != NULL) {
         if (p != NULL) {

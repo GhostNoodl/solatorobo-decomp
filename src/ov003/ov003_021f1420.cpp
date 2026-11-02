@@ -1,10 +1,5 @@
 #include "types.h"
-
-struct Ov003HeapCtx {
-    void *cur;
-    u32 unk_04;
-    void *alt;
-};
+#include "Main/Sys/SysState.h"
 
 struct Ov003PropDef {
     u16 id;
@@ -42,7 +37,6 @@ struct Ov003Prop {
 
 extern "C" {
 
-extern Ov003HeapCtx *data_02097dd0;
 extern u8 data_ov003_021fa1b8[];
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *p);
@@ -52,7 +46,7 @@ extern s32 func_0206ffa0(u16 id);
 extern void func_ov000_021bd228(void *p);
 extern void *func_ov000_0218c928(void *p);
 extern Ov003PropInfo *func_0206fef8(u16 id);
-extern void *func_0207011c(u16 id);
+extern void *func_0207011c(s32 id);
 extern Ov003PropRes *func_ov000_0218e9c4(void *p);
 extern Ov003PropShadow *func_ov000_021919c8(void *p);
 extern void Shadow_Load(Ov003PropShadow *p);
@@ -75,7 +69,7 @@ static inline void Ov003Prop_Dtor(Ov003Prop *self) {
     void *old;
     self->vtbl = data_ov003_021fa1b8;
     old = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->alt;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     p = self->unk_ac;
     if (p != NULL) {
         if (p != NULL) {

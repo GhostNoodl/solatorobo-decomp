@@ -1,6 +1,7 @@
 #include "ov010/ov010.h" // FX32_ONE: nitro/fx.h via ov000/Vec.h
 #include "ov000/ObjLayouts.h"
 #include "Main/Sys/FieldState.h"
+#include "nitro/mi.h"
 
 // The zero rotation is an Ov010Ang3 (ov010.h).
 
@@ -1187,7 +1188,6 @@ extern void MTX_RotX33_(Ov010Mtx33a *m, s32 s, s32 c);
 extern void MTX_RotY33_(Ov010Mtx33a *m, s32 s, s32 c);
 extern void MTX_RotZ33_(Ov010Mtx33a *m, s32 s, s32 c);
 extern void MTX_Concat33(Ov010Mtx33a *a, Ov010Mtx33a *b, Ov010Mtx33a *out);
-extern void MI_Copy36B(const void *src, void *dst);
 extern BOOL func_ov000_02194c08(void *self);
 
 void Ov010ActVt_02210378_Draw(Obj0220a6b0 *self) {
@@ -3006,7 +3006,6 @@ extern void MTX_Identity33_(void *m);
 extern void MTX_RotZ33_(void *m, s32 s, s32 c);
 extern void MTX_RotY33_(void *m, s32 s, s32 c);
 extern void MTX_Concat33(void *a, void *b, void *c);
-extern void MI_Copy36B(void *m, void *b);
 extern s32 func_ov000_021903b4(void *p);
 extern BOOL func_ov000_02190cb0(void *p, const void *a, s32 b, s32 c);
 extern void func_ov000_021915a0(void *p);

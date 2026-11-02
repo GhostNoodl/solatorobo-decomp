@@ -16,7 +16,7 @@ extern void *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(void *obj, u16 id);
 extern BOOL func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(void);
-extern s32 Rand_UpTo(s32 v);
+extern u32 Rand_UpTo(u32 v);
 
 void func_ov003_021d9dbc(Ov003Vec *out, const Ov003Vec *a, const Ov003Vec *b, s32 dist, s32 yoff) {
     Ov003Vec d;

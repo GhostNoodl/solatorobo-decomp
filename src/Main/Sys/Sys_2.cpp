@@ -1,29 +1,28 @@
 #include "Main/Res/ResMgr.h"
+#include "Main/Save/SysCard.h"
+#include "nnsys/fnd/expheap.h"
+#include "nnsys/fnd/heapcommon.h"
 
 extern "C" {
 
-extern void *data_02097e44;
-extern int func_020472c4(void *obj);
+extern BOOL func_020472c4(SysCard *obj);
 extern void GX_DispOff(void);
 extern void GX_DispOn(void);
-extern BOOL PM_SetLCDPower(BOOL a);
-extern void PM_GoSleepMode(int a, int b, int c);
+extern BOOL PM_SetLCDPower(u32 a);
+extern void PM_GoSleepMode(u32 a, u32 b, u16 c);
 extern void *OS_GetArenaLo(int arena);
 extern void *OS_GetArenaHi(int arena);
 extern void *OS_InitAlloc(int arena, void *lo, void *hi, int n);
 extern void OS_SetArenaLo(int arena, void *p);
 extern BOOL OS_IsRunOnTwl(void);
 extern void *func_0201998c(int arena);
-extern void *NNS_FndCreateExpHeapEx(void *start, u32 size, int flags);
 extern void func_0203dfb0(void);
 extern void func_0203e024(void);
 extern void OS_WaitVBlankIntr(void);
 extern void func_0203e6bc(void);
 extern u32 OS_DisableInterrupts(void);
 extern u32 OS_RestoreInterrupts(u32 state);
-extern void *NNS_FndAllocFromExpHeapEx(void *heap, u32 size, u32 align);
 extern void NNS_FndFreeToExpHeap(void *heap, void *ptr);
-extern void *NNS_FndFindContainHeap(void *ptr);
 extern u32 NNS_FndResizeForMBlockExpHeap(void *heap, void *ptr, u32 size);
 
 static inline BOOL PAD_DetectFold(void) {

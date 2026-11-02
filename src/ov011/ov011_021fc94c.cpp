@@ -1,4 +1,6 @@
 #include "ov011/ov011.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 struct Ov011Fade {
     u8 b0 : 1;
@@ -99,7 +101,7 @@ static inline BOOL Ov011Fade_AllDone(Ov011Fade *f) {
 
 extern "C" {
 
-void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
+void ActorMgr_SendMsg(u16 a, u16 b, u8 c, BOOL d, u32 e, const void *f);
 
 static inline void Ov011_Msg(u16 id, s32 a, s32 b) {
     Ov011Arg2 arg;
@@ -142,8 +144,6 @@ static inline void Ov011_SendB(u16 id, s32 kind, s16 x, s16 y) {
     ActorMgr_SendMsg(id, 0xffff, 0xe, 1, 0xc, &b);
 }
 
-extern void *data_02097e4c;
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 
 #pragma force_active on
 void func_ov011_021fc94c(Ov011Tut *self) {

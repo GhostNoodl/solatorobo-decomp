@@ -1,6 +1,7 @@
 #include "Main/Lang/LangData.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "nitro/fx.h"
+#include "nitro/mi.h"
 
 extern "C" {
 
@@ -53,7 +54,6 @@ void G3X_SetToonTable(const void *p);
 void G3X_SetEdgeColorTable(const void *p);
 void G3X_SetFogTable(const void *p);
 void G3X_SetFog(BOOL enable, int mode, int slope, int offset);
-void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
 
 #define REG_DISP3DCNT (*(vu16 *)0x04000060)
 #define REG_FOG_COLOR (*(vu32 *)0x04000358)

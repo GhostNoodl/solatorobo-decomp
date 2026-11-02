@@ -1,6 +1,7 @@
 #include "Main/Lang/LangData.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "nitro/fx.h"
+#include "Main/Sys/FieldState.h"
 
 extern "C" {
 
@@ -138,13 +139,6 @@ typedef struct LangCamera {
     /* 0x14 */ u8 unk_14[2];
     /* 0x16 */ u8 dirty;
 } LangCamera;
-
-typedef struct LangGame54 {
-    u8 unk_00[0x11c];
-    LangCamera camera;
-} LangGame54;
-
-extern LangGame54 *data_ov000_021ccd54;
 
 
 #define REG_DISP3DCNT (*(vu16 *)0x04000060)

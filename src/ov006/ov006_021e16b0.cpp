@@ -1,31 +1,13 @@
 #include "ov006/Model.h"
 #include "Main/Gfx/FieldMsg.h"
 
-typedef struct ov006_Txt021e16b0 {
-    void *vtbl;
-    u32 flags;
-    u8 unk8[0x1c];
-    const char *unk24;
-    int unk28;
-    int unk2C;
-    u8 unk30[4];
-    u16 unk34;
-    u8 unk36;
-    s8 unk37;
-    int unk38;
-    u8 unk3C[8];
-    u8 unk44[4];
-    u8 unk48[4];
-    int unk4C;
-} ov006_Txt021e16b0;
-
 typedef struct ov006_Sub021e16b0 {
     void *vtbl;
     u8 unk4;
     int unk8[6];
     int type;
     Model *model;
-    ov006_Txt021e16b0 *txt;
+    TextWin *txt;
 } ov006_Sub021e16b0;
 
 typedef struct ov006_Lbl021e16b0 {
@@ -80,7 +62,7 @@ extern ov006_Anim021eb824 data_ov006_021eb824[];
 extern u8 data_ov006_021ec2fc[];
 extern u8 data_ov006_021ec25c[];
 extern u8 data_0208b318[];
-void TextWin_InitLines(void *p, int a);
+void TextWin_InitLines(TextWin *win, u32 n);
 
 static inline Model *ov006_NewModel021e16b0(void) {
     Model *model = (Model *)Heap_Alloc(sizeof(Model));
@@ -96,25 +78,25 @@ static inline Model *ov006_NewModel021e16b0(void) {
 }
 
 static inline void ov006_Sub021e16b0_Reset(ov006_Sub021e16b0 *s, const char *str) {
-    ov006_Txt021e16b0 *t;
+    TextWin *t;
     const char *p = str;
     if (s->txt == NULL) {
         return;
     }
-    VCALL(s->txt, 08);
-    s->txt->unk28 = 7;
-    s->txt->unk2C = 4;
-    s->txt->unk34 = 0;
+    s->txt->unk_vf08();
+    s->txt->font = 7;
+    s->txt->unk_2c = 4;
+    s->txt->unk_34 = 0;
     t = s->txt;
-    t->unk24 = p;
-    t->unk4C = Text_Measure(t->unk28, t->unk38, (u32)t->unk24, (u32 *)t->unk44, (u32 *)t->unk48, t->unk37 != 0);
-    data_02097ce0->unk_004 = t->unk28;
+    t->str = (u32)p;
+    t->unk_4c = Text_Measure(t->font, t->spacing, t->str, &t->width, &t->height, (s8)t->unk_37 != 0);
+    data_02097ce0->unk_004 = t->font;
     TextWin_InitLines(s->txt, 0x10);
     s->txt->flags |= 4;
 }
 
 static inline void ov006_Sub021e16b0_Init(ov006_Sub021e16b0 *s) {
-    ov006_Txt021e16b0 *t;
+    TextWin *t;
     if (s->type != 2) {
         s->model = ov006_NewModel021e16b0();
         func_020417e0(s->model, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
@@ -123,10 +105,10 @@ static inline void ov006_Sub021e16b0_Init(ov006_Sub021e16b0 *s) {
         s->model->flags |= 0x400000;
         func_02041d9c(s->model, 2, data_ov006_021eb824[s->type].unk0);
     }
-    t = (ov006_Txt021e16b0 *)Heap_Alloc(0xb8);
+    t = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (t != NULL) {
-        t->vtbl = (void *)data_0208ba70;
-        func_0204c7d0((TextWin *)t);
+        *(const u32 **)t = data_0208ba70;
+        func_0204c7d0(t);
     }
     s->txt = t;
     ov006_Sub021e16b0_Reset(s, data_ov006_021ec1b5);

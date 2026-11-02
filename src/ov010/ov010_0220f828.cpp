@@ -3,6 +3,7 @@
 #include "ov000/ObjLayouts.h"
 
 #include "nitro/fx.h"
+#include "Main/Gfx/GfxMgr.h"
 
 // A header's zero rotation and vector, plus copies made at startup, next to this TU's effect
 // names and the pointers to them. Other functions read the first pointer, an offset, the zero
@@ -482,7 +483,6 @@ void func_ov010_0220078c(Ov010Beam *o) {
 
 extern u8 data_020928b4[];
 extern u8 NNS_G3dGlb[];
-extern u8 *data_02097d48;
 extern void NNS_G3dGlbSetBaseTrans(VecFx32 *v);
 extern void NNS_G3dGlbSetBaseScale(VecFx32 *v);
 extern void NNS_G3dGlbFlushVP(void);
@@ -503,7 +503,6 @@ namespace m_02200a00 {
 
 extern "C" {
 
-extern u8 *data_02097d48;
 u8 Gfx3DState_NextPolyId(void *p);
 
 void func_ov010_02200a00(Ov010Beam *self) {
@@ -537,7 +536,7 @@ void func_ov010_02200a00(Ov010Beam *self) {
     NNS_G3dGeMultMtx33(&rx);
     VEC_Set(&s, FX32_ONE, FX32_ONE, FX_Mul(self->len, 0xf000));
     NNS_G3dGeScaleVec(&s);
-    NNS_G3dGePolygonAttr(0, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, Gfx3DState_NextPolyId(data_02097d48 + 0x8b0), alpha, 0);
+    NNS_G3dGePolygonAttr(0, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, Gfx3DState_NextPolyId(data_02097d48->unk_8b0), alpha, 0);
     NNS_G3dGeTexImageParam(GX_TEXFMT_NONE, GX_TEXGEN_NONE, GX_TEXSIZE_S8, GX_TEXSIZE_T8, GX_TEXREPEAT_NONE, GX_TEXFLIP_NONE, GX_TEXPLTTCOLOR0_TRNS, 0);
     NNS_G3dGeBegin(GX_BEGIN_TRIANGLES);
     NNS_G3dGeColor(GX_RGB(31, 0, 0));

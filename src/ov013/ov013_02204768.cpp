@@ -11,14 +11,14 @@ extern void *data_ov013_0220bbb8[];
 extern char data_ov013_0220ba58[];
 extern char data_ov013_0220ba60[];
 extern void func_ov003_021d9980(VecFx32 *out, u16 rot, const VecFx32 *v);
-extern void *ActorEx_Ctor(void *self);
+extern ActorEx *ActorEx_Ctor(ActorEx *self);
 extern void *Ov003Vt_021f79a8_Ctor(void *p);
 extern void *Ov003Vt_021f79a8_Dtor(void *p);
 extern void *func_ov000_0218ea20(void *p);
 extern void *func_ov000_0218fee4(void *p);
-extern void *func_ov000_0218e9c4(void *p);
+extern ResSet *func_ov000_0218e9c4(ResSet *p);
 extern void func_ov000_0219433c(void *self);
-extern BOOL func_ov000_021946f8(void *self);
+extern BOOL func_ov000_021946f8(ActorEx *self);
 extern BOOL func_ov000_0218f110(void *p);
 
 static inline void Ov013_InitDc(void *self) {
@@ -103,9 +103,9 @@ extern void func_ov003_021cf33c(void *p, void *q);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern void func_ov000_02190758(void *m, u16 *rot, s32 a);
 extern BOOL func_ov000_021903b4(void *m);
-extern BOOL func_ov000_02194c08(void *self);
+extern BOOL func_ov000_02194c08(ActorEx *self);
 extern u8 data_ov013_0220b2ec[];
-extern u8 *func_020704b4(u16 kind);
+extern u8 *func_020704b4(s32 kind);
 
 static inline u16 Ov013_LockId(void) {
     return FLD(u16, func_ov000_0219bf90(), 0xb1c);
@@ -150,23 +150,23 @@ BOOL Ov013ActEx_02204454_Draw(Ov013ActEx_02204454 *self) {
         return func_ov000_021903b4(self->unk_e0);
     }
     {
-        void *m = self->model;
-        s32 x = FLD(s32, m, 0xa8);
-        s32 y = FLD(s32, m, 0xac);
-        s32 z = FLD(s32, m, 0xb0);
+        Model0218fe1c *m = self->model;
+        s32 x = m->scale.x;
+        s32 y = m->scale.y;
+        s32 z = m->scale.z;
         s32 sc;
         BOOL r;
-        FLD(s32, m, 0xa8) = FX_Mul(x, 0xd00);
-        FLD(s32, m, 0xac) = FX_Mul(y, 0xd00);
-        FLD(s32, m, 0xb0) = FX_Mul(z, 0xd00);
+        m->scale.x = FX_Mul(x, 0xd00);
+        m->scale.y = FX_Mul(y, 0xd00);
+        m->scale.z = FX_Mul(z, 0xd00);
         sc = FLD(s32, self->unk_3c, 0x14);
         FLD(s32, self->unk_3c, 0x14) = FX_Mul(sc, 0x59a);
         r = func_ov000_02194c08(self);
         FLD(s32, self->unk_3c, 0x14) = sc;
         m = self->model;
-        FLD(s32, m, 0xa8) = x;
-        FLD(s32, m, 0xac) = y;
-        FLD(s32, m, 0xb0) = z;
+        m->scale.x = x;
+        m->scale.y = y;
+        m->scale.z = z;
         return r;
     }
 }

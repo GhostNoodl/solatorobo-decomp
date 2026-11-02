@@ -3,7 +3,7 @@
 extern "C" {
 
 extern BOOL func_ov000_021903b4(void *p);
-extern void func_ov000_02190a80(void *p, s32 a);
+extern void func_ov000_02190a80(Model0218fe1c *p, s16 a);
 
 BOOL Ov009ActVt_02217594_Draw(Ov009ActVt_02217594 *self) {
     BOOL r = func_ov003_021d16cc(self);
@@ -19,7 +19,7 @@ void func_ov009_0220923c(Ov009ActVt_02217594 *self) {
 }
 
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
-extern BOOL Hit_DiffInCylinder(const VecFx32 *a, const VecFx32 *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
 
 void Ov009ActVt_02217594_Update(Ov009ActVt_02217594 *self) {
     Ov003Actor *t;

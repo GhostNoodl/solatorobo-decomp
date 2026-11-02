@@ -24,12 +24,12 @@ extern void func_0221d6d8(void);  /* TWL only */
 extern void NNS_SndInit(void);
 extern void NNS_SndArcInit(void *arc, const char *filePath, NNSSndHeap *heap, BOOL symbolLoadFlag);
 
-extern s32 NNS_SndArcGetSeqCount(void);
-extern s32 NNS_SndArcGetSeqArcCount(void);
-extern s32 NNS_SndArcGetBankCount(void);
-extern s32 NNS_SndArcGetWaveArcCount(void);
-extern s32 NNS_SndArcGetGroupCount(void);
-extern s32 NNS_SndArcGetStrmCount(void);
+extern u32 NNS_SndArcGetSeqCount(void);
+extern u32 NNS_SndArcGetSeqArcCount(void);
+extern u32 NNS_SndArcGetBankCount(void);
+extern u32 NNS_SndArcGetWaveArcCount(void);
+extern u32 NNS_SndArcGetGroupCount(void);
+extern u32 NNS_SndArcGetStrmCount(void);
 extern void NNS_SndPlayerSetPlayableSeqCount(int playerNo, int seqCount);
 void func_020495ac(SndMgr *mgr, s32 type, s32 id);
 extern u8 data_020bbef0[];

@@ -1,4 +1,5 @@
 #include "ov011/ov011.h"
+#include "Main/Res/ResArc.h"
 
 extern "C" {
 
@@ -20,13 +21,10 @@ Ov011PhotoCfg data_ov011_02207be0 = {
 void *func_ov000_0214b598(void *p);
 void *func_ov000_0214b570(void *p);
 void func_ov000_0214b5e8(void *p, void *t);
-s32 func_ov000_0214b6d0(void *p);
+u32 func_ov000_0214b6d0(void *p);
 BOOL func_ov000_0214b640(void *p);
 void func_ov000_0214b5bc(void *p);
-void *func_ov000_0218ea20(void *p);
-void *func_020359d0(const char *arc, s32 b, s32 c);
-BOOL func_02035b90(const char *arc, s32 b);
-void func_02036838(void *mgr, const char *arc, s32 c, s32 d);
+ResSet *func_ov000_0218ea20(ResSet *p);
 BOOL func_02036328(void);
 BOOL func_ov000_0218cf5c(void *self);
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);

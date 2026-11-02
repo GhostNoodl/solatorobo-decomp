@@ -1,12 +1,12 @@
 #include "ov014/ov014.h"
+#include "Main/Gfx/GfxMgr.h"
 
 extern "C" {
 
-extern u8 *data_02097d48;
 extern u8 data_ov014_02217aac[];
-extern u8 data_ov014_02217c6c[];
-extern void func_ov000_02195d88(void *self);
-extern void func_ov000_0219763c(void *self);
+extern char data_ov014_02217c6c[];
+extern void func_ov000_02195d88(ActorEx *self);
+extern void func_ov000_0219763c(VObj *self);
 extern Ov003Actor *Target_Get(void *p);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
@@ -15,13 +15,13 @@ extern s32 **func_ov000_02190a30(void *a, s32 b);
 extern s32 func_ov000_02191318(void *a, s32 b);
 extern s32 func_ov000_02191f18(void *a, void *b);
 extern s32 func_ov014_0220ec18(s16 *a, u8 *b);
-extern void *ActorEx_Ctor(void *self);
+extern ActorEx *ActorEx_Ctor(ActorEx *self);
 extern void func_ov000_02194758(void *self);
-extern BOOL func_ov000_02194c08(void *self);
+extern BOOL func_ov000_02194c08(ActorEx *self);
 extern u8 Gfx3DState_NextPolyId(void *p);
-extern void func_ov000_02191920(void *a, s32 b, s32 c, s32 d);
-extern void func_ov000_02191618(void *p);
-extern void func_ov000_02191708(void *p);
+extern void func_ov000_02191920(Model0218fe1c *a, s32 b, s16 c, u8 d);
+extern void func_ov000_02191618(Model0218fe1c *p);
+extern void func_ov000_02191708(Model0218fe1c *p);
 
 extern VecFx32 *func_ov000_0218d2e0(void *self);
 extern BOOL func_ov014_0220eb14(Actor *self);

@@ -662,11 +662,11 @@ void func_ov013_021ff45c(Ov013Act_021fea8c *self) {
         Ov013Obj1c *q = ((Ov013Obj1c *)self->unk_124);
         if (q->b0 && q->b1) {
             if (q->unk_04 % 10 == 0) {
-                void *a = q->unk_14->model;
-                FLD(u16, a, 0xb6) = 0x7fff;
-                FLD(u16, a, 0xb8) = 0x3eaf;
-                FLD(u16, a, 0xba) = 6;
-                FLD(u16, a, 0xbc) = 5;
+                Model0218fe1c *a = q->unk_14->model;
+                a->color = 0x7fff;
+                a->color2 = 0x3eaf;
+                a->blend = 6;
+                a->blendMax = 5;
             }
             if (q->unk_04 % 50 == 0) {
                 Ov013_VecCopy(&pos, &q->unk_14->pos);

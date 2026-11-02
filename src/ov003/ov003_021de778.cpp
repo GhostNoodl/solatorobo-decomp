@@ -3,6 +3,7 @@
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
+#include "Main/Res/StageCmd.h"
 
 
 class Ov003Bomb {
@@ -29,17 +30,16 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
 extern u16 Camera_GetYaw(Camera *cam);
 extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
-extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 extern Ov003BmInfo *func_020704b4(u16 id);
 extern void func_ov000_0219b400(void *a, void *b, s32 c, VecFx32 *pos, Rot16 *rot, s32 d);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *sc, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 
 static inline u16 Camera_GetAngle(Camera *cam) {
     return cam->mode != 0 ? cam->yaw : Camera_GetYaw(cam);

@@ -1,4 +1,7 @@
 #include "ov006/ov006.h"
+#include "ov006/Model.h"
+#include "Main/Res/ResArc.h"
+#include "Main/Res/ArcName.h"
 
 typedef struct ov006_Task0 {
     ov006_Task base;
@@ -32,16 +35,11 @@ typedef struct ov006_Flags {
     u32 unk4_8 : 24;
 } ov006_Flags;
 
-typedef struct ov006_Unk021d58cc_Member {
-    u8 unk0[0x88];
-    u8 unk88[1];
-} ov006_Unk021d58cc_Member;
-
 typedef struct ov006_Unk021d58cc {
     void *vtbl;
     u8 unk4[0x38];
-    ov006_Unk021d58cc_Member *unk3C;
-    ov006_Unk021d58cc_Member *unk40;
+    Model *unk3C;
+    Model *unk40;
     u8 unk44;
 } ov006_Unk021d58cc;
 
@@ -76,9 +74,7 @@ extern void *data_ov006_021ebc80;
 extern void *data_ov006_021ebc70;
 extern void *data_ov006_021ebfc0;
 extern void *data_ov000_021cc060;
-extern void *data_02097cdc;
-extern void *data_0208cc94;
-extern u8 data_ov006_021ec864[];
+extern char data_ov006_021ec864[];
 extern ov006_Unk02097e48 *data_02097e48;
 extern ov006_Unk021ccd40 *data_ov000_021ccd40;
 extern int data_ov000_021ccd38;
@@ -91,13 +87,7 @@ void func_ov000_02180660(int a, int b);
 bool func_ov000_021735e8(void);
 void func_ov000_021c2310(void *self);
 void func_ov000_02163254(void *self);
-void func_02036838(void *a, void *b, int c, int d);
-void *func_020359d0(void *a, int b, int c);
-int func_02035b90(void *a, int b);
 void func_0204aab0(ov006_Unk02097e48 *a);
-void func_02041558(void *a);
-void func_02041278(void *a);
-void MIi_CpuClear32(int value, void *dst, u32 size);
 
 ov006_Task0 *func_ov006_021d54b0(ov006_Task0 *self) {
     func_ov006_021ccda0(self);
@@ -255,26 +245,10 @@ BOOL func_ov006_021d58c0(void) {
 void func_ov006_021d58c8(void) {
 }
 
-#define OV006_DELETE_MEMBER(obj)                                 \
-    do {                                                         \
-        void *saved_ = data_02097dd0->cur;                   \
-        data_02097dd0->cur = data_02097dd0->heapHi;            \
-        if ((obj) != NULL) {                                     \
-            if ((obj) != NULL) {                                 \
-                ov006_Unk021d58cc_Member *m_ = (obj);            \
-                func_02041558(m_);                               \
-                func_02041278(m_->unk88);                        \
-                Heap_Free(m_);                               \
-            }                                                    \
-            (obj) = NULL;                                        \
-        }                                                        \
-        data_02097dd0->cur = saved_;                         \
-    } while (0)
-
 static inline void ov006_Unk021d58cc_Dtor(ov006_Unk021d58cc *self) {
     self->vtbl = &data_ov006_021ebe40;
-    OV006_DELETE_MEMBER(self->unk3C);
-    OV006_DELETE_MEMBER(self->unk40);
+    OV006_DELETE_MODEL(self->unk3C);
+    OV006_DELETE_MODEL(self->unk40);
     self->unk44 = 0;
     self->vtbl = &data_ov000_021cc060;
     VCALL(self, 5c);

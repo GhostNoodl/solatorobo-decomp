@@ -125,7 +125,7 @@ extern ov006_Unk021ec888 *data_ov006_021ec888;
 
 void *Heap_Alloc(u32 size);
 void Heap_Free(void *p);
-void func_0201bbfc(int a);
+void func_0201bbfc(u32 a);
 
 #ifdef __cplusplus
 }

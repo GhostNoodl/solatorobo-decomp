@@ -229,13 +229,13 @@ void func_ov009_0220bb70(Ov009ActVt_02217640 *self) {
             self->fsm->timer = 5;
         }
         m = self->model;
-        b = FLD(u8, m, 0xbe);
+        b = m->alpha;
         if (b < 0x1f) {
             b++;
             if (b >= 0x1f) {
                 b = 0x1f;
             }
-            FLD(u8, m, 0xbe) = b;
+            m->alpha = b;
         } else {
             self->fsm->timer = 0;
             self->fsm->st = 0x1e;

@@ -106,10 +106,10 @@ struct Ov003Prop {
 
 extern "C" {
 extern s32 Rand_PlusMinus(s32 max);
-extern s32 Rand_UpTo(s32 max);
+extern u32 Rand_UpTo(u32 max);
 extern Ov003FxPlayer *func_ov000_0219bf90(void);
 extern Ov003Info *func_0206fef8(u16 id);
-extern s32 func_020705fc(u16 id);
+extern u8 *func_020705fc(s32 id);
 extern void *Heap_Alloc(u32 size);
 extern Ov003Res *func_ov000_0218e9c4(void *p);
 extern Ov003Shadow *func_ov000_021919c8(void *p);

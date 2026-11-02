@@ -1,16 +1,16 @@
 #include "ov010/ov010.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern u8 data_ov010_0220f024[];
 extern const VecFx32 data_ov010_0220f144;
-extern BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
-extern void func_ov000_021915a0(void *a);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
+extern BOOL func_ov000_02190cb0(Model0218fe1c *a, const char *b, s16 c, u8 d);
+extern void func_ov000_021915a0(Model0218fe1c *a);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
-extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(ActorSub40 *a, u8 b, BOOL c);
 
 static inline BOOL Ov010_Begin(u16 *st) {
     if (*st == 0) {

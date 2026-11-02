@@ -1,13 +1,13 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern char data_ov009_022172af[];
 extern char data_ov009_022172bb[];
-extern void func_ov000_02191418(void *m, s32 a, s32 b);
-extern BOOL func_ov000_02191508(void *m);
-extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
+extern void func_ov000_02191418(Model0218fe1c *m, u16 a, BOOL b);
+extern BOOL func_ov000_02191508(Model0218fe1c *m);
 void func_ov009_0220b258(Ov009ActVt_022172e4 *self) {
     ActorSub40 *st = self->fsm;
     ActorSub44 *s44;

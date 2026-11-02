@@ -206,7 +206,7 @@ struct Ov011Msg {
     s32 c;
 };
 
-void ActorMgr_SendMsg(u16 a, u16 b, u8 c, s32 d, s32 e, void *f);
+void ActorMgr_SendMsg(u16 a, u16 b, u8 c, BOOL d, u32 e, const void *f);
 void func_ov011_022011c8(void *a, s32 b);
 BOOL func_ov011_02202ac8(void *p, VecFx32 *a, VecFx32 *b, s32 c, u8 d);
 

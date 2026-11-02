@@ -3,7 +3,7 @@
 typedef void (*VFunc)(void *);
 
 extern void Heap_Free(void *p);
-extern void *func_ov000_0218c928(void *p);
+extern u8 *func_ov000_0218c928(u8 *p);
 extern void *func_ov000_0218ea20(void *p);
 extern void *func_ov000_0218fee4(void *p);
 

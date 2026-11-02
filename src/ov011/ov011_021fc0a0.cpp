@@ -38,7 +38,7 @@ extern const VecFx32 data_ov011_022072b4;
 BOOL func_ov011_02201244(void *o);
 void func_ov011_0220121c(void *o, s32 a);
 void *__cxa_vec_new(u32 count, u32 size, u32 hdr, void *ctor, void *dtor);
-void *func_ov011_021fb66c(void *self);
+void *func_ov011_021fb66c(Ov011E40 *self);
 void *func_ov011_021fc0a0(void *self);
 BOOL func_ov011_02201f28(void *self, u16 id, const VecFx32 *off, s16 c, s16 d, s16 e);
 void func_ov011_02202464(void *self);

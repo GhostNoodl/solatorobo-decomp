@@ -4,7 +4,7 @@ extern "C" {
 
 extern char data_ov009_022172af[];
 extern BOOL func_ov000_021903b4(void *p);
-extern void func_ov000_02190a80(void *p, s32 a);
+extern void func_ov000_02190a80(Model0218fe1c *p, s16 a);
 
 struct Ov009Bits16 {
     u16 b0 : 1;
@@ -27,7 +27,7 @@ void func_ov009_02207910(Ov009ActVt_02217844 *self) {
     func_ov003_021d1b88(self);
     func_ov000_02190a80(&self->modelObj, 0x1000);
 }
-extern BOOL Hit_DiffInCylinder(const VecFx32 *a, const VecFx32 *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
 extern Ov003Actor *func_ov000_0219bf90(void);
 
 void Ov009ActVt_02217844_Update(Ov009ActVt_02217844 *self) {

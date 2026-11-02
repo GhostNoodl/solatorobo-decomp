@@ -175,7 +175,7 @@ void func_ov003_021d9980(VecFx32 *a, u16 b, const VecFx32 *c);
 // ov003 helpers that ov010 calls (state blocks, fx lists, pools, vector math), declared once here.
 // The ov003 sources define them on their own local types, so these take void * where ov010 has no
 // shared type for the argument. The actor API is in ov003/Actor.h.
-void func_ov003_021cedf4(s32 a);
+void func_ov003_021cedf4(u16 a);
 void func_ov003_021cf340(const char *p);
 void func_ov003_021cf39c(s32 a, const char *b);
 void func_ov003_021cf3fc(s32 a);
@@ -213,7 +213,7 @@ void func_ov003_021d9d28(VecFx32 *out, VecFx32 *pos, u16 ang, void *c);
 void func_ov003_021d9dbc(VecFx32 *out, const VecFx32 *a, const VecFx32 *b, s32 dist, s32 yoff);
 void func_ov003_021d9f80(void *rot, const VecFx32 *a, const VecFx32 *b);
 VecFx32 func_ov003_021da214(void *actor);
-void func_ov003_021da40c(void *p);
+void func_ov003_021da40c(ActorSub40 *p);
 void func_ov003_021da48c(void *p, s32 a);
 VObj *func_ov003_021da788(s32 id, void *self, const VecFx32 *ofs);
 VObj *func_ov003_021da7e8(s32 id, void *src, const VecFx32 *ofs);

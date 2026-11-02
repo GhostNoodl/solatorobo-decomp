@@ -1,4 +1,6 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 
@@ -31,9 +33,7 @@ void func_ov009_021fad54(Ov003Actor *self) {
     self->unk_c8 = 0x50000;
 }
 
-extern void *data_02097e4c;
 extern char data_ov009_02216ab0[];
-extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 void func_ov009_021fada8(Ov009ActVt_022164a0 *self) {
@@ -79,10 +79,10 @@ void func_ov009_021fada8(Ov009ActVt_022164a0 *self) {
 }
 
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void func_ov000_021911c8(void *model, s32 a);
+extern void func_ov000_021911c8(Model0218fe1c *model, s16 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
-extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
+extern void func_01ffc9fc(VecFx32 *out, VecFx32 *a, u16 b);
 static inline Ov003Actor *Ov009_FindActor5(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
@@ -98,8 +98,8 @@ void func_ov009_021faf48(Ov009ActVt_022164a0 *self) {
         func_ov000_02190cb0(self->model, data_ov009_02216ab0, 0x200, 0);
         {
             Model0218fe1c *m = self->model;
-            FLD(s32, m, 0xd8) = 0;
-            FLD(s32, m, 0xdc) = 0;
+            m->evScript = NULL;
+            m->evCursor = NULL;
         }
         func_ov000_021911c8(self->model, 0x800);
         self->speed = 0;

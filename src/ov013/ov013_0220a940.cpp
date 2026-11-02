@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_ov013_0220beb4;
 extern VecFx32 data_ov013_0220b3f8;
 extern VecFx32 data_ov013_0220b404;
-extern void *ActorEx_Ctor(void *self);
+extern ActorEx *ActorEx_Ctor(ActorEx *self);
 extern void func_ov000_02194758(void *self);
 extern Ov003Actor *func_ov000_0219bf90(void);
 

@@ -8,7 +8,7 @@ extern char data_ov009_02216bb4[];
 extern char data_ov009_02216bba[];
 extern void *func_ov003_021da940(void *p);
 extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern void *func_ov000_02191318(Model0218fe1c *m, s32 a);
+extern s16 *func_ov000_02191318(Model0218fe1c *m, s32 a);
 
 static inline void Ov009_SpawnSparks(Ov009ActVt_02216dcc *self) {
     EffectObj *e;

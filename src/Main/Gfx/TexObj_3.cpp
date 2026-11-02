@@ -235,7 +235,7 @@ void func_020429a0(TexObj *obj, TexObjOam *oam, void *cell, TexObjEntry *e, u8 a
     u32 plttBase;
     MtxFx43 mtx;
     func_02042958(obj, 0, e);
-    func_02043d20((u8 *)data_02097d48 + 0x8b0, 0);
+    func_02043d20(data_02097d48->unk_8b0, 0);
     NNS_G3dGeSendDL(data_0208288c, 0xc);
     if (obj->plttPtr->fmt == 4) {
         obj->unk_018 = 1;

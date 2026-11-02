@@ -9,6 +9,7 @@
 #include "ov006/SlotManager.h"
 #include "nitro/fx.h"
 #include "nnsys/g3d.h"
+#include "Main/Gfx/PlttRes.h"
 
 // ---- merged from ov006_021d3498.cpp
 namespace m_021d3498 {
@@ -154,7 +155,6 @@ void func_0204b420(void *self);
 void *func_ov000_0218ea20(void *self);
 void *func_ov000_0218fee4(void *self);
 ov006_Model60 *func_ov000_0218e9c4(void *self);
-void Heap_FreeHi(void *p);
 void func_02035acc(const char *a, const char *b, int c);
 const char *func_0207011c(u16 id);
 const char *func_020701d4(u16 id);
@@ -346,7 +346,6 @@ void func_0204b420(void *self);
 void *func_ov000_0218ea20(void *self);
 void *func_ov000_0218fee4(void *self);
 ov006_Model60 *func_ov000_0218e9c4(void *self);
-void Heap_FreeHi(void *p);
 void func_02035acc(const char *a, const char *b, int c);
 const char *func_0207011c(u16 id);
 const char *func_020701d4(u16 id);
@@ -937,10 +936,7 @@ void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *s
 void func_ov006_021cd580(int a, int b, int c);
 void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self);
 void func_ov006_021e463c(ov006_Unk021ec888 *self);
-void *Heap_AllocHi(u32 size, int align);
-void MI_CpuFill8(void *dst, u8 value, u32 size);
 int STD_TSNPrintf(char *dst, u32 size, const char *fmt, ...);
-void MIi_CpuClearFast(u32 data, void *destp, u32 size);
 
 static inline void ov006_Window_SetSel(ov006_Window *w, u16 id) {
     int idx = func_ov000_02154b58(w, id);

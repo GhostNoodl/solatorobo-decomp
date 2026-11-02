@@ -12,7 +12,7 @@ void func_ov009_02212668(Ov003Actor *self) {
 }
 
 extern char data_ov009_022179b4[];
-extern void func_ov000_021911c8(void *model, s32 a);
+extern void func_ov000_021911c8(Model0218fe1c *model, s16 a);
 
 void func_ov009_0221268c(Ov009ActSpin *self) {
     VecFx32 d;

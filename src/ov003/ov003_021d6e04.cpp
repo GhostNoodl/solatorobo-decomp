@@ -2,6 +2,7 @@
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
 #include "ov003/Actor.h"
+#include "nitro/mi.h"
 
 #pragma pool_strings on
 #pragma dont_reuse_strings off
@@ -20,10 +21,10 @@ typedef struct {
 extern "C" {
 
 extern Ov003Pl *func_ov000_0219bf90(void);
-extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
-extern void func_ov000_021915a0(void *model);
+extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s16 a, u8 b);
+extern void func_ov000_021915a0(Model0218fe1c *model);
 extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 
 typedef struct {
     s16 v[9];
@@ -33,7 +34,7 @@ extern const Ov003Route data_ov003_021f484c[];
 extern u16 FX_Atan2(s32 x, s32 z);
 extern void VEC_MultAdd(s32 scale, const VecFx32 *dir, const VecFx32 *base, VecFx32 *out);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
+extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 a, u16 b);
 
 void func_ov003_021d6e04(Ov003Act *self) {
     const char *run = "run00";
@@ -175,11 +176,10 @@ void func_ov003_021d732c(Ov003Act *self) {
     }
 }
 
-extern void func_ov000_021911c8(void *model, s32 v);
+extern void func_ov000_021911c8(Model0218fe1c *model, s16 v);
 extern void func_0203f364(ActorSub48 *ctl);
-extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov000_0218996c(s32 a, s32 b);
-extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
+extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
+extern void func_ov000_0218996c(u8 a, u8 b);
 
 void func_ov003_021d73dc(Ov003Act *self) {
     switch (self->fsm->st) {

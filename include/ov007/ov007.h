@@ -9,6 +9,7 @@
 #include "Main/Sys/GameScene.h"
 #include "Main/Gfx/Gfx3D.h"
 #include "Main/Gfx/GfxMgr.h"
+#include "Main/Gfx/TextWin.h"
 #include "Main/Res/StageCmd.h"
 #include "Main/Res/StageRes.h"
 #include "Main/Save/GameSave.h"
@@ -253,36 +254,6 @@ public:
 };
 OV007_SIZE(Ov007Player, 0xe8);
 
-struct Ov007WinAttr {
-    u32 b0 : 8;
-    u32 alpha : 5;
-    u32 pid : 8;
-    u32 rest : 11;
-};
-
-// Text window (0xb8 bytes, vtable data_0208ba70, func_0204c7d0).
-class Ov007Win : public Ov007V {
-public:
-    union {
-        u32 flags;
-        Ov007WinAttr attr;
-    };
-    u8 unk_08[0x1c];
-    s32 str; // text
-    s32 font;
-    u8 unk_2c[0xb];
-    s8 unk_37;
-    s32 spacing;
-    u8 unk_3c[0x8];
-    s32 width; // width
-    s32 height;
-    s32 unk_4c;
-    u8 unk_50[0x20];
-    s32 posZ;
-    u8 unk_74[0x44];
-};
-OV007_SIZE(Ov007Win, 0xb8);
-
 // Title camera (0xbc bytes, func_0204b370).
 class Ov007Cam : public Ov007V {
 public:
@@ -302,12 +273,6 @@ public:
     u8 unk_4c[0x70];
 };
 OV007_SIZE(Ov007Cam, 0xbc);
-
-// The object at data_02097e3c.
-struct Ov007Game {
-    u8 unk_000[0x149];
-    u8 unk_149;
-};
 
 // The ov000 object Task_FindById(8) returns: a callback slot and its argument.
 struct Ov007Menu8 {
@@ -412,7 +377,7 @@ struct Ov007Scene {
     s32 unk_50;
     s32 unk_54;
     s32 unk_58;
-    Ov007Win *wins[2];
+    TextWin *wins[2]; // vtable data_0208ba70
     s8 unk_64;
     u8 unk_65;
     u16 unk_66;
@@ -437,6 +402,15 @@ BOOL func_ov000_02189068(void *p);
 void func_ov000_0215c1bc(void *self, u32 flags, char *str);
 }
 
+// OV007_DEL_V for a TextWin (its deleting destructor is the second virtual).
+#define OV007_DEL_W(field)                              \
+    if ((field) != NULL) {                              \
+        TextWin *p_ = (field);                          \
+        if (p_ != NULL) {                               \
+            p_->unk_vf04();                             \
+        }                                               \
+        (field) = NULL;                                 \
+    }
 #define OV007_DEL_V(field, slot)                        \
     if ((field) != NULL) {                              \
         Ov007V *p_ = (field);                           \
@@ -505,7 +479,7 @@ extern const Ov007Row data_ov007_021cfa5c[];
 extern const Ov007Row data_ov007_021cfa60[];
 extern const Ov007RowB data_ov007_021cfa64[];
 
-BOOL func_02054f10(void *a, int b);
+BOOL func_02054f10(Model *a, u32 b);
 void func_ov000_02180660(int a, int b);
 void func_ov000_02180754(void);
 Ov007Menu8 *Task_FindById(int id);
@@ -586,7 +560,7 @@ static inline void Ov007_FreePage(Ov007Scene *s) {
 }
 
 extern "C" {
-u8 Gfx3DState_NextPolyId(void *p);
+u8 Gfx3DState_NextPolyId(Gfx3DState *p);
 void func_ov007_021cdff0(Ov007Rs *rs);
 void func_ov007_021cd58c(Ov007RankA *task, Ov007Scene *s);
 }

@@ -25,7 +25,7 @@ void func_ov013_02206ca8(Ov003Actor *self) {
 
 extern char data_ov013_0220be82[];
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void func_ov000_021911c8(void *p, s32 a);
+extern void func_ov000_021911c8(Model0218fe1c *p, s16 a);
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -87,9 +87,9 @@ struct Ov013Blk12 {
 extern void *data_02097e4c;
 extern char data_ov013_0220be88[];
 extern const Ov013Blk12 data_ov013_0220b3e0;
-extern void *ActorMgr_GetGroup(void *mgr, s32 a);
+extern ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 a);
 extern u16 ActorGroup_CountKind(void *p, s32 a);
-extern void func_ov000_0219a210(VecFx32 *p, VecFx32 *o, u16 rot);
+extern void func_ov000_0219a210(VecFx32 *p, const VecFx32 *o, s32 rot);
 extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
 
 void func_ov013_02206edc(Ov013ActVt_0220bdd8 *self) {

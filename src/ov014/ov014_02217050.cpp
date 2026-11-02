@@ -1,4 +1,5 @@
 #include "ov014/ov014.h"
+#include "nitro/mi.h"
 
 
 // A header's zero rotation and vector, plus copies made at startup, with this TU's offset
@@ -919,7 +920,6 @@ struct Ov014PlFlags {
 #define OV014_FXMUL_K(a, k) ((s32)(((s64)(a) * (k) + 0x800) >> 12))
 
 extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
-extern void MIi_CpuClear32(u32 data, void *dest, u32 size);
 extern void Actor_MoveToPos(Actor *self, VecFx32 *v, s32 a);
 extern u8 *func_ov000_0219bf90(void);
 extern BOOL func_01ffc318(VecFx32 *a, VecFx32 *pos, VecFx32 *min, VecFx32 *max, u16 *rot);
@@ -1165,7 +1165,6 @@ extern VecFx32 data_ov014_02216a1c;
 extern VecFx32 data_ov014_022169e0;
 extern VecFx32 data_ov014_02216a10;
 extern Ov003Actor *Actor_GetTarget(Actor *self);
-extern void MIi_CpuClear32(u32 data, void *dest, u32 size);
 extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern BOOL func_ov000_0219aca8(Actor *a, Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);

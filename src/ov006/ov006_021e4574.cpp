@@ -1,4 +1,5 @@
 #include "ov006/Model.h"
+#include "Main/Net/Wh.h"
 
 typedef struct ov006_Unk02097e40 {
     u8 unk0[0x32];
@@ -9,7 +10,6 @@ extern "C" {
 
 extern void *data_ov006_021ec434;
 extern u8 data_ov006_021eb840[];
-extern ov006_Unk02097e40 *data_02097e40;
 
 u16 func_02046ab4(ov006_Unk02097e40 *a);
 BOOL Wh_SetEntry(ov006_Unk02097e40 *a, BOOL enabled);

@@ -1,9 +1,9 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 
-extern void *data_02097e4c;
-extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 
 void func_ov009_021fc51c(Ov009ActVt_02216348 *self) {
     ActorSub40 *st;

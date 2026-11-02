@@ -233,7 +233,7 @@ void func_ov009_02207164(Ov009ActVt_022178f0 *self) {
 }
 
 extern const u16 data_ov009_02215ef0[3];
-extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void func_0203f364(ActorSub48 *p);
 void func_ov009_02207314(Ov009ActVt_022178f0 *self) {

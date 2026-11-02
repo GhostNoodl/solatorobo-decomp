@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void *func_ov000_0218fee4(void *p);
+extern Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *p);
 extern void *func_ov000_0218ea20(void *p);
 
 void func_ov009_0220d034(Ov009ActVt_02217640 *self) {

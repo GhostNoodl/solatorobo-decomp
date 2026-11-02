@@ -58,10 +58,10 @@ extern void func_ov000_02184508(void *g);
 extern void func_ov000_02184548(void *g);
 extern void func_ov000_0218d46c(void *a, u16 id, s32 msg);
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
-extern void *ActorMgr_GetActor(void *mgr, u16 id);
+extern Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 extern void func_ov000_02199f48(void *p, Ov003Actor *a);
-extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern Ov003Actor *func_ov000_0219bf90(void);
 
 static inline void *Ov009_FindActorD68(u16 id) {

@@ -2,14 +2,13 @@
 // bottom) and loop-invariant loads stay in the loop.
 #pragma optimization_level 2
 #include "ov006/ov006.h"
+#include "nitro/mi.h"
 
 extern "C" {
 
 extern ObjectVtbl data_ov006_021ec434;
 extern u8 data_ov006_021eb840[];
 
-void MI_CpuFill8(void *dst, u8 value, u32 size);
-void MI_CpuCopy8(const void *src, void *dst, u32 size);
 int func_ov006_021e4674(ov006_Unk021ec888 *self);
 
 static inline BOOL ov006_KeyEq(const u8 *a, const u8 *b) {

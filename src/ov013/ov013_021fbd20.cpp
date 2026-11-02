@@ -1,4 +1,6 @@
 #include "ov013/ov013.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 struct Ov013SpawnDesc {
     u16 kind;
@@ -24,7 +26,7 @@ extern char data_ov013_0220b5b8[];
 extern VecFx32 data_ov013_0220ae70;
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToActor(void *self, Ov003Actor *a, s32 b);
-extern void func_ov000_0219a210(VecFx32 *v, VecFx32 *off, u16 rot);
+extern void func_ov000_0219a210(VecFx32 *v, const VecFx32 *off, s32 rot);
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov013SpawnDesc *d, VecFx32 *pos, u16 *rot, u16 a);
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
@@ -103,13 +105,10 @@ void func_ov013_021fbd20(Ov013Boss *self) {
     }
 }
 
-extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 extern void func_0203f364(ActorSub48 *p);
-extern void *data_02097e4c;
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
-extern void func_ov000_0218996c(s32 a, s32 b);
-extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
+extern void func_ov000_0218996c(u8 a, u8 b);
+extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 
 void func_ov013_021fbf84(Ov013Boss *self) {
     ActorSub40 *w = self->fsm;

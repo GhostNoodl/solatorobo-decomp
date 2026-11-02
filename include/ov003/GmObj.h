@@ -19,12 +19,6 @@ typedef struct {
 } Ov003Ctl;
 
 typedef struct {
-    void *cur;
-    u32 unk_04;
-    void *alt;
-} Ov003HeapCtx;
-
-typedef struct {
     u8 unk_00[0x2c];
     u32 unk_2c;
 } Ov003ColState;

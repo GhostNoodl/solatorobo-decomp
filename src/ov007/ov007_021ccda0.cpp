@@ -2,6 +2,7 @@
 #pragma dont_reuse_strings off
 #include "ov007/ov007.h"
 #include "nitro/std.h"
+#include "Main/Movie/Movie.h"
 
 extern "C" {
 
@@ -88,7 +89,7 @@ void func_ov007_021ccf9c(Ov007Scene *s) {
     OV007_FREE_D(s->unk_38, func_ov000_0218fee4);
     OV007_PUSH(saved); OV007_DEL_V(s->cam, v08); OV007_POP(saved);
     for (i = 0; i < 2; i++) {
-        OV007_PUSH(saved); OV007_DEL_V(s->wins[i], v04); OV007_POP(saved);
+        OV007_PUSH(saved); OV007_DEL_W(s->wins[i]); OV007_POP(saved);
     }
 }
 
@@ -273,7 +274,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
             s->idx = 0;
             return;
         }
-        m = (Model *)Heap_Alloc(0x160);
+        m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
             res = data_ov007_021cfa50[s->idx].v;
             func_02041218(&m->pltt);
@@ -284,7 +285,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
         s->unk_28->flags |= 2;
         func_02041d9c(s->unk_28, 2, 0xffff);
         if (data_ov007_021cfa54[s->idx].v != 0) {
-            m = (Model *)Heap_Alloc(0x160);
+            m = (Model *)Heap_Alloc(sizeof(Model));
             if (m != NULL) {
                 res = data_ov007_021cfa54[s->idx].v;
                 func_02041218(&m->pltt);
@@ -536,8 +537,8 @@ BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 void func_ov000_021915a0(void *p);
 void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
-void func_0204c7d0(void *p);
-s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
+void func_0204c7d0(TextWin *win);
+u32 Text_Measure(u32 font, u32 spacing, u32 str, u32 *outW, u32 *outH, BOOL d);
 void func_0204ca70(void *p);
 void func_0204aab0(Ov007SndQ *queue, u16 value);
 void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
@@ -576,8 +577,8 @@ static inline Ov007Model *Ov007_NewMdl(void) {
     return m;
 }
 
-static inline Ov007Win *Ov007_NewWin(void) {
-    Ov007Win *win = (Ov007Win *)Heap_Alloc(0xb8);
+static inline TextWin *Ov007_NewWin(void) {
+    TextWin *win = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (win != NULL) {
         OV007_SET_VT(win, &data_0208ba70);
         func_0204c7d0(win);
@@ -585,11 +586,11 @@ static inline Ov007Win *Ov007_NewWin(void) {
     return win;
 }
 
-static inline Ov007Win *Ov007_MakeWin(s32 text) {
-    Ov007Win *win = Ov007_NewWin();
+static inline TextWin *Ov007_MakeWin(s32 text) {
+    TextWin *win = Ov007_NewWin();
     win->font = 8;
     win->str = text;
-    win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, win->unk_37 != 0 ? TRUE : FALSE);
+    win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
     data_02097ce0->unk_004 = win->font;
     win->posZ = -0x299a;
     win->flags |= 0x40;
@@ -761,7 +762,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
         }
         tbl = data_ov007_021cfbb4;
         p = (Ov007V *)s->pic->v10();
-        m = (Model *)Heap_Alloc(0x160);
+        m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
             res = tbl.s[s->unk_4c - 1];
             func_02041218(&m->pltt);
@@ -771,7 +772,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
         func_020417e0(s->unk_28, func_02034d88(p, m->unk_04c));
         s->unk_28->flags |= 2;
         func_02041d9c(s->unk_28, 2, 0xffff);
-        m = (Model *)Heap_Alloc(0x160);
+        m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
             res = "cepct1cmn00";
             func_02041218(&m->pltt);
@@ -1008,10 +1009,9 @@ void func_ov007_021ce038(Ov007Scene *s) {
 
 extern "C" {
 
-extern Ov007Game *data_02097e3c;
-void Movie_Load(void *a, s32 b, int c, int d);
-void Movie_RequestStop(void *a);
-void func_02043db4(int a, s32 b, s32 c, s32 d);
+void Movie_Load(Movie *a, int b, int c, BOOL d);
+void Movie_RequestStop(Movie *a);
+void func_02043db4(int a, int b, int c, u32 d);
 void func_ov007_021cf474(Ov007Scene *s);
 
 }
@@ -1128,7 +1128,7 @@ void func_ov007_021cef80(Ov007Scene *s) {
         if (!Ov007_FadeIdle()) {
             return;
         }
-        if (data_02097e3c->unk_149 == 0) {
+        if (data_02097e3c->state == 0) {
             func_0206e900(buf, "pic/title");
             p = (Ov007Pic *)Heap_Alloc(0x4c);
             if (p != NULL) {

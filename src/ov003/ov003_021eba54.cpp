@@ -5,6 +5,7 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorParts.h"
 #include "ov003/Unit.h"
+#include "Main/Res/StageRes.h"
 
 
 
@@ -232,7 +233,7 @@ extern Ov003Player *func_ov000_0219bf90(void);
 extern void func_ov000_021bd7a0(void *p);
 extern BOOL func_ov000_02194c08(void *self);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
-extern s32 Rand_UpTo(s32 max);
+extern u32 Rand_UpTo(u32 max);
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_021946f8(void *self);
@@ -247,7 +248,6 @@ extern void func_ov000_02190a80(void *a, void *b);
 extern void func_ov000_02190758(Ov003Anim *anim, Rot16 *rot, s32 a);
 extern BOOL func_ov000_021903b4(Ov003Anim *anim);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
-extern Ov003Snd *data_02fe152c;
 extern s32 func_0205976c(Ov003Snd *s, s32 a);
 extern u16 func_02059544(Ov003Snd *s, u8 *p, s32 a, s32 b, u16 c);
 extern Ov003SubAnim *func_ov000_02190a30(Ov003Mdl *m, s32 a);
@@ -260,13 +260,13 @@ extern void func_ov000_021915a0(void *model);
 extern void func_ov000_021911c8(void *model, s32 a);
 extern s32 Rand_PlusMinus(s32 max);
 extern void func_ov000_02195848(void *self);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+extern u16 func_01ffc128(u16 target, u16 cur, s32 step, u32 a, u16 b);
 extern char data_ov003_021f9983[];
 extern char data_ov003_021f9989[];
-extern s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
+extern s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 c, s32 d, s32 e, s32 f);
 extern void Actor_MoveToPos(void *self, VecFx32 *v, s32 a);
 extern void func_ov000_021987b8(Ov003Ctl *ctl, s32 a, s32 b, s32 c);
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 
 static inline BOOL Ov003Game_IsBusy(FieldState *g) {
     return g->head != g->tail;

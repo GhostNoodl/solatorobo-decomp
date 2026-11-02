@@ -17,16 +17,16 @@ extern char data_ov003_021f7a60[];
 extern char data_ov003_021f7a66[];
 extern Ov003KbUnit *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToActor(void *self, Ov003KbUnit *target, s32 a);
-extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
-extern void func_ov000_021915a0(void *model);
-extern BOOL func_ov000_02191120(void *model);
-extern BOOL func_ov000_02191508(void *model);
-extern void func_ov000_02191418(void *model, s32 a, s32 b);
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s16 a, u8 b);
+extern void func_ov000_021915a0(Model0218fe1c *model);
+extern BOOL func_ov000_02191120(Model0218fe1c *model);
+extern BOOL func_ov000_02191508(Model0218fe1c *model);
+extern void func_ov000_02191418(Model0218fe1c *model, u16 a, BOOL b);
+extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 extern u16 func_ov000_02198da8(ActorSub48 *ctl, u16 a);
-extern void func_ov000_0218996c(s32 a, s32 b);
-extern void Actor_Move(void *self, s32 a);
-extern void Actor_MoveToPos(void *self, VecFx32 *v, s32 a);
+extern void func_ov000_0218996c(u8 a, u8 b);
+extern void Actor_Move(Actor *self, s32 a);
+extern void Actor_MoveToPos(Actor *self, const VecFx32 *v, s32 a);
 extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 
 static inline BOOL Ov003Kb_GameBusy(FieldState *g) {

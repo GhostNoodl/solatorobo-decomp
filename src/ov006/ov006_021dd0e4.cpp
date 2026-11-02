@@ -18,10 +18,10 @@ typedef struct ov006_Unk021dd0e4 {
 
 extern "C" {
 
-BOOL func_02054f10(void *a, int b);
+BOOL func_02054f10(Model *a, u32 b);
 
 static inline MtxFx22 *ov006_Model_Mtx22(Model *m) {
-    return (MtxFx22 *)((u8 *)m + 0x114);
+    return m->mtx;
 }
 
 void func_ov006_021dd0e4(ov006_Unk021dd0e4 *self) {

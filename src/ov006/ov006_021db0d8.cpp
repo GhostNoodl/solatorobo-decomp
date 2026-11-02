@@ -1,4 +1,5 @@
 #include "ov006/SlotManager.h"
+#include "Main/Net/Wh.h"
 
 typedef struct ov006_Save02046a50 {
     u8 unk0[2];
@@ -7,7 +8,6 @@ typedef struct ov006_Save02046a50 {
 
 extern "C" {
 
-extern void *data_02097e40;
 ov006_Save02046a50 *Wh_GetSharedData(void *a, int idx);
 
 static inline ov006_Slot *ov006_SlotManager_GetSlot(ov006_SlotManager *self, u32 idx) {

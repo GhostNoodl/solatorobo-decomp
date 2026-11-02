@@ -1,8 +1,10 @@
 #include "Main/Res/ResMgr.h"
+#include "nitro/mi.h"
+#include "nitro/gx.h"
+#include "nitro/os.h"
 
 extern "C" {
 
-extern int GXi_DmaId;
 extern u8 data_02fe0000[];
 extern void GX_Init(void);
 extern void GX_DispOff(void);
@@ -10,8 +12,6 @@ extern void FX_Init(void);
 extern void OS_InitTick(void);
 extern void RTC_Init(void);
 extern void func_0203d770(void);
-extern void OS_SetIrqFunction(int a, void (*func)(void));
-extern s32 OS_EnableIrqMask(int a);
 extern s32 GX_VBlankIntr(int a);
 extern void OS_GetLowEntropyData(void *dt);
 extern void Rand_Seed(u64 seed);
@@ -25,7 +25,6 @@ extern s32 GX_ResetBankForSubBGExtPltt(void);
 extern s32 GX_ResetBankForSubOBJ(void);
 extern s32 GX_ResetBankForSubOBJExtPltt(void);
 extern void GX_SetBankForLCDC(int a);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern s32 GX_DisableBankForLCDC(void);
 void func_0203d824(void);
 
@@ -33,7 +32,6 @@ extern void OS_Init(void);
 extern void OS_EnableITCM(void);
 extern void OS_EnableDTCM(void);
 extern void *OS_AllocFromArenaLo(int id, u32 size, int align);
-extern void MI_CpuFill8(void *dest, u8 data, u32 size);
 extern BOOL OS_IsRunOnTwl(void);
 void func_0203d9e8(UnkSys *sys);
 void func_0203d80c(void);

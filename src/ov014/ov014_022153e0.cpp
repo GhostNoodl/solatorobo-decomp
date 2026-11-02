@@ -18,8 +18,8 @@ extern "C" {
 extern Ov003Actor *Target_Get(void *p);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void func_ov014_02215ffc(Ov014ActEx_022152e8 *self);
-extern void func_ov000_021911c8(void *a, s32 b);
-extern void Interp_SinLerpVec(VecFx32 *out, s32 t, VecFx32 *a, VecFx32 *b);
+extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
+extern void Interp_SinLerpVec(VecFx32 *out, s32 t, const VecFx32 *a, const VecFx32 *b);
 extern void Actor_TurnToActor(Actor *self, Actor *target, s32 a);
 extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);

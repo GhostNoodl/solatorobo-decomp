@@ -10,7 +10,7 @@ extern Ov003Actor *func_ov000_0219bf90(void);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
 extern void func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
-extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, const void *f, const void *g, s32 h, s32 i, s32 j, s32 k);
+extern BOOL func_ov000_0219aae8(Actor *a, Actor *b, u16 c, u8 d, u16 e, VecFx32 *f, void *g, s32 h, s32 i, s16 j, s32 k);
 
 struct Ov009AngSrc {
     u8 unk_00[0x40];
@@ -197,9 +197,9 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
         }
         {
             Model0218fe1c *m = self->model;
-            FLD(s32, m, 0xa8) = h;
-            FLD(s32, m, 0xac) = h;
-            FLD(s32, m, 0xb0) = h;
+            m->scale.x = h;
+            m->scale.y = h;
+            m->scale.z = h;
         }
         break;
     case 12: {

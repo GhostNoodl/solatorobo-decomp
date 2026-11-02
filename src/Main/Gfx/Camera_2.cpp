@@ -1,5 +1,6 @@
 #include "Main/Gfx/Camera.h"
 #include "Main/Gfx/GfxMgr.h"
+#include "nitro/mi.h"
 
 extern "C" {
 
@@ -11,10 +12,9 @@ extern
 void func_0204bac8(Camera *cam);
 extern s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 extern void *NNS_G3dFuncAnmJntNsBcaDefault[];
-extern s32 Rand_UpTo(s32 max);
+extern u32 Rand_UpTo(u32 max);
 extern void *NNS_G3dRS;
 extern u32 NNS_G3dGetJointScale_FuncArray;
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 
 typedef struct CamAnimResult {
     /* 0x00 */ u32 flags;
@@ -31,7 +31,7 @@ typedef struct CamAnimWork {
 
 typedef void (*CamAnimFunc)(CamAnimResult *out, s32 *frame, s32 arg);
 extern s32 Rand_PlusMinus(s32 amp);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
+extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 a, u16 b);
 typedef struct CamState {
     /* 0x000 */ u8 unk_000[0xfc];
     /* 0x0fc */ u32 dirty;

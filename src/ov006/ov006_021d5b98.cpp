@@ -3,6 +3,8 @@
 #include "ov006/Model.h"
 #include "ov006/SlotManager.h"
 #include "Main/Effect/Effect.h"
+#include "Main/Res/ResArc.h"
+#include "Main/Res/ArcName.h"
 
 extern "C" u8 *data_ov000_021ccd54;
 
@@ -23,10 +25,8 @@ typedef struct ov006_Unk021d5b98 {
 extern "C" {
 
 extern u8 data_ov006_021ebfc0[];
-extern char *data_0208cc94;
 extern char data_0214b105[];
 extern char data_ov006_021ec864[];
-void func_02036838(void *a, const void *b, int c, int d);
 void func_0206e900(char *dst, const char *src);
 void *func_ov000_0218ea20(void *p);
 void func_ov006_021ccddc(void *self);
@@ -125,7 +125,6 @@ extern "C" {
 extern const u16 data_ov006_021eb7a8[];
 extern ov006_Unk02097e48 *data_02097e48;
 
-void *func_020359d0(const char *a, int b, int c);
 void func_0206e900(char *dst, const char *src);
 void *func_ov000_0218e9c4(void *p);
 void func_ov000_02193e5c(void *p, u16 id);
@@ -252,7 +251,6 @@ extern void *data_02097e4c;
 void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(void *p);
 void func_ov000_021b53f4(void *p);
-BOOL func_02035b90(const char *name, int a);
 void func_0206e900(char *dst, const char *src);
 BOOL func_ov000_0218f110(void *p);
 BOOL func_ov000_021b5578(void *p);
@@ -487,7 +485,7 @@ void func_ov006_021de008(ov006_Gauge021d6724 *p);
 void func_ov000_0216da2c(void *p, int a, int b, int c);
 ov006_Pos021d6724 *Ov006Vt_021ec1fc_Ctor(void *p);
 void func_ov006_021e16b0(ov006_Pos021d6724 *p);
-const void *func_0206ec48(u16 id);
+void *func_0206ec48(u32 id);
 void func_ov006_021e1e6c(ov006_Pos021d6724 *a, const void *b);
 void func_ov006_021e1ddc(ov006_Pos021d6724 *a, const char *b, int c, int d);
 ov006_Pos021d6724 *Ov006Vt_021ec2cc_Ctor(void *p);

@@ -1,4 +1,5 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
 
 extern "C" {
 
@@ -31,8 +32,8 @@ void func_ov009_0220a560(Ov009ActVt_02217390 *self) {
 }
 
 extern char data_ov009_022172cd[];
-extern void func_ov000_02191618(void *model);
-extern void func_ov000_021911c8(void *model, s32 a);
+extern void func_ov000_02191618(Model0218fe1c *model);
+extern void func_ov000_021911c8(Model0218fe1c *model, s16 a);
 
 static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->event != 0;
@@ -62,12 +63,10 @@ void func_ov009_0220a654(Ov009ActVt_02217390 *self) {
     func_ov000_021911c8(self->model, 0x200);
 }
 
-extern void *data_02097e4c;
 extern char data_ov009_022172af[];
 extern char data_ov009_022172bb[];
-extern void func_ov000_02191418(void *m, s32 a, s32 b);
-extern BOOL func_ov000_02191508(void *m);
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void func_ov000_02191418(Model0218fe1c *m, u16 a, BOOL b);
+extern BOOL func_ov000_02191508(Model0218fe1c *m);
 void func_ov009_0220a750(Ov009ActVt_02217390 *self) {
     ActorSub40 *st = self->fsm;
     Model0218fe1c *m = self->model;
@@ -133,7 +132,7 @@ void func_ov009_0220a750(Ov009ActVt_02217390 *self) {
 }
 
 extern char data_ov009_022172d3[];
-extern void *func_ov000_02191318(Model0218fe1c *m, s32 a);
+extern s16 *func_ov000_02191318(Model0218fe1c *m, s32 a);
 void func_ov009_0220a984(Ov009ActVt_02217390 *self) {
     s32 prev;
     switch (self->fsm->st) {

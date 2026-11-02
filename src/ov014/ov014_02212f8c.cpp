@@ -25,7 +25,7 @@ extern void Actor_TurnToActor(Actor *self, Actor *target, s32 a);
 extern char data_ov014_02217d4c[];
 extern u8 data_ov014_02216dc0[];
 extern Ov003Actor *Actor_GetTarget(Actor *self);
-extern void func_ov000_02191618(void *a);
+extern void func_ov000_02191618(Model0218fe1c *a);
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, void *pos, void *rot, u16 a);
 
 static inline void Ov014_TimerTick(ActorSub40 *s) {

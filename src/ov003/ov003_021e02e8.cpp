@@ -281,7 +281,7 @@ void func_ov003_021e0448(Ov003Lamp *self) {
     Actor_SendMsg(p, self->unk_0c, 8, 1, sizeof(m2), &m2);
 }
 
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov003_021e06a8(Ov003Lamp *self) {

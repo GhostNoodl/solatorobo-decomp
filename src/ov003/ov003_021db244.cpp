@@ -5,7 +5,7 @@
 extern "C" {
 
 extern Ov003ShotStep data_ov003_021f49ba[];
-extern VecFx32 data_02092a50;
+extern const VecFx32 data_02092a50;
 extern Robo021ca458 *func_ov000_0219bf90(void);
 extern Actor *Target_Get(ActorSub4c *t);
 extern VecFx32 *func_ov000_0218d2e0(Actor *self);

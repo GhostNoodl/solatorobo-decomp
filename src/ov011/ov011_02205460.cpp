@@ -24,7 +24,7 @@ struct Ov011Rot {
 extern "C" {
 
 extern const u16 data_ov011_0220751c[];
-s32 Rand_UpTo(s32 max);
+u32 Rand_UpTo(u32 max);
 void *Group_SpawnActor(void *mgr, Ov011SpawnDesc *d, VecFx32 *pos, Ov011Rot *rot, u16 a);
 void *func_ov000_0214b670(void *p);
 
@@ -133,7 +133,7 @@ void func_ov011_02205674(Ov011Act7da4 *self) {
     func_ov011_02205460(self, self->fsm->timer, 0);
 }
 
-extern VecFx32 data_02092a50;
+extern const VecFx32 data_02092a50;
 
 void func_ov011_0220576c(Ov011Act7da4 *self) {
     ActorSub40 *st = self->fsm;

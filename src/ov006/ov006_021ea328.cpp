@@ -1,5 +1,7 @@
 #include "ov006/SlotManager.h"
 #include "Main/Effect/Effect.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 typedef struct ov006_Prop021ea328 {
     u8 unk0[0x70];
@@ -17,8 +19,6 @@ typedef struct ov006_Prop021ea328 {
 
 extern "C" {
 
-extern void *data_02097e4c;
-void *func_02049f44(void *a, int b, void *c, int d);
 
 void func_ov006_021ea328(ov006_Prop021ea328 *self) {
     self->unk1F6 += 3000;

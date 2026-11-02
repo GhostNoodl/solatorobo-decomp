@@ -124,7 +124,7 @@ extern "C" {
 
 u32 func_ov011_02201244(void *self);
 void *func_ov011_02201254(void *self);
-void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
+void ActorMgr_SendMsg(u16 a, u16 b, u8 c, BOOL d, u32 e, const void *f);
 u32 func_ov011_02201b64(void *p);
 BOOL func_ov011_02201b40(void *p);
 void func_ov011_02201aac(void *p, const VecFx32 *v);

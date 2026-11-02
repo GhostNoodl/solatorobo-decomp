@@ -101,9 +101,9 @@ struct Ov009Vec3x3 {
 
 extern const Ov009Vec3x3 data_ov009_02215f50;
 extern char data_ov009_022172af[];
-extern void func_ov000_021911c8(void *model, s32 a);
+extern void func_ov000_021911c8(Model0218fe1c *model, s16 a);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
-extern BOOL Hit_DiffInCylinder(const VecFx32 *a, const VecFx32 *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
 
 void func_ov009_02209668(Ov009ActVt_02217594 *self) {
     Ov009Vec3x3 tbl = data_ov009_02215f50;

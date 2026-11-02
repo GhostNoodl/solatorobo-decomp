@@ -1,4 +1,5 @@
 #include "ov006/ov006.h"
+#include "nitro/mi.h"
 
 typedef struct ov006_Flagged {
     u8 unk0[0xc];
@@ -23,7 +24,6 @@ BOOL func_020469d4(ov006_Unk02097e40 *a, ov006_MenuEntry *entry);
 int Wh_GetError(ov006_Unk02097e40 *a);
 ov006_MenuEntry *Wh_GetSharedData(ov006_Unk02097e40 *a, int idx);
 void OS_GetOwnerInfo(void *a);
-void MI_CpuCopy8(const void *src, void *dst, u32 size);
 
 void func_ov006_021e5e00(ov006_Unk021ec888 *self) {
     ov006_ObjectHolder *holder = self->unk1D8;

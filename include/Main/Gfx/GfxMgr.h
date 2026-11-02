@@ -78,7 +78,7 @@ typedef struct GfxSys {
     /* 0x048 */ u8 unk_048[0x1c];
     /* 0x064 */ GfxVramHeap heaps[2];
     /* 0x8a4 */ u16 slotMasks[6];
-    /* 0x8b0 */ union {
+    /* 0x8b0 */ union { // 0x8b0..0xa30 is the system's Gfx3DState (Main/Gfx/Gfx3D.h): its init/poly-id functions take unk_8b0
         u8 unk_8b0[0x134];
         struct {
             u8 unk_8b0_0 : 4;
@@ -88,7 +88,8 @@ typedef struct GfxSys {
         };
     };
     /* 0x9e4 */ GfxPltt pltt;
-    /* 0x9e8 */ u8 unk_9e8[0x48];
+    /* 0x9e8 */ u8 unk_9e8[0x44];
+    /* 0xa2c */ s32 *nearClip; // &Camera.nearClip of the camera last applied (Camera_Apply)
     /* 0xa30 */ u8 unk_a30_0 : 1;
     /* 0xa30 */ u8 unk_a30_1 : 1;
     /* 0xa30 */ u8 unk_a30_2 : 1;

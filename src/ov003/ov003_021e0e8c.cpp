@@ -8,6 +8,8 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorParts.h"
 #include "ov003/Unit.h"
+#include "nitro/std.h"
+#include "Main/Sys/SysState.h"
 
 // ---- merged from ov003_021e0e8c.c
 namespace m_021e0e8c {
@@ -1128,8 +1130,6 @@ extern void *data_ov000_021ccd64;
 extern void func_ov000_0219433c(void *self);
 extern char *func_0207011c(u16 id);
 extern char *func_02039674(char *p);
-extern void *STD_CopyString(char *dst, const char *src);
-extern void *STD_ConcatenateString(char *dst, const char *s);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 
 void Ov003ActVt_021f8c28_Init(Ov003Prop *self) {
@@ -1576,8 +1576,6 @@ extern void *data_ov000_021ccd64;
 extern void func_ov000_0219433c(void *self);
 extern char *func_0207011c(u16 id);
 extern char *func_02039674(char *p);
-extern void *STD_CopyString(char *dst, const char *src);
-extern void *STD_ConcatenateString(char *dst, const char *s);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 
 void Ov003ActVt_021f89c8_Init(Ov003Prop *self) {
@@ -2743,8 +2741,8 @@ typedef struct {
     u8 unk_20a;
     u8 unk_20b;
     u8 unk_20c[0x84];
-    u8 unk_290[0x20];
-    u8 unk_2b0[0x90];
+    char unk_290[0x20];
+    char unk_2b0[0x90];
     Ov003BigMdl sub;
     u8 unk_404[0x24];
     VecFx32 unk_428[4];
@@ -2770,7 +2768,6 @@ extern void func_ov000_0218996c(s32 a, s32 b);
 extern s32 Rand_UpTo(s32 max);
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
-extern void *STD_CopyString(void *dst, const void *src);
 extern BOOL func_ov000_021946f8(void *self);
 extern BOOL func_ov000_0218f110(s16 *res);
 
@@ -2945,8 +2942,8 @@ typedef struct {
     u8 unk_20a;
     u8 unk_20b;
     u8 unk_20c[0x84];
-    u8 unk_290[0x20];
-    u8 unk_2b0[0x90];
+    char unk_290[0x20];
+    char unk_2b0[0x90];
     Ov003Model sub;
     u8 unk_404[0x24];
     VecFx32 unk_428[4];
@@ -3048,8 +3045,8 @@ typedef struct {
     u8 unk_20a;
     u8 unk_20b;
     u8 unk_20c[0x84];
-    u8 unk_290[0x20];
-    u8 unk_2b0[0x90];
+    char unk_290[0x20];
+    char unk_2b0[0x90];
     Ov003BigMdl sub;
     u8 unk_404[0x24];
     VecFx32 unk_428[4];
@@ -3469,12 +3466,6 @@ typedef struct {
 } Ov003Ctl;
 
 typedef struct {
-    void *cur;
-    u32 unk_04;
-    void *alt;
-} Ov003HeapCtx;
-
-typedef struct {
     u8 unk_00[0x2c];
     u32 unk_2c;
 } Ov003ColState;
@@ -3541,8 +3532,8 @@ typedef struct {
     VecFx32 unk_d4;
     u8 unk_e0[0xec];
     void **unk_1cc;
-    u8 unk_1d0[0x20];
-    u8 unk_1f0[0x18];
+    char unk_1d0[0x20];
+    char unk_1f0[0x18];
     void *unk_208;
     u8 unk_20c;
     u8 unk_20d[3];
@@ -3552,7 +3543,6 @@ typedef struct {
 extern "C" {
 
 extern Ov003ColState data_02fe0f14;
-extern Ov003HeapCtx *data_02097dd0;
 extern char data_ov003_021f8768[];
 extern void func_ov000_02194758(void *self);
 extern s32 func_ov000_0219a2f4(VecFx32 *pos, s32 a, s32 b);
@@ -3568,10 +3558,8 @@ extern void *func_ov000_0218ea20(void *p);
 extern void *func_ov000_0219429c(void *self);
 extern const char *const data_ov003_021f4c64[2];
 extern void func_ov000_0219433c(void *self);
-extern void *func_0207011c(u16 id);
-extern void *STD_CopyString(void *dst, const void *src);
-extern void *STD_ConcatenateString(void *dst, const char *s);
-extern void *func_02039674(void *p);
+extern char *func_0207011c(u16 id);
+extern char *func_02039674(char *p);
 extern BOOL OS_IsRunOnTwl(void);
 extern void *Heap_Alloc(u32 size);
 extern void *func_ov000_0214b570(void *p);
@@ -3665,7 +3653,7 @@ Ov003Obj *Ov003ActVt_021f8768_Dtor(Ov003Obj *self) {
     void *p;
     self->vtbl = data_ov003_021f8768;
     old = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->alt;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     p = self->unk_208;
     if (p != NULL) {
         if (p != NULL) {
@@ -3685,7 +3673,7 @@ Ov003Obj *Ov003ActVt_021f8768_DtorDelete(Ov003Obj *self) {
     void *p;
     self->vtbl = data_ov003_021f8768;
     old = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->alt;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     p = self->unk_208;
     if (p != NULL) {
         if (p != NULL) {
@@ -3702,11 +3690,11 @@ Ov003Obj *Ov003ActVt_021f8768_DtorDelete(Ov003Obj *self) {
 }
 
 void Ov003ActVt_021f8768_Init(Ov003Obj *self) {
-    u8 buf[0x20];
+    char buf[0x20];
     func_ov000_0219433c(self);
     if (self->kind != 0) {
         u16 id = self->unk_0e;
-        void *r;
+        char *r;
         const char *t;
         if (self->kind == 3) {
             id = 0x4053;
@@ -3796,7 +3784,7 @@ void Ov003ActVt_021f8768_Start(Ov003Obj *self) {
         s32 z;
         if (self->unk_44 != NULL) {
             void *old = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->alt;
+            data_02097dd0->cur = data_02097dd0->heapHi;
             if (self->unk_44 != NULL) {
                 Heap_Free(self->unk_44);
                 self->unk_44 = NULL;
@@ -3914,7 +3902,7 @@ extern void *data_ov000_021cac60[];
 extern void *data_ov000_021cad50[];
 extern void *data_02149ef8;
 extern void *data_ov000_021ccd68;
-extern VecFx32 data_02092a50;
+extern const VecFx32 data_02092a50;
 extern void *Heap_Alloc(u32 size);
 extern const char *MsgRes_GetString(void *mgr, s32 id);
 extern void func_ov000_0215c1bc(void *a, s32 b, const char *c);
@@ -4050,12 +4038,6 @@ typedef struct {
     u8 unk_58[0x42];
     u16 unk_9a;
 } Ov003Ctl;
-
-typedef struct {
-    void *cur;
-    u32 unk_04;
-    void *alt;
-} Ov003HeapCtx;
 
 typedef struct {
     u8 unk_00[0x2c];

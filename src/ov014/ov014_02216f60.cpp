@@ -1,4 +1,6 @@
 #include "ov014/ov014.h"
+#include "Main/Res/ResArc.h"
+#include "nitro/mi.h"
 
 
 // A header's zero rotation and vector, plus copies made at startup, next to this TU's name,
@@ -26,7 +28,6 @@ extern char data_ov014_022170d8[];
 extern const u8 data_ov014_02216480[];
 extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
-extern BOOL func_02035b90(void *a, s32 b);
 extern BOOL func_ov000_021903b4(void *p);
 extern void func_0203f364(ActorSub48 *p);
 extern BOOL func_020621c4(void);
@@ -177,7 +178,6 @@ extern char data_ov014_022170d8[];
 extern const u8 data_ov014_02216480[];
 extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
-extern BOOL func_02035b90(void *a, s32 b);
 extern BOOL func_ov000_021903b4(void *p);
 extern void func_0203f364(ActorSub48 *p);
 extern BOOL func_020621c4(void);
@@ -750,7 +750,6 @@ extern char data_ov014_022171d0[];
 extern char data_ov014_022171df[];
 extern char data_ov014_022171f1[];
 extern char data_ov014_022171fd[];
-extern void MIi_CpuClear32(u32 data, void *dst, u32 size);
 extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern BOOL func_ov000_0219aca8(Actor *a, Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);

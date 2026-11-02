@@ -302,16 +302,16 @@ void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 void func_ov000_021915a0(void *a);
 s32 Rand_PlusMinus(s32 max);
-s32 Rand_UpTo(s32 max);
+u32 Rand_UpTo(u32 max);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 s32 func_ov000_0219a2f4(VecFx32 *v, s32 y, s32 b);
-BOOL func_ov000_02191120(void *p);
+BOOL func_ov000_02191120(Model0218fe1c *p);
 char *func_0207011c(void *res);
 char *func_020701d4(void *res);
 u8 *func_02070558(void *res);
 }
 extern "C" {
-void func_ov000_021953b4(void *self);
+void func_ov000_021953b4(ActorEx *self);
 void func_ov003_021dacfc(void *p);
 void *func_ov000_0219429c(void *self);
 s32 func_0203db40(void *p);

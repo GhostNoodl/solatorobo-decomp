@@ -1,13 +1,13 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern Ov009Path data_ov009_02215fd0[];
 extern Ov003Actor *func_ov000_0219bf90(void);
-extern BOOL Hit_DiffInCylinder(const VecFx32 *a, const VecFx32 *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
 extern BOOL func_ov000_0219aae8(Actor *self, Actor *src, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
-extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 
 static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->event != 0;
@@ -88,8 +88,8 @@ static inline s32 Ov009_DistXZ(const VecFx32 *a, const VecFx32 *b) {
 extern const Ov009Path data_ov009_02215fbc[];
 extern char data_ov009_022172c7[];
 extern u8 *Group_FindNode(void *mgr, u16 id);
-extern void func_ov000_021911c8(Model0218fe1c *m, s32 a);
-extern void *func_ov000_02191318(Model0218fe1c *m, s32 a);
+extern void func_ov000_021911c8(Model0218fe1c *m, s16 a);
+extern s16 *func_ov000_02191318(Model0218fe1c *m, s32 a);
 extern void func_ov000_02191780(Model0218fe1c *m);
 
 void func_ov009_02208b24(Ov003Actor *self) {

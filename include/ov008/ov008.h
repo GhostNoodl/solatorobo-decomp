@@ -6,6 +6,7 @@
 #include "Main/Sys/SysState.h"
 #include "Main/Sys/SysTask.h"
 #include "ov000/ModelPart.h"
+#include "Main/Gfx/TextWin.h"
 
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
 class Ov008V {
@@ -219,16 +220,6 @@ struct Ov008Panel {
 };
 OV008_SIZE(Ov008Panel, 0x6c);
 
-// Text window (0xb8 bytes, vtable data_0208ba70, func_0204c7d0).
-class Ov008Win : public Ov008V {
-public:
-    u8 unk_04[0x40];
-    s32 width; // width
-    s32 height; // height
-    u8 unk_4c[0x6c];
-};
-OV008_SIZE(Ov008Win, 0xb8);
-
 // Camera (0xbc bytes, func_0204b370).
 class Ov008Cam : public Ov008V {
 public:
@@ -259,7 +250,7 @@ struct Ov008Item {
     u16 unk_0a;
     s32 unk_0c;
     u8 unk_10[0xc];
-    Ov008Win *label; // label
+    TextWin *label; // label
     u8 unk_20[0x8];
     Ov008Item *prev;
     Ov008Item *next;
@@ -353,8 +344,8 @@ public:
     u8 unk_10[0x58];
     s16 unk_68;
     u8 unk_6a[0x26];
-    Ov008Win win;
-    Ov008Win win2;
+    TextWin win; // vtable data_0208ba70
+    TextWin win2;
     void *unk_200;
     u8 unk_204[0x18];
 };
@@ -373,35 +364,6 @@ struct Ov008MgrFlags {
 struct Ov008Sel {
     u8 unk_00[0x6];
     u16 id;
-};
-
-// The block at data_02fe1534.
-struct Ov008Shared {
-    u8 unk_00[0x44];
-    u16 unk_44;
-    u8 unk_46[0xc];
-    u16 unk_52;
-    u8 unk_54[0x14];
-    u16 unk_68;
-};
-
-// The G3 state block at data_02097d48 + 0x8b0.
-struct Ov008G3 {
-    u8 unk_00;
-    u8 unk_01[0x37];
-    s32 unk_38;
-    u16 unk_3c[0x20]; // toon table
-};
-
-struct Ov008Sys {
-    u8 unk_000[0x8b0];
-    Ov008G3 unk_8b0;
-};
-
-// The block at data_02097ce0.
-struct Ov008Ce0 {
-    u32 unk_00;
-    s32 unk_04;
 };
 
 // The save block at data_02fe152c.

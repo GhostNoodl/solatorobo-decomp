@@ -1,9 +1,10 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
 
 extern "C" {
 
 extern Ov003Actor *func_ov000_0219bf90(void);
-extern void func_ov000_0219864c(ActorSub48 *p, s32 a, s32 b);
+extern void func_ov000_0219864c(ActorSub48 *p, VecFx32 *a, u16 *b);
 
 void Ov009ActVt_02217390_Start(Ov009ActVt_02217390 *self) {
     Ov003Actor *a;
@@ -41,10 +42,8 @@ struct Ov009RotS {
     u16 z;
 };
 
-extern void *data_02097e4c;
-extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
+extern void func_01ffc9fc(VecFx32 *out, VecFx32 *a, u16 b);
 extern BOOL func_01ffc624(const VecFx32 *a, const VecFx32 *b, Ov009RotS *r, s32 c, s32 d);
-extern void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 
 static inline void Ov009_CountDown(Ov009ActVt_02217390 *self) {

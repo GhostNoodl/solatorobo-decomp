@@ -1,4 +1,5 @@
 #include "ov014/ov014.h"
+#include "nitro/mi.h"
 
 
 // A header's zero rotation and vector, plus copies made at startup, next to this TU's name,
@@ -171,11 +172,11 @@ void func_ov014_021fc464(Ov014ActEx_021fc24c *self) {
                 s->st++;
             }
             {
-                u8 *m = (u8 *)self->model;
+                Model0218fe1c *m = self->model;
                 s32 f = self->unk_f4;
-                FLD(s32, m, 0xa8) = f;
-                FLD(s32, m, 0xac) = f;
-                FLD(s32, m, 0xb0) = f;
+                m->scale.x = f;
+                m->scale.y = f;
+                m->scale.z = f;
             }
             break;
         case 2:
@@ -241,21 +242,21 @@ void func_ov014_021fc464(Ov014ActEx_021fc24c *self) {
                 self->fsm->st++;
             }
             {
-                u8 *m = (u8 *)self->model;
+                Model0218fe1c *m = self->model;
                 s32 f = self->unk_f4;
-                FLD(s32, m, 0xa8) = f;
-                FLD(s32, m, 0xac) = f;
-                FLD(s32, m, 0xb0) = f;
+                m->scale.x = f;
+                m->scale.y = f;
+                m->scale.z = f;
             }
             {
                 ActorSub40 *w = self->fsm;
                 w->timer++;
                 if (w->timer % 15 == 0) {
-                    u8 *m = (u8 *)self->model;
-                    FLD(u16, m, 0xb6) = 0x7c1f;
-                    FLD(u16, m, 0xb8) = 0x7c1f;
-                    FLD(u16, m, 0xba) = 6;
-                    FLD(u16, m, 0xbc) = 5;
+                    Model0218fe1c *m = self->model;
+                    m->color = 0x7c1f;
+                    m->color2 = 0x7c1f;
+                    m->blend = 6;
+                    m->blendMax = 5;
                 }
             }
             break;
@@ -271,11 +272,11 @@ void func_ov014_021fc464(Ov014ActEx_021fc24c *self) {
                 func_ov000_02198360(self->fsm, 0xb, 0);
             }
             if (t % 15 == 0) {
-                u8 *m = (u8 *)self->model;
-                FLD(u16, m, 0xb6) = 0x7c1f;
-                FLD(u16, m, 0xb8) = 0x7c1f;
-                FLD(u16, m, 0xba) = 6;
-                FLD(u16, m, 0xbc) = 5;
+                Model0218fe1c *m = self->model;
+                m->color = 0x7c1f;
+                m->color2 = 0x7c1f;
+                m->blend = 6;
+                m->blendMax = 5;
             }
             break;
         }
@@ -297,7 +298,6 @@ extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
 extern void func_ov003_021f0c60(Actor *self, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void MIi_CpuClear32(u32 data, void *dest, u32 size);
 extern BOOL func_ov000_0219aca8(Actor *a, Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 
@@ -342,11 +342,11 @@ void func_ov014_021fc9c8(Ov014ActEx_021fc24c *self) {
                     w = self->fsm;
                     w->timer++;
                     if (w->timer % 15 == 0) {
-                        u8 *m = (u8 *)self->model;
-                        FLD(u16, m, 0xb6) = 0x7c1f;
-                        FLD(u16, m, 0xb8) = 0x7c1f;
-                        FLD(u16, m, 0xba) = 6;
-                        FLD(u16, m, 0xbc) = 5;
+                        Model0218fe1c *m = self->model;
+                        m->color = 0x7c1f;
+                        m->color2 = 0x7c1f;
+                        m->blend = 6;
+                        m->blendMax = 5;
                     }
                 }
                 Actor_TurnToPos(self, &self->unk_d0, 0xcd);

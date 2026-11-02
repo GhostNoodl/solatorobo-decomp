@@ -1,4 +1,6 @@
 #include "Main/Gfx/GfxMgr.h"
+#include "Main/Gfx/PlttRes.h"
+#include "Main/Res/ResLoader.h"
 
 extern "C" {
 
@@ -6,10 +8,6 @@ extern "C" {
 extern u8 data_02097ce4[];
 extern const u8 data_02082798[0x60];
 
-extern void *Heap_AllocLo(u32 size, int align);
-extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
-extern void DC_FlushRange(const void *addr, u32 size);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void GX_LoadBGPltt(const void *src, u32 offset, u32 size);
 extern void GXS_LoadBGPltt(const void *src, u32 offset, u32 size);
 extern void GX_LoadOBJPltt(const void *src, u32 offset, u32 size);

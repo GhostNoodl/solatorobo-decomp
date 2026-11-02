@@ -19,7 +19,7 @@ extern "C" {
 
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern Ov003Actor *Target_Get(void *p);
-extern BOOL func_ov000_0219a8bc(void *p, Actor *a, Actor *b, s32 c, s32 d, const VecFx32 *pos, s32 e, s32 f, s32 g);
+extern BOOL func_ov000_0219a8bc(void *p, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *pos, s16 e, s32 f, s32 g);
 struct Ov014Mtx33 {
     s32 m[9];
 };

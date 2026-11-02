@@ -1,14 +1,13 @@
 // Built at a lower optimization level: the loops are not rotated.
 #pragma optimization_level 2
 #include "ov006/ov006.h"
+#include "nitro/mi.h"
 
 extern "C" {
 
 extern void *data_ov006_021ec404;
 extern void *data_ov006_021ec444;
 extern u16 data_ov006_021eb840[];
-void MI_CpuFill8(void *dst, u8 value, u32 size);
-void MIi_CpuClear16(int value, void *dst, u32 size);
 
 static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
     ov006_MenuNode *node = self->nodes;

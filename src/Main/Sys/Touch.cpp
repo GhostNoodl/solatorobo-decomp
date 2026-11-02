@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Res/ResLoader.h"
 
 extern "C" {
 
@@ -41,7 +42,6 @@ extern Touch *data_02097dcc;
 extern void TP_Init(void);
 extern BOOL TP_GetUserInfo(void *calib);
 extern void TP_SetCalibrateParam(void *calib);
-extern void *Heap_AllocLo(u32 size, int align);
 extern void func_02021b9c(void);
 
 void func_0203d45c(TouchQuad *q, u16 a, u16 b, u16 c, u16 d) {

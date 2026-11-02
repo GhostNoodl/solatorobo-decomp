@@ -786,7 +786,6 @@ extern const BoxFaceAttr data_02082a10;
 extern const BoxFaceIdx data_02082a78;
 extern const BoxFaceIdx data_02082b08;
 
-extern void *Heap_AllocHi(u32 size, u32 align);
 extern void func_0203ff94(BoxBounds *bounds, BoxTri *tri, u32 value, const VecFx16 *verts, const u32 (*indices)[3]);
 extern void HitMesh_Init(void *mesh);
 extern void HitMesh_SetRes(BoxMesh *mesh, BoxMeshRes *res);

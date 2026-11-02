@@ -4,7 +4,7 @@
 typedef struct ov006_Unk021e0f00 {
     u8 unk0[0x1c];
     Model *unk1C;
-    ov006_Anim *unk20;
+    TextWin *unk20;
 } ov006_Unk021e0f00;
 
 typedef struct ov006_Fader021e10d0 {
@@ -27,16 +27,16 @@ void func_ov006_021e0f00(ov006_Unk021e0f00 *self) {
     Model *model;
     const char *text;
 
-    self->unk20 = ov006_Anim_New();
+    self->unk20 = ov006_TextWin_New();
     text = data_ov006_021ec1b5;
     if (self->unk20 != NULL) {
-        VCALL(self->unk20, 08);
-        self->unk20->unk28 = 3;
-        self->unk20->unk2C = 4;
-        self->unk20->unk34 = 0;
-        ov006_Anim_Start(self->unk20, (int)text);
+        self->unk20->unk_vf08();
+        self->unk20->font = 3;
+        self->unk20->unk_2c = 4;
+        self->unk20->unk_34 = 0;
+        ov006_TextWin_Start(self->unk20, (int)text);
         TextWin_InitLines(self->unk20, 8);
-        self->unk20->unk4 |= 4;
+        self->unk20->flags |= 4;
     }
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {

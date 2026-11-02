@@ -29,9 +29,9 @@ extern "C" {
 void Ov012Act_021ffa68_Init(void *self);
 void func_0205e958(void *light);
 BOOL Ov012Act_021ffa68_IsReady(void *self);
-void func_ov000_0218cfc8(void *self);
-BOOL func_ov000_0218d17c(void *self);
-void func_ov000_0218d190(void *self);
+void func_ov000_0218cfc8(Actor *self);
+BOOL func_ov000_0218d17c(Actor *self);
+void func_ov000_0218d190(Actor *self);
 void func_ov012_02201cb8(void);
 void *Ov012Act_021ffa68_Dtor(void *self);
 void *Ov012Act_021ffa68_DtorDelete(void *self);
@@ -1654,7 +1654,7 @@ void func_ov012_021fd148(Ov003Actor *self) {
 extern "C" {
 extern void func_ov000_02184508(void *g);
 extern void func_ov000_02184548(void *g);
-extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
+extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 
 struct Ov012Bits32 {
     u32 b0 : 1;

@@ -90,7 +90,7 @@ extern BOOL func_ov003_021f0a38(Ov003BrTgt *t, void *def);
 extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern void func_ov000_021911c8(void *p, s32 a);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern void Actor_SendMsg(Ov003BrTgt *o, u16 id, s32 a, s32 b, s32 c, void *p);
 extern Ov003BrTgt *func_ov000_0219bf90(void);
 extern Ov003BrTgt *Actor_GetTarget(Ov003Bridge *self);

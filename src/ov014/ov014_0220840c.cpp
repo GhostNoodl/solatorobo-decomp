@@ -1,4 +1,5 @@
 #include "ov014/ov014.h"
+#include "nitro/mi.h"
 
 struct Ov014HitArg {
     u8 a;
@@ -12,7 +13,6 @@ extern "C" {
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
-void MIi_CpuClear32(u32 data, void *dest, u32 size);
 
 static inline BOOL Ov014_AnyHit(Ov014ActEx_0220774c *self) {
     s32 r = self->unk_d4;
@@ -65,7 +65,7 @@ void func_ov014_0220840c(Ov014ActEx_0220774c *self) {
 
 
 extern u8 data_ov014_02217708[];
-extern void *ActorEx_Ctor(void *self);
+extern ActorEx *ActorEx_Ctor(ActorEx *self);
 extern void func_ov000_02194758(void *self);
 extern void func_0203f364(ActorSub48 *p);
 

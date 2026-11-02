@@ -1,5 +1,6 @@
 #include "Main/Sys/SysTask.h"
 #include "nitro/fx.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define ST_FLD(type, p, off) (*(type *)((u8 *)(p) + (off)))
 
@@ -74,7 +75,6 @@ struct SysTaskRes {
     virtual void *vf10(void);
 };
 
-extern u8 *data_02097d48;
 extern void *data_0208b3d0[];
 extern u32 data_020828f8[];
 extern char data_0208c1a0[];
@@ -87,38 +87,31 @@ extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 extern BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
 extern void func_ov000_02191618(void *a);
-extern void func_02041218(void *p);
-extern void func_02041440(void *p, void *res, BOOL c);
-extern void func_020417e0(void *a, void *b);
 extern void func_02041d8c(void *a);
-extern void func_02041d9c(void *a, s32 b, s32 c);
-extern BOOL func_02054f10(void *a, u32 b);
+extern BOOL func_02054f10(Model *a, u32 b);
 extern void func_02043d20(void *a, s32 b);
 extern void NNS_G3dGeBufferOP_N(u32 cmd, const void *data, u32 count);
 extern void NNS_G3dGeSendDL(const void *src, u32 size);
-extern void *NNS_G2dGetAnimSequenceByIdx(void *a, u16 b);
-extern void *NNS_G2dGetCellDataByIdx(void *a, u16 b);
-extern void func_02042628(void *a, void *b, void *c, s32 d);
 
-static inline void ST_DrawModel(void *m) {
-    void *anim;
-    void *res = ST_FLD(void *, m, 0x28);
+static inline void ST_DrawModel(Model *m) {
+    ModelPart *part;
+    ModelRes *res = m->res;
     void *arg;
-    void *t;
+    ModelPartRes *t;
     if (res == NULL) {
         return;
     }
-    anim = NULL;
-    if (ST_FLD(s32, m, 0x80) > 0) {
-        anim = ST_FLD(void *, m, 0x78);
+    part = NULL;
+    if (m->numParts > 0) {
+        part = m->parts;
     }
-    if (anim != NULL && (t = ST_FLD(void *, anim, 0x4)) != NULL) {
-        arg = ST_FLD(void *, t, 0x30);
+    if (part != NULL && (t = part->res) != NULL) {
+        arg = t->tex;
     } else {
-        void *e = NNS_G2dGetAnimSequenceByIdx(ST_FLD(void *, res, 0xc), 0);
-        arg = NNS_G2dGetCellDataByIdx(ST_FLD(void *, res, 0x4), **(u16 **)ST_FLD(void *, e, 0xc));
+        void *e = NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0);
+        arg = NNS_G2dGetCellDataByIdx(res->texRes, **(u16 **)ST_FLD(void *, e, 0xc));
     }
-    func_02042628(m, arg, anim, 0);
+    func_02042628(m, arg, part, 0);
 }
 
 static inline void ST_DrawBg(int idx, int x, int y, u32 color) {
@@ -141,7 +134,7 @@ static inline void ST_Draw(Unk0214a418 *p, u32 size) {
     int scale[3];
     u32 c;
     u32 one;
-    func_02043d20(data_02097d48 + 0x8b0, 0);
+    func_02043d20(data_02097d48->unk_8b0, 0);
     s.x = 0x1000;
     s.y = 0x1000;
     s.z = 0x1000;
@@ -164,7 +157,7 @@ static inline void ST_Draw(Unk0214a418 *p, u32 size) {
     NNS_G3dGeSendDL(data_0208b3d0[1], size);
     one = 1;
     NNS_G3dGeBufferOP_N(0x12, &one, 1);
-    ST_FLD(s32, p->unk_14, 0x150) = -0x3b3;
+    p->unk_14->unk_150 = -0x3b3;
     ST_DrawModel(p->unk_14);
 }
 
@@ -179,19 +172,19 @@ static inline BOOL ST_IsReady(Unk0214a418 *p) {
     return ok;
 }
 
-static inline void ST_ModelCtor(void *m, void *res, BOOL f) {
-    func_02041218((u8 *)m + 0x88);
-    func_02041440(m, (u8 *)res + 4, f);
+static inline void ST_ModelCtor(Model *m, void *res, BOOL f) {
+    func_02041218(&m->pltt);
+    func_02041440(m, (const char *)res + 4, f);
 }
-static inline void *ST_NewModel(void *res, BOOL f) {
-    void *m = Heap_Alloc(0x160);
+static inline Model *ST_NewModel(void *res, BOOL f) {
+    Model *m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
         ST_ModelCtor(m, res, f);
     }
     return m;
 }
-static inline void *ST_NewModel2(Unk0214a418 *p) {
-    void *m = Heap_Alloc(0x160);
+static inline Model *ST_NewModel2(Unk0214a418 *p) {
+    Model *m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
         ST_ModelCtor(m, p->unk_10, p->unk_14 != NULL);
     }
@@ -214,17 +207,17 @@ s32 func_02062ac8(Unk0214a418 *p, s32 argv) {
             }
             if (p->unk_14 == NULL) {
                 void *res;
-                void *m = Heap_Alloc(0x160);
+                Model *m = (Model *)Heap_Alloc(sizeof(Model));
                 if (m != NULL) {
                     BOOL f;
                     res = p->unk_10;
                     f = p->unk_14 != NULL;
-                    func_02041218((u8 *)m + 0x88);
-                    func_02041440(m, (u8 *)res + 4, f);
+                    func_02041218(&m->pltt);
+                    func_02041440(m, (const char *)res + 4, f);
                 }
                 p->unk_14 = m;
                 func_020417e0(p->unk_14, ((SysTaskRes *)p->unk_10)->vf10());
-                ST_FLD(u32, p->unk_14, 0x6c) |= 2;
+                p->unk_14->flags |= 2;
                 func_02041d9c(p->unk_14, 0, 0xffff);
             }
         }

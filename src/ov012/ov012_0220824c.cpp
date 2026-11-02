@@ -12,7 +12,7 @@ void func_ov012_0220824c(Ov003Actor *self) {
 extern char data_ov012_0220b335[];
 extern char data_ov012_0220b33b[];
 extern char data_ov012_0220b341[];
-extern void func_ov000_021911c8(void *p, s32 a);
+extern void func_ov000_021911c8(Model0218fe1c *p, s16 a);
 
 
 static inline u16 Ov012_HpPct8294(Ov003Actor *self) {

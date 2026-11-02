@@ -1,4 +1,6 @@
 #include "ov011/ov011.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 
@@ -8,7 +10,7 @@ void *func_ov011_02201510(void *p);
 void *func_ov011_02201c18(void *p);
 void Ov011Mov_Init(void *p);
 void *Ov011Vt_022079b0_Ctor(void *p);
-BOOL func_ov011_021fd4d8(void *p, void *owner);
+BOOL func_ov011_021fd4d8(Ov011Scene *p, Actor *owner);
 BOOL func_020621c4(void);
 
 void Ov011SceneActor_Start(Ov011SceneActor *self) {
@@ -68,10 +70,7 @@ void Ov011SceneActor_Start(Ov011SceneActor *self) {
     self->mode = 2;
 }
 
-extern void *data_02097e4c;
 extern const char *const data_ov011_02207258;
-extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 BOOL func_ov003_021d1c00(Ov003Actor *self, Ov011ActMsg *msg);
 
 

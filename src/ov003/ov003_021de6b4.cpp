@@ -14,7 +14,7 @@ typedef struct Ov003Bomb {
 } Ov003Bomb;
 
 VObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *sc, s32 a, s32 b, s32 c, s32 d);
-s32 Rand_UpTo(s32 max);
+u32 Rand_UpTo(u32 max);
 
 typedef enum { OV003_SPARK_KIND = 0x325 } Ov003SparkKind;
 

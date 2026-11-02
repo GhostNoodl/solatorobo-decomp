@@ -92,7 +92,7 @@ void func_02054b98(void *dst, u32 size) {
 }
 
 void func_02054bac(Model *model, u32 v) {
-    *(u32 *)((u8 *)model + 0xec) = v;
+    model->extPltt = (PlttRes *)v;
 }
 
 // Model_GetPartTex with the resource pointer held by the caller. Using it for

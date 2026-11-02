@@ -1,4 +1,5 @@
 #include "ov014/ov014.h"
+#include "nitro/mi.h"
 
 extern "C" {
 
@@ -237,7 +238,7 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
     m->clearInit = 0;
     self->model->flushVP = 1;
     self->model->renderUser = &FLD(u8, self, 0xf0);
-    FLD(Ov014Flags, self->model, 0xc2).b4 = 0;
+    self->model->boxTest = 0;
     p = (u8 *)Heap_Alloc(0x1c);
     if (p != NULL) {
         FLD(void *, p, 0) = data_ov014_02217db0;
@@ -295,7 +296,6 @@ struct Ov014Ctl154 {
 
 extern VecFx32 data_ov014_02216c18[];
 extern u8 *func_ov000_0219bf90(void);
-extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
 extern BOOL func_ov014_02213cfc(void *p);
 extern void *func_ov003_021ceff4(void *p);
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDescB *d, VecFx32 *pos, Ov014Vec16 *rot, u16 a);

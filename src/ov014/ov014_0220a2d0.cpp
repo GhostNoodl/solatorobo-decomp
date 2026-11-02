@@ -100,9 +100,9 @@ void func_ov014_0220a490(Ov014Act_02209280 *self, VecFx32 *vel, u16 a, u16 b, u1
 
 
 extern char data_ov014_02217a48[];
-extern u8 data_ov014_02217a4e[];
+extern char data_ov014_02217a4e[];
 extern u8 data_ov014_02217a54[];
-extern void func_ov000_021911c8(void *a, s32 b);
+extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
 extern BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
 
 void func_ov014_0220a588(Ov014Act_02209280 *self) {
@@ -138,11 +138,11 @@ void func_ov014_0220a588(Ov014Act_02209280 *self) {
 extern const VecFx32 data_ov014_02216aa8[];
 extern char data_ov014_02217a48[];
 extern u8 data_ov014_02217a5a[];
-extern u8 data_ov014_02217a60[];
+extern char data_ov014_02217a60[];
 extern u8 data_ov014_02217a66[];
 extern u8 data_ov014_02217a6c[];
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, s32 c, s32 d);
-extern void func_ov000_02191618(void *p);
+extern void func_ov000_02191618(Model0218fe1c *p);
 extern BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToActor(Actor *self, Actor *t, s32 a);

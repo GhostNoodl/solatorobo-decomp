@@ -1,14 +1,10 @@
 #include "ov006/Tasks.h"
 #include "nitro/fx.h"
+#include "Main/Net/Wh.h"
 
-typedef struct ov006_Unk02097e40 {
-    u8 unk0[0x32];
-    u16 unk32;
-} ov006_Unk02097e40;
 
 extern "C" {
 
-extern ov006_Unk02097e40 *data_02097e40;
 
 void ov006_Slot_Pack(ov006_Slot *self, void *buf);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);

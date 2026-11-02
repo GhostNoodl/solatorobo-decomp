@@ -234,7 +234,7 @@ struct Ov011ArgB {
     u8 pad2[2];
 };
 
-void ActorMgr_SendMsg(u16 a, u16 b, u8 c, s32 d, s32 e, void *f);
+void ActorMgr_SendMsg(u16 a, u16 b, u8 c, BOOL d, u32 e, const void *f);
 u32 func_ov011_02201244(void *self);
 void *func_ov011_02201254(void *self);
 BOOL Ov011Mov_Start(void *self, const VecFx32 *pos, const VecFx32 *vel, s32 scale, s32 accel);

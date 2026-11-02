@@ -1,5 +1,6 @@
 #include "ov006/ov006.h"
 #include "ov006/SlotManager.h"
+#include "Main/Sys/Pad.h"
 
 typedef struct ov006_Part021d96a8 {
     void *vtbl;
@@ -39,15 +40,10 @@ typedef struct ov006_Fade021d96a8 {
     s32 unkC;
 } ov006_Fade021d96a8;
 
-typedef struct ov006_Pad021d96a8 {
-    u8 unk0[0x12];
-    u16 trig;
-} ov006_Pad021d96a8;
 
 extern "C" {
 
 extern ov006_Fade021d96a8 data_02097d78;
-extern ov006_Pad021d96a8 *data_02097dc8;
 extern u8 *data_0214a424;
 extern u8 *data_02097e40;
 extern void *data_02097e4c;

@@ -16,13 +16,13 @@ extern "C" {
 
 extern const Ov003DtEnt data_ov003_021f4648[];
 extern char data_ov003_021f7a7f[];
-extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s16 a, u8 b);
 extern void func_ov000_021915a0(Model0218fe1c *model);
 extern void func_0203f364(ActorSub48 *c);
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 on, u32 mask);
-extern void func_ov000_0218996c(s32 a, s32 b);
-extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
-extern u8 *func_02070558(u16 id);
+extern void func_ov000_0218996c(u8 a, u8 b);
+extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
+extern u8 *func_02070558(s32 id);
 extern void func_ov000_0219b400(u8 *a, u8 *b, s32 c, VecFx32 *pos, u16 *rot, s32 d);
 extern void func_ov000_0219b5dc(u16 id, VecFx32 *pos, u16 *rot);
 

@@ -1,5 +1,7 @@
 #include "ov014/ov014.h"
 #include "Main/Math/Rot16.h"
+#include "Main/Res/ResArc.h"
+#include "nitro/mi.h"
 
 
 // This TU's .rodata from its base to the last vector the static initialiser copies, and its .data
@@ -148,9 +150,6 @@ extern void *Ov003Vt_021f7d10_Dtor(void *p);
 extern void Ov003ScriptList_Init(void *p);
 extern void *Ov003Vt_021f7974_Dtor(void *p);
 extern void func_02049de8(void *a, s32 b);
-extern BOOL func_02035b90(void *a, s32 b);
-extern void func_02036838(void *a, void *b, s32 c, s32 d);
-extern void *func_020359d0(void *a, s32 b, s32 c);
 extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
 extern BOOL func_ov003_021d8820(void *p);
 extern void func_ov003_021d883c(void *p, VecFx32 *a, VecFx32 *b, s32 c);
@@ -1947,7 +1946,7 @@ void func_ov014_022008f4(Ov014Act_0220011c *self) {
         s44->unk_22_1 = 0;
         q = func_ov000_02190a30(self->model, 3);
         if (q != NULL) {
-            FLD(Ov014Flags, self->model, 0xc2).b6 = 1;
+            self->model->unk_c2_6 = 1;
             func_ov000_02191920(self->model, 0, 0x1000, 0);
             if (FLD(s32 *, q, 0) != NULL) {
                 *FLD(s32 *, q, 0) = 0;
@@ -2044,7 +2043,7 @@ void func_ov014_02200a88(Ov014Act_0220011c *self) {
         s44->unk_22_1 = 1;
         q = func_ov000_02190a30(self->model, 3);
         if (q != NULL) {
-            FLD(Ov014Flags, self->model, 0xc2).b6 = 1;
+            self->model->unk_c2_6 = 1;
             func_ov000_02191920(self->model, 0, 0x1000, 0);
             if (FLD(s32 *, q, 0) != NULL) {
                 *FLD(s32 *, q, 0) = 0x1000;
@@ -2216,7 +2215,7 @@ void func_ov014_022010a4(Ov014Act_0220011c *self) {
         s44->unk_22_1 = 1;
         q = func_ov000_02190a30(self->model, 3);
         if (q != NULL) {
-            FLD(Ov014Flags, self->model, 0xc2).b6 = 1;
+            self->model->unk_c2_6 = 1;
             func_ov000_02191920(self->model, 0, 0x1000, 0);
             if (FLD(s32 *, q, 0) != NULL) {
                 *FLD(s32 *, q, 0) = 0x2000;
@@ -2344,7 +2343,7 @@ void func_ov014_02201558(Ov014Act_0220011c *self) {
         s44->unk_22_1 = 1;
         q = func_ov000_02190a30(self->model, 3);
         if (q != NULL) {
-            FLD(Ov014Flags, self->model, 0xc2).b6 = 1;
+            self->model->unk_c2_6 = 1;
             func_ov000_02191920(self->model, 0, 0x1000, 0);
             if (FLD(s32 *, q, 0) != NULL) {
                 *FLD(s32 *, q, 0) = 0x3000;
@@ -2791,9 +2790,9 @@ static inline s32 Ov014e_FxMul64(s32 a, s64 b) {
 }
 
 void func_ov014_02202330(Ov014Act_02201b94 *self) {
-    u8 *m38 = (u8 *)self->model;
+    Model0218fe1c *m38 = self->model;
     ActorSub40 *s = self->fsm;
-    s32 hp = Ov014e_FxMul64(FLD(s32, m38, 0xa8), 0x1333);
+    s32 hp = Ov014e_FxMul64(m38->scale.x, 0x1333);
     s32 v = self->unk_330;
     switch (ActorSub40_State(s)) {
     case 0: {
@@ -2839,13 +2838,13 @@ void func_ov014_02202330(Ov014Act_02201b94 *self) {
         self->fsm->st++;
         break;
     case 3: {
-        u8 c = FLD(u8, m38, 0xbe);
+        u8 c = m38->alpha;
         if (c < 0x1f) {
             c = c + 1;
             if (c >= 0x1f) {
                 self->unk_f4 ^= 0x100000;
                 c = 0x1f;
-                FLD(u8, m38, 0xbe) = c;
+                m38->alpha = c;
             }
             self->model->alpha = c;
         }
@@ -3033,10 +3032,10 @@ extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, void *f);
 
 void func_ov014_02202a34(Ov014Act_02201b94 *self) {
     s32 off;
-    u8 *m38 = (u8 *)self->model;
+    Model0218fe1c *m38 = self->model;
     ActorSub40 *s = self->fsm;
     s32 v = self->unk_330;
-    s32 hp = FLD(s32, m38, 0xa8);
+    s32 hp = m38->scale.x;
     self->unk_94_1 = 1;
     switch (s->st) {
     case 0: {
@@ -3106,7 +3105,7 @@ void func_ov014_02202a34(Ov014Act_02201b94 *self) {
         break;
     }
     case 3: {
-        u8 c = FLD(u8, m38, 0xbe);
+        u8 c = m38->alpha;
         s32 h;
         EffectObj *e;
         if (c != 0) {
@@ -3114,21 +3113,21 @@ void func_ov014_02202a34(Ov014Act_02201b94 *self) {
             if (c == 0) {
                 c = 0;
             }
-            FLD(u8, m38, 0xbe) = c;
+            m38->alpha = c;
         }
         if (c == 0) {
             self->unk_f4 &= ~0x100000;
         }
-        m38 = (u8 *)self->model;
-        h = FLD(s32, m38, 0xa8);
+        m38 = self->model;
+        h = m38->scale.x;
         if (h > 0) {
             h -= Ov014e_FxMul64(hp >> 1, 0xcd);
             if (h <= 0) {
                 h = 0;
             }
-            FLD(s32, m38, 0xa8) = h;
-            FLD(s32, m38, 0xac) = h;
-            FLD(s32, m38, 0xb0) = h;
+            m38->scale.x = h;
+            m38->scale.y = h;
+            m38->scale.z = h;
         }
         if (v > 0) {
             v -= Ov014e_FxMul64(hp >> 1, 0x19a);
@@ -3642,7 +3641,6 @@ extern void func_ov000_02191708(void *a);
 extern s32 func_ov003_021d8820(void *p);
 extern void func_ov003_021d87d0(void *p, s32 a);
 extern void func_ov003_021d85c8(void *p, s32 a, s32 b, s32 c, s32 d);
-extern void MIi_CpuClear32(u32 data, void *dst, u32 size);
 
 static inline s32 Ov014c_FxMul64(s32 a, s64 b) {
     return (a * b + 0x800) >> 12;

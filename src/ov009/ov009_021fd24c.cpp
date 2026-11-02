@@ -1,4 +1,6 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 
@@ -84,9 +86,7 @@ void func_ov009_021fd430(Ov009ActVt_02216750 *self) {
     VEC_MultAdd(0x31, &d, &self->pos, &self->pos);
 }
 
-extern void *data_02097e4c;
 extern Ov003Actor *func_ov000_02199f60(void *p);
-extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 static inline u16 Ov009_AngleTo(Ov003Actor *a, Ov003Actor *b) {
     if (a != NULL && a != b) {
         return FX_Atan2(a->pos.x - b->pos.x, a->pos.z - b->pos.z);

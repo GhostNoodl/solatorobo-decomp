@@ -1,14 +1,13 @@
 #include "ov008/ov008.h"
+#include "Main/Gfx/GfxMgr.h"
 
 
 
 extern "C" {
 
-extern Ov008Ce0 *data_02097ce0;
 extern void *data_ov000_021caec8;
 extern void *data_ov000_021cac60;
-void *GfxMgr_GetFont(void *p);
-BOOL func_02054f10(void *a, int b);
+BOOL func_02054f10(Model *a, u32 b);
 BOOL func_0203e63c(void *p);
 BOOL func_ov008_021d01b0(Ov008Menu *self);
 

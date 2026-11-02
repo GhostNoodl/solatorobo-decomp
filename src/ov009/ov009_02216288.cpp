@@ -477,7 +477,7 @@ void Ov009ActVt_02217eb4_Draw(Ov009ActVt_02217eb4 *self) {
     MTX_Concat33((MtxFx33 *)&m, (MtxFx33 *)&t, (MtxFx33 *)&m);
     MTX_RotY33_((MtxFx33 *)&t, OV009_SIN(self->rot_y), OV009_COS(self->rot_y));
     MTX_Concat33((MtxFx33 *)&m, (MtxFx33 *)&t, (MtxFx33 *)&m);
-    MI_Copy36B(&m, (u8 *)self->model + 0x84);
+    MI_Copy36B(&m, &self->model->rot);
     self->model->trans = self->pos;
     func_ov000_0218cea4(self);
 }

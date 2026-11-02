@@ -5,7 +5,7 @@ extern "C" {
 extern char data_ov009_022172c1[];
 extern char data_ov009_022172af[];
 extern Ov009Path data_ov009_02215fbc[];
-extern void func_ov000_021911c8(Model0218fe1c *m, s32 a);
+extern void func_ov000_021911c8(Model0218fe1c *m, s16 a);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnClamped(Ov003Actor *self, u16 ang, u16 b, s32 c, s32 d);
 extern void func_0203f2b8(void *p);

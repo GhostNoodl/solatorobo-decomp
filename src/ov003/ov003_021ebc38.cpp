@@ -3,6 +3,7 @@
 #include "Main/Effect/Effect.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorParts.h"
+#include "Main/Sys/SysState.h"
 
 
 
@@ -67,18 +68,12 @@ typedef struct {
     u16 timer;
 } Ov003Lift;
 
-typedef struct {
-    void *cur;
-    u32 unk_04;
-    void *alt;
-} Ov003HeapCtx;
-
 extern "C" {
 
 extern char data_ov003_021f998f[];
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_0218f074(Ov003LiftRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 extern BOOL func_ov000_021946f8(void *self);
 extern BOOL func_ov000_0218f110(Ov003LiftRes *p);
 extern void func_ov000_02194758(void *self);

@@ -76,8 +76,8 @@ extern const char data_ov003_021fa1aa[];
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
-extern s32 Rand_UpTo(s32 max);
-extern s32 func_02049bdc(void *mgr, s32 a, s32 b);
+extern u32 Rand_UpTo(u32 max);
+extern s32 func_02049bdc(SndMgr *mgr, s32 a, s32 b);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *shape, Rot16 *rot, s32 f, s32 g, s32 h, s32 i);
 
 static inline BOOL Ov003FxGame_IsBusy(FieldState *g) {

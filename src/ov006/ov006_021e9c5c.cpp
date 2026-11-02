@@ -2,6 +2,7 @@
 #include "ov006/ov006.h"
 #include "nitro/fx.h"
 #include "Main/Effect/Effect.h"
+#include "Main/Res/StageCmd.h"
 
 typedef struct ov006_Rot021e9c5c {
     u16 x;
@@ -65,7 +66,6 @@ extern "C" {
 extern const ov006_Ent021e9c5c data_ov006_021eb858[];
 extern u16 data_ov006_021eb894[];
 extern void *data_02097e4c;
-extern void *data_ov000_021ccd68;
 
 s32 func_ov000_0219a5c8(ov006_Prop021e9c5c *self, u16 mask, const VecFx32 *pos, ov006_Rot021e9c5c *rot, s32 r, s32 a, void **list);
 ov006_Hit021e9c5c *func_ov000_021985c0(void *p);

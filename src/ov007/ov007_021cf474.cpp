@@ -150,11 +150,11 @@ void func_ov007_021cf474(Ov007Scene *s) {
             }
             {
                 s32 w = s->wins[i]->width;
-                s->wins[i]->v14();
-                s->wins[i]->attr.pid = Gfx3DState_NextPolyId(st);
-                s->wins[i]->attr.alpha = alpha;
-                s->wins[i]->v20(0x80 - (w >> 1) + (off >> 12), x);
-                s->wins[i]->v90();
+                s->wins[i]->unk_vf14();
+                s->wins[i]->unk_4_13 = Gfx3DState_NextPolyId(st); // polygon id
+                s->wins[i]->unk_4_8 = alpha;
+                s->wins[i]->unk_vf20(0x80 - (w >> 1) + (off >> 12), x);
+                s->wins[i]->Render();
             }
         }
         x += 0x10;

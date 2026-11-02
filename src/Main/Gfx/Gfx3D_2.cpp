@@ -130,7 +130,7 @@ void Gfx3DState_Init(Gfx3DState *st) {
     st->unk_134 = -1;
     st->unk_138 = 0;
     *(u8 *)st = 0;
-    st->unk_17c = 0;
+    st->nearClip = NULL;
     st->polyId = 30;
     st->unk_002 = 6;
     st->unk_003 = 2;

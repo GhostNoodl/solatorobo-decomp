@@ -1,5 +1,6 @@
 #include "types.h"
 #include "nitro/fx.h"
+#include "nnsys/g3d.h"
 
 typedef struct {
     u8 unk_00[0xc];
@@ -56,8 +57,6 @@ extern void *func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, void *b);
 extern BOOL func_ov000_0218cea4(void *self);
 extern BOOL func_ov000_021903b4(Ov003Anim *anim);
-extern void *NNS_G3dGetMdlSet(s32 a);
-extern BOOL NNS_G3dBindMdlSet(void *a, s32 b);
 extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void func_ov000_02191c24(Ov003Shadow *shadow, VecFx32 *pos);
 

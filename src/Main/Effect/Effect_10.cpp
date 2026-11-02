@@ -95,7 +95,7 @@ BOOL func_02069300(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
     return TRUE;
 }
 
-extern s32 Rand_Fx(void);
+extern u32 Rand_Fx(void);
 
 BOOL func_020694a4(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cmd) {
     s32 x;

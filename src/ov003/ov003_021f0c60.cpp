@@ -2,6 +2,7 @@
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
 #include "nitro/std.h"
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     u8 unk_00[0xc];
@@ -74,7 +75,6 @@ typedef struct {
 
 extern "C" {
 extern Ov003Game30 *data_ov000_021ccd30;
-extern void *data_ov000_021ccd54;
 extern Ov003Save *data_0214a424;
 extern Ov003DataRes *data_02fe152c;
 extern void *data_02149ef8;
@@ -82,7 +82,7 @@ Ov003PkOwner *Target_Get(Ov003PkItem *item);
 BOOL func_ov000_0219aae8(Ov003Pickup *self, Ov003PkOwner *owner, u16 a, u8 b, u16 mask, VecFx32 *v, s32 c, s32 d, s32 e, s32 f, s32 g);
 void Actor_SendMsg(Ov003PkOwner *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_02040a98(void *buf, u32 n);
-s32 func_02049bdc(void *a, s32 b, s32 c);
+s32 func_02049bdc(SndMgr *a, s32 b, s32 c);
 void func_ov003_021ce9c4(u16 id);
 u32 func_0205975c(Ov003DataRes *res, u32 idx);
 void *func_0205976c(Ov003DataRes *res, u32 idx);

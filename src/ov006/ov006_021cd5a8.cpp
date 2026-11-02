@@ -8,8 +8,8 @@ typedef struct ov006_DataRes {
 extern "C" {
 
 
-void *func_0206ec48(u16 id);
-void *func_0206ffa0(u32 id);
+void *func_0206ec48(u32 id);
+void *func_0206ffa0(s32 id);
 void *func_0205976c(ov006_DataRes *res, u32 idx);
 u32 func_0205975c(ov006_DataRes *res, u32 idx);
 u16 func_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);

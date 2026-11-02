@@ -4,8 +4,8 @@ extern "C" {
 
 extern char data_ov014_02217d7c[];
 extern char data_ov014_02217d82[];
-extern void *func_ov000_02191318(void *a, s32 b);
-extern void func_ov000_02191618(void *a);
+extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
+extern void func_ov000_02191618(Model0218fe1c *a);
 
 void func_ov014_02211f0c(Ov014Act_0220f9d0 *self) {
     switch (self->fsm->st) {
@@ -53,10 +53,10 @@ extern char data_ov014_02217d88[];
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_ov000_02182590(void *p);
-extern void func_ov000_021911c8(void *a, s32 b);
+extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
 extern s32 **func_ov000_02190a30(void *a, s32 b);
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 
 // *(&data_02097e4c) keeps the global's address in a saved register (r7) across the
 // switch, as in the target; a plain data_02097e4c reloads it from the pool each time.

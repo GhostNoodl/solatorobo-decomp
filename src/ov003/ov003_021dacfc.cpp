@@ -1,12 +1,7 @@
 #include "ov003/Vec.h"
 #include "Main/Effect/Effect.h"
 #include "ov003/FxList.h"
-
-struct Ov003HeapCtx {
-    void *cur;
-    u32 unk_04;
-    void *alt;
-};
+#include "Main/Sys/SysState.h"
 
 
 extern "C" {

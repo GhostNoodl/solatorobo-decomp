@@ -10,7 +10,7 @@ extern void *func_ov000_0218fe1c(void *p);
 extern void *func_ov000_0218fee4(void *p);
 extern void *func_ov000_0218ea20(void *p);
 extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
-extern BOOL func_ov000_0218f110(void *p);
+extern BOOL func_ov000_0218f110(ResSet *p);
 extern s32 func_ov003_021d1c00(Ov003Actor *self, Ov014Msg *msg);
 
 #pragma force_active on

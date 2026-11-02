@@ -31,7 +31,7 @@ void Ov003ActVt_021f8188_Start(Ov003Prop *self) {
     func_ov000_0218b700(u, 0x5000, 0);
 }
 
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 

@@ -1,5 +1,6 @@
 #include "Main/Gfx/GfxMgr.h"
 #include "nnsys/g2d/g2d_Font.h"
+#include "nitro/mi.h"
 
 extern "C" {
 
@@ -78,7 +79,6 @@ typedef struct GfxOamTmp {
 
 extern u16 NNS_G2dFontFindGlyphIndex(const NNSG2dFont *pFont, u16 c);
 extern const NNSG2dCharWidths *NNS_G2dFontGetCharWidthsFromIndex(const NNSG2dFont *pFont, u16 idx);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_0203bbfc(GfxSys *sys, int which);
 extern BOOL NNS_G2dEntryOamManagerOam(void *mgr, const void *oam, u16 num);
 

@@ -8,7 +8,7 @@ void func_ov014_02208d90(Ov014ActEx_02208618 *self) {
 }
 extern void func_ov000_02198c8c(void *p, s32 a);
 extern void func_0203f364(ActorSub48 *p);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 
 void func_ov014_02208db4(Ov014ActEx_02208618 *self) {
     switch (self->fsm->st) {

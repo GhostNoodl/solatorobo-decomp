@@ -31,7 +31,7 @@ struct Ov011KeyVal {
     s32 val;
 };
 extern const Ov011KeyVal data_ov011_02207380[];
-void func_ov011_021fb8d4(void *a, s32 b, void *c, void *d);
+void func_ov011_021fb8d4(Ov011Mgr2 *a, s32 b, Ov011List *c, Ov011Ent *d);
 
 void func_ov011_021fdfd8(Ov011Scene *self) {
     Ov011Node *n;

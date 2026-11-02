@@ -1,6 +1,7 @@
 #include "ov006/SlotManager.h"
 #include "nitro/fx.h"
 #include "Main/Save/PlayTime.h"
+#include "Main/Sys/Pad.h"
 
 typedef struct ov006_RacerBits {
     u16 b0 : 6;
@@ -132,10 +133,6 @@ typedef struct ov006_Task021d6ff0 {
     u8 unk6E;
 } ov006_Task021d6ff0;
 
-typedef struct ov006_Pad021d6ff0 {
-    u8 unk0[0x12];
-    u16 trig;
-} ov006_Pad021d6ff0;
 
 typedef struct ov006_E40021d6ff0 {
     u8 unk0[0x32];
@@ -153,7 +150,6 @@ extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern void *data_02149ef8;
 extern u8 *data_0214a424;
-extern ov006_Pad021d6ff0 *data_02097dc8;
 extern ov006_E40021d6ff0 *data_02097e40;
 extern ov006_Speed021d6ff0 data_ov006_021eb85c[];
 

@@ -28,16 +28,16 @@ extern "C" {
 extern char data_ov014_02217d3a[];
 extern char data_ov014_02217d40[];
 extern char data_ov014_02217d46[];
-extern void func_ov000_021911c8(void *a, s32 b);
+extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern char data_ov014_02217d4c[];
-extern void *func_ov000_02191318(void *a, s32 b);
-extern void *func_ov014_02210878(Ov014Act_0220f9d0 *self);
+extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
+extern Ov003Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self);
 extern char data_ov014_02217d1d[];
 extern char data_ov014_02217d52[];
 extern char data_ov014_02217d5e[];
 extern char data_ov014_02217d64[];
-extern void func_ov000_02191618(void *a);
+extern void func_ov000_02191618(Model0218fe1c *a);
 extern s32 **func_ov000_02190a30(void *a, s32 b);
 extern Ov003Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self);
 extern Ov003Actor *func_ov014_02210a78(Ov014Act_0220f9d0 *self);
@@ -348,8 +348,8 @@ void func_ov014_02211538(Ov014Act_0220f9d0 *self) {
 
 extern char data_ov014_02217d76[];
 extern u8 data_ov014_02216d78[];
-extern void func_ov000_02191780(void *a);
-extern void func_ov000_021917f8(void *a);
+extern void func_ov000_02191780(Model0218fe1c *a);
+extern void func_ov000_021917f8(Model0218fe1c *a);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
 struct Ov014WaveB {

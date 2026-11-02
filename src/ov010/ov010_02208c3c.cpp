@@ -24,7 +24,7 @@ extern BOOL Ov003Sequence_HasEntries(void *p, void *d);
 extern Robo021ca458 *func_ov000_0219bf90(void);
 extern void func_ov000_0218a358(void *a, const void *b, void *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern s32 FX_Div(s32 a, s32 b);
-extern void func_ov010_022075bc(void *p);
+extern void func_ov010_022075bc(Ov010Obj02210154 *p);
 extern void *Ov003Vt_021f7cd8_Dtor(void *p);
 extern void *Ov003Vt_021f7d10_Dtor(void *p);
 

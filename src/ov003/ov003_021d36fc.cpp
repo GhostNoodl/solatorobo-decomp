@@ -2,6 +2,7 @@
 #include "Main/Math/Rot16.h"
 #include "nitro/std.h"
 #include "ov003/Actor.h"
+#include "nitro/mi.h"
 
 extern "C" {
 
@@ -46,16 +47,14 @@ extern char data_ov003_021f7a7f[];
 extern Ov003DwTgt *Target_Get(ActorSub4c *p);
 extern u16 func_ov000_02199bc8(ActorSub4c *p, VecFx32 *pos, s32 a, s32 b);
 extern void func_ov000_02191008(Model0218fe1c *model);
-extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s16 a, u8 b);
 extern void func_ov000_021915a0(Model0218fe1c *model);
-extern void func_ov000_021911c8(Model0218fe1c *model, s32 v);
+extern void func_ov000_021911c8(Model0218fe1c *model, s16 v);
 extern void func_0203f364(ActorSub48 *ctl);
-extern BOOL func_ov000_02198360(ActorSub40 *w, s32 a, s32 b);
+extern BOOL func_ov000_02198360(ActorSub40 *w, u8 a, BOOL b);
 extern Ov003DwPl *func_ov000_0219bf90(void);
 extern void Actor_SendMsg(Ov003DwPl *p, u16 id, s32 a, s32 b, s32 c, Ov003DwArg *arg);
 extern void func_ov000_021b4560(Ov003DwPl *p, Ov003Actor *self);
-extern void MI_Copy36B(const void *src, void *dst);
-extern void MI_Copy48B(const void *src, void *dst);
 
 static inline void Ov003DwCtl_Clear(ActorSub48 *c) {
     if (c != NULL) {

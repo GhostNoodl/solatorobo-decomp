@@ -24,9 +24,9 @@ static inline s32 Ov014_Approach(s32 cur, s32 target) {
 extern "C" {
 
 extern u8 data_ov014_02217fb0[];
-extern void *ActorEx_Ctor(void *self);
+extern ActorEx *ActorEx_Ctor(ActorEx *self);
 extern void func_ov000_02194758(void *self);
-extern BOOL func_ov000_02194c08(void *self);
+extern BOOL func_ov000_02194c08(ActorEx *self);
 extern void func_0203f364(ActorSub48 *p);
 extern Ov003Actor *Target_Get(void *p);
 extern Ov003Actor *func_ov000_0219bf90(void);
@@ -117,11 +117,11 @@ BOOL func_ov014_022143f4(Actor *self) {
 extern char data_ov014_02218040[];
 extern char data_ov014_0221804f[];
 extern char data_ov014_0221805b[];
-extern void *Actor_GetTarget(void *self);
+extern Actor *Actor_GetTarget(Actor *self);
 extern void func_ov014_02214f10(Actor *self);
 extern void HitSphere_Link(ActorSub48 *p);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 
 void func_ov014_022144f8(Ov014ActEx_022142fc *self) {
     Ov014Mtx33 m;

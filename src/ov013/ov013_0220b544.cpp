@@ -464,15 +464,15 @@ void func_ov013_02205098(Ov003Actor *self) {
             lim = OV013_CLAMP(lim, 0, Ov013_Dur(self));
             if (lim < self->fsm->timer && self->fsm->timer % 8 == 0) {
                 Model0218fe1c *m = self->model;
-                if (FLD(u8, m, 0xbe) == 0x10) {
-                    FLD(u8, m, 0xbe) = 0x1f;
+                if (m->alpha == 0x10) {
+                    m->alpha = 0x1f;
                 } else {
-                    FLD(u8, m, 0xbe) = 0x10;
+                    m->alpha = 0x10;
                     m = self->model;
-                    FLD(u16, m, 0xb6) = 0x318c;
-                    FLD(u16, m, 0xb8) = 0x7fff;
-                    FLD(u16, m, 0xba) = 9;
-                    FLD(u16, m, 0xbc) = 8;
+                    m->color = 0x318c;
+                    m->color2 = 0x7fff;
+                    m->blend = 9;
+                    m->blendMax = 8;
                 }
             }
         }

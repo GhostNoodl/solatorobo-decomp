@@ -1,4 +1,6 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Res/StageFlags.h"
 
 extern "C" {
 
@@ -41,13 +43,11 @@ void func_ov009_021fc834(Ov003Actor *self) {
     }
 }
 
-extern void *data_02097e4c;
 extern char data_ov009_02216ac8[];
 extern char data_ov009_02216ab0[];
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern void func_ov000_0218999c(s32 a, s32 b);
+extern void func_ov000_0218999c(u8 a, u8 b);
 void func_ov009_021fc8f4(Ov003Actor *self) {
     ActorSub40 *st = self->fsm;
     Model0218fe1c *m;
@@ -99,10 +99,9 @@ void func_ov009_021fc8f4(Ov003Actor *self) {
 
 extern void func_0203f364(ActorSub48 *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern void func_ov000_0219b5dc(u16 id, const VecFx32 *pos, const u16 *rot);
 extern void func_ov003_021ce9c4(u16 id);
-extern u8 *data_0214a424;
 void func_ov009_021fcad0(Ov003Actor *self) {
     VecFx32 p;
     ActorSub40 *st;

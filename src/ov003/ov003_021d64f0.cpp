@@ -12,7 +12,7 @@ typedef struct {
 
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 
 void func_ov003_021d64f0(Ov003Actor *self) {
     if (self->unk_b0->unk_0a_5) {
@@ -33,7 +33,7 @@ extern const u8 data_ov003_021f4432[];
 extern const u8 data_ov003_021f4437[];
 extern const u8 data_ov003_021f443c[];
 extern const u8 data_ov003_021f4441[];
-extern void func_ov003_021cedf4(s32 n);
+extern void func_ov003_021cedf4(u16 n);
 extern Ov003EvPlayer *func_ov000_0219bf90(void);
 
 static inline BOOL Ov003EvPlayer_Flag(Ov003EvPlayer *pl) {

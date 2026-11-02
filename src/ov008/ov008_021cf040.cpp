@@ -1,4 +1,5 @@
 #include "ov008/ov008.h"
+#include "Main/Gfx/GfxMgr.h"
 
 
 struct Ov008DrawBits {
@@ -54,9 +55,8 @@ static inline void Ov008_SetXY(Model *o, s32 x, s32 y) {
 
 extern "C" {
 
-extern Ov008Sys *data_02097d48;
 extern const Ov008Tbl5 data_ov008_021d02e8;
-BOOL func_02054f10(void *a, int b);
+BOOL func_02054f10(Model *a, u32 b);
 u8 Gfx3DState_NextPolyId(void *p);
 Ov008Item *func_ov000_02154b58(void *a, u32 id);
 void func_02041c20(void *a, int b, int c);
@@ -85,7 +85,7 @@ void func_ov008_021cf040(Ov008Mgr *m) {
                 s32 a = (u8)((Ov008Panel *)p)->alpha;
                 s32 px = (((Ov008Panel *)p)->unk_5c + (((Ov008Panel *)p)->offset + 0x3d000)) & ~0xfff;
                 if (a > 0) {
-                    MODEL_FLAGS(((Ov008Panel *)p)->sprite)->polygon_id = Gfx3DState_NextPolyId(&data_02097d48->unk_8b0);
+                    MODEL_FLAGS(((Ov008Panel *)p)->sprite)->polygon_id = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
                     MODEL_FLAGS(((Ov008Panel *)p)->sprite)->alpha = (u8)a;
                     Ov008_SetXY(((Ov008Panel *)p)->sprite, px, -0x1a000);
                     Ov008_DrawModelIdx(((Ov008Panel *)p)->sprite, 0);
@@ -154,7 +154,7 @@ void func_ov008_021cf5c8(s32 type, Ov008Menu *list, Ov008ListInfo *info) {
     s32 sy;
     Ov008Item *item;
     Model *m;
-    Ov008Win *pos;
+    TextWin *pos;
     s32 scroll;
     mgr = list->owner;
     switch (type) {
@@ -178,7 +178,7 @@ void func_ov008_021cf5c8(s32 type, Ov008Menu *list, Ov008ListInfo *info) {
         scroll = list->scroll >> 12;
         m->unk_150 = info->z - 0xa0;
         sx = info->x + pos->width - 0x78 - scroll;
-        sy = info->y + (pos->height >> 1) - 0x60;
+        sy = info->y + ((s32)pos->height >> 1) - 0x60;
         m->x = sx << 12;
         m->y = sy << 12;
         MODEL_FLAGS(m)->polygon_id = (u8)info->pid;

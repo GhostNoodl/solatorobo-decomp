@@ -1,4 +1,6 @@
 #include "types.h"
+#include "nitro/std.h"
+#include "Main/Sys/SysState.h"
 
 typedef void (*VFunc)(void *);
 
@@ -57,19 +59,10 @@ typedef struct {
     Ov003Link *list8;
 } Ov003Group;
 
-typedef struct {
-    void *cur;
-    u32 unk_04;
-    void *alt;
-} Ov003HeapCtx;
-
 extern "C" {
 
 extern u32 data_ov003_021f79a8;
-extern Ov003HeapCtx *data_02097dd0;
-extern u32 STD_GetStringLength(const char *s);
 extern void *Heap_AllocArray(u32 size);
-extern int STD_CopyLString(void *dst, const void *src, u32 size);
 extern void Heap_Free(void *p);
 void func_ov003_021cf5e8(Ov003Group *self);
 
@@ -150,23 +143,23 @@ void func_ov003_021cf33c(void *self, void *arg) {
 
 void func_ov003_021cf340(const char *str) {
     void *old = data_02097dd0->cur;
-    void *buf;
+    char *buf;
     u32 n;
-    data_02097dd0->cur = data_02097dd0->alt;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     data_02097dd0->cur = old;
     n = STD_GetStringLength(str) + 1;
-    buf = Heap_AllocArray(n * 2 - n);
+    buf = (char *)Heap_AllocArray(n * 2 - n);
     STD_CopyLString(buf, str, STD_GetStringLength(str) + 1);
 }
 
 void func_ov003_021cf39c(void *self, const char *str) {
     void *old = data_02097dd0->cur;
-    void *buf;
+    char *buf;
     u32 n;
-    data_02097dd0->cur = data_02097dd0->alt;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     data_02097dd0->cur = old;
     n = STD_GetStringLength(str) + 1;
-    buf = Heap_AllocArray(n * 2 - n);
+    buf = (char *)Heap_AllocArray(n * 2 - n);
     STD_CopyLString(buf, str, STD_GetStringLength(str) + 1);
 }
 
@@ -279,7 +272,7 @@ void func_ov003_021cf5e8(Ov003Group *self) {
         next = l->next;
         if (l->item->flag) {
             old = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->alt;
+            data_02097dd0->cur = data_02097dd0->heapHi;
             if (l->item->obj != NULL) {
                 Ov003RelObj *o = (Ov003RelObj *)l->item->obj;
                 if (o != NULL) {
@@ -290,7 +283,7 @@ void func_ov003_021cf5e8(Ov003Group *self) {
             data_02097dd0->cur = old;
         }
         old = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->alt;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (l->item != NULL) {
             Heap_Free(l->item);
             l->item = NULL;

@@ -1,4 +1,7 @@
 #include "ov008/ov008.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Res/ResArc.h"
+#include "Main/Res/ArcName.h"
 
 struct Ov008Rot3 {
     u16 x;
@@ -53,8 +56,6 @@ void func_02041cb4(void *a, int b);
 void func_ov000_02190a80(void *a, s32 b);
 
 extern char data_ov008_021d04a7[];
-extern void *data_0208cca0;
-extern void *data_0208cc94;
 extern void *data_0208b318;
 extern void *data_ov000_021cac60;
 
@@ -63,12 +64,9 @@ extern const VecFx32 data_ov008_021d02dc;
 extern const Ov008Rot3 data_ov008_021d02c8;
 extern char data_ov008_021d04f0[];
 extern char data_ov008_021d04c5[];
-extern void *data_0208cb74;
-extern void *data_0208cc88;
 extern void *data_ov000_021ca94c;
 extern void *data_0208ba70;
 extern Ov008Snd *data_02097e48;
-extern Ov008Sys *data_02097d48;
 
 void *func_ov000_0218fe1c(void *p);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
@@ -79,11 +77,9 @@ void func_02041cf8(void *a, int b);
 void func_02041c18(void *a, void *b);
 void func_02041c34(void *a, int b, void *f, int c);
 void func_02041c5c(void *a, void *f);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
 BOOL func_0205aa30(void *p);
 s32 func_ov000_0214bc94(void);
-void func_0204c7d0(void *p);
+void func_0204c7d0(TextWin *win);
 void func_0204aab0(void *p);
 void func_020626c0(void);
 void *func_ov008_021cd26c(void);
@@ -132,7 +128,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     func_ov000_021915a0(m->unk_d0);
     func_ov000_02190a30(m->unk_d0, 0)->unk_112 = 0x400;
 
-    p = (Model *)Heap_Alloc(0x160);
+    p = (Model *)Heap_Alloc(sizeof(Model));
     if (p != NULL) {
         const char *name = data_ov008_021d04a7;
         if (name) {
@@ -144,7 +140,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     func_020417e0(m->unk_d8, (void *)m->unk_d4->v10());
     func_02041d9c(m->unk_d8, 2, 0xffff);
 
-    p = (Model *)Heap_Alloc(0x160);
+    p = (Model *)Heap_Alloc(sizeof(Model));
     if (p != NULL) {
         const char *name = data_ov008_021d04a7;
         if (name) {
@@ -157,7 +153,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     func_02041d9c(m->unk_e0, 0, 0xffff);
     m->unk_e0->unk_150 = -0x1fe66;
 
-    p = (Model *)Heap_Alloc(0x160);
+    p = (Model *)Heap_Alloc(sizeof(Model));
     if (p != NULL) {
         const char *name = data_ov008_021d04c5;
         if (name) {
@@ -178,10 +174,10 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     {
     Model *q;
     res = func_02034d88(func_02035d5c(data_0208cca0), data_0208cb74);
-    q = (Model *)Heap_Alloc(0x160);
+    q = (Model *)Heap_Alloc(sizeof(Model));
     if (q != NULL) {
-        void *file = data_0208cca0;
-        void *nm = data_0208cb74;
+        const char *file = data_0208cca0;
+        const char *nm = data_0208cb74;
         func_02041218(&q->pltt);
         func_02041440(q, (char *)nm, 0);
         STD_CopyString(q->name, (char *)file);
@@ -195,10 +191,10 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     {
     Model *q;
     res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-    q = (Model *)Heap_Alloc(0x160);
+    q = (Model *)Heap_Alloc(sizeof(Model));
     if (q != NULL) {
-        void *file = data_0208cc94;
-        void *nm = data_0208cc88;
+        const char *file = data_0208cc94;
+        const char *nm = data_0208cc88;
         func_02041218(&q->pltt);
         func_02041440(q, (char *)nm, 0);
         STD_CopyString(q->name, (char *)file);
@@ -272,7 +268,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
             g->unk_08 = 10;
         }
     }
-    data_02097d48->unk_8b0.unk_00 = (u8)(data_02097d48->unk_8b0.unk_00 & ~0x10) | 0x20;
+    data_02097d48->unk_8b0[0] = (u8)(data_02097d48->unk_8b0[0] & ~0x10) | 0x20;
     *(vu16 *)0x4000060 &= 0xcfdf;
     func_020626c0();
 }

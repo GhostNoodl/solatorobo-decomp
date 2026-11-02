@@ -9,7 +9,7 @@ extern void *data_ov000_021ccd68;
 extern Actor *Target_Get(ActorSub4c *t);
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
-extern void func_01ffc9fc(VecFx32 *dst, const VecFx32 *src, u16 ry);
+extern void func_01ffc9fc(VecFx32 *dst, VecFx32 *src, u16 ry);
 extern void HitSphere_Link(ActorSub48 *a);
 extern void func_ov000_021987b8(ActorSub48 *a, s32 b, s32 c, s32 d);
 

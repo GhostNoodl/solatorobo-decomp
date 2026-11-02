@@ -11,7 +11,7 @@ struct Ov009Rot {
 extern u8 data_ov009_022160ac[];
 extern u8 data_ov009_022160c4[];
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
-extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_0219a210(VecFx32 *v, const void *a, u16 b);
 extern Ov003Actor *func_ov000_0219be1c(u16 kind, const VecFx32 *pos, const void *rot, u16 id, u16 parent);

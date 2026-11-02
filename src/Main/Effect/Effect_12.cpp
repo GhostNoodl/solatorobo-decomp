@@ -23,7 +23,7 @@ static inline void Effect_VecSet(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->z = z;
 }
 
-extern s32 Rand_Fx(void);
+extern u32 Rand_Fx(void);
 
 static inline u16 Effect_Rgb(s32 r, s32 g, s32 b) {
     return (r >> 12) | ((g >> 12) << 5) | ((b >> 12) << 10);

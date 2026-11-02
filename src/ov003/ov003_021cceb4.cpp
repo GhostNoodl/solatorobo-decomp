@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Gfx/Model.h"
+#include "Main/Sys/SysState.h"
 
 class Ov003Deletable {
 public:
@@ -7,23 +9,12 @@ public:
 };
 
 typedef struct {
-    u8 unk_00[0x88];
-    u8 unk_88[1];
-} Ov003Res;
-
-typedef struct {
-    void *cur;
-    u32 unk_04;
-    void *alt;
-} Ov003HeapCtx;
-
-typedef struct {
     u8 unk_00[0x3c];
     Ov003Deletable *unk_3c;
     Ov003Deletable *unk_40;
-    Ov003Res *unk_44;
-    Ov003Res *unk_48;
-    Ov003Res *unk_4c;
+    Model *unk_44;
+    Model *unk_48;
+    Model *unk_4c;
     u32 unk_50;
     u32 unk_54;
     u16 unk_58;
@@ -52,7 +43,7 @@ typedef struct {
 #define OV003_DELETE_V(p)                              \
     {                                                  \
         void *old = data_02097dd0->cur;                \
-        data_02097dd0->cur = data_02097dd0->alt;       \
+        data_02097dd0->cur = data_02097dd0->heapHi;    \
         if ((p) != NULL) {                             \
             if ((p) != NULL) {                         \
                 (p)->Delete();                         \
@@ -65,13 +56,13 @@ typedef struct {
 #define OV003_DELETE_RES(p)                            \
     {                                                  \
         void *old = data_02097dd0->cur;                \
-        data_02097dd0->cur = data_02097dd0->alt;       \
+        data_02097dd0->cur = data_02097dd0->heapHi;    \
         if ((p) != NULL) {                             \
-            Ov003Res *res = (p);                       \
+            Model *res = (p);                          \
             if (res != NULL) {                         \
                 func_02041558(res);                    \
-                func_02041278(res->unk_88);            \
-                Heap_Free(res);                    \
+                func_02041278(&res->pltt);             \
+                Heap_Free(res);                        \
             }                                          \
             (p) = NULL;                                \
         }                                              \
@@ -84,13 +75,9 @@ extern char data_ov003_021f78c4[];
 extern char data_ov003_021f78cd[];
 extern void func_ov000_021c8408(u32 a, u32 b, u32 c, u32 d, u16 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k);
 extern void func_ov000_021c2208(void *p);
-extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
-extern Ov003HeapCtx *data_02097dd0;
-extern void func_02041558(void *p);
-extern void func_02041278(void *p);
 extern void Heap_Free(void *p);
 extern void func_02035acc(const void *a, const void *b, s32 c);
-extern u32 func_02035bd4(const void *a, const void *b, s32 c);
+extern BOOL func_02035bd4(const char *a, const char *b, u16 c);
 
 void func_ov003_021cceb4(u32 a, u32 b, u32 c, u32 d, u32 unused, u32 e, u32 f, u32 g, u32 h, u32 i, u32 j) {
     func_ov000_021c8408(a, b, c, d, j, e, f, g, h, i, j);

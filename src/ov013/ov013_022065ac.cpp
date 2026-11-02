@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_ov013_0220bb20;
 extern char data_ov013_0220b360[];
-extern void *ActorEx_Ctor(void *self);
+extern ActorEx *ActorEx_Ctor(ActorEx *self);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern BOOL func_020621c4(void);
 
@@ -81,7 +81,7 @@ void Ov013ActVt_0220bdd8_Start(Ov013ActVt_0220bdd8 *self) {
 
 extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(Ov003Actor *a, u16 id);
-extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
+extern BOOL func_ov000_021983b0(ActorSub40 *a, u8 b, s32 c, BOOL d);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 
 #define OV013_SQRTCNT (*(volatile u16 *)0x40002b0)

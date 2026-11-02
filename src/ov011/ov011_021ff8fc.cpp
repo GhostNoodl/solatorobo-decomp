@@ -1,4 +1,5 @@
 #include "ov011/ov011.h"
+#include "Main/Gfx/SlidePanel.h"
 
 #ifdef NONMATCHING
 // Status (round drA): Ov011SceneActor_Update is 26 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is
@@ -323,9 +324,7 @@ void Ov011SceneActor_Update(Ov011SceneActor *self) {
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern const char data_ov011_022078e1[];
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 s32 Rand_PlusMinus(s32 max);

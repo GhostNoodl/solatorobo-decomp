@@ -1,5 +1,6 @@
 #include "types.h"
 #include "ov003/Unit.h"
+#include "Main/Gfx/SlidePanel.h"
 
 typedef struct {
     u8 unk_00[0x111];
@@ -221,10 +222,8 @@ void Ov003ActVt_021f7f14_Update(Ov003Prop *self) {
     }
 }
 
-extern void *data_02097e4c;
 extern BOOL func_ov000_0218fa28(void *ctrl, void *obj, Ov003MdlRes *res, void *file, const char *name, s16 blend, u8 force);
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern BOOL func_ov000_02191120(Ov003Mdl *m);
 extern void *Target_Get(Ov003PropDef *def);
 extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);

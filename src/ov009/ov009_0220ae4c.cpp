@@ -1,4 +1,6 @@
 #include "ov009/ov009.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Snd/SndMgr.h"
 
 extern "C" {
 
@@ -22,10 +24,8 @@ struct Ov009RotS {
     u16 z;
 };
 
-extern void *data_02097e4c;
 extern Ov003Actor *func_ov000_0219bf90(void);
-extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
-extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
+extern void func_01ffc9fc(VecFx32 *out, VecFx32 *a, u16 b);
 extern void func_0203f364(ActorSub48 *p);
 extern BOOL func_01ffc624(const VecFx32 *a, const VecFx32 *b, Ov009RotS *r, s32 c, s32 d);
 
