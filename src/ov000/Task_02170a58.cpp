@@ -50,7 +50,6 @@ typedef struct {
     u32 b0 : 1;
 } Bit0;
 
-#define STATE LFLD(s32, self, 0x24)
 
 static inline VObj *NewObj2(u32 size, void *vt) {
     VObj *p = (VObj *)Heap_Alloc(size);
@@ -68,7 +67,7 @@ struct Obj02170a58 {
     u8 *unk_0c;
     u8 unk_10[0x10];
     u32 unk_20;
-    u8 unk_24[0x4];
+    s32 unk_24;
     VObj *unk_28;
     void *unk_2c;
     VObj *unk_30;
@@ -95,9 +94,9 @@ struct Obj02170a58 {
 
 void func_ov000_02170a58(Obj02170a58 *self) {
     u8 *c = self->unk_0c;
-    switch (STATE) {
+    switch (self->unk_24) {
     case 0:
-        STATE = 1;
+        self->unk_24 = 1;
     case 1: {
         VObj *p;
         u8 *q;
@@ -144,7 +143,7 @@ void func_ov000_02170a58(Obj02170a58 *self) {
         }
         self->unk_7c = q;
         func_ov000_021bce90();
-        STATE = 2;
+        self->unk_24 = 2;
     }
     case 2:
         if (!func_0204c120()) {
@@ -152,18 +151,18 @@ void func_ov000_02170a58(Obj02170a58 *self) {
         }
         func_ov000_0216bbec(self->unk_7c);
         self->unk_20 |= 2;
-        STATE = 3;
+        self->unk_24 = 3;
         break;
     case 4:
         if ((void *)self->unk_48 == NULL && !self->unk_28->vfunc_8c()) {
             HEAP_DELETE(VObj *, self->unk_28, p->vfunc_04());
-            STATE = 3;
+            self->unk_24 = 3;
         }
     case 10:
         if (self->unk_3c != NULL && !func_ov000_021b9010(self->unk_3c)) {
             HEAP_DELETE_FN(self->unk_3c, func_ov000_021b8ecc);
-            if (STATE == 10) {
-                STATE = 3;
+            if (self->unk_24 == 10) {
+                self->unk_24 = 3;
             }
         }
     case 11:
@@ -173,39 +172,39 @@ void func_ov000_02170a58(Obj02170a58 *self) {
                 self->unk_28->vfunc_0c();
             }
             func_ov000_02182524((u8 *)data_ov000_021ccd54 + 0xac);
-            if (STATE == 11) {
-                STATE = 3;
+            if (self->unk_24 == 11) {
+                self->unk_24 = 3;
             }
         }
         break;
     case 8:
         if (self->unk_40 != NULL && !func_ov000_021ba92c(self->unk_40)) {
             HEAP_DELETE_FN(self->unk_40, func_ov000_021bacf4);
-            STATE = 3;
+            self->unk_24 = 3;
         }
         break;
     case 9:
         if (self->unk_44 != NULL && !func_ov000_021bb8dc(self->unk_44)) {
             HEAP_DELETE(u8 *, (u8 *)self->unk_44, func_ov000_021bbcac(p); *(void **)(p + 4) = data_0208b318; ((VObj *)(p + 4))->vfunc_0c(); Heap_Free(p));
-            STATE = 3;
+            self->unk_24 = 3;
         }
         break;
     case 5:
         if (!func_0204fd60(self->unk_2c)) {
             HEAP_DELETE_FN(self->unk_2c, func_020507d8);
-            STATE = 3;
+            self->unk_24 = 3;
         }
         break;
     case 6:
         if (!self->unk_30->vfunc_1c()) {
             HEAP_DELETE(VObj *, self->unk_30, p->vfunc_04());
-            STATE = 3;
+            self->unk_24 = 3;
         }
         break;
     case 7:
         if (!func_ov000_021b8994(self->unk_38)) {
             HEAP_DELETE_FN(self->unk_38, func_ov000_021b88d8);
-            STATE = 3;
+            self->unk_24 = 3;
         }
         break;
     }

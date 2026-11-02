@@ -57,9 +57,9 @@ void func_ov000_021c6d64(Obj021c6d64 *self, void *unused, VecFx32 *pos, s32 arg)
         mdl = self->model;
         MTX_Rot22(&m, FX_SinCosTable_[0x7fe], FX_SinCosTable_[0x7ff]);
         MTX_Concat22(&m, (MtxFx22 *)((u8 *)mdl + 0x114), (MtxFx22 *)((u8 *)mdl + 0x114));
-        LFLD(void *, self->model, 0x158) = (void *)func_ov000_021c8408;
+        self->model->unk_158 = (void *)func_ov000_021c8408;
         Model_PlayPartEx(self->model, 4, 1);
-        LFLD(void *, self->model, 0x158) = NULL;
+        self->model->unk_158 = NULL;
     }
     if (self->count > 1 && (self->unk_c4.b0 || self->cur < self->count - 1)) {
         MtxFx22 m;
@@ -77,9 +77,9 @@ void func_ov000_021c6d64(Obj021c6d64 *self, void *unused, VecFx32 *pos, s32 arg)
         mdl = self->model;
         MTX_Rot22(&m, FX_SinCosTable_[0x17fe], FX_SinCosTable_[0x17ff]);
         MTX_Concat22(&m, (MtxFx22 *)((u8 *)mdl + 0x114), (MtxFx22 *)((u8 *)mdl + 0x114));
-        LFLD(void *, self->model, 0x158) = (void *)func_ov000_021c8408;
+        self->model->unk_158 = (void *)func_ov000_021c8408;
         Model_PlayPartEx(self->model, 4, 1);
-        LFLD(void *, self->model, 0x158) = NULL;
+        self->model->unk_158 = NULL;
     }
 }
 }

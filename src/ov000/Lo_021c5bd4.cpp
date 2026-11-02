@@ -54,7 +54,7 @@ void func_ov000_021c5bd4(Lo021cca40 *self) {
     }
     self->unk_34 = (Model *)(m);
     func_020417e0(self->unk_34, func_02034d88(func_02035d5c(m + 0x2c), (u8 *)self->unk_34 + 0x4c));
-    LFLD(u32, self->unk_34, 0x6c) |= 2;
+    self->unk_34->flags |= 2;
     func_02041d9c(self->unk_34, 0, 6);
     func_02041d9c(self->unk_34, 0, 7);
     func_02041c5c((u8 *)self->unk_34, (void *)func_ov000_021c5a0c);

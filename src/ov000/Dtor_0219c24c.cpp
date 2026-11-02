@@ -18,9 +18,9 @@ u8 *Robo021ca458_Dtor(Robo021ca458 *self) {
     HEAP_DELETE_FN(self->unk_99c, func_ov000_0218ea20);
     HEAP_DELETE_FN(self->unk_9b0, func_ov000_021bd228);
     HEAP_DELETE_FN(self->unk_9b4, func_ov000_021bd228);
-    LFLD(s32, self, 0x38) = 0;
+    self->model = NULL;
     self->unk_34 = 0;
-    LFLD(s32, self, 0x48) = 0;
+    self->hit = NULL;
     func_ov000_0218ea20((u8 *)self + 0x860);
     func_ov000_0218fee4((u8 *)self + 0x778);
     func_0203f2b8((u8 *)self + 0x6c0);
@@ -40,9 +40,9 @@ u8 *Robo021ca458_DtorDelete(Robo021ca458 *self) {
     HEAP_DELETE_FN(self->unk_99c, func_ov000_0218ea20);
     HEAP_DELETE_FN(self->unk_9b0, func_ov000_021bd228);
     HEAP_DELETE_FN(self->unk_9b4, func_ov000_021bd228);
-    LFLD(s32, self, 0x38) = 0;
+    self->model = NULL;
     self->unk_34 = 0;
-    LFLD(s32, self, 0x48) = 0;
+    self->hit = NULL;
     func_ov000_0218ea20((u8 *)self + 0x860);
     func_ov000_0218fee4((u8 *)self + 0x778);
     func_0203f2b8((u8 *)self + 0x6c0);

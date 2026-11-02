@@ -8,14 +8,6 @@ typedef struct {
 } Info0219d1a8;
 
 typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 b4 : 12;
-} B16_0219d1a8;
-
-typedef struct {
     u16 max;
     u16 cur;
     u16 unk_04;
@@ -118,52 +110,52 @@ void Robo021ca458_Start(Robo021ca458 *self) {
     self->height = info->hy << 4;
     self->centerY = self->height >> 1;
     func_ov000_0218ffdc((u8 *)self + 0xac, (u8 *)self + 0x194, 0, 1);
-    self->unk_160 = self->id;
-    self->unk_18c = (void *)func_ov003_021ce630;
+    self->mdl0.actor_id = self->id;
+    self->mdl0.evFunc = (void *)func_ov003_021ce630;
     p = NULL;
-    q = self->unk_254;
+    q = self->res0.unk_c0;
     if (q != NULL) {
         p = (u8 *)*q + 8;
     }
-    self->unk_17c = p;
+    self->mdl0.evTable = (AnimEventTable *)p;
     if (p != NULL && LFLD(u16, p, 2) == 0) {
-        self->unk_180 = p + 4 + LFLD(u16, p, 0) * 12;
+        self->mdl0.evData = (s16 *)(p + 4 + LFLD(u16, p, 0) * 12);
     }
     self->unk_a4b = 0;
-    LFLD(u16, self, 0x16e) |= 0x100;
+    self->mdl0.unk_c2 |= 0x100;
     if (!LBIT(self, 0xb24).b1) {
-        self->unk_178 = 0x320;
+        self->mdl0.unk_cc = 0x320;
     }
     self->unk_a4c = 0;
     self->unk_a48 = func_ov000_021909a8((u8 *)self + 0xac, (u8 *)self + 0x200, data_ov000_021cc60f);
     func_ov000_0218ffdc((u8 *)self + 0x778, (u8 *)self + 0x860, 0, 1);
-    self->unk_82c = self->id;
+    self->mdl2.actor_id = self->id;
     func_ov000_0219c8e0((u8 *)self);
     x = self->radius;
     z = self->centerY;
     func_ov000_02198c8c((u8 *)self + 0x2cc, self->id);
-    self->unk_304 = (x >> 1) + (x >> 3);
-    self->unk_2f4 = 2;
-    self->unk_32c = z - (z >> 3);
-    self->unk_366_0 = 0;
-    self->unk_366_3 = 0;
+    self->hit0.radius = (x >> 1) + (x >> 3);
+    self->hit0.unk_28 = 2;
+    self->hit0.offset.y = z - (z >> 3);
+    self->hit0.unk_9a_0 = 0;
+    self->hit0.unk_9a_3 = 0;
     func_0203f364((u8 *)self + 0x2cc);
     func_ov000_02198c8c((u8 *)self + 0x6c0, self->id);
-    self->unk_6e8 = 2;
-    self->unk_75a_0 = 0;
-    self->unk_6f8 = x;
-    self->unk_720 = z;
-    self->unk_75a_3 = 0;
+    self->hit1.unk_28 = 2;
+    self->hit1.unk_9a_0 = 0;
+    self->hit1.radius = x;
+    self->hit1.offset.y = z;
+    self->hit1.unk_9a_3 = 0;
     func_0203f364((u8 *)self + 0x6c0);
-    self->unk_708 = x;
+    self->hit1.unk_48 = x;
     self->unk_44 = (ActorSub44 *)(NewObj44_0219d1a8());
-    LFLD(u16, self->unk_44, 0x20) = self->id;
-    LFLD(s32, self->unk_44, 0x1c) = x;
-    LFLD(s32, self->unk_44, 0x10) = z;
+    self->unk_44->unk_20 = self->id;
+    self->unk_44->unk_1c = x;
+    self->unk_44->unk_0c.y = z;
     {
         ActorSub44 *o = self->unk_44;
-        LFLD(B16_0219d1a8, o, 0x22).b0 = 1;
-        LFLD(B16_0219d1a8, o, 0x22).b1 = 1;
+        o->unk_22_0 = 1;
+        o->unk_22_1 = 1;
     }
     self->fsm = (ActorSub40 *)NewObj40_0219d1a8();
     n = data_0214a424[0x1a] * 100 + 500;

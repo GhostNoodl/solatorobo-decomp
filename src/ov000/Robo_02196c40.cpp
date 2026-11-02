@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Res/StageFlags.h"
 #include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
@@ -37,7 +38,6 @@ public:
 
 extern "C" {
 extern char data_ov000_021cc463[];
-extern u8 *data_0214a424;
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd6c;
 BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
@@ -130,26 +130,26 @@ void func_ov000_02196c40(ActorEx *self) {
                 Robo021ca458 *p;
                 if (self->unk_44 != NULL) {
                     ActorSub44 *q = self->unk_44;
-                    LFLD(Bits02196c40, q, 0x22).b0 = 0;
-                    LFLD(Bits02196c40, q, 0x22).b1 = 0;
+                    q->unk_22_0 = 0;
+                    q->unk_22_1 = 0;
                 }
                 if (self->hit != NULL) {
                     ActorSub48 *q = self->hit;
-                    LFLD(Bits02196c40, q, 0x9a).b0 = 0;
+                    q->unk_9a_0 = 0;
                     q->unk_9a_3 = 0;
                     func_0203f364(q);
                     q = self->hit;
-                    LFLD(Bits02196c40, q, 0x9a).b1 = 0;
+                    q->unk_9a_1 = 0;
                     q->unk_9a_4 = 0;
                 }
                 p = func_ov000_0219bf90();
                 if (p->id == self->targetObj->target) {
-                    u8 *g = data_0214a424;
-                    u32 n = LFLD(u16, g, 0x16) + 1;
+                    StageFlags *g = data_0214a424;
+                    u32 n = g->unk_016 + 1;
                     if (n >= 0xffff) {
                         n = 0xffff;
                     }
-                    LFLD(u16, g, 0x16) = n;
+                    g->unk_016 = n;
                 }
                 if (self->targetObj->unk_03 != 0) {
                     func_ov003_021f0c60(self, 0);
@@ -204,17 +204,17 @@ void func_ov000_02196c40(ActorEx *self) {
     if (self->hit != NULL) {
         u8 *other;
         BOOL saved;
-        u8 *m;
+        ActorSub4c *m;
         if (self->param->type == 2) {
             ActorSub48 *q = self->hit;
-            LFLD(Bits02196c40, q, 0x9a).b0 = 1;
+            q->unk_9a_0 = 1;
             q->unk_9a_3 = 1;
             HitSphere_Link(q);
         }
-        m = ((u8 *)self->targetObj);
+        m = self->targetObj;
         other = NULL;
         saved = FALSE;
-        if (m != NULL && LFLD(u16, m, 0x1c) != 0xffff && LFLD(u8, m, 1) == 1) {
+        if (m != NULL && m->target != 0xffff && m->unk_01 == 1) {
             s32 h = self->radius + 0x4cd;
             u8 *t;
             if (h < 0xccd) {

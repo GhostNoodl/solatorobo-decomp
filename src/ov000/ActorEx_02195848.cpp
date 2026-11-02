@@ -6,17 +6,6 @@
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define SC(r) FX_SinCosTable_[((r) >> 4) * 2], FX_SinCosTable_[((r) >> 4) * 2 + 1]
 
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 b4 : 1;
-    u16 b5 : 1;
-    u16 b6 : 1;
-    u16 rest : 9;
-} B16_02195848;
-
 extern "C" {
 extern void *data_ov000_021ccd64;
 extern u8 data_ov000_021cc456[];
@@ -83,7 +72,7 @@ void func_ov000_02195848(VObj *obj) {
     }
     switch (self->fsm->st) {
     case 0:
-        if ((void *)((u8 *)self->model) != NULL) {
+        if ((void *)self->model != NULL) {
             func_ov000_02190cb0(((u8 *)self->model), data_ov000_021cc456, 0x1000, 0);
             func_ov000_021915a0(((u8 *)self->model));
         }
@@ -105,16 +94,16 @@ void func_ov000_02195848(VObj *obj) {
         }
         if (self->unk_20 == 0xffff && self->unk_cc_4) {
             if (PlayerIdle02195848()) {
-                u8 *st = ((u8 *)self->fsm);
-                LFLD(u16, st, 2)++;
-                if ((s32)LFLD(u16, st, 2) > 0x1fe) {
-                    if ((s32)LFLD(u16, st, 2) > 0x258) {
+                ActorSub40 *st = self->fsm;
+                st->timer++;
+                if ((s32)st->timer > 0x1fe) {
+                    if ((s32)st->timer > 0x258) {
                         func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
                         obj->vfunc_08();
                         break;
                     }
                     if (((u8 *)self->model) != NULL) {
-                        if ((LFLD(u16, st, 2) & 7) > 2) {
+                        if ((st->timer & 7) > 2) {
                             self->model->alpha = 10;
                         } else {
                             self->model->alpha = 0x1f;
@@ -126,8 +115,8 @@ void func_ov000_02195848(VObj *obj) {
             }
         }
         if ((self->msg_flags & 0x80) && (h = self->hit) != NULL) {
-            LFLD(B16_02195848, h, 0x9a).b0 = 1;
-            LFLD(u16, h, 0x9a) |= 8;
+            h->unk_9a_0 = 1;
+            h->unk_9a |= 8;
             HitSphere_Link(h);
             func_ov000_021987b8(self->hit, 0, 0, 0);
         }
@@ -168,7 +157,7 @@ void func_ov000_02195848(VObj *obj) {
         self->unk_93_0 = 1;
         return;
     }
-    LFLD(u16, self->hit, 0x9a) |= 0x20;
+    self->hit->unk_9a |= 0x20;
     if (!(self->hit->unk_50 & 0x20000000)) {
         if (PlayerIdle02195848()) {
             func_ov000_02198360(((u8 *)self->fsm), 4, 0);

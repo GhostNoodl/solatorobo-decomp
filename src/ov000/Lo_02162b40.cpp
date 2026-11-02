@@ -111,7 +111,6 @@ static inline void StopSlot(u8 *self, u8 i) {
     b[i].unk_00 = 0;
 }
 
-#define CF LFLD(CamFlags, self, 0x61e)
 #define V(off) LFLD(VecFx32, self, off)
 
 struct Obj02162bd4 {
@@ -138,7 +137,7 @@ void func_ov000_02162bd4(Obj02162bd4 *self) {
         }
         break;
     case 10:
-        CF.b0 = 0;
+        LFLD(CamFlags, self, 0x61e).b0 = 0;
         StopSlot((u8 *)self + 4, LFLD(u8, (u8 *)self + 4, 5));
         self->unk_6b8++;
         break;
@@ -151,12 +150,12 @@ void func_ov000_02162bd4(Obj02162bd4 *self) {
         }
         self->unk_09 ^= 1;
         func_ov000_0218ffdc((u8 *)self + 0x55c, (u8 *)self + 0x7c + self->unk_09 * 0x138, 0, 1);
-        CF.b6 = 1;
+        LFLD(CamFlags, self, 0x61e).b6 = 1;
         func_ov000_02190cb0((u8 *)self + 0x55c, self->unk_6c0, 0x1000, 0);
         func_ov000_021911c8((u8 *)self + 0x55c, self->unk_6c8);
         func_ov000_021915a0((u8 *)self + 0x55c);
-        CF.b4 = 0;
-        CF.b0 = 0;
+        LFLD(CamFlags, self, 0x61e).b4 = 0;
+        LFLD(CamFlags, self, 0x61e).b0 = 0;
         if (LFLD(void *, (u8 *)self + 0x2ec + self->unk_09 * 0x138, 0x48) != NULL &&
             LFLD(s32, LFLD(void *, (u8 *)self + 0x2ec + self->unk_09 * 0x138, 0x48), 0xc) != 0) {
             func_ov000_02191870((u8 *)self + 0x55c, (u8 *)self + 0x2ec + self->unk_09 * 0x138);
@@ -201,7 +200,7 @@ void func_ov000_02162bd4(Obj02162bd4 *self) {
             self->unk_704--;
             break;
         }
-        CF.b0 = 1;
+        LFLD(CamFlags, self, 0x61e).b0 = 1;
         if (func_02049244((u8 *)self + 0x6d8, 0x266, (u8 *)self + 0x6d8, (u8 *)self + 0x6cc, 0xcd)) {
             self->unk_6b8++;
         }
@@ -253,7 +252,7 @@ void func_ov000_02162bd4(Obj02162bd4 *self) {
         if ((s32)(((s64)d.x * (V(0x6f8).x - V(0x6d8).x) + (s64)d.y * (V(0x6f8).y - V(0x6d8).y) + (s64)d.z * (V(0x6f8).z - V(0x6d8).z) + 0x800) >> 12) > 0) {
             break;
         }
-        CF.b0 = 0;
+        LFLD(CamFlags, self, 0x61e).b0 = 0;
         self->unk_6b8++;
         break;
     }

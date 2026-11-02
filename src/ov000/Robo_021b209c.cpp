@@ -97,7 +97,7 @@ void func_ov000_021b209c(Robo021ca458 *self) {
     Hang_021b209c *info;
     s32 ret;
     Actor *actor;
-    u8 *sub;
+    ActorSub4c *sub;
     VecFx32 from;
     VecFx32 to;
     VecFx32 v;
@@ -107,11 +107,11 @@ void func_ov000_021b209c(Robo021ca458 *self) {
     actor = FindActor_021b209c(self->unk_b20);
     sub = NULL;
     if (actor != NULL) {
-        sub = ((u8 *)actor->targetObj);
+        sub = actor->targetObj;
     }
     info = NULL;
     if (sub != NULL) {
-        info = &data_ov000_021ca320[LFLD(u16, sub, 6)];
+        info = &data_ov000_021ca320[sub->unk_06];
     }
     if (info == NULL) {
         return;
@@ -187,7 +187,7 @@ void func_ov000_021b209c(Robo021ca458 *self) {
         if (body->unk_50 & 0x20000000) {
             if (self->velY <= 0) {
                 self->velY = -0x800;
-                LFLD(u16, body, 0x9a) |= 0x20;
+                body->unk_9a |= 0x20;
                 if (info->se0 >= 0 && self->seSlot < 0) {
                     self->seSlot = func_02049afc(data_02097e4c, info->se0);
                     func_0204a0d4(data_02097e4c, self->seSlot, info->se0arg);

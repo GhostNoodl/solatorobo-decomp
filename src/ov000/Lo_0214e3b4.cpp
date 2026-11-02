@@ -12,7 +12,6 @@ typedef struct {
     u32 rest : 10;
 } LoMdlFlags0214e3b4;
 
-#define MF(m) LFLD(LoMdlFlags0214e3b4, m, 0x6c)
 
 extern "C" {
 
@@ -54,28 +53,28 @@ void func_ov000_0214e3b4(Lo021caac8 *self, void *arg, s32 x, s32 y, u8 depth, u8
         return;
     }
     if (flip) {
-        MF(self->unk_10).b19 = 1;
+        LFLD(LoMdlFlags0214e3b4, self->unk_10, 0x6c).b19 = 1;
         LFLD(s32, self->unk_10, 0x150) = self->unk_68 - 0x110;
-        MF(self->unk_10).b20 = 1;
-        MF(self->unk_b4).b19 = 1;
+        LFLD(LoMdlFlags0214e3b4, self->unk_10, 0x6c).b20 = 1;
+        LFLD(LoMdlFlags0214e3b4, self->unk_b4, 0x6c).b19 = 1;
         LFLD(s32, self->unk_b4, 0x150) = self->unk_68 - 0x110;
-        MF(self->unk_b4).b20 = 1;
+        LFLD(LoMdlFlags0214e3b4, self->unk_b4, 0x6c).b20 = 1;
     } else {
-        MF(self->unk_10).b19 = 1;
+        LFLD(LoMdlFlags0214e3b4, self->unk_10, 0x6c).b19 = 1;
         LFLD(s32, self->unk_10, 0x150) = self->unk_68 - 0x80;
-        MF(self->unk_10).b20 = 0;
-        MF(self->unk_b4).b19 = 1;
+        LFLD(LoMdlFlags0214e3b4, self->unk_10, 0x6c).b20 = 0;
+        LFLD(LoMdlFlags0214e3b4, self->unk_b4, 0x6c).b19 = 1;
         LFLD(s32, self->unk_b4, 0x150) = self->unk_68 - 0x80;
-        MF(self->unk_b4).b20 = 0;
+        LFLD(LoMdlFlags0214e3b4, self->unk_b4, 0x6c).b20 = 0;
     }
     x += self->vfunc_94() - 0x80;
     LoSetPos0214e3b4(self->unk_10, x, y - 0x59);
     LoModelPlayPart(self->unk_10, 13);
     LoModelPlayPart(self->unk_10, 12);
-    MF(self->unk_10).b20 = 0;
-    MF(self->unk_b4).f7 = depth;
-    MF(self->unk_b4).f2 = 30;
-    MF(self->unk_b4).b21 = 1;
+    LFLD(LoMdlFlags0214e3b4, self->unk_10, 0x6c).b20 = 0;
+    LFLD(LoMdlFlags0214e3b4, self->unk_b4, 0x6c).f7 = depth;
+    LFLD(LoMdlFlags0214e3b4, self->unk_b4, 0x6c).f2 = 30;
+    LFLD(LoMdlFlags0214e3b4, self->unk_b4, 0x6c).b21 = 1;
     if (self->unk_0c & 0x800000) {
         LoSetPos0214e3b4(self->unk_b4, x - 2, y - 0x5d);
         LoModelPlayPart(self->unk_b4, 7);

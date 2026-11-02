@@ -3,24 +3,6 @@
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 10;
-    u32 b12 : 2;
-    u32 b14 : 3;
-    u32 b17 : 1;
-    u32 b18 : 1;
-    u32 b19 : 1;
-    u32 b20 : 12;
-} B24_021a2d64;
-
-typedef struct {
-    u16 b0 : 3;
-    u16 b3 : 1;
-    u16 b4 : 12;
-} B22_021a2d64;
-
-typedef struct {
     u16 b0 : 7;
     u16 b7 : 1;
     u16 b8 : 8;
@@ -30,9 +12,6 @@ typedef struct {
     u16 state;
     u16 sub;
 } St_021a2d64;
-
-#define B24(self) LFLD(B24_021a2d64, self, 0xb24)
-#define B22(self) LFLD(B22_021a2d64, self, 0xb22)
 
 extern "C" {
 
@@ -79,7 +58,7 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
     case 0: {
         s32 lim;
         BOOL fall;
-        B24(self).b17 = 0;
+        self->unk_b24_17 = 0;
         self->gravity = 0x29;
         self->unk_b36 = 0;
         if (!(self->msg_flags & 0x80)) {
@@ -91,7 +70,7 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
                 flag = TRUE;
             }
         }
-        if (B22(self).b3) {
+        if (self->unk_b22_3) {
             if (!flag) {
                 self->velY = 0;
             }
@@ -138,8 +117,8 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
             ((St_021a2d64 *)self->fsm)->sub = 4;
             if (!idle) {
                 Model0218fe1c *mdl = self->model;
-                LFLD(s32, mdl, 0xd8) = 0;
-                LFLD(s32, mdl, 0xdc) = 0;
+                mdl->evScript = NULL;
+                mdl->evCursor = NULL;
                 ((St_021a2d64 *)self->fsm)->sub = 5;
             }
             ((St_021a2d64 *)self->fsm)->state++;
@@ -149,15 +128,15 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
         fall = FALSE;
         if (!(self->hit->unk_54 & 0x20000000)) {
             lim = -0xf000;
-            if (B22(self).b0 != 0 || B24(self).b12 != 0 || B24(self).b19) {
+            if (self->unk_b22_0 != 0 || self->unk_b24_12 != 0 || self->unk_b24_19) {
                 lim = -0x2d000;
             }
-            if (self->pos.y - self->unk_b00 < lim) {
+            if (self->pos.y - self->unk_afc.y < lim) {
                 fall = TRUE;
             }
         }
         if (fall) {
-            B24(self).b18 = 1;
+            self->unk_b24_18 = 1;
             self->gravity = 0x52;
             func_ov000_02198360(self->fsm, 4, 0);
         }
@@ -174,7 +153,7 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
             st->sub--;
         }
         if (st->sub == 0) {
-            if (!B22(self).b3) {
+            if (!self->unk_b22_3) {
                 self->gravity = 0x52;
             }
             func_ov000_02198360(self->fsm, 4, 0);
@@ -182,16 +161,16 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
         break;
     }
     turned = FALSE;
-    if (B24(self).b1 && (self->hit->unk_54 & 0x400)) {
-        self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x,
-                                         self->unk_af8 - self->pos.z);
+    if (self->unk_b24_1 && (self->hit->unk_54 & 0x400)) {
+        self->moveYaw = FX_Atan2(self->unk_af0.x - self->pos.x,
+                                         self->unk_af0.z - self->pos.z);
         self->speed = 0x66;
         self->friction = 0;
-        if (!B24(self).b17 || (self->hit->unk_50 & 0x40000000)) {
+        if (!self->unk_b24_17 || (self->hit->unk_50 & 0x40000000)) {
             self->velY = 0x200;
         }
         self->gravity = 0x52;
-        B24(self).b17 = 1;
+        self->unk_b24_17 = 1;
         turned = TRUE;
     }
     if (!turned) {

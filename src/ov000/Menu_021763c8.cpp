@@ -1927,7 +1927,6 @@ void func_ov000_021754bc(Obj021743bc *self) {
 
 }
 
-
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
@@ -1996,7 +1995,6 @@ struct LoTextWin {
 };
 
 #define TEXT(off) ((LoTextWin *)((u8 *)self + (off)))
-#define M5C LFLD(Model *, self, 0x5c)
 
 static inline void Model_PlayPartChk(Model *model, s32 idx) {
     ModelRes *res;
@@ -2036,7 +2034,7 @@ void func_ov000_0217558c(Obj021743bc *self) {
     m = (Model *)self->unk_58;
     Model_PlayPart(m, 1);
     func_ov000_0219bf90();
-    MODEL_FLAGS(M5C)->polygon_id = Gfx3DState_NextPolyId(g);
+    MODEL_FLAGS(((Model *)self->unk_5c))->polygon_id = Gfx3DState_NextPolyId(g);
     xi = x >> 12;
     TEXT(0x60)->unk_vf20(xi + 0xc2 - (self->unk_a4 >> 1), 0x30);
     TEXT(0x60)->Render();
@@ -2050,42 +2048,41 @@ void func_ov000_0217558c(Obj021743bc *self) {
     TEXT(0x340)->Render();
     TEXT(0x3f8)->unk_vf20(xi + 0x92, 0x76);
     TEXT(0x3f8)->Render();
-    func_02041c20(M5C, 6, 2);
+    func_02041c20(((Model *)self->unk_5c), 6, 2);
     x = xi + 0x5a;
-    Model_SetPos(M5C, x << 12, -0x18000);
-    Model_PlayPart(M5C, 9);
-    Model_SetPos(M5C, x << 12, -0xa000);
-    Model_PlayPart(M5C, 9);
-    Model_SetPos(M5C, x << 12, 0x4000);
-    Model_PlayPart(M5C, 9);
-    Model_SetPos(M5C, x << 12, 0x12000);
-    Model_PlayPart(M5C, 9);
-    Model_SetPos(M5C, x << 12, 0x20000);
-    M5C->x += 0x15000;
-    Model_PlayPart(M5C, 10);
+    Model_SetPos(((Model *)self->unk_5c), x << 12, -0x18000);
+    Model_PlayPart(((Model *)self->unk_5c), 9);
+    Model_SetPos(((Model *)self->unk_5c), x << 12, -0xa000);
+    Model_PlayPart(((Model *)self->unk_5c), 9);
+    Model_SetPos(((Model *)self->unk_5c), x << 12, 0x4000);
+    Model_PlayPart(((Model *)self->unk_5c), 9);
+    Model_SetPos(((Model *)self->unk_5c), x << 12, 0x12000);
+    Model_PlayPart(((Model *)self->unk_5c), 9);
+    Model_SetPos(((Model *)self->unk_5c), x << 12, 0x20000);
+    ((Model *)self->unk_5c)->x += 0x15000;
+    Model_PlayPart(((Model *)self->unk_5c), 10);
     func_ov000_021c95fc(&c);
-    func_02041c18(M5C, (s8)Clamp99(c.a[0] + c.b[0]));
-    Model_SetPos(M5C, (x + 7) << 12, -0x21000);
-    Model_PlayPartChk(M5C, 6);
-    func_02041c18(M5C, (s8)Clamp99(c.a[1] + c.b[1]));
-    Model_SetPos(M5C, (x + 7) << 12, -0x13000);
-    Model_PlayPartChk(M5C, 6);
-    func_02041c18(M5C, (s8)Clamp99(c.a[2] + c.b[2]));
-    Model_SetPos(M5C, (x + 7) << 12, -0x5000);
-    Model_PlayPartChk(M5C, 6);
-    func_02041c18(M5C, (s8)Clamp99(c.a[3] + c.b[3]));
-    Model_SetPos(M5C, (x + 7) << 12, 0x9000);
-    Model_PlayPartChk(M5C, 6);
-    func_02041c18(M5C, (s8)Clamp99(c.a[4] + c.b[4]));
-    Model_SetPos(M5C, (x + 7) << 12, 0x17000);
-    Model_PlayPartChk(M5C, 6);
+    func_02041c18(((Model *)self->unk_5c), (s8)Clamp99(c.a[0] + c.b[0]));
+    Model_SetPos(((Model *)self->unk_5c), (x + 7) << 12, -0x21000);
+    Model_PlayPartChk(((Model *)self->unk_5c), 6);
+    func_02041c18(((Model *)self->unk_5c), (s8)Clamp99(c.a[1] + c.b[1]));
+    Model_SetPos(((Model *)self->unk_5c), (x + 7) << 12, -0x13000);
+    Model_PlayPartChk(((Model *)self->unk_5c), 6);
+    func_02041c18(((Model *)self->unk_5c), (s8)Clamp99(c.a[2] + c.b[2]));
+    Model_SetPos(((Model *)self->unk_5c), (x + 7) << 12, -0x5000);
+    Model_PlayPartChk(((Model *)self->unk_5c), 6);
+    func_02041c18(((Model *)self->unk_5c), (s8)Clamp99(c.a[3] + c.b[3]));
+    Model_SetPos(((Model *)self->unk_5c), (x + 7) << 12, 0x9000);
+    Model_PlayPartChk(((Model *)self->unk_5c), 6);
+    func_02041c18(((Model *)self->unk_5c), (s8)Clamp99(c.a[4] + c.b[4]));
+    Model_SetPos(((Model *)self->unk_5c), (x + 7) << 12, 0x17000);
+    Model_PlayPartChk(((Model *)self->unk_5c), 6);
 }
 
 }
 
 }  // namespace m_Lo_021752f0
 #undef TEXT
-#undef M5C
 
 // ---- Dtor_02175e04
 namespace m_Dtor_02175e04 {
@@ -2584,7 +2581,6 @@ void func_ov000_02176560(void) {
         func_0205aa30(data_ov000_021ccd48);
     }
 }
-
 
 void func_ov000_02176590(s16 v) {
     *(s16 *)(data_02fe1534 + 0x7a) = v;
@@ -3297,7 +3293,6 @@ static inline u8 *GetNth(u8 *m) {
     return p;
 }
 
-
 }
 
 extern "C" {
@@ -3755,7 +3750,6 @@ void func_ov000_02178110(Lo02178110 *self) {
 namespace m_Stub_021782b0 {
 
 extern "C" {
-
 
 void func_ov000_021782b0(void) {
 }
@@ -5378,7 +5372,7 @@ void func_ov000_0217a480(Lo0217a1f8 *self) {
         break;
     case 2: {
         u8 *g;
-        LFLD(u8, data_02097dd0, 0x31) = 1;
+        data_02097dd0->unk_31 = 1;
         self->unk_40 = 0;
         if (self->unk_0c == 0) {
             func_0206c620(data_0214a424);
@@ -5430,7 +5424,7 @@ void func_ov000_0217a480(Lo0217a1f8 *self) {
         self->unk_3c = 5;
         break;
     case 5:
-        LFLD(u8, data_02097dd0, 0x31) = 0;
+        data_02097dd0->unk_31 = 0;
         if (self->unk_48 != NULL) {
             return;
         }
@@ -6033,7 +6027,6 @@ typedef struct {
     s16 count;
     s16 unk_ba;
 } Self;
-
 
 extern "C" {
 extern void *data_02149ef8;
@@ -6654,7 +6647,7 @@ void func_ov000_0217c7b8(Lo0217ab30 *self) {
         if (!func_ov000_0217bd88(self, 0x8000, 0x82)) {
             return;
         }
-        LFLD(u8, data_02097dd0, 0x31) = 1;
+        data_02097dd0->unk_31 = 1;
         self->unk_04 |= 0x10000000;
         self->unk_50 = 6;
     case 6: {
@@ -6679,7 +6672,7 @@ void func_ov000_0217c7b8(Lo0217ab30 *self) {
         self->unk_50 = 8;
         break;
     case 8:
-        LFLD(u8, data_02097dd0, 0x31) = 0;
+        data_02097dd0->unk_31 = 0;
         if (!((self->unk_04 & 0x4000000) ? TRUE : FALSE)) {
             Lo0217c008_SetMode(self, 5);
         }
@@ -7439,7 +7432,7 @@ void func_ov000_0217ddd4(Lo0217ab30 *self) {
         self->unk_48 = 1;
     }
     case 1:
-        LFLD(u8, data_02097dd0, 0x31) = 0;
+        data_02097dd0->unk_31 = 0;
         break;
     }
 }
@@ -7488,8 +7481,6 @@ typedef struct {
     u32 b21 : 1;
     u32 rest : 10;
 } LoMdlFlags0217df5c;
-
-#define MF(m) LFLD(LoMdlFlags0217df5c, m, 0x6c)
 
 extern "C" {
 
@@ -7556,9 +7547,9 @@ void func_ov000_0217df5c(Lo0217ab30 *self, VecFx32 *pos) {
     u8 *g = (u8 *)data_02097d48;
     u32 size;
     u8 i;
-    MF(self->unk_a0).b19 = 1;
-    MF(self->unk_a0).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
-    MF(self->unk_a0).f2 = 0x1c;
+    LFLD(LoMdlFlags0217df5c, self->unk_a0, 0x6c).b19 = 1;
+    LFLD(LoMdlFlags0217df5c, self->unk_a0, 0x6c).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
+    LFLD(LoMdlFlags0217df5c, self->unk_a0, 0x6c).f2 = 0x1c;
     LoSetPosV0217df5c(self->unk_a0, pos);
     LFLD(s32, self->unk_a0, 0x150) = -0x1ccd;
     LoModelPlayPart(self->unk_a0, 1);
@@ -7566,8 +7557,8 @@ void func_ov000_0217df5c(Lo0217ab30 *self, VecFx32 *pos) {
         v.x = pos->x - 0x6f000;
         v.y = pos->y - 0x4a000;
         v.z = pos->z;
-        MF(self->unk_a0).b19 = 0;
-        MF(self->unk_a0).f2 = 0x1f;
+        LFLD(LoMdlFlags0217df5c, self->unk_a0, 0x6c).b19 = 0;
+        LFLD(LoMdlFlags0217df5c, self->unk_a0, 0x6c).f2 = 0x1f;
         for (i = 0; i < 3; i++) {
             LFLD(s32, self->unk_a0, 0x150) = -0x1c8d;
             LoSetPosV0217df5c(self->unk_a0, &v);
@@ -7623,7 +7614,6 @@ void func_ov000_0217df5c(Lo0217ab30 *self, VecFx32 *pos) {
 }
 
 }  // namespace m_Lo_0217df5c
-#undef MF
 
 // ---- Lo_0217e560
 namespace m_Lo_0217e560 {
@@ -7638,8 +7628,6 @@ typedef struct {
     u32 b21 : 1;
     u32 rest : 10;
 } LoMdlFlags0217e560;
-
-#define MF(m) LFLD(LoMdlFlags0217e560, m, 0x6c)
 
 extern "C" {
 
@@ -7789,9 +7777,9 @@ void func_ov000_0217e560(Lo0217ab30 *self, s32 *pos) {
     }
     {
         s32 py = (self->unk_ba * step + y0 - 0x5a) << 12;
-        MF(self->unk_a0).b19 = 1;
-        MF(self->unk_a0).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
-        MF(self->unk_a0).f2 = (u8)a;
+        LFLD(LoMdlFlags0217e560, self->unk_a0, 0x6c).b19 = 1;
+        LFLD(LoMdlFlags0217e560, self->unk_a0, 0x6c).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
+        LFLD(LoMdlFlags0217e560, self->unk_a0, 0x6c).f2 = (u8)a;
         LoSetPosFx0217e560(self->unk_a0, (lx - 0x80) << 12, py);
     }
     LFLD(s32, self->unk_a0, 0x150) = -0x1c8d;
@@ -7801,8 +7789,6 @@ void func_ov000_0217e560(Lo0217ab30 *self, s32 *pos) {
 }
 
 }  // namespace m_Lo_0217e560
-#undef MF
-
 
 // ---- Dtor_0217e9c8
 namespace m_Dtor_0217e9c8 {
@@ -8093,8 +8079,6 @@ typedef struct {
     u8 b0 : 1;
 } LoBits8;
 
-#define STATE LFLD(s32, self, 0x3c)
-
 static inline BOOL FadeIs4(void) {
     if (data_02097d78[3] == 4) {
         return TRUE;
@@ -8161,14 +8145,14 @@ static inline u8 *NewWorldMapModel(void) {
 
 void func_ov000_0217ef3c(Lo0217edb4 *self) {
     char buf[0x20];
-    switch (STATE) {
+    switch (self->unk_3c) {
     case 0:
         if (func_02059454(data_02fe152c, 5, 1, 3)) {
             LFLD(void *, LoSwitchTaskC(3, 0), 0x30) = (void *)func_ov000_0217ea30;
             self->vfunc_48();
-            STATE = 1;
+            self->unk_3c = 1;
         } else {
-            STATE = 3;
+            self->unk_3c = 3;
         }
         return;
     case 1:
@@ -8179,13 +8163,13 @@ void func_ov000_0217ef3c(Lo0217edb4 *self) {
             return;
         }
         if (self->unk_44 == 2) {
-            STATE = 2;
+            self->unk_3c = 2;
         } else if (self->unk_44 == -1) {
-            STATE = 3;
+            self->unk_3c = 3;
         } else if (self->unk_44 == 0) {
-            STATE = 8;
+            self->unk_3c = 8;
         } else if (self->unk_44 == 1) {
-            STATE = 10;
+            self->unk_3c = 10;
         }
         return;
     case 2:
@@ -8194,10 +8178,10 @@ void func_ov000_0217ef3c(Lo0217edb4 *self) {
         if (!FadeIs3() && !FadeIs4()) {
             func_0203cc58(0xb4000, 1, -1);
         }
-        if (STATE == 3) {
-            STATE = 4;
+        if (self->unk_3c == 3) {
+            self->unk_3c = 4;
         } else {
-            STATE = 7;
+            self->unk_3c = 7;
             return;
         }
         self->unk_40 = 0;
@@ -8228,7 +8212,7 @@ void func_ov000_0217ef3c(Lo0217edb4 *self) {
         self->unk_50 = o;
         LFLD(s32, o, 0x44) = 2;
         self->unk_50->vfunc_24(buf, "celog1gov01");
-        STATE = 5;
+        self->unk_3c = 5;
     }
     case 5: {
         BOOL ok = TRUE;
@@ -8273,7 +8257,7 @@ void func_ov000_0217ef3c(Lo0217edb4 *self) {
                 LFLD(u16, p, 8) = 10;
             }
         }
-        STATE = 6;
+        self->unk_3c = 6;
     }
     case 6:
         if (!FadeIdle()) {
@@ -8285,7 +8269,7 @@ void func_ov000_0217ef3c(Lo0217edb4 *self) {
             }
         }
         func_0203cc58(0xf000, 1, -1);
-        STATE = 7;
+        self->unk_3c = 7;
         return;
     case 7:
         if (!FadeIs4()) {
@@ -8294,12 +8278,12 @@ void func_ov000_0217ef3c(Lo0217edb4 *self) {
         self->unk_20 = 0x1000;
         self->vfunc_0c(0);
         func_ov000_02187150(data_ov000_021ccd54, 0);
-        STATE = 12;
+        self->unk_3c = 12;
         return;
     case 8:
         SndStop();
         func_0203cc58(0x3c000, 1, -1);
-        STATE = 9;
+        self->unk_3c = 9;
     case 9:
         if (!FadeIs4()) {
             return;
@@ -8307,12 +8291,12 @@ void func_ov000_0217ef3c(Lo0217edb4 *self) {
         self->unk_20 = 0x1000;
         self->vfunc_0c(0);
         func_ov000_02182b0c(data_ov000_021ccd54);
-        STATE = 12;
+        self->unk_3c = 12;
         return;
     case 10:
         SndStop();
         func_0203cc58(0x3c000, 1, -1);
-        STATE = 11;
+        self->unk_3c = 11;
     case 11:
         if (!FadeIs4()) {
             return;
@@ -8325,7 +8309,7 @@ void func_ov000_0217ef3c(Lo0217edb4 *self) {
         func_020623fc();
         { u8 *q = data_ov000_021ccd54; q[0xac] = 1;
         func_ov000_02182590(q + 0xac); }
-        STATE = 12;
+        self->unk_3c = 12;
         break;
     }
 }
@@ -8333,7 +8317,6 @@ void func_ov000_0217ef3c(Lo0217edb4 *self) {
 }
 
 }  // namespace m_Lo_0217ef3c
-#undef STATE
 
 // ---- Lo_0217f778
 namespace m_Lo_0217f778 {
@@ -9100,11 +9083,6 @@ typedef struct {
 typedef struct {
     Query *query;
 } Finder;
-
-typedef struct {
-    Finder finder;
-    Query q;
-} FinderQuery;
 
 extern "C" {
 s32 func_ov000_021993fc(Finder *self, Query *q, void **out, s32 max);

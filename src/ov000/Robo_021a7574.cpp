@@ -3,11 +3,6 @@
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
-    u16 state;
-    u16 timer;
-} State021a783c;
-
-typedef struct {
     u8 pad_00[0x40];
     u16 unk_40;
     u16 pad_42;
@@ -25,7 +20,7 @@ extern u8 data_ov000_021cc618[];
 extern void *data_ov000_021ccd68;
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02191120(void *a);
-BOOL func_ov000_02198360(State021a783c *st, s32 state, s32 x);
+BOOL func_ov000_02198360(ActorSub40 *st, s32 state, s32 x);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 void func_ov000_021b03c8(void *self);
 u8 *Actor_GetTarget(void *self);
@@ -85,7 +80,7 @@ typedef struct {
 } Msg021a70b0;
 
 void func_ov000_021a70b0(Robo021ca458 *self) {
-    switch (((State021a783c *)self->fsm)->state) {
+    switch (((ActorSub40 *)self->fsm)->st) {
     case 0:
         if (self->unk_b22_3) {
             func_ov000_02190cb0(self->model, data_ov000_021cc64e, 0x555, 0);
@@ -106,7 +101,7 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
         }
         self->friction = 0x99a;
         self->gravity = 10;
-        ((State021a783c *)self->fsm)->state++;
+        ((ActorSub40 *)self->fsm)->st++;
         break;
     case 1: {
         u16 ang;
@@ -151,23 +146,23 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
             self->unk_b1c = 0xffff;
             self->unk_b1e = 0xffff;
             self->unk_b24_7 = self->unk_b24_9;
-            ((State021a783c *)self->fsm)->state++;
+            ((ActorSub40 *)self->fsm)->st++;
         }
     }
     case 2:
         if (func_ov000_02191120(self->model)) {
             func_ov000_02190cb0(self->model, data_ov000_021cc5e3, 0x200, 0);
-            ((State021a783c *)self->fsm)->state++;
-            ((State021a783c *)self->fsm)->timer = 0;
+            ((ActorSub40 *)self->fsm)->st++;
+            ((ActorSub40 *)self->fsm)->timer = 0;
             self->friction = 0x800;
         }
         break;
     case 3: {
-        State021a783c *st = ((State021a783c *)self->fsm);
+        ActorSub40 *st = ((ActorSub40 *)self->fsm);
         st->timer++;
         if (st->timer > 15) {
             self->gravity = 0x52;
-            func_ov000_02198360(((State021a783c *)self->fsm), 1, 0);
+            func_ov000_02198360(((ActorSub40 *)self->fsm), 1, 0);
         }
         break;
     }
@@ -179,8 +174,8 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
     if (!(self->hit->unk_54 & 0x400)) {
         return;
     }
-    self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x,
-                                     self->unk_af8 - self->pos.z);
+    self->moveYaw = FX_Atan2(self->unk_af0.x - self->pos.x,
+                                     self->unk_af0.z - self->pos.z);
     self->speed = 0x66;
     self->friction = 0;
     if (!LBIT(self, 0xb24).b17 || (self->hit->unk_50 & 0x40000000)) {
@@ -191,7 +186,7 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
 }
 
 void func_ov000_021a7574(Robo021ca458 *self) {
-    switch (LFLD(State021a783c *, self, 0x40)->state) {
+    switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov000_021cc672, 0x800, 0);
         if (self->unk_b24_5 != 2) {
@@ -205,7 +200,7 @@ void func_ov000_021a7574(Robo021ca458 *self) {
         self->friction = 0xccd;
         self->gravity = 10;
         self->unk_b24_7 = 2;
-        ((State021a783c *)self->fsm)->state++;
+        ((ActorSub40 *)self->fsm)->st++;
         break;
     case 1:
         if (self->model->anim_state == 1 || func_ov000_02191120(self->model)) {
@@ -232,18 +227,18 @@ void func_ov000_021a7574(Robo021ca458 *self) {
             }
             func_ov000_02190cb0(self->model, data_ov000_021cc5e3, 0x155, 0);
             self->gravity = 0x52;
-            ((State021a783c *)self->fsm)->state++;
+            ((ActorSub40 *)self->fsm)->st++;
         }
         break;
     case 2: {
-        State021a783c *st = LFLD(State021a783c *, self, 0x40);
+        ActorSub40 *st = self->fsm;
         s32 lim = 0x10;
         if (self->unk_93_4) {
             lim = 8;
         }
         st->timer++;
         if (st->timer > lim) {
-            func_ov000_02198360(((State021a783c *)self->fsm), 1, 0);
+            func_ov000_02198360(((ActorSub40 *)self->fsm), 1, 0);
         }
         break;
     }
@@ -255,8 +250,8 @@ void func_ov000_021a7574(Robo021ca458 *self) {
     if (!(self->hit->unk_54 & 0x400)) {
         return;
     }
-    self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x,
-                                     self->unk_af8 - self->pos.z);
+    self->moveYaw = FX_Atan2(self->unk_af0.x - self->pos.x,
+                                     self->unk_af0.z - self->pos.z);
     self->speed = 0x66;
     self->friction = 0;
     if (!LBIT(self, 0xb24).b17 || (self->hit->unk_50 & 0x40000000)) {
@@ -271,7 +266,7 @@ void func_ov000_021a783c(Robo021ca458 *self) {
         func_ov000_021b03c8(self);
         return;
     }
-    switch (((State021a783c *)self->fsm)->state) {
+    switch (((ActorSub40 *)self->fsm)->st) {
     case 0:
         if (self->velY > 0) {
             self->velY = 0;
@@ -279,7 +274,7 @@ void func_ov000_021a783c(Robo021ca458 *self) {
         self->friction = 0xe66;
         self->gravity = 10;
         func_ov000_02190cb0(self->model, data_ov000_021cc696, 0x800, 0);
-        ((State021a783c *)self->fsm)->state++;
+        ((ActorSub40 *)self->fsm)->st++;
         break;
     case 1: {
         u16 ang;
@@ -298,7 +293,7 @@ void func_ov000_021a783c(Robo021ca458 *self) {
             if (a != NULL) {
                 func_ov000_0218d46c(a, self->id, 0xe);
             }
-            ((State021a783c *)self->fsm)->state++;
+            ((ActorSub40 *)self->fsm)->st++;
         }
         break;
     }
@@ -306,15 +301,15 @@ void func_ov000_021a783c(Robo021ca458 *self) {
         if (func_ov000_02191120(self->model)) {
             self->gravity = 0x52;
             func_ov000_02190cb0(self->model, data_ov000_021cc618, 0x19a, 0);
-            ((State021a783c *)self->fsm)->state++;
-            ((State021a783c *)self->fsm)->timer = 0;
+            ((ActorSub40 *)self->fsm)->st++;
+            ((ActorSub40 *)self->fsm)->timer = 0;
         }
         break;
     case 3: {
-        State021a783c *st = ((State021a783c *)self->fsm);
+        ActorSub40 *st = ((ActorSub40 *)self->fsm);
         st->timer++;
         if (st->timer > 20) {
-            func_ov000_02198360(((State021a783c *)self->fsm), 1, 0);
+            func_ov000_02198360(((ActorSub40 *)self->fsm), 1, 0);
         }
         break;
     }
@@ -326,8 +321,8 @@ void func_ov000_021a783c(Robo021ca458 *self) {
     if (!(self->hit->unk_54 & 0x400)) {
         return;
     }
-    self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x,
-                                     self->unk_af8 - self->pos.z);
+    self->moveYaw = FX_Atan2(self->unk_af0.x - self->pos.x,
+                                     self->unk_af0.z - self->pos.z);
     self->speed = 0x66;
     self->friction = 0;
     if (!LBIT(self, 0xb24).b17 || (self->hit->unk_50 & 0x40000000)) {

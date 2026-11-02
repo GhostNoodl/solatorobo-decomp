@@ -1,66 +1,20 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
-
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 2;
-    u32 b4 : 1;
-    u32 b5 : 2;
-    u32 b7 : 2;
-    u32 b9 : 3;
-    u32 b12 : 2;
-    u32 b14 : 6;
-    u32 b20 : 1;
-    u32 b21 : 1;
-    u32 rest : 10;
-} B24_0219d9fc;
-
-typedef struct {
-    u16 b0 : 3;
-    u16 b3 : 1;
-    u16 rest : 12;
-} B22_0219d9fc;
-
-typedef struct {
-    u16 b0 : 3;
-    u16 b3 : 1;
-    u16 b4 : 2;
-    u16 b6 : 1;
-    u16 rest : 9;
-} B2C_0219d9fc;
 
 typedef struct {
     u8 b0 : 1;
     u8 rest : 7;
 } Bit0_0219d9fc;
 
-typedef struct {
-    u16 b0 : 1;
-    u16 rest : 15;
-} H0_0219d9fc;
-
-typedef struct {
-    u16 b0 : 9;
-    u16 b9 : 1;
-    u16 rest : 6;
-} Pad18_0219d9fc;
-
-#define B24(self) LFLD(B24_0219d9fc, self, 0xb24)
-#define B22(self) LFLD(B22_0219d9fc, self, 0xb22)
-#define B2C(self) LFLD(B2C_0219d9fc, self, 0xb2c)
-#define B93(self) LFLD(Bit0_0219d9fc, self, 0x93)
-#define PAD18 LFLD(Pad18_0219d9fc, data_0214a424, 0x18)
-#define VEC(p, off) LFLD(VecFx32, p, off)
 #define SIN_0219d9fc(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define COS_0219d9fc(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
 extern "C" {
 extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd30;
-extern u8 *data_0214a424;
 extern u8 *data_02097d48;
 extern u8 data_ov000_021ca320[];
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
@@ -114,7 +68,7 @@ static inline BOOL HasD4B_0219d9fc(FieldState *g) {
 }
 
 static inline BOOL PadB9_0219d9fc(void) {
-    return PAD18.b9 ? TRUE : FALSE;
+    return data_0214a424->bits18.flag9 ? TRUE : FALSE;
 }
 
 struct RgbEq_0219d9fcSelf {
@@ -132,21 +86,21 @@ static inline BOOL RgbEq_0219d9fc(FieldState *g, RgbEq_0219d9fcSelf *self) {
     return e;
 }
 
-static inline void Flash_0219d9fc(u8 *m, u16 a, u16 b, s32 n) {
+static inline void Flash_0219d9fc(Model0218fe1c *m, u16 a, u16 b, s32 n) {
     if (n != 0) {
-        LFLD(u16, m, 0xb6) = a;
-        LFLD(u16, m, 0xb8) = b;
-        LFLD(u16, m, 0xba) = n + 1;
-        LFLD(u16, m, 0xbc) = n;
+        m->color = a;
+        m->color2 = b;
+        m->blend = n + 1;
+        m->blendMax = n;
     }
 }
 
 BOOL Robo021ca458_Draw(Robo021ca458 *self) {
     u32 fl;
-    u8 *m;
+    Model0218fe1c *m;
     u8 v;
     s32 n;
-    u8 *a;
+    Actor *a;
     u8 lvl;
     u16 ca;
     u16 cb;
@@ -156,25 +110,25 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
         return FALSE;
     }
     func_ov000_02191ec4(((void *)self->unk_3c), 1, self->hit->unk_54);
-    m = ((u8 *)self->model);
-    v = LFLD(u8, m, 0xbf);
+    m = self->model;
+    v = m->bright;
     if (self->hit->unk_54 & 0x80000) {
-        if (B24(self).b20) {
+        if (self->unk_b24_20_f) {
             if (v > 5) {
-                LFLD(u8, m, 0xbf) = v - 3;
+                m->bright = v - 3;
             }
         } else {
-            LFLD(u8, m, 0xbf) = 5;
-            B24(self).b20 = 1;
+            m->bright = 5;
+            self->unk_b24_20_f = 1;
         }
     } else {
-        if (B24(self).b20) {
+        if (self->unk_b24_20_f) {
             if (v < 0x1f) {
-                LFLD(u8, m, 0xbf) = v + 1;
+                m->bright = v + 1;
             }
         } else {
-            LFLD(u8, m, 0xbf) = 0x1f;
-            B24(self).b20 = 1;
+            m->bright = 0x1f;
+            self->unk_b24_20_f = 1;
         }
     }
 
@@ -200,71 +154,71 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
                     lvl = 0x14;
                 }
             }
-        } else if (B24(self).b0) {
+        } else if (self->unk_b24_0) {
             cb = ca = 0x3def;
             lvl = 0x1e;
             n = 1;
-        } else if (B22(self).b3 && IsIdle_0219d9fc(data_ov000_021ccd54)) {
+        } else if (self->unk_b22_3 && IsIdle_0219d9fc(data_ov000_021ccd54)) {
             if (!(LFLD(u16, data_ov000_021ccd68, 0xa) & 0x3f)) {
                 ca = 0x63fc;
                 cb = 0x5ad4;
                 n = 0x40;
             }
-        } else if (B2C(self).b6) {
+        } else if (self->unk_b2c_6) {
             if (self->fsm->current == 0x16) {
                 cb = ca = 0x729c;
                 n = 1;
             }
-        } else if (B2C(self).b3) {
+        } else if (self->unk_b2c_3_f) {
             cb = ca = 0x7e90;
             n = 1;
         }
     }
     if (n != 0) {
-        u8 *fm = ((u8 *)self->model);
-        LFLD(u16, fm, 0xb6) = ca;
-        LFLD(u16, fm, 0xb8) = cb;
-        LFLD(u16, fm, 0xba) = n + 1;
-        LFLD(u16, fm, 0xbc) = n;
+        Model0218fe1c *fm = self->model;
+        fm->color = ca;
+        fm->color2 = cb;
+        fm->blend = n + 1;
+        fm->blendMax = n;
     }
     self->model->alpha = lvl;
-    if (B24(self).b1) {
-        if (B22(self).b0 && ((u8 *)self->unk_998) != NULL) {
-            Flash_0219d9fc(((u8 *)self->unk_998), ca, cb, n);
+    if (self->unk_b24_1) {
+        if (self->unk_b22_0 && ((u8 *)self->unk_998) != NULL) {
+            Flash_0219d9fc((Model0218fe1c *)self->unk_998, ca, cb, n);
             LFLD(u8, ((u8 *)self->unk_998), 0xbe) = lvl;
         }
-    } else if (B24(self).b21) {
+    } else if (self->unk_b24_21) {
         if (n != 0) {
-            self->unk_82e = ca;
-            self->unk_830 = cb;
-            self->unk_832 = n + 1;
-            self->unk_834 = n;
+            self->mdl2.color = ca;
+            self->mdl2.color2 = cb;
+            self->mdl2.blend = n + 1;
+            self->mdl2.blendMax = n;
         }
-        self->unk_836 = lvl;
+        self->mdl2.alpha = lvl;
     }
 
     {
     s32 res = 0;
     s32 off = self->radius;
     u8 alpha = Begin_0219d9fc();
-    if (B24(self).b2) {
-        VEC(self, 0x3e0) = VEC(self, 0x75c);
+    if (self->unk_b24_2) {
+        self->mdl1.trans = self->unk_75c;
         func_ov000_02190758((u8 *)self + 0x368, (u8 *)self + 0x76c, 1);
-        self->unk_426 = 0x1f;
-        self->unk_429 = alpha;
+        self->mdl1.alpha = 0x1f;
+        self->mdl1.polyId = alpha;
         if (func_ov000_021903b4((u8 *)self + 0x368)) {
             res = 1;
         }
-        VEC(self, 0x124) = VEC(self, 0x70);
-        func_ov000_02190758(&self->unk_ac, (u8 *)self + 0x7c, 1);
-        self->unk_16d = alpha;
-        func_ov000_021903b4(&self->unk_ac);
-        h = self->unk_338;
+        self->mdl0.trans = self->pos;
+        func_ov000_02190758(&self->mdl0, (u8 *)self + 0x7c, 1);
+        self->mdl0.polyId = alpha;
+        func_ov000_021903b4(&self->mdl0);
+        h = self->hit0.check.y;
     } else {
-    if (B24(self).b1) {
+    if (self->unk_b24_1) {
         VecFx32 p;
-        if ((u32)(B24(self).b5 - 1) <= 1) {
-            s32 f = B24(self).b7;
+        if ((u32)(self->unk_b24_5 - 1) <= 1) {
+            s32 f = self->unk_b24_7;
             if (f == 1) {
                 self->unk_ae4 |= 2;
             } else if (f == 0) {
@@ -274,20 +228,20 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
                 self->unk_ae4_0 = 1;
             }
         }
-        if (B22(self).b0) {
+        if (self->unk_b22_0) {
             self->unk_ae4 |= 4;
         }
         if (self->unk_ae4 != 0) {
-            self->unk_3b8 = (u8 *)self + 0xa50;
+            self->mdl1.renderUser = (u8 *)self + 0xa50;
             NNS_G3dRenderObjSetInitFunc((u8 *)self + 0x38c, (void *)func_ov003_021ce9ac);
-            LFLD(u16, self, 0x42a) |= 0x20;
+            self->mdl1.unk_c2 |= 0x20;
         }
-        p = VEC(self, 0x75c);
-        if (B24(self).b12) {
-            a = (u8 *)FindActor_0219d9fc(self->unk_b20);
-            u8 *s;
-            if (a != NULL && (s = LFLD(u8 *, a, 0x4c)) != NULL) {
-                s16 *e = (s16 *)(data_ov000_021ca320 + LFLD(u16, s, 6) * 0x18);
+        p = self->unk_75c;
+        if (self->unk_b24_12) {
+            a = FindActor_0219d9fc(self->unk_b20);
+            ActorSub4c *s;
+            if (a != NULL && (s = a->targetObj) != NULL) {
+                s16 *e = (s16 *)(data_ov000_021ca320 + s->unk_06 * 0x18);
                 VecFx32 o;
                 o.x = e[1];
                 o.y = e[2];
@@ -295,32 +249,32 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
                 VEC_Add(&p, &o, &p);
             }
         }
-        VEC(self, 0x3e0) = p;
+        self->mdl1.trans = p;
         func_ov000_02190758((u8 *)self + 0x368, (u8 *)self + 0x76c, 1);
-        self->unk_429 = alpha;
+        self->mdl1.polyId = alpha;
         if (func_ov000_021903b4((u8 *)self + 0x368)) {
             res = 1;
         }
-        h = self->unk_72c;
-        if (!B22(self).b3) {
+        h = self->hit1.check.y;
+        if (!self->unk_b22_3) {
             off = off * 2 - (off >> 2);
         } else {
             off <<= 1;
         }
-        if (B24(self).b5) {
+        if (self->unk_b24_5) {
             func_ov000_021b4130(self, res != 0 ? TRUE : FALSE);
         }
     } else {
         if (!PadB9_0219d9fc() && RgbEq_0219d9fc(data_ov000_021ccd54, (RgbEq_0219d9fcSelf *)self)) {
-            VEC(self, 0x3e0) = VEC(self, 0x75c);
+            self->mdl1.trans = self->unk_75c;
             func_ov000_02190758((u8 *)self + 0x368, (u8 *)self + 0x76c, 1);
-            self->unk_426 = 0x1f;
-            self->unk_429 = alpha;
-            if (B22(self).b0) {
+            self->mdl1.alpha = 0x1f;
+            self->mdl1.polyId = alpha;
+            if (self->unk_b22_0) {
                 self->unk_ae4 |= 4;
-                self->unk_3b8 = (u8 *)self + 0xa50;
+                self->mdl1.renderUser = (u8 *)self + 0xa50;
                 NNS_G3dRenderObjSetInitFunc((u8 *)self + 0x38c, (void *)func_ov003_021ce9ac);
-                LFLD(u16, self, 0x42a) |= 0x20;
+                self->mdl1.unk_c2 |= 0x20;
             }
             if (func_ov000_021903b4((u8 *)self + 0x368)) {
                 res = 1;
@@ -328,35 +282,35 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
         } else {
             res = -1;
         }
-        if (B24(self).b21) {
+        if (self->unk_b24_21) {
             LFLD(Bit0_0219d9fc, self, 0xa4c).b0 = 1;
-            self->unk_fc = (u8 *)self + 0x9b8;
+            self->mdl0.renderUser = (u8 *)self + 0x9b8;
             NNS_G3dRenderObjSetInitFunc((u8 *)self + 0xd0, (void *)func_ov003_021ce9ac);
-            LFLD(u16, self, 0x16e) |= 0x20;
+            self->mdl0.unk_c2 |= 0x20;
         }
-        if (!B93(self).b0) {
-            VEC(self, 0x124) = VEC(self, 0x70);
-            func_ov000_02190758(&self->unk_ac, (u8 *)self + 0x7c, 1);
+        if (!self->unk_93_0) {
+            self->mdl0.trans = self->pos;
+            func_ov000_02190758(&self->mdl0, (u8 *)self + 0x7c, 1);
         }
-        self->unk_16d = alpha;
-        if (func_ov000_021903b4(&self->unk_ac) && B24(self).b21) {
-            VEC(self, 0x7f0) = VEC(self, 0x9dc);
+        self->mdl0.polyId = alpha;
+        if (func_ov000_021903b4(&self->mdl0) && self->unk_b24_21) {
+            self->mdl2.trans = self->unk_9dc;
             MI_Copy36B((u8 *)self + 0x9b8, (u8 *)self + 0x7fc);
-            self->unk_839 = alpha;
+            self->mdl2.polyId = alpha;
             func_ov000_021903b4((u8 *)self + 0x778);
         }
-        h = self->unk_338;
-        if (B24(self).b5) {
+        h = self->hit0.check.y;
+        if (self->unk_b24_5) {
             Actor *a = FindActor_0219d9fc(self->unk_b1c);
             if (a != NULL) {
-                u8 *s = ((u8 *)a->targetObj);
+                ActorSub4c *s = a->targetObj;
                 s32 q[3];
-                LFLD(u16, s, 0x1c) = self->id;
+                s->target = self->id;
                 q[0] = self->pos.x;
                 q[1] = self->pos.y;
                 q[2] = self->pos.z;
                 q[1] += self->centerY;
-                VEC(s, 0x44) = *(VecFx32 *)q;
+                s->dest = *(VecFx32 *)q;
             }
         }
     }
@@ -374,17 +328,17 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
         LFLD(s32, ((void *)self->unk_3c), 0x14) = off;
         LFLD(s32, ((void *)self->unk_3c), 0x10) = self->pos.y - h;
         LFLD(u8, ((void *)self->unk_3c), 0x1a) = alpha;
-        if (B93(self).b0 && !B24(self).b1) {
+        if (self->unk_93_0 && !self->unk_b24_1) {
             VecFx32 w;
-            w.x = self->unk_124;
-            w.y = self->unk_128;
-            w.z = self->unk_12c;
+            w.x = self->mdl0.trans.x;
+            w.y = self->mdl0.trans.y;
+            w.z = self->mdl0.trans.z;
             func_ov000_02191c24(((void *)self->unk_3c), &w);
         } else {
             func_ov000_02191c24(((void *)self->unk_3c), &self->pos);
         }
     }
-    if (B22(self).b0 && ((u8 *)self->unk_998) != NULL && res >= 0 && self->unk_42a_0) {
+    if (self->unk_b22_0 && ((u8 *)self->unk_998) != NULL && res >= 0 && self->mdl1.visible) {
         if (res != 0) {
             BOOL set;
             u16 rz;
@@ -392,7 +346,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
             u16 rx;
             MtxFx33 mm;
             MtxFx33 mt;
-            VEC(((u8 *)self->unk_998), 0x78) = VEC(self, 0xad4);
+            LFLD(VecFx32, ((u8 *)self->unk_998), 0x78) = self->unk_ad4;
             ry = self->unk_9a8;
             rz = self->unk_9aa;
             rx = self->unk_9a6;
@@ -425,7 +379,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
             func_ov000_021903b4(((u8 *)self->unk_998));
         }
         if (self->unk_9ac < self->unk_9ae) {
-            if (B24(self).b1) {
+            if (self->unk_b24_1) {
                 u8 *o = LFLD(u8 *, data_ov000_021ccd30, 0x11c);
                 if (o != NULL && LFLD(void *, o, 0x6c) != NULL) {
                     func_ov000_02167fac(LFLD(void *, o, 0x6c), self->unk_9ac, self->unk_9ae);

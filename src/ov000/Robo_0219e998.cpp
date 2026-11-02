@@ -1,41 +1,6 @@
 #include "ov000/Actor.h"
+#include "ov000/ObjLayouts.h"
 #include "ov000/LoCommon.h"
-
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 10;
-    u32 mode : 2;
-    u32 b14 : 2;
-    u32 b16 : 1;
-    u32 rest : 15;
-} B24_0219e998;
-
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 rest : 13;
-} B2c_0219e998;
-
-typedef struct {
-    u16 b0 : 3;
-    u16 b3 : 1;
-    u16 rest : 12;
-} B22_0219e998;
-
-typedef struct {
-    u8 b0 : 5;
-    u8 f5 : 2;
-    u8 b7 : 1;
-} B93_0219e998;
-
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 3;
-    u8 b4 : 1;
-    u8 rest : 3;
-} B29_0219e998;
 
 typedef struct {
     u32 b0 : 1;
@@ -55,15 +20,15 @@ void func_ov000_021bd300(void *p);
 VObj *func_02065f88(s32 id, void *pos);
 BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg);
 
-static inline void MinB32_0219e998(u8 *self, u16 n) {
-    if (LFLD(u16, self, 0xb32) < n) {
-        LFLD(u16, self, 0xb32) = n;
+static inline void MinB32_0219e998(Robo021ca458 *self, u16 n) {
+    if (self->unk_b32 < n) {
+        self->unk_b32 = n;
     }
 }
 
 // g is a local; as a trailing parameter it gets the target's registers.
-BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, u8 *g) {
-    u8 *s = (u8 *)self;
+BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
+    Robo021ca458 *s = (Robo021ca458 *)self;
     BOOL callBase;
     BOOL ok;
     if (!self->vfunc_14()) {
@@ -80,14 +45,14 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, u8 *g) {
     switch (msg->type) {
     case 9:
         callBase = FALSE;
-        if (!LFLD(B29_0219e998, s, 0xb29).b0 && LFLD(u16, LFLD(u8 *, s, 0x50), 0xa) == 0) {
-            g = (u8 *)data_ov000_021ccd54;
+        if (!s->unk_b29_0 && LFLD(u16, ((u8 *)s->hp), 0xa) == 0) {
+            g = data_ov000_021ccd54;
             if (g != NULL) {
-                ok = LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94) ? TRUE : FALSE;
+                ok = g->head != g->tail ? TRUE : FALSE;
                 if (ok) {
                     ok = FALSE;
                 } else {
-                    if (LFLD(s32, g, 0) != 3) ok = FALSE; else ok = TRUE;
+                    if (g->state != 3) ok = FALSE; else ok = TRUE;
                 }
             }
         if (ok) {
@@ -95,34 +60,34 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, u8 *g) {
             u16 hp;
             s32 bit;
             u8 kind;
-            u8 *p50 = LFLD(u8 *, s, 0x50);
-            LFLD(u16, p50, 4) = msg->id;
+            ActorHp *p50 = (ActorHp *)s->hp;
+            p50->unk_04 = msg->id;
             dmg = *(u16 *)msg->data;
-            if (LFLD(u8, LFLD(u8 *, s, 0x40), 0x13) == 0x16 && !(LFLD(u32, LFLD(u8 *, s, 0x48), 0x50) & 0x20000000)) {
+            if (LFLD(u8, ((u8 *)s->fsm), 0x13) == 0x16 && !(LFLD(u32, ((u8 *)s->hit), 0x50) & 0x20000000)) {
                 dmg += dmg / 2;
             }
-            if (LFLD(B93_0219e998, s, 0x93).f5 != 0 && dmg > 1) {
+            if (s->unk_93_5 != 0 && dmg > 1) {
                 dmg = dmg / 2;
             }
-            p50 = LFLD(u8 *, s, 0x50);
-            if (dmg >= LFLD(u16, p50, 0)) {
-                LFLD(u16, p50, 0) = 0;
+            p50 = (ActorHp *)s->hp;
+            if (dmg >= p50->cur) {
+                p50->cur = 0;
             } else {
-                LFLD(u16, p50, 0) -= dmg;
+                p50->cur -= dmg;
             }
             bit = 0;
-            hp = LFLD(u16, p50, 0);
+            hp = p50->cur;
             kind = msg->data[2];
             MinB32_0219e998(s, 0x5a);
             if (hp != 0) {
-                u32 mode = LFLD(B24_0219e998, s, 0xb24).mode;
-                if ((mode == 0 || mode == 3) && !LFLD(B2c_0219e998, s, 0xb2c).b0 && !LFLD(B2c_0219e998, s, 0xb2c).b1 &&
-                    !LFLD(B2c_0219e998, s, 0xb2c).b2 && (!LFLD(B22_0219e998, s, 0xb22).b3 || kind == 0x50)) {
+                u32 mode = s->unk_b24_12;
+                if ((mode == 0 || mode == 3) && !s->unk_b2c_0 && !s->unk_b2c_1 &&
+                    !s->unk_b2c_2 && (!s->unk_b22_3 || kind == 0x50)) {
                     switch (kind) {
                     case 0x10:
                     case 0x11:
                         bit = 0x12;
-                        if (!(LFLD(u32, LFLD(u8 *, s, 0x48), 0x50) & 0x20000000) || mode == 3) {
+                        if (!(LFLD(u32, ((u8 *)s->hit), 0x50) & 0x20000000) || mode == 3) {
                             MinB32_0219e998(s, 0x96);
                             bit = 0x13;
                             kind = 0x20;
@@ -138,42 +103,42 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, u8 *g) {
                         break;
                     }
                 }
-            } else if (LFLD(B24_0219e998, s, 0xb24).mode - 1 <= 1) {
-                LFLD(u16, LFLD(u8 *, s, 0x50), 0) = 1;
+            } else if (s->unk_b24_12 - 1 <= 1) {
+                LFLD(u16, ((u8 *)s->hp), 0) = 1;
             } else {
-                LFLD(B24_0219e998, s, 0xb24).b0 = 1;
-                LFLD(B93_0219e998, s, 0x93).f5 = 0;
+                s->unk_b24_0 = 1;
+                s->unk_93_5 = 0;
                 MinB32_0219e998(s, 0x96);
-                LFLD(u16, s, 0x90) = 0xffff;
-                LFLD(Bd_0219e998, LFLD(u8 *, s, 0x5c), 0).b1 = 0;
+                s->target = 0xffff;
+                LFLD(Bd_0219e998, ((u8 *)s->unk_5c), 0).b1 = 0;
                 bit = 0x13;
                 kind = 0x20;
-                func_ov000_021bd300(LFLD(void *, s, 0x5c));
-                LFLD(Bd_0219e998, LFLD(u8 *, s, 0x9b0), 0).b1 = 0;
-                func_ov000_021bd300(LFLD(void *, s, 0x9b0));
+                func_ov000_021bd300(s->unk_5c);
+                LFLD(Bd_0219e998, ((u8 *)s->unk_9b0), 0).b1 = 0;
+                func_ov000_021bd300(s->unk_9b0);
             }
-            p50 = LFLD(u8 *, s, 0x50);
-            LFLD(u16, p50, 6) = dmg;
-            LFLD(u8, p50, 8) = kind;
-            LFLD(u8, p50, 9) = kind;
+            p50 = (ActorHp *)s->hp;
+            p50->dmg = dmg;
+            p50->kind = kind;
+            p50->kind2 = kind;
             if (bit != 0) {
                 ((ActorSub40 *)self->fsm)->flags |= (u64)1 << bit;
             }
             if (msg->data[2] != 1) {
-                LFLD(u16, LFLD(u8 *, s, 0x50), 0xa) = 0x5a;
+                LFLD(u16, ((u8 *)s->hp), 0xa) = 0x5a;
             } else {
-                LFLD(u16, LFLD(u8 *, s, 0x50), 0xa) = 10;
+                LFLD(u16, ((u8 *)s->hp), 0xa) = 10;
             }
             {
-                u8 *m = LFLD(u8 *, s, 0x38);
-                LFLD(u16, m, 0xb6) = 0x14bf;
-                LFLD(u16, m, 0xb8) = 0x739f;
-                LFLD(u16, m, 0xba) = 0xb;
-                LFLD(u16, m, 0xbc) = 0xa;
+                Model0218fe1c *m = s->model;
+                m->color = 0x14bf;
+                m->color2 = 0x739f;
+                m->blend = 0xb;
+                m->blendMax = 0xa;
             }
-            LFLD(u8, s, 0xb2a) |= 2;
+            s->unk_b2a |= 2;
             if ((msg->id >> 12) == 4) {
-                LFLD(u8, s, 0xb2a) |= 0x10;
+                s->unk_b2a |= 0x10;
             }
         }
         }
@@ -182,21 +147,21 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, u8 *g) {
         u8 *p;
         VObj *e;
         callBase = FALSE;
-        LFLD(u16, LFLD(u8 *, s, 0x50), 4) = msg->id;
-        p = LFLD(u8 *, s, 0x50);
+        LFLD(u16, ((u8 *)s->hp), 4) = msg->id;
+        p = ((u8 *)s->hp);
         LFLD(u16, p, 0) += *(u16 *)msg->data;
         if (LFLD(u16, p, 0) > LFLD(u16, p, 2)) {
             LFLD(u16, p, 0) = LFLD(u16, p, 2);
         }
         {
-            u8 *m = LFLD(u8 *, s, 0x38);
-            LFLD(u16, m, 0xb6) = 0x73ea;
-            LFLD(u16, m, 0xb8) = 0x7ffc;
-            LFLD(u16, m, 0xba) = 0xb;
-            LFLD(u16, m, 0xbc) = 0xa;
+            Model0218fe1c *m = s->model;
+            m->color = 0x73ea;
+            m->color2 = 0x7ffc;
+            m->blend = 0xb;
+            m->blendMax = 0xa;
         }
-        e = func_02065f88(0xcb, s + 0x70);
-        LFLD(s32, s, 0xb44) = LFLD(s32, e, 0x24);
+        e = func_02065f88(0xcb, &s->pos);
+        s->unk_b44 = LFLD(s32, e, 0x24);
         e->vfunc_14(0x99a, 0x1000, 0x99a);
         MinB32_0219e998(s, 0x5a);
         break;
@@ -206,54 +171,54 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, u8 *g) {
         switch (msg->data[0]) {
         case 1: {
             u16 a = *(u16 *)(msg->data + 4);
-            u8 *p = LFLD(u8 *, s, 0x54);
+            u8 *p = ((u8 *)s->unk_54);
             LFLD(s16, p, 2) = *(s16 *)(msg->data + 2);
             LFLD(u16, p, 0) = a;
             break;
         }
         case 2:
-            LFLD(u16, LFLD(u8 *, s, 0x54), 4) = *(u16 *)(msg->data + 4);
+            LFLD(u16, ((u8 *)s->unk_54), 4) = *(u16 *)(msg->data + 4);
             break;
         }
         break;
     case 12:
         callBase = FALSE;
         if (msg->data[0] == 2) {
-            LFLD(u16, LFLD(u8 *, s, 0x54), 4) = 0;
+            LFLD(u16, ((u8 *)s->unk_54), 4) = 0;
         }
         break;
     case 7: {
         s32 v;
         callBase = FALSE;
-        LFLD(B29_0219e998, s, 0xb29).b4 = 1;
-        LFLD(s32, s, 0x70) = *(s32 *)(msg->data + 0);
-        LFLD(s32, s, 0x74) = *(s32 *)(msg->data + 4);
-        LFLD(s32, s, 0x78) = *(s32 *)(msg->data + 8);
-        LFLD(u16, s, 0x7c) = *(u16 *)(msg->data + 0xc);
-        LFLD(u16, s, 0x7e) = *(u16 *)(msg->data + 0xe);
-        LFLD(u16, s, 0x80) = *(u16 *)(msg->data + 0x10);
+        s->unk_b29_4 = 1;
+        s->pos.x = *(s32 *)(msg->data + 0);
+        s->pos.y = *(s32 *)(msg->data + 4);
+        s->pos.z = *(s32 *)(msg->data + 8);
+        s->rot_x = *(u16 *)(msg->data + 0xc);
+        s->rot_y = *(u16 *)(msg->data + 0xe);
+        s->rot_z = *(u16 *)(msg->data + 0x10);
         v = *(s32 *)(msg->data + 0x14);
         if (v > 0) {
-            LFLD(s32, s, 0xa8) = v;
+            s->gravity = v;
         } else if (v == 0) {
-            if (LFLD(B24_0219e998, s, 0xb24).b1) {
-                if ((LFLD(u16, data_ov000_021ccd68, 0xa) & 0x3f) >= 0x2a) {
-                    LFLD(s32, s, 0xa0) -= LFLD(s32, s, 0xa0) >> 2;
+            if (s->unk_b24_1) {
+                if ((data_ov000_021ccd68->frame & 0x3f) >= 0x2a) {
+                    s->velY -= s->velY >> 2;
                 } else {
-                    LFLD(s32, s, 0xa0) -= LFLD(s32, s, 0xa0) >> 3;
+                    s->velY -= s->velY >> 3;
                 }
-            } else if ((LFLD(u16, data_ov000_021ccd68, 0xa) & 0x3f) >= 0x2a) {
-                if (LFLD(s32, s, 0xa0) < 0) {
-                    LFLD(s32, s, 0xa0) -= LFLD(s32, s, 0xa0) >> 1;
+            } else if ((data_ov000_021ccd68->frame & 0x3f) >= 0x2a) {
+                if (s->velY < 0) {
+                    s->velY -= s->velY >> 1;
                 }
             } else {
-                if (LFLD(s32, s, 0xa0) < 0) {
-                    LFLD(s32, s, 0xa0) -= LFLD(s32, s, 0xa0) >> 2;
+                if (s->velY < 0) {
+                    s->velY -= s->velY >> 2;
                 }
             }
-            LFLD(s32, s, 0xa8) = 0x52;
-            LFLD(B9a_0219e998, LFLD(u8 *, s, 0x48), 0x9a).b5 = 0;
-            LFLD(B24_0219e998, s, 0xb24).b16 = 0;
+            s->gravity = 0x52;
+            LFLD(B9a_0219e998, ((u8 *)s->hit), 0x9a).b5 = 0;
+            s->unk_b24_16 = 0;
         }
         break;
     }

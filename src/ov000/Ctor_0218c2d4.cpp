@@ -1,62 +1,63 @@
+#include "ov000/LoCommon.h"
+#include "ov000/ActorBase.h"
 #include "types.h"
 
-#define F(type, off) (*(type *)((u8 *)self + (off)))
 
 extern "C" {
 extern u8 data_ov000_021cc3b4[];
 void PauseNode_Init(void *p);
 
-u8 *Actor_Ctor(u8 *self) {
+Actor *Actor_Ctor(Actor *self) {
     s32 i;
-    F(void *, 0) = data_ov000_021cc3b4;
-    PauseNode_Init(self + 0x24);
-    F(s32, 0x4) = 0;
-    F(s32, 0x8) = 0;
-    F(u16, 0xc) = 0xffff;
-    F(u16, 0xe) = 0xffff;
-    F(u16, 0x20) = 0xffff;
-    F(s32, 0x10) = 0;
-    F(u8, 0x14) = 1;
-    F(u8, 0x15) = 2;
-    F(u8, 0x16) = 0;
-    F(u8, 0x17) = 0xff;
+    VOBJ_SET_VTABLE(self, data_ov000_021cc3b4);
+    PauseNode_Init(&self->pause);
+    self->prev = NULL;
+    self->next = NULL;
+    self->id = 0xffff;
+    self->kind = 0xffff;
+    self->unk_20 = 0xffff;
+    self->unk_10 = 0;
+    self->state = 1;
+    self->mode = 2;
+    self->unk_16 = 0;
+    self->unk_17 = 0xff;
     for (i = 0; i < 4; i++) {
-        ((u16 *)(self + 0x18))[i] = 0;
+        (&self->unk_18)[i] = 0;
     }
-    F(s16, 0x22) = -1;
-    F(s32, 0x2c) = 0;
-    F(s32, 0x30) = 0;
-    F(s32, 0x34) = 0;
-    F(s32, 0x38) = 0;
-    F(s32, 0x3c) = 0;
-    F(s32, 0x40) = 0;
-    F(s32, 0x44) = 0;
-    F(s32, 0x48) = 0;
-    F(s32, 0x4c) = 0;
-    F(s32, 0x50) = 0;
-    F(s32, 0x54) = 0;
-    F(s32, 0x58) = 0;
-    F(s32, 0x5c) = 0;
-    F(s32, 0x60) = 0;
-    F(s32, 0x64) = 0;
-    F(s32, 0x68) = 0;
-    F(s32, 0x6c) = 0;
-    F(s32, 0x70) = 0;
-    F(s32, 0x74) = 0;
-    F(s32, 0x78) = 0;
-    F(u16, 0x7c) = 0;
-    F(u16, 0x7e) = 0;
-    F(u16, 0x80) = 0;
-    F(u16, 0x90) = 0xffff;
-    F(u8, 0x92) = 0;
-    F(u8, 0x93) = 0;
-    F(u8, 0x94) = 0;
-    F(u16, 0x96) = 0;
-    F(u16, 0x98) = 0;
-    F(s32, 0x9c) = 0;
-    F(s32, 0xa0) = 0;
-    F(s32, 0xa4) = 0;
-    F(s32, 0xa8) = 0;
+    self->unk_22 = -1;
+    self->msgs = NULL;
+    self->msg_flags = 0;
+    self->unk_34 = NULL;
+    self->model = NULL;
+    self->unk_3c = NULL;
+    self->fsm = NULL;
+    self->unk_44 = NULL;
+    self->hit = NULL;
+    self->targetObj = NULL;
+    self->hp = NULL;
+    self->unk_54 = NULL;
+    self->hitMesh = NULL;
+    self->unk_5c = NULL;
+    self->unk_60 = NULL;
+    self->radius = 0;
+    self->height = 0;
+    self->centerY = 0;
+    self->pos.x = 0;
+    self->pos.y = 0;
+    self->pos.z = 0;
+    self->rot_x = 0;
+    self->rot_y = 0;
+    self->rot_z = 0;
+    self->target = 0xffff;
+    self->unk_92 = 0;
+    self->unk_93 = 0;
+    self->unk_94 = 0;
+    self->unk_96 = 0;
+    self->moveYaw = 0;
+    self->speed = 0;
+    self->velY = 0;
+    self->friction = 0;
+    self->gravity = 0;
     return self;
 }
 }

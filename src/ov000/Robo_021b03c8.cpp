@@ -31,7 +31,7 @@ static inline void Next021b03c8(Robo021ca458 *self) {
 void func_ov000_021b03c8(Robo021ca458 *self) {
     ActorSub40 *s = self->fsm;
     Actor *a;
-    u8 *sub;
+    ActorSub4c *sub;
     void *o;
     VecFx32 v;
 
@@ -46,9 +46,9 @@ void func_ov000_021b03c8(Robo021ca458 *self) {
         a = FindActor021b03c8(self->unk_b20);
         sub = NULL;
         if (a != NULL) {
-            sub = ((u8 *)a->targetObj);
+            sub = a->targetObj;
         }
-        if (sub == NULL || LFLD(u16, sub, 0x1e) == 0) {
+        if (sub == NULL || sub->unk_1e == 0) {
             func_0204a028(data_02097e4c, 0x48, &self->pos, -5);
             Next021b03c8(self);
             return;
@@ -63,7 +63,7 @@ void func_ov000_021b03c8(Robo021ca458 *self) {
         if (LFLD(u8 *, o, 0x4c) != NULL) {
             LFLD(u8, LFLD(u8 *, o, 0x4c), 0x18) |= 0x40;
         }
-        LFLD(u16, sub, 0x1e)--;
+        sub->unk_1e--;
         func_ov000_0218996c(3, 6);
         func_02049f44(data_02097e4c, 0x66, &self->pos, 0);
         Next021b03c8(self);

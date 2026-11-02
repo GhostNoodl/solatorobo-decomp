@@ -4,15 +4,12 @@
 #include "types.h"
 #include "nitro/fx.h"
 #include "Main/Gfx/Camera.h"
+#include "Main/Sys/FieldId.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-// A 3-byte id (compared and copied as a whole by the field code).
-typedef struct FieldId {
-    u8 c[3];
-} FieldId;
 
 // The field camera (ctor Ov000Vt_021cc3a0_Ctor, vtable data_ov000_021cc3a0): a Camera with
 // an overlay 0 extension, 0x120 bytes.

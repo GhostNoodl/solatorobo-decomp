@@ -50,7 +50,7 @@ void func_ov000_0215d758(Lo021cae48 *self) {
     }
     self->unk_90 = (Model *)(m);
     func_020417e0(self->unk_90, func_02034d88(func_02035d5c(m + 0x2c), (u8 *)self->unk_90 + 0x4c));
-    LFLD(u32, self->unk_90, 0x6c) |= 2;
+    self->unk_90->flags |= 2;
     func_02041d9c(self->unk_90, 0, 6);
     if (self->unk_84 != 4) {
         func_02041d9c(self->unk_90, 0, ent[0]);

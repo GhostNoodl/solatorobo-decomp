@@ -32,7 +32,6 @@ typedef struct {
 
 #define M ((Model0218fe1c *)(self + 0x368))
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-#define F(type, off) (*(type *)((u8 *)self + (off)))
 
 extern "C" {
 extern char data_ov000_021cc5e3[];
@@ -62,8 +61,8 @@ void func_ov000_0219c8e0(u8 *self) {
     u8 *base;
     const char *name;
     func_ov000_0218ffdc(M, self + 0x450, 0, 1);
-    M->actor_id = F(u16, 0xc);
-    tbl = F(void **, 0x510) != NULL ? (AnimEventTable *)((u8 *)*F(void **, 0x510) + 8) : NULL;
+    M->actor_id = LFLD(u16, self, 0xc);
+    tbl = LFLD(void **, self, 0x510) != NULL ? (AnimEventTable *)((u8 *)*LFLD(void **, self, 0x510) + 8) : NULL;
     M->evTable = tbl;
     if (tbl != NULL) {
         if (tbl->is_ptr == 0) {
@@ -73,16 +72,16 @@ void func_ov000_0219c8e0(u8 *self) {
     M->evFunc = (void *)func_ov003_021ce630;
     {
         const char *nm = data_ov000_021cc5e3;
-        if (!F(B24_0219c8e0, 0xb24).b1) {
+        if (!LFLD(B24_0219c8e0, self, 0xb24).b1) {
             nm = data_ov000_021cc5e9;
         }
         func_ov000_02190cb0(M, nm, 0x1000, 1);
     }
     func_ov000_021915a0(M);
-    if (F(u8 *, 0xba0) != NULL) {
+    if (LFLD(u8 *, self, 0xba0) != NULL) {
         AnimCtrl *ctrl;
         void *q = NULL;
-        if (F(u8 *, 0xba0)[0x18] != 0) {
+        if (LFLD(u8 *, self, 0xba0)[0x18] != 0) {
             q = self + 0x588;
         }
         func_ov000_02191870(M, q);
@@ -92,7 +91,7 @@ void func_ov000_0219c8e0(u8 *self) {
             float f;
             s32 frame;
             func_ov000_02191920(M, 0, 0x1000, 0);
-            v = F(u8 *, 0xba0)[0x18];
+            v = LFLD(u8 *, self, 0xba0)[0x18];
             if (v > 0) {
                 f = (float)(s32)(v << 12) + 0.5f;
             } else {
@@ -109,43 +108,43 @@ void func_ov000_0219c8e0(u8 *self) {
             *((u8 *)ctrl + 0x111) |= 8;
         }
     }
-    F(C2_0219c8e0, 0x42a).b6 = 1;
+    LFLD(C2_0219c8e0, self, 0x42a).b6 = 1;
     func_ov000_02190a80(M, 0x1000);
-    F(u8, 0xae3) = 0;
-    F(C2_0219c8e0, 0x42a).b0 = 1;
-    F(u8, 0xae4) = 0;
-    if (!F(B22_0219c8e0, 0xb22).b3) {
+    LFLD(u8, self, 0xae3) = 0;
+    LFLD(C2_0219c8e0, self, 0x42a).b0 = 1;
+    LFLD(u8, self, 0xae4) = 0;
+    if (!LFLD(B22_0219c8e0, self, 0xb22).b3) {
         base = self + 0xbc;
-        F(u8, 0xae1) = func_ov000_021909a8(M, base + 0x400, data_ov000_021cc5ef);
-        F(u8, 0xae0) = func_ov000_021909a8(M, base + 0x400, data_ov000_021cc5f6);
-        F(u8, 0xae2) = func_ov000_021909a8(M, base + 0x400, data_ov000_021cc5fd);
+        LFLD(u8, self, 0xae1) = func_ov000_021909a8(M, base + 0x400, data_ov000_021cc5ef);
+        LFLD(u8, self, 0xae0) = func_ov000_021909a8(M, base + 0x400, data_ov000_021cc5f6);
+        LFLD(u8, self, 0xae2) = func_ov000_021909a8(M, base + 0x400, data_ov000_021cc5fd);
     } else {
         base = self + 0xbc;
-        F(u8, 0xae1) = func_ov000_021909a8(M, base + 0x400, data_ov000_021cc605);
-        F(u8, 0xae0) = func_ov000_021909a8(M, base + 0x400, data_ov000_021cc60a);
-        F(u8, 0xae2) = func_ov000_021909a8(M, base + 0x400, data_ov000_021cc5fd);
+        LFLD(u8, self, 0xae1) = func_ov000_021909a8(M, base + 0x400, data_ov000_021cc605);
+        LFLD(u8, self, 0xae0) = func_ov000_021909a8(M, base + 0x400, data_ov000_021cc60a);
+        LFLD(u8, self, 0xae2) = func_ov000_021909a8(M, base + 0x400, data_ov000_021cc5fd);
     }
-    if (!F(B22_0219c8e0, 0xb22).b3 && ((G18_0219c8e0 *)(data_0214a424 + 0x18))->mode != 2) {
+    if (!LFLD(B22_0219c8e0, self, 0xb22).b3 && ((G18_0219c8e0 *)(data_0214a424 + 0x18))->mode != 2) {
         Model0218fe1c *m2 = (Model0218fe1c *)(self + 0xac);
         void *tex = M->tex;
         NNS_G3dBindMdlSet(NNS_G3dGetMdlSet(m2->res->mdl_handle != NULL ? m2->res->mdl_handle->unk_00 : NULL), tex);
-        F(C2_0219c8e0, 0x16e).b0 = 1;
+        LFLD(C2_0219c8e0, self, 0x16e).b0 = 1;
     }
     if (((G18_0219c8e0 *)(data_0214a424 + 0x18))->mode == 2) {
-        F(C2_0219c8e0, 0x42a).b8 = 0;
+        LFLD(C2_0219c8e0, self, 0x42a).b8 = 0;
     } else {
-        F(C2_0219c8e0, 0x42a).b8 = 1;
+        LFLD(C2_0219c8e0, self, 0x42a).b8 = 1;
     }
-    if (F(B22_0219c8e0, 0xb22).b0 != 0 && F(void *, 0x99c) != NULL) {
+    if (LFLD(B22_0219c8e0, self, 0xb22).b0 != 0 && LFLD(void *, self, 0x99c) != NULL) {
         Model0218fe1c *p = (Model0218fe1c *)Heap_Alloc(0xe8);
         if (p != NULL) {
             p = func_ov000_0218fe1c(p);
         }
-        F(Model0218fe1c *, 0x998) = p;
-        func_ov000_0218ffdc(p, F(void *, 0x99c), 0, 1);
+        LFLD(Model0218fe1c *, self, 0x998) = p;
+        func_ov000_0218ffdc(p, LFLD(void *, self, 0x99c), 0, 1);
     }
-    if (F(Model0218fe1c *, 0x998) != NULL) {
-        F(Model0218fe1c *, 0x998)->visible = 1;
+    if (LFLD(Model0218fe1c *, self, 0x998) != NULL) {
+        LFLD(Model0218fe1c *, self, 0x998)->visible = 1;
     }
 }
 

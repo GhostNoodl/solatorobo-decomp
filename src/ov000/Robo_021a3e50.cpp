@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
@@ -11,7 +12,6 @@ typedef struct {
 extern "C" {
 extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd30;
-extern u8 *data_0214a424;
 extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc648[];
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
@@ -51,7 +51,7 @@ static inline BOOL IsBusy021a3e50(void) {
 void func_ov000_021a3e50(Robo021ca458 *self) {
     Actor *t;
     ActorSub40 *sub;
-    LFLD(u16, self->hit, 0x9a) |= 0x20;
+    self->hit->unk_9a |= 0x20;
     if (self->unk_b2f == 0) {
         self->unk_b2f++;
     }
@@ -73,15 +73,15 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
             } else {
                 self->fsm->st = 10;
                 if (self->unk_bac != self->target) {
-                    u8 *g;
+                    StageFlags *g;
                     u32 n;
                     self->unk_bac = self->target;
                     g = data_0214a424;
-                    n = LFLD(u16, g, 0x14) + 1;
+                    n = g->unk_014 + 1;
                     if (n >= 0xffff) {
                         n = 0xffff;
                     }
-                    LFLD(u16, g, 0x14) = n;
+                    g->unk_014 = n;
                 }
             }
         }

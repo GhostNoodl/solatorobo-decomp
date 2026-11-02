@@ -58,8 +58,8 @@ static inline Actor *FindActor_021a4194(u16 id) {
 }
 
 void func_ov000_021a4194(Robo021ca458 *self) {
-    u8 *t;
-    u8 *info;
+    Actor *t;
+    ActorSub4c *info;
     ActorSub40 *sub;
     BOOL hit;
     VecFx32 pos;
@@ -67,14 +67,14 @@ void func_ov000_021a4194(Robo021ca458 *self) {
     VecFx32 p;
     Pose_021a4194 pose;
 
-    LFLD(u16, self->hit, 0x9a) |= 0x20;
+    self->hit->unk_9a |= 0x20;
     if (self->unk_b2f == 0) {
         self->unk_b2f++;
     }
-    t = (u8 *)FindActor_021a4194(self->target);
+    t = FindActor_021a4194(self->target);
     info = NULL;
     if (t != NULL) {
-        info = LFLD(u8 *, t, 0x4c);
+        info = t->targetObj;
     }
     if (info == NULL && self->fsm->st < 0x14) {
         func_ov000_02198360(self->fsm, 1, 0);
@@ -83,12 +83,12 @@ void func_ov000_021a4194(Robo021ca458 *self) {
     sub = self->fsm;
     switch (sub->st) {
     case 0:
-        if (LFLD(u8, info, 0) != 0x12) {
+        if (info->type != 0x12) {
             u16 ang;
-            if (t == NULL || t == (u8 *)self) {
+            if (t == NULL || t == self) {
                 ang = self->rot_y;
             } else {
-                ang = FX_Atan2(LFLD(s32, t, 0x70) - self->pos.x, LFLD(s32, t, 0x78) - self->pos.z);
+                ang = FX_Atan2(t->pos.x - self->pos.x, t->pos.z - self->pos.z);
             }
             self->moveYaw = ang;
             self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
@@ -101,7 +101,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                 s = self->fsm;
                 s->timer++;
                 if (s->timer < 0x23 &&
-                    !Hit_DiffInCylinder(t + 0x70, &pos, LFLD(s32, t, 0x64) * 2 + 0x1000, 0x3800)) {
+                    !Hit_DiffInCylinder(&t->pos, &pos, t->radius * 2 + 0x1000, 0x3800)) {
                     hit = FALSE;
                     func_ov000_02190cb0(self->model, data_ov000_021ca050[self->unk_b24_5], 0x400, 0);
                     func_ov000_021915a0(self->model);
@@ -109,7 +109,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                     Actor_Move(self, 0);
                     func_ov000_021987b8(self->hit, 0, 0, 0);
                     if (self->unk_b24_1 && (self->hit->unk_54 & 0x400)) {
-                        self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
+                        self->moveYaw = FX_Atan2(self->unk_af0.x - self->pos.x, self->unk_af0.z - self->pos.z);
                         self->speed = 0x66;
                         self->friction = 0;
                         if (!self->unk_b24_17 || (self->hit->unk_50 & 0x40000000)) {
@@ -168,12 +168,12 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                 anim = data_ov000_021cc65a;
             }
         } else {
-            if (LFLD(u8, info, 0) == 0x12) {
+            if (info->type == 0x12) {
                 self->fsm->st = 10;
                 return;
             }
             if (!self->unk_b22_3) {
-                if (LFLD(u8, info, 0) == 0xd) {
+                if (info->type == 0xd) {
                     anim = data_ov000_021cc654;
                 } else {
                     anim = self->unk_b24_1 ? data_ov000_021cc65a : data_ov000_021cc660;
@@ -202,12 +202,12 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                 if (a->model != NULL) {
                     func_ov000_02190cb0(a->model, data_ov000_021cc660, 0x1000, 0);
                 }
-                self->fsm->timer = LFLD(s16, self->model, 0xc4);
+                self->fsm->timer = self->model->anim_state;
                 self->fsm->st++;
                 return;
             }
-        } else if (info != NULL && LFLD(u8, info, 2) == 7) {
-            self->fsm->timer = LFLD(s16, self->model, 0xc4);
+        } else if (info != NULL && info->unk_02 == 7) {
+            self->fsm->timer = self->model->anim_state;
             self->fsm->st++;
             return;
         }
@@ -226,14 +226,14 @@ void func_ov000_021a4194(Robo021ca458 *self) {
         if (self->unk_b1c != 0xffff) {
             Actor *a = FindActor_021a4194(self->unk_b1c);
             if (a != NULL) {
-                a->target = LFLD(u16, t, 0xc);
+                a->target = t->id;
                 func_ov000_0218d46c(a, self->id, 6);
             }
         } else {
             func_ov000_0218d46c(t, self->id, 6);
-            LFLD(u16, t, 0x90) = 0xffff;
+            t->target = 0xffff;
             Target_Set(info, self);
-            if (LFLD(u8, info, 2) == 6) {
+            if (info->unk_02 == 6) {
                 self->unk_b29_0 = 1;
             }
         }
@@ -241,8 +241,8 @@ void func_ov000_021a4194(Robo021ca458 *self) {
         return;
     case 11:
         if (func_ov000_02191120(self->model)) {
-            if (LFLD(u8, info, 2) == 6) {
-                if (LFLD(s16, t, 0x18) != 3) {
+            if (info->unk_02 == 6) {
+                if (t->unk_18 != 3) {
                     if (!self->unk_b24_1) {
                         self->unk_93_0 = 1;
                     } else {
@@ -250,13 +250,13 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                         func_ov000_021915a0(self->model);
                     }
                     {
-                        p.x = LFLD(s32, t, 0x70);
-                        p.y = LFLD(s32, t, 0x74);
-                        p.z = LFLD(s32, t, 0x78);
+                        p.x = t->pos.x;
+                        p.y = t->pos.y;
+                        p.z = t->pos.z;
                         o.x = 0;
                         o.y = 0;
                         o.z = -0x800;
-                        func_ov000_0219a210(&p, &o, LFLD(u16, t, 0x7e));
+                        func_ov000_0219a210(&p, &o, t->rot_y);
                         self->moveYaw = FX_Atan2(p.x - self->pos.x, p.z - self->pos.z);
                     }
                     self->speed = 0x15c;
@@ -277,7 +277,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
             func_ov000_021bd438(self->unk_5c, (VecFx32 *)((u8 *)self + 0x70), 0);
         }
         self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
-        if (LFLD(u8, info, 2) == 6) {
+        if (info->unk_02 == 6) {
             self->unk_b29_0 = 1;
             self->unk_b29_3 = 1;
         }

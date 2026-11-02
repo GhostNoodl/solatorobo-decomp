@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
@@ -7,21 +8,6 @@ typedef struct {
     u8 pad[0x258];
     VecFx32 camPos;
 } Glb_021afaf8;
-
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 2;
-    u16 b3 : 4;
-    u16 b7 : 2;
-    u16 b9 : 1;
-    u16 rest : 6;
-} Sv18_021afaf8;
-
-typedef struct {
-    u8 b0 : 6;
-    u8 b6 : 1;
-    u8 b7 : 1;
-} B190_021afaf8;
 
 typedef struct {
     u16 b0 : 1;
@@ -59,7 +45,6 @@ extern "C" const char data_ov000_021cc747[];
 
 extern "C" {
 extern Glb_021afaf8 NNS_G3dGlb;
-extern u8 *data_0214a424;
 extern Def_021afaf8 data_ov000_021ca398[];
 extern Def_021afaf8 data_ov000_021ca248[];
 extern void *data_ov000_021ccd68;
@@ -149,7 +134,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
     anm = NULL;
     s32 ofs;
     def = NULL;
-    u8 *sv;
+    StageFlags *sv;
     u32 mode;
     u32 lock;
     u32 id;
@@ -157,7 +142,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
     VecFx32 v;
     Pose_021afaf8 st;
 
-    LFLD(H_021afaf8, self->unk_44, 0x22).b1 = 0;
+    self->unk_44->unk_22_1 = 0;
     switch (self->fsm->st) {
     case 0: {
         self->unk_b22_9 = 2;
@@ -167,19 +152,19 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
         big = FALSE;
         ofs = 0;
         mode = self->unk_b22_6;
-        lock = LFLD(Sv18_021afaf8, sv, 0x18).b1;
-        id = LFLD(Sv18_021afaf8, sv, 0x18).b3;
+        lock = sv->bits18.mode;
+        id = sv->bits18.unk_3;
         switch (mode) {
         case 0:
             if (lock != 0) {
-                LFLD(Sv18_021afaf8, sv, 0x18).b1 = 0;
+                sv->bits18.mode = 0;
             }
             def = &data_ov000_021ca398[self->unk_b22_6];
             ofs = 0x1000;
             break;
         case 1:
             if (lock != 0) {
-                LFLD(Sv18_021afaf8, sv, 0x18).b1 = 0;
+                sv->bits18.mode = 0;
             }
             def = &data_ov000_021ca398[self->unk_b22_6];
             self->unk_9ac = self->unk_9ae = 0x1770;
@@ -187,7 +172,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
             break;
         case 2:
             if (lock != 1) {
-                LFLD(Sv18_021afaf8, sv, 0x18).b1 = 1;
+                sv->bits18.mode = 1;
             }
             anm = func_0206ef10(id | 0x8000);
             if (anm != NULL) {
@@ -197,7 +182,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
             break;
         case 3:
             if (lock != 1) {
-                LFLD(Sv18_021afaf8, sv, 0x18).b1 = 1;
+                sv->bits18.mode = 1;
             }
             anm = func_0206ef10(id | 0x8000);
             if (anm != NULL) {
@@ -228,11 +213,11 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
             if (lock == 2) {
                 break;
             }
-            LFLD(Sv18_021afaf8, sv, 0x18).b1 = 2;
+            sv->bits18.mode = 2;
             def = &data_ov000_021ca398[self->unk_b22_6];
-            self->unk_af0 = self->pos.x - NNS_G3dGlb.camPos.x;
-            self->unk_af4 = self->pos.y - NNS_G3dGlb.camPos.y;
-            self->unk_af8 = self->pos.z - NNS_G3dGlb.camPos.z;
+            self->unk_af0.x = self->pos.x - NNS_G3dGlb.camPos.x;
+            self->unk_af0.y = self->pos.y - NNS_G3dGlb.camPos.y;
+            self->unk_af0.z = self->pos.z - NNS_G3dGlb.camPos.z;
             break;
         }
         self->unk_ba4 = anm;
@@ -245,8 +230,8 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
         if (!big && self->unk_b22_0 != 0) {
             self->unk_b22_0 = 0;
             data_ov000_021ccd54->cam.base.wallClip = 0;
-            self->unk_70c = 0xa000;
-            LFLD(s32, self->unk_3c, 0xc) = 0xa000;
+            self->hit1.unk_4c = 0xa000;
+            self->unk_3c->unk_0c = 0xa000;
             FreeModels_021afaf8(self);
             ofs = 0;
         } else if (big) {
@@ -255,8 +240,8 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
             u8 *r;
             self->unk_b22_0 = 1;
             data_ov000_021ccd54->cam.base.wallClip = 1;
-            self->unk_70c = 0x14000;
-            LFLD(s32, self->unk_3c, 0xc) = 0x14000;
+            self->hit1.unk_4c = 0x14000;
+            self->unk_3c->unk_0c = 0x14000;
             FreeModels_021afaf8(self);
             {
                 void *p_1 = Heap_Alloc(0x138);
@@ -311,7 +296,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
             self->unk_b24_7 = self->unk_b24_9;
             self->target = 0xffff;
             if (ofs != 0 && !self->unk_b22_13) {
-                if (self->unk_b24_1 || (!(LFLD(Sv18_021afaf8, data_0214a424, 0x18).b9 ? TRUE : FALSE) && SameRoom_021afaf8(self))) {
+                if (self->unk_b24_1 || (!(data_0214a424->bits18.flag9 ? TRUE : FALSE) && SameRoom_021afaf8(self))) {
                     if (!self->unk_b24_1) {
                         ofs = 0xccd;
                     }
@@ -321,14 +306,14 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
                     func_02065f88(0x384, &v);
                 }
             }
-            self->unk_42a_0 = 0;
+            self->mdl1.visible = 0;
             func_ov000_02191008((u8 *)self + 0x368);
             if ((u8 *)self->unk_998 != NULL) {
                 LFLD(H_021afaf8, self->unk_998, 0xc2).b0 = 0;
             }
-            self->unk_16e_0 = 0;
+            self->mdl0.visible = 0;
             {
-                void **res = LFLD(void **, self->unk_ac, 0xc);
+                void **res = (void **)self->mdl0.res->mdl_handle;
                 NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet(res != NULL ? *res : NULL));
             }
             func_ov000_0218ec60((u8 *)self + 0x450, def->w[0], def->w[1], 1, 1);

@@ -1,12 +1,7 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageFlags.h"
 #include "ov000/Actor.h"
 #include "ov000/ObjLayouts.h"
-
-typedef struct {
-    u16 b0 : 1;
-    u16 sel : 2;
-    u16 rest : 13;
-} G18_021a0268;
 
 typedef struct {
     u8 b0 : 1;
@@ -20,7 +15,6 @@ typedef struct {
 } Msg021a0268;
 
 extern "C" {
-extern u8 *data_0214a424;
 extern s32 data_ov000_021ca00c[];
 extern s32 data_ov000_021ca100[];
 extern s32 data_ov000_021ca168[];
@@ -81,14 +75,14 @@ void func_ov000_021a0268(Robo021ca458 *self) {
         if (self->unk_b24_5 == 2) {
             self->unk_b08 = 0x15c;
         } else {
-            self->unk_b08 = data_ov000_021ca00c[LFLD(G18_021a0268, data_0214a424, 0x18).sel];
+            self->unk_b08 = data_ov000_021ca00c[data_0214a424->bits18.mode];
         }
         if (self->unk_b22_3) {
             self->unk_b08 += 0x8f;
         }
         self->unk_b08 += func_0206d37c(data_0214a424, 3) * 4;
     } else {
-        self->model = (Model0218fe1c *)&self->unk_ac;
+        self->model = (Model0218fe1c *)&self->mdl0;
         self->hit = (ActorSub48 *)((u8 *)self + 0x2cc);
         self->unk_b08 = 0x19a;
     }
@@ -171,7 +165,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
         }
         s = ((ActorSub40 *)self->fsm);
         if ((s->flags & 0x2000000) && self->velY <= 0x19a &&
-            self->pos.y - self->unk_af4 >= -0x2d000 && self->unk_b1c == 0xffff &&
+            self->pos.y - self->unk_af0.y >= -0x2d000 && self->unk_b1c == 0xffff &&
             !(self->hit->unk_50 & 0x20000000)) {
             func_ov000_02198360(s, 0x19, 0);
             break;

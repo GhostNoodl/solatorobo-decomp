@@ -29,11 +29,11 @@ BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void func_ov000_02168e18(void *self, s32 a, s32 b, VecFx32 *p);
 VObj *func_02065f88(s32 id, VecFx32 *pos);
 
-static inline void SetPal(u8 *sub) {
-    LFLD(u16, sub, 0xb6) = 0x73ea;
-    LFLD(u16, sub, 0xb8) = 0x7ffc;
-    LFLD(u16, sub, 0xba) = 0x15;
-    LFLD(u16, sub, 0xbc) = 0x14;
+static inline void SetPal(Model0218fe1c *sub) {
+    sub->color = 0x73ea;
+    sub->color2 = 0x7ffc;
+    sub->blend = 0x15;
+    sub->blendMax = 0x14;
 }
 
 void func_ov000_021b08ec(Robo021ca458 *self) {
@@ -61,10 +61,10 @@ void func_ov000_021b08ec(Robo021ca458 *self) {
             } else if (t == 0x23) {
                 func_0204a028(data_02097e4c, 0x44, (u8 *)self + 0x70, 2);
                 func_02049f44(data_02097e4c, 0x78, (u8 *)self + 0x70, 0);
-                SetPal(((u8 *)self->model));
+                SetPal(self->model);
             } else if (t >= 0x41) {
                 func_02049f44(data_02097e4c, 0x36, (u8 *)self + 0x70, 0);
-                SetPal(((u8 *)self->model));
+                SetPal(self->model);
                 self->fsm->timer = 0x23;
             }
             ofs.x = 0;
@@ -103,7 +103,7 @@ void func_ov000_021b08ec(Robo021ca458 *self) {
             }
             func_01ffc9fc(&pos, &data_ov000_021ca024, self->rot_y);
             VEC_Add(&pos, (VecFx32 *)((u8 *)self + 0xaf0), &pos);
-            rot.x = ((-0x6800 - self->unk_af4) >> 5) + 0xfa00;
+            rot.x = ((-0x6800 - self->unk_af0.y) >> 5) + 0xfa00;
             rot.y = 0x8000;
             rot.z = 0;
             o = (VObj *)func_ov000_0219be1c(kind, &pos, &rot, self->id, 0xffff);

@@ -1,4 +1,5 @@
 #include "nitro/fx.h"
+#include "ov000/Model0218fe1c.h"
 #include "nitro/std.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
@@ -104,23 +105,23 @@ void func_ov000_021c194c(Self021c194c *self, BOOL flag, u8 *p) {
         self->state = 7;
     }
     case 7: {
-        u8 *m_1;
+        Model0218fe1c *m_1;
         if (!Ready021c194c(self->obj)) {
             return;
         }
-        m_1 = (u8 *)Heap_Alloc(0xe8);
+        m_1 = (Model0218fe1c *)Heap_Alloc(0xe8);
         if (m_1 != NULL) {
-            m_1 = func_ov000_0218fe1c(m_1);
+            m_1 = (Model0218fe1c *)func_ov000_0218fe1c(m_1);
         }
-        self->model = m_1;
-        func_ov000_0218ffdc(m_1, GetObj021c194c(self), 0, 1);
+        self->model = (u8 *)m_1;
+        func_ov000_0218ffdc((u8 *)m_1, GetObj021c194c(self), 0, 1);
         func_ov000_02190cb0(self->model, data_ov000_021cc92d, 0, 1);
         LFLD(u16, self->model, 0xb4) = 0;
         func_ov000_021915a0(self->model);
-        m_1 = self->model;
-        LFLD(s32, m_1, 0xa8) = 0xb33;
-        LFLD(s32, m_1, 0xac) = 0xb33;
-        LFLD(s32, m_1, 0xb0) = 0xb33;
+        m_1 = (Model0218fe1c *)self->model;
+        m_1->scale.x = 0xb33;
+        m_1->scale.y = 0xb33;
+        m_1->scale.z = 0xb33;
         self->state = 4;
     }
     case 4: {

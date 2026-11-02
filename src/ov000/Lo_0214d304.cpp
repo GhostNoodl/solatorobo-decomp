@@ -12,9 +12,6 @@ typedef struct {
     u32 rest : 10;
 } LoMdlFlags0214d304;
 
-#define MF(m) LFLD(LoMdlFlags0214d304, m, 0x6c)
-#define M10 LFLD(u8 *, self, 0x10)
-#define M88 LFLD(u8 *, self, 0x88)
 
 extern "C" {
 
@@ -62,9 +59,12 @@ static inline void LoSetPos(void *m, s32 x, s32 y) {
 struct Obj0214d304 : public VObj {
     u8 unk_04[0x8];
     u32 unk_0c;
-    u8 unk_10[0x58];
+    u8 *unk_10;
+    u8 unk_14[0x54];
     s16 unk_68;
-    u8 unk_6a[0xde];
+    u8 unk_6a[0x1e];
+    u8 *unk_88;
+    u8 unk_8c[0xbc];
     VObj unk_148;
     u8 unk_14c[0x40];
     s32 unk_18c;
@@ -90,69 +90,69 @@ void func_ov000_0214d304(Obj0214d304 *self, s32 a, s32 *pos, s32 d) {
     z = self->unk_68 - 0x110;
     x = (pos[0] >> 12) - 0x80;
     y = (pos[1] >> 12) - 0x51;
-    MF(M10).b19 = 1;
-    MF(M10).f2 = 0x1e;
-    MF(M10).b20 = 1;
-    MF(M10).b21 = 1;
-    MF(M10).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
-    LoSetPos(M10, x << 12, y << 12);
-    LFLD(s32, M10, 0x150) = z;
-    LoModelPlayPart(M10, 0xe);
-    func_02041774(M10, 0xffff);
+    LFLD(LoMdlFlags0214d304, self->unk_10, 0x6c).b19 = 1;
+    LFLD(LoMdlFlags0214d304, self->unk_10, 0x6c).f2 = 0x1e;
+    LFLD(LoMdlFlags0214d304, self->unk_10, 0x6c).b20 = 1;
+    LFLD(LoMdlFlags0214d304, self->unk_10, 0x6c).b21 = 1;
+    LFLD(LoMdlFlags0214d304, self->unk_10, 0x6c).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
+    LoSetPos(self->unk_10, x << 12, y << 12);
+    LFLD(s32, self->unk_10, 0x150) = z;
+    LoModelPlayPart(self->unk_10, 0xe);
+    func_02041774(self->unk_10, 0xffff);
     self->unk_1b8 = self->unk_68;
     self->unk_148.vfunc_20(x + 0xb2 - (self->unk_18c >> 1), y + 0x62);
     self->unk_148.vfunc_90();
-    MF(M10).f7 = g[0x8b1];
-    LoSetPos(M10, (x + 0x74) << 12, (y + 8) << 12);
-    LFLD(s32, M10, 0x150) = self->unk_68;
-    LoModelPlayPart(M10, 0xb);
-    MF(M88).b19 = 1;
-    MF(M88).f2 = 0x1e;
-    LoSetPos(M88, (x + 0x7e) << 12, (y + 3) << 12);
-    LFLD(s32, M88, 0x150) = self->unk_68;
-    func_02041c20(M88, 6, LFLD(u16, data_02fe1534, 0x58));
+    LFLD(LoMdlFlags0214d304, self->unk_10, 0x6c).f7 = g[0x8b1];
+    LoSetPos(self->unk_10, (x + 0x74) << 12, (y + 8) << 12);
+    LFLD(s32, self->unk_10, 0x150) = self->unk_68;
+    LoModelPlayPart(self->unk_10, 0xb);
+    LFLD(LoMdlFlags0214d304, self->unk_88, 0x6c).b19 = 1;
+    LFLD(LoMdlFlags0214d304, self->unk_88, 0x6c).f2 = 0x1e;
+    LoSetPos(self->unk_88, (x + 0x7e) << 12, (y + 3) << 12);
+    LFLD(s32, self->unk_88, 0x150) = self->unk_68;
+    func_02041c20(self->unk_88, 6, LFLD(u16, data_02fe1534, 0x58));
     s = self->unk_218;
     if (s != 0) {
         {
-            u8 *m = M88;
+            u8 *m = self->unk_88;
             LFLD(s32, m, 0x144) = 0x800;
             LFLD(s32, m, 0x148) = 0x400;
             LFLD(s32, m, 0x14c) = 0x800;
         }
-        MTX_Identity22_((MtxFx22 *)(M88 + 0x114));
-        MTX_ScaleApply22((MtxFx22 *)(M88 + 0x114), (MtxFx22 *)(M88 + 0x114), s + 0x1000, s + 0x1000);
-        LoModelPlayPartF(M88, 6, 1);
+        MTX_Identity22_((MtxFx22 *)(self->unk_88 + 0x114));
+        MTX_ScaleApply22((MtxFx22 *)(self->unk_88 + 0x114), (MtxFx22 *)(self->unk_88 + 0x114), s + 0x1000, s + 0x1000);
+        LoModelPlayPartF(self->unk_88, 6, 1);
     } else {
-        LoModelPlayPart(M88, 6);
+        LoModelPlayPart(self->unk_88, 6);
     }
-    LFLD(s32, M10, 0x150) = self->unk_68;
+    LFLD(s32, self->unk_10, 0x150) = self->unk_68;
     py = (y + 0x14) << 12;
     y = x + 0x10;
     for (i = 0; i < 10; i++) {
         y += 0xb;
-        LoSetPos(M10, y << 12, py);
+        LoSetPos(self->unk_10, y << 12, py);
         if (self->unk_0c & 0x10000) {
             if (i > self->unk_208) {
             } else if (i == self->unk_208) {
                 u8 al = LO_FX_MUL(self->unk_210, 0x1f000) >> 12;
                 if (al != 0) {
-                    MF(M10).b19 = 1;
-                    MF(M10).f2 = al;
-                    MF(M10).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
-                    LFLD(s32, M10, 0x150) = self->unk_68;
-                    LoModelPlayPart(M10, 0xd);
-                    func_02041774(M10, 0xffff);
+                    LFLD(LoMdlFlags0214d304, self->unk_10, 0x6c).b19 = 1;
+                    LFLD(LoMdlFlags0214d304, self->unk_10, 0x6c).f2 = al;
+                    LFLD(LoMdlFlags0214d304, self->unk_10, 0x6c).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
+                    LFLD(s32, self->unk_10, 0x150) = self->unk_68;
+                    LoModelPlayPart(self->unk_10, 0xd);
+                    func_02041774(self->unk_10, 0xffff);
                 }
             } else {
-                LFLD(s32, M10, 0x150) = self->unk_68;
-                LoModelPlayPart(M10, 0xd);
+                LFLD(s32, self->unk_10, 0x150) = self->unk_68;
+                LoModelPlayPart(self->unk_10, 0xd);
             }
         } else if (i + 1 <= self->unk_208) {
-            LFLD(s32, M10, 0x150) = self->unk_68;
-            LoModelPlayPart(M10, 0xd);
+            LFLD(s32, self->unk_10, 0x150) = self->unk_68;
+            LoModelPlayPart(self->unk_10, 0xd);
         }
-        LFLD(s32, M10, 0x150) = self->unk_68 - 0x20;
-        LoModelPlayPart(M10, 0xc);
+        LFLD(s32, self->unk_10, 0x150) = self->unk_68 - 0x20;
+        LoModelPlayPart(self->unk_10, 0xc);
     }
 }
 

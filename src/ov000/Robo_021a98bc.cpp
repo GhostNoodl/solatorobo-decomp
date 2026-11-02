@@ -77,7 +77,7 @@ void func_ov000_021a98bc(Robo021ca458 *self) {
                         if (self->unk_b22_0 != 0 || self->unk_b24_12 != 0 || self->unk_b24_19) {
                             lim = -0x2d000;
                         }
-                        if (self->pos.y - self->unk_b00 < lim) {
+                        if (self->pos.y - self->unk_afc.y < lim) {
                             hit = TRUE;
                         }
                     }

@@ -4,6 +4,7 @@
 // 0x021899d8 in the ROM (its functions still read these objects through the 0x021ccd50 pool),
 // but func_ov000_0218867c is not matched, so the files after it stay separate.
 #include "ov000/VObj.h"
+#include "Main/Res/StageFlags.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/HeapScope.h"
 #include "ov000/LoCommon.h"
@@ -1660,7 +1661,6 @@ s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
-extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
@@ -1763,7 +1763,6 @@ s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
-extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
@@ -1791,7 +1790,7 @@ s32 func_ov000_021834c4(CmdObj *self) {
         if (!(LFLD(s32, &data_02097d78, 0xc) == 0 && LFLD(s32, &data_02097d78, 0) == 0 ? 1 : 0)) {
             func_0203cb78(0x8000, 0, -1);
         }
-        LFLD(u8, data_0214a424, 9) = (u8)self->unk_a4;
+        data_0214a424->unk_009 = (u8)self->unk_a4;
         func_0206c620(data_0214a424);
         func_ov000_02180660(7, 0);
         self->step++;
@@ -1970,7 +1969,6 @@ s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
-extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
@@ -2118,7 +2116,6 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_ov000_021ccd68;
 extern Dtcm02fe1534 data_02fe1534;
 extern Obj021ccd6c *data_ov000_021ccd6c;
-extern void *data_0214a424;
 extern void *data_02097e4c;
 extern Mgr021ccd30 *data_ov000_021ccd30;
 Obj0219bf90 *func_ov000_0219bf90(void);
@@ -2840,7 +2837,6 @@ s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
-extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
@@ -2962,7 +2958,6 @@ s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
-extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
@@ -3063,7 +3058,6 @@ s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
-extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
@@ -3201,7 +3195,6 @@ s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
-extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
@@ -3346,7 +3339,6 @@ s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
-extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
@@ -5005,7 +4997,6 @@ s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
-extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
@@ -5471,7 +5462,6 @@ s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
-extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
@@ -5686,7 +5676,6 @@ s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
-extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);

@@ -4,17 +4,6 @@
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
-    u8 b0 : 1;
-    u8 rest : 7;
-} B18_021aa978;
-
-typedef struct {
-    u16 val;
-    u8 d;
-    u16 id;
-} Hit021aa978;
-
-typedef struct {
     u16 x, y, z;
 } Rot021aa978;
 
@@ -46,11 +35,6 @@ void func_ov000_02191418(void *a, u16 b, s32 c);
 void func_ov000_021b1fac(void *self, s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, u16 b);
 u16 Camera_GetYaw(void *cam);
-
-typedef struct {
-    u16 b0 : 3;
-    u16 rest : 13;
-} B22_021aa978;
 
 static inline Actor *FindActor021aa978(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;
@@ -99,7 +83,7 @@ static inline void Release021aa978(Robo021ca458 *self, s32 next) {
         Actor_SendMsg(a, self->id, 7, 1, sizeof(Msg021aa978), &m);
         func_ov000_0218d46c(a, self->id, 0xa);
         if (a->targetObj != NULL) {
-            LFLD(B18_021aa978, a->targetObj, 0x18).b0 = 0;
+            a->targetObj->unk_18_0 = 0;
         }
     }
     self->unk_b1c = 0xffff;
@@ -109,7 +93,6 @@ static inline void Release021aa978(Robo021ca458 *self, s32 next) {
     self->unk_b2c_1 = 0;
     func_ov000_02198360(((void *)self->fsm), next, 0);
 }
-
 
 void func_ov000_021aa978(Robo021ca458 *self) {
     Actor *a = FindActor021aa978(self->unk_b1c);
@@ -193,9 +176,9 @@ void func_ov000_021aa978(Robo021ca458 *self) {
         }
         func_ov000_0218d46c(a, self->id, 0xb);
         a->rot_y = self->rot_y + 0x8000;
-        LFLD(s32, sub, 0x50) = 0x2000;
-        LFLD(s32, sub, 0x54) = 0x19a;
-        LFLD(s32, sub, 0x58) = 0;
+        sub->unk_50 = 0x2000;
+        sub->unk_54 = 0x19a;
+        sub->unk_58 = 0;
         {
             u8 v = self->unk_b2c_7 * 5;
             sub->unk_19 = self->unk_b24_22;

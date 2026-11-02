@@ -4,17 +4,6 @@
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
-    u8 b0 : 1;
-    u8 rest : 7;
-} B18_021aaf80;
-
-typedef struct {
-    u16 val;
-    u8 d;
-    u16 id;
-} Hit021aaf80;
-
-typedef struct {
     u16 x, y, z;
 } Rot021aaf80;
 
@@ -93,7 +82,7 @@ static inline void Release021aaf80(Robo021ca458 *self, s32 next) {
         Actor_SendMsg(a, self->id, 7, 1, sizeof(Msg021aaf80), &m);
         func_ov000_0218d46c(a, self->id, 0xa);
         if (a->targetObj != NULL) {
-            LFLD(B18_021aaf80, a->targetObj, 0x18).b0 = 0;
+            a->targetObj->unk_18_0 = 0;
         }
     }
     self->unk_b1c = 0xffff;
@@ -103,7 +92,6 @@ static inline void Release021aaf80(Robo021ca458 *self, s32 next) {
     self->unk_b2c_1 = 0;
     func_ov000_02198360(self->fsm, next, 0);
 }
-
 
 void func_ov000_021aaf80(Robo021ca458 *self) {
     Actor *a = FindActor021aaf80(self->unk_b1c);
@@ -153,10 +141,10 @@ void func_ov000_021aaf80(Robo021ca458 *self) {
             o->vfunc_14(sc + 0xccd, 0x1400, sc + 0xccd);
             LFLD(s32, o, 0x3c) = 0xe66;
             func_ov000_0218d46c(a, self->id, 0xb);
-            LFLD(B18_021aaf80, sub, 0x18).b0 = 0;
-            LFLD(s32, sub, 0x50) = 0x19a;
-            LFLD(s32, sub, 0x54) = -0x1000;
-            LFLD(s32, sub, 0x58) = 0;
+            sub->unk_18_0 = 0;
+            sub->unk_50 = 0x19a;
+            sub->unk_54 = -0x1000;
+            sub->unk_58 = 0;
             v = sub->unk_1a * 5;
             sub->unk_19 = self->unk_b24_22;
             sub->unk_1b = v;
@@ -203,7 +191,7 @@ void func_ov000_021aaf80(Robo021ca458 *self) {
                 if (self->unk_b22_0 || self->unk_b24_12 || self->unk_b24_19) {
                     lim = -0x2d000;
                 }
-                if (self->pos.y - self->unk_b00 < lim) {
+                if (self->pos.y - self->unk_afc.y < lim) {
                     fall = TRUE;
                 }
             }

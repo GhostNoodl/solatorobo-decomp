@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageFlags.h"
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
@@ -12,7 +13,6 @@ typedef struct {
 
 extern "C" {
 extern void *data_02149ef8;
-extern u8 *data_0214a424;
 extern Shared02fe1534 data_02fe1534;
 extern void *data_02fe152c;
 extern u8 data_ov000_021ccd24[];
@@ -65,7 +65,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
         func_0205aa30(LFLD(void *, data_ov000_021ccd24, 8));
     }
     {
-        u16 v = LFLD(u8, data_0214a424, 0x639);
+        u16 v = data_0214a424->unk_639;
         data_02fe1534.unk_70 = 1;
         data_02fe1534.unk_7a = v;
         LFLD(VObj *, data_ov000_021ccd24, 8)->vfunc_38(1);

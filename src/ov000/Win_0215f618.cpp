@@ -20,7 +20,6 @@ typedef struct {
     u32 rest : 10;
 } MdlFlags0215f618;
 
-#define MF(m) LFLD(MdlFlags0215f618, m, 0x6c)
 
 extern "C" {
 
@@ -76,15 +75,15 @@ void func_ov000_0215f618(Obj0215f618 *self, s32 *pos) {
     Entry0215f618 *e;
     G3_Cmd1(0x2a, 0x20000000);
     useAlpha = TRUE;
-    if (!MF(self->unk_28).b19) {
+    if (!LFLD(MdlFlags0215f618, self->unk_28, 0x6c).b19) {
         useAlpha = FALSE;
     }
     if (useAlpha) {
-        alpha = (u8)MF(self->unk_28).f2;
+        alpha = (u8)LFLD(MdlFlags0215f618, self->unk_28, 0x6c).f2;
     } else {
         alpha = 0x1e;
     }
-    if (MF(self->unk_28).b20 ? TRUE : FALSE) {
+    if (LFLD(MdlFlags0215f618, self->unk_28, 0x6c).b20 ? TRUE : FALSE) {
         misc |= 0x4000;
     }
     e = &data_02fe0188[self->unk_04];
@@ -103,7 +102,7 @@ void func_ov000_0215f618(Obj0215f618 *self, s32 *pos) {
     G3_Cmd1(0x20, 0);
     NNS_G3dGeSendDL(LFLD(void *, data_0208b3d0, 4), LFLD(u32, data_020828f8, 4));
     G3_Cmd1(0x12, 1);
-    if (!MF(self->unk_28).b21) {
+    if (!LFLD(MdlFlags0215f618, self->unk_28, 0x6c).b21) {
         shadow = FALSE;
     }
     if (shadow) {
@@ -122,7 +121,7 @@ void func_ov000_0215f618(Obj0215f618 *self, s32 *pos) {
     G3_Cmd1(0x25, 0x10001000);
     NNS_G3dGeBufferOP_N(0x41, NULL, 0);
     G3_Cmd1(0x12, 1);
-    MF(self->unk_28).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
+    LFLD(MdlFlags0215f618, self->unk_28, 0x6c).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
 }
 
 }

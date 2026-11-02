@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
@@ -19,7 +20,6 @@ typedef struct {
 extern "C" {
 extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
-extern void *data_0214a424;
 extern char data_ov000_021cc6cc[];
 extern char data_ov000_021cc6d2[];
 extern char data_ov000_021cc6d8[];
@@ -72,7 +72,7 @@ static inline BOOL GIdle_021ac844(void) {
 
 static inline void Bump_021ac844(Robo021ca458 *self) {
     if (self->unk_b24_1 && (self->hit->unk_54 & 0x400)) {
-        self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
+        self->moveYaw = FX_Atan2(self->unk_af0.x - self->pos.x, self->unk_af0.z - self->pos.z);
         self->speed = 0x66;
         self->friction = 0;
         if (!self->unk_b24_17 || (self->hit->unk_50 & 0x40000000)) {
@@ -188,7 +188,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
             func_ov000_02199f88(((u8 *)self->hp), self);
             self->fsm->st++;
         }
-        if (self->pos.y - self->unk_b00 > 0x28cd) {
+        if (self->pos.y - self->unk_afc.y > 0x28cd) {
             self->velY = -0x60;
         }
         if (self->unk_b24_0) {
@@ -274,7 +274,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
                 self->fsm->st++;
             }
         }
-        LFLD(u16, self->hit, 0x9a) |= 0x20;
+        self->hit->unk_9a |= 0x20;
         if (self->msg_flags & 0x80) {
             upd = TRUE;
         }
@@ -288,7 +288,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
                 func_ov000_02198360(self->fsm, 1, 0);
             }
         }
-        LFLD(u16, self->hit, 0x9a) |= 0x20;
+        self->hit->unk_9a |= 0x20;
         if (self->msg_flags & 0x80) {
             upd = TRUE;
         }

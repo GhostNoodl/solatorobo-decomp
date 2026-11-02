@@ -1,4 +1,5 @@
 #include "ov000/Actor.h"
+#include "Main/Res/StageFlags.h"
 #include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
@@ -10,7 +11,6 @@ typedef struct {
 } Bits021950e8;
 
 extern "C" {
-extern u8 *data_0214a424;
 Actor *func_ov000_0219bf90(void);
 BOOL func_ov000_0219b3b4(void *p);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
@@ -43,12 +43,12 @@ BOOL func_ov000_021950e8(ActorEx *self, ActorMsg *msg) {
                 if (!self->unk_cc_2) {
                     Actor *p = func_ov000_0219bf90();
                     if (p != NULL && msg->id == p->id) {
-                        u8 *g = data_0214a424;
-                        u32 n = LFLD(u16, g, 0x16) + 1;
+                        StageFlags *g = data_0214a424;
+                        u32 n = g->unk_016 + 1;
                         if (n >= 0xffff) {
                             n = 0xffff;
                         }
-                        LFLD(u16, g, 0x16) = n;
+                        g->unk_016 = n;
                         ((ActorSub40 *)self->fsm)->flags |= 0x200000;
                     }
                 }

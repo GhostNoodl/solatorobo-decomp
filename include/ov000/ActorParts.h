@@ -121,4 +121,20 @@ typedef struct ActorSub48 {
 } ActorSub48;
 SIZE_ASSERT(ActorSub48, 0x9c);
 
+// The actor's resource block (Actor::unk_34, 0x138 bytes, ctor func_ov000_0218e9c4); the robot embeds four.
+typedef struct ActorRes {
+    s16 unk_00; // negative until the resources are loaded
+    u8 unk_02;
+    u8 unk_03_0 : 1;
+    u8 unk_03_1 : 1;
+    u8 unk_03_2 : 1;
+    u8 unk_03_3 : 1;
+    u8 unk_03_4 : 1;
+    u8 unk_03_5 : 3;
+    u8 unk_04[0xbc];
+    u32 *unk_c0;
+    u8 unk_c4[0x74];
+} ActorRes;
+SIZE_ASSERT(ActorRes, 0x138);
+
 #endif

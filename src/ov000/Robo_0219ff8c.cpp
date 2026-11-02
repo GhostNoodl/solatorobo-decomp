@@ -9,13 +9,6 @@ typedef struct {
     u32 rest : 30;
 } Bits32_0219ff8c;
 
-typedef struct {
-    u16 b0 : 3;
-    u16 b3 : 1;
-    u16 b4 : 2;
-    u16 rest : 10;
-} Bits16_0219ff8c;
-
 extern "C" {
 
 void func_ov000_021bd300(void *p);
@@ -24,8 +17,8 @@ void func_0203f364(void *p);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 
 static inline s32 Dist0219ff8c(Robo021ca458 *self) {
-    s32 dx = self->pos.x - self->unk_b10;
-    s32 dz = self->pos.z - self->unk_b18;
+    s32 dx = self->pos.x - self->unk_b10.x;
+    s32 dz = self->pos.z - self->unk_b10.z;
     {
         s64 sq = (s64)dx * dx;
         sq += (s64)dz * dz;

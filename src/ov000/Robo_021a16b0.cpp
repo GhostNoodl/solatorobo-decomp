@@ -100,7 +100,7 @@ void func_ov000_021a16b0(Robo021ca458 *self) {
         self->velY = 0;
         self->friction = 0;
         self->gravity = 0;
-        LFLD(u16, self->hit, 0x9a) |= 0x20;
+        self->hit->unk_9a |= 0x20;
         if (self->msg_flags & 0x80) {
             func_ov000_021987b8(self->hit, 1, 0, 0);
         }

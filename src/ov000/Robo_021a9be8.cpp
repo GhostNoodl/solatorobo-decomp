@@ -4,13 +4,6 @@
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 2;
-    u16 rest : 12;
-} H22_021a9be8;
-
-typedef struct {
     u8 b0 : 1;
     u8 rest : 7;
 } B8_021a9be8;
@@ -67,18 +60,18 @@ static inline Actor *FindActor_021a9be8(u16 id) {
 }
 
 static inline BOOL Both_021a9be8(ActorSub44 *c) {
-    return (LFLD(H22_021a9be8, c, 0x22).b0 == 1 && LFLD(H22_021a9be8, c, 0x22).b1 == 1) ? TRUE : FALSE;
+    return (c->unk_22_0 == 1 && c->unk_22_1 == 1) ? TRUE : FALSE;
 }
 
 static inline BOOL Has_021a9be8(ActorSub44 *c) {
-    return LFLD(H22_021a9be8, c, 0x22).b2 != 0 ? TRUE : FALSE;
+    return c->unk_22_2 != 0 ? TRUE : FALSE;
 }
 
-static inline u16 AngleTo_021a9be8(Robo021ca458 *self, u8 *other) {
-    if (other == NULL || other == (u8 *)self) {
+static inline u16 AngleTo_021a9be8(Robo021ca458 *self, Actor *other) {
+    if (other == NULL || other == self) {
         return self->rot_y;
     }
-    return FX_Atan2(LFLD(s32, other, 0x70) - self->pos.x, LFLD(s32, other, 0x78) - self->pos.z);
+    return FX_Atan2(other->pos.x - self->pos.x, other->pos.z - self->pos.z);
 }
 
 static inline u16 CamYaw_021a9be8(u8 *cam) {
@@ -100,9 +93,9 @@ static inline s32 Frame_021a9be8(Model0218fe1c *m) {
 static inline void SetFx_021a9be8(Robo021ca458 *self, u8 *o, s32 rz) {
     self->unk_b48 = LFLD(s32, o, 0x24);
     LFLD(s32, o, 0x3c) = 0x2000;
-    self->unk_b4c = self->unk_a74 - self->pos.x;
-    self->unk_b50 = self->unk_a78 - self->pos.y;
-    self->unk_b54 = self->unk_a7c - self->pos.z;
+    self->unk_b4c = self->unk_a74.x - self->pos.x;
+    self->unk_b50 = self->unk_a74.y - self->pos.y;
+    self->unk_b54 = self->unk_a74.z - self->pos.z;
     self->unk_b58 = 0;
     self->unk_b5a = -self->rot_y;
     self->unk_b5c = 0;
@@ -111,7 +104,7 @@ static inline void SetFx_021a9be8(Robo021ca458 *self, u8 *o, s32 rz) {
 
 static inline void Bump_021a9be8(Robo021ca458 *self) {
     if (self->unk_b24_1 && (self->hit->unk_54 & 0x400)) {
-        self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
+        self->moveYaw = FX_Atan2(self->unk_af0.x - self->pos.x, self->unk_af0.z - self->pos.z);
         self->speed = 0x66;
         self->friction = 0;
         if (!self->unk_b24_17 || (self->hit->unk_50 & 0x40000000)) {
@@ -150,7 +143,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         if (self->unk_b22_0 || self->unk_b24_12 || self->unk_b24_19) {
             lim = -0x2d000;
         }
-        if (self->pos.y - self->unk_b00 < lim) {
+        if (self->pos.y - self->unk_afc.y < lim) {
             fall = TRUE;
         }
     }
@@ -267,7 +260,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
                 if (((void *)tg->unk_44) != NULL) {
                     ang = Actor_YawToPos(self, ((void *)tg->unk_44));
                 } else {
-                    ang = AngleTo_021a9be8(self,(u8 *)tg);
+                    ang = AngleTo_021a9be8(self,tg);
                 }
             }
             {
@@ -323,7 +316,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
             if (((void *)tg->unk_44) != NULL) {
                 ang = Actor_YawToPos(self, ((void *)tg->unk_44));
             } else {
-                ang = AngleTo_021a9be8(self,(u8 *)tg);
+                ang = AngleTo_021a9be8(self,tg);
             }
         }
         self->rot_y = func_01ffc128(ang, self->rot_y, 0x400, 1, 0x8000);
@@ -333,7 +326,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
     func_ov000_021987b8(self->hit, 1, 0, 0);
     if (self->velY < 0 && (self->hit->unk_50 & 0x20000000)) {
         self->velY = 0;
-        LFLD(u16, self->hit, 0x9a) |= 0x20;
+        self->hit->unk_9a |= 0x20;
         if (self->unk_b24_17) {
             self->unk_b24_17 = 0;
             self->moveYaw = self->rot_y;

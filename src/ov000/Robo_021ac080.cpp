@@ -10,12 +10,6 @@ typedef struct {
     u16 rest : 6;
 } Bits0214a424_ac;
 
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 rest : 14;
-} Bits16_ac;
-
 extern "C" {
 extern u8 data_ov000_021cc5e9[];
 extern u8 data_ov000_021cc6c0[];
@@ -58,13 +52,13 @@ void func_ov000_021ac080(Robo021ca458 *self) {
     if (self->unk_b2f == 0) {
         self->unk_b2f++;
     }
-    LFLD(Bits16_ac, self->unk_44, 0x22).b1 = 0;
+    self->unk_44->unk_22_1 = 0;
     switch (self->fsm->st) {
     case 0:
         self->unk_b24_2 = 2;
         self->unk_b24_1 = 0;
         self->target = 0xffff;
-        LFLD(FieldId, self, 0x772) = data_ov000_021ccd54->unk_ca;
+        self->fieldId = data_ov000_021ccd54->unk_ca;
         LFLD(Bits0214a424_ac, data_0214a424, 0x18).b8 = 1;
         LFLD(VecFx32, data_0214a424, 0x148) = self->unk_75c;
         LFLD(u16, data_0214a424, 0x156) = self->unk_76e;
@@ -73,8 +67,8 @@ void func_ov000_021ac080(Robo021ca458 *self) {
         data_ov000_021ccd54->stageFlags = 1;
         self->pos.y += 0x119a;
         func_ov000_02190cb0((u8 *)self + 0x368, data_ov000_021cc5e9, 0x155, 0);
-        func_ov000_02190cb0(&self->unk_ac, data_ov000_021cc6c0, 0x400, 0);
-        self->unk_178 = 0x320;
+        func_ov000_02190cb0(&self->mdl0, data_ov000_021cc6c0, 0x400, 0);
+        self->mdl0.unk_cc = 0x320;
         self->fsm->st++;
         break;
     case 1: {
@@ -119,7 +113,6 @@ void func_ov000_021ac080(Robo021ca458 *self) {
     }
 }
 }
-
 
 typedef struct {
     u8 b0 : 1;
@@ -276,7 +269,7 @@ void func_ov000_021ac3ec(Robo021ca458 *self) {
     }
     go = FALSE;
     if (self->unk_b24_1 && (self->hit->unk_54 & 0x400)) {
-        self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
+        self->moveYaw = FX_Atan2(self->unk_af0.x - self->pos.x, self->unk_af0.z - self->pos.z);
         self->speed = 0x66;
         self->friction = 0;
         if (!self->unk_b24_17 || (self->hit->unk_50 & 0x40000000)) {

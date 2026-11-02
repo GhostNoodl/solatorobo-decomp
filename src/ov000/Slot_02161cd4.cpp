@@ -22,7 +22,7 @@ static inline void StopSlot(u8 *self, u8 i) {
 }
 
 static inline void Dtor02161cd4(u8 *self) {
-    LFLD(void *, self, 0) = data_ov000_021cabd8;
+    VOBJ_SET_VTABLE(self, data_ov000_021cabd8);
     StopSlot(self, LFLD(u8, self, 5));
     StopSlot(self, (LFLD(u8, self, 5) & 1) ^ 1);
     __cxa_vec_cleanup(self + 0x2e8, 2, 0x138, (void (*)(void *))func_ov000_0218ea20);

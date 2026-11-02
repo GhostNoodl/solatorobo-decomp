@@ -11,12 +11,6 @@ typedef struct {
     Act02195618Pmf fn;
 } Act02195618Entry;
 
-typedef struct {
-    u16 b0 : 4;
-    u16 b4 : 1;
-    u16 rest : 11;
-} B22_02195618;
-
 extern "C" {
 
 extern Act02195618Entry data_ov000_021c9e18[];
@@ -73,15 +67,15 @@ void func_ov000_02195618(ActorEx *self) {
                 ActorSub44 *hit = self->unk_44;
                 if (hit != NULL) {
                     pos = *(VecFx32 *)hit;
-                    if (LFLD(B22_02195618, hit, 0x22).b4) {
-                        ofs.z = LFLD(s32, hit, 0x1c);
+                    if (hit->unk_22_4) {
+                        ofs.z = hit->unk_1c;
                         ofs.x = 0;
                         ofs.y = 0;
                         func_ov000_0219a210(&pos, &ofs, self->rot_y);
                     }
-                    r = LFLD(s32, self->unk_44, 0x10);
+                    r = self->unk_44->unk_0c.y;
                     if (r == 0) {
-                        r = LFLD(s32, self->unk_44, 0x1c);
+                        r = self->unk_44->unk_1c;
                     }
                 } else {
                     pos = self->pos;

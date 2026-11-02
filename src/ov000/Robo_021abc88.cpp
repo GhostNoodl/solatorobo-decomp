@@ -1,31 +1,13 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageCmd.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
-
-typedef struct {
-    u16 b0 : 8;
-    u16 b8 : 1;
-    u16 rest : 7;
-} G18_021abc88;
-
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 rest : 14;
-} Bits16_021abc88;
-
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 rest : 6;
-} Bits8_021abc88;
 
 extern "C" {
 extern u8 data_ov000_021cc62a[];
 extern u8 data_ov000_021cc6c0[];
 extern u8 data_ov000_021cc5e3[];
-extern u8 *data_0214a424;
 extern void *data_02097e4c;
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_02062764(s32 a, s32 b);
@@ -43,7 +25,7 @@ void func_ov000_021abc88(Robo021ca458 *self) {
     if (self->unk_b2f == 0) {
         self->unk_b2f++;
     }
-    LFLD(Bits16_021abc88, self->unk_44, 0x22).b1 = 0;
+    self->unk_44->unk_22_1 = 0;
     switch (self->fsm->st) {
     case 0: {
         s32 dx;
@@ -52,7 +34,7 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         func_ov000_02190cb0((u8 *)self + 0xac, data_ov000_021cc62a, 0x800, 0);
         dx = self->unk_75c.x - self->pos.x;
         dz = self->unk_75c.z - self->pos.z;
-        self->unk_178 = -1;
+        self->mdl0.unk_cc = -1;
         {
             s64 sq = (s64)dx * dx;
             sq += (s64)dz * dz;
@@ -69,7 +51,7 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         func_02049f44(data_02097e4c, 7, (u8 *)self + 0x70, 0);
         self->fsm->st++;
         self->fsm->timer = 0;
-        LFLD(G18_021abc88, data_0214a424, 0x18).b8 = 0;
+        data_0214a424->bits18.flag8 = 0;
         func_02062764(3, 1);
         data_ov000_021ccd54->stageFlags = 1;
         break;
@@ -101,7 +83,7 @@ void func_ov000_021abc88(Robo021ca458 *self) {
     }
     case 2:
         if (func_ov000_02191120((u8 *)self + 0xac)) {
-            u8 *p;
+            AnimCtrl *p;
             self->pos = self->unk_75c;
             self->rot_x = self->unk_76c;
             self->rot_y = self->unk_76e;
@@ -112,13 +94,13 @@ void func_ov000_021abc88(Robo021ca458 *self) {
             self->unk_b24_1 = 1;
             self->unk_b36 = 0;
             func_ov000_02190cb0((u8 *)self + 0x368, data_ov000_021cc5e3, 0x155, 0);
-            p = self->unk_384;
+            p = self->mdl1.unk_1c;
             if (p != NULL) {
-                NNS_G3dRenderObjRemoveAnmObj((u8 *)self + 0x38c, LFLD(void *, p, 0));
-                LFLD(u8, p, 0x108) = 0;
-                LFLD(u8, p, 0x110) = 0xff;
-                LFLD(Bits8_021abc88, p, 0x111).b0 = 0;
-                LFLD(Bits8_021abc88, p, 0x111).b1 = 0;
+                NNS_G3dRenderObjRemoveAnmObj((u8 *)self + 0x38c, ((void *)p->cur));
+                p->name[0] = 0;
+                p->index = 0xff;
+                p->playing = 0;
+                p->same = 0;
             }
             func_02049f44(data_02097e4c, 0xe, (u8 *)self + 0x70, 0);
             func_ov000_02198360(self->fsm, 1, 0);

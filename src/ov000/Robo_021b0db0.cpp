@@ -1,17 +1,11 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageCmd.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 
-typedef struct {
-    u16 b0 : 10;
-    u16 b10 : 1;
-    u16 rest : 5;
-} Bits0214a424_021b0db0;
-
 extern "C" {
 extern void *data_02097dc8;
-extern u8 *data_0214a424;
 extern const VecFx32 data_02092a50;
 extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc751[];
@@ -36,7 +30,7 @@ static inline void MulVec33_021b0db0(const VecFx32 *v, const s32 *m, VecFx32 *ou
 }
 
 static inline BOOL Flip021b0db0(void) {
-    return LFLD(Bits0214a424_021b0db0, data_0214a424, 0x18).b10 ? TRUE : FALSE;
+    return data_0214a424->bits18.flag10 ? TRUE : FALSE;
 }
 
 void func_ov000_021b0db0(Robo021ca458 *self, s32 spd) {
@@ -55,23 +49,23 @@ void func_ov000_021b0db0(Robo021ca458 *self, s32 spd) {
         s32 z;
         u16 keys;
         u8 *anim;
-        self->unk_af0 += (s32)(((s64)spd * FX_SinCosTable_[idx * 2] + 0x800) >> 12);
-        if (self->unk_af0 > 0x6000) {
-            self->unk_af0 = 0x6000;
-        } else if (self->unk_af0 < -0x6000) {
-            self->unk_af0 = -0x6000;
+        self->unk_af0.x += (s32)(((s64)spd * FX_SinCosTable_[idx * 2] + 0x800) >> 12);
+        if (self->unk_af0.x > 0x6000) {
+            self->unk_af0.x = 0x6000;
+        } else if (self->unk_af0.x < -0x6000) {
+            self->unk_af0.x = -0x6000;
         }
         z = (s32)(((s64)spd * FX_SinCosTable_[idx * 2 + 1] + 0x800) >> 12);
-        if (LFLD(Bits0214a424_021b0db0, data_0214a424, 0x18).b10) {
+        if (data_0214a424->bits18.flag10) {
             z = -z;
         }
-        self->unk_af4 += z;
-        if (self->unk_af4 > 0x1a66) {
-            self->unk_af4 = 0x1a66;
-        } else if (self->unk_af4 < -0x6800) {
-            self->unk_af4 = -0x6800;
+        self->unk_af0.y += z;
+        if (self->unk_af0.y > 0x1a66) {
+            self->unk_af0.y = 0x1a66;
+        } else if (self->unk_af0.y < -0x6800) {
+            self->unk_af0.y = -0x6800;
         }
-        self->unk_af8 = 0;
+        self->unk_af0.z = 0;
         keys = self->padCur;
         anim = data_ov000_021cc5e3;
         if (keys & 0x20) {
@@ -80,9 +74,9 @@ void func_ov000_021b0db0(Robo021ca458 *self, s32 spd) {
         } else if (keys & 0x10) {
             tilt = 0x800;
             anim = data_ov000_021cc757;
-        } else if (((keys & 0x40) && !Flip021b0db0()) || ((keys & 0x80) && LFLD(Bits0214a424_021b0db0, data_0214a424, 0x18).b10)) {
+        } else if (((keys & 0x40) && !Flip021b0db0()) || ((keys & 0x80) && data_0214a424->bits18.flag10)) {
             anim = data_ov000_021cc75d;
-        } else if (((keys & 0x80) && !Flip021b0db0()) || ((keys & 0x40) && LFLD(Bits0214a424_021b0db0, data_0214a424, 0x18).b10)) {
+        } else if (((keys & 0x80) && !Flip021b0db0()) || ((keys & 0x40) && data_0214a424->bits18.flag10)) {
             anim = data_ov000_021cc763;
         }
         func_ov000_02190cb0(self->model, anim, 0xcd, 0);

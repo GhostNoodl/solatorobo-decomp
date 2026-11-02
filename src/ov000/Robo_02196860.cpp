@@ -1,20 +1,11 @@
 #include "types.h"
+#include "Main/Res/StageFlags.h"
 #include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 b4 : 1;
-    u16 rest : 11;
-} Bits02196860;
-
 extern "C" {
 extern char data_ov000_021cc456[];
-extern u8 *data_0214a424;
 BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void HitSphere_Link(void *a);
@@ -31,29 +22,29 @@ s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 void func_ov000_02196860(ActorEx *self) {
     switch (self->fsm->st) {
     case 0: {
-        u8 *m = ((u8 *)self->targetObj);
-        if (LFLD(u16, m, 0x1c) != 0xffff && (u8)(LFLD(u8, m, 2) + 0xff) <= 1) {
+        ActorSub4c *m = self->targetObj;
+        if (m->target != 0xffff && (u8)(m->unk_02 + 0xff) <= 1) {
             BOOL done = FALSE;
             Robo021ca458 *p = func_ov000_0219bf90();
             if (p->id == self->targetObj->target) {
-                u8 *g = data_0214a424;
-                u32 n = LFLD(u16, g, 0x16) + 1;
+                StageFlags *g = data_0214a424;
+                u32 n = g->unk_016 + 1;
                 if (n >= 0xffff) {
                     n = 0xffff;
                 }
-                LFLD(u16, g, 0x16) = n;
+                g->unk_016 = n;
                 if (self->unk_44 != NULL) {
                     ActorSub44 *q = self->unk_44;
-                    LFLD(Bits02196860, q, 0x22).b0 = 0;
-                    LFLD(Bits02196860, q, 0x22).b1 = 0;
+                    q->unk_22_0 = 0;
+                    q->unk_22_1 = 0;
                 }
                 if (self->hit != NULL) {
                     ActorSub48 *q = self->hit;
-                    LFLD(Bits02196860, q, 0x9a).b0 = 0;
+                    q->unk_9a_0 = 0;
                     q->unk_9a_3 = 0;
                     func_0203f364(q);
                     q = self->hit;
-                    LFLD(Bits02196860, q, 0x9a).b1 = 0;
+                    q->unk_9a_1 = 0;
                     q->unk_9a_4 = 0;
                 }
                 if (self->targetObj->unk_03 != 0) {
@@ -71,8 +62,8 @@ void func_ov000_02196860(ActorEx *self) {
         func_ov000_021915a0(self->model);
         if (self->unk_44 != NULL) {
             ActorSub44 *q = self->unk_44;
-            LFLD(Bits02196860, q, 0x22).b0 = 1;
-            LFLD(Bits02196860, q, 0x22).b1 = 1;
+            q->unk_22_0 = 1;
+            q->unk_22_1 = 1;
         }
         if (self->hit != NULL) {
             self->speed = 0xf6 - Rand_UpTo(0x7b);
@@ -107,10 +98,10 @@ void func_ov000_02196860(ActorEx *self) {
             }
             {
                 ActorSub48 *q = self->hit;
-                LFLD(Bits02196860, q, 0x9a).b0 = 1;
+                q->unk_9a_0 = 1;
                 q->unk_9a_3 = 1;
                 HitSphere_Link(q);
-                LFLD(u16, self->hit, 0x9a) |= 0x12;
+                self->hit->unk_9a |= 0x12;
                 self->hit->unk_9a_4 = 0;
             }
             self->fsm->st++;

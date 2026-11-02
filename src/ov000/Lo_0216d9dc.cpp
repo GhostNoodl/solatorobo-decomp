@@ -109,7 +109,6 @@ void func_020627fc(s32 a);
 void func_ov000_02182590(void *p);
 void func_ov000_02188140(void *p, s32 a, s32 b, s32 c);
 
-#define B(self) LFLD(Bits0216dae4, self, 0)
 
 static inline BOOL GBusy0216dae4(FieldState *g) {
     return g->head != g->tail ? TRUE : FALSE;
@@ -174,12 +173,12 @@ static inline void Done0216dae4(Obj0216dae4 *self) {
 }
 
 BOOL func_ov000_0216dae4(Obj0216dae4 *self) {
-    if (B(self).b2 == 1) {
-        if (!B(self).b0 && !func_ov000_021735e8()) {
-            B(self).b4 = 1;
+    if (LFLD(Bits0216dae4, self, 0).b2 == 1) {
+        if (!LFLD(Bits0216dae4, self, 0).b0 && !func_ov000_021735e8()) {
+            LFLD(Bits0216dae4, self, 0).b4 = 1;
         } else if (self->unk_04 == 7 || self->unk_04 == 9) {
-            B(self).b4 = 0;
-            B(self).f18 = 0;
+            LFLD(Bits0216dae4, self, 0).b4 = 0;
+            LFLD(Bits0216dae4, self, 0).f18 = 0;
         }
     }
     switch (self->unk_04) {
@@ -190,11 +189,11 @@ BOOL func_ov000_0216dae4(Obj0216dae4 *self) {
     case 1:
         self->unk_04 = 4;
     case 4:
-        if (B(self).b2 && B(self).b4) {
-            B(self).b3 = 1;
+        if (LFLD(Bits0216dae4, self, 0).b2 && LFLD(Bits0216dae4, self, 0).b4) {
+            LFLD(Bits0216dae4, self, 0).b3 = 1;
             self->unk_04 = 5;
         } else {
-            if (B(self).b0) {
+            if (LFLD(Bits0216dae4, self, 0).b0) {
                 self->unk_04 = 3;
             }
             break;
@@ -206,7 +205,7 @@ BOOL func_ov000_0216dae4(Obj0216dae4 *self) {
         if (!Ready0216dae4(self)) {
             break;
         }
-        B(self).b5 = 1;
+        LFLD(Bits0216dae4, self, 0).b5 = 1;
         self->unk_2c = 0;
         self->unk_30 = 0x1000;
         self->unk_04 = 8;
@@ -216,9 +215,9 @@ BOOL func_ov000_0216dae4(Obj0216dae4 *self) {
         t = FX_Div(self->unk_2c, 0x1e000);
         if (t >= 0x1000) {
             self->unk_2c = 0;
-            B(self).b5 = 0;
+            LFLD(Bits0216dae4, self, 0).b5 = 0;
             t = 0x1000;
-            if (B(self).b3) {
+            if (LFLD(Bits0216dae4, self, 0).b3) {
                 self->unk_04 = 7;
             } else {
                 self->unk_04 = 4;
@@ -226,20 +225,20 @@ BOOL func_ov000_0216dae4(Obj0216dae4 *self) {
             }
         }
         self->unk_30 = FX_SinCosTable_[(((t * 0x4000) >> 12) >> 4) * 2];
-        if (B(self).b3) {
+        if (LFLD(Bits0216dae4, self, 0).b3) {
             self->unk_30 = 0x1000 - self->unk_30;
         }
     }
     case 7:
-        if (B(self).b9 == 1) {
+        if (LFLD(Bits0216dae4, self, 0).b9 == 1) {
             func_ov000_0216eaf8(self);
-        } else if ((B(self).b22 || FadeIdle0216dae4()) && (!B(self).b6 || GIdle0216dae4()) && B(self).b7 == 1) {
+        } else if ((LFLD(Bits0216dae4, self, 0).b22 || FadeIdle0216dae4()) && (!LFLD(Bits0216dae4, self, 0).b6 || GIdle0216dae4()) && LFLD(Bits0216dae4, self, 0).b7 == 1) {
             if (self->unk_08 == 2) {
                 self->unk_1c -= self->unk_18;
                 if (self->unk_1c <= 0) {
                     self->unk_1c = 0;
-                    B(self).b14 = 1;
-                    if (B(self).b6 == 1) {
+                    LFLD(Bits0216dae4, self, 0).b14 = 1;
+                    if (LFLD(Bits0216dae4, self, 0).b6 == 1) {
                         Done0216dae4(self);
                     }
                 }
@@ -250,22 +249,22 @@ BOOL func_ov000_0216dae4(Obj0216dae4 *self) {
                 }
                 if (self->unk_1c > self->unk_24) {
                     self->unk_1c = self->unk_24;
-                    B(self).b14 = 1;
-                    if (B(self).b6 == 1) {
+                    LFLD(Bits0216dae4, self, 0).b14 = 1;
+                    if (LFLD(Bits0216dae4, self, 0).b6 == 1) {
                         Done0216dae4(self);
                     }
                 }
             }
         }
-        if (B(self).b8 != 1) {
+        if (LFLD(Bits0216dae4, self, 0).b8 != 1) {
             self->unk_20 = self->unk_1c;
         } else {
             func_ov000_0216e968(self);
         }
     case 9:
-        if (!B(self).b2 || !B(self).b4) {
-            B(self).b5 = 1;
-            B(self).b3 = 0;
+        if (!LFLD(Bits0216dae4, self, 0).b2 || !LFLD(Bits0216dae4, self, 0).b4) {
+            LFLD(Bits0216dae4, self, 0).b5 = 1;
+            LFLD(Bits0216dae4, self, 0).b3 = 0;
             self->unk_04 = 8;
         }
         break;

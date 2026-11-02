@@ -1,14 +1,8 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageFlags.h"
 #include "ov000/Vec.h"
 #include "ov000/Actor.h"
 #include "ov000/ObjLayouts.h"
-
-typedef struct {
-    u16 b0 : 8;
-    u16 b8 : 1;
-    u16 b9 : 1;
-    u16 rest : 6;
-} Bits0214a424;
 
 typedef struct {
     u8 unk_00[0x108];
@@ -20,16 +14,9 @@ typedef struct {
     u8 b2 : 6;
 } Anm021b12c0;
 
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 2;
-    u16 b3 : 13;
-} Save021b1814;
-
 extern "C" {
 extern char data_ov000_021cc5e3[];
 extern char data_ov000_021cc5e9[];
-extern u8 *data_0214a424;
 void func_ov000_02190a80(void *a, s32 b);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
 void func_02062764(s32 a, s32 b);
@@ -44,7 +31,7 @@ static inline void Reset12c0(Robo021ca458 *self, BOOL flag) {
     self->unk_76e = self->rot_y;
     self->unk_770 = self->rot_z;
     func_ov000_02190cb0((u8 *)self + 0x368, data_ov000_021cc5e3, 0x1000, 1);
-    anm = ((Anm021b12c0 *)self->unk_384);
+    anm = ((Anm021b12c0 *)self->mdl1.unk_1c);
     if (anm != NULL) {
         NNS_G3dRenderObjRemoveAnmObj((u8 *)self + 0x38c, *(void **)anm);
         anm->unk_108 = 0;
@@ -52,9 +39,9 @@ static inline void Reset12c0(Robo021ca458 *self, BOOL flag) {
         anm->b0 = 0;
         anm->b1 = 0;
     }
-    self->unk_178 = -1;
-    LFLD(Bits0214a424, data_0214a424, 0x18).b8 = 0;
-    LFLD(Bits0214a424, data_0214a424, 0x18).b9 = 0;
+    self->mdl0.unk_cc = -1;
+    data_0214a424->bits18.flag8 = 0;
+    data_0214a424->bits18.flag9 = 0;
     func_02062764(3, 1);
     if (flag) {
         data_ov000_021ccd54->stageFlags = 1;
@@ -71,8 +58,8 @@ void func_ov000_021b1814(Robo021ca458 *self, BOOL flag, BOOL mode) {
     if (!self->unk_b24_1) {
         Reset12c0(self, flag);
     }
-    if (LFLD(Save021b1814, data_0214a424, 0x18).b1 == 2) {
-        LFLD(Save021b1814, data_0214a424, 0x18).b1 = 1;
+    if (data_0214a424->bits18.mode == 2) {
+        data_0214a424->bits18.mode = 1;
     }
     if (mode) {
         self->unk_b22_4 = 1;
@@ -111,24 +98,11 @@ typedef struct {
 } Bits021b1a54;
 
 typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 2;
-    u16 b3 : 13;
-} Save021b1a54;
-
-typedef struct {
     u32 b0 : 1;
     u32 b1 : 1;
     u32 b2 : 2;
     u32 rest : 28;
 } Bits021b1b88b;
-
-typedef struct {
-    u16 b0 : 8;
-    u16 b8 : 1;
-    u16 b9 : 1;
-    u16 rest : 6;
-} Save021b1b88;
 
 typedef struct {
     u8 unk_00[0x108];
@@ -143,7 +117,6 @@ typedef struct {
 extern "C" {
 extern char data_ov000_021cc5e3[];
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
-extern u8 *data_0214a424;
 void func_02062764(s32 a, s32 b);
 
 static inline void SetSt(u8 *self, u16 st) {
@@ -165,7 +138,7 @@ void func_ov000_021b1a54(Robo021ca458 *self, BOOL flag) {
         return;
     }
     st = 0;
-    if (LFLD(Save021b1a54, data_0214a424, 0x18).b1 == 1) {
+    if (data_0214a424->bits18.mode == 1) {
         if (self->unk_b22_5) {
             st = 3;
         } else {
@@ -215,8 +188,8 @@ void func_ov000_021b1b88(VObj *self, s32 mode) {
                 anm->b1 = 0;
             }
             LFLD(s16, self, 0x178) = -1;
-            LFLD(Save021b1b88, data_0214a424, 0x18).b8 = 0;
-            LFLD(Save021b1b88, data_0214a424, 0x18).b9 = 0;
+            data_0214a424->bits18.flag8 = 0;
+            data_0214a424->bits18.flag9 = 0;
             func_02062764(3, 1);
         }
         st = 5;

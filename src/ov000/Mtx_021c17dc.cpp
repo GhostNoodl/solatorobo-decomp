@@ -36,10 +36,10 @@ static inline MtxFx43 *GetCam021c17dc(void) {
     return (MtxFx43 *)data_02092844;
 }
 
-static inline void SetScale021c17dc(u8 *model, s32 x, s32 y, s32 z) {
-    LFLD(s32, model, 0xa8) = x;
-    LFLD(s32, model, 0xac) = y;
-    LFLD(s32, model, 0xb0) = z;
+static inline void SetScale021c17dc(Model0218fe1c *model, s32 x, s32 y, s32 z) {
+    model->scale.x = x;
+    model->scale.y = y;
+    model->scale.z = z;
 }
 
 void func_ov000_021c17dc(Lo021cc938 *self) {
@@ -67,7 +67,7 @@ void func_ov000_021c17dc(Lo021cc938 *self) {
     p.z = self->unk_80;
     data_ov000_021ccd74 = LO_FX_MUL(self->unk_88, 0x1e000) >> 12;
     LFLD(VecFx32, self->unk_90, 0x78) = p;
-    SetScale021c17dc((u8 *)self->unk_90, 0x1000, -0x1000, 0x1000);
+    SetScale021c17dc((Model0218fe1c *)self->unk_90, 0x1000, -0x1000, 0x1000);
     func_ov000_021903b4((u8 *)self->unk_90);
     SetProj021c17dc(proj);
     MI_Copy48B(cam, cm);

@@ -4,11 +4,6 @@
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
-    u8 b0 : 1;
-    u8 rest : 7;
-} B18_021ab68c;
-
-typedef struct {
     u16 val;
     u8 d;
     u16 id;
@@ -130,7 +125,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
         if (!hit) {
             VecFx32 p;
             VObj *o;
-            p = LFLD(VecFx32, sub, 0x44);
+            p = sub->dest;
             p.y = self->pos.y;
             o = func_02065f88(0x67, &p);
             o->vfunc_0c(0x1800);
@@ -151,13 +146,13 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
         if (hit) {
             func_ov000_0218d46c(a, self->id, 0xb);
             a->rot_y = AngleTo021ab68c((Actor *)self, a);
-            LFLD(s32, sub, 0x50) = 0x19a;
-            LFLD(s32, sub, 0x54) = -0x1000;
-            LFLD(s32, sub, 0x58) = 0;
+            sub->unk_50 = 0x19a;
+            sub->unk_54 = -0x1000;
+            sub->unk_58 = 0;
             sub->unk_19 = self->unk_b24_22;
             sub->unk_1b = lvl2;
         }
-        LFLD(B18_021ab68c, sub, 0x18).b0 = 0;
+        sub->unk_18_0 = 0;
         if (a != NULL) {
             Msg021ab68c m;
             VecFx32 t;

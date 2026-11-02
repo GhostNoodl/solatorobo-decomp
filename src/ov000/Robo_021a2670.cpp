@@ -42,7 +42,7 @@ static inline Actor *GetObj021a2670(u16 id) {
 static inline BOOL Jump021a2670(Robo021ca458 *self) {
     BOOL go = FALSE;
     if (self->unk_b24_1 && (self->hit->unk_54 & 0x400)) {
-        self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
+        self->moveYaw = FX_Atan2(self->unk_af0.x - self->pos.x, self->unk_af0.z - self->pos.z);
         self->speed = 0x66;
         self->friction = 0;
         if (!self->unk_b24_17 || (self->hit->unk_50 & 0x40000000)) {
@@ -163,7 +163,7 @@ void func_ov000_021a2670(Robo021ca458 *self) {
                 }
             }
         }
-        LFLD(u16, self->hit, 0x9a) |= 0x20;
+        self->hit->unk_9a |= 0x20;
         func_ov000_021987b8(self->hit, 1, 0, 0);
         if (self->hit->unk_50 & 0x20000000) {
             return;

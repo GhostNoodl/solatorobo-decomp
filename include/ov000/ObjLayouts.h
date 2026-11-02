@@ -8,6 +8,7 @@
 #include "ov000/Vec.h"
 #include "ov000/VObj.h"
 #include "ov000/ActorBase.h"
+#include "Main/Sys/FieldId.h"
 
 struct Model;
 struct TextWin;
@@ -66,123 +67,30 @@ SIZE_ASSERT(ActorEx, 0xd0);
 // handlers are the pointer-to-member table data_ov000_021ca458). Methods in Robo_*.cpp and others.
 // The bit fields at 0xae4 and 0xb22..0xb2c are the union of the members the methods use.
 struct Robo021ca458 : public Actor {
-    u8 *unk_ac;
-    u8 unk_b0[0x4c];
-    void *unk_fc;
-    u8 unk_100[0x24];
-    s32 unk_124;
-    s32 unk_128;
-    s32 unk_12c;
-    u8 unk_130[0x30];
-    u16 unk_160;
-    u8 unk_162[0xb];
-    u8 unk_16d;
-    u16 unk_16e_0 : 1;
-    u16 unk_16e_1 : 15;
-    u8 unk_170[0x8];
-    s16 unk_178;
-    u8 unk_17a[0x2];
-    u8 *unk_17c;
-    u8 *unk_180;
-    u8 unk_184[0x8];
-    void *unk_18c;
-    u8 unk_190[0x4];
-    s16 unk_194;
-    u8 unk_196[0xbe];
-    u32 *unk_254;
-    u8 unk_258[0x9c];
-    s32 unk_2f4;
-    u8 unk_2f8[0xc];
-    s32 unk_304;
-    u8 unk_308[0x14];
-    u32 unk_31c;
-    s32 unk_320;
-    s32 unk_324;
-    u8 unk_328[0x4];
-    s32 unk_32c;
-    u8 unk_330[0x8];
-    s32 unk_338;
-    u8 unk_33c[0x2a];
-    u16 unk_366_0 : 1;
-    u16 unk_366_1 : 1;
-    u16 unk_366_2 : 1;
-    u16 unk_366_3 : 1;
-    u16 unk_366_4 : 12;
-    u8 unk_368[0x1c];
-    u8 *unk_384;
-    u8 unk_388[0x30];
-    void *unk_3b8;
-    u8 unk_3bc[0x6a];
-    u8 unk_426;
-    u8 unk_427[0x2];
-    u8 unk_429;
-    u16 unk_42a_0 : 1;
-    u16 unk_42a_1 : 15;
-    u8 unk_42c[0x24];
-    s16 unk_450;
-    u8 unk_452[0x1];
-    u8 unk_453_0 : 1;
-    u8 unk_453_1 : 1;
-    u8 unk_453_2 : 1;
-    u8 unk_453_3 : 1;
-    u8 unk_453_4 : 1;
-    u8 unk_453_5 : 3;
-    u8 unk_454[0x134];
-    s16 unk_588;
-    u8 unk_58a[0x1];
-    u8 unk_58b_0 : 1;
-    u8 unk_58b_1 : 1;
-    u8 unk_58b_2 : 1;
-    u8 unk_58b_3 : 1;
-    u8 unk_58b_4 : 1;
-    u8 unk_58b_5 : 3;
-    u8 unk_58c[0x15c];
-    s32 unk_6e8;
-    u8 unk_6ec[0xc];
-    s32 unk_6f8;
-    u8 unk_6fc[0xc];
-    s32 unk_708;
-    s32 unk_70c;
-    u32 unk_710;
-    u32 unk_714;
-    s32 unk_718;
-    u8 unk_71c[0x4];
-    s32 unk_720;
-    u8 unk_724[0x8];
-    s32 unk_72c;
-    u8 unk_730[0x2a];
-    u16 unk_75a_0 : 1;
-    u16 unk_75a_1 : 1;
-    u16 unk_75a_2 : 1;
-    u16 unk_75a_3 : 1;
-    u16 unk_75a_4 : 12;
+    // Built in place by Robo021ca458_Ctor: three models with their resources and two hit spheres.
+    Model0218fe1c mdl0; // 0xac
+    ActorRes res0; // 0x194
+    ActorSub48 hit0; // 0x2cc
+    Model0218fe1c mdl1; // 0x368
+    ActorRes res1; // 0x450
+    ActorRes res2; // 0x588
+    ActorSub48 hit1; // 0x6c0
     VecFx32 unk_75c;
     s32 unk_768;
     u16 unk_76c;
     u16 unk_76e;
     u16 unk_770;
-    u8 unk_772;
-    u8 unk_773;
-    u8 unk_774;
-    u8 unk_775[0xb7];
-    u16 unk_82c;
-    u16 unk_82e;
-    u16 unk_830;
-    u16 unk_832;
-    u16 unk_834;
-    u8 unk_836;
-    u8 unk_837[0x2];
-    u8 unk_839;
-    u8 unk_83a[0x26];
-    s16 unk_860;
-    u8 unk_862[0x1];
-    u8 unk_863_0 : 1;
-    u8 unk_863_1 : 1;
-    u8 unk_863_2 : 1;
-    u8 unk_863_3 : 1;
-    u8 unk_863_4 : 1;
-    u8 unk_863_5 : 3;
-    u8 unk_864[0x134];
+    union {
+        FieldId fieldId; // copied from FieldState::unk_ca
+        struct {
+            u8 unk_772;
+            u8 unk_773;
+            u8 unk_774;
+        };
+    };
+    u8 unk_775[0x3];
+    Model0218fe1c mdl2; // 0x778
+    ActorRes res3; // 0x860
     void *unk_998;
     void *unk_99c;
     u16 unk_9a0;
@@ -195,18 +103,20 @@ struct Robo021ca458 : public Actor {
     u16 unk_9ae;
     void *unk_9b0;
     void *unk_9b4;
-    u8 unk_9b8[0x90];
+    u8 unk_9b8[0x24];
+    VecFx32 unk_9dc;
+    u8 unk_9e8[0x60];
     u8 unk_a48;
     u8 unk_a49[0x2];
     u8 unk_a4b;
     u8 unk_a4c;
     u8 unk_a4d[0x27];
-    s32 unk_a74;
-    s32 unk_a78;
-    s32 unk_a7c;
+    VecFx32 unk_a74;
     u8 unk_a80[0x24];
     VecFx32 unk_aa4;
-    u8 unk_ab0[0x34];
+    u8 unk_ab0[0x24];
+    VecFx32 unk_ad4;
+    u8 unk_ae0[0x4];
     union {
         u8 unk_ae4;
         struct {
@@ -214,21 +124,16 @@ struct Robo021ca458 : public Actor {
             u8 unk_ae4_1_f : 7;
         };
     };
-    u8 unk_ae5[0x5];
+    u8 unk_ae5[0x3];
+    u16 unk_ae8;
     u16 unk_aea;
     u16 unk_aec;
     u8 unk_aee[0x2];
-    s32 unk_af0;
-    s32 unk_af4;
-    s32 unk_af8;
-    s32 unk_afc;
-    s32 unk_b00;
-    s32 unk_b04;
+    VecFx32 unk_af0;
+    VecFx32 unk_afc;
     s32 unk_b08;
     s32 unk_b0c;
-    s32 unk_b10;
-    u8 unk_b14[0x4];
-    s32 unk_b18;
+    VecFx32 unk_b10;
     u16 unk_b1c;
     u16 unk_b1e;
     u16 unk_b20;

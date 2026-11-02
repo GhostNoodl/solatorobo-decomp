@@ -13,7 +13,6 @@ typedef void (*LoCb02152740)(VObj *self);
 extern "C" {
 s32 FX_Div(s32 a, s32 b);
 
-#define WB(self) LFLD(Bits02152740, self, 0xc)
 
 struct Obj02152740 : public VObj {
     s32 unk_04;
@@ -36,14 +35,14 @@ BOOL func_ov000_02152740(Obj02152740 *self) {
     self->vfunc_54();
     switch (self->unk_04) {
     case 5:
-        if (!WB(self).b1) {
+        if (!LFLD(Bits02152740, self, 0xc).b1) {
             self->unk_04 = 0;
             return TRUE;
         }
         return FALSE;
     case 0:
-        WB(self).b0 = 1;
-        if (WB(self).b1 == 1) {
+        LFLD(Bits02152740, self, 0xc).b0 = 1;
+        if (LFLD(Bits02152740, self, 0xc).b1 == 1) {
             self->unk_04 = 5;
             break;
         }
@@ -61,7 +60,7 @@ BOOL func_ov000_02152740(Obj02152740 *self) {
             break;
         }
         if ((void *)self->unk_74 == NULL) {
-            WB(self).b0 = 0;
+            LFLD(Bits02152740, self, 0xc).b0 = 0;
         }
         self->unk_30 = self->unk_34;
         self->unk_38 = 0x1000;
@@ -71,7 +70,7 @@ BOOL func_ov000_02152740(Obj02152740 *self) {
         self->unk_04 = 2;
         break;
     case 1:
-        WB(self).b0 = 1;
+        LFLD(Bits02152740, self, 0xc).b0 = 1;
         if (self->unk_78 != NULL) {
             self->unk_78(self);
         }
@@ -93,7 +92,7 @@ BOOL func_ov000_02152740(Obj02152740 *self) {
         self->unk_30 = self->unk_34;
         self->unk_38 = 0x1000;
         {
-            u32 f = WB(self).fade;
+            u32 f = LFLD(Bits02152740, self, 0xc).fade;
             if (f == 0) {
             } else if (f == 1) {
                 self->unk_3c += 0x1000;
@@ -101,7 +100,7 @@ BOOL func_ov000_02152740(Obj02152740 *self) {
                 if (self->unk_44 >= 0x1000) {
                     self->unk_3c = self->unk_40;
                     self->unk_44 = 0x1000;
-                    WB(self).fade = 2;
+                    LFLD(Bits02152740, self, 0xc).fade = 2;
                 }
             } else if (f == 3) {
                 self->unk_3c -= 0x1000;
@@ -109,7 +108,7 @@ BOOL func_ov000_02152740(Obj02152740 *self) {
                 if (self->unk_44 <= 0) {
                     self->unk_3c = 0;
                     self->unk_44 = 0;
-                    WB(self).fade = 0;
+                    LFLD(Bits02152740, self, 0xc).fade = 0;
                 }
             }
         }
@@ -118,10 +117,10 @@ BOOL func_ov000_02152740(Obj02152740 *self) {
     if (self->unk_74 != NULL && !self->unk_74->vfunc_1c()) {
         LO_FREE_V(self, 0x74);
         if (self->unk_74 == NULL) {
-            WB(self).b0 = 0;
+            LFLD(Bits02152740, self, 0xc).b0 = 0;
         }
         if (!self->vfunc_50()) {
-            WB(self).b1 = 1;
+            LFLD(Bits02152740, self, 0xc).b1 = 1;
         }
     }
     self->vfunc_58();

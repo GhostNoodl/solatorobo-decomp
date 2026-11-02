@@ -182,7 +182,7 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
                 if (pl != NULL && id == pl->id) {
                     VEC_Add(&base, &self->unk_70[i], &out);
                     pl->unk_75c = out;
-                    LFLD(FieldId, pl, 0x772) = data_ov000_021ccd54->unk_ca;
+                    pl->fieldId = data_ov000_021ccd54->unk_ca;
                 } else {
                     a = data_ov000_021ccd68 == NULL ? NULL : (u8 *)ActorMgr_GetActor(data_ov000_021ccd68, id);
                     if (a != NULL) {

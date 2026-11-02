@@ -1,10 +1,10 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageCmd.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
-extern u8 *data_0214a424;
 u16 Camera_GetYaw(void *cam);
 void Actor_MoveByPad(void *self, u16 base, s32 turn, void *range);
 void Actor_MoveToPos(void *self, const VecFx32 *target, s32 turn);
@@ -53,11 +53,11 @@ void func_ov000_021b1dd8(Robo021ca458 *self, s32 target, s32 rate, s32 speed, s3
     if (ox != self->pos.x || oz != self->pos.y) {
         self->unk_ba8 += self->speed;
         if (self->unk_ba8 > 0x1000) {
-            u32 v = LFLD(u32, data_0214a424, 0x10) + ((u32)self->unk_ba8 >> 12);
+            u32 v = data_0214a424->unk_010 + ((u32)self->unk_ba8 >> 12);
             if (v >= 0xf423f) {
-                LFLD(u32, data_0214a424, 0x10) = 0xf423f;
+                data_0214a424->unk_010 = 0xf423f;
             } else {
-                LFLD(u32, data_0214a424, 0x10) = v;
+                data_0214a424->unk_010 = v;
             }
             self->unk_ba8 &= 0xfff;
         }
@@ -66,10 +66,10 @@ void func_ov000_021b1dd8(Robo021ca458 *self, s32 target, s32 rate, s32 speed, s3
         func_ov000_021987b8(((void *)self->hit), anim, 0, 0);
     }
     if (self->velY < 0) {
-        u8 *m = (u8 *)((void *)self->hit);
-        if (LFLD(u32, m, 0x50) & 0x20000000) {
+        ActorSub48 *m = self->hit;
+        if (m->unk_50 & 0x20000000) {
             self->velY = 0;
-            LFLD(u16, m, 0x9a) |= 0x20;
+            m->unk_9a |= 0x20;
         }
     }
 }

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageCmd.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
@@ -13,14 +14,7 @@ typedef struct {
     u16 rest : 10;
 } Body_0219e498;
 
-typedef struct {
-    u16 b0 : 9;
-    u16 b9 : 1;
-    u16 rest : 6;
-} G18_0219e498;
-
 extern "C" {
-extern u8 *data_0214a424;
 void HitSphere_Link(void *a);
 void func_0203f364(void *a);
 void func_ov000_0219864c(void *a, void *b, void *c);
@@ -54,7 +48,7 @@ static inline void Hide2_0219e498(Robo021ca458 *s, u32 off) {
 }
 
 static inline BOOL G9_0219e498(void) {
-    return LFLD(G18_0219e498, data_0214a424, 0x18).b9 ? TRUE : FALSE;
+    return data_0214a424->bits18.flag9 ? TRUE : FALSE;
 }
 
 static inline BOOL RgbEq0219e498(FieldId *a, FieldId *b) {
@@ -84,13 +78,13 @@ void func_ov000_0219e498(Robo021ca458 *self) {
                 b += 0x35c;
             }
         }
-        self->unk_6f8 = a + self->radius;
-        self->unk_720 = b + self->centerY;
+        self->hit1.radius = a + self->radius;
+        self->hit1.offset.y = b + self->centerY;
         if (!On0219e498(self, 0x6c0)) {
             Show0219e498((u8 *)self, 0x6c0);
         }
         if (!On2_0219e498(self, 0x6c0)) {
-            LFLD(u16, self, 0x75a) |= 0x12;
+            self->hit1.unk_9a |= 0x12;
         }
         func_ov000_0219864c((u8 *)self + 0x6c0, NULL, NULL);
         self->unk_75c = self->pos;
@@ -99,12 +93,12 @@ void func_ov000_0219e498(Robo021ca458 *self) {
         func_ov000_0219864c((u8 *)self + 0x2cc, NULL, NULL);
         return;
     }
-    if (!G9_0219e498() && RgbEq0219e498(&data_ov000_021ccd54->unk_ca, &LFLD(FieldId, self, 0x772))) {
-        self->unk_6f8 = self->radius >> 1;
-        self->unk_720 = self->centerY >> 1;
+    if (!G9_0219e498() && RgbEq0219e498(&data_ov000_021ccd54->unk_ca, &self->fieldId)) {
+        self->hit1.radius = self->radius >> 1;
+        self->hit1.offset.y = self->centerY >> 1;
         Show0219e498((u8 *)self, 0x6c0);
-        LFLD(u16, self, 0x75a) |= 0x12;
-        if ((self->unk_710 & 0x20000000) || !(self->unk_714 & 0x20000000)) {
+        self->hit1.unk_9a |= 0x12;
+        if ((self->hit1.unk_50 & 0x20000000) || !(self->hit1.unk_54 & 0x20000000)) {
             self->unk_768 = 0;
             BODY(self, 0x6c0).b5 = 1;
         } else {
@@ -124,18 +118,18 @@ void func_ov000_0219e498(Robo021ca458 *self) {
     }
     func_ov000_0219864c((u8 *)self + 0x6c0, (u8 *)self + 0x75c, (u8 *)self + 0x76c);
     if (self->unk_b24_2 != 1) {
-        if (self->unk_31c & 0x400) {
-            self->unk_304 = (self->radius >> 1) + (self->radius >> 2);
+        if (self->hit0.unk_50 & 0x400) {
+            self->hit0.radius = (self->radius >> 1) + (self->radius >> 2);
         } else {
-            self->unk_304 = (self->radius >> 1) + (self->radius >> 3);
+            self->hit0.radius = (self->radius >> 1) + (self->radius >> 3);
         }
         Show0219e498((u8 *)self, 0x2cc);
-        LFLD(u16, self, 0x366) |= 0x12;
+        self->hit0.unk_9a |= 0x12;
     } else {
         Hide0219e498((u8 *)self, 0x2cc);
-        self->unk_31c = 0;
-        self->unk_320 = 0;
-        self->unk_324 = 0;
+        self->hit0.unk_50 = 0;
+        self->hit0.unk_54 = 0;
+        self->hit0.unk_58 = 0;
         Hide2_0219e498(self, 0x2cc);
     }
     func_ov000_0219864c((u8 *)self + 0x2cc, NULL, NULL);

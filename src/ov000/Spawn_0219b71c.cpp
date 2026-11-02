@@ -99,14 +99,14 @@ u16 func_ov000_0219b808(u16 id, void *a1, const Shape0219b808 *q, u16 *out, u32 
     VecFx32 p1;
     VecFx32 p2;
     Msg0219b808 m;
-    u8 *sub;
+    ActorSub48 *sub;
     ActorGroup *grp;
     Actor *a;
     if (q->mask & 2) {
         pl = func_ov000_0219bf90();
         if (pl != NULL && !(pl->unk_b24 << 30 >> 31 ? TRUE : FALSE) &&
             SameCol0219b808(&LFLD(Rgb0219b808, data_ov000_021ccd54, 0xca), PlCol0219b808(pl)) &&
-            q->flags == (q->flags & pl->unk_710)) {
+            q->flags == (q->flags & pl->hit1.unk_50)) {
             p1.x = pl->unk_75c.x;
             p1.y = pl->unk_75c.y;
             p1.z = pl->unk_75c.z;
@@ -130,8 +130,8 @@ u16 func_ov000_0219b808(u16 id, void *a1, const Shape0219b808 *q, u16 *out, u32 
             continue;
         }
         do {
-            if (id != a->id && (sub = (u8 *)a->hit) != NULL &&
-                q->flags == (q->flags & LFLD(u32, sub, 0x50))) {
+            if (id != a->id && (sub = a->hit) != NULL &&
+                q->flags == (q->flags & sub->unk_50)) {
                 p2.x = a->pos.x;
                 p2.y = a->pos.y;
                 p2.z = a->pos.z;

@@ -164,11 +164,16 @@ public:
     VecFx32 unk_84;
     u16 target;
     u8 unk_92;
-    u8 unk_93_0 : 1;
-    u8 unk_93_1 : 3;
-    u8 unk_93_4 : 1;
-    u8 unk_93_5 : 2;
-    u8 unk_93_7_f : 1;
+    union {
+        u8 unk_93; // cleared whole by Actor_Ctor
+        struct {
+            u8 unk_93_0 : 1;
+            u8 unk_93_1 : 3;
+            u8 unk_93_4 : 1;
+            u8 unk_93_5 : 2;
+            u8 unk_93_7_f : 1;
+        };
+    };
     union {
         u8 unk_94;
         struct {

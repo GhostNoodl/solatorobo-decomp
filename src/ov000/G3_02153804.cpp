@@ -1,7 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
 
-#define VERTS LFLD(VecFx16 *, self, 0x6c)
 
 extern "C" {
 s32 FX_Div(s32 numer, s32 denom);
@@ -65,14 +64,14 @@ void func_ov000_02153804(LoBase021ca94c_021caac8 *self, s32 on, s32 *pos, s32 sc
     v = (VecFx16 *)self->unk_6c;
     if (v != NULL) {
         n = self->unk_70 - 1;
-        G3_Vtx(VERTS[0].x, VERTS[0].y, 0);
-        G3_VtxXY(VERTS[2].x, VERTS[2].y);
-        G3_VtxXY(VERTS[2].x, -t);
-        G3_VtxXY(VERTS[0].x, -t);
-        G3_Vtx(VERTS[1].x, VERTS[1].y, 0);
-        G3_VtxXY(VERTS[1].x, VERTS[1].y + t + q);
-        G3_VtxXY(VERTS[n].x, t + VERTS[n].y + q);
-        G3_VtxXY(VERTS[n].x, VERTS[n].y);
+        G3_Vtx(LFLD(VecFx16 *, self, 0x6c)[0].x, LFLD(VecFx16 *, self, 0x6c)[0].y, 0);
+        G3_VtxXY(LFLD(VecFx16 *, self, 0x6c)[2].x, LFLD(VecFx16 *, self, 0x6c)[2].y);
+        G3_VtxXY(LFLD(VecFx16 *, self, 0x6c)[2].x, -t);
+        G3_VtxXY(LFLD(VecFx16 *, self, 0x6c)[0].x, -t);
+        G3_Vtx(LFLD(VecFx16 *, self, 0x6c)[1].x, LFLD(VecFx16 *, self, 0x6c)[1].y, 0);
+        G3_VtxXY(LFLD(VecFx16 *, self, 0x6c)[1].x, LFLD(VecFx16 *, self, 0x6c)[1].y + t + q);
+        G3_VtxXY(LFLD(VecFx16 *, self, 0x6c)[n].x, t + LFLD(VecFx16 *, self, 0x6c)[n].y + q);
+        G3_VtxXY(LFLD(VecFx16 *, self, 0x6c)[n].x, LFLD(VecFx16 *, self, 0x6c)[n].y);
     } else {
         G3_Vtx(0xf8, 0, 0);
         G3_VtxXY(0xf17, 0);

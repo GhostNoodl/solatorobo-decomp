@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageCmd.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/CmdQueue.h"
 #include "ov000/ObjLayouts.h"
@@ -9,19 +10,6 @@ typedef struct {
 } St021ad130;
 
 typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 rest : 14;
-} B44_021ad130;
-
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 8;
-    u16 b9 : 2;
-    u16 rest : 5;
-} Bc2_021ad130;
-
-typedef struct {
     s32 w[3];
 } Ids021ad130;
 
@@ -29,18 +17,11 @@ typedef struct {
     u16 v[3];
 } Ids16_021ad130;
 
-typedef struct {
-    u8 pad[0xa];
-    Ids16_021ad130 ids;
-} Def021ad130;
-
 extern "C" {
 extern u8 data_ov000_021cc6de[];
 extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc618[];
-extern void *data_0214a424;
 extern void *data_02097e4c;
-extern u8 *data_ov000_021ccd68;
 extern const u8 data_ov000_021c9fe8[3];
 extern const u8 data_ov000_021c9feb[3];
 extern const u8 data_ov000_021c9fee[3];
@@ -194,7 +175,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
                 func_0204a028(data_02097e4c, 0x56, (u8 *)self + 0x70, -5);
                 func_ov000_0218996c(0x14, 0x3c);
                 self->model->visible = 0;
-                LFLD(u8, self->unk_3c, 0x19) = 0;
+                self->unk_3c->unk_19 = 0;
             }
         }
         if (((St021ad130 *)self->fsm)->timer == 300) {
@@ -231,7 +212,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
                     sc = 0x8000;
                 }
                 e->vfunc_0c(sc);
-                LFLD(B44_021ad130, self->unk_44, 0x22).b1 = 0;
+                self->unk_44->unk_22_1 = 0;
                 ((St021ad130 *)self->fsm)->timer = 0;
                 goto next;
             }
@@ -254,7 +235,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
             ((St021ad130 *)self->fsm)->state++;
         }
         Fx021ad130(self);
-        LFLD(B44_021ad130, self->unk_44, 0x22).b1 = 0;
+        self->unk_44->unk_22_1 = 0;
         break;
     }
     case 12: {
@@ -272,7 +253,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
     if (self->unk_b22_6 == 5) {
         return;
     }
-    LFLD(u16, self->hit, 0x9a) |= 0x20;
+    self->hit->unk_9a |= 0x20;
     if (!(self->msg_flags & 0x80) && LFLD(u16, ((u8 *)self->hp), 0) == 0) {
         return;
     }

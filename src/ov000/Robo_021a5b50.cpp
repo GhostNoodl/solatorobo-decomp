@@ -33,7 +33,7 @@ void func_ov000_021a5b50(Robo021ca458 *self) {
             return;
         }
         if (self->hit->unk_50 & 0x20000000) {
-            LFLD(u16, self->hit, 0x9a) |= 0x20;
+            self->hit->unk_9a |= 0x20;
             self->speed = 0;
             self->friction = 0;
         } else {
@@ -52,8 +52,8 @@ void func_ov000_021a5b50(Robo021ca458 *self) {
         if (!(self->hit->unk_54 & 0x400)) {
             return;
         }
-        self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x,
-                                         self->unk_af8 - self->pos.z);
+        self->moveYaw = FX_Atan2(self->unk_af0.x - self->pos.x,
+                                         self->unk_af0.z - self->pos.z);
         self->speed = 0x66;
         self->friction = 0;
         if (!LBIT(self, 0xb24).b17 || (self->hit->unk_50 & 0x40000000)) {

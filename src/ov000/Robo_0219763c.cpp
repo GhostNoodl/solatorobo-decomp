@@ -6,18 +6,6 @@
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 b4 : 1;
-    u16 b5 : 1;
-    u16 b6 : 1;
-    u16 b7 : 1;
-    u16 rest : 8;
-} Bits0219763c;
-
-typedef struct {
     u8 unk_00[0x158];
     u32 flags[1][4];
 } Save0219763c;
@@ -163,18 +151,18 @@ void func_ov000_0219763c(VObj *obj) {
         }
         if (self->unk_44 != NULL) {
             ActorSub44 *q = self->unk_44;
-            LFLD(Bits0219763c, q, 0x22).b0 = 0;
-            LFLD(Bits0219763c, q, 0x22).b1 = 0;
+            q->unk_22_0 = 0;
+            q->unk_22_1 = 0;
         }
         if (self->hit != NULL) {
             ActorSub48 *q;
             func_ov000_02198c8c(self->hit, 0xffff);
             q = self->hit;
-            LFLD(Bits0219763c, q, 0x9a).b0 = 0;
+            q->unk_9a_0 = 0;
             q->unk_9a_3 = 0;
             func_0203f364(q);
             q = self->hit;
-            LFLD(Bits0219763c, q, 0x9a).b1 = 0;
+            q->unk_9a_1 = 0;
             q->unk_9a_4 = 0;
         }
         if (self->hitMesh != NULL) {

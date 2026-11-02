@@ -25,7 +25,7 @@ static inline Actor *FindActor021b2d48(u16 id) {
 void func_ov000_021b2d48(Robo021ca458 *self) {
     u8 *res = NULL;
     BOOL flag = FALSE;
-    u8 *tgt = NULL;
+    Model0218fe1c *tgt = NULL;
     u8 *sub = NULL;
     BOOL search = FALSE;
 
@@ -38,7 +38,7 @@ void func_ov000_021b2d48(Robo021ca458 *self) {
         Actor *a = FindActor021b2d48(self->unk_b1c);
         if (a != NULL && (sub = ((u8 *)a->targetObj)) != NULL) {
             if (sub[1] == 6) {
-                tgt = (u8 *)func_ov000_02199d78(sub);
+                tgt = (Model0218fe1c *)func_ov000_02199d78(sub);
             } else if (sub[1] == 1 || sub[1] == 5) {
                 flag = TRUE;
             }
@@ -57,13 +57,13 @@ void func_ov000_021b2d48(Robo021ca458 *self) {
         }
         if ((LFLD(u16, res, 0x20) >> 12) == 4) {
             u8 *t = (u8 *)func_ov000_021985c0(res);
-            if (t != NULL && (tgt = LFLD(u8 *, t, 0x38)) != NULL) {
+            if (t != NULL && (tgt = (Model0218fe1c *)LFLD(u8 *, t, 0x38)) != NULL) {
                 flag = TRUE;
                 if (!func_ov000_02190a30(tgt, 1)) {
-                    LFLD(u16, tgt, 0xb6) = 0x73ff;
-                    LFLD(u16, tgt, 0xb8) = 0x73ff;
-                    LFLD(u16, tgt, 0xba) = 2;
-                    LFLD(u16, tgt, 0xbc) = 1;
+                    tgt->color = 0x73ff;
+                    tgt->color2 = 0x73ff;
+                    tgt->blend = 2;
+                    tgt->blendMax = 1;
                 }
             }
         }

@@ -6,18 +6,6 @@
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 b4 : 1;
-    u16 b5 : 1;
-    u16 b6 : 1;
-    u16 b7 : 1;
-    u16 rest : 8;
-} Bits02196258;
-
-typedef struct {
     u8 unk_00[0x158];
     u32 flags[1][4];
 } Save02196258;
@@ -106,16 +94,16 @@ void func_ov000_02196258(VObj *obj) {
     case 0:
         if (self->unk_44 != NULL) {
             ActorSub44 *q = self->unk_44;
-            LFLD(Bits02196258, q, 0x22).b0 = 0;
-            LFLD(Bits02196258, q, 0x22).b1 = 0;
+            q->unk_22_0 = 0;
+            q->unk_22_1 = 0;
         }
         if (self->hit != NULL) {
             ActorSub48 *q = self->hit;
-            LFLD(Bits02196258, q, 0x9a).b0 = 0;
+            q->unk_9a_0 = 0;
             q->unk_9a_3 = 0;
             func_0203f364(q);
             q = self->hit;
-            LFLD(Bits02196258, q, 0x9a).b1 = 0;
+            q->unk_9a_1 = 0;
             q->unk_9a_4 = 0;
         }
         if (self->hitMesh != NULL) {
@@ -129,13 +117,13 @@ void func_ov000_02196258(VObj *obj) {
         self->fsm->st++;
         return;
     case 1: {
-        u8 *m = ((u8 *)self->targetObj);
-        self->pos.x = LFLD(s32, m, 0x44);
-        self->pos.y = LFLD(s32, m, 0x48);
-        self->pos.z = LFLD(s32, m, 0x4c);
+        ActorSub4c *m = self->targetObj;
+        self->pos.x = m->dest.x;
+        self->pos.y = m->dest.y;
+        self->pos.z = m->dest.z;
         self->friction = zero;
         self->velY = 0x185;
-        if (t != NULL && LFLD(u8, m, 1) == 4) {
+        if (t != NULL && m->unk_01 == 4) {
             self->speed = 0x19a;
             self->gravity = 0x57;
             self->moveYaw = self->rot_y + 0x8000;

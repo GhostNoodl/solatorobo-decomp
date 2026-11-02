@@ -1,131 +1,104 @@
+#include "ov000/LoCommon.h"
+#include "Main/Res/StageCmd.h"
+#include "ov000/ObjLayouts.h"
 #include "types.h"
 #include "nitro/fx.h"
 
-#define F(type, off) (*(type *)((u8 *)self + (off)))
-#define G(type, off) (*(type *)((u8 *)data_0214a424 + (off)))
-
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 3;
-    u32 b5 : 2;
-    u32 b7 : 2;
-    u32 b9 : 1;
-    u32 b10 : 2;
-    u32 b12 : 2;
-    u32 b14 : 18;
-} B24_0219bfbc;
-
-typedef struct {
-    u16 b0 : 6;
-    u16 b6 : 3;
-    u16 b9 : 7;
-} B22_0219bfbc;
-
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 2;
-    u16 b3 : 5;
-    u16 b8 : 1;
-    u16 b9 : 7;
-} G18_0219bfbc;
-
 extern "C" {
 extern u8 data_ov000_021cc774[];
-extern u8 *data_0214a424;
 void *Actor_Ctor(void *self);
 void *func_ov000_0218fe1c(void *p);
 void *func_ov000_0218e9c4(void *p);
 void *func_ov000_021985e8(void *p);
 void func_0203d45c(void *q, u16 a, u16 b, u16 c, u16 d);
 
-u8 *Robo021ca458_Ctor(u8 *self) {
+Robo021ca458 *Robo021ca458_Ctor(Robo021ca458 *self) {
     u32 mode;
     Actor_Ctor(self);
-    F(void *, 0) = data_ov000_021cc774;
-    func_ov000_0218fe1c(self + 0xac);
-    func_ov000_0218e9c4(self + 0x194);
-    func_ov000_021985e8(self + 0x2cc);
-    func_ov000_0218fe1c(self + 0x368);
-    func_ov000_0218e9c4(self + 0x450);
-    func_ov000_0218e9c4(self + 0x588);
-    func_ov000_021985e8(self + 0x6c0);
-    func_ov000_0218fe1c(self + 0x778);
-    func_ov000_0218e9c4(self + 0x860);
-    F(u16, 0xae8) = 0;
-    F(u16, 0xaea) = 0;
-    F(u16, 0xaec) = 0;
-    F(s32, 0x99c) = 0;
-    F(s32, 0x998) = 0;
-    F(s32, 0x9b0) = 0;
-    F(s32, 0x9b4) = 0;
-    F(u8, 0xb28) = 0;
-    F(u8, 0xb29) = 0;
-    F(u8, 0xb2a) = 0;
-    F(u8, 0xb2e) = 0;
-    F(u8, 0xb2f) = 0;
-    F(u8, 0xb30) = 0;
-    F(u8, 0xb31) = 0;
-    F(u16, 0x7c) = 0;
-    F(u16, 0xb22) = 0;
-    F(u16, 0xb2c) = 0;
-    F(u16, 0xb32) = 0;
-    F(u16, 0xb36) = 0;
-    F(u16, 0xb38) = 0;
-    F(u16, 0xb1c) = 0xffff;
-    F(u16, 0xb1e) = 0xffff;
-    F(u16, 0xb20) = 0xffff;
+    VOBJ_SET_VTABLE(self, data_ov000_021cc774);
+    func_ov000_0218fe1c(&self->mdl0);
+    func_ov000_0218e9c4(&self->res0);
+    func_ov000_021985e8(&self->hit0);
+    func_ov000_0218fe1c(&self->mdl1);
+    func_ov000_0218e9c4(&self->res1);
+    func_ov000_0218e9c4(&self->res2);
+    func_ov000_021985e8(&self->hit1);
+    func_ov000_0218fe1c(&self->mdl2);
+    func_ov000_0218e9c4(&self->res3);
+    self->unk_ae8 = 0;
+    self->unk_aea = 0;
+    self->unk_aec = 0;
+    self->unk_99c = NULL;
+    self->unk_998 = NULL;
+    self->unk_9b0 = NULL;
+    self->unk_9b4 = NULL;
+    self->unk_b28 = 0;
+    self->unk_b29 = 0;
+    self->unk_b2a = 0;
+    self->unk_b2e = 0;
+    self->unk_b2f = 0;
+    self->unk_b30 = 0;
+    self->unk_b31 = 0;
+    self->rot_x = 0;
+    self->unk_b22 = 0;
+    self->unk_b2c = 0;
+    self->unk_b32 = 0;
+    self->unk_b36 = 0;
+    self->unk_b38 = 0;
+    self->unk_b1c = 0xffff;
+    self->unk_b1e = 0xffff;
+    self->unk_b20 = 0xffff;
     // The flag word is cleared and its fields set last in this group, after the 0xffff stores.
-    F(u32, 0xb24) = 0;
-    F(B24_0219bfbc, 0xb24).b5 = 0;
-    F(B24_0219bfbc, 0xb24).b7 = F(B24_0219bfbc, 0xb24).b9;
-    F(B24_0219bfbc, 0xb24).b12 = 0;
-    if (G(G18_0219bfbc, 0x18).b8) {
-        F(B24_0219bfbc, 0xb24).b1 = 0;
+    self->unk_b24 = 0;
+    self->unk_b24_5 = 0;
+    self->unk_b24_7 = self->unk_b24_9;
+    self->unk_b24_12 = 0;
+    if (data_0214a424->bits18.flag8) {
+        self->unk_b24_1 = 0;
     } else {
-        F(B24_0219bfbc, 0xb24).b1 = 1;
+        self->unk_b24_1 = 1;
     }
-    if (!F(B24_0219bfbc, 0xb24).b1) {
-        F(VecFx32, 0x75c) = G(VecFx32, 0x148);
-        u16 v = G(u16, 0x156);
-        F(u16, 0x76c) = 0;
-        F(u16, 0x76e) = v;
-        F(u16, 0x770) = 0;
-        F(u8, 0x772) = G(u8, 0x134);
-        F(u8, 0x773) = G(u8, 0x135);
-        F(u8, 0x774) = G(u8, 0x136);
+    if (!self->unk_b24_1) {
+        self->unk_75c = data_0214a424->target;
+        u16 v = data_0214a424->targetRotY;
+        self->unk_76c = 0;
+        self->unk_76e = v;
+        self->unk_770 = 0;
+        self->unk_772 = data_0214a424->color.r;
+        self->unk_773 = data_0214a424->color.g;
+        self->unk_774 = data_0214a424->color.b;
     }
-    F(s32, 0x768) = 0;
-    F(s32, 0xaf0) = 0;
-    F(s32, 0xaf4) = 0;
-    F(s32, 0xaf8) = 0;
-    F(s32, 0xafc) = 0;
-    F(s32, 0xb00) = 0;
-    F(s32, 0xb04) = 0;
-    F(s32, 0xb40) = 0;
-    F(s32, 0xb44) = 0;
-    F(s32, 0xb48) = 0;
-    F(s16, 0xb64) = -1;
-    F(s16, 0xb66) = -1;
-    F(u16, 0xb68) = 0;
-    F(u16, 0xb6a) = 0;
-    F(u16, 0xb6c) = 0;
-    F(u16, 0xb6e) = 0;
-    func_0203d45c(self + 0xb70, 0, 0x4000, 0x8000, 0xc000);
-    F(s32, 0xb0c) = 0x1000;
-    F(s32, 0xb9c) = 0;
-    mode = G(G18_0219bfbc, 0x18).b1;
-    F(B22_0219bfbc, 0xb22).b6 = 0;
+    self->unk_768 = 0;
+    self->unk_af0.x = 0;
+    self->unk_af0.y = 0;
+    self->unk_af0.z = 0;
+    self->unk_afc.x = 0;
+    self->unk_afc.y = 0;
+    self->unk_afc.z = 0;
+    self->unk_b40 = 0;
+    self->unk_b44 = 0;
+    self->unk_b48 = 0;
+    self->seSlot = -1;
+    self->unk_b66 = -1;
+    self->padCur = 0;
+    self->padTrig = 0;
+    self->padRelease = 0;
+    self->padDir = 0;
+    func_0203d45c(self->unk_b70, 0, 0x4000, 0x8000, 0xc000);
+    self->unk_b0c = 0x1000;
+    self->unk_b9c = 0;
+    mode = data_0214a424->bits18.mode;
+    self->unk_b22_6 = 0;
     if (mode == 1) {
-        F(B22_0219bfbc, 0xb22).b6 = 2;
+        self->unk_b22_6 = 2;
     } else if (mode == 2) {
-        F(B22_0219bfbc, 0xb22).b6 = 5;
+        self->unk_b22_6 = 5;
     }
-    F(s32, 0xba4) = 0;
-    F(s32, 0xba0) = 0;
-    F(s32, 0xba8) = 0;
-    F(u16, 0xbac) = 0xffff;
-    F(u8, 0x16) |= 4;
+    self->unk_ba4 = NULL;
+    self->unk_ba0 = NULL;
+    self->unk_ba8 = 0;
+    self->unk_bac = 0xffff;
+    self->unk_16 |= 4;
     return self;
 }
 }

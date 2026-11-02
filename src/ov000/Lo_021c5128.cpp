@@ -24,7 +24,7 @@ void func_ov000_021c79a0(BOOL alt, s32 x, s32 y, s32 z, s32 unused, const void *
 
 void func_ov000_021c5128(LoBase021ccb54_021ccbe0 *self, s32 unused, s32 *pos) {
     s16 z = self->unk_68 + 0x80;
-    LFLD(void *, self->unk_10, 0x158) = (void *)func_ov000_021c79a0;
+    self->unk_10->unk_158 = (void *)func_ov000_021c79a0;
     self->unk_10->flags |= 0x80000;
     self->unk_10->flags |= 0x200000;
     FLAGSX(self->unk_10)->alpha = 0x1e;
@@ -38,7 +38,7 @@ void func_ov000_021c5128(LoBase021ccb54_021ccbe0 *self, s32 unused, s32 *pos) {
     self->unk_10->unk_150 = z;
     func_02041c20(self->unk_10, 6, (u8 *)self + 0xc0);
     Model_PlayPart(self->unk_10, 6);
-    LFLD(void *, self->unk_10, 0x158) = NULL;
+    self->unk_10->unk_158 = NULL;
 }
 
 }

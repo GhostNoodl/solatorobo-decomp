@@ -52,7 +52,7 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
     if (!self->unk_b22_3) {
         func_ov000_021915a0(self->model);
     }
-    LFLD(u16, self->hit, 0x9a) |= 0x20;
+    self->hit->unk_9a |= 0x20;
     func_ov000_021b1dd8((u8 *)self, target, frame, speed, 0x466, 1);
     spd = 0x1000;
     if (!self->unk_b22_3) {
@@ -67,12 +67,12 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
     func_ov000_021911c8(self->model, spd);
     if (self->unk_b28_0 == 3) {
         self->unk_b28_0 = 2;
-        LFLD(VecFx32, self, 0xb10) = self->pos;
+        self->unk_b10 = self->pos;
     }
     turned = FALSE;
     if (LBIT(self, 0xb24).b1 && (self->hit->unk_54 & 0x400)) {
-        self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x,
-                                         self->unk_af8 - self->pos.z);
+        self->moveYaw = FX_Atan2(self->unk_af0.x - self->pos.x,
+                                         self->unk_af0.z - self->pos.z);
         self->speed = 0x66;
         self->friction = 0;
         if (!LBIT(self, 0xb24).b17 || (self->hit->unk_50 & 0x40000000)) {

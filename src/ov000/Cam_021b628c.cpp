@@ -102,7 +102,7 @@ void func_ov000_021b628c(Obj021b628c *self) {
     VecFx32 t;
     u16 rot[3];
     u8 *cam;
-    u8 *pl;
+    Robo021ca458 *pl;
     Rect021b628c *r;
     u8 idx = self->unk_0a;
 
@@ -168,24 +168,24 @@ void func_ov000_021b628c(Obj021b628c *self) {
         ((Cam021b628c *)cam)->vfunc_00();
         LFLD(Bit0_021b628c, cam, 0x9c).b0 = 1;
     }
-    pl = (u8 *)func_ov000_0219bf90();
+    pl = func_ov000_0219bf90();
     if (pl == NULL) {
         return;
     }
-    func_ov000_0219cbf8(pl, &pos, rot);
+    func_ov000_0219cbf8((u8 *)pl, &pos, rot);
     ((Pl021b628c *)pl)->vfunc_18();
-    if (LFLD(u8, pl, 0xb2e) < 10) {
-        LFLD(u8, pl, 0xb2e) = 10;
+    if (pl->unk_b2e < 10) {
+        pl->unk_b2e = 10;
     }
-    LFLD(u8, pl, 0xb2f) = LFLD(u8, pl, 0xb2e);
+    pl->unk_b2f = pl->unk_b2e;
     self->unk_24 = pos;
     r = self->unk_14;
     if (r != NULL) {
-        func_0203d45c(pl + 0xb70, r->unk_0a, r->unk_0c, r->unk_0e, r->unk_10);
-        LFLD(s32, pl, 0xb0c) = self->unk_14->unk_12;
+        func_0203d45c((u8 *)pl + 0xb70, r->unk_0a, r->unk_0c, r->unk_0e, r->unk_10);
+        pl->unk_b0c = self->unk_14->unk_12;
     } else {
-        func_0203d45c(pl + 0xb70, 0, 0x4000, 0x8000, 0xc000);
-        LFLD(s32, pl, 0xb0c) = 0x1000;
+        func_0203d45c((u8 *)pl + 0xb70, 0, 0x4000, 0x8000, 0xc000);
+        pl->unk_b0c = 0x1000;
     }
 }
 

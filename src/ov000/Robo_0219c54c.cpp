@@ -1,17 +1,9 @@
 #include "types.h"
+#include "Main/Res/StageCmd.h"
 #include "nitro/std.h"
 #include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 1;
-    u8 b3 : 1;
-    u8 b4 : 1;
-    u8 b5 : 3;
-} AnmFlags0219c54c;
 
 typedef struct {
     char *name[6];
@@ -19,15 +11,8 @@ typedef struct {
     u8 pad_19[7];
 } Entry0219c54c;
 
-typedef struct {
-    u16 b0 : 3;
-    u16 sub : 4;
-    u16 b7 : 9;
-} Save0219c54c;
-
 extern "C" {
 extern Entry0219c54c data_ov000_021ca398[];
-extern u8 *data_0214a424;
 extern char data_ov000_021cc5d2[];
 extern char data_ov000_021cc5d9[];
 void *func_0207011c(u16 id);
@@ -52,16 +37,16 @@ void Robo021ca458_Init(Robo021ca458 *self) {
     res = func_0207011c(self->kind);
     func_020701d4(self->kind);
     func_ov000_0218f074((u8 *)self + 0x194, res, TRUE, TRUE, 1, FALSE);
-    self->unk_194 = 0;
+    self->res0.unk_00 = 0;
     {
         const char *b = data_ov000_021cc5d2;
         const char *a = data_ov000_021cc5d9;
         if (a != NULL && b != NULL) {
             SetNames0219c54c((char *)self + 0x870, (char *)self + 0x890, a, b);
-            self->unk_863_1 = 1;
+            self->res3.unk_03_1 = 1;
         }
     }
-    self->unk_860 = 0;
+    self->res3.unk_00 = 0;
     p = Heap_Alloc(0x1c);
     if (p != NULL) {
         p = func_ov000_021919c8(p);
@@ -71,7 +56,7 @@ void Robo021ca458_Init(Robo021ca458 *self) {
     kind = self->unk_b22_6;
     e = &data_ov000_021ca398[kind];
     if ((u16)(kind + 0xfffe) <= 1) {
-        u8 *x = func_0206ef10(LFLD(Save0219c54c, data_0214a424, 0x18).sub | 0x8000);
+        u8 *x = func_0206ef10(data_0214a424->bits18.unk_3 | 0x8000);
         if (x != NULL) {
             self->unk_ba4 = x;
             e = (Entry0219c54c *)(x + 0xc);
@@ -79,19 +64,19 @@ void Robo021ca458_Init(Robo021ca458 *self) {
     }
     self->unk_ba0 = (u8 *) e;
     SetNames0219c54c((char *)self + 0x460, (char *)self + 0x480, e->name[0], e->name[1]);
-    self->unk_453_1 = 1;
+    self->res1.unk_03_1 = 1;
     SetNames0219c54c((char *)self + 0x49c, (char *)self + 0x4bc, e->name[2], e->name[3]);
-    self->unk_453_2 = 1;
+    self->res1.unk_03_2 = 1;
     if (e->name[4] != NULL && e->name[5] != NULL) {
         SetNames0219c54c((char *)self + 0x514, (char *)self + 0x534, e->name[4], e->name[5]);
-        self->unk_453_4 = 1;
+        self->res1.unk_03_4 = 1;
     }
-    self->unk_450 = 0;
+    self->res1.unk_00 = 0;
     if (e->unk_18 == 0) {
         return;
     }
     SetNames0219c54c((char *)self + 0x5d4, (char *)self + 0x5f4, e->name[0], e->name[1]);
-    self->unk_58b_2 = 1;
-    self->unk_588 = 0;
+    self->res2.unk_03_2 = 1;
+    self->res2.unk_00 = 0;
 }
 }

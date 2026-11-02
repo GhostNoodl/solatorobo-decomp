@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageFlags.h"
 
 extern "C" {
 
@@ -8,7 +9,6 @@ extern char data_ov000_021cb8e0[];
 extern char data_ov000_021cb8f1[];
 extern char data_ov000_021cb8fd[];
 extern char data_ov000_021cb909[];
-extern u8 *data_0214a424;
 extern u8 *data_02097d48;
 void *func_02035d5c(const char *a);
 void func_0206e900(char *dst, const char *src);
@@ -52,7 +52,7 @@ void func_ov000_02164a94(Obj02164a94 *self) {
     a = func_02035d5c(data_0208cca0);
     func_0206e900(buf, data_ov000_021cb8e0);
     b = func_02035d5c(buf);
-    self->unk_50 = LFLD(s32, data_0214a424, 0x20);
+    self->unk_50 = ((s32)data_0214a424->unk_020);
     pp = &LFLD(s32, data_02097d48, 0x9e4);
     saved = *pp;
     *pp = -1;
@@ -390,7 +390,6 @@ typedef struct Out_52e4 {
     Hit_52e4 *hits;
 } Out_52e4;
 
-#define D_CNT_52e4 LFLD(u8, d, 1)
 #define D_OAM_52e4(i) (&((Oam_52e4 *)((u8 *)d + 0x2c))[i])
 #define D_POS_52e4(i) (&((Pos_52e4 *)((u8 *)d + 0x65c))[i])
 
@@ -420,8 +419,8 @@ void func_ov000_021652e4(Obj02164c50 *self, u8 *d, Out_52e4 *o, const Def_52e4 *
             tbl = data_ov000_021c9b69;
         }
     }
-    o->pos = D_POS_52e4(D_CNT_52e4);
-    o->oam = D_OAM_52e4(D_CNT_52e4);
+    o->pos = D_POS_52e4(LFLD(u8, d, 1));
+    o->oam = D_OAM_52e4(LFLD(u8, d, 1));
     o->n = 0;
     o->unk_04 = 0;
     o->w = def->w;
@@ -453,7 +452,7 @@ void func_ov000_021652e4(Obj02164c50 *self, u8 *d, Out_52e4 *o, const Def_52e4 *
             o->n++;
         }
     }
-    D_CNT_52e4 += o->n;
+    LFLD(u8, d, 1) += o->n;
     o->nPart = def->nPart;
     o->parts = &LFLD(Part_52e4 *, d, 0xc7c)[LFLD(u8, d, 6)];
     pe = (const PartDef_52e4 *)def->hits;
@@ -465,9 +464,9 @@ void func_ov000_021652e4(Obj02164c50 *self, u8 *d, Out_52e4 *o, const Def_52e4 *
         s32 ax;
         s32 ay;
         u8 t;
-        p->pos = D_POS_52e4(D_CNT_52e4);
+        p->pos = D_POS_52e4(LFLD(u8, d, 1));
         pos = p->pos;
-        p->oam = D_OAM_52e4(D_CNT_52e4);
+        p->oam = D_OAM_52e4(LFLD(u8, d, 1));
         oam = p->oam;
         p->c[0] = pe->c[0];
         p->c[1] = pe->c[1];
@@ -498,7 +497,7 @@ void func_ov000_021652e4(Obj02164c50 *self, u8 *d, Out_52e4 *o, const Def_52e4 *
             oam->a01.vf = 1;
         }
         p++;
-        D_CNT_52e4 = D_CNT_52e4 + 1;
+        LFLD(u8, d, 1) = LFLD(u8, d, 1) + 1;
         pe = (const PartDef_52e4 *)((u8 *)pe + 0xc);
     }
     LFLD(u8, d, 6) += o->nPart;

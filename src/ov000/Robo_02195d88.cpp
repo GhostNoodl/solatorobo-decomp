@@ -1,19 +1,9 @@
 #include "types.h"
+#include "Main/Res/StageFlags.h"
 #include "nitro/std.h"
 #include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 b4 : 1;
-    u16 b5 : 3;
-    u16 b8 : 1;
-    u16 rest : 7;
-} Bits02195d88;
 
 typedef struct {
     u8 b0 : 1;
@@ -27,7 +17,6 @@ typedef struct {
 
 extern "C" {
 extern char data_ov000_021cc45c[];
-extern u8 *data_0214a424;
 void func_ov000_02191008(void *a);
 BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
@@ -57,8 +46,8 @@ void func_ov000_02195d88(ActorEx *self) {
         }
         if (self->unk_44 != NULL) {
             ActorSub44 *q = self->unk_44;
-            LFLD(Bits02195d88, q, 0x22).b0 = 0;
-            LFLD(Bits02195d88, q, 0x22).b1 = 0;
+            q->unk_22_0 = 0;
+            q->unk_22_1 = 0;
         }
         if (self->hit != NULL) {
             ActorSub48 *p = self->hit;
@@ -66,11 +55,11 @@ void func_ov000_02195d88(ActorEx *self) {
             p->unk_54 = 0;
             p->unk_58 = 0;
             p = self->hit;
-            LFLD(Bits02195d88, p, 0x9a).b0 = 0;
+            p->unk_9a_0 = 0;
             p->unk_9a_3 = 0;
             func_0203f364(p);
             p = self->hit;
-            LFLD(Bits02195d88, p, 0x9a).b1 = 0;
+            p->unk_9a_1 = 0;
             p->unk_9a_4 = 0;
         }
         self->target = 0xffff;
@@ -103,23 +92,23 @@ void func_ov000_02195d88(ActorEx *self) {
             }
             pl = func_ov000_0219bf90();
             if (pl->id == self->targetObj->target) {
-                u32 n = LFLD(u16, data_0214a424, 0x16) + 1;
+                u32 n = data_0214a424->unk_016 + 1;
                 if (n >= 0xffff) {
                     n = 0xffff;
                 }
-                LFLD(u16, data_0214a424, 0x16) = n;
+                data_0214a424->unk_016 = n;
                 if (self->unk_44 != NULL) {
                     ActorSub44 *q = self->unk_44;
-                    LFLD(Bits02195d88, q, 0x22).b0 = 0;
-                    LFLD(Bits02195d88, q, 0x22).b1 = 0;
+                    q->unk_22_0 = 0;
+                    q->unk_22_1 = 0;
                 }
                 if (self->hit != NULL) {
                     ActorSub48 *p = self->hit;
-                    LFLD(Bits02195d88, p, 0x9a).b0 = 0;
+                    p->unk_9a_0 = 0;
                     p->unk_9a_3 = 0;
                     func_0203f364(p);
                     p = self->hit;
-                    LFLD(Bits02195d88, p, 0x9a).b1 = 0;
+                    p->unk_9a_1 = 0;
                     p->unk_9a_4 = 0;
                 }
                 if (self->targetObj->unk_03 != 0) {

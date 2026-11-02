@@ -56,7 +56,7 @@ void func_ov000_021971c4(VObj *obj) {
     ActorEx *self = (ActorEx *)obj;
     u32 none = 0xffff;
     s32 zero = 0;
-    u8 *tgt = (u8 *)Target_Get(((u8 *)self->targetObj));
+    Actor *tgt = (Actor *)Target_Get(((u8 *)self->targetObj));
     switch (self->fsm->st) {
     case 0:
         if (self->model != NULL) {
@@ -74,7 +74,7 @@ void func_ov000_021971c4(VObj *obj) {
                         Target_Set(((void *)a->targetObj), self);
                     }
                 }
-            } else if (func_ov000_02199cd8(((u8 *)self->targetObj), LFLD(u16, tgt, 0xe))) {
+            } else if (func_ov000_02199cd8(((u8 *)self->targetObj), tgt->kind)) {
                 obj->vfunc_8c();
                 self->targetObj->target = none;
             }
@@ -93,9 +93,9 @@ void func_ov000_021971c4(VObj *obj) {
             func_ov000_0219b400((u16 *)(d + 0x20), d + 0x24, 2, &self->pos, (u8 *)self + 0x7c, zero);
         }
         if (self->target != none) {
-            u8 *m = ((u8 *)self->targetObj);
-            if (LFLD(u8, m, 2) != 0 && LFLD(u8, m, 2) != 7) {
-                LFLD(u16, m, 0x1c) = none;
+            ActorSub4c *m = self->targetObj;
+            if (m->unk_02 != 0 && m->unk_02 != 7) {
+                m->target = none;
             } else {
                 func_ov000_02198360(self->fsm, 9, 0);
             }
@@ -123,9 +123,9 @@ void func_ov000_021971c4(VObj *obj) {
     }
     if (tgt != NULL && self->target != none) {
         func_ov000_02199bc8(((u8 *)self->targetObj), &self->pos, 0, 0);
-        self->rot_x = LFLD(u16, tgt, 0x7c);
-        self->rot_y = LFLD(u16, tgt, 0x7e);
-        self->rot_z = LFLD(u16, tgt, 0x80);
+        self->rot_x = tgt->rot_x;
+        self->rot_y = tgt->rot_y;
+        self->rot_z = tgt->rot_z;
     }
 }
 

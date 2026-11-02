@@ -6,12 +6,6 @@
 #define SC(r) FX_SinCosTable_[((r) >> 4) * 2], FX_SinCosTable_[((r) >> 4) * 2 + 1]
 
 typedef struct {
-    u16 b0 : 4;
-    u16 b4 : 1;
-    u16 rest : 11;
-} Bits22_021b3738;
-
-typedef struct {
     u8 b0 : 1;
     u8 rest : 7;
 } Bits94_021b3738;
@@ -78,7 +72,7 @@ static inline BOOL IsLocked_021b3738(void *p) {
     return IsB1_021b3738(p) ? TRUE : FALSE;
 }
 
-void func_ov000_021b3738(Robo021ca458 *self, u8 *hit) {
+void func_ov000_021b3738(Robo021ca458 *self, ActorSub44 *hit) {
     VecFx32 pos;
     VecFx32 ofs;
     MtxFx33 m;
@@ -88,15 +82,15 @@ void func_ov000_021b3738(Robo021ca458 *self, u8 *hit) {
         BOOL flag;
         u8 *e;
         pos = *(VecFx32 *)hit;
-        if (LFLD(Bits22_021b3738, hit, 0x22).b4) {
-            ofs.z = LFLD(s32, hit, 0x1c);
+        if (hit->unk_22_4) {
+            ofs.z = hit->unk_1c;
             ofs.x = 0;
             ofs.y = 0;
             func_ov000_0219a210(&pos, &ofs, LFLD(u16, a, 0x7e));
         }
-        r = LFLD(s32, hit, 0x10);
+        r = hit->unk_0c.y;
         if (r == 0) {
-            r = LFLD(s32, hit, 0x1c);
+            r = hit->unk_1c;
         }
         r += 0x400;
         if (State_021b3738(a) == 0x13 || State_021b3738(a) == 0x14 || LFLD(Bits94_021b3738, a, 0x94).b0) {

@@ -92,29 +92,29 @@ BOOL func_ov000_02194c08(ActorEx *self) {
             q = LFLD(u8 *, p, 0x48);
         }
         if (q != NULL) {
-            u8 *s = ((u8 *)self->model);
+            Model0218fe1c *s = self->model;
             if (LFLD(u32, q, 0x54) & 0x80000) {
-                LFLD(u8, s, 0xbf) = 5;
+                s->bright = 5;
             } else {
-                LFLD(u8, s, 0xbf) = 0x1f;
+                s->bright = 0x1f;
             }
         }
         if (((u8 *)self->targetObj) != NULL && LFLD(B8_02194c08, ((u8 *)self->targetObj), 0x18).b0) {
             Mtx_02194c08 m;
-            u8 *s;
+            Model0218fe1c *s;
             MI_Copy48B(((u8 *)self->targetObj) + 0x20, &m);
-            s = ((u8 *)self->model);
-            MI_Copy36B(&m, s + 0x84);
-            LFLD(s32, s, 0x78) = m.m[9];
-            LFLD(s32, s, 0x7c) = m.m[10];
-            LFLD(s32, s, 0x80) = m.m[11];
+            s = self->model;
+            MI_Copy36B(&m, &s->rot);
+            s->trans.x = m.m[9];
+            s->trans.y = m.m[10];
+            s->trans.z = m.m[11];
             self->unk_93_0 = 1;
         }
         if (!self->unk_93_0) {
-            u8 *s = ((u8 *)self->model);
-            LFLD(s32, s, 0x78) = self->pos.x;
-            LFLD(s32, s, 0x7c) = self->pos.y;
-            LFLD(s32, s, 0x80) = self->pos.z;
+            Model0218fe1c *s = self->model;
+            s->trans.x = self->pos.x;
+            s->trans.y = self->pos.y;
+            s->trans.z = self->pos.z;
             func_ov000_02190758(((u8 *)self->model), (u8 *)self + 0x7c, 0);
         }
         self->unk_93_0 = 0;
@@ -124,9 +124,9 @@ BOOL func_ov000_02194c08(ActorEx *self) {
             s32 dist;
             s32 r;
             FieldState *g = data_ov000_021ccd54;
-            u8 *s = ((u8 *)self->model);
-            s32 dx = g->cam.base.eye.x - LFLD(s32, s, 0x78);
-            s32 dz = g->cam.base.eye.z - LFLD(s32, s, 0x80);
+            Model0218fe1c *s = self->model;
+            s32 dx = g->cam.base.eye.x - s->trans.x;
+            s32 dz = g->cam.base.eye.z - s->trans.z;
             {
                 s64 sq = (s64)dx * dx;
                 sq += (s64)dz * dz;
@@ -156,18 +156,18 @@ BOOL func_ov000_02194c08(ActorEx *self) {
     }
     if (ret && self->unk_3c != NULL) {
         u8 *info = func_0206fef8(self->kind);
-        u8 *o = (u8 *)self->hit;
+        ActorSub48 *o = self->hit;
         u8 *t = Target_Get(((u8 *)self->targetObj));
         if (t != NULL) {
             if (self->fsm->current == 9) {
-                o = LFLD(u8 *, t, 0x48);
+                o = (ActorSub48 *)LFLD(u8 *, t, 0x48);
             }
         } else if (LFLD(Info12_02194c08, info, 0x12).b12 == 2) {
             o = NULL;
         }
         if (o != NULL) {
             s32 m;
-            LFLD(s32, self->unk_3c, 0x10) = self->pos.y - LFLD(s32, o, 0x6c);
+            self->unk_3c->unk_10 = self->pos.y - o->check.y;
             m = 1;
             switch (LFLD(Info12_02194c08, info, 0x12).b14) {
             case 0:
@@ -183,7 +183,7 @@ BOOL func_ov000_02194c08(ActorEx *self) {
                 m = 2;
                 break;
             }
-            func_ov000_02191ec4(self->unk_3c, m, LFLD(u32, o, 0x54));
+            func_ov000_02191ec4(self->unk_3c, m, o->unk_54);
             func_ov000_02191c24(self->unk_3c, (u8 *)self + 0x70);
         }
     }

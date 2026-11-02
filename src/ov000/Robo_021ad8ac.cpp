@@ -88,12 +88,12 @@ struct Dust_021ad8acSelf {
 };
 
 static inline void Dust_021ad8ac(Dust_021ad8acSelf *self) {
-    u8 *m = self->unk_48;
-    if ((LFLD(u32, m, 0x54) & 0x20000000) && self->unk_74 - LFLD(s32, m, 0x6c) < 0x5000) {
+    ActorSub48 *m = (ActorSub48 *)self->unk_48;
+    if ((m->unk_54 & 0x20000000) && self->unk_74 - m->check.y < 0x5000) {
         VecFx32 p;
-        p.x = LFLD(s32, m, 0x68);
-        p.y = LFLD(s32, m, 0x6c);
-        p.z = LFLD(s32, m, 0x70);
+        p.x = m->check.x;
+        p.y = m->check.y;
+        p.z = m->check.z;
         func_02065f88(0x12f, &p)->vfunc_0c(0x800);
     }
 }
@@ -297,7 +297,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
                 self->unk_9a8 = func_01ffc128(0, self->unk_9a8, 0x2cd, 1, 0x8000);
                 self->unk_9aa = func_01ffc128(0, self->unk_9aa, 0x2cd, 1, 0x8000);
                 StopSnd_021ad8ac(self);
-                if (self->pos.y - self->unk_b00 < -0x2d000) {
+                if (self->pos.y - self->unk_afc.y < -0x2d000) {
                     Kill_021ad8ac(self);
                     self->unk_b24_18 = 1;
                     func_ov000_02198360(self->fsm, 4, 0);
@@ -391,7 +391,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             return;
         }
         self->fsm->timer = 6;
-        if (!func_ov000_02191120(self->model) && LFLD(s64, self->fsm, 4) == 0) {
+        if (!func_ov000_02191120(self->model) && ((s64)self->fsm->flags) == 0) {
             return;
         }
         func_ov000_02198360(self->fsm, 1, 0);
@@ -509,7 +509,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             LFLD(u16, cam, 0xf8) = cur;
             LFLD(Bda_021ad8ac, cam, 0xda).b4 = 1;
             self->rot_x = func_01ffc128(self->unk_9a0, self->rot_x, 0x59a, 1, 0x8000);
-            d = self->pos.y - self->unk_b00;
+            d = self->pos.y - self->unk_afc.y;
             if (d < -0x2d000) {
                 self->velY = 0;
             } else if (d > 0x4b000) {

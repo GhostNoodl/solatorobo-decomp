@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Res/StageCmd.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/LoCommon.h"
 #include "ov000/Actor.h"
@@ -14,17 +15,6 @@ typedef struct {
 } Obj02097e48;
 
 typedef struct {
-    u8 a, b, c;
-} Rgb3;
-
-typedef struct {
-    u8 unk_00[6];
-    u16 h6;
-    u8 unk_08[4];
-    s32 unk_0c;
-} Item02177f40;
-
-typedef struct {
     u16 b0 : 3;
     u16 b3 : 3;
     u16 st : 3;
@@ -34,20 +24,11 @@ typedef struct {
     u16 b14 : 2;
 } Bits21b1d28;
 
-typedef struct {
-    u8 unk_00[0x18];
-    u16 b0 : 1;
-    u16 b1 : 2;
-    u16 b3 : 13;
-} Save0214a424;
-
 extern "C" {
 extern Data021ccd50 data_ov000_021ccd50;
 extern Obj02097e48 *data_02097e48;
-extern u8 *data_0214a424;
 extern void *data_02097e4c;
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-Robo021ca458 *func_ov000_0219bf90(void);
 void func_02062764(s32 a, s32 b);
 
 static inline void Set54(u8 *t, u8 n, s32 c) {

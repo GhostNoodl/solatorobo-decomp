@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Res/StageFlags.h"
 
 typedef struct {
     u32 bit0 : 1;
@@ -107,7 +108,6 @@ BOOL func_ov000_021b468c(Robo021b468c *self) {
     return r;
 }
 
-extern void *data_0214a424;
 u8 func_0206d204(void *p, s32 a);
 
 BOOL func_ov000_021b4738(void *self) {

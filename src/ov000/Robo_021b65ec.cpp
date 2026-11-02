@@ -25,16 +25,6 @@ typedef struct {
     u8 unk_23;
 } Item021b65ec;
 
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 3;
-    u32 b5 : 2;
-    u32 b7 : 2;
-    u32 b9 : 1;
-    u32 b10 : 22;
-} B24_021b65ec;
-
 extern "C" {
 
 extern ActorMgr *data_ov000_021ccd68;
@@ -60,10 +50,10 @@ static inline void PlSetPos021b65ec(Robo021ca458 *pl, const VecFx32 *pos, s16 rx
     pl->unk_770 = rz;
 }
 
-static inline void PlSetCol021b65ec(u8 *pl, u8 r, u8 g, u8 b) {
-    LFLD(u8, pl, 0x772) = r;
-    LFLD(u8, pl, 0x773) = g;
-    LFLD(u8, pl, 0x774) = b;
+static inline void PlSetCol021b65ec(Robo021ca458 *pl, u8 r, u8 g, u8 b) {
+    pl->unk_772 = r;
+    pl->unk_773 = g;
+    pl->unk_774 = b;
 }
 
 static inline Rgb021b65ec *PlCol021b65ec(Robo021ca458 *pl) {
@@ -112,7 +102,7 @@ void func_ov000_021b65ec(Obj021b65ec *self) {
             return;
         }
         func_ov000_021b13cc((u8 *)pl, 0);
-        LFLD(FieldId, pl, 0x772) = g->unk_d0;
+        pl->fieldId = g->unk_d0;
         {
             VecFx32 v;
             v.x = item->hx << 4;

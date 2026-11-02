@@ -114,7 +114,7 @@ static inline void StopSlot02162294(u8 *self, u8 i) {
 }
 
 static inline void SlotDtor02162294(u8 *self) {
-    LFLD(void *, self, 0) = data_ov000_021cabd8;
+    VOBJ_SET_VTABLE(self, data_ov000_021cabd8);
     StopSlot02162294(self, LFLD(u8, self, 5));
     StopSlot02162294(self, (LFLD(u8, self, 5) & 1) ^ 1);
     __cxa_vec_cleanup(self + 0x2e8, 2, 0x138, (void (*)(void *))func_ov000_0218ea20);
@@ -123,7 +123,7 @@ static inline void SlotDtor02162294(u8 *self) {
 
 static inline void CamDtor02162294(u8 *self) {
     u8 *sub;
-    LFLD(void *, self, 0) = data_ov000_021cabc8;
+    VOBJ_SET_VTABLE(self, data_ov000_021cabc8);
     StopSlot02162294(self + 4, LFLD(u8, self + 4, 5));
     StopSlot02162294(self + 4, (LFLD(u8, self + 4, 5) & 1) ^ 1);
     func_ov000_0218fee4(self + 0x55c);

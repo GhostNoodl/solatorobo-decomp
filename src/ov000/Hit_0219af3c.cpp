@@ -21,20 +21,6 @@ typedef struct {
     u32 rest : 30;
 } PBits0219af3c;
 
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 3;
-    u32 b5 : 2;
-    u32 rest : 25;
-} PlBits0219af3c;
-
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 rest : 14;
-} Bits22_0219af3c;
-
 extern "C" {
 extern void *data_ov000_021ccd68;
 Robo021ca458 *func_ov000_0219bf90(void);
@@ -61,7 +47,7 @@ static inline u16 Kind0219af3c(u16 id) {
 }
 
 static inline BOOL Both0219af3c(ActorSub44 *p) {
-    return LFLD(Bits22_0219af3c, p, 0x22).b0 == 1 && LFLD(Bits22_0219af3c, p, 0x22).b1 == 1 ? TRUE : FALSE;
+    return p->unk_22_0 == 1 && p->unk_22_1 == 1 ? TRUE : FALSE;
 }
 
 static inline BOOL Special0219af3c(Tgt0219af3c *t) {

@@ -20,17 +20,17 @@ void func_ov000_0219cbf8(Robo021ca458 *self, VecFx32 *pos, u16 *rot) {
     self->pos.y = pos->y;
     self->pos.z = pos->z;
     if (self->unk_b22_6 != 5) {
-        LFLD(VecFx32, self, 0xaf0).x = pos->x;
-        LFLD(VecFx32, self, 0xaf0).y = pos->y;
-        LFLD(VecFx32, self, 0xaf0).z = pos->z;
+        self->unk_af0.x = pos->x;
+        self->unk_af0.y = pos->y;
+        self->unk_af0.z = pos->z;
     } else {
-        LFLD(VecFx32, self, 0xaf0).x = self->pos.x - NNS_G3dGlb.camPos.x;
-        LFLD(VecFx32, self, 0xaf0).y = self->pos.y - NNS_G3dGlb.camPos.y;
-        LFLD(VecFx32, self, 0xaf0).z = self->pos.z - NNS_G3dGlb.camPos.z;
+        self->unk_af0.x = self->pos.x - NNS_G3dGlb.camPos.x;
+        self->unk_af0.y = self->pos.y - NNS_G3dGlb.camPos.y;
+        self->unk_af0.z = self->pos.z - NNS_G3dGlb.camPos.z;
     }
-    LFLD(VecFx32, self, 0xafc).x = LFLD(VecFx32, self, 0xaf0).x;
-    LFLD(VecFx32, self, 0xafc).y = LFLD(VecFx32, self, 0xaf0).y;
-    LFLD(VecFx32, self, 0xafc).z = LFLD(VecFx32, self, 0xaf0).z;
+    self->unk_afc.x = self->unk_af0.x;
+    self->unk_afc.y = self->unk_af0.y;
+    self->unk_afc.z = self->unk_af0.z;
     {
         u16 ry;
         self->rot_x = rot[0];
@@ -55,13 +55,13 @@ void func_ov000_0219cbf8(Robo021ca458 *self, VecFx32 *pos, u16 *rot) {
         func_ov000_021bd438(self->unk_9b0, &self->unk_75c, 0);
     }
     Body_SetPos((u8 *)self + 0x2cc, &self->pos, self->rot_y);
-    self->unk_31c = 0;
-    self->unk_320 = 0;
-    self->unk_324 = 0;
+    self->hit0.unk_50 = 0;
+    self->hit0.unk_54 = 0;
+    self->hit0.unk_58 = 0;
     Body_SetPos((u8 *)self + 0x6c0, &self->unk_75c, self->unk_76e);
-    self->unk_710 = 0;
-    self->unk_714 = 0;
-    self->unk_718 = 0;
+    self->hit1.unk_50 = 0;
+    self->hit1.unk_54 = 0;
+    self->hit1.unk_58 = 0;
     self->vfunc_44();
     LBIT(self, 0xb24).b20 = 0;
     if (data_ov000_021ccd6c[9] == 0xff) {
@@ -70,16 +70,10 @@ void func_ov000_0219cbf8(Robo021ca458 *self, VecFx32 *pos, u16 *rot) {
 }
 }
 
-
 typedef struct {
     u16 b0 : 1;
     u16 rest : 15;
 } H1_0219cdb8;
-
-typedef struct {
-    u8 b0 : 1;
-    u8 rest : 7;
-} C1_0219cdb8;
 
 extern "C" {
 extern void *data_ov000_021ccd68;
@@ -122,13 +116,13 @@ void func_ov000_0219cdb8(Robo021ca458 *self) {
     }
     if (self->unk_b24_5 != 0) {
         Actor *o = GetObj0219cdb8(self->unk_b1c);
-        u8 *p = NULL;
+        ActorSub4c *p = NULL;
         if (o != NULL) {
-            p = ((u8 *)o->targetObj);
+            p = o->targetObj;
         }
-        if (p == NULL || LFLD(u16, p, 0x1c) != self->id) {
+        if (p == NULL || p->target != self->id) {
             if (p != NULL) {
-                LFLD(u16, p, 0x1c) = 0xffff;
+                p->target = 0xffff;
             }
             Reset0219cdb8(self);
         }
@@ -195,14 +189,14 @@ void func_ov000_0219cdb8(Robo021ca458 *self) {
             s32 *t;
             void **res;
             self->unk_b22_12 = 0;
-            self->unk_42a_0 = 0;
+            self->mdl1.visible = 0;
             t = ((s32 *)self->unk_ba0);
             func_ov000_02191008((u8 *)self + 0x368);
             if ((u8 *)self->unk_998 != NULL) {
                 LFLD(H1_0219cdb8, self->unk_998, 0xc2).b0 = 0;
             }
-            self->unk_16e_0 = 0;
-            res = LFLD(void **, self->unk_ac, 0xc);
+            self->mdl0.visible = 0;
+            res = (void **)self->mdl0.res->mdl_handle;
             NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet(res != NULL ? *res : NULL));
             func_ov000_0218ec60((u8 *)self + 0x450, t[0], t[1], 1, 1);
             func_ov000_0218edf0((u8 *)self + 0x450, t[2], t[3], 1, 1);

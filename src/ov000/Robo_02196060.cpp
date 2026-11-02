@@ -3,14 +3,6 @@
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 rest : 12;
-} Bits02196060;
-
 extern "C" {
 extern char data_ov000_021cc456[];
 extern void *data_02097e4c;
@@ -49,15 +41,15 @@ void func_ov000_02196060(ActorEx *self) {
         self->moveYaw = self->rot_y;
         {
             ActorSub44 *q = self->unk_44;
-            LFLD(Bits02196060, self->unk_44, 0x22).b0 = 1;
-            LFLD(Bits02196060, q, 0x22).b1 = 1;
+            self->unk_44->unk_22_0 = 1;
+            q->unk_22_1 = 1;
         }
         if (self->hit != NULL) {
             ActorSub48 *p = self->hit;
-            LFLD(Bits02196060, p, 0x9a).b0 = 1;
+            p->unk_9a_0 = 1;
             p->unk_9a_3 = 1;
             HitSphere_Link(p);
-            LFLD(u16, self->hit, 0x9a) |= 0x12;
+            self->hit->unk_9a |= 0x12;
         }
         break;
     case 1:

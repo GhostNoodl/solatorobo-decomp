@@ -39,7 +39,7 @@ void func_ov000_021b12c0(Robo021ca458 *self, BOOL flag) {
     self->unk_76e = self->rot_y;
     self->unk_770 = self->rot_z;
     func_ov000_02190cb0((u8 *)self + 0x368, data_ov000_021cc5e3, 0x1000, 1);
-    anm = ((Anm021b12c0 *)self->unk_384);
+    anm = ((Anm021b12c0 *)self->mdl1.unk_1c);
     if (anm != NULL) {
         NNS_G3dRenderObjRemoveAnmObj((u8 *)self + 0x38c, *(void **)anm);
         anm->unk_108 = 0;
@@ -47,7 +47,7 @@ void func_ov000_021b12c0(Robo021ca458 *self, BOOL flag) {
         anm->b0 = 0;
         anm->b1 = 0;
     }
-    self->unk_178 = -1;
+    self->mdl0.unk_cc = -1;
     LFLD(Bits0214a424, data_0214a424, 0x18).b8 = 0;
     LFLD(Bits0214a424, data_0214a424, 0x18).b9 = 0;
     func_02062764(3, 1);
@@ -69,9 +69,9 @@ extern "C" void func_ov000_021b13cc(Robo021ca458 *self, BOOL flag) {
     self->vfunc_18();
     func_ov000_02190cb0((u8 *)self + 0x368, data_ov000_021cc5e9, 0x1000, 1);
     func_ov000_02190a80((u8 *)self + 0x368, 0x1000);
-    self->unk_178 = 0x320;
+    self->mdl0.unk_cc = 0x320;
     if (self->unk_b24_1 == 1) {
-        LFLD(FieldId, self, 0x772) = data_ov000_021ccd54->unk_ca;
+        self->fieldId = data_ov000_021ccd54->unk_ca;
     }
     LFLD(Bits0214a424, data_0214a424, 0x18).b8 = 1;
     LFLD(VecFx32, data_0214a424, 0x148) = self->unk_75c;

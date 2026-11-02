@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/MapCtx.h"
@@ -177,7 +178,6 @@ typedef struct {
 } Ent6180;
 
 extern "C" {
-extern u8 *data_0214a424;
 typedef struct { s8 dx; s8 dy; u16 hf : 1; u16 vf : 1; u16 idx : 4; } Dir2_6180;
 extern const Dir2_6180 data_ov000_021c9b40[];
 extern const s8 data_ov000_021c9b41[];
@@ -259,7 +259,7 @@ void func_ov000_02166180(Obj0216607c *self) {
 
 
     p = (u8 *)self->unk_30;
-    tbl2 = (Ent6180 *)(data_0214a424 + 0x60c);
+    tbl2 = (Ent6180 *)data_0214a424->slots;
     kind = LFLD(u8 *, p, 0xcb4)[0x14];
     anim = LFLD(u8 *, p, 0xc88) + kind * 8;
     g = data_ov000_021ccd54;

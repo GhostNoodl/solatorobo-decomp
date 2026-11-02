@@ -20,12 +20,6 @@ typedef struct {
     u8 b1 : 7;
 } B19_021a5d00;
 
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 rest : 14;
-} B22_021a5d00;
-
 extern "C" {
 
 extern void *data_ov000_021ccd68;
@@ -61,11 +55,11 @@ static inline Actor *FindActor021a5d00(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-static inline u16 AngleTo021a5d00(Robo021ca458 *self, u8 *a) {
-    if (a == NULL || a == (u8 *)self) {
+static inline u16 AngleTo021a5d00(Robo021ca458 *self, Actor *a) {
+    if (a == NULL || a == self) {
         return self->rot_y;
     }
-    return FX_Atan2(LFLD(s32, a, 0x70) - self->pos.x, LFLD(s32, a, 0x78) - self->pos.z);
+    return FX_Atan2(a->pos.x - self->pos.x, a->pos.z - self->pos.z);
 }
 
 static inline BOOL Ev19_021a5d00(void) {
@@ -83,7 +77,7 @@ static inline void Fx021a5d00(Robo021ca458 *self, u8 *info) {
         v.y += self->height;
         func_ov000_021899d8(&v, 0, 0x8000, 1, 0x1000, 0x1000);
     }
-    LFLD(B22_021a5d00, self->unk_44, 0x22).b1 = 0;
+    self->unk_44->unk_22_1 = 0;
 }
 
 static inline void Reset021a5d00(Robo021ca458 *self) {
@@ -95,13 +89,13 @@ static inline void Reset021a5d00(Robo021ca458 *self) {
 }
 
 void func_ov000_021a5d00(Robo021ca458 *self) {
-    u8 *a;
+    Actor *a;
     u8 *info;
-    LFLD(u16, self->hit, 0x9a) |= 0x20;
-    a = (u8 *)FindActor021a5d00(self->target);
+    self->hit->unk_9a |= 0x20;
+    a = FindActor021a5d00(self->target);
     info = NULL;
     if (a != NULL) {
-        info = LFLD(u8 *, a, 0x4c);
+        info = ((u8 *)a->targetObj);
     }
     if (self->unk_b2f == 0) {
         self->unk_b2f++;
@@ -119,7 +113,7 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
                 St_021a5d00 *st = (St_021a5d00 *)self->fsm;
                 st->timer++;
                 if (st->timer < 0xf) {
-                    if (!Hit_DiffInCylinder(a + 0x70, &pos, (LFLD(s32, a, 0x64) << 1) + 0x19a, 0x3800)) {
+                    if (!Hit_DiffInCylinder(&a->pos, &pos, (a->radius << 1) + 0x19a, 0x3800)) {
                         func_ov000_02190cb0(self->model, data_ov000_021cc61e, 0x400, 0);
                         func_ov000_021915a0(self->model);
                         self->speed = 0x15c;
@@ -149,12 +143,12 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
         if (a != NULL && info != NULL) {
             BOOL done;
             u8 *o44;
-            o44 = LFLD(u8 *, a, 0x44);
+            o44 = ((u8 *)a->unk_44);
             done = FALSE;
             if (LFLD(B18_021a5d00, info, 0x18).b1 && info[3] != 10 && info[3] != 11) {
                 FieldState *g;
                 func_02062764(0x3c0, 0x80);
-                func_020627a0(LFLD(u16, a, 0xe), LFLD(u16, a, 0xc));
+                func_020627a0(a->kind, a->id);
                 g = data_ov000_021ccd54;
                 g->stageFlags = 1;
                 func_ov000_02182590((u8 *)g + 0xac);

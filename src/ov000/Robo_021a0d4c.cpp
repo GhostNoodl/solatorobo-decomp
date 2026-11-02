@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
@@ -9,21 +10,6 @@ typedef struct {
     s32 key;
     Robo021a0d4cPmf fn;
 } Robo021a0d4cEntry;
-
-typedef struct {
-    u16 b0 : 8;
-    u16 b8 : 1;
-    u16 rest : 7;
-} B9a_021a0d4c;
-
-typedef struct {
-    u16 b0 : 1;
-    u16 sel : 2;
-    u16 b3 : 6;
-    u16 b9 : 1;
-    u16 b10 : 1;
-    u16 rest : 5;
-} G18_021a0d4c;
 
 typedef struct {
     u32 b0 : 1;
@@ -43,7 +29,6 @@ extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
 extern u8 *data_ov000_021ccd6c;
 extern u8 *data_02149f0c;
-extern u8 *data_0214a424;
 void func_ov000_021b06dc(u8 *self);
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_ov000_0216adc0(void *p, s32 a, u16 b);
@@ -123,7 +108,7 @@ static inline BOOL NotB1_021a0d4c(Robo021ca458 *self) {
 }
 
 static inline BOOL G9_021a0d4c(void) {
-    return LFLD(G18_021a0d4c, data_0214a424, 0x18).b9 ? TRUE : FALSE;
+    return data_0214a424->bits18.flag9 ? TRUE : FALSE;
 }
 
 static inline BOOL Ready021a0d4c(FieldState *g) {
@@ -207,7 +192,7 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
         }
     }
     if (!self->unk_b24_1) {
-        self->model = (Model0218fe1c *)&self->unk_ac;
+        self->model = (Model0218fe1c *)&self->mdl0;
         self->hit = (ActorSub48 *)((u8 *)self + 0x2cc);
     } else {
         self->model = (Model0218fe1c *)((u8 *)self + 0x368);
@@ -222,15 +207,15 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
     if (self->hit->unk_9a_8) {
         u32 f = self->hit->unk_50;
         if ((f & 0x20000000) && !(f & 0x40400) && !(f & 0x40000000)) {
-            self->unk_af0 = self->pos.x;
-            self->unk_af4 = self->pos.y;
-            self->unk_af8 = self->pos.z;
+            self->unk_af0.x = self->pos.x;
+            self->unk_af0.y = self->pos.y;
+            self->unk_af0.z = self->pos.z;
         }
         if (self->hit->unk_54 & 0x20000000) {
             ActorSub48 *p = self->hit;
-            self->unk_afc = p->check.x;
-            self->unk_b00 = p->check.y;
-            self->unk_b04 = p->check.z;
+            self->unk_afc.x = p->check.x;
+            self->unk_afc.y = p->check.y;
+            self->unk_afc.z = p->check.z;
         }
     }
     if (self->unk_b24_5 != 0 && !self->unk_b22_3) {
@@ -298,7 +283,7 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
     LFLD(Bd_021a0d4c, ((u8 *)self->unk_9b4), 0).b1 = 0;
     if (self->unk_b22_0 != 0 && Ok021a0d4c(self)) {
         if (self->unk_b24_1) {
-            BOOL f = LFLD(G18_021a0d4c, data_0214a424, 0x18).b10 ? TRUE : FALSE;
+            BOOL f = data_0214a424->bits18.flag10 ? TRUE : FALSE;
             u8 *g = LFLD(u8 *, data_ov000_021ccd30, 0x11c);
             if (g != NULL) {
                 func_ov000_0216b508(LFLD(void *, g, 0x68), 1, f);
@@ -334,7 +319,7 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
         }
         if (GIdle021a0d4c() || self->unk_b34 < m) {
             Bar021a0d4c(LFLD(u16, ((u8 *)self->hp), 0), m);
-            if (LFLD(G18_021a0d4c, data_0214a424, 0x18).sel == 1 && !self->unk_b22_4) {
+            if (data_0214a424->bits18.mode == 1 && !self->unk_b22_4) {
                 BOOL on;
                 if (!self->unk_b22_3 && self->unk_b22_9 == 0 &&
                     self->unk_b24_1 && self->unk_93_4 &&
@@ -345,7 +330,7 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
                 } else {
                     on = FALSE;
                 }
-                Mark021a0d4c(LFLD(u16, data_0214a424, 0x26), 0x2d0, on);
+                Mark021a0d4c(data_0214a424->unk_026, 0x2d0, on);
             }
         }
     }
@@ -355,6 +340,6 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
             self->unk_9ac = self->unk_9ae;
         }
     }
-    LFLD(s64, self->fsm, 4) = 0;
+    self->fsm->flags = 0;
 }
 }
