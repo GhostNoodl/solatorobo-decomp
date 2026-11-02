@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
@@ -17,7 +18,6 @@ typedef struct {
 } Mtx_02194c08;
 
 extern "C" {
-extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd64;
 u8 *Target_Get(void *p);
 u8 *Group_FindNode(void *mgr, u16 id);
@@ -31,17 +31,17 @@ void MI_Copy48B(const void *src, void *dst);
 void MI_Copy36B(const void *src, void *dst);
 s32 FX_Div(s32 a, s32 b);
 
-static inline BOOL GBusy02194c08(u8 *g) {
-    return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94) ? TRUE : FALSE;
+static inline BOOL GBusy02194c08(FieldState *g) {
+    return g->head != g->tail ? TRUE : FALSE;
 }
 
 static inline BOOL GIdle02194c08(void) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         if (GBusy02194c08(g)) {
             return FALSE;
         }
-        if (LFLD(s32, g, 0) != 3) {
+        if (g->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -79,7 +79,7 @@ BOOL func_ov000_02194c08(ActorEx *self) {
     p = NULL;
     q = p;
     ret = TRUE;
-    if (((u8 *)self->unk_38) != NULL) {
+    if (((u8 *)self->model) != NULL) {
         u8 alpha;
         u8 *cam;
         if (((u8 *)self->unk_4c) != NULL) {
@@ -92,7 +92,7 @@ BOOL func_ov000_02194c08(ActorEx *self) {
             q = LFLD(u8 *, p, 0x48);
         }
         if (q != NULL) {
-            u8 *s = ((u8 *)self->unk_38);
+            u8 *s = ((u8 *)self->model);
             if (LFLD(u32, q, 0x54) & 0x80000) {
                 LFLD(u8, s, 0xbf) = 5;
             } else {
@@ -103,7 +103,7 @@ BOOL func_ov000_02194c08(ActorEx *self) {
             Mtx_02194c08 m;
             u8 *s;
             MI_Copy48B(((u8 *)self->unk_4c) + 0x20, &m);
-            s = ((u8 *)self->unk_38);
+            s = ((u8 *)self->model);
             MI_Copy36B(&m, s + 0x84);
             LFLD(s32, s, 0x78) = m.m[9];
             LFLD(s32, s, 0x7c) = m.m[10];
@@ -111,11 +111,11 @@ BOOL func_ov000_02194c08(ActorEx *self) {
             self->unk_93_0 = 1;
         }
         if (!self->unk_93_0) {
-            u8 *s = ((u8 *)self->unk_38);
+            u8 *s = ((u8 *)self->model);
             LFLD(s32, s, 0x78) = self->pos.x;
             LFLD(s32, s, 0x7c) = self->pos.y;
             LFLD(s32, s, 0x80) = self->pos.z;
-            func_ov000_02190758(((u8 *)self->unk_38), (u8 *)self + 0x7c, 0);
+            func_ov000_02190758(((u8 *)self->model), (u8 *)self + 0x7c, 0);
         }
         self->unk_93_0 = 0;
         alpha = 0x1f;
@@ -123,10 +123,10 @@ BOOL func_ov000_02194c08(ActorEx *self) {
         if (cam != NULL) {
             s32 dist;
             s32 r;
-            u8 *g = data_ov000_021ccd54;
-            u8 *s = ((u8 *)self->unk_38);
-            s32 dx = LFLD(s32, g, 0xf8) - LFLD(s32, s, 0x78);
-            s32 dz = LFLD(s32, g, 0x100) - LFLD(s32, s, 0x80);
+            FieldState *g = data_ov000_021ccd54;
+            u8 *s = ((u8 *)self->model);
+            s32 dx = g->cam.base.eye.x - LFLD(s32, s, 0x78);
+            s32 dz = g->cam.base.eye.z - LFLD(s32, s, 0x80);
             {
                 s64 sq = (s64)dx * dx;
                 sq += (s64)dz * dz;
@@ -144,14 +144,14 @@ BOOL func_ov000_02194c08(ActorEx *self) {
             }
         }
         if (alpha == 0x1f) {
-            ret = func_ov000_021903b4(((u8 *)self->unk_38));
+            ret = func_ov000_021903b4(((u8 *)self->model));
         } else if (alpha != 0) {
-            u8 old = LFLD(u8, ((u8 *)self->unk_38), 0xbe);
+            u8 old = self->model->alpha;
             if (old > alpha) {
-                LFLD(u8, ((u8 *)self->unk_38), 0xbe) = alpha;
+                self->model->alpha = alpha;
             }
-            ret = func_ov000_021903b4(((u8 *)self->unk_38));
-            LFLD(u8, ((u8 *)self->unk_38), 0xbe) = old;
+            ret = func_ov000_021903b4(((u8 *)self->model));
+            self->model->alpha = old;
         }
     }
     if (ret && self->unk_3c != NULL) {

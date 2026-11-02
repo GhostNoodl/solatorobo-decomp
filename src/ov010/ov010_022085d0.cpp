@@ -1,4 +1,5 @@
 #include "ov010/ov010.h"
+#include "Main/Sys/FieldState.h"
 #include "ov010/ObjLayouts.h"
 
 struct Ov010Rot {
@@ -8,7 +9,6 @@ struct Ov010Rot {
 extern "C" {
 
 extern void *data_02097e4c;
-extern void *data_ov000_021ccd54;
 extern u8 data_ov010_0220f024[];
 extern Ov010Vec data_ov010_0220f114;
 extern Ov010Vec data_ov010_0220f120;
@@ -61,7 +61,7 @@ void func_ov010_022085d0(Ov010Obj0220ffe4 *self) {
     case 100:
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
-        FLD(u8, data_ov000_021ccd54, 0xac) = 1;
+        data_ov000_021ccd54->unk_ac = 1;
         self->unk_40->st = 0x65;
         self->unk_1fc = 1;
         break;

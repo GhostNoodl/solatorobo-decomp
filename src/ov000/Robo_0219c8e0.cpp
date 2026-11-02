@@ -62,7 +62,7 @@ void func_ov000_0219c8e0(u8 *self) {
     u8 *base;
     const char *name;
     func_ov000_0218ffdc(M, self + 0x450, 0, 1);
-    M->unk_b4 = F(u16, 0xc);
+    M->actor_id = F(u16, 0xc);
     tbl = F(void **, 0x510) != NULL ? (AnimEventTable *)((u8 *)*F(void **, 0x510) + 8) : NULL;
     M->unk_d0 = tbl;
     if (tbl != NULL) {

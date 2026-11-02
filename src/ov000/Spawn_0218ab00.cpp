@@ -1,4 +1,5 @@
 #include "nitro/fx.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
@@ -48,16 +49,6 @@ typedef struct {
 } Seg0218ac98;
 
 typedef struct {
-    u8 c[3];
-} Rgb0218ac98;
-
-typedef struct {
-    u8 pad[0xc9];
-    u8 unk_c9;
-    Rgb0218ac98 c;
-} Glob0218ac98;
-
-typedef struct {
     u8 pad[0xc];
     u16 unk_0c;
     u8 pad0e[9];
@@ -68,7 +59,7 @@ typedef struct {
     u8 pad[2];
     u16 unk_02;
     u8 pad04[0xa];
-    Rgb0218ac98 c;
+    FieldId c;
     u8 pad11;
     u16 unk_12;
     u16 unk_14;
@@ -78,7 +69,7 @@ typedef struct {
 
 typedef struct {
     u8 pad[0xe];
-    Rgb0218ac98 c;
+    FieldId c;
     u8 mask[3];
     u8 pad14[0x44];
 } Param0218ac98;
@@ -190,7 +181,6 @@ Obj0218a9d8 *func_ov000_0218a9d8(Obj0218a9d8 *self) {
 }
 
 
-extern Glob0218ac98 *data_ov000_021ccd54;
 extern Mgr0218ac98 *data_ov000_021ccd64;
 BOOL func_01ffc89c(Obj0218ac98 *vol, Seg0218ac98 *seg);
 s32 func_ov000_0219a2f4(VecFx32 *pos, s32 up, s32 down);
@@ -219,7 +209,7 @@ static inline Actor0218ab00 *GetActor0218ab00(u16 id) {
 #define REC(s, i) ((Rec0218ac98 *)((u8 *)(s) + (i) * 0x24 + 0xc))
 
 void func_ov000_0218ab00(Obj0218ac98 *self) {
-    Glob0218ac98 *g;
+    FieldState *g;
     BOOL changed;
     Ctx0218ab00 *ctx;
     u8 *base;
@@ -227,13 +217,13 @@ void func_ov000_0218ab00(Obj0218ac98 *self) {
     Actor0218ab00 *a;
     g = data_ov000_021ccd54;
     changed = FALSE;
-    if (self->param.mask[2] != 0xff && self->param.mask[2] != g->c.c[2]) {
+    if (self->param.mask[2] != 0xff && self->param.mask[2] != g->unk_ca.c[2]) {
         changed = TRUE;
     }
-    if (self->param.mask[1] != 0xff && self->param.mask[1] != g->c.c[1]) {
+    if (self->param.mask[1] != 0xff && self->param.mask[1] != g->unk_ca.c[1]) {
         changed = TRUE;
     }
-    if (self->param.mask[0] != 0xff && self->param.mask[0] != g->c.c[0]) {
+    if (self->param.mask[0] != 0xff && self->param.mask[0] != g->unk_ca.c[0]) {
         changed = TRUE;
     }
     if (g->unk_c9 != 0) {

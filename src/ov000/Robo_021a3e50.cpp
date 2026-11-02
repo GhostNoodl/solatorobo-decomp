@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
@@ -10,7 +11,6 @@ typedef struct {
 extern "C" {
 extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd30;
-extern u8 *data_ov000_021ccd54;
 extern u8 *data_0214a424;
 extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc648[];
@@ -90,9 +90,9 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
             if (!LBIT(self, 0xb24).b1) {
                 anim = data_ov000_021cc648;
             }
-            func_ov000_02190cb0(self->unk_38, anim, 0x400, 0);
+            func_ov000_02190cb0(self->model, anim, 0x400, 0);
         }
-        func_ov000_021915a0(self->unk_38);
+        func_ov000_021915a0(self->model);
         self->unk_40->timer = 0;
         self->unk_9c = 0;
         self->unk_a0 = 0;
@@ -109,7 +109,7 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
     case 10:
         if (t != NULL) {
             func_020627a0(t->kind, t->id);
-            LFLD(u8, data_ov000_021ccd54, 0xac) = 1;
+            data_ov000_021ccd54->unk_ac = 1;
         }
         self->unk_40->st++;
         break;

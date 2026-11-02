@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/Vec.h"
 
@@ -33,7 +34,6 @@ typedef struct {
 
 extern "C" {
 extern Mgr0218af9c *data_ov000_021ccd64;
-extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 Robo021ca458 *func_ov000_0219bf90(void);
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
@@ -43,17 +43,17 @@ u16 FX_Atan2(s32 x, s32 z);
 void func_ov000_0218b4b4(u8 *self, s32 mode, u8 *src);
 u8 *Group_SpawnActor(void *mgr, Desc0218af9c *d, void *pos, void *rot, u16 a);
 
-static inline BOOL GBusy0218af9c(u8 *g) {
-    return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94) ? TRUE : FALSE;
+static inline BOOL GBusy0218af9c(FieldState *g) {
+    return g->head != g->tail ? TRUE : FALSE;
 }
 
 static inline s16 GIdle0218af9c(void) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         if (GBusy0218af9c(g)) {
             return FALSE;
         }
-        if (LFLD(s32, g, 0) != 3) {
+        if (g->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -191,11 +191,11 @@ void func_ov000_0218af9c(Obj0218af9c *self) {
                 self->unk_0c = 0xffff;
             }
         } else if (self->unk_0c != 0xffff) {
-            u8 *g = data_ov000_021ccd54;
+            FieldState *g = data_ov000_021ccd54;
             BOOL same;
             any = TRUE;
             same = FALSE;
-            if (self->unk_1a == g[0xca] && self->unk_1b == g[0xcb] && self->unk_1c == g[0xcc]) {
+            if (self->unk_1a == ((u8 *)g)[0xca] && self->unk_1b == ((u8 *)g)[0xcb] && self->unk_1c == ((u8 *)g)[0xcc]) {
                 same = TRUE;
             }
             if (same) {

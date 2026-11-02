@@ -1,4 +1,5 @@
 #include "ov010/ov010.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 typedef s32 fx32;
@@ -125,7 +126,6 @@ struct Ov010G190 {
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern void func_ov003_021d85c8(void *p, s32 a, s32 b, s32 c, s32 d);
@@ -180,7 +180,7 @@ BOOL func_ov010_0220441c(Obj0220441c *self, u8 *msg) {
             if (!Ov010_IsInvul(hp)) {
                 s32 n;
                 u8 st;
-                u8 *g;
+                FieldState *g;
                 hp[2] = FLD(u16, msg, 6);
                 n = func_ov003_021d6548(self, msg + 0xa);
                 hp = self->hp;
@@ -196,15 +196,15 @@ BOOL func_ov010_0220441c(Obj0220441c *self, u8 *msg) {
                     func_ov003_021d982c((u8 *)self + 0x160, 1);
                 }
                 if (st != 1) {
-                    func_ov000_02191418(self->unk_38, 5, 0);
+                    func_ov000_02191418(self->model, 5, 0);
                 }
                 g = data_ov000_021ccd54;
-                FLD(Ov010G190, g, 0x190).b2 = 1;
-                FLD(Ov010G190, g, 0x190).b3 = 1;
-                FLD(Ov010G190, g, 0x190).b4 = 1;
-                FLD(u8, g, 0x18d) = 0x14;
-                FLD(u8, g, 0x18e) = 0x1e;
-                FLD(u8, g, 0x18f) = 0x1e;
+                g->cam.base.shakeX = 1;
+                g->cam.base.shakeY = 1;
+                g->cam.base.shakeZ = 1;
+                g->cam.base.shakeTime = 0x14;
+                g->cam.base.shakeLen = 0x1e;
+                g->cam.base.shakeCur = 0x1e;
                 func_ov003_021d68e0(self, 0x14bf, 0x739f, 10);
                 func_02049f44(data_02097e4c, 0x1b, &self->pos, 0);
             }
@@ -414,7 +414,7 @@ void Ov010ActVt_02210154_Start(Obj022046ac *self) {
     Ov003StateMachine_Init(self->unk_118);
     func_ov003_021d8a30(self->unk_118, 0, self->unk_120);
     func_ov003_021d8a30(self->unk_118, 1, self->unk_11c);
-    FLD(Ov010Bits16, self->unk_38, 0xc2).b0 = 0;
+    self->model->unk_c2_0 = 0;
     self->target = FLD(u16, func_ov000_0219bf90(), 0xc);
     if (func_020621c4()) {
         func_ov003_021d6bac(self, data_ov010_0220f0a0);
@@ -583,8 +583,8 @@ void func_ov010_02204cdc(Obj02204aac *self) {
     if (self->unk_40->st != 0) {
         return;
     }
-    func_ov000_02190cb0(self->unk_38, data_ov010_0220f050, 0x266, 0);
-    func_ov000_021915a0(self->unk_38);
+    func_ov000_02190cb0(self->model, data_ov010_0220f050, 0x266, 0);
+    func_ov000_021915a0(self->model);
     self->unk_9c = 0;
     self->unk_a0 = 0;
     self->unk_a4 = 0;
@@ -664,7 +664,7 @@ void func_ov010_02204d44(Obj02204aac *self) {
         self->unk_a0 = 0;
         self->unk_a4 = 0;
         self->unk_a8 = 0;
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220f040, 0x800, 1);
+        func_ov000_02190cb0(self->model, data_ov010_0220f040, 0x800, 1);
         pl = func_ov000_0219bf90();
         func_ov010_02209578(self->unk_104, self->unk_15c, self->unk_fc, self->unk_100, self->id, pl->id);
         func_ov010_0220d9c0((u8 *)self + 0x174, self->unk_104);
@@ -736,12 +736,12 @@ void func_ov010_02204d44(Obj02204aac *self) {
     case 0x1e:
         func_ov010_02207828(self);
         Actor_TurnToPos(self, self->unk_f8, 0x400);
-        FLD(Ov010Flags8, func_ov000_02190a30(self->unk_38, 0), 0x111).b3 = 0;
-        func_ov000_021911c8(self->unk_38, 0x2000);
+        FLD(Ov010Flags8, func_ov000_02190a30(self->model, 0), 0x111).b3 = 0;
+        func_ov000_021911c8(self->model, 0x2000);
         self->unk_40->st = 0x1f;
         break;
     case 0x1f:
-        if (FLD(s16, self->unk_38, 0xc4) == 1) {
+        if (((s16)self->model->unk_c4) == 1) {
             func_ov010_0220984c(self->unk_108, self->id);
             func_ov010_0220d9c0((u8 *)self + 0x174, self->unk_108);
             self->unk_40->st = 0x28;
@@ -751,9 +751,9 @@ void func_ov010_02204d44(Obj02204aac *self) {
         Actor_TurnToPos(self, self->unk_f8, 0x400);
         break;
     case 0x28:
-        if (func_ov010_0220da4c((u8 *)self + 0x174) && func_ov000_02191120(self->unk_38)) {
-            func_ov000_02190cb0(self->unk_38, data_ov010_0220f050, 0x266, 1);
-            func_ov000_021915a0(self->unk_38);
+        if (func_ov010_0220da4c((u8 *)self + 0x174) && func_ov000_02191120(self->model)) {
+            func_ov000_02190cb0(self->model, data_ov010_0220f050, 0x266, 1);
+            func_ov000_021915a0(self->model);
             self->unk_40->st = 0x32;
         }
         func_ov010_02207828(self);
@@ -763,8 +763,8 @@ void func_ov010_02204d44(Obj02204aac *self) {
         func_ov003_021d969c((u8 *)self + 0x160, 1);
         break;
     }
-    if (flag && FLD(s16, self->unk_38, 0xc4) == 2) {
-        FLD(Ov010Flags8, func_ov000_02190a30(self->unk_38, 0), 0x111).b3 = 1;
+    if (flag && ((s16)self->model->unk_c4) == 2) {
+        FLD(Ov010Flags8, func_ov000_02190a30(self->model, 0), 0x111).b3 = 1;
     }
 }
 
@@ -794,7 +794,7 @@ void func_ov010_0220522c(Obj02204aac *self) {
         self->unk_40->st = 0x10;
         break;
     case 0x10:
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220f040, 0x266, 0);
+        func_ov000_02190cb0(self->model, data_ov010_0220f040, 0x266, 0);
         self->unk_40->st = 0x11;
         func_02049f44(data_02097e4c, self->unk_134, &self->pos, 0);
     case 0x11:
@@ -813,10 +813,10 @@ void func_ov010_0220522c(Obj02204aac *self) {
         break;
     }
     case 0x21:
-        if (func_ov010_0220da4c((u8 *)self + 0x174) && func_ov000_02191120(self->unk_38)) {
+        if (func_ov010_0220da4c((u8 *)self + 0x174) && func_ov000_02191120(self->model)) {
             self->unk_40->st = 0x30;
         }
-        if (func_ov000_02191120(self->unk_38)) {
+        if (func_ov000_02191120(self->model)) {
             func_ov003_021d8a7c(self->unk_118, 1);
         }
         break;
@@ -834,9 +834,9 @@ void func_ov010_0220522c(Obj02204aac *self) {
         func_ov003_021d969c((u8 *)self + 0x160, 1);
         break;
     }
-    if (func_ov000_02191120(self->unk_38)) {
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220f050, 0x800, 0);
-        func_ov000_021915a0(self->unk_38);
+    if (func_ov000_02191120(self->model)) {
+        func_ov000_02190cb0(self->model, data_ov010_0220f050, 0x800, 0);
+        func_ov000_021915a0(self->model);
     }
 }
 
@@ -864,7 +864,6 @@ extern void *data_02097e4c;
 extern const Ov010Blk12 data_ov010_0220f0b4;
 extern const Ov010Blk12 data_ov010_0220f0c0;
 extern const Ov010Blk12 data_ov010_0220f0cc;
-extern u8 *data_ov000_021ccd54;
 extern BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
 extern void func_ov000_02191618(void *a);
@@ -922,8 +921,8 @@ void func_ov010_02205444(Obj02204aac *self) {
     switch (st->st) {
     case 0: {
         u8 k;
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220f02c, 0x266, 0);
-        func_ov000_021915a0(self->unk_38);
+        func_ov000_02190cb0(self->model, data_ov010_0220f02c, 0x266, 0);
+        func_ov000_021915a0(self->model);
         func_ov003_021d8a7c(self->unk_118, 0);
         k = self->unk_171;
         switch (k) {
@@ -1017,16 +1016,16 @@ void func_ov010_02205444(Obj02204aac *self) {
         }
         break;
     case 0x28: {
-        u8 *g;
+        FieldState *g;
         Ov010V *e;
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220f030, 0x266, 0);
-        func_ov000_021915a0(self->unk_38);
+        func_ov000_02190cb0(self->model, data_ov010_0220f030, 0x266, 0);
+        func_ov000_021915a0(self->model);
         Ov010_ClearSpeed(self);
         g = data_ov000_021ccd54;
-        FLD(u8, g, 0x190) |= 0x1c;
-        FLD(u8, g, 0x18d) = 0xf;
-        FLD(u8, g, 0x18e) = 0x28;
-        FLD(u8, g, 0x18f) = 0x28;
+        g->cam.base.flags |= 0x1c;
+        g->cam.base.shakeTime = 0xf;
+        g->cam.base.shakeLen = 0x28;
+        g->cam.base.shakeCur = 0x28;
         self->unk_40->st = 0x29;
         Ov010Vec o = {0, 0, 0};
         o.y = self->unk_68 / 2;
@@ -1066,13 +1065,13 @@ void func_ov010_02205444(Obj02204aac *self) {
         break;
     }
     case 0x32:
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220f034, 0x266, 0);
-        func_ov000_02191618(self->unk_38);
+        func_ov000_02190cb0(self->model, data_ov010_0220f034, 0x266, 0);
+        func_ov000_02191618(self->model);
         self->unk_a4 = 0x400;
         self->unk_40->st = 0x33;
         break;
     case 0x33:
-        if (func_ov000_02191120(self->unk_38)) {
+        if (func_ov000_02191120(self->model)) {
             Ov010_ClearSpeed(self);
             self->unk_40->st = 0x3c;
         }
@@ -1080,8 +1079,8 @@ void func_ov010_02205444(Obj02204aac *self) {
         break;
     case 0x3c:
         self->rot_y += 0x7fff;
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220f050, 0x1000, 0);
-        func_ov000_021915a0(self->unk_38);
+        func_ov000_02190cb0(self->model, data_ov010_0220f050, 0x1000, 0);
+        func_ov000_021915a0(self->model);
         self->unk_40->st = 0x46;
         break;
     case 0x46:
@@ -1135,7 +1134,7 @@ void func_ov010_02205c30(Obj02204aac *self) {
     }
     switch (self->unk_40->st) {
     case 0:
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220f03c, 0x800, 0);
+        func_ov000_02190cb0(self->model, data_ov010_0220f03c, 0x800, 0);
         self->unk_9c = 0;
         self->unk_a0 = 0;
         self->unk_a4 = 0;
@@ -1144,14 +1143,14 @@ void func_ov010_02205c30(Obj02204aac *self) {
         return;
     case 1:
         Actor_TurnToActor(self, tgt, r);
-        if (FLD(s16, self->unk_38, 0xc4) == 1) {
+        if (((s16)self->model->unk_c4) == 1) {
             self->unk_40->st = 2;
         }
         return;
     case 2: {
         u8 *res;
         u8 *ent;
-        if (FLD(s16, self->unk_38, 0xc4) != 3) {
+        if (((s16)self->model->unk_c4) != 3) {
             return;
         }
         res = func_02070558(self->kind);
@@ -1160,11 +1159,11 @@ void func_ov010_02205c30(Obj02204aac *self) {
             self->unk_40->st = 4;
         } else {
             Ov010Vec v;
-            u8 *m = (u8 *)self->unk_38;
+            Model0218fe1c *m = self->model;
             u8 *o;
-            v.x = FLD(s16, m, 0xc6) << 4;
-            v.y = FLD(s16, m, 0xc8) << 4;
-            v.z = FLD(s16, m, 0xca) << 4;
+            v.x = ((s16)m->unk_c6) << 4;
+            v.y = ((s16)m->unk_c8) << 4;
+            v.z = ((s16)m->unk_ca) << 4;
             func_01ffc9fc(&v, &v, self->rot_y);
             VEC_Add(&v, &self->pos, &v);
             o = func_ov003_021d69f0(self, 0x4818, &v, (u8 *)self + 0x7c, tgt);
@@ -1196,11 +1195,11 @@ void func_ov010_02205c30(Obj02204aac *self) {
         return;
     }
     case 4:
-        if (!func_ov000_02191120(self->unk_38)) {
+        if (!func_ov000_02191120(self->model)) {
             return;
         }
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220f050, 0xcd, 0);
-        func_ov000_021915a0(self->unk_38);
+        func_ov000_02190cb0(self->model, data_ov010_0220f050, 0xcd, 0);
+        func_ov000_021915a0(self->model);
         FLD(Ov010Bits3, self, 0xea).lo = FLD(Ov010Rank, self->unk_b0, 0xa).rank;
         self->unk_ec.b0 = 1;
         func_ov000_02198360(self->unk_40, 1, 0);
@@ -1243,9 +1242,9 @@ void func_ov010_02205f40(Obj02204aac *self) {
     case 0: {
         u16 ang;
         void *t;
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220f038, 0x1000, 1);
-        func_ov000_02191418(self->unk_38, 5, 1);
-        func_ov000_02191618(self->unk_38);
+        func_ov000_02190cb0(self->model, data_ov010_0220f038, 0x1000, 1);
+        func_ov000_02191418(self->model, 5, 1);
+        func_ov000_02191618(self->model);
         self->unk_92 = 0;
         self->unk_9c = 0;
         self->unk_a0 = 0;
@@ -1295,7 +1294,7 @@ void func_ov010_02205f40(Obj02204aac *self) {
             self->unk_a4 = 0;
             self->unk_a8 = 0;
         }
-        if (!func_ov000_02191120(self->unk_38)) {
+        if (!func_ov000_02191120(self->model)) {
             return;
         }
         if (self->unk_9c == 0) {
@@ -1320,14 +1319,14 @@ void func_ov010_02205f40(Obj02204aac *self) {
         Actor_Move(self, 0);
         break;
     case 0x30:
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220fefc, 0x266, 1);
-        func_ov000_02191418(self->unk_38, 5, 1);
-        func_ov000_02191618(self->unk_38);
+        func_ov000_02190cb0(self->model, data_ov010_0220fefc, 0x266, 1);
+        func_ov000_02191418(self->model, 5, 1);
+        func_ov000_02191618(self->model);
         self->unk_a8 -= 2;
         self->unk_40->st = 0x31;
         break;
     case 0x31:
-        if (FLD(s16, self->unk_38, 0xc4) == 1) {
+        if (((s16)self->model->unk_c4) == 1) {
             self->unk_40->st = 0x40;
             self->unk_a0 = 0;
             self->unk_a4 = 0;
@@ -1426,8 +1425,8 @@ void func_ov010_0220640c(Obj02204aac *self) {
         n->b22_1 = 0;
         FLD(u16, self->unk_4c, 0x1c) = 0xffff;
         Ov003StateMachine_Leave(self->unk_118);
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220f038, 0x800, 1);
-        func_ov000_02191418(self->unk_38, 5, 1);
+        func_ov000_02190cb0(self->model, data_ov010_0220f038, 0x800, 1);
+        func_ov000_02191418(self->model, 5, 1);
         scr = OV010_FADE_SCREEN_MAIN;
         Ov010_Jump640c(self);
         func_0203cb78(0x1e000, 1, scr);
@@ -1462,9 +1461,9 @@ void func_ov010_0220640c(Obj02204aac *self) {
         Actor_Move(self, 0);
         return;
     case 2:
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220f028, 0x266, 0);
-        func_ov000_021915a0(self->unk_38);
-        FLD(u16, func_ov000_02190a30(self->unk_38, 0), 0x112) = 0x800;
+        func_ov000_02190cb0(self->model, data_ov010_0220f028, 0x266, 0);
+        func_ov000_021915a0(self->model);
+        FLD(u16, func_ov000_02190a30(self->model, 0), 0x112) = 0x800;
         self->unk_a8 = 0;
         self->unk_a0 = Ov010g_Mul(self->unk_a0, 0xf80);
         self->unk_40->timer++;
@@ -1541,11 +1540,11 @@ void func_ov010_02206784(Obj02204aac *self) {
         self->unk_40->st = 1;
         d = FLD(u16, e, 0x66) - self->rot_y;
         if (d >= 0x1400 && d <= 0x6c00) {
-            func_ov000_02190cb0(self->unk_38, data_ov010_0220f048, 0x800, 0);
+            func_ov000_02190cb0(self->model, data_ov010_0220f048, 0x800, 0);
             return;
         }
         if (d >= 0x9400 && d <= 0xec00) {
-            func_ov000_02190cb0(self->unk_38, data_ov010_0220f044, 0x800, 0);
+            func_ov000_02190cb0(self->model, data_ov010_0220f044, 0x800, 0);
         }
         break;
     }
@@ -1557,7 +1556,7 @@ void func_ov010_02206784(Obj02204aac *self) {
         }
         break;
     case 0x100:
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220f050, 0xcd, 0);
+        func_ov000_02190cb0(self->model, data_ov010_0220f050, 0xcd, 0);
         func_ov003_021d969c((u8 *)self + 0x160, 1);
         break;
     }
@@ -1567,7 +1566,6 @@ struct Ov010Mtx33f {
     s32 m[9];
 };
 
-extern u8 *data_ov000_021ccd54;
 extern s32 VEC_Distance(const Ov010Vec *a, const Ov010Vec *b);
 extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *o);
 extern void MTX_RotY33_(Ov010Mtx33f *m, s32 s, s32 c);
@@ -1602,7 +1600,7 @@ void func_ov010_02206974(Obj02204aac *self) {
     Ov010Vec a;
     Ov010Vec b;
     Ov010Vec c;
-    if (data_ov000_021ccd54 + 0xf4 == NULL) {
+    if ((u8 *)data_ov000_021ccd54 + 0xf4 == NULL) {
         self->unk_40->st = 0x100;
     } else {
         Ov010Vec *t = self->unk_f8;
@@ -1612,7 +1610,7 @@ void func_ov010_02206974(Obj02204aac *self) {
         a.y = self->pos.y - t->y;
         a.z = self->pos.z - t->z;
         VEC_Normalize(&a, &a);
-        b = FLD(Ov010Vec, data_ov000_021ccd54, 0xf8);
+        b = data_ov000_021ccd54->cam.base.eye;
         t = self->unk_f8;
         b.x = t->x - b.x;
         b.y = t->y - b.y;
@@ -1671,9 +1669,9 @@ void func_ov010_02206974(Obj02204aac *self) {
         e->v0c(0x2000);
         d = FLD(u16, e, 0x66) - self->rot_y;
         if (d >= 0x1400 && d <= 0x6c00) {
-            func_ov000_02190cb0(self->unk_38, data_ov010_0220f048, 0x800, 0);
+            func_ov000_02190cb0(self->model, data_ov010_0220f048, 0x800, 0);
         } else if (d >= 0x9400 && d <= 0xec00) {
-            func_ov000_02190cb0(self->unk_38, data_ov010_0220f044, 0x800, 0);
+            func_ov000_02190cb0(self->model, data_ov010_0220f044, 0x800, 0);
         }
         func_02049f44(data_02097e4c, 0x29, &self->pos, 0);
         self->unk_40->st = 0x31;
@@ -1689,7 +1687,7 @@ void func_ov010_02206974(Obj02204aac *self) {
             self->unk_150.z = c.z - self->pos.z;
             VEC_Normalize(&self->unk_150, &self->unk_150);
             self->unk_9c = 0x300;
-            func_ov000_02190cb0(self->unk_38, data_ov010_0220f050, 0xcd, 0);
+            func_ov000_02190cb0(self->model, data_ov010_0220f050, 0xcd, 0);
             self->unk_40->st = 0x40;
         } else {
             self->pos = c;

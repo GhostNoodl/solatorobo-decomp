@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
@@ -14,7 +15,6 @@ typedef struct {
     LoTimedObj objs[10];
 } LoTimedHost;
 
-extern void *data_ov000_021ccd54;
 extern u8 *data_02097d48;
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);

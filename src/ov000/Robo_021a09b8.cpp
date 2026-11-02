@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
@@ -8,7 +9,6 @@ typedef struct {
 } Bits021a09b8_18;
 
 extern "C" {
-extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 s32 func_ov000_0219840c(void *s, s32 *list, s32 count, BOOL push);
@@ -28,9 +28,9 @@ static inline Actor *FindActor021a09b8(u16 id) {
 }
 
 static inline void Ping021a09b8(void) {
-    u8 *g = data_ov000_021ccd54;
-    LFLD(u8, g, 0xac) = 1;
-    func_ov000_02182590(g + 0xac);
+    FieldState *g = data_ov000_021ccd54;
+    g->unk_ac = 1;
+    func_ov000_02182590((u8 *)g + 0xac);
 }
 
 s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {

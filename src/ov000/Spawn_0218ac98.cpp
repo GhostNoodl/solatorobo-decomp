@@ -1,19 +1,11 @@
 #include "nitro/fx.h"
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     VecFx32 from;
     VecFx32 to;
     u16 angle;
 } Seg0218ac98;
-
-typedef struct {
-    u8 c[3];
-} Rgb0218ac98;
-
-typedef struct {
-    u8 pad[0xca];
-    Rgb0218ac98 c;
-} Glob0218ac98;
 
 typedef struct {
     u8 pad[0xc];
@@ -26,7 +18,7 @@ typedef struct {
     u8 pad[2];
     u16 unk_02;
     u8 pad04[0xa];
-    Rgb0218ac98 c;
+    FieldId c;
     u8 pad11;
     u16 unk_12;
     u16 unk_14;
@@ -71,16 +63,15 @@ void func_ov000_0218adf0(Obj0218ac98 *self);
 void func_ov000_0218af9c(Obj0218ac98 *self);
 void Group_RemoveNode(void *mgr, Obj0218ac98 *self, s32 a);
 
-extern Glob0218ac98 *data_ov000_021ccd54;
 extern Mgr0218ac98 *data_ov000_021ccd64;
 BOOL func_01ffc89c(Obj0218ac98 *vol, Seg0218ac98 *seg);
 s32 func_ov000_0219a2f4(VecFx32 *pos, s32 up, s32 down);
 Spawn0218ac98 *Group_SpawnActor(Mgr0218ac98 *mgr, void *a, VecFx32 *pos, void *b, u16 c);
 
 static inline BOOL Obj0218ac98_SameColor(Obj0218ac98 *self) {
-    Glob0218ac98 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     BOOL r = FALSE;
-    if (g->c.c[0] == self->recs[1].c.c[0] && g->c.c[1] == self->recs[1].c.c[1] && g->c.c[2] == self->recs[1].c.c[2]) {
+    if (g->unk_ca.c[0] == self->recs[1].c.c[0] && g->unk_ca.c[1] == self->recs[1].c.c[1] && g->unk_ca.c[2] == self->recs[1].c.c[2]) {
         r = TRUE;
     }
     return r;
@@ -162,7 +153,7 @@ void func_ov000_0218adf0(Obj0218ac98 *self) {
                 r->unk_12 = self->unk_94;
                 r->unk_14 = self->unk_96;
                 r->unk_16 = self->unk_98;
-                r->c = data_ov000_021ccd54->c;
+                r->c = data_ov000_021ccd54->unk_ca;
                 self->unk_0b++;
             }
             if (done) {

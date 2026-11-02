@@ -1,4 +1,5 @@
 #include "nitro/fx.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/VObj.h"
 #include "ov000/ObjLayouts.h"
 
@@ -16,13 +17,7 @@ typedef struct {
     u16 rest : 9;
 } B16_02195848;
 
-typedef struct {
-    u16 b0 : 3;
-    u16 rest : 13;
-} K_02195848;
-
 extern "C" {
-extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd64;
 extern u8 data_ov000_021cc456[];
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
@@ -37,12 +32,12 @@ void func_ov000_021987b8(void *p, s32 a, s32 b, s32 c);
 void HitMesh_SetMtx(void *p, MtxFx43 *m);
 
 static inline BOOL PlayerIdle02195848(void) {
-    u8 *pl = data_ov000_021ccd54;
+    FieldState *pl = data_ov000_021ccd54;
     if (pl != NULL) {
-        if (LFLD(s32, pl, 0x90) != LFLD(s32, pl, 0x94) ? TRUE : FALSE) {
+        if (pl->head != pl->tail ? TRUE : FALSE) {
             return FALSE;
         }
-        if (LFLD(s32, pl, 0) != 3) {
+        if (pl->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -84,13 +79,13 @@ void func_ov000_02195848(VObj *obj) {
 
     h = self->unk_48;
     if (h != NULL) {
-        LFLD(B16_02195848, h, 0x9a).b6 = 0;
+        h->unk_9a_6 = 0;
     }
     switch (self->unk_40->st) {
     case 0:
-        if ((void *)((u8 *)self->unk_38) != NULL) {
-            func_ov000_02190cb0(((u8 *)self->unk_38), data_ov000_021cc456, 0x1000, 0);
-            func_ov000_021915a0(((u8 *)self->unk_38));
+        if ((void *)((u8 *)self->model) != NULL) {
+            func_ov000_02190cb0(((u8 *)self->model), data_ov000_021cc456, 0x1000, 0);
+            func_ov000_021915a0(((u8 *)self->model));
         }
         self->unk_40->st++;
         self->unk_9c = 0;
@@ -100,7 +95,7 @@ void func_ov000_02195848(VObj *obj) {
         self->unk_cc |= 2;
         break;
     case 1:
-        if (((u8 *)self->unk_4c) != NULL && LFLD(u8, ((u8 *)self->unk_4c), 0) == 2) {
+        if (((u8 *)self->unk_4c) != NULL && self->unk_4c->unk_00 == 2) {
             void *r = func_ov003_021f0868((u8 *)self + 0x70, self->unk_64, self->unk_68);
             if (r != NULL) {
                 Target_Set(((u8 *)self->unk_4c), r);
@@ -118,16 +113,16 @@ void func_ov000_02195848(VObj *obj) {
                         obj->vfunc_08();
                         break;
                     }
-                    if (((u8 *)self->unk_38) != NULL) {
+                    if (((u8 *)self->model) != NULL) {
                         if ((LFLD(u16, st, 2) & 7) > 2) {
-                            LFLD(u8, ((u8 *)self->unk_38), 0xbe) = 10;
+                            self->model->alpha = 10;
                         } else {
-                            LFLD(u8, ((u8 *)self->unk_38), 0xbe) = 0x1f;
+                            self->model->alpha = 0x1f;
                         }
                     }
                 }
-            } else if (((u8 *)self->unk_38) != NULL) {
-                LFLD(u8, ((u8 *)self->unk_38), 0xbe) = 0x1f;
+            } else if (((u8 *)self->model) != NULL) {
+                self->model->alpha = 0x1f;
             }
         }
         if ((self->msg_flags & 0x80) && (h = self->unk_48) != NULL) {
@@ -159,17 +154,17 @@ void func_ov000_02195848(VObj *obj) {
         return;
     }
     {
-        s32 k = LFLD(K_02195848, self->unk_b0, 2).b0;
+        s32 k = self->param->type;
         if (k == 3) {
             return;
         }
         if (self->unk_58 != NULL && self->unk_cc_0 && k != 1) {
-            LFLD(B16_02195848, h, 0x9a).b3 = 0;
+            h->unk_9a_3 = 0;
             func_0203f364(h);
         }
     }
     if (!self->unk_cc_1) {
-        LFLD(B16_02195848, self->unk_48, 0x9a).b4 = 0;
+        self->unk_48->unk_9a_4 = 0;
         self->unk_93_0 = 1;
         return;
     }
@@ -187,6 +182,6 @@ void func_ov000_02195848(VObj *obj) {
         return;
     }
     self->unk_cc_1 = 0;
-    LFLD(B16_02195848, self->unk_48, 0x9a).b4 = 0;
+    self->unk_48->unk_9a_4 = 0;
 }
 }

@@ -113,7 +113,7 @@ void func_ov000_021aaf80(Robo021ca458 *self) {
     }
     switch (self->unk_40->st) {
     case 0:
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc6b4, 0x555, 0);
+        func_ov000_02190cb0(self->model, data_ov000_021cc6b4, 0x555, 0);
         self->unk_9c = 0;
         self->unk_a0 = 0;
         self->unk_a4 = 0;
@@ -122,7 +122,7 @@ void func_ov000_021aaf80(Robo021ca458 *self) {
         break;
     case 1: {
         VObj *o;
-        if (LFLD(s16, self->unk_38, 0xc4) != 1) {
+        if (((s16)self->model->unk_c4) != 1) {
             break;
         }
         o = func_02065f88(0x192, (VecFx32 *)((u8 *)self + 0x70));
@@ -189,7 +189,7 @@ void func_ov000_021aaf80(Robo021ca458 *self) {
             self->unk_b1e = 0xffff;
             self->unk_b24_5 = 0;
             self->unk_b24_7 = self->unk_b24_9;
-            func_ov000_02191418(self->unk_38, 3, 0);
+            func_ov000_02191418(self->model, 3, 0);
             self->unk_9c = 0;
             self->unk_a0 = 0;
             self->unk_a4 = 0;
@@ -211,17 +211,17 @@ void func_ov000_021aaf80(Robo021ca458 *self) {
                 self->unk_b24 |= 0x40000;
                 Release021aaf80(self, 4);
             }
-            func_ov000_02191418(self->unk_38, 1, 0);
+            func_ov000_02191418(self->model, 1, 0);
         }
         break;
     case 3:
-        if (!func_ov000_02191120(self->unk_38)) {
+        if (!func_ov000_02191120(self->model)) {
             break;
         }
         Release021aaf80(self, 1);
         break;
     }
-    if (!func_ov000_02191508(self->unk_38)) {
+    if (!func_ov000_02191508(self->model)) {
         u16 ang = self->rot_y;
         if (self->unk_15 == 1 && (self->unk_b68 & 0xf0)) {
             ang = CamYaw021aaf80((u8 *)data_ov000_021ccd54 + 0xf4) + self->unk_b6e;

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
@@ -6,7 +7,6 @@ extern "C" {
 extern u8 NNS_G3dGlb[];
 extern u8 data_02092844[];
 extern u8 data_02092800[];
-extern u8 *data_ov000_021ccd54;
 extern u8 *data_02097dc8;
 void MIi_CpuCopyFast(void *a, void *b, s32 c);
 void func_ov000_02190758(void *m, void *p, s32 a);

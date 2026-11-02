@@ -1,9 +1,9 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ActorBase.h"
 #include "ov000/Vec.h"
 
 extern "C" {
-extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
@@ -16,9 +16,9 @@ static inline Actor *FindActor0218c040(u16 id) {
 }
 
 static inline BOOL IsHere0218c040(u8 *e) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     BOOL ret = FALSE;
-    if (g[0xca] == e[0x3e] && g[0xcb] == e[0x3f] && g[0xcc] == e[0x40]) {
+    if (((u8 *)g)[0xca] == e[0x3e] && ((u8 *)g)[0xcb] == e[0x3f] && ((u8 *)g)[0xcc] == e[0x40]) {
         ret = TRUE;
     }
     return ret;

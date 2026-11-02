@@ -1,4 +1,5 @@
 #include "Main/Gfx/TextWin.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ModelPart.h"
 #include "ov000/Vec.h"
 
@@ -15,7 +16,6 @@ extern void *data_0208cc94;
 extern void *data_0208cc88;
 extern const u32 data_0208ba70[];
 extern void *data_02149ef8;
-extern void *data_ov000_021ccd54;
 void *Heap_Alloc(u32 size);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
@@ -43,9 +43,9 @@ static inline TextWin *Lo_TextWinNew(void) {
 }
 
 static inline void Lo_SetText(TextWin *win, u32 text) {
-    win->unk_24 = text;
-    win->unk_4c = func_0204c4fc(win->unk_28, win->unk_38, win->unk_24, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->unk_28;
+    win->str = text;
+    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+    data_02097ce0->unk_004 = win->font;
 }
 
 struct Obj021bca00 {
@@ -82,7 +82,7 @@ BOOL func_ov000_021bca00(Obj021bca00 *self) {
         MODEL_FLAGS(self->unk_14)->alpha = 0x1e;
         func_02041d9c(self->unk_14, 0, 0x1d);
         self->unk_10 = Lo_TextWinNew();
-        self->unk_10->unk_28 = 4;
+        self->unk_10->font = 4;
         Lo_SetText(self->unk_10, MsgRes_GetString(data_02149ef8, 0x118));
         self->unk_10->unk_74 = 0x7fff;
         self->unk_10->unk_76 = 0x67f;

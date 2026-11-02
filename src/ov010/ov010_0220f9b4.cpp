@@ -1,4 +1,5 @@
 #include "ov010/ov010.h" // FX32_ONE: nitro/fx.h via ov000/Vec.h
+#include "Main/Sys/FieldState.h"
 
 // The zero rotation.
 struct Ov010Rot3 { u16 x, y, z; };
@@ -1266,12 +1267,12 @@ void Ov010ActVt_02210378_Draw(Obj0220a6b0 *self) {
         u16 ax;
         u16 dx;
         u16 dy;
-        dx = o->rot_x - FLD(u16, self, 0x190);
-        dy = o->rot_y - FLD(u16, self, 0x192);
-        dz = o->rot_z - FLD(u16, self, 0x194);
-        az = FLD(u16, self, 0x19a);
-        ay = FLD(u16, self, 0x198);
-        ax = FLD(u16, self, 0x196);
+        dx = o->rot_x - self->unk_190.x;
+        dy = o->rot_y - self->unk_190.y;
+        dz = o->rot_z - self->unk_190.z;
+        az = self->unk_196.z;
+        ay = self->unk_196.y;
+        ax = self->unk_196.x;
         set = FALSE;
         MTX_Identity33_(&ma);
         if (az != 0) {
@@ -1354,12 +1355,12 @@ void Ov010ActVt_02210378_Draw(Obj0220a6b0 *self) {
             }
         }
     }
-    MI_Copy36B(&out, (u8 *)self->unk_38 + 0x84);
+    MI_Copy36B(&out, (u8 *)self->model + 0x84);
     {
-        u8 *m = (u8 *)self->unk_38;
-        FLD(s32, m, 0x78) = self->pos.x;
-        FLD(s32, m, 0x7c) = self->pos.y;
-        FLD(s32, m, 0x80) = self->pos.z;
+        Model0218fe1c *m = self->model;
+        m->unk_78 = self->pos.x;
+        m->unk_7c = self->pos.y;
+        m->unk_80 = self->pos.z;
     }
     func_ov000_02194c08(self);
 }
@@ -1478,12 +1479,12 @@ void Ov010ActVt_02210378_Start(Obj0220a6b0 *self) {
         FLD(Ov010Flags, q, 0x22).b0 = 0;
         FLD(Ov010Flags, q, 0x22).b1 = 0;
     }
-    FLD(Ov010Flags, self->unk_38, 0xc2).b0 = 0;
+    self->model->unk_c2_0 = 0;
     {
-        u8 *m = (u8 *)self->unk_38;
-        FLD(s32, m, 0xa8) = 0x1400;
-        FLD(s32, m, 0xac) = 0x1400;
-        FLD(s32, m, 0xb0) = 0x1400;
+        Model0218fe1c *m = self->model;
+        m->unk_a8 = 0x1400;
+        m->unk_ac = 0x1400;
+        m->unk_b0 = 0x1400;
     }
     FLD(u16, ((void *)self->unk_4c), 0x1c) = self->unk_d0;
     FLD(Ov010Flags8, ((void *)self->unk_4c), 0x18).b4 = 1;
@@ -1788,7 +1789,7 @@ void func_ov010_0220b40c(Obj0220a6b0 *self) {
         e->v0c(0x1000);
         FLD(void *, e, 0xdc) = (void *)func_ov010_02209074;
         FLD(s32, e, 4) = 6;
-        FLD(Ov010Flags, self->unk_38, 0xc2).b0 = 0;
+        self->model->unk_c2_0 = 0;
         self->unk_40->st = 4;
         return;
     }
@@ -1815,7 +1816,7 @@ void func_ov010_0220b7b0(Obj0220a6b0 *self) {
         u8 c = 1;
         Actor_SendMsg(obj, self->id, 0xe, 1, 1, &c);
     }
-    FLD(Ov010Flags, self->unk_38, 0xc2).b0 = 0;
+    self->model->unk_c2_0 = 0;
     self->unk_cf = 0;
     func_ov000_02198360(((void *)self->unk_40), 0x15, 0);
 }
@@ -1824,9 +1825,9 @@ void func_ov010_0220b890(Obj0220a6b0 *self) {
     if (self->unk_40->st != 0) {
         return;
     }
-    if (self->unk_38 != NULL) {
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220f540, 0x1000, 0);
-        func_ov000_021915a0(self->unk_38);
+    if (self->model != NULL) {
+        func_ov000_02190cb0(self->model, data_ov010_0220f540, 0x1000, 0);
+        func_ov000_021915a0(self->model);
     }
     self->unk_40->st = 1;
     self->unk_9c = 0;
@@ -1836,7 +1837,7 @@ void func_ov010_0220b890(Obj0220a6b0 *self) {
 }
 
 void func_ov010_0220b8f8(Obj0220a6b0 *self) {
-    u8 *p = func_ov000_02190a30(self->unk_38, 0);
+    u8 *p = func_ov000_02190a30(self->model, 0);
     FLD(Ov010Flags8, p, 0x111).b3 = 0;
     func_ov000_02195d88(self);
 }
@@ -1891,15 +1892,15 @@ static inline void Ov010_VecSubB(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec 
     out->z = a->z - bz;
 }
 
-static inline void *Ov010_FindObjById2(u16 id) {
-    void *o = NULL;
+static inline Ov010Obj *Ov010_FindObjById2(u16 id) {
+    Ov010Obj *o = NULL;
     if (data_ov000_021ccd68 != NULL) {
         o = ActorMgr_GetActor(data_ov000_021ccd68, id);
     }
     return o;
 }
 
-static inline void *Ov010_FindObjById3(u16 id) {
+static inline Ov010Obj *Ov010_FindObjById3(u16 id) {
     return data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
 }
 
@@ -1974,7 +1975,7 @@ void func_ov010_0220b924(Obj0220a6b0 *self) {
         break;
     }
     case 0x30: {
-        void *t;
+        Ov010Obj *t;
         BOOL ok;
         self->unk_98 = self->rot_y;
         self->unk_a0 = 0;
@@ -1989,8 +1990,8 @@ void func_ov010_0220b924(Obj0220a6b0 *self) {
             void *q;
             s32 dot;
             u16 ang;
-            Ov010_VecSubA(&FLD(Ov010Vec, t, 0x70), &self->pos, &d);
-            q = FLD(void *, t, 0x40);
+            Ov010_VecSubA(&t->pos, &self->pos, &d);
+            q = ((void *)t->unk_40);
             a = (q != NULL ? FLD(u8, q, 0x13) : 0) == 0x13;
             b = FALSE;
             MTX_RotY33_(&m, OV010_SIN(self->unk_98), OV010_COS(self->unk_98));
@@ -2013,10 +2014,10 @@ void func_ov010_0220b924(Obj0220a6b0 *self) {
         }
         if (ok) {
             OV010_BLKCPY(&o, &data_ov010_0220f594);
-            o.y += OV010_FXMUL_K(FLD(s32, t, 0x68), 0x99a);
-            p.x = FLD(s32, t, 0x70);
-            p.y = FLD(s32, t, 0x74);
-            p.z = FLD(s32, t, 0x78);
+            o.y += OV010_FXMUL_K(t->unk_68, 0x99a);
+            p.x = t->pos.x;
+            p.y = t->pos.y;
+            p.z = t->pos.z;
             VEC_Add(&p, &o, &p);
             self->unk_108.x = p.x - self->pos.x;
             self->unk_108.y = p.y - self->pos.y;
@@ -2047,27 +2048,27 @@ void func_ov010_0220b924(Obj0220a6b0 *self) {
         s48->unk_44 = OV010_FXMUL_K(s48->unk_38, 0x800);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
         if (self->unk_48->unk_58 & 0x20) {
-            void *t = Ov010_FindObjById2(self->target);
+            Ov010Obj *t = Ov010_FindObjById2(self->target);
             void *q;
             Ov010V *e;
             if (t == NULL) {
                 self->unk_40->st = 0x50;
                 return;
             }
-            self->unk_180 = FLD(u16, t, 0xc);
-            FLD(Ov010Flags8, func_ov000_02190a30(self->unk_38, 0), 0x111).b3 = 1;
+            self->unk_180 = t->id;
+            FLD(Ov010Flags8, func_ov000_02190a30(self->model, 0), 0x111).b3 = 1;
             self->rot_x += (u16)(Rand_UpTo(0x2000) - 0x1000);
             self->rot_y += (u16)(Rand_UpTo(0x2000) - 0x1000);
             q = Target_Get(((void *)self->unk_4c));
             if (q != NULL) {
                 self->unk_182 = FLD(u16, q, 0xc);
-                msg.a = func_ov000_0219a874(FLD(void *, t, 0x50), FLD(void *, q, 0x50), 0x14);
+                msg.a = func_ov000_0219a874(((void *)t->hp), FLD(void *, q, 0x50), 0x14);
                 msg.b = 0x10;
                 msg.id = self->id;
                 Actor_SendMsg(t, self->id, 9, 0, 6, (u8 *)&msg);
             }
-            Ov010_VecSubB(&self->pos, &FLD(Ov010Vec, t, 0x70), &d2);
-            func_ov003_021d9980(&d2, (u16)(0xffff - FLD(u16, t, 0x7e)), &d2);
+            Ov010_VecSubB(&self->pos, &t->pos, &d2);
+            func_ov003_021d9980(&d2, (u16)(0xffff - t->rot_y), &d2);
             e = func_ov003_021da7e8(0x6c, t, &d2);
             e->v34((u16)(self->rot_x + 0x4000), 0, 0);
             e->v0c(0x1800);
@@ -2081,20 +2082,20 @@ void func_ov010_0220b924(Obj0220a6b0 *self) {
         break;
     }
     case 0x40: {
-        void *t = Ov010_FindObjById3(self->unk_180);
+        Ov010Obj *t = Ov010_FindObjById3(self->unk_180);
         u8 *ec;
         BOOL found;
         if (t == NULL) {
             self->unk_40->st = 0x50;
             return;
         }
-        Ov010_VecSubB(&self->pos, &FLD(Ov010Vec, t, 0x70), &self->unk_184);
-        FLD(u16, self, 0x190) = FLD(u16, t, 0x7c);
-        FLD(u16, self, 0x192) = FLD(u16, t, 0x7e);
-        FLD(u16, self, 0x194) = FLD(u16, t, 0x80);
-        FLD(u16, self, 0x196) = self->rot_x;
-        FLD(u16, self, 0x198) = self->rot_y;
-        FLD(u16, self, 0x19a) = self->rot_z;
+        Ov010_VecSubB(&self->pos, &t->pos, &self->unk_184);
+        self->unk_190.x = t->rot_x;
+        self->unk_190.y = t->rot_y;
+        self->unk_190.z = t->rot_z;
+        self->unk_196.x = self->rot_x;
+        self->unk_196.y = self->rot_y;
+        self->unk_196.z = self->rot_z;
         self->unk_d8 = 7;
         {
             ActorSub48 *mm = self->unk_48;
@@ -2158,7 +2159,6 @@ void func_ov010_0220b924(Obj0220a6b0 *self) {
 namespace m_0220c2a4 {
 extern "C" {
 extern void *data_02097e4c;
-extern void *data_ov000_021ccd54;
 extern void HitSphere_Link(void *p);
 extern void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 extern void Actor_SendMsg(void *obj, u16 id, s32 a, s32 b, s32 c, u8 *d);
@@ -2197,18 +2197,18 @@ void func_ov010_0220c2a4(Obj0220a6b0 *self) {
 
 void func_ov010_0220c390(Obj0220a6b0 *self) {
     if (self->unk_40->st == 0) {
-        u8 *g;
+        FieldState *g;
         Ov010V *fx;
         if (self->unk_cf != 0) {
             func_02049f44(data_02097e4c, 0x19, &self->pos, 0);
         }
-        g = (u8 *)data_ov000_021ccd54;
-        FLD(Ov010Flags8, g, 0x190).b2 = 1;
-        FLD(Ov010Flags8, g, 0x190).b3 = 1;
-        FLD(Ov010Flags8, g, 0x190).b4 = 1;
-        g[0x18d] = 5;
-        g[0x18e] = 0xf;
-        g[0x18f] = 0xf;
+        g = data_ov000_021ccd54;
+        g->cam.base.shakeX = 1;
+        g->cam.base.shakeY = 1;
+        g->cam.base.shakeZ = 1;
+        ((u8 *)g)[0x18d] = 5;
+        ((u8 *)g)[0x18e] = 0xf;
+        ((u8 *)g)[0x18f] = 0xf;
         fx = func_02065f88(0x38f, &self->pos);
         fx->v24(0, 0x800, 0);
         fx->v0c(0x1800);
@@ -2517,7 +2517,6 @@ static inline Ov010Obj *Ov010_FindActorD(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-extern void *data_ov000_021ccd54;
 extern s32 Ov003Vec_DistSq(const Ov010Vec *a, const Ov010Vec *b);
 extern BOOL Ov003Vec_Equal(Ov010Vec *a, void *b);
 extern void func_ov003_021d9f80(void *rot, const Ov010Vec *a, const Ov010Vec *b);
@@ -2680,7 +2679,7 @@ void func_ov010_0220cba0(Obj0220cba0 *self) {
         }
         {
             u16 ang;
-            u8 *g;
+            FieldState *g;
             u8 *m;
             *(Ov010Blk12 *)&a = FLD(Ov010Blk12, self, 0x70);
             *(Ov010Blk12 *)&b = data_ov010_0220f588;
@@ -2689,11 +2688,11 @@ void func_ov010_0220cba0(Obj0220cba0 *self) {
             e->v34(0, ang, 0);
             e->v10(&b);
             Ov010_Puff(self);
-            g = (u8 *)data_ov000_021ccd54;
-            FLD(u8, g, 0x190) |= 0x1c;
-            FLD(u8, g, 0x18d) = 5;
-            FLD(u8, g, 0x18e) = 8;
-            FLD(u8, g, 0x18f) = 8;
+            g = data_ov000_021ccd54;
+            g->cam.base.flags |= 0x1c;
+            g->cam.base.shakeTime = 5;
+            g->cam.base.shakeLen = 8;
+            g->cam.base.shakeCur = 8;
             {
                 u16 r;
                 if (self->unk_7c > 0x7fff) {
@@ -2819,7 +2818,7 @@ void func_ov010_0220d3d8(Obj0220cba0 *self) {
         }
         if (FLD(u32, self->unk_48, 0x50) & 0x20000000) {
             u16 ang;
-            u8 *g;
+            FieldState *g;
             u8 *m;
             a.x = self->unk_70.x;
             a.y = self->unk_70.y - FLD(s32, self->unk_48, 0x38);
@@ -2834,11 +2833,11 @@ void func_ov010_0220d3d8(Obj0220cba0 *self) {
             e->v0c(0x1000);
             FLD(void *, e, 0xdc) = (void *)func_ov010_02209074;
             FLD(s32, e, 4) = 6;
-            g = (u8 *)data_ov000_021ccd54;
-            FLD(u8, g, 0x190) |= 0x1c;
-            FLD(u8, g, 0x18d) = 5;
-            FLD(u8, g, 0x18e) = 8;
-            FLD(u8, g, 0x18f) = 8;
+            g = data_ov000_021ccd54;
+            g->cam.base.flags |= 0x1c;
+            g->cam.base.shakeTime = 5;
+            g->cam.base.shakeLen = 8;
+            g->cam.base.shakeCur = 8;
             self->unk_7c += Rand_UpTo(0x2aaa) - 0x1555;
             m = func_ov000_02190a30(self->unk_38, 0);
             FLD(u8, m, 0x111) |= 8;
@@ -3246,7 +3245,7 @@ void func_ov010_0220de4c(Obj0220de4c *self, s32 a) {
 s32 Ov010ActVt_022102e0_Draw(Obj0220dd60 *self) {
     u8 m[0x24];
     s32 r = 0;
-    if (self->unk_38 != NULL && self->unk_d0 != -1) {
+    if (self->model != NULL && self->unk_d0 != -1) {
         switch (self->unk_d0) {
         case 0:
             MTX_RotY33_((u8 *)self + 0xdc, OV010_SIN(self->rot_y), OV010_COS(self->rot_y));
@@ -3257,9 +3256,9 @@ s32 Ov010ActVt_022102e0_Draw(Obj0220dd60 *self) {
             MTX_Concat33(m, (u8 *)self + 0xdc, (u8 *)self + 0xdc);
             break;
         }
-        FLD(Ov010Vec, self->unk_38, 0x78) = self->pos;
-        MI_Copy36B((u8 *)self + 0xdc, (u8 *)self->unk_38 + 0x84);
-        r = func_ov000_021903b4(self->unk_38);
+        FLD(Ov010Vec, self->model, 0x78) = self->pos;
+        MI_Copy36B((u8 *)self + 0xdc, (u8 *)self->model + 0x84);
+        r = func_ov000_021903b4(self->model);
     }
     return r;
 }
@@ -3267,7 +3266,7 @@ s32 Ov010ActVt_022102e0_Draw(Obj0220dd60 *self) {
 void Ov010ActVt_022102e0_Start(Obj0220dd60 *self) {
     func_ov000_02194758(self);
     Ov010Vec v = data_ov010_0220f57c;
-    FLD(Ov010Vec, self->unk_38, 0xa8) = v;
+    FLD(Ov010Vec, self->model, 0xa8) = v;
 }
 
 void func_ov010_0220dfac(Obj0220dd60 *self) {
@@ -3278,8 +3277,8 @@ void func_ov010_0220dfac(Obj0220dd60 *self) {
     if (self->unk_d0 == -1) {
         self->unk_d0 = 0;
     }
-    func_ov000_02190cb0(self->unk_38, data_ov010_0220f540, 0x1000, 0);
-    func_ov000_021915a0(self->unk_38);
+    func_ov000_02190cb0(self->model, data_ov010_0220f540, 0x1000, 0);
+    func_ov000_021915a0(self->model);
     m = self->unk_48;
     if (m != NULL) {
         FLD(Ov010Flags, m, 0x9a).b0 = 0;
@@ -3335,7 +3334,7 @@ void func_ov010_0220e06c(Obj0220dd60 *self) {
     if (self->unk_48 == NULL) {
         return;
     }
-    scale = Ov010_FxMul(FLD(s32, self->unk_38, 0xa8), self->unk_64);
+    scale = Ov010_FxMul(self->model->unk_a8, self->unk_64);
     switch (self->unk_d0) {
     case 0: {
         u16 a = self->rot_y + 0x4000;

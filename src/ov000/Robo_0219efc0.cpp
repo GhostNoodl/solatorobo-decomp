@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 
@@ -80,7 +81,6 @@ typedef struct {
 #define PAD18 LFLD(Pad18_0219efc0, data_0214a424, 0x18)
 
 extern "C" {
-extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd30;
 extern u8 *data_0214a424;
@@ -106,17 +106,17 @@ static inline Actor *FindActor_0219efc0(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-static inline BOOL IsBusy_0219efc0(u8 *g) {
-    return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94);
+static inline BOOL IsBusy_0219efc0(FieldState *g) {
+    return g->head != g->tail;
 }
 
 static inline BOOL IsIdle_0219efc0(void) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         if (IsBusy_0219efc0(g)) {
             return FALSE;
         }
-        if (LFLD(s32, g, 0) != 3) {
+        if (g->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -124,8 +124,8 @@ static inline BOOL IsIdle_0219efc0(void) {
     return TRUE;
 }
 
-static inline BOOL HasD4_0219efc0(u8 *g) {
-    return LFLD(s32, g, 0xd4) != 0;
+static inline BOOL HasD4_0219efc0(FieldState *g) {
+    return ((s32)g->unk_d4) != 0;
 }
 
 static inline void TogglePad_0219efc0(void) {
@@ -165,18 +165,18 @@ struct RgbEq_0219efc0Self {
     u8 unk_774;
 };
 
-static inline BOOL RgbEq_0219efc0(u8 *g, RgbEq_0219efc0Self *self) {
+static inline BOOL RgbEq_0219efc0(FieldState *g, RgbEq_0219efc0Self *self) {
     BOOL e = FALSE;
-    if (g[0xca] == self->unk_772 && g[0xcb] == self->unk_773 && g[0xcc] == self->unk_774) e = TRUE;
+    if (g->unk_ca.c[0] == self->unk_772 && g->unk_ca.c[1] == self->unk_773 && g->unk_ca.c[2] == self->unk_774) e = TRUE;
     return e;
 }
 
-static inline BOOL Ready_0219efc0(u8 *g) {
+static inline BOOL Ready_0219efc0(FieldState *g) {
     if (IsBusy_0219efc0(g)) return FALSE;
-    if (LFLD(s32, g, 0) != 3) return FALSE;
+    if (g->state != 3) return FALSE;
     return TRUE;
 }
-static inline BOOL IsIdleG_0219efc0(u8 *g) {
+static inline BOOL IsIdleG_0219efc0(FieldState *g) {
     if (g != NULL) {
         return Ready_0219efc0(g);
     }
@@ -192,7 +192,7 @@ static inline BOOL PadB9_0219efc0(void) {
 }
 
 static inline BOOL CanMove_0219efc0(Robo021ca458 *self) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     BOOL r = IsIdleG_0219efc0(g);
     if (r) {
         r = !self->unk_b29_1;

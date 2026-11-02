@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
@@ -7,7 +8,6 @@ extern char data_ov000_021cc5e3[];
 extern char data_ov000_021cc618[];
 extern char *data_ov000_021ca040[];
 extern void *data_02097e4c;
-extern u8 *data_ov000_021ccd54;
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void func_ov000_02191008(void *a);
@@ -17,12 +17,12 @@ void func_ov000_021b209c(u8 *self);
 void func_ov000_021b2b08(u8 *self);
 
 static inline BOOL PlayerIdle021a16b0(void) {
-    u8 *pl = data_ov000_021ccd54;
+    FieldState *pl = data_ov000_021ccd54;
     if (pl != NULL) {
-        if (LFLD(s32, pl, 0x90) != LFLD(s32, pl, 0x94) ? TRUE : FALSE) {
+        if (pl->head != pl->tail ? TRUE : FALSE) {
             return FALSE;
         }
-        if (LFLD(s32, pl, 0) != 3) {
+        if (pl->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -68,7 +68,7 @@ void func_ov000_021a16b0(Robo021ca458 *self) {
                 }
                 rate = 0xa4;
             }
-        } else if (LFLD(u32, self->unk_48, 0x50) & 0x400) {
+        } else if (self->unk_48->unk_50 & 0x400) {
             name = data_ov000_021cc618;
         }
         if (self->unk_b24_25) {
@@ -76,8 +76,8 @@ void func_ov000_021a16b0(Robo021ca458 *self) {
             rate = 0x1000;
             d = 1;
         }
-        func_ov000_02190cb0(self->unk_38, name, rate, d);
-        func_ov000_021915a0(self->unk_38);
+        func_ov000_02190cb0(self->model, name, rate, d);
+        func_ov000_021915a0(self->model);
         if (self->unk_b24_12 != 0) {
             self->unk_40->st++;
             if (self->unk_b2f == 0) {

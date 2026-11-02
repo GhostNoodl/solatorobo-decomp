@@ -80,7 +80,7 @@ s32 func_ov000_021b7b50(Obj021b7b50 *self) {
             HitMesh_Link(self->unk_ec);
         }
         {
-            VecFx32 *g = &data_ov000_021ccd54->unk_f4.pos;
+            VecFx32 *g = &data_ov000_021ccd54->cam.base.eye;
             s32 gx = g->x, gy = g->y, gz = g->z;
             d.x = self->pos.x;
             d.y = self->pos.y;

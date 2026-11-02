@@ -84,7 +84,7 @@ void func_ov000_021b1110(Robo021ca458 *self, BOOL force) {
         if (self->unk_b22_4) {
             return;
         }
-        if (LFLD(LoBits, self, 0xb24).b0) {
+        if (self->unk_b24_0) {
             return;
         }
         func_ov000_021b1a54(self, 1);

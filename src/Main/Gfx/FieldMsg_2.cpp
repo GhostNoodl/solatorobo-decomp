@@ -31,7 +31,7 @@ BOOL func_020559f8(s32 id) {
 }
 
 static inline BOOL Field_IsIdle(void) {
-    return data_ov000_021ccd70->unk_04 == NULL ? TRUE : FALSE;
+    return data_ov000_021ccd70->state == 0 ? TRUE : FALSE;
 }
 
 BOOL func_02055a4c(void) {

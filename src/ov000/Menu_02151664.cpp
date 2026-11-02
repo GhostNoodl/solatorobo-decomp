@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "nitro/std.h"
 
@@ -9,7 +10,6 @@ extern u8 data_ov000_021cad50[];
 extern u8 data_02fe1534[];
 extern char data_ov000_021ca940[];
 extern void *data_02097e4c;
-extern void *data_ov000_021ccd54;
 void func_ov000_0215ce8c(void *self, s32 id);
 void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 Robo021ca458 *func_ov000_0219bf90(void);

@@ -103,8 +103,8 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                 if (s->timer < 0x23 &&
                     !func_01ffc584(t + 0x70, &pos, LFLD(s32, t, 0x64) * 2 + 0x1000, 0x3800)) {
                     hit = FALSE;
-                    func_ov000_02190cb0(self->unk_38, data_ov000_021ca050[self->unk_b24_5], 0x400, 0);
-                    func_ov000_021915a0(self->unk_38);
+                    func_ov000_02190cb0(self->model, data_ov000_021ca050[self->unk_b24_5], 0x400, 0);
+                    func_ov000_021915a0(self->model);
                     self->unk_9c = 0x15c;
                     Actor_Move(self, 0);
                     func_ov000_021987b8(self->unk_48, 0, 0, 0);
@@ -156,9 +156,9 @@ void func_ov000_021a4194(Robo021ca458 *self) {
         char *anim;
         if (self->unk_b1c != 0xffff) {
             if (self->unk_b22_3) {
-                func_ov000_02190cb0(self->unk_38, data_ov000_021cc64e, 0x555, 0);
-                func_ov000_02191318(self->unk_38, 0xa000);
-                func_ov000_02191780(self->unk_38);
+                func_ov000_02190cb0(self->model, data_ov000_021cc64e, 0x555, 0);
+                func_ov000_02191318(self->model, 0xa000);
+                func_ov000_02191780(self->model);
                 self->unk_40->st++;
                 return;
             }
@@ -182,12 +182,12 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                 anim = data_ov000_021cc64e;
             }
         }
-        func_ov000_02190cb0(self->unk_38, anim, 0x400, 0);
+        func_ov000_02190cb0(self->model, anim, 0x400, 0);
         self->unk_40->st++;
         return;
     }
     case 2: {
-        s16 f = LFLD(s16, self->unk_38, 0xc4);
+        s16 f = ((s16)self->model->unk_c4);
         Actor *a;
         if (f == 1 || self->unk_b22_3) {
             sub->st = 10;
@@ -199,15 +199,15 @@ void func_ov000_021a4194(Robo021ca458 *self) {
         a = FindActor_021a4194(self->unk_b1c);
         if (a != NULL) {
             if (a->unk_4c->unk_02 == 7) {
-                if (a->unk_38 != NULL) {
-                    func_ov000_02190cb0(a->unk_38, data_ov000_021cc660, 0x1000, 0);
+                if (a->model != NULL) {
+                    func_ov000_02190cb0(a->model, data_ov000_021cc660, 0x1000, 0);
                 }
-                self->unk_40->timer = LFLD(s16, self->unk_38, 0xc4);
+                self->unk_40->timer = LFLD(s16, self->model, 0xc4);
                 self->unk_40->st++;
                 return;
             }
         } else if (info != NULL && LFLD(u8, info, 2) == 7) {
-            self->unk_40->timer = LFLD(s16, self->unk_38, 0xc4);
+            self->unk_40->timer = LFLD(s16, self->model, 0xc4);
             self->unk_40->st++;
             return;
         }
@@ -240,14 +240,14 @@ void func_ov000_021a4194(Robo021ca458 *self) {
         self->unk_40->st++;
         return;
     case 11:
-        if (func_ov000_02191120(self->unk_38)) {
+        if (func_ov000_02191120(self->model)) {
             if (LFLD(u8, info, 2) == 6) {
                 if (LFLD(s16, t, 0x18) != 3) {
                     if (!self->unk_b24_1) {
                         self->unk_93_0 = 1;
                     } else {
-                        func_ov000_02190cb0(self->unk_38, data_ov000_021cc61e, 0x400, 0);
-                        func_ov000_021915a0(self->unk_38);
+                        func_ov000_02190cb0(self->model, data_ov000_021cc61e, 0x400, 0);
+                        func_ov000_021915a0(self->model);
                     }
                     {
                         p.x = LFLD(s32, t, 0x70);
@@ -267,8 +267,8 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                     func_ov000_02198360(self->unk_40, 1, 0);
                 }
             } else {
-                func_ov000_02190cb0(self->unk_38, data_ov000_021ca040[self->unk_b24_5], 0xcd, 0);
-                func_ov000_021915a0(self->unk_38);
+                func_ov000_02190cb0(self->model, data_ov000_021ca040[self->unk_b24_5], 0xcd, 0);
+                func_ov000_021915a0(self->model);
                 self->unk_40->st = 0x32;
             }
             self->target = 0xffff;

@@ -110,7 +110,7 @@ void func_ov000_021a2670(Robo021ca458 *self) {
         if (self->unk_b24_1 && self->unk_b24_12 == 0 &&
             self->unk_ba4 != NULL && LFLD(Ba4_021a2670, self->unk_ba4, 6).b6 &&
             self->unk_b38 >= thr) {
-            func_ov000_02190cb0(self->unk_38, data_ov000_021ca030[self->unk_b24_5], 0x19a, 1);
+            func_ov000_02190cb0(self->model, data_ov000_021ca030[self->unk_b24_5], 0x19a, 1);
             self->unk_9c = 0;
             self->unk_a4 = 0;
             ((St021a2670 *)self->unk_40)->state++;
@@ -130,7 +130,7 @@ void func_ov000_021a2670(Robo021ca458 *self) {
                 ((St021a2670 *)self->unk_40)->state = 10;
                 return;
             }
-            func_ov000_02190cb0(self->unk_38, data_ov000_021ca040[self->unk_b24_5], 0x800, 0);
+            func_ov000_02190cb0(self->model, data_ov000_021ca040[self->unk_b24_5], 0x800, 0);
             self->unk_b2c_6 = 1;
             func_ov000_02198360(self->unk_40, 0x16, 0);
             self->unk_b48 = 0;
@@ -205,7 +205,7 @@ void func_ov000_021a2670(Robo021ca458 *self) {
             self->unk_a8 = 0x50;
             ((St021a2670 *)self->unk_40)->timer = 0xf;
         }
-        func_ov000_02190cb0(self->unk_38, anm, 0x800, 0);
+        func_ov000_02190cb0(self->model, anm, 0x800, 0);
         PlaySe021a2670(snd, &self->pos);
         if (!self->unk_93_4) {
             s32 se = 0x300;

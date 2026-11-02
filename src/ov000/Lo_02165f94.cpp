@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/MapCtx.h"
 
@@ -7,7 +8,6 @@ extern "C" {
 extern u8 NNS_G3dGlb[];
 extern u8 data_02092844[];
 extern u8 data_02092800[];
-extern u8 *data_ov000_021ccd54;
 extern u8 *data_02097dc8;
 void MIi_CpuCopyFast(void *a, void *b, s32 c);
 void func_ov000_02190758(void *m, void *p, s32 a);
@@ -27,9 +27,9 @@ struct Obj02165f94 {
 
 u8 *func_ov000_02165f94(Obj02165f94 *self) {
     LoAnimC *p = self->unk_30->anim;
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (!LoAnimValid(p)) {
-        return g + 0xca;
+        return (u8 *)g + 0xca;
     }
     if (LFLD(u16, data_02097dc8, 0x12) & 2) {
         p->timer = p->period;
@@ -47,8 +47,8 @@ u8 *func_ov000_02165f94(Obj02165f94 *self) {
             p->state = 0xffff;
         }
     }
-    p->rgb[0] = g[0xca];
-    p->rgb[1] = g[0xcb];
+    p->rgb[0] = ((u8 *)g)[0xca];
+    p->rgb[1] = ((u8 *)g)[0xcb];
     p->rgb[2] = p->frames[p->idx][8];
     return p->rgb;
 }
@@ -241,7 +241,7 @@ void func_ov000_02166180(Obj0216607c *self) {
     u8 c;
     Node0216607c *nd;
     s16 x;
-    u8 *g;
+    FieldState *g;
     u8 *p;
     u8 *r;
     u8 *en;
@@ -287,7 +287,7 @@ void func_ov000_02166180(Obj0216607c *self) {
         if (busy) {
             f = r == LFLD(u8 *, p, 0xcb8);
         } else {
-            f = LFLD(RBits6180, r, 0).a == g[0xcb] && LFLD(RBits6180, r, 0).b == g[0xcc];
+            f = LFLD(RBits6180, r, 0).a == ((u8 *)g)[0xcb] && LFLD(RBits6180, r, 0).b == ((u8 *)g)[0xcc];
         }
         if (f) {
             for (j = 0; j < r[0xa]; j++) {
@@ -310,7 +310,7 @@ void func_ov000_02166180(Obj0216607c *self) {
             } else {
                 SetXY6180(OamAt6180(oams, j), xx, yy);
             }
-            if (LFLD(RBits6180, r, 0).a == g[0xcb] && LFLD(RBits6180, r, 0).b == g[0xcc]) {
+            if (LFLD(RBits6180, r, 0).a == ((u8 *)g)[0xcb] && LFLD(RBits6180, r, 0).b == ((u8 *)g)[0xcc]) {
                 xx = ex - 4; yy = ey - 4; PUTM(&LFLD(Oam6180, p, 0xc), xx, yy)
                 LFLD(Oam6180, p, 0xc).w1.pal = *(LFLD(s8 *, p, 0xc90) + PalIdx6180(p) - 2);
                 OamAt6180(oams, j)->w1.pal = pal[PalIdx6180(p)];
@@ -388,7 +388,7 @@ void func_ov000_02166180(Obj0216607c *self) {
     }
     pl = func_ov000_0219bf90();
     if (pl != NULL && LFLD(u8 *, p, 0xcb8) != NULL) {
-        cam = data_ov000_021ccd54 + 0xf4;
+        cam = (u8 *)data_ov000_021ccd54 + 0xf4;
         if (!LFLD(QBits6180, LFLD(u8 *, p, 0xcb8), 0).b3) {
             xx = LFLD(Oam6180, p, 0xc).w0.x;
             yy = LFLD(Oam6180, p, 0xc).w0.y;

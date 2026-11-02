@@ -1,4 +1,5 @@
 #include "nitro/fx.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/VObj.h"
 #include "ov000/ObjLayouts.h"
 
@@ -22,7 +23,6 @@ typedef struct {
 } Save02196258;
 
 extern "C" {
-extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd64;
 extern Save02196258 *data_0214a424;
 void func_0203f364(void *a);
@@ -75,9 +75,9 @@ static inline void Die02196258(VObj *obj) {
         func_02062764(0x3c0, 0x100);
         func_020627a0(self->unk_0e, self->unk_0c);
         {
-            u8 *pl = data_ov000_021ccd54;
-            pl[0xac] = 1;
-            func_ov000_02182590(pl + 0xac);
+            FieldState *pl = data_ov000_021ccd54;
+            ((u8 *)pl)[0xac] = 1;
+            func_ov000_02182590((u8 *)pl + 0xac);
         }
     }
     {
@@ -110,18 +110,18 @@ void func_ov000_02196258(VObj *obj) {
             LFLD(Bits02196258, q, 0x22).b1 = 0;
         }
         if (self->unk_48 != NULL) {
-            u8 *q = (u8 *)self->unk_48;
+            ActorSub48 *q = self->unk_48;
             LFLD(Bits02196258, q, 0x9a).b0 = 0;
-            LFLD(Bits02196258, q, 0x9a).b3 = 0;
+            q->unk_9a_3 = 0;
             func_0203f364(q);
-            q = (u8 *)self->unk_48;
+            q = self->unk_48;
             LFLD(Bits02196258, q, 0x9a).b1 = 0;
-            LFLD(Bits02196258, q, 0x9a).b4 = 0;
+            q->unk_9a_4 = 0;
         }
         if (self->unk_58 != NULL) {
             self->unk_cc_0 = 0;
         }
-        if (LFLD(u8, ((u8 *)self->unk_4c), 0) == 2) {
+        if (self->unk_4c->unk_00 == 2) {
             self->unk_40->st = 0x14;
             return;
         }
@@ -149,7 +149,7 @@ void func_ov000_02196258(VObj *obj) {
         ActorSub40 *s2 = self->unk_40;
         s2->timer++;
         if (s2->timer > 0xb) {
-            if (t != NULL && LFLD(u8, ((u8 *)self->unk_4c), 1) == 4) {
+            if (t != NULL && self->unk_4c->unk_01 == 4) {
                 self->unk_40->timer = 0xc;
             } else {
                 self->unk_40->timer = 0x1e;
@@ -168,7 +168,7 @@ void func_ov000_02196258(VObj *obj) {
             Die02196258(obj);
             return;
         }
-        if (t != NULL && LFLD(u8, ((u8 *)self->unk_4c), 1) == 4) {
+        if (t != NULL && self->unk_4c->unk_01 == 4) {
             VecFx32 v;
             s32 k = (0xc - self->unk_40->timer) * 0xcd;
             s32 r = 0x1000 - k;
@@ -186,7 +186,7 @@ void func_ov000_02196258(VObj *obj) {
             v.z += self->unk_9c;
             v.y += self->unk_a0;
             VEC_Add((VecFx32 *)((u8 *)self + 0x70), &v, (VecFx32 *)((u8 *)self + 0x70));
-            mdl = ((u8 *)self->unk_38);
+            mdl = ((u8 *)self->model);
             {
                 VecFx32 *sc = (VecFx32 *)(mdl + 0xa8);
                 s32 x, y, z;
@@ -204,7 +204,7 @@ void func_ov000_02196258(VObj *obj) {
             if (a > 0x1f) {
                 a = 0x1f;
             }
-            LFLD(u8, ((u8 *)self->unk_38), 0xbe) = a;
+            self->model->alpha = a;
         }
         return;
     case 0x14:

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/VObj.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
@@ -19,7 +20,6 @@
     } while (0)
 
 extern "C" {
-extern void *data_ov000_021ccd54;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb1b0[];

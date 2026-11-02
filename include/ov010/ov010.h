@@ -190,6 +190,7 @@ struct Ov010Vec {
 typedef Ov010Vec VecFx32;
 #endif
 #include "ov000/ActorParts.h"
+#include "ov000/Model0218fe1c.h"
 
 // The ov000 actor base (ov000 Actor, ctor Actor_Ctor, 0xac bytes) as ov010 uses it.
 class Ov010Obj : public Ov010V {
@@ -210,7 +211,7 @@ public:
     void *msgs;
     u32 msg_flags;
     s32 unk_34;
-    void *unk_38;
+    Model0218fe1c *model;
     void *unk_3c;
     ActorSub40 *unk_40; // state block (ov000 Actor::unk_40)
     void *unk_44;

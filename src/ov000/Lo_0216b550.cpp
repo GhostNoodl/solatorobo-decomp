@@ -1,9 +1,9 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd54;
 extern s32 data_02097d78[5];
 extern void *data_0208cc94;
 extern void *data_0208cc88;
@@ -21,17 +21,17 @@ typedef struct {
     u32 rest : 25;
 } LoMdlFlags0216b550;
 
-static inline BOOL LoGBusy(u8 *g) {
-    return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94) ? TRUE : FALSE;
+static inline BOOL LoGBusy(FieldState *g) {
+    return g->head != g->tail ? TRUE : FALSE;
 }
 
 static inline BOOL LoGIdle(void) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         if (LoGBusy(g)) {
             return FALSE;
         }
-        if (LFLD(s32, g, 0) != 3) {
+        if (g->state != 3) {
             return FALSE;
         }
         return TRUE;

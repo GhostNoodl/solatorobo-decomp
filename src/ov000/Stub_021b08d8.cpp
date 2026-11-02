@@ -61,10 +61,10 @@ void func_ov000_021b08ec(Robo021ca458 *self) {
             } else if (t == 0x23) {
                 func_0204a028(data_02097e4c, 0x44, (u8 *)self + 0x70, 2);
                 func_02049f44(data_02097e4c, 0x78, (u8 *)self + 0x70, 0);
-                SetPal(((u8 *)self->unk_38));
+                SetPal(((u8 *)self->model));
             } else if (t >= 0x41) {
                 func_02049f44(data_02097e4c, 0x36, (u8 *)self + 0x70, 0);
-                SetPal(((u8 *)self->unk_38));
+                SetPal(((u8 *)self->model));
                 self->unk_40->timer = 0x23;
             }
             ofs.x = 0;

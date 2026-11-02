@@ -14,12 +14,15 @@ typedef struct Camera {
     /* 0x04 */ VecFx32 eye;
     /* 0x10 */ VecFx32 at;
     /* 0x1c */ VecFx32 up;
-    /* 0x28 */ s32 fovSin;
-    /* 0x2c */ s32 fovCos;
-    /* 0x30 */ s16 aspect;
-    /* 0x32 */ s16 nearClip;
-    /* 0x34 */ s16 farClip;
-    /* 0x36 */ u8 unk_36[8];
+    // projection, in MTX_PerspectiveW / NNS_G3dGlbPerspectiveW argument order
+    /* 0x28 */ s32 nearClip;
+    /* 0x2c */ s32 farClip;
+    /* 0x30 */ s16 fovySin;
+    /* 0x32 */ s16 fovyCos;
+    /* 0x34 */ s16 aspect;
+    /* 0x36 */ u16 fovyIdx;
+    /* 0x38 */ s32 fovyDeg;
+    /* 0x3c */ u8 unk_3c[2];
     /* 0x3e */ u8 projDirty;
     /* 0x40 */ u16 mode;
     /* 0x42 */ u16 pitch;
@@ -44,14 +47,19 @@ typedef struct Camera {
     /* 0x99 */ u8 shakeTime;
     /* 0x9a */ u8 shakeLen;
     /* 0x9b */ u8 shakeCur;
-    /* 0x9c */ u8 flag0 : 1;
-    /* 0x9c */ u8 flag1 : 1;
-    /* 0x9c */ u8 shakeX : 1;
-    /* 0x9c */ u8 shakeY : 1;
-    /* 0x9c */ u8 shakeZ : 1;
-    /* 0x9c */ u8 flag5 : 1;
-    /* 0x9c */ u8 flag6 : 1;
-    /* 0x9c */ u8 flag7 : 1;
+    /* 0x9c */ union {
+        u8 flags; // the bits below as one byte (shakeX | shakeY | shakeZ is 0x1c)
+        struct {
+            u8 flag0 : 1;
+            u8 flag1 : 1;
+            u8 shakeX : 1;
+            u8 shakeY : 1;
+            u8 shakeZ : 1;
+            u8 flag5 : 1;
+            u8 flag6 : 1;
+            u8 flag7 : 1;
+        };
+    };
     /* 0x9e */ s16 speed;
     /* 0xa0 */ s32 animFrame;
     /* 0xa4 */ s32 animSpeed;

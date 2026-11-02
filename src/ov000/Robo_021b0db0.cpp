@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 
@@ -9,7 +10,6 @@ typedef struct {
 } Bits0214a424_021b0db0;
 
 extern "C" {
-extern u8 *data_ov000_021ccd54;
 extern void *data_02097dc8;
 extern u8 *data_0214a424;
 extern const VecFx32 data_02092a50;
@@ -42,7 +42,7 @@ static inline BOOL Flip021b0db0(void) {
 void func_ov000_021b0db0(Robo021ca458 *self, s32 spd) {
     u16 yaw;
     u16 tilt;
-    u8 *cam = data_ov000_021ccd54 + 0xf4;
+    u8 *cam = (u8 *)data_ov000_021ccd54 + 0xf4;
     if (LFLD(u16, cam, 0x40) != 0) {
         yaw = LFLD(u16, cam, 0x44);
     } else {
@@ -85,10 +85,10 @@ void func_ov000_021b0db0(Robo021ca458 *self, s32 spd) {
         } else if (((keys & 0x80) && !Flip021b0db0()) || ((keys & 0x40) && LFLD(Bits0214a424_021b0db0, data_0214a424, 0x18).b10)) {
             anim = data_ov000_021cc763;
         }
-        func_ov000_02190cb0(self->unk_38, anim, 0xcd, 0);
+        func_ov000_02190cb0(self->model, anim, 0xcd, 0);
     } else if (spd == 0) {
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc5e3, 0xcd, tilt);
-        func_ov000_021915a0(self->unk_38);
+        func_ov000_02190cb0(self->model, data_ov000_021cc5e3, 0xcd, tilt);
+        func_ov000_021915a0(self->model);
     }
     MulVec33_021b0db0((VecFx32 *)((u8 *)self + 0xaf0), NNS_G3dGlbGetInvV(), (VecFx32 *)((u8 *)self + 0x9c));
     VEC_Add((VecFx32 *)((u8 *)self + 0x9c), &data_02092a50, (VecFx32 *)((u8 *)self + 0x70));

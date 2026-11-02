@@ -7478,3 +7478,37 @@ Header consistency for `include/Main`, `include/ov000` and the SDK headers they 
   - **`Lo_0215123c`'s `LoTextWin`** is a different view of `TextWin` (s32 vs u32 fields), not a conflict.
   - **Three `ActorEx_*` files** keep a local `VecFx32` copy. They do not include `fx.h`.
 - **Pitfall:** a one-line drop of SDK prototypes must be limited to the names the newly visible header actually declares (`sdkdrop --only=`). A blanket drop removed `NNS_G3d*` prototypes that nothing else declares, and it removed Menu's load-bearing `STD_CopyString`.
+
+### Round svJ
+
+Source readability in `src/ov000`, `src/ov010`, `src/Main` and their headers. Every function is byte-identical: a per-function hash of code plus relocations was compared against a baseline after each step. The touched `NONMATCHING` drafts were compiled with `NONMATCHING` defined at HEAD and after the change, and they are the same (`ov010_02203ff4`'s draft already failed to compile at HEAD). Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, and `ninja report` 8138 matched.
+
+- **FLD/LFLD/CFLD counts:**
+  - `src/ov000`: 3381 -> 3050. On `self`: 217 -> 212.
+  - `src/ov010`: 687 -> 573. On `self`: 122 -> 110.
+- **`data_ov000_021ccd54` is a `FieldState *`** (0x214, size-asserted). It lives in the new `Main/Sys/FieldState.h`, which is C-compatible and is also included by `Main/Sys/Field.h`.
+  - The same header holds `FieldCam` (0x120 at 0xf4, a `Camera` base followed by the field-camera extras), `FieldId` (`u8 c[3]`, the 3-byte map/area ids at 0xca/0xcd/0xd0) and `FieldFade` (`data_ov000_021ccd70`: `flag0`/`flag1`, `state`, `mode`, `duration`).
+  - The field-command queue is `queue[0x10]`, `queueArg[0x10]`, `head` and `tail`. `pause[8]` is at 0x08.
+  - 106 TUs include it in place of a raw `u8 *`/`void *` extern. The local views `Player021ccd54Sub`, `Player021b3d78`, `Ov010G54`, `Glob0218ac98` and the six local `Rgb` `{u8 c[3];}` typedefs are gone.
+  - Main users were renamed: `unk_18c..f` became `cam.base.shake*`, `unk_190` became `cam.base.flags`, and `unk_0c9[1]` became `unk_ca.c[0]`.
+  - TUs outside this scope (ov002/3/6/7/8/15), plus `Lo_0216adc0` and `Menu_021763c8`, keep the raw extern.
+- **`Camera`:** the 0x9c bits sit under `union { u8 flags; struct { flag0..7 }; }`. The projection fields are named from `MTX_PerspectiveW`'s argument order: `nearClip`, `farClip`, `fovySin`, `fovyCos`, `aspect`, `fovyIdx` and `fovyDeg`.
+- **`Actor::unk_38` / `Ov010Obj::unk_38` are `Model0218fe1c *model`** (about 300 uses). The Robo models embedded at 0xac/0x368 are stored with a cast. In `Model0218fe1c`, 0xb4 is `actor_id` (the owner actor for animation events, 0xffff for none) and 0xbe is `alpha` (polygon alpha, 0x1f for opaque).
+- **`TextWin`:**
+  - The 0x04 bits sit under a `u32 flags` union.
+  - 0x24 is `str` (the text to lay out), 0x28 is `font` and 0x38 is `spacing`, named from the `func_0204c4fc(font, spacing, str, ...)` params. `str` stays `u32` because `const char *` clashes with the `text[0x20]` member and with existing prototypes.
+  - The 0xb8 allocations in `Text_02158b48`, `Obj_021c2a88`, `Lo_021c5bd4` and `Hud_021c2450` are typed `TextWin *`. So are `Lo021cca40::unk_30` and `Hud021cca10::unk_38`.
+- **`ActorEx`:** `unk_b0` is now `ActorExParam *param` (kind, plus the 3/1/3/1/1-bit splits at 0x02). `unk_b4` is now `ResSet *res[2]`.
+  - `ActorEx_021946f8`, `_02195018`, `_021953b4` and the first part of `_02194074` use the shared `ActorEx` instead of local typedefs.
+  - `Param0219433c` and `Param02194758` are now `ActorExParam`.
+- **ov010:** the `FindActor`/`FindObjById2`/`FindObjById3` helpers return `Actor *` / `Ov010Obj *` instead of `void *`. About 23 locals and params were retyped (`ActorSub48`, `ActorSub40`, `Model0218fe1c`, `Ov010Obj`).
+- **Left:**
+  - `Hud_021c28cc` and `Lo_0214e9e4` can't take the `TextWin` header. Their `Model.h` `u8`-vs-`int` prototypes and their `NNS_G2d` index types conflict.
+  - `Heap_021c0e30`, `Lo_0216bf30`, `Stub_0215c1a8` and Menu keep `TextWin` views with `s32` fields. The signedness is load-bearing.
+  - `Lo_021814dc` keeps its `CmdObj` views, and its `NONMATCHING` draft keeps the `LFLD` on `data_ov000_021ccd54`.
+  - `Task_021c9020`'s `Persp` view starts at a different base offset.
+  - `FieldState::unk_d4` is `u32` because Main compares it with 0xffff. Some ov000 TUs read it as a pointer.
+  - The Robo embedded models at 0xac/0x368 are not embedded members yet.
+  - `ActorEx_02194074`/`_02194758` keep their own Actor views. Their `unk_4c` target layout differs from the shared one.
+  - The rest of the `self` FLDs are on structs that have no free pad at that offset, or where users disagree on the width or type.
+- **Pitfall:** retyping a pointer param from `u8 *` changes the meaning of `g + N` and `g[N]` in the body. Rewrite them to `(u8 *)g + N` or to a member, then check the per-function hash.

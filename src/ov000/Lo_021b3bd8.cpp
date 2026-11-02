@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 
 typedef struct {
@@ -54,11 +55,6 @@ typedef struct {
 } Mgr021b3bd8;
 
 typedef struct {
-    u8 pad[0xca];
-    u8 ids[3];
-} Player021b3bd8;
-
-typedef struct {
     u8 pad[0x18];
     u16 b0 : 9;
     u16 b9 : 1;
@@ -68,7 +64,6 @@ typedef struct {
 extern "C" {
 
 extern Cfg021b3bd8 *data_0214a424;
-extern Player021b3bd8 *data_ov000_021ccd54;
 BOOL func_01ffc584(void *a, VecFx32 *b, s32 c, s32 d);
 
 static inline void Fade_Set(Fade021b3bd8 *f) {
@@ -94,7 +89,7 @@ void func_ov000_021b3bd8(Mgr021b3bd8 *self) {
         return;
     }
     same = FALSE;
-    if (data_ov000_021ccd54->ids[0] == self->ids[0] && data_ov000_021ccd54->ids[1] == self->ids[1] && data_ov000_021ccd54->ids[2] == self->ids[2]) {
+    if (data_ov000_021ccd54->unk_ca.c[0] == self->ids[0] && data_ov000_021ccd54->unk_ca.c[1] == self->ids[1] && data_ov000_021ccd54->unk_ca.c[2] == self->ids[2]) {
         same = TRUE;
     }
     if (!same) {

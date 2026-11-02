@@ -41,10 +41,10 @@ void func_ov000_0216bae4(LoTextHolder *self, u32 text) {
         return;
     }
     win = LoTextWin_New();
-    win->unk_28 = 4;
-    win->unk_24 = text;
-    win->unk_4c = func_0204c4fc(win->unk_28, win->unk_38, win->unk_24, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->unk_28;
+    win->font = 4;
+    win->str = text;
+    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+    data_02097ce0->unk_004 = win->font;
     win->unk_74 = 0x2b9f;
     win->unk_76 = 0xc7f;
     win->noVram = 1;

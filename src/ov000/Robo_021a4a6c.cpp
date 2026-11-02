@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 
@@ -88,7 +89,6 @@ extern char data_ov000_021cc61e[];
 extern char data_ov000_021cc672[];
 extern char data_ov000_021cc5e3[];
 extern void *data_02097e4c;
-extern u8 *data_ov000_021ccd54;
 extern u8 *data_ov000_021ccd68;
 extern u8 *data_0214a424;
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
@@ -117,17 +117,17 @@ void func_020627a0(u16 a, u16 b);
 void func_ov000_02182590(void *p);
 void func_ov000_021899d8(VecFx32 *a, s32 b, s32 c, s32 d, s16 e, s16 f);
 
-static inline BOOL IsBusy_021a4a6c(u8 *g) {
-    return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94);
+static inline BOOL IsBusy_021a4a6c(FieldState *g) {
+    return g->head != g->tail;
 }
 
 static inline BOOL IsIdle_021a4a6c(void) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         if (IsBusy_021a4a6c(g)) {
             return FALSE;
         }
-        if (LFLD(s32, g, 0) != 3) {
+        if (g->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -207,7 +207,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
             VObj *e;
             B24(self).b7 = 2;
             self->unk_b36 = 0;
-            func_ov000_02190cb0(self->unk_38, data_ov000_021cc666, 0x800, 1);
+            func_ov000_02190cb0(self->model, data_ov000_021cc666, 0x800, 1);
             e = func_02065f88(0x391, &self->pos);
             e->vfunc_24(0, (self->unk_68 >> 1) + (self->unk_68 >> 3), 0);
             e->vfunc_0c(0x1333);
@@ -218,8 +218,8 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
         } else if (B22(self).b3) {
             B24(self).b7 = 2;
             self->unk_b36 = 0;
-            func_ov000_02190cb0(self->unk_38, data_ov000_021cc64e, 0x800, 1);
-            func_ov000_021911c8(self->unk_38, 0x2800);
+            func_ov000_02190cb0(self->model, data_ov000_021cc64e, 0x800, 1);
+            func_ov000_021911c8(self->model, 0x2800);
         } else {
             B24(self).b7 = B24(self).b9;
             if (sub != NULL && LFLD(u8, sub, 0) == 0xf) {
@@ -233,11 +233,11 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
         switch (B24(self).b7) {
         case 0:
             B24(self).b9 = 1;
-            func_ov000_02190cb0(self->unk_38, data_ov000_021cc64e, 0x800, 1);
+            func_ov000_02190cb0(self->model, data_ov000_021cc64e, 0x800, 1);
             break;
         case 1:
             B24(self).b9 = 0;
-            func_ov000_02190cb0(self->unk_38, data_ov000_021cc66c, 0x800, 1);
+            func_ov000_02190cb0(self->model, data_ov000_021cc66c, 0x800, 1);
             break;
         }
         if (B24(self).b12 == 0 && !(self->unk_48->unk_50 & 0x20000000)) {
@@ -283,22 +283,22 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
                         st = ST(self);
                         st->timer++;
                         if (st->timer < 0x14 && !func_01ffc584(t + 0x70, &p1, (LFLD(s32, t, 0x64) << 1) + 0x1000, 0x4800)) {
-                            func_ov000_02190cb0(self->unk_38, data_ov000_021cc61e, 0x400, 0);
-                            func_ov000_021915a0(self->unk_38);
+                            func_ov000_02190cb0(self->model, data_ov000_021cc61e, 0x400, 0);
+                            func_ov000_021915a0(self->model);
                             self->unk_9c = 0x229;
                             self->rot_y = func_01ffc128(self->unk_98, self->rot_y, 0x400, 1, 0x8000);
                             goto end;
                         }
                     }
                 }
-                func_ov000_02190cb0(self->unk_38, data_ov000_021cc672, 0x800, 1);
+                func_ov000_02190cb0(self->model, data_ov000_021cc672, 0x800, 1);
                 self->unk_9c = 0;
                 self->unk_a4 = 0;
             }
             if (sub != NULL && B93(self).b4) {
                 u8 *q;
                 if (!B22(self).b3 && B2C(self).b4 < 3) {
-                    func_ov000_02191318(self->unk_38, 0x16000);
+                    func_ov000_02191318(self->model, 0x16000);
                 }
                 q = LFLD(u8 *, t, 0x48);
                 if ((u16)(LFLD(u16, t, 0xc) & 0xf000) == 0x5000 && LFLD(u8, sub, 0) == 0xf) {
@@ -309,7 +309,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
                         } else {
                             B24(self).b22 = 1;
                         }
-                        func_ov000_021911c8(self->unk_38, 0x3800);
+                        func_ov000_021911c8(self->model, 0x3800);
                         self->unk_a8 = 0x29;
                         if (self->unk_a0 > 0) {
                             self->unk_a0 -= self->unk_a0 >> 1;
@@ -320,7 +320,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
                     }
                 }
                 B24(self).b22 = 0;
-                func_ov000_021911c8(self->unk_38, 0x1800);
+                func_ov000_021911c8(self->model, 0x1800);
                 goto next;
             }
             B24(self).b22 = 0;
@@ -337,7 +337,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
         if (B24(self).b5 != 0) {
             break;
         }
-        if (LFLD(s16, self->unk_38, 0xc4) < 1) {
+        if (((s16)self->model->unk_c4) < 1) {
             break;
         }
         ST(self)->st++;
@@ -381,7 +381,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
                     u16 id;
                     func_02049f44(data_02097e4c, 0xc, &self->pos, 0);
                     if (B24(self).b22 == 0) {
-                        func_ov000_02191418(self->unk_38, 4, 0);
+                        func_ov000_02191418(self->model, 4, 0);
                     }
                     if (B24(self).b7 == 2) {
                         if (B22(self).b3) {
@@ -409,9 +409,9 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
                     if (LFLD(S18_021a4a6c, sub, 0x18).b1) {
                         func_02062764(0x3c0, 0x200);
                         func_020627a0(LFLD(u16, t, 0xe), LFLD(u16, t, 0xc));
-                        u8 *g = data_ov000_021ccd54;
-                        LFLD(u8, g, 0xac) = 1;
-                        func_ov000_02182590(g + 0xac);
+                        FieldState *g = data_ov000_021ccd54;
+                        g->unk_ac = 1;
+                        func_ov000_02182590((u8 *)g + 0xac);
                     }
                     ST(self)->st = 10;
                     break;
@@ -421,7 +421,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
             func_ov000_02198360(ST(self), 0xf, 0);
             break;
         }
-        if (LFLD(s16, self->unk_38, 0xc4) == 2 || func_ov000_02191120(self->unk_38)) {
+        if (((s16)self->model->unk_c4) == 2 || func_ov000_02191120(self->model)) {
             B24(self).b5 = 0;
             self->unk_b1c = 0xffff;
             self->unk_b1e = 0xffff;
@@ -437,7 +437,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
         } else {
             sub = NULL;
         }
-        if (!func_ov000_02191120(self->unk_38) && ST(self)->keys == 0) {
+        if (!func_ov000_02191120(self->model) && ST(self)->keys == 0) {
             break;
         }
         if (t == NULL) {
@@ -483,7 +483,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
         }
         if (!done) {
             if (B2C(self).b4 == 3 && sub == NULL) {
-                func_ov000_02190cb0(self->unk_38, data_ov000_021cc5e3, 0x89, 0);
+                func_ov000_02190cb0(self->model, data_ov000_021cc5e3, 0x89, 0);
                 ST(self)->timer = 0;
                 ST(self)->st++;
             } else {
@@ -503,7 +503,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
     }
     }
 end:
-    if (!func_ov000_02191508(self->unk_38)) {
+    if (!func_ov000_02191508(self->model)) {
         BOOL turned;
         if (B24(self).b7 == 2 && !B22(self).b3) {
             func_ov000_021b1fac(self, FALSE, 1);

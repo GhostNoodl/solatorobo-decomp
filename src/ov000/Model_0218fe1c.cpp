@@ -99,7 +99,7 @@ Model0218fe1c *func_ov000_0218fe1c(Model0218fe1c *self) {
     self->unk_a8 = 0x1000;
     self->unk_ac = 0x1000;
     self->unk_b0 = 0x1000;
-    self->unk_b4 = 0xffff;
+    self->actor_id = 0xffff;
     self->unk_c4 = 0;
     self->unk_c6 = 0;
     self->unk_c8 = 0;
@@ -114,7 +114,7 @@ Model0218fe1c *func_ov000_0218fe1c(Model0218fe1c *self) {
     self->unk_e4 = 0;
     self->unk_ba = 0;
     self->unk_bc = 0;
-    self->unk_be = 0x1f;
+    self->alpha = 0x1f;
     self->unk_bf = 0x1f;
     self->unk_c0 = 0xff;
     self->unk_c1 = 0;
@@ -190,7 +190,7 @@ BOOL func_ov000_0218ffdc(Model0218fe1c *self, ResSet *res, u8 idx, BOOL anim) {
             self->unk_1c = AnimCtrl_New();
         }
     }
-    self->unk_be = 0x1f;
+    self->alpha = 0x1f;
     self->unk_ba = 0;
     self->unk_bc = 0;
     return TRUE;

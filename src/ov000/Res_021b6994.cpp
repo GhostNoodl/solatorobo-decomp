@@ -1,11 +1,11 @@
 #include "ov000/VObj.h"
+#include "Main/Sys/FieldState.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
 
 extern void *data_02097cdc;
-extern u8 *data_ov000_021ccd54;
 u8 *func_0206e150(void *p);
 u8 *func_0206e180(void *p);
 void *func_02035d5c(void *e);
@@ -59,9 +59,9 @@ void func_ov000_021b6994(Obj021b6994 *self, u8 arg) {
             func_02036838(data_02097cdc, e, 7, 0);
         }
     }
-    p = data_ov000_021ccd54 + 0xd0;
+    p = (u8 *)data_ov000_021ccd54 + 0xd0;
     if (arg || p[0] == 0xff || p[1] == 0xff || p[2] == 0xff) {
-        p = data_ov000_021ccd54 + 0xca;
+        p = (u8 *)data_ov000_021ccd54 + 0xca;
     }
     t = func_0206e7d0(p[0]);
     func_0206dedc(buf, p);

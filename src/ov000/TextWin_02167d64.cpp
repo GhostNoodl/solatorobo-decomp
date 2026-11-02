@@ -20,9 +20,9 @@ static inline TextWin *TextWin_New(void) {
 }
 
 static inline void SetText(TextWin *win, u32 text) {
-    win->unk_24 = text;
-    win->unk_4c = func_0204c4fc(win->unk_28, win->unk_38, win->unk_24, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->unk_28;
+    win->str = text;
+    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+    data_02097ce0->unk_004 = win->font;
 }
 
 struct Obj02167d64 {
@@ -57,7 +57,7 @@ void func_ov000_02167d64(Obj02167d64 *self) {
         }
         win = TextWin_New();
         self->unk_40 = win;
-        win->unk_28 = 7;
+        win->font = 7;
         self->unk_40->unk_2c = 0;
         self->unk_40->unk_34 = 0;
         SetText(self->unk_40, (u32)str);
@@ -68,7 +68,7 @@ void func_ov000_02167d64(Obj02167d64 *self) {
     case 3:
         str = NULL;
     case 8:
-        if (str == NULL || str[0] == 0 || STD_CompareString((const char *)self->unk_40->unk_24, str) != 0) {
+        if (str == NULL || str[0] == 0 || STD_CompareString((const char *)self->unk_40->str, str) != 0) {
             self->unk_48 -= 0x1000;
         } else {
             self->unk_48 += 0x1000;
@@ -87,7 +87,7 @@ void func_ov000_02167d64(Obj02167d64 *self) {
         }
         return;
     case 7:
-        if (str != NULL && str[0] != 0 && STD_CompareString((const char *)self->unk_40->unk_24, str) == 0) {
+        if (str != NULL && str[0] != 0 && STD_CompareString((const char *)self->unk_40->str, str) == 0) {
             return;
         }
         self->unk_44 = 3;

@@ -43,7 +43,7 @@ s32 Rand_UpTo(s32 max);
 void func_ov000_021b0c50(Actor *self) {
     switch (self->unk_40->st) {
     case 0:
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc6c6, 0x800, 0);
+        func_ov000_02190cb0(self->model, data_ov000_021cc6c6, 0x800, 0);
         func_ov000_0218996c(8, 0xc);
         self->unk_9c = 0;
         self->unk_a0 = 0;
@@ -51,7 +51,7 @@ void func_ov000_021b0c50(Actor *self) {
         self->unk_a8 = 0;
         self->unk_40->st++;
     case 1:
-        if (func_ov000_02191120(self->unk_38)) {
+        if (func_ov000_02191120(self->model)) {
             switch (ROBO_FLAGS(self)->bit0) {
             default:
                 func_ov000_02198360(self->unk_40, 0x14, 0);

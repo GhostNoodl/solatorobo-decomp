@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
 
@@ -60,7 +61,6 @@ public:
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd54;
 Item021b628c *func_0206e230(Rect021b628c *b);
 Start021b628c *func_0206e264(Rect021b628c *b);
 BOOL func_02062698(void);
@@ -135,7 +135,7 @@ void func_ov000_021b628c(Obj021b628c *self) {
         SetRot021b628c(rot, 0, 0, 0);
     }
     func_020626c0();
-    cam = data_ov000_021ccd54 + 0xf4;
+    cam = (u8 *)data_ov000_021ccd54 + 0xf4;
     if (cam != NULL) {
         LFLD(u8, cam, 0xda) = 0;
         LFLD(u16, cam, 0x42) = rot[0];

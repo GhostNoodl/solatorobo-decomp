@@ -90,7 +90,7 @@ void func_ov000_02197ad0(Actor *self, BOOL b) {
         self->unk_a8 = 0x52;
     }
     if (((Body02197ad0 *)self->unk_48)->flags & 0x20000000) {
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc46f, 0x1000, 0);
+        func_ov000_02190cb0(self->model, data_ov000_021cc46f, 0x1000, 0);
         if (self->unk_92 == 0 && e->se2 >= 0 && self->unk_a0 <= -0xcd) {
             Cam02197ad0 *cam = (Cam02197ad0 *)((u8 *)data_ov000_021ccd54 + 0xf4);
             if (cam != NULL && DistXZSq(&cam->pos, &self->pos) < 0x19000) {

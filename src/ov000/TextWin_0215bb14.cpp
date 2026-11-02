@@ -40,9 +40,9 @@ static inline TextWinEx *TextWinEx_New(void) {
 }
 
 static inline void SetText(TextWin *win, u32 text) {
-    win->unk_24 = text;
-    win->unk_4c = func_0204c4fc(win->unk_28, win->unk_38, win->unk_24, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->unk_28;
+    win->str = text;
+    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+    data_02097ce0->unk_004 = win->font;
 }
 
 static inline void SetPages(TextWinEx *win, u32 text) {
@@ -81,8 +81,8 @@ void func_ov000_0215bb14(Obj0215bb14 *self, u32 text) {
     if (self->unk_0c & 0x80000) {
         TextWin *win = TextWin_New();
         self->unk_84 = win;
-        win->unk_28 = self->unk_1c;
-        self->unk_84->unk_38 = self->vfunc_3c();
+        win->font = self->unk_1c;
+        self->unk_84->spacing = self->vfunc_3c();
         SetText(self->unk_84, text);
         self->unk_84->noVram = 1;
         self->unk_84->flag24 = 1;
@@ -91,8 +91,8 @@ void func_ov000_0215bb14(Obj0215bb14 *self, u32 text) {
     } else {
         TextWinEx *win = TextWinEx_New();
         self->unk_84 = (TextWin *)(win);
-        win->unk_28 = self->unk_1c;
-        ((TextWinEx *)self->unk_84)->unk_38 = self->vfunc_3c();
+        win->font = self->unk_1c;
+        ((TextWinEx *)self->unk_84)->spacing = self->vfunc_3c();
         SetPages((TextWinEx *)self->unk_84, text);
     }
     {

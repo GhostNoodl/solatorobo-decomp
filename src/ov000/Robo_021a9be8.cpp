@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 
@@ -31,7 +32,6 @@ typedef struct {
 
 extern "C" {
 extern void *data_ov000_021ccd68;
-extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd64;
 extern u8 *data_ov000_021ccd30;
 extern void *data_02097e4c;
@@ -88,7 +88,7 @@ static inline u16 CamYaw_021a9be8(u8 *cam) {
     return Camera_GetYaw(cam);
 }
 
-static inline s32 Frame_021a9be8(void *m) {
+static inline s32 Frame_021a9be8(Model0218fe1c *m) {
     s32 f = 0;
     s32 **a = func_ov000_02190a30(m, f);
     if (*a != NULL) {
@@ -160,7 +160,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
     }
     switch (self->unk_40->st) {
     case 0:
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc68a, 0x555, 1);
+        func_ov000_02190cb0(self->model, data_ov000_021cc68a, 0x555, 1);
         self->unk_9c = 0;
         self->unk_a0 = 0;
         if (self->unk_b36 != 0) {
@@ -176,8 +176,8 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
             func_ov000_02198360(self->unk_40, 1, 0);
             break;
         }
-        if (Frame_021a9be8(self->unk_38) > 0x14000) {
-            func_ov000_0219122c(self->unk_38, 0x14000);
+        if (Frame_021a9be8(self->model) > 0x14000) {
+            func_ov000_0219122c(self->model, 0x14000);
             self->unk_ae4_0 = 1;
         }
         if (self->unk_40->timer == 0x14) {
@@ -222,8 +222,8 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         }
         break;
     case 2:
-        if (Frame_021a9be8(self->unk_38) > 0x14000) {
-            func_ov000_0219122c(self->unk_38, 0x14000);
+        if (Frame_021a9be8(self->model) > 0x14000) {
+            func_ov000_0219122c(self->model, 0x14000);
         }
         if (self->unk_b36 == 0) {
             a = (u8 *)FindActor_021a9be8(self->unk_b1c);
@@ -294,7 +294,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         self->unk_40->st++;
         break;
     case 11:
-        if (func_ov000_02191120(self->unk_38)) {
+        if (func_ov000_02191120(self->model)) {
             self->unk_98 = self->rot_y;
             if (self->unk_b36 != 0) {
                 self->unk_40->st = 0;
@@ -308,7 +308,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         return;
     }
     if (!self->unk_b24_17) {
-        u16 yaw = CamYaw_021a9be8(data_ov000_021ccd54 + 0xf4);
+        u16 yaw = CamYaw_021a9be8((u8 *)data_ov000_021ccd54 + 0xf4);
         u16 ang;
         if (self->unk_b68 & 0xf0) {
             self->unk_9c = self->unk_b08 >> 2;

@@ -43,17 +43,17 @@ void func_ov000_02195d88(ActorEx *self) {
     switch (s->st) {
     case 0:
         self->unk_93_1 = 1;
-        if (self->unk_38 != NULL) {
+        if (self->model != NULL) {
             char *name = self->unk_4c->unk_0c;
             if (name != NULL) {
                 if (STD_CompareString(name, data_ov000_021cc45c) == 0) {
-                    func_ov000_02191008(self->unk_38);
+                    func_ov000_02191008(self->model);
                 } else {
-                    func_ov000_02190cb0(self->unk_38, name, 0x1000, 0);
-                    func_ov000_021915a0(self->unk_38);
+                    func_ov000_02190cb0(self->model, name, 0x1000, 0);
+                    func_ov000_021915a0(self->model);
                 }
             }
-            LFLD(u8, self->unk_38, 0xbe) = 0x1f;
+            self->model->alpha = 0x1f;
         }
         if (self->unk_44 != NULL) {
             u8 *q = self->unk_44;
@@ -77,7 +77,7 @@ void func_ov000_02195d88(ActorEx *self) {
         if (self->unk_58 != NULL) {
             self->unk_cc_0 = 0;
         }
-        if (LFLD(Bits02195d88, self->unk_b0, 2).b8) {
+        if (self->param->unk_02_8) {
             LFLD(Bits8_02195d88, ((u8 *)self->unk_4c), 0x18).b0 = 1;
         }
         self->unk_9c = 0;

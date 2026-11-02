@@ -86,7 +86,7 @@ struct Obj021b65ec {
 };
 
 void func_ov000_021b65ec(Obj021b65ec *self) {
-    u8 *g;
+    FieldState *g;
     Robo021ca458 *pl;
     Item021b65ec *item;
     // DECL-END
@@ -95,7 +95,7 @@ void func_ov000_021b65ec(Obj021b65ec *self) {
         return;
     }
     item = &self->unk_18[self->unk_0b];
-    g = (u8 *)data_ov000_021ccd54;
+    g = data_ov000_021ccd54;
     if (item->bits.b1 && pl->unk_b24_5) {
         Actor *a = FindActor021b65ec(pl->unk_b1c);
         if (a != NULL && ((u8 *)a->unk_4c) != NULL) {
@@ -112,7 +112,7 @@ void func_ov000_021b65ec(Obj021b65ec *self) {
             return;
         }
         func_ov000_021b13cc((u8 *)pl, 0);
-        { typedef struct { u8 c[3]; } C3; LFLD(C3, pl, 0x772) = LFLD(C3, g, 0xd0); }
+        LFLD(FieldId, pl, 0x772) = g->unk_d0;
         {
             VecFx32 v;
             v.x = item->hx << 4;
@@ -131,13 +131,13 @@ void func_ov000_021b65ec(Obj021b65ec *self) {
         c.g = item->col.g;
         c.b = item->col.b;
         if (c.r == 0xff) {
-            c.r = LFLD(u8, g, 0xd0);
+            c.r = g->unk_d0.c[0];
         }
         if (c.g == 0xff) {
-            c.g = LFLD(u8, g, 0xd1);
+            c.g = g->unk_d0.c[1];
         }
         if (c.b == 0xff) {
-            c.b = LFLD(u8, g, 0xd2);
+            c.b = g->unk_d0.c[2];
         }
         if (!SameCol021b65ec(&c, PlCol021b65ec(pl))) {
             return;
@@ -156,15 +156,15 @@ void func_ov000_021b65ec(Obj021b65ec *self) {
         func_ov000_021b12c0((u8 *)pl, 0);
         ((u8 *)&c)[0] = ((u8 *)&item->col)[0];
         if (((u8 *)&c)[0] == 0xff) {
-            ((u8 *)&c)[0] = LFLD(u8, g, 0xd0);
+            ((u8 *)&c)[0] = g->unk_d0.c[0];
         }
         ((u8 *)&c)[1] = ((u8 *)&item->col)[1];
         if (((u8 *)&c)[1] == 0xff) {
-            ((u8 *)&c)[1] = LFLD(u8, g, 0xd1);
+            ((u8 *)&c)[1] = g->unk_d0.c[1];
         }
         ((u8 *)&c)[2] = ((u8 *)&item->col)[2];
         if (((u8 *)&c)[2] == 0xff) {
-            ((u8 *)&c)[2] = LFLD(u8, g, 0xd2);
+            ((u8 *)&c)[2] = g->unk_d0.c[2];
         }
         LFLD(Rgb021b65ec, pl, 0x772) = c;
         break;

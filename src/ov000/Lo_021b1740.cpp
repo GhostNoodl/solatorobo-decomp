@@ -69,7 +69,7 @@ void func_ov000_021b1740(Robo021ca458 *self, BOOL flag) {
     }
     func_02062764(0x30, 0x10);
     if (flag) {
-        LFLD(u8, data_ov000_021ccd54, 0xac) = 1;
+        data_ov000_021ccd54->unk_ac = 1;
     }
 }
 

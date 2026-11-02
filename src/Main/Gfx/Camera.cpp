@@ -58,7 +58,7 @@ static inline s32 Cam_FxMul(s32 a, s32 b) {
 static inline void Camera_Init(Camera *cam) {
     cam->vtable = data_0208b8c0;
     func_02043548(&cam->eye);
-    func_020434e0(&cam->fovSin);
+    func_020434e0(&cam->nearClip);
     cam->mode = 1;
     cam->dist = 0xa000;
     cam->pitch = 0x1000;
@@ -120,7 +120,7 @@ static inline void Cam_SqrtStart(s64 v) {
 }
 
 void Camera_Apply(Camera *cam) {
-    *(s32 **)((u8 *)data_02097d48 + 0xa2c) = &cam->fovSin;
+    *(s32 **)((u8 *)data_02097d48 + 0xa2c) = &cam->nearClip;
     if (cam->flag0 && !cam->flag1) {
         func_0204bcb0(cam);
     }
@@ -237,7 +237,7 @@ void Camera_Apply(Camera *cam) {
         NNS_G3dGlb.dirty &= ~0xe8;
     }
     if (cam->projDirty == 1) {
-        MTX_PerspectiveW(cam->aspect, cam->nearClip, cam->farClip, cam->fovSin, cam->fovCos, 0x1000, (MtxFx44 *)data_02092800);
+        MTX_PerspectiveW(cam->fovySin, cam->fovyCos, cam->aspect, cam->nearClip, cam->farClip, 0x1000, (MtxFx44 *)data_02092800);
         NNS_G3dGlb.dirty &= ~0x50;
         cam->projDirty = 0;
     }

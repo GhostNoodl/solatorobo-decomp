@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/CmdQueue.h"
 #include "ov000/ObjLayouts.h"
 
@@ -39,7 +40,6 @@ extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc618[];
 extern void *data_0214a424;
 extern void *data_02097e4c;
-extern u8 *data_ov000_021ccd54;
 extern u8 *data_ov000_021ccd68;
 extern const u8 data_ov000_021c9fe8[3];
 extern const u8 data_ov000_021c9feb[3];
@@ -76,12 +76,12 @@ static inline void Fx021ad130(Robo021ca458 *self) {
 }
 
 static inline BOOL QHas021ad130(const s32 *w) {
-    u8 *q = data_ov000_021ccd54;
+    FieldState *q = data_ov000_021ccd54;
     s32 i;
-    for (i = LFLD(s32, q, 0x90); i != LFLD(s32, q, 0x94);) {
+    for (i = q->head; i != q->tail;) {
         const s32 *p = w;
         while (*p != 0) {
-            if (*p++ == ((s32 *)(q + 0x10))[i]) {
+            if (*p++ == ((s32 *)((u8 *)q + 0x10))[i]) {
                 return TRUE;
             }
         }
@@ -108,7 +108,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
     switch (((St021ad130 *)self->unk_40)->state) {
     case 0: {
         s32 r;
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc6de, 0x400, 0);
+        func_ov000_02190cb0(self->model, data_ov000_021cc6de, 0x400, 0);
         r = func_0206d204(data_0214a424, 1);
         if (r != 0) {
             u8 *p;
@@ -127,9 +127,9 @@ void func_ov000_021ad130(Robo021ca458 *self) {
             self->unk_b32 = 0xa0;
         }
         {
-            u8 *m = (u8 *)self->unk_38;
-            LFLD(Bc2_021ad130, m, 0xc2).b9 = 2;
-            NNSi_G3dModifyPolygonAttrMask(LFLD(void *, m, 4), 0, 0xc0);
+            Model0218fe1c *m = self->model;
+            m->unk_c2_9 = 2;
+            NNSi_G3dModifyPolygonAttrMask(m->mdl, 0, 0xc0);
         }
     next:
         ((St021ad130 *)self->unk_40)->state++;
@@ -193,16 +193,16 @@ void func_ov000_021ad130(Robo021ca458 *self) {
                 }
                 func_0204a028(data_02097e4c, 0x56, (u8 *)self + 0x70, -5);
                 func_ov000_0218996c(0x14, 0x3c);
-                LFLD(Bc2_021ad130, self->unk_38, 0xc2).b0 = 0;
+                self->model->unk_c2_0 = 0;
                 LFLD(u8, self->unk_3c, 0x19) = 0;
             }
         }
         if (((St021ad130 *)self->unk_40)->timer == 300) {
             func_02062410();
             {
-                u8 *g = data_ov000_021ccd54;
-                LFLD(u8, g, 0xac) = 1;
-                func_ov000_02182590(g + 0xac);
+                FieldState *g = data_ov000_021ccd54;
+                g->unk_ac = 1;
+                func_ov000_02182590((u8 *)g + 0xac);
             }
             {
                 Ids021ad130 ids = data_ov000_021ca018;
@@ -220,7 +220,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
         break;
     }
     case 10:
-        if (func_ov000_02191120(self->unk_38)) {
+        if (func_ov000_02191120(self->model)) {
             St021ad130 *st = (St021ad130 *)self->unk_40;
             st->timer++;
             if (st->timer > 0x3c) {
@@ -244,10 +244,10 @@ void func_ov000_021ad130(Robo021ca458 *self) {
             u8 *anm;
             func_02065f88(0x190, (u8 *)self + 0x70);
             anm = data_ov000_021cc5e3;
-            if (!self->unk_b24_1 && (LFLD(u32, self->unk_48, 0x50) & 0x400)) {
+            if (!self->unk_b24_1 && (self->unk_48->unk_50 & 0x400)) {
                 anm = data_ov000_021cc618;
             }
-            func_ov000_02190cb0(self->unk_38, anm, 0x400, 0);
+            func_ov000_02190cb0(self->model, anm, 0x400, 0);
             LFLD(u16, ((u8 *)self->hp), 0xa) = 0xf0;
             self->unk_b24_0 = 0;
             ((St021ad130 *)self->unk_40)->timer = 0;

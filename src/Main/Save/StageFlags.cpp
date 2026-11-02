@@ -99,7 +99,7 @@ static inline void StageFlags_SaveBuf(StageFlags *f) {
     u16 v;
     n += func_020590e8(data_02fe152c, f->buf, sizeof(f->buf));
     n += func_020622ec(f->buf + n, sizeof(f->buf) - n);
-    func_ov000_02181af4(&data_ov000_021ccd54->unk_0ac, f->buf + n, sizeof(f->buf) - n);
+    func_ov000_02181af4(&data_ov000_021ccd54->unk_ac, f->buf + n, sizeof(f->buf) - n);
     f->unk_518_16 = data_02fe1534.unk_04;
     v = data_02fe1534.unk_06;
     if (v >= 4) {

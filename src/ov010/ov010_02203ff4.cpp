@@ -37,10 +37,10 @@ struct Obj02203ff4 : public Ov010Obj {
 };
 
 void func_ov010_02203ff4(Obj02203ff4 *self) {
-    if (self->unk_38 == NULL) {
+    if (self->model == NULL) {
         return;
     }
-    func_ov000_02190a80(self->unk_38, func_0203db40((u8 *)self + 0x24));
+    func_ov000_02190a80(self->model, func_0203db40((u8 *)self + 0x24));
 }
 
 void func_ov010_02204020(void) {

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "nitro/std.h"
 #include "ov000/VObj.h"
 
@@ -260,7 +261,6 @@ s32 func_ov000_0215c720(Obj0215c720 *self) {
 }
 
 extern void *data_02149ef8;
-extern u8 *data_ov000_021ccd54;
 u16 func_02061d54(u16 a);
 char *MsgRes_GetString(void *p, s32 a);
 char *func_02040ab0(char *str, int c);

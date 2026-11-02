@@ -56,9 +56,9 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
         if (self->unk_40 != NULL) {
             func_ov000_02198360(self->unk_40, 0, 0);
         }
-        if (self->unk_38 != NULL) {
-            func_ov000_02190e98(self->unk_38, zero, 0x1000, zero);
-            func_ov000_02190cb0(self->unk_38, data_ov000_021cc404, 0x1000, zero);
+        if (self->model != NULL) {
+            func_ov000_02190e98(self->model, zero, 0x1000, zero);
+            func_ov000_02190cb0(self->model, data_ov000_021cc404, 0x1000, zero);
         }
         handled = TRUE;
         break;
@@ -83,11 +83,11 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
         if (sub40 != NULL) {
             sub40->flags |= 1;
         }
-        if (self->unk_38 != NULL) {
+        if (self->model != NULL) {
             MsgData4 *data = (MsgData4 *)msg->data;
-            func_ov000_02190cb0(self->unk_38, data->unk_08, data->unk_0c, 0);
+            func_ov000_02190cb0(self->model, data->unk_08, data->unk_0c, 0);
             if (data->unk_0e) {
-                func_ov000_021915a0(self->unk_38);
+                func_ov000_021915a0(self->model);
             }
         }
         handled = TRUE;
@@ -97,11 +97,11 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
         if (sub40 != NULL) {
             sub40->flags |= 1;
         }
-        if (self->unk_38 != NULL) {
+        if (self->model != NULL) {
             MsgData5 *data = (MsgData5 *)msg->data;
-            func_ov000_02190e98(self->unk_38, data->unk_08, data->unk_0a, 0);
+            func_ov000_02190e98(self->model, data->unk_08, data->unk_0a, 0);
             if (data->unk_0c) {
-                func_ov000_021915a0(self->unk_38);
+                func_ov000_021915a0(self->model);
             }
         }
         handled = TRUE;
@@ -126,7 +126,7 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
         break;
     }
     case 8:
-        sub38 = (ActorSub38 *)self->unk_38;
+        sub38 = (ActorSub38 *)self->model;
         if (sub38 != NULL) {
             MsgData8 *data = (MsgData8 *)msg->data;
             MI_Copy36B(data, sub38->unk_84);
@@ -212,11 +212,11 @@ void func_ov000_0218d7e8(Actor *self, u8 arg) {
 
 BOOL Actor_DespawnIfFar(Actor *self) {
     BOOL ret = FALSE;
-    Player021ccd54Sub *player = &data_ov000_021ccd54->unk_f4;
-    if (player != NULL) {
-        s32 dx = player->pos.x;
-        s32 dy = player->pos.y;
-        s32 dz = player->pos.z;
+    Camera *cam = &data_ov000_021ccd54->cam.base;
+    if (cam != NULL) {
+        s32 dx = cam->eye.x;
+        s32 dy = cam->eye.y;
+        s32 dz = cam->eye.z;
         dx = self->pos.x - dx;
         dy = self->pos.y - dy;
         dz = self->pos.z - dz;

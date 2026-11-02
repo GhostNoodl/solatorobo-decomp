@@ -971,7 +971,7 @@ static inline void ObjPool_Trigger(ObjPool *pool, ObjPoolEntry *entry) {
         func_020599f4(pool, entry);
         data_02fe1534.unk_10 = entry->id;
         {
-            u8 *p = &data_ov000_021ccd54->unk_0ac;
+            u8 *p = &data_ov000_021ccd54->unk_ac;
             *p = TRUE;
             func_ov000_02182590(p);
         }
@@ -1042,7 +1042,7 @@ BOOL func_0205a268(ObjPool *pool, ObjPoolEntry *entry) {
     func_020599f4(pool, entry);
     data_02fe1534.unk_10 = entry->id;
     {
-        u8 *p = &data_ov000_021ccd54->unk_0ac;
+        u8 *p = &data_ov000_021ccd54->unk_ac;
         *p = TRUE;
         func_ov000_02182590(p);
     }
@@ -2091,7 +2091,7 @@ extern void *data_ov008_021d0500;
 extern void func_ov008_021cf9b8(void *m, u32 id);
 
 void func_0205beb0(void) {
-    data_ov000_021ccd54->unk_0c8 = TRUE;
+    data_ov000_021ccd54->unk_c8 = TRUE;
 }
 
 void func_0205bec8(u16 id) {
@@ -2593,8 +2593,8 @@ int func_0205cb9c(StageResSlot *slot) {
         return -0x63;
     }
     state = data_ov000_021ccd54;
-    state->unk_0d3 = 0;
-    state->bits190.flag0 = 1;
+    state->unk_d3 = 0;
+    state->cam.base.flag0 = 1;
     return 1;
 }
 
@@ -2842,10 +2842,10 @@ int func_0205d0dc(StageResSlot *slot) {
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    state->unk_18c = 0;
-    state->unk_18d = 0;
-    state->unk_18e = 0;
-    state->unk_18f = 0;
+    state->cam.base.shakeRandom = 0;
+    state->cam.base.shakeTime = 0;
+    state->cam.base.shakeLen = 0;
+    state->cam.base.shakeCur = 0;
     return 1;
 }
 
@@ -2859,8 +2859,8 @@ int func_0205d124(StageResSlot *slot) {
     StageRes_Pop();
     {
         FieldState *state = data_ov000_021ccd54;
-        state->unk_0ac = TRUE;
-        func_ov000_02182590(&state->unk_0ac);
+        state->unk_ac = TRUE;
+        func_ov000_02182590(&state->unk_ac);
     }
     return -0x62;
 }
@@ -4631,7 +4631,7 @@ extern SndMgr *data_02097e4c;
 extern SndHandle *func_02049a48(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 extern void func_02049de8(SndMgr *mgr, u16 id);
 extern void func_0204a284(SndMgr *mgr, int a);
-extern void func_ov000_021bc3ec(FieldState *state, u16 a, s32 b);
+extern void func_ov000_021bc3ec(FieldFade *fade, u16 a, s32 b);
 extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
 extern void func_0203c9e8(int a, int b);
 extern void func_0203cc58(int a, int b, int c);

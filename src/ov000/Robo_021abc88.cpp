@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 
@@ -25,7 +26,6 @@ extern u8 data_ov000_021cc62a[];
 extern u8 data_ov000_021cc6c0[];
 extern u8 data_ov000_021cc5e3[];
 extern u8 *data_0214a424;
-extern u8 *data_ov000_021ccd54;
 extern void *data_02097e4c;
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_02062764(s32 a, s32 b);
@@ -71,7 +71,7 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         self->unk_40->timer = 0;
         LFLD(G18_021abc88, data_0214a424, 0x18).b8 = 0;
         func_02062764(3, 1);
-        LFLD(u8, data_ov000_021ccd54, 0xac) = 1;
+        data_ov000_021ccd54->unk_ac = 1;
         break;
     }
     case 1: {

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
@@ -67,7 +68,6 @@ extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb5a8[];
 extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021caac8[];
-extern u8 *data_ov000_021ccd54;
 extern char data_ov000_021ca93e[];
 void *MsgRes_GetString(void *g, u32 id);
 BOOL func_0205aa30(void *p);
@@ -218,7 +218,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     if (self->unk_42 != 0xffff) {
         LFLD(u16, p, 6) = self->unk_42;
     } else {
-        LFLD(u16, self->unk_54, 6) = LFLD(u16, func_ov000_021824d0(data_ov000_021ccd54 + 0xac, 0), 0xc6);
+        LFLD(u16, self->unk_54, 6) = LFLD(u16, func_ov000_021824d0((u8 *)data_ov000_021ccd54 + 0xac, 0), 0xc6);
     }
     {
         void *r = func_0204c08c(LFLD(void *, LFLD(void *, data_ov000_021ccd24, 8), 0xbc), LFLD(u16, self->unk_54, 6), out, 2);

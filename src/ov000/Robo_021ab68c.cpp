@@ -81,7 +81,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
     st = self->unk_40;
     switch (st->st) {
     case 0:
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc6ba, 0x555, 0);
+        func_ov000_02190cb0(self->model, data_ov000_021cc6ba, 0x555, 0);
         self->unk_40->st++;
         return;
     case 1:
@@ -94,7 +94,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
         }
         ok = FALSE;
         Charge021ab68c(self);
-        v = LFLD(s16, self->unk_38, 0xc4);
+        v = ((s16)self->model->unk_c4);
         if (v == 1) {
             ok = TRUE;
         }
@@ -121,7 +121,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
         } else if (lvl < 5 && self->unk_b2b >= 4) {
             self->unk_b2b = 0;
             if (!(lvl & 1)) {
-                func_ov000_02191318(self->unk_38, 0xa000);
+                func_ov000_02191318(self->model, 0xa000);
             }
             hit = FALSE;
         }
@@ -193,10 +193,10 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
         return;
     }
     case 0x14:
-        if (func_ov000_02191508(self->unk_38)) {
+        if (func_ov000_02191508(self->model)) {
             return;
         }
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc5e3, 0x89, 0);
+        func_ov000_02190cb0(self->model, data_ov000_021cc5e3, 0x89, 0);
         self->unk_40->timer = 0;
         self->unk_40->st++;
         return;

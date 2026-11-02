@@ -9,6 +9,7 @@
 #include "ov000/VObj.h"
 #include "ov000/Vec.h"
 #include "ov000/ActorParts.h"
+#include "ov000/Model0218fe1c.h"
 
 typedef struct ActorMsg {
     struct ActorMsg *next;
@@ -59,7 +60,7 @@ public:
     ActorMsg *msgs;
     u32 msg_flags;
     s32 unk_34;
-    void *unk_38;
+    Model0218fe1c *model;
     u8 *unk_3c;
     ActorSub40 *unk_40;
     u8 *unk_44;

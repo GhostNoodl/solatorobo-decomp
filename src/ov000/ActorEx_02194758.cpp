@@ -1,15 +1,6 @@
 #include "types.h"
+#include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
-
-typedef struct {
-    u8 kind;
-    u8 pad;
-    u16 type : 3;
-    u16 b3 : 1;
-    u16 b4 : 3;
-    u16 b7 : 1;
-    u16 rest : 8;
-} Param02194758;
 
 typedef struct {
     u8 pad[0x10];
@@ -107,7 +98,7 @@ typedef struct {
     u8 pad82[0x16];
     u16 unk_98;
     u8 pad9a[0x16];
-    Param02194758 *unk_b0;
+    ActorExParam *unk_b0;
     u8 padb4[0x18];
     u16 cc_0 : 1;
     u16 cc_1 : 15;
@@ -224,7 +215,7 @@ void func_ov000_02194758(Actor02194758 *self) {
     } else {
         func_ov000_02198360(self->unk_40, 1, 0);
     }
-    if (self->unk_b0->b4 != 0) {
+    if (self->unk_b0->unk_02_4 != 0) {
         Obj44_02194758 *o;
         self->unk_44 = NewObj44_02194758();
         self->unk_44->unk_1c = self->unk_64;
@@ -233,19 +224,19 @@ void func_ov000_02194758(Actor02194758 *self) {
         o = self->unk_44;
         o->b0 = 1;
         o->b1 = 1;
-        if (self->unk_b0->b4 == 3) {
+        if (self->unk_b0->unk_02_4 == 3) {
             self->unk_44->b4 = 1;
-        } else if (self->unk_b0->b4 == 4) {
+        } else if (self->unk_b0->unk_02_4 == 4) {
             self->unk_44->b5 = 1;
         }
         func_ov000_021984f4(self->unk_44, NULL, 0);
-        if (self->unk_b0->b4 == 2) {
+        if (self->unk_b0->unk_02_4 == 2) {
             if (self->unk_4c != NULL) {
                 self->unk_4c->b5 = 1;
             }
         }
     }
-    if (self->unk_b0->b3 && GetRes02194758(self->unk_34) != NULL) {
+    if (self->unk_b0->unk_02_3 && GetRes02194758(self->unk_34) != NULL) {
         MtxFx43 t;
         MtxFx43 m;
         void *mesh;
@@ -289,7 +280,7 @@ void func_ov000_02194758(Actor02194758 *self) {
         HitMesh_SetMtx(mesh, &m);
         self->cc_0 = 1;
     }
-    if (self->unk_b0->b7) {
+    if (self->unk_b0->unk_02_7) {
         Obj5c_02194758 *p = NewObj5c_02194758();
         self->unk_5c = p;
         func_ov000_021bd314(p, 1);

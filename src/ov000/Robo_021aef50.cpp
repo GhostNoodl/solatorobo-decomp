@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
@@ -23,7 +24,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern char data_ov000_021cc62a[];
@@ -70,7 +70,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
     info = NULL;
     if (a != NULL) {
         info = ((u8 *)a->unk_4c);
-        pos = LFLD(VecFx32, a, 0x70);
+        pos = a->pos;
     }
     if (self->unk_b2f == 0) {
         self->unk_b2f++;
@@ -81,7 +81,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
             u8 k = info[2];
             if (k == 9) {
                 self->unk_b24_12 = 1;
-                LFLD(u8, data_ov000_021ccd54, 0x190) |= 0x20;
+                data_ov000_021ccd54->cam.base.flags |= 0x20;
             } else if (k == 10) {
                 self->unk_b24_12 = 2;
             } else if (k == 11) {
@@ -94,7 +94,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
         }
         self->unk_b20 = self->target;
         self->target = 0xffff;
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc62a, 0x800, 0);
+        func_ov000_02190cb0(self->model, data_ov000_021cc62a, 0x800, 0);
         {
             s32 d = Dist021aef50(pos.x - self->pos.x, pos.z - self->pos.z);
             self->unk_9c = d >> 4;
@@ -119,7 +119,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
                 break;
             }
         }
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc630, 0x400, 0);
+        func_ov000_02190cb0(self->model, data_ov000_021cc630, 0x400, 0);
         ((St_021aef50 *)self->unk_40)->timer = 0;
         ((St_021aef50 *)self->unk_40)->state++;
         if (self->unk_b24_12 == 1) {
@@ -135,7 +135,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
         st->timer++;
         if (st->timer >= 10) {
             if (a != NULL) {
-                LFLD(VecFx32, self, 0x70) = pos;
+                self->pos = pos;
                 {
                     u16 ry = a->rot_y;
                     u16 rz = a->rot_z;
@@ -176,7 +176,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
         if (func_ov000_0219a2f4(&self->pos, self->unk_68 << 1, -0x66) == -0x1000) {
             break;
         }
-        LFLD(B190_021aef50, data_ov000_021ccd54, 0x190).b5 = 0;
+        data_ov000_021ccd54->cam.base.flag5 = 0;
         func_ov000_02198360(((St_021aef50 *)self->unk_40), 4, 0);
         break;
     }

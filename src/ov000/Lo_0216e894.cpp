@@ -1,10 +1,10 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd54;
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_021b4738(void);
 void func_020627fc(u16 a);
@@ -46,15 +46,15 @@ void func_ov000_0216e894(Obj0216e894 *self) {
     func_ov000_0219bf90();
     if (!func_ov000_021b4738()) {
         s32 v = self->unk_1c;
-        u8 *g;
+        FieldState *g;
         if (v > 0xffff) {
             v = 0xffff;
         }
         func_020627fc(self->unk_0c);
         func_0206280c(v);
         g = data_ov000_021ccd54;
-        g[0xac] = 1;
-        func_ov000_02182590(g + 0xac);
+        ((u8 *)g)[0xac] = 1;
+        func_ov000_02182590((u8 *)g + 0xac);
     }
     self->unk_04 = 9;
 }

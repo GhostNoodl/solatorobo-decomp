@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
@@ -21,7 +22,6 @@ extern u8 data_ov000_021ca0a4[];
 extern u8 data_ov000_021cc5e3[];
 VObj *func_02065f88(s32 id, void *pos);
 extern u8 data_ov000_021cc618[];
-extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02191120(void *a);
@@ -88,15 +88,15 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
     switch (((State021a783c *)self->unk_40)->state) {
     case 0:
         if (self->unk_b22_3) {
-            func_ov000_02190cb0(self->unk_38, data_ov000_021cc64e, 0x555, 0);
-            func_ov000_02191318(self->unk_38, 0xa000);
-            func_ov000_02191780(self->unk_38);
+            func_ov000_02190cb0(self->model, data_ov000_021cc64e, 0x555, 0);
+            func_ov000_02191318(self->model, 0xa000);
+            func_ov000_02191780(self->model);
         } else if (self->unk_b24_5 == 1) {
-            func_ov000_02190cb0(self->unk_38, data_ov000_021cc68a, 0x555, 0);
+            func_ov000_02190cb0(self->model, data_ov000_021cc68a, 0x555, 0);
         } else {
-            func_ov000_02190cb0(self->unk_38, data_ov000_021cc690, 0x333, 0);
+            func_ov000_02190cb0(self->model, data_ov000_021cc690, 0x333, 0);
             {
-                u8 *m = (u8 *)self->unk_38;
+                Model0218fe1c *m = self->model;
                 LFLD(void *, m, 0xd8) = data_ov000_021ca090;
                 LFLD(void *, m, 0xdc) = data_ov000_021ca090;
             }
@@ -116,12 +116,12 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
         } else {
             ang = self->rot_y;
             if (self->unk_15 == 1 && (self->unk_b68 & 0xf0)) {
-                ang = CamYaw((Cam021a783c *)(data_ov000_021ccd54 + 0xf4)) + self->unk_b6e;
+                ang = CamYaw((Cam021a783c *)((u8 *)data_ov000_021ccd54 + 0xf4)) + self->unk_b6e;
             }
         }
         self->rot_y = func_01ffc128(ang, self->rot_y, 0x59a, 1, 0x8000);
         if (self->unk_b24_5 != 0 &&
-            (LFLD(s16, self->unk_38, 0xc4) == 1 || self->unk_b22_3)) {
+            (((s16)self->model->unk_c4) == 1 || self->unk_b22_3)) {
             Actor *a;
             func_02049a48(data_02097e4c, 0x301, -1, -1, -1);
             a = FindActor021a783c(self->unk_b1c);
@@ -133,7 +133,7 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
                     if (((VecFx32 *)a->unk_48) != NULL) {
                         v = *((VecFx32 *)a->unk_48);
                     } else {
-                        v = LFLD(VecFx32, a, 0x70);
+                        v = a->pos;
                     }
                     if (func_01ffbd6c(&self->pos, &v, -1, 0, 0, -1) != -0x1000) {
                         v.x -= self->pos.x;
@@ -155,8 +155,8 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
         }
     }
     case 2:
-        if (func_ov000_02191120(self->unk_38)) {
-            func_ov000_02190cb0(self->unk_38, data_ov000_021cc5e3, 0x200, 0);
+        if (func_ov000_02191120(self->model)) {
+            func_ov000_02190cb0(self->model, data_ov000_021cc5e3, 0x200, 0);
             ((State021a783c *)self->unk_40)->state++;
             ((State021a783c *)self->unk_40)->timer = 0;
             self->unk_a4 = 0x800;
@@ -193,9 +193,9 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
 void func_ov000_021a7574(Robo021ca458 *self) {
     switch (LFLD(State021a783c *, self, 0x40)->state) {
     case 0:
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc672, 0x800, 0);
+        func_ov000_02190cb0(self->model, data_ov000_021cc672, 0x800, 0);
         if (self->unk_b24_5 != 2) {
-            u8 *m = (u8 *)self->unk_38;
+            Model0218fe1c *m = self->model;
             LFLD(void *, m, 0xd8) = data_ov000_021ca0a4;
             LFLD(void *, m, 0xdc) = data_ov000_021ca0a4;
         }
@@ -208,7 +208,7 @@ void func_ov000_021a7574(Robo021ca458 *self) {
         ((State021a783c *)self->unk_40)->state++;
         break;
     case 1:
-        if (LFLD(s16, self->unk_38, 0xc4) == 1 || func_ov000_02191120(self->unk_38)) {
+        if (((s16)self->model->unk_c4) == 1 || func_ov000_02191120(self->model)) {
             if (self->unk_b24_5 != 0) {
                 VObj *e;
                 u8 *a = (u8 *)FindActor021a783c(self->unk_b1c);
@@ -230,7 +230,7 @@ void func_ov000_021a7574(Robo021ca458 *self) {
                 self->unk_b5c = 0;
                 e->vfunc_14(0x2800, 0x2000, 0x2800);
             }
-            func_ov000_02190cb0(self->unk_38, data_ov000_021cc5e3, 0x155, 0);
+            func_ov000_02190cb0(self->model, data_ov000_021cc5e3, 0x155, 0);
             self->unk_a8 = 0x52;
             ((State021a783c *)self->unk_40)->state++;
         }
@@ -278,7 +278,7 @@ void func_ov000_021a783c(Robo021ca458 *self) {
         }
         self->unk_a4 = 0xe66;
         self->unk_a8 = 10;
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc696, 0x800, 0);
+        func_ov000_02190cb0(self->model, data_ov000_021cc696, 0x800, 0);
         ((State021a783c *)self->unk_40)->state++;
         break;
     case 1: {
@@ -289,11 +289,11 @@ void func_ov000_021a783c(Robo021ca458 *self) {
         } else {
             ang = self->rot_y;
             if (self->unk_15 == 1 && (self->unk_b68 & 0xf0)) {
-                ang = CamYaw((Cam021a783c *)(data_ov000_021ccd54 + 0xf4)) + self->unk_b6e;
+                ang = CamYaw((Cam021a783c *)((u8 *)data_ov000_021ccd54 + 0xf4)) + self->unk_b6e;
             }
         }
         self->rot_y = func_01ffc128(ang, self->rot_y, 0x8cd, 1, 0x8000);
-        if (self->unk_b24_5 != 0 && LFLD(s16, self->unk_38, 0xc4) == 1) {
+        if (self->unk_b24_5 != 0 && ((s16)self->model->unk_c4) == 1) {
             u8 *a = (u8 *)FindActor021a783c(self->unk_b1c);
             if (a != NULL) {
                 func_ov000_0218d46c(a, self->id, 0xe);
@@ -303,9 +303,9 @@ void func_ov000_021a783c(Robo021ca458 *self) {
         break;
     }
     case 2:
-        if (func_ov000_02191120(self->unk_38)) {
+        if (func_ov000_02191120(self->model)) {
             self->unk_a8 = 0x52;
-            func_ov000_02190cb0(self->unk_38, data_ov000_021cc618, 0x19a, 0);
+            func_ov000_02190cb0(self->model, data_ov000_021cc618, 0x19a, 0);
             ((State021a783c *)self->unk_40)->state++;
             ((State021a783c *)self->unk_40)->timer = 0;
         }

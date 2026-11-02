@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 
@@ -48,7 +49,6 @@ typedef struct {
 } Act_021b2f08;
 
 extern "C" {
-extern u8 *data_ov000_021ccd54;
 u16 Camera_GetYaw(void *cam);
 s32 func_ov000_02199554(Finder_021b2f08 *f, Query_021b2f08 *q, Part_021b2f08 **list, s32 max);
 s32 func_ov000_02199454(Finder_021b2f08 *f, Query_021b2f08 *q, Part_021b2f08 **list, s32 count);
@@ -124,7 +124,7 @@ Part_021b2f08 *func_ov000_021b2f08(Robo021ca458 *self, u16 tgt, void *sub, u8 fl
         flag = TRUE;
     }
     if (flag) {
-        u8 *cam = data_ov000_021ccd54 + 0xf4;
+        u8 *cam = (u8 *)data_ov000_021ccd54 + 0xf4;
         if (LFLD(u16, cam, 0x40) != 0) {
             ang = LFLD(u16, cam, 0x44);
         } else {

@@ -35,9 +35,9 @@ void func_ov000_02196060(ActorEx *self) {
     ActorSub40 *s = self->unk_40;
     switch (s->st) {
     case 0:
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc456, 0x1000, 0);
-        func_ov000_021915a0(self->unk_38);
-        if (LFLD(u8, ((u8 *)self->unk_4c), 1) == 1) {
+        func_ov000_02190cb0(self->model, data_ov000_021cc456, 0x1000, 0);
+        func_ov000_021915a0(self->model);
+        if (self->unk_4c->unk_01 == 1) {
             func_ov000_02199dc0(((u8 *)self->unk_4c), self);
             func_02049f44(data_02097e4c, 0xb, (u8 *)self + 0x70, 0);
             self->unk_40->st++;
@@ -53,9 +53,9 @@ void func_ov000_02196060(ActorEx *self) {
             LFLD(Bits02196060, q, 0x22).b1 = 1;
         }
         if (self->unk_48 != NULL) {
-            u8 *p = (u8 *)self->unk_48;
+            ActorSub48 *p = self->unk_48;
             LFLD(Bits02196060, p, 0x9a).b0 = 1;
-            LFLD(Bits02196060, p, 0x9a).b3 = 1;
+            p->unk_9a_3 = 1;
             HitSphere_Link(p);
             LFLD(u16, self->unk_48, 0x9a) |= 0x12;
         }

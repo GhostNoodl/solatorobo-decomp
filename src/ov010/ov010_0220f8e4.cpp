@@ -1,4 +1,5 @@
 #include "ov010/ov010.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
@@ -128,7 +129,6 @@ struct Ov010FnTbl2 {
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd54;
 
 extern u8 data_ov010_0220fe5c[];
 extern const u8 data_ov003_021f4340;
@@ -220,8 +220,8 @@ void Ov010ActVt_0220fe6c_Draw(Obj022020c8 *self) {
     MTX_Concat33(m1, m2, m1);
     MTX_RotY33_(m2, OV010_SIN(self->rot_y), OV010_COS(self->rot_y));
     MTX_Concat33(m1, m2, m1);
-    MI_Copy36B(m1, (u8 *)self->unk_38 + 0x84);
-    FLD(Ov010Vec, self->unk_38, 0x78) = self->pos;
+    MI_Copy36B(m1, (u8 *)self->model + 0x84);
+    FLD(Ov010Vec, self->model, 0x78) = self->pos;
     func_ov000_0218cea4(self);
 }
 
@@ -285,7 +285,7 @@ void Ov010ActVt_0220fe6c_Start(Obj022020c8 *self) {
     Ov010Snd *s;
     u8 c;
     func_ov000_02194758(self);
-    FLD(Ov010Flags, self->unk_38, 0xc2).b0 = 0;
+    self->model->unk_c2_0 = 0;
     func_ov000_02198360(self->unk_40, 0x20, 0);
     m = self->unk_48;
     FLD(Ov010Flags, m, 0x9a).b1 = 0;
@@ -308,17 +308,17 @@ void Ov010ActVt_0220fe6c_Start(Obj022020c8 *self) {
     Ov010Snd_Init(s, self->id);
 }
 
-static inline BOOL Ov010_GBusy(u8 *g) {
-    return FLD(s32, g, 0x90) != FLD(s32, g, 0x94) ? TRUE : FALSE;
+static inline BOOL Ov010_GBusy(FieldState *g) {
+    return g->head != g->tail ? TRUE : FALSE;
 }
 
 static inline BOOL Ov010_GIdle(void) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         if (Ov010_GBusy(g)) {
             return FALSE;
         }
-        if (FLD(s32, g, 0) != 3) {
+        if (g->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -467,7 +467,7 @@ void func_ov010_022029a4(Obj022020c8 *self) {
     switch (self->unk_40->st) {
     case 0: {
         void *m;
-        FLD(Ov010Flags, self->unk_38, 0xc2).b0 = 1;
+        self->model->unk_c2_0 = 1;
         self->unk_9c = a;
         LFLD(Ov010Vec, self, 0xa0).x = a;
         LFLD(Ov010Vec, self, 0xa0).y = a;
@@ -478,12 +478,12 @@ void func_ov010_022029a4(Obj022020c8 *self) {
         m = self->unk_48;
         FLD(Ov010Flags, m, 0x9a).b3 = 0;
         func_0203f364(m);
-        m = self->unk_38;
+        m = self->model;
         FLD(u16, m, 0xb6) = 0x53ff;
         FLD(u16, m, 0xb8) = 0x53ff;
         FLD(u16, m, 0xba) = 2;
         FLD(u16, m, 0xbc) = 1;
-        FLD(u8, self->unk_38, 0xbe) = 0x14;
+        self->model->alpha = 0x14;
         func_02049f44(data_02097e4c, 0x2b, &self->pos, 0);
         break;
     }
@@ -500,7 +500,7 @@ void func_ov010_022029a4(Obj022020c8 *self) {
         m = self->unk_48;
         FLD(Ov010Flags, m, 0x9a).b3 = 0;
         func_0203f364(m);
-        m = self->unk_38;
+        m = self->model;
         FLD(u16, m, 0xb6) = 0x53ff;
         FLD(u16, m, 0xb8) = 0x53ff;
         FLD(u16, m, 0xba) = 2;
@@ -517,7 +517,7 @@ void func_ov010_022029a4(Obj022020c8 *self) {
         self->unk_40->timer++;
         if (self->unk_40->timer > 0x3c) {
             Ov010FxSet *s;
-            FLD(u8, self->unk_38, 0xbe) = 0x1f;
+            self->model->alpha = 0x1f;
             s = (Ov010FxSet *)self->unk_d8;
             if (s->b0) {
                 s->b1 = 1;
@@ -546,7 +546,7 @@ void func_ov010_022029a4(Obj022020c8 *self) {
 void func_ov010_02202c9c(Obj022020c8 *self) {
     if (self->unk_40->st == 0) {
         Ov010FxSet *s;
-        FLD(u8, self->unk_38, 0xbe) = 0x1f;
+        self->model->alpha = 0x1f;
         s = (Ov010FxSet *)self->unk_d8;
         if (s->b0) {
             s->b1 = 1;
@@ -625,13 +625,13 @@ void func_ov010_02202d9c(Obj022020c8 *self) {
     chk = done;
     switch (p40->st) {
     case 0: {
-        void *m = self->unk_38;
+        Model0218fe1c *m = self->model;
         Ov010Trail *s;
         FLD(u16, m, 0xb6) = 0x7fff;
         FLD(u16, m, 0xb8) = 0x7fff;
-        FLD(u16, m, 0xba) = 0x10;
-        FLD(u16, m, 0xbc) = 0xf;
-        FLD(u8, self->unk_38, 0xbe) = 0x1f;
+        m->unk_ba = 0x10;
+        m->unk_bc = 0xf;
+        self->model->alpha = 0x1f;
         s = (Ov010Trail *)self->unk_d8;
         if (s->b0) {
             s->b1 = 1;
@@ -747,7 +747,7 @@ void func_ov010_02202d9c(Obj022020c8 *self) {
     case 0x28: {
         s32 t;
         u16 col;
-        void *m;
+        Model0218fe1c *m;
         {
             u16 id = self->target;
             if (data_ov000_021ccd68 != NULL) {
@@ -761,11 +761,11 @@ void func_ov010_02202d9c(Obj022020c8 *self) {
             t = 1;
         }
         col = (t << 5) | 0x1f | (t << 10);
-        m = self->unk_38;
+        m = self->model;
         FLD(u16, m, 0xb6) = col;
         FLD(u16, m, 0xb8) = col;
-        FLD(u16, m, 0xba) = 2;
-        FLD(u16, m, 0xbc) = 1;
+        m->unk_ba = 2;
+        m->unk_bc = 1;
         dir = TRUE;
         chk = TRUE;
         self->unk_40->timer++;
@@ -921,8 +921,8 @@ void func_ov010_022033d0(Obj022020c8 *self) {
             func_ov000_02197dec(self, 0xf, 0x63);
             func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
             ((Ov010V *)self)->v08();
-        } else if (self->unk_38 != NULL) {
-            FLD(u8, self->unk_38, 0xbe) = 31 - self->unk_40->timer * 4;
+        } else if (self->model != NULL) {
+            self->model->alpha = 31 - self->unk_40->timer * 4;
         }
     }
     func_ov010_02203bf8((Ov010FxSet *)self->unk_d8);

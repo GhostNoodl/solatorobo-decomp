@@ -59,8 +59,8 @@ void func_ov000_021971c4(VObj *obj) {
     u8 *tgt = (u8 *)Target_Get(((u8 *)self->unk_4c));
     switch (self->unk_40->st) {
     case 0:
-        if (self->unk_38 != NULL) {
-            func_ov000_02190cb0(self->unk_38, data_ov000_021cc469, 0x1000, zero);
+        if (self->model != NULL) {
+            func_ov000_02190cb0(self->model, data_ov000_021cc469, 0x1000, zero);
         }
         if (tgt != NULL) {
             if (self->target != none) {
@@ -82,7 +82,7 @@ void func_ov000_021971c4(VObj *obj) {
         self->unk_40->st++;
         break;
     case 1:
-        if (self->unk_38 != NULL && !func_ov000_02191120(self->unk_38)) {
+        if (self->model != NULL && !func_ov000_02191120(self->model)) {
             break;
         }
         if (tgt != NULL) {

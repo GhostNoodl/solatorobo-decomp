@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 
@@ -17,7 +18,6 @@ typedef struct {
 
 extern "C" {
 extern void *data_ov000_021ccd68;
-extern u8 *data_ov000_021ccd54;
 extern void *data_02097e4c;
 extern void *data_0214a424;
 extern char data_ov000_021cc6cc[];
@@ -52,17 +52,17 @@ static inline Actor *FindActor_021ac844(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-static inline BOOL GBusy_021ac844(u8 *g) {
-    return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94) ? TRUE : FALSE;
+static inline BOOL GBusy_021ac844(FieldState *g) {
+    return g->head != g->tail ? TRUE : FALSE;
 }
 
 static inline BOOL GIdle_021ac844(void) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         if (GBusy_021ac844(g)) {
             return FALSE;
         }
-        if (LFLD(s32, g, 0) != 3) {
+        if (g->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -96,7 +96,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
         if (self->unk_93_5) {
             anim = data_ov000_021cc6cc;
         }
-        func_ov000_02190cb0(self->unk_38, anim, 0x800, 1);
+        func_ov000_02190cb0(self->model, anim, 0x800, 1);
         if (self->unk_b22_0 != 0) {
             if (self->unk_998 != NULL) {
                 func_ov000_02191008(self->unk_998);
@@ -194,7 +194,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
         if (self->unk_b24_0) {
             self->unk_9c = 0;
         }
-        func_ov000_02191418(self->unk_38, 5, 0);
+        func_ov000_02191418(self->model, 5, 0);
         if (self->msg_flags & 0x80) {
             upd = TRUE;
         }
@@ -224,7 +224,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
                     func_ov000_02198360(self->unk_40, 4, 0);
                 } else if (++self->unk_92 > 2 || ((self->unk_b68 & 2) && !self->unk_b24_0) ||
                            !GIdle_021ac844() || self->unk_15 == 3) {
-                    func_ov000_02190cb0(self->unk_38, data_ov000_021cc6d8, 0x800, 1);
+                    func_ov000_02190cb0(self->model, data_ov000_021cc6d8, 0x800, 1);
                     self->unk_9c = 0;
                     self->unk_a0 = 0;
                     self->unk_a4 = 0;
@@ -234,7 +234,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
                 } else {
                     BOOL stop;
                     s32 r;
-                    func_ov000_02190cb0(self->unk_38, data_ov000_021cc6de, 0x800, 1);
+                    func_ov000_02190cb0(self->model, data_ov000_021cc6de, 0x800, 1);
                     self->unk_a0 = -self->unk_a0 >> 1;
                     self->unk_9c = self->unk_9c - (self->unk_9c >> 2);
                     stop = FALSE;
@@ -249,7 +249,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
             }
         }
         self->rot_y = func_01ffc128(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
-        if (!func_ov000_02191508(self->unk_38)) {
+        if (!func_ov000_02191508(self->model)) {
             Actor_Move(self, 0);
         }
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
@@ -270,7 +270,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
         } else {
             s->timer++;
             if (s->timer > 0x19 || (self->unk_b68 & 2)) {
-                func_ov000_02190cb0(self->unk_38, data_ov000_021cc6d8, 0x800, 0);
+                func_ov000_02190cb0(self->model, data_ov000_021cc6d8, 0x800, 0);
                 self->unk_40->st++;
             }
         }
@@ -281,7 +281,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
         break;
     }
     case 11:
-        if (func_ov000_02191120(self->unk_38)) {
+        if (func_ov000_02191120(self->model)) {
             if (self->unk_93_5) {
                 func_ov000_02198360(self->unk_40, 0x1c, 0);
             } else {
@@ -294,14 +294,14 @@ void func_ov000_021ac844(Robo021ca458 *self) {
         }
         break;
     case 0x14:
-        if (func_ov000_02191120(self->unk_38)) {
+        if (func_ov000_02191120(self->model)) {
             if (self->unk_93_5) {
                 func_ov000_02198360(self->unk_40, 0x1c, 0);
             } else {
                 func_ov000_02198360(self->unk_40, 1, 0);
             }
         }
-        if (!func_ov000_02191508(self->unk_38)) {
+        if (!func_ov000_02191508(self->model)) {
             func_ov000_021b1fac(self, 1, 1);
         }
         Bump_021ac844(self);

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 
@@ -29,7 +30,6 @@ typedef struct {
 extern "C" {
 
 extern void *data_ov000_021ccd68;
-extern u8 *data_ov000_021ccd54;
 extern Rgb021aa5c8 data_ov000_021c9fe8;
 extern void *data_02097e4c;
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
@@ -68,7 +68,7 @@ static inline s32 FxMulL021aa5c8(s32 a, s64 b) {
 void func_ov000_021aa5c8(Robo021ca458 *self) {
     Actor *actor;
     u8 *sub;
-    u8 *g;
+    FieldState *g;
     VecFx32 d;
     VecFx32 out;
     actor = FindActor021aa5c8(self->unk_b1c);
@@ -82,12 +82,12 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
         e->vfunc_24(0, self->unk_68 - (self->unk_68 >> 2), 0);
         e->vfunc_14(0x159a, 0x159a, 0x159a);
         LFLD(s32, e, 0x3c) = 0x4000;
-        LFLD(Bits8021aa5c8, g, 0x190).b2 = 1;
-        LFLD(Bits8021aa5c8, g, 0x190).b3 = 1;
-        LFLD(Bits8021aa5c8, g, 0x190).b4 = 1;
-        LFLD(u8, g, 0x18d) = 8;
-        LFLD(u8, g, 0x18e) = 6;
-        LFLD(u8, g, 0x18f) = 6;
+        g->cam.base.shakeX = 1;
+        g->cam.base.shakeY = 1;
+        g->cam.base.shakeZ = 1;
+        g->cam.base.shakeTime = 8;
+        g->cam.base.shakeLen = 6;
+        g->cam.base.shakeCur = 6;
         func_02049a48(data_02097e4c, 0x44, -1, -1, -1);
         func_02049a48(data_02097e4c, 0x30c, -1, -1, -1);
         if (!self->unk_b22_3) {
@@ -100,7 +100,7 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
             }
             func_ov003_021cedf4(n);
         }
-        if (RgbEq021aa5c8((Rgb021aa5c8 *)(data_ov000_021ccd54 + 0xca), data_ov000_021c9fe8)) {
+        if (RgbEq021aa5c8((Rgb021aa5c8 *)((u8 *)data_ov000_021ccd54 + 0xca), data_ov000_021c9fe8)) {
             func_02049bdc(data_02097e4c, 0x5e, Rand_UpTo(3));
         }
     }
@@ -121,7 +121,7 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
         d.z = FxMulL021aa5c8(d.z, 0x733);
         d.y = self->unk_6c;
         VEC_Add(&d, (VecFx32 *)((u8 *)self + 0x70), &out);
-        func_ov000_0218a358(g + 0xf4, &out, 0, actor->unk_64 + 0x8c00, 1, 0x2333, 0x1000, 1);
+        func_ov000_0218a358((u8 *)g + 0xf4, &out, 0, actor->unk_64 + 0x8c00, 1, 0x2333, 0x1000, 1);
     }
     if (((State021aa5c8 *)self->unk_40)->kind != 0x11) {
         return;

@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     u8 pad[4];
@@ -21,24 +22,12 @@ typedef struct {
     Ent02170188 *ent;
 } Obj02170188;
 
-typedef struct {
-    u8 pad[0x98];
-    s32 mode;
-} Player02170188;
-
-typedef struct {
-    u32 b0 : 1;
-    u32 rest : 31;
-} Flag02170188;
-
 extern "C" {
 
-extern Player02170188 *data_ov000_021ccd54;
 extern void *data_0214a420;
-extern Flag02170188 *data_ov000_021ccd70;
 extern u8 data_0208ba70[];
 extern u8 data_0208bbc8[];
-BOOL func_ov000_02184498(Player02170188 *p);
+BOOL func_ov000_02184498(FieldState *p);
 BOOL func_020658cc(void *a, s32 id);
 void *func_0204c08c(s32 a, u16 b, s32 *out, s32 c);
 void *Heap_Alloc(u32 size);
@@ -52,17 +41,17 @@ static inline void Ent_Init(Ent02170188 *e, s32 out, void *res) {
 }
 
 static inline BOOL IsFlag(void) {
-    return data_ov000_021ccd70->b0 == 1 ? TRUE : FALSE;
+    return data_ov000_021ccd70->flag0 == 1 ? TRUE : FALSE;
 }
 
 BOOL func_ov000_02170188(Obj02170188 *self, s32 a, u32 arg) {
-    Player02170188 *p;
+    FieldState *p;
     s32 out;
     u16 hi;
     void *res;
     Ent02170188 *e;
     p = data_ov000_021ccd54;
-    if ((u32)(p->mode - 0x11) > 2) {
+    if ((u32)(p->unk_98 - 0x11) > 2) {
         return FALSE;
     }
     if (self->state != 3) {

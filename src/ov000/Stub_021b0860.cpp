@@ -8,8 +8,8 @@ void func_ov000_021b0db0(Actor *self, s32 id);
 void func_ov000_021b0860(Actor *self) {
     switch (self->unk_40->st) {
     case 0:
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc5e3, 0x89, 0);
-        func_ov000_021915a0(self->unk_38);
+        func_ov000_02190cb0(self->model, data_ov000_021cc5e3, 0x89, 0);
+        func_ov000_021915a0(self->model);
         self->unk_9c = 0;
         self->unk_a0 = 0;
         self->unk_a4 = 0;

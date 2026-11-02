@@ -1,9 +1,9 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
-extern u8 *data_ov000_021ccd54;
 extern u8 *data_0214a424;
 u16 Camera_GetYaw(void *cam);
 void func_ov000_0218dd8c(void *self, u16 base, s32 turn, void *range);
@@ -23,7 +23,7 @@ void func_ov000_021b1dd8(Robo021ca458 *self, s32 target, s32 rate, s32 speed, s3
             return;
         }
         if (self->unk_b68 & 0xf0) {
-            u8 *cam = data_ov000_021ccd54 + 0xf4;
+            u8 *cam = (u8 *)data_ov000_021ccd54 + 0xf4;
             u16 ang;
             if (LFLD(u16, cam, 0x40) != 0) {
                 ang = LFLD(u16, cam, 0x44);

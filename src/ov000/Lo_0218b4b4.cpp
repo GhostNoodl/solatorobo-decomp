@@ -1,12 +1,8 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
-extern u8 *data_ov000_021ccd54;
-
-typedef struct {
-    u8 c[3];
-} Rgb0218b4b4;
 
 
 typedef struct {
@@ -21,7 +17,7 @@ typedef struct {
     u16 unk_02;
     s16 unk_04[4];
     s16 unk_0c;
-    Rgb0218b4b4 rgb;
+    FieldId rgb;
     u8 pad_11;
     u16 unk_12, unk_14, unk_16;
     s32 unk_18, unk_1c, unk_20;
@@ -83,9 +79,9 @@ void func_ov000_0218b4b4(Obj0218b4b4 *self, s32 mode, Src0218b4b4 *src) {
             slot->unk_14 = src->unk_7e;
             slot->unk_16 = src->unk_80;
             if (mode == 2) {
-                slot->rgb = LFLD(Rgb0218b4b4, data_ov000_021ccd54, 0xd0);
+                slot->rgb = data_ov000_021ccd54->unk_d0;
             } else {
-                slot->rgb = LFLD(Rgb0218b4b4, data_ov000_021ccd54, 0xca);
+                slot->rgb = data_ov000_021ccd54->unk_ca;
             }
         }
         for (i = 0; i < 4; i++) {

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     u8 unk_00[0x10];
@@ -63,7 +64,6 @@ void func_ov000_0214dcc4(Obj0214dcc4 *self) {
 
 extern "C" {
 extern u8 data_ov000_021ccd24[];
-extern u8 *data_ov000_021ccd54;
 extern u8 data_02fe1534[];
 extern void *data_02fe152c;
 void func_ov000_02153f90(void *p);
@@ -100,7 +100,7 @@ struct Node0214dd3c {
 };
 
 static inline u8 *GetG0214dd3c(void) {
-    return data_ov000_021ccd54;
+    return (u8 *)data_ov000_021ccd54;
 }
 
 static inline u16 KeyR0214dd3c(Node0214dd3c *p, u8 *&g) {

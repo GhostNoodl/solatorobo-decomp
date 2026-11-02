@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 
@@ -19,7 +20,6 @@ typedef struct {
 extern "C" {
 
 extern Act02195618Entry data_ov000_021c9e18[];
-extern u8 *data_ov000_021ccd54;
 extern void *data_0214a420;
 void func_0203f920(void *p);
 void func_ov000_0219af3c(u8 *self, void *p);
@@ -30,12 +30,12 @@ VObj *func_020657b0(void *mgr, void *h);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline BOOL PlayerIdle02195618(void) {
-    u8 *pl = data_ov000_021ccd54;
+    FieldState *pl = data_ov000_021ccd54;
     if (pl != NULL) {
-        if (LFLD(s32, pl, 0x90) != LFLD(s32, pl, 0x94) ? TRUE : FALSE) {
+        if (pl->head != pl->tail ? TRUE : FALSE) {
             return FALSE;
         }
-        if (LFLD(s32, pl, 0) != 3) {
+        if (pl->state != 3) {
             return FALSE;
         }
         return TRUE;

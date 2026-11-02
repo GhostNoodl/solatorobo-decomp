@@ -1,4 +1,5 @@
 #include "ov010/ov010.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 #include "nitro/fx.h"
@@ -43,39 +44,25 @@ struct Ov010Toggle {
     u8 b2 : 6;
 };
 
-struct Ov010G54 {
-    u8 unk_000[0x1ce];
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 2;
-    u8 b4 : 4;
-    u8 unk_1cf;
-    s32 unk_1d0;
-    s32 unk_1d4;
-    s32 unk_1d8;
-    u8 unk_1dc[0xc];
-    s32 unk_1e8;
-};
 
 extern "C" {
 
 extern const Ov010Vec data_ov010_0220ec80;
 extern const Ov010Vec data_ov010_0220ec74;
-extern Ov010G54 *data_ov000_021ccd54;
 extern void func_ov000_0218a358(void *a, const void *b, Ov010Rot *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 extern void func_ov000_0219864c(void *a, s32 b, s32 c);
 extern void func_ov003_021da48c(void *p, s32 a);
 
 static inline void Ov010_SetSky(void) {
-    Ov010G54 *g = data_ov000_021ccd54;
-    g->unk_1d0 = 0;
-    g->unk_1d4 = 0x5580;
-    g->unk_1d8 = 0;
-    g->b0 = 1;
+    FieldState *g = data_ov000_021ccd54;
+    g->cam.unk_dc.x = 0;
+    g->cam.unk_dc.y = 0x5580;
+    g->cam.unk_dc.z = 0;
+    g->cam.unk_da_0 = 1;
     g = data_ov000_021ccd54;
-    g->unk_1e8 = 0x5c00;
-    g->b2 = 2;
+    g->cam.unk_f4 = 0x5c00;
+    g->cam.unk_da_2 = 2;
 }
 
 BOOL func_ov010_021fff80(Ov010Toggle *o) {
@@ -426,7 +413,6 @@ BOOL func_ov010_022006fc(Ov010Beam *o, u16 a, u16 b, u8 c, u16 d) {
 }
 
 extern void *data_0214a420;
-extern u8 *data_ov000_021ccd54;
 extern void *data_02097e4c;
 extern void func_02065804(void *a, s32 b);
 extern BOOL func_ov010_02200048(Ov010FxObj *o, u16 a, u16 b, u8 c, u16 d);
@@ -482,11 +468,11 @@ void func_ov010_0220078c(Ov010Beam *o) {
             o->mode = 1;
             func_ov010_02200670(&o->fx, &o->pos, o->rx, o->ry, o->unk_0c, o->len, 0, o->unk_0a);
             if (o->unk_01 != 0) {
-                u8 *g = data_ov000_021ccd54;
-                FLD(u8, g, 0x190) |= 0x1c;
-                FLD(u8, g, 0x18d) = 0xf;
-                FLD(u8, g, 0x18e) = 10;
-                FLD(u8, g, 0x18f) = 10;
+                FieldState *g = data_ov000_021ccd54;
+                g->cam.base.flags |= 0x1c;
+                g->cam.base.shakeTime = 0xf;
+                g->cam.base.shakeLen = 10;
+                g->cam.base.shakeCur = 10;
                 func_0204a028(data_02097e4c, 0x5c, &o->pos, 5);
             }
             o->st.st++;

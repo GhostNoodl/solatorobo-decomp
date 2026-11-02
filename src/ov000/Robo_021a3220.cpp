@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 
@@ -55,7 +56,6 @@ extern char data_ov000_021cc62a[];
 extern char data_ov000_021cc636[];
 extern char *const data_ov000_021ca030[];
 extern void *data_02097e4c;
-extern u8 *data_ov000_021ccd54;
 extern u8 *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd6c;
 u8 *Actor_GetTarget(u8 *self);
@@ -99,17 +99,17 @@ static inline u16 AngTo_021a3220(Robo021ca458 *self, u8 *t) {
     return FX_Atan2(LFLD(s32, t, 0x70) - self->pos.x, LFLD(s32, t, 0x78) - self->pos.z);
 }
 
-static inline BOOL IsBusy_021a3220(u8 *g) {
-    return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94);
+static inline BOOL IsBusy_021a3220(FieldState *g) {
+    return g->head != g->tail;
 }
 
 static inline BOOL IsIdle_021a3220(void) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         if (IsBusy_021a3220(g)) {
             return FALSE;
         }
-        if (LFLD(s32, g, 0) != 3) {
+        if (g->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -128,7 +128,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
     switch (ST(self)->st) {
     case 0: {
         B24(self).b17 = 0;
-        func_ov000_02190cb0(self->unk_38, data_ov000_021ca030[B24(self).b5], 0x555, 1);
+        func_ov000_02190cb0(self->model, data_ov000_021ca030[B24(self).b5], 0x555, 1);
         ST(self)->st++;
         if (B2C(self).b6) {
             ST(self)->timer = 5;
@@ -188,7 +188,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
             ST(self)->timer = 0;
             ST(self)->st++;
             if (self->unk_b68 & 0xf0) {
-                u16 yaw = CamYaw_021a3220(data_ov000_021ccd54 + 0xf4);
+                u16 yaw = CamYaw_021a3220((u8 *)data_ov000_021ccd54 + 0xf4);
                 self->unk_98 = yaw + self->unk_b6e;
             }
             e = func_02065f88(0x192, &self->pos);
@@ -274,7 +274,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
             BOOL ok;
             Actor *a;
             u8 *p;
-            func_ov000_02190cb0(self->unk_38, data_ov000_021cc636, 0x1000, 1);
+            func_ov000_02190cb0(self->model, data_ov000_021cc636, 0x1000, 1);
             func_02049f44(data_02097e4c, 8, &self->pos, 0);
             ok = TRUE;
             p = LFLD(u8 *, data_ov000_021ccd6c, 0x14);
@@ -343,7 +343,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
         if (st->timer >= 0x1e) {
             func_ov000_02198360(ST(self), 4, 0);
         } else if (self->unk_48->unk_50 & 0x20000000) {
-            func_ov000_02190cb0(self->unk_38, data_ov000_021cc630, 0x800, 0);
+            func_ov000_02190cb0(self->model, data_ov000_021cc630, 0x800, 0);
             self->unk_a4 = 0xe66;
             func_02049f44(data_02097e4c, 0x81, &self->pos, 0);
             func_02065f88(0x12f, &self->pos)->vfunc_0c(0x800);
@@ -379,7 +379,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
         turned = TRUE;
     }
     if (turned) {
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc62a, 0x800, 0);
+        func_ov000_02190cb0(self->model, data_ov000_021cc62a, 0x800, 0);
         func_ov000_02198360(ST(self), 4, 0);
     }
 }

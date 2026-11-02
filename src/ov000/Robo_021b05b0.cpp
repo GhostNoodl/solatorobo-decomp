@@ -10,7 +10,7 @@ void func_ov000_0218d7e8(void *self, u8 arg);
 
 void func_ov000_021b05b0(Robo021ca458 *self) {
     ActorSub40 *s;
-    self->unk_38 = (u8 *)self + 0x368;
+    self->model = (Model0218fe1c *)((u8 *)self + 0x368);
     self->unk_48 = (ActorSub48 *)((u8 *)self + 0x6c0);
     self->unk_b08 = 0x2cd;
     s = self->unk_40;

@@ -37,9 +37,9 @@ static inline TextWin *TextWin_New(void) {
 }
 
 static inline void SetText(TextWin *win, u32 text) {
-    win->unk_24 = text;
-    win->unk_4c = func_0204c4fc(win->unk_28, win->unk_38, win->unk_24, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->unk_28;
+    win->str = text;
+    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+    data_02097ce0->unk_004 = win->font;
 }
 
 static inline char *FindSpace(Obj0215e0c0 *self, s32 need) {
@@ -72,7 +72,7 @@ void func_ov000_0215e0c0(Obj0215e0c0 *self, const char *text) {
         *p = 0;
     }
     self->win = TextWin_New();
-    self->win->unk_28 = 8;
+    self->win->font = 8;
     SetText(self->win, (u32)dst);
     self->win->unk_74 = 0x7fff;
     self->win->unk_76 = 0x67f;
@@ -85,7 +85,7 @@ void func_ov000_0215e0c0(Obj0215e0c0 *self, const char *text) {
         return;
     }
     self->win2 = TextWin_New();
-    self->win2->unk_28 = 8;
+    self->win2->font = 8;
     SetText(self->win2, (u32)(p + 1));
     self->win2->unk_74 = 0x7fff;
     self->win2->unk_76 = 0x67f;

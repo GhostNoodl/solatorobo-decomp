@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 class Robo021b06dcCls;
@@ -24,19 +25,18 @@ typedef struct {
 extern "C" {
 
 extern Robo021b06dcEntry data_ov000_021ca1b0[];
-extern u8 *data_ov000_021ccd54;
 extern u8 *data_ov000_021ccd30;
 extern u8 *data_0214a424;
 void func_ov000_021697dc(void *p, u16 a, u16 b);
 void func_ov000_0216b508(void *p, s32 a, BOOL b);
 
 static inline BOOL PlayerIdle021b06dc(void) {
-    u8 *pl = data_ov000_021ccd54;
+    FieldState *pl = data_ov000_021ccd54;
     if (pl != NULL) {
-        if (LFLD(s32, pl, 0x90) != LFLD(s32, pl, 0x94) ? TRUE : FALSE) {
+        if (pl->head != pl->tail ? TRUE : FALSE) {
             return FALSE;
         }
-        if (LFLD(s32, pl, 0) != 3) {
+        if (pl->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -73,7 +73,7 @@ void func_ov000_021b06dc(Robo021ca458 *self) {
         u8 *st = ((u8 *)self->unk_40);
         LFLD(s64, st, 4) = 0;
     }
-    LFLD(B9a_021b06dc, self->unk_48, 0x9a).b4 = 0;
+    self->unk_48->unk_9a_4 = 0;
     if (PlayerIdle021b06dc()) {
         SetGauge021b06dc(LFLD(u16, ((u8 *)self->hp), 0), LFLD(u16, ((u8 *)self->hp), 2));
     }

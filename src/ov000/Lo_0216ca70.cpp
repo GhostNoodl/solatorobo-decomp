@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/Vec.h"
 
@@ -44,7 +45,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd30;
 extern s32 data_02097d78[5];
 extern VecFx32 data_ov000_021c9af8;
@@ -70,8 +70,8 @@ s32 func_ov000_0218c040(void *mgr, s32 max, VecFx32 *out, s32 kind, u16 id);
 s32 func_0204061c(s32 *out, const VecFx32 *pos);
 void func_ov000_021c194c(Eff0216ca70 *p);
 
-static inline BOOL LoGBusy(u8 *g) {
-    return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94) ? TRUE : FALSE;
+static inline BOOL LoGBusy(FieldState *g) {
+    return g->head != g->tail ? TRUE : FALSE;
 }
 
 static inline BOOL LoD78Idle(void) {
@@ -125,7 +125,7 @@ BOOL func_ov000_0216ca70(Obj0216ca70 *self) {
     s32 z;
     u16 id;
 
-    if (PauseNode_IsDrawPaused(data_ov000_021ccd54 + 8, TRUE)) {
+    if (PauseNode_IsDrawPaused((u8 *)data_ov000_021ccd54 + 8, TRUE)) {
         self->b2 = 0;
         self->cnt = 0;
         self->state = 4;

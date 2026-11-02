@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
@@ -17,11 +18,6 @@ typedef struct {
 } Obj0219bf90;
 
 typedef struct {
-    u8 unk_00[0xac];
-    u8 unk_ac;
-} Player021975b4;
-
-typedef struct {
     u8 unk_00[0xc];
     u16 unk_0c;
     u16 unk_0e;
@@ -29,7 +25,6 @@ typedef struct {
 
 extern "C" {
 
-extern Player021975b4 *data_ov000_021ccd54;
 Obj0219bf90 *func_ov000_0219bf90(void);
 void func_020627b4(void);
 void func_020627a0(u16 a, u16 b);
@@ -46,7 +41,7 @@ void func_ov000_021974b0(Obj021975b4 *self) {
     func_020627a0(self->unk_0e, self->unk_0c);
     func_020627dc(0x8002);
     {
-        Player021975b4 *pl = data_ov000_021ccd54;
+        FieldState *pl = data_ov000_021ccd54;
         pl->unk_ac = 1;
         func_ov000_02182590(&pl->unk_ac);
     }
@@ -74,7 +69,7 @@ void func_ov000_021975b4(Obj021975b4 *self) {
     func_020627a0(self->unk_0e, self->unk_0c);
     func_020627dc(0x8003);
     {
-        Player021975b4 *pl = data_ov000_021ccd54;
+        FieldState *pl = data_ov000_021ccd54;
         pl->unk_ac = 1;
         func_ov000_02182590(&pl->unk_ac);
     }

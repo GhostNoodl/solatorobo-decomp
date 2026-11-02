@@ -126,11 +126,11 @@ void func_ov000_021aa978(Robo021ca458 *self) {
     st = self->unk_40;
     switch (st->st) {
     case 0:
-        func_ov000_02190cb0(self->unk_38, data_ov000_021cc6ae, 0x555, 0);
+        func_ov000_02190cb0(self->model, data_ov000_021cc6ae, 0x555, 0);
         self->unk_40->st++;
         break;
     case 1:
-        if (LFLD(s16, self->unk_38, 0xc4) != 1) {
+        if (((s16)self->model->unk_c4) != 1) {
             break;
         }
         self->unk_98 = self->rot_y;
@@ -142,7 +142,7 @@ void func_ov000_021aa978(Robo021ca458 *self) {
         ActorSub40 *s;
         hit = TRUE;
         Charge021aa978(self);
-        func_ov000_02191418(self->unk_38, 1, 0);
+        func_ov000_02191418(self->model, 1, 0);
         s = self->unk_40;
         s->timer++;
         if (s->timer < 0x20) {
@@ -170,7 +170,7 @@ void func_ov000_021aa978(Robo021ca458 *self) {
     case 3: {
         u16 tgt;
         u16 d;
-        func_ov000_02191418(self->unk_38, 1, 0);
+        func_ov000_02191418(self->model, 1, 0);
         tgt = self->unk_98 + 0x8000;
         d = tgt - self->rot_y;
         if (d > 0x800 && d < 0xf800) {
@@ -188,7 +188,7 @@ void func_ov000_021aa978(Robo021ca458 *self) {
             st->st++;
             break;
         }
-        if (LFLD(s16, self->unk_38, 0xc4) != 2) {
+        if (((s16)self->model->unk_c4) != 2) {
             break;
         }
         func_ov000_0218d46c(a, self->id, 0xb);
@@ -233,7 +233,7 @@ void func_ov000_021aa978(Robo021ca458 *self) {
         self->unk_40->st++;
         break;
     case 5:
-        if (!func_ov000_02191120(self->unk_38)) {
+        if (!func_ov000_02191120(self->model)) {
             break;
         }
         self->unk_b2c_0 = 0;
@@ -265,7 +265,7 @@ void func_ov000_021aa978(Robo021ca458 *self) {
     }
     func_ov000_0218996c(8, 0xa);
     func_02049f44(data_02097e4c, 0x7d, &self->pos, 0);
-    func_ov000_02191418(self->unk_38, 3, 0);
+    func_ov000_02191418(self->model, 3, 0);
 }
 
 }

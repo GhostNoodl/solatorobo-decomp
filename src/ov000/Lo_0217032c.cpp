@@ -1,8 +1,8 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd54;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
 BOOL func_ov000_02184498(void *g);
@@ -34,7 +34,7 @@ BOOL func_ov000_0217032c(Obj0217032c *self, void *res, u32 id) {
     s32 n;
     s32 v;
     u8 *p;
-    if ((u32)(LFLD(s32, data_ov000_021ccd54, 0x98) - 0x11) > 2) {
+    if ((u32)(data_ov000_021ccd54->unk_98 - 0x11) > 2) {
         return FALSE;
     }
     if (self->unk_24 != 3) {
@@ -66,11 +66,11 @@ struct Obj02170448 {
 };
 
 BOOL func_ov000_02170448(Obj02170448 *self, void *res, u32 id) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     u32 hi;
     u16 lo;
     VObj *p;
-    if ((u32)(LFLD(s32, g, 0x98) - 0x11) > 2) {
+    if ((u32)(g->unk_98 - 0x11) > 2) {
         return FALSE;
     }
     if (self->unk_24 != 3) {

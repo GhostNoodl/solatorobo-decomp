@@ -32,11 +32,11 @@ void func_ov000_021c5fd0(Obj021c5fd0 *self, u32 text) {
         data_02097dd0->cur = saved;
     }
     self->unk_30 = TextWin_New();
-    self->unk_30->unk_28 = 8;
+    self->unk_30->font = 8;
     win = self->unk_30;
-    win->unk_24 = text;
-    win->unk_4c = func_0204c4fc(win->unk_28, win->unk_38, win->unk_24, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->unk_28;
+    win->str = text;
+    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+    data_02097ce0->unk_004 = win->font;
     self->unk_30->unk_2c = 0;
     self->unk_30->noVram = 1;
     self->unk_30->flag24 = 1;

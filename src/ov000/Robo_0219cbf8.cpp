@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 
@@ -82,7 +83,6 @@ typedef struct {
 
 extern "C" {
 extern void *data_ov000_021ccd68;
-extern u8 *data_ov000_021ccd54;
 extern u8 *data_ov000_021ccd30;
 extern u8 *data_ov000_021ccd6c;
 extern void *data_02097e4c;
@@ -168,7 +168,7 @@ void func_ov000_0219cdb8(Robo021ca458 *self) {
         v[1] = 0;
         v[2] = 0;
     }
-    if (data_ov000_021ccd54[0xc9] != 0) {
+    if (((u8 *)data_ov000_021ccd54)[0xc9] != 0) {
         u16 *w = self->hp;
         u8 *a;
         u16 v;
@@ -190,8 +190,8 @@ void func_ov000_0219cdb8(Robo021ca458 *self) {
         }
     }
     if (self->unk_b22_12) {
-        u8 *c = data_ov000_021ccd54;
-        if (c[0xca] != c[0xd0] || c[0xcb] != c[0xd1]) {
+        FieldState *c = data_ov000_021ccd54;
+        if (((u8 *)c)[0xca] != ((u8 *)c)[0xd0] || ((u8 *)c)[0xcb] != ((u8 *)c)[0xd1]) {
             s32 *t;
             void **res;
             self->unk_b22_12 = 0;

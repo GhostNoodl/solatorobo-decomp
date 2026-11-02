@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/HeapScope.h"
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -12,7 +13,6 @@ extern u8 data_ov000_021cb744[];
 extern u8 data_ov000_021cb6f0[];
 extern u8 data_ov000_021cb840[];
 extern u8 data_ov000_021cb894[];
-extern u8 *data_ov000_021ccd54;
 void *Heap_Alloc(u32 size);
 void func_ov000_0216b474(void *p);
 void func_ov000_0216ad04(void *p);
@@ -172,7 +172,7 @@ void func_ov000_02170a58(Obj02170a58 *self) {
             if (self->unk_28 != NULL) {
                 self->unk_28->vfunc_0c();
             }
-            func_ov000_02182524(data_ov000_021ccd54 + 0xac);
+            func_ov000_02182524((u8 *)data_ov000_021ccd54 + 0xac);
             if (STATE == 11) {
                 STATE = 3;
             }

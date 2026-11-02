@@ -1,11 +1,8 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 
 extern "C" {
 
-extern const s16 FX_SinCosTable_[];
-extern u8 *data_ov000_021ccd54;
-void MTX_Identity43_(void *m);
-void MTX_RotY43_(void *m, s32 s, s32 c);
 void func_020627fc(s32 a);
 void func_ov000_02182590(void *p);
 void func_ov000_02188140(void *p, s32 a, s32 b, s32 c);

@@ -58,7 +58,7 @@ static inline s32 Cam_FxMul(s32 a, s32 b) {
 static inline void Camera_Init(Camera *cam) {
     cam->vtable = data_0208b8c0;
     func_02043548(&cam->eye);
-    func_020434e0(&cam->fovSin);
+    func_020434e0(&cam->nearClip);
     cam->mode = 1;
     cam->dist = 0xa000;
     cam->pitch = 0x1000;

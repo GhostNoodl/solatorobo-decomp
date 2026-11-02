@@ -27,11 +27,6 @@ typedef struct {
     u8 rest : 5;
 } Bits8_02196c40;
 
-typedef struct {
-    u16 mode : 3;
-    u16 rest : 13;
-} Mode02196c40;
-
 class VObj02196c40 {
 public:
     virtual void vfunc_00();
@@ -175,8 +170,8 @@ void func_ov000_02196c40(ActorEx *self) {
         }
         if (self->unk_a0 < 0) {
             State02196c40 *st;
-            func_ov000_02190cb0(self->unk_38, data_ov000_021cc463, 0x1000, 0);
-            func_ov000_021915a0(self->unk_38);
+            func_ov000_02190cb0(self->model, data_ov000_021cc463, 0x1000, 0);
+            func_ov000_021915a0(self->model);
             st = ((State02196c40 *)self->unk_40);
             st->timer++;
             if (st->timer > 0x46) {
@@ -197,7 +192,7 @@ void func_ov000_02196c40(ActorEx *self) {
             break;
         }
         ((State02196c40 *)self->unk_40)->timer = 6;
-        if (!func_ov000_02191120(self->unk_38) && LFLD(s64, ((State02196c40 *)self->unk_40), 4) == 0) {
+        if (!func_ov000_02191120(self->model) && LFLD(s64, ((State02196c40 *)self->unk_40), 4) == 0) {
             break;
         }
         self->unk_4c->unk_1c = 0xffff;
@@ -210,7 +205,7 @@ void func_ov000_02196c40(ActorEx *self) {
         u8 *other;
         BOOL saved;
         u8 *m;
-        if (LFLD(Mode02196c40, self->unk_b0, 2).mode == 2) {
+        if (self->param->type == 2) {
             ActorSub48 *q = self->unk_48;
             LFLD(Bits02196c40, q, 0x9a).b0 = 1;
             q->unk_9a_3 = 1;

@@ -140,12 +140,12 @@ static inline void SlideMsg_Show(SlideMsg *msg, const char *text) {
     } else {
         msg->win->unk_vf08();
     }
-    msg->win->unk_28 = 4;
+    msg->win->font = 4;
     msg->win->unk_2c = 0;
     win = msg->win;
-    win->unk_24 = (u32)text;
-    win->unk_4c = func_0204c4fc(win->unk_28, win->unk_38, win->unk_24, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->unk_28;
+    win->str = (u32)text;
+    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+    data_02097ce0->unk_004 = win->font;
     msg->win->unk_vf20(0, 0xc0);
     msg->win->noVram = 1;
     msg->win->flag24 = 1;
@@ -302,7 +302,7 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
     SlideVram v4;
     SlideVram v6;
 
-    data_02097ce0->unk_004 = win->unk_28;
+    data_02097ce0->unk_004 = win->font;
     panel = NULL;
     count = 0;
     data_02097ce0->unk_012 = win->unk_34;

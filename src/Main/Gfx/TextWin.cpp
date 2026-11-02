@@ -728,11 +728,11 @@ void func_0204c7d0(TextWin *win) {
     win->unk_1c = 0;
     win->unk_1e = 0;
     win->vram = NULL;
-    win->unk_24 = 0;
-    win->unk_28 = 3;
+    win->str = 0;
+    win->font = 3;
     win->unk_2c = 0;
     win->unk_30 = 5;
-    win->unk_38 = 0;
+    win->spacing = 0;
     win->unk_34 = 1;
     win->unk_36 = 0;
     win->unk_37 = 0;
@@ -829,7 +829,7 @@ void func_0204ca14(TextWin *win, u32 n) {
 
 void func_0204ca70(TextWin *win) {
     u32 saved;
-    data_02097ce0->unk_004 = win->unk_28;
+    data_02097ce0->unk_004 = win->font;
     saved = win->rendering;
     win->rendering = 1;
     if (win->noVram) {
@@ -2215,7 +2215,7 @@ void func_0204dda8(TextWin *win) {
         }
         win->unk_vf98();
     }
-    data_02097ce0->unk_004 = win->unk_28;
+    data_02097ce0->unk_004 = win->font;
     data_02097ce0->unk_012 = win->unk_34;
     TextWin_SetOrigin(win->unk_3c, win->unk_40);
     if (win->noVram) {
@@ -2869,8 +2869,8 @@ void func_0204e358(TextWin *win) {
     }
     font = (TextWinFont *)func_0203a4c0(data_02097ce0);
     fn = font->splitChar;
-    s = (const char *)win->unk_24;
-    lineH = win->unk_38 + font->info[1];
+    s = (const char *)win->str;
+    lineH = win->spacing + font->info[1];
     y = 0;
     while (*s != 0) {
         x = 0;
@@ -2956,13 +2956,13 @@ void func_0204e5d4(TextWin *win) {
     MIi_CpuClearFast(0, win->unk_68, size);
     font = (NNSG2dFont *)func_0203a4c0(data_02097ce0);
     fn = font->cbCharSpliter;
-    s = (const char *)win->unk_24;
+    s = (const char *)win->str;
     color = win->unk_2c % 15 + 1;
     shadow = (s32)win->unk_30 % 15 + 1;
     pitch = (8 << win->unk_58) >> 3;
     dst = (u32 *)win->unk_68;
     y = bx;
-    lineH = win->unk_38 + font->pRes->pGlyph->cellHeight;
+    lineH = win->spacing + font->pRes->pGlyph->cellHeight;
     while ((c = fn((const void **)&s)) != 0) {
         const u8 *src;
         if (c == '\n') {
@@ -3634,7 +3634,7 @@ void GfxGe_PopMtx(s32 num, ...) {
 
 void func_0204f49c(TextWinEx *win) {
     int i;
-    win->unk_38 = 2;
+    win->spacing = 2;
     *(u32 *)((u8 *)win + 0xb8) = 0;
     win->blocksReady = 1;
     for (i = 0; i < 0x80; i++) {
@@ -4104,7 +4104,7 @@ s32 func_0204f804(TextWinEx *win) {
     s32 pad;
     u16 c;
     NNSG2dFont *font;
-    data_02097ce0->unk_004 = win->unk_28;
+    data_02097ce0->unk_004 = win->font;
     data_02097ce0->unk_012 = win->unk_34;
     n = 0;
     if (win->unk_3c4 >= 0) {
@@ -4119,7 +4119,7 @@ s32 func_0204f804(TextWinEx *win) {
         fn = font->cbCharSpliter;
         pad = 0;
         stop = FALSE;
-        lineH = win->unk_38 + font->pRes->linefeed;
+        lineH = win->spacing + font->pRes->linefeed;
         color = win->unk_2c;
         saved = (char *)win->unk_3d8;
         while ((c = fn((const void **)&win->unk_3d8)) != 0) {
@@ -4896,10 +4896,10 @@ void func_0204ffdc(TextBox *box) {
                 u32 saved;
                 line = &box->lines[box->unk_204];
                 win = TextBox_NewWin();
-                win->unk_28 = box->pltt;
-                win->unk_24 = (u32)line;
-                win->unk_4c = func_0204c4fc(win->unk_28, win->unk_38, win->unk_24, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-                data_02097ce0->unk_004 = win->unk_28;
+                win->font = box->pltt;
+                win->str = (u32)line;
+                win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+                data_02097ce0->unk_004 = win->font;
                 win->unk_2c = 0;
                 win->unk_74 = 0x77df;
                 win->unk_76 = 0x67e;
@@ -4909,7 +4909,7 @@ void func_0204ffdc(TextBox *box) {
                 win->unk_78 = 0x9000;
                 win->unk_vf14();
                 win->rendering = 1;
-                data_02097ce0->unk_004 = win->unk_28;
+                data_02097ce0->unk_004 = win->font;
                 saved = win->rendering;
                 win->rendering = 1;
                 if (win->noVram) {
@@ -6742,7 +6742,7 @@ void func_02051a34(SlideWin *win, SlideCharFn fn) {
     s32 line;
     const char *s;
     char file[0x20];
-    data_02097ce0->unk_004 = win->unk_28;
+    data_02097ce0->unk_004 = win->font;
     font = (SlideFont *)func_0203a4c0(data_02097ce0);
     panel = NULL;
     fn = font->splitChar;
@@ -6951,10 +6951,10 @@ void func_02051f70(GameScene *scene) {
     case 16:
         scene->shakeLimit = 0;
         scene->shake = 0;
-        state->unk_18c = 0;
-        state->unk_18d = 0;
-        state->unk_18e = 0;
-        state->unk_18f = 0;
+        state->cam.base.shakeRandom = 0;
+        state->cam.base.shakeTime = 0;
+        state->cam.base.shakeLen = 0;
+        state->cam.base.shakeCur = 0;
         break;
     }
 }

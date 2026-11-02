@@ -1,4 +1,5 @@
 #include "nitro/fx.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/VObj.h"
 #include "ov000/ObjLayouts.h"
 
@@ -32,7 +33,6 @@ typedef struct {
 } Ent0219763c;
 
 extern "C" {
-extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd64;
 extern Save0219763c *data_0214a424;
 extern Ent0219763c data_ov000_021c9ecc[];
@@ -97,9 +97,9 @@ static inline void Die0219763c(VObj *obj) {
         func_020627a0(self->unk_0e, self->unk_0c);
         func_020627dc(0x63);
         {
-            u8 *pl = data_ov000_021ccd54;
-            pl[0xac] = 1;
-            func_ov000_02182590(pl + 0xac);
+            FieldState *pl = data_ov000_021ccd54;
+            ((u8 *)pl)[0xac] = 1;
+            func_ov000_02182590((u8 *)pl + 0xac);
         }
     }
     func_020627c8();
@@ -189,8 +189,8 @@ void func_ov000_0219763c(VObj *obj) {
             Die0219763c(obj);
             return;
         }
-        if (((u8 *)self->unk_38) != NULL) {
-            LFLD(u8, ((u8 *)self->unk_38), 0xbe) = 0x1f - (self->unk_40->timer << 2);
+        if (((u8 *)self->model) != NULL) {
+            self->model->alpha = 0x1f - (self->unk_40->timer << 2);
         }
         return;
     }

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 
@@ -11,7 +12,6 @@ typedef struct {
 
 extern "C" {
 extern void *data_ov000_021ccd68;
-extern u8 *data_ov000_021ccd54;
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 u16 Camera_GetYaw(void *cam);
@@ -51,7 +51,7 @@ void func_ov000_021b2b08(Robo021ca458 *self) {
         self->unk_40->st = 0x64;
         return;
     }
-    cam = data_ov000_021ccd54 + 0xf4;
+    cam = (u8 *)data_ov000_021ccd54 + 0xf4;
     if (LFLD(u16, cam, 0x40) != 0) {
         ang = LFLD(u16, cam, 0x44);
     } else {

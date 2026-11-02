@@ -76,34 +76,34 @@ void func_02055cbc(GameScene *scene) {
     state = data_ov000_021ccd54;
     switch (effect) {
     case 5:
-        state->unk_18c = 1;
+        state->cam.base.shakeRandom = 1;
     case 0:
-        state->unk_190 |= 0x1c;
-        state->unk_18d = 1;
-        state->unk_18e = 0x3c;
-        state->unk_18f = 0x3c;
+        state->cam.base.flags |= 0x1c;
+        state->cam.base.shakeTime = 1;
+        state->cam.base.shakeLen = 0x3c;
+        state->cam.base.shakeCur = 0x3c;
         break;
     case 6:
-        state->unk_18c = 1;
+        state->cam.base.shakeRandom = 1;
     case 1:
-        state->unk_190 |= 0x1c;
-        state->unk_18d = 3;
-        state->unk_18e = 0x3c;
-        state->unk_18f = 0x3c;
+        state->cam.base.flags |= 0x1c;
+        state->cam.base.shakeTime = 3;
+        state->cam.base.shakeLen = 0x3c;
+        state->cam.base.shakeCur = 0x3c;
         break;
     case 7:
-        state->unk_18c = 1;
+        state->cam.base.shakeRandom = 1;
     case 2:
-        state->unk_190 |= 0x1c;
-        state->unk_18d = 5;
-        state->unk_18e = 0x3c;
-        state->unk_18f = 0x3c;
+        state->cam.base.flags |= 0x1c;
+        state->cam.base.shakeTime = 5;
+        state->cam.base.shakeLen = 0x3c;
+        state->cam.base.shakeCur = 0x3c;
         break;
     case 10:
-        state->unk_18c = 0;
-        state->unk_18d = 0;
-        state->unk_18e = 0;
-        state->unk_18f = 0;
+        state->cam.base.shakeRandom = 0;
+        state->cam.base.shakeTime = 0;
+        state->cam.base.shakeLen = 0;
+        state->cam.base.shakeCur = 0;
         break;
     }
     scene->effect = 0;

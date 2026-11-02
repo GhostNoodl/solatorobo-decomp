@@ -1,4 +1,5 @@
 #include "ov010/ov010.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "nitro/std.h"
 
@@ -58,19 +59,6 @@ struct Ov010Wobble {
     u16 unk_0a;
 };
 
-struct Ov010G54 {
-    u8 unk_000[0x1ce];
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 2;
-    u8 b4 : 4;
-    u8 unk_1cf;
-    s32 unk_1d0;
-    s32 unk_1d4;
-    s32 unk_1d8;
-    u8 unk_1dc[0xc];
-    s32 unk_1e8;
-};
 
 struct Ov010Fade {
     u8 b0 : 1;
@@ -224,7 +212,6 @@ const Ov010Rec data_ov010_0220fb68 = {{0x3, 0x1, 0x1000, 0x0, 0x1000, 0x7000, 0x
 const Ov010Rec data_ov010_0220fb9c = {{0x3, 0x1, 0x1000, 0x0, 0x1000, 0x7000, 0xe00, 0x20}, data_ov010_0220ebcc, data_ov010_0220ebf0, data_ov010_0220ece0, data_ov010_0220ec8c};
 
 extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *o);
-extern Ov010G54 *data_ov000_021ccd54;
 extern void VEC_Normalize(const Ov010Vec *a, Ov010Vec *o);
 extern s32 VEC_Mag(const Ov010Vec *v);
 extern void VEC_MultAdd(s32 s, const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *out);
@@ -447,8 +434,8 @@ BOOL Ov010ActVt_0220fccc_Draw(Obj021fa860 *self) {
     MTX_Concat33(m1, m2, m1);
     func_ov003_021d883c((u8 *)self + 0x150, &v, &self->pos, self->unk_f2);
     self->unk_93.b0 = 1;
-    MI_Copy36B(m1, (u8 *)self->unk_38 + 0x84);
-    FLD(Ov010Vec, self->unk_38, 0x78) = v;
+    MI_Copy36B(m1, (u8 *)self->model + 0x84);
+    FLD(Ov010Vec, self->model, 0x78) = v;
     r = func_ov003_021d16cc(self);
     func_ov010_0220166c(self->unk_100);
     return r;
@@ -470,7 +457,6 @@ struct Ov010Msg {
 extern "C" {
 
 extern void *data_ov000_021ccd68;
-extern u8 *data_ov000_021ccd54;
 extern void *data_0214a420;
 extern const Ov010Vec data_ov010_0220ed10;
 extern BOOL func_ov003_021d1c00(void *self, Ov010Msg *msg);
@@ -521,7 +507,7 @@ static inline BOOL Ov010e_Ignore(Obj021fa860 *self) {
     return r;
 }
 
-static inline void *Ov010e_FindActor(u16 id) {
+static inline Actor *Ov010e_FindActor(u16 id) {
     Actor *a = NULL;
     if (data_ov000_021ccd68 != NULL) {
         a = ActorMgr_GetActor(data_ov000_021ccd68, id);
@@ -539,14 +525,14 @@ static inline Ov010V *Ov010e_Eff(u8 *p) {
 
 static inline void Ov010e_Spawn(Obj021fa860 *self) {
     if (self->unk_138.b0 && self->unk_140 == 0) {
-        void *a = Ov010e_FindActor(self->unk_13a);
+        Actor *a = Ov010e_FindActor(self->unk_13a);
         if (a != NULL) {
             Ov010V *e;
             Ov010Vec w;
             Ov010Vec u = ((Ov010PosFn)self->unk_14c)(a);
-            w.x = FLD(s32, a, 0x70);
-            w.y = FLD(s32, a, 0x74);
-            w.z = FLD(s32, a, 0x78);
+            w.x = a->pos.x;
+            w.y = a->pos.y;
+            w.z = a->pos.z;
             VEC_Add(&w, &u, &w);
             e = func_02065f88(self->unk_144, &w);
             FLD(u8, e, 0xd0) = 1;
@@ -594,11 +580,11 @@ BOOL func_ov010_021fac1c(Obj021fa860 *self, Ov010Msg *msg) {
                     self->unk_f2 = 0x800;
                     func_ov003_021d85c8((u8 *)self + 0x150, 10, 0, 0, 0);
                     {
-                        u8 *g = data_ov000_021ccd54;
-                        g[0x190] |= 0x1c;
-                        g[0x18d] = 10;
-                        g[0x18e] = 10;
-                        g[0x18f] = 10;
+                        FieldState *g = data_ov000_021ccd54;
+                        ((u8 *)g)[0x190] |= 0x1c;
+                        ((u8 *)g)[0x18d] = 10;
+                        ((u8 *)g)[0x18e] = 10;
+                        ((u8 *)g)[0x18f] = 10;
                     }
                 } else {
                     self->unk_f2 = 0x500;
@@ -617,7 +603,7 @@ BOOL func_ov010_021fac1c(Obj021fa860 *self, Ov010Msg *msg) {
                     }
                 }
                 func_ov003_021d68e0(self, 0x14bf, 0x739f, 10);
-                func_ov000_02191418(self->unk_38, 5, 0);
+                func_ov000_02191418(self->model, 5, 0);
             }
         }
         self->msg_flags |= 1 << msg->type;
@@ -775,7 +761,7 @@ void Ov010ActVt_0220fccc_Start(Obj021fa860 *self) {
         FLD(s32, p, 0x10) = 0x61b2;
         FLD(s32, p, 0x14) = 0x24d5;
     }
-    FLD(Ov010Flags, self->unk_38, 0xc2).b4 = 0;
+    self->model->unk_c2_4 = 0;
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
     if (self->unk_48 != NULL) {
@@ -944,7 +930,7 @@ static inline BOOL Ov010_PlFlag(void) {
 }
 
 static inline void Ov010_SetAlpha(Ov010Cls *self, u8 a) {
-    FLD(u8, self->unk_38, 0xbe) = a;
+    self->model->alpha = a;
     if (self->unk_138.b0 && self->unk_140 != 0) {
         self->unk_139 = a;
     }
@@ -1123,8 +1109,8 @@ void func_ov010_021fba70(Obj021fa860 *self) {
         return;
     }
     Ov010Cam_Start((u8 *)self->unk_104);
-    func_ov000_02190cb0(self->unk_38, data_ov010_0220ebe0, 0xcd, 0);
-    func_ov000_021915a0(self->unk_38);
+    func_ov000_02190cb0(self->model, data_ov010_0220ebe0, 0xcd, 0);
+    func_ov000_021915a0(self->model);
     self->unk_40->st++;
 }
 
@@ -1411,7 +1397,7 @@ void func_ov010_021fbda0(Obj021fa860 *self) {
         Ov010Path *p;
         Ov010V *e;
         u16 a;
-        func_ov000_02190cb0(self->unk_38, self->unk_fc->anim0, data_ov010_0220fa24, 0);
+        func_ov000_02190cb0(self->model, self->unk_fc->anim0, data_ov010_0220fa24, 0);
         p = self->unk_fc;
         self->unk_9c = 0;
         self->unk_a0 = 0;
@@ -1440,7 +1426,7 @@ void func_ov010_021fbda0(Obj021fa860 *self) {
         self->unk_9c = Ov010e_Clamp(self->unk_9c + 0x60, 0x1000);
         if (VEC_Mag(&d11) < 0x3000) {
             self->unk_9c = Ov010_FxMul(self->unk_9c, 0xf40);
-            func_ov000_02190cb0(self->unk_38, self->unk_fc->anim1, data_ov010_0220fa24, 0);
+            func_ov000_02190cb0(self->model, self->unk_fc->anim1, data_ov010_0220fa24, 0);
         }
         func_ov003_021d9dbc(&self->pos, &self->unk_fc->a, &self->pos, self->unk_9c, 0);
         if (Ov003Vec_Equal(&self->pos, &self->unk_fc->a) || self->unk_9c < 0x10) {
@@ -1494,7 +1480,7 @@ void func_ov010_021fbda0(Obj021fa860 *self) {
     case 0x1e:
         self->unk_40->timer++;
         if (data_ov010_0220fa28 == self->unk_40->timer) {
-            func_ov000_02190cb0(self->unk_38, data_ov010_0220ebe0, data_ov010_0220fa20, 0);
+            func_ov000_02190cb0(self->model, data_ov010_0220ebe0, data_ov010_0220fa20, 0);
         }
         if (self->unk_40->timer > 0x78) {
             self->unk_40->timer = 0;
@@ -1554,7 +1540,7 @@ void func_ov010_021fc4ac(Obj021fa860 *self) {
         Ov010Vec ofs;
         Robo021ca458 *pl;
         s32 i = 0;
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220ebcc, 0x1000, i);
+        func_ov000_02190cb0(self->model, data_ov010_0220ebcc, 0x1000, i);
         {
             Ov010Shake *cam = self->unk_104;
             cam->active = i;
@@ -1606,14 +1592,14 @@ void func_ov010_021fc4ac(Obj021fa860 *self) {
         break;
     }
     case 0x1e: {
-        u8 *g;
+        FieldState *g;
         func_ov010_02203ee0(0x12e, &self->pos)->v0c(0x3000);
-        g = (u8 *)data_ov000_021ccd54;
-        g[0x190] |= 0x1c;
-        g[0x18d] = 10;
-        g[0x18e] = 0x1e;
-        g[0x18f] = 0x1e;
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220ebe0, 0x80, 0);
+        g = data_ov000_021ccd54;
+        ((u8 *)g)[0x190] |= 0x1c;
+        ((u8 *)g)[0x18d] = 10;
+        ((u8 *)g)[0x18e] = 0x1e;
+        ((u8 *)g)[0x18f] = 0x1e;
+        func_ov000_02190cb0(self->model, data_ov010_0220ebe0, 0x80, 0);
         self->unk_40->st = 0x1f;
         func_02049f44(data_02097e4c, 0x35, &self->pos, 0);
         break;
@@ -1641,7 +1627,7 @@ void func_ov010_021fc4ac(Obj021fa860 *self) {
         }
         break;
     case 0x32:
-        func_ov000_02190cb0(self->unk_38, anim, 0x90, 0);
+        func_ov000_02190cb0(self->model, anim, 0x90, 0);
         func_ov010_02201bf4((u8 *)self + 0x17c);
         self->unk_40->st = 0x33;
         func_02049a48(data_02097e4c, 0xb03, -1, -1, -1);
@@ -1653,13 +1639,13 @@ void func_ov010_021fc4ac(Obj021fa860 *self) {
         func_ov003_021d9aec(&self->unk_120, &self->unk_120, 0x2000);
         self->unk_40->timer++;
         if ((s32)self->unk_40->timer > 0xf0 && func_ov010_02201c34((u8 *)self + 0x17c)) {
-            FLD(Ov010Bits16, self->unk_38, 0xc2).b0 = 0;
+            self->model->unk_c2_0 = 0;
             self->unk_40->timer = 0;
             self->unk_40->st = 100;
         }
         break;
     case 100:
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220ebe0, 0x1000, 0);
+        func_ov000_02190cb0(self->model, data_ov010_0220ebe0, 0x1000, 0);
         func_ov010_02201b48((u8 *)self + 0x17c);
         func_ov003_021d969c((u8 *)self + 0x1ac, 1);
         break;
@@ -1672,16 +1658,16 @@ void func_ov010_021fc4ac(Obj021fa860 *self) {
     }
 }
 
-static inline void *Ov010e_FindActor(u16 id) {
+static inline Actor *Ov010e_FindActor(u16 id) {
     return data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 static inline void Ov010e_Pull(Obj021fa860 *self, s32 rate) {
-    void *a = Ov010e_FindActor(self->target);
+    Actor *a = Ov010e_FindActor(self->target);
     if (a != NULL) {
         Ov010Vec d;
-        s32 x = FLD(s32, a, 0x70);
-        s32 y = FLD(s32, a, 0x74);
-        s32 z = FLD(s32, a, 0x78);
+        s32 x = a->pos.x;
+        s32 y = a->pos.y;
+        s32 z = a->pos.z;
         d.x = x - self->unk_12c.x;
         d.y = y - self->unk_12c.y;
         d.z = z - self->unk_12c.z;
@@ -1706,15 +1692,15 @@ void func_ov010_021fca40(Obj021fa860 *self) {
             self->target = pl->id;
             self->unk_40->st = 10;
         }
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220fc13, 0x800, 0);
-        func_ov000_021915a0(self->unk_38);
+        func_ov000_02190cb0(self->model, data_ov010_0220fc13, 0x800, 0);
+        func_ov000_021915a0(self->model);
         break;
     }
     case 10:
     case 11:
         self->unk_40->timer++;
         rate = 0x100;
-        if (func_ov000_02191120(self->unk_38)) {
+        if (func_ov000_02191120(self->model)) {
             if (self->unk_40->timer > 0x3c) {
                 self->unk_40->timer = 0;
                 self->unk_40->st = 0x28;
@@ -1767,12 +1753,12 @@ void func_ov010_021fca40(Obj021fa860 *self) {
         func_ov010_02201898(self->unk_100, &self->unk_12c);
         self->unk_40->timer++;
         if (self->unk_40->timer > 0x3c) {
-            void *a = Ov010e_FindActor(self->target);
+            Actor *a = Ov010e_FindActor(self->target);
             if (a != NULL) {
                 Ov010Vec p;
-                p.x = FLD(s32, a, 0x70);
-                p.y = FLD(s32, a, 0x74);
-                p.z = FLD(s32, a, 0x78);
+                p.x = a->pos.x;
+                p.y = a->pos.y;
+                p.z = a->pos.z;
                 if (VEC_Distance(&p, &self->unk_84) > 0x10000) {
                     func_ov010_02201700(self->unk_100);
                 }
@@ -1795,12 +1781,12 @@ void func_ov010_021fca40(Obj021fa860 *self) {
         }
         break;
     case 0x46:
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220ebe0, 0xcd, 0);
-        func_ov000_021915a0(self->unk_38);
+        func_ov000_02190cb0(self->model, data_ov010_0220ebe0, 0xcd, 0);
+        func_ov000_021915a0(self->model);
         self->unk_40->st = 0x47;
         break;
     case 0x47:
-        if (func_ov000_02191120(self->unk_38)) {
+        if (func_ov000_02191120(self->model)) {
             Ov010e_Cmd((u8 *)self + 0x1c0, 2, 1);
             self->unk_40->st = 100;
         }
@@ -1862,15 +1848,15 @@ static inline u16 Ov010e_AngTo(Obj021fa860 *self, u8 *a) {
 
 static inline void Ov010e_Spawn(Obj021fa860 *self) {
     if (self->unk_138.b0 && self->unk_140 == 0) {
-        void *a = Ov010e_FindActor(self->unk_13a);
+        Actor *a = Ov010e_FindActor(self->unk_13a);
         if (a != NULL) {
             Ov010V *e;
             Ov010Vec w;
             Ov010Vec u;
             *(Ov010Blk12 *)&u = ((Ov010PosFn)self->unk_14c)(a);
-            w.x = FLD(s32, a, 0x70);
-            w.y = FLD(s32, a, 0x74);
-            w.z = FLD(s32, a, 0x78);
+            w.x = a->pos.x;
+            w.y = a->pos.y;
+            w.z = a->pos.z;
             VEC_Add(&w, &u, &w);
             e = func_02065f88(self->unk_144, &w);
             FLD(u8, e, 0xd0) = 1;
@@ -1900,7 +1886,7 @@ void func_ov010_021fcf70(Obj021fa860 *self) {
             self->unk_120.x = data_ov010_0220ec20.x;
             self->unk_120.y = data_ov010_0220ec20.y;
             self->unk_120.z = data_ov010_0220ec20.z;
-            func_ov000_02191418(self->unk_38, 3, 0);
+            func_ov000_02191418(self->model, 3, 0);
             Ov010e_Cmd((u8 *)self + 0x1c0, 2, 1);
             func_ov010_0220172c(self->unk_100);
             func_ov010_02201b48((u8 *)self + 0x17c);
@@ -1938,11 +1924,11 @@ void func_ov010_021fcf70(Obj021fa860 *self) {
             self->unk_f2 = 0x1000;
             func_ov003_021d85c8((u8 *)self + 0x150, 0x14, 0, 0, 0);
             {
-                u8 *g = (u8 *)data_ov000_021ccd54;
-                g[0x190] |= 0x1c;
-                g[0x18d] = 0xf;
-                g[0x18e] = 0xf;
-                g[0x18f] = 0xf;
+                FieldState *g = data_ov000_021ccd54;
+                ((u8 *)g)[0x190] |= 0x1c;
+                ((u8 *)g)[0x18d] = 0xf;
+                ((u8 *)g)[0x18e] = 0xf;
+                ((u8 *)g)[0x18f] = 0xf;
             }
             func_ov003_021d68e0(self, 0x5adf, 0x739f, 10);
             func_ov003_021d9980(&self->unk_120, self->unk_98, (Ov010Vec *)&data_ov010_0220ec38);
@@ -1953,7 +1939,7 @@ void func_ov010_021fcf70(Obj021fa860 *self) {
                 self->unk_140 = 2;
                 self->unk_13c = 0;
             }
-            func_ov000_02190cb0(self->unk_38, data_ov010_0220fc19, 0x800, 1);
+            func_ov000_02190cb0(self->model, data_ov010_0220fc19, 0x800, 1);
             self->unk_b4 = 0;
             self->unk_b6 = 0;
             self->unk_40->st = 0x15;
@@ -1972,8 +1958,8 @@ void func_ov010_021fcf70(Obj021fa860 *self) {
         VEC_Add(&self->pos, &self->unk_120, &self->pos);
         self->unk_40->timer++;
         if (self->unk_40->timer > 0x19) {
-            func_ov000_02190cb0(self->unk_38, data_ov010_0220fc1f, 0x89, 0);
-            func_ov000_021915a0(self->unk_38);
+            func_ov000_02190cb0(self->model, data_ov010_0220fc1f, 0x89, 0);
+            func_ov000_021915a0(self->model);
             self->unk_40->timer = 0;
             self->unk_40->st = 0x32;
         }
@@ -2083,9 +2069,9 @@ void func_ov010_021fd694(Obj021fa860 *self) {
         self->unk_40->st = 10;
         break;
     case 10:
-        func_ov000_02191418(self->unk_38, 5, 1);
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220fc19, 0x266, 1);
-        func_ov000_021915a0(self->unk_38);
+        func_ov000_02191418(self->model, 5, 1);
+        func_ov000_02190cb0(self->model, data_ov010_0220fc19, 0x266, 1);
+        func_ov000_021915a0(self->model);
         func_ov003_021d68e0(self, 0x14bf, 0x739f, 10);
         self->unk_40->st = 11;
     case 11:
@@ -2144,8 +2130,8 @@ void func_ov010_021fd694(Obj021fa860 *self) {
         func_02049a48(data_02097e4c, 0xb05, -1, -1, -1);
         func_02049f44(data_02097e4c, 0x19, &pos2, 0);
         VEC_MultAdd(0x800, &data_ov010_0220fa64, &self->unk_120, &self->unk_120);
-        func_ov000_02190cb0(self->unk_38, data_ov010_0220fc25, 0x800, 1);
-        func_ov000_021915a0(self->unk_38);
+        func_ov000_02190cb0(self->model, data_ov010_0220fc25, 0x800, 1);
+        func_ov000_021915a0(self->model);
         self->unk_40->st = 0x1f;
     }
     case 0x1f:
@@ -2424,11 +2410,11 @@ void func_ov010_021fe2a4(Obj021fe084 *self) {
         break;
     }
     case 10: {
-        u8 *g = (u8 *)data_ov000_021ccd54;
-        FLD(u8, g, 0x190) |= 0x1c;
-        FLD(u8, g, 0x18d) = 0x1e;
-        FLD(u8, g, 0x18e) = 10;
-        FLD(u8, g, 0x18f) = 10;
+        FieldState *g = data_ov000_021ccd54;
+        g->cam.base.flags |= 0x1c;
+        g->cam.base.shakeTime = 0x1e;
+        g->cam.base.shakeLen = 10;
+        g->cam.base.shakeCur = 10;
         self->unk_40->st = 0xb;
         break;
     }
@@ -3103,14 +3089,14 @@ void func_ov010_021ffca4(Ov010Toggle *o, s32 *msg) {
 }
 
 static inline void Ov010_SetSky(void) {
-    Ov010G54 *g = data_ov000_021ccd54;
-    g->unk_1d0 = 0;
-    g->unk_1d4 = 0x5580;
-    g->unk_1d8 = 0;
-    g->b0 = 1;
+    FieldState *g = data_ov000_021ccd54;
+    g->cam.unk_dc.x = 0;
+    g->cam.unk_dc.y = 0x5580;
+    g->cam.unk_dc.z = 0;
+    g->cam.unk_da_0 = 1;
     g = data_ov000_021ccd54;
-    g->unk_1e8 = 0x5c00;
-    g->b2 = 2;
+    g->cam.unk_f4 = 0x5c00;
+    g->cam.unk_da_2 = 2;
 }
 
 void func_ov010_021ffd0c(Ov010Toggle *o) {

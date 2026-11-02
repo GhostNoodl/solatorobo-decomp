@@ -1,11 +1,8 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 
 extern "C" {
 
-extern const s16 FX_SinCosTable_[];
-extern u8 *data_ov000_021ccd54;
-void MTX_Identity43_(void *m);
-void MTX_RotY43_(void *m, s32 s, s32 c);
 void func_020627fc(s32 a);
 void func_ov000_02182590(void *p);
 void func_ov000_02188140(void *p, s32 a, s32 b, s32 c);
@@ -18,8 +15,8 @@ void func_ov000_0216d9dc(void *self, s32 unused, u16 *msg) {
         return;
     }
     ang = LFLD(u16, p, 0x44);
-    MTX_Identity43_(self);
-    MTX_RotY43_(self, FX_SinCosTable_[(ang >> 4) * 2], FX_SinCosTable_[(ang >> 4) * 2 + 1]);
+    MTX_Identity43_((MtxFx43 *)self);
+    MTX_RotY43_((MtxFx43 *)self, FX_SinCosTable_[(ang >> 4) * 2], FX_SinCosTable_[(ang >> 4) * 2 + 1]);
 }
 
 struct Obj0216da2c {
@@ -66,11 +63,11 @@ void func_ov000_0216da78(Obj0216da78 *self) {
     LBIT(self, 0).b8 = 1;
     self->unk_20 = v;
     if (LBIT(self, 0).b6 == 1) {
-        u8 *d;
+        FieldState *d;
         func_020627fc(4);
         d = data_ov000_021ccd54;
-        d[0xac] = 1;
-        func_ov000_02182590(d + 0xac);
+        d->unk_ac = 1;
+        func_ov000_02182590((u8 *)d + 0xac);
         func_ov000_02188140(data_ov000_021ccd54, 0xffff, 0, 0);
     }
 }
@@ -102,7 +99,6 @@ typedef struct {
 extern "C" {
 extern const s16 FX_SinCosTable_[];
 extern int data_02097d78[];
-extern u8 *data_ov000_021ccd54;
 bool func_ov000_021735e8(void);
 void func_ov000_0216e67c(void *self);
 void func_ov000_0216eaf8(void *self);
@@ -115,17 +111,17 @@ void func_ov000_02188140(void *p, s32 a, s32 b, s32 c);
 
 #define B(self) LFLD(Bits0216dae4, self, 0)
 
-static inline BOOL GBusy0216dae4(u8 *g) {
-    return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94) ? TRUE : FALSE;
+static inline BOOL GBusy0216dae4(FieldState *g) {
+    return g->head != g->tail ? TRUE : FALSE;
 }
 
 static inline BOOL GIdle0216dae4(void) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         if (GBusy0216dae4(g)) {
             return FALSE;
         }
-        if (LFLD(s32, g, 0) != 3) {
+        if (g->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -168,11 +164,11 @@ static inline void Done0216dae4(Obj0216dae4 *self) {
     LBIT(self, 0).b5 = 1;
     LBIT(self, 0).b8 = 1;
     if (LBIT(self, 0).b6 == 1) {
-        u8 *d;
+        FieldState *d;
         func_020627fc(4);
         d = data_ov000_021ccd54;
-        d[0xac] = 1;
-        func_ov000_02182590(d + 0xac);
+        d->unk_ac = 1;
+        func_ov000_02182590((u8 *)d + 0xac);
         func_ov000_02188140(data_ov000_021ccd54, 0xffff, 0, 0);
     }
 }

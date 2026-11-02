@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -13,7 +14,6 @@ typedef struct {
     Rgb0219d5a0 rgb;
 } Def0219d5a0;
 
-extern u8 *data_ov000_021ccd54;
 extern Def0219d5a0 data_ov000_021c9fe8;
 
 static inline BOOL RgbEq0219d5a0(Rgb0219d5a0 *a, Rgb0219d5a0 b) {
@@ -35,14 +35,14 @@ s32 func_ov000_0219d5a0(Robo021ca458 *self) {
             busy = FALSE;
         }
     }
-    st = LFLD(u32, self->unk_48, 0x50);
+    st = self->unk_48->unk_50;
     if (st & 0x400) {
         busy = TRUE;
     }
     if (!self->unk_b24_1) {
         if (self->unk_b29_4 || busy) {
             result = 2;
-        } else if (!RgbEq0219d5a0((Rgb0219d5a0 *)(data_ov000_021ccd54 + 0xca), data_ov000_021c9fe8.rgb)) {
+        } else if (!RgbEq0219d5a0((Rgb0219d5a0 *)((u8 *)data_ov000_021ccd54 + 0xca), data_ov000_021c9fe8.rgb)) {
             if (!(st & 0x20000000) || !self->unk_b24_4) {
                 result = 1;
             }

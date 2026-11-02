@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
 
 /* Actor factory: picks the class from the actor info type, then from the id. */
 
@@ -94,7 +95,6 @@ extern u8 data_ov012_0220af10[];
 extern u8 data_ov012_0220b150[];
 extern u8 data_ov012_0220b1e8[];
 extern u8 data_ov013_0220b7d0[];
-extern u8 *data_ov000_021ccd54;
 void *Heap_Alloc(u32 size);
 Info02192b24 *func_020704b4(u16 id);
 s32 func_0206ffa0(u16 id);
@@ -588,7 +588,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
     }
     if (p != NULL) {
         Actor_JoinGroup(p, s->sub, s->id, func_0206ffa0(s->id));
-        *(Rgb02192b24 *)(p + 0xac) = *(Rgb02192b24 *)(data_ov000_021ccd54 + 0xca);
+        *(Rgb02192b24 *)(p + 0xac) = *(Rgb02192b24 *)((u8 *)data_ov000_021ccd54 + 0xca);
     }
     return p;
 }

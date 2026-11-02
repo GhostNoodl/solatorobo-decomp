@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 
@@ -57,7 +58,6 @@ typedef struct {
 #define COS_0219d9fc(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
 extern "C" {
-extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd30;
 extern u8 *data_0214a424;
@@ -82,16 +82,16 @@ static inline Actor *FindActor_0219d9fc(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-static inline BOOL IsBusy_0219d9fc(u8 *g) {
-    return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94);
+static inline BOOL IsBusy_0219d9fc(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL IsIdle_0219d9fc(u8 *g) {
+static inline BOOL IsIdle_0219d9fc(FieldState *g) {
     if (g != NULL) {
         if (IsBusy_0219d9fc(g)) {
             return FALSE;
         }
-        if (LFLD(s32, g, 0) != 3) {
+        if (g->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -105,11 +105,11 @@ static inline u8 Begin_0219d9fc(void) {
     return a;
 }
 
-static inline BOOL HasD4_0219d9fc(u8 *g) {
-    return LFLD(s32, g, 0xd4) != 0;
+static inline BOOL HasD4_0219d9fc(FieldState *g) {
+    return ((s32)g->unk_d4) != 0;
 }
 
-static inline BOOL HasD4B_0219d9fc(u8 *g) {
+static inline BOOL HasD4B_0219d9fc(FieldState *g) {
     return HasD4_0219d9fc(g) ? TRUE : FALSE;
 }
 
@@ -124,9 +124,9 @@ struct RgbEq_0219d9fcSelf {
     u8 unk_774;
 };
 
-static inline BOOL RgbEq_0219d9fc(u8 *g, RgbEq_0219d9fcSelf *self) {
+static inline BOOL RgbEq_0219d9fc(FieldState *g, RgbEq_0219d9fcSelf *self) {
     BOOL e = FALSE;
-    if (g[0xca] == self->unk_772 && g[0xcb] == self->unk_773 && g[0xcc] == self->unk_774) {
+    if (g->unk_ca.c[0] == self->unk_772 && g->unk_ca.c[1] == self->unk_773 && g->unk_ca.c[2] == self->unk_774) {
         e = TRUE;
     }
     return e;
@@ -156,7 +156,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
         return FALSE;
     }
     func_ov000_02191ec4(((void *)self->unk_3c), 1, self->unk_48->unk_54);
-    m = ((u8 *)self->unk_38);
+    m = ((u8 *)self->model);
     v = LFLD(u8, m, 0xbf);
     if (self->unk_48->unk_54 & 0x80000) {
         if (B24(self).b20) {
@@ -183,7 +183,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
         u16 w = LFLD(u16, ((u8 *)self->hp), 0xa);
         n = 0;
         if (w != 0) {
-            if (LFLD(u16, ((u8 *)self->unk_38), 0xba) == 0) {
+            if (self->model->unk_ba == 0) {
                 u16 k;
                 n = 1;
                 cb = ca = 0x53ff;
@@ -221,13 +221,13 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
         }
     }
     if (n != 0) {
-        u8 *fm = ((u8 *)self->unk_38);
+        u8 *fm = ((u8 *)self->model);
         LFLD(u16, fm, 0xb6) = ca;
         LFLD(u16, fm, 0xb8) = cb;
         LFLD(u16, fm, 0xba) = n + 1;
         LFLD(u16, fm, 0xbc) = n;
     }
-    LFLD(u8, ((u8 *)self->unk_38), 0xbe) = lvl;
+    self->model->alpha = lvl;
     if (B24(self).b1) {
         if (B22(self).b0 && ((u8 *)self->unk_998) != NULL) {
             Flash_0219d9fc(((u8 *)self->unk_998), ca, cb, n);
@@ -361,7 +361,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
         }
     }
     {
-        u8 *g = data_ov000_021ccd54;
+        FieldState *g = data_ov000_021ccd54;
         if (IsIdle_0219d9fc(g) && !HasD4B_0219d9fc(g)) {
             func_ov000_021bd7a0(self->unk_5c);
             func_ov000_021bd7a0(self->unk_9b0);

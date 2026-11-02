@@ -28,9 +28,9 @@ static inline TextWin *TextWin_New(void) {
 }
 
 static inline void SetText(TextWin *win, u32 text) {
-    win->unk_24 = text;
-    win->unk_4c = func_0204c4fc(win->unk_28, win->unk_38, win->unk_24, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->unk_28;
+    win->str = text;
+    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+    data_02097ce0->unk_004 = win->font;
 }
 
 void func_ov000_0215d758(Lo021cae48 *self) {
@@ -59,7 +59,7 @@ void func_ov000_0215d758(Lo021cae48 *self) {
     res = data_02149ef8;
     win = TextWin_New();
     self->unk_94 = win;
-    win->unk_28 = 4;
+    win->font = 4;
     SetText(self->unk_94, MsgRes_GetString(res, ent[1]));
     self->unk_94->unk_2c = 0;
     self->unk_94->unk_74 = 0x77df;

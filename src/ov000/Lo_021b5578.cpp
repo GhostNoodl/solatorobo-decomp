@@ -1,4 +1,5 @@
 #include "nitro/fx.h"
+#include "Main/Sys/FieldState.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -61,7 +62,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd54;
 extern Save021b5578 *data_0214a424;
 
 Lang021b5578 *func_0206e7d0(u8 id);
@@ -128,7 +128,7 @@ BOOL func_ov000_021b5578(Mgr021b5578 *self) {
     u8 st;
     char buf[0x20];
     u16 kind;
-    u8 *ids = data_ov000_021ccd54 + 0xca;
+    u8 *ids = (u8 *)data_ov000_021ccd54 + 0xca;
     Lang021b5578 *t = func_0206e7d0(ids[0]);
     switch (self->state) {
     case 0:

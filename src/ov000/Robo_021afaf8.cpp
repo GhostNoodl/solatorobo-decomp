@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 
@@ -61,7 +62,6 @@ extern Glb_021afaf8 NNS_G3dGlb;
 extern u8 *data_0214a424;
 extern Def_021afaf8 data_ov000_021ca398[];
 extern Def_021afaf8 data_ov000_021ca248[];
-extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 u8 *func_0206ef10(u16 id);
 u8 *func_02065f88(s32 id, void *pos);
@@ -80,17 +80,17 @@ void *NNS_G3dGetMdlSet(void *file);
 void NNS_G3dReleaseMdlSet(void *mdl);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
-static inline BOOL GBusy_021afaf8(u8 *g) {
-    return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94) ? TRUE : FALSE;
+static inline BOOL GBusy_021afaf8(FieldState *g) {
+    return g->head != g->tail ? TRUE : FALSE;
 }
 
 static inline BOOL GIdle_021afaf8(void) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         if (GBusy_021afaf8(g)) {
             return FALSE;
         }
-        if (LFLD(s32, g, 0) != 3) {
+        if (g->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -106,9 +106,9 @@ static inline Actor *FindActor_021afaf8(u16 id) {
 }
 
 static inline BOOL SameRoom_021afaf8(Robo021ca458 *self) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     BOOL r = FALSE;
-    if (g[0xca] == self->unk_772 && g[0xcb] == self->unk_773 && g[0xcc] == self->unk_774) {
+    if (((u8 *)g)[0xca] == self->unk_772 && ((u8 *)g)[0xcb] == self->unk_773 && ((u8 *)g)[0xcc] == self->unk_774) {
         r = TRUE;
     }
     return r;
@@ -244,7 +244,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
         }
         if (!big && self->unk_b22_0 != 0) {
             self->unk_b22_0 = 0;
-            LFLD(B190_021afaf8, data_ov000_021ccd54, 0x190).b6 = 0;
+            data_ov000_021ccd54->cam.base.flag6 = 0;
             self->unk_70c = 0xa000;
             LFLD(s32, self->unk_3c, 0xc) = 0xa000;
             FreeModels_021afaf8(self);
@@ -254,7 +254,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
             const char *s2;
             u8 *r;
             self->unk_b22_0 = 1;
-            LFLD(B190_021afaf8, data_ov000_021ccd54, 0x190).b6 = 1;
+            data_ov000_021ccd54->cam.base.flag6 = 1;
             self->unk_70c = 0x14000;
             LFLD(s32, self->unk_3c, 0xc) = 0x14000;
             FreeModels_021afaf8(self);

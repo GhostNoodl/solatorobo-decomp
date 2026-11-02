@@ -37,7 +37,7 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
             }
             rate = 0x111;
         }
-    } else if (LFLD(u32, self->unk_48, 0x50) & 0x400) {
+    } else if (self->unk_48->unk_50 & 0x400) {
         name = data_ov000_021cc624;
         if (self->unk_b36 == 1) {
             target = 0x1c3;
@@ -48,9 +48,9 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
             frame = 0xcd;
         }
     }
-    func_ov000_02190cb0(self->unk_38, name, rate, 0);
+    func_ov000_02190cb0(self->model, name, rate, 0);
     if (!self->unk_b22_3) {
-        func_ov000_021915a0(self->unk_38);
+        func_ov000_021915a0(self->model);
     }
     LFLD(u16, self->unk_48, 0x9a) |= 0x20;
     func_ov000_021b1dd8((u8 *)self, target, frame, speed, 0x466, 1);
@@ -64,18 +64,18 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
             spd = (s16)(v * 2) * 4 + (s16)(v * 2) * 2 + (s16)(v * 2);
         }
     }
-    func_ov000_021911c8(self->unk_38, spd);
+    func_ov000_021911c8(self->model, spd);
     if (self->unk_b28_0 == 3) {
         self->unk_b28_0 = 2;
-        LFLD(VecFx32, self, 0xb10) = LFLD(VecFx32, self, 0x70);
+        LFLD(VecFx32, self, 0xb10) = self->pos;
     }
     turned = FALSE;
-    if (LBIT(self, 0xb24).b1 && (LFLD(u32, self->unk_48, 0x54) & 0x400)) {
+    if (LBIT(self, 0xb24).b1 && (self->unk_48->unk_54 & 0x400)) {
         self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x,
                                          self->unk_af8 - self->pos.z);
         self->unk_9c = 0x66;
         self->unk_a4 = 0;
-        if (!LBIT(self, 0xb24).b17 || (LFLD(u32, self->unk_48, 0x50) & 0x40000000)) {
+        if (!LBIT(self, 0xb24).b17 || (self->unk_48->unk_50 & 0x40000000)) {
             self->unk_a0 = 0x200;
         }
         self->unk_a8 = 0x52;
@@ -85,7 +85,7 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
     if (!turned) {
         return;
     }
-    func_ov000_02190cb0(self->unk_38, data_ov000_021cc62a, 0x800, 0);
+    func_ov000_02190cb0(self->model, data_ov000_021cc62a, 0x800, 0);
     func_ov000_02198360(self->unk_40, 4, 0);
 }
 

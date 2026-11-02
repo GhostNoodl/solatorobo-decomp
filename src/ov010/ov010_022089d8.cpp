@@ -92,9 +92,9 @@ void func_ov010_022089d8(Obj022089d8 *self) {
     }
     }
     if (anim) {
-        func_ov000_02190cb0(self->unk_38, FLD(const char *, data_ov010_0220f024, 0x2c), 0x1000, 0);
-        func_ov000_021915a0(self->unk_38);
-        FLD(Ov010Flags, self->unk_38, 0xc2).b0 = 1;
+        func_ov000_02190cb0(self->model, FLD(const char *, data_ov010_0220f024, 0x2c), 0x1000, 0);
+        func_ov000_021915a0(self->model);
+        self->model->unk_c2_0 = 1;
     }
 }
 }

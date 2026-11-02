@@ -14,13 +14,26 @@ struct TextWin;
 
 // The ov000 actor with resources (ctor ActorEx_Ctor, vtable data_ov000_021cc480, 0xd0
 // bytes); the ov003/ov009/ov012-ov014 actor classes in that vtable family derive from it.
+// Spawn parameters of an ActorEx (ActorEx::param). The bit fields at 0x02 are the union of
+// the splits the methods use.
+typedef struct ActorExParam {
+    u8 kind;
+    u8 unk_01;
+    u16 type : 3;
+    u16 unk_02_3 : 1;
+    u16 unk_02_4 : 3;
+    u16 unk_02_7 : 1;
+    u16 unk_02_8 : 1;
+    u16 unk_02_9_f : 7;
+} ActorExParam;
+
 struct ActorEx : public Actor {
     u8 unk_ac;
     u8 unk_ad;
     u8 unk_ae;
     u8 unk_af;
-    u8 *unk_b0;
-    void *unk_b4[2];
+    ActorExParam *param;
+    ResSet *res[2];
     void *unk_bc;
     s32 unk_c0;
     s32 unk_c4;
@@ -31,7 +44,7 @@ struct ActorEx : public Actor {
             u16 unk_cc_0 : 1;
             u16 unk_cc_1 : 1;
             u16 unk_cc_2 : 1;
-            u16 unk_cc_3_f : 1;
+            u16 unk_cc_3 : 1;
             u16 unk_cc_4 : 1;
             u16 unk_cc_5 : 1;
             u16 unk_cc_6 : 1;
@@ -1157,7 +1170,7 @@ struct Hud021cca10 {
     u8 unk_21[0xf];
     Model *unk_30;
     Model *unk_34;
-    void *unk_38;
+    TextWin *unk_38;
     void *unk_3c;
     char *unk_40;
     u8 unk_44;
@@ -1170,7 +1183,7 @@ struct Lo021cca40 {
     s32 unk_10;
     s32 unk_14;
     u8 unk_18[0x18];
-    u8 *unk_30;
+    TextWin *unk_30;
     Model *unk_34;
     void *unk_38;
     u16 unk_3c;

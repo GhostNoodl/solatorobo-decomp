@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     u8 pad[0x12];
@@ -56,7 +57,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd54;
 void *func_0203de84(u32 size, s32 align);
 void func_0203df0c(void *p);
 u8 *func_ov000_02165e2c(Obj02165a20 *self, Area02165a20 *area);
@@ -84,7 +84,7 @@ static inline Area02165a20 *FindArea02165a20(Sub02165a20 *w, u8 a, u8 b) {
 
 void func_ov000_02165a20(Obj02165a20 *self, u8 *key) {
     Sub02165a20 *w = self->sub;
-    u8 *pl;
+    FieldState *pl;
     Area02165a20 *start;
     Area02165a20 *dst;
     Ctx02165a20 *p;
@@ -94,7 +94,7 @@ void func_ov000_02165a20(Obj02165a20 *self, u8 *key) {
         return;
     }
     pl = data_ov000_021ccd54;
-    if (pl[0xca] != key[0]) {
+    if (((u8 *)pl)[0xca] != key[0]) {
         return;
     }
     start = FindArea02165a20(w, key[1], key[2]);
@@ -120,7 +120,7 @@ void func_ov000_02165a20(Obj02165a20 *self, u8 *key) {
     p->unk_10c = 0;
     p->unk_10e = 0;
     w = self->sub;
-    dst = GetArea02165a20(w, pl[0xcc]);
+    dst = GetArea02165a20(w, ((u8 *)pl)[0xcc]);
     if (dst == NULL) {
         if (w != NULL && w->ctx != NULL) {
             func_0203df0c(w->ctx);

@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/HeapScope.h"
 #include "nitro/fx.h"
@@ -64,7 +65,6 @@ typedef struct {
 extern "C" {
 void *Heap_Alloc(u32 size);
 extern char *data_ov000_021cc858[];
-extern u8 *data_ov000_021ccd54;
 extern void *data_02149ef8;
 extern u8 data_0208b318[];
 extern u8 data_0208ba70[];
@@ -167,7 +167,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         }
         self->state = 4;
     case 4: {
-        s32 v = LFLD(s32, data_ov000_021ccd54, 0x98);
+        s32 v = data_ov000_021ccd54->unk_98;
         void *text;
         void *text1;
         u8 *w;

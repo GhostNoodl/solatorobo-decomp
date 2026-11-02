@@ -47,17 +47,17 @@ static inline void Reset021a0268(Robo021ca458 *self) {
     self->unk_b24_7 = self->unk_b24_9;
 }
 
-static inline BOOL GBusy021a0268(u8 *g) {
-    return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94) ? TRUE : FALSE;
+static inline BOOL GBusy021a0268(FieldState *g) {
+    return g->head != g->tail ? TRUE : FALSE;
 }
 
 static inline BOOL GIdle021a0268(void) {
-    u8 *g = (u8 *)data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         if (GBusy021a0268(g)) {
             return FALSE;
         }
-        if (LFLD(s32, g, 0) != 3) {
+        if (g->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -76,7 +76,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
         return;
     }
     if (self->unk_b24_1) {
-        self->unk_38 = (u8 *)self + 0x368;
+        self->model = (Model0218fe1c *)((u8 *)self + 0x368);
         self->unk_48 = (ActorSub48 *)((u8 *)self + 0x6c0);
         if (self->unk_b24_5 == 2) {
             self->unk_b08 = 0x15c;
@@ -88,7 +88,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
         }
         self->unk_b08 += func_0206d37c(data_0214a424, 3) * 4;
     } else {
-        self->unk_38 = &self->unk_ac;
+        self->model = (Model0218fe1c *)&self->unk_ac;
         self->unk_48 = (ActorSub48 *)((u8 *)self + 0x2cc);
         self->unk_b08 = 0x19a;
     }
@@ -114,7 +114,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
             Actor *o = GetObj021a0268(self->unk_b1c);
             if (o != NULL) {
                 Msg021a0268 m;
-                m.pos = LFLD(VecFx32, self, 0x70);
+                m.pos = self->pos;
                 m.pos.y += self->unk_6c;
                 m.rot[0] = o->rot_x;
                 m.rot[1] = o->rot_y;

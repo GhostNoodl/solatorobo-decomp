@@ -102,11 +102,11 @@ typedef struct {
     s32 unk_a8;
     s32 unk_ac;
     s32 unk_b0;
-    u16 unk_b4;
+    u16 actor_id; // owner actor for animation events (0xffff: none)
     u8 unk_b6[0x4];
     u16 unk_ba;
     u16 unk_bc;
-    u8 unk_be;
+    u8 alpha; // polygon alpha, 0x1f opaque
     u8 unk_bf;
     u8 unk_c0;
     u8 unk_c1;

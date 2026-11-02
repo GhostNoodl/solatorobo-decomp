@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 
@@ -23,7 +24,6 @@ extern "C" {
 extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc5e9[];
 extern u8 *data_0214a424;
-extern u8 *data_ov000_021ccd54;
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_02190a80(void *a, s32 b);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
@@ -52,14 +52,10 @@ void func_ov000_021b12c0(Robo021ca458 *self, BOOL flag) {
     LFLD(Bits0214a424, data_0214a424, 0x18).b9 = 0;
     func_02062764(3, 1);
     if (flag) {
-        LFLD(u8, data_ov000_021ccd54, 0xac) = 1;
+        data_ov000_021ccd54->unk_ac = 1;
     }
 }
 }
-
-typedef struct {
-    u8 c[3];
-} Rgb021b13cc;
 
 static inline void SetRgb(u8 *g, u8 r, u8 gr, u8 b) {
     LFLD(u8, g, 0x134) = r;
@@ -75,7 +71,7 @@ extern "C" void func_ov000_021b13cc(Robo021ca458 *self, BOOL flag) {
     func_ov000_02190a80((u8 *)self + 0x368, 0x1000);
     self->unk_178 = 0x320;
     if (self->unk_b24_1 == 1) {
-        LFLD(Rgb021b13cc, self, 0x772) = LFLD(Rgb021b13cc, data_ov000_021ccd54, 0xca);
+        LFLD(FieldId, self, 0x772) = data_ov000_021ccd54->unk_ca;
     }
     LFLD(Bits0214a424, data_0214a424, 0x18).b8 = 1;
     LFLD(VecFx32, data_0214a424, 0x148) = self->unk_75c;
@@ -83,6 +79,6 @@ extern "C" void func_ov000_021b13cc(Robo021ca458 *self, BOOL flag) {
     SetRgb(data_0214a424, self->unk_772, self->unk_773, self->unk_774);
     func_02062764(3, 2);
     if (flag) {
-        LFLD(u8, data_ov000_021ccd54, 0xac) = 1;
+        data_ov000_021ccd54->unk_ac = 1;
     }
 }

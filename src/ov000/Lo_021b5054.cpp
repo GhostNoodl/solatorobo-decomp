@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 
 class Mgr021b5054Cls;
@@ -29,7 +30,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd54;
 void PauseNode_Init(void *node);
 void func_0203f80c(void *p);
 
@@ -39,7 +39,7 @@ Mgr021b5054 *func_ov000_021b5054(Mgr021b5054 *self) {
     PauseNode_Init(self);
     func_0203f80c(self->unk_1f4);
     if (data_ov000_021ccd54 != NULL) {
-        self->unk_00 = data_ov000_021ccd54 + 8;
+        self->unk_00 = (u8 *)data_ov000_021ccd54 + 8;
     }
     self->unk_08 = 0;
     self->unk_0c = 0;

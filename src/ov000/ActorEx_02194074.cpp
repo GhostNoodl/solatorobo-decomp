@@ -1,59 +1,11 @@
 #include "types.h"
+#include "ov000/ObjLayouts.h"
 #include "Main/Sys/SysState.h"
 #include "nitro/fx.h"
-
-typedef struct ResSet ResSet;
 
 typedef struct {
     s16 state;
 } AnimRes;
-
-typedef struct {
-    u8 unk_00[0x2];
-    u16 type : 3;
-    u16 unk_02_3 : 13;
-} ActorExParam;
-
-typedef struct {
-    u8 unk_00[0x9a];
-    u16 unk_9a_0 : 3;
-    u16 unk_9a_3 : 1;
-    u16 unk_9a_4 : 1;
-    u16 unk_9a_5 : 11;
-} Obj48;
-
-typedef struct {
-    const void *vtbl;
-    u8 unk_04[0x1c];
-    u16 unk_20;
-    u8 unk_22[0x1a];
-    void *unk_3c;
-    u8 unk_40[0x8];
-    Obj48 *unk_48;
-    void *unk_4c;
-    u8 unk_50[0x8];
-    void *unk_58;
-    u8 unk_5c[0x14];
-    VecFx32 pos;
-    u8 unk_7c[0x30];
-    u8 unk_ac;
-    u8 unk_ad;
-    u8 unk_ae;
-    u8 unk_af;
-    ActorExParam *unk_b0;
-    ResSet *res[2];
-    void *unk_bc;
-    s32 unk_c0;
-    s32 unk_c4;
-    s32 unk_c8;
-    u16 unk_cc_0 : 1;
-    u16 unk_cc_1 : 1;
-    u16 unk_cc_2 : 1;
-    u16 unk_cc_3 : 1;
-    u16 unk_cc_4 : 1;
-    u16 unk_cc_5 : 1;
-    u16 unk_cc_6 : 10;
-} ActorEx;
 
 extern "C" {
 
@@ -70,9 +22,9 @@ BOOL func_ov000_0218f110(AnimRes *res);
 BOOL Actor_DespawnIfFar(void *self);
 void *Target_Get(void *p);
 void *func_ov000_0219bf90(void);
-void func_0203f364(Obj48 *obj);
+void func_0203f364(ActorSub48 *obj);
 void HitMesh_Link(void *obj);
-void func_ov000_0219864c(Obj48 *obj, VecFx32 *pos, s32 c);
+void func_ov000_0219864c(ActorSub48 *obj, VecFx32 *pos, s32 c);
 
 static inline void ResSet_Delete(ResSet *res) {
     if (res != NULL) {
@@ -85,11 +37,11 @@ static inline void ActorEx_Init(ActorEx *self) {
     s32 i;
 
     Actor_Ctor(self);
-    self->vtbl = data_ov000_021cc480;
+    *(const void **)self = data_ov000_021cc480;
     self->unk_ac = 0xff;
     self->unk_ad = 0xff;
     self->unk_ae = 0xff;
-    self->unk_b0 = NULL;
+    self->param = NULL;
     for (i = 0; i < 2; i++) {
         self->res[i] = NULL;
     }
@@ -106,7 +58,7 @@ static inline void ActorEx_Init(ActorEx *self) {
 static inline void ActorEx_Destroy(ActorEx *self) {
     s32 i;
 
-    self->vtbl = data_ov000_021cc480;
+    *(const void **)self = data_ov000_021cc480;
     for (i = 0; i < 2; i++) {
         void *saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->unk_08;
@@ -173,18 +125,6 @@ typedef struct {
 } Ids0219433c;
 
 typedef struct {
-    u8 kind;
-    u8 pad;
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 b4 : 4;
-    u16 b8 : 1;
-    u16 rest : 7;
-} Param0219433c;
-
-typedef struct {
     Hdr0219433c hdr;
     Ids0219433c ids;
     u8 f0 : 1;
@@ -197,7 +137,7 @@ typedef struct {
 typedef struct {
     Hdr0219433c hdr;
     Ids0219433c ids;
-    Param0219433c param;
+    ActorExParam param;
 } Data0219433c;
 
 typedef struct {
@@ -230,7 +170,7 @@ typedef struct {
     u8 b93_0 : 7;
     u8 b93_7 : 1;
     u8 pad94[0x1c];
-    Param0219433c *unk_b0;
+    ActorExParam *unk_b0;
     void *res[2];
     u8 padbc[0x10];
     u16 cc_0 : 1;
@@ -347,7 +287,7 @@ void func_ov000_0219433c(Actor0219433c *self) {
     Data0219433c *d = func_020704b4(self->id);
     s32 i;
     self->unk_b0 = &d->param;
-    if (info->b0 || info->b1 || self->unk_b0->b3) {
+    if (info->b0 || info->b1 || self->unk_b0->unk_02_3) {
         self->unk_34 = NewRes0219433c();
         func_ov000_02193e5c(self->unk_34, self->id);
     }
@@ -365,7 +305,7 @@ void func_ov000_0219433c(Actor0219433c *self) {
         if (&d->ids != NULL) {
             CopyIds0219433c(&o->ids, &d->ids);
         }
-        if (self->unk_b0->b8) {
+        if (self->unk_b0->unk_02_8) {
             SetMtx0219433c(self, self->unk_4c);
         }
         if (d->hdr.kind == 2) {

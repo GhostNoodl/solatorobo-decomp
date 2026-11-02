@@ -1,11 +1,11 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 
 extern "C" {
 
 typedef void (*VFunc)(void);
 
-extern u8 *data_ov000_021ccd54;
 extern u8 *data_02097ce0;
 extern VFunc data_0208ba70[];
 void *func_02061d64(u16 idx);
@@ -67,7 +67,7 @@ s32 func_ov000_021ba92c(Obj021ba92c *self) {
     case 2:
         self->unk_04 = 4;
     case 4: {
-        s32 m = LFLD(s32, data_ov000_021ccd54, 0x98);
+        s32 m = data_ov000_021ccd54->unk_98;
         void *str;
         Ov000Text *t;
         if (!IsMode021ba92c(m) && (u32)(m - 0x11) > 2) {

@@ -57,7 +57,7 @@ static inline void Reset12c0(Robo021ca458 *self, BOOL flag) {
     LFLD(Bits0214a424, data_0214a424, 0x18).b9 = 0;
     func_02062764(3, 1);
     if (flag) {
-        LFLD(u8, data_ov000_021ccd54, 0xac) = 1;
+        data_ov000_021ccd54->unk_ac = 1;
     }
 }
 
@@ -93,7 +93,7 @@ void func_ov000_021b1814(Robo021ca458 *self, BOOL flag, BOOL mode) {
     }
     func_02062764(0xc00, 0x800);
     if (flag) {
-        LFLD(u8, data_ov000_021ccd54, 0xac) = 1;
+        data_ov000_021ccd54->unk_ac = 1;
     }
 }
 }
@@ -182,7 +182,7 @@ void func_ov000_021b1a54(Robo021ca458 *self, BOOL flag) {
     SetSt((u8 *)self, st);
     func_02062764(0xc00, 0x400);
     if (flag) {
-        LFLD(u8, data_ov000_021ccd54, 0xac) = 1;
+        data_ov000_021ccd54->unk_ac = 1;
     }
 }
 

@@ -121,7 +121,7 @@ void func_02056e74(GameScene *scene, GameHud *hud) {
     G3_Cmd1(0x2a, 0x20000000);
     col = 0;
     y = 0x8c;
-    if (*(s32 *)data_ov000_021ccd70->unk_08 != 2) {
+    if (data_ov000_021ccd70->mode != 2) {
         pltt = &data_02097d48->pltt;
         hud->unk_4 = 0xf;
         hud->unk_6 = 0x94;
@@ -132,7 +132,7 @@ void func_02056e74(GameScene *scene, GameHud *hud) {
         s = !hud->flip ? FX_SinCosTable_[((hud->t << 14) >> 16) * 2] : 0x1000 - FX_SinCosTable_[((hud->t << 14) >> 16) * 2];
         G3_Vec(0x1b, s, s, 0x1000);
         if (!GameScene_IsPlayerActing()) {
-            if ((u8)(data_ov000_021ccd54->unk_0c9[1] + 2) <= 1) {
+            if ((u8)(data_ov000_021ccd54->unk_ca.c[0] + 2) <= 1) {
                 col = 0xc63;
             }
         }

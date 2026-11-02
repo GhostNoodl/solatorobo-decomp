@@ -1,4 +1,5 @@
 #include "ov000/Vec.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ActorBase.h"
 #include "ov000/VObj.h"
 #include "ov000/Model0218fe1c.h"
@@ -15,7 +16,6 @@ typedef struct {
 extern "C" {
 extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
-extern u8 *data_ov000_021ccd54;
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
@@ -60,7 +60,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
     AnimCtrl *a;
     s32 prev;
     s32 op = *p++;
-    Actor *actor = FindActor_02191f18(m->unk_b4);
+    Actor *actor = FindActor_02191f18(m->actor_id);
 
     switch (op) {
     case 0:
@@ -162,7 +162,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
         break;
     case 23:
         if (actor != NULL) {
-            actor->unk_98 = (u16)p[0] + CamYaw_02191f18(data_ov000_021ccd54 + 0xf4);
+            actor->unk_98 = (u16)p[0] + CamYaw_02191f18((u8 *)data_ov000_021ccd54 + 0xf4);
             SetOfs_02191f18(actor, p[1] << 4, p[2] << 4, p[3] << 4, p[4] << 4);
         }
         p += 5;
@@ -385,7 +385,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
         if (actor != NULL) {
             func_020627a0(actor->kind, actor->id);
             func_020627dc(5);
-            LFLD(u8, data_ov000_021ccd54, 0xac) = 1;
+            data_ov000_021ccd54->unk_ac = 1;
         }
         break;
     }

@@ -1,4 +1,5 @@
 #include "ov010/ov010.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "ov010/ObjLayouts.h"
 
@@ -20,7 +21,6 @@ extern u8 data_ov010_0220f448[];
 extern u8 data_ov010_0220f298[];
 extern u8 data_ov010_0220ffc4[];
 extern u8 data_ov010_02210154[];
-extern u8 *data_ov000_021ccd54;
 extern void *data_0214a420;
 extern BOOL func_ov003_021d984c(void *p, void *d);
 extern void func_ov003_021d95e8(void *p, void *d, s32 n);
@@ -107,7 +107,7 @@ void func_ov010_02208de8(Ov010Sw *self) {
     if (!self->b0) {
         return;
     }
-    if (data_ov000_021ccd54 + 0xf4 == NULL) {
+    if ((u8 *)data_ov000_021ccd54 + 0xf4 == NULL) {
         return;
     }
     p = func_ov000_0219bf90();
@@ -117,7 +117,7 @@ void func_ov010_02208de8(Ov010Sw *self) {
     if (Ov010_PlayerBusy(p)) {
         return;
     }
-    func_ov000_0218a358(data_ov000_021ccd54 + 0xf4, &self->unk_08, self->unk_14, self->unk_1c, 0, 0x1000, 0x1000, 1);
+    func_ov000_0218a358((u8 *)data_ov000_021ccd54 + 0xf4, &self->unk_08, self->unk_14, self->unk_1c, 0, 0x1000, 0x1000, 1);
 }
 
 u16 func_ov010_02208e90(s32 a, s32 b) {

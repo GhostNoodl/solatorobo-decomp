@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 class Robo021a0d4cCls;
@@ -37,7 +38,6 @@ typedef struct {
 
 extern "C" {
 extern Robo021a0d4cEntry data_ov000_021ca458[];
-extern u8 *data_ov000_021ccd54;
 extern u8 *data_ov000_021ccd30;
 extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
@@ -92,17 +92,17 @@ static inline void Gauge021a0d4c(u16 v) {
     }
 }
 
-static inline BOOL GBusy021a0d4c(u8 *g) {
-    return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94) ? TRUE : FALSE;
+static inline BOOL GBusy021a0d4c(FieldState *g) {
+    return g->head != g->tail ? TRUE : FALSE;
 }
 
 static inline BOOL GIdle021a0d4c(void) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         if (GBusy021a0d4c(g)) {
             return FALSE;
         }
-        if (LFLD(s32, g, 0) != 3) {
+        if (g->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -126,19 +126,19 @@ static inline BOOL G9_021a0d4c(void) {
     return LFLD(G18_021a0d4c, data_0214a424, 0x18).b9 ? TRUE : FALSE;
 }
 
-static inline BOOL Ready021a0d4c(u8 *g) {
+static inline BOOL Ready021a0d4c(FieldState *g) {
     if (GBusy021a0d4c(g)) return FALSE;
-    if (LFLD(s32, g, 0) != 3) return FALSE;
+    if (g->state != 3) return FALSE;
     return TRUE;
 }
-static inline BOOL IdleG021a0d4c(u8 *g) {
+static inline BOOL IdleG021a0d4c(FieldState *g) {
     if (g != NULL) {
         return Ready021a0d4c(g);
     }
     return TRUE;
 }
 static inline BOOL Ok021a0d4c(Robo021ca458 *self) {
-    u8 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     BOOL r = IdleG021a0d4c(g);
     if (r) {
         r = !self->unk_b29_1;
@@ -161,7 +161,7 @@ static inline BOOL Ok021a0d4c(Robo021ca458 *self) {
             BOOL t = G9_021a0d4c();
             r = !t;
             if (!t) {
-                r = RgbEq021a0d4c(g + 0xca, (u8 *)self + 0x772);
+                r = RgbEq021a0d4c((u8 *)g + 0xca, (u8 *)self + 0x772);
             }
             if (r) {
                 r = self->unk_b24_14 == 0;
@@ -207,10 +207,10 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
         }
     }
     if (!self->unk_b24_1) {
-        self->unk_38 = &self->unk_ac;
+        self->model = (Model0218fe1c *)&self->unk_ac;
         self->unk_48 = (ActorSub48 *)((u8 *)self + 0x2cc);
     } else {
-        self->unk_38 = (u8 *)self + 0x368;
+        self->model = (Model0218fe1c *)((u8 *)self + 0x368);
         self->unk_75c.x = self->pos.x;
         self->unk_75c.y = self->pos.y;
         self->unk_75c.z = self->pos.z;
@@ -308,7 +308,7 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
             func_ov000_021bd314(((u8 *)self->unk_9b4), 8);
             LFLD(Bd_021a0d4c, ((u8 *)self->unk_9b4), 0).b1 = 1;
         } else {
-            u8 *q = data_ov000_021ccd54 + 0xf4;
+            u8 *q = (u8 *)data_ov000_021ccd54 + 0xf4;
             if (q != NULL && LFLD(u16, q, 0xd6) - 1 == LFLD(u16, q, 0xd4)) {
                 func_ov000_021bd314(((u8 *)self->unk_9b4), 9);
                 LFLD(Bd_021a0d4c, ((u8 *)self->unk_9b4), 0).b1 = 1;

@@ -1,10 +1,10 @@
 #include "ov000/ModelPart.h"
+#include "Main/Sys/FieldState.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 extern "C" {
-extern u8 *data_ov000_021ccd54;
 BOOL PauseNode_IsDrawPaused(void *p, s32 a);
 void func_ov000_021c1e78(void *p);
 
@@ -25,7 +25,7 @@ struct Obj0216d14c {
 void func_ov000_0216d14c(Obj0216d14c *self) {
     Model *m;
     s32 x;
-    if (PauseNode_IsDrawPaused(data_ov000_021ccd54 + 8, 1)) {
+    if (PauseNode_IsDrawPaused((u8 *)data_ov000_021ccd54 + 8, 1)) {
         return;
     }
     switch (self->unk_04) {
