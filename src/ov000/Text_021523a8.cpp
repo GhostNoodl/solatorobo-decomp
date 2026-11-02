@@ -6,46 +6,46 @@
 
 extern "C" {
 extern u8 data_0208ba70[];
-void func_0204c7d0(void *p);
+void func_0204c7d0(TextWin *win);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void func_0204ca70(void *p);
+void func_0204ca70(TextWin *win);
 
 
 void UiObj_SetTitle(UiObj *self, s32 arg) {
     TextWin *p;
-    LO_FREE_V(self, 0x14);
+    HEAP_DELETE(TextWin *, self->title, p->unk_vf04());
     p = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
         func_0204c7d0(p);
     }
-    self->title = (VObj *)p;
+    self->title = p;
     p->font = 8;
-    p = (TextWin *)self->title;
+    p = self->title;
     p->str = arg;
     p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, (s8)p->unk_37 != 0);
     data_02097ce0->unk_004 = ((s32)p->font);
-    LFLD(u16, self->title, 0x74) = 0x7fff;
-    LFLD(u16, self->title, 0x76) = 0x67f;
-    LFLD(u32, self->title, 0x4) |= 0x40;
-    LFLD(u32, self->title, 0x4) |= 0x1000000;
-    LFLD(u32, self->title, 0x4) |= 0x400000;
-    LFLD(u32, self->title, 0x4) |= 0x40000000;
-    LFLD(u32, self->title, 0x4) |= 0x4;
-    func_0204ca70(((u8 *)self->title));
+    self->title->color0 = 0x7fff;
+    self->title->color1 = 0x67f;
+    self->title->flags |= 0x40;
+    self->title->flags |= 0x1000000;
+    self->title->flags |= 0x400000;
+    self->title->flags |= 0x40000000;
+    self->title->flags |= 0x4;
+    func_0204ca70(self->title);
 }
 
 void UiObj_SetCaption(UiObj *self, const char *src) {
     TextWin *p;
     char buf[0x100];
     char *d;
-    LO_FREE_V(self, 0x18);
+    HEAP_DELETE(TextWin *, self->caption, p->unk_vf04());
     p = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
         func_0204c7d0(p);
     }
-    self->caption = (VObj *)p;
+    self->caption = p;
     d = buf;
     while (*src != 0) {
         if (*src != '\n') {
@@ -56,20 +56,20 @@ void UiObj_SetCaption(UiObj *self, const char *src) {
         src++;
     }
     *d = 0;
-    LFLD(s32, self->caption, 0x28) = 4;
-    p = (TextWin *)self->caption;
+    self->caption->font = 4;
+    p = self->caption;
     p->str = (u32)buf;
     p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, (s8)p->unk_37 != 0);
     data_02097ce0->unk_004 = ((s32)p->font);
-    LFLD(u32, self->caption, 0x4) |= 0x40;
-    LFLD(u32, self->caption, 0x4) |= 0x1000000;
-    LFLD(u32, self->caption, 0x4) |= 0x400000;
-    LFLD(u32, self->caption, 0x4) |= 0x40000000;
-    LFLD(u32, self->caption, 0x4) |= 0x4;
-    func_0204ca70(((u8 *)self->caption));
-    LFLD(char *, self->caption, 0x24) = NULL;
+    self->caption->flags |= 0x40;
+    self->caption->flags |= 0x1000000;
+    self->caption->flags |= 0x400000;
+    self->caption->flags |= 0x40000000;
+    self->caption->flags |= 0x4;
+    func_0204ca70(self->caption);
+    self->caption->str = 0;
     self->scrollPos = 0;
-    self->scrollLen = LFLD(s32, self->caption, 0x44) + 0x40;
+    self->scrollLen = self->caption->width + 0x40;
     if (self->scrollLen + 0x68 < 0x100) {
         self->scrollLen = 0x98;
     }

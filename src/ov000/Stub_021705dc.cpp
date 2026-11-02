@@ -36,7 +36,7 @@ bool func_ov000_021705ec(ListBuffer021cb940 *self) {
 }
 
 s32 func_ov000_0217060c(ListBuffer021cb940 *self) {
-    return self->unk_48 != NULL ? 0x1 : 0x0;
+    return self->dialog != NULL ? 0x1 : 0x0;
 }
 
 }

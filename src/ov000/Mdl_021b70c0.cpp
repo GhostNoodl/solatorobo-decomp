@@ -1,27 +1,8 @@
 #include "types.h"
 #include "Main/Gfx/PlttRes.h"
+#include "ov000/FieldMgr.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u8 pad00[0x14];
-    void **mdl;
-    void **tex;
-    void **anm;
-} Res021b70c0;
-
-typedef struct {
-    Res021b70c0 *res;
-    void *anm[5];
-    void *buf38;
-    void *buf58;
-    u8 *rob;
-    void *sub[1];
-    u8 robj[0x54];
-    u8 pad7c[0x3e];
-    u8 nsub;
-    u8 unk_bb;
-} Self021b70c0;
 
 extern "C" {
 
@@ -67,7 +48,7 @@ if (res->anm[i] != NULL) {                                   \
     if (a != NULL) {                                         \
         u32 size = NNS_G3dAnmObjCalcSizeRequired(a, mdl);    \
         if (self->anm[i] == NULL) {                          \
-            self->anm[i] = Heap_AllocHi(size, 4);           \
+            self->anm[i] = (struct NNSG3dAnmObj_ *)Heap_AllocHi(size, 4); \
         }                                                    \
         NNS_G3dAnmObjInit(self->anm[i], a, mdl, tex);        \
         NNS_G3dRenderObjAddAnmObj(self->rob, self->anm[i]);  \
@@ -78,7 +59,7 @@ if (res->anm[i] != NULL) {                                   \
 // tex is a trailing parameter (callers pass six arguments); it fixes the
 // register order of mdl and tex. needMat and nsub are u8 for the
 // prologue order of the two stack-argument copies.
-void func_ov000_021b70c0(Self021b70c0 *self, Res021b70c0 *res, u8 *list, u8 count, u8 needMat, u8 nsub, void *tex) {
+void func_ov000_021b70c0(FieldPropModel *self, FieldPropLoader *res, u8 *list, u8 count, u8 needMat, u8 nsub, void *tex) {
     u8 *set;
     u8 *mdl;
     BOOL needJnt;
@@ -106,10 +87,10 @@ void func_ov000_021b70c0(Self021b70c0 *self, Res021b70c0 *res, u8 *list, u8 coun
             }
         }
     }
-    self->unk_bb = 0;
-    i = self->unk_bb;
+    self->cur = 0;
+    i = self->cur;
     mdl = (u8 *)GetMdlByIdx021b70c0(set, i);
-    self->rob = self->robj;
+    self->rob = (struct NNSG3dRenderObj_ *)self->robj;
     NNS_G3dRenderObjInit(self->rob, mdl);
     needJnt = TRUE;
     if (res->anm != NULL) {
@@ -123,12 +104,12 @@ void func_ov000_021b70c0(Self021b70c0 *self, Res021b70c0 *res, u8 *list, u8 coun
     if (needMat || needJnt) {
         if (needMat) {
             void *p = Heap_AllocHi(mdl[0x18] * 0x38, 4);
-            self->buf38 = p;
+            self->matBuf = p;
             LFLD(void *, self->rob, 0x38) = p;
         }
         if (needJnt) {
             void *p = Heap_AllocHi(mdl[0x17] * 0x58, 4);
-            self->buf58 = p;
+            self->jntBuf = p;
             LFLD(void *, self->rob, 0x34) = p;
         }
         LFLD(u32, self->rob, 0) |= 2;
@@ -150,7 +131,7 @@ void func_ov000_021b70c0(Self021b70c0 *self, Res021b70c0 *res, u8 *list, u8 coun
             void *m;
             m = GetMdlByIdx021b70c0(set, i + 1);
             if (m != NULL) {
-                self->sub[i] = Heap_AllocHi(0x54, 4);
+                self->sub[i] = (struct NNSG3dRenderObj_ *)Heap_AllocHi(0x54, 4);
                 NNS_G3dRenderObjInit(self->sub[i], m);
             }
         }

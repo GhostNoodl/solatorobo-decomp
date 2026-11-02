@@ -4,6 +4,7 @@
 #include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/FieldMgr.h"
 
 class Robo021a0d4cCls;
 typedef void (Robo021a0d4cCls::*Robo021a0d4cPmf)();
@@ -28,7 +29,6 @@ extern "C" {
 extern Robo021a0d4cEntry data_ov000_021ca458[];
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern void *data_ov000_021ccd64;
-extern u8 *data_ov000_021ccd6c;
 extern u8 *data_02149f0c;
 void func_ov000_021b06dc(u8 *self);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
@@ -251,10 +251,10 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
     func_ov000_021b3d78((u8 *)self);
     Obj0218c208_AddPoint(data_ov000_021ccd64, &self->pos, self->rot_y);
     if (self->unk_b24_2 != 1) {
-        u8 *c = data_ov000_021ccd6c;
-        LFLD(s32, c, 0x24) = self->pos.x;
-        LFLD(s32, c, 0x28) = self->pos.y;
-        LFLD(s32, c, 0x2c) = self->pos.z;
+        FieldMgr *c = data_ov000_021ccd6c;
+        c->playerPos.x = self->pos.x;
+        c->playerPos.y = self->pos.y;
+        c->playerPos.z = self->pos.z;
     }
     {
         u8 *c = data_02149f0c;

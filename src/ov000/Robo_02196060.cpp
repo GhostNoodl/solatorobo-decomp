@@ -1,19 +1,18 @@
 #include "types.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/FieldMgr.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
 extern char data_ov000_021cc456[];
 extern void *data_02097e4c;
-extern void *data_ov000_021ccd6c;
 BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void func_ov000_02199dc0(void *a, void *b);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 void HitSphere_Link(void *a);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
-void *func_ov000_021b68b8(void *a, void *pos);
 void Actor_Move(Actor *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 
@@ -61,9 +60,9 @@ void func_ov000_02196060(ActorEx *self) {
             self->velY = -0xcd;
         }
         {
-            u8 *o = (u8 *)func_ov000_021b68b8(data_ov000_021ccd6c, (u8 *)self + 0x70);
+            FieldExit *o = func_ov000_021b68b8(data_ov000_021ccd6c, &self->pos);
             if (o != NULL) {
-                u16 ang = (u64)LFLD(u16, o, 0x1a);
+                u16 ang = (u64)o->dir;
                 self->speed = FX_Mul(self->speed, 0x59a);
                 if (self->speed < 0x8f) {
                     self->speed = 0x8f;

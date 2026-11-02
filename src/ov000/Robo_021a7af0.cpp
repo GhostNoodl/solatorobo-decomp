@@ -6,6 +6,7 @@
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
+#include "ov000/FieldMgr.h"
 
 typedef struct {
     u16 b0 : 8;
@@ -13,13 +14,7 @@ typedef struct {
     u16 rest : 7;
 } Ba4_021a7af0;
 
-typedef struct {
-    u8 b0 : 1;
-    u8 rest : 7;
-} B19_021a7af0;
-
 extern "C" {
-extern u8 *data_ov000_021ccd6c;
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern void *data_02097e4c;
 extern char data_ov000_021cc672[];
@@ -122,9 +117,9 @@ static inline void Gauge_021a7af0(s32 a, s32 b, VecFx32 *p, VecFx32 *q) {
     func_ov000_02168490(o->unk_74, a, b, p, q);
 }
 
-static inline BOOL Flag19_021a7af0(u8 *g) {
-    u8 *p = LFLD(u8 *, g, 0x14);
-    if (p != NULL && LFLD(B19_021a7af0, p, 0x19).b0) {
+static inline BOOL Flag19_021a7af0(FieldMgr *g) {
+    LangBlockB *p = g->blockB;
+    if (p != NULL && p->unk_19_0) {
         return TRUE;
     }
     return FALSE;
@@ -668,7 +663,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
         }
         Actor_TurnToActor(self, t, 0x400);
         {
-            u8 *g = data_ov000_021ccd6c;
+            FieldMgr *g = data_ov000_021ccd6c;
             VecFx32 w;
             VecFx32 u;
             v = t->pos;

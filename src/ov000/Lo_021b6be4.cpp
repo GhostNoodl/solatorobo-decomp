@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/VObj.h"
+#include "ov000/FieldMgr.h"
 
 extern "C" {
 void func_0204b924(Camera *cam, s32 speed);
@@ -26,12 +27,7 @@ static inline BOOL IsIdle021b6be4(FieldState *m) {
     return r;
 }
 
-struct Obj021b6be4 {
-    u8 unk_00[0x1f2];
-    s16 unk_1f2;
-};
-
-void func_ov000_021b6be4(Obj021b6be4 *self) {
+void func_ov000_021b6be4(FieldMgr *self) {
     FieldState *m;
     Camera *s;
     if (self->unk_1f2 == 0) {

@@ -1,6 +1,7 @@
 #include "ov000/VObj.h"
 #include "ov000/Vec.h"
 #include "ov000/ModelPart.h"
+#include "ov000/FieldMgr.h"
 
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
@@ -12,30 +13,17 @@ typedef struct {
     u32 b4 : 28;
 } Bits4;
 
-typedef struct {
-    u8 unk_00[0xc];
-    s16 hx, hy, hz;
-    u16 rot;
-    u8 unk_14[0x10];
-} Item021b68b8;
-
 extern "C" {
 s32 FX_Div(s32 a, s32 b);
-BOOL func_01ffc318(void *a, Item021b68b8 *item, VecFx32 *min, VecFx32 *max, VecFx16 *rot);
+BOOL func_01ffc318(VecFx32 *a, FieldExit *item, VecFx32 *min, VecFx32 *max, VecFx16 *rot);
 
-struct Obj021b68b8 {
-    u8 unk_00[0x14];
-    u8 *unk_14;
-    Item021b68b8 *unk_18;
-};
-
-Item021b68b8 *func_ov000_021b68b8(Obj021b68b8 *self, void *arg) {
-    Item021b68b8 *ret = NULL;
-    Item021b68b8 *item;
+FieldExit *func_ov000_021b68b8(FieldMgr *self, VecFx32 *pos) {
+    FieldExit *ret = NULL;
+    FieldExit *item;
     u8 i;
-    if (self->unk_14 != NULL) {
-        item = self->unk_18;
-        for (i = 0; i < self->unk_14[0x14]; i++, item++) {
+    if (self->blockB != NULL) {
+        item = self->exits;
+        for (i = 0; i < self->blockB->count0; i++, item++) {
             VecFx32 max;
             VecFx32 min;
             VecFx16 rot;
@@ -48,7 +36,7 @@ Item021b68b8 *func_ov000_021b68b8(Obj021b68b8 *self, void *arg) {
             rot.y = item->rot;
             rot.x = 0;
             rot.z = 0;
-            if (func_01ffc318(arg, item, &min, &max, &rot)) {
+            if (func_01ffc318(pos, item, &min, &max, &rot)) {
                 ret = item;
                 break;
             }

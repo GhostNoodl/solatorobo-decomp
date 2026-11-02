@@ -1,20 +1,6 @@
 #include "ov000/HeapScope.h"
 #include "Main/Sys/FieldState.h"
-
-typedef struct Node021b4f28 {
-    struct Node021b4f28 *prev;
-    struct Node021b4f28 *next;
-} Node021b4f28;
-
-typedef struct {
-    u8 pad_00[0x14];
-    s32 unk_14;
-    s32 unk_18;
-    Node021b4f28 *head;
-    Node021b4f28 *tail;
-    u8 pad_24[0x1d0];
-    u8 unk_1f4[1];
-} Obj021b4f28;
+#include "ov000/FieldMgr.h"
 
 typedef struct {
     u8 pad_00[8];
@@ -23,18 +9,16 @@ typedef struct {
 
 extern "C" {
 
-extern Obj021b4f28 *data_ov000_021ccd6c;
 Info021b4f28 *Lang_GetGroup(u32 id);
 void func_0206dfd4(char *buf, u8 *src);
 void func_02035acc(void *a, void *b, s32 c);
-void func_ov000_021b6994(Obj021b4f28 *self, s32 a);
-void *func_ov000_021b7a7c(Node021b4f28 *node);
+void *func_ov000_021b7a7c(FieldProp *node);
 void HitMesh_Detach(void *obj);
 void func_0206e6c0(void);
 
-static inline void Obj021b4f28_Delete(Obj021b4f28 *o) {
-    Node021b4f28 *node;
-    if (o->unk_14 != 0) {
+static inline void FieldMgr_Delete(FieldMgr *o) {
+    FieldProp *node;
+    if (o->blockB != NULL) {
         FieldState *g = data_ov000_021ccd54;
         Info021b4f28 *info = Lang_GetGroup(g->unk_ca.c[0]);
         char buf[0x20];
@@ -45,13 +29,13 @@ static inline void Obj021b4f28_Delete(Obj021b4f28 *o) {
             sub->unk_c8 = 0;
             sub->unk_d6 = 0;
         }
-        o->unk_14 = 0;
+        o->blockB = NULL;
     }
-    o->unk_18 = 0;
+    o->exits = NULL;
     func_ov000_021b6994(o, 1);
     while ((node = o->head) != NULL) {
-        Node021b4f28 *prev = node->prev;
-        Node021b4f28 *next = node->next;
+        FieldProp *prev = node->prev;
+        FieldProp *next = node->next;
         if (node != NULL) {
             func_ov000_021b7a7c(node);
             Heap_Free(node);
@@ -67,19 +51,19 @@ static inline void Obj021b4f28_Delete(Obj021b4f28 *o) {
             o->tail = prev;
         }
     }
-    HitMesh_Detach(o->unk_1f4);
+    HitMesh_Detach(o->hitMesh);
     Heap_Free(o);
 }
 
 void func_ov000_021b4f28(void) {
-    Obj021b4f28 *p;
+    FieldMgr *p;
     void *saved;
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     p = data_ov000_021ccd6c;
     if (p != NULL) {
         if (p != NULL) {
-            Obj021b4f28_Delete(p);
+            FieldMgr_Delete(p);
         }
         data_ov000_021ccd6c = NULL;
     }

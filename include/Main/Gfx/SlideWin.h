@@ -19,7 +19,9 @@ struct SlideWin : TextWin {
     /* 0x0b8 */ u32 unk_b8_24 : 8;
     /* 0x0bc */ u32 unk_bc_0 : 2;
     /* 0x0bc */ u32 style : 4;
-    /* 0x0bc */ u32 unk_bc_6 : 26;
+    /* 0x0bc */ u32 unk_bc_6 : 1;
+    /* 0x0bc */ u32 unk_bc_7 : 1;
+    /* 0x0bc */ u32 unk_bc_8 : 24;
     /* 0x0c0 */ u32 unk_0c0;
     /* 0x0c4 */ u16 unk_0c4;
     /* 0x0c6 */ u16 unk_0c6;

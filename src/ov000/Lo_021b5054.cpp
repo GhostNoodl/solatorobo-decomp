@@ -1,64 +1,38 @@
 #include "types.h"
 #include "Main/Sys/FieldState.h"
-#include "nitro/fx.h"
-
-class Mgr021b5054Cls;
-typedef void (Mgr021b5054Cls::*Mgr021b5054Pmf)();
-
-typedef struct {
-    void *unk_00;
-    u8 pad_04[4];
-    u8 unk_08;
-    u8 unk_09;
-    u8 unk_0a;
-    u8 unk_0b;
-    s32 unk_0c;
-    s32 unk_10;
-    s32 unk_14;
-    s32 unk_18;
-    s32 unk_1c;
-    s32 unk_20;
-    u8 pad_24[0xc];
-    u16 unk_30[0x20];
-    VecFx32 unk_70[0x20];
-    u16 unk_1f0;
-    u16 unk_1f2;
-    u8 unk_1f4[0x98];
-    Mgr021b5054Pmf unk_28c;
-} Mgr021b5054;
-
+#include "ov000/FieldMgr.h"
 
 extern "C" {
 
-void PauseNode_Init(void *node);
+void PauseNode_Init(PauseNode *node);
 void HitMesh_Init(void *p);
 
-Mgr021b5054 *func_ov000_021b5054(Mgr021b5054 *self) {
+FieldMgr *func_ov000_021b5054(FieldMgr *self) {
     s32 i;
 
-    PauseNode_Init(self);
-    HitMesh_Init(self->unk_1f4);
+    PauseNode_Init(&self->pause);
+    HitMesh_Init(self->hitMesh);
     if (data_ov000_021ccd54 != NULL) {
-        self->unk_00 = data_ov000_021ccd54->pause;
+        self->pause.parent = (PauseNode *)data_ov000_021ccd54->pause;
     }
-    self->unk_08 = 0;
-    self->unk_0c = 0;
-    self->unk_10 = 0;
-    self->unk_14 = 0;
-    self->unk_18 = 0;
-    self->unk_1c = 0;
-    self->unk_20 = 0;
-    self->unk_09 = 0xff;
-    self->unk_0a = 0xff;
-    self->unk_0b = 0xff;
+    self->state = 0;
+    self->unk_0c = NULL;
+    self->blockA = NULL;
+    self->blockB = NULL;
+    self->exits = NULL;
+    self->head = NULL;
+    self->tail = NULL;
+    self->curExit = 0xff;
+    self->destExit = 0xff;
+    self->exit = 0xff;
     for (i = 0; i < 0x20; i++) {
-        self->unk_30[i] = 0xffff;
-        self->unk_70[i].x = 0;
-        self->unk_70[i].y = 0;
-        self->unk_70[i].z = 0;
+        self->ids[i] = 0xffff;
+        self->vecs[i].x = 0;
+        self->vecs[i].y = 0;
+        self->vecs[i].z = 0;
     }
     self->unk_1f0 = 0xffff;
-    self->unk_28c = NULL;
+    self->step = NULL;
     self->unk_1f2 = 0;
     return self;
 }

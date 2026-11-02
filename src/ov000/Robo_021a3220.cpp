@@ -5,18 +5,13 @@
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
+#include "ov000/FieldMgr.h"
 
 typedef struct {
     u16 b0 : 5;
     u16 b5 : 1;
     u16 rest : 10;
 } Ba4_021a3220;
-
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 rest : 6;
-} B19_021a3220;
 
 typedef struct {
     VecFx32 pos;
@@ -30,7 +25,6 @@ extern char data_ov000_021cc62a[];
 extern char data_ov000_021cc636[];
 extern char *const data_ov000_021ca030[];
 extern void *data_02097e4c;
-extern u8 *data_ov000_021ccd6c;
 u8 *Actor_GetTarget(u8 *self);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
@@ -44,7 +38,6 @@ s32 Rand_UpTo(s32 max);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, VecFx32 *ofs, void *rot, s32 r, s32 rr, s16 h, s32 i);
 u16 func_ov000_02198da8(void *body, u16 angle);
 void func_ov000_0218996c(s32 a, s32 b);
-void *func_ov000_021b68b8(void *a, void *pos);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
 
@@ -237,12 +230,12 @@ void func_ov000_021a3220(Robo021ca458 *self) {
         if (hit || near) {
             BOOL ok;
             Actor *a;
-            u8 *p;
+            LangBlockB *p;
             func_ov000_02190cb0(self->model, data_ov000_021cc636, 0x1000, 1);
             func_02049f44(data_02097e4c, 8, &self->pos, 0);
             ok = TRUE;
-            p = LFLD(u8 *, data_ov000_021ccd6c, 0x14);
-            if (p == NULL || !LFLD(B19_021a3220, p, 0x19).b1) {
+            p = data_ov000_021ccd6c->blockB;
+            if (p == NULL || !p->unk_19_1) {
                 ok = FALSE;
             }
             if (!ok) {

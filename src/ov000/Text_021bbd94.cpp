@@ -2,6 +2,8 @@
 #include "ov000/MessageQueue.h"
 #include "nitro/std.h"
 #include "Main/Gfx/Model.h"
+#include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 typedef struct {
     u8 c[3];
@@ -37,7 +39,7 @@ struct Obj021bbd94 {
     char fileName[0x20];
     u8 unk_48[0x10];
     Model *unk_58;
-    VObj *unk_5c;
+    Lo021cb5a8 *unk_5c;
     u8 unk_60[0x14];
     u8 unk_74;
     u8 unk_75;
@@ -46,11 +48,11 @@ struct Obj021bbd94 {
 
 void func_ov000_021bbd94(Obj021bbd94 *self) {
     void *msg = data_02149ef8;
-    VObj *t;
+    Lo021cb5a8 *t;
     Model *m;
     Rgb021bbd94 c;
 
-    t = (VObj *)Heap_Alloc(0xe0);
+    t = (Lo021cb5a8 *)Heap_Alloc(sizeof(Lo021cb5a8));
     if (t != NULL) {
         VOBJ_SET_VTABLE(t, data_ov000_021cac60);
         t->vfunc_28();
@@ -60,22 +62,22 @@ void func_ov000_021bbd94(Obj021bbd94 *self) {
         t->vfunc_28();
     }
     self->unk_5c = t;
-    LFLD(u32, t, 0xc) |= 0x4000000;
-    LFLD(s32, self->unk_5c, 0x2c) = 1;
+    t->flags |= 0x4000000;
+    self->unk_5c->slideMode = 1;
     {
-        u8 *p = (u8 *)self->unk_5c;
-        LFLD(s32, p, 0x58) = 0x100;
-        LFLD(s32, p, 0x5c) = 0;
-        LFLD(s32, p, 0x60) = 0;
+        Lo021cb5a8 *p = self->unk_5c;
+        p->slideX = 0x100;
+        p->slideY = 0;
+        p->slideZ = 0;
     }
     {
-        u8 *p = (u8 *)self->unk_5c;
-        LFLD(s16, p, 0x64) = 0;
-        LFLD(s16, p, 0x66) = 0;
-        LFLD(s16, p, 0x68) = -0x89a;
+        Lo021cb5a8 *p = self->unk_5c;
+        p->posX = 0;
+        p->posY = 0;
+        p->posZ = -0x89a;
     }
-    LFLD(u32, self->unk_5c, 0xc) |= 0x20000000;
-    LFLD(u32, self->unk_5c, 0xc) |= 0x80000000;
+    self->unk_5c->flags |= 0x20000000;
+    self->unk_5c->flags |= 0x80000000;
     self->unk_5c->vfunc_f4(2, MsgRes_GetString(msg, 0x33));
     self->unk_5c->vfunc_08();
     m = (Model *)Heap_Alloc(sizeof(Model));

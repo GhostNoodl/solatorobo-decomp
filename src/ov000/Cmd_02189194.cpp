@@ -4,6 +4,7 @@
 #include "ov000/VObj.h"
 #include "Main/Effect/Effect.h"
 #include "Main/Gfx/GfxMgr.h"
+#include "ov000/FieldMgr.h"
 
 typedef struct {
     u8 b0 : 2;
@@ -72,7 +73,6 @@ extern CmdEntry data_ov000_021cc1a0[];
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 extern Obj02097dc8 *data_02097dc8;
-extern void *data_ov000_021ccd6c;
 extern void *data_ov000_021ccd64;
 
 void func_0203cb78(s32 a, s32 b, s32 c);
@@ -87,7 +87,6 @@ void func_02062424(FieldId *id);
 void func_0204aa10(void *p);
 void func_ov000_0216bcbc(void *p);
 void func_ov000_021645a4(s32 a);
-void func_ov000_021b53f4(void *p);
 void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(ActorMgr *p);
 

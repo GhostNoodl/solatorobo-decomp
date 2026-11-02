@@ -1,12 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Vec.h"
 #include "nitro/mi.h"
-
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 6;
-} Flags021b7f0c;
+#include "ov000/FieldMgr.h"
 
 typedef struct {
     s32 m[9];
@@ -19,60 +14,41 @@ void HitMesh_Link(void *mesh);
 void HitMesh_SetRes(void *mesh, void *res);
 void HitMesh_SetScale(void *mesh, int scale);
 void HitMesh_SetMtx(void *mesh, const void *mtx);
-BOOL func_ov000_021b6d28(void *p);
-void func_ov000_021b70c0(void *a, void *b, s32 c, u8 d, s32 e, s32 f);
+BOOL func_ov000_021b6d28(FieldPropLoader *p);
+void func_ov000_021b70c0(FieldPropModel *a, FieldPropLoader *b, s32 c, u8 d, s32 e, s32 f);
 
-struct Obj021b7f0c {
-    u8 unk_00[0x10];
-    s16 unk_10;
-    u8 unk_12[0x16];
-    void **unk_28;
-    u8 unk_2c[0x7c];
-    s32 unk_a8;
-    s32 unk_ac;
-    s32 unk_b0;
-    u8 unk_b4[0x24];
-    s32 unk_d8;
-    u8 unk_dc[0x10];
-    void *unk_ec;
-    s32 unk_f0;
-    u8 unk_f4;
-    u8 unk_f5[0x1];
-    Flags021b7f0c unk_f6;
-};
-
-BOOL func_ov000_021b7f0c(Obj021b7f0c *self) {
+BOOL func_ov000_021b7f0c(FieldProp *self) {
     BOOL ok = TRUE;
-    if (self->unk_10 >= 0) {
-        if (!func_ov000_021b6d28((u8 *)self + 8)) {
+    if (self->loader.state >= 0) {
+        if (!func_ov000_021b6d28(&self->loader)) {
             ok = FALSE;
         } else {
             s32 a = 0;
             s32 m;
-            if (!self->unk_f6.b0 && !self->unk_f6.b1) {
+            if (!self->fade && !self->lod) {
                 a = ok;
             }
             m = 0;
-            if (self->unk_f6.b1) {
+            if (self->lod) {
                 m = 2;
             }
-            func_ov000_021b70c0((u8 *)self + 0x2c, (u8 *)self + 8, self->unk_f0, self->unk_f4, a, m);
-            if ((void *)self->unk_28 != NULL) {
+            func_ov000_021b70c0(&self->model, &self->loader, self->unk_f0, self->unk_f4, a, m);
+            if (self->loader.hit != NULL) {
                 Mtx021b7f0c mtx;
                 void *mesh;
                 s32 scale;
-                MI_Copy36B((u8 *)self + 0xb4, mtx.m);
-                { s32 x = self->unk_a8; s32 y = self->unk_ac; s32 z = self->unk_b0; mtx.t.x = x; mtx.t.y = y; mtx.t.z = z; }
-                scale = self->unk_d8;
+                MI_Copy36B(&self->model.rot, mtx.m);
+                { s32 x = self->model.trans.x; s32 y = self->model.trans.y; s32 z = self->model.trans.z; mtx.t.x = x; mtx.t.y = y; mtx.t.z = z; }
+                scale = self->model.scale.x;
                 mesh = Heap_Alloc(0x98);
                 if (mesh != NULL) {
                     HitMesh_Init(mesh);
                 }
-                self->unk_ec = mesh;
-                HitMesh_SetRes(mesh, *self->unk_28);
-                HitMesh_SetMtx(self->unk_ec, &mtx);
-                HitMesh_SetScale(self->unk_ec, scale);
-                HitMesh_Link(self->unk_ec);
+                self->hitMesh = mesh;
+                HitMesh_SetRes(mesh, *self->loader.hit);
+                HitMesh_SetMtx(self->hitMesh, &mtx);
+                HitMesh_SetScale(self->hitMesh, scale);
+                HitMesh_Link(self->hitMesh);
             }
         }
     }

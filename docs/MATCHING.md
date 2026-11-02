@@ -8505,3 +8505,42 @@ Cleanup only, over `src/ov000` and `include/ov000`. Every function is still byte
   - The `data_ov000_021ccd6c` manager (ctor `021b5054`, 0x294): the views disagree at 0x10/0x14.
   - `Model_02164a94`, `Lo_02165f94`, `Loader_021633ac` and `Spawn_0219b71c`: no record evidence, or not reached.
   - `Menu_021763c8`'s local views: left for round pmA.
+
+### Round acK (ov000 field manager `FieldMgr` and its props, the message box `MsgBox`, list dialog, text-window members)
+
+Cleanup only, over `src/ov000` and `include/ov000` (plus two layout-neutral lines in `include/Main/Gfx`). Every function is still byte-identical. Each rebuilt object was compared function by function, on code bytes and relocations, with a baseline built at `c00e0a78`. At the end, all 1906 objects were compared again: 0 differ. `origin/main` did not move during the round.
+
+**Gate.**
+- 0 FAILED, with 19/19 ROM checks and `check symbols` OK.
+- `ninja report`: 8138 matched (unchanged).
+- `check_drafts.py --score` exits 0 (30 files, no score changed).
+- No symbols were renamed.
+
+**Counts** (`grep -o LFLD -r` and `grep -rn 'void \*self'`, over `src/ov000` + `include/ov000`):
+
+| | before | after |
+|---|---|---|
+| `LFLD` | 1069 | 931 |
+| `void *self` | 204 | 199 |
+
+- **`FieldMgr` (new `include/ov000/FieldMgr.h`): the `data_ov000_021ccd6c` manager.**
+  - Why the views disagreed at 0x10/0x14: it is one class, not a union. 0x10 and 0x14 point to two different loaded data blocks, and each old view typed a different part of the block it read. Block A (0x10, counts at 0x0a..0x0c) and block B (0x14, camera words at 0x0a..0x12, counts at 0x14..0x18, flags at 0x19) have the layouts that Main's Lang code gives `LangBlockA`/`LangBlockB`. The header declares them with those names. 0x18 is block B's exit list (`func_0206e230`).
+  - `FieldMgr` is 0x294 bytes. Its ctor is `021b5054`; it is made by `021b4eec` and deleted by `021b4f28`. It holds the pause node, the load state, the three exit indices (`curExit`, `destExit`, `exit`), `unk_0c`, `blockA`, `blockB`, `exits`, the prop list `head`/`tail`, `playerPos` (written by the robot each frame), the `ids`/`vecs` table, the hit mesh and the `step` member-function pointer.
+  - `FieldExit` (0x24): the box (`pos`, half size, yaw), the arrival offset and yaw, `type` bits, the destination `FieldId` and `destExit`. Two old views read the box half size (0x0c) and the others read the arrival offset (0x14); they were different fields of the same record. `FieldStart` (0x10) and `FieldPropDef` (0x34) are the other two block B records. The def flags are named from what `021b8014` turns them into.
+  - `FieldProp` (0x114; ctor `021b79f4`, dtor `021b7a7c`) holds `FieldPropLoader` (0x24, stepped by `021b6d28`) and `FieldPropModel` (0xc0; ctor `021b6f94`, set up by `021b70c0`, animated by `021b7838`). It also holds the hit mesh, the state, the fade/LOD/visible/keep-hit bits and the view box (`021b7e60`).
+  - These use it: `Lo_021b5054`, `Stub_021b4ebc`, `Heap_021b4f28`, `Lo_021b5110` (the step pointer is called as `(self->*self->step)()`), `Stub_021b53a8`, `Lo_021b53f4`, `Lo_021b5578`, `Mgr_021b5dc0`, `Cam_021b628c`, `Robo_021b65ec`, `Lo_021b68b8`, `Res_021b6994`, `Stub_021b6b4c`, `Lo_021b6be4`, `Stub_021b6c60`, `Loader_021b6d28`, `Stub_021b6f94`, `Mdl_021b70c0`, `Lo_021b7838`, `Stub_021b79f4`, `Obj_021b7b50`, `Stub_021b7e34`, `Hit_021b7f0c` and `Mtx_021b8014`.
+  - So do these callers: `Lo_021814dc` (four namespaces), `Cmd_02189194`, `Ai_02197ee0`, `Robo_02196060`, `Robo_02196c40`, `Robo_0219cbf8`, `Robo_021a0d4c`, `Robo_021a3220`, `Robo_021a5d00`, `Robo_021a7af0`, `Robo_021af464`, `MiniMap_021675ec`, `Lo_02166be8` and `TextWin_02167d64`.
+  - TUs that include `Main/Res/StageCmd.h` keep its `StageCamMgr` view and do not include `FieldMgr.h`.
+- **`MsgBox` (new `include/ov000/MsgBox.h`): the record behind `Loader_021633ac`.** It is 0x2c bytes, with ctor `02163224`, select `021632f0`, step `021633ac`, free `02163254` and draw `02163594`. It holds the archive and name, the message id, the line count and text from `func_0204c08c`, and the `SlideWin`/`MsgRes` it allocates. ov006 keeps its own `ov006_MsgBox` view.
+  - The 0xb80 window is `SlideWin` (vtable `data_0208bbc8`). `Lo_02170188` uses it too. `ListBuffer021cb940::unk_28` is now `SlideWin *win`, used by `Dtor_0216fb14`, `Stub_0216faac`, `Task_02170a58`, `Scene_02171270` and `Lo_02170100`. `func_ov000_02170188` takes `ListBuffer021cb940 *` and `MsgRes *`.
+  - Main headers: `TextWin::unk_vf8c` returns `BOOL` (its slot 0x8c functions `0204dccc`/`020534dc` do). `SlideWin::unk_bc_6 : 26` is split into `unk_bc_6`, `unk_bc_7` and `unk_bc_8 : 24`, because `MsgBox::unk_10` sets bit 7. The layout does not change.
+- **`Spawn_0219b71c`.** The colour triples are `FieldState::unk_ca` and `Robo021ca458::fieldId` (read through a pointer-returning inline, as before). The message is `MsgData7` and the angles are `Actor::rot_x/y/z`.
+- **List dialog `Lo021cb0b8` (`ObjLayouts.h`).** It is 0x1e4 bytes, with vtable `021cb0b8` and init `0215e4fc`: `buf[0x100]`, `msgId`, `text`, `key`. `LoBase021cafc0_021cb0b8::unk_d4` is `TextWin *title2`, freed by slot 0x2c. `ListBuffer021cb940::unk_48` is `Lo021cb0b8 *dialog`. These use it: `TextWin_0215e0c0`, `Stub_0215e534`, `Obj_02170620`, `Stub_0215ad9c`, `Lo_0215adbc`, `G3_0215b598`, `Stub_021705dc`, `Task_02170a58`, `Scene_02171270` and `Dtor_0216fb14`.
+- **Text windows.** `UiObj::title`/`caption` are `TextWin *`, and `Lo021cb3a8::unk_ec` is `TextWin *text`. `Text_021523a8`, `Lo_02152a58`, `Lo_02152d68` (`UiObj_Release` takes `UiObj *`), `Lo_02152f8c`, `Text_02158b48`, `Lo_02158da8`, `Lo_02159720` and `Stub_02158d90` use the members, and `HEAP_DELETE` replaces their `LO_FREE_V` offsets. `UiObj_Draw` takes `UiObj *`. `Win_021c37f0` builds a `Lo021cb3a8`, `Text_021bbd94` builds a `Lo021cb5a8`, and `Model_0216b880` reads the bar displays through `MessageQueue021cb980`.
+- **Kept forms.**
+  - `FieldPropModel::robj` is `u8[0x54]`, and `rob`/`anm` are pointers to the SDK structs, so `FieldMgr.h` does not need `nnsys/g3d.h`. Many files declare the NNS functions locally with `void *`, and those declarations would clash.
+  - `Model_021b75e0` keeps its view for the same reason.
+  - `Lo_02152294`/`Lo_02155770` keep their dialog stores through `UiObj::child` (a `VObj *`). A typed local would drop the reloads.
+  - `Lo_02170188` keeps `hi & 0xf` (the ROM masks twice).
+- **Left.** The 0xce0 mini-map record (`Model_02164a94`, `Lo_02165f94`, `Lo_02165da0`) is allocated and zeroed in `02164c50`, but its OAM/palette fields have not been typed yet. Also left: the target-marker object at `Actor::unk_5c`/`Robo021ca458::unk_9b0` (`021bd300..021bd624`), and `Menu_021763c8` (round pmA).
+- **Scratch:** session scratchpad `acK/` holds acI's `chk.py`, `mksig.py`, `dd.sh` and `vmap.py`/`vt.py`, re-pointed.

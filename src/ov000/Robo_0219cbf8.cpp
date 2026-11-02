@@ -4,6 +4,7 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/FieldMgr.h"
 
 typedef struct {
     u8 pad[0x258];
@@ -12,7 +13,6 @@ typedef struct {
 
 extern "C" {
 extern Glb0219cbf8 NNS_G3dGlb;
-extern u8 *data_ov000_021ccd6c;
 void func_ov000_021bd300(void *p);
 void func_ov000_021bd438(void *p, VecFx32 *v, s32 dy);
 void Body_SetPos(void *body, VecFx32 *pos, u32 angle);
@@ -66,7 +66,7 @@ void func_ov000_0219cbf8(Robo021ca458 *self, VecFx32 *pos, u16 *rot) {
     self->hit1.unk_58 = 0;
     self->vfunc_44();
     LBIT(self, 0xb24).b20 = 0;
-    if (data_ov000_021ccd6c[9] == 0xff) {
+    if (data_ov000_021ccd6c->curExit == 0xff) {
         self->unk_b22_13 = 1;
     }
 }
@@ -79,7 +79,6 @@ typedef struct {
 
 extern "C" {
 extern MessageQueue021cb980 *data_ov000_021ccd30;
-extern u8 *data_ov000_021ccd6c;
 extern void *data_02097e4c;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_02191008(void *p);
@@ -208,7 +207,7 @@ void func_ov000_0219cdb8(Robo021ca458 *self) {
             self->unk_b22_11 = 1;
         }
     }
-    if (data_ov000_021ccd6c[0xb] == 0xff) {
+    if (data_ov000_021ccd6c->exit == 0xff) {
         self->unk_b22_13 = 1;
     }
 }

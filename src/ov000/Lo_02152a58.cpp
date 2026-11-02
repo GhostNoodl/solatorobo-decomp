@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/UiObj.h"
+#include "Main/Gfx/TextWin.h"
 
 extern "C" {
 
@@ -10,14 +11,14 @@ BOOL func_02054f10(void *a, s32 b);
 BOOL func_0203e63c(void *p);
 void func_ov000_0215eab4(void *p);
 
-static inline BOOL LoResDone(u8 *o) {
-    if (LFLD(void *, o, 0x6c) == NULL) {
+static inline BOOL LoResDone(TextWin *o) {
+    if (o->unk_6c == NULL) {
         return TRUE;
     }
-    if (func_0203e63c(LFLD(void *, o, 0x6c))) {
-        LFLD(void *, o, 0x6c) = NULL;
+    if (func_0203e63c(o->unk_6c)) {
+        o->unk_6c = NULL;
     } else {
-        return LBIT(o, 4).b6 ? FALSE : TRUE;
+        return o->noVram ? FALSE : TRUE;
     }
     return TRUE;
 }
@@ -28,10 +29,10 @@ BOOL func_ov000_02152a58(UiObj *self) {
     if (self->model && !func_02054f10(self->model, 0xffff)) {
         ok = FALSE;
     }
-    if (((u8 *)self->title) && !LoResDone(((u8 *)self->title))) {
+    if (self->title && !LoResDone(self->title)) {
         ok = FALSE;
     }
-    if (((u8 *)self->caption) && !LoResDone(((u8 *)self->caption))) {
+    if (self->caption && !LoResDone(self->caption)) {
         ok = FALSE;
     }
     return ok;

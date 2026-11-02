@@ -53,7 +53,7 @@ struct TextWin {
     virtual void unk_vf80();
     virtual void unk_vf84();
     virtual void unk_vf88();
-    virtual void unk_vf8c();
+    virtual BOOL unk_vf8c();
     virtual void Render();
     virtual void unk_vf94();
     virtual void unk_vf98();

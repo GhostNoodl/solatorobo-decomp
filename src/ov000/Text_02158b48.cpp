@@ -48,30 +48,25 @@ void func_ov000_02158b48(Lo021cb3a8 *self) {
 extern "C" {
 void func_0204ca70(void *p);
 
-struct Obj02158c60 : public VObj {
-    u8 unk_04[0xe8];
-    TextWin *unk_ec;
-};
-
-void func_ov000_02158c60(Obj02158c60 *self, s32 arg) {
+void func_ov000_02158c60(Lo021cb3a8 *self, s32 arg) {
     TextWin *p;
-    LO_FREE_V(self, 0xec);
+    HEAP_DELETE(TextWin *, self->text, p->unk_vf04());
     p = (TextWin *)Heap_Alloc(0xb8);
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
         func_0204c7d0(p);
     }
-    self->unk_ec = p;
+    self->text = p;
     p->font = 8;
-    p = self->unk_ec;
+    p = self->text;
     p->str = arg;
     p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, (s8)p->unk_37 != 0);
     data_02097ce0->unk_004 = p->font;
-    self->unk_ec->flags |= 0x40;
-    self->unk_ec->flags |= 0x1000000;
-    self->unk_ec->flags |= 0x400000;
-    self->unk_ec->flags |= 0x40000000;
-    self->unk_ec->flags |= 0x4;
-    func_0204ca70(self->unk_ec);
+    self->text->flags |= 0x40;
+    self->text->flags |= 0x1000000;
+    self->text->flags |= 0x400000;
+    self->text->flags |= 0x40000000;
+    self->text->flags |= 0x4;
+    func_0204ca70(self->text);
 }
 }

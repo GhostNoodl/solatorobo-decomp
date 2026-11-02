@@ -5,7 +5,7 @@ extern "C" {
 void func_ov000_0216faac(ListBuffer021cb940 *self) {
     self->unk_20 = 0;
     self->state = 0;
-    self->unk_28 = NULL;
+    self->win = NULL;
     self->unk_2c = NULL;
     self->unk_30 = NULL;
     self->unk_34 = NULL;
@@ -13,7 +13,7 @@ void func_ov000_0216faac(ListBuffer021cb940 *self) {
     self->unk_3c = NULL;
     self->unk_40 = NULL;
     self->unk_44 = NULL;
-    self->unk_48 = NULL;
+    self->dialog = NULL;
     self->unk_4c = NULL;
     self->unk_50 = NULL;
     self->unk_54 = NULL;

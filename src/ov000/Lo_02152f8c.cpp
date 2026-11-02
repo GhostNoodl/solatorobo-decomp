@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Vec.h"
 #include "ov000/UiObj.h"
+#include "Main/Gfx/TextWin.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/Model.h"
 #include "ov000/ModelPart.h"
@@ -52,12 +53,12 @@ void func_ov000_02152f8c(UiObj *self, s32 ratio, VecFx32 *pos, s32 arg3) {
         self->model->unk_150 = self->posZ - 0x50;
         Model_PlayPart(self->model, 7);
         {
-            u8 *o = (u8 *)self->title;
-            h = LFLD(s32, o, 0x44);
-            LFLD(s32, o, 0x70) = self->posZ - 0x40;
+            TextWin *o = self->title;
+            h = o->width;
+            o->posZ = self->posZ - 0x40;
         }
-        self->title->vfunc_20(0x31 - (h >> 1) - k, 1);
-        self->title->vfunc_90();
+        self->title->unk_vf20(0x31 - (h >> 1) - k, 1);
+        self->title->Render();
     }
     if ((void *)self->caption == NULL) {
         return;
@@ -76,16 +77,16 @@ void func_ov000_02152f8c(UiObj *self, s32 ratio, VecFx32 *pos, s32 arg3) {
     NNS_G3dGeSendDL(LFLD(void *, data_0208b3d0, 4), LFLD(u32, data_020828f8, 4));
     G3_Cmd1(0x12, 1);
     x = 0xe4 - (self->scrollPos >> 12);
-    h = LFLD(s32, self->caption, 0x44);
-    LFLD(s32, self->caption, 0x70) = self->posZ - 0x60;
+    h = self->caption->width;
+    self->caption->posZ = self->posZ - 0x60;
     if (x < 0x100 && x + h > 0x68) {
-        self->caption->vfunc_20(x, 2 - k);
-        self->caption->vfunc_90();
+        self->caption->unk_vf20(x, 2 - k);
+        self->caption->Render();
     }
     x += self->scrollLen;
     if (x < 0x100 && x + h > 0x68) {
-        self->caption->vfunc_20(x, 2 - k);
-        self->caption->vfunc_90();
+        self->caption->unk_vf20(x, 2 - k);
+        self->caption->Render();
     }
 }
 

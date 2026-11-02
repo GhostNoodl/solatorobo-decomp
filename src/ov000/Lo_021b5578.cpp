@@ -1,36 +1,8 @@
 #include "nitro/fx.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Group.h"
+#include "ov000/FieldMgr.h"
 
-
-typedef struct Node021b5578 {
-    struct Node021b5578 *prev;
-    struct Node021b5578 *next;
-} Node021b5578;
-
-typedef struct {
-    u8 pad_00[0xa];
-    u8 n_a;
-    u8 n_b;
-    u8 n_ents;
-} Res021b5578;
-
-typedef struct {
-    u8 pad_00[0x16];
-    u8 n;
-} Res2021b5578;
-
-typedef struct {
-    u8 pad_00[8];
-    u8 state;
-    u8 pad_09[3];
-    void *unk_0c;
-    Res021b5578 *unk_10;
-    Res2021b5578 *unk_14;
-    void *unk_18;
-    Node021b5578 *head;
-    Node021b5578 *tail;
-} Mgr021b5578;
 
 typedef struct {
     VecFx32 pos;
@@ -63,11 +35,11 @@ void func_0206dfd4(char *buf, u8 *ids);
 void func_020359fc(void *a, char *buf, s32 b, s32 c);
 BOOL func_02035bd4(void *a, char *buf, s32 b);
 void **func_02035fe8(void *a, char *buf);
-Ent021b5578 *func_0206e1bc(Res021b5578 *r);
+Ent021b5578 *func_0206e1bc(LangBlockA *r);
 u16 func_0206e7ec(u32 a, u32 b);
 u8 *func_020704b4(u16 id);
-u8 *func_0206e150(Res021b5578 *r);
-u8 *func_0206e180(Res021b5578 *r);
+u8 *func_0206e150(LangBlockA *r);
+u8 *func_0206e180(LangBlockA *r);
 void *func_020359d0(void *e, s32 a, s32 b);
 BOOL func_02035b90(void *e, s32 a);
 void *func_02035d5c(void *e);
@@ -77,12 +49,12 @@ void **func_02034ec0(void *m, void *k);
 BOOL func_0203ed04(void *k, void *r);
 BOOL func_0203e688(void);
 void func_02039494(void *r);
-void *func_0206e230(Res2021b5578 *r);
-u8 *func_0206e2a4(Res2021b5578 *r);
+FieldExit *func_0206e230(LangBlockB *r);
+FieldPropDef *func_0206e2a4(LangBlockB *r);
 void *Heap_Alloc(u32 size);
-Node021b5578 *func_ov000_021b79f4(void *p);
-void func_ov000_021b8014(Node021b5578 *n, u8 *d, u8 *e, u8 c);
-BOOL func_ov000_021b7f0c(Node021b5578 *n);
+FieldProp *func_ov000_021b79f4(FieldProp *p);
+void func_ov000_021b8014(FieldProp *n, const FieldPropDef *def, u8 *list, u8 count);
+BOOL func_ov000_021b7f0c(FieldProp *n);
 
 static inline void SetNibble021b5578(s32 row, s32 idx, u32 value) {
     s32 sh = idx % 8;
@@ -112,7 +84,7 @@ static inline u16 Kind021b5578(u16 v) {
     return v >> 12;
 }
 
-BOOL func_ov000_021b5578(Mgr021b5578 *self) {
+BOOL func_ov000_021b5578(FieldMgr *self) {
     BOOL ret = FALSE;
     BOOL ok_0 = TRUE;
     u8 st;
@@ -122,7 +94,7 @@ BOOL func_ov000_021b5578(Mgr021b5578 *self) {
     Lang021b5578 *t = Lang_GetGroup(ids[0]);
     switch (self->state) {
     case 0:
-        if (self->unk_10 == NULL) {
+        if (self->blockA == NULL) {
             self->state = 10;
         } else {
             st = 0x1e;
@@ -154,15 +126,15 @@ BOOL func_ov000_021b5578(Mgr021b5578 *self) {
         func_0206dde4(buf, ids);
         r_0 = func_02035fe8(t->unk_08, buf);
         if (r_0 != NULL) {
-            self->unk_10 = (Res021b5578 *)*r_0;
+            self->blockA = (LangBlockA *)*r_0;
         }
         self->state = 0x1e;
-        if (self->unk_10 == NULL) {
+        if (self->blockA == NULL) {
             break;
         }
         {
-            Ent021b5578 *ents = func_0206e1bc(self->unk_10);
-            u8 n_0 = self->unk_10->n_ents;
+            Ent021b5578 *ents = func_0206e1bc(self->blockA);
+            u8 n_0 = self->blockA->count2;
             s32 i_0;
             if (ents != NULL) {
                 for (i_0 = 0; i_0 < n_0; i_0++) {
@@ -226,19 +198,19 @@ BOOL func_ov000_021b5578(Mgr021b5578 *self) {
             }
         }
         {
-            u8 *e_1 = func_0206e150(self->unk_10);
+            u8 *e_1 = func_0206e150(self->blockA);
             s32 i_1;
             if (e_1 != NULL) {
-                for (i_1 = 0; i_1 < self->unk_10->n_a; i_1++, e_1 += 0x18) {
+                for (i_1 = 0; i_1 < self->blockA->count0; i_1++, e_1 += 0x18) {
                     func_020359d0(e_1, 7, 0);
                 }
                 self->state = 0x14;
             }
-            e_1 = func_0206e180(self->unk_10);
+            e_1 = func_0206e180(self->blockA);
             if (e_1 == NULL) {
                 break;
             }
-            for (i_1 = 0; i_1 < self->unk_10->n_b; i_1++, e_1 += 0x18) {
+            for (i_1 = 0; i_1 < self->blockA->count1; i_1++, e_1 += 0x18) {
                 func_020359d0(e_1, 7, 0);
             }
             st = 0x14;
@@ -248,18 +220,18 @@ BOOL func_ov000_021b5578(Mgr021b5578 *self) {
     case 0x14: {
         u8 *e_2;
         s32 i_2;
-        e_2 = func_0206e150(self->unk_10);
+        e_2 = func_0206e150(self->blockA);
         if (e_2 != NULL) {
-            for (i_2 = 0; i_2 < self->unk_10->n_a; i_2++, e_2 += 0x18) {
+            for (i_2 = 0; i_2 < self->blockA->count0; i_2++, e_2 += 0x18) {
                 if (!func_02035b90(e_2, 7)) {
                     ok_0 = FALSE;
                     break;
                 }
             }
         }
-        e_2 = func_0206e180(self->unk_10);
+        e_2 = func_0206e180(self->blockA);
         if (e_2 != NULL) {
-            for (i_2 = 0; i_2 < self->unk_10->n_b; i_2++, e_2 += 0x18) {
+            for (i_2 = 0; i_2 < self->blockA->count1; i_2++, e_2 += 0x18) {
                 if (!func_02035b90(e_2, 7)) {
                     ok_0 = FALSE;
                     break;
@@ -269,9 +241,9 @@ BOOL func_ov000_021b5578(Mgr021b5578 *self) {
         if (!ok_0) {
             break;
         }
-        e_2 = func_0206e150(self->unk_10);
+        e_2 = func_0206e150(self->blockA);
         if (e_2 != NULL) {
-            for (i_2 = 0; i_2 < self->unk_10->n_a; i_2++, e_2 += 0x18) {
+            for (i_2 = 0; i_2 < self->blockA->count0; i_2++, e_2 += 0x18) {
                 void *m_1 = func_02035d5c(e_2);
                 if (m_1 != NULL) {
                     void *k_1 = func_02039674(e_2);
@@ -297,10 +269,10 @@ BOOL func_ov000_021b5578(Mgr021b5578 *self) {
         }
         break;
     case 0x16: {
-        u8 *e_3 = func_0206e150(self->unk_10);
+        u8 *e_3 = func_0206e150(self->blockA);
         s32 i_3;
         if (e_3 != NULL) {
-            for (i_3 = 0; i_3 < self->unk_10->n_a; i_3++, e_3 += 0x18) {
+            for (i_3 = 0; i_3 < self->blockA->count0; i_3++, e_3 += 0x18) {
                 void *m_2 = func_02035d5c(e_3);
                 if (m_2 != NULL) {
                     void *k_2 = func_02039674(e_3);
@@ -319,7 +291,7 @@ BOOL func_ov000_021b5578(Mgr021b5578 *self) {
         self->state = 0x1e;
     }
     case 0x1e:
-        if (self->unk_14 != NULL) {
+        if (self->blockB != NULL) {
             self->state = 0xff;
             break;
         }
@@ -337,25 +309,25 @@ BOOL func_ov000_021b5578(Mgr021b5578 *self) {
         }
         r_3 = func_02035fe8(t->unk_08, buf);
         if (r_3 != NULL) {
-            self->unk_14 = (Res2021b5578 *)*r_3;
+            self->blockB = (LangBlockB *)*r_3;
         }
-        if (self->unk_14) {
-            u8 *d;
+        if (self->blockB) {
+            FieldPropDef *d;
             u8 n_1;
             u8 *e_4;
             s32 i_4;
-            self->unk_18 = func_0206e230(self->unk_14);
-            d = func_0206e2a4(self->unk_14);
-            n_1 = self->unk_14->n;
-            e_4 = func_0206e150(self->unk_10);
+            self->exits = func_0206e230(self->blockB);
+            d = func_0206e2a4(self->blockB);
+            n_1 = self->blockB->count2;
+            e_4 = func_0206e150(self->blockA);
             for (i_4 = 0; i_4 < n_1; i_4++) {
-                Node021b5578 *nd = (Node021b5578 *)Heap_Alloc(0x114);
+                FieldProp *nd = (FieldProp *)Heap_Alloc(sizeof(FieldProp));
                 if (nd != NULL) {
                     nd = func_ov000_021b79f4(nd);
                 }
-                func_ov000_021b8014(nd, d + i_4 * 0x34, e_4, self->unk_10->n_a);
+                func_ov000_021b8014(nd, &d[i_4], e_4, self->blockA->count0);
                 {
-                    Node021b5578 *tl = self->tail;
+                    FieldProp *tl = self->tail;
                     bool has = tl != NULL;
                     if (has) {
                         tl->next = nd;
@@ -371,7 +343,7 @@ BOOL func_ov000_021b5578(Mgr021b5578 *self) {
         self->state = 0x28;
     }
     case 0x28: {
-        Node021b5578 *n_2;
+        FieldProp *n_2;
         BOOL ok_1 = TRUE;
         for (n_2 = self->head; n_2 != NULL; n_2 = n_2->next) {
             if (!func_ov000_021b7f0c(n_2)) {

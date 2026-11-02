@@ -46,12 +46,6 @@ EffectObj *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, 
 // stores, and the plain field order gives the ROM's list (rounds raA-raH needed it between x and y).
 #include "ov000/Actor.h"
 namespace m_Spawn_0219b808 {
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u8 r, g, b;
-} Rgb0219b808;
-
 typedef struct {
     u16 x, y, z;
 } Rot0219b808;
@@ -66,13 +60,6 @@ typedef struct {
     s32 unk_30;
 } Shape0219b808;
 
-typedef struct {
-    VecFx32 pos;
-    Rot0219b808 rot;
-    u8 pad[2];
-    s32 unk_14;
-} Msg0219b808;
-
 extern "C" {
 
 Robo021ca458 *func_ov000_0219bf90(void);
@@ -80,13 +67,13 @@ ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 kind);
 BOOL func_01ffc318(VecFx32 *pos, void *a, const VecFx32 *min, const VecFx32 *max, const Rot0219b808 *rot);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
-static inline Rgb0219b808 *PlCol0219b808(Robo021ca458 *pl) {
-    return &LFLD(Rgb0219b808, pl, 0x772);
+static inline FieldId *PlId0219b808(Robo021ca458 *pl) {
+    return &pl->fieldId;
 }
 
-static inline BOOL SameCol0219b808(const Rgb0219b808 *a, const Rgb0219b808 *b) {
+static inline BOOL SameId0219b808(const FieldId *a, const FieldId *b) {
     BOOL r = FALSE;
-    if (a->r == b->r && a->g == b->g && a->b == b->b) {
+    if (a->c[0] == b->c[0] && a->c[1] == b->c[1] && a->c[2] == b->c[2]) {
         r = TRUE;
     }
     return r;
@@ -98,14 +85,14 @@ u16 func_ov000_0219b808(u16 id, void *a1, const Shape0219b808 *q, u16 *out, u32 
     s32 i;
     VecFx32 p1;
     VecFx32 p2;
-    Msg0219b808 m;
+    MsgData7 m;
     ActorSub48 *sub;
     ActorGroup *grp;
     Actor *a;
     if (q->mask & 2) {
         pl = func_ov000_0219bf90();
         if (pl != NULL && !(pl->unk_b24 << 30 >> 31 ? TRUE : FALSE) &&
-            SameCol0219b808(&LFLD(Rgb0219b808, data_ov000_021ccd54, 0xca), PlCol0219b808(pl)) &&
+            SameId0219b808(&data_ov000_021ccd54->unk_ca, PlId0219b808(pl)) &&
             q->flags == (q->flags & pl->hit1.unk_50)) {
             p1.x = pl->unk_75c.x;
             p1.y = pl->unk_75c.y;
@@ -140,11 +127,11 @@ u16 func_ov000_0219b808(u16 id, void *a1, const Shape0219b808 *q, u16 *out, u32 
                     m.pos.y = a->pos.y;
                     m.pos.z = a->pos.z;
                     VEC_Add(&m.pos, &q->ofs, &m.pos);
-                    m.rot.x = LFLD(Rot0219b808, a, 0x7c).x;
-                    m.rot.y = LFLD(Rot0219b808, a, 0x7c).y;
-                    m.rot.z = LFLD(Rot0219b808, a, 0x7c).z;
-                    m.unk_14 = q->unk_30;
-                    Actor_SendMsg(a, id, 7, TRUE, sizeof(Msg0219b808), &m);
+                    m.rot_x = a->rot_x;
+                    m.rot_y = a->rot_y;
+                    m.rot_z = a->rot_z;
+                    m.unk_1c = q->unk_30;
+                    Actor_SendMsg(a, id, 7, TRUE, sizeof(MsgData7), &m);
                     if (out != NULL && n < max) {
                         out[n] = a->id;
                     }

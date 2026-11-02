@@ -1,31 +1,14 @@
 #include "Main/Gfx/FieldMsg.h"
 #include "ov000/VObj.h"
-
-typedef struct {
-    u8 pad[0x14];
-    TextWin *win;
-    u8 pad18[0xbc];
-    TextWin *win2;
-    s8 buf[0x100];
-    u16 msgId;
-    u8 pad1da[2];
-    char *text;
-    u16 key;
-} Obj0215e0c0;
-
-typedef struct Node0215e344 {
-    u8 pad[6];
-    u16 id;
-    u8 pad8[0x24];
-    struct Node0215e344 *next;
-} Node0215e344;
+#include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
 extern const char data_ov000_021cabf4[];
 extern void *data_02149ef8;
 char *MsgRes_GetString(void *p, s32 id);
-void func_ov000_0215aa78(VObj *self);
+void func_ov000_0215aa78(LoBase021cafc0_021cb0b8 *self);
 
 static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
@@ -42,27 +25,27 @@ static inline void SetText(TextWin *win, u32 text) {
     data_02097ce0->unk_004 = win->font;
 }
 
-static inline char *FindSpace(Obj0215e0c0 *self, s32 need) {
+static inline char *FindSpace(Lo021cb0b8 *self, s32 need) {
     s32 i;
     if (self->buf[0] == 0) {
-        return (char *)self->buf;
+        return self->buf;
     }
     for (i = 0; i < 0xff; i++) {
         if (self->buf[i] == 0 && self->buf[i + 1] == 0) {
             s32 n = i + 1;
             if (0xff - n > need) {
-                return (char *)self->buf + n;
+                return self->buf + n;
             }
-            return (char *)self->buf;
+            return self->buf;
         }
     }
     return NULL;
 }
 
-void func_ov000_0215e0c0(Obj0215e0c0 *self, const char *text) {
+void func_ov000_0215e0c0(Lo021cb0b8 *self, const char *text) {
     char *dst;
     char *p;
-    if (self->win != NULL) {
+    if (self->title != NULL) {
         return;
     }
     dst = FindSpace(self, STD_GetStringLength(text) + 1);
@@ -71,52 +54,52 @@ void func_ov000_0215e0c0(Obj0215e0c0 *self, const char *text) {
     if (p != NULL) {
         *p = 0;
     }
-    self->win = TextWin_New();
-    self->win->font = 8;
-    SetText(self->win, (u32)dst);
-    self->win->color0 = 0x7fff;
-    self->win->color1 = 0x67f;
-    *(u32 *)((u8 *)self->win + 4) |= 0x40;
-    *(u32 *)((u8 *)self->win + 4) |= 0x1000000;
-    *(u32 *)((u8 *)self->win + 4) |= 0x400000;
-    *(u32 *)((u8 *)self->win + 4) |= 0x40000000;
-    *(u32 *)((u8 *)self->win + 4) |= 0x4;
+    self->title = TextWin_New();
+    self->title->font = 8;
+    SetText(self->title, (u32)dst);
+    self->title->color0 = 0x7fff;
+    self->title->color1 = 0x67f;
+    self->title->flags |= 0x40;
+    self->title->flags |= 0x1000000;
+    self->title->flags |= 0x400000;
+    self->title->flags |= 0x40000000;
+    self->title->flags |= 0x4;
     if (p == NULL) {
         return;
     }
-    self->win2 = TextWin_New();
-    self->win2->font = 8;
-    SetText(self->win2, (u32)(p + 1));
-    self->win2->color0 = 0x7fff;
-    self->win2->color1 = 0x67f;
-    *(u32 *)((u8 *)self->win2 + 4) |= 0x40;
-    *(u32 *)((u8 *)self->win2 + 4) |= 0x1000000;
-    *(u32 *)((u8 *)self->win2 + 4) |= 0x400000;
-    *(u32 *)((u8 *)self->win2 + 4) |= 0x40000000;
-    *(u32 *)((u8 *)self->win2 + 4) |= 0x4;
+    self->title2 = TextWin_New();
+    self->title2->font = 8;
+    SetText(self->title2, (u32)(p + 1));
+    self->title2->color0 = 0x7fff;
+    self->title2->color1 = 0x67f;
+    self->title2->flags |= 0x40;
+    self->title2->flags |= 0x1000000;
+    self->title2->flags |= 0x400000;
+    self->title2->flags |= 0x40000000;
+    self->title2->flags |= 0x4;
 }
 
-void func_ov000_0215e344(Obj0215e0c0 *self) {
+void func_ov000_0215e344(Lo021cb0b8 *self) {
     char *p;
     char *dst;
     char *q;
     u16 i;
     BOOL done;
-    Node0215e344 *node;
+    UiListItem *node;
     u16 key;
 
     {
         void *d = data_02149ef8;
         char *t;
-        *(u16 *)((u8 *)self + 0x64) = 0;
-        *(u16 *)((u8 *)self + 0x66) = 0;
-        *(u16 *)((u8 *)self + 0x68) = 0;
+        self->posX = 0;
+        self->posY = 0;
+        self->posZ = 0;
         if (self->msgId != 0xffff) {
             t = MsgRes_GetString(d, self->msgId);
         } else {
             t = MsgRes_GetString(d, 0x8d);
         }
-        ((VObj *)self)->vfunc_10(t);
+        self->vfunc_10(t);
     }
     p = self->text;
     i = 0;
@@ -139,18 +122,18 @@ void func_ov000_0215e344(Obj0215e0c0 *self) {
         } else {
             done = TRUE;
         }
-        ((VObj *)self)->vfunc_74(dst, i, 0xffff, 0xffff);
+        self->vfunc_74(dst, i, 0xffff, 0xffff);
         dst = q + 1;
         i++;
     } while (!done);
-    func_ov000_0215aa78((VObj *)self);
+    func_ov000_0215aa78(self);
     key = self->key;
-    for (node = *(Node0215e344 **)((u8 *)self + 0x94); node != NULL; node = node->next) {
+    for (node = self->items; node != NULL; node = node->next) {
         if (node->id == key) {
             break;
         }
     }
-    ((VObj *)self)->vfunc_a8(node);
+    self->vfunc_a8(node);
 }
 
 }

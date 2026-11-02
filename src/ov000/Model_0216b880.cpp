@@ -1,4 +1,6 @@
 #include "ov000/ModelPart.h"
+#include "ov000/MessageQueue.h"
+#include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
@@ -15,7 +17,7 @@ typedef struct {
 } Bits0216b880;
 
 extern "C" {
-extern u8 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern u8 data_ov000_021c9a9c[];
 
 static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
@@ -34,16 +36,16 @@ static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
     func_02042628(model, anim, part, flag);
 }
 
-static inline BOOL IsShown(u8 *p) {
-    return LFLD(Bits0216b880, p, 0xc).b3 ? TRUE : FALSE;
+static inline BOOL IsShown(ObjBase021cac0c_021cb6f0 *p) {
+    return p->unk_0c_3 ? TRUE : FALSE;
 }
 
-static inline u8 *GetA0216b880(u8 *mgr) {
-    return LFLD(u8 *, mgr, 0x11c) != NULL ? LFLD(u8 *, LFLD(u8 *, mgr, 0x11c), 0x58) : NULL;
+static inline Lo021cb798 *GetA0216b880(MessageQueue021cb980 *mgr) {
+    return mgr->unk_11c != NULL ? mgr->unk_11c->unk_58 : NULL;
 }
 
-static inline u8 *GetB0216b880(u8 *mgr) {
-    return LFLD(u8 *, mgr, 0x11c) != NULL ? LFLD(u8 *, LFLD(u8 *, mgr, 0x11c), 0x64) : NULL;
+static inline Lo021cb744 *GetB0216b880(MessageQueue021cb980 *mgr) {
+    return mgr->unk_11c != NULL ? mgr->unk_11c->unk_64 : NULL;
 }
 
 struct Obj0216b880 {
@@ -56,9 +58,9 @@ struct Obj0216b880 {
 
 void func_ov000_0216b880(Obj0216b880 *self) {
     s32 off;
-    u8 *m;
-    u8 *a;
-    u8 *b;
+    Model *m;
+    Lo021cb798 *a;
+    Lo021cb744 *b;
     s32 y;
     s32 v;
     if (self->unk_04 != 7 && self->unk_04 != 8) {
@@ -71,13 +73,13 @@ void func_ov000_0216b880(Obj0216b880 *self) {
     b = GetB0216b880(data_ov000_021ccd30);
     Lim0216b880 lim = LFLD(Lim0216b880, data_ov000_021c9a9c, 0x20);
     off = 0;
-    if (b != NULL && IsShown(b) && (m = LFLD(u8 *, b, 0x9c)) != NULL) {
-        lim.x = LFLD(s32, m, 0xfc);
-        lim.y = LFLD(s32, m, 0x100) - 0x15000;
+    if (b != NULL && IsShown(b) && (m = b->unk_9c) != NULL) {
+        lim.x = m->x;
+        lim.y = m->y - 0x15000;
         off = -0x12000;
-    } else if (a != NULL && IsShown(a) && (m = LFLD(u8 *, a, 0xa4)) != NULL) {
-        lim.x = LFLD(s32, m, 0xfc);
-        lim.y = LFLD(s32, m, 0x100) - 0x15000;
+    } else if (a != NULL && IsShown(a) && (m = a->unk_a4) != NULL) {
+        lim.x = m->x;
+        lim.y = m->y - 0x15000;
         off = -0xa000;
     }
     if (v == 0) {

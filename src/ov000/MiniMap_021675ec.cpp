@@ -6,6 +6,7 @@
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/Model.h"
 #include "ov000/ModelPart.h"
+#include "ov000/FieldMgr.h"
 // Mini-map markers: quest targets, visible actors and point markers.
 #define ABS021675ec(x) ((x) < 0 ? -(x) : (x))
 
@@ -47,7 +48,6 @@ extern "C" {
 extern void *data_ov000_021ccd64;
 // In .rodata; declaring it const lets the 0x74 copy load both words before either store.
 extern const u8 data_ov000_021c9a9c[];
-extern u8 *data_ov000_021ccd6c;
 Robo021ca458 *func_ov000_0219bf90(void);
 void *func_0203bbfc(void *sys, int which);
 s32 func_ov000_0218c040(void *mgr, s32 max, VecFx32 *out, s32 kind, u16 id);
@@ -105,13 +105,8 @@ typedef struct {
     u8 b : 1;
 } Flags021675ec;
 
-typedef struct {
-    u16 lo : 8;
-    u16 b8 : 1;
-} H12_021675ec;
-
-static inline BOOL Vis021675ec(u8 *o) {
-    return LFLD(H12_021675ec, o, 0x12).b8 == 1 ? TRUE : FALSE;
+static inline BOOL Vis021675ec(FieldProp *o) {
+    return o->loader.flag8 == 1 ? TRUE : FALSE;
 }
 
 static inline BOOL Bit2_021675ec(Robo021ca458 *pl) {
@@ -126,7 +121,7 @@ struct Obj021675ec {
 void func_ov000_021675ec(Obj021675ec *self, u8 *w) {
     u16 k;
     VecFx32 pos;
-    u8 *o;
+    FieldProp *o;
     VecFx32 pts[8];
     Robo021ca458 *pl;
     s32 j;
@@ -179,11 +174,11 @@ void func_ov000_021675ec(Obj021675ec *self, u8 *w) {
         Model_PlayPartF(self->unk_24, 3, 0);
         NNS_G2dEntryOamManagerOam(oam, w + 0x14, 1);
     }
-    for (o = LFLD(u8 *, data_ov000_021ccd6c, 0x1c); o != NULL; o = LFLD(u8 *, o, 4)) {
+    for (o = data_ov000_021ccd6c->head; o != NULL; o = o->next) {
         if (Vis021675ec(o)) {
-            s32 ox = LFLD(s32, o, 0xa8);
-            s32 oz = LFLD(s32, o, 0xb0);
-            u8 *a = LFLD(u8 *, LFLD(u8 *, o, 0x4c), 4);
+            s32 ox = o->model.trans.x;
+            s32 oz = o->model.trans.z;
+            u8 *a = LFLD(u8 *, o->model.rob, 4);
             s32 sx;
             s32 sy;
             a = a != NULL ? a + 0x14 : NULL;

@@ -2,6 +2,7 @@
 #include "Main/Res/StageFlags.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
+#include "ov000/FieldMgr.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -16,7 +17,6 @@ public:
 extern "C" {
 extern char data_ov000_021cc463[];
 extern void *data_02097e4c;
-extern void *data_ov000_021ccd6c;
 BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 BOOL func_ov000_02191120(void *a);
@@ -29,7 +29,6 @@ void Target_Set(void *a, void *b);
 void func_ov003_021f0c60(void *self, s32 a);
 void *func_ov003_021f0868(void *pos, s32 a, s32 b);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
-u8 *func_ov000_021b68b8(void *mgr, void *pos);
 void func_ov000_02197ad0(Actor *self, BOOL b);
 void Actor_Move(Actor *self, s32 a);
 void func_ov000_021987b8(void *a, BOOL b, s32 c, s32 d);
@@ -56,7 +55,7 @@ void func_ov000_02196c40(ActorEx *self) {
         break;
     case 1: {
         u32 in = self->hit->unk_50;
-        u8 *hit;
+        FieldExit *hit;
         if (self->velY > 0 && (in & 0x80000000)) {
             self->velY = -0xcd;
         }
@@ -80,7 +79,7 @@ void func_ov000_02196c40(ActorEx *self) {
         }
         hit = func_ov000_021b68b8(data_ov000_021ccd6c, &self->pos);
         if (hit != NULL) {
-            u16 ang = LFLD(u16, hit, 0x1a);
+            u16 ang = hit->dir;
             self->speed = FxMul02196c40(self->speed, 0x59a);
             if (self->speed < 0x8f) {
                 self->speed = 0x8f;

@@ -506,7 +506,17 @@ struct Lo021cae48 : public UiObj {
 
 // Vtable data_ov000_021cafc0, data_ov000_021cb0b8, data_ov000_021cb1b0, data_ov006_021ec30c; methods in 6 files, G3_0215b2e4.cpp .. Text_0215b8f0.cpp.
 struct LoBase021cafc0_021cb0b8 : public UiList {
-    s32 unk_d4;
+    TextWin *title2; // second title line (slot 0x10 func_ov000_0215e0c0 splits the title), freed by slot 0x2c
+};
+
+// Vtable data_ov000_021cb0b8 (0x1e4 bytes, base data_ov000_021cb1b0, slot 0x28 func_ov000_0215e4fc): a list
+// dialog whose title and lines are copied into buf; slot 0x08 func_ov000_0215e344 builds it from message msgId
+// (or text) and selects the item with id key.
+struct Lo021cb0b8 : public LoBase021cafc0_021cb0b8 {
+    char buf[0x100]; // 0xd8 the title and the item strings
+    u16 msgId;       // 0x1d8 (0xffff: none)
+    char *text;      // 0x1dc the item lines, separated by data_ov000_021cabf4
+    u16 key;         // 0x1e0 id of the item selected first
 };
 
 
@@ -515,7 +525,7 @@ struct Lo021cb3a8 : public UiList021cb4a8 {
     char *srcStr;
     char *str;
     s32 strSize;
-    VObj *unk_ec;
+    TextWin *text; // built from str by func_ov000_02158c60
 };
 
 // Vtable data_ov000_021cb5a8; methods in 6 files, Lo_02159aac.cpp .. Lo_0215a7d8.cpp.

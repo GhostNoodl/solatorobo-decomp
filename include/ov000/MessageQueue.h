@@ -36,7 +36,9 @@ public:
 };
 
 struct LoTicker;
+struct SlideWin; // Main/Gfx/SlideWin.h
 struct LoTimer;
+struct Lo021cb0b8; // list dialog, ov000/ObjLayouts.h
 struct Lo021cb6f0; // the bar displays, ov000/ObjLayouts.h
 struct Lo021cb744;
 struct Lo021cb798;
@@ -59,7 +61,7 @@ public:
         };
     };
     s32 state;
-    VObj *unk_28;
+    SlideWin *win; // message window, made by func_ov000_02170188
     void *unk_2c;
     VObj *unk_30;
     void *unk_34;
@@ -67,7 +69,7 @@ public:
     void *unk_3c;
     void *unk_40;
     void *unk_44;
-    VObj *unk_48;
+    Lo021cb0b8 *dialog; // list dialog, made by func_ov000_02170620
     void *unk_4c;
     void *unk_50;
     struct LoTimer *unk_54; // the stage timer

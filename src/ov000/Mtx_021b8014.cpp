@@ -1,62 +1,7 @@
 #include "nitro/fx.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
+#include "ov000/FieldMgr.h"
 #define SC(r) FX_SinCosTable_[((r) >> 4) * 2], FX_SinCosTable_[((r) >> 4) * 2 + 1]
-
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 b4 : 1;
-    u16 b5 : 1;
-    u16 b6 : 1;
-    u16 b7 : 1;
-    u16 rest : 8;
-} DefFlags021b8014;
-
-typedef struct {
-    u8 pad[0x18];
-    VecFx32 pos;
-    u16 rot[3];
-    s16 sx;
-    s16 sy;
-    s16 sz;
-    s16 unk_30;
-    DefFlags021b8014 flags;
-} Def021b8014;
-
-typedef struct {
-    u8 b0 : 1;
-    u8 rest : 7;
-} Bits8;
-
-typedef struct {
-    u16 b0 : 1;
-    u16 rest : 15;
-} Bits16;
-
-typedef struct {
-    u8 pad[0x8];
-    const Def021b8014 *def;
-    const char *ext;
-    s16 unk_10;
-    u16 flags;
-    u8 pad14[0x94];
-    VecFx32 pos;
-    MtxFx33 mtx;
-    s32 sx;
-    s32 sy;
-    s32 sz;
-    s16 unk_e4;
-    u8 unk_e6[3];
-    u8 flags_e9;
-    u8 pad_ea[6];
-    s32 unk_f0;
-    u8 unk_f4;
-    u8 pad_f5;
-    u8 flags_f6;
-} Obj021b8014;
 
 extern "C" {
 
@@ -96,45 +41,45 @@ static inline void RotZYX(MtxFx33 *m, const u16 *rot) {
     }
 }
 
-void func_ov000_021b8014(Obj021b8014 *self, const Def021b8014 *def, s32 a, u8 b) {
-    LFLD(Bits16, self, 0x12).b0 = 1;
-    self->flags |= 4;
-    if (def->flags.b2) {
-        self->flags |= 0x100;
+void func_ov000_021b8014(FieldProp *self, const FieldPropDef *def, s32 a, u8 b) {
+    self->loader.flag0 = 1;
+    self->loader.flag2 = 1;
+    if (def->hit) {
+        self->loader.flag8 = 1;
     }
     self->unk_f0 = a;
     self->unk_f4 = b;
-    if (def->flags.b3) {
-        self->flags |= 0x10;
+    if (def->tex) {
+        self->loader.flag4 = 1;
     }
-    if (def->flags.b0) {
-        self->flags |= 0x40;
-        if (def->flags.b1) {
-            self->flags_e9 |= 2;
+    if (def->anim) {
+        self->loader.flag6 = 1;
+        if (def->loop) {
+            self->model.loop = 1;
         }
         if (def->unk_30 != 0x1000) {
-            self->unk_e4 = def->unk_30;
+            self->model.speed = def->unk_30;
         }
     }
-    self->unk_10 = 0;
-    self->def = def;
-    self->ext = func_02039674(def);
-    self->pos = def->pos;
-    RotZYX(&self->mtx, def->rot);
-    if (def->flags.b5) {
-        self->flags_e9 |= 0x20;
+    self->loader.state = 0;
+    self->loader.def = def;
+    self->loader.name = func_02039674(def);
+    self->model.trans = def->pos;
+    RotZYX(&self->model.rot, def->rot);
+    if (def->boxTest) {
+        self->model.boxTest = 1;
     }
-    self->sx = def->sx << 4;
-    self->sy = def->sy << 4;
-    self->sz = def->sz << 4;
-    if (def->flags.b4) {
-        LFLD(Bits8, self, 0xf6).b0 = 1;
+    self->model.scale.x = def->sx << 4;
+    self->model.scale.y = def->sy << 4;
+    self->model.scale.z = def->sz << 4;
+    if (def->fade) {
+        self->fade = 1;
     }
-    if (def->flags.b6) {
-        self->flags_f6 |= 2;
+    if (def->lod) {
+        self->lod = 1;
     }
-    if (def->flags.b7) {
-        self->flags_e9 |= 0x10;
+    if (def->addInvTrans) {
+        self->model.addInvTrans = 1;
     }
 }
 

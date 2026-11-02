@@ -2,68 +2,23 @@
 #include "ov000/ObjLayouts.h"
 #include "ov000/Vec.h"
 #include "Main/Sys/FieldState.h"
-
-class Mgr021b5110Cls;
-typedef void (Mgr021b5110Cls::*Mgr021b5110Pmf)();
-
-typedef struct Node021b5110 {
-    struct Node021b5110 *prev;
-    struct Node021b5110 *next;
-} Node021b5110;
-
-typedef struct {
-    u8 unk_00[0xc];
-    s16 hx, hy, hz;
-    u16 rot;
-    u8 unk_14[0xc];
-    u8 c[3];
-    u8 sel;
-} Item021b5110;
-
-typedef struct {
-    u8 unk_00[0x14];
-    u8 count;
-} Def021b5110;
+#include "ov000/FieldMgr.h"
 
 typedef struct {
     u16 x, y, z;
 } Rot021b5110;
 
-typedef struct {
-    u8 c[3];
-} Col021b5110;
-
-typedef struct {
-    u8 pad_00[8];
-    u8 unk_08;
-    u8 unk_09;
-    u8 unk_0a;
-    u8 unk_0b;
-    u8 pad_0c[8];
-    Def021b5110 *def;
-    Item021b5110 *items;
-    Node021b5110 *head;
-    u8 pad_20[4];
-    u8 unk_24[0x268];
-    Mgr021b5110Pmf unk_28c;
-} Mgr021b5110;
-
-typedef struct {
-    u8 pad_00[0x15];
-    u8 unk_15;
-} Player021b5110;
-
 extern "C" {
 
 extern void *data_02149efc;
 extern void *data_02097e4c;
-BOOL PauseNode_IsUpdatePaused(void *node, s32 a);
-s32 func_ov000_021b7b50(Node021b5110 *n);
-Player021b5110 *func_ov000_0219bf90(void);
-BOOL func_ov000_021b4738(Player021b5110 *pl);
-BOOL func_01ffc318(void *a, Item021b5110 *item, VecFx32 *min, VecFx32 *max, Rot021b5110 *rot);
+BOOL PauseNode_IsUpdatePaused(PauseNode *node, s32 a);
+s32 func_ov000_021b7b50(FieldProp *n);
+Robo021ca458 *func_ov000_0219bf90(void);
+BOOL func_ov000_021b4738(Robo021ca458 *pl);
+BOOL func_01ffc318(VecFx32 *a, FieldExit *item, VecFx32 *min, VecFx32 *max, Rot021b5110 *rot);
 void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
-void func_ov000_02188ca0(Col021b5110 *c, s32 a);
+void func_ov000_02188ca0(FieldId *c, s32 a);
 
 static inline void SetRot(Rot021b5110 *r, u16 x, u16 y, u16 z) {
     r->x = x;
@@ -86,37 +41,37 @@ static inline void Push(s32 cmd, s32 arg) {
     }
 }
 
-void func_ov000_021b5110(Mgr021b5110 *self) {
-    Node021b5110 *n;
-    Player021b5110 *pl;
-    Item021b5110 *item;
+void func_ov000_021b5110(FieldMgr *self) {
+    FieldProp *n;
+    Robo021ca458 *pl;
+    FieldExit *item;
     u8 i;
     u8 hit;
-    if (PauseNode_IsUpdatePaused(self, 1)) {
+    if (PauseNode_IsUpdatePaused(&self->pause, 1)) {
         return;
     }
     for (n = self->head; n != NULL; n = n->next) {
         func_ov000_021b7b50(n);
     }
-    if (*(void **)&self->unk_28c != NULL) {
-        (((Mgr021b5110Cls *)self)->*self->unk_28c)();
+    if (*(void **)&self->step != NULL) {
+        (self->*self->step)();
     }
     pl = func_ov000_0219bf90();
-    if (pl == NULL || pl->unk_15 == 3) {
+    if (pl == NULL || pl->mode == 3) {
         return;
     }
     if (func_ov000_021b4738(pl)) {
         return;
     }
-    if (self->def == NULL) {
+    if (self->blockB == NULL) {
         return;
     }
-    if (self->unk_0a != 0xff || self->unk_0b != 0xff) {
+    if (self->destExit != 0xff || self->exit != 0xff) {
         return;
     }
-    item = self->items;
+    item = self->exits;
     hit = 0xff;
-    for (i = 0; i < self->def->count; i++, item++) {
+    for (i = 0; i < self->blockB->count0; i++, item++) {
         VecFx32 max;
         VecFx32 min;
         Rot021b5110 rot;
@@ -127,14 +82,14 @@ void func_ov000_021b5110(Mgr021b5110 *self) {
         min.y = -max.y;
         min.z = -max.z;
         SetRot(&rot, 0, item->rot, 0);
-        if (func_01ffc318(self->unk_24, item, &min, &max, &rot)) {
+        if (func_01ffc318(&self->playerPos, item, &min, &max, &rot)) {
             hit = i;
-            if (self->unk_09 == i) {
+            if (self->curExit == i) {
                 break;
             }
-            self->unk_0b = i;
-            self->unk_0a = item->sel;
-            if (self->unk_0a == 0xff) {
+            self->exit = i;
+            self->destExit = item->destExit;
+            if (self->destExit == 0xff) {
                 BOOL busy = FALSE;
                 if (data_02149efc != NULL) {
                     busy = TRUE;
@@ -145,11 +100,11 @@ void func_ov000_021b5110(Mgr021b5110 *self) {
                     Push(0x1d, 0);
                 }
             } else {
-                Col021b5110 c;
+                FieldId c;
                 FieldState *gm = data_ov000_021ccd54;
-                u8 r = item->c[0];
-                u8 g = item->c[1];
-                u8 b = item->c[2];
+                u8 r = item->dest.c[0];
+                u8 g = item->dest.c[1];
+                u8 b = item->dest.c[2];
                 if (r == 0xff) r = gm->unk_ca.c[0];
                 if (g == 0xff) g = gm->unk_ca.c[1];
                 if (b == 0xff) b = gm->unk_ca.c[2];
@@ -162,7 +117,7 @@ void func_ov000_021b5110(Mgr021b5110 *self) {
         }
     }
     if (hit == 0xff) {
-        self->unk_09 = 0xff;
+        self->curExit = 0xff;
     }
 }
 }

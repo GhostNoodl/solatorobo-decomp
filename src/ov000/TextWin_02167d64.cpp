@@ -1,11 +1,11 @@
 #include "Main/Gfx/FieldMsg.h"
 #include "Main/Res/ResMgr.h"
 #include "ov000/VObj.h"
+#include "ov000/FieldMgr.h"
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
-extern u8 *data_ov000_021ccd6c;
-char *func_0206e200(u32 a);
+char *func_0206e200(LangBlockB *b);
 void TextWin_InitLines(TextWin *win, s32 a);
 s32 FX_Div(s32 a, s32 b);
 
@@ -33,7 +33,7 @@ struct Obj02167d64 {
 };
 
 void func_ov000_02167d64(Obj02167d64 *self) {
-    char *str = func_0206e200(LFLD(u32, data_ov000_021ccd6c, 0x14));
+    char *str = func_0206e200(data_ov000_021ccd6c->blockB);
     TextWin *win;
     switch (self->unk_44) {
     case 4:

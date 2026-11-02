@@ -1,6 +1,8 @@
 #include "ov000/LoCommon.h"
 #include "Main/Gfx/Model.h"
 #include "ov000/ModelPart.h"
+#include "ov000/UiObj.h"
+#include "Main/Gfx/TextWin.h"
 
 typedef struct {
     u32 b0 : 2;
@@ -12,11 +14,11 @@ extern "C" {
 
 void func_ov000_0215a8c8(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);
 
-void UiObj_Release(VObj *self) {
+void UiObj_Release(UiObj *self) {
     self->vfunc_48(1, 0);
-    LO_FREE_M(self, 0x10);
-    LO_FREE_V(self, 0x14);
-    LO_FREE_V(self, 0x18);
+    HEAP_DELETE_MODEL(self->model);
+    HEAP_DELETE(TextWin *, self->title, p->unk_vf04());
+    HEAP_DELETE(TextWin *, self->caption, p->unk_vf04());
 }
 
 }

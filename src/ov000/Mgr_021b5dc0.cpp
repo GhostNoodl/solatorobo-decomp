@@ -5,23 +5,8 @@
 #include "ov000/Group.h"
 #include "nitro/fx.h"
 #include "Main/Gfx/GfxMgr.h"
+#include "ov000/FieldMgr.h"
 
-
-class Mgr021b5dc0Cls;
-typedef void (Mgr021b5dc0Cls::*Mgr021b5dc0Pmf)();
-
-typedef struct {
-    u8 b0 : 2;
-    u8 b2 : 1;
-    u8 rest : 5;
-} Bits021b5dc0;
-
-typedef struct {
-    u8 pad_00[0x17];
-    u8 unk_17;
-    u8 unk_18;
-    Bits021b5dc0 unk_19;
-} Rect021b5dc0;
 
 typedef struct {
     VecFx32 pos;
@@ -31,42 +16,19 @@ typedef struct {
 } Ent021b5dc0;
 
 
-typedef struct Node021b5dc0 {
-    u8 pad_00[4];
-    struct Node021b5dc0 *next;
-    u8 pad_08[0xee];
-    u8 unk_f6;
-} Node021b5dc0;
-
-typedef struct {
-    void *unk_00;
-    u8 pad_04[0xc];
-    void *unk_10;
-    Rect021b5dc0 *unk_14;
-    u8 pad_18[4];
-    Node021b5dc0 *unk_1c;
-    u8 pad_20[0x10];
-    u16 unk_30[0x20];
-    VecFx32 unk_70[0x20];
-    u16 unk_1f0;
-    s16 unk_1f2;
-    u8 unk_1f4[0x98];
-    Mgr021b5dc0Pmf unk_28c;
-} Mgr021b5dc0;
-
 extern "C" {
 
 extern Group *data_ov000_021ccd64;
-extern const Mgr021b5dc0Pmf data_ov000_021cc81c;
-extern const Mgr021b5dc0Pmf data_ov000_021cc824;
+extern const FieldMgrFn data_ov000_021cc81c;
+extern const FieldMgrFn data_ov000_021cc824;
 extern char data_ov000_021cc82c[];
 extern char data_ov000_021cc83d[];
 
-void func_0206e660(void *p);
-void func_0206e648(void *p);
+void func_0206e660(LangBlockA *p);
+void func_0206e648(LangBlockB *p);
 void func_02043b20(void *p);
-s32 func_0206e340(Rect021b5dc0 *r);
-Ent021b5dc0 *func_0206e2ec(Rect021b5dc0 *r);
+s32 func_0206e340(LangBlockB *r);
+Ent021b5dc0 *func_0206e2ec(LangBlockB *r);
 Robo021ca458 *func_ov000_0219bf90(void);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
@@ -74,7 +36,7 @@ void Body_SetPos(void *body, VecFx32 *pos, u16 angle);
 void **func_02035edc(const char *a, const char *b);
 void *NNS_G3dGetAnmByIdx(void *p, s32 idx);
 void Camera_SetAnim(Camera *cam, void *anim);
-void func_ov000_021b7e60(Node021b5dc0 *n, s32 v);
+void func_ov000_021b7e60(FieldProp *n, s32 v);
 
 static inline BOOL SameArea021b5dc0(void) {
     FieldState *g = data_ov000_021ccd54;
@@ -99,7 +61,7 @@ static inline u16 Kind021b5dc0(u16 v) {
     return v >> 12;
 }
 
-void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
+void func_ov000_021b5dc0(FieldMgr *self) {
     GroupActorDesc s;
     VecFx32 base;
     VecFx32 out;
@@ -113,23 +75,23 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
     s32 mode;
     Robo021ca458 *pl;
     Actor *a;
-    Node021b5dc0 *n;
+    FieldProp *n;
 
-    if (self->unk_10 != NULL) {
-        func_0206e660(self->unk_10);
+    if (self->blockA != NULL) {
+        func_0206e660(self->blockA);
     }
-    if (self->unk_14 != NULL) {
-        func_0206e648(self->unk_14);
+    if (self->blockB != NULL) {
+        func_0206e648(self->blockB);
     }
     func_02043b20(data_02097d48->unk_8b0);
-    v = self->unk_14->unk_18;
+    v = self->blockB->count4;
     cam = &data_ov000_021ccd54->cam;
-    cam->unk_c8 = func_0206e340(self->unk_14);
+    cam->unk_c8 = func_0206e340(self->blockB);
     cam->unk_d6 = v;
     g = data_ov000_021ccd54;
-    ents = func_0206e2ec(self->unk_14);
+    ents = func_0206e2ec(self->blockB);
     if (ents != NULL && (!SameArea021b5dc0() || data_ov000_021ccd54->unk_c9 != 0)) {
-        for (i = 0; i < self->unk_14->unk_17; i++) {
+        for (i = 0; i < self->blockB->count3; i++) {
             GroupNode *o;
             u16 kind;
             id = ents[i].id;
@@ -164,18 +126,18 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
         pl = func_ov000_0219bf90();
         if (func_ov000_0218c040(data_ov000_021ccd64, 1, &base, self->unk_1f0 >> 12, self->unk_1f0)) {
             for (i = 0; i < 0x20; i++) {
-                id = self->unk_30[i];
+                id = self->ids[i];
                 if (id == 0xffff) {
                     continue;
                 }
                 if (pl != NULL && id == pl->id) {
-                    VEC_Add(&base, &self->unk_70[i], &out);
+                    VEC_Add(&base, &self->vecs[i], &out);
                     pl->unk_75c = out;
                     pl->fieldId = data_ov000_021ccd54->unk_ca;
                 } else {
                     a = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, id);
                     if (a != NULL) {
-                        VEC_Add(&base, &self->unk_70[i], &out);
+                        VEC_Add(&base, &self->vecs[i], &out);
                         a->pos = out;
                         a->speed = 0;
                         a->velY = 0;
@@ -186,12 +148,12 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
                         }
                     }
                 }
-                self->unk_30[i] = 0xffff;
+                self->ids[i] = 0xffff;
             }
         }
         self->unk_1f0 = 0xffff;
     }
-    self->unk_28c = NULL;
+    self->step = NULL;
     self->unk_1f2 = 0;
     if (g->unk_ca.c[0] == 0x10 && g->unk_ca.c[1] == 0 && (g->unk_ca.c[2] == 0 || g->unk_ca.c[2] == 3)) {
         void **res = func_02035edc(data_ov000_021cc82c, data_ov000_021cc83d);
@@ -202,17 +164,17 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
                 self->unk_1f2 = 0xa4;
             }
             cam->base.speed = self->unk_1f2;
-            self->unk_28c = data_ov000_021cc81c;
+            self->step = data_ov000_021cc81c;
         }
     }
-    if (self->unk_14->unk_19.b2) {
-        self->unk_28c = data_ov000_021cc824;
+    if (self->blockB->unk_19_2) {
+        self->step = data_ov000_021cc824;
     }
     if (g->unk_ca.c[0] != 0x12) {
         return;
     }
-    for (n = self->unk_1c; n != NULL; n = n->next) {
-        n->unk_f6 |= 8;
+    for (n = self->head; n != NULL; n = n->next) {
+        n->keepHit = 1;
         func_ov000_021b7e60(n, 0x1ccd);
     }
 }

@@ -68,7 +68,7 @@ void func_ov000_0215b598(LoBase021cafc0_021cb0b8 *self, s32 a1, s32 *pos, s32 a3
         G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g->unk_8b0) << 24) | 0x8d0 | (a << 16));
     }
     {
-        s32 k = self->unk_d4 ? 0x10000 : 0;
+        s32 k = self->title2 ? 0x10000 : 0;
         sx = self->width << 12;
         sy = (self->height << 12) + 0xb000;
         t = FX_Div(k + 0x10000, sy);

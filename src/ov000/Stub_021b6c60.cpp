@@ -1,29 +1,17 @@
 #include "types.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Sys/FieldState.h"
-
-typedef struct {
-    u8 pad_00[0xa];
-    u16 unk_0a;
-    u16 unk_0c;
-    u16 unk_0e;
-    u16 unk_10;
-} Rect021b6c60;
-
-typedef struct {
-    u8 pad_00[0x14];
-    Rect021b6c60 *unk_14;
-} Obj021b6c60;
+#include "ov000/FieldMgr.h"
 
 extern "C" {
 Robo021ca458 *func_ov000_0219bf90(void);
 void func_0203d45c(void *q, u16 a, u16 b, u16 c, u16 d);
 
-void func_ov000_021b6c60(Obj021b6c60 *self) {
+void func_ov000_021b6c60(FieldMgr *self) {
     Robo021ca458 *pl = func_ov000_0219bf90();
-    Rect021b6c60 *r;
+    LangBlockB *r;
     FieldCam *cam;
-    if (pl == NULL || (r = self->unk_14) == NULL) {
+    if (pl == NULL || (r = self->blockB) == NULL) {
         return;
     }
     cam = &data_ov000_021ccd54->cam;

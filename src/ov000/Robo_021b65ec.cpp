@@ -1,29 +1,7 @@
 #include "ov000/Actor.h"
 #include "ov000/ObjLayouts.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u8 r, g, b;
-} Rgb021b65ec;
-
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 2;
-    u16 b4 : 12;
-} ItemBits021b65ec;
-
-typedef struct {
-    VecFx32 pos;
-    u8 unk_0c[8];
-    s16 hx, hy, hz;
-    u16 rot;
-    ItemBits021b65ec bits;
-    u8 unk_1e[2];
-    Rgb021b65ec col;
-    u8 unk_23;
-} Item021b65ec;
+#include "ov000/FieldMgr.h"
 
 extern "C" {
 
@@ -56,37 +34,30 @@ static inline void PlSetCol021b65ec(Robo021ca458 *pl, u8 r, u8 g, u8 b) {
     pl->unk_774 = b;
 }
 
-static inline Rgb021b65ec *PlCol021b65ec(Robo021ca458 *pl) {
-    return &LFLD(Rgb021b65ec, pl, 0x772);
+static inline FieldId *PlCol021b65ec(Robo021ca458 *pl) {
+    return &pl->fieldId;
 }
 
-static inline BOOL SameCol021b65ec(const Rgb021b65ec *a, const Rgb021b65ec *b) {
+static inline BOOL SameCol021b65ec(const FieldId *a, const FieldId *b) {
     BOOL r = FALSE;
-    if (a->r == b->r && a->g == b->g && a->b == b->b) {
+    if (a->c[0] == b->c[0] && a->c[1] == b->c[1] && a->c[2] == b->c[2]) {
         r = TRUE;
     }
     return r;
 }
 
-struct Obj021b65ec {
-    u8 unk_00[0xb];
-    u8 unk_0b;
-    u8 unk_0c[0xc];
-    Item021b65ec *unk_18;
-};
-
-void func_ov000_021b65ec(Obj021b65ec *self) {
+void func_ov000_021b65ec(FieldMgr *self) {
     FieldState *g;
     Robo021ca458 *pl;
-    Item021b65ec *item;
+    FieldExit *item;
     // DECL-END
     pl = func_ov000_0219bf90();
     if (pl == NULL) {
         return;
     }
-    item = &self->unk_18[self->unk_0b];
+    item = &self->exits[self->exit];
     g = data_ov000_021ccd54;
-    if (item->bits.b1 && pl->unk_b24_5) {
+    if (item->unk_1c_1 && pl->unk_b24_5) {
         Actor *a = FindActor021b65ec(pl->unk_b1c);
         if (a != NULL && a->targetObj != NULL) {
             a->targetObj->target = 0xffff;
@@ -96,7 +67,7 @@ void func_ov000_021b65ec(Obj021b65ec *self) {
         pl->unk_b24_5 = 0;
         pl->unk_b24_7 = pl->unk_b24_9;
     }
-    switch (item->bits.b2) {
+    switch (item->type) {
     case 1:
         if (!pl->unk_b24_1) {
             return;
@@ -105,29 +76,29 @@ void func_ov000_021b65ec(Obj021b65ec *self) {
         pl->fieldId = g->unk_d0;
         {
             VecFx32 v;
-            v.x = item->hx << 4;
-            v.y = item->hy << 4;
-            v.z = item->hz << 4;
+            v.x = item->ox << 4;
+            v.y = item->oy << 4;
+            v.z = item->oz << 4;
             VEC_Add(&v, &item->pos, &v);
-            PlSetPos021b65ec(pl, &v, 0, item->rot, 0);
+            PlSetPos021b65ec(pl, &v, 0, item->dir, 0);
         }
         break;
     case 2: {
-        Rgb021b65ec c;
+        FieldId c;
         if (pl->unk_b24_1 ? TRUE : FALSE) {
             return;
         }
-        c.r = item->col.r;
-        c.g = item->col.g;
-        c.b = item->col.b;
-        if (c.r == 0xff) {
-            c.r = g->unk_d0.c[0];
+        c.c[0] = item->dest.c[0];
+        c.c[1] = item->dest.c[1];
+        c.c[2] = item->dest.c[2];
+        if (c.c[0] == 0xff) {
+            c.c[0] = g->unk_d0.c[0];
         }
-        if (c.g == 0xff) {
-            c.g = g->unk_d0.c[1];
+        if (c.c[1] == 0xff) {
+            c.c[1] = g->unk_d0.c[1];
         }
-        if (c.b == 0xff) {
-            c.b = g->unk_d0.c[2];
+        if (c.c[2] == 0xff) {
+            c.c[2] = g->unk_d0.c[2];
         }
         if (!SameCol021b65ec(&c, PlCol021b65ec(pl))) {
             return;
@@ -136,7 +107,7 @@ void func_ov000_021b65ec(Obj021b65ec *self) {
         break;
     }
     case 3: {
-        Rgb021b65ec c;
+        FieldId c;
         if (func_020594bc(data_02fe152c, 5, 1, 0) != 1) {
             return;
         }
@@ -144,19 +115,19 @@ void func_ov000_021b65ec(Obj021b65ec *self) {
             return;
         }
         func_ov000_021b12c0((u8 *)pl, 0);
-        ((u8 *)&c)[0] = ((u8 *)&item->col)[0];
-        if (((u8 *)&c)[0] == 0xff) {
-            ((u8 *)&c)[0] = g->unk_d0.c[0];
+        c.c[0] = item->dest.c[0];
+        if (c.c[0] == 0xff) {
+            c.c[0] = g->unk_d0.c[0];
         }
-        ((u8 *)&c)[1] = ((u8 *)&item->col)[1];
-        if (((u8 *)&c)[1] == 0xff) {
-            ((u8 *)&c)[1] = g->unk_d0.c[1];
+        c.c[1] = item->dest.c[1];
+        if (c.c[1] == 0xff) {
+            c.c[1] = g->unk_d0.c[1];
         }
-        ((u8 *)&c)[2] = ((u8 *)&item->col)[2];
-        if (((u8 *)&c)[2] == 0xff) {
-            ((u8 *)&c)[2] = g->unk_d0.c[2];
+        c.c[2] = item->dest.c[2];
+        if (c.c[2] == 0xff) {
+            c.c[2] = g->unk_d0.c[2];
         }
-        LFLD(Rgb021b65ec, pl, 0x772) = c;
+        pl->fieldId = c;
         break;
     }
     }

@@ -62,8 +62,8 @@ struct UiObj : public VObj {
         };
     };
     Model *model;       // 0x10 freed with LO_FREE_M
-    VObj *title;        // 0x14 TextWin (vtable data_0208ba70); slot 0x10 (UiObj_SetTitle) builds it from a string, font 8
-    VObj *caption;      // 0x18 TextWin; slot 0x14 (UiObj_SetCaption): one line, font 4, scrolled by scrollPos
+    TextWin *title;     // 0x14 TextWin (vtable data_0208ba70); slot 0x10 (UiObj_SetTitle) builds it from a string, font 8
+    TextWin *caption;   // 0x18 TextWin; slot 0x14 (UiObj_SetCaption): one line, font 4, scrolled by scrollPos
     s32 font;           // 0x1c copied to data_02097ce0->unk_004
     s32 rows;           // 0x20
     s32 width;          // 0x24 G3 frame x scale (func_ov000_02153804)

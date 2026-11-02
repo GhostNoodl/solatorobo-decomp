@@ -3,6 +3,7 @@
 #include "ov000/UiObj.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/PlttRes.h"
+#include "Main/Gfx/TextWin.h"
 
 extern "C" {
 
@@ -20,7 +21,7 @@ typedef struct {
 } LoArr98;
 
 void func_ov000_0215adbc(LoBase021cafc0_021cb0b8 *self) {
-    LO_FREE_V(self, 0xd4);
+    HEAP_DELETE(TextWin *, self->title2, p->unk_vf04());
 }
 
 

@@ -2,16 +2,12 @@
 #include "ov000/ActorMgr.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/FieldMgr.h"
 
 typedef struct {
     u16 state;
     u16 timer;
 } St_021af464;
-
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 7;
-} B19_021af464;
 
 #define REG_SQRTCNT_021af464 (*(volatile u16 *)0x40002b0)
 #define REG_SQRT_RESULT_021af464 (*(volatile u32 *)0x40002b4)
@@ -20,7 +16,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd6c;
 extern void *data_02097e4c;
 extern char data_ov000_021cc62a[];
 extern char data_ov000_021cc71d[];
@@ -86,8 +81,8 @@ static inline BOOL GHasD4_021af464(void) {
 }
 
 static inline BOOL Ev19_021af464(void) {
-    u8 *e = LFLD(u8 *, data_ov000_021ccd6c, 0x14);
-    if (e != NULL && LFLD(B19_021af464, e, 0x19).b0) {
+    LangBlockB *e = data_ov000_021ccd6c->blockB;
+    if (e != NULL && e->unk_19_0) {
         return TRUE;
     }
     return FALSE;
@@ -240,7 +235,7 @@ void func_ov000_021af464(Robo021ca458 *self) {
         self->unk_b24_27 = 1;
     }
     {
-        v = *(VecFx32 *)((u8 *)self + 0x70);
+        v = self->pos;
         v.y += self->centerY;
         func_ov000_021899d8(&v, 0, 0x6ccd, 1, 0x1000, 0x1000);
     }

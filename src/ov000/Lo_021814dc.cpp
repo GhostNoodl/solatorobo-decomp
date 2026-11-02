@@ -13,6 +13,7 @@
 #include "ov000/CmdObj.h"
 #include "ov000/SceneCmd.h"
 #include "ov000/MessageQueue.h"
+#include "ov000/FieldMgr.h"
 #include "ov000/Vec.h"
 #include "nitro/fx.h"
 #include "types.h"
@@ -44,7 +45,6 @@ typedef void (*VoidFn)(void);
 
 extern "C" {
 extern void *data_ov000_021ccd64;
-extern void *data_ov000_021ccd6c;
 extern void *data_0214a420;
 extern void *data_02149f0c;
 extern u8 *data_02149ef0;
@@ -96,13 +96,11 @@ void func_ov000_02182590(SceneStage *self);
 BOOL func_0205b4ac(void);
 s32 func_ov000_021bc644(FieldFade *p);
 s32 func_ov000_02189194(SceneCmd *self);
-void func_ov000_021b5110(void *p);
 void func_ov000_0218c25c(void *p);
 void func_ov000_0218be54(void *p);
 void ActorMgr_Update(ActorMgr *p);
 void func_02065ac0(void *p);
 void func_0203cd10(void);
-void func_ov000_021b53a8(void *p);
 void ActorMgr_Draw(ActorMgr *p);
 void func_02065b84(void *p);
 void func_ov000_021bc6c0(FieldFade *p);
@@ -1273,11 +1271,6 @@ typedef struct {
     u16 unk_04;
 } Dtcm02fe1534;
 
-typedef struct {
-    u8 pad_00[0xa];
-    u8 unk_0a;
-} Obj021ccd6c;
-
 extern "C" {
 extern Obj0214a424 *data_0214a424;
 extern VObj *data_02fe152c;
@@ -1288,7 +1281,6 @@ extern u8 data_ov000_021cb920[];
 extern Obj02097e48 *data_02097e48;
 extern Dtcm02fe1534 data_02fe1534;
 extern void *data_02097e4c;
-extern Obj021ccd6c *data_ov000_021ccd6c;
 
 void func_02058fe4(void);
 void func_02058f2c(void);
@@ -1444,7 +1436,7 @@ s32 func_ov000_02182cb8(SceneCmd *self) {
             } else {
                 u16 room = data_0214a424->unk_138;
                 if (room != 0xffff) {
-                    data_ov000_021ccd6c->unk_0a = room;
+                    data_ov000_021ccd6c->destExit = room;
                 } else if (NotFlag(data_0214a424)) {
                     Obj0214a424 *p = data_0214a424;
                     VecFx32 v;
@@ -1921,11 +1913,6 @@ typedef struct {
 } Actor0218e640;
 
 typedef struct {
-    u8 pad_00[0xa];
-    u8 unk_0a;
-} Obj021ccd6c;
-
-typedef struct {
     u8 pad_00[0x24];
     u16 unk_24;
     u16 unk_26;
@@ -1937,7 +1924,6 @@ extern "C" {
 extern s32 data_02097d78[5];
 extern Obj02097e48 *data_02097e48;
 extern Dtcm02fe1534 data_02fe1534;
-extern Obj021ccd6c *data_ov000_021ccd6c;
 extern void *data_02097e4c;
 extern Mgr021ccd30 *data_ov000_021ccd30;
 Robo021ca458 *func_ov000_0219bf90(void);
@@ -2011,7 +1997,7 @@ s32 func_ov000_02183a10(SceneCmd *self) {
         func_020624b8();
         if (self->unk_c8) {
             self->unk_c8 = 0;
-            data_ov000_021ccd6c->unk_0a = 0xff;
+            data_ov000_021ccd6c->destExit = 0xff;
             self->unk_cd.c[0] = 0xff;
             self->unk_cd.c[1] = 0xff;
             self->unk_cd.c[2] = 0xff;
@@ -2127,7 +2113,6 @@ extern s32 data_02097d78[5];
 extern Obj021ccd64 *data_ov000_021ccd64;
 extern Obj02097e48 *data_02097e48;
 extern void *data_0214a420;
-extern void *data_ov000_021ccd6c;
 extern u32 data_ov004_021cf868;
 extern ProtFn data_ov004_021cf86c[];
 extern u8 OVERLAY_3_ID[];
@@ -2145,13 +2130,9 @@ void func_0204aa10(void *p);
 void func_ov000_0216bcbc(void *p);
 void func_ov000_021645a4(s32 a);
 void EffectMgr_FreeAll(void *p);
-void func_ov000_021b53f4(void *p);
 void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(ActorMgr *p);
 void MessageQueue_RemoveAll(Mgr021ccd30 *p, s32 a, s32 b, s32 c);
-BOOL func_ov000_021b5578(void *p);
-void func_ov000_021b5dc0(void *p);
-void func_ov000_021b628c(void *p);
 void func_ov003_021cfa30(void);
 void func_ov000_0218c25c(void *p);
 void func_ov000_0218be54(void *p);
@@ -4219,29 +4200,12 @@ typedef struct {
     void *unk_11c;
 } Mgr021ccd30;
 
-typedef struct {
-    VecFx32 base;
-    u8 pad_0c[8];
-    s16 x;
-    s16 y;
-    s16 z;
-    u8 pad_1a[0xa];
-} Spot021ccd6c;
-
-typedef struct {
-    u8 pad_00[0xb];
-    u8 cur;
-    u8 pad_0c[0xc];
-    Spot021ccd6c *spots;
-} Obj021ccd6c;
-
 extern "C" {
 extern void *data_02149efc;
 extern void *data_02149ef8;
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 extern Mgr021ccd30 *data_ov000_021ccd30;
-extern Obj021ccd6c *data_ov000_021ccd6c;
 void func_020623e0(void);
 void func_ov000_02182590(SceneStage *self);
 u16 func_02061d54(s32 a);
@@ -4312,15 +4276,15 @@ s32 func_ov000_021866d0(SceneCmd *self) {
                 CmdObj_Push(self, 0x26, 1);
                 CmdObj_Push(self, 0x1e, 0);
             } else {
-                Obj021ccd6c *g = data_ov000_021ccd6c;
-                if (g->cur != 0xff) {
-                    Spot021ccd6c *s = &g->spots[g->cur];
+                FieldMgr *g = data_ov000_021ccd6c;
+                if (g->exit != 0xff) {
+                    FieldExit *s = &g->exits[g->exit];
                     VecFx32 v;
                     Robo021ca458 *obj;
-                    v.x = s->x << 4;
-                    v.y = s->y << 4;
-                    v.z = s->z << 4;
-                    VEC_Add(&v, &s->base, &v);
+                    v.x = s->ox << 4;
+                    v.y = s->oy << 4;
+                    v.z = s->oz << 4;
+                    VEC_Add(&v, &s->pos, &v);
                     obj = func_ov000_0219bf90();
                     if (obj != NULL) {
                         obj->mode = 3;
@@ -4330,7 +4294,7 @@ s32 func_ov000_021866d0(SceneCmd *self) {
                     }
                 }
             }
-            data_ov000_021ccd6c->cur = 0xff;
+            data_ov000_021ccd6c->exit = 0xff;
         }
         return 0;
     }
@@ -5401,7 +5365,6 @@ extern u8 data_ov000_021cb920[];
 extern Dtcm02fe1534 data_02fe1534;
 extern Obj02097e48 *data_02097e48;
 extern void *data_0214a420;
-extern void *data_ov000_021ccd6c;
 extern void *data_ov000_021ccd64;
 extern void *data_02149f0c;
 extern void *data_02149ef0;
@@ -5418,7 +5381,6 @@ void func_0204aa10(void *p);
 void func_ov000_0216bcbc(void *p);
 void func_ov000_021645a4(s32 a);
 void EffectMgr_FreeAll(void *p);
-void func_ov000_021b53f4(void *p);
 void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(ActorMgr *p);
 void MessageQueue_FreeBuffer(Mgr021ccd30 *mgr, void *task);

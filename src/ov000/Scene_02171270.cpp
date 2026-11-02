@@ -1,4 +1,5 @@
 #include "ov000/MessageQueue.h"
+#include "Main/Gfx/SlideWin.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/LoTimer.h"
 #include "ov000/LoTicker.h"
@@ -17,16 +18,16 @@ void func_ov000_0216b1b4(void *p);
 void func_ov000_02171270(ListBuffer021cb940 *self) {
     switch (self->state) {
     case 4:
-        if (self->unk_28 != NULL) {
-            self->unk_28->vfunc_90();
+        if (self->win != NULL) {
+            self->win->Render();
         }
     case 10:
         if (self->unk_3c != NULL) {
             func_ov000_021b9a84(self->unk_3c);
         }
     case 11:
-        if (self->unk_48 != NULL) {
-            self->unk_48->vfunc_20();
+        if (self->dialog != NULL) {
+            self->dialog->vfunc_20();
         }
         break;
     case 8:

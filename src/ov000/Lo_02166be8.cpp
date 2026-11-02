@@ -4,6 +4,7 @@
 #include "ov000/MapCtx.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/PlttRes.h"
+#include "ov000/FieldMgr.h"
 
 typedef struct {
     s32 x;
@@ -12,7 +13,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd6c;
 extern u8 data_ov000_021c9a9c[];
 extern s32 data_02097d78[5];
 Robo021ca458 *func_ov000_0219bf90(void);
@@ -83,9 +83,9 @@ void func_ov000_02166be8(Obj02166be8 *self) {
     s32 dx;
     s32 dz;
     s32 ox;
-    u8 *ctx = data_ov000_021ccd6c;
+    FieldMgr *ctx = data_ov000_021ccd6c;
     Item0216607c *e;
-    tgt = LFLD(u8 *, ctx, 0xc);
+    tgt = (u8 *)ctx->unk_0c;
     Pos02166be8 c = LFLD(Pos02166be8, data_ov000_021c9a9c, 0x28);
     k = 0x1000;
     switch (self->unk_34) {

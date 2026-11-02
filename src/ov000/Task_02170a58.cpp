@@ -4,6 +4,7 @@
 #include "ov000/LoTicker.h"
 #include "ov000/SceneCmd.h"
 #include "ov000/HeapScope.h"
+#include "Main/Gfx/SlideWin.h"
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
@@ -121,8 +122,8 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
         self->state = 3;
         break;
     case 4:
-        if ((void *)self->unk_48 == NULL && !self->unk_28->vfunc_8c()) {
-            HEAP_DELETE(VObj *, self->unk_28, p->vfunc_04());
+        if (self->dialog == NULL && !self->win->unk_vf8c()) {
+            HEAP_DELETE(SlideWin *, self->win, p->unk_vf04());
             self->state = 3;
         }
     case 10:
@@ -133,10 +134,10 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
             }
         }
     case 11:
-        if (self->unk_48 != NULL && !self->unk_48->vfunc_1c()) {
-            HEAP_DELETE(VObj *, self->unk_48, p->vfunc_04());
-            if (self->unk_28 != NULL) {
-                self->unk_28->vfunc_0c();
+        if (self->dialog != NULL && !self->dialog->vfunc_1c()) {
+            HEAP_DELETE(Lo021cb0b8 *, self->dialog, p->vfunc_04());
+            if (self->win != NULL) {
+                self->win->OnSkip();
             }
             func_ov000_02182524(&SceneCmd_Get()->stage);
             if (self->state == 11) {

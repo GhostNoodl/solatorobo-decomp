@@ -1,59 +1,33 @@
 #include "types.h"
 #include "nitro/std.h"
-
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 b4 : 1;
-    u16 b5 : 1;
-    u16 b6 : 1;
-    u16 b7 : 1;
-    u16 b8 : 1;
-    u16 rest : 7;
-} LdFlags021b6d28;
-
-typedef struct {
-    void *arc;
-    char *name;
-    s16 state;
-    LdFlags021b6d28 flags;
-    void *task0;
-    void *task1;
-    u32 *res0;
-    u32 *res1;
-    void *res2;
-    void *res3;
-} Loader021b6d28;
+#include "ov000/FieldMgr.h"
 
 extern "C" {
 extern char data_ov000_021cc84c[];
 extern char data_ov000_021cc850[];
-void *func_020359d0(void *a, s32 b, s32 c);
-BOOL func_02035b90(void *a, s32 b);
-void *func_02035d5c(void *a);
-u32 *func_02034ec0(void *a, char *b);
-u32 *func_02034f5c(void *a, char *b);
-void *func_02034ff8(void *a, char *b);
-void *ResList_FindPath(void *a, char *b, char *c);
-BOOL func_0203ed04(char *name, u32 a);
-void *func_0203ebf8(void);
-BOOL func_0203e63c(void *a);
-void func_02039494(u32 a);
+void *func_020359d0(const char *path, s32 type, s32 toFront);
+BOOL func_02035b90(const char *path, s32 type);
+void *func_02035d5c(const char *path);
+void **func_02034ec0(void *list, const char *name);
+void **func_02034f5c(void *list, const char *name);
+void **func_02034ff8(void *list, const char *name);
+void **ResList_FindPath(void *list, const char *name, const char *ext);
+BOOL func_0203ed04(const char *name, void *data);
+u32 func_0203ebf8(void);
+BOOL func_0203e63c(u32 task);
+void func_02039494(void *data);
 
-static inline void *Load021b6d28(char *name, u32 *res) {
+static inline u32 Load021b6d28(const char *name, void **res) {
     if (res != NULL) {
         func_0203ed04(name, *res);
     }
     return func_0203ebf8();
 }
 
-BOOL func_ov000_021b6d28(Loader021b6d28 *self) {
+BOOL func_ov000_021b6d28(FieldPropLoader *self) {
     BOOL done = FALSE;
     BOOL again;
     void *h;
-    u32 *r;
     char buf[32];
 
     do {
@@ -66,39 +40,39 @@ BOOL func_ov000_021b6d28(Loader021b6d28 *self) {
         case 1:
             break;
         case 10:
-            if (!self->flags.b0) {
+            if (!self->flag0) {
                 self->state = 100;
             } else {
-                self->task0 = NULL;
-                self->task1 = NULL;
-                func_020359d0(self->arc, 7, 0);
-                self->flags.b1 = 1;
+                self->task0 = 0;
+                self->task1 = 0;
+                func_020359d0(self->path, 7, 0);
+                self->flag1 = 1;
                 self->state++;
             }
             again = TRUE;
             break;
         case 11:
-            if (!func_02035b90(self->arc, 7)) {
+            if (!func_02035b90(self->path, 7)) {
                 break;
             }
-            h = func_02035d5c(self->arc);
-            if (self->flags.b2) {
-                if ((self->res0 = func_02034ec0(h, self->name)) != NULL) {
-                    self->task0 = Load021b6d28(self->name, self->res0);
+            h = func_02035d5c(self->path);
+            if (self->flag2) {
+                if ((self->mdl = func_02034ec0(h, self->name)) != NULL) {
+                    self->task0 = Load021b6d28(self->name, self->mdl);
                 }
             }
-            if (self->flags.b4) {
+            if (self->flag4) {
                 STD_CopyString(buf, self->name);
                 STD_ConcatenateString(buf, data_ov000_021cc84c);
-                if ((self->res1 = func_02034f5c(h, buf)) != NULL) {
-                    self->task1 = Load021b6d28(buf, self->res1);
+                if ((self->tex = func_02034f5c(h, buf)) != NULL) {
+                    self->task1 = Load021b6d28(buf, self->tex);
                 }
             }
-            if (self->flags.b6) {
-                self->res2 = func_02034ff8(h, self->name);
+            if (self->flag6) {
+                self->anm = func_02034ff8(h, self->name);
             }
-            if (self->flags.b8) {
-                self->res3 = ResList_FindPath(h, self->name, data_ov000_021cc850);
+            if (self->flag8) {
+                self->hit = ResList_FindPath(h, self->name, data_ov000_021cc850);
             }
             self->state++;
             again = TRUE;
@@ -110,19 +84,19 @@ BOOL func_ov000_021b6d28(Loader021b6d28 *self) {
             if (!func_0203e63c(self->task1)) {
                 break;
             }
-            self->task0 = NULL;
-            self->task1 = NULL;
+            self->task0 = 0;
+            self->task1 = 0;
             self->state++;
             break;
         case 13:
             self->state++;
             break;
         case 14:
-            if (self->res0 != NULL) {
-                func_02039494(*self->res0);
+            if (self->mdl != NULL) {
+                func_02039494(*self->mdl);
             }
-            if (self->res1 != NULL) {
-                func_02039494(*self->res1);
+            if (self->tex != NULL) {
+                func_02039494(*self->tex);
             }
             self->state = 100;
             again = TRUE;

@@ -3,6 +3,7 @@
 #include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
 #include "ov000/ActorBase.h"
+#include "ov000/FieldMgr.h"
 
 
 typedef struct {
@@ -20,10 +21,8 @@ typedef struct {
 } AiState02197ee0;
 
 extern "C" {
-extern void *data_ov000_021ccd6c;
 Robo021ca458 *func_ov000_0219bf90(void);
 void Actor_TurnToActor(Actor *self, void *other, s32 a);
-u8 *func_ov000_021b68b8(void *a, void *pos);
 s32 Rand_UpTo(s32 max);
 u16 FX_Atan2(s32 x, s32 z);
 u16 func_ov000_0219a36c(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32 mask);
@@ -115,7 +114,7 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
         st->timer = 0;
     case 1: {
         VecFx32 p;
-        u8 *o;
+        FieldExit *o;
         u16 ang;
         if (dist >= radius - 0x1000 && dist <= radius + 0x2800) {
             st->st = 10;
@@ -126,7 +125,7 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
         p = obj->pos;
         o = func_ov000_021b68b8(data_ov000_021ccd6c, &self->pos);
         if (o != NULL) {
-            ang = LFLD(u16, o, 0x1a);
+            ang = o->dir;
         } else {
             p.y += self->centerY;
             ang = FX_Atan2(p.x - self->pos.x, p.z - self->pos.z);

@@ -2,20 +2,15 @@
 #include "ov000/ActorMgr.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/FieldMgr.h"
 
 typedef struct {
     u16 state;
     u16 timer;
 } St_021a5d00;
 
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 7;
-} B19_021a5d00;
-
 extern "C" {
 
-extern u8 *data_ov000_021ccd6c;
 extern void *data_02097e4c;
 extern char data_ov000_021cc67e[];
 extern char data_ov000_021cc61e[];
@@ -55,8 +50,8 @@ static inline u16 AngleTo021a5d00(Robo021ca458 *self, Actor *a) {
 }
 
 static inline BOOL Ev19_021a5d00(void) {
-    u8 *e = LFLD(u8 *, data_ov000_021ccd6c, 0x14);
-    if (e != NULL && LFLD(B19_021a5d00, e, 0x19).b0) {
+    LangBlockB *e = data_ov000_021ccd6c->blockB;
+    if (e != NULL && e->unk_19_0) {
         return TRUE;
     }
     return FALSE;
@@ -65,7 +60,7 @@ static inline BOOL Ev19_021a5d00(void) {
 static inline void Fx021a5d00(Robo021ca458 *self, ActorSub4c *info) {
     if (!Ev19_021a5d00() && !(info != NULL && (info->unk_18_4 ? TRUE : FALSE))) {
         VecFx32 v;
-        v = *(VecFx32 *)((u8 *)self + 0x70);
+        v = self->pos;
         v.y += self->height;
         func_ov000_021899d8(&v, 0, 0x8000, 1, 0x1000, 0x1000);
     }
@@ -97,7 +92,7 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
         char *lbl = data_ov000_021cc67e;
         if (a != NULL) {
             VecFx32 pos;
-            pos = *(VecFx32 *)((u8 *)self + 0x70);
+            pos = self->pos;
             pos.y -= 0x1000;
             self->moveYaw = AngleTo021a5d00(self, a);
             self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
