@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 #define GX_PACK_POLYGONATTR_PARAM(light, polyMode, cullMode, polygonID, alpha, misc) \
     ((u32)(((light) << 0) | ((polyMode) << 4) | ((cullMode) << 6) | (misc) | ((polygonID) << 24) | ((alpha) << 16)))
@@ -65,8 +66,8 @@ void func_ov000_0215deb4(Lo021cae48 *self, s32 enable, s32 *pos, s32 scale) {
     G3_Cmd1(0x2a, 0x20000000);
     alpha = self->unk_54;
     G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, Gfx3DState_NextPolyId(g + 0x8b0), alpha, 0x800));
-    sx = self->unk_24 << 12;
-    sy = self->unk_28 << 12;
+    sx = self->width << 12;
+    sy = self->height << 12;
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, pos[0], pos[1], z);
     G3_Vec(0x1b, scale, scale, 0x1000);

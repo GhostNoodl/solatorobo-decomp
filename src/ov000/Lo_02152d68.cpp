@@ -36,7 +36,7 @@ static inline void LoModelPlayPart(void *model, int idx) {
     func_02042628(model, anim, part, 0);
 }
 
-void func_ov000_02152d68(VObj *self) {
+void UiObj_Release(VObj *self) {
     self->vfunc_48(1, 0);
     LO_FREE_M(self, 0x10);
     LO_FREE_V(self, 0x14);

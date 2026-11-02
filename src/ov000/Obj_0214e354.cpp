@@ -1,15 +1,14 @@
 #include "ov000/VObj.h"
+#include "ov000/UiObj.h"
 
 typedef struct {
     u32 unk_00;
     u32 unk_04;
 } Data02097ce0;
 
-class Obj0214e354 : public VObj {
+class Obj0214e354 : public UiObj {
 public:
-    u8 unk_04[0x18];
-    u32 unk_1c;
-    u8 unk_20[0x98];
+    u8 unk_84[0x34];
     void *unk_b8;
 };
 
@@ -25,7 +24,7 @@ s32 func_ov000_0214e354(Obj0214e354 *self) {
 
 s32 func_ov000_0214e368(Obj0214e354 *self) {
     s32 base;
-    data_02097ce0->unk_04 = self->unk_1c;
+    data_02097ce0->unk_04 = self->font;
     base = (*GfxMgr_GetFont(data_02097ce0))[1];
     return base + self->vfunc_3c();
 }

@@ -5,6 +5,7 @@
 #include "ov000/LoCommon.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 extern u8 *data_02097d48;
@@ -62,8 +63,8 @@ void func_ov000_0215d4b4(Lo021cad50 *self, s32 a1, s32 *pos, s32 sc) {
     g = data_02097d48;
     G3_Cmd1(0x2a, 0x20000000);
     G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g + 0x8b0) << 24) | 0x8d0 | (0x18 << 16));
-    sx = self->unk_24 << 12;
-    sy = self->unk_28 << 12;
+    sx = self->width << 12;
+    sy = self->height << 12;
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, pos[0], pos[1], z);
     G3_Vec(0x1b, sx, sy, 0x1000);

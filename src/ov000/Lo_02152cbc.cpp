@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -11,80 +12,42 @@ void func_ov000_0215f0ec(void *p, void *q);
 extern const s16 FX_SinCosTable_[];
 typedef BOOL (*LoMsgFn)(void *, void *);
 
-struct Obj02152cbc {
-    u8 unk_00[0x4];
-    s32 unk_04;
-    s32 unk_08;
-    s32 unk_0c;
-    s32 unk_10;
-    s32 unk_14;
-    s32 unk_18;
-    s32 unk_1c;
-    s32 unk_20;
-    s32 unk_24;
-    s32 unk_28;
-    s32 unk_2c;
-    s32 unk_30;
-    s32 unk_34;
-    s32 unk_38;
-    s32 unk_3c;
-    s32 unk_40;
-    s32 unk_44;
-    s16 unk_48;
-    s16 unk_4a;
-    s32 unk_4c;
-    s32 unk_50;
-    s32 unk_54;
-    s32 unk_58;
-    s32 unk_5c;
-    s32 unk_60;
-    s16 unk_64;
-    s16 unk_66;
-    s16 unk_68;
-    u8 unk_6a[0x2];
-    s32 unk_6c;
-    s32 unk_70;
-    s32 unk_74;
-    s32 unk_78;
-    s32 unk_7c;
-    s32 unk_80;
-};
 
-void func_ov000_02152cbc(Obj02152cbc *self) {
-    self->unk_04 = 0;
-    self->unk_08 = 0;
-    self->unk_0c = 0;
-    self->unk_10 = 0;
-    self->unk_14 = 0;
-    self->unk_18 = 0;
-    self->unk_4c = 0;
-    self->unk_50 = 0;
-    self->unk_1c = 8;
-    self->unk_20 = 1;
-    self->unk_24 = 0x80;
-    self->unk_28 = 0;
-    self->unk_2c = 0;
-    self->unk_30 = 0;
-    self->unk_34 = 0xc000;
-    self->unk_38 = 0;
-    self->unk_3c = 0;
-    self->unk_40 = 0xc000;
-    self->unk_44 = 0;
-    self->unk_48 = 0;
+void UiObj_Init(UiObj *self) {
+    self->state = 0;
+    self->owner = 0;
+    self->flags = 0;
+    self->model = 0;
+    self->title = 0;
+    self->caption = 0;
+    self->scrollPos = 0;
+    self->scrollLen = 0;
+    self->font = 8;
+    self->rows = 1;
+    self->width = 0x80;
+    self->height = 0;
+    self->slideMode = 0;
+    self->openTime = 0;
+    self->openLen = 0xc000;
+    self->openRatio = 0;
+    self->fadeTime = 0;
+    self->fadeLen = 0xc000;
+    self->fadeRatio = 0;
+    self->color = 0;
     self->unk_4a = 0xb;
-    self->unk_58 = 0;
-    self->unk_5c = 0;
-    self->unk_60 = 0;
-    self->unk_64 = 0;
-    self->unk_66 = 0;
-    self->unk_68 = 0;
+    self->slideX = 0;
+    self->slideY = 0;
+    self->slideZ = 0;
+    self->posX = 0;
+    self->posY = 0;
+    self->posZ = 0;
     self->unk_54 = 0x14;
-    self->unk_6c = 0;
-    self->unk_70 = 0;
-    self->unk_74 = 0;
-    self->unk_78 = 0;
-    self->unk_7c = 0;
-    self->unk_80 = 0;
+    self->shape = 0;
+    self->shapeCount = 0;
+    self->child = 0;
+    self->onState = 0;
+    self->onDraw = 0;
+    self->onDrawItem = 0;
 }
 
 }

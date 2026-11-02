@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -27,14 +28,14 @@ void func_ov000_02159f94(Lo021cb5a8 *self, s32 b, s32 c) {
         LFLD(s32, n, 0x2c) = 0;
     }
     LFLD(s32, n, 0) = c;
-    id = self->unk_9c;
-    self->unk_9c = id + 1;
+    id = self->itemCount;
+    self->itemCount = id + 1;
     LFLD(s16, n, 4) = id;
     LFLD(s16, n, 6) = b;
-    t = self->unk_94;
+    t = (u8 *)self->items;
     if (t == NULL) {
-        self->unk_94 = n;
-        self->unk_98 = n;
+        self->items = (UiListItem *)n;
+        self->topItem = (UiListItem *)n;
         return;
     }
     for (nx = LFLD(u8 *, t, 0x2c); nx != NULL; nx = LFLD(u8 *, nx, 0x2c)) {

@@ -1,5 +1,6 @@
 #include "Main/Gfx/FieldMsg.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
@@ -71,8 +72,8 @@ void func_ov000_0215d758(Lo021cae48 *self) {
     self->unk_94->unk_4_30 = 1;
     self->unk_94->rendering = 1;
     self->color = 0x4cc2;
-    self->unk_24 = 0x60;
-    self->unk_28 = 0xe;
-    LFLD(Bits0215d758, self, 0xc).b0 = 1;
+    self->width = 0x60;
+    self->height = 0xe;
+    self->busy = 1;
 }
 }

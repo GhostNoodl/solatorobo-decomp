@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -30,7 +31,7 @@ static inline BOOL LoPartReady(u8 *q) {
     return r;
 }
 
-BOOL func_ov000_02157fc0(LoBase021caac8_021cb2a8 *self) {
+BOOL func_ov000_02157fc0(UiList021cb4a8 *self) {
     BOOL ok = func_ov000_021580e8(self);
     if (self->unk_d4 && !LoPartReady(self->unk_d4)) {
         ok = FALSE;

@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/Task.h"
 
 typedef struct {
     const void *vtbl;
@@ -49,12 +50,12 @@ static inline BOOL HasWin(Obj0214c668 *w) {
 }
 
 void func_ov000_0214f7a4(Lo021caa44 *self) {
-    if (self->unk_08 == 0xd) {
+    if (self->state == 0xd) {
         s32 n;
         if (self->unk_5c != NULL) {
             if (self->unk_5c->vfunc_1c()) {
                 if ((u8 *)self->unk_50 != NULL) {
-                    LFLD(u32, self->unk_50, 0xc) |= 4;
+                    self->unk_50->flags |= 4;
                 }
             } else {
                 LO_FREE_V(self, 0x5c);
@@ -83,11 +84,11 @@ void func_ov000_0214f7a4(Lo021caa44 *self) {
                     w->unk_200->unk_b8_0 = 4;
                     w->unk_200->unk_04 |= 4;
                     w->unk_0c |= 2;
-                    LFLD(u32, self->unk_50, 0xc) |= 4;
+                    self->unk_50->flags |= 4;
                     self->unk_64 = 0xffff;
                 }
             } else {
-                LFLD(u32, self->unk_50, 0xc) |= 4;
+                self->unk_50->flags |= 4;
             }
         }
         n = 0;
@@ -105,7 +106,7 @@ void func_ov000_0214f7a4(Lo021caa44 *self) {
         }
     }
     if ((u8 *)self->unk_50 != NULL) {
-        LFLD(u32, self->unk_50, 0xc) |= 4;
+        self->unk_50->flags |= 4;
     }
 }
 

@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -34,7 +35,7 @@ static inline BOOL LoIsMode4(void) {
 }
 
 void func_ov000_02161238(Lo021cacd8 *self) {
-    switch (self->unk_04) {
+    switch (self->state) {
     case 0:
         self->unk_98 = 0;
         self->unk_9c = 0;
@@ -43,7 +44,7 @@ void func_ov000_02161238(Lo021cacd8 *self) {
         break;
     case 2:
         if (LBIT(self, 0xc).b1) {
-            self->unk_04 = 1;
+            self->state = 1;
         }
         break;
     }

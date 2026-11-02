@@ -1,6 +1,7 @@
 #include "ov000/ModelPart.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -30,14 +31,14 @@ static inline s32 PosX021c524c(Pos021c524c *p) {
 }
 
 void func_ov000_021c524c(UnitBase021ccb54_021ccbe0 *self, s32 unused, Pos021c524c *pos, s32 arg) {
-    s32 x = (PosX021c524c(pos) >> 12) + ((self->unk_24 << 12) - self->unk_b8 >> 12) + 6;
+    s32 x = (PosX021c524c(pos) >> 12) + ((self->width << 12) - self->unk_b8 >> 12) + 6;
     s32 y = pos->y >> 12;
     Model *m;
-    self->unk_10->flags &= ~0x40000;
-    self->unk_10->flags = (self->unk_10->flags & ~0x7c) | (0x1e << 2);
-    m = self->unk_10;
+    self->model->flags &= ~0x40000;
+    self->model->flags = (self->model->flags & ~0x7c) | (0x1e << 2);
+    m = self->model;
     Model_SetPos(m, (x - 0x80) << 12, (y - 0x60) << 12);
-    Model_PlayPart(self->unk_10, 2);
+    Model_PlayPart(self->model, 2);
 }
 
 static inline void SetOfs(Model *m, s32 x, s32 y) {
@@ -50,21 +51,21 @@ static inline s32 GetD0(LoBase021ccb54_021ccbe0 *self) {
 
 void func_ov000_021c5324(LoBase021ccb54_021ccbe0 *self, s32 unused, s32 *pos) {
     Model *m;
-    s32 x = (self->unk_24 >> 1) + (pos[0] >> 12) + 4;
+    s32 x = (self->width >> 1) + (pos[0] >> 12) + 4;
     if (self->unk_cc > 0) {
         s32 y = (pos[1] >> 12) - 2 - (self->unk_d0 >> 12);
-        FLAGSX(self->unk_10)->unk_18 = 1;
-        FLAGSX(self->unk_10)->alpha = (u8)self->unk_cc;
-        SetOfs(self->unk_10, x, y);
-        m = self->unk_10;
+        FLAGSX(self->model)->unk_18 = 1;
+        FLAGSX(self->model)->alpha = (u8)self->unk_cc;
+        SetOfs(self->model, x, y);
+        m = self->model;
         Model_PlayPart(m, 4);
     }
     if (self->unk_cd > 0) {
-        s32 y = self->unk_28 + (pos[1] >> 12) + 2 + (GetD0(self) >> 12);
-        FLAGSX(self->unk_10)->unk_18 = 0;
-        FLAGSX(self->unk_10)->alpha = (u8)self->unk_cd;
-        SetOfs(self->unk_10, x, y);
-        Model_PlayPart(self->unk_10, 4);
+        s32 y = self->height + (pos[1] >> 12) + 2 + (GetD0(self) >> 12);
+        FLAGSX(self->model)->unk_18 = 0;
+        FLAGSX(self->model)->alpha = (u8)self->unk_cd;
+        SetOfs(self->model, x, y);
+        Model_PlayPart(self->model, 4);
     }
 }
 

@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/Task.h"
 
 
 extern "C" {
@@ -9,7 +10,7 @@ extern u8 data_ov000_021cad50[];
 void func_ov000_0215ce8c(void *self, s32 id);
 
 void func_ov000_02151018(Lo021ca9c4 *self) {
-    switch (self->unk_08) {
+    switch (self->state) {
     case 13: {
         s32 n;
         VObj *o = self->unk_58;
@@ -28,12 +29,12 @@ void func_ov000_02151018(Lo021ca9c4 *self) {
                             VOBJ_SET_VTABLE(p, data_ov000_021cad50);
                             p->vfunc_28();
                         }
-                        self->unk_58 = p;
+                        self->unk_58 = (Lo021cad50 *)p;
                     }
-                    LFLD(s32, self->unk_58, 0x1c) = 4;
+                    self->unk_58->font = 4;
                     self->unk_58->vfunc_08();
                     func_ov000_0215ce8c(self->unk_58, id);
-                    LFLD(s16, self->unk_58, 0x68) = -0x1666;
+                    self->unk_58->posZ = -0x1666;
                     self->unk_58->vfunc_70();
                     self->unk_5c = 0xffff;
                 }
@@ -54,19 +55,19 @@ void func_ov000_02151018(Lo021ca9c4 *self) {
     case 10:
         if (self->vfunc_54()) {
             if (self->unk_4c != NULL) {
-                LFLD(u32, self->unk_4c, 0xc) |= 2;
+                self->unk_4c->flags |= 2;
             }
             if (self->unk_50 != NULL) {
-                LFLD(u32, self->unk_50, 0xc) |= 2;
+                self->unk_50->flags |= 2;
             }
             if (self->unk_58 != NULL) {
-                LFLD(u32, self->unk_58, 0xc) |= 2;
+                self->unk_58->flags |= 2;
             }
         }
         break;
     }
     if (self->unk_50 != NULL) {
-        LFLD(u32, self->unk_50, 0xc) |= 4;
+        self->unk_50->flags |= 4;
     }
 }
 }

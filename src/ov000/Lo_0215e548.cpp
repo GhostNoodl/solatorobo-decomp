@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -11,20 +12,14 @@ void func_ov000_0215f0ec(void *p, void *q);
 extern const s16 FX_SinCosTable_[];
 typedef BOOL (*LoMsgFn)(void *, void *);
 
-struct Obj0215e548 {
-    u8 unk_00[0xc];
-    u32 unk_0c;
-    u8 unk_10[0x74];
-    LoMsgFn unk_84;
-};
 
-BOOL func_ov000_0215e548(Obj0215e548 *self, void *msg) {
-    LoMsgFn fn = self->unk_84;
+BOOL func_ov000_0215e548(UiList *self, void *msg) {
+    LoMsgFn fn = ((LoMsgFn)self->onDecide);
     if (fn) {
         return fn(self, msg);
     }
     if (msg == NULL) {
-        if (self->unk_0c & 0x4000000) {
+        if (self->flags & 0x4000000) {
             func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
             return TRUE;
         }

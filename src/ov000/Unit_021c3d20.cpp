@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -26,35 +27,35 @@ void func_ov000_021c3d20(UnitBase021ccb54_021ccbe0 *self) {
     u8 *o;
 
     LBIT(self, 0xc).b1 = 0;
-    self->unk_2c = 1;
+    self->slideMode = 1;
     {
-        s32 z = self->unk_68;
-        self->unk_58 = -(self->unk_24 + 0x20);
-        self->unk_60 = z;
+        s32 z = self->posZ;
+        self->slideX = -(self->width + 0x20);
+        self->slideZ = z;
     }
-    self->unk_5c = 0;
+    self->slideY = 0;
     p = self->unk_94;
     if (p != NULL) {
-        self->unk_28 = self->unk_20 * LFLD(s32, p, 0x18);
+        self->height = self->rows * LFLD(s32, p, 0x18);
     } else {
-        self->unk_28 = self->unk_20 * 0xc;
+        self->height = self->rows * 0xc;
     }
-    self->unk_28 += 0xf;
-    self->unk_c0 = (self->unk_28 - 0x14) << 12;
-    if (self->unk_98 < self->unk_20) {
+    self->height += 0xf;
+    self->unk_c0 = (self->height - 0x14) << 12;
+    if (self->unk_98 < self->rows) {
         self->unk_c8 = 0x1000;
     } else {
-        self->unk_c8 = FX_Div(self->unk_20 << 12, self->unk_98 << 12);
+        self->unk_c8 = FX_Div(self->rows << 12, self->unk_98 << 12);
     }
     self->unk_c4 = FX_Div(self->unk_9c << 12, self->unk_98 << 12);
     if (self->unk_b4 == (s32)0x80000000) {
         self->unk_b4 = 0x4000;
     }
     if (self->unk_b0 == (s32)0x80000000) {
-        if (self->unk_0c & 0x40000) {
-            self->unk_b0 = (((self->unk_24 << 12) - 0x20000) >> 12) - 4;
+        if (self->flags & 0x40000) {
+            self->unk_b0 = (((self->width << 12) - 0x20000) >> 12) - 4;
         } else {
-            self->unk_b0 = self->unk_24 - 4;
+            self->unk_b0 = self->width - 4;
         }
     }
     if (self->unk_b8 == (s32)0x80000000) {
@@ -62,13 +63,13 @@ void func_ov000_021c3d20(UnitBase021ccb54_021ccbe0 *self) {
     }
     self->unk_a0 = self->unk_94;
     if (func_ov000_02152e5c(self)) {
-        func_02041d9c(self->unk_10, 0, 2);
-        func_02041d9c(self->unk_10, 0, 4);
-        func_02041d9c(self->unk_10, 0, 6);
-        func_02041c5c(self->unk_10, (void *)func_ov000_021c77bc);
-        func_02041c20(self->unk_10, 2, self);
+        func_02041d9c(self->model, 0, 2);
+        func_02041d9c(self->model, 0, 4);
+        func_02041d9c(self->model, 0, 6);
+        func_02041c5c(self->model, (void *)func_ov000_021c77bc);
+        func_02041c20(self->model, 2, self);
     }
-    if (self->unk_0c & 0x400000) {
+    if (self->flags & 0x400000) {
         m = (u8 *)Heap_Alloc(0x160);
         if (m) {
             void *arc;
@@ -84,7 +85,7 @@ void func_ov000_021c3d20(UnitBase021ccb54_021ccbe0 *self) {
         LFLD(u32, self->unk_84, 0x6c) |= 2;
         func_02041d9c(self->unk_84, 0, 6);
         func_02041c20(self->unk_84, 6, self);
-        if (self->unk_0c & 0x800000) {
+        if (self->flags & 0x800000) {
             func_02041d9c(self->unk_84, 0, 7);
         }
         func_02041c5c(self->unk_84, (void *)func_ov000_021c782c);

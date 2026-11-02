@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -24,24 +25,24 @@ static inline BOOL LoResDone(u8 *o) {
 
 void func_ov000_0215ba4c(LoBase021cafc0_021cb0b8 *self, s32 unused, s32 *pos) {
     s32 h = self->vfunc_40() << 12;
-    s32 hh = h * self->unk_b1;
+    s32 hh = h * self->cursor;
     s32 z;
-    u8 *o;
+    UiPanel *o;
     if (LBIT(self, 0xc).b3 ? TRUE : FALSE) {
         z = self->posZ - 0x100;
         s32 y = hh + (pos[1] + (self->vfunc_34() << 12));
-        o = self->unk_ac;
-        LFLD(s32, o, 4) = pos[0] + ((self->unk_24 >> 1) << 12);
-        LFLD(s32, o, 8) = y + 0x6000;
+        o = (UiPanel *)((u8 *)self->panel);
+        o->unk_04 = pos[0] + ((self->width >> 1) << 12);
+        o->unk_08 = y + 0x6000;
     } else {
         z = self->posZ - 0x100;
         s32 y = hh + (pos[1] + (self->vfunc_34() << 12));
-        o = self->unk_ac;
-        LFLD(s32, o, 4) = pos[0] + ((self->unk_24 >> 1) << 12);
-        LFLD(s32, o, 8) = y - 0x2000;
+        o = (UiPanel *)((u8 *)self->panel);
+        o->unk_04 = pos[0] + ((self->width >> 1) << 12);
+        o->unk_08 = y - 0x2000;
     }
-    LFLD(s32, o, 0xc) = z;
-    func_ov000_0215eab4(self->unk_ac);
+    o->unk_0c = z;
+    func_ov000_0215eab4(((u8 *)self->panel));
 }
 
 }

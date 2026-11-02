@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -22,17 +23,17 @@ static inline BOOL LoSubReady(void *p) {
     return TRUE;
 }
 
-void func_ov000_02157c28(LoBase021cb2a8_021cb4a8 *self) {
+void func_ov000_02157c28(UiList021cb4a8 *self) {
     s32 v;
-    self->unk_64 = (self->unk_0c & 0x4000000) ? 0 : 0xc;
-    self->unk_24 = 0x100 - self->unk_64 * 2;
+    self->posX = (self->flags & 0x4000000) ? 0 : 0xc;
+    self->width = 0x100 - self->posX * 2;
     func_ov000_0215429c(self);
-    v = self->unk_24;
-    self->unk_2c = 1;
-    self->unk_58 = v + 0x10;
-    self->unk_5c = 0;
-    self->unk_60 = 0;
-    LFLD(s32, self->unk_ac, 0x10) = (v - 0x10) << 12;
+    v = self->width;
+    self->slideMode = 1;
+    self->slideX = v + 0x10;
+    self->slideY = 0;
+    self->slideZ = 0;
+    self->panel->unk_10 = (v - 0x10) << 12;
 }
 
 struct Obj02157c90 {

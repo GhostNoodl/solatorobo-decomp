@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 #define GX_PACK_POLYGONATTR_PARAM(light, polyMode, cullMode, polygonID, alpha, misc) \
     ((u32)(((light) << 0) | ((polyMode) << 4) | ((cullMode) << 6) | (misc) | ((polygonID) << 24) | ((alpha) << 16)))
@@ -17,18 +18,9 @@ typedef struct {
     u32 rest : 11;
 } TextFlags021561f8;
 
-typedef struct Item021561f8 {
-    s32 unk_00;
-    s16 idx;
-    u8 pad_06[0x16];
-    VObj *text;
-    u8 pad_20[0x8];
-    struct Item021561f8 *next2;
-    struct Item021561f8 *next;
-} Item021561f8;
 
 typedef struct {
-    Item021561f8 *item;
+    UiListItem *item;
     s32 x;
     s32 y;
     s32 z;
@@ -79,7 +71,7 @@ static inline void G3_Cmd2(int cmd, u32 a, u32 b) {
     NNS_G3dGeBufferOP_N(cmd, v, 2);
 }
 
-void func_ov000_02155f68(LoBase021caec8_021efca4 *self, s32 a1, s32 *pos, s32 a3) {
+void func_ov000_02155f68(UiList *self, s32 a1, s32 *pos, s32 a3) {
     s16 z;
     u8 *g;
     s32 sx;
@@ -91,19 +83,19 @@ void func_ov000_02155f68(LoBase021caec8_021efca4 *self, s32 a1, s32 *pos, s32 a3
     G3_Cmd1(0x2a, 0x20000000);
     alpha = self->unk_54;
     G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, Gfx3DState_NextPolyId(g + 0x8b0), alpha, 0x800));
-    sx = self->unk_24 << 12;
-    sy = self->unk_28 << 12;
+    sx = self->width << 12;
+    sy = self->height << 12;
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, pos[0], pos[1], z);
     G3_Vec(0x1b, sx, sy, 0x1000);
     G3_Cmd1(0x40, 2);
     G3_Cmd1(0x20, self->color);
-    v = (V6 *)self->unk_6c;
+    v = (V6 *)self->shape;
     if (v != NULL) {
         s32 i;
         G3_Cmd2(0x23, v[0].x | (v[0].y << 16), 0);
-        for (i = 1; i < self->unk_70; i++) {
-            v = (V6 *)self->unk_6c;
+        for (i = 1; i < self->shapeCount; i++) {
+            v = (V6 *)self->shape;
             G3_Cmd1(0x25, v[i].x | (v[i].y << 16));
         }
     } else {
@@ -125,7 +117,7 @@ void func_ov000_02153c48(void *item, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_02153f30(VObj *self, s32 a);
 void func_ov000_02153f60(VObj *self, s32 a);
 
-void func_ov000_021561f8(LoBase021caec8_021cb5a8 *self, s32 on, s32 *pos) {
+void func_ov000_021561f8(UiList *self, s32 on, s32 *pos) {
     s32 lo;
     s32 k;
     s32 px;
@@ -135,66 +127,66 @@ void func_ov000_021561f8(LoBase021caec8_021cb5a8 *self, s32 on, s32 *pos) {
     s32 py;
     s32 dim;
     s32 ox;
-    Item021561f8 *top;
+    UiListItem *top;
     s32 oy;
     s32 s;
     s32 col;
     s32 d;
     s32 ow;
     s32 lh;
-    Item021561f8 *it;
+    UiListItem *it;
     s32 last;
 
-    if (on == 0 || (it = (Item021561f8 *)self->unk_94) == NULL) {
+    if (on == 0 || (it = (UiListItem *)self->items) == NULL) {
         return;
     }
     g = data_02097d48;
     k = 0;
     lh = self->vfunc_40();
     col = Gfx3DState_NextPolyId(g + 0x8b0);
-    if (!(self->unk_0c & 0x20000)) {
-        lo = ((Item021561f8 *)self->unk_98)->idx;
-        hi = lo + self->unk_20;
+    if (!(self->flags & 0x20000)) {
+        lo = ((UiListItem *)self->topItem)->index;
+        hi = lo + self->rows;
         first = lo;
         last = hi;
     } else {
         s = self->unk_9e;
         if (s != 0) {
-            top = (Item021561f8 *)self->unk_98;
-            last = self->unk_20;
-            lo = top->idx - 2;
-            hi = top->idx + last + 2;
-            if (top->next2 == NULL) {
+            top = (UiListItem *)self->topItem;
+            last = self->rows;
+            lo = top->index - 2;
+            hi = top->index + last + 2;
+            if (top->prev == NULL) {
                 k = 1;
-            } else if (top->next2->next2 != NULL) {
+            } else if (top->prev->prev != NULL) {
                 k--;
             }
         } else if (self->unk_a8 != NULL) {
-            if (self->unk_0c & 0x200000) {
-                top = (Item021561f8 *)self->unk_98;
-                last = self->unk_20;
-                lo = top->idx - 2;
-                hi = top->idx + last + 1;
-                if (top->next2 == NULL) {
+            if (self->flags & 0x200000) {
+                top = (UiListItem *)self->topItem;
+                last = self->rows;
+                lo = top->index - 2;
+                hi = top->index + last + 1;
+                if (top->prev == NULL) {
                     k = 1;
-                } else if (top->next2->next2 != NULL) {
+                } else if (top->prev->prev != NULL) {
                     k--;
                 }
             } else {
-                top = (Item021561f8 *)self->unk_98;
-                last = self->unk_20;
-                lo = top->idx - 1;
-                hi = top->idx + last + 2;
-                if (top->next2 == NULL) {
+                top = (UiListItem *)self->topItem;
+                last = self->rows;
+                lo = top->index - 1;
+                hi = top->index + last + 2;
+                if (top->prev == NULL) {
                     k = 1;
                 }
             }
         } else {
-            top = (Item021561f8 *)self->unk_98;
-            last = self->unk_20;
-            lo = top->idx - 1;
-            hi = top->idx + last + 1;
-            if (top->next2 == NULL) {
+            top = (UiListItem *)self->topItem;
+            last = self->rows;
+            lo = top->index - 1;
+            hi = top->index + last + 1;
+            if (top->prev == NULL) {
                 k = 1;
             }
         }
@@ -211,44 +203,44 @@ void func_ov000_021561f8(LoBase021caec8_021cb5a8 *self, s32 on, s32 *pos) {
     oy = self->vfunc_34() + self->unk_9e;
     ow = self->vfunc_8c();
     while (it != NULL) {
-        if (it->idx >= lo && it->idx < hi) {
-            if (it->unk_00 != 0) {
-                if (it->text == NULL) {
-                    func_ov000_02153c48(it, self->unk_1c, 0, 0, 0);
+        if (it->index >= lo && it->index < hi) {
+            if (((s32)it->name) != 0) {
+                if (it->label == NULL) {
+                    func_ov000_02153c48(it, self->font, 0, 0, 0);
                 }
                 if (k < first || k > last) {
                     dim = 1;
-                    func_ov000_02153f30(it->text, self->unk_68);
+                    func_ov000_02153f30(it->label, self->posZ);
                 } else {
                     dim = 0;
-                    func_ov000_02153f60(it->text, self->unk_68);
+                    func_ov000_02153f60(it->label, self->posZ);
                 }
-                LFLD(TextFlags021561f8, it->text, 4).color = (u8)col;
+                LFLD(TextFlags021561f8, it->label, 4).color = (u8)col;
                 d = 0;
-                if ((Item021561f8 *)self->unk_a8 != NULL) {
+                if ((UiListItem *)self->unk_a8 != NULL) {
                     s = self->unk_a0;
-                    if (s > 0 && it->idx < ((Item021561f8 *)self->unk_a8)->idx) {
+                    if (s > 0 && it->index < ((UiListItem *)self->unk_a8)->index) {
                         d = s;
-                    } else if (s < 0 && it->idx > ((Item021561f8 *)self->unk_a8)->idx) {
+                    } else if (s < 0 && it->index > ((UiListItem *)self->unk_a8)->index) {
                         d = s;
                     }
                 }
-                if (self->unk_0c & 0x1000000) {
-                    ox = ((0x100 - LFLD(s32, it->text, 0x44)) >> 1) - self->unk_64;
+                if (self->flags & 0x1000000) {
+                    ox = ((0x100 - LFLD(s32, it->label, 0x44)) >> 1) - self->posX;
                 }
                 px = ox + (pos[0] >> 12);
                 py = d + (lh * k + (oy + (pos[1] >> 12)));
-                it->text->vfunc_20(px + ow, py);
-                it->text->vfunc_90();
+                it->label->vfunc_20(px + ow, py);
+                it->label->vfunc_90();
                 self->vfunc_dc(it, px, py, col, dim);
                 self->vfunc_e0(it, px + ow, py, col, 0);
                 self->vfunc_e4(it, pos[0] >> 12, py, col, dim);
-                if (self->unk_80 != NULL) {
+                if (self->onDrawItem != NULL) {
                     Msg021561f8 m;
                     m.item = it;
                     m.x = px;
                     m.y = py;
-                    m.z = self->unk_68;
+                    m.z = self->posZ;
                     m.col = col;
                     m.dim = dim;
                     m.ofs = -0x110;

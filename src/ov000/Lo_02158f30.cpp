@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -23,30 +24,30 @@ static inline BOOL LoSubReady(void *p) {
 }
 
 void func_ov000_02158f30(Lo021cb3a8 *self, s32 n, s32 b) {
-    s8 old = self->unk_b1;
-    s16 max = self->unk_9c;
-    s32 m = self->unk_20;
+    s8 old = self->cursor;
+    s16 max = self->itemCount;
+    s32 m = self->rows;
     self->unk_b0 = old;
     if (max > m) {
-        self->unk_b1 = old + (s8)n;
-        if (self->unk_b1 + m > max) {
-            self->unk_b1 = max - m;
+        self->cursor = old + (s8)n;
+        if (self->cursor + m > max) {
+            self->cursor = max - m;
         }
     }
-    self->vfunc_bc(self->unk_b1 - self->unk_b0, b);
+    self->vfunc_bc(self->cursor - self->unk_b0, b);
     self->unk_a2 = 4;
 }
 
 void func_ov000_02158f98(Lo021cb3a8 *self, s32 n, s32 b) {
-    s8 old = self->unk_b1;
+    s8 old = self->cursor;
     self->unk_b0 = old;
-    if (self->unk_0c & 0x20000) {
-        self->unk_b1 = old + (s8)n;
-        if (self->unk_b1 + self->unk_20 > self->unk_9c) {
-            self->unk_b1 = self->unk_9c - self->unk_20;
+    if (self->flags & 0x20000) {
+        self->cursor = old + (s8)n;
+        if (self->cursor + self->rows > self->itemCount) {
+            self->cursor = self->itemCount - self->rows;
         }
     }
-    self->vfunc_bc(self->unk_b1 - self->unk_b0, b);
+    self->vfunc_bc(self->cursor - self->unk_b0, b);
     self->unk_a2 = 8;
 }
 

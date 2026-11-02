@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "Main/Res/StageFlags.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/Task.h"
 
 typedef struct {
     u8 unk_00[0x68];
@@ -117,23 +118,23 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
         *(void **)o = data_ov000_021cb5a8;
         o->vfunc_28();
     }
-    self->unk_4c = o;
+    self->unk_4c = (Lo021cb5a8 *)o;
     LFLD(u32, o, 0xc) |= 0x4000000;
-    LFLD(s32, self->unk_4c, 0x2c) = 1;
+    self->unk_4c->slideMode = 1;
     {
-        u8 *t = (u8 *)self->unk_4c;
-        LFLD(s32, t, 0x58) = 0x100;
-        LFLD(s32, t, 0x5c) = 0;
-        LFLD(s32, t, 0x60) = 0;
+        UiList *t = (UiList *)self->unk_4c;
+        t->slideX = 0x100;
+        t->slideY = 0;
+        t->slideZ = 0;
     }
-    LFLD(s32, self->unk_4c, 0x34) = 0xc000;
+    self->unk_4c->openLen = 0xc000;
     {
-        u8 *t = (u8 *)self->unk_4c;
-        LFLD(s16, t, 0x64) = 0;
-        LFLD(s16, t, 0x66) = 0x66;
-        LFLD(s16, t, 0x68) = -0x1ccd;
+        UiList *t = (UiList *)self->unk_4c;
+        t->posX = 0;
+        t->posY = 0x66;
+        t->posZ = -0x1ccd;
     }
-    LFLD(u32, self->unk_4c, 0xc) |= 0x20000000;
+    self->unk_4c->flags |= 0x20000000;
     self->unk_4c->vfunc_f4(1, MsgRes_GetString(g, 0x37));
     self->unk_4c->vfunc_f4(2, MsgRes_GetString(g, 0x33));
     self->unk_4c->vfunc_08();
@@ -148,9 +149,9 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
         func_0204c7d0((u8 *)o + 0x148);
         o->vfunc_28();
     }
-    self->unk_60 = o;
+    self->unk_60 = (Menu021ca94c *)o;
     o->vfunc_08();
-    LFLD(s16, self->unk_60, 0x68) = -0x1bcd;
+    self->unk_60->posZ = -0x1bcd;
     o = (VObj *)Heap_Alloc(0xe4);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -162,26 +163,26 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
         *(void **)o = data_ov000_021caac8;
         o->vfunc_28();
     }
-    self->unk_50 = o;
+    self->unk_50 = (Lo021caac8 *)o;
     ((VObj *)self->unk_50)->vfunc_10(MsgRes_GetString(g, 0x10f));
     ((VObj *)self->unk_50)->vfunc_14(MsgRes_GetString(g, 0x110));
     func_ov000_02157c90(self->unk_50, MsgRes_GetString(g, 0x111));
     func_ov000_021546ec(self->unk_50, data_0208cca0, data_0208cb74, 0xb);
-    LFLD(void *, self->unk_50, 0x8) = self;
-    LFLD(s32, self->unk_50, 0x20) = 4;
+    self->unk_50->owner = self;
+    self->unk_50->rows = 4;
     {
-        u8 *t = (u8 *)self->unk_50;
-        LFLD(s16, t, 0x64) = 0;
-        LFLD(s16, t, 0x66) = 0x18;
-        LFLD(s16, t, 0x68) = -0x1ccd;
+        UiList *t = (UiList *)self->unk_50;
+        t->posX = 0;
+        t->posY = 0x18;
+        t->posZ = -0x1ccd;
     }
-    LFLD(u8, self->unk_50, 0xc0) = 0x94;
-    LFLD(s32, self->unk_50, 0x34) = 0xc000;
-    LFLD(u32, self->unk_50, 0xc) |= 0x400000;
-    LFLD(u8, self->unk_50, 0xc1) = 2;
+    self->unk_50->unk_c0 = 0x94;
+    self->unk_50->openLen = 0xc000;
+    self->unk_50->flags |= 0x400000;
+    self->unk_50->unk_c1 = 2;
     LFLD(void *, self->unk_50, 0x84) = (void *)func_ov000_0214ffac;
     LFLD(void *, self->unk_50, 0x88) = (void *)func_ov000_02150104;
-    id = self->unk_0c;
+    id = self->param;
     data_02fe1534.unk_70 = 0;
     data_02fe1534.unk_7a = id;
     LFLD(VObj *, data_ov000_021ccd24, 8)->vfunc_38(1);
@@ -198,10 +199,10 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     ((VObj *)self->unk_50)->vfunc_a8(LFLD(s32, self->unk_50, 0x98));
     ((VObj *)self->unk_50)->vfunc_08();
     {
-        u8 *t = (u8 *)self->unk_50;
-        LFLD(s32, t, 0x58) = 0x100;
-        LFLD(s32, t, 0x5c) = 0;
-        LFLD(s32, t, 0x60) = 0;
+        UiList *t = (UiList *)self->unk_50;
+        t->slideX = 0x100;
+        t->slideY = 0;
+        t->slideZ = 0;
     }
 }
 

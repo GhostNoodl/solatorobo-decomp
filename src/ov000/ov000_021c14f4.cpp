@@ -132,7 +132,7 @@ void func_ov000_021c14f4(Lo021cc938 *self) {
     case 10: {
         VecFx32 v;
         VecFx32 out;
-        u8 *proj;
+        MtxFx44 *proj;
         s32 a;
         s32 b;
         s32 q;
@@ -144,11 +144,11 @@ void func_ov000_021c14f4(Lo021cc938 *self) {
         v.y = self->unk_54;
         v.z = self->unk_58;
         func_ov000_021bd474((u8 *)self, &v);
-        proj = (u8 *)&NNS_G3dGlb.projMtx;
+        proj = &NNS_G3dGlb.projMtx;
         MTX_MultVec43(&v, &NNS_G3dGlb.cameraMtx, &out);
         out.z += 0x3000;
         a = Mul_021c14f4(out.z, -0x1000);
-        b = LO_FX_MUL(LFLD(s32, proj, 0x28), out.z) + LFLD(s32, proj, 0x38);
+        b = LO_FX_MUL(LFLD(s32, proj, 0x28), out.z) + proj->_32;
         q = FX_Div(b + a, a << 1);
         self->unk_80 = CalcSub_021c14f4(&data_02097d48->cam.sub, Mul_021c14f4(q, 0x2000));
         func_ov000_02190a80(self->unk_90, 0x1000);

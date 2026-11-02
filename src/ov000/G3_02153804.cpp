@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 
 extern "C" {
@@ -31,7 +32,7 @@ static inline void G3_VtxXY(s16 x, s16 y) {
     NNS_G3dGeBufferOP_N(0x25, &v, 1);
 }
 
-void func_ov000_02153804(LoBase021ca94c_021caac8 *self, s32 on, s32 *pos, s32 scale) {
+void func_ov000_02153804(UiObj *self, s32 on, s32 *pos, s32 scale) {
     s16 z;
     u16 c;
     s32 sx;
@@ -43,10 +44,10 @@ void func_ov000_02153804(LoBase021ca94c_021caac8 *self, s32 on, s32 *pos, s32 sc
     if (on == 0) {
         return;
     }
-    sy = self->unk_68 - 0x100;
+    sy = self->posZ - 0x100;
     z = sy;
-    sx = self->unk_24 << 12;
-    sy = self->unk_28 << 12;
+    sx = self->width << 12;
+    sy = self->height << 12;
     t = FX_Div(0x5000, sy);
     q = t / 5 / 2;
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
@@ -54,24 +55,24 @@ void func_ov000_02153804(LoBase021ca94c_021caac8 *self, s32 on, s32 *pos, s32 sc
     G3_Vec(0x1b, scale, scale, 0x1000);
     G3_Vec(0x1b, sx, sy, 0x1000);
     G3_Cmd1(0x40, 1);
-    c = self->unk_48;
+    c = self->color;
     {
         u8 r = (c & 0x1f) >> 1;
         u8 g = ((c >> 5) & 0x1f) >> 1;
         u8 b = ((c >> 10) & 0x1f) >> 1;
         G3_Cmd1(0x20, (u16)(r | (g << 5) | (b << 10)));
     }
-    v = (VecFx16 *)self->unk_6c;
+    v = (VecFx16 *)self->shape;
     if (v != NULL) {
-        n = self->unk_70 - 1;
-        G3_Vtx(LFLD(VecFx16 *, self, 0x6c)[0].x, LFLD(VecFx16 *, self, 0x6c)[0].y, 0);
-        G3_VtxXY(LFLD(VecFx16 *, self, 0x6c)[2].x, LFLD(VecFx16 *, self, 0x6c)[2].y);
-        G3_VtxXY(LFLD(VecFx16 *, self, 0x6c)[2].x, -t);
-        G3_VtxXY(LFLD(VecFx16 *, self, 0x6c)[0].x, -t);
-        G3_Vtx(LFLD(VecFx16 *, self, 0x6c)[1].x, LFLD(VecFx16 *, self, 0x6c)[1].y, 0);
-        G3_VtxXY(LFLD(VecFx16 *, self, 0x6c)[1].x, LFLD(VecFx16 *, self, 0x6c)[1].y + t + q);
-        G3_VtxXY(LFLD(VecFx16 *, self, 0x6c)[n].x, t + LFLD(VecFx16 *, self, 0x6c)[n].y + q);
-        G3_VtxXY(LFLD(VecFx16 *, self, 0x6c)[n].x, LFLD(VecFx16 *, self, 0x6c)[n].y);
+        n = self->shapeCount - 1;
+        G3_Vtx(self->shape[0].x, self->shape[0].y, 0);
+        G3_VtxXY(self->shape[2].x, self->shape[2].y);
+        G3_VtxXY(self->shape[2].x, -t);
+        G3_VtxXY(self->shape[0].x, -t);
+        G3_Vtx(self->shape[1].x, self->shape[1].y, 0);
+        G3_VtxXY(self->shape[1].x, self->shape[1].y + t + q);
+        G3_VtxXY(self->shape[n].x, t + self->shape[n].y + q);
+        G3_VtxXY(self->shape[n].x, self->shape[n].y);
     } else {
         G3_Vtx(0xf8, 0, 0);
         G3_VtxXY(0xf17, 0);

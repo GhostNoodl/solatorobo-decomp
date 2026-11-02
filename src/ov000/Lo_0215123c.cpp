@@ -41,7 +41,7 @@ static inline BOOL LoIsLoaded24(void) {
 
 void func_ov000_0215123c(Lo021ca9c4 *self) {
     s32 s;
-    if (self->unk_24 == 0 || (s = self->unk_08) == 0) {
+    if (self->fadeRatio == 0 || (s = self->state) == 0) {
         return;
     }
     if (s != 0xc && s != 0xd) {
@@ -91,6 +91,7 @@ u32 func_ov000_0214bf2c(u16 a);
 }
 
 #include "ov000/ModelPart.h"
+#include "ov000/Task.h"
 
 extern "C" {
 

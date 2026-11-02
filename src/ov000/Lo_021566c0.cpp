@@ -1,14 +1,15 @@
 #include "ov000/VObj.h"
 #include "ov000/ModelPart.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
 
-static inline BOOL IsVisible(LoBase021caac8_021caec8 *self, s32 y) {
-    if (y < self->unk_66 + self->vfunc_34() ||
-        y > self->unk_66 + self->unk_28 - self->vfunc_38() - 0xc) {
+static inline BOOL IsVisible(UiList *self, s32 y) {
+    if (y < self->posY + self->vfunc_34() ||
+        y > self->posY + self->height - self->vfunc_38() - 0xc) {
         return FALSE;
     }
     return TRUE;
@@ -44,7 +45,7 @@ void func_ov000_021566c0(Obj021566c0 *self, u8 *info, s32 x, s32 y, u8 polyId, u
     Model_PlayPart(self->unk_b8, LFLD(u16, info, 0x8));
 }
 
-void func_ov000_0215683c(LoBase021caac8_021caec8 *self, u8 *info, s32 x, s32 y, u8 polyId) {
+void func_ov000_0215683c(UiList *self, u8 *info, s32 x, s32 y, u8 polyId) {
     Model *m = self->unk_bc;
     if (m == NULL || LFLD(u16, info, 0xa) == 0xffff) {
         return;
@@ -53,7 +54,7 @@ void func_ov000_0215683c(LoBase021caac8_021caec8 *self, u8 *info, s32 x, s32 y, 
         return;
     }
     MODEL_FLAGS(self->unk_bc)->unk_19 = 1;
-    self->unk_bc->unk_150 = self->unk_68 - 0xa0;
+    self->unk_bc->unk_150 = self->posZ - 0xa0;
     MODEL_FLAGS(self->unk_bc)->unk_20 = 0;
     y = y + (self->vfunc_40() >> 1) - 0x62;
     x = x + LFLD(s32, LFLD(u8 *, info, 0x1c), 0x44) - 0x78 - (self->unk_d0 >> 12);

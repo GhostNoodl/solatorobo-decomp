@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/Task.h"
 
 extern "C" {
 
@@ -149,24 +150,24 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
             *(void **)o = data_ov000_021cb5a8;
             o->vfunc_28();
         }
-        self->unk_4c = o;
+        self->unk_4c = (Lo021cb5a8 *)o;
         LFLD(u32, o, 0xc) |= 0x4000000;
-        LFLD(s32, self->unk_4c, 0x2c) = 1;
+        self->unk_4c->slideMode = 1;
         {
-            u8 *t = (u8 *)self->unk_4c;
-            LFLD(s32, t, 0x58) = 0x100;
-            LFLD(s32, t, 0x5c) = 0;
-            LFLD(s32, t, 0x60) = 0;
+            UiList *t = (UiList *)self->unk_4c;
+            t->slideX = 0x100;
+            t->slideY = 0;
+            t->slideZ = 0;
         }
-        LFLD(s32, self->unk_4c, 0x34) = 0x6000;
+        self->unk_4c->openLen = 0x6000;
         {
-            u8 *t = (u8 *)self->unk_4c;
-            LFLD(s16, t, 0x64) = 0;
-            LFLD(s16, t, 0x66) = 0x11;
-            LFLD(s16, t, 0x68) = -0x1ccd;
+            UiList *t = (UiList *)self->unk_4c;
+            t->posX = 0;
+            t->posY = 0x11;
+            t->posZ = -0x1ccd;
         }
-        LFLD(u32, self->unk_4c, 0xc) |= 0x20000000;
-        LFLD(u32, self->unk_4c, 0xc) |= 0x80000000;
+        self->unk_4c->flags |= 0x20000000;
+        self->unk_4c->flags |= 0x80000000;
         self->unk_4c->vfunc_f4(2, MsgRes_GetString(g, 0x33));
         self->unk_4c->vfunc_08();
     }
@@ -181,30 +182,30 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
         *(void **)o = data_ov000_021caac8;
         o->vfunc_28();
     }
-    self->unk_50 = o;
+    self->unk_50 = (Lo021caac8 *)o;
     if (self->unk_42 == 0xffff) {
         self->unk_50->vfunc_10(MsgRes_GetString(g, 0x112));
         self->unk_50->vfunc_14(MsgRes_GetString(g, 0x113));
     }
-    LFLD(void *, self->unk_50, 0x8) = self;
-    LFLD(s32, self->unk_50, 0x20) = 3;
+    self->unk_50->owner = self;
+    self->unk_50->rows = 3;
     {
-        u8 *t = (u8 *)self->unk_50;
-        LFLD(s16, t, 0x64) = 0;
-        LFLD(s16, t, 0x66) = 0;
-        LFLD(s16, t, 0x68) = -0x199a;
+        UiList *t = (UiList *)self->unk_50;
+        t->posX = 0;
+        t->posY = 0;
+        t->posZ = -0x199a;
     }
-    LFLD(u8, self->unk_50, 0xdc) = 0x20;
-    LFLD(s32, self->unk_50, 0x34) = 0x6000;
+    self->unk_50->unk_dc = 0x20;
+    self->unk_50->openLen = 0x6000;
     LFLD(void *, self->unk_50, 0x7c) = (void *)func_ov000_02151610;
     LFLD(void *, self->unk_50, 0x78) = (void *)func_ov000_0215158c;
     self->unk_50->vfunc_a8(LFLD(s32, self->unk_50, 0x98));
     self->unk_50->vfunc_08();
     {
-        u8 *t = (u8 *)self->unk_50;
-        LFLD(s16, t, 0x64) = 0;
-        LFLD(s16, t, 0x66) = 0;
-        LFLD(s16, t, 0x68) = -0x199a;
+        UiList *t = (UiList *)self->unk_50;
+        t->posX = 0;
+        t->posY = 0;
+        t->posZ = -0x199a;
     }
     p = (u8 *)Heap_Alloc(0x38);
     if (p != NULL) {

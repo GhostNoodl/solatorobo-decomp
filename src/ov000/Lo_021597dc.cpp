@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 typedef struct {
     u8 unk_00[0x10];
@@ -17,7 +18,7 @@ static inline BOOL Lo_Active021597dc(Lo021cb3a8 *self) {
 
 static inline BOOL Lo_Settled021597dc(Lo021cb3a8 *self) {
     BOOL r = FALSE;
-    if (self->unk_98 == self->unk_a4 && self->unk_b3 == 0) {
+    if (self->topItem == self->unk_a4 && self->unk_b3 == 0) {
         r = TRUE;
     }
     return r;
@@ -34,12 +35,12 @@ void func_ov000_021597dc(Lo021cb3a8 *self) {
     if (!Lo_Active021597dc(self)) {
         return;
     }
-    if (self->unk_98 == self->unk_a4 && LBIT(self, 0xc).b1) {
+    if (self->topItem == self->unk_a4 && LBIT(self, 0xc).b1) {
         LBIT(self, 0xc).b0 = 1;
-        self->unk_04 = 1;
+        self->state = 1;
         return;
     }
-    if (self->unk_94 == NULL) {
+    if (self->items == NULL) {
         return;
     }
     if (LBIT(self, 0xc).b2) {
@@ -62,11 +63,11 @@ void func_ov000_021597dc(Lo021cb3a8 *self) {
             } else if (cont & 0x80) {
                 self->vfunc_b4(1, 0);
             } else {
-                if (self->unk_9c > self->unk_20 && (self->unk_0c & 0x10000)) {
+                if (self->itemCount > self->rows && (self->flags & 0x10000)) {
                     if (cont & 0x200) {
-                        self->vfunc_b0(self->unk_20, 0);
+                        self->vfunc_b0(self->rows, 0);
                     } else if (cont & 0x100) {
-                        self->vfunc_b8(self->unk_20, 0);
+                        self->vfunc_b8(self->rows, 0);
                     }
                 }
                 self->unk_b3 = 0;
@@ -80,7 +81,7 @@ void func_ov000_021597dc(Lo021cb3a8 *self) {
     }
     if (trig & 2) {
         if (!self->vfunc_98(NULL)) {
-            self->unk_0c |= 2;
+            self->flags |= 2;
         }
         return;
     }

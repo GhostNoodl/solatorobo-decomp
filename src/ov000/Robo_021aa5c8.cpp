@@ -67,14 +67,14 @@ static inline s32 FxMulL021aa5c8(s32 a, s64 b) {
 
 void func_ov000_021aa5c8(Robo021ca458 *self) {
     Actor *actor;
-    u8 *sub;
+    ActorSub4c *sub;
     FieldState *g;
     VecFx32 d;
     VecFx32 out;
     actor = FindActor021aa5c8(self->unk_b1c);
     sub = NULL;
     if (actor != NULL) {
-        sub = ((u8 *)actor->targetObj);
+        sub = (ActorSub4c *)((u8 *)actor->targetObj);
     }
     g = data_ov000_021ccd54;
     if (((State021aa5c8 *)self->fsm)->st == 0) {
@@ -93,7 +93,7 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
         if (!self->unk_b22_3) {
             u16 n = 0x14;
             if (sub != NULL) {
-                n += (u16)(LFLD(u8, sub, 0x1a) * 2);
+                n += (u16)(sub->unk_1a * 2);
             }
             if (self->unk_ba4 != NULL) {
                 n += LFLD(Nib021aa5c8, self->unk_ba4, 5).hi;

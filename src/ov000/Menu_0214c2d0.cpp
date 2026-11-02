@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 typedef struct {
     char s[16];
@@ -42,17 +43,17 @@ void func_ov000_0214c2d0(Menu021ca94c *self) {
     u8 *m;
     void *fnt;
 
-    self->unk_0c |= 0x10;
-    self->unk_24 = 0x8c;
-    self->unk_28 = 0x2b;
-    self->unk_64 = 0;
-    self->unk_66 = 0xc0 - self->unk_28;
+    self->flags |= 0x10;
+    self->width = 0x8c;
+    self->height = 0x2b;
+    self->posX = 0;
+    self->posY = 0xc0 - self->height;
     self->posZ = -0x1000;
     if (func_ov000_02152e5c(self)) {
-        func_02041d9c(self->unk_10, 0, 0xb);
-        func_02041d9c(self->unk_10, 0, 0xc);
-        func_02041d9c(self->unk_10, 0, 0xd);
-        func_02041d9c(self->unk_10, 0, 0xe);
+        func_02041d9c(self->model, 0, 0xb);
+        func_02041d9c(self->model, 0, 0xc);
+        func_02041d9c(self->model, 0, 0xd);
+        func_02041d9c(self->model, 0, 0xe);
     }
     m = (u8 *)Heap_Alloc(0x160);
     if (m) {
@@ -93,10 +94,10 @@ void func_ov000_0214c2d0(Menu021ca94c *self) {
     LFLD(u32, self->unk_84, 0x6c) |= 0x100000;
     LFLD(u32, self->unk_84, 0x6c) |= 0x200000;
     LFLD(u32, self->unk_84, 0x6c) |= 0x20000;
-    self->unk_2c = 1;
-    self->unk_58 = 0;
-    self->unk_5c = self->unk_28 + 0x40;
-    self->unk_60 = 0;
+    self->slideMode = 1;
+    self->slideX = 0;
+    self->slideY = self->height + 0x40;
+    self->slideZ = 0;
 
     fnt = data_02149ef8;
     self->unk_b8 = 8;

@@ -4,6 +4,7 @@
 #pragma short_enums on
 #include "ov000/LoCommon.h"
 #include "nitro/fx.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 extern u8 *data_02097d48;
@@ -47,19 +48,8 @@ static inline void G3_SetTransMtx(MtxFx43 *m, s32 x, s32 y, s32 z) {
     }
 }
 
-struct Obj021535a8 {
-    u8 unk_00[0x24];
-    s32 unk_24;
-    s32 unk_28;
-    u8 unk_2c[0x1c];
-    u16 unk_48;
-    u8 unk_4a[0xa];
-    s32 unk_54;
-    u8 unk_58[0x10];
-    s16 unk_68;
-};
 
-void func_ov000_021535a8(Obj021535a8 *self, s32 a1, s32 *pos, s32 sy2) {
+void func_ov000_021535a8(UiObj *self, s32 a1, s32 *pos, s32 sy2) {
     MtxFx43 m;
     MtxFx43 t;
     s16 z;
@@ -69,15 +59,15 @@ void func_ov000_021535a8(Obj021535a8 *self, s32 a1, s32 *pos, s32 sy2) {
     if (a1 == 0) {
         return;
     }
-    z = self->unk_68 - 0x100;
+    z = self->posZ - 0x100;
     g = data_02097d48;
     G3_Cmd1(0x2a, 0x20000000);
     {
         s32 a = self->unk_54;
         G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g + 0x8b0) << 24) | 0x8d0 | (a << 16));
     }
-    sx = self->unk_24 << 12;
-    sy = self->unk_28 << 12;
+    sx = self->width << 12;
+    sy = self->height << 12;
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, pos[0], pos[1], z);
     MTX_Scale43_(&m, 0x1000, sy2, 0x1000);
@@ -87,7 +77,7 @@ void func_ov000_021535a8(Obj021535a8 *self, s32 a1, s32 *pos, s32 sy2) {
     G3_Vec(0x1b, sx, sy, 0x1000);
     NNS_G3dGeBufferOP_N(0x19, &m, 12);
     G3_Cmd1(0x40, 3);
-    G3_Cmd1(0x20, self->unk_48);
+    G3_Cmd1(0x20, self->color);
     G3_Cmd2(0x23, 0x1000, 0);
     G3_Cmd1(0x25, 0);
     G3_Cmd1(0x25, 0x10001000);

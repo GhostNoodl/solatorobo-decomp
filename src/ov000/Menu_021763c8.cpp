@@ -20,6 +20,7 @@
 #include "ov000/HeapScope.h"
 #include "Main/Sys/Pad.h"
 #include "ov000/Actor.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -1459,21 +1460,21 @@ void Task021cbbe0_Start(Task021cbbe0 *self) {
         o->vfunc_28();
     }
     self->unk_44 = (Lo021cb5a8 *)o;
-    ((Lo021cb5a8 *)o)->unk_0c |= 0x4000000;
-    self->unk_44->unk_2c = 1;
+    ((Lo021cb5a8 *)o)->flags |= 0x4000000;
+    self->unk_44->slideMode = 1;
     {
         Lo021cb5a8 *s_0 = self->unk_44;
-        s_0->unk_58 = 0x80;
-        s_0->unk_5c = 0;
-        s_0->unk_60 = 0;
+        s_0->slideX = 0x80;
+        s_0->slideY = 0;
+        s_0->slideZ = 0;
     }
     {
         Lo021cb5a8 *s_1 = self->unk_44;
-        s_1->unk_64 = 0;
-        s_1->unk_66 = 0x10;
+        s_1->posX = 0;
+        s_1->posY = 0x10;
         s_1->posZ = -0x1ccd;
     }
-    self->unk_44->unk_0c |= 0x20000000;
+    self->unk_44->flags |= 0x20000000;
     ((MenuBox021743bc *)self->unk_44)->SetText(1, MsgRes_GetString(g, 0x32));
     ((MenuBox021743bc *)self->unk_44)->SetText(2, MsgRes_GetString(g, 0x33));
     ((MenuBox021743bc *)self->unk_44)->Show();
@@ -1484,24 +1485,24 @@ void Task021cbbe0_Start(Task021cbbe0 *self) {
         *(void **)o = data_ov000_021caec8;
         o->vfunc_28();
     }
-    self->unk_40 = (LoBase021caac8_021caec8 *)o;
+    self->unk_40 = (UiList *)o;
     ((MenuList021743bc *)self->unk_40)->SetTitleId((s32)MsgRes_GetString(g, 0xb8));
     ((MenuList021743bc *)self->unk_40)->SetTitle((const char *)MsgRes_GetString(g, 0xb9));
-    self->unk_40->unk_34 = 0x6000;
-    self->unk_40->unk_08 = self;
-    self->unk_40->unk_24 = 0x6c;
-    self->unk_40->unk_20 = 5;
+    self->unk_40->openLen = 0x6000;
+    self->unk_40->owner = self;
+    self->unk_40->width = 0x6c;
+    self->unk_40->rows = 5;
     {
-        LoBase021caac8_021caec8 *s_2 = self->unk_40;
-        s_2->unk_64 = 0;
-        s_2->unk_66 = 0x14;
-        s_2->unk_68 = -0x1ccd;
+        UiList *s_2 = self->unk_40;
+        s_2->posX = 0;
+        s_2->posY = 0x14;
+        s_2->posZ = -0x1ccd;
     }
-    self->unk_40->unk_0c &= ~0x20000;
-    self->unk_40->unk_0c &= ~0x40000;
-    self->unk_40->unk_0c &= ~0x10000;
-    self->unk_40->unk_78 = (void *)func_ov000_021742b4;
-    self->unk_40->unk_84 = (void *)func_ov000_021742c8;
+    self->unk_40->flags &= ~0x20000;
+    self->unk_40->flags &= ~0x40000;
+    self->unk_40->flags &= ~0x10000;
+    self->unk_40->onState = (UiStateFn)func_ov000_021742b4;
+    self->unk_40->onDecide = (UiItemFn)func_ov000_021742c8;
     ((MenuList021743bc *)self->unk_40)->AddItem((const char *)MsgRes_GetString(g, 0xba), 0x1a, 0xffff, 0xffff);
     ((MenuList021743bc *)self->unk_40)->AddItem((const char *)MsgRes_GetString(g, 0xc2), 6, 0xffff, 0xffff);
     ((MenuList021743bc *)self->unk_40)->AddItem((const char *)MsgRes_GetString(g, 0x112), 0xf, 0xffff, 0xffff);
@@ -1537,9 +1538,9 @@ found:
     }
     ((MenuList021743bc *)self->unk_40)->Show();
     {
-        LoBase021caac8_021caec8 *s_3 = self->unk_40;
-        s_3->unk_6c = data_ov000_021c9c28;
-        s_3->unk_70 = 5;
+        UiList *s_3 = self->unk_40;
+        s_3->shape = (VecFx16 *)data_ov000_021c9c28;
+        s_3->shapeCount = 5;
     }
     res = func_02034d88(func_02035d5c(data_0208ccc8), data_ov000_021cba0c);
     m = (u8 *)Heap_Alloc(0x160);
@@ -1550,11 +1551,11 @@ found:
         func_02041440(m, nm, 0);
         STD_CopyString(m + 0x2c, file);
     }
-    self->unk_58 = m;
+    self->unk_58 = (Model *)m;
     func_020417e0(m, res);
-    LFLD(u32, self->unk_58, 0x6c) |= 2;
+    self->unk_58->flags |= 2;
     func_02041d9c(self->unk_58, 0, 0xffff);
-    LFLD(s32, self->unk_58, 0x150) = -0x1cbd;
+    self->unk_58->unk_150 = -0x1cbd;
     res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
     m2 = (u8 *)Heap_Alloc(0x160);
     if (m2 != NULL) {
@@ -1564,15 +1565,15 @@ found:
         func_02041440(m2, nm, 0);
         STD_CopyString(m2 + 0x2c, file);
     }
-    self->unk_5c = m2;
+    self->unk_5c = (Model *)m2;
     func_020417e0(m2, res);
-    LFLD(u32, self->unk_5c, 0x6c) |= 2;
+    self->unk_5c->flags |= 2;
     func_02041d9c(self->unk_5c, 0, 6);
     func_02041d9c(self->unk_5c, 0, 9);
     func_02041d9c(self->unk_5c, 0, 0xa);
-    LFLD(u32, self->unk_5c, 0x6c) |= 0x80000;
-    LFLD(u32, self->unk_5c, 0x6c) = (LFLD(u32, self->unk_5c, 0x6c) & ~0x7c) | 0x78;
-    LFLD(s32, self->unk_5c, 0x150) = -0x1c9d;
+    self->unk_5c->flags |= 0x80000;
+    self->unk_5c->flags = (self->unk_5c->flags & ~0x7c) | 0x78;
+    self->unk_5c->unk_150 = -0x1c9d;
     func_02041c5c(self->unk_5c, (int)func_ov000_02174168);
     InitWin021743bc((u8 *)self + 0x60, MsgRes_GetString(g, 0xba));
     InitWin021743bc((u8 *)self + 0x118, MsgRes_GetString(g, 0x48));
@@ -1585,16 +1586,16 @@ found:
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
         *(void **)o = data_ov000_021ca94c;
-        LFLD(void *, (LoBase021ca94c_021caac8 *)o, 0x90) = data_0208ba70;
+        LFLD(void *, (UiObj *)o, 0x90) = data_0208ba70;
         func_0204c7d0((u8 *)o + 0x90);
-        LFLD(void *, (LoBase021ca94c_021caac8 *)o, 0x148) = data_0208ba70;
+        LFLD(void *, (UiObj *)o, 0x148) = data_0208ba70;
         func_0204c7d0((u8 *)o + 0x148);
         o->vfunc_28();
     }
-    self->unk_48 = (LoBase021ca94c_021caac8 *)o;
+    self->unk_48 = (UiObj *)o;
     o->vfunc_08();
-    LFLD(Bits021743bc, self->unk_48, 0xc).b4 = 0;
-    self->unk_48->unk_68 = -0x1ccd;
+    self->unk_48->flag4 = 0;
+    self->unk_48->posZ = -0x1ccd;
     if (IsMode4_021743bc()) {
         func_0203cb78(self->fadeLen, 0, -1);
     }
@@ -1651,9 +1652,9 @@ void Task021cbbe0_Release(Task021cbbe0 *self) {
 void func_ov000_02175080(Task021cbbe0 *self, s32 kind) {
     switch (kind) {
     case 0x1a: {
-        void *t;
+        Task *t;
         t = LoSwitchTask(0x1a);
-        LFLD(s32, t, 0x2c) = 0;
+        t->parent = NULL;
         LFLD(s32, t, 0x3c) = self->id;
         self->vfunc_50();
         self->unk_04 |= 6;
@@ -1736,7 +1737,7 @@ void func_ov000_021753a0(Task021cbbe0 *self) {
     if (m == 1) {
         s32 v;
         self->unk_50 += 0x1000;
-        v = FX_Div(self->unk_50, self->unk_40->unk_34);
+        v = FX_Div(self->unk_50, self->unk_40->openLen);
         self->unk_54 = v;
         if (v >= 0x1000) {
             self->unk_54 = 0x1000;
@@ -1745,7 +1746,7 @@ void func_ov000_021753a0(Task021cbbe0 *self) {
     } else if (m == 0) {
         s32 v;
         self->unk_50 -= 0x1000;
-        v = FX_Div(self->unk_50, self->unk_40->unk_34);
+        v = FX_Div(self->unk_50, self->unk_40->openLen);
         self->unk_54 = v;
         if (v <= 0) {
             self->unk_54 = 0;
@@ -2006,26 +2007,21 @@ static inline BOOL LoIsLoaded(void) {
     return r;
 }
 
-struct Lo02175e6c {
-    u8 unk_00[0x8];
-    void *unk_08;
-    u32 unk_0c;
-};
 
-BOOL func_ov000_02175e6c(Lo02175e6c *self, void *msg) {
-    void *o = self->unk_08;
+BOOL func_ov000_02175e6c(UiList *self, UiListItem *msg) {
+    Task021cbfe0 *o = (Task021cbfe0 *)self->owner;
     s32 v;
     if (msg == NULL) {
-        if (self->unk_0c & 0x4000000) {
+        if (self->flags & 0x4000000) {
             func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
             return TRUE;
         }
         v = 0xff;
     } else {
-        v = LFLD(u16, msg, 6);
+        v = msg->id;
     }
-    LFLD(u16, o, 0x44) = v;
-    if (LFLD(LoCbFn, o, 0x30)(o, 2)) {
+    o->unk_44 = v;
+    if (o->callback(o, 2)) {
         func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
     } else {
         ((VObj *)o)->vfunc_0c(0);
@@ -2315,7 +2311,7 @@ static inline BOOL LoIsLoaded(void) {
 }
 
 void func_ov000_021762e4(void *a, s32 mode) {
-    void *t = LoFindTask(4);
+    Task *t = LoFindTask(4);
     VObj *m;
     void *r;
     if (mode == 1 && func_0206f66c(a)) {
@@ -2608,21 +2604,21 @@ void Task021cbee0_Start(Task021cbee0 *self) {
         o->vfunc_28();
     }
     self->unk_3c = (Lo021cb5a8 *)o;
-    ((Lo021cb5a8 *)o)->unk_0c |= 0x4000000;
-    self->unk_3c->unk_2c = 1;
+    ((Lo021cb5a8 *)o)->flags |= 0x4000000;
+    self->unk_3c->slideMode = 1;
     {
         Lo021cb5a8 *s = self->unk_3c;
-        s->unk_58 = 0x100;
-        s->unk_5c = 0;
-        s->unk_60 = 0;
+        s->slideX = 0x100;
+        s->slideY = 0;
+        s->slideZ = 0;
     }
     {
         Lo021cb5a8 *s = self->unk_3c;
-        s->unk_64 = 0;
-        s->unk_66 = 0x11;
+        s->posX = 0;
+        s->posY = 0x11;
         s->posZ = -0x1ccd;
     }
-    self->unk_3c->unk_0c |= 0x20000000;
+    self->unk_3c->flags |= 0x20000000;
     self->unk_3c->vfunc_f4(1, MsgRes_GetString(g, 0x32));
     self->unk_3c->vfunc_f4(2, MsgRes_GetString(g, 0x33));
     self->unk_3c->vfunc_08();
@@ -2634,16 +2630,16 @@ void Task021cbee0_Start(Task021cbee0 *self) {
         o->vfunc_28();
     }
     self->unk_40 = (Lo021cae48 *)o;
-    ((Lo021cae48 *)o)->unk_64 = 0x86;
-    ((Lo021cae48 *)o)->unk_66 = 0x78;
+    ((Lo021cae48 *)o)->posX = 0x86;
+    ((Lo021cae48 *)o)->posY = 0x78;
     ((Lo021cae48 *)o)->posZ = -0x1ccd;
     func_ov000_0215d980(self->unk_40, data_0214a424->unk_020, 0);
-    self->unk_40->unk_2c = 1;
+    self->unk_40->slideMode = 1;
     {
         Lo021cae48 *s = self->unk_40;
-        s->unk_58 = 0x80;
-        s->unk_5c = 0;
-        s->unk_60 = 0;
+        s->slideX = 0x80;
+        s->slideY = 0;
+        s->slideZ = 0;
     }
     self->unk_40->vfunc_08();
     o = (VObj *)Heap_Alloc(0x8c);
@@ -2654,21 +2650,21 @@ void Task021cbee0_Start(Task021cbee0 *self) {
         o->vfunc_28();
     }
     self->unk_50 = (Lo021cadcc *)o;
-    ((Lo021cadcc *)o)->unk_24 = 0xf8;
-    self->unk_50->unk_20 = 2;
+    ((Lo021cadcc *)o)->width = 0xf8;
+    self->unk_50->rows = 2;
     {
         Lo021cadcc *s = self->unk_50;
-        s->unk_64 = 8;
-        s->unk_66 = 0x95;
-        s->unk_68 = -0x1ccd;
+        s->posX = 8;
+        s->posY = 0x95;
+        s->posZ = -0x1ccd;
     }
-    self->unk_50->unk_48 = 0xb;
-    self->unk_50->unk_2c = 1;
+    self->unk_50->color = 0xb;
+    self->unk_50->slideMode = 1;
     {
         Lo021cadcc *s = self->unk_50;
-        s->unk_58 = 0;
-        s->unk_5c = 0x40;
-        s->unk_60 = 0;
+        s->slideX = 0;
+        s->slideY = 0x40;
+        s->slideZ = 0;
     }
     self->unk_50->vfunc_08();
     switch (func_ov000_02184a04(self->param)) {
@@ -2684,22 +2680,22 @@ void Task021cbee0_Start(Task021cbee0 *self) {
         ((Lo021cae48 *)o)->unk_84 = 4;
         {
             Lo021cae48 *s = self->unk_44;
-            s->unk_64 = 0x1a;
-            s->unk_66 = 0x78;
+            s->posX = 0x1a;
+            s->posY = 0x78;
             s->posZ = -0x1ccd;
         }
         func_ov000_0215d980(self->unk_44, 0, 0);
-        self->unk_44->unk_2c = 1;
+        self->unk_44->slideMode = 1;
         {
             Lo021cae48 *s = self->unk_44;
-            s->unk_58 = 0x80;
-            s->unk_5c = 0;
-            s->unk_60 = 0;
+            s->slideX = 0x80;
+            s->slideY = 0;
+            s->slideZ = 0;
         }
         self->unk_44->vfunc_08();
         func_ov000_0215d990(self->unk_44, 0x120);
-        self->unk_44->unk_24 = 0x66;
-        self->unk_44->unk_28 = 0x19;
+        self->unk_44->width = 0x66;
+        self->unk_44->height = 0x19;
         o = (VObj *)Heap_Alloc(0x98);
         if (o != NULL) {
             *(void **)o = data_ov000_021cac60;
@@ -2711,22 +2707,22 @@ void Task021cbee0_Start(Task021cbee0 *self) {
         ((Lo021cae48 *)o)->unk_84 = 4;
         {
             Lo021cae48 *s = self->unk_48;
-            s->unk_64 = 0x1a;
-            s->unk_66 = 0x83;
+            s->posX = 0x1a;
+            s->posY = 0x83;
             s->posZ = -0x1ccd;
         }
         func_ov000_0215d980(self->unk_48, 0, 0);
-        self->unk_48->unk_2c = 1;
+        self->unk_48->slideMode = 1;
         {
             Lo021cae48 *s = self->unk_48;
-            s->unk_58 = 0x80;
-            s->unk_5c = 0;
-            s->unk_60 = 0;
+            s->slideX = 0x80;
+            s->slideY = 0;
+            s->slideZ = 0;
         }
         self->unk_48->vfunc_08();
         func_ov000_0215d990(self->unk_48, 0x121);
-        self->unk_48->unk_24 = 0x66;
-        self->unk_48->unk_28 = 0;
+        self->unk_48->width = 0x66;
+        self->unk_48->height = 0;
         o = (VObj *)Heap_Alloc(0xe0);
         if (o != NULL) {
             *(void **)o = data_ov000_021cac60;
@@ -2737,7 +2733,7 @@ void Task021cbee0_Start(Task021cbee0 *self) {
             o->vfunc_28();
             *(void **)o = data_ov000_021cb2a8;
         }
-        self->unk_4c = (LoBase021caac8_021cb2a8 *)o;
+        self->unk_4c = (UiList021cb4a8 *)o;
         self->unk_4c->vfunc_10(MsgRes_GetString(g, 0x98));
         self->unk_4c->vfunc_14(MsgRes_GetString(g, 0x99));
         func_ov000_02157c90(self->unk_4c, MsgRes_GetString(g, 0xa1));
@@ -2754,7 +2750,7 @@ void Task021cbee0_Start(Task021cbee0 *self) {
             *(void **)o = data_ov000_021cb4a8;
             o->vfunc_28();
         }
-        self->unk_4c = (LoBase021caac8_021cb2a8 *)o;
+        self->unk_4c = (UiList021cb4a8 *)o;
         self->unk_4c->vfunc_10(MsgRes_GetString(g, 0xa9));
         self->unk_4c->vfunc_14(MsgRes_GetString(g, 0x99));
         func_ov000_02157c90(self->unk_4c, MsgRes_GetString(g, 0xa3));
@@ -2788,7 +2784,7 @@ void Task021cbee0_Start(Task021cbee0 *self) {
             *(void **)o = data_ov000_021cb4a8;
             o->vfunc_28();
         }
-        self->unk_4c = (LoBase021caac8_021cb2a8 *)o;
+        self->unk_4c = (UiList021cb4a8 *)o;
         self->unk_4c->vfunc_10(MsgRes_GetString(g, 0xaa));
         self->unk_4c->vfunc_14(MsgRes_GetString(g, 0x99));
         func_ov000_02157c90(self->unk_4c, MsgRes_GetString(g, 0xa6));
@@ -2799,27 +2795,27 @@ void Task021cbee0_Start(Task021cbee0 *self) {
     data_02fe1534.unk_7a = self->param;
     data_ov000_021ccd48->vfunc_38(1);
     data_02fe1534.unk_7a = 0;
-    self->unk_4c->unk_08 = self;
-    self->unk_4c->unk_20 = 4;
+    self->unk_4c->owner = self;
+    self->unk_4c->rows = 4;
     {
-        LoBase021caac8_021cb2a8 *s = self->unk_4c;
-        s->unk_64 = 0;
-        s->unk_66 = 0x2c;
+        UiList021cb4a8 *s = self->unk_4c;
+        s->posX = 0;
+        s->posY = 0x2c;
         s->posZ = -0x1ccd;
     }
     self->unk_4c->unk_c0 = 0x78;
-    self->unk_4c->unk_0c |= 0x400000;
-    self->unk_4c->unk_84 = (void *)func_ov000_021774a4;
-    self->unk_4c->unk_88 = (void *)func_ov000_02177698;
+    self->unk_4c->flags |= 0x400000;
+    self->unk_4c->onDecide = (UiItemFn)func_ov000_021774a4;
+    self->unk_4c->onCursor = (UiItemFn)func_ov000_02177698;
     {
-        LoBase021caac8_021cb2a8 *t = self->unk_4c;
+        UiList021cb4a8 *t = self->unk_4c;
         t->vfunc_a8(LFLD(s32, t, 0x98));
     }
     self->unk_4c->vfunc_08();
     if ((void *)self->unk_50 == NULL) {
         return;
     }
-    if (self->unk_4c->unk_9c != 0) {
+    if (self->unk_4c->itemCount != 0) {
         return;
     }
     func_ov000_0215bb14(self->unk_50, MsgRes_GetString(g, 0x9d));
@@ -2921,9 +2917,9 @@ namespace m_Lo_02177240 {
 extern "C" {
 
 static inline void SetFlag02177240(Task021cbee0 *self) {
-    LoBase021caac8_021cb2a8 *p = self->unk_4c;
+    UiList021cb4a8 *p = self->unk_4c;
     if (p != NULL) {
-        p->unk_0c |= 4;
+        p->flags |= 4;
     }
 }
 
@@ -3039,15 +3035,15 @@ void func_ov000_0215c1bc(void *p, s32 a, s32 b);
 void func_ov000_02152294(void *self, s32 a, s32 b, void *cb);
 s32 func_ov000_02177bd8(void);
 
-static inline u8 *List021774a4_Cur(LoBase021caac8_021cb2a8 *list) {
-    u8 *p = (u8 *)list->unk_98;
+static inline UiListItem *List021774a4_Cur(UiList021cb4a8 *list) {
+    UiListItem *p = list->topItem;
     s32 n;
     if (p == NULL) {
         return NULL;
     }
-    n = list->unk_b1;
+    n = list->cursor;
     while (n-- != 0) {
-        p = LFLD(u8 *, p, 0x2c);
+        p = p->next;
     }
     return p;
 }
@@ -3056,7 +3052,7 @@ static inline u8 *List021774a4_Cur(LoBase021caac8_021cb2a8 *list) {
 
 BOOL func_ov000_021774a4(Self021774a4 *self, BOOL ok) {
     Task021cbee0 *m = self->unk_08;
-    u8 *item = List021774a4_Cur(m->unk_4c);
+    UiListItem *item = List021774a4_Cur(m->unk_4c);
 
     if (!ok) {
         func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
@@ -3069,7 +3065,7 @@ BOOL func_ov000_021774a4(Self021774a4 *self, BOOL ok) {
         SET_HIDE((u8 *)m->unk_58);
         return FALSE;
     }
-    if (LFLD(s32, item, 0xc) == -1 ? TRUE : FALSE) {
+    if (((s32)item->unk_0c) == -1 ? TRUE : FALSE) {
         if (m->unk_58 == NULL) {
             VObj *o = (VObj *)Heap_Alloc(0xe8);
             if (o != NULL) {
@@ -3111,15 +3107,15 @@ void func_ov000_0215d980(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
-static inline u8 *GetNth(u8 *m) {
-    u8 *p = LFLD(u8 *, m, 0x98);
+static inline UiListItem *GetNth(UiList *m) {
+    UiListItem *p = m->topItem;
     s32 n;
     if (p == NULL) {
         return NULL;
     }
-    n = LFLD(s8, m, 0xb1);
+    n = m->cursor;
     while (n-- != 0) {
-        p = LFLD(u8 *, p, 0x2c);
+        p = p->next;
     }
     return p;
 }
@@ -3132,40 +3128,36 @@ void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 
-struct Lo02177698 {
-    u8 unk_00[0x8];
-    Task021cbee0 *unk_08;
-};
 
-s32 func_ov000_02177698(Lo02177698 *self, u8 *item) {
-    Task021cbee0 *o = self->unk_08;
+s32 func_ov000_02177698(UiList *self, UiListItem *item) {
+    Task021cbee0 *o = (Task021cbee0 *)self->owner;
     VObj *t = o->unk_50;
     if (t != NULL) {
         if (item != NULL) {
             u16 id;
-            u8 *a;
-            func_0206ecd4(0x100, o->unk_5c, LFLD(u16, item, 6));
+            Lo021cae48 *a;
+            func_0206ecd4(0x100, o->unk_5c, item->id);
             func_ov000_0215bb14(t, o->unk_5c);
             t->vfunc_70();
-            id = LFLD(u16, item, 6);
-            a = (u8 *)o->unk_44;
+            id = item->id;
+            a = o->unk_44;
             if (id & 0x2000) {
-                u8 *b;
+                Lo021cae48 *b;
                 if (a != NULL) {
                     func_ov000_0215d980(a, data_0214a424->items[(u16)(id & 0xfff)], 1);
-                    LFLD(u32, a, 0xc) &= ~0x20;
+                    a->flags &= ~0x20;
                 }
-                b = (u8 *)o->unk_48;
+                b = o->unk_48;
                 if (b != NULL) {
-                    func_ov000_0215d980(b, StageFlags_CountEntries(data_0214a424, LFLD(u16, item, 6)), 1);
-                    LFLD(u32, b, 0xc) &= ~0x20;
+                    func_ov000_0215d980(b, StageFlags_CountEntries(data_0214a424, item->id), 1);
+                    b->flags &= ~0x20;
                 }
             } else {
                 if (a != NULL) {
-                    LFLD(u32, a, 0xc) |= 0x20;
+                    a->flags |= 0x20;
                 }
                 if ((u8 *)o->unk_48 != NULL) {
-                    LFLD(u32, (u8 *)o->unk_48, 0xc) |= 0x20;
+                    o->unk_48->flags |= 0x20;
                 }
             }
         } else {
@@ -3177,13 +3169,13 @@ s32 func_ov000_02177698(Lo02177698 *self, u8 *item) {
 }
 
 s32 func_ov000_021777d4(Task021cbee0 *self, u16 id) {
-    u8 *m = (u8 *)self->unk_4c;
+    UiList021cb4a8 *m = self->unk_4c;
     void *obj = self->unk_40;
-    u8 *node = GetNth(m);
+    UiListItem *node = GetNth(m);
     StageFlags *g = data_0214a424;
     u32 t;
     data_02fe1534.unk_72 = id;
-    t = LFLD(u32, node, 0xc);
+    t = node->unk_0c;
     g->unk_020 = g->unk_020 > t ? g->unk_020 - t : 0;
     func_ov000_0215d980(obj, data_0214a424->unk_020, 0);
     if (id & 0x2000) {
@@ -3205,7 +3197,7 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
 BOOL func_0206f21c(u16 a, s32 b);
 void func_ov000_0215c1bc(void *self, s32 id, void *v);
-void func_ov000_02153c48(u8 *self, s32 a, BOOL show, BOOL center, u8 d);
+void func_ov000_02153c48(UiListItem *self, s32 a, BOOL show, BOOL center, u8 d);
 
 static inline void ShowMsg021778f0(Task021cbee0 *self, s32 msg) {
     if (self->unk_58 == NULL) {
@@ -3252,19 +3244,19 @@ static inline void AddCount021778f0(u16 n) {
     }
 }
 
-static inline void ResetItem021778f0(u8 *item) {
-    if (LFLD(s32, item, 0x10) == 1) {
-        LFLD(s32, item, 0x10) = 0;
-        LFLD(s32, item, 0xc) = -1;
-        LFLD(s32, item, 0x24) = 0xe;
-        if (LFLD(void *, item, 0x1c) != NULL) {
+static inline void ResetItem021778f0(UiListItem *item) {
+    if (((s32)item->unk_10) == 1) {
+        item->unk_10 = 0;
+        item->unk_0c = -1;
+        item->unk_24 = 0xe;
+        if (((void *)item->label) != NULL) {
             func_ov000_02153c48(item, 8, TRUE, 0, 0);
         }
     }
 }
 
-BOOL func_ov000_021778f0(Task021cbee0 *self, u8 *item) {
-    u16 id = LFLD(u16, item, 6);
+BOOL func_ov000_021778f0(Task021cbee0 *self, UiListItem *item) {
+    u16 id = item->id;
     switch (((id >> 12) & 0xffff) - 1) {
     case 0:
         if (!func_ov000_021777d4(self, id)) {
@@ -3313,19 +3305,19 @@ static inline u8 *GetObj02177bd8(Task021cbee0 *o) {
     return (u8 *)o->unk_40;
 }
 
-s32 func_ov000_02177bd8(VObj *self, u8 *item) {
+s32 func_ov000_02177bd8(VObj *self, UiListItem *item) {
     Task021cbee0 *o = LFLD(Task021cbee0 *, self, 8);
-    u8 *m = (u8 *)o->unk_4c;
+    UiList021cb4a8 *m = o->unk_4c;
     u8 *obj = GetObj02177bd8(o);
-    u8 *node = GetNth(m);
+    UiListItem *node = GetNth(m);
     u16 type;
     if (item == NULL) {
         Snd021778f0(0x1f);
         return 0;
     }
-    type = LFLD(u16, item, 6);
+    type = item->id;
     if (type == 0) {
-        u32 cost = LFLD(u32, node, 0xc);
+        u32 cost = node->unk_0c;
         if (IsCost021778f0(cost)) {
             ShowMsg021778f0(o, 0x9f);
         } else if (LFLD(u32, obj, 0x8c) >= cost) {
@@ -3413,32 +3405,28 @@ extern "C" {
 extern void *data_02097e4c;
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
-struct Lo02177f40 {
-    u8 unk_00[0x8];
-    Task021cbe60 *unk_08;
-};
 
-BOOL func_ov000_02177f40(Lo02177f40 *self, void *msg) {
+BOOL func_ov000_02177f40(UiList *self, UiListItem *msg) {
     u16 id;
     Task021cbe60 *o;
     if (msg == NULL) {
         return FALSE;
     }
-    id = LFLD(u16, msg, 6);
-    o = self->unk_08;
+    id = msg->id;
+    o = (Task021cbe60 *)self->owner;
     if (((u32)(id << 4) >> 16) - 1 == 1) {
         s32 c;
         u32 v;
         v = data_0214a424->items[(u16)(id & 0xfff)];
-        c = LFLD(s32, msg, 0xc);
+        c = ((s32)msg->unk_0c);
         {
-            u16 *p = &LFLD(u16, o->unk_54, 0x8a);
+            u16 *p = &o->unk_54->unk_8a;
             *p = v > 1 ? v : 1;
         }
         LFLD(s32, o->unk_54, 0x8c) = c;
         LBIT(o->unk_54, 0xc).b2 = 0;
         LBIT(o->unk_54, 0xc).b1 = 0;
-        LFLD(u16, o->unk_54, 0x88) = 1;
+        o->unk_54->unk_88 = 1;
         LBIT(o->unk_3c, 0xc).b2 = 1;
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
     }
@@ -3475,28 +3463,24 @@ u8 StageFlags_CountEntries(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
-struct Lo02178010 {
-    u8 unk_00[0x8];
-    Task021cbe60 *unk_08;
-};
 
-BOOL func_ov000_02178010(Lo02178010 *self, void *msg) {
-    void *o = self->unk_08; // reused below for the 0x4c window
-    if (msg == NULL || LFLD(u16, msg, 6) == 0xffff) {
+BOOL func_ov000_02178010(UiList *self, UiListItem *msg) {
+    void *o = (Task021cbe60 *)self->owner; // reused below for the 0x4c window
+    if (msg == NULL || msg->id == 0xffff) {
         VObj *p = LFLD(VObj *, o, 0x40);
         func_ov000_0215bb14(p, MsgRes_GetString(data_02149ef8, 0x9d));
         p->vfunc_70();
     } else {
         VObj *p = LFLD(VObj *, o, 0x40);
-        func_0206ecd4(0x100, (u8 *)o + 0x58, LFLD(u16, msg, 6));
+        func_0206ecd4(0x100, (u8 *)o + 0x58, msg->id);
         func_ov000_0215bb14(p, (u8 *)o + 0x58);
         p->vfunc_70();
         if (LFLD(void *, o, 0x48) != NULL) {
-            func_ov000_0215d980(LFLD(void *, o, 0x48), data_0214a424->items[(u16)(LFLD(u16, msg, 6) & 0xfff)], 1);
+            func_ov000_0215d980(LFLD(void *, o, 0x48), data_0214a424->items[(u16)(msg->id & 0xfff)], 1);
         }
         o = LFLD(void *, o, 0x4c);
         if (o != NULL) {
-            func_ov000_0215d980(o, StageFlags_CountEntries(data_0214a424, LFLD(u16, msg, 6)), 1);
+            func_ov000_0215d980(o, StageFlags_CountEntries(data_0214a424, msg->id), 1);
         }
     }
     return TRUE;
@@ -3527,13 +3511,9 @@ void *func_020359d0(void *a, s32 b, s32 c);
 s32 func_02035b90(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
-struct Lo02178100 {
-    u8 unk_00[0x8];
-    void *unk_08;
-};
 
-void func_ov000_02178100(Lo02178100 *self, BOOL add) {
-    func_ov000_02178dcc(self->unk_08, add);
+void func_ov000_02178100(UiList *self, BOOL add) {
+    func_ov000_02178dcc(self->owner, add);
 }
 
 }
@@ -3627,22 +3607,22 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
         o->vfunc_28();
     }
     self->unk_40 = (Lo021cadcc *)o;
-    ((Lo021cadcc *)o)->unk_24 = 0xf8;
-    self->unk_40->unk_20 = 2;
+    ((Lo021cadcc *)o)->width = 0xf8;
+    self->unk_40->rows = 2;
     {
         Lo021cadcc *s = self->unk_40;
-        s->unk_64 = 4;
-        s->unk_66 = 0x95;
-        s->unk_68 = -0x1ccd;
+        s->posX = 4;
+        s->posY = 0x95;
+        s->posZ = -0x1ccd;
     }
     {
         Lo021cadcc *s = self->unk_40;
-        s->unk_58 = 0;
-        s->unk_5c = 0x54;
-        s->unk_60 = -0x1ccd;
+        s->slideX = 0;
+        s->slideY = 0x54;
+        s->slideZ = -0x1ccd;
     }
-    self->unk_40->unk_2c = 1;
-    self->unk_40->unk_48 = 0xb;
+    self->unk_40->slideMode = 1;
+    self->unk_40->color = 0xb;
     self->unk_40->vfunc_08();
     func_ov000_0215bb14(self->unk_40, MsgRes_GetString(g, 0x9d));
     self->unk_40->vfunc_70();
@@ -3654,16 +3634,16 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
         o->vfunc_28();
     }
     self->unk_44 = (Lo021cae48 *)o;
-    ((Lo021cae48 *)o)->unk_64 = 0x86;
-    ((Lo021cae48 *)o)->unk_66 = 0x78;
+    ((Lo021cae48 *)o)->posX = 0x86;
+    ((Lo021cae48 *)o)->posY = 0x78;
     ((Lo021cae48 *)o)->posZ = -0x199a;
     {
         Lo021cae48 *s = self->unk_44;
-        s->unk_58 = 0x100;
-        s->unk_5c = 0;
-        s->unk_60 = -0x199a;
+        s->slideX = 0x100;
+        s->slideY = 0;
+        s->slideZ = -0x199a;
     }
-    self->unk_44->unk_2c = 1;
+    self->unk_44->slideMode = 1;
     func_ov000_0215d980(self->unk_44, data_0214a424->unk_020, 0);
     self->unk_44->vfunc_08();
     o = (VObj *)Heap_Alloc(0x98);
@@ -3677,22 +3657,22 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     ((Lo021cae48 *)o)->unk_84 = 4;
     {
         Lo021cae48 *s = self->unk_48;
-        s->unk_64 = 0x1a;
-        s->unk_66 = 0x78;
+        s->posX = 0x1a;
+        s->posY = 0x78;
         s->posZ = -0x1ccd;
     }
     func_ov000_0215d980(self->unk_48, 0, 0);
-    self->unk_48->unk_2c = 1;
+    self->unk_48->slideMode = 1;
     {
         Lo021cae48 *s = self->unk_48;
-        s->unk_58 = 0x80;
-        s->unk_5c = 0;
-        s->unk_60 = 0;
+        s->slideX = 0x80;
+        s->slideY = 0;
+        s->slideZ = 0;
     }
     self->unk_48->vfunc_08();
     func_ov000_0215d990(self->unk_48, 0x120);
-    self->unk_48->unk_24 = 0x66;
-    self->unk_48->unk_28 = 0x19;
+    self->unk_48->width = 0x66;
+    self->unk_48->height = 0x19;
     o = (VObj *)Heap_Alloc(0x98);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -3704,22 +3684,22 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     ((Lo021cae48 *)o)->unk_84 = 4;
     {
         Lo021cae48 *s = self->unk_4c;
-        s->unk_64 = 0x1a;
-        s->unk_66 = 0x83;
+        s->posX = 0x1a;
+        s->posY = 0x83;
         s->posZ = -0x1ccd;
     }
     func_ov000_0215d980(self->unk_4c, 0, 0);
-    self->unk_4c->unk_2c = 1;
+    self->unk_4c->slideMode = 1;
     {
         Lo021cae48 *s = self->unk_4c;
-        s->unk_58 = 0x80;
-        s->unk_5c = 0;
-        s->unk_60 = 0;
+        s->slideX = 0x80;
+        s->slideY = 0;
+        s->slideZ = 0;
     }
     self->unk_4c->vfunc_08();
     func_ov000_0215d990(self->unk_4c, 0x121);
-    self->unk_4c->unk_24 = 0x66;
-    self->unk_4c->unk_28 = 0;
+    self->unk_4c->width = 0x66;
+    self->unk_4c->height = 0;
     o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -3730,20 +3710,20 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
         o->vfunc_28();
     }
     self->unk_50 = (Lo021cb5a8 *)o;
-    ((Lo021cb5a8 *)o)->unk_0c |= 0x4000000;
-    self->unk_50->unk_2c = 1;
+    ((Lo021cb5a8 *)o)->flags |= 0x4000000;
+    self->unk_50->slideMode = 1;
     {
         Lo021cb5a8 *s = self->unk_50;
-        s->unk_64 = 0;
-        s->unk_66 = 0x11;
+        s->posX = 0;
+        s->posY = 0x11;
         s->posZ = -0x199a;
     }
-    self->unk_50->unk_0c |= 0x20000000;
+    self->unk_50->flags |= 0x20000000;
     {
         Lo021cb5a8 *s = self->unk_50;
-        s->unk_58 = 0x100;
-        s->unk_5c = 0;
-        s->unk_60 = -0x199a;
+        s->slideX = 0x100;
+        s->slideY = 0;
+        s->slideZ = -0x199a;
     }
     self->unk_50->vfunc_f4(1, MsgRes_GetString(g, 0x32));
     self->unk_50->vfunc_f4(2, MsgRes_GetString(g, 0x33));
@@ -3759,11 +3739,11 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     ((Lo021cacd8 *)o)->posX = 0x64;
     ((Lo021cacd8 *)o)->posY = 0x50;
     ((Lo021cacd8 *)o)->posZ = -0x1666;
-    self->unk_54->unk_08 = self;
+    self->unk_54->owner = self;
     LFLD(void *, self->unk_54, 0x90) = (void *)func_ov000_02178100;
     self->unk_54->vfunc_08();
-    self->unk_54->unk_0c |= 2;
-    self->unk_54->unk_0c |= 4;
+    self->unk_54->flags |= 2;
+    self->unk_54->flags |= 4;
     o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -3774,33 +3754,33 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
         o->vfunc_28();
         *(void **)o = data_ov000_021cb2a8;
     }
-    self->unk_3c = (LoBase021caac8_021cb2a8 *)o;
+    self->unk_3c = (UiList021cb4a8 *)o;
     self->unk_3c->vfunc_10(MsgRes_GetString(g, 0x11e));
     self->unk_3c->vfunc_14(MsgRes_GetString(g, 0x11f));
-    self->unk_3c->unk_20 = 4;
-    self->unk_3c->unk_24 = 0xf8;
+    self->unk_3c->rows = 4;
+    self->unk_3c->width = 0xf8;
     {
-        LoBase021caac8_021cb2a8 *s = self->unk_3c;
-        s->unk_64 = 0;
-        s->unk_66 = 0x2c;
+        UiList021cb4a8 *s = self->unk_3c;
+        s->posX = 0;
+        s->posY = 0x2c;
         s->posZ = -0x1ccd;
     }
     {
-        LoBase021caac8_021cb2a8 *s = self->unk_3c;
-        s->unk_58 = 0x100;
-        s->unk_5c = 0;
-        s->unk_60 = -0x1ccd;
+        UiList021cb4a8 *s = self->unk_3c;
+        s->slideX = 0x100;
+        s->slideY = 0;
+        s->slideZ = -0x1ccd;
     }
-    self->unk_3c->unk_2c = 1;
-    self->unk_3c->unk_0c |= 0x400000;
-    self->unk_3c->unk_0c &= ~0x800000;
+    self->unk_3c->slideMode = 1;
+    self->unk_3c->flags |= 0x400000;
+    self->unk_3c->flags &= ~0x800000;
     self->unk_3c->unk_c1 = 5;
     self->unk_3c->unk_c0 = 0x78;
     func_ov000_02157c90(self->unk_3c, MsgRes_GetString(g, 0x9a));
     func_ov000_02157d2c(self->unk_3c, MsgRes_GetString(g, 0x3e));
-    self->unk_3c->unk_84 = (void *)func_ov000_02177f40;
-    self->unk_3c->unk_88 = (void *)func_ov000_02178010;
-    self->unk_3c->unk_08 = self;
+    self->unk_3c->onDecide = (UiItemFn)func_ov000_02177f40;
+    self->unk_3c->onCursor = (UiItemFn)func_ov000_02178010;
+    self->unk_3c->owner = self;
     func_ov000_021546ec(self->unk_3c, data_0208ccc8, "cem3d1icn00", 0xffff);
     for (i = 0; i < 0x53; i++) {
         id = i + 0x2000;
@@ -3851,7 +3831,7 @@ void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
 void func_ov000_02178a5c(Task021cbe60 *self) {
     u16 v;
-    if (self->unk_54->unk_04 != 5) {
+    if (self->unk_54->state != 5) {
         return;
     }
     v = data_02097dc8[9];
@@ -3893,10 +3873,10 @@ void func_ov000_02178b10(Task021cbe60 *self) {
     case 13: {
         bool done;
         self->unk_54->vfunc_1c();
-        if (self->unk_54->unk_04 == 5) {
-            self->unk_3c->unk_0c &= ~4;
+        if (self->unk_54->state == 5) {
+            self->unk_3c->flags &= ~4;
         } else {
-            self->unk_3c->unk_0c |= 4;
+            self->unk_3c->flags |= 4;
         }
         done = true;
         done &= !self->unk_3c->vfunc_1c();
@@ -3990,24 +3970,14 @@ void Task021cbe60_Draw(Task021cbe60 *self) {
 static inline u16 ItemKind(u16 v) { return v >> 12; }
 static inline u16 ItemIdx(u16 v) { return v & 0xfff; }
 
-struct Lo02178dcc {
-    u8 unk_00[0x3c];
-    VObj *unk_3c;
-    u8 unk_40[0x4];
-    void *unk_44;
-    void *unk_48;
-    void *unk_4c;
-    u8 unk_50[0x4];
-    u8 *unk_54;
-};
 
 void func_ov000_02178dcc(void *p, BOOL on) {
-    Lo02178dcc *self = (Lo02178dcc *)p;
+    Task021cbe60 *self = (Task021cbe60 *)p;
     u32 n;
-    if (on && (n = LFLD(u32, self->unk_54, 0x8c) * LFLD(u16, self->unk_54, 0x88)) != 0) {
+    if (on && (n = LFLD(u32, self->unk_54, 0x8c) * self->unk_54->unk_88) != 0) {
         s32 rest;
-        u8 *node;
-        u8 *list;
+        UiListItem *node;
+        UiListItem *list;
         {
             StageFlags *g = data_0214a424;
             if ((g->unk_020 += n) > 99999) {
@@ -4017,36 +3987,36 @@ void func_ov000_02178dcc(void *p, BOOL on) {
         node = NULL;
         func_ov000_0215d980(self->unk_44, data_0214a424->unk_020, 0);
         func_02049a48(data_02097e4c, 0x30, -1, -1, -1);
-        list = LFLD(u8 *, self->unk_3c, 0x98);
+        list = (UiListItem *)((u8 *)self->unk_3c->topItem);
         if (list != NULL) {
-            s32 i = LFLD(s8, self->unk_3c, 0xb1);
+            s32 i = self->unk_3c->cursor;
             while (i-- != 0) {
-                list = LFLD(u8 *, list, 0x2c);
+                list = (UiListItem *)((u8 *)list->next);
             }
-            node = list;
+            node = (UiListItem *)list;
         }
-        rest = LFLD(u16, self->unk_54, 0x8a) - LFLD(u16, self->unk_54, 0x88);
-        if (ItemKind(LFLD(u16, node, 6)) - 1 == 1) {
+        rest = self->unk_54->unk_8a - self->unk_54->unk_88;
+        if (ItemKind(node->id) - 1 == 1) {
             s32 c = rest;
             if (c < 0) {
                 c = 0;
             }
-            func_0206f3f0(LFLD(u16, node, 6), c);
+            func_0206f3f0(node->id, c);
             func_0206d02c(data_0214a424);
         }
         if (self->unk_48 != NULL) {
-            func_ov000_0215d980(self->unk_48, data_0214a424->items[ItemIdx(LFLD(u16, node, 6))], 1);
+            func_ov000_0215d980(self->unk_48, data_0214a424->items[ItemIdx(node->id)], 1);
         }
         if (self->unk_4c != NULL) {
-            func_ov000_0215d980(self->unk_4c, StageFlags_CountEntries(data_0214a424, LFLD(u16, node, 6)), 1);
+            func_ov000_0215d980(self->unk_4c, StageFlags_CountEntries(data_0214a424, node->id), 1);
         }
         if (rest <= 0) {
             self->unk_3c->vfunc_70(node);
         }
     }
-    LFLD(u32, self->unk_54, 0xc) |= 4;
-    LFLD(u32, self->unk_54, 0xc) |= 2;
-    LFLD(u32, self->unk_3c, 0xc) &= ~4;
+    self->unk_54->flags |= 4;
+    self->unk_54->flags |= 2;
+    self->unk_3c->flags &= ~4;
 }
 
 }
@@ -4145,7 +4115,7 @@ void MI_CpuFill8(void *dst, u8 val, u32 size);
 void Task021cbde0_Start(Task021cbde0 *self) {
     VObj *p;
     void *g;
-    u8 *s;
+    UiObj *s;
     self->unk_04 &= ~2;
     if (((VObj *)self)->vfunc_28()) {
         return;
@@ -4163,18 +4133,18 @@ void Task021cbde0_Start(Task021cbde0 *self) {
         p->vfunc_28();
     }
     self->unk_40 = (Lo021cb5a8 *)p;
-    ((Lo021cb5a8 *)p)->unk_0c |= 0x4000000;
-    self->unk_40->unk_2c = 1;
-    s = (u8 *)self->unk_40;
-    LFLD(s32, s, 0x58) = 0x100;
-    LFLD(s32, s, 0x5c) = 0;
-    LFLD(s32, s, 0x60) = 0;
-    s = (u8 *)self->unk_40;
-    LFLD(s16, s, 0x64) = 0;
-    LFLD(s16, s, 0x66) = 0x11;
-    LFLD(s16, s, 0x68) = -0x1ccd;
-    self->unk_40->unk_0c |= 0x20000000;
-    self->unk_40->unk_0c |= 0x80000000;
+    ((Lo021cb5a8 *)p)->flags |= 0x4000000;
+    self->unk_40->slideMode = 1;
+    s = (UiObj *)self->unk_40;
+    s->slideX = 0x100;
+    s->slideY = 0;
+    s->slideZ = 0;
+    s = (UiObj *)self->unk_40;
+    s->posX = 0;
+    s->posY = 0x11;
+    s->posZ = -0x1ccd;
+    self->unk_40->flags |= 0x20000000;
+    self->unk_40->flags |= 0x80000000;
     self->unk_40->vfunc_f4(1, MsgRes_GetString(g, 0x34));
     self->unk_40->vfunc_f4(2, MsgRes_GetString(g, 0x33));
     self->unk_40->vfunc_08();
@@ -4185,16 +4155,16 @@ void Task021cbde0_Start(Task021cbde0 *self) {
         VOBJ_SET_VTABLE(p, data_ov000_021ccbe0);
         func_ov000_021c3af4(p);
     }
-    self->unk_44 = p;
+    self->unk_44 = (LoBase021ccb54_021ccbe0 *)p;
     self->unk_44->vfunc_10(MsgRes_GetString(g, 0x118));
     self->unk_44->vfunc_14(MsgRes_GetString(g, 0x119));
-    LFLD(void *, self->unk_44, 0x8) = self;
-    LFLD(s32, self->unk_44, 0x20) = 7;
-    LFLD(s32, self->unk_44, 0x24) = 0xf9;
-    s = (u8 *)self->unk_44;
-    LFLD(s16, s, 0x64) = 4;
-    LFLD(s16, s, 0x66) = 0x23;
-    LFLD(s16, s, 0x68) = -0x1ccd;
+    self->unk_44->owner = self;
+    self->unk_44->rows = 7;
+    self->unk_44->width = 0xf9;
+    s = (UiObj *)self->unk_44;
+    s->posX = 4;
+    s->posY = 0x23;
+    s->posZ = -0x1ccd;
     LFLD(void *, self->unk_44, 0xe4) = (void *)func_ov000_02179910;
     {
         u8 *base = LFLD(u8 *, data_02fe152c, 0x4c);
@@ -4407,10 +4377,10 @@ void func_ov000_02179684(Task021cbde0 *self) {
             if (!self->unk_50->vfunc_8c()) {
                 HEAP_DELETE_VOBJ(self->unk_50);
                 if (self->unk_40 != NULL) {
-                    self->unk_40->unk_0c &= ~2;
+                    self->unk_40->flags &= ~2;
                 }
                 if (self->unk_44 != NULL) {
-                    LFLD(u32, self->unk_44, 0xc) &= ~2;
+                    self->unk_44->flags &= ~2;
                 }
                 self->unk_48 = 0;
             }
@@ -4418,7 +4388,7 @@ void func_ov000_02179684(Task021cbde0 *self) {
         }
     }
     if (self->unk_44 != NULL) {
-        LFLD(u32, self->unk_44, 0xc) |= 4;
+        self->unk_44->flags |= 4;
     }
 }
 }
@@ -4459,13 +4429,9 @@ void Task021cbde0_Draw(Task021cbde0 *self) {
     }
 }
 
-struct Lo02179910 {
-    u8 unk_00[0x8];
-    Task021cbde0 *unk_08;
-};
 
-BOOL func_ov000_02179910(Lo02179910 *self, void *msg) {
-    Task021cbde0 *o = self->unk_08;
+BOOL func_ov000_02179910(UiList *self, UiListItem *msg) {
+    Task021cbde0 *o = (Task021cbde0 *)self->owner;
     if (msg == NULL) {
         return FALSE;
     }
@@ -4590,22 +4556,22 @@ void Task021cbd60_Start(Task021cbd60 *self) {
         o->vfunc_28();
     }
     self->unk_44 = (Lo021cb5a8 *)o;
-    ((Lo021cb5a8 *)o)->unk_0c |= 0x4000000;
-    self->unk_44->unk_2c = 1;
+    ((Lo021cb5a8 *)o)->flags |= 0x4000000;
+    self->unk_44->slideMode = 1;
     {
         Lo021cb5a8 *s = self->unk_44;
-        s->unk_58 = 0x100;
-        s->unk_5c = 0;
-        s->unk_60 = 0;
+        s->slideX = 0x100;
+        s->slideY = 0;
+        s->slideZ = 0;
     }
     {
         Lo021cb5a8 *s = self->unk_44;
-        s->unk_64 = 0;
-        s->unk_66 = 0;
+        s->posX = 0;
+        s->posY = 0;
         s->posZ = -0x1ccd;
     }
-    self->unk_44->unk_0c |= 0x20000000;
-    self->unk_44->unk_0c |= 0x80000000;
+    self->unk_44->flags |= 0x20000000;
+    self->unk_44->flags |= 0x80000000;
     self->unk_44->vfunc_f4(2, MsgRes_GetString(g, 0x33));
     self->unk_44->vfunc_08();
     o = (VObj *)Heap_Alloc(0x8c);
@@ -4617,35 +4583,35 @@ void Task021cbd60_Start(Task021cbd60 *self) {
     }
     self->unk_40 = (Lo021cadcc *)o;
     ((Lo021cadcc *)o)->unk_88 = 0xe;
-    self->unk_40->unk_24 = 0xf8;
-    self->unk_40->unk_20 = 6;
+    self->unk_40->width = 0xf8;
+    self->unk_40->rows = 6;
     {
         Lo021cadcc *s = self->unk_40;
-        s->unk_64 = 4;
-        s->unk_66 = 0x2e;
-        s->unk_68 = -0x1ccd;
+        s->posX = 4;
+        s->posY = 0x2e;
+        s->posZ = -0x1ccd;
     }
-    self->unk_40->unk_48 = 0;
-    self->unk_40->unk_0c |= 0x10;
-    self->unk_40->unk_2c = 1;
+    self->unk_40->color = 0;
+    self->unk_40->flags |= 0x10;
+    self->unk_40->slideMode = 1;
     {
         Lo021cadcc *s = self->unk_40;
-        s->unk_58 = 0x100;
-        s->unk_5c = 0;
-        s->unk_60 = 0;
+        s->slideX = 0x100;
+        s->slideY = 0;
+        s->slideZ = 0;
     }
     self->unk_40->vfunc_10(MsgRes_GetString(g, 0xc2));
     self->unk_40->vfunc_14(MsgRes_GetString(g, 0xc3));
     self->unk_40->vfunc_08();
-    self->unk_40->unk_0c |= 0x80000;
+    self->unk_40->flags |= 0x80000;
     n = data_0214a424->unk_518_8;
     if (n != 0) {
         func_ov000_0215bb14(self->unk_40, MsgRes_GetString(self->unk_3c, (u16)(n - 1)));
     }
     {
         Lo021cadcc *s = self->unk_40;
-        s->unk_6c = data_ov000_021c9c46;
-        s->unk_70 = 6;
+        s->shape = (VecFx16 *)data_ov000_021c9c46;
+        s->shapeCount = 6;
     }
     func_ov000_02173648(self);
 }
@@ -5003,29 +4969,29 @@ void func_ov000_0217a328(Task021cbc60 *self, s32 a, s32 b) {
             VOBJ_SET_VTABLE(o, data_ov000_021cad50);
             o->vfunc_28();
         }
-        self->unk_48 = o;
+        self->unk_48 = (Lo021cad50 *)o;
     }
     if (a == 0x79 || b == 0x77) {
-        LFLD(u32, self->unk_48, 0xc) |= 0x10000;
+        self->unk_48->flags |= 0x10000;
     } else {
-        LFLD(u32, self->unk_48, 0xc) &= ~0x10000;
+        self->unk_48->flags &= ~0x10000;
     }
     if (self->param != 1) {
-        LFLD(u16, self->unk_48, 0x48) = 0x2803;
+        self->unk_48->color = 0x2803;
     } else {
         VObj *o = self->unk_48;
         LFLD(u32, o, 0xc) |= 8;
         LFLD(u16, o, 0x48) = 0x14a5;
         LFLD(s32, o, 0x54) = 0x1c;
     }
-    LFLD(s32, self->unk_48, 0x1c) = 4;
+    self->unk_48->font = 4;
     self->unk_48->vfunc_08();
     if (b != -1) {
         func_ov000_0215c1bc(self->unk_48, 0x8000, MsgRes_GetString(data_02149ef8, b));
     } else {
         func_ov000_0215ce8c(self->unk_48, a);
     }
-    LFLD(s16, self->unk_48, 0x68) = -0x1ccd;
+    self->unk_48->posZ = -0x1ccd;
     self->unk_48->vfunc_70();
 }
 }
@@ -5087,7 +5053,7 @@ void func_ov000_0217a480(Task021cbc60 *self) {
             if (self->unk_48 != NULL) {
                 return;
             }
-            LFLD(void *, LoSwitchTaskC(3, 0), 0x30) = (void *)func_ov000_0217a034;
+            LoSwitchTaskC(3, 0)->callback = (TaskCallback)func_ov000_0217a034;
             ((VObj *)self)->vfunc_48();
             self->unk_3c = 1;
         } else if (self->param == 1) {
@@ -5141,7 +5107,7 @@ void func_ov000_0217a480(Task021cbc60 *self) {
             if (self->unk_40 <= 0x3c) {
                 return;
             }
-            LFLD(u32, self->unk_48, 0xc) |= 0x40000;
+            self->unk_48->flags |= 0x40000;
             self->unk_3c = 4;
         } else {
             if (!IsB2_0217a480(self->unk_44)) {
@@ -5398,17 +5364,6 @@ static inline void ModelInit(u8 *m, void *s, void *nm) {
     STD_CopyString(m + 0x2c, s);
 }
 
-class Model {
-public:
-    u8 data[0x160];
-    static void *operator new(unsigned long size) { return Heap_Alloc(size); }
-    Model(void *nm, void *s) {
-        func_02041218((struct PlttRes *)(data + 0x88));
-        func_02041440(data, nm, 0);
-        STD_CopyString(data + 0x2c, s);
-    }
-};
-
 void Task021cbb60_Start(Task021cbb60 *self) {
     u8 *m;
     VObj *o;
@@ -5429,16 +5384,16 @@ void Task021cbb60_Start(Task021cbb60 *self) {
     if (m) {
         ModelInit(m, data_0208cc9c, data_0208cb78);
     }
-    self->unk_a0 = m;
+    self->unk_a0 = (Model *)m;
     func_020417e0((u8 *)self->unk_a0, func_02034d88(func_02035d5c(m + 0x2c), (u8 *)self->unk_a0 + 0x4c));
-    LFLD(u32, self->unk_a0, 0x6c) |= 2;
+    self->unk_a0->flags |= 2;
     func_02041d9c((u8 *)self->unk_a0, 0, 1);
     func_02041d9c((u8 *)self->unk_a0, 0, 2);
     func_02041d9c((u8 *)self->unk_a0, 0, 3);
     func_02041d9c((u8 *)self->unk_a0, 0, 4);
-    LFLD(u32, self->unk_a0, 0x6c) |= 0x200000;
-    LFLD(u32, self->unk_a0, 0x6c) |= 0x80000;
-    LFLD(u32, self->unk_a0, 0x6c) = (LFLD(u32, self->unk_a0, 0x6c) & ~0x7c) | 0x78;
+    self->unk_a0->flags |= 0x200000;
+    self->unk_a0->flags |= 0x80000;
+    self->unk_a0->flags = (self->unk_a0->flags & ~0x7c) | 0x78;
     func_ov000_02173648(self);
     self->unk_04 |= 0x10000;
     if (self->unk_44 != 7) {
@@ -6096,7 +6051,7 @@ void func_ov000_0217c008(Task021cbb60 *self) {
         switch (self->unk_50) {
         case 0:
             self->unk_54 = 0;
-            LFLD(void *, LoSwitchTask(3), 0x30) = (void *)func_ov000_0217a8f4;
+            LoSwitchTask(3)->callback = (TaskCallback)func_ov000_0217a8f4;
             ((VObj *)self)->vfunc_48();
             self->unk_50 = 1;
             break;
@@ -6186,7 +6141,7 @@ void func_ov000_0217c3b0(Task021cbb60 *self) {
             return;
         }
         self->unk_54 = 1;
-        LFLD(void *, LoSwitchTask(3), 0x30) = (void *)func_ov000_0217a8f4;
+        LoSwitchTask(3)->callback = (TaskCallback)func_ov000_0217a8f4;
         ((VObj *)self)->vfunc_48();
         self->unk_50 = 3;
         break;
@@ -6232,7 +6187,7 @@ void func_ov000_0217c5a8(Task021cbb60 *self) {
             return;
         }
         self->unk_54 = 1;
-        LFLD(void *, LoSwitchTask(3), 0x30) = (void *)func_ov000_0217a8f4;
+        LoSwitchTask(3)->callback = (TaskCallback)func_ov000_0217a8f4;
         ((VObj *)self)->vfunc_48();
         self->unk_50 = 3;
         break;
@@ -6295,7 +6250,7 @@ void func_ov000_0217c7b8(Task021cbb60 *self) {
             return;
         }
         self->unk_54 = 1;
-        LFLD(void *, LoSwitchTask(3), 0x30) = (void *)func_ov000_0217a8f4;
+        LoSwitchTask(3)->callback = (TaskCallback)func_ov000_0217a8f4;
         ((VObj *)self)->vfunc_48();
         self->unk_50 = 2;
         break;
@@ -6317,7 +6272,7 @@ void func_ov000_0217c7b8(Task021cbb60 *self) {
         break;
     case 3:
         self->unk_54 = 0x10001;
-        LFLD(void *, LoSwitchTask(3), 0x30) = (void *)func_ov000_0217a8f4;
+        LoSwitchTask(3)->callback = (TaskCallback)func_ov000_0217a8f4;
         ((VObj *)self)->vfunc_48();
         self->unk_50 = 4;
         break;
@@ -7243,7 +7198,7 @@ void func_ov000_0217df5c(Task021cbb60 *self, VecFx32 *pos) {
     LFLD(LoMdlFlags0217df5c, self->unk_a0, 0x6c).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
     LFLD(LoMdlFlags0217df5c, self->unk_a0, 0x6c).f2 = 0x1c;
     LoSetPosV0217df5c(self->unk_a0, pos);
-    LFLD(s32, self->unk_a0, 0x150) = -0x1ccd;
+    self->unk_a0->unk_150 = -0x1ccd;
     LoModelPlayPart(self->unk_a0, 1);
     if (self->unk_71 != 0) {
         v.x = pos->x - 0x6f000;
@@ -7252,11 +7207,11 @@ void func_ov000_0217df5c(Task021cbb60 *self, VecFx32 *pos) {
         LFLD(LoMdlFlags0217df5c, self->unk_a0, 0x6c).b19 = 0;
         LFLD(LoMdlFlags0217df5c, self->unk_a0, 0x6c).f2 = 0x1f;
         for (i = 0; i < 3; i++) {
-            LFLD(s32, self->unk_a0, 0x150) = -0x1c8d;
+            self->unk_a0->unk_150 = -0x1c8d;
             LoSetPosV0217df5c(self->unk_a0, &v);
             LoModelPlayPart(self->unk_a0, 2);
             if (i < self->unk_71) {
-                LFLD(s32, self->unk_a0, 0x150) = -0x1c4d;
+                self->unk_a0->unk_150 = -0x1c4d;
                 LoSetPosV0217df5c(self->unk_a0, &v);
                 LoModelPlayPart(self->unk_a0, 3);
             }
@@ -7474,7 +7429,7 @@ void func_ov000_0217e560(Task021cbb60 *self, s32 *pos) {
         LFLD(LoMdlFlags0217e560, self->unk_a0, 0x6c).f2 = (u8)a;
         LoSetPosFx0217e560(self->unk_a0, (lx - 0x80) << 12, py);
     }
-    LFLD(s32, self->unk_a0, 0x150) = -0x1c8d;
+    self->unk_a0->unk_150 = -0x1c8d;
     LoModelPlayPart(self->unk_a0, 4);
 }
 
@@ -7827,7 +7782,7 @@ void func_ov000_0217ef3c(Task021cbae0 *self) {
     switch (self->unk_3c) {
     case 0:
         if (func_02059454(data_02fe152c, 5, 1, 3)) {
-            LFLD(void *, LoSwitchTaskC(3, 0), 0x30) = (void *)func_ov000_0217ea30;
+            LoSwitchTaskC(3, 0)->callback = (TaskCallback)func_ov000_0217ea30;
             self->vfunc_48();
             self->unk_3c = 1;
         } else {
@@ -8080,14 +8035,10 @@ VObj *Task021cbf60_New(void) {
     return obj;
 }
 
-struct Lo0217f958 {
-    u8 unk_00[0x8];
-    Task021cbf60 *unk_08;
-};
 
-BOOL func_ov000_0217f958(Lo0217f958 *self, void *msg) {
+BOOL func_ov000_0217f958(UiList *self, UiListItem *msg) {
     if (msg != NULL) {
-        Task021cbf60 *o = self->unk_08;
+        Task021cbf60 *o = (Task021cbf60 *)self->owner;
         VObj *p;
         LBIT(o->unk_3c, 0xc).b2 = 1;
         LBIT(o->unk_44, 0xc).b1 = 0;
@@ -8099,15 +8050,11 @@ BOOL func_ov000_0217f958(Lo0217f958 *self, void *msg) {
     return TRUE;
 }
 
-struct Lo0217f9e8 {
-    u8 unk_00[0x8];
-    Task021cbf60 *unk_08;
-};
 
-BOOL func_ov000_0217f9e8(Lo0217f9e8 *self, void *msg) {
+BOOL func_ov000_0217f9e8(UiList *self, UiListItem *msg) {
     if (msg != NULL) {
-        Task021cbf60 *o = self->unk_08;
-        func_0206ecd4(0x100, o->unk_5f, LFLD(u16, msg, 6));
+        Task021cbf60 *o = (Task021cbf60 *)self->owner;
+        func_0206ecd4(0x100, o->unk_5f, msg->id);
         if (o->unk_40 != NULL) {
             func_ov000_0215bb14(o->unk_40, o->unk_5f);
             o->unk_40->vfunc_70();
@@ -8116,27 +8063,23 @@ BOOL func_ov000_0217f9e8(Lo0217f9e8 *self, void *msg) {
     return TRUE;
 }
 
-struct Lo0217fa34 {
-    u8 unk_00[0x8];
-    Task021cbf60 *unk_08;
-};
 
-BOOL func_ov000_0217fa34(Lo0217fa34 *self, void *msg) {
-    Task021cbf60 *o = self->unk_08;
+BOOL func_ov000_0217fa34(UiList *self, UiListItem *msg) {
+    Task021cbf60 *o = (Task021cbf60 *)self->owner;
     if (msg != NULL) {
-        if (LFLD(u16, msg, 6) == 0) {
-            void *a = o->unk_3c;
-            void *n = LFLD(void *, a, 0x98);
+        if (msg->id == 0) {
+            UiList *a = o->unk_3c;
+            UiListItem *n = (UiListItem *)((void *)a->topItem);
             if (n == NULL) {
                 n = NULL;
             } else {
-                s32 c = LFLD(s8, a, 0xb1);
+                s32 c = a->cursor;
                 while (c-- != 0) {
-                    n = LFLD(void *, n, 0x2c);
+                    n = (UiListItem *)((void *)n->next);
                 }
             }
-            if (LFLD(u16, n, 6) != o->unk_5c) {
-                func_0206f21c(LFLD(u16, n, 6), 0);
+            if (n->id != o->unk_5c) {
+                func_0206f21c(n->id, 0);
                 if (o->unk_5c != 0) {
                     func_0206f21c(o->unk_5c, 1);
                 }
@@ -8278,24 +8221,24 @@ void Task021cbf60_Start(Task021cbf60 *self) {
         o->vfunc_28();
         *(void **)o = data_ov000_021cb2a8;
     }
-    self->unk_3c = (LoBase021caac8_021cb2a8 *)o;
+    self->unk_3c = (UiList021cb4a8 *)o;
     self->unk_3c->vfunc_10(MsgRes_GetString(g, 0x11a));
     self->unk_3c->vfunc_14(MsgRes_GetString(g, 0x11b));
-    self->unk_3c->unk_20 = 5;
+    self->unk_3c->rows = 5;
     {
-        LoBase021caac8_021cb2a8 *s = self->unk_3c;
-        s->unk_64 = 0;
-        s->unk_66 = 0x2c;
+        UiList021cb4a8 *s = self->unk_3c;
+        s->posX = 0;
+        s->posY = 0x2c;
         s->posZ = -0xccd;
     }
     {
-        LoBase021caac8_021cb2a8 *s = self->unk_3c;
-        s->unk_58 = -0x100;
-        s->unk_5c = 0;
-        s->unk_60 = -0xccd;
+        UiList021cb4a8 *s = self->unk_3c;
+        s->slideX = -0x100;
+        s->slideY = 0;
+        s->slideZ = -0xccd;
     }
-    self->unk_3c->unk_0c |= 0x400000;
-    self->unk_3c->unk_0c |= 0x800000;
+    self->unk_3c->flags |= 0x400000;
+    self->unk_3c->flags |= 0x800000;
     self->unk_3c->unk_c0 = 0x80;
     self->unk_3c->unk_c1 = 3;
     func_ov000_021547e8(self->unk_3c, data_0214b105, data_0208cb7c, 0xb);
@@ -8325,15 +8268,15 @@ void Task021cbf60_Start(Task021cbf60 *self) {
             }
         }
     }
-    self->unk_3c->unk_08 = self;
-    self->unk_3c->unk_84 = (void *)func_ov000_0217f958;
-    self->unk_3c->unk_88 = (void *)func_ov000_0217f9e8;
+    self->unk_3c->owner = self;
+    self->unk_3c->onDecide = (UiItemFn)func_ov000_0217f958;
+    self->unk_3c->onCursor = (UiItemFn)func_ov000_0217f9e8;
     {
         VObj *t = self->unk_3c;
         t->vfunc_a8(func_ov000_02154b58(t, 0));
     }
     self->unk_3c->vfunc_08();
-    self->unk_3c->unk_0c &= ~2;
+    self->unk_3c->flags &= ~2;
     o = (VObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -8342,21 +8285,21 @@ void Task021cbf60_Start(Task021cbf60 *self) {
         o->vfunc_28();
     }
     self->unk_40 = (Lo021cadcc *)o;
-    ((Lo021cadcc *)o)->unk_20 = 2;
-    self->unk_40->unk_24 = 0xf8;
+    ((Lo021cadcc *)o)->rows = 2;
+    self->unk_40->width = 0xf8;
     {
         Lo021cadcc *s = self->unk_40;
-        s->unk_64 = 4;
-        s->unk_66 = 0x96;
-        s->unk_68 = -0xccd;
+        s->posX = 4;
+        s->posY = 0x96;
+        s->posZ = -0xccd;
     }
     {
         Lo021cadcc *s = self->unk_40;
-        s->unk_58 = -0x100;
-        s->unk_5c = 0;
-        s->unk_60 = -0xccd;
+        s->slideX = -0x100;
+        s->slideY = 0;
+        s->slideZ = -0xccd;
     }
-    self->unk_40->unk_2c = 1;
+    self->unk_40->slideMode = 1;
     func_ov000_0215bb14(self->unk_40, MsgRes_GetString(g, 0x11d));
     self->unk_40->vfunc_70();
     self->unk_40->vfunc_08();
@@ -8377,10 +8320,10 @@ void Task021cbf60_Start(Task021cbf60 *self) {
     self->unk_44->vfunc_10(MsgRes_GetString(g, 0x11c));
     self->unk_44->posZ = -0x666;
     self->unk_44->vfunc_08();
-    self->unk_44->unk_08 = self;
-    self->unk_44->unk_84 = (void *)func_ov000_0217fa34;
-    self->unk_44->unk_0c |= 2;
-    self->unk_44->unk_0c |= 4;
+    self->unk_44->owner = self;
+    self->unk_44->onDecide = (UiItemFn)func_ov000_0217fa34;
+    self->unk_44->flags |= 2;
+    self->unk_44->flags |= 4;
     o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -8391,21 +8334,21 @@ void Task021cbf60_Start(Task021cbf60 *self) {
         o->vfunc_28();
     }
     self->unk_48 = (Lo021cb5a8 *)o;
-    ((Lo021cb5a8 *)o)->unk_0c |= 0x4000000;
-    self->unk_48->unk_2c = 1;
+    ((Lo021cb5a8 *)o)->flags |= 0x4000000;
+    self->unk_48->slideMode = 1;
     {
         Lo021cb5a8 *s = self->unk_48;
-        s->unk_64 = 0xa5;
-        s->unk_66 = 0x12;
+        s->posX = 0xa5;
+        s->posY = 0x12;
         s->posZ = -0x99a;
     }
     {
         Lo021cb5a8 *s = self->unk_48;
-        s->unk_58 = 0x100;
-        s->unk_5c = 0;
-        s->unk_60 = -0x99a;
+        s->slideX = 0x100;
+        s->slideY = 0;
+        s->slideZ = -0x99a;
     }
-    self->unk_48->unk_0c |= 0x20000000;
+    self->unk_48->flags |= 0x20000000;
     self->unk_48->vfunc_f4(1, MsgRes_GetString(g, 0x32));
     self->unk_48->vfunc_08();
     func_ov000_02173648(self);
@@ -8449,10 +8392,10 @@ void func_ov000_02180350(Task021cbf60 *self) {
         }
     }
     if (!ok) {
-        self->unk_3c->unk_0c |= 4;
+        self->unk_3c->flags |= 4;
         return;
     }
-    self->unk_3c->unk_0c &= ~4;
+    self->unk_3c->flags &= ~4;
     if (self->unk_5e != 0) {
         return;
     }
@@ -8527,16 +8470,16 @@ void func_ov000_02180524(Task021cbf60 *self) {
     p = self->unk_44;
     ok = 0;
     if (LBIT(p, 0xc).b1 ? 1 : 0) {
-        if (p->unk_04 == 5 ? 1 : 0) {
+        if (p->state == 5 ? 1 : 0) {
             ok = 1;
         }
     }
     if (ok == 0) {
         return;
     }
-    self->unk_3c->unk_0c |= 2;
-    self->unk_40->unk_0c |= 2;
-    self->unk_48->unk_0c |= 2;
+    self->unk_3c->flags |= 2;
+    self->unk_40->flags |= 2;
+    self->unk_48->flags |= 2;
 }
 
 }

@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 extern void *data_0208cb84;
@@ -69,40 +70,40 @@ public:
 
 void func_ov000_0215e8b0(Panel0215429c *p);
 
-static inline BOOL LoadModel0215429c(LoBase021caec8_021efca4 *self) {
-    if (self->unk_10 != NULL) {
+static inline BOOL LoadModel0215429c(UiList *self) {
+    if (self->model != NULL) {
         return TRUE;
     }
     if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
-        self->unk_10 = (u8 *)(new Model0215429c(data_0208cb84, data_0208cc8c));
+        self->model = (Model *)(new Model0215429c(data_0208cb84, data_0208cc8c));
     } else {
-        self->unk_10 = (u8 *)(new Model0215429c(data_0208cb74, data_0208cca0));
+        self->model = (Model *)(new Model0215429c(data_0208cb74, data_0208cca0));
     }
     {
-        void *a = func_02035d5c(self->unk_10 + 0x2c);
-        func_020417e0(self->unk_10, func_02034d88(a, self->unk_10 + 0x4c));
+        void *a = func_02035d5c(((u8 *)self->model) + 0x2c);
+        func_020417e0(((u8 *)self->model), func_02034d88(a, ((u8 *)self->model) + 0x4c));
     }
-    LFLD(u32, self->unk_10, 0x6c) |= 2;
-    func_02041d9c(self->unk_10, 0, 7);
+    LFLD(u32, self->model, 0x6c) |= 2;
+    func_02041d9c(((u8 *)self->model), 0, 7);
     return TRUE;
 }
 
-void func_ov000_0215429c(LoBase021caec8_021efca4 *self) {
-    if (!(self->unk_0c & 0x20000)) {
-        self->unk_20 = self->unk_9c;
+void func_ov000_0215429c(UiList *self) {
+    if (!(self->flags & 0x20000)) {
+        self->rows = self->itemCount;
     }
-    self->unk_28 = self->vfunc_44();
+    self->height = self->vfunc_44();
     if (LoadModel0215429c(self)) {
-        if (self->unk_0c & 0x40000) {
-            func_02041d9c(self->unk_10, 0, 2);
-            func_02041d9c(self->unk_10, 0, 10);
-            func_02041d9c(self->unk_10, 0, 6);
+        if (self->flags & 0x40000) {
+            func_02041d9c(((u8 *)self->model), 0, 2);
+            func_02041d9c(((u8 *)self->model), 0, 10);
+            func_02041d9c(((u8 *)self->model), 0, 6);
         }
-        func_02041c5c(self->unk_10, (void *)func_ov000_021540b0);
-        func_02041c20(self->unk_10, 2, self);
-        func_02041c20(self->unk_10, 6, self);
+        func_02041c5c(((u8 *)self->model), (void *)func_ov000_021540b0);
+        func_02041c20(((u8 *)self->model), 2, self);
+        func_02041c20(((u8 *)self->model), 6, self);
     }
-    if (self->unk_0c & 0x400000) {
+    if (self->flags & 0x400000) {
         Model0215429c *m = (Model0215429c *)Heap_Alloc(0x160);
         if (m) {
             void *arc;
@@ -113,36 +114,36 @@ void func_ov000_0215429c(LoBase021caec8_021efca4 *self) {
             func_02041440(m->data, name, 0);
             STD_CopyString(m->data + 0x2c, arc);
         }
-        self->unk_b4 = (u8 *)(m);
+        self->unk_b4 = (Model *)(m);
         {
             void *a = func_02035d5c(m->data + 0x2c);
-            func_020417e0(self->unk_b4, func_02034d88(a, self->unk_b4 + 0x4c));
+            func_020417e0(((u8 *)self->unk_b4), func_02034d88(a, ((u8 *)self->unk_b4) + 0x4c));
         }
         LFLD(u32, self->unk_b4, 0x6c) |= 2;
-        func_02041d9c(self->unk_b4, 0, 6);
-        func_02041c20(self->unk_b4, 6, self);
-        if (self->unk_0c & 0x800000) {
-            func_02041d9c(self->unk_b4, 0, 7);
+        func_02041d9c(((u8 *)self->unk_b4), 0, 6);
+        func_02041c20(((u8 *)self->unk_b4), 6, self);
+        if (self->flags & 0x800000) {
+            func_02041d9c(((u8 *)self->unk_b4), 0, 7);
         }
-        func_02041c5c(self->unk_b4, (void *)func_ov000_02154128);
+        func_02041c5c(((u8 *)self->unk_b4), (void *)func_ov000_02154128);
     }
-    if ((Panel0215429c *)self->unk_ac == NULL) {
-        self->unk_ac = new Panel0215429c();
+    if ((Panel0215429c *)self->panel == NULL) {
+        self->panel = (UiPanel *)new Panel0215429c();
         if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
-            ((Panel0215429c *)self->unk_ac)->flags.b4 = 1;
+            ((Panel0215429c *)self->panel)->flags.b4 = 1;
         }
-        func_ov000_0215e8b0((Panel0215429c *)self->unk_ac);
-        if (self->unk_0c & 0x1000000) {
-            ((Panel0215429c *)self->unk_ac)->unk_10 = (self->unk_24 + 0x10) << 12;
-            ((Panel0215429c *)self->unk_ac)->flags.b0 = 1;
+        func_ov000_0215e8b0((Panel0215429c *)self->panel);
+        if (self->flags & 0x1000000) {
+            ((Panel0215429c *)self->panel)->unk_10 = (self->width + 0x10) << 12;
+            ((Panel0215429c *)self->panel)->flags.b0 = 1;
         } else {
-            ((Panel0215429c *)self->unk_ac)->unk_10 = (self->unk_24 + 0x10) << 12;
+            ((Panel0215429c *)self->panel)->unk_10 = (self->width + 0x10) << 12;
         }
     }
-    self->unk_2c = 1;
-    self->unk_5c = 0;
-    self->unk_60 = 0;
-    self->unk_58 = -(self->unk_24 + 0x10);
+    self->slideMode = 1;
+    self->slideY = 0;
+    self->slideZ = 0;
+    self->slideX = -(self->width + 0x10);
     LBIT(self, 0xc).b0 = 1;
     self->vfunc_48(0, 0);
 }

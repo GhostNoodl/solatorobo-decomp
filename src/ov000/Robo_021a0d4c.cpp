@@ -221,10 +221,10 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
     if (self->unk_b24_5 != 0 && !self->unk_b22_3) {
         u8 *o = Target021a0d4c(self);
         if (o != NULL) {
-            u8 *p = LFLD(u8 *, o, 0x4c);
+            ActorSub4c *p = (ActorSub4c *)LFLD(u8 *, o, 0x4c);
             u16 v = 0;
             if (p != NULL) {
-                v = LFLD(u16, p, 0x1e);
+                v = p->unk_1e;
             }
             if (v != 0) {
                 Gauge021a0d4c(v);
@@ -236,12 +236,12 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
     }
     if (self->unk_b24_12 == 3) {
         Actor *o = GetObj021a0d4c(self->unk_b20);
-        u8 *p = NULL;
+        ActorSub4c *p = NULL;
         if (o != NULL) {
-            p = ((u8 *)o->targetObj);
+            p = (ActorSub4c *)((u8 *)o->targetObj);
         }
         if (p != NULL) {
-            Gauge021a0d4c(LFLD(u16, p, 0x1e));
+            Gauge021a0d4c(p->unk_1e);
             if (self->unk_b32 == 0) {
                 self->unk_b32++;
             }

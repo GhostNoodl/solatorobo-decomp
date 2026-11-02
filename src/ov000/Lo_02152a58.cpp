@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -21,22 +22,16 @@ static inline BOOL LoResDone(u8 *o) {
     return TRUE;
 }
 
-struct Obj02152a58 {
-    u8 unk_00[0x10];
-    void *unk_10;
-    u8 *unk_14;
-    u8 *unk_18;
-};
 
-BOOL func_ov000_02152a58(Obj02152a58 *self) {
+BOOL func_ov000_02152a58(UiObj *self) {
     BOOL ok = TRUE;
-    if (self->unk_10 && !func_02054f10(self->unk_10, 0xffff)) {
+    if (self->model && !func_02054f10(self->model, 0xffff)) {
         ok = FALSE;
     }
-    if (self->unk_14 && !LoResDone(self->unk_14)) {
+    if (((u8 *)self->title) && !LoResDone(((u8 *)self->title))) {
         ok = FALSE;
     }
-    if (self->unk_18 && !LoResDone(self->unk_18)) {
+    if (((u8 *)self->caption) && !LoResDone(((u8 *)self->caption))) {
         ok = FALSE;
     }
     return ok;

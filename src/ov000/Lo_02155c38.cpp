@@ -1,29 +1,30 @@
 #include "types.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
 
-static inline BOOL Cond1_02155c38(LoBase021caac8_021caec8 *self) {
-    u8 *p = self->unk_98;
+static inline BOOL Cond1_02155c38(UiList *self) {
+    UiListItem *p = (UiListItem *)((u8 *)self->topItem);
     if (p == NULL) {
         return TRUE;
     }
-    return LFLD(s16, p, 4) == 0;
+    return p->index == 0;
 }
 
-static inline BOOL Cond2_02155c38(LoBase021caac8_021caec8 *self) {
-    u8 *p = self->unk_98;
+static inline BOOL Cond2_02155c38(UiList *self) {
+    UiListItem *p = (UiListItem *)((u8 *)self->topItem);
     if (p == NULL) {
         return TRUE;
     }
-    if (LFLD(s16, p, 4) == self->unk_9c - self->unk_20 || self->unk_9c < self->unk_20) {
+    if (p->index == self->itemCount - self->rows || self->itemCount < self->rows) {
         return TRUE;
     }
     return FALSE;
 }
 
-void func_ov000_02155c38(LoBase021caac8_021caec8 *self) {
+void func_ov000_02155c38(UiList *self) {
     if (++self->unk_c4 < 0x18) {
         self->unk_c8 += (s32)(((s64)(0x3000 - self->unk_c8) * (s64)0x148 + 0x800) >> 12);
     } else if (self->unk_c4 < 0x40) {

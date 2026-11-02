@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -8,29 +9,29 @@ static inline s32 LoApproach(s32 cur, s32 target, s32 rate) {
 }
 
 void func_ov000_0215ae80(LoBase021cafc0_021cb0b8 *self) {
-    u8 *o;
+    UiPanel *o;
     s32 n;
-    if (self->unk_04 != 2) {
+    if (self->state != 2) {
         return;
     }
-    self->unk_30 = self->unk_34;
-    self->unk_38 = 0x1000;
+    self->openTime = self->openLen;
+    self->openRatio = 0x1000;
     self->vfunc_c4();
-    o = self->unk_ac;
+    o = (UiPanel *)((u8 *)self->panel);
     if (o == NULL) {
         return;
     }
     if (LBIT(o, 0).b3 != 1) {
         return;
     }
-    n = ++LFLD(s32, o, 0x20);
+    n = ++o->unk_20;
     if (n < 0x12) {
-        LFLD(s32, o, 0x24) = LoApproach(LFLD(s32, o, 0x24), 0x8000, 0x19a);
+        o->unk_24 = LoApproach(o->unk_24, 0x8000, 0x19a);
     } else if (n < 0x30) {
-        LFLD(s32, o, 0x24) = LoApproach(LFLD(s32, o, 0x24), 0, 0xcd);
+        o->unk_24 = LoApproach(o->unk_24, 0, 0xcd);
     } else {
-        LFLD(s32, o, 0x20) = 0;
-        LFLD(s32, o, 0x24) = 0;
+        o->unk_20 = 0;
+        o->unk_24 = 0;
     }
 }
 

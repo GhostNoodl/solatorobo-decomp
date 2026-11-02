@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -14,25 +15,25 @@ typedef BOOL (*LoMsgFn)(void *, void *);
 
 void func_ov000_0215d30c(Lo021cad50 *self) {
     VObj *o;
-    if (self->unk_04 != 2) {
+    if (self->state != 2) {
         return;
     }
-    self->unk_30 = self->unk_34;
-    self->unk_38 = 0x1000;
+    self->openTime = self->openLen;
+    self->openRatio = 0x1000;
     o = self->unk_98;
     if (o) {
-        if (!(self->unk_0c & 0x10000)) {
+        if (!(self->flags & 0x10000)) {
             LFLD(u32, o, 4) |= 0x4000000;
         }
         self->unk_98->vfunc_8c();
         if (!LBIT(self, 0xc).b1) {
-            if (self->unk_98->vfunc_10() || (self->unk_0c & 0x40000)) {
+            if (self->unk_98->vfunc_10() || (self->flags & 0x40000)) {
                 LBIT(self, 0xc).b1 = 1;
             }
         }
     }
     if (LBIT(self, 0xc).b1 == 1) {
-        self->unk_04 = 1;
+        self->state = 1;
     }
 }
 

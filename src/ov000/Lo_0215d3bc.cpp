@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -51,7 +52,7 @@ void func_ov000_0215d3bc(Lo021cad50 *self, void *a, s32 *pos, s32 d) {
     } else {
         self->vfunc_64(a, pos, d);
     }
-    if (self->unk_04 != 2 && d != 0x1000) {
+    if (self->state != 2 && d != 0x1000) {
         return;
     }
     for (i = 0; i < 12; i++) {
@@ -65,7 +66,7 @@ void func_ov000_0215d3bc(Lo021cad50 *self, void *a, s32 *pos, s32 d) {
             ((LoArr98 *)self)->o[i]->vfunc_20(x0, y0);
         }
     }
-    self->unk_0c |= 0x200;
+    self->flags |= 0x200;
 }
 
 }

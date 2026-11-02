@@ -55,7 +55,7 @@ public:
     s32 unk_94;
     s32 unk_98;
     s32 unk_9c;
-    void *unk_a0;
+    Model *unk_a0;
     s32 unk_a4;
     u8 unk_a8[0x10];
     s16 unk_b8;
@@ -70,14 +70,14 @@ SIZE_ASSERT(Task021cbb60, 0xc4);
 class Task021cbbe0 : public Task {
 public:
     s32 unk_3c;
-    LoBase021caac8_021caec8 *unk_40;
+    UiList *unk_40;
     Lo021cb5a8 *unk_44;
-    LoBase021ca94c_021caac8 *unk_48;
+    UiObj *unk_48;
     s32 unk_4c;
     s32 unk_50;
     s32 unk_54;
-    void *unk_58;
-    void *unk_5c;
+    Model *unk_58;
+    Model *unk_5c;
     u8 unk_60[0x44];
     s32 unk_a4;
     u8 unk_a8[0x408];
@@ -90,7 +90,7 @@ public:
     s32 unk_3c;
     s32 unk_40;
     VObj *unk_44;
-    VObj *unk_48;
+    Lo021cad50 *unk_48;
     s32 unk_4c;
 };
 SIZE_ASSERT(Task021cbc60, 0x50);
@@ -121,7 +121,7 @@ class Task021cbde0 : public Task {
 public:
     VObj *unk_3c;
     Lo021cb5a8 *unk_40;
-    VObj *unk_44;
+    LoBase021ccb54_021ccbe0 *unk_44;
     s32 unk_48;
     u16 unk_4c;
     u8 unk_4e[0x2];
@@ -132,7 +132,7 @@ SIZE_ASSERT(Task021cbde0, 0x54);
 // Vtable data_ov000_021cbe60, 0x158 bytes.
 class Task021cbe60 : public Task {
 public:
-    LoBase021caac8_021cb2a8 *unk_3c;
+    UiList021cb4a8 *unk_3c;
     Lo021cadcc *unk_40;
     Lo021cae48 *unk_44;
     Lo021cae48 *unk_48;
@@ -150,7 +150,7 @@ public:
     Lo021cae48 *unk_40;
     Lo021cae48 *unk_44;
     Lo021cae48 *unk_48;
-    LoBase021caac8_021cb2a8 *unk_4c;
+    UiList021cb4a8 *unk_4c;
     Lo021cadcc *unk_50;
     s32 unk_54;
     VObj *unk_58;
@@ -161,7 +161,7 @@ SIZE_ASSERT(Task021cbee0, 0x15c);
 // Vtable data_ov000_021cbf60, 0x160 bytes.
 class Task021cbf60 : public Task {
 public:
-    LoBase021caac8_021cb2a8 *unk_3c;
+    UiList021cb4a8 *unk_3c;
     Lo021cadcc *unk_40;
     LoBase021cafc0_021cb0b8 *unk_44;
     Lo021cb5a8 *unk_48;

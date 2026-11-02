@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/UiObj.h"
 
 #define GX_PACK_POLYGONATTR_PARAM(light, polyMode, cullMode, polygonID, alpha, misc) \
     ((u32)(((light) << 0) | ((polyMode) << 4) | ((cullMode) << 6) | (misc) | ((polygonID) << 24) | ((alpha) << 16)))
@@ -50,22 +51,8 @@ static inline void G3_Cmd2(int cmd, u32 a, u32 b) {
     NNS_G3dGeBufferOP_N(cmd, v, 2);
 }
 
-struct Obj021532d0 {
-    u8 unk_00[0x24];
-    s32 unk_24;
-    s32 unk_28;
-    u8 unk_2c[0x1c];
-    u16 unk_48;
-    u8 unk_4a[0xa];
-    s32 unk_54;
-    u8 unk_58[0x10];
-    s16 unk_68;
-    u8 unk_6a[0x2];
-    V6 *unk_6c;
-    s32 unk_70;
-};
 
-void func_ov000_021532d0(Obj021532d0 *self, s32 a1, s32 *pos, s32 a3) {
+void func_ov000_021532d0(UiObj *self, s32 a1, s32 *pos, s32 a3) {
     s16 z;
     u8 *g;
     s32 sx;
@@ -75,25 +62,25 @@ void func_ov000_021532d0(Obj021532d0 *self, s32 a1, s32 *pos, s32 a3) {
     if (a1 == 0) {
         return;
     }
-    z = self->unk_68 - 0x100;
+    z = self->posZ - 0x100;
     g = data_02097d48;
     G3_Cmd1(0x2a, 0x20000000);
     alpha = self->unk_54;
     G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, Gfx3DState_NextPolyId(g + 0x8b0), alpha, 0x800));
-    sx = self->unk_24 << 12;
-    sy = self->unk_28 << 12;
+    sx = self->width << 12;
+    sy = self->height << 12;
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, pos[0], pos[1], z);
     G3_Vec(0x1b, a3, a3, 0x1000);
     G3_Vec(0x1b, sx, sy, 0x1000);
     G3_Cmd1(0x40, 2);
-    G3_Cmd1(0x20, self->unk_48);
-    v = self->unk_6c;
+    G3_Cmd1(0x20, self->color);
+    v = (V6 *)self->shape;
     if (v != NULL) {
         s32 i;
         G3_Cmd2(0x23, v[0].x | (v[0].y << 16), 0);
-        for (i = 1; i < self->unk_70; i++) {
-            v = self->unk_6c;
+        for (i = 1; i < self->shapeCount; i++) {
+            v = (V6 *)self->shape;
             G3_Cmd1(0x25, v[i].x | (v[i].y << 16));
         }
     } else {

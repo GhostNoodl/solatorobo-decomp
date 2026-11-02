@@ -1,60 +1,32 @@
 #include "ov000/LoCommon.h"
+#include "ov000/UiObj.h"
 
-typedef struct Ent02154c34 {
-    u32 unk_00;
-    u16 unk_04;
-    u16 unk_06;
-    u16 unk_08;
-    u16 unk_0a;
-    u32 unk_0c;
-    u32 unk_10;
-    u32 unk_14;
-    u32 unk_18;
-    VObj *unk_1c;
-    VObj *unk_20;
-    u32 unk_24;
-    u32 unk_28;
-    struct Ent02154c34 *next;
-} Ent02154c34;
 
-typedef struct {
-    u32 unk_00;
-    u32 unk_04;
-    u32 unk_08;
-    u32 unk_0c;
-    s32 unk_10;
-    s32 unk_14;
-    u32 unk_18;
-    u32 unk_1c;
-    u32 unk_20;
-    u32 unk_24;
-    void *model;
-} Obj02154c34Sub;
 
 extern "C" {
 
-static inline void Ent02154c34_Dtor(Ent02154c34 *e) {
+static inline void Ent02154c34_Dtor(UiListItem *e) {
     LO_FREE_V(e, 0x1c);
     LO_FREE_V(e, 0x20);
-    e->unk_00 = 0;
-    e->unk_04 = 0;
-    e->unk_06 = 0;
+    e->name = 0;
+    e->index = 0;
+    e->id = 0;
     e->unk_08 = 0xffff;
     e->unk_0a = 0xffff;
     e->unk_0c = 0;
     e->unk_10 = 0;
     e->unk_14 = 0;
     e->unk_18 = 0;
-    e->unk_1c = NULL;
+    e->label = NULL;
     e->unk_20 = NULL;
     e->unk_24 = 0;
-    e->unk_28 = 0;
+    e->prev = 0;
     e->next = NULL;
 }
 
-static inline void Sub02154c34_Dtor(Obj02154c34Sub *s) {
+static inline void Sub02154c34_Dtor(UiPanel *s) {
     LO_FREE_M(s, 0x28);
-    s->unk_00 = 0;
+    s->flags = 0;
     s->unk_04 = 0;
     s->unk_08 = 0;
     s->unk_0c = 0;
@@ -67,21 +39,15 @@ static inline void Sub02154c34_Dtor(Obj02154c34Sub *s) {
     s->model = NULL;
 }
 
-struct Obj02154c34 {
-    u8 unk_00[0x94];
-    Ent02154c34 *unk_94;
-    u8 unk_98[0x14];
-    Obj02154c34Sub *unk_ac;
-};
 
-void func_ov000_02154c34(Obj02154c34 *self) {
-    Ent02154c34 *e = self->unk_94;
+void UiList_Release(UiList *self) {
+    UiListItem *e = self->items;
     while (e != NULL) {
-        Ent02154c34 *next = e->next;
+        UiListItem *next = e->next;
         u32 saved;
         LO_HEAP_PUSH(saved);
         if (e != NULL) {
-            Ent02154c34 *p = e;
+            UiListItem *p = e;
             if (p != NULL) {
                 Ent02154c34_Dtor(p);
                 Heap_Free(p);
@@ -94,13 +60,13 @@ void func_ov000_02154c34(Obj02154c34 *self) {
     {
         u32 saved;
         LO_HEAP_PUSH(saved);
-        if (self->unk_ac != NULL) {
-            Obj02154c34Sub *p = self->unk_ac;
+        if (self->panel != NULL) {
+            UiPanel *p = self->panel;
             if (p != NULL) {
                 Sub02154c34_Dtor(p);
                 Heap_Free(p);
             }
-            self->unk_ac = NULL;
+            self->panel = NULL;
         }
         LO_HEAP_POP(saved);
     }

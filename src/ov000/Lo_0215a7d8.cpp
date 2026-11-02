@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 typedef struct {
     u32 b0 : 2;
@@ -39,20 +40,20 @@ static inline void LoModelPlayPart(void *model, int idx) {
 
 void func_ov000_0215a7d8(Lo021cb5a8 *self, s32 unused, s32 *pos) {
     s16 z = self->posZ - 0x100;
-    LFLD(void *, self->unk_10, 0x158) = (void *)func_ov000_0215a8c8;
-    LFLD(u32, self->unk_10, 0x6c) |= 0x80000;
-    LFLD(u32, self->unk_10, 0x6c) |= 0x200000;
-    LFLD(LoF2, self->unk_10, 0x6c).f2 = 0x1e;
+    LFLD(void *, self->model, 0x158) = (void *)func_ov000_0215a8c8;
+    LFLD(u32, self->model, 0x6c) |= 0x80000;
+    LFLD(u32, self->model, 0x6c) |= 0x200000;
+    LFLD(LoF2, self->model, 0x6c).f2 = 0x1e;
     {
         s32 px = pos[0];
         s32 py = pos[1];
-        u8 *o = (u8 *)self->unk_10;
+        u8 *o = (u8 *)self->model;
         LFLD(s32, o, 0xfc) = px;
         LFLD(s32, o, 0x100) = py;
     }
-    LFLD(s32, self->unk_10, 0x150) = z;
-    LoModelPlayPart(self->unk_10, 8);
-    LFLD(void *, self->unk_10, 0x158) = NULL;
+    LFLD(s32, self->model, 0x150) = z;
+    LoModelPlayPart(self->model, 8);
+    LFLD(void *, self->model, 0x158) = NULL;
 }
 
 }

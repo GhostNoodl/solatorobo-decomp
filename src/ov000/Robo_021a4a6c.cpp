@@ -124,7 +124,7 @@ static inline BOOL Falling_021a4a6c(Robo021ca458 *self) {
 
 void func_ov000_021a4a6c(Robo021ca458 *self) {
     Actor *t;
-    u8 *sub;
+    ActorSub4c *sub;
     VecFx32 p1;
     VecFx32 p2;
     VecFx32 o;
@@ -137,7 +137,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
         t = FindActor_021a4a6c(self->target);
         if (t != NULL && ((u8 *)t->unk_44) != NULL && LFLD(H22_021a4a6c, ((u8 *)t->unk_44), 0x22).b0 == 1 &&
             LFLD(H22_021a4a6c, ((u8 *)t->unk_44), 0x22).b1 == 1) {
-            sub = ((u8 *)t->targetObj);
+            sub = (ActorSub4c *)((u8 *)t->targetObj);
             if (self->unk_b2f == 0) {
                 self->unk_b2f++;
             }
@@ -165,7 +165,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
             func_ov000_021911c8(self->model, 0x2800);
         } else {
             self->unk_b24_7 = self->unk_b24_9;
-            if (sub != NULL && LFLD(u8, sub, 0) == 0xf) {
+            if (sub != NULL && sub->type == 0xf) {
                 if ((u16)(t->id & 0xf000) != 0x4000 || (self->hit->unk_50 & 0x20000000)) {
                     self->unk_b24_7 = 2;
                     self->speed = 0;
@@ -244,7 +244,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
                     func_ov000_02191318(self->model, 0x16000);
                 }
                 q = t->hit;
-                if ((u16)(t->id & 0xf000) == 0x5000 && LFLD(u8, sub, 0) == 0xf) {
+                if ((u16)(t->id & 0xf000) == 0x5000 && sub->type == 0xf) {
                     u32 fl = self->hit->unk_50 & 0x20000000;
                     if (fl == 0 || (t->unk_92 == 0 && q != NULL && !(q->unk_50 & 0x20000000))) {
                         if (self->unk_b24_22 != 1 && t->unk_92 == 0 && fl == 0 && q != NULL && !(q->unk_50 & 0x20000000)) {
@@ -291,7 +291,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
         if (sub != NULL) {
             ActorSub44 *h = NULL;
             BOOL ok = FALSE;
-            u8 k = LFLD(u8, sub, 0);
+            u8 k = sub->type;
             if (self->unk_b22_3 || self->unk_b2c_4 == 3) {
                 if (k == 0xf || k == 0xe || k == 5) {
                     ok = TRUE;
@@ -349,7 +349,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
                     self->target = 0xffff;
                     func_ov000_0218d46c(t, self->id, 9);
                     Target_Set(sub, self);
-                    if (LFLD(S18_021a4a6c, sub, 0x18).b1) {
+                    if (sub->unk_18_1) {
                         func_02062764(0x3c0, 0x200);
                         func_020627a0(t->kind, t->id);
                         FieldState *g = data_ov000_021ccd54;
@@ -376,7 +376,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
         BOOL done;
         t = FindActor_021a4a6c(self->unk_b1c);
         if (t != NULL) {
-            sub = ((u8 *)t->targetObj);
+            sub = (ActorSub4c *)((u8 *)t->targetObj);
         } else {
             sub = NULL;
         }
@@ -391,7 +391,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
         }
         done = FALSE;
         if (sub != NULL) {
-            if (LFLD(u8, sub, 1) == 4) {
+            if (sub->unk_01 == 4) {
                 self->unk_b24_7 = 2;
                 func_ov000_02198360(self->fsm, 0xd, 0);
                 done = TRUE;

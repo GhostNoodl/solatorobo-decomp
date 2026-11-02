@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -40,7 +41,7 @@ void func_ov000_021614b0(Lo021cacd8 *self, s32 a, s32 b, s32 c) {
     self->vfunc_64(a, b, c);
     func_ov000_02161798(self, a, b, c);
     func_ov000_02161994(self, a, b, c);
-    self->unk_0c |= 0x200;
+    self->flags |= 0x200;
 }
 
 }

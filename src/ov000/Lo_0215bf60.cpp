@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -42,7 +43,7 @@ static inline BOOL LoD78Idle(void) {
 }
 
 void func_ov000_0215bf60(Lo021cadcc *self) {
-    switch (self->unk_04) {
+    switch (self->state) {
     case 5:
         if (LBIT(self, 0xc).b1 == 1) {
             LO_FREE_V(self, 0x84);

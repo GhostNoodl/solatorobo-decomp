@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -18,7 +19,7 @@ static inline void Free02157df0(u8 *p) {
     Heap_Free(p);
 }
 
-void func_ov000_02157df0(LoBase021cb2a8_021cb4a8 *self) {
+void func_ov000_02157df0(UiList021cb4a8 *self) {
     {
         u32 saved;
         LO_HEAP_PUSH(saved);

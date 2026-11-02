@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -23,13 +24,13 @@ void func_ov000_0215a2c4(Lo021cb5a8 *self, s32 a, s32 b, s32 c) {
     if (a == 0) {
         return;
     }
-    if (!func_02054f10(self->unk_10, 0xffff)) {
+    if (!func_02054f10(self->model, 0xffff)) {
         return;
     }
     self->vfunc_f8(a, b, c);
     self->vfunc_64(a, b, c);
     self->vfunc_fc(a, b, c);
-    self->unk_0c |= 0x200;
+    self->flags |= 0x200;
 }
 
 }

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -22,21 +23,15 @@ void func_ov000_0215adbc(void *self) {
     LO_FREE_V(self, 0xd4);
 }
 
-struct Obj0215ae10 {
-    u8 unk_00[0x4];
-    s32 unk_04;
-    u8 unk_08[0x2c];
-    s32 unk_34;
-};
 
-void func_ov000_0215ae10(Obj0215ae10 *self) {
-    switch (self->unk_04) {
+void func_ov000_0215ae10(UiList *self) {
+    switch (self->state) {
     case 0:
-        self->unk_34 = 0x8000;
+        self->openLen = 0x8000;
         func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
         break;
     case 1:
-        self->unk_34 = 0x8000;
+        self->openLen = 0x8000;
         func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
         break;
     }

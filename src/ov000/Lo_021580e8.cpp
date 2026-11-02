@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -22,12 +23,8 @@ static inline BOOL LoSubReady(void *p) {
     return TRUE;
 }
 
-struct Obj021580e8 {
-    u8 unk_00[0xb4];
-    void *unk_b4;
-};
 
-BOOL func_ov000_021580e8(Obj021580e8 *self) {
+BOOL func_ov000_021580e8(UiList *self) {
     BOOL r = func_ov000_02152a58(self);
     if (self->unk_b4 != NULL && !func_02054f10(self->unk_b4, 0xffff)) {
         r = FALSE;
@@ -35,27 +32,27 @@ BOOL func_ov000_021580e8(Obj021580e8 *self) {
     return r;
 }
 
-void func_ov000_02158120(LoBase021caac8_021cb2a8 *self, s32 delta, s32 arg) {
-    s8 sel = self->unk_b1;
+void func_ov000_02158120(UiList021cb4a8 *self, s32 delta, s32 arg) {
+    s8 sel = self->cursor;
     s32 off = 0;
     self->unk_b0 = sel;
-    self->unk_b1 = self->unk_b1 - (s8)delta;
-    if (self->unk_9c <= self->unk_20) {
-        if (self->unk_b1 <= 0) {
-            self->unk_b1 = 0;
+    self->cursor = self->cursor - (s8)delta;
+    if (self->itemCount <= self->rows) {
+        if (self->cursor <= 0) {
+            self->cursor = 0;
         }
-    } else if (LFLD(s16, self->unk_98, 4) == 0) {
-        if (self->unk_b1 <= 0) {
-            self->unk_b1 = 0;
+    } else if (self->topItem->index == 0) {
+        if (self->cursor <= 0) {
+            self->cursor = 0;
         }
     } else {
-        off = self->unk_b1 - 1;
+        off = self->cursor - 1;
         if (off < 0) {
-            if (off + LFLD(s16, self->unk_98, 4) >= 0) {
-                self->unk_b1 = 1;
+            if (off + self->topItem->index >= 0) {
+                self->cursor = 1;
             } else {
-                self->unk_b1 = 0;
-                off = -LFLD(s16, self->unk_98, 4);
+                self->cursor = 0;
+                off = -self->topItem->index;
             }
         } else {
             off = 0;

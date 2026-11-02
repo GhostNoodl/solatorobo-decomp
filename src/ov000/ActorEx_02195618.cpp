@@ -56,8 +56,8 @@ void func_ov000_02195618(ActorEx *self) {
         }
     }
     {
-        u8 *st = ((u8 *)self->fsm);
-        LFLD(s64, st, 4) = 0;
+        ActorSub40 *st = (ActorSub40 *)((u8 *)self->fsm);
+        st->flags = 0;
     }
     if (self->unk_5c != NULL) {
         if (PlayerIdle02195618()) {

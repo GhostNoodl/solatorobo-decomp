@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -31,34 +32,34 @@ void *func_ov000_02160e28(u8 *self, u16 *cmd, void *arr, u16 *count);
             func_02041440(m_, name_, 0);             \
             STD_CopyString(m_ + 0x2c, arc_);          \
         }                                            \
-        out = m_;                                    \
+        out = (Model *)m_;                                  \
     } while (0)
 
 static inline BOOL EnsureModel(Lo021cacd8 *self) {
-    if (self->unk_10) {
+    if (self->model) {
         return TRUE;
     }
     if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
-        LO_MODEL_NEW(self->unk_10, data_0208cb84, data_0208cc8c);
+        LO_MODEL_NEW(self->model, data_0208cb84, data_0208cc8c);
     } else {
-        LO_MODEL_NEW(self->unk_10, data_0208cb74, data_0208cca0);
+        LO_MODEL_NEW(self->model, data_0208cb74, data_0208cca0);
     }
     {
-        void *a = func_02035d5c(self->unk_10 + 0x2c);
-        void *b = func_02034d88(a, self->unk_10 + 0x4c);
-        func_020417e0(self->unk_10, b);
+        void *a = func_02035d5c(((u8 *)self->model) + 0x2c);
+        void *b = func_02034d88(a, ((u8 *)self->model) + 0x4c);
+        func_020417e0(((u8 *)self->model), b);
     }
-    LFLD(u32, self->unk_10, 0x6c) |= 2;
-    func_02041d9c(self->unk_10, 0, 7);
+    LFLD(u32, self->model, 0x6c) |= 2;
+    func_02041d9c(((u8 *)self->model), 0, 7);
     return TRUE;
 }
 
 void func_ov000_02160ff8(Lo021cacd8 *self) {
-    self->unk_24 = 0x50;
-    self->unk_28 = 0x1e;
+    self->width = 0x50;
+    self->height = 0x1e;
     self->posX = 0x80;
     self->posY = 0x60;
-    self->unk_2c = 0;
+    self->slideMode = 0;
     self->color = 0x294a;
     LO_MODEL_NEW(self->unk_84, data_0208cc88, data_0208cc94);
     func_020417e0(self->unk_84, func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88));
@@ -68,8 +69,8 @@ void func_ov000_02160ff8(Lo021cacd8 *self) {
     func_02041d9c(self->unk_84, 0, 8);
     func_02041c5c(self->unk_84, (void *)func_ov000_02160e28);
     if (EnsureModel(self)) {
-        func_02041d9c(self->unk_10, 0, 10);
-        LFLD(u32, self->unk_10, 0x6c) |= 0x80000;
+        func_02041d9c(((u8 *)self->model), 0, 10);
+        LFLD(u32, self->model, 0x6c) |= 0x80000;
     }
 }
 

@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 typedef struct {
     u32 unk_00;
@@ -27,9 +28,9 @@ static inline void G3_Cmd1(int cmd, u32 value) {
     NNS_G3dGeBufferOP_N(cmd, &v, 1);
 }
 
-void func_ov000_02155e24(LoBase021caac8_021caec8 *self, s32 t) {
+void func_ov000_02155e24(UiList *self, s32 t) {
     u8 *g = data_02097d48;
-    s16 z = self->unk_68 - 0x180;
+    s16 z = self->posZ - 0x180;
     s32 alpha = (s32)(((s64)t * 0x14000 + 0x800) >> 12) >> 12 & 0xff;
     if (alpha == 0) {
         return;

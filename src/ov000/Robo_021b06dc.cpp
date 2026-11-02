@@ -32,7 +32,7 @@ static inline BOOL PlayerIdle021b06dc(void) {
 }
 
 static inline void SetGauge021b06dc(u16 a, u16 b) {
-    u8 *o = ((u8 *)data_ov000_021ccd30->unk_11c);
+    FieldActor *o = (FieldActor *)((u8 *)data_ov000_021ccd30->unk_11c);
     if (o != NULL && LFLD(void *, o, 0x58) != NULL) {
         func_ov000_021697dc(LFLD(void *, o, 0x58), a, b);
         LFLD(u32, LFLD(u8 *, o, 0x58), 0xc) |= 0x80;
@@ -57,8 +57,8 @@ void func_ov000_021b06dc(Robo021ca458 *self) {
         LFLD(u16, ((u8 *)self->hp), 0xa)--;
     }
     {
-        u8 *st = ((u8 *)self->fsm);
-        LFLD(s64, st, 4) = 0;
+        ActorSub40 *st = (ActorSub40 *)((u8 *)self->fsm);
+        st->flags = 0;
     }
     self->hit->unk_9a_4 = 0;
     if (PlayerIdle021b06dc()) {
@@ -66,7 +66,7 @@ void func_ov000_021b06dc(Robo021ca458 *self) {
     }
     {
         BOOL f = data_0214a424->bits18.flag10 ? TRUE : FALSE;
-        u8 *o = ((u8 *)data_ov000_021ccd30->unk_11c);
+        FieldActor *o = (FieldActor *)((u8 *)data_ov000_021ccd30->unk_11c);
         if (o != NULL) {
             func_ov000_0216b508(LFLD(void *, o, 0x68), 1, f);
         }

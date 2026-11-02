@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 typedef struct {
     u32 b0 : 13;
@@ -7,18 +8,9 @@ typedef struct {
     u32 rest : 11;
 } TextFlags021593b8;
 
-typedef struct Item021593b8 {
-    s32 unk_00;
-    s16 idx;
-    u8 pad_06[0x16];
-    VObj *text;
-    u8 pad_20[0x8];
-    struct Item021593b8 *next2;
-    struct Item021593b8 *next;
-} Item021593b8;
 
 typedef struct {
-    Item021593b8 *item;
+    UiListItem *item;
     s32 x;
     s32 y;
     s32 z;
@@ -46,42 +38,42 @@ void func_ov000_021593b8(Lo021cb3a8 *self, s32 on, s32 *pos) {
     s32 py;
     s32 dim;
     s32 ox;
-    Item021593b8 *top;
+    UiListItem *top;
     s32 oy;
     s32 s;
     s32 col;
     s32 ow;
     s32 lh;
-    Item021593b8 *it;
+    UiListItem *it;
     s32 last;
 
-    if (on == 0 || (it = (Item021593b8 *)self->unk_94) == NULL) {
+    if (on == 0 || (it = (UiListItem *)self->items) == NULL) {
         return;
     }
     g = data_02097d48;
     k = 0;
     lh = self->vfunc_40();
     col = Gfx3DState_NextPolyId(g + 0x8b0);
-    if (!(self->unk_0c & 0x20000)) {
-        lo = ((Item021593b8 *)self->unk_98)->idx;
-        hi = lo + self->unk_20;
+    if (!(self->flags & 0x20000)) {
+        lo = ((UiListItem *)self->topItem)->index;
+        hi = lo + self->rows;
         first = lo;
         last = hi;
     } else {
         s = self->unk_9e;
         if (s != 0) {
-            top = (Item021593b8 *)self->unk_98;
-            last = self->unk_20;
-            lo = top->idx - 1;
-            hi = top->idx + last + 1;
-            if (top->next2 != NULL) {
+            top = (UiListItem *)self->topItem;
+            last = self->rows;
+            lo = top->index - 1;
+            hi = top->index + last + 1;
+            if (top->prev != NULL) {
                 k--;
             }
         } else {
-            top = (Item021593b8 *)self->unk_98;
-            last = self->unk_20;
-            lo = top->idx;
-            hi = top->idx + last;
+            top = (UiListItem *)self->topItem;
+            last = self->rows;
+            lo = top->index;
+            hi = top->index + last;
         }
         if (s > 0) {
             last -= 2;
@@ -94,26 +86,26 @@ void func_ov000_021593b8(Lo021cb3a8 *self, s32 on, s32 *pos) {
     oy = self->vfunc_34() + self->unk_9e;
     ow = self->vfunc_8c();
     while (it != NULL) {
-        if (it->idx >= lo && it->idx < hi) {
-            if (it->unk_00 != 0) {
-                if (it->text == NULL) {
-                    func_ov000_02153c48(it, self->unk_1c, 0, 1, 0);
+        if (it->index >= lo && it->index < hi) {
+            if (((s32)it->name) != 0) {
+                if (it->label == NULL) {
+                    func_ov000_02153c48(it, self->font, 0, 1, 0);
                 }
                 if (k < first || k > last) {
                     dim = 1;
-                    func_ov000_02153f30(it->text, self->posZ);
+                    func_ov000_02153f30(it->label, self->posZ);
                 } else {
                     dim = 0;
-                    func_ov000_02153f60(it->text, self->posZ);
+                    func_ov000_02153f60(it->label, self->posZ);
                 }
-                LFLD(TextFlags021593b8, it->text, 4).color = (u8)col;
+                LFLD(TextFlags021593b8, it->label, 4).color = (u8)col;
                 px = ox + (pos[0] >> 12);
                 py = lh * k + (oy + (pos[1] >> 12));
-                it->text->vfunc_20(px + ow, py);
-                it->text->vfunc_90();
+                it->label->vfunc_20(px + ow, py);
+                it->label->vfunc_90();
                 self->vfunc_dc(it, px, py, col, dim);
                 self->vfunc_e4(it, pos[0] >> 12, py, col, dim);
-                if (self->unk_80 != NULL) {
+                if (self->onDrawItem != NULL) {
                     Msg021593b8 m;
                     m.item = it;
                     m.x = px;

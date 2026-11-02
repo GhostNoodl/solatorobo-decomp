@@ -1,6 +1,7 @@
 #include "ov000/VObj.h"
 #include "ov000/ModelPart.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -15,17 +16,17 @@ void func_ov000_0214e074(Lo021caac8 *self, u8 *info, s32 x, s32 y, u8 polyId, u8
     }
     if (front) {
         MODEL_FLAGS(self->unk_b8)->unk_19 = 1;
-        self->unk_b8->unk_150 = self->unk_68 - 0x110;
+        self->unk_b8->unk_150 = self->posZ - 0x110;
         MODEL_FLAGS(self->unk_b8)->unk_20 = 1;
         MODEL_FLAGS(self->unk_b4)->unk_19 = 1;
-        self->unk_b4->unk_150 = self->unk_68 - 0x110;
+        self->unk_b4->unk_150 = self->posZ - 0x110;
         MODEL_FLAGS(self->unk_b4)->unk_20 = 1;
     } else {
         MODEL_FLAGS(self->unk_b8)->unk_19 = 1;
-        self->unk_b8->unk_150 = self->unk_68 - 0x80;
+        self->unk_b8->unk_150 = self->posZ - 0x80;
         MODEL_FLAGS(self->unk_b8)->unk_20 = 0;
         MODEL_FLAGS(self->unk_b4)->unk_19 = 1;
-        self->unk_b4->unk_150 = self->unk_68 - 0x80;
+        self->unk_b4->unk_150 = self->posZ - 0x80;
         MODEL_FLAGS(self->unk_b4)->unk_20 = 0;
     }
     x -= 3;

@@ -3,6 +3,7 @@
 #include "ov000/LoCommon.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 extern u8 *data_02097d48;
@@ -68,8 +69,8 @@ void func_ov000_0215b598(LoBase021cafc0_021cb0b8 *self, s32 a1, s32 *pos, s32 a3
     }
     {
         s32 k = self->unk_d4 ? 0x10000 : 0;
-        sx = self->unk_24 << 12;
-        sy = (self->unk_28 << 12) + 0xb000;
+        sx = self->width << 12;
+        sy = (self->height << 12) + 0xb000;
         t = FX_Div(k + 0x10000, sy);
     }
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);

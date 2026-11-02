@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -41,13 +42,13 @@ BOOL func_ov000_02158e14(Lo021cb3a8 *self) {
 }
 
 void func_ov000_02158e80(Lo021cb3a8 *self, s32 n, s32 b) {
-    s8 old = self->unk_b1;
-    self->unk_b1 = old - (s8)n;
+    s8 old = self->cursor;
+    self->cursor = old - (s8)n;
     self->unk_b0 = old;
-    if (self->unk_b1 < 0) {
-        self->unk_b1 = 0;
+    if (self->cursor < 0) {
+        self->cursor = 0;
     }
-    self->vfunc_bc(self->unk_b1 - self->unk_b0, b);
+    self->vfunc_bc(self->cursor - self->unk_b0, b);
     self->unk_a2 = 4;
 }
 

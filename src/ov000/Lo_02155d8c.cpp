@@ -2,10 +2,11 @@
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 #include "types.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
-void func_ov000_02155d8c(LoBase021caac8_021caec8 *self) {
+void func_ov000_02155d8c(UiList *self) {
     s32 n = ++self->unk_cc;
     s32 v;
     if (n < 0x14) {

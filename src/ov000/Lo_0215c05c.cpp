@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -20,16 +21,16 @@ typedef struct {
 } LoArr98;
 
 void func_ov000_0215c05c(Lo021cadcc *self) {
-    if (self->unk_04 != 2) {
+    if (self->state != 2) {
         return;
     }
     if (LBIT(self, 0xc).b1 == 1) {
-        self->unk_04 = 1;
+        self->state = 1;
     }
-    self->unk_30 = self->unk_34;
-    self->unk_38 = 0x1000;
+    self->openTime = self->openLen;
+    self->openRatio = 0x1000;
     if (self->unk_84 != NULL && !self->unk_84->vfunc_8c()) {
-        self->unk_0c |= 0x40000;
+        self->flags |= 0x40000;
     }
 }
 

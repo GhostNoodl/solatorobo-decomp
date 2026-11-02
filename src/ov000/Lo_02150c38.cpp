@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/Task.h"
 
 extern "C" {
 
@@ -40,7 +41,7 @@ static inline BOOL LoIsLoaded24(void) {
 }
 
 void func_ov000_02150c38(Lo021ca9c4 *self) {
-    self->unk_20 = 0x1000;
+    self->fadeLen = 0x1000;
     self->unk_3c = 0;
     self->unk_44 = 0;
     self->unk_48 = 0;

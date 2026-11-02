@@ -2,6 +2,7 @@
 #include "Main/Gfx/FieldMsg.h"
 #include "nitro/std.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 extern char data_ov000_021cabf4[];
@@ -12,8 +13,8 @@ void func_ov000_02158b48(Lo021cb3a8 *self) {
     BOOL done;
     char *p;
     char *s;
-    u8 *n;
-    self->unk_64 = (0x100 - self->unk_24) >> 1;
+    UiListItem *n;
+    self->posX = (0x100 - self->width) >> 1;
     line = 0;
     done = FALSE;
     if (self->str == NULL) {
@@ -34,9 +35,9 @@ void func_ov000_02158b48(Lo021cb3a8 *self) {
         line++;
     } while (!done && *s != 0);
     func_ov000_0215429c(self);
-    LFLD(s32, self->unk_ac, 0x10) = (self->unk_24 - 0x10) << 12;
-    for (n = (u8 *)self->unk_94; n != NULL; n = LFLD(u8 *, n, 0x2c)) {
-        if (LFLD(u16, n, 6) == 0) {
+    self->panel->unk_10 = (self->width - 0x10) << 12;
+    for (n = self->items; n != NULL; n = (UiListItem *)((u8 *)n->next)) {
+        if (n->id == 0) {
             break;
         }
     }

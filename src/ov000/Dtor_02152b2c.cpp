@@ -38,7 +38,7 @@ VObj *Ov000Vt_021cb0b8_DtorDelete(VObj *self) {
     return self;
 }
 
-void func_ov000_02152bb0(VObj *self) {
+void UiObj_Draw(VObj *self) {
     s32 extra;
     VecFx32 pos;
     VecFx32 scale;

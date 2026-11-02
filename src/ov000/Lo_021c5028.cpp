@@ -2,6 +2,7 @@
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Math/Rot16.h"
+#include "ov000/UiObj.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -37,7 +38,7 @@ void func_ov000_021c5028(LoBase021ccb54_021ccbe0 *self, s32 unused, const VecFx3
     s32 i = 0;
     s32 y = pos->y + self->unk_e0;
     s32 x = pos->x;
-    s32 z = self->unk_68;
+    s32 z = self->posZ;
     if (p == NULL) {
         return;
     }
@@ -47,17 +48,17 @@ void func_ov000_021c5028(LoBase021ccb54_021ccbe0 *self, s32 unused, const VecFx3
         BOOL vis = FALSE;
         switch (self->unk_df) {
         case 0:
-            if (i >= self->unk_9c && i <= self->unk_9c + (self->unk_20 - 1)) {
+            if (i >= self->unk_9c && i <= self->unk_9c + (self->rows - 1)) {
                 vis = TRUE;
             }
             break;
         case 1:
-            if (i >= self->unk_9c && i <= self->unk_9c + self->unk_20) {
+            if (i >= self->unk_9c && i <= self->unk_9c + self->rows) {
                 vis = TRUE;
             }
             break;
         case 2:
-            if (i >= self->unk_9c - 1 && i <= self->unk_9c + self->unk_20 - 1) {
+            if (i >= self->unk_9c - 1 && i <= self->unk_9c + self->rows - 1) {
                 vis = TRUE;
             }
             break;

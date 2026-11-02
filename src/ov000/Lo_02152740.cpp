@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/UiObj.h"
 
 typedef struct {
     u32 b0 : 1;
@@ -14,121 +15,105 @@ extern "C" {
 s32 FX_Div(s32 a, s32 b);
 
 
-struct Obj02152740 : public VObj {
-    s32 unk_04;
-    u8 unk_08[0x28];
-    s32 unk_30;
-    s32 unk_34;
-    s32 unk_38;
-    s32 unk_3c;
-    s32 unk_40;
-    s32 unk_44;
-    u8 unk_48[0x4];
-    s32 unk_4c;
-    s32 unk_50;
-    u8 unk_54[0x20];
-    VObj *unk_74;
-    LoCb02152740 unk_78;
-};
 
-BOOL func_ov000_02152740(Obj02152740 *self) {
+BOOL UiObj_Update(UiObj *self) {
     self->vfunc_54();
-    switch (self->unk_04) {
+    switch (self->state) {
     case 5:
-        if (!LFLD(Bits02152740, self, 0xc).b1) {
-            self->unk_04 = 0;
+        if (!self->hidden) {
+            self->state = 0;
             return TRUE;
         }
         return FALSE;
     case 0:
-        LFLD(Bits02152740, self, 0xc).b0 = 1;
-        if (LFLD(Bits02152740, self, 0xc).b1 == 1) {
-            self->unk_04 = 5;
+        self->busy = 1;
+        if (self->hidden == 1) {
+            self->state = 5;
             break;
         }
-        if (self->unk_78 != NULL) {
-            self->unk_78(self);
+        if (((LoCb02152740)self->onState) != NULL) {
+            ((LoCb02152740)self->onState)(self);
         }
-        self->unk_04 = 3;
+        self->state = 3;
     case 3:
         if (!self->vfunc_4c()) {
             break;
         }
-        self->unk_30 += 0x1000;
-        self->unk_38 = FX_Div(self->unk_30, self->unk_34);
-        if (self->unk_38 < 0x1000) {
+        self->openTime += 0x1000;
+        self->openRatio = FX_Div(self->openTime, self->openLen);
+        if (self->openRatio < 0x1000) {
             break;
         }
-        if ((void *)self->unk_74 == NULL) {
-            LFLD(Bits02152740, self, 0xc).b0 = 0;
+        if ((void *)self->child == NULL) {
+            self->busy = 0;
         }
-        self->unk_30 = self->unk_34;
-        self->unk_38 = 0x1000;
-        if (self->unk_78 != NULL) {
-            self->unk_78(self);
+        self->openTime = self->openLen;
+        self->openRatio = 0x1000;
+        if (((LoCb02152740)self->onState) != NULL) {
+            ((LoCb02152740)self->onState)(self);
         }
-        self->unk_04 = 2;
+        self->state = 2;
         break;
     case 1:
-        LFLD(Bits02152740, self, 0xc).b0 = 1;
-        if (self->unk_78 != NULL) {
-            self->unk_78(self);
+        self->busy = 1;
+        if (((LoCb02152740)self->onState) != NULL) {
+            ((LoCb02152740)self->onState)(self);
         }
-        self->unk_04 = 4;
+        self->state = 4;
     case 4:
-        self->unk_30 -= 0x1000;
-        self->unk_38 = FX_Div(self->unk_30, self->unk_34);
-        if (self->unk_38 > 0) {
+        self->openTime -= 0x1000;
+        self->openRatio = FX_Div(self->openTime, self->openLen);
+        if (self->openRatio > 0) {
             break;
         }
-        self->unk_30 = 0;
-        self->unk_38 = 0;
-        if (self->unk_78 != NULL) {
-            self->unk_78(self);
+        self->openTime = 0;
+        self->openRatio = 0;
+        if (((LoCb02152740)self->onState) != NULL) {
+            ((LoCb02152740)self->onState)(self);
         }
-        self->unk_04 = 5;
+        self->state = 5;
         return FALSE;
     case 2:
-        self->unk_30 = self->unk_34;
-        self->unk_38 = 0x1000;
+        self->openTime = self->openLen;
+        self->openRatio = 0x1000;
         {
-            u32 f = LFLD(Bits02152740, self, 0xc).fade;
+            u32 f = self->fade;
             if (f == 0) {
             } else if (f == 1) {
-                self->unk_3c += 0x1000;
-                self->unk_44 = FX_Div(self->unk_3c, self->unk_40);
-                if (self->unk_44 >= 0x1000) {
-                    self->unk_3c = self->unk_40;
-                    self->unk_44 = 0x1000;
-                    LFLD(Bits02152740, self, 0xc).fade = 2;
+                self->fadeTime += 0x1000;
+                self->fadeRatio = FX_Div(self->fadeTime, self->fadeLen);
+                if (self->fadeRatio >= 0x1000) {
+                    self->fadeTime = self->fadeLen;
+                    self->fadeRatio = 0x1000;
+                    self->fade = 2;
                 }
             } else if (f == 3) {
-                self->unk_3c -= 0x1000;
-                self->unk_44 = FX_Div(self->unk_3c, self->unk_40);
-                if (self->unk_44 <= 0) {
-                    self->unk_3c = 0;
-                    self->unk_44 = 0;
-                    LFLD(Bits02152740, self, 0xc).fade = 0;
+                self->fadeTime -= 0x1000;
+                self->fadeRatio = FX_Div(self->fadeTime, self->fadeLen);
+                if (self->fadeRatio <= 0) {
+                    self->fadeTime = 0;
+                    self->fadeRatio = 0;
+                    self->fade = 0;
                 }
             }
         }
         break;
     }
-    if (self->unk_74 != NULL && !self->unk_74->vfunc_1c()) {
+    if (self->child != NULL && !self->child->vfunc_1c()) {
         LO_FREE_V(self, 0x74);
-        if (self->unk_74 == NULL) {
-            LFLD(Bits02152740, self, 0xc).b0 = 0;
+        if (self->child == NULL) {
+            self->busy = 0;
         }
         if (!self->vfunc_50()) {
-            LFLD(Bits02152740, self, 0xc).b1 = 1;
+            self->hidden = 1;
         }
     }
     self->vfunc_58();
-    if (self->unk_50 != 0) {
-        s32 n = self->unk_50 << 12;
-        self->unk_4c += 0x666;
-        if (self->unk_4c >= n + 0x7c000) {
-            self->unk_4c -= n;
+    if (self->scrollLen != 0) {
+        s32 n = self->scrollLen << 12;
+        self->scrollPos += 0x666;
+        if (self->scrollPos >= n + 0x7c000) {
+            self->scrollPos -= n;
         }
     }
     return TRUE;
