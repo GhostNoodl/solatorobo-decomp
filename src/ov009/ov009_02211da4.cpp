@@ -44,7 +44,7 @@ struct Ov009Byte {
 
 extern Ov009Actor *func_ov000_02192b24(void *desc);
 
-void func_ov009_02211e6c(Ov009Actor *self) {
+void func_ov009_02211e6c(Ov009ActSpin *self) {
     Ov009SpawnDesc desc;
     Ov009Actor *o;
     s32 i;
@@ -68,7 +68,7 @@ void func_ov009_02211e6c(Ov009Actor *self) {
     if (o == NULL) {
         return;
     }
-    FLD(u16, self, 0xf0) = o->id;
+    self->unk_f0 = o->id;
     o->pos.x = self->pos.x;
     o->pos.y = self->pos.y;
     o->pos.z = self->pos.z;

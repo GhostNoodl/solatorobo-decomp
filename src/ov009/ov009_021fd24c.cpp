@@ -14,7 +14,7 @@ static inline void Ov009_Notify(u16 id, u16 a, u16 b, const Ov009Vec *pos) {
     }
 }
 
-BOOL func_ov009_021fd24c(Ov009Actor *self) {
+BOOL func_ov009_021fd24c(Ov009ActVt_02216750 *self) {
     BOOL r = func_ov003_021d16cc(self);
     if (r) {
         Ov009_Notify(self->id, self->unk_50[0], self->unk_50[1], &self->pos);
@@ -112,7 +112,7 @@ void func_ov009_021fd510(Ov009ActVt_02216750 *self) {
         if (self->unk_fc.y < self->unk_f0.y - 0x1000) {
             self->unk_fc.y = self->unk_f0.y - 0x1000;
         }
-        if (FLD(u8, data_ov000_021ccd54, 0xca) != 0x11) {
+        if (data_ov000_021ccd54->unk_ca != 0x11) {
             p = func_ov000_02199f60(self->unk_50);
             if (p != NULL) {
                 u16 a = Ov009_AngleTo(self, p);

@@ -48,7 +48,7 @@ extern BOOL func_01ffc624(const Ov009Vec *a, const Ov009Vec *b, Ov009RotS *r, s3
 extern void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
 
-static inline void Ov009_CountDown(Ov009Actor *self) {
+static inline void Ov009_CountDown(Ov009ActVt_02217390 *self) {
     if (self->unk_b6 != 0) {
         self->unk_b6--;
     }

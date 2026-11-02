@@ -1,11 +1,5 @@
 #include "ov014/ov014.h"
 
-struct Ov014Vec16 {
-    u16 x;
-    u16 y;
-    u16 z;
-};
-
 struct Ov014SpawnDesc {
     u16 kind;
     u16 flags;
@@ -26,7 +20,7 @@ extern "C" {
 
 extern void func_ov000_021984f4(void *a, void *b, s32 c);
 
-void func_ov014_02210854(Ov014Actor *self) {
+void func_ov014_02210854(Ov014Act_0220f9d0 *self) {
     if (self->unk_44 != NULL) {
         func_ov000_021984f4(self->unk_44, (u8 *)self + 0x118, 0);
     }
@@ -36,7 +30,7 @@ extern void *data_ov000_021ccd64;
 extern const Ov014Blk12 data_ov014_02216bf4;
 extern const Ov014Blk12 data_ov014_02216c00;
 extern u8 data_ov014_02216cb8[];
-extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDesc *d, Ov014Vec *pos, Ov014Vec16 *rot, u16 a);
+extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDesc *d, Ov014Vec *pos, Ov014Rot16 *rot, u16 a);
 extern Ov014Actor *func_ov000_0219bf90(void);
 extern void MTX_Identity33_(Ov014Mtx33 *m);
 extern void MTX_RotX33_(Ov014Mtx33 *m, s32 s, s32 c);
@@ -52,7 +46,7 @@ Ov014Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
     Ov014Mtx33 m2;
     Ov014Vec off;
     Ov014Mtx33 m;
-    Ov014Vec16 rot;
+    Ov014Rot16 rot;
     Ov014Actor *o;
     Ov014Actor *pl;
     s32 px;
@@ -93,11 +87,11 @@ Ov014Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
     o->unk_84.x = px;
     o->unk_84.y = 0;
     o->unk_84.z = pz;
-    FLD(Ov014Flags8, o, 0x16).b0 = 1;
-    if (((u8 *)o->unk_4c) != NULL) {
-        FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
+    o->flags_0 = 1;
+    if (o->unk_4c != NULL) {
+        o->unk_4c->target = self->id;
     }
-    FLD(u16, self, 0xde) = o->id;
+    self->target_id = o->id;
     return o;
 }
 
@@ -108,7 +102,7 @@ Ov014Actor *func_ov014_02210a78(Ov014Act_0220f9d0 *self) {
     Ov014Vec pos;
     Ov014Vec d;
     Ov014SpawnDesc desc;
-    Ov014Vec16 rot;
+    Ov014Rot16 rot;
     Ov014Actor *o;
     s32 k;
     s32 i;
@@ -148,11 +142,11 @@ Ov014Actor *func_ov014_02210a78(Ov014Act_0220f9d0 *self) {
     desc.parent = -1;
     o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
     o->unk_84 = d;
-    FLD(Ov014Flags8, o, 0x16).b0 = 1;
-    if (((u8 *)o->unk_4c) != NULL) {
-        FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
+    o->flags_0 = 1;
+    if (o->unk_4c != NULL) {
+        o->unk_4c->target = self->id;
     }
-    FLD(u16, self, 0xde) = o->id;
+    self->target_id = o->id;
     return o;
 }
 

@@ -1,11 +1,5 @@
 #include "ov014/ov014.h"
 
-struct Ov014Vec16 {
-    s16 x;
-    s16 y;
-    s16 z;
-};
-
 struct Ov014SpawnDesc {
     u16 kind;
     u16 flags;
@@ -62,11 +56,11 @@ Ov014Actor *func_ov014_02210c5c(Ov014Act_0220f9d0 *self) {
     Ov014Spawn_Init(&desc, 0x4814);
     o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
     o->unk_90 = func_ov000_0219bf90()->id;
-    FLD(Ov014Flags8, o, 0x16).b0 = 1;
-    if (((u8 *)o->unk_4c) != NULL) {
-        FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
+    o->flags_0 = 1;
+    if (o->unk_4c != NULL) {
+        o->unk_4c->target = self->id;
     }
-    FLD(u16, self, 0xde) = o->id;
+    self->target_id = o->id;
     return o;
 }
 
@@ -75,7 +69,7 @@ Ov014Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self) {
     Ov014Vec pos;
     Ov014Vec16 rot;
     Ov014Actor *o;
-    u16 id = FLD(u16, self, 0xde);
+    u16 id = self->target_id;
     if (data_ov000_021ccd68 == NULL) {
         o = NULL;
     } else {
@@ -98,12 +92,12 @@ Ov014Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self) {
         return NULL;
     }
     o->unk_90 = self->unk_90;
-    FLD(Ov014Flags8, o, 0x16).b0 = 1;
-    if (((u8 *)o->unk_4c) != NULL) {
-        FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
+    o->flags_0 = 1;
+    if (o->unk_4c != NULL) {
+        o->unk_4c->target = self->id;
     }
     o->unk_60 = data_ov014_02216cf4;
-    FLD(u16, self, 0xde) = o->id;
+    self->target_id = o->id;
     return o;
 }
 

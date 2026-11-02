@@ -58,10 +58,10 @@ void func_ov013_021fe778(Ov013Actor *self) {
             s32 ty = t->pos.y;
             s32 d = Ov013_DistXZ(&self->pos, &t->pos);
             s32 dy = self->pos.y >= ty ? self->pos.y - ty : ty - self->pos.y;
-            u8 *m = ((u8 *)self->unk_4c);
-            FLD(s32, m, 0x50) = d;
-            FLD(s32, m, 0x54) = dy;
-            FLD(s32, m, 0x58) = 0;
+            Ov013Target *m = self->unk_4c;
+            m->unk_50 = d;
+            m->unk_54 = dy;
+            m->unk_58 = 0;
         }
         self->unk_48->unk_30 = 0;
     }

@@ -1,13 +1,5 @@
 #include "ov014/ov014.h"
 
-struct Ov014G190C {
-    u8 b0 : 2;
-    u8 b2 : 1;
-    u8 b3 : 1;
-    u8 b4 : 1;
-    u8 b5 : 3;
-};
-
 struct Ov014BgmC {
     u16 active : 1;
     u16 rest : 15;
@@ -103,7 +95,7 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
         n = self->unk_44;
         n->unk_22_0 = 0;
         n->unk_22_1 = 0;
-        FLD(u16, ((u8 *)self->unk_4c), 0x1c) = 0xffff;
+        self->unk_4c->target = 0xffff;
         b = 0x15;
         func_ov000_0219bd20(0x5c16, self->id, 2, 1, 1, &b);
         func_ov000_0219bd20(0x4806, self->id, 2, 1, 1, &b);
@@ -142,13 +134,13 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
         if (t == 0x140) {
             Ov014Game54 *g = data_ov000_021ccd54;
             u8 *h;
-            FLD(Ov014G190C, g, 0x190).b2 = 1;
-            FLD(Ov014G190C, g, 0x190).b3 = 0;
-            FLD(Ov014G190C, g, 0x190).b4 = 0;
-            FLD(u8, g, 0x18d) = 0x10;
-            FLD(u8, g, 0x18e) = 0x1e;
-            FLD(u8, g, 0x18f) = 0x1e;
-            FLD(u8, g, 0x18c) = 1;
+            g->unk_190_2 = 1;
+            g->unk_190_3 = 0;
+            g->unk_190_4 = 0;
+            g->unk_18d = 0x10;
+            g->unk_18e = 0x1e;
+            g->unk_18f = 0x1e;
+            g->unk_18c = 1;
             h = data_02097e48;
             if (FLD(Ov014BgmC, h, 0).active != 1 || FLD(u16, h, 0x74) != 0xffff || FLD(u16, h, 0x72) != 0x38) {
                 FLD(u16, h, 0x74) = 0x38;
@@ -191,10 +183,10 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
             Ov014Game54 *g;
             self->unk_40->state++;
             g = data_ov000_021ccd54;
-            FLD(u8, g, 0x18c) = 0;
-            FLD(u8, g, 0x18d) = 0;
-            FLD(u8, g, 0x18e) = 0;
-            FLD(u8, g, 0x18f) = 0;
+            g->unk_18c = 0;
+            g->unk_18d = 0;
+            g->unk_18e = 0;
+            g->unk_18f = 0;
         }
         break;
     }

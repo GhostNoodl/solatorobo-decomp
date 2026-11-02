@@ -91,7 +91,7 @@ s32 func_ov013_021fc400(Ov013Actor *self) {
     return r;
 }
 
-void func_ov013_021fc518(Ov013Actor *self) {
+void func_ov013_021fc518(Ov013ActVt_0220b5e0 *self) {
     Ov013Sub48 *m;
     s32 n;
     Ov013Actor *a;
@@ -100,10 +100,10 @@ void func_ov013_021fc518(Ov013Actor *self) {
     m = self->unk_48;
     m->unk_9a_2 = 0;
     m->unk_9a_5 = 0;
-    FLD(u8, self, 0xf0) = 0;
-    FLD(s32, self, 0xf4) = -1;
+    self->unk_f0 = 0;
+    self->unk_f4 = -1;
     n = func_ov000_0218dfb4(func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000), 0x5c17);
-    FLD(u8, self, 0xf8) = n % 2;
+    self->unk_f8 = n % 2;
     if (n == 2) {
         if (data_ov000_021ccd68 == NULL) {
             a = NULL;
@@ -111,7 +111,7 @@ void func_ov013_021fc518(Ov013Actor *self) {
             a = func_ov000_0218e6d0(data_ov000_021ccd68, 0x5000, 0x5c17);
         }
         if (a != NULL && a == self) {
-            FLD(u8, self, 0xf8) = 1;
+            self->unk_f8 = 1;
         }
     }
     func_ov000_02190cb0(self->unk_38, data_ov013_0220b5b8, 0x1000, 0);
@@ -122,7 +122,7 @@ void func_ov013_021fc518(Ov013Actor *self) {
     self->unk_b6 = 100;
 }
 
-void func_ov013_021fc624(Ov013Actor *self) {
+void func_ov013_021fc624(Ov013ActVt_0220b5e0 *self) {
     Ov013Actor *p;
     u8 k;
     if (!Ov013_GameIdle()) {
@@ -134,7 +134,7 @@ void func_ov013_021fc624(Ov013Actor *self) {
         self->unk_90 = p->id;
     }
     k = self->unk_40->unk_13;
-    if (FLD(u8, self, 0xf0) != 0 && k != 0x15 && k != 9) {
+    if (self->unk_f0 != 0 && k != 0x15 && k != 9) {
         self->unk_40->flags |= 4;
     }
     if (k != 1 || self->unk_40->state != 0x63) {
@@ -205,7 +205,7 @@ static inline s32 Ov013_DistXZ(const Ov013Vec *a, const Ov013Vec *b) {
 // the sound pitch are built where they are assigned (rounds o4B, cmA).
 typedef enum { OV013_EF_KIND_FC7E0 = 0x192 } Ov013EfKind;
 typedef enum { OV013_SND_PITCH_NONE = 0 } Ov013SndPitch;
-void func_ov013_021fc7e0(Ov013Actor *self) {
+void func_ov013_021fc7e0(Ov013ActVt_0220b5e0 *self) {
     Ov013SndPitch pitch;
     Ov013EfKind kind;
     Ov013Actor *pl = func_ov000_0218d240(self);
@@ -269,7 +269,7 @@ void func_ov013_021fc7e0(Ov013Actor *self) {
             o = (Ef13 *)func_02065f88(kind, &v);
         }
         pitch = OV013_SND_PITCH_NONE;
-        FLD(s32, self, 0xf4) = o->id;
+        self->unk_f4 = o->id;
         o->SetRotXYZ(0, self->unk_98, 0);
         o->speed = 0xb33;
         o->SetScaleXYZ(0x800, 0x800, 0x800);
@@ -288,7 +288,7 @@ void func_ov013_021fc7e0(Ov013Actor *self) {
             self->pos.y = 0x99a;
         }
         func_ov000_0219aae8(self, self, 0x1e, 0x20, 1 << (pl->id >> 12), data_ov013_0220ae88, NULL, self->unk_64, 0, 100, 0x1000);
-        o = (Ef13 *)func_020657b0(data_0214a420, FLD(s32, self, 0xf4));
+        o = (Ef13 *)func_020657b0(data_0214a420, self->unk_f4);
         if (o != NULL) {
             Ov013Vec v;
             v.x = self->pos.x;
@@ -300,7 +300,7 @@ void func_ov013_021fc7e0(Ov013Actor *self) {
         }
         if (Ov013_DistXZ(&self->pos, &tgt) < 0x19a) {
             self->unk_a0 = 0x29;
-            self->unk_b8 = data_ov013_0220b5a0[FLD(u8, self, 0xf8)];
+            self->unk_b8 = data_ov013_0220b5a0[self->unk_f8];
             self->unk_40->state = 21;
             self->unk_40->timer = 0;
         }
@@ -318,8 +318,8 @@ void func_ov013_021fc7e0(Ov013Actor *self) {
         if (t > 0x1e) {
             func_ov000_0218d918(self, &tgt, 0x11f);
         }
-        if (self->pos.y > data_ov013_0220b5a0[FLD(u8, self, 0xf8)].y) {
-            self->pos.y = data_ov013_0220b5a0[FLD(u8, self, 0xf8)].y;
+        if (self->pos.y > data_ov013_0220b5a0[self->unk_f8].y) {
+            self->pos.y = data_ov013_0220b5a0[self->unk_f8].y;
         }
         func_ov000_0219aae8(self, self, 0x1e, 0x20, 1 << (pl->id >> 12), data_ov013_0220ae88, NULL, self->unk_64, 0, 100, 0x1000);
         if (func_01ffc198(&self->pos, &tgt, 0xccd)) {
@@ -330,7 +330,7 @@ void func_ov013_021fc7e0(Ov013Actor *self) {
         }
         self->unk_98 = self->rot[1];
         func_ov000_0218dbe0(self, 0);
-        o = (Ef13 *)func_020657b0(data_0214a420, FLD(s32, self, 0xf4));
+        o = (Ef13 *)func_020657b0(data_0214a420, self->unk_f4);
         if (o != NULL) {
             Ov013Vec v;
             v.x = self->pos.x;
@@ -346,7 +346,7 @@ void func_ov013_021fc7e0(Ov013Actor *self) {
         self->pos = tgt;
         func_ov000_02190cb0(self->unk_38, data_ov013_0220b5b8, 0x155, 0);
         func_ov000_021915a0(self->unk_38);
-        func_02065804(data_0214a420, FLD(s32, self, 0xf4));
+        func_02065804(data_0214a420, self->unk_f4);
         self->unk_40->state = 0x63;
         self->unk_40->timer = 0;
         break;

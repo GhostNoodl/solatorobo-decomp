@@ -177,7 +177,7 @@ void func_ov013_02204910(Ov013Actor *self, u16 a, u16 b, u16 c, u16 d) {
     }
     FLD(Ov013Flags8, self, 0xce).b0 = 0;
     FLD(u16, self, 0xd0) = d;
-    FLD(u16, self->unk_4c, 0x1c) = a;
+    self->unk_4c->target = a;
     self->unk_90 = b;
     FLD(void *, self, 0xd8) = data_ov013_0220b2ec;
     self->unk_98 = c;

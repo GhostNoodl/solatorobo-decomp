@@ -66,7 +66,7 @@ void func_ov009_021fdbc8(Ov009ActVt_022165f8 *self) {
         self->unk_f2 = 0xc8;
         break;
     }
-    if (FLD(u8, data_ov000_021ccd54, 0xca) == 2) {
+    if (data_ov000_021ccd54->unk_ca == 2) {
         self->unk_18 = 1;
     }
     self->unk_f8 = 0;

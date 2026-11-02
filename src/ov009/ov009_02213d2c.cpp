@@ -34,7 +34,7 @@ void func_ov009_02213d2c(Ov009ActVt_02217cb0 *self) {
         self->unk_40->timer = 3;
         break;
     case 10:
-        if (FLD(s16, self->unk_38, 0xc4) != 1) {
+        if (self->unk_38->anim_state != 1) {
             return;
         }
         st = self->unk_40;

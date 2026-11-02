@@ -46,7 +46,7 @@ void func_ov013_0220aca0(Ov013ActEx_0220a9a8 *self) {
     if (t == NULL) {
         return;
     }
-    func_ov000_0219aae8(self, self, FLD(u16, self->unk_4c, 0x8), FLD(u16, self->unk_4c, 0xa), 1 << (t->id >> 12), NULL, 0,
+    func_ov000_0219aae8(self, self, self->unk_4c->unk_08, self->unk_4c->unk_0a, 1 << (t->id >> 12), NULL, 0,
                         self->unk_48->unk_38, self->unk_d0, -1, 0x1000);
 }
 

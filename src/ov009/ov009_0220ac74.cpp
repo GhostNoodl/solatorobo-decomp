@@ -4,7 +4,7 @@ extern "C" {
 
 extern void func_ov003_021d3d28(Ov009Actor *self);
 
-void func_ov009_0220ac74(Ov009Actor *self) {
+void func_ov009_0220ac74(Ov009ActVt_02217390 *self) {
     func_ov003_021d3d28(self);
     if (self->unk_90 != 0xffff) {
         return;
@@ -75,7 +75,7 @@ void func_ov009_0220acb8(Ov009ActVt_02217390 *self) {
         e->v20(&v);
         Ov009_Blast(self, Ov009_Ang(self), &v, y + 0x1333);
         func_ov000_0218996c(10, 0x19);
-        FLD(u16, self->unk_4c, 0x1c) = 0xffff;
+        self->unk_4c->target = 0xffff;
         self->unk_40->state++;
         break;
     }
@@ -83,7 +83,7 @@ void func_ov009_0220acb8(Ov009ActVt_02217390 *self) {
         if (Ov009_Tick(self->unk_40) > 0x1e) {
             func_ov003_021d6a3c(self, 1, 0, 0);
         } else {
-            FLD(u8, self->unk_38, 0xbe) = 0x1f - self->unk_40->timer;
+            self->unk_38->alpha = 0x1f - self->unk_40->timer;
         }
         break;
     }

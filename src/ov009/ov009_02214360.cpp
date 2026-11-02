@@ -2,11 +2,11 @@
 
 extern "C" {
 
-extern BOOL func_ov000_021950e8(Ov009Actor *self, u8 *msg);
+extern BOOL func_ov000_021950e8(Ov009Obj *self, u8 *msg);
 extern void func_ov000_02194758(Ov009Obj *self);
 extern void *func_ov000_02199ba0(void *p);
 
-void func_ov009_02214360(Ov009Actor *self, u8 *msg) {
+void func_ov009_02214360(Ov009ActExVt_0221828c *self, u8 *msg) {
     if (msg[5] == 6) {
         FLD(u8, self, 0xce) = msg[8];
         self->unk_30 |= 1 << msg[5];
@@ -19,7 +19,7 @@ void func_ov009_0221439c(Ov009ActExVt_0221828c *self) {
     u8 *p;
     func_ov000_02194758(self);
     self->unk_d0 = 0;
-    p = (u8 *)func_ov000_02199ba0(((void *)self->unk_4c));
+    p = (u8 *)func_ov000_02199ba0(self->unk_4c);
     if (p != NULL) {
         self->unk_d2 = FLD(u16, p, 0xc);
     }

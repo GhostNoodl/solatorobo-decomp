@@ -61,8 +61,8 @@ void func_ov014_02208fe4(Ov014ActEx_02208618 *self) {
     for (i = 0; i < n; i++) {
         Ov014Actor *q;
         if (list[i] != NULL && (q = func_ov000_021985c0(list[i])) != NULL) {
-            u8 *s = ((u8 *)q->unk_4c);
-            if (s == NULL || k != (u16)(FLD(u16, s, 0x1c) & 0xf000)) {
+            Ov014Target *s = q->unk_4c;
+            if (s == NULL || k != (u16)(s->target & 0xf000)) {
                 func_ov003_021f0c60(self, 0);
                 self->unk_d0 |= 0x1000;
                 func_ov000_02198360(self->unk_40, 0x15, 0);
@@ -148,7 +148,7 @@ Ov014Actor *func_ov014_02209280(Ov014Act_02209280 *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov014_02217968;
     func_ov003_021ceedc((u8 *)self + 0x1c0);
-    self->unk_f0 = 0;
+    self->step = 0;
     self->unk_f4 = 0;
     self->unk_f8 = 0;
     self->unk_fc = 0;
@@ -166,8 +166,8 @@ Ov014Actor *func_ov014_02209280(Ov014Act_02209280 *self) {
     self->unk_1b4.x = 0;
     self->unk_1b4.y = 0;
     self->unk_1b4.z = 0;
-    FLD(s32, self, 0x1dc) = 0;
-    FLD(s32, self, 0x1e0) = 0;
+    self->unk_1dc = 0;
+    self->unk_1e0 = 0;
     self->unk_1e4 = 0;
     self->unk_1e8 = 0;
     self->unk_1ec = 0;
@@ -176,9 +176,9 @@ Ov014Actor *func_ov014_02209280(Ov014Act_02209280 *self) {
 }
 #pragma force_active reset
 
-static inline void Ov014_Kill1f0(Ov014Actor *self) {
+static inline void Ov014_Kill1f0(Ov014Act_02209280 *self) {
     Ov014V *o;
-    if (data_0214a420 != NULL && (o = func_020657b0(data_0214a420, FLD(void *, self, 0x1f0))) != NULL) {
+    if (data_0214a420 != NULL && (o = func_020657b0(data_0214a420, ((void *)self->unk_1f0))) != NULL) {
         u32 saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->def;
         if (o != NULL) {
@@ -190,7 +190,7 @@ static inline void Ov014_Kill1f0(Ov014Actor *self) {
     }
 }
 
-Ov014Actor *func_ov014_02209334(Ov014Actor *self) {
+Ov014Act_02209280 *func_ov014_02209334(Ov014Act_02209280 *self) {
     FLD(void *, self, 0) = data_ov014_02217968;
     Ov014_Kill1f0(self);
     func_02036838(data_02097cdc, data_ov014_02217a0c, 7, 0);
@@ -199,7 +199,7 @@ Ov014Actor *func_ov014_02209334(Ov014Actor *self) {
     return self;
 }
 
-Ov014Actor *func_ov014_022093e0(Ov014Actor *self) {
+Ov014Act_02209280 *func_ov014_022093e0(Ov014Act_02209280 *self) {
     FLD(void *, self, 0) = data_ov014_02217968;
     Ov014_Kill1f0(self);
     func_02036838(data_02097cdc, data_ov014_02217a0c, 7, 0);
@@ -209,20 +209,20 @@ Ov014Actor *func_ov014_022093e0(Ov014Actor *self) {
     return self;
 }
 
-void func_ov014_02209494(Ov014Actor *self) {
+void func_ov014_02209494(Ov014Act_02209280 *self) {
     func_ov003_021d0fc0(self);
     func_020359d0(data_ov014_02217a0c, 7, 0);
     func_02049678(data_02097e4c, 4, 0xc, -1);
 }
 
-BOOL func_ov014_022094d0(Ov014Actor *self) {
+BOOL func_ov014_022094d0(Ov014Act_02209280 *self) {
     BOOL r = TRUE;
     r = (r & func_ov000_0218cf5c(self)) ? TRUE : FALSE;
     r = (r & func_02035b90(data_ov014_02217a0c, 7)) ? TRUE : FALSE;
     return (r & func_0204985c(data_02097e4c)) ? TRUE : FALSE;
 }
 
-void func_ov014_02209520(Ov014Actor *self, Ov014Msg *msg) {
+void func_ov014_02209520(Ov014Act_02209280 *self, Ov014Msg *msg) {
     func_ov003_021d1c00(self, msg);
 }
 
@@ -267,17 +267,11 @@ void func_ov014_0220952c(Ov014Act_02209280 *self) {
     self->unk_38->unk_c2_8 = 1;
     self->unk_38->unk_50 = &self->unk_fc;
     FLD(Ov014Flags, self->unk_38, 0xc2).b4 = 0;
-    FLD(u8, ((u8 *)self->unk_4c), 0x18) |= 0x10;
+    self->unk_4c->unk_18 |= 0x10;
     self->unk_1a8 = self->pos.x;
     self->unk_1ac = self->pos.y;
     self->unk_1b0 = self->pos.z;
 }
-
-struct Ov014Anim8c {
-    s16 kind;
-    u8 unk_02[0x4];
-    u16 unk_06;
-};
 
 extern u8 *func_ov000_0219bf90(void);
 extern void func_02065860(void *a, void *b);
@@ -321,7 +315,7 @@ void func_ov014_022096e0(Ov014Act_02209280 *self) {
         func_02065860(data_0214a420, self->unk_1e0);
         self->unk_1e0 = NULL;
         func_02065860(data_0214a420, ((void *)self->unk_1e4));
-        FLD(void *, self, 0x1e4) = NULL;
+        self->unk_1e4 = 0;
     }
     switch (self->unk_b4) {
     case 0:
@@ -358,7 +352,7 @@ void func_ov014_022096e0(Ov014Act_02209280 *self) {
         t = self->unk_1cc;
         idx = FLD(u16, t, 8);
         a = FLD(u8 *, t, 0xc);
-        FLD(u8 *, self, 0xf0) = a + idx * 8;
+        self->step = (Ov014Step *)(a + idx * 8);
         switch (*(s16 *)(a + idx * 8)) {
         case 0:
         case 1:
@@ -402,7 +396,7 @@ void func_ov014_022096e0(Ov014Act_02209280 *self) {
         self->unk_40->flags |= 2;
         self->unk_40->state = 0;
         self->unk_b4 = 0x14;
-        self->unk_b6 = ((Ov014Anim8c *)self->unk_f0)->unk_06;
+        self->unk_b6 = self->step->unk_06;
         break;
     case 0x32:
         func_ov000_02198360(self->unk_40, 0x10, 0);
@@ -417,7 +411,7 @@ void func_ov014_022096e0(Ov014Act_02209280 *self) {
         self->unk_40->flags |= 2;
         self->unk_40->state = 0;
         self->unk_b4 = 0x14;
-        self->unk_b6 = ((Ov014Anim8c *)self->unk_f0)->unk_06;
+        self->unk_b6 = self->step->unk_06;
         break;
     case 0x28:
         func_ov000_02198360(self->unk_40, 0xf, 0);
@@ -432,7 +426,7 @@ void func_ov014_022096e0(Ov014Act_02209280 *self) {
         self->unk_40->flags |= 2;
         self->unk_40->state = 0;
         self->unk_b4 = 0x14;
-        self->unk_b6 = ((Ov014Anim8c *)self->unk_f0)->unk_06;
+        self->unk_b6 = self->step->unk_06;
         break;
     case 0x3c:
         func_ov000_02198360(self->unk_40, 0x11, 0);
@@ -447,7 +441,7 @@ void func_ov014_022096e0(Ov014Act_02209280 *self) {
         self->unk_40->flags |= 2;
         self->unk_40->state = 0;
         self->unk_b4 = 0x14;
-        self->unk_b6 = ((Ov014Anim8c *)self->unk_f0)->unk_06;
+        self->unk_b6 = self->step->unk_06;
         break;
     case 0x46:
         if (self->unk_40->unk_13 == 1) {
@@ -503,7 +497,7 @@ void func_ov014_022096e0(Ov014Act_02209280 *self) {
         self->unk_40->flags |= 2;
         self->unk_40->timer = 0;
         self->unk_b4 = 0x14;
-        self->unk_b6 = ((Ov014Anim8c *)self->unk_f0)->unk_06;
+        self->unk_b6 = self->step->unk_06;
         self->unk_a0 = 0;
         self->unk_a8 = 0;
         break;

@@ -173,6 +173,19 @@ struct Ov014Flags8 {
     u8 b7 : 1;
 };
 
+struct Ov014Vec16 {
+    s16 x;
+    s16 y;
+    s16 z;
+};
+
+// Three u16 angles.
+struct Ov014Rot16 {
+    u16 x;
+    u16 y;
+    u16 z;
+};
+
 struct Ov014Vec {
     s32 x;
     s32 y;
@@ -315,6 +328,42 @@ struct Ov014Param {
     u16 unk_0a_10 : 6;
 };
 
+// The ov000 Target object at Ov014Obj::unk_4c (Target_02199b00.c; func_ov000_02199ba0 looks up
+// the actor whose id is in target).
+struct Ov014Target {
+    u8 type;
+    u8 unk_01;
+    u8 unk_02;
+    u8 unk_03;
+    u16 unk_04;
+    u16 unk_06;
+    u16 unk_08;
+    u16 unk_0a;
+    u8 unk_0c[0x4];
+    u16 kinds[2];
+    u16 ids[2];
+    u8 unk_18;
+    u8 unk_19;
+    u8 unk_1a;
+    u8 unk_1b;
+    u16 target;
+    u16 unk_1e;
+    u8 unk_20[0x24];
+    Ov014Vec dest;
+    u32 unk_50;
+    u32 unk_54;
+    u32 unk_58;
+};
+SIZE_ASSERT(Ov014Target, 0x5c);
+
+// One step of an Ov014Act_02209280 action script (8 bytes; the actor's step points at the current one).
+struct Ov014Step {
+    s16 kind;
+    u16 time;
+    u16 unk_04;
+    u16 unk_06;
+};
+
 // The object base shared by the ov003 actor (Ov014Actor, built by func_ov003_021d0c1c) and the
 // ov000 actor (Ov014ActorEx, built by func_ov000_02194074): the fields below 0xac.
 class Ov014Obj : public Ov014V {
@@ -322,7 +371,16 @@ public:
     u8 unk_04[0x8];
     u16 id;
     u16 kind;
-    u8 unk_10[0x8];
+    u8 unk_10[0x6];
+    union {
+        u8 unk_16; // read and written whole in func_ov014_022049e8
+        struct {
+            u8 flags_0 : 1;
+            u8 flags_1 : 1;
+            u8 flags_2 : 6;
+        };
+    };
+    u8 unk_17;
     s16 unk_18;
     s16 unk_1a;
     s16 unk_1c;
@@ -338,7 +396,7 @@ public:
     Ov014Sub40 *unk_40;
     Ov014Sub44 *unk_44;
     Ov014Sub48 *unk_48;
-    void *unk_4c;
+    Ov014Target *unk_4c;
     u16 *unk_50;
     u8 unk_54[0x8];
     void *unk_5c;
@@ -379,11 +437,15 @@ public:
     s32 unk_c4;
     s32 unk_c8;
     s32 unk_cc;
-    u32 unk_d0;
-    u8 unk_d4[0xc];
-    s32 unk_e0;
-    u8 unk_e4;
-    u8 unk_e5[0x5];
+    // 0xd0..0xee as func_ov003_021d0c1c sets them.
+    void *unk_d0;
+    void *unk_d4;
+    void *unk_d8;
+    u16 unk_dc;
+    u16 target_id;  // id of the actor this one tracks; 0xffff for none
+    void *unk_e0;
+    void *unk_e4;
+    u16 unk_e8;
     u16 unk_ea_0 : 3;
     u16 unk_ea_3 : 3;
     u16 unk_ea_6 : 2;
@@ -466,6 +528,21 @@ struct Ov014Game54 {
     u8 unk_ac;
     u8 unk_ad[0x27];
     s32 unk_d4;
+    u8 unk_d8[0xb4];
+    u8 unk_18c;
+    u8 unk_18d;
+    u8 unk_18e;
+    u8 unk_18f;
+    union {
+        u8 unk_190;
+        struct {
+            u8 unk_190_0 : 2;
+            u8 unk_190_2 : 1;
+            u8 unk_190_3 : 1;
+            u8 unk_190_4 : 1;
+            u8 unk_190_5 : 3;
+        };
+    };
 };
 
 extern "C" {
@@ -704,7 +781,7 @@ SIZE_ASSERT(Ov014Act_0221267c, 0x358);
 // Actor class of func_ov014_02209280 (vtable data_ov014_02217968).
 class Ov014Act_02209280 : public Ov014Actor {
 public:
-    s32 unk_f0;
+    Ov014Step *step;
     u32 unk_f4;
     u16 unk_f8;
     u8 unk_fa[0x2];
@@ -715,9 +792,15 @@ public:
     u8 unk_108[0x24];
     Ov014Vec unk_12c;
     s32 unk_138;
-    u8 unk_13c[0x30];
+    u8 unk_13c[0x24];
+    s32 unk_160;
+    s32 unk_164;
+    s32 unk_168;
     s32 unk_16c;
-    u8 unk_170[0x30];
+    u8 unk_170[0x24];
+    s32 unk_194;
+    s32 unk_198;
+    s32 unk_19c;
     u16 unk_1a0;
     u16 unk_1a2;
     u8 unk_1a4;
@@ -790,7 +873,8 @@ class Ov014ActEx_0220d70c : public Ov014ActorEx {
 public:
     void *unk_d0;
     void *unk_d4;
-    u8 unk_d8[0x8];
+    Ov014Vec16 unk_d8; // state durations, copied from the spawn data at 0x18
+    u8 unk_de[0x2];
 };
 SIZE_ASSERT(Ov014ActEx_0220d70c, 0xe0);
 
@@ -888,5 +972,23 @@ public:
     s32 unk_f4;
 };
 SIZE_ASSERT(Ov014ActEx_022152e8, 0xf8);
+
+// The ov000-factory classes with vtables data_ov014_022178d0 (0xe8 bytes, exactly this class) and
+// data_ov014_02217838 (Ov014ActExVt_02217838): both scale in from 0 to the model's scale.
+class Ov014ActExGrow : public Ov014ActorEx {
+public:
+    u32 flags;      // 0x1000: remove, 0x200000: hit
+    Ov014Vec scale; // the model's scale, saved at start
+    s32 cur_scale;
+    u8 timer;
+    u8 unk_e5[0x3];
+};
+SIZE_ASSERT(Ov014ActExGrow, 0xe8);
+
+class Ov014ActExVt_02217838 : public Ov014ActExGrow {
+public:
+    void *fx; // handle of the effect spawned at full size
+};
+SIZE_ASSERT(Ov014ActExVt_02217838, 0xec);
 
 #endif

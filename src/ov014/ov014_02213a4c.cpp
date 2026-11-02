@@ -96,10 +96,10 @@ void func_ov014_022136b4(Ov014Act_0221267c *self) {
         o->unk_60 = data_ov014_02216e08;
         o->unk_90 = self->unk_90;
         if (o->unk_4c != NULL) {
-            FLD(u16, o->unk_4c, 0x1c) = self->id;
+            o->unk_4c->target = self->id;
         }
         FLD(Ov014Bit16, o, 0x16).b0 = 1;
-        FLD(u16, self, 0xde) = o->id;
+        self->target_id = o->id;
         self->unk_312--;
         self->unk_40->state++;
         self->unk_40->timer = 0x32;
@@ -134,7 +134,7 @@ void func_ov014_022136b4(Ov014Act_0221267c *self) {
     }
 }
 
-void func_ov014_02213a4c(Ov014Actor *self) {
+void func_ov014_02213a4c(Ov014Act_0221267c *self) {
     switch (self->unk_40->state) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov014_02217d7c, 0x1000, 0);

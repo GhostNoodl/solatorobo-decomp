@@ -56,7 +56,7 @@ struct Ov009Bit8 {
     u8 b1 : 7;
 };
 
-void func_ov009_02211f9c(Ov009Actor *self) {
+void func_ov009_02211f9c(Ov009ActSpin *self) {
     Ov009Sub38 *m;
     u8 *c;
     u32 *o;
@@ -66,18 +66,18 @@ void func_ov009_02211f9c(Ov009Actor *self) {
     func_ov003_021d112c(self);
     switch (self->kind) {
     case 0x504f:
-        FLD(s32, self, 0xf4) = func_ov000_021909a8(self->unk_38, data_ov009_022179c0, data_ov009_022179c7);
+        self->unk_f4 = func_ov000_021909a8(self->unk_38, data_ov009_022179c0, data_ov009_022179c7);
         break;
     case 0x5050:
-        FLD(s32, self, 0xf4) = func_ov000_021909a8(self->unk_38, data_ov009_022179d1, data_ov009_022179d8);
+        self->unk_f4 = func_ov000_021909a8(self->unk_38, data_ov009_022179d1, data_ov009_022179d8);
         break;
     }
-    MTX_Identity43_(&FLD(u8, self, 0xf8));
+    MTX_Identity43_(&self->unk_f8);
     m = self->unk_38;
     NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov009_02211f84);
     m->unk_c2_5 = 0;
     self->unk_38->unk_c2_8 = 1;
-    self->unk_38->unk_50 = &FLD(u8, self, 0xf4);
+    self->unk_38->unk_50 = &self->unk_f4;
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
     if (self->unk_48 != NULL) {
@@ -150,10 +150,10 @@ void func_ov009_02211f9c(Ov009Actor *self) {
     }
     self->unk_b6 = 0x1e;
     self->unk_ea_0 = 0;
-    FLD(Ov009Vec, self, 0x134).x = self->pos.x;
-    FLD(Ov009Vec, self, 0x134).y = self->pos.y;
-    FLD(Ov009Vec, self, 0x134).z = self->pos.z;
-    FLD(u16, self, 0xf2) = 0;
+    self->unk_134.x = self->pos.x;
+    self->unk_134.y = self->pos.y;
+    self->unk_134.z = self->pos.z;
+    self->unk_f2 = 0;
 }
 
 }

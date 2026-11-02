@@ -54,9 +54,9 @@ __declspec(weak) const VecFx32 data_ov012_0220afb8 = data_ov012_0220a5d0;
 // ---- merged from ov012_02202994.cpp
 namespace m_02202994 {
 extern "C" {
-void func_ov012_02202994(Ov012Actor *self) {
+void func_ov012_02202994(Ov012ActExVt_0220af10 *self) {
     if (self->unk_40->state == 0) {
-        FLD(u16, self->unk_4c, 0x1c) = FLD(u16, self, 0xe0);
+        self->unk_4c->target = self->unk_e0;
         self->unk_48->unk_30 = 0x40000000;
     }
     func_ov000_02196860(self);
@@ -64,7 +64,7 @@ void func_ov012_02202994(Ov012Actor *self) {
 }
 
 extern "C" {
-void func_ov012_022029c8(Ov012Actor *self) {
+void func_ov012_022029c8(Ov012ActExVt_0220af10 *self) {
     if (self->unk_40->state == 0) {
         self->unk_64 = 0x1800;
         func_02065f88(0x69, &self->pos);
@@ -245,7 +245,7 @@ void func_ov012_02202d1c(Ov012Act_02202b10 *self) {
     m->unk_5c = 0;
     m->unk_60 = 0x1800;
     m->unk_64 = 0;
-    v = FLD(u8, data_ov000_021ccd54, 0xca);
+    v = data_ov000_021ccd54->unk_ca;
     self->unk_f4 = v;
     if (v == 3) {
         self->unk_50[1] = 700;
@@ -354,7 +354,7 @@ void func_ov012_02202e30(Ov012Act_02202b10 *self) {
         if (self->unk_50[0] != 0) {
             BOOL f = FALSE;
             func_02049f44(data_02097e4c, 0x405, &self->pos, 0);
-            if (FLD(u8, ((u8 *)self->unk_4c), 0x19) != 0) {
+            if (self->unk_4c->unk_19 != 0) {
                 f = TRUE;
             }
             if (kind != 0x16 && kind != 0xf && kind != 0x10 && kind != 0x11 && !f) {
@@ -383,8 +383,8 @@ void func_ov012_02202e30(Ov012Act_02202b10 *self) {
                     if (!Ov012_HasFlag(self->unk_40, 0x100000)) {
                         if (self->unk_e8 != 0) {
                             self->unk_e8 = 0;
-                            FLD(u8, ((u8 *)self->unk_4c), 0x1a) = 0;
-                            FLD(u8, ((u8 *)self->unk_4c), 0) = *func_02070558((void *)self->kind);
+                            self->unk_4c->unk_1a = 0;
+                            self->unk_4c->type = *func_02070558((void *)self->kind);
                         }
                         self->unk_f0 = 0x400000;
                         self->unk_40->flags |= 2;
@@ -477,7 +477,7 @@ void func_ov012_02203420(Ov012Act_02202b10 *self) {
     Ov012Vec tgt;
     Ov012Vec p;
     Ov012Sub40 *s;
-    u8 k = FLD(u8, data_ov000_021ccd54, 0xca);
+    u8 k = data_ov000_021ccd54->unk_ca;
     if (k != 3) {
         if (k == 8) {
             tgt = data_ov012_0220a748[self->unk_fa];
@@ -681,7 +681,7 @@ void func_ov012_02203b2c(Ov012Act_02202b10 *self) {
                 o->unk_16.b0 = 1;
                 o->unk_90 = self->unk_90;
                 if (o->unk_4c != NULL) {
-                    FLD(u16, o->unk_4c, 0x1c) = self->id;
+                    o->unk_4c->target = self->id;
                 }
             }
         }
@@ -799,7 +799,7 @@ void func_ov012_02203ed4(Ov012Act_02202b10 *self) {
         break;
     }
     }
-    switch (FLD(u8, data_ov000_021ccd54, 0xca)) {
+    switch (data_ov000_021ccd54->unk_ca) {
     case 8:
         func_ov000_0218d918(self, &data_ov012_0220a618, 0x400);
         break;
@@ -907,7 +907,7 @@ void func_ov012_0220422c(Ov012Act_02202b10 *self) {
             o->unk_90 = self->unk_90;
             func_ov000_0219bebc(o, self->unk_124);
             if (o->unk_4c != NULL) {
-                FLD(u16, o->unk_4c, 0x1c) = self->id;
+                o->unk_4c->target = self->id;
             }
         }
         e = func_02065f88(0x68, pos);
@@ -1301,7 +1301,7 @@ void func_ov012_02205254(Ov012Act_02202b10 *self) {
     o->unk_16.b0 = 1;
     o->unk_18 = 0;
     func_ov000_0219bebc(o, self->unk_124);
-    switch (FLD(u8, data_ov000_021ccd54, 0xca)) {
+    switch (data_ov000_021ccd54->unk_ca) {
     case 8:
         Ov012_VecSet(&o->unk_84, 0, 0x2000, -0x1f0a);
         break;
@@ -1312,7 +1312,7 @@ void func_ov012_02205254(Ov012Act_02202b10 *self) {
     o->rot[1] = self->rot[1];
     o->unk_90 = self->unk_90;
     if (o->unk_4c != NULL) {
-        FLD(u16, o->unk_4c, 0x1c) = self->id;
+        o->unk_4c->target = self->id;
     }
 }
 }
@@ -1343,7 +1343,7 @@ void func_ov012_022053a4(Ov012Act_02202b10 *self) {
     }
     func_ov000_0219bebc(o, self->unk_124);
     if (o->unk_4c != NULL) {
-        FLD(u16, o->unk_4c, 0x1c) = self->id;
+        o->unk_4c->target = self->id;
     }
 }
 }

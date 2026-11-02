@@ -303,6 +303,34 @@ struct Ov013Param {
 };
 
 class Ov013Actor;
+// The ov000 Target object at Ov013Obj::unk_4c (Target_02199b00.c; func_ov000_02199ba0 looks up
+// the actor whose id is in target).
+struct Ov013Target {
+    u8 type;
+    u8 unk_01;
+    u8 unk_02;
+    u8 unk_03;
+    u16 unk_04;
+    u16 unk_06;
+    u16 unk_08;
+    u16 unk_0a;
+    u8 unk_0c[0x4];
+    u16 kinds[2];
+    u16 ids[2];
+    u8 unk_18;
+    u8 unk_19;
+    u8 unk_1a;
+    u8 unk_1b;
+    u16 target;
+    u16 unk_1e;
+    u8 unk_20[0x24];
+    Ov013Vec dest;
+    u32 unk_50;
+    u32 unk_54;
+    u32 unk_58;
+};
+SIZE_ASSERT(Ov013Target, 0x5c);
+
 // The object base shared by the ov003 actor (Ov013Actor, built by func_ov003_021d0c1c) and the
 // ov000 actor (Ov013ActorEx, built by func_ov000_02194074): the fields below 0xac.
 class Ov013Obj : public Ov013V {
@@ -329,7 +357,7 @@ public:
     Ov013Sub40 *unk_40;
     Ov013Sub44 *unk_44;
     Ov013Sub48 *unk_48;
-    void *unk_4c;
+    Ov013Target *unk_4c;
     u16 *unk_50;
     u8 unk_54[0x8];
     void *unk_5c;
@@ -371,9 +399,15 @@ public:
     s32 unk_c4;
     s32 unk_c8;
     s32 unk_cc;
-    u8 unk_d0[0x8];
-    s32 unk_d8;
-    u8 unk_dc[0xe];
+    // 0xd0..0xee as func_ov003_021d0c1c sets them.
+    void *unk_d0;
+    void *unk_d4;
+    void *unk_d8;
+    u16 unk_dc;
+    u16 target_id;  // id of the actor this one tracks; 0xffff for none
+    void *unk_e0;
+    void *unk_e4;
+    u16 unk_e8;
     u16 unk_ea_0 : 3;
     u16 unk_ea_3 : 3;
     u16 unk_ea_6 : 2;
@@ -406,7 +440,8 @@ public:
     s32 unk_c0;
     s32 unk_c4;
     s32 unk_c8;
-    u8 unk_cc[0x4];
+    u16 unk_cc;
+    u16 unk_ce;
 };
 
 struct Ov013Names {
@@ -454,8 +489,25 @@ struct Ov013Game54 {
     s32 unk_94;
     u8 unk_98[0x14];
     u8 unk_ac;
-    u8 unk_ad[0x27];
+    u8 unk_ad[0x1d];
+    u8 unk_ca;
+    u8 unk_cb[0x9];
     s32 unk_d4;
+    u8 unk_d8[0xb4];
+    u8 unk_18c;
+    u8 unk_18d;
+    u8 unk_18e;
+    u8 unk_18f;
+    union {
+        u8 unk_190;
+        struct {
+            u8 unk_190_0 : 2;
+            u8 unk_190_2 : 1;
+            u8 unk_190_3 : 1;
+            u8 unk_190_4 : 1;
+            u8 unk_190_5 : 3;
+        };
+    };
 };
 
 extern "C" {
@@ -556,7 +608,9 @@ static inline s32 *Ov013_NewFx(void) {
 class Ov013ActEx_02204454 : public Ov013ActorEx {
 public:
     u16 unk_d0;
-    u8 unk_d2[0x6];
+    u16 unk_d2;
+    u16 unk_d4;
+    u8 unk_d6[0x2];
     void *unk_d8;
     Ov013Names *unk_dc;
     void *unk_e0;
@@ -576,11 +630,12 @@ SIZE_ASSERT(Ov013ActEx_021fdb70, 0xd8);
 // Actor class of func_ov013_021fea8c (vtable data_ov013_0220b9a0).
 class Ov013Act_021fea8c : public Ov013Actor {
 public:
-    u8 unk_f0[0x2];
+    Ov013Flags8 unk_f0;
+    u8 unk_f1;
     u16 unk_f2;
     u16 unk_f4;
     u16 unk_f6;
-    u8 unk_f8[0x2];
+    u16 unk_f8;
     u16 unk_fa;
     u16 unk_fc;
     u8 unk_fe[0x2];
@@ -649,5 +704,65 @@ public:
     s32 unk_d4;
 };
 SIZE_ASSERT(Ov013ActEx_0220a9a8, 0xd8);
+
+// The ov000-factory class with vtable data_ov013_0220b7d0 (0xdc bytes).
+class Ov013ActExVt_0220b7d0 : public Ov013ActorEx {
+public:
+    s32 unk_d0;
+    s32 unk_d4;
+    s32 unk_d8;
+};
+SIZE_ASSERT(Ov013ActExVt_0220b7d0, 0xdc);
+
+// Actor class with vtable data_ov013_0220b5e0 (built inline by the ov003 factory).
+class Ov013ActVt_0220b5e0 : public Ov013Actor {
+public:
+    u8 unk_f0;
+    u8 unk_f1[0x3];
+    s32 unk_f4;
+    u8 unk_f8;
+    u8 unk_f9[0x3];
+};
+SIZE_ASSERT(Ov013ActVt_0220b5e0, 0xfc);
+
+// Actor class with vtable data_ov013_0220bc80 (built inline by the ov003 factory).
+class Ov013ActVt_0220bc80 : public Ov013Actor {
+public:
+    u16 unk_f0;
+    u8 unk_f2[0x2];
+    Ov013Vec unk_f4;
+    Ov013Vec unk_100;
+};
+SIZE_ASSERT(Ov013ActVt_0220bc80, 0x10c);
+
+// Actor class with vtable data_ov013_0220bdd8 (built inline by the ov003 factory).
+class Ov013ActVt_0220bdd8 : public Ov013Actor {
+public:
+    Ov013Vec unk_f0;
+    u8 unk_fc;
+    u8 unk_fd;
+    u16 unk_fe;
+};
+SIZE_ASSERT(Ov013ActVt_0220bdd8, 0x100);
+
+struct Ov013Pole {
+    Ov013Vec v;
+    u8 on;
+    u8 pad[3];
+};
+
+// The ov003-factory class with vtable data_ov013_0220b68c (0x13c bytes).
+class Ov013Boss : public Ov013Actor {
+public:
+    u8 unk_f0;
+    u8 unk_f1;
+    u8 side;
+    u8 unk_f3;
+    u16 unk_f4;
+    u8 unk_f6[2];
+    s32 unk_f8;
+    Ov013Pole poles[4];
+};
+SIZE_ASSERT(Ov013Boss, 0x13c);
 
 #endif

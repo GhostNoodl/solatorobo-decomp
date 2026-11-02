@@ -36,7 +36,7 @@ struct Ov009Byte {
     u8 b1 : 7;
 };
 
-void func_ov009_02206ae4(Ov009Actor *self) {
+void func_ov009_02206ae4(Ov009ActVt_022178f0 *self) {
     Ov009Actor *a;
     if (!Ov009_GameIdle()) {
         return;
@@ -113,7 +113,7 @@ void func_ov009_02206c84(Ov009ActVt_022178f0 *self) {
         }
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
-        FLD(u8, data_ov000_021ccd54, 0xac) = 1;
+        data_ov000_021ccd54->unk_ac = 1;
         func_0204a058(data_02097e4c, self->unk_10c, 0x14, 0x1c2);
         func_ov000_02198360(self->unk_40, 1, 0);
         break;
@@ -136,7 +136,7 @@ void func_ov009_02206e30(Ov009ActVt_022178f0 *self) {
         if (st->timer > 0xf) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
-            FLD(u8, data_ov000_021ccd54, 0xac) = 1;
+            data_ov000_021ccd54->unk_ac = 1;
             func_02049bb4(data_02097e4c, self->unk_10c);
             self->unk_40->timer = 0;
             self->unk_40->state++;

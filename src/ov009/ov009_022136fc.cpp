@@ -6,7 +6,7 @@ extern void *data_02097e4c;
 extern void func_02049564(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(Ov009Game54 *g, s32 a);
 
-void func_ov009_022136fc(Ov009Actor *self) {
+void func_ov009_022136fc(Ov009ActVt_02217cb0 *self) {
     func_ov003_021d0fc0(self);
     func_02049564(data_02097e4c, 1, 1);
     switch (self->kind) {
@@ -21,7 +21,7 @@ void func_ov009_022136fc(Ov009Actor *self) {
         func_ov000_02187a20(data_ov000_021ccd54, 0xe);
         break;
     }
-    FLD(u16, self, 0xea) |= 0x400;
+    self->unk_ea |= 0x400;
 }
 
 }

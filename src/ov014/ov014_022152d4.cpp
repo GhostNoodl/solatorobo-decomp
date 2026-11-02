@@ -7,7 +7,7 @@ extern void *func_ov000_02194074(void *self);
 extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02194c08(void *self);
 
-void func_ov014_022152d4(Ov014Actor *self) {
+void func_ov014_022152d4(Ov014ActEx_022142fc *self) {
     self->v08();
 }
 
@@ -40,11 +40,11 @@ void *func_ov014_02215348(void *self) {
     return self;
 }
 
-void func_ov014_02215364(Ov014Actor *self) {
+void func_ov014_02215364(Ov014ActEx_022152e8 *self) {
     func_ov000_02194c08(self);
 }
 
-void func_ov014_02215370(Ov014Actor *self) {
+void func_ov014_02215370(Ov014ActEx_022152e8 *self) {
     Ov014Sub44 *n;
     func_ov000_02194758(self);
     func_ov000_02198360(self->unk_40, 0xb, 0);

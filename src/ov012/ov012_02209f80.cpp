@@ -16,7 +16,7 @@ static inline u16 Ov012_AngTo(Ov012Actor *self, Ov012Actor *t) {
 }
 
 void func_ov012_02209bd4(Ov012Actor *self) {
-    Ov012Actor *o = Ov012_FindActor(FLD(u16, FLD(void *, self, 0xd0), 0x62));
+    Ov012Actor *o = Ov012_FindActor(self->unk_d0->target_id);
     Ov012Actor *pl = func_ov000_0218d240(self);
     Ov012Sub40 *s = self->unk_40;
     switch (s->state) {
@@ -27,7 +27,7 @@ void func_ov012_02209bd4(Ov012Actor *self) {
         self->unk_a4 = 0;
         self->unk_a8 = 0;
         func_02049f44(data_02097e4c, 0x701, &self->pos, 0);
-        if (FLD(u16, FLD(void *, self, 0xd0), 0x62) != 0xffff) {
+        if (self->unk_d0->target_id != 0xffff) {
             func_ov000_02190cb0(self->unk_38, data_ov012_0220b40c, 0x400, 0);
             self->unk_40->state = 10;
         } else {
@@ -39,7 +39,7 @@ void func_ov012_02209bd4(Ov012Actor *self) {
         if (self->unk_38->unk_c4 == 1) {
             Ov012Actor *n = func_ov003_021d69a0(self, 0x4009, 9);
             if (n != NULL) {
-                FLD(u16, FLD(void *, self, 0xd0), 0x62) = n->id;
+                self->unk_d0->target_id = n->id;
             }
             self->unk_40->state++;
         }
@@ -72,14 +72,14 @@ void func_ov012_02209bd4(Ov012Actor *self) {
         if (!func_ov000_02191120(self->unk_38)) {
             break;
         }
-        if (o != NULL && o->unk_4c != NULL && FLD(u16, o->unk_4c, 0x1e) == 0) {
-            Ov012Actor *n = Ov012_FindActor(FLD(u16, FLD(void *, self, 0xd0), 0x62));
+        if (o != NULL && o->unk_4c != NULL && o->unk_4c->unk_1e == 0) {
+            Ov012Actor *n = Ov012_FindActor(self->unk_d0->target_id);
             if (n != NULL) {
                 func_ov000_0218d46c(n, self->id, 10);
                 if (n->unk_4c != NULL) {
                     FLD(Ov012Flags8, n->unk_4c, 0x18).b0 = 0;
                 }
-                FLD(u16, FLD(void *, self, 0xd0), 0x62) = 0xffff;
+                self->unk_d0->target_id = 0xffff;
             }
             func_02049f44(data_02097e4c, 0x700, &self->pos, 0);
         }
@@ -149,7 +149,7 @@ void func_ov012_02209f80(Ov012Actor *self) {
 extern "C" {
 void func_ov012_0220a0f4(Ov012Actor *self) {
     if (self->unk_40->state == 0) {
-        Ov012Actor *o = Ov012_FindActor(FLD(u16, FLD(void *, self, 0xd0), 0x62));
+        Ov012Actor *o = Ov012_FindActor(self->unk_d0->target_id);
         if (o != NULL) {
             void *p;
             func_ov000_0218d46c(o, self->id, 10);
@@ -157,7 +157,7 @@ void func_ov012_0220a0f4(Ov012Actor *self) {
             if (p != NULL) {
                 FLD(Ov012Flags8, p, 0x18).b0 = 0;
             }
-            FLD(u16, FLD(void *, self, 0xd0), 0x62) = 0xffff;
+            self->unk_d0->target_id = 0xffff;
         }
         if (*self->unk_50 == 0) {
             func_02049f44(data_02097e4c, 0x704, &self->pos, 0);
@@ -186,7 +186,7 @@ void func_ov012_0220a1ac(Ov012Actor *self) {
 extern "C" {
 void func_ov012_0220a244(Ov012Actor *self) {
     if (self->unk_40->state == 0) {
-        Ov012Actor *o = Ov012_FindActor(FLD(u16, FLD(void *, self, 0xd0), 0x62));
+        Ov012Actor *o = Ov012_FindActor(self->unk_d0->target_id);
         if (o != NULL) {
             void *p;
             func_ov000_0218d46c(o, self->id, 10);
@@ -194,7 +194,7 @@ void func_ov012_0220a244(Ov012Actor *self) {
             if (p != NULL) {
                 FLD(Ov012Flags8, p, 0x18).b0 = 0;
             }
-            FLD(u16, FLD(void *, self, 0xd0), 0x62) = 0xffff;
+            self->unk_d0->target_id = 0xffff;
         }
         func_02049f44(data_02097e4c, 0x703, &self->pos, 0);
     }
@@ -205,7 +205,7 @@ void func_ov012_0220a244(Ov012Actor *self) {
 extern "C" {
 void func_ov012_0220a2ec(Ov012Actor *self) {
     if (self->unk_40->state == 0) {
-        Ov012Actor *o = Ov012_FindActor(FLD(u16, FLD(void *, self, 0xd0), 0x62));
+        Ov012Actor *o = Ov012_FindActor(self->unk_d0->target_id);
         if (o != NULL) {
             void *p;
             func_ov000_0218d46c(o, self->id, 10);
@@ -213,7 +213,7 @@ void func_ov012_0220a2ec(Ov012Actor *self) {
             if (p != NULL) {
                 FLD(Ov012Flags8, p, 0x18).b0 = 0;
             }
-            FLD(u16, FLD(void *, self, 0xd0), 0x62) = 0xffff;
+            self->unk_d0->target_id = 0xffff;
         }
         func_02049f44(data_02097e4c, 0x704, &self->pos, 0);
     }

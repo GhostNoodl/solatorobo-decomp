@@ -11,7 +11,7 @@ extern void *func_ov000_02194074(Ov013Obj *self);
 extern void func_ov000_02194758(void *self);
 extern Ov013Actor *func_ov000_0219bf90(void);
 
-void func_ov013_021fdb18(Ov013Actor *self) {
+void func_ov013_021fdb18(Ov013ActExVt_0220b7d0 *self) {
     s32 i;
     if (self->unk_40->state == 0) {
         for (i = 0; i < 2; i++) {
@@ -27,7 +27,7 @@ void func_ov013_021fdb18(Ov013Actor *self) {
 Ov013ActEx_021fdb70 *func_ov013_021fdb70(Ov013ActEx_021fdb70 *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = data_ov013_0220b738;
-    FLD(u16, self, 0xce) = 0;
+    self->unk_ce = 0;
     self->unk_d0 = -1;
     self->unk_d4 = 0;
     return self;

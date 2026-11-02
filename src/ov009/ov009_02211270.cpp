@@ -10,7 +10,7 @@ static inline BOOL Ov009Game_IsPaused(Ov009Game54 *g) {
     return g->unk_d4 != 0;
 }
 
-void func_ov009_02211270(Ov009Actor *self) {
+void func_ov009_02211270(Ov009ActVt_02217aac *self) {
     Ov009Actor *t;
     if (!Ov009_GameIdle()) {
         return;

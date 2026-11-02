@@ -43,7 +43,7 @@ void func_ov013_02209674(Ov013Act_02207968 *self) {
     if (self->unk_40->unk_13 != 10) {
         return;
     }
-    FLD(u16, self->unk_4c, 0x1c) = 0xffff;
+    self->unk_4c->target = 0xffff;
     m = self->unk_48;
     m->unk_9a_0 = 1;
     m->unk_9a_3 = 1;

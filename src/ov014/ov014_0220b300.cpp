@@ -2,20 +2,20 @@
 
 extern "C" {
 
-extern void func_ov014_0220d274(Ov014Actor *self);
+extern void func_ov014_0220d274(Ov014Act_02209280 *self);
 extern void func_ov003_021d4fd8(Ov014Actor *self);
 
-void func_ov014_0220b300(Ov014Actor *self) {
+void func_ov014_0220b300(Ov014Act_02209280 *self) {
     func_ov014_0220d274(self);
 }
 
-void func_ov014_0220b30c(Ov014Actor *self) {
+void func_ov014_0220b30c(Ov014Act_02209280 *self) {
     func_ov003_021d4fd8(self);
 }
 
-void func_ov014_0220b318(Ov014Actor *self) {
+void func_ov014_0220b318(Ov014Act_02209280 *self) {
     if (self->unk_40->state == 0) {
-        FLD(u8, ((u8 *)self->unk_4c), 0) = 0xf;
+        self->unk_4c->type = 0xf;
     }
     func_ov003_021d5900(self);
 }
@@ -43,7 +43,7 @@ void func_ov014_0220b33c(Ov014Act_02209280 *self) {
         func_02065860(data_0214a420, self->unk_1e0);
         self->unk_1e0 = NULL;
         func_02065860(data_0214a420, ((void *)self->unk_1e4));
-        FLD(void *, self, 0x1e4) = NULL;
+        self->unk_1e4 = 0;
         func_ov000_02190cb0(self->unk_38, data_ov014_02217a84, 0xcd, 0);
         func_ov000_021915a0(self->unk_38);
         func_ov000_021911c8(self->unk_38, 0x800);

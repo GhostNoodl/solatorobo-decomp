@@ -7,7 +7,7 @@ extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
 void func_ov009_0220b48c(Ov009ActVt_022176ec *self) {
     func_ov003_021d112c(self);
     self->unk_f0 = self->pos;
-    FLD(u16, self, 0xea) |= 0x1000;
+    self->unk_ea |= 0x1000;
     if (self->unk_48->unk_54 & 0x400) {
         return;
     }
@@ -26,7 +26,7 @@ void func_ov009_0220b4e4(Ov009ActVt_022176ec *self) {
     Ov009Actor *t;
     BOOL in;
     if (st->unk_13 != 0x15 && (self->unk_48->unk_50 & 0x20000000) && !(self->unk_48->unk_50 & 0x400) &&
-        FLD(u16, self->unk_4c, 0x1c) == 0xffff) {
+        self->unk_4c->target == 0xffff) {
         st->flags |= 0x200000;
         func_02049f44(data_02097e4c, 0x6c, &self->pos, 0);
         return;

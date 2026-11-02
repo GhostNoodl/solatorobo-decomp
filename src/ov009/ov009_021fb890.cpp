@@ -6,7 +6,7 @@ extern u8 data_ov009_02216aaa[];
 extern u8 data_ov009_02216abc[];
 extern void func_ov000_0218ddd4(Ov009Actor *self, Ov009Vec *v, s32 a);
 
-void func_ov009_021fb890(Ov009Actor *self) {
+void func_ov009_021fb890(Ov009ActVt_022166a4 *self) {
     Ov009Vec v;
     Ov009Param *p;
     if (self->unk_40->state == 0) {
@@ -46,7 +46,7 @@ static inline Ov009Actor *Ov009_FindActor(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-void func_ov009_021fb9b0(Ov009Actor *self) {
+void func_ov009_021fb9b0(Ov009ActVt_022166a4 *self) {
     Ov009Sub40 *st;
     s32 g;
     if (!Ov009_GameIdle()) {
@@ -65,7 +65,7 @@ void func_ov009_021fb9b0(Ov009Actor *self) {
         break;
     case 1:
         func_ov000_0218d988(self, Ov009_FindActor(self->unk_90), self->unk_b0->unk_02);
-        if (FLD(s16, self->unk_38, 0xc4) == 1) {
+        if (self->unk_38->anim_state == 1) {
             self->unk_40->state++;
         }
         break;

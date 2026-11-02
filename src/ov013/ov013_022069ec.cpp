@@ -10,7 +10,7 @@ void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 
 
-void func_ov013_022069ec(Ov013Actor *self) {
+void func_ov013_022069ec(Ov013ActVt_0220bdd8 *self) {
     Ov013Sub40 *w = self->unk_40;
     switch (w->state) {
     case 0: {
@@ -19,7 +19,7 @@ void func_ov013_022069ec(Ov013Actor *self) {
         func_ov000_021915a0(self->unk_38);
         self->unk_9c = 0;
         self->unk_a4 = 0;
-        FLD(Ov013Vec, self, 0xf0) = self->pos;
+        self->unk_f0 = self->pos;
         self->pos.y -= 0x3c000;
         self->unk_a8 = 0;
         self->rot[1] = 0;
@@ -52,17 +52,17 @@ void func_ov013_022069ec(Ov013Actor *self) {
         self->unk_40->timer = 0;
         break;
     case 4:
-        if (VEC_Distance(&FLD(Ov013Vec, self, 0xf0), &self->pos) > 0x333) {
+        if (VEC_Distance(&self->unk_f0, &self->pos) > 0x333) {
             Ov013Vec d;
             s32 sc = self->unk_a0;
-            d.x = FLD(s32, self, 0xf0) - self->pos.x;
-            d.y = FLD(s32, self, 0xf4) - self->pos.y;
-            d.z = FLD(s32, self, 0xf8) - self->pos.z;
+            d.x = self->unk_f0.x - self->pos.x;
+            d.y = self->unk_f0.y - self->pos.y;
+            d.z = self->unk_f0.z - self->pos.z;
             VEC_MultAdd(sc, &d, &self->pos, &self->pos);
             return;
         } else {
             Ov013Sub44 *n;
-            self->pos = FLD(Ov013Vec, self, 0xf0);
+            self->pos = self->unk_f0;
             n = self->unk_44;
             n->unk_22_0 = 1;
             n->unk_22_1 = 1;
@@ -77,7 +77,7 @@ void func_ov013_022069ec(Ov013Actor *self) {
         }
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
-        FLD(u8, data_ov000_021ccd54, 0xac) = 1;
+        data_ov000_021ccd54->unk_ac = 1;
         func_ov000_02198360(self->unk_40, 1, 0);
         break;
     }

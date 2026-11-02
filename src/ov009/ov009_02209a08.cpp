@@ -7,7 +7,7 @@ extern void *func_ov000_02191318(Ov009Sub38 *m, s32 a);
 extern void func_ov000_02191618(void *model);
 extern void func_0203f364(Ov009Sub48 *p);
 
-void func_ov009_02209a08(Ov009Actor *self) {
+void func_ov009_02209a08(Ov009ActVt_02217594 *self) {
     switch (self->unk_40->state) {
     case 0: {
         Ov009Sub44 *s44;
@@ -39,7 +39,7 @@ void func_ov009_02209a08(Ov009Actor *self) {
     case 1:
         if (func_ov000_02191120(self->unk_38)) {
             func_ov000_02198360(self->unk_40, 1, 0);
-            FLD(u16, self, 0x310) = 0;
+            self->step = 0;
         }
         break;
     }

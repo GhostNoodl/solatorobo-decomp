@@ -47,14 +47,14 @@ Ov014ActEx_0220eca0 *func_ov014_0220eca0(Ov014ActEx_0220eca0 *self) {
 }
 #pragma force_active reset
 
-Ov014Actor *func_ov014_0220ecf8(Ov014Actor *self) {
+Ov014ActEx_0220eca0 *func_ov014_0220ecf8(Ov014ActEx_0220eca0 *self) {
     FLD(void *, self, 0) = data_ov014_02217aac;
     func_02049de8(data_02097e4c, 0x38);
     func_ov000_0219429c(self);
     return self;
 }
 
-Ov014Actor *func_ov014_0220ed30(Ov014Actor *self) {
+Ov014ActEx_0220eca0 *func_ov014_0220ed30(Ov014ActEx_0220eca0 *self) {
     FLD(void *, self, 0) = data_ov014_02217aac;
     func_02049de8(data_02097e4c, 0x38);
     func_ov000_0219429c(self);
@@ -62,7 +62,7 @@ Ov014Actor *func_ov014_0220ed30(Ov014Actor *self) {
     return self;
 }
 
-void func_ov014_0220ed70(Ov014Actor *self) {
+void func_ov014_0220ed70(Ov014ActEx_0220eca0 *self) {
     self->unk_38->unk_c1 = func_02043d48(data_02097d48 + 0x8b0);
     func_ov000_02194c08(self);
 }
@@ -92,13 +92,13 @@ extern BOOL func_ov000_02191120(void *p);
 extern void func_ov014_0220f20c(Ov014Obj *self, void *a, void *b, void *c);
 
 static inline void Ov014_Flash(u8 c) {
-    u8 *g = (u8 *)data_ov000_021ccd54;
-    FLD(Ov014Flags8, g, 0x190).b2 = 0;
-    FLD(Ov014Flags8, g, 0x190).b3 = 1;
-    FLD(Ov014Flags8, g, 0x190).b4 = 0;
-    g[0x18d] = c;
-    g[0x18e] = 0xf;
-    g[0x18f] = 0xf;
+    Ov014Game54 *g = data_ov000_021ccd54;
+    g->unk_190_2 = 0;
+    g->unk_190_3 = 1;
+    g->unk_190_4 = 0;
+    g->unk_18d = c;
+    g->unk_18e = 0xf;
+    g->unk_18f = 0xf;
 }
 
 static inline void Ov014_Release(Ov014Obj *self) {

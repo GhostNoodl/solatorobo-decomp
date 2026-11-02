@@ -77,22 +77,22 @@ s32 func_ov013_02209b44(Ov013Act_02207968 *self) {
     return st;
 }
 
-void func_ov013_02209cac(Ov013Actor *self) {
+void func_ov013_02209cac(Ov013ActVt_0220bc80 *self) {
     s32 r;
     Ov013Vec *v;
     func_ov003_021d112c(self);
-    FLD(u16, self, 0xf0) = self->rot[1] + func_02040528(0x3400);
-    v = &FLD(Ov013Vec, self, 0xf4);
+    self->unk_f0 = self->rot[1] + func_02040528(0x3400);
+    v = &self->unk_f4;
     Ov013_VecCopy(v, &self->pos);
     r = func_02040498(0x800) + 0x3800;
     v->x += Ov013_FxMul(r, OV013_SIN(self->rot[1]));
     v->z += Ov013_FxMul(r, OV013_COS(self->rot[1]));
-    FLD(s32, self, 0x104) = v->y;
+    self->unk_100.y = v->y;
     self->unk_b8.y = v->y;
-    FLD(s32, self, 0x100) = v->x;
+    self->unk_100.x = v->x;
     self->unk_b8.x = v->x;
     self->unk_1c = 0x96;
-    FLD(s32, self, 0x108) = v->z;
+    self->unk_100.z = v->z;
     self->unk_b8.z = v->z;
     self->unk_ea_6 = 1;
     {
@@ -106,7 +106,7 @@ void func_ov013_02209cac(Ov013Actor *self) {
     self->unk_cc = 0x5000;
 }
 
-void func_ov013_02209dd4(Ov013Actor *self) {
+void func_ov013_02209dd4(Ov013ActVt_0220bc80 *self) {
     Ov013Vec d;
     switch (self->unk_40->state) {
     case 0:
@@ -125,14 +125,14 @@ void func_ov013_02209dd4(Ov013Actor *self) {
         break;
     }
     }
-    d.x = FLD(s32, self, 0x100) - self->pos.x;
-    d.y = FLD(s32, self, 0x104) - self->pos.y;
-    d.z = FLD(s32, self, 0x108) - self->pos.z;
+    d.x = self->unk_100.x - self->pos.x;
+    d.y = self->unk_100.y - self->pos.y;
+    d.z = self->unk_100.z - self->pos.z;
     VEC_MultAdd(0xcd, &d, &self->pos, &self->pos);
     func_ov000_021987b8(self->unk_48, 0, 0, 0);
 }
 
-void func_ov013_02209ed8(Ov013Actor *self) {
+void func_ov013_02209ed8(Ov013ActVt_0220bc80 *self) {
     Ov013Vec d;
     switch (self->unk_40->state) {
     case 0:
@@ -146,17 +146,17 @@ void func_ov013_02209ed8(Ov013Actor *self) {
         }
         if (q->timer == 0) {
             self->unk_40->timer = 0x3c;
-            FLD(Ov013Vec, self, 0x100) = self->unk_b8;
-            FLD(s32, self, 0x100) += func_02040528(0x8cd);
-            FLD(s32, self, 0x108) += func_02040528(0x8cd);
-            FLD(s32, self, 0x104) = FLD(s32, self, 0x104) + func_02040528(0x8cd) + 0x1800;
+            self->unk_100 = self->unk_b8;
+            self->unk_100.x += func_02040528(0x8cd);
+            self->unk_100.z += func_02040528(0x8cd);
+            self->unk_100.y = self->unk_100.y + func_02040528(0x8cd) + 0x1800;
         }
         break;
     }
     }
-    d.x = FLD(s32, self, 0x100) - self->pos.x;
-    d.y = FLD(s32, self, 0x104) - self->pos.y;
-    d.z = FLD(s32, self, 0x108) - self->pos.z;
+    d.x = self->unk_100.x - self->pos.x;
+    d.y = self->unk_100.y - self->pos.y;
+    d.z = self->unk_100.z - self->pos.z;
     d.x = Ov013_FxMul(d.x, 0x33);
     d.y = Ov013_FxMul(d.y, 0x33);
     d.z = Ov013_FxMul(d.z, 0x33);

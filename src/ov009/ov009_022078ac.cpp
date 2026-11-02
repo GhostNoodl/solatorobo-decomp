@@ -14,26 +14,26 @@ struct Ov009Bits16 {
     u16 b1 : 15;
 };
 
-BOOL func_ov009_022078ac(Ov009Actor *self) {
+BOOL func_ov009_022078ac(Ov009ActVt_02217844 *self) {
     BOOL r = func_ov003_021d16cc(self);
     if (r) {
         Ov009Vec p;
         p = self->pos;
         if (func_ov000_0219a2f4(&p, 0x2000, -0x5000) != -0x1000) {
-            func_ov000_021903b4(&FLD(u8, self, 0x228));
+            func_ov000_021903b4(&self->model);
         }
     }
     return r;
 }
 
-void func_ov009_02207910(Ov009Actor *self) {
+void func_ov009_02207910(Ov009ActVt_02217844 *self) {
     func_ov003_021d1b88(self);
-    func_ov000_02190a80(&FLD(u8, self, 0x228), 0x1000);
+    func_ov000_02190a80(&self->model, 0x1000);
 }
 extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
 extern Ov009Actor *func_ov000_0219bf90(void);
 
-void func_ov009_0220792c(Ov009Actor *self) {
+void func_ov009_0220792c(Ov009ActVt_02217844 *self) {
     Ov009Actor *pl;
     if (!Ov009_GameIdle()) {
         return;

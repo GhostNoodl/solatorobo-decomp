@@ -14,12 +14,12 @@ extern void func_ov003_021d6954(Ov009Actor *self, u8 a);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 extern void func_ov000_0218bed8(void *mgr, s32 a, Ov009Actor *self);
-static inline void Ov009_NextState(Ov009Actor *self) {
+static inline void Ov009_NextState(Ov009ActVt_02217aac *self) {
     self->unk_40->state++;
     self->unk_40->timer = 0;
 }
 
-void func_ov009_02211b6c(Ov009Actor *self) {
+void func_ov009_02211b6c(Ov009ActVt_02217aac *self) {
     Ov009Vec d;
     Ov009Sub40 *st;
     switch (self->unk_40->state) {
@@ -76,7 +76,7 @@ void func_ov009_02211b6c(Ov009Actor *self) {
         if (st->timer > 0x3c) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
-            FLD(u8, data_ov000_021ccd54, 0xac) = 1;
+            data_ov000_021ccd54->unk_ac = 1;
             func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
             self->v08();
         }

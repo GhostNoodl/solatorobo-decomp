@@ -6,12 +6,6 @@ struct Ov014Wave {
     u16 count;
 };
 
-struct Ov014Vec16b {
-    u16 x;
-    u16 y;
-    u16 z;
-};
-
 struct Ov014SpawnDescB {
     u16 kind;
     u16 flags;
@@ -61,11 +55,11 @@ static inline void Ov014_TimerTick(Ov014Sub40 *s) {
     }
 }
 
-void func_ov014_02210ecc(Ov014Actor *self) {
+void func_ov014_02210ecc(Ov014Act_0220f9d0 *self) {
     self->unk_40->state = 0xffff;
 }
 
-void func_ov014_02210ee0(Ov014Actor *self) {
+void func_ov014_02210ee0(Ov014Act_0220f9d0 *self) {
     switch (self->unk_40->state) {
     case 0: {
         Ov014Sub44 *n = self->unk_44;
@@ -249,7 +243,7 @@ extern u8 data_ov014_02216d30[];
 extern void *data_ov000_021ccd64;
 extern void MTX_MultVec43(const Ov014Vec *in, const void *m, Ov014Vec *out);
 extern s32 VEC_Mag(const Ov014Vec *v);
-extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDescB *d, Ov014Vec *pos, Ov014Vec16b *rot, u16 a);
+extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDescB *d, Ov014Vec *pos, Ov014Rot16 *rot, u16 a);
 
 void func_ov014_02211538(Ov014Act_0220f9d0 *self) {
     switch (Ov014Sub40_State(self->unk_40)) {
@@ -303,7 +297,7 @@ void func_ov014_02211538(Ov014Act_0220f9d0 *self) {
         Ov014Vec w;
         Ov014Vec v;
         Ov014SpawnDescB desc;
-        Ov014Vec16b rot;
+        Ov014Rot16 rot;
         Ov014Actor *o;
         Ov014Game54 *g;
         if (self->unk_38->unk_c4 != 1) {
@@ -327,16 +321,16 @@ void func_ov014_02211538(Ov014Act_0220f9d0 *self) {
         o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &p, &rot, 0xffff);
         o->unk_60 = data_ov014_02216d30;
         o->unk_90 = self->unk_90;
-        if (((u8 *)o->unk_4c) != NULL) {
-            FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
+        if (o->unk_4c != NULL) {
+            o->unk_4c->target = self->id;
         }
-        FLD(Ov014Flags8, o, 0x16).b0 = 1;
-        FLD(u16, self, 0xde) = o->id;
+        o->flags_0 = 1;
+        self->target_id = o->id;
         g = data_ov000_021ccd54;
-        FLD(u8, g, 0x190) |= 0x1c;
-        FLD(u8, g, 0x18d) = 0x1e;
-        FLD(u8, g, 0x18e) = 0x78;
-        FLD(u8, g, 0x18f) = 0x78;
+        g->unk_190 |= 0x1c;
+        g->unk_18d = 0x1e;
+        g->unk_18e = 0x78;
+        g->unk_18f = 0x78;
         self->unk_40->state++;
         self->unk_40->timer = 0xa0;
         break;
@@ -452,7 +446,7 @@ void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
         Ov014Vec w;
         Ov014Vec v;
         Ov014SpawnDescB desc;
-        Ov014Vec16b rot;
+        Ov014Rot16 rot;
         u16 tm = self->unk_40->timer;
         p = self->unk_118;
         p.y -= 0x800;
@@ -480,17 +474,17 @@ void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
             o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &p, &rot, 0xffff);
             o->unk_60 = data_ov014_02216d78;
             o->unk_90 = self->unk_90;
-            if (((u8 *)o->unk_4c) != NULL) {
-                FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
+            if (o->unk_4c != NULL) {
+                o->unk_4c->target = self->id;
             }
-            FLD(Ov014Flags8, o, 0x16).b0 = 1;
-            FLD(u16, self, 0xde) = o->id;
-            FLD(u16, self, 0xde) = o != NULL ? o->id : 0xffff;
+            o->flags_0 = 1;
+            self->target_id = o->id;
+            self->target_id = o != NULL ? o->id : 0xffff;
             g = data_ov000_021ccd54;
-            FLD(u8, g, 0x190) |= 0x1c;
-            FLD(u8, g, 0x18d) = 0x1e;
-            FLD(u8, g, 0x18e) = 0x2d;
-            FLD(u8, g, 0x18f) = 0x2d;
+            g->unk_190 |= 0x1c;
+            g->unk_18d = 0x1e;
+            g->unk_18e = 0x2d;
+            g->unk_18f = 0x2d;
             e = func_02065f88(0x579, &p);
             e->v0c(0x24cd);
             FLD(s32, e, 0x50) = -0x64000;
@@ -504,7 +498,7 @@ void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
             }
             if (s->timer > 10) {
                 {
-                    u16 id = FLD(u16, self, 0xde);
+                    u16 id = self->target_id;
                     if (data_ov000_021ccd68 == NULL) {
                         a = NULL;
                     } else {
@@ -512,11 +506,11 @@ void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
                     }
                 }
                 if (a == NULL) {
-                    FLD(u16, self, 0xde) = 0xffff;
+                    self->target_id = 0xffff;
                     break;
                 }
                 a->pos = p;
-                FLD(Ov014Vec16b, a, 0x7c) = rot;
+                FLD(Ov014Rot16, a, 0x7c) = rot;
                 break;
             }
             self->unk_40->state++;

@@ -21,7 +21,7 @@ static inline s32 Ov009_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
 
 extern Ov009Actor *func_ov000_0219bf90(void);
 
-void func_ov009_022124e0(Ov009Actor *self) {
+void func_ov009_022124e0(Ov009ActVt_02217a00 *self) {
     Ov009Actor *t;
     if (!Ov009_GameIdle()) {
         return;

@@ -28,24 +28,6 @@ struct Ov013Rot16 {
     u16 z;
 };
 
-struct Ov013Pole {
-    Ov013Vec v;
-    u8 on;
-    u8 pad[3];
-};
-
-class Ov013Boss : public Ov013Actor {
-public:
-    u8 unk_f0;
-    u8 unk_f1;
-    u8 side;
-    u8 unk_f3;
-    u16 unk_f4;
-    u8 unk_f6[2];
-    s32 unk_f8;
-    Ov013Pole poles[4];
-};
-
 extern "C" {
 
 extern void *data_02097e4c;
@@ -315,9 +297,9 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
                     FLD(u8, o, 0xd4) = 0;
                 }
                 if (o->unk_4c != NULL) {
-                    FLD(u16, o->unk_4c, 0x1c) = self->id;
+                    o->unk_4c->target = self->id;
                 }
-                FLD(u16, self, 0xde) = o->id;
+                self->target_id = o->id;
             }
         }
         break;

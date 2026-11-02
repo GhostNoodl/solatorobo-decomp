@@ -21,7 +21,7 @@ static inline s32 Ov009_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
 
 extern Ov009Actor *func_ov000_0219bf90(void);
 
-void func_ov009_02213814(Ov009Actor *self) {
+void func_ov009_02213814(Ov009ActVt_02217cb0 *self) {
     u8 k;
     Ov009Actor *t;
     Ov009Vec v;

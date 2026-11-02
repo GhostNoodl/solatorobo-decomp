@@ -52,10 +52,10 @@ void func_ov014_0220f20c(Ov014Obj *self, s32 a, s32 b, s32 c) {
     }
     {
         void *p44;
-        u8 *s;
-        s = ((u8 *)self->unk_4c);
+        Ov014Target *s;
+        s = self->unk_4c;
         p44 = pl->unk_44;
-        if (!func_ov000_0219a8bc(p44, self, func_ov000_02199ba0(s), FLD(u16, s, 8), (u8)FLD(u16, s, 0xa), &v, -1, rad, 0x1000)) {
+        if (!func_ov000_0219a8bc(p44, self, func_ov000_02199ba0(s), s->unk_08, (u8)s->unk_0a, &v, -1, rad, 0x1000)) {
             return;
         }
     }

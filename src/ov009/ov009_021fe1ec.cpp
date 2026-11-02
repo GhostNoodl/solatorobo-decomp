@@ -4,7 +4,7 @@ extern "C" {
 
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 
-void func_ov009_021fe1ec(Ov009Actor *self) {
+void func_ov009_021fe1ec(Ov009ActVt_022165f8 *self) {
     Ov009Sub40 *st = self->unk_40;
     if (st->state != 0) {
         return;
@@ -23,7 +23,7 @@ void func_ov009_021fe1ec(Ov009Actor *self) {
 extern u8 data_ov009_02216ab6[];
 extern void func_ov000_021911c8(void *model, s32 a);
 
-void func_ov009_021fe2c8(Ov009Actor *self) {
+void func_ov009_021fe2c8(Ov009ActVt_022165f8 *self) {
     switch (self->unk_40->state) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov009_02216ab6, 0x2ab, 0);

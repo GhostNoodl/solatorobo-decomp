@@ -59,7 +59,7 @@ BOOL func_ov014_021fa94c(Ov014Act_021fa6a0 *self) {
     return r;
 }
 
-void func_ov014_021fa984(Ov014Actor *self) {
+void func_ov014_021fa984(Ov014Act_021fa6a0 *self) {
     func_ov003_021d1b88(self);
     func_ov000_02190a80((u8 *)self + 0x25c, func_0203db40((u8 *)self + 0x24));
 }
@@ -197,7 +197,7 @@ extern void *func_ov003_021ceff4(void *p);
 extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 extern void func_ov000_021911c8(void *a, s32 b);
 
-void func_ov014_021fad9c(Ov014Actor *self) {
+void func_ov014_021fad9c(Ov014Act_021fa6a0 *self) {
     const char *anim;
     if (self->unk_40->state != 0) {
         return;
@@ -261,7 +261,7 @@ void func_ov014_021fae44(Ov014Act_021fa6a0 *self) {
         break;
     case 10: {
         Ov014Actor *a;
-        u16 id = FLD(u16, self, 0xde);
+        u16 id = self->target_id;
         if (data_ov000_021ccd68 == NULL) {
             a = NULL;
         } else {
@@ -288,7 +288,7 @@ void func_ov014_021fae44(Ov014Act_021fa6a0 *self) {
         break;
     case 0x1e: {
         Ov014Actor *a;
-        u16 id = FLD(u16, self, 0xde);
+        u16 id = self->target_id;
         if (data_ov000_021ccd68 == NULL) {
             a = NULL;
         } else {
@@ -446,7 +446,7 @@ void func_ov014_021fb554(Ov014Act_021fa6a0 *self) {
     case 10: {
         Ov014Actor *a;
         void *r;
-        u16 id = FLD(u16, self, 0xde);
+        u16 id = self->target_id;
         if (data_ov000_021ccd68 == NULL) {
             a = NULL;
         } else {
@@ -574,7 +574,7 @@ void func_ov014_021fb92c(Ov014Act_021fa6a0 *self) {
     func_ov000_02198360(self->unk_40, 1, 0);
 }
 
-void func_ov014_021fb948(Ov014Actor *self) {
+void func_ov014_021fb948(Ov014Act_021fa6a0 *self) {
     const char *anim;
     Ov014Sub40 *st;
     FLD(Ov014Flags, self, 0xea).b9 = 1;
@@ -600,7 +600,7 @@ void func_ov014_021fb948(Ov014Actor *self) {
             n->unk_22_0 = 0;
             n->unk_22_1 = 0;
         }
-        FLD(u16, ((u8 *)self->unk_4c), 0x1c) = 0xffff;
+        self->unk_4c->target = 0xffff;
         self->unk_40->state++;
     case 1:
         st = self->unk_40;
@@ -626,10 +626,10 @@ void func_ov014_021fbab8(Ov014Act_021fa6a0 *self, s16 n) {
     o->pos = self->unk_110;
     func_ov000_0219bebc(o, self->unk_364);
     o->v04();
-    FLD(Ov014Flags8, o, 0x16).b0 = 1;
+    o->flags_0 = 1;
     o->unk_90 = self->unk_90;
-    if (((u8 *)o->unk_4c) != NULL) {
-        FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
+    if (o->unk_4c != NULL) {
+        o->unk_4c->target = self->id;
     }
 }
 
@@ -648,11 +648,11 @@ void func_ov014_021fbb90(Ov014Act_021fa6a0 *self, s16 n) {
     o->unk_18 = n;
     func_ov000_0219bebc(o, self->unk_364);
     o->v04();
-    FLD(Ov014Flags8, o, 0x16).b0 = 1;
+    o->flags_0 = 1;
     o->unk_90 = self->unk_90;
-    FLD(u16, self, 0xde) = o->id;
-    if (((u8 *)o->unk_4c) != NULL) {
-        FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
+    self->target_id = o->id;
+    if (o->unk_4c != NULL) {
+        o->unk_4c->target = self->id;
     }
 }
 
@@ -703,11 +703,11 @@ void func_ov014_021fbd18(Ov014Actor *self) {
     self->v64();
 }
 
-void func_ov014_021fbd3c(Ov014Actor *self) {
+void func_ov014_021fbd3c(Ov014Act_021fa6a0 *self) {
     self->v60();
 }
 
-void func_ov014_021fbd50(Ov014Actor *self) {
+void func_ov014_021fbd50(Ov014Act_021fa6a0 *self) {
     self->v7c();
 }
 
@@ -721,28 +721,28 @@ Ov014ActEx_021fbd64 *func_ov014_021fbd64(Ov014ActEx_021fbd64 *self) {
 }
 #pragma force_active reset
 
-static inline void Ov014_FreeD0(Ov014Actor *self) {
+static inline void Ov014_FreeD0(Ov014ActEx_021fbd64 *self) {
     u32 saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
-    if (FLD(void *, self, 0xd0) != NULL) {
-        void *p = FLD(void *, self, 0xd0);
+    if (self->unk_d0 != NULL) {
+        void *p = self->unk_d0;
         if (p != NULL) {
             func_ov003_021da940(p);
             func_0203de1c(p);
         }
-        FLD(void *, self, 0xd0) = NULL;
+        self->unk_d0 = NULL;
     }
     data_02097dd0->cur = saved;
 }
 
-Ov014Actor *func_ov014_021fbd90(Ov014Actor *self) {
+Ov014ActEx_021fbd64 *func_ov014_021fbd90(Ov014ActEx_021fbd64 *self) {
     FLD(void *, self, 0) = data_ov014_022172c4;
     Ov014_FreeD0(self);
     func_ov000_0219429c(self);
     return self;
 }
 
-Ov014Actor *func_ov014_021fbe00(Ov014Actor *self) {
+Ov014ActEx_021fbd64 *func_ov014_021fbe00(Ov014ActEx_021fbd64 *self) {
     FLD(void *, self, 0) = data_ov014_022172c4;
     Ov014_FreeD0(self);
     func_ov000_0219429c(self);
@@ -750,7 +750,7 @@ Ov014Actor *func_ov014_021fbe00(Ov014Actor *self) {
     return self;
 }
 
-void func_ov014_021fbe78(Ov014Actor *self) {
+void func_ov014_021fbe78(Ov014ActEx_021fbd64 *self) {
     s16 n;
     s32 *p;
     func_ov000_02194758(self);
@@ -767,7 +767,7 @@ void func_ov014_021fbe78(Ov014Actor *self) {
     if (p != NULL) {
         *p = 0;
     }
-    FLD(s32 *, self, 0xd0) = p;
+    self->unk_d0 = p;
 }
 
 
@@ -788,14 +788,6 @@ extern s32 FX_Div(s32 a, s32 b);
 extern void func_020639d4(void *e, s32 a, s32 b);
 extern BOOL func_ov000_0219aca8(Ov014Obj *a, Ov014Obj *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern Ov014Actor *func_ov000_0218d240(Ov014Obj *self);
-
-struct Ov014Ccd190 {
-    u8 b0 : 2;
-    u8 b2 : 1;
-    u8 b3 : 1;
-    u8 b4 : 1;
-    u8 b5 : 3;
-};
 
 void func_ov014_021fbf0c(Ov014ActEx_021fbd64 *self) {
     Ov014V *e;
@@ -832,12 +824,12 @@ void func_ov014_021fbf0c(Ov014ActEx_021fbd64 *self) {
         func_ov003_021da9ac(self->unk_d0, 0xfd, e);
         func_02049f44(data_02097e4c, 0x19, &self->pos, 0x140);
         g = data_ov000_021ccd54;
-        FLD(Ov014Ccd190, g, 0x190).b2 = 0;
-        FLD(Ov014Ccd190, g, 0x190).b3 = 1;
-        FLD(Ov014Ccd190, g, 0x190).b4 = 0;
-        FLD(u8, g, 0x18d) = 0xf;
-        FLD(u8, g, 0x18e) = 5;
-        FLD(u8, g, 0x18f) = 5;
+        g->unk_190_2 = 0;
+        g->unk_190_3 = 1;
+        g->unk_190_4 = 0;
+        g->unk_18d = 0xf;
+        g->unk_18e = 5;
+        g->unk_18f = 5;
         self->unk_40->state++;
     }
     case 3: {

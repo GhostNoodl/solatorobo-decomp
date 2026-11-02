@@ -104,8 +104,8 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
         VEC_Distance(&self->pos, &v1);
         break;
     case 2:
-        s.x = FLD(s32, self->unk_38, 0xa8) + 0x19a;
-        s.y = FLD(s32, self->unk_38, 0xac) - 0xcd;
+        s.x = self->unk_38->scale.x + 0x19a;
+        s.y = self->unk_38->scale.y - 0xcd;
         s.z = s.x;
         if (s.x >= Ov009_MaxScale(self)->x) {
             s = *Ov009_MaxScale(self);
@@ -127,7 +127,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
             func_ov000_021915a0(self->unk_38);
             self->unk_40->state++;
         }
-        FLD(Ov009Vec, self->unk_38, 0xa8) = s;
+        self->unk_38->scale = s;
         func_ov000_0218dbe0(self, 0);
         func_ov000_0218d988(self, pl, 0x1000);
         self->unk_48->unk_9a_5 = 1;
@@ -152,7 +152,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
         }
         break;
     case 4: {
-        s16 c = FLD(s16, self->unk_38, 0xc4);
+        s16 c = self->unk_38->anim_state;
         if (c >= 10) {
             st->timer = c;
             self->unk_40->state = 0x1e;
@@ -189,7 +189,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
         if (st->timer < 0x32) {
             break;
         }
-        h = FLD(s32, self->unk_38, 0xa8) + 0x266;
+        h = self->unk_38->scale.x + 0x266;
         if (h >= FLD(s32, self, 0x100)) {
             h = FLD(u32, self, 0x100);
             o = func_02065f88(0x69, &self->pos);
@@ -221,7 +221,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
         }
         if (t2 >= 10) {
             if (*func_ov000_0219bf90()->unk_50 != 0) {
-                func_ov000_0219aae8(self, self, self->unk_f6, FLD(u16, ((void *)self->unk_4c), 0xa), 2, NULL, 0, 0x2333, 0, 6, 0x800);
+                func_ov000_0219aae8(self, self, self->unk_f6, self->unk_4c->unk_0a, 2, NULL, 0, 0x2333, 0, 6, 0x800);
             }
             if (func_020657b0(data_0214a420, self->unk_f8) == NULL) {
                 self->unk_f8 = 0;

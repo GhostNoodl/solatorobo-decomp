@@ -9,7 +9,7 @@ extern Ov009Actor *func_ov000_0218e4cc(void *mgr, u16 id);
 extern Ov009Actor *func_ov003_021d69a0(Ov009Actor *self, u16 kind, s32 a);
 extern void func_ov003_021d452c(Ov009Actor *self);
 
-void func_ov009_021fb298(Ov009Actor *self) {
+void func_ov009_021fb298(Ov009ActVt_022164a0 *self) {
     if (self->unk_40->state == 0 && *self->unk_50 == 0) {
         func_ov000_0218e8ec(data_ov000_021ccd68, 0x5404, 0x15);
     }
@@ -26,7 +26,7 @@ void func_ov009_021fb2e4(Ov009Actor *self) {
     }
     func_ov000_0218996c(0xc, 0x19);
     range = 0xa000;
-    if (FLD(u8, data_ov000_021ccd54, 0xca) == 0x11) {
+    if (data_ov000_021ccd54->unk_ca == 0x11) {
         range = 0x5000;
     }
     g = func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000);

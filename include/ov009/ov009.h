@@ -4,6 +4,8 @@
 #include "types.h"
 #include "nitro/std.h"
 
+#define OV009_SIZE(T, n) typedef char T##_size_check[(sizeof(T) == (n)) ? 1 : -1]
+
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
 class Ov009V {
 public:
@@ -189,16 +191,28 @@ struct Ov009Sub38 {
     u8 unk_24[0x2c];
     void *unk_50;
     u8 unk_54[0x24];
-    Ov009Vec unk_78;
-    u8 unk_84[0x3e];
-    u16 unk_c2_0 : 1;
-    u16 unk_c2_1 : 4;
-    u16 unk_c2_5 : 1;
-    u16 unk_c2_6 : 2;
-    u16 unk_c2_8 : 1;
-    u16 unk_c2_9 : 2;
-    u16 unk_c2_11 : 5;
-    u8 unk_c4[0x24];
+    Ov009Vec unk_78; // position
+    u8 unk_84[0x24];
+    Ov009Vec scale;
+    u16 unk_b4;
+    u8 unk_b6[0x8];
+    u8 alpha;
+    u8 unk_bf[0x3];
+    union {
+        u16 unk_c2; // or-ed whole in func_ov009_022076b8
+        struct {
+            u16 unk_c2_0 : 1;
+            u16 unk_c2_1 : 4;
+            u16 unk_c2_5 : 1;
+            u16 unk_c2_6 : 2;
+            u16 unk_c2_8 : 1;
+            u16 unk_c2_9 : 2;
+            u16 unk_c2_11 : 5;
+        };
+    };
+    s16 anim_state;
+    u8 unk_c6[0x1e];
+    u32 unk_e4;
 };
 
 struct Ov009Sub40 {
@@ -276,6 +290,34 @@ struct Ov009Param {
     u16 unk_0a_10 : 6;
 };
 
+// The ov000 Target object at Ov009Obj::unk_4c (Target_02199b00.c; func_ov000_02199ba0 looks up
+// the actor whose id is in target).
+struct Ov009Target {
+    u8 type;
+    u8 unk_01;
+    u8 unk_02;
+    u8 unk_03;
+    u16 unk_04;
+    u16 unk_06;
+    u16 unk_08;
+    u16 unk_0a;
+    u8 unk_0c[0x4];
+    u16 kinds[2];
+    u16 ids[2];
+    u8 unk_18;
+    u8 unk_19;
+    u8 unk_1a;
+    u8 unk_1b;
+    u16 target;
+    u16 unk_1e;
+    u8 unk_20[0x24];
+    Ov009Vec dest;
+    u32 unk_50;
+    u32 unk_54;
+    u32 unk_58;
+};
+SIZE_ASSERT(Ov009Target, 0x5c);
+
 // The object base shared by the ov003 actor (Ov009Actor, built by func_ov003_021d0c1c) and the
 // ov000 actor (Ov009ActorEx, built by func_ov000_02194074): the fields below 0xac.
 class Ov009Obj : public Ov009V {
@@ -298,7 +340,7 @@ public:
     Ov009Sub40 *unk_40;
     Ov009Sub44 *unk_44;
     Ov009Sub48 *unk_48;
-    u8 *unk_4c;
+    Ov009Target *unk_4c;
     u16 *unk_50;
     u8 unk_54[0x4];
     void *unk_58;
@@ -342,21 +384,28 @@ public:
     s32 unk_c4;
     s32 unk_c8;
     s32 unk_cc;
-    u8 unk_d0[0x4];
-    u8 unk_d4;
-    u8 unk_d5[0x3];
+    // 0xd0..0xee as func_ov003_021d0c1c sets them.
+    void *unk_d0;
+    void *unk_d4;
     void *unk_d8;
-    u8 unk_dc[0x2];
-    u16 unk_de;
-    u8 unk_e0[0xa];
-    u16 unk_ea_0 : 3;
-    u16 unk_ea_3 : 3;
-    u16 unk_ea_6 : 2;
-    u16 unk_ea_8 : 2;
-    u16 unk_ea_10 : 1;
-    u16 unk_ea_11 : 3;
-    u16 unk_ea_14 : 1;
-    u16 unk_ea_15 : 1;
+    u16 unk_dc;
+    u16 target_id;  // id of the actor this one tracks; 0xffff for none
+    void *unk_e0;
+    void *unk_e4;
+    u16 unk_e8;
+    union {
+        u16 unk_ea; // or-ed whole by several members
+        struct {
+        u16 unk_ea_0 : 3;
+        u16 unk_ea_3 : 3;
+        u16 unk_ea_6 : 2;
+        u16 unk_ea_8 : 2;
+        u16 unk_ea_10 : 1;
+        u16 unk_ea_11 : 3;
+        u16 unk_ea_14 : 1;
+        u16 unk_ea_15 : 1;
+        };
+    };
     u8 unk_ec_0 : 1;
     u8 unk_ec_1 : 1;
     u8 unk_ec_2 : 6;
@@ -385,8 +434,9 @@ public:
     u16 unk_ce;
 };
 
+// The 0x138-byte animation object (func_ov000_0218e9c4); unk_00 is negative until it is ready.
 struct Ov009Names {
-    u16 unk_00;
+    s16 unk_00;
     u8 unk_02;
     u8 unk_03_0 : 1;
     u8 unk_03_1 : 1;
@@ -401,6 +451,7 @@ struct Ov009Names {
     char unk_6c[0x58];
     char unk_c4[0x20];
     char unk_e4[0x20];
+    u8 unk_104[0x34];
 };
 
 struct Ov009Heap {
@@ -428,12 +479,29 @@ struct Ov009Game54 {
     u8 unk_04[0x8c];
     s32 unk_90;
     s32 unk_94;
-    u8 unk_98[0x32];
+    u8 unk_98[0x14];
+    u8 unk_ac;
+    u8 unk_ad[0x1d];
     u8 unk_ca;
     u8 unk_cb;
     u8 unk_cc;
     u8 unk_cd[0x7];
     s32 unk_d4;
+    u8 unk_d8[0xb4];
+    u8 unk_18c;
+    u8 unk_18d;
+    u8 unk_18e;
+    u8 unk_18f;
+    union {
+        u8 unk_190;
+        struct {
+            u8 unk_190_0 : 2;
+            u8 unk_190_2 : 1;
+            u8 unk_190_3 : 1;
+            u8 unk_190_4 : 1;
+            u8 unk_190_5 : 3;
+        };
+    };
 };
 
 extern "C" {
@@ -681,14 +749,22 @@ public:
 SIZE_ASSERT(Ov009ActVt_022178f0, 0x110);
 
 // Actor class with vtable data_ov009_02217a00 (built inline by the ov003 factory).
-class Ov009ActVt_02217a00 : public Ov009Actor {
+// The 0x140 layout shared by the classes with vtables 02217a00 and 02217d5c,
+// which also share their member functions (func_ov009_02211e6c, 02211f9c, 0221268c, 022127f8).
+class Ov009ActSpin : public Ov009Actor {
 public:
     u16 unk_f0;
-    u8 unk_f2[0x6];
+    u16 unk_f2; // angle
+    s32 unk_f4; // from func_ov000_021909a8; the model's unk_50 points here
     u8 unk_f8;
     u8 unk_f9[0x23];
     Ov009Vec unk_11c;
-    u8 unk_128[0x18];
+    Ov009Vec unk_128;
+    Ov009Vec unk_134; // pos at setup; func_ov009_0221268c bobs around it
+};
+OV009_SIZE(Ov009ActSpin, 0x140);
+
+class Ov009ActVt_02217a00 : public Ov009ActSpin {
 };
 SIZE_ASSERT(Ov009ActVt_02217a00, 0x140);
 
@@ -706,13 +782,19 @@ public:
 SIZE_ASSERT(Ov009ActVt_02217aac, 0x108);
 
 // Actor class with vtable data_ov009_02217b58 (built inline by the ov003 factory).
-class Ov009ActVt_02217b58 : public Ov009Actor {
+// The 0x110 layout shared by the classes with vtables 02217b58 and 02217f60,
+// which also share func_ov009_0220d2d8 and func_ov009_0220d5f8.
+class Ov009ActPair110 : public Ov009Actor {
 public:
     Ov009Vec unk_f0;
     Ov009Vec unk_fc;
     u8 unk_108;
     u8 unk_109[0x3];
     s32 unk_10c;
+};
+OV009_SIZE(Ov009ActPair110, 0x110);
+
+class Ov009ActVt_02217b58 : public Ov009ActPair110 {
 };
 SIZE_ASSERT(Ov009ActVt_02217b58, 0x110);
 
@@ -731,14 +813,7 @@ public:
 SIZE_ASSERT(Ov009ActVt_02217cb0, 0xfc);
 
 // Actor class with vtable data_ov009_02217d5c (built inline by the ov003 factory).
-class Ov009ActVt_02217d5c : public Ov009Actor {
-public:
-    u16 unk_f0;
-    u8 unk_f2[0x6];
-    u8 unk_f8;
-    u8 unk_f9[0x23];
-    Ov009Vec unk_11c;
-    u8 unk_128[0x18];
+class Ov009ActVt_02217d5c : public Ov009ActSpin {
 };
 SIZE_ASSERT(Ov009ActVt_02217d5c, 0x140);
 
@@ -761,13 +836,7 @@ public:
 SIZE_ASSERT(Ov009ActVt_02217eb4, 0x10c);
 
 // Actor class with vtable data_ov009_02217f60 (built inline by the ov003 factory).
-class Ov009ActVt_02217f60 : public Ov009Actor {
-public:
-    Ov009Vec unk_f0;
-    Ov009Vec unk_fc;
-    u8 unk_108;
-    u8 unk_109[0x3];
-    s32 unk_10c;
+class Ov009ActVt_02217f60 : public Ov009ActPair110 {
 };
 SIZE_ASSERT(Ov009ActVt_02217f60, 0x110);
 
@@ -804,5 +873,54 @@ public:
     u8 unk_f1[0x3];
 };
 SIZE_ASSERT(Ov009ActVt_02216348, 0xf4);
+
+// Actor class with vtable data_ov009_02216c74 (built inline by the ov003 factory).
+class Ov009ActVt_02216c74 : public Ov009Actor {
+public:
+    void *unk_f0;
+};
+SIZE_ASSERT(Ov009ActVt_02216c74, 0xf4);
+
+// Actor class with vtable data_ov009_0221707c (built inline by the ov003 factory, which clears unk_104).
+class Ov009ActVt_0221707c : public Ov009Actor {
+public:
+    u16 unk_f0;
+    u16 unk_f2;
+    u8 unk_f4;
+    s8 unk_f5;
+    u8 unk_f6[0x2];
+    s32 unk_f8;
+    s32 unk_fc;
+    s32 unk_100;
+    void *unk_104;
+    s32 unk_108;
+};
+
+// An actor holding one animation and one model (factory 0x5414 and 0x31c class).
+class Ov009ActModel : public Ov009Actor {
+public:
+    Ov009Names anim;
+    Ov009Sub38 model;
+};
+OV009_SIZE(Ov009ActModel, 0x310);
+OV009_SIZE(Ov009Sub38, 0xe8);
+OV009_SIZE(Ov009Names, 0x138);
+
+// Actor class with vtable 02217844 (built inline by the ov003 factory, 0x5414).
+class Ov009ActVt_02217844 : public Ov009ActModel {
+};
+
+// Actor class with vtable 02217594 (built inline by the ov003 factory).
+class Ov009ActVt_02217594 : public Ov009ActModel {
+public:
+    u16 step;
+    u8 unk_312;
+    u8 unk_313;
+    s32 unk_314; // effect handle (func_020657b0)
+    u8 unk_318;
+    u8 unk_319[0x3];
+};
+OV009_SIZE(Ov009ActVt_02217594, 0x31c);
+SIZE_ASSERT(Ov009ActVt_0221707c, 0x10c);
 
 #endif

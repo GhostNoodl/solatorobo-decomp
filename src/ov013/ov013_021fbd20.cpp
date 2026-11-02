@@ -36,7 +36,7 @@ static inline Ov013Actor *Ov013_FindActor(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-void func_ov013_021fbd20(Ov013Actor *self) {
+void func_ov013_021fbd20(Ov013Boss *self) {
     Ov013Sub40 *w;
     Ov013Actor *a = Ov013_FindActor(self->unk_90);
     if (a == NULL) {
@@ -70,16 +70,16 @@ void func_ov013_021fbd20(Ov013Actor *self) {
         o = func_ov000_0218bf1c(data_ov000_021ccd64, &d, &pos, self->rot, 0xffff);
         o->unk_16.b0 = 1;
         o->unk_90 = self->unk_90;
-        if (FLD(u8, self, 0xf0) != 0) {
+        if (self->unk_f0 != 0) {
             o->unk_9c = 0x11f;
             o->unk_a0 = 0;
             o->unk_a4 = 0;
             o->unk_a8 = 0;
         }
         if (o->unk_4c != NULL) {
-            FLD(u16, o->unk_4c, 0x1c) = self->id;
+            o->unk_4c->target = self->id;
         }
-        FLD(u16, self, 0xde) = o->id;
+        self->target_id = o->id;
         func_ov000_02190cb0(self->unk_38, data_ov013_0220b5b8, 0x155, 0);
         func_ov000_021915a0(self->unk_38);
         self->unk_40->state = 0x63;
@@ -87,17 +87,17 @@ void func_ov013_021fbd20(Ov013Actor *self) {
         break;
     }
     case 0x63:
-        if (FLD(u8, self, 0xf1) != 0) {
+        if (self->unk_f1 != 0) {
             w->timer++;
             if (w->timer > 60) {
-                FLD(u8, self, 0xf1)--;
+                self->unk_f1--;
                 self->unk_40->state = 0;
                 self->unk_40->timer = 0;
             }
         } else {
             w->timer++;
             if (w->timer > 20) {
-            FLD(u8, self, 0xf0) = 0;
+            self->unk_f0 = 0;
                 func_ov000_02198360(self->unk_40, 1, 0);
             }
         }
@@ -118,7 +118,7 @@ extern void *func_ov000_0219b71c(Ov013Vec *pos, Ov013Vec *v, s32 a, s32 b, s32 c
 extern void func_ov003_021d6a3c(Ov013Actor *self, s32 a, s32 b, s32 c);
 extern void func_ov003_021d6954(Ov013Actor *self, u8 a);
 
-void func_ov013_021fbf84(Ov013Actor *self) {
+void func_ov013_021fbf84(Ov013Boss *self) {
     Ov013Sub40 *w = self->unk_40;
     switch (w->state) {
     case 0: {
@@ -142,10 +142,10 @@ void func_ov013_021fbf84(Ov013Actor *self) {
         n = self->unk_44;
         n->unk_22_0 = 0;
         n->unk_22_1 = 0;
-        FLD(u16, self->unk_4c, 0x1c) = 0xffff;
+        self->unk_4c->target = 0xffff;
         o = func_02065f88(0x390, &self->pos);
         if (o != NULL) {
-            FLD(s32, self, 0xf8) = FLD(s32, o, 0x24);
+            self->unk_f8 = FLD(s32, o, 0x24);
             o->v24(0, self->unk_68, 0);
             o->v0c(0x1800);
         }
@@ -185,8 +185,8 @@ void func_ov013_021fbf84(Ov013Actor *self) {
                 func_02049f44(data_02097e4c, 0x44, &self->pos, 0);
             }
             if (t == 0x6e) {
-                func_02065860(data_0214a420, FLD(s32, self, 0xf8));
-                FLD(s32, self, 0xf8) = 0;
+                func_02065860(data_0214a420, self->unk_f8);
+                self->unk_f8 = 0;
             }
         }
         break;

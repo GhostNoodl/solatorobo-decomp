@@ -56,7 +56,7 @@ Ov013Actor *func_ov013_02206660(Ov013Actor *self) {
     return self;
 }
 
-void func_ov013_0220667c(Ov013Actor *self) {
+void func_ov013_0220667c(Ov013ActVt_0220bdd8 *self) {
     Ov013Sub48 *m;
     Ov013Sub44 *n;
     Ov013Actor *p;
@@ -78,10 +78,10 @@ void func_ov013_0220667c(Ov013Actor *self) {
     }
     self->unk_93_4 = 1;
     self->unk_b6 = 0x5a;
-    FLD(u16, self, 0xfe) = 0x1000;
+    self->unk_fe = 0x1000;
     if (func_020621c4()) {
         func_ov003_021d6bac(self, data_ov013_0220b360);
-        FLD(u16, self, 0xfe) = 0x1800;
+        self->unk_fe = 0x1800;
     }
 }
 

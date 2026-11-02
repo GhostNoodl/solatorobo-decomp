@@ -8,7 +8,7 @@ void func_ov009_0220ae4c(Ov009ActVt_022172e4 *self) {
     self->unk_fc = self->rot[1];
     self->unk_f0 = self->pos;
     self->unk_b8 = self->pos;
-    FLD(u16, self, 0xea) |= 0x1000;
+    self->unk_ea |= 0x1000;
     s44 = self->unk_44;
     s44->unk_22_0 = 0;
     s44->unk_22_1 = 0;
@@ -38,7 +38,7 @@ void func_ov009_0220aeb8(Ov009ActVt_022172e4 *self) {
     u8 st = s->unk_13;
     if (st != 0x15) {
         u32 f = self->unk_48->unk_50;
-        if ((f & 0x20000000) && (!(f & 0x400) || st == 0x13) && FLD(u16, ((void *)self->unk_4c), 0x1c) == 0xffff) {
+        if ((f & 0x20000000) && (!(f & 0x400) || st == 0x13) && self->unk_4c->target == 0xffff) {
             s->flags |= 0x200000;
             func_02049f44(data_02097e4c, 0x6c, &self->pos, 0);
             return;

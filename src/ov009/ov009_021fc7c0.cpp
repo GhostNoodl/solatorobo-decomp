@@ -24,7 +24,7 @@ void func_ov009_021fc7c0(Ov009Actor *self) {
         ((Ov009Byte *)(p + 0xa2))->b0 = 0;
     }
     self->unk_40->flags |= 0x100000000ULL;
-    FLD(u8, self->unk_4c, 0x18) |= 2;
+    self->unk_4c->unk_18 |= 2;
 }
 
 void func_ov009_021fc834(Ov009Actor *self) {
@@ -69,7 +69,7 @@ void func_ov009_021fc8f4(Ov009Actor *self) {
         }
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
-        FLD(u8, data_ov000_021ccd54, 0xac) = 1;
+        data_ov000_021ccd54->unk_ac = 1;
         m = self->unk_38;
         m->unk_c2_0 = 1;
         func_ov000_02190cb0(self->unk_38, data_ov009_02216ac8, 0x400, 0);
@@ -136,7 +136,7 @@ void func_ov009_021fcad0(Ov009Actor *self) {
             s44->unk_22_0 = 0;
             s44->unk_22_1 = 0;
         }
-        FLD(u16, self->unk_4c, 0x1c) = 0xffff;
+        self->unk_4c->target = 0xffff;
         m = self->unk_38;
         m->unk_c2_9 = 2;
         NNSi_G3dModifyPolygonAttrMask(FLD(void *, m, 4), 0, 0xc0);

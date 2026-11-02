@@ -6,7 +6,7 @@ extern void *data_ov000_021ccd68;
 extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 msg);
 extern Ov009Actor *func_ov000_0218e6d0(void *mgr, u16 a, u16 b);
 
-void func_ov009_021facf0(Ov009Actor *self) {
+void func_ov009_021facf0(Ov009ActVt_02216a00 *self) {
     if (self->unk_40->state == 0) {
         func_ov000_0218e8ec(data_ov000_021ccd68, 0x5401, 0x15);
         func_ov000_0218e8ec(data_ov000_021ccd68, 0x541f, 0x15);
@@ -39,7 +39,7 @@ extern void func_ov000_0218dbe0(Ov009Obj *self, s32 turn);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
-void func_ov009_021fada8(Ov009Actor *self) {
+void func_ov009_021fada8(Ov009ActVt_022164a0 *self) {
     Ov009Sub40 *st = self->unk_40;
     Ov009Sub44 *s44;
     switch (st->state) {
@@ -74,7 +74,7 @@ void func_ov009_021fada8(Ov009Actor *self) {
         if (st->timer > 0x2d) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
-            FLD(u8, data_ov000_021ccd54, 0xac) = 1;
+            data_ov000_021ccd54->unk_ac = 1;
             func_ov000_02198360(self->unk_40, 1, 0);
         }
         break;

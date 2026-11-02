@@ -57,28 +57,28 @@ Ov014ActEx_021fc24c *func_ov014_021fc24c(Ov014ActEx_021fc24c *self) {
 }
 #pragma force_active reset
 
-static inline void Ov014_Free100(Ov014Actor *self) {
+static inline void Ov014_Free100(Ov014ActEx_021fc24c *self) {
     u32 saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
-    if (FLD(void *, self, 0x100) != NULL) {
-        void *p = FLD(void *, self, 0x100);
+    if (self->unk_100 != NULL) {
+        void *p = self->unk_100;
         if (p != NULL) {
             func_ov003_021da940(p);
             func_0203de1c(p);
         }
-        FLD(void *, self, 0x100) = NULL;
+        self->unk_100 = NULL;
     }
     data_02097dd0->cur = saved;
 }
 
-Ov014Actor *func_ov014_021fc280(Ov014Actor *self) {
+Ov014ActEx_021fc24c *func_ov014_021fc280(Ov014ActEx_021fc24c *self) {
     FLD(void *, self, 0) = data_ov014_0221722c;
     Ov014_Free100(self);
     func_ov000_0219429c(self);
     return self;
 }
 
-Ov014Actor *func_ov014_021fc2f0(Ov014Actor *self) {
+Ov014ActEx_021fc24c *func_ov014_021fc2f0(Ov014ActEx_021fc24c *self) {
     FLD(void *, self, 0) = data_ov014_0221722c;
     Ov014_Free100(self);
     func_ov000_0219429c(self);
@@ -111,7 +111,7 @@ void func_ov014_021fc368(Ov014ActEx_021fc24c *self) {
     if (p != NULL) {
         *p = 0;
     }
-    FLD(s32 *, self, 0x100) = p;
+    self->unk_100 = p;
     m = self->unk_38;
     {
         s32 y = m->unk_a8.y;
@@ -382,7 +382,7 @@ void func_ov014_021fc9c8(Ov014ActEx_021fc24c *self) {
                     for (i = 0; i < n; i++) {
                         Ov014Actor *a;
                         if (list[i] != NULL && (a = func_ov000_021985c0(list[i])) != NULL) {
-                            if (a->unk_4c == NULL || (u16)(FLD(u16, a->unk_4c, 0x1c) & 0xf000) != team ||
+                            if (a->unk_4c == NULL || (u16)(a->unk_4c->target & 0xf000) != team ||
                                 self->unk_fe >= 200) {
                                 if (self->unk_fc == 0) {
                                     func_ov003_021f0c60(self, 0);
@@ -433,7 +433,7 @@ void func_ov014_021fc9c8(Ov014ActEx_021fc24c *self) {
                         MIi_CpuClear32(-1, (u8 *)e + 0x84, 0x40);
                     }
                 }
-                if (func_ov000_0219aca8(self, self, FLD(u16, self->unk_4c, 8), FLD(u16, self->unk_4c, 0xa), 0, 0, 0x5ccd, 0, 0x6b, 0x1000)) {
+                if (func_ov000_0219aca8(self, self, self->unk_4c->unk_08, self->unk_4c->unk_0a, 0, 0, 0x5ccd, 0, 0x6b, 0x1000)) {
                     Ov014Actor *t = func_ov000_0218d240(self);
                     Ov014Vec pp;
                     if (t != NULL) {
@@ -550,7 +550,7 @@ void func_ov014_021fcf00(Ov014ActEx_021fc24c *self) {
             for (i = 0; i < n; i++) {
                 Ov014Actor *a;
                 if (list[i] != NULL && (a = func_ov000_021985c0(list[i])) != NULL) {
-                    if (a->unk_4c == NULL || (u16)(FLD(u16, a->unk_4c, 0x1c) & 0xf000) != team ||
+                    if (a->unk_4c == NULL || (u16)(a->unk_4c->target & 0xf000) != team ||
                         ++self->unk_fe >= 200) {
                         func_ov003_021f0c60(self, 0);
                         func_ov000_02198360(self->unk_40, 0x15, 0);

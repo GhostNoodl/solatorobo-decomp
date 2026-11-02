@@ -78,24 +78,24 @@ extern void func_ov000_02194758(void *self);
 extern void func_0203f364(Ov014Sub48 *p);
 
 #pragma force_active on
-Ov014Actor *func_ov014_02208618(Ov014Actor *self) {
+Ov014ActEx_02208618 *func_ov014_02208618(Ov014ActEx_02208618 *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = data_ov014_02217708;
     self->unk_d0 = 0;
-    FLD(void *, self, 0xd8) = NULL;
-    FLD(u8, self, 0xd4) = 0;
+    self->unk_d8 = NULL;
+    self->unk_d4 = 0;
     return self;
 }
 #pragma force_active reset
 
-Ov014Actor *func_ov014_02208648(Ov014Actor *self) {
+Ov014ActEx_02208618 *func_ov014_02208648(Ov014ActEx_02208618 *self) {
     FLD(void *, self, 0) = data_ov014_02217708;
     Ov014_FreeFx(self, 0xd8);
     func_ov000_0219429c(self);
     return self;
 }
 
-Ov014Actor *func_ov014_022086b8(Ov014Actor *self) {
+Ov014ActEx_02208618 *func_ov014_022086b8(Ov014ActEx_02208618 *self) {
     FLD(void *, self, 0) = data_ov014_02217708;
     Ov014_FreeFx(self, 0xd8);
     func_ov000_0219429c(self);

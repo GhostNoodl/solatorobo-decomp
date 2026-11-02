@@ -21,7 +21,7 @@ void func_ov009_02211138(Ov009ActVt_02217aac *self) {
         self->pos = self->unk_f0;
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
-        FLD(u8, data_ov000_021ccd54, 0xac) = 1;
+        data_ov000_021ccd54->unk_ac = 1;
         func_ov000_02198360(self->unk_40, 1, 0);
     }
     d.x = self->unk_f0.x - self->pos.x;

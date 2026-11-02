@@ -104,11 +104,11 @@ void func_ov012_02209268(Ov012Actor *self) {
     } else if (dist < 0xc000) {
         void *m = func_ov000_0218e4cc(data_ov000_021ccd68, 0x4000);
         if (m == NULL || func_ov000_0218dfb4(m, 0x4009) <= 2) {
-            u8 *t = NULL;
+            Ov012Target *t = NULL;
             if (o != NULL) {
-                t = ((u8 *)o->unk_4c);
+                t = o->unk_4c;
             }
-            if (t != NULL && FLD(u16, t, 0x1c) != self->id) {
+            if (t != NULL && t->target != self->id) {
                 t = NULL;
             }
             if (t == NULL) {

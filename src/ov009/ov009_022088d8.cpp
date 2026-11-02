@@ -33,9 +33,9 @@ void func_ov009_022088d8(Ov009Actor *self) {
         }
     }
     if (self->unk_40->unk_13 == 0xf) {
-        func_ov000_0219aae8(self, self, 0x78, FLD(u16, self->unk_4c, 0xa) & 0xff, 2, 0, 0, 0x3000, 0x1b33, 0x64, 0x1000);
+        func_ov000_0219aae8(self, self, 0x78, self->unk_4c->unk_0a & 0xff, 2, 0, 0, 0x3000, 0x1b33, 0x64, 0x1000);
     }
-    if (FLD(s16, self->unk_38, 0xc4) == 1) {
+    if (self->unk_38->anim_state == 1) {
         func_0204a028(data_02097e4c, 9, &self->pos, -3);
     }
 }

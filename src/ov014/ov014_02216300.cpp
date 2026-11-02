@@ -30,10 +30,10 @@ void func_ov014_02215ffc(Ov014ActEx_022152e8 *self) {
         Ov014Vec *p;
         func_ov000_021911c8(self->unk_38, 0x1000);
         {
-            u8 *m = ((u8 *)self->unk_4c);
-            FLD(s32, m, 0x50) = 0x1000;
-            FLD(s32, m, 0x54) = 0x29;
-            FLD(s32, m, 0x58) = 0;
+            Ov014Target *m = self->unk_4c;
+            m->unk_50 = 0x1000;
+            m->unk_54 = 0x29;
+            m->unk_58 = 0;
         }
         self->unk_48->unk_30 = 0;
         p = func_ov000_0218d2e0(self);
@@ -91,11 +91,11 @@ void func_ov014_02215ffc(Ov014ActEx_022152e8 *self) {
     FLD(s32, self->unk_3c, 0x14) = 0x2000;
 }
 
-void func_ov014_02216300(Ov014Actor *self) {
+void func_ov014_02216300(Ov014ActEx_022152e8 *self) {
     func_ov000_02195d88(self);
 }
 
-void func_ov014_0221630c(Ov014Actor *self) {
+void func_ov014_0221630c(Ov014ActEx_022152e8 *self) {
     func_ov000_02198360(self->unk_40, 0x15, 0);
 }
 
@@ -124,8 +124,8 @@ BOOL func_ov014_02216324(Ov014Obj *self) {
         for (i = 0; i < n; i++) {
             Ov014Actor *q;
             if (list[i] != NULL && (q = func_ov000_021985c0(list[i])) != NULL) {
-                u8 *s = ((u8 *)q->unk_4c);
-                if (s == NULL || k != (u16)(FLD(u16, s, 0x1c) & 0xf000)) {
+                Ov014Target *s = q->unk_4c;
+                if (s == NULL || k != (u16)(s->target & 0xf000)) {
                     r = TRUE;
                     break;
                 }
@@ -135,7 +135,7 @@ BOOL func_ov014_02216324(Ov014Obj *self) {
     return r;
 }
 
-void func_ov014_0221641c(Ov014Actor *self) {
+void func_ov014_0221641c(Ov014ActEx_022142fc *self) {
     self->v74();
 }
 

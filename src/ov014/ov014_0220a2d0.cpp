@@ -1,11 +1,5 @@
 #include "ov014/ov014.h"
 
-struct Ov014Vec16 {
-    s16 x;
-    s16 y;
-    s16 z;
-};
-
 struct Ov014SpawnDesc {
     u16 kind;
     u16 flags;
@@ -57,22 +51,22 @@ void func_ov014_0220a2d0(Ov014Act_02209280 *self, u16 a) {
     v.z = Ov014_FxMul(spd, OV014_COS(ang)) + 0x8000;
     Ov014Spawn_Init(&desc, 0x481d);
     desc.unk_04[0] = a;
-    FLD(u16, self, 0xde) = 0xffff;
+    self->target_id = 0xffff;
     o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
     if (o == NULL) {
         return;
     }
-    if (((u8 *)o->unk_4c) != NULL) {
-        FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
+    if (o->unk_4c != NULL) {
+        o->unk_4c->target = self->id;
     }
     o->unk_84.x = v.x;
     o->unk_84.y = 0;
     o->unk_84.z = v.z;
-    FLD(Ov014Flags8, o, 0x16).b0 = 1;
-    FLD(u16, self, 0xde) = o->id;
+    o->flags_0 = 1;
+    self->target_id = o->id;
 }
 
-void func_ov014_0220a490(Ov014Actor *self, Ov014Vec *vel, u16 a, u16 b, u16 c) {
+void func_ov014_0220a490(Ov014Act_02209280 *self, Ov014Vec *vel, u16 a, u16 b, u16 c) {
     Ov014SpawnDesc desc;
     Ov014Vec pos;
     Ov014Vec16 rot;
@@ -88,21 +82,21 @@ void func_ov014_0220a490(Ov014Actor *self, Ov014Vec *vel, u16 a, u16 b, u16 c) {
     rot.x = 0;
     rot.y = 0;
     rot.z = 0;
-    FLD(u16, self, 0xde) = 0xffff;
+    self->target_id = 0xffff;
     o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
     if (o == NULL) {
         return;
     }
-    if (((u8 *)o->unk_4c) != NULL) {
-        FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
+    if (o->unk_4c != NULL) {
+        o->unk_4c->target = self->id;
     }
     if (vel != NULL) {
         s32 x = vel->x; s32 y = vel->y; o->unk_84.x = x; s32 z = vel->z; o->unk_84.y = y; o->unk_84.z = z;
     } else {
         o->unk_90 = self->unk_90;
     }
-    FLD(Ov014Flags8, o, 0x16).b0 = 1;
-    FLD(u16, self, 0xde) = o->id;
+    o->flags_0 = 1;
+    self->target_id = o->id;
 }
 
 
@@ -165,7 +159,7 @@ static inline Ov014Actor *Ov014h_FindById(u16 id) {
 void func_ov014_0220a67c(Ov014Act_02209280 *self) {
     switch (self->unk_40->state) {
     case 0: {
-        s16 *p = ((s16 *)self->unk_f0);
+        Ov014Step *p = self->step;
         Ov014Vec a;
         Ov014Vec b;
         Ov014Vec c;
@@ -173,8 +167,8 @@ void func_ov014_0220a67c(Ov014Act_02209280 *self) {
         s32 d;
         const void *anim;
         Ov014V *e;
-        if (p[0] == 0xb) {
-            self->unk_b8 = data_ov014_02216aa8[(u16)p[2]];
+        if (p->kind == 0xb) {
+            self->unk_b8 = data_ov014_02216aa8[p->unk_04];
         } else {
             s32 i = func_02040498(6);
             self->unk_b8 = data_ov014_02216aa8[i];

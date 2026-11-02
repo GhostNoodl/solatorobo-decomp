@@ -18,7 +18,7 @@ struct Ov009Byte {
     u8 b2 : 6;
 };
 
-static inline void Ov009_SpawnChild(Ov009Actor *self) {
+static inline void Ov009_SpawnChild(Ov009ActVt_022166a4 *self) {
     Ov009Actor *o = func_ov003_021d69a0(self, 0x4011, 0);
     if (o != NULL) {
         ((Ov009Byte *)&FLD(u8, o, 0x16))->b1 = 1;
@@ -26,7 +26,7 @@ static inline void Ov009_SpawnChild(Ov009Actor *self) {
     self->unk_ea_3 = 0;
 }
 
-void func_ov009_021fbbc0(Ov009Actor *self) {
+void func_ov009_021fbbc0(Ov009ActVt_022166a4 *self) {
     switch (self->unk_40->state) {
     case 0x33:
         self->unk_9c = 0;
@@ -45,7 +45,7 @@ void func_ov009_021fbbc0(Ov009Actor *self) {
     func_ov003_021d4b68(self);
 }
 
-void func_ov009_021fbc9c(Ov009Actor *self) {
+void func_ov009_021fbc9c(Ov009ActVt_022166a4 *self) {
     if (self->unk_40->state == 0) {
         self->unk_1a = 1;
         if (self->unk_ea_3) {
@@ -55,14 +55,14 @@ void func_ov009_021fbc9c(Ov009Actor *self) {
     func_ov003_021d36fc(self);
 }
 
-void func_ov009_021fbd04(Ov009Actor *self) {
+void func_ov009_021fbd04(Ov009ActVt_022166a4 *self) {
     if ((self->unk_50[2] >> 12) != 5 && self->unk_40->state == 0 && self->unk_ea_3) {
         Ov009_SpawnChild(self);
     }
     func_ov003_021d6054(self);
 }
 
-void func_ov009_021fbd78(Ov009Actor *self) {
+void func_ov009_021fbd78(Ov009ActVt_022166a4 *self) {
     if ((self->unk_50[2] >> 12) == 5) {
         func_ov000_02198360(self->unk_40, 0x15, 0);
         return;
@@ -80,7 +80,7 @@ void func_ov009_021fbd78(Ov009Actor *self) {
     }
 }
 
-void func_ov009_021fbe3c(Ov009Actor *self) {
+void func_ov009_021fbe3c(Ov009ActVt_022166a4 *self) {
     if ((self->unk_50[2] >> 12) == 5) {
         func_ov000_02198360(self->unk_40, 0x15, 0);
         return;
@@ -106,7 +106,7 @@ void func_ov009_021fbe3c(Ov009Actor *self) {
     }
 }
 
-void func_ov009_021fbf50(Ov009Actor *self) {
+void func_ov009_021fbf50(Ov009ActVt_022163f4 *self) {
     func_ov003_021d112c(self);
     func_ov000_02198360(self->unk_40, 0x20, 0);
 }
@@ -265,7 +265,7 @@ void func_ov009_021fc2a8(Ov009ActVt_02216348 *self) {
             self->unk_f0--;
         }
     }
-    if (FLD(s16, self->unk_38, 0xc4) == 1) {
+    if (self->unk_38->anim_state == 1) {
         func_0204a028(data_02097e4c, 0x1e, &self->pos, 0xc);
     }
 }

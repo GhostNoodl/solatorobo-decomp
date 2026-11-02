@@ -6,7 +6,7 @@ void func_ov009_0220a560(Ov009ActVt_02217390 *self) {
     switch (self->unk_40->state) {
     case 0:
         self->pos.y = self->unk_f8.y - 0xc00;
-        FLD(u8, self->unk_38, 0xbe) = 0;
+        self->unk_38->alpha = 0;
         self->unk_38->unk_c2_0 = 1;
         self->unk_40->state++;
         break;
@@ -21,7 +21,7 @@ void func_ov009_0220a560(Ov009ActVt_02217390 *self) {
             }
             self->unk_40->timer = 0x1f;
         }
-        FLD(u8, self->unk_38, 0xbe) = self->unk_40->timer;
+        self->unk_38->alpha = self->unk_40->timer;
         self->pos.y = self->pos.y + ((self->unk_f8.y - self->pos.y) >> 2);
         break;
     }
@@ -154,7 +154,7 @@ void func_ov009_0220a984(Ov009ActVt_02217390 *self) {
         self->unk_f0 = 0;
         break;
     case 1:
-        if (FLD(u32, self->unk_38, 0xe4) & 0x80) {
+        if (self->unk_38->unk_e4 & 0x80) {
             self->unk_9c = 0;
             self->unk_a4 = 0;
             self->unk_a0 = 0x666;
@@ -179,7 +179,7 @@ void func_ov009_0220a984(Ov009ActVt_02217390 *self) {
                 }
             }
         }
-        if (FLD(u32, self->unk_38, 0xe4) & 0x8000000) {
+        if (self->unk_38->unk_e4 & 0x8000000) {
             func_ov000_02191418(self->unk_38, 3, 0);
         }
         if (self->unk_a0 < 0) {

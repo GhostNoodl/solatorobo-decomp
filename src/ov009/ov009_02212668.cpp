@@ -14,14 +14,14 @@ void func_ov009_02212668(Ov009Actor *self) {
 extern u8 data_ov009_022179b4[];
 extern void func_ov000_021911c8(void *model, s32 a);
 
-void func_ov009_0221268c(Ov009Actor *self) {
+void func_ov009_0221268c(Ov009ActSpin *self) {
     Ov009Vec d;
     s32 x, y, z;
     int s;
-    x = FLD(s32, self, 0x134);
-    FLD(u16, self, 0xf2) += 0x60;
-    y = FLD(s32, self, 0x138) + OV009_SIN(FLD(u16, self, 0xf2));
-    z = FLD(s32, self, 0x13c);
+    x = self->unk_134.x;
+    self->unk_f2 += 0x60;
+    y = self->unk_134.y + OV009_SIN(self->unk_f2);
+    z = self->unk_134.z;
     d.x = x - self->pos.x;
     d.y = y - self->pos.y;
     d.z = z - self->pos.z;

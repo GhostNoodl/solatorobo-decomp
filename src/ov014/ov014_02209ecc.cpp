@@ -5,7 +5,7 @@ extern "C" {
 extern void func_ov000_0219864c(void *a, s32 b, s32 c);
 extern void func_ov000_021984f4(void *a, Ov014Vec *b, s32 c);
 
-void func_ov014_02209ecc(Ov014Actor *self) {
+void func_ov014_02209ecc(Ov014Act_02209280 *self) {
     u16 k = self->unk_b4;
     if (k != 100 && k != 110) {
         self->unk_48->unk_60 = self->unk_6c >> 1;
@@ -17,7 +17,7 @@ void func_ov014_02209ecc(Ov014Actor *self) {
     func_ov000_0219864c(self->unk_48, 0, 0);
 }
 
-void func_ov014_02209f24(Ov014Actor *self) {
+void func_ov014_02209f24(Ov014Act_02209280 *self) {
     Ov014Vec v;
     u16 k;
     Ov014_VecCopy(&v, &self->pos);
@@ -146,17 +146,17 @@ void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 kind) {
     desc.unk_04[0] = a;
     desc.unk_04[1] = b;
     desc.unk_04[2] = 0x380;
-    FLD(u16, self, 0xde) = 0xffff;
+    self->target_id = 0xffff;
     o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &pos, rot, 0xffff);
     if (o == NULL) {
         return;
     }
     if (o->unk_4c != NULL) {
-        FLD(u16, o->unk_4c, 0x1c) = self->id;
+        o->unk_4c->target = self->id;
     }
     o->unk_90 = 0xffff;
-    FLD(Ov014Flags8, o, 0x16).b0 = 1;
-    FLD(u16, self, 0xde) = o->id;
+    o->flags_0 = 1;
+    self->target_id = o->id;
 }
 
 }

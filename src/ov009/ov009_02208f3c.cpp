@@ -5,12 +5,12 @@ extern "C" {
 extern char data_ov009_0221729c[];
 extern char data_ov009_022172a7[];
 
-void func_ov009_02208f3c(Ov009Actor *self) {
+void func_ov009_02208f3c(Ov009ActVt_02217594 *self) {
     func_ov003_021d0fc0(self);
     {
         const char *a = data_ov009_0221729c;
         const char *b = data_ov009_022172a7;
-        Ov009Names *n = &FLD(Ov009Names, self, 0xf0);
+        Ov009Names *n = &self->anim;
         if (a) {
             STD_CopyString(n->unk_10, a);
             STD_CopyString(n->unk_30, b);

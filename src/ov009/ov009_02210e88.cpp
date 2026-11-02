@@ -6,7 +6,7 @@ extern void func_ov000_021911c8(void *model, s32 a);
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void func_ov000_02199f48(void *p, Ov009Actor *a);
 
-void func_ov009_02210e88(Ov009Actor *self) {
+void func_ov009_02210e88(Ov009ActVt_02217c04 *self) {
     if (self->unk_40->state == 0) {
         self->unk_64 += self->unk_64 >> 1;
         func_ov000_021911c8(self->unk_38, 0x400);

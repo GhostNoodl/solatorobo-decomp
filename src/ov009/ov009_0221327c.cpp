@@ -9,7 +9,7 @@ extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 
-void func_ov009_0221327c(Ov009Actor *self) {
+void func_ov009_0221327c(Ov009ActVt_02217d5c *self) {
     Ov009Vec p;
     Ov009V *e;
     Ov009Sub40 *st;
@@ -119,7 +119,7 @@ void func_ov009_02213460(Ov009ActVt_02217d5c *self) {
         if (st->timer == 0) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
-            FLD(u8, data_ov000_021ccd54, 0xac) = 1;
+            data_ov000_021ccd54->unk_ac = 1;
             func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
             self->v08();
             return;

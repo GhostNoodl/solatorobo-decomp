@@ -64,7 +64,7 @@ void func_ov014_02212948(Ov014Act_0221267c *self) {
             self->unk_40->flags = 0;
             self->unk_40->flags |= 0x40000;
             self->unk_40->state = 0;
-            a = Ov014_FindById(FLD(u16, self, 0xde));
+            a = Ov014_FindById(self->target_id);
             if (a != NULL) {
                 a->unk_1a = 1;
             }
@@ -83,7 +83,7 @@ void func_ov014_02212948(Ov014Act_0221267c *self) {
                 if (m & 2) {
                     Ov014Actor *a;
                     self->unk_40->state = 0xffff;
-                    a = Ov014_FindById(FLD(u16, self, 0xde));
+                    a = Ov014_FindById(self->target_id);
                     if (a != NULL) {
                         a->unk_1a = 1;
                     }

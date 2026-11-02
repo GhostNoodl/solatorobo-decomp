@@ -16,27 +16,27 @@ struct Ov009Bits16 {
     u16 b1 : 15;
 };
 
-void func_ov009_02207aa0(Ov009Actor *self) {
+void func_ov009_02207aa0(Ov009ActVt_02217844 *self) {
     if (self->unk_40->state == 0) {
         self->unk_38->unk_c2_0 = 0;
-        ((Ov009Bits16 *)&FLD(u8, self, 0x2ea))->b0 = 0;
+        self->model.unk_c2_0 = 0;
         self->unk_40->state++;
     }
 }
 
-void func_ov009_02207ae4(Ov009Actor *self) {
+void func_ov009_02207ae4(Ov009ActVt_02217844 *self) {
     switch (self->unk_40->state) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov009_022172af, 0x1000, 1);
         self->unk_38->unk_c2_0 = 1;
-        func_ov000_02190e98(&FLD(u8, self, 0x228), 0, 0x1000, 1);
-        ((Ov009Bits16 *)&FLD(u8, self, 0x2ea))->b0 = 1;
+        func_ov000_02190e98(&self->model, 0, 0x1000, 1);
+        self->model.unk_c2_0 = 1;
         self->unk_40->state++;
         break;
     case 1:
         if (func_ov000_02191120(self->unk_38)) {
             self->unk_38->unk_c2_0 = 0;
-            ((Ov009Bits16 *)&FLD(u8, self, 0x2ea))->b0 = 0;
+            self->model.unk_c2_0 = 0;
             func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
             self->v08();
         }
@@ -44,19 +44,19 @@ void func_ov009_02207ae4(Ov009Actor *self) {
     }
 }
 
-void func_ov009_02207bd4(Ov009Actor *self) {
+void func_ov009_02207bd4(Ov009ActVt_02217844 *self) {
     switch (self->unk_40->state) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov009_022172b5, 0x1000, 1);
         self->unk_38->unk_c2_0 = 1;
-        func_ov000_02190e98(&FLD(u8, self, 0x228), 1, 0x1000, 1);
-        ((Ov009Bits16 *)&FLD(u8, self, 0x2ea))->b0 = 1;
+        func_ov000_02190e98(&self->model, 1, 0x1000, 1);
+        self->model.unk_c2_0 = 1;
         self->unk_40->state++;
         break;
     case 1:
         if (func_ov000_02191120(self->unk_38)) {
             self->unk_38->unk_c2_0 = 0;
-            ((Ov009Bits16 *)&FLD(u8, self, 0x2ea))->b0 = 0;
+            self->model.unk_c2_0 = 0;
             func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
             self->v08();
         }

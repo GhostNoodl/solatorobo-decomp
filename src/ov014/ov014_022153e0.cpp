@@ -137,20 +137,20 @@ void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
         if (self->unk_40->timer == 0xf) {
             Ov014V *e;
             Ov014V *e2;
-            u8 *g;
+            Ov014Game54 *g;
             e = func_02065f88(0x66, &self->pos);
             e->v0c(0x2800);
             e->v30(self->rot);
             e2 = func_02065f88(0x3ea, &self->pos);
             e2->v0c(0x3800);
             e2->v30(self->rot);
-            g = (u8 *)data_ov000_021ccd54;
-            FLD(Ov014Flags8, g, 0x190).b2 = 1;
-            FLD(Ov014Flags8, g, 0x190).b3 = 1;
-            FLD(Ov014Flags8, g, 0x190).b4 = 1;
-            FLD(u8, g, 0x18d) = 0x14;
-            FLD(u8, g, 0x18e) = 10;
-            FLD(u8, g, 0x18f) = 10;
+            g = data_ov000_021ccd54;
+            g->unk_190_2 = 1;
+            g->unk_190_3 = 1;
+            g->unk_190_4 = 1;
+            g->unk_18d = 0x14;
+            g->unk_18e = 10;
+            g->unk_18f = 10;
             func_02049f44(data_02097e4c, 0x29, &self->pos, 0);
         }
         st = self->unk_40;
@@ -249,7 +249,7 @@ void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
             if (o != NULL) {
                 mask &= (u16)~(1 << ((u16)(o->id & 0xf000) >> 12));
             }
-            func_ov000_0219aae8(self, o, FLD(u16, self->unk_4c, 8), FLD(u16, self->unk_4c, 0xa), mask, NULL, 0,
+            func_ov000_0219aae8(self, o, self->unk_4c->unk_08, self->unk_4c->unk_0a, mask, NULL, 0,
                                 self->unk_ec, 0x1000, 0x64, 0x1000);
         }
         st = self->unk_40;

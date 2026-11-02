@@ -24,7 +24,7 @@ s32 func_ov013_021fc400(Ov013Actor *self);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
-void func_ov013_021fa6a0(Ov013Actor *self) {
+void func_ov013_021fa6a0(Ov013Boss *self) {
     Ov013Sub48 *m;
     Ov013Sub44 *n;
     Ov013Actor *p;
@@ -45,15 +45,15 @@ void func_ov013_021fa6a0(Ov013Actor *self) {
     self->pos.y = 0;
     self->pos.z = -0x14000;
     FLD(s32, self->unk_3c, 0x14) = self->unk_64 << 1;
-    FLD(u8, self, 0xf1) = 0;
-    FLD(u8, self, 0xf0) = 0;
-    FLD(u8, self, 0xf2) = 0;
-    FLD(u16, self, 0xf4) = 0x1000;
-    FLD(s32, self, 0xf8) = 0;
+    self->unk_f1 = 0;
+    self->unk_f0 = 0;
+    self->side = 0;
+    self->unk_f4 = 0x1000;
+    self->unk_f8 = 0;
     self->unk_b6 = 0x3c;
     if (func_020621c4()) {
         func_ov003_021d6bac(self, data_ov013_0220ae4e);
-        FLD(u16, self, 0xf4) = 0x1800;
+        self->unk_f4 = 0x1800;
     }
 }
 
@@ -128,7 +128,7 @@ void func_ov013_021fa8e4(Ov013Actor *self) {
         if (s->timer > 0x14) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
-            FLD(u8, data_ov000_021ccd54, 0xac) = 1;
+            data_ov000_021ccd54->unk_ac = 1;
             func_ov000_02198360(self->unk_40, 1, 0);
         }
         break;

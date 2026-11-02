@@ -302,6 +302,34 @@ struct Ov012Param {
     u16 unk_0a_10 : 6;
 };
 
+// The ov000 Target object at Ov012Obj::unk_4c (Target_02199b00.c; func_ov000_02199ba0 looks up
+// the actor whose id is in target).
+struct Ov012Target {
+    u8 type;
+    u8 unk_01;
+    u8 unk_02;
+    u8 unk_03;
+    u16 unk_04;
+    u16 unk_06;
+    u16 unk_08;
+    u16 unk_0a;
+    u8 unk_0c[0x4];
+    u16 kinds[2];
+    u16 ids[2];
+    u8 unk_18;
+    u8 unk_19;
+    u8 unk_1a;
+    u8 unk_1b;
+    u16 target;
+    u16 unk_1e;
+    u8 unk_20[0x24];
+    Ov012Vec dest;
+    u32 unk_50;
+    u32 unk_54;
+    u32 unk_58;
+};
+SIZE_ASSERT(Ov012Target, 0x5c);
+
 // The object base shared by the ov003 actor (Ov012Actor, built by func_ov003_021d0c1c) and the
 // ov000 actor (Ov012ActorEx, built by func_ov000_02194074): the fields below 0xac.
 class Ov012Obj : public Ov012V {
@@ -327,7 +355,7 @@ public:
     Ov012Sub40 *unk_40;
     Ov012Sub44 *unk_44;
     Ov012Sub48 *unk_48;
-    void *unk_4c;
+    Ov012Target *unk_4c;
     u16 *unk_50;
     u8 unk_54[0xc];
     void *unk_60;
@@ -357,6 +385,14 @@ public:
     s32 unk_a8;
 };
 
+// The block at Ov012Actor::unk_d0 (allocated by the ov003 actor; holds two models at 0x68).
+struct Ov012SubD0 {
+    u8 unk_00[0x62];
+    u16 target_id;
+    u8 unk_64[0x4];
+    void *unk_68[2];
+};
+
 // Common actor base (the ov003 actor class); subclass fields start at 0xf0.
 class Ov012Actor : public Ov012Obj {
 public:
@@ -368,10 +404,14 @@ public:
     s32 unk_c4;
     s32 unk_c8;
     s32 unk_cc;
-    u8 unk_d0[0x12];
-    u8 unk_e2;
-    u8 unk_e3;
-    s32 unk_e4;
+    // 0xd0..0xee as func_ov003_021d0c1c sets them.
+    Ov012SubD0 *unk_d0;
+    void *unk_d4;
+    void *unk_d8;
+    u16 unk_dc;
+    u16 target_id;  // id of the actor this one tracks; 0xffff for none
+    void *unk_e0;
+    void *unk_e4;
     u16 unk_e8;
     u16 unk_ea_0 : 3;
     u16 unk_ea_3 : 3;
@@ -451,8 +491,27 @@ struct Ov012Game54 {
     u8 unk_04[0x8c];
     s32 unk_90;
     s32 unk_94;
-    u8 unk_98[0x3c];
+    u8 unk_98[0x14];
+    u8 unk_ac;
+    u8 unk_ad[0x1d];
+    u8 unk_ca;
+    u8 unk_cb[0x9];
     s32 unk_d4;
+    u8 unk_d8[0xb4];
+    u8 unk_18c;
+    u8 unk_18d;
+    u8 unk_18e;
+    u8 unk_18f;
+    union {
+        u8 unk_190;
+        struct {
+            u8 unk_190_0 : 2;
+            u8 unk_190_2 : 1;
+            u8 unk_190_3 : 1;
+            u8 unk_190_4 : 1;
+            u8 unk_190_5 : 3;
+        };
+    };
 };
 
 extern "C" {
@@ -591,7 +650,7 @@ extern void func_ov003_021daa6c(void *p, s32 a);
 extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void func_ov000_021984f4(void *p, s32 a, s32 b);
 extern void func_ov000_0219864c(void *p, s32 a, s32 b);
-extern void func_ov000_02196860(Ov012Actor *self);
+extern void func_ov000_02196860(Ov012Obj *self);
 extern void func_ov000_0219763c(Ov012Obj *self);
 extern Ov012V *func_02065f88(s32 id, Ov012Vec *pos);
 }
@@ -613,7 +672,7 @@ extern void func_ov003_021daab0(void *p);
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_0218f074(void *a, const void *b, s32 c, s32 d, s32 e, s32 f);
 extern BOOL func_ov000_021946f8(void *self);
-extern void *func_ov000_02199ba0(void *p);
+extern Ov012Obj *func_ov000_02199ba0(void *p);
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, void *f);
 extern void func_ov000_02195d88(void *self);
 extern void func_ov000_02194758(void *self);
@@ -924,5 +983,30 @@ public:
     s32 unk_d4;
 };
 SIZE_ASSERT(Ov012ActEx_02207018, 0xd8);
+
+// The ov000-factory class with vtable data_ov012_0220af10 (0xe4 bytes).
+class Ov012ActExVt_0220af10 : public Ov012ActorEx {
+public:
+    Ov012Vec unk_d0;
+    u16 unk_dc;
+    u16 unk_de;
+    u16 unk_e0;
+    u8 unk_e2;
+    u8 unk_e3;
+};
+SIZE_ASSERT(Ov012ActExVt_0220af10, 0xe4);
+
+// The ov000-factory class with vtable data_ov012_0220b150 (0xe8 bytes).
+class Ov012ActExVt_0220b150 : public Ov012ActorEx {
+public:
+    s32 unk_d0;
+    s32 unk_d4;
+    s32 unk_d8;
+    u32 unk_dc;
+    u8 unk_e0;
+    u8 unk_e1[0x3];
+    s32 unk_e4;
+};
+SIZE_ASSERT(Ov012ActExVt_0220b150, 0xe8);
 
 #endif

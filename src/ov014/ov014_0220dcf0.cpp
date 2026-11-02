@@ -53,7 +53,7 @@ Ov014ActEx_0220dcf4 *func_ov014_0220dd64(Ov014ActEx_0220dcf4 *self) {
     return self;
 }
 
-void func_ov014_0220dda4(Ov014Actor *self) {
+void func_ov014_0220dda4(Ov014ActEx_0220dcf4 *self) {
     func_ov000_02194c08(self);
 }
 
@@ -262,7 +262,7 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
             v.x = self->pos.x - FLD(s32, self, 0x70);
             v.y = self->pos.y - FLD(s32, self, 0x74);
             v.z = self->pos.z - FLD(s32, self, 0x78);
-            func_ov000_0219aae8(self, a, FLD(u16, self->unk_4c, 8), FLD(u16, self->unk_4c, 0xa), 2, &v, 0,
+            func_ov000_0219aae8(self, a, self->unk_4c->unk_08, self->unk_4c->unk_0a, 2, &v, 0,
                                 0x4000, 0, 0x6a, 0x1000);
         }
         if (t % 15 == 0) {
@@ -280,7 +280,7 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
             return;
         }
         if (self->unk_d4 == 0) {
-            FLD(u8, self->unk_4c, 2) = 0;
+            self->unk_4c->unk_02 = 0;
             func_ov000_02198360(self->unk_40, 0x15, 0);
             return;
         }

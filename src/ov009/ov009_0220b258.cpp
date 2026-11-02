@@ -25,13 +25,13 @@ void func_ov009_0220b258(Ov009ActVt_022172e4 *self) {
         self->unk_40->state++;
         break;
     case 1:
-        if (FLD(u32, self->unk_38, 0xe4) & 0x80) {
+        if (self->unk_38->unk_e4 & 0x80) {
             self->rot[1] = self->unk_fc;
             self->unk_98 = self->rot[1];
         } else {
             self->rot[1] = func_01ffc128(self->unk_fc, self->rot[1], 0x400, 1, 0x8000);
         }
-        if (FLD(u32, self->unk_38, 0xe4) & 0x8000000) {
+        if (self->unk_38->unk_e4 & 0x8000000) {
             func_ov000_02191418(self->unk_38, 3, 0);
         }
         if (!func_ov000_02191508(self->unk_38)) {

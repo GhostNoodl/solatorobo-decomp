@@ -22,7 +22,7 @@ BOOL func_ov014_02212780(Ov014Act_0221267c *self) {
     return r;
 }
 
-BOOL func_ov014_022127b8(Ov014Actor *self) {
+BOOL func_ov014_022127b8(Ov014Act_0221267c *self) {
     return func_ov003_021d16cc(self);
 }
 
@@ -33,7 +33,7 @@ extern void MTX_Identity43_(void *m);
 extern void NNS_G3dRenderObjSetInitFunc(void *obj, void *fn);
 extern void func_ov014_0220f8e4(u8 *self);
 
-void func_ov014_022127c4(Ov014Actor *self) {
+void func_ov014_022127c4(Ov014Act_0221267c *self) {
     Ov014Sub38 *m;
     func_ov003_021d112c(self);
     {

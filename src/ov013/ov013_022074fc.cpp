@@ -62,7 +62,7 @@ void func_ov013_022075b8(Ov013Actor *self) {
             n->unk_22_0 = 0;
             n->unk_22_1 = 0;
         }
-        FLD(u16, self->unk_4c, 0x1c) = 0xffff;
+        self->unk_4c->target = 0xffff;
         func_0204a028(data_02097e4c, 0x6a, &self->pos, -3);
         e = func_02065f88(0x69, &self->pos);
         if (e != NULL) {

@@ -120,8 +120,8 @@ void func_ov012_02208858(Ov012Actor *self) {
             }
             for (i = 0; i < n; i++) {
                 Ov012Actor *a = list[i];
-                if (a != NULL && a->unk_4c != NULL && FLD(u16, a->unk_4c, 0x1c) != 0xffff &&
-                    FLD(u16, a->unk_4c, 0x1c) != self->id) {
+                if (a != NULL && a->unk_4c != NULL && a->unk_4c->target != 0xffff &&
+                    a->unk_4c->target != self->id) {
                     Ov012Actor *o;
                     a->v08();
                     r.x = 0;

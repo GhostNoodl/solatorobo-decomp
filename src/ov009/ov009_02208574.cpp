@@ -187,7 +187,7 @@ void func_ov009_0220862c(Ov009Multi *self) {
             ang = FX_Atan2(a->pos.x - self->pos.x, a->pos.z - self->pos.z);
         }
         func_ov000_0218db58(self, ang, self->unk_492, 0x3800, self->unk_b0->unk_02 << 1);
-        if (FLD(s16, self->unk_38, 0xc4) == 1) {
+        if (self->unk_38->anim_state == 1) {
             self->unk_40->state++;
         }
         break;

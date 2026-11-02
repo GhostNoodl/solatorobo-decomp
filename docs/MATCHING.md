@@ -7372,3 +7372,31 @@ FLD cleanup in `src/ov000`, `src/ov010`, `include/ov000` and `include/ov010`. **
   - The `(u8 *)self` aliases in Robo code and some `unk_48` reads. Converting them changes the code.
   - The ov010 `void *` FindActor helpers, written as a ternary or with a local.
   - `data_ov000_021ccd54` (`Obj02188ba0`).
+
+### Round svH
+
+FLD cleanup in `src/ov009`, `src/ov012`, `src/ov013` and `src/ov014` and their headers. **`FLD`/`CFLD`/`LFLD` accesses: ov009 568 -> 198, ov012 365 -> 242, ov013 576 -> 341, ov014 707 -> 399** (counted over src and include). Every function is byte-identical, checked by a per-function hash of code plus relocations against a baseline taken at the start. Gate (after pulling main): 0 FAILED, 19/19 ROM checks, `check symbols` OK, and `ninja report` 8138 matched. The three ov009 files that hold `NONMATCHING` drafts (`02205d14`, `0220ac74`, `022161f8`) were compiled with `NONMATCHING` defined before and after, and the objects are the same. No data was added, and no shared header outside these overlays changed. The scratch is in the session scratchpad `svH/`.
+
+- **Base range 0xd0..0xef:**
+  - Each overlay's `Actor` now spells out what `func_ov003_021d0c1c` sets: `void *unk_d0/d4/d8`, `u16 unk_dc`, `u16 target_id` (0xffff = none), `void *unk_e0/e4`, `u16 unk_e8`, plus the `ea`/`ec`/`ee` bits. In ov009, `unk_ea` is a union of the u16 and its bits, because several members or-mask it whole.
+  - Many members were typed as `OvNNNActor *` but belong to the `ActorEx` (0xd0) family. They now take their real class, and the ActorEx-only fields moved into those subclasses.
+- **Classes added:**
+  - ov014: `Ov014ActExGrow` (vtable 022178d0), `Ov014ActExVt_02217838`, `Ov014Step`, `Ov014Target`.
+  - ov012: `Ov012ActExVt_0220af10`, `Ov012ActExVt_0220b150`, `Ov012SubD0`, `Ov012Target`.
+  - ov013: `Ov013ActExVt_0220b7d0` (previously skipped), `Ov013ActVt_0220b5e0`/`0220bc80`/`0220bdd8`, and `Ov013Pole`/`Ov013Boss` moved from `021fb1b4.cpp` into the header.
+  - ov009:
+    - `Ov009ActVt_02216c74` (previously skipped; it was the local `Ov009Act3`) and `Ov009ActVt_0221707c` (0x10c, previously skipped).
+    - `Ov009ActModel` (0x310), the shared base of vtables 02217844 and 02217594 (0x31c). Both factory paths build `anim` with `func_ov000_0218e9c4` at 0xf0 and `model` with `func_ov000_0218fe1c` at 0x228.
+    - `Ov009ActSpin` (0x140), shared by 02217a00 and 02217d5c.
+    - `Ov009ActPair110` (0x110), shared by 02217b58 and 02217f60.
+    - Each intermediate class exists only because its two vtables share both the member functions and the layout.
+  - `OvNNNTarget` is the 0x5c ov000 target object at `Obj::unk_4c`, and `Game54` gained its 0x18c..0x190 tail.
+- **Sub38 (the 0xe8 model)** in ov009 now has `scale` (0xa8), `unk_b4`, `alpha` (0xbe), `unk_c2` (u16 or bits), `anim_state` (0xc4) and `unk_e4`. This is the "Sub38 pass" that svB could not finish. Its layout follows `Ov011Sub38`. `Ov009Names` is the full 0x138 animation object, and its `unk_00` is `s16`.
+- **Kept forms:**
+  - In `ov014_0220d6f8.cpp` (`d890`), the durations in `unk_d8` stay `FLD(u16, ...)`. The field is `s16`, and a member read loads it signed (`ldrsh`).
+  - Two `unk_38->0xe4` reads in `0220a984` and `0220b258` stay FLD, because converting them changes the code.
+  - Polymorphic vptr stores stay FLD.
+- **Left:**
+  - The mixed-form functions svB listed: ov014 0xf4 in `021fecc8`/`021ff318`/`021ff59c`/`021fb198`/`021fb554`, and `pos` in `0220de34`/`0220e72c`.
+  - Non-self pointers whose source is untyped (`e`, `q`, `m`, the camera at `data_ov000_021ccd54+0xf4`).
+  - Base-typed FLDs in ov012 (88) and ov013 (58), whose vtables are not yet tied to a class.

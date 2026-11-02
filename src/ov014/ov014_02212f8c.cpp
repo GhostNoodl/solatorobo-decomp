@@ -36,7 +36,7 @@ static inline void Ov014_TimerTick(Ov014Sub40 *s) {
     }
 }
 
-void func_ov014_02212f8c(Ov014Actor *self) {
+void func_ov014_02212f8c(Ov014Act_0221267c *self) {
     Ov014Sub40 *s = self->unk_40;
     switch (Ov014Sub40_State(s)) {
     case 0:
@@ -66,7 +66,7 @@ void func_ov014_02212f8c(Ov014Actor *self) {
     }
 }
 
-void func_ov014_0221308c(Ov014Actor *self) {
+void func_ov014_0221308c(Ov014Act_0221267c *self) {
     Ov014Sub40 *s = self->unk_40;
     switch (Ov014Sub40_State(s)) {
     case 0:
@@ -103,11 +103,11 @@ void func_ov014_0221308c(Ov014Actor *self) {
             o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, (u8 *)self + 0x33c, self->rot, 0xffff);
             o->unk_60 = data_ov014_02216dc0;
             o->unk_90 = self->unk_90;
-            if (((u8 *)o->unk_4c) != NULL) {
-                FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
+            if (o->unk_4c != NULL) {
+                o->unk_4c->target = self->id;
             }
-            FLD(Ov014Flags8, o, 0x16).b0 = 1;
-            FLD(u16, self, 0xde) = o->id;
+            o->flags_0 = 1;
+            self->target_id = o->id;
             self->unk_40->state = 20;
             self->unk_40->timer = 120;
         }
@@ -175,11 +175,11 @@ void func_ov014_02213318(Ov014Act_0221267c *self) {
             o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, (u8 *)self + 0x33c, self->rot, 0xffff);
             o->unk_60 = data_ov014_02216dc0;
             o->unk_90 = self->unk_90;
-            if (((u8 *)o->unk_4c) != NULL) {
-                FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
+            if (o->unk_4c != NULL) {
+                o->unk_4c->target = self->id;
             }
-            FLD(Ov014Flags8, o, 0x16).b0 = 1;
-            FLD(u16, self, 0xde) = o->id;
+            o->flags_0 = 1;
+            self->target_id = o->id;
             self->unk_312--;
             self->unk_40->state++;
             self->unk_40->timer = 0x78;
@@ -193,7 +193,7 @@ void func_ov014_02213318(Ov014Act_0221267c *self) {
             u16 id;
             self->unk_34c += self->unk_350;
             self->rot[1] = self->unk_34c;
-            id = FLD(u16, self, 0xde);
+            id = self->target_id;
             if (data_ov000_021ccd68 == NULL) {
                 a = NULL;
             } else {

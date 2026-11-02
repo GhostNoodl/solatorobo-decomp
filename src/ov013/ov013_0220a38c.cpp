@@ -88,7 +88,7 @@ Ov013Actor *func_ov013_0220a4c4(Ov013Actor *self) {
 Ov013ActEx_0220a4e0 *func_ov013_0220a4e0(Ov013ActEx_0220a4e0 *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = &data_ov013_0220bf4c;
-    FLD(u16, self, 0xce) = 0;
+    self->unk_ce = 0;
     self->unk_d0 = 0;
     self->unk_d4.x = 0;
     self->unk_d4.y = 0;
@@ -164,7 +164,7 @@ void func_ov013_0220a554(Ov013ActEx_0220a4e0 *self) {
         self->unk_a0 = Ov013_FxMul(OV013_COS(ang), 0x214);
         self->rot[0] = FX_Atan2(self->pos.y - self->unk_d4.y, d);
         self->unk_98 = self->rot[1];
-        FLD(u16, self, 0xce) = 0x12c;
+        self->unk_ce = 0x12c;
         if (self->unk_48 != NULL) {
             Ov013Sub48 *m;
             self->unk_48->unk_30 = 0;
@@ -186,7 +186,7 @@ void func_ov013_0220a554(Ov013ActEx_0220a4e0 *self) {
     case 1: {
         Ov013Sub48 *m;
         func_ov000_0218dbe0(self, 0);
-        if (FLD(u16, self, 0xce)-- == 0) {
+        if (self->unk_ce-- == 0) {
             func_ov000_02198360(self->unk_40, 10, 0);
             return;
         }
@@ -204,7 +204,7 @@ void func_ov013_0220a554(Ov013ActEx_0220a4e0 *self) {
             e->v0c(self->unk_d0);
             pl = func_ov000_0219bf90();
             if (pl != NULL && !func_ov000_021b4738(pl)) {
-                Ov013Actor *a = func_ov000_0219be1c(0x4813, &self->pos, self->rot, FLD(u16, self->unk_4c, 0x1c), self->unk_90);
+                Ov013Actor *a = func_ov000_0219be1c(0x4813, &self->pos, self->rot, self->unk_4c->target, self->unk_90);
                 if (a != NULL) {
                     FLD(s32, a, 0xd4) = self->unk_d0;
                 }
@@ -217,7 +217,7 @@ void func_ov013_0220a554(Ov013ActEx_0220a4e0 *self) {
             self->unk_9c = 0;
             return;
         }
-        if (func_ov000_0219aae8(self, self, FLD(u16, self->unk_4c, 8), FLD(u16, self->unk_4c, 0xa), 2, NULL, 0, self->unk_64, 0, 0x130, self->unk_d0 >> 1)) {
+        if (func_ov000_0219aae8(self, self, self->unk_4c->unk_08, self->unk_4c->unk_0a, 2, NULL, 0, self->unk_64, 0, 0x130, self->unk_d0 >> 1)) {
             func_ov000_02198360(self->unk_40, 0x15, 0);
         }
         break;

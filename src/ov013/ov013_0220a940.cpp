@@ -35,7 +35,7 @@ void func_ov013_0220a940(Ov013Actor *self) {
 Ov013ActEx_0220a9a8 *func_ov013_0220a9a8(Ov013ActEx_0220a9a8 *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = &data_ov013_0220beb4;
-    FLD(u16, self, 0xce) = 0;
+    self->unk_ce = 0;
     self->unk_d0 = 0;
     self->unk_d4 = 0;
     return self;
@@ -47,7 +47,7 @@ void func_ov013_0220a9d8(Ov013ActEx_0220a9a8 *self) {
     Ov013V *fx;
     func_ov000_02194758(self);
     func_ov000_02198360(self->unk_40, 1, 0);
-    FLD(u16, self, 0xce) = 600;
+    self->unk_ce = 600;
     self->unk_48->unk_38 = 0x1b33;
     self->unk_d0 = 0x1000;
     self->unk_90 = 0xffff;
@@ -108,10 +108,10 @@ void func_ov013_0220aa7c(Ov013ActEx_0220a9a8 *self) {
     case 1: {
         Ov013Actor *pl = func_ov000_0219bf90();
         if (pl == NULL || func_ov000_021b4738(pl)) {
-            FLD(u16, self, 0xce) = 1;
+            self->unk_ce = 1;
         }
-        FLD(u16, self, 0xce)--;
-        if (FLD(u16, self, 0xce) == 0) {
+        self->unk_ce--;
+        if (self->unk_ce == 0) {
             func_ov000_02198360(self->unk_40, 10, 0);
             return;
         }
@@ -122,7 +122,7 @@ void func_ov013_0220aa7c(Ov013ActEx_0220a9a8 *self) {
     if (t == NULL) {
         return;
     }
-    func_ov000_0219aae8(self, self, FLD(u16, ((u8 *)self->unk_4c), 8), FLD(u16, ((u8 *)self->unk_4c), 0xa), (u16)(1 << (t->id >> 12)), NULL, 0,
+    func_ov000_0219aae8(self, self, self->unk_4c->unk_08, self->unk_4c->unk_0a, (u16)(1 << (t->id >> 12)), NULL, 0,
                         self->unk_48->unk_38, self->unk_d0, 0x25f, 0x1000);
 }
 
