@@ -13,7 +13,7 @@ extern Glb0219cbf8 NNS_G3dGlb;
 extern u8 *data_ov000_021ccd6c;
 void func_ov000_021bd300(void *p);
 void func_ov000_021bd438(void *p, VecFx32 *v, s32 dy);
-void func_ov000_02198d28(void *body, VecFx32 *pos, u32 angle);
+void Body_SetPos(void *body, VecFx32 *pos, u32 angle);
 
 void func_ov000_0219cbf8(Robo021ca458 *self, VecFx32 *pos, u16 *rot) {
     self->pos.x = pos->x;
@@ -54,11 +54,11 @@ void func_ov000_0219cbf8(Robo021ca458 *self, VecFx32 *pos, u16 *rot) {
         func_ov000_021bd300(self->unk_9b0);
         func_ov000_021bd438(self->unk_9b0, &self->unk_75c, 0);
     }
-    func_ov000_02198d28((u8 *)self + 0x2cc, &self->pos, self->rot_y);
+    Body_SetPos((u8 *)self + 0x2cc, &self->pos, self->rot_y);
     self->unk_31c = 0;
     self->unk_320 = 0;
     self->unk_324 = 0;
-    func_ov000_02198d28((u8 *)self + 0x6c0, &self->unk_75c, self->unk_76e);
+    Body_SetPos((u8 *)self + 0x6c0, &self->unk_75c, self->unk_76e);
     self->unk_710 = 0;
     self->unk_714 = 0;
     self->unk_718 = 0;

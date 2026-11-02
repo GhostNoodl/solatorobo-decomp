@@ -214,7 +214,7 @@ void Ov009ActVt_02216348_Start(Ov009ActVt_02216348 *self) {
 extern void *data_02097e4c;
 extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
-extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
 struct Ov009HitMsg {
     u8 a;
     u16 b;
@@ -236,7 +236,7 @@ void Ov009ActVt_02216348_Update(Ov009ActVt_02216348 *self) {
         a.y = self->pos.y;
         a.z = self->pos.z;
         a.y -= 0x1000;
-        if (func_01ffc584(&p->pos, &a, self->unk_64 + p->unk_64, self->unk_68 + 0x1000)) {
+        if (Hit_DiffInCylinder(&p->pos, &a, self->unk_64 + p->unk_64, self->unk_68 + 0x1000)) {
             s32 m = p->unk_40 != NULL ? p->unk_40->unk_13 : 0;
             if (m == 7 || m == 0x16 || m == 0x17 || (u8)(m + 0xf1) <= 2) {
                 self->unk_40->flags |= 0x80000;

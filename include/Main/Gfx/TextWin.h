@@ -104,8 +104,8 @@ struct TextWin {
     /* 0x38 */ u32 spacing;
     /* 0x3c */ s32 cursorX; // layout position (GfxMgr_SetCursor)
     /* 0x40 */ s32 cursorY;
-    /* 0x44 */ u32 vramSize;
-    /* 0x48 */ u32 vramArg;
+    /* 0x44 */ u32 width;
+    /* 0x48 */ u32 height;
     /* 0x4c */ u32 unk_4c;
     /* 0x50 */ void *texVram; // NNS_GfdDefaultFuncAllocTexVram
     /* 0x54 */ void *plttVram; // NNS_GfdDefaultFuncAllocPlttVram

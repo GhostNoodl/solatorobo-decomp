@@ -67,8 +67,8 @@ extern s32 data_02fe0efc;
 extern HitRayInfo *data_02fe0ef8;
 extern HitRayMesh *data_02fe0f08;
 extern HitRayInfo data_02fe0f14;
-extern void func_01ff82d8(HitRayQuery *q);
-extern BOOL func_01ffc828(VecFx32 *aMin, VecFx32 *aMax, VecFx32 *bMin, VecFx32 *bMax);
+extern void HitSegQuery_CalcBox(HitRayQuery *q);
+extern BOOL HitAabb_Overlap(VecFx32 *aMin, VecFx32 *aMax, VecFx32 *bMin, VecFx32 *bMax);
 extern void func_01ffb83c(HitRayMesh **ray);
 extern void func_01ffae08(HitRayMesh **ray);
 extern void func_01ffbb14(HitRayMesh **q);
@@ -90,10 +90,10 @@ s32 func_01ffbd6c(VecFx32 *from, VecFx32 *to, u32 mask, s32 a, s32 b, s32 c) {
     q.best = 0x7fffffff;
     q.from = q.from2;
     q.to = q.to2;
-    func_01ff82d8(&q);
+    HitSegQuery_CalcBox(&q);
     for (; mesh != NULL; mesh = mesh->next) {
         if (mesh->unk_84_1 ? TRUE : FALSE) {
-            if (!func_01ffc828(&q.boxMin, &q.boxMax, &mesh->min, &mesh->max)) {
+            if (!HitAabb_Overlap(&q.boxMin, &q.boxMax, &mesh->min, &mesh->max)) {
                 continue;
             }
         }
@@ -135,7 +135,7 @@ s32 func_01ffbf40(VecFx32 *pos, s32 radius, u32 mask, s32 a, s32 b, s32 c) {
     q.boxMax.z = q.center.z + radius;
     for (; mesh != NULL; mesh = mesh->next) {
         if (mesh->unk_84_1 ? TRUE : FALSE) {
-            if (!func_01ffc828(&q.boxMin, &q.boxMax, &mesh->min, &mesh->max)) {
+            if (!HitAabb_Overlap(&q.boxMin, &q.boxMax, &mesh->min, &mesh->max)) {
                 continue;
             }
         }

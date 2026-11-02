@@ -158,7 +158,7 @@ void func_ov013_021faa40(Ov013Actor *self) {
 extern char data_ov013_0220b5be[];
 extern char data_ov013_0220b5c4[];
 extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern Ov013Vec func_ov003_021dadc0(const Ov013Vec *a, const Ov013Vec *b);
+extern Ov013Vec Ov003Vec_DirXZ(const Ov013Vec *a, const Ov013Vec *b);
 extern void Actor_TurnToPos(Ov013Actor *self, Ov013Vec *p, s32 a);
 extern void Actor_MoveToPos(Ov013Actor *self, Ov013Vec *v, s32 a);
 
@@ -242,7 +242,7 @@ void func_ov013_021faae8(Ov013Actor *self) {
         v.y = t->pos.y;
         v.z = t->pos.z;
         v.y = 0x99a;
-        Ov013Vec d = func_ov003_021dadc0(&v, &self->pos);
+        Ov013Vec d = Ov003Vec_DirXZ(&v, &self->pos);
         VEC_MultAdd(0x7800, &d, &v, &v);
         self->unk_b8.x = v.x;
         self->unk_b8.y = v.y;
@@ -268,7 +268,7 @@ void func_ov013_021faae8(Ov013Actor *self) {
             }
             break;
         }
-        if (func_01ffc198(&self->pos, &v, 0x333)) {
+        if (Hit_DiffInSphere(&self->pos, &v, 0x333)) {
             self->pos.x = v.x;
             self->pos.y = v.y;
             self->pos.z = v.z;

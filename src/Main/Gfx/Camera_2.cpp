@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern void *func_02043548(VecFx32 *eye);
+extern void *GfxCamPos_Init(VecFx32 *eye);
 extern void func_020434e0(s32 *proj);
 extern void Heap_Free(void *ptr);
 extern void func_0204bcb0(Camera *cam);
@@ -57,7 +57,7 @@ static inline s32 Cam_FxMul(s32 a, s32 b) {
 
 static inline void Camera_Init(Camera *cam) {
     cam->vtable = data_0208b8c0;
-    func_02043548(&cam->eye);
+    GfxCamPos_Init(&cam->eye);
     func_020434e0(&cam->nearClip);
     cam->mode = 1;
     cam->dist = 0xa000;
@@ -102,7 +102,7 @@ void func_0204b438(Camera *cam);
 
 void Camera_Apply(Camera *cam);
 
-void func_0204b8e8(Camera *cam, void *anim) {
+void Camera_SetAnim(Camera *cam, void *anim) {
     cam->anim = anim;
     cam->animFrame = 0;
     cam->animSpeed = 0x1000;

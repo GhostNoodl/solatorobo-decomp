@@ -12,12 +12,12 @@ extern BOOL FS_CloseFile(FSFile *file);
 extern int FS_ReadFileAsync(FSFile *file, void *buf, u32 size);
 extern BOOL FS_OpenFile(FSFile *file, const char *path);
 extern u32 FS_GetLength(FSFile *file);
-extern ResList *func_02034b50(ResList *list);
+extern ResList *ResList_Dtor(ResList *list);
 extern void func_0203835c(ResData *data);
 extern void Heap_Free(void *ptr);
-extern void *func_0203de84(u32 size, int align);
-extern void func_0203df0c(void *ptr);
-extern void func_0203df40(void *ptr);
+extern void *Heap_AllocHi(u32 size, int align);
+extern void Heap_FreeHi(void *ptr);
+extern void Heap_FreeLo(void *ptr);
 
 void func_020381cc(ResMgr *mgr, ResNode *node) {
     if (node->type == 7) {
@@ -27,22 +27,22 @@ void func_020381cc(ResMgr *mgr, ResNode *node) {
         list = node->u.arc.list;
         if (list != NULL) {
             if (list != NULL) {
-                func_02034b50(list);
+                ResList_Dtor(list);
                 Heap_Free(list);
             }
             node->u.arc.list = NULL;
         }
         data_02097dd0->cur = heap;
         if (node->u.data[1] != NULL) {
-            func_0203df40(node->u.data[1]);
+            Heap_FreeLo(node->u.data[1]);
             node->u.data[1] = NULL;
         }
         if (node->u.data[2] != NULL) {
-            func_0203df0c(node->u.data[2]);
+            Heap_FreeHi(node->u.data[2]);
             node->u.data[2] = NULL;
         }
         if (node->u.data[3] != NULL) {
-            func_0203df0c(node->u.data[3]);
+            Heap_FreeHi(node->u.data[3]);
             node->u.data[3] = NULL;
         }
     } else {
@@ -63,12 +63,12 @@ void *func_02038284(ResMgr *mgr, const char *path, u32 size, void *buf) {
         }
         dst = buf;
         if (buf == NULL) {
-            dst = func_0203de84(size, 4);
+            dst = Heap_AllocHi(size, 4);
         }
         if (FS_ReadFileAsync(&mgr->file, dst, size) == -1) {
             FS_CloseFile(&mgr->file);
             if (buf == NULL && dst != NULL) {
-                func_0203df0c(dst);
+                Heap_FreeHi(dst);
                 dst = NULL;
             }
         }
@@ -78,7 +78,7 @@ void *func_02038284(ResMgr *mgr, const char *path, u32 size, void *buf) {
 
 #define RES_DATA_FREE(i)                 \
     if (data->data[i] != NULL) {         \
-        func_0203df0c(data->data[i]);    \
+        Heap_FreeHi(data->data[i]);    \
         data->data[i] = NULL;            \
     }
 

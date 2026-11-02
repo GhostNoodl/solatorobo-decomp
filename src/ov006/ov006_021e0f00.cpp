@@ -35,7 +35,7 @@ void func_ov006_021e0f00(ov006_Unk021e0f00 *self) {
         self->unk20->unk2C = 4;
         self->unk20->unk34 = 0;
         ov006_Anim_Start(self->unk20, (int)text);
-        func_0204ca14(self->unk20, 8);
+        TextWin_InitLines(self->unk20, 8);
         self->unk20->unk4 |= 4;
     }
     model = (Model *)Heap_Alloc(sizeof(Model));

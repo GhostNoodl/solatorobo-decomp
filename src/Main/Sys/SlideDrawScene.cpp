@@ -96,16 +96,16 @@ BOOL func_02056c9c(SlidePanel *panel);
 void func_0205311c(SlideDrawScene *scene);
 s32 func_02054894(SlidePanel *panel);
 s32 func_020548c8(SlidePanel *panel);
-void func_02051f3c(SlidePanel *panel, u32 v);
+void Obj3DLayer_SetCur(SlidePanel *panel, u32 v);
 void func_020543bc(SlidePanel *panel);
 void func_02050ea4(Model *model, u32 v);
 void func_02050e94(Model *model);
 void func_02056cb8(Model *model);
 void func_0205563c(Model *model, int idx, ModelPos *pos);
 void func_0204e2dc(Model *model, s32 v);
-void func_02056cc8(Model *model, u32 r, u32 g, u32 b);
+void Model_SetColorRGB(Model *model, u32 r, u32 g, u32 b);
 void func_0204e2e4(Model *model, s32 idx);
-void func_02056cdc(Model *model, int idx, s32 dx, s32 dy);
+void Model_MovePos(Model *model, int idx, s32 dx, s32 dy);
 void func_02056d04(Model *model);
 void func_02056d14(Model *model);
 u8 func_02056d24(Model *model);
@@ -245,7 +245,7 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
             x = a + (func_0204e2c4(func_0204e2ac((panel->unk_20 << 14) >> 12), (b - a) << 12) >> 12);
             if (panel->unk_20 == 0x1000) {
                 if (panel->cur == 4) {
-                    func_02051f3c(panel, panel->next);
+                    Obj3DLayer_SetCur(panel, panel->next);
                 }
                 panel->state = 0xf;
             }
@@ -300,19 +300,19 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
             pos.y += 0xa000;
             func_0205563c(panel->model2, 0, &pos);
             func_0204e2dc(panel->model2, -0x99a - y);
-            func_02056cc8(panel->model2, 0x1f, 0x1f, 0x1f);
+            Model_SetColorRGB(panel->model2, 0x1f, 0x1f, 0x1f);
             func_0204e2e4(panel->model2, 0);
             func_0205563c(panel->model2, 0, &pos);
             if (i == 3) {
                 pos.x -= 0x10000;
-                func_02056cdc(panel->model2, 0, 3, 4);
+                Model_MovePos(panel->model2, 0, 3, 4);
             } else {
                 pos.x += 0x10000;
-                func_02056cdc(panel->model2, 0, -3, 4);
+                Model_MovePos(panel->model2, 0, -3, 4);
             }
             pos.y -= 0x30000;
             func_0204e2dc(panel->model2, -0x99a - (y + 0x10));
-            func_02056cc8(panel->model2, 0, 0, 0);
+            Model_SetColorRGB(panel->model2, 0, 0, 0);
             func_0204e2e4(panel->model2, 0);
             func_02056d04(panel->model2);
             func_02056d14(panel->model);

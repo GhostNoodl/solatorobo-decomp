@@ -5,7 +5,7 @@ extern "C" {
 extern char data_0208c980[];
 extern u32 data_0208c840[];
 
-void func_0206ad84(EffectEmitter *em) {
+void EffectEmitter_Reset(EffectEmitter *em) {
     em->unk_14 = 2;
     em->nameDef = NULL;
     em->arc = NULL;
@@ -88,7 +88,7 @@ BOOL func_0206aec0(EffectEmitter *em) {
     return ret;
 }
 
-BOOL func_0206afb0(EffectEmitter *em) {
+BOOL MainVt_0208c868_Setup(EffectEmitter *em) {
     em->Loop();
     return TRUE;
 }

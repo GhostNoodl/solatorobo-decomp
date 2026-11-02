@@ -2,7 +2,7 @@
 
 extern "C" {
 extern void *data_02097e4c;
-extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
@@ -19,7 +19,7 @@ void func_ov009_0221327c(Ov009ActVt_02217d5c *self) {
         s44 = self->unk_44;
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x483f, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x483f, 0x15);
         func_ov000_0218996c(10, 0x28);
         func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
         e = func_02065f88(5, &self->pos);

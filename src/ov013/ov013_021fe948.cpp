@@ -39,7 +39,7 @@ u32 func_ov013_021fe9f8(Ov013Actor **out, u32 max, u16 kind, const Ov013Vec *pos
     void *list = ActorMgr_GetGroup(data_ov000_021ccd68, kind);
     Ov013Actor *a = FLD(Ov013Actor *, list, 0xc);
     for (; a != NULL; a = Ov013_ListNext(list, a)) {
-        if (kind == a->kind && func_01ffc198(&a->pos, (VecFx32 *)pos, dist + a->unk_64)) {
+        if (kind == a->kind && Hit_DiffInSphere(&a->pos, (VecFx32 *)pos, dist + a->unk_64)) {
             if (n >= max) {
                 break;
             }

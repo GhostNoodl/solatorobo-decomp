@@ -74,7 +74,7 @@ extern void VEC_Add(const Ov003BmVec *a, const Ov003BmVec *b, Ov003BmVec *out);
 extern Ov003BmFx *func_02065f88(s32 id, const Ov003BmVec *pos);
 extern void *func_0204a028(void *mgr, s32 id, Ov003BmVec *pos, s32 a);
 extern void *func_02049f44(void *mgr, s32 id, Ov003BmVec *pos, s32 a);
-extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern Ov003BmInfo *func_020704b4(u16 id);
 extern void func_ov000_0219b400(void *a, void *b, s32 c, Ov003BmVec *pos, Ov003BmRot *rot, s32 d);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
@@ -113,8 +113,8 @@ void func_ov003_021de778(Ov003Bomb *self) {
             func_0204a028(data_02097e4c, 0x79, &self->pos, -0xf);
             func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
         }
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4030, 0x15);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4031, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4030, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4031, 0x15);
         self->work[1] = 1;
         self->work[0]++;
         break;

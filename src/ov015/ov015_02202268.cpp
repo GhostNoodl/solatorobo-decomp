@@ -10,9 +10,9 @@ void func_ov015_02210d04(u8 *self);
 void func_ov015_02212264(Ov015Obj292c *self);
 void func_ov015_021fb758(u8 *self);
 BOOL func_ov000_021903b4(void *a);
-s32 func_02065748(void *a, void *b);
+s32 EffectMgr_Contains(void *a, void *b);
 void func_ov015_021fa6cc(void *p);
-void func_020656b4(void *p);
+void EffectMgr_FreeAll(void *p);
 void func_ov015_0220101c(Ov015Game *self);
 void func_ov015_02211878(void *p);
 extern u8 data_ov015_0221296c[];
@@ -105,12 +105,12 @@ void *Ov015Game_DtorDelete(Ov015Game *self) {
     HEAP_PUSH(saved);
     DELETE_V(self->unk_2c);
     HEAP_POP(saved);
-    func_020656b4(data_0214a420);
+    EffectMgr_FreeAll(data_0214a420);
     data_0214a420->drawFilter = 0;
     data_02097d48->nextState = 1;
     func_ov015_02211878(&self->info);
     SET_VT(&self->phase2, data_ov015_022127dc);
-    if (func_02065748(data_0214a420, self->phase2.fx)) {
+    if (EffectMgr_Contains(data_0214a420, self->phase2.fx)) {
         HEAP_PUSH(saved);
         DELETE_V(self->phase2.fx);
         HEAP_POP(saved);
@@ -146,12 +146,12 @@ void *Ov015Game_Dtor(Ov015Game *self) {
     HEAP_PUSH(saved);
     DELETE_V(self->unk_2c);
     HEAP_POP(saved);
-    func_020656b4(data_0214a420);
+    EffectMgr_FreeAll(data_0214a420);
     data_0214a420->drawFilter = 0;
     data_02097d48->nextState = 1;
     func_ov015_02211878(&self->info);
     SET_VT(&self->phase2, data_ov015_022127dc);
-    if (func_02065748(data_0214a420, self->phase2.fx)) {
+    if (EffectMgr_Contains(data_0214a420, self->phase2.fx)) {
         HEAP_PUSH(saved);
         DELETE_V(self->phase2.fx);
         HEAP_POP(saved);

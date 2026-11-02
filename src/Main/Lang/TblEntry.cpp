@@ -54,7 +54,7 @@ void *func_0206ffa0(s32 id) {
     return Tbl_GetOffset(Tbl_FindEntry(id), 0);
 }
 
-void *func_0207005c(s32 id, int i) {
+void *Tbl_GetEntryData(s32 id, int i) {
     TblEntry *e = Tbl_FindEntry(id);
     u32 *o = &e->offsets[1];
     return o[i] != 0 ? (u8 *)e + o[i] : NULL;

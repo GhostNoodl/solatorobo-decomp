@@ -36,10 +36,10 @@ void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
 void func_02041c20(void *model, s32 a, void *b);
 void func_0204c7d0(void *p);
-s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
+s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_ov000_02157c90(void *self, void *a);
 void func_ov000_021546ec(void *a, void *b, void *c, u16 d);
-void *func_ov000_02173610(s32 kind);
+void *Task_FindById(s32 kind);
 u32 func_0205975c(void *a, s32 b);
 u16 func_ov000_0214bcc4(u16 id, u16 index);
 s32 func_02061e7c(u16 a);
@@ -96,7 +96,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     }
     LFLD(s32, p, 0x28) = 8;
     LFLD(void *, p, 0x24) = s;
-    LFLD(s32, p, 0x4c) = func_0204c4fc(LFLD(s32, p, 0x28), LFLD(s32, p, 0x38), LFLD(s32, p, 0x24), p + 0x44, p + 0x48, LFLD(s8, p, 0x37) != 0);
+    LFLD(s32, p, 0x4c) = Text_Measure(LFLD(s32, p, 0x28), LFLD(s32, p, 0x38), LFLD(s32, p, 0x24), p + 0x44, p + 0x48, LFLD(s8, p, 0x37) != 0);
     LFLD(s32, data_02097ce0, 0x4) = LFLD(s32, p, 0x28);
     LFLD(s32, p, 0x2c) = 0;
     LFLD(u16, p, 0x74) = 0x77df;
@@ -190,7 +190,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     for (i = 0; i < n; i++) {
         k = func_ov000_0214bcc4(id, i);
         if (k != 0xffff) {
-            t = LFLD(VObj *, func_ov000_02173610(0xe), 0x50);
+            t = LFLD(VObj *, Task_FindById(0xe), 0x50);
             t->vfunc_74(func_02061e7c(k), k, 0xffff, 0xffff);
         }
     }

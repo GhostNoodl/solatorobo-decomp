@@ -191,7 +191,7 @@ GroupNode *Group_FindNode(Group *g, u16 id) {
     return ret;
 }
 
-GroupNode *func_ov000_0218bd9c(Group *g, u16 id, u8 b) {
+GroupNode *Group_FindById(Group *g, u16 id, u8 b) {
     GroupNode *ret = NULL;
     GroupNode *n;
     for (n = g->head; n != NULL; n = n->next) {

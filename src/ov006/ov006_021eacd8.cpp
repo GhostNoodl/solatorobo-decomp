@@ -27,7 +27,7 @@ typedef struct ov006_Obj021eacd8 {
 extern "C" {
 
 extern ov006_Game021eacd8 *data_ov000_021ccd54;
-BOOL func_01ffc198(ov006_Vec021eacd8 *a, ov006_Vec021eacd8 *b, s32 r);
+BOOL Hit_DiffInSphere(ov006_Vec021eacd8 *a, ov006_Vec021eacd8 *b, s32 r);
 void func_ov000_02190758(ov006_Model021eacd8 *a, void *b, int c);
 int func_ov000_021903b4(ov006_Model021eacd8 *a);
 
@@ -39,7 +39,7 @@ int Ov006ActVt_021ec5e4_Draw(ov006_Obj021eacd8 *self) {
     target.y = data_ov000_021ccd54->unkF8.y;
     target.z = data_ov000_021ccd54->unkF8.z;
     r = 0;
-    if (func_01ffc198(&self->unk70, &target, 0x190000)) {
+    if (Hit_DiffInSphere(&self->unk70, &target, 0x190000)) {
         m->pos = self->unk70;
         func_ov000_02190758(m, self->unk7C, 1);
         r = func_ov000_021903b4(m);

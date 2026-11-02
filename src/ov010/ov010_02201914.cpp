@@ -29,31 +29,31 @@ extern u8 data_ov010_0220fe1c[];
 extern u8 data_ov010_0220fe08[];
 extern Ov010Heap *data_02097dd0;
 extern void func_ov003_021d7848(void *p);
-extern void *func_ov003_021d7858(void *p);
+extern void *Ov003Pool_Dtor(void *p);
 extern BOOL func_ov003_021d7894(void *p, s32 a, s32 b);
-extern void func_ov003_021d7948(void *p);
-extern Ov010TaskNode *func_ov003_021d7980(void *p);
+extern void Ov003Pool_Release(void *p);
+extern Ov010TaskNode *Ov003Pool_Alloc(void *p);
 extern void Ov003Pool_Free(void *p, Ov010TaskNode *n);
 void func_ov010_02201b48(Ov010TaskList *o);
 
-Ov010TaskList *func_ov010_02201914(Ov010TaskList *o) {
+Ov010TaskList *Ov010Vt_0220fe1c_Ctor(Ov010TaskList *o) {
     o->vtbl = data_ov010_0220fe1c;
     func_ov003_021d7848(o->pool);
     o->b0 = 0;
     return o;
 }
 
-Ov010TaskList *func_ov010_02201944(Ov010TaskList *o) {
+Ov010TaskList *Ov010Vt_0220fe1c_Dtor(Ov010TaskList *o) {
     o->vtbl = data_ov010_0220fe1c;
     ((Ov010V *)o)->v08();
-    func_ov003_021d7858(o->pool);
+    Ov003Pool_Dtor(o->pool);
     return o;
 }
 
-Ov010TaskList *func_ov010_02201974(Ov010TaskList *o) {
+Ov010TaskList *Ov010Vt_0220fe1c_DtorDelete(Ov010TaskList *o) {
     o->vtbl = data_ov010_0220fe1c;
     ((Ov010V *)o)->v08();
-    func_ov003_021d7858(o->pool);
+    Ov003Pool_Dtor(o->pool);
     Heap_Free(o);
     return o;
 }
@@ -67,7 +67,7 @@ static inline Ov010TaskNode *Ov010TaskList_Push(Ov010TaskNode *head, Ov010TaskNo
     }
     return head;
 }
-BOOL func_ov010_022019ac(Ov010TaskList *o) {
+BOOL Ov010TaskList_Init(Ov010TaskList *o) {
     o->b0 = 1;
     o->b1 = 0;
     o->b2 = 0;

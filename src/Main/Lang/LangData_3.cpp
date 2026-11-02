@@ -239,7 +239,7 @@ void func_0206e6e4(void) {
     }
 }
 
-LangGroup *func_0206e7d0(int i) {
+LangGroup *Lang_GetGroup(int i) {
     return &data_0214b0a8->groups[i];
 }
 
@@ -316,7 +316,7 @@ extern const u32 data_0208b318[];
 extern const char *data_0208ccb0;
 extern const char *data_0208cca8;
 extern void *Heap_Alloc(u32 size);
-void *func_0206f964(void *data, const char *name);
+void *NamedTable_Find(void *data, const char *name);
 
 static inline LangRes *LangRes_New(void) {
     LangRes *res = (LangRes *)Heap_Alloc(sizeof(LangRes));
@@ -327,9 +327,9 @@ static inline LangRes *LangRes_New(void) {
     return res;
 }
 
-void func_0206e9e8(void);
+void LangData_CreateRes(void);
 
-void func_0206ea7c(void);
+void LangData_DeleteRes(void);
 
 BOOL func_0206ead8(void);
 

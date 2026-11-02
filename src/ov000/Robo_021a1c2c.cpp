@@ -74,7 +74,7 @@ u16 Pad_LookupDir(void *rng, void *p);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 void func_02062764(s32 a, s32 b);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
-void func_ov000_02198d28(void *body, VecFx32 *pos, u32 angle);
+void Body_SetPos(void *body, VecFx32 *pos, u32 angle);
 BOOL func_ov000_02191120(void *a);
 
 static inline u16 CamYaw_021a1c2c(u8 *cam) {
@@ -283,7 +283,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
             self->pos.y = y + 0x159a;
             self->pos.z = z;
         }
-        func_ov000_02198d28(self->hit, (VecFx32 *)((u8 *)self + 0x70), self->rot_y);
+        Body_SetPos(self->hit, (VecFx32 *)((u8 *)self + 0x70), self->rot_y);
         self->speed = 0;
         self->velY = 0x333;
         self->friction = 0;

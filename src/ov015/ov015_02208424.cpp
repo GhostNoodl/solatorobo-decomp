@@ -14,7 +14,7 @@ s32 func_02041b10(void *m, void *anim);
 s32 func_02041bb0(void *m, void *anim);
 extern u8 data_0208ba70[];
 void func_0204c7d0(void *p);
-s32 func_0204c4fc(s32 a, s32 b, void *c, void *d, void *e, BOOL f);
+s32 Text_Measure(s32 a, s32 b, void *c, void *d, void *e, BOOL f);
 u8 Gfx3DState_NextPolyId(void *p);
 const char *func_0206ffa0(u16 id);
 s32 func_0201e950(const void *s, const void *t, s32 n);
@@ -332,7 +332,7 @@ void func_ov015_02208a28(u8 *self, void *name) {
     FLD(s32, FLD(u8 *, self, 0x84), 0x2c) = 0;
     p = FLD(u8 *, self, 0x84);
     FLD(void *, p, 0x24) = name;
-    FLD(s32, p, 0x4c) = func_0204c4fc(FLD(s32, p, 0x28), FLD(s32, p, 0x38), FLD(void *, p, 0x24), p + 0x44, p + 0x48,
+    FLD(s32, p, 0x4c) = Text_Measure(FLD(s32, p, 0x28), FLD(s32, p, 0x38), FLD(void *, p, 0x24), p + 0x44, p + 0x48,
                                       FLD(s8, p, 0x37) != 0);
     FLD(s32, data_02097ce0, 0x4) = FLD(s32, p, 0x28);
     FLD(Ov015Bits08a28, FLD(u8 *, self, 0x84), 0x4).f13 = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
@@ -360,7 +360,7 @@ struct Ov015TagParser {
 };
 typedef s32 (*Ov015CharFn)(const char **s);
 void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src) {
-    Ov015CharFn fn = *(Ov015CharFn *)((u8 *)func_0203a4c0(data_02097ce0) + 4);
+    Ov015CharFn fn = *(Ov015CharFn *)((u8 *)GfxMgr_GetFont(data_02097ce0) + 4);
     const char *s;
     Ov015TagParser p;
     s = src;
@@ -438,7 +438,7 @@ s32 func_ov015_02208db0(Ov015UiText *self) {
 s32 func_ov015_02208dfc(Ov015UiText *self) {
     s32 a;
     data_02097ce0->unk_004 = self->font;
-    a = (*(s8 **)func_0203a4c0(data_02097ce0))[1];
+    a = (*(s8 **)GfxMgr_GetFont(data_02097ce0))[1];
     return a + VCALL(self)->v3c();
 }
 

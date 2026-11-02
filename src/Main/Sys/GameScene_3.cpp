@@ -44,11 +44,11 @@ void func_02056cb8(Model *model) {
     model->flags |= 0x200000;
 }
 
-void func_02056cc8(Model *model, u32 r, u32 g, u32 b) {
+void Model_SetColorRGB(Model *model, u32 r, u32 g, u32 b) {
     model->color = r | (g << 5) | (b << 10);
 }
 
-void func_02056cdc(Model *model, int idx, s32 dx, s32 dy) {
+void Model_MovePos(Model *model, int idx, s32 dx, s32 dy) {
     model->pos[idx].x += dx << 12;
     model->pos[idx].y += dy << 12;
 }

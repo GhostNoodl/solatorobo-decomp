@@ -149,7 +149,7 @@ extern s32 func_ov000_021993fc(Ov003LfFinder *f, Ov003LfQuery *q, Ov003LfHit **o
 extern Ov003LfTgt *func_ov000_021985c0(Ov003LfHit *h);
 extern BOOL func_ov003_021f0a38(Ov003LfTgt *t, void *def);
 extern BOOL func_ov000_02199d40(void *t);
-extern BOOL func_01ffc584(const Ov003Vec *a, const Ov003Vec *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(const Ov003Vec *a, const Ov003Vec *b, s32 r, s32 h);
 extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern void func_ov000_021911c8(void *p, s32 a);
@@ -362,7 +362,7 @@ void func_ov003_021ed6b8(Ov003Lift *self) {
                     p.y = pl->pos2.y;
                     p.z = pl->pos2.z;
                     p.y += 0x333;
-                    if (func_01ffc584(&p, &self->pos, self->unk_64 + pl->unk_64 + 0x400, 0x999)) {
+                    if (Hit_DiffInCylinder(&p, &self->pos, self->unk_64 + pl->unk_64 + 0x400, 0x999)) {
                         found = pl;
                         res = 1;
                     }

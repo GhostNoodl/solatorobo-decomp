@@ -92,7 +92,7 @@ extern void func_01ffc9fc(Ov009Vec *dst, Ov009Vec *src, u16 angle);
 extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, const Ov009Vec *v, s32 e, s32 f, s32 g, s32 h, s32 i);
 extern Ov009V *func_020657b0(void *mgr, s32 h);
-extern void func_02065804(void *mgr, s32 h);
+extern void EffectMgr_Kill(void *mgr, s32 h);
 extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
 
 static inline Ov009Actor *Ov009_FindActor(void *mgr, u16 id) {
@@ -291,7 +291,7 @@ void func_ov009_021fe55c(Ov009ActVt_022165f8 *self) {
         case 4:
             st->timer++;
             if (st->timer > 0x3c) {
-                func_02065804(data_0214a420, self->unk_f8);
+                EffectMgr_Kill(data_0214a420, self->unk_f8);
                 e = func_02065f88(0x322, &self->pos);
                 e->v20(&data_ov009_02215cdc);
                 e->v0c(0xccd);

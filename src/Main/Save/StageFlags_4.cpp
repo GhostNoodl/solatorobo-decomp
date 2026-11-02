@@ -46,7 +46,7 @@ BOOL func_0206d0d4(StageFlags *f, u16 id, u8 x, u8 y, u8 rot, u8 used) {
     return ok;
 }
 
-u8 func_0206d1d4(StageFlags *f, u16 id) {
+u8 StageFlags_CountEntries(StageFlags *f, u16 id) {
     u8 n = 0;
     s32 i;
     for (i = 0; i < STAGE_ITEM_ENTRY_MAX; i++) {

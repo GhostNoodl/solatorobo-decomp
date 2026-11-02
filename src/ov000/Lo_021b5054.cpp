@@ -31,13 +31,13 @@ typedef struct {
 extern "C" {
 
 void PauseNode_Init(void *node);
-void func_0203f80c(void *p);
+void HitMesh_Init(void *p);
 
 Mgr021b5054 *func_ov000_021b5054(Mgr021b5054 *self) {
     s32 i;
 
     PauseNode_Init(self);
-    func_0203f80c(self->unk_1f4);
+    HitMesh_Init(self->unk_1f4);
     if (data_ov000_021ccd54 != NULL) {
         self->unk_00 = (u8 *)data_ov000_021ccd54 + 8;
     }

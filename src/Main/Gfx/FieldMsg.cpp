@@ -25,7 +25,7 @@ void func_020556a0(FieldMsg *msg, const char *text) {
     msg->win->unk_2c = 0;
     win = msg->win;
     win->str = (u32)text;
-    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+    win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
     data_02097ce0->unk_004 = win->font;
     msg->win->unk_vf20(0, 0xc0);
     msg->win->noVram = 1;
@@ -35,7 +35,7 @@ void func_020556a0(FieldMsg *msg, const char *text) {
     } else {
         msg->win->rendering = 0;
     }
-    msg->unk_358 = msg->win->vramSize;
+    msg->winWidth = msg->win->width;
     msg->flag15 = 1;
     msg->flag16 = 0;
     msg->unk_35c = 0;
@@ -44,7 +44,7 @@ void func_020556a0(FieldMsg *msg, const char *text) {
     msg->unk_312 = msg->unk_310;
 }
 
-BOOL func_020557f8(FieldMsg *msg) {
+BOOL FieldMsg_IsBusy(FieldMsg *msg) {
     FieldMsgEntry *e = msg->entries;
     int i;
     for (i = 0; i < 5; i++, e++) {
@@ -63,7 +63,7 @@ BOOL func_02055844(void) {
     return Field_HasEvent() ? TRUE : FALSE;
 }
 
-void func_02055870(void) {
+void Field_ClearEvent(void) {
     if (data_ov000_021ccd54->event != 0xffff) {
         data_ov000_021ccd54->event = 0;
     }

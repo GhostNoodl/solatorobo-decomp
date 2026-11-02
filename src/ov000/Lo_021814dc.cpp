@@ -70,16 +70,16 @@ void *func_ov000_02188ba0(void *p);
 void func_ov000_021b4eec(void);
 void ActorMgr_Create(void);
 void *func_ov000_0218bb34(void *p);
-void func_020654b8(void);
+void EffectMgr_Create(void);
 void func_ov000_021bc274(void);
-void func_ov000_0216f360(void *p);
+void MessageQueue_Init(void *p);
 void func_ov000_02171464(void *p);
 void func_02058d10(s32 a);
 void func_02058f2c(void);
 void func_0205983c(void);
-void func_0204c158(void);
-void func_0206f9dc(void);
-void func_0206e9e8(void);
+void MsgRes_Create(void);
+void LangRes2_Create(void);
+void LangData_CreateRes(void);
 void func_0205b1b4(void);
 void func_0203c9e8(s32 a, s32 b);
 void func_0203cc58(s32 a, s32 b, s32 c);
@@ -89,17 +89,17 @@ void func_02058fe4(void);
 void func_02058e18(void);
 void func_ov000_02180754(void);
 void func_ov000_0214bc10(void);
-void func_0204c214(void);
+void MsgRes_Delete(void);
 void func_ov000_021819a4(Obj021819a4 *self);
-void func_0206fa70(void);
-void func_0206ea7c(void);
+void LangRes2_Delete(void);
+void LangData_DeleteRes(void);
 void func_ov000_021bc2d8(void);
 void func_ov000_021b4f28(void);
 u16 ActorMgr_CountActors(void *p, s32 a);
 void func_0204b270(void *p, s32 a, s32 b);
 void *Group_Clear(void *p);
 void ActorMgr_Destroy(void);
-void func_02065534(void);
+void EffectMgr_Delete(void);
 void *func_ov000_02189b14(void *p);
 void func_02062a24(void);
 s32 PauseNode_IsUpdatePaused(void *p, s32 a);
@@ -147,14 +147,14 @@ void func_ov000_021814dc(void) {
         }
         data_ov000_021ccd64 = p;
     }
-    func_020654b8();
+    EffectMgr_Create();
     *(void **)data_0214a420 = ((u8 *)data_ov000_021ccd54) + 8;
     func_ov000_021bc274();
     if (data_ov000_021ccd30 == NULL) {
         VObj *obj = (VObj *)Heap_Alloc(0x120);
         if (obj != NULL) {
             VOBJ_SET_VTABLE(obj, data_ov000_021cb9b0);
-            func_ov000_0216f360(obj);
+            MessageQueue_Init(obj);
             VOBJ_SET_VTABLE(obj, data_ov000_021cb980);
             func_ov000_02171464(obj);
         }
@@ -163,9 +163,9 @@ void func_ov000_021814dc(void) {
     func_02058d10(0);
     func_02058f2c();
     func_0205983c();
-    func_0204c158();
-    func_0206f9dc();
-    func_0206e9e8();
+    MsgRes_Create();
+    LangRes2_Create();
+    LangData_CreateRes();
     func_0205b1b4();
     func_0203c9e8(0x3f, -1);
     func_0203cc58(0, 1, -1);
@@ -203,12 +203,12 @@ void func_ov000_02181624(void) {
     data_02097dd0->cur = saved;
     func_ov000_02180754();
     func_ov000_0214bc10();
-    func_0204c214();
+    MsgRes_Delete();
     if (data_ov000_021ccd54 != NULL) {
         func_ov000_021819a4((Obj021819a4 *)(((u8 *)data_ov000_021ccd54) + 0xac));
     }
-    func_0206fa70();
-    func_0206ea7c();
+    LangRes2_Delete();
+    LangData_DeleteRes();
     func_ov000_021bc2d8();
     func_ov000_021b4f28();
     {
@@ -231,7 +231,7 @@ void func_ov000_02181624(void) {
     }
     data_02097dd0->cur = saved;
     ActorMgr_Destroy();
-    func_02065534();
+    EffectMgr_Delete();
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     obj = (u8 *)data_ov000_021ccd54;
@@ -504,9 +504,9 @@ extern char data_ov000_021cc105[];
 extern char data_ov000_021cc111[];
 extern char data_ov000_021cc119[];
 void func_0205a6a0(void *p);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
-void *func_0206e7d0(u8 id);
+void *Lang_GetGroup(u8 id);
 int func_0200779c(char *dst, const char *fmt, ...);
 void func_0205a840(void *p, void *buf, const void *s);
 
@@ -527,7 +527,7 @@ BOOL func_ov000_02181d70(Lo02181d70 *self, u16 id) {
         if (self->unk_04->vfunc_34()) {
             return TRUE;
         }
-        if (func_0205a9c8(self->unk_04)) {
+        if (StageRes_IsAllLoaded(self->unk_04)) {
             func_0205aa30(self->unk_04);
             return TRUE;
         }
@@ -548,7 +548,7 @@ BOOL func_ov000_02181d70(Lo02181d70 *self, u16 id) {
         if (id == 0xfe) {
             STD_CopyString(name, data_ov000_021cc0f8);
         } else {
-            func_0200779c(name, data_ov000_021cc105, LFLD(char *, func_0206e7d0(id), 4));
+            func_0200779c(name, data_ov000_021cc105, LFLD(char *, Lang_GetGroup(id), 4));
         }
         STD_CopyString(path, data_ov000_021cc111);
         STD_ConcatenateString(path, data_ov000_021cc119);
@@ -684,7 +684,7 @@ typedef struct {
 extern "C" {
 
 extern Dtcm02fe1534 data_02fe1534;
-BOOL func_0205a9c8(Widget021820bc *w);
+BOOL StageRes_IsAllLoaded(Widget021820bc *w);
 BOOL func_0205aa30(Widget021820bc *w);
 
 BOOL func_ov000_021820bc(Panel021820bc *self, BOOL notify) {
@@ -699,7 +699,7 @@ BOOL func_ov000_021820bc(Panel021820bc *self, BOOL notify) {
     changed = FALSE;
     data_02fe1534.unk_44 = 1;
     while (w != NULL) {
-        if (!w->vfunc_34() && func_0205a9c8(w)) {
+        if (!w->vfunc_34() && StageRes_IsAllLoaded(w)) {
             func_0205aa30(w);
             if (notify && w->unk_c8 == 0) {
                 w->vfunc_38(1);
@@ -1131,10 +1131,10 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 void func_ov000_0218283c(CmdQueue *self, s32 arg) {
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         if (p->flag) {
@@ -1177,10 +1177,10 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 void func_ov000_02182920(CmdQueue *self) {
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         if (p->flag) {
@@ -1223,10 +1223,10 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 void func_ov000_021829f8(CmdQueue *self) {
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         if (p->flag) {
@@ -1287,7 +1287,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 typedef struct {
     u8 pad_00[8];
@@ -1295,10 +1295,10 @@ typedef struct {
 } Obj0214a424;
 
 extern Obj0214a424 *data_0214a424;
-BOOL func_0206c4a0(void);
+BOOL StageFlags_IsValid(void);
 
 static inline void Prelude(void) {
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         if (p->flag) {
@@ -1315,7 +1315,7 @@ static inline void Prelude(void) {
 }
 
 void func_ov000_02182b0c(CmdQueue *self) {
-    if (func_0206c4a0()) {
+    if (StageFlags_IsValid()) {
         Prelude();
         CmdQueue_Push(self, 0x26, 2);
         CmdQueue_Push(self, 2, 4);
@@ -1430,9 +1430,9 @@ void func_0206c4c4(Obj0214a424 *p);
 void func_0206ca44(Obj0214a424 *p);
 void func_0206c994(Obj0214a424 *p);
 void func_ov000_02181f54(u8 *p, s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_020626d4(VecFx32 *v, u16 a);
-BOOL func_0205a9c8(VObj *p);
+BOOL StageRes_IsAllLoaded(VObj *p);
 BOOL func_0205aa30(VObj *p);
 BOOL func_ov000_021820bc(u8 *p, s32 a);
 
@@ -1552,7 +1552,7 @@ s32 func_ov000_02182cb8(CmdEx *self) {
                 id.c[2] = 0xfe;
                 Warp(&id, 0);
             } else if (kind == 0) {
-                func_02049564(data_02097e4c, 1, 1);
+                SndMgr_LoadHeapState(data_02097e4c, 1, 1);
                 {
                     Obj02097e48 *p = data_02097e48;
                     if (p->flag) {
@@ -1595,7 +1595,7 @@ s32 func_ov000_02182cb8(CmdEx *self) {
         BOOL done;
         if (self->unk_b8 == NULL || self->unk_b8->vfunc_34()) {
             done = TRUE;
-        } else if (!func_0205a9c8(self->unk_b8)) {
+        } else if (!StageRes_IsAllLoaded(self->unk_b8)) {
             done = FALSE;
         } else {
             func_0205aa30(self->unk_b8);
@@ -1642,7 +1642,7 @@ extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
 BOOL func_ov000_021820bc(void *p, s32 a);
 void func_ov000_0214ba18(void);
@@ -1663,7 +1663,7 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL ActorMgr_IsReady(void *p);
@@ -1745,7 +1745,7 @@ extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
 BOOL func_ov000_021820bc(void *p, s32 a);
 void func_ov000_0214ba18(void);
@@ -1766,7 +1766,7 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL ActorMgr_IsReady(void *p);
@@ -1952,7 +1952,7 @@ extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
 BOOL func_ov000_021820bc(void *p, s32 a);
 void func_ov000_0214ba18(void);
@@ -1973,7 +1973,7 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL ActorMgr_IsReady(void *p);
@@ -1996,7 +1996,7 @@ static inline BOOL WaitB8(CmdObj *self) {
     if (LFLD(VObj *, self, 0xb8) == NULL || LFLD(VObj *, self, 0xb8)->vfunc_34()) {
         return TRUE;
     }
-    if (!func_0205a9c8(LFLD(VObj *, self, 0xb8))) {
+    if (!StageRes_IsAllLoaded(LFLD(VObj *, self, 0xb8))) {
         return FALSE;
     }
     func_0205aa30(LFLD(VObj *, self, 0xb8));
@@ -2131,7 +2131,7 @@ void func_0203c9e8(s32 a, s32 b);
 void func_0203cc58(s32 a, s32 b, s32 c);
 void func_02062424(Id3 *id);
 BOOL func_ov000_02181d70(u8 *p);
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 static inline BOOL IsMode1(void) {
     BOOL r;
@@ -2234,7 +2234,7 @@ s32 func_ov000_02183a10(CmdEx *self) {
         func_ov000_02181d70(&self->unk_ac);
         self->state = 4;
     }
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         p->unk_74 = 0x8000;
@@ -2368,15 +2368,15 @@ void func_ov004_021ccf10(void);
 BOOL func_ov004_021ce2ec(u32 addr, s32 arg);
 BOOL func_ov004_021ce374(u32 addr, s32 arg);
 BOOL func_ov004_021ce3fc(u32 addr, s32 arg);
-bool func_ov003_021ce484(u32 addr, s32 arg);
+bool Ov003TaskVt_021f78f4_GetFlag6(u32 addr, s32 arg);
 void func_0204aa10(void *p);
 void func_ov000_0216bcbc(void *p);
 void func_ov000_021645a4(s32 a);
-void func_020656b4(void *p);
+void EffectMgr_FreeAll(void *p);
 void func_ov000_021b53f4(void *p);
 void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(void *p);
-void func_ov000_0216f6d0(Mgr021ccd30 *p, s32 a, s32 b, s32 c);
+void MessageQueue_RemoveAll(Mgr021ccd30 *p, s32 a, s32 b, s32 c);
 BOOL func_ov000_021b5578(void *p);
 void func_ov000_021b5dc0(void *p);
 void func_ov000_021b628c(void *p);
@@ -2455,8 +2455,8 @@ s32 func_ov000_02183db8(CmdEx *self) {
                     if (r) {
                         obj->unk_22 = 3;
                     } else {
-                        if (ProtHash((const u32 *)func_ov003_021ce484) == 0x786385f) {
-                            r = func_ov003_021ce484(0x2002000, 0);
+                        if (ProtHash((const u32 *)Ov003TaskVt_021f78f4_GetFlag6) == 0x786385f) {
+                            r = Ov003TaskVt_021f78f4_GetFlag6(0x2002000, 0);
                         } else {
                             r = data_ov004_021cf86c[data_ov004_021cf868 ^ 1](0x2002000, 0);
                         }
@@ -2502,7 +2502,7 @@ s32 func_ov000_02183db8(CmdEx *self) {
                 self->unk_18d = 0;
                 self->unk_18e = 0;
                 self->unk_18f = 0;
-                func_020656b4(data_0214a420);
+                EffectMgr_FreeAll(data_0214a420);
                 func_ov000_021b53f4(data_ov000_021ccd6c);
                 func_ov000_0218be9c(data_ov000_021ccd64);
                 ActorMgr_DestroyAll(data_ov000_021ccd68);
@@ -2522,10 +2522,10 @@ s32 func_ov000_02183db8(CmdEx *self) {
         if (pl != NULL) {
             pl->b4 = 0;
             if (data_ov000_021ccd30 != NULL) {
-                func_ov000_0216f6d0(data_ov000_021ccd30, 0x14, 1, 0);
+                MessageQueue_RemoveAll(data_ov000_021ccd30, 0x14, 1, 0);
             }
             if (data_ov000_021ccd30 != NULL) {
-                func_ov000_0216f6d0(data_ov000_021ccd30, 0x14, 2, 0);
+                MessageQueue_RemoveAll(data_ov000_021ccd30, 0x14, 2, 0);
             }
         }
         self->step++;
@@ -2822,7 +2822,7 @@ extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
 BOOL func_ov000_021820bc(void *p, s32 a);
 void func_ov000_0214ba18(void);
@@ -2843,7 +2843,7 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL ActorMgr_IsReady(void *p);
@@ -2944,7 +2944,7 @@ extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
 BOOL func_ov000_021820bc(void *p, s32 a);
 void func_ov000_0214ba18(void);
@@ -2965,7 +2965,7 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL ActorMgr_IsReady(void *p);
@@ -3045,7 +3045,7 @@ extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
 BOOL func_ov000_021820bc(void *p, s32 a);
 void func_ov000_0214ba18(void);
@@ -3066,7 +3066,7 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL ActorMgr_IsReady(void *p);
@@ -3183,7 +3183,7 @@ extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
 BOOL func_ov000_021820bc(void *p, s32 a);
 void func_ov000_0214ba18(void);
@@ -3204,7 +3204,7 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL ActorMgr_IsReady(void *p);
@@ -3328,7 +3328,7 @@ extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
 BOOL func_ov000_021820bc(void *p, s32 a);
 void func_ov000_0214ba18(void);
@@ -3349,7 +3349,7 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL ActorMgr_IsReady(void *p);
@@ -3866,7 +3866,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 typedef struct {
     u8 pad_00[0x70];
@@ -3887,7 +3887,7 @@ void func_ov000_02185804(CmdQueue *self, s32 arg) {
         v.z = o->pos.z;
         func_020626d4(&v, o->rot_y);
     }
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         if (p->flag) {
@@ -3923,10 +3923,10 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 void func_ov000_02185918(CmdQueue *self, s32 arg) {
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         p->unk_74 = 0x8000;
@@ -4002,13 +4002,13 @@ BOOL func_ov000_0217060c(void *p);
 void func_02036838(void *a, void *b, int c, int d);
 void *func_020359d0(void *a, int b, int c);
 int func_02035b90(void *a, int b);
-void func_0206fa70(void);
-void func_0206ea7c(void);
+void LangRes2_Delete(void);
+void LangData_DeleteRes(void);
 void func_0203caf8(s32 a);
-void func_020444b0(void *p, s32 a, s32 b, s32 c);
-void func_0206f9dc(void);
-void func_0206e9e8(void);
-void func_02044524(void *p);
+void Movie_Load(void *p, s32 a, s32 b, s32 c);
+void LangRes2_Create(void);
+void LangData_CreateRes(void);
+void Movie_RequestStop(void *p);
 BOOL func_0206facc(void);
 BOOL func_0206ead8(void);
 void func_0206faec(void);
@@ -4119,10 +4119,10 @@ s32 func_ov000_021859c4(CmdObj *self) {
             func_02036838(data_02097cdc, data_0208cc94, 7, 0);
             func_02036838(data_02097cdc, data_0208cca0, 7, 0);
             func_02036838(data_02097cdc, data_0214b105, 7, 0);
-            func_0206fa70();
-            func_0206ea7c();
+            LangRes2_Delete();
+            LangData_DeleteRes();
             func_0203caf8(-1);
-            func_020444b0(data_02097e3c, self->unk_a4, -1, 0);
+            Movie_Load(data_02097e3c, self->unk_a4, -1, 0);
             self->step++;
             return 0;
         case 1:
@@ -4130,11 +4130,11 @@ s32 func_ov000_021859c4(CmdObj *self) {
                 func_020359d0(data_0214b105, 7, 0);
                 func_020359d0(data_0208cca0, 7, 0);
                 func_020359d0(data_0208cc94, 7, 0);
-                func_0206f9dc();
-                func_0206e9e8();
+                LangRes2_Create();
+                LangData_CreateRes();
                 self->step++;
             } else if (data_02097dc8->unk_12 & 8) {
-                func_02044524(data_02097e3c);
+                Movie_RequestStop(data_02097e3c);
             }
             break;
         case 2: {
@@ -4304,10 +4304,10 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 void func_ov000_02186158(CmdQueue *self, s32 arg) {
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         p->unk_74 = 0x8000;
@@ -4334,10 +4334,10 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 void func_ov000_02186204(CmdQueue *self, s32 arg) {
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         p->unk_74 = 0x8000;
@@ -4398,7 +4398,7 @@ extern u8 OVERLAY_2_ID[];
 extern u8 OVERLAY_6_ID[];
 extern u8 OVERLAY_15_ID[];
 void func_0204b270(void *p, s32 a, s32 b);
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_ov015_021fa77c(void);
 void func_ov006_021ccf8c(void);
 void func_ov000_021860e0(void);
@@ -4452,7 +4452,7 @@ s32 func_ov000_021862b0(CmdObj *self) {
         if (data_ov006_021ec860->unk_04 == 5) {
             ClearCallbacks();
             if (self->unk_a4 == 0) {
-                func_02049564(data_02097e4c, 1, 1);
+                SndMgr_LoadHeapState(data_02097e4c, 1, 1);
                 {
                     Obj02097e48 *p = data_02097e48;
                     if (p->flag) {
@@ -4528,10 +4528,10 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 void func_ov000_021865f8(CmdQueue *self) {
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         if (p->flag) {
@@ -4627,7 +4627,7 @@ BOOL func_ov000_0216f674(Mgr021ccd30 *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
 u16 func_02062834(void);
 void func_02062500(u8 *p);
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 Obj0219bf90 *func_ov000_0219bf90(void);
 
 static inline BOOL Busy0f(void) {
@@ -4671,7 +4671,7 @@ s32 func_ov000_021866d0(CmdObj *self) {
             CmdObj_Done(self);
             if (!func_02062834()) {
                 func_02062500(&((CmdObj021866d0 *)self)->unk_ca);
-                func_02049564(data_02097e4c, 1, 1);
+                SndMgr_LoadHeapState(data_02097e4c, 1, 1);
                 {
                     Obj02097e48 *p = data_02097e48;
                     if (p->flag) {
@@ -4799,12 +4799,12 @@ namespace m_Stub_02186b74 {
 extern "C" {
 
 extern u8 data_ov008_021d0500[];
-void func_ov008_021cd48c();
+void Ov008Mgr_Delete();
 s32 func_ov008_021ce518(void *a);
 void func_ov008_021cec20(void *a);
 
 void func_ov000_02186b74(void) {
-    func_ov008_021cd48c();
+    Ov008Mgr_Delete();
 }
 
 void func_ov000_02186b80(void) {
@@ -4840,10 +4840,10 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 void func_ov000_02186bb0(CmdQueue *self) {
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         if (p->flag) {
@@ -4987,7 +4987,7 @@ extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
 BOOL func_ov000_021820bc(void *p, s32 a);
 void func_ov000_0214ba18(void);
@@ -5008,7 +5008,7 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL ActorMgr_IsReady(void *p);
@@ -5071,7 +5071,7 @@ void func_ov002_021ccda0(void);
 BOOL func_ov004_021ce2ec(u32 addr, s32 arg);
 BOOL func_ov004_021ce374(u32 addr, s32 arg);
 BOOL func_ov004_021ce3fc(u32 addr, s32 arg);
-bool func_ov003_021ce484(u32 addr, s32 arg);
+bool Ov003TaskVt_021f78f4_GetFlag6(u32 addr, s32 arg);
 
 // Checksum of the first 0x1c words of a protected function, used to detect tampering.
 static inline u32 ProtHash(const u32 *p) {
@@ -5112,8 +5112,8 @@ void func_ov000_02186ed4(void) {
             if (r) {
                 obj->unk_22 = 3;
             } else {
-                if (ProtHash((const u32 *)func_ov003_021ce484) == 0x786385f) {
-                    r = func_ov003_021ce484(0x2002000, 0);
+                if (ProtHash((const u32 *)Ov003TaskVt_021f78f4_GetFlag6) == 0x786385f) {
+                    r = Ov003TaskVt_021f78f4_GetFlag6(0x2002000, 0);
                 } else {
                     r = data_ov004_021cf86c[data_ov004_021cf868 ^ 1](0x2002000, 0);
                 }
@@ -5157,7 +5157,7 @@ typedef struct {
 
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 static inline void Queue_Push(void *self, s32 cmd, s32 arg) {
     s32 *index = (s32 *)((u8 *)self + 0x94);
@@ -5182,7 +5182,7 @@ void func_ov000_02187138(void) {
 
 
 void func_ov000_02187150(void *self, s32 arg) {
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         if (p->flag) {
@@ -5287,10 +5287,10 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 void func_ov000_02187374(CmdQueue *self, s32 arg) {
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         p->unk_74 = 0x8000;
@@ -5400,10 +5400,10 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 void func_ov000_02187588(CmdQueue *self) {
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         if (p->flag) {
@@ -5453,7 +5453,7 @@ extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
 BOOL func_ov000_021820bc(void *p, s32 a);
 void func_ov000_0214ba18(void);
@@ -5474,7 +5474,7 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL ActorMgr_IsReady(void *p);
@@ -5511,7 +5511,7 @@ s32 func_ov000_02187660(CmdObj *self) {
             data_ov000_021ccd58 = NULL;
             data_ov000_021ccd60 = NULL;
             CmdObj_Done(self);
-            func_02049564(data_02097e4c, 1, 1);
+            SndMgr_LoadHeapState(data_02097e4c, 1, 1);
             {
                 Obj02097e48 *p = data_02097e48;
                 if (p->flag) {
@@ -5551,10 +5551,10 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 void func_ov000_0218781c(CmdQueue *self, s32 arg) {
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         p->unk_74 = 0x8000;
@@ -5588,7 +5588,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 
 s32 func_ov000_021878c8(CmdObj *self) {
@@ -5598,7 +5598,7 @@ s32 func_ov000_021878c8(CmdObj *self) {
     data_ov000_021ccd5c = NULL;
     data_ov000_021ccd58 = 0;
     data_ov000_021ccd60 = 0;
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         if (p->flag) {
@@ -5668,7 +5668,7 @@ extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
 BOOL func_ov000_021820bc(void *p, s32 a);
 void func_ov000_0214ba18(void);
@@ -5689,7 +5689,7 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_0214a424;
 extern void *data_ov000_021ccd68;
 extern Flags021ccd44 *data_ov000_021ccd44;
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL ActorMgr_IsReady(void *p);
@@ -5845,11 +5845,11 @@ void ActorMgr_ClearGroup(void *p, s32 a);
 void func_0204aa10(void *p);
 void func_ov000_0216bcbc(void *p);
 void func_ov000_021645a4(s32 a);
-void func_020656b4(void *p);
+void EffectMgr_FreeAll(void *p);
 void func_ov000_021b53f4(void *p);
 void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(void *p);
-void func_ov000_0216f42c(Mgr021ccd30 *mgr, void *task);
+void MessageQueue_FreeBuffer(Mgr021ccd30 *mgr, void *task);
 void func_0206222c(void);
 void func_ov000_021819a4(u8 *p);
 void func_0205b1b4(void);
@@ -5988,18 +5988,18 @@ s32 func_ov000_02187b88(CmdEx *self) {
             self->unk_18d = 0;
             self->unk_18e = 0;
             self->unk_18f = 0;
-            func_020656b4(data_0214a420);
+            EffectMgr_FreeAll(data_0214a420);
             func_ov000_021b53f4(data_ov000_021ccd6c);
             func_ov000_0218be9c(data_ov000_021ccd64);
             ActorMgr_DestroyAll(data_ov000_021ccd68);
             {
                 Mgr021ccd30 *mgr = data_ov000_021ccd30;
-                func_ov000_0216f42c(mgr, mgr->unk_11c);
+                MessageQueue_FreeBuffer(mgr, mgr->unk_11c);
                 mgr->unk_11c = NULL;
             }
             {
                 Mgr021ccd30 *mgr = data_ov000_021ccd30;
-                func_ov000_0216f42c(mgr, mgr->unk_118);
+                MessageQueue_FreeBuffer(mgr, mgr->unk_118);
                 mgr->unk_118 = NULL;
             }
             if (mode == 2) {
@@ -6173,7 +6173,7 @@ extern Obj02097e48 *data_02097e48;
 extern Mgr021ccd30 *data_ov000_021ccd30;
 void func_0203c9e8(s32 a, s32 b);
 void func_0203cc58(s32 a, s32 b, s32 c);
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_ov000_0216f844(void *p, s32 a);
 
 static inline BOOL IsMode0(void) {
@@ -6205,7 +6205,7 @@ s32 func_ov000_02188438(CmdObj *self) {
     case 1:
         if (IsMode4()) {
             CmdObj_Done(self);
-            func_02049564(data_02097e4c, 1, 1);
+            SndMgr_LoadHeapState(data_02097e4c, 1, 1);
             {
                 Obj02097e48 *p = data_02097e48;
                 if (p->flag) {

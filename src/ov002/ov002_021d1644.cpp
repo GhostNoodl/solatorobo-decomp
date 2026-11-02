@@ -14,7 +14,7 @@ BOOL func_ov002_021d166c(void *self) {
     case 0:
         if (FIELD(self, 0x5c, s32) < 8 && ((s32 *)((u8 *)self + 0x3c))[FIELD(self, 0x5c, s32)] >= 0) {
             func_0203caf8(-1);
-            func_020444b0(data_02097e3c, ((s32 *)((u8 *)self + 0x3c))[FIELD(self, 0x5c, s32)], -1, 0);
+            Movie_Load(data_02097e3c, ((s32 *)((u8 *)self + 0x3c))[FIELD(self, 0x5c, s32)], -1, 0);
             FIELD(self, 0x64, s32) = 1;
         } else {
             func_0203cc58(0xa000, 2, 0);
@@ -23,7 +23,7 @@ BOOL func_ov002_021d166c(void *self) {
         break;
     case 1:
         if (data_02097dc8->trig & 0xa) {
-            func_02044524(data_02097e3c);
+            Movie_RequestStop(data_02097e3c);
         }
         if (FIELD(data_02097e3c, 0x149, u8) == 0) {
             FIELD(self, 0x64, s32) = 0;

@@ -51,17 +51,17 @@ static inline void ov002_PlayBgm(u16 id) {
 void func_ov002_021d1258(void *self) {
     switch (FIELD(self, 0x8, s32)) {
     case 8: {
-        void *t = func_ov000_02173610(0x15);
+        void *t = Task_FindById(0x15);
         void *o;
         if (t != NULL) {
             ov002_FreeParts(t);
         }
-        o = func_ov000_02173610(0x12);
+        o = Task_FindById(0x12);
         if (o != NULL) {
             FIELD(self, 0x6c, void *) = FIELD(o, 0x44, void *);
             func_ov002_021ce724(o);
         }
-        o = func_ov000_02173610(0x11);
+        o = Task_FindById(0x11);
         if (o != NULL) {
             FIELD(o, 0x4d, u8) = 1;
         }
@@ -101,7 +101,7 @@ void func_ov002_021d1258(void *self) {
         break;
     case 10: {
         void *saved;
-        void *t = func_ov000_02173610(0x15);
+        void *t = Task_FindById(0x15);
         void *o;
         if (t != NULL) {
             HEAP_PUSH(saved);
@@ -114,11 +114,11 @@ void func_ov002_021d1258(void *self) {
             FIELD(FIELD(t, 0x3c, void *), 0xc, u32) |= 2;
             FIELD(FIELD(t, 0x40, void *), 0xc, u32) |= 2;
         }
-        o = func_ov000_02173610(0x12);
+        o = Task_FindById(0x12);
         if (o != NULL) {
             func_ov002_021ce660(o, FIELD(self, 0x6c, void *));
         }
-        o = func_ov000_02173610(0x11);
+        o = Task_FindById(0x11);
         if (o != NULL) {
             FIELD(o, 0x4c, u8) = 1;
         }

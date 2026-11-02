@@ -105,7 +105,7 @@ extern void *data_0214a420;
 extern void func_ov000_021911c8(void *model, s32 a);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
-extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
 extern void *func_020657b0(void *mgr, s32 id);
 
 void func_ov009_02209668(Ov009ActVt_02217594 *self) {
@@ -121,7 +121,7 @@ void func_ov009_02209668(Ov009ActVt_02217594 *self) {
         Ov009V *e;
         self->unk_318 = 3;
         for (i = 0; i < 3; i++) {
-            if (func_01ffc584(&pl->pos, &tbl.v[i], pl->unk_64 + 0x2400, 0xf000)) {
+            if (Hit_DiffInCylinder(&pl->pos, &tbl.v[i], pl->unk_64 + 0x2400, 0xf000)) {
                 self->unk_318 = i;
             }
         }

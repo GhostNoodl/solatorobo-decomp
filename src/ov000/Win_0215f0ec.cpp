@@ -63,7 +63,7 @@ static inline TextWin *TextWin_New(void) {
 
 static inline void SetText(TextWin *win, u32 text) {
     win->str = text;
-    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+    win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
     data_02097ce0->unk_004 = win->font;
 }
 

@@ -74,7 +74,7 @@ extern "C" {
 
 extern const s16 FX_SinCosTable_[];
 extern void *data_0214a420;
-extern Ov003SlFx *func_02066774(void *arc, void *mdl, s32 c, Ov003SlVec *pos);
+extern Ov003SlFx *Effect3D_Create(void *arc, void *mdl, s32 c, Ov003SlVec *pos);
 extern Ov003SlFx *func_02065f88(s32 id, Ov003SlVec *pos);
 extern Ov003SlFx *func_020657b0(void *mgr, void *handle);
 extern void func_01ffc9fc(Ov003SlVec *out, Ov003SlVec *in, u16 ang);
@@ -121,7 +121,7 @@ void func_ov003_021dc3fc(Ov003Slot *self, s32 i, s32 mode) {
     }
     if (self->handles[i] == NULL) {
         if (def->arc != NULL && ent->mdl != NULL) {
-            nfx = func_02066774(def->arc, ent->mdl, 0, &self->pos);
+            nfx = Effect3D_Create(def->arc, ent->mdl, 0, &self->pos);
         } else if (ent->id != -1) {
             nfx = func_02065f88(ent->id, &self->pos);
         }

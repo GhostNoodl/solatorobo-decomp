@@ -37,8 +37,8 @@ extern void *data_ov000_021ccd68;
 extern void *func_ov003_021d0edc(void *p);
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *p);
-extern void func_0203df0c(void *p);
-extern void *func_0203de84(u32 size, s32 align);
+extern void Heap_FreeHi(void *p);
+extern void *Heap_AllocHi(u32 size, s32 align);
 extern void *ActorMgr_GetActor(void *mgr, u16 id);
 
 void *Ov003ActVt_021f7c0c_Dtor(void *self) {
@@ -63,7 +63,7 @@ void *Ov003ActVt_021f7b60_DtorDelete(void *self) {
     return self;
 }
 
-Ov003Node8 *func_ov003_021d77e0(Ov003NodeSrc *self) {
+Ov003Node8 *Ov003NodeSrc_NewNode(Ov003NodeSrc *self) {
     u16 id = self->unk_0c;
     Ov003Node8 *node = (Ov003Node8 *)Heap_Alloc(8);
     node->id = id;
@@ -92,10 +92,10 @@ void func_ov003_021d7848(Ov003Pool *self) {
     self->active = 0;
 }
 
-Ov003Pool *func_ov003_021d7858(Ov003Pool *self) {
+Ov003Pool *Ov003Pool_Dtor(Ov003Pool *self) {
     if (self->active) {
         self->active = 0;
-        func_0203df0c(self->buf);
+        Heap_FreeHi(self->buf);
         self->end = NULL;
         self->freeList = NULL;
     }
@@ -113,7 +113,7 @@ BOOL func_ov003_021d7894(Ov003Pool *self, s32 size, s32 count) {
     stride = size + 4;
     self->elemSize = size;
     self->active = true;
-    p = (u8 *)func_0203de84(stride * count, 4);
+    p = (u8 *)Heap_AllocHi(stride * count, 4);
     self->buf = p;
     self->end = p + stride * count;
     self->freeList = (Ov003FreeNode *)p;

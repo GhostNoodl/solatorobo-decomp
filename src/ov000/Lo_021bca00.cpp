@@ -22,7 +22,7 @@ void *func_02034d88(void *a, void *b);
 char *STD_CopyString(char *dst, const char *src);
 void func_0204c7d0(void *p);
 u32 MsgRes_GetString(void *p, s32 a);
-u32 func_0204c4fc(u32 a, u32 b, u32 c, u32 *d, u32 *e, BOOL f);
+u32 Text_Measure(u32 a, u32 b, u32 c, u32 *d, u32 *e, BOOL f);
 void func_0204ca70(void *p);
 void func_ov000_02184508(void *p);
 BOOL func_02054f10(void *p, s32 a);
@@ -44,7 +44,7 @@ static inline TextWin *Lo_TextWinNew(void) {
 
 static inline void Lo_SetText(TextWin *win, u32 text) {
     win->str = text;
-    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+    win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
     data_02097ce0->unk_004 = win->font;
 }
 

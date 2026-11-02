@@ -14,7 +14,7 @@ extern void *func_ov003_021d0edc(void *self);
 extern void func_ov003_021d8f24(void *p);
 extern void func_ov003_021d8f34(void *p);
 extern void *func_ov010_0220d79c(void *p);
-extern void *func_ov010_0220d7c0(void *p);
+extern void *Ov010Coll_Dtor(void *p);
 extern void *Ov003Vt_021f7d10_Ctor(void *p);
 extern void *Ov003Vt_021f7d10_Dtor(void *p);
 extern void *Ov003Vt_021f7cd8_Ctor(void *p);
@@ -52,7 +52,7 @@ static inline void Ov010_02204294_Body(Ov010ObjBase0220ffe4_0221009c *self) {
     func_ov010_022075bc(self);
     Ov003Vt_021f7cd8_Dtor((u8 *)self + 0x1dc);
     Ov003Vt_021f7d10_Dtor((u8 *)self + 0x1b0);
-    func_ov010_0220d7c0((u8 *)self + 0x174);
+    Ov010Coll_Dtor((u8 *)self + 0x174);
     func_ov003_021d8f34((u8 *)self + 0x160);
     func_ov003_021d0edc(self);
 }

@@ -10,7 +10,7 @@ void *func_ov000_0218ea20(void *p);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void MI_CpuFill8(void *dst, u8 value, u32 size);
 void *func_ov000_0218fe1c(void *p);
-void *func_02043548(void *p);
+void *GfxCamPos_Init(void *p);
 void MTX_Identity44_(void *m);
 
 struct Obj02162124 {
@@ -66,7 +66,7 @@ u8 *func_ov000_02162124(Obj02162124 *self) {
     MI_CpuFill8((u8 *)self + 0x63, 0, 0x18);
     self->unk_7b = 0;
     func_ov000_0218fe1c((u8 *)self + 0x55c);
-    func_02043548((u8 *)self + 0x644);
+    GfxCamPos_Init((u8 *)self + 0x644);
     MTX_Identity44_((u8 *)self + 0x668);
     self->unk_6a8 = 0;
     self->unk_6ac = 0;

@@ -148,7 +148,7 @@ Ov003HtActor *Target_Get(Ov003HtTarget *t);
 u16 func_ov000_02199e94(Ov003HtTarget *t);
 u8 func_ov000_02199f08(Ov003HtTarget *t);
 void func_ov000_02199f48(Ov003HtCounter *t, Ov003HtActor *a);
-s32 func_ov000_0219a874(Ov003HtCounter *a, Ov003HtSlot *b, s32 value);
+s32 Filter_Apply(Ov003HtCounter *a, Ov003HtSlot *b, s32 value);
 BOOL func_ov000_0219aae8(Ov003Ht *a, Ov003HtActor *b, u16 c, u8 d, u16 mask, Ov003HtVec *ofs, void *rot, s32 r, s32 rr, s16 h, s32 i);
 u8 func_ov003_021cee68(void);
 
@@ -268,7 +268,7 @@ void func_ov003_021d3d28(Ov003Ht *self) {
                 if (self->unk_50->unk_00 != 0) {
                     u32 kind = func_ov000_02199f08(self->unk_4c);
                     Ov003HtMsg msg;
-                    msg.val = func_ov000_0219a874(self->unk_50, slot, c);
+                    msg.val = Filter_Apply(self->unk_50, slot, c);
                     msg.kind = kind;
                     msg.id = 0xffff;
                     if (hit && kind == 0x41) {

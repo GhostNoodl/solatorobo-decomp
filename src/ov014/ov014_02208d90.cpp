@@ -14,8 +14,8 @@ extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
 extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 extern Ov014V *func_020657b0(void *a, void *b);
 extern void func_ov003_021da9ac(void *p, u8 id, void *obj);
-extern BOOL func_ov003_021daa0c(void *p, u8 id);
-extern void *func_ov003_021daa3c(void *p, u8 id);
+extern BOOL Ov003FxList_Has(void *p, u8 id);
+extern void *Ov003FxList_Get(void *p, u8 id);
 extern void func_ov000_0218996c(s32 a, s32 b);
 
 void func_ov014_02208db4(Ov014ActEx_02208618 *self) {
@@ -53,15 +53,15 @@ void func_ov014_02208db4(Ov014ActEx_02208618 *self) {
     }
     case 1: {
         Ov014V *o;
-        o = func_020657b0(data_0214a420, func_ov003_021daa3c(((void *)self->unk_d8), 0xff));
+        o = func_020657b0(data_0214a420, Ov003FxList_Get(((void *)self->unk_d8), 0xff));
         if (o != NULL) {
             o->v0c(FLD(s32, o, 0x40) + 0x148);
         }
-        o = func_020657b0(data_0214a420, func_ov003_021daa3c(((void *)self->unk_d8), 0xfe));
+        o = func_020657b0(data_0214a420, Ov003FxList_Get(((void *)self->unk_d8), 0xfe));
         if (o != NULL) {
             o->v0c(FLD(s32, o, 0x40) + 0xcd);
         }
-        if (!func_ov003_021daa0c(((void *)self->unk_d8), 0xff)) {
+        if (!Ov003FxList_Has(((void *)self->unk_d8), 0xff)) {
             self->unk_40->state++;
         }
         break;

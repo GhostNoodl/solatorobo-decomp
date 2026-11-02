@@ -20,7 +20,7 @@ void ov006_DeleteSlotManager(void);
 void func_0206e900(void *a, void *b);
 void *func_020359d0(void *a, int b, int c);
 int func_02035b90(void *a, int b);
-void func_02044ac4(void);
+void Wh_Create(void);
 void func_ov006_021e42b4(void);
 void func_ov006_021dacb0(void);
 void func_ov006_021e4348(ov006_Unk021ec888 *a);
@@ -155,7 +155,7 @@ int func_ov006_021cd0ac(ov006_Manager *self) {
         done = zero;
         switch (self->subState) {
         case 0:
-            func_02044ac4();
+            Wh_Create();
             func_ov006_021e42b4();
             func_ov006_021dacb0();
             self->subState++;

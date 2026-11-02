@@ -287,7 +287,7 @@ struct Ov008MenuRes {
 
 typedef s32 (*Ov008Cb)(...);
 
-// What func_0206e7d0 returns for an entry id.
+// What Lang_GetGroup returns for an entry id.
 struct Ov008Def {
     void *unk_00;
     void *unk_04; // name

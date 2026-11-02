@@ -81,10 +81,10 @@ Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_0218c040(void *mgr, s32 a, VecFx32 *out, s32 b, s32 c);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
-void func_ov000_02198d28(u8 *a, VecFx32 *v, u16 b);
+void Body_SetPos(u8 *a, VecFx32 *v, u16 b);
 void **func_02035edc(const char *a, const char *b);
 void *NNS_G3dGetAnmByIdx(void *p, s32 idx);
-void func_0204b8e8(u8 *cam, void *anm);
+void Camera_SetAnim(u8 *cam, void *anm);
 void func_ov000_021b7e60(Node021b5dc0 *n, s32 v);
 
 static inline BOOL SameArea021b5dc0(void) {
@@ -193,7 +193,7 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
                         LFLD(s32, a, 0xa4) = 0;
                         LFLD(s32, a, 0xa8) = 0;
                         if (LFLD(void *, a, 0x48) != NULL) {
-                            func_ov000_02198d28(LFLD(u8 *, a, 0x48), &out, LFLD(u16, a, 0x7e));
+                            Body_SetPos(LFLD(u8 *, a, 0x48), &out, LFLD(u16, a, 0x7e));
                         }
                     }
                 }
@@ -207,7 +207,7 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
     if (((u8 *)g)[0xca] == 0x10 && ((u8 *)g)[0xcb] == 0 && (((u8 *)g)[0xcc] == 0 || ((u8 *)g)[0xcc] == 3)) {
         void **res = func_02035edc(data_ov000_021cc82c, data_ov000_021cc83d);
         if (res != NULL && *res != NULL) {
-            func_0204b8e8(cam, NNS_G3dGetAnmByIdx(*res, 0));
+            Camera_SetAnim(cam, NNS_G3dGetAnmByIdx(*res, 0));
             self->unk_1f2 = 0x52;
             if (((u8 *)g)[0xcc] == 3) {
                 self->unk_1f2 = 0xa4;

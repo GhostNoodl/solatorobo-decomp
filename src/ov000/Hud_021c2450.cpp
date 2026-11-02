@@ -43,7 +43,7 @@ static inline void SetText021c2450(Hud021cca10 *self, char *str0) {
     self->unk_38->font = 8;
     t = self->unk_38;
     t->str = (u32)str;
-    t->unk_4c = func_0204c4fc(t->font, t->spacing, t->str, &t->vramSize, &t->vramArg, (s8)t->unk_37 != 0);
+    t->unk_4c = Text_Measure(t->font, t->spacing, t->str, &t->width, &t->height, (s8)t->unk_37 != 0);
     data_02097ce0->unk_004 = t->font;
     self->unk_38->unk_4_8 = 0x1e;
     self->unk_38->unk_vf14();

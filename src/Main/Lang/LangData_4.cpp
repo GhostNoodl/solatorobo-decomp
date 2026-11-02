@@ -199,7 +199,7 @@ void func_0206e6c0(void);
 
 void func_0206e6e4(void);
 
-LangGroup *func_0206e7d0(int i);
+LangGroup *Lang_GetGroup(int i);
 
 u16 func_0206e7ec(int group, int index);
 
@@ -339,7 +339,7 @@ extern const u32 data_0208b318[];
 extern const char *data_0208ccb0;
 extern const char *data_0208cca8;
 extern void *Heap_Alloc(u32 size);
-void *func_0206f964(void *data, const char *name);
+void *NamedTable_Find(void *data, const char *name);
 
 static inline LangRes *LangRes_New(void) {
     LangRes *res = (LangRes *)Heap_Alloc(sizeof(LangRes));
@@ -350,7 +350,7 @@ static inline LangRes *LangRes_New(void) {
     return res;
 }
 
-void func_0206e9e8(void) {
+void LangData_CreateRes(void) {
     char arcName[0x20];
     char name[0x20];
     LangRes *res = LangRes_New();
@@ -361,7 +361,7 @@ void func_0206e9e8(void) {
     data_0214b128.res->Open(arcName, name);
 }
 
-void func_0206ea7c(void) {
+void LangData_DeleteRes(void) {
     void *saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     if (data_0214b128.res != NULL) {
@@ -398,19 +398,19 @@ void func_0206eaf8(void) {
     }
     data_0214b128.res->unk_vf30();
     data = data_0214b128.res->GetData();
-    data_0214b128.items[0] = func_0206f964(*data, data_0208cccc);
-    data_0214b128.items[1] = func_0206f964(*data, data_0208ccd0);
-    data_0214b128.items[2] = func_0206f964(*data, data_0208ccd7);
-    data_0214b128.items[3] = func_0206f964(*data, data_0208ccdf);
-    data_0214b128.items[4] = func_0206f964(*data, data_0208cced);
-    data_0214b128.items[5] = func_0206f964(*data, data_0208ccfd);
-    data_0214b128.items[6] = func_0206f964(*data, data_0208cd0d);
-    data_0214b128.items[7] = func_0206f964(*data, data_0208cd19);
-    data_0214b128.items[8] = func_0206f964(*data, data_0208cd24);
-    data_0214b128.items[9] = func_0206f964(*data, data_0208cd2f);
-    data_0214b128.items[10] = func_0206f964(*data, data_0208cd39);
-    data_0214b128.items[11] = func_0206f964(*data, data_0208cd47);
-    data_0214b128.items[12] = func_0206f964(*data, data_0208cd4f);
+    data_0214b128.items[0] = NamedTable_Find(*data, data_0208cccc);
+    data_0214b128.items[1] = NamedTable_Find(*data, data_0208ccd0);
+    data_0214b128.items[2] = NamedTable_Find(*data, data_0208ccd7);
+    data_0214b128.items[3] = NamedTable_Find(*data, data_0208ccdf);
+    data_0214b128.items[4] = NamedTable_Find(*data, data_0208cced);
+    data_0214b128.items[5] = NamedTable_Find(*data, data_0208ccfd);
+    data_0214b128.items[6] = NamedTable_Find(*data, data_0208cd0d);
+    data_0214b128.items[7] = NamedTable_Find(*data, data_0208cd19);
+    data_0214b128.items[8] = NamedTable_Find(*data, data_0208cd24);
+    data_0214b128.items[9] = NamedTable_Find(*data, data_0208cd2f);
+    data_0214b128.items[10] = NamedTable_Find(*data, data_0208cd39);
+    data_0214b128.items[11] = NamedTable_Find(*data, data_0208cd47);
+    data_0214b128.items[12] = NamedTable_Find(*data, data_0208cd4f);
 }
 
 }

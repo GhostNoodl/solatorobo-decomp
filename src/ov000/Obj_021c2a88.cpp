@@ -24,7 +24,7 @@ void func_ov000_021c2a88(Obj021c2a88 *self, s32 arg) {
     self->unk_38->font = 8;
     p = self->unk_38;
     p->str = arg;
-    p->unk_4c = func_0204c4fc(p->font, p->spacing, p->str, &p->vramSize, &p->vramArg, (s8)p->unk_37 != 0);
+    p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, (s8)p->unk_37 != 0);
     data_02097ce0->unk_004 = p->font;
     self->unk_38->flags = (self->unk_38->flags & ~0x1f00) | 0x1e00;
     self->unk_38->unk_vf14();

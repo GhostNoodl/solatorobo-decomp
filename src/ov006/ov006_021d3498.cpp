@@ -154,7 +154,7 @@ void func_0204b420(void *self);
 void *func_ov000_0218ea20(void *self);
 void *func_ov000_0218fee4(void *self);
 ov006_Model60 *func_ov000_0218e9c4(void *self);
-void func_0203df0c(void *p);
+void Heap_FreeHi(void *p);
 void func_02035acc(const char *a, const char *b, int c);
 const char *func_0207011c(u16 id);
 const char *func_020701d4(u16 id);
@@ -236,7 +236,7 @@ static inline void ov006_TaskD37_Dtor(ov006_TaskD37 *self) {
     OV006_DELETE_WITH(self->unk6C, func_ov000_0218fee4);
     OV006_DELETE_WITH(self->unk70, func_ov000_0218ea20);
     if (self->anm != NULL) {
-        func_0203df0c(self->anm);
+        Heap_FreeHi(self->anm);
         self->anm = NULL;
     }
     OV006_DELETE_OBJECT(self->unk138);
@@ -346,7 +346,7 @@ void func_0204b420(void *self);
 void *func_ov000_0218ea20(void *self);
 void *func_ov000_0218fee4(void *self);
 ov006_Model60 *func_ov000_0218e9c4(void *self);
-void func_0203df0c(void *p);
+void Heap_FreeHi(void *p);
 void func_02035acc(const char *a, const char *b, int c);
 const char *func_0207011c(u16 id);
 const char *func_020701d4(u16 id);
@@ -410,7 +410,7 @@ const ov006_Rot021d4118 data_ov006_021eb702 = {0xfa80, 0x8200, 0};
 void *MsgRes_GetString(void *a, int id);
 void func_ov006_021cd580(int a, void *b, int c);
 void func_ov000_021548cc(void *a, int b);
-void *func_ov000_02154b80(void *a, int b);
+void *ListOwner_GetNth(void *a, int b);
 BOOL func_ov006_021d37d0(ov006_Window *window, ov006_ListNode *node);
 BOOL func_ov006_021d1f00(ov006_Window *window, ov006_ListNode *node);
 void func_ov000_0215bb14(void *a, const void *b);
@@ -434,7 +434,7 @@ const void *func_0206ec48(u16 id);
 void func_ov006_021dbfb8(ov006_Obj58 *a, const char *b, int c, int d);
 void func_ov006_021e1ddc(ov006_Obj13C *a, const char *b, int c, int d);
 void func_ov006_021e1e6c(ov006_Obj13C *a, const void *b);
-void func_ov006_021e4b90(ov006_Unk021ec888 *self);
+void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self);
 void func_ov000_02173648(void *self);
 
 static inline ov006_Window *ov006_NewWindow_caec8(void) {
@@ -548,9 +548,9 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
     self->unk50->unk4A = 0x2c00;
     self->unk50->rows = 5;
     self->unk50->width = 0x9c;
-    ov006_Window_SetRot(self->unk50, 0, 0x1e, -0x199a);
+    ov006_Window_SetPos(self->unk50, 0, 0x1e, -0x199a);
     self->unk50->posZ = -0x199a;
-    ov006_Window_SetPos(self->unk50, -0xff, 0, -0x199a);
+    ov006_Window_SetSlide(self->unk50, -0xff, 0, -0x199a);
     self->unk50->flags &= ~0x400000;
     self->unk50->flags &= ~0x800000;
     self->unk50->flags &= ~0x80000;
@@ -566,7 +566,7 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
         VCALL(w, a8, func_ov000_02154b58(w, self->unk4A));
     } else {
         ov006_Window *w = self->unk50;
-        VCALL(w, a8, func_ov000_02154b80(w, 0));
+        VCALL(w, a8, ListOwner_GetNth(w, 0));
     }
     self->unk50->owner = self;
     self->unk50->onCursor = func_ov006_021d37d0;
@@ -574,8 +574,8 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
     self->unk54 = ov006_NewWindow_cadcc();
     self->unk54->width = 0xf8;
     self->unk54->rows = 2;
-    ov006_Window_SetRot(self->unk54, 4, 0x95, -0x199a);
-    ov006_Window_SetPos(self->unk54, -0x100, 0, -0x199a);
+    ov006_Window_SetPos(self->unk54, 4, 0x95, -0x199a);
+    ov006_Window_SetSlide(self->unk54, -0x100, 0, -0x199a);
     self->unk54->slideMode = 1;
     VCALL(self->unk54, 08);
     if (self->head.unkC == 2) {
@@ -655,7 +655,7 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
     func_ov006_021e1ddc(self->unk13C, "menu/skyrace_map", info->unk4, 0);
     func_ov006_021e1e6c(self->unk13C, func_0206ec48(id));
     self->unk4C = self->unk4A;
-    func_ov006_021e4b90(data_ov006_021ec888);
+    ov006_Menu_ClearEntries(data_ov006_021ec888);
     self->unk44 = 4;
     self->unk48 = self->unk4A;
     func_ov000_02173648(self);
@@ -933,11 +933,11 @@ void func_ov006_021e1bb4(ov006_Obj13C *a);
 void func_ov000_02190a80(ov006_Model64 *a, int b);
 BOOL func_ov000_021903b4(ov006_Model64 *a);
 BOOL func_ov006_021d5368(ov006_TaskD37 *self, ov006_Model64 *obj);
-void func_ov006_021e4a80(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
+void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 void func_ov006_021cd580(int a, int b, int c);
-void func_ov006_021e4b90(ov006_Unk021ec888 *self);
+void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self);
 void func_ov006_021e463c(ov006_Unk021ec888 *self);
-void *func_0203de84(u32 size, int align);
+void *Heap_AllocHi(u32 size, int align);
 void MI_CpuFill8(void *dst, u8 value, u32 size);
 int STD_TSNPrintf(char *dst, u32 size, const char *fmt, ...);
 void MIi_CpuClearFast(u32 data, void *destp, u32 size);
@@ -989,7 +989,7 @@ void func_ov006_021d4f64(ov006_TaskD37 *self) {
     if (self->head.unkC == 1) {
         self->unk48 = self->unk4A;
     }
-    func_ov006_021e4a80(data_ov006_021ec888, self->unk44, 2, &self->unk46, 4);
+    ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk44, 2, &self->unk46, 4);
 }
 
 void func_ov006_021d513c(ov006_TaskD37 *self) {
@@ -1010,7 +1010,7 @@ void func_ov006_021d513c(ov006_TaskD37 *self) {
         self->step++;
         break;
     }
-    func_ov006_021e4b90(data_ov006_021ec888);
+    ov006_Menu_ClearEntries(data_ov006_021ec888);
 }
 
 void func_ov006_021d51cc(ov006_TaskD37 *self) {
@@ -1038,7 +1038,7 @@ void func_ov006_021d526c(ov006_TaskD37 *self, const char *name, s16 speed, u8 lo
         return;
     }
     if (self->anm == NULL) {
-        self->anm = (ov006_Anm74 *)func_0203de84(0x100, 4);
+        self->anm = (ov006_Anm74 *)Heap_AllocHi(0x100, 4);
     }
     res = self->unk70->unk48;
     MI_CpuFill8(buf, 0, sizeof(buf));

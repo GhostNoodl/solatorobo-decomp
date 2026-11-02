@@ -60,7 +60,7 @@ extern Ov010Heap *data_02097dd0;
 extern void func_ov003_021cf404(s32 a);
 extern void func_ov003_021cf400(s32 a);
 extern void func_ov003_021d8fa8(void *p);
-extern void func_ov010_0220d834(void *p);
+extern void Ov010Coll_Release(void *p);
 
 struct Obj022075bc {
     u8 unk_00[0x124];
@@ -158,7 +158,7 @@ void func_ov010_022075bc(Obj022075bc *self) {
     }
     data_02097dd0->cur = saved;
     func_ov003_021d8fa8((u8 *)self + 0x160);
-    func_ov010_0220d834((u8 *)self + 0x174);
+    Ov010Coll_Release((u8 *)self + 0x174);
     ((Ov010V *)((u8 *)self + 0x1b0))->v08();
     ((Ov010V *)((u8 *)self + 0x1dc))->v08();
     data_ov000_021ccd54->cam.unk_d8_0 = 0;
@@ -170,7 +170,7 @@ extern s32 func_ov000_02199128(s32 *out, Ov010Query *q, void **list, s32 max);
 
 extern s32 VEC_Distance(const Ov010Vec *a, const Ov010Vec *b);
 extern BOOL Ov003Vec_Equal(Ov010Vec *a, Ov010Vec *b);
-extern void func_ov003_021d9e90(Ov010Vec *a, Ov010Vec *b, Ov010Vec *c, s32 d, s32 e);
+extern void Ov003Vec_MultAdd(Ov010Vec *a, Ov010Vec *b, Ov010Vec *c, s32 d, s32 e);
 extern void func_ov003_021da2c8(void *self, s32 a, s32 b, s32 c, s32 d);
 
 static inline s32 Ov010_Clamp(s32 v, s32 lo, s32 hi) {
@@ -197,7 +197,7 @@ struct Obj02207828 : public Ov010Obj {
 };
 
 static inline void Ov010_Move(Obj02207828 *self) {
-    func_ov003_021d9e90(&self->pos, &self->unk_150, &self->pos, self->speed, self->velY);
+    Ov003Vec_MultAdd(&self->pos, &self->unk_150, &self->pos, self->speed, self->velY);
     func_ov003_021da2c8(self, self->speed, self->velY, self->friction, self->gravity);
 }
 

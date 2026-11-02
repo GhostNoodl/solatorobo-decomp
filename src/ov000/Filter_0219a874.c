@@ -9,7 +9,7 @@ typedef struct {
     FilterFunc fn_18;
 } Filter;
 
-s32 func_ov000_0219a874(Filter *a, Filter *b, s32 value) {
+s32 Filter_Apply(Filter *a, Filter *b, s32 value) {
     if (b != NULL && b->fn_10 != NULL) {
         value = b->fn_10(value);
     }

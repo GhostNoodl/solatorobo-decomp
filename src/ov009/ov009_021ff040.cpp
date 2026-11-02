@@ -6,8 +6,8 @@ extern void *data_0214a420;
 extern void *data_02097e4c;
 extern char data_ov009_02216ab6[];
 extern char data_ov009_02216ace[];
-extern void func_02065804(void *mgr, void *p);
-extern void func_02049564(void *mgr, s32 a, s32 b);
+extern void EffectMgr_Kill(void *mgr, void *p);
+extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
@@ -30,7 +30,7 @@ void func_ov009_021ff074(Ov009ActVt_022165f8 *self) {
 
 void func_ov009_021ff0a0(Ov009ActVt_022165f8 *self) {
     if (self->unk_40->state == 0 && self->unk_f4 == 0x5045) {
-        func_02065804(data_0214a420, ((void *)self->unk_f8));
+        EffectMgr_Kill(data_0214a420, ((void *)self->unk_f8));
         FLD(void *, self, 0xf8) = NULL;
     }
     func_ov003_021d5900(self);
@@ -38,7 +38,7 @@ void func_ov009_021ff0a0(Ov009ActVt_022165f8 *self) {
 
 void func_ov009_021ff0f0(Ov009ActVt_022165f8 *self) {
     if (self->unk_40->state == 0 && self->unk_f4 == 0x5045) {
-        func_02065804(data_0214a420, ((void *)self->unk_f8));
+        EffectMgr_Kill(data_0214a420, ((void *)self->unk_f8));
         FLD(void *, self, 0xf8) = NULL;
     }
     func_ov003_021d6054(self);
@@ -46,7 +46,7 @@ void func_ov009_021ff0f0(Ov009ActVt_022165f8 *self) {
 
 void func_ov009_021ff140(Ov009Actor *self) {
     func_ov003_021d0fc0(self);
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     func_ov000_02187a20(data_ov000_021ccd54, 0xe);
     self->unk_ea_10 = 1;
 }
@@ -73,7 +73,7 @@ void func_ov009_021ff188(Ov009Actor *self) {
             go = TRUE;
         } else {
             target = Actor_GetTarget(self);
-            if (target != NULL && func_01ffc198(&target->pos, &self->pos, target->unk_64 + 0x8000)) {
+            if (target != NULL && Hit_DiffInSphere(&target->pos, &self->pos, target->unk_64 + 0x8000)) {
                 go = TRUE;
             }
         }

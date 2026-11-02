@@ -48,7 +48,7 @@ extern "C" {
 
 extern void *data_02097cdc;
 void func_0203f920(void *p);
-void func_0203f864(void *p);
+void HitMesh_Detach(void *p);
 void Heap_Free(void *p);
 void func_0203f0b4(void *p);
 void *func_ov000_021b700c(void *p);
@@ -93,7 +93,7 @@ Obj021b7a7c *func_ov000_021b7a7c(Obj021b7a7c *self) {
         p = self->unk_ec;
         if (p != NULL) {
             if (p != NULL) {
-                func_0203f864(p);
+                HitMesh_Detach(p);
                 Heap_Free(p);
             }
             self->unk_ec = NULL;

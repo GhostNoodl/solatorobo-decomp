@@ -392,7 +392,7 @@ static inline s32 Ov009_DistXZc(const Ov009Vec *a, const Ov009Vec *b) {
 extern void *data_02097e4c;
 extern void func_ov003_021d452c(Ov009Actor *self);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
-extern void func_020639d4(Ov009V *o, s32 a, s32 b);
+extern void EffectObj_AddSndCue(Ov009V *o, s32 a, s32 b);
 extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
 extern void func_0203f364(Ov009Sub48 *p);
 extern void HitSphere_Link(Ov009Sub48 *p);
@@ -424,7 +424,7 @@ void func_ov009_0220c094(Ov009ActVt_02217640 *self) {
         o->v20(&a);
         o->v34(0x4000, self->rot[1], self->rot[2]);
         o->v0c(0xb33);
-        func_020639d4(o, 0x82, 0);
+        EffectObj_AddSndCue(o, 0x82, 0);
         return;
     }
     t = Actor_GetTarget(self);
@@ -639,7 +639,7 @@ extern "C" {
 
 extern void func_0203f364(Ov009Sub48 *p);
 extern void *func_02065f88(s32 id, const Ov009Vec *pos);
-extern void func_020639d4(void *p, s32 a, s32 b);
+extern void EffectObj_AddSndCue(void *p, s32 a, s32 b);
 extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
 extern void func_ov003_021d6954(Ov009Actor *self, u8 a);
 extern Ov009Actor *func_ov000_0219bf90(void);
@@ -657,7 +657,7 @@ void func_ov009_0220c970(Ov009ActVt_02217640 *self) {
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
         self->unk_4c->target = 0xffff;
-        func_020639d4(func_02065f88(0x38a, &self->pos), 0x40, 0);
+        EffectObj_AddSndCue(func_02065f88(0x38a, &self->pos), 0x40, 0);
         self->unk_40->timer = 0;
         self->unk_40->state++;
         break;

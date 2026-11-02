@@ -60,7 +60,7 @@ u16 func_ov006_021e60e8(int type, u16 mask);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self);
 void func_ov006_021e5e00(ov006_Unk021ec888 *p);
-void func_ov006_021e4a80(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
+void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 
 static inline BOOL ov006_FadeIdle(void) {
     BOOL r;
@@ -277,7 +277,7 @@ BOOL func_ov006_021d96a8(ov006_Task021d96a8 *self) {
     VCALL(self->unk28, 1c);
     VCALL(self->unk24, 1c);
     if (send) {
-        func_ov006_021e4a80(data_ov006_021ec888, self->unk3C, 2, self->unk3E, 4);
+        ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk3C, 2, self->unk3E, 4);
     }
     return ret;
 }

@@ -10,7 +10,7 @@ void func_02040be0(PlttRes *res, PlttResSrc *src) {
     PlttRes_SetSrc(res, src);
 }
 
-void func_02040c40(PlttRes *res, PlttResSrc *src) {
+void PlttRes_Load(PlttRes *res, PlttResSrc *src) {
     PlttRes_SetSrc(res, src);
     PlttRes_SetData(res, src->info->header->data, res->size);
 }
@@ -67,7 +67,7 @@ void func_02040dd8(PlttRes *res, int idx, bool load) {
         }
     }
     addr = 0;
-    res->maps[idx] = (s8 *)func_0203de84(0x10, 4);
+    res->maps[idx] = (s8 *)Heap_AllocHi(0x10, 4);
     for (i = 0; i < 0x10; i++) {
         res->maps[idx][i] = -1;
     }

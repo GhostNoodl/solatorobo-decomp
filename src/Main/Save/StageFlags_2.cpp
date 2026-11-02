@@ -3,7 +3,7 @@
 extern "C" {
 
 extern StageFlags data_0214aa68;
-extern void *func_0203dec8(u32 size, int align);
+extern void *Heap_AllocLo(u32 size, int align);
 extern u8 data_0214a428[0x640];
 extern void func_0206ccb8(StageFlags *f, u32 a);
 extern u16 func_0206d02c(StageFlags *f);

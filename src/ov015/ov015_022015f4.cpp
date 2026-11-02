@@ -13,7 +13,7 @@ extern u8 data_ov015_0221290c[];
 extern u8 data_ov015_0221295c[];
 void *func_0204b370(void *p);
 u8 *func_02070744(u16 id);
-void func_ov015_021fce94(Ov015CamPair *self);
+void Ov015CamPair_Init(Ov015CamPair *self);
 void func_ov015_02210b3c(u8 *self);
 s32 func_ov015_02211160(u8 *self, u16 *out, u32 n);
 void func_ov015_02211890(Ov015Info38 *self, u16 id, s32 mode);
@@ -47,7 +47,7 @@ BOOL func_ov015_02201618(Ov015Game *self) {
         o->timer = 0;
     }
     self->cam = o;
-    func_ov015_021fce94(o);
+    Ov015CamPair_Init(o);
     if ((u32)(FLD(s32, data_ov015_02213320.unk_00, 0x4) - 1) <= 1) {
         u8 *p = (u8 *)Heap_Alloc(0x14);
         if (p != NULL) {
@@ -116,8 +116,8 @@ extern s32 data_ov015_02213328;
 extern u8 *data_0214a424;
 void func_0203cb78(s32 a, s32 b, s32 c);
 Ov015V *func_ov015_021fa6d0(void);
-void func_ov015_021fa71c(Ov015Fade *self, s32 c, u16 d);
-void func_ov015_021fa73c(Ov015Fade *self, s32 c, u16 d);
+void Ov015Fade_ToClear(Ov015Fade *self, s32 c, u16 d);
+void Ov015Fade_ToOpaque(Ov015Fade *self, s32 c, u16 d);
 BOOL func_ov015_022078bc(Ov015Ship *p);
 s32 func_ov000_0218f110(void *a);
 BOOL func_ov015_0220947c(Ov015Fish *self);
@@ -136,7 +136,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a, Ov015CamPair *b, Ov015L
 BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamPair *c, Ov015Info38 *d);
 BOOL func_ov015_021fb5d4(u8 *self);
 void func_ov015_0220101c(Ov015Game *self);
-void func_020656b4(void *p);
+void EffectMgr_FreeAll(void *p);
 BOOL func_ov015_0220f568(u8 *self);
 
 static inline BOOL Ov015_SysB4(void) {
@@ -212,7 +212,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
             sys->nextState = v;
             func_0203cb78(0x1000, 0, v - 3);
         }
-        func_ov015_021fa73c((Ov015Fade *)func_ov015_021fa6d0(), 0x1000, 0);
+        Ov015Fade_ToOpaque((Ov015Fade *)func_ov015_021fa6d0(), 0x1000, 0);
         self->step = 0x14;
         break;
     }
@@ -298,7 +298,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
             func_ov015_02210c28();
         }
         data_0214a420->drawFilter = 1;
-        func_ov015_021fa71c((Ov015Fade *)func_ov015_021fa6d0(), 0x1e000, 0);
+        Ov015Fade_ToClear((Ov015Fade *)func_ov015_021fa6d0(), 0x1e000, 0);
         self->step = 0x28;
         func_02049a48(data_02097e4c, 0x4f, -1, -1, -1);
         Ov015_BgmFadeTo(0x23);
@@ -343,10 +343,10 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
             if (!func_ov015_02200204((Ov015Obj34 *)&self->phase2, self->ship, (Ov015Fish *)self->fishList->head->key,
                                      self->cam, &self->info)) {
                 self->step = 0x3c;
-                func_ov015_021fa73c((Ov015Fade *)func_ov015_021fa6d0(), 0x1e000, 0x7fff);
+                Ov015Fade_ToOpaque((Ov015Fade *)func_ov015_021fa6d0(), 0x1e000, 0x7fff);
                 FLD(s32, data_ov015_02213320.unk_00, 8) = Dup::data_ov015_0221332c.unk_30;
                 if (Dup::data_ov015_0221332c.unk_30 == 2) {
-                    func_ov015_021fa71c((Ov015Fade *)func_ov015_021fa6d0(), 0x1000, 0x7fff);
+                    Ov015Fade_ToClear((Ov015Fade *)func_ov015_021fa6d0(), 0x1000, 0x7fff);
                     self->step = 0x50;
                 }
             }
@@ -370,8 +370,8 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
             }
         }
         func_ov015_0220101c(self);
-        func_020656b4(data_0214a420);
-        func_ov015_021fa71c((Ov015Fade *)func_ov015_021fa6d0(), 0x1000, 0x7fff);
+        EffectMgr_FreeAll(data_0214a420);
+        Ov015Fade_ToClear((Ov015Fade *)func_ov015_021fa6d0(), 0x1000, 0x7fff);
         {
             u32 v = FLD(u16, data_0214a424, 0x61c) + 1;
             if (v >= 1000) {

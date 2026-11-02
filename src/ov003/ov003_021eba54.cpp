@@ -261,7 +261,7 @@ extern char data_ov003_021f9978[];
 extern Ov003Player *func_ov000_0219bf90(void);
 extern void func_ov000_021bd7a0(void *p);
 extern BOOL func_ov000_02194c08(void *self);
-extern BOOL func_01ffc198(Ov003Vec3 *a, Ov003Vec3 *b, s32 r);
+extern BOOL Hit_DiffInSphere(Ov003Vec3 *a, Ov003Vec3 *b, s32 r);
 extern s32 Rand_UpTo(s32 max);
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);

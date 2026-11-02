@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_0203df0c(void *p);
+void Heap_FreeHi(void *p);
 BOOL func_ov000_02152a58(void *self);
 BOOL func_ov000_021580e8(void *self);
 BOOL func_02054f10(void *p, s32 a);
@@ -25,7 +25,7 @@ static inline BOOL LoSubReady(void *p) {
 
 void func_ov000_02158da8(Lo021cb3a8 *self) {
     if ((void *)self->str != NULL) {
-        func_0203df0c(self->str);
+        Heap_FreeHi(self->str);
         self->str = NULL;
     }
     LO_FREE_V(self, 0xec);

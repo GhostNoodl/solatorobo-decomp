@@ -103,7 +103,7 @@ extern void func_ov000_02199dc0(Ov003S4c *p, void *self);
 extern void Actor_Move(void *self, s32 a);
 extern void func_ov000_021987b8(Ov003Ct *ctl, s32 a, s32 b, s32 c);
 extern s32 FX_Div(s32 a, s32 b);
-extern void func_02065804(void *mgr, void *p);
+extern void EffectMgr_Kill(void *mgr, void *p);
 extern Ov003Fx *func_02065f88(s32 id, void *pos);
 
 
@@ -135,7 +135,7 @@ void func_ov003_021d3a88(Ov003Unk *self) {
             return;
         }
         if (self->unk_e4 != NULL) {
-            func_02065804(data_0214a420, self->unk_e4);
+            EffectMgr_Kill(data_0214a420, self->unk_e4);
             self->unk_e4 = NULL;
         }
         if (self->unk_e4 == NULL) {

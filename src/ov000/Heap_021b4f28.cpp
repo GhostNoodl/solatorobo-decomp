@@ -38,19 +38,19 @@ extern "C" {
 
 extern Obj021b4f28 *data_ov000_021ccd6c;
 extern Game021b4f28 *data_ov000_021ccd54;
-Info021b4f28 *func_0206e7d0(u32 id);
+Info021b4f28 *Lang_GetGroup(u32 id);
 void func_0206dfd4(char *buf, u8 *src);
 void func_02035acc(void *a, void *b, s32 c);
 void func_ov000_021b6994(Obj021b4f28 *self, s32 a);
 void *func_ov000_021b7a7c(Node021b4f28 *node);
-void func_0203f864(void *obj);
+void HitMesh_Detach(void *obj);
 void func_0206e6c0(void);
 
 static inline void Obj021b4f28_Delete(Obj021b4f28 *o) {
     Node021b4f28 *node;
     if (o->unk_14 != 0) {
         Game021b4f28 *g = data_ov000_021ccd54;
-        Info021b4f28 *info = func_0206e7d0(g->unk_ca);
+        Info021b4f28 *info = Lang_GetGroup(g->unk_ca);
         char buf[0x20];
         func_0206dfd4(buf, &g->unk_ca);
         func_02035acc(info->unk_08, buf, 0);
@@ -81,7 +81,7 @@ static inline void Obj021b4f28_Delete(Obj021b4f28 *o) {
             o->tail = prev;
         }
     }
-    func_0203f864(o->unk_1f4);
+    HitMesh_Detach(o->unk_1f4);
     Heap_Free(o);
 }
 

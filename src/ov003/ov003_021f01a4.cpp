@@ -113,7 +113,7 @@ extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern void VEC_Add(const Ov003FxVec *a, const Ov003FxVec *b, Ov003FxVec *out);
 extern void VEC_Normalize(const Ov003FxVec *a, Ov003FxVec *out);
-extern BOOL func_01ffc198(Ov003FxVec *a, Ov003FxVec *b, s32 r);
+extern BOOL Hit_DiffInSphere(Ov003FxVec *a, Ov003FxVec *b, s32 r);
 extern s32 Rand_UpTo(s32 max);
 extern s32 func_02049bdc(void *mgr, s32 a, s32 b);
 extern void *func_0204a028(void *mgr, s32 id, Ov003FxVec *pos, s32 a);
@@ -207,7 +207,7 @@ void func_ov003_021f0258(Ov003FxProp *self) {
         case 1:
         case 11:
             VEC_Add(&self->pos, &self->vel, &self->pos);
-            if (func_01ffc198(&self->pos, &self->target, e->path[self->unk_dc].speed)) {
+            if (Hit_DiffInSphere(&self->pos, &self->target, e->path[self->unk_dc].speed)) {
                 self->pos = self->target;
                 self->task->state++;
                 self->task->timer = 0;

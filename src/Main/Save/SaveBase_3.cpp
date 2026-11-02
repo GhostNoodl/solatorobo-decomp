@@ -6,7 +6,7 @@ void func_02047a20(SaveBase *s) {
     SaveHeader *hdr = s->header;
     switch (s->step) {
         case 0:
-            s->tmpBuf = func_0203de84(s->tmpSize, 4);
+            s->tmpBuf = Heap_AllocHi(s->tmpSize, 4);
             MI_CpuFill8(s->tmpBuf, 0, s->tmpSize);
             s->InitHeader(hdr);
             s->step = 1;
@@ -21,7 +21,7 @@ void func_02047a20(SaveBase *s) {
                 return;
             }
             if (s->tmpBuf != NULL) {
-                func_0203df0c(s->tmpBuf);
+                Heap_FreeHi(s->tmpBuf);
                 s->tmpBuf = NULL;
             }
             SysCard_EndAccess();

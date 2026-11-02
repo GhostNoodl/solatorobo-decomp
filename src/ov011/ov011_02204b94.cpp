@@ -32,7 +32,7 @@ BOOL func_02035b90(const char *arc, s32 b);
 void func_02036838(void *mgr, const char *arc, s32 c, s32 d);
 BOOL func_02036328(void);
 BOOL func_ov000_0218cf5c(void *self);
-void func_ov000_0218e8ec(void *mgr, u16 id, s32 c);
+void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);
 
 static inline void Ov011_FreeTwl(void **slot) {
     void *saved = data_02097dd0->cur;
@@ -142,7 +142,7 @@ void Ov011Act7da4_Start(Ov011Act7da4 *self) {
     self->unk_ea_9 = 1;
     self->unk_ea_6 = 1;
     self->unk_36c = 0xffff;
-    func_ov000_0218e8ec(data_ov000_021ccd68, 0x400c, 0x15);
+    ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x400c, 0x15);
 }
 
 }

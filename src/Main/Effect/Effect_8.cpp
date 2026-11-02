@@ -63,14 +63,14 @@ extern u32 data_0208c868[];
 extern u32 data_0208c8bc[];
 extern void func_02063a34(EffectObj *obj);
 extern void func_02063f90(Effect3D *e);
-extern void func_020639d4(EffectObj *obj, s32 id, s32 frame);
+extern void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
 extern void func_02069184(EffectEmitterSub *sub);
-extern void func_0206ad84(EffectEmitter *em);
-extern void func_0206b744(EffectEmitter *em);
-extern void func_0206a0cc(EffectPartSet *parts);
+extern void EffectEmitter_Reset(EffectEmitter *em);
+extern void EffectEmitter_ResetParams(EffectEmitter *em);
+extern void EffectPartSet_Init(EffectPartSet *parts);
 extern void func_0206a138(EffectPartSet *parts);
 extern void func_0206a0d8(EffectPartSet *parts);
-extern BOOL func_0206a0dc(EffectPartSet *parts, u8 *data);
+extern BOOL EffectPartSet_AddSlot(EffectPartSet *parts, u8 *data);
 extern void func_02069248(EffectEmitterSub *sub);
 
 void func_02068c40(EffectSetup *setup, EffectObj *obj, s32 id);
@@ -115,9 +115,9 @@ EffectObj *func_020687f8(EffectSetup *setup, EffectDef *def) {
             *(u32 **)em = data_0208c868;
             *(u32 **)&em->sub = data_0208c354;
             func_02069184(&em->sub);
-            func_0206ad84(em);
+            EffectEmitter_Reset(em);
             *(u32 **)em = data_0208c8bc;
-            func_0206b744(em);
+            EffectEmitter_ResetParams(em);
         }
         ret = em;
         em->time = -def->delay;
@@ -131,7 +131,7 @@ EffectObj *func_020687f8(EffectSetup *setup, EffectDef *def) {
         parts = (EffectPartSet *)Heap_Alloc(0x12c);
         if (parts != NULL) {
             *(u32 **)parts = data_0208c364;
-            func_0206a0cc(parts);
+            EffectPartSet_Init(parts);
             *(u32 **)parts = data_0208c850;
             func_0206a138(parts);
         }
@@ -218,7 +218,7 @@ void func_02068b6c(EffectSetup *setup, EffectPartSet *parts, u8 *ids) {
             }
             p += size;
         }
-        func_0206a0dc(parts, p);
+        EffectPartSet_AddSlot(parts, p);
     }
 }
 
@@ -244,7 +244,7 @@ void func_02068c40(EffectSetup *setup, EffectObj *obj, s32 id) {
     MI_CpuCopy8(p + 4, &n, 4);
     cues = (s32 *)(p + 0xc);
     for (i = 0; i < n; i++) {
-        func_020639d4(obj, cues[i * 2], cues[i * 2 + 1]);
+        EffectObj_AddSndCue(obj, cues[i * 2], cues[i * 2 + 1]);
     }
 }
 

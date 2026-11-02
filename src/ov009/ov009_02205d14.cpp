@@ -7,7 +7,7 @@ extern void *data_ov009_02215d0c[];
 extern void *data_ov009_0221707c;
 extern u8 data_ov009_02216bb4[];
 extern u8 data_ov009_02216bba[];
-extern void func_02049564(void *mgr, s32 a, s32 b);
+extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 extern void func_ov003_021d452c(Ov009Actor *self);
 extern s32 func_ov003_021d1e30(s32 a);
@@ -32,7 +32,7 @@ void func_ov009_02205d14(Ov009ActVt_02216bc8 *self) {
 
 void func_ov009_02205d40(Ov009Actor *self) {
     func_ov003_021d0fc0(self);
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     func_ov000_02187a20(data_ov000_021ccd54, 0xe);
 }
 
@@ -70,7 +70,7 @@ void func_ov009_02205e54(Ov009Actor *self) {
         self->unk_d8 = (void *)func_ov009_02205d94;
     }
     func_ov003_021d0fc0(self);
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     switch (self->kind) {
     case 0x5014:
     case 0x501e:
@@ -104,7 +104,7 @@ void func_ov009_02205ff0(Ov009Actor *self) {
 
 void Ov009ActVt_02216dcc_Init(Ov009ActVt_02216dcc *self) {
     func_ov003_021d0fc0(self);
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     func_ov000_02187a20(data_ov000_021ccd54, 0xd);
     self->unk_b8 = self->pos;
     self->unk_ea_10 = 1;

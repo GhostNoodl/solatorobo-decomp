@@ -11,9 +11,9 @@ void *func_0205976c(void *a, s32 b);
 u32 func_0205975c(void *a, s32 b);
 u32 func_ov000_0214bf2c(u16 a);
 u16 func_02059544(void *a, void *b, void *c, s32 d, s32 e);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 void func_0204c7d0(void *p);
-void *func_ov000_02173610(s32 kind);
+void *Task_FindById(s32 kind);
 Robo021ca458 *func_ov000_0219bf90(void);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
@@ -34,7 +34,7 @@ typedef struct {
 
 static inline BOOL LoIsLoaded24(void) {
     BOOL r = TRUE;
-    if (!func_0205a9c8(LFLD(void *, data_ov000_021ccd24, 8))) {
+    if (!StageRes_IsAllLoaded(LFLD(void *, data_ov000_021ccd24, 8))) {
         r = FALSE;
     }
     return r;
@@ -78,7 +78,7 @@ void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
-s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
+s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_0204ca70(void *p);
 s32 func_02061e7c(u16 a);
 void *func_0204c08c(void *a, u16 id, void *out, s32 n);
@@ -91,7 +91,7 @@ s32 func_ov000_02151610(VObj *self, s32 a, s32 b, s32 c);
 void func_ov000_0215158c(void *self);
 
 static inline void LoTextInit(u8 *t) {
-    LFLD(s32, t, 0x4c) = func_0204c4fc(LFLD(s32, t, 0x28), LFLD(s32, t, 0x38), LFLD(s32, t, 0x24), t + 0x44, t + 0x48, LFLD(s8, t, 0x37) != 0);
+    LFLD(s32, t, 0x4c) = Text_Measure(LFLD(s32, t, 0x28), LFLD(s32, t, 0x38), LFLD(s32, t, 0x24), t + 0x44, t + 0x48, LFLD(s8, t, 0x37) != 0);
     LFLD(s32, data_02097ce0, 0x4) = LFLD(s32, t, 0x28);
 }
 

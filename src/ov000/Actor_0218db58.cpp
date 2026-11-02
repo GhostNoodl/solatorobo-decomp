@@ -23,7 +23,7 @@ void Actor_PitchToActor(Actor *self, Actor *other, s32 step) {
     self->rot_x = func_01ffc128(FX_Atan2(self->pos.y - oy, (s32)(REG_SQRT_RESULT + 1) >> 1), self->rot_x, step, 1, 0x8000);
 }
 
-void func_ov000_0218db58(Actor *self, u16 angle, u16 center, u16 range, s32 step) {
+void Actor_TurnClamped(Actor *self, u16 angle, u16 center, u16 range, s32 step) {
     u16 diff = angle - center;
     if (diff > 0x8000) {
         if (diff < (u16)-range) {

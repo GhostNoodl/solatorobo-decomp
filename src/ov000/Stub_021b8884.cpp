@@ -32,13 +32,13 @@ void func_02041278(void *p);
 void Heap_Free(void *p);
 
 extern char data_ov000_021cc87b[];
-Obj0206e7d0 *func_0206e7d0(u8 a);
+Obj0206e7d0 *Lang_GetGroup(u8 a);
 void func_02070874(char *dst, const char *fmt, ...);
 void func_0203cc58(s32 a, s32 b, s32 c);
 
 void func_ov000_021b8884(Obj021b8884 *self, u16 a) {
     self->unk_00 = 0;
-    func_02070874(self->unk_04, data_ov000_021cc87b, func_0206e7d0(a)->unk_04);
+    func_02070874(self->unk_04, data_ov000_021cc87b, Lang_GetGroup(a)->unk_04);
     self->unk_2c = a;
     self->unk_24 = 0;
     self->unk_28 = 1;

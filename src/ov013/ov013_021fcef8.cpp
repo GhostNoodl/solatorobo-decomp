@@ -3,7 +3,7 @@
 extern "C" {
 
 extern void *data_0214a420;
-extern void func_02065804(void *a, s32 b);
+extern void EffectMgr_Kill(void *a, s32 b);
 extern void func_ov003_021d36fc(Ov013Actor *self);
 extern void func_ov003_021d3d28(Ov013Actor *self);
 extern Ov013Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
@@ -74,7 +74,7 @@ void func_ov013_021fcef8(Ov013Actor *self) {
 
 void func_ov013_021fd06c(Ov013ActVt_0220b5e0 *self) {
     if (self->unk_40->state == 0) {
-        func_02065804(data_0214a420, self->unk_f4);
+        EffectMgr_Kill(data_0214a420, self->unk_f4);
     }
     func_ov003_021d36fc(self);
 }

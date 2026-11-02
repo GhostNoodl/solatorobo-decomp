@@ -7,7 +7,7 @@ void func_ov012_02207c40(Ov012Actor *self) {
     func_ov003_021d0fc0(self);
     func_ov000_0218f074((u8 *)self + 0xf0, func_0207011c((void *)0x480e), 1, 0, 0, 0);
     FLD(s16, self, 0xf0) = 0;
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     if (self->kind == 0x5029 || self->kind == 0x5057) {
         self->unk_1a = 1;
         return;

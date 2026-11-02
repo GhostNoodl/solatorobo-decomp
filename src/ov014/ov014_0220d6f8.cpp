@@ -8,12 +8,12 @@ extern u8 data_ov014_02217b44[];
 extern void *ActorEx_Ctor(void *self);
 extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02194c08(void *self);
-extern void func_02065804(void *a, void *b);
+extern void EffectMgr_Kill(void *a, void *b);
 extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
 
 extern char data_ov014_02217a4e[];
 extern char data_ov014_02217a9c[];
-extern void func_02065860(void *a, void *b);
+extern void EffectMgr_StopLoop(void *a, void *b);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
 extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_02191618(void *p);
@@ -28,9 +28,9 @@ void func_ov014_0220d274(Ov014Act_02209280 *self) {
         func_ov000_02191318(self->unk_38, 0);
         func_ov000_021915a0(self->unk_38);
         self->unk_fc = 1;
-        func_02065860(data_0214a420, self->unk_1dc);
+        EffectMgr_StopLoop(data_0214a420, self->unk_1dc);
         self->unk_1dc = NULL;
-        func_02065860(data_0214a420, self->unk_1e0);
+        EffectMgr_StopLoop(data_0214a420, self->unk_1e0);
         self->unk_1e0 = NULL;
         self->unk_40->state++;
         self->unk_40->timer = 0x3c;
@@ -184,10 +184,10 @@ Ov014ActEx_0220d70c *Ov014ActEx_0220d70c_Ctor(Ov014ActEx_0220d70c *self) {
 Ov014ActEx_0220d70c *Ov014ActEx_0220d70c_Dtor(Ov014ActEx_0220d70c *self) {
     FLD(void *, self, 0) = data_ov014_02217bdc;
     if (self->unk_d0 != NULL) {
-        func_02065804(data_0214a420, self->unk_d0);
+        EffectMgr_Kill(data_0214a420, self->unk_d0);
     }
     if (self->unk_d4 != NULL) {
-        func_02065804(data_0214a420, self->unk_d4);
+        EffectMgr_Kill(data_0214a420, self->unk_d4);
     }
     func_ov000_0219429c(self);
     return self;
@@ -196,10 +196,10 @@ Ov014ActEx_0220d70c *Ov014ActEx_0220d70c_Dtor(Ov014ActEx_0220d70c *self) {
 Ov014ActEx_0220d70c *Ov014ActEx_0220d70c_DtorDelete(Ov014ActEx_0220d70c *self) {
     FLD(void *, self, 0) = data_ov014_02217bdc;
     if (self->unk_d0 != NULL) {
-        func_02065804(data_0214a420, self->unk_d0);
+        EffectMgr_Kill(data_0214a420, self->unk_d0);
     }
     if (self->unk_d4 != NULL) {
-        func_02065804(data_0214a420, self->unk_d4);
+        EffectMgr_Kill(data_0214a420, self->unk_d4);
     }
     func_ov000_0219429c(self);
     Heap_Free(self);
@@ -287,7 +287,7 @@ void func_ov014_0220d890(Ov014ActEx_0220d70c *self) {
     }
     case 2:
         if (self->unk_40->timer < 0x1e && self->unk_d0 != NULL) {
-            func_02065860(data_0214a420, self->unk_d0);
+            EffectMgr_StopLoop(data_0214a420, self->unk_d0);
             self->unk_d0 = NULL;
         }
         if (self->unk_40->timer == 0) {

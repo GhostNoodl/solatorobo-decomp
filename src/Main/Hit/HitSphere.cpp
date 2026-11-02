@@ -272,7 +272,7 @@ extern int data_02fe0f0c;
 void func_0203fa0c(HitMesh *mesh);
 void func_0203fb08(HitMesh *mesh);
 
-void func_0203f80c(HitMesh *mesh) {
+void HitMesh_Init(HitMesh *mesh) {
     mesh->flags = 0;
     mesh->active = 0;
     mesh->res = NULL;
@@ -306,7 +306,7 @@ static inline void HitMesh_Unlink(HitMesh *mesh) {
     data_02fe0f0c--;
 }
 
-void func_0203f864(HitMesh *mesh) {
+void HitMesh_Detach(HitMesh *mesh) {
     if (mesh->active) {
         HitMesh_Unlink(mesh);
     }

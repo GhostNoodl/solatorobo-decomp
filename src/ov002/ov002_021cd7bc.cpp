@@ -96,7 +96,7 @@ extern "C" {
 void func_ov000_02187b50(void *p);
 void func_02062524(void);
 BOOL func_020624d8(void);
-void func_ov000_0216f42c(void *a, void *b);
+void MessageQueue_FreeBuffer(void *a, void *b);
 
 typedef struct {
     u32 b0 : 1;
@@ -197,7 +197,7 @@ void func_ov002_021cd9c0(Task50 *self) {
                 }
                 t = data_ov000_021ccd30;
                 if (t != NULL) {
-                    func_ov000_0216f42c(t, FIELD(t, 0x118, void *));
+                    MessageQueue_FreeBuffer(t, FIELD(t, 0x118, void *));
                     FIELD(t, 0x118, void *) = NULL;
                 }
                 VC(self, 0xc)(0);

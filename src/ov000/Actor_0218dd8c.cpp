@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0218dd8c(Actor *self, u16 base, s32 turn, s32 range) {
+void Actor_MoveByPad(Actor *self, u16 base, s32 turn, s32 range) {
     if (!(data_02097dc8->cur & 0xf0)) {
         return;
     }

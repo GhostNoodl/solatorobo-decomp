@@ -25,7 +25,7 @@ extern void *data_ov000_021cad50[];
 void *MsgRes_GetString(void *a, int id);
 void func_ov000_0215c1bc(void *a, int b, void *c);
 void func_02045094(ov006_Net021e58e4 *net);
-BOOL func_02044f70(ov006_Net021e58e4 *net);
+BOOL Wh_End(ov006_Net021e58e4 *net);
 
 static inline void ov006_Menu_Advance(ov006_Unk021ec888 *self) {
     if (self->stateTime < 0xff) {
@@ -79,7 +79,7 @@ static inline void ov006_Menu_WaitReady(ov006_Unk021ec888 *self) {
     if (data_02097e40->state != 1) {
         return;
     }
-    if (!func_02044f70(data_02097e40)) {
+    if (!Wh_End(data_02097e40)) {
         return;
     }
     ov006_Menu_Advance(self);

@@ -169,11 +169,11 @@ extern void *data_0214a420;
 extern void *data_02097e4c;
 extern const Ov013Vec data_ov013_0220ae64;
 extern u8 data_ov013_0220ae88[];
-extern void func_02065804(void *a, s32 b);
+extern void EffectMgr_Kill(void *a, s32 b);
 extern Ov013V *func_020657b0(void *a, s32 b);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
 extern void *func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
-extern Ov013Vec func_ov003_021dadc0(const Ov013Vec *a, const Ov013Vec *b);
+extern Ov013Vec Ov003Vec_DirXZ(const Ov013Vec *a, const Ov013Vec *b);
 extern void func_ov000_0219a210(Ov013Vec *v, const Ov013Vec *a, s32 b);
 extern void Actor_TurnToPos(Ov013Actor *self, Ov013Vec *v, s32 a);
 extern void Actor_MoveToPos(Ov013Actor *self, Ov013Vec *v, s32 a);
@@ -240,7 +240,7 @@ void func_ov013_021fc7e0(Ov013ActVt_0220b5e0 *self) {
         }
         tgt = pl->pos;
         {
-            Ov013Vec dir = func_ov003_021dadc0(&self->pos, &tgt);
+            Ov013Vec dir = Ov003Vec_DirXZ(&self->pos, &tgt);
             VEC_MultAdd(0x1800, &dir, &tgt, &tgt);
         }
         self->unk_b8 = tgt;
@@ -317,7 +317,7 @@ void func_ov013_021fc7e0(Ov013ActVt_0220b5e0 *self) {
             self->pos.y = data_ov013_0220b5a0[self->unk_f8].y;
         }
         func_ov000_0219aae8(self, self, 0x1e, 0x20, 1 << (pl->id >> 12), data_ov013_0220ae88, NULL, self->unk_64, 0, 100, 0x1000);
-        if (func_01ffc198(&self->pos, &tgt, 0xccd)) {
+        if (Hit_DiffInSphere(&self->pos, &tgt, 0xccd)) {
             Actor_TurnToPos(self, &tgt, 0x1000);
         }
         if (t > 500) {
@@ -341,7 +341,7 @@ void func_ov013_021fc7e0(Ov013ActVt_0220b5e0 *self) {
         self->pos = tgt;
         func_ov000_02190cb0(self->unk_38, data_ov013_0220b5b8, 0x155, 0);
         func_ov000_021915a0(self->unk_38);
-        func_02065804(data_0214a420, self->unk_f4);
+        EffectMgr_Kill(data_0214a420, self->unk_f4);
         self->unk_40->state = 0x63;
         self->unk_40->timer = 0;
         break;

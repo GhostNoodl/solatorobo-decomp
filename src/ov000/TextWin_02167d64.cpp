@@ -6,7 +6,7 @@
 extern "C" {
 extern u8 *data_ov000_021ccd6c;
 char *func_0206e200(u32 a);
-void func_0204ca14(TextWin *win, s32 a);
+void TextWin_InitLines(TextWin *win, s32 a);
 BOOL STD_CompareString(const char *a, const char *b);
 s32 FX_Div(s32 a, s32 b);
 
@@ -21,7 +21,7 @@ static inline TextWin *TextWin_New(void) {
 
 static inline void SetText(TextWin *win, u32 text) {
     win->str = text;
-    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+    win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
     data_02097ce0->unk_004 = win->font;
 }
 
@@ -61,7 +61,7 @@ void func_ov000_02167d64(Obj02167d64 *self) {
         self->unk_40->unk_2c = 0;
         self->unk_40->unk_34 = 0;
         SetText(self->unk_40, (u32)str);
-        func_0204ca14(self->unk_40, 8);
+        TextWin_InitLines(self->unk_40, 8);
         self->unk_40->rendering = 1;
         self->unk_44 = 8;
         return;

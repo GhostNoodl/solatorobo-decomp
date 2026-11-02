@@ -388,7 +388,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
         s->sub = 9;
         return;
     case 9:
-        t = func_ov000_02173610(8);
+        t = Task_FindById(8);
         if (t != NULL) {
             t->unk_bc = (void *)func_ov007_021cd58c;
             t->unk_c0 = s;
@@ -530,14 +530,14 @@ extern void *data_0208ba70;
 void *func_ov000_0218e9c4(void *p);
 BOOL func_ov000_0218f110(void *p);
 void *func_0204b370(void *p);
-void func_0204b8e8(void *cam, void *anim);
+void Camera_SetAnim(void *cam, void *anim);
 void *func_ov000_0218fe1c(void *p);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 void func_ov000_021915a0(void *p);
 void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 void func_0204c7d0(void *p);
-s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
+s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_0204ca70(void *p);
 void func_0204aab0(Ov007SndQ *queue, u16 value);
 void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
@@ -589,7 +589,7 @@ static inline Ov007Win *Ov007_MakeWin(s32 text) {
     Ov007Win *win = Ov007_NewWin();
     win->font = 8;
     win->str = text;
-    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->width, &win->height, win->unk_37 != 0 ? TRUE : FALSE);
+    win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, win->unk_37 != 0 ? TRUE : FALSE);
     data_02097ce0->unk_004 = win->font;
     win->posZ = -0x299a;
     win->flags |= 0x40;
@@ -662,7 +662,7 @@ static inline void Ov007_Go(Ov007Scene *s, s32 idx, s32 kind) {
     s->sub = 100;
 }
 
-static inline void Ov007Cam_SetA(Ov007Cam *o) {
+static inline void Ov007Cam_SetFovy(Ov007Cam *o) {
     o->fovyIdx = 0xaaa;
     o->fovyDeg = 0xeff1;
     o->fovySin = FX_SinCosTable_[(0x555 >> 4) * 2];
@@ -687,7 +687,7 @@ static inline void Ov007Cam_SetD(Ov007Cam *o, s32 v) {
     o->projDirty = 1;
 }
 
-static inline void Ov007Cam_SetE(Ov007Cam *o, s32 v) {
+static inline void Ov007Cam_SetDist(Ov007Cam *o, s32 v) {
     o->dist = v;
 }
 
@@ -800,12 +800,12 @@ void func_ov007_021ce038(Ov007Scene *s) {
             o = func_0204b370(o);
         }
         s->cam = (Ov007Cam *)o;
-        func_0204b8e8(s->cam, NNS_G3dGetAnmByIdx(*(void **)res, 0));
-        Ov007Cam_SetA(s->cam);
+        Camera_SetAnim(s->cam, NNS_G3dGetAnmByIdx(*(void **)res, 0));
+        Ov007Cam_SetFovy(s->cam);
         Ov007Cam_SetB(s->cam, 4, 3, 0x1555);
         Ov007Cam_SetC(s->cam, 0x2000);
         Ov007Cam_SetD(s->cam, 0x7d0000);
-        Ov007Cam_SetE(s->cam, -0x1000);
+        Ov007Cam_SetDist(s->cam, -0x1000);
         s->unk_30 = Ov007_NewMdl();
         func_ov000_0218ffdc(s->unk_30, s->unk_18, 0, 1);
         if (s->unk_4c == 3) {
@@ -1009,8 +1009,8 @@ void func_ov007_021ce038(Ov007Scene *s) {
 extern "C" {
 
 extern Ov007Game *data_02097e3c;
-void func_020444b0(void *a, s32 b, int c, int d);
-void func_02044524(void *a);
+void Movie_Load(void *a, s32 b, int c, int d);
+void Movie_RequestStop(void *a);
 void func_02043db4(int a, s32 b, s32 c, s32 d);
 void func_ov007_021cf474(Ov007Scene *s);
 
@@ -1121,7 +1121,7 @@ void func_ov007_021cef80(Ov007Scene *s) {
         }
         OV007_FREE_V(s->pic, v04);
         func_0203cb78(0x1e000, 0, -1);
-        func_020444b0(data_02097e3c, Ov007_Choice(s), -1, 0);
+        Movie_Load(data_02097e3c, Ov007_Choice(s), -1, 0);
         s->sub = 2;
         return;
     case 2:
@@ -1145,7 +1145,7 @@ void func_ov007_021cef80(Ov007Scene *s) {
         if (!(data_02097dc8->trig & 1)) {
             return;
         }
-        func_02044524(data_02097e3c);
+        Movie_RequestStop(data_02097e3c);
         return;
     case 3:
         if (!Ov007_FadeDone()) {

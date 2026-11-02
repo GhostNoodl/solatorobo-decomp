@@ -57,8 +57,8 @@ typedef struct {
 
 extern "C" {
 
-void *func_0203de84(u32 size, s32 align);
-void func_0203df0c(void *p);
+void *Heap_AllocHi(u32 size, s32 align);
+void Heap_FreeHi(void *p);
 u8 *func_ov000_02165e2c(Obj02165a20 *self, Area02165a20 *area);
 
 static inline Area02165a20 *GetArea02165a20(Sub02165a20 *w, u8 i) {
@@ -101,7 +101,7 @@ void func_ov000_02165a20(Obj02165a20 *self, u8 *key) {
     if (start == NULL) {
         return;
     }
-    p = (Ctx02165a20 *)func_0203de84(0x114, 4);
+    p = (Ctx02165a20 *)Heap_AllocHi(0x114, 4);
     w->ctx = p;
     p->a = 0xff;
     p->b = 0xff;
@@ -123,7 +123,7 @@ void func_ov000_02165a20(Obj02165a20 *self, u8 *key) {
     dst = GetArea02165a20(w, ((u8 *)pl)[0xcc]);
     if (dst == NULL) {
         if (w != NULL && w->ctx != NULL) {
-            func_0203df0c(w->ctx);
+            Heap_FreeHi(w->ctx);
             w->ctx = NULL;
         }
         return;

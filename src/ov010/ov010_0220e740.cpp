@@ -33,7 +33,7 @@ extern void func_ov003_021da48c(void *p, s32 a);
 extern Ov010V *func_02065f88(s32 a, Ov010Vec *b);
 extern void func_ov003_021da904(Ov010V *e, void *src, const Ov010Vec *off);
 extern Ov010V *func_ov003_021da8e4(s32 a, Ov010Vec *pos, s32 b);
-extern void func_02065860(void *a, s32 b);
+extern void EffectMgr_StopLoop(void *a, s32 b);
 extern Ov010V *func_020657b0(void *a, s32 b);
 extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *c);
 extern void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
@@ -104,7 +104,7 @@ void func_ov010_0220e7c8(Ov010Path *self) {
             if (self->unk_02 < lim) {
                 return;
             }
-            func_02065860(data_0214a420, self->unk_08);
+            EffectMgr_StopLoop(data_0214a420, self->unk_08);
             self->unk_08 = 0;
             func_ov000_02198360(&self->sm, 4, 0);
         }

@@ -79,7 +79,7 @@ struct Ov009PlB22 {
 };
 
 extern void *data_0214a420;
-extern void func_02065804(void *mgr, s32 h);
+extern void EffectMgr_Kill(void *mgr, s32 h);
 
 void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
     Ov009Vec t;
@@ -158,7 +158,7 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
         }
         t.x += FX_Mul(dist, OV009_SIN(a));
         t.z += FX_Mul(dist, OV009_COS(a));
-        if (!func_01ffc198(&self->pos, &t, self->unk_64 + 0x400)) {
+        if (!Hit_DiffInSphere(&self->pos, &t, self->unk_64 + 0x400)) {
             self->unk_40->flags |= 4;
             self->unk_b8 = t;
         }
@@ -178,7 +178,7 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
         return;
     }
     if (self->unk_f8 != 0) {
-        func_02065804(data_0214a420, self->unk_f8);
+        EffectMgr_Kill(data_0214a420, self->unk_f8);
         self->unk_f8 = 0;
     }
     if (self->rot[0] == 0) {

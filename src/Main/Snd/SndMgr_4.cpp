@@ -186,7 +186,7 @@ void func_0204a0d4(SndMgr *mgr, u32 slot, s32 pan);
 
 BOOL func_0204a118(SndMgr *mgr, s32 id);
 
-void func_0204a160(SndMgr *mgr);
+void SndMgr_PauseAll(SndMgr *mgr);
 
 void SndMgr_ResumeAll(SndMgr *mgr);
 

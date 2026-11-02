@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_0203df0c(void *p);
+void Heap_FreeHi(void *p);
 
 void func_ov000_0215a04c(void *self) {
     *(s32 *)((u8 *)self + 0xd4) = -1;
@@ -12,7 +12,7 @@ void func_ov000_0215a04c(void *self) {
 
 void func_ov000_0215a064(void *self) {
     if (*(void **)((u8 *)self + 0xd8) != NULL) {
-        func_0203df0c(*(void **)((u8 *)self + 0xd8));
+        Heap_FreeHi(*(void **)((u8 *)self + 0xd8));
         *(void **)((u8 *)self + 0xd8) = NULL;
     }
 }

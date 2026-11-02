@@ -118,7 +118,7 @@ void func_ov000_0219864c(Obj48_02194758 *o, void *a, s32 b);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 Obj44_02194758 *func_ov000_021984c8(void *p);
 void func_ov000_021984f4(Obj44_02194758 *o, void *a, s32 b);
-void func_0203f80c(void *p);
+void HitMesh_Init(void *p);
 void HitMesh_SetRes(void *mesh, void *res);
 void HitMesh_SetScale(void *mesh, s32 scale);
 void HitMesh_SetMtx(void *mesh, const MtxFx43 *mtx);
@@ -155,7 +155,7 @@ static inline Obj44_02194758 *NewObj44_02194758(void) {
 static inline void *NewMesh02194758(void) {
     void *p = Heap_Alloc(0x98);
     if (p != NULL) {
-        func_0203f80c(p);
+        HitMesh_Init(p);
     }
     return p;
 }

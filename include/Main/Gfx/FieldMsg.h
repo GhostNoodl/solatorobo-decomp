@@ -27,7 +27,7 @@ typedef struct FieldMsg {
     /* 0x314 */ char name[0x20];
     /* 0x334 */ char prevName[0x20];
     /* 0x354 */ TextWin *win;
-    /* 0x358 */ u32 unk_358;
+    /* 0x358 */ u32 winWidth;
     /* 0x35c */ s32 unk_35c;
     /* 0x360 */ s32 unk_360;
     /* 0x364 */ u8 unk_364[0x158];
@@ -51,7 +51,7 @@ extern const char data_0208ba20[];
 
 extern void *Heap_Alloc(u32 size);
 extern void func_0204c7d0(TextWin *win);
-extern u32 func_0204c4fc(u32 a, u32 b, u32 c, u32 *outSize, u32 *outArg, BOOL d);
+extern u32 Text_Measure(u32 a, u32 b, u32 c, u32 *outW, u32 *outH, BOOL d);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
 

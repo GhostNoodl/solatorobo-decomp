@@ -2,11 +2,11 @@
 
 extern "C" {
 
-void func_0204730c(SaveBase *s) {
+void SaveBase_AllocBuffers(SaveBase *s) {
     u32 n;
-    s->header = (SaveHeader *)func_0203de84(s->headerSize, 4);
+    s->header = (SaveHeader *)Heap_AllocHi(s->headerSize, 4);
     MI_CpuFill8(s->header, 0, s->headerSize);
-    s->data = (SaveData *)func_0203de84(s->dataSize, 4);
+    s->data = (SaveData *)Heap_AllocHi(s->dataSize, 4);
     MI_CpuFill8(s->data, 0, s->dataSize);
     n = (s->tmpSize - (s->dataSize * s->slotCount + s->headerSize)) / s->dataSize;
     if (n > 0x80) {
@@ -90,17 +90,17 @@ void func_02047580(SaveBase *s) {
     s->backupCount = 0;
 }
 
-void func_020475ec(SaveBase *s) {
+void SaveBase_FreeBuffers(SaveBase *s) {
     if (s->tmpBuf != NULL) {
-        func_0203df0c(s->tmpBuf);
+        Heap_FreeHi(s->tmpBuf);
         s->tmpBuf = NULL;
     }
     if (s->header != NULL) {
-        func_0203df0c(s->header);
+        Heap_FreeHi(s->header);
         s->header = NULL;
     }
     if (s->data != NULL) {
-        func_0203df0c(s->data);
+        Heap_FreeHi(s->data);
         s->data = NULL;
     }
     SysCard_Reset(data_02097e44);

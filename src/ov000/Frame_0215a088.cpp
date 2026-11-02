@@ -42,7 +42,7 @@ extern "C" {
 extern const Vtxs0215a088 data_ov000_021c98fa;
 extern const Tcs0215a088 data_ov000_021c995c;
 extern const Quads0215a088 data_ov000_021c99dc;
-void *func_0203de84(u32 size, u32 align);
+void *Heap_AllocHi(u32 size, u32 align);
 void DC_FlushRange(const void *p, u32 size);
 
 void func_ov000_0215a088(Frame0215a088 *self) {
@@ -57,7 +57,7 @@ void func_ov000_0215a088(Frame0215a088 *self) {
     s32 j;
 
     self->unk_dc = 0x480;
-    self->unk_d8 = func_0203de84(0x480, 4);
+    self->unk_d8 = Heap_AllocHi(0x480, 4);
     G3_BeginMakeDL(&dl, self->unk_d8, self->unk_dc);
     G3B_Color(&dl, 0x7fff);
     vtx = data_ov000_021c98fa;

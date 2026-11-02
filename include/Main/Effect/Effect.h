@@ -332,7 +332,7 @@ static inline u8 Effect_NextPolyId(void) {
 void func_02063cac(struct EffectObj *obj);
 BOOL func_020637d0(struct EffectObj *obj);
 void func_02063954(struct EffectObj *obj);
-void func_02063a14(struct EffectObj *obj);
+void EffectObj_StopLoop(struct EffectObj *obj);
 
 #define EFFECT_DELETE(obj) \
     { \
@@ -384,8 +384,8 @@ extern EffectFile *func_02034ff8(void *arc, const char *name);
 extern void func_02036838(ResMgr *mgr, const char *arc, s32 c, s32 d);
 extern BOOL func_0203ed04(const char *name, void *data);
 extern void func_0203f0b4(void *data);
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void *Heap_Alloc(u32 size);
 extern char data_0208c330[];

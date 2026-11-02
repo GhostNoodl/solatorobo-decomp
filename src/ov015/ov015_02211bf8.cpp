@@ -10,7 +10,7 @@ void *func_02065f88(s32 id, void *pos);
 extern u8 data_ov015_02213286[];
 extern u8 data_ov015_0221329a[];
 extern u8 data_ov015_022132a6[];
-u8 *func_02066774(void *a, void *b, int c, void *d);
+u8 *Effect3D_Create(void *a, void *b, int c, void *d);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void *func_ov000_02191318(void *a, s32 b);
 void func_ov000_021911c8(void *a, s32 b);
@@ -93,7 +93,7 @@ BOOL func_ov015_02211e88(Ov015Obj290 *self) {
     u8 *o;
     v = self->unk_27c;
     v.y = 0;
-    o = func_02066774(data_ov015_02213286, data_ov015_0221329a, 0, &v);
+    o = Effect3D_Create(data_ov015_02213286, data_ov015_0221329a, 0, &v);
     FLD(s32, o, 0xd4) = 1;
     FLD(u8, o, 0x28) = 1;
     FLD(s32, o, 0x50) = -0xc8000;

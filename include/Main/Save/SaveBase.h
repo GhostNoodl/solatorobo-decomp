@@ -94,8 +94,8 @@ extern "C" {
 extern u32 data_0208b614[];
 extern const char data_0208b5fd[];
 
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 extern void Heap_Free(void *ptr);
 
 BOOL func_02047694(SaveBase *s);

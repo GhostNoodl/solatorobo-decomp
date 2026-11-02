@@ -8,12 +8,12 @@ void func_0205563c(Model *model, int idx, ModelPos *pos) {
     ((ModelPos *)&model->x)[idx] = *pos;
 }
 
-void func_02055654(SlideCtrl *ctrl) {
+void SlideCtrl_Lock(SlideCtrl *ctrl) {
     ctrl->flag11 = 1;
     ctrl->lock++;
 }
 
-void func_0205567c(SlideCtrl *ctrl) {
+void SlideCtrl_Unlock(SlideCtrl *ctrl) {
     if (ctrl->lock != 0) {
         ctrl->lock--;
     }

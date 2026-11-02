@@ -16,7 +16,7 @@ BOOL func_020559c8(FieldMsg *msg) {
     return TRUE;
 }
 
-BOOL func_020559f8(s32 id) {
+BOOL Field_IsEventQueued(s32 id) {
     FieldState *state = data_ov000_021ccd54;
     s32 i;
     for (i = state->head; i != state->tail;) {

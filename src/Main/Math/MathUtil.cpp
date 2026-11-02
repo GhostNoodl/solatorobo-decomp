@@ -67,7 +67,7 @@ static inline void MathVec_Copy(const VecFx32 *src, VecFx32 *dst) {
 
 // `v` is not const: a `const T *` parameter is never ordered against stores, and the
 // target copies it one word at a time between the stores to `p` (round ckB).
-void func_02040578(u16 *ang, VecFx32 *v) {
+void Math_DirToAngles(u16 *ang, VecFx32 *v) {
     VecFx32 p;
     MtxFx43 mtx;
     MTX_Identity43_(&mtx);

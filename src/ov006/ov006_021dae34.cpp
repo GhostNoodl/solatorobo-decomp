@@ -18,7 +18,7 @@ void func_ov006_021daf60(ov006_SlotManager *self) {
     ov006_SlotManager_ClearState(self);
 }
 
-void func_ov006_021daf80(ov006_SlotManager *self) {
+void ov006_SlotManager_CountActive(ov006_SlotManager *self) {
     int i;
     self->numActive = 0;
     for (i = 0; i < 4; i++) {
@@ -28,7 +28,7 @@ void func_ov006_021daf80(ov006_SlotManager *self) {
     }
 }
 
-ov006_Slot *func_ov006_021dafb4(ov006_SlotManager *self, int idx, int type, const char *name, u8 unk12) {
+ov006_Slot *ov006_SlotManager_InitSlot(ov006_SlotManager *self, int idx, int type, const char *name, u8 unk12) {
     ov006_Slot *slot = &self->slots[idx];
     ov006_Slot_Clear(slot);
     slot->active = 1;

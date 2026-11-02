@@ -103,37 +103,37 @@ bool func_ov003_021ce444(u32 *self, u32 mask) {
     return r;
 }
 
-void func_ov003_021ce464(Ov003FlagSet *self) {
+void Ov003TaskVt_021f78f4_ClearFlag7(Ov003FlagSet *self) {
     self->b7 = 0;
 }
 
-void func_ov003_021ce474(Ov003FlagSet *self) {
+void Ov003TaskVt_021f78f4_SetFlag7(Ov003FlagSet *self) {
     self->b7 = 1;
 }
 
-bool func_ov003_021ce484(Ov003FlagSet *self) {
+bool Ov003TaskVt_021f78f4_GetFlag6(Ov003FlagSet *self) {
     BOOL r = self->b6 ? TRUE : FALSE;
     return r;
 }
 
-void func_ov003_021ce4a8(Ov003FlagSet *self) {
+void Ov003TaskVt_021f78f4_SetFlag6(Ov003FlagSet *self) {
     self->b6 = 1;
 }
 
-bool func_ov003_021ce4b8(Ov003FlagSet *self) {
+bool Ov003TaskVt_021f78f4_GetFlag5(Ov003FlagSet *self) {
     BOOL r = self->b5 ? TRUE : FALSE;
     return r;
 }
 
-void func_ov003_021ce4dc(Ov003FlagSet *self) {
+void Ov003TaskVt_021f78f4_SetFlag5(Ov003FlagSet *self) {
     self->b5 = 1;
 }
 
-void func_ov003_021ce4ec(Ov003FlagSet *self) {
+void Ov003TaskVt_021f78f4_ClearFlag4(Ov003FlagSet *self) {
     self->b4 = 0;
 }
 
-void func_ov003_021ce4fc(Ov003FlagSet *self) {
+void Ov003TaskVt_021f78f4_SetFlag4(Ov003FlagSet *self) {
     self->b4 = 1;
 }
 

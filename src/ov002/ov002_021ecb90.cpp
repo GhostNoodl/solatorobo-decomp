@@ -323,7 +323,7 @@ extern "C" {
 
 extern VFunc data_0208ba70[];
 void func_0204c7d0(void *p);
-s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
+s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_0204ca70(void *p);
 char *func_02040ab0(char *s, int c);
 
@@ -357,7 +357,7 @@ static inline Ov002Text2 *ov002_021ed270_newText(char *str) {
     }
     t->font = 4;
     t->str = (s32)str;
-    t->unk_4c = func_0204c4fc(t->font, t->spacing, t->str, &t->width, &t->height, t->unk_37 != 0);
+    t->unk_4c = Text_Measure(t->font, t->spacing, t->str, &t->width, &t->height, t->unk_37 != 0);
     FIELD(data_02097ce0, 0x4, s32) = t->font;
     return t;
 }

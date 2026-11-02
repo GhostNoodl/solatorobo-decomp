@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 msg);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern Ov009Actor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern Ov009Actor *func_ov003_021d69a0(Ov009Actor *self, u16 kind, s32 a);
@@ -10,7 +10,7 @@ extern void func_ov003_021d452c(Ov009Actor *self);
 
 void func_ov009_021fb298(Ov009ActVt_022164a0 *self) {
     if (self->unk_40->state == 0 && *self->unk_50 == 0) {
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x5404, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5404, 0x15);
     }
     func_ov003_021d5900(self);
 }
@@ -49,7 +49,7 @@ void func_ov009_021fb2e4(Ov009Actor *self) {
 
 void func_ov009_021fb3a8(Ov009Actor *self) {
     if (self->unk_40->state == 0 && *self->unk_50 == 0) {
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x5407, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5407, 0x15);
     }
     func_ov003_021d5900(self);
 }

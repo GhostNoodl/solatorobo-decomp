@@ -162,7 +162,7 @@ Shadow *func_ov000_02191b04(Shadow *self) {
     return self;
 }
 
-void func_ov000_02191b70(Shadow *self) {
+void Shadow_Load(Shadow *self) {
     func_020359d0(data_ov000_021c9d80.file, 7, 0);
     self->state = 1;
 }

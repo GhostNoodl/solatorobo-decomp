@@ -106,7 +106,7 @@ void func_ov002_021d637c(void *self) {
     FIELD(FIELD(self, 0x50, void *), 0xc, u32) |= 4;
     FIELD(FIELD(self, 0x54, void *), 0xc, u32) |= 4;
     FIELD(FIELD(self, 0x54, void *), 0xc, u32) |= 2;
-    x = func_ov000_02173610(0x1b);
+    x = Task_FindById(0x1b);
     if (x != NULL && FIELD(x, 0x3c, void *) != NULL) {
         func_ov002_021e2690(FIELD(x, 0x3c, void *), z, z);
     }

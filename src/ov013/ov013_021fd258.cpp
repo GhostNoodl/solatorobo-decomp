@@ -6,7 +6,7 @@ extern void *data_0214a420;
 extern void *data_02097cdc;
 extern char data_ov013_0220b860[];
 extern void *data_ov013_0220b7d0[];
-extern void func_02065804(void *a, s32 b);
+extern void EffectMgr_Kill(void *a, s32 b);
 extern void func_ov003_021d6a3c(Ov013Actor *self, s32 a, s32 b, s32 c);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 extern void func_ov000_0219864c(void *a, s32 b, s32 c);
@@ -21,7 +21,7 @@ extern Ov013Actor *func_ov000_0219bf90(void);
 
 void func_ov013_021fd258(Ov013ActVt_0220b5e0 *self) {
     if (self->unk_40->state == 0) {
-        func_02065804(data_0214a420, self->unk_f4);
+        EffectMgr_Kill(data_0214a420, self->unk_f4);
     }
     if (self->unk_40->unk_0c[0] == 2) {
         func_ov003_021d6a3c(self, 1, 1, 1);
@@ -174,9 +174,9 @@ extern const Ov013Vec data_ov013_0220aeb8;
 extern char data_ov013_0220b86f[];
 extern char data_ov013_0220b87b[];
 extern void func_ov000_0219a210(Ov013Vec *v, const Ov013Vec *off, u16 rot);
-extern Ov013V *func_02066774(const void *a, const void *b, s32 c, Ov013Vec *pos);
+extern Ov013V *Effect3D_Create(const void *a, const void *b, s32 c, Ov013Vec *pos);
 extern Ov013V *EffectGroup_Create(const void *a, const void *b, Ov013Vec *pos);
-extern void func_020639d4(Ov013V *o, s32 a, s32 b);
+extern void EffectObj_AddSndCue(Ov013V *o, s32 a, s32 b);
 extern BOOL func_ov000_021b4738(Ov013Actor *p);
 extern void Actor_TurnToPos(Ov013Obj *self, Ov013Vec *p, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
@@ -225,10 +225,10 @@ void func_ov013_021fd5fc(Ov013ActExVt_0220b7d0 *self) {
         pos.z = self->pos.z;
         func_ov000_0219a210(&pos, &data_ov013_0220aeb8, self->rot[1]);
         f = data_ov013_0220b860;
-        o = func_02066774(f, data_ov013_0220b86f, 0, &pos);
+        o = Effect3D_Create(f, data_ov013_0220b86f, 0, &pos);
         FLD(s32, o, 0xc8) = -1;
         o->v0c(self->unk_d8);
-        func_020639d4(o, 0x3e, 6);
+        EffectObj_AddSndCue(o, 0x3e, 6);
         self->unk_d0 = FLD(s32, o, 0x24);
         o = EffectGroup_Create(f, data_ov013_0220b87b, &pos);
         FLD(s32, o, 0xc8) = -1;

@@ -24,7 +24,7 @@ void func_02044a80(void) {
     }
 }
 
-void func_02044ac4(void) {
+void Wh_Create(void) {
     WhMgr *wh;
     if (data_02097e40 != NULL) {
         return;
@@ -119,18 +119,18 @@ BOOL func_02044e38(WhMgr *wh, void (*cb)(void *arg)) {
         wh->indicateCb = (void (*)(void *))func_02044a60;
     }
     if (wh->recvBufRaw != NULL) {
-        func_0203df0c(wh->recvBufRaw);
+        Heap_FreeHi(wh->recvBufRaw);
         wh->recvBufRaw = NULL;
     }
     if (wh->sendBufRaw != NULL) {
-        func_0203df0c(wh->sendBufRaw);
+        Heap_FreeHi(wh->sendBufRaw);
         wh->sendBufRaw = NULL;
     }
     recvSize = WH_MAX(wh->cfg.parentRecvSize, wh->cfg.childRecvSize);
     sendSize = WH_MAX(wh->cfg.parentSendSize, wh->cfg.childSendSize);
-    wh->recvBufRaw = func_0203de84(recvSize + 0x20, 4);
+    wh->recvBufRaw = Heap_AllocHi(recvSize + 0x20, 4);
     wh->recvBuf = (void *)(((u32)wh->recvBufRaw + 0x1f) & ~0x1f);
-    wh->sendBufRaw = func_0203de84(sendSize + 0x20, 4);
+    wh->sendBufRaw = Heap_AllocHi(sendSize + 0x20, 4);
     wh->sendBuf = (void *)(((u32)wh->sendBufRaw + 0x1f) & ~0x1f);
     if (!WH_StateInInitialize(wh)) {
         return FALSE;
@@ -139,7 +139,7 @@ BOOL func_02044e38(WhMgr *wh, void (*cb)(void *arg)) {
     return TRUE;
 }
 
-BOOL func_02044f70(WhMgr *wh) {
+BOOL Wh_End(WhMgr *wh) {
     WH_ChangeSysState(3);
     if (WM_End((void (*)(void *))func_02044fc0) != 2) {
         WH_ChangeSysState(8);
@@ -328,7 +328,7 @@ void func_02045770(WhCbArg *arg) {
 
 s16 func_0204587c(WhMgr *wh, u16 bitmap);
 
-u16 func_0204584c(WhMgr *wh) {
+u16 Wh_SelectChannel(WhMgr *wh) {
     WH_ChangeSysState(1);
     wh->channel = func_0204587c(wh, wh->channelBitmap);
     return wh->channel;

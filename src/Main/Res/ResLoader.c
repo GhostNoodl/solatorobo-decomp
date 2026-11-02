@@ -61,7 +61,7 @@ void func_02035670(ResLoader *loader) {
         blockSize = 0x1540;
         buf = OS_AllocFromHeap(OS_ARENA_MAIN, (OSHeapHandle)data_02097dd0->osHeap, 0x3fc0);
     } else {
-        buf = func_0203dec8(0x6000, 4);
+        buf = Heap_AllocLo(0x6000, 4);
     }
     ResRing_Setup(&loader->ring, buf, blockSize, numBlocks);
 }

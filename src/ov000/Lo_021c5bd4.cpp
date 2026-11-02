@@ -35,7 +35,7 @@ void func_ov000_021c5bd4(Lo021cca40 *self) {
         p = self->unk_30;
         p->str = (u32)t;
     }
-    p->unk_4c = func_0204c4fc(p->font, p->spacing, p->str, &p->vramSize, &p->vramArg, (s8)p->unk_37 != 0);
+    p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, (s8)p->unk_37 != 0);
     data_02097ce0->unk_004 = p->font;
     self->unk_30->unk_2c = 0;
     self->unk_30->flags |= 0x40;

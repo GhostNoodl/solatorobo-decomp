@@ -139,14 +139,14 @@ BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_021705a0(void *p, s32 a);
 Player *func_ov000_0219bf90(void);
 void func_ov000_02188ed0(CmdEx *self);
-void func_02049564(void *p, s32 a, s32 b);
+void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_ov000_021721f4(void *p);
 BOOL func_ov000_02181d70(u8 *p, s32 a);
 void func_02062424(Id3 *id);
 void func_0204aa10(void *p);
 void func_ov000_0216bcbc(void *p);
 void func_ov000_021645a4(s32 a);
-void func_020656b4(void *p);
+void EffectMgr_FreeAll(void *p);
 void func_ov000_021b53f4(void *p);
 void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(void *p);
@@ -299,7 +299,7 @@ s32 func_ov000_02189194(CmdEx *self) {
     switch (self->state) {
     case 2:
         self->state = 3;
-        func_02049564(data_02097e4c, 1, 1);
+        SndMgr_LoadHeapState(data_02097e4c, 1, 1);
         {
             Obj02097e48 *p = data_02097e48;
             if (p->flag) {
@@ -403,7 +403,7 @@ s32 func_ov000_02189194(CmdEx *self) {
         self->unk_18d = 0;
         self->unk_18e = 0;
         self->unk_18f = 0;
-        func_020656b4(data_0214a420);
+        EffectMgr_FreeAll(data_0214a420);
         func_ov000_021b53f4(data_ov000_021ccd6c);
         func_ov000_0218be9c(data_ov000_021ccd64);
         ActorMgr_DestroyAll(data_ov000_021ccd68);

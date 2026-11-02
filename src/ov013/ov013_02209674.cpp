@@ -13,7 +13,7 @@ extern void *func_0204a028(void *a, s32 b, Ov013Vec *c, s32 d);
 extern void *func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
 extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToActor(Ov013Actor *self, Ov013Actor *t, s32 a);
-extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 a);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 a);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
 
 static inline Ov013Actor *Ov013_FindActor(u16 id) {
@@ -120,8 +120,8 @@ void func_ov013_022099e0(Ov013Actor *self) {
 void func_ov013_02209aac(Ov013Actor *self) {
     if (self->unk_40->state == 0) {
         Ov013V *fx;
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4811, 10);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4813, 10);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4811, 10);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4813, 10);
         fx = func_02065f88(0x69, &self->pos);
         if (fx != NULL) {
             fx->v0c(0x3000);

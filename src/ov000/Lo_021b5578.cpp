@@ -64,7 +64,7 @@ extern "C" {
 
 extern Save021b5578 *data_0214a424;
 
-Lang021b5578 *func_0206e7d0(u8 id);
+Lang021b5578 *Lang_GetGroup(u8 id);
 void func_0206dde4(char *buf, u8 *ids);
 void func_0206dedc(char *buf, u8 *ids);
 void func_0206dfd4(char *buf, u8 *ids);
@@ -129,7 +129,7 @@ BOOL func_ov000_021b5578(Mgr021b5578 *self) {
     char buf[0x20];
     u16 kind;
     u8 *ids = (u8 *)data_ov000_021ccd54 + 0xca;
-    Lang021b5578 *t = func_0206e7d0(ids[0]);
+    Lang021b5578 *t = Lang_GetGroup(ids[0]);
     switch (self->state) {
     case 0:
         if (self->unk_10 == NULL) {

@@ -154,7 +154,7 @@ TblEntry *func_0206fef8(s32 id);
 
 void *func_0206ffa0(s32 id);
 
-void *func_0207005c(s32 id, int i);
+void *Tbl_GetEntryData(s32 id, int i);
 
 void *func_0207011c(s32 id);
 

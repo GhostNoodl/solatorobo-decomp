@@ -7,7 +7,7 @@ extern char data_ov009_022172af[];
 extern Ov009Path data_ov009_02215fbc[];
 extern void func_ov000_021911c8(Ov009Sub38 *m, s32 a);
 extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void func_ov000_0218db58(Ov009Actor *self, u16 ang, u16 b, s32 c, s32 d);
+extern void Actor_TurnClamped(Ov009Actor *self, u16 ang, u16 b, s32 c, s32 d);
 extern void func_0203f2b8(void *p);
 extern u8 *Group_FindNode(void *mgr, u16 id);
 
@@ -63,7 +63,7 @@ void func_ov009_02208204(Ov009Multi *self) {
         if (a != NULL) {
             a2 = Ov009_AngTo(self, a);
         }
-        func_ov000_0218db58(self, a2, self->unk_492, 0x3000, self->unk_b0->unk_02);
+        Actor_TurnClamped(self, a2, self->unk_492, 0x3000, self->unk_b0->unk_02);
         {
             Ov009Sub40 *s = self->unk_40;
             if (s->timer != 0) {
@@ -178,7 +178,7 @@ void func_ov009_0220862c(Ov009Multi *self) {
         } else {
             ang = FX_Atan2(a->pos.x - self->pos.x, a->pos.z - self->pos.z);
         }
-        func_ov000_0218db58(self, ang, self->unk_492, 0x3800, self->unk_b0->unk_02 << 1);
+        Actor_TurnClamped(self, ang, self->unk_492, 0x3800, self->unk_b0->unk_02 << 1);
         if (self->unk_38->anim_state == 1) {
             self->unk_40->state++;
         }

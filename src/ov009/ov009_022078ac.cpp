@@ -27,7 +27,7 @@ void func_ov009_02207910(Ov009ActVt_02217844 *self) {
     func_ov003_021d1b88(self);
     func_ov000_02190a80(&self->model, 0x1000);
 }
-extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
 extern Ov009Actor *func_ov000_0219bf90(void);
 
 void Ov009ActVt_02217844_Update(Ov009ActVt_02217844 *self) {
@@ -47,7 +47,7 @@ void Ov009ActVt_02217844_Update(Ov009ActVt_02217844 *self) {
         if (self->unk_40->unk_13 == 0xf) {
             return;
         }
-        if (func_01ffc584(&pl->pos, &self->pos, pl->unk_64 + 0x6800, 0x6000)) {
+        if (Hit_DiffInCylinder(&pl->pos, &self->pos, pl->unk_64 + 0x6800, 0x6000)) {
             self->unk_40->flags |= 0x8000;
         }
     } else {
@@ -63,7 +63,7 @@ void Ov009ActVt_02217844_Update(Ov009ActVt_02217844 *self) {
             v.z = z;
             v.y = y;
         }
-        if (func_01ffc584(&pl->pos, &v, pl->unk_64 + 0x6800, 0x6000)) {
+        if (Hit_DiffInCylinder(&pl->pos, &v, pl->unk_64 + 0x6800, 0x6000)) {
             self->unk_40->flags |= 0x10000;
         }
     }

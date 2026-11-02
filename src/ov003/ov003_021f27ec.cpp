@@ -150,7 +150,7 @@ extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 extern Ov003MCtx *data_ov000_021ccd6c;
 
-extern BOOL func_01ffc198(Ov003MVec *a, Ov003MVec *b, s32 r);
+extern BOOL Hit_DiffInSphere(Ov003MVec *a, Ov003MVec *b, s32 r);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
 extern BOOL func_ov000_0218ffdc(Ov003MultiModel *m, Ov003MultiSlot *slot, s32 a, s32 b);
 extern void func_ov000_02190e98(Ov003MultiModel *m, s32 a, s32 b, s32 c);
@@ -206,7 +206,7 @@ void func_ov003_021f27ec(Ov003Multi *self) {
         return;
     }
     def = &data_ov003_021f7470[self->kind];
-    if (func_01ffc198(&self->unk_114c, &self->pos, 0x1000)) {
+    if (Hit_DiffInSphere(&self->unk_114c, &self->pos, 0x1000)) {
         idx = def->map[++self->unk_1118];
         if (idx < 0) {
             self->unk_1118 = 0;

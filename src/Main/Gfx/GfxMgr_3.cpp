@@ -25,11 +25,11 @@ VramBlock *func_0203a408(GfxMgr *mgr, int width, int height, BOOL temporary) {
     return block;
 }
 
-GfxCell *func_0203a4a4(GfxMgr *mgr) {
+GfxCell *GfxMgr_NextCell(GfxMgr *mgr) {
     return &mgr->cells[mgr->unk_046++];
 }
 
-void *func_0203a4c0(GfxMgr *mgr) {
+void *GfxMgr_GetFont(GfxMgr *mgr) {
     return &mgr->fonts[mgr->unk_004]->res;
 }
 

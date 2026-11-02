@@ -4,7 +4,7 @@ extern "C" {
 
 void func_0206d4dc(GameSave *s) {
     s->vf78();
-    func_0204730c(s);
+    SaveBase_AllocBuffers(s);
 }
 
 void func_0206d4fc(GameSave *s) {

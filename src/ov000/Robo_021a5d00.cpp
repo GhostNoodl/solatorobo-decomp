@@ -38,7 +38,7 @@ extern char data_ov000_021cc684[];
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 u16 FX_Atan2(s32 y, s32 x);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
-BOOL func_01ffc584(void *a, void *b, s32 c, s32 d);
+BOOL Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void Actor_Move(void *self, s32 turn);
@@ -119,7 +119,7 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
                 St_021a5d00 *st = (St_021a5d00 *)self->fsm;
                 st->timer++;
                 if (st->timer < 0xf) {
-                    if (!func_01ffc584(a + 0x70, &pos, (LFLD(s32, a, 0x64) << 1) + 0x19a, 0x3800)) {
+                    if (!Hit_DiffInCylinder(a + 0x70, &pos, (LFLD(s32, a, 0x64) << 1) + 0x19a, 0x3800)) {
                         func_ov000_02190cb0(self->model, data_ov000_021cc61e, 0x400, 0);
                         func_ov000_021915a0(self->model);
                         self->speed = 0x15c;

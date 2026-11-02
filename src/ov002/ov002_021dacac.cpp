@@ -6,7 +6,7 @@ extern VFunc data_ov000_021cadcc[];
 extern u8 data_ov002_021efe30[];
 int func_ov002_021dac8c(void *self, void *arg);
 BOOL func_ov000_0219d5a0(void);
-void *func_ov000_02154b80(void *a, u8 b);
+void *ListOwner_GetNth(void *a, u8 b);
 
 static inline void ov002_SetId(void *x, u16 id) {
     if (x != NULL) {
@@ -72,7 +72,7 @@ void func_ov002_021dacac(void *self) {
     }
     FIELD(self, 0xc, VObject *)->v0x74(MsgRes_GetString(g, 0xfa), 2, 0xffff, 0xffff);
     m = FIELD(self, 0xc, VObject *);
-    m->v0xa8(func_ov000_02154b80(m, *(u8 *)data_ov002_021f0f90));
+    m->v0xa8(ListOwner_GetNth(m, *(u8 *)data_ov002_021f0f90));
     FIELD(FIELD(self, 0xc, void *), 0xc, u32) &= ~0x20000;
     FIELD(FIELD(self, 0xc, void *), 0xc, u32) &= ~0x40000;
     FIELD(FIELD(self, 0xc, void *), 0xc, u32) &= ~0x10000;
@@ -136,7 +136,7 @@ void func_ov002_021dacac(void *self) {
     } else {
         func_ov000_021c9544(w + 0x76, FIELD(w, 0x6c, void *));
     }
-    t = func_ov000_02173610(0x1b);
+    t = Task_FindById(0x1b);
     if (t != NULL && FIELD(data_0214a424, 0x18, Bits021d9e38).mode == 1) {
         ov002_SetId(FIELD(t, 0x3c, void *), FIELD(data_0214a424, 0x18, Bits021d9e38).id | 0x8000);
     }

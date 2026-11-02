@@ -2,7 +2,7 @@
 
 extern "C" {
 
-BOOL func_0206b804(EffectEmitter *em) {
+BOOL MainVt_0208c8bc_Loop(EffectEmitter *em) {
     s32 t = em->time;
     if (t < 0) {
         t = 0;

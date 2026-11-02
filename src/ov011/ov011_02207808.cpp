@@ -363,7 +363,7 @@ BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, VecFx32 *v, s3
 void func_ov000_02196c40(void *p);
 void func_ov000_02196060(void *p);
 void func_ov000_0219763c(void *p);
-void *func_ov000_02198328(void *p);
+void *History_Init(void *p);
 void func_ov011_02201688(Ov011Fx *p);
 
 void Ov011Npc_Start(Ov011Npc *self) {
@@ -442,7 +442,7 @@ void func_ov011_022014e0(Ov011Npc *self) {
 }
 
 void *func_ov011_02201510(Ov011Fx *self) {
-    func_ov000_02198328(&self->state);
+    History_Init(&self->state);
     func_ov003_021d7ca8(self->s5c);
     func_ov003_021d7ca8(self->s68);
     func_ov003_021d7ca8(self->s74);
@@ -1089,7 +1089,7 @@ extern const VecFx32 data_ov011_02207480;
 extern u8 data_ov011_0220748c[];
 extern void *data_0214a420;
 Ov011V *func_02065f88(s32 id, VecFx32 *v);
-BOOL func_02065748(void *mgr, void *p);
+BOOL EffectMgr_Contains(void *mgr, void *p);
 
 // unk_06 is read through a const view; a plain read schedules differently.
 static inline s32 Ov011_Progress(Ov011Chr *c, s32 n) {
@@ -1123,7 +1123,7 @@ void func_ov011_02202538(Ov011Chr *self) {
         break;
     }
     case 2:
-        if (!func_02065748(data_0214a420, self->unk_24)) {
+        if (!EffectMgr_Contains(data_0214a420, self->unk_24)) {
             self->mode = 0;
             self->unk_24 = NULL;
         }
@@ -1178,7 +1178,7 @@ void func_ov011_022026b4(Ov011Chr *self) {
         break;
     }
     case 4: {
-        BOOL done = func_02065748(data_0214a420, self->unk_24) ? FALSE : TRUE;
+        BOOL done = EffectMgr_Contains(data_0214a420, self->unk_24) ? FALSE : TRUE;
         if (done) {
             done = Ov011Model2_Idle(&self->m28);
         }
@@ -1226,7 +1226,7 @@ void func_ov011_022028a8(Ov011Chr *self) {
         break;
     }
     case 6:
-        if (!func_02065748(data_0214a420, self->unk_24)) {
+        if (!EffectMgr_Contains(data_0214a420, self->unk_24)) {
             self->mode = 0;
             self->unk_24 = NULL;
         }
@@ -1337,7 +1337,7 @@ void func_ov011_02202b74(Ov011TwA *self) {
     Ov011_Lerp(self->t, &self->from, &self->to, &self->cur);
 }
 
-VecFx32 *func_ov011_02202c10(Ov011TwA *self) {
+VecFx32 *Ov011Vt_022079d0_GetCur(Ov011TwA *self) {
     VecFx32 *r = NULL;
     if (self->b0) {
         r = &self->cur;
@@ -1345,7 +1345,7 @@ VecFx32 *func_ov011_02202c10(Ov011TwA *self) {
     return r;
 }
 
-BOOL func_ov011_02202c2c(Ov011TwA *self) {
+BOOL Ov011Vt_022079d0_IsDone(Ov011TwA *self) {
     if (self->b0 && self->t >= 0x1000) {
         return TRUE;
     }
@@ -1389,7 +1389,7 @@ Ov011TwB *Ov011Vt_022079b0_DtorDelete(Ov011TwB *self) {
     return self;
 }
 
-BOOL func_ov011_02202d04(Ov011TwB *self, const VecFx32 *to, const VecFx32 *from, s16 speed) {
+BOOL Ov011TwB_Start(Ov011TwB *self, const VecFx32 *to, const VecFx32 *from, s16 speed) {
     self->b0 = 1;
     self->cur = *from;
     self->to = *to;
@@ -1432,7 +1432,7 @@ void func_ov011_02202de0(Ov011TwB *self) {
     }
 }
 
-VecFx32 *func_ov011_02202ea4(Ov011TwB *self) {
+VecFx32 *Ov011Vt_022079b0_GetCur(Ov011TwB *self) {
     return self->b0 ? &self->cur : NULL;
 }
 

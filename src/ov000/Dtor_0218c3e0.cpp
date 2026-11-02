@@ -26,7 +26,7 @@ void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
 void func_0203f2b8(void *p);
 void func_0203f920(void *p);
-void func_0203f864(void *p);
+void HitMesh_Detach(void *p);
 void func_ov000_021bd228(void *p);
 
 // Shared body of the three destructor variants below.
@@ -53,7 +53,7 @@ void func_ov000_021bd228(void *p);
     HEAP_FREE(F(void *, 0x54));                            \
     if (F(void *, 0x58) != NULL) {                         \
         func_0203f920(F(void *, 0x58));                    \
-        HEAP_DELETE_FN(F(void *, 0x58), func_0203f864);    \
+        HEAP_DELETE_FN(F(void *, 0x58), HitMesh_Detach);    \
     }                                                      \
     HEAP_DELETE_FN(F(void *, 0x5c), func_ov000_021bd228);  \
     }

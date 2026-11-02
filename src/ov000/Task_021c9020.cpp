@@ -65,7 +65,7 @@ extern char data_ov000_021ccc72[];
 extern char data_ov000_021ccc7e[];
 extern u8 data_ov002_021f0f90;
 void *Heap_Alloc(u32 size);
-void func_02043858(void *p);
+void Gfx3DState_Init(void *p);
 void *func_020359d0(void *p, s32 a, s32 b);
 void func_020359fc(void *p, void *q, s32 a, s32 b);
 BOOL func_02035b90(void *p, s32 a);
@@ -92,7 +92,7 @@ VObj *Ov000TaskVt_021ccc94_New(void) {
         VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
         obj->vfunc_58();
         VOBJ_SET_VTABLE(obj, data_ov000_021ccc94);
-        func_02043858((u8 *)obj + 0x40);
+        Gfx3DState_Init((u8 *)obj + 0x40);
         *(s32 *)((u8 *)obj + 0x3c) = 0;
         *((u8 *)obj + 0x1c0) = 0;
     }

@@ -175,7 +175,7 @@ extern s32 Rand_UpTo(s32 max);
 extern Ov003GmEffect *func_02065f88(s32 id, const Ov003Vec *pos);
 extern void func_ov003_021ec668(Ov003Gimmick *self);
 extern void *data_0214a420;
-extern void func_02065804(void *mgr, void *handle);
+extern void EffectMgr_Kill(void *mgr, void *handle);
 extern Ov003GmFx *func_020657b0(void *mgr, void *handle);
 extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 extern void func_ov000_0219bd20(u16 id, u16 a, s32 type, s32 b, s32 c, Ov003GmSig *sig);
@@ -390,7 +390,7 @@ void func_ov003_021ec668(Ov003Gimmick *self) {
     Ov003GmFx *fx;
     if (!Ov003Gm_GameIdle() || Ov003GmGlobal_Flag(data_ov000_021ccd54)) {
         if (self->fx != NULL) {
-            func_02065804(data_0214a420, self->fx);
+            EffectMgr_Kill(data_0214a420, self->fx);
             self->fx = NULL;
         }
         return;

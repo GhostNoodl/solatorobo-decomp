@@ -78,7 +78,7 @@ void func_ov002_021d8148(void *self) {
     if (q[0] != 0) {
         void *a = NNS_G3dGetAnmByName((void *)q[0], (NNSG3dResName *)buf);
         if (a != NULL) {
-            FIELD(self, 0x88, void *) = func_0203de84(NNS_G3dAnmObjCalcSizeRequired(a, (NNSG3dResMdl *)FIELD(self, 0x7c, void *)), 4);
+            FIELD(self, 0x88, void *) = Heap_AllocHi(NNS_G3dAnmObjCalcSizeRequired(a, (NNSG3dResMdl *)FIELD(self, 0x7c, void *)), 4);
             NNS_G3dAnmObjInit((NNSG3dAnmObj *)FIELD(self, 0x88, void *), a, (NNSG3dResMdl *)FIELD(self, 0x7c, void *), (NNSG3dResTex *)0);
             NNS_G3dRenderObjAddAnmObj((NNSG3dRenderObj *)FIELD(self, 0x80, void *), (NNSG3dAnmObj *)FIELD(self, 0x88, void *));
         }
@@ -86,7 +86,7 @@ void func_ov002_021d8148(void *self) {
     if (q[1] != 0) {
         void *a = NNS_G3dGetAnmByName((void *)q[1], (NNSG3dResName *)buf);
         if (a != NULL) {
-            FIELD(self, 0x8c, void *) = func_0203de84(NNS_G3dAnmObjCalcSizeRequired(a, (NNSG3dResMdl *)FIELD(self, 0x7c, void *)), 4);
+            FIELD(self, 0x8c, void *) = Heap_AllocHi(NNS_G3dAnmObjCalcSizeRequired(a, (NNSG3dResMdl *)FIELD(self, 0x7c, void *)), 4);
             NNS_G3dAnmObjInit((NNSG3dAnmObj *)FIELD(self, 0x8c, void *), a, (NNSG3dResMdl *)FIELD(self, 0x7c, void *), (NNSG3dResTex *)0);
             NNS_G3dRenderObjAddAnmObj((NNSG3dRenderObj *)FIELD(self, 0x80, void *), (NNSG3dAnmObj *)FIELD(self, 0x8c, void *));
         }
@@ -94,7 +94,7 @@ void func_ov002_021d8148(void *self) {
     if (q[2] != 0) {
         void *a = NNS_G3dGetAnmByName((void *)q[2], (NNSG3dResName *)buf);
         if (a != NULL) {
-            FIELD(self, 0x90, void *) = func_0203de84(NNS_G3dAnmObjCalcSizeRequired(a, (NNSG3dResMdl *)FIELD(self, 0x7c, void *)), 4);
+            FIELD(self, 0x90, void *) = Heap_AllocHi(NNS_G3dAnmObjCalcSizeRequired(a, (NNSG3dResMdl *)FIELD(self, 0x7c, void *)), 4);
             NNS_G3dAnmObjInit((NNSG3dAnmObj *)FIELD(self, 0x90, void *), a, (NNSG3dResMdl *)FIELD(self, 0x7c, void *), (NNSG3dResTex *)(int)NNS_G3dGetTex((NNSG3dResFileHeader *)*FIELD(self, 0x78, u32 *)));
             NNS_G3dRenderObjAddAnmObj((NNSG3dRenderObj *)FIELD(self, 0x80, void *), (NNSG3dAnmObj *)FIELD(self, 0x90, void *));
         }

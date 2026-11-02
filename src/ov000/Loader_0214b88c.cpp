@@ -54,7 +54,7 @@ Data0202aca0 *NNS_G3dGetTex(u32 a);
 BOOL func_0203e63c(void *a);
 void func_0205a6a0(VObj *obj);
 void func_0205a840(VObj *obj, char *a, const char *b);
-BOOL func_0205a9c8(VObj *obj);
+BOOL StageRes_IsAllLoaded(VObj *obj);
 s32 func_0205aa30(VObj *obj);
 
 void func_ov000_0214b88c(Loader *self, const char *name) {
@@ -151,7 +151,7 @@ void func_ov000_0214baa8(void) {
 
 BOOL func_ov000_0214bb04(void) {
     BOOL ret = TRUE;
-    if (!func_0205a9c8(data_ov000_021ccd24.unk_04)) {
+    if (!StageRes_IsAllLoaded(data_ov000_021ccd24.unk_04)) {
         ret = FALSE;
     }
     return ret;
@@ -191,7 +191,7 @@ void func_ov000_0214bc10(void) {
 
 BOOL func_ov000_0214bc6c(void) {
     BOOL ret = TRUE;
-    if (!func_0205a9c8(data_ov000_021ccd24.unk_08)) {
+    if (!StageRes_IsAllLoaded(data_ov000_021ccd24.unk_08)) {
         ret = FALSE;
     }
     return ret;

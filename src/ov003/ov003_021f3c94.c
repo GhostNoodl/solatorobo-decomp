@@ -71,7 +71,7 @@ extern u32 func_020705fc(u16 id);
 extern void *Heap_Alloc(u32 size);
 extern Ov003NmLabel *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_021919c8(void *p);
-extern void func_ov000_02191b70(void *p);
+extern void Shadow_Load(void *p);
 
 void Ov003ActVt_021fa548_Init(Ov003NmObj *self) {
     Ov003NmInfo *info;
@@ -119,7 +119,7 @@ void Ov003ActVt_021fa548_Init(Ov003NmObj *self) {
             p = func_ov000_021919c8(p);
         }
         self->unk_3c = p;
-        func_ov000_02191b70(p);
+        Shadow_Load(p);
     }
     self->unk_1ea = data_0214a424->unk_18_1;
     self->unk_1ec = data_0214a424->unk_18_3;

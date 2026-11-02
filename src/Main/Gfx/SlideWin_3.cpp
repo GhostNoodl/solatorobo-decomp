@@ -27,7 +27,7 @@ struct SlideMsg {
     /* 0x314 */ char name[0x20];
     /* 0x334 */ char prevName[0x20];
     /* 0x354 */ TextWin *win;
-    /* 0x358 */ u32 vramSize;
+    /* 0x358 */ u32 winWidth;
     /* 0x35c */ s32 timer2;
     /* 0x360 */ s32 t2;
 }; // size 0x364
@@ -70,7 +70,7 @@ struct SlideModel : Model {
 
 extern "C" {
 
-extern void *func_0203a4c0(GfxMgr *mgr);
+extern void *GfxMgr_GetFont(GfxMgr *mgr);
 extern void func_0203a4dc(GfxMgr *mgr, void *arg);
 extern void func_0203a5a4(GfxMgr *mgr, u16 c);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
@@ -144,7 +144,7 @@ static inline void SlideMsg_Show(SlideMsg *msg, const char *text) {
     msg->win->unk_2c = 0;
     win = msg->win;
     win->str = (u32)text;
-    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+    win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
     data_02097ce0->unk_004 = win->font;
     msg->win->unk_vf20(0, 0xc0);
     msg->win->noVram = 1;
@@ -154,7 +154,7 @@ static inline void SlideMsg_Show(SlideMsg *msg, const char *text) {
     } else {
         msg->win->rendering = 0;
     }
-    msg->vramSize = msg->win->vramSize;
+    msg->winWidth = msg->win->width;
     msg->closing = 1;
     msg->flag16 = 0;
     msg->timer2 = 0;
@@ -322,7 +322,7 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
     if (*win->str == 0) {
         goto end;
     }
-    font = (NNSG2dFont *)func_0203a4c0(data_02097ce0);
+    font = (NNSG2dFont *)GfxMgr_GetFont(data_02097ce0);
     adv = 0;
     fn = font->cbCharSpliter;
     msg = win->msgs;

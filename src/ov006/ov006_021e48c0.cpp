@@ -12,10 +12,10 @@ extern u8 data_ov006_021eb840[];
 extern ov006_Unk02097e40 *data_02097e40;
 
 u16 func_02046ab4(ov006_Unk02097e40 *a);
-BOOL func_02045ea4(ov006_Unk02097e40 *a, BOOL enabled);
+BOOL Wh_SetEntry(ov006_Unk02097e40 *a, BOOL enabled);
 int func_ov006_021e4674(ov006_Unk021ec888 *self);
 
-ov006_MenuNode *func_ov006_021e48c0(ov006_Unk021ec888 *self, int id) {
+ov006_MenuNode *ov006_Menu_FindNode(ov006_Unk021ec888 *self, int id) {
     ov006_MenuNode *node;
     for (node = self->nodes; node != NULL; node = node->next) {
         if (id == node->id) {

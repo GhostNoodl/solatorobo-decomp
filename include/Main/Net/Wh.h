@@ -107,8 +107,8 @@ extern WhMgr *data_02097e40;
 
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *ptr);
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 extern int WM_SetIndCallback(void (*cb)(void *arg));
 extern u16 WM_GetAllowedChannel(void);
 extern u16 WM_GetDispersionBeaconPeriod(void);
@@ -239,11 +239,11 @@ static inline BOOL WH_Destroy(WhMgr *wh) {
     if (wh != NULL) {
         if (wh != NULL) {
             if (wh->recvBufRaw != NULL) {
-                func_0203df0c(wh->recvBufRaw);
+                Heap_FreeHi(wh->recvBufRaw);
                 wh->recvBufRaw = NULL;
             }
             if (wh->sendBufRaw != NULL) {
-                func_0203df0c(wh->sendBufRaw);
+                Heap_FreeHi(wh->sendBufRaw);
                 wh->sendBufRaw = NULL;
             }
             Heap_Free(wh);

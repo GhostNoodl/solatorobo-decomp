@@ -29,7 +29,7 @@ u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep) {
     return (u16)(cur + step);
 }
 
-BOOL func_01ffc198(VecFx32 *a, VecFx32 *b, fx32 r) {
+BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, fx32 r) {
     VecFx32 d;
     BOOL ret = FALSE;
 
@@ -48,7 +48,7 @@ BOOL func_01ffc23c(VecFx32 *p, VecFx32 *min, VecFx32 *max) {
     return HitInBox(p, min, max);
 }
 
-BOOL func_01ffc2a4(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max) {
+BOOL Hit_DiffInBox(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max) {
     VecFx32 d;
 
     d.x = a->x - b->x;

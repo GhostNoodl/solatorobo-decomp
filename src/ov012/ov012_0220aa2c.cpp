@@ -44,11 +44,11 @@ void func_ov012_02206400(Ov012Actor *self) {
         func_02049de8(data_02097e4c, 0x4f);
         e = func_02065f88(4, &self->pos);
         e->v0c(0xe66);
-        func_020639d4(e, 0x56, 0);
+        EffectObj_AddSndCue(e, 0x56, 0);
         func_02065f88(0x6b, &self->pos);
         e = func_02065f88(0x57c, &self->pos);
         e->v0c(0x1b33);
-        func_020639d4(e, 0x79, 0);
+        EffectObj_AddSndCue(e, 0x79, 0);
         func_ov000_0218996c(10, 10);
         func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
         self->v08();
@@ -220,8 +220,8 @@ void func_ov012_02206718(Ov012ActExVt_0220b150 *self) {
             func_ov000_0218996c(0x14, 0x1e);
             e = func_02065f88(0x65, &self->pos);
             e->v0c(0x1800);
-            func_020639d4(e, 0x56, 0);
-            func_020639d4(e, 0x32, 5);
+            EffectObj_AddSndCue(e, 0x56, 0);
+            EffectObj_AddSndCue(e, 0x32, 5);
             self->unk_40->state = 10;
         }
         if (++self->unk_e0 < 100) {
@@ -559,7 +559,7 @@ void func_ov012_0220717c(Ov012ActEx_02207018 *self) {
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
         if (self->unk_48->unk_50 & 0x60000000) {
             self->unk_d0 |= 0x200000;
-            func_ov003_021daa6c(((void *)self->unk_d4), 0xfa);
+            Ov003FxList_Kill(((void *)self->unk_d4), 0xfa);
             self->unk_40->state = 10;
         }
         break;
@@ -578,7 +578,7 @@ void func_ov012_0220717c(Ov012ActEx_02207018 *self) {
         }
         e = func_02065f88(0x66, &self->pos);
         FLD(s32, e, 0x3c) = 0x800;
-        func_020639d4(e, 0x3e, 0);
+        EffectObj_AddSndCue(e, 0x3e, 0);
         func_ov003_021da9ac(((void *)self->unk_d4), 0xff, e);
         for (i = 0; i < 3; i++) {
             s32 a;
@@ -619,7 +619,7 @@ void func_ov012_0220717c(Ov012ActEx_02207018 *self) {
         u8 i;
         Ov012Rot rr;
         func_ov000_0219aca8(self, self, self->unk_4c->unk_08, self->unk_4c->unk_0a, &c, 0, 0x4000, 0, 100, 0x1000);
-        o = (Ov012V *)func_020657b0(data_0214a420, func_ov003_021daa3c(((void *)self->unk_d4), 0xff));
+        o = (Ov012V *)func_020657b0(data_0214a420, Ov003FxList_Get(((void *)self->unk_d4), 0xff));
         if (o != NULL) {
             v = FLD(Ov012Vec, o, 0x40);
             v.x += 0x266;
@@ -633,7 +633,7 @@ void func_ov012_0220717c(Ov012ActEx_02207018 *self) {
             func_ov000_02198360(self->unk_40, 0x15, 0);
         }
         for (i = 0; i < 3; i++) {
-            o = (Ov012V *)func_020657b0(data_0214a420, func_ov003_021daa3c(((void *)self->unk_d4), (u8)(0xfd - i)));
+            o = (Ov012V *)func_020657b0(data_0214a420, Ov003FxList_Get(((void *)self->unk_d4), (u8)(0xfd - i)));
             if (o != NULL) {
                 v = FLD(Ov012Vec, o, 0x40);
                 v.x += 0xcd;

@@ -45,7 +45,7 @@ extern BOOL NNS_G2dGetUnpackedCharacterData(void *data, void *out);
 extern BOOL NNS_G2dGetUnpackedPaletteData(void *data, void *out);
 extern BOOL NNS_G2dGetUnpackedPaletteCompressInfo(void *data, void *out);
 extern void *Heap_Alloc(u32 size);
-extern void func_0203df40(void *ptr);
+extern void Heap_FreeLo(void *ptr);
 extern BOOL func_02046e28(void *arg);
 extern void *data_02097e44;
 
@@ -108,7 +108,7 @@ void func_020359fc(const char *name, const char *arcName, u16 id, u8 toFront) {
     STD_CopyString(node->u.arc.name, arcName);
 }
 
-void func_02035a74(ResList *list) {
+void ResMgr_ReleaseList(ResList *list) {
     ResMgr *mgr = data_02097cdc;
     ResNode *node;
     for (node = mgr->head; node != NULL; node = node->next) {
@@ -259,7 +259,7 @@ void ResMgr_Create(void) {
     if (data_02097cdc != NULL) {
         return;
     }
-    data_02097cdc = (ResMgr *)func_0203dec8(sizeof(ResMgr), 4);
+    data_02097cdc = (ResMgr *)Heap_AllocLo(sizeof(ResMgr), 4);
     func_020363d8(data_02097cdc);
 }
 
@@ -270,7 +270,7 @@ void func_020363d8(ResMgr *mgr) {
     FS_Init(-1);
     mgr->unk_7bb4 = NULL;
     size = FS_TryLoadTable(NULL, 0);
-    mgr->unk_7bb4 = func_0203dec8(size, 4);
+    mgr->unk_7bb4 = Heap_AllocLo(size, 4);
     FS_TryLoadTable(mgr->unk_7bb4, size);
     data_02097dd0->cur = data_02097dd0->heapLo;
     loader = (ResLoader *)Heap_Alloc(0x40c);
@@ -347,7 +347,7 @@ ResNode *func_0203662c(ResMgr *mgr) {
             }
         }
     } else {
-        node = (ResNode *)func_0203dec8(sizeof(ResNode), 4);
+        node = (ResNode *)Heap_AllocLo(sizeof(ResNode), 4);
         MI_CpuFill8(node, 0, sizeof(ResNode));
         node->heapAllocated = TRUE;
     }
@@ -360,7 +360,7 @@ static inline void ResMgr_FreeNode(ResMgr *mgr, ResNode *node) {
         MI_CpuFill8(node, 0, sizeof(ResNode));
         mgr->freeNode = node;
     } else {
-        func_0203df40(node);
+        Heap_FreeLo(node);
     }
     mgr->numNodes--;
 }
@@ -827,7 +827,7 @@ extern void func_0203581c(ResLoader *loader);
 extern u8 *func_02035890(ResRing *ring);
 extern u32 func_02035904(ResRing *ring);
 extern BOOL FS_SeekFile(FSFile *file, s32 offset, int whence);
-extern void func_0203df0c(void *ptr);
+extern void Heap_FreeHi(void *ptr);
 
 static inline BOOL ResName_Match(const char *a, const char *b) {
     int i;
@@ -860,7 +860,7 @@ BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
         req->index = 0;
         STD_CopyString(path, node->name);
         STD_ConcatenateString(path, data_0208b3af);
-        req->unk_04 = (u32)func_0203dec8(8, 4);
+        req->unk_04 = (u32)Heap_AllocLo(8, 4);
         if (func_02038284(mgr, path, 8, (void *)req->unk_04) != NULL) {
             again = TRUE;
             mgr->loadStep = 1;
@@ -874,7 +874,7 @@ BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
             break;
         }
         size = ((ResArcHeader *)req->unk_04)->count << 5;
-        req->entries = (ResFileEntry *)func_0203de84(size, -4);
+        req->entries = (ResFileEntry *)Heap_AllocHi(size, -4);
         if (func_02038284(mgr, NULL, size, req->entries) != NULL) {
             mgr->loadStep = 3;
             again = TRUE;
@@ -931,7 +931,7 @@ BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
             }
         }
         size = entry->attr2 >> 8;
-        req->data = func_0203de84(size, 4);
+        req->data = Heap_AllocHi(size, 4);
         if (entry->attr2 & 0xf0) {
             ResLoader *loader = mgr->loader;
             ResRing *ring;
@@ -1020,11 +1020,11 @@ BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
         }
     case 50:
         if (req->unk_04 != 0) {
-            func_0203df40((void *)req->unk_04);
+            Heap_FreeLo((void *)req->unk_04);
             req->unk_04 = 0;
         }
         if (req->entries != NULL) {
-            func_0203df0c(req->entries);
+            Heap_FreeHi(req->entries);
             req->entries = NULL;
         }
         FS_CloseFile(&mgr->file);
@@ -1033,15 +1033,15 @@ BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
         break;
     case 100:
         if (req->unk_04 != 0) {
-            func_0203df40((void *)req->unk_04);
+            Heap_FreeLo((void *)req->unk_04);
             req->unk_04 = 0;
         }
         if (req->entries != NULL) {
-            func_0203df0c(req->entries);
+            Heap_FreeHi(req->entries);
             req->entries = NULL;
         }
         if (req->data != NULL) {
-            func_0203df0c(req->data);
+            Heap_FreeHi(req->data);
             req->data = NULL;
         }
         FS_CloseFile(&mgr->file);

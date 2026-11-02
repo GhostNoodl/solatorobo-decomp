@@ -6,7 +6,7 @@ extern VFunc data_0208ba70[];
 
 void func_0204c7d0(void *p);
 
-s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
+s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 
 void func_ov002_021e331c(void *self) {
     u8 *p;
@@ -25,7 +25,7 @@ void func_ov002_021e331c(void *self) {
     FIELD(p, 0x28, s32) = 8;
     p = FIELD(self, 0x34, u8 *);
     FIELD(p, 0x24, s32) = FIELD(self, 0x3c, s32);
-    FIELD(p, 0x4c, s32) = func_0204c4fc(FIELD(p, 0x28, s32), FIELD(p, 0x38, s32), FIELD(p, 0x24, s32), p + 0x44, p + 0x48, FIELD(p, 0x37, s8) != 0);
+    FIELD(p, 0x4c, s32) = Text_Measure(FIELD(p, 0x28, s32), FIELD(p, 0x38, s32), FIELD(p, 0x24, s32), p + 0x44, p + 0x48, FIELD(p, 0x37, s8) != 0);
     FIELD(data_02097ce0, 0x4, s32) = FIELD(p, 0x28, s32);
     FIELD(FIELD(self, 0x34, void *), 0x4, u32) = (FIELD(FIELD(self, 0x34, void *), 0x4, u32) & ~0x1f00) | 0x1e00;
     FIELD(FIELD(self, 0x34, void *), 0x4, u32) |= 0x40;

@@ -254,7 +254,7 @@ extern ov006_Unk021ccd6c *data_ov000_021ccd6c;
 extern u8 *data_ov000_021ccd54;
 extern void *data_02097e4c;
 
-void func_020656b4(void *p);
+void EffectMgr_FreeAll(void *p);
 void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(void *p);
 void func_ov000_021b53f4(void *p);
@@ -267,7 +267,7 @@ void func_ov000_021b5dc0(void *p);
 int func_0206e264(ov006_Party *party);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 ov006_Prop *func_ov006_021ea430(u32 id, u8 a, const ov006_Pos *pos, const ov006_Rot *rot);
-void func_ov000_0218c208(void *a, const ov006_Pos *pos, u16 rot);
+void Obj0218c208_AddPoint(void *a, const ov006_Pos *pos, u16 rot);
 void func_ov000_0218be54(void *p);
 BOOL ActorMgr_IsReady(void *p);
 void func_0204a2f0(void *a, u16 b);
@@ -289,7 +289,7 @@ BOOL func_ov006_021d630c(ov006_Task021d630c *self) {
     zero = i;
     switch (self->subState) {
     case 0:
-        func_020656b4(data_0214a420);
+        EffectMgr_FreeAll(data_0214a420);
         ((ov006_Bits0c *)(data_ov000_021ccd64 + 0xc))->b0 = 1;
         func_ov000_0218be9c(data_ov000_021ccd64);
         ActorMgr_DestroyAll(data_ov000_021ccd68);
@@ -377,7 +377,7 @@ BOOL func_ov006_021d630c(ov006_Task021d630c *self) {
                 ov006_Prop *prop = func_ov006_021ea430(slot->unkC, j, &pos, &rot);
                 if (prop != NULL) {
                     slot->actorId = prop->unkC;
-                    func_ov000_0218c208(data_ov000_021ccd64, &pos, rot.y);
+                    Obj0218c208_AddPoint(data_ov000_021ccd64, &pos, rot.y);
                 }
             }
             if (j == data_ov006_021ec884->unk5) {
@@ -503,10 +503,10 @@ ov006_Pos021d6724 *Ov006Vt_021ec2ac_Ctor(void *p);
 void func_ov006_021e279c(ov006_Pos021d6724 *p);
 BOOL func_0203e688(void);
 void func_02039518(void *p);
-void func_ov006_021e4a80(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
+void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 u16 func_02046ab4(ov006_Unk02097e40 *a);
 u16 func_ov006_021e60e8(int type, u16 mask);
-void func_ov006_021e4b90(ov006_Unk021ec888 *self);
+void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self);
 
 static inline void ov006_Gauge_Init(ov006_Gauge021d6724 *g, int a, int b, int c) {
     if (g->unk1C != NULL) {
@@ -606,7 +606,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
             msg.unk4 = 0;
             msg.unk8 = 0;
             msg.unkC = 0;
-            func_ov006_021e4a80(data_ov006_021ec888, 7, 3, &msg, 0x10);
+            ov006_Menu_SetOwnEntry(data_ov006_021ec888, 7, 3, &msg, 0x10);
             if (func_02046ab4(data_02097e40) == 0) {
                 self->subState = 20;
             } else {
@@ -631,7 +631,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
             msg.unk4 = 0;
             msg.unk8 = 0;
             msg.unkC = 0;
-            func_ov006_021e4a80(data_ov006_021ec888, 8, 3, &msg, 0x10);
+            ov006_Menu_SetOwnEntry(data_ov006_021ec888, 8, 3, &msg, 0x10);
             self->subState++;
         }
         break;
@@ -652,7 +652,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         self->subState = 40;
     }
     case 40:
-        func_ov006_021e4b90(data_ov006_021ec888);
+        ov006_Menu_ClearEntries(data_ov006_021ec888);
         self->subState = -1;
         result = TRUE;
         break;

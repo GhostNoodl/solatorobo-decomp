@@ -620,7 +620,7 @@ extern void HitSphere_Link(Ov003KbCtl *ctl);
 extern Ov003KbPlayer *func_ov000_0219bf90(void);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
-extern void func_02065804(void *mgr, void *e);
+extern void EffectMgr_Kill(void *mgr, void *e);
 extern Ov003KbFxEnt *func_020657b0(void *mgr, void *e);
 
 static inline BOOL Ov003Kb_GameBusy(Ov003KbGame *g) {
@@ -751,7 +751,7 @@ void func_ov003_021d5900(Ov003Kb *self) {
         self->unk_b6 = 0;
         self->unk_ea_0 = self->unk_b0->unk_0a_7;
         if (self->unk_e4 != NULL) {
-            func_02065804(data_0214a420, self->unk_e4);
+            EffectMgr_Kill(data_0214a420, self->unk_e4);
             self->unk_e4 = NULL;
         }
         if (self->unk_e4 == NULL && !z) {
@@ -852,7 +852,7 @@ void func_ov003_021d5900(Ov003Kb *self) {
         }
         if (self->unk_e8 == 0) {
             if (self->unk_e4 != NULL) {
-                func_02065804(data_0214a420, self->unk_e4);
+                EffectMgr_Kill(data_0214a420, self->unk_e4);
                 self->unk_e4 = NULL;
             }
             self->def->unk_1a = 0;

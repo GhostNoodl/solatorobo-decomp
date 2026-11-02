@@ -40,7 +40,7 @@ static inline void Obj021c628c_SetText(Obj021c628c *self, u32 text) {
     self->unk_a0->font = 8;
     win = self->unk_a0;
     win->str = text;
-    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+    win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
     data_02097ce0->unk_004 = win->font;
     self->unk_a0->noVram = 1;
     self->unk_a0->unk_4_8 = 0x1e;

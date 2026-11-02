@@ -10,7 +10,7 @@ static inline void Ov015Anim_SetA(Ov015Anim *n, const char *a, const char *b) {
     n->ownMdl = 1;
 }
 
-static inline void Ov015Anim_SetB(Ov015Anim *n, const char *a, const char *b) {
+static inline void Ov015Anim_SetAnm(Ov015Anim *n, const char *a, const char *b) {
     STD_CopyString(n->anmDir, a);
     STD_CopyString(n->anmName, b);
     n->ownAnm = 1;
@@ -28,7 +28,7 @@ extern char data_ov015_02212def[];
 extern char data_ov015_02212df5[];
 extern char *data_ov015_02212db0[];
 char *func_0207011c(u16 id);
-void func_ov000_02191b70(void *p);
+void Shadow_Load(void *p);
 
 void func_ov015_02209364(Ov015Fish *self) {
     Ov015Anim *n1 = (Ov015Anim *)&self->res;
@@ -41,7 +41,7 @@ void func_ov015_02209364(Ov015Fish *self) {
             {
                 const char *d = data_ov015_02212def;
                 if (d) {
-                    Ov015Anim_SetB(n1, a, d);
+                    Ov015Anim_SetAnm(n1, a, d);
                     Ov015Anim_SetD(n1, a, d);
                 }
             }
@@ -52,12 +52,12 @@ void func_ov015_02209364(Ov015Fish *self) {
         const char *a = data_ov015_02212df5;
         if (a) {
             Ov015Anim_SetA(n2, a, c);
-            Ov015Anim_SetB(n2, a, data_ov015_02212db0[3]);
+            Ov015Anim_SetAnm(n2, a, data_ov015_02212db0[3]);
         }
     }
     n1->unk_00 = 0;
     n2->unk_00 = 0;
-    func_ov000_02191b70(&self->shadow);
+    Shadow_Load(&self->shadow);
 }
 
 }

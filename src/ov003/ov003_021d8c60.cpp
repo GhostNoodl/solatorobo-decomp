@@ -113,7 +113,7 @@ extern s16 func_ov003_021d7e58(Ov003Ticker *t);
 extern void VEC_MultAdd(s32 scale, Ov003Vec *dir, Ov003Vec *src, Ov003Vec *dst);
 extern void Heap_Free(void *p);
 extern void *Heap_Alloc(u32 size);
-extern void *func_ov000_02198328(void *p);
+extern void *History_Init(void *p);
 
 void func_ov003_021d8c60(Ov003Timer *self) {
     if (self->active) {

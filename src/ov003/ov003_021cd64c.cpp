@@ -77,7 +77,7 @@ extern void func_ov000_021c2208(void *p);
 extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
 extern u32 func_02035bd4(const void *a, const void *b, s32 c);
 
-bool func_ov003_021cd64c(Ov003FlagSet *self) {
+bool Ov003TaskVt_021f78f4_GetFlag4(Ov003FlagSet *self) {
     BOOL r = self->b4 ? TRUE : FALSE;
     return r;
 }

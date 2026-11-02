@@ -38,7 +38,7 @@ BOOL func_ov000_0218ffdc(u8 *m, u8 *o, s32 a, s32 b);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void func_ov000_02190a80(void *a, s32 b);
-void func_02040578(u16 *out, VecFx32 *dir);
+void Math_DirToAngles(u16 *out, VecFx32 *dir);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
 static inline void SetNamesA021c194c(u8 *o) {
@@ -136,7 +136,7 @@ void func_ov000_021c194c(Self021c194c *self, BOOL flag, u8 *p) {
         d4.y = self->target.y - self->pos.y;
         d4.z = self->target.z - self->pos.z;
         VEC_Normalize(&d4, &d4);
-        func_02040578(a4, &d4);
+        Math_DirToAngles(a4, &d4);
         self->rx = a4[0];
         self->ry = -a4[1];
         self->state = 10;
@@ -193,7 +193,7 @@ void func_ov000_021c194c(Self021c194c *self, BOOL flag, u8 *p) {
         d.y = self->target.y - self->pos.y;
         d.z = self->target.z - self->pos.z;
         VEC_Normalize(&d, &d);
-        func_02040578(ang, &d);
+        Math_DirToAngles(ang, &d);
         self->rx = func_01ffc128(ang[0], self->rx, 0x266, 1, 0x8000);
         self->ry = func_01ffc128(-ang[1], self->ry, 0x266, 1, 0x8000);
         ry = self->ry;

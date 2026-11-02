@@ -57,7 +57,7 @@ typedef struct {
 } Ov003HitPlr;
 
 extern Ov003HitPlr *func_ov000_0219bf90(void);
-extern BOOL func_01ffc584(void *a, Ov003HitVec *v, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(void *a, Ov003HitVec *v, s32 r, s32 h);
 
 Ov003HitPlr *func_ov003_021f0868(void *a, s32 r, s32 h) {
     Ov003HitPlr *ret;
@@ -91,7 +91,7 @@ Ov003HitPlr *func_ov003_021f0868(void *a, s32 r, s32 h) {
             hh += h + 0x4000;
             rad += 0x199a;
         }
-        if (func_01ffc584(a, &v, rad, hh)) {
+        if (Hit_DiffInCylinder(a, &v, rad, hh)) {
             ret = p;
         }
     }

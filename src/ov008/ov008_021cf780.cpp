@@ -12,7 +12,7 @@ void *func_02049a48(void *a, int b, int c, int d, int e);
 void func_ov000_021865f8(void *p);
 void func_02062524(void);
 void func_ov000_02187b50(void *p);
-Ov008Def *func_0206e7d0(u8 id);
+Ov008Def *Lang_GetGroup(u8 id);
 u16 func_020594bc(void *a, int b, int c, int d);
 Ov008Item *func_ov000_02154b58(void *a, u32 id);
 
@@ -97,7 +97,7 @@ BOOL func_ov008_021cf878(void *self, Ov008Sel *sel) {
 
 #pragma force_active on
 void func_ov008_021cf9b8(Ov008Mgr *m, u32 id) {
-    Ov008Def *e = func_0206e7d0(id);
+    Ov008Def *e = Lang_GetGroup(id);
     Ov008Item *p;
     m->menu->v74(e->unk_00, id, 0xffff, 0xffff);
     if (!func_020594bc(data_02fe152c, 0, 0x201, id)) {

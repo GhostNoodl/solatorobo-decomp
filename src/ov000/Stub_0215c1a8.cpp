@@ -56,9 +56,9 @@ extern VFunc0215c1bc data_0208ba70[];
 extern char data_ov000_021cabf4[];
 extern u8 *data_02097ce0;
 void *Heap_Alloc(u32 size);
-void *func_0203de84(u32 size, u32 align);
+void *Heap_AllocHi(u32 size, u32 align);
 void func_0204c7d0(void *p);
-s32 func_0204c4fc(s32 a, s32 b, char *c, void *d, void *e, BOOL f);
+s32 Text_Measure(s32 a, s32 b, char *c, void *d, void *e, BOOL f);
 void func_0204c6bc(char *s, s32 a, s32 *out, void *cb);
 
 static inline BOOL Bit3_0215c1bc(VObj *self) {
@@ -139,7 +139,7 @@ void func_ov000_0215c1bc(Obj0215c1bc *self, u32 flags, char *str) {
         lines[i] = NULL;
     }
     if (STD_SearchString(str, data_ov000_021cabf4) != NULL) {
-        self->unk_90 = (char *)func_0203de84(STD_GetStringLength(str) + 1, 4);
+        self->unk_90 = (char *)Heap_AllocHi(STD_GetStringLength(str) + 1, 4);
         STD_CopyString(self->unk_90, str);
         str = self->unk_90;
         p = STD_SearchString(str, data_ov000_021cabf4);
@@ -183,7 +183,7 @@ void func_ov000_0215c1bc(Obj0215c1bc *self, u32 flags, char *str) {
     }
     self->unk_98 = tt;
     tt->str = str;
-    tt->unk_4c = func_0204c4fc(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
+    tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
     LFLD(s32, data_02097ce0, 4) = tt->unk_28;
     for (i = 1; i < 12; i++) {
         if (lines[i] != NULL) {
@@ -205,7 +205,7 @@ void func_ov000_0215c1bc(Obj0215c1bc *self, u32 flags, char *str) {
             }
             ((Text0215c1bc **)((u8 *)self + 0x98))[i] = tt;
             tt->str = lines[i];
-            tt->unk_4c = func_0204c4fc(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
+            tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
             LFLD(s32, data_02097ce0, 4) = tt->unk_28;
         }
     }
@@ -327,20 +327,20 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
     if (STD_SearchString(str, data_ov000_021cabf4) != NULL || func_02040ab0(str, '%') != NULL) {
         len = STD_GetStringLength(str) + 1;
         if (func_02040ab0(str, '%') != NULL) {
-            self->unk_90 = (char *)func_0203de84(len + STD_GetStringLength(lines[0]), 4);
+            self->unk_90 = (char *)Heap_AllocHi(len + STD_GetStringLength(lines[0]), 4);
             func_02070874(self->unk_90, str, lines[0]);
             id = 0;
             lines[0] = NULL;
             self->unk_94--;
         } else if (func_02040ab0(str, '*') != NULL) {
-            self->unk_90 = (char *)func_0203de84(len + STD_GetStringLength(lines[0]), 4);
+            self->unk_90 = (char *)Heap_AllocHi(len + STD_GetStringLength(lines[0]), 4);
             func_020707e8(self->unk_90, str, lines[0], '*');
             self->unk_94--;
             id = 0;
             lines[0] = NULL;
             star = TRUE;
         } else {
-            self->unk_90 = (char *)func_0203de84(len, 4);
+            self->unk_90 = (char *)Heap_AllocHi(len, 4);
             STD_CopyString(self->unk_90, str);
         }
         p = self->unk_90;
@@ -397,7 +397,7 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
         }
         self->unk_98 = tt;
         tt->str = lines[0];
-        tt->unk_4c = func_0204c4fc(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
+        tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
         LFLD(s32, data_02097ce0, 4) = tt->unk_28;
     }
     for (i = 1; i < 12; i++) {
@@ -419,7 +419,7 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
             }
             ((Text0215c1bc **)((u8 *)self + 0x98))[i] = tt;
             tt->str = lines[i];
-            tt->unk_4c = func_0204c4fc(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
+            tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
             LFLD(s32, data_02097ce0, 4) = tt->unk_28;
         }
     }

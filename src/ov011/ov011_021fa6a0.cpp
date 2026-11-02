@@ -288,7 +288,7 @@ void func_ov011_021facc4(Ov011Mgr *self) {
 
 extern "C" {
 
-BOOL func_ov003_021d7a44(void *self, const VecFx32 *target, const VecFx32 *start, s32 speed, s32 maxDist, u8 noSnap);
+BOOL Ov003Mover_Start(void *self, const VecFx32 *target, const VecFx32 *start, s32 speed, s32 maxDist, u8 noSnap);
 void func_ov003_021d7c08(void *self, const VecFx32 *target);
 void func_ov011_02201214(void *self, void *p);
 
@@ -319,7 +319,7 @@ void func_ov011_021fb02c(Ov011Mgr *self) {
             a = Ov011_FindActor(self->ids[i]);
             if (a != NULL) {
                 p = a->pos;
-                func_ov003_021d7a44(&self->arr8[i], &v, &p, 0x52, 0x3000, 0);
+                Ov003Mover_Start(&self->arr8[i], &v, &p, 0x52, 0x3000, 0);
             }
         }
         self->state++;

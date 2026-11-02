@@ -35,7 +35,7 @@ void func_ov000_021c2c0c(Obj021c2c0c *self, u32 text) {
     self->unk_34->font = 8;
     win = self->unk_34;
     win->str = text;
-    win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+    win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
     data_02097ce0->unk_004 = win->font;
     self->unk_34->unk_4_8 = 0x1e;
     self->unk_34->unk_vf14();

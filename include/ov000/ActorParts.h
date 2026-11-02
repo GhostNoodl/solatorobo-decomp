@@ -8,7 +8,7 @@
 
 #define HISTORY_LEN 7
 
-// The actor's state block (Actor::fsm, ctor func_ov000_02198328, 0x14 bytes): the step and
+// The actor's state block (Actor::fsm, ctor History_Init, 0x14 bytes): the step and
 // frame timer of the current state, flag bits, and the last states. func_ov000_02198360
 // switches to a new state and pushes the old one (History_0219830c.c).
 typedef struct ActorSub40 {

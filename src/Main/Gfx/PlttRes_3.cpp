@@ -23,7 +23,7 @@ extern void NNS_G2dLoadPaletteEx(int *fmt, u16 *count, u32 addr, int idx, PlttSu
 
 
 extern void func_0203e58c(u32 id);
-extern void func_0203be50(GfxSys *sys, int shift, int count, int idx);
+extern void GfxSys_FreeSlots(GfxSys *sys, int shift, int count, int idx);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(u32 key);
 
 void func_02041218(PlttRes *res) {
@@ -41,17 +41,17 @@ void func_02041278(PlttRes *res) {
             if (map[i] != -1) {
                 if (res->unk_28 == 0) {
                     if (res->fmt == 3) {
-                        func_0203be50(data_02097d48, (u16)map[i], 1, 0);
+                        GfxSys_FreeSlots(data_02097d48, (u16)map[i], 1, 0);
                     } else {
-                        func_0203be50(data_02097d48, (u16)map[i], 16, 0);
+                        GfxSys_FreeSlots(data_02097d48, (u16)map[i], 16, 0);
                     }
                 } else {
-                    func_0203be50(data_02097d48, (u16)map[i], 1, 1);
+                    GfxSys_FreeSlots(data_02097d48, (u16)map[i], 1, 1);
                 }
             }
         }
         if (res->maps[1] != NULL) {
-            func_0203df0c(res->maps[1]);
+            Heap_FreeHi(res->maps[1]);
             res->maps[1] = NULL;
         }
     }
@@ -61,29 +61,29 @@ void func_02041278(PlttRes *res) {
             if (map[i] != -1) {
                 if (res->unk_28 == 0) {
                     if (res->fmt == 3) {
-                        func_0203be50(data_02097d48, (u16)map[i], 1, 2);
+                        GfxSys_FreeSlots(data_02097d48, (u16)map[i], 1, 2);
                     } else {
-                        func_0203be50(data_02097d48, (u16)map[i], 16, 2);
+                        GfxSys_FreeSlots(data_02097d48, (u16)map[i], 16, 2);
                     }
                 } else {
-                    func_0203be50(data_02097d48, (u16)map[i], 1, 3);
+                    GfxSys_FreeSlots(data_02097d48, (u16)map[i], 1, 3);
                 }
             }
         }
         if (res->maps[2] != NULL) {
-            func_0203df0c(res->maps[2]);
+            Heap_FreeHi(res->maps[2]);
             res->maps[2] = NULL;
         }
     }
     if (res->key != 0) {
         NNS_GfdDefaultFuncFreePlttVram(res->key);
         if (res->maps[0] != NULL) {
-            func_0203df0c(res->maps[0]);
+            Heap_FreeHi(res->maps[0]);
             res->maps[0] = NULL;
         }
     }
     if (res->loaded) {
-        func_0203df0c(res->buf);
+        Heap_FreeHi(res->buf);
     }
 }
 

@@ -7,11 +7,11 @@ extern "C" {
 extern u8 data_ov010_0220f394[];
 extern u8 data_ov010_0220f310[];
 extern u8 data_ov010_0220f1d0[];
-extern BOOL func_ov003_021d984c(void *p, void *a);
+extern BOOL Ov003Sequence_HasEntries(void *p, void *a);
 extern void func_ov003_021d95e8(void *p, void *a, s32 b);
 
 static inline void Ov010_PlayAnim(Ov010Obj0220ffe4 *self, void *anim, s32 n) {
-    if (!func_ov003_021d984c((u8 *)self + 0x160, anim)) {
+    if (!Ov003Sequence_HasEntries((u8 *)self + 0x160, anim)) {
         func_ov003_021d95e8((u8 *)self + 0x160, anim, n);
     }
 }

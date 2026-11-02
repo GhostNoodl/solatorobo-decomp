@@ -16,7 +16,7 @@ SIZE_ASSERT(Obj021bb810, 0x20);
 extern "C" {
 
 extern void *data_0214a420;
-BOOL func_02065748(void *p, VObj *obj);
+BOOL EffectMgr_Contains(void *p, VObj *obj);
 
 static inline void Obj021bb810_Init(Obj021bb810 *self, s32 a) {
     self->unk_00 = 1;
@@ -41,7 +41,7 @@ void func_ov000_021bb810(Obj021bb810 *self, s32 a) {
 }
 
 void func_ov000_021bb840(Obj021bb810 *self) {
-    if (func_02065748(data_0214a420, self->unk_10)) {
+    if (EffectMgr_Contains(data_0214a420, self->unk_10)) {
         void *saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->unk_10 != NULL) {

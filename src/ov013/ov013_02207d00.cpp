@@ -195,7 +195,7 @@ void func_ov013_02207eac(Ov013Act_02207968 *self) {
 }
 
 extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern Ov013Vec func_ov003_021dadc0(const Ov013Vec *a, const Ov013Vec *b);
+extern Ov013Vec Ov003Vec_DirXZ(const Ov013Vec *a, const Ov013Vec *b);
 extern void Actor_TurnToActor(Ov013Actor *self, Ov013Actor *target, s32 a);
 extern void Actor_MoveToPos(Ov013Actor *self, Ov013Vec *v, s32 a);
 extern Ov013Vec data_ov013_0220b3b0;
@@ -227,7 +227,7 @@ static inline Ov013Vec Ov013_ApproachPoint(Ov013Actor *self) {
         Ov013Vec tp;
         Ov013Vec dir;
         Ov013_VecCopy(&tp, &t->pos);
-        Ov013_VecCopyR(&dir, func_ov003_021dadc0(&tp, &self->pos));
+        Ov013_VecCopyR(&dir, Ov003Vec_DirXZ(&tp, &self->pos));
         VEC_MultAdd(0x7800, &dir, &tp, &res);
     }
     return res;
@@ -279,13 +279,13 @@ void func_ov013_022080bc(Ov013Act_02207968 *self) {
     Actor_MoveToPos(self, &v, 0);
     func_ov000_021987b8(self->unk_48, 1, 0, 0);
     if (Ov013_DistXZ3(&tpos, &self->pos) < 0x7800) {
-        Ov013Vec dir = func_ov003_021dadc0(&tpos, &self->pos);
+        Ov013Vec dir = Ov003Vec_DirXZ(&tpos, &self->pos);
         VEC_MultAdd(0x7800, &dir, &tpos, &v);
         self->unk_b8 = v;
     }
     d = Ov013_DistXZc(-0x2d9a, -0x452, &self->pos);
     if (d > 0xf000) {
-        Ov013Vec dir = func_ov003_021dadc0(&self->pos, &data_ov013_0220b3b0);
+        Ov013Vec dir = Ov003Vec_DirXZ(&self->pos, &data_ov013_0220b3b0);
         VEC_MultAdd(d - 0xf000, &dir, &data_ov013_0220b3b0, &v);
         self->unk_b8 = v;
     }
@@ -307,7 +307,7 @@ void func_ov013_022080bc(Ov013Act_02207968 *self) {
 }
 
 extern char data_ov013_0220be82[];
-extern BOOL func_01ffc584(const Ov013Vec *a, const Ov013Vec *b, s32 c, s32 d);
+extern BOOL Hit_DiffInCylinder(const Ov013Vec *a, const Ov013Vec *b, s32 c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void *func_ov000_02191318(void *a, s32 b);
 extern void Actor_TurnToPos(Ov013Actor *self, Ov013Vec *p, s32 a);
@@ -327,7 +327,7 @@ static inline Ov013Vec Ov013_ApproachPointK(Ov013Actor *self, s32 k) {
         Ov013Vec tp;
         Ov013Vec dir;
         Ov013_VecCopy(&tp, &t->pos);
-        Ov013_VecCopyR(&dir, func_ov003_021dadc0(&tp, &self->pos));
+        Ov013_VecCopyR(&dir, Ov003Vec_DirXZ(&tp, &self->pos));
         VEC_MultAdd(k, &dir, &tp, &res);
     }
     return res;
@@ -347,7 +347,7 @@ void func_ov013_02208500(Ov013Act_02207968 *self) {
         func_ov000_02190cb0(self->unk_38, data_ov013_0220be82, 0x2ab, 0);
         tp = t->pos;
         {
-            Ov013Vec dir = func_ov003_021dadc0(&tp, &self->pos);
+            Ov013Vec dir = Ov003Vec_DirXZ(&tp, &self->pos);
             VEC_MultAdd(0xc000, &dir, &tp, &v);
         }
         v.y = 0x5800;
@@ -373,16 +373,16 @@ void func_ov013_02208500(Ov013Act_02207968 *self) {
             return;
         }
         v = Ov013_ApproachPointK(self, -0x4000);
-        if (!func_01ffc584(&v, &data_ov013_0220b3b0, 0x7000, 0x2800) || func_01ffc584(&v, &data_ov013_0220b3b0, 0x5800, 0x2800)) {
-            Ov013Vec dir = func_ov003_021dadc0(&data_ov013_0220b3b0, &v);
+        if (!Hit_DiffInCylinder(&v, &data_ov013_0220b3b0, 0x7000, 0x2800) || Hit_DiffInCylinder(&v, &data_ov013_0220b3b0, 0x5800, 0x2800)) {
+            Ov013Vec dir = Ov003Vec_DirXZ(&data_ov013_0220b3b0, &v);
             VEC_MultAdd(0x7000, &dir, &data_ov013_0220b3b0, &v);
         }
         {
         Ov013Vec tp;
         tp = t->pos;
         {
-        Ov013Vec a = func_ov003_021dadc0(&self->pos, &tp);
-        Ov013Vec b = func_ov003_021dadc0(&data_ov013_0220b3b0, &tp);
+        Ov013Vec a = Ov003Vec_DirXZ(&self->pos, &tp);
+        Ov013Vec b = Ov003Vec_DirXZ(&data_ov013_0220b3b0, &tp);
         if ((s32)(((s64)a.x * b.x + (s64)a.y * b.y + (s64)a.z * b.z + 0x800) >> 12) < 0x19a) {
             VEC_MultAdd(0x7000, &a, &data_ov013_0220b3b0, &v);
         }
@@ -406,7 +406,7 @@ void func_ov013_02208500(Ov013Act_02207968 *self) {
             self->pos.y = 0x5800;
             self->unk_a0 = 0;
         }
-        Ov013_VecCopyR(&d, func_ov003_021dadc0(&data_ov013_0220b3b0, &v));
+        Ov013_VecCopyR(&d, Ov003Vec_DirXZ(&data_ov013_0220b3b0, &v));
         VEC_MultAdd(0xf000, &d, &data_ov013_0220b3b0, &p);
         Actor_TurnToPos(self, &p, 0x400);
         if (self->unk_38->unk_c4 == 3) {
@@ -429,7 +429,7 @@ void func_ov013_02208500(Ov013Act_02207968 *self) {
         Ov013Vec d;
         self->unk_94_1 = 0;
         self->rot[0] = func_01ffc128(0x271c, self->rot[0], 0xcd, 1, 0x8000);
-        Ov013_VecCopyR(&d, func_ov003_021dadc0(&data_ov013_0220b3b0, &self->pos));
+        Ov013_VecCopyR(&d, Ov003Vec_DirXZ(&data_ov013_0220b3b0, &self->pos));
         VEC_MultAdd(0x5000, &d, &self->pos, &p);
         Actor_TurnToPos(self, &p, 0x400);
         if (self->pos.y <= 0x1b33) {
@@ -502,14 +502,14 @@ void func_ov013_02208bfc(Ov013Act_02207968 *self) {
         if (pt->y > 0x2000) {
             pt->y = 0x2000;
         }
-        if (!func_01ffc584(pt, &data_ov013_0220b3b0, 0x6000, 0x2800)) {
-            Ov013Vec dir = func_ov003_021dadc0(&data_ov013_0220b3b0, pt);
+        if (!Hit_DiffInCylinder(pt, &data_ov013_0220b3b0, 0x6000, 0x2800)) {
+            Ov013Vec dir = Ov003Vec_DirXZ(&data_ov013_0220b3b0, pt);
             VEC_MultAdd(0x5800, &dir, &data_ov013_0220b3b0, pt);
         }
         if (Ov013_DistXZ3(&self->pos, pt) < 0x5000) {
             Ov013Vec d;
             Ov013Vec q;
-            Ov013_VecCopyR(&d, func_ov003_021dadc0(pt, &self->pos));
+            Ov013_VecCopyR(&d, Ov003Vec_DirXZ(pt, &self->pos));
             VEC_MultAdd(0x5000, &d, pt, &q);
             Ov013_VecCopy(&self->unk_b8, &q);
             self->unk_48->unk_30 = 0;
@@ -614,13 +614,13 @@ void func_ov013_022090ac(Ov013Act_02207968 *self) {
                 pt->y = 0x2000;
             }
             if (Ov013_DistXZ3(pt, &self->pos) < 0x5000) {
-                Ov013Vec d = func_ov003_021dadc0(pt, &self->pos);
+                Ov013Vec d = Ov003Vec_DirXZ(pt, &self->pos);
                 Ov013Vec q;
                 VEC_MultAdd(0x5000, &d, pt, &q);
                 Ov013_VecCopy(&self->unk_b8, &q);
                 self->unk_48->unk_30 = 0;
             }
-            Ov013_VecCopyR(&self->unk_104, func_ov003_021dadc0(&self->pos, pt));
+            Ov013_VecCopyR(&self->unk_104, Ov003Vec_DirXZ(&self->pos, pt));
         } else {
             Ov013Vec w;
             s32 k;
@@ -632,8 +632,8 @@ void func_ov013_022090ac(Ov013Act_02207968 *self) {
                 k = 0x6000;
             }
             VEC_MultAdd(k, &w, pt, pt);
-            if (!func_01ffc584(pt, &data_ov013_0220b3b0, 0x6000, 0x2800)) {
-                Ov013Vec dir = func_ov003_021dadc0(&data_ov013_0220b3b0, pt);
+            if (!Hit_DiffInCylinder(pt, &data_ov013_0220b3b0, 0x6000, 0x2800)) {
+                Ov013Vec dir = Ov003Vec_DirXZ(&data_ov013_0220b3b0, pt);
                 VEC_MultAdd(0x5800, &dir, &data_ov013_0220b3b0, pt);
             }
         }

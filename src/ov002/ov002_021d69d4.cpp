@@ -27,7 +27,7 @@ void func_ov002_021d6a54(void *self, void *arg, int a) {
 int func_ov002_021d6a78(VObject *self) {
     s8 base;
     FIELD(data_02097ce0, 0x4, s32) = FIELD(self, 0x1c, s32);
-    base = (*(s8 **)func_0203a4c0(data_02097ce0))[1];
+    base = (*(s8 **)GfxMgr_GetFont(data_02097ce0))[1];
     return base + self->v0x3c();
 }
 

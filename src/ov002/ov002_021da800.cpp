@@ -22,7 +22,7 @@ BOOL func_ov002_021da800(void *self) {
 void func_ov002_021da894(void *self) {
     func_ov002_021d95e0(FIELD(self, 0x4, void *));
     func_ov002_021dab58(self, FIELD(self, 0xc, s32));
-    func_02065eec(data_0214a420);
+    EffectMgr_SaveList(data_0214a420);
     *(s32 *)data_0214a420 = 0;
     FIELD(self, 0x10, u8) = 1;
 }

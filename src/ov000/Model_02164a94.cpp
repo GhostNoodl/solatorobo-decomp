@@ -94,7 +94,7 @@ typedef struct {
 
 extern "C" {
 
-void *func_0203de84(u32 size, u32 align);
+void *Heap_AllocHi(u32 size, u32 align);
 void *Heap_Alloc(u32 size);
 void MI_CpuFill8(void *dst, u32 value, u32 size);
 void func_02040be0(void *res, void *src);
@@ -154,7 +154,7 @@ void func_ov000_02164c50(Obj02164c50 *self, u8 *arg) {
     OamAttr02164c50 *oa;
     self->unk_38 = 0;
     self->unk_3c = 0;
-    p = (u8 *)func_0203de84(0xce0, 4);
+    p = (u8 *)Heap_AllocHi(0xce0, 4);
     self->unk_30 = p;
     MI_CpuFill8(p, 0, 0xce0);
     p[0] = 1;
@@ -231,20 +231,20 @@ void func_ov000_02164c50(Obj02164c50 *self, u8 *arg) {
         p[9]++;
         {
             u32 sz = n2 * 0x14;
-            LFLD(void *, p, 0xc7c) = func_0203de84(sz, 4);
+            LFLD(void *, p, 0xc7c) = Heap_AllocHi(sz, 4);
             MI_CpuFill8(LFLD(void *, p, 0xc7c), 0, sz);
         }
         {
             u32 sz = n1 * 0x18;
-            LFLD(void *, p, 0xc80) = func_0203de84(sz, 4);
+            LFLD(void *, p, 0xc80) = Heap_AllocHi(sz, 4);
             MI_CpuFill8(LFLD(void *, p, 0xc80), 0, sz);
         }
-        LFLD(void *, p, 0xc84) = func_0203de84(p[8] * 0x1c, 4);
+        LFLD(void *, p, 0xc84) = Heap_AllocHi(p[8] * 0x1c, 4);
         MI_CpuFill8(LFLD(void *, p, 0xc84), 0, p[8] * 0x1c);
-        LFLD(void *, p, 0xc88) = func_0203de84(p[9] << 3, 4);
+        LFLD(void *, p, 0xc88) = Heap_AllocHi(p[9] << 3, 4);
         MI_CpuFill8(LFLD(void *, p, 0xc88), 0, p[9] << 3);
         for (k = 0; k < p[9]; k++) {
-            LFLD(void *, LFLD(u8 *, p, 0xc88) + k * 8, 4) = func_0203de84(p[8] << 2, 4);
+            LFLD(void *, LFLD(u8 *, p, 0xc88) + k * 8, 4) = Heap_AllocHi(p[8] << 2, 4);
             MI_CpuFill8(LFLD(void *, LFLD(u8 *, p, 0xc88) + k * 8, 4), 0, p[8] << 2);
         }
     }

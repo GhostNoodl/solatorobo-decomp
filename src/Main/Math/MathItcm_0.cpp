@@ -67,7 +67,7 @@ static inline void HitAabb_FromSeg(HitAabb *box, VecFx32 *a, VecFx32 *b) {
     }
 }
 
-void func_01ff82d8(HitSegQuery *q) {
+void HitSegQuery_CalcBox(HitSegQuery *q) {
     HitAabb_FromSeg(&q->box, &q->from, &q->to);
 }
 
@@ -125,7 +125,7 @@ static inline void HitMeshBlockXf_Apply(HitMeshBlockXf *block, VecFx32 *src, Vec
     }
 }
 
-void func_01ff8464(HitSegLocal *seg, HitMeshBlockXf *block) {
+void HitSegLocal_Transform(HitSegLocal *seg, HitMeshBlockXf *block) {
     if (block->flags & 2) {
         VEC_MultAdd(block->mtx._00, &seg->from, (VecFx32 *)block->mtx.m[3], &seg->localFrom);
         VEC_MultAdd(block->mtx._00, &seg->to, (VecFx32 *)block->mtx.m[3], &seg->localTo);
@@ -169,7 +169,7 @@ static inline void HitVec_Scale(VecFx32 *v, fx32 s) {
     v->z = FX_Mul(v->z, s);
 }
 
-void func_01ff8520(HitSphereMeshQuery *q) {
+void HitSphereMeshQuery_ToLocal(HitSphereMeshQuery *q) {
     HitSphereOwner *owner = q->owner;
     fx32 r;
     MTX_MultVec43(&q->world, &owner->invMtx, &q->local);
@@ -188,7 +188,7 @@ typedef struct HitSphereLocal {
     /* 0x30 */ VecFx32 localCenter;
 } HitSphereLocal;
 
-void func_01ff85ec(HitSphereLocal *sp, HitMeshBlockXf *block) {
+void HitSphereLocal_Transform(HitSphereLocal *sp, HitMeshBlockXf *block) {
     fx32 r;
     HitMeshBlockXf_Apply(block, &sp->center, &sp->localCenter);
     r = FX_Mul(sp->radius, block->mtx._00);

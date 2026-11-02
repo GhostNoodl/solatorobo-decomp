@@ -131,7 +131,7 @@ void *func_ov015_021fa6e4(void *self) {
     return self;
 }
 
-void func_ov015_021fa6f8(Ov015Fade *self, u8 a, u8 b, s32 c, u16 d) {
+void Ov015Fade_Start(Ov015Fade *self, u8 a, u8 b, s32 c, u16 d) {
     self->alphaFrom = a;
     self->alphaTo = b;
     self->duration = c;
@@ -139,7 +139,7 @@ void func_ov015_021fa6f8(Ov015Fade *self, u8 a, u8 b, s32 c, u16 d) {
     self->time = 0;
 }
 
-void func_ov015_021fa71c(Ov015Fade *self, s32 c, u16 d) {
+void Ov015Fade_ToClear(Ov015Fade *self, s32 c, u16 d) {
     self->alphaFrom = 0x1f;
     self->alphaTo = 0;
     self->duration = c;
@@ -147,7 +147,7 @@ void func_ov015_021fa71c(Ov015Fade *self, s32 c, u16 d) {
     self->time = 0;
 }
 
-void func_ov015_021fa73c(Ov015Fade *self, s32 c, u16 d) {
+void Ov015Fade_ToOpaque(Ov015Fade *self, s32 c, u16 d) {
     self->alphaFrom = 0;
     self->alphaTo = 0x1f;
     self->duration = c;
@@ -155,7 +155,7 @@ void func_ov015_021fa73c(Ov015Fade *self, s32 c, u16 d) {
     self->time = 0;
 }
 
-void func_ov015_021fa75c(Ov015Fade *self) {
+void Ov015Fade_Reset(Ov015Fade *self) {
     self->alphaFrom = 0;
     self->alphaTo = 0;
     self->duration = 0;

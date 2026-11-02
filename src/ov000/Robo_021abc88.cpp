@@ -35,7 +35,7 @@ BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 void Actor_TurnToPos(void *self, void *v, s32 a);
 void Actor_MoveToPos(void *self, const VecFx32 *target, s32 turn);
 BOOL func_ov000_02191120(void *a);
-void func_ov000_02198d28(void *body, VecFx32 *pos, u32 angle);
+void Body_SetPos(void *body, VecFx32 *pos, u32 angle);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
 
@@ -106,8 +106,8 @@ void func_ov000_021abc88(Robo021ca458 *self) {
             self->rot_x = self->unk_76c;
             self->rot_y = self->unk_76e;
             self->rot_z = self->unk_770;
-            func_ov000_02198d28((u8 *)self + 0x2cc, (VecFx32 *)((u8 *)self + 0x70), self->rot_y);
-            func_ov000_02198d28((u8 *)self + 0x6c0, (VecFx32 *)((u8 *)self + 0x75c), self->unk_76e);
+            Body_SetPos((u8 *)self + 0x2cc, (VecFx32 *)((u8 *)self + 0x70), self->rot_y);
+            Body_SetPos((u8 *)self + 0x6c0, (VecFx32 *)((u8 *)self + 0x75c), self->unk_76e);
             self->unk_b24_2 = 0;
             self->unk_b24_1 = 1;
             self->unk_b36 = 0;

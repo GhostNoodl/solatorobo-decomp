@@ -572,7 +572,7 @@ extern void *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_0218fe1c(void *p);
 extern void *func_ov000_0218fee4(void *p);
 extern void *func_ov000_0218ea20(void *p);
-extern void func_02049564(void *a, s32 b, s32 c);
+extern void SndMgr_LoadHeapState(void *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
 extern BOOL func_ov000_0218cf5c(Ov012Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
@@ -593,7 +593,7 @@ static inline void Ov012_StopSnd(void) {
 extern "C" {
 extern void func_0203f364(Ov012Sub48 *p);
 extern void *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
-extern void func_ov003_021daa6c(void *p, s32 a);
+extern void Ov003FxList_Kill(void *p, s32 a);
 extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void func_ov000_021984f4(void *p, s32 a, s32 b);
 extern void func_ov000_0219864c(void *p, s32 a, s32 b);
@@ -606,7 +606,7 @@ extern Ov012V *func_02065f88(s32 id, Ov012Vec *pos);
 
 
 extern "C" {
-extern void func_ov003_021ceedc(void *p);
+extern void Ov003ScriptList_Init(void *p);
 extern void *Ov003Vt_021f7974_Dtor(void *p);
 extern void func_02049678(void *a, s32 b, s32 c, s32 d);
 extern BOOL SndMgr_IsLoadDone(void *a);
@@ -614,7 +614,7 @@ extern BOOL SndMgr_IsLoadDone(void *a);
 
 
 extern "C" {
-extern void func_ov003_021daab0(void *p);
+extern void Ov003FxList_KillAll(void *p);
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_0218f074(void *a, const void *b, s32 c, s32 d, s32 e, s32 f);
 extern BOOL func_ov000_021946f8(void *self);
@@ -638,7 +638,7 @@ extern void func_ov003_021d452c(void *self);
 
 extern "C" {
 extern void func_ov003_021d4fd8(void *self);
-extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 }
 
 
@@ -685,7 +685,7 @@ struct Ov012Nib {
 extern "C" {
 extern Ov012Actor *Group_SpawnActor(void *mgr, Ov012SpawnDesc *d, void *pos, void *rot, u16 a);
 extern void Target_Set(void *a, void *b);
-extern BOOL func_ov003_021daa0c(void *p, s32 a);
+extern BOOL Ov003FxList_Has(void *p, s32 a);
 extern void func_ov000_02190758(void *a, void *b, s32 c);
 extern void func_ov000_02191c24(void *a, Ov012Vec *b);
 extern BOOL func_ov000_02194c08(void *self);
@@ -705,7 +705,7 @@ extern "C" {
 extern s32 func_ov000_0219a510(void *self, u16 mask, Ov012Vec *pos, s32 r, s32 a, void **list);
 extern void *func_ov000_021985c0(void *p);
 extern void func_ov003_021f0c60(void *self, s32 a);
-extern void func_020639d4(void *e, s32 a, s32 b);
+extern void EffectObj_AddSndCue(void *e, s32 a, s32 b);
 extern void func_ov000_0218996c(u8 a, u8 b);
 }
 
@@ -804,7 +804,7 @@ extern "C" {
 extern u16 FX_AsinIdx(s32 a);
 extern u16 FX_Atan2(s32 a, s32 b);
 extern void func_ov003_021da9ac(void *p, s32 a, void *e);
-extern void *func_ov003_021daa3c(void *p, s32 a);
+extern void *Ov003FxList_Get(void *p, s32 a);
 }
 
 

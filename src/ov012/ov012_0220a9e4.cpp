@@ -156,7 +156,7 @@ extern u8 data_ov012_0220afe4[];
 Ov012Act_02202b10 *Ov012Act_02202b10_Ctor(Ov012Act_02202b10 *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov012_0220afe4;
-    func_ov003_021ceedc((u8 *)self + 0x108);
+    Ov003ScriptList_Init((u8 *)self + 0x108);
     self->unk_f8 = 0;
     self->unk_f6 = 0;
     self->unk_f0 = 0x200000;
@@ -199,7 +199,7 @@ void *Ov012Act_02202b10_DtorDelete(void *self) {
 extern "C" {
 void Ov012Act_02202b10_Init(Ov012Actor *self) {
     func_ov003_021d0fc0(self);
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     func_02049678(data_02097e4c, 4, 4, -1);
 }
 }
@@ -356,7 +356,7 @@ void Ov012Act_02202b10_Update(Ov012Act_02202b10 *self) {
                 f = TRUE;
             }
             if (kind != 0x16 && kind != 0xf && kind != 0x10 && kind != 0x11 && !f) {
-                func_ov003_021daab0(((void *)self->unk_100));
+                Ov003FxList_KillAll(((void *)self->unk_100));
                 self->unk_104 = NULL;
                 self->unk_f8 = 0;
                 if (!(self->unk_f0 & 0x400000)) {
@@ -398,8 +398,8 @@ void Ov012Act_02202b10_Update(Ov012Act_02202b10 *self) {
             func_0203f364(m);
         }
     }
-    if (func_ov003_021daa0c(((void *)self->unk_100), 0xfe) && pl != NULL && FLD(u16, pl, 0xb1e) == self->id) {
-        func_ov003_021daa6c(((void *)self->unk_100), 0xfe);
+    if (Ov003FxList_Has(((void *)self->unk_100), 0xfe) && pl != NULL && FLD(u16, pl, 0xb1e) == self->id) {
+        Ov003FxList_Kill(((void *)self->unk_100), 0xfe);
     }
     if (pl != NULL) {
         FLD(Ov012Vec, pl, 0xb90) = self->pos;
@@ -438,7 +438,7 @@ void func_ov012_022032f4(Ov012Act_02202b10 *self) {
         }
     }
     if (self->unk_40->state == 0) {
-        func_ov003_021daab0(((void *)self->unk_100));
+        Ov003FxList_KillAll(((void *)self->unk_100));
         func_ov000_02190cb0(self->unk_38, data_ov012_0220a57c, 0x89, 0);
         func_ov000_021915a0(self->unk_38);
         self->unk_40->state++;
@@ -482,7 +482,7 @@ void func_ov012_02203420(Ov012Act_02202b10 *self) {
     } else {
         tgt = data_ov012_0220a7a8[self->unk_fa];
     }
-    if (!func_01ffc198(&self->pos, &tgt, self->unk_64 + 0x400)) {
+    if (!Hit_DiffInSphere(&self->pos, &tgt, self->unk_64 + 0x400)) {
         self->unk_f6 = func_01ffc128(FX_Atan2(tgt.x - self->pos.x, tgt.z - self->pos.z), self->unk_f6, 0x1000, 1, 0x8000);
     }
     FLD(Ov012bEA, self, 0xea).b0 = 4;
@@ -542,7 +542,7 @@ void func_ov012_02203420(Ov012Act_02202b10 *self) {
             e = func_02065f88(0x192, &self->pos);
             e->v0c(0x4000);
             e->v34(self->rot[0], self->unk_f6, self->rot[2]);
-            func_020639d4(e, 0x29, 0);
+            EffectObj_AddSndCue(e, 0x29, 0);
             func_ov003_021da9ac(((void *)self->unk_100), 0, e);
         }
         Actor_TurnToPos(self, &p, 0x19a);
@@ -554,7 +554,7 @@ void func_ov012_02203420(Ov012Act_02202b10 *self) {
         for (i = 1; i <= 2; i++) {
             func_ov003_021daae4(((void *)self->unk_100), (u8)(0xfd - i), &self->pos, 0, 0, &data_ov012_0220a65c[i], self->rot);
         }
-        o = (Ov012V *)func_020657b0(data_0214a420, func_ov003_021daa3c(((void *)self->unk_100), 0xf9));
+        o = (Ov012V *)func_020657b0(data_0214a420, Ov003FxList_Get(((void *)self->unk_100), 0xf9));
         if (o != NULL) {
             o->v0c(FLD(s32, o, 0x40) + 0x19a);
         }
@@ -565,12 +565,12 @@ void func_ov012_02203420(Ov012Act_02202b10 *self) {
         e = func_02065f88(0x67, &self->pos);
         e->v0c(0x2000);
         e->v34(self->rot[0], (u16)(self->unk_f6 + 0x7fff), self->rot[2]);
-        func_020639d4(e, 0x82, 0);
+        EffectObj_AddSndCue(e, 0x82, 0);
         if (++self->unk_fa >= 8) {
             self->unk_fa = 0;
         }
         for (i = 1; i <= 2; i++) {
-            func_ov003_021daa6c(((void *)self->unk_100), (u8)(0xfd - i));
+            Ov003FxList_Kill(((void *)self->unk_100), (u8)(0xfd - i));
         }
         n = 0;
         if (self->unk_104 != NULL) {
@@ -750,7 +750,7 @@ void func_ov012_02203ed4(Ov012Act_02202b10 *self) {
         break;
     }
     case 2:
-        if (func_ov003_021daa0c(((void *)self->unk_100), 0)) {
+        if (Ov003FxList_Has(((void *)self->unk_100), 0)) {
             break;
         }
         func_02049f44(data_02097e4c, 0x402, &self->pos, 0);
@@ -1044,12 +1044,12 @@ void func_ov012_02204904(Ov012Act_02202b10 *self) {
             e = func_02065f88(0x391, &self->pos);
             e->v0c(0x2000);
             e->v20(&data_ov012_0220a680);
-            func_020639d4(e, 0x5b, 0);
+            EffectObj_AddSndCue(e, 0x5b, 0);
             func_ov003_021da9ac(((void *)self->unk_100), 0, e);
             self->unk_f0 |= 0x100000;
             func_ov000_02191690(self->unk_38);
         }
-        if ((self->unk_f0 & 0x100000) && !func_ov003_021daa0c(((void *)self->unk_100), 0)) {
+        if ((self->unk_f0 & 0x100000) && !Ov003FxList_Has(((void *)self->unk_100), 0)) {
             func_02049f44(data_02097e4c, 0x404, &self->pos, 0);
             self->unk_f0 ^= 0x100000;
             func_ov000_02191708(self->unk_38);
@@ -1069,7 +1069,7 @@ void func_ov012_02204904(Ov012Act_02202b10 *self) {
             v.z = 0x4000;
             func_01ffc9fc(&v, &v, self->rot[1]);
             e->v20(&v);
-            func_020639d4(e, 0x1a, 0);
+            EffectObj_AddSndCue(e, 0x1a, 0);
             func_ov000_0218996c(10, 10);
         }
         if (!func_ov000_02191120(self->unk_38)) {
@@ -1104,7 +1104,7 @@ void func_ov012_02204904(Ov012Act_02202b10 *self) {
         func_ov000_02198360(self->unk_40, 1, 0);
         break;
     }
-    e = (Ov012V *)func_020657b0(data_0214a420, func_ov003_021daa3c(((void *)self->unk_100), 0xf9));
+    e = (Ov012V *)func_020657b0(data_0214a420, Ov003FxList_Get(((void *)self->unk_100), 0xf9));
     if (e != NULL) {
         e->v0c(FLD(s32, e, 0x40) + 0xcd);
     }
@@ -1123,7 +1123,7 @@ void func_ov012_02204d00(Ov012Act_02202b10 *self) {
         FLD(s32, self, 0x104) = 0;
         self->unk_f8 = 0;
         FLD(s32, self, 0xf0) |= 0x400;
-        func_ov003_021daab0(((void *)self->unk_100));
+        Ov003FxList_KillAll(((void *)self->unk_100));
     }
     func_ov003_021d5348(self);
 }
@@ -1134,7 +1134,7 @@ void func_ov012_02204d64(Ov012Act_02202b10 *self) {
     if (self->unk_40->state == 0) {
         func_02049f44(data_02097e4c, 0x406, &self->pos, 0);
         FLD(s32, self, 0xf0) |= 0x800;
-        func_ov003_021daab0(((void *)self->unk_100));
+        Ov003FxList_KillAll(((void *)self->unk_100));
     }
     func_ov003_021d5900(self);
 }
@@ -1220,10 +1220,10 @@ extern "C" {
 void func_ov012_02204fc8(Ov012Actor *self) {
     if (self->unk_40->state == 0) {
         Ov012V *e;
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x480d, 0x15);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4824, 0x15);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4825, 0x15);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4826, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x480d, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4824, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4825, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4826, 0x15);
         e = func_02065f88(0x69, &self->pos);
         if (e != NULL) {
             e->v0c(0x2800);
@@ -1261,8 +1261,8 @@ BOOL func_ov012_02205080(Ov012Act_02202b10 *self, s32 a) {
         self->unk_fc++;
         break;
     case 2:
-        if (func_ov003_021daa0c(((void *)self->unk_100), 0xfe)) {
-            Ov012V *o = (Ov012V *)func_020657b0(data_0214a420, func_ov003_021daa3c(((void *)self->unk_100), 0xfe));
+        if (Ov003FxList_Has(((void *)self->unk_100), 0xfe)) {
+            Ov012V *o = (Ov012V *)func_020657b0(data_0214a420, Ov003FxList_Get(((void *)self->unk_100), 0xfe));
             if (o != NULL) {
                 Ov012Vec t = data_ov012_0220a5f4;
                 o->v20(&t);
@@ -1271,7 +1271,7 @@ BOOL func_ov012_02205080(Ov012Act_02202b10 *self, s32 a) {
             self->unk_fc = 1;
         }
         if (func_ov000_02191120(self->unk_38)) {
-            func_ov003_021daa6c(((void *)self->unk_100), 0xff);
+            Ov003FxList_Kill(((void *)self->unk_100), 0xff);
             return TRUE;
         }
         break;
@@ -1361,7 +1361,7 @@ void func_ov012_022054cc(Ov012Act_02202b10 *self) {
         self->unk_fd++;
         break;
     case 1:
-        func_ov003_021daab0(((void *)self->unk_100));
+        Ov003FxList_KillAll(((void *)self->unk_100));
         e = func_02065f88(0x190, &self->pos);
         e->v0c(0x1800);
         e->v20(data_ov012_0220a5e8);
@@ -1369,7 +1369,7 @@ void func_ov012_022054cc(Ov012Act_02202b10 *self) {
         self->unk_fd++;
         break;
     case 2:
-        if (!func_ov003_021daa0c(((void *)self->unk_100), 0xfa)) {
+        if (!Ov003FxList_Has(((void *)self->unk_100), 0xfa)) {
             u16 hp;
             e = func_02065f88(0xcb, &self->pos);
             e->v0c(0x1800);

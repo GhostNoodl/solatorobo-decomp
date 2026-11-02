@@ -119,9 +119,9 @@ extern ObjPoolShared data_02fe1534;
 extern UnkSys *data_02097dd0;
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *ptr);
-extern void func_0203df0c(void *ptr);
+extern void Heap_FreeHi(void *ptr);
 extern void func_0203f2b8(void *obj);
-extern void func_0203f864(void *obj);
+extern void HitMesh_Detach(void *obj);
 
 void func_020599f4(ObjPool *pool, ObjPoolEntry *entry);
 

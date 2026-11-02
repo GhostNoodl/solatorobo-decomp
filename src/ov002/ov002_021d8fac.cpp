@@ -143,7 +143,7 @@ void func_ov002_021d91d8(void *self) {
     q = (u32 *)func_02034ff8(res, (char *)FIELD(info, 0x8, void *));
     STD_CopyLString(buf, (char *)FIELD(info, 0xc, void *), sizeof(buf));
     a = NNS_G3dGetAnmByName((void *)q[1], (NNSG3dResName *)buf);
-    FIELD(self, 0x88, void *) = func_0203de84(NNS_G3dAnmObjCalcSizeRequired(a, (NNSG3dResMdl *)FIELD(self, 0x7c, void *)), 4);
+    FIELD(self, 0x88, void *) = Heap_AllocHi(NNS_G3dAnmObjCalcSizeRequired(a, (NNSG3dResMdl *)FIELD(self, 0x7c, void *)), 4);
     NNS_G3dAnmObjInit((NNSG3dAnmObj *)FIELD(self, 0x88, void *), a, (NNSG3dResMdl *)FIELD(self, 0x7c, void *), (NNSG3dResTex *)(int)NNS_G3dGetTex((NNSG3dResFileHeader *)*FIELD(self, 0x78, u32 *)));
     NNS_G3dRenderObjAddAnmObj((NNSG3dRenderObj *)FIELD(self, 0x80, void *), (NNSG3dAnmObj *)FIELD(self, 0x88, void *));
     FIELD(FIELD(self, 0x88, void *), 0, s32) = FIELD(self, 0xac, s32) << 12;

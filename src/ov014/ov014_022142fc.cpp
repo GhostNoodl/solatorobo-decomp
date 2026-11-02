@@ -123,7 +123,7 @@ extern void *Actor_GetTarget(void *self);
 extern void func_ov014_02214f10(Ov014Obj *self);
 extern void *func_02049f44(void *mgr, s32 id, Ov014Vec *pos, s32 a);
 extern void HitSphere_Link(Ov014Sub48 *p);
-extern Ov014V *func_02066774(void *a, void *b, s32 c, Ov014Vec *d);
+extern Ov014V *Effect3D_Create(void *a, void *b, s32 c, Ov014Vec *d);
 extern Ov014V *EffectGroup_Create(void *a, void *b, Ov014Vec *d);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
 extern Ov014V *func_020657b0(void *a, void *b);
@@ -250,7 +250,7 @@ void func_ov014_022144f8(Ov014ActEx_022142fc *self) {
         q.y = self->unk_84.y;
         q.z = self->unk_84.z;
         q.y += 0xd9a;
-        e = func_02066774(data_ov014_02218040, data_ov014_0221804f, 0, &q);
+        e = Effect3D_Create(data_ov014_02218040, data_ov014_0221804f, 0, &q);
         e->v14(0x1ccd, 0xccd, 0x1ccd);
         FLD(s32, e, 0x3c) = 0x1400;
         self->unk_40->state++;
@@ -321,7 +321,7 @@ void func_ov014_022144f8(Ov014ActEx_022142fc *self) {
         w.y = self->pos.y;
         w.z = self->pos.z;
         w.y = self->unk_48->unk_68.y;
-        e = func_02066774(data_ov014_02218040, data_ov014_0221804f, 0, &w);
+        e = Effect3D_Create(data_ov014_02218040, data_ov014_0221804f, 0, &w);
         e->v14(0x24cd, 0x299a, 0x24cd);
         func_02049f44(data_02097e4c, 0x56, &w, 0);
         func_ov000_0218996c(0xc, 0x19);

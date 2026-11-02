@@ -127,7 +127,7 @@ extern "C" {
 extern void *data_0214a420;
 extern char data_ov014_02217a8a[];
 extern Ov014Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void func_ov000_0218db58(Ov014Actor *self, u16 a, u16 b, s32 c, s32 d);
+extern void Actor_TurnClamped(Ov014Actor *self, u16 a, u16 b, s32 c, s32 d);
 extern void func_ov000_02191618(void *a);
 extern void func_ov000_02191418(void *a, s32 b, s32 c);
 extern void func_ov000_02191690(void *a);
@@ -141,7 +141,7 @@ extern void func_ov000_0218a358(void *a, const Ov014Vec *b, Ov014Rot16 *c, s32 d
 extern void func_02049de8(void *a, s32 b);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
 extern Ov014Actor *func_ov014_0220f7f0(s32 k, Ov014Vec *pos);
-extern void func_020639d4(void *e, s32 a, s32 b);
+extern void EffectObj_AddSndCue(void *e, s32 a, s32 b);
 extern Ov014V *func_020657b0(void *a, s32 b);
 extern BOOL func_ov000_0219a8bc(void *p, Ov014Obj *a, Ov014Obj *b, s32 c, s32 d, const Ov014Vec *pos, s32 e, s32 f, s32 g);
 
@@ -160,7 +160,7 @@ static inline void Ov014e_Aim(Ov014Actor *self, Ov014Actor *t) {
     } else {
         a = self->rot[1];
     }
-    func_ov000_0218db58(self, a, FX_Atan2(-self->pos.x, 0x8000 - self->pos.z), 0x1fff, self->unk_b0->unk_02);
+    Actor_TurnClamped(self, a, FX_Atan2(-self->pos.x, 0x8000 - self->pos.z), 0x1fff, self->unk_b0->unk_02);
 }
 
 static inline void Ov014e_Clr(u16 *q) {
@@ -431,9 +431,9 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
             Ov014Actor *e = func_ov014_0220f7f0(3, &self->unk_84);
             e->v0c(r);
             FLD(s32, e, 0x3c) = 0x800;
-            func_020639d4(e, 0x56, 4);
-            func_020639d4(e, 0x53, 0x14);
-            func_020639d4(e, 0x53, 0x28);
+            EffectObj_AddSndCue(e, 0x56, 4);
+            EffectObj_AddSndCue(e, 0x53, 0x14);
+            EffectObj_AddSndCue(e, 0x53, 0x28);
             self->unk_1e4 = FLD(s32, e, 0x24);
             ((Ov014V *)func_02065f88(0x69, &self->unk_84))->v0c(0x3000);
         } else {
@@ -458,7 +458,7 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
                 rad = Ov014e_FxMul64(r / 2, 0x1800);
             }
             o = Ov014e_FindById(self->unk_90);
-            if (o != NULL && func_01ffc198(&o->pos, &self->unk_84, rad + o->unk_64)) {
+            if (o != NULL && Hit_DiffInSphere(&o->pos, &self->unk_84, rad + o->unk_64)) {
                 func_ov000_0219a8bc(o->unk_44, self, self, self->unk_1f4, (u8)self->unk_1f6, NULL, 0x64, 0x1000, 0x1000);
             }
         }
@@ -489,7 +489,7 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
 extern char data_ov014_02217a60[];
 extern char data_ov014_02217a90[];
 extern char data_ov014_02217a96[];
-extern void func_02065860(void *a, void *b);
+extern void EffectMgr_StopLoop(void *a, void *b);
 extern void Actor_TurnToActor(Ov014Obj *self, Ov014Obj *t, s32 a);
 extern void Actor_MoveToPos(Ov014Obj *self, Ov014Vec *p, s32 a);
 
@@ -504,9 +504,9 @@ void func_ov014_0220cd74(Ov014Act_02209280 *self) {
         func_ov000_02191318(self->unk_38, 0);
         func_ov000_02191618(self->unk_38);
         self->unk_fc = 1;
-        func_02065860(data_0214a420, self->unk_1dc);
+        EffectMgr_StopLoop(data_0214a420, self->unk_1dc);
         self->unk_1dc = NULL;
-        func_02065860(data_0214a420, self->unk_1e0);
+        EffectMgr_StopLoop(data_0214a420, self->unk_1e0);
         self->unk_1e0 = NULL;
         self->unk_40->state++;
         self->unk_40->timer = 0x14;

@@ -29,10 +29,10 @@ extern u8 data_ov010_0220fe1c[];
 extern u8 data_ov010_0220fe08[];
 extern Ov010Heap *data_02097dd0;
 extern void func_ov003_021d7848(void *p);
-extern void *func_ov003_021d7858(void *p);
+extern void *Ov003Pool_Dtor(void *p);
 extern BOOL func_ov003_021d7894(void *p, s32 a, s32 b);
-extern void func_ov003_021d7948(void *p);
-extern Ov010TaskNode *func_ov003_021d7980(void *p);
+extern void Ov003Pool_Release(void *p);
+extern Ov010TaskNode *Ov003Pool_Alloc(void *p);
 extern void Ov003Pool_Free(void *p, Ov010TaskNode *n);
 void func_ov010_02201b48(Ov010TaskList *o);
 
@@ -41,7 +41,7 @@ void func_ov010_022019f4(Ov010TaskList *o) {
         return;
     }
     func_ov010_02201b48(o);
-    func_ov003_021d7948(o->pool);
+    Ov003Pool_Release(o->pool);
     o->b0 = 0;
 }
 
@@ -101,7 +101,7 @@ Ov010V *func_ov010_02201ad4(Ov010TaskList *o, Ov010V *(*fn)(void), u32 time) {
     Ov010TaskNode *n;
     if (o->b0 && Ov010TL_Flags(o)->b0 && !Ov010TL_Flags(o)->b1) {
         obj = fn();
-        n = func_ov003_021d7980(o->pool);
+        n = Ov003Pool_Alloc(o->pool);
         n->obj = obj;
         n->time = time;
         n->next = NULL;

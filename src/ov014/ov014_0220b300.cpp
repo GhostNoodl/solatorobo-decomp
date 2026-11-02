@@ -23,11 +23,11 @@ void func_ov014_0220b318(Ov014Act_02209280 *self) {
 
 extern void *data_0214a420;
 extern char data_ov014_02217a84[];
-extern void func_02065860(void *a, void *b);
+extern void EffectMgr_StopLoop(void *a, void *b);
 extern Ov014V *func_020657b0(void *a, void *b);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
-extern void func_020639d4(void *e, s32 a, s32 b);
-extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
+extern void EffectObj_AddSndCue(void *e, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern void func_ov000_021911c8(void *a, s32 b);
 extern u8 *func_ov000_02190a30(void *p, s32 a);
 extern void func_ov003_021d6a3c(Ov014Actor *self, s32 a, s32 b, s32 c);
@@ -36,19 +36,19 @@ void func_ov014_0220b33c(Ov014Act_02209280 *self) {
     switch (self->unk_40->state) {
     case 0:
         self->unk_fc = 0;
-        func_02065860(data_0214a420, self->unk_1dc);
+        EffectMgr_StopLoop(data_0214a420, self->unk_1dc);
         self->unk_1dc = NULL;
-        func_02065860(data_0214a420, self->unk_1e0);
+        EffectMgr_StopLoop(data_0214a420, self->unk_1e0);
         self->unk_1e0 = NULL;
-        func_02065860(data_0214a420, ((void *)self->unk_1e4));
+        EffectMgr_StopLoop(data_0214a420, ((void *)self->unk_1e4));
         self->unk_1e4 = 0;
         func_ov000_02190cb0(self->unk_38, data_ov014_02217a84, 0xcd, 0);
         func_ov000_021915a0(self->unk_38);
         func_ov000_021911c8(self->unk_38, 0x800);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4819, 0x15);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x481d, 0x15);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x481e, 0x15);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x481f, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4819, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x481d, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x481e, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x481f, 0x15);
         self->unk_40->state++;
         self->unk_40->timer = 0xf0;
         break;
@@ -88,7 +88,7 @@ void func_ov014_0220b33c(Ov014Act_02209280 *self) {
             pos2.z = self->pos.z + 0x3000;
             e = func_02065f88(4, &pos2);
             e->v0c(Rand_UpTo(0xccd) + 0xccd);
-            func_020639d4(e, 0x56, 2);
+            EffectObj_AddSndCue(e, 0x56, 2);
         }
         if (t == 0x78) {
             Ov014V *e;
@@ -138,7 +138,7 @@ void func_ov014_0220b33c(Ov014Act_02209280 *self) {
 
 
 extern Ov014V *func_020658cc(void *mgr, s32 id);
-extern void func_02063a14(void *e);
+extern void EffectObj_StopLoop(void *e);
 extern s32 Interp_QuadLerp(s32 t, s32 from, s32 to);
 
 static inline s32 Ov014b_Mul64(s32 a, s64 b) {
@@ -162,9 +162,9 @@ void func_ov014_0220b74c(Ov014Act_02209280 *self) {
             e->v14(0x2000, 0x2000, 0x2000);
             FLD(s32, e, 0xc8) = -1;
             FLD(s32, e, 0x50) = -0x1e000;
-            func_020639d4(e, 0x44, 0);
-            func_020639d4(e, 0x44, 0x14);
-            func_020639d4(e, 0x44, 0x28);
+            EffectObj_AddSndCue(e, 0x44, 0);
+            EffectObj_AddSndCue(e, 0x44, 0x14);
+            EffectObj_AddSndCue(e, 0x44, 0x28);
             FLD(s32, e, 0xc8) = -2;
         }
         {
@@ -179,7 +179,7 @@ void func_ov014_0220b74c(Ov014Act_02209280 *self) {
         {
             Ov014V *e = func_020658cc(data_0214a420, 0x390);
             if (e != NULL) {
-                func_02063a14(e);
+                EffectObj_StopLoop(e);
             }
         }
         self->unk_40->state++;
@@ -191,7 +191,7 @@ void func_ov014_0220b74c(Ov014Act_02209280 *self) {
         if (t == 0xd2) {
             Ov014Vec p;
             Ov014V *e;
-            func_02065860(data_0214a420, ((void *)self->unk_1f0));
+            EffectMgr_StopLoop(data_0214a420, ((void *)self->unk_1f0));
             p = self->pos;
             p.y += 0x3800;
             e = func_02065f88(0x391, &p);
@@ -280,7 +280,7 @@ void func_ov014_0220b74c(Ov014Act_02209280 *self) {
             func_02065f88(4, &p)->v0c(r);
             e = func_02065f88(0x6d, &p);
             e->v0c(r);
-            func_020639d4(e, 0x56, 0);
+            EffectObj_AddSndCue(e, 0x56, 0);
         }
         if (m == 0x1e) {
             Ov014V *e;
@@ -292,7 +292,7 @@ void func_ov014_0220b74c(Ov014Act_02209280 *self) {
             e = func_02065f88(0x320, &p);
             e->v0c(r);
             FLD(s32, e, 0x30) = -0x1e000;
-            func_020639d4(e, 0x56, 0);
+            EffectObj_AddSndCue(e, 0x56, 0);
         }
         {
             Ov014Sub40 *s = self->unk_40;

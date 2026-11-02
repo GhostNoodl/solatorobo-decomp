@@ -16,7 +16,7 @@ void *Actor_Ctor(void *self);
 void *func_ov000_0218c928(void *self);
 ResSet *func_ov000_0218ea20(ResSet *self);
 void Heap_Free(void *ptr);
-void func_02065804(void *mgr, void *handle);
+void EffectMgr_Kill(void *mgr, void *handle);
 BOOL func_ov000_0218cf5c(void *self);
 BOOL func_ov000_0218f110(AnimRes *res);
 BOOL Actor_DespawnIfFar(void *self);
@@ -69,7 +69,7 @@ static inline void ActorEx_Destroy(ActorEx *self) {
         data_02097dd0->cur = saved;
     }
     if (self->unk_bc != NULL) {
-        func_02065804(data_0214a420, self->unk_bc);
+        EffectMgr_Kill(data_0214a420, self->unk_bc);
     }
     func_ov000_0218c928(self);
 }
@@ -188,8 +188,8 @@ Data0219433c *func_020704b4(u16 id);
 void *func_ov000_0218e9c4(void *p);
 void func_ov000_02193e5c(void *p, u16 id);
 void *func_ov000_021919c8(void *p);
-void func_ov000_02191b70(void *p);
-void *func_ov000_02198328(void *p);
+void Shadow_Load(void *p);
+void *History_Init(void *p);
 void *func_ov000_02199b00(void *p);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
@@ -215,7 +215,7 @@ static inline void *NewA0219433c(void) {
 static inline void *NewB0219433c(void) {
     void *p = Heap_Alloc(0x14);
     if (p != NULL) {
-        p = func_ov000_02198328(p);
+        p = History_Init(p);
     }
     return p;
 }
@@ -293,7 +293,7 @@ void func_ov000_0219433c(Actor0219433c *self) {
     }
     if (info->b12 != 0) {
         self->unk_3c = NewA0219433c();
-        func_ov000_02191b70(self->unk_3c);
+        Shadow_Load(self->unk_3c);
     }
     self->unk_40 = NewB0219433c();
     if (d->hdr.a != 0) {

@@ -7,11 +7,11 @@ extern void *data_02097e4c;
 extern void *data_0214a420;
 extern Ov009Eff *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void func_01ffc9fc(Ov009Vec *dst, const Ov009Vec *src, s32 angle);
-extern void func_020639d4(Ov009Eff *o, s32 a, s32 b);
+extern void EffectObj_AddSndCue(Ov009Eff *o, s32 a, s32 b);
 extern void HitSphere_Link(Ov009Sub48 *p);
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
-extern void func_02065804(void *mgr, s32 h);
+extern void EffectMgr_Kill(void *mgr, s32 h);
 extern void *func_020657b0(void *mgr, s32 id);
 extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
@@ -86,7 +86,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
             self->unk_38->unk_c2_0 = 1;
             o = func_02065f88(0x192, &self->pos);
             o->SetRotXYZ(0x4000, 0, 0);
-            func_020639d4(o, 0x54, 0);
+            EffectObj_AddSndCue(o, 0x54, 0);
             self->unk_9c = 0;
             self->unk_a4 = 0;
             self->unk_a8 = 0;
@@ -107,7 +107,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
         s.z = s.x;
         if (s.x >= Ov009_MaxScale(self)->x) {
             s = *Ov009_MaxScale(self);
-            func_02065804(data_0214a420, self->unk_f8);
+            EffectMgr_Kill(data_0214a420, self->unk_f8);
             self->unk_f8 = 0;
             o = func_02065f88(0x68, &self->pos);
             o->AddPosXYZ(0, 0x400, 0);
@@ -215,7 +215,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
             o = func_02065f88(0x322, &self->pos);
             self->unk_f8 = FLD(s32, o, 0x24);
             o->vf0c(0x199a);
-            func_020639d4(o, 0x7a, 0);
+            EffectObj_AddSndCue(o, 0x7a, 0);
         }
         if (t2 >= 10) {
             if (*func_ov000_0219bf90()->unk_50 != 0) {

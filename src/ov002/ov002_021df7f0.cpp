@@ -32,7 +32,7 @@ void func_ov002_021dfcc0(void *self);
 void func_ov002_021d792c(void *self);
 void func_ov002_021d788c(void *self);
 void *Heap_GetCurrent(void);
-void func_0204c284(void);
+void Heap_SetCurrentHi(void);
 void Heap_SetCurrent(void *heap);
 
 void func_ov002_021df7f0(void *self, void *a) {
@@ -125,7 +125,7 @@ void func_ov002_021df7f0(void *self, void *a) {
             func_ov002_021dfc44(q, func_ov002_021d9e30(FIELD(self, 0x10, void *)));
             func_ov002_021dbd08(a, q, 0x14);
             h = Heap_GetCurrent();
-            func_0204c284();
+            Heap_SetCurrentHi();
             DELETE_VOBJ(FIELD(self, 0x10, VObject *));
             Heap_SetCurrent(h);
             FIELD(self, 0x18, s32) = 0x32;
@@ -145,7 +145,7 @@ void func_ov002_021df7f0(void *self, void *a) {
             }
             func_ov002_021dbd08(FIELD(self, 0x4, void *), q, 10);
             h = Heap_GetCurrent();
-            func_0204c284();
+            Heap_SetCurrentHi();
             DELETE_VOBJ(FIELD(self, 0x10, VObject *));
             Heap_SetCurrent(h);
             FIELD(self, 0x18, s32) = 0x32;

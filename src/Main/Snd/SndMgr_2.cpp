@@ -9,7 +9,7 @@ NNSSndHeap *SndMgr_GetHeap(SndMgr *mgr, u32 idx) {
     return mgr->heaps[idx];
 }
 
-void func_02049564(SndMgr *mgr, s32 level, s32 idx) {
+void SndMgr_LoadHeapState(SndMgr *mgr, s32 level, s32 idx) {
     if (idx < 0 || idx >= 2) {
         return;
     }

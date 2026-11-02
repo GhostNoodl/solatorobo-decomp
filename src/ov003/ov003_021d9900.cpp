@@ -72,7 +72,7 @@ u16 Ov003Vec_Yaw(const Ov003Vec *v) {
     return FX_Atan2(v->x, v->z);
 }
 
-u16 func_ov003_021d9c50(const Ov003Vec *a, const Ov003Vec *b) {
+u16 Ov003Vec_YawTo(const Ov003Vec *a, const Ov003Vec *b) {
     return FX_Atan2(a->x - b->x, a->z - b->z);
 }
 

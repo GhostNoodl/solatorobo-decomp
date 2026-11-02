@@ -97,7 +97,7 @@ extern s16 func_ov003_021d7e58(Ov003Ticker *t);
 extern void VEC_MultAdd(s32 scale, const Ov003Vec *dir, const Ov003Vec *src, Ov003Vec *dst);
 extern void Heap_Free(void *p);
 extern void *Heap_Alloc(u32 size);
-extern void *func_ov000_02198328(void *p);
+extern void *History_Init(void *p);
 extern s32 Rand_PlusMinus(s32 max);
 
 static inline void Ov003Ticker_Reset(Ov003Ticker *t) {

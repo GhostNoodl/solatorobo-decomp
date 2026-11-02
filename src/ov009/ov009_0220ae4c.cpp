@@ -73,7 +73,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
         }
         break;
     case 1:
-        if ((self->unk_48->unk_50 & 0x40000000) || func_01ffc198(&self->pos, &v, self->unk_64 + 0xc00)) {
+        if ((self->unk_48->unk_50 & 0x40000000) || Hit_DiffInSphere(&self->pos, &v, self->unk_64 + 0xc00)) {
             {
                 s32 z = Rand_PlusMinus(0x800) + 0x2400;
                 v.x = 0;
@@ -98,7 +98,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
         }
         break;
     case 11:
-        if ((self->unk_48->unk_50 & 0x40000000) || func_01ffc198(&self->pos, &v, self->unk_64 + 0xc00)) {
+        if ((self->unk_48->unk_50 & 0x40000000) || Hit_DiffInSphere(&self->pos, &v, self->unk_64 + 0xc00)) {
             {
                 s32 z = Rand_PlusMinus(0x800) + 0x2400;
                 v.x = 0;

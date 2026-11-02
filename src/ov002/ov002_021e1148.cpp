@@ -33,12 +33,12 @@ typedef struct ov002_Info021e1148 {
 
 extern "C" {
 
-s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void func_0204ca14(ov002_Anim021e1148 *a, int b);
+s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
+void TextWin_InitLines(ov002_Anim021e1148 *a, int b);
 
 static inline void ov002_Anim1148_Start(ov002_Anim021e1148 *s, s32 a) {
     s->unk24 = a;
-    s->unk4C = func_0204c4fc(s->unk28, s->unk38, s->unk24, s->unk44, s->unk48, s->unk37 != 0 ? TRUE : FALSE);
+    s->unk4C = Text_Measure(s->unk28, s->unk38, s->unk24, s->unk44, s->unk48, s->unk37 != 0 ? TRUE : FALSE);
     FIELD(data_02097ce0, 0x4, s32) = s->unk28;
 }
 
@@ -48,7 +48,7 @@ static inline void ov002_Anim1148_Show(ov002_Anim021e1148 *a, s32 text, s32 font
     a->unk2C = pal;
     a->unk34 = 0;
     ov002_Anim1148_Start(a, text);
-    func_0204ca14(a, 0xc);
+    TextWin_InitLines(a, 0xc);
     a->unk4 |= 4;
 }
 
@@ -126,7 +126,7 @@ void func_ov002_021e1148(void *self, u16 id) {
         FIELD(self, 4, ov002_Anim021e1148 *)->unk2C = 4;
         FIELD(self, 4, ov002_Anim021e1148 *)->unk34 = 0;
         ov002_Anim1148_Start(FIELD(self, 4, ov002_Anim021e1148 *), text);
-        func_0204ca14(FIELD(self, 4, ov002_Anim021e1148 *), 0xc);
+        TextWin_InitLines(FIELD(self, 4, ov002_Anim021e1148 *), 0xc);
         FIELD(self, 4, ov002_Anim021e1148 *)->unk4 |= 4;
     }
 }

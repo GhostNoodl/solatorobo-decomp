@@ -89,13 +89,13 @@ static inline ov006_ListNode *ov006_Window_GetSelected(ov006_Window *self) {
     return node;
 }
 
-static inline void ov006_Window_SetRot(ov006_Window *self, s16 x, s16 y, s16 z) {
+static inline void ov006_Window_SetPos(ov006_Window *self, s16 x, s16 y, s16 z) {
     self->posX = x;
     self->posY = y;
     self->posZ = z;
 }
 
-static inline void ov006_Window_SetPos(ov006_Window *self, int x, int y, int z) {
+static inline void ov006_Window_SetSlide(ov006_Window *self, int x, int y, int z) {
     self->slideX = x;
     self->slideY = y;
     self->slideZ = z;

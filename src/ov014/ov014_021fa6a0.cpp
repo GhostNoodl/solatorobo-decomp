@@ -24,13 +24,13 @@ extern void *data_02097e4c;
 
 extern void *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_0218fe1c(void *p);
-extern void func_ov003_021ceedc(void *p);
+extern void Ov003ScriptList_Init(void *p);
 extern void *Ov003Vt_021f7974_Dtor(void *p);
 extern void *func_ov000_0218fee4(void *p);
 extern void *func_ov000_0218ea20(void *p);
 extern BOOL func_02035b90(void *a, s32 b);
 extern void func_02036838(void *a, void *b, s32 c, s32 d);
-extern void func_02049564(void *a, s32 b, s32 c);
+extern void SndMgr_LoadHeapState(void *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
 extern void *func_020359d0(void *a, s32 b, s32 c);
 
@@ -41,7 +41,7 @@ Ov014Actor *Ov014Act_021fa6a0_Ctor(Ov014Act_021fa6a0 *self) {
     FLD(void *, self, 0) = data_ov014_02217114;
     func_ov000_0218e9c4((u8 *)self + 0x124);
     func_ov000_0218fe1c((u8 *)self + 0x25c);
-    func_ov003_021ceedc((u8 *)self + 0x348);
+    Ov003ScriptList_Init((u8 *)self + 0x348);
     for (i = 0; i < 2; i++) {
         ((Ov014A *)self)->unk_f8[i] = data_ov014_02216468[i];
     }

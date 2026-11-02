@@ -12,7 +12,7 @@ extern u8 *data_02097ce0;
 extern void *data_02149ef8;
 void func_0204c7d0(void *p);
 s32 MsgRes_GetString(void *p, s32 a);
-s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
+s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
 void func_0204ca70(void *p);
 
 static inline u8 *NewTw02153c48(void) {
@@ -47,7 +47,7 @@ void func_ov000_02153c48(Obj02153c48 *self, s32 a, BOOL show, BOOL center, u8 d)
     LFLD(s32, self->unk_1c, 0x2c) = self->unk_24;
     w = self->unk_1c;
     LFLD(s32, w, 0x24) = self->unk_00;
-    LFLD(s32, w, 0x4c) = func_0204c4fc(LFLD(s32, w, 0x28), LFLD(s32, w, 0x38), LFLD(s32, w, 0x24), w + 0x44, w + 0x48, LFLD(s8, w, 0x37) ? 1 : 0);
+    LFLD(s32, w, 0x4c) = Text_Measure(LFLD(s32, w, 0x28), LFLD(s32, w, 0x38), LFLD(s32, w, 0x24), w + 0x44, w + 0x48, LFLD(s8, w, 0x37) ? 1 : 0);
     LFLD(s32, data_02097ce0, 4) = LFLD(s32, w, 0x28);
     LFLD(TwBits02153c48, self->unk_1c, 4).f8 = 0x1e;
     if (center) {
@@ -76,7 +76,7 @@ void func_ov000_02153c48(Obj02153c48 *self, s32 a, BOOL show, BOOL center, u8 d)
             LFLD(s32, w, 0x24) = t;
         }
     }
-    LFLD(s32, w, 0x4c) = func_0204c4fc(LFLD(s32, w, 0x28), LFLD(s32, w, 0x38), LFLD(s32, w, 0x24), w + 0x44, w + 0x48, LFLD(s8, w, 0x37) ? 1 : 0);
+    LFLD(s32, w, 0x4c) = Text_Measure(LFLD(s32, w, 0x28), LFLD(s32, w, 0x38), LFLD(s32, w, 0x24), w + 0x44, w + 0x48, LFLD(s8, w, 0x37) ? 1 : 0);
     LFLD(s32, data_02097ce0, 4) = LFLD(s32, w, 0x28);
     LFLD(TwBits02153c48, self->unk_20, 4).f8 = 0x1e;
     LFLD(u32, self->unk_20, 4) |= 0x40;

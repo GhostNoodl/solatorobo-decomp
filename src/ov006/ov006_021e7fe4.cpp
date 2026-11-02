@@ -72,7 +72,7 @@ extern const char data_ov006_021ec48c[];
 extern const char data_ov006_021ec49b[];
 
 s32 func_ov000_02199128(ov006_Finder021e7fe4 *self, ov006_Query021e7fe4 *q, void **out, s32 max);
-ov006_Eff021e7fe4 *func_02066774(const char *a, const char *b, s32 c, VecFx32 *pos);
+ov006_Eff021e7fe4 *Effect3D_Create(const char *a, const char *b, s32 c, VecFx32 *pos);
 s32 func_02049bdc(void *a, int b, int c);
 
 static inline void ov006_FinderQuery_Init(ov006_FinderQuery021e7fe4 *fq) {
@@ -122,7 +122,7 @@ void func_ov006_021e7fe4(ov006_Prop021e7fe4 *self) {
             self->unk19C_14 = 1;
             self->unk1FC = 0;
             if (self->unk1F0 == 0) {
-                ov006_Eff021e7fe4 *eff = func_02066774(data_ov006_021ec48c, data_ov006_021ec49b, 0, &self->pos);
+                ov006_Eff021e7fe4 *eff = Effect3D_Create(data_ov006_021ec48c, data_ov006_021ec49b, 0, &self->pos);
                 self->unk1F0 = eff->unk24;
                 eff->unkC8 = -1;
                 eff->unk28 = 0;

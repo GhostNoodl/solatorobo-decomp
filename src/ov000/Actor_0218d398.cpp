@@ -234,7 +234,7 @@ u16 Actor_YawToPos(Actor *self, VecFx32 *target) {
 }
 
 void Actor_TurnToPos(Actor *self, VecFx32 *target, s32 step) {
-    if (func_01ffc198(&self->pos, target, self->radius + 0x400)) {
+    if (Hit_DiffInSphere(&self->pos, target, self->radius + 0x400)) {
         return;
     }
     self->rot_y = func_01ffc128(FX_Atan2(target->x - self->pos.x, target->z - self->pos.z), self->rot_y, step, 1, 0x8000);
@@ -256,7 +256,7 @@ void Actor_TurnToActor(Actor *self, Actor *other, s32 step) {
 void Actor_PitchToPos(Actor *self, VecFx32 *target, s32 step) {
     s32 dz;
     s32 dx;
-    if (func_01ffc198(&self->pos, target, self->radius + 0x400)) {
+    if (Hit_DiffInSphere(&self->pos, target, self->radius + 0x400)) {
         return;
     }
     dx = self->pos.x - target->x;

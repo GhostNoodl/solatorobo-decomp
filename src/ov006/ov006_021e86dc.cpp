@@ -73,7 +73,7 @@ extern char data_ov006_021ec4d4[];
 extern u8 data_ov006_021eb908[];
 extern s32 data_ov006_021eb8f8[];
 ov006_Eff021e86dc *func_02065f88(s32 id, VecFx32 *pos);
-ov006_Eff021e86dc *func_02066774(const char *a, const char *b, const char *c, VecFx32 *pos);
+ov006_Eff021e86dc *Effect3D_Create(const char *a, const char *b, const char *c, VecFx32 *pos);
 ov006_Old021e86dc *func_020657b0(void *a, int b);
 void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
@@ -115,7 +115,7 @@ void func_ov006_021e86dc(ov006_Car021e86dc *self) {
                             self->unk1D4 = 0;
                         }
                     }
-                    e = func_02066774(data_ov006_021ec4ad, data_ov006_021ec4bc, data_ov006_021ec4bc, &self->pos);
+                    e = Effect3D_Create(data_ov006_021ec4ad, data_ov006_021ec4bc, data_ov006_021ec4bc, &self->pos);
                     if (e != NULL) {
                         self->unk1D4 = e->unk24;
                         e->unk3C = 0x2000;
@@ -175,7 +175,7 @@ void func_ov006_021e86dc(ov006_Car021e86dc *self) {
             } else if (data_ov006_021ec884->unk13D == 0) {
                 if (self->unk1D8 == 0 && (self->unk19C_0 & 1)) {
                     ov006_Eff021e86dc *e;
-                    e = func_02066774(data_ov006_021ec4ad, data_ov006_021ec4c8, data_ov006_021ec4c8, &self->pos);
+                    e = Effect3D_Create(data_ov006_021ec4ad, data_ov006_021ec4c8, data_ov006_021ec4c8, &self->pos);
                     if (e != NULL) {
                         self->unk1D8 = e->unk24;
                         e->unk28 = 0;
@@ -183,7 +183,7 @@ void func_ov006_021e86dc(ov006_Car021e86dc *self) {
                         VCALL(e, 14, 0x1000, 0x1000, 0x2000);
                         e->unk29 = 1;
                     }
-                    e = func_02066774(data_ov006_021ec4ad, data_ov006_021ec4c8, data_ov006_021ec4c8, &self->pos);
+                    e = Effect3D_Create(data_ov006_021ec4ad, data_ov006_021ec4c8, data_ov006_021ec4c8, &self->pos);
                     if (e != NULL) {
                         self->unk1DC = e->unk24;
                         e->unk28 = 0;
@@ -289,7 +289,7 @@ void func_ov006_021e86dc(ov006_Car021e86dc *self) {
         if (data_ov006_021ec884->unk13D != 0) {
             return;
         }
-        e = func_02066774(data_ov006_021ec4ad, data_ov006_021ec4d4, data_ov006_021ec4d4, &self->pos);
+        e = Effect3D_Create(data_ov006_021ec4ad, data_ov006_021ec4d4, data_ov006_021ec4d4, &self->pos);
         if (e == NULL) {
             return;
         }

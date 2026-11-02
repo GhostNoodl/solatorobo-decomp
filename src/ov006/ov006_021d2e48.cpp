@@ -11,7 +11,7 @@ extern "C" {
 extern ov006_Unk02097e40 *data_02097e40;
 
 void ov006_Slot_Pack(ov006_Slot *self, void *buf);
-void func_ov006_021e4a80(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
+void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 void func_ov000_02162a20(ov006_Actor58 *self);
 void func_ov000_02162a58(ov006_Actor58 *self);
 void func_ov006_021e0af4(ov006_Unk68 *self);

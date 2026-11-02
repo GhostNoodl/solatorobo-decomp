@@ -40,7 +40,7 @@ extern void *data_ov000_021ccd68;
 Robo021ca458 *func_ov000_0219bf90(void);
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 BOOL func_ov000_02199cd8(Tgt0219af3c *self, u16 id);
-BOOL func_01ffc198(VecFx32 *a, VecFx32 *b, s32 r);
+BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 BOOL func_ov000_021bd314(void *p, s32 x);
 
 static inline s32 Cur0219af3c(Actor *self) {
@@ -140,7 +140,7 @@ void func_ov000_0219af3c(Actor *self, u8 *p) {
             v.x = self->pos.x;
             v.y = self->pos.y;
             v.z = self->pos.z;
-            if (!func_01ffc198(&pl->pos, &v, pl->radius + 0x6000)) {
+            if (!Hit_DiffInSphere(&pl->pos, &v, pl->radius + 0x6000)) {
                 return;
             }
         }

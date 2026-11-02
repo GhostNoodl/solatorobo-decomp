@@ -318,13 +318,13 @@ void func_ov000_02163224(void *p);
 void func_ov000_021632f0(void *p, s32 a, void *b, void *c, s32 d);
 void func_ov000_02173648(void *self);
 
-static inline void Ov015_SetXYZ16(Ov015Ui *o, s16 x, s16 y, s16 z) {
+static inline void Ov015_SetUiPos(Ov015Ui *o, s16 x, s16 y, s16 z) {
     o->posX = x;
     o->posY = y;
     o->posZ = z;
 }
 
-static inline void Ov015_SetXYZ32(Ov015Ui *o, s32 x, s32 y, s32 z) {
+static inline void Ov015_SetUiSlide(Ov015Ui *o, s32 x, s32 y, s32 z) {
     o->slideX = x;
     o->slideY = y;
     o->slideZ = z;
@@ -354,8 +354,8 @@ void func_ov015_02204284(Ov015Scene2c08 *self) {
     VCALL(self->unk_3c)->v14(MsgRes_GetString(res, 0xc7));
     self->unk_3c->rows = 5;
     self->unk_3c->width = 0xf8;
-    Ov015_SetXYZ16(self->unk_3c, 0, 0x2c, -0xccd);
-    Ov015_SetXYZ32(self->unk_3c, -0x100, 0, -0xccd);
+    Ov015_SetUiPos(self->unk_3c, 0, 0x2c, -0xccd);
+    Ov015_SetUiSlide(self->unk_3c, -0x100, 0, -0xccd);
     self->unk_3c->slideMode = 1;
     self->unk_3c->flags |= 0x400000;
     self->unk_3c->unk_c0 = 0x78;
@@ -404,8 +404,8 @@ void func_ov015_02204284(Ov015Scene2c08 *self) {
     self->unk_40 = (Ov015UiLabel *)p;
     self->unk_40->width = 0xf8;
     self->unk_40->rows = 2;
-    Ov015_SetXYZ16(self->unk_40, 4, 0x95, -0xccd);
-    Ov015_SetXYZ32(self->unk_40, -0x100, 0, -0xccd);
+    Ov015_SetUiPos(self->unk_40, 4, 0x95, -0xccd);
+    Ov015_SetUiSlide(self->unk_40, -0x100, 0, -0xccd);
     self->unk_40->slideMode = 1;
     {
         void *s = func_0206ec8c(self->unk_3c->items->id);
@@ -427,8 +427,8 @@ void func_ov015_02204284(Ov015Scene2c08 *self) {
     self->unk_44 = (Ov015Menu *)p;
     self->unk_44->flags |= 0x4000000;
     self->unk_44->slideMode = 1;
-    Ov015_SetXYZ16(self->unk_44, 0x91, 0x12, -0x333);
-    Ov015_SetXYZ32(self->unk_44, 0x100, 0, -0x333);
+    Ov015_SetUiPos(self->unk_44, 0x91, 0x12, -0x333);
+    Ov015_SetUiSlide(self->unk_44, 0x100, 0, -0x333);
     self->unk_44->flags |= 0x20000000;
     VCALL(self->unk_44)->vf4(1, MsgRes_GetString(res, 0x32));
     VCALL(self->unk_44)->vf4(2, MsgRes_GetString(res, 0x33));
@@ -441,8 +441,8 @@ void func_ov015_02204284(Ov015Scene2c08 *self) {
         VCALL(p)->v28();
     }
     self->unk_48 = (Ov015UiNum *)p;
-    Ov015_SetXYZ16(self->unk_48, 0x86, 0x87, -0xccd);
-    Ov015_SetXYZ32(self->unk_48, 0x100, 0, -0xccd);
+    Ov015_SetUiPos(self->unk_48, 0x86, 0x87, -0xccd);
+    Ov015_SetUiSlide(self->unk_48, 0x100, 0, -0xccd);
     self->unk_48->slideMode = 1;
     func_ov000_0215d980(self->unk_48, FLD(void *, data_0214a424, 0x20), 0);
     VCALL(self->unk_48)->v08();

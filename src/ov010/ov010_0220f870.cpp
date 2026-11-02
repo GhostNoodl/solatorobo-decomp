@@ -145,7 +145,7 @@ void *func_ov010_02201f04(void *o) {
     return o;
 }
 
-void *func_ov010_02201f18(void) {
+void *Ov010Vt_0220fdf4_New(void) {
     u8 *p = (u8 *)Heap_Alloc(0x24);
     if (p != NULL) {
         FLD(void *, p, 0) = data_ov010_0220fdf4;

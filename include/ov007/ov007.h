@@ -309,7 +309,7 @@ struct Ov007Game {
     u8 unk_149;
 };
 
-// The ov000 object func_ov000_02173610(8) returns: a callback slot and its argument.
+// The ov000 object Task_FindById(8) returns: a callback slot and its argument.
 struct Ov007Menu8 {
     u8 unk_00[0xbc];
     void *unk_bc;
@@ -508,7 +508,7 @@ extern const Ov007RowB data_ov007_021cfa64[];
 BOOL func_02054f10(void *a, int b);
 void func_ov000_02180660(int a, int b);
 void func_ov000_02180754(void);
-Ov007Menu8 *func_ov000_02173610(int id);
+Ov007Menu8 *Task_FindById(int id);
 
 }
 

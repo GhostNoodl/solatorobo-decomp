@@ -50,7 +50,7 @@ extern void *data_02097e4c;
 extern char data_ov006_021ec4ad[];
 extern char data_ov006_021ec4e0[];
 void *func_02065f88(s32 id, VecFx32 *pos);
-void *func_02066774(const char *a, const char *b, const char *c, VecFx32 *pos);
+void *Effect3D_Create(const char *a, const char *b, const char *c, VecFx32 *pos);
 void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 void func_ov000_021987b8(ov006_Col021e96cc *col, s32 a, VecFx32 *b, VecFx32 *c);
 void func_ov000_02198e34(ov006_Col021e96cc *col, ov006_Rot021e96cc *out, VecFx32 *v, s32 a);
@@ -197,7 +197,7 @@ void func_ov006_021e96cc(ov006_Car021e96cc *self) {
                     s32 nz = col->nrm.z;
                     p = col->pos;
                     if ((col->unk50 & 0xf0f0f0) == 0x90b0c0) {
-                        void *e = func_02066774(data_ov006_021ec4ad, data_ov006_021ec4e0, data_ov006_021ec4e0, &self->pos);
+                        void *e = Effect3D_Create(data_ov006_021ec4ad, data_ov006_021ec4e0, data_ov006_021ec4e0, &self->pos);
                         if (e != NULL) {
                             ((u8 *)e)[0x28] = 0;
                             VCALL(e, 34, b.x, b.y, 0);

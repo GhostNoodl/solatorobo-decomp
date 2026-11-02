@@ -3,12 +3,12 @@
 extern "C" {
 
 extern void *data_02097e4c;
-extern void func_02049564(void *mgr, s32 a, s32 b);
+extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(FieldState *g, s32 a);
 
 void Ov009ActVt_02217cb0_Init(Ov009ActVt_02217cb0 *self) {
     func_ov003_021d0fc0(self);
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     switch (self->kind) {
     case 0x504e:
     case 0x5056:

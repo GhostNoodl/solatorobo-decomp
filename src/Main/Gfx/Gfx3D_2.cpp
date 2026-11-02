@@ -33,7 +33,7 @@ typedef struct GfxCamPos {
     int v[9];
 } GfxCamPos;
 
-GfxCamPos *func_02043548(GfxCamPos *p) {
+GfxCamPos *GfxCamPos_Init(GfxCamPos *p) {
     p->v[0] = 0;
     p->v[1] = 0;
     p->v[2] = 0;
@@ -125,7 +125,7 @@ static inline void GfxLight_Init(GfxLight *light) {
     light->emission = 0;
 }
 
-void func_02043858(Gfx3DState *st) {
+void Gfx3DState_Init(Gfx3DState *st) {
     GfxLight_Init(&st->light);
     st->unk_134 = -1;
     st->unk_138 = 0;
@@ -271,11 +271,11 @@ void func_02043db4(int idx, int x, int y, u32 color) {
 }
 
 void *func_02043e1c(u32 size) {
-    return func_0203de84(size, 4);
+    return Heap_AllocHi(size, 4);
 }
 
 void func_02043e2c(void *ptr) {
-    func_0203df0c(ptr);
+    Heap_FreeHi(ptr);
 }
 
 

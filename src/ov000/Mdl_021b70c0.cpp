@@ -34,7 +34,7 @@ void **func_02034ec0(void *a, void *b);
 void NNS_G3dRenderObjInit(void *rob, void *mdl);
 void *NNS_G3dGetAnmByIdx(void *file, s32 idx);
 u32 NNS_G3dAnmObjCalcSizeRequired(void *anm, void *mdl);
-void *func_0203de84(u32 size, s32 align);
+void *Heap_AllocHi(u32 size, s32 align);
 void NNS_G3dAnmObjInit(void *obj, void *anm, void *mdl, void *tex);
 void NNS_G3dRenderObjAddAnmObj(void *rob, void *obj);
 void NNS_G3dDraw(void *rob);
@@ -67,7 +67,7 @@ if (res->anm[i] != NULL) {                                   \
     if (a != NULL) {                                         \
         u32 size = NNS_G3dAnmObjCalcSizeRequired(a, mdl);    \
         if (self->anm[i] == NULL) {                          \
-            self->anm[i] = func_0203de84(size, 4);           \
+            self->anm[i] = Heap_AllocHi(size, 4);           \
         }                                                    \
         NNS_G3dAnmObjInit(self->anm[i], a, mdl, tex);        \
         NNS_G3dRenderObjAddAnmObj(self->rob, self->anm[i]);  \
@@ -122,12 +122,12 @@ void func_ov000_021b70c0(Self021b70c0 *self, Res021b70c0 *res, u8 *list, u8 coun
     }
     if (needMat || needJnt) {
         if (needMat) {
-            void *p = func_0203de84(mdl[0x18] * 0x38, 4);
+            void *p = Heap_AllocHi(mdl[0x18] * 0x38, 4);
             self->buf38 = p;
             LFLD(void *, self->rob, 0x38) = p;
         }
         if (needJnt) {
-            void *p = func_0203de84(mdl[0x17] * 0x58, 4);
+            void *p = Heap_AllocHi(mdl[0x17] * 0x58, 4);
             self->buf58 = p;
             LFLD(void *, self->rob, 0x34) = p;
         }
@@ -150,7 +150,7 @@ void func_ov000_021b70c0(Self021b70c0 *self, Res021b70c0 *res, u8 *list, u8 coun
             void *m;
             m = GetMdlByIdx021b70c0(set, i + 1);
             if (m != NULL) {
-                self->sub[i] = func_0203de84(0x54, 4);
+                self->sub[i] = Heap_AllocHi(0x54, 4);
                 NNS_G3dRenderObjInit(self->sub[i], m);
             }
         }

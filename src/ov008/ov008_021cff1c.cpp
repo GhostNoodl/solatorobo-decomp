@@ -7,7 +7,7 @@ extern "C" {
 extern Ov008Ce0 *data_02097ce0;
 extern void *data_ov000_021caec8;
 extern void *data_ov000_021cac60;
-void *func_0203a4c0(void *p);
+void *GfxMgr_GetFont(void *p);
 BOOL func_02054f10(void *a, int b);
 BOOL func_0203e63c(void *p);
 BOOL func_ov008_021d01b0(Ov008Menu *self);
@@ -51,7 +51,7 @@ static inline s32 Ov008_Height(Ov008Menu *self) {
 
 extern "C" {
 
-void func_ov008_021cff1c(Ov008Menu *self, s32 arg, s32 b) {
+void Ov008Menu_DrawItem(Ov008Menu *self, s32 arg, s32 b) {
     Ov008Cb cb = self->onDrawItem;
     if (cb != NULL) {
         cb(arg, self, b);
@@ -61,7 +61,7 @@ void func_ov008_021cff1c(Ov008Menu *self, s32 arg, s32 b) {
 s32 func_ov008_021cff40(Ov008Menu *self) {
     s32 a;
     data_02097ce0->unk_04 = self->font;
-    a = (*(s8 **)func_0203a4c0(data_02097ce0))[1];
+    a = (*(s8 **)GfxMgr_GetFont(data_02097ce0))[1];
     return a + self->v3c();
 }
 

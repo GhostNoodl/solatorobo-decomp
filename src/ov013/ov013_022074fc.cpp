@@ -29,7 +29,7 @@ void func_ov013_022074fc(Ov013Actor *self) {
 
 extern char data_ov013_0220be7c[];
 extern char data_ov013_0220be9a[];
-extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 c);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);
 extern void func_0203f364(void *p);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
 extern void func_ov000_021911c8(void *a, s32 b);
@@ -45,9 +45,9 @@ void func_ov013_022075b8(Ov013Actor *self) {
     switch (st->state) {
     case 0: {
         Ov013V *e;
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x540c, 0x15);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4811, 10);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4813, 10);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x540c, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4811, 10);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4813, 10);
         func_ov000_02190cb0(self->unk_38, data_ov013_0220be94, 0x19a, 0);
         self->unk_50[0] = 0;
         {

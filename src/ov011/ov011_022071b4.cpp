@@ -9,7 +9,7 @@ s32 Rand_PlusMinus(s32 max);
 extern const VecFx32 data_02092a50;
 extern void *data_02097e4c;
 Ov011Eff *func_02065f88(s32 id, VecFx32 *pos);
-void func_ov000_0218e8ec(void *mgr, u16 id, s32 msg);
+void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 void func_ov000_0218996c(s32 a, s32 b);
 void func_ov003_021d6a3c(void *self, s32 a, s32 b, s32 c);
 void *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 kind, s32 chance);
@@ -263,8 +263,8 @@ void func_ov011_02206e18(Ov011Act7da4 *self) {
         p->unk_22_1 = 0;
         self->unk_4c->unk_1c = 0xffff;
         Ov011_VecSet((VecFx32 *)&self->unk_9c, Rand_PlusMinus(0x29), -0x71, Rand_PlusMinus(0x29));
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4804, 0x15);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4805, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4804, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4805, 0x15);
         o = Ov011_FindActor(self->unk_de);
         if (o != NULL) {
             o->unk_1a = 1;

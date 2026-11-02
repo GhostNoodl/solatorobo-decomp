@@ -93,7 +93,7 @@ extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
 extern BOOL func_ov000_02191120(void *p);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern Ov003LvPlayer *func_ov000_0219bf90(void);
-extern BOOL func_01ffc198(Ov003Vec *a, Ov003Vec *b, s32 r);
+extern BOOL Hit_DiffInSphere(Ov003Vec *a, Ov003Vec *b, s32 r);
 extern Ov003LvEffect *func_02065f88(s32 id, const Ov003Vec *pos);
 extern s32 Rand_UpTo(s32 max);
 extern BOOL func_ov000_0219aae8(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
@@ -284,7 +284,7 @@ void func_ov003_021ee73c(Ov003Lever *self) {
     case 0:
         if (!(w->timer & 0x7f)) {
             Ov003LvPlayer *pl = func_ov000_0219bf90();
-            if (pl != NULL && func_01ffc198(&pl->pos, &self->pos, pl->radius + 0xf000)) {
+            if (pl != NULL && Hit_DiffInSphere(&pl->pos, &self->pos, pl->radius + 0xf000)) {
                 Ov003LvEffect *e = func_02065f88(0x322, &self->pos);
                 e->SetScale(0xe66, 0xe66, 0xe66);
                 func_02049f44(data_02097e4c, Rand_UpTo(1) + 0x79, &self->pos, 0);

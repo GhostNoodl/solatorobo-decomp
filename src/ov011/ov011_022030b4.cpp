@@ -15,7 +15,7 @@ void func_020627dc(s32 a);
 void func_ov003_021d5348(void *p);
 void func_ov003_021d5900(void *p);
 void func_ov003_021d6054(void *p);
-void func_ov000_0218e8ec(void *mgr, u16 id, s32 c);
+void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);
 void func_ov003_021d112c(void *p);
 void func_ov000_0218d7e8(void *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
@@ -149,8 +149,8 @@ void func_ov011_02203534(Ov011Actor *self) {
         self->unk_3c->unk_14 = self->unk_64 * 2;
         self->unk_3c->unk_19 = 0xff;
         if (*self->hp == 0) {
-            func_ov000_0218e8ec(data_ov000_021ccd68, 0x5807, 0x15);
-            func_ov000_0218e8ec(data_ov000_021ccd68, 0x4803, 0x15);
+            ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5807, 0x15);
+            ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4803, 0x15);
         }
     }
     func_ov003_021d5900(self);

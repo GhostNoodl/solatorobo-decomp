@@ -26,7 +26,7 @@ void func_020708fc(s32 a, LoName16 *out);
 void func_02070b98(s32 a, LoName16 *out, s32 b, s32 c);
 s32 func_0206ffa0(s32 a);
 s32 MsgRes_GetString(void *p, s32 a);
-s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
+s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
 void func_0204ca70(void *win);
 
 typedef struct {
@@ -101,7 +101,7 @@ void func_ov000_0214c2d0(Menu021ca94c *self) {
     fnt = data_02149ef8;
     self->unk_b8 = 8;
     self->unk_b4 = func_0206ffa0(0x1000);
-    self->unk_dc = func_0204c4fc(self->unk_b8, self->unk_c8, self->unk_b4, (u8 *)self + 0xd4, (u8 *)self + 0xd8, self->unk_c7 != 0 ? 1 : 0);
+    self->unk_dc = Text_Measure(self->unk_b8, self->unk_c8, self->unk_b4, (u8 *)self + 0xd4, (u8 *)self + 0xd8, self->unk_c7 != 0 ? 1 : 0);
     LFLD(s32, data_02097ce0, 4) = self->unk_b8;
     self->unk_104 = 0x7fff;
     self->unk_106 = 0x67f;
@@ -113,7 +113,7 @@ void func_ov000_0214c2d0(Menu021ca94c *self) {
 
     self->unk_170 = 4;
     self->unk_16c = MsgRes_GetString(fnt, 0x117);
-    self->unk_194 = func_0204c4fc(self->unk_170, self->unk_180, self->unk_16c, (u8 *)self + 0x18c, (u8 *)self + 0x190, self->unk_17f != 0);
+    self->unk_194 = Text_Measure(self->unk_170, self->unk_180, self->unk_16c, (u8 *)self + 0x18c, (u8 *)self + 0x190, self->unk_17f != 0);
     LFLD(s32, data_02097ce0, 4) = self->unk_170;
     self->unk_14c |= 0x40;
     self->unk_14c |= 0x1000000;

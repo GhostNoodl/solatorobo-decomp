@@ -29,7 +29,7 @@ void func_ov006_021e3934(ov006_Window *self, int arg, int arg2) {
 int func_ov006_021e3958(ov006_Window *self) {
     s8 base;
     data_02097ce0->unk_004 = self->font;
-    base = ((ov006_Unk0203a4c0 *)func_0203a4c0(data_02097ce0))->unk0[1];
+    base = ((ov006_Unk0203a4c0 *)GfxMgr_GetFont(data_02097ce0))->unk0[1];
     return base + VCALL(self, 3c);
 }
 
@@ -54,7 +54,7 @@ BOOL func_ov006_021e3a0c(ov006_Window *self, ov006_ListNode *node) {
     return self->unk8C(self, node);
 }
 
-BOOL func_ov006_021e3a28(ov006_Window *self, ov006_ListNode *node) {
+BOOL ov006_Window_OnCursor(ov006_Window *self, ov006_ListNode *node) {
     if (self->onCursor == NULL) {
         return TRUE;
     }

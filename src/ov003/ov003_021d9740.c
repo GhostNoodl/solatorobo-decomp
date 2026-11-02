@@ -48,7 +48,7 @@ static inline void Ov003Sequence_Step(Ov003Sequence *self) {
     self->b4 = 0;
 }
 
-void func_ov003_021d96e0(Ov003Sequence *self) {
+void Ov003Sequence_Update(Ov003Sequence *self) {
     if (!self->active) {
         return;
     }
@@ -79,7 +79,7 @@ void func_ov003_021d982c(Ov003Sequence *self, u8 v) {
     }
 }
 
-BOOL func_ov003_021d984c(Ov003Sequence *self, Ov003SeqEntry *entries) {
+BOOL Ov003Sequence_HasEntries(Ov003Sequence *self, Ov003SeqEntry *entries) {
     BOOL r = FALSE;
     if (self->active && entries != NULL) {
         if (self->entries == entries) {

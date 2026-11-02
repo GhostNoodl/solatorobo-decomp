@@ -12,7 +12,7 @@ extern u8 data_ov006_021eb840[];
 extern ov006_Unk02097e40 *data_02097e40;
 
 u16 func_02046ab4(ov006_Unk02097e40 *a);
-BOOL func_02045ea4(ov006_Unk02097e40 *a, BOOL enabled);
+BOOL Wh_SetEntry(ov006_Unk02097e40 *a, BOOL enabled);
 int func_ov006_021e4674(ov006_Unk021ec888 *self);
 
 void func_ov006_021e49bc(ov006_Unk021ec888 *self) {
@@ -78,11 +78,11 @@ static inline void ov006_MenuEntry_Set(ov006_MenuEntry *self, u16 a, int b, cons
     }
 }
 
-void func_ov006_021e4a80(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size) {
+void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size) {
     ov006_MenuEntry_Set(&self->entries[func_02046ab4(data_02097e40)], a, b, src, size);
 }
 
-void func_ov006_021e4b18(ov006_Unk021ec888 *self, int idx, u16 a, int b, const void *src, u32 size) {
+void ov006_Menu_SetEntryAt(ov006_Unk021ec888 *self, int idx, u16 a, int b, const void *src, u32 size) {
     ov006_MenuEntry_Set(&self->entries[idx], a, b, src, size);
 }
 
@@ -92,7 +92,7 @@ static inline void ov006_MenuEntry_Clear(ov006_MenuEntry *self) {
     MIi_CpuClear16(0, self->unk2, sizeof(self->unk2));
 }
 
-void func_ov006_021e4b90(ov006_Unk021ec888 *self) {
+void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self) {
     int i;
     for (i = 0; i < 4; i++) {
         ov006_MenuEntry_Clear(&self->entries[i]);
@@ -102,7 +102,7 @@ void func_ov006_021e4b90(ov006_Unk021ec888 *self) {
 BOOL func_ov006_021e4bec(ov006_Unk021ec888 *self, u8 v) {
     BOOL result;
     self->unk18 = v;
-    result = func_02045ea4(data_02097e40, v);
+    result = Wh_SetEntry(data_02097e40, v);
     if (result) {
         if (v == 0) {
             self->unk15C = data_02097e40->unk32;

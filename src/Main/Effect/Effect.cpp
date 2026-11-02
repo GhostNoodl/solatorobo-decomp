@@ -112,7 +112,7 @@ void func_02063954(EffectObj *obj) {
 void func_020639d0(EffectObj *obj) {
 }
 
-void func_020639d4(EffectObj *obj, s32 id, s32 frame) {
+void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame) {
     s32 i;
     EffectSndCue *cues;
     if (id < 0) {
@@ -128,7 +128,7 @@ void func_020639d4(EffectObj *obj, s32 id, s32 frame) {
     }
 }
 
-void func_02063a14(EffectObj *obj) {
+void EffectObj_StopLoop(EffectObj *obj) {
     for (; obj != NULL; obj = obj->child) {
         obj->loopCount = 0;
     }
@@ -368,23 +368,23 @@ void func_02063fd4(Effect3D *e) {
         func_0203f0b4(e->mdlFile->data);
     }
     if (e->anmObjs[0] != NULL) {
-        func_0203df0c(e->anmObjs[0]);
+        Heap_FreeHi(e->anmObjs[0]);
         e->anmObjs[0] = NULL;
     }
     if (e->anmObjs[1] != NULL) {
-        func_0203df0c(e->anmObjs[1]);
+        Heap_FreeHi(e->anmObjs[1]);
         e->anmObjs[1] = NULL;
     }
     if (e->anmObjs[2] != NULL) {
-        func_0203df0c(e->anmObjs[2]);
+        Heap_FreeHi(e->anmObjs[2]);
         e->anmObjs[2] = NULL;
     }
     if (e->anmObjs[3] != NULL) {
-        func_0203df0c(e->anmObjs[3]);
+        Heap_FreeHi(e->anmObjs[3]);
         e->anmObjs[3] = NULL;
     }
     if (e->anmObjs[4] != NULL) {
-        func_0203df0c(e->anmObjs[4]);
+        Heap_FreeHi(e->anmObjs[4]);
         e->anmObjs[4] = NULL;
     }
     if (e->unk_34) {
@@ -468,19 +468,19 @@ BOOL func_020641b8(Effect3D *e) {
     e->renderObj.ptrUser = e;
     if (e->anmFiles != NULL) {
         if (e->anmFiles[0].data != NULL) {
-            e->anmObjs[0] = (NNSG3dAnmObj *)func_0203de84(0x80, 4);
+            e->anmObjs[0] = (NNSG3dAnmObj *)Heap_AllocHi(0x80, 4);
         }
         if (e->anmFiles[1].data != NULL) {
-            e->anmObjs[1] = (NNSG3dAnmObj *)func_0203de84(0x80, 4);
+            e->anmObjs[1] = (NNSG3dAnmObj *)Heap_AllocHi(0x80, 4);
         }
         if (e->anmFiles[2].data != NULL) {
-            e->anmObjs[2] = (NNSG3dAnmObj *)func_0203de84(0x80, 4);
+            e->anmObjs[2] = (NNSG3dAnmObj *)Heap_AllocHi(0x80, 4);
         }
         if (e->anmFiles[3].data != NULL) {
-            e->anmObjs[3] = (NNSG3dAnmObj *)func_0203de84(0x80, 4);
+            e->anmObjs[3] = (NNSG3dAnmObj *)Heap_AllocHi(0x80, 4);
         }
         if (e->anmFiles[4].data != NULL) {
-            e->anmObjs[4] = (NNSG3dAnmObj *)func_0203de84(0x80, 4);
+            e->anmObjs[4] = (NNSG3dAnmObj *)Heap_AllocHi(0x80, 4);
         }
     }
     func_02063e24(e);
@@ -500,7 +500,7 @@ static inline void Effect_SetAnmFrame(NNSG3dAnmObj *a, s32 frame, BOOL *ret) {
     }
 }
 
-BOOL func_02064308(Effect3D *e, s32 frame) {
+BOOL Effect3D_SetFrame(Effect3D *e, s32 frame) {
     BOOL ret;
     if (e->anmFiles == NULL) {
         return FALSE;
@@ -515,7 +515,7 @@ BOOL func_02064308(Effect3D *e, s32 frame) {
 }
 
 BOOL func_02064400(Effect3D *e) {
-    return func_02064308(e, e->time);
+    return Effect3D_SetFrame(e, e->time);
 }
 
 
@@ -757,7 +757,7 @@ namespace m_02064d3c {
 extern "C" {
 
 extern EffectFile *func_02034b98(void *arc, const char *name);
-extern void func_02068508(struct EffectSetup *setup, void *data, VecFx32 *pos);
+extern void EffectSetup_Init(struct EffectSetup *setup, void *data, VecFx32 *pos);
 extern EffectObj *func_02068544(struct EffectSetup *setup);
 extern void func_02068540(struct EffectSetup *setup);
 extern u32 data_0208c1d8[];
@@ -780,7 +780,7 @@ void func_02064d3c(EffectObj *obj, EffectObj *child) {
     child->parent = p;
 }
 
-void func_02064d74(EffectGroup *g, const char *prefix, const char *name, const char *suffix) {
+void EffectGroup_SetName(EffectGroup *g, const char *prefix, const char *name, const char *suffix) {
     if (name != NULL) {
         if (prefix != NULL) {
             STD_CopyString(g->name, prefix);
@@ -796,7 +796,7 @@ void func_02064d74(EffectGroup *g, const char *prefix, const char *name, const c
     }
 }
 
-void func_02064dd8(EffectGroup *g) {
+void EffectGroup_Reset(EffectGroup *g) {
     g->unk_14 = 4;
     g->arcName[0] = 0;
     g->name[0] = 0;
@@ -843,7 +843,7 @@ BOOL func_02064e98(EffectGroup *g) {
             *(u32 **)setup = data_0208c1d8;
         }
         g->setup = setup;
-        func_02068508(setup, file->data, &g->pos);
+        EffectSetup_Init(setup, file->data, &g->pos);
         first = func_02068544(g->setup);
         c = first;
         if (first != NULL) {
@@ -906,11 +906,11 @@ EffectSetup *EffectSetup_DtorDelete(EffectSetup *setup) {
     return setup;
 }
 
-BOOL func_02065090(EffectGroup *g) {
+BOOL EffectGroup_Step(EffectGroup *g) {
     return g->child != NULL ? TRUE : FALSE;
 }
 
-BOOL func_020650a4(EffectGroup *g) {
+BOOL EffectGroup_Loop(EffectGroup *g) {
     EffectObj *c;
     g->Setup();
     for (c = g->child; c != NULL; c = c->child) {
@@ -919,7 +919,7 @@ BOOL func_020650a4(EffectGroup *g) {
     return TRUE;
 }
 
-void func_020650e0(EffectGroup *g, const VecFx32 *pos) {
+void EffectGroup_SetPos(EffectGroup *g, const VecFx32 *pos) {
     VecFx32 d;
     EffectObj *c;
     d.x = pos->x - g->pos.x;
@@ -935,7 +935,7 @@ void func_0206516c(EffectObj *obj, const VecFx32 *delta) {
     VEC_Add(&obj->pos, delta, &obj->pos);
 }
 
-void func_02065184(EffectObj *obj, s32 x, s32 y, s32 z) {
+void EffectGroup_SetPosXYZ(EffectObj *obj, s32 x, s32 y, s32 z) {
     VecFx32 v;
     v.x = x;
     v.y = y;
@@ -943,7 +943,7 @@ void func_02065184(EffectObj *obj, s32 x, s32 y, s32 z) {
     obj->SetPos(&v);
 }
 
-void func_020651b0(EffectGroup *g, const VecFx32 *delta) {
+void EffectGroup_AddPos(EffectGroup *g, const VecFx32 *delta) {
     EffectObj *c;
     for (c = g->child; c != NULL; c = c->child) {
         c->AddPos(delta);
@@ -951,7 +951,7 @@ void func_020651b0(EffectGroup *g, const VecFx32 *delta) {
     VEC_Add(&g->pos, delta, &g->pos);
 }
 
-void func_020651fc(EffectObj *obj, s32 x, s32 y, s32 z) {
+void EffectGroup_AddPosXYZ(EffectObj *obj, s32 x, s32 y, s32 z) {
     VecFx32 v;
     v.x = x;
     v.y = y;
@@ -959,7 +959,7 @@ void func_020651fc(EffectObj *obj, s32 x, s32 y, s32 z) {
     obj->AddPos(&v);
 }
 
-void func_02065228(EffectGroup *g, const EffectRot *rot) {
+void EffectGroup_SetRot(EffectGroup *g, const EffectRot *rot) {
     u16 dx = rot->x - g->rot.x;
     u16 dy = rot->y - g->rot.y;
     u16 dz = rot->z - g->rot.z;
@@ -975,7 +975,7 @@ void func_02065228(EffectGroup *g, const EffectRot *rot) {
     g->rot = *rot;
 }
 
-void func_020652e4(EffectObj *obj, u16 x, u16 y, u16 z) {
+void EffectGroup_SetRotXYZ(EffectObj *obj, u16 x, u16 y, u16 z) {
     EffectRot r;
     r.x = x;
     r.y = y;
@@ -983,7 +983,7 @@ void func_020652e4(EffectObj *obj, u16 x, u16 y, u16 z) {
     obj->SetRot(&r);
 }
 
-void func_02065310(EffectGroup *g, const VecFx32 *scale) {
+void EffectGroup_SetScale(EffectGroup *g, const VecFx32 *scale) {
     s32 fx = FX_Div(scale->x, g->scale.x);
     s32 fy = FX_Div(scale->y, g->scale.y);
     s32 fz = FX_Div(scale->z, g->scale.z);
@@ -999,7 +999,7 @@ void func_02065310(EffectGroup *g, const VecFx32 *scale) {
     g->scale = *scale;
 }
 
-void func_02065454(EffectObj *obj, s32 x, s32 y, s32 z) {
+void EffectGroup_SetScaleXYZ(EffectObj *obj, s32 x, s32 y, s32 z) {
     VecFx32 v;
     v.x = x;
     v.y = y;
@@ -1007,7 +1007,7 @@ void func_02065454(EffectObj *obj, s32 x, s32 y, s32 z) {
     obj->SetScale(&v);
 }
 
-void func_02065480(EffectGroup *g, s32 param) {
+void EffectGroup_SetParam(EffectGroup *g, s32 param) {
     EffectObj *c;
     for (c = g->child; c != NULL; c = c->child) {
         c->SetParam(param);
@@ -1015,7 +1015,7 @@ void func_02065480(EffectGroup *g, s32 param) {
 }
 
 extern void PauseNode_Init(void *task);
-extern void *func_02043548(EffectCamera *camera);
+extern void *GfxCamPos_Init(EffectCamera *camera);
 
 static inline void EffectMgr_Reset(EffectMgr *m) {
     m->state = 0;
@@ -1033,7 +1033,7 @@ static inline void EffectMgr_Reset(EffectMgr *m) {
     MTX_Identity44_(&m->proj);
 }
 
-void func_020654b8(void) {
+void EffectMgr_Create(void) {
     EffectMgr *m;
     if (data_0214a420 != NULL) {
         return;
@@ -1041,7 +1041,7 @@ void func_020654b8(void) {
     m = (EffectMgr *)Heap_Alloc(sizeof(EffectMgr));
     if (m != NULL) {
         PauseNode_Init(m);
-        func_02043548(&m->camera);
+        GfxCamPos_Init(&m->camera);
         EffectMgr_Reset(m);
     }
     data_0214a420 = m;
@@ -1066,7 +1066,7 @@ static inline void EffectMgr_Dtor(EffectMgr *m) {
     EffectMgr_Reset(m);
 }
 
-void func_02065534(void) {
+void EffectMgr_Delete(void) {
     void *saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     if (data_0214a420 != NULL) {
@@ -1080,7 +1080,7 @@ void func_02065534(void) {
     data_02097dd0->cur = saved;
 }
 
-void func_020656b4(EffectMgr *m) {
+void EffectMgr_FreeAll(EffectMgr *m) {
     EffectObj *o;
     EffectObj *next;
     for (o = m->head; o != NULL; o = next) {
@@ -1100,7 +1100,7 @@ EffectObj *EffectObj_DtorDelete(EffectObj *obj) {
     return obj;
 }
 
-BOOL func_02065748(EffectMgr *m, EffectObj *obj) {
+BOOL EffectMgr_Contains(EffectMgr *m, EffectObj *obj) {
     EffectObj *o;
     for (o = m->head; o != NULL; o = o->next) {
         if (o == obj && o->id == obj->id) {
@@ -1130,14 +1130,14 @@ EffectObj *func_020657b0(EffectMgr *m, u32 id) {
     return NULL;
 }
 
-void func_02065804(EffectMgr *m, u32 id) {
+void EffectMgr_Kill(EffectMgr *m, u32 id) {
     EffectObj *o = Effect_Find(m, id);
     if (o != NULL) {
         o->state = 4;
     }
 }
 
-void func_02065860(EffectMgr *m, u32 id) {
+void EffectMgr_StopLoop(EffectMgr *m, u32 id) {
     EffectObj *o = Effect_Find(m, id);
     if (o == NULL) {
         return;

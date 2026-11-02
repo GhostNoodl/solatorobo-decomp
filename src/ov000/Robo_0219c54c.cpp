@@ -35,7 +35,7 @@ s32 func_020701d4(u16 id);
 u8 *func_0206ef10(u16 id);
 void *Heap_Alloc(u32 size);
 void *func_ov000_021919c8(void *p);
-void func_ov000_02191b70(void *s);
+void Shadow_Load(void *s);
 void func_ov000_0218f074(void *o, void *a, BOOL b, BOOL c, s32 d, BOOL e);
 
 static inline void SetNames0219c54c(char *d0, char *d1, const char *a, const char *b) {
@@ -67,7 +67,7 @@ void Robo021ca458_Init(Robo021ca458 *self) {
         p = func_ov000_021919c8(p);
     }
     self->unk_3c = (u8 *) p;
-    func_ov000_02191b70(p);
+    Shadow_Load(p);
     kind = self->unk_b22_6;
     e = &data_ov000_021ca398[kind];
     if ((u16)(kind + 0xfffe) <= 1) {

@@ -7,7 +7,7 @@ extern void *func_ov000_0218fee4(void *p);
 void *func_ov003_021e75bc(void *self);
 
 extern void Heap_Free(void *p);
-extern void func_0203f864(void *p);
+extern void HitMesh_Detach(void *p);
 extern void *func_ov000_0218ea20(void *p);
 extern void *func_ov000_0219429c(void *p);
 
@@ -149,7 +149,7 @@ void *Ov003ActVt_021f8af8_Dtor(void *self) {
 }
 
 void *func_ov003_021e75bc(void *self) {
-    func_0203f864(self);
+    HitMesh_Detach(self);
     return self;
 }
 

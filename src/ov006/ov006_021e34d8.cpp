@@ -9,7 +9,7 @@ extern "C" {
 
 
 
-void func_ov006_021e34d8(ov006_CaptionSet *self, const char *text, int idx) {
+void ov006_CaptionSet_SetText(ov006_CaptionSet *self, const char *text, int idx) {
     OV006_DELETE_OBJECT(self->captions[idx]);
     self->captions[idx] = ov006_Caption_New();
     self->captions[idx]->kind = 2;

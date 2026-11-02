@@ -28,10 +28,10 @@ extern void func_02063a34(EffectObj *obj);
 extern void func_02063bd0(EffectObj *obj);
 extern void func_02063f90(Effect3D *e);
 extern void func_02063fd4(Effect3D *e);
-extern void func_020639d4(EffectObj *obj, s32 id, s32 frame);
+extern void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
 extern void func_02064b40(Effect3D *e);
 extern void func_02068540(struct EffectSetup *setup);
-extern void func_02035a74(void *arc);
+extern void ResMgr_ReleaseList(void *arc);
 extern void func_0206e900(char *dst, const char *src);
 
 static inline void Effect_SetStr(char *dst, const char *src) {
@@ -66,7 +66,7 @@ static inline Effect3D *EffectHud3D_New(void) {
     return e;
 }
 
-Effect3D *func_02066774(const char *arc, const char *mdl, const char *anm, const VecFx32 *pos) {
+Effect3D *Effect3D_Create(const char *arc, const char *mdl, const char *anm, const VecFx32 *pos) {
     Effect3D *e = Effect3D_New();
     Effect_SetStr(e->arcName, arc);
     Effect_SetStr(e->mdlName, mdl);
@@ -144,7 +144,7 @@ static inline void EffectGroup_Dtor(EffectGroup *g) {
         c->state = 4;
     }
     if (g->arcName[0] != 0) {
-        func_02035a74(g->arc);
+        ResMgr_ReleaseList(g->arc);
         g->arc = NULL;
         g->arcName[0] = 0;
     }
@@ -244,7 +244,7 @@ Effect3D *func_02066d10(const VecFx32 *pos) {
     mdl = data_0208c38b;
     arc = data_0208c397;
     e = EffectHud_Create(arc, mdl, 0x2714);
-    func_020639d4(e, 0x85, 2);
+    EffectObj_AddSndCue(e, 0x85, 2);
     e->SetPos(pos);
     return e;
 }
@@ -256,8 +256,8 @@ Effect3D *func_02066df0(void) {
     mdl = data_0208c3a1;
     arc = data_0208c3ad;
     e = EffectHud_Create(arc, mdl, 0x2711);
-    func_020639d4(e, 0x27, 2);
-    func_020639d4(e, 0x2c, 0x3c);
+    EffectObj_AddSndCue(e, 0x27, 2);
+    EffectObj_AddSndCue(e, 0x2c, 0x3c);
     return e;
 }
 
@@ -268,7 +268,7 @@ Effect3D *func_02066ec8(void) {
     mdl = data_0208c3bb;
     arc = data_0208c3c7;
     e = EffectHud_Create(arc, mdl, 0x2712);
-    func_020639d4(e, 0x2c, 2);
+    EffectObj_AddSndCue(e, 0x2c, 2);
     return e;
 }
 
@@ -279,7 +279,7 @@ Effect3D *func_02066f90(void) {
     mdl = data_0208c3d6;
     arc = data_0208c3e2;
     e = EffectHud_Create(arc, mdl, 0x2713);
-    func_020639d4(e, 0xd, 2);
+    EffectObj_AddSndCue(e, 0xd, 2);
     return e;
 }
 
@@ -290,7 +290,7 @@ Effect3D *func_02067058(void) {
     mdl = data_0208c3f1;
     arc = data_0208c3fd;
     e = EffectHud_Create(arc, mdl, 0x2715);
-    func_020639d4(e, 0x2c, 2);
+    EffectObj_AddSndCue(e, 0x2c, 2);
     return e;
 }
 
@@ -301,7 +301,7 @@ Effect3D *func_02067120(void) {
     mdl = data_0208c40c;
     arc = data_0208c418;
     e = EffectHud_Create(arc, mdl, 0x2716);
-    func_020639d4(e, 0x44, 2);
+    EffectObj_AddSndCue(e, 0x44, 2);
     return e;
 }
 

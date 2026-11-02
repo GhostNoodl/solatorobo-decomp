@@ -136,7 +136,7 @@ extern s32 func_020705fc(u16 id);
 extern void *Heap_Alloc(u32 size);
 extern Ov003Res *func_ov000_0218e9c4(void *p);
 extern Ov003Shadow *func_ov000_021919c8(void *p);
-extern void func_ov000_02191b70(Ov003Shadow *p);
+extern void Shadow_Load(Ov003Shadow *p);
 extern BOOL func_ov000_02191b9c(Ov003Shadow *p);
 extern BOOL func_ov000_0218f110(s16 *p);
 extern Ov003Save *data_0214a424;
@@ -146,7 +146,7 @@ extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_02191870(void *model, Ov003Res *res);
 extern Ov003AnimLayer *func_ov000_02190a30(void *model, s32 n);
 extern void func_ov000_02191920(void *model, s32 a, s32 b, s32 c);
-extern void *func_ov000_02198328(void *p);
+extern void *History_Init(void *p);
 extern u8 *func_0206ef10(u16 id);
 extern void func_ov000_02191008(Ov003Model *model);
 extern void func_ov000_0218ec60(Ov003Res *res, s32 a, s32 b, s32 c, s32 d);
@@ -223,7 +223,7 @@ void Ov003ActVt_021fa548_Start(Ov003Prop *self) {
     }
     void *task = Heap_Alloc(0x14);
     if (task != NULL) {
-        task = func_ov000_02198328(task);
+        task = History_Init(task);
     }
     self->task = task;
 }

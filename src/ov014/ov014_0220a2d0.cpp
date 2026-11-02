@@ -141,7 +141,7 @@ extern u8 data_ov014_02217a5a[];
 extern u8 data_ov014_02217a60[];
 extern u8 data_ov014_02217a66[];
 extern u8 data_ov014_02217a6c[];
-extern BOOL func_01ffc584(Ov014Vec *a, Ov014Vec *b, s32 c, s32 d);
+extern BOOL Hit_DiffInCylinder(Ov014Vec *a, Ov014Vec *b, s32 c, s32 d);
 extern void func_ov000_02191618(void *p);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
 extern BOOL func_02049244(Ov014Vec *out, s32 speed, const Ov014Vec *from, const Ov014Vec *to, s32 minDist);
@@ -175,7 +175,7 @@ void func_ov014_0220a67c(Ov014Act_02209280 *self) {
         self->unk_a8 = 0;
         a = self->pos;
         b = self->unk_b8;
-        if (func_01ffc584(&a, &b, 0x1800, 0x2800)) {
+        if (Hit_DiffInCylinder(&a, &b, 0x1800, 0x2800)) {
             self->unk_40->state = 0x14;
             self->unk_40->timer = 0x1e;
             break;

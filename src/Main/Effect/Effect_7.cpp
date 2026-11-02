@@ -12,7 +12,7 @@ extern char data_0208c81e[];
 extern char data_0208c826[];
 extern char data_0208c82e[];
 
-void func_02068508(EffectSetup *setup, u8 *data, const VecFx32 *pos) {
+void EffectSetup_Init(EffectSetup *setup, u8 *data, const VecFx32 *pos) {
     setup->data = data;
     setup->pos = *pos;
     setup->objChunk = NULL;

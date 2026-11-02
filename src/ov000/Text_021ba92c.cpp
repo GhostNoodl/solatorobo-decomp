@@ -10,7 +10,7 @@ extern u8 *data_02097ce0;
 extern VFunc data_0208ba70[];
 void *func_02061d64(u16 idx);
 void func_0204c7d0(void *p);
-s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
+s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 
 typedef struct Ov000Text {
     VFunc *vtbl;
@@ -84,7 +84,7 @@ s32 func_ov000_021ba92c(Obj021ba92c *self) {
         self->unk_10->unk_2c = 0;
         t = self->unk_10;
         t->unk_24 = (s32)str;
-        t->unk_4c = func_0204c4fc(t->unk_28, t->unk_38, t->unk_24, &t->unk_44, &t->unk_48, t->unk_37 != 0);
+        t->unk_4c = Text_Measure(t->unk_28, t->unk_38, t->unk_24, &t->unk_44, &t->unk_48, t->unk_37 != 0);
         LFLD(s32, data_02097ce0, 4) = t->unk_28;
         ((VObj *)self->unk_10)->vfunc_14();
         self->unk_10->flags |= 0x40;

@@ -266,7 +266,7 @@ Actor *ActorMgr_FindKindNear(ActorMgr *mgr, u16 id, u16 kind, VecFx32 *pos, s32 
     if (group != NULL) {
         for (actor = group->head; actor != NULL; actor = actor->next) {
             if (kind == 0xffff || kind == actor->kind) {
-                if (func_01ffc198(&actor->pos, pos, dist + actor->radius)) {
+                if (Hit_DiffInSphere(&actor->pos, pos, dist + actor->radius)) {
                     ret = actor;
                     break;
                 }
@@ -324,7 +324,7 @@ static inline ActorGroup *FindGroupX(ActorMgr *mgr, u16 id) {
     return found;
 }
 
-void func_ov000_0218e8ec(void *self, u16 kind, s32 type) {
+void ActorMgr_BroadcastKind(void *self, u16 kind, s32 type) {
     ActorGroup *group = FindGroupX(data_ov000_021ccd68, (u16)(kind & 0xf000));
     Actor *actor;
     if (group == NULL || (actor = group->head) == NULL) {

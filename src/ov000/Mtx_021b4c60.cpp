@@ -49,7 +49,7 @@ void *func_020705fc(u16 id);
 void *Heap_Alloc(u32 size);
 void *func_ov000_0218fe1c(void *m);
 void func_ov000_0219badc(void *m, Res021b4c60 *res, Cfg021b4c60 *cfg);
-void func_0203f80c(void *o);
+void HitMesh_Init(void *o);
 void HitMesh_SetRes(void *o, void *a);
 void HitMesh_SetScale(void *o, s32 a);
 void HitMesh_Link(void *o);
@@ -89,7 +89,7 @@ void Ov000ActVt_021cc7cc_Start(Obj021b4c60 *self) {
     {
         void *o = Heap_Alloc(0x98);
         if (o != NULL) {
-            func_0203f80c(o);
+            HitMesh_Init(o);
         }
         self->unk_58 = o;
     }

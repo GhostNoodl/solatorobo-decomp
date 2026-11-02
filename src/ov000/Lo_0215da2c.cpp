@@ -10,8 +10,8 @@ BOOL func_02054f10(void *p, s32 a);
 u16 func_02061d54(u16 a);
 s32 MsgRes_GetString(void *p, s32 a);
 void func_ov000_0215c1bc(void *self, s32 id, s32 v);
-void func_0203df0c(void *p);
-s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
+void Heap_FreeHi(void *p);
+s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
 
 typedef struct {
     u8 pad[0x98];

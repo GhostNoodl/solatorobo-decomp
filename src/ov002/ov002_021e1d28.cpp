@@ -112,8 +112,8 @@ extern char data_ov002_021effc8[];
 extern char data_ov002_021effd2[];
 
 void func_0204c7d0(void *p);
-s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void func_0204ca14(ov002_Anim021e0c28 *a, int b);
+s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
+void TextWin_InitLines(ov002_Anim021e0c28 *a, int b);
 void *func_02035de0(void *file, void *name);
 void func_02041c5c(void *a, void *fn);
 void *func_ov002_021e1988(void *a, void *b, void *c, u16 *d);
@@ -129,7 +129,7 @@ static inline ov002_Anim021e0c28 *ov002_Anim_New(void) {
 
 static inline void ov002_Anim_Start(ov002_Anim021e0c28 *s, s32 a) {
     s->unk24 = a;
-    s->unk4C = func_0204c4fc(s->unk28, s->unk38, s->unk24, s->unk44, s->unk48, s->unk37 != 0 ? TRUE : FALSE);
+    s->unk4C = Text_Measure(s->unk28, s->unk38, s->unk24, s->unk44, s->unk48, s->unk37 != 0 ? TRUE : FALSE);
     FIELD(data_02097ce0, 0x4, s32) = s->unk28;
 }
 
@@ -233,7 +233,7 @@ void func_ov002_021e1ed8(void *self) {
             c->anim->unk2C = 0;
             c->anim->unk34 = 1;
             ov002_Anim_Start(c->anim, text);
-            func_0204ca14(c->anim, 8);
+            TextWin_InitLines(c->anim, 8);
             c->anim->unk4 |= 4;
         }
         c = ((ov002_Caption021e0c28 **)((u8 *)self + 0x14))[i];

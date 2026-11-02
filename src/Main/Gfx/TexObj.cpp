@@ -131,7 +131,7 @@ void func_02041558(TexObj *obj) {
         func_020416b4(obj, i);
     }
     if (obj->entries != NULL) {
-        func_0203df0c(obj->entries);
+        Heap_FreeHi(obj->entries);
         obj->entries = NULL;
     }
     if (obj->owned && obj->name[0] != 0) {
@@ -383,7 +383,7 @@ void func_020417e0(TexObj *obj, const TexObjRes *res) {
     n = TexObj_CountAnims(res);
     count = *res->dict;
     obj->count = count;
-    obj->entries = (TexObjEntry *)func_0203de84(count * sizeof(TexObjEntry) + n * 0x58, 4);
+    obj->entries = (TexObjEntry *)Heap_AllocHi(count * sizeof(TexObjEntry) + n * 0x58, 4);
     anims = (u8 *)obj->entries + count * sizeof(TexObjEntry);
     {
     u16 i;

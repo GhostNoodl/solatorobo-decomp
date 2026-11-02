@@ -2,11 +2,11 @@
 
 extern "C" {
 
-s32 func_02065748(void *a, void *b);
+s32 EffectMgr_Contains(void *a, void *b);
 void func_ov000_021bd228(void *p);
 extern u8 data_ov015_022132ac[];
 extern u8 data_ov015_022132bb[];
-u8 *func_02066774(void *a, void *b, int c, void *d);
+u8 *Effect3D_Create(void *a, void *b, int c, void *d);
 void func_ov000_021bd198(void *p);
 void func_ov015_02212430(Ov015Obj292c *self);
 void func_ov000_021bd624(void *p);
@@ -36,7 +36,7 @@ void func_ov015_022120c0(Ov015Obj292c *self) {
 void func_ov015_022120fc(Ov015Obj292c *self) {
     void *saved;
     void *o;
-    if (func_02065748(data_0214a420, self->fx)) {
+    if (EffectMgr_Contains(data_0214a420, self->fx)) {
         FLD(s32, self->fx, 0x1c) = 4;
         FLD(void *, self, 0x4) = NULL;
     }
@@ -62,7 +62,7 @@ int func_ov015_0221219c(Ov015Obj292c *self) {
 
 BOOL func_ov015_022121b4(Ov015Obj292c *self) {
     u8 *q;
-    self->fx = func_02066774(data_ov015_022132ac, data_ov015_022132bb, 0, &self->pos);
+    self->fx = Effect3D_Create(data_ov015_022132ac, data_ov015_022132bb, 0, &self->pos);
     FLD(s32, self->fx, 0xd4) = 3;
     FLD(s32, self->fx, 0x54) = 0;
     FLD(s32, self->fx, 0x50) = -0xc8000;

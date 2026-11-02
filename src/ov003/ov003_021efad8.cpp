@@ -143,7 +143,7 @@ extern void *data_0214a420;
 extern Ov003Game54 *data_ov000_021ccd54;
 extern const Ov003BxDef data_ov003_021f6e60[];
 extern Ov003BxPlayer *func_ov000_0219bf90(void);
-extern void func_02065860(void *mgr, void *p);
+extern void EffectMgr_StopLoop(void *mgr, void *p);
 extern s32 VEC_Distance(const Ov003BxVec *a, const Ov003BxVec *b);
 extern void *func_0204a028(void *mgr, s32 id, Ov003BxVec *pos, s32 a);
 extern BOOL func_ov000_0219aae8(Ov003Bx *a, Ov003Bx *b, u16 c, u8 d, s32 e, Ov003BxVec *pos, Ov003BxRot *rot, s32 f, s32 g, s32 h, s32 i);
@@ -215,7 +215,7 @@ typedef struct {
 extern void *data_ov000_021ccd64;
 extern s32 Rand_PlusMinus(s32 n);
 extern s32 Rand_UpTo(s32 n);
-extern BOOL func_01ffc584(Ov003BxVec *a, Ov003BxVec *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(Ov003BxVec *a, Ov003BxVec *b, s32 r, s32 h);
 extern void HitSphere_Link(Ov003BxCtl *ctl);
 extern void *func_0206fef8(u16 id);
 extern Ov003BxSpawned *Group_SpawnActor(void *mgr, Ov003BxSpawnInfo *info, void *pos, Ov003BxRot *rot, u16 a);
@@ -269,7 +269,7 @@ void func_ov003_021ef70c(Ov003Bx *self) {
                 v.y = self->pos.y;
                 v.z = self->pos.z;
                 v.y -= 0x4000;
-                if (func_01ffc584(&pl->pos, &v, BXF(s32, pl, 0x64) + 0x8000, 0x8000)) {
+                if (Hit_DiffInCylinder(&pl->pos, &v, BXF(s32, pl, 0x64) + 0x8000, 0x8000)) {
                     func_ov000_0218996c(6, 0x16);
                     func_02049f44(data_02097e4c, 0x53, &self->pos, 0);
                     if (self->unk_1a < 0) {
@@ -459,7 +459,7 @@ void func_ov003_021efde8(Ov003Bx *self) {
     Ov003BxWork *w;
     if (d > 0x20000) {
         if (self->unk_bc != NULL) {
-            func_02065860(data_0214a420, self->unk_bc);
+            EffectMgr_StopLoop(data_0214a420, self->unk_bc);
             self->unk_bc = NULL;
         }
         self->work->state = 0;
@@ -497,7 +497,7 @@ void func_ov003_021efde8(Ov003Bx *self) {
         if (n > 0 && ++w->timer > n) {
             {
                 if (self->unk_bc != NULL) {
-                    func_02065860(data_0214a420, self->unk_bc);
+                    EffectMgr_StopLoop(data_0214a420, self->unk_bc);
                 }
                 self->unk_bc = NULL;
                 self->work->state++;

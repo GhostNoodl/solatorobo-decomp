@@ -7,7 +7,7 @@ ResList *ResList_Init(ResList *list) {
     return list;
 }
 
-ResList *func_02034b50(ResList *list) {
+ResList *ResList_Dtor(ResList *list) {
     ResNode *node = list->head;
     ResNode *next;
     while (node != NULL) {
@@ -59,7 +59,7 @@ ResList *func_02034b50(ResList *list) {
 
 RES_LIST_FIND_FUNC(func_02034b98, 0)
 
-void *func_02034c34(ResList *list, const char *dir, const char *name) {
+void *ResList_FindPath(ResList *list, const char *dir, const char *name) {
     char path[0x18];
     u16 hash;
     char *str = path;

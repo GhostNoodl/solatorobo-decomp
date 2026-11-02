@@ -7,7 +7,7 @@ extern void *data_02097e4c;
 extern char data_ov008_021d0458[];
 extern char data_ov008_021d0462[];
 void func_ov000_02153f90(void *p);
-Ov008Def *func_0206e7d0(u8 id);
+Ov008Def *Lang_GetGroup(u8 id);
 void func_02070874(char *dst, const char *fmt, ...);
 void *func_02049a48(void *a, int b, int c, int d, int e);
 
@@ -51,7 +51,7 @@ void func_ov008_021cce38(Ov008Caption *o) {
             u16 v = o->next;
             o->shown = v;
             o->next = 0xffff;
-            func_02070874(buf, data_ov008_021d0458, func_0206e7d0(v)->unk_04);
+            func_02070874(buf, data_ov008_021d0458, Lang_GetGroup(v)->unk_04);
             o->pic.v0c();
             o->pic.unk_44 = 2;
             o->pic.v24(data_ov008_021d0462, buf);

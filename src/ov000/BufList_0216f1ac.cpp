@@ -119,7 +119,7 @@ void func_ov000_0216f23c(BufferList *list, BOOL mode) {
     } while (buf != NULL);
 }
 
-void func_ov000_0216f360(MessageQueue *self) {
+void MessageQueue_Init(MessageQueue *self) {
     u32 i;
     self->unk_04 = 0;
     self->list.head = NULL;
@@ -137,7 +137,7 @@ ListBuffer *func_ov000_0216f398(MessageQueue *self, ListBuffer *buf, u32 priorit
     return MessageQueue_AddBuffer(self, buf, priority, owner);
 }
 
-void func_ov000_0216f42c(MessageQueue *self, ListBuffer *buf) {
+void MessageQueue_FreeBuffer(MessageQueue *self, ListBuffer *buf) {
     if (buf == NULL) {
         return;
     }

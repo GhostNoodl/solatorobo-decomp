@@ -170,8 +170,8 @@ extern "C" {
 void func_ov012_0220a1ac(Ov012Actor *self) {
     if (self->unk_40->state == 0) {
         Ov012V *e;
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4009, 0x15);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4801, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4009, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4801, 0x15);
         e = func_02065f88(0x69, &self->pos);
         if (e != NULL) {
             e->v0c(0x2400);

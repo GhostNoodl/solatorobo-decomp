@@ -12,7 +12,7 @@ void func_0206d0a8(void *a);
 
 BOOL func_0206d0d4(void *a, u16 id, u8 x, u8 y, u8 rot, int e);
 
-u8 func_0206d1d4(void *a, u16 id);
+u8 StageFlags_CountEntries(void *a, u16 id);
 
 void func_0206f3f0(u16 id, u8 v);
 
@@ -39,7 +39,7 @@ void func_ov002_021d9c04(void *self) {
     for (i = 0; i < 0x53; i++) {
         p = (u8 *)self + i;
         id = i | 0x2000;
-        if (p[8] != 0 || func_0206d1d4(data_0214a424, id)) {
+        if (p[8] != 0 || StageFlags_CountEntries(data_0214a424, id)) {
             func_0206f3f0(id, p[8]);
         }
     }

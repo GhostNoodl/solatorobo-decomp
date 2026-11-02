@@ -47,7 +47,7 @@ BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *pos, u16
                          s32 f, s32 g, s32 h, s32 i);
 void func_ov000_0218bed8(void *a, s32 b, void *actor);
 ov006_Tgt021ead6c *ActorMgr_GetActor(void *mgr, u16 id);
-BOOL func_01ffc198(VecFx32 *a, VecFx32 *b, s32 r);
+BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 void Actor_SendMsg(ov006_Tgt021ead6c *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 
 static inline ov006_Tgt021ead6c *GetTgt(u16 id) {
@@ -115,7 +115,7 @@ void func_ov006_021ead6c(ov006_Obj021ead6c *self) {
             done = FALSE;
             if (self->unk90 != 0xffff && (tgt = GetTgt(self->unk90)) != NULL) {
                 d = tgt->pos;
-                if (func_01ffc198(&d, &self->unk70, 0x2800)) {
+                if (Hit_DiffInSphere(&d, &self->unk70, 0x2800)) {
                     msg.b = 0x11;
                     msg.a = 1;
                     msg.c = self->unkC;

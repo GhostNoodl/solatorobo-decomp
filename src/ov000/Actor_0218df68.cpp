@@ -91,7 +91,7 @@ void ActorGroup_SendMsg(ActorGroup *group, u16 id, u8 type, BOOL notify, u32 siz
     } while (actor != NULL);
 }
 
-void func_ov000_0218e044(ActorGroup *group, u16 kind, s32 value) {
+void ActorGroup_BroadcastKind(ActorGroup *group, u16 kind, s32 value) {
     Actor *actor = group->head;
     u8 buf;
     if (actor == NULL) {

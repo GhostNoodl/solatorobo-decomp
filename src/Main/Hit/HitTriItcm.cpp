@@ -42,7 +42,7 @@ void func_01ffae08(HitTriRay *ray) {
     n = res->blockCount;
     block = res->blocks;
     while (n != 0) {
-        func_01ff8464(&ray->min, block);
+        HitSegLocal_Transform(&ray->min, block);
         if (ray->min.x <= block->max[0] && ray->max.x >= block->min[0] && ray->min.y <= block->max[1] &&
             ray->max.y >= block->min[1] && ray->min.z <= block->max[2] && ray->max.z >= block->min[2]) {
             ray->dir.x = ray->to.x - ray->from.x;

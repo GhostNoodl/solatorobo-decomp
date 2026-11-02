@@ -35,7 +35,7 @@ extern char data_ov000_021cc61e[];
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
-BOOL func_01ffc584(void *a, void *b, s32 c, s32 d);
+BOOL Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *p, void *a, s32 b, s32 c);
 void func_ov000_021915a0(void *p);
 void *func_ov000_02191318(void *a, s32 b);
@@ -101,7 +101,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                 s = self->fsm;
                 s->timer++;
                 if (s->timer < 0x23 &&
-                    !func_01ffc584(t + 0x70, &pos, LFLD(s32, t, 0x64) * 2 + 0x1000, 0x3800)) {
+                    !Hit_DiffInCylinder(t + 0x70, &pos, LFLD(s32, t, 0x64) * 2 + 0x1000, 0x3800)) {
                     hit = FALSE;
                     func_ov000_02190cb0(self->model, data_ov000_021ca050[self->unk_b24_5], 0x400, 0);
                     func_ov000_021915a0(self->model);

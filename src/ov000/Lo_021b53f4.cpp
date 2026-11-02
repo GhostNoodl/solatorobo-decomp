@@ -62,7 +62,7 @@ void func_020434e0(void *p);
 void func_ov000_021b65ec(Mgr021b53f4 *self);
 void *func_ov000_021b7a7c(Node021b53f4 *n);
 void Heap_Free(void *p);
-Ent021b53f4 *func_0206e7d0(u8 id);
+Ent021b53f4 *Lang_GetGroup(u8 id);
 void func_0206dfd4(char *buf, u8 *ids);
 void func_02035acc(void *a, char *buf, s32 c);
 void func_ov000_021b6994(Mgr021b53f4 *self, s32 a);
@@ -109,7 +109,7 @@ void func_ov000_021b53f4(Mgr021b53f4 *self) {
         if (ids[0] == 0xff || ids[1] == 0xff || ids[2] == 0xff) {
             ids = p->unk_ca;
         }
-        e = func_0206e7d0(ids[0]);
+        e = Lang_GetGroup(ids[0]);
         func_0206dfd4(buf, ids);
         func_02035acc(e->unk_08, buf, 0);
         {

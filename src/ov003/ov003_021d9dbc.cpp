@@ -83,7 +83,7 @@ void func_ov003_021d9dbc(Ov003Vec *out, const Ov003Vec *a, const Ov003Vec *b, s3
     *out = r;
 }
 
-void func_ov003_021d9e90(Ov003Vec *out, const Ov003Vec *dir, const Ov003Vec *base, s32 scale, s32 yoff) {
+void Ov003Vec_MultAdd(Ov003Vec *out, const Ov003Vec *dir, const Ov003Vec *base, s32 scale, s32 yoff) {
     Ov003Vec r;
     VEC_MultAdd(scale, (VecFx32 *)dir, (VecFx32 *)base, (VecFx32 *)&r);
     if (yoff != 0) {

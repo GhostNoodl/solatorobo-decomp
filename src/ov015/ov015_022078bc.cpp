@@ -14,7 +14,7 @@ void func_ov000_021911c8(void *a, s32 b);
 s32 func_ov000_021909a8(void *a, const void *b, const void *c);
 
 BOOL func_ov000_0218f110(void *p);
-void func_ov000_02191b70(void *p);
+void Shadow_Load(void *p);
 BOOL func_ov000_02191b9c(void *p);
 extern const char *data_ov015_02212cac[];
 extern const char *data_ov015_02212cb4[];
@@ -60,7 +60,7 @@ BOOL func_ov015_022078bc(Ov015Ship *self) {
         if ((u32)self & 3) {
             kq = 0xcb8;
         }
-        func_ov000_02191b70((u8 *)self + kq);
+        Shadow_Load((u8 *)self + kq);
         self->loadStep = 20;
         break;
     case 20: {
@@ -124,7 +124,7 @@ u16 func_01ffc128(u16 a, u16 b, s32 c, s32 d, s32 e);
 s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
 Ov015V *func_02065f88(s32 id, void *pos);
-s32 func_02065748(void *a, void *b);
+s32 EffectMgr_Contains(void *a, void *b);
 
 void func_ov015_02207c30(Ov015Ship *self) {
     u16 ang = 0x8000;
@@ -201,13 +201,13 @@ void func_ov015_02207c30(Ov015Ship *self) {
             }
         }
     } else {
-        if (func_02065748(data_0214a420, self->fx)) {
+        if (EffectMgr_Contains(data_0214a420, self->fx)) {
             void *saved;
             HEAP_PUSH(saved);
             DELETE_V(self->fx);
             HEAP_POP(saved);
         }
-        if (func_02065748(data_0214a420, self->fx2)) {
+        if (EffectMgr_Contains(data_0214a420, self->fx2)) {
             void *saved;
             HEAP_PUSH(saved);
             DELETE_V(self->fx2);

@@ -6,7 +6,7 @@
 extern "C" {
 extern u8 *data_0214a424;
 u16 Camera_GetYaw(void *cam);
-void func_ov000_0218dd8c(void *self, u16 base, s32 turn, void *range);
+void Actor_MoveByPad(void *self, u16 base, s32 turn, void *range);
 void Actor_MoveToPos(void *self, const VecFx32 *target, s32 turn);
 void Actor_Move(void *self, s32 turn);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
@@ -36,7 +36,7 @@ void func_ov000_021b1dd8(Robo021ca458 *self, s32 target, s32 rate, s32 speed, s3
             } else {
                 self->friction = 0x1000;
             }
-            func_ov000_0218dd8c(self, ang, turn, (u8 *)self + 0xb70);
+            Actor_MoveByPad(self, ang, turn, (u8 *)self + 0xb70);
             moved = TRUE;
         }
     } else if (self->unk_b28_0) {

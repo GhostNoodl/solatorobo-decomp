@@ -5,7 +5,7 @@ extern "C" {
 extern u8 data_02097ce4[];
 
 
-extern void *func_0203dec8(u32 size, int align);
+extern void *Heap_AllocLo(u32 size, int align);
 extern void func_02039a34(GfxMgr *mgr);
 extern void *func_0203a408(GfxMgr *mgr, void *arg1, void *arg2, void *arg3);
 extern void *func_0203a984(GfxMgr *mgr, void *arg1, void *arg2);
@@ -28,7 +28,7 @@ void func_02039750(void) {
     if (data_02097ce0 != NULL) {
         return;
     }
-    data_02097ce0 = (GfxMgr *)func_0203dec8(sizeof(GfxMgr), 4);
+    data_02097ce0 = (GfxMgr *)Heap_AllocLo(sizeof(GfxMgr), 4);
     func_02039a34(data_02097ce0);
     mgr = data_02097ce0;
     for (i = 0; i < 10; i++) {

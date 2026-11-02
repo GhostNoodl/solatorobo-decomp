@@ -64,7 +64,7 @@ typedef struct {
 extern "C" {
 
 extern Cfg021b3bd8 *data_0214a424;
-BOOL func_01ffc584(void *a, VecFx32 *b, s32 c, s32 d);
+BOOL Hit_DiffInCylinder(void *a, VecFx32 *b, s32 c, s32 d);
 
 static inline void Fade_Set(Fade021b3bd8 *f) {
     f->c0 = 0x73ff;
@@ -101,9 +101,9 @@ void func_ov000_021b3bd8(Mgr021b3bd8 *self) {
     }
     v = self->pos;
     v.y -= 0x3800;
-    hit = func_01ffc584(self->unk_70, &v, self->unk_64 + 0x3000, 0x6000);
+    hit = Hit_DiffInCylinder(self->unk_70, &v, self->unk_64 + 0x3000, 0x6000);
     if (!hit && !(self->unk_48->flags & 0x20000000)) {
-        hit = func_01ffc584(self->unk_70, &v, self->unk_64 + 0x5000, 0x3800);
+        hit = Hit_DiffInCylinder(self->unk_70, &v, self->unk_64 + 0x5000, 0x3800);
     }
     if (!hit) {
         return;

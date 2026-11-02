@@ -37,7 +37,7 @@ typedef struct SndMgr {
     /* 0x5a */ u8 noAutoPlay;
     /* 0x5b */ u8 unk_5b;
     /* 0x5c */ SndHandle *seqArcHandles[5];
-    /* 0x70 */ s32 seqArcPaused[5]; // seqArc[i] was paused by func_0204a160 (SndMgr_ResumeAll)
+    /* 0x70 */ s32 seqArcPaused[5]; // seqArc[i] was paused by SndMgr_PauseAll (SndMgr_ResumeAll)
     /* 0x84 */ s32 seqArcSlots[5];
     /* 0x98 */ s32 seqArcNext;
     /* 0x9c */ s32 unk_9c;
@@ -91,7 +91,7 @@ extern const s32 data_0208b688[];
 struct SndCmd;
 void func_0204aad0(SndQueue *queue);
 void func_0204aaec(SndQueue *queue, struct SndCmd *cmd);
-void func_0204ab54(SndQueue *queue);
+void SndQueue_StopSeqArcs(SndQueue *queue);
 void func_02049690(SndMgr *mgr);
 SndHandle *func_02049984(SndMgr *mgr, s32 id, s32 *outSeqArc, s32 *outIndex);
 s32 func_02049afc(SndMgr *mgr, s32 id);

@@ -94,10 +94,10 @@ extern void func_ov000_02191618(void *model);
 extern void func_ov000_021911c8(void *model, s32 v);
 extern Ov003FlickerInfo *func_0206fef8(u16 id);
 extern void *Heap_Alloc(u32 size);
-extern void *func_ov000_02198328(void *p);
+extern void *History_Init(void *p);
 extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 extern void VEC_Normalize(const Ov003Vec *a, Ov003Vec *out);
-extern BOOL func_01ffc198(Ov003Vec *a, Ov003Vec *b, s32 r);
+extern BOOL Hit_DiffInSphere(Ov003Vec *a, Ov003Vec *b, s32 r);
 extern const s16 FX_SinCosTable_[];
 extern void MTX_Identity43_(Ov003FlickerMtx *m);
 extern void MTX_RotX43_(Ov003FlickerMtx *m, s32 s, s32 c);
@@ -193,7 +193,7 @@ void Ov003ActVt_021fa498_Start(Ov003Flicker *self) {
     }
     p = Heap_Alloc(0x14);
     if (p != NULL) {
-        p = func_ov000_02198328(p);
+        p = History_Init(p);
     }
     self->task = p;
     self->task->timer = Rand_UpTo(0x28);
@@ -226,7 +226,7 @@ void func_ov003_021f1f00(Ov003Flicker *self) {
             task->timer--;
         }
         if (task->timer == 0) {
-            if (func_01ffc198(&self->pos, &tgt, e->radius + self->unk_64)) {
+            if (Hit_DiffInSphere(&self->pos, &tgt, e->radius + self->unk_64)) {
                 self->task->state = 10;
             }
             self->vel.x = tgt.x - self->pos.x;

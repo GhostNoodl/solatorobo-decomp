@@ -36,7 +36,7 @@ BOOL func_ov000_0218f110(void *p);
 void func_0206e900(char *dst, const char *src);
 void func_0205a6a0(void *p);
 void func_0205a840(void *p, const char *a, const char *b);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 void func_ov000_0214bb80(void);
 void func_ov000_0214c1ac(void);
 BOOL func_ov000_0214bc6c(void);
@@ -98,7 +98,7 @@ BOOL func_ov008_021cddc8(Ov008Mgr *m) {
     if (!func_02035b90(data_0208cc94, 7)) {
         r = FALSE;
     }
-    if (!func_0205a9c8(m->unk_fc)) {
+    if (!StageRes_IsAllLoaded(m->unk_fc)) {
         r = FALSE;
     }
     if (!func_ov000_0214bc6c()) {

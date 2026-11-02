@@ -7,7 +7,7 @@ extern void *data_02097e4c;
 extern u8 *data_02097d48;
 extern u8 data_ov014_02217aac[];
 extern u8 data_ov014_02217c6c[];
-extern void func_02065860(void *a, void *b);
+extern void EffectMgr_StopLoop(void *a, void *b);
 extern void func_ov000_02195d88(void *self);
 extern void func_ov000_0219763c(void *self);
 extern Ov014Actor *Target_Get(void *p);
@@ -90,7 +90,7 @@ void func_ov014_0220e72c(Ov014ActEx_0220dcf4 *self) {
             m->unk_54 = 0;
             FLD(u32, m, 0x58) = 0;
         }
-        func_02065860(data_0214a420, self->unk_d0);
+        EffectMgr_StopLoop(data_0214a420, self->unk_d0);
         self->unk_d0 = NULL;
         self->unk_40->state++;
         break;
@@ -118,7 +118,7 @@ void func_ov014_0220e72c(Ov014ActEx_0220dcf4 *self) {
 
 void func_ov014_0220ea94(Ov014ActEx_0220dcf4 *self) {
     if (self->unk_40->state == 0) {
-        func_02065860(data_0214a420, self->unk_d0);
+        EffectMgr_StopLoop(data_0214a420, self->unk_d0);
         self->unk_d0 = NULL;
     }
     func_ov000_02195d88(self);
@@ -126,7 +126,7 @@ void func_ov014_0220ea94(Ov014ActEx_0220dcf4 *self) {
 
 void func_ov014_0220ead4(Ov014ActEx_0220dcf4 *self) {
     if (self->unk_40->state == 0) {
-        func_02065860(data_0214a420, self->unk_d0);
+        EffectMgr_StopLoop(data_0214a420, self->unk_d0);
         self->unk_d0 = NULL;
     }
     func_ov000_0219763c(self);

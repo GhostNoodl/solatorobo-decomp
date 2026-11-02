@@ -111,11 +111,11 @@ extern void func_ov000_021915a0(void *anim);
 extern void func_0203f2b8(void *p);
 extern void Heap_Free(void *p);
 extern void func_01ffc9fc(Ov003Vec *src, Ov003Vec *dst, u16 angle);
-extern void func_02065804(void *mgr, void *handle);
+extern void EffectMgr_Kill(void *mgr, void *handle);
 extern void *func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, void *b);
 extern Ov003LiftPlayer *func_ov000_0219bf90(void);
-extern BOOL func_01ffc198(Ov003Vec *a, Ov003Vec *b, s32 r);
+extern BOOL Hit_DiffInSphere(Ov003Vec *a, Ov003Vec *b, s32 r);
 extern Ov003LiftFx *func_02065f88(s32 id, const Ov003Vec *pos);
 extern BOOL func_ov000_02194c08(void *self);
 extern void func_ov000_02190758(void *anim, void *p, s32 a);
@@ -182,7 +182,7 @@ void Ov003ActVt_021f979c_Start(Ov003Lift *self) {
 void func_ov003_021ebe08(Ov003Lift *self) {
     if (self->active) {
         if (self->fx != NULL) {
-            func_02065804(data_0214a420, self->fx);
+            EffectMgr_Kill(data_0214a420, self->fx);
             self->fx = NULL;
         }
         if (self->model != NULL) {
@@ -195,7 +195,7 @@ void func_ov003_021ebe08(Ov003Lift *self) {
     }
     if (!(self->timer & 0x7f)) {
         Ov003LiftPlayer *pl = func_ov000_0219bf90();
-        if (pl != NULL && func_01ffc198(&pl->pos, &self->pos, pl->radius + 0xf000)) {
+        if (pl != NULL && Hit_DiffInSphere(&pl->pos, &self->pos, pl->radius + 0xf000)) {
             Ov003LiftFx *fx = func_02065f88(0xcc, &self->pos);
             if (fx != NULL) {
                 self->fx = fx->handle;

@@ -27,7 +27,7 @@ extern const u8 data_ov006_021eb740[];
 
 void func_ov006_021cd580(int a, void *b, int c);
 void func_ov000_021548cc(void *a, int b);
-void *func_ov000_02154b80(void *a, int b);
+void *ListOwner_GetNth(void *a, int b);
 void *func_ov000_02162124(void *p);
 void func_ov000_021627ac(void *p);
 void func_ov000_02162910(void *p, const void *a, const void *b, const void *c);
@@ -42,7 +42,7 @@ void func_ov006_021e0f00(void *p);
 void func_ov006_021e13c8(void *p, void *s);
 void func_ov006_021e139c(ov006_Unk021e139c *self, int a, int b, u8 c);
 void ov006_Slot_Pack(ov006_Slot *self, void *buf);
-void func_ov006_021e4a80(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
+void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 void func_ov006_021d3498(ov006_TaskD1F *self, u16 id, BOOL dir);
 ov006_Unk020706a0 *func_020706a0(u16 id);
 void func_02043904(void *p);
@@ -128,9 +128,9 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     self->unk54->unk4A = 0x2c00;
     self->unk54->rows = 4;
     self->unk54->width = 0x8c;
-    ov006_Window_SetRot(self->unk54, 0, 0x1e, -0x199a);
+    ov006_Window_SetPos(self->unk54, 0, 0x1e, -0x199a);
     self->unk54->posZ = -0x199a;
-    ov006_Window_SetPos(self->unk54, -0xff, 0, -0x199a);
+    ov006_Window_SetSlide(self->unk54, -0xff, 0, -0x199a);
     self->unk54->flags &= ~0x400000;
     self->unk54->flags &= ~0x80000;
     self->unk54->flags |= 0x40000;
@@ -143,7 +143,7 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
         ov006_Window *w = self->unk54;
         VCALL(w, a8, func_ov000_02154b58(w, self->unk4A));
     } else {
-        VCALL(self->unk54, a8, func_ov000_02154b80(self->unk54, 0));
+        VCALL(self->unk54, a8, ListOwner_GetNth(self->unk54, 0));
     }
     self->unk54->owner = self;
     self->unk54->onCursor = func_ov006_021d1df8;
@@ -160,8 +160,8 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     self->unk5C = ov006_NewWindow_cadcc();
     self->unk5C->width = 0xf8;
     self->unk5C->rows = 2;
-    ov006_Window_SetRot(self->unk5C, 4, 0x95, -0x199a);
-    ov006_Window_SetPos(self->unk5C, -0x100, 0, -0x199a);
+    ov006_Window_SetPos(self->unk5C, 4, 0x95, -0x199a);
+    ov006_Window_SetSlide(self->unk5C, -0x100, 0, -0x199a);
     self->unk5C->slideMode = 1;
     VCALL(self->unk5C, 08);
     self->unk60 = ov006_NewWindow_cb0b8();
@@ -210,7 +210,7 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     {
         u8 buf[0x18];
         ov006_Slot_Pack(func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5), buf);
-        func_ov006_021e4a80(data_ov006_021ec888, self->unk49, 1, buf, 0x18);
+        ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk49, 1, buf, 0x18);
     }
     if (self->base.unkC != 0) {
         self->unk48 = 0;

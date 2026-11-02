@@ -2,7 +2,7 @@
 
 extern "C" {
 
-u8 *func_02066774(void *a, void *b, int c, void *d);
+u8 *Effect3D_Create(void *a, void *b, int c, void *d);
 extern u8 data_ov015_02212e20[];
 extern u8 data_ov015_02212e34[];
 struct Ov015Blk0afcc { s32 w[3]; };
@@ -17,7 +17,7 @@ void func_ov015_0220afcc(Ov015FishState2c *self) {
     u16 ang;
     Ov015V *e = func_020657b0(data_0214a420, self->unk_24);
     if (e == NULL) {
-        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, &self->fish->pos);
+        e = (Ov015V *)Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &self->fish->pos);
         FLD(s32, e, 0xd4) = 1;
         FLD(u8, e, 0x28) = 0;
         FLD(s32, e, 0xc8) = -1;
@@ -50,7 +50,7 @@ void func_ov015_0220afcc(Ov015FishState2c *self) {
 }
 
 Ov015V *func_02065f88(s32 id, void *pos);
-void func_02065860(void *a, void *b);
+void EffectMgr_StopLoop(void *a, void *b);
 s32 Rand_PlusMinus(s32 n);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
@@ -153,7 +153,7 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
         }
         e->v18(&b);
     } else {
-        func_02065860(data_0214a420, self->unk_28);
+        EffectMgr_StopLoop(data_0214a420, self->unk_28);
     }
     if (((u8)self->unk_14)) {
         func_ov000_02190cb0(&self->fish->model, data_ov015_02212e40, 0x19a, 0);

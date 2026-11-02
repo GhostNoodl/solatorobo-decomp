@@ -37,7 +37,7 @@ extern Mgr0218af9c *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
 Robo021ca458 *func_ov000_0219bf90(void);
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
-BOOL func_01ffc2a4(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max);
+BOOL Hit_DiffInBox(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max);
 BOOL func_01ffc89c(void *vol, VecFx32 *seg);
 u16 FX_Atan2(s32 x, s32 z);
 void func_ov000_0218b4b4(u8 *self, s32 mode, u8 *src);
@@ -142,7 +142,7 @@ void func_ov000_0218af9c(Obj0218af9c *self) {
                     }
                 }
                 tp = LFLD(VecFx32, tgt, 0x70);
-                if (!func_01ffc2a4(&tp, &t.pos, (VecFx32 *)((u8 *)self + 0x5c), (VecFx32 *)((u8 *)self + 0x68))) {
+                if (!Hit_DiffInBox(&tp, &t.pos, (VecFx32 *)((u8 *)self + 0x5c), (VecFx32 *)((u8 *)self + 0x68))) {
                     r = TRUE;
                 } else {
 

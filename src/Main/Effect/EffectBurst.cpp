@@ -9,7 +9,7 @@ extern char data_0208c4da[];
 extern void func_02063a34(EffectObj *obj);
 extern void func_02063f90(Effect3D *e);
 extern void func_02064d3c(EffectObj *obj, EffectObj *child);
-extern void func_02064dd8(EffectGroup *g);
+extern void EffectGroup_Reset(EffectGroup *g);
 extern s32 Rand_PlusMinus(s32 range);
 extern char data_0208c5e5[];
 extern char data_0208c5eb[];
@@ -45,8 +45,8 @@ extern char data_0208c699[];
 extern char data_0208c69f[];
 extern char data_0208c4a8[];
 extern char data_0208c4af[];
-extern void func_020639d4(EffectObj *obj, s32 id, s32 frame);
-extern void func_02064d74(EffectGroup *g, const char *prefix, const char *name, const char *suffix);
+extern void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
+extern void EffectGroup_SetName(EffectGroup *g, const char *prefix, const char *name, const char *suffix);
 
 // Keeps the NULL check on a string address, which the compiler would otherwise fold.
 #define EFFECT_STR(s) ((const char *)(u32)(s))
@@ -76,7 +76,7 @@ static inline EffectGroup *EffectGroup_New(void) {
         *(u32 **)g = data_0208c2e4;
         func_02063a34(g);
         *(u32 **)g = data_0208c23c;
-        func_02064dd8(g);
+        EffectGroup_Reset(g);
     }
     return g;
 }
@@ -210,13 +210,13 @@ EffectGroup *func_02067b08(s32 id, const VecFx32 *pos) {
         break;
     case 0x190:
         name = data_0208c699;
-        func_020639d4(g, 0x11, 0);
+        EffectObj_AddSndCue(g, 0x11, 0);
         break;
     case 0x193:
         name = data_0208c69f;
         break;
     }
-    func_02064d74(g, data_0208c4a8, name, data_0208c4af);
+    EffectGroup_SetName(g, data_0208c4a8, name, data_0208c4af);
     g->SetPos(pos);
     g->unk_20 = id;
     return g;

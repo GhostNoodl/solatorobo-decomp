@@ -135,7 +135,7 @@ void *Group_SpawnActor(void *mgr, Ov011SpawnDesc *d, VecFx32 *pos, Ov011Rot *rot
 void func_ov011_022011c0(void *self, u16 v);
 void func_ov011_022011c8(void *a, s32 b);
 void func_ov011_02201214(void *self, void *p);
-Ov011Node *func_ov003_021d77e0(void *self);
+Ov011Node *Ov003NodeSrc_NewNode(void *self);
 
 static inline void Ov011_Send(u16 id, s32 a, s32 b) {
     Ov011Msg m;
@@ -248,7 +248,7 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
                 ob->unk_4c->unk_1c = self->actor->id;
                 func_ov011_02201214(ob, NULL);
                 ob->unk_16_0 = 1;
-                nn = func_ov003_021d77e0(ob);
+                nn = Ov003NodeSrc_NewNode(ob);
                 {
                     Ov011Node *h = self->head;
                     if (nn != NULL) {

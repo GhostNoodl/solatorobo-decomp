@@ -10,9 +10,9 @@ void *func_0205976c(void *a, s32 b);
 u32 func_0205975c(void *a, s32 b);
 u32 func_ov000_0214bf2c(u16 a);
 u16 func_02059544(void *a, void *b, void *c, s32 d, s32 e);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 void func_0204c7d0(void *p);
-void *func_ov000_02173610(s32 kind);
+void *Task_FindById(s32 kind);
 Robo021ca458 *func_ov000_0219bf90(void);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
@@ -33,7 +33,7 @@ typedef struct {
 
 static inline BOOL LoIsLoaded24(void) {
     BOOL r = TRUE;
-    if (!func_0205a9c8(LFLD(void *, data_ov000_021ccd24, 8))) {
+    if (!StageRes_IsAllLoaded(LFLD(void *, data_ov000_021ccd24, 8))) {
         r = FALSE;
     }
     return r;
@@ -85,7 +85,7 @@ void func_ov000_0215123c(Lo021ca9c4 *self) {
 extern "C" {
 
 extern u8 *data_02097ce0;
-u8 **func_0203a4c0(void *p);
+u8 **GfxMgr_GetFont(void *p);
 u32 func_ov000_0214bf2c(u16 a);
 
 }
@@ -182,7 +182,7 @@ void func_ov000_021512b4(LoStatusWin *self, s32 a, s32 *pos, s32 c) {
     self->unk_118.unk_vf20(bx + 0x19, y);
     self->unk_118.Render();
     LFLD(s32, data_02097ce0, 4) = self->unk_118.unk_28;
-    h = self->unk_118.unk_38 + LFLD(u8, LFLD(u8 *, *func_0203a4c0(data_02097ce0), 8), 1);
+    h = self->unk_118.unk_38 + LFLD(u8, LFLD(u8 *, *GfxMgr_GetFont(data_02097ce0), 8), 1);
     y += h * 5 + 1;
     if (func_ov000_0214bf2c(LFLD(u16, self->unk_54, 6)) & 0x10) {
         self->unk_340.depth = -0x191a;

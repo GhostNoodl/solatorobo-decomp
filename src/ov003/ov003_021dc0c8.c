@@ -77,9 +77,9 @@ extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_ov000_0219763c(void *self);
 extern void func_ov000_02195d88(void *self);
 extern void func_ov000_02194758(void *self);
-extern void func_02065804(void *mgr, void *handle);
+extern void EffectMgr_Kill(void *mgr, void *handle);
 extern Ov003EmFx *func_020657b0(void *mgr, void *handle);
-extern void func_02063a14(Ov003EmFx *fx);
+extern void EffectObj_StopLoop(Ov003EmFx *fx);
 extern s32 FX_Div(s32 a, s32 b);
 extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern void func_ov003_021dc3fc(Ov003EmB *self, s32 a, s32 b);
@@ -115,7 +115,7 @@ void func_ov003_021dc0fc(Ov003EmA *self) {
 void func_ov003_021dc148(Ov003EmA *self) {
     if (self->task->state == 0) {
         if (self->def->stopEffect && self->effect != NULL) {
-            func_02065804(data_0214a420, self->effect);
+            EffectMgr_Kill(data_0214a420, self->effect);
             self->effect = NULL;
         }
         self->unk_d8 = 0;
@@ -175,7 +175,7 @@ void func_ov003_021dc27c(Ov003EmB *self) {
                 Ov003EmFx *fx = func_020657b0(data_0214a420, self->handles[i]);
                 if (fx != NULL) {
                     fx->alpha = FX_Div(0, 0x1f000);
-                    func_02063a14(fx);
+                    EffectObj_StopLoop(fx);
                 }
             }
             func_ov000_02198360(self->task, 0x15, 0);
@@ -186,8 +186,8 @@ void func_ov003_021dc27c(Ov003EmB *self) {
 
 void func_ov003_021dc3b8(Ov003EmB *self) {
     if (self->task->state == 0) {
-        func_02065804(data_0214a420, self->handles[1]);
-        func_02065804(data_0214a420, self->handles[0]);
+        EffectMgr_Kill(data_0214a420, self->handles[1]);
+        EffectMgr_Kill(data_0214a420, self->handles[0]);
     }
     func_ov000_0219763c(self);
 }

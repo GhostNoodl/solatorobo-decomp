@@ -61,7 +61,7 @@ static inline BOOL Ov008_FadeDone(int ch) {
     return r;
 }
 
-static inline void Ov008_SetRot(Ov008Menu *w, s16 x, s16 y, s16 z) {
+static inline void Ov008Menu_SetPos(Ov008Menu *w, s16 x, s16 y, s16 z) {
     w->posX = x;
     w->posY = y;
     w->posZ = z;
@@ -171,7 +171,7 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
             m->dialog = w;
             m->dialog->text = MsgRes_GetString(res, id);
             m->dialog->owner = m;
-            Ov008_SetRot(m->dialog, 0, 0, 0);
+            Ov008Menu_SetPos(m->dialog, 0, 0, 0);
             m->dialog->flags |= 0x80000;
             m->dialog->onDecide = (Ov008Cb)func_ov008_021cf878;
             m->dialog->v08();

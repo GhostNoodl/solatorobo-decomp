@@ -32,8 +32,8 @@ typedef struct ResLoader {
 } ResLoader;
 
 
-extern void *func_0203de84(u32 size, u32 align);
-extern void *func_0203dec8(u32 size, u32 align);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void *Heap_AllocLo(u32 size, u32 align);
 
 static inline u32 ResRing_GetWriteSize(ResRing *ring) {
     u32 size = ring->total - ring->writePos;
@@ -105,7 +105,7 @@ static inline void ResRing_Setup(ResRing *ring, void *buf, u32 blockSize, u16 nu
         ring->buf = (u8 *)buf;
         return;
     }
-    ring->buf = (u8 *)func_0203de84(size, 4);
+    ring->buf = (u8 *)Heap_AllocHi(size, 4);
     ring->flags = (ring->flags & ~1) | 1;
 }
 

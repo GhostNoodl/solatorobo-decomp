@@ -13,12 +13,12 @@ extern char data_ov014_02217ccf[];
 extern u8 data_ov014_02217e6c[];
 extern u8 data_ov014_02217d1d[];
 extern u8 *EffectGroup_Create(const char *a, const char *b, Ov014Vec *pos);
-extern u8 *func_02066774(const char *a, const char *b, s32 c, Ov014Vec *pos);
+extern u8 *Effect3D_Create(const char *a, const char *b, s32 c, Ov014Vec *pos);
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
-extern void func_ov003_021ceedc(void *p);
+extern void Ov003ScriptList_Init(void *p);
 extern void *Ov003Vt_021f7974_Dtor(void *p);
-extern void *func_ov000_02198328(void *p);
+extern void *History_Init(void *p);
 extern void MIi_CpuClear32(s32 v, void *p, u32 n);
 extern BOOL func_02035b90(void *a, s32 b);
 extern void func_02036838(void *a, void *b, s32 c, s32 d);
@@ -46,14 +46,14 @@ u8 *func_ov014_0220f7f0(s32 k, Ov014Vec *pos) {
         r = EffectGroup_Create((const char *)data_ov014_02217c72, (const char *)data_ov014_02217c81, pos);
         break;
     case 1:
-        r = func_02066774((const char *)data_ov014_02217c72, (const char *)data_ov014_02217c93, 0, pos);
+        r = Effect3D_Create((const char *)data_ov014_02217c72, (const char *)data_ov014_02217c93, 0, pos);
         r[0x28] = 2;
         break;
     case 2:
         r = EffectGroup_Create((const char *)data_ov014_02217c72, (const char *)data_ov014_02217c9f, pos);
         break;
     case 3:
-        r = func_02066774((const char *)data_ov014_02217c72, (const char *)data_ov014_02217cb1, 0, pos);
+        r = Effect3D_Create((const char *)data_ov014_02217c72, (const char *)data_ov014_02217cb1, 0, pos);
         r[0x28] = 2;
         break;
     case 4:
@@ -120,10 +120,10 @@ void func_ov014_0220f8fc(void *self, Ov014Actor *a) {
 Ov014Actor *Ov014Act_0220f9d0_Ctor(Ov014Act_0220f9d0 *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov014_02217e6c;
-    func_ov003_021ceedc((u8 *)self + 0x124);
+    Ov003ScriptList_Init((u8 *)self + 0x124);
     FLD(s16, self, 0x15c) = 0;
     self->unk_15e = 0;
-    func_ov000_02198328((u8 *)self + 0x16c);
+    History_Init((u8 *)self + 0x16c);
     self->target_id = 0xffff;
     MIi_CpuClear32(0, (u8 *)self + 0xf0, 0x34);
     FLD(s32, self, 0x140) = 0;

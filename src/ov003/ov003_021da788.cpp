@@ -81,7 +81,7 @@ extern Ov003FxObj *func_020657b0(void *mgr, void *handle);
 extern void func_01ffc9fc(Ov003Vec *out, const Ov003Vec *in, u16 ang);
 extern const Ov003VecP data_ov003_021f7cc4;
 extern void *func_02065f88(void *mgr, const void *arg);
-extern void func_02065804(void *mgr, void *handle);
+extern void EffectMgr_Kill(void *mgr, void *handle);
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *p);
 extern void func_ov003_021da520(Ov003Follow *self);
@@ -151,7 +151,7 @@ Ov003FxList *func_ov003_021da940(Ov003FxList *self) {
     Ov003FxNode *n = self->head;
     while (n != NULL) {
         Ov003FxNode *next = n->next;
-        func_02065804(data_0214a420, n->handle);
+        EffectMgr_Kill(data_0214a420, n->handle);
         Ov003_HeapDelete(n);
         n = next;
     }
@@ -175,7 +175,7 @@ void func_ov003_021da9ac(Ov003FxList *self, u8 id, Ov003Handled *obj) {
     }
 }
 
-BOOL func_ov003_021daa0c(Ov003FxList *self, u8 id) {
+BOOL Ov003FxList_Has(Ov003FxList *self, u8 id) {
     Ov003FxNode *n;
     for (n = self->head; n != NULL; n = n->next) {
         if (id == n->id) {
@@ -185,7 +185,7 @@ BOOL func_ov003_021daa0c(Ov003FxList *self, u8 id) {
     return FALSE;
 }
 
-void *func_ov003_021daa3c(Ov003FxList *self, u8 id) {
+void *Ov003FxList_Get(Ov003FxList *self, u8 id) {
     Ov003FxNode *n;
     for (n = self->head; n != NULL; n = n->next) {
         if (id == n->id) {
@@ -195,19 +195,19 @@ void *func_ov003_021daa3c(Ov003FxList *self, u8 id) {
     return NULL;
 }
 
-void func_ov003_021daa6c(Ov003FxList *self, u8 id) {
+void Ov003FxList_Kill(Ov003FxList *self, u8 id) {
     Ov003FxNode *n;
     for (n = self->head; n != NULL; n = n->next) {
         if (id == n->id) {
-            func_02065804(data_0214a420, n->handle);
+            EffectMgr_Kill(data_0214a420, n->handle);
         }
     }
 }
 
-void func_ov003_021daab0(Ov003FxList *self) {
+void Ov003FxList_KillAll(Ov003FxList *self) {
     Ov003FxNode *n;
     for (n = self->head; n != NULL; n = n->next) {
-        func_02065804(data_0214a420, n->handle);
+        EffectMgr_Kill(data_0214a420, n->handle);
     }
 }
 

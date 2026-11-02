@@ -12,7 +12,7 @@ extern u8 data_ov006_021eb840[];
 extern ov006_Unk02097e40 *data_02097e40;
 
 u16 func_02046ab4(ov006_Unk02097e40 *a);
-BOOL func_02045ea4(ov006_Unk02097e40 *a, BOOL enabled);
+BOOL Wh_SetEntry(ov006_Unk02097e40 *a, BOOL enabled);
 int func_ov006_021e4674(ov006_Unk021ec888 *self);
 
 void func_ov006_021e4574(ov006_Unk021ec888 *self) {

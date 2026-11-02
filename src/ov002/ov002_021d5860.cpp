@@ -232,7 +232,7 @@ void func_ov002_021d58b8(Task50 *self) {
         }
     }
     {
-        void *t = func_ov000_02173610(0x1b);
+        void *t = Task_FindById(0x1b);
         if (t != NULL) {
             if (FIELD(t, 0x3c, void *) != NULL) {
                 func_ov002_021e2690(FIELD(t, 0x3c, void *), 9, 0);

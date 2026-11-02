@@ -41,7 +41,7 @@ extern u8 data_ov014_02217d64[];
 extern void func_ov000_02191618(void *a);
 extern s32 **func_ov000_02190a30(void *a, s32 b);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
-extern Ov014V *func_02066774(const void *a, const void *b, s32 c, Ov014Vec *pos);
+extern Ov014V *Effect3D_Create(const void *a, const void *b, s32 c, Ov014Vec *pos);
 extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 extern Ov014Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self);
 extern Ov014Actor *func_ov014_02210a78(Ov014Act_0220f9d0 *self);
@@ -197,7 +197,7 @@ void func_ov014_022112b8(Ov014Act_0220f9d0 *self) {
                 v.x = self->unk_118.x;
                 v.y = self->unk_118.y;
                 v.z = self->unk_118.z + 0x3000;
-                func_02066774(data_ov014_02217d1d, data_ov014_02217d52, 0, &v)->v14(0x3000, 0x3000, 0x3000);
+                Effect3D_Create(data_ov014_02217d1d, data_ov014_02217d52, 0, &v)->v14(0x3000, 0x3000, 0x3000);
                 func_02049f44(data_02097e4c, 0x5b, (Ov014Vec *)((u8 *)self + 0x118), 0);
                 func_02049f44(data_02097e4c, 0x50, (Ov014Vec *)((u8 *)self + 0x118), 0);
             }
@@ -215,7 +215,7 @@ void func_ov014_022112b8(Ov014Act_0220f9d0 *self) {
             return;
         }
         func_ov014_02210d9c(self);
-        func_02066774(data_ov014_02217d1d, data_ov014_02217d64, 0, (Ov014Vec *)((u8 *)self + 0x118));
+        Effect3D_Create(data_ov014_02217d1d, data_ov014_02217d64, 0, (Ov014Vec *)((u8 *)self + 0x118));
         func_02049f44(data_02097e4c, 0x1b, (Ov014Vec *)((u8 *)self + 0x118), 0);
         func_02049f44(data_02097e4c, 0x3e, (Ov014Vec *)((u8 *)self + 0x118), 0);
         self->unk_38->unk_c4 = 0;

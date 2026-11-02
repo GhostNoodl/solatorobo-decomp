@@ -15,7 +15,7 @@ extern void *data_ov000_021ccd68;
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 u16 Camera_GetYaw(void *cam);
-void func_ov000_0218db58(void *self, u16 angle, u16 center, u16 range, s32 step);
+void Actor_TurnClamped(void *self, u16 angle, u16 center, u16 range, s32 step);
 void Actor_SendMsg(void *t, u16 id, s32 a, s32 b, s32 c, void *arg);
 
 static inline Actor *FindActor021b2b08(u16 id) {
@@ -63,7 +63,7 @@ void func_ov000_021b2b08(Robo021ca458 *self) {
     } else if (self->padCur & 0x10) {
         ry -= 0x280;
     }
-    func_ov000_0218db58(self, ry, ang, 0x1500, 0x400);
+    Actor_TurnClamped(self, ry, ang, 0x1500, 0x400);
     {
         u16 f = self->padCur;
         u16 base = LFLD(u16, cam, 0x42);

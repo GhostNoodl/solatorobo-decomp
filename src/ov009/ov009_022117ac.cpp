@@ -16,7 +16,7 @@ extern void *data_02097e4c;
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void func_0203f364(Ov009Sub48 *p);
 extern void func_ov000_02199f48(void *p, Ov009Actor *a);
-extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 msg);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern void func_ov000_021911c8(void *m, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
@@ -40,7 +40,7 @@ void func_ov009_022117e4(Ov009ActVt_02217aac *self) {
         s48->unk_9a_3 = 0;
         func_0203f364(s48);
         func_ov000_02199f48(self->unk_50, func_ov000_0219bf90());
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4802, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4802, 0x15);
         self->unk_93_4 = 0;
         self->unk_40->state++;
         func_ov000_021911c8(self->unk_38, 0x800);

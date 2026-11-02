@@ -29,11 +29,11 @@ typedef struct {
 extern "C" {
 
 void MTX_Identity33_(void *mtx);
-void func_0203df0c(void *p);
+void Heap_FreeHi(void *p);
 
 #define FREE_FIELD(f)          \
     if ((f) != 0) {            \
-        func_0203df0c((void *)(f)); \
+        Heap_FreeHi((void *)(f)); \
         (f) = 0;               \
     }
 

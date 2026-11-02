@@ -347,7 +347,7 @@ extern "C" {
 void func_ov012_022090e4(Ov012Actor *self) {
     if (self->unk_40->state == 0) {
         Ov012V *e;
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x480e, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x480e, 0x15);
         e = func_02065f88(0x69, &self->pos);
         if (e != NULL) {
             e->v0c(0x2400);
@@ -378,7 +378,7 @@ void *func_ov012_02209184(void *self) {
 extern "C" {
 void func_ov012_022091ac(Ov012Actor *self) {
     func_ov003_021d0fc0(self);
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     func_02049678(data_02097e4c, 4, 7, -1);
 }
 }

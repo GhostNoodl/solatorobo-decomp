@@ -234,7 +234,7 @@ void func_ov009_02207164(Ov009ActVt_022178f0 *self) {
 }
 
 extern const u16 data_ov009_02215ef0[3];
-extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern void func_0203f364(Ov009Sub48 *p);
 extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
@@ -256,7 +256,7 @@ void func_ov009_02207314(Ov009ActVt_022178f0 *self) {
         *self->unk_50 = data_ov009_02215ef0[self->unk_10a];
         self->unk_10a++;
         if (self->unk_10a > 2) {
-            func_ov000_0218e8ec(data_ov000_021ccd68, 0x480b, 0x15);
+            ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x480b, 0x15);
             func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
             if (self->unk_44 != NULL) {
                 Ov009Sub44 *s44 = self->unk_44;
@@ -277,7 +277,7 @@ void func_ov009_02207314(Ov009ActVt_022178f0 *self) {
         st->timer++;
         if (st->timer > 0x3c) {
             if (self->unk_10a > 2) {
-                func_ov000_0218e8ec(data_ov000_021ccd68, 0x480b, 0x15);
+                ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x480b, 0x15);
                 self->unk_93_4 = 0;
                 self->unk_ea_6 = 1;
                 self->unk_40->timer = 0;

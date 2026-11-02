@@ -22,7 +22,7 @@ extern u8 data_ov010_0220f298[];
 extern u8 data_ov010_0220ffc4[];
 extern u8 data_ov010_02210154[];
 extern void *data_0214a420;
-extern BOOL func_ov003_021d984c(void *p, void *d);
+extern BOOL Ov003Sequence_HasEntries(void *p, void *d);
 extern void func_ov003_021d95e8(void *p, void *d, s32 n);
 extern Robo021ca458 *func_ov000_0219bf90(void);
 extern void func_ov000_0218a358(void *a, const void *b, void *c, s32 d, s32 e, s32 f, s32 g, s32 h);
@@ -31,13 +31,13 @@ extern void func_ov003_021cf3fc(s32 a);
 extern void func_ov010_022075bc(void *p);
 extern void *Ov003Vt_021f7cd8_Dtor(void *p);
 extern void *Ov003Vt_021f7d10_Dtor(void *p);
-extern void *func_ov010_0220d7c0(void *p);
+extern void *Ov010Coll_Dtor(void *p);
 extern void func_ov003_021d8f34(void *p);
 extern void *func_ov003_021d0edc(void *p);
-extern void func_02065804(void *a, s32 b);
+extern void EffectMgr_Kill(void *a, s32 b);
 
 static inline void Ov010_PlayIfIdle(Ov010Obj0221009c *self, void *anim, s32 n) {
-    if (!func_ov003_021d984c((u8 *)self + 0x160, anim)) {
+    if (!Ov003Sequence_HasEntries((u8 *)self + 0x160, anim)) {
         func_ov003_021d95e8((u8 *)self + 0x160, anim, n);
     }
 }
@@ -137,7 +137,7 @@ static inline void Ov010_02208f14_Body(void *self) {
     func_ov010_022075bc(self);
     Ov003Vt_021f7cd8_Dtor((u8 *)self + 0x1dc);
     Ov003Vt_021f7d10_Dtor((u8 *)self + 0x1b0);
-    func_ov010_0220d7c0((u8 *)self + 0x174);
+    Ov010Coll_Dtor((u8 *)self + 0x174);
     func_ov003_021d8f34((u8 *)self + 0x160);
     func_ov003_021d0edc(self);
 }
@@ -172,7 +172,7 @@ void func_ov010_02209074(void *p) {
         FLD(s32, p, 4)--;
         return;
     }
-    func_02065804(data_0214a420, FLD(s32, p, 0x24));
+    EffectMgr_Kill(data_0214a420, FLD(s32, p, 0x24));
     FLD(s32, p, 0xdc) = 0;
 }
 

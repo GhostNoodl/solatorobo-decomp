@@ -18,7 +18,7 @@ extern ov006_Unk02097e40 *data_02097e40;
 void func_02045094(ov006_Unk02097e40 *p);
 void func_02045498(ov006_Unk02097e40 *p, int a);
 BOOL func_02044c80(void);
-BOOL func_02044f70(ov006_Unk02097e40 *p);
+BOOL Wh_End(ov006_Unk02097e40 *p);
 
 static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
     ov006_MenuNode *node = self->nodes;
@@ -66,7 +66,7 @@ void func_ov006_021e4d38(ov006_Unk021ec888 *self) {
         }
     case 10:
         if (data_02097e40->unk2C == 1) {
-            if (func_02044f70(data_02097e40)) {
+            if (Wh_End(data_02097e40)) {
                 self->stateTime = 20;
             }
         } else {

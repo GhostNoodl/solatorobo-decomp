@@ -11,7 +11,7 @@ struct Ov009Rot {
 extern u8 data_ov009_022160ac[];
 extern u8 data_ov009_022160c4[];
 extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
-extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_0219a210(Ov009Vec *v, const void *a, u16 b);
 extern Ov009Actor *func_ov000_0219be1c(u16 kind, const Ov009Vec *pos, const void *rot, u16 id, u16 parent);
@@ -32,7 +32,7 @@ void func_ov009_022130b4(Ov009ActVt_02217d5c *self) {
     case 2:
     case 4: {
         Ov009Sub40 *st;
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4092, 6);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4092, 6);
         st = self->unk_40;
         st->timer++;
         if (st->timer > 0x1e) {

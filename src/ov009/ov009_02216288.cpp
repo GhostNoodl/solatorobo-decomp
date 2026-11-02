@@ -290,7 +290,7 @@ void func_ov009_0220da24(Ov009ActVt_02217f60 *self) {
 }
 
 extern void *data_02097e4c;
-extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
@@ -305,8 +305,8 @@ void func_ov009_0220dba4(Ov009Actor *self) {
         Ov009Sub44 *s44 = self->unk_44;
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x480b, 0x15);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x482e, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x480b, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x482e, 0x15);
         func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
         func_ov000_0218996c(0x10, 0x3c);
         self->unk_ea_6 = 1;
@@ -1132,7 +1132,7 @@ namespace m_0220f5fc {
 extern "C" {
 
 extern void *data_02097e4c;
-extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern void *func_ov000_0219b71c(Ov009Vec *pos, Ov009Vec *v, s32 a, s32 b, s32 c, s32 d);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void SndMgr_StopSeqArc(void *mgr, s32 id);
@@ -1146,7 +1146,7 @@ void func_ov009_0220f5fc(Ov009ActVt_02217b58 *self) {
     Ov009Sub40 *st = self->unk_40;
     switch (st->state) {
     case 0:
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x482d, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x482d, 0x15);
         self->unk_9c = 0;
         self->unk_a4 = 0;
         self->unk_a0 = -0x71;
@@ -1773,7 +1773,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 
 static inline Ov009Actor *Ov009_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -1798,7 +1798,7 @@ void func_ov009_022107b4(Ov009ActVt_02217e08 *self) {
 void func_ov009_02210848(Ov009ActVt_02217e08 *self) {
     if (self->unk_40->state == 0) {
         Ov009Actor *a;
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4006, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4006, 0x15);
         a = Ov009_FindActor(self->target_id);
         if (a != NULL) {
             func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)a);

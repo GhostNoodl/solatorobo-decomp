@@ -2,7 +2,7 @@
 
 extern "C" {
 
-BOOL func_0206aad4(EffectPartSet *s, EffectPartSlot *slot) {
+BOOL EffectPartSet_AddSpeed(EffectPartSet *s, EffectPartSlot *slot) {
     EffectPtcl *p;
     s32 rate = slot->rate;
     for (p = s->ptcls; p != NULL; p = p->next) {

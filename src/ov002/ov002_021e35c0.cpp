@@ -102,7 +102,7 @@ VObject *Ov002Vt_021f0044_Dtor(VObject *self) {
 }
 
 VObject *func_ov002_021e3874(void *self, int unused, s32 n) {
-    VObject *o = func_02066774(data_ov002_021f00cc, data_ov002_021f00d8, 0, self);
+    VObject *o = Effect3D_Create(data_ov002_021f00cc, data_ov002_021f00d8, 0, self);
     s32 s = (s32)(((s64)((n - 1) << 12) * 0x4cd + 0x800) >> 12);
     o->v0x14(s + 0x1000, s + 0x1000, s + 0x1000);
     FIELD(o, 0x54, s32) = 0x20;

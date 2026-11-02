@@ -103,7 +103,7 @@ void func_ov013_021fbd20(Ov013Boss *self) {
     }
 }
 
-extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern void func_0203f364(Ov013Sub48 *p);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
 extern void *data_02097e4c;
@@ -111,7 +111,7 @@ extern void *data_0214a420;
 extern void *func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
 extern void *func_0204a028(void *a, s32 b, Ov013Vec *c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_02065860(void *a, s32 b);
+extern void EffectMgr_StopLoop(void *a, s32 b);
 extern void *func_ov000_0219b71c(Ov013Vec *pos, Ov013Vec *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov003_021d6a3c(Ov013Actor *self, s32 a, s32 b, s32 c);
 extern void func_ov003_021d6954(Ov013Actor *self, u8 a);
@@ -123,9 +123,9 @@ void func_ov013_021fbf84(Ov013Boss *self) {
         Ov013Sub48 *m48;
         Ov013Sub44 *n;
         Ov013V *o;
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x5c17, 0x15);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4823, 0x15);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4820, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5c17, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4823, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4820, 0x15);
         func_ov000_02190cb0(self->unk_38, data_ov013_0220b5b8, 0x2ab, 0);
         func_ov000_021915a0(self->unk_38);
         self->unk_9c = 0;
@@ -183,7 +183,7 @@ void func_ov013_021fbf84(Ov013Boss *self) {
                 func_02049f44(data_02097e4c, 0x44, &self->pos, 0);
             }
             if (t == 0x6e) {
-                func_02065860(data_0214a420, self->unk_f8);
+                EffectMgr_StopLoop(data_0214a420, self->unk_f8);
                 self->unk_f8 = 0;
             }
         }

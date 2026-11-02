@@ -289,8 +289,8 @@ extern void *Ov010Vt_02210260_Ctor(void *p);
 extern void *Ov010Vt_02210240_Ctor(void *p);
 extern void *Ov003Vt_021f7cf4_Ctor(void *p);
 extern BOOL func_ov003_021d8f4c(void *p);
-extern BOOL func_ov010_0220d7f8(void *p);
-extern BOOL func_ov003_021d8198(void *p);
+extern BOOL Ov010Coll_Init(void *p);
+extern BOOL Ov003TickerSet_Init(void *p);
 extern BOOL func_ov003_021d8c10(void *p);
 extern BOOL Ov003StateMachine_Init(void *p);
 extern void func_ov003_021d8a30(void *p, u8 id, void *st);
@@ -387,8 +387,8 @@ void Ov010ActVt_02210154_Start(Obj022046ac *self) {
     p[1] = 0;
     p[2] = 0;
     func_ov003_021d8f4c((u8 *)self + 0x160);
-    func_ov010_0220d7f8((u8 *)self + 0x174);
-    func_ov003_021d8198((u8 *)self + 0x1b0);
+    Ov010Coll_Init((u8 *)self + 0x174);
+    Ov003TickerSet_Init((u8 *)self + 0x1b0);
     func_ov003_021d8c10((u8 *)self + 0x1dc);
     switch (self->kind) {
     case 0x5c04:
@@ -600,8 +600,8 @@ extern void *data_02097e4c;
 extern BOOL func_ov010_0220d77c(void *p);
 extern void func_ov010_0220d918(void *p, void (*fn)(void));
 extern s32 Ov010Coll_GetCount(void *p);
-extern void func_ov010_0220d9c0(void *p, void *h);
-extern BOOL func_ov010_0220da4c(void *p);
+extern void Ov010Coll_SetHandler(void *p, void *h);
+extern BOOL Ov010Coll_IsFree(void *p);
 extern Robo021ca458 *func_ov000_0219bf90(void);
 extern void func_ov010_02209578(void *t, s32 a, s32 b, s32 c, u16 d, u16 e);
 extern void func_ov010_02204030(Ov010Vec *out, void *c, const Ov010Vec *target, s32 n, u16 ang);
@@ -639,7 +639,7 @@ static inline s32 Ov010d_FxMul(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-static inline void Ov010d_SetRot(Ov010Vec *v, s32 r, u16 ang) {
+static inline void Ov010d_PolarVec(Ov010Vec *v, s32 r, u16 ang) {
     Ov010Mtx33 m;
     v->x = 0;
     v->y = 0;
@@ -667,7 +667,7 @@ void func_ov010_02204d44(Obj02204aac *self) {
         func_ov000_02190cb0(self->model, data_ov010_0220f040, 0x800, 1);
         pl = func_ov000_0219bf90();
         func_ov010_02209578(self->unk_104, self->unk_15c, self->unk_fc, self->unk_100, self->id, pl->id);
-        func_ov010_0220d9c0((u8 *)self + 0x174, self->unk_104);
+        Ov010Coll_SetHandler((u8 *)self + 0x174, self->unk_104);
         self->fsm->st = 11;
     }
     case 11:
@@ -700,7 +700,7 @@ void func_ov010_02204d44(Obj02204aac *self) {
         }
         c = self->unk_f8;
         y = c->y;
-        Ov010d_SetRot(&v, FLD(s32, c, 0x10), r);
+        Ov010d_PolarVec(&v, FLD(s32, c, 0x10), r);
         VEC_Add(&v, (Ov010Vec *)c, &v);
         v.y = y;
         v.y += Rand_PlusMinus(0x1000);
@@ -727,7 +727,7 @@ void func_ov010_02204d44(Obj02204aac *self) {
     }
     case 0x15:
         flag = TRUE;
-        if (func_ov010_0220da4c((u8 *)self + 0x174)) {
+        if (Ov010Coll_IsFree((u8 *)self + 0x174)) {
             self->fsm->st = 0x1e;
         }
         func_ov010_02207828(self);
@@ -743,7 +743,7 @@ void func_ov010_02204d44(Obj02204aac *self) {
     case 0x1f:
         if (((s16)self->model->unk_c4) == 1) {
             func_ov010_0220984c(self->unk_108, self->id);
-            func_ov010_0220d9c0((u8 *)self + 0x174, self->unk_108);
+            Ov010Coll_SetHandler((u8 *)self + 0x174, self->unk_108);
             self->fsm->st = 0x28;
             func_02049f44(data_02097e4c, self->unk_13c, &self->pos, 0);
         }
@@ -751,7 +751,7 @@ void func_ov010_02204d44(Obj02204aac *self) {
         Actor_TurnToPos(self, self->unk_f8, 0x400);
         break;
     case 0x28:
-        if (func_ov010_0220da4c((u8 *)self + 0x174) && func_ov000_02191120(self->model)) {
+        if (Ov010Coll_IsFree((u8 *)self + 0x174) && func_ov000_02191120(self->model)) {
             func_ov000_02190cb0(self->model, data_ov010_0220f050, 0x266, 1);
             func_ov000_021915a0(self->model);
             self->fsm->st = 0x32;
@@ -782,8 +782,8 @@ extern BOOL func_ov000_02191120(void *p);
 extern Robo021ca458 *func_ov000_0219bf90(void);
 extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
 extern void func_ov010_0220a040(void *self, u16 a, s32 b, s32 c, s32 d, u16 e, u16 f);
-extern void func_ov010_0220d9c0(void *p, void *h);
-extern BOOL func_ov010_0220da4c(void *p);
+extern void Ov010Coll_SetHandler(void *p, void *h);
+extern BOOL Ov010Coll_IsFree(void *p);
 extern void func_ov003_021d8a7c(void *p, s32 a);
 extern void Ov003StateMachine_Leave(void *p);
 extern void func_ov003_021d969c(void *p, s32 a);
@@ -808,12 +808,12 @@ void func_ov010_0220522c(Obj02204aac *self) {
         Robo021ca458 *pl = func_ov000_0219bf90();
         func_ov010_0220a040(self->unk_10c, self->unk_171, self->unk_15c, self->unk_fc,
                             self->unk_100, self->id, pl->id);
-        func_ov010_0220d9c0((u8 *)self + 0x174, self->unk_10c);
+        Ov010Coll_SetHandler((u8 *)self + 0x174, self->unk_10c);
         self->fsm->st = 0x21;
         break;
     }
     case 0x21:
-        if (func_ov010_0220da4c((u8 *)self + 0x174) && func_ov000_02191120(self->model)) {
+        if (Ov010Coll_IsFree((u8 *)self + 0x174) && func_ov000_02191120(self->model)) {
             self->fsm->st = 0x30;
         }
         if (func_ov000_02191120(self->model)) {
@@ -821,11 +821,11 @@ void func_ov010_0220522c(Obj02204aac *self) {
         }
         break;
     case 0x30:
-        func_ov010_0220d9c0((u8 *)self + 0x174, self->unk_110);
+        Ov010Coll_SetHandler((u8 *)self + 0x174, self->unk_110);
         self->fsm->st = 0x31;
         break;
     case 0x31:
-        if (func_ov010_0220da4c((u8 *)self + 0x174)) {
+        if (Ov010Coll_IsFree((u8 *)self + 0x174)) {
             Ov003StateMachine_Leave(self->unk_118);
             self->fsm->st = 0x40;
         }
@@ -881,7 +881,7 @@ extern u16 FX_Atan2(s32 y, s32 x);
 extern Ov010V *func_02065f88(s32 id, Ov010Vec *pos);
 extern void func_ov010_02207828(void *self);
 extern void Actor_TurnToActor(void *self, void *other, s32 a);
-extern Ov010V *func_02066774(const char *a, const char *b, s32 c, void *d);
+extern Ov010V *Effect3D_Create(const char *a, const char *b, s32 c, void *d);
 extern Ov010V *func_ov003_021da788(s32 id, void *self, Ov010Vec *ofs);
 extern s32 VEC_Distance(const Ov010Vec *a, const Ov010Vec *b);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
@@ -891,7 +891,7 @@ static inline s32 Ov010f_FxMul(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-static inline void Ov010f_SetRot(Ov010Vec *v, s32 r, u16 ang) {
+static inline void Ov010f_PolarVec(Ov010Vec *v, s32 r, u16 ang) {
     Ov010Mtx33 m;
     v->x = 0;
     v->y = 0;
@@ -948,7 +948,7 @@ void func_ov010_02205444(Obj02204aac *self) {
         ang = Ov003Vec_Yaw(&d);
         t = self->unk_f8;
         y = t->y;
-        Ov010f_SetRot(&v, FLD(s32, t, 0x10), ang);
+        Ov010f_PolarVec(&v, FLD(s32, t, 0x10), ang);
         VEC_Add(&v, t, &v);
         v.y = y;
         self->unk_b8.x = v.x;
@@ -998,7 +998,7 @@ void func_ov010_02205444(Obj02204aac *self) {
         *(Ov010Blk12 *)&b = data_ov010_0220f0cc;
         func_ov003_021d9980(&c2, self->rot_y, &b);
         self->moveYaw = self->rot_y;
-        o2 = func_02066774(data_ov010_0220f054, data_ov010_0220f04c, 0, &self->pos);
+        o2 = Effect3D_Create(data_ov010_0220f054, data_ov010_0220f04c, 0, &self->pos);
         FLD(u8, o2, 0x28) = 0;
         o2->v34(0, self->moveYaw, 0);
         o2->v10(&a);
@@ -1223,8 +1223,8 @@ extern u8 *func_ov000_02199f60(void *p);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern s32 Rand_PlusMinus(s32 max);
 extern void Ov003StateMachine_Leave(void *p);
-extern void func_ov010_0220da14(void *p);
-extern void func_ov003_021d9e90(Ov010Vec *a, Ov010Vec *b, Ov010Vec *c, s32 d, s32 e);
+extern void Ov010Coll_ClearHandler(void *p);
+extern void Ov003Vec_MultAdd(Ov010Vec *a, Ov010Vec *b, Ov010Vec *c, s32 d, s32 e);
 extern void func_ov003_021da2c8(void *self, s32 a, s32 b, s32 c, s32 d);
 extern void Actor_Move(void *self, s32 a);
 extern s32 Ov003Vec_DistSq(const Ov010Vec *a, const Ov010Vec *b);
@@ -1266,7 +1266,7 @@ void func_ov010_02205f40(Obj02204aac *self) {
         self->unk_96 = ang;
         self->moveYaw = self->unk_96 + 0x8000 + Rand_PlusMinus(0x2000);
         Ov003StateMachine_Leave(self->unk_118);
-        func_ov010_0220da14((u8 *)self + 0x174);
+        Ov010Coll_ClearHandler((u8 *)self + 0x174);
         func_ov003_021d969c((u8 *)self + 0x160, 0);
         switch (self->unk_171) {
         case 1:
@@ -1286,7 +1286,7 @@ void func_ov010_02205f40(Obj02204aac *self) {
     case 0x11: {
         Ov010Vec v = data_ov010_0220f0b4;
         func_ov003_021d9980(&v, self->moveYaw, &v);
-        func_ov003_021d9e90(&self->pos, &v, &self->pos, self->speed, self->velY);
+        Ov003Vec_MultAdd(&self->pos, &v, &self->pos, self->speed, self->velY);
         func_ov003_021da2c8(self, self->speed, self->velY, self->friction, self->gravity);
         if (self->speed < 0x40) {
             self->speed = 0;
@@ -1385,7 +1385,7 @@ extern Ov010G54b *data_ov000_021ccd54;
 extern void func_ov003_021d97fc(void *p, s32 a);
 extern void func_0203f364(Ov010Sub48 *p);
 extern void func_0203cb78(s32 a, s32 b, s32 c);
-extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern void func_ov003_021d8eac(void *a, void *b, s32 c, s32 d);
 extern BOOL Ov003Timer_IsStopped(void *a);
 extern u8 *func_ov000_02190a30(void *p, s32 a);
@@ -1430,7 +1430,7 @@ void func_ov010_0220640c(Obj02204aac *self) {
         scr = OV010_FADE_SCREEN_MAIN;
         Ov010_Jump640c(self);
         func_0203cb78(0x1e000, 1, scr);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4817, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4817, 0x15);
         o = func_02065f88(0x69, &self->pos);
         if (o != NULL) {
             o->v0c(0x5000);
@@ -1574,13 +1574,13 @@ extern u16 func_ov010_02208e90(s32 a, s32 b);
 extern void func_ov003_021d9d28(Ov010Vec *out, Ov010Vec *pos, u16 ang, void *c);
 extern u16 Ov003Vec_Yaw(Ov010Vec *v);
 extern void func_ov003_021da2c8(void *self, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov003_021d9e90(Ov010Vec *a, Ov010Vec *b, Ov010Vec *c, s32 d, s32 e);
+extern void Ov003Vec_MultAdd(Ov010Vec *a, Ov010Vec *b, Ov010Vec *c, s32 d, s32 e);
 
 static inline s32 Ov010f_FxMul(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-static inline void Ov010f_SetRot(Ov010Vec *v, s32 r, u16 ang) {
+static inline void Ov010f_PolarVec(Ov010Vec *v, s32 r, u16 ang) {
     Ov010Mtx33f m;
     v->x = 0;
     v->y = 0;
@@ -1640,7 +1640,7 @@ void func_ov010_02206974(Obj02204aac *self) {
         r = Ov003Vec_Yaw(&d);
         t = self->unk_f8;
         y = t->y;
-        Ov010f_SetRot(&v, FLD(s32, t, 0x10), r);
+        Ov010f_PolarVec(&v, FLD(s32, t, 0x10), r);
         VEC_Add(&v, (Ov010Vec *)t, &v);
         v.y = y;
         self->unk_b8 = v;
@@ -1702,7 +1702,7 @@ void func_ov010_02206974(Obj02204aac *self) {
             self->fsm->st = 0x100;
         }
         self->friction = 0xe80;
-        func_ov003_021d9e90(&self->pos, &self->unk_150, &self->pos, self->speed, self->velY);
+        Ov003Vec_MultAdd(&self->pos, &self->unk_150, &self->pos, self->speed, self->velY);
         Actor_TurnToPos(self, self->unk_f8, 0x400);
         func_ov003_021da2c8(self, self->speed, self->velY, self->friction, self->gravity);
         break;
@@ -1724,8 +1724,8 @@ extern void func_ov003_021d8a7c(void *p, s32 a);
 extern void Ov003StateMachine_Leave(void *p);
 extern void func_ov003_021d969c(void *p, s32 a);
 extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
-extern void func_ov010_0220d9c0(void *p, void *h);
-extern BOOL func_ov010_0220da4c(void *p);
+extern void Ov010Coll_SetHandler(void *p, void *h);
+extern BOOL Ov010Coll_IsFree(void *p);
 extern Ov010V *func_02065f88(s32 a, Ov010Vec *b);
 
 static inline Ov010Vec Ov010_Center(Ov010_CenterSelf *self) {
@@ -1805,11 +1805,11 @@ void func_ov010_02206fd0(Obj02206f54 *self) {
 void func_ov010_02207004(Obj02206f54 *self) {
     self->unk_f2 = 1;
     if (self->unk_40->st == 0) {
-        func_ov010_0220d9c0((u8 *)self + 0x174, self->unk_114);
+        Ov010Coll_SetHandler((u8 *)self + 0x174, self->unk_114);
         self->unk_40->st++;
         return;
     }
-    if (func_ov010_0220da4c((u8 *)self + 0x174)) {
+    if (Ov010Coll_IsFree((u8 *)self + 0x174)) {
         func_ov003_021d969c((u8 *)self + 0x160, 1);
     }
 }
@@ -1863,7 +1863,7 @@ static inline s32 Ov010e_FxMul(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-static inline void Ov010e_SetRot(Ov010Vec *v, s32 r, u16 ang) {
+static inline void Ov010e_PolarVec(Ov010Vec *v, s32 r, u16 ang) {
     Ov010Mtx33e m;
     v->x = 0;
     v->y = 0;
@@ -1908,7 +1908,7 @@ void func_ov010_022071a0(Obj02206f54 *self) {
         }
         c = self->unk_f8;
         y = FLD(s32, c, 4);
-        Ov010e_SetRot(&v, FLD(s32, c, 0x10), ang);
+        Ov010e_PolarVec(&v, FLD(s32, c, 0x10), ang);
         VEC_Add(&v, (Ov010Vec *)c, &v);
         v.y = y;
         self->unk_b8 = v;

@@ -6,7 +6,7 @@ extern "C" {
 extern u8 *data_0208d268[];
 extern s32 func_0206d2ec(StageFlags *f, u16 id, u32 n);
 extern s32 func_0206d2a4(StageFlags *f, u16 id, u8 n);
-extern u8 func_0206d1d4(StageFlags *f, u16 id);
+extern u8 StageFlags_CountEntries(StageFlags *f, u16 id);
 extern void func_02059280(DataRes *res, SaveRef *ref, u32 idx, u16 unk);
 extern u16 func_0205973c(DataRes *res, SaveRef *ref, u32 id);
 extern void func_02059428(DataRes *res, SaveRef *ref, u32 id, u16 val);
@@ -137,6 +137,6 @@ typedef struct NamedTable {
     /* 0x10 */ NamedEntry entries[1];
 } NamedTable;
 
-void *func_0206f964(NamedTable *t, const char *name);
+void *NamedTable_Find(NamedTable *t, const char *name);
 
 }

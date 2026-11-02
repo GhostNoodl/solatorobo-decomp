@@ -6,12 +6,12 @@ extern "C" {
 extern u8 data_ov000_021cb920[];
 extern u8 data_ov000_021cb6d0[];
 extern u8 data_ov000_021cb9b0[];
-void func_0203df0c(void *p);
+void Heap_FreeHi(void *p);
 
 static inline void LoListBufferDtor(ListBuffer *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb6d0);
     if ((self->flags & 0x20) && self->unk_0c != 0) {
-        func_0203df0c((void *)self->unk_0c);
+        Heap_FreeHi((void *)self->unk_0c);
     }
     self->flags = 0;
     self->priority = 0;

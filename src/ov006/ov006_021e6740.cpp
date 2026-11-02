@@ -31,7 +31,7 @@ void *func_ov000_021985e8(void *p);
 void func_ov000_02198c8c(void *p, u16 id);
 void HitSphere_Link(void *p);
 void *func_ov000_021984c8(void *p);
-void *func_ov000_02198328(void *p);
+void *History_Init(void *p);
 void *Ov006Vt_021ec28c_Ctor(void *p);
 void func_ov006_021dc8f8(void *p);
 void func_ov006_021dcc9c(void *p, int idx, u8 flag);
@@ -99,7 +99,7 @@ void Ov006ActVt_021ec4f4_Start(u8 *self) {
     }
     p = Heap_Alloc(0x14);
     if (p != NULL) {
-        p = func_ov000_02198328(p);
+        p = History_Init(p);
     }
     FIELD(self, 0x40, void *) = p;
     self[0x15] = 1;

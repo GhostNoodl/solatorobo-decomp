@@ -3,7 +3,7 @@
 extern "C" {
 
 Ov015V *func_ov015_021fa6d0(void);
-void func_ov015_021fa6f8(Ov015Fade *self, u8 a, u8 b, s32 c, u16 d);
+void Ov015Fade_Start(Ov015Fade *self, u8 a, u8 b, s32 c, u16 d);
 extern u8 *data_02097dc8;
 extern u8 data_ov015_022128ec[];
 extern u8 data_ov015_02213188[];
@@ -29,7 +29,7 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
     BOOL r = TRUE;
     switch (self->state) {
     case 0:
-        func_ov015_021fa6f8((Ov015Fade *)func_ov015_021fa6d0(), 0, 0xf, 0x3c000, 0x2639);
+        Ov015Fade_Start((Ov015Fade *)func_ov015_021fa6d0(), 0, 0xf, 0x3c000, 0x2639);
         self->state++;
     case 1: {
         Ov015Fade *f = (Ov015Fade *)func_ov015_021fa6d0();
@@ -139,7 +139,7 @@ BOOL func_ov015_0220f1a4(Ov015ResultPanel *self) {
     BOOL r = TRUE;
     switch (self->state) {
     case 0:
-        func_ov015_021fa6f8((Ov015Fade *)func_ov015_021fa6d0(), 0, 0x14, 0x3c000, 0x2639);
+        Ov015Fade_Start((Ov015Fade *)func_ov015_021fa6d0(), 0, 0x14, 0x3c000, 0x2639);
         self->state++;
     case 1: {
         Ov015Fade *f = (Ov015Fade *)func_ov015_021fa6d0();
@@ -251,7 +251,7 @@ extern Ov015Globals data_ov015_02213320;
 void func_ov002_021e7b58(void);
 void *func_ov002_021e9b28(s32 a);
 s32 func_ov002_021e7ea8(void *p);
-void func_ov015_021fa75c(Ov015Fade *self);
+void Ov015Fade_Reset(Ov015Fade *self);
 void func_ov015_0220f878(Ov015Result *self);
 void func_ov015_0220fb78(Ov015Result *self);
 void func_ov015_0220e634(Ov015ResultPanel *a, s32 b);
@@ -332,7 +332,7 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
         }
         if (busy == 0) {
             func_ov002_021e7c1c();
-            func_ov015_021fa75c((Ov015Fade *)func_ov015_021fa6d0());
+            Ov015Fade_Reset((Ov015Fade *)func_ov015_021fa6d0());
             r = FALSE;
         }
         break;

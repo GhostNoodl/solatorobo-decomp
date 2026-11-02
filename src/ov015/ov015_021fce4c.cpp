@@ -158,7 +158,7 @@ static inline void Ov015Cam_Init(Ov015Cam *c, s32 ay, s32 az) {
     c->mode = 0;
 }
 
-void func_ov015_021fce94(Ov015CamPair *self) {
+void Ov015CamPair_Init(Ov015CamPair *self) {
     Ov015Cam_Init(&self->cam0, 0x2000, -0x1000);
     Ov015Cam_Init(&self->cam1, -0x1800, 0);
     self->unk_18c.x = -0x333;

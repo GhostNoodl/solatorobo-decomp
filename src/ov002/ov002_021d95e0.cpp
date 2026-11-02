@@ -8,7 +8,7 @@ typedef struct Bits021d95e0 {
     u16 rest : 13;
 } Bits021d95e0;
 
-void *func_02043548(void *p);
+void *GfxCamPos_Init(void *p);
 void func_0206ce78(void *a, u16 b);
 void func_ov002_021d7058(void *self);
 void func_ov002_021d98ac(void *self);
@@ -41,7 +41,7 @@ void func_ov002_021d95e0(void *self) {
     func_ov002_021d7058(FIELD(self, 0x4, void *));
     cam = Heap_Alloc(0x24);
     if (cam != NULL) {
-        cam = func_02043548(cam);
+        cam = GfxCamPos_Init(cam);
     }
     FIELD(self, 0x8c, void *) = cam;
     ov002_Vec_Copy((s32 *)(data_ov002_021eef74 + 0x70), (s32 *)cam);
@@ -50,12 +50,12 @@ void func_ov002_021d95e0(void *self) {
     FIELD(self, 0x90, s32) = -1;
     FIELD(self, 0x94, s32) = 0x14;
     func_ov002_021d98ac(self);
-    t = func_ov000_02173610(0x1b);
+    t = Task_FindById(0x1b);
     if (t != NULL && FIELD(self, 0x75, u8) != 0) {
         ov002_Hud_Set(FIELD(t, 0x3c, void *), FIELD(self, 0x74, u8));
         FIELD(self, 0x75, u8) = 0;
     }
-    t = func_ov000_02173610(0x1b);
+    t = Task_FindById(0x1b);
     if (t != NULL && FIELD(t, 0x3c, void *) != NULL) {
         MI_CpuCopy8((u8 *)self + 0x76, FIELD(t, 0x3c, u8 *) + 0x2c, 0x14);
     }

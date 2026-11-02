@@ -6,7 +6,7 @@ Message *func_ov000_0216f674(MessageQueue *self, s32 id) {
     return MessageQueue_FindById(self, id);
 }
 
-void func_ov000_0216f6d0(MessageQueue *self, s32 id, u32 a, u32 b) {
+void MessageQueue_RemoveAll(MessageQueue *self, s32 id, u32 a, u32 b) {
     Message *msg;
     do {
         msg = MessageQueue_Find(self, id, a, b);

@@ -19,7 +19,7 @@ extern void func_ov003_021f0c60(Ov014Obj *self, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
-extern void func_ov003_021ceedc(void *p);
+extern void Ov003ScriptList_Init(void *p);
 extern void *Ov003Vt_021f7974_Dtor(void *p);
 extern Ov014V *func_020657b0(void *a, void *b);
 extern void func_02036838(void *a, void *b, s32 c, s32 d);
@@ -145,7 +145,7 @@ Ov014Actor *Ov014Act_02209280_Ctor(Ov014Act_02209280 *self) {
     s32 i;
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov014_02217968;
-    func_ov003_021ceedc((u8 *)self + 0x1c0);
+    Ov003ScriptList_Init((u8 *)self + 0x1c0);
     self->step = 0;
     self->unk_f4 = 0;
     self->unk_f8 = 0;
@@ -272,7 +272,7 @@ void Ov014Act_02209280_Start(Ov014Act_02209280 *self) {
 }
 
 extern u8 *func_ov000_0219bf90(void);
-extern void func_02065860(void *a, void *b);
+extern void EffectMgr_StopLoop(void *a, void *b);
 extern void *func_ov003_021ceff4(void *p);
 extern BOOL func_ov000_021983b0(void *p, s32 a, s32 b, s32 c);
 
@@ -308,11 +308,11 @@ void Ov014Act_02209280_Update(Ov014Act_02209280 *self) {
     }
     if (self->unk_30 != 0 && (self->unk_30 & 0x200)) {
         self->unk_fc = 0;
-        func_02065860(data_0214a420, self->unk_1dc);
+        EffectMgr_StopLoop(data_0214a420, self->unk_1dc);
         self->unk_1dc = NULL;
-        func_02065860(data_0214a420, self->unk_1e0);
+        EffectMgr_StopLoop(data_0214a420, self->unk_1e0);
         self->unk_1e0 = NULL;
-        func_02065860(data_0214a420, ((void *)self->unk_1e4));
+        EffectMgr_StopLoop(data_0214a420, ((void *)self->unk_1e4));
         self->unk_1e4 = 0;
     }
     switch (self->unk_b4) {

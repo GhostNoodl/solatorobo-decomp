@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern Ov009Path data_ov009_02215fd0[];
 extern Ov009Actor *func_ov000_0219bf90(void);
-extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
 extern BOOL func_ov000_0219aae8(Ov009Obj *self, Ov009Obj *src, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 
@@ -27,7 +27,7 @@ void func_ov009_022088d8(Ov009Actor *self) {
         Ov009Vec v = self->unk_84;
         v.y -= 0x3000;
         s32 r = data_ov009_02215fd0[self->unk_1a].start.x;
-        if (func_01ffc584(&a->pos, &v, r + a->unk_64, 0x5000)) {
+        if (Hit_DiffInCylinder(&a->pos, &v, r + a->unk_64, 0x5000)) {
             self->unk_40->flags = 0;
             func_ov000_02198360(self->unk_40, 0xf, 0);
         }

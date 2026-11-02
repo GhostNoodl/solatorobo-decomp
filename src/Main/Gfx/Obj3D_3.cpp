@@ -5,7 +5,7 @@ extern "C" {
 extern u8 Gfx3DState_NextPolyId(void *obj);
 extern s8 data_02149ef4;
 
-void func_02051f3c(Obj3DLayer *layer, u32 v);
+void Obj3DLayer_SetCur(Obj3DLayer *layer, u32 v);
 
 void func_020520fc(Obj3DRender *render);
 

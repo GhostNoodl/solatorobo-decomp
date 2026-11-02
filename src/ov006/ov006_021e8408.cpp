@@ -62,7 +62,7 @@ extern void *data_02097e4c;
 
 ov006_Eff021e8408 *func_02065f88(int id, VecFx32 *pos);
 ov006_Old021e8408 *func_020657b0(void *a, int b);
-void func_02063a14(ov006_Old021e8408 *p);
+void EffectObj_StopLoop(ov006_Old021e8408 *p);
 void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 void func_ov000_0218996c(s32 a, s32 b);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
@@ -82,7 +82,7 @@ void func_ov006_021e8408(ov006_Prop021e8408 *self) {
         if (eff != NULL) {
             ov006_Old021e8408 *old = func_020657b0(data_0214a420, self->unk1E0);
             if (old != NULL) {
-                func_02063a14(old);
+                EffectObj_StopLoop(old);
                 old->unk1C = 4;
             }
             self->unk1E0 = eff->unk24;

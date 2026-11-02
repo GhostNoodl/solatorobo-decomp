@@ -36,7 +36,7 @@ void *func_02035d5c(void *a);
 u32 *func_02034ec0(void *a, char *b);
 u32 *func_02034f5c(void *a, char *b);
 void *func_02034ff8(void *a, char *b);
-void *func_02034c34(void *a, char *b, char *c);
+void *ResList_FindPath(void *a, char *b, char *c);
 BOOL func_0203ed04(char *name, u32 a);
 void *func_0203ebf8(void);
 BOOL func_0203e63c(void *a);
@@ -98,7 +98,7 @@ BOOL func_ov000_021b6d28(Loader021b6d28 *self) {
                 self->res2 = func_02034ff8(h, self->name);
             }
             if (self->flags.b8) {
-                self->res3 = func_02034c34(h, self->name, data_ov000_021cc850);
+                self->res3 = ResList_FindPath(h, self->name, data_ov000_021cc850);
             }
             self->state++;
             again = TRUE;

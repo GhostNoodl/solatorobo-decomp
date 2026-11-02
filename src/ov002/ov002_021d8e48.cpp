@@ -32,7 +32,7 @@ void func_ov002_021d8e90(void *self) {
         HEAP_POP(saved);
     }
     if (FIELD(self, 0x88, void *) != NULL) {
-        func_0203df0c(FIELD(self, 0x88, void *));
+        Heap_FreeHi(FIELD(self, 0x88, void *));
         FIELD(self, 0x88, void *) = NULL;
     }
     {

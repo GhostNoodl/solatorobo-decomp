@@ -39,7 +39,7 @@ extern void NNS_G2dLoadPaletteEx(int *fmt, u16 *count, u32 addr, int idx, PlttSu
 
 
 extern void func_0203e58c(u32 id);
-extern void func_0203be50(GfxSys *sys, int shift, int count, int idx);
+extern void GfxSys_FreeSlots(GfxSys *sys, int shift, int count, int idx);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(u32 key);
 
 // Bytes loaded per palette slot: one 16-colour palette, or a whole 256-colour one.

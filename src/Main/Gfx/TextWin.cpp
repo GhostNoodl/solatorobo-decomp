@@ -81,7 +81,7 @@ static inline void MsgRes_OpenFile2(MsgRes *res, const char *arcName, const char
     res->Open(arc, file);
 }
 
-void func_0204c158(void) {
+void MsgRes_Create(void) {
     MsgRes *res;
     if (MSG_RES != NULL) {
         return;
@@ -97,7 +97,7 @@ void func_0204c158(void) {
     MsgRes_OpenFile2(res, "script/cmninfo", "cmn.ccmes");
 }
 
-void func_0204c214(void) {
+void MsgRes_Delete(void) {
     void *heap = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     if (MSG_RES != NULL) {
@@ -113,7 +113,7 @@ void *Heap_GetCurrent(void) {
     return data_02097dd0->cur;
 }
 
-void func_0204c284(void) {
+void Heap_SetCurrentHi(void) {
     data_02097dd0->cur = data_02097dd0->heapHi;
 }
 
@@ -150,8 +150,8 @@ extern const u32 data_0208ba70[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void *func_02039828(VramBlock *block);
@@ -170,7 +170,7 @@ typedef struct TextScanParser {
     /* 0x88 */ u8 unk_88[0x30];
 } TextScanParser;
 
-extern void *func_0203a4c0(GfxMgr *mgr);
+extern void *GfxMgr_GetFont(GfxMgr *mgr);
 void func_0204c7d0(TextWin *win);
 BOOL func_0204cc18(TextScanParser *p, const char **s);
 
@@ -192,7 +192,7 @@ s32 func_0204c2f4(char *out, s32 outSize, const char *str) {
     if (str == NULL) {
         return 0;
     }
-    f = (NNSG2dFont *)func_0203a4c0(data_02097ce0);
+    f = (NNSG2dFont *)GfxMgr_GetFont(data_02097ce0);
     fn = (TextScanCharFn)f->cbCharSpliter;
     len = 0;
     s = str;
@@ -260,7 +260,7 @@ TextLayout *TextWin_Dtor(TextLayout *layout) {
 
 // Measures str: the widest line in *outW and the total height in *outH.
 // Returns the number of characters; raw skips escapes and tags.
-s32 func_0204c4fc(s32 font, s32 spacing, const char *str, s32 *outW, s32 *outH, bool raw) {
+s32 Text_Measure(s32 font, s32 spacing, const char *str, s32 *outW, s32 *outH, bool raw) {
     const char *s;
     TextScanParser p;
     u16 c;
@@ -271,7 +271,7 @@ s32 func_0204c4fc(s32 font, s32 spacing, const char *str, s32 *outW, s32 *outH, 
     s32 maxW;
     s32 h;
     data_02097ce0->unk_004 = font;
-    f = (NNSG2dFont *)func_0203a4c0(data_02097ce0);
+    f = (NNSG2dFont *)GfxMgr_GetFont(data_02097ce0);
     fn = (TextScanCharFn)f->cbCharSpliter;
     s = str;
     p.vt = data_0208ba70;
@@ -328,7 +328,7 @@ void func_0204c8a8(TextWin *win);
 
 Model *func_0204c9f8(Model *model);
 
-void func_0204ca14(TextWin *win, u32 n);
+void TextWin_InitLines(TextWin *win, u32 n);
 
 void func_0204ca70(TextWin *win);
 
@@ -532,7 +532,7 @@ Model *func_0204e238(Model *model, const char *name, const char *file, int a);
 
 void *func_0204e278(void *pltt);
 
-char *func_0204e28c(Model *model);
+char *Model_GetName(Model *model);
 
 void *func_0204e294(Model *model);
 
@@ -647,7 +647,7 @@ typedef struct TextScanParser {
     /* 0x88 */ u8 unk_88[0x30];
 } TextScanParser;
 
-void *func_0203a4c0(GfxMgr *mgr);
+void *GfxMgr_GetFont(GfxMgr *mgr);
 void func_0204c7d0(TextWin *win);
 BOOL func_0204cc18(TextScanParser *p, const char **s);
 
@@ -658,7 +658,7 @@ void func_0204c6bc(const char *str, s32 maxLines, void *arg, void (*cb)(void *ar
     TextScanCharFn fn;
     s32 c;
     data_02097ce0->unk_004 = 3;
-    fn = *(TextScanCharFn *)((u8 *)func_0203a4c0(data_02097ce0) + 4);
+    fn = *(TextScanCharFn *)((u8 *)GfxMgr_GetFont(data_02097ce0) + 4);
     s = str;
     n = 0;
     p.vt = data_0208ba70;
@@ -705,8 +705,8 @@ extern const u32 data_0208ba70[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void *func_02039828(VramBlock *block);
@@ -738,8 +738,8 @@ void func_0204c7d0(TextWin *win) {
     win->unk_37 = 0;
     win->cursorX = 0;
     win->cursorY = 0;
-    win->vramSize = 0;
-    win->vramArg = 0;
+    win->width = 0;
+    win->height = 0;
     win->unk_4c = 0;
     win->texVram = NULL;
     win->plttVram = NULL;
@@ -767,16 +767,16 @@ void func_0204c8a8(TextWin *win) {
     void *saved;
     if (win->lines != NULL) {
         if (win->lines->buf != NULL) {
-            func_0203df0c(win->lines->buf);
+            Heap_FreeHi(win->lines->buf);
             win->lines->buf = NULL;
         }
         if (win->lines != NULL) {
-            func_0203df0c(win->lines);
+            Heap_FreeHi(win->lines);
             win->lines = NULL;
         }
     }
     if (win->dl != NULL) {
-        func_0203df0c(win->dl);
+        Heap_FreeHi(win->dl);
         win->dl = NULL;
     }
     saved = data_02097dd0->cur;
@@ -805,7 +805,7 @@ void func_0204c8a8(TextWin *win) {
         NNS_GfdDefaultFuncFreePlttVram(win->plttVram);
     }
     if (win->texBuf != NULL) {
-        func_0203df0c(win->texBuf);
+        Heap_FreeHi(win->texBuf);
         win->texBuf = NULL;
     }
     func_0203e58c(win->unk_6c);
@@ -818,10 +818,10 @@ Model *func_0204c9f8(Model *model) {
     return model;
 }
 
-void func_0204ca14(TextWin *win, u32 n) {
-    win->lines = (TextLines *)func_0203de84(0x10, 4);
+void TextWin_InitLines(TextWin *win, u32 n) {
+    win->lines = (TextLines *)Heap_AllocHi(0x10, 4);
     win->lines->unk_0 = 0;
-    win->lines->buf = func_0203de84(n * 8, 4);
+    win->lines->buf = Heap_AllocHi(n * 8, 4);
     win->lines->capacity = n;
     win->lines->count = 0;
     win->lines->unk_c = 3;
@@ -837,7 +837,7 @@ void func_0204ca70(TextWin *win) {
         win->Render();
         win->inRender = 0;
     } else {
-        win->vram = func_020397fc(win->vramSize, win->vramArg, 0);
+        win->vram = func_020397fc(win->width, win->height, 0);
         win->vram->unk_10_29 = 0;
         win->Render();
         win->vram->unk_10_29 = 1;
@@ -1087,7 +1087,7 @@ Model *func_0204e238(Model *model, const char *name, const char *file, int a);
 
 void *func_0204e278(void *pltt);
 
-char *func_0204e28c(Model *model);
+char *Model_GetName(Model *model);
 
 void *func_0204e294(Model *model);
 
@@ -1265,8 +1265,8 @@ extern const u32 data_0208ba70[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void *func_02039828(VramBlock *block);
@@ -1282,7 +1282,7 @@ void func_0204c8a8(TextWin *win);
 
 Model *func_0204c9f8(Model *model);
 
-void func_0204ca14(TextWin *win, u32 n);
+void TextWin_InitLines(TextWin *win, u32 n);
 
 void func_0204ca70(TextWin *win);
 
@@ -1797,7 +1797,7 @@ Model *func_0204e238(Model *model, const char *name, const char *file, int a);
 
 void *func_0204e278(void *pltt);
 
-char *func_0204e28c(Model *model);
+char *Model_GetName(Model *model);
 
 void *func_0204e294(Model *model);
 
@@ -1903,8 +1903,8 @@ extern const u32 data_0208ba70[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void *func_02039828(VramBlock *block);
@@ -1920,7 +1920,7 @@ void func_0204c8a8(TextWin *win);
 
 Model *func_0204c9f8(Model *model);
 
-void func_0204ca14(TextWin *win, u32 n);
+void TextWin_InitLines(TextWin *win, u32 n);
 
 void func_0204ca70(TextWin *win);
 
@@ -2210,7 +2210,7 @@ void func_0204dda8(TextWin *win) {
     }
     if (!win->flag3 && win->flag26) {
         if (!win->flag28) {
-            win->modelX = win->cursorX + win->vramSize + 8;
+            win->modelX = win->cursorX + win->width + 8;
             win->modelY = win->cursorY + 0xc;
         }
         win->unk_vf98();
@@ -2333,7 +2333,7 @@ Model *func_0204e238(Model *model, const char *name, const char *file, int a);
 
 void *func_0204e278(void *pltt);
 
-char *func_0204e28c(Model *model);
+char *Model_GetName(Model *model);
 
 void *func_0204e294(Model *model);
 
@@ -2479,8 +2479,8 @@ extern const u32 data_0208ba70[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void *func_02039828(VramBlock *block);
@@ -2496,7 +2496,7 @@ void func_0204c8a8(TextWin *win);
 
 Model *func_0204c9f8(Model *model);
 
-void func_0204ca14(TextWin *win, u32 n);
+void TextWin_InitLines(TextWin *win, u32 n);
 
 void func_0204ca70(TextWin *win);
 
@@ -2726,7 +2726,7 @@ void *func_0204e278(void *pltt) {
     return pltt;
 }
 
-char *func_0204e28c(Model *model) {
+char *Model_GetName(Model *model) {
     return model->name;
 }
 
@@ -2833,8 +2833,8 @@ typedef struct TextWinFont {
     /* 0x4 */ TextWinCharFn splitChar;
 } TextWinFont;
 
-extern GfxCell *func_0203a4a4(GfxMgr *mgr);
-extern void *func_0203a4c0(GfxMgr *mgr);
+extern GfxCell *GfxMgr_NextCell(GfxMgr *mgr);
+extern void *GfxMgr_GetFont(GfxMgr *mgr);
 extern void func_0203a4d4(GfxMgr *mgr, void *arg);
 extern void func_0203a0cc(GfxMgr *mgr, VramBlock *block, GfxCell *cell, u32 size, u32 arg, s32 color);
 extern BOOL func_0204cc18(TextWin *win, const char **s);
@@ -2851,23 +2851,23 @@ void func_0204e358(TextWin *win) {
     GfxCell *cell;
     TextWinFont *font;
     s32 y;
-    cell = func_0203a4a4(data_02097ce0);
+    cell = GfxMgr_NextCell(data_02097ce0);
     hi = win->unk_2c >> 4;
     color = win->unk_2c % 16 + 1;
     if (win->vram == NULL) {
-        win->vram = func_020397fc(win->vramSize, win->vramArg, 0);
+        win->vram = func_020397fc(win->width, win->height, 0);
     }
     win->vram->unk_10_31 = win->flag5;
     if (win->lines != NULL) {
         func_0203a4d4(data_02097ce0, win->lines);
     }
-    func_0203a0cc(data_02097ce0, win->vram, cell, win->vramSize, win->vramArg, hi);
+    func_0203a0cc(data_02097ce0, win->vram, cell, win->width, win->height, hi);
     if (!win->vram->temporary) {
         if (win->vram->temporary || win->vram->unk_10_2) {
             return;
         }
     }
-    font = (TextWinFont *)func_0203a4c0(data_02097ce0);
+    font = (TextWinFont *)GfxMgr_GetFont(data_02097ce0);
     fn = font->splitChar;
     s = (const char *)win->str;
     lineH = win->spacing + font->info[1];
@@ -2944,17 +2944,17 @@ void func_0204e5d4(TextWin *win) {
     s32 px;
 
     if (win->flag24 == 1) {
-        func_020430b8(win->vramSize + 2, win->vramArg + 2, &win->texSizeS, &win->texSizeT);
+        func_020430b8(win->width + 2, win->height + 2, &win->texSizeS, &win->texSizeT);
         outline = TRUE;
     } else {
-        func_020430b8(win->vramSize, win->vramArg, &win->texSizeS, &win->texSizeT);
+        func_020430b8(win->width, win->height, &win->texSizeS, &win->texSizeT);
         outline = FALSE;
     }
     size = ((8 << win->texSizeS) << win->texSizeT) << 2;
-    win->texBuf = func_0203de84(size, 4);
+    win->texBuf = Heap_AllocHi(size, 4);
     bx = 0;
     MIi_CpuClearFast(0, win->texBuf, size);
-    font = (NNSG2dFont *)func_0203a4c0(data_02097ce0);
+    font = (NNSG2dFont *)GfxMgr_GetFont(data_02097ce0);
     fn = font->cbCharSpliter;
     s = (const char *)win->str;
     color = win->unk_2c % 15 + 1;
@@ -3058,7 +3058,7 @@ extern "C" {
 
 extern "C" {
 
-extern void *func_0203de84(u32 size, u32 align);
+extern void *Heap_AllocHi(u32 size, u32 align);
 
 // Builds the display list that draws the window's glyph texture as a (gradient) quad.
 void func_0204eb3c(TextWin *win) {
@@ -3118,12 +3118,12 @@ void func_0204eb3c(TextWin *win) {
         G3B_VtxXY(&dl, 0x1000, 0x1000);
     }
     win->dlSize = G3_EndMakeDL(&dl);
-    win->dl = func_0203de84(win->dlSize, 4);
+    win->dl = Heap_AllocHi(win->dlSize, 4);
     MI_CpuCopy8(buf, win->dl, win->dlSize);
     DC_FlushRange(win->dl, win->dlSize);
 }
 
-extern void func_0203df0c(void *ptr);
+extern void Heap_FreeHi(void *ptr);
 extern BOOL func_0203e63c(void *task);
 extern void func_02043d20(void *p, int a);
 
@@ -3224,7 +3224,7 @@ void func_0204edd8(TextWin *win) {
         return;
     }
     if (win->texBuf != NULL) {
-        func_0203df0c(win->texBuf);
+        Heap_FreeHi(win->texBuf);
         win->texBuf = NULL;
     }
     if (win->inRender) {
@@ -3334,8 +3334,8 @@ extern const u32 data_0208ba70[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void *func_02039828(VramBlock *block);
@@ -3351,7 +3351,7 @@ void func_0204c8a8(TextWin *win);
 
 Model *func_0204c9f8(Model *model);
 
-void func_0204ca14(TextWin *win, u32 n);
+void TextWin_InitLines(TextWin *win, u32 n);
 
 void func_0204ca70(TextWin *win);
 
@@ -3571,7 +3571,7 @@ Model *func_0204e238(Model *model, const char *name, const char *file, int a);
 
 void *func_0204e278(void *pltt);
 
-char *func_0204e28c(Model *model);
+char *Model_GetName(Model *model);
 
 void *func_0204e294(Model *model);
 
@@ -3725,8 +3725,8 @@ extern const u32 data_0208ba70[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void *func_02039828(VramBlock *block);
@@ -3742,7 +3742,7 @@ void func_0204c8a8(TextWin *win);
 
 Model *func_0204c9f8(Model *model);
 
-void func_0204ca14(TextWin *win, u32 n);
+void TextWin_InitLines(TextWin *win, u32 n);
 
 void func_0204ca70(TextWin *win);
 
@@ -3962,7 +3962,7 @@ Model *func_0204e238(Model *model, const char *name, const char *file, int a);
 
 void *func_0204e278(void *pltt);
 
-char *func_0204e28c(Model *model);
+char *Model_GetName(Model *model);
 
 void *func_0204e294(Model *model);
 
@@ -4089,7 +4089,7 @@ void func_0204f784(TextWinEx *win) {
     func_0203972c(win->blocks, count);
 }
 
-extern void *func_0203a4c0(GfxMgr *mgr);
+extern void *GfxMgr_GetFont(GfxMgr *mgr);
 extern void func_0203a4dc(GfxMgr *mgr, void *arg);
 extern void func_0203a5a4(GfxMgr *mgr, u16 c);
 BOOL func_0204cc18(TextWin *win, char **pp);
@@ -4115,7 +4115,7 @@ s32 func_0204f804(TextWinEx *win) {
         return 0;
     }
     if (*(char *)win->unk_3d8 != 0) {
-        font = (NNSG2dFont *)func_0203a4c0(data_02097ce0);
+        font = (NNSG2dFont *)GfxMgr_GetFont(data_02097ce0);
         fn = font->cbCharSpliter;
         pad = 0;
         stop = FALSE;
@@ -4326,8 +4326,8 @@ extern const u32 data_0208ba70[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void *func_02039828(VramBlock *block);
@@ -4343,7 +4343,7 @@ void func_0204c8a8(TextWin *win);
 
 Model *func_0204c9f8(Model *model);
 
-void func_0204ca14(TextWin *win, u32 n);
+void TextWin_InitLines(TextWin *win, u32 n);
 
 void func_0204ca70(TextWin *win);
 
@@ -4563,7 +4563,7 @@ Model *func_0204e238(Model *model, const char *name, const char *file, int a);
 
 void *func_0204e278(void *pltt);
 
-char *func_0204e28c(Model *model);
+char *Model_GetName(Model *model);
 
 void *func_0204e294(Model *model);
 
@@ -4759,7 +4759,7 @@ void func_02050ea4(Model *model, u32 v);
 extern void func_02043d20(void *obj, int a);
 extern void func_02043db4(int a, s32 b, s32 c, u16 d);
 extern BOOL func_0203e63c(void *id);
-extern u32 func_0204c4fc(u32 a, u32 b, u32 c, u32 *outSize, u32 *outArg, BOOL d);
+extern u32 Text_Measure(u32 a, u32 b, u32 c, u32 *outW, u32 *outH, BOOL d);
 void func_020508f4(TextBox *box, u32 arg);
 void func_02050b50(TextBox *box);
 
@@ -4898,7 +4898,7 @@ void func_0204ffdc(TextBox *box) {
                 win = TextBox_NewWin();
                 win->font = box->pltt;
                 win->str = (u32)line;
-                win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
+                win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
                 data_02097ce0->unk_004 = win->font;
                 win->unk_2c = 0;
                 win->color0 = 0x77df;
@@ -4917,7 +4917,7 @@ void func_0204ffdc(TextBox *box) {
                     win->Render();
                     win->inRender = 0;
                 } else {
-                    win->vram = func_020397fc(win->vramSize, win->vramArg, 0);
+                    win->vram = func_020397fc(win->width, win->height, 0);
                     win->vram->unk_10_29 = 0;
                     win->Render();
                     win->vram->unk_10_29 = 1;
@@ -5002,8 +5002,8 @@ extern const u32 data_0208ba70[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void *func_02039828(VramBlock *block);
@@ -5019,7 +5019,7 @@ void func_0204c8a8(TextWin *win);
 
 Model *func_0204c9f8(Model *model);
 
-void func_0204ca14(TextWin *win, u32 n);
+void TextWin_InitLines(TextWin *win, u32 n);
 
 void func_0204ca70(TextWin *win);
 
@@ -5239,7 +5239,7 @@ Model *func_0204e238(Model *model, const char *name, const char *file, int a);
 
 void *func_0204e278(void *pltt);
 
-char *func_0204e28c(Model *model);
+char *Model_GetName(Model *model);
 
 void *func_0204e294(Model *model);
 
@@ -5375,8 +5375,8 @@ extern const u32 data_0208ba70[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void *func_02039828(VramBlock *block);
@@ -5392,7 +5392,7 @@ void func_0204c8a8(TextWin *win);
 
 Model *func_0204c9f8(Model *model);
 
-void func_0204ca14(TextWin *win, u32 n);
+void TextWin_InitLines(TextWin *win, u32 n);
 
 void func_0204ca70(TextWin *win);
 
@@ -5612,7 +5612,7 @@ Model *func_0204e238(Model *model, const char *name, const char *file, int a);
 
 void *func_0204e278(void *pltt);
 
-char *func_0204e28c(Model *model);
+char *Model_GetName(Model *model);
 
 void *func_0204e294(Model *model);
 
@@ -5774,7 +5774,7 @@ typedef struct TextScanParser {
     /* 0x88 */ u8 unk_88[0x30];
 } TextScanParser;
 
-void *func_0203a4c0(GfxMgr *mgr);
+void *GfxMgr_GetFont(GfxMgr *mgr);
 void func_0204c7d0(TextWin *win);
 BOOL func_0204cc18(TextScanParser *p, const char **s);
 
@@ -5796,7 +5796,7 @@ void func_020508f4(TextBox *box, const char *str) {
     s32 nLines;
     u32 i;
     data_02097ce0->unk_004 = box->pltt;
-    font = (NNSG2dFont *)func_0203a4c0(data_02097ce0);
+    font = (NNSG2dFont *)GfxMgr_GetFont(data_02097ce0);
     fn = font->cbCharSpliter;
     s = str;
     p.vt = data_0208ba70;
@@ -5891,8 +5891,8 @@ extern const u32 data_0208ba70[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void *func_02039828(VramBlock *block);
@@ -5908,7 +5908,7 @@ void func_0204c8a8(TextWin *win);
 
 Model *func_0204c9f8(Model *model);
 
-void func_0204ca14(TextWin *win, u32 n);
+void TextWin_InitLines(TextWin *win, u32 n);
 
 void func_0204ca70(TextWin *win);
 
@@ -6128,7 +6128,7 @@ Model *func_0204e238(Model *model, const char *name, const char *file, int a);
 
 void *func_0204e278(void *pltt);
 
-char *func_0204e28c(Model *model);
+char *Model_GetName(Model *model);
 
 void *func_0204e294(Model *model);
 
@@ -6710,7 +6710,7 @@ typedef struct SlideFont {
     /* 0x4 */ SlideCharFn splitChar;
 } SlideFont;
 
-extern void *func_0203a4c0(GfxMgr *mgr);
+extern void *GfxMgr_GetFont(GfxMgr *mgr);
 extern BOOL func_0204cc18(TextWin *win, const char **s);
 extern void func_020708fc(u16 id, char *out);
 extern void func_02070b98(u16 id, char *out, u16 a, u16 b);
@@ -6743,7 +6743,7 @@ void func_02051a34(SlideWin *win, SlideCharFn fn) {
     const char *s;
     char file[0x20];
     data_02097ce0->unk_004 = win->font;
-    font = (SlideFont *)func_0203a4c0(data_02097ce0);
+    font = (SlideFont *)GfxMgr_GetFont(data_02097ce0);
     panel = NULL;
     fn = font->splitChar;
     line = 0;
@@ -6881,7 +6881,7 @@ extern "C" {
 extern u8 Gfx3DState_NextPolyId(void *obj);
 extern s8 data_02149ef4;
 
-void func_02051f3c(Obj3DLayer *layer, u32 v) {
+void Obj3DLayer_SetCur(Obj3DLayer *layer, u32 v) {
     if (layer->cur == 0) {
         layer->prev = v;
     } else {
@@ -6989,7 +6989,7 @@ extern "C" {
 extern u8 Gfx3DState_NextPolyId(void *obj);
 extern s8 data_02149ef4;
 
-void func_02051f3c(Obj3DLayer *layer, u32 v);
+void Obj3DLayer_SetCur(Obj3DLayer *layer, u32 v);
 
 void func_020520fc(Obj3DRender *render) {
     GfxSys *sys;

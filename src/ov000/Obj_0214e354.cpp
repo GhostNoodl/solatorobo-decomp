@@ -17,7 +17,7 @@ extern "C" {
 
 extern Data02097ce0 *data_02097ce0;
 
-s8 **func_0203a4c0(Data02097ce0 *a);
+s8 **GfxMgr_GetFont(Data02097ce0 *a);
 
 s32 func_ov000_0214e354(Obj0214e354 *self) {
     return self->unk_b8 != NULL ? 0x15 : 0;
@@ -26,7 +26,7 @@ s32 func_ov000_0214e354(Obj0214e354 *self) {
 s32 func_ov000_0214e368(Obj0214e354 *self) {
     s32 base;
     data_02097ce0->unk_04 = self->unk_1c;
-    base = (*func_0203a4c0(data_02097ce0))[1];
+    base = (*GfxMgr_GetFont(data_02097ce0))[1];
     return base + self->vfunc_3c();
 }
 

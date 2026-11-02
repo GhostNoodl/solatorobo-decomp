@@ -255,7 +255,7 @@ struct ActorMgr; // ov000/Actor.h
 extern struct ActorMgr *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
 extern void *ActorMgr_FindKind(void *mgr, u16 kind, u16 id);
-extern void *func_ov000_0218bd9c(void *mgr, u16 id, u8 a);
+extern void *Group_FindById(void *mgr, u16 id, u8 a);
 
 static inline BOOL Field_IsPlayerActing(void) {
     FieldPlayer *player = data_ov000_021ccd30;
@@ -306,7 +306,7 @@ static inline void Stage_FindObj(u16 id, u16 b) {
         return;
     }
     data_02149f10 = Stage_FindObj3D(id);
-    data_02149f00 = func_ov000_0218bd9c(data_ov000_021ccd64, id, b & 0xff);
+    data_02149f00 = Group_FindById(data_ov000_021ccd64, id, b & 0xff);
 }
 
 struct StageObj3D {
@@ -350,9 +350,9 @@ extern void func_ov000_0218b60c(void *obj, u8 *color, StageVec *pos, s16 *rot);
 extern s32 FX_Div(s32 a, s32 b);
 extern StageObj3D *ActorMgr_GetActor(void *mgr, u16 idx);
 extern StageLightObj *Group_FindNode(void *mgr, u16 idx);
-extern void func_ov000_02198d28(void *p, StageVec *pos, u32 rot);
+extern void Body_SetPos(void *p, StageVec *pos, u32 rot);
 extern void *ActorMgr_GetGroup(void *mgr, u16 kind);
-extern void func_ov000_0218e044(void *p, u16 id, s32 m);
+extern void ActorGroup_BroadcastKind(void *p, u16 id, s32 m);
 extern void func_ov000_0218d46c(StageObj3D *o, u16 id, s32 m);
 
 static inline StageObj3D *Stage_FindObj3DByIdx(u16 idx) {
@@ -371,7 +371,7 @@ static inline StageObj3D *Stage_FindObj3DPtr(u16 id) {
 }
 
 static inline void *Stage_FindLight1(u16 id, u16 b) {
-    return func_ov000_0218bd9c(data_ov000_021ccd64, id, (u8)b);
+    return Group_FindById(data_ov000_021ccd64, id, (u8)b);
 }
 
 static inline void *Stage_FindLight2(u16 id, u16 b) {

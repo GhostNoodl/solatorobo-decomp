@@ -25,7 +25,7 @@ struct Ov014Mtx33 {
 };
 extern s32 func_ov014_0220f3f0(const Ov014Vec *a, const Ov014Vec *b, const u16 *rot, const s32 *ext);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
-extern void func_020639d4(void *e, s32 a, s32 b);
+extern void EffectObj_AddSndCue(void *e, s32 a, s32 b);
 
 void func_ov014_0220f20c(Ov014Obj *self, s32 a, s32 b, s32 c) {
     Ov014Actor *pl = func_ov000_0219bf90();
@@ -65,7 +65,7 @@ void func_ov014_0220f20c(Ov014Obj *self, s32 a, s32 b, s32 c) {
         Ov014Actor *e = func_02065f88(0x325, &v);
         e->v0c(0x1400);
         FLD(s32, e, 0x50) = -0x64000;
-        func_020639d4(e, 0x19, 4);
+        EffectObj_AddSndCue(e, 0x19, 4);
     }
 }
 

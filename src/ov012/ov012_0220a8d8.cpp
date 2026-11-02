@@ -373,7 +373,7 @@ extern "C" {
 void Ov012Lift_Init(Ov012Lift *self) {
     func_ov003_021d0fc0(self);
     self->unk_f0 = self->unk_18;
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     func_ov000_02187a20(data_ov000_021ccd54, 5);
     func_020359d0(data_ov012_0220aaf9, 7, 0);
     if (self->unk_f0 == 1) {
@@ -1656,7 +1656,7 @@ void func_ov012_021fd148(Ov012Actor *self) {
 }
 
 extern "C" {
-extern void func_02065804(void *a, s32 b);
+extern void EffectMgr_Kill(void *a, s32 b);
 extern void func_ov000_02184508(void *g);
 extern void func_ov000_02184548(void *g);
 extern void *func_ov000_0219b71c(Ov012Vec *pos, Ov012Vec *v, s32 a, s32 b, s32 c, s32 d);
@@ -1710,7 +1710,7 @@ void func_ov012_021fd1b0(Ov012Lift *self) {
         Ov012Sub48 *m48;
         Ov012Sub44 *n;
         Ov012V *e;
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x480f, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x480f, 0x15);
         o = Ov012_FindActor(self->target_id);
         if (o != NULL) {
             o->unk_1a = 1;
@@ -1773,7 +1773,7 @@ void func_ov012_021fd1b0(Ov012Lift *self) {
         w->timer++;
         t = w->timer;
         if (t == 0x32) {
-            func_02065804(data_0214a420, self->unk_13c);
+            EffectMgr_Kill(data_0214a420, self->unk_13c);
         }
         if (t >= 0x8c) {
             {
@@ -2738,7 +2738,7 @@ void func_ov012_021ff674(Ov012Act_021fee1c *self) {
     s = self->unk_40;
     switch (Ov012Sub40_State(s)) {
     case 0:
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x480b, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x480b, 0x15);
         func_ov000_02190cb0(self->unk_38, data_ov012_0220a3c4, 0x400, 0);
         self->unk_b8.y = self->pos.y;
         self->unk_b8.z = self->pos.z;
@@ -3171,7 +3171,7 @@ void func_ov012_02200398(Ov012Act_021ffa68 *self) {
     case 2:
         v = self->unk_b8;
         Actor_MoveToPos(self, &v, 0);
-        if (VEC_Distance(&self->pos, &self->unk_b8) > 0 && !func_01ffc198(&pl->pos, &self->pos, pl->unk_64 + 0x2000)) {
+        if (VEC_Distance(&self->pos, &self->unk_b8) > 0 && !Hit_DiffInSphere(&pl->pos, &self->pos, pl->unk_64 + 0x2000)) {
             return;
         }
         func_ov000_02190cb0(self->unk_38, data_ov012_0220ab2d, 0x111, 0);
@@ -3668,7 +3668,7 @@ void func_ov012_022015a0(Ov012Act_021ffa68 *self) {
     void *o;
     self->unk_48->unk_30 = 0x40000000;
     FLD(u16, self->unk_48, 0x9a) |= 0x12;
-    func_ov003_021daa6c(((void *)self->unk_108), 0);
+    Ov003FxList_Kill(((void *)self->unk_108), 0);
     self->unk_40->timer = 0;
     func_ov003_021d5900(self);
     if (!(self->unk_100 & 0x100000)) {

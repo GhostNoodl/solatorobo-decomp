@@ -174,7 +174,7 @@ void func_ov012_02209740(Ov012Actor *self) {
         self->unk_94_1 = 1;
         break;
     case 2:
-        if (self->unk_38->unk_c4 == 1 || func_01ffc198(&pl->pos, &self->pos, pl->unk_64 + 0x3000)) {
+        if (self->unk_38->unk_c4 == 1 || Hit_DiffInSphere(&pl->pos, &self->pos, pl->unk_64 + 0x3000)) {
             func_ov000_02191418(self->unk_38, 0, 1);
             self->unk_a4 = 0xc00;
             self->unk_40->timer = 0;

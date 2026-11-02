@@ -427,7 +427,7 @@ BOOL func_ov002_021d52e0(void *self, void *ev) {
             func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
         }
     }
-    t = func_ov000_02173610(0x1b);
+    t = Task_FindById(0x1b);
     if (t != NULL && FIELD(t, 0x3c, void *) != NULL) {
         func_ov002_021e2690(FIELD(t, 0x3c, void *), 9, 0);
     }
@@ -450,7 +450,7 @@ BOOL func_ov002_021d5350(void *self, void *ev) {
                                 FIELD(info, 0x28, s32), data_ov002_021efaeb, info[0x24], 0x1000);
         }
         func_ov000_021c95ac(owner + 0x60, id);
-        t = func_ov000_02173610(0x1b);
+        t = Task_FindById(0x1b);
         if (t != NULL) {
             if (FIELD(t, 0x3c, u8 *) != NULL) {
                 MI_CpuCopy8(owner + 0x60, FIELD(t, 0x3c, u8 *) + 0x2c, 0x14);
@@ -469,7 +469,7 @@ BOOL func_ov002_021d5444(void *self, void *ev) {
             void *t;
             func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
             func_ov000_02152294(self, 0x8d, 0x23, func_ov002_021d52e0);
-            t = func_ov000_02173610(0x1b);
+            t = Task_FindById(0x1b);
             if (t != NULL && FIELD(t, 0x3c, void *) != NULL) {
                 func_ov002_021e2690(FIELD(t, 0x3c, void *), 0, 0);
             }

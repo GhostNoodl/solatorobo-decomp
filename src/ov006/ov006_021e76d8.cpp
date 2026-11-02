@@ -95,7 +95,7 @@ extern u8 *data_ov000_021ccd54;
 extern ov006_Ofs021e76d8 data_ov006_021eb954[];
 ov006_Eff021e76d8 *func_020657b0(void *a, int b);
 ov006_Eff021e76d8 *func_02065f88(s32 id, VecFx32 *pos);
-void func_02063a14(ov006_Eff021e76d8 *e);
+void EffectObj_StopLoop(ov006_Eff021e76d8 *e);
 ov006_Hit021e76d8 *func_ov000_02190a30(void *a, int b);
 void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
@@ -122,7 +122,7 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
         if (self->unk1F8 == 0) {
             e = func_020657b0(data_0214a420, self->unk1E8);
             if (e != NULL) {
-                func_02063a14(e);
+                EffectObj_StopLoop(e);
                 e->unk1C = 4;
                 self->unk1E8 = 0;
             }
@@ -189,7 +189,7 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
             self->unk1FA = 0;
             e = func_020657b0(data_0214a420, self->unk1EC);
             if (e != NULL) {
-                func_02063a14(e);
+                EffectObj_StopLoop(e);
                 self->unk1EC = 0;
             }
             if (self->unk19C_0 & 1) {

@@ -25,7 +25,7 @@ EffectEmitter *MainVt_0208c8bc_DtorDelete(EffectEmitter *em) {
     return em;
 }
 
-void func_0206c324(EffectEmitter *em) {
+void MainVt_0208c8bc_Setup(EffectEmitter *em) {
     em->Loop();
 }
 

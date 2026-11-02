@@ -33,10 +33,10 @@ extern char data_0208c741[];
 extern char data_0208c747[];
 extern void func_02063a34(EffectObj *obj);
 extern void func_02063f90(Effect3D *e);
-extern void func_020639d4(EffectObj *obj, s32 id, s32 frame);
+extern void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
 extern void func_02064d3c(EffectObj *obj, EffectObj *child);
-extern void func_02064d74(EffectGroup *g, const char *prefix, const char *name, const char *suffix);
-extern void func_02064dd8(EffectGroup *g);
+extern void EffectGroup_SetName(EffectGroup *g, const char *prefix, const char *name, const char *suffix);
+extern void EffectGroup_Reset(EffectGroup *g);
 extern void func_0206e900(char *dst, const char *src);
 extern u32 data_0208c1d8[];
 extern char data_0208c74d[];
@@ -91,7 +91,7 @@ static inline EffectGroup *EffectGroup_New(void) {
         *(u32 **)g = data_0208c2e4;
         func_02063a34(g);
         *(u32 **)g = data_0208c23c;
-        func_02064dd8(g);
+        EffectGroup_Reset(g);
     }
     return g;
 }
@@ -114,7 +114,7 @@ EffectObj *func_02067e9c(s32 id, const VecFx32 *pos) {
         e->unk_50 = -0x14000;
         e->unk_54 = -0x14000;
         func_02064d3c(g, e);
-        func_020639d4(g, 0x85, 0);
+        EffectObj_AddSndCue(g, 0x85, 0);
     }
     g->SetPos(pos);
     g->unk_20 = id;
@@ -181,7 +181,7 @@ EffectGroup *func_0206811c(s32 id, const VecFx32 *pos) {
         name = data_0208c711;
         break;
     }
-    func_02064d74(g, data_0208c4a8, name, data_0208c4af);
+    EffectGroup_SetName(g, data_0208c4a8, name, data_0208c4af);
     return g;
 }
 
@@ -220,8 +220,8 @@ EffectGroup *func_02068228(s32 id, const VecFx32 *pos) {
         name = data_0208c747;
         break;
     }
-    func_02064d74(g, data_0208c4a8, name, data_0208c4af);
-    func_020639d4(g, 0x36, 0);
+    EffectGroup_SetName(g, data_0208c4a8, name, data_0208c4af);
+    EffectObj_AddSndCue(g, 0x36, 0);
     return g;
 }
 
@@ -279,7 +279,7 @@ EffectGroup *func_02068354(s32 id, const VecFx32 *pos) {
             *(s32 *)((u8 *)c + 0x170) = 0x14000;
         }
     }
-    func_020639d4(g, 0x36, 0);
+    EffectObj_AddSndCue(g, 0x36, 0);
     return g;
 }
 

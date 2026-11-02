@@ -152,7 +152,7 @@ void func_02045d98(void *p) {
     }
 }
 
-BOOL func_02045ea4(WhMgr *wh, BOOL enabled) {
+BOOL Wh_SetEntry(WhMgr *wh, BOOL enabled) {
     if (wh->sysState != 4 && wh->sysState != 5) {
         return TRUE;
     }

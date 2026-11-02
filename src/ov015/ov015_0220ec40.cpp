@@ -39,13 +39,13 @@ struct Ov015ItemEnt {
     s32 cnt;
 };
 
-static inline void Ov015_SetXYZ16(u8 *o, s16 x, s16 y, s16 z) {
+static inline void Ov015_SetUiPos(u8 *o, s16 x, s16 y, s16 z) {
     FLD(s16, o, 0x64) = x;
     FLD(s16, o, 0x66) = y;
     FLD(s16, o, 0x68) = z;
 }
 
-static inline void Ov015_SetXYZ32(u8 *o, s32 x, s32 y, s32 z) {
+static inline void Ov015_SetUiSlide(u8 *o, s32 x, s32 y, s32 z) {
     FLD(s32, o, 0x58) = x;
     FLD(s32, o, 0x5c) = y;
     FLD(s32, o, 0x60) = z;
@@ -78,9 +78,9 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     FLD(u8 *, self, 0x4) = p;
     FLD(s32, p, 0x24) = 0xf8;
     self->unk_04->rows = 1;
-    Ov015_SetXYZ16(((u8 *)self->unk_04), 0, 0x19, -0xccd);
+    Ov015_SetUiPos(((u8 *)self->unk_04), 0, 0x19, -0xccd);
     FLD(u16, self->unk_04, 0x48) = 0x28;
-    Ov015_SetXYZ32(((u8 *)self->unk_04), -0x100, 0, -0xccd);
+    Ov015_SetUiSlide(((u8 *)self->unk_04), -0x100, 0, -0xccd);
     self->unk_04->flags &= ~0x40000;
     self->unk_04->flags &= ~0x20000;
     VCALL(self->unk_04)->v10(MsgRes_GetString(res, 0xcc));
@@ -113,8 +113,8 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     self->unk_08 = p;
     FLD(s32, p, 0x24) = 0xf8;
     FLD(s32, self->unk_08, 0x20) = 3;
-    Ov015_SetXYZ16(self->unk_08, 2, 0x3c, -0xccd);
-    Ov015_SetXYZ32(self->unk_08, -0x100, 0, -0xccd);
+    Ov015_SetUiPos(self->unk_08, 2, 0x3c, -0xccd);
+    Ov015_SetUiSlide(self->unk_08, -0x100, 0, -0xccd);
     FLD(s32, self->unk_08, 0x2c) = 1;
     FLD(u32, self->unk_08, 0xc) &= ~0x40000;
     FLD(u8, self->unk_08, 0xf0) = 0;
@@ -167,7 +167,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     self->unk_14->slideMode = 1;
     self->unk_14->flags |= 0x20000000;
     self->unk_14->flags |= 0x80000000;
-    Ov015_SetXYZ32(((u8 *)self->unk_14), 0x100, 0, -0xcd);
+    Ov015_SetUiSlide(((u8 *)self->unk_14), 0x100, 0, -0xcd);
     VCALL(self->unk_14)->vf4(1, MsgRes_GetString(res, 0x36));
     VCALL(self->unk_14)->v08();
     self->unk_14->flags |= 2;
@@ -179,8 +179,8 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
         VCALL(p)->v28();
     }
     FLD(u8 *, self, 0xc) = p;
-    Ov015_SetXYZ16(p, 0x92, 0x78, -0x99a);
-    Ov015_SetXYZ32(((u8 *)self->unk_0c), 0x100, 0, -0x99a);
+    Ov015_SetUiPos(p, 0x92, 0x78, -0x99a);
+    Ov015_SetUiSlide(((u8 *)self->unk_0c), 0x100, 0, -0x99a);
     self->unk_0c->slideMode = 1;
     FLD(s32, self->unk_0c, 0x84) = 1;
     VCALL(self->unk_0c)->v08();
@@ -197,8 +197,8 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
         VCALL(p)->v28();
     }
     FLD(u8 *, self, 0x10) = p;
-    Ov015_SetXYZ16(p, 0x92, 0x8c, -0x99a);
-    Ov015_SetXYZ32(((u8 *)self->unk_10), 0x100, 0, -0x99a);
+    Ov015_SetUiPos(p, 0x92, 0x8c, -0x99a);
+    Ov015_SetUiSlide(((u8 *)self->unk_10), 0x100, 0, -0x99a);
     self->unk_10->slideMode = 1;
     FLD(s32, self->unk_10, 0x84) = 1;
     VCALL(self->unk_10)->v08();

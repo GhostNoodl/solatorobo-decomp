@@ -20,7 +20,7 @@ extern u8 data_ov000_021c9b28[];
 void func_020708fc(s32 a, LoFadeP *out);
 void func_02070b98(s32 a, LoFadeP *out, s32 b, s32 c);
 BOOL func_02035bd4(LoFadeP *a, LoFadeP *b, s32 c);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 s32 func_ov000_02180838(void *a);
 void func_ov000_0215fdfc(void *self, s32 a, const void *b);
 void func_02041c5c(void *obj, void *value);
@@ -43,7 +43,7 @@ static inline BOOL LoFadeDone(void) {
 
 static inline BOOL LoResReady(void) {
     BOOL ret = TRUE;
-    if (!func_0205a9c8(LFLD(void *, data_ov000_021ccd24, 8))) {
+    if (!StageRes_IsAllLoaded(LFLD(void *, data_ov000_021ccd24, 8))) {
         ret = FALSE;
     }
     return ret;

@@ -14,7 +14,7 @@ void **func_02034f5c(void *m, void *k);
 void **func_02034ec0(void *m, void *k);
 void func_0203f0b4(void *p);
 void func_02036838(void *a, void *e, s32 b, s32 c);
-u8 *func_0206e7d0(u8 id);
+u8 *Lang_GetGroup(u8 id);
 void func_0206dedc(void *buf, u8 *p);
 void func_0206dde4(void *buf, u8 *p);
 void func_02035acc(void *a, void *buf, s32 b);
@@ -63,7 +63,7 @@ void func_ov000_021b6994(Obj021b6994 *self, u8 arg) {
     if (arg || p[0] == 0xff || p[1] == 0xff || p[2] == 0xff) {
         p = (u8 *)data_ov000_021ccd54 + 0xca;
     }
-    t = func_0206e7d0(p[0]);
+    t = Lang_GetGroup(p[0]);
     func_0206dedc(buf, p);
     func_02035acc(LFLD(void *, t, 8), buf, 0);
     func_0206dde4(buf, p);

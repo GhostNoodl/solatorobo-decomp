@@ -21,8 +21,8 @@ char *func_0206ec48(u16 id);
 char *func_02062020(u16 id);
 void func_02040a98(char *buf, u16 id);
 char *MsgRes_GetString(void *msg, s32 id);
-void *func_0203de84(u32 size, u32 align);
-void func_0203df0c(void *p);
+void *Heap_AllocHi(u32 size, u32 align);
+void Heap_FreeHi(void *p);
 
 char *func_ov000_0215cfd0(Text0215cfd0 *self) {
     char tmp[0x20];
@@ -41,10 +41,10 @@ char *func_ov000_0215cfd0(Text0215cfd0 *self) {
         }
         len = STD_GetStringLength(s);
         if (self->unk_8c != NULL) {
-            func_0203df0c(self->unk_8c);
+            Heap_FreeHi(self->unk_8c);
             self->unk_8c = NULL;
         }
-        self->unk_8c = (char *)func_0203de84(len + 10, 4);
+        self->unk_8c = (char *)Heap_AllocHi(len + 10, 4);
         STD_CopyString(self->unk_8c, data_ov000_021cabf6);
         STD_ConcatenateString(self->unk_8c, s);
         STD_ConcatenateString(self->unk_8c, data_ov000_021cabfb);

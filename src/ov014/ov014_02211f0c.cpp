@@ -67,7 +67,7 @@ extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
 extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
-extern void func_02065860(void *a, void *b);
+extern void EffectMgr_StopLoop(void *a, void *b);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_ov003_021d6a3c(Ov014Actor *self, s32 a, s32 b, s32 c);
 
@@ -128,7 +128,7 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
             func_02049f44(*(&data_02097e4c), 0x44, &self->pos, 0);
         }
         if (t == 0x12c) {
-            func_02065860(data_0214a420, self->unk_158);
+            EffectMgr_StopLoop(data_0214a420, self->unk_158);
         }
         if (t == 0x140) {
             FieldState *g = data_ov000_021ccd54;

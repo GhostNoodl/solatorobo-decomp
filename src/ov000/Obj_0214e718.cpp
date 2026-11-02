@@ -14,7 +14,7 @@ extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021caa44[];
 
 void *Heap_Alloc(u32 size);
-Obj0214e718 *func_ov000_02173610(s32 id);
+Obj0214e718 *Task_FindById(s32 id);
 s32 func_02061e7c(s32 a);
 
 s32 func_ov000_0214e718(Obj0214e718 *self) {
@@ -39,7 +39,7 @@ VObj *Lo021caa44_New(void) {
 }
 
 void func_ov000_0214e7ac(s32 id) {
-    VObj *obj = func_ov000_02173610(0xe)->unk_50;
+    VObj *obj = Task_FindById(0xe)->unk_50;
     obj->vfunc_74(func_02061e7c(id), id, 0xffff, 0xffff);
 }
 

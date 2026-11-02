@@ -120,7 +120,7 @@ extern HitTriInfo *data_02fe0ef8;
 extern HitTriInfo data_02fe0f50[];
 
 extern void func_01ff8330(HitTriRay *ray);
-extern void func_01ff8464(VecFx32 *box, HitTriBlock *block);
+extern void HitSegLocal_Transform(VecFx32 *box, HitTriBlock *block);
 
 #define HIT_ATTR_CHECK(mode, mask, attr, fail, ok) \
     if ((mode) == 0) { \

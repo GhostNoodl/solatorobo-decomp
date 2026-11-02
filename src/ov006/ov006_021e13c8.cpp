@@ -16,7 +16,7 @@ void func_ov006_021e13c8(ov006_Unk021e13c8 *self, int a) {
     self->unk20->unk2C = 4;
     self->unk20->unk34 = 0;
     ov006_Anim_Start(self->unk20, a);
-    func_0204ca14(self->unk20, 8);
+    TextWin_InitLines(self->unk20, 8);
     self->unk20->unk4 |= 4;
 }
 

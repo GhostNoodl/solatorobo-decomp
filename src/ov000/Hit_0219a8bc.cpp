@@ -139,7 +139,7 @@ typedef struct {
 
 void *Actor_GetTarget(Actor *a);
 u8 *func_ov000_0218d2e0(Actor *a);
-BOOL func_01ffc584(void *hit, VecFx32 *pos, s32 r, s32 h);
+BOOL Hit_DiffInCylinder(void *hit, VecFx32 *pos, s32 r, s32 h);
 BOOL func_01ffc624(void *hit, VecFx32 *pos, u16 *box, s32 r, s32 h);
 
 static inline BOOL IsSolid0219aca8(u8 *hit) {
@@ -194,13 +194,13 @@ BOOL func_ov000_0219aca8(Actor *a, Actor *b, u16 c, u8 d, VecFx32 *ofs, u16 *box
         if (!IsSolid0219aca8(hit)) {
             ok = FALSE;
         } else {
-            ok = func_01ffc198((VecFx32 *)hit, &pos, r + LFLD(s32, hit, 0x1c));
+            ok = Hit_DiffInSphere((VecFx32 *)hit, &pos, r + LFLD(s32, hit, 0x1c));
         }
     } else if (box == NULL || (box[0] == 0 && box[1] == 0 && box[2] == 0)) {
         if (!IsSolid0219aca8(hit)) {
             ok = FALSE;
         } else {
-            ok = func_01ffc584(hit, &pos, r + LFLD(s32, hit, 0x1c), hgt);
+            ok = Hit_DiffInCylinder(hit, &pos, r + LFLD(s32, hit, 0x1c), hgt);
         }
     } else {
         if (!IsSolid0219aca8(hit)) {

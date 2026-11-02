@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_ov000_021ccd54;
 extern Ov008Shared data_02fe1534;
 extern Ov008Save *data_02fe152c;
-Ov008Def *func_0206e7d0(u8 id);
+Ov008Def *Lang_GetGroup(u8 id);
 u16 func_020594bc(void *a, int b, int c, int d);
 Ov008Item *func_ov000_02154b58(void *a, u32 id);
 BOOL func_ov008_021cf790(void *self, Ov008Sel *sel);
@@ -33,7 +33,7 @@ void func_0204c6bc(const char *str, s32 maxLines, void *arg, void (*cb)(void *ar
 void func_ov000_0214dc20(void *arg, s32 *tag);
 void func_ov008_021cf5c8(s32 type, void *list, void *info);
 static inline void Ov008_AddEntry(Ov008Mgr *m, u32 id) {
-    Ov008Def *e = func_0206e7d0(id);
+    Ov008Def *e = Lang_GetGroup(id);
     Ov008Item *p;
     m->menu->v74(e->unk_00, id, 0xffff, 0xffff);
     if (!func_020594bc(data_02fe152c, 0, 0x201, id)) {

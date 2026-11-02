@@ -3,8 +3,8 @@
 
 extern "C" {
 
-extern void *func_0203dec8(u32 size, int align);
-extern void func_0203df40(void *ptr);
+extern void *Heap_AllocLo(u32 size, int align);
+extern void Heap_FreeLo(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 
 // Renders a string into a 1/2/4/8 bpp bitmap buffer (mgr->unk_67c), growing the buffer as needed.
@@ -54,11 +54,11 @@ void func_0203b12c(GfxMgr *mgr, const char *str) {
         mgr->unk_69c[2] = 0;
         mgr->unk_69c[3] = 0;
         if (mgr->unk_67c != NULL) {
-            func_0203df40(mgr->unk_67c);
+            Heap_FreeLo(mgr->unk_67c);
             mgr->unk_67c = NULL;
         }
         mgr->unk_680 = 0;
-        buf = (u8 *)func_0203dec8(size, 4);
+        buf = (u8 *)Heap_AllocLo(size, 4);
         mgr->unk_67c = buf;
         mgr->unk_680 = size;
     }

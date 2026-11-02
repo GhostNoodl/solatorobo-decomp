@@ -195,7 +195,7 @@ void func_ov003_021cf418(Ov003Group *self) {
     self->active = 0;
 }
 
-Ov003Group *func_ov003_021cf428(Ov003Group *self) {
+Ov003Group *Ov003Group_Dtor(Ov003Group *self) {
     if (self->active) {
         func_ov003_021cf5e8(self);
         self->active = 0;
@@ -213,7 +213,7 @@ BOOL Ov003Group_Init(Ov003Group *self) {
 }
 #pragma force_active reset
 
-void func_ov003_021cf480(Ov003Group *self) {
+void Ov003Group_Release(Ov003Group *self) {
     if (self->active) {
         func_ov003_021cf5e8(self);
         self->active = 0;

@@ -139,7 +139,7 @@ extern char data_ov003_021f8350[];
 extern void Heap_Free(void *p);
 extern void *func_ov000_0219429c(void *p);
 extern void func_ov000_02194758(void *p);
-extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void SndMgr_StopSeqArc(void *mgr, s32 id);
 extern s32 func_02049afc(void *mgr, s32 v);
@@ -153,7 +153,7 @@ void func_ov003_021df0c8(Ov003BgProp *self) {
         w->timer++;
         if (w->timer > 0x3c) {
             Ov003DfEffect *e;
-            func_ov000_0218e8ec(data_ov000_021ccd68, 0x4035, 0x15);
+            ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4035, 0x15);
             func_ov000_0218996c(0x3c, 0x78);
             e = func_02065f88(5, &self->pos);
             if (e != NULL) {

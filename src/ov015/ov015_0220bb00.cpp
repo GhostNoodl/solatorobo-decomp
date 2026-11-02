@@ -4,7 +4,7 @@ extern "C" {
 
 extern u8 data_ov015_02212e20[];
 extern u8 data_ov015_02212e68[];
-u8 *func_02066774(void *a, void *b, int c, void *d);
+u8 *Effect3D_Create(void *a, void *b, int c, void *d);
 extern u8 data_ov015_02212e55[];
 extern u8 data_ov015_02212eb0[];
 extern u8 data_ov015_02212e0d[];
@@ -34,7 +34,7 @@ static inline void Ov015_Spawn0bb68(Ov015FishState18 *self, s32 s1, s32 s2) {
     Ov015Vec b;
     Ov015Fish *q;
     s32 y;
-    o = func_02066774(data_ov015_02212e20, data_ov015_02212e68, 0, &self->fish->pos);
+    o = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e68, 0, &self->fish->pos);
     FLD(s32, o, 0xd4) = 1;
     FLD(u8, o, 0x28) = 1;
     FLD(s32, o, 0x50) = -0xc8000;
@@ -96,7 +96,7 @@ void func_ov015_0220be38(Ov015FishState18 *self, Ov015Fish *p) {
     a.z = q->pos.z;
     e = func_020657b0(data_0214a420, self->fxKey);
     if (e == NULL) {
-        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e55, 0, &self->fish->pos);
+        e = (Ov015V *)Effect3D_Create(data_ov015_02212e20, data_ov015_02212e55, 0, &self->fish->pos);
         FLD(s32, e, 0xd4) = 1;
         FLD(u8, e, 0x28) = 0;
         FLD(s32, e, 0x3c) = 0x800;

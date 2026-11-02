@@ -49,12 +49,12 @@ extern "C" {
 Info021b4adc *func_0206fef8(u16 id);
 Flags021b4adc *func_020705fc(u16 id);
 void *func_0207011c(u16 id);
-char *func_0207005c(u16 id, s32 idx);
+char *Tbl_GetEntryData(u16 id, s32 idx);
 void *Heap_Alloc(u32 size);
 Obj021b4adc *func_ov000_0218e9c4(void *p);
 St021b4adc *func_ov000_021919c8(void *p);
 void func_ov000_0218f074(Obj021b4adc *o, void *a, BOOL b, BOOL c, s32 d, BOOL e);
-void func_ov000_02191b70(St021b4adc *s);
+void Shadow_Load(St021b4adc *s);
 
 static inline void SetState(St021b4adc *s, s32 n) {
     s->prev = s->cur;
@@ -82,8 +82,8 @@ void func_ov000_021b4adc(Self021b4adc *self) {
         BOOL f5 = self->flags->b5 ? TRUE : FALSE;
         func_ov000_0218f074(self->obj, res, f0, f1, 0, f5);
     }
-    s0 = func_0207005c(self->id, 0);
-    s1 = func_0207005c(self->id, 1);
+    s0 = Tbl_GetEntryData(self->id, 0);
+    s1 = Tbl_GetEntryData(self->id, 1);
     if (s0 != NULL && s1 != NULL) {
         o = self->obj;
         STD_CopyString(o->name0, s0);
@@ -104,7 +104,7 @@ void func_ov000_021b4adc(Self021b4adc *self) {
     } else {
         SetState(self->st, 0);
     }
-    func_ov000_02191b70(self->st);
+    Shadow_Load(self->st);
 }
 
 }

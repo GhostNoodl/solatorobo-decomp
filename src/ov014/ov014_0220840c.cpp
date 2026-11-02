@@ -13,10 +13,10 @@ extern void *data_02097e4c;
 extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
 extern s32 func_ov000_0219a510(Ov014Obj *self, u16 mask, Ov014Vec *pos, s32 r, s32 a, Ov014Actor **list);
 extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
-extern BOOL func_ov003_021daa0c(void *p, s32 a);
+extern BOOL Ov003FxList_Has(void *p, s32 a);
 extern void func_ov003_021da9ac(void *p, s32 a, void *e);
 extern void func_ov003_021daae4(void *p, s32 a, Ov014Vec *v, s32 b, s32 c, s32 d, s32 e);
-extern void func_ov003_021daa6c(void *p, s32 a);
+extern void Ov003FxList_Kill(void *p, s32 a);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *v);
 extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -52,7 +52,7 @@ void func_ov014_0220840c(Ov014ActEx_0220774c *self) {
             arg.c = 1;
             Actor_SendMsg((Actor *)t, self->id, 0xb, 1, 6, &arg);
             p.y += 0x1800;
-            if (!func_ov003_021daa0c(self->unk_d8, 0xfe)) {
+            if (!Ov003FxList_Has(self->unk_d8, 0xfe)) {
                 Ov014V *e = func_02065f88(0xcb, &p);
                 e->v34(0, 0, 0x7fff);
                 e->v0c(0xb33);
@@ -63,7 +63,7 @@ void func_ov014_0220840c(Ov014ActEx_0220774c *self) {
                 func_ov003_021daae4(self->unk_d8, 0xfe, &p, 0, 0, 0, 0);
             }
         } else {
-            func_ov003_021daa6c(self->unk_d8, 0xfe);
+            Ov003FxList_Kill(self->unk_d8, 0xfe);
         }
     } else {
         func_ov000_02198360(self->unk_40, 0x15, 0);

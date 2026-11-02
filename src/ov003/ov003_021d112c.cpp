@@ -191,7 +191,7 @@ typedef struct {
 extern "C" {
 extern Ov003InGame *data_ov000_021ccd54;
 void *Heap_Alloc(u32 size);
-void *func_0203de84(u32 size, s32 align);
+void *Heap_AllocHi(u32 size, s32 align);
 Ov003InInfo *func_0206fef8(u16 id);
 Ov003InParam *func_02070558(u16 id);
 Ov003InModel *func_ov000_0218fe1c(void *p);
@@ -313,7 +313,7 @@ extern "C" void func_ov003_021d112c(Ov003In *self) {
     }
     for (i = 0; i < 2; i++) {
         if (self->unk_b0->unk_10[i] != NULL || self->unk_b0->unk_0e[i] != 0) {
-            Ov003InParts *pp = (Ov003InParts *)func_0203de84(0x70, 4);
+            Ov003InParts *pp = (Ov003InParts *)Heap_AllocHi(0x70, 4);
             s32 j;
             self->unk_d0 = pp;
             for (j = 0; j < 2; j++) {

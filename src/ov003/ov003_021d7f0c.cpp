@@ -107,7 +107,7 @@ Ov003TickerSet *Ov003Vt_021f7d10_DtorDelete(Ov003TickerSet *self) {
     return self;
 }
 
-BOOL func_ov003_021d8198(Ov003TickerSet *self) {
+BOOL Ov003TickerSet_Init(Ov003TickerSet *self) {
     self->active = 1;
     self->b1 = 0;
     self->b2 = 0;

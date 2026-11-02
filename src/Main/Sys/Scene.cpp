@@ -15,9 +15,9 @@ extern void *data_0214a424;
 extern SndMgr *data_02097e4c;
 extern const char *data_0208cb28[];
 
-extern void *func_0203dec8(u32 size, int align);
+extern void *Heap_AllocLo(u32 size, int align);
 extern void G2x_SetBlendBrightness_(volatile void *reg, int a, int b);
-extern void func_0206c44c(void);
+extern void StageFlags_Create(void);
 extern void func_0206e858(void);
 extern BOOL PauseNode_IsUpdatePaused(UnkSysNode *node, BOOL recurse);
 extern BOOL PauseNode_IsDrawPaused(UnkSysNode *node, BOOL recurse);
@@ -39,7 +39,7 @@ void func_0204ae14(void) {
         SceneMgr *mgr;
         Movie *movie;
         s32 i;
-        data_02149ef0 = (SceneMgr *)func_0203dec8(sizeof(SceneMgr), 4);
+        data_02149ef0 = (SceneMgr *)Heap_AllocLo(sizeof(SceneMgr), 4);
         mgr = data_02149ef0;
         mgr->state = 4;
         mgr->changing = FALSE;
@@ -63,7 +63,7 @@ void func_0204ae14(void) {
         movie->names = data_0208cb28;
         movie->unk_0e8 = 2;
     }
-    func_0206c44c();
+    StageFlags_Create();
     func_0206e858();
 }
 

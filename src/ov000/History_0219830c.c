@@ -76,7 +76,7 @@ void func_ov000_02198320(void) {
 void func_ov000_02198324(void) {
 }
 
-ActorSub40 *func_ov000_02198328(ActorSub40 *self) {
+ActorSub40 *History_Init(ActorSub40 *self) {
     s32 i;
     self->st = 0;
     self->timer = 0;

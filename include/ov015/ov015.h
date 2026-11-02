@@ -880,7 +880,7 @@ struct Ov015Dialog : public Ov015Menu {
 SIZE_ASSERT(Ov015Dialog, 0x1e4);
 
 // Camera view block: eye/at/up and the projection, laid out like Main Camera 0x04..0x3f
-// (0x3c bytes; initialised by func_02043548 and func_020434e0).
+// (0x3c bytes; initialised by GfxCamPos_Init and func_020434e0).
 struct Ov015CamView {
     Ov015Vec eye;
     Ov015Vec at;

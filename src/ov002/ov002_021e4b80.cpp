@@ -842,23 +842,23 @@ void func_ov002_021e5d0c(void *self) {
 
 void func_ov002_021e5d88(void *self) {
     if (FIELD(self, 0x64, void *) != NULL) {
-        func_0203df0c(FIELD(self, 0x64, void *));
+        Heap_FreeHi(FIELD(self, 0x64, void *));
         FIELD(self, 0x64, void *) = NULL;
     }
     if (FIELD(self, 0x68, void *) != NULL) {
-        func_0203df0c(FIELD(self, 0x68, void *));
+        Heap_FreeHi(FIELD(self, 0x68, void *));
         FIELD(self, 0x68, void *) = NULL;
     }
     if (FIELD(self, 0x6c, void *) != NULL) {
-        func_0203df0c(FIELD(self, 0x6c, void *));
+        Heap_FreeHi(FIELD(self, 0x6c, void *));
         FIELD(self, 0x6c, void *) = NULL;
     }
     if (FIELD(self, 0x70, void *) != NULL) {
-        func_0203df0c(FIELD(self, 0x70, void *));
+        Heap_FreeHi(FIELD(self, 0x70, void *));
         FIELD(self, 0x70, void *) = NULL;
     }
     if (FIELD(self, 0x74, void *) != NULL) {
-        func_0203df0c(FIELD(self, 0x74, void *));
+        Heap_FreeHi(FIELD(self, 0x74, void *));
         FIELD(self, 0x74, void *) = NULL;
     }
     if (FIELD(self, 0x14, s32) != 0) {
@@ -951,7 +951,7 @@ void NNS_G3dRenderObjAddAnmObj(void *a, void *b);
 static inline void ov002_021e5fe4_Load(void **slot, void *set, char *name, void *mdl, void *tex, void *robj) {
     void *a = NNS_G3dGetAnmByName(set, (NNSG3dResName *)name);
     if (a != NULL) {
-        *slot = func_0203de84(NNS_G3dAnmObjCalcSizeRequired(a, mdl), 4);
+        *slot = Heap_AllocHi(NNS_G3dAnmObjCalcSizeRequired(a, mdl), 4);
         NNS_G3dAnmObjInit(*slot, a, mdl, (int)tex);
         NNS_G3dRenderObjAddAnmObj(robj, *slot);
     }
@@ -988,7 +988,7 @@ void func_ov002_021e61b4(void *self) {
         STD_CopyLString(name, (char *)FIELD(self, 0x50, void *), sizeof(name));
     }
     anm = NNS_G3dGetAnmByName(*FIELD(self, 0x60, void **), (NNSG3dResName *)name);
-    FIELD(self, 0x64, void *) = func_0203de84(0x100, 4);
+    FIELD(self, 0x64, void *) = Heap_AllocHi(0x100, 4);
     FIELD(FIELD(self, 0x64, void *), 0x8, void *) = anm;
     FIELD(FIELD(self, 0x64, void *), 0x0, s32) = 0;
     FIELD(FIELD(self, 0x64, void *), 0x4, s32) = 0x1000;
@@ -1165,7 +1165,7 @@ extern "C" {
 
 void func_ov002_021e6784(void *self);
 
-void func_02040578(void *out, VecFx32 *dir);
+void Math_DirToAngles(void *out, VecFx32 *dir);
 
 static inline BOOL ov002_inWindow(s32 t) {
     u8 *g = (u8 *)data_ov002_021f0f9c;
@@ -1217,7 +1217,7 @@ BOOL func_ov002_021e65ac(void *self) {
             dir.y = 0;
             dir.z = 0x1000;
             MTX_MultVec33(&dir, (MtxFx33 *)(m + 0xb8), &dir);
-            func_02040578(rot, &dir);
+            Math_DirToAngles(rot, &dir);
             o->v0x18(&pos);
             o->v0x10(&scale);
             o->v0x30(rot);
@@ -1255,7 +1255,7 @@ void func_ov002_021e6784(void *self) {
             dir.y = 0;
             dir.z = 0x1000;
             MTX_MultVec33(&dir, (MtxFx33 *)(m + 0xb8), &dir);
-            func_02040578(rot, &dir);
+            Math_DirToAngles(rot, &dir);
             o->v0x18(&pos);
             o->v0x10(&scale);
             o->v0x30(rot);
@@ -1410,7 +1410,7 @@ BOOL func_ov002_021e6b54(void *self) {
         break;
     }
     FIELD(data_02097ce0, 4, s32) = FIELD(self, 0x150, s32);
-    r = (s8 **)func_0203a4c0(data_02097ce0);
+    r = (s8 **)GfxMgr_GetFont(data_02097ce0);
     FIELD(self, 0x158, s8 **) = r;
     FIELD(self, 0x15c, s8 *) = r[1];
     FIELD(data_ov002_021f0f9c, 0x128, s32) = FIELD(self, 8, s32);
@@ -1528,7 +1528,7 @@ void func_ov002_021e6d4c(void *self) {
     }
     {
         void *txt = FIELD(self, 0x14c, void *);
-        void *font = func_0203a4c0(data_02097ce0);
+        void *font = GfxMgr_GetFont(data_02097ce0);
         s32 w = NNSi_G2dFontGetTextWidth(font, 0, txt);
         FIELD(data_02097ce0, 0x4, s32) = FIELD(self, 0x154, s32);
         FIELD(data_02097ce0, 0x8, s32) = 0;
@@ -2005,7 +2005,7 @@ void func_ov002_021e7b58(void) {
         *(VFunc **)p = data_ov002_021f0674;
         *(VFunc **)((u8 *)p + 0x6c) = data_ov002_021f0684;
         func_ov002_021eacd0((u8 *)p + 0x6c);
-        func_02043858((u8 *)p + 0x14c);
+        Gfx3DState_Init((u8 *)p + 0x14c);
         func_ov002_021e7cb4(p);
     }
     data_ov002_021f0f9c = p;
@@ -2092,7 +2092,7 @@ void func_ov002_021e7dac(void *self) {
         }
     }
     func_02035acc(data_ov002_021f0104[1], data_ov002_021f0104[2], 2);
-    func_0204ab54(data_02097e48.queue);
+    SndQueue_StopSeqArcs(data_02097e48.queue);
     if (FIELD(self, 0x148, u8)) {
         u8 *g = (u8 *)data_02097d48;
         MIi_CpuCopy32((u8 *)self + 0x14c, g + 0x8b0, 0x180);
@@ -2119,7 +2119,7 @@ static inline void GXS_SetMasterBrightness(int b) { GXx_SetMasterBrightness_((vu
 
 int func_0203ca84(int a);
 void func_02043904(void *p);
-void func_020656b4(void *p);
+void EffectMgr_FreeAll(void *p);
 BOOL func_ov002_021e828c(void *self);
 BOOL func_ov002_021e86a0(void *self);
 BOOL func_ov002_021e8828(void *self);
@@ -2247,7 +2247,7 @@ BOOL func_ov002_021e7ea8(void *self) {
         }
         if (done) {
             func_ov002_021e8c0c(self);
-            func_020656b4(data_0214a420);
+            EffectMgr_FreeAll(data_0214a420);
             FIELD(data_0214a420, 0x10, u8) = 0;
             FIELD(data_02097d48, 0x4, s32) = 1;
             ov002_SetState(self, 6);
@@ -2749,7 +2749,7 @@ void func_ov002_021e8f04(s32 idx) {
         *(VFunc **)p = data_ov002_021f0674;
         *(VFunc **)((u8 *)p + 0x6c) = data_ov002_021f0684;
         func_ov002_021eacd0((u8 *)p + 0x6c);
-        func_02043858((u8 *)p + 0x14c);
+        Gfx3DState_Init((u8 *)p + 0x14c);
         func_ov002_021e7cb4(p);
     }
     off = idx * 0xc;
@@ -2989,7 +2989,7 @@ void *func_ov002_021e9478(s32 a, s32 b, s32 c, s32 d, u16 e, s32 mode, u8 f, u8 
     return p;
 }
 
-void *func_02043548(void *p);
+void *GfxCamPos_Init(void *p);
 
 void MTX_Identity44_(void *p);
 
@@ -3010,7 +3010,7 @@ void *func_ov002_021e95c4(u8 *a, u8 *b) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
         *(VFunc **)p = data_ov002_021f0854;
-        func_02043548(p + 0x50);
+        GfxCamPos_Init(p + 0x50);
         FIELD(p, 0x4, s32) = 7;
         FIELD(p, 0x4c, s32) = -1;
         MTX_Identity44_(p + 0x74);
@@ -3072,7 +3072,7 @@ void *func_ov002_021e97e8(u8 *a, u8 *b) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
         *(VFunc **)p = data_ov002_021f0854;
-        func_02043548(p + 0x50);
+        GfxCamPos_Init(p + 0x50);
         FIELD(p, 0x4, s32) = 7;
         FIELD(p, 0x4c, s32) = -1;
         MTX_Identity44_(p + 0x74);

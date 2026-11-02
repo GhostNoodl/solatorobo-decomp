@@ -33,7 +33,7 @@ extern s32 func_ov000_021909a8(Ov009Sub38 *m, const char *a, const char *b);
 extern void NNS_G3dRenderObjSetInitFunc(void *p, void *cb);
 extern void func_0203f2b8(void *p);
 extern u8 *func_0206fef8(void *res);
-extern void func_0203f80c(void *p);
+extern void HitMesh_Init(void *p);
 extern void HitMesh_SetRes(void *p, s32 v);
 extern void HitMesh_SetScale(void *p, s32 v);
 extern void HitMesh_SetMtx(void *mesh, const void *mtx);
@@ -89,7 +89,7 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
     if (v != 0) {
         void *q = Heap_Alloc(0x98);
         if (q != NULL) {
-            func_0203f80c(q);
+            HitMesh_Init(q);
         }
         self->unk_58 = q;
         o = FLD(u32 *, self->unk_34, 0x84);

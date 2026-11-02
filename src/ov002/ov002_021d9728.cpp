@@ -31,7 +31,7 @@ void func_ov002_021d9728(void *self) {
     for (n = FIELD(self, 0x6c, void *); n != NULL; n = FIELD(n, 0x70, void *)) {
         ((VObject *)n)->v0xc();
     }
-    t = func_ov000_02173610(0x1b);
+    t = Task_FindById(0x1b);
     if (t != NULL && FIELD(self, 0x75, u8)) {
         void *m = FIELD(t, 0x3c, void *);
         u8 k = FIELD(self, 0x74, u8);
@@ -40,7 +40,7 @@ void func_ov002_021d9728(void *self) {
         }
         FIELD(self, 0x75, u8) = 0;
     }
-    t = func_ov000_02173610(0x1b);
+    t = Task_FindById(0x1b);
     if (t != NULL && FIELD(t, 0x3c, void *) != NULL) {
         MI_CpuCopy8((u8 *)self + 0x76, FIELD(t, 0x3c, u8 *) + 0x2c, 0x14);
     }

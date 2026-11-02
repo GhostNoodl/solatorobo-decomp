@@ -23,7 +23,7 @@ extern int data_02097d8c[5];
 extern int data_02097da0[5];
 extern int data_02097db4[5];
 extern void *Heap_Alloc(u32 size);
-extern void func_02043858(void *obj);
+extern void Gfx3DState_Init(void *obj);
 void func_0203b70c(GfxSys *sys);
 
 }
@@ -79,7 +79,7 @@ extern "C" {
 
 extern "C" {
 
-extern void *func_0203dec8(u32 size, int align);
+extern void *Heap_AllocLo(u32 size, int align);
 extern void MI_CpuFill8(void *dst, u32 value, u32 size);
 extern void GX_SetBankForTex(int a);
 extern void GX_SetBankForTexPltt(int a);
@@ -105,7 +105,7 @@ extern void *NNS_GfdDefaultFuncFreePlttVram;
 
 static inline void GfxSys_InitTexVram(GfxSys *sys, u32 size) {
     if (sys->unk_018 == 0) {
-        sys->unk_018 = (u32)func_0203dec8((u32)sys->unk_014, 4);
+        sys->unk_018 = (u32)Heap_AllocLo((u32)sys->unk_014, 4);
     } else {
         MI_CpuFill8((void *)sys->unk_018, 0, (u32)sys->unk_014);
     }
@@ -114,7 +114,7 @@ static inline void GfxSys_InitTexVram(GfxSys *sys, u32 size) {
 
 static inline void GfxSys_InitPlttVram(GfxSys *sys, u32 size) {
     if (sys->unk_020 == 0) {
-        sys->unk_020 = (u32)func_0203dec8((u32)sys->unk_01c, 4);
+        sys->unk_020 = (u32)Heap_AllocLo((u32)sys->unk_01c, 4);
     } else {
         MI_CpuFill8((void *)sys->unk_020, 0, (u32)sys->unk_01c);
     }
@@ -231,7 +231,7 @@ static inline u32 G3_PackPolygonAttr(int light, int polyMode, int cullMode, int 
 extern "C" {
 
 // The fade channels (indexed by screen) are this TU's own .bss objects, addressed through one
-// pool literal (0x02097d44) plus offsets. func_0203b6a0 already reads data_02097d48 that way, so
+// pool literal (0x02097d44) plus offsets. GfxSys_Create already reads data_02097d48 that way, so
 // the first two objects are defined before it. The rest are defined after it, which keeps
 // definition order: nine definitions before the first function come out in MWCC's own order
 // (d4c d48 d44, then the arrays from d8c). As TU objects in one pool their accesses stay in
@@ -240,7 +240,7 @@ extern "C" {
 u32 data_02097d44;
 GfxSys *data_02097d48;
 
-void func_0203b6a0(void) {
+void GfxSys_Create(void) {
     GfxSys *sys;
     if (data_02097d48 != NULL) {
         return;
@@ -248,7 +248,7 @@ void func_0203b6a0(void) {
     data_02097dd0->cur = data_02097dd0->heapLo;
     sys = (GfxSys *)Heap_Alloc(sizeof(GfxSys));
     if (sys != NULL) {
-        func_02043858(sys->unk_8b0);
+        Gfx3DState_Init(sys->unk_8b0);
         func_0203b70c(sys);
     }
     data_02097d48 = sys;
@@ -550,7 +550,7 @@ u16 func_0203bdb0(GfxSys *sys, int count, int idx) {
     return ret;
 }
 
-void func_0203be50(GfxSys *sys, int shift, int count, int idx) {
+void GfxSys_FreeSlots(GfxSys *sys, int shift, int count, int idx) {
     u16 mask = 0;
     int i;
     for (i = 0; i < count; i++) {

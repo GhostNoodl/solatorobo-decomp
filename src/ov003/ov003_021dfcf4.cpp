@@ -96,7 +96,7 @@ extern Ov003FvCtx *data_ov000_021ccd6c;
 extern Ov003FvSnd *data_02097e48;
 extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
-extern void func_02049564(void *a, s32 b, s32 c);
+extern void SndMgr_LoadHeapState(void *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
 extern void func_ov000_0218999c(s32 a, s32 b);
 extern void func_ov000_0218996c(s32 a, s32 b);
@@ -164,7 +164,7 @@ void func_ov003_021df8fc(Ov003Fv *self) {
     w = self->work;
     switch (w->state) {
     case 0:
-        func_02049564(data_02097e4c, 1, 1);
+        SndMgr_LoadHeapState(data_02097e4c, 1, 1);
         func_ov000_02187a20(data_ov000_021ccd54, 2);
         self->unk_84.x = 0;
         self->unk_84.y = 0;
@@ -266,7 +266,7 @@ void func_ov003_021dfcf4(Ov003Fv *self) {
     w = self->work;
     switch (w->state) {
     case 0:
-        func_02049564(data_02097e4c, 1, 1);
+        SndMgr_LoadHeapState(data_02097e4c, 1, 1);
         func_ov000_02187a20(data_ov000_021ccd54, 2);
         self->unk_84.x = 0;
         self->unk_84.y = 0;

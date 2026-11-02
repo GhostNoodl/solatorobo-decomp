@@ -112,7 +112,7 @@ void *func_ov003_021ceec8(void *self) {
     return self;
 }
 
-void func_ov003_021ceedc(Ov003ScriptList *self) {
+void Ov003ScriptList_Init(Ov003ScriptList *self) {
     self->vtbl = data_ov003_021f7974;
     self->head = NULL;
     self->cur = NULL;

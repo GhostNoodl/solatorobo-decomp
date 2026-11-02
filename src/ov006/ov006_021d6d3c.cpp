@@ -45,7 +45,7 @@ void SndMgr_StopAll(void *a, int b);
 void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(void *p);
 void func_ov000_021b53f4(void *p);
-void func_020656b4(void *p);
+void EffectMgr_FreeAll(void *p);
 void func_0203cc58(s32 a, int b, int c);
 void func_0203cd10(void);
 BOOL func_ov006_021cd2a8(ov006_Manager *m);
@@ -83,7 +83,7 @@ BOOL func_ov006_021d6d3c(ov006_Scene021d6d3c *self) {
         func_ov000_0218be9c(data_ov000_021ccd64);
         ActorMgr_DestroyAll(data_ov000_021ccd68);
         func_ov000_021b53f4(data_ov000_021ccd6c);
-        func_020656b4(data_0214a420);
+        EffectMgr_FreeAll(data_0214a420);
         {
             ov006_Game021d6d3c *game = data_ov000_021ccd54;
             game->unk1CC_1 = 0;

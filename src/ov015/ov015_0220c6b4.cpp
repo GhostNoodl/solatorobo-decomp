@@ -4,7 +4,7 @@ extern "C" {
 
 extern u8 data_ov015_02212e20[];
 extern u8 data_ov015_02212e68[];
-u8 *func_02066774(void *a, void *b, int c, void *d);
+u8 *Effect3D_Create(void *a, void *b, int c, void *d);
 
 BOOL Ov015FishState1c_Exit(Ov015FishState1c *self, Ov015Fish *p) {
     self->fish = p;
@@ -25,7 +25,7 @@ void func_ov015_0220c6c8(Ov015FishState1c *self, Ov015Fish *p) {
         Ov015Vec v;
         func_02049a48(data_02097e4c, 0x19, -1, -1, -1);
         func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
-        o = func_02066774(data_ov015_02212e20, data_ov015_02212e68, 0, &self->fish->pos);
+        o = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e68, 0, &self->fish->pos);
         FLD(s32, o, 0xd4) = 1;
         FLD(u8, o, 0x28) = 1;
         FLD(s32, o, 0x50) = -0xc8000;

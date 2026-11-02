@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_ov015_02212db8[];
 void func_0203f364(void *a);
-u8 *func_02066774(void *a, void *b, int c, void *d);
+u8 *Effect3D_Create(void *a, void *b, int c, void *d);
 extern u8 data_ov015_02212e20[];
 extern u8 data_ov015_02212e34[];
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
@@ -51,7 +51,7 @@ void func_ov015_0220d328(Ov015FishState40 *self, Ov015Fish *o) {
     o->drawMode = 2;
     e = func_020657b0(data_0214a420, self->unk_08);
     if (e == NULL) {
-        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, &o->pos);
+        e = (Ov015V *)Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &o->pos);
         FLD(s32, e, 0xd4) = 3;
         FLD(u8, e, 0x28) = 0;
         FLD(s32, e, 0xc8) = -1;
@@ -92,7 +92,7 @@ void func_ov015_0220d578(Ov015FishState40 *self, Ov015Fish *o) {
     }
     e = func_020657b0(data_0214a420, self->unk_08);
     if (e == NULL) {
-        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, &o->pos);
+        e = (Ov015V *)Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &o->pos);
         FLD(s32, e, 0xd4) = 3;
         FLD(u8, e, 0x28) = 0;
         FLD(s32, e, 0xc8) = -1;
@@ -174,7 +174,7 @@ BOOL Ov015FishState08_Update(Ov015FishState08 *self, Ov015Fish *p) {
             v.x = x;
             v.z = z;
             v.y = 0;
-            o = func_02066774(data_ov015_02212e20, data_ov015_02212e68, 0, &v);
+            o = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e68, 0, &v);
             VCALL(o)->v10(&p->scaleX);
             FLD(s32, o, 0xd4) = 3;
             FLD(u8, o, 0x28) = 0;

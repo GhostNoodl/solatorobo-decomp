@@ -106,8 +106,8 @@ void *func_ov000_02191318(void *a, s32 frame);
 void func_ov000_02191418(void *a, s32 b, s32 c);
 void func_ov000_021915a0(void *a);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
-BOOL func_01ffc584(void *hit, VecFx32 *pos, s32 r, s32 h);
-BOOL func_01ffc198(void *a, VecFx32 *b, s32 r);
+BOOL Hit_DiffInCylinder(void *hit, VecFx32 *pos, s32 r, s32 h);
+BOOL Hit_DiffInSphere(void *a, VecFx32 *b, s32 r);
 void Actor_TurnToActor(void *self, void *other, s32 step);
 void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
@@ -282,7 +282,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
                         p1.y -= 0x1000;
                         st = ST(self);
                         st->timer++;
-                        if (st->timer < 0x14 && !func_01ffc584(t + 0x70, &p1, (LFLD(s32, t, 0x64) << 1) + 0x1000, 0x4800)) {
+                        if (st->timer < 0x14 && !Hit_DiffInCylinder(t + 0x70, &p1, (LFLD(s32, t, 0x64) << 1) + 0x1000, 0x4800)) {
                             func_ov000_02190cb0(self->model, data_ov000_021cc61e, 0x400, 0);
                             func_ov000_021915a0(self->model);
                             self->speed = 0x229;
@@ -373,7 +373,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
                 }
                 r += self->radius;
                 if (LFLD(H22_021a4a6c, h, 0x22).b0 == 1 && LFLD(H22_021a4a6c, h, 0x22).b1 == 1) {
-                    hit = func_01ffc198(h, &p2, r + LFLD(s32, h, 0x1c));
+                    hit = Hit_DiffInSphere(h, &p2, r + LFLD(s32, h, 0x1c));
                 } else {
                     hit = FALSE;
                 }

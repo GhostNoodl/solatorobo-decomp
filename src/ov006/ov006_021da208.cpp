@@ -212,14 +212,14 @@ static inline ov006_Entry021da208 *ov006_NewEntry(void) {
     return e;
 }
 
-static inline void ov006_SetRot(void *p, s16 x, s16 y, s16 z) {
+static inline void ov006_SetPos(void *p, s16 x, s16 y, s16 z) {
     ov006_Window *self = (ov006_Window *)p;
     self->posX = x;
     self->posY = y;
     self->posZ = z;
 }
 
-static inline void ov006_SetPos(void *p, int x, int y, int z) {
+static inline void ov006_SetSlide(void *p, int x, int y, int z) {
     ov006_Window *self = (ov006_Window *)p;
     self->slideX = x;
     self->slideY = y;
@@ -252,8 +252,8 @@ void func_ov006_021da208(ov006_Task021da208 *self) {
     func_ov000_02157d2c(self->unk10, MsgRes_GetString(res, 0x3e));
     self->unk10->width = 0xf8;
     self->unk10->rows = 1;
-    ov006_SetRot(self->unk10, 0, 0x19, -0x199a);
-    ov006_SetPos(self->unk10, -0x100, 0, 0);
+    ov006_SetPos(self->unk10, 0, 0x19, -0x199a);
+    ov006_SetSlide(self->unk10, -0x100, 0, 0);
     self->unk10->flags |= 0x400000;
     self->unk10->flags &= ~0x800000;
     self->unk10->unkC0 = 0x8c;
@@ -277,8 +277,8 @@ void func_ov006_021da208(ov006_Task021da208 *self) {
     func_ov000_021c5678(self->unk14, MsgRes_GetString(res, 0x3e));
     self->unk14->unk24 = 0xf8;
     self->unk14->unk20 = 4;
-    ov006_SetRot(self->unk14, 2, 0x3b, -0x199a);
-    ov006_SetPos(self->unk14, -0x100, 0, 0);
+    ov006_SetPos(self->unk14, 2, 0x3b, -0x199a);
+    ov006_SetSlide(self->unk14, -0x100, 0, 0);
     if (data_ov006_021ec860->unk1C) {
         const ov006_Price021da208 *p = &data_ov006_021eb7e4;
         ov006_Entry021da208 *e = ov006_NewEntry();
@@ -307,15 +307,15 @@ void func_ov006_021da208(ov006_Task021da208 *self) {
     self->unk14->flags &= ~2;
 
     self->unk18 = ov006_NewWindow_cae48();
-    ov006_SetRot(self->unk18, 0x92, 0x86, -0x199a);
-    ov006_SetPos(self->unk18, 0x100, 0, 0);
+    ov006_SetPos(self->unk18, 0x92, 0x86, -0x199a);
+    ov006_SetSlide(self->unk18, 0x100, 0, 0);
     self->unk18->slideMode = 1;
     VCALL(self->unk18, 08);
     func_ov000_0215d980(self->unk18, self->unk38, 1);
 
     self->unk1C = ov006_NewWindow_cae48();
-    ov006_SetRot(self->unk1C, 0x92, 0x96, -0x199a);
-    ov006_SetPos(self->unk1C, 0x100, 0, 0);
+    ov006_SetPos(self->unk1C, 0x92, 0x96, -0x199a);
+    ov006_SetSlide(self->unk1C, 0x100, 0, 0);
     self->unk1C->slideMode = 1;
     VCALL(self->unk1C, 08);
     func_ov000_0215d980(self->unk1C, *(s32 *)((u8 *)data_0214a424 + 0x20), 1);
@@ -325,7 +325,7 @@ void func_ov006_021da208(ov006_Task021da208 *self) {
     self->unk20->slideMode = 1;
     self->unk20->flags |= 0x20000000;
     self->unk20->flags |= 0x80000000;
-    ov006_SetPos(self->unk20, 0x100, 0, -0xcd);
+    ov006_SetSlide(self->unk20, 0x100, 0, -0xcd);
     VCALL(self->unk20, f4, 1, MsgRes_GetString(res, 0x36));
     VCALL(self->unk20, 08);
     self->unk20->flags |= 2;

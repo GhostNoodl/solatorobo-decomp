@@ -234,7 +234,7 @@ ResHandle *func_02034ec0(void *arc, const char *name);
 BOOL func_0203ed04(const char *name, void *data);
 void *func_0203ebf8(void);
 ResHandle *func_02034ff8(void *arc, const char *name);
-ResHandle *func_02034c34(void *arc, const char *name, const char *ext);
+ResHandle *ResList_FindPath(void *arc, const char *name, const char *ext);
 void func_02039494(void *a);
 void func_020359fc(const char *name, const char *ext, s32 type, s32 d);
 BOOL func_02035bd4(const char *name, const char *ext, s32 type);
@@ -296,10 +296,10 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
                 self->entries[1].handle = func_02034ff8(arc, self->entries[0].ext);
             }
             if (self->owned_4) {
-                self->entries[3].handle = func_02034c34(arc, self->entries[0].ext, data_ov000_021cc424);
+                self->entries[3].handle = ResList_FindPath(arc, self->entries[0].ext, data_ov000_021cc424);
             }
             if (self->owned_3) {
-                self->entries[2].handle = func_02034c34(arc, self->entries[0].ext, data_ov000_021cc41d);
+                self->entries[2].handle = ResList_FindPath(arc, self->entries[0].ext, data_ov000_021cc41d);
             }
             self->unk_00++;
             again = TRUE;

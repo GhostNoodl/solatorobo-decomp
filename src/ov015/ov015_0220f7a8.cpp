@@ -409,7 +409,7 @@ s32 func_0204c08c(void *p, u16 id, void *buf, s32 n);
 void *func_02035de0(void *a, void *b);
 void func_0204c7d0(void *p);
 void *MsgRes_GetString(void *a, s32 b);
-s32 func_0204c4fc(s32 a, s32 b, void *c, void *d, void *e, BOOL f);
+s32 Text_Measure(s32 a, s32 b, void *c, void *d, void *e, BOOL f);
 void func_0204ca70(void *p);
 void func_ov015_02208544(Ov015UiText *self);
 s32 func_0204c2f4(void *p, s32 n, void *src);
@@ -422,13 +422,13 @@ struct Ov015Bits10314 {
     u32 rest : 19;
 };
 
-static inline void Ov015T_SetXYZ16(Ov015Ui *o, s16 x, s16 y, s16 z) {
+static inline void Ov015T_SetPos(Ov015Ui *o, s16 x, s16 y, s16 z) {
     o->posX = x;
     o->posY = y;
     o->posZ = z;
 }
 
-static inline void Ov015T_SetXYZ32(Ov015Ui *o, s32 x, s32 y, s32 z) {
+static inline void Ov015T_SetSlide(Ov015Ui *o, s32 x, s32 y, s32 z) {
     o->slideX = x;
     o->slideY = y;
     o->slideZ = z;
@@ -462,7 +462,7 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
         void *t = MsgRes_GetString(data_02149ef8, 0x118);
         p = self->textWin;
         FLD(void *, p, 0x24) = t;
-        FLD(s32, p, 0x4c) = func_0204c4fc(FLD(s32, p, 0x28), FLD(s32, p, 0x38), FLD(void *, p, 0x24), p + 0x44, p + 0x48,
+        FLD(s32, p, 0x4c) = Text_Measure(FLD(s32, p, 0x28), FLD(s32, p, 0x38), FLD(void *, p, 0x24), p + 0x44, p + 0x48,
                                           FLD(s8, p, 0x37) != 0);
         FLD(s32, data_02097ce0, 0x4) = FLD(s32, p, 0x28);
     }
@@ -485,11 +485,11 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
     }
     FLD(u8 *, self, 0x28) = p;
     FLD(s32, p, 0x24) = 0xf8;
-    Ov015T_SetXYZ32(self->label, -0x100, 0, -0xccd);
+    Ov015T_SetSlide(self->label, -0x100, 0, -0xccd);
     self->label->slideMode = 1;
     self->label->flags |= 0x80000;
     self->label->rows = 3;
-    Ov015T_SetXYZ16(self->label, 4, 0x86, -0xccd);
+    Ov015T_SetPos(self->label, 4, 0x86, -0xccd);
     VCALL(self->label)->v08();
     p = (u8 *)Heap_Alloc(0xb4);
     if (p != NULL) {
@@ -499,8 +499,8 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
         func_ov015_02208544((Ov015UiText *)p);
     }
     self->textBox = (Ov015UiText *)p;
-    Ov015T_SetXYZ16((Ov015Ui *)p, 0, 0x7b, -0x99a);
-    Ov015T_SetXYZ32(self->textBox, -0x100, 0, -0x99a);
+    Ov015T_SetPos((Ov015Ui *)p, 0, 0x7b, -0x99a);
+    Ov015T_SetSlide(self->textBox, -0x100, 0, -0x99a);
     self->textBox->slideMode = 1;
     self->textBox->flags &= ~0x10000;
     VCALL(self->textBox)->v08();

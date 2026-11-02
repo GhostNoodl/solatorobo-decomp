@@ -52,7 +52,7 @@ void func_ov009_021fd2b4(Ov009ActVt_02216750 *self) {
         d.y = path->end.y - self->pos.y;
         d.z = path->end.z - self->pos.z;
         VEC_MultAdd(0x7b, &d, &self->pos, &self->pos);
-        if (func_01ffc198(&self->pos, &path->end, self->unk_64 + 0x800)) {
+        if (Hit_DiffInSphere(&self->pos, &path->end, self->unk_64 + 0x800)) {
             Ov009Sub44 *s44 = self->unk_44;
             s44->unk_22_0 = 1;
             s44->unk_22_1 = 1;

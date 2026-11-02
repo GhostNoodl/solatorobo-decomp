@@ -150,7 +150,7 @@ void func_0204a0d4(SndMgr *mgr, u32 slot, s32 pan);
 
 BOOL func_0204a118(SndMgr *mgr, s32 id);
 
-void func_0204a160(SndMgr *mgr);
+void SndMgr_PauseAll(SndMgr *mgr);
 
 void SndMgr_ResumeAll(SndMgr *mgr);
 
@@ -332,7 +332,7 @@ BOOL func_0204a118(SndMgr *mgr, s32 id) {
     return ret;
 }
 
-void func_0204a160(SndMgr *mgr) {
+void SndMgr_PauseAll(SndMgr *mgr) {
     s32 i;
     SndHandle *handle;
     for (i = 0; i < 5; i++) {
@@ -454,8 +454,8 @@ extern void DC_StoreRange(const void *startAddr, u32 nBytes);
 extern void OS_Terminate(void);
 extern void OS_Sleep(u32 msec);
 extern BOOL OS_IsRunOnTwl(void);
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 extern char data_0208b6e0[];
 /* TWL only */
 extern void func_0228ee0c(u32 a, u32 b);
@@ -497,7 +497,7 @@ BOOL func_0204a598(SndMgr *mgr) {
         return FALSE;
     }
     SndMgr_TwlOpen();
-    mgr->fileBuf = (s32)func_0203de84(0x10000, 4);
+    mgr->fileBuf = (s32)Heap_AllocHi(0x10000, 4);
     result = 4;
     if (OS_IsRunOnTwl() == TRUE) {
         result = func_0221d814(&status);
@@ -525,12 +525,12 @@ BOOL func_0204a598(SndMgr *mgr) {
     return TRUE;
 }
 
-void func_0204a734(SndMgr *mgr) {
+void SndMgr_FreeFileBuf(SndMgr *mgr) {
     if (OS_IsRunOnTwl()) {
         func_0221dfa0();
     }
     if (mgr->fileBuf != 0) {
-        func_0203df0c((void *)mgr->fileBuf);
+        Heap_FreeHi((void *)mgr->fileBuf);
         mgr->fileBuf = 0;
     }
 }
@@ -578,7 +578,7 @@ extern "C" {
 #define SND_MGR data_02097e4c
 
 extern void *Heap_Alloc(u32 size);
-extern void *func_0203dec8(u32 size, int align);
+extern void *Heap_AllocLo(u32 size, int align);
 extern SndMgr *func_020492e0(SndMgr *mgr);
 extern void func_02049344(SndMgr *mgr);
 void func_0204a924(SndQueue *queue);
@@ -597,7 +597,7 @@ void func_0204a87c(void) {
         func_02049344(SND_MGR);
     }
     if (SND_QUEUE == NULL) {
-        SND_QUEUE = (SndQueue *)func_0203dec8(sizeof(SndQueue), 4);
+        SND_QUEUE = (SndQueue *)Heap_AllocLo(sizeof(SndQueue), 4);
         func_0204a924(SND_QUEUE);
     }
 }
@@ -637,7 +637,7 @@ void func_0204aad0(SndQueue *queue);
 
 void func_0204aaec(SndQueue *queue, SndCmd *cmd);
 
-void func_0204ab54(SndQueue *queue);
+void SndQueue_StopSeqArcs(SndQueue *queue);
 
 }
 
@@ -660,7 +660,7 @@ extern "C" {
 
 
 extern void *Heap_Alloc(u32 size);
-extern void *func_0203dec8(u32 size, int align);
+extern void *Heap_AllocLo(u32 size, int align);
 extern void *func_020492e0(SndMgr *mgr);
 extern void func_02049344(SndMgr *mgr);
 
@@ -750,7 +750,7 @@ void func_0204aaec(SndQueue *queue, SndCmd *cmd) {
     func_0204a3b8(SND_MGR, cmd);
 }
 
-void func_0204ab54(SndQueue *queue) {
+void SndQueue_StopSeqArcs(SndQueue *queue) {
     s32 i;
     SndMgr *mgr = SND_MGR;
     for (i = 0; i < 5; i++) {

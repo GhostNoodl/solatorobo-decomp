@@ -51,7 +51,7 @@ void func_ov000_0219c8e0(u8 *self);
 void func_ov000_02198c8c(void *o, u16 id);
 void func_0203f364(void *o);
 void *func_ov000_021984c8(void *p);
-void *func_ov000_02198328(void *p);
+void *History_Init(void *p);
 void func_ov000_021bd198(void *p);
 BOOL func_ov000_021bd314(void *p, s32 a);
 void func_02062764(s32 a, s32 b);
@@ -67,7 +67,7 @@ static inline void *NewObj44_0219d1a8(void) {
 static inline void *NewObj40_0219d1a8(void) {
     void *p = Heap_Alloc(0x14);
     if (p != NULL) {
-        p = func_ov000_02198328(p);
+        p = History_Init(p);
     }
     return p;
 }

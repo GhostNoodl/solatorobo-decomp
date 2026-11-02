@@ -110,7 +110,7 @@ typedef struct {
 extern const Ov003Route data_ov003_021f484c[];
 extern u16 FX_Atan2(s32 x, s32 z);
 extern void VEC_MultAdd(s32 scale, const Ov003Pos *dir, const Ov003Pos *base, Ov003Pos *out);
-extern BOOL func_01ffc198(Ov003Pos *a, Ov003Pos *b, s32 r);
+extern BOOL Hit_DiffInSphere(Ov003Pos *a, Ov003Pos *b, s32 r);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
 
 void func_ov003_021d6e04(Ov003Act *self) {
@@ -148,7 +148,7 @@ void func_ov003_021d6e04(Ov003Act *self) {
         d.y = t.y - self->pos.y;
         d.z = t.z - self->pos.z;
         VEC_MultAdd(0xcd, &d, &self->pos, &self->pos);
-        if (!func_01ffc198(&self->pos, &t, self->unk_64 + 0x800)) {
+        if (!Hit_DiffInSphere(&self->pos, &t, self->unk_64 + 0x800)) {
             return;
         }
         r = &data_ov003_021f484c[self->unk_1a - 1];
@@ -180,7 +180,7 @@ void func_ov003_021d6e04(Ov003Act *self) {
         d2.y = t.y - self->pos.y;
         d2.z = t.z - self->pos.z;
         VEC_MultAdd(0xcd, &d2, &self->pos, &self->pos);
-        if (!func_01ffc198(&self->pos, &t, self->unk_64 + 0x800)) {
+        if (!Hit_DiffInSphere(&self->pos, &t, self->unk_64 + 0x800)) {
             return;
         }
         s = self->unk_44;
@@ -259,7 +259,7 @@ extern void func_0203f364(Ov003Ctl *ctl);
 extern void *func_ov000_0219b71c(Ov003Pos *pos, Ov003Pos *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
-extern void func_020639d4(Ov003Eff *e, s32 a, s32 b);
+extern void EffectObj_AddSndCue(Ov003Eff *e, s32 a, s32 b);
 extern void *func_020657b0(void *mgr, void *handle);
 extern void func_ov003_021d6a3c(Ov003Act *self, s32 a, s32 b, s32 c);
 extern void func_ov003_021d6954(Ov003Act *self, u8 a);
@@ -306,7 +306,7 @@ void func_ov003_021d73dc(Ov003Act *self) {
         e->SetRot(0, self->unk_6c, 0);
         e->SetSize(0x1800);
         MIi_CpuClear32(-1, (u8 *)e + 0x84, 0x40);
-        func_020639d4(e, 0x42, 5);
+        EffectObj_AddSndCue(e, 0x42, 5);
         self->unk_f0 = e->unk_24;
         self->work->timer = 0;
         self->work->state++;

@@ -208,7 +208,7 @@ void func_ov003_021d7c08(void *p, VecFx32 *v);
 VecFx32 *Ov003Mover_GetDir(void *p);
 u16 Ov003Vec_Pitch(VecFx32 *v);
 u16 Ov003Vec_Yaw(VecFx32 *v);
-BOOL func_ov003_021d7a44(void *p, VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e);
+BOOL Ov003Mover_Start(void *p, VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e);
 void func_ov011_022011fc(void *a, s32 b);
 void func_ov011_022011c8(void *a, s32 b);
 void func_ov011_02201214(void *a, void *b);
@@ -453,7 +453,7 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
             pp.y = pl->pos.y;
             pp.z = pl->pos.z;
             found->b0 = 1;
-            func_ov003_021d7a44(&found->obj, &pp, &c, 0x14, 0x11f, 1);
+            Ov003Mover_Start(&found->obj, &pp, &c, 0x14, 0x11f, 1);
             self->state = 3;
             func_02049f44(data_02097e4c, 0x35, &c, 0);
         }

@@ -16,9 +16,9 @@ void *func_0205976c(void *a, s32 b);
 u32 func_0205975c(void *a, s32 b);
 u32 func_ov000_0214bf2c(u16 a);
 u16 func_02059544(void *a, void *b, void *c, s32 d, s32 e);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 void func_0204c7d0(void *p);
-void *func_ov000_02173610(s32 kind);
+void *Task_FindById(s32 kind);
 Robo021ca458 *func_ov000_0219bf90(void);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
@@ -39,7 +39,7 @@ typedef struct {
 
 static inline BOOL LoIsLoaded24(void) {
     BOOL r = TRUE;
-    if (!func_0205a9c8(LFLD(void *, data_ov000_021ccd24, 8))) {
+    if (!StageRes_IsAllLoaded(LFLD(void *, data_ov000_021ccd24, 8))) {
         r = FALSE;
     }
     return r;

@@ -88,7 +88,7 @@ void func_ov002_021d60dc(void *self) {
         if (a) {
             BOOL b = isState5(FIELD(self, 0x54, void *));
             if (b) {
-                void *x = func_ov000_02173610(0x1b);
+                void *x = Task_FindById(0x1b);
                 if (x != NULL) {
                     u8 buf[0x14];
                     func_ov000_021c95fc(buf);
@@ -130,7 +130,7 @@ void func_ov002_021d60dc(void *self) {
             func_ov000_0215bb14(FIELD(self, 0x54, void *), func_0206ec8c(id));
             FIELD(self, 0x54, VObject *)->v0x70();
         }
-        x = func_ov000_02173610(0x1b);
+        x = Task_FindById(0x1b);
         if (x != NULL && FIELD(x, 0x3c, void *) != NULL) {
             func_ov002_021e2690(FIELD(x, 0x3c, void *), 9, 0);
         }

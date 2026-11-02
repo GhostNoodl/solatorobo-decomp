@@ -7,7 +7,7 @@ extern "C" {
 extern Ov008Ce0 *data_02097ce0;
 extern void *data_ov000_021caec8;
 extern void *data_ov000_021cac60;
-void *func_0203a4c0(void *p);
+void *GfxMgr_GetFont(void *p);
 BOOL func_02054f10(void *a, int b);
 BOOL func_0203e63c(void *p);
 BOOL func_ov008_021d01b0(Ov008Menu *self);
@@ -58,14 +58,14 @@ s32 func_ov008_021d0014(Ov008Menu *self, s32 arg) {
     return self->unk_8c(self, arg);
 }
 
-s32 func_ov008_021d0030(Ov008Menu *self, s32 arg) {
+s32 Ov008Menu_OnCursor(Ov008Menu *self, s32 arg) {
     if (self->onCursor == NULL) {
         return TRUE;
     }
     return self->onCursor(self, arg);
 }
 
-s32 func_ov008_021d004c(Ov008Menu *self, s32 arg) {
+s32 Ov008Menu_OnDecide(Ov008Menu *self, s32 arg) {
     if (self->onDecide == NULL) {
         return TRUE;
     }

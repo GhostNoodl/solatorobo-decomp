@@ -7,7 +7,7 @@ extern void *data_02097e4c;
 extern u8 *data_02097d48;
 extern u8 data_ov014_02217aac[];
 extern char data_ov014_02217c6c[];
-extern void func_02065860(void *a, void *b);
+extern void EffectMgr_StopLoop(void *a, void *b);
 extern void func_ov000_02195d88(void *self);
 extern void func_ov000_0219763c(void *self);
 extern Ov014Actor *Target_Get(void *p);

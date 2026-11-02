@@ -110,7 +110,7 @@ BOOL Ov015FishState40_Enter(Ov015FishState40 *self, Ov015Fish *p) {
 BOOL func_ov015_0220d7d0(Ov015FishState40 *self, Ov015Vec *out, Ov015Vec *pos);
 void func_ov015_0220d328(Ov015FishState40 *self, Ov015Fish *o);
 void func_ov015_0220d578(Ov015FishState40 *self, Ov015Fish *o);
-u8 *func_02066774(void *a, void *b, int c, void *d);
+u8 *Effect3D_Create(void *a, void *b, int c, void *d);
 extern u8 data_ov015_02212e20[];
 extern u8 data_ov015_02212e34[];
 
@@ -263,7 +263,7 @@ clamp:
         VEC_Normalize((VecFx32 *)(&self->unk_1c), (VecFx32 *)(&p->dir));
         e = func_020657b0(data_0214a420, self->unk_08);
         if (e == NULL) {
-            e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, &p->pos);
+            e = (Ov015V *)Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &p->pos);
             FLD(s32, e, 0xd4) = 3;
             FLD(u8, e, 0x28) = 0;
             FLD(s32, e, 0xc8) = -1;

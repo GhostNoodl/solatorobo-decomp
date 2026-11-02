@@ -80,7 +80,7 @@ extern ov006_Anim021eb824 data_ov006_021eb824[];
 extern u8 data_ov006_021ec2fc[];
 extern u8 data_ov006_021ec25c[];
 extern u8 data_0208b318[];
-void func_0204ca14(void *p, int a);
+void TextWin_InitLines(void *p, int a);
 
 static inline Model *ov006_NewModel021e16b0(void) {
     Model *model = (Model *)Heap_Alloc(sizeof(Model));
@@ -107,9 +107,9 @@ static inline void ov006_Sub021e16b0_Reset(ov006_Sub021e16b0 *s, const char *str
     s->txt->unk34 = 0;
     t = s->txt;
     t->unk24 = p;
-    t->unk4C = func_0204c4fc(t->unk28, t->unk38, (u32)t->unk24, (u32 *)t->unk44, (u32 *)t->unk48, t->unk37 != 0);
+    t->unk4C = Text_Measure(t->unk28, t->unk38, (u32)t->unk24, (u32 *)t->unk44, (u32 *)t->unk48, t->unk37 != 0);
     data_02097ce0->unk_004 = t->unk28;
-    func_0204ca14(s->txt, 0x10);
+    TextWin_InitLines(s->txt, 0x10);
     s->txt->flags |= 4;
 }
 

@@ -2,13 +2,13 @@
 
 extern "C" {
 
-extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 msg);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern Ov009Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 
 void func_ov009_021facf0(Ov009ActVt_02216a00 *self) {
     if (self->unk_40->state == 0) {
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x5401, 0x15);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x541f, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5401, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x541f, 0x15);
         self->unk_ea_10 = 1;
     }
     func_ov003_021d6054(self);

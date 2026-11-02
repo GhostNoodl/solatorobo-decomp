@@ -23,9 +23,9 @@ typedef struct HitVolume {
 
 extern "C" {
 
-BOOL func_01ffc2a4(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max);
+BOOL Hit_DiffInBox(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max);
 
-BOOL func_01ffc828(VecFx32 *aMin, VecFx32 *aMax, VecFx32 *bMin, VecFx32 *bMax) {
+BOOL HitAabb_Overlap(VecFx32 *aMin, VecFx32 *aMax, VecFx32 *bMin, VecFx32 *bMax) {
     if (aMin->x > bMax->x || aMax->x < bMin->x || aMin->y > bMax->y || aMax->y < bMin->y || aMin->z > bMax->z ||
         aMax->z < bMin->z) {
         return FALSE;
@@ -41,7 +41,7 @@ BOOL func_01ffc89c(HitVolume *vol, HitSegment *seg) {
     u16 diff;
     fx32 scale;
 
-    if (!func_01ffc2a4(&seg->from, &seg->to, &vol->min, &vol->max)) {
+    if (!Hit_DiffInBox(&seg->from, &seg->to, &vol->min, &vol->max)) {
         return FALSE;
     }
     if (!vol->useRange) {

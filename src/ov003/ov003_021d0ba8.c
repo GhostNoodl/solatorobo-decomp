@@ -87,7 +87,7 @@ extern Ov003ResInfo *func_0206fef8(u16 id);
 extern Ov003ResParam *func_02070558(u16 id);
 extern char *func_0207011c(u16 id);
 extern char *func_020701d4(u16 id);
-extern char *func_0207005c(u16 id, s32 n);
+extern char *Tbl_GetEntryData(u16 id, s32 n);
 extern void func_ov000_0218f074(Ov003Res *p, char *res, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov003_021d0a2c(Ov003Res *res, u16 id) {
@@ -115,8 +115,8 @@ void func_ov003_021d0a2c(Ov003Res *res, u16 id) {
     } else {
         func_ov000_0218f074(res, name, info->flags.bit0 != 0, info->flags.bit1 != 0, 0, 0);
     }
-    a = func_0207005c(id, 0);
-    b = func_0207005c(id, 1);
+    a = Tbl_GetEntryData(id, 0);
+    b = Tbl_GetEntryData(id, 1);
     if (a != NULL && b != NULL) {
         STD_CopyString(res->unk_100, a);
         STD_CopyString(res->unk_120, b);
@@ -192,8 +192,8 @@ extern Ov003HeapCtx *data_02097dd0;
 extern void *data_0214a420;
 extern void *func_ov000_0218fee4(void *p);
 extern void Heap_Free(void *p);
-extern void func_0203df0c(void *p);
-extern void func_02065804(void *mgr, void *p);
+extern void Heap_FreeHi(void *p);
+extern void EffectMgr_Kill(void *mgr, void *p);
 extern void *func_ov000_0218c928(Ov003Obj *self);
 
 static inline void Ov003Obj_DtorBody(Ov003Obj *self) {
@@ -214,14 +214,14 @@ static inline void Ov003Obj_DtorBody(Ov003Obj *self) {
             }
             data_02097dd0->cur = old;
         }
-        func_0203df0c(self->unk_d0);
+        Heap_FreeHi(self->unk_d0);
     }
     if (self->unk_e4 != NULL) {
-        func_02065804(data_0214a420, self->unk_e4);
+        EffectMgr_Kill(data_0214a420, self->unk_e4);
         self->unk_e4 = NULL;
     }
     if (self->unk_e0 != NULL) {
-        func_02065804(data_0214a420, self->unk_e0);
+        EffectMgr_Kill(data_0214a420, self->unk_e0);
         self->unk_e0 = NULL;
     }
     func_ov000_0218c928(self);
@@ -291,8 +291,8 @@ typedef struct {
 extern void *Heap_Alloc(u32 size);
 extern void *func_ov000_0218e9c4(void *p);
 extern Ov003InitShadow *func_ov000_021919c8(void *p);
-extern void func_ov000_02191b70(Ov003InitShadow *p);
-extern void *func_ov000_02198328(void *p);
+extern void Shadow_Load(Ov003InitShadow *p);
+extern void *History_Init(void *p);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 static inline void Ov003Shadow_Push(Ov003InitShadow *s, u8 v) {
@@ -325,11 +325,11 @@ void func_ov003_021d0fc0(Ov003ObjInit *self) {
         } else {
             Ov003Shadow_Push(s, 0);
         }
-        func_ov000_02191b70(self->unk_3c);
+        Shadow_Load(self->unk_3c);
     }
     p = Heap_Alloc(0x14);
     if (p != NULL) {
-        p = func_ov000_02198328(p);
+        p = History_Init(p);
     }
     self->unk_40 = p;
     if (self->unk_b0->unk_0a_13) {

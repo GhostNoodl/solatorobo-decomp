@@ -39,7 +39,7 @@ extern const Ov013Vec data_ov013_0220ae7c;
 extern Ov013Actor *func_ov000_0219bf90(void);
 extern Ov013Actor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(Ov013Actor *a, u16 id);
-extern Ov013Vec func_ov003_021dadc0(const Ov013Vec *a, const Ov013Vec *b);
+extern Ov013Vec Ov003Vec_DirXZ(const Ov013Vec *a, const Ov013Vec *b);
 extern void Actor_TurnToPos(Ov013Actor *self, Ov013Vec *p, s32 a);
 extern void Actor_MoveToPos(Ov013Actor *self, Ov013Vec *v, s32 a);
 extern void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
@@ -48,7 +48,7 @@ extern s32 Rand_Fx(void);
 extern u32 Rand_Get(void);
 extern void HitSphere_Link(Ov013Sub48 *p);
 extern void func_0203f364(Ov013Sub48 *p);
-extern BOOL func_01ffc584(Ov013Vec *a, Ov013Vec *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(Ov013Vec *a, Ov013Vec *b, s32 r, s32 h);
 extern Ov013Actor *Group_SpawnActor(void *mgr, Ov013SpawnDesc *d, Ov013Vec *pos, u16 *rot, u16 a);
 extern void func_ov000_0218a358(void *a, const Ov013Vec *b, Ov013Rot16 *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 }
@@ -162,7 +162,7 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
                     prev = &POLE(self, i - 1)->v;
                     cur = &POLE(self, i)->v;
                     if (Ov013_DistXZ(prev, cur) < 0x1800) {
-                        Ov013Vec dir = func_ov003_021dadc0(prev, cur);
+                        Ov013Vec dir = Ov003Vec_DirXZ(prev, cur);
                         VEC_MultAdd(0x2000, &dir, prev, cur);
                     }
                 }
@@ -307,7 +307,7 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
         if (self->pos.y > 0x3000) {
             shake = TRUE;
         }
-        if (func_01ffc584(&self->pos, &v_1, self->unk_9c, 0x5000)) {
+        if (Hit_DiffInCylinder(&self->pos, &v_1, self->unk_9c, 0x5000)) {
             self->pos.x = v_1.x;
             self->pos.z = v_1.z;
             self->rot[1] = func_01ffc128(0, self->rot[1], self->unk_b0->unk_02, 1, 0x8000);

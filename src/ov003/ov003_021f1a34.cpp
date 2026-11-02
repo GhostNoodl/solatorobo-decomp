@@ -132,7 +132,7 @@ extern Ov003PdMsg *data_ov000_021ccd30;
 extern void *data_ov000_021ccd64;
 extern void *func_ov000_0216f674(Ov003PdMsg *mgr, s32 id);
 extern BOOL func_ov000_021700c4(void *p);
-extern void *func_ov000_02173610(s32 id);
+extern void *Task_FindById(s32 id);
 extern Ov003PdPlr *func_ov000_0219bf90(void);
 extern void func_ov000_021bd624(Ov003PdIcon *p);
 extern BOOL func_ov000_021bd314(Ov003PdIcon *p, s32 id);
@@ -164,7 +164,7 @@ void func_ov003_021f1b1c(Ov003Pd *self) {
         Ov003PdSub44 *s;
         self->unk_5c->flags &= ~2;
         s = self->unk_44;
-        if (s != NULL && s->unk_22_0 == 1 && s->unk_22_1 == 1 && !Ov003_MsgBusy() && func_ov000_02173610(7) == NULL) {
+        if (s != NULL && s->unk_22_0 == 1 && s->unk_22_1 == 1 && !Ov003_MsgBusy() && Task_FindById(7) == NULL) {
             Ov003PdPlr *p = func_ov000_0219bf90();
             if (p != NULL && p->unk_90 == self->unk_0c) {
                 show = FALSE;

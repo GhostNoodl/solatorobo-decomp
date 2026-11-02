@@ -15,7 +15,7 @@ BOOL func_01ffc4ec(VecFx32 *p, fx32 r, fx32 h) {
     return ret;
 }
 
-BOOL func_01ffc584(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h) {
+BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h) {
     VecFx32 d;
     BOOL ret = FALSE;
 

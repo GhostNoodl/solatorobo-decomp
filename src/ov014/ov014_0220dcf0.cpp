@@ -17,7 +17,7 @@ extern u8 data_ov014_02217b44[];
 extern void *ActorEx_Ctor(void *self);
 extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02194c08(void *self);
-extern void func_02065804(void *a, void *b);
+extern void EffectMgr_Kill(void *a, void *b);
 extern void func_0203f364(Ov014Sub48 *p);
 extern void func_ov000_02191690(void *p);
 extern void func_ov000_02191618(void *p);
@@ -40,14 +40,14 @@ Ov014ActEx_0220dcf4 *Ov014ActEx_0220dcf4_Ctor(Ov014ActEx_0220dcf4 *self) {
 
 Ov014ActEx_0220dcf4 *Ov014ActEx_0220dcf4_Dtor(Ov014ActEx_0220dcf4 *self) {
     FLD(void *, self, 0) = data_ov014_02217b44;
-    func_02065804(data_0214a420, self->unk_d0);
+    EffectMgr_Kill(data_0214a420, self->unk_d0);
     func_ov000_0219429c(self);
     return self;
 }
 
 Ov014ActEx_0220dcf4 *Ov014ActEx_0220dcf4_DtorDelete(Ov014ActEx_0220dcf4 *self) {
     FLD(void *, self, 0) = data_ov014_02217b44;
-    func_02065804(data_0214a420, self->unk_d0);
+    EffectMgr_Kill(data_0214a420, self->unk_d0);
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;
@@ -80,9 +80,9 @@ extern void *func_02049f44(void *mgr, s32 id, Ov014Vec *pos, s32 a);
 extern Ov014V *func_020657b0(void *a, void *b);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_02040578(u16 *ang, Ov014Vec *v);
+extern void Math_DirToAngles(u16 *ang, Ov014Vec *v);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
-extern void func_02065860(void *a, void *b);
+extern void EffectMgr_StopLoop(void *a, void *b);
 extern void *Target_Get(void *p);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, Ov014Vec *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern void func_ov000_02191708(void *p);
@@ -163,7 +163,7 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
         if (st->timer != 0) {
             return;
         }
-        func_02065804(data_0214a420, self->unk_d0);
+        EffectMgr_Kill(data_0214a420, self->unk_d0);
         self->unk_d0 = NULL;
         self->unk_40->state = 10;
         self->unk_40->timer = 0x1e;
@@ -218,7 +218,7 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
         e = func_020657b0(data_0214a420, self->unk_d0);
         if (e != NULL) {
             e->v18(&self->pos);
-            func_02040578(ang, &n);
+            Math_DirToAngles(ang, &n);
             e->v30(ang);
         }
         if (self->pos.y < 0x5000 && oldy >= 0x5000) {
@@ -232,7 +232,7 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
         func_ov000_0218996c(0x14, 0x14);
         func_02065f88(5, &self->pos)->v0c(0x4000);
         func_02049f44(data_02097e4c, 0x19, &self->pos, 0);
-        func_02065860(data_0214a420, self->unk_d0);
+        EffectMgr_StopLoop(data_0214a420, self->unk_d0);
         self->unk_d0 = NULL;
         if (self->unk_d4 == 0) {
             Ov014Sub44 *q4;

@@ -10,7 +10,7 @@ static inline void Ov015Anim_SetA(Ov015Anim *n, const char *a, const char *b) {
     n->ownMdl = 1;
 }
 
-static inline void Ov015Anim_SetB(Ov015Anim *n, const char *a, const char *b) {
+static inline void Ov015Anim_SetAnm(Ov015Anim *n, const char *a, const char *b) {
     STD_CopyString(n->anmDir, a);
     STD_CopyString(n->anmName, b);
     n->ownAnm = 1;
@@ -30,7 +30,7 @@ BOOL func_ov015_0220df48(u8 *self) {
             Ov015Anim_SetA(n1, a, FLD(char *, self, 0x514));
             const char *d = data_ov015_02212def;
             if (d) {
-                Ov015Anim_SetB(n1, a, d);
+                Ov015Anim_SetAnm(n1, a, d);
             }
         }
     }
@@ -38,7 +38,7 @@ BOOL func_ov015_0220df48(u8 *self) {
         const char *a = data_ov015_02212df5;
         if (a) {
             Ov015Anim_SetA(n2, a, FLD(char *, self, 0x510));
-            Ov015Anim_SetB(n2, a, data_ov015_02212db0[3]);
+            Ov015Anim_SetAnm(n2, a, data_ov015_02212db0[3]);
         }
     }
     n1->unk_00 = 0;

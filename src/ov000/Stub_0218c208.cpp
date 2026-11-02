@@ -12,7 +12,7 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_0218c208(Obj0218c208 *self, const VecFx32 *v, u16 id) {
+void Obj0218c208_AddPoint(Obj0218c208 *self, const VecFx32 *v, u16 id) {
     if (self->count >= 4) {
         return;
     }

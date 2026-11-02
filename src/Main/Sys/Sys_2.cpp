@@ -170,27 +170,27 @@ void Heap_FreeArray(void *ptr) {
     OS_RestoreInterrupts(irq);
 }
 
-void *func_0203de84(u32 size, u32 align) {
+void *Heap_AllocHi(u32 size, u32 align) {
     u32 irq = OS_DisableInterrupts();
     void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->heapHi, size, align);
     OS_RestoreInterrupts(irq);
     return p;
 }
 
-void *func_0203dec8(u32 size, u32 align) {
+void *Heap_AllocLo(u32 size, u32 align) {
     u32 irq = OS_DisableInterrupts();
     void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->heapLo, size, align);
     OS_RestoreInterrupts(irq);
     return p;
 }
 
-void func_0203df0c(void *ptr) {
+void Heap_FreeHi(void *ptr) {
     u32 irq = OS_DisableInterrupts();
     NNS_FndFreeToExpHeap(data_02097dd0->heapHi, ptr);
     OS_RestoreInterrupts(irq);
 }
 
-void func_0203df40(void *ptr) {
+void Heap_FreeLo(void *ptr) {
     u32 irq = OS_DisableInterrupts();
     NNS_FndFreeToExpHeap(data_02097dd0->heapLo, ptr);
     OS_RestoreInterrupts(irq);

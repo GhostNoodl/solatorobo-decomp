@@ -169,12 +169,12 @@ extern "C" {
 extern u8 data_ov000_021cb920[];
 extern u8 data_ov000_021cb6d0[];
 extern u8 data_ov000_021cb9b0[];
-void func_0203df0c(void *p);
+void Heap_FreeHi(void *p);
 
 static inline void LoListBufferDtor(ListBuffer *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb6d0);
     if ((self->flags & 0x20) && self->unk_0c != 0) {
-        func_0203df0c((void *)self->unk_0c);
+        Heap_FreeHi((void *)self->unk_0c);
     }
     self->flags = 0;
     self->priority = 0;
@@ -298,12 +298,12 @@ extern "C" {
 extern u8 data_ov000_021cb920[];
 extern u8 data_ov000_021cb6d0[];
 extern u8 data_ov000_021cb9b0[];
-void func_0203df0c(void *p);
+void Heap_FreeHi(void *p);
 
 static inline void LoListBufferDtor(ListBuffer *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb6d0);
     if ((self->flags & 0x20) && self->unk_0c != 0) {
-        func_0203df0c((void *)self->unk_0c);
+        Heap_FreeHi((void *)self->unk_0c);
     }
     self->flags = 0;
     self->priority = 0;
@@ -560,7 +560,7 @@ bool func_ov000_021735e8(void) {
     return TaskList_HasTasks();
 }
 
-Task *func_ov000_02173610(s32 id) {
+Task *Task_FindById(s32 id) {
     Task *task;
     for (task = (Task *)data_ov000_021ccd3c; task != NULL; task = task->next) {
         if (task->id == id) {
@@ -838,7 +838,7 @@ extern Task02173a5c *(*const data_ov000_021c9c6c[])(void);
 extern void *data_02097e4c;
 extern Player02173a5c *data_ov000_021ccd54;
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
-void func_0204a160(void *a);
+void SndMgr_PauseAll(void *a);
 void SndMgr_ResumeAll(void *a);
 void func_02043b20(void *p);
 
@@ -875,7 +875,7 @@ void func_ov000_02173a5c(Obj02173a5c *self) {
     switch (self->state) {
     case 8:
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
-        func_0204a160(data_02097e4c);
+        SndMgr_PauseAll(data_02097e4c);
         break;
     case 10:
         self->unk_3c = -0xcd;
@@ -1526,7 +1526,7 @@ void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, u32 b);
 void func_02041c5c(void *model, int fn);
 void func_0204c7d0(void *p);
-s32 func_0204c4fc(s32 a, s32 b, const char *c, s32 *d, s32 *e, bool f);
+s32 Text_Measure(s32 a, s32 b, const char *c, s32 *d, s32 *e, bool f);
 void func_0204ca70(void *p);
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_ov000_021742b4(Obj021742b4 *self);
@@ -1547,7 +1547,7 @@ static inline void InitWin021743bc(u8 *p, void *s) {
     ((VObj *)p)->vfunc_08();
     LFLD(void *, p, 0x24) = s;
     LFLD(s32, p, 0x28) = 4;
-    LFLD(s32, p, 0x4c) = func_0204c4fc(LFLD(s32, p, 0x28), LFLD(s32, p, 0x38), LFLD(const char *, p, 0x24), (s32 *)(p + 0x44), (s32 *)(p + 0x48), LFLD(s8, p, 0x37) != 0);
+    LFLD(s32, p, 0x4c) = Text_Measure(LFLD(s32, p, 0x28), LFLD(s32, p, 0x38), LFLD(const char *, p, 0x24), (s32 *)(p + 0x44), (s32 *)(p + 0x48), LFLD(s8, p, 0x37) != 0);
     LFLD(s32, data_02097ce0, 0x4) = LFLD(s32, p, 0x28);
     LFLD(u32, p, 0x4) |= 0x40;
     LFLD(u32, p, 0x4) |= 0x41000000;
@@ -2128,7 +2128,7 @@ extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 func_0206ec48(void *p);
 s32 func_0206f080(void *p);
@@ -2138,7 +2138,7 @@ typedef s32 (*LoCbFn)(void *self, s32 arg);
 
 static inline BOOL LoIsLoaded(void) {
     BOOL r = TRUE;
-    if (!func_0205a9c8(data_ov000_021ccd48)) {
+    if (!StageRes_IsAllLoaded(data_ov000_021ccd48)) {
         r = FALSE;
     }
     return r;
@@ -2211,7 +2211,7 @@ extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 func_0206ec48(void *p);
 s32 func_0206f080(void *p);
@@ -2221,7 +2221,7 @@ typedef s32 (*LoCbFn)(void *self, s32 arg);
 
 static inline BOOL LoIsLoaded(void) {
     BOOL r = TRUE;
-    if (!func_0205a9c8(data_ov000_021ccd48)) {
+    if (!StageRes_IsAllLoaded(data_ov000_021ccd48)) {
         r = FALSE;
     }
     return r;
@@ -2261,7 +2261,7 @@ extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 func_0206ec48(void *p);
 s32 func_0206f080(void *p);
@@ -2271,7 +2271,7 @@ typedef s32 (*LoCbFn)(void *self, s32 arg);
 
 static inline BOOL LoIsLoaded(void) {
     BOOL r = TRUE;
-    if (!func_0205a9c8(data_ov000_021ccd48)) {
+    if (!StageRes_IsAllLoaded(data_ov000_021ccd48)) {
         r = FALSE;
     }
     return r;
@@ -2364,7 +2364,7 @@ extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 func_0206ec48(void *p);
 s32 func_0206f080(void *p);
@@ -2374,7 +2374,7 @@ typedef s32 (*LoCbFn)(void *self, s32 arg);
 
 static inline BOOL LoIsLoaded(void) {
     BOOL r = TRUE;
-    if (!func_0205a9c8(data_ov000_021ccd48)) {
+    if (!StageRes_IsAllLoaded(data_ov000_021ccd48)) {
         r = FALSE;
     }
     return r;
@@ -2436,7 +2436,7 @@ extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 func_0206ec48(void *p);
 s32 func_0206f080(void *p);
@@ -2446,7 +2446,7 @@ typedef s32 (*LoCbFn)(void *self, s32 arg);
 
 static inline BOOL LoIsLoaded(void) {
     BOOL r = TRUE;
-    if (!func_0205a9c8(data_ov000_021ccd48)) {
+    if (!StageRes_IsAllLoaded(data_ov000_021ccd48)) {
         r = FALSE;
     }
     return r;
@@ -2496,7 +2496,7 @@ void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-u8 func_0206d1d4(void *a, u16 b);
+u8 StageFlags_CountEntries(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
@@ -2534,7 +2534,7 @@ extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 func_0206ec48(void *p);
 s32 func_0206f080(void *p);
@@ -2544,7 +2544,7 @@ typedef s32 (*LoCbFn)(void *self, s32 arg);
 
 static inline BOOL LoIsLoaded(void) {
     BOOL r = TRUE;
-    if (!func_0205a9c8(data_ov000_021ccd48)) {
+    if (!StageRes_IsAllLoaded(data_ov000_021ccd48)) {
         r = FALSE;
     }
     return r;
@@ -2568,12 +2568,12 @@ namespace m_Stub_02176538 {
 extern "C" {
 
 extern u8 data_02fe1534[];
-s32 func_0205a9c8(void *p);
+s32 StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
 
 BOOL func_ov000_02176538(void) {
     BOOL result = TRUE;
-    if (func_0205a9c8(data_ov000_021ccd48) == 0) {
+    if (StageRes_IsAllLoaded(data_ov000_021ccd48) == 0) {
         result = FALSE;
     }
     return result;
@@ -2618,7 +2618,7 @@ void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-u8 func_0206d1d4(void *a, u16 b);
+u8 StageFlags_CountEntries(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
@@ -2656,7 +2656,7 @@ extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 func_0206ec48(void *p);
 s32 func_0206f080(void *p);
@@ -2666,7 +2666,7 @@ typedef s32 (*LoCbFn)(void *self, s32 arg);
 
 static inline BOOL LoIsLoaded(void) {
     BOOL r = TRUE;
-    if (!func_0205a9c8(data_ov000_021ccd48)) {
+    if (!StageRes_IsAllLoaded(data_ov000_021ccd48)) {
         r = FALSE;
     }
     return r;
@@ -3001,7 +3001,7 @@ extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-BOOL func_0205a9c8(void *p);
+BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 func_0206ec48(void *p);
 s32 func_0206f080(void *p);
@@ -3011,7 +3011,7 @@ typedef s32 (*LoCbFn)(void *self, s32 arg);
 
 static inline BOOL LoIsLoaded(void) {
     BOOL r = TRUE;
-    if (!func_0205a9c8(data_ov000_021ccd48)) {
+    if (!StageRes_IsAllLoaded(data_ov000_021ccd48)) {
         r = FALSE;
     }
     return r;
@@ -3281,7 +3281,7 @@ extern Data02fe1534 data_02fe1534;
 extern u8 *data_0214a424;
 extern void *data_02097e4c;
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-u8 func_0206d1d4(void *a, u16 b);
+u8 StageFlags_CountEntries(void *a, u16 b);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 static inline u8 *GetNth(u8 *m) {
@@ -3331,7 +3331,7 @@ s32 func_ov000_02177698(Lo02177698 *self, u8 *item) {
                 }
                 b = LFLD(u8 *, o, 0x48);
                 if (b != NULL) {
-                    func_ov000_0215d980(b, func_0206d1d4(data_0214a424, LFLD(u16, item, 6)), 1);
+                    func_ov000_0215d980(b, StageFlags_CountEntries(data_0214a424, LFLD(u16, item, 6)), 1);
                     LFLD(u32, b, 0xc) &= ~0x20;
                 }
             } else {
@@ -3366,7 +3366,7 @@ s32 func_ov000_021777d4(u8 *self, u16 id) {
         }
         void *o48 = LFLD(void *, self, 0x48);
         if (o48 != NULL) {
-            func_ov000_0215d980(o48, func_0206d1d4(data_0214a424, id), 1);
+            func_ov000_0215d980(o48, StageFlags_CountEntries(data_0214a424, id), 1);
         }
     }
     func_02049a48(data_02097e4c, 0x31, -1, -1, -1);
@@ -3553,7 +3553,7 @@ void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-u8 func_0206d1d4(void *a, u16 b);
+u8 StageFlags_CountEntries(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
@@ -3648,7 +3648,7 @@ void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-u8 func_0206d1d4(void *a, u16 b);
+u8 StageFlags_CountEntries(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
@@ -3673,7 +3673,7 @@ BOOL func_ov000_02178010(Lo02178010 *self, void *msg) {
         }
         o = LFLD(void *, o, 0x4c);
         if (o != NULL) {
-            func_ov000_0215d980(o, func_0206d1d4(data_0214a424, LFLD(u16, msg, 6)), 1);
+            func_ov000_0215d980(o, StageFlags_CountEntries(data_0214a424, LFLD(u16, msg, 6)), 1);
         }
     }
     return TRUE;
@@ -4041,7 +4041,7 @@ void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-u8 func_0206d1d4(void *a, u16 b);
+u8 StageFlags_CountEntries(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
@@ -4154,7 +4154,7 @@ void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-u8 func_0206d1d4(void *a, u16 b);
+u8 StageFlags_CountEntries(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 void func_0206f3f0(u16 id, s32 v);
@@ -4235,7 +4235,7 @@ void func_ov000_02178dcc(void *p, BOOL on) {
             func_ov000_0215d980(self->unk_48, *(data_0214a424 + ItemIdx(LFLD(u16, node, 6)) + 0x2a), 1);
         }
         if (self->unk_4c != NULL) {
-            func_ov000_0215d980(self->unk_4c, func_0206d1d4(data_0214a424, LFLD(u16, node, 6)), 1);
+            func_ov000_0215d980(self->unk_4c, StageFlags_CountEntries(data_0214a424, LFLD(u16, node, 6)), 1);
         }
         if (rest <= 0) {
             self->unk_3c->vfunc_70(node);
@@ -5932,7 +5932,7 @@ extern u8 data_0208ba70[];
 extern Data02097ce0 *data_02097ce0;
 void *Heap_Alloc(u32 size);
 void func_0204c7d0(void *p);
-s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
+s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
 void func_0204ca70(void *p);
 
 Obj0217b230 *func_ov000_0217b230(void *unused, s32 a1, s32 a2) {
@@ -5944,7 +5944,7 @@ Obj0217b230 *func_ov000_0217b230(void *unused, s32 a1, s32 a2) {
     o->unk_37 = 1;
     o->unk_28 = a2;
     o->unk_24 = a1;
-    o->unk_4c = func_0204c4fc(o->unk_28, o->unk_38, o->unk_24, o->unk_44, o->unk_48, o->unk_37 ? 1 : 0);
+    o->unk_4c = Text_Measure(o->unk_28, o->unk_38, o->unk_24, o->unk_44, o->unk_48, o->unk_37 ? 1 : 0);
     data_02097ce0->unk_04 = o->unk_28;
     o->unk_70 = -0x1c8d;
     o->b8 = 0x1e;
@@ -7845,7 +7845,7 @@ extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb1b0[];
 extern u8 data_ov000_021cb0b8[];
 void *MsgRes_GetString(void *g, u32 id);
-BOOL func_0206c4a0(void);
+BOOL StageFlags_IsValid(void);
 u16 func_02059454(void *a, s32 b, s32 c, s32 d);
 BOOL func_ov000_02175e6c(void);
 
@@ -7892,7 +7892,7 @@ s32 func_ov000_0217ea30(Lo0217ea30 *self, s32 msg) {
     struct Text0217ea30 text;
     switch (msg) {
     case 0:
-        if (func_0206c4a0()) {
+        if (StageFlags_IsValid()) {
             if (func_02059454(data_02fe152c, 5, 1, 4)) {
                 g = data_02149ef8;
                 text.desc = MsgRes_GetString(g, 0x1d);
@@ -7926,7 +7926,7 @@ s32 func_ov000_0217ea30(Lo0217ea30 *self, s32 msg) {
         LFLD(u32, self->unk_3c, 0xc) |= 0x4000000;
         break;
     case 2:
-        if (func_0206c4a0()) {
+        if (StageFlags_IsValid()) {
             if (func_02059454(data_02fe152c, 5, 1, 4)) {
                 if (self->unk_44 == 0) {
                     LFLD(s32, p, 0x44) = 0;
@@ -8058,8 +8058,8 @@ extern void *data_02097e4c;
 extern u8 *data_02097dc8;
 u16 func_02059454(void *p, s32 a, s32 b, s32 c);
 s32 func_ov000_0217ea30(VObj *self, s32 msg);
-void func_ov000_0216f42c(void *a, void *b);
-void func_020656b4(void *p);
+void MessageQueue_FreeBuffer(void *a, void *b);
+void EffectMgr_FreeAll(void *p);
 void ActorMgr_ClearGroup(void *p, s32 a);
 void func_0206e900(char *dst, const char *src);
 void func_02041440(void *p, void *name, s32 c);
@@ -8209,14 +8209,14 @@ void func_ov000_0217ef3c(Lo0217edb4 *self) {
         {
             u8 **pmq = &data_ov000_021ccd30;
             u8 *mq = *pmq;
-            func_ov000_0216f42c(mq, LFLD(void *, mq, 0x11c));
+            MessageQueue_FreeBuffer(mq, LFLD(void *, mq, 0x11c));
             LFLD(void *, mq, 0x11c) = NULL;
             mq = *pmq;
-            func_ov000_0216f42c(mq, LFLD(void *, mq, 0x118));
+            MessageQueue_FreeBuffer(mq, LFLD(void *, mq, 0x118));
             LFLD(void *, mq, 0x118) = NULL;
         }
         LFLD(Bits0e, data_ov000_021ccd54, 0xe).b2 = 2;
-        func_020656b4(data_0214a420);
+        EffectMgr_FreeAll(data_0214a420);
         ActorMgr_ClearGroup(data_ov000_021ccd68, 0xf000);
         LFLD(LoBits8, data_ov000_021ccd64, 0xc).b0 = 0;
         func_0206e900(buf, "pic/title");

@@ -251,7 +251,7 @@ SIZE_ASSERT(Ov010Obj, 0xac);
 // keeps a list of three Ov010BeamNode (0x8c); each node holds an Ov010Beam (0x80, drawn by
 // func_ov010_02200a00 and stepped by func_ov010_0220078c), which holds its hit effect
 // Ov010FxObj (0x44, func_ov010_02200048 / func_ov010_022000d8). The st members are the ov000
-// state blocks (func_ov000_02198328 / func_ov000_02198360).
+// state blocks (History_Init / func_ov000_02198360).
 struct Ov010FxObj {
     u8 b0 : 1;
     u8 b1 : 1;

@@ -297,7 +297,7 @@ ListEntry *func_ov000_02154b58(ListOwner *self, u16 id) {
     return FindById(self, id);
 }
 
-ListEntry *func_ov000_02154b80(ListOwner *self, s32 n) {
+ListEntry *ListOwner_GetNth(ListOwner *self, s32 n) {
     ListEntry *entry = self->entries;
     if (n <= 0) {
         return entry;

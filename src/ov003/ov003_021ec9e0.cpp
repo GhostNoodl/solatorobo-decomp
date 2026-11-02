@@ -156,7 +156,7 @@ extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern Ov003GmPlayer *func_ov000_0219bf90(void);
 extern BOOL func_ov000_0219aae8(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern BOOL func_ov000_0219a8bc(void *a, void *b, void *c, s32 d, s32 e, Ov003Vec *f, s32 g, s32 h, s32 i);
-extern void func_02065804(void *mgr, void *handle);
+extern void EffectMgr_Kill(void *mgr, void *handle);
 extern void func_ov000_0219bd20(s32 id, u16 a, s32 b, s32 c, s32 d, Ov003GmArg *arg);
 extern void func_ov000_02195d88(void *self);
 extern void *data_02097e4c;
@@ -214,7 +214,7 @@ void func_ov003_021ecb6c(Ov003Gimmick *self) {
             self->unk_d0 = 0x4000;
             if (self->fx != NULL) {
                 Ov003GmArg arg;
-                func_02065804(data_0214a420, self->fx);
+                EffectMgr_Kill(data_0214a420, self->fx);
                 self->fx = NULL;
                 arg.a = self->unk_1c;
                 arg.b = 0;
@@ -237,7 +237,7 @@ void func_ov003_021ecc68(Ov003Gimmick *self) {
     }
     if (self->count == 0 && self->state == 1) {
         if (self->fx != NULL) {
-            func_02065804(data_0214a420, self->fx);
+            EffectMgr_Kill(data_0214a420, self->fx);
             self->fx = NULL;
         }
         func_ov000_0219763c(self);
@@ -249,7 +249,7 @@ void func_ov003_021ecc68(Ov003Gimmick *self) {
             s16 m;
             Ov003GmEffect *e;
             if (self->fx != NULL) {
-                func_02065804(data_0214a420, self->fx);
+                EffectMgr_Kill(data_0214a420, self->fx);
                 self->fx = NULL;
                 if (self->id == 0x4064) {
                     arg.a = self->unk_1c;

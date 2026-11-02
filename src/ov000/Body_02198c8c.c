@@ -216,7 +216,7 @@ void func_ov000_02198c8c(Body *self, u16 id) {
     self->pos.z = p.z;
 }
 
-void func_ov000_02198d28(Body *self, VecFx32 *pos, u32 angle) {
+void Body_SetPos(Body *self, VecFx32 *pos, u32 angle) {
     VecFx32 tmp;
 
     self->check.x = pos->x;

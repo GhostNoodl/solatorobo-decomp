@@ -22,7 +22,7 @@ void func_ov000_021915a0(void *p);
 void func_020627a0(u16 a, u16 b);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_021700c4(void *p);
-void *func_ov000_02173610(s32 kind);
+void *Task_FindById(s32 kind);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 static inline Actor *FindActor021a3e50(u16 id) {
@@ -124,7 +124,7 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
         if (IsBusy021a3e50()) {
             break;
         }
-        if (func_ov000_02173610(7)) {
+        if (Task_FindById(7)) {
             break;
         }
         if (t != NULL) {

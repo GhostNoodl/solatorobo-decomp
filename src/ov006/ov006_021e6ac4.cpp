@@ -61,7 +61,7 @@ extern const u16 data_ov006_021eb89c[];
 BOOL func_ov000_0218d494(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg);
 ov006_Effect6ac4 *func_02065f88(int id, void *pos);
 void *func_020657b0(void *a, int b);
-void func_02063a14(void *p);
+void EffectObj_StopLoop(void *p);
 void *func_02049f44(void *a, int b, void *c, int d);
 
 static inline void ov006_Prop6ac4_Ack(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg) {
@@ -105,7 +105,7 @@ BOOL func_ov006_021e6ac4(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg) {
                     e->unk3C = 0x1800;
                     old = func_020657b0(data_0214a420, self->unk1EC);
                     if (old != NULL) {
-                        func_02063a14(old);
+                        EffectObj_StopLoop(old);
                         *(int *)((u8 *)old + 0x1c) = 4;
                     }
                     self->unk1EC = e->unk24;

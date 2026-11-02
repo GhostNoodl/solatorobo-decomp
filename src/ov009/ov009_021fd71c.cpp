@@ -12,7 +12,7 @@ extern void *data_02097e4c;
 extern Ov009Actor *func_ov000_0219be1c(u16 kind, const Ov009Vec *pos, const void *rot, u16 id, u16 parent);
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
-extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
 
 void func_ov009_021fd71c(Ov009ActVt_02216750 *self) {
     Ov009Vec p;
@@ -33,7 +33,7 @@ void func_ov009_021fd71c(Ov009ActVt_02216750 *self) {
         if (t != NULL) {
             Ov009Vec tp;
             tp = t->pos;
-            if (func_01ffc584(&p, &tp, 0x6800, 0x7000)) {
+            if (Hit_DiffInCylinder(&p, &tp, 0x6800, 0x7000)) {
                 Ov009Rot r;
                 r.x = 0xf000;
                 r.y = o->rot[1];
@@ -45,7 +45,7 @@ void func_ov009_021fd71c(Ov009ActVt_02216750 *self) {
     func_ov000_02198360(self->unk_40, 1, 0);
 }
 
-extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 msg);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern void func_0203f364(Ov009Sub48 *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void func_ov000_0218996c(s32 a, s32 b);
@@ -72,9 +72,9 @@ static inline void Ov009_ReleaseFx(Ov009ActVt_02216750 *self) {
         id = 0x5045;
         break;
     }
-    func_ov000_0218e8ec(data_ov000_021ccd68, id, 0x15);
-    func_ov000_0218e8ec(data_ov000_021ccd68, 0x483f, 0x15);
-    func_ov000_0218e8ec(data_ov000_021ccd68, 0x482d, 0x15);
+    ActorMgr_BroadcastKind(data_ov000_021ccd68, id, 0x15);
+    ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x483f, 0x15);
+    ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x482d, 0x15);
 }
 
 void func_ov009_021fd830(Ov009ActVt_02216750 *self) {

@@ -65,14 +65,14 @@ BOOL func_02069f3c(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
     return TRUE;
 }
 
-void func_0206a0cc(EffectPartSet *s) {
+void EffectPartSet_Init(EffectPartSet *s) {
     s->ptcls = NULL;
 }
 
 void func_0206a0d8(EffectPartSet *s) {
 }
 
-BOOL func_0206a0dc(EffectPartSet *s, const u8 *data) {
+BOOL EffectPartSet_AddSlot(EffectPartSet *s, const u8 *data) {
     BOOL ret = FALSE;
     s32 i;
     for (i = 0; i < 4; i++) {
@@ -136,7 +136,7 @@ static inline void EffectPtcl_Accel(EffectPtcl *p, s32 rate, const VecFx32 *acc)
     VEC_Normalize(&v, &p->dir);
 }
 
-BOOL func_0206a2ec(EffectPartSet *s, EffectPartSlot *slot) {
+BOOL EffectPartSet_Accel(EffectPartSet *s, EffectPartSlot *slot) {
     EffectPtcl *p;
     for (p = s->ptcls; p != NULL; p = p->next) {
         EffectPtcl_Accel(p, slot->rate, &slot->vec);

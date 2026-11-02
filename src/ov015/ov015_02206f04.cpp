@@ -4,7 +4,7 @@ extern "C" {
 
 extern u8 data_ov015_02212a88[];
 extern u8 data_ov015_02212a08[];
-void *func_02043548(void *p);
+void *GfxCamPos_Init(void *p);
 void func_020434e0(void *p);
 extern u8 data_ov015_02212c08[];
 extern u8 data_ov015_02212b88[];
@@ -25,7 +25,7 @@ void *func_ov000_0218fe1c(void *p);
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_021919c8(void *p);
 void __cxa_vec_ctor(void *p, s32 n, s32 size, void *ctor, void *dtor);
-s32 func_02065748(void *a, void *b);
+s32 EffectMgr_Contains(void *a, void *b);
 void *Ov000Vt_021cc438_Dtor(void *p);
 void *func_ov000_0218ea20(void *p);
 void __cxa_vec_cleanup(void *p, s32 n, s32 size, void *dtor);
@@ -53,7 +53,7 @@ void *func_ov015_02206f7c(void) {
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
         SET_VT(p, data_ov015_02212a08);
-        func_02043548(&p->camView.eye);
+        GfxCamPos_Init(&p->camView.eye);
         func_020434e0(&p->camView.fovSin);
         p->ship = 0;
         p->shadow = 0;
@@ -364,12 +364,12 @@ void *func_ov015_0220765c(Ov015Ship *self) {
 
 void *func_ov015_02207738(Ov015Ship *self) {
     void *saved;
-    if (func_02065748(data_0214a420, self->fx) != 0) {
+    if (EffectMgr_Contains(data_0214a420, self->fx) != 0) {
         HEAP_PUSH(saved);
         DELETE_V(self->fx);
         HEAP_POP(saved);
     }
-    if (func_02065748(data_0214a420, self->fx2) != 0) {
+    if (EffectMgr_Contains(data_0214a420, self->fx2) != 0) {
         HEAP_PUSH(saved);
         DELETE_V(self->fx2);
         HEAP_POP(saved);

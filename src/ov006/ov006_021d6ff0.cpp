@@ -176,7 +176,7 @@ void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_020498ac(void *p, s32 a);
 void SndMgr_StopSeqNo(void *p, int a, int b);
 void *ActorMgr_GetGroup(void *mgr, u16 id);
-void func_ov000_0218e044(void *p, u16 a, int b);
+void ActorGroup_BroadcastKind(void *p, u16 a, int b);
 void func_ov000_0216da78(ov006_GObj021d6ff0 *p);
 void *MsgRes_GetString(void *a, int id);
 void func_ov006_021d86a0(ov006_Task021d6ff0 *self, u16 a, int b);
@@ -477,7 +477,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 }
                 o = ActorMgr_GetGroup(data_ov000_021ccd68, 0x7000);
                 if (o != NULL) {
-                    func_ov000_0218e044(o, 0xffff, 2);
+                    ActorGroup_BroadcastKind(o, 0xffff, 2);
                 }
                 func_020498ac(data_02097e4c, info->unk8);
                 func_02049a48(data_02097e4c, 0x2c, -1, -1, -1);
@@ -497,7 +497,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             }
             o = ActorMgr_GetGroup(data_ov000_021ccd68, 0x7000);
             if (o != NULL) {
-                func_ov000_0218e044(o, 0xffff, 1);
+                ActorGroup_BroadcastKind(o, 0xffff, 1);
             }
             self->state = 8;
             self->sub = 0;

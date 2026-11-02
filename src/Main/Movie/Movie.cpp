@@ -25,7 +25,7 @@ extern int OS_IsThreadTerminated(Movie *m);
 extern void OS_DestroyThread(Movie *m);
 extern void OS_SleepThreadDirect(Movie *m, int arg);
 extern void OS_SleepThread(int arg);
-extern void func_0203df40(void *ptr);
+extern void Heap_FreeLo(void *ptr);
 extern void func_0203365c(void *audio);
 extern BOOL func_0203379c(void *audio);
 extern u32 func_020336dc(void *audio);
@@ -36,7 +36,7 @@ extern u32 func_020337c0(void *audio);
 extern BOOL func_020337d8(void *audio, s16 *dst);
 extern BOOL FS_CloseFile(void *file);
 extern void DC_StoreRange(const void *addr, u32 size);
-extern void func_02049564(void *obj, int a, int b);
+extern void SndMgr_LoadHeapState(void *obj, int a, int b);
 extern void *data_02097e4c;
 
 void Movie_Pause(void) {
@@ -58,7 +58,7 @@ void Movie_Resume(void) {
     }
 }
 
-void func_02043e9c(void) {
+void Movie_Create(void) {
     Movie *m;
     if (data_02097e3c != NULL) {
         return;
@@ -108,7 +108,7 @@ extern u16 func_02033694(void *audio);
 extern BOOL func_02033730(void *audio);
 extern BOOL func_02033778(void *audio, u32 vram, int stride, int mode);
 extern NNSSndHeap *SndMgr_GetHeap(void *obj, int idx);
-extern void *func_0203dec8(u32 size, u32 align);
+extern void *Heap_AllocLo(u32 size, u32 align);
 extern void OS_CreateThread(Movie *m, void (*cb)(int), int arg, void *buf, u32 size, int prio);
 extern void OS_WakeupThreadDirect(Movie *m);
 extern void OS_SetThreadStackWarningOffset(Movie *m, int arg);
@@ -182,7 +182,7 @@ void func_02043f70(Movie *m) {
         m->bufSize = n * bs * 2;
         m->blockCount = n;
         if (m->channels >= 1) {
-            func_02049564(data_02097e4c, 1, 1);
+            SndMgr_LoadHeapState(data_02097e4c, 1, 1);
             m->bufL = (s16 *)NNS_SndHeapAlloc(SndMgr_GetHeap(data_02097e4c, 1), m->bufSize, NULL, 0, 0);
             MIi_CpuClearFast(0, m->bufL, m->bufSize);
         }
@@ -190,7 +190,7 @@ void func_02043f70(Movie *m) {
             m->bufR = (s16 *)NNS_SndHeapAlloc(SndMgr_GetHeap(data_02097e4c, 1), m->bufSize, NULL, 0, 0);
             MIi_CpuClearFast(0, m->bufR, m->bufSize);
         }
-        m->buf = func_0203dec8(0x300, 4);
+        m->buf = Heap_AllocLo(0x300, 4);
         OS_CreateThread(m, func_02044494, 0, (u8 *)m->buf + 0x300, 0x300, 0x11);
         OS_SetThreadStackWarningOffset(m, 0x4c);
         Movie_SetFrameWait(60 / (m->unk_140 >> 24));
@@ -270,7 +270,7 @@ void func_02044494(int arg) {
     func_0204479c(data_02097e3c, arg);
 }
 
-void func_020444b0(Movie *m, int idx, int mode, BOOL loop) {
+void Movie_Load(Movie *m, int idx, int mode, BOOL loop) {
     STD_CopyString(m->name, m->names[idx]);
     m->state = 1;
     *(u8 *)((u8 *)m + 0x14a) = 0;
@@ -285,7 +285,7 @@ void func_020444b0(Movie *m, int idx, int mode, BOOL loop) {
     m->mode = mode;
 }
 
-void func_02044524(Movie *m) {
+void Movie_RequestStop(Movie *m) {
     if (m->state != 0) {
         m->state = 6;
     }
@@ -315,7 +315,7 @@ void func_02044538(Movie *m) {
     if (OS_IsThreadTerminated(m) == 0) {
         OS_DestroyThread(m);
         if (m->buf != NULL) {
-            func_0203df40(m->buf);
+            Heap_FreeLo(m->buf);
             m->buf = NULL;
         }
     }
@@ -326,7 +326,7 @@ void func_02044538(Movie *m) {
     func_0203365c(m->audio);
     FS_CloseFile(m->file);
     if (m->bufL != NULL || m->bufR != NULL) {
-        func_02049564(data_02097e4c, 1, 1);
+        SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     }
     m->bufL = NULL;
     m->bufR = NULL;
@@ -392,7 +392,7 @@ void func_0204479c(Movie *m, int arg) {
     }
 }
 
-void func_020448bc(void) {
+void Movie_ReleaseBlock(void) {
     Movie *m = data_02097e3c;
     if (m->numBlocks != 0) {
         m->numBlocks--;
@@ -418,7 +418,7 @@ void func_020448dc(Movie *m) {
     if (m->channels >= 2) {
         SND_SetupChannelPcm(1, 1, m->bufR, 1, 0, (m->blockCount * bs) >> 1, 0x7f, 0, timer, 0x7f);
     }
-    SND_SetupAlarm(0, (bs >> 6) * (timer << 1), (bs >> 6) * (timer << 1), func_020448bc, NULL);
+    SND_SetupAlarm(0, (bs >> 6) * (timer << 1), (bs >> 6) * (timer << 1), Movie_ReleaseBlock, NULL);
     SND_StartTimer(ch, 0, 1, 0);
     SND_FlushCommand(1);
 }

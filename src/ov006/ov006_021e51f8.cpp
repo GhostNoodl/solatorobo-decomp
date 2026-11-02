@@ -33,12 +33,12 @@ extern ov006_Net021e51f8 *data_02097e40;
 BOOL func_020463c8(ov006_Net021e51f8 *net);
 BOOL func_020455ac(ov006_Net021e51f8 *net);
 int Wh_GetError(ov006_Net021e51f8 *net);
-u16 func_0204584c(ov006_Net021e51f8 *net);
+u16 Wh_SelectChannel(ov006_Net021e51f8 *net);
 void func_02044a0c(ov006_NetParam021e51f8 *param);
 void Wh_SetGameInfo(ov006_Net021e51f8 *net, void *data, u32 size);
 void func_02045950(ov006_Net021e51f8 *net, void *data, u32 size);
 BOOL func_020459cc(ov006_Net021e51f8 *net, int a, u16 tgid, u16 b);
-BOOL func_02045ea4(ov006_Net021e51f8 *net, BOOL enabled);
+BOOL Wh_SetEntry(ov006_Net021e51f8 *net, BOOL enabled);
 u16 WM_GetNextTgid(void);
 void func_ov006_021e5f24(void);
 
@@ -71,7 +71,7 @@ static inline BOOL ov006_Menu_HasPeer(ov006_Unk021ec888 *menu) {
 static inline BOOL ov006_Menu_SetEntry(ov006_Unk021ec888 *self, u8 enabled) {
     BOOL result;
     self->unk18 = enabled;
-    result = func_02045ea4(data_02097e40, enabled);
+    result = Wh_SetEntry(data_02097e40, enabled);
     if (result) {
         if (enabled == 0) {
             self->unk15C = data_02097e40->unk32;
@@ -132,7 +132,7 @@ void func_ov006_021e51f8(ov006_Unk021ec888 *self) {
         ov006_Net021e51f8 *net;
         ov006_Unk021ec888 *menu;
         int i;
-        self->unk15A = func_0204584c(data_02097e40);
+        self->unk15A = Wh_SelectChannel(data_02097e40);
         net = data_02097e40;
         net->param.unk2 = 0x66;
         net->param.unkE = 8;

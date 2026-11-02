@@ -50,19 +50,19 @@ extern void *data_ov000_021ccd68;
 extern void *func_ov003_021d0edc(void *p);
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *p);
-extern void func_0203df0c(void *p);
+extern void Heap_FreeHi(void *p);
 extern void *ActorMgr_GetActor(void *mgr, u16 id);
 
-void func_ov003_021d7948(Ov003Pool *self) {
+void Ov003Pool_Release(Ov003Pool *self) {
     if (self->active) {
         self->active = 0;
-        func_0203df0c(self->buf);
+        Heap_FreeHi(self->buf);
         self->end = NULL;
         self->freeList = NULL;
     }
 }
 
-void *func_ov003_021d7980(Ov003Pool *self) {
+void *Ov003Pool_Alloc(Ov003Pool *self) {
     void *r = NULL;
     Ov003FreeNode *node;
     if (self->active && (node = self->freeList) != NULL) {
@@ -99,7 +99,7 @@ Ov003PoolOwner *Ov003Vt_021f7d2c_DtorDelete(Ov003PoolOwner *self) {
     return self;
 }
 
-BOOL func_ov003_021d7a44(Ov003Mover *self, const Ov003Vec *target, const Ov003Vec *start, s32 speed, s32 maxDist, u8 noSnap) {
+BOOL Ov003Mover_Start(Ov003Mover *self, const Ov003Vec *target, const Ov003Vec *start, s32 speed, s32 maxDist, u8 noSnap) {
     self->active = 1;
     self->noSnap = noSnap;
     self->done = 0;

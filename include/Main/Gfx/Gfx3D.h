@@ -12,8 +12,8 @@ extern "C" {
 #define REG_ALPHA_TEST_REF (*(volatile u16 *)0x4000340)
 #define REG_FOG_COLOR (*(volatile u32 *)0x4000358)
 
-extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203df0c(void *ptr);
+extern void *Heap_AllocHi(u32 size, u32 align);
+extern void Heap_FreeHi(void *ptr);
 
 extern const int data_02082898[][4];
 extern const int data_020828c8[][4];

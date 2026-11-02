@@ -79,7 +79,7 @@ extern BOOL func_ov000_0219aae8(Ov003Spawner *a, Ov003Spawner *b, u16 c, u8 d, s
 extern Ov003SpPlayer *func_ov000_0219bf90(void);
 extern Ov003SpFx *func_02065f88(s32 id, Ov003Vec *pos);
 extern Ov003SpFx *EffectGroup_Create(void *a, void *b, Ov003Vec *pos);
-extern void func_020639d4(Ov003SpFx *e, s32 a, s32 b);
+extern void EffectObj_AddSndCue(Ov003SpFx *e, s32 a, s32 b);
 
 static inline void Ov003_RotX(Ov003Vec *out, const Ov003Vec *in, u16 ang) {
     s32 y = 0;
@@ -136,7 +136,7 @@ BOOL func_ov003_021dc840(Ov003Spawner *self) {
                 Ov003SpRes *r = self->res;
                 if (r->unk_00 != NULL && r->unk_40 != NULL) {
                     e = EffectGroup_Create(r->unk_00, r->unk_40, &ppos);
-                    func_020639d4(e, 0x10, 0);
+                    EffectObj_AddSndCue(e, 0x10, 0);
                     e->SetSize(0x99a);
                 } else {
                     e = func_02065f88(0x64, &ppos);

@@ -90,7 +90,7 @@ extern s16 func_ov003_021d7e58(Ov003Ticker *t);
 extern void VEC_MultAdd(s32 scale, Ov003Vec *dir, Ov003Vec *src, Ov003Vec *dst);
 extern void Heap_Free(void *p);
 extern void *Heap_Alloc(u32 size);
-extern void *func_ov000_02198328(void *p);
+extern void *History_Init(void *p);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 void func_ov003_021d88ec(u32 *p) {
@@ -197,7 +197,7 @@ void Ov003StateMachine_Leave(Ov003StateMachine *self) {
     }
 }
 
-BOOL func_ov003_021d8b34(Ov003StateMachine *self, u8 id) {
+BOOL Ov003StateMachine_IsState(Ov003StateMachine *self, u8 id) {
     BOOL r = FALSE;
     if (self->active && self->cur != NULL) {
         if (self->cur->id == id) {
@@ -216,7 +216,7 @@ void Ov003StateMachine_SendMessage(Ov003StateMachine *self, void *arg) {
 Ov003Timer *Ov003Vt_021f7cd8_Ctor(Ov003Timer *self) {
     *(void **)self = &data_ov003_021f7cd8;
     self->active = 0;
-    func_ov000_02198328(self->unk_0c);
+    History_Init(self->unk_0c);
     return self;
 }
 

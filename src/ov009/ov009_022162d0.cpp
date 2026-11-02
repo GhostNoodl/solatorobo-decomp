@@ -482,7 +482,7 @@ void func_ov009_02214e90(Ov009ActExVt_022181f4 *self) {
         }
         func_ov000_0219aae8(self, a, self->unk_4c->unk_08, self->unk_4c->unk_0a & 0xff, 0x30, 0, 0, 0x299a, 0, 0x64, 0x1000);
         t = func_ov000_0219bf90();
-        if (t != NULL && func_01ffc198(&t->pos, &self->pos, t->unk_64 + 0x299a)) {
+        if (t != NULL && Hit_DiffInSphere(&t->pos, &self->pos, t->unk_64 + 0x299a)) {
             Ov009Target *q = self->unk_4c;
             func_ov000_0219a8bc(t->unk_44, self, self, q->unk_08, q->unk_0a & 0xff, &self->pos, 0x64, 0x1000, 0x1000);
         }

@@ -53,7 +53,7 @@ extern u32 data_0208b614[];
 extern u32 data_0208c994[];
 extern u32 data_0208ca9c[];
 extern char data_0208cb18[];
-extern void func_0204730c(SaveBase *s);
+extern void SaveBase_AllocBuffers(SaveBase *s);
 extern void func_020473ac(SaveBase *s, s32 state);
 extern void func_02046cd0(SysCard *card);
 extern void func_02047c2c(SaveBase *s);

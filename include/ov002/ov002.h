@@ -335,8 +335,8 @@ void func_ov000_021c7000(void *a);
 void func_ov002_021d1f70(void *self);
 
 void func_0203caf8(int a);
-void func_020444b0(void *a, s32 b, int c, int d);
-void func_02044524(void *a);
+void Movie_Load(void *a, s32 b, int c, int d);
+void Movie_RequestStop(void *a);
 void func_ov000_021c701c(void *a);
 
 void func_ov002_021e4904(void *p);
@@ -405,7 +405,7 @@ void func_ov002_021dab58(void *a, int b);
 BOOL func_ov002_021da8d8(void *a);
 extern VFunc data_ov002_021efc24[];
 void func_ov002_021d5f60(void *a);
-void *func_ov000_02173610(int id);
+void *Task_FindById(int id);
 extern VFunc data_ov002_021efb04[];
 void func_ov000_02163254(void *self);
 extern VFunc data_ov000_021caec8[];
@@ -560,7 +560,7 @@ void func_ov000_021c524c(void *a, void *b, VecFx32 *pos, s32 d);
 extern VFunc data_ov000_021ccbe0[];
 void func_ov000_021c3bb0(void *self);
 void func_ov002_021d95e0(void *a);
-void func_02065eec(void *a);
+void EffectMgr_SaveList(void *a);
 
 static inline void *func_ov002_021e0b08_inline(void *self) {
     void *prev;
@@ -696,7 +696,7 @@ extern VecFx32 data_ov002_021ef110;
 
 extern u8 data_ov002_021f00cc[];
 extern u8 data_ov002_021f00d8[];
-VObject *func_02066774(void *a, void *b, int c, void *d);
+VObject *Effect3D_Create(void *a, void *b, int c, void *d);
 
 extern VFunc data_ov002_021f07d4[];
 void func_ov002_021e51f8(void *self);
@@ -740,7 +740,7 @@ typedef struct Oam021e7ab8 {
 void func_ov002_021d36b8(void *self, s32 n);
 extern VFunc data_ov002_021eff74[];
 void func_ov002_021eacd0(void *self);
-void func_02043858(void *p);
+void Gfx3DState_Init(void *p);
 void func_ov002_021e7cb4(void *self);
 
 BOOL func_ov002_021e41cc(Vec2 *a, Vec2 *b, void *c, void *d, Vec2 *out);

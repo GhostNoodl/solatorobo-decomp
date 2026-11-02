@@ -3,11 +3,11 @@
 extern "C" {
 
 extern void *data_02097e4c;
-extern void func_02049564(void *mgr, s32 a, s32 b);
+extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 void func_ov009_021fc63c(Ov009Actor *self) {
     func_ov003_021d0fc0(self);
-    func_02049564(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     switch (self->kind) {
     case 0x5000:
     case 0x5001:

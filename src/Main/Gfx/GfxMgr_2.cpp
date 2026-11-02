@@ -6,7 +6,7 @@ extern "C" {
 extern u8 data_02097ce4[];
 extern const u8 data_02082798[0x60];
 
-extern void *func_0203dec8(u32 size, int align);
+extern void *Heap_AllocLo(u32 size, int align);
 extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern void DC_FlushRange(const void *addr, u32 size);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
@@ -16,7 +16,7 @@ extern void GX_LoadOBJPltt(const void *src, u32 offset, u32 size);
 extern void GXS_LoadOBJPltt(const void *src, u32 offset, u32 size);
 extern u16 func_0203bdb0(GfxSys *obj, int a, int b);
 extern void *func_0203bc20(GfxSys *obj, u32 size, int a);
-extern void func_0203df40(void *ptr);
+extern void Heap_FreeLo(void *ptr);
 extern void func_020435e8(GfxPltt *src, void *dst, u32 size);
 
 
@@ -85,7 +85,7 @@ void func_02039a34(GfxMgr *mgr) {
     mgr->unk_650 = func_0203bc20(data_02097d48, 0x4000, 0);
     mgr->unk_654 = func_0203bc20(data_02097d48, 0x4000, 1);
 
-    block = (VramBlock *)func_0203dec8(0x80 * sizeof(VramBlock), 4);
+    block = (VramBlock *)Heap_AllocLo(0x80 * sizeof(VramBlock), 4);
     MIi_CpuClearFast(0, block, 0x80 * sizeof(VramBlock));
     block->addr = 0x20;
     block->size = 0x4000 - 0x20;
@@ -96,7 +96,7 @@ void func_02039a34(GfxMgr *mgr) {
     mgr->pools[0].alignShift = 2;
     mgr->pools[0].numBlocks = 0x80;
 
-    block = (VramBlock *)func_0203dec8(0x80 * sizeof(VramBlock), 4);
+    block = (VramBlock *)Heap_AllocLo(0x80 * sizeof(VramBlock), 4);
     MIi_CpuClearFast(0, block, 0x80 * sizeof(VramBlock));
     block->addr = 0x20;
     block->size = 0x4000 - 0x20;
@@ -135,7 +135,7 @@ void func_02039c54(GfxMgr *mgr, int mode) {
     mgr->unk_69c[2] = 0;
     mgr->unk_69c[3] = 0;
     if (mgr->unk_67c != NULL) {
-        func_0203df40(mgr->unk_67c);
+        Heap_FreeLo(mgr->unk_67c);
         mgr->unk_67c = NULL;
     }
     mgr->unk_680 = 0;
@@ -195,7 +195,7 @@ void func_02039e0c(GfxMgr *mgr) {
     mgr->unk_69c[2] = 0;
     mgr->unk_69c[3] = 0;
     if (mgr->unk_67c != NULL) {
-        func_0203df40(mgr->unk_67c);
+        Heap_FreeLo(mgr->unk_67c);
         mgr->unk_67c = NULL;
     }
     mgr->unk_680 = 0;

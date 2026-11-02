@@ -4,7 +4,7 @@ extern "C" {
 
 extern const s16 data_ov011_0220726e[4];
 void func_ov003_021d112c(void *self);
-void *func_ov000_02198328(void *p);
+void *History_Init(void *p);
 void *func_ov011_02201510(void *p);
 void *func_ov011_02201c18(void *p);
 void Ov011Mov_Init(void *p);
@@ -20,15 +20,15 @@ void Ov011SceneActor_Start(Ov011SceneActor *self) {
     p = (Ov011Scene *)Heap_Alloc(0x23c);
     if (p != NULL) {
         p->ring.b0 = 0;
-        func_ov000_02198328(&p->seq);
+        History_Init(&p->seq);
         func_ov011_02201510(&p->fx);
-        func_ov000_02198328(&p->mgr2.state);
+        History_Init(&p->mgr2.state);
         func_ov011_02201c18(p->mgr2.unk_28);
         Ov011Mov_Init(&p->mgr2.mov);
         p->mgr2.b0 = 0;
-        func_ov000_02198328(&p->s1b4.seq);
+        History_Init(&p->s1b4.seq);
         p->s1b4.b0 = 0;
-        func_ov000_02198328(&p->mgr.state);
+        History_Init(&p->mgr.state);
         p->mgr.b0 = 0;
         p->ent.active = 0;
         p->b0 = 0;
@@ -37,7 +37,7 @@ void Ov011SceneActor_Start(Ov011SceneActor *self) {
     func_ov011_021fd4d8(p, self);
     q = (Ov011Sa104 *)Heap_Alloc(0x3c);
     if (q != NULL) {
-        func_ov000_02198328(q);
+        History_Init(q);
         Ov011Vt_022079b0_Ctor(&q->tw);
     }
     self->unk_104 = q;

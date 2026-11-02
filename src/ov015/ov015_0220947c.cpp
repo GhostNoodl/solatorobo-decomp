@@ -27,7 +27,7 @@ s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 void func_ov015_02209c90(Ov015Fish *self);
 void func_ov015_0220daf4(Ov015Shadow *a, Ov015Vec *pos, s32 b, s32 c, s32 ang, s32 d);
 BOOL func_ov000_021903b4(void *a);
-s32 func_01ffc584(void *a, void *b, s32 c, s32 d);
+s32 Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);
 extern u8 data_ov015_02212e94[];
 extern u8 data_ov015_02212eb0[];
 
@@ -183,7 +183,7 @@ void func_ov015_02209a50(Ov015Fish *self) {
     self->unk_88 = FX_Mul(self->unk_88, f);
 }
 
-void func_ov015_02209b80(Ov015Fish *self, s32 a, s32 b) {
+void Ov015Fish_SetNextState(Ov015Fish *self, s32 a, s32 b) {
     self->nextState = (Ov015V *)a;
     self->nextStateId = b;
 }
@@ -267,13 +267,13 @@ s32 func_ov015_02209fb8(s32 x) {
 
 BOOL func_ov015_02209ff0(Ov015Fish *self, void *a) {
     BOOL r = FALSE;
-    if (func_01ffc584(a, &self->pos, self->unk_98 + 0x4cd, self->unk_94)) r = TRUE;
+    if (Hit_DiffInCylinder(a, &self->pos, self->unk_98 + 0x4cd, self->unk_94)) r = TRUE;
     return r;
 }
 
 BOOL func_ov015_0220a028(Ov015Fish *self, void *a) {
     BOOL r = FALSE;
-    if (func_01ffc584(a, &self->pos, self->unk_98, self->unk_94)) r = TRUE;
+    if (Hit_DiffInCylinder(a, &self->pos, self->unk_98, self->unk_94)) r = TRUE;
     return r;
 }
 

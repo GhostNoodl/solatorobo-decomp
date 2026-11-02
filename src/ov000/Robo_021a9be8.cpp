@@ -45,7 +45,7 @@ BOOL func_ov000_02191120(void *a);
 s32 **func_ov000_02190a30(void *a, int b);
 void *func_ov000_0219122c(void *a, s32 frame);
 void Actor_Move(void *self, s32 a);
-void func_ov000_0218dd8c(void *self, u16 base, s32 turn, void *p);
+void Actor_MoveByPad(void *self, u16 base, s32 turn, void *p);
 u16 Actor_YawToPos(void *self, void *target);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
@@ -312,7 +312,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         u16 ang;
         if (self->padCur & 0xf0) {
             self->speed = self->unk_b08 >> 2;
-            func_ov000_0218dd8c(self, yaw, 0, (u8 *)self + 0xb70);
+            Actor_MoveByPad(self, yaw, 0, (u8 *)self + 0xb70);
             ang = self->moveYaw;
         } else {
             self->friction = 0x29;

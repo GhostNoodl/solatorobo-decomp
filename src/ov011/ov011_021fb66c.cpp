@@ -16,7 +16,7 @@ static inline s32 Ov011Ent_GetA(Ov011Ent *e) {
     return 0;
 }
 
-static inline s32 Ov011Ent_GetB(Ov011Ent *e) {
+static inline s32 Ov011Ent_GetRadius(Ov011Ent *e) {
     if (e->active) {
         return e->radius;
     }

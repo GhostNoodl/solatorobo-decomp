@@ -14,7 +14,7 @@ typedef struct {
 
 extern "C" {
 void MI_Copy36B(const void *src, void *dst);
-void func_0203f80c(void *mesh);
+void HitMesh_Init(void *mesh);
 void HitMesh_Link(void *mesh);
 void HitMesh_SetRes(void *mesh, void *res);
 void HitMesh_SetScale(void *mesh, int scale);
@@ -66,7 +66,7 @@ BOOL func_ov000_021b7f0c(Obj021b7f0c *self) {
                 scale = self->unk_d8;
                 mesh = Heap_Alloc(0x98);
                 if (mesh != NULL) {
-                    func_0203f80c(mesh);
+                    HitMesh_Init(mesh);
                 }
                 self->unk_ec = mesh;
                 HitMesh_SetRes(mesh, *self->unk_28);

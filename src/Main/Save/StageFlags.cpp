@@ -3,7 +3,7 @@
 extern "C" {
 
 extern StageFlags data_0214aa68;
-extern void *func_0203dec8(u32 size, int align);
+extern void *Heap_AllocLo(u32 size, int align);
 extern u8 data_0214a428[0x640];
 extern void func_0206ccb8(StageFlags *f, u32 a);
 extern u16 func_0206d02c(StageFlags *f);
@@ -18,18 +18,18 @@ typedef struct StageFlagsInit {
 
 extern const StageFlagsInit data_02082be4;
 
-void func_0206c44c(void) {
+void StageFlags_Create(void) {
     StageFlags *f;
     if (data_0214a424 != NULL) {
         return;
     }
-    f = (StageFlags *)func_0203dec8(sizeof(StageFlags), 4);
+    f = (StageFlags *)Heap_AllocLo(sizeof(StageFlags), 4);
     data_0214a424 = f;
     MIi_CpuClearFast(0, f, sizeof(StageFlags));
     f->magic = STAGE_FLAGS_MAGIC;
 }
 
-BOOL func_0206c4a0(void) {
+BOOL StageFlags_IsValid(void) {
     return data_0214aa68.magic == STAGE_FLAGS_MAGIC;
 }
 

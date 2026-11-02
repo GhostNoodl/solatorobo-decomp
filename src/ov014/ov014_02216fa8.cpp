@@ -27,7 +27,7 @@ namespace m_021fc220 {
 extern "C" {
 
 extern u8 data_ov014_0221722c[];
-extern void func_ov003_021daab0(void *p);
+extern void Ov003FxList_KillAll(void *p);
 extern void func_ov000_0219763c(void *self);
 extern void *ActorEx_Ctor(void *self);
 extern void func_ov000_02194758(void *self);
@@ -35,7 +35,7 @@ extern void func_0203f364(Ov014Sub48 *p);
 
 void func_ov014_021fc220(Ov014ActEx_021fbd64 *self) {
     if (self->unk_40->state == 0) {
-        func_ov003_021daab0(self->unk_d0);
+        Ov003FxList_KillAll(self->unk_d0);
     }
     func_ov000_0219763c(self);
 }
@@ -123,7 +123,7 @@ extern Ov014Vec data_ov014_022164dc;
 extern void *data_02097e4c;
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
 extern void func_ov003_021da9ac(void *p, u8 id, void *obj);
-extern BOOL func_ov003_021daa0c(void *p, u8 id);
+extern BOOL Ov003FxList_Has(void *p, u8 id);
 extern Ov014Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 
@@ -189,7 +189,7 @@ void func_ov014_021fc464(Ov014ActEx_021fc24c *self) {
             }
             break;
         case 2:
-            if (!func_ov003_021daa0c(self->unk_100, 0)) {
+            if (!Ov003FxList_Has(self->unk_100, 0)) {
                 Ov014Sub44 *n = self->unk_44;
                 n->unk_22_0 = true;
                 n->unk_22_1 = true;
@@ -308,7 +308,7 @@ extern s32 func_ov000_0219a510(Ov014Obj *self, u16 mask, Ov014Vec *pos, s32 r, s
 extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
 extern void func_ov003_021f0c60(Ov014Obj *self, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern Ov014V *func_02066774(const void *a, const void *b, s32 c, Ov014Vec *pos);
+extern Ov014V *Effect3D_Create(const void *a, const void *b, s32 c, Ov014Vec *pos);
 extern void MIi_CpuClear32(u32 data, void *dest, u32 size);
 extern BOOL func_ov000_0219aca8(Ov014Obj *a, Ov014Obj *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
@@ -402,7 +402,7 @@ void func_ov014_021fc9c8(Ov014ActEx_021fc24c *self) {
             case 2: {
                 Ov014V *e;
                 u8 k;
-                e = func_02066774(data_ov014_02217209, data_ov014_02217218, 0, &self->pos);
+                e = Effect3D_Create(data_ov014_02217209, data_ov014_02217218, 0, &self->pos);
                 e->v0c(0x8800);
                 FLD(u8, e, 0x28) = 0;
                 MIi_CpuClear32(-1, (u8 *)e + 0x84, 0x40);
@@ -435,7 +435,7 @@ void func_ov014_021fc9c8(Ov014ActEx_021fc24c *self) {
                 break;
             }
             case 3:
-                if (!func_ov003_021daa0c(self->unk_100, 0xfe)) {
+                if (!Ov003FxList_Has(self->unk_100, 0xfe)) {
                     func_ov000_02198360(self->unk_40, 0x15, 0);
                 }
                 break;

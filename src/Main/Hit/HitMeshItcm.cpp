@@ -67,13 +67,13 @@ typedef struct HitMeshRay {
 } HitMeshRay;
 
 extern void func_01ff8330(HitMeshRay *ray);
-extern void func_01ff8464(s32 *box, HitMeshItcmBlock *block);
+extern void HitSegLocal_Transform(s32 *box, HitMeshItcmBlock *block);
 extern void func_01ff868c(HitMeshRay *ray, void *table);
 extern HitMeshItcmRes *HitMesh_GetRes(void *mesh);
 extern BOOL func_0203fc60(void *mesh);
 extern s32 Hit_FxMul(s32 a, s32 b);
-extern void func_01ff8520(HitMeshQuery *q);
-extern void func_01ff85ec(s32 *box, HitMeshItcmBlock *block);
+extern void HitSphereMeshQuery_ToLocal(HitMeshQuery *q);
+extern void HitSphereLocal_Transform(s32 *box, HitMeshItcmBlock *block);
 extern void func_01ff9f9c(HitMeshQuery *q, HitMeshItcmBlock *block, void *tri);
 extern void func_01ff9060(HitMeshQuery *q, void *table);
 
@@ -112,7 +112,7 @@ void func_01ffb83c(HitMeshRay *ray) {
     n = res->blockCount;
     block = (HitMeshItcmBlock *)res->blocks;
     while (n != 0) {
-        func_01ff8464(ray->min, block);
+        HitSegLocal_Transform(ray->min, block);
         if (ray->min[0] <= block->max[0] && ray->max[0] >= block->min[0] && ray->min[1] <= block->max[1] &&
             ray->max[1] >= block->min[1] && ray->min[2] <= block->max[2] && ray->max[2] >= block->min[2]) {
             ray->dir.x = ray->to.x - ray->from.x;
@@ -131,7 +131,7 @@ void func_01ffb9b0(HitMeshQuery *q) {
     HitMeshItcmRes *res = HitMesh_GetRes(q->mesh);
     HitMeshItcmBlock *block;
     u32 n;
-    func_01ff8520(q);
+    HitSphereMeshQuery_ToLocal(q);
     if (func_0203fc60(q->mesh)) {
         if (q->min[0] > res->max[0]) {
             return;
@@ -155,7 +155,7 @@ void func_01ffb9b0(HitMeshQuery *q) {
     n = res->blockCount;
     block = (HitMeshItcmBlock *)res->blocks;
     while (n != 0) {
-        func_01ff85ec(q->min, block);
+        HitSphereLocal_Transform(q->min, block);
         if (q->min[0] <= block->max[0] && q->max[0] >= block->min[0] && q->min[1] <= block->max[1] &&
             q->max[1] >= block->min[1] && q->min[2] <= block->max[2] && q->max[2] >= block->min[2]) {
             u8 *tri;

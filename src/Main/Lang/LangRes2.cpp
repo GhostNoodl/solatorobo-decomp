@@ -73,7 +73,7 @@ static inline LangRes2 *LangRes2_New(void) {
     return res;
 }
 
-void func_0206f9dc(void) {
+void LangRes2_Create(void) {
     char arcName[0x20];
     char name[0x20];
     LangRes2 *res = LangRes2_New();
@@ -84,7 +84,7 @@ void func_0206f9dc(void) {
     data_0214b160.res->Open(arcName, name);
 }
 
-void func_0206fa70(void) {
+void LangRes2_Delete(void) {
     void *saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     if (data_0214b160.res != NULL) {

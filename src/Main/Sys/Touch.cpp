@@ -41,7 +41,7 @@ extern Touch *data_02097dcc;
 extern void TP_Init(void);
 extern BOOL TP_GetUserInfo(void *calib);
 extern void TP_SetCalibrateParam(void *calib);
-extern void *func_0203dec8(u32 size, int align);
+extern void *Heap_AllocLo(u32 size, int align);
 extern void func_02021b9c(void);
 
 void func_0203d45c(TouchQuad *q, u16 a, u16 b, u16 c, u16 d) {
@@ -89,7 +89,7 @@ void func_0203d560(void) {
     TP_Init();
     TP_GetUserInfo(calib);
     TP_SetCalibrateParam(calib);
-    tp = (Touch *)func_0203dec8(sizeof(Touch), 4);
+    tp = (Touch *)Heap_AllocLo(sizeof(Touch), 4);
     func_0203d4f8(tp);
     data_02097dcc = tp;
 }

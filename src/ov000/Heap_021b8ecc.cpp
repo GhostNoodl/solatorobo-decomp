@@ -83,7 +83,7 @@ void *func_02061df0(u16 id);
 void *func_02061e7c(u16 id);
 void *MsgRes_GetString(void *g, void *id);
 void func_0204c7d0(void *p);
-s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
+s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_02041440(void *m, void *a, s32 b);
 void *func_02034d88(s32 a, void *b);
 void func_020417e0(void *m, void *a);
@@ -111,7 +111,7 @@ static inline VObj *NewTextWin_021b9010(void) {
 
 static inline void TextWinStart_021b9010(VObj *w, void *text) {
     LFLD(void *, w, 0x24) = text;
-    LFLD(s32, w, 0x4c) = func_0204c4fc(LFLD(s32, w, 0x28), LFLD(s32, w, 0x38), LFLD(s32, w, 0x24), (u8 *)w + 0x44, (u8 *)w + 0x48, LFLD(s8, w, 0x37) != 0);
+    LFLD(s32, w, 0x4c) = Text_Measure(LFLD(s32, w, 0x28), LFLD(s32, w, 0x38), LFLD(s32, w, 0x24), (u8 *)w + 0x44, (u8 *)w + 0x48, LFLD(s8, w, 0x37) != 0);
     LFLD(s32, data_02097ce0, 0x4) = LFLD(s32, w, 0x28);
 }
 

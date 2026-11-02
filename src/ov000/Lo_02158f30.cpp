@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_0203df0c(void *p);
+void Heap_FreeHi(void *p);
 BOOL func_ov000_02152a58(void *self);
 BOOL func_02054f10(void *p, s32 a);
 BOOL func_0203e63c(void *p);

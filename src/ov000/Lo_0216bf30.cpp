@@ -91,7 +91,7 @@ extern u8 data_0208ba70[];
 extern u8 *data_02097ce0;
 extern LoPair0216c018 data_ov000_021c9bb4[];
 void func_0204c7d0(void *p);
-s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
+s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_0204ca70(void *p);
 void func_ov000_0216bae4(void *p, s32 b);
 u8 *func_02066c58(void);
@@ -108,7 +108,7 @@ static inline LoText0216c018 *NewText0216c018(void) {
 
 static inline void SetText0216c018(LoText0216c018 *t, char *str) {
     t->unk_24 = (s32)str;
-    t->unk_4c = func_0204c4fc(t->unk_28, t->unk_38, t->unk_24, &t->unk_44, &t->unk_48, t->unk_37 != 0);
+    t->unk_4c = Text_Measure(t->unk_28, t->unk_38, t->unk_24, &t->unk_44, &t->unk_48, t->unk_37 != 0);
     LFLD(s32, data_02097ce0, 4) = t->unk_28;
 }
 
@@ -240,7 +240,7 @@ void func_ov000_0216c018(void *obj) {
 extern "C" {
 
 extern void *data_0214a420;
-BOOL func_02065748(void *p, VObj *obj);
+BOOL EffectMgr_Contains(void *p, VObj *obj);
 
 typedef struct LoSlot0216c310 LoSlot0216c310;
 struct LoSlot0216c310 {
@@ -329,7 +329,7 @@ void func_ov000_0216c310(LoHost0216c310 *self) {
             n->x = m >> 12;
             n->y = (0x24000 - y) >> 12;
             if (n->kind == 7 && n->eff != NULL) {
-                if (func_02065748(data_0214a420, n->eff)) {
+                if (EffectMgr_Contains(data_0214a420, n->eff)) {
                     n->eff->vfunc_14(0x1000, 0x1000, 0x1000);
                     n->eff->vfunc_1c((n->x << 12) - 0x51000, -((n->y << 12) - 0x5b000), -0x400);
                 } else {
@@ -352,7 +352,7 @@ void func_ov000_0216c310(LoHost0216c310 *self) {
                 n->flags = 0;
                 n->next = NULL;
                 HEAP_DELETE_VOBJ(n->obj);
-                if (n->eff != NULL && func_02065748(data_0214a420, n->eff)) {
+                if (n->eff != NULL && EffectMgr_Contains(data_0214a420, n->eff)) {
                     LFLD(s32, n->eff, 0x1c) = 4;
                 }
                 n->eff = NULL;

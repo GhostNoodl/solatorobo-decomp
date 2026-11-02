@@ -406,7 +406,7 @@ void func_ov014_021fb198(Ov014Act_021fa6a0 *self) {
     }
 }
 
-extern void func_020639d4(void *e, s32 a, s32 b);
+extern void EffectObj_AddSndCue(void *e, s32 a, s32 b);
 extern void *Target_Get(void *p);
 
 void func_ov014_021fb554(Ov014Act_021fa6a0 *self) {
@@ -423,7 +423,7 @@ void func_ov014_021fb554(Ov014Act_021fa6a0 *self) {
             Ov014Actor *e;
             VEC_Add(&self->pos, &data_ov014_02216444, &v);
             e = func_02065f88(0x195, &v);
-            func_020639d4(e, 0x36, 0);
+            EffectObj_AddSndCue(e, 0x36, 0);
             self->unk_120 = e->unk_24;
             self->unk_40->state++;
         }
@@ -536,7 +536,7 @@ extern "C" {
 extern const s32 data_ov014_022164e8[];
 extern u8 data_ov014_022172c4[];
 extern void func_ov000_021911c8(void *a, s32 b);
-extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 msg);
+extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern void func_0203f364(Ov014Sub48 *p);
 extern void func_ov003_021d6a3c(Ov014Actor *self, s32 a, s32 b, s32 c);
 extern Ov014Actor *func_ov000_02192b24(Ov014SpawnDesc *desc);
@@ -576,8 +576,8 @@ void func_ov014_021fb948(Ov014Act_021fa6a0 *self) {
         func_ov000_02190cb0((u8 *)self + 0x25c, anim, 0x111, 0);
         func_ov000_021911c8((u8 *)self + 0x25c, 0x1ec);
         func_ov000_021915a0((u8 *)self + 0x25c);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4821, 0x15);
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4822, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4821, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4822, 0x15);
         {
             Ov014Sub48 *m = self->unk_48;
             m->unk_9a_0 = 0;
@@ -766,14 +766,14 @@ extern char data_ov014_022171df[];
 extern char data_ov014_022171f1[];
 extern char data_ov014_022171fd[];
 extern Ov014V *EffectGroup_Create(const char *arc, const char *name, Ov014Vec *pos);
-extern Ov014V *func_02066774(const void *a, const void *b, s32 c, Ov014Vec *pos);
+extern Ov014V *Effect3D_Create(const void *a, const void *b, s32 c, Ov014Vec *pos);
 extern void MIi_CpuClear32(u32 data, void *dst, u32 size);
 extern void func_ov003_021da9ac(void *p, s32 id, void *e);
-extern BOOL func_ov003_021daa0c(void *p, s32 id);
-extern void func_ov003_021daa6c(void *p, s32 id);
+extern BOOL Ov003FxList_Has(void *p, s32 id);
+extern void Ov003FxList_Kill(void *p, s32 id);
 extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
 extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
-extern void func_020639d4(void *e, s32 a, s32 b);
+extern void EffectObj_AddSndCue(void *e, s32 a, s32 b);
 extern BOOL func_ov000_0219aca8(Ov014Obj *a, Ov014Obj *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
 
@@ -787,7 +787,7 @@ void func_ov014_021fbf0c(Ov014ActEx_021fbd64 *self) {
         MIi_CpuClear32(0xffffffff, (u8 *)e + 0x84, 0x40);
         func_ov003_021da9ac(self->unk_d0, 0xff, e);
         func_0204a028(data_02097e4c, 0x11, &self->pos, 0xa);
-        e = func_02066774(data_ov014_022171d0, data_ov014_022171f1, 0, &self->pos);
+        e = Effect3D_Create(data_ov014_022171d0, data_ov014_022171f1, 0, &self->pos);
         e->v24(0, 0xcd, 0);
         e->v0c(0x2000);
         FLD(u8, e, 0x28) = 0;
@@ -796,19 +796,19 @@ void func_ov014_021fbf0c(Ov014ActEx_021fbd64 *self) {
         func_ov003_021da9ac(self->unk_d0, 0xfe, e);
         self->unk_40->state++;
     case 1:
-        if (func_ov003_021daa0c(self->unk_d0, 0xfe)) {
+        if (Ov003FxList_Has(self->unk_d0, 0xfe)) {
             break;
         }
-        func_ov003_021daa6c(self->unk_d0, 0xff);
+        Ov003FxList_Kill(self->unk_d0, 0xff);
         self->unk_40->state++;
     case 2: {
         FieldState *g;
-        e = func_02066774(data_ov014_022171d0, data_ov014_022171fd, 0, &self->pos);
+        e = Effect3D_Create(data_ov014_022171d0, data_ov014_022171fd, 0, &self->pos);
         e->v14(0x14cd, 0x1800, 0x14cd);
         FLD(s32, e, 0x3c) = 0x1800;
         FLD(s32, e, 0x7c) = FX_Div(0x1e000, 0x1f000);
         FLD(u8, e, 0x28) = 0;
-        func_020639d4(e, 0x79, 3);
+        EffectObj_AddSndCue(e, 0x79, 3);
         func_ov003_021da9ac(self->unk_d0, 0xfd, e);
         func_02049f44(data_02097e4c, 0x19, &self->pos, 0x140);
         g = data_ov000_021ccd54;
@@ -832,7 +832,7 @@ void func_ov014_021fbf0c(Ov014ActEx_021fbd64 *self) {
                 func_02049f44(data_02097e4c, 0x10, &v, 0);
             }
         }
-        if (!func_ov003_021daa0c(self->unk_d0, 0xfd)) {
+        if (!Ov003FxList_Has(self->unk_d0, 0xfd)) {
             func_ov000_02198360(self->unk_40, 0x15, 0);
         }
         break;

@@ -2,14 +2,14 @@
 
 extern "C" {
 
-extern void func_ov003_021daab0(void *p);
+extern void Ov003FxList_KillAll(void *p);
 
 void func_ov014_022083a4(Ov014ActEx_0220774c *self) {
     FieldState *g;
     if (self->unk_40->state != 0) {
         return;
     }
-    func_ov003_021daab0(self->unk_d8);
+    Ov003FxList_KillAll(self->unk_d8);
     g = data_ov000_021ccd54;
     g->cam.base.shakeRandom = 0;
     g->cam.base.shakeTime = 0;

@@ -48,7 +48,7 @@ void func_ov000_021b06dc(u8 *self);
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_ov000_0216adc0(void *p, s32 a, u16 b);
 void func_ov000_021b3d78(u8 *self);
-void func_ov000_0218c208(void *a, void *pos, u16 ang);
+void Obj0218c208_AddPoint(void *a, void *pos, u16 ang);
 void func_ov000_0219a088(void *p);
 void func_ov000_0219a0b0(void *p, u8 *self);
 void func_ov000_0216b508(void *p, s32 a, BOOL b);
@@ -263,7 +263,7 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
         }
     }
     func_ov000_021b3d78((u8 *)self);
-    func_ov000_0218c208(data_ov000_021ccd64, &self->pos, self->rot_y);
+    Obj0218c208_AddPoint(data_ov000_021ccd64, &self->pos, self->rot_y);
     if (self->unk_b24_2 != 1) {
         u8 *c = data_ov000_021ccd6c;
         LFLD(s32, c, 0x24) = self->pos.x;

@@ -25,8 +25,8 @@ extern char data_0208c4af[];
 extern u32 data_0208c23c[];
 extern u32 data_0208c2e4[];
 extern void func_02063a34(EffectObj *obj);
-extern void func_02064dd8(EffectGroup *g);
-extern void func_02064d74(EffectGroup *g, const char *prefix, const char *name, const char *suffix);
+extern void EffectGroup_Reset(EffectGroup *g);
+extern void EffectGroup_SetName(EffectGroup *g, const char *prefix, const char *name, const char *suffix);
 extern char data_0208c4b6[];
 extern char data_0208c4c2[];
 extern char data_0208c4ce[];
@@ -56,14 +56,14 @@ extern u32 data_0208c290[];
 extern void func_02063f90(Effect3D *e);
 extern char data_0208c427[];
 extern char data_0208c436[];
-extern void func_020639d4(EffectObj *obj, s32 id, s32 frame);
+extern void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
 extern EffectGroup *EffectGroup_Create(const char *arc, const char *name, const VecFx32 *pos);
 
 EffectGroup *func_020671e8(const VecFx32 *pos) {
     EffectGroup *g = EffectGroup_Create(data_0208c427, data_0208c436, pos);
     g->unk_20 = 0x2717;
-    func_020639d4(g, 0x5e, 2);
-    func_020639d4(g, 0x5e, 0x14);
+    EffectObj_AddSndCue(g, 0x5e, 2);
+    EffectObj_AddSndCue(g, 0x5e, 0x14);
     return g;
 }
 
@@ -73,7 +73,7 @@ static inline EffectGroup *Effect6_GroupNew(void) {
         *(u32 **)g = data_0208c2e4;
         func_02063a34(g);
         *(u32 **)g = data_0208c23c;
-        func_02064dd8(g);
+        EffectGroup_Reset(g);
     }
     return g;
 }
@@ -165,12 +165,12 @@ EffectGroup *func_0206723c(s32 id, const VecFx32 *pos) {
         name = data_0208c4a2;
         break;
     }
-    func_02064d74(g, data_0208c4a8, name, data_0208c4af);
+    EffectGroup_SetName(g, data_0208c4a8, name, data_0208c4af);
     if (scale != 0x1000) {
         g->SetScaleXYZ(scale, scale, scale);
     }
     if (cue >= 0) {
-        func_020639d4(g, cue, frame);
+        EffectObj_AddSndCue(g, cue, frame);
     }
     g->unk_20 = id;
     g->SetPos(pos);
@@ -242,21 +242,21 @@ Effect3D *func_020674dc(s32 id, const VecFx32 *pos) {
     case 0x4b0:
         e->unk_28 = 0;
         name = data_0208c52e;
-        func_020639d4(e, 0x35, 0);
+        EffectObj_AddSndCue(e, 0x35, 0);
         break;
     case 0x322:
         name = data_0208c53a;
         break;
     case 0x384:
         name = data_0208c546;
-        func_020639d4(e, 0x36, 4);
+        EffectObj_AddSndCue(e, 0x36, 4);
         break;
     case 0x391:
         name = data_0208c552;
         break;
     case 0x389:
         name = data_0208c55e;
-        func_020639d4(e, 0x36, 4);
+        EffectObj_AddSndCue(e, 0x36, 4);
         break;
     case 0x385:
         e->unk_28 = 0;
@@ -294,25 +294,25 @@ Effect3D *func_020674dc(s32 id, const VecFx32 *pos) {
         break;
     case 0xc9:
         e->unk_28 = 0;
-        func_020639d4(e, 0x21, 4);
+        EffectObj_AddSndCue(e, 0x21, 4);
         Effect6_SetStr(e->arcName, EFFECT_STR(data_0208c5a6));
         name = data_0208c5b5;
         break;
     case 0x3e9:
         e->unk_28 = 0;
-        func_020639d4(e, 0x64, 6);
+        EffectObj_AddSndCue(e, 0x64, 6);
         Effect6_SetStr(e->anmName, EFFECT_STR(data_0208c5c1));
         name = data_0208c5c1;
         break;
     case 0x3ea:
         e->unk_28 = 0;
-        func_020639d4(e, 0x65, 6);
+        EffectObj_AddSndCue(e, 0x65, 6);
         Effect6_SetStr(e->anmName, EFFECT_STR(data_0208c5cd));
         name = data_0208c5c1;
         break;
     case 0x3eb:
         e->unk_28 = 0;
-        func_020639d4(e, 0x64, 6);
+        EffectObj_AddSndCue(e, 0x64, 6);
         Effect6_SetStr(e->anmName, EFFECT_STR(data_0208c5d9));
         name = data_0208c5d9;
         break;

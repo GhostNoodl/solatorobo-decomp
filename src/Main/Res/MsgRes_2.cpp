@@ -55,13 +55,13 @@ void func_0204c138(void) {
 }
 #pragma force_active reset
 
-void func_0204c158(void);
+void MsgRes_Create(void);
 
-void func_0204c214(void);
+void MsgRes_Delete(void);
 
 void *Heap_GetCurrent(void);
 
-void func_0204c284(void);
+void Heap_SetCurrentHi(void);
 
 MsgRes *MainVt_0208ba30_DtorDelete(MsgRes *res);
 

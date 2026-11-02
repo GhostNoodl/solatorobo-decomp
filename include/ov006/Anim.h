@@ -34,7 +34,7 @@ typedef struct ov006_AnimHolder {
 extern "C" {
 #endif
 
-void func_0204ca14(ov006_Anim *a, int b);
+void TextWin_InitLines(ov006_Anim *a, int b);
 
 #ifdef __cplusplus
 }
@@ -42,7 +42,7 @@ void func_0204ca14(ov006_Anim *a, int b);
 
 static inline void ov006_Anim_Start(ov006_Anim *s, int a) {
     s->unk24 = a;
-    s->unk4C = func_0204c4fc(s->unk28, s->unk38, s->unk24, (u32 *)s->unk44, (u32 *)s->unk48, s->unk37 != 0 ? TRUE : FALSE);
+    s->unk4C = Text_Measure(s->unk28, s->unk38, s->unk24, (u32 *)s->unk44, (u32 *)s->unk48, s->unk37 != 0 ? TRUE : FALSE);
     data_02097ce0->unk_004 = s->unk28;
 }
 
@@ -55,7 +55,7 @@ static inline void ov006_AnimHolder_Play(ov006_AnimHolder *self, int a, int b) {
     self->unk28->unk2C = b;
     self->unk28->unk34 = 0;
     ov006_Anim_Start(self->unk28, a);
-    func_0204ca14(self->unk28, 0x10);
+    TextWin_InitLines(self->unk28, 0x10);
     self->unk28->unk4 |= 4;
 }
 

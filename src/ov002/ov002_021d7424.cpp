@@ -42,15 +42,15 @@ void *Ov002Vt_021efe3c_Dtor(void *self) {
         HEAP_POP(saved);
     }
     if (FIELD(self, 0x20, void *) != NULL) {
-        func_0203df0c(FIELD(self, 0x20, void *));
+        Heap_FreeHi(FIELD(self, 0x20, void *));
         FIELD(self, 0x20, void *) = NULL;
     }
     if (FIELD(self, 0x24, void *) != NULL) {
-        func_0203df0c(FIELD(self, 0x24, void *));
+        Heap_FreeHi(FIELD(self, 0x24, void *));
         FIELD(self, 0x24, void *) = NULL;
     }
     if (FIELD(self, 0x28, void *) != NULL) {
-        func_0203df0c(FIELD(self, 0x28, void *));
+        Heap_FreeHi(FIELD(self, 0x28, void *));
         FIELD(self, 0x28, void *) = NULL;
     }
     func_0203f0b4(*FIELD(self, 0x10, void **));
@@ -69,15 +69,15 @@ void *Ov002Vt_021efe3c_DtorDelete(void *self) {
         HEAP_POP(saved);
     }
     if (FIELD(self, 0x20, void *) != NULL) {
-        func_0203df0c(FIELD(self, 0x20, void *));
+        Heap_FreeHi(FIELD(self, 0x20, void *));
         FIELD(self, 0x20, void *) = NULL;
     }
     if (FIELD(self, 0x24, void *) != NULL) {
-        func_0203df0c(FIELD(self, 0x24, void *));
+        Heap_FreeHi(FIELD(self, 0x24, void *));
         FIELD(self, 0x24, void *) = NULL;
     }
     if (FIELD(self, 0x28, void *) != NULL) {
-        func_0203df0c(FIELD(self, 0x28, void *));
+        Heap_FreeHi(FIELD(self, 0x28, void *));
         FIELD(self, 0x28, void *) = NULL;
     }
     func_0203f0b4(*FIELD(self, 0x10, void **));

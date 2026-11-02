@@ -55,7 +55,7 @@ extern Ov003PropInfo *func_0206fef8(u16 id);
 extern void *func_0207011c(u16 id);
 extern Ov003PropRes *func_ov000_0218e9c4(void *p);
 extern Ov003PropShadow *func_ov000_021919c8(void *p);
-extern void func_ov000_02191b70(Ov003PropShadow *p);
+extern void Shadow_Load(Ov003PropShadow *p);
 extern void func_ov000_0218f074(Ov003PropRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
 
 Ov003Prop *func_ov003_021f1420(Ov003PropDef *def) {
@@ -126,6 +126,6 @@ void Ov003ActVt_021fa1b8_Init(Ov003Prop *self) {
         sh = func_ov000_021919c8(sh);
     }
     self->shadow = sh;
-    func_ov000_02191b70(sh);
+    Shadow_Load(sh);
 }
 }

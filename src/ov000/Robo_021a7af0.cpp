@@ -93,7 +93,7 @@ void func_ov000_021911c8(void *model, s16 speed);
 s32 func_ov000_02198360(void *history, u8 value, BOOL force);
 u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
 void func_ov000_021987b8(void *body, u8 keep, VecFx32 *pos, const void *rot);
-BOOL func_01ffc584(void *a, void *b, s32 c, s32 d);
+BOOL Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);
 s32 **func_ov000_02190a30(void *model, u32 i);
 VObj *func_02065f88(s32 id, void *pos);
 void *func_02049a48(void *mgr, s32 id, s32 volume, s32 targetVolume, s32 frame);
@@ -309,7 +309,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
                     s->timer--;
                 }
             }
-            if (ST(self)->timer == 0 || func_01ffc584(t + 0x70, &v, LFLD(s32, t, 0x64) * 2 + 0x99a, 0x3800)) {
+            if (ST(self)->timer == 0 || Hit_DiffInCylinder(t + 0x70, &v, LFLD(s32, t, 0x64) * 2 + 0x99a, 0x3800)) {
                 ST(self)->st++;
                 return;
             }
@@ -396,7 +396,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
         {
             State_021a7af0 *s = ST(self);
             s->timer++;
-            if (s->timer < 0x14 && !func_01ffc584(t + 0x70, &v, r + LFLD(s32, t, 0x64), h)) {
+            if (s->timer < 0x14 && !Hit_DiffInCylinder(t + 0x70, &v, r + LFLD(s32, t, 0x64), h)) {
                 u32 fl;
                 f = FALSE;
                 func_ov000_02190cb0(self->model, data_ov000_021cc61e, 0x400, 0);
@@ -465,7 +465,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
             r += 0x400;
             h += 0x429;
         }
-        if (!func_01ffc584(t + 0x70, &v, r + LFLD(s32, t, 0x64), h)) {
+        if (!Hit_DiffInCylinder(t + 0x70, &v, r + LFLD(s32, t, 0x64), h)) {
             ST(self)->st = 0x1e;
             return;
         }
@@ -605,7 +605,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
             r += 0x400;
             h += 0x429;
         }
-        if (!func_01ffc584(t + 0x70, &v, r + LFLD(s32, t, 0x64), h)) {
+        if (!Hit_DiffInCylinder(t + 0x70, &v, r + LFLD(s32, t, 0x64), h)) {
             ST(self)->st = 0x1e;
             return;
         }

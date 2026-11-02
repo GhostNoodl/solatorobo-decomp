@@ -326,7 +326,7 @@ extern void *data_0214a420;
 extern void func_ov003_021d0c1c(void *self);
 extern void *func_ov003_021d0edc(void *self);
 extern void *Ov003Vt_021f7d10_Ctor(void *p);
-extern void *func_ov010_02201914(void *p);
+extern void *Ov010Vt_0220fe1c_Ctor(void *p);
 extern void *Ov003Vt_021f79a8_Ctor(void *p);
 extern void func_ov003_021d8f24(void *p);
 extern void *Ov003Vt_021f7cf4_Ctor(void *p);
@@ -337,15 +337,15 @@ extern void func_ov003_021cf39c(s32 a, const char *b);
 extern void func_ov010_021fedd4(Obj021fa860 *self);
 extern void SndMgr_StopSeqArc(void *a, s32 b);
 extern void func_ov010_021fee70(Obj021fa860 *self);
-extern void *func_ov003_021cf428(void *p);
+extern void *Ov003Group_Dtor(void *p);
 extern void *Ov003Vt_021f7cf4_Dtor(void *p);
 extern void func_ov003_021d8f34(void *p);
 extern void *Ov003Vt_021f79a8_Dtor(void *p);
-extern void *func_ov010_02201944(void *p);
+extern void *Ov010Vt_0220fe1c_Dtor(void *p);
 extern void *Ov003Vt_021f7d10_Dtor(void *p);
-extern void func_02065804(void *a, s32 b);
+extern void EffectMgr_Kill(void *a, s32 b);
 extern BOOL func_ov000_0218cf5c(void *self);
-extern void func_02049564(void *a, s32 b, s32 c);
+extern void SndMgr_LoadHeapState(void *a, s32 b, s32 c);
 extern void func_02049678(void *a, s32 b, s32 c, s32 d);
 extern BOOL SndMgr_IsLoadDone(void *a);
 
@@ -354,7 +354,7 @@ void *Ov010ActVt_0220fccc_Ctor(Obj021fa860 *self) {
     *(void * *)self = data_ov010_0220fccc;
     self->unk_138.b0 = 0;
     Ov003Vt_021f7d10_Ctor((u8 *)self + 0x150);
-    func_ov010_02201914((u8 *)self + 0x17c);
+    Ov010Vt_0220fe1c_Ctor((u8 *)self + 0x17c);
     Ov003Vt_021f79a8_Ctor((u8 *)self + 0x19c);
     func_ov003_021d8f24((u8 *)self + 0x1ac);
     Ov003Vt_021f7cf4_Ctor((u8 *)self + 0x1c0);
@@ -374,14 +374,14 @@ static inline void Ov010_021fa91c_Body(Obj021fa860 *self) {
     func_ov003_021cf3fc(0);
     SndMgr_StopSeqArc(data_02097e4c, self->unk_11c);
     func_ov010_021fee70(self);
-    func_ov003_021cf428((u8 *)self + 0x1d0);
+    Ov003Group_Dtor((u8 *)self + 0x1d0);
     Ov003Vt_021f7cf4_Dtor((u8 *)self + 0x1c0);
     func_ov003_021d8f34((u8 *)self + 0x1ac);
     Ov003Vt_021f79a8_Dtor((u8 *)self + 0x19c);
-    func_ov010_02201944((u8 *)self + 0x17c);
+    Ov010Vt_0220fe1c_Dtor((u8 *)self + 0x17c);
     Ov003Vt_021f7d10_Dtor((u8 *)self + 0x150);
     if (self->unk_138.b0) {
-        func_02065804(data_0214a420, self->unk_148);
+        EffectMgr_Kill(data_0214a420, self->unk_148);
         self->unk_138.b0 = 0;
     }
     func_ov003_021d0edc(self);
@@ -402,7 +402,7 @@ BOOL Ov010ActVt_0220fccc_IsReady(Obj021fa860 *self) {
     BOOL r = func_ov000_0218cf5c(self);
     if (!self->unk_f0.b0) {
         self->unk_f0.b0 = 1;
-        func_02049564(data_02097e4c, 1, 1);
+        SndMgr_LoadHeapState(data_02097e4c, 1, 1);
         func_02049678(data_02097e4c, 4, 0xb, -1);
         r = FALSE;
     } else if (SndMgr_IsLoadDone(data_02097e4c) == 0) {
@@ -636,9 +636,9 @@ extern void func_ov003_021d112c(void *self);
 extern void func_ov003_021cf404(s32 a);
 extern void func_ov003_021cf400(s32 a);
 extern Ov010Vec func_ov010_021fa7e0(void *a);
-extern BOOL func_ov003_021d8198(void *p);
+extern BOOL Ov003TickerSet_Init(void *p);
 extern int func_ov003_021cf330(void *p, const char *name, u8 v);
-extern BOOL func_ov010_022019ac(void *p);
+extern BOOL Ov010TaskList_Init(void *p);
 extern BOOL func_ov003_021d8f4c(void *p);
 extern void func_ov003_021d95e8(void *p, void *tbl, u16 n);
 extern void func_0203f2b8(void *p);
@@ -646,7 +646,7 @@ extern BOOL Ov003StateMachine_Init(void *p);
 extern void func_ov003_021d8a30(void *p, u8 id, void *st);
 extern void *func_ov010_02200d94(void *p);
 extern BOOL func_ov010_02200dcc(void *p, u16 a, u16 b, u8 c, u16 d);
-extern void *func_ov000_02198328(void *p);
+extern void *History_Init(void *p);
 extern void func_ov003_021da48c(void *p, s32 a);
 extern void *Ov003Vt_021f7cd8_Ctor(void *p);
 extern BOOL func_ov003_021d8c10(void *p);
@@ -711,7 +711,7 @@ static inline void *Ov010e_NewE(void) {
         FLD(Ov010Blk12, o, 0x14) = *(Ov010Blk12 *)&t;
         FLD(Ov010Blk12, o, 0x20) = *(Ov010Blk12 *)&t;
         FLD(Ov010Blk12, o, 0x2c) = *(Ov010Blk12 *)&t;
-        func_ov000_02198328((u8 *)o + 0x38);
+        History_Init((u8 *)o + 0x38);
         func_ov003_021da48c((u8 *)o + 0x38, 0);
     }
     return o;
@@ -750,9 +750,9 @@ void Ov010ActVt_0220fccc_Start(Obj021fa860 *self) {
     self->unk_13c = 0;
     self->unk_140 = 0;
     self->unk_148 = 0;
-    func_ov003_021d8198((u8 *)self + 0x150);
+    Ov003TickerSet_Init((u8 *)self + 0x150);
     func_ov003_021cf330((u8 *)self + 0x19c, data_ov010_0220fc0f, data_ov003_021f4340);
-    func_ov010_022019ac((u8 *)self + 0x17c);
+    Ov010TaskList_Init((u8 *)self + 0x17c);
     func_ov003_021d8f4c((u8 *)self + 0x1ac);
     func_ov003_021d95e8((u8 *)self + 0x1ac, data_ov010_0220ee6c, 0x2a);
     {
@@ -1045,7 +1045,7 @@ extern "C" {
 extern u8 data_ov010_0220edd4[];
 extern BOOL func_ov003_021da03c(void *self);
 extern BOOL func_ov003_021d98a0(void *p);
-extern BOOL func_ov003_021d984c(void *p, void *a);
+extern BOOL Ov003Sequence_HasEntries(void *p, void *a);
 extern void func_ov003_021d8fc0(void *p);
 extern void func_ov003_021d95e8(void *p, void *a, s32 b);
 extern void func_ov003_021d97fc(void *p, s32 a);
@@ -1067,7 +1067,7 @@ void Ov010ActVt_0220fccc_Update(Obj021fa860 *self) {
         return;
     }
     a = func_ov003_021d98a0((u8 *)self + 0x1ac) ? FALSE : TRUE;
-    b = func_ov003_021d984c((u8 *)self + 0x1ac, data_ov010_0220edd4) ? FALSE : TRUE;
+    b = Ov003Sequence_HasEntries((u8 *)self + 0x1ac, data_ov010_0220edd4) ? FALSE : TRUE;
     func_ov003_021d8fc0((u8 *)self + 0x1ac);
     if (a && b) {
         u16 *hp = self->hp;
@@ -1289,7 +1289,7 @@ extern u16 Ov003Vec_Pitch(Ov010Vec *a);
 extern BOOL Ov003Vec_Equal(void *a, const Ov010Vec *b);
 extern void func_ov010_02201b48(void *p);
 extern void *func_ov010_02201ad4(void *p, void *fn, u32 time);
-extern void func_ov010_02201c9c(void);
+extern void Ov010Vt_0220fe08_New(void);
 extern void func_ov010_02201eac(void *t, u16 a, u16 id, const Ov010Vec *v0, const Ov010Vec *v1);
 extern void func_ov010_02201bf4(void *p);
 extern BOOL func_ov010_02201c5c(void *p);
@@ -1446,7 +1446,7 @@ void func_ov010_021fbda0(Obj021fa860 *self) {
         Ov010Fns2 fns = *(const Ov010Fns2 *)data_ov010_0220ec0c;
         id = pl->id;
         for (i = 0; i < 2; i++) {
-            void *t = func_ov010_02201ad4((u8 *)self + 0x17c, (void *)func_ov010_02201c9c, i * 15);
+            void *t = func_ov010_02201ad4((u8 *)self + 0x17c, (void *)Ov010Vt_0220fe08_New, i * 15);
             *(Ov010Blk12 *)&r = ((Ov010OfsFn)fns.f[i])(self->unk_fc->anim1);
             func_ov010_02201eac(t, id, self->id, &self->unk_fc->b, &r);
         }
@@ -1497,7 +1497,7 @@ void func_ov010_021fbda0(Obj021fa860 *self) {
 
 extern void *data_02097e4c;
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-extern void *func_ov010_02201f18(void);
+extern void *Ov010Vt_0220fdf4_New(void);
 extern void func_ov010_02202074(void *t, u16 a, u16 id, const Ov010Vec *v0, const Ov010Vec *v1);
 extern void VEC_MultAdd(s32 s, const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *out);
 extern s32 VEC_Mag(const Ov010Vec *v);
@@ -1512,8 +1512,8 @@ extern s32 VEC_Distance(const Ov010Vec *a, const Ov010Vec *b);
 extern void func_ov010_022016a0(void *p, Ov010Vec *a, Ov010Vec *b, s32 c);
 extern void func_ov010_02201830(void *p, Ov010Vec *a);
 extern void func_ov010_02201898(void *p, Ov010Vec *a);
-extern void func_ov010_02201700(void *p);
-extern BOOL func_ov010_0220180c(void *p);
+extern void Ov010BeamSet_Stop(void *p);
+extern BOOL Ov010BeamSet_IsDone(void *p);
 extern void Actor_TurnToPos(void *self, void *t, s32 a);
 
 struct Ov010Bits16 {
@@ -1569,7 +1569,7 @@ void func_ov010_021fc4ac(Obj021fa860 *self) {
             ofs.x = -0x1333;
             ofs.y = 0x8000;
             ofs.z = 0x2666;
-            t = func_ov010_02201ad4((u8 *)self + 0x17c, (void *)func_ov010_02201f18, i * 15 + 0x50);
+            t = func_ov010_02201ad4((u8 *)self + 0x17c, (void *)Ov010Vt_0220fdf4_New, i * 15 + 0x50);
             func_ov010_02202074(t, pl->id, self->id, &rot, &ofs);
         }
         self->fsm->st = 10;
@@ -1760,11 +1760,11 @@ void func_ov010_021fca40(Obj021fa860 *self) {
                 p.y = a->pos.y;
                 p.z = a->pos.z;
                 if (VEC_Distance(&p, &self->unk_84) > 0x10000) {
-                    func_ov010_02201700(self->unk_100);
+                    Ov010BeamSet_Stop(self->unk_100);
                 }
             }
         }
-        if (func_ov010_0220180c(self->unk_100)) {
+        if (Ov010BeamSet_IsDone(self->unk_100)) {
             self->fsm->st = 0x3c;
         }
         break;
@@ -1829,7 +1829,7 @@ extern void func_ov010_0220172c(void *p);
 extern void func_ov000_02191418(void *a, s32 b, s32 c);
 extern void func_ov003_021d85c8(void *p, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov003_021da108(void *t, s32 a, s32 b, s32 c, s32 d);
-extern BOOL func_ov003_021d984c(void *p, void *tbl);
+extern BOOL Ov003Sequence_HasEntries(void *p, void *tbl);
 extern void func_ov003_021d95e8(void *p, void *tbl, s32 n);
 extern void func_ov003_021d97fc(void *p, s32 a);
 extern u16 func_01ffc128(u16 a, u16 b, s32 c, s32 d, s32 e);
@@ -1972,7 +1972,7 @@ void func_ov010_021fcf70(Obj021fa860 *self) {
             u16 *hp = self->hp;
             if ((hp[0] << 12) / hp[1] <= 0x333) {
                 Ov010e_Spawn(self);
-                if (!func_ov003_021d984c((u8 *)self + 0x1ac, data_ov010_0220edd4)) {
+                if (!Ov003Sequence_HasEntries((u8 *)self + 0x1ac, data_ov010_0220edd4)) {
                     func_ov003_021d95e8((u8 *)self + 0x1ac, data_ov010_0220edd4, 0x19);
                     func_ov003_021d97fc((u8 *)self + 0x1ac, 1);
                 }
@@ -1996,13 +1996,13 @@ void func_ov010_021fcf70(Obj021fa860 *self) {
     self->hp[5] = 5;
 }
 
-extern BOOL func_ov003_021d8b34(void *p, s32 a);
+extern BOOL Ov003StateMachine_IsState(void *p, s32 a);
 extern void func_ov003_021d8a7c(void *p, s32 a);
-extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
+extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern void func_0203cb78(s32 a, s32 b, s32 c);
 extern void *func_ov000_0219b71c(Ov010Vec *pos, Ov010Vec *s, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_02065804(void *a, s32 b);
+extern void EffectMgr_Kill(void *a, s32 b);
 extern void SndMgr_StopSeqArc(void *a, s32 b);
 extern void func_ov003_021d6a3c(void *self, s32 a, s32 b, s32 c);
 extern Ov010V *func_ov003_021da7e8(s32 id, void *src, const Ov010Vec *ofs);
@@ -2034,7 +2034,7 @@ static inline Ov010Vec Ov010f_AttachPos(Obj021fa860 *self) {
 void func_ov010_021fd694(Obj021fa860 *self) {
     switch (self->fsm->st) {
     case 0:
-        if (func_ov003_021d8b34((u8 *)self + 0x1c0, 1)) {
+        if (Ov003StateMachine_IsState((u8 *)self + 0x1c0, 1)) {
             Ov010e_Cmd((u8 *)self + 0x1c0, 2, 1);
         } else {
             func_ov003_021d8a7c((u8 *)self + 0x1c0, 3);
@@ -2065,7 +2065,7 @@ void func_ov010_021fd694(Obj021fa860 *self) {
             cam->active = 0;
             cam->decay = 0xf00;
         }
-        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4829, 0x15);
+        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4829, 0x15);
         self->fsm->st = 10;
         break;
     case 10:
@@ -2119,7 +2119,7 @@ void func_ov010_021fd694(Obj021fa860 *self) {
         break;
     case 0x1e: {
         Ov010V *e;
-        func_02065804(data_0214a420, self->unk_f4);
+        EffectMgr_Kill(data_0214a420, self->unk_f4);
         self->unk_f4 = 0;
         Ov010Vec pos2 = Ov010f_AttachPos(self);
         func_02065f88(4, &pos2)->v0c(0x3000);
@@ -2219,7 +2219,7 @@ struct Ov010Obj108 {
     u16 unk_0a;
 };
 
-extern void func_ov003_021d9e90(void *out, Ov010Vec *dir, void *in, s32 speed, s32 e);
+extern void Ov003Vec_MultAdd(void *out, Ov010Vec *dir, void *in, s32 speed, s32 e);
 
 struct Obj021fe084 {
     u8 unk_00[0x38];
@@ -2312,7 +2312,7 @@ void func_ov010_021fe084(Obj021fe084 *self) {
         self->unk_9c = v;
         func_ov003_021d9900(&d, 0x9fff, (Ov010Vec *)&data_ov010_0220ec38);
         func_ov003_021d9980(&d, self->unk_7e, &d);
-        func_ov003_021d9e90(&self->unk_70, &d, &self->unk_70, self->unk_9c, 0);
+        Ov003Vec_MultAdd(&self->unk_70, &d, &self->unk_70, self->unk_9c, 0);
         self->unk_40->timer++;
         if (self->unk_40->timer > 60) {
             self->unk_40->timer = 0;
@@ -2720,7 +2720,7 @@ extern void func_ov003_021cf404(s32 a);
 extern void func_ov003_021cf400(s32 a);
 extern void *func_ov010_02200db8(void *p);
 extern void func_ov003_021d8fa8(void *p);
-extern void func_ov003_021cf480(void *p);
+extern void Ov003Group_Release(void *p);
 extern void func_ov010_021fedd4(Obj021fa860 *self);
 
 static inline void Ov010_FreeV(Obj021fa860 *self, u32 off) {
@@ -2740,7 +2740,7 @@ void func_ov010_021fee70(Obj021fa860 *self) {
     u32 saved;
     func_ov003_021cf404(0);
     func_ov003_021cf400(0);
-    func_02065804(data_0214a420, self->unk_f4);
+    EffectMgr_Kill(data_0214a420, self->unk_f4);
     self->unk_f4 = 0;
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
@@ -2770,7 +2770,7 @@ void func_ov010_021fee70(Obj021fa860 *self) {
     Ov010_FreeV(self, 0x108);
     Ov010_FreeV(self, 0x10c);
     if (self->unk_138.b0) {
-        func_02065804(data_0214a420, self->unk_148);
+        EffectMgr_Kill(data_0214a420, self->unk_148);
         self->unk_138.b0 = 0;
     }
     ((Ov010V *)((u8 *)self + 0x150))->v08();
@@ -2778,7 +2778,7 @@ void func_ov010_021fee70(Obj021fa860 *self) {
     ((Ov010V *)((u8 *)self + 0x19c))->v08();
     func_ov003_021d8fa8((u8 *)self + 0x1ac);
     ((Ov010V *)((u8 *)self + 0x1c0))->v08();
-    func_ov003_021cf480((u8 *)self + 0x1d0);
+    Ov003Group_Release((u8 *)self + 0x1d0);
     func_ov010_021fedd4(self);
 }
 

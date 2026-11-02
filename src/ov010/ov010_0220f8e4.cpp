@@ -145,7 +145,7 @@ extern void *ActorEx_Ctor(void *self);
 extern void *func_ov000_0219429c(void *self);
 extern void *Ov003Vt_021f79a8_Ctor(void *p);
 extern void *Ov003Vt_021f79a8_Dtor(void *p);
-extern void func_02065860(void *a, s32 b);
+extern void EffectMgr_StopLoop(void *a, s32 b);
 extern void MTX_RotZ33_(void *m, s32 s, s32 c);
 extern void MTX_RotX33_(void *m, s32 s, s32 c);
 extern void MTX_RotY33_(void *m, s32 s, s32 c);
@@ -184,8 +184,8 @@ static inline void Ov010_022020c8_Dtor(void *self) {
         if (s != NULL) {
             if (s->b0) {
                 s->b0 = 0;
-                func_02065860(data_0214a420, s->unk_0c);
-                func_02065860(data_0214a420, s->unk_10);
+                EffectMgr_StopLoop(data_0214a420, s->unk_0c);
+                EffectMgr_StopLoop(data_0214a420, s->unk_10);
                 s->unk_0c = 0;
                 s->unk_10 = 0;
             }
@@ -590,7 +590,7 @@ extern void *data_0214a420;
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd68;
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-extern void func_02065860(void *a, void *b);
+extern void EffectMgr_StopLoop(void *a, void *b);
 extern void *func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
 extern void *func_0204a028(void *mgr, s32 id, const Ov010Vec *pos, s32 a);
 extern void VEC_MultAdd(s32 s, const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *out);
@@ -603,7 +603,7 @@ extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern u16 Ov003Vec_Pitch(Ov010Vec *v);
 extern u16 Ov003Vec_Yaw(const Ov010Vec *v);
 extern void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-extern BOOL func_01ffc198(const Ov010Vec *a, const Ov010Vec *b, s32 r);
+extern BOOL Hit_DiffInSphere(const Ov010Vec *a, const Ov010Vec *b, s32 r);
 extern void func_ov010_02203bf8(Ov010Trail *p);
 
 static inline s32 Ov010t_FxMul64(s32 a, s64 b) {
@@ -640,7 +640,7 @@ void func_ov010_02202d9c(Obj022020c8 *self) {
         s = (Ov010Trail *)self->unk_d8;
         if (s->b0) {
             if (s->b2) {
-                func_02065860(data_0214a420, s->unk_10);
+                EffectMgr_StopLoop(data_0214a420, s->unk_10);
                 s->unk_10 = NULL;
             }
             s->b2 = 1;
@@ -792,7 +792,7 @@ void func_ov010_02202d9c(Obj022020c8 *self) {
         if (self->hit->unk_50 & 0x20000000) {
             hit = TRUE;
         }
-        r = func_01ffc198(&FLD(Ov010Vec, tgt, 0x70), &self->pos, self->radius + FLD(s32, tgt, 0x64));
+        r = Hit_DiffInSphere(&FLD(Ov010Vec, tgt, 0x70), &self->pos, self->radius + FLD(s32, tgt, 0x64));
         if (hit || r) {
             done = TRUE;
         }
@@ -845,7 +845,7 @@ extern void *data_0214a420;
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
-extern void func_02065804(void *a, s32 b);
+extern void EffectMgr_Kill(void *a, s32 b);
 extern void func_ov010_02203bf8(Ov010FxSet *p);
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
@@ -890,13 +890,13 @@ void func_ov010_022033d0(Obj022020c8 *self) {
         s = (Ov010FxSet *)self->unk_d8;
         if (s->b0) {
             s->b1 = 0;
-            func_02065804(data_0214a420, s->fx0);
+            EffectMgr_Kill(data_0214a420, s->fx0);
             s->fx0 = 0;
         }
         s = (Ov010FxSet *)self->unk_d8;
         if (s->b0) {
             s->b2 = 0;
-            func_02065804(data_0214a420, s->fx1);
+            EffectMgr_Kill(data_0214a420, s->fx1);
             s->fx1 = 0;
         }
         if ((Ov010Sub44 *)self->unk_44 != NULL) {
@@ -972,7 +972,7 @@ struct Ov010B0 {
 
 extern "C" {
 extern void *data_0214a420;
-extern void func_02065804(void *a, s32 b);
+extern void EffectMgr_Kill(void *a, s32 b);
 extern void func_ov000_02195d88(void *self);
 extern void func_ov000_02196060(void *self);
 extern void *Target_Get(void *p);
@@ -983,13 +983,13 @@ void func_ov010_0220366c(Obj022020c8 *self) {
         Ov010FxSet *s = (Ov010FxSet *)self->unk_d8;
         if (s->b0) {
             s->b1 = 0;
-            func_02065804(data_0214a420, s->fx0);
+            EffectMgr_Kill(data_0214a420, s->fx0);
             s->fx0 = 0;
         }
         s = (Ov010FxSet *)self->unk_d8;
         if (s->b0) {
             s->b2 = 0;
-            func_02065804(data_0214a420, s->fx1);
+            EffectMgr_Kill(data_0214a420, s->fx1);
             s->fx1 = 0;
         }
     }
@@ -1027,7 +1027,7 @@ extern s32 func_ov000_0219a510(void *self, u16 mask, Ov010Vec *pos, s32 r, s32 a
 extern void func_ov003_021f0c60(void *self, s32 a);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_ov003_021d9e90(Ov010Vec *a, Ov010Vec *b, Ov010Vec *c, s32 d, s32 e);
+extern void Ov003Vec_MultAdd(Ov010Vec *a, Ov010Vec *b, Ov010Vec *c, s32 d, s32 e);
 extern void HitSphere_Link(Ov010Sub48b *p);
 extern void func_0203f364(Ov010Sub48b *p);
 extern void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
@@ -1124,7 +1124,7 @@ void func_ov010_02203788(Obj022020c8 *self) {
         }
         self->speed = v;
     }
-    func_ov003_021d9e90(&self->pos, &self->unk_ec, &self->pos, self->speed, 0);
+    Ov003Vec_MultAdd(&self->pos, &self->unk_ec, &self->pos, self->speed, 0);
     if ((Ov010Sub48b *)self->hit != NULL) {
         Ov010Sub48b *o;
         BOOL f;
@@ -1193,7 +1193,7 @@ void func_ov010_02203f08(Ov010Fx *fx);
 extern void *data_0214a420;
 extern void *data_ov000_021ccd68;
 extern Ov010V *func_020657b0(void *a, s32 b);
-extern void func_02065860(void *a, s32 b);
+extern void EffectMgr_StopLoop(void *a, s32 b);
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *o);
 
@@ -1239,8 +1239,8 @@ void func_ov010_02203bf8(Ov010Glow *self) {
     }
     if (actor == NULL) {
         self->id = 0xffff;
-        func_02065860(data_0214a420, self->keyA);
-        func_02065860(data_0214a420, self->keyB);
+        EffectMgr_StopLoop(data_0214a420, self->keyA);
+        EffectMgr_StopLoop(data_0214a420, self->keyB);
         self->keyA = 0;
         self->keyB = 0;
         return;

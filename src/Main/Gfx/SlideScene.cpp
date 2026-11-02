@@ -95,18 +95,18 @@ extern u16 Pad_GetRelease(void);
 extern void func_02051a34(SlideScene *scene);
 extern void *func_02035d5c(const char *name);
 extern void *Heap_GetCurrent(void);
-extern void func_0204c284(void);
+extern void Heap_SetCurrentHi(void);
 extern Model *func_0204c9f8(Model *model);
 extern void Heap_SetCurrent(void *heap);
 extern BOOL func_0204e218(SlideScene *scene);
 extern Model *func_0204e238(void *model, const char *name, const char *file, int a);
-extern char *func_0204e28c(Model *model);
+extern char *Model_GetName(Model *model);
 extern void *func_0204e294(Model *model);
 extern void *func_02034d88(void *a, void *b);
 extern void func_020417e0(Model *model, void *res);
 extern void func_0204e29c(Model *model);
 extern void func_02054254(SlidePanel *panel);
-extern void func_02051f3c(SlidePanel *panel, u32 v);
+extern void Obj3DLayer_SetCur(SlidePanel *panel, u32 v);
 extern BOOL func_020544e4(SlidePanel *panel, BOOL sound);
 extern BOOL func_02035bd4(const char *name, void *arcName, u16 id);
 extern void *func_02035f30(const char *name, void *arcName, u16 id);
@@ -114,7 +114,7 @@ extern void func_02054b70(Model *model);
 extern void func_02054b80(Model *model);
 extern void func_02050e94(Model *model);
 extern void *func_0204e278(void *pltt);
-extern void func_02040c40(void *res, Model *src);
+extern void PlttRes_Load(void *res, Model *src);
 extern u32 *func_02054b90(void *pltt);
 extern void func_02054b98(void *dst, u32 size);
 extern void DC_FlushRange(const void *addr, u32 size);
@@ -125,23 +125,23 @@ extern BOOL func_02054b4c(int ch);
 extern BOOL func_02054f10(Model *model, u32 idx);
 extern void func_02055068(SlidePanel *panel, SlidePanel *prev);
 extern void func_020554e4(SlidePanel *panel);
-extern void func_02055654(SlideScene *scene);
-extern void func_0205567c(SlideScene *scene);
+extern void SlideCtrl_Lock(SlideScene *scene);
+extern void SlideCtrl_Unlock(SlideScene *scene);
 extern BOOL func_0204ffb0(int idx);
 extern s32 FX_Div(s32 a, s32 b);
 extern void func_020556a0(SlideHud *hud, s8 *text);
 extern void func_02055bbc(SlideScene *scene);
 extern void func_02055cbc(SlideScene *scene);
 extern void func_02052178(SlideScene *scene);
-extern BOOL func_020557f8(SlideScene *scene);
+extern BOOL FieldMsg_IsBusy(SlideScene *scene);
 extern BOOL func_02055aa4(SlideScene *scene);
 extern BOOL func_02055844(void);
-extern void func_02055870(void);
+extern void Field_ClearEvent(void);
 extern u16 Pad_GetTrig(void);
 extern BOOL func_02055898(void);
 extern void func_0205592c(SlideHud *hud);
 extern BOOL func_020559c8(SlideHud *hud);
-extern BOOL func_020559f8(s32 id);
+extern BOOL Field_IsEventQueued(s32 id);
 extern BOOL func_02055a4c(void);
 extern void func_02055a78(void);
 extern u8 *func_0204f354(void);
@@ -184,7 +184,7 @@ BOOL func_020534dc(SlideScene *scene) {
     if (!scene->loaded && func_02035d5c(data_0208cca0) != NULL) {
         scene->loaded = 1;
         heap = Heap_GetCurrent();
-        func_0204c284();
+        Heap_SetCurrentHi();
         model = scene->model;
         if (model != NULL) {
             if (model != NULL) {
@@ -207,7 +207,7 @@ BOOL func_020534dc(SlideScene *scene) {
             }
             scene->model = model;
         }
-        res = func_02035d5c(func_0204e28c(scene->model));
+        res = func_02035d5c(Model_GetName(scene->model));
         func_020417e0(scene->model, func_02034d88(res, func_0204e294(scene->model)));
         func_0204e29c(scene->model);
         func_02041d9c(scene->model, 0, 4);
@@ -222,21 +222,21 @@ BOOL func_020534dc(SlideScene *scene) {
         }
         if (!panel->opened && panel->flag20) {
             if (panel->visible == 1) {
-                func_02051f3c(panel, panel->next);
+                Obj3DLayer_SetCur(panel, panel->next);
                 if (func_020544e4(panel, TRUE)) {
                     break;
                 }
             }
-            if (!func_02035bd4(func_0204e28c(panel->nextModel), func_0204e294(panel->nextModel), 2)) {
+            if (!func_02035bd4(Model_GetName(panel->nextModel), func_0204e294(panel->nextModel), 2)) {
                 goto check;
             }
             model = panel->nextModel2;
             if (model != NULL) {
-                if (!func_02035bd4(func_0204e28c(model), func_0204e294(model), 2)) {
+                if (!func_02035bd4(Model_GetName(model), func_0204e294(model), 2)) {
                     goto check;
                 }
             }
-            res = func_02035f30(func_0204e28c(panel->nextModel), func_0204e294(panel->nextModel), 2);
+            res = func_02035f30(Model_GetName(panel->nextModel), func_0204e294(panel->nextModel), 2);
             func_02054254(panel);
             func_020417e0(panel->nextModel, func_02034d88(res, func_0204e294(panel->nextModel)));
             if (panel->flag22) {
@@ -255,7 +255,7 @@ BOOL func_020534dc(SlideScene *scene) {
                     pltt = func_0204e278(pltt);
                 }
                 panel->nextPltt = (PlttRes *)pltt;
-                func_02040c40(pltt, panel->nextModel);
+                PlttRes_Load(pltt, panel->nextModel);
                 buf = func_02054b90(panel->nextPltt);
                 func_02054b98((void *)buf[3], buf[2]);
                 DC_FlushRange((void *)buf[3], buf[2]);
@@ -264,7 +264,7 @@ BOOL func_020534dc(SlideScene *scene) {
             }
             model = panel->nextModel2;
             if (model != NULL) {
-                res = func_02035f30(func_0204e28c(model), func_0204e294(model), 2);
+                res = func_02035f30(Model_GetName(model), func_0204e294(model), 2);
                 func_020417e0(panel->nextModel2, func_02034d88(res, func_0204e294(panel->nextModel2)));
                 if (i == 3) {
                     func_02054b70(panel->nextModel2);
@@ -297,7 +297,7 @@ BOOL func_020534dc(SlideScene *scene) {
                     if (j <= 2) {
                         func_02055068(panel, other);
                     } else {
-                        func_02051f3c(other, panel->next);
+                        Obj3DLayer_SetCur(other, panel->next);
                         func_020544e4(other, TRUE);
                         panel->link = j + 1;
                     }
@@ -316,10 +316,10 @@ BOOL func_020534dc(SlideScene *scene) {
         if (scene->flag5 == 1 && scene->faded == 1 && panel->moving) {
             if (panel->frame == 0 && panel->model2 != NULL) {
                 if (panel->state == 0 || panel->state == 2) {
-                    func_02055654(scene);
+                    SlideCtrl_Lock(scene);
                 }
                 if (panel->state == 1 || panel->state == 3) {
-                    func_0205567c(scene);
+                    SlideCtrl_Unlock(scene);
                 }
             }
             if (func_0204ffb0(0)) { panel->frame = panel->frames; } else { panel->frame++; }
@@ -413,12 +413,12 @@ BOOL func_020534dc(SlideScene *scene) {
     func_02055cbc(scene);
     func_02052178(scene);
     scene->pressed = 0;
-    if (!scene->loaded || func_020557f8(scene)) {
+    if (!scene->loaded || FieldMsg_IsBusy(scene)) {
         return TRUE;
     }
     if (!func_02055aa4(scene)) {
         if (func_02055844()) {
-            func_02055870();
+            Field_ClearEvent();
         }
         return FALSE;
     }
@@ -480,7 +480,7 @@ BOOL func_020534dc(SlideScene *scene) {
         }
     }
     if (!scene->skip) {
-        if (func_020559f8(0x20)) {
+        if (Field_IsEventQueued(0x20)) {
             scene->End();
             if (!func_02055a4c()) {
                 func_02055a78();
@@ -511,7 +511,7 @@ BOOL func_020534dc(SlideScene *scene) {
             return TRUE;
         }
         if (func_02055844()) {
-            func_02055870();
+            Field_ClearEvent();
         }
         return FALSE;
     }

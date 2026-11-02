@@ -59,7 +59,7 @@ void func_ov003_021dacfc(Ov003FxList *self) {
     }
 }
 
-Ov003VecP func_ov003_021dadc0(const Ov003Vec *a, const Ov003Vec *b) {
+Ov003VecP Ov003Vec_DirXZ(const Ov003Vec *a, const Ov003Vec *b) {
     Ov003VecP d;
     d.x = b->x - a->x;
     d.z = b->z - a->z;

@@ -5,7 +5,7 @@ extern "C" {
 extern BOOL func_0206b1cc(EffectEmitter *em);
 extern EffectPtcl *func_0206b81c(EffectEmitter *em);
 
-void func_0206b744(EffectEmitter *em) {
+void EffectEmitter_ResetParams(EffectEmitter *em) {
     MIi_CpuClear32(0, &em->params, sizeof(em->params));
     em->params.duration = 0;
     em->params.unk_34 = 0;
@@ -30,7 +30,7 @@ static inline void EffectEmitter_AddPtcl(EffectEmitter *em, EffectPtcl *p) {
     }
 }
 
-BOOL func_0206b778(EffectEmitter *em) {
+BOOL MainVt_0208c8bc_Step(EffectEmitter *em) {
     BOOL ret;
     BOOL alive;
     EffectEmitter_AddPtcl(em, func_0206b81c(em));

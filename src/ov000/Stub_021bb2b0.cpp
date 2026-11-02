@@ -44,7 +44,7 @@ Fx021bb33c *func_02066c58(void);
 Fx021bb33c *func_02067058(void);
 Fx021bb33c *func_02067120(void);
 Fx021bb33c *func_02065f88(s32 id, const VecFx32 *pos);
-BOOL func_02065748(void *mgr, Fx021bb33c *fx);
+BOOL EffectMgr_Contains(void *mgr, Fx021bb33c *fx);
 void func_0203cb78(int duration, int mode, int ch);
 
 void func_ov000_021bb2b0(Obj021bb2b0 *self, s32 a, s16 *v, u8 c) {
@@ -204,7 +204,7 @@ BOOL func_ov000_021bb33c(Obj021bb2b0 *self) {
         }
         break;
     }
-    if (func_02065748(data_0214a420, self->fx)) {
+    if (EffectMgr_Contains(data_0214a420, self->fx)) {
         return TRUE;
     }
     self->fx = NULL;

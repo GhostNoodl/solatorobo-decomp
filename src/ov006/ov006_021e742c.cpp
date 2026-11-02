@@ -69,7 +69,7 @@ void func_ov006_021dc9c8(void *self);
 void func_ov006_021e9f80(ov006_Prop021e742c *self);
 void func_ov006_021e7fe4(ov006_Prop021e742c *self);
 void func_ov006_021e76d8(ov006_Prop021e742c *self);
-void func_ov000_0218c208(void *a, const VecFx32 *pos, u16 rot);
+void Obj0218c208_AddPoint(void *a, const VecFx32 *pos, u16 rot);
 
 static inline BOOL ov006_Prop021e742c_IsOver(ov006_Prop021e742c *self) {
     BOOL result = FALSE;
@@ -131,7 +131,7 @@ void func_ov006_021e742c(ov006_Prop021e742c *self) {
     func_ov006_021e9f80(self);
     func_ov006_021e7fe4(self);
     func_ov006_021e76d8(self);
-    func_ov000_0218c208(data_ov000_021ccd64, &self->pos, self->unk7E);
+    Obj0218c208_AddPoint(data_ov000_021ccd64, &self->pos, self->unk7E);
     {
         ov006_Work021e742c *w = self->work;
         w->unk4 = 0;

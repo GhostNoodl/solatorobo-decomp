@@ -653,7 +653,7 @@ void func_020599f4(ObjPool *pool, ObjPoolEntry *entry) {
     case 4: {
         void *saved;
         if (((void **)entry->obj)[0x88 / 4] != NULL) {
-            func_0203df0c(((void **)entry->obj)[0x88 / 4]);
+            Heap_FreeHi(((void **)entry->obj)[0x88 / 4]);
         }
         saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->heapHi;
@@ -661,7 +661,7 @@ void func_020599f4(ObjPool *pool, ObjPoolEntry *entry) {
             void *p = entry->obj;
             if (p != NULL) {
                 if (p != NULL) {
-                    func_0203f864(p);
+                    HitMesh_Detach(p);
                     Heap_Free(p);
                 }
                 entry->obj = NULL;
@@ -786,9 +786,9 @@ extern const BoxFaceAttr data_02082a10;
 extern const BoxFaceIdx data_02082a78;
 extern const BoxFaceIdx data_02082b08;
 
-extern void *func_0203de84(u32 size, u32 align);
+extern void *Heap_AllocHi(u32 size, u32 align);
 extern void func_0203ff94(BoxBounds *bounds, BoxTri *tri, u32 value, const VecFx16 *verts, const u32 (*indices)[3]);
-extern void func_0203f80c(void *mesh);
+extern void HitMesh_Init(void *mesh);
 extern void HitMesh_SetRes(BoxMesh *mesh, BoxMeshRes *res);
 extern void HitMesh_Link(BoxMesh *mesh);
 extern void HitMesh_SetMtx(BoxMesh *mesh, const MtxFx43 *mtx);
@@ -840,7 +840,7 @@ ObjPoolEntry *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int flip
         s = (s32)t;
     }
     e->kind = 4;
-    res = (BoxMeshRes *)func_0203de84(s + 0x20, 4);
+    res = (BoxMeshRes *)Heap_AllocHi(s + 0x20, 4);
     tail = (u32 *)((u8 *)res + s);
     tail[0] = 0;
     tail[1] = 0;
@@ -914,7 +914,7 @@ ObjPoolEntry *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int flip
     {
         BoxMesh *mesh = (BoxMesh *)Heap_Alloc(0x98);
         if (mesh != NULL) {
-            func_0203f80c(mesh);
+            HitMesh_Init(mesh);
         }
         e->obj = mesh;
     }
@@ -1296,7 +1296,7 @@ void func_0205a840(StageRes *res, const char *arcName, const char *name) {
     }
 }
 
-BOOL func_0205a9c8(StageRes *res) {
+BOOL StageRes_IsAllLoaded(StageRes *res) {
     BOOL loaded = TRUE;
     if (!res->IsLoaded()) {
         loaded = FALSE;
@@ -2659,7 +2659,7 @@ int func_0205cbf0(StageResSlot *slot) {
         l = Group_FindNode(data_ov000_021ccd64, slot->args[3]);
     } else if (!(id & 0x8000)) {
         o = Stage_FindObj3DPtr(id);
-        l = (StageLightObj *)func_ov000_0218bd9c(data_ov000_021ccd64, slot->args[1], 0xff);
+        l = (StageLightObj *)Group_FindById(data_ov000_021ccd64, slot->args[1], 0xff);
     }
     id = slot->args[1];
     if (id == 0x1000) {
@@ -3461,7 +3461,7 @@ int func_0205e818(StageResSlot *slot) {
         }
     }
     {
-        void *obj = func_ov000_0218bd9c(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
+        void *obj = Group_FindById(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
         if (obj != NULL) {
             Group_RemoveNode(data_ov000_021ccd64, obj, 1);
         } else {
@@ -3485,7 +3485,7 @@ int func_0205e964(StageResSlot *slot) {
         }
     }
     {
-        void *obj = func_ov000_0218bd9c(data_ov000_021ccd64, slot->args[0], slot->args[1] & 0xff);
+        void *obj = Group_FindById(data_ov000_021ccd64, slot->args[0], slot->args[1] & 0xff);
         if (obj != NULL) {
             Group_RemoveNode(data_ov000_021ccd64, obj, 1);
         } else {
@@ -3505,7 +3505,7 @@ int func_0205ea9c(StageResSlot *slot) {
         }
     }
     if (func_ov000_0218bddc(data_ov000_021ccd64, slot->args[0], slot->args[2] & 0xff) == NULL) {
-        void *obj = func_ov000_0218bd9c(data_ov000_021ccd64, slot->args[0], slot->args[1] & 0xff);
+        void *obj = Group_FindById(data_ov000_021ccd64, slot->args[0], slot->args[1] & 0xff);
         if (obj != NULL) {
             Group_RemoveNode(data_ov000_021ccd64, obj, 1);
         }
@@ -3628,7 +3628,7 @@ int func_0205eff8(StageResSlot *slot) {
         l = (StageLightObj *)data_02149f00;
     } else if (slot->args[0] != 0) {
         o = Stage_FindObj3DPtr(slot->args[0]);
-        l = (StageLightObj *)func_ov000_0218bd9c(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
+        l = (StageLightObj *)Group_FindById(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
     } else {
         o = Stage_FindObj3DByIdx(slot->args[1]);
         l = Group_FindNode(data_ov000_021ccd64, slot->args[1]);
@@ -3645,7 +3645,7 @@ int func_0205eff8(StageResSlot *slot) {
         o->unk_a4 = 0;
         o->unk_a8 = 0;
         if (o->unk_48 != NULL) {
-            func_ov000_02198d28(o->unk_48, &pos, o->rot[1]);
+            Body_SetPos(o->unk_48, &pos, o->rot[1]);
         }
     }
     if (l != NULL) {
@@ -3667,7 +3667,7 @@ int func_0205f22c(StageResSlot *slot) {
         l = (StageLightObj *)data_02149f00;
     } else if (slot->args[0] != 0) {
         o = Stage_FindObj3DPtr(slot->args[0]);
-        l = (StageLightObj *)func_ov000_0218bd9c(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
+        l = (StageLightObj *)Group_FindById(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
     } else if (slot->args[1] == 0xffff) {
         o = Stage_FindObj3DByIdx(data_02fe1534.unk_26);
         l = Group_FindNode(data_ov000_021ccd64, data_02fe1534.unk_26);
@@ -3693,7 +3693,7 @@ int func_0205f354(StageResSlot *slot) {
         l = (StageLightObj *)data_02149f00;
     } else if (slot->args[0] != 0) {
         o = Stage_FindObj3DPtr(slot->args[0]);
-        l = (StageLightObj *)func_ov000_0218bd9c(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
+        l = (StageLightObj *)Group_FindById(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
     } else if (slot->args[1] == 0xffff) {
         o = Stage_FindObj3DByIdx(data_02fe1534.unk_26);
         l = Group_FindNode(data_ov000_021ccd64, data_02fe1534.unk_26);
@@ -3732,7 +3732,7 @@ int func_0205f47c(StageResSlot *slot) {
     }
     m = slot->args[2] == 10 ? 6 : slot->args[2] + 0x21;
     if (o != NULL) {
-        func_ov000_0218e044(o, slot->args[0], m);
+        ActorGroup_BroadcastKind(o, slot->args[0], m);
     }
     if (l != NULL) {
         func_ov000_0218d46c(l, 0xffff, m);
@@ -4054,7 +4054,7 @@ extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
 extern void func_ov000_02187a20(FieldState *state, u16 a);
 extern void func_0204aa10(SndQueue *queue);
-extern void func_02049564(SndMgr *mgr, int a, int b);
+extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
 extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
 extern u16 SndQueue_Peek(SndQueue *queue);
@@ -4125,7 +4125,7 @@ extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
 extern void func_ov000_02187a20(FieldState *state, u16 a);
 extern void func_0204aa10(SndQueue *queue);
-extern void func_02049564(SndMgr *mgr, int a, int b);
+extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
 extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
 extern u16 SndQueue_Peek(SndQueue *queue);
@@ -4259,7 +4259,7 @@ extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
 extern void func_ov000_02187a20(FieldState *state, u16 a);
 extern void func_0204aa10(SndQueue *queue);
-extern void func_02049564(SndMgr *mgr, int a, int b);
+extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
 extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
 extern u16 SndQueue_Peek(SndQueue *queue);
@@ -4336,7 +4336,7 @@ int func_02060898(u16 id, u16 idx, int val) {
         l = (StageLightObj *)data_02149f00;
     } else if (id != 0) {
         o = Stage_FindObj3DPtr(id);
-        l = (StageLightObj *)func_ov000_0218bd9c(data_ov000_021ccd64, id, data_02fe1534.b & 0xff);
+        l = (StageLightObj *)Group_FindById(data_ov000_021ccd64, id, data_02fe1534.b & 0xff);
     } else {
         o = Stage_FindObj3DByIdx(idx);
         l = Group_FindNode(data_ov000_021ccd64, idx);
@@ -4443,7 +4443,7 @@ extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
 extern void func_ov000_02187a20(FieldState *state, u16 a);
 extern void func_0204aa10(SndQueue *queue);
-extern void func_02049564(SndMgr *mgr, int a, int b);
+extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
 extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
 extern u16 SndQueue_Peek(SndQueue *queue);
@@ -4495,7 +4495,7 @@ int func_02060c28(StageResSlot *slot) {
         data_02097e48->flag3 = 1;
         break;
     case 6:
-        func_02049564(data_02097e4c, 1, 1);
+        SndMgr_LoadHeapState(data_02097e4c, 1, 1);
         break;
     }
     return 1;

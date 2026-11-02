@@ -550,7 +550,7 @@ extern void *data_0214a420;
 extern void func_ov000_02196c40(void *self);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
 extern void func_ov000_021953b4(void *self);
-extern void func_02065804(void *mgr, void *handle);
+extern void EffectMgr_Kill(void *mgr, void *handle);
 BOOL func_ov003_021e83d0(Ov003Rotor *self);
 
 extern s32 **func_ov000_02190a30(void *model, s32 a);
@@ -1053,7 +1053,7 @@ extern void *data_0214a420;
 extern void func_ov000_02196c40(void *self);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
 extern void func_ov000_021953b4(void *self);
-extern void func_02065804(void *mgr, void *handle);
+extern void EffectMgr_Kill(void *mgr, void *handle);
 extern Ov003SwFx *func_02065f88(s32 id, const Ov003Vec *pos);
 extern Ov003SwFx *func_020657b0(void *mgr, void *handle);
 extern void *func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
@@ -1112,7 +1112,7 @@ void Ov003ActVt_021f9374_Start(Ov003Swing *self) {
 void Ov003ActVt_021f9374_Update(Ov003Swing *self) {
     func_ov000_021953b4(self);
     if (self->work->unk_13 != 1 && self->fx != NULL) {
-        func_02065804(data_0214a420, self->fx);
+        EffectMgr_Kill(data_0214a420, self->fx);
         self->fx = NULL;
     }
 }
