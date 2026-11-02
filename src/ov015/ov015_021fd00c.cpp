@@ -18,7 +18,7 @@ void func_ov015_021fee54(Ov015CamPair *self);
 void func_ov015_021ff044(Ov015CamPair *self);
 extern u8 data_ov015_0221253c[];
 
-void func_ov015_021fd00c(Ov015CamPair *self, s32 mode, const Ov015Vec *v) {
+void Ov015CamPair_SetMode(Ov015CamPair *self, s32 mode, const Ov015Vec *v) {
     if (self->mode != mode) {
         if (mode == 2) {
             self->timer = 0x78;
@@ -96,7 +96,7 @@ void func_ov015_021fd0f4(Ov015CamPair *self, Ov015Vec *out) {
 }
 
 
-BOOL func_02049244(Ov015Vec *a, s32 b, Ov015Vec *c, Ov015Vec *d, s32 e);
+BOOL Interp_MoveTo(Ov015Vec *a, s32 b, Ov015Vec *c, Ov015Vec *d, s32 e);
 
 static inline void Ov015SetFovy(Ov015Cam *p, s32 deg) {
     u16 idx;
@@ -156,7 +156,7 @@ void func_ov015_021fd288(Ov015CamPair *self) {
     self->cam0.at = tgt;
     self->cam1.up = up;
     q = self->cam1.pos;
-    func_02049244(&q, 0x148, &q, &res, 0);
+    Interp_MoveTo(&q, 0x148, &q, &res, 0);
     self->cam1.pos = q;
     d2.x = a.x - res.x;
     d2.y = a.y - res.y;
@@ -170,7 +170,7 @@ void func_ov015_021fd288(Ov015CamPair *self) {
     MTX_MultVec33(&d2, (MtxFx33 *)&m, &r);
     VEC_Add(&r, &res, &r);
     w = self->cam1.at;
-    func_02049244(&w, 0x148, &w, &r, 0);
+    Interp_MoveTo(&w, 0x148, &w, &r, 0);
     self->cam1.at = w;
     Ov015SetFovy(&self->cam1, 0x1e000);
 }
@@ -186,7 +186,7 @@ void func_ov015_021fd634(Ov015CamPair *self) {
     Ov015Vec p;
     Ov015Vec up;
     Ov015Vec t;
-    func_02049244(&self->unk_18c, 0x29, &self->unk_18c, &data_ov015_022125e4, 0x29);
+    Interp_MoveTo(&self->unk_18c, 0x29, &self->unk_18c, &data_ov015_022125e4, 0x29);
     self->unk_198 = Ov015Cam_Approach(self->unk_198, 0x5a3d, 0x29, 0x7b);
     func_ov015_021fd0f4(self, &o);
     self->cam0.at = o;
@@ -229,7 +229,7 @@ static inline void Ov015Cam_ZoomOut(Ov015CamPair *self) {
     Ov015Vec t;
     a = self->target;
     o = self->cam0.at;
-    func_02049244(&o, 0x19a, &o, &a, 0x29);
+    Interp_MoveTo(&o, 0x19a, &o, &a, 0x29);
     self->cam0.at = o;
     d.x = self->unk_18c.x - o.x;
     d.y = self->unk_18c.y - o.y;
@@ -271,7 +271,7 @@ static inline void Ov015Cam_Follow(Ov015CamPair *self) {
     Ov015Vec p;
     Ov015Vec up;
     Ov015Vec t;
-    func_02049244(&self->unk_18c, 0x29, &self->unk_18c, &data_ov015_022125e4, 0x29);
+    Interp_MoveTo(&self->unk_18c, 0x29, &self->unk_18c, &data_ov015_022125e4, 0x29);
     self->unk_198 = Ov015Cam_Approach(self->unk_198, 0x5a3d, 0x29, 0x7b);
     func_ov015_021fd0f4(self, &o);
     self->cam0.at = o;
@@ -314,7 +314,7 @@ static inline void Ov015Cam_ZoomIn(Ov015CamPair *self) {
     Ov015Vec t;
     a = self->target;
     o = self->cam0.at;
-    func_02049244(&o, 0x19a, &o, &a, 0x29);
+    Interp_MoveTo(&o, 0x19a, &o, &a, 0x29);
     self->cam0.at = o;
     d.x = self->unk_18c.x - o.x;
     d.y = self->unk_18c.y - o.y;
@@ -372,9 +372,9 @@ void func_ov015_021fe218(Ov015CamPair *self) {
     Ov015Vec res;
     Ov015Vec up;
     Ov015Vec t;
-    func_02049244(&self->unk_18c, 0x29, &self->unk_18c, &data_ov015_02212530, 0x29);
+    Interp_MoveTo(&self->unk_18c, 0x29, &self->unk_18c, &data_ov015_02212530, 0x29);
     self->unk_198 = Ov015Cam_Approach(self->unk_198, 0x4cd, 0x29, 0x7b);
-    func_02049244(&self->unk_18c, 0x29, &self->unk_18c, &data_ov015_022125e4, 0x29);
+    Interp_MoveTo(&self->unk_18c, 0x29, &self->unk_18c, &data_ov015_022125e4, 0x29);
     self->unk_198 = Ov015Cam_Approach(self->unk_198, 0x5a3d, 0x29, 0x7b);
     func_ov015_021fd0f4(self, &o);
     self->cam0.at = o;
@@ -414,7 +414,7 @@ void func_ov015_021fe548(Ov015CamPair *self) {
     Ov015Vec p;
     Ov015Vec up;
     Ov015Vec t;
-    func_02049244(&self->unk_18c, 0x29, &self->unk_18c, &data_ov015_022125cc, 0x29);
+    Interp_MoveTo(&self->unk_18c, 0x29, &self->unk_18c, &data_ov015_022125cc, 0x29);
     self->unk_198 = Ov015Cam_Approach(self->unk_198, 0x5a3d, 0x29, 0x7b);
     func_ov015_021fd0f4(self, &o);
     self->cam0.at = o;
@@ -458,7 +458,7 @@ void func_ov015_021fe814(Ov015CamPair *self) {
     Ov015Vec t;
     a = self->target;
     o = self->cam0.at;
-    func_02049244(&o, 0x19a, &o, &a, 0x29);
+    Interp_MoveTo(&o, 0x19a, &o, &a, 0x29);
     self->cam0.at = o;
     d.x = self->unk_18c.x - o.x;
     d.y = self->unk_18c.y - o.y;
@@ -503,7 +503,7 @@ void func_ov015_021feb34(Ov015CamPair *self) {
     Ov015Vec t;
     a = self->target;
     o = self->cam0.at;
-    func_02049244(&o, 0x19a, &o, &a, 0x29);
+    Interp_MoveTo(&o, 0x19a, &o, &a, 0x29);
     self->cam0.at = o;
     d.x = self->unk_18c.x - o.x;
     d.y = self->unk_18c.y - o.y;

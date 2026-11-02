@@ -19,7 +19,7 @@ static inline void PlayPart021b86a4(Model *model, u32 idx) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx) + 0xc));
     }
-    func_02042628(model, anim, part, 0);
+    TexObj_DrawCell(model, anim, part, 0);
 }
 
 struct Obj021b86a4 {

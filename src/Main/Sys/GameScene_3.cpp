@@ -20,7 +20,7 @@ BOOL func_02056c48(void) {
     if (player == NULL) {
         return FALSE;
     }
-    if (func_ov000_0216f674(player, 6)) {
+    if (MessageQueue_GetById(player, 6)) {
         return TRUE;
     }
     if (player->unk_11c == NULL) {
@@ -33,7 +33,7 @@ u8 func_02056c94(u8 *p) {
     return p[2];
 }
 
-BOOL func_02056c9c(SlidePanel *panel) {
+BOOL SlidePanel_IsIdle(SlidePanel *panel) {
     if (panel->state == 0 || panel->state == 2) {
         return TRUE;
     }

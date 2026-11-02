@@ -60,8 +60,8 @@ typedef struct {
         if ((p) != NULL) {                             \
             Model *res = (p);                          \
             if (res != NULL) {                         \
-                func_02041558(res);                    \
-                func_02041278(&res->pltt);             \
+                TexObj_Release(res);                    \
+                PlttRes_Release(&res->pltt);             \
                 Heap_Free(res);                        \
             }                                          \
             (p) = NULL;                                \
@@ -76,8 +76,8 @@ extern char data_ov003_021f78cd[];
 extern void func_ov000_021c8408(u32 a, u32 b, u32 c, u32 d, u16 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k);
 extern void func_ov000_021c2208(void *p);
 extern void Heap_Free(void *p);
-extern void func_02035acc(const void *a, const void *b, s32 c);
-extern BOOL func_02035bd4(const char *a, const char *b, u16 c);
+extern void ResMgr_ReleaseArchive(const void *a, const void *b, s32 c);
+extern BOOL ResMgr_IsArchiveLoaded(const char *a, const char *b, u16 c);
 
 void func_ov003_021cceb4(u32 a, u32 b, u32 c, u32 d, u32 unused, u32 e, u32 f, u32 g, u32 h, u32 i, u32 j) {
     func_ov000_021c8408(a, b, c, d, j, e, f, g, h, i, j);
@@ -112,9 +112,9 @@ void Ov003TaskVt_021f78f4_FreeRes(Ov003Title *self) {
     OV003_DELETE_RES(self->unk_48);
     OV003_DELETE_RES(self->unk_4c);
     if (self->unk_50 != 0 && self->unk_54 != 0) {
-        func_02035acc((void *)self->unk_50, (void *)self->unk_54, 2);
+        ResMgr_ReleaseArchive((void *)self->unk_50, (void *)self->unk_54, 2);
     }
-    func_02035acc(data_ov003_021f78c4, data_ov003_021f78cd, 2);
+    ResMgr_ReleaseArchive(data_ov003_021f78c4, data_ov003_021f78cd, 2);
 }
 
 }

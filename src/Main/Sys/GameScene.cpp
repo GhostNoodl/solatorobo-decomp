@@ -114,7 +114,7 @@ void func_02055d80(GameScene *scene) {
     GfxSys *sys = data_02097d48;
     s32 r;
     u16 n;
-    func_02043d20(sys->unk_8b0, 0);
+    Gfx3D_SendDL(sys->unk_8b0, 0);
     func_02043d84(sys->unk_8b0);
     if (!scene->flag1 && scene->flag25) {
         busy = Field_IsPlayerBusy();

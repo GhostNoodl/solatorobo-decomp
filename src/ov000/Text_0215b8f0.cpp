@@ -12,7 +12,7 @@ typedef struct {
 
 extern "C" {
 u8 Gfx3DState_NextPolyId(void *p);
-void func_ov000_02153c48(void *node, void *a, s32 b, s32 c, s32 d);
+void Obj02153c48_CreateText(void *node, void *a, s32 b, s32 c, s32 d);
 
 void func_ov000_0215b8f0(LoBase021cafc0_021cb0b8 *self, s32 unused, VecFx32 *pos) {
     GfxSys *g;
@@ -35,7 +35,7 @@ void func_ov000_0215b8f0(LoBase021cafc0_021cb0b8 *self, s32 unused, VecFx32 *pos
     do {
         VObj *o;
         if (node->label == NULL) {
-            func_ov000_02153c48(node, ((void *)self->font), 0, 0, 0);
+            Obj02153c48_CreateText(node, ((void *)self->font), 0, 0, 0);
         }
         node->label->vfunc_14();
         LFLD(s32, node->label, 0x70) = self->posZ - 0x100;

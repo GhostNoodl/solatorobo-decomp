@@ -14,10 +14,10 @@ extern void *data_02149efc;
 extern void *data_02097e4c;
 BOOL PauseNode_IsUpdatePaused(PauseNode *node, s32 a);
 s32 func_ov000_021b7b50(FieldProp *n);
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL func_ov000_021b4738(Robo021ca458 *pl);
 BOOL func_01ffc318(VecFx32 *a, FieldExit *item, VecFx32 *min, VecFx32 *max, Rot021b5110 *rot);
-void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_ov000_02188ca0(FieldId *c, s32 a);
 
 static inline void SetRot(Rot021b5110 *r, u16 x, u16 y, u16 z) {
@@ -41,7 +41,7 @@ static inline void Push(s32 cmd, s32 arg) {
     }
 }
 
-void func_ov000_021b5110(FieldMgr *self) {
+void FieldMgr_Update(FieldMgr *self) {
     FieldProp *n;
     Robo021ca458 *pl;
     FieldExit *item;
@@ -56,7 +56,7 @@ void func_ov000_021b5110(FieldMgr *self) {
     if (*(void **)&self->step != NULL) {
         (self->*self->step)();
     }
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (pl == NULL || pl->mode == 3) {
         return;
     }
@@ -95,7 +95,7 @@ void func_ov000_021b5110(FieldMgr *self) {
                     busy = TRUE;
                 }
                 if (busy || QueueBusy()) {
-                    func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+                    SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
                 } else {
                     Push(0x1d, 0);
                 }

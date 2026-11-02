@@ -3,7 +3,7 @@
 extern "C" {
 
 extern Ov003Actor *Target_Get(void *p);
-extern void func_0203f364(ActorSub48 *p);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void func_ov014_02208a9c(Ov014ActEx_02208618 *self);
 extern void Ov014ActEx_02208618_HitNearby(Ov014ActEx_02208618 *self);
 
@@ -18,7 +18,7 @@ void Ov014ActEx_02208618_StateThrown(Ov014ActEx_02208618 *self) {
             ActorSub48 *m = o->hit;
             if (m != NULL && m->unk_9a_3) {
                 m->unk_9a_3 = 0;
-                func_0203f364(m);
+                HitSphere_Unlink_0203f364(m);
             }
         }
         if (o->kind == 0x1000) {
@@ -69,14 +69,14 @@ void Ov014ActEx_02208618_StateThrown(Ov014ActEx_02208618 *self) {
             Ov014ActEx_02208618_HitNearby(self);
             if ((self->hit->unk_50 & 0x20000000) || ++self->unk_d4 >= 200) {
                 self->unk_d0 |= 0x1000;
-                func_ov000_02198360(self->fsm, 0x15, 0);
+                History_SetState(self->fsm, 0x15, 0);
             }
             if (self->hit->unk_50 & 0x20000000) {
                 VecFx32 v;
                 EffectObj *e;
                 v = self->pos;
                 v.y = 0x47800;
-                e = func_02065f88(0x67, &v);
+                e = Effect_SpawnId(0x67, &v);
                 e->SetScaleAll(0x2000);
                 e->SetRotXYZ(0, (u16)(self->rot_y + 0x7fff), 0);
             }
@@ -84,7 +84,7 @@ void Ov014ActEx_02208618_StateThrown(Ov014ActEx_02208618 *self) {
         }
     } else {
         self->unk_d0 |= 0x1000;
-        func_ov000_02198360(self->fsm, 0x15, 0);
+        History_SetState(self->fsm, 0x15, 0);
     }
 }
 

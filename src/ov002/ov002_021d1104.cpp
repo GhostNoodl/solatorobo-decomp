@@ -2,10 +2,10 @@
 
 extern "C" {
 
-void func_ov002_021d1104(void) {
+void Task021ef89c_PostUpdate(void) {
 }
 
-void func_ov002_021d1108(Task021ef89c *self) {
+void Task021ef89c_Draw(Task021ef89c *self) {
     if (self->unk_3c != NULL) {
         self->unk_3c->vfunc_20();
     }
@@ -32,21 +32,21 @@ Task021ef71c *func_ov002_021d1144(void) {
 
 Task021ef71c *Ov002TaskVt_021ef71c_Dtor(Task021ef71c *self) {
     *(VFunc **)self = data_ov002_021ef71c;
-    func_ov002_021e916c();
+    Ov002Stage_Delete_021e916c();
     TaskBase_dtor(self);
     return self;
 }
 
 Task021ef71c *Ov002TaskVt_021ef71c_DtorDelete(Task021ef71c *self) {
     *(VFunc **)self = data_ov002_021ef71c;
-    func_ov002_021e916c();
+    Ov002Stage_Delete_021e916c();
     TaskBase_dtor(self);
     Heap_Free(self);
     return self;
 }
 
-void func_ov002_021d124c(Task021ef71c *self) {
-    func_ov000_02173648(self);
+void Task021ef71c_Start(Task021ef71c *self) {
+    TaskList_Insert(self);
 }
 
 }

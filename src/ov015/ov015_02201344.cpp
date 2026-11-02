@@ -15,14 +15,14 @@ extern char data_ov015_02212878[];
 extern char data_ov015_022128c1[];
 u8 *func_ov015_0220765c(Ov015Ship *p);
 void func_ov015_02207858(Ov015Ship *p);
-void *func_ov000_0218e9c4(void *p);
-void *func_ov000_0218fe1c(void *p);
+void *ResSet_Init(void *p);
+void *Model0218fe1c_Init(void *p);
 
 static inline Model *Ov015_NewTex(void) {
     Model *t = (Model *)Heap_Alloc(0x160);
     if (t != NULL) {
-        func_02041218(&t->pltt);
-        func_02041440(t, (char *)NULL, 0);
+        PlttRes_Init_02041218(&t->pltt);
+        TexObj_Init(t, (char *)NULL, 0);
     }
     return t;
 }
@@ -41,12 +41,12 @@ BOOL func_ov015_02201344(Ov015Game *self) {
     o = (Ov015MdlSet *)Heap_Alloc(sizeof(Ov015MdlSet));
     if (o != NULL) {
         SET_VT(o, data_ov015_0221294c);
-        func_ov000_0218e9c4(&o->p[0].res);
-        func_ov000_0218fe1c(&o->p[0].mdl);
-        func_ov000_0218e9c4(&o->p[1].res);
-        func_ov000_0218fe1c(&o->p[1].mdl);
-        func_ov000_0218e9c4(&o->p[2].res);
-        func_ov000_0218fe1c(&o->p[2].mdl);
+        ResSet_Init(&o->p[0].res);
+        Model0218fe1c_Init(&o->p[0].mdl);
+        ResSet_Init(&o->p[1].res);
+        Model0218fe1c_Init(&o->p[1].mdl);
+        ResSet_Init(&o->p[2].res);
+        Model0218fe1c_Init(&o->p[2].mdl);
     }
     self->unk_20 = o;
     {
@@ -131,7 +131,7 @@ BOOL func_ov015_02201344(Ov015Game *self) {
         self->result = f;
         func_ov015_0220f470(f);
     }
-    func_020359d0(data_ov015_022128c1, 7, 0);
+    ResMgr_Load(data_ov015_022128c1, 7, 0);
     return TRUE;
 }
 

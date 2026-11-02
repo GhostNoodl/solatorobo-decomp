@@ -2,7 +2,7 @@
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
-void func_ov000_021c4460(void *self);
+void Win021c4460_Update(void *self);
 void func_ov000_021c4b00(void *self);
 void func_ov000_0215f330(UiLabel *p);
 void func_ov000_021c4c10(void *self);
@@ -15,7 +15,7 @@ void func_ov000_021c56c0(Lo021ccb54 *self) {
         if (self->hidden) {
             self->state = 1;
         }
-        func_ov000_021c4460(self);
+        Win021c4460_Update(self);
         func_ov000_021c4b00(self);
         self->unk_d4++;
         if (self->unk_d4 < 20) {

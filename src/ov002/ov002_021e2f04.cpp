@@ -13,7 +13,7 @@ void *func_ov002_021e2f04(Model *self, void *unused, u8 *entries, u16 *count) {
     return entries;
 }
 
-void func_ov002_021e2f54(Obj021f002c *self) {
+void Obj021f002c_Init(Obj021f002c *self) {
     self->height = 0xf;
     self->width = 0x78;
     self->model = NULL;

@@ -3,7 +3,7 @@
 extern "C" {
 
 BOOL func_ov015_0220a028(Ov015Fish *self, void *a);
-void func_ov015_021fd00c(Ov015CamPair *self, s32 mode, const Ov015Vec *v);
+void Ov015CamPair_SetMode(Ov015CamPair *self, s32 mode, const Ov015Vec *v);
 BOOL func_ov015_02209790(Ov015Fish *self, s32 a);
 void func_ov015_0221234c(Ov015Obj292c *self);
 void func_ov015_022123c4(Ov015Obj292c *self);
@@ -15,7 +15,7 @@ BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
     Ov015Fish *found;
     Ov015Node *n;
     if (self->unk_0c != 0) return r;
-    func_ov015_021fd00c(self->cam, 7, (const Ov015Vec *)&self->unk_10->pos);
+    Ov015CamPair_SetMode(self->cam, 7, (const Ov015Vec *)&self->unk_10->pos);
     self->unk_14->vfunc_18();
     self->fish = func_ov015_021fffc4(self);
     if (self->unk_14->vfunc_20() || self->fish != NULL) {
@@ -81,19 +81,19 @@ Ov015Fish *func_ov015_021fffc4(Ov015Obj30 *self) {
             EffectObj *e;
             v = FLD(Ov015Vec, self->unk_14, 0x240);
             found = obj;
-            e = func_02065f88(0x69, &v);
+            e = Effect_SpawnId(0x69, &v);
             e->SetParam(1);
             e->SetScaleXYZ(0x5800, 0x5800, 0x5800);
-            e = func_02065f88(0x69, &v);
+            e = Effect_SpawnId(0x69, &v);
             e->SetParam(1);
             e->SetScaleXYZ(0x3800, 0x3800, 0x3800);
-            e = func_02065f88(0x6c, &v);
+            e = Effect_SpawnId(0x6c, &v);
             e->unk_50 = -0x64000;
             e->SetParam(1);
             e->SetScaleXYZ(0x6800, 0x6800, 0x6800);
             e->speed = 0x1800;
             v.y += 0x5000;
-            e = func_02065f88(0x44c, &v);
+            e = Effect_SpawnId(0x44c, &v);
             e->SetParam(1);
             e->unk_50 = -0xa000;
             e->SetScaleAll(0x1400);

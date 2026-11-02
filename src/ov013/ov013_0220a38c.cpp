@@ -24,7 +24,7 @@ static inline void Ov013_SetPair(Ov013Pair89 *d, const Ov013Pair89 *s, u8 b) {
 void Ov013ActVt_0220bc80_StateKnockBack(Ov013ActVt_0220bc80 *self) {
     ActorSub40 *q;
     if ((((Ov013Sub50a *)self->hp)->unk_04 >> 12) == 5) {
-        func_ov000_02198360(self->fsm, 0x15, 0);
+        History_SetState(self->fsm, 0x15, 0);
         return;
     }
     q = self->fsm;
@@ -38,7 +38,7 @@ void Ov013ActVt_0220bc80_StateKnockBack(Ov013ActVt_0220bc80 *self) {
     }
     Ov003Actor_StateKnockBack(self);
     if (self->fsm->current == 4) {
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
     }
 }
 
@@ -95,8 +95,8 @@ Ov013ActEx_0220a4e0 *Ov013ActEx_0220a4e0_Ctor(Ov013ActEx_0220a4e0 *self) {
 }
 
 void Ov013ActEx_0220a4e0_Start(Ov013ActEx_0220a4e0 *self) {
-    func_ov000_02194758(self);
-    func_ov000_02198360(self->fsm, 0xb, 0);
+    ActorEx_Start(self);
+    History_SetState(self->fsm, 0xb, 0);
     self->hit->offset.y = -0x800;
     self->hit->unk_48 = self->radius;
 }
@@ -105,11 +105,11 @@ extern void *data_02097e4c;
 extern char data_ov013_0220bfdc[];
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void HitSphere_Link(void *p);
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern BOOL func_ov000_021b4738(Ov003Actor *a);
-extern Ov003Actor *func_ov000_0219be1c(s32 kind, VecFx32 *pos, u16 *rot, u16 id, u16 owner);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, VecFx32 *v, s32 e, s32 f, s32 g, s32 h, s32 i);
+extern Ov003Actor *Actor_SpawnKind(s32 kind, VecFx32 *pos, u16 *rot, u16 id, u16 owner);
+extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
+extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 mask, VecFx32 *v, s32 e, s32 f, s32 g, s32 h, s32 i);
 
 #define OV013_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV013_SQRT_RESULT (*(volatile u32 *)0x40002b4)
@@ -146,8 +146,8 @@ void Ov013ActEx_0220a4e0_StateThrown(Ov013ActEx_0220a4e0 *self) {
     case 0: {
         s32 d;
         u16 ang;
-        func_ov000_02190cb0(self->model, data_ov013_0220bfdc, 0x1000, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220bfdc, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;
@@ -181,7 +181,7 @@ void Ov013ActEx_0220a4e0_StateThrown(Ov013ActEx_0220a4e0 *self) {
         ActorSub48 *m;
         Actor_Move(self, 0);
         if (self->unk_ce-- == 0) {
-            func_ov000_02198360(self->fsm, 10, 0);
+            History_SetState(self->fsm, 10, 0);
             return;
         }
         m = self->hit;
@@ -191,28 +191,28 @@ void Ov013ActEx_0220a4e0_StateThrown(Ov013ActEx_0220a4e0 *self) {
         m->unk_9a_0 = 1;
         m->unk_9a_3 = 1;
         HitSphere_Link(m);
-        func_ov000_021987b8(self->hit, 1, 0, 0);
+        Body_Update(self->hit, 1, 0, 0);
         if (self->hit->unk_50 & 0x20000000) {
-            EffectObj *e = func_02065f88(0x130, &self->pos);
+            EffectObj *e = Effect_SpawnId(0x130, &self->pos);
             Ov003Actor *pl;
             e->SetScaleAll(self->unk_d0);
-            pl = func_ov000_0219bf90();
+            pl = ActorMgr_FindPlayer();
             if (pl != NULL && !func_ov000_021b4738(pl)) {
-                Ov013ActEx_0220a9a8 *a = (Ov013ActEx_0220a9a8 *)func_ov000_0219be1c(0x4813, &self->pos, &self->rot_x, self->targetObj->target, self->target);
+                Ov013ActEx_0220a9a8 *a = (Ov013ActEx_0220a9a8 *)Actor_SpawnKind(0x4813, &self->pos, &self->rot_x, self->targetObj->target, self->target);
                 if (a != NULL) {
                     a->unk_d4 = self->unk_d0;
                 }
             }
-            func_02049f44(data_02097e4c, 0x35, &self->pos, 0);
-            func_ov000_02198360(self->fsm, 10, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x35, &self->pos, 0);
+            History_SetState(self->fsm, 10, 0);
             m = self->hit;
             m->unk_9a_1 = 0;
             m->unk_9a_4 = 0;
             self->speed = 0;
             return;
         }
-        if (func_ov000_0219aae8(self, self, self->targetObj->unk_08, self->targetObj->unk_0a, 2, NULL, 0, self->radius, 0, 0x130, self->unk_d0 >> 1)) {
-            func_ov000_02198360(self->fsm, 0x15, 0);
+        if (Hit_ApplyInArea(self, self, self->targetObj->unk_08, self->targetObj->unk_0a, 2, NULL, 0, self->radius, 0, 0x130, self->unk_d0 >> 1)) {
+            History_SetState(self->fsm, 0x15, 0);
         }
         break;
     }

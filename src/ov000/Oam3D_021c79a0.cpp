@@ -20,7 +20,7 @@ typedef struct {
 extern "C" {
 
 extern u32 data_ov000_021ca5dc[];
-void func_02043064(const Oam021c79a0 *attr, u32 *w, u32 *h);
+void Oam_GetSize(const Oam021c79a0 *attr, u32 *w, u32 *h);
 void func_ov000_021c7af8(void *p, s32 x, s32 y, s32 z);
 void func_ov000_021c7f88(void *p, s32 x, s32 y, s32 z);
 void func_ov000_021c8120(void *p, s32 x, s32 y, s32 z);
@@ -38,7 +38,7 @@ void func_ov000_021c79a0(BOOL alt, s32 x, s32 y, s32 z, s32 unused, const Oam021
     u32 pal;
     charName = (u16)oam->charName;
     shift = ((s32)(img->mappingType & 0x700000) >> 20) + 5;
-    func_02043064(oam, &w, &h);
+    Oam_GetSize(oam, &w, &h);
     REG_TEXIMAGE_PARAM = ((charBase + (charName << shift)) >> 3) | (img->fmt << 26) | 0x40000000 | (w << 20) |
                          (h << 23) | (img->plttUse << 29);
     fmt = data_ov000_021ca5dc[(oam->attr01 << 18) >> 31];

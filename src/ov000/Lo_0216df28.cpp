@@ -17,7 +17,7 @@ static inline void LoPlace(LoTimer *self, s32 x, s32 y) {
     Model_SetPos(self->unk_10, x << 12, y << 12);
 }
 
-void func_ov000_0216df28(LoTimer *self) {
+void LoTimer_Draw(LoTimer *self) {
     Model *m;
     s32 st = self->state;
     s32 s;

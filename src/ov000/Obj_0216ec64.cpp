@@ -35,7 +35,7 @@ extern Data02097d78 data_02097d78;
 void Heap_Free(void *ptr);
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_ov000_02164420(void *self);
-void func_ov000_0216f168(Buffer0216f144 *self);
+void Buffer0216f144_Free(Buffer0216f144 *self);
 
 VObj *Lo021cb744_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb744);
@@ -189,7 +189,7 @@ Buffer0216f144 *Lo021cb6b0_DtorDelete(Buffer0216f144 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb6b0);
     func_ov000_02164420(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cb6d0);
-    func_ov000_0216f168(self);
+    Buffer0216f144_Free(self);
     Heap_Free(self);
     return self;
 }
@@ -198,13 +198,13 @@ Buffer0216f144 *Lo021cb6b0_Dtor(Buffer0216f144 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb6b0);
     func_ov000_02164420(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cb6d0);
-    func_ov000_0216f168(self);
+    Buffer0216f144_Free(self);
     return self;
 }
 
 Buffer0216f144 *Ov000Vt_021cb6d0_DtorDelete(Buffer0216f144 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb6d0);
-    func_ov000_0216f168(self);
+    Buffer0216f144_Free(self);
     Heap_Free(self);
     return self;
 }
@@ -236,11 +236,11 @@ void func_ov000_0216f0dc(void) {
 
 Buffer0216f144 *Ov000Vt_021cb6d0_Dtor(Buffer0216f144 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb6d0);
-    func_ov000_0216f168(self);
+    Buffer0216f144_Free(self);
     return self;
 }
 
-void func_ov000_0216f144(Buffer0216f144 *self) {
+void Buffer0216f144_Init(Buffer0216f144 *self) {
     self->unk_04 = 0;
     self->unk_08 = 0;
     self->unk_0c = NULL;
@@ -250,7 +250,7 @@ void func_ov000_0216f144(Buffer0216f144 *self) {
     self->unk_1c = 0;
 }
 
-void func_ov000_0216f168(Buffer0216f144 *self) {
+void Buffer0216f144_Free(Buffer0216f144 *self) {
     if ((self->unk_04 & 0x20) && self->unk_0c != NULL) {
         Heap_FreeHi(self->unk_0c);
     }

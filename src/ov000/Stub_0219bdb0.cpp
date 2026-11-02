@@ -31,7 +31,7 @@ void ActorMgr_SendMsg(u16 target, u16 id, u8 type, BOOL notify, u32 size, const 
     Actor_SendMsg(actor, id, type, notify, size, data);
 }
 
-Spawned0219be1c *func_ov000_0219be1c(u16 kind, const void *pos, const void *rot, u16 a, u16 b) {
+Spawned0219be1c *Actor_SpawnKind(u16 kind, const void *pos, const void *rot, u16 a, u16 b) {
     GroupActorDesc desc;
     s32 i;
     Spawned0219be1c *o;

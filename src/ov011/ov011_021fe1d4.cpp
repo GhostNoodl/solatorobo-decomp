@@ -98,7 +98,7 @@ void func_ov011_021fe1d4(Ov011Scene *self) {
             self->s1b4.id = o->id;
             self->s1b4.scene = self;
             self->s1b4.ent = &self->ent;
-            func_ov000_02198360(&self->s1b4.seq, 2, 0);
+            History_SetState(&self->s1b4.seq, 2, 0);
         }
         self->seq.st = 1;
         break;

@@ -5,7 +5,7 @@ extern "C" {
 
 int STD_CopyLString(void *dst, const void *src, s32 n);
 
-void func_ov000_02162b40(ModelViewer *self, const void *s0, const void *s1, const void *s2, const void *s3, s32 d, s32 e, s16 f) {
+void ModelViewer_SetModel(ModelViewer *self, const void *s0, const void *s1, const void *s2, const void *s3, s32 d, s32 e, s16 f) {
     STD_CopyLString(self->res.mdlArc, s0, sizeof(self->res.mdlArc));
     STD_CopyLString(self->res.mdlName, s1, sizeof(self->res.mdlName));
     STD_CopyLString(self->res.anmArc, s2, sizeof(self->res.anmArc));
@@ -24,17 +24,17 @@ void func_ov000_02162b40(ModelViewer *self, const void *s0, const void *s1, cons
 
 extern "C" {
 
-void func_ov000_0218ec60(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_0218edf0(void *p, s32 a, s32 b, s32 c, s32 d);
+void ResSet_SetName0(void *p, s32 a, s32 b, s32 c, s32 d);
+void ResSet_SetName1(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_02161fac(ModelViewerRes *res);
-BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
-void func_ov000_021911c8(void *a, s32 b);
-void func_ov000_021915a0(void *a);
+BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
+BOOL Model0218fe1c_SetAnim(void *a, const char *b, s32 c, s32 d);
+void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
+void Model0218fe1c_SetLoop(void *a);
 void func_ov000_02191870(void *a, void *b);
-AnimCtrl *func_ov000_02190a30(void *a, s32 b);
+AnimCtrl *Model0218fe1c_GetAnimCtrl(void *a, s32 b);
 void func_ov000_02191920(void *a, s32 b, s32 c, s32 d);
-BOOL func_02049244(void *out, s32 speed, const void *from, const void *to, s32 minDist);
+BOOL Interp_MoveTo(void *out, s32 speed, const void *from, const void *to, s32 minDist);
 void VEC_Normalize(const VecFx32 *src, VecFx32 *dst);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
 
@@ -44,10 +44,10 @@ static inline void StopSlot(ModelViewerRes *res, u8 i) {
     }
     ActorRes *a = res->a;
     ActorRes *b = res->b;
-    func_ov000_0218ec60(&a[i], 0, 0, 1, 0);
-    func_ov000_0218edf0(&a[i], 0, 0, 1, 0);
+    ResSet_SetName0(&a[i], 0, 0, 1, 0);
+    ResSet_SetName1(&a[i], 0, 0, 1, 0);
     a[i].unk_00 = 0;
-    func_ov000_0218edf0(&b[i], 0, 0, 1, 0);
+    ResSet_SetName1(&b[i], 0, 0, 1, 0);
     b[i].unk_00 = 0;
 }
 
@@ -73,17 +73,17 @@ void func_ov000_02162bd4(ModelViewer *self) {
             break;
         }
         self->res.cur ^= 1;
-        func_ov000_0218ffdc(&self->model, &self->res.a[self->res.cur], 0, 1);
+        Model0218fe1c_SetRes(&self->model, &self->res.a[self->res.cur], 0, 1);
         self->model.unk_c2_6 = 1;
-        func_ov000_02190cb0(&self->model, self->anim, 0x1000, 0);
-        func_ov000_021911c8(&self->model, self->speed);
-        func_ov000_021915a0(&self->model);
+        Model0218fe1c_SetAnim(&self->model, self->anim, 0x1000, 0);
+        Model0218fe1c_SetAnimSpeed(&self->model, self->speed);
+        Model0218fe1c_SetLoop(&self->model);
         self->model.boxTest = 0;
         self->model.visible = 0;
         if (LFLD(void *, &self->res.b[self->res.cur], 0x48) != NULL &&
             LFLD(s32, LFLD(void *, &self->res.b[self->res.cur], 0x48), 0xc) != 0) {
             func_ov000_02191870(&self->model, &self->res.b[self->res.cur]);
-            ctrl = func_ov000_02190a30(&self->model, 3);
+            ctrl = Model0218fe1c_GetAnimCtrl(&self->model, 3);
             if (ctrl != NULL) {
                 s32 v;
                 float f;
@@ -125,7 +125,7 @@ void func_ov000_02162bd4(ModelViewer *self) {
             break;
         }
         self->model.visible = 1;
-        if (func_02049244(&self->pos, 0x266, &self->pos, &self->home, 0xcd)) {
+        if (Interp_MoveTo(&self->pos, 0x266, &self->pos, &self->home, 0xcd)) {
             self->state++;
         }
         break;

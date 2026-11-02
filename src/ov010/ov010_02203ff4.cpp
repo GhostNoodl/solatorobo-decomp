@@ -3,7 +3,7 @@
 extern "C" {
 
 extern s32 func_0203db40(void *p);
-extern void func_ov000_02190a80(void *p, s32 a);
+extern void Model0218fe1c_UpdateAnim(void *p, s32 a);
 void Ov010_GrowFxCallback(EffectObj *fx);
 
 static inline s32 Ov010_Clamp(s32 v, s32 lo, s32 hi) {
@@ -20,7 +20,7 @@ void Ov010ActorEx_Animate(Actor *self) {
     if (self->model == NULL) {
         return;
     }
-    func_ov000_02190a80(self->model, func_0203db40((u8 *)self + 0x24));
+    Model0218fe1c_UpdateAnim(self->model, func_0203db40((u8 *)self + 0x24));
 }
 
 void Ov010ActorEx_UpdateMode1(void) {

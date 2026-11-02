@@ -8,7 +8,7 @@ extern Ov015Obj290 *data_ov015_0221336c;
 extern const char *data_ov015_02213228[];
 extern const char *data_ov015_02213230[];
 extern const char *data_ov015_02213208[];
-s32 func_ov000_0218f110(void *a);
+s32 ResSet_UpdateLoad(void *a);
 
 void func_ov015_02211824(void) {
 }
@@ -131,23 +131,23 @@ void func_ov015_02211a74(Ov015Obj290 *self) {
 BOOL func_ov015_02211b00(Ov015Obj290 *self) {
     BOOL r = TRUE;
     if (self->res.unk_00 >= 0) {
-        if ((func_ov000_0218f110(&self->res) & 1) == 0) r = FALSE;
+        if ((ResSet_UpdateLoad(&self->res) & 1) == 0) r = FALSE;
     }
     return r;
 }
 
 
-BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-void func_ov000_02191618(void *a);
+BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
+BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
+void Model0218fe1c_ClearLoop(void *a);
 s32 func_ov000_021909a8(void *a, const void *b, const void *c);
 extern u8 data_ov015_02213280[];
 extern const char *data_ov015_02213210[];
 
 BOOL func_ov015_02211b2c(Ov015Obj290 *self) {
-    func_ov000_0218ffdc(&self->model, &self->res, 0, 1);
-    func_ov000_02190cb0(&self->model, data_ov015_02213280, 0x1000, 0);
-    func_ov000_02191618(&self->model);
+    Model0218fe1c_SetRes(&self->model, &self->res, 0, 1);
+    Model0218fe1c_SetAnim(&self->model, data_ov015_02213280, 0x1000, 0);
+    Model0218fe1c_ClearLoop(&self->model);
     self->model.flags.boxTest = 0;
     self->model.flags.invV = 0;
     self->model.flags.visible = 0;

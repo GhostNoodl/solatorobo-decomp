@@ -9,7 +9,7 @@ void func_ov000_021b1d28(void);
 
 void func_0206d390(void *a, u8 b, u8 c);
 
-s32 func_02049bdc(void *a, int b, int c);
+s32 SndMgr_PlayPan(void *a, int b, int c);
 
 void func_ov002_021d5f60(Task021efc24 *self) {
     UiList *g = self->unk_50;
@@ -32,10 +32,10 @@ void func_ov002_021d5f60(Task021efc24 *self) {
     self->unk_74 = p->id;
     func_ov002_021e3620(self->unk_50, prev, 0);
     func_ov002_021e3620(self->unk_50, self->unk_74, 4);
-    func_ov000_0215bb14(self->unk_4c, func_0206ec48(self->unk_74));
+    Obj0215bb14_SetText(self->unk_4c, Param_Get(self->unk_74));
     self->unk_4c->vfunc_70();
     data_0214a424->bits18.unk_3 = self->unk_74;
-    if (func_ov000_0219bf90()) {
+    if (ActorMgr_FindPlayer()) {
         func_ov000_021b1d28();
     } else {
         data_0214a424->bits18.mode = 1;
@@ -49,8 +49,8 @@ void func_ov002_021d5f60(Task021efc24 *self) {
         }
         func_0206d390(data_0214a424, i, (s8)v);
     }
-    func_02049bdc(data_02097e4c, 0x2c, -5);
-    func_02049a48(data_02097e4c, 0x44, -1, -1, -1);
+    SndMgr_PlayPan(data_02097e4c, 0x2c, -5);
+    SndMgr_PlayVolume(data_02097e4c, 0x44, -1, -1, -1);
 }
 
 static inline bool isState5(void *p) {
@@ -59,9 +59,9 @@ static inline bool isState5(void *p) {
 
 void func_ov000_021c95fc(void *p);
 
-BOOL func_ov000_021633ac(void *p);
+BOOL MsgBox_Update(void *p);
 
-void func_ov000_02162a20(void *p);
+void ModelViewer_Update(void *p);
 
 static inline void *ov002_cursor60dc(void *g) {
     u8 *p = FIELD(g, 0x98, u8 *);
@@ -76,7 +76,7 @@ static inline void *ov002_cursor60dc(void *g) {
     return p;
 }
 
-void func_ov002_021d60dc(Task021efc24 *self) {
+void Task021efc24_PreUpdate(Task021efc24 *self) {
     switch (self->state) {
     case 8:
         self->unk_4c->flags &= ~2;
@@ -96,10 +96,10 @@ void func_ov002_021d60dc(Task021efc24 *self) {
                         MI_CpuCopy8(buf, x->hud->unk_2c, 0x14);
                     }
                     if (x->hud != NULL) {
-                        func_ov002_021e2690(x->hud, 0, 0);
+                        Ov002Hud_SetRow(x->hud, 0, 0);
                     }
                     if (x->hud != NULL) {
-                        func_ov002_021e2754(x->hud, 0xffff);
+                        Ov002Hud_SetInfo(x->hud, 0xffff);
                     }
                 }
                 self->unk_04 |= 6;
@@ -109,8 +109,8 @@ void func_ov002_021d60dc(Task021efc24 *self) {
         break;
     }
     }
-    func_ov000_02162a20(self->unk_58);
-    if (self->unk_5c != NULL && !func_ov000_021633ac(self->unk_5c)) {
+    ModelViewer_Update(self->unk_58);
+    if (self->unk_5c != NULL && !MsgBox_Update(self->unk_5c)) {
         u8 *p;
         u16 id;
         Task021efba4 *x;
@@ -127,12 +127,12 @@ void func_ov002_021d60dc(Task021efc24 *self) {
         p = (u8 *)ov002_cursor60dc(self->unk_50);
         id = FIELD(p, 6, u16);
         if (self->unk_54 != NULL) {
-            func_ov000_0215bb14(self->unk_54, func_0206ec8c(id));
+            Obj0215bb14_SetText(self->unk_54, func_0206ec8c(id));
             self->unk_54->vfunc_70();
         }
         x = (Task021efba4 *)Task_FindById(0x1b);
         if (x != NULL && x->hud != NULL) {
-            func_ov002_021e2690(x->hud, 9, 0);
+            Ov002Hud_SetRow(x->hud, 9, 0);
         }
     }
     self->unk_4c->vfunc_1c();

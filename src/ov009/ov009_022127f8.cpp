@@ -19,7 +19,7 @@ void Ov009ActSpin_StateHurt(Ov009ActSpin *self) {
         st->timer++;
         if (st->timer > 0x3c || VEC_Distance(&self->pos, &self->unk_128) < 0x19a) {
             if (self->unk_1a == 1) {
-                func_ov000_02198360(self->fsm, 1, 0);
+                History_SetState(self->fsm, 1, 0);
             } else {
                 self->unk_128.x = self->unk_134.x;
                 self->unk_128.y = self->unk_134.y;
@@ -33,7 +33,7 @@ void Ov009ActSpin_StateHurt(Ov009ActSpin *self) {
         st = self->fsm;
         st->timer++;
         if (st->timer > 0x78 || VEC_Distance(&self->pos, &self->unk_128) < 0x52) {
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }
@@ -45,17 +45,17 @@ void Ov009ActSpin_StateHurt(Ov009ActSpin *self) {
 
 
 extern void *data_02097e4c;
-extern void func_0203f920(void *mesh);
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void HitMesh_Unlink_0203f920(void *mesh);
+extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_02184508(void *g);
 extern void func_ov000_02184548(void *g);
-extern void func_ov000_0218d46c(void *a, u16 id, s32 msg);
+extern void Actor_SendMsgU8(void *a, u16 id, s32 msg);
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-extern void func_ov000_02199f48(void *p, Ov003Actor *a);
-extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
+extern void Target_SetActor(void *p, Ov003Actor *a);
+extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 extern void func_ov000_0218996c(u8 a, u8 b);
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 
 static inline void *Ov009_FindActorD68(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -92,7 +92,7 @@ void Ov009ActSpin_StateDie(Ov009ActVt_02217a00 *self) {
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x483f, 0x15);
         o = Ov009_FindActorD68(self->unk_f0);
         if (o != NULL) {
-            func_ov000_0218d46c(o, self->unk_f0, 0x15);
+            Actor_SendMsgU8(o, self->unk_f0, 0x15);
         }
         self->fsm->st++;
         self->fsm->timer = 0;
@@ -103,13 +103,13 @@ void Ov009ActSpin_StateDie(Ov009ActVt_02217a00 *self) {
         st->timer++;
         t = st->timer;
         if (t > 0xb4) {
-            func_0203f920(self->hitMesh);
+            HitMesh_Unlink_0203f920(self->hitMesh);
             if (self->unk_1a == 0) {
                 func_ov000_02184548(data_ov000_021ccd54);
             }
             func_ov000_0218996c(10, 0x28);
-            func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
-            func_02065f88(5, &self->pos)->SetScaleXYZ(0x7800, 0x7800, 0x7800);
+            SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
+            Effect_SpawnId(5, &self->pos)->SetScaleXYZ(0x7800, 0x7800, 0x7800);
             self->fsm->timer = 0x29;
             self->fsm->st++;
             return;
@@ -120,9 +120,9 @@ void Ov009ActSpin_StateDie(Ov009ActVt_02217a00 *self) {
             w.x = 0x1333;
             w.y = 0x2000;
             w.z = 0x5800;
-            func_ov000_0219b71c(&v, &w, 0x666, 0x1000, 3, 0x46);
+            Spawn_ScatterEffect(&v, &w, 0x666, 0x1000, 3, 0x46);
             func_ov000_0218996c(8, 8);
-            func_02049a48(data_02097e4c, 0x35, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
         }
         VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
         if (self->unk_1a == 0) {
@@ -134,7 +134,7 @@ void Ov009ActSpin_StateDie(Ov009ActVt_02217a00 *self) {
             return;
         }
         if (self->fsm->timer % 35 == 0) {
-            EffectObj *e = func_02065f88(0x325, &self->pos);
+            EffectObj *e = Effect_SpawnId(0x325, &self->pos);
             s32 a;
             e->SetRotXYZ(0, (u16)(self->rot_y + 0x8000), 0);
             e->SetScaleXYZ(0x1ccd, 0x1ccd, 0x1ccd);
@@ -148,7 +148,7 @@ void Ov009ActSpin_StateDie(Ov009ActVt_02217a00 *self) {
             st->timer--;
         }
         if (st->timer == 0) {
-            func_ov000_02199f48(self->hp, func_ov000_0219bf90());
+            Target_SetActor(self->hp, ActorMgr_FindPlayer());
             Ov003Actor_Defeat(self, 1, 1, 1);
             return;
         }

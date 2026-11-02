@@ -79,18 +79,18 @@ extern Ov003Save *data_0214a424;
 extern Ov003DataRes *data_02fe152c;
 extern void *data_02149ef8;
 Ov003PkOwner *Target_Get(Ov003PkItem *item);
-BOOL func_ov000_0219aae8(Ov003Pickup *self, Ov003PkOwner *owner, u16 a, u8 b, u16 mask, VecFx32 *v, s32 c, s32 d, s32 e, s32 f, s32 g);
+BOOL Hit_ApplyInArea(Ov003Pickup *self, Ov003PkOwner *owner, u16 a, u8 b, u16 mask, VecFx32 *v, s32 c, s32 d, s32 e, s32 f, s32 g);
 void Actor_SendMsg(Ov003PkOwner *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_02040a98(void *buf, u32 n);
-s32 func_02049bdc(SndMgr *a, s32 b, s32 c);
+s32 SndMgr_PlayPan(SndMgr *a, s32 b, s32 c);
 void Ov003_AddExp(u16 id);
-u32 func_0205975c(Ov003DataRes *res, u32 idx);
-void *func_0205976c(Ov003DataRes *res, u32 idx);
-u16 func_02059544(Ov003DataRes *res, void *block, void *entries, int packed, u32 id);
+u32 DataRes_GetCount(Ov003DataRes *res, u32 idx);
+void *DataRes_GetTable(Ov003DataRes *res, u32 idx);
+u16 DataRes_ReadBitsAt_02059544(Ov003DataRes *res, void *block, void *entries, int packed, u32 id);
 void func_0205c234(s32 a, s32 b);
-BOOL func_0206f5e4(u16 id, int n);
-BOOL func_0206f21c(u16 id, int n);
-const char *func_0206ec48(u16 id);
+BOOL Item_Set_0206f5e4(u16 id, int n);
+BOOL Item_Give(u16 id, int n);
+const char *Param_Get(u16 id);
 void func_ov000_02184ee0(void *g, u16 id);
 void func_ov000_02184ea4(void *g, u16 id);
 const char *MsgRes_GetString(void *a, s32 id);
@@ -156,7 +156,7 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
         if (item->neg) {
             f = -1;
         }
-        func_ov000_0219aae8(self, o, item->amount, item->unk_0a, mask, &v, 0, y, 0, f, 0x1000);
+        Hit_ApplyInArea(self, o, item->amount, item->unk_0a, mask, &v, 0, y, 0, f, 0x1000);
         item->unk_1c = 0xffff;
         break;
     }
@@ -167,7 +167,7 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
         if (item->neg) {
             f = -1;
         }
-        func_ov000_0219aae8(self, o, item->amount, item->unk_0a, mask, NULL, 0, self->unk_64, self->unk_68, f, 0x1000);
+        Hit_ApplyInArea(self, o, item->amount, item->unk_0a, mask, NULL, 0, self->unk_64, self->unk_68, f, 0x1000);
         item->unk_1c = 0xffff;
         break;
     }
@@ -195,7 +195,7 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
         }
         func_02040a98(buf, item->amount);
         Ov003Log_Push(2, buf);
-        func_02049a48(data_02097e4c, 0x31, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x31, -1, -1, -1);
         break;
     }
     case 6:
@@ -210,7 +210,7 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
         }
         func_02040a98(buf, item->amount);
         Ov003Log_Push(3, buf);
-        func_02049bdc(data_02097e4c, 0x21, 2);
+        SndMgr_PlayPan(data_02097e4c, 0x21, 2);
         break;
     }
     case 9: {
@@ -227,19 +227,19 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
         data_0214a424->unk_614 = t;
         func_02040a98(buf, n);
         Ov003Log_Push(4, buf);
-        func_02049bdc(data_02097e4c, 0x89, 5);
+        SndMgr_PlayPan(data_02097e4c, 0x89, 5);
         {
             u8 *base;
             BOOL found;
             u32 i;
             u32 count;
             void *tbl;
-            count = func_0205975c(data_02fe152c, 8);
+            count = DataRes_GetCount(data_02fe152c, 8);
             base = data_02fe152c->unk_4c;
-            tbl = func_0205976c(data_02fe152c, 8);
+            tbl = DataRes_GetTable(data_02fe152c, 8);
             found = FALSE;
             for (i = 0; i < count; i++) {
-                if (func_02059544(data_02fe152c, base + 0x110, tbl, 1, (u16)i)) {
+                if (DataRes_ReadBitsAt_02059544(data_02fe152c, base + 0x110, tbl, 1, (u16)i)) {
                     found = TRUE;
                     break;
                 }
@@ -261,7 +261,7 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
                 break;
             }
         }
-        func_0206f5e4(id, 1);
+        Item_Set_0206f5e4(id, 1);
         func_ov000_02184ee0(data_ov000_021ccd54, id);
         break;
     }
@@ -273,8 +273,8 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
                 id = 0x2000;
             }
         }
-        if (func_0206f21c(id, 1)) {
-            Ov003Log_Push(1, func_0206ec48(id));
+        if (Item_Give(id, 1)) {
+            Ov003Log_Push(1, Param_Get(id));
         } else {
             func_ov000_02184ea4(data_ov000_021ccd54, id);
         }
@@ -282,11 +282,11 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
     }
     case 10:
         Ov003Log_Push(0, MsgRes_GetString(data_02149ef8, 0x63));
-        func_02049bdc(data_02097e4c, 0x1e, -5);
+        SndMgr_PlayPan(data_02097e4c, 0x1e, -5);
         break;
     case 11:
         Ov003Log_Push(0, MsgRes_GetString(data_02149ef8, 0x63));
-        func_02049bdc(data_02097e4c, 0x1e, -5);
+        SndMgr_PlayPan(data_02097e4c, 0x1e, -5);
         break;
     }
 }

@@ -2,12 +2,12 @@
 
 extern "C" {
 
-void func_ov002_021cf240(void) {
+void Task021ef4b0_PostUpdate(void) {
 }
 
-void func_ov002_021cf244(Task021ef4b0 *self) {
+void Task021ef4b0_Draw(Task021ef4b0 *self) {
     if (self->fadeRatio != 0) {
-        func_ov000_0217357c(self);
+        Task_Draw(self);
         self->unk_3c->vfunc_20();
         self->unk_40->vfunc_20();
     }
@@ -38,7 +38,7 @@ void func_ov002_021cf280(Task021ef4b0 *self, int kind) {
         str = MsgRes_GetString(msg, 0xe4);
         break;
     }
-    func_ov000_0215bb14(self->unk_40, str);
+    Obj0215bb14_SetText(self->unk_40, str);
     self->unk_40->vfunc_70();
 }
 

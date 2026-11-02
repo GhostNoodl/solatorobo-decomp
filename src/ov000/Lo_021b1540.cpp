@@ -28,7 +28,7 @@ static inline void Enter(Robo021ca458 *self, BOOL flag) {
     self->unk_76c = self->rot_x;
     self->unk_76e = self->rot_y;
     self->unk_770 = self->rot_z;
-    func_ov000_02190cb0(&self->mdl1, data_ov000_021cc5e3, 0x1000, 1);
+    Model0218fe1c_SetAnim(&self->mdl1, data_ov000_021cc5e3, 0x1000, 1);
     anm = ((Anm021b1540 *)self->mdl1.unk_1c);
     if (anm != NULL) {
         NNS_G3dRenderObjRemoveAnmObj((u8 *)self + 0x38c, *(void **)anm);
@@ -64,7 +64,7 @@ void func_ov000_021b1540(Robo021ca458 *self, BOOL flag, s32 mode) {
         self->unk_b22_6 = (u16)st;
         self->unk_b22_9 = 1;
         self->fsm->flags |= 0x80000000;
-        func_ov000_02198360(self->fsm, 0x1f, 0);
+        History_SetState(self->fsm, 0x1f, 0);
     }
     func_02062764(0x30, 0x20);
     if (flag) {

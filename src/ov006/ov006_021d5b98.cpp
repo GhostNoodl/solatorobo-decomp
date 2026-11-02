@@ -30,8 +30,8 @@ extern "C" {
 extern u8 data_ov006_021ebfc0[];
 extern char data_0214b105[];
 extern char data_ov006_021ec864[];
-void func_0206e900(char *dst, const char *src);
-void *func_ov000_0218ea20(void *p);
+void LangData_LocalizePath(char *dst, const char *src);
+void *ResSet_ReleaseAll(void *p);
 void func_ov006_021ccddc(ov006_Task *self);
 
 static inline void ov006_Unk021d5b98_dtor(ov006_Unk021d5b98 *self) {
@@ -45,17 +45,17 @@ static inline void ov006_Unk021d5b98_dtor(ov006_Unk021d5b98 *self) {
     OV006_DELETE_OBJECT(self->unk2C);
     OV006_DELETE_OBJECT(self->unk30);
     OV006_DELETE_OBJECT(self->unk34);
-    func_02036838(data_02097cdc, data_0214b105, 7, 0);
-    func_02036838(data_02097cdc, data_0208cc94, 7, 0);
-    func_0206e900(buf, "menu/skyrace");
-    func_02036838(data_02097cdc, buf, 7, 0);
-    func_02036838(data_02097cdc, data_ov006_021ec864, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_0214b105, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_0208cc94, 7, 0);
+    LangData_LocalizePath(buf, "menu/skyrace");
+    ResMgr_ReleaseByName(data_02097cdc, buf, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_ov006_021ec864, 7, 0);
     {
         // The name in a local makes the literal load come before the manager load.
         const char *s = "ef/effect3darc";
-        func_02036838(data_02097cdc, s, 7, 0);
+        ResMgr_ReleaseByName(data_02097cdc, s, 7, 0);
     }
-    func_02036838(data_02097cdc, "ef/effect3dtri", 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, "ef/effect3dtri", 7, 0);
     i = 0;
     for (; i < 6; i++) {
         void *saved = data_02097dd0->cur;
@@ -63,7 +63,7 @@ static inline void ov006_Unk021d5b98_dtor(ov006_Unk021d5b98 *self) {
         if (self->unk70[i] != NULL) {
             if (self->unk70[i] != NULL) {
                 void *p = self->unk70[i];
-                func_ov000_0218ea20(p);
+                ResSet_ReleaseAll(p);
                 Heap_Free(p);
             }
             self->unk70[i] = NULL;
@@ -113,11 +113,11 @@ extern "C" {
 extern const u16 data_ov006_021eb7a8[];
 extern ov006_Unk02097e48 *data_02097e48;
 
-void func_0206e900(char *dst, const char *src);
-void *func_ov000_0218e9c4(void *p);
+void LangData_LocalizePath(char *dst, const char *src);
+void *ResSet_Init(void *p);
 void func_ov000_02193e5c(void *p, u16 id);
 void func_0203cc58(s32 a, int b, int c);
-void func_0203cd10(void);
+void GfxSys_UpdateFade(void);
 
 static inline void ov006_Game_SetColor(u8 r, u8 g, u8 b) {
     // The aggregate initializer keeps c in memory; its stores are dead but still emitted.
@@ -132,17 +132,17 @@ static inline void ov006_Game_SetColor(u8 r, u8 g, u8 b) {
 BOOL Ov006Vt_021ebfc0_Load(ov006_Task021d6140 *self) {
     char buf[0x21];
     int i;
-    func_020359d0(data_0214b105, 7, 0);
-    func_020359d0(data_0208cc94, 7, 0);
-    func_0206e900(buf, "menu/skyrace");
-    func_020359d0(buf, 7, 0);
-    func_020359d0(data_ov006_021ec864, 7, 0);
-    func_020359d0("ef/effect3darc", 7, 0);
-    func_020359d0("ef/effect3dtri", 7, 0);
+    ResMgr_Load(data_0214b105, 7, 0);
+    ResMgr_Load(data_0208cc94, 7, 0);
+    LangData_LocalizePath(buf, "menu/skyrace");
+    ResMgr_Load(buf, 7, 0);
+    ResMgr_Load(data_ov006_021ec864, 7, 0);
+    ResMgr_Load("ef/effect3darc", 7, 0);
+    ResMgr_Load("ef/effect3dtri", 7, 0);
     for (i = 0; i < 6; i++) {
         void *p = Heap_Alloc(0x138);
         if (p != NULL) {
-            p = func_ov000_0218e9c4(p);
+            p = ResSet_Init(p);
         }
         self->unk70[i] = p;
         func_ov000_02193e5c(p, data_ov006_021eb7a8[i]);
@@ -153,7 +153,7 @@ BOOL Ov006Vt_021ebfc0_Load(ov006_Task021d6140 *self) {
     }
     func_0203cc58(0x1000, 0, 0);
     func_0203cc58(0x1000, 0, 1);
-    func_0203cd10();
+    GfxSys_UpdateFade();
     {
         ov006_Unk02097e48 *p = data_02097e48;
         if (p->active) {
@@ -213,11 +213,11 @@ void func_ov000_0218be9c(Group *self);
 void func_ov000_0218be54(Group *self);
 void ActorMgr_DestroyAll(void *p);
 void func_ov000_021b53f4(void *p);
-void func_0206e900(char *dst, const char *src);
-BOOL func_ov000_0218f110(void *p);
-BOOL func_ov000_021b5578(void *p);
+void LangData_LocalizePath(char *dst, const char *src);
+BOOL ResSet_UpdateLoad(void *p);
+BOOL FieldMgr_UpdateLoad(void *p);
 void func_ov000_021b5dc0(void *p);
-int func_0206e264(ov006_Party *party);
+int LangBlockB_GetData(ov006_Party *party);
 ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 Ov006Racer *Ov006Racer_New(u32 id, u8 a, const VecFx32 *pos, const Rot16 *rot);
 BOOL ActorMgr_IsReady(void *p);
@@ -228,7 +228,7 @@ static inline int ov006_GetPartyValue(ov006_Unk021ccd6c *self) {
     if (self->party == NULL || self->party->count == 0) {
         return 0;
     }
-    return func_0206e264(self->party);
+    return LangBlockB_GetData(self->party);
 }
 
 BOOL Ov006Vt_021ebfc0_IsLoaded(ov006_Task021d630c *self) {
@@ -249,23 +249,23 @@ BOOL Ov006Vt_021ebfc0_IsLoaded(ov006_Task021d630c *self) {
         break;
     case 1: {
         char buf[0x20];
-        if (!func_02035b90(data_0214b105, 7)) {
+        if (!ResMgr_IsLoaded(data_0214b105, 7)) {
             break;
         }
-        if (!func_02035b90(data_0208cc94, 7)) {
+        if (!ResMgr_IsLoaded(data_0208cc94, 7)) {
             break;
         }
-        func_0206e900(buf, "menu/skyrace");
-        if (!func_02035b90(buf, 7)) {
+        LangData_LocalizePath(buf, "menu/skyrace");
+        if (!ResMgr_IsLoaded(buf, 7)) {
             break;
         }
-        if (!func_02035b90(data_ov006_021ec864, 7)) {
+        if (!ResMgr_IsLoaded(data_ov006_021ec864, 7)) {
             break;
         }
-        if (!func_02035b90("ef/effect3darc", 7)) {
+        if (!ResMgr_IsLoaded("ef/effect3darc", 7)) {
             break;
         }
-        if (!func_02035b90("ef/effect3dtri", 7)) {
+        if (!ResMgr_IsLoaded("ef/effect3dtri", 7)) {
             break;
         }
         self->subState++;
@@ -274,7 +274,7 @@ BOOL Ov006Vt_021ebfc0_IsLoaded(ov006_Task021d630c *self) {
     case 2:
         result = TRUE;
         for (; i < 6; i++) {
-            if (*self->unk70[i] >= 0 && !func_ov000_0218f110(self->unk70[i])) {
+            if (*self->unk70[i] >= 0 && !ResSet_UpdateLoad(self->unk70[i])) {
                 result = zero;
             }
         }
@@ -292,13 +292,13 @@ BOOL Ov006Vt_021ebfc0_IsLoaded(ov006_Task021d630c *self) {
             self->subState++;
             break;
         }
-        func_02065ac0(data_0214a420);
+        EffectMgr_Update(data_0214a420);
         break;
     case 5: {
         ov006_PartyEntry *tbl;
         u8 j;
         u8 n;
-        if (!func_ov000_021b5578(data_ov000_021ccd6c)) {
+        if (!FieldMgr_UpdateLoad(data_ov000_021ccd6c)) {
             break;
         }
         func_ov000_021b5dc0(data_ov000_021ccd6c);
@@ -438,17 +438,17 @@ ov006_SlotManager *ov006_GetSlotManager(void);
 void ov006_Manager_DispatchMenuCb(int a, void *b, int c);
 ov006_Gauge021d6724 *Ov006Vt_021ec2bc_Ctor(void *p);
 void ov006_Unk021ddcc0_Load(ov006_Gauge021d6724 *p);
-void func_ov000_0216da2c(void *p, int a, int b, int c);
+void LoTimer_Setup(void *p, int a, int b, int c);
 VecFx32021d6724 *Ov006Vt_021ec1fc_Ctor(void *p);
 void ov006_Unk021e16b0_Load(VecFx32021d6724 *p);
-void *func_0206ec48(u32 id);
+void *Param_Get(u32 id);
 void ov006_Unk021e1e6c_PlayText(VecFx32021d6724 *a, const void *b);
 void ov006_Unk021e1ddc_SetLabel(VecFx32021d6724 *a, const char *b, int c, int d);
 VecFx32021d6724 *Ov006Vt_021ec2cc_Ctor(void *p);
 void ov006_MarkerSet_Load(VecFx32021d6724 *p);
 VecFx32021d6724 *Ov006Vt_021ec2ac_Ctor(void *p);
 void ov006_Unk021e279c_Load(VecFx32021d6724 *p);
-BOOL func_0203e688(void);
+BOOL Vram_IsIdle(void);
 void func_02039518(void *p);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 u16 func_02046ab4(ov006_Unk02097e40 *a);
@@ -457,7 +457,7 @@ void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self);
 
 static inline void ov006_Gauge_Init(ov006_Gauge021d6724 *g, int a, int b, int c) {
     if (g->unk1C != NULL) {
-        func_ov000_0216da2c(g->unk1C, a, b, c);
+        LoTimer_Setup(g->unk1C, a, b, c);
     }
 }
 
@@ -495,15 +495,15 @@ BOOL Ov006Vt_021ebfc0_Setup(ov006_Task021d6724 *self) {
         model = (Model *)Heap_Alloc(sizeof(Model));
         if (model != NULL) {
             const char *name = "cefly1pic00";
-            func_02041218(&model->pltt);
-            func_02041440(model, name, 0);
+            PlttRes_Init_02041218(&model->pltt);
+            TexObj_Init(model, name, 0);
             STD_CopyString(model->name, data_ov006_021ec864);
         }
         self->unk24 = model;
-        func_020417e0(self->unk24, func_02035de0(data_ov006_021ec864, "cefly1pic00"));
+        TexObj_SetRes(self->unk24, func_02035de0(data_ov006_021ec864, "cefly1pic00"));
         self->unk24->flags |= 2;
         self->unk24->flags |= 0x400000;
-        func_02041d9c(self->unk24, 2, 0xffff);
+        TexObj_SelectImage(self->unk24, 2, 0xffff);
         info = (ov006_Info021d6724 *)data_ov006_021ec884->info;
         p = (VecFx32021d6724 *)Heap_Alloc(0x30);
         if (p != NULL) {
@@ -511,7 +511,7 @@ BOOL Ov006Vt_021ebfc0_Setup(ov006_Task021d6724 *self) {
         }
         self->unk28 = p;
         ov006_Unk021e16b0_Load(p);
-        ov006_Unk021e1e6c_PlayText(self->unk28, func_0206ec48(data_ov006_021ec884->unk6));
+        ov006_Unk021e1e6c_PlayText(self->unk28, Param_Get(data_ov006_021ec884->unk6));
         ov006_Unk021e1ddc_SetLabel(self->unk28, "menu/skyrace_map", info->unk4, zero);
         VecFx32_SetXY(self->unk28, -0x2c, 0xc);
         p = (VecFx32021d6724 *)Heap_Alloc(0xa4);
@@ -537,7 +537,7 @@ BOOL Ov006Vt_021ebfc0_Setup(ov006_Task021d6724 *self) {
         break;
     }
     case 1:
-        if (!func_0203e688()) {
+        if (!Vram_IsIdle()) {
             break;
         }
         func_02039518(func_02035de0(data_ov006_021ec864, "cefly1pic00"));

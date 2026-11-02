@@ -6,16 +6,16 @@
 extern "C" {
 
 extern void *data_ov003_021f738c[];
-extern Ov003BlinkTarget *func_ov000_0219bf90(void);
-extern BOOL func_ov000_02191120(void *model);
+extern Ov003BlinkTarget *ActorMgr_FindPlayer(void);
+extern BOOL Model0218fe1c_IsAnimDone(void *model);
 extern char data_ov003_021fa2d2[];
 
-extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
-extern void func_ov000_021915a0(void *model);
-extern void func_ov000_021911c8(void *model, s32 v);
+extern BOOL Model0218fe1c_SetAnim(void *model, const void *name, s32 a, s32 b);
+extern void Model0218fe1c_SetLoop(void *model);
+extern void Model0218fe1c_SetAnimSpeed(void *model, s32 v);
 extern s32 Rand_PlusMinus(s32 max);
-extern Ov003BlinkInfo *func_0206fef8(u16 id);
-extern BOOL func_ov000_021903b4(void *model);
+extern Ov003BlinkInfo *Tbl_FindEntry_0206fef8(u16 id);
+extern BOOL Model021903b4_Draw(void *model);
 
 static inline void Ov003_SetSqrtImm64(u64 param) {
     *(volatile u64 *)0x040002b8 = param;
@@ -63,10 +63,10 @@ void Ov003ActVt_021fa440_Start(Ov003PropBlink *self) {
 }
 
 void Ov003ActVt_021fa440_RunState(Ov003PropBlink *self) {
-    Ov003BlinkTarget *t = func_ov000_0219bf90();
+    Ov003BlinkTarget *t = ActorMgr_FindPlayer();
     switch (self->phase) {
     case 0:
-        if (!func_ov000_02191120(self->model)) {
+        if (!Model0218fe1c_IsAnimDone(self->model)) {
             return;
         }
         if (Ov003_DistXZ(&self->pos, &t->pos) < self->radius) {
@@ -75,7 +75,7 @@ void Ov003ActVt_021fa440_RunState(Ov003PropBlink *self) {
         }
         break;
     case 1:
-        if (!func_ov000_02191120(self->model)) {
+        if (!Model0218fe1c_IsAnimDone(self->model)) {
             return;
         }
         if (self->unk_18 & 0xff) {
@@ -87,7 +87,7 @@ void Ov003ActVt_021fa440_RunState(Ov003PropBlink *self) {
         }
         break;
     case 2:
-        if (!func_ov000_02191120(self->model)) {
+        if (!Model0218fe1c_IsAnimDone(self->model)) {
             return;
         }
         if (Ov003_DistXZ(&self->pos, &t->pos) > self->radius) {
@@ -96,7 +96,7 @@ void Ov003ActVt_021fa440_RunState(Ov003PropBlink *self) {
         }
         break;
     case 3:
-        if (!func_ov000_02191120(self->model)) {
+        if (!Model0218fe1c_IsAnimDone(self->model)) {
             return;
         }
         if (self->unk_18 & 0xff00) {

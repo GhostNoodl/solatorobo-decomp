@@ -6,14 +6,14 @@
 
 extern "C" {
 
-void func_ov000_02150cb0(Lo021ca9c4 *self) {
+void Lo021ca9c4_Release(Lo021ca9c4 *self) {
     self->text[0].unk_vf08();
     self->text[1].unk_vf08();
     self->text[2].unk_vf08();
     self->text[3].unk_vf08();
     self->text[4].unk_vf08();
     self->text[5].unk_vf08();
-    HEAP_DELETE(MsgEntryEx *, self->unk_54, func_ov000_02153fd8(p); Heap_Free(p));
+    HEAP_DELETE(MsgEntryEx *, self->unk_54, MsgEntry_Release(p); Heap_Free(p));
     HEAP_DELETE_VOBJ(self->unk_58);
     HEAP_DELETE_VOBJ(self->unk_4c);
     HEAP_DELETE_VOBJ(self->unk_50);

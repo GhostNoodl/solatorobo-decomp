@@ -4,7 +4,7 @@ extern "C" {
 
 extern VFunc data_ov000_021cadcc[];
 
-void func_ov002_021cfba8(Task021ef79c *self) {
+void Task021ef79c_Start(Task021ef79c *self) {
     UiObj *o;
     UiObj *o2;
     UiObj *s;
@@ -41,7 +41,7 @@ void func_ov002_021cfba8(Task021ef79c *self) {
     self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xf2), 0x14, 0xffff, 0xffff);
     self->unk_3c->vfunc_08();
     m = self->unk_3c;
-    m->vfunc_a8(func_ov000_02154b58(m, 0xb));
+    m->vfunc_a8(UiList_GetItemById(m, 0xb));
     o2 = (UiObj *)Heap_Alloc(0x8c);
     if (o2 != NULL) {
         *(VFunc **)o2 = data_ov000_021cac60;
@@ -62,12 +62,12 @@ void func_ov002_021cfba8(Task021ef79c *self) {
     s->slideZ = -0x199a;
     self->unk_40->slideMode = 1;
     self->unk_40->vfunc_08();
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 BOOL func_ov002_021cf314(int idx, u32 arg);
 
-void func_ov002_021cfe48(Task021ef79c *self) {
+void Task021ef79c_PreUpdate(Task021ef79c *self) {
     UiListItem *e;
     void *mgr;
     void *s1;
@@ -75,7 +75,7 @@ void func_ov002_021cfe48(Task021ef79c *self) {
     UiListItem *e2;
     if (self->state == 8) {
         mgr = data_02149ef8;
-        e = func_ov000_02154b58(self->unk_3c, 0xb);
+        e = UiList_GetItemById(self->unk_3c, 0xb);
         e->name = NULL;
         {
             HEAP_PUSH(s1);
@@ -90,8 +90,8 @@ void func_ov002_021cfe48(Task021ef79c *self) {
             e->unk_24 = 0;
             e->unk_10 = 0;
         }
-        func_ov000_02153c48(e, 8, 0, 0, 0);
-        e2 = func_ov000_02154b58(self->unk_3c, 0x14);
+        Obj02153c48_CreateText(e, 8, 0, 0, 0);
+        e2 = UiList_GetItemById(self->unk_3c, 0x14);
         e2->name = NULL;
         {
             HEAP_PUSH(s2);
@@ -106,7 +106,7 @@ void func_ov002_021cfe48(Task021ef79c *self) {
             e2->unk_24 = 0;
             e2->unk_10 = 0;
         }
-        func_ov000_02153c48(e2, 8, 0, 0, 0);
+        Obj02153c48_CreateText(e2, 8, 0, 0, 0);
     }
     self->unk_3c->vfunc_1c();
     self->unk_40->vfunc_1c();

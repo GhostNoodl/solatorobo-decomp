@@ -8,15 +8,15 @@ typedef struct {
 
 extern "C" {
 extern char data_ov000_021cc9e9[];
-BOOL func_ov000_02152e5c(void *self);
+BOOL Obj02152e5c_LoadModel(void *self);
 void func_ov000_0215ec44(void *self);
-void func_ov000_0215e8b0(void *self);
+void Obj0215e8b0_LoadModel(void *self);
 
 static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
-        func_0204c7d0(win);
+        TextWin_Init(win);
     }
     return win;
 }
@@ -82,7 +82,7 @@ static inline u8 *Obj021c628c_GetItem(Obj021c628cS *self, s32 n) {
     return p;
 }
 
-void func_ov000_021c628c(Obj021c628cS *self) {
+void Ov000Vt_021ccadc_Setup(Obj021c628cS *self) {
     u8 *p;
     u8 *o;
 
@@ -98,8 +98,8 @@ void func_ov000_021c628c(Obj021c628cS *self) {
     if (p != NULL) {
         self->unk_b4 = LFLD(s32, p, 0x1c);
     }
-    if (func_ov000_02152e5c(self)) {
-        func_02041d9c(self->unk_10, 0, 4);
+    if (Obj02152e5c_LoadModel(self)) {
+        TexObj_SelectImage(self->unk_10, 0, 4);
     }
     self->unk_88 = self->unk_84;
     o = (u8 *)Heap_Alloc(0x2c);
@@ -108,7 +108,7 @@ void func_ov000_021c628c(Obj021c628cS *self) {
     }
     self->unk_9c = o;
     LFLD(s32, o, 0x10) = self->unk_a4 << 12;
-    func_ov000_0215e8b0(self->unk_9c);
+    Obj0215e8b0_LoadModel(self->unk_9c);
     if (self->unk_a0 != NULL) {
         return;
     }

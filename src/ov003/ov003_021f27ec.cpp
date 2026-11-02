@@ -121,9 +121,9 @@ extern Ov003MCtx *data_ov000_021ccd6c;
 
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 a, u16 b);
-extern BOOL func_ov000_0218ffdc(Ov003MultiModel *m, Ov003MultiSlot *slot, s32 a, s32 b);
-extern void func_ov000_02190e98(Ov003MultiModel *m, s32 a, s32 b, s32 c);
-extern void func_ov000_021915a0(Ov003MultiModel *m);
+extern BOOL Model0218fe1c_SetRes(Ov003MultiModel *m, Ov003MultiSlot *slot, s32 a, s32 b);
+extern void Model0218fe1c_SetAnimByIndex(Ov003MultiModel *m, s32 a, s32 b, s32 c);
+extern void Model0218fe1c_SetLoop(Ov003MultiModel *m);
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, BOOL on, u32 mask);
 extern void NNSi_G3dModifyMatFlag(void *mdl, BOOL on, u32 flag);
 extern s32 func_ov000_021909a8(Ov003MultiModel *m, const void *a, const void *b);
@@ -177,10 +177,10 @@ void Ov003ActVt_021fa390_RunState(Ov003Multi *self) {
             idx = def->map[self->unk_1118];
         }
         m = &self->models[self->unk_1119];
-        func_ov000_0218ffdc(m, &self->slots[idx], 0, 1);
+        Model0218fe1c_SetRes(m, &self->slots[idx], 0, 1);
         m->unk_c2_4 = 0;
-        func_ov000_02190e98(m, 0, 0x1000, 0);
-        func_ov000_021915a0(m);
+        Model0218fe1c_SetAnimByIndex(m, 0, 0x1000, 0);
+        Model0218fe1c_SetLoop(m);
         m->unk_a8 = def->res[idx].x;
         m->unk_ac = def->res[idx].y;
         m->unk_b0 = def->res[idx].z;
@@ -208,7 +208,7 @@ void Ov003ActVt_021fa390_RunState(Ov003Multi *self) {
         VEC_Add(&self->unk_1140, &v, &self->unk_114c);
         self->unk_9c = 0;
         if (self->unk_1119 == 0 || self->unk_1119 == 3) {
-            func_02049a48(data_02097e4c, 0x51, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x51, -1, -1, -1);
         }
     }
     self->unk_9c += def->speed;

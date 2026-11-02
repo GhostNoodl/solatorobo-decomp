@@ -10,14 +10,14 @@ extern const char *data_0208cc94;
 extern char data_ov000_021ccc68[];
 extern char data_ov000_021ccc72[];
 extern char data_ov000_021ccc7e[];
-void func_02035acc(void *a, void *b, s32 c);
+void ResMgr_ReleaseArchive(void *a, void *b, s32 c);
 void Heap_Free(void *ptr);
 
 static inline void Obj021ccc94_Dtor(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021ccc94);
-    func_02036838(data_02097cdc, data_0208cc94, 7, 0);
-    func_02036838(data_02097cdc, data_ov000_021ccc68, 7, 0);
-    func_02035acc(data_ov000_021ccc72, data_ov000_021ccc7e, 2);
+    ResMgr_ReleaseByName(data_02097cdc, data_0208cc94, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_ov000_021ccc68, 7, 0);
+    ResMgr_ReleaseArchive(data_ov000_021ccc72, data_ov000_021ccc7e, 2);
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
 }

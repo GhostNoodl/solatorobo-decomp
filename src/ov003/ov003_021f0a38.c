@@ -84,7 +84,7 @@ typedef struct {
 extern void *data_ov000_021ccd68;
 extern Ov003SwObjList *data_ov000_021ccd64;
 extern Ov003SwGroup *ActorMgr_GetGroup(void *mgr, u16 key);
-extern Ov003SwPlayer *func_ov000_0219bf90(void);
+extern Ov003SwPlayer *ActorMgr_FindPlayer(void);
 
 BOOL Ov003Switch_AreTargetsDone(Ov003Switch *self, BOOL deep) {
     BOOL r = TRUE;
@@ -117,7 +117,7 @@ BOOL Ov003Switch_AreTargetsDone(Ov003Switch *self, BOOL deep) {
                         break;
                     }
                     if ((g->unk_08 >> 12) == 5) {
-                        Ov003SwPlayer *p = func_ov000_0219bf90();
+                        Ov003SwPlayer *p = ActorMgr_FindPlayer();
                         if (p != NULL && p->unk_93_4) {
                             r = FALSE;
                             break;

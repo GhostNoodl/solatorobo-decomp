@@ -15,7 +15,7 @@ void func_ov000_02153f60(VObj *self, s32 a) {
     *(u32 *)((u8 *)self + 4) &= ~0x200000;
 }
 
-void func_ov000_02153f90(MsgEntry *self) {
+void MsgEntry_Init(MsgEntry *self) {
     self->unk_00 = 0;
     self->unk_04 = 0;
     self->id = 0;

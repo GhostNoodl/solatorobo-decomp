@@ -24,9 +24,9 @@ GroupActor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Heap_Free(void *p);
 void func_ov000_0218b4b4(GroupNode *node, s32 a, GroupActor *actor);
 GroupActor *Ov003Prop_New(const GroupActorDesc *desc);
-GroupActor *func_ov000_02192b24(const GroupActorDesc *desc);
+GroupActor *Factory_New4000(const GroupActorDesc *desc);
 GroupActor *Ov003_NewActor(const GroupActorDesc *desc);
-GroupActor *func_ov000_021b4828(const GroupActorDesc *desc);
+GroupActor *Factory_New6000(const GroupActorDesc *desc);
 
 static inline Group *Group_Init(Group *g) {
     g->head = NULL;
@@ -147,7 +147,7 @@ GroupNode *Group_FindById(Group *g, u16 id, u8 b) {
     return ret;
 }
 
-GroupNode *func_ov000_0218bddc(Group *g, u16 id, u8 b) {
+GroupNode *Group_FindNodeByKind(Group *g, u16 id, u8 b) {
     GroupNode *ret = NULL;
     GroupNode *n;
     for (n = g->head; n != NULL; n = n->next) {
@@ -214,13 +214,13 @@ GroupActor *Group_SpawnActor(Group *g, const GroupActorDesc *desc, const VecFx32
         actor = Ov003Prop_New(desc);
         break;
     case 0x4000:
-        actor = func_ov000_02192b24(desc);
+        actor = Factory_New4000(desc);
         break;
     case 0x5000:
         actor = Ov003_NewActor(desc);
         break;
     case 0x6000:
-        actor = func_ov000_021b4828(desc);
+        actor = Factory_New6000(desc);
         break;
     }
     if (actor != NULL) {

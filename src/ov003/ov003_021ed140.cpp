@@ -17,7 +17,7 @@ typedef struct {
 
 extern void *data_ov000_021ccd64;
 extern Actor *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, VecFx32 *pos, const void *rot, u16 a);
-extern void func_ov000_0218d46c(Actor *o, u16 a, u8 b);
+extern void Actor_SendMsgU8(Actor *o, u16 a, u8 b);
 extern u32 Rand_UpTo(u32 n);
 
 void Ov003ActVt_021f9b18_StateDie(ActorEx *self) {
@@ -34,7 +34,7 @@ void Ov003ActVt_021f9b18_StateDie(ActorEx *self) {
         o = Group_SpawnActor(data_ov000_021ccd64, &info, &self->pos, &self->rot_x, 0xffff);
         if (o != NULL) {
             o->flags_0 = 1;
-            func_ov000_0218d46c(o, self->id, 4);
+            Actor_SendMsgU8(o, self->id, 4);
             o->speed = Rand_UpTo(0x80) + 0x19a;
             o->velY = 0x333;
             o->friction = 0;
@@ -42,7 +42,7 @@ void Ov003ActVt_021f9b18_StateDie(ActorEx *self) {
             o->moveYaw = self->rot_y;
         }
     }
-    func_ov000_0219763c(self);
+    ActorEx_StateDie(self);
 }
 
 extern Ov003ShotDef data_ov003_021f6c04;

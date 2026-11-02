@@ -46,14 +46,14 @@ typedef struct {
 
 extern "C" {
 
-Info021b4adc *func_0206fef8(u16 id);
+Info021b4adc *Tbl_FindEntry_0206fef8(u16 id);
 Flags021b4adc *func_020705fc(u16 id);
 void *func_0207011c(u16 id);
 char *Tbl_GetEntryData(u16 id, s32 idx);
 void *Heap_Alloc(u32 size);
-Obj021b4adc *func_ov000_0218e9c4(void *p);
-St021b4adc *func_ov000_021919c8(void *p);
-void func_ov000_0218f074(Obj021b4adc *o, void *a, BOOL b, BOOL c, s32 d, BOOL e);
+Obj021b4adc *ResSet_Init(void *p);
+St021b4adc *Shadow_Ctor(void *p);
+void ResSet_SetFile(Obj021b4adc *o, void *a, BOOL b, BOOL c, s32 d, BOOL e);
 void Shadow_Load(St021b4adc *s);
 
 static inline void SetState(St021b4adc *s, s32 n) {
@@ -61,26 +61,26 @@ static inline void SetState(St021b4adc *s, s32 n) {
     s->cur = n;
 }
 
-void func_ov000_021b4adc(Self021b4adc *self) {
+void Ov000ActVt_021cc7cc_Init(Self021b4adc *self) {
     Info021b4adc *info;
     void *res;
     char *s0;
     char *s1;
     Obj021b4adc *o;
     void *p;
-    info = func_0206fef8(self->id);
+    info = Tbl_FindEntry_0206fef8(self->id);
     self->flags = func_020705fc(self->id);
     res = func_0207011c(self->id);
     p = Heap_Alloc(0x138);
     if (p != NULL) {
-        p = func_ov000_0218e9c4(p);
+        p = ResSet_Init(p);
     }
     self->obj = (Obj021b4adc *)p;
     {
         BOOL f0 = info->b0 ? TRUE : FALSE;
         BOOL f1 = info->b1 ? TRUE : FALSE;
         BOOL f5 = self->flags->b5 ? TRUE : FALSE;
-        func_ov000_0218f074(self->obj, res, f0, f1, 0, f5);
+        ResSet_SetFile(self->obj, res, f0, f1, 0, f5);
     }
     s0 = Tbl_GetEntryData(self->id, 0);
     s1 = Tbl_GetEntryData(self->id, 1);
@@ -96,7 +96,7 @@ void func_ov000_021b4adc(Self021b4adc *self) {
     }
     p = Heap_Alloc(0x1c);
     if (p != NULL) {
-        p = func_ov000_021919c8(p);
+        p = Shadow_Ctor(p);
     }
     self->st = (St021b4adc *)p;
     if (info->b14 == 0) {

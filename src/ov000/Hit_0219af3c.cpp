@@ -18,9 +18,9 @@ typedef struct {
 } Tgt0219af3c;
 
 extern "C" {
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-BOOL func_ov000_02199cd8(Tgt0219af3c *self, u16 id);
+BOOL Target_MatchesId(Tgt0219af3c *self, u16 id);
 BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 
 static inline s32 Cur0219af3c(Actor *self) {
@@ -69,7 +69,7 @@ void func_ov000_0219af3c(Actor *self, ActorMarker *p) {
     s32 act;
     p->show = 0;
     r4 = 0;
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (pl == NULL) {
         return;
     }
@@ -111,7 +111,7 @@ void func_ov000_0219af3c(Actor *self, ActorMarker *p) {
             if (a == NULL) {
                 return;
             }
-            if (!func_ov000_02199cd8(tgt, a->kind)) {
+            if (!Target_MatchesId(tgt, a->kind)) {
                 return;
             }
         }
@@ -132,7 +132,7 @@ void func_ov000_0219af3c(Actor *self, ActorMarker *p) {
                 r4 = 0;
             }
         }
-        func_ov000_021bd314(p, 1);
+        ActorMarker_SetKind(p, 1);
         if (p->kind == 1) {
             LFLD(s32, p, 0x98) = r4; // kind 1's own field
         } else {
@@ -173,7 +173,7 @@ void func_ov000_0219af3c(Actor *self, ActorMarker *p) {
     if (act == -1) {
         return;
     }
-    func_ov000_021bd314(p, act);
+    ActorMarker_SetKind(p, act);
     p->show = 1;
 }
 }

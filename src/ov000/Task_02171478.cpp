@@ -20,10 +20,10 @@ extern u8 data_ov000_021cb940[];
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern s32 data_02097d78[];
 void *Heap_Alloc(u32 size);
-void *func_020359d0(void *a, s32 b, s32 c);
-void func_ov000_0216f1ac(ListBuffer *buf, BufferList *list);
-void func_ov000_0216faac(ListBuffer021cb940 *self);
-VObj *func_ov000_0219bf90(void);
+void *ResMgr_Load(void *a, s32 b, s32 c);
+void ListBuffer_AddToList(ListBuffer *buf, BufferList *list);
+void ListBuffer021cb940_Init(ListBuffer021cb940 *self);
+VObj *ActorMgr_FindPlayer(void);
 void func_ov000_021848d0(FieldState *q);
 BOOL func_ov000_02170188(ListBuffer021cb940 *t, s32 b, s32 c);
 BOOL func_ov000_0217032c(ListBuffer021cb940 *t, s32 b, s32 c);
@@ -37,7 +37,7 @@ void func_ov000_021b8884(void *p, u16 a);
 void func_ov000_021bacb8(void *p, u16 a);
 void func_ov000_021bbc68(void *p, u8 a, u8 b, u8 c);
 void func_ov000_021b8e80(void *p, s32 a, u16 b);
-void func_ov000_021bb810(void *p, s32 a);
+void Obj021bb810_Init_021bb810(void *p, s32 a);
 void func_ov000_021bb2b0(void *p, u16 a, s32 b, BOOL c);
 
 }
@@ -68,7 +68,7 @@ static inline ListBuffer *AddBuffer02171478(MessageQueue *self, ListBuffer *buf,
     b->unk_10 = 0;
     b->unk_14 = 0;
     b->unk_0c = (u32)owner;
-    func_ov000_0216f1ac(b, &self->list);
+    ListBuffer_AddToList(b, &self->list);
     if (allocated) {
         b->flags |= 0x10;
     }
@@ -189,10 +189,10 @@ static inline BOOL Task_Start54(ListBuffer021cb940 *t, u32 b, s32 c) {
     hi = (b >> 8) & 0xffffff;
     p = (LoTimer *)Heap_Alloc(sizeof(LoTimer));
     if (p != NULL) {
-        func_ov000_0216e574(p);
+        LoTimer_Init(p);
     }
     t->unk_54 = p;
-    func_ov000_0216da2c(p, lo, c, hi);
+    LoTimer_Setup(p, lo, c, hi);
     t->unk_54->b6 = 1;
     t->unk_54->b2 = 1;
     return TRUE;
@@ -295,7 +295,7 @@ static inline BOOL Task_Start4c(ListBuffer021cb940 *t, u32 b, s32 c) {
     f = (b >> 16) & 1 ? TRUE : FALSE;
     p = Heap_Alloc(0x20);
     if (p != NULL) {
-        func_ov000_021bb810(p, 4);
+        Obj021bb810_Init_021bb810(p, 4);
     }
     t->unk_4c = p;
     func_ov000_021bb2b0(p, lo, c, f);
@@ -308,9 +308,9 @@ void func_ov000_02171478(MessageQueue021cb980 *self, s32 a, s32 kind, s32 b, s32
     switch (kind) {
     case 1:
         self->flag0 = 1;
-        func_020359d0(data_0214b105, 7, 0);
-        func_020359d0(data_0208cca0, 7, 0);
-        func_020359d0(data_0208cc94, 7, 0);
+        ResMgr_Load(data_0214b105, 7, 0);
+        ResMgr_Load(data_0208cca0, 7, 0);
+        ResMgr_Load(data_0208cc94, 7, 0);
         if (self->unk_118 == NULL) {
             TimedBuffer021cb920 *t = (TimedBuffer021cb920 *)Heap_Alloc(0x34);
             if (t != NULL) {
@@ -331,7 +331,7 @@ void func_ov000_02171478(MessageQueue021cb980 *self, s32 a, s32 kind, s32 b, s32
             if (t != NULL) {
                 ListBuffer_Init02171478(t);
                 VOBJ_SET_VTABLE(t, data_ov000_021cb940);
-                func_ov000_0216faac(t);
+                ListBuffer021cb940_Init(t);
             }
             self->unk_11c = t;
             AddBuffer02171478(self, t, 0x10000, self);
@@ -344,7 +344,7 @@ void func_ov000_02171478(MessageQueue021cb980 *self, s32 a, s32 kind, s32 b, s32
         if (a != 0) {
             return;
         }
-        pl = func_ov000_0219bf90();
+        pl = ActorMgr_FindPlayer();
         if (pl == NULL) {
             return;
         }

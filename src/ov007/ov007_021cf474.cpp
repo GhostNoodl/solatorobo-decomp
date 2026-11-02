@@ -15,8 +15,8 @@ extern "C" {
 extern const Ov007Lights data_ov007_021cfa3c;
 extern const u16 data_ov007_021cfa98[][0x20];
 extern void *data_02097e4c;
-void *func_02049a48(void *a, int b, int c, int d, int e);
-BOOL func_ov000_021903b4(void *a);
+void *SndMgr_PlayVolume(void *a, int b, int c, int d, int e);
+BOOL Model021903b4_Draw(void *a);
 void *func_02070dcc(int kind);
 
 }
@@ -45,7 +45,7 @@ static inline void Ov007_DrawMdl(Model *m) {
         Ov007SprSeq *e = (Ov007SprSeq *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0);
         arg = NNS_G2dGetCellDataByIdx(res->texRes, **e->unk_0c);
     }
-    func_02042628(m, arg, anim, 0);
+    TexObj_DrawCell(m, arg, anim, 0);
 }
 
 static inline void Ov007_SetOfs(Model *m, s32 x, s32 y) {
@@ -86,10 +86,10 @@ void func_ov007_021cf474(Ov007Scene *s) {
         NNS_G3dGlbLightVector(GX_LIGHTID_0, v->x, v->y, v->z);
     }
     s->cam->v00();
-    func_ov000_021903b4(s->unk_30);
-    func_ov000_021903b4(s->unk_34);
+    Model021903b4_Draw(s->unk_30);
+    Model021903b4_Draw(s->unk_34);
     if (s->unk_38 != NULL) {
-        func_ov000_021903b4(s->unk_38);
+        Model021903b4_Draw(s->unk_38);
     }
     if (s->unk_28 != NULL) {
         s->unk_28->unk_150 = -0x3000;
@@ -130,12 +130,12 @@ void func_ov007_021cf474(Ov007Scene *s) {
             if (snd == 1) {
                 if (!(s->unk_4f & (1 << i))) {
                     s->unk_4f |= (u8)(1 << i);
-                    func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+                    SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
                 }
             } else if (snd == 2) {
                 if (s->unk_4f & (1 << i)) {
                     s->unk_4f &= (u8)~(1 << i);
-                    func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
+                    SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
                 }
             }
         }

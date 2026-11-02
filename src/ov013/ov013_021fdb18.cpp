@@ -4,20 +4,20 @@ extern "C" {
 
 extern void *data_ov013_0220b738[];
 extern VecFx32 data_ov013_0220aed0;
-extern void func_ov000_0219763c(Actor *self);
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern void ActorEx_StateDie(Actor *self);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 
 void Ov013ActExVt_0220b7d0_StateDie(Ov013ActExVt_0220b7d0 *self) {
     s32 i;
     if (self->fsm->st == 0) {
         for (i = 0; i < 2; i++) {
-            EffectObj *p = func_020657b0(data_0214a420, self->unk_d0[i]);
+            EffectObj *p = Effect_Find_020657b0(data_0214a420, self->unk_d0[i]);
             if (p != NULL) {
                 p->state = 4;
             }
         }
     }
-    func_ov000_0219763c(self);
+    ActorEx_StateDie(self);
 }
 
 Ov013ActEx_021fdb70 *Ov013ActEx_021fdb70_Ctor(Ov013ActEx_021fdb70 *self) {
@@ -36,10 +36,10 @@ static inline void Ov013_SetSpd(Actor *self, VecFx32 v) {
 
 void Ov013ActEx_021fdb70_Start(Ov013ActEx_021fdb70 *self) {
     Ov003Actor *p;
-    func_ov000_02194758(self);
-    func_ov000_02198360(self->fsm, 0x20, 0);
+    ActorEx_Start(self);
+    History_SetState(self->fsm, 0x20, 0);
     self->target = 0xffff;
-    p = func_ov000_0219bf90();
+    p = ActorMgr_FindPlayer();
     if (p != NULL) {
         self->target = p->id;
     }

@@ -41,11 +41,11 @@ extern BOOL CARDi_RequestStreamCommand(u32 src, u32 dst, u32 len, void (*cb)(voi
 extern BOOL func_02036328(void);
 
 void func_02046d1c(SysCard *card);
-s32 func_02046e48(SysCard *card, void *dst, u32 src, u32 len);
+s32 SysCard_Read(SysCard *card, void *dst, u32 src, u32 len);
 s32 func_02047004(SysCard *card, u32 dst, const void *src, u32 len);
 void func_02046fac(void *arg);
 void func_02047198(void *arg);
-BOOL func_020471f0(SysCard *card, s32 err);
+BOOL SysCard_CheckError(SysCard *card, s32 err);
 
 static inline void SysCard_Lock(SysCard *card) {
     if (card->lockCount == 0) {
@@ -83,7 +83,7 @@ static inline BOOL SysCard_IsBusy(void) {
     if (done) {
         done = CARD_TryWaitBackupAsync();
     }
-    func_020471f0(data_02097e44, 11);
+    SysCard_CheckError(data_02097e44, 11);
     return done ? FALSE : TRUE;
 }
 
@@ -92,7 +92,7 @@ static inline void SysCard_EndAccess(void) {
     if (card->state == 8) {
         return;
     }
-    func_020471f0(card, 11);
+    SysCard_CheckError(card, 11);
     SysCard_Unlock(card);
     SysCard_SetState(card, 1);
 }

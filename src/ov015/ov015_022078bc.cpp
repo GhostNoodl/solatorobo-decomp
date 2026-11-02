@@ -5,16 +5,16 @@
 
 extern "C" {
 
-BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
-void func_ov000_02190e98(void *a, s32 b, s32 c, s32 d);
-void func_ov000_021911c8(void *a, s32 b);
+BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
+BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
+void Model0218fe1c_SetAnimByIndex(void *a, s32 b, s32 c, s32 d);
+void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
 s32 func_ov000_021909a8(void *a, const void *b, const void *c);
 
-BOOL func_ov000_0218f110(void *p);
+BOOL ResSet_UpdateLoad(void *p);
 void Shadow_Load(void *p);
-BOOL func_ov000_02191b9c(void *p);
+BOOL Shadow_UpdateLoad(void *p);
 extern const char *data_ov015_02212cac[];
 extern const char *data_ov015_02212cb4[];
 extern const char *data_ov015_02212cbc[];
@@ -66,13 +66,13 @@ BOOL func_ov015_022078bc(Ov015Ship *self) {
         BOOL ok = TRUE;
         BOOL t;
         u8 k;
-        if (self->res.unk_00 >= 0 && !func_ov000_0218f110(self)) ok = FALSE;
-        if (self->res2.unk_00 >= 0 && !func_ov000_0218f110(&self->res2)) ok = FALSE;
-        if (self->res3.unk_00 >= 0 && !func_ov000_0218f110(&self->res3)) ok = FALSE;
+        if (self->res.unk_00 >= 0 && !ResSet_UpdateLoad(self)) ok = FALSE;
+        if (self->res2.unk_00 >= 0 && !ResSet_UpdateLoad(&self->res2)) ok = FALSE;
+        if (self->res3.unk_00 >= 0 && !ResSet_UpdateLoad(&self->res3)) ok = FALSE;
         k = self->shadow.state;
         t = TRUE;
         if (k != 3 && k != 0) t = FALSE;
-        if (!t && !func_ov000_02191b9c(&self->shadow)) ok = FALSE;
+        if (!t && !Shadow_UpdateLoad(&self->shadow)) ok = FALSE;
         if (ok) {
             self->loadStep = 30;
             r = TRUE;
@@ -88,23 +88,23 @@ BOOL func_ov015_022078bc(Ov015Ship *self) {
 
 BOOL func_ov015_02207adc(Ov015Ship *self) {
     s32 i;
-    func_ov000_0218ffdc(&self->model, self, 0, 1);
-    func_ov000_02190cb0(&self->model, "ang00", 0x1000, 0);
-    func_ov000_021915a0(&self->model);
+    Model0218fe1c_SetRes(&self->model, self, 0, 1);
+    Model0218fe1c_SetAnim(&self->model, "ang00", 0x1000, 0);
+    Model0218fe1c_SetLoop(&self->model);
     NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->model.renderObj), func_ov015_02208474);
     self->model.flags.clearInit = 0;
     self->model.flags.flushVP = 1;
     self->nodeMtx.id = func_ov000_021909a8(&self->model, self->res.anmName, "ang05");
     for (i = 0; i < 8; i++) {
-        func_ov000_0218ffdc(&self->subModels[i], &self->res2, 0, 1);
-        func_ov000_02190e98(&self->subModels[i], 0, 0x1000, 0);
-        func_ov000_021915a0(&self->subModels[i]);
-        func_ov000_021911c8(&self->subModels[i], 0);
+        Model0218fe1c_SetRes(&self->subModels[i], &self->res2, 0, 1);
+        Model0218fe1c_SetAnimByIndex(&self->subModels[i], 0, 0x1000, 0);
+        Model0218fe1c_SetLoop(&self->subModels[i]);
+        Model0218fe1c_SetAnimSpeed(&self->subModels[i], 0);
         self->subModels[i].scale.x = 0x1333;
         self->subModels[i].scale.y = 0x1333;
         self->subModels[i].scale.z = 0x1c00;
     }
-    func_ov000_0218ffdc(&self->model3, &self->res3, 0, 1);
+    Model0218fe1c_SetRes(&self->model3, &self->res3, 0, 1);
     self->shadow.prev = self->shadow.type;
     self->shadow.type = 3;
     self->shadow.scale = 0x2000;
@@ -115,10 +115,10 @@ BOOL func_ov015_02207adc(Ov015Ship *self) {
 
 extern const void *data_ov015_02212634[];
 extern u16 data_ov015_0221262c[];
-void func_ov000_02191618(void *a);
-void func_ov000_02190a80(void *a, s32 b);
-void func_ov000_02191780(void *a);
-void func_ov000_021917f8(void *a);
+void Model0218fe1c_ClearLoop(void *a);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
+void Model0218fe1c_SetReverse(void *a);
+void Model0218fe1c_ClearReverse(void *a);
 u16 func_01ffc128(u16 a, u16 b, s32 c, s32 d, s32 e);
 s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
@@ -127,18 +127,18 @@ void func_ov015_02207c30(Ov015Ship *self) {
     u16 ang = 0x8000;
     switch (self->unk_d3a) {
     case 0:
-        func_ov000_02190cb0(&self->model, data_ov015_02212634[self->unk_d3a], 0x155, 0);
-        func_ov000_021915a0(&self->model);
+        Model0218fe1c_SetAnim(&self->model, data_ov015_02212634[self->unk_d3a], 0x155, 0);
+        Model0218fe1c_SetLoop(&self->model);
         break;
     case 1:
     case 2:
     case 3:
-        func_ov000_02190cb0(&self->model, data_ov015_02212634[self->unk_d3a], 0x2ab, 0);
-        func_ov000_02191618(&self->model);
+        Model0218fe1c_SetAnim(&self->model, data_ov015_02212634[self->unk_d3a], 0x2ab, 0);
+        Model0218fe1c_ClearLoop(&self->model);
         ang = data_ov015_0221262c[self->unk_d3a] + Rand_PlusMinus(0x800);
         break;
     }
-    func_ov000_02190a80(&self->model, 0x1000);
+    Model0218fe1c_UpdateAnim(&self->model, 0x1000);
     if (self->unk_d40) {
         self->rotY = func_01ffc128(ang, self->rotY, 0x19a, 1, 0x8000);
     }
@@ -151,19 +151,19 @@ void func_ov015_02207c30(Ov015Ship *self) {
             neg = TRUE;
         }
         for (i = 0; i < 8; i++) {
-                func_ov000_021911c8(&self->subModels[i], v);
+                Model0218fe1c_SetAnimSpeed(&self->subModels[i], v);
             if (neg) {
-                func_ov000_02191780(&self->subModels[i]);
+                Model0218fe1c_SetReverse(&self->subModels[i]);
             } else {
-                func_ov000_021917f8(&self->subModels[i]);
+                Model0218fe1c_ClearReverse(&self->subModels[i]);
             }
-            func_ov000_02190a80(&self->subModels[i], 0x1000);
+            Model0218fe1c_UpdateAnim(&self->subModels[i], 0x1000);
         }
     }
     if (self->unk_d42) {
         if (self->fx == NULL) {
             Ov015Vec p = *(Ov015Vec *)&self->nodeMtx.m[3];
-            EffectObj *e = func_02065f88(0x322, &p);
+            EffectObj *e = Effect_SpawnId(0x322, &p);
             self->fx = e;
             e->SetScaleXYZ(0x1333, 0x1333, 0x1333);
             self->fx->SetRotXYZ(0, 0, (u16)Rand_UpTo(0x3fff));
@@ -174,7 +174,7 @@ void func_ov015_02207c30(Ov015Ship *self) {
         } else {
             if (Rand_UpTo(100) < 5) {
                 Ov015Vec p = FLD(Ov015Vec, self->fx, 0x58);
-                EffectObj *e = func_02065f88(0x320, &p);
+                EffectObj *e = Effect_SpawnId(0x320, &p);
                 e->SetScaleXYZ(0x800, 0x800, 0x800);
                 e->SetParam(3);
             }
@@ -184,7 +184,7 @@ void func_ov015_02207c30(Ov015Ship *self) {
             }
         }
         if (self->fx2 == NULL) {
-            EffectObj *e = func_02065f88(0x322, &self->unk_d4c);
+            EffectObj *e = Effect_SpawnId(0x322, &self->unk_d4c);
             self->fx2 = e;
             e->SetRotXYZ(0, 0, 0x3fff);
             self->fx2->loopCount = -1;

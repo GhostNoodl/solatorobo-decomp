@@ -17,8 +17,8 @@ typedef struct {
 extern "C" {
 extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc5e9[];
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
-void func_ov000_02190a80(void *a, s32 b);
+BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
 void func_02062764(s32 a, s32 b);
 
@@ -31,7 +31,7 @@ void func_ov000_021b12c0(Robo021ca458 *self, BOOL flag) {
     self->unk_76c = self->rot_x;
     self->unk_76e = self->rot_y;
     self->unk_770 = self->rot_z;
-    func_ov000_02190cb0(&self->mdl1, data_ov000_021cc5e3, 0x1000, 1);
+    Model0218fe1c_SetAnim(&self->mdl1, data_ov000_021cc5e3, 0x1000, 1);
     anm = ((Anm021b12c0 *)self->mdl1.unk_1c);
     if (anm != NULL) {
         NNS_G3dRenderObjRemoveAnmObj(self->mdl1.renderObj, *(void **)anm);
@@ -60,8 +60,8 @@ extern "C" void func_ov000_021b13cc(Robo021ca458 *self, BOOL flag) {
     self->unk_b24_1 = 0;
     self->unk_b24_2 = 0;
     self->vfunc_18();
-    func_ov000_02190cb0(&self->mdl1, data_ov000_021cc5e9, 0x1000, 1);
-    func_ov000_02190a80(&self->mdl1, 0x1000);
+    Model0218fe1c_SetAnim(&self->mdl1, data_ov000_021cc5e9, 0x1000, 1);
+    Model0218fe1c_UpdateAnim(&self->mdl1, 0x1000);
     self->mdl0.unk_cc = 0x320;
     if (self->unk_b24_1 == 1) {
         self->fieldId = data_ov000_021ccd54->unk_ca;

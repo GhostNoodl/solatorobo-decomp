@@ -24,7 +24,7 @@ extern "C" {
 
 extern Ov003Save *data_0214a424;
 extern u8 data_ov003_021f7974[];
-extern s32 func_02049bdc(SndMgr *mgr, s32 a, s32 b);
+extern s32 SndMgr_PlayPan(SndMgr *mgr, s32 a, s32 b);
 extern Ov003Area *func_0206ef10(u16 id);
 extern void Heap_Free(void *p);
 extern s32 Rand_UpTo(s32 max);
@@ -38,7 +38,7 @@ void Ov003_AddMeter_021cedf4(u16 add) {
     if (c < 0x2d0) {
         c += add;
         if (c >= 0x2d0) {
-            func_02049bdc(data_02097e4c, 0x44, 5);
+            SndMgr_PlayPan(data_02097e4c, 0x44, 5);
             c = 0x2d0;
         }
     } else {

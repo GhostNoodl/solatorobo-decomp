@@ -7,7 +7,7 @@ extern u8 data_ov009_02216148[];
 extern u8 data_ov009_02216058[];
 extern u8 data_ov009_02216188[];
 extern u8 data_ov009_02216070[];
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 
 void Ov009ActVt_02217aac_Start(Ov009ActVt_02217aac *self) {
     GroupNode *p;
@@ -20,12 +20,12 @@ void Ov009ActVt_02217aac_Start(Ov009ActVt_02217aac *self) {
     }
     self->unk_93_4 = 1;
     self->target = 0xffff;
-    a = func_ov000_0219bf90();
+    a = ActorMgr_FindPlayer();
     if (a != NULL) {
         self->target = a->id;
     }
-    func_ov000_02190cb0(self->model, data_ov009_022179b4, 0x1000, 0);
-    func_ov000_021915a0(self->model);
+    Model0218fe1c_SetAnim(self->model, data_ov009_022179b4, 0x1000, 0);
+    Model0218fe1c_SetLoop(self->model);
     self->unk_fc = 0;
     self->unk_fd = 0;
     self->unk_fe = 0;

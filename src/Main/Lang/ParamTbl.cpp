@@ -18,7 +18,7 @@ static inline u16 Param_Idx(u32 id) {
     return id & 0xfff;
 }
 
-void *func_0206ec48(u32 id) {
+void *Param_Get(u32 id) {
     ParamOfs *ofs = &data_0214b12c[Param_Cat(id) - 1][Param_Idx(id)];
     return ofs->offset != 0 ? (u8 *)ofs + ofs->offset : NULL;
 }
@@ -40,7 +40,7 @@ typedef struct ParamItem {
     /* 0x3 */ u8 unk_3[0xd];
 } ParamItem;
 
-char *func_02040ab0(char *str, int c);
+char *Str_FindCharMb(char *str, int c);
 void func_02040a98(char *dst, int num);
 
 void func_0206ecd4(u32 dstSize, char *dst, u32 id) {
@@ -53,7 +53,7 @@ void func_0206ecd4(u32 dstSize, char *dst, u32 id) {
         char *q;
         STD_CopyString(buf, str);
         dst[0] = 0;
-        q = func_02040ab0(buf, '?');
+        q = Str_FindCharMb(buf, '?');
         if (q != NULL) {
             *q = 0;
             func_02040a98(num, item->num);
@@ -72,7 +72,7 @@ void func_0206ecd4(u32 dstSize, char *dst, u32 id) {
     }
 }
 
-void *func_0206ede8(u32 id) {
+void *Param_GetEntry(u32 id) {
     return data_0208d268[(u16)(Param_Cat(id) - 1)] + Param_Idx(id) * 0x10;
 }
 
@@ -161,7 +161,7 @@ typedef struct ParamE7 {
     u8 unk_c[0x20];
 } ParamE7;
 
-u32 func_0206f0f4(u32 id) {
+u32 Param_GetValue(u32 id) {
     u16 cat = Param_Cat(id);
     switch (cat - 1) {
     case 0:

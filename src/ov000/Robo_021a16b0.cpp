@@ -8,11 +8,11 @@ extern char data_ov000_021cc5e3[];
 extern char data_ov000_021cc618[];
 extern char *data_ov000_021ca040[];
 extern void *data_02097e4c;
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
-void func_ov000_02191008(void *a);
+BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
+void Model0218fe1c_StopAnim(void *a);
 void SndMgr_StopSeqArc(void *a, s32 b);
-void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
+void Body_Update(void *a, s32 b, s32 c, s32 d);
 void func_ov000_021b209c(u8 *self);
 void func_ov000_021b2b08(u8 *self);
 
@@ -37,7 +37,7 @@ void func_ov000_021a16b0(Robo021ca458 *self) {
         self->fsm->st++;
         if (self->unk_b22_0 > 1) {
             if (self->unk_998 != NULL) {
-                func_ov000_02191008(self->unk_998);
+                Model0218fe1c_StopAnim(self->unk_998);
             }
             if (self->seSlot >= 0) {
                 SndMgr_StopSeqArc(data_02097e4c, self->seSlot);
@@ -76,8 +76,8 @@ void func_ov000_021a16b0(Robo021ca458 *self) {
             rate = 0x1000;
             d = 1;
         }
-        func_ov000_02190cb0(self->model, name, rate, d);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, name, rate, d);
+        Model0218fe1c_SetLoop(self->model);
         if (self->unk_b24_12 != 0) {
             self->fsm->st++;
             if (self->unk_b2f == 0) {
@@ -102,7 +102,7 @@ void func_ov000_021a16b0(Robo021ca458 *self) {
         self->gravity = 0;
         self->hit->unk_9a |= 0x20;
         if (self->msg_flags & 0x80) {
-            func_ov000_021987b8(self->hit, 1, 0, 0);
+            Body_Update(self->hit, 1, 0, 0);
         }
         return;
     }

@@ -4,7 +4,7 @@ extern "C" {
 
 void func_ov000_021764c4(void);
 
-void func_ov002_021d3ccc(Task021ef81c *self) {
+void Task021ef81c_FreeWindows(Task021ef81c *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(FIELD(self, 0x3c, VObj *));

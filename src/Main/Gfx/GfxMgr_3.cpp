@@ -8,7 +8,7 @@ extern VramBlock *func_02039844(GfxMgr *mgr, VramPool *pool, u32 size);
 extern void func_0203aab0(GfxMgr *mgr, void *arg);
 extern void func_0203acb8(GfxMgr *mgr, void *arg);
 
-VramBlock *func_0203a408(GfxMgr *mgr, int width, int height, BOOL temporary) {
+VramBlock *GfxMgr_AllocCharBlock(GfxMgr *mgr, int width, int height, BOOL temporary) {
     VramBlock *block;
     u32 size = (((width + 7) >> 3) * ((height + 7) >> 3)) << 5;
     if (data_020827f8[mgr->unk_004].mode == 4) {
@@ -147,7 +147,7 @@ void func_0203a5a4(GfxMgr *mgr, u16 c) {
     w = widths->left + info->cellWidth;
     wc = w > 16 ? 16 : w;
     if (block == NULL) {
-        block = (VramBlock *)func_0203a408(mgr, w, h, TRUE);
+        block = (VramBlock *)GfxMgr_AllocCharBlock(mgr, w, h, TRUE);
     }
     dst = (u32 *)(base + block->addr);
     if ((w >> 3) != 0 && (h >> 3) != 0) {

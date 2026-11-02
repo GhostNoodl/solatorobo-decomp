@@ -98,7 +98,7 @@ extern u16 NNS_G2dFontFindGlyphIndex(const GfxNnsFont *font, u16 c);
 extern const GfxCharWidths *NNS_G2dFontGetCharWidthsFromIndex(const GfxNnsFont *font, u16 idx);
 extern void *func_0203bbfc(GfxSys *sys, int which);
 extern BOOL NNS_G2dEntryOamManagerOam(void *mgr, const void *oam, u16 num);
-extern VramBlock *func_0203a408(GfxMgr *mgr, int width, int height, BOOL temporary);
+extern VramBlock *GfxMgr_AllocCharBlock(GfxMgr *mgr, int width, int height, BOOL temporary);
 
 // Draws a string as one 16x16 OBJ per glyph.
 void func_0203acb8(GfxMgr *mgr, const char *str) {
@@ -177,7 +177,7 @@ void func_0203acb8(GfxMgr *mgr, const char *str) {
         glyph = info->glyphTable + idx * info->cellSize;
         w = widths->left + info->cellWidth;
         wc = w > 16 ? 16 : w;
-        block = func_0203a408(mgr, w, h, TRUE);
+        block = GfxMgr_AllocCharBlock(mgr, w, h, TRUE);
         if ((w >> 3) != 0 && h8 != 0) {
             shape = 0x40000000;
         } else if ((w >> 3) == 0 && h8 != 0) {

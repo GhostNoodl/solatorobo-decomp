@@ -7,11 +7,11 @@ extern "C" {
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
 BOOL func_ov000_02184498(void *g);
-s32 func_0204c08c(void *res, u16 id, s32 *out, s32 d);
+s32 MsgRes_GetLines(void *res, u16 id, s32 *out, s32 d);
 void func_02050748(void *p);
 void func_020508f4(void *p, s32 n);
 void *MsgRes_GetString(void *a, s32 b);
-void func_ov000_0215c1bc(void *p, s32 a, void *b);
+void Obj0215c1bc_SetText(void *p, s32 a, void *b);
 void func_ov000_0215ced8(void *p, s32 a, s32 b);
 
 static inline void LoMsgInit(u8 *p, s32 n, s32 v) {
@@ -45,7 +45,7 @@ BOOL func_ov000_0217032c(Obj0217032c *self, void *res, u32 id) {
     if (func_020658cc(data_0214a420, 0x2712) || func_020658cc(data_0214a420, 0x2713) || func_020658cc(data_0214a420, 0x191)) {
         return FALSE;
     }
-    v = func_0204c08c(res, (u16)id, &n, 1);
+    v = MsgRes_GetLines(res, (u16)id, &n, 1);
     p = (u8 *)Heap_Alloc(0x210);
     if (p) {
         func_02050748(p);
@@ -93,7 +93,7 @@ BOOL func_ov000_02170448(Obj02170448 *self, void *res, u32 id) {
     self->unk_30 = p;
     p->vfunc_08();
     if ((hi & 0xfc00) == 0x8000) {
-        func_ov000_0215c1bc(self->unk_30, hi, MsgRes_GetString(res, lo));
+        Obj0215c1bc_SetText(self->unk_30, hi, MsgRes_GetString(res, lo));
     } else {
         func_ov000_0215ced8(self->unk_30, hi, lo);
     }

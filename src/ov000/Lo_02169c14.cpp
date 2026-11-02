@@ -5,10 +5,10 @@
 extern "C" {
 
 extern s32 data_02097d78[5];
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd44;
-void *func_ov000_0218084c(void *a, s32 b, s32 c);
+void *TaskHost_RequestSwitch(void *a, s32 b, s32 c);
 
 static inline BOOL LoGBusy(FieldState *g) {
     return g->head != g->tail ? TRUE : FALSE;
@@ -35,7 +35,7 @@ static inline BOOL LoD78Idle(void) {
 static inline s32 LoApproach(s32 cur, s32 target, s32 rate) {
     return cur + (s32)(((s64)(target - cur) * rate + 0x800) >> 12);
 }
-BOOL func_02054f10(void *a, s32 b);
+BOOL Model_IsReady(void *a, s32 b);
 
 BOOL func_ov000_02169c14(Lo021cb798 *self) {
     if (!LoGIdle() || !LoD78Idle()) {
@@ -50,10 +50,10 @@ BOOL func_ov000_02169c14(Lo021cb798 *self) {
         }
         return FALSE;
     case 1:
-        if (self->unk_a0 != NULL && !func_02054f10(self->unk_a0, 0xffff)) {
+        if (self->unk_a0 != NULL && !Model_IsReady(self->unk_a0, 0xffff)) {
             return FALSE;
         }
-        if (self->unk_a4 != NULL && !func_02054f10(self->unk_a4, 0xffff)) {
+        if (self->unk_a4 != NULL && !Model_IsReady(self->unk_a4, 0xffff)) {
             return FALSE;
         }
         self->unk_0c_3 = 1;

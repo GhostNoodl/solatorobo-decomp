@@ -114,7 +114,7 @@ extern void OS_WakeupThreadDirect(Movie *m);
 extern void OS_SetThreadStackWarningOffset(Movie *m, int arg);
 extern const char data_0208b3d8[];
 void func_02044494(int arg);
-void func_02044538(Movie *m);
+void Movie_Close(Movie *m);
 void func_020448dc(Movie *m);
 
 static inline void Sys_SetFrameWait(u8 w) {
@@ -140,7 +140,7 @@ void func_02043f70(Movie *m) {
     u32 n;
     switch (m->state) {
     case 1:
-        func_02044538(m);
+        Movie_Close(m);
         data_02097d48->nextState = 3;
         lo = OS_GetArenaLo(3);
         size = OS_GetArenaHi(3) - lo;
@@ -230,7 +230,7 @@ void func_02043f70(Movie *m) {
         }
         if (++m->unk_138 >= m->unk_13c) {
             if (!m->loop) {
-                func_02044538(m);
+                Movie_Close(m);
                 m->state = 6;
                 return;
             }
@@ -256,7 +256,7 @@ void func_02043f70(Movie *m) {
         m->state = 4;
         return;
     case 6:
-        func_02044538(m);
+        Movie_Close(m);
         m->name[0] = 0;
         m->state = 0;
         *(u8 *)((u8 *)m + 0x14b) = 0;
@@ -305,7 +305,7 @@ static inline void Movie_StopSound(Movie *m) {
     }
 }
 
-void func_02044538(Movie *m) {
+void Movie_Close(Movie *m) {
     u32 i;
     if (!m->opened) {
         return;

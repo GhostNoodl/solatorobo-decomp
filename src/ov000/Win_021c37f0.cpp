@@ -10,8 +10,8 @@ extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021cb3a8[];
 extern u8 data_ov000_021cc9e8[];
 void *Heap_Alloc(u32 size);
-void func_ov000_02158c60(Lo021cb3a8 *w, void *a);
-UiListItem *func_ov000_02154b58(UiList *w, u16 a);
+void Lo021cb3a8_SetText(Lo021cb3a8 *w, void *a);
+UiListItem *UiList_GetItemById(UiList *w, u16 a);
 
 static inline void SetVec(s32 *v, s32 x, s32 y, s32 z) {
     v[0] = x;
@@ -45,11 +45,11 @@ void func_ov000_021c37f0(ListRowText *self) {
         self->win->openLen = 0x1000;
         self->win->slideMode = 1;
         self->win->srcStr = self->unk_34;
-        func_ov000_02158c60(self->win, self->unk_38);
+        Lo021cb3a8_SetText(self->win, self->unk_38);
         self->win->vfunc_08();
         {
             Lo021cb3a8 *w = self->win;
-            w->vfunc_a8(func_ov000_02154b58(w, self->unk_40));
+            w->vfunc_a8(UiList_GetItemById(w, self->unk_40));
         }
         SetVec(&self->win->slideX, 0, 0, 0);
         self->win->flags &= ~0x10;
@@ -68,7 +68,7 @@ void func_ov000_021c37f0(ListRowText *self) {
                 v = 0;
             }
             self->unk_40 = v;
-            func_ov000_02158c60(self->win, data_ov000_021cc9e8);
+            Lo021cb3a8_SetText(self->win, data_ov000_021cc9e8);
             self->win->flags |= 4;
             self->state = 30;
         }
@@ -80,7 +80,7 @@ void func_ov000_021c37f0(ListRowText *self) {
             self->state = 0;
         }
         if (self->unk_20_1) {
-            func_ov000_02158c60(self->win, self->unk_38);
+            Lo021cb3a8_SetText(self->win, self->unk_38);
             self->state = 20;
         }
         break;

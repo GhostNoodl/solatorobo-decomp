@@ -18,8 +18,8 @@ typedef struct MoCodeMem {
 extern MoCodeMem data_02097cbc;
 
 extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
-extern void *func_02043e1c(u32 size);
-extern void func_02043e2c(void *ptr);
+extern void *Gfx3D_AllocHi(u32 size);
+extern void Gfx3D_FreeHi(void *ptr);
 
 // Decoder kernels in ROM. dsd finds no relocations to these, so symbols.txt names them by hand.
 extern u8 data_0207bcb8[];
@@ -113,11 +113,11 @@ void *func_020347ac(void) {
 }
 
 void *func_02034818(u32 size) {
-    return func_02043e1c(size);
+    return Gfx3D_AllocHi(size);
 }
 
 void func_02034824(void *ptr) {
-    func_02043e2c(ptr);
+    Gfx3D_FreeHi(ptr);
 }
 
 }

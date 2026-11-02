@@ -6,11 +6,11 @@ extern "C" {
 extern StageFlags data_0214aa68;
 extern u8 data_0214a428[0x640];
 extern void func_0206ccb8(StageFlags *f, u16 a);
-extern u16 func_0206d02c(StageFlags *f);
+extern u16 StageFlags_CountItems(StageFlags *f);
 
 extern s32 func_020591a4(DataRes *res, u8 *buf, s32 a);
 extern s32 func_02062370(u8 *buf);
-extern s32 func_ov000_02181c4c(u8 *dst, u8 *buf);
+extern s32 SceneStage_Deserialize(u8 *dst, u8 *buf);
 
 typedef struct StageFlagsInit {
     u32 data[5];
@@ -22,12 +22,12 @@ static inline void StageFlags_LoadBuf(StageFlags *f) {
     s32 n = 0;
     n += func_020591a4(data_02fe152c, f->buf, 0);
     n += func_02062370(f->buf + n);
-    func_ov000_02181c4c(&data_ov000_021ccd54->stageFlags, f->buf + n);
+    SceneStage_Deserialize(&data_ov000_021ccd54->stageFlags, f->buf + n);
     data_02fe1534.unk_04 = f->unk_518_16;
     data_02fe1534.unk_06 = f->unk_518_28;
 }
 
-void func_0206c994(StageFlags *f) {
+void StageFlags_Restore(StageFlags *f) {
     MI_CpuCopy8(data_0214a428, f, sizeof(StageFlags));
     MI_CpuCopy8(data_0214a428, &data_0214aa68, 0x640);
     StageFlags_LoadBuf(f);
@@ -38,14 +38,14 @@ void func_0206ca44(StageFlags *f) {
     StageFlags_LoadBuf(f);
 }
 
-extern void func_0206c4c4(StageFlags *f);
+extern void StageFlags_Reset(StageFlags *f);
 extern u32 func_02059270(DataRes *res, u8 *buf);
 
 void func_0206cadc(StageFlags *f) {
     StageFlags tmp;
     u32 i;
     MI_CpuCopy8(data_0214a428, &tmp, sizeof(StageFlags));
-    func_0206c4c4(f);
+    StageFlags_Reset(f);
     f->frameCount = tmp.frameCount;
     f->unk_008 = tmp.unk_008;
     f->unk_00a = tmp.unk_00a;

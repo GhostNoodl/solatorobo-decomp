@@ -6,7 +6,7 @@ extern "C" {
 
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *c);
 extern void ActorMgr_SendMsg(u16 a, u16 b, u8 c, BOOL d, u32 e, const void *f);
-extern BOOL func_ov000_02198360(ActorSub40 *a, u8 b, BOOL c);
+extern BOOL History_SetState(ActorSub40 *a, u8 b, BOOL c);
 
 BOOL Ov010Path_Init(Ov010Path *self, Actor *owner, const void *msg, s32 size, const VecFx32 *offset, s32 fxId) {
     self->b0 = 1;
@@ -51,7 +51,7 @@ void Ov010Path_Update(Ov010Path *self) {
         if (self->timer < lim) {
             return;
         }
-        func_ov000_02198360(&self->sm, 3, 0);
+        History_SetState(&self->sm, 3, 0);
         break;
     }
     case 3:
@@ -61,7 +61,7 @@ void Ov010Path_Update(Ov010Path *self) {
             p.x = self->owner->pos.x;
             p.y = self->owner->pos.y;
             p.z = self->owner->pos.z;
-            e = func_02065f88(0x322, &p);
+            e = Effect_SpawnId(0x322, &p);
             e->SetScaleAll(0xf00);
             e->AddPos(&self->offset);
             e->loopCount = -1;
@@ -75,7 +75,7 @@ void Ov010Path_Update(Ov010Path *self) {
             }
             EffectMgr_StopLoop(data_0214a420, self->fxHandle);
             self->fxHandle = 0;
-            func_ov000_02198360(&self->sm, 4, 0);
+            History_SetState(&self->sm, 4, 0);
         }
         break;
     case 4: {
@@ -93,7 +93,7 @@ void Ov010Path_Update(Ov010Path *self) {
             self->fxHandle = e->id;
             self->sm.st++;
         }
-        fx = func_020657b0(data_0214a420, self->fxHandle);
+        fx = Effect_Find_020657b0(data_0214a420, self->fxHandle);
         if (fx != NULL) {
             VecFx32 q;
             q.x = self->owner->pos.x;
@@ -106,7 +106,7 @@ void Ov010Path_Update(Ov010Path *self) {
             return;
         }
         ActorMgr_SendMsg(self->owner->id, 0xffff, 0xe, 1, 0x30, self->msg);
-        func_ov000_02198360(&self->sm, 1, 0);
+        History_SetState(&self->sm, 1, 0);
         break;
     }
     }

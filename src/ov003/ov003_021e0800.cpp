@@ -10,7 +10,7 @@ extern "C" {
 extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 
 void Ov003ActVt_021f8058_Start(ActorEx *self) {
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     self->model->visible = 0;
     ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x400c, 0x15);
     self->pos.y -= 0x14000;
@@ -18,11 +18,11 @@ void Ov003ActVt_021f8058_Start(ActorEx *self) {
 
 extern char data_ov003_021f852b[];
 extern char data_ov003_021f8516[];
-extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
-extern void func_ov000_021911c8(void *model, s32 a);
-extern void func_ov000_021915a0(void *model);
-extern BOOL func_ov000_02191120(void *model);
-extern void *func_ov000_0219bf90(void);
+extern BOOL Model0218fe1c_SetAnim(void *model, const char *name, s32 a, s32 b);
+extern void Model0218fe1c_SetAnimSpeed(void *model, s32 a);
+extern void Model0218fe1c_SetLoop(void *model);
+extern BOOL Model0218fe1c_IsAnimDone(void *model);
+extern void *ActorMgr_FindPlayer(void);
 extern BOOL func_ov000_021b4738(void *p);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
@@ -41,8 +41,8 @@ void Ov003ActVt_021f8058_StateIdle(ActorEx *self) {
         m->scale.z = 0;
         self->model->alpha = 0;
         self->model->visible = 1;
-        func_ov000_02190cb0(self->model, data_ov003_021f852b, 0x1000, 0);
-        func_ov000_021911c8(self->model, 0xc00);
+        Model0218fe1c_SetAnim(self->model, data_ov003_021f852b, 0x1000, 0);
+        Model0218fe1c_SetAnimSpeed(self->model, 0xc00);
         self->fsm->st++;
         break;
     }
@@ -65,10 +65,10 @@ void Ov003ActVt_021f8058_StateIdle(ActorEx *self) {
             self->fsm->timer = 0;
             self->fsm->st++;
         }
-        if (func_ov000_02191120(self->model)) {
-            func_ov000_02190cb0(self->model, data_ov003_021f8516, 0xcd, 0);
-            func_ov000_021915a0(self->model);
-            func_ov000_021911c8(self->model, 0xccd);
+        if (Model0218fe1c_IsAnimDone(self->model)) {
+            Model0218fe1c_SetAnim(self->model, data_ov003_021f8516, 0xcd, 0);
+            Model0218fe1c_SetLoop(self->model);
+            Model0218fe1c_SetAnimSpeed(self->model, 0xccd);
         }
         break;
     case 2: {
@@ -77,7 +77,7 @@ void Ov003ActVt_021f8058_StateIdle(ActorEx *self) {
         if (w->timer <= 0x3c) {
             return;
         }
-        pl = func_ov000_0219bf90();
+        pl = ActorMgr_FindPlayer();
         if (pl != NULL && !func_ov000_021b4738(pl)) {
             FieldState *g;
             func_020627a0(self->kind, self->id);

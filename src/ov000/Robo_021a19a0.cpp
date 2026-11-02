@@ -7,11 +7,11 @@ extern char data_ov000_021cc61e[];
 extern char data_ov000_021cc624[];
 extern char data_ov000_021cc62a[];
 extern char *data_ov000_021ca050[];
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
-void func_ov000_021911c8(void *a, s32 b);
-BOOL func_ov000_02198360(void *st, s32 state, s32 x);
-void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
+BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
+void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
+BOOL History_SetState(void *st, s32 state, s32 x);
+void Robo021ca458_WalkByPad(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
 u16 FX_Atan2(s32 y, s32 x);
 
 void func_ov000_021a19a0(Robo021ca458 *self) {
@@ -48,12 +48,12 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
             frame = 0xcd;
         }
     }
-    func_ov000_02190cb0(self->model, name, rate, 0);
+    Model0218fe1c_SetAnim(self->model, name, rate, 0);
     if (!self->unk_b22_3) {
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetLoop(self->model);
     }
     self->hit->unk_9a |= 0x20;
-    func_ov000_021b1dd8((u8 *)self, target, frame, speed, 0x466, 1);
+    Robo021ca458_WalkByPad((u8 *)self, target, frame, speed, 0x466, 1);
     spd = 0x1000;
     if (!self->unk_b22_3) {
         // The repeated (s16)(v * 2) terms keep MWCC from folding the else branch into one multiply.
@@ -64,7 +64,7 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
             spd = (s16)(v * 2) * 4 + (s16)(v * 2) * 2 + (s16)(v * 2);
         }
     }
-    func_ov000_021911c8(self->model, spd);
+    Model0218fe1c_SetAnimSpeed(self->model, spd);
     if (self->unk_b28_0 == 3) {
         self->unk_b28_0 = 2;
         self->unk_b10 = self->pos;
@@ -85,8 +85,8 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
     if (!turned) {
         return;
     }
-    func_ov000_02190cb0(self->model, data_ov000_021cc62a, 0x800, 0);
-    func_ov000_02198360(self->fsm, 4, 0);
+    Model0218fe1c_SetAnim(self->model, data_ov000_021cc62a, 0x800, 0);
+    History_SetState(self->fsm, 4, 0);
 }
 
 }

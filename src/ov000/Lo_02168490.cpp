@@ -7,7 +7,7 @@ extern u8 data_ov000_021cacd8[];
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021c9b28[];
 extern u8 data_ov000_021c9b2e[];
-void func_ov000_0215fe1c(ObjBase021cac0c_021cb6f0 *self, s32 a, s32 b);
+void Obj0215fdfc_SetRange(ObjBase021cac0c_021cb6f0 *self, s32 a, s32 b);
 
 
 void func_ov000_02168490(Lo021cb894 *self, s32 a, s32 b, VecFx32 *p, VecFx32 *q) {
@@ -20,7 +20,7 @@ void func_ov000_02168490(Lo021cb894 *self, s32 a, s32 b, VecFx32 *p, VecFx32 *q)
     if (a > b) {
         a = b;
     }
-    func_ov000_0215fe1c(self, a, b);
+    Obj0215fdfc_SetRange(self, a, b);
     self->unk_0c = (self->unk_0c & ~2) | 0x10000;
 }
 

@@ -9,14 +9,14 @@ extern u8 data_ov000_021cc62a[];
 extern u8 data_ov000_021cc6c0[];
 extern u8 data_ov000_021cc5e3[];
 extern void *data_02097e4c;
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 void func_02062764(s32 a, s32 b);
-void *func_02049f44(void *a, s32 b, void *c, s32 d);
+void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+BOOL History_SetState(void *p, s32 a, s32 b);
 void Actor_TurnToPos(Actor *self, void *v, s32 a);
 void Actor_MoveToPos(Actor *self, const VecFx32 *target, s32 turn);
-BOOL func_ov000_02191120(void *a);
+BOOL Model0218fe1c_IsAnimDone(void *a);
 void Body_SetPos(void *body, VecFx32 *pos, u32 angle);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
@@ -31,7 +31,7 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         s32 dx;
         s32 dz;
         self->unk_b24_2 = 1;
-        func_ov000_02190cb0(&self->mdl0, data_ov000_021cc62a, 0x800, 0);
+        Model0218fe1c_SetAnim(&self->mdl0, data_ov000_021cc62a, 0x800, 0);
         dx = self->unk_75c.x - self->pos.x;
         dz = self->unk_75c.z - self->pos.z;
         self->mdl0.unk_cc = -1;
@@ -48,7 +48,7 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         self->gravity = 0x52;
         self->target = 0xffff;
         self->friction = 0;
-        func_02049f44(data_02097e4c, 7, (u8 *)self + 0x70, 0);
+        SndMgr_PlayAt(data_02097e4c, 7, (u8 *)self + 0x70, 0);
         self->fsm->st++;
         self->fsm->timer = 0;
         data_0214a424->bits18.flag8 = 0;
@@ -77,12 +77,12 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         self->velY = 0;
         self->friction = 0;
         self->gravity = 0;
-        func_ov000_02190cb0(&self->mdl0, data_ov000_021cc6c0, 0x400, 0);
+        Model0218fe1c_SetAnim(&self->mdl0, data_ov000_021cc6c0, 0x400, 0);
         self->fsm->st++;
         break;
     }
     case 2:
-        if (func_ov000_02191120(&self->mdl0)) {
+        if (Model0218fe1c_IsAnimDone(&self->mdl0)) {
             AnimCtrl *p;
             self->pos = self->unk_75c;
             self->rot_x = self->unk_76c;
@@ -93,7 +93,7 @@ void func_ov000_021abc88(Robo021ca458 *self) {
             self->unk_b24_2 = 0;
             self->unk_b24_1 = 1;
             self->unk_b36 = 0;
-            func_ov000_02190cb0(&self->mdl1, data_ov000_021cc5e3, 0x155, 0);
+            Model0218fe1c_SetAnim(&self->mdl1, data_ov000_021cc5e3, 0x155, 0);
             p = self->mdl1.unk_1c;
             if (p != NULL) {
                 NNS_G3dRenderObjRemoveAnmObj((u8 *)self + 0x38c, ((void *)p->cur));
@@ -102,8 +102,8 @@ void func_ov000_021abc88(Robo021ca458 *self) {
                 p->playing = 0;
                 p->same = 0;
             }
-            func_02049f44(data_02097e4c, 0xe, (u8 *)self + 0x70, 0);
-            func_ov000_02198360(self->fsm, 1, 0);
+            SndMgr_PlayAt(data_02097e4c, 0xe, (u8 *)self + 0x70, 0);
+            History_SetState(self->fsm, 1, 0);
         } else {
             VecFx32 d;
             s32 ty;

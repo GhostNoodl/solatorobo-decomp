@@ -7,7 +7,7 @@ extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
-void func_ov000_02153c48(void *node, void *a, s32 b, s32 c, s32 d);
+void Obj02153c48_CreateText(void *node, void *a, s32 b, s32 c, s32 d);
 
 typedef struct {
     u32 b0 : 1;
@@ -50,7 +50,7 @@ public:
     }
 };
 
-void func_ov000_0215e8b0(Panel0215aa78 *p);
+void Obj0215e8b0_LoadModel(Panel0215aa78 *p);
 
 struct Obj0215aa78 : public VObj {
     u8 unk_04[0xc];
@@ -72,14 +72,14 @@ struct Obj0215aa78 : public VObj {
     Panel0215aa78 *unk_ac;
 };
 
-void func_ov000_0215aa78(Obj0215aa78 *self) {
+void LoBase021cafc0_021cb0b8_Setup(Obj0215aa78 *self) {
     u8 *node;
     s32 maxw;
 
     node = self->unk_94;
     maxw = 0;
     while (node != NULL) {
-        func_ov000_02153c48(node, self->unk_1c, 0, 0, 0);
+        Obj02153c48_CreateText(node, self->unk_1c, 0, 0, 0);
         if (LFLD(s32, LFLD(u8 *, node, 0x1c), 0x44) > maxw) {
             maxw = LFLD(s32, LFLD(u8 *, node, 0x1c), 0x44);
         }
@@ -104,11 +104,11 @@ void func_ov000_0215aa78(Obj0215aa78 *self) {
             self->unk_10 = new ModelObj(data_0208cb74, data_0208cca0);
         }
         {
-            ResList *a = func_02035d5c(self->unk_10->name);
-            func_020417e0(self->unk_10, func_02034d88(a, self->unk_10->unk_04c));
+            ResList *a = ResMgr_GetArcList(self->unk_10->name);
+            TexObj_SetRes(self->unk_10, ResList_FindType2(a, self->unk_10->unk_04c));
         }
         self->unk_10->flags |= 2;
-        func_02041d9c(self->unk_10, 0, 7);
+        TexObj_SelectImage(self->unk_10, 0, 7);
     }
     if (self->unk_ac == NULL) {
         self->unk_ac = new Panel0215aa78();
@@ -119,7 +119,7 @@ void func_ov000_0215aa78(Obj0215aa78 *self) {
             self->unk_ac->flags.b1 = 3;
             self->unk_ac->flags.b0 = 1;
         }
-        func_ov000_0215e8b0(self->unk_ac);
+        Obj0215e8b0_LoadModel(self->unk_ac);
         self->unk_ac->unk_10 = (self->unk_24 - 0x20) << 12;
         self->unk_ac->model->flags |= 0x200000;
         self->unk_ac->model->flags |= 0x100000;

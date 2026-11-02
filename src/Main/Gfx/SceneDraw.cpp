@@ -172,8 +172,8 @@ typedef struct Obj3254Type {
 
 extern Obj3254Type data_0208bc80[];
 extern s8 data_02149ef4;
-extern void func_ov000_02190758(Obj3254Model *model, u16 *rot, int a);
-extern BOOL func_ov000_021903b4(Obj3254Model *model);
+extern void Obj02190758_SetRot(Obj3254Model *model, u16 *rot, int a);
+extern BOOL Model021903b4_Draw(Obj3254Model *model);
 
 static inline void Obj3254Model_SetScale(Obj3254Model *m, s32 x, s32 y, s32 z) {
     m->scaleX = x;
@@ -304,10 +304,10 @@ void func_02053254(GameScene *scene, int a, void *obj, int b) {
         pos.x += 0x8000;
     }
     Obj3254Model_SetPosV(part->model, &pos);
-    func_ov000_02190758(part->model, part->rot, 0);
+    Obj02190758_SetRot(part->model, part->rot, 0);
     Obj3254Model_SetScale(part->model, scale, 0x1000, 0x1000);
     data_02149ef4 = part->unk_48;
-    func_ov000_021903b4(part->model);
+    Model021903b4_Draw(part->model);
 }
 #endif
 

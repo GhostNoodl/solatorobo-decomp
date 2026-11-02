@@ -11,10 +11,10 @@ VObj *Ov002Vt_021efca4_DtorDelete(VObj *self) {
     return self;
 }
 
-void func_ov002_021d58ac(void) {
+void Task021efc24_Load(void) {
 }
 
-BOOL func_ov002_021d58b0(void) {
+BOOL Task021efc24_IsLoaded(void) {
     return TRUE;
 }
 
@@ -27,8 +27,8 @@ extern char data_ov002_021efaf1[];
 extern u8 data_ov002_021eef54[];
 void *func_02035de0(void *a, void *b);
 void func_ov000_021547e8(void *a, void *b, const char *c, int d);
-void *func_ov000_02162124(void *p);
-void func_ov000_021627ac(void *p);
+void *ModelViewer_Ctor(void *p);
+void ModelViewer_InitCamera(void *p);
 void func_ov000_021c95fc(void *p);
 BOOL func_ov002_021d5444(UiList *self, UiListItem *ev);
 BOOL func_ov002_021d5350(UiList *self, UiListItem *ev);
@@ -49,7 +49,7 @@ static inline UiListItem *ov002_021d58b8_sel(UiList *g) {
 
 static inline void ov002_021d58b8_setName(Task021efc24 *self, u16 id) {
     if (self->unk_54 != NULL) {
-        func_ov000_0215bb14(self->unk_54, func_0206ec8c(id));
+        Obj0215bb14_SetText(self->unk_54, func_0206ec8c(id));
         self->unk_54->vfunc_70();
     }
 }
@@ -57,18 +57,18 @@ static inline void ov002_021d58b8_setName(Task021efc24 *self, u16 id) {
 static inline void ov002_021d58b8_setInfo(Task021efc24 *self, u16 id) {
     if (self->unk_58 != NULL) {
         Param0206ef10 *info = func_0206ef10(id);
-        func_ov000_02162b40(self->unk_58, info->def.name[0], info->def.name[1], data_ov002_021efae1,
+        ModelViewer_SetModel(self->unk_58, info->def.name[0], info->def.name[1], data_ov002_021efae1,
                             info->def.unk_1c, data_ov002_021efaeb, info->def.unk_18, 0x1000);
     }
 }
 
 static inline void ov002_021d58b8_setId(Ov002Hud *x, u16 id) {
     if (x != NULL) {
-        func_ov002_021e2754(x, id);
+        Ov002Hud_SetInfo(x, id);
     }
 }
 
-void func_ov002_021d58b8(Task021efc24 *self) {
+void Task021efc24_Start(Task021efc24 *self) {
     void *res;
     void *m;
     UiObj *o;
@@ -83,13 +83,13 @@ void func_ov002_021d58b8(Task021efc24 *self) {
     res = func_02035de0(data_ov002_021efaf1, data_0208ccc0);
     m = Heap_Alloc(0x160);
     if (m != NULL) {
-        func_02041218((PlttRes *)((u8 *)m + 0x88));
-        func_02041440((Model *)m, NULL, 0);
+        PlttRes_Init_02041218((PlttRes *)((u8 *)m + 0x88));
+        TexObj_Init((Model *)m, NULL, 0);
     }
     self->unk_3c = (Model *)m;
-    func_020417e0((Model *)m, res);
+    TexObj_SetRes((Model *)m, res);
     self->unk_3c->flags |= 2;
-    func_02041d9c((Model *)self->unk_3c, 0, 0);
+    TexObj_SelectImage((Model *)self->unk_3c, 0, 0);
     self->unk_3c->unk_150 = -0x1fe66;
     self->unk_3c->unk_158 = (void *)func_ov002_021d66b0;
     func_02041c20((Model *)self->unk_3c, 0, (u8 *)self + 0x40);
@@ -124,7 +124,7 @@ void func_ov002_021d58b8(Task021efc24 *self) {
     }
     self->unk_4c->flags |= 0x80000;
     self->unk_4c->vfunc_08();
-    func_ov000_0215bb14(self->unk_4c, func_0206ec48(self->unk_74));
+    Obj0215bb14_SetText(self->unk_4c, Param_Get(self->unk_74));
     self->unk_4c->vfunc_70();
     o = (UiObj *)Heap_Alloc(0xd4);
     if (o != NULL) {
@@ -160,12 +160,12 @@ void func_ov002_021d58b8(Task021efc24 *self) {
     self->unk_50->flags |= 0x10000;
     self->unk_50->vfunc_08();
     base = data_02fe152c->data;
-    tbl = func_0205976c(data_02fe152c, 12);
-    count = func_0205975c(data_02fe152c, 12);
+    tbl = DataRes_GetTable(data_02fe152c, 12);
+    count = DataRes_GetCount(data_02fe152c, 12);
     for (i = 0; i < count; i++) {
-        if (func_02059544(data_02fe152c, base + 0x190, tbl, 1, i)) {
+        if (DataRes_ReadBitsAt_02059544(data_02fe152c, base + 0x190, tbl, 1, i)) {
             id = i + 0x8000;
-            e = (UiListItem *)self->unk_50->vfunc_74(func_0206ec48(id), id, 0xffff, 0xffff);
+            e = (UiListItem *)self->unk_50->vfunc_74(Param_Get(id), id, 0xffff, 0xffff);
             if (self->unk_74 == id) {
                 e->unk_24 = 4;
             }
@@ -176,7 +176,7 @@ void func_ov002_021d58b8(Task021efc24 *self) {
     self->unk_50->owner = self;
     {
         VObj *mm = self->unk_50;
-        mm->vfunc_a8(func_ov000_02154b58(mm, self->unk_74));
+        mm->vfunc_a8(UiList_GetItemById(mm, self->unk_74));
     }
     o = (UiObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
@@ -219,10 +219,10 @@ void func_ov002_021d58b8(Task021efc24 *self) {
     {
         void *q = Heap_Alloc(0x708);
         if (q != NULL) {
-            q = func_ov000_02162124(q);
+            q = ModelViewer_Ctor(q);
         }
         self->unk_58 = (VObj *)q;
-        func_ov000_021627ac(q);
+        ModelViewer_InitCamera(q);
     }
     {
         UiListItem *p = ov002_021d58b8_sel(self->unk_50);
@@ -234,7 +234,7 @@ void func_ov002_021d58b8(Task021efc24 *self) {
         Task021efba4 *t = (Task021efba4 *)Task_FindById(0x1b);
         if (t != NULL) {
             if (t->hud != NULL) {
-                func_ov002_021e2690(t->hud, 9, 0);
+                Ov002Hud_SetRow(t->hud, 9, 0);
             }
             func_ov000_021c95fc((u8 *)self + 0x60);
             if (t->hud != NULL) {
@@ -246,6 +246,6 @@ void func_ov002_021d58b8(Task021efc24 *self) {
     if (func_ov002_isMode4()) {
         func_0203cb78(0x14000, 0, -1);
     }
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 }

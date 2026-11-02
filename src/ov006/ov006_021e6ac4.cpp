@@ -7,7 +7,7 @@ extern "C" {
 
 extern const u16 data_ov006_021eb89c[];
 
-BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg);
+BOOL Actor_HandleMsg(Actor *self, ActorMsg *msg);
 
 static inline void Ov006Racer_Ack(Ov006Racer *self, ActorMsg *msg) {
     self->msg_flags |= 1 << msg->type;
@@ -43,24 +43,24 @@ BOOL Ov006ActVt_021ec4f4_HandleMsg(Ov006Racer *self, ActorMsg *msg) {
                 self->unk_1fa = v;
             }
             if (self->idx == data_ov006_021ec884->unk5) {
-                EffectObj *e = func_02065f88(0x648, &self->pos);
+                EffectObj *e = Effect_SpawnId(0x648, &self->pos);
                 if (e != NULL) {
                     EffectObj *old;
                     e->SetScaleAll(0x1800);
                     e->speed = 0x1800;
-                    old = func_020657b0(data_0214a420, self->unk_1ec);
+                    old = Effect_Find_020657b0(data_0214a420, self->unk_1ec);
                     if (old != NULL) {
                         EffectObj_StopLoop(old);
                         old->state = 4;
                     }
                     self->unk_1ec = e->id;
                 }
-                func_02049f44(data_02097e4c, 0x41, &self->pos, 0);
+                SndMgr_PlayAt(data_02097e4c, 0x41, &self->pos, 0);
             }
         }
         break;
     }
-    if (pass && func_ov000_0218d494(self, msg)) {
+    if (pass && Actor_HandleMsg(self, msg)) {
         return TRUE;
     }
     Ov006Racer_Ack(self, msg);

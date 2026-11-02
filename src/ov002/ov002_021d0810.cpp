@@ -8,17 +8,17 @@ static inline BOOL ov002_isState5(void *o) {
     return FIELD(o, 0x4, s32) == 5 ? TRUE : FALSE;
 }
 
-void func_ov002_021d0810(Task021efa1c *self) {
+void Task021efa1c_PreUpdate(Task021efa1c *self) {
     switch (self->state) {
     case 8:
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         self->unk_3c->flags &= ~2;
         self->unk_40->flags &= ~2;
         break;
     case 10:
         self->unk_3c->flags |= 2;
         self->unk_40->flags |= 2;
-        func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
         break;
     case 11:
         if (ov002_isState5(self->unk_3c) && ov002_isState5(self->unk_40)) {

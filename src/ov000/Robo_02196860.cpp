@@ -6,12 +6,12 @@
 
 extern "C" {
 extern char data_ov000_021cc456[];
-BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
+BOOL Model0218fe1c_SetAnim(void *a, const char *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
 void HitSphere_Link(void *a);
-void func_0203f364(void *a);
-BOOL func_ov000_02198360(void *s, s32 a, s32 b);
-Robo021ca458 *func_ov000_0219bf90(void);
+void HitSphere_Unlink_0203f364(void *a);
+BOOL History_SetState(void *s, s32 a, s32 b);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 void *Target_Get(void *p);
 void Target_Set(void *a, void *b);
 void Ov003Pickup_Update(void *self, s32 a);
@@ -19,13 +19,13 @@ void *Ov003_FindPlayerInRange(void *pos, s32 a, s32 b);
 s32 Rand_UpTo(s32 n);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 
-void func_ov000_02196860(ActorEx *self) {
+void ActorEx_State0a(ActorEx *self) {
     switch (self->fsm->st) {
     case 0: {
         ActorSub4c *m = self->targetObj;
         if (m->target != 0xffff && (u8)(m->unk_02 + 0xff) <= 1) {
             BOOL done = FALSE;
-            Robo021ca458 *p = func_ov000_0219bf90();
+            Robo021ca458 *p = ActorMgr_FindPlayer();
             if (p->id == self->targetObj->target) {
                 StageFlags *g = data_0214a424;
                 u32 n = g->unk_016 + 1;
@@ -42,7 +42,7 @@ void func_ov000_02196860(ActorEx *self) {
                     ActorSub48 *q = self->hit;
                     q->unk_9a_0 = 0;
                     q->unk_9a_3 = 0;
-                    func_0203f364(q);
+                    HitSphere_Unlink_0203f364(q);
                     q = self->hit;
                     q->unk_9a_1 = 0;
                     q->unk_9a_4 = 0;
@@ -54,12 +54,12 @@ void func_ov000_02196860(ActorEx *self) {
                 done = TRUE;
             }
             if (done) {
-                func_ov000_02198360(self->fsm, 0x15, 0);
+                History_SetState(self->fsm, 0x15, 0);
                 break;
             }
         }
-        func_ov000_02190cb0(self->model, data_ov000_021cc456, 0x1000, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov000_021cc456, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
         if (self->unk_44 != NULL) {
             ActorSub44 *q = self->unk_44;
             q->unk_22_0 = 1;
@@ -106,7 +106,7 @@ void func_ov000_02196860(ActorEx *self) {
             }
             self->fsm->st++;
         } else {
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         self->targetObj->target = 0xffff;
         break;
@@ -115,14 +115,14 @@ void func_ov000_02196860(ActorEx *self) {
         if (self->hit != NULL) {
             self->hit->unk_9a_4 = 0;
         }
-        func_ov000_02198360(self->fsm, 4, 0);
+        History_SetState(self->fsm, 4, 0);
         break;
     }
     if (self->targetObj != NULL && self->targetObj->type == 2) {
         void *r = Ov003_FindPlayerInRange(&self->pos, self->radius, self->height);
         if (r != NULL) {
             Target_Set(((u8 *)self->targetObj), r);
-            func_ov000_02198360(self->fsm, 0xd, 0);
+            History_SetState(self->fsm, 0xd, 0);
         }
     }
 }

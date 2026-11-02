@@ -13,7 +13,7 @@ Obj021efe8c *Ov002Vt_021efe8c_DtorDelete(Obj021efe8c *self) {
     return self;
 }
 
-void func_ov002_021d788c(Obj021efe8c *self) {
+void Obj021efe8c_SyncAnmFrame(Obj021efe8c *self) {
     s32 v = self->mdl.frame;
     if (self->mdl.anm[0] != NULL) {
         self->mdl.anm[0]->frame = v;
@@ -28,21 +28,21 @@ void func_ov002_021d788c(Obj021efe8c *self) {
 }
 
 Obj021efe5c *Ov002Vt_021efe5c_Dtor(Obj021efe5c *self) {
-    func_02041558(&self->model);
-    func_02041278(&self->model.pltt);
+    TexObj_Release(&self->model);
+    PlttRes_Release(&self->model.pltt);
     Ov002Vt_021efe3c_Dtor(&self->mdl);
     return self;
 }
 
 Obj021efe5c *Ov002Vt_021efe5c_DtorDelete(Obj021efe5c *self) {
-    func_02041558(&self->model);
-    func_02041278(&self->model.pltt);
+    TexObj_Release(&self->model);
+    PlttRes_Release(&self->model.pltt);
     Ov002Vt_021efe3c_Dtor(&self->mdl);
     Heap_Free(self);
     return self;
 }
 
-void func_ov002_021d792c(Obj021efe5c *self) {
+void Obj021efe5c_SyncAnmFrame(Obj021efe5c *self) {
     s32 v = self->mdl.frame;
     if (self->mdl.anm[0] != NULL) {
         self->mdl.anm[0]->frame = v;

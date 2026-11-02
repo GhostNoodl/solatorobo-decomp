@@ -4,17 +4,17 @@
 extern "C" {
 
 extern u8 data_ov000_021cc678[];
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
-BOOL func_ov000_02198360(ActorSub40 *st, s32 state, s32 x);
-void func_ov000_021b1fac(Robo021ca458 *self, BOOL a, s32 b);
+BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
+BOOL History_SetState(ActorSub40 *st, s32 state, s32 x);
+void Robo021ca458_Move(Robo021ca458 *self, BOOL a, s32 b);
 u16 FX_Atan2(s32 y, s32 x);
 
 void func_ov000_021a5b50(Robo021ca458 *self) {
     switch (self->fsm->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov000_021cc678, 0x200, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov000_021cc678, 0x200, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->friction = 0x800;
         self->unk_93_5 = 1;
         if (self->gravity == 0) {
@@ -24,7 +24,7 @@ void func_ov000_021a5b50(Robo021ca458 *self) {
     case 1:
         if (self->unk_b36 == 0) {
             self->unk_93_5 = 0;
-            func_ov000_02198360((ActorSub40 *)self->fsm, 1, 0);
+            History_SetState((ActorSub40 *)self->fsm, 1, 0);
             return;
         }
         if (self->hit->unk_50 & 0x20000000) {
@@ -37,10 +37,10 @@ void func_ov000_021a5b50(Robo021ca458 *self) {
             if (st->timer > 0x3c) {
                 self->unk_93_5 = 0;
                 self->unk_b36 = 0;
-                func_ov000_02198360((ActorSub40 *)self->fsm, 4, 0);
+                History_SetState((ActorSub40 *)self->fsm, 4, 0);
             }
         }
-        func_ov000_021b1fac(self, FALSE, 1);
+        Robo021ca458_Move(self, FALSE, 1);
         if (!self->unk_b24_1) {
             return;
         }

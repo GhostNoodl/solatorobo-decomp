@@ -3,7 +3,7 @@
 
 s32 func_01ffbd6c(VecFx32 *from, VecFx32 *to, u32 mask, s32 a, s32 b, s32 c);
 
-void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *ofs, s32 angle) {
+void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *ofs, s32 angle) {
     s32 c;
     s32 s;
     s32 z;
@@ -32,7 +32,7 @@ void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *ofs, s32 angle) {
     VEC_Add(pos, &r, pos);
 }
 
-s32 func_ov000_0219a2f4(VecFx32 *pos, s32 up, s32 down) {
+s32 Geom_SnapToGround(VecFx32 *pos, s32 up, s32 down) {
     VecFx32 a;
     VecFx32 b;
     s32 ret;

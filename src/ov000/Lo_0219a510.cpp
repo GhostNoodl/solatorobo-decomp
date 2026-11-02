@@ -27,11 +27,11 @@ typedef struct {
 } FinderQuery;
 
 extern "C" {
-s32 func_ov000_021993fc(Finder *self, Query *q, void **out, s32 max);
-s32 func_ov000_02199128(Finder *self, Query *q, void **out, s32 max);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+s32 Finder_CollectParts(Finder *self, Query *q, void **out, s32 max);
+s32 Finder_CollectActors(Finder *self, Query *q, void **out, s32 max);
+BOOL History_SetState(void *a, s32 b, s32 c);
 
-s32 func_ov000_0219a510(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list) {
+s32 Actor_FindInRadius(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list) {
     FinderQuery fq;
     fq.q.unk_18 = 0;
     fq.q.unk_1c = 0;
@@ -60,7 +60,7 @@ s32 func_ov000_0219a510(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a,
     if (self != NULL) {
         fq.q.exclude = self->id;
     }
-    return func_ov000_021993fc(&fq.finder, &fq.q, list, 0x20);
+    return Finder_CollectParts(&fq.finder, &fq.q, list, 0x20);
 }
 
 }

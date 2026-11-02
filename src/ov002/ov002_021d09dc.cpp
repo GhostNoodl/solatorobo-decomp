@@ -2,10 +2,10 @@
 
 extern "C" {
 
-void func_ov002_021d09dc(void) {
+void Task021efa1c_PostUpdate(void) {
 }
 
-void func_ov002_021d09e0(Task021efa1c *self) {
+void Task021efa1c_Draw(Task021efa1c *self) {
     if (self->unk_3c != NULL) {
         self->unk_3c->vfunc_20();
     }
@@ -34,7 +34,7 @@ BOOL func_ov002_021d0a80(void *self, void *arg) {
     int j;
     if (arg != NULL) {
         data_ov002_021f0f84[1] = FIELD(self, 0xa8, s32);
-        obj = (u8 *)func_ov000_0218084c(data_ov000_021ccd44, 0x16, 0);
+        obj = (u8 *)TaskHost_RequestSwitch(data_ov000_021ccd44, 0x16, 0);
         info = func_0206ee90((u16)FIELD(arg, 0x8, u32));
         if (!((Info0206ee90 *)info)->flag) {
             obj[0x68] = 0;
@@ -60,13 +60,13 @@ BOOL func_ov002_021d0a80(void *self, void *arg) {
     return TRUE;
 }
 
-void func_ov002_021d0b5c(Task021ef89c *self) {
+void Task021ef89c_Start(Task021ef89c *self) {
     self->unk_04_1 = 0;
     if (self->vfunc_28() != 0) {
         return;
     }
     func_ov002_021d0b98(self);
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 }

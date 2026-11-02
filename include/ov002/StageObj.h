@@ -7,7 +7,7 @@
 #include "nnsys/g3d.h"
 #include "Main/Gfx/Gfx3D.h"
 
-// Base of the ov002 stage objects (0x4c; ctor func_ov002_021e4cd8, dtor func_ov002_021e4d4c).
+// Base of the ov002 stage objects (0x4c; ctor Ov002Obj_Init, dtor Ov002Obj_Detach).
 // The ctor appends the object to the list in data_ov002_021f0f9c (head at 0xdc, tail at 0xe0,
 // linked through next); an object can own up to eight others (children, each pointing back
 // through owner). Vtable data_ov002_021f0734: slot 0x08 func_ov002_021e8b28 (loaded: unk_0c >= 3),
@@ -27,8 +27,8 @@ struct Ov002Obj : public VObj {
 };
 SIZE_ASSERT(Ov002Obj, 0x4c);
 
-// Message reader (0x28, vtable data_ov002_021f0ce8; Ov002Vt_021f0ce8_Ctor, reset func_ov002_021ebfd0):
-// func_ov002_021ec010 points it at a loaded message file, func_ov002_021ec0cc steps to the next record.
+// Message reader (0x28, vtable data_ov002_021f0ce8; Ov002Vt_021f0ce8_Ctor, reset Ov002Msg021f0ce8_Init):
+// Ov002Msg021f0ce8_Load points it at a loaded message file, Ov002Msg021f0ce8_Next steps to the next record.
 // Each record is a 0xe-byte header (copied to unk_10) followed by a name and a text string.
 typedef struct Ov002MsgRes {
     u8 *data;
@@ -53,8 +53,8 @@ struct Ov002Msg021f0ce8 : public VObj {
 SIZE_ASSERT(Ov002Msg021f0ce8, 0x28);
 
 // Sound command reader (0x18, vtable data_ov002_021f0cf8; Ov002Vt_021f0cf8_Ctor, reset
-// func_ov002_021ec1c4): func_ov002_021ec1e0 points it at a list of 0x10-byte commands,
-// func_ov002_021ec2ac steps to the next one.
+// Ov002Snd021f0cf8_Init): Ov002Snd021f0cf8_Load points it at a list of 0x10-byte commands,
+// Ov002Snd021f0cf8_Next steps to the next one.
 struct Ov002Snd021f0cf8 : public VObj {
     void *src;
     s16 index;
@@ -66,8 +66,8 @@ struct Ov002Snd021f0cf8 : public VObj {
 };
 SIZE_ASSERT(Ov002Snd021f0cf8, 0x18);
 
-// The subclasses, named by vtable and sized by the allocation in their factory (func_ov002_021e91c8 ..
-// func_ov002_021e9bd8). Fields are named by offset unless the code shows what they hold.
+// The subclasses, named by vtable and sized by the allocation in their factory (Ov002Obj021f07d4_New ..
+// Ov002Obj021f06bc_New). Fields are named by offset unless the code shows what they hold.
 
 // File names of a stage object's resource, pointing into the stage file (or ov015's tables).
 typedef struct Ov002ResName {
@@ -76,20 +76,20 @@ typedef struct Ov002ResName {
     char *item; // name of the model or animation inside it, NULL: name
 } Ov002ResName;
 
-// Texture link record (0x1c bytes) appended by func_ov002_021e50a8 / func_ov002_021e50d8: a texture
+// Texture link record (0x1c bytes) appended by Ov002Obj021f07d4_AddLink / func_ov002_021e50d8: a texture
 // file bound to the model of the object whose unk_4c matches id (func_ov002_021e534c loads it).
 typedef struct Ov002ObjLink {
     s32 id;
     char *arc;  // archive, NULL: a loose file
     char *name; // file name
-    u32 task;   // texture upload (func_0203ebf8 / func_0203e63c)
+    u32 task;   // texture upload (func_0203ebf8 / Vram_IsTransferDone)
     u32 *res;   // loaded file
     u8 loaded;
     u8 alt;     // not found in the archive: loaded as its own file into res2
     u32 *res2;
 } Ov002ObjLink;
 
-// Vtable data_ov002_021f07d4, 0x1f4 bytes (func_ov002_021e91c8, ctor func_ov002_021e5140).
+// Vtable data_ov002_021f07d4, 0x1f4 bytes (Ov002Obj021f07d4_New, ctor Ov002Obj021f07d4_Init).
 struct Ov002Obj021f07d4 : public Ov002Obj {
     s32 unk_4c; // id matched against the link records
     Ov002ResName res; // its model
@@ -97,7 +97,7 @@ struct Ov002Obj021f07d4 : public Ov002Obj {
     NNSG3dResMdl *unk_60;
     NNSG3dResTex *unk_64;
     NNSG3dRenderObj renderObj;
-    u32 unk_bc;   // texture upload (func_0203ebf8 / func_0203e63c)
+    u32 unk_bc;   // texture upload (func_0203ebf8 / Vram_IsTransferDone)
     Ov002ObjLink links[8];
     s32 linkCount;
     VecFx32 trans; // NNS_G3dGlbSetBaseTrans (func_ov002_021e5b08)
@@ -119,9 +119,9 @@ struct Ov002Obj021f07d4 : public Ov002Obj {
 };
 SIZE_ASSERT(Ov002Obj021f07d4, 0x1f4);
 
-// Vtable data_ov002_021f075c, 0xec bytes (func_ov002_021e92b0, ctor func_ov002_021e5d0c).
+// Vtable data_ov002_021f075c, 0xec bytes (Ov002Obj021f075c_New, ctor Ov002Obj021f075c_Init).
 // Kind 2 while it animates its owner's model with up to five NNSG3dAnmObjs, kind 3 when it drives
-// a single joint animation (func_ov002_021e61b4).
+// a single joint animation (Ov002Obj021f075c_LoadAnim).
 struct Ov002Obj021f075c : public Ov002Obj {
     Ov002ResName res; // its animations
     s32 unk_58;
@@ -138,20 +138,20 @@ struct Ov002Obj021f075c : public Ov002Obj {
     s32 unk_84;
     s32 unk_88;
     s32 unk_8c;
-    NNSG3dJntAnmResult jnt; // the joint animation's result (func_ov002_021e63f0)
+    NNSG3dJntAnmResult jnt; // the joint animation's result (Ov002Obj021f075c_UpdateAnims)
     union {
         u32 unk_e8;
         struct {
             u8 started : 1; // set by func_ov002_021e6290
             u8 done : 1;    // frame passed unk_8c
-            u8 stopped : 1; // func_ov002_021e6360 on a kind 3 object
+            u8 stopped : 1; // Ov002Obj021f075c_RemoveAnims on a kind 3 object
             u8 unk_e8_3 : 5;
         };
     };
 };
 SIZE_ASSERT(Ov002Obj021f075c, 0xec);
 
-// Vtable data_ov002_021f070c, 0x70 bytes (func_ov002_021e9380).
+// Vtable data_ov002_021f070c, 0x70 bytes (Ov002Obj021f070c_New).
 struct Ov002Obj021f070c : public Ov002Obj {
     s32 unk_4c;
     u8 unk_50[0x10];
@@ -162,7 +162,7 @@ struct Ov002Obj021f070c : public Ov002Obj {
 };
 SIZE_ASSERT(Ov002Obj021f070c, 0x70);
 
-// Vtable data_ov002_021f0784, 0x60 bytes (func_ov002_021e9478).
+// Vtable data_ov002_021f0784, 0x60 bytes (Ov002Obj021f0784_New).
 struct Ov002Obj021f0784 : public Ov002Obj {
     s32 unk_4c; // mode 0..2
     u16 unk_50;
@@ -173,7 +173,7 @@ struct Ov002Obj021f0784 : public Ov002Obj {
 };
 SIZE_ASSERT(Ov002Obj021f0784, 0x60);
 
-// Vtable data_ov002_021f06e4, 0x54 bytes (func_ov002_021e9974).
+// Vtable data_ov002_021f06e4, 0x54 bytes (Ov002Obj021f06e4_New).
 struct Ov002Obj021f06e4 : public Ov002Obj {
     union {
         s16 unk_4c; // passed to func_0206e3a0 with unk_50
@@ -191,7 +191,7 @@ struct Ov002Obj021f06e4 : public Ov002Obj {
 };
 SIZE_ASSERT(Ov002Obj021f06e4, 0x54);
 
-// Vtable data_ov002_021f06bc, 0xac bytes (func_ov002_021e9bd8): plays the sound commands of a file.
+// Vtable data_ov002_021f06bc, 0xac bytes (Ov002Obj021f06bc_New): plays the sound commands of a file.
 struct Ov002Obj021f06bc : public Ov002Obj {
     char unk_4c[0x20]; // archive
     char unk_6c[0x20]; // file name
@@ -203,8 +203,8 @@ SIZE_ASSERT(Ov002Obj021f06bc, 0xac);
 
 typedef s32 (*Ov002GetChar)(char **cursor);
 
-// Vtable data_ov002_021f07ac, 0x160 bytes (func_ov002_021e9a50, ctor func_ov002_021e6a14): shows the
-// messages of a file, typing each text out into unk_c4 (func_ov002_021e6e40).
+// Vtable data_ov002_021f07ac, 0x160 bytes (Ov002Obj021f07ac_New, ctor Ov002Obj021f07ac_Init): shows the
+// messages of a file, typing each text out into unk_c4 (Ov002Obj021f07ac_UpdateText).
 struct Ov002Obj021f07ac : public Ov002Obj {
     char unk_4c[0x20]; // archive
     char unk_6c[0x20]; // file name
@@ -236,15 +236,15 @@ struct Ov002Cam021f0854 : public Ov002Obj {
 };
 SIZE_ASSERT(Ov002Cam021f0854, 0xb4);
 
-// Vtable data_ov002_021f07fc, 0xb8 bytes (func_ov002_021e97e8): orthographic.
+// Vtable data_ov002_021f07fc, 0xb8 bytes (Ov002Cam021f07fc_New): orthographic.
 struct Ov002Cam021f07fc : public Ov002Cam021f0854 {
     struct Ov002Obj021f075c *unk_b4; // kind 3 child (func_ov002_021e7900)
 };
 SIZE_ASSERT(Ov002Cam021f07fc, 0xb8);
 
-// Vtable data_ov002_021f0828, 0xcc bytes (func_ov002_021e95c4): perspective.
+// Vtable data_ov002_021f0828, 0xcc bytes (Ov002Cam021f0828_New): perspective.
 struct Ov002Cam021f0828 : public Ov002Cam021f0854 {
-    s32 unk_b4;   // field of view in degrees (fx32, func_ov002_021e772c)
+    s32 unk_b4;   // field of view in degrees (fx32, Ov002Cam021f0828_SetFovy)
     u16 unk_b8;   // as an angle; fovySin/fovyCos are of its half
     s16 fovySin; // FX_SinCosTable_ pair
     s16 fovyCos;
@@ -273,8 +273,8 @@ typedef struct Ov002ResList {
     Ov002ResNode *head;
 } Ov002ResList;
 
-// Stage file reader (0x64, vtable data_ov002_021f0684; init func_ov002_021eacd0, release
-// func_ov002_021eae48), embedded in the stage context. func_ov002_021ead1c points it at a loaded
+// Stage file reader (0x64, vtable data_ov002_021f0684; init Ov002StageFile_Init, release
+// Ov002StageFile_Free), embedded in the stage context. Ov002StageFile_Open points it at a loaded
 // stage file and func_ov002_021eb964 finds the file's sections; func_ov002_021eaf20 builds the
 // stage objects from them.
 struct Ov002StageFile : public VObj {
@@ -305,7 +305,7 @@ struct Ov002StageFile : public VObj {
 SIZE_ASSERT(Ov002StageFile, 0x64);
 
 // Stage context (0x2cc, vtable data_ov002_021f0674), data_ov002_021f0f9c, built by
-// func_ov002_021e7b58 / func_ov002_021e8f04 (ctor func_ov002_021e7cb4, dtor func_ov002_021e7dac).
+// Ov002Stage_Create / func_ov002_021e8f04 (ctor Ov002Stage_Init, dtor Ov002Stage_Release).
 // It loads the stage file, runs the stage objects in its list and fades the screens in and out
 // (func_ov002_021e7ea8).
 struct Ov002Stage : public VObj {
@@ -353,19 +353,19 @@ extern "C" {
 
 extern Ov002Stage *data_ov002_021f0f9c;
 
-void func_ov002_021e4cd8(Ov002Obj *self);
-void func_ov002_021e4d4c(Ov002Obj *self);
-void func_ov002_021e4dac(Ov002Obj *self, Ov002Obj *item);
-Ov002Obj *func_ov002_021e4ee4(Ov002Obj *self, s32 kind, s32 min);
+void Ov002Obj_Init(Ov002Obj *self);
+void Ov002Obj_Detach(Ov002Obj *self);
+void Ov002Obj_AddChild(Ov002Obj *self, Ov002Obj *item);
+Ov002Obj *Ov002Obj_FindChildKind(Ov002Obj *self, s32 kind, s32 min);
 void func_ov002_021e50d8(Ov002Obj021f07d4 *self, char *arc, char *name);
-void func_ov002_021e61b4(Ov002Obj021f075c *self);
-void func_ov002_021e6360(Ov002Obj021f075c *self);
-void func_ov002_021e7b58(void);
-void func_ov002_021e7c1c(void);
+void Ov002Obj021f075c_LoadAnim(Ov002Obj021f075c *self);
+void Ov002Obj021f075c_RemoveAnims(Ov002Obj021f075c *self);
+void Ov002Stage_Create(void);
+void Ov002Stage_Delete(void);
 BOOL func_ov002_021e7ea8(Ov002Stage *self);
 void func_ov002_021e8b3c(Ov002Stage *self);
-Ov002Obj *func_ov002_021e91c8(s32 start, s32 end, s32 screen, bool b, u8 a);
-Ov002Obj *func_ov002_021e92b0(s32 start, s32 end, s32 screen, s32 d, s32 e);
+Ov002Obj *Ov002Obj021f07d4_New(s32 start, s32 end, s32 screen, bool b, u8 a);
+Ov002Obj *Ov002Obj021f075c_New(s32 start, s32 end, s32 screen, s32 d, s32 e);
 Ov002Obj *func_ov002_021e9b28(s32 end);
 void func_ov002_021e9e40(s32 idx);
 

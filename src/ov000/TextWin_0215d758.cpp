@@ -12,8 +12,8 @@ extern u16 data_ov000_021cabe0[];
 extern void *data_0208cc88;
 extern void *data_0208cc94;
 extern void *data_02149ef8;
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
+void *ResMgr_GetArcList(void *a);
+void *ResList_FindType2(void *a, void *b);
 void func_02041c5c(void *model, void *fn);
 u32 MsgRes_GetString(void *a, s32 b);
 void *func_ov000_02154128(u8 *self, void *req, void *buf, u16 *count);
@@ -22,7 +22,7 @@ static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
-        func_0204c7d0(win);
+        TextWin_Init(win);
     }
     return win;
 }
@@ -33,7 +33,7 @@ static inline void SetText(TextWin *win, u32 text) {
     data_02097ce0->unk_004 = win->font;
 }
 
-void func_ov000_0215d758(Lo021cae48 *self) {
+void Lo021cae48_Setup(Lo021cae48 *self) {
     u16 *ent = &data_ov000_021cabe0[self->unk_84 * 2];
     u8 *m;
     void *res;
@@ -44,16 +44,16 @@ void func_ov000_0215d758(Lo021cae48 *self) {
         void *name_;
         name_ = data_0208cc88;
         arc_ = data_0208cc94;
-        func_02041218((struct PlttRes *)(m + 0x88));
-        func_02041440((Model *)m, (const char *)name_, 0);
+        PlttRes_Init_02041218((struct PlttRes *)(m + 0x88));
+        TexObj_Init((Model *)m, (const char *)name_, 0);
         STD_CopyString((char *)m + 0x2c, (const char *)arc_);
     }
     self->unk_90 = (Model *)(m);
-    func_020417e0(self->unk_90, func_02034d88(func_02035d5c(m + 0x2c), (u8 *)self->unk_90 + 0x4c));
+    TexObj_SetRes(self->unk_90, ResList_FindType2(ResMgr_GetArcList(m + 0x2c), (u8 *)self->unk_90 + 0x4c));
     self->unk_90->flags |= 2;
-    func_02041d9c(self->unk_90, 0, 6);
+    TexObj_SelectImage(self->unk_90, 0, 6);
     if (self->unk_84 != 4) {
-        func_02041d9c(self->unk_90, 0, ent[0]);
+        TexObj_SelectImage(self->unk_90, 0, ent[0]);
     }
     func_02041c5c((u8 *)self->unk_90, (void *)func_ov000_02154128);
     res = data_02149ef8;

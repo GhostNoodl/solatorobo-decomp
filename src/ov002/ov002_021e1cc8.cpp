@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021e1cc8(Ov002Hud *self) {
+void Ov002Hud_Init(Ov002Hud *self) {
     self->unk_04 = NULL;
     self->unk_08 = NULL;
     self->unk_0c = NULL;

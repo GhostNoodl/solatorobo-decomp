@@ -27,24 +27,24 @@ Ov014ActEx_022152e8 *Ov014ActEx_022152e8_Ctor(Ov014ActEx_022152e8 *self) {
 #pragma force_active reset
 
 Ov014ActEx_022152e8 *Ov014ActEx_022152e8_Dtor(Ov014ActEx_022152e8 *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 Ov014ActEx_022152e8 *Ov014ActEx_022152e8_DtorDelete(Ov014ActEx_022152e8 *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 void Ov014ActEx_022152e8_Draw(Ov014ActEx_022152e8 *self) {
-    func_ov000_02194c08(self);
+    ActorEx_Draw(self);
 }
 
 void Ov014ActEx_022152e8_Start(Ov014ActEx_022152e8 *self) {
     ActorSub44 *n;
-    func_ov000_02194758(self);
-    func_ov000_02198360(self->fsm, 0xb, 0);
+    ActorEx_Start(self);
+    History_SetState(self->fsm, 0xb, 0);
     self->unk_44->unk_0c.y = 0;
     n = self->unk_44;
     n->unk_22_0 = 0;

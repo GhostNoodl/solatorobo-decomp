@@ -15,7 +15,7 @@ static inline EffectObj *Ov010_SpawnFx192(Actor *self, u16 a, u16 b) {
         p.y = y + self->height / 2;
         p.z = z;
     }
-    fx = func_02065f88(0x192, &p);
+    fx = Effect_SpawnId(0x192, &p);
     fx->SetRotXYZ(a, b, 0);
     return fx;
 }

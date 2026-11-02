@@ -60,7 +60,7 @@ void func_ov002_021ebcf8(Ov002StageFile *self, int kind, u8 *data, Ov002Obj021f0
     src = data + 0x10;
     for (i = 0; i < n; i++) {
         MI_CpuCopy8(src, &rec, 0x18);
-        o = (Ov002Obj021f075c *)func_ov002_021e92b0(rec.a, rec.b, 1, rec.e, rec.g);
+        o = (Ov002Obj021f075c *)Ov002Obj021f075c_New(rec.a, rec.b, 1, rec.e, rec.g);
         o->unk_04 = kind;
         o->unk_84 = rec.f;
         o->unk_58 = rec.c;

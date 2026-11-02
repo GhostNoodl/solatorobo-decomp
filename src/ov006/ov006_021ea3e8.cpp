@@ -12,10 +12,10 @@ extern "C" {
 Ov006Racer *Ov006ActVt_021ec4f4_Ctor(Ov006Racer *self);
 void *func_0206ffa0(s32 id);
 void Actor_JoinGroup(Actor *self, u16 type, u32 id, void *res);
-void func_ov000_021984f4(ActorSub44 *a, int b, int c);
-void func_ov000_0219864c(ActorSub48 *a, int b, int c);
+void Obj021984c8_UpdatePos(ActorSub44 *a, int b, int c);
+void ActorSub48_UpdatePos(ActorSub48 *a, int b, int c);
 void *func_0203db40(PauseNode *a);
-void func_ov000_02190a80(Model0218fe1c *a, void *b);
+void Model0218fe1c_UpdateAnim(Model0218fe1c *a, void *b);
 
 BOOL Ov006Racer_IsFinished(Ov006Racer *self) {
     BOOL result = FALSE;
@@ -50,19 +50,19 @@ Ov006Racer *Ov006Racer_New(u32 id, u8 a, const ov006_Pos *pos, const u16 *rot) {
 
 void Ov006Racer_UpdateSub44(Ov006Racer *self) {
     if (self->unk_44 != NULL) {
-        func_ov000_021984f4(self->unk_44, 0, 0);
+        Obj021984c8_UpdatePos(self->unk_44, 0, 0);
     }
 }
 
 void Ov006ActVt_021ec4f4_UpdateHit(Ov006Racer *self) {
     if (self->hit != NULL) {
-        func_ov000_0219864c(self->hit, 0, 0);
+        ActorSub48_UpdatePos(self->hit, 0, 0);
     }
 }
 
 void Ov006Racer_Animate(Ov006Racer *self) {
     if (self->model != NULL) {
-        func_ov000_02190a80(self->model, func_0203db40(&self->pause));
+        Model0218fe1c_UpdateAnim(self->model, func_0203db40(&self->pause));
     }
 }
 

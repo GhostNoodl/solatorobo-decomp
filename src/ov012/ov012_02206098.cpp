@@ -13,7 +13,7 @@ void func_ov012_02206098(Ov012ActExVt_0220b1e8 *self) {
         self->velY = 0;
         self->friction = 0;
         self->gravity = 0;
-        p = func_ov000_0218d2e0(self);
+        p = Actor_GetTargetSub44(self);
         if (p != NULL) {
             s32 r;
             s32 dx;
@@ -44,7 +44,7 @@ void func_ov012_02206098(Ov012ActExVt_0220b1e8 *self) {
             FX_Atan2(r, self->unk_84.y - self->pos.y);
             self->rot_x = FX_Atan2(self->pos.y - self->unk_84.y, r);
             if (!(self->unk_d0 & 0x100000)) {
-                func_ov000_02190758(&self->mdl, &self->rot_x, 0);
+                Obj02190758_SetRot(&self->mdl, &self->rot_x, 0);
             }
             self->unk_d0 |= 0x400000;
         } else {
@@ -68,9 +68,9 @@ void func_ov012_02206098(Ov012ActExVt_0220b1e8 *self) {
             Actor_Move(self, 0);
         }
         Ov012ActExVt_0220b1e8_HitNearby(self);
-        func_ov000_021987b8(self->hit, 1, 0, 0);
+        Body_Update(self->hit, 1, 0, 0);
         if (self->hit->unk_50 & 0x60000000) {
-            func_ov000_02198360(self->fsm, 0x15, 0);
+            History_SetState(self->fsm, 0x15, 0);
         }
         break;
     }

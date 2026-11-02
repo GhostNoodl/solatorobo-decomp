@@ -18,16 +18,16 @@ typedef struct ov006_Obj021e835c {
 extern "C" {
 
 extern char data_ov006_021ec4a7[];
-BOOL func_ov000_02190cb0(void *a, const void *b, int c, int d);
-void func_ov000_021915a0(void *a);
-void func_ov000_021911c8(void *a, int b);
+BOOL Model0218fe1c_SetAnim(void *a, const void *b, int c, int d);
+void Model0218fe1c_SetLoop(void *a);
+void Model0218fe1c_SetAnimSpeed(void *a, int b);
 u16 func_01ffc128(u16 a, u16 b, s32 c, u32 d, u16 e);
 
 void func_ov006_021e835c(ov006_Obj021e835c *self) {
     if (self->unk40->unk0 == 0) {
-        func_ov000_02190cb0(self->unk38, data_ov006_021ec4a7, 0x1000, 0);
-        func_ov000_021915a0(self->unk38);
-        func_ov000_021911c8(self->unk38, 0x333);
+        Model0218fe1c_SetAnim(self->unk38, data_ov006_021ec4a7, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->unk38);
+        Model0218fe1c_SetAnimSpeed(self->unk38, 0x333);
         self->unk40->unk0++;
     }
     self->unk7C = func_01ffc128(0, self->unk7C, 0x400, 1, 0x8000);

@@ -12,8 +12,8 @@ typedef struct {
 extern "C" {
 extern Data021ccd50b data_ov000_021ccd50;
 extern MessageQueue021cb980 *data_ov000_021ccd30;
-Robo021ca458 *func_ov000_0219bf90(void);
-BOOL func_ov000_0216f674(MessageQueue *self, s32 id);
+Robo021ca458 *ActorMgr_FindPlayer(void);
+BOOL MessageQueue_GetById(MessageQueue *self, s32 id);
 BOOL func_ov000_021700c4(ListBuffer021cb940 *self);
 void func_ov000_0218a358(FieldCam *self, const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clamp, s16 a6, s16 a7, u8 a8);
 
@@ -22,7 +22,7 @@ static inline BOOL IsBusy(void) {
     if (c == NULL) {
         return FALSE;
     }
-    if (func_ov000_0216f674(c, 6)) {
+    if (MessageQueue_GetById(c, 6)) {
         return TRUE;
     }
     if (c->unk_11c == NULL) {
@@ -48,7 +48,7 @@ void func_ov000_02188ed0(SceneCmd *self) {
     }
     s->base.smooth = 1;
     if ((s32)self->event > 0) {
-        Robo021ca458 *p = func_ov000_0219bf90();
+        Robo021ca458 *p = ActorMgr_FindPlayer();
         if (p != NULL && p->unk_b28_0 == 0 && p->unk_b2e < 2) {
             p->unk_b2e = 2;
         }

@@ -3,7 +3,7 @@
 extern "C" {
 
 
-Ov002Obj *func_ov002_021e9380(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+Ov002Obj *Ov002Obj021f070c_New(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 
 typedef struct Rec021eb870 {
     s32 a;
@@ -33,7 +33,7 @@ void func_ov002_021eb870(Ov002StageFile *self) {
         void *q;
         u8 *a, *b, *c;
         MIi_CpuCopyFast(p, &rec, size);
-        o = func_ov002_021e9380(rec.a, rec.b, rec.c, rec.d, rec.e, rec.f);
+        o = Ov002Obj021f070c_New(rec.a, rec.b, rec.c, rec.d, rec.e, rec.f);
         p += size;
         a = (rec.flags & 1) ? p : NULL;
         if (rec.flags & 1) {
@@ -47,7 +47,7 @@ void func_ov002_021eb870(Ov002StageFile *self) {
         if (rec.flags & 4) {
             p += 0x18;
         }
-        q = func_ov002_021e92b0(rec.a, rec.b, rec.c, 0, 0x1000);
+        q = Ov002Obj021f075c_New(rec.a, rec.b, rec.c, 0, 0x1000);
         FIELD(q, 0x4c, u8 *) = a;
         FIELD(q, 0x50, u8 *) = b;
         FIELD(q, 0x54, u8 *) = c;

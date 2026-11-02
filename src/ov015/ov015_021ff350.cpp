@@ -6,14 +6,14 @@ extern u8 data_ov015_0221292c[];
 void func_ov015_022120fc(Ov015Obj292c *self);
 extern u8 data_ov015_022132e0[];
 void func_ov015_02211a18(void);
-void *func_ov000_0218fee4(void *p);
-void *func_ov000_0218ea20(void *p);
+void *Model0218fe1c_FreeAnims(void *p);
+void *ResSet_ReleaseAll(void *p);
 
-void func_ov015_021ff350(Ov015Obj30 *self) {
+void Ov015Obj30_Init(Ov015Obj30 *self) {
     Ov015Obj30_Clear(self);
 }
 
-void func_ov015_021ff380(Ov015Obj30 *self) {
+void Ov015Obj30_Free(Ov015Obj30 *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_10);
@@ -34,8 +34,8 @@ void *Ov015Obj292c_DtorDelete(Ov015Obj292c *self) {
 void *Ov015Obj290_DtorDelete(Ov015Obj290 *self) {
     SET_VT(self, data_ov015_022132e0);
     func_ov015_02211a18();
-    func_ov000_0218fee4(&self->model);
-    func_ov000_0218ea20(&self->res);
+    Model0218fe1c_FreeAnims(&self->model);
+    ResSet_ReleaseAll(&self->res);
     Heap_Free(self);
     return self;
 }

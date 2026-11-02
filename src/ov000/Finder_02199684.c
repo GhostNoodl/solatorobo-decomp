@@ -85,7 +85,7 @@ static inline s32 Dist2D(s64 sq) {
 
 u16 FX_Atan2(s32 x, s32 z);
 s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
-BOOL func_ov000_02199a34(Finder *self, Shape *s);
+BOOL Finder_TestDist(Finder *self, Shape *s);
 
 static inline BOOL Query_CheckHeight(Query *q, Shape *s) {
     BOOL ok = TRUE;
@@ -152,10 +152,10 @@ BOOL func_ov000_02199684(Finder *self, ActorF *actor) {
     if (!Finder_CheckAngle(self, &s)) {
         return FALSE;
     }
-    return func_ov000_02199a34(self, &s) ? TRUE : FALSE;
+    return Finder_TestDist(self, &s) ? TRUE : FALSE;
 }
 
-BOOL func_ov000_021997e8(Finder *self, Part *part) {
+BOOL Finder_TestPart(Finder *self, Part *part) {
     Shape s;
     Query *q = self->query;
 
@@ -204,10 +204,10 @@ BOOL func_ov000_021997e8(Finder *self, Part *part) {
     if (!Finder_CheckAngle(self, &s)) {
         return FALSE;
     }
-    return func_ov000_02199a34(self, &s) ? TRUE : FALSE;
+    return Finder_TestDist(self, &s) ? TRUE : FALSE;
 }
 
-BOOL func_ov000_02199a34(Finder *self, Shape *s) {
+BOOL Finder_TestDist(Finder *self, Shape *s) {
     BOOL ok = TRUE;
     Query *q = self->query;
     s32 lo = q->dist_min;

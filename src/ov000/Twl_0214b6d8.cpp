@@ -23,7 +23,7 @@ SIZE_ASSERT(Twl0214b6d8, 0x3c);
 
 extern "C" {
 
-Twl0214b6d8 *func_ov000_0214b6d8(Twl0214b6d8 *self) {
+Twl0214b6d8 *Twl0214b6d8_Init(Twl0214b6d8 *self) {
     self->unk_00 = 0;
     self->unk_01 = 0;
     self->unk_02 = 0;

@@ -14,7 +14,7 @@ extern void *Ov003Vt_021f7cd8_Ctor(void *p);
 extern void *Ov003Vt_021f7cd8_Dtor(void *p);
 extern void Ov010Obj02210154_ClearFields(Ov010Obj02210154 *self);
 extern void Ov010Obj02210154_Release(Ov010Obj02210154 *self);
-extern void func_02049678(SndMgr *a, s32 b, s32 c, s32 d);
+extern void SndMgr_RequestLoad_02049678(SndMgr *a, s32 b, s32 c, s32 d);
 extern BOOL SndMgr_IsLoadDone(SndMgr *a);
 
 void *Ov010ActVt_02210154_Ctor(Ov010Obj02210154 *self) {
@@ -56,11 +56,11 @@ void *Ov010ActVt_02210154_DtorDelete(Ov010Obj02210154 *self) {
 }
 
 BOOL Ov010Obj02210154_IsReady(Ov010Obj02210154 *self) {
-    BOOL r = func_ov000_0218cf5c(self);
+    BOOL r = Actor_IsReady(self);
     if (self->unk_f0 == 0) {
         self->unk_f0 = 1;
         if (((VObj *)self)->vfunc_a8(&self->sndBank)) {
-            func_02049678(data_02097e4c, 4, self->sndBank, -1);
+            SndMgr_RequestLoad_02049678(data_02097e4c, 4, self->sndBank, -1);
         }
         r = FALSE;
     } else if (SndMgr_IsLoadDone(data_02097e4c) == 0) {

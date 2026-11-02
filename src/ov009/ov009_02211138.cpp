@@ -9,8 +9,8 @@ extern void func_020627dc(s32 a);
 void Ov009ActVt_02217aac_State20(Ov009ActVt_02217aac *self) {
     VecFx32 d;
     if (self->fsm->st == 0) {
-        func_ov000_02190cb0(self->model, data_ov009_022179b4, 0x1000, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov009_022179b4, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->unk_f0 = self->pos;
         self->pos.y += 0xa000;
         self->fsm->st++;
@@ -21,7 +21,7 @@ void Ov009ActVt_02217aac_State20(Ov009ActVt_02217aac *self) {
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
     }
     d.x = self->unk_f0.x - self->pos.x;
     d.y = self->unk_f0.y - self->pos.y;

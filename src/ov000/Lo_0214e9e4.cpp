@@ -31,15 +31,15 @@ extern u8 data_ov000_021ca94c[];
 extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021caac8[];
 void *MsgRes_GetString(void *g, u32 id);
-BOOL func_0205aa30(void *p);
-void *func_02034d88(void *a, void *b);
+BOOL StageRes_Bind(void *p);
+void *ResList_FindType2(void *a, void *b);
 void func_02041c20(void *model, s32 a, void *b);
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void func_ov000_02157c90(UiList021cb4a8 *self, void *a);
+void UiList021cb4a8_SetLabel(UiList021cb4a8 *self, void *a);
 void func_ov000_021546ec(void *a, const char *b, const char *c, u16 d);
 void *Task_FindById(s32 kind);
-u32 func_0205975c(void *a, s32 b);
+u32 DataRes_GetCount(void *a, s32 b);
 u16 func_ov000_0214bcc4(u16 id, u16 index);
 s32 func_02061e7c(u16 a);
 void func_ov000_0214fcfc(void *self, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, const void *mtx);
@@ -61,7 +61,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     u16 id;
     g = data_02149ef8;
     if (!data_ov000_021ccd24.unk_08->vfunc_34()) {
-        func_0205aa30(data_ov000_021ccd24.unk_08);
+        StageRes_Bind(data_ov000_021ccd24.unk_08);
     }
     {
         u16 v = data_0214a424->unk_639;
@@ -74,14 +74,14 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     if (m != NULL) {
         name = data_ov000_021ca8d8[1];
         arc = data_ov000_021ca8d8[0];
-        func_02041218(&m->pltt);
-        func_02041440(m, name, 0);
+        PlttRes_Init_02041218(&m->pltt);
+        TexObj_Init(m, name, 0);
         STD_CopyString(m->name, arc);
     }
     self->unk_40 = m;
-    func_020417e0(self->unk_40, func_02034d88((void *)self->unk_3c->vfunc_10(), (u8 *)self->unk_40 + 0x4c));
+    TexObj_SetRes(self->unk_40, ResList_FindType2((void *)self->unk_3c->vfunc_10(), (u8 *)self->unk_40 + 0x4c));
     self->unk_40->flags |= 2;
-    func_02041d9c(self->unk_40, 0, 1);
+    TexObj_SelectImage(self->unk_40, 0, 1);
     self->unk_40->unk_158 = (void *)func_ov000_0214fcfc;
     func_02041c20(self->unk_40, 1, self);
     self->unk_40->flags |= 0x80000;
@@ -91,7 +91,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     p = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
-        func_0204c7d0(p);
+        TextWin_Init(p);
     }
     p->font = 8;
     p->str = (u32)s;
@@ -142,9 +142,9 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
         o->vfunc_28();
         *(void **)o = data_ov000_021ca94c;
         VOBJ_SET_VTABLE((u8 *)o + 0x90, data_0208ba70);
-        func_0204c7d0((u8 *)o + 0x90);
+        TextWin_Init((u8 *)o + 0x90);
         VOBJ_SET_VTABLE((u8 *)o + 0x148, data_0208ba70);
-        func_0204c7d0((u8 *)o + 0x148);
+        TextWin_Init((u8 *)o + 0x148);
         o->vfunc_28();
     }
     self->unk_60 = (Menu021ca94c *)o;
@@ -164,7 +164,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     self->unk_50 = (Lo021caac8 *)o;
     ((VObj *)self->unk_50)->vfunc_10(MsgRes_GetString(g, 0x10f));
     ((VObj *)self->unk_50)->vfunc_14(MsgRes_GetString(g, 0x110));
-    func_ov000_02157c90(self->unk_50, MsgRes_GetString(g, 0x111));
+    UiList021cb4a8_SetLabel(self->unk_50, MsgRes_GetString(g, 0x111));
     func_ov000_021546ec(self->unk_50, data_0208cca0, data_0208cb74, 0xb);
     self->unk_50->owner = self;
     self->unk_50->rows = 4;
@@ -185,7 +185,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     data_02fe1534.unk_7a = id;
     data_ov000_021ccd24.unk_08->vfunc_38(1);
     data_02fe1534.unk_7a = 0;
-    n = func_0205975c(data_02fe152c, 1);
+    n = DataRes_GetCount(data_02fe152c, 1);
     for (i = 0; i < n; i++) {
         k = func_ov000_0214bcc4(id, i);
         if (k != 0xffff) {
@@ -204,12 +204,12 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     }
 }
 
-void func_ov000_0214e9e4(Lo021caa44 *self) {
+void Lo021caa44_Start(Lo021caa44 *self) {
     self->unk_04 &= ~2;
     if (self->vfunc_28()) {
         return;
     }
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
     Setup0214e9e4(self);
 }
 

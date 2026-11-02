@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021d8e48(Obj021efed4 *self) {
+void Obj021efed4_Init(Obj021efed4 *self) {
     self->unk_78 = NULL;
     self->unk_7c = NULL;
     self->unk_80 = NULL;
@@ -20,8 +20,8 @@ void func_ov002_021d8e48(Obj021efed4 *self) {
     self->unk_b0 = NULL;
 }
 
-void func_ov002_021d8e90(Obj021efed4 *self) {
-    func_0203f0b4(*FIELD(self, 0x78, void **));
+void Obj021efed4_Release(Obj021efed4 *self) {
+    Vram_FreeRes(*FIELD(self, 0x78, void **));
     {
         void *saved;
         HEAP_PUSH(saved);
@@ -42,8 +42,8 @@ void func_ov002_021d8e90(Obj021efed4 *self) {
             void *p = self->unk_90;
             if (p != NULL) {
                 if (p != NULL) {
-                    func_02041558((Model *)p);
-                    func_02041278((PlttRes *)((u8 *)p + 0x88));
+                    TexObj_Release((Model *)p);
+                    PlttRes_Release((PlttRes *)((u8 *)p + 0x88));
                     Heap_Free(p);
                 }
                 self->unk_90 = NULL;
@@ -55,7 +55,7 @@ void func_ov002_021d8e90(Obj021efed4 *self) {
 
 void func_ov002_021d8f4c(Obj021efed4 *self) {
     func_ov002_021d7c04_inline(self);
-    self->unk_a8 = func_0206ede8(self->unk_48)[2];
+    self->unk_a8 = Param_GetEntry(self->unk_48)[2];
 }
 
 }

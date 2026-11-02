@@ -18,22 +18,22 @@ u16 func_02041040(int count);
 u16 func_02041060(int count);
 
 
-extern u32 func_0203e458(int type, u32 src, u32 dst, u32 size, u32 chunk);
+extern u32 Vram_QueueTransfer(int type, u32 src, u32 dst, u32 size, u32 chunk);
 extern void NNS_G2dLoadPaletteEx(int *fmt, u16 *count, u32 addr, int idx, PlttSub *sub);
 
 
-extern void func_0203e58c(u32 id);
+extern void Vram_CancelTransfer(u32 id);
 extern void GfxSys_FreeSlots(GfxSys *sys, int shift, int count, int idx);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(u32 key);
 
-void func_02041218(PlttRes *res) {
+void PlttRes_Init_02041218(PlttRes *res) {
     PlttRes_Init(res);
 }
 
-void func_02041278(PlttRes *res) {
+void PlttRes_Release(PlttRes *res) {
     u16 i;
     s8 *map;
-    func_0203e58c(res->transfer);
+    Vram_CancelTransfer(res->transfer);
     map = res->maps[1];
     res->transfer = 0;
     if (map != NULL) {

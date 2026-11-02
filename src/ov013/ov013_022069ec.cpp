@@ -14,8 +14,8 @@ void Ov013ActVt_0220bdd8_State20(Ov013ActVt_0220bdd8 *self) {
     switch (w->st) {
     case 0: {
         ActorSub44 *n;
-        func_ov000_02190cb0(self->model, data_ov013_0220be7c, 0x2ab, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220be7c, 0x2ab, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->speed = 0;
         self->friction = 0;
         self->unk_f0 = self->pos;
@@ -44,8 +44,8 @@ void Ov013ActVt_0220bdd8_State20(Ov013ActVt_0220bdd8 *self) {
         if (w->timer <= 80) {
             return;
         }
-        func_02049a48(data_02097e4c, 0x6a, -1, -1, -1);
-        func_02049a48(data_02097e4c, 0x53, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x6a, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x53, -1, -1, -1);
         func_ov000_0218996c(0x14, 0xf);
         self->fsm->st = 4;
         self->fsm->timer = 0;
@@ -77,7 +77,7 @@ void Ov013ActVt_0220bdd8_State20(Ov013ActVt_0220bdd8 *self) {
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         break;
     }
 }

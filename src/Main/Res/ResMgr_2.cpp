@@ -49,7 +49,7 @@ void func_020381cc(ResMgr *mgr, ResNode *node) {
     }
 }
 
-void *func_02038284(ResMgr *mgr, const char *path, u32 size, void *buf) {
+void *ResMgr_ReadFile(ResMgr *mgr, const char *path, u32 size, void *buf) {
     void *dst = NULL;
     BOOL ok = FS_IsFile(&mgr->file);
     if (!ok) {

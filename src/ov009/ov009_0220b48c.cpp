@@ -15,8 +15,8 @@ void Ov009ActVt_022176ec_Start(Ov009ActVt_022176ec *self) {
     Ov003Actor_Defeat(self, 1, 1, 0);
 }
 
-extern void func_0203f364(ActorSub48 *p);
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
 void Ov009ActVt_022176ec_Update(Ov009ActVt_022176ec *self) {
     ActorSub40 *st = self->fsm;
@@ -26,18 +26,18 @@ void Ov009ActVt_022176ec_Update(Ov009ActVt_022176ec *self) {
     if (st->current != 0x15 && (self->hit->unk_50 & 0x20000000) && !(self->hit->unk_50 & 0x400) &&
         self->targetObj->target == 0xffff) {
         st->flags |= 0x200000;
-        func_02049f44(data_02097e4c, 0x6c, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x6c, &self->pos, 0);
         return;
     }
     s48 = self->hit;
     s48->unk_9a_0 = 0;
     s48->unk_9a_3 = 0;
-    func_0203f364(s48);
+    HitSphere_Unlink_0203f364(s48);
     if (!Ov009_GameIdle()) {
         return;
     }
     self->target = 0xffff;
-    t = func_ov000_0219bf90();
+    t = ActorMgr_FindPlayer();
     if (t != NULL) {
         self->target = t->id;
     }

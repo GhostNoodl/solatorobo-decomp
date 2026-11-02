@@ -18,7 +18,7 @@ typedef struct ov006_Unk021dd0e4 {
 
 extern "C" {
 
-BOOL func_02054f10(Model *a, u32 b);
+BOOL Model_IsReady(Model *a, u32 b);
 
 static inline MtxFx22 *ov006_Model_Mtx22(Model *m) {
     return m->mtx;
@@ -29,10 +29,10 @@ void ov006_Unk021dd0e4_Update(ov006_Unk021dd0e4 *self) {
         if (self->unkC == NULL) {
             return;
         }
-        if (!func_02054f10(self->unkC, 0xffff) || self->unk10 == NULL) {
+        if (!Model_IsReady(self->unkC, 0xffff) || self->unk10 == NULL) {
             return;
         }
-        if (func_02054f10(self->unk10, 0xffff)) {
+        if (Model_IsReady(self->unk10, 0xffff)) {
             self->state = 4;
         }
         return;

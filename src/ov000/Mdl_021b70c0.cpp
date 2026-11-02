@@ -9,10 +9,10 @@ extern "C" {
 void *NNS_G3dGetMdlSet(void *file);
 void *NNS_G3dGetTex(void *file);
 BOOL NNS_G3dBindMdlSet(void *mdlset, void *tex);
-void *func_02035d5c(void *a);
-void *func_02039674(void *a);
-void **func_02034f5c(void *a, void *b);
-void **func_02034ec0(void *a, void *b);
+void *ResMgr_GetArcList(void *a);
+void *Path_SkipDir(void *a);
+void **ResList_FindType5(void *a, void *b);
+void **ResList_FindType4(void *a, void *b);
 void NNS_G3dRenderObjInit(void *rob, void *mdl);
 void *NNS_G3dGetAnmByIdx(void *file, s32 idx);
 u32 NNS_G3dAnmObjCalcSizeRequired(void *anm, void *mdl);
@@ -71,14 +71,14 @@ void func_ov000_021b70c0(FieldPropModel *self, FieldPropLoader *res, u8 *list, u
     }
     if (list != NULL && count != 0) {
         for (i = 0; i < count; i++, list += 0x18) {
-            void *f = func_02035d5c(list);
+            void *f = ResMgr_GetArcList(list);
             if (f != NULL) {
-                void *n = func_02039674(list);
-                void **p = func_02034f5c(f, n);
+                void *n = Path_SkipDir(list);
+                void **p = ResList_FindType5(f, n);
                 if (p != NULL && *p != NULL) {
                     NNS_G3dBindMdlSet(set, NNS_G3dGetTex(*p));
                 } else {
-                    p = func_02034ec0(f, n);
+                    p = ResList_FindType4(f, n);
                     if (p == NULL || *p == NULL) {
                         continue;
                     }

@@ -10,8 +10,8 @@ typedef struct {
 extern "C" {
 
 void Heap_Free(void *p);
-void *func_ov000_0218fee4(void *p);
-void *func_ov000_0218ea20(void *p);
+void *Model0218fe1c_FreeAnims(void *p);
+void *ResSet_ReleaseAll(void *p);
 
 void func_ov000_021c216c(Obj021c216c *self) {
     void *saved;
@@ -22,7 +22,7 @@ void func_ov000_021c216c(Obj021c216c *self) {
     p = self->unk_0c;
     if (p != NULL) {
         if (p != NULL) {
-            func_ov000_0218fee4(p);
+            Model0218fe1c_FreeAnims(p);
             Heap_Free(p);
         }
         self->unk_0c = NULL;
@@ -34,7 +34,7 @@ void func_ov000_021c216c(Obj021c216c *self) {
     p = self->unk_08;
     if (p != NULL) {
         if (p != NULL) {
-            func_ov000_0218ea20(p);
+            ResSet_ReleaseAll(p);
             Heap_Free(p);
         }
         self->unk_08 = NULL;

@@ -33,13 +33,13 @@ extern G3dGlb14f4 NNS_G3dGlb;
 extern char data_ov000_021cc929[];
 void func_ov000_021c14dc(void *self);
 void NNS_G3dRenderObjSetInitFunc(void *obj, void *fn);
-void *func_ov000_0218ea20(void *p);
-void *func_ov000_0218fee4(void *p);
-void *func_ov000_0218fe1c(void *p);
-BOOL func_ov000_0218ffdc(void *m, void *res, u8 mode, s32 e);
-BOOL func_ov000_02190cb0(void *m, const char *name, s32 blend, s32 force);
-void func_ov000_021915a0(void *m);
-void func_ov000_02190a80(void *m, s32 a);
+void *ResSet_ReleaseAll(void *p);
+void *Model0218fe1c_FreeAnims(void *p);
+void *Model0218fe1c_Init(void *p);
+BOOL Model0218fe1c_SetRes(void *m, void *res, u8 mode, s32 e);
+BOOL Model0218fe1c_SetAnim(void *m, const char *name, s32 blend, s32 force);
+void Model0218fe1c_SetLoop(void *m);
+void Model0218fe1c_UpdateAnim(void *m, s32 a);
 
 static inline s32 Mul_021c14f4(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
@@ -69,7 +69,7 @@ void func_ov000_021c14f4(ActorMarker3D *self) {
         if (self->unk_8c != NULL) {
             void *p = self->unk_8c;
             if (p != NULL) {
-                func_ov000_0218ea20(p);
+                ResSet_ReleaseAll(p);
                 Heap_Free(p);
             }
             self->unk_8c = NULL;
@@ -79,7 +79,7 @@ void func_ov000_021c14f4(ActorMarker3D *self) {
         if (self->unk_90 != NULL) {
             void *p = self->unk_90;
             if (p != NULL) {
-                func_ov000_0218fee4(p);
+                Model0218fe1c_FreeAnims(p);
                 Heap_Free(p);
             }
             self->unk_90 = NULL;
@@ -95,16 +95,16 @@ void func_ov000_021c14f4(ActorMarker3D *self) {
         self->unk_8c = res;
         m = Heap_Alloc(0xe8);
         if (m != NULL) {
-            m = func_ov000_0218fe1c(m);
+            m = Model0218fe1c_Init(m);
         }
         self->unk_90 = (Model0218fe1c *)m;
-        func_ov000_0218ffdc(m, self->unk_8c, 0, 1);
-        func_ov000_02190cb0(self->unk_90, data_ov000_021cc929, 0, 1);
+        Model0218fe1c_SetRes(m, self->unk_8c, 0, 1);
+        Model0218fe1c_SetAnim(self->unk_90, data_ov000_021cc929, 0, 1);
         self->unk_90->actor_id = 0;
         model = self->unk_90;
         NNS_G3dRenderObjSetInitFunc(model->renderObj, (void *)func_ov000_021c14dc);
         model->clearInit = 0;
-        func_ov000_021915a0(self->unk_90);
+        Model0218fe1c_SetLoop(self->unk_90);
         self->work.state = 4;
     }
     case 4:
@@ -125,13 +125,13 @@ void func_ov000_021c14f4(ActorMarker3D *self) {
         s32 b;
         s32 q;
         Cam_021c14f4 *g;
-        if (func_ov000_021bd374(self, 0x6000)) {
+        if (ActorMarker_UpdateFade(self, 0x6000)) {
             return;
         }
         v.x = self->unk_50.x;
         v.y = self->unk_50.y;
         v.z = self->unk_50.z;
-        func_ov000_021bd474(self, &v);
+        ActorMarker_UpdateScreenPos(self, &v);
         proj = &NNS_G3dGlb.projMtx;
         MTX_MultVec43(&v, &NNS_G3dGlb.cameraMtx, &out);
         out.z += 0x3000;
@@ -139,7 +139,7 @@ void func_ov000_021c14f4(ActorMarker3D *self) {
         b = LO_FX_MUL(LFLD(s32, proj, 0x28), out.z) + proj->_32;
         q = FX_Div(b + a, a << 1);
         self->work.z = CalcSub_021c14f4(&data_02097d48->cam.sub, Mul_021c14f4(q, 0x2000));
-        func_ov000_02190a80(self->unk_90, 0x1000);
+        Model0218fe1c_UpdateAnim(self->unk_90, 0x1000);
         break;
     }
     }

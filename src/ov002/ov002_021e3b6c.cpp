@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021e3b6c(s32 *out, s32 *v, void *mp) {
+void Ov002_ProjectToScreen(s32 *out, s32 *v, void *mp) {
     s32 *m = (s32 *)mp;
     s32 x = FX_MUL(v[0], m[0]) + FX_MUL(v[1], m[4]) + FX_MUL(v[2], m[8]) + m[12];
     s32 y = FX_MUL(v[0], m[1]) + FX_MUL(v[1], m[5]) + FX_MUL(v[2], m[9]) + m[13];

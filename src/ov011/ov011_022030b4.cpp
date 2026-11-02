@@ -6,13 +6,13 @@ extern void *data_02097e4c;
 extern const char data_ov011_02207bd8[];
 u16 ActorGroup_CountKind(void *g, u16 id);
 void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
-void func_ov000_021911c8(Model0218fe1c *a, s16 b);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void Model0218fe1c_SetAnimSpeed(Model0218fe1c *a, s16 b);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);
-void func_ov000_0218d7e8(Actor *self, u8 a);
-void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
+void Actor_DropStateMsgs(Actor *self, u8 a);
+void Body_Update(void *a, s32 b, s32 c, s32 d);
 
 void Ov011ActVt_02207b34_Update(Ov003Actor *self) {
     BOOL ok;
@@ -29,7 +29,7 @@ void Ov011ActVt_02207b34_Update(Ov003Actor *self) {
     if (ok) {
         Ov003Actor *pl;
         self->target = 0xffff;
-        pl = (Ov003Actor *)func_ov000_0219bf90();
+        pl = (Ov003Actor *)ActorMgr_FindPlayer();
         if (pl == NULL) {
             return;
         }
@@ -91,8 +91,8 @@ void Ov011ActVt_02207b34_State20(Ov003Actor *self) {
     ActorSub40 *s = self->fsm;
     switch (s->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov011_02207bd8, 0x1000, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov011_02207bd8, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->model->visible = 0;
         self->fsm->st++;
         break;
@@ -101,8 +101,8 @@ void Ov011ActVt_02207b34_State20(Ov003Actor *self) {
         if (++s->timer <= 120) {
             return;
         }
-        func_02049a48(data_02097e4c, 50, 100, -1, -1);
-        p = func_02065f88(50 + 0x358, &self->pos);
+        SndMgr_PlayVolume(data_02097e4c, 50, 100, -1, -1);
+        p = Effect_SpawnId(50 + 0x358, &self->pos);
         p->SetScaleXYZ(0x1666, 0x1666, 0x1666);
         p->AddPosXYZ(0, 0x1000, 0);
         self->model->visible = 1;
@@ -117,7 +117,7 @@ void Ov011ActVt_02207b34_State20(Ov003Actor *self) {
             func_020627dc(4);
             data_ov000_021ccd54->stageFlags = 1;
             self->model->alpha = 0x1f;
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         } else if (self->fsm->timer > 30) {
             u8 v = self->model->alpha + 1;
             if (v > 0x1f) {
@@ -154,7 +154,7 @@ void Ov011ActVt_02207b34_StateDie(Ov003Actor *self) {
         EffectObj *p;
         self->unk_3c->unk_14 = self->radius * 2;
         self->unk_3c->unk_19 = 0xff;
-        p = func_02065f88(0x69, &self->pos);
+        p = Effect_SpawnId(0x69, &self->pos);
         if (p != NULL) {
             p->SetScaleAll(0x2400);
             p->AddPosXYZ(0, 0x1000, 0);
@@ -165,7 +165,7 @@ void Ov011ActVt_02207b34_StateDie(Ov003Actor *self) {
 
 void Ov011ActVt_02207a88_Start(Ov003Actor *self) {
     Ov003Actor_Start(self);
-    func_ov000_0218d7e8(self, 0xb);
+    Actor_DropStateMsgs(self, 0xb);
 }
 
 void Ov011ActVt_02207a88_State20(Ov003Actor *self) {
@@ -177,18 +177,18 @@ void Ov011ActVt_02207a88_State20(Ov003Actor *self) {
         self->gravity = 5;
         self->friction = 0x1400 - 0x59a;
         self->moveYaw = self->rot_y;
-        func_ov000_02190cb0(self->model, data_ov011_02207bd8, 0x1000, 0);
-        func_ov000_021911c8(self->model, 0x2000);
-        func_02049a48(data_02097e4c, 0x29, -1, -1, -1);
+        Model0218fe1c_SetAnim(self->model, data_ov011_02207bd8, 0x1000, 0);
+        Model0218fe1c_SetAnimSpeed(self->model, 0x2000);
+        SndMgr_PlayVolume(data_02097e4c, 0x29, -1, -1, -1);
         self->fsm->st++;
         break;
     case 1:
         if (++s->timer > 60) {
             self->gravity = 0x29;
-            func_ov000_02198360(self->fsm, 4, 0);
+            History_SetState(self->fsm, 4, 0);
         }
         Actor_Move(self, 0);
-        func_ov000_021987b8(self->hit, 0, 0, 0);
+        Body_Update(self->hit, 0, 0, 0);
         break;
     }
 }
@@ -223,7 +223,7 @@ void Ov011Act7cf8_Start(Ov011Act7cf8 *self) {
     if (self->hit != NULL) {
         void *p = self->hit;
         if (p != NULL) {
-            func_0203f2b8(p);
+            HitSphere_Unlink_0203f2b8(p);
             Heap_Free(p);
         }
         self->hit = NULL;
@@ -248,7 +248,7 @@ void Ov011Act7cf8_SelectState(Ov003Actor *self) {
     if ((f & 0x200000) == 0) {
         return;
     }
-    func_ov000_02198360(s, 0x15, 0);
+    History_SetState(s, 0x15, 0);
 }
 
 }

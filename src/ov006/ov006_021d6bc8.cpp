@@ -33,7 +33,7 @@ void ov006_Unk021e000c_Update(void *p);
 void ov006_Unk021e1af0_Update(void *p);
 void ov006_MarkerSet_Update(void *p);
 void ov006_Unk021e2878_Update(void *p);
-void func_ov000_021b5110(void *p);
+void FieldMgr_Update(void *p);
 void func_ov000_0218be54(void *p);
 void ActorMgr_Update(void *p);
 int ov006_Race_Update(ov006_Scene021d6bc8 *self);
@@ -73,7 +73,7 @@ int Ov006Vt_021ebfc0_Update(ov006_Scene021d6bc8 *self) {
             }
         }
         if (data_ov000_021ccd6c != NULL) {
-            func_ov000_021b5110(data_ov000_021ccd6c);
+            FieldMgr_Update(data_ov000_021ccd6c);
         }
         if (data_ov000_021ccd64 != NULL) {
             func_ov000_0218be54(data_ov000_021ccd64);
@@ -81,7 +81,7 @@ int Ov006Vt_021ebfc0_Update(ov006_Scene021d6bc8 *self) {
         if (data_ov000_021ccd68 != NULL) {
             ActorMgr_Update(data_ov000_021ccd68);
         }
-        func_02065ac0(data_0214a420);
+        EffectMgr_Update(data_0214a420);
     }
     r = ov006_Race_Update(self);
     if (state == 0 && data_ov006_021ec888->state != 9) {

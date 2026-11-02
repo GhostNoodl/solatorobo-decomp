@@ -4,7 +4,7 @@
 
 extern "C" {
 
-// func_ov000_0215f548 inlined, then the label itself.
+// UiLabel_Release inlined, then the label itself.
 static inline void Free02157df0(UiLabel *p) {
     LO_FREE_V(p, 0x24); // text
     LO_FREE_M(p, 0x28); // model

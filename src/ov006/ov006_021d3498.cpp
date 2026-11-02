@@ -35,7 +35,7 @@ void VEC_Normalize(const ov006_Vec32 *src, ov006_Vec32 *dst);
 const char *func_0207011c(u16 id);
 const char *func_020701d4(u16 id);
 s16 *func_020706a0(u16 id);
-void func_ov000_02162b40(ov006_Chr021d3498 *chr, const char *a, const char *b, const char *c, const char *d,
+void ModelViewer_SetModel(ov006_Chr021d3498 *chr, const char *a, const char *b, const char *c, const char *d,
                          const char *e, int f, int g);
 
 static inline void ov006_Chr_SetVec(ov006_Vec32 *dst, const ov006_Vec32 *src) {
@@ -105,7 +105,7 @@ void func_ov006_021d3498(ov006_Task021d3498 *self, u16 id, BOOL flag) {
     }
     {
         s16 g = *func_020706a0(id);
-        func_ov000_02162b40(self->unk58, a, b, c, d, "nut00", 0, g);
+        ModelViewer_SetModel(self->unk58, a, b, c, d, "nut00", 0, g);
     }
 }
 
@@ -146,31 +146,31 @@ extern void *data_ov006_021ebdc0;
 
 ov006_Info021daaa8 *ov006_GetCourseInfo(u16 id);
 const void *func_0206ec8c(u16 id);
-const void *func_0206ec48(u16 id);
+const void *Param_Get(u16 id);
 void ov006_Label_Set_021dbfb8(ov006_Label *a, const char *b, int c, int d);
 void ov006_Unk021e1ddc_SetLabel(ov006_Obj13C *a, const char *b, int c, int d);
 void ov006_Unk021e1e6c_PlayText(ov006_Obj13C *a, const void *b);
-ActorRes *func_ov000_0218ea20(ActorRes *self);
-Camera *func_0204b370(Camera *cam);
+ActorRes *ResSet_ReleaseAll(ActorRes *self);
+Camera *Camera_Ctor(Camera *cam);
 void func_0204b420(Camera *cam);
-Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *self);
-ActorRes *func_ov000_0218e9c4(ActorRes *self);
-void func_02035acc(const char *a, const char *b, int c);
+Model0218fe1c *Model0218fe1c_FreeAnims(Model0218fe1c *self);
+ActorRes *ResSet_Init(ActorRes *self);
+void ResMgr_ReleaseArchive(const char *a, const char *b, int c);
 const char *func_0207011c(u16 id);
 const char *func_020701d4(u16 id);
-int func_ov000_0218f110(ActorRes *self);
+int ResSet_UpdateLoad(ActorRes *self);
 
 static inline void ov006_TaskD37_Select(ov006_TaskD37 *self, u16 id) {
     ov006_Info021daaa8 *info;
     self->unk4A = id;
     info = ov006_GetCourseInfo(id);
     if (self->param != 2) {
-        func_ov000_0215bb14(self->unk54, func_0206ec8c(id));
+        Obj0215bb14_SetText(self->unk54, func_0206ec8c(id));
         self->unk54->vfunc_70();
     }
     ov006_Label_Set_021dbfb8(self->unk58, "menu/skyrace_menu", info->unk0, 0);
     ov006_Unk021e1ddc_SetLabel(self->unk13C, "menu/skyrace_map", info->unk4, 0);
-    ov006_Unk021e1e6c_PlayText(self->unk13C, func_0206ec48(id));
+    ov006_Unk021e1e6c_PlayText(self->unk13C, Param_Get(id));
 }
 
 BOOL func_ov006_021d37d0(UiList *window, UiListItem *node) {
@@ -187,7 +187,7 @@ BOOL func_ov006_021d37d0(UiList *window, UiListItem *node) {
 ov006_TaskD37 *func_ov006_021d3874(ov006_TaskD37 *self) {
     OV006_TASKBASE_CTOR(self);
     *(void **)self = &data_ov006_021ebdc0;
-    func_0204b370(&self->cam);
+    Camera_Ctor(&self->cam);
     self->step = 0;
     self->unk44 = 0;
     self->unk46 = 0;
@@ -230,18 +230,18 @@ static inline void ov006_TaskD37_Dtor(ov006_TaskD37 *self) {
     OV006_DELETE_OBJECT(self->unk54);
     OV006_DELETE_OBJECT(self->unk58);
     OV006_DELETE_OBJECT(self->unk5C);
-    OV006_DELETE_WITH(ActorRes, self->unk60, func_ov000_0218ea20);
-    OV006_DELETE_WITH(Model0218fe1c, self->unk64, func_ov000_0218fee4);
-    OV006_DELETE_WITH(ActorRes, self->unk68, func_ov000_0218ea20);
-    OV006_DELETE_WITH(Model0218fe1c, self->unk6C, func_ov000_0218fee4);
-    OV006_DELETE_WITH(ActorRes, self->unk70, func_ov000_0218ea20);
+    OV006_DELETE_WITH(ActorRes, self->unk60, ResSet_ReleaseAll);
+    OV006_DELETE_WITH(Model0218fe1c, self->unk64, Model0218fe1c_FreeAnims);
+    OV006_DELETE_WITH(ActorRes, self->unk68, ResSet_ReleaseAll);
+    OV006_DELETE_WITH(Model0218fe1c, self->unk6C, Model0218fe1c_FreeAnims);
+    OV006_DELETE_WITH(ActorRes, self->unk70, ResSet_ReleaseAll);
     if (self->anm != NULL) {
         Heap_FreeHi(self->anm);
         self->anm = NULL;
     }
     OV006_DELETE_OBJECT(self->unk138);
     OV006_DELETE_OBJECT(self->unk13C);
-    func_02035acc("ac/c1dum1", "c1dum1", 6);
+    ResMgr_ReleaseArchive("ac/c1dum1", "c1dum1", 6);
     func_0204b420(&self->cam);
     OV006_TASKBASE_DTOR(self);
 }
@@ -268,14 +268,14 @@ namespace m_021d3f04 {
 extern "C" {
 
 
-ActorRes *func_ov000_0218e9c4(ActorRes *self);
+ActorRes *ResSet_Init(ActorRes *self);
 const char *func_0207011c(u16 id);
 const char *func_020701d4(u16 id);
 
 static inline ActorRes *ov006_NewModel60(void) {
     ActorRes *p = (ActorRes *)Heap_Alloc(sizeof(ActorRes));
     if (p != NULL) {
-        p = func_ov000_0218e9c4(p);
+        p = ResSet_Init(p);
     }
     return p;
 }
@@ -336,30 +336,30 @@ extern void *data_ov006_021ebdc0;
 
 ov006_Info021daaa8 *ov006_GetCourseInfo(u16 id);
 const void *func_0206ec8c(u16 id);
-const void *func_0206ec48(u16 id);
+const void *Param_Get(u16 id);
 void ov006_Label_Set_021dbfb8(ov006_Label *a, const char *b, int c, int d);
 void ov006_Unk021e1ddc_SetLabel(ov006_Obj13C *a, const char *b, int c, int d);
 void ov006_Unk021e1e6c_PlayText(ov006_Obj13C *a, const void *b);
-ActorRes *func_ov000_0218ea20(ActorRes *self);
-Camera *func_0204b370(Camera *cam);
+ActorRes *ResSet_ReleaseAll(ActorRes *self);
+Camera *Camera_Ctor(Camera *cam);
 void func_0204b420(Camera *cam);
-Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *self);
-ActorRes *func_ov000_0218e9c4(ActorRes *self);
-void func_02035acc(const char *a, const char *b, int c);
+Model0218fe1c *Model0218fe1c_FreeAnims(Model0218fe1c *self);
+ActorRes *ResSet_Init(ActorRes *self);
+void ResMgr_ReleaseArchive(const char *a, const char *b, int c);
 const char *func_0207011c(u16 id);
 const char *func_020701d4(u16 id);
-int func_ov000_0218f110(ActorRes *self);
+int ResSet_UpdateLoad(ActorRes *self);
 
 BOOL ov006_TaskD37_IsResLoaded(ov006_TaskD37 *self) {
     BOOL r = TRUE;
     if (self->unk60->unk_00 >= 0) {
-        r = (r & func_ov000_0218f110(self->unk60)) ? TRUE : FALSE;
+        r = (r & ResSet_UpdateLoad(self->unk60)) ? TRUE : FALSE;
     }
     if (self->unk68->unk_00 >= 0) {
-        r = (r & func_ov000_0218f110(self->unk68)) ? TRUE : FALSE;
+        r = (r & ResSet_UpdateLoad(self->unk68)) ? TRUE : FALSE;
     }
     if (self->unk70->unk_00 >= 0) {
-        r = (r & func_ov000_0218f110(self->unk70)) ? TRUE : FALSE;
+        r = (r & ResSet_UpdateLoad(self->unk70)) ? TRUE : FALSE;
     }
     return r;
 }
@@ -399,12 +399,12 @@ UiListItem *ListOwner_GetNth(UiList *self, int n);
 BOOL func_ov006_021d37d0(UiList *window, UiListItem *node);
 BOOL ov006_ListCb_StoreId(UiList *window, UiListItem *node);
 ov006_Label *Ov006Vt_021ec2fc_Ctor(void *p);
-Model0218fe1c *func_ov000_0218fe1c(void *p);
-BOOL func_ov000_0218ffdc(Model0218fe1c *a, ActorRes *b, int c, int d);
-BOOL func_ov000_02190cb0(void *a, const void *b, int c, int d);
-void func_ov000_021915a0(void *a);
-AnimCtrl *func_ov000_02190a30(Model0218fe1c *a, int b);
-void func_ov000_021911c8(void *a, int b);
+Model0218fe1c *Model0218fe1c_Init(void *p);
+BOOL Model0218fe1c_SetRes(Model0218fe1c *a, ActorRes *b, int c, int d);
+BOOL Model0218fe1c_SetAnim(void *a, const void *b, int c, int d);
+void Model0218fe1c_SetLoop(void *a);
+AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *a, int b);
+void Model0218fe1c_SetAnimSpeed(void *a, int b);
 ov006_Unk020706a0 *func_020706a0(u16 id);
 void ov006_TaskD37_PlayAnim(ov006_TaskD37 *self, const char *name, s16 speed, u8 loop);
 ov006_Caption *ov006_Caption_Ctor(ov006_Caption *self);
@@ -414,17 +414,17 @@ ov006_Obj13C *Ov006Vt_021ec1fc_Ctor(ov006_Obj13C *self);
 void ov006_Unk021e16b0_Load(ov006_Obj13C *p);
 ov006_Info021daaa8 *ov006_GetCourseInfo(u16 id);
 const void *func_0206ec8c(u16 id);
-const void *func_0206ec48(u16 id);
+const void *Param_Get(u16 id);
 void ov006_Label_Set_021dbfb8(ov006_Label *a, const char *b, int c, int d);
 void ov006_Unk021e1ddc_SetLabel(ov006_Obj13C *a, const char *b, int c, int d);
 void ov006_Unk021e1e6c_PlayText(ov006_Obj13C *a, const void *b);
 void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self);
-void func_ov000_02173648(Task *self);
+void TaskList_Insert(Task *self);
 
 static inline Model0218fe1c *ov006_NewModel64(void) {
     void *p = Heap_Alloc(0xe8);
     if (p != NULL) {
-        p = func_ov000_0218fe1c(p);
+        p = Model0218fe1c_Init(p);
     }
     return (Model0218fe1c *)p;
 }
@@ -455,12 +455,12 @@ static inline void ov006_TaskD37_Select(ov006_TaskD37 *self, u16 id) {
     self->unk4A = id;
     info = ov006_GetCourseInfo(id);
     if (self->param != 2) {
-        func_ov000_0215bb14(self->unk54, func_0206ec8c(id));
+        Obj0215bb14_SetText(self->unk54, func_0206ec8c(id));
         self->unk54->vfunc_70();
     }
     ov006_Label_Set_021dbfb8(self->unk58, "menu/skyrace_menu", info->unk0, 0);
     ov006_Unk021e1ddc_SetLabel(self->unk13C, "menu/skyrace_map", info->unk4, 0);
-    ov006_Unk021e1e6c_PlayText(self->unk13C, func_0206ec48(id));
+    ov006_Unk021e1e6c_PlayText(self->unk13C, Param_Get(id));
 }
 
 static inline void ov006_SetCam(ov006_TaskD37 *self, const VecFx32 *at, const VecFx32 *up, const Rot16 *rot, int dist) {
@@ -509,7 +509,7 @@ void ov006_TaskD37_Setup(ov006_TaskD37 *self) {
     func_ov000_021548cc(self->unk50, data_ov006_021eb6fe[data_ov006_021ec884->unk5]);
     if (self->unk4A != none && self->param == 0) {
         UiList *w = self->unk50;
-        w->vfunc_a8(func_ov000_02154b58(w, self->unk4A));
+        w->vfunc_a8(UiList_GetItemById(w, self->unk4A));
     } else {
         UiList *w = self->unk50;
         w->vfunc_a8(ListOwner_GetNth(w, 0));
@@ -525,7 +525,7 @@ void ov006_TaskD37_Setup(ov006_TaskD37 *self) {
     self->unk54->slideMode = 1;
     self->unk54->vfunc_08();
     if (self->param == 2) {
-        func_ov000_0215bb14(self->unk54, MsgRes_GetString(res, 0x13f));
+        Obj0215bb14_SetText(self->unk54, MsgRes_GetString(res, 0x13f));
         self->unk54->vfunc_70();
     }
     {
@@ -538,17 +538,17 @@ void ov006_TaskD37_Setup(ov006_TaskD37 *self) {
     ov006_SetPos3(self->unk58, 0xbf000, 0x50000, self->unk58->origin.z);
     self->unk58->origin.z = -0x1fccd;
     self->unk64 = ov006_NewModel64();
-    func_ov000_0218ffdc(self->unk64, self->unk60, 0, 1);
-    func_ov000_02190cb0(self->unk64, "s00", 0, 1);
+    Model0218fe1c_SetRes(self->unk64, self->unk60, 0, 1);
+    Model0218fe1c_SetAnim(self->unk64, "s00", 0, 1);
     self->unk64->actor_id = 0;
-    func_ov000_021915a0(self->unk64);
-    func_ov000_02190a30(self->unk64, 0)->speed = 0x400;
+    Model0218fe1c_SetLoop(self->unk64);
+    Model0218fe1c_GetAnimCtrl(self->unk64, 0)->speed = 0x400;
     self->unk6C = ov006_NewModel64();
-    func_ov000_0218ffdc(self->unk6C, self->unk68, 0, 1);
-    func_ov000_02190cb0(self->unk6C, "nut00", 0, 1);
+    Model0218fe1c_SetRes(self->unk6C, self->unk68, 0, 1);
+    Model0218fe1c_SetAnim(self->unk6C, "nut00", 0, 1);
     self->unk6C->actor_id = 0;
-    func_ov000_021915a0(self->unk6C);
-    func_ov000_021911c8(self->unk6C, func_020706a0(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC)->unk0);
+    Model0218fe1c_SetLoop(self->unk6C);
+    Model0218fe1c_SetAnimSpeed(self->unk6C, func_020706a0(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC)->unk0);
     ov006_TaskD37_PlayAnim(self, "s00", 0x400, 1);
     {
         VecFx32 at = data_ov006_021eb764;
@@ -594,17 +594,17 @@ void ov006_TaskD37_Setup(ov006_TaskD37 *self) {
     self->unk4A = id;
     info = ov006_GetCourseInfo(id);
     if (self->param != 2) {
-        func_ov000_0215bb14(self->unk54, func_0206ec8c(id));
+        Obj0215bb14_SetText(self->unk54, func_0206ec8c(id));
         self->unk54->vfunc_70();
     }
     ov006_Label_Set_021dbfb8(self->unk58, "menu/skyrace_menu", info->unk0, 0);
     ov006_Unk021e1ddc_SetLabel(self->unk13C, "menu/skyrace_map", info->unk4, 0);
-    ov006_Unk021e1e6c_PlayText(self->unk13C, func_0206ec48(id));
+    ov006_Unk021e1e6c_PlayText(self->unk13C, Param_Get(id));
     self->unk4C = self->unk4A;
     ov006_Menu_ClearEntries(data_ov006_021ec888);
     self->unk44 = 4;
     self->unk48 = self->unk4A;
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
     self->unk_04 &= ~2;
 }
 
@@ -633,12 +633,12 @@ extern ov006_Unk02097e40 *data_02097e40;
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
 void ov006_Label_Close(ov006_Label *p);
 void ov006_Menu_ShowObj(ov006_Unk021ec888 *self);
-BOOL func_ov000_02190cb0(void *a, const void *b, int c, int d);
-AnimCtrl *func_ov000_02190a30(Model0218fe1c *a, int b);
+BOOL Model0218fe1c_SetAnim(void *a, const void *b, int c, int d);
+AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *a, int b);
 void ov006_TaskD37_PlayAnim(ov006_TaskD37 *self, const char *name, s16 speed, u8 loop);
 ov006_Info021daaa8 *ov006_GetCourseInfo(u16 id);
 const void *func_0206ec8c(u16 id);
-const void *func_0206ec48(u16 id);
+const void *Param_Get(u16 id);
 void ov006_Label_Set_021dbfb8(ov006_Label *a, const char *b, int c, int d);
 void ov006_Unk021e1ddc_SetLabel(ov006_Obj13C *a, const char *b, int c, int d);
 void ov006_Unk021e1e6c_PlayText(ov006_Obj13C *a, const void *b);
@@ -648,12 +648,12 @@ static inline void ov006_TaskD37_Select(ov006_TaskD37 *self, u16 id) {
     self->unk4A = id;
     info = ov006_GetCourseInfo(id);
     if (self->param != 2) {
-        func_ov000_0215bb14(self->unk54, func_0206ec8c(id));
+        Obj0215bb14_SetText(self->unk54, func_0206ec8c(id));
         self->unk54->vfunc_70();
     }
     ov006_Label_Set_021dbfb8(self->unk58, "menu/skyrace_menu", info->unk0, 0);
     ov006_Unk021e1ddc_SetLabel(self->unk13C, "menu/skyrace_map", info->unk4, 0);
-    ov006_Unk021e1e6c_PlayText(self->unk13C, func_0206ec48(id));
+    ov006_Unk021e1e6c_PlayText(self->unk13C, Param_Get(id));
 }
 
 static inline BOOL ov006_IsUnlocked(int type, u16 mask) {
@@ -717,7 +717,7 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
         trg = data_02097dc8->trig;
         if (trg & 2) {
             if (self->unk3D) {
-                func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
                 self->unk50->flags |= 2;
                 self->unk54->flags |= 2;
                 ov006_Label_Close(self->unk58);
@@ -727,10 +727,10 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
                 self->unk_04 |= 6;
                 self->step = 0x78;
             } else {
-                func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
             }
         } else if (trg & 1) {
-            func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             self->step = 0x14;
         }
         break;
@@ -740,7 +740,7 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
         self->unk5C->flags &= ~2;
         {
             Lo021cb0b8 *w = self->unk5C;
-            w->vfunc_a8(func_ov000_02154b58(w, 1));
+            w->vfunc_a8(UiList_GetItemById(w, 1));
         }
         self->step++;
         break;
@@ -764,8 +764,8 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
         self->unk50->flags |= 2;
         self->unk54->flags |= 2;
         ov006_Label_Close(self->unk58);
-        func_ov000_02190cb0(self->unk64, "s01", 0, 1);
-        func_ov000_02190a30(self->unk64, 0)->speed = 0xb33;
+        Model0218fe1c_SetAnim(self->unk64, "s01", 0, 1);
+        Model0218fe1c_GetAnimCtrl(self->unk64, 0)->speed = 0xb33;
         ov006_TaskD37_PlayAnim(self, "s01", 0x1000, 0);
         {
             ov006_Info021daaa8 *info = ov006_GetCourseInfo(self->unk4A);
@@ -785,9 +785,9 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
             int f = self->anm->frame;
             s16 len = self->animSpeed;
             if ((f >= 0x10000 && f < 0x10000 + len) || (f >= 0x1e000 && f < 0x1e000 + len)) {
-                func_02049a48(data_02097e4c, 0x32, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x32, -1, -1, -1);
             } else if (f >= 0xb000 && f < 0xb000 + len) {
-                func_02049a48(data_02097e4c, 0x35, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
             }
         }
         if (self->anm->frame >= (self->anm->res->numFrame << 12) - 0x1000) {
@@ -805,7 +805,7 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
         if (!ov006_Menu_GetEntryMask_021e60e8(6, 1)) {
             return;
         }
-        self->unk50->vfunc_a8(func_ov000_02154b58(self->unk50, self->unk4C));
+        self->unk50->vfunc_a8(UiList_GetItemById(self->unk50, self->unk4C));
         ov006_TaskD37_Select(self, self->unk4C);
         self->step = 0x1e;
         break;
@@ -854,7 +854,7 @@ extern void *data_02097e40;
 
 ov006_Info021daaa8 *ov006_GetCourseInfo(u16 id);
 const void *func_0206ec8c(u16 id);
-const void *func_0206ec48(u16 id);
+const void *Param_Get(u16 id);
 void ov006_Label_Set_021dbfb8(ov006_Label *a, const char *b, int c, int d);
 void ov006_Unk021e1ddc_SetLabel(ov006_Obj13C *a, const char *b, int c, int d);
 void ov006_Unk021e1e6c_PlayText(ov006_Obj13C *a, const void *b);
@@ -865,8 +865,8 @@ void ov006_Caption_Update(ov006_Caption *self);
 void func_ov006_021e0b80(ov006_Caption *self);
 void ov006_Unk021e1af0_Update(ov006_Obj13C *a);
 void ov006_Unk021e1bb4_Draw(ov006_Obj13C *a);
-void func_ov000_02190a80(Model0218fe1c *a, int b);
-BOOL func_ov000_021903b4(Model0218fe1c *a);
+void Model0218fe1c_UpdateAnim(Model0218fe1c *a, int b);
+BOOL Model021903b4_Draw(Model0218fe1c *a);
 BOOL ov006_TaskD37_ApplyAnim(ov006_TaskD37 *self, Model0218fe1c *obj);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 void ov006_Manager_DispatchMenuCb(int a, int b, int c);
@@ -880,7 +880,7 @@ static inline void ov006_Camera_Apply(Camera *cam) {
 }
 
 static inline void ov006_Window_SetSel(UiList *w, u16 id) {
-    UiListItem *item = func_ov000_02154b58(w, id);
+    UiListItem *item = UiList_GetItemById(w, id);
     w->vfunc_a8(item);
 }
 
@@ -889,12 +889,12 @@ static inline void ov006_TaskD37_Select(ov006_TaskD37 *self, u16 id) {
     self->unk4A = id;
     info = ov006_GetCourseInfo(id);
     if (self->param != 2) {
-        func_ov000_0215bb14(self->unk54, func_0206ec8c(id));
+        Obj0215bb14_SetText(self->unk54, func_0206ec8c(id));
         self->unk54->vfunc_70();
     }
     ov006_Label_Set_021dbfb8(self->unk58, "menu/skyrace_menu", info->unk0, 0);
     ov006_Unk021e1ddc_SetLabel(self->unk13C, "menu/skyrace_map", info->unk4, 0);
-    ov006_Unk021e1e6c_PlayText(self->unk13C, func_0206ec48(id));
+    ov006_Unk021e1e6c_PlayText(self->unk13C, Param_Get(id));
 }
 
 void ov006_TaskD37_PreUpdate(ov006_TaskD37 *self) {
@@ -906,7 +906,7 @@ void ov006_TaskD37_PreUpdate(ov006_TaskD37 *self) {
         if (self->param == 2 && self->step == 0x28) {
             self->unk4C = p->unk4;
             if (self->unk4A != self->unk4C) {
-                self->unk50->vfunc_a8(func_ov000_02154b58(self->unk50, self->unk4C));
+                self->unk50->vfunc_a8(UiList_GetItemById(self->unk50, self->unk4C));
                 ov006_TaskD37_Select(self, self->unk4C);
             }
         }
@@ -917,8 +917,8 @@ void ov006_TaskD37_PreUpdate(ov006_TaskD37 *self) {
     ov006_Caption_Update(self->unk138);
     ov006_Unk021e1af0_Update(self->unk13C);
     self->unk5C->vfunc_1c();
-    func_ov000_02190a80(self->unk64, 0x1000);
-    func_ov000_02190a80(self->unk6C, 0x1000);
+    Model0218fe1c_UpdateAnim(self->unk64, 0x1000);
+    Model0218fe1c_UpdateAnim(self->unk6C, 0x1000);
     ov006_TaskD37_ApplyAnim(self, self->unk6C);
     if (!done) {
         return;
@@ -943,7 +943,7 @@ void ov006_TaskD37_PostUpdate(ov006_TaskD37 *self) {
         self->step++;
         break;
     case 0x82:
-        func_ov000_0218084c(data_ov000_021ccd44, 0x26, 0);
+        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x26, 0);
         self->step++;
         break;
     }
@@ -961,8 +961,8 @@ void func_ov006_021d51cc(ov006_TaskD37 *self) {
     self->unk54->vfunc_20();
     self->unk5C->vfunc_20();
     ov006_Camera_Apply(&self->cam);
-    func_ov000_021903b4(self->unk64);
-    func_ov000_021903b4(self->unk6C);
+    Model021903b4_Draw(self->unk64);
+    Model021903b4_Draw(self->unk6C);
     if (data_ov006_021ec888 != NULL) {
         ov006_Menu_ReleaseObj(data_ov006_021ec888);
     }

@@ -8,13 +8,13 @@ extern "C" {
 extern const char data_ov000_021cabf4[];
 extern void *data_02149ef8;
 char *MsgRes_GetString(void *p, s32 id);
-void func_ov000_0215aa78(LoBase021cafc0_021cb0b8 *self);
+void LoBase021cafc0_021cb0b8_Setup(LoBase021cafc0_021cb0b8 *self);
 
 static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
-        func_0204c7d0(win);
+        TextWin_Init(win);
     }
     return win;
 }
@@ -126,7 +126,7 @@ void func_ov000_0215e344(Lo021cb0b8 *self) {
         dst = q + 1;
         i++;
     } while (!done);
-    func_ov000_0215aa78(self);
+    LoBase021cafc0_021cb0b8_Setup(self);
     key = self->key;
     for (node = self->items; node != NULL; node = node->next) {
         if (node->id == key) {

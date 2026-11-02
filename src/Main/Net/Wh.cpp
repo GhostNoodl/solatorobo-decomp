@@ -348,7 +348,7 @@ s16 func_0204587c(WhMgr *wh, u16 bitmap) {
     if (num <= 1) {
         return channel;
     }
-    select = (u16)((num * ((int)func_0204045c() & 0xff)) / 0x100);
+    select = (u16)((num * ((int)Rand_GetGlobal() & 0xff)) / 0x100);
     for (i = 0; i < 16; i++) {
         if (bitmap & 1) {
             if (select == 0) {

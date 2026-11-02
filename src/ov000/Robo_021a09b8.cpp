@@ -5,8 +5,8 @@
 
 extern "C" {
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-s32 func_ov000_0219840c(void *s, s32 *list, s32 count, BOOL push);
-BOOL func_ov000_02198360(void *s, s32 a, s32 b);
+s32 History_PickFlagged(void *s, s32 *list, s32 count, BOOL push);
+BOOL History_SetState(void *s, s32 a, s32 b);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(u16 a);
 void func_ov000_02182590(void *p);
@@ -35,7 +35,7 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
     BOOL done;
 
     a = NULL;
-    r = func_ov000_0219840c(((void *)self->fsm), list, count, FALSE);
+    r = History_PickFlagged(((void *)self->fsm), list, count, FALSE);
     if (r == 0) {
         return r;
     }
@@ -163,7 +163,7 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
         break;
     }
     if (r != 0) {
-        func_ov000_02198360(((void *)self->fsm), (u8)r, 0);
+        History_SetState(((void *)self->fsm), (u8)r, 0);
     }
     return r;
 }

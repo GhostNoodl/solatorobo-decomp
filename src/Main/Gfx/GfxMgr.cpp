@@ -7,9 +7,9 @@ extern u8 data_02097ce4[];
 
 
 extern void func_02039a34(GfxMgr *mgr);
-extern void *func_0203a408(GfxMgr *mgr, void *arg1, void *arg2, void *arg3);
+extern void *GfxMgr_AllocCharBlock(GfxMgr *mgr, void *arg1, void *arg2, void *arg3);
 extern void *func_0203a984(GfxMgr *mgr, void *arg1, void *arg2);
-extern VramBlock *func_0203994c(GfxMgr *mgr, VramBlock *block);
+extern VramBlock *GfxMgr_FreeBlock(GfxMgr *mgr, VramBlock *block);
 extern ResList *func_02035934(const char *name);
 extern void *func_02034cec(ResList *list, const char *name);
 
@@ -43,11 +43,11 @@ void func_02039750(void) {
 }
 
 void *func_020397fc(void *arg1, void *arg2, void *arg3) {
-    return func_0203a408(data_02097ce0, arg1, arg2, arg3);
+    return GfxMgr_AllocCharBlock(data_02097ce0, arg1, arg2, arg3);
 }
 
 VramBlock *func_02039828(VramBlock *block) {
-    return func_0203994c(data_02097ce0, block);
+    return GfxMgr_FreeBlock(data_02097ce0, block);
 }
 
 VramBlock *func_02039844(GfxMgr *mgr, VramPool *pool, u32 size) {

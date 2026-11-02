@@ -17,9 +17,9 @@ void Ov009ActVt_02216348_StateFly(Ov009ActVt_02216348 *self) {
         if (self->velY < 0) {
             if (self->hit->unk_50 & 0x20000000) {
                 if (self->velY < -0xcd) {
-                    func_0204a028(data_02097e4c, 0x1e, &self->pos, 0xc);
+                    SndMgr_PlayAtPitch(data_02097e4c, 0x1e, &self->pos, 0xc);
                 }
-                func_ov000_02198360(self->fsm, 1, 0);
+                History_SetState(self->fsm, 1, 0);
                 self->velY = 0;
                 self->gravity = 0;
                 self->friction = 0x800;
@@ -29,7 +29,7 @@ void Ov009ActVt_02216348_StateFly(Ov009ActVt_02216348 *self) {
                 if (st->timer > 0x46) {
                     self->fsm->timer = 0x46;
                     if (!(self->hit->unk_54 & 0x20000000)) {
-                        func_ov000_02198360(self->fsm, 0x15, 0);
+                        History_SetState(self->fsm, 0x15, 0);
                     }
                 }
             }
@@ -38,7 +38,7 @@ void Ov009ActVt_02216348_StateFly(Ov009ActVt_02216348 *self) {
     }
     Actor_Move(self, 0);
     if (self->hit != NULL) {
-        func_ov000_021987b8(self->hit, 1, 0, 0);
+        Body_Update(self->hit, 1, 0, 0);
     }
 }
 

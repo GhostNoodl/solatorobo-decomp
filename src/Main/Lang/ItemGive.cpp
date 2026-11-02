@@ -10,9 +10,9 @@ extern u8 StageFlags_CountEntries(StageFlags *f, u16 id);
 extern void func_02059280(DataRes *res, SaveRef *ref, u32 idx, u16 unk);
 extern u16 func_0205973c(DataRes *res, SaveRef *ref, u32 id);
 extern void func_02059428(DataRes *res, SaveRef *ref, u32 id, u16 val);
-extern u32 func_0205975c(DataRes *res, u32 idx);
-extern SaveEntry *func_0205976c(DataRes *res, u32 idx);
-extern u16 func_02059544(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id);
+extern u32 DataRes_GetCount(DataRes *res, u32 idx);
+extern SaveEntry *DataRes_GetTable(DataRes *res, u32 idx);
+extern u16 DataRes_ReadBitsAt_02059544(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id);
 
 static inline u16 Item_Cat16(u16 id) {
     return id >> 12;
@@ -59,7 +59,7 @@ static inline BOOL Item_Set(u16 id, u16 val) {
     return ok ? TRUE : FALSE;
 }
 
-BOOL func_0206f21c(u16 id, int n) {
+BOOL Item_Give(u16 id, int n) {
     BOOL ok = TRUE;
     switch (Item_Cat(id) - 1) {
     case 1: {
@@ -153,7 +153,7 @@ void func_0206f518(SaveRef *ref, u32 id) {
     func_02059280(data_02fe152c, ref, idx, unk);
 }
 
-BOOL func_0206f5e4(u16 id, int n) {
+BOOL Item_Set_0206f5e4(u16 id, int n) {
     return Item_Set(id, n);
 }
 

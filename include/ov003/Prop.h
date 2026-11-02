@@ -1,10 +1,10 @@
 #ifndef OV003_PROP_H
 #define OV003_PROP_H
 
-// The actors func_ov000_021b4828 builds for ov003 (round acC): an ov000 Actor with one more word
+// The actors Factory_New6000 builds for ov003 (round acC): an ov000 Actor with one more word
 // (vtable data_ov000_021cc7cc, 0xb0 bytes, methods Ov000ActVt_021cc7cc_*), and the ov003
 // subclasses whose members the factory constructs in place. Their dtors destroy those members and
-// then call the Actor dtor func_ov000_0218c928. The subclasses without members only add words
+// then call the Actor dtor Actor_DtorBase. The subclasses without members only add words
 // (vtables 021fa4f0 and 021fa498: 0xb4, 021fa440: 0xb8, 021fa3e8: 0xc0; 021fa338 and 021fa2e0
 // are 0xb0).
 
@@ -47,7 +47,7 @@ SIZE_ASSERT(Ov003PropDrift, 0xc0);
 // One ActorRes (vtable 021fa548 is 0x1f0 bytes and adds two words).
 class Ov003PropRes : public Ov003Prop {
 public:
-    ActorRes res; // ctor func_ov000_0218e9c4, dtor func_ov000_0218ea20
+    ActorRes res; // ctor ResSet_Init, dtor ResSet_ReleaseAll
 };
 SIZE_ASSERT(Ov003PropRes, 0x1e8);
 
@@ -67,7 +67,7 @@ SIZE_ASSERT(Ov003Prop021fa548, 0x1f0);
 // is 0x2d4 bytes).
 class Ov003PropResMdl : public Ov003PropRes {
 public:
-    Model0218fe1c mdl; // ctor func_ov000_0218fe1c, dtor func_ov000_0218fee4
+    Model0218fe1c mdl; // ctor Model0218fe1c_Init, dtor Model0218fe1c_FreeAnims
 };
 SIZE_ASSERT(Ov003PropResMdl, 0x2d0);
 
@@ -88,13 +88,13 @@ public:
 SIZE_ASSERT(Ov003PropMulti, 0x1158);
 
 extern "C" {
-Actor *func_ov000_0218c928(Actor *self); // Actor dtor
-ActorRes *func_ov000_0218ea20(ActorRes *self); // ActorRes dtor
-Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *self); // Model0218fe1c dtor
+Actor *Actor_DtorBase(Actor *self); // Actor dtor
+ActorRes *ResSet_ReleaseAll(ActorRes *self); // ActorRes dtor
+Model0218fe1c *Model0218fe1c_FreeAnims(Model0218fe1c *self); // Model0218fe1c dtor
 void Ov000ActVt_021cc7cc_Start(Ov003Prop *self);
-BOOL func_ov000_0218cf5c(Actor *self); // IsReady of the props
-void func_ov000_021b4adc(Ov003Prop *self); // Init of the props
-BOOL func_ov000_0218cea4(Actor *self); // draws the model
+BOOL Actor_IsReady(Actor *self); // IsReady of the props
+void Ov000ActVt_021cc7cc_Init(Ov003Prop *self); // Init of the props
+BOOL Actor_Draw(Actor *self); // draws the model
 }
 
 #endif

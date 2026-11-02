@@ -13,11 +13,11 @@ void func_ov006_021dba5c(ov006_Unk021dba5c *self) {
     switch (self->state) {
     case 0:
         self->unk34 = 0x4000;
-        func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
         break;
     case 1:
         self->unk34 = 0x4000;
-        func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
         break;
     }
 }

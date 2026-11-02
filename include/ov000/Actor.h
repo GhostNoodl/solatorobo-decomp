@@ -157,12 +157,12 @@ extern "C" {
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
 void ActorGroup_Add(ActorGroup *group, Actor *actor);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-void func_ov000_02190e98(void *a, u32 b, s16 c, u8 d);
+BOOL History_SetState(void *a, s32 b, s32 c);
+void Model0218fe1c_SetAnimByIndex(void *a, u32 b, s16 c, u8 d);
 // Model_02190a30.cpp defines it as (Model0218fe1c *, const char *, s16 blend, u8 force); callers
 // here pass the model untyped and the last two as words.
-BOOL func_ov000_02190cb0(void *model, const char *name, s32 blend, s32 force);
-void func_ov000_021915a0(void *a);
+BOOL Model0218fe1c_SetAnim(void *model, const char *name, s32 blend, s32 force);
+void Model0218fe1c_SetLoop(void *a);
 extern char data_ov000_021cc404[];
 BOOL func_01ffc4ec(VecFx32 *v, s32 speed, s32 b);
 u16 Pad_LookupDir(void *rng, s32 range);

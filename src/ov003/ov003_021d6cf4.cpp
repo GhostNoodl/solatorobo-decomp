@@ -3,18 +3,18 @@
 
 extern "C" {
 
-extern void func_ov000_021984f4(void *p, int a, int b);
-extern void func_ov000_0219864c(ActorSub48 *p, VecFx32 *a, u16 *b);
+extern void Obj021984c8_UpdatePos(void *p, int a, int b);
+extern void ActorSub48_UpdatePos(ActorSub48 *p, VecFx32 *a, u16 *b);
 
 void Ov003Actor_UpdateSub44(Ov003Actor *self) {
     if (self->unk_44 != NULL) {
-        func_ov000_021984f4(self->unk_44, 0, 0);
+        Obj021984c8_UpdatePos(self->unk_44, 0, 0);
     }
 }
 
 void Ov003Actor_UpdateHit(Ov003Actor *self) {
     if (self->hit != NULL) {
-        func_ov000_0219864c(self->hit, 0, 0);
+        ActorSub48_UpdatePos(self->hit, 0, 0);
     }
 }
 

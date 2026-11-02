@@ -9,14 +9,14 @@ extern int data_02097d78[];
 extern void *data_02097e4c;
 extern char data_ov000_021cc879[];
 char *func_02061f94(u16 id);
-void func_020359fc(void *a, void *b, s32 c, s32 d);
-BOOL func_02035bd4(void *a, void *b, s32 c);
-void *func_02035f30(void *a, void *b, s32 c);
+void ResMgr_LoadArchive(void *a, void *b, s32 c, s32 d);
+BOOL ResMgr_IsArchiveLoaded(void *a, void *b, s32 c);
+void *ResMgr_GetArchiveList(void *a, void *b, s32 c);
 void *Heap_Alloc(u32 size);
-void *func_02034d88(void *a, void *b);
-BOOL func_02054f10(void *a, s32 b);
+void *ResList_FindType2(void *a, void *b);
+BOOL Model_IsReady(void *a, s32 b);
 void func_02041d8c(void *model);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 s32 FX_Div(s32 a, s32 b);
 
 static inline BOOL FadeIdle021b8284(void) {
@@ -58,7 +58,7 @@ BOOL func_ov000_021b8284(Obj021b8284 *self) {
         c = STD_SearchString(self->arcName, data_ov000_021cc879);
         *c = 0;
         STD_CopyString(self->fileName, c + 1);
-        func_020359fc(self->arcName, self->fileName, 2, 0);
+        ResMgr_LoadArchive(self->arcName, self->fileName, 2, 0);
         {
             GfxSys *g = data_02097d48;
             g->unk_8b0_4 = 0;
@@ -69,12 +69,12 @@ BOOL func_ov000_021b8284(Obj021b8284 *self) {
         break;
     }
     case 2:
-        if (!func_02035bd4(self->arcName, self->fileName, 2)) {
+        if (!ResMgr_IsArchiveLoaded(self->arcName, self->fileName, 2)) {
             break;
         }
         self->unk_44 = 4;
     case 4: {
-        void *res = func_02035f30(self->arcName, self->fileName, 2);
+        void *res = ResMgr_GetArchiveList(self->arcName, self->fileName, 2);
         Model *p;
         u16 i;
         if (!FadeIdle021b8284() && !Fade4_021b8284()) {
@@ -82,32 +82,32 @@ BOOL func_ov000_021b8284(Obj021b8284 *self) {
         }
         p = (Model *)Heap_Alloc(sizeof(Model));
         if (p != NULL) {
-            func_02041218(&p->pltt);
-            func_02041440(p, self->fileName, 1);
+            PlttRes_Init_02041218(&p->pltt);
+            TexObj_Init(p, self->fileName, 1);
             STD_CopyString(p->name, self->arcName);
         }
         self->unk_4c = p;
-        func_020417e0(self->unk_4c, func_02034d88(res, p->unk_04c));
+        TexObj_SetRes(self->unk_4c, ResList_FindType2(res, p->unk_04c));
         self->unk_4c->flags |= 2;
         {
             ModelRes *q = (ModelRes *)((u8 *)self->unk_4c->res);
             self->unk_58 = q != NULL ? *LFLD(u16 *, q, 0xc) : 0;
         }
         for (i = 0; i < self->unk_58; i++) {
-            func_02041d9c(self->unk_4c, 0, i);
+            TexObj_SelectImage(self->unk_4c, 0, i);
         }
         self->unk_44 = 5;
         break;
     }
     case 5:
-        if (!func_02054f10(self->unk_4c, 0xffff)) {
+        if (!Model_IsReady(self->unk_4c, 0xffff)) {
             break;
         }
         func_02041d8c(self->unk_4c);
         if (Fade4_021b8284()) {
             self->unk_50 = 0x3e7000;
         } else {
-            func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
             self->unk_50 = 0;
         }
         self->unk_44 = 7;
@@ -130,7 +130,7 @@ BOOL func_ov000_021b8284(Obj021b8284 *self) {
         if (!FadeIdle021b8284()) {
             self->unk_50 = 0x3e7000;
         } else {
-            func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
             self->unk_50 = 0;
         }
         self->unk_44 = 0xd;

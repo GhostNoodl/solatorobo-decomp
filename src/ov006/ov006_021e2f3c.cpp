@@ -12,7 +12,7 @@ typedef struct ov006_Unk021e2f3c {
 extern "C" void ov006_Unk021e2f3c_Update(ov006_Unk021e2f3c *self) {
     int i;
 
-    if (!self->unk4 && self->unk10 != NULL && func_02054f10(self->unk10, 0xffff)) {
+    if (!self->unk4 && self->unk10 != NULL && Model_IsReady(self->unk10, 0xffff)) {
         self->unk4 = 1;
     }
     ov006_Slider_Update(self->unk14);

@@ -4,14 +4,14 @@ extern "C" {
 
 extern char data_ov013_0220ba58[];
 extern char data_ov013_0220ba60[];
-void *func_ov000_0218e9c4(void *p);
+void *ResSet_Init(void *p);
 
 void Ov013ActEx_02204454_Init(Ov013ActEx_02204454 *self) {
     Ov013Names *n;
-    func_ov000_0219433c(self);
+    ActorEx_InitActor(self);
     n = (Ov013Names *)Heap_Alloc(0x138);
     if (n != NULL) {
-        n = (Ov013Names *)func_ov000_0218e9c4(n);
+        n = (Ov013Names *)ResSet_Init(n);
     }
     self->unk_dc = n;
     {

@@ -18,7 +18,7 @@ extern char data_ov000_021cabf6[];
 extern char data_ov000_021cabfb[];
 extern char data_ov000_021cac00[];
 char *func_0206ffa0(u16 id);
-char *func_0206ec48(u16 id);
+char *Param_Get(u16 id);
 char *func_02062020(u16 id);
 void func_02040a98(char *buf, u16 id);
 char *MsgRes_GetString(void *msg, s32 id);
@@ -34,7 +34,7 @@ char *func_ov000_0215cfd0(Text0215cfd0 *self) {
         return func_0206ffa0(self->unk_88);
     case 0x800:
         if (self->unk_88 & 0xf000) {
-            s = func_0206ec48(self->unk_88);
+            s = Param_Get(self->unk_88);
         } else {
             s = func_02062020(self->unk_88);
         }

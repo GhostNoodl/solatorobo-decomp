@@ -21,7 +21,7 @@ typedef struct {
 } AiState02197ee0;
 
 extern "C" {
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 void Actor_TurnToActor(Actor *self, void *other, s32 a);
 s32 Rand_UpTo(s32 max);
 u16 FX_Atan2(s32 x, s32 z);
@@ -84,7 +84,7 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
     dist = 0x7fffffff;
     if ((u8)(cur + 0xff) <= 1) {
         self->target = 0xffff;
-        obj = func_ov000_0219bf90();
+        obj = ActorMgr_FindPlayer();
         if (obj != NULL) {
             self->target = obj->id;
         }
@@ -123,7 +123,7 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
             return;
         }
         p = obj->pos;
-        o = func_ov000_021b68b8(data_ov000_021ccd6c, &self->pos);
+        o = FieldMgr_FindExitAt(data_ov000_021ccd6c, &self->pos);
         if (o != NULL) {
             ang = o->dir;
         } else {

@@ -5,7 +5,7 @@
 
 extern "C" {
 
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *data_02097e4c;
 extern s32 data_02097d78[5];
 
@@ -45,12 +45,12 @@ void func_ov000_0215bf60(Lo021cadcc *self) {
         break;
     case 0:
         if (self->flag4 ? TRUE : FALSE) {
-            func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         }
         break;
     case 1:
         if (self->flag4 ? TRUE : FALSE) {
-            func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         }
         break;
     }

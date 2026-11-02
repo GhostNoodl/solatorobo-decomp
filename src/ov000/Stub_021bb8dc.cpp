@@ -8,14 +8,14 @@ extern char *data_ov000_021cc858;
 extern char data_ov000_021cc894[];
 extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
-void func_0206e900(char *dst, const char *src);
+void LangData_LocalizePath(char *dst, const char *src);
 void func_ov000_021bbd94(u8 *self);
-BOOL func_02054f10(void *a, s32 b);
+BOOL Model_IsReady(void *a, s32 b);
 s32 FX_Div(s32 a, s32 b);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_ov000_02165da0(void *p);
 BOOL func_ov000_02165df4(void *p);
-void func_ov000_02165d78(void *p);
+void Lo021cb6b0_FreeAnim(void *p);
 
 static inline void *Get021bb8dc(void) {
     TimedBuffer021cb920 *p = data_ov000_021ccd30->unk_118;
@@ -58,7 +58,7 @@ BOOL func_ov000_021bb8dc(Obj021bb8dc *self) {
     switch (self->unk_50) {
     case 1: {
         char buf[0x20];
-        func_0206e900(buf, data_ov000_021cc858);
+        LangData_LocalizePath(buf, data_ov000_021cc858);
         self->unk_48 = 2;
         ((VObj *)((u8 *)self + 4))->vfunc_24(buf, data_ov000_021cc894);
         self->unk_50 = 2;
@@ -72,7 +72,7 @@ BOOL func_ov000_021bb8dc(Obj021bb8dc *self) {
         func_ov000_021bbd94((u8 *)self);
         self->unk_50 = 10;
     case 10:
-        if (!func_02054f10(self->unk_58, 0xffff)) {
+        if (!Model_IsReady(self->unk_58, 0xffff)) {
             break;
         }
         self->unk_50 = 6;
@@ -91,7 +91,7 @@ BOOL func_ov000_021bb8dc(Obj021bb8dc *self) {
         break;
     case 11:
         if (data_02097dc8->trig & 2) {
-            func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
             self->unk_50 = 12;
             break;
         }
@@ -120,7 +120,7 @@ BOOL func_ov000_021bb8dc(Obj021bb8dc *self) {
         }
         break;
     case 12:
-        func_ov000_02165d78(p);
+        Lo021cb6b0_FreeAnim(p);
         if ((void *)self->unk_5c != NULL) {
             LFLD(u32, self->unk_5c, 0xc) |= 2;
         }

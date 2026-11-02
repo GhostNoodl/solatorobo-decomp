@@ -41,15 +41,15 @@ extern "C" {
 
 extern const s16 FX_SinCosTable_[];
 extern char data_ov003_021f9fd6[];
-extern s32 func_ov000_021993fc(Ov003BrFinder *f, Ov003BrQuery *q, Ov003BrHit **out, s32 max);
-extern Actor *func_ov000_021985c0(Ov003BrHit *h);
+extern s32 Finder_CollectParts(Ov003BrFinder *f, Ov003BrQuery *q, Ov003BrHit **out, s32 max);
+extern Actor *Obj021984c8_GetActor(Ov003BrHit *h);
 extern BOOL Ov003Switch_IsTarget(Actor *t, void *def);
-extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
-extern void func_ov000_021915a0(void *p);
-extern void func_ov000_021911c8(void *p, s32 a);
+extern BOOL Model0218fe1c_SetAnim(void *p, const char *name, s32 a, s32 b);
+extern void Model0218fe1c_SetLoop(void *p);
+extern void Model0218fe1c_SetAnimSpeed(void *p, s32 a);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern void Actor_SendMsg(Actor *o, u16 id, s32 a, s32 b, s32 c, void *p);
-extern Actor *func_ov000_0219bf90(void);
+extern Actor *ActorMgr_FindPlayer(void);
 extern void HitMesh_SetMtx(void *o, MtxFx43 *m);
 extern BOOL func_ov000_021b4738(void);
 extern void func_020627b4(void);
@@ -150,11 +150,11 @@ void Ov003Bridge_StateIdle(Ov003Bridge *self) {
         q.mask = 0x10;
         q.unk_10 = 0xffff;
         f.q = NULL;
-        n = func_ov000_021993fc(&f, &q, list, 0x20);
+        n = Finder_CollectParts(&f, &q, list, 0x20);
         for (i = 0; i < n; i++) {
             Ov003BrHit *h = list[i];
             if (h != NULL && h->pos.y - h->unk_10 - self->pos.y - self->height <= 0x666) {
-                Actor *o = func_ov000_021985c0(h);
+                Actor *o = Obj021984c8_GetActor(h);
                 if (o != NULL && self->targetObj != NULL && Ov003Switch_IsTarget(o, self->targetObj)) {
                     found = o;
                     break;
@@ -166,21 +166,21 @@ void Ov003Bridge_StateIdle(Ov003Bridge *self) {
         }
         self->target = found->id;
         if (self->model != NULL) {
-            func_ov000_02190cb0(self->model, data_ov003_021f9fd6, 0x111, 0);
-            func_ov000_021915a0(self->model);
-            func_ov000_021911c8(self->model, 0x4cd);
+            Model0218fe1c_SetAnim(self->model, data_ov003_021f9fd6, 0x111, 0);
+            Model0218fe1c_SetLoop(self->model);
+            Model0218fe1c_SetAnimSpeed(self->model, 0x4cd);
         }
-        func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
         func_ov000_0218996c(5, 10);
         b = 0;
         Actor_SendMsg(found, self->id, 0xd, 1, 1, &b);
-        pl = func_ov000_0219bf90();
+        pl = ActorMgr_FindPlayer();
         if (pl != NULL) {
             v.x = pl->pos.x;
             v.y = pl->pos.y;
             v.z = pl->pos.z;
-            func_02065f88(0x44f, &v)->AddPosXYZ(0, pl->height, 0);
-            func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
+            Effect_SpawnId(0x44f, &v)->AddPosXYZ(0, pl->height, 0);
+            SndMgr_PlayVolume(data_02097e4c, 0x4a, -1, -1, -1);
         }
         self->fsm->st++;
         self->fsm->timer = 0;
@@ -206,7 +206,7 @@ void Ov003Bridge_StateIdle(Ov003Bridge *self) {
                 wp.rot[2] = t->rot_z;
                 wp.unk_14 = 0;
                 Actor_SendMsg(t, self->id, 7, 1, 0x18, &wp);
-                func_ov000_02197d80(self);
+                Obj02197d80_LoadValue(self);
                 mode = 1;
                 if (self->unk_18 == 0) {
                     if (self->unk_1a == 0) {
@@ -235,7 +235,7 @@ void Ov003Bridge_StateIdle(Ov003Bridge *self) {
             }
             self->unk_93_1 = 1;
             if (self->hitMesh != NULL) {
-                func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
+                SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
                 func_ov000_0218996c(5, 10);
             }
             self->fsm->st = 10;
@@ -259,7 +259,7 @@ void Ov003Bridge_StateIdle(Ov003Bridge *self) {
         break;
     }
     case 10:
-        if (func_ov000_0219bf90() != NULL && !func_ov000_021b4738()) {
+        if (ActorMgr_FindPlayer() != NULL && !func_ov000_021b4738()) {
             u16 id = 0;
             Actor *t = Actor_GetTarget(self);
             if (t != NULL) {

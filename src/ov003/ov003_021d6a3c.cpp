@@ -18,8 +18,8 @@ extern "C" {
 extern Ov003SaveData *data_0214a424;
 extern void *data_ov000_021ccd64;
 
-u16 func_0206e7ec(int a, int b);
-Ov003Player *func_ov000_0219bf90(void);
+u16 LangData_GetIndex(int a, int b);
+Ov003Player *ActorMgr_FindPlayer(void);
 BOOL func_ov000_021b4738(void);
 void func_020627a0(u16 kind, u16 id);
 void func_020627dc(u16 sfx);
@@ -48,7 +48,7 @@ static inline void Obj_StoreValue(Ov003Actor *self, u8 value) {
     s32 row;
 
     if (idx != 0xff) {
-        row = func_0206e7ec(self->unk_ac, self->unk_ad);
+        row = LangData_GetIndex(self->unk_ac, self->unk_ad);
         if (row != 0xffff) {
             value |= SaveData_GetNibble(row, idx) & 8;
             SaveData_SetNibble(row, idx, value);
@@ -57,7 +57,7 @@ static inline void Obj_StoreValue(Ov003Actor *self, u8 value) {
 }
 
 extern "C" void Ov003Actor_Defeat(Ov003Actor *self, BOOL release, BOOL mark, BOOL sound) {
-    Ov003Player *pl = func_ov000_0219bf90();
+    Ov003Player *pl = ActorMgr_FindPlayer();
     if (pl != NULL && !func_ov000_021b4738()) {
         if (sound) {
             func_020627a0(self->kind, self->id);
@@ -71,7 +71,7 @@ extern "C" void Ov003Actor_Defeat(Ov003Actor *self, BOOL release, BOOL mark, BOO
         if (mark) {
             u8 idx = self->unk_17;
             if (idx != 0xff) {
-                s32 row = func_0206e7ec(self->unk_ac, self->unk_ad);
+                s32 row = LangData_GetIndex(self->unk_ac, self->unk_ad);
                 if (row != 0xffff) {
                     u8 value = 0xf;
                     value |= SaveData_GetNibble(row, idx) & 8;

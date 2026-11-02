@@ -24,9 +24,9 @@ struct Ov009RotS {
     u16 z;
 };
 
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern void func_01ffc9fc(VecFx32 *out, VecFx32 *a, u16 b);
-extern void func_0203f364(ActorSub48 *p);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern BOOL func_01ffc624(const VecFx32 *a, const VecFx32 *b, Ov009RotS *r, s32 c, s32 d);
 
 void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
@@ -39,7 +39,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
         u32 f = self->hit->unk_50;
         if ((f & 0x20000000) && (!(f & 0x400) || st == 0x13) && self->targetObj->target == 0xffff) {
             s->flags |= 0x200000;
-            func_02049f44(data_02097e4c, 0x6c, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x6c, &self->pos, 0);
             return;
         }
     }
@@ -47,7 +47,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
         ActorSub48 *s48 = self->hit;
         s48->unk_9a_0 = 0;
         s48->unk_9a_3 = 0;
-        func_0203f364(s48);
+        HitSphere_Unlink_0203f364(s48);
     }
     if (!Ov009_GameIdle()) {
         return;
@@ -58,7 +58,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
         s44->unk_22_1 = 0;
     }
     self->target = 0xffff;
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (pl != NULL) {
         self->target = pl->id;
     }

@@ -20,7 +20,7 @@ typedef struct TblEntry {
 
 extern TblCat data_0208d6d0[];
 extern TblEntry *data_0214b164[];
-extern const char *func_02039674(const char *path);
+extern const char *Path_SkipDir(const char *path);
 
 static inline u16 Tbl_Index(TblRange *ranges, u16 idx) {
     if (ranges != NULL) {
@@ -150,7 +150,7 @@ static inline void *Tbl_GetOffset(TblEntry *e, int i) {
     return e->offsets[i] != 0 ? (u8 *)e + e->offsets[i] : NULL;
 }
 
-TblEntry *func_0206fef8(s32 id);
+TblEntry *Tbl_FindEntry_0206fef8(s32 id);
 
 void *func_0206ffa0(s32 id);
 
@@ -197,14 +197,14 @@ u8 *func_02070744(s32 id) {
     return data + idx * 0x14;
 }
 
-extern char *func_02040ab0(char *str, int c);
+extern char *Str_FindCharMb(char *str, int c);
 
 void func_020707e8(char *dst, const char *fmt, const char *arg, int c) {
     char buf[0x80];
     char *p;
     STD_GetStringLength(fmt);
     STD_CopyString(buf, fmt);
-    p = func_02040ab0(buf, c);
+    p = Str_FindCharMb(buf, c);
     if (p != NULL) {
         *p = 0;
         STD_CopyString(dst, buf);
@@ -220,7 +220,7 @@ static inline void Tbl_Format(char *dst, const char *fmt, const char *arg) {
     char *p;
     STD_GetStringLength(fmt);
     STD_CopyString(buf, fmt);
-    p = func_02040ab0(buf, '%');
+    p = Str_FindCharMb(buf, '%');
     if (p != NULL) {
         *p = 0;
         STD_CopyString(dst, buf);
@@ -231,7 +231,7 @@ static inline void Tbl_Format(char *dst, const char *fmt, const char *arg) {
     }
 }
 
-void func_02070874(char *dst, const char *fmt, const char *arg) {
+void Tbl_Format_02070874(char *dst, const char *fmt, const char *arg) {
     Tbl_Format(dst, fmt, arg);
 }
 

@@ -5,18 +5,18 @@ extern "C" {
 extern u8 data_ov014_02217dc0[];
 extern char data_ov014_02217d8e[];
 extern char data_ov014_02217d95[];
-extern ResSet *func_ov000_0218e9c4(ResSet *p);
-extern Model0218fe1c *func_ov000_0218fe1c(Model0218fe1c *p);
-extern Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *p);
-extern ResSet *func_ov000_0218ea20(ResSet *p);
-extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
-extern BOOL func_ov000_0218f110(void *p);
+extern ResSet *ResSet_Init(ResSet *p);
+extern Model0218fe1c *Model0218fe1c_Init(Model0218fe1c *p);
+extern Model0218fe1c *Model0218fe1c_FreeAnims(Model0218fe1c *p);
+extern ResSet *ResSet_ReleaseAll(ResSet *p);
+extern BOOL Actor_IsReady(Ov003Actor *self);
+extern BOOL ResSet_UpdateLoad(void *p);
 extern s32 Ov003Actor_HandleMsg(Ov003Actor *self, Ov014Msg *msg);
 
 BOOL Ov014Act_0221267c_IsReady(Ov014Act_0221267c *self) {
-    BOOL r = func_ov000_0218cf5c(self);
+    BOOL r = Actor_IsReady(self);
     if (self->unk_f0.unk_00 >= 0) {
-        r = (r & func_ov000_0218f110(&self->unk_f0)) ? TRUE : FALSE;
+        r = (r & ResSet_UpdateLoad(&self->unk_f0)) ? TRUE : FALSE;
     }
     return r;
 }

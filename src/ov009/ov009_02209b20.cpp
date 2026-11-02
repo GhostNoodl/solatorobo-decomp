@@ -3,14 +3,14 @@
 
 extern "C" {
 
-extern Ov003Actor *func_ov000_0219bf90(void);
-extern void func_ov000_02199f48(void *p, Ov003Actor *a);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
+extern void Target_SetActor(void *p, Ov003Actor *a);
 
 void Ov009ActVt_02217594_StateDie(Ov009ActVt_02217594 *self) {
     if (self->fsm->st != 0) {
         return;
     }
-    func_ov000_02199f48(self->hp, func_ov000_0219bf90());
+    Target_SetActor(self->hp, ActorMgr_FindPlayer());
     Ov003Actor_Defeat(self, 0, 1, 1);
     self->fsm->st++;
 }
@@ -34,12 +34,12 @@ void Ov009ActVt_02217594_State21(Ov009ActVt_02217594 *self) {
 
 
 extern char data_ov009_022172b5[];
-extern s16 *func_ov000_02191318(Model0218fe1c *m, s32 a);
-extern void func_ov000_02191780(Model0218fe1c *p);
-extern void func_ov000_021917f8(Model0218fe1c *p);
-extern void func_ov000_021911c8(Model0218fe1c *p, s16 a);
-extern void func_0203f364(ActorSub48 *p);
-extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
+extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *m, s32 a);
+extern void Model0218fe1c_SetReverse(Model0218fe1c *p);
+extern void Model0218fe1c_ClearReverse(Model0218fe1c *p);
+extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *p, s16 a);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
+extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 
@@ -55,15 +55,15 @@ void Ov009ActVt_02217594_State22(Ov009ActVt_02217594 *self) {
         case 0: {
             ActorSub48 *s48;
             ActorSub44 *s44;
-            func_ov000_02190cb0(self->model, data_ov009_022172b5, 0x1000, 0);
-            func_ov000_02191318(self->model, 0x40000);
-            func_ov000_02191780(self->model);
+            Model0218fe1c_SetAnim(self->model, data_ov009_022172b5, 0x1000, 0);
+            Model0218fe1c_SetAnimFrame(self->model, 0x40000);
+            Model0218fe1c_SetReverse(self->model);
             self->fsm->timer = 0xc;
             self->fsm->st++;
             s48 = self->hit;
             s48->unk_9a_0 = 0;
             s48->unk_9a_3 = 0;
-            func_0203f364(s48);
+            HitSphere_Unlink_0203f364(s48);
             s44 = self->unk_44;
             s44->unk_22_0 = 0;
             s44->unk_22_1 = 0;
@@ -81,9 +81,9 @@ void Ov009ActVt_02217594_State22(Ov009ActVt_02217594 *self) {
                 }
             }
             if (self->step % 2 == 0) {
-                func_ov000_02191780(self->model);
+                Model0218fe1c_SetReverse(self->model);
             } else {
-                func_ov000_021917f8(self->model);
+                Model0218fe1c_ClearReverse(self->model);
             }
             self->step++;
             self->fsm->timer = 0xc;
@@ -97,18 +97,18 @@ void Ov009ActVt_02217594_State22(Ov009ActVt_02217594 *self) {
                 v.x = self->radius * 2;
                 v.y = self->height;
                 v.z = self->radius;
-                func_ov000_0219b71c(&p, &v, 0x99a, 0x1333, 0x38b, 0x32);
-                func_02049a48(data_02097e4c, 0x35, -1, -1, -1);
+                Spawn_ScatterEffect(&p, &v, 0x99a, 0x1333, 0x38b, 0x32);
+                SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
             }
             if (self->step > 0xd) {
                 self->fsm->st++;
                 self->fsm->timer = 0;
                 self->step = 0;
-                func_ov000_021917f8(self->model);
+                Model0218fe1c_ClearReverse(self->model);
             }
             break;
         case 2:
-            if (func_ov000_02191120(self->model)) {
+            if (Model0218fe1c_IsAnimDone(self->model)) {
                 func_020627a0(self->kind, self->id);
                 func_020627dc(4);
                 data_ov000_021ccd54->stageFlags = 1;
@@ -126,13 +126,13 @@ void Ov009ActVt_02217594_State22(Ov009ActVt_02217594 *self) {
             s48 = self->hit;
             s48->unk_9a_0 = 0;
             s48->unk_9a_3 = 0;
-            func_0203f364(s48);
+            HitSphere_Unlink_0203f364(s48);
             s44 = self->unk_44;
             s44->unk_22_0 = 0;
             s44->unk_22_1 = 0;
             self->fsm->timer = 0x18;
             self->fsm->st++;
-            func_ov000_021911c8(self->model, 0x800);
+            Model0218fe1c_SetAnimSpeed(self->model, 0x800);
             break;
         }
         case 1: {
@@ -147,11 +147,11 @@ void Ov009ActVt_02217594_State22(Ov009ActVt_02217594 *self) {
                 v2.x = self->radius;
                 v2.y = self->height * 2;
                 v2.z = self->radius;
-                func_ov000_0219b71c(&p2, &v2, 0x99a, 0x1333, 0x38b, 0x32);
-                func_02049a48(data_02097e4c, 0x35, -1, -1, -1);
+                Spawn_ScatterEffect(&p2, &v2, 0x99a, 0x1333, 0x38b, 0x32);
+                SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
             }
-            if (func_ov000_02191120(self->model)) {
-                func_ov000_021911c8(self->model, 0x1000);
+            if (Model0218fe1c_IsAnimDone(self->model)) {
+                Model0218fe1c_SetAnimSpeed(self->model, 0x1000);
                 func_020627a0(self->kind, self->id);
                 func_020627dc(4);
                 data_ov000_021ccd54->stageFlags = 1;

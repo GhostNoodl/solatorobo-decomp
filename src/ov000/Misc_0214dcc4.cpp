@@ -12,18 +12,18 @@ typedef struct {
 extern "C" {
 
 void func_ov000_02157c28(Obj0214dcc4 *self);
-BOOL func_ov000_02152e5c(Obj0214dcc4 *self);
+BOOL Obj02152e5c_LoadModel(Obj0214dcc4 *self);
 void func_02041c34(void *obj, s32 a, void (*cb)(void), void *arg);
 void *func_ov000_0214db04(u8 *self, u16 *cmd, void *arr, u16 *count);
 
-void func_ov000_0214dcc4(Obj0214dcc4 *self) {
+void Lo021caac8_Setup(Obj0214dcc4 *self) {
     func_ov000_02157c28(self);
-    if (func_ov000_02152e5c(self)) {
-        func_02041d9c(self->unk_10, 0, 0xc);
-        func_02041d9c(self->unk_10, 0, 0xd);
+    if (Obj02152e5c_LoadModel(self)) {
+        TexObj_SelectImage(self->unk_10, 0, 0xc);
+        TexObj_SelectImage(self->unk_10, 0, 0xd);
     }
     if (self->unk_b4 != NULL) {
-        func_02041d9c(self->unk_b4, 0, 0x1e);
+        TexObj_SelectImage(self->unk_b4, 0, 0x1e);
         func_02041c34(self->unk_b4, 0x1e, (void (*)(void))func_ov000_0214db04, self);
     }
 }
@@ -66,9 +66,9 @@ void func_ov000_0214dcc4(Obj0214dcc4 *self) {
 extern "C" {
 extern u8 data_02fe1534[];
 extern void *data_02fe152c;
-void func_ov000_02153f90(void *p);
-s32 func_0204c08c(void *res, u16 id, s32 *out, s32 d);
-void func_0204c6bc(s32 a, s32 b, void *c, void *d);
+void MsgEntry_Init(void *p);
+s32 MsgRes_GetLines(void *res, u16 id, s32 *out, s32 d);
+void Text_ScanTags(s32 a, s32 b, void *c, void *d);
 void func_ov000_0214dc20(void *self, s32 *msg);
 u32 func_ov000_0214bf2c(u16 a);
 u16 func_020595c4(void *a, s32 b, s32 c, u16 d);
@@ -91,7 +91,7 @@ struct Node0214dd3c {
     u16 unk_36;
     static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     Node0214dd3c() {
-        func_ov000_02153f90(this);
+        MsgEntry_Init(this);
         unk_30 = 0;
         unk_32 = 0;
         unk_34 = 0;
@@ -152,7 +152,7 @@ Node0214dd3c *func_ov000_0214dd3c(List0214dd3c *self, s32 a, u16 id, u16 c, s32 
     m->id = id;
     m->unk_08 = c;
     m->unk_0c = d;
-    func_0204c6bc(out, func_0204c08c(LFLD(void *, data_ov000_021ccd24.unk_08, 0xbc), id, &out, 1), m, (void *)func_ov000_0214dc20);
+    Text_ScanTags(out, MsgRes_GetLines(LFLD(void *, data_ov000_021ccd24.unk_08, 0xbc), id, &out, 1), m, (void *)func_ov000_0214dc20);
     if (self->tail == NULL) {
         self->tail = m;
         self->head = m;

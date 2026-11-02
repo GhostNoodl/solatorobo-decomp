@@ -6,7 +6,7 @@
 extern "C" {
 
 extern Ov008Mgr *data_ov008_021d0500;
-void *func_0204b370(void *p);
+void *Camera_Ctor(void *p);
 void func_0204b420(void *p);
 void func_ov008_021cd500(Ov008Mgr *m);
 void func_ov008_021cd584(Ov008Mgr *m);
@@ -21,7 +21,7 @@ void func_ov008_021cd448(void) {
     }
     p = (Ov008Mgr *)Heap_Alloc(0x120);
     if (p != NULL) {
-        func_0204b370(&p->cam);
+        Camera_Ctor(&p->cam);
         func_ov008_021cd500(p);
     }
     data_ov008_021d0500 = p;
@@ -64,8 +64,8 @@ void func_ov008_021cd500(Ov008Mgr *m) {
 }
 
 void func_ov008_021cd584(Ov008Mgr *m) {
-    OV008_FREE_D(m->unk_c8, func_ov000_0218fee4);
-    OV008_FREE_D(m->unk_d0, func_ov000_0218fee4);
+    OV008_FREE_D(m->unk_c8, Model0218fe1c_FreeAnims);
+    OV008_FREE_D(m->unk_d0, Model0218fe1c_FreeAnims);
     OV008_FREE_M(m->unk_d8);
     OV008_FREE_M(m->unk_e0);
     OV008_FREE_M(m->unk_e8);
@@ -87,8 +87,8 @@ void func_ov008_021cd584(Ov008Mgr *m) {
         }
         data_02097dd0->cur = saved;
     }
-    OV008_FREE_D(m->unk_c4, func_ov000_0218ea20);
-    OV008_FREE_D(m->unk_cc, func_ov000_0218ea20);
+    OV008_FREE_D(m->unk_c4, ResSet_ReleaseAll);
+    OV008_FREE_D(m->unk_cc, ResSet_ReleaseAll);
     OV008_FREE_V(m->unk_d4, v04);
     OV008_FREE_V(m->unk_dc, v04);
     OV008_FREE_V(m->unk_e4, v04);
@@ -97,8 +97,8 @@ void func_ov008_021cd584(Ov008Mgr *m) {
     OV008_FREE_V(m->menu, v04);
     OV008_FREE_V(m->dialog, v04);
     OV008_FREE_V(m->talk, v04);
-    func_02036838(data_02097cdc, data_0208cca0, 7, 0);
-    func_02036838(data_02097cdc, data_0208cc94, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_0208cca0, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_0208cc94, 7, 0);
     func_ov000_0214bc10();
     func_ov000_0214c210();
 }
@@ -117,11 +117,11 @@ extern char data_ov008_021d04c5[];
 extern char data_ov008_021d04d1[];
 extern char data_ov008_021d04d9[];
 extern char data_ov008_021d04e1[];
-void *func_ov000_0218e9c4(void *p);
-BOOL func_ov000_0218f110(void *p);
-void func_0206e900(char *dst, const char *src);
-void func_0205a6a0(void *p);
-void func_0205a840(void *p, const char *a, const char *b);
+void *ResSet_Init(void *p);
+BOOL ResSet_UpdateLoad(void *p);
+void LangData_LocalizePath(char *dst, const char *src);
+void StageRes_Init(void *p);
+void StageRes_Open(void *p, const char *a, const char *b);
 BOOL StageRes_IsAllLoaded(void *p);
 void func_ov000_0214bb80(void);
 void func_ov000_0214c1ac(void);
@@ -154,7 +154,7 @@ static inline void Ov008_SetNameB(Ov008Anim *p, const char *a, const char *b) {
 static inline Ov008Anim *Ov008_NewMsg(void) {
     Ov008Anim *p = (Ov008Anim *)Heap_Alloc(0x138);
     if (p != NULL) {
-        p = (Ov008Anim *)func_ov000_0218e9c4(p);
+        p = (Ov008Anim *)ResSet_Init(p);
     }
     return p;
 }

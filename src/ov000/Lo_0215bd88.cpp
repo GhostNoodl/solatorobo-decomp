@@ -13,7 +13,7 @@ extern void *data_0208cb78;
 extern void *data_0208cc9c;
 VObj *func_ov000_02176208(void);
 
-void func_ov000_0215bd88(Lo021cadcc *self) {
+void Lo021cadcc_Setup(Lo021cadcc *self) {
     self->height = self->vfunc_44();
     if ((s32)self->title != 0 && self->model == NULL) {
         if (self->flag6 ? TRUE : FALSE) {
@@ -22,11 +22,11 @@ void func_ov000_0215bd88(Lo021cadcc *self) {
             self->model = new ModelObj(data_0208cb74, data_0208cca0);
         }
         {
-            ResList *a = func_02035d5c(self->model->name);
-            func_020417e0(self->model, func_02034d88(a, self->model->unk_04c));
+            ResList *a = ResMgr_GetArcList(self->model->name);
+            TexObj_SetRes(self->model, ResList_FindType2(a, self->model->unk_04c));
         }
         self->model->flags |= 2;
-        func_02041d9c(self->model, 0, 7);
+        TexObj_SelectImage(self->model, 0, 7);
     }
     if (self->flags & 0x10000) {
         self->posX = (0x100 - self->width) >> 1;

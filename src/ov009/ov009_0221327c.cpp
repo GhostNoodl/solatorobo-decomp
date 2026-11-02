@@ -18,8 +18,8 @@ void Ov009ActVt_02217d5c_StateDie(Ov009ActVt_02217d5c *self) {
         s44->unk_22_1 = 0;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x483f, 0x15);
         func_ov000_0218996c(10, 0x28);
-        func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
-        e = func_02065f88(5, &self->pos);
+        SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
+        e = Effect_SpawnId(5, &self->pos);
         e->SetScaleXYZ(0x7800, 0x7800, 0x7800);
         self->fsm->st++;
         break;
@@ -44,15 +44,15 @@ void Ov009ActVt_02217d5c_StateDie(Ov009ActVt_02217d5c *self) {
     }
     p.y += Rand_PlusMinus(self->height);
     p.z += Rand_PlusMinus(0x4000) + 0x3000;
-    e = func_02065f88(0x325, &p);
+    e = Effect_SpawnId(0x325, &p);
     e->SetRotXYZ(0, (u16)(self->rot_y + 0x8000), 0);
     e->SetScaleXYZ(0x1ccd, 0x1ccd, 0x1ccd);
     self->fsm->timer = 0;
 }
 
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 msg);
-extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
+extern void Actor_SendMsgU8(Ov003Actor *a, u16 id, s32 msg);
+extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 static inline Ov003Actor *Ov009_FindActor4(u16 id) {
@@ -82,11 +82,11 @@ void Ov009ActVt_02217d5c_State21(Ov009ActVt_02217d5c *self) {
         if (t > 0xb4) {
             Ov003Actor *a = Ov009_FindActor4(self->unk_f0);
             if (a != NULL) {
-                func_ov000_0218d46c(a, self->unk_f0, 0x15);
+                Actor_SendMsgU8(a, self->unk_f0, 0x15);
             }
             func_ov000_0218996c(0xf, 0x50);
-            func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
-            func_02065f88(5, &self->pos)->SetScaleXYZ(0x8000, 0x8000, 0x8000);
+            SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
+            Effect_SpawnId(5, &self->pos)->SetScaleXYZ(0x8000, 0x8000, 0x8000);
             self->fsm->timer = 0x29;
             self->fsm->st++;
             return;
@@ -98,9 +98,9 @@ void Ov009ActVt_02217d5c_State21(Ov009ActVt_02217d5c *self) {
             v.x = 0x1333;
             v.y = 0x2000;
             v.z = 0x7800;
-            func_ov000_0219b71c(&p, &v, 0x666, 0x1000, 3, 0x46);
+            Spawn_ScatterEffect(&p, &v, 0x666, 0x1000, 3, 0x46);
             func_ov000_0218996c(8, 8);
-            func_02049a48(data_02097e4c, 0x35, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
         }
         VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
         break;

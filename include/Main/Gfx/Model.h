@@ -32,12 +32,12 @@ typedef struct ModelPos {
     s32 y;
 } ModelPos;
 
-// 3D model instance (built by func_02041440, torn down by func_02041558).
+// 3D model instance (built by TexObj_Init, torn down by TexObj_Release).
 typedef struct Model {
     /* 0x000 */ u8 unk_000[0x28];
     /* 0x028 */ ModelRes *res;
     /* 0x02c */ char name[0x20];
-    /* 0x04c */ char unk_04c[0x20]; // file name (the name argument of func_02041440)
+    /* 0x04c */ char unk_04c[0x20]; // file name (the name argument of TexObj_Init)
     /* 0x06c */ u32 flags;
     /* 0x070 */ u8 unk_070[8];
     /* 0x078 */ ModelPart *parts;
@@ -59,7 +59,7 @@ typedef struct Model {
     /* 0x104 */ u8 unk_104[8];
     /* 0x10c */ s32 unk_10c;
     /* 0x110 */ s32 unk_110;
-    /* 0x114 */ MtxFx22 mtx[3]; // identity after func_02041440
+    /* 0x114 */ MtxFx22 mtx[3]; // identity after TexObj_Init
     /* 0x144 */ s32 unk_144;
     /* 0x148 */ s32 unk_148;
     /* 0x14c */ s32 unk_14c;
@@ -70,11 +70,11 @@ typedef struct Model {
     /* 0x15c */ u8 unk_15c[4];
 } Model; // size 0x160
 
-extern void func_02041440(Model *model, const char *name, int a);
-extern void func_02041558(Model *model);
-extern void func_020417e0(Model *model, void *res);
-extern void func_02041d9c(Model *model, int a, int b);
-extern void func_02042628(Model *model, void *tex, ModelPart *part, u8 a);
+extern void TexObj_Init(Model *model, const char *name, int a);
+extern void TexObj_Release(Model *model);
+extern void TexObj_SetRes(Model *model, void *res);
+extern void TexObj_SelectImage(Model *model, int a, int b);
+extern void TexObj_DrawCell(Model *model, void *tex, ModelPart *part, u8 a);
 // Game-side views of two nnsys/g2d/g2d_Load.h functions. The SDK takes a u16 index and typed banks;
 // these callers pass the index at full width, and declaring it u16 adds a truncation to nine functions
 // (SlidePanel, TextWin, seven ov000 TUs). So this header and g2d_Load.h cannot be included together.

@@ -21,13 +21,13 @@ extern u8 data_ov000_021ca320[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_02191ec4(void *a, s32 b, u32 c);
 int func_02043d9c(void *p);
-void func_ov000_02190758(void *model, void *rot, s32 a);
-BOOL func_ov000_021903b4(void *model);
+void Obj02190758_SetRot(void *model, void *rot, s32 a);
+BOOL Model021903b4_Draw(void *model);
 void NNS_G3dRenderObjSetInitFunc(void *obj, void *fn);
 void Ov003SlotUser_StartCapture(void *p);
 void func_ov000_021b4130(Robo021ca458 *self, BOOL a);
-void func_ov000_021bd7a0(void *p);
-void func_ov000_02191c24(void *shadow, void *pos);
+void ActorMarker_Draw(void *p);
+void Shadow_Draw(void *shadow, void *pos);
 void func_ov000_02167fac(Lo021cb6f0 *self, s32 a, s32 b);
 
 static inline Actor *FindActor_0219d9fc(u16 id) {
@@ -204,16 +204,16 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
     u8 alpha = Begin_0219d9fc();
     if (self->unk_b24_2) {
         self->mdl1.trans = self->unk_75c;
-        func_ov000_02190758(&self->mdl1, (u8 *)self + 0x76c, 1);
+        Obj02190758_SetRot(&self->mdl1, (u8 *)self + 0x76c, 1);
         self->mdl1.alpha = 0x1f;
         self->mdl1.polyId = alpha;
-        if (func_ov000_021903b4(&self->mdl1)) {
+        if (Model021903b4_Draw(&self->mdl1)) {
             res = 1;
         }
         self->mdl0.trans = self->pos;
-        func_ov000_02190758(&self->mdl0, (u8 *)self + 0x7c, 1);
+        Obj02190758_SetRot(&self->mdl0, (u8 *)self + 0x7c, 1);
         self->mdl0.polyId = alpha;
-        func_ov000_021903b4(&self->mdl0);
+        Model021903b4_Draw(&self->mdl0);
         h = self->hit0.check.y;
     } else {
     if (self->unk_b24_1) {
@@ -251,9 +251,9 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
             }
         }
         self->mdl1.trans = p;
-        func_ov000_02190758(&self->mdl1, (u8 *)self + 0x76c, 1);
+        Obj02190758_SetRot(&self->mdl1, (u8 *)self + 0x76c, 1);
         self->mdl1.polyId = alpha;
-        if (func_ov000_021903b4(&self->mdl1)) {
+        if (Model021903b4_Draw(&self->mdl1)) {
             res = 1;
         }
         h = self->hit1.check.y;
@@ -268,7 +268,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
     } else {
         if (!PadB9_0219d9fc() && RgbEq_0219d9fc(data_ov000_021ccd54, (RgbEq_0219d9fcSelf *)self)) {
             self->mdl1.trans = self->unk_75c;
-            func_ov000_02190758(&self->mdl1, (u8 *)self + 0x76c, 1);
+            Obj02190758_SetRot(&self->mdl1, (u8 *)self + 0x76c, 1);
             self->mdl1.alpha = 0x1f;
             self->mdl1.polyId = alpha;
             if (self->unk_b22_0) {
@@ -277,7 +277,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
                 NNS_G3dRenderObjSetInitFunc((u8 *)self + 0x38c, (void *)Ov003SlotUser_StartCapture);
                 self->mdl1.unk_c2 |= 0x20;
             }
-            if (func_ov000_021903b4(&self->mdl1)) {
+            if (Model021903b4_Draw(&self->mdl1)) {
                 res = 1;
             }
         } else {
@@ -291,14 +291,14 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
         }
         if (!self->unk_93_0) {
             self->mdl0.trans = self->pos;
-            func_ov000_02190758(&self->mdl0, (u8 *)self + 0x7c, 1);
+            Obj02190758_SetRot(&self->mdl0, (u8 *)self + 0x7c, 1);
         }
         self->mdl0.polyId = alpha;
-        if (func_ov000_021903b4(&self->mdl0) && self->unk_b24_21) {
+        if (Model021903b4_Draw(&self->mdl0) && self->unk_b24_21) {
             self->mdl2.trans = self->unk_9dc;
             MI_Copy36B((u8 *)self + 0x9b8, (u8 *)self + 0x7fc);
             self->mdl2.polyId = alpha;
-            func_ov000_021903b4(&self->mdl2);
+            Model021903b4_Draw(&self->mdl2);
         }
         h = self->hit0.check.y;
         if (self->unk_b24_5) {
@@ -318,9 +318,9 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
     {
         FieldState *g = data_ov000_021ccd54;
         if (IsIdle_0219d9fc(g) && !HasD4B_0219d9fc(g)) {
-            func_ov000_021bd7a0(self->unk_5c);
-            func_ov000_021bd7a0(self->unk_9b0);
-            func_ov000_021bd7a0(self->unk_9b4);
+            ActorMarker_Draw(self->unk_5c);
+            ActorMarker_Draw(self->unk_9b0);
+            ActorMarker_Draw(self->unk_9b4);
         }
     }
     }
@@ -334,9 +334,9 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
             w.x = self->mdl0.trans.x;
             w.y = self->mdl0.trans.y;
             w.z = self->mdl0.trans.z;
-            func_ov000_02191c24(self->unk_3c, &w);
+            Shadow_Draw(self->unk_3c, &w);
         } else {
-            func_ov000_02191c24(self->unk_3c, &self->pos);
+            Shadow_Draw(self->unk_3c, &self->pos);
         }
     }
     if (self->unk_b22_0 && self->unk_998 != NULL && res >= 0 && self->mdl1.visible) {
@@ -377,7 +377,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
             MTX_Concat33(&mm, (const MtxFx33 *)((u8 *)self + 0xab0), &mm);
             MI_Copy36B(&mm, ((u8 *)self->unk_998) + 0x84);
             LFLD(u8, self->unk_998, 0xc1) = alpha;
-            func_ov000_021903b4(self->unk_998);
+            Model021903b4_Draw(self->unk_998);
         }
         if (self->unk_9ac < self->unk_9ae) {
             if (self->unk_b24_1) {

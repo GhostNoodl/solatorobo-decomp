@@ -17,10 +17,10 @@ typedef struct {
 
 extern "C" {
 
-BOOL func_ov000_0218d17c(Obj0219d538 *self);
+BOOL Actor_IsActive(Obj0219d538 *self);
 
-BOOL func_ov000_0219d538(Obj0219d538 *self) {
-    BOOL r = func_ov000_0218d17c(self);
+BOOL Robo021ca458_IsActive(Obj0219d538 *self) {
+    BOOL r = Actor_IsActive(self);
     if (!r) {
         return r;
     }

@@ -75,7 +75,7 @@ static inline void RotYXZ(MtxFx33 *m, const u16 *rot) {
     }
 }
 
-void func_ov000_02190758(Obj02190758 *self, const u16 *rot, BOOL order) {
+void Obj02190758_SetRot(Obj02190758 *self, const u16 *rot, BOOL order) {
     if (order == 0) {
         RotZYX(&self->mtx, rot);
     } else {

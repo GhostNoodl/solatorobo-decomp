@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern u8 *func_0206ede8(u16 id);
+extern u8 *Param_GetEntry(u16 id);
 
 #define STAGE_ITEM_NONE 0xffff
 
@@ -14,7 +14,7 @@ static inline u16 StageFlags_ItemIdx(u32 id) {
     return id & 0xfff;
 }
 
-// `used` is a BOOL here but a u8 parameter of func_0206d0d4; that mix gives the target's load order of the two stack arguments.
+// `used` is a BOOL here but a u8 parameter of StageFlags_AddEntry; that mix gives the target's load order of the two stack arguments.
 static inline void StageFlags_SetEntryBits(StageFlags *f, s32 i, u8 x, u8 y, u8 rot, BOOL used) {
     f->entries[i].bits.a = x;
     f->entries[i].bits.b = y;
@@ -22,7 +22,7 @@ static inline void StageFlags_SetEntryBits(StageFlags *f, s32 i, u8 x, u8 y, u8 
     f->entries[i].bits.used = used;
 }
 
-BOOL func_0206d0d4(StageFlags *f, u16 id, u8 x, u8 y, u8 rot, u8 used) {
+BOOL StageFlags_AddEntry(StageFlags *f, u16 id, u8 x, u8 y, u8 rot, u8 used) {
     s32 i;
     BOOL ok;
     ok = TRUE;
@@ -39,7 +39,7 @@ BOOL func_0206d0d4(StageFlags *f, u16 id, u8 x, u8 y, u8 rot, u8 used) {
     } else {
         f->entries[i].id = id;
         StageFlags_SetEntryBits(f, i, x, y, rot, used);
-        if (*func_0206ede8(id) != 0x80) {
+        if (*Param_GetEntry(id) != 0x80) {
             f->itemTotal++;
         }
     }
@@ -63,7 +63,7 @@ u8 func_0206d204(StageFlags *f, BOOL consume) {
     for (i = 0; i < STAGE_ITEM_ENTRY_MAX; i++) {
         StageItemEntry *e = &f->entries[i];
         if (e->id != STAGE_ITEM_NONE && !e->bits.used) {
-            u8 *info = func_0206ede8(e->id);
+            u8 *info = Param_GetEntry(e->id);
             if (info[0] == 4) {
                 total += info[2];
                 if (consume) {
@@ -84,7 +84,7 @@ u8 func_0206d204(StageFlags *f, BOOL consume) {
 }
 
 s32 func_0206d2a4(StageFlags *f, u16 id, u8 n) {
-    if (*func_0206ede8(id) == 0x80) {
+    if (*Param_GetEntry(id) == 0x80) {
         return -1;
     }
     f->items[(u16)(id & 0xfff)] = n;
@@ -94,7 +94,7 @@ s32 func_0206d2a4(StageFlags *f, u16 id, u8 n) {
 s32 func_0206d2ec(StageFlags *f, u16 id, u32 n) {
     u16 idx;
     s32 v;
-    if (*func_0206ede8(id) == 0x80) {
+    if (*Param_GetEntry(id) == 0x80) {
         return -1;
     }
     if (n + data_0214a424->itemTotal > 100) {

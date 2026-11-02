@@ -16,7 +16,7 @@ extern void func_02035670(ResLoader *loader);
 extern void func_0203584c(ResLoader *loader);
 extern void func_020363d8(ResMgr *mgr);
 extern void func_020381cc(ResMgr *mgr, ResNode *node);
-extern void *func_02038284(ResMgr *mgr, const char *path, u32 size, void *buf);
+extern void *ResMgr_ReadFile(ResMgr *mgr, const char *path, u32 size, void *buf);
 extern void NNS_G2dFontInitAuto(void *out, void *data);
 extern void func_02036cd8(ResMgr *mgr, ResNode *node);
 extern void func_02036de0(ResMgr *mgr, ResNode *node);
@@ -51,27 +51,27 @@ extern void Heap_FreeLo(void *ptr);
 extern BOOL func_02046e28(void *arg);
 
 
-extern ResNode *func_0203657c(ResMgr *mgr, const char *name, int type);
-extern void func_02036720(ResMgr *mgr, ResNode *node, int arg);
-extern ResNode *func_02036860(ResMgr *mgr, const char *name, const char *arcName, int type, u8 toFront);
-extern void func_02036b30(ResMgr *mgr, ResNode *node);
+extern ResNode *ResMgr_Find(ResMgr *mgr, const char *name, int type);
+extern void ResMgr_ReleaseNode(ResMgr *mgr, ResNode *node, int arg);
+extern ResNode *ResMgr_Request(ResMgr *mgr, const char *name, const char *arcName, int type, u8 toFront);
+extern void ResMgr_LoadNode(ResMgr *mgr, ResNode *node);
 extern void Sys_WaitVBlank(UnkSys *sys);
 
-extern void *func_02034b98(ResList *list, const char *name);
-extern void *func_02034ec0(ResList *list, const char *name);
-extern void *func_02034f5c(ResList *list, const char *name);
-extern void *func_02034ff8(ResList *list, const char *name);
+extern void *ResList_FindType0(ResList *list, const char *name);
+extern void *ResList_FindType4(ResList *list, const char *name);
+extern void *ResList_FindType5(ResList *list, const char *name);
+extern void *ResList_FindType6(ResList *list, const char *name);
 
 ResList *func_02035934(const char *name) {
     ResList *result = NULL;
-    ResNode *node = func_02036860(data_02097cdc, name, NULL, 7, 1);
+    ResNode *node = ResMgr_Request(data_02097cdc, name, NULL, 7, 1);
     ResMgr *mgr;
     if (node != NULL) {
         mgr = data_02097cdc;
-        func_02036b30(mgr, node);
+        ResMgr_LoadNode(mgr, node);
         if (node->state != 7) {
             while (TRUE) {
-                func_02036b30(mgr, node);
+                ResMgr_LoadNode(mgr, node);
                 if (node->state == 5) {
                     break;
                 }
@@ -85,12 +85,12 @@ ResList *func_02035934(const char *name) {
     return result;
 }
 
-ResNode *func_020359d0(const char *name, int type, u8 toFront) {
-    return func_02036860(data_02097cdc, name, NULL, type, toFront);
+ResNode *ResMgr_Load(const char *name, int type, u8 toFront) {
+    return ResMgr_Request(data_02097cdc, name, NULL, type, toFront);
 }
 
-void func_020359fc(const char *name, const char *arcName, u16 id, u8 toFront) {
-    ResNode *node = func_02036860(data_02097cdc, name, arcName, id, toFront);
+void ResMgr_LoadArchive(const char *name, const char *arcName, u16 id, u8 toFront) {
+    ResNode *node = ResMgr_Request(data_02097cdc, name, arcName, id, toFront);
     if (node == NULL) {
         return;
     }
@@ -117,27 +117,27 @@ void ResMgr_ReleaseList(ResList *list) {
         }
     }
     if (node != NULL) {
-        func_02036720(mgr, node, 0);
+        ResMgr_ReleaseNode(mgr, node, 0);
     }
 }
 
-void func_02035acc(const char *name, const char *arcName, u16 id) {
+void ResMgr_ReleaseArchive(const char *name, const char *arcName, u16 id) {
     ResNode *node = ResMgr_FindArchive(data_02097cdc, name, arcName, id);
     if (node != NULL) {
-        func_02036720(data_02097cdc, node, 0);
+        ResMgr_ReleaseNode(data_02097cdc, node, 0);
     }
 }
 
-BOOL func_02035b90(const char *name, int type) {
+BOOL ResMgr_IsLoaded(const char *name, int type) {
     BOOL result = FALSE;
-    ResNode *node = func_0203657c(data_02097cdc, name, type);
+    ResNode *node = ResMgr_Find(data_02097cdc, name, type);
     if (node == NULL || node->state == 5) {
         result = TRUE;
     }
     return result;
 }
 
-BOOL func_02035bd4(const char *name, const char *arcName, u16 id) {
+BOOL ResMgr_IsArchiveLoaded(const char *name, const char *arcName, u16 id) {
     BOOL result = FALSE;
     ResNode *node = ResMgr_FindArchive(data_02097cdc, name, arcName, id);
     if (node == NULL || node->state == 5) {
@@ -149,7 +149,7 @@ BOOL func_02035bd4(const char *name, const char *arcName, u16 id) {
 #define RES_MGR_GET_DATA(func, kind)                                \
     void *func(const char *name) {                                  \
         void *result = NULL;                                        \
-        ResNode *node = func_0203657c(data_02097cdc, name, kind);   \
+        ResNode *node = ResMgr_Find(data_02097cdc, name, kind);   \
         if (node != NULL) {                                         \
             result = node->u.data;                                  \
         }                                                           \
@@ -161,9 +161,9 @@ RES_MGR_GET_DATA(func_02035ccc, 4)
 RES_MGR_GET_DATA(func_02035cfc, 5)
 RES_MGR_GET_DATA(func_02035d2c, 6)
 
-ResList *func_02035d5c(const char *name) {
+ResList *ResMgr_GetArcList(const char *name) {
     ResList *result = NULL;
-    ResNode *node = func_0203657c(data_02097cdc, name, 7);
+    ResNode *node = ResMgr_Find(data_02097cdc, name, 7);
     if (node != NULL) {
         result = node->u.arc.list;
     }
@@ -174,7 +174,7 @@ ResList *func_02035d5c(const char *name) {
     void *func(const char *arcName, const char *name) {             \
         void *result = NULL;                                        \
         ResList *list = NULL;                                       \
-        ResNode *node = func_0203657c(data_02097cdc, arcName, 7);   \
+        ResNode *node = ResMgr_Find(data_02097cdc, arcName, 7);   \
         if (node != NULL) {                                         \
             list = node->u.arc.list;                                \
         }                                                           \
@@ -184,13 +184,13 @@ ResList *func_02035d5c(const char *name) {
         return result;                                              \
     }
 
-RES_MGR_GET_ARC_DATA(func_02035d8c, func_02034b98)
-RES_MGR_GET_ARC_DATA(func_02035de0, func_02034d88)
-RES_MGR_GET_ARC_DATA(func_02035e34, func_02034ec0)
-RES_MGR_GET_ARC_DATA(func_02035e88, func_02034f5c)
-RES_MGR_GET_ARC_DATA(func_02035edc, func_02034ff8)
+RES_MGR_GET_ARC_DATA(func_02035d8c, ResList_FindType0)
+RES_MGR_GET_ARC_DATA(func_02035de0, ResList_FindType2)
+RES_MGR_GET_ARC_DATA(func_02035e34, ResList_FindType4)
+RES_MGR_GET_ARC_DATA(func_02035e88, ResList_FindType5)
+RES_MGR_GET_ARC_DATA(func_02035edc, ResList_FindType6)
 
-ResList *func_02035f30(const char *name, const char *arcName, u16 id) {
+ResList *ResMgr_GetArchiveList(const char *name, const char *arcName, u16 id) {
     ResList *result = NULL;
     ResNode *node = ResMgr_FindArchive(data_02097cdc, name, arcName, id);
     if (node != NULL) {
@@ -228,10 +228,10 @@ ResList *func_02035f30(const char *name, const char *arcName, u16 id) {
     return result; \
 }
 
-RES_MGR_GET_NAMED_ARC_DATA(func_02035fe8, func_02034b98, 0)
-RES_MGR_GET_NAMED_ARC_DATA(func_020360b8, func_02034d88, 2)
-RES_MGR_GET_NAMED_ARC_DATA(func_02036188, func_02034ec0, 4)
-RES_MGR_GET_NAMED_ARC_DATA(func_02036258, func_02034ff8, 6)
+RES_MGR_GET_NAMED_ARC_DATA(func_02035fe8, ResList_FindType0, 0)
+RES_MGR_GET_NAMED_ARC_DATA(func_020360b8, ResList_FindType2, 2)
+RES_MGR_GET_NAMED_ARC_DATA(func_02036188, ResList_FindType4, 4)
+RES_MGR_GET_NAMED_ARC_DATA(func_02036258, ResList_FindType6, 6)
 
 BOOL func_02036328(void) {
     BOOL result = FALSE;
@@ -298,18 +298,18 @@ void func_020364c0(ResMgr *mgr) {
     }
     node = ResMgr_FindState(mgr, 4);
     if (node != NULL) {
-        func_02036b30(mgr, node);
+        ResMgr_LoadNode(mgr, node);
         if (node->state == 4) {
             return;
         }
     }
     node = ResMgr_FindState(mgr, 2);
     if (node != NULL) {
-        func_02036b30(mgr, node);
+        ResMgr_LoadNode(mgr, node);
     }
 }
 
-ResNode *func_0203657c(ResMgr *mgr, const char *name, int type) {
+ResNode *ResMgr_Find(ResMgr *mgr, const char *name, int type) {
     u16 hash;
     ResNode *node;
     if (name == NULL) {
@@ -380,7 +380,7 @@ static inline void ResMgr_StopLoading(ResMgr *mgr) {
     func_0203584c(mgr->loader);
 }
 
-void func_02036720(ResMgr *mgr, ResNode *node, BOOL force) {
+void ResMgr_ReleaseNode(ResMgr *mgr, ResNode *node, BOOL force) {
     ResNode *prev;
     ResNode *next;
     if (!force) {
@@ -407,14 +407,14 @@ void func_02036720(ResMgr *mgr, ResNode *node, BOOL force) {
     ResMgr_FreeNode(mgr, node);
 }
 
-void func_02036838(ResMgr *mgr, const char *name, int type, BOOL force) {
-    ResNode *node = func_0203657c(mgr, name, type);
+void ResMgr_ReleaseByName(ResMgr *mgr, const char *name, int type, BOOL force) {
+    ResNode *node = ResMgr_Find(mgr, name, type);
     if (node != NULL) {
-        func_02036720(mgr, node, force);
+        ResMgr_ReleaseNode(mgr, node, force);
     }
 }
 
-ResNode *func_02036860(ResMgr *mgr, const char *name, const char *arcName, int type, u8 toFront) {
+ResNode *ResMgr_Request(ResMgr *mgr, const char *name, const char *arcName, int type, u8 toFront) {
     BOOL kick;
     ResNode *node;
     ResNode *loading;
@@ -423,7 +423,7 @@ ResNode *func_02036860(ResMgr *mgr, const char *name, const char *arcName, int t
         return NULL;
     }
     if (arcName == NULL) {
-        node = func_0203657c(mgr, name, type);
+        node = ResMgr_Find(mgr, name, type);
     } else {
         hash = 0;
         node = data_02097cdc->tail;
@@ -499,7 +499,7 @@ ResNode *func_02036860(ResMgr *mgr, const char *name, const char *arcName, int t
     return node;
 }
 
-void func_02036b30(ResMgr *mgr, ResNode *node) {
+void ResMgr_LoadNode(ResMgr *mgr, ResNode *node) {
     if (node->state == 2 && mgr->loadStep <= 0) {
         mgr->loadStep = 0;
         node->state = 4;
@@ -508,7 +508,7 @@ void func_02036b30(ResMgr *mgr, ResNode *node) {
     case 0:
         switch (mgr->loadStep) {
         case 0:
-            node->u.data[0] = func_02038284(mgr, node->name, 0, 0);
+            node->u.data[0] = ResMgr_ReadFile(mgr, node->name, 0, 0);
             if (node->u.data[0] != NULL) {
                 mgr->loadStep++;
                 return;
@@ -557,7 +557,7 @@ void func_02036cd8(ResMgr *mgr, ResNode *node) {
     case 0:
         STD_CopyString(path, node->name);
         STD_ConcatenateString(path, data_0208b354);
-        node->u.data[0] = func_02038284(mgr, path, 0, 0);
+        node->u.data[0] = ResMgr_ReadFile(mgr, path, 0, 0);
         if (node->u.data[0] != NULL) {
             mgr->loadStep++;
             return;
@@ -584,7 +584,7 @@ static inline bool ResMgr_IsReadDone(ResMgr *mgr) {
 #define RES_LOAD_FIRST(slot, ext)                                   \
     STD_CopyString(path, node->name);                                \
     STD_ConcatenateString(path, ext);                                       \
-    node->u.data[slot] = func_02038284(mgr, path, 0, 0);            \
+    node->u.data[slot] = ResMgr_ReadFile(mgr, path, 0, 0);            \
     if (node->u.data[slot] != NULL) {                               \
         mgr->loadStep++;                                            \
         return;                                                     \
@@ -595,7 +595,7 @@ static inline bool ResMgr_IsReadDone(ResMgr *mgr) {
 #define RES_LOAD_PART(slot, ext, nextStep)                          \
     STD_CopyString(path, node->name);                                \
     STD_ConcatenateString(path, ext);                                       \
-    node->u.data[slot] = func_02038284(mgr, path, 0, 0);            \
+    node->u.data[slot] = ResMgr_ReadFile(mgr, path, 0, 0);            \
     if (node->u.data[slot] != NULL) {                               \
         mgr->loadStep++;                                            \
     } else {                                                        \
@@ -619,7 +619,7 @@ void func_02036de0(ResMgr *mgr, ResNode *node) {
         node->u.data[10] = NULL;
         STD_CopyString(path, node->name);
         STD_ConcatenateString(path, data_0208b35a);
-        node->u.data[0] = func_02038284(mgr, path, 0, 0);
+        node->u.data[0] = ResMgr_ReadFile(mgr, path, 0, 0);
         if (node->u.data[0] != NULL) {
             mgr->loadStep++;
             return;
@@ -667,7 +667,7 @@ void func_02036de0(ResMgr *mgr, ResNode *node) {
     case 40:
         STD_CopyString(path, node->name);
         STD_ConcatenateString(path, data_0208b372);
-        node->u.data[8] = func_02038284(mgr, path, 0, 0);
+        node->u.data[8] = ResMgr_ReadFile(mgr, path, 0, 0);
         if (node->u.data[8] != NULL) {
             mgr->loadStep++;
             return;
@@ -760,7 +760,7 @@ RES_LOAD_SINGLE(func_02037640, data_0208b385)
 #define RES_LOAD_OPTIONAL(slot, ext, nextStep)                      \
     STD_CopyString(path, node->name);                                \
     STD_ConcatenateString(path, ext);                                       \
-    node->u.data[slot] = func_02038284(mgr, path, 0, 0);            \
+    node->u.data[slot] = ResMgr_ReadFile(mgr, path, 0, 0);            \
     if (node->u.data[slot] == NULL) {                               \
         mgr->loadStep = nextStep;                                   \
         return;                                                     \
@@ -824,8 +824,8 @@ extern ResList *ResList_Init(ResList *list);
 extern void func_02035094(ResList *list, ResRequest *req);
 extern BOOL func_02035740(ResLoader *loader, ResRequest *req);
 extern void func_0203581c(ResLoader *loader);
-extern u8 *func_02035890(ResRing *ring);
-extern u32 func_02035904(ResRing *ring);
+extern u8 *ResRing_GetReadPtr(ResRing *ring);
+extern u32 ResRing_GetReadSize(ResRing *ring);
 extern BOOL FS_SeekFile(FSFile *file, int offset, u32 whence);
 
 static inline BOOL ResName_Match(const char *a, const char *b) {
@@ -860,7 +860,7 @@ BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
         STD_CopyString(path, node->name);
         STD_ConcatenateString(path, data_0208b3af);
         req->unk_04 = (u32)Heap_AllocLo(8, 4);
-        if (func_02038284(mgr, path, 8, (void *)req->unk_04) != NULL) {
+        if (ResMgr_ReadFile(mgr, path, 8, (void *)req->unk_04) != NULL) {
             again = TRUE;
             mgr->loadStep = 1;
         } else {
@@ -874,7 +874,7 @@ BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
         }
         size = ((ResArcHeader *)req->unk_04)->count << 5;
         req->entries = (ResFileEntry *)Heap_AllocHi(size, -4);
-        if (func_02038284(mgr, NULL, size, req->entries) != NULL) {
+        if (ResMgr_ReadFile(mgr, NULL, size, req->entries) != NULL) {
             mgr->loadStep = 3;
             again = TRUE;
         } else {
@@ -939,18 +939,18 @@ BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
             loader->ring.readPos = 0;
             loader->ring.writePos = 0;
             ring = &loader->ring;
-            buf = func_02035890(ring);
+            buf = ResRing_GetReadPtr(ring);
             if (buf == NULL) {
                 break;
             }
-            func_02038284(mgr, NULL, func_02035904(ring), buf);
+            ResMgr_ReadFile(mgr, NULL, ResRing_GetReadSize(ring), buf);
             if (func_02035740(mgr->loader, req)) {
                 mgr->loadStep = 30;
                 again = TRUE;
             } else {
                 mgr->loadStep = 20;
             }
-        } else if (func_02038284(mgr, NULL, size, req->data) != NULL) {
+        } else if (ResMgr_ReadFile(mgr, NULL, size, req->data) != NULL) {
             mgr->loadStep = 10;
             again = TRUE;
         } else {
@@ -978,28 +978,28 @@ BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
             break;
         }
         loader = mgr->loader;
-        loader->ring.readPos += func_02035904(&loader->ring);
-        size = func_02035904(&loader->ring);
+        loader->ring.readPos += ResRing_GetReadSize(&loader->ring);
+        size = ResRing_GetReadSize(&loader->ring);
         if (size == 0) {
             mgr->loadStep = 40;
             again = TRUE;
             break;
         }
-        buf = func_02035890(&loader->ring);
+        buf = ResRing_GetReadPtr(&loader->ring);
         if (buf == NULL) {
             mgr->loadStep = 31;
             break;
         }
-        func_02038284(mgr, NULL, size, buf);
+        ResMgr_ReadFile(mgr, NULL, size, buf);
         break;
     }
     case 31: {
         ResLoader *loader = mgr->loader;
-        u8 *buf = func_02035890(&loader->ring);
+        u8 *buf = ResRing_GetReadPtr(&loader->ring);
         if (buf == NULL) {
             break;
         }
-        func_02038284(mgr, NULL, func_02035904(&loader->ring), buf);
+        ResMgr_ReadFile(mgr, NULL, ResRing_GetReadSize(&loader->ring), buf);
         mgr->loadStep = 30;
         break;
     }

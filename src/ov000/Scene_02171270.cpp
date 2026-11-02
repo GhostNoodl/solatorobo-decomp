@@ -63,7 +63,7 @@ void func_ov000_02171270(ListBuffer021cb940 *self) {
         func_ov000_0216d14c(self->unk_50);
     }
     if (self->unk_54 != NULL) {
-        func_ov000_0216df28(self->unk_54);
+        LoTimer_Draw(self->unk_54);
     }
     if (self->unk_58 != NULL) {
         self->unk_58->vfunc_10();

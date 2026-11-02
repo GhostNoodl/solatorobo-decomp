@@ -7,7 +7,7 @@
 extern "C" {
 
 void func_ov000_021b1a54(u8 *self, BOOL flag);
-void func_0203f364(void *p);
+void HitSphere_Unlink_0203f364(void *p);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 
 static inline s32 Dist0219ff8c(Robo021ca458 *self) {
@@ -24,7 +24,7 @@ static inline s32 Dist0219ff8c(Robo021ca458 *self) {
     return (s32)(REG_SQRT_RESULT + 1) >> 1;
 }
 
-void func_ov000_0219ff8c(Robo021ca458 *self) {
+void Robo021ca458_UpdateMode3(Robo021ca458 *self) {
     self->padCur = 0;
     self->padTrig = 0;
     self->padRelease = 0;
@@ -50,7 +50,7 @@ void func_ov000_0219ff8c(Robo021ca458 *self) {
         {
             ActorSub48 *p = self->hit;
             p->unk_9a_3 = 0;
-            func_0203f364(p);
+            HitSphere_Unlink_0203f364(p);
         }
         switch (self->unk_b28_0) {
         case 1:

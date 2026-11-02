@@ -150,7 +150,7 @@ struct Ov008SprSeq {
     u16 **unk_0c;
 };
 
-// ov000 model resource (0x138 bytes, func_ov000_0218e9c4).
+// ov000 model resource (0x138 bytes, ResSet_Init).
 struct Ov008Anim {
     s16 unk_00;
     u8 unk_02;
@@ -163,13 +163,13 @@ struct Ov008Anim {
 };
 OV008_SIZE(Ov008Anim, 0x138);
 
-// What func_ov000_02190a30 returns for a model.
+// What Model0218fe1c_GetAnimCtrl returns for a model.
 struct Ov008MdlAnm {
     u8 unk_00[0x112];
     s16 unk_112;
 };
 
-// ov000 model (0xe8 bytes, func_ov000_0218fe1c).
+// ov000 model (0xe8 bytes, Model0218fe1c_Init).
 struct Ov008Model {
     u8 unk_00[0xb4];
     s16 unk_b4;
@@ -187,7 +187,7 @@ public:
 };
 OV008_SIZE(Ov008Pic, 0x4c);
 
-// Picture subclass (0xc4 bytes, vtable data_0208bf54, func_0205a6a0).
+// Picture subclass (0xc4 bytes, vtable data_0208bf54, StageRes_Init).
 class Ov008PicC4 : public Ov008Pic {
 public:
     u8 unk_4c[0x70];
@@ -220,7 +220,7 @@ struct Ov008Panel {
 };
 OV008_SIZE(Ov008Panel, 0x6c);
 
-// Camera (0xbc bytes, func_0204b370).
+// Camera (0xbc bytes, Camera_Ctor).
 class Ov008Cam : public Ov008V {
 public:
     u8 unk_04[0xc];
@@ -241,7 +241,7 @@ struct Ov008ItemFlags {
     u16 rest : 15;
 };
 
-// ov000 list-menu item (0x34 bytes, func_ov000_02153f90).
+// ov000 list-menu item (0x34 bytes, MsgEntry_Init).
 struct Ov008Item {
     s32 unk_00;
     s16 serial; // serial number from the menu's unk_9c
@@ -372,7 +372,7 @@ struct Ov008Save {
     u8 *unk_4c;
 };
 
-// What func_ov000_021824d0 returns.
+// What SceneStage_GetScript returns.
 struct Ov008Chr {
     u8 unk_00[0xc6];
     u16 unk_c6;
@@ -434,7 +434,7 @@ extern "C" {
 #define OV008_FREE_V(field, slot) OV008_FREE(field, Ov008V *, p_->slot())
 #define OV008_FREE_D(field, dtor) OV008_FREE(field, void *, (dtor(p_), Heap_Free(p_)))
 #define OV008_FREE_M(field) \
-    OV008_FREE(field, Model *, (func_02041558(p_), func_02041278(&p_->pltt), Heap_Free(p_)))
+    OV008_FREE(field, Model *, (TexObj_Release(p_), PlttRes_Release(&p_->pltt), Heap_Free(p_)))
 
 static inline void Ov008_DrawModel(Model *m) {
     ModelPart *anim;
@@ -454,7 +454,7 @@ static inline void Ov008_DrawModel(Model *m) {
         Ov008SprSeq *e = (Ov008SprSeq *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0);
         arg = NNS_G2dGetCellDataByIdx(res->texRes, **e->unk_0c);
     }
-    func_02042628(m, arg, anim, 0);
+    TexObj_DrawCell(m, arg, anim, 0);
 }
 
 static inline void *Ov008_GetTex(Model *m, ModelRes *res, ModelPart *anim) {
@@ -468,7 +468,7 @@ static inline void Ov008_DrawModel2(Model *m) {
     ModelRes *res = m->res;
     if (res != NULL) {
         ModelPart *anim = 0 >= m->numParts ? NULL : m->parts;
-        func_02042628(m, Ov008_GetTex(m, res, anim), anim, 0);
+        TexObj_DrawCell(m, Ov008_GetTex(m, res, anim), anim, 0);
     }
 }
 

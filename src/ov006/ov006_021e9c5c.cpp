@@ -22,9 +22,9 @@ extern u16 data_ov006_021eb894[];
 extern void *data_02097e4c;
 
 s32 func_ov000_0219a5c8(Actor *self, u16 mask, const VecFx32 *pos, Rot16 *rot, s32 r, s32 a, void **list);
-Actor *func_ov000_021985c0(void *p);
-void *func_ov000_0219be1c(s32 id, VecFx32 *pos, Rot16 *rot, u16 a, u16 b);
-void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
+Actor *Obj021984c8_GetActor(void *p);
+void *Actor_SpawnKind(s32 id, VecFx32 *pos, Rot16 *rot, u16 a, u16 b);
+void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 void *ActorMgr_GetGroup(void *mgr, u16 kind);
 void ActorGroup_SendMsg(void *obj, u16 a, int b, int c, int d, int e);
 
@@ -54,7 +54,7 @@ void Ov006Racer_UseItem(Ov006Racer *self) {
             rot = self->look2;
             rot.x += 0x4000;
             if (func_ov000_0219a5c8(self, 0x80, &self->pos, &rot, 0x3c000, 0xc8000, list) && list[0] != NULL) {
-                tgt = func_ov000_021985c0(list[0])->id;
+                tgt = Obj021984c8_GetActor(list[0])->id;
             }
             pos = self->pos;
             VEC_Add(&pos, &self->vel, &pos);
@@ -75,22 +75,22 @@ void Ov006Racer_UseItem(Ov006Racer *self) {
         if (id == 0xffff) {
             break;
         }
-        func_ov000_0219be1c(id, &pos, &rot, self->id, tgt);
+        Actor_SpawnKind(id, &pos, &rot, self->id, tgt);
         {
-            EffectObj *e = func_02065f88(0x69, &self->pos);
+            EffectObj *e = Effect_SpawnId(0x69, &self->pos);
             if (e != NULL) {
                 self->unk_1e4 = e->id;
             }
         }
         if (ent->se >= 0) {
-            func_02049f44(data_02097e4c, ent->se, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, ent->se, &self->pos, 0);
         }
         break;
     }
     case 2:
         self->unk_1f8 = data_ov006_021eb894[self->rank];
         if (self->unk_1e8 == 0) {
-            EffectObj *e = func_02065f88(0x391, &self->pos);
+            EffectObj *e = Effect_SpawnId(0x391, &self->pos);
             if (e != NULL) {
                 self->unk_1e8 = e->id;
                 e->SetScaleAll(0x199a);
@@ -98,7 +98,7 @@ void Ov006Racer_UseItem(Ov006Racer *self) {
             }
         }
         if (ent->se >= 0) {
-            func_02049f44(data_02097e4c, ent->se, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, ent->se, &self->pos, 0);
         }
         self->phase = 0;
         {
@@ -115,14 +115,14 @@ void Ov006Racer_UseItem(Ov006Racer *self) {
         if (obj != NULL) {
             ActorGroup_SendMsg(obj, self->id, 0xb, 1, 0, 0);
         }
-        e = func_02065f88(0x389, &self->pos);
+        e = Effect_SpawnId(0x389, &self->pos);
         if (e != NULL) {
             self->unk_1e4 = e->id;
             e->SetScaleAll(0x2800);
             e->speed = 0x3000;
         }
         if (ent->se >= 0) {
-            func_02049f44(data_02097e4c, ent->se, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, ent->se, &self->pos, 0);
         }
         break;
     }

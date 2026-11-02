@@ -27,7 +27,7 @@ static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx) + 0xc));
     }
-    func_02042628(model, anim, part, flag);
+    TexObj_DrawCell(model, anim, part, flag);
 }
 
 static inline BOOL IsShown(ObjBase021cac0c_021cb6f0 *p) {

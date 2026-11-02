@@ -43,7 +43,7 @@ static inline void ov002_Cursor_SetMode(Obj021efe8c *c) {
         c->unk_84 = 0xcd;
         break;
     }
-    func_ov002_021d7620(&c->mdl);
+    Ov002Mdl021efe3c_Load(&c->mdl);
 }
 
 void func_ov002_021dbec8(Obj021eff10 *self, Obj021eff50 *owner) {
@@ -54,8 +54,8 @@ void func_ov002_021dbec8(Obj021eff10 *self, Obj021eff50 *owner) {
     if (m != NULL) {
         *(VFunc **)m = data_ov002_021efe5c;
         Ov002Vt_021efe3c_Ctor(&m->mdl);
-        func_02041218(&m->model.pltt);
-        func_02041440(&m->model, NULL, 0);
+        PlttRes_Init_02041218(&m->model.pltt);
+        TexObj_Init(&m->model, NULL, 0);
         m->unk_1d4 = 0;
         m->pos.x = 0;
         m->pos.y = 0;
@@ -65,17 +65,17 @@ void func_ov002_021dbec8(Obj021eff10 *self, Obj021eff50 *owner) {
     m->mdl.arc = K::data_ov002_021efdf6;
     m->mdl.name = K::data_ov002_021efe0e;
     m->mdl.anmName = K::data_ov002_021efe0e;
-    func_ov002_021d7620(&m->mdl);
+    Ov002Mdl021efe3c_Load(&m->mdl);
     {
         char *nm = ((char *)K::data_ov002_021efe1a);
         char *file = ((char *)K::data_ov002_021efe26);
-        func_02041440(&m->model, nm, 0);
+        TexObj_Init(&m->model, nm, 0);
         STD_CopyString(m->model.name, file);
-        func_020417e0(&m->model, func_02035de0(file, nm));
+        TexObj_SetRes(&m->model, func_02035de0(file, nm));
     }
     m->model.flags |= 2;
     m->model.unk_150 = -0x2000;
-    func_02041d9c(&m->model, 0, 4);
+    TexObj_SelectImage(&m->model, 0, 4);
     MTX_Identity22_(&m->model.mtx[0]);
     MTX_Rot22_(&r, FX_SINCOS(0xbff * 2), FX_SINCOS(0xbff * 2 + 1));
     MTX_Concat22(&r, &m->model.mtx[0], &m->model.mtx[0]);
@@ -90,17 +90,17 @@ void func_ov002_021dbec8(Obj021eff10 *self, Obj021eff50 *owner) {
         if (mdl != NULL) {
             const char *file = data_0208cc94;
             const char *nm = data_0208cc88;
-            func_02041218(&mdl->pltt);
-            func_02041440(mdl, nm, 0);
+            PlttRes_Init_02041218(&mdl->pltt);
+            TexObj_Init(mdl, nm, 0);
             STD_CopyString(mdl->name, file);
         }
         self->unk_10 = mdl;
     }
-    func_020417e0(self->unk_10, func_02035de0(data_0208cc94, data_0208cc88));
+    TexObj_SetRes(self->unk_10, func_02035de0(data_0208cc94, data_0208cc88));
     self->unk_10->flags |= 2;
     self->unk_10->unk_150 = -0x2000;
     func_02041c34(self->unk_10, 6, (void *)func_ov002_021e0488, 0);
-    func_02041d9c(self->unk_10, 0, 6);
+    TexObj_SelectImage(self->unk_10, 0, 6);
     {
         Obj021efe8c *c = (Obj021efe8c *)Heap_Alloc(sizeof(Obj021efe8c));
         if (c != NULL) {

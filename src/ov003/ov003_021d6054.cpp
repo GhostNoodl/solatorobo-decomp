@@ -16,14 +16,14 @@ extern "C" {
 
 extern const Ov003DtEnt data_ov003_021f4648[];
 extern char data_ov003_021f7a7f[];
-extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s16 a, u8 b);
-extern void func_ov000_021915a0(Model0218fe1c *model);
-extern void func_0203f364(ActorSub48 *c);
+extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const char *name, s16 a, u8 b);
+extern void Model0218fe1c_SetLoop(Model0218fe1c *model);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *c);
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 on, u32 mask);
 extern void func_ov000_0218996c(u8 a, u8 b);
-extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
+extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 extern u8 *func_02070558(s32 id);
-extern void func_ov000_0219b400(u8 *a, u8 *b, s32 c, VecFx32 *pos, u16 *rot, s32 d);
+extern void Drop_SpawnWeighted(u8 *a, u8 *b, s32 c, VecFx32 *pos, u16 *rot, s32 d);
 extern void func_ov000_0219b5dc(u16 id, VecFx32 *pos, u16 *rot);
 
 void Ov003Actor_StateDie(Ov003Actor *self) {
@@ -41,14 +41,14 @@ void Ov003Actor_StateDie(Ov003Actor *self) {
         Model0218fe1c *m;
         self->hpObj->cur = 0;
         if (!self->unk_ea_12) {
-            func_ov000_02190cb0(self->model, data_ov003_021f7a7f, 0xcd, 0);
-            func_ov000_021915a0(self->model);
+            Model0218fe1c_SetAnim(self->model, data_ov003_021f7a7f, 0xcd, 0);
+            Model0218fe1c_SetLoop(self->model);
         }
         c = self->hit;
         if (c != NULL) {
             c->unk_9a_0 = 0;
             c->unk_9a_3 = 0;
-            func_0203f364(c);
+            HitSphere_Unlink_0203f364(c);
         }
         s = self->unk_44;
         if (s != NULL) {
@@ -72,8 +72,8 @@ void Ov003Actor_StateDie(Ov003Actor *self) {
         u16 t = self->fsm->timer;
         if (t >= 0x78) {
             func_ov000_0218996c(0x19, 0x78);
-            func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
-            func_02049f44(data_02097e4c, 0x53, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x53, &self->pos, 0);
             self->fsm->st = 10;
             return;
         }
@@ -86,9 +86,9 @@ void Ov003Actor_StateDie(Ov003Actor *self) {
             r.x = self->radius;
             r.y = self->height >> 2;
             r.z = self->radius + (self->radius >> 2);
-            func_ov000_0219b71c(&v, &r, 0x733, 0xccd, e->unk_02, 0x32);
+            Spawn_ScatterEffect(&v, &r, 0x733, 0xccd, e->unk_02, 0x32);
             func_ov000_0218996c(8, 10);
-            func_02049f44(data_02097e4c, 0x35, &v, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x35, &v, 0);
         }
         self->fsm->timer++;
         break;
@@ -100,7 +100,7 @@ void Ov003Actor_StateDie(Ov003Actor *self) {
         v.z = self->pos.z;
         v.y += (self->height >> 1) - (self->height >> 3);
         if (e->fx != -1) {
-            EffectObj *fx = func_02065f88(e->fx, &v);
+            EffectObj *fx = Effect_SpawnId(e->fx, &v);
             s32 sc = e->scale << 4;
             if (sc == 0) {
                 sc = self->radius;
@@ -116,10 +116,10 @@ void Ov003Actor_StateDie(Ov003Actor *self) {
             fx->SetScaleXYZ(sc, sc, sc);
         }
         if (e->sound >= 0 && self->hpObj->unk_04 != 0xffff) {
-            func_02049f44(data_02097e4c, e->sound, &v, 0);
+            SndMgr_PlayAt(data_02097e4c, e->sound, &v, 0);
         }
         res = func_02070558(self->kind);
-        func_ov000_0219b400(res + 0x3e, res + 0x42, 2, &v, &self->rot_x, 1);
+        Drop_SpawnWeighted(res + 0x3e, res + 0x42, 2, &v, &self->rot_x, 1);
         func_ov000_0219b5dc(self->unk_b0->unk_06, &v, &self->rot_x);
         self->fsm->timer = 0;
         self->fsm->st++;

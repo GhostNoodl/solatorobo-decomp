@@ -6,7 +6,7 @@ void func_02054254(SlidePanel *panel);
 
 
 
-BOOL func_02054f10(Model *model, u32 idx) {
+BOOL Model_IsReady(Model *model, u32 idx) {
     if (!Transfer_Check(&model->pltt.transfer) || !Transfer_Check(&model->extPltt->transfer)) {
         return FALSE;
     }
@@ -15,7 +15,7 @@ BOOL func_02054f10(Model *model, u32 idx) {
         if (part != NULL) {
             u16 j;
             for (j = 0; j < 3; j++) {
-                if (!func_02042958(model, j, part)) {
+                if (!TexObj_CheckTransfer(model, j, part)) {
                     return FALSE;
                 }
             }
@@ -26,7 +26,7 @@ BOOL func_02054f10(Model *model, u32 idx) {
             u16 j;
             ModelPart *parts = model->parts;
             for (j = 0; j < 3; j++) {
-                if (!func_02042958(model, j, &parts[i])) {
+                if (!TexObj_CheckTransfer(model, j, &parts[i])) {
                     return FALSE;
                 }
             }
@@ -78,7 +78,7 @@ void func_020554e4(SlidePanel *panel) {
             PlttRes *p = panel->pltt;
             if (p != NULL) {
                 if (p != NULL) {
-                    func_02041278(p);
+                    PlttRes_Release(p);
                     Heap_Free(p);
                 }
                 panel->pltt = NULL;
@@ -100,8 +100,8 @@ void func_020554e4(SlidePanel *panel) {
                 Model *p = panel->model;
                 if (p != NULL) {
                     if (p != NULL) {
-                        func_02041558(p);
-                        func_02041278(&p->pltt);
+                        TexObj_Release(p);
+                        PlttRes_Release(&p->pltt);
                         Heap_Free(p);
                     }
                     panel->model = NULL;
@@ -124,8 +124,8 @@ void func_020554e4(SlidePanel *panel) {
                 Model *p = panel->model2;
                 if (p != NULL) {
                     if (p != NULL) {
-                        func_02041558(p);
-                        func_02041278(&p->pltt);
+                        TexObj_Release(p);
+                        PlttRes_Release(&p->pltt);
                         Heap_Free(p);
                     }
                     panel->model2 = NULL;

@@ -43,7 +43,7 @@ typedef struct PauseNode {
     u32 unk_04;
 } PauseNode;
 
-// The Target object at Actor::targetObj (ctor func_ov000_02199b00, Target_02199b00.c, 0x5c bytes).
+// The Target object at Actor::targetObj (ctor Target_Init, Target_02199b00.c, 0x5c bytes).
 typedef struct {
     u8 type;
     u8 unk_01;
@@ -65,7 +65,7 @@ typedef struct {
             u8 unk_18_3 : 1;
             u8 unk_18_4 : 1;
             u8 unk_18_5 : 1;
-            u8 unk_18_6 : 1; // the ov003 shot's hit passes -1 instead of 100 to func_ov000_0219a8bc
+            u8 unk_18_6 : 1; // the ov003 shot's hit passes -1 instead of 100 to Hit_Apply
             u8 unk_18_7 : 1;
         };
     };
@@ -82,8 +82,8 @@ typedef struct {
 } ActorSub4c;
 SIZE_ASSERT(ActorSub4c, 0x5c);
 
-// The actor's shadow (Actor::unk_3c, 0x1c bytes, built by func_ov000_021919c8 and placed with
-// func_ov000_02191c24 / 02191ec4); deleted through vfunc_04.
+// The actor's shadow (Actor::unk_3c, 0x1c bytes, built by Shadow_Ctor and placed with
+// Shadow_Draw / 02191ec4); deleted through vfunc_04.
 class ActorShadow : public VObj {
 public:
     u8 unk_04[0x8];
@@ -129,19 +129,19 @@ public:
     PauseNode pause;
     ActorMsg *msgs;
     u32 msg_flags;
-    void *unk_34; // resource names (0x138 bytes, ctor func_ov000_0218e9c4; filled by Ov003Res_SetNames)
+    void *unk_34; // resource names (0x138 bytes, ctor ResSet_Init; filled by Ov003Res_SetNames)
     Model0218fe1c *model;
     ActorShadow *unk_3c;
-    ActorSub40 *fsm; // state block (func_ov000_02198360 switches state)
+    ActorSub40 *fsm; // state block (History_SetState switches state)
     ActorSub44 *unk_44;
-    ActorSub48 *hit; // collision sphere (a HitSphere: func_0203f260, HitSphere_Link)
+    ActorSub48 *hit; // collision sphere (a HitSphere: HitSphere_Init, HitSphere_Link)
     ActorSub4c *targetObj; // Target object (Target_Get / Target_Set)
     union {
         u16 *hp; // hp gauge (hp[0], hp[1]; ov011 Ov011Obj::hp)
         ActorHp *hpObj; // the same block with its fields
     };
     void *unk_54;
-    void *hitMesh; // HitMesh (HitMesh_Link / func_0203f920)
+    void *hitMesh; // HitMesh (HitMesh_Link / HitMesh_Unlink_0203f920)
     struct ActorMarker *unk_5c; // marker over the actor (ov000/ActorMarker.h)
     union {
         void *unk_60;

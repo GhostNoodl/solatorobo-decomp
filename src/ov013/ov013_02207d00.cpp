@@ -8,12 +8,12 @@ extern char data_ov013_0220be7c[];
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern BOOL func_ov000_021b4738(Ov003Actor *a);
 extern void func_ov000_02182590(void *p);
 extern void Ov003_AddExp(u16 a);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
-extern BOOL func_ov000_021983b0(ActorSub40 *a, u8 b, s32 c, BOOL d);
+extern BOOL History_HasState(ActorSub40 *a, u8 b, s32 c, BOOL d);
 extern s32 Ov013Act_02207968_ChooseAttack(Ov013Act_02207968 *self);
 
 void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
@@ -24,7 +24,7 @@ void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
     }
     self->unk_94_1 = 1;
     self->target = 0xffff;
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (pl != NULL) {
         self->target = pl->id;
     }
@@ -70,7 +70,7 @@ void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
             dist = Dist2D(sq);
         }
     }
-    if (dist < 0x6800 && !func_ov000_021983b0(self->fsm, 2, 2, 1)) {
+    if (dist < 0x6800 && !History_HasState(self->fsm, 2, 2, 1)) {
         self->fsm->flags |= 4;
         self->unk_b6 = 0x23;
         return;
@@ -83,8 +83,8 @@ void Ov013Act_02207968_State20(Ov013Act_02207968 *self) {
     ActorSub40 *st = self->fsm;
     switch (st->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov013_0220be7c, 0x2ab, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220be7c, 0x2ab, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->rot_y = 0;
         {
             ActorSub44 *n = self->unk_44;
@@ -101,7 +101,7 @@ void Ov013Act_02207968_State20(Ov013Act_02207968 *self) {
             VEC_MultAdd(0x52, &v, &self->pos, &self->pos);
             return;
         }
-        func_0204a028(data_02097e4c, 0x39, &self->pos, 2);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x39, &self->pos, 2);
         {
             ActorSub44 *n = self->unk_44;
             n->unk_22_0 = 1;
@@ -124,7 +124,7 @@ void Ov013Act_02207968_State20(Ov013Act_02207968 *self) {
             n->unk_22_0 = 1;
             n->unk_22_1 = 1;
         }
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         break;
     }
 }
@@ -134,8 +134,8 @@ extern u16 ActorGroup_CountKind(ActorGroup *p, u16 a);
 
 void Ov013Act_02207968_StateIdle(Ov013Act_02207968 *self) {
     if (self->fsm->st == 0) {
-        func_ov000_02190cb0(self->model, data_ov013_0220be7c, 0x155, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220be7c, 0x155, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st = 7;
         self->fsm->timer = 0;
         self->hit->unk_30 = 0x40000000;
@@ -179,7 +179,7 @@ void Ov013Act_02207968_StateIdle(Ov013Act_02207968 *self) {
         }
         self->velY = 0x334;
         self->unk_f0 = 4;
-        func_ov000_02190cb0(self->model, data_ov013_0220be7c, 0xe4, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220be7c, 0xe4, 0);
         return;
     }
     case 4:
@@ -259,8 +259,8 @@ void Ov013Act_02207968_StateMove(Ov013Act_02207968 *self) {
     }
     tpos = t->pos;
     if (self->fsm->st == 0) {
-        func_ov000_02190cb0(self->model, data_ov013_0220be7c, 0x1000, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220be7c, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;
@@ -272,12 +272,12 @@ void Ov013Act_02207968_StateMove(Ov013Act_02207968 *self) {
         self->fsm->st = 7;
         self->fsm->timer = 0;
         self->hit->unk_30 = 0;
-        func_0204a028(data_02097e4c, 0x39, &self->pos, 2);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x39, &self->pos, 2);
     }
     v = self->unk_b8;
     Actor_TurnToActor(self, t, self->unk_b0->unk_02);
     Actor_MoveToPos(self, &v, 0);
-    func_ov000_021987b8(self->hit, 1, 0, 0);
+    Body_Update(self->hit, 1, 0, 0);
     if (Ov013_DistXZ3(&tpos, &self->pos) < 0x7800) {
         VecFx32 dir = Ov003Vec_DirXZ(&tpos, &self->pos);
         VEC_MultAdd(0x7800, &dir, &tpos, &v);
@@ -296,10 +296,10 @@ void Ov013Act_02207968_StateMove(Ov013Act_02207968 *self) {
             return;
         }
     }
-    func_ov000_02190cb0(self->model, data_ov013_0220be7c, 0x19a, 0);
-    func_ov000_021915a0(self->model);
+    Model0218fe1c_SetAnim(self->model, data_ov013_0220be7c, 0x19a, 0);
+    Model0218fe1c_SetLoop(self->model);
     self->unk_110 = 0;
-    func_ov000_02198360(self->fsm, 1, 0);
+    History_SetState(self->fsm, 1, 0);
     self->speed = 0;
     self->velY = 0;
     self->friction = 0;
@@ -309,7 +309,7 @@ void Ov013Act_02207968_StateMove(Ov013Act_02207968 *self) {
 extern char data_ov013_0220be82[];
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 c, fx32 d);
 extern void func_ov000_0218996c(u8 a, u8 b);
-extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
+extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *a, s32 b);
 extern void Actor_TurnToPos(Ov003Actor *self, VecFx32 *p, s32 a);
 
 static inline VecFx32 Ov013_ApproachPointK(Ov003Actor *self, s32 k) {
@@ -343,7 +343,7 @@ void Ov013Act_02207968_StateAttack(Ov013Act_02207968 *self) {
     case 0: {
         VecFx32 tp;
         self->unk_f1 = 0xf;
-        func_ov000_02190cb0(self->model, data_ov013_0220be82, 0x2ab, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220be82, 0x2ab, 0);
         tp = t->pos;
         {
             VecFx32 dir = Ov003Vec_DirXZ(&tp, &self->pos);
@@ -357,7 +357,7 @@ void Ov013Act_02207968_StateAttack(Ov013Act_02207968 *self) {
         self->gravity = 0;
         self->speed = FX_Div(Ov013_DistXZ3(&self->pos, &v), 0x3c000);
         self->velY = -0xcd;
-        func_0204a028(data_02097e4c, 0x39, &self->pos, 2);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x39, &self->pos, 2);
         self->fsm->st = 2;
         self->fsm->timer = 0;
         break;
@@ -409,7 +409,7 @@ void Ov013Act_02207968_StateAttack(Ov013Act_02207968 *self) {
         VEC_MultAdd(0xf000, &d, &data_ov013_0220b3b0, &p);
         Actor_TurnToPos(self, &p, 0x400);
         if (self->model->anim_state == 3) {
-            func_0204a028(data_02097e4c, 0x39, &self->pos, 2);
+            SndMgr_PlayAtPitch(data_02097e4c, 0x39, &self->pos, 2);
         }
         if (self->model->anim_state != 2) {
             return;
@@ -442,7 +442,7 @@ void Ov013Act_02207968_StateAttack(Ov013Act_02207968 *self) {
             if (self->pos.y < 0x1b33) {
                 self->pos.y = 0x1b33;
                 func_ov000_0218996c(5, 0x1e);
-                func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
+                SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
             }
         }
         {
@@ -452,11 +452,11 @@ void Ov013Act_02207968_StateAttack(Ov013Act_02207968 *self) {
                 return;
             }
         }
-        func_ov000_02190cb0(self->model, data_ov013_0220be82, 0x155, 0);
-        func_ov000_02191318(self->model, 0x96000);
-        func_0204a028(data_02097e4c, 0x39, &self->pos, 2);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220be82, 0x155, 0);
+        Model0218fe1c_SetAnimFrame(self->model, 0x96000);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x39, &self->pos, 2);
         self->unk_f0 = 2;
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         self->fsm->st = 7;
         break;
     }
@@ -471,10 +471,10 @@ extern char data_ov013_0220be8e[];
 extern VecFx32 data_ov013_0220b398;
 extern VecFx32 data_ov013_0220b38c;
 extern VecFx32 data_ov013_0220b380;
-extern void func_ov000_0219a210(VecFx32 *p, const VecFx32 *o, s32 rot);
-extern Ov003Actor *func_ov000_0219be1c(s32 kind, VecFx32 *pos, u16 *rot, u16 id, u16 owner);
+extern void Geom_AddRotatedOffset(VecFx32 *p, const VecFx32 *o, s32 rot);
+extern Ov003Actor *Actor_SpawnKind(s32 kind, VecFx32 *pos, u16 *rot, u16 id, u16 owner);
 extern void func_ov000_0219bebc(Actor *a, s32 b);
-extern u8 *func_0206fef8(u16 kind);
+extern u8 *Tbl_FindEntry_0206fef8(u16 kind);
 
 void Ov013Act_02207968_StateShoot(Ov013Act_02207968 *self) {
     Ov003Actor *t = Ov013_GetActor(self->target);
@@ -487,7 +487,7 @@ void Ov013Act_02207968_StateShoot(Ov013Act_02207968 *self) {
     case 0: {
         VecFx32 *pt;
         self->unk_f1 = 0xe;
-        func_ov000_02190cb0(self->model, data_ov013_0220be8e, 0x2ab, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220be8e, 0x2ab, 0);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;
@@ -537,17 +537,17 @@ void Ov013Act_02207968_StateShoot(Ov013Act_02207968 *self) {
         if (self->model->anim_state != 2) {
             return;
         }
-        func_02049f44(data_02097e4c, 0x6b, &self->pos, 0);
-        func_02049f44(data_02097e4c, 0x67, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x6b, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x67, &self->pos, 0);
         *(Ov013Blk12 *)&p = *(Ov013Blk12 *)&self->pos;
-        func_ov000_0219a210(&p, &data_ov013_0220b398, self->rot_y);
-        a = (Ov013ActEx_0220a4e0 *)func_ov000_0219be1c(0x4811, &p, &self->rot_x, self->id, self->target);
+        Geom_AddRotatedOffset(&p, &data_ov013_0220b398, self->rot_y);
+        a = (Ov013ActEx_0220a4e0 *)Actor_SpawnKind(0x4811, &p, &self->rot_x, self->id, self->target);
         if (a != NULL) {
             a->unk_d0 = 0x99a;
             a->unk_d4.x = self->unk_f8.x;
             a->unk_d4.y = self->unk_f8.y;
             a->unk_d4.z = self->unk_f8.z;
-            FLD(u16, func_0206fef8(a->kind), 0x10) = 0x99a;
+            FLD(u16, Tbl_FindEntry_0206fef8(a->kind), 0x10) = 0x99a;
             func_ov000_0219bebc(a, 0x1000);
             id = a->id;
         } else {
@@ -563,17 +563,17 @@ void Ov013Act_02207968_StateShoot(Ov013Act_02207968 *self) {
             VecFx32 p;
             EffectObj *e;
             *(Ov013Blk12 *)&p = *(Ov013Blk12 *)&self->pos;
-            func_ov000_0219a210(&p, &data_ov013_0220b38c, self->rot_y);
-            e = func_02065f88(0x12c, &p);
+            Geom_AddRotatedOffset(&p, &data_ov013_0220b38c, self->rot_y);
+            e = Effect_SpawnId(0x12c, &p);
             e->SetScale(&data_ov013_0220b380);
             e->SetRotXYZ(0, self->rot_y, 0);
             self->fsm->timer++;
         }
-        if (!func_ov000_02191120(self->model)) {
+        if (!Model0218fe1c_IsAnimDone(self->model)) {
             return;
         }
-        func_ov000_02190cb0(self->model, data_ov013_0220be7c, 0x19a, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220be7c, 0x19a, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st = 7;
         self->fsm->timer = 0;
         break;
@@ -582,8 +582,8 @@ void Ov013Act_02207968_StateShoot(Ov013Act_02207968 *self) {
         if (st->timer <= 0x1e) {
             return;
         }
-        func_0204a028(data_02097e4c, 0x39, &self->pos, 2);
-        func_ov000_02198360(self->fsm, 1, 0);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x39, &self->pos, 2);
+        History_SetState(self->fsm, 1, 0);
         break;
     }
 }
@@ -599,7 +599,7 @@ void Ov013Act_02207968_StateAttack2(Ov013Act_02207968 *self) {
     case 0: {
         VecFx32 *pt;
         self->unk_f1 = 0xe;
-        func_ov000_02190cb0(self->model, data_ov013_0220be8e, 0x2ab, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220be8e, 0x2ab, 0);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;
@@ -658,17 +658,17 @@ void Ov013Act_02207968_StateAttack2(Ov013Act_02207968 *self) {
         if (self->model->anim_state != 2) {
             return;
         }
-        func_02049f44(data_02097e4c, 0x6b, &self->pos, 0);
-        func_02049f44(data_02097e4c, 0x67, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x6b, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x67, &self->pos, 0);
         p = self->pos;
-        func_ov000_0219a210(&p, &data_ov013_0220b398, self->rot_y);
-        a = (Ov013ActEx_0220a4e0 *)func_ov000_0219be1c(0x4811, &p, &self->rot_x, self->id, self->target);
+        Geom_AddRotatedOffset(&p, &data_ov013_0220b398, self->rot_y);
+        a = (Ov013ActEx_0220a4e0 *)Actor_SpawnKind(0x4811, &p, &self->rot_x, self->id, self->target);
         if (a != NULL) {
             a->unk_d0 = 0x99a;
             a->unk_d4.x = self->unk_f8.x;
             a->unk_d4.y = self->unk_f8.y;
             a->unk_d4.z = self->unk_f8.z;
-            FLD(u16, func_0206fef8(a->kind), 0x10) = 0x99a;
+            FLD(u16, Tbl_FindEntry_0206fef8(a->kind), 0x10) = 0x99a;
             func_ov000_0219bebc(a, 0x1000);
             id = a->id;
         } else {
@@ -685,20 +685,20 @@ void Ov013Act_02207968_StateAttack2(Ov013Act_02207968 *self) {
             VecFx32 p;
             EffectObj *e;
             *(Ov013Blk12 *)&p = *(Ov013Blk12 *)&self->pos;
-            func_ov000_0219a210(&p, &data_ov013_0220b38c, self->rot_y);
-            e = func_02065f88(0x12c, &p);
+            Geom_AddRotatedOffset(&p, &data_ov013_0220b38c, self->rot_y);
+            e = Effect_SpawnId(0x12c, &p);
             e->SetScale(&data_ov013_0220b380);
             e->SetRotXYZ(0, self->rot_y, 0);
             self->fsm->timer++;
         }
-        if (!func_ov000_02191120(self->model)) {
+        if (!Model0218fe1c_IsAnimDone(self->model)) {
             return;
         }
-        func_ov000_02190cb0(self->model, data_ov013_0220be7c, 0x19a, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220be7c, 0x19a, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st = 7;
         self->fsm->timer = 0;
-        func_0204a028(data_02097e4c, 0x39, &self->pos, 2);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x39, &self->pos, 2);
         break;
     case 7:
         st->timer++;
@@ -709,7 +709,7 @@ void Ov013Act_02207968_StateAttack2(Ov013Act_02207968 *self) {
             self->fsm->st = 0;
             return;
         }
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;

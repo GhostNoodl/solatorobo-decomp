@@ -7,7 +7,7 @@ extern "C" {
 
 Ov015Glyph *func_ov015_021fb25c(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count);
 Ov015Glyph *func_ov015_021fb408(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count);
-void func_0206e900(char *buf, const char *name);
+void LangData_LocalizePath(char *buf, const char *name);
 void func_02041c34(void *a, int b, void *cb, void *arg);
 extern char data_ov015_022128ab[];
 extern char data_ov015_022128b5[];
@@ -26,18 +26,18 @@ Ov015Glyph *func_ov015_021fb408(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, 
 }
 
 static inline void Ov015_LabelInit(Model *t, void *dict, void *name) {
-    func_02041440(t, (char *)dict, 0);
+    TexObj_Init(t, (char *)dict, 0);
     STD_CopyString(t->name, (char *)name);
 }
 
 s32 func_ov015_021fb474(Ov015Hud *self) {
     char buf[0x20];
     void *res;
-    func_0206e900(buf, data_ov015_022128ab);
-    res = func_02034d88(func_02035d5c(buf), data_ov015_022128b5);
-    func_02041440(self->mdl0, (char *)NULL, 0);
-    func_020417e0(self->mdl0, res);
-    func_02041d9c(self->mdl0, 0, 0xffff);
+    LangData_LocalizePath(buf, data_ov015_022128ab);
+    res = ResList_FindType2(ResMgr_GetArcList(buf), data_ov015_022128b5);
+    TexObj_Init(self->mdl0, (char *)NULL, 0);
+    TexObj_SetRes(self->mdl0, res);
+    TexObj_SelectImage(self->mdl0, 0, 0xffff);
     self->mdl0->flags |= 2;
     self->mdl0->flags |= 0x80000;
     {
@@ -45,10 +45,10 @@ s32 func_ov015_021fb474(Ov015Hud *self) {
         func_02041c34(self->mdl0, 0xf, (void *)func_ov015_021fb25c, arg);
         func_02041c34(self->mdl0, 0xe, (void *)func_ov015_021fb25c, arg);
     }
-    res = func_02034d88(func_02035d5c((char *)data_0208cc94), data_0208cc88);
+    res = ResList_FindType2(ResMgr_GetArcList((char *)data_0208cc94), data_0208cc88);
     Ov015_LabelInit(self->mdl1, data_0208cc88, data_0208cc94);
-    func_020417e0(self->mdl1, res);
-    func_02041d9c(self->mdl1, 0, 0x10);
+    TexObj_SetRes(self->mdl1, res);
+    TexObj_SelectImage(self->mdl1, 0, 0x10);
     self->mdl1->flags |= 2;
     func_02041c34(self->mdl1, 0x10, (void *)func_ov015_021fb408, NULL);
     return 1;

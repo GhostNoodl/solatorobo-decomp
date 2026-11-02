@@ -2,7 +2,7 @@
 
 extern "C" {
 
-Ov015Fade *func_ov015_021fa6d0(void);
+Ov015Fade *Ov015_GetFade(void);
 void Ov015Fade_Start(Ov015Fade *self, u8 a, u8 b, s32 c, u16 d);
 extern u8 data_ov015_022128ec[];
 extern u8 data_ov015_02213188[];
@@ -23,10 +23,10 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
     BOOL r = TRUE;
     switch (self->state) {
     case 0:
-        Ov015Fade_Start(func_ov015_021fa6d0(), 0, 0xf, 0x3c000, 0x2639);
+        Ov015Fade_Start(Ov015_GetFade(), 0, 0xf, 0x3c000, 0x2639);
         self->state++;
     case 1: {
-        Ov015Fade *f = func_ov015_021fa6d0();
+        Ov015Fade *f = Ov015_GetFade();
         if (f->time >= f->duration) {
             self->timer = 0;
             self->state++;
@@ -56,7 +56,7 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
             if (data_02097dc8->trig & 1) {
                 func_ov000_0215d980(self->unk_10, ((s32)self->unk_10->value) + n, 0);
                 func_ov000_0215d980(self->unk_0c, 0, 0);
-                func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
                 self->state = 0x1e;
             }
         } else {
@@ -73,12 +73,12 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
                 func_ov000_0215d980(self->unk_0c, 0, 1);
             } else {
                 if (++self->timer % 4 == 0) {
-                    func_02049a48(data_02097e4c, 0x18, -1, -1, -1);
+                    SndMgr_PlayVolume(data_02097e4c, 0x18, -1, -1, -1);
                 }
                 break;
             }
         }
-        func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x4a, -1, -1, -1);
         self->state = 0x28;
         self->timer = 0;
         break;
@@ -86,7 +86,7 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
     case 0x28:
         if (self->timer >= 0x14000) {
             if (data_02097dc8->trig & 1) {
-                func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
                 Ov015_SetMoney2(data_0214a424, self->unk_10->value);
                 self->unk_04->flags |= 2;
                 self->unk_08->flags |= 2;
@@ -133,10 +133,10 @@ BOOL func_ov015_0220f1a4(Ov015ResultPanel *self) {
     BOOL r = TRUE;
     switch (self->state) {
     case 0:
-        Ov015Fade_Start(func_ov015_021fa6d0(), 0, 0x14, 0x3c000, 0x2639);
+        Ov015Fade_Start(Ov015_GetFade(), 0, 0x14, 0x3c000, 0x2639);
         self->state++;
     case 1: {
-        Ov015Fade *f = func_ov015_021fa6d0();
+        Ov015Fade *f = Ov015_GetFade();
         if (f->time >= f->duration) {
             self->timer = 0;
             self->state++;
@@ -156,7 +156,7 @@ BOOL func_ov015_0220f1a4(Ov015ResultPanel *self) {
         u32 t;
         if (self->timer >= self->unk_14->openLen && (t = data_02097dc8->trig & 1) != 0) {
             if (t) {
-                func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             }
             self->unk_04->flags |= 2;
             self->unk_08->flags |= 2;
@@ -230,7 +230,7 @@ void func_ov015_0220f4d4(Ov015Result *self) {
     DELETE_V(self->panel);
     HEAP_POP(saved);
     if (data_ov002_021f0f9c != NULL) {
-        func_ov002_021e7c1c();
+        Ov002Stage_Delete();
     }
 }
 
@@ -255,7 +255,7 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
     BOOL r = TRUE;
     switch (self->state) {
     case 0:
-        func_ov002_021e7b58();
+        Ov002Stage_Create();
         data_ov002_021f0f9c->unk_1a = 0;
         data_ov002_021f0f9c->unk_130 = 1;
         data_ov002_021f0f9c->unk_134 = 2;
@@ -322,8 +322,8 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
             busy = func_ov002_021e7ea8(data_ov002_021f0f9c);
         }
         if (busy == 0) {
-            func_ov002_021e7c1c();
-            Ov015Fade_Reset(func_ov015_021fa6d0());
+            Ov002Stage_Delete();
+            Ov015Fade_Reset(Ov015_GetFade());
             r = FALSE;
         }
         break;

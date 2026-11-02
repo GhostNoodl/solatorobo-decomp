@@ -16,7 +16,7 @@ extern s32 data_02097d78[];
 extern u8 data_ov000_021cb6b0[];
 extern u8 data_ov000_021cb6d0[];
 void *Heap_Alloc(u32 size);
-void func_ov000_0216f1ac(ListBuffer *buf, BufferList *list);
+void ListBuffer_AddToList(ListBuffer *buf, BufferList *list);
 void func_0203c9e8(s32 a, s32 b);
 void func_0203cc58(s32 a, s32 b, s32 c);
 void func_ov000_021643e8(void *self);
@@ -62,7 +62,7 @@ static inline ListBuffer *MessageQueue_AddBuffer(MessageQueue *self, ListBuffer 
     b->unk_10 = 0;
     b->unk_14 = 0;
     b->unk_0c = (u32)owner;
-    func_ov000_0216f1ac(b, &self->list);
+    ListBuffer_AddToList(b, &self->list);
     if (allocated) {
         b->flags |= 0x10;
     }

@@ -40,7 +40,7 @@ Ov002HudInfo *Ov002Vt_021f000c_DtorDelete(Ov002HudInfo *self) {
     return self;
 }
 
-void func_ov002_021e0ff8(Ov002HudInfo *self, Model *model) {
+void Ov002HudInfo_Draw(Ov002HudInfo *self, Model *model) {
     s32 x;
     s32 y;
     if (self->shownId == 0xffff) {

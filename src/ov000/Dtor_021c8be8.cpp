@@ -12,8 +12,8 @@ extern u8 data_ov000_021cca70[];
 extern u8 data_ov000_021cc9f8[];
 extern u8 data_ov000_021cca10[];
 void Heap_Free(void *ptr);
-void func_ov000_021c2f90(ListRow021cca70 *self);
-void func_ov000_021c2364(Hud021cca10 *self);
+void ListRow021cca70_Release(ListRow021cca70 *self);
+void Hud021cca10_Release(Hud021cca10 *self);
 
 static inline void ListRow_Dtor(ListRow *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbac8);
@@ -42,7 +42,7 @@ ListRowText *Ov000Vt_021cca58_Dtor(ListRowText *self) {
 
 ListRow021cca70 *Ov000Vt_021cca70_DtorDelete(ListRow021cca70 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cca70);
-    func_ov000_021c2f90(self);
+    ListRow021cca70_Release(self);
     ListRow_Dtor(self);
     Heap_Free(self);
     return self;
@@ -50,7 +50,7 @@ ListRow021cca70 *Ov000Vt_021cca70_DtorDelete(ListRow021cca70 *self) {
 
 ListRow021cca70 *Ov000Vt_021cca70_Dtor(ListRow021cca70 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cca70);
-    func_ov000_021c2f90(self);
+    ListRow021cca70_Release(self);
     ListRow_Dtor(self);
     return self;
 }
@@ -74,7 +74,7 @@ ListRowGauge *Ov000Vt_021cc9f8_Dtor(ListRowGauge *self) {
 
 Hud021cca10 *Hud021cca10_DtorDelete(Hud021cca10 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cca10);
-    func_ov000_021c2364(self);
+    Hud021cca10_Release(self);
     ListRow_Dtor(self);
     Heap_Free(self);
     return self;
@@ -82,7 +82,7 @@ Hud021cca10 *Hud021cca10_DtorDelete(Hud021cca10 *self) {
 
 Hud021cca10 *Hud021cca10_Dtor(Hud021cca10 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cca10);
-    func_ov000_021c2364(self);
+    Hud021cca10_Release(self);
     ListRow_Dtor(self);
     return self;
 }

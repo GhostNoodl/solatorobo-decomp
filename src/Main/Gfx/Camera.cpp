@@ -95,7 +95,7 @@ Camera *func_0204b2c0(Camera *cam) {
     return cam;
 }
 
-Camera *func_0204b370(Camera *cam) {
+Camera *Camera_Ctor(Camera *cam) {
     Camera_Init(cam);
     return cam;
 }

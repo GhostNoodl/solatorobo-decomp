@@ -42,7 +42,7 @@ typedef struct ov006_Hud021de6bc {
 
 extern "C" {
 
-void func_ov000_0216df28(void *p);
+void LoTimer_Draw(void *p);
 
 static inline void ov006_Model_SetPosV(Model *self, const VecFx32 *p) {
     self->pos[0].x = p->x;
@@ -68,7 +68,7 @@ static inline void ov006_Model_PlayPartF(Model *model, int idx, int flag) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(res->texRes, **((ov006_Unk02023390 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx))->unkC);
     }
-    func_02042628(model, anim, part, flag);
+    TexObj_DrawCell(model, anim, part, flag);
 }
 
 static inline void ov006_Model_PlayPartChk(Model *model, int idx) {
@@ -85,7 +85,7 @@ static inline void ov006_Model_PlayPartChk(Model *model, int idx) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(res->texRes, **((ov006_Unk02023390 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx))->unkC);
     }
-    func_02042628(model, anim, part, 0);
+    TexObj_DrawCell(model, anim, part, 0);
 }
 
 void ov006_Hud021de6bc_Draw(ov006_Hud021de6bc *self) {
@@ -124,7 +124,7 @@ void ov006_Hud021de6bc_Draw(ov006_Hud021de6bc *self) {
         item->model->unk_150 = item->pos.z;
         ov006_Model_PlayPartChk(item->model, 2);
     }
-    func_ov000_0216df28(self->unk1C);
+    LoTimer_Draw(self->unk1C);
     {
         if (self->unk34 != NULL) {
             s32 x = self->x >> 12;

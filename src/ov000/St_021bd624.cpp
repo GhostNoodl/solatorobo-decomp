@@ -13,8 +13,8 @@ extern "C" {
 
 extern ActorMarkerKind data_ov000_021cc934[];
 extern ActorMarkerKind data_ov000_021cc938[]; // data_ov000_021cc934 + 4: its .update is the kind's draw
-BOOL func_0203e688(void);
-BOOL func_02054f10(Model *p, u16 a);
+BOOL Vram_IsIdle(void);
+BOOL Model_IsReady(Model *p, u16 a);
 
 static inline s32 Norm021bd624(s32 k) {
     if (k >= 12 && k < 16) {
@@ -23,7 +23,7 @@ static inline s32 Norm021bd624(s32 k) {
     return k;
 }
 
-void func_ov000_021bd624(ActorMarker *self) {
+void ActorMarker_Update(ActorMarker *self) {
     switch (self->step) {
     case 7:
         if (!func_ov000_021bd8ac(self)) {
@@ -36,12 +36,12 @@ void func_ov000_021bd624(ActorMarker *self) {
         s32 k = Norm021bd624(self->nextKind);
         ok = FALSE;
         if (k == 11) {
-            if (func_0203e688()) {
+            if (Vram_IsIdle()) {
                 ok = TRUE;
             }
         } else {
             for (i = 0; i < 8; i++) {
-                if (self->mdl[i] != NULL && !func_02054f10(self->mdl[i], 0xffff)) {
+                if (self->mdl[i] != NULL && !Model_IsReady(self->mdl[i], 0xffff)) {
                     break;
                 }
             }

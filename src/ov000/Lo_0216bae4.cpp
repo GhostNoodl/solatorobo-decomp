@@ -3,14 +3,14 @@
 
 extern "C" {
 
-void func_0204ca70(TextWin *win);
+void TextWin_RenderToVram(TextWin *win);
 void *Heap_Alloc(u32 size);
 
 static inline TextWin *LoTextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
-        func_0204c7d0(win);
+        TextWin_Init(win);
     }
     return win;
 }
@@ -48,7 +48,7 @@ void func_ov000_0216bae4(LoTextHolder *self, void *text) {
     win->flag24 = 1;
     win->rendering = 1;
     win->unk_4_30 = 1;
-    func_0204ca70(win);
+    TextWin_RenderToVram(win);
     self->win = win;
     self->count = 1;
 }

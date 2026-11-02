@@ -57,7 +57,7 @@ ResList *ResList_Dtor(ResList *list) {
         return result;                                    \
     }
 
-RES_LIST_FIND_FUNC(func_02034b98, 0)
+RES_LIST_FIND_FUNC(ResList_FindType0, 0)
 
 void *ResList_FindPath(ResList *list, const char *dir, const char *name) {
     char path[0x18];
@@ -76,11 +76,11 @@ void *ResList_FindPath(ResList *list, const char *dir, const char *name) {
 }
 
 RES_LIST_FIND_FUNC(func_02034cec, 1)
-RES_LIST_FIND_FUNC(func_02034d88, 2)
-RES_LIST_FIND_FUNC(func_02034e24, 3)
-RES_LIST_FIND_FUNC(func_02034ec0, 4)
-RES_LIST_FIND_FUNC(func_02034f5c, 5)
-RES_LIST_FIND_FUNC(func_02034ff8, 6)
+RES_LIST_FIND_FUNC(ResList_FindType2, 2)
+RES_LIST_FIND_FUNC(ResList_FindType3, 3)
+RES_LIST_FIND_FUNC(ResList_FindType4, 4)
+RES_LIST_FIND_FUNC(ResList_FindType5, 5)
+RES_LIST_FIND_FUNC(ResList_FindType6, 6)
 
 extern const char data_0208b2c8[]; // ".ncer"
 extern const char data_0208b2ce[]; // ".nanr"
@@ -96,7 +96,7 @@ extern const char data_0208b308[]; // ".nsbva"
 
 extern BOOL func_020395a8(const char *a, const char *b, int len);
 extern void Str_CopyStem(char *dst, const char *src, int len);
-extern const char *func_02039644(const char *path);
+extern const char *Path_FindExt(const char *path);
 extern void NNS_G2dFontInitAuto(void *out, void *data);
 extern BOOL NNS_G2dGetUnpackedCellBank(void *data, void *out);
 extern BOOL NNS_G2dGetUnpackedAnimBank(void *data, void *out);
@@ -151,7 +151,7 @@ void func_02035094(ResList *list, ResRequest *req) {
         NNS_G2dFontInitAuto(&node->u.data[1], node->u.data[0]);
         break;
     case 2:
-        ext = func_02039644(entry->name);
+        ext = Path_FindExt(entry->name);
         if (STD_CompareString(ext, data_0208b2c8) == 0) {
             node->u.data[0] = req->data;
             NNS_G2dGetUnpackedCellBank(node->u.data[0], &node->u.data[1]);
@@ -172,7 +172,7 @@ void func_02035094(ResList *list, ResRequest *req) {
         }
         break;
     case 3:
-        ext = func_02039644(entry->name);
+        ext = Path_FindExt(entry->name);
         if (STD_CompareString(ext, data_0208b2e6) == 0) {
             node->u.data[0] = req->data;
             NNS_G2dGetUnpackedScreenData(node->u.data[0], &node->u.data[1]);
@@ -192,7 +192,7 @@ void func_02035094(ResList *list, ResRequest *req) {
         node->u.data[0] = req->data;
         break;
     case 6:
-        ext = func_02039644(entry->name);
+        ext = Path_FindExt(entry->name);
         if (STD_CompareString(ext, data_0208b2ec) == 0) {
             node->u.data[0] = req->data;
         } else if (STD_CompareString(ext, data_0208b2f3) == 0) {

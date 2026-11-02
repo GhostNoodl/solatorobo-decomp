@@ -176,7 +176,7 @@ extern Task *data_ov000_021ccd40; // the task that is finishing
 extern s32 data_ov000_021ccd38;
 extern s32 data_02097d78[];
 
-void *func_ov000_0218084c(void *a, int b, int c);
+void *TaskHost_RequestSwitch(void *a, int b, int c);
 void func_0203cc58(int a, int b, int c);
 void func_0203cb78(int a, int b, int c);
 
@@ -229,7 +229,7 @@ static inline ov006_MsgBox *ov006_MsgBox_New(void) {
     ov006_MsgBox *p = (ov006_MsgBox *)Heap_Alloc(sizeof(ov006_MsgBox));
     if (p != NULL) {
         p->vtbl = &data_ov006_021ebc70;
-        func_ov000_02163224(p);
+        MsgBox_Init(p);
     }
     return p;
 }

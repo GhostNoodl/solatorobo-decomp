@@ -19,7 +19,7 @@ SIZE_ASSERT(SceneRes, 0xc4);
 
 // A stage script (vtable data_ov000_021cc158, 0xd8 bytes): the StageRes plus its id, its four
 // arguments and the list links. func_ov000_02181f54 makes the main one (SceneStage::main),
-// func_ov000_02182190 inserts the others into SceneStage::scripts by descending order.
+// SceneStage_AddScript inserts the others into SceneStage::scripts by descending order.
 class SceneScript : public SceneRes {
 public:
     /* 0xc4 */ u16 order;
@@ -34,7 +34,7 @@ public:
 SIZE_ASSERT(SceneScript, 0xd8);
 
 // data_ov000_021ccd24 (0xc bytes of .bss): a flag and two stage script resources, unk_04 made by
-// func_ov000_0214ba18 and unk_08 by func_ov000_0214e7f0.
+// func_ov000_0214ba18 and unk_08 by Lo021caa44_Load.
 typedef struct SceneResSet {
     /* 0x00 */ u8 unk_00;
     /* 0x04 */ SceneRes *unk_04;

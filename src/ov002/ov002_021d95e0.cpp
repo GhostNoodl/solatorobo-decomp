@@ -25,7 +25,7 @@ static inline void ov002_Vec_Set(s32 *v, s32 x, s32 y, s32 z) {
 
 static inline void ov002_Hud_Set(Ov002Hud *hud, u8 k) {
     if (hud != NULL) {
-        func_ov002_021e2690(hud, k, 0);
+        Ov002Hud_SetRow(hud, k, 0);
     }
 }
 

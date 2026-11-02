@@ -9,7 +9,7 @@ void func_ov002_021dd7f0(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c);
 
 static inline void ov002_ShowMsg(Obj021eff10 *self, void *str) {
     Obj021eff50 *t = self->owner;
-    func_ov000_0215bb14(t->unk_20, str);
+    Obj0215bb14_SetText(t->unk_20, str);
     t->unk_20->vfunc_70();
 }
 
@@ -30,7 +30,7 @@ static inline Obj021efef0 *ov002_NewDcee0(void) {
     Obj021efef0 *p = (Obj021efef0 *)Heap_Alloc(sizeof(Obj021efef0));
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021efef0;
-        func_ov002_021ddd80(p);
+        Obj021efef0_Init(p);
     }
     return p;
 }
@@ -59,7 +59,7 @@ void func_ov002_021dcf00(Obj021eff10 *self) {
     if (trig & 1) {
         if (sumItems(w) == 0) {
             ov002_ShowMsg(self, MsgRes_GetString(msg, 0x107));
-            func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
             return;
         }
         {
@@ -73,7 +73,7 @@ void func_ov002_021dcf00(Obj021eff10 *self) {
             t->unk_10 = p;
             t->unk_0c = 0x14;
         }
-        func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
         return;
     }
     if ((trig & 0x20) || (trig & 2)) {
@@ -92,7 +92,7 @@ void func_ov002_021dcf00(Obj021eff10 *self) {
         ov002_CamMove(w, px, py, pz, 0, 0, tz);
         func_ov002_021dd7f0(self, (Vec2 *)((u8 *)self + 0x24), (Vec2 *)((u8 *)self + 0x24), 1);
         self->unk_18 = 10;
-        func_02049a48(data_02097e4c, 0xf, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0xf, -1, -1, -1);
     }
 }
 

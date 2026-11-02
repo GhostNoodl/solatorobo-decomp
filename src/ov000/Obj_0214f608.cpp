@@ -60,7 +60,7 @@ VObj *Lo021caac8_DtorDelete(VObj *self) {
     return self;
 }
 
-void func_ov000_0214f770(Obj0214f770 *self) {
+void Lo021caa44_UpdateActive(Obj0214f770 *self) {
     if (self->unk_60 == NULL) {
         return;
     }
@@ -72,7 +72,7 @@ void func_ov000_0214f770(Obj0214f770 *self) {
     }
 }
 
-void func_ov000_0214f7a0(void) {
+void Lo021caa44_PreUpdate(void) {
 }
 
 }

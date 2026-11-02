@@ -4,7 +4,7 @@ extern "C" {
 
 extern VFunc data_0208ba70[];
 
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void TextWin_InitLines(Ov002Text2 *a, int b);
 
@@ -12,7 +12,7 @@ static inline Ov002Text2 *ov002_Anim_New(void) {
     Ov002Text2 *anim = (Ov002Text2 *)Heap_Alloc(0xb8);
     if (anim != NULL) {
         *(VFunc **)anim = data_0208ba70;
-        func_0204c7d0(anim);
+        TextWin_Init(anim);
     }
     return anim;
 }
@@ -39,7 +39,7 @@ static inline void ov002_Caption_Lerp(Ov002Caption *self) {
     self->y = y;
 }
 
-void func_ov002_021e0c28(Ov002Caption *self) {
+void Ov002Caption_Update(Ov002Caption *self) {
     if (self->anim == NULL) {
         return;
     }

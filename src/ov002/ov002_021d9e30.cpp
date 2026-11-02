@@ -6,7 +6,7 @@ u16 func_ov002_021d9e30(Obj021efeb8 *self) {
     return self->unk_48;
 }
 
-void func_ov002_021d9e38(Obj021efe6c *self, Obj021efeb8 *node) {
+void Obj021efe6c_AppendPiece(Obj021efe6c *self, Obj021efeb8 *node) {
     Obj021efeb8 *p = self->pieces;
     if (p != NULL) {
         if (p != NULL) {

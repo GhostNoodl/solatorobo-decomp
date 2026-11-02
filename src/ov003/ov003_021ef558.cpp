@@ -13,7 +13,7 @@ void Ov003ActVt_021f9d78_Start(ActorEx *self) {
     BOOL keep;
     s16 sub;
     s16 mode;
-    func_ov000_02197d80(self);
+    Obj02197d80_LoadValue(self);
     sub = self->unk_1a;
     mode = self->unk_18;
     keep = TRUE;
@@ -31,55 +31,55 @@ void Ov003ActVt_021f9d78_Start(ActorEx *self) {
         self->vfunc_08();
         return;
     }
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
 }
 
 ActorEx *Ov003ActVt_021f9f40_Dtor(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021f9f40_DtorDelete(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021f9ea8_Dtor(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021f9ea8_DtorDelete(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021f9ce0_Dtor(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021f9ce0_DtorDelete(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021f9d78_Dtor(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021f9d78_DtorDelete(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 void Ov003ActVt_021fa07c_Start(ActorEx *self) {
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     self->fsm->flags |= 0x100000000ULL;
     self->unk_84.x = self->pos.x;
     self->unk_84.y = self->pos.y;

@@ -41,21 +41,21 @@ void func_ov000_021c588c(Win021c588c *self, s32 a, VecFx32 *pos, s32 c) {
         t->x = x + 0x18;
         t->y = y - 3;
         t->z = z;
-        func_ov000_0215f334(self->t0);
+        UiLabel_Draw(self->t0);
     }
     t = self->t1;
     if (t != NULL) {
         t->x = x + 0x94 - (t->width >> 1);
         t->y = y - 3;
         t->z = z;
-        func_ov000_0215f334(self->t1);
+        UiLabel_Draw(self->t1);
     }
     t = self->t2;
     if (t != NULL) {
         t->x = x + 0xe2 - t->width;
         t->y = y - 3;
         t->z = z;
-        func_ov000_0215f334(self->t2);
+        UiLabel_Draw(self->t2);
     }
 }
 

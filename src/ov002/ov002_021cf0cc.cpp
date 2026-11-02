@@ -4,7 +4,7 @@ extern "C" {
 
 void func_ov002_021cf280(Task021ef4b0 *self, void *a);
 
-void func_ov002_021cf0cc(Task021ef4b0 *self) {
+void Task021ef4b0_PreUpdate(Task021ef4b0 *self) {
     switch (self->state) {
     case 8:
         if (self->unk_3c != NULL) {
@@ -14,7 +14,7 @@ void func_ov002_021cf0cc(Task021ef4b0 *self) {
             self->unk_40->flags &= ~2;
             func_ov002_021cf280(self, FIELD(self, 0x44, void *));
         }
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         break;
     case 10:
         if (self->unk_3c != NULL) {
@@ -23,7 +23,7 @@ void func_ov002_021cf0cc(Task021ef4b0 *self) {
         if (self->unk_40 != NULL) {
             self->unk_40->flags |= 2;
         }
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         break;
     }
     if (self->unk_3c != NULL) {

@@ -13,7 +13,7 @@ extern u8 data_ov000_021cb940[];
 extern u8 data_ov000_021cb6d0[];
 void func_ov000_0216f23c(void *p, s32 a);
 BOOL func_ov000_02180900(void *p);
-void func_ov000_0216fb14(void *p);
+void ListBuffer021cb940_Release(void *p);
 
 typedef struct { u32 lo : 4; } LoNib;
 
@@ -27,13 +27,13 @@ void func_ov000_02172078(MessageQueue *self) {
         return;
     }
     r = TRUE;
-    if (!func_02035b90(data_0214b105, 7)) {
+    if (!ResMgr_IsLoaded(data_0214b105, 7)) {
         r = FALSE;
     }
-    if (!func_02035b90(data_0208cca0, 7)) {
+    if (!ResMgr_IsLoaded(data_0208cca0, 7)) {
         r = FALSE;
     }
-    if (!func_02035b90(data_0208cc94, 7)) {
+    if (!ResMgr_IsLoaded(data_0208cc94, 7)) {
         r = FALSE;
     }
     if (r) {

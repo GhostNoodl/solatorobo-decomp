@@ -2,10 +2,10 @@
 
 extern "C" {
 
-void func_ov002_021d43fc(void) {
+void Task021ef81c_UpdateActive(void) {
 }
 
-void func_ov002_021d4400(Task021ef81c *self) {
+void Task021ef81c_PreUpdate(Task021ef81c *self) {
     bool r;
     if (self->state == 8 || self->state == 10) {
         return;
@@ -23,12 +23,12 @@ void func_ov002_021d4400(Task021ef81c *self) {
     }
 }
 
-void func_ov002_021d44e0(void) {
+void Task021ef81c_PostUpdate(void) {
 }
 
-void func_ov002_021d44e4(Task021ef81c *self) {
+void Task021ef81c_Draw(Task021ef81c *self) {
     if (self->fadeRatio != 0) {
-        func_ov000_0217357c(self);
+        Task_Draw(self);
         self->unk_3c->vfunc_20();
         self->unk_40->vfunc_20();
         self->unk_44->vfunc_20();
@@ -67,7 +67,7 @@ void func_ov002_021d4540(void *dst, u32 size, const void *a, const void *b, int 
 
 Task021ef81c *Ov002TaskVt_021ef81c_DtorDelete(Task021ef81c *self) {
     *(VFunc **)self = data_ov002_021ef81c;
-    func_ov002_021d3ccc(self);
+    Task021ef81c_FreeWindows(self);
     TaskBase_dtor(self);
     Heap_Free(self);
     return self;
@@ -75,7 +75,7 @@ Task021ef81c *Ov002TaskVt_021ef81c_DtorDelete(Task021ef81c *self) {
 
 Task021ef81c *Ov002TaskVt_021ef81c_Dtor(Task021ef81c *self) {
     *(VFunc **)self = data_ov002_021ef81c;
-    func_ov002_021d3ccc(self);
+    Task021ef81c_FreeWindows(self);
     TaskBase_dtor(self);
     return self;
 }
@@ -108,7 +108,7 @@ Task021ef91c *Ov002TaskVt_021ef91c_Dtor(Task021ef91c *self) {
 
 Task021ef99c *Ov002TaskVt_021ef99c_DtorDelete(Task021ef99c *self) {
     *(VFunc **)self = data_ov002_021ef99c;
-    func_ov002_021d25ec(self);
+    Task021ef99c_FreeWindows(self);
     __cxa_vec_cleanup(self->unk_4c, 7, 0x18, (void (*)(void *))Ov002Vt_021f00fc_Dtor);
     TaskBase_dtor(self);
     Heap_Free(self);
@@ -117,7 +117,7 @@ Task021ef99c *Ov002TaskVt_021ef99c_DtorDelete(Task021ef99c *self) {
 
 Task021ef99c *Ov002TaskVt_021ef99c_Dtor(Task021ef99c *self) {
     *(VFunc **)self = data_ov002_021ef99c;
-    func_ov002_021d25ec(self);
+    Task021ef99c_FreeWindows(self);
     __cxa_vec_cleanup(self->unk_4c, 7, 0x18, (void (*)(void *))Ov002Vt_021f00fc_Dtor);
     TaskBase_dtor(self);
     return self;
@@ -209,7 +209,7 @@ Task021efa1c *Ov002TaskVt_021efa1c_Dtor(Task021efa1c *self) {
 
 void *Ov002Vt_021ef684_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021ef684;
-    func_ov000_021c2310(self);
+    ListRow_Unlink(self);
     Heap_Free(self);
     return self;
 }
@@ -222,7 +222,7 @@ void func_ov002_021d4cb0(void) {
 
 void *Ov002Vt_021ef684_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021ef684;
-    func_ov000_021c2310(self);
+    ListRow_Unlink(self);
     return self;
 }
 
@@ -249,15 +249,15 @@ Task021efba4 *Ov002TaskVt_021efba4_Dtor(Task021efba4 *self) {
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->hud);
     HEAP_POP(saved);
-    func_0206e900(buf, data_ov002_021efad1);
-    func_02036838(data_02097cdc, buf, 7, 0);
+    LangData_LocalizePath(buf, data_ov002_021efad1);
+    ResMgr_ReleaseByName(data_02097cdc, buf, 7, 0);
     TaskBase_dtor(self);
     return self;
 }
 
 Ov002Hud *Ov002Vt_021efb14_DtorDelete(Ov002Hud *self) {
     *(VFunc **)self = data_ov002_021efb14;
-    func_ov002_021e1d28(self);
+    Ov002Hud_Release(self);
     Heap_Free(self);
     return self;
 }
@@ -269,32 +269,32 @@ Task021efba4 *Ov002TaskVt_021efba4_DtorDelete(Task021efba4 *self) {
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->hud);
     HEAP_POP(saved);
-    func_0206e900(buf, data_ov002_021efad1);
-    func_02036838(data_02097cdc, buf, 7, 0);
+    LangData_LocalizePath(buf, data_ov002_021efad1);
+    ResMgr_ReleaseByName(data_02097cdc, buf, 7, 0);
     TaskBase_dtor(self);
     Heap_Free(self);
     return self;
 }
 
-void func_ov002_021d4ee8(void) {
+void Task021efba4_Load(void) {
     char buf[0x20];
-    func_0206e900(buf, data_ov002_021efad1);
-    func_020359d0(buf, 7, 0);
+    LangData_LocalizePath(buf, data_ov002_021efad1);
+    ResMgr_Load(buf, 7, 0);
 }
 
-bool func_ov002_021d4f1c(void) {
+bool Task021efba4_IsLoaded(void) {
     char buf[0x20];
-    func_0206e900(buf, data_ov002_021efad1);
-    return func_02035b90(buf, 7) != 0;
+    LangData_LocalizePath(buf, data_ov002_021efad1);
+    return ResMgr_IsLoaded(buf, 7) != 0;
 }
 
 static inline Ov002Hud *func_ov002_021d4f58_ctor(Ov002Hud *self) {
     *(VFunc **)self = data_ov002_021efb14;
-    func_ov002_021e1cc8(self);
+    Ov002Hud_Init(self);
     return self;
 }
 
-void func_ov002_021d4f58(Task021efba4 *self) {
+void Task021efba4_Start(Task021efba4 *self) {
     Ov002Hud *p;
     self->unk_04_1 = 0;
     if (self->vfunc_28() != 0) {
@@ -305,16 +305,16 @@ void func_ov002_021d4f58(Task021efba4 *self) {
         func_ov002_021d4f58_ctor(p);
     }
     self->hud = p;
-    func_ov002_021e1ed8(p);
-    func_ov002_021e2690(self->hud, 0, 0);
+    Ov002Hud_Load(p);
+    Ov002Hud_SetRow(self->hud, 0, 0);
     self->fadeLen = 0x1000;
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
-void func_ov002_021d4fd0(Task021efba4 *self) {
+void Task021efba4_PreUpdate(Task021efba4 *self) {
     switch (self->state) {
     case 0xc:
-        func_ov000_0218084c(data_ov000_021ccd44, 0x1c, 0);
+        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x1c, 0);
         self->vfunc_4c();
         break;
     case 0xd:
@@ -324,13 +324,13 @@ void func_ov002_021d4fd0(Task021efba4 *self) {
         }
         break;
     }
-    func_ov002_021e23ac(self->hud);
+    Ov002Hud_Update(self->hud);
 }
 
-void func_ov002_021d505c(void) {
+void Task021efba4_PostUpdate(void) {
 }
 
-void func_ov002_021d5060(Task021efba4 *self) {
+void Task021efba4_Draw(Task021efba4 *self) {
     func_ov002_021e2528(self->hud);
 }
 
@@ -344,16 +344,16 @@ Task021efb24 *func_ov002_021d5070(void) {
     return p;
 }
 
-void func_ov002_021d50c8(void) {
-    func_ov002_021da2fc();
-    func_ov002_021da5c0(func_ov002_021da420());
+void Task021efb24_Load(void) {
+    Obj021efe7c_Create();
+    Obj021efe7c_Setup(Obj021efe7c_Get());
 }
 
-void func_ov002_021d50dc(void) {
-    func_ov002_021da800(func_ov002_021da420());
+void Task021efb24_IsLoaded(void) {
+    Obj021efe7c_IsLoaded(Obj021efe7c_Get());
 }
 
-void func_ov002_021d50ec(Task021efb24 *self) {
+void Task021efb24_Start(Task021efb24 *self) {
     BOOL clear = Task_isFlag1Clear(self);
     if (!clear) {
         self->unk_04_1 = 0;
@@ -361,27 +361,27 @@ void func_ov002_021d50ec(Task021efb24 *self) {
     if (self->vfunc_28() != 0) {
         return;
     }
-    func_ov002_021da894(func_ov002_021da420());
+    Obj021efe7c_Start(Obj021efe7c_Get());
     self->vfunc_40();
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
-void func_ov002_021d5154(Task021efb24 *self) {
+void Task021efb24_PreUpdate(Task021efb24 *self) {
     switch (self->state) {
     case 8:
-        func_ov002_021dab58(func_ov002_021da420(), 0);
+        func_ov002_021dab58(Obj021efe7c_Get(), 0);
         break;
     case 0xd:
-        if (func_ov002_021da8d8(func_ov002_021da420()) != 0) {
+        if (Obj021efe7c_Update(Obj021efe7c_Get()) != 0) {
             break;
         }
-        if (func_ov002_021da420()->unk_0c == 2) {
-            func_ov000_0218084c(data_ov000_021ccd44, 0x1d, 0);
+        if (Obj021efe7c_Get()->unk_0c == 2) {
+            TaskHost_RequestSwitch(data_ov000_021ccd44, 0x1d, 0);
             self->unk_04_1 = 1;
             self->unk_04_2 = 1;
             self->vfunc_4c();
         } else {
-            func_ov000_0218084c(data_ov000_021ccd44, 0x1b, 0);
+            TaskHost_RequestSwitch(data_ov000_021ccd44, 0x1b, 0);
             self->unk_04_1 = 1;
             self->unk_04_2 = 1;
             self->vfunc_4c();
@@ -390,9 +390,9 @@ void func_ov002_021d5154(Task021efb24 *self) {
     }
 }
 
-void func_ov002_021d520c(Task021efb24 *p) {
+void Task021efb24_Draw(Task021efb24 *p) {
     if (data_ov000_021ccd40 == p) {
-        func_ov002_021da960(func_ov002_021da420());
+        Obj021efe7c_Draw(Obj021efe7c_Get());
     }
 }
 
@@ -424,12 +424,12 @@ BOOL func_ov002_021d52e0(UiList *self, UiListItem *ev) {
         if (ev->id == 0) {
             func_ov002_021d5f60((Task021efc24 *)self->owner);
         } else {
-            func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         }
     }
     t = (Task021efba4 *)Task_FindById(0x1b);
     if (t != NULL && t->hud != NULL) {
-        func_ov002_021e2690(t->hud, 9, 0);
+        Ov002Hud_SetRow(t->hud, 9, 0);
     }
     return FALSE;
 }
@@ -441,12 +441,12 @@ BOOL func_ov002_021d5350(UiList *self, UiListItem *ev) {
     if (ev != NULL) {
         id = ev->id;
         if (owner->unk_54 != NULL) {
-            func_ov000_0215bb14(owner->unk_54, func_0206ec8c(id));
+            Obj0215bb14_SetText(owner->unk_54, func_0206ec8c(id));
             owner->unk_54->vfunc_70();
         }
         if (owner->unk_58 != NULL) {
             Param0206ef10 *info = func_0206ef10(id);
-            func_ov000_02162b40(owner->unk_58, info->def.name[0], info->def.name[1], data_ov002_021efae1,
+            ModelViewer_SetModel(owner->unk_58, info->def.name[0], info->def.name[1], data_ov002_021efae1,
                                 info->def.unk_1c, data_ov002_021efaeb, info->def.unk_18, 0x1000);
         }
         func_ov000_021c95ac(owner->unk_60, id);
@@ -456,7 +456,7 @@ BOOL func_ov002_021d5350(UiList *self, UiListItem *ev) {
                 MI_CpuCopy8(owner->unk_60, t->hud->unk_2c, 0x14);
             }
             if (t->hud != NULL) {
-                func_ov002_021e2754(t->hud, id);
+                Ov002Hud_SetInfo(t->hud, id);
             }
         }
     }
@@ -467,14 +467,14 @@ BOOL func_ov002_021d5444(UiList *self, UiListItem *ev) {
     if (ev != NULL) {
         if (ev->id != ((Task021efc24 *)self->owner)->unk_74) {
             Task021efba4 *t;
-            func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             func_ov000_02152294(self, 0x8d, 0x23, (EvCallback)func_ov002_021d52e0);
             t = (Task021efba4 *)Task_FindById(0x1b);
             if (t != NULL && t->hud != NULL) {
-                func_ov002_021e2690(t->hud, 0, 0);
+                Ov002Hud_SetRow(t->hud, 0, 0);
             }
         } else {
-            func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
         }
     }
     return TRUE;

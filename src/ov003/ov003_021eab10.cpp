@@ -33,19 +33,19 @@ extern char data_ov003_021f995c[];
 extern char data_ov003_021f9967[];
 extern char data_ov003_021f996d[];
 extern char data_ov003_021f9978[];
-extern Ov003Player *func_ov000_0219bf90(void);
-extern void func_ov000_021bd7a0(void *p);
+extern Ov003Player *ActorMgr_FindPlayer(void);
+extern void ActorMarker_Draw(void *p);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
-extern void func_ov000_0218f074(ActorRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
-extern BOOL func_ov000_0218f110(ActorRes *res);
-extern BOOL func_ov000_0218ffdc(Model0218fe1c *anim, ActorRes *res, s32 a, s32 b);
-extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern void ResSet_SetFile(ActorRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
+extern BOOL ResSet_UpdateLoad(ActorRes *res);
+extern BOOL Model0218fe1c_SetRes(Model0218fe1c *anim, ActorRes *res, s32 a, s32 b);
+extern BOOL Model0218fe1c_SetAnim(void *model, const char *name, s32 a, s32 b);
 extern void *Heap_Alloc(u32 size);
-extern ActorSub4c *func_ov000_02199b00(void *p);
+extern ActorSub4c *Target_Init(void *p);
 extern void *func_0203db40(void *p);
-extern void func_ov000_02190a80(void *a, void *b);
-extern void func_ov000_02190758(Model0218fe1c *anim, Rot16 *rot, s32 a);
-extern BOOL func_ov000_021903b4(Model0218fe1c *anim);
+extern void Model0218fe1c_UpdateAnim(void *a, void *b);
+extern void Obj02190758_SetRot(Model0218fe1c *anim, Rot16 *rot, s32 a);
+extern BOOL Model021903b4_Draw(Model0218fe1c *anim);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 
 static inline BOOL Ov003Game_IsBusy(FieldState *g) {
@@ -98,13 +98,13 @@ BOOL Ov003ActVt_021f98cc_Draw(ActorEx *self) {
     BOOL r = TRUE;
     if (!self->unk_cc_7) {
         if (self->unk_5c != NULL && Ov003_GameIdle()) {
-            Ov003Player *pl = func_ov000_0219bf90();
+            Ov003Player *pl = ActorMgr_FindPlayer();
             if (pl->unk_90 == self->id) {
-                func_ov000_021bd7a0(self->unk_5c);
+                ActorMarker_Draw(self->unk_5c);
             }
         }
     } else if (self->targetObj->unk_03 != 10) {
-        r = func_ov000_02194c08(self);
+        r = ActorEx_Draw(self);
     }
     return r;
 }
@@ -117,14 +117,14 @@ void Ov003ActVt_021f98cc_StateIdle(ActorEx *self) {
         return;
     }
     if ((self->unk_ce & 0x7f) == 0 && self->unk_1a >= 0) {
-        Ov003Player *pl = func_ov000_0219bf90();
+        Ov003Player *pl = ActorMgr_FindPlayer();
         if (pl != NULL) {
             s32 r = 0xf000;
             if (self->unk_1a >= 1) {
                 r = self->unk_1a << 4;
             }
             if (Hit_DiffInSphere(&pl->pos, &self->pos, r + pl->radius)) {
-                func_02065f88(0xc8, &self->pos);
+                Effect_SpawnId(0xc8, &self->pos);
             }
         }
     }
@@ -132,8 +132,8 @@ void Ov003ActVt_021f98cc_StateIdle(ActorEx *self) {
 }
 
 void Ov003ActVt_021f9834_Init(Ov003ActExHome *self) {
-    func_ov000_0219433c(self);
-    func_ov000_0218f074(&self->res, data_ov003_021f995c, 1, 1, 1, 0);
+    ActorEx_InitActor(self);
+    ResSet_SetFile(&self->res, data_ov003_021f995c, 1, 1, 1, 0);
     self->res.unk_00 = 0;
     self->homePos.x = self->pos.x;
     self->homePos.y = self->pos.y;
@@ -144,8 +144,8 @@ void Ov003ActVt_021f9834_Init(Ov003ActExHome *self) {
 }
 
 BOOL Ov003ActVt_021f9834_IsReady(Ov003ActExHome *self) {
-    BOOL r = func_ov000_021946f8(self);
-    if (self->res.unk_00 >= 0 && !func_ov000_0218f110(&self->res)) {
+    BOOL r = ActorEx_IsReady(self);
+    if (self->res.unk_00 >= 0 && !ResSet_UpdateLoad(&self->res)) {
         r = FALSE;
     }
     return r;
@@ -154,9 +154,9 @@ BOOL Ov003ActVt_021f9834_IsReady(Ov003ActExHome *self) {
 void Ov003ActVt_021f9834_Start(Ov003ActExHome *self) {
     AnimEventTable *tbl;
     Ov003Player *pl;
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     tbl = NULL;
-    func_ov000_0218ffdc(&self->mdl, &self->res, 0, 1);
+    Model0218fe1c_SetRes(&self->mdl, &self->res, 0, 1);
     self->mdl.actor_id = self->id;
     if (self->res.unk_c0 != NULL) {
         tbl = &(*(Ov003AnimRes **)self->res.unk_c0)->tbl;
@@ -167,15 +167,15 @@ void Ov003ActVt_021f9834_Start(Ov003ActExHome *self) {
             self->mdl.evData = (s16 *)&tbl->entries[tbl->count];
         }
     }
-    func_ov000_02190cb0(&self->mdl, data_ov003_021f9967, 0x1000, 0);
-    pl = func_ov000_0219bf90();
+    Model0218fe1c_SetAnim(&self->mdl, data_ov003_021f9967, 0x1000, 0);
+    pl = ActorMgr_FindPlayer();
     if (pl == NULL || !pl->unk_16_2) {
         return;
     }
     if (self->targetObj == NULL) {
         void *mem = Heap_Alloc(0x5c);
         if (mem != NULL) {
-            mem = func_ov000_02199b00(mem);
+            mem = Target_Init(mem);
         }
         self->targetObj = (ActorSub4c *)mem;
     }

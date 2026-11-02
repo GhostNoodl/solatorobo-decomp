@@ -5,7 +5,7 @@ extern "C" {
 
 extern VFunc data_0208ba70[];
 
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 
 static inline void setVec3(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
@@ -34,12 +34,12 @@ static inline Ov002Text2 *ov002_Text_New(void) {
     Ov002Text2 *q = (Ov002Text2 *)Heap_Alloc(0xb8);
     if (q != NULL) {
         *(VFunc **)q = data_0208ba70;
-        func_0204c7d0(q);
+        TextWin_Init(q);
     }
     return q;
 }
 
-void func_ov002_021e2754(Ov002Hud *self, u16 id) {
+void Ov002Hud_SetInfo(Ov002Hud *self, u16 id) {
     if (self->info != NULL) {
         if (id == 0xffff) {
             void *saved;

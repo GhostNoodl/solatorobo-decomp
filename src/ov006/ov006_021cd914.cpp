@@ -13,8 +13,8 @@ void ov006_SlotManager_CountActive(ov006_SlotManager *self);
 ov006_Slot *ov006_SlotManager_InitSlot(ov006_SlotManager *self, int idx, int type, const char *name, u8 unk12);
 void ov006_Slot_SetSub2C(ov006_Slot *self, const ov006_SlotSub *src);
 void ov006_Slot_SetSub3C(ov006_Slot *self, const ov006_SlotSub *src);
-u16 func_020594bc(void *res, int a, int b, u32 idx);
-void func_020592c4(void *res, int a, int b, u32 idx, u16 v);
+u16 DataRes_ReadEntry(void *res, int a, int b, u32 idx);
+void DataRes_WriteEntry(void *res, int a, int b, u32 idx, u16 v);
 void func_020627fc(u8 v);
 void func_0206280c(u16 v);
 void func_ov000_02182590(u8 *p);
@@ -124,7 +124,7 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
             break;
         }
         if (idx != 0xffff) {
-            v = func_020594bc(data_02fe152c, 4, 0x10, idx);
+            v = DataRes_ReadEntry(data_02fe152c, 4, 0x10, idx);
         }
         data_ov006_021ec884->unk144 = v;
         break;
@@ -164,7 +164,7 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
             if (b == 2) {
                 u32 idx = ov006_RecordIdx();
                 if (idx != 0xffff) {
-                    func_020592c4(data_02fe152c, 4, 0x10, idx, n16);
+                    DataRes_WriteEntry(data_02fe152c, 4, 0x10, idx, n16);
                 }
             }
             func_020627fc(c);

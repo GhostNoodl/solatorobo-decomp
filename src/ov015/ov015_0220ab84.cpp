@@ -10,7 +10,7 @@ BOOL Ov015FishState2c_Exit(Ov015FishState2c *self, Ov015Fish *a) {
     EffectObj *o;
     void *saved;
     self->fish = a;
-    o = func_020657b0(data_0214a420, self->unk_24);
+    o = Effect_Find_020657b0(data_0214a420, self->unk_24);
     if (o != NULL) {
         HEAP_PUSH(saved);
         if (o != NULL) {
@@ -20,7 +20,7 @@ BOOL Ov015FishState2c_Exit(Ov015FishState2c *self, Ov015Fish *a) {
         }
         HEAP_POP(saved);
     }
-    o = func_020657b0(data_0214a420, self->unk_28);
+    o = Effect_Find_020657b0(data_0214a420, self->unk_28);
     if (o != NULL) {
         HEAP_PUSH(saved);
         if (o != NULL) {

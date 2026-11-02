@@ -84,24 +84,24 @@ static inline DataRes *DataRes_New(u32 size, const u32 *vtbl) {
 static inline void DataRes_Open152c(const char *arcName, const char *name) {
     char arc[0x20];
     char file[0x20];
-    func_0206e900(arc, arcName);
-    func_0206e900(file, name);
+    LangData_LocalizePath(arc, arcName);
+    LangData_LocalizePath(file, name);
     data_02fe152c->Open(arc, file);
 }
 
 static inline void DataRes_Open1530(const char *arcName, const char *name) {
     char arc[0x20];
     char file[0x20];
-    func_0206e900(arc, arcName);
-    func_0206e900(file, name);
+    LangData_LocalizePath(arc, arcName);
+    LangData_LocalizePath(file, name);
     data_02fe1530->Open(arc, file);
 }
 
 static inline void DataRes_Open1530_18(const char *arcName, const char *name) {
     char arc[0x20];
     char file[0x20];
-    func_0206e900(arc, arcName);
-    func_0206e900(file, name);
+    LangData_LocalizePath(arc, arcName);
+    LangData_LocalizePath(file, name);
     data_02fe1530->Open18(arc, file);
 }
 
@@ -221,24 +221,24 @@ static inline DataRes *DataRes_New(u32 size, const u32 *vtbl) {
 static inline void DataRes_Open152c(const char *arcName, const char *name) {
     char arc[0x20];
     char file[0x20];
-    func_0206e900(arc, arcName);
-    func_0206e900(file, name);
+    LangData_LocalizePath(arc, arcName);
+    LangData_LocalizePath(file, name);
     data_02fe152c->Open(arc, file);
 }
 
 static inline void DataRes_Open1530(const char *arcName, const char *name) {
     char arc[0x20];
     char file[0x20];
-    func_0206e900(arc, arcName);
-    func_0206e900(file, name);
+    LangData_LocalizePath(arc, arcName);
+    LangData_LocalizePath(file, name);
     data_02fe1530->Open(arc, file);
 }
 
 static inline void DataRes_Open1530_18(const char *arcName, const char *name) {
     char arc[0x20];
     char file[0x20];
-    func_0206e900(arc, arcName);
-    func_0206e900(file, name);
+    LangData_LocalizePath(arc, arcName);
+    LangData_LocalizePath(file, name);
     data_02fe1530->Open18(arc, file);
 }
 
@@ -395,13 +395,13 @@ static inline void DataRes_WriteBitsAt(DataRes *res, SaveBlock *block, SaveEntry
     }
 }
 
-void func_020592c4(DataRes *res, u32 idx, int packed, int sub, u16 val) {
+void DataRes_WriteEntry(DataRes *res, u32 idx, int packed, int sub, u16 val) {
     SaveBlock *b = DataRes_Block(res, idx);
     SaveEntry *t = DataRes_Table(res, idx);
     DataRes_WriteBitsAt(res, b, t, packed, sub, val);
 }
 
-void func_02059360(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id, u16 val) {
+void DataRes_WriteBitsById(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id, u16 val) {
     u16 i;
     int start;
     u8 *bytes;
@@ -433,13 +433,13 @@ namespace m_DataRes_5 {
 
 extern "C" {
 
-void func_02059360(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id, u16 val);
+void DataRes_WriteBitsById(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id, u16 val);
 
 void func_02059428(DataRes *res, SaveRef *ref, u32 id, u16 val) {
-    func_02059360(res, ref->block, ref->table, ref->unk_04, id, val);
+    DataRes_WriteBitsById(res, ref->block, ref->table, ref->unk_04, id, val);
 }
 
-u16 func_02059454(DataRes *res, u32 idx, int n, int start) {
+u16 DataRes_ReadBitRange(DataRes *res, u32 idx, int n, int start) {
     u16 r;
     u16 i;
     u8 *bytes;
@@ -503,13 +503,13 @@ static inline u16 DataRes_ReadBitsById(DataRes *res, SaveBlock *block, SaveEntry
     return r;
 }
 
-u16 func_020594bc(DataRes *res, u32 idx, int packed, int sub) {
+u16 DataRes_ReadEntry(DataRes *res, u32 idx, int packed, int sub) {
     SaveBlock *b = DataRes_Block(res, idx);
     SaveEntry *t = DataRes_Table(res, idx);
     return DataRes_ReadBitsAt(res, b, t, packed, sub);
 }
 
-u16 func_02059544(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u16 sub) {
+u16 DataRes_ReadBitsAt_02059544(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u16 sub) {
     return DataRes_ReadBitsAt(res, block, entries, packed, sub);
 }
 
@@ -519,7 +519,7 @@ u16 func_020595c4(DataRes *res, u32 idx, int packed, u32 id) {
     return DataRes_ReadBitsById(res, b, t, packed, id);
 }
 
-u16 func_02059688(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id) {
+u16 DataRes_ReadBitsById_02059688(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id) {
     return DataRes_ReadBitsById(res, block, entries, packed, id);
 }
 
@@ -534,17 +534,17 @@ extern "C" {
 
 
 
-u16 func_02059688(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id);
+u16 DataRes_ReadBitsById_02059688(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id);
 
 u16 func_0205973c(DataRes *res, SaveRef *ref, u32 id) {
-    return func_02059688(res, ref->block, ref->table, ref->unk_04, id);
+    return DataRes_ReadBitsById_02059688(res, ref->block, ref->table, ref->unk_04, id);
 }
 
-u32 func_0205975c(DataRes *res, u32 idx) {
+u32 DataRes_GetCount(DataRes *res, u32 idx) {
     return ((SaveLayout *)res->data)->blocks[idx].count;
 }
 
-SaveEntry *func_0205976c(DataRes *res, u32 idx) {
+SaveEntry *DataRes_GetTable(DataRes *res, u32 idx) {
     return (SaveEntry *)((u8 *)((SaveLayout *)res->data)->blocks + ((SaveLayout *)res->data)->blocks[idx].tableOffset);
 }
 
@@ -633,7 +633,7 @@ void func_02059974(ObjPool *pool) {
     ObjPool_Reset(pool);
 }
 
-void func_020599f4(ObjPool *pool, ObjPoolEntry *entry) {
+void ObjPool_FreeEntry(ObjPool *pool, ObjPoolEntry *entry) {
     switch (entry->kind) {
     case 3: {
         void *saved = data_02097dd0->cur;
@@ -642,7 +642,7 @@ void func_020599f4(ObjPool *pool, ObjPoolEntry *entry) {
             void *p = entry->obj;
             if (p != NULL) {
                 if (p != NULL) {
-                    func_0203f2b8(p);
+                    HitSphere_Unlink_0203f2b8(p);
                     Heap_Free(p);
                 }
                 entry->obj = NULL;
@@ -688,7 +688,7 @@ void func_020599f4(ObjPool *pool, ObjPoolEntry *entry) {
     entry->unk_06 = 0xffff;
 }
 
-ObjPoolEntry *func_02059b14(ObjPool *pool, u16 id, ObjPoolParam *param) {
+ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param) {
     ObjPoolEntry *e = pool->entries;
     int i;
     for (i = 0; i < 16; i++, e++) {
@@ -830,7 +830,7 @@ ObjPoolEntry *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int flip
     BoxTri *tri;
     s32 s;
     s16 x, y, z;
-    e = func_02059b14(pool, id, param);
+    e = ObjPool_Add(pool, id, param);
     {
         u8 *p = (u8 *)0x10;
         BoxTri *t;
@@ -947,13 +947,13 @@ typedef struct ObjPoolPlayer {
 
 extern "C" {
 
-extern ObjPoolPlayer *func_ov000_0219bf90(void);
+extern ObjPoolPlayer *ActorMgr_FindPlayer(void);
 extern void func_ov000_02182590(u8 *p);
 
 extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
 extern void *ActorMgr_FindKindNear(void *mgr, u16 kind, u16 id, s32 *pos, s32 r);
-extern s32 func_ov000_0218c040(void *mgr, s32 max, VecFx32 *out, int kind, u16 id);
+extern s32 Group_GetSpawnPositions(void *mgr, s32 max, VecFx32 *out, int kind, u16 id);
 
 static inline void *ObjPool_FindObj(u16 kind, u16 id, s32 *pos, s32 r) {
     if (data_ov000_021ccd68 == NULL) {
@@ -968,7 +968,7 @@ static inline void ObjPool_Trigger(ObjPool *pool, ObjPoolEntry *entry) {
         data_02fe1534.unk_12 = entry->id;
     }
     if (entry->active & 2) {
-        func_020599f4(pool, entry);
+        ObjPool_FreeEntry(pool, entry);
         data_02fe1534.unk_10 = entry->id;
         {
             u8 *p = &data_ov000_021ccd54->stageFlags;
@@ -995,7 +995,7 @@ BOOL func_0205a028(ObjPool *pool, ObjPoolEntry *entry) {
         if (ObjPool_FindObj(entry->unk_04 << 12, entry->unk_06, &entry->x, entry->unk_18) != NULL) {
             found = TRUE;
         } else {
-            s32 n = func_ov000_0218c040(data_ov000_021ccd64, 0x10, buf, entry->unk_04, entry->unk_06);
+            s32 n = Group_GetSpawnPositions(data_ov000_021ccd64, 0x10, buf, entry->unk_04, entry->unk_06);
             s32 i;
             for (i = 0; i < n; i++) {
                 s32 dx = entry->x - buf[i].x;
@@ -1015,7 +1015,7 @@ BOOL func_0205a028(ObjPool *pool, ObjPoolEntry *entry) {
 }
 
 BOOL func_0205a268(ObjPool *pool, ObjPoolEntry *entry) {
-    ObjPoolPlayer *player = func_ov000_0219bf90();
+    ObjPoolPlayer *player = ActorMgr_FindPlayer();
     BOOL hit;
     if (player == NULL) {
         return FALSE;
@@ -1039,7 +1039,7 @@ BOOL func_0205a268(ObjPool *pool, ObjPoolEntry *entry) {
     if (!hit) {
         return FALSE;
     }
-    func_020599f4(pool, entry);
+    ObjPool_FreeEntry(pool, entry);
     data_02fe1534.unk_10 = entry->id;
     {
         u8 *p = &data_ov000_021ccd54->stageFlags;
@@ -1090,7 +1090,7 @@ static inline BOOL ObjPool_CheckBox(ObjPool *pool, ObjPoolEntry *entry) {
         }
     } else {
         VecFx32 buf[16];
-        s32 n = func_ov000_0218c040(data_ov000_021ccd64, 0x10, buf, entry->unk_06 >> 12, entry->unk_06);
+        s32 n = Group_GetSpawnPositions(data_ov000_021ccd64, 0x10, buf, entry->unk_06 >> 12, entry->unk_06);
         s32 w;
         s32 z;
         s32 y;
@@ -1131,9 +1131,9 @@ void func_0205a358(ObjPool *pool) {
     do {
         next = e->next;
         if (e->b != data_02fe1534.b || e->g != data_02fe1534.g || e->r != data_02fe1534.r) {
-            func_020599f4(pool, e);
+            ObjPool_FreeEntry(pool, e);
         } else {
-            ObjPoolPlayer *pl = func_ov000_0219bf90();
+            ObjPoolPlayer *pl = ActorMgr_FindPlayer();
             if (pl != NULL && !func_ov000_021b4738(pl) && (e->active & 1)) {
                 switch (e->kind) {
                 case 1:
@@ -1171,7 +1171,7 @@ extern "C" {
 void func_0205a69c(void *p) {
 }
 
-void func_0205a6a0(StageRes *res) {
+void StageRes_Init(StageRes *res) {
     res->type = 0;
     res->data = NULL;
     res->size = 0;
@@ -1190,7 +1190,7 @@ void func_0205a6a0(StageRes *res) {
     res->posEv = NULL;
 }
 
-void func_0205a6e8(StageRes *res) {
+void StageRes_CancelSlots(StageRes *res) {
     s32 end;
     s32 i;
     i = data_02149f14;
@@ -1233,7 +1233,7 @@ void func_0205a6e8(StageRes *res) {
         }
         data_02097dd0->cur = saved;
     }
-    func_0205a6a0(res);
+    StageRes_Init(res);
 }
 
 PosEvRes *PosEvRes_DtorDelete(PosEvRes *res) {
@@ -1251,16 +1251,16 @@ PosEvRes *PosEvRes_DtorDelete(PosEvRes *res) {
 static inline void StageRes_OpenData(PosEvRes *res, const char *arcName, const char *name) {
     char arc[0x20];
     char file[0x20];
-    func_0206e900(arc, arcName);
-    func_0206e900(file, name);
+    LangData_LocalizePath(arc, arcName);
+    LangData_LocalizePath(file, name);
     res->Open(arc, file);
 }
 
-void func_0205a840(StageRes *res, const char *arcName, const char *name) {
+void StageRes_Open(StageRes *res, const char *arcName, const char *name) {
     char arc[0x20];
     char file[0x20];
-    func_0206e900(arc, arcName);
-    func_0206e900(file, name);
+    LangData_LocalizePath(arc, arcName);
+    LangData_LocalizePath(file, name);
     func_02038b88(res, arc, file);
     if (res->sub == NULL) {
         DataRes *sub;
@@ -1271,10 +1271,10 @@ void func_0205a840(StageRes *res, const char *arcName, const char *name) {
             *(const u32 **)sub = data_0208b318;
             sub->Clear();
             *(const u32 **)sub = data_0208ba30;
-            func_0204bfcc(sub);
+            MsgRes_Reset_0204bfcc(sub);
         }
         res->sub = sub;
-        func_0204bfe4(sub, arcName, file);
+        MsgRes_OpenLocalized(sub, arcName, file);
     }
     if (res->posEv == NULL) {
         PosEvRes *posEv;
@@ -1310,7 +1310,7 @@ BOOL StageRes_IsAllLoaded(StageRes *res) {
     return loaded;
 }
 
-BOOL func_0205aa30(StageRes *res) {
+BOOL StageRes_Bind(StageRes *res) {
     u8 *hdr;
     if (res->loaded) {
         return TRUE;
@@ -1319,7 +1319,7 @@ BOOL func_0205aa30(StageRes *res) {
     res->data = hdr + *(u32 *)(hdr + 0xc);
     res->size = *(u32 *)(hdr + 8);
     if (res->sub != NULL) {
-        func_0204c030(res->sub);
+        MsgRes_Bind(res->sub);
     }
     if (res->posEv != NULL) {
         func_02059784(res->posEv);
@@ -1480,8 +1480,8 @@ extern "C" {
 static inline void StageRes_OpenData(PosEvRes *res, const char *arcName, const char *name) {
     char arc[0x20];
     char file[0x20];
-    func_0206e900(arc, arcName);
-    func_0206e900(file, name);
+    LangData_LocalizePath(arc, arcName);
+    LangData_LocalizePath(file, name);
     res->Open(arc, file);
 }
 
@@ -1489,7 +1489,7 @@ void func_0205ae68(void) {
     data_02149efc = 0;
 }
 
-u16 func_0205ae7c(StageRes *res) {
+u16 StageRes_GetValue(StageRes *res) {
     return res->value;
 }
 
@@ -1650,8 +1650,8 @@ extern "C" {
 static inline void StageRes_OpenData(PosEvRes *res, const char *arcName, const char *name) {
     char arc[0x20];
     char file[0x20];
-    func_0206e900(arc, arcName);
-    func_0206e900(file, name);
+    LangData_LocalizePath(arc, arcName);
+    LangData_LocalizePath(file, name);
     res->Open(arc, file);
 }
 
@@ -1666,7 +1666,7 @@ BOOL func_0205b1fc(void) {
     return data_02149f14 != data_02149f04;
 }
 
-StageResSlot *func_0205b23c(u16 id) {
+StageResSlot *StageRes_FindSlot(u16 id) {
     s32 i;
     s32 end;
     StageResSlot *slot;
@@ -1726,8 +1726,8 @@ extern "C" {
 static inline void StageRes_OpenData(PosEvRes *res, const char *arcName, const char *name) {
     char arc[0x20];
     char file[0x20];
-    func_0206e900(arc, arcName);
-    func_0206e900(file, name);
+    LangData_LocalizePath(arc, arcName);
+    LangData_LocalizePath(file, name);
     res->Open(arc, file);
 }
 
@@ -1773,7 +1773,7 @@ StageResSlot *func_0205b378(BOOL pop) {
 }
 
 
-u16 func_0205b3cc(StageRes *res, u16 id, u32 argc, u16 *cmd) {
+u16 StageRes_EvalArgs(StageRes *res, u16 id, u32 argc, u16 *cmd) {
     StageResSlot *slot = Slot_Alloc();
     u16 len;
     u16 i;
@@ -1820,7 +1820,7 @@ BOOL func_0205b4ac(void) {
 
 u16 func_0205b068(StageRes *res, u16 *cmd, u16 val);
 
-// Reads n bits, LSB first, from bit `start` of block idx's data (an inlined func_02059454).
+// Reads n bits, LSB first, from bit `start` of block idx's data (an inlined DataRes_ReadBitRange).
 static inline u16 DataRes_ReadBits(DataRes *res, u32 idx, s32 n, u16 start) {
     u16 r;
     u16 i;
@@ -1937,7 +1937,7 @@ namespace m_StageRes_5 {
 extern "C" {
 
 extern void func_0205ae68(void);
-extern u16 func_0205ae7c(StageRes *res);
+extern u16 StageRes_GetValue(StageRes *res);
 extern void func_0205beb0(void);
 extern void func_0205bec8(u16 id);
 extern void func_0205bee4(void);
@@ -1955,7 +1955,7 @@ extern int func_0205f978(StageResSlot *slot);
 extern int func_020616b0(StageResSlot *slot);
 extern int func_02061c8c(StageResSlot *slot);
 extern s32 Rand_UpTo(s32 max);
-extern u16 func_0205b3cc(StageRes *res, u16 id, u32 argc, u16 *cmd);
+extern u16 StageRes_EvalArgs(StageRes *res, u16 id, u32 argc, u16 *cmd);
 extern StageResSlot *func_0205b378(BOOL pop);
 
 void func_0205b8c4(void) {
@@ -1976,7 +1976,7 @@ u16 func_0205b8dc(StageRes *res, u16 *cmd) {
     }
     func_0205b8c4();
     if (data_02fe1534.unk_00 == 1) {
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         func_0205b378(TRUE);
         return len;
     }
@@ -1984,32 +1984,32 @@ u16 func_0205b8dc(StageRes *res, u16 *cmd) {
     case 0x100:
         len++;
         len += res->Eval(cmd + 2, 0, 0);
-        *(u16 *)data_02fe1534.unk_02 = func_0205ae7c(res);
+        *(u16 *)data_02fe1534.unk_02 = StageRes_GetValue(res);
         break;
     case 0x101:
         len++;
         len += res->Eval(cmd + 2, 0, 0);
-        *(u16 *)&data_02fe1534.unk_08[0] = func_0205ae7c(res);
+        *(u16 *)&data_02fe1534.unk_08[0] = StageRes_GetValue(res);
         *(u16 *)&data_02fe1534.unk_08[2] = 0;
         break;
     case 0x102:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         func_0205bf70(func_0205b378(TRUE));
         break;
     case 0x209:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         func_0205c37c(NULL);
         break;
     case 0x20a:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         func_0205c490(NULL);
         break;
     case 0x20c:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         func_0205c5c4(func_0205b378(TRUE));
         break;
     case 0x20e:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         func_0205c624(func_0205b378(TRUE));
         break;
     case 0x11:
@@ -2017,48 +2017,48 @@ u16 func_0205b8dc(StageRes *res, u16 *cmd) {
         func_0205beb0();
         break;
     case 0x23a:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         func_0205e19c(func_0205b378(TRUE));
         break;
     case 0x43b:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         func_0205e29c(func_0205b378(TRUE));
         break;
     case 0x243:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         func_0205eda0(func_0205b378(TRUE));
         break;
     case 0x347:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         func_0205f354(func_0205b378(TRUE));
         break;
     case 0x14c:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         func_0205f978(func_0205b378(TRUE));
         break;
     case 0x32:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         break;
     case 0x136:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         func_0205de88(func_0205b378(TRUE));
         break;
     case 0x17d:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         func_0205bec8(func_0205b378(TRUE)->args[0]);
         break;
     case 0x16f:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         func_020616b0(func_0205b378(TRUE));
         break;
     case 0x280:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         func_02061c8c(func_0205b378(TRUE));
         break;
     case 0x1f0:
         len++;
         len += res->Eval(cmd + 2, 0, 0);
-        *(u16 *)data_02fe1534.unk_7e = Rand_UpTo(func_0205ae7c(res));
+        *(u16 *)data_02fe1534.unk_7e = Rand_UpTo(StageRes_GetValue(res));
         break;
     case 0xf1:
         len++;
@@ -2069,7 +2069,7 @@ u16 func_0205b8dc(StageRes *res, u16 *cmd) {
         func_0205ae68();
         break;
     default:
-        len += func_0205b3cc(res, op, argc, cmd + 1);
+        len += StageRes_EvalArgs(res, op, argc, cmd + 1);
         break;
     }
     if (op == 0x237 || op == 0x27f) {
@@ -2235,14 +2235,14 @@ int func_0205c2fc(StageResSlot *slot) {
     case 0:
         return 1;
     case 1:
-        if (!func_0206f21c(id, 1)) {
+        if (!Item_Give(id, 1)) {
             func_ov000_02184ea4(data_ov000_021ccd54, id);
         }
         break;
     case 3:
     case 4:
     case 5:
-        func_0206f5e4(id, 1);
+        Item_Set_0206f5e4(id, 1);
         break;
     }
     return 1;
@@ -2625,8 +2625,8 @@ extern void func_ov000_0218372c(FieldState *state, u16 a);
 extern void func_ov000_021837c0(FieldState *state);
 extern void func_ov000_021837f8(FieldState *state, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f);
 
-extern void *func_0206fef8(u32 id);
-extern s32 func_ov000_0218c040(void *mgr, s32 max, StageVec *out, s32 kind, u16 id);
+extern void *Tbl_FindEntry_0206fef8(u32 id);
+extern s32 Group_GetSpawnPositions(void *mgr, s32 max, StageVec *out, s32 kind, u16 id);
 
 static inline s32 StageFx_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -2676,8 +2676,8 @@ int func_0205cbf0(StageResSlot *slot) {
         pos.y = p[1] << 4;
         pos.z = p[2] << 4;
     } else {
-        StageObjInfo *info = (StageObjInfo *)func_0206fef8(id);
-        s32 n = func_ov000_0218c040(data_ov000_021ccd64, 0x20, list, id >> 12, id);
+        StageObjInfo *info = (StageObjInfo *)Tbl_FindEntry_0206fef8(id);
+        s32 n = Group_GetSpawnPositions(data_ov000_021ccd64, 0x20, list, id >> 12, id);
         s32 hh = info->height << 4;
         s32 h;
         s32 i = 0;
@@ -3004,7 +3004,7 @@ int func_0205d7a0(StageResSlot *slot) {
 int func_0205d7e4(StageResSlot *slot) {
     data_ov000_021ccd30->flag1 = slot->args[0];
     if (slot->args[0] != 0) {
-        StagePlayer *player = func_ov000_0219bf90();
+        StagePlayer *player = ActorMgr_FindPlayer();
         if (player != NULL) {
             func_ov000_021b1110(player, 1);
             player->unk_b2a = 0;
@@ -3268,7 +3268,7 @@ int func_0205e29c(StageResSlot *slot) {
     area = Stage_GetArea(slot->res, slot->args[2]);
     data_02fe1534.unk_80 = 0;
     if (slot->args[1] == 1) {
-        StagePlayer *pl = func_ov000_0219bf90();
+        StagePlayer *pl = ActorMgr_FindPlayer();
         if (pl->color.b != slot->args[3]) {
             return 1;
         }
@@ -3504,7 +3504,7 @@ int func_0205ea9c(StageResSlot *slot) {
             return -0x63;
         }
     }
-    if (func_ov000_0218bddc(data_ov000_021ccd64, slot->args[0], slot->args[2] & 0xff) == NULL) {
+    if (Group_FindNodeByKind(data_ov000_021ccd64, slot->args[0], slot->args[2] & 0xff) == NULL) {
         void *obj = Group_FindById(data_ov000_021ccd64, slot->args[0], slot->args[1] & 0xff);
         if (obj != NULL) {
             Group_RemoveNode(data_ov000_021ccd64, obj, 1);
@@ -3735,7 +3735,7 @@ int func_0205f47c(StageResSlot *slot) {
         ActorGroup_BroadcastKind(o, slot->args[0], m);
     }
     if (l != NULL) {
-        func_ov000_0218d46c(l, 0xffff, m);
+        Actor_SendMsgU8(l, 0xffff, m);
     }
     return 1;
 }
@@ -3766,7 +3766,7 @@ int func_0205f5c4(StageRes *res, u16 id, u16 idx, u16 posIdx, u16 mode) {
     } else {
         o = Stage_FindObj3DByIdx(idx);
     }
-    if (o != NULL && (pl = func_ov000_0219bf90()) != NULL) {
+    if (o != NULL && (pl = ActorMgr_FindPlayer()) != NULL) {
         cur = &((StageCamView *)data_ov000_021ccd54)->cur;
         if (posIdx != 0) {
             s16 *p = (s16 *)(res->posEv->pos + (u16)(posIdx & 0x7fff) * 6);
@@ -3841,7 +3841,7 @@ int func_0205f940(StageResSlot *slot) {
 }
 
 int func_0205f978(StageResSlot *slot) {
-    StagePlayer *player = func_ov000_0219bf90();
+    StagePlayer *player = ActorMgr_FindPlayer();
     if (player == NULL) {
         return 1;
     }
@@ -3857,7 +3857,7 @@ int func_0205f978(StageResSlot *slot) {
 }
 
 int func_0205f9dc(StageResSlot *slot) {
-    StagePlayer *player = func_ov000_0219bf90();
+    StagePlayer *player = ActorMgr_FindPlayer();
     if (player == NULL || !Stage_IsWirelessReady()) {
         return -0x63;
     }
@@ -3875,7 +3875,7 @@ int func_0205fa48(StageResSlot *slot) {
     if (Field_HasEvent(0x11) || Field_HasEvent(0x27)) {
         return -0x63;
     }
-    player = func_ov000_0219bf90();
+    player = ActorMgr_FindPlayer();
     if (player != NULL && player->unk_b1e != 0xffff) {
         return -0x63;
     }
@@ -3920,7 +3920,7 @@ int func_0205fa48(StageResSlot *slot) {
 }
 
 void func_0205fc88(u32 flags) {
-    StagePlayer *player = func_ov000_0219bf90();
+    StagePlayer *player = ActorMgr_FindPlayer();
     if (player != NULL) {
         if (flags & 1) {
             func_ov000_021b12c0(player, 0);
@@ -3944,7 +3944,7 @@ void func_0205fc88(u32 flags) {
             func_ov000_021b1a54(player, 0);
         }
         if (flags & 0x1000) {
-            func_ov000_021b4774(player);
+            Robo021ca458_RestoreHp(player);
         }
     }
     if ((flags & 0x30) || (flags & 0xc00)) {
@@ -3969,7 +3969,7 @@ static inline void Stage_SetMark(const StageVec *v, u16 rot, u16 active) {
 }
 
 int func_0205fdb0(StageResSlot *slot) {
-    StagePlayer *player = func_ov000_0219bf90();
+    StagePlayer *player = ActorMgr_FindPlayer();
     if (player != NULL) {
         Stage_SetMark(&player->pos, player->rot[1], 1);
     }
@@ -3977,7 +3977,7 @@ int func_0205fdb0(StageResSlot *slot) {
 }
 
 u16 func_020600cc(StageResSlot *slot, StageVec *pos, u16 *rot, u16 *idx);
-extern void func_ov000_0219cbf8(StagePlayer *player, StageVec *pos, u16 *rot);
+extern void Robo021ca458_SetPosRot(StagePlayer *player, StageVec *pos, u16 *rot);
 extern void func_ov000_02184594(FieldState *state);
 
 int func_0205fe10(StageResSlot *slot) {
@@ -3986,7 +3986,7 @@ int func_0205fe10(StageResSlot *slot) {
     u16 idx;
     u16 rot[3];
     StageVec pos;
-    player = func_ov000_0219bf90();
+    player = ActorMgr_FindPlayer();
     flags = slot->args[2];
     switch (slot->bits.unk_04_0) {
     case 0:
@@ -3999,7 +3999,7 @@ int func_0205fe10(StageResSlot *slot) {
             data_ov000_021ccd6c->destExit = 0xff;
         } else if (idx == 0xffff) {
             if (data_ov000_021ccd6c->destExit == 0xff && player != NULL) {
-                func_ov000_0219cbf8(player, &pos, rot);
+                Robo021ca458_SetPosRot(player, &pos, rot);
                 if (!(flags & 0x20)) {
                     player->unk_vf18();
                 }
@@ -4048,12 +4048,12 @@ extern "C" {
 
 extern void func_0205fc88(u32 flags);
 extern void func_ov000_02184594(FieldState *state);
-extern ObjPoolEntry *func_02059b14(ObjPool *pool, u16 id, ObjPoolParam *param);
+extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
 extern void func_ov000_02187a20(FieldState *state, u16 a);
-extern void func_0204aa10(SndQueue *queue);
+extern void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
 extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
@@ -4064,7 +4064,7 @@ int func_02060898(u16 id, u16 idx, int val);
 u16 func_020600cc(StageResSlot *slot, StageVec *pos, u16 *rot, u16 *idx) {
     StageRes *res;
     u16 ang;
-    func_ov000_0219bf90();
+    ActorMgr_FindPlayer();
     res = slot->res;
     *idx = slot->args[0] & ~0x8000;
     ang = Stage_GetAngleOr0(res, slot->args[1]);
@@ -4085,7 +4085,7 @@ int func_020601e0(StageResSlot *slot) {
     if (!Stage_IsWirelessReady() || Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
-    if (func_ov000_0219bf90() == NULL) {
+    if (ActorMgr_FindPlayer() == NULL) {
         func_ov000_02184594(data_ov000_021ccd54);
         return -0x63;
     }
@@ -4094,7 +4094,7 @@ int func_020601e0(StageResSlot *slot) {
 }
 
 int func_02060278(StageResSlot *slot) {
-    StagePlayer *player = func_ov000_0219bf90();
+    StagePlayer *player = ActorMgr_FindPlayer();
     if (player == NULL || Field_HasEvent(9) || !Stage_IsWirelessReady()) {
         return -0x63;
     }
@@ -4119,12 +4119,12 @@ extern "C" {
 
 extern void func_0205fc88(u32 flags);
 extern void func_ov000_02184594(FieldState *state);
-extern ObjPoolEntry *func_02059b14(ObjPool *pool, u16 id, ObjPoolParam *param);
+extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
 extern void func_ov000_02187a20(FieldState *state, u16 a);
-extern void func_0204aa10(SndQueue *queue);
+extern void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
 extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
@@ -4143,7 +4143,7 @@ int func_02060364(StageResSlot *slot) {
     idx = slot->args[0] & ~0x8000;
     ang = Stage_GetAngleOr0(res, slot->args[1]);
     if (slot->args[0] & 0x8000) {
-        StagePlayer *player = func_ov000_0219bf90();
+        StagePlayer *player = ActorMgr_FindPlayer();
         s16 *p = (s16 *)(res->posEv->pos + idx * 6);
         if (player != NULL) {
             s32 x = p[0] << 4;
@@ -4161,7 +4161,7 @@ int func_02060364(StageResSlot *slot) {
 }
 
 int func_020604f4(StageResSlot *slot) {
-    ObjPoolEntry *e = func_02059b14(data_02149f0c, slot->args[0], (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12));
+    ObjPoolEntry *e = ObjPool_Add(data_02149f0c, slot->args[0], (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12));
     e->active |= 2;
     return 1;
 }
@@ -4171,7 +4171,7 @@ int func_02060534(StageResSlot *slot) {
     ObjPoolEntry *e;
     ObjPoolParam *prm = (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12);
     a = slot->args[1];
-    e = func_02059b14(data_02149f0c, slot->args[0], prm);
+    e = ObjPool_Add(data_02149f0c, slot->args[0], prm);
     if ((u16)(a & 0xfff) == 0xfff) {
         e->unk_06 = 0xffff;
     } else {
@@ -4193,7 +4193,7 @@ int func_020605a4(StageResSlot *slot) {
         }
     }
     if (i != 16) {
-        func_020599f4(pool, e);
+        ObjPool_FreeEntry(pool, e);
     }
     return 1;
 }
@@ -4213,12 +4213,12 @@ int func_020605fc(StageResSlot *slot) {
         if (rot) {
             func_02059c98(pool, slot->args[0], prm, 0);
         } else {
-            ObjPoolEntry *e = func_02059b14(pool, slot->args[0], prm);
+            ObjPoolEntry *e = ObjPool_Add(pool, slot->args[0], prm);
             HitSphere *h;
             e->kind = 3;
             h = (HitSphere *)Heap_Alloc(sizeof(HitSphere));
             if (h != NULL) {
-                func_0203f260(h);
+                HitSphere_Init(h);
             }
             e->obj = h;
             h->radius = e->unk_18;
@@ -4253,12 +4253,12 @@ extern "C" {
 
 extern void func_0205fc88(u32 flags);
 extern void func_ov000_02184594(FieldState *state);
-extern ObjPoolEntry *func_02059b14(ObjPool *pool, u16 id, ObjPoolParam *param);
+extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
 extern void func_ov000_02187a20(FieldState *state, u16 a);
-extern void func_0204aa10(SndQueue *queue);
+extern void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
 extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
@@ -4277,14 +4277,14 @@ int func_02060714(StageResSlot *slot) {
         }
     }
     if (i != 16) {
-        func_020599f4(pool, e);
+        ObjPool_FreeEntry(pool, e);
     }
     return 1;
 }
 
 int func_0206076c(StageResSlot *slot) {
     u16 f = slot->args[1];
-    ObjPoolEntry *e = func_02059b14(data_02149f0c, slot->args[0], NULL);
+    ObjPoolEntry *e = ObjPool_Add(data_02149f0c, slot->args[0], NULL);
     e->kind = 5;
     e->active |= f;
     return 1;
@@ -4301,13 +4301,13 @@ int func_020607a8(StageResSlot *slot) {
         }
     }
     if (i != 16) {
-        func_020599f4(pool, e);
+        ObjPool_FreeEntry(pool, e);
     }
     return 1;
 }
 
 int func_02060800(StageResSlot *slot) {
-    ObjPoolEntry *e = func_02059b14(data_02149f0c, slot->args[0], (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12));
+    ObjPoolEntry *e = ObjPool_Add(data_02149f0c, slot->args[0], (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12));
     e->active |= 8;
     return 1;
 }
@@ -4323,7 +4323,7 @@ int func_02060840(StageResSlot *slot) {
         }
     }
     if (i != 16) {
-        func_020599f4(pool, e);
+        ObjPool_FreeEntry(pool, e);
     }
     return 1;
 }
@@ -4437,12 +4437,12 @@ extern "C" {
 
 extern void func_0205fc88(u32 flags);
 extern void func_ov000_02184594(FieldState *state);
-extern ObjPoolEntry *func_02059b14(ObjPool *pool, u16 id, ObjPoolParam *param);
+extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
 extern void func_ov000_02187a20(FieldState *state, u16 a);
-extern void func_0204aa10(SndQueue *queue);
+extern void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
 extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
@@ -4477,7 +4477,7 @@ int func_02060c28(StageResSlot *slot) {
         if (Field_HasEvent(0xa)) {
             return -0x63;
         }
-        func_0204aa10(data_02097e48);
+        SndQueue_ResetNodes_0204aa10(data_02097e48);
         data_02097e48->flag2 = 1;
         {
             SndQueue *q = data_02097e48;
@@ -4628,9 +4628,9 @@ namespace m_StageCmd_13 {
 extern "C" {
 
 extern SndMgr *data_02097e4c;
-extern SndHandle *func_02049a48(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
-extern void func_02049de8(SndMgr *mgr, u16 id);
-extern void func_0204a284(SndMgr *mgr, int a);
+extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
+extern void SndMgr_Stop(SndMgr *mgr, u16 id);
+extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, int a);
 extern void func_ov000_021bc3ec(FieldFade *fade, u16 a, s32 b);
 extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
 extern void func_0203c9e8(int a, int b);
@@ -4647,7 +4647,7 @@ extern void func_ov000_02188634(FieldState *state, u16 a, u16 b);
 extern BOOL func_ov000_0214be8c(void);
 extern BOOL func_ov000_021b4738(StagePlayer *player);
 extern DataRes *data_02fe1530;
-extern u16 func_020594bc(DataRes *res, u32 idx, int packed, int sub);
+extern u16 DataRes_ReadEntry(DataRes *res, u32 idx, int packed, int sub);
 
 typedef struct StageTblChunk {
     /* 0x00 */ char name[0x10];
@@ -4685,7 +4685,7 @@ int func_020613bc(StageResSlot *slot) {
     if (Field_HasEvent(0x11) || Field_HasEvent(0x25)) {
         return -0x63;
     }
-    func_02049a48(data_02097e4c, slot->args[0], -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, slot->args[0], -1, -1, -1);
     return 1;
 }
 
@@ -4693,7 +4693,7 @@ int func_0206149c(StageResSlot *slot) {
     if (slot->args[1] == 0 && Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
-    func_02049de8(data_02097e4c, slot->args[0]);
+    SndMgr_Stop(data_02097e4c, slot->args[0]);
     return 1;
 }
 
@@ -4701,7 +4701,7 @@ int func_020614f4(StageResSlot *slot) {
     if (Field_HasEvent(0x11) || Field_HasEvent(0x25)) {
         return -0x63;
     }
-    func_0204a20c(data_02097e4c, slot->args[0]);
+    SndMgr_PlayStrm(data_02097e4c, slot->args[0]);
     return 1;
 }
 
@@ -4709,7 +4709,7 @@ int func_020615bc(StageResSlot *slot) {
     if (slot->args[1] == 0 && Field_IsEventPending(data_ov000_021ccd54)) {
         return -0x63;
     }
-    func_0204a284(data_02097e4c, -1);
+    SndMgr_StopStrm_0204a284(data_02097e4c, -1);
     return 1;
 }
 
@@ -4878,7 +4878,7 @@ int func_02061b20(StageResSlot *slot) {
         break;
     case 1:
         if (slot->args[1] != data_0214a424->bits18.mode) {
-            StagePlayer *player = func_ov000_0219bf90();
+            StagePlayer *player = ActorMgr_FindPlayer();
             if (player != NULL) {
                 func_ov000_021b1b88(player, slot->args[1]);
                 Field_PushEvent(data_ov000_021ccd54, 0xb, 0);
@@ -4907,7 +4907,7 @@ int func_02061c8c(StageResSlot *slot) {
         shared->unk_80 = func_ov000_0214be8c();
         break;
     case 1: {
-        StagePlayer *player = func_ov000_0219bf90();
+        StagePlayer *player = ActorMgr_FindPlayer();
         if (player != NULL) {
             StageObj3D *o = Stage_FindObj3DByIdx(player->unk_b1c);
             if (o == NULL) {
@@ -4921,7 +4921,7 @@ int func_02061c8c(StageResSlot *slot) {
         break;
     }
     case 2: {
-        StagePlayer *player = func_ov000_0219bf90();
+        StagePlayer *player = ActorMgr_FindPlayer();
         if (player != NULL) {
             if (func_ov000_021b4738(player)) {
                 shared->unk_80 = 1;
@@ -5119,7 +5119,7 @@ found:
 
 BOOL func_020621c4(void) {
     BOOL r = TRUE;
-    if (func_020594bc(data_02fe152c, 5, r, 8) == 0) {
+    if (DataRes_ReadEntry(data_02fe152c, 5, r, 8) == 0) {
         r = FALSE;
     }
     return r;
@@ -5127,7 +5127,7 @@ BOOL func_020621c4(void) {
 
 BOOL func_020621f8(void) {
     BOOL r = TRUE;
-    if (func_020594bc(data_02fe152c, 5, r, 9) == 0) {
+    if (DataRes_ReadEntry(data_02fe152c, 5, r, 9) == 0) {
         r = FALSE;
     }
     return r;

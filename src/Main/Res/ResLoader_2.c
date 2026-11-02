@@ -9,7 +9,7 @@ void func_0203584c(ResLoader *loader) {
     }
 }
 
-u8 *func_02035890(ResRing *ring) {
+u8 *ResRing_GetReadPtr(ResRing *ring) {
     u8 *result;
     u32 readPos;
     int readOff;
@@ -33,7 +33,7 @@ u8 *func_02035890(ResRing *ring) {
 }
 
 // The clamp is written out in both branches; the target keeps them as two blocks.
-u32 func_02035904(ResRing *ring) {
+u32 ResRing_GetReadSize(ResRing *ring) {
     u32 size;
     u32 max;
     if (ring->readPos != 0) {

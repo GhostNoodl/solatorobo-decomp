@@ -7,8 +7,8 @@ extern void *data_02149ef8;
 extern void *data_0208cc88;
 extern void *data_0208cc94;
 void *MsgRes_GetString(void *a, s32 b);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
+void *ResMgr_GetArcList(void *a);
+void *ResList_FindType2(void *a, void *b);
 void func_02041c5c(void *model, void *fn);
 void *func_ov000_021c5a0c(u8 *self, u16 *cmd, void *arr, u16 *count);
 
@@ -23,7 +23,7 @@ void func_ov000_021c5bd4(Lo021cca40 *self) {
     p = (TextWin *)Heap_Alloc(0xb8);
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
-        func_0204c7d0(p);
+        TextWin_Init(p);
     }
     self->unk_30 = p;
     p->font = 8;
@@ -48,15 +48,15 @@ void func_ov000_021c5bd4(Lo021cca40 *self) {
         void *name;
         name = data_0208cc88;
         arc = data_0208cc94;
-        func_02041218((struct PlttRes *)(m + 0x88));
-        func_02041440((Model *)m, (const char *)name, 0);
+        PlttRes_Init_02041218((struct PlttRes *)(m + 0x88));
+        TexObj_Init((Model *)m, (const char *)name, 0);
         STD_CopyString((char *)m + 0x2c, (const char *)arc);
     }
     self->unk_34 = (Model *)(m);
-    func_020417e0(self->unk_34, func_02034d88(func_02035d5c(m + 0x2c), (u8 *)self->unk_34 + 0x4c));
+    TexObj_SetRes(self->unk_34, ResList_FindType2(ResMgr_GetArcList(m + 0x2c), (u8 *)self->unk_34 + 0x4c));
     self->unk_34->flags |= 2;
-    func_02041d9c(self->unk_34, 0, 6);
-    func_02041d9c(self->unk_34, 0, 7);
+    TexObj_SelectImage(self->unk_34, 0, 6);
+    TexObj_SelectImage(self->unk_34, 0, 7);
     func_02041c5c((u8 *)self->unk_34, (void *)func_ov000_021c5a0c);
     self->unk_44 = 1;
 }

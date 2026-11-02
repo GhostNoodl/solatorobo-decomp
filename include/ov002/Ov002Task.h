@@ -26,7 +26,7 @@ public:
     s32 unk_48;
     u8 unk_4c;
     u8 unk_4d;
-    s8 unk_4e; // load state (func_ov002_021ce204)
+    s8 unk_4e; // load state (Task021ef430_PreUpdate)
     u8 unk_4f;
 };
 SIZE_ASSERT(Task021ef430, 0x50);
@@ -36,7 +36,7 @@ class Task021ef4b0 : public Task {
 public:
     UiList *unk_3c;
     Lo021cadcc *unk_40;
-    u32 unk_44; // current list item id (func_ov002_021cedec)
+    u32 unk_44; // current list item id (Task021ef4b0_UpdateActive)
     union {
         u32 unk_48;
         struct {
@@ -136,8 +136,8 @@ public:
 SIZE_ASSERT(Task021ef89c, 0x44);
 
 // Level table read from a data file (0x18 bytes, vtable data_ov002_021f00fc; ctor
-// func_ov002_021e4714, load func_ov002_021e4814, clear func_ov002_021e4904). The file holds a
-// count, `count` thresholds and two strings; func_ov002_021e4960 gives the level of a value.
+// Ov002LevelTable_Ctor, load Ov002LevelTable_Load, clear func_ov002_021e4904). The file holds a
+// count, `count` thresholds and two strings; Ov002LevelTable_GetLevel gives the level of a value.
 struct Ov002LevelTable : public VObj {
     /* 0x04 */ u8 *src; // the file data
     /* 0x08 */ u32 count;
@@ -155,7 +155,7 @@ typedef struct Ov002StrPair {
 } Ov002StrPair;
 
 // String-pair table read from a data file (0x10 bytes, vtable data_ov002_021f00ec; ctor
-// func_ov002_021e49a0, load func_ov002_021e4a78, clear func_ov002_021e4b80).
+// Ov002StrTable_Ctor, load Ov002StrTable_Load, clear Ov002StrTable_Clear).
 struct Ov002StrTable : public VObj {
     /* 0x04 */ u8 *src; // the file data
     /* 0x08 */ u32 count;
@@ -210,7 +210,7 @@ SIZE_ASSERT(Task021efb24, 0x3c);
 // Vtable data_ov002_021efba4, 0x40 bytes.
 class Task021efba4 : public Task {
 public:
-    struct Ov002Hud *hud; // built by func_ov002_021d4f58 (ov002/ObjLayouts.h)
+    struct Ov002Hud *hud; // built by Task021efba4_Start (ov002/ObjLayouts.h)
 };
 SIZE_ASSERT(Task021efba4, 0x40);
 

@@ -7,15 +7,15 @@ extern "C" {
 extern void *data_02149ef8;
 void *MsgRes_GetString(void *a, s32 b);
 void func_ov000_0216bae4(void *dst, void *src);
-BOOL func_02054f10(void *a, s32 b);
-BOOL func_0203e63c(void *p);
-void func_ov000_0215eab4(void *p);
+BOOL Model_IsReady(void *a, s32 b);
+BOOL Vram_IsTransferDone(void *p);
+void Obj0215eab4_Draw(void *p);
 
 static inline BOOL LoResDone(TextWin *o) {
     if (o->unk_6c == NULL) {
         return TRUE;
     }
-    if (func_0203e63c(o->unk_6c)) {
+    if (Vram_IsTransferDone(o->unk_6c)) {
         o->unk_6c = NULL;
     } else {
         return o->noVram ? FALSE : TRUE;
@@ -24,9 +24,9 @@ static inline BOOL LoResDone(TextWin *o) {
 }
 
 
-BOOL func_ov000_02152a58(UiObj *self) {
+BOOL UiObj_IsLoaded(UiObj *self) {
     BOOL ok = TRUE;
-    if (self->model && !func_02054f10(self->model, 0xffff)) {
+    if (self->model && !Model_IsReady(self->model, 0xffff)) {
         ok = FALSE;
     }
     if (self->title && !LoResDone(self->title)) {

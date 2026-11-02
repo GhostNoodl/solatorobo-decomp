@@ -6,11 +6,11 @@ extern "C" {
 
 extern u8 data_ov010_0220f024[];
 extern const VecFx32 data_ov010_0220f144;
-extern BOOL func_ov000_02190cb0(Model0218fe1c *a, const char *b, s16 c, u8 d);
-extern void func_ov000_021915a0(Model0218fe1c *a);
+extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *a, const char *b, s16 c, u8 d);
+extern void Model0218fe1c_SetLoop(Model0218fe1c *a);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
-extern BOOL func_ov000_02198360(ActorSub40 *a, u8 b, BOOL c);
+extern BOOL History_SetState(ActorSub40 *a, u8 b, BOOL c);
 
 static inline BOOL Ov010_Begin(u16 *st) {
     if (*st == 0) {
@@ -36,7 +36,7 @@ void Ov010ActVt_0221009c_State20(Ov003Actor *self) {
             self->gravity = 0;
             self->speed = 0x200;
             anim = TRUE;
-            func_02049f44(data_02097e4c, 0x51, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x51, &self->pos, 0);
             self->fsm->st++;
         } else {
             const VecFx32 *t = &data_ov010_0220f144;
@@ -51,7 +51,7 @@ void Ov010ActVt_0221009c_State20(Ov003Actor *self) {
                 self->moveYaw = FX_Atan2(t->x - self->pos.x, t->z - self->pos.z);
             } else {
                 if (st->timer == 0) {
-                    func_02065f88(0x12f, &self->pos)->SetScaleAll(0xe66);
+                    Effect_SpawnId(0x12f, &self->pos)->SetScaleAll(0xe66);
                 }
                 self->fsm->timer++;
                 if (self->fsm->timer > 0x5a) {
@@ -79,13 +79,13 @@ void Ov010ActVt_0221009c_State20(Ov003Actor *self) {
         self->rot_x = 0;
         self->rot_y = 0xff;
         self->rot_z = 0;
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         break;
     }
     }
     if (anim) {
-        func_ov000_02190cb0(self->model, FLD(const char *, data_ov010_0220f024, 0x2c), 0x1000, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, FLD(const char *, data_ov010_0220f024, 0x2c), 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->model->visible = 1;
     }
 }

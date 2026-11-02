@@ -9,10 +9,10 @@ extern char data_ov013_0220ba60[];
 extern void Ov003Vec_RotateY(VecFx32 *out, u16 rot, const VecFx32 *v);
 extern void *Ov003Vt_021f79a8_Ctor(void *p);
 extern void *Ov003Vt_021f79a8_Dtor(void *p);
-extern void *func_ov000_0218ea20(void *p);
-extern void *func_ov000_0218fee4(void *p);
-extern ResSet *func_ov000_0218e9c4(ResSet *p);
-extern BOOL func_ov000_0218f110(ResSet *p);
+extern void *ResSet_ReleaseAll(void *p);
+extern void *Model0218fe1c_FreeAnims(void *p);
+extern ResSet *ResSet_Init(ResSet *p);
+extern BOOL ResSet_UpdateLoad(ResSet *p);
 
 static inline void Ov013_InitDc(Ov013ActEx_02204454 *self) {
     self->unk_ce_0 = 0;
@@ -36,7 +36,7 @@ static inline void Ov013_DtorDc(Ov013ActEx_02204454 *self) {
     if (self->unk_dc != NULL) {
         Ov013Names *p = self->unk_dc;
         if (p != NULL) {
-            func_ov000_0218ea20(p);
+            ResSet_ReleaseAll(p);
             Heap_Free(p);
         }
         self->unk_dc = NULL;
@@ -47,7 +47,7 @@ static inline void Ov013_DtorDc(Ov013ActEx_02204454 *self) {
     if (self->unk_e0 != NULL) {
         Model0218fe1c *p = self->unk_e0;
         if (p != NULL) {
-            func_ov000_0218fee4(p);
+            Model0218fe1c_FreeAnims(p);
             Heap_Free(p);
         }
         self->unk_e0 = NULL;
@@ -55,7 +55,7 @@ static inline void Ov013_DtorDc(Ov013ActEx_02204454 *self) {
     data_02097dd0->cur = saved;
     Ov013_InitDc(self);
     Ov003Vt_021f79a8_Dtor(self->unk_ec);
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
 }
 
 static inline void Ov013_SetRes(Ov013Names *p, const char *a, const char *b) {
@@ -85,14 +85,14 @@ struct Ov013Shadow {
 };
 
 extern void func_ov003_021cf33c(void *p, void *q);
-extern Ov003Actor *func_ov000_0219bf90(void);
-extern void func_ov000_02190758(void *m, u16 *rot, s32 a);
-extern BOOL func_ov000_021903b4(void *m);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
+extern void Obj02190758_SetRot(void *m, u16 *rot, s32 a);
+extern BOOL Model021903b4_Draw(void *m);
 extern Ov013Prm data_ov013_0220b2ec;
 extern u8 *func_020704b4(s32 kind);
 
 static inline u16 Ov013_LockId(void) {
-    return ((Robo021ca458 *)func_ov000_0219bf90())->unk_b1c;
+    return ((Robo021ca458 *)ActorMgr_FindPlayer())->unk_b1c;
 }
 
 static inline void Ov013_SetShadow(Ov013Shadow *s, u8 a, u8 b, u8 c, u8 d, u16 size, u16 f, Ov013ShadowSub sub) {

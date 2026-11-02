@@ -17,10 +17,10 @@ void func_ov000_021b05b0(u8 *self);
 u8 func_0206d37c(void *save, s32 a);
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
-void func_ov000_0218d46c(Actor *self, u16 id, u8 value);
-BOOL func_ov000_02198360(void *s, s32 a, s32 b);
+void Actor_SendMsgU8(Actor *self, u16 id, u8 value);
+BOOL History_SetState(void *s, s32 a, s32 b);
 s32 func_ov000_021a09b8(u8 *self, s32 *list, s32 count);
-void func_ov000_0218d7e8(Actor *self, u8 arg);
+void Actor_DropStateMsgs(Actor *self, u8 arg);
 
 static inline Actor *GetObj021a0268(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -58,7 +58,7 @@ static inline s32 FxMul021a0268(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
-void func_ov000_021a0268(Robo021ca458 *self) {
+void Robo021ca458_SelectState(Robo021ca458 *self) {
     ActorSub40 *s;
     if (self->unk_b22_6 == 5) {
         func_ov000_021b05b0((u8 *)self);
@@ -110,7 +110,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
                 m.rot[2] = o->rot_z;
                 m.z = 0;
                 Actor_SendMsg((Actor *)o, self->id, 7, 1, 0x18, &m);
-                func_ov000_0218d46c(o, self->id, 10);
+                Actor_SendMsgU8(o, self->id, 10);
                 if (o->targetObj != NULL) {
                     o->targetObj->unk_18_0 = 0;
                 }
@@ -119,13 +119,13 @@ void func_ov000_021a0268(Robo021ca458 *self) {
             return;
         }
         if (s->flags & 0x80000000) {
-            func_ov000_02198360(s, 0x1f, 0);
+            History_SetState(s, 0x1f, 0);
         } else if (s->flags & 2) {
-            func_ov000_02198360(s, 1, 1);
+            History_SetState(s, 1, 1);
         } else if (s->flags & 0x80000) {
-            func_ov000_02198360(s, 0x13, 1);
+            History_SetState(s, 0x13, 1);
         } else if (s->flags & 0x40000) {
-            func_ov000_02198360(s, 0x12, 1);
+            History_SetState(s, 0x12, 1);
         }
     }
     s = ((ActorSub40 *)self->fsm);
@@ -147,7 +147,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
         if (!self->unk_b24_1) {
             break;
         }
-        func_ov000_02198360(s, 0x16, 0);
+        History_SetState(s, 0x16, 0);
         break;
     case 4:
         if (!self->unk_b24_17 && !self->unk_b24_18) {
@@ -155,26 +155,26 @@ void func_ov000_021a0268(Robo021ca458 *self) {
                 break;
             }
         } else if (s->flags & 0x4000000) {
-            func_ov000_02198360(s, 0x1a, 0);
+            History_SetState(s, 0x1a, 0);
             break;
         }
         s = ((ActorSub40 *)self->fsm);
         if ((s->flags & 0x2000000) && self->velY <= 0x19a &&
             self->pos.y - self->unk_af0.y >= -0x2d000 && self->unk_b1c == 0xffff &&
             !(self->hit->unk_50 & 0x20000000)) {
-            func_ov000_02198360(s, 0x19, 0);
+            History_SetState(s, 0x19, 0);
             break;
         }
         if (s->flags & 8) {
             u32 f = self->hit->unk_50;
             if ((f & 0x20000000) && !(f & 0x400)) {
-                func_ov000_02198360(s, 3, 0);
+                History_SetState(s, 3, 0);
                 break;
             }
             if (self->unk_b24_1 && self->unk_b24_5 == 0 &&
                 self->unk_b24_12 == 0 && self->velY <= 0x19a &&
                 !self->unk_b24_17 && !self->unk_b24_18) {
-                func_ov000_02198360(s, 0x17, 0);
+                History_SetState(s, 0x17, 0);
                 break;
             }
         }
@@ -186,17 +186,17 @@ void func_ov000_021a0268(Robo021ca458 *self) {
         }
         if (self->unk_b24_1) {
             if (self->unk_b22_0 != 0) {
-                func_ov000_02198360(s, 0x19, 0);
+                History_SetState(s, 0x19, 0);
             } else {
-                func_ov000_02198360(s, 0x17, 0);
+                History_SetState(s, 0x17, 0);
             }
         } else {
-            func_ov000_02198360(s, 1, 0);
+            History_SetState(s, 1, 0);
         }
         break;
     case 1:
         if (self->hpObj->cur == 0) {
-            func_ov000_02198360(s, 0x14, 0);
+            History_SetState(s, 0x14, 0);
             break;
         }
         if (s->flags & 2) {
@@ -218,9 +218,9 @@ void func_ov000_021a0268(Robo021ca458 *self) {
         }
         if (self->hit->unk_50 & 0x20000000) {
             if (s->flags & 4) {
-                func_ov000_02198360(s, 2, 0);
+                History_SetState(s, 2, 0);
             } else {
-                func_ov000_02198360(s, 1, 0);
+                History_SetState(s, 1, 0);
             }
             break;
         }
@@ -236,11 +236,11 @@ void func_ov000_021a0268(Robo021ca458 *self) {
                 }
             }
             if (ok) {
-                func_ov000_02198360(((ActorSub40 *)self->fsm), 4, 0);
+                History_SetState(((ActorSub40 *)self->fsm), 4, 0);
             }
         }
         break;
     }
-    func_ov000_0218d7e8(self, self->fsm->current);
+    Actor_DropStateMsgs(self, self->fsm->current);
 }
 }

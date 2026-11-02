@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021d0740(Task021efa1c *self) {
+void Task021efa1c_UpdateActive(Task021efa1c *self) {
     u16 k = data_02097dc8->trig;
     if (k & 0x800) {
         u8 *g = (u8 *)data_02097e48.queue;
@@ -18,7 +18,7 @@ void func_ov002_021d0740(Task021efa1c *self) {
     if (!(k & 2)) {
         return;
     }
-    func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     data_ov002_021f0f84[0] = self->unk_3c->unk_a0->index;
     self->vfunc_0c(0);
 }

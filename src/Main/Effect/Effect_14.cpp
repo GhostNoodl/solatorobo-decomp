@@ -19,14 +19,14 @@ void EffectEmitter_Reset(EffectEmitter *em) {
     em->parts = NULL;
 }
 
-void func_0206adbc(EffectEmitter *em) {
+void EffectEmitter_Release(EffectEmitter *em) {
     EffectPtcl *p;
     EffectPtcl *next;
     if (em->file != NULL) {
-        func_0203f0b4(em->file->data);
+        Vram_FreeRes(em->file->data);
     }
     if (em->nameDef != NULL && em->unk_34) {
-        func_02036838(data_02097cdc, em->nameDef->arcName, 7, 0);
+        ResMgr_ReleaseByName(data_02097cdc, em->nameDef->arcName, 7, 0);
     }
     for (p = em->ptcls; p != NULL; p = next) {
         next = p->next;
@@ -58,20 +58,20 @@ BOOL func_0206aec0(EffectEmitter *em) {
         if (em->nameDef == NULL) {
             em->nameDef = (EffectDef *)data_0208c980;
         }
-        func_020359d0(em->nameDef->arcName, 7, 0);
+        ResMgr_Load(em->nameDef->arcName, 7, 0);
         em->unk_34 = 1;
         em->unk_2c++;
     case 1:
-        if (!func_02035b90(em->nameDef->arcName, 7)) {
+        if (!ResMgr_IsLoaded(em->nameDef->arcName, 7)) {
             break;
         }
         em->unk_2c = 10;
     case 10: {
         EffectDef *def;
         EffectFile *f;
-        em->arc = func_02035d5c(em->nameDef->arcName);
+        em->arc = ResMgr_GetArcList(em->nameDef->arcName);
         def = em->def;
-        f = func_02034ec0(em->arc, def->mdlName);
+        f = ResList_FindType4(em->arc, def->mdlName);
         if (f != NULL) {
             func_0203ed04(def->mdlName, f->data);
         }

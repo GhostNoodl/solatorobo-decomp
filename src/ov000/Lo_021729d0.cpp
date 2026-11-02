@@ -13,13 +13,13 @@ extern u8 data_ov000_021cb940[];
 extern u8 data_ov000_021cb6d0[];
 void func_ov000_0216f23c(void *p, s32 a);
 BOOL func_ov000_02180900(void *p);
-void func_ov000_0216fb14(void *p);
+void ListBuffer021cb940_Release(void *p);
 
 typedef struct { u32 lo : 4; } LoNib;
 
 void *Ov000Vt_021cb940_DtorDelete(ListBuffer *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb940);
-    func_ov000_0216fb14(self);
+    ListBuffer021cb940_Release(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cb6d0);
     if ((self->flags & 0x20) && self->unk_0c != 0) {
         Heap_FreeHi((void *)self->unk_0c);

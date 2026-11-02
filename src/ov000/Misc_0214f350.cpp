@@ -19,7 +19,7 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_0214f350(Obj0214f350 *self) {
+void Lo021caa44_Init(Obj0214f350 *self) {
     self->unk_20 = 0x1000;
     self->unk_3c = 0;
     self->unk_40 = 0;

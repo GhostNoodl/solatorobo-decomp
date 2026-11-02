@@ -7,7 +7,7 @@
 
 extern "C" {
 
-void func_ov000_0215eab4(void *p);
+void Obj0215eab4_Draw(void *p);
 
 static inline void SetVec(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
@@ -27,7 +27,7 @@ void func_ov000_02159720(Lo021cb3a8 *self, s32 unused, VecFx32 *pos) {
     x = pos->x + ((((0x100 - (t->unk_10 >> 12)) >> 1) - self->posX) << 12);
     y = pos->y - 0x14000;
     SetVec((VecFx32 *)(&t->unk_04), x, y, self->posZ - 0xc0);
-    func_ov000_0215eab4(((u8 *)self->panel));
+    Obj0215eab4_Draw(((u8 *)self->panel));
     e = self->text;
     if (e == NULL) {
         return;

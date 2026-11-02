@@ -22,27 +22,27 @@ typedef Ov003ActExHome Ov003Lift;
 extern "C" {
 
 extern char data_ov003_021f998f[];
-extern void func_ov000_0218f074(ActorRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
-extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
-extern BOOL func_ov000_0218f110(ActorRes *p);
-extern BOOL func_ov000_0218ffdc(void *anim, ActorRes *res, s32 a, s32 b);
-extern void func_ov000_02190e98(void *anim, s32 a, s32 b, s32 c);
-extern void func_ov000_021915a0(void *anim);
-extern void func_0203f2b8(void *p);
+extern void ResSet_SetFile(ActorRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
+extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
+extern BOOL ResSet_UpdateLoad(ActorRes *p);
+extern BOOL Model0218fe1c_SetRes(void *anim, ActorRes *res, s32 a, s32 b);
+extern void Model0218fe1c_SetAnimByIndex(void *anim, s32 a, s32 b, s32 c);
+extern void Model0218fe1c_SetLoop(void *anim);
+extern void HitSphere_Unlink_0203f2b8(void *p);
 extern void Heap_Free(void *p);
 extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void *func_0203db40(void *p);
-extern void func_ov000_02190a80(void *a, void *b);
-extern Ov003LiftPlayer *func_ov000_0219bf90(void);
+extern void Model0218fe1c_UpdateAnim(void *a, void *b);
+extern Ov003LiftPlayer *ActorMgr_FindPlayer(void);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
-extern void func_ov000_02190758(void *anim, void *p, s32 a);
-extern BOOL func_ov000_021903b4(void *anim);
-extern void func_ov000_021bd7a0(void *p);
+extern void Obj02190758_SetRot(void *anim, void *p, s32 a);
+extern BOOL Model021903b4_Draw(void *anim);
+extern void ActorMarker_Draw(void *p);
 
 void Ov003ActVt_021f979c_Init(Ov003Lift *self) {
-    func_ov000_0219433c(self);
+    ActorEx_InitActor(self);
     if (self->unk_1a != 0) {
-        func_ov000_0218f074(&self->res, data_ov003_021f998f, 1, 1, 0, 0);
+        ResSet_SetFile(&self->res, data_ov003_021f998f, 1, 1, 0, 0);
         self->res.unk_00 = 0;
     }
     self->homePos.x = self->pos.x;
@@ -51,27 +51,27 @@ void Ov003ActVt_021f979c_Init(Ov003Lift *self) {
     self->homeRot.x = self->rot.x;
     self->homeRot.y = self->rot.y;
     self->homeRot.z = self->rot.z;
-    func_ov000_02198360(self->fsm, 1, 0);
+    History_SetState(self->fsm, 1, 0);
 }
 
 BOOL Ov003ActVt_021f979c_IsReady(Ov003Lift *self) {
-    BOOL r = func_ov000_021946f8(self);
-    if (self->unk_1a != 0 && self->res.unk_00 >= 0 && !func_ov000_0218f110(&self->res)) {
+    BOOL r = ActorEx_IsReady(self);
+    if (self->unk_1a != 0 && self->res.unk_00 >= 0 && !ResSet_UpdateLoad(&self->res)) {
         r = FALSE;
     }
     return r;
 }
 
 void Ov003ActVt_021f979c_Start(Ov003Lift *self) {
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     if (self->unk_1a != 0) {
-        func_ov000_0218ffdc(&self->mdl, &self->res, 0, 1);
+        Model0218fe1c_SetRes(&self->mdl, &self->res, 0, 1);
         self->mdl.actor_id = self->id;
         self->mdl.scale.x = 0x1c00;
         self->mdl.scale.y = 0x1c00;
         self->mdl.scale.z = 0x1c00;
-        func_ov000_02190e98(&self->mdl, 0, 0x1000, 0);
-        func_ov000_021915a0(&self->mdl);
+        Model0218fe1c_SetAnimByIndex(&self->mdl, 0, 0x1000, 0);
+        Model0218fe1c_SetLoop(&self->mdl);
         self->fxOffset.x = 0;
         self->fxOffset.y = 0x1800;
         self->fxOffset.z = 0x1800;
@@ -82,7 +82,7 @@ void Ov003ActVt_021f979c_Start(Ov003Lift *self) {
         p = self->hit;
         if (p != NULL) {
             if (p != NULL) {
-                func_0203f2b8(p);
+                HitSphere_Unlink_0203f2b8(p);
                 Heap_Free(p);
             }
             self->hit = NULL;
@@ -103,17 +103,17 @@ void Ov003ActVt_021f979c_Animate(Ov003Lift *self) {
             self->unk_bc = NULL;
         }
         if (self->model != NULL) {
-            func_ov000_02190a80(self->model, func_0203db40(&self->pause));
+            Model0218fe1c_UpdateAnim(self->model, func_0203db40(&self->pause));
         }
         return;
     }
     if (self->unk_1a != 0) {
-        func_ov000_02190a80(&self->mdl, (void *)0x1000);
+        Model0218fe1c_UpdateAnim(&self->mdl, (void *)0x1000);
     }
     if (!(self->unk_302 & 0x7f)) {
-        Ov003LiftPlayer *pl = func_ov000_0219bf90();
+        Ov003LiftPlayer *pl = ActorMgr_FindPlayer();
         if (pl != NULL && Hit_DiffInSphere(&pl->pos, &self->pos, pl->radius + 0xf000)) {
-            EffectObj *fx = func_02065f88(0xcc, &self->pos);
+            EffectObj *fx = Effect_SpawnId(0xcc, &self->pos);
             if (fx != NULL) {
                 self->unk_bc = fx->id;
             }
@@ -156,7 +156,7 @@ BOOL Ov003ActVt_021f979c_Draw(Ov003Lift *self) {
     BOOL r = TRUE;
     BOOL done = FALSE;
     if (self->unk_cc_7) {
-        done = func_ov000_02194c08(self);
+        done = ActorEx_Draw(self);
         if (self->unk_1a != 0) {
             self->mdl.alpha = self->model->alpha;
         }
@@ -165,11 +165,11 @@ BOOL Ov003ActVt_021f979c_Draw(Ov003Lift *self) {
         self->mdl.trans.x = self->homePos.x;
         self->mdl.trans.y = self->homePos.y;
         self->mdl.trans.z = self->homePos.z;
-        func_ov000_02190758(&self->mdl, &self->homeRot, 0);
-        r = func_ov000_021903b4(&self->mdl);
+        Obj02190758_SetRot(&self->mdl, &self->homeRot, 0);
+        r = Model021903b4_Draw(&self->mdl);
     }
     if (!done && self->unk_5c != NULL && Ov003_GameIdle() && !Ov003_GameHasD4()) {
-        func_ov000_021bd7a0(self->unk_5c);
+        ActorMarker_Draw(self->unk_5c);
     }
     return r;
 }

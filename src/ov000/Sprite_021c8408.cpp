@@ -32,7 +32,7 @@ typedef struct {
 
 extern "C" {
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
-void func_02043064(const void *attr, u32 *w, u32 *h);
+void Oam_GetSize(const void *attr, u32 *w, u32 *h);
 extern const int data_ov000_021ca614[];
 
 extern const u16 data_02075614[3][4]; // OBJ heights [shape][size]
@@ -98,7 +98,7 @@ void func_ov000_021c8408(void *self, int x, int y, int z, u16 color, const Oam02
     if (oy > 0x7f) {
         oy |= ~0xff;
     }
-    func_02043064(oam, &ws, &hs);
+    Oam_GetSize(oam, &ws, &hs);
     shape = oam->attr01 & 0xc000c000;
     shapeBit = (shape & 0xc000) >> 14;
     sizeBit = (u32)(shape & 0xc0000000) >> 30;

@@ -6,9 +6,9 @@
 
 extern "C" {
 extern u8 data_0208ba70[];
-void func_0204c7d0(TextWin *win);
+void TextWin_Init(TextWin *win);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void func_0204ca70(TextWin *win);
+void TextWin_RenderToVram(TextWin *win);
 
 
 void UiObj_SetTitle(UiObj *self, s32 arg) {
@@ -17,7 +17,7 @@ void UiObj_SetTitle(UiObj *self, s32 arg) {
     p = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
-        func_0204c7d0(p);
+        TextWin_Init(p);
     }
     self->title = p;
     p->font = 8;
@@ -32,7 +32,7 @@ void UiObj_SetTitle(UiObj *self, s32 arg) {
     self->title->flags |= 0x400000;
     self->title->flags |= 0x40000000;
     self->title->flags |= 0x4;
-    func_0204ca70(self->title);
+    TextWin_RenderToVram(self->title);
 }
 
 void UiObj_SetCaption(UiObj *self, const char *src) {
@@ -43,7 +43,7 @@ void UiObj_SetCaption(UiObj *self, const char *src) {
     p = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
-        func_0204c7d0(p);
+        TextWin_Init(p);
     }
     self->caption = p;
     d = buf;
@@ -66,7 +66,7 @@ void UiObj_SetCaption(UiObj *self, const char *src) {
     self->caption->flags |= 0x400000;
     self->caption->flags |= 0x40000000;
     self->caption->flags |= 0x4;
-    func_0204ca70(self->caption);
+    TextWin_RenderToVram(self->caption);
     self->caption->str = 0;
     self->scrollPos = 0;
     self->scrollLen = self->caption->width + 0x40;

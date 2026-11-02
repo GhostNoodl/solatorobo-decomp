@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov002_021d65e0(Task021efc24 *self) {
+void Task021efc24_Draw(Task021efc24 *self) {
     if (!self->vfunc_28()) {
         return;
     }
@@ -11,9 +11,9 @@ void func_ov002_021d65e0(Task021efc24 *self) {
     self->unk_4c->vfunc_20();
     self->unk_50->vfunc_20();
     self->unk_54->vfunc_20();
-    func_ov000_02162a58(self->unk_58);
+    ModelViewer_Draw(self->unk_58);
     if (self->unk_5c != NULL) {
-        func_ov000_02163594(self->unk_5c);
+        MsgBox_Render(self->unk_5c);
     }
 }
 

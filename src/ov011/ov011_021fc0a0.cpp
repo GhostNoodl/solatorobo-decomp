@@ -40,7 +40,7 @@ void *__cxa_vec_new(u32 count, u32 size, u32 hdr, void *ctor, void *dtor);
 Ov011E40b *Ov011E40b_Ctor(Ov011E40b *self);
 BOOL Ov011Chr_Init(void *self, u16 id, const VecFx32 *off, s16 c, s16 d, s16 e);
 void Ov011Chr_StartMode1(void *self);
-void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
+void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 
 static inline Ov011Npc *Ov011_Find(u16 id) {
     return data_ov000_021ccd68 == NULL ? NULL : (Ov011Npc *)ActorMgr_GetActor(data_ov000_021ccd68, id);
@@ -98,7 +98,7 @@ void func_ov011_021fbe08(Ov011Mgr3 *self) {
         w.x = a->pos.x;
         w.y = a->pos.y;
         w.z = a->pos.z;
-        func_02049f44(data_02097e4c, 0x44, &w, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x44, &w, 0);
         self->state = 1;
         break;
     }
@@ -210,7 +210,7 @@ BOOL Ov003Mover_Start(void *p, VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e);
 void func_ov011_022011fc(void *a, s32 b);
 void Ov011Npc_SetTracking(void *a, s32 b);
 s32 Rand_PlusMinus(s32 max);
-void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
+void Body_Update(void *a, s32 b, s32 c, s32 d);
 void Ov011Chr_StartMode3(void *self, s16 v);
 void Ov011Chr_StartMode5(void *self, s16 v);
 VecFx32 Ov011Chr_GetPos(const void *self);
@@ -275,7 +275,7 @@ static inline void Ov011Slot_Kill(Ov011Slot *s) {
 }
 
 static inline BOOL Ov011_PlBusy(void) {
-    void *pl = func_ov000_0219bf90();
+    void *pl = ActorMgr_FindPlayer();
     if (pl != NULL && !func_ov000_021b4738(pl)) {
         return FALSE;
     }
@@ -337,11 +337,11 @@ void Ov011Ctl_Update(Ov011Ctl *self) {
                     Ov003Mover_SetSpeed(&self->slots[i].obj, 0x66);
                     Ov003Mover_SetMaxDist(&self->slots[i].obj, 0x948);
                     func_ov011_022011fc(a, 0);
-                    func_02049f44(data_02097e4c, 0x2f, (VecFx32 *)self->slots[i].obj.v10(), 0);
+                    SndMgr_PlayAt(data_02097e4c, 0x2f, (VecFx32 *)self->slots[i].obj.v10(), 0);
                     v.x = Rand_PlusMinus(0x1000);
                     v.z = Rand_PlusMinus(0x1000);
                 }
-                m = ((Actor *)func_ov000_0219bf90())->hit;
+                m = ((Actor *)ActorMgr_FindPlayer())->hit;
                 w.x = m->check.x;
                 w.y = m->check.y;
                 w.z = m->check.z;
@@ -350,14 +350,14 @@ void Ov011Ctl_Update(Ov011Ctl *self) {
                 Ov003Mover_SetTarget(&self->slots[i].obj, &w);
                 if (self->slots[i].timer == 0x50) {
                     VecFx32 t = *(VecFx32 *)self->slots[i].obj.v10();
-                    EffectObj *e = func_02065f88(0x192, &t);
+                    EffectObj *e = Effect_SpawnId(0x192, &t);
                     VecFx32 d = *Ov003Mover_GetDir(&self->slots[i].obj);
                     e->SetRotXYZ(Ov003Vec_Pitch(&d), Ov003Vec_Yaw(&d), 0);
                     e->SetScaleXYZ(0x1ccd, 0x1ccd, 0x1ccd);
                 }
                 continue;
             }
-            func_ov000_021987b8(a->hit, 1, 0, 0);
+            Body_Update(a->hit, 1, 0, 0);
             if (!(a->hit->unk_50 & 0x60000000)) {
                 continue;
             }
@@ -372,10 +372,10 @@ void Ov011Ctl_Update(Ov011Ctl *self) {
                 Ov011Npc_SetTracking(a, 0);
                 p.y -= a->hit->radius;
                 ang = Ov003Vec_Yaw(Ov003Mover_GetDir(&self->slots[i].obj)) + 0x7fff;
-                e = func_02065f88(0x67, &p);
+                e = Effect_SpawnId(0x67, &p);
                 e->SetRotXYZ(0, ang, 0);
                 e->SetScaleXYZ(0x1ccd, 0x1ccd, 0x1ccd);
-                func_02049f44(data_02097e4c, 0x1a, &p, 0);
+                SndMgr_PlayAt(data_02097e4c, 0x1a, &p, 0);
                 q = &data_ov000_021ccd54->cam.base;
                 if (q != NULL) {
                     q->shakeX = 1;
@@ -443,14 +443,14 @@ void Ov011Ctl_Update(Ov011Ctl *self) {
             VecFx32 pp;
             Actor *pl;
             c = Ov011Chr_GetPos(self->chr);
-            pl = (Actor *)func_ov000_0219bf90();
+            pl = (Actor *)ActorMgr_FindPlayer();
             pp.x = pl->pos.x;
             pp.y = pl->pos.y;
             pp.z = pl->pos.z;
             found->b0 = 1;
             Ov003Mover_Start(&found->obj, &pp, &c, 0x14, 0x11f, 1);
             self->state = 3;
-            func_02049f44(data_02097e4c, 0x35, &c, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x35, &c, 0);
         }
         break;
     }
@@ -492,7 +492,7 @@ void Ov011Ctl_Update(Ov011Ctl *self) {
         } else if (self->timer > 150) {
             self->flags |= 2;
         } else {
-            void *pl = func_ov000_0219bf90();
+            void *pl = ActorMgr_FindPlayer();
             if (pl == NULL || func_ov000_021b4738(pl)) {
                 self->flags |= 2;
             }

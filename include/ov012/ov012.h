@@ -247,22 +247,22 @@ extern "C" {
 void *Heap_Alloc(u32 size); // Main/Gfx/ObjPool.h
 void Heap_Free(void *ptr);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-void func_ov000_021915a0(void *a);
+BOOL History_SetState(void *a, s32 b, s32 c);
+void Model0218fe1c_SetLoop(void *a);
 s32 Rand_PlusMinus(s32 max);
 u32 Rand_UpTo(u32 max);
-void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-s32 func_ov000_0219a2f4(VecFx32 *v, s32 y, s32 b);
-BOOL func_ov000_02191120(Model0218fe1c *p);
+void Body_Update(void *a, s32 b, s32 c, s32 d);
+s32 Geom_SnapToGround(VecFx32 *v, s32 y, s32 b);
+BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *p);
 char *func_0207011c(void *res);
 char *func_020701d4(void *res);
 u8 *func_02070558(void *res);
 }
 extern "C" {
-void func_ov000_021953b4(ActorEx *self);
+void ActorEx_Update(ActorEx *self);
 void Ov003FxList_Prune(Ov003FxList *p);
 s32 func_0203db40(void *p);
-void func_ov000_02190a80(void *a, s32 b);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
 }
 
 
@@ -293,49 +293,49 @@ static inline Ov003FxList *Ov012_NewFx(void) {
 extern "C" {
 extern void *data_ov000_021ccd64;
 extern char data_ov012_0220aaf9[];
-extern void *func_ov000_0218e9c4(void *p);
-extern void *func_ov000_0218fe1c(void *p);
-extern void *func_ov000_0218fee4(void *p);
-extern void *func_ov000_0218ea20(void *p);
+extern void *ResSet_Init(void *p);
+extern void *Model0218fe1c_Init(void *p);
+extern void *Model0218fe1c_FreeAnims(void *p);
+extern void *ResSet_ReleaseAll(void *p);
 extern void SndMgr_LoadHeapState(SndMgr *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
-extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
-extern BOOL func_ov000_0218f110(void *p);
-extern BOOL func_ov000_021903b4(void *p);
+extern BOOL Actor_IsReady(Ov003Actor *self);
+extern BOOL ResSet_UpdateLoad(void *p);
+extern BOOL Model021903b4_Draw(void *p);
 extern s32 Ov003Actor_HandleMsg(Ov003Actor *self, Ov012Msg *msg);
 extern BOOL func_020621c4(void);
-extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
+extern BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 }
 
 static inline void Ov012_StopSnd(void) {
-    if (func_02035b90(data_ov012_0220aaf9, 7)) {
-        func_02036838(data_02097cdc, data_ov012_0220aaf9, 7, 0);
+    if (ResMgr_IsLoaded(data_ov012_0220aaf9, 7)) {
+        ResMgr_ReleaseByName(data_02097cdc, data_ov012_0220aaf9, 7, 0);
     }
 }
 
 
 extern "C" {
-extern void func_0203f364(ActorSub48 *p);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
-extern void func_ov000_021984f4(void *p, s32 a, s32 b);
-extern void func_ov000_0219864c(ActorSub48 *p, VecFx32 *a, u16 *b);
-extern void func_ov000_02196860(Actor *self);
-extern void func_ov000_0219763c(Actor *self);
+extern void Obj021984c8_UpdatePos(void *p, s32 a, s32 b);
+extern void ActorSub48_UpdatePos(ActorSub48 *p, VecFx32 *a, u16 *b);
+extern void ActorEx_State0a(Actor *self);
+extern void ActorEx_StateDie(Actor *self);
 }
 
 #define VCALL(p) ((Ov012V *)(p))
 
 
 extern "C" {
-extern void func_02049678(SndMgr *a, s32 b, s32 c, s32 d);
+extern void SndMgr_RequestLoad_02049678(SndMgr *a, s32 b, s32 c, s32 d);
 extern BOOL SndMgr_IsLoadDone(SndMgr *a);
 }
 
 
 extern "C" {
-extern void func_ov000_0218f074(void *a, const void *b, s32 c, s32 d, s32 e, s32 f);
+extern void ResSet_SetFile(void *a, const void *b, s32 c, s32 d, s32 e, s32 f);
 extern Actor *Target_Get(void *p);
-extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, void *f);
+extern void ActorMgr_SendToKindOthers(s32 a, u16 b, s32 c, s32 d, s32 e, void *f);
 }
 
 
@@ -389,8 +389,8 @@ static inline void Ov012Spawn_Init(Ov012SpawnDesc *d, u16 k) {
 extern "C" {
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov012SpawnDesc *d, void *pos, void *rot, u16 a);
 extern void Target_Set(void *a, void *b);
-extern void func_ov000_02190758(void *a, void *b, s32 c);
-extern void func_ov000_02191c24(void *a, VecFx32 *b);
+extern void Obj02190758_SetRot(void *a, void *b, s32 c);
+extern void Shadow_Draw(void *a, VecFx32 *b);
 }
 
 
@@ -404,8 +404,8 @@ struct Ov012VecC {
 
 
 extern "C" {
-extern s32 func_ov000_0219a510(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list);
-extern void *func_ov000_021985c0(void *p);
+extern s32 Actor_FindInRadius(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list);
+extern void *Obj021984c8_GetActor(void *p);
 extern void Ov003Pickup_Update(void *self, s32 a);
 extern void func_ov000_0218996c(u8 a, u8 b);
 }
@@ -464,7 +464,7 @@ public:
     u8 unk_137;
     u8 unk_138;
     u8 unk_139[0x3];
-    s32 fxId[3]; // effect handles (func_02065f88(...)->id); the ctor sets all three to -1
+    s32 fxId[3]; // effect handles (Effect_SpawnId(...)->id); the ctor sets all three to -1
     u8 unk_148[0xc];
     s32 unk_154;
     s32 unk_158;
@@ -475,8 +475,8 @@ public:
     u8 unk_16f;
     s16 unk_170;
     u8 unk_172[0x2];
-    Ov012Names unk_174; // func_ov000_0218e9c4 / func_ov000_0218ea20
-    Model0218fe1c mdl;  // func_ov000_0218fe1c / func_ov000_0218fee4, drawn once per arr entry
+    Ov012Names unk_174; // ResSet_Init / ResSet_ReleaseAll
+    Model0218fe1c mdl;  // Model0218fe1c_Init / Model0218fe1c_FreeAnims, drawn once per arr entry
     VecFx32 arr[2];
     u8 unk_3ac[2];
     u8 unk_3ae;
@@ -505,7 +505,7 @@ static inline void Ov012Spawn_Set(Ov012SpawnDesc *d, u16 k) {
 }
 
 extern "C" {
-extern Ov003Actor *func_ov000_02192b24(Ov012SpawnDesc *d);
+extern Ov003Actor *Factory_New4000(Ov012SpawnDesc *d);
 extern void func_ov000_02182590(void *p);
 }
 
@@ -515,8 +515,8 @@ extern "C" {
 
 
 extern "C" {
-extern BOOL func_ov000_021983b0(ActorSub40 *p, u8 a, s32 b, BOOL c);
-extern void func_ov000_02191418(Model0218fe1c *p, u16 a, BOOL b);
+extern BOOL History_HasState(ActorSub40 *p, u8 a, s32 b, BOOL c);
+extern void Model0218fe1c_SetAnimDelay(Model0218fe1c *p, u16 a, BOOL b);
 }
 
 
@@ -640,8 +640,8 @@ public:
     u32 unk_d0;
     u8 unk_d4;
     u8 unk_d5[0x3];
-    ActorRes unk_d8;    // func_ov000_0218e9c4 / func_ov000_0218ea20
-    Model0218fe1c mdl;  // func_ov000_0218fe1c / func_ov000_0218fee4
+    ActorRes unk_d8;    // ResSet_Init / ResSet_ReleaseAll
+    Model0218fe1c mdl;  // Model0218fe1c_Init / Model0218fe1c_FreeAnims
     u8 unk_2f8;
     u8 unk_2f9[0x3];
 };
@@ -651,7 +651,7 @@ SIZE_ASSERT(Ov012ActExVt_0220b1e8, 0x2fc);
 // 0x5057, 0x5c01): its own resource names at 0xf0, filled through nameFunc.
 class Ov012ActVt_0220b280 : public Ov003Actor {
 public:
-    Ov012Names unk_f0; // func_ov000_0218e9c4 / func_ov000_0218ea20
+    Ov012Names unk_f0; // ResSet_Init / ResSet_ReleaseAll
     u16 unk_228;
     u8 unk_22a[0x2];
 };
@@ -661,13 +661,13 @@ SIZE_ASSERT(Ov012ActVt_0220b280, 0x22c);
 extern "C" {
 ActorEx *ActorEx_Ctor(ActorEx *self);
 void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
-VecFx32 *func_ov000_0218d2e0(Actor *self);
-ActorEx *func_ov000_0219429c(ActorEx *self);
-void func_ov000_0219433c(ActorEx *self);
-BOOL func_ov000_021946f8(ActorEx *self);
-void func_ov000_02194758(ActorEx *self);
-BOOL func_ov000_02194c08(ActorEx *self);
-void func_ov000_02195d88(ActorEx *self);
+VecFx32 *Actor_GetTargetSub44(Actor *self);
+ActorEx *ActorEx_DtorBase(ActorEx *self);
+void ActorEx_InitActor(ActorEx *self);
+BOOL ActorEx_IsReady(ActorEx *self);
+void ActorEx_Start(ActorEx *self);
+BOOL ActorEx_Draw(ActorEx *self);
+void ActorEx_StateHeld(ActorEx *self);
 }
 
 #endif

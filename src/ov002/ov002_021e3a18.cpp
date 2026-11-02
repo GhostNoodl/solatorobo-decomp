@@ -7,7 +7,7 @@ void func_ov002_021e3a18(Vec2 *out, int rot, Vec2 *a, Vec2 *b, Vec2 *c) {
     s32 dx;
     s32 dy;
     Vec2 t;
-    func_ov002_021e391c(m, rot);
+    Ov002_QuarterRotMtx(m, rot);
     dy = a->y - b->y;
     dx = a->x - b->x;
     t = *c;

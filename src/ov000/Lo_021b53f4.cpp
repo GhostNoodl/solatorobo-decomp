@@ -9,14 +9,14 @@ typedef struct {
 } Ent021b53f4;
 
 extern "C" {
-void func_02043904(void *p);
-void func_02043b20(void *p);
+void Gfx3DState_SetDefaults(void *p);
+void Gfx3DState_Apply(void *p);
 void func_020434e0(s32 *proj);
 void *func_ov000_021b7a7c(FieldProp *n);
 void Heap_Free(void *p);
 Ent021b53f4 *Lang_GetGroup(u8 id);
 void func_0206dfd4(char *buf, u8 *ids);
-void func_02035acc(void *a, char *buf, s32 c);
+void ResMgr_ReleaseArchive(void *a, char *buf, s32 c);
 
 void func_ov000_021b53f4(FieldMgr *self) {
     FieldState *pb;
@@ -24,8 +24,8 @@ void func_ov000_021b53f4(FieldMgr *self) {
     FieldProp *next;
     FieldProp *n;
     GfxSys *d48 = data_02097d48;
-    func_02043904(d48->unk_8b0);
-    func_02043b20(d48->unk_8b0);
+    Gfx3DState_SetDefaults(d48->unk_8b0);
+    Gfx3DState_Apply(d48->unk_8b0);
     pb = data_ov000_021ccd54;
     func_020434e0(&pb->cam.base.nearClip);
     pb->cam.base.wallClip = 0;
@@ -62,7 +62,7 @@ void func_ov000_021b53f4(FieldMgr *self) {
         }
         e = Lang_GetGroup(ids[0]);
         func_0206dfd4(buf, ids);
-        func_02035acc(e->unk_08, buf, 0);
+        ResMgr_ReleaseArchive(e->unk_08, buf, 0);
         {
             FieldCam *sub = &data_ov000_021ccd54->cam;
             sub->unk_c8 = 0;

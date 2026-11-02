@@ -11,19 +11,19 @@ extern u8 data_ov015_02212b88[];
 extern u8 data_ov015_02212b08[];
 extern u8 data_ov015_022129e0[];
 extern u8 data_ov015_0221280c[];
-void func_ov000_02180754(void);
+void TaskHost_Destroy(void);
 void func_ov015_02205c7c(Ov015Scene2b08 *self);
 void func_ov015_02204110(Ov015Scene2c08 *self);
 void func_ov015_02203020(Ov015Scene2a08 *self);
 extern u8 data_ov015_022129c0[];
-void func_ov000_02163254(void *p);
-void *func_ov000_0218e9c4(void *p);
-void *func_ov000_0218fe1c(void *p);
-void *func_ov000_0218fee4(void *p);
-void *func_ov000_021919c8(void *p);
+void MsgBox_Release(void *p);
+void *ResSet_Init(void *p);
+void *Model0218fe1c_Init(void *p);
+void *Model0218fe1c_FreeAnims(void *p);
+void *Shadow_Ctor(void *p);
 void __cxa_vec_ctor(void *p, s32 n, s32 size, void *ctor, void *dtor);
 void *Ov000Vt_021cc438_Dtor(void *p);
-void *func_ov000_0218ea20(void *p);
+void *ResSet_ReleaseAll(void *p);
 void __cxa_vec_cleanup(void *p, s32 n, s32 size, void *dtor);
 void func_01ffc9fc(Ov015V3 *in, Ov015V3 *out, u16 ang);
 
@@ -133,7 +133,7 @@ void *func_ov015_02207138(void) {
 
 void *func_ov015_022071c4(Ov015SceneSeq *self) {
     SET_VT(self, data_ov015_022129e0);
-    func_ov000_02180754();
+    TaskHost_Destroy();
     SET_VT(self, data_ov015_0221280c);
     func_ov015_021fa6cc(self);
     Heap_Free(self);
@@ -142,7 +142,7 @@ void *func_ov015_022071c4(Ov015SceneSeq *self) {
 
 void *func_ov015_02207200(Ov015SceneSeq *self) {
     SET_VT(self, data_ov015_022129e0);
-    func_ov000_02180754();
+    TaskHost_Destroy();
     SET_VT(self, data_ov015_0221280c);
     func_ov015_021fa6cc(self);
     return self;
@@ -272,7 +272,7 @@ void *Ov015Scene2a08_Dtor(Ov015Scene2a08 *self) {
     return self;
 }
 
-void func_ov015_02207508(void) {
+void Ov015Scene2a88_UpdateActive(void) {
 }
 
 void *Ov015Scene2a88_DtorDelete(Ov015Scene2a88 *self) {
@@ -283,8 +283,8 @@ void *Ov015Scene2a88_DtorDelete(Ov015Scene2a88 *self) {
         Model *p = self->model;
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558(p);
-                func_02041278(&p->pltt);
+                TexObj_Release(p);
+                PlttRes_Release(&p->pltt);
                 Heap_Free(p);
             }
             self->model = NULL;
@@ -305,8 +305,8 @@ void *Ov015Scene2a88_Dtor(Ov015Scene2a88 *self) {
         Model *p = self->model;
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558(p);
-                func_02041278(&p->pltt);
+                TexObj_Release(p);
+                PlttRes_Release(&p->pltt);
                 Heap_Free(p);
             }
             self->model = NULL;
@@ -321,18 +321,18 @@ void *Ov015Scene2a88_Dtor(Ov015Scene2a88 *self) {
 
 void *func_ov015_0220763c(Ov015MsgBox *self) {
     SET_VT(self, data_ov015_022129c0);
-    func_ov000_02163254(self);
+    MsgBox_Release(self);
     return self;
 }
 
 void *func_ov015_0220765c(Ov015Ship *self) {
-    func_ov000_0218e9c4(self);
-    func_ov000_0218fe1c(&self->model);
-    func_ov000_0218e9c4(&self->res2);
-    __cxa_vec_ctor(self->subModels, 8, 0xe8, (void *)func_ov000_0218fe1c, (void *)func_ov000_0218fee4);
-    func_ov000_0218e9c4(&self->res3);
-    func_ov000_0218fe1c(&self->model3);
-    func_ov000_021919c8(&self->shadow);
+    ResSet_Init(self);
+    Model0218fe1c_Init(&self->model);
+    ResSet_Init(&self->res2);
+    __cxa_vec_ctor(self->subModels, 8, 0xe8, (void *)Model0218fe1c_Init, (void *)Model0218fe1c_FreeAnims);
+    ResSet_Init(&self->res3);
+    Model0218fe1c_Init(&self->model3);
+    Shadow_Ctor(&self->shadow);
     self->pos.x = 0;
     self->pos.z = 0;
     self->unk_d08.x = 0;
@@ -371,12 +371,12 @@ void *func_ov015_02207738(Ov015Ship *self) {
         HEAP_POP(saved);
     }
     Ov000Vt_021cc438_Dtor(&self->shadow);
-    func_ov000_0218fee4(&self->model3);
-    func_ov000_0218ea20(&self->res3);
-    __cxa_vec_cleanup(self->subModels, 8, 0xe8, (void *)func_ov000_0218fee4);
-    func_ov000_0218ea20(&self->res2);
-    func_ov000_0218fee4(&self->model);
-    func_ov000_0218ea20(self);
+    Model0218fe1c_FreeAnims(&self->model3);
+    ResSet_ReleaseAll(&self->res3);
+    __cxa_vec_cleanup(self->subModels, 8, 0xe8, (void *)Model0218fe1c_FreeAnims);
+    ResSet_ReleaseAll(&self->res2);
+    Model0218fe1c_FreeAnims(&self->model);
+    ResSet_ReleaseAll(self);
     return self;
 }
 

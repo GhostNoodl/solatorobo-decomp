@@ -17,7 +17,7 @@ void SaveBase_AllocBuffers(SaveBase *s) {
     s->stateChanged = 0;
 }
 
-void func_020473ac(SaveBase *s, s32 state) {
+void SaveBase_SetState_020473ac(SaveBase *s, s32 state) {
     SaveBase_SetState(s, state);
 }
 

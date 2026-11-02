@@ -8,16 +8,16 @@ void func_ov002_021e00bc(Obj021eff30 *self) {
     u8 *q;
     if (k & 1) {
         self->unk_18 = 0x28;
-        func_02049a48(data_02097e4c, 0xf, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0xf, -1, -1, -1);
         return;
     }
     if (!(k & 2) && !(k & 0x20)) {
         return;
     }
     {
-        void *r = func_0206ec48(self->unk_10->unk_48);
+        void *r = Param_Get(self->unk_10->unk_48);
         w = self->owner;
-        func_ov000_0215bb14(FIELD(w, 0x20, void *), r);
+        Obj0215bb14_SetText(FIELD(w, 0x20, void *), r);
         FIELD(w, 0x20, VObj *)->vfunc_70();
     }
     q = ((u8 *)self->owner->board);
@@ -25,7 +25,7 @@ void func_ov002_021e00bc(Obj021eff30 *self) {
     q[0x75] = 1;
     func_ov002_021e019c(self, self->unk_1c, self->unk_20);
     self->unk_18 = 0;
-    func_02049a48(data_02097e4c, 0xf, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, 0xf, -1, -1, -1);
 }
 
 }

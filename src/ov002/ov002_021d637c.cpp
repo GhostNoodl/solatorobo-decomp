@@ -11,9 +11,9 @@ typedef struct Pair021efa94 { const char *a; const char *b; s32 scale; } Pair021
 extern const Pair021efa94 data_ov002_021efa94;
 const Pair021efa94 data_ov002_021efa94 = { data_ov002_021efaa0, data_ov002_021efaad, FX_Div(256 << 12, 15 << 12) };
 
-void func_ov000_02163224(void *o);
+void MsgBox_Init(void *o);
 
-void func_ov000_021632f0(void *o, u16 id, const char *a, const char *b, int z);
+void MsgBox_Open(void *o, u16 id, const char *a, const char *b, int z);
 
 static inline BOOL ov002_isIdle637c(void) {
     return FIELD(data_ov000_021ccd70, 4, void *) == NULL;
@@ -52,12 +52,12 @@ static inline void *ov002_new637c(void) {
     void *o = Heap_Alloc(0x2c);
     if (o != NULL) {
         *(VFunc **)o = data_ov002_021efb04;
-        func_ov000_02163224(o);
+        MsgBox_Init(o);
     }
     return o;
 }
 
-void func_ov002_021d637c(Task021efc24 *self) {
+void Task021efc24_UpdateActive(Task021efc24 *self) {
     s32 z = 0;
     void *g;
     u16 keys;
@@ -83,7 +83,7 @@ void func_ov002_021d637c(Task021efc24 *self) {
     keys = data_02097dc8->trig;
     if (ov002_unsel637c(g) && (keys & 2)) {
         z = -1;
-        func_02049a48(data_02097e4c, 0x1f, z, z, z);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, z, z, z);
         self->unk_4c->flags |= 2;
         self->unk_50->flags |= 2;
         self->unk_54->flags |= 2;
@@ -102,13 +102,13 @@ void func_ov002_021d637c(Task021efc24 *self) {
         return;
     }
     self->unk_5c = (VObj *)(ov002_new637c());
-    func_ov000_021632f0(self->unk_5c, FIELD(p, 6, u16) & 0xfff, data_ov002_021efa94.a, data_ov002_021efa94.b, z);
+    MsgBox_Open(self->unk_5c, FIELD(p, 6, u16) & 0xfff, data_ov002_021efa94.a, data_ov002_021efa94.b, z);
     self->unk_50->flags |= 4;
     self->unk_54->flags |= 4;
     self->unk_54->flags |= 2;
     x = (Task021efba4 *)Task_FindById(0x1b);
     if (x != NULL && x->hud != NULL) {
-        func_ov002_021e2690(x->hud, z, z);
+        Ov002Hud_SetRow(x->hud, z, z);
     }
 }
 

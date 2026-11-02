@@ -64,10 +64,10 @@ extern Mtx33 data_020928b4;
 extern GxState NNS_G3dGlb;
 
 ShadowRes *func_02035e34(void *file, void *name);
-void func_0203f0b4(void *file);
-int func_02035b90(void *a, int b);
-void *func_020359d0(void *a, int b, int c);
-void func_02036838(void *a, void *b, int c, int d);
+void Vram_FreeRes(void *file);
+int ResMgr_IsLoaded(void *a, int b);
+void *ResMgr_Load(void *a, int b, int c);
+void ResMgr_ReleaseByName(void *a, void *b, int c, int d);
 char *func_0203ed04(void *name, void *file);
 void Heap_Free(void *ptr);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
@@ -131,10 +131,10 @@ static inline void Shadow_Init(Shadow *self) {
 static inline void Shadow_Destroy(Shadow *self) {
     self->vtbl = data_ov000_021cc438;
     if (self->res != NULL) {
-        func_0203f0b4(func_02035e34(data_ov000_021c9d80.file, data_ov000_021c9d80.name)->file);
+        Vram_FreeRes(func_02035e34(data_ov000_021c9d80.file, data_ov000_021c9d80.name)->file);
     }
     if (self->state != 0) {
-        func_02036838(data_02097cdc, data_ov000_021c9d80.file, 7, 0);
+        ResMgr_ReleaseByName(data_02097cdc, data_ov000_021c9d80.file, 7, 0);
     }
 }
 

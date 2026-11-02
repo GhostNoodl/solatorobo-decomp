@@ -41,7 +41,7 @@ static inline void PlayTime_Normalize(PlayTime *t, BOOL toMinutes) {
     PlayTime_Set(t, h, min, sec, ms);
 }
 
-void func_02048bfc(PlayTime *t, BOOL toMinutes) {
+void PlayTime_Normalize_02048bfc(PlayTime *t, BOOL toMinutes) {
     PlayTime_Normalize(t, toMinutes);
 }
 

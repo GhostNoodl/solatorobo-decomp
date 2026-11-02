@@ -82,14 +82,14 @@ void func_ov000_021bbd94(Obj021bbd94 *self) {
     self->unk_5c->vfunc_08();
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
-        func_02041218(&m->pltt);
-        func_02041440(m, self->fileName, 0);
+        PlttRes_Init_02041218(&m->pltt);
+        TexObj_Init(m, self->fileName, 0);
         STD_CopyString(m->name, self->arcName);
     }
     self->unk_58 = m;
-    func_020417e0(self->unk_58, (void *)VOBJ_AT(self, 4)->vfunc_10());
+    TexObj_SetRes(self->unk_58, (void *)VOBJ_AT(self, 4)->vfunc_10());
     self->unk_58->flags |= 2;
-    func_02041d9c(self->unk_58, 0, 0xffff);
+    TexObj_SelectImage(self->unk_58, 0, 0xffff);
     {
         s32 v = Ccd30_Value();
         Rgb_Set(&c, self->unk_74, self->unk_75, self->unk_76);

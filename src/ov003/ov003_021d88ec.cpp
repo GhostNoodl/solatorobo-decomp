@@ -50,7 +50,7 @@ extern s16 Ov003Ticker_GetValue(Ov003Ticker *t);
 extern void Heap_Free(void *p);
 extern void *Heap_Alloc(u32 size);
 extern void *History_Init(void *p);
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL History_SetState(void *p, s32 a, s32 b);
 
 void Ov003_ClearWords4(u32 *p) {
     u32 i;
@@ -200,7 +200,7 @@ BOOL Ov003Timer_Init(Ov003Timer *self) {
     self->unk_08 = 0;
     self->unk_10 = 0;
     self->unk_14 = 0;
-    func_ov000_02198360(self->unk_0c, 0, 1);
+    History_SetState(self->unk_0c, 0, 1);
     return TRUE;
 }
 

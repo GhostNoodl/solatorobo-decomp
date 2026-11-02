@@ -65,7 +65,7 @@ void Task_SetFlag7(FlagObj *self) {
     self->unk_04_7 = 1;
 }
 
-void func_ov000_02151a0c(void *obj) {
+void Task_SetCurrent(void *obj) {
     if (data_ov000_021ccd40 != NULL) {
         data_ov000_021ccd38 = *(u32 *)((u8 *)data_ov000_021ccd40 + 0x14);
     } else {
@@ -106,7 +106,7 @@ void Task_SetFlag4(FlagObj *self) {
     self->unk_04_4 = 1;
 }
 
-BOOL func_ov000_02151af8(void) {
+BOOL Task_IsReady(void) {
     return TRUE;
 }
 
@@ -131,7 +131,7 @@ Lo021ca9c4 *Lo021ca9c4_DtorDelete(Lo021ca9c4 *self) {
     return self;
 }
 
-BOOL func_ov000_02151bcc(StateOwner *self) {
+BOOL Lo021ca9c4_TryReleaseCurrent(StateOwner *self) {
     BOOL ok = TRUE;
     if (self->unk_50 != NULL && !IsState5(self->unk_50)) {
         ok = FALSE;
@@ -180,7 +180,7 @@ VObj *Lo021caa44_DtorDelete(VObj *self) {
     return self;
 }
 
-BOOL func_ov000_02151dac(StateOwner *self) {
+BOOL Lo021caa44_TryReleaseCurrent(StateOwner *self) {
     BOOL ok = TRUE;
     if (self->unk_50 != NULL && !IsState5(self->unk_50)) {
         ok = FALSE;

@@ -9,16 +9,16 @@ static inline u8 Ov014_Kind13(Ov003Actor *a) {
 
 extern "C" {
 
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern Ov003Actor *Target_Get(void *p);
-extern BOOL func_ov000_0219a8bc(void *p, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *pos, s16 e, s32 f, s32 g);
+extern BOOL Hit_Apply(void *p, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *pos, s16 e, s32 f, s32 g);
 struct Ov014Mtx33 {
     s32 m[9];
 };
 extern s32 Ov014_PointInBox(const VecFx32 *a, const VecFx32 *b, const u16 *rot, const s32 *ext);
 
 void func_ov014_0220f20c(Actor *self, s32 a, s32 b, s32 c) {
-    Ov003Actor *pl = func_ov000_0219bf90();
+    Ov003Actor *pl = ActorMgr_FindPlayer();
     VecFx32 v;
     s32 rad;
     if (pl == NULL) {
@@ -45,14 +45,14 @@ void func_ov014_0220f20c(Actor *self, s32 a, s32 b, s32 c) {
         ActorSub4c *s;
         s = self->targetObj;
         p44 = pl->unk_44;
-        if (!func_ov000_0219a8bc(p44, self, Target_Get(s), s->unk_08, (u8)s->unk_0a, &v, -1, rad, 0x1000)) {
+        if (!Hit_Apply(p44, self, Target_Get(s), s->unk_08, (u8)s->unk_0a, &v, -1, rad, 0x1000)) {
             return;
         }
     }
     if (pl->unk_93_5) {
-        func_02065f88(0x327, &v)->SetScaleAll(pl->radius * 2);
+        Effect_SpawnId(0x327, &v)->SetScaleAll(pl->radius * 2);
     } else {
-        EffectObj *e = func_02065f88(0x325, &v);
+        EffectObj *e = Effect_SpawnId(0x325, &v);
         e->SetScaleAll(0x1400);
         e->unk_50 = -0x64000;
         EffectObj_AddSndCue(e, 0x19, 4);

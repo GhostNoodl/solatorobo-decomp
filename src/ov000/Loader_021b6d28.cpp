@@ -5,16 +5,16 @@
 extern "C" {
 extern char data_ov000_021cc84c[];
 extern char data_ov000_021cc850[];
-void *func_020359d0(const char *path, s32 type, s32 toFront);
-BOOL func_02035b90(const char *path, s32 type);
-void *func_02035d5c(const char *path);
-void **func_02034ec0(void *list, const char *name);
-void **func_02034f5c(void *list, const char *name);
-void **func_02034ff8(void *list, const char *name);
+void *ResMgr_Load(const char *path, s32 type, s32 toFront);
+BOOL ResMgr_IsLoaded(const char *path, s32 type);
+void *ResMgr_GetArcList(const char *path);
+void **ResList_FindType4(void *list, const char *name);
+void **ResList_FindType5(void *list, const char *name);
+void **ResList_FindType6(void *list, const char *name);
 void **ResList_FindPath(void *list, const char *name, const char *ext);
 BOOL func_0203ed04(const char *name, void *data);
 u32 func_0203ebf8(void);
-BOOL func_0203e63c(u32 task);
+BOOL Vram_IsTransferDone(u32 task);
 void func_02039494(void *data);
 
 static inline u32 Load021b6d28(const char *name, void **res) {
@@ -45,31 +45,31 @@ BOOL func_ov000_021b6d28(FieldPropLoader *self) {
             } else {
                 self->task0 = 0;
                 self->task1 = 0;
-                func_020359d0(self->path, 7, 0);
+                ResMgr_Load(self->path, 7, 0);
                 self->flag1 = 1;
                 self->state++;
             }
             again = TRUE;
             break;
         case 11:
-            if (!func_02035b90(self->path, 7)) {
+            if (!ResMgr_IsLoaded(self->path, 7)) {
                 break;
             }
-            h = func_02035d5c(self->path);
+            h = ResMgr_GetArcList(self->path);
             if (self->flag2) {
-                if ((self->mdl = func_02034ec0(h, self->name)) != NULL) {
+                if ((self->mdl = ResList_FindType4(h, self->name)) != NULL) {
                     self->task0 = Load021b6d28(self->name, self->mdl);
                 }
             }
             if (self->flag4) {
                 STD_CopyString(buf, self->name);
                 STD_ConcatenateString(buf, data_ov000_021cc84c);
-                if ((self->tex = func_02034f5c(h, buf)) != NULL) {
+                if ((self->tex = ResList_FindType5(h, buf)) != NULL) {
                     self->task1 = Load021b6d28(buf, self->tex);
                 }
             }
             if (self->flag6) {
-                self->anm = func_02034ff8(h, self->name);
+                self->anm = ResList_FindType6(h, self->name);
             }
             if (self->flag8) {
                 self->hit = ResList_FindPath(h, self->name, data_ov000_021cc850);
@@ -78,10 +78,10 @@ BOOL func_ov000_021b6d28(FieldPropLoader *self) {
             again = TRUE;
             break;
         case 12:
-            if (!func_0203e63c(self->task0)) {
+            if (!Vram_IsTransferDone(self->task0)) {
                 break;
             }
-            if (!func_0203e63c(self->task1)) {
+            if (!Vram_IsTransferDone(self->task1)) {
                 break;
             }
             self->task0 = 0;

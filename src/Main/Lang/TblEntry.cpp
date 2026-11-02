@@ -19,7 +19,7 @@ typedef struct TblEntry {
 
 extern TblCat data_0208d6d0[];
 extern TblEntry *data_0214b164[];
-extern const char *func_02039674(const char *path);
+extern const char *Path_SkipDir(const char *path);
 
 // Unlike the TblRes.cpp lookups, this one re-reads cat->ranges at each use.
 static inline TblEntry *Tbl_FindEntry(s32 id) {
@@ -46,7 +46,7 @@ static inline void *Tbl_GetOffset(TblEntry *e, int i) {
     return e->offsets[i] != 0 ? (u8 *)e + e->offsets[i] : NULL;
 }
 
-TblEntry *func_0206fef8(s32 id) {
+TblEntry *Tbl_FindEntry_0206fef8(s32 id) {
     return Tbl_FindEntry(id);
 }
 
@@ -88,7 +88,7 @@ const char *func_020701d4(s32 id) {
             idx = idx - cat->ranges[i - 1].start + cat->ranges[i - 1].base;
         }
     }
-    return func_02039674((const char *)Tbl_GetOffset(&entries[idx], 3));
+    return Path_SkipDir((const char *)Tbl_GetOffset(&entries[idx], 3));
 }
 
 }

@@ -5,25 +5,25 @@ extern "C" {
 
 void func_02041d8c(Model *model);
 
-void func_ov002_021e0c28(Ov002Caption *self);
+void Ov002Caption_Update(Ov002Caption *self);
 
-void func_ov002_021e1148(Ov002HudInfo *self, u16 id);
+void Ov002HudInfo_SetId(Ov002HudInfo *self, u16 id);
 
-void func_ov002_021e23ac(Ov002Hud *self) {
+void Ov002Hud_Update(Ov002Hud *self) {
     if (self->pending != 0) {
-        if ((self->pending & 1) && func_02054f10(self->unk_04, 0) != 0) {
+        if ((self->pending & 1) && Model_IsReady(self->unk_04, 0) != 0) {
             func_02041d8c(self->unk_04);
             self->pending &= ~1;
         }
-        if ((self->pending & 2) && func_02054f10(self->unk_08, 0) != 0) {
+        if ((self->pending & 2) && Model_IsReady(self->unk_08, 0) != 0) {
             func_02041d8c(self->unk_08);
             self->pending &= ~2;
         }
-        if ((self->pending & 4) && func_02054f10(self->unk_0c, 0) != 0) {
+        if ((self->pending & 4) && Model_IsReady(self->unk_0c, 0) != 0) {
             func_02041d8c(self->unk_0c);
             self->pending &= ~4;
         }
-        if ((self->pending & 8) && func_02054f10(self->unk_10, 0xffff) != 0) {
+        if ((self->pending & 8) && Model_IsReady(self->unk_10, 0xffff) != 0) {
             self->pending &= ~8;
         }
         if (self->pending != 0) {
@@ -34,7 +34,7 @@ void func_ov002_021e23ac(Ov002Hud *self) {
         s32 i;
         Ov002HudInfo *w;
         for (i = 0; i < 5; i++) {
-            func_ov002_021e0c28(self->captions[i]);
+            Ov002Caption_Update(self->captions[i]);
         }
         w = self->info;
         if (w == NULL) {
@@ -42,7 +42,7 @@ void func_ov002_021e23ac(Ov002Hud *self) {
         }
         if (w->shownId != w->id) {
             w->shownId = w->id;
-            func_ov002_021e1148(w, w->shownId);
+            Ov002HudInfo_SetId(w, w->shownId);
             w->delay = 2;
         }
         for (i = 0; i < 4; i++) {
@@ -57,7 +57,7 @@ void func_ov002_021e23ac(Ov002Hud *self) {
 
 void func_ov002_021e28b0(Ov002Hud *self);
 
-void func_ov002_021e0ff8(Ov002HudInfo *self, Model *model);
+void Ov002HudInfo_Draw(Ov002HudInfo *self, Model *model);
 
 void func_ov002_021e2528(Ov002Hud *self) {
     s32 i;
@@ -79,12 +79,12 @@ void func_ov002_021e2528(Ov002Hud *self) {
         }
     }
     if (self->info != NULL) {
-        func_ov002_021e0ff8(self->info, self->unk_0c);
+        Ov002HudInfo_Draw(self->info, self->unk_0c);
     }
     Model_PlayPart(self->unk_04, 0);
 }
 
-void func_ov002_021e2690(Ov002Hud *self, u8 row, int force) {
+void Ov002Hud_SetRow(Ov002Hud *self, u8 row, int force) {
     void *res = data_02149ef8;
     u16 *ids = data_ov002_021ef058[row];
     s32 i;

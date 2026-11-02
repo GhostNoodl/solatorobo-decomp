@@ -30,9 +30,9 @@ extern "C" {
 
 extern const u8 data_0208ba70[];
 extern const u8 data_0208bbc8[];
-void func_0204c7d0(void *obj);
-void func_02050f70(void *obj);
-s32 func_0204c08c(void *a, u16 b, s32 *out, s32 c);
+void TextWin_Init(void *obj);
+void TwScene_Init(void *obj);
+s32 MsgRes_GetLines(void *a, u16 b, s32 *out, s32 c);
 
 static inline void Obj0214c6b4_SetParams(Obj0214c6b4 *obj, s32 a, s32 b) {
     obj->unk_b7c = a;
@@ -44,7 +44,7 @@ static inline BOOL HasWin(Obj0214c668 *w) {
     return w->unk_200 != NULL ? TRUE : FALSE;
 }
 
-void func_ov000_0214f7a4(Lo021caa44 *self) {
+void Lo021caa44_PostUpdate(Lo021caa44 *self) {
     if (self->state == 0xd) {
         s32 n;
         if (self->unk_5c != NULL) {
@@ -63,15 +63,15 @@ void func_ov000_0214f7a4(Lo021caa44 *self) {
                     Obj0214c668 *w;
                     Obj0214c6b4 *obj;
                     s32 b;
-                    b = func_0204c08c(data_ov000_021ccd24.unk_08->sub, self->unk_64, &a, 1);
+                    b = MsgRes_GetLines(data_ov000_021ccd24.unk_08->sub, self->unk_64, &a, 1);
                     w = (Obj0214c668 *)self->unk_60;
                     w->unk_204 = 0x1e;
                     obj = (Obj0214c6b4 *)Heap_Alloc(0xb80);
                     if (obj != NULL) {
                         obj->vtbl = data_0208ba70;
-                        func_0204c7d0(obj);
+                        TextWin_Init(obj);
                         obj->vtbl = data_0208bbc8;
-                        func_02050f70(obj);
+                        TwScene_Init(obj);
                     }
                     w->unk_200 = obj;
                     obj->unk_28 = 8;

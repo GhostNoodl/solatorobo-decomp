@@ -19,14 +19,14 @@ static inline s32 Ov009_DistXZ(const VecFx32 *a, const VecFx32 *b) {
     return Ov009_Sqrt64(sq);
 }
 
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 
 void Ov009ActVt_02217d5c_Update(Ov009ActVt_02217d5c *self) {
     Ov003Actor *t;
     if (!Ov009_GameIdle()) {
         return;
     }
-    t = func_ov000_0219bf90();
+    t = ActorMgr_FindPlayer();
     if (t == NULL) {
         return;
     }

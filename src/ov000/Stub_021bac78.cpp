@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_02043d20(void *p, s32 a);
+void Gfx3D_SendDL(void *p, s32 a);
 void func_ov000_021badd4(void *self);
 
 void func_ov000_021bac78(void *self) {
@@ -11,7 +11,7 @@ void func_ov000_021bac78(void *self) {
     if (state != 0xb && state != 0xc && state != 0xd) {
         return;
     }
-    func_02043d20(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
     func_ov000_021badd4(self);
 }
 

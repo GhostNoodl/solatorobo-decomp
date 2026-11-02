@@ -14,8 +14,8 @@ extern u8 data_ov000_021cc757[];
 extern u8 data_ov000_021cc75d[];
 extern u8 data_ov000_021cc763[];
 u16 Pad_LookupDir(void *rng, s32 range);
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
+BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
 s32 *NNS_G3dGlbGetInvV(void);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
@@ -75,10 +75,10 @@ void func_ov000_021b0db0(Robo021ca458 *self, s32 spd) {
         } else if (((keys & 0x80) && !Flip021b0db0()) || ((keys & 0x40) && data_0214a424->bits18.flag10)) {
             anim = data_ov000_021cc763;
         }
-        func_ov000_02190cb0(self->model, anim, 0xcd, 0);
+        Model0218fe1c_SetAnim(self->model, anim, 0xcd, 0);
     } else if (spd == 0) {
-        func_ov000_02190cb0(self->model, data_ov000_021cc5e3, 0xcd, tilt);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov000_021cc5e3, 0xcd, tilt);
+        Model0218fe1c_SetLoop(self->model);
     }
     MulVec33_021b0db0((VecFx32 *)((u8 *)self + 0xaf0), NNS_G3dGlbGetInvV(), (VecFx32 *)((u8 *)self + 0x9c));
     VEC_Add((VecFx32 *)((u8 *)self + 0x9c), &data_02092a50, (VecFx32 *)((u8 *)self + 0x70));

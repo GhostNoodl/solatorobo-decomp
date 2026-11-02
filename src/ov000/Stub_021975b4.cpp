@@ -26,17 +26,17 @@ typedef struct {
 
 extern "C" {
 
-Obj0219bf90 *func_ov000_0219bf90(void);
+Obj0219bf90 *ActorMgr_FindPlayer(void);
 void func_020627b4(void);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 void func_ov000_02182590(u8 *p);
 s32 func_0205b1fc(void);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 extern void *data_02097e4c;
 
 void func_ov000_021974b0(Obj021975b4 *self) {
-    Obj0219bf90 *p = func_ov000_0219bf90();
+    Obj0219bf90 *p = ActorMgr_FindPlayer();
     func_020627b4();
     func_020627a0(self->unk_0e, self->unk_0c);
     func_020627dc(0x8002);
@@ -58,9 +58,9 @@ void func_ov000_021974b0(Obj021975b4 *self) {
         pos.x = p->unk_70;
         pos.y = p->unk_74;
         pos.z = p->unk_78;
-        func_02065f88(0x44f, &pos)->AddPosXYZ(0, p->unk_68, 0);
+        Effect_SpawnId(0x44f, &pos)->AddPosXYZ(0, p->unk_68, 0);
     }
-    func_02049a48(data_02097e4c, 0x88, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, 0x88, -1, -1, -1);
 }
 
 void func_ov000_021975b4(Obj021975b4 *self) {
@@ -76,7 +76,7 @@ void func_ov000_021975b4(Obj021975b4 *self) {
     if (func_0205b1fc() != 1) {
         return;
     }
-    p = func_ov000_0219bf90();
+    p = ActorMgr_FindPlayer();
     if (p == NULL) {
         return;
     }

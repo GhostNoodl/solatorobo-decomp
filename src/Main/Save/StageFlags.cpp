@@ -7,11 +7,11 @@ extern "C" {
 extern StageFlags data_0214aa68;
 extern u8 data_0214a428[0x640];
 extern void func_0206ccb8(StageFlags *f, u16 a);
-extern u16 func_0206d02c(StageFlags *f);
+extern u16 StageFlags_CountItems(StageFlags *f);
 
 extern s32 func_020591a4(DataRes *res, u8 *buf, s32 a);
 extern s32 func_02062370(u8 *buf);
-extern s32 func_ov000_02181c4c(u8 *dst, u8 *buf);
+extern s32 SceneStage_Deserialize(u8 *dst, u8 *buf);
 
 typedef struct StageFlagsInit {
     u32 data[5];
@@ -43,7 +43,7 @@ static inline void StageFlags_ClearEntries(StageFlags *f) {
     }
 }
 
-void func_0206c4c4(StageFlags *f) {
+void StageFlags_Reset(StageFlags *f) {
     u32 i;
     MIi_CpuClearFast(0, f, sizeof(StageFlags));
     f->magic = STAGE_FLAGS_MAGIC;
@@ -59,7 +59,7 @@ void func_0206c4c4(StageFlags *f) {
     MI_CpuFill8(f->bits, 0, sizeof(f->bits));
     func_0206ccb8(f, 0x9000);
     MI_CpuFill8(f->unk_12c, 0, sizeof(f->unk_12c));
-    func_0206d02c(f);
+    StageFlags_CountItems(f);
     for (i = 0; i < 2; i++) {
         f->slots[i] = -1;
     }
@@ -74,8 +74,8 @@ void func_0206c4c4(StageFlags *f) {
 
 extern s32 func_020590e8(DataRes *res, u8 *buf, s32 size);
 extern s32 func_020622ec(u8 *buf, s32 size);
-extern s32 func_ov000_02181af4(u8 *src, u8 *buf, s32 size);
-extern u16 *func_0205b23c(u32 id);
+extern s32 SceneStage_Serialize(u8 *src, u8 *buf, s32 size);
+extern u16 *StageRes_FindSlot(u32 id);
 extern u16 func_020600cc(u16 *obj, StageVec *pos, u16 *rot, u16 *id);
 extern BOOL func_02062698(void);
 extern void func_02062724(StageVec *pos);
@@ -86,7 +86,7 @@ void func_0206c824(StageFlags *f);
 void func_0206c620(StageFlags *f) {
     u16 *p;
     func_0206c824(f);
-    p = func_0205b23c(0x310);
+    p = StageRes_FindSlot(0x310);
     if (p != NULL) {
         f->color2.r = p[4];
         f->color2.g = p[5];
@@ -100,7 +100,7 @@ static inline void StageFlags_SaveBuf(StageFlags *f) {
     u16 v;
     n += func_020590e8(data_02fe152c, f->buf, sizeof(f->buf));
     n += func_020622ec(f->buf + n, sizeof(f->buf) - n);
-    func_ov000_02181af4(&data_ov000_021ccd54->stageFlags, f->buf + n, sizeof(f->buf) - n);
+    SceneStage_Serialize(&data_ov000_021ccd54->stageFlags, f->buf + n, sizeof(f->buf) - n);
     f->unk_518_16 = data_02fe1534.unk_04;
     v = data_02fe1534.unk_06;
     if (v >= 4) {
@@ -128,7 +128,7 @@ void func_0206c72c(StageFlags *f, StageColor *rgb) {
             f->unk_138 = v;
         }
     }
-    p = func_0205b23c(0x350);
+    p = StageRes_FindSlot(0x350);
     if (p != NULL) {
         StageVec pos;
         u16 rot[3];
@@ -150,7 +150,7 @@ void func_0206c72c(StageFlags *f, StageColor *rgb) {
 void func_0206c824(StageFlags *f) {
     StagePlayer *pl;
     StageFlags_SaveBuf(f);
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (pl == NULL) {
         f->bits18.unk_0 = 1;
     } else {

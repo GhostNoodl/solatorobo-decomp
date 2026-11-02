@@ -6,7 +6,7 @@ void func_ov002_021e4904(Ov002LevelTable *self) {
     func_ov002_021e4904_inline(self);
 }
 
-u32 func_ov002_021e4960(Ov002LevelTable *self, s32 val) {
+u32 Ov002LevelTable_GetLevel(Ov002LevelTable *self, s32 val) {
     u32 n = self->count;
     s32 *arr;
     u32 i;
@@ -21,7 +21,7 @@ u32 func_ov002_021e4960(Ov002LevelTable *self, s32 val) {
     return i;
 }
 
-void func_ov002_021e49a0(Ov002StrTable *self) {
+void Ov002StrTable_Ctor(Ov002StrTable *self) {
     *(VFunc **)self = data_ov002_021f00ec;
     self->src = NULL;
     self->count = 0;

@@ -68,7 +68,7 @@ void func_ov000_0217125c(LoTextHolder *self);
 LoTextHolder *func_ov000_0217006c(LoTextHolder *self);
 void func_ov000_0216bae4(LoTextHolder *self, void *text);
 void func_ov000_0216bbec(LoTicker *self);
-void func_ov000_0216bcbc(LoTicker *self);
+void LoTicker_Clear(LoTicker *self);
 void func_ov000_0216be58(LoTicker *self);
 void func_ov000_0216be94(LoTicker *self);
 void func_ov000_0216bf30(LoTicker *self);

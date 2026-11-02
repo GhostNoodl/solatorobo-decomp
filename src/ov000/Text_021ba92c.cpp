@@ -9,7 +9,7 @@ typedef void (*VFunc)(void);
 
 extern VFunc data_0208ba70[];
 void *func_02061d64(u16 idx);
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 
 typedef struct Ov000Text {
@@ -77,7 +77,7 @@ s32 func_ov000_021ba92c(Obj021ba92c *self) {
         t = (Ov000Text *)Heap_Alloc(0xb8);
         if (t != NULL) {
             t->vtbl = data_0208ba70;
-            func_0204c7d0(t);
+            TextWin_Init(t);
         }
         self->unk_10 = t;
         t->unk_28 = 8;

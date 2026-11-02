@@ -27,7 +27,7 @@ void func_ov000_021b3d78(u8 *self);
 void Obj0218c208_AddPoint(void *a, void *pos, u16 ang);
 void func_ov000_0219a088(void *p);
 void func_ov000_0219a0b0(void *p, u8 *self);
-void func_ov000_0216b508(Lo0216b474 *p, s32 want, BOOL part22);
+void Lo0216b474_Ask(Lo0216b474 *p, s32 want, BOOL part22);
 void func_ov000_021b1110(u8 *self, s32 a);
 void func_ov000_021697dc(Lo021cb798 *self, u16 a, u16 b);
 void func_ov000_0216a438(Lo021cb744 *self, u16 a, s32 b, BOOL c);
@@ -160,7 +160,7 @@ static inline void Mark021a0d4c(u16 a, s32 b, BOOL c) {
     }
 }
 
-void func_ov000_021a0d4c(Robo021ca458 *self) {
+void Robo021ca458_RunState(Robo021ca458 *self) {
 
     s32 k;
     s32 i;
@@ -275,21 +275,21 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
             BOOL f = data_0214a424->bits18.flag10 ? TRUE : FALSE;
             ListBuffer021cb940 *g = data_ov000_021ccd30->unk_11c;
             if (g != NULL) {
-                func_ov000_0216b508(g->unk_68, 1, f);
+                Lo0216b474_Ask(g->unk_68, 1, f);
             }
         }
         if (self->unk_b22_0 == 3 || self->unk_b22_0 == 4) {
-            func_ov000_021bd314(self->unk_9b4, 8);
+            ActorMarker_SetKind(self->unk_9b4, 8);
             self->unk_9b4->show = 1;
         } else {
             FieldCam *q = &data_ov000_021ccd54->cam;
             if (q != NULL && q->unk_d6 - 1 == q->unk_d4) {
-                func_ov000_021bd314(self->unk_9b4, 9);
+                ActorMarker_SetKind(self->unk_9b4, 9);
                 self->unk_9b4->show = 1;
             }
         }
     }
-    func_ov000_021bd624(self->unk_9b4);
+    ActorMarker_Update(self->unk_9b4);
     func_ov000_021b1110((u8 *)self, 0);
     if (self->unk_b32 != 0) {
         u16 m;

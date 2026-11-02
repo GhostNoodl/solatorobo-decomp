@@ -20,11 +20,11 @@ typedef struct {
 
 extern "C" {
 
-Obj0219bf90 *func_ov000_0219bf90(void);
+Obj0219bf90 *ActorMgr_FindPlayer(void);
 extern void *data_02fe152c;
 extern s32 data_02097d78[];
 void func_ov000_021bb298(void *self);
-u16 func_020594bc(void *res, u32 idx, int packed, int sub);
+u16 DataRes_ReadEntry(void *res, u32 idx, int packed, int sub);
 void func_0204aab0(SndQueue *queue, u16 value);
 u16 SndQueue_Peek(SndQueue *queue);
 void SndQueue_Pop(SndQueue *queue);
@@ -35,7 +35,7 @@ void func_ov000_021bb2b0(Obj021bb2b0 *self, s32 a, s16 *v, u8 c) {
     self->unk_0c = a;
     self->unk_08 = c;
     if (v == NULL) {
-        Obj0219bf90 *p = func_ov000_0219bf90();
+        Obj0219bf90 *p = ActorMgr_FindPlayer();
         if (p != NULL) {
             self->pos.x = p->pos.x;
             self->pos.y = p->pos.y;
@@ -92,7 +92,7 @@ static inline void Bgm021bb33c_Resume(void) {
 }
 
 static inline void Bgm021bb33c_Start(void) {
-    if (func_020594bc(data_02fe152c, 5, 1, 10) == 0) {
+    if (DataRes_ReadEntry(data_02fe152c, 5, 1, 10) == 0) {
         Bgm021bb33c_Play(0xb);
     } else {
         Bgm021bb33c_Play(0x47);
@@ -158,10 +158,10 @@ BOOL func_ov000_021bb33c(Obj021bb2b0 *self) {
                 self->fx = fx;
                 break;
             case 0x2717:
-                self->fx = func_02065f88(self->unk_0c, &self->pos);
+                self->fx = Effect_SpawnId(self->unk_0c, &self->pos);
                 break;
             default:
-                self->fx = func_02065f88(((const Obj021bb2b0 *)self)->unk_0c, &self->pos);
+                self->fx = Effect_SpawnId(((const Obj021bb2b0 *)self)->unk_0c, &self->pos);
                 break;
             }
             if (!self->unk_08) {

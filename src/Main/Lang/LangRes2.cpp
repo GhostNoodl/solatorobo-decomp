@@ -49,7 +49,7 @@ extern const u32 data_0208b318[];
 extern const char *data_0208ccb0;
 extern const char *data_0208cca4;
 extern void *Heap_Alloc(u32 size);
-extern void func_0206e900(char *dst, const char *src);
+extern void LangData_LocalizePath(char *dst, const char *src);
 
 static inline void *LangTbl_Find(void **data, const char *name) {
     const char *nm = name;
@@ -79,8 +79,8 @@ void LangRes2_Create(void) {
     LangRes2 *res = LangRes2_New();
     data_0214b160.res = res;
     res->type = 0;
-    func_0206e900(arcName, data_0208ccb0);
-    func_0206e900(name, data_0208cca4);
+    LangData_LocalizePath(arcName, data_0208ccb0);
+    LangData_LocalizePath(name, data_0208cca4);
     data_0214b160.res->Open(arcName, name);
 }
 

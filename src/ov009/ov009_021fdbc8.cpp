@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 void Ov009ActVt_022165f8_Start(Ov009ActVt_022165f8 *self) {
     Ov003Actor_Start(self);
     switch (self->unk_1a) {
@@ -19,10 +19,10 @@ void Ov009ActVt_022165f8_Start(Ov009ActVt_022165f8 *self) {
     }
     case 1:
         self->velY = 0x466;
-        func_ov000_02198360(self->fsm, 0x20, 0);
+        History_SetState(self->fsm, 0x20, 0);
         break;
     case 2: {
-        Ov003Actor *t = func_ov000_0219bf90();
+        Ov003Actor *t = ActorMgr_FindPlayer();
         if (t != NULL) {
             u16 r = t->rot_y;
             u16 a = r + Rand_PlusMinus(0x1000);
@@ -35,7 +35,7 @@ void Ov009ActVt_022165f8_Start(Ov009ActVt_022165f8 *self) {
             self->velY = 0x266;
             VEC_MultAdd(0x28000, (VecFx32 *)&self->speed, &self->pos, &self->pos);
         }
-        func_ov000_02198360(self->fsm, 0x20, 0);
+        History_SetState(self->fsm, 0x20, 0);
         break;
     }
     }
@@ -64,7 +64,7 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
     if (*self->hp == 0) {
         return;
     }
-    pl = (Robo021ca458 *)func_ov000_0219bf90();
+    pl = (Robo021ca458 *)ActorMgr_FindPlayer();
     if (pl == NULL) {
         return;
     }

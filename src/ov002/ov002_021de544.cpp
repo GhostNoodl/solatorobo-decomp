@@ -4,10 +4,10 @@ extern "C" {
 
 ListRow *func_ov000_021c4014(LoBase021ccb54_021ccbe0 *list, int idx);
 void func_ov000_021c414c(LoBase021ccb54_021ccbe0 *list, ListRow *item);
-void func_ov000_021c403c(LoBase021ccb54_021ccbe0 *list, int idx);
-void func_ov002_021e331c(Obj021f002c *self);
+void LoBase021ccb54_021ccbe0_Select(LoBase021ccb54_021ccbe0 *list, int idx);
+void Obj021f002c_CreateText(Obj021f002c *self);
 Ov002RowList *func_ov002_021def98(Obj021efef0 *self, u32 kind);
-Obj021f002c *func_ov002_021e35c0(LoBase021ccb54_021ccbe0 *self, u16 id);
+Obj021f002c *Ov002_FindRow(LoBase021ccb54_021ccbe0 *self, u16 id);
 void func_ov002_021dec74(Obj021efef0 *self);
 void func_0206ecd4(int a, void *b, u16 c);
 
@@ -69,16 +69,16 @@ void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
         MIi_CpuClear32(0, cnt, sizeof(cnt));
         w = a->board->unk_08;
         for (i = 0; i < 100; i++) {
-            u8 *info = func_0206ede8(i + 0x2000);
+            u8 *info = Param_GetEntry(i + 0x2000);
             cnt[info[0]] += w[i];
         }
         for (i = 0; i < 5; i++) {
             Obj021f002c *o = (Obj021f002c *)func_ov000_021c4014(self->unk_08, i);
             o->unk_44 = cnt[i] != 0 ? TRUE : FALSE;
-            func_ov002_021e331c(o);
+            Obj021f002c_CreateText(o);
         }
         ov002_ClrFlag1(self->unk_08);
-        func_ov000_0215bb14(a->unk_20, ((Obj021f002c *)self->unk_08->unk_a0)->unk_40);
+        Obj0215bb14_SetText(a->unk_20, ((Obj021f002c *)self->unk_08->unk_a0)->unk_40);
         a->unk_20->vfunc_70();
         self->unk_20 = 0;
         self->unk_21 = 0;
@@ -87,11 +87,11 @@ void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
     }
     case 2:
         if (data_02097dc8->trig & 2) {
-            func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
             self->unk_1c = 0x1e;
         } else if (self->unk_20) {
             self->unk_20 = 0;
-            func_ov000_0215bb14(a->unk_20, ((Obj021f002c *)self->unk_08->unk_a0)->unk_40);
+            Obj0215bb14_SetText(a->unk_20, ((Obj021f002c *)self->unk_08->unk_a0)->unk_40);
             a->unk_20->vfunc_70();
         } else if (self->unk_21) {
             LoBase021ccb54_021ccbe0 *l = self->unk_08;
@@ -122,13 +122,13 @@ void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
         }
         self->unk_0c = func_ov002_021def98(self, self->unk_28);
         if (self->unk_18 != 0xffff) {
-            func_ov000_021c414c(self->unk_0c, func_ov002_021e35c0(self->unk_0c, self->unk_18));
+            func_ov000_021c414c(self->unk_0c, Ov002_FindRow(self->unk_0c, self->unk_18));
             self->unk_18 = 0xffff;
         } else {
-            func_ov000_021c403c(self->unk_0c, 0);
+            LoBase021ccb54_021ccbe0_Select(self->unk_0c, 0);
         }
         func_0206ecd4(0x100, self->unk_38, ((Obj021f002c *)self->unk_0c->unk_a0)->id);
-        func_ov000_0215bb14(a->unk_20, self->unk_38);
+        Obj0215bb14_SetText(a->unk_20, self->unk_38);
         a->unk_20->vfunc_70();
         self->unk_22 = 0;
         self->unk_23 = 0;
@@ -144,7 +144,7 @@ void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
         if (self->unk_0c != NULL) {
             ov002_SetFlag1(self->unk_0c);
         }
-        func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
         self->unk_1c++;
     case 21: {
         Obj021eff30 *p;
@@ -179,7 +179,7 @@ void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
         if (self->unk_0c != NULL) {
             ov002_SetFlag1(self->unk_0c);
         }
-        func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
         self->unk_1c++;
     case 31: {
         Obj021eff10 *p;

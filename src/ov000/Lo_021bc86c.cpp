@@ -9,7 +9,7 @@ typedef struct {
 extern "C" {
 extern DLRef021bc86c data_0208b3d0;
 extern DLRef021bc86c data_020828f8;
-void func_02043d20(void *obj, int a);
+void Gfx3D_SendDL(void *obj, int a);
 u8 Gfx3DState_NextPolyId(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
@@ -30,7 +30,7 @@ static inline void G3_Cmd1(int cmd, u32 value) {
 void func_ov000_021bc86c(void) {
     GfxSys *g = data_02097d48;
     u32 size;
-    func_02043d20(g->unk_8b0, 0);
+    Gfx3D_SendDL(g->unk_8b0, 0);
     G3_Cmd1(0x29, 0 | (1 << 4) | (3 << 6) | (1 << 11) | (Gfx3DState_NextPolyId(g->unk_8b0) << 24) | (0x1e << 16));
     G3_Cmd1(0x2a, 0x20000000);
     G3_Cmd1(0x20, 0);

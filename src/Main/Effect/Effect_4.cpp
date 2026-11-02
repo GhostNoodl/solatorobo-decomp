@@ -18,7 +18,7 @@ void EffectMgr_RestoreList(EffectMgr *m) {
 }
 
 extern u32 data_0208c2e4[];
-extern void func_02063a34(EffectObj *obj);
+extern void EffectObj_Register(EffectObj *obj);
 extern struct EffectGroup *func_0206723c(s32 id, const VecFx32 *pos);
 extern struct Effect3D *func_020674dc(s32 id, const VecFx32 *pos);
 extern struct EffectGroup *func_02067984(const VecFx32 *pos);
@@ -31,7 +31,7 @@ extern struct EffectGroup *func_02068354(s32 id, const VecFx32 *pos);
 extern struct Effect3D *func_02066d10(const VecFx32 *pos);
 extern struct EffectGroup *func_020671e8(const VecFx32 *pos);
 
-EffectObj *func_02065f88(s32 id, const VecFx32 *pos) {
+EffectObj *Effect_SpawnId(s32 id, const VecFx32 *pos) {
     EffectObj *obj;
     switch (id) {
     case 0x0:
@@ -192,7 +192,7 @@ EffectObj *func_02065f88(s32 id, const VecFx32 *pos) {
         obj = (EffectObj *)Heap_Alloc(0xf8);
         if (obj != NULL) {
             *(u32 **)obj = data_0208c2e4;
-            func_02063a34(obj);
+            EffectObj_Register(obj);
         }
         break;
     }

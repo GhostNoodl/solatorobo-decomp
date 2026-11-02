@@ -11,7 +11,7 @@ typedef void (*Cb02161280)(u8 *self, BOOL ok);
 
 extern "C" {
 extern void *data_02097e4c;
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 
 struct Obj02161280 {
     u8 unk_00[0xc];
@@ -35,12 +35,12 @@ void func_ov000_02161280(Obj02161280 *self) {
     trg = data_02097dc8->trig;
     rep = data_02097dc8->repeat;
     if (trg & 1) {
-        func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
         if (self->unk_90 != NULL) {
             self->unk_90((u8 *)self, TRUE);
         }
     } else if (trg & 2) {
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         if (self->unk_90 != NULL) {
             self->unk_90((u8 *)self, FALSE);
         }
@@ -52,14 +52,14 @@ void func_ov000_02161280(Obj02161280 *self) {
         }
         self->unk_88 = v;
         if (old != self->unk_88) {
-            func_02049a48(data_02097e4c, 0x1d, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1d, -1, -1, -1);
         }
     } else if (rep & 0x80) {
         u16 old = self->unk_88;
         s32 v = old - 1;
         self->unk_88 = v <= 1 ? 1 : v;
         if (old != self->unk_88) {
-            func_02049a48(data_02097e4c, 0x1d, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1d, -1, -1, -1);
         }
     } else if (rep & 0x20) {
         u16 old = self->unk_88;
@@ -69,14 +69,14 @@ void func_ov000_02161280(Obj02161280 *self) {
         }
         self->unk_88 = v;
         if (old != self->unk_88) {
-            func_02049a48(data_02097e4c, 0x1d, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1d, -1, -1, -1);
         }
     } else if (rep & 0x10) {
         u16 old = self->unk_88;
         s32 v = old - 10;
         self->unk_88 = v <= 1 ? 1 : v;
         if (old != self->unk_88) {
-            func_02049a48(data_02097e4c, 0x1d, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1d, -1, -1, -1);
         }
     }
     self->unk_94++;

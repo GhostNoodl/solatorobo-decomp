@@ -3,8 +3,8 @@
 
 extern "C" {
 
-extern Ov003Actor *func_ov000_0219bf90(void);
-extern void func_ov000_0219864c(ActorSub48 *p, VecFx32 *a, u16 *b);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
+extern void ActorSub48_UpdatePos(ActorSub48 *p, VecFx32 *a, u16 *b);
 
 void Ov009ActVt_02217390_Start(Ov009ActVt_02217390 *self) {
     Ov003Actor *a;
@@ -12,7 +12,7 @@ void Ov009ActVt_02217390_Start(Ov009ActVt_02217390 *self) {
     Ov003Actor_Start(self);
     self->unk_ea_6 = 1;
     self->target = 0xffff;
-    a = func_ov000_0219bf90();
+    a = ActorMgr_FindPlayer();
     if (a != NULL) {
         self->target = a->id;
     }
@@ -29,9 +29,9 @@ void Ov009ActVt_02217390_Start(Ov009ActVt_02217390 *self) {
     }
     if (self->hit != NULL) {
         self->hit->unk_48 = self->radius << 1;
-        func_ov000_0219864c(self->hit, 0, 0);
+        ActorSub48_UpdatePos(self->hit, 0, 0);
     }
-    func_ov000_02198360(self->fsm, 0x20, 0);
+    History_SetState(self->fsm, 0x20, 0);
     self->model->visible = 0;
     self->unk_93_7_f = 1;
 }
@@ -84,7 +84,7 @@ void Ov009ActVt_02217390_Update(Ov009ActVt_02217390 *self, u8 st) {
     BOOL flag = Ov009_Skip(st, f);
     if (flag) {
         s->flags |= 0x200000;
-        func_02049a48(data_02097e4c, 0x6c, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x6c, -1, -1, -1);
         return;
     }
     Ov003Actor *pl = Actor_GetTarget(self);
@@ -182,7 +182,7 @@ void Ov009ActVt_02217390_Update(Ov009ActVt_02217390 *self, u8 st) {
             self->pos = v;
         }
         self->unk_b6 = Rand_UpTo(0x1e) + 0x3c;
-        func_ov000_02198360(self->fsm, 0x20, 0);
+        History_SetState(self->fsm, 0x20, 0);
         break;
     }
 }

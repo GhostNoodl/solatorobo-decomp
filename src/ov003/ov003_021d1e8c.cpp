@@ -46,12 +46,12 @@ extern void *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
 extern const Ov003AgFlag data_ov003_021f4466[];
 extern const s16 FX_SinCosTable_[];
-extern Ov003AgPl *func_ov000_0219bf90(void);
+extern Ov003AgPl *ActorMgr_FindPlayer(void);
 extern BOOL func_ov000_021b4738(Ov003AgPl *pl);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Ov003AgUnit *Group_FindNode(void *mgr, u16 id);
 extern u8 *func_02070558(s32 id);
-extern BOOL func_ov000_021983b0(ActorSub40 *w, u8 a, s32 b, s32 c);
+extern BOOL History_HasState(ActorSub40 *w, u8 a, s32 b, s32 c);
 extern u32 Rand_UpTo(u32 max);
 extern u16 FX_Atan2(s32 x, s32 z);
 extern u16 func_ov000_0219a36c(VecFx32 *pos, s32 r, u16 ang, s32 a, u8 b, u32 c);
@@ -154,7 +154,7 @@ extern "C" void Ov003Actor_Update(Ov003Actor *self) {
     if (Ov003_GameHasD4()) {
         return;
     }
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (pl != NULL) {
         if (Ov003AgPl_Bit2(pl)) {
             return;
@@ -284,7 +284,7 @@ extern "C" void Ov003Actor_Update(Ov003Actor *self) {
     case 10:
         self->unk_ee_9 = 0;
         for (i = 0; i < 2; i++) {
-            if (p->unk_08[i] != 0 && func_ov000_021983b0(self->fsm, p->unk_08[i], 2, 1)) {
+            if (p->unk_08[i] != 0 && History_HasState(self->fsm, p->unk_08[i], 2, 1)) {
                 self->unk_c4 = Ov003Ag_Lookup(p->unk_0a[i]);
                 self->unk_ee_9 = (u16)(i + 1);
                 break;

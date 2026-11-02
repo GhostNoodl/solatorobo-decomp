@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_ov013_0220bb20;
 extern char data_ov013_0220b360[];
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern BOOL func_020621c4(void);
 
 Ov013ActEx_022065ac *Ov013ActEx_022065ac_Ctor(Ov013ActEx_022065ac *self) {
@@ -31,7 +31,7 @@ void Ov013ActEx_022065ac_StateThrown(Ov013ActEx_022065ac *self) {
         self->rot_y = FX_Atan2(self->vel.x, self->vel.z);
     }
     if (self->unk_f4 != 0 && ((s32)self->unk_bc) != 0) {
-        EffectObj *p = func_020657b0(data_0214a420, ((s32)self->unk_bc));
+        EffectObj *p = Effect_Find_020657b0(data_0214a420, ((s32)self->unk_bc));
         if (p != NULL) {
             p->loopCount = -1;
         }
@@ -65,7 +65,7 @@ void Ov013ActVt_0220bdd8_Start(Ov013ActVt_0220bdd8 *self) {
     self->hit->unk_30 = 0;
     Ov013_VecSet(&self->unk_44->unk_0c, 0, -0x1800, 0x5800);
     self->target = 0xffff;
-    p = func_ov000_0219bf90();
+    p = ActorMgr_FindPlayer();
     if (p != NULL) {
         self->target = p->id;
     }
@@ -80,7 +80,7 @@ void Ov013ActVt_0220bdd8_Start(Ov013ActVt_0220bdd8 *self) {
 
 extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(Ov003Actor *a, u16 id);
-extern BOOL func_ov000_021983b0(ActorSub40 *a, u8 b, s32 c, BOOL d);
+extern BOOL History_HasState(ActorSub40 *a, u8 b, s32 c, BOOL d);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 
 #define OV013_SQRTCNT (*(volatile u16 *)0x40002b0)
@@ -124,7 +124,7 @@ void Ov013ActVt_0220bdd8_Update(Ov013ActVt_0220bdd8 *self, Ov003Actor *b) {
         if (self->hp[0] < (self->hp[1] >> 1)) {
             m = 5;
         }
-        if (ActorGroup_CountKind(a, 0x540c) >= 2 || func_ov000_021983b0(self->fsm, 0x10, m, 1) || n == 0) {
+        if (ActorGroup_CountKind(a, 0x540c) >= 2 || History_HasState(self->fsm, 0x10, m, 1) || n == 0) {
             ok = FALSE;
         }
     }
@@ -155,7 +155,7 @@ void Ov013ActVt_0220bdd8_Update(Ov013ActVt_0220bdd8 *self, Ov003Actor *b) {
             }
             m = th;
             n = Rand_UpTo(n);
-            if (ActorGroup_CountKind(b, 0x4813) >= 2 || n > m || func_ov000_021983b0(self->fsm, 0xe, 2, 1)) {
+            if (ActorGroup_CountKind(b, 0x4813) >= 2 || n > m || History_HasState(self->fsm, 0xe, 2, 1)) {
                 ok = FALSE;
             }
         }

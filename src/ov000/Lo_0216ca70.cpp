@@ -54,17 +54,17 @@ extern const char *data_0208cc94;
 extern const char *data_0208cc88;
 extern void *data_ov000_021ccd64;
 BOOL PauseNode_IsDrawPaused(void *node, BOOL recurse);
-BOOL func_ov000_0216f674(void *mgr, s32 a);
+BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL func_ov000_021705a0(void *p, s32 a);
 void func_ov000_021c2114(void *p);
 void func_02041c34(void *a, int b, void *c, void *d);
-BOOL func_02054f10(void *a, s32 b);
+BOOL Model_IsReady(void *a, s32 b);
 void *func_ov000_0216c800(void);
 void func_ov000_0216d474(Obj0216ca70 *self);
 s32 FX_Div(s32 a, s32 b);
-Pl0216ca70 *func_ov000_0219bf90(void);
-s32 func_ov000_0218c040(void *mgr, s32 max, VecFx32 *out, s32 kind, u16 id);
-s32 func_0204061c(s32 *out, const VecFx32 *pos);
+Pl0216ca70 *ActorMgr_FindPlayer(void);
+s32 Group_GetSpawnPositions(void *mgr, s32 max, VecFx32 *out, s32 kind, u16 id);
+s32 Math_ProjectToScreen(s32 *out, const VecFx32 *pos);
 void func_ov000_021c194c(Eff0216ca70 *p);
 
 static inline BOOL LoGBusy(FieldState *g) {
@@ -80,9 +80,9 @@ static inline BOOL Busy(void) {
     void *mgr = data_ov000_021ccd30;
     if (mgr == NULL) {
         r = FALSE;
-    } else if (func_ov000_0216f674(mgr, 9)) {
+    } else if (MessageQueue_GetById(mgr, 9)) {
         r = TRUE;
-    } else if (func_ov000_0216f674(mgr, 0xa)) {
+    } else if (MessageQueue_GetById(mgr, 0xa)) {
         r = TRUE;
     } else if (LFLD(void *, mgr, 0x11c) == NULL) {
         r = FALSE;
@@ -184,28 +184,28 @@ BOOL func_ov000_0216ca70(Obj0216ca70 *self) {
                 self->eff->ofs = ofs;
             }
             if (self->unk_28 != 0xffff) {
-                res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+                res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
                 m = (Model *)Heap_Alloc(sizeof(Model));
                 if (m) {
                     const char *name = data_0208cc88;
-                    func_02041218((struct PlttRes *)((u8 *)m + 0x88));
-                    func_02041440(m, name, 0);
+                    PlttRes_Init_02041218((struct PlttRes *)((u8 *)m + 0x88));
+                    TexObj_Init(m, name, 0);
                 }
                 self->model = m;
-                func_020417e0(m, res);
+                TexObj_SetRes(m, res);
                 self->model->flags |= 2;
-                func_02041d9c(self->model, 0, 0xd);
-                func_02041d9c(self->model, 0, 0xe);
-                func_02041d9c(self->model, 0, self->unk_28);
-                func_02041d9c(self->model, 0, 6);
-                func_02041d9c(self->model, 0, 8);
+                TexObj_SelectImage(self->model, 0, 0xd);
+                TexObj_SelectImage(self->model, 0, 0xe);
+                TexObj_SelectImage(self->model, 0, self->unk_28);
+                TexObj_SelectImage(self->model, 0, 6);
+                TexObj_SelectImage(self->model, 0, 8);
                 func_02041c34(self->model, 6, (void *)func_ov000_0216c800, self);
             }
             func_ov000_0216d474(self);
         }
         break;
     case 6:
-        if (self->model == NULL || func_02054f10(self->model, 0xffff)) {
+        if (self->model == NULL || Model_IsReady(self->model, 0xffff)) {
             self->unk_2c = 0;
             self->unk_30 = 0x1000;
             self->state = 8;
@@ -247,14 +247,14 @@ BOOL func_ov000_0216ca70(Obj0216ca70 *self) {
     if (self->eff != NULL) {
         if (self->b2) {
             self->eff->flags |= 2;
-            pl = func_ov000_0219bf90();
+            pl = ActorMgr_FindPlayer();
             {
                 VecFx32 c;
                 c.x = pl->pos.x;
                 c.y = pl->pos.y + LO_FX_MUL(pl->h, 0xc00);
                 c.z = pl->pos.z;
                 self->eff->pos = *(VecFx32 *)&c;
-                n = func_ov000_0218c040(data_ov000_021ccd64, 0x20, pts, self->unk_2a >> 12, self->unk_2a);
+                n = Group_GetSpawnPositions(data_ov000_021ccd64, 0x20, pts, self->unk_2a >> 12, self->unk_2a);
                 if (n != 0) {
                     maxd = self->unk_14;
                     for (i = 0, best = 0; i < n; i++) {
@@ -265,7 +265,7 @@ BOOL func_ov000_0216ca70(Obj0216ca70 *self) {
                         }
                     }
                     if (best != 0) {
-                        z = func_0204061c(scr, &pts[best - 1]);
+                        z = Math_ProjectToScreen(scr, &pts[best - 1]);
                         if (z < -0xf000 || z > 0 || scr[0] < -0x20 || scr[0] > 0x120 || scr[1] < -0x20 || scr[1] > 0x100) {
                             e = self->eff;
                             p = &pts[best - 1];

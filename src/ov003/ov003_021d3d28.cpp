@@ -22,19 +22,19 @@ extern "C" {
 extern const char data_ov003_021f7a85[];
 extern const char data_ov003_021f7a8b[];
 void HitSphere_Link(ActorSub48 *ctl);
-void func_0203f364(ActorSub48 *ctl);
+void HitSphere_Unlink_0203f364(ActorSub48 *ctl);
 void func_ov000_0218996c(u8 a, u8 b);
 void Actor_SendMsg(Ov003Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s16 blend, u8 force);
-BOOL func_ov000_02191120(Model0218fe1c *model);
-void func_ov000_021915a0(Model0218fe1c *model);
-BOOL func_ov000_02198360(ActorSub40 *w, u8 a, BOOL b);
-void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
+BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const char *name, s16 blend, u8 force);
+BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *model);
+void Model0218fe1c_SetLoop(Model0218fe1c *model);
+BOOL History_SetState(ActorSub40 *w, u8 a, BOOL b);
+void Body_Update(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 u16 func_ov000_02198da8(ActorSub48 *ctl, u16 angle);
 Actor *Target_Get(ActorSub4c *t);
 u16 func_ov000_02199e94(ActorSub4c *t);
 u8 func_ov000_02199f08(ActorSub4c *t);
-void func_ov000_02199f48(ActorHp *t, Actor *a);
+void Target_SetActor(ActorHp *t, Actor *a);
 s32 Filter_Apply(ActorHp *a, Ov003HtSlot *b, s32 value);
 u8 Ov003_GetMaxCombo(void);
 
@@ -80,7 +80,7 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
                     if (self->targetObj->unk_19 < 2) {
                         ActorSub4c *t;
                         c = 0;
-                        func_02049f44(data_02097e4c, 0x66, &self->pos, 0);
+                        SndMgr_PlayAt(data_02097e4c, 0x66, &self->pos, 0);
                         t = self->targetObj;
                         t->unk_19 = 0;
                         t->unk_1b = 0;
@@ -95,7 +95,7 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
                 }
                 h = 100;
                 if (self->hit->unk_50 & 0x20000000) {
-                    EffectObj *fx = func_02065f88(0x67, &self->pos);
+                    EffectObj *fx = Effect_SpawnId(0x67, &self->pos);
                     s32 r;
                     fx->SetRotXYZ(0, self->rot_y + 0x8000, 0);
                     r = self->radius;
@@ -103,7 +103,7 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
                         s32 t = r + ((r >> 1) + 0x333);
                         fx->SetScaleXYZ(t, t * 2, t);
                         fx->speed = 0xc00;
-                        fx = func_02065f88(0x57b, &self->pos);
+                        fx = Effect_SpawnId(0x57b, &self->pos);
                         fx->SetScaleXYZ(0x159a, 0x159a, 0x159a);
                     } else {
                         fx->SetScaleXYZ(r + ((r >> 2) + 0x333), r + ((r >> 2) + 0x333), r + ((r >> 2) + 0x333));
@@ -112,20 +112,20 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
                 } else {
                     h = -1;
                     if (self->targetObj->unk_19 != 0) {
-                        EffectObj *fx = func_02065f88(0x65, &self->pos);
+                        EffectObj *fx = Effect_SpawnId(0x65, &self->pos);
                         fx->SetRotXYZ(0x1800, self->rot_y + 0x8000, 0);
                     } else {
-                        EffectObj *fx = func_02065f88(0x64, &self->pos);
+                        EffectObj *fx = Effect_SpawnId(0x64, &self->pos);
                         fx->SetScaleXYZ(0xccd, 0xccd, 0xccd);
                     }
                 }
                 if (self->targetObj->unk_19 != 0) {
                     s32 n = self->targetObj->unk_1a + 1;
                     func_ov000_0218996c(n + 8, n * 2 + 0x14);
-                    func_02049f44(data_02097e4c, 0x1a, &self->pos, 0);
+                    SndMgr_PlayAt(data_02097e4c, 0x1a, &self->pos, 0);
                 } else {
                     func_ov000_0218996c(6, 10);
-                    func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
+                    SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
                 }
                 if (self->targetObj->unk_03 == 1) {
                     VecFx32 ofs;
@@ -144,7 +144,7 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
                         slot->unk_10 = slot->unk_14;
                         slot->unk_14 = tmp;
                     }
-                    hit = func_ov000_0219aae8(self, tgt, c, d, 0x30, &ofs, NULL, r, 0, h, 0x1000);
+                    hit = Hit_ApplyInArea(self, tgt, c, d, 0x30, &ofs, NULL, r, 0, h, 0x1000);
                     if (slot != NULL) {
                         s32 tmp = slot->unk_10;
                         slot->unk_10 = slot->unk_14;
@@ -163,12 +163,12 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
                     Actor_SendMsg(self, tgt->id, 9, 0, sizeof(msg), &msg);
                 } else {
                     ActorSub44 *s;
-                    func_ov000_02199f48(self->hpObj, tgt);
-                    func_ov000_02198360(self->fsm, 0x15, 0);
+                    Target_SetActor(self->hpObj, tgt);
+                    History_SetState(self->fsm, 0x15, 0);
                     ctl = self->hit;
                     ctl->unk_9a_0 = 0;
                     ctl->unk_9a_3 = 0;
-                    func_0203f364(ctl);
+                    HitSphere_Unlink_0203f364(ctl);
                     s = self->unk_44;
                     s->unk_22_0 = 0;
                     s->unk_22_1 = 0;
@@ -192,7 +192,7 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
                 self->fsm->timer = 0;
             }
             if (self->hit->unk_50 & 0x20000000) {
-                func_ov000_02190cb0(self->model, data_ov003_021f7a85, 0x800, 0);
+                Model0218fe1c_SetAnim(self->model, data_ov003_021f7a85, 0x800, 0);
                 if (self->velY < -0x266) {
                     s32 se = 8;
                     if (self->hit->unk_50 & 0x400) {
@@ -201,10 +201,10 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
                         EffectObj *fx;
                         se = 0x17;
                         func_ov000_0218996c(10, 0x14);
-                        fx = func_02065f88(0x12e, &self->pos);
+                        fx = Effect_SpawnId(0x12e, &self->pos);
                         fx->SetScaleAll(0x1400);
                     }
-                    func_02049f44(data_02097e4c, se, &self->pos, 0);
+                    SndMgr_PlayAt(data_02097e4c, se, &self->pos, 0);
                 }
                 self->fsm->st++;
                 self->fsm->timer = 0;
@@ -212,8 +212,8 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
                 self->gravity = 0;
                 self->friction = 0x800;
             } else {
-                func_ov000_02190cb0(self->model, data_ov003_021f7a8b, 0x400, 0);
-                func_ov000_021915a0(self->model);
+                Model0218fe1c_SetAnim(self->model, data_ov003_021f7a8b, 0x400, 0);
+                Model0218fe1c_SetLoop(self->model);
             }
         }
         if (!(self->hit->unk_50 & 0x20000000)) {
@@ -222,7 +222,7 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
             if (w->timer > 0x46) {
                 self->fsm->timer = 0x46;
                 if (!(self->hit->unk_54 & 0x20000000)) {
-                    func_ov000_02198360(self->fsm, 0x15, 0);
+                    History_SetState(self->fsm, 0x15, 0);
                 }
             }
         }
@@ -235,13 +235,13 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
         w->timer++;
         if (w->timer >= 5) {
             self->fsm->timer = 5;
-            if (func_ov000_02191120(self->model) || self->fsm->flags != 0) {
+            if (Model0218fe1c_IsAnimDone(self->model) || self->fsm->flags != 0) {
                 self->targetObj->target = 0xffff;
                 self->speed = 0;
                 self->velY = 0;
                 self->friction = 0;
                 self->gravity = 0;
-                func_ov000_02198360(self->fsm, 1, 0);
+                History_SetState(self->fsm, 1, 0);
             }
         }
         break;
@@ -267,11 +267,11 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
             a = Target_Get(self->targetObj);
             if (a != NULL && (other = a->hit) != NULL && other->unk_9a_3) {
                 other->unk_9a_3 = 0;
-                func_0203f364(other);
+                HitSphere_Unlink_0203f364(other);
                 restore = TRUE;
             }
         }
-        func_ov000_021987b8(self->hit, 1, 0, 0);
+        Body_Update(self->hit, 1, 0, 0);
         if (restore) {
             other->unk_9a_3 = 1;
             HitSphere_Link(other);

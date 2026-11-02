@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0216faac(ListBuffer021cb940 *self) {
+void ListBuffer021cb940_Init(ListBuffer021cb940 *self) {
     self->unk_20 = 0;
     self->state = 0;
     self->win = NULL;

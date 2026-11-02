@@ -42,13 +42,13 @@ typedef struct {
 extern "C" {
 
 extern char data_ov000_021cc454[];
-ResInfo02193e5c *func_0206fef8(s32 id);
+ResInfo02193e5c *Tbl_FindEntry_0206fef8(s32 id);
 ResParam02193e5c *func_020704b4(s32 id);
 char *func_0207011c(s32 id);
 char *func_020701d4(s32 id);
 char *Tbl_GetEntryData(s32 id, s32 n);
-char *func_02039674(const char *path);
-void func_ov000_0218f074(Res02193e5c *p, char *name, s32 a, s32 b, s32 c, s32 d);
+char *Path_SkipDir(const char *path);
+void ResSet_SetFile(Res02193e5c *p, char *name, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_02193e5c(Res02193e5c *res, s32 id) {
     ResParam02193e5c *param;
@@ -56,7 +56,7 @@ void func_ov000_02193e5c(Res02193e5c *res, s32 id) {
     char *name;
     char *a;
     char *b;
-    info = func_0206fef8(id);
+    info = Tbl_FindEntry_0206fef8(id);
     param = func_020704b4(id);
     if (!info->flags.bit0 && !info->flags.bit1 && !param->flags.bit3) {
         return;
@@ -65,7 +65,7 @@ void func_ov000_02193e5c(Res02193e5c *res, s32 id) {
     if (param->path != NULL) {
         char *alt;
         if (STD_SearchString(param->path, data_ov000_021cc454) != NULL) {
-            alt = func_02039674(param->path);
+            alt = Path_SkipDir(param->path);
             STD_CopyString(res->unk_c4, param->path);
             STD_CopyString(res->unk_e4, alt);
             res->unk_03 |= 0x10;
@@ -92,7 +92,7 @@ void func_ov000_02193e5c(Res02193e5c *res, s32 id) {
             res->unk_03 |= 8;
         }
     } else {
-        func_ov000_0218f074(res, name, info->flags.bit0 != 0, info->flags.bit1 != 0, 0, param->flags.bit3 != 0);
+        ResSet_SetFile(res, name, info->flags.bit0 != 0, info->flags.bit1 != 0, 0, param->flags.bit3 != 0);
     }
     a = Tbl_GetEntryData(id, 0);
     b = Tbl_GetEntryData(id, 1);

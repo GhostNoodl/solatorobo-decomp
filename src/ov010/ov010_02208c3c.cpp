@@ -21,7 +21,7 @@ extern u8 data_ov010_0220f298[];
 extern u8 data_ov010_0220ffc4[];
 extern u8 data_ov010_02210154[];
 extern BOOL Ov003Sequence_HasEntries(void *p, void *d);
-extern Robo021ca458 *func_ov000_0219bf90(void);
+extern Robo021ca458 *ActorMgr_FindPlayer(void);
 extern void func_ov000_0218a358(void *a, const void *b, void *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern s32 FX_Div(s32 a, s32 b);
 extern void Ov010Obj02210154_Release(Ov010Obj02210154 *p);
@@ -102,7 +102,7 @@ void Ov010Sw_Update(Ov010Sw *self) {
     if (&data_ov000_021ccd54->cam == NULL) {
         return;
     }
-    p = func_ov000_0219bf90();
+    p = ActorMgr_FindPlayer();
     if (p == NULL) {
         return;
     }

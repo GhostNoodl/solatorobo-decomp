@@ -6,7 +6,7 @@
 // base slots (0x08..0x0c, 0x1c..0x54, 0x60, 0x68); slot 0x58 (Init) is called by New after each
 // vtable store and clears the class's fields, slot 0x5c (Release) is called by the Dtor at each
 // level and frees what the task owns. Slot 0x18 builds the task's windows and links the task
-// (func_ov000_02173648). Fields are named by offset unless the code shows what they hold.
+// (TaskList_Insert). Fields are named by offset unless the code shows what they hold.
 
 #include "ov000/TaskList.h"
 #include "ov000/ObjLayouts.h"
@@ -60,7 +60,7 @@ public:
     u8 unk_a8[0x10];
     s16 unk_b8;
     s16 unk_ba;
-    void (*unk_bc)(void *self, void *arg); // called with unk_c0 when the task closes (func_ov000_0217c008)
+    void (*unk_bc)(void *self, void *arg); // called with unk_c0 when the task closes (Task021cbb60_PostUpdate)
     void *unk_c0;
 };
 SIZE_ASSERT(Task021cbb60, 0xc4);

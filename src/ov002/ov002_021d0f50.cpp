@@ -6,7 +6,7 @@ static inline bool ov002_Task_getFlag1(Task *self) {
     return self->unk_04_1;
 }
 
-void func_ov002_021d0f50(Task021ef89c *self) {
+void Task021ef89c_PreUpdate(Task021ef89c *self) {
     switch (self->state) {
     case 8:
         if (func_ov002_isMode4() || func_ov002_isMode4b()) {
@@ -19,10 +19,10 @@ void func_ov002_021d0f50(Task021ef89c *self) {
         if (self->unk_40 != NULL) {
             self->unk_40->flags &= ~2;
         }
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         break;
     case 10:
-        func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
         if (self->unk_3c != NULL) {
             self->unk_3c->flags |= 2;
         }

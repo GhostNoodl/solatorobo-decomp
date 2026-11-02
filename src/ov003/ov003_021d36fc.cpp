@@ -45,14 +45,14 @@ extern char data_ov003_021f7a60[];
 extern char data_ov003_021f7a78[];
 extern char data_ov003_021f7a7f[];
 extern Ov003DwTgt *Target_Get(ActorSub4c *p);
-extern u16 func_ov000_02199bc8(ActorSub4c *p, VecFx32 *pos, s32 a, s32 b);
-extern void func_ov000_02191008(Model0218fe1c *model);
-extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s16 a, u8 b);
-extern void func_ov000_021915a0(Model0218fe1c *model);
-extern void func_ov000_021911c8(Model0218fe1c *model, s16 v);
-extern void func_0203f364(ActorSub48 *ctl);
-extern BOOL func_ov000_02198360(ActorSub40 *w, u8 a, BOOL b);
-extern Ov003DwPl *func_ov000_0219bf90(void);
+extern u16 Target_LerpToDest(ActorSub4c *p, VecFx32 *pos, s32 a, s32 b);
+extern void Model0218fe1c_StopAnim(Model0218fe1c *model);
+extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const char *name, s16 a, u8 b);
+extern void Model0218fe1c_SetLoop(Model0218fe1c *model);
+extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *model, s16 v);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *ctl);
+extern BOOL History_SetState(ActorSub40 *w, u8 a, BOOL b);
+extern Ov003DwPl *ActorMgr_FindPlayer(void);
 extern void Actor_SendMsg(Ov003DwPl *p, u16 id, s32 a, s32 b, s32 c, Ov003DwArg *arg);
 extern void func_ov000_021b4560(Ov003DwPl *p, Ov003Actor *self);
 
@@ -76,20 +76,20 @@ void Ov003Actor_StateHeld(Ov003Actor *self) {
         name = self->targetObj->unk_0c;
         if (name != NULL) {
             if (STD_CompareString(name, data_ov003_021f7a78) == 0) {
-                func_ov000_02191008(self->model);
+                Model0218fe1c_StopAnim(self->model);
             } else {
-                func_ov000_02190cb0(self->model, name, 0x1000, 0);
+                Model0218fe1c_SetAnim(self->model, name, 0x1000, 0);
             }
         } else {
-            func_ov000_02190cb0(self->model, data_ov003_021f7a7f, 0x1000, 0);
+            Model0218fe1c_SetAnim(self->model, data_ov003_021f7a7f, 0x1000, 0);
         }
-        func_ov000_021915a0(self->model);
-        func_ov000_021911c8(self->model, 0x1400);
+        Model0218fe1c_SetLoop(self->model);
+        Model0218fe1c_SetAnimSpeed(self->model, 0x1400);
         ctl = self->hit;
         if (ctl != NULL) {
             ctl->unk_9a_0 = 0;
             ctl->unk_9a_3 = 0;
-            func_0203f364(ctl);
+            HitSphere_Unlink_0203f364(ctl);
             ctl = self->hit;
             ctl->unk_50 = 0;
             ctl->unk_54 = 0;
@@ -110,7 +110,7 @@ void Ov003Actor_StateHeld(Ov003Actor *self) {
     }
     case 1:
         if (t != NULL) {
-            u32 r = func_ov000_02199bc8(self->targetObj, &self->pos, self->fsm->timer, 10);
+            u32 r = Target_LerpToDest(self->targetObj, &self->pos, self->fsm->timer, 10);
             self->rot_x = t->rot.x;
         self->rot_y = t->rot.y;
         self->rot_z = t->rot.z;
@@ -121,7 +121,7 @@ void Ov003Actor_StateHeld(Ov003Actor *self) {
             self->fsm->st++;
             self->fsm->timer = 0;
         } else {
-            func_ov000_02198360(self->fsm, 4, 0);
+            History_SetState(self->fsm, 4, 0);
         }
         break;
     case 2:
@@ -131,7 +131,7 @@ void Ov003Actor_StateHeld(Ov003Actor *self) {
             if (w->timer > 0xb4) {
                 Ov003DwPl *p;
                 self->fsm->timer = 0xb4;
-                p = func_ov000_0219bf90();
+                p = ActorMgr_FindPlayer();
                 if (p != NULL) {
                     s32 kind = p->unk_40 != NULL ? p->unk_40->kind : 0;
                     if (p->unk_b24_5 != 0 && kind != 0xb && kind != 0x11) {
@@ -145,14 +145,14 @@ void Ov003Actor_StateHeld(Ov003Actor *self) {
                         arg.c = 0xffff;
                         Actor_SendMsg(p, self->id, 9, 0, 6, &arg);
                         func_ov000_021b4560(p, self);
-                        func_ov000_02190cb0(self->model, data_ov003_021f7a60, 0x400, 0);
-                        func_ov000_02198360(self->fsm, 10, 0);
+                        Model0218fe1c_SetAnim(self->model, data_ov003_021f7a60, 0x400, 0);
+                        History_SetState(self->fsm, 10, 0);
                         return;
                     }
                 }
             }
         }
-        func_ov000_02199bc8(self->targetObj, &self->pos, 10, 10);
+        Target_LerpToDest(self->targetObj, &self->pos, 10, 10);
         self->rot_x = t->rot.x;
         self->rot_y = t->rot.y;
         self->rot_z = t->rot.z;

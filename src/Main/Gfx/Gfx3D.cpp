@@ -4,7 +4,7 @@ extern "C" {
 
 
 
-void func_02043064(const OamShape *attr, u32 *w, u32 *h) {
+void Oam_GetSize(const OamShape *attr, u32 *w, u32 *h) {
     OamShape shape = *attr & 0xc000c000;
     u16 shapeBit = (u16)((shape & 0xc000) >> 14);
     u16 sizeBit = (u16)((shape & 0xc0000000) >> 30);

@@ -9,8 +9,8 @@
 // vtable their constructor stores: UiList (021caec8), UiList021cb4a8, Lo021cadcc, Lo021cad50,
 // Lo021cae48, Lo021cb5a8 and Lo021cb0b8 (and ov006's subclass ov006_ListWin).
 
-// ov000's 0x100-byte list with vtable data_ov000_021ccb54 (func_ov000_021c54f4 clears unk_f4..unk_fc);
-// the ov006 menus fill it with func_ov000_021c3fd4.
+// ov000's 0x100-byte list with vtable data_ov000_021ccb54 (Lo021ccb54_ClearLabels clears unk_f4..unk_fc);
+// the ov006 menus fill it with LoBase021ccb54_021ccbe0_AppendRow.
 struct ov006_HudList : public LoBase021ccb54_021ccbe0 {
     s32 unk_f4;
     s32 unk_f8;
@@ -36,22 +36,22 @@ extern u8 data_ov000_021cae48[];
 extern u8 data_ov000_021ccbe0[];
 extern u8 data_ov000_021ccb54[];
 void func_ov000_021c3af4(LoBase021ccb54_021ccbe0 *self);
-void func_ov000_021c54f4(ov006_HudList *self);
+void Lo021ccb54_ClearLabels(ov006_HudList *self);
 
 // The ov000 window methods the ov006 menus call (text arguments are message strings).
-UiListItem *func_ov000_02154b58(UiList *self, u16 id);
-void func_ov000_02153c48(UiListItem *item, s32 a, BOOL show, BOOL center, u8 d);
+UiListItem *UiList_GetItemById(UiList *self, u16 id);
+void Obj02153c48_CreateText(UiListItem *item, s32 a, BOOL show, BOOL center, u8 d);
 void func_ov000_021546ec(UiList *self, const char *file, const char *name, u32 b);
 void func_ov000_021548cc(UiList *self, u32 value);
-void func_ov000_02157c90(UiList021cb4a8 *self, const void *text);
-void func_ov000_02157d2c(UiList021cb4a8 *self, const void *text);
-void func_ov000_0215bb14(Lo021cadcc *self, const void *text);
-void func_ov000_0215c1bc(Lo021cad50 *self, u32 flags, const void *text);
+void UiList021cb4a8_SetLabel(UiList021cb4a8 *self, const void *text);
+void UiList021cb4a8_SetCenteredLabel(UiList021cb4a8 *self, const void *text);
+void Obj0215bb14_SetText(Lo021cadcc *self, const void *text);
+void Obj0215c1bc_SetText(Lo021cad50 *self, u32 flags, const void *text);
 void func_ov000_0215d980(Lo021cae48 *self, s32 value, BOOL both);
-void func_ov000_021c3fd4(ov006_HudList *self, void *item);
-void func_ov000_021c55e8(ov006_HudList *self, const void *text);
-void func_ov000_021c5630(ov006_HudList *self, const void *text);
-void func_ov000_021c5678(ov006_HudList *self, const void *text);
+void LoBase021ccb54_021ccbe0_AppendRow(ov006_HudList *self, void *item);
+void Obj021c55e8_SetLabel1(ov006_HudList *self, const void *text);
+void Obj021c55e8_SetLabel2(ov006_HudList *self, const void *text);
+void Obj021c55e8_SetLabel3(ov006_HudList *self, const void *text);
 }
 
 // The window constructors, inlined at each use: each class stores its vtable and calls slot 0x28
@@ -150,7 +150,7 @@ static inline ov006_HudList *ov006_NewHudList(void) {
         *(void **)w = data_ov000_021ccbe0;
         func_ov000_021c3af4(w);
         *(void **)w = data_ov000_021ccb54;
-        func_ov000_021c54f4(w);
+        Lo021ccb54_ClearLabels(w);
     }
     return w;
 }

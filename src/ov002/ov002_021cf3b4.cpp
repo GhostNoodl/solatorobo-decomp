@@ -66,11 +66,11 @@ Task021ef4b0 *Ov002TaskVt_021ef4b0_DtorDelete(Task021ef4b0 *self) {
     return self;
 }
 
-BOOL func_ov002_021cf5a8(void) {
+BOOL Task021ef4b0_IsLoaded(void) {
     return TRUE;
 }
 
-void func_ov002_021cf5b0(void) {
+void Task021ef4b0_Load(void) {
 }
 
 Task021ef4b0 *Ov002TaskVt_021ef4b0_Dtor(Task021ef4b0 *self) {
@@ -101,7 +101,7 @@ Task021ef430 *Ov002TaskVt_021ef430_DtorDelete(Task021ef430 *self) {
     Task_deleteModel(self);
     HEAP_POP(saved);
     if (self->unk_4f) {
-        func_02035acc(data_ov002_021ef3e4, data_ov002_021ef3f9, 2);
+        ResMgr_ReleaseArchive(data_ov002_021ef3e4, data_ov002_021ef3f9, 2);
     }
     self->unk_4f = 0;
     TaskBase_dtor(self);
@@ -116,7 +116,7 @@ Task021ef430 *Ov002TaskVt_021ef430_Dtor(Task021ef430 *self) {
     Task_deleteModel(self);
     HEAP_POP(saved);
     if (self->unk_4f) {
-        func_02035acc(data_ov002_021ef3e4, data_ov002_021ef3f9, 2);
+        ResMgr_ReleaseArchive(data_ov002_021ef3e4, data_ov002_021ef3f9, 2);
     }
     self->unk_4f = 0;
     TaskBase_dtor(self);
@@ -131,7 +131,7 @@ Task021ef530 *Ov002TaskVt_021ef530_DtorDelete(Task021ef530 *self) {
     return self;
 }
 
-BOOL func_ov002_021cf858(Task021ef530 *self) {
+BOOL Task021ef530_TryReleaseCurrent(Task021ef530 *self) {
     if (self->vfunc_54() != 0) {
         func_ov002_setCurrent021ccd40(NULL);
     }
@@ -147,7 +147,7 @@ Task021ef530 *Ov002TaskVt_021ef530_Dtor(Task021ef530 *self) {
 
 void *Ov002Vt_021ef410_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021ef410;
-    func_ov000_0216f168(self);
+    Buffer0216f144_Free(self);
     Heap_Free(self);
     return self;
 }
@@ -178,7 +178,7 @@ BOOL func_ov002_021cf990(void) {
 
 void *Ov002Vt_021ef410_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021ef410;
-    func_ov000_0216f168(self);
+    Buffer0216f144_Free(self);
     return self;
 }
 

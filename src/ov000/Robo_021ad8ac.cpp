@@ -21,22 +21,22 @@ extern char data_ov000_021cc708[];
 extern char data_ov000_021cc70b[];
 extern char data_ov000_021cc711[];
 extern char data_ov000_021cc717[];
-BOOL func_ov000_02190cb0(void *p, void *a, s32 b, s32 c);
-void func_ov000_021915a0(void *p);
-void func_ov000_02191008(void *a);
-BOOL func_ov000_02191120(void *a);
-void func_ov000_021911c8(void *a, s32 b);
-BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+BOOL Model0218fe1c_SetAnim(void *p, void *a, s32 b, s32 c);
+void Model0218fe1c_SetLoop(void *p);
+void Model0218fe1c_StopAnim(void *a);
+BOOL Model0218fe1c_IsAnimDone(void *a);
+void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
+BOOL History_SetState(void *p, s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
-s32 func_02049afc(void *mgr, s32 id);
+s32 SndMgr_StartSeqArc(void *mgr, s32 id);
 void SndMgr_StopSeqArc(void *mgr, s32 id);
-void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
-void *func_0204a028(void *mgr, s32 id, void *pos, s32 a);
+void *SndMgr_PlayAt(void *mgr, s32 id, void *pos, s32 a);
+void *SndMgr_PlayAtPitch(void *mgr, s32 id, void *pos, s32 a);
 void func_02062790(u16 a);
 void Actor_Move(Actor *self, s32 a);
-void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *v, s32 f, s32 g, s32 h, s32 i, s32 j);
-void func_ov000_021b1fac(Robo021ca458 *self, s32 a, s32 b);
+void Body_Update(void *a, s32 b, s32 c, s32 d);
+BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 e, void *v, s32 f, s32 g, s32 h, s32 i, s32 j);
+void Robo021ca458_Move(Robo021ca458 *self, s32 a, s32 b);
 s32 Ov003_SurfaceSoundId(u32 a);
 
 static inline BOOL GBusy_021ad8ac(FieldState *g) {
@@ -59,7 +59,7 @@ static inline BOOL GIdle_021ad8ac(void) {
 
 static inline void Kill_021ad8ac(Robo021ca458 *self) {
     if (self->unk_998 != NULL) {
-        func_ov000_02191008(self->unk_998);
+        Model0218fe1c_StopAnim(self->unk_998);
     }
     if (self->seSlot >= 0) {
         SndMgr_StopSeqArc(data_02097e4c, self->seSlot);
@@ -87,7 +87,7 @@ static inline void StopSnd_021ad8ac(Robo021ca458 *self) {
 
 static inline void StartSnd_021ad8ac(Robo021ca458 *self) {
     if (self->seSlot < 0) {
-        self->seSlot = func_02049afc(data_02097e4c, 0x33);
+        self->seSlot = SndMgr_StartSeqArc(data_02097e4c, 0x33);
     }
 }
 
@@ -98,11 +98,11 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
 
     switch (self->fsm->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov000_021cc6e4, 0x200, 1);
-        func_ov000_021915a0(self->model);
-        func_ov000_02190cb0(self->unk_998, data_ov000_021cc6ea, 0x1000, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov000_021cc6e4, 0x200, 1);
+        Model0218fe1c_SetLoop(self->model);
+        Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc6ea, 0x1000, 0);
         if ((self->padCur & 2) && self->unk_9ac != 0 && self->seSlot < 0) {
-            self->seSlot = func_02049afc(data_02097e4c, 0x33);
+            self->seSlot = SndMgr_StartSeqArc(data_02097e4c, 0x33);
         }
         if (self->velY >= 0) {
             self->velY = 0;
@@ -124,7 +124,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
                 p.x = m->check.x;
                 p.y = m->check.y;
                 p.z = m->check.z;
-                func_02065f88(0x12f, &p)->SetScaleAll(0x800);
+                Effect_SpawnId(0x12f, &p)->SetScaleAll(0x800);
             }
         }
         func_02062790(1);
@@ -135,10 +135,10 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             self->friction = 0;
             self->velY = 0;
             self->gravity = 0;
-            func_ov000_02190cb0(self->model, data_ov000_021cc6e4, 0xe4, 0);
-            func_ov000_021915a0(self->model);
-            func_ov000_02190cb0(self->unk_998, data_ov000_021cc6ed, 0x1000, 0);
-            func_ov000_021915a0(self->unk_998);
+            Model0218fe1c_SetAnim(self->model, data_ov000_021cc6e4, 0xe4, 0);
+            Model0218fe1c_SetLoop(self->model);
+            Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc6ed, 0x1000, 0);
+            Model0218fe1c_SetLoop(self->unk_998);
             self->unk_9a8 = func_01ffc128(0xc000, self->unk_9a8, 0x2cd, 1, 0x8000);
             self->unk_9aa = func_01ffc128(0, self->unk_9aa, 0x2cd, 1, 0x8000);
             StopSnd_021ad8ac(self);
@@ -211,14 +211,14 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
                         break;
                     }
                     if (anim != NULL) {
-                        func_ov000_02190cb0(self->model, anim, 0xcd, 0);
+                        Model0218fe1c_SetAnim(self->model, anim, 0xcd, 0);
                     }
                 } else {
-                    func_ov000_02190cb0(self->model, data_ov000_021cc6e4, 0xe4, 0);
-                    func_ov000_021915a0(self->model);
+                    Model0218fe1c_SetAnim(self->model, data_ov000_021cc6e4, 0xe4, 0);
+                    Model0218fe1c_SetLoop(self->model);
                 }
                 if ((self->padTrig & 2) || self->seSlot < 0) {
-                    func_ov000_02190cb0(self->unk_998, data_ov000_021cc6ea, 0x1000, 0);
+                    Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc6ea, 0x1000, 0);
                     StartSnd_021ad8ac(self);
                     {
             ActorSub48 *m = self->hit;
@@ -227,13 +227,13 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
                 p.x = m->check.x;
                 p.y = m->check.y;
                 p.z = m->check.z;
-                func_02065f88(0x12f, &p)->SetScaleAll(0x800);
+                Effect_SpawnId(0x12f, &p)->SetScaleAll(0x800);
             }
         }
-                    func_ov000_0219aae8(self, self, 5, 0x11, 0x20, NULL, 0, 0x1000, 0, 0x64, 0x1000);
-                } else if (func_ov000_02191120(self->unk_998)) {
-                    func_ov000_02190cb0(self->unk_998, data_ov000_021cc6ed, 0x1000, 0);
-                    func_ov000_021915a0(self->unk_998);
+                    Hit_ApplyInArea(self, self, 5, 0x11, 0x20, NULL, 0, 0x1000, 0, 0x64, 0x1000);
+                } else if (Model0218fe1c_IsAnimDone(self->unk_998)) {
+                    Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc6ed, 0x1000, 0);
+                    Model0218fe1c_SetLoop(self->unk_998);
                 }
                 self->unk_9a8 = func_01ffc128(0xc000, self->unk_9a8, 0x2cd, 1, 0x8000);
                 self->unk_9aa = func_01ffc128(rot, self->unk_9aa, 0x2cd, 1, 0x8000);
@@ -246,9 +246,9 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
                     func_02062790(0);
                     data_ov000_021ccd54->stageFlags = 1;
                 }
-                func_ov000_02190cb0(self->model, data_ov000_021cc636, 0xcd, 0);
-                func_ov000_021911c8(self->model, 0x800);
-                func_ov000_02190cb0(self->unk_998, data_ov000_021cc708, 0x1000, 0);
+                Model0218fe1c_SetAnim(self->model, data_ov000_021cc636, 0xcd, 0);
+                Model0218fe1c_SetAnimSpeed(self->model, 0x800);
+                Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc708, 0x1000, 0);
                 self->gravity += 2;
                 if (self->gravity > 0x14) {
                     self->gravity = 0x14;
@@ -259,12 +259,12 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
                 if (self->pos.y - self->unk_afc.y < -0x2d000) {
                     Kill_021ad8ac(self);
                     self->unk_b24_18 = 1;
-                    func_ov000_02198360(self->fsm, 4, 0);
+                    History_SetState(self->fsm, 4, 0);
                 }
             }
         }
         Actor_Move(self, 0);
-        func_ov000_021987b8(self->hit, 1, 0, 0);
+        Body_Update(self->hit, 1, 0, 0);
         if (self->unk_92 != 0) {
             self->unk_92--;
         }
@@ -292,22 +292,22 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
         cam->unk_da_0 = 1;
         if (self->hit->unk_50 & 0x20000000) {
             s32 r;
-            func_ov000_02190cb0(self->model, data_ov000_021cc630, 0x1000, 0);
+            Model0218fe1c_SetAnim(self->model, data_ov000_021cc630, 0x1000, 0);
             Kill_021ad8ac(self);
-            func_02049f44(data_02097e4c, 8, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 8, &self->pos, 0);
             r = Ov003_SurfaceSoundId(self->hit->unk_50);
             if (r >= 0) {
-                func_0204a028(data_02097e4c, r, &self->pos, -5);
+                SndMgr_PlayAtPitch(data_02097e4c, r, &self->pos, -5);
                 if ((self->hit->unk_50 & 0xf0f0f0) == 0xe0e000) {
                     VecFx32 p;
                     p.x = self->pos.x;
                     p.y = self->pos.y;
                     p.z = self->pos.z;
                     p.y += 0xccd;
-                    func_02065f88(0x2bc, &p);
-                    func_02065f88(0x2bd, &p)->SetScaleAll(0x1800);
+                    Effect_SpawnId(0x2bc, &p);
+                    Effect_SpawnId(0x2bd, &p)->SetScaleAll(0x1800);
                 } else {
-                    func_02065f88(0x12f, &self->pos)->SetScaleAll(0x800);
+                    Effect_SpawnId(0x12f, &self->pos)->SetScaleAll(0x800);
                 }
             }
             self->fsm->st++;
@@ -326,7 +326,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
         self->moveYaw = FX_Atan2(self->hit->unk_80, self->hit->unk_88);
         if (self->velY >= 0) {
             s32 a0;
-            func_02049f44(data_02097e4c, 0x7c, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x7c, &self->pos, 0);
             self->unk_92 = 8;
             a0 = self->velY;
             if (a0 < 0) {
@@ -341,7 +341,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
     }
     case 2: {
         ActorSub40 *st;
-        func_ov000_021b1fac(self, 1, 1);
+        Robo021ca458_Move(self, 1, 1);
         self->unk_9a8 = func_01ffc128(0, self->unk_9a8, 0x800, 1, 0x8000);
         self->unk_9aa = func_01ffc128(0, self->unk_9aa, 0x59a, 1, 0x8000);
         st = self->fsm;
@@ -350,10 +350,10 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             return;
         }
         self->fsm->timer = 6;
-        if (!func_ov000_02191120(self->model) && ((s64)self->fsm->flags) == 0) {
+        if (!Model0218fe1c_IsAnimDone(self->model) && ((s64)self->fsm->flags) == 0) {
             return;
         }
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         self->unk_9a6 = 0;
         self->unk_9a8 = 0;
         self->unk_9aa = 0;
@@ -362,15 +362,15 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
     case 10: {
         EffectObj *e;
         self->unk_b22_0 = 3;
-        func_ov000_02190cb0(self->model, data_ov000_021cc70b, 0x200, 1);
-        func_ov000_021915a0(self->model);
-        func_ov000_02190cb0(self->unk_998, data_ov000_021cc6ea, 0x1000, 0);
-        func_02049f44(data_02097e4c, 0x32, &self->pos, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov000_021cc70b, 0x200, 1);
+        Model0218fe1c_SetLoop(self->model);
+        Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc6ea, 0x1000, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x32, &self->pos, 0);
         StartSnd_021ad8ac(self);
-        e = func_02065f88(0x4b0, &self->pos);
+        e = Effect_SpawnId(0x4b0, &self->pos);
         self->unk_b40 = e->id;
         e->SetRot(&self->rot);
-        func_02065f88(0x68, &self->pos)->SetRotXYZ(0x4000, self->rot_y, 0);
+        Effect_SpawnId(0x68, &self->pos)->SetRotXYZ(0x4000, self->rot_y, 0);
         self->unk_9a6 = 0;
         self->unk_9a8 = 0;
         self->unk_9aa = 0;
@@ -390,10 +390,10 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             self->gravity = 0;
             self->rot_x = func_01ffc128(0, self->rot_x, 0x200, 1, 0x8000);
             self->rot_z = func_01ffc128(0, self->rot_z, 0x266, 1, 0x8000);
-            func_ov000_02190cb0(self->model, data_ov000_021cc70b, 0x200, 0);
-            func_ov000_021915a0(self->model);
-            func_ov000_02190cb0(self->unk_998, data_ov000_021cc6ed, 0x1000, 0);
-            func_ov000_021915a0(self->unk_998);
+            Model0218fe1c_SetAnim(self->model, data_ov000_021cc70b, 0x200, 0);
+            Model0218fe1c_SetLoop(self->model);
+            Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc6ed, 0x1000, 0);
+            Model0218fe1c_SetLoop(self->unk_998);
             StopSnd_021ad8ac(self);
             self->fsm->st++;
             return;
@@ -403,7 +403,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
         } else {
             self->unk_9ac = 0;
         }
-        if (!func_ov000_02191120(self->model)) {
+        if (!Model0218fe1c_IsAnimDone(self->model)) {
             s32 tgt = data_0214a424->bits18.mode == 1 ? 0x51f : 0x4cd;
             self->speed += LO_FX_MUL(tgt - self->speed, 0x200);
             self->rot_x = func_01ffc128(0, self->rot_x, 0x266, 1, 0x8000);
@@ -424,13 +424,13 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
                 self->unk_b24_9 = 0;
                 anim = data_ov000_021cc717;
             }
-            func_ov000_02190cb0(self->model, anim, 0x800, 1);
-            func_ov000_02190cb0(self->unk_998, data_ov000_021cc6ea, 0x1000, 0);
+            Model0218fe1c_SetAnim(self->model, anim, 0x800, 1);
+            Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc6ea, 0x1000, 0);
             self->speed = data_0214a424->bits18.mode == 1 ? 0xd1f : 0xccd;
             self->unk_9a0 = 0;
             self->unk_9a2 = 0;
             self->unk_9a4 = 0;
-            e = func_02065f88(0x4b0, &self->pos);
+            e = Effect_SpawnId(0x4b0, &self->pos);
             self->unk_b40 = e->id;
             e->SetRot(&self->rot);
         } else if ((self->padCur & 2) && self->unk_9ac != 0) {
@@ -442,8 +442,8 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             s32 d;
             tgt = 0;
             self->unk_b22_0 = 3;
-            func_ov000_02190cb0(self->model, data_ov000_021cc70b, 0x200, 0);
-            func_ov000_021915a0(self->model);
+            Model0218fe1c_SetAnim(self->model, data_ov000_021cc70b, 0x200, 0);
+            Model0218fe1c_SetLoop(self->model);
             cur = cam->base.pitch;
             f = self->padCur;
             if (data_0214a424->bits18.flag10) {
@@ -495,7 +495,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             self->fsm->timer = 0;
         } else {
             self->unk_b22_0 = 3;
-            func_ov000_02190cb0(self->model, data_ov000_021cc70b, 0x200, 0);
+            Model0218fe1c_SetAnim(self->model, data_ov000_021cc70b, 0x200, 0);
             self->speed -= self->speed >> 5;
             self->velY += LO_FX_MUL(0x266 - self->velY, 0x414);
             self->rot_x = func_01ffc128(0xc000, self->rot_x, 0x200, 1, 0x8000);
@@ -506,14 +506,14 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
         if (st->timer > 0xc) {
             st->st = 0;
             StopSnd_021ad8ac(self);
-            func_02049f44(data_02097e4c, 0x35, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x35, &self->pos, 0);
         }
-        if (func_ov000_02191120(self->unk_998)) {
-            func_ov000_02190cb0(self->unk_998, data_ov000_021cc6ed, 0x1000, 0);
-            func_ov000_021915a0(self->unk_998);
+        if (Model0218fe1c_IsAnimDone(self->unk_998)) {
+            Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc6ed, 0x1000, 0);
+            Model0218fe1c_SetLoop(self->unk_998);
         }
         Actor_Move(self, 0);
-        func_ov000_021987b8(self->hit, 1, 0, 0);
+        Body_Update(self->hit, 1, 0, 0);
         if (self->unk_92 != 0) {
             self->unk_92--;
             return;
@@ -521,7 +521,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
         {
             u32 fl = self->hit->unk_50;
             if (fl & 0x20000000) {
-                func_02049f44(data_02097e4c, 0x7c, &self->pos, 0);
+                SndMgr_PlayAt(data_02097e4c, 0x7c, &self->pos, 0);
                 self->unk_92 = 8;
                 self->velY = 0x519;
                 self->speed = self->speed >> 1;
@@ -535,7 +535,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
         {
             u16 d;
             u16 h;
-            func_02049f44(data_02097e4c, 0x7c, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x7c, &self->pos, 0);
             self->unk_92 = 8;
             d = FX_Atan2(self->hit->unk_80, self->hit->unk_88) - self->moveYaw;
             if (d <= 0x8000) {

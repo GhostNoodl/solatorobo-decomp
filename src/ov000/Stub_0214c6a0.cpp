@@ -46,8 +46,8 @@ extern const u8 data_0208bbc8[];
 extern Shared02fe1534 data_02fe1534;
 
 void *Heap_Alloc(u32 size);
-void func_0204c7d0(void *obj);
-void func_02050f70(void *obj);
+void TextWin_Init(void *obj);
+void TwScene_Init(void *obj);
 
 static inline void Obj0214c6b4_SetParams(Obj0214c6b4 *obj, s32 a, s32 b) {
     obj->unk_b7c = a;
@@ -77,9 +77,9 @@ void func_ov000_0214c6b4(Obj0214c668 *self, s32 a, s32 b, s32 c) {
     obj = (Obj0214c6b4 *)Heap_Alloc(0xb80);
     if (obj != NULL) {
         obj->vtbl = data_0208ba70;
-        func_0204c7d0(obj);
+        TextWin_Init(obj);
         obj->vtbl = data_0208bbc8;
-        func_02050f70(obj);
+        TwScene_Init(obj);
     }
     self->unk_200 = obj;
     obj->unk_28 = 8;
@@ -93,8 +93,8 @@ void func_ov000_0214c750(Obj0214c668 *self) {
     self->unk_84 = 0;
     self->unk_88 = 0;
     self->unk_8c = 0;
-    func_0204c7d0(self->unk_90);
-    func_0204c7d0(self->unk_148);
+    TextWin_Init(self->unk_90);
+    TextWin_Init(self->unk_148);
     self->unk_200 = NULL;
     self->unk_204 = 0;
     self->unk_208 = data_02fe1534.unk_5a;

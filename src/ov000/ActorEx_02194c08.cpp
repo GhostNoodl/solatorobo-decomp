@@ -19,10 +19,10 @@ extern "C" {
 extern void *data_ov000_021ccd64;
 u8 *Target_Get(void *p);
 GroupNode *Group_FindNode(void *mgr, u16 id);
-u8 *func_0206fef8(u16 id);
-void func_ov000_02190758(void *a, void *b, s32 c);
-BOOL func_ov000_021903b4(void *a);
-void func_ov000_02191c24(void *a, void *b);
+u8 *Tbl_FindEntry_0206fef8(u16 id);
+void Obj02190758_SetRot(void *a, void *b, s32 c);
+BOOL Model021903b4_Draw(void *a);
+void Shadow_Draw(void *a, void *b);
 void func_ov000_02191ec4(void *a, s32 b, u32 c);
 s32 FX_Div(s32 a, s32 b);
 
@@ -64,7 +64,7 @@ static inline s32 Fade02194c08(s32 dist, GroupNode *node) {
     return r;
 }
 
-BOOL func_ov000_02194c08(ActorEx *self) {
+BOOL ActorEx_Draw(ActorEx *self) {
     BOOL ret;
     u8 *p;
     u8 *q;
@@ -110,7 +110,7 @@ BOOL func_ov000_02194c08(ActorEx *self) {
             s->trans.x = self->pos.x;
             s->trans.y = self->pos.y;
             s->trans.z = self->pos.z;
-            func_ov000_02190758(((u8 *)self->model), (u8 *)self + 0x7c, 0);
+            Obj02190758_SetRot(((u8 *)self->model), (u8 *)self + 0x7c, 0);
         }
         self->unk_93_0 = 0;
         alpha = 0x1f;
@@ -139,18 +139,18 @@ BOOL func_ov000_02194c08(ActorEx *self) {
             }
         }
         if (alpha == 0x1f) {
-            ret = func_ov000_021903b4(((u8 *)self->model));
+            ret = Model021903b4_Draw(((u8 *)self->model));
         } else if (alpha != 0) {
             u8 old = self->model->alpha;
             if (old > alpha) {
                 self->model->alpha = alpha;
             }
-            ret = func_ov000_021903b4(((u8 *)self->model));
+            ret = Model021903b4_Draw(((u8 *)self->model));
             self->model->alpha = old;
         }
     }
     if (ret && self->unk_3c != NULL) {
-        u8 *info = func_0206fef8(self->kind);
+        u8 *info = Tbl_FindEntry_0206fef8(self->kind);
         ActorSub48 *o = self->hit;
         u8 *t = Target_Get(((u8 *)self->targetObj));
         if (t != NULL) {
@@ -179,12 +179,12 @@ BOOL func_ov000_02194c08(ActorEx *self) {
                 break;
             }
             func_ov000_02191ec4(self->unk_3c, m, o->unk_54);
-            func_ov000_02191c24(self->unk_3c, (u8 *)self + 0x70);
+            Shadow_Draw(self->unk_3c, (u8 *)self + 0x70);
         }
     }
     if (ret && self->unk_5c != NULL) {
         if (GIdle02194c08() && !GHasD4_02194c08()) {
-            func_ov000_021bd7a0(self->unk_5c);
+            ActorMarker_Draw(self->unk_5c);
         }
     }
     return ret;

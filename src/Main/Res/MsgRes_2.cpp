@@ -12,7 +12,7 @@ extern const char data_0208b9e6[];
 
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *ptr);
-extern void func_0206e900(char *dst, const char *src);
+extern void LangData_LocalizePath(char *dst, const char *src);
 
 static inline void MsgRes_Reset(MsgRes *res) {
     res->type = 0;
@@ -21,21 +21,21 @@ static inline void MsgRes_Reset(MsgRes *res) {
     res->strings = NULL;
 }
 
-void func_0204bfcc(MsgRes *res);
+void MsgRes_Reset_0204bfcc(MsgRes *res);
 
 static inline void MsgRes_OpenFile(MsgRes *res, const char *arcName, const char *name) {
     char arc[0x20];
     char file[0x20];
-    func_0206e900(arc, arcName);
-    func_0206e900(file, name);
+    LangData_LocalizePath(arc, arcName);
+    LangData_LocalizePath(file, name);
     res->Open(arc, file);
 }
 
-void func_0204bfe4(MsgRes *res, const char *arcName, const char *name);
+void MsgRes_OpenLocalized(MsgRes *res, const char *arcName, const char *name);
 
-BOOL func_0204c030(MsgRes *res);
+BOOL MsgRes_Bind(MsgRes *res);
 
-u32 func_0204c08c(MsgRes *res, s32 idx, char **out, s32 max);
+u32 MsgRes_GetLines(MsgRes *res, s32 idx, char **out, s32 max);
 
 char *MsgRes_GetString(MsgRes *res, s32 idx) {
     return res->strings + (res->entries[idx] & ~0xff000000);
@@ -46,7 +46,7 @@ BOOL func_0204c100(void) {
 }
 
 BOOL func_0204c120(void) {
-    return func_0204c030(MSG_RES);
+    return MsgRes_Bind(MSG_RES);
 }
 
 #pragma force_active on

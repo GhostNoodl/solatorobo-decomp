@@ -23,7 +23,7 @@ extern const VecFx32 data_02092a50;
 extern const VecFx32 data_02092a38;
 extern const Ov011PathEnt data_ov011_022076a0[];
 extern u8 data_ov011_02207598[];
-Actor *func_ov000_0219be1c(s32 kind, VecFx32 *pos, Ov011Rot *rot, u16 a, u16 b);
+Actor *Actor_SpawnKind(s32 kind, VecFx32 *pos, Ov011Rot *rot, u16 a, u16 b);
 
 void Ov011Act7e50_StateIdle(Ov011Act7e50 *self) {
     VecFx32 d;
@@ -59,7 +59,7 @@ void Ov011Act7e50_StateIdle(Ov011Act7e50 *self) {
         {
             u16 t = self->fsm->timer;
             if (t == 10 || t == 0x19 || t == 0x28) {
-                Robo021ca458 *pl = (Robo021ca458 *)func_ov000_0219bf90();
+                Robo021ca458 *pl = (Robo021ca458 *)ActorMgr_FindPlayer();
                 if (pl != NULL) {
                     Actor *o;
                     v.x = pl->unk_af0.x;
@@ -73,7 +73,7 @@ void Ov011Act7e50_StateIdle(Ov011Act7e50 *self) {
                     r.x = FX_Atan(-v.y);
                     r.y = FX_Atan2(v.x, v.z);
                     r.z = 0;
-                    o = func_ov000_0219be1c(0x4805, &self->unk_f0, &r, self->id, pl->id);
+                    o = Actor_SpawnKind(0x4805, &self->unk_f0, &r, self->id, pl->id);
                     if (o != NULL) {
                         o->unk_60 = data_ov011_02207598;
                     }

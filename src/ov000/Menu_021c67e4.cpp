@@ -76,7 +76,7 @@ struct Obj021c67e4 : public VObj {
 extern "C" {
 
 extern void *data_02097e4c;
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 
 static inline Node021c67e4 *At021c67e4(Obj021c67e4 *self, s32 i) {
     Node021c67e4 *n;
@@ -154,7 +154,7 @@ static inline void Body(Obj021c67e4 *self) {
     }
     if (cur) {
         Node021c67e4 *node;
-        func_02049a48(data_02097e4c, 0x1d, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1d, -1, -1, -1);
         node = At021c67e4(self, self->index);
         self->cur = node;
         if (node != NULL) {
@@ -234,7 +234,7 @@ void func_ov000_021c69e4(Obj021c67e4 *self) {
 }
 
 extern s32 data_ov000_021cc994;
-void func_ov000_0215eab4(Cursor021c6b28 *p);
+void Obj0215eab4_Draw(Cursor021c6b28 *p);
 void func_ov000_021c6d64(Obj021c67e4 *self, s32 a, VecFx32 *pos, s32 b);
 
 static inline Node021c67e4 *At6b28(Obj021c67e4 *self, s32 i) {
@@ -289,7 +289,7 @@ void func_ov000_021c6b28(Obj021c67e4 *self, s32 a, VecFx32 *pos, s32 b) {
         c->x = x;
         c->y = y;
         c->z = z + 0x20;
-        func_ov000_0215eab4(self->cursor);
+        Obj0215eab4_Draw(self->cursor);
         self->arrow->vfunc_20(((self->width - self->arrow->width) >> 1) + (x >> 12), (y >> 12) + 2);
         self->arrow->z = z + 0x20;
         self->arrow->vfunc_90();

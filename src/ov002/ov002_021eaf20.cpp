@@ -22,11 +22,11 @@ void func_ov002_021e9cec(void *dst, u32 size, void *src, int mode, u8 idx);
 
 void func_ov002_021e9d7c(void *dst, u32 size, void *src, int mode, u8 idx);
 
-Ov002Obj *func_ov002_021e9a50(void *a, void *b);
+Ov002Obj *Ov002Obj021f07ac_New(void *a, void *b);
 
-Ov002Obj *func_ov002_021e9bd8(void *a, void *b);
+Ov002Obj *Ov002Obj021f06bc_New(void *a, void *b);
 
-Ov002Obj *func_ov002_021e9478(s32 a, s32 b, s32 c, s32 d, u16 e, s32 mode, u8 f, u8 g);
+Ov002Obj *Ov002Obj021f0784_New(s32 a, s32 b, s32 c, s32 d, u16 e, s32 mode, u8 f, u8 g);
 
 typedef struct Hdr021eaf20 {
     s32 count;
@@ -70,28 +70,28 @@ void func_ov002_021eaf20(Ov002StageFile *self) {
     stride = hdr.stride;
     for (i = 0; i < n; i++) {
         MI_CpuCopy8(src, &rec, 0x1c);
-        func_ov002_021e9478(rec.a, rec.b, rec.c, rec.d, rec.e, rec.mode, rec.f, rec.g);
+        Ov002Obj021f0784_New(rec.a, rec.b, rec.c, rec.d, rec.e, rec.mode, rec.f, rec.g);
         src += stride;
     }
     func_ov002_021eb7c0(self);
     func_ov002_021eb870(self);
     func_ov002_021e9cec(bufA, 0x20, data_ov002_021f0d00, 1, ((u8 (*)(void))LangData_GetLang)());
     func_ov002_021e9d7c(bufB, 0x20, self->unk_04, 1, ((u8 (*)(void))LangData_GetLang)());
-    func_ov002_021e9bd8(bufA, bufB);
+    Ov002Obj021f06bc_New(bufA, bufB);
     func_ov002_021e9cec(bufC, 0x20, data_ov002_021f0d0f, 2, ((u8 (*)(void))LangData_GetLang)());
     func_ov002_021e9d7c(bufD, 0x20, self->unk_04, 2, ((u8 (*)(void))LangData_GetLang)());
-    func_ov002_021e9a50(bufC, bufD);
+    Ov002Obj021f07ac_New(bufC, bufD);
     MI_CpuCopy8(self->data + 0xc, &end, 4);
     func_ov002_021e9b28(end);
 }
 
 void *Heap_AllocArray(u32 size);
 
-Ov002Obj *func_ov002_021e97e8(u8 *a, u8 *b);
+Ov002Obj *Ov002Cam021f07fc_New(u8 *a, u8 *b);
 
-Ov002Obj *func_ov002_021e95c4(u8 *a, u8 *b);
+Ov002Obj *Ov002Cam021f0828_New(u8 *a, u8 *b);
 
-void func_ov002_021e772c(Ov002Cam021f0828 *self, s32 deg);
+void Ov002Cam021f0828_SetFovy(Ov002Cam021f0828 *self, s32 deg);
 
 
 typedef struct Hdr021eb0f8 {
@@ -131,19 +131,19 @@ void func_ov002_021eb0f8(Ov002StageFile *self) {
         MI_CpuCopy8(src, &rec, 6);
         switch (rec.type) {
         case 0:
-            obj = func_ov002_021e97e8(NULL, NULL);
+            obj = Ov002Cam021f07fc_New(NULL, NULL);
             break;
         case 1:
-            obj = func_ov002_021e95c4(NULL, NULL);
-            func_ov002_021e772c((Ov002Cam021f0828 *)obj, 0x1e000);
+            obj = Ov002Cam021f0828_New(NULL, NULL);
+            Ov002Cam021f0828_SetFovy((Ov002Cam021f0828 *)obj, 0x1e000);
             break;
         case 2:
-            obj = func_ov002_021e95c4(NULL, NULL);
-            func_ov002_021e772c((Ov002Cam021f0828 *)obj, 0x28000);
+            obj = Ov002Cam021f0828_New(NULL, NULL);
+            Ov002Cam021f0828_SetFovy((Ov002Cam021f0828 *)obj, 0x28000);
             break;
         case 3:
-            obj = func_ov002_021e95c4(NULL, NULL);
-            func_ov002_021e772c((Ov002Cam021f0828 *)obj, 0xf000);
+            obj = Ov002Cam021f0828_New(NULL, NULL);
+            Ov002Cam021f0828_SetFovy((Ov002Cam021f0828 *)obj, 0xf000);
             break;
         }
         ((Ov002Cam021f0854 *)obj)->unk_4c = rec.id;
@@ -153,7 +153,7 @@ void func_ov002_021eb0f8(Ov002StageFile *self) {
             Ov002Obj021f075c *q = self->unk_48[k];
             if (rec.id == q->unk_5c) {
                 q->owner = obj;
-                func_ov002_021e4dac(obj, self->unk_48[k]);
+                Ov002Obj_AddChild(obj, self->unk_48[k]);
             }
         }
         tbl[i].obj = obj;
@@ -166,7 +166,7 @@ void func_ov002_021eb0f8(Ov002StageFile *self) {
         if (par >= 0) {
             Ov002Obj *po = tbl[par].obj;
             o->owner = po;
-            func_ov002_021e4dac(po, o);
+            Ov002Obj_AddChild(po, o);
         }
     }
     Heap_Free(tbl);
@@ -254,7 +254,7 @@ void func_ov002_021eb298(Ov002StageFile *self) {
     }
 }
 
-void func_ov002_021e50a8(Ov002Obj021f07d4 *self, Ov002ObjLink *src);
+void Ov002Obj021f07d4_AddLink(Ov002Obj021f07d4 *self, Ov002ObjLink *src);
 
 typedef struct Hdr021eb448 {
     s32 count;
@@ -299,7 +299,7 @@ void func_ov002_021eb448(Ov002StageFile *self) {
         s32 m2;
         s32 k;
         MI_CpuCopy8(src, &rec, 0x18);
-        obj = (Ov002Obj021f07d4 *)func_ov002_021e91c8(rec.a, rec.b, rec.c, false, 0);
+        obj = (Ov002Obj021f07d4 *)Ov002Obj021f07d4_New(rec.a, rec.b, rec.c, false, 0);
         obj->unk_4c = rec.id;
         switch (rec.kind) {
         case 0:
@@ -349,13 +349,13 @@ void func_ov002_021eb448(Ov002StageFile *self) {
         for (q = 0; q < self->linkCount; q++) {
             Ov002ObjLink *l = &self->links[q];
             if (l->id == obj->unk_4c) {
-                func_ov002_021e50a8(obj, l);
+                Ov002Obj021f07d4_AddLink(obj, l);
             }
         }
         m = self->unk_54;
         for (j = 0; j < m; j++) {
             if (rec.id == self->unk_44[j]->unk_5c) {
-                func_ov002_021e4dac(obj, self->unk_44[j]);
+                Ov002Obj_AddChild(obj, self->unk_44[j]);
                 self->unk_44[j]->owner = obj;
                 self->unk_44[j]->unk_08 = obj->unk_08;
             }
@@ -363,7 +363,7 @@ void func_ov002_021eb448(Ov002StageFile *self) {
         m2 = self->unk_5c;
         for (k = 0; k < m2; k++) {
             if (rec.id == self->unk_4c[k]->unk_5c) {
-                func_ov002_021e4dac(obj, self->unk_4c[k]);
+                Ov002Obj_AddChild(obj, self->unk_4c[k]);
                 self->unk_4c[k]->owner = obj;
                 self->unk_4c[k]->unk_08 = obj->unk_08;
             }

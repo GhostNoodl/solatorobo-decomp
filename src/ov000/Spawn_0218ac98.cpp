@@ -80,7 +80,7 @@ void func_ov000_0218adf0(GroupNode *self) {
             Actor *sp;
             pos = self->pos;
             if (self->flags.toGround) {
-                func_ov000_0219a2f4(&pos, 0x5dc000, -0x1000);
+                Geom_SnapToGround(&pos, 0x5dc000, -0x1000);
             }
             sp = Group_SpawnActor(data_ov000_021ccd64, &self->spawn, &pos, &self->rot, self->id);
             if (sp != NULL) {

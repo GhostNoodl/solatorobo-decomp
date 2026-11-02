@@ -44,11 +44,11 @@ typedef struct {
 
 extern "C" {
 
-Cfg021b4c60 *func_0206fef8(u16 id);
+Cfg021b4c60 *Tbl_FindEntry_0206fef8(u16 id);
 void *func_020705fc(u16 id);
 void *Heap_Alloc(u32 size);
-void *func_ov000_0218fe1c(void *m);
-void func_ov000_0219badc(void *m, Res021b4c60 *res, Cfg021b4c60 *cfg);
+void *Model0218fe1c_Init(void *m);
+void Model0218fe1c_Setup(void *m, Res021b4c60 *res, Cfg021b4c60 *cfg);
 void HitMesh_Init(void *o);
 void HitMesh_SetRes(void *o, void *a);
 void HitMesh_SetScale(void *o, s32 a);
@@ -63,7 +63,7 @@ void Ov000ActVt_021cc7cc_Start(Obj021b4c60 *self) {
     MtxFx43 t;
     MtxFx43 m;
     MtxFx43 *pm = &m;
-    Cfg021b4c60 *cfg = func_0206fef8(self->unk_0e);
+    Cfg021b4c60 *cfg = Tbl_FindEntry_0206fef8(self->unk_0e);
     func_020705fc(self->unk_0e);
     self->unk_64 = cfg->unk_14 << 4;
     self->unk_68 = cfg->unk_16 << 4;
@@ -71,11 +71,11 @@ void Ov000ActVt_021cc7cc_Start(Obj021b4c60 *self) {
     if (cfg->b0) {
         u8 *mdl = (u8 *)Heap_Alloc(0xe8);
         if (mdl != NULL) {
-            mdl = (u8 *)func_ov000_0218fe1c(mdl);
+            mdl = (u8 *)Model0218fe1c_Init(mdl);
         }
         self->model = mdl;
         *(u16 *)(mdl + 0xb4) = self->unk_0c;
-        func_ov000_0219badc(self->model, self->res, cfg);
+        Model0218fe1c_Setup(self->model, self->res, cfg);
     }
     if (self->obj != NULL) {
         *(s32 *)(self->obj + 0x14) = self->unk_64 << 1;

@@ -18,10 +18,10 @@ extern "C" {
 extern Glb02162a58 NNS_G3dGlb;
 extern u8 data_02092844[];
 extern u8 data_02092800[];
-void func_ov000_02190758(void *m, void *p, s32 a);
-BOOL func_ov000_021903b4(void *m);
+void Obj02190758_SetRot(void *m, void *p, s32 a);
+BOOL Model021903b4_Draw(void *m);
 
-void func_ov000_02162a58(ModelViewer *self) {
+void ModelViewer_Draw(ModelViewer *self) {
     NNS_G3dGlb.camPos = self->eye;
     NNS_G3dGlb.camUp = self->up;
     NNS_G3dGlb.camTarget = self->at;
@@ -30,7 +30,7 @@ void func_ov000_02162a58(ModelViewer *self) {
     MIi_CpuCopyFast(&self->proj, data_02092800, 0x40);
     NNS_G3dGlb.flag &= ~0x50;
     self->model.trans = self->pos;
-    func_ov000_02190758(&self->model, self->rot, 0);
-    func_ov000_021903b4(&self->model);
+    Obj02190758_SetRot(&self->model, self->rot, 0);
+    Model021903b4_Draw(&self->model);
 }
 }

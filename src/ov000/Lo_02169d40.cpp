@@ -5,7 +5,7 @@ extern "C" {
 
 extern const s16 FX_SinCosTable_[];
 s32 FX_Div(s32 a, s32 b);
-u32 func_0204045c(void);
+u32 Rand_GetGlobal(void);
 
 void func_ov000_02169d40(Lo021cb798 *self) {
     s32 s = self->unk_04;
@@ -37,7 +37,7 @@ void func_ov000_02169d40(Lo021cb798 *self) {
         return;
     }
     if (self->unk_ac & 1) {
-        self->unk_aa = func_0204045c();
+        self->unk_aa = Rand_GetGlobal();
     }
     self->unk_ac--;
 }

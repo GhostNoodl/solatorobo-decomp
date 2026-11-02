@@ -5,11 +5,11 @@ extern "C" {
 extern const u32 data_0208bf54[];
 extern const u32 data_0208be94[];
 extern const u32 data_0208bf14[];
-extern void func_0205a6e8(StageRes *res);
+extern void StageRes_CancelSlots(StageRes *res);
 
 StageRes *StageRes_DtorDelete(StageRes *res) {
     *(const u32 **)res = data_0208bf54;
-    func_0205a6e8(res);
+    StageRes_CancelSlots(res);
     *(const u32 **)res = data_0208b318;
     res->Unload();
     Heap_Free(res);
@@ -18,7 +18,7 @@ StageRes *StageRes_DtorDelete(StageRes *res) {
 
 StageRes *StageRes_Dtor(StageRes *res) {
     *(const u32 **)res = data_0208bf54;
-    func_0205a6e8(res);
+    StageRes_CancelSlots(res);
     *(const u32 **)res = data_0208b318;
     res->Unload();
     return res;

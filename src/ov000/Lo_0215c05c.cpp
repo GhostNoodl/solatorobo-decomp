@@ -8,8 +8,8 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern void *data_02149ef8;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-BOOL func_02054f10(void *p, s32 a);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+BOOL Model_IsReady(void *p, s32 a);
 u16 func_02061d54(u16 a);
 s32 MsgRes_GetString(void *p, s32 a);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);

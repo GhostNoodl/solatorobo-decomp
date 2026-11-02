@@ -17,12 +17,12 @@ extern void *data_ov000_021ccd44;
 extern u8 data_ov000_021c9b28[];
 void func_020708fc(s32 a, LoFadeP *out);
 void func_02070b98(s32 a, LoFadeP *out, s32 b, s32 c);
-BOOL func_02035bd4(LoFadeP *a, LoFadeP *b, s32 c);
+BOOL ResMgr_IsArchiveLoaded(LoFadeP *a, LoFadeP *b, s32 c);
 BOOL StageRes_IsAllLoaded(void *p);
 s32 func_ov000_02180838(void *a);
 void func_02041c5c(void *obj, void *value);
 void func_02041c18(void *obj, s32 value);
-u8 *func_0206ede8(u16 id);
+u8 *Param_GetEntry(u16 id);
 void func_ov000_021566c0(void *self, void *msg, s32 c, s32 d, u8 e, u8 f);
 void *func_ov000_02161bc4(void *self, s32 unused, void *g, u16 *count);
 
@@ -32,7 +32,7 @@ static inline BOOL LoFadeDone(void) {
     BOOL ret = TRUE;
     func_020708fc(0x1000, &a);
     func_02070b98(0x1000, &b, 1, 2);
-    if (!func_02035bd4(&a, &b, 2)) {
+    if (!ResMgr_IsArchiveLoaded(&a, &b, 2)) {
         ret = FALSE;
     }
     return ret;
@@ -60,7 +60,7 @@ void func_ov000_02161c14(Obj02161c14 *self, void *msg, s32 c, s32 d, u8 e, u8 f)
     }
     func_02041c5c(self->unk_b8, (void *)func_ov000_02161bc4);
     if (((u32)(LFLD(u16, msg, 6) << 4) >> 16) - 1 == 1) {
-        func_02041c18(self->unk_b8, *func_0206ede8(LFLD(u16, msg, 6)));
+        func_02041c18(self->unk_b8, *Param_GetEntry(LFLD(u16, msg, 6)));
     } else {
         func_02041c18(self->unk_b8, 0);
     }

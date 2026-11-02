@@ -11,7 +11,7 @@ void Ov009ActVt_02217390_StateFly(Ov009ActVt_02217390 *self) {
     if (self->hit->unk_54 & 0x20000000) {
         return;
     }
-    func_ov000_02198360(self->fsm, 0x15, 0);
+    History_SetState(self->fsm, 0x15, 0);
 }
 
 }
@@ -29,9 +29,9 @@ void Ov009ActVt_02217390_StateFly(Ov009ActVt_02217390 *self) {
 // cast), a direct call instead of Ov009_Blast, or the radius as Ov009_Blast's first argument changes nothing.
 extern "C" {
 
-extern void func_0203f364(ActorSub48 *p);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern u16 func_ov000_02199e94(void *p);
-extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, const VecFx32 *v, void *e, s32 f, s32 g, s16 h, s32 i);
+extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 mask, const VecFx32 *v, void *e, s32 f, s32 g, s16 h, s32 i);
 extern void func_ov000_0218996c(s32 a, s32 b);
 
 static inline u16 Ov009_Tick(ActorSub40 *s) {
@@ -44,7 +44,7 @@ static inline u16 Ov009_Ang(Ov009ActVt_02217390 *self) {
 }
 
 static inline void Ov009_Blast(Ov009ActVt_02217390 *self, u16 ang, const VecFx32 *v, s32 r) {
-    func_ov000_0219aae8(self, self, ang, 0x20, 0, v, 0, r, 0, 0x64, 0x1000);
+    Hit_ApplyInArea(self, self, ang, 0x20, 0, v, 0, r, 0, 0x64, 0x1000);
 }
 
 void Ov009ActVt_02217390_StateDie(Ov009ActVt_02217390 *self) {
@@ -59,12 +59,12 @@ void Ov009ActVt_02217390_StateDie(Ov009ActVt_02217390 *self) {
         s48 = self->hit;
         s48->unk_9a_0 = 0;
         s48->unk_9a_3 = 0;
-        func_0203f364(s48);
+        HitSphere_Unlink_0203f364(s48);
         s44 = self->unk_44;
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
         // Called through the variadic Ov009V view: the typed EffectObj calls (SetScaleAll, AddPos) score 17 / 15.
-        e = (Ov009V *)func_02065f88(3, &self->pos);
+        e = (Ov009V *)Effect_SpawnId(3, &self->pos);
         y = self->radius + self->unk_f0 * 8;
         e->v0c(y);
         v.x = 0;

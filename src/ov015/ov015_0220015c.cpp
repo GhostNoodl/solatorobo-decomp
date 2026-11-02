@@ -9,7 +9,7 @@ extern char data_ov015_022128d5[];
 void func_ov015_02207c30(Ov015Ship *p);
 BOOL func_ov015_022003ec(Ov015Obj34 *self);
 void Ov015Fish_SetNextState(Ov015Fish *self, s32 a, s32 b);
-void func_ov015_021fd00c(Ov015CamPair *self, s32 mode, const Ov015Vec *v);
+void Ov015CamPair_SetMode(Ov015CamPair *self, s32 mode, const Ov015Vec *v);
 
 void func_ov015_0220015c(Ov015Obj34 *self) {
     self->fx = NULL;
@@ -67,7 +67,7 @@ BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
             }
             func_ov015_02207c30(a);
             busy = TRUE;
-            func_ov015_021fd00c(c, busy, (const Ov015Vec *)&b->pos);
+            Ov015CamPair_SetMode(c, busy, (const Ov015Vec *)&b->pos);
             self->unk_0c += 0x1000;
         }
         if (!busy) {

@@ -24,17 +24,17 @@ struct ResHandle {
     /* 0x48 */ u8 unk_48;
 };
 
-extern ResNode *func_0203657c(ResMgr *mgr, const char *name, int type);
-extern void func_02036720(ResMgr *mgr, ResNode *node, BOOL force);
-extern ResNode *func_02036860(ResMgr *mgr, const char *name, const char *arcName, int type, u8 toFront);
-extern void func_02036b30(ResMgr *mgr, ResNode *node);
+extern ResNode *ResMgr_Find(ResMgr *mgr, const char *name, int type);
+extern void ResMgr_ReleaseNode(ResMgr *mgr, ResNode *node, BOOL force);
+extern ResNode *ResMgr_Request(ResMgr *mgr, const char *name, const char *arcName, int type, u8 toFront);
+extern void ResMgr_LoadNode(ResMgr *mgr, ResNode *node);
 extern void Sys_WaitVBlank(UnkSys *sys);
-extern void *func_02034b98(ResList *list, const char *name);
+extern void *ResList_FindType0(ResList *list, const char *name);
 extern void *func_02034cec(ResList *list, const char *name);
-extern void *func_02034e24(ResList *list, const char *name);
-extern void *func_02034ec0(ResList *list, const char *name);
-extern void *func_02034f5c(ResList *list, const char *name);
-extern void *func_02034ff8(ResList *list, const char *name);
+extern void *ResList_FindType3(ResList *list, const char *name);
+extern void *ResList_FindType4(ResList *list, const char *name);
+extern void *ResList_FindType5(ResList *list, const char *name);
+extern void *ResList_FindType6(ResList *list, const char *name);
 
 void func_02038504(ResHandle *handle) {
     handle->arcName[0] = '\0';
@@ -65,13 +65,13 @@ void func_02038520(ResHandle *handle) {
                 node = node->prev;
             }
             if (node != NULL) {
-                func_02036720(data_02097cdc, node, FALSE);
+                ResMgr_ReleaseNode(data_02097cdc, node, FALSE);
             }
         } else {
             ResMgr *mgr = data_02097cdc;
-            ResNode *node = func_0203657c(mgr, handle->name, type);
+            ResNode *node = ResMgr_Find(mgr, handle->name, type);
             if (node != NULL) {
-                func_02036720(mgr, node, FALSE);
+                ResMgr_ReleaseNode(mgr, node, FALSE);
             }
         }
     }
@@ -82,16 +82,16 @@ void func_02038520(ResHandle *handle) {
 #define RES_HANDLE_LOAD_SYNC(kind)                                          \
     {                                                                       \
         ResMgr *mgr = data_02097cdc;                                        \
-        ResNode *node = func_02036860(mgr, handle->name, NULL, kind, TRUE); \
+        ResNode *node = ResMgr_Request(mgr, handle->name, NULL, kind, TRUE); \
         if (node == NULL) {                                                 \
             return;                                                         \
         }                                                                   \
-        func_02036b30(mgr, node);                                           \
+        ResMgr_LoadNode(mgr, node);                                           \
         if (node->state == 7) {                                             \
             return;                                                         \
         }                                                                   \
         while (TRUE) {                                                      \
-            func_02036b30(mgr, node);                                       \
+            ResMgr_LoadNode(mgr, node);                                       \
             if (node->state == 5) {                                         \
                 return;                                                     \
             }                                                               \
@@ -124,18 +124,18 @@ void func_02038638(ResHandle *handle, const char *name) {
         RES_HANDLE_LOAD_SYNC(6);
         break;
     case 7: {
-        ResNode *node = func_02036860(data_02097cdc, handle->name, NULL, 7, TRUE);
+        ResNode *node = ResMgr_Request(data_02097cdc, handle->name, NULL, 7, TRUE);
         ResMgr *mgr;
         if (node == NULL) {
             return;
         }
         mgr = data_02097cdc;
-        func_02036b30(mgr, node);
+        ResMgr_LoadNode(mgr, node);
         if (node->state == 7) {
             return;
         }
         while (TRUE) {
-            func_02036b30(mgr, node);
+            ResMgr_LoadNode(mgr, node);
             if (node->state == 5) {
                 return;
             }
@@ -146,7 +146,7 @@ void func_02038638(ResHandle *handle, const char *name) {
 }
 
 static inline ResNode *ResHandle_LoadArchive(ResHandle *handle, const char *name, const char *arcName, int id, u8 toFront) {
-    ResNode *node = func_02036860(data_02097cdc, name, arcName, id, toFront);
+    ResNode *node = ResMgr_Request(data_02097cdc, name, arcName, id, toFront);
     if (node == NULL) {
         return node;
     }
@@ -165,7 +165,7 @@ void func_02038a10(ResHandle *handle, const char *arcName, const char *name) {
     STD_CopyString(handle->arcName, arcName);
     STD_CopyString(handle->name, name);
     id = handle->type;
-    node = func_02036860(data_02097cdc, handle->arcName, handle->name, id, TRUE);
+    node = ResMgr_Request(data_02097cdc, handle->arcName, handle->name, id, TRUE);
     if (node == NULL) {
         return;
     }
@@ -175,12 +175,12 @@ void func_02038a10(ResHandle *handle, const char *arcName, const char *name) {
         STD_CopyString(node->u.arc.name, handle->name);
     }
     mgr = data_02097cdc;
-    func_02036b30(mgr, node);
+    ResMgr_LoadNode(mgr, node);
     if (node->state == 7) {
         return;
     }
     while (TRUE) {
-        func_02036b30(mgr, node);
+        ResMgr_LoadNode(mgr, node);
         if (node->state == 5) {
             return;
         }
@@ -190,12 +190,12 @@ void func_02038a10(ResHandle *handle, const char *arcName, const char *name) {
 
 void func_02038b0c(ResHandle *handle, const char *name) {
     STD_CopyString(handle->name, name);
-    func_02036860(data_02097cdc, handle->name, NULL, handle->type, FALSE);
+    ResMgr_Request(data_02097cdc, handle->name, NULL, handle->type, FALSE);
 }
 
 void func_02038b48(ResHandle *handle, const char *name) {
     STD_CopyString(handle->name, name);
-    func_02036860(data_02097cdc, handle->name, NULL, handle->type, TRUE);
+    ResMgr_Request(data_02097cdc, handle->name, NULL, handle->type, TRUE);
 }
 
 void func_02038b88(ResHandle *handle, const char *arcName, const char *name) {
@@ -241,7 +241,7 @@ BOOL func_02038ca0(ResHandle *handle) {
         }
     } else {
         BOOL done2 = FALSE;
-        ResNode *node2 = func_0203657c(data_02097cdc, handle->name, handle->type);
+        ResNode *node2 = ResMgr_Find(data_02097cdc, handle->name, handle->type);
         if (node2 == NULL || node2->state == 5) {
             done2 = TRUE;
         }
@@ -286,7 +286,7 @@ BOOL func_02038ca0(ResHandle *handle) {
 #define RES_HANDLE_GET_DATA(kind)                                           \
     {                                                                       \
         void *result = NULL;                                                \
-        ResNode *node = func_0203657c(data_02097cdc, handle->name, kind);   \
+        ResNode *node = ResMgr_Find(data_02097cdc, handle->name, kind);   \
         if (node != NULL) {                                                 \
             result = node->u.data;                                          \
         }                                                                   \
@@ -300,19 +300,19 @@ void *func_02038dbc(ResHandle *handle) {
     if (handle->arcName[0] != '\0') {
         switch (handle->type) {
         case 0:
-            RES_HANDLE_GET_ARC_DATA(0, func_02034b98);
+            RES_HANDLE_GET_ARC_DATA(0, ResList_FindType0);
         case 1:
             RES_HANDLE_GET_ARC_DATA(1, func_02034cec);
         case 2:
-            RES_HANDLE_GET_ARC_DATA(2, func_02034d88);
+            RES_HANDLE_GET_ARC_DATA(2, ResList_FindType2);
         case 3:
-            RES_HANDLE_GET_ARC_DATA(3, func_02034e24);
+            RES_HANDLE_GET_ARC_DATA(3, ResList_FindType3);
         case 4:
-            RES_HANDLE_GET_ARC_DATA(4, func_02034ec0);
+            RES_HANDLE_GET_ARC_DATA(4, ResList_FindType4);
         case 5:
-            RES_HANDLE_GET_ARC_DATA(5, func_02034f5c);
+            RES_HANDLE_GET_ARC_DATA(5, ResList_FindType5);
         case 6:
-            RES_HANDLE_GET_ARC_DATA(6, func_02034ff8);
+            RES_HANDLE_GET_ARC_DATA(6, ResList_FindType6);
         }
     } else {
         switch (handle->type) {
@@ -332,7 +332,7 @@ void *func_02038dbc(ResHandle *handle) {
             RES_HANDLE_GET_DATA(6);
         case 7: {
             ResList *result = NULL;
-            ResNode *node = func_0203657c(data_02097cdc, handle->name, 7);
+            ResNode *node = ResMgr_Find(data_02097cdc, handle->name, 7);
             if (node != NULL) {
                 result = node->u.arc.list;
             }
@@ -354,7 +354,7 @@ typedef struct G3dTex {
 
 extern G3dTex *NNS_G3dGetTex(void *res);
 extern u32 Heap_Resize(void *ptr, u32 size);
-extern void *func_0203e458(int arg0, void *arg1, u32 arg2, u32 arg3, int arg4);
+extern void *Vram_QueueTransfer(int arg0, void *arg1, u32 arg2, u32 arg3, int arg4);
 
 void func_02039494(void *res) {
     G3dTex *tex = NNS_G3dGetTex(res);
@@ -371,7 +371,7 @@ void *func_020394cc(void *res, void *arg) {
     if (tex != NULL) {
         u32 size = tex->unk_0c << 3;
         if (size != 0) {
-            result = func_0203e458(0, arg, (u16)tex->unk_08 << 3, size, 0);
+            result = Vram_QueueTransfer(0, arg, (u16)tex->unk_08 << 3, size, 0);
         }
     }
     return result;
@@ -436,7 +436,7 @@ void Str_CopyStem(char *dst, const char *src, int len) {
 }
 
 // Returns the extension of a path, or the path itself if it has none.
-const char *func_02039644(const char *path) {
+const char *Path_FindExt(const char *path) {
     const char *p = path;
     if (*p == '\0') {
         return path;
@@ -450,7 +450,7 @@ const char *func_02039644(const char *path) {
 }
 
 // Returns the file name of a path.
-const char *func_02039674(const char *path) {
+const char *Path_SkipDir(const char *path) {
     const char *p = path;
     if (*p == '\0') {
         return path;

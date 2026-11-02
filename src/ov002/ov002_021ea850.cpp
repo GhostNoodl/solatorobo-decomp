@@ -6,7 +6,7 @@ void *Ov002Vt_021f070c_DtorDelete(Ov002Obj021f070c *self) {
     int i;
     *(VFunc **)self = data_ov002_021f070c;
     for (i = 0; i < 4; i++) {
-        EffectObj *o = func_020657b0(data_0214a420, ((u32 *)((u8 *)self + 0x50))[i]);
+        EffectObj *o = Effect_Find_020657b0(data_0214a420, ((u32 *)((u8 *)self + 0x50))[i]);
         void *saved;
         HEAP_PUSH(saved);
         if (o != NULL) {
@@ -26,7 +26,7 @@ void *Ov002Vt_021f070c_Dtor(Ov002Obj021f070c *self) {
     int i;
     *(VFunc **)self = data_ov002_021f070c;
     for (i = 0; i < 4; i++) {
-        EffectObj *o = func_020657b0(data_0214a420, ((u32 *)((u8 *)self + 0x50))[i]);
+        EffectObj *o = Effect_Find_020657b0(data_0214a420, ((u32 *)((u8 *)self + 0x50))[i]);
         void *saved;
         HEAP_PUSH(saved);
         if (o != NULL) {
@@ -43,7 +43,7 @@ void *Ov002Vt_021f070c_Dtor(Ov002Obj021f070c *self) {
 
 void *Ov002Vt_021f075c_DtorDelete(Ov002Obj021f075c *self) {
     *(VFunc **)self = data_ov002_021f075c;
-    func_ov002_021e5d88(self);
+    Ov002Obj021f075c_FreeAnims(self);
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
     Heap_Free(self);
@@ -55,7 +55,7 @@ void func_ov002_021eaaa4(void) {
 
 void *Ov002Vt_021f075c_Dtor(Ov002Obj021f075c *self) {
     *(VFunc **)self = data_ov002_021f075c;
-    func_ov002_021e5d88(self);
+    Ov002Obj021f075c_FreeAnims(self);
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
     return self;
@@ -63,7 +63,7 @@ void *Ov002Vt_021f075c_Dtor(Ov002Obj021f075c *self) {
 
 void *Ov002Vt_021f07d4_DtorDelete(Ov002Obj021f07d4 *self) {
     *(VFunc **)self = data_ov002_021f07d4;
-    func_ov002_021e51f8(self);
+    Ov002Obj021f07d4_Release(self);
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
     Heap_Free(self);
@@ -72,7 +72,7 @@ void *Ov002Vt_021f07d4_DtorDelete(Ov002Obj021f07d4 *self) {
 
 void *Ov002Vt_021f07d4_Dtor(Ov002Obj021f07d4 *self) {
     *(VFunc **)self = data_ov002_021f07d4;
-    func_ov002_021e51f8(self);
+    Ov002Obj021f07d4_Release(self);
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
     return self;
@@ -91,7 +91,7 @@ void *Ov002Vt_021f0684_DtorDelete(Ov002StageFile *self) {
     return self;
 }
 
-void func_ov002_021eacd0(Ov002StageFile *self) {
+void Ov002StageFile_Init(Ov002StageFile *self) {
     self->unk_04 = NULL;
     self->data = NULL;
     MIi_CpuClear32(0, (u8 *)self + 0x10, 0x30);

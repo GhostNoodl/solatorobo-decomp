@@ -43,8 +43,8 @@ static inline VObj *Ov015_NewTask1c(void) {
 }
 
 static inline void Ov015_Sounds(void) {
-    func_02049a48(data_02097e4c, 0x55, -1, -1, -1);
-    func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, 0x55, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
 }
 
 static inline s32 Ov015_Speed(Ov015FishState2c *self) {

@@ -14,7 +14,7 @@ extern "C" {
 void ov006_Label_Update(void *a);
 
 void ov006_Unk021e1af0_Update(ov006_Unk021e1af0 *self) {
-    if (!self->unk4 && self->unk28 != NULL && func_02054f10(self->unk28, 0xffff)) {
+    if (!self->unk4 && self->unk28 != NULL && Model_IsReady(self->unk28, 0xffff)) {
         self->unk4 = 1;
     }
     ov006_Slider_Update(self->unk24);

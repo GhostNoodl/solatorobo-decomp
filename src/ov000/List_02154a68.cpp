@@ -54,7 +54,7 @@ static inline s32 ListOwner_CalcSize(UiList *self) {
     return a + b + self->vfunc_38();
 }
 
-s32 func_ov000_02154638(UiList *self) {
+s32 UiList_GetHeight(UiList *self) {
     if (*(u32 *)((u8 *)self + 0xc) & 0x20000) {
         s32 ret;
         self->rows += 2;
@@ -72,8 +72,8 @@ void func_ov000_021546ec(UiList *self, const char *name, void *a, u32 b) {
     model = self->unk_b8;
     if (model != NULL) {
         if (model != NULL) {
-            func_02041558(model);
-            func_02041278(&model->pltt);
+            TexObj_Release(model);
+            PlttRes_Release(&model->pltt);
             Heap_Free(model);
         }
         self->unk_b8 = NULL;
@@ -81,17 +81,17 @@ void func_ov000_021546ec(UiList *self, const char *name, void *a, u32 b) {
     data_02097dd0->cur = saved;
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
-        func_02041218(&model->pltt);
-        func_02041440(model, (const char *)a, 0);
+        PlttRes_Init_02041218(&model->pltt);
+        TexObj_Init(model, (const char *)a, 0);
         STD_CopyString(model->name, name);
     }
     self->unk_b8 = model;
-    func_020417e0(self->unk_b8, func_02034d88(func_02035d5c(model->name), self->unk_b8->unk_04c));
+    TexObj_SetRes(self->unk_b8, ResList_FindType2(ResMgr_GetArcList(model->name), self->unk_b8->unk_04c));
     self->unk_b8->flags |= 2;
     if (b != 0xffff) {
-        func_02041d9c(self->unk_b8, 0, 0xffff);
+        TexObj_SelectImage(self->unk_b8, 0, 0xffff);
     } else {
-        func_02041d9c(self->unk_b8, 0, b);
+        TexObj_SelectImage(self->unk_b8, 0, b);
     }
 }
 
@@ -102,8 +102,8 @@ void func_ov000_021547e8(UiList *self, const char *name, void *a, void *b) {
     model = self->unk_bc;
     if (model != NULL) {
         if (model != NULL) {
-            func_02041558(model);
-            func_02041278(&model->pltt);
+            TexObj_Release(model);
+            PlttRes_Release(&model->pltt);
             Heap_Free(model);
         }
         self->unk_bc = NULL;
@@ -111,14 +111,14 @@ void func_ov000_021547e8(UiList *self, const char *name, void *a, void *b) {
     data_02097dd0->cur = saved;
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
-        func_02041218(&model->pltt);
-        func_02041440(model, (const char *)a, 0);
+        PlttRes_Init_02041218(&model->pltt);
+        TexObj_Init(model, (const char *)a, 0);
         STD_CopyString(model->name, name);
     }
     self->unk_bc = model;
-    func_020417e0(self->unk_bc, func_02034d88(func_02035d5c(model->name), self->unk_bc->unk_04c));
+    TexObj_SetRes(self->unk_bc, ResList_FindType2(ResMgr_GetArcList(model->name), self->unk_bc->unk_04c));
     self->unk_bc->flags |= 2;
-    func_02041d9c(self->unk_bc, 0, (int)b);
+    TexObj_SelectImage(self->unk_bc, 0, (int)b);
 }
 
 void func_ov000_021548cc(UiList *self, u32 value) {
@@ -191,31 +191,31 @@ void UiList_AddItem(UiList *self, const char *name, u16 id, u16 a, u32 b) {
     entry->prev = last;
 }
 
-void func_ov000_02154a68(UiList *self, u16 id, u16 a, u32 b) {
+void UiList_SetItemArgsById(UiList *self, u16 id, u16 a, u32 b) {
     UiListItem *entry = FindById(self, id);
     entry->unk_08 = a;
     entry->unk_0c = b;
 }
 
-void func_ov000_02154a98(UiList *self, const char *name, u16 a, u32 b) {
+void UiList_SetItemArgsByName(UiList *self, const char *name, u16 a, u32 b) {
     UiListItem *entry = FindByName(self, name);
     entry->unk_08 = a;
     entry->unk_0c = b;
 }
 
-void func_ov000_02154ae0(UiList *self, u16 id, u32 b, u16 a) {
+void UiList_SetItemArgsByIdRev(UiList *self, u16 id, u32 b, u16 a) {
     UiListItem *entry = FindById(self, id);
     entry->unk_0c = b;
     entry->unk_08 = a;
 }
 
-void func_ov000_02154b10(UiList *self, const char *name, u32 b, u16 a) {
+void UiList_SetItemArgsByNameRev(UiList *self, const char *name, u32 b, u16 a) {
     UiListItem *entry = FindByName(self, name);
     entry->unk_0c = b;
     entry->unk_08 = a;
 }
 
-UiListItem *func_ov000_02154b58(UiList *self, u16 id) {
+UiListItem *UiList_GetItemById(UiList *self, u16 id) {
     return FindById(self, id);
 }
 

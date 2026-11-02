@@ -10,7 +10,7 @@ Ov004V *data_ov004_021cf864;
 
 void *func_ov004_021ccda0(s32 a, s32 b) {
     Ov004V *o = data_ov004_021cf864;
-    u8 *x = (u8 *)func_ov000_0219bf90();
+    u8 *x = (u8 *)ActorMgr_FindPlayer();
     u32 v = (o->unk_16 |= 4);
     if (x != NULL) {
         v |= x[0x16];
@@ -29,7 +29,7 @@ void *func_ov004_021ccda0(s32 a, s32 b) {
 
 void *func_ov004_021ccdfc(s32 a, s32 b) {
     Ov004V *o = data_ov004_021cf864;
-    u8 *x = (u8 *)func_ov000_0219bf90();
+    u8 *x = (u8 *)ActorMgr_FindPlayer();
     u32 v = (o->unk_16 = o->unk_16 & ~4);
     if (x != NULL) {
         v &= x[0x16];
@@ -94,26 +94,26 @@ void func_ov004_021ccf10(void) {
 }
 
 void *Ov004ActVt_021cf808_DtorDelete(void *p) {
-    func_ov000_0218c928(p);
+    Actor_DtorBase(p);
     Heap_Free(p);
     return p;
 }
 
 void func_ov004_021ccfb0(Ov004V *p) {
     if (p->unk_44 != NULL) {
-        func_ov000_021984f4(p->unk_44, 0, 0);
+        Obj021984c8_UpdatePos(p->unk_44, 0, 0);
     }
 }
 
 void func_ov004_021ccfd0(Ov004V *p) {
     if (p->unk_48 != NULL) {
-        func_ov000_0219864c(p->unk_48, 0, 0);
+        ActorSub48_UpdatePos(p->unk_48, 0, 0);
     }
 }
 
 void func_ov004_021ccff0(Ov004V *p) {
     if (p->model != NULL) {
-        func_ov000_02190a80(p->model, func_0203db40(p->unk_24));
+        Model0218fe1c_UpdateAnim(p->model, func_0203db40(p->unk_24));
     }
 }
 
@@ -127,7 +127,7 @@ void func_ov004_021cd034(void) {}
 void Ov004ActVt_021cf808_Init(void) {}
 
 void *Ov004ActVt_021cf808_Dtor(void *p) {
-    func_ov000_0218c928(p);
+    Actor_DtorBase(p);
     return p;
 }
 

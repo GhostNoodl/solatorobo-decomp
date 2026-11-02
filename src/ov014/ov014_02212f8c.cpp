@@ -20,11 +20,11 @@ static inline void Ov014Spawn_Init(Ov014SpawnDesc *d, u16 k) {
 extern "C" {
 
 extern char data_ov014_02217d3a[];
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern char data_ov014_02217d4c[];
 extern u8 data_ov014_02216dc0[];
 extern Ov003Actor *Actor_GetTarget(Actor *self);
-extern void func_ov000_02191618(Model0218fe1c *a);
+extern void Model0218fe1c_ClearLoop(Model0218fe1c *a);
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, void *pos, void *rot, u16 a);
 
 static inline void Ov014_TimerTick(ActorSub40 *s) {
@@ -37,13 +37,13 @@ void Ov014Act_0221267c_StateIdle(Ov014Act_0221267c *self) {
     ActorSub40 *s = self->fsm;
     switch (ActorSub40_State(s)) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov014_02217d3a, 0x19a, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov014_02217d3a, 0x19a, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st++;
         self->fsm->timer = 60;
         break;
     case 1:
-        Actor_TurnToActor(self, func_ov000_0219bf90(), 0x400);
+        Actor_TurnToActor(self, ActorMgr_FindPlayer(), 0x400);
         s = self->fsm;
         if (ActorSub40_Timer(s) == 0) {
             s->st++;
@@ -67,8 +67,8 @@ void Ov014Act_0221267c_StateAttack(Ov014Act_0221267c *self) {
     ActorSub40 *s = self->fsm;
     switch (ActorSub40_State(s)) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov014_02217d3a, 0x19a, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov014_02217d3a, 0x19a, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st = 10;
         self->fsm->timer = 20;
         break;
@@ -76,7 +76,7 @@ void Ov014Act_0221267c_StateAttack(Ov014Act_0221267c *self) {
         Actor_TurnToActor(self, Actor_GetTarget(self), 0x400);
         s = self->fsm;
         if (ActorSub40_Timer(s) == 0) {
-            func_02065f88(0x5e2, (VecFx32 *)((u8 *)self + 0x33c))->SetScaleXYZ(0x2000, 0x2000, 0x2000);
+            Effect_SpawnId(0x5e2, (VecFx32 *)((u8 *)self + 0x33c))->SetScaleXYZ(0x2000, 0x2000, 0x2000);
             self->fsm->st++;
             self->fsm->timer = 60;
         } else {
@@ -85,8 +85,8 @@ void Ov014Act_0221267c_StateAttack(Ov014Act_0221267c *self) {
         break;
     case 11:
         if (ActorSub40_Timer(s) == 0) {
-            func_ov000_02190cb0(self->model, data_ov014_02217d4c, 0x19a, 0);
-            func_ov000_02191618(self->model);
+            Model0218fe1c_SetAnim(self->model, data_ov014_02217d4c, 0x19a, 0);
+            Model0218fe1c_ClearLoop(self->model);
             self->fsm->st++;
         } else {
             Ov014_TimerTick(s);
@@ -131,8 +131,8 @@ void Ov014Act_0221267c_StateAttack2(Ov014Act_0221267c *self) {
     case 0: {
         s32 base;
         u16 ang;
-        func_ov000_02190cb0(self->model, data_ov014_02217d3a, 0x19a, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov014_02217d3a, 0x19a, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st = 10;
         self->fsm->timer = 0x14;
         base = self->unk_354 != 0 ? 0x1fff : -0x1fff;
@@ -145,7 +145,7 @@ void Ov014Act_0221267c_StateAttack2(Ov014Act_0221267c *self) {
         self->rot_y = func_01ffc128(self->unk_34c, self->rot_y, 0x400, 1, 0x8000);
         s = self->fsm;
         if (ActorSub40_Timer(s) == 0) {
-            func_02065f88(0x5dd, (VecFx32 *)((u8 *)self + 0x33c))->SetScaleXYZ(0x2000, 0x2000, 0x2000);
+            Effect_SpawnId(0x5dd, (VecFx32 *)((u8 *)self + 0x33c))->SetScaleXYZ(0x2000, 0x2000, 0x2000);
             self->fsm->st++;
             self->fsm->timer = 0x3c;
         } else {
@@ -154,8 +154,8 @@ void Ov014Act_0221267c_StateAttack2(Ov014Act_0221267c *self) {
         break;
     case 11:
         if (ActorSub40_Timer(s) == 0) {
-            func_ov000_02190cb0(self->model, data_ov014_02217d4c, 0x19a, 0);
-            func_ov000_02191618(self->model);
+            Model0218fe1c_SetAnim(self->model, data_ov014_02217d4c, 0x19a, 0);
+            Model0218fe1c_ClearLoop(self->model);
             self->fsm->st++;
         } else {
             Ov014_TimerTick(s);

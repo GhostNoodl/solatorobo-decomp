@@ -3,10 +3,10 @@
 extern "C" {
 
 void func_ov002_021eae3c(Ov002StageFile *self) {
-    func_ov002_021eae48(self);
+    Ov002StageFile_Free(self);
 }
 
-void func_ov002_021eae48(Ov002StageFile *self) {
+void Ov002StageFile_Free(Ov002StageFile *self) {
     {
         void *saved;
         HEAP_PUSH(saved);

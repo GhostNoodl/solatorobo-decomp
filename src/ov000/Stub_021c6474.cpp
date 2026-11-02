@@ -15,7 +15,7 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_021c6474(List021c6474 *self, Node021c6474 *n) {
+void List021c6474_Append(List021c6474 *self, Node021c6474 *n) {
     Node021c6474 *p = self->head;
     if (p == NULL) {
         self->head = n;

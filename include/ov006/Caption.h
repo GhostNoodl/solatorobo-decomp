@@ -62,7 +62,7 @@ static inline TextWin *ov006_TextWin_New(void) {
     TextWin *anim = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (anim != NULL) {
         *(const u32 **)anim = data_0208ba70;
-        func_0204c7d0(anim);
+        TextWin_Init(anim);
     }
     return anim;
 }
@@ -94,17 +94,17 @@ static inline void ov006_Caption_Init(ov006_Caption *self) {
         if (model != NULL) {
             const char *name = data_ov006_021ec1a9;
             if (name) {
-                func_02041218(&model->pltt);
-                func_02041440(model, name, 0);
+                PlttRes_Init_02041218(&model->pltt);
+                TexObj_Init(model, name, 0);
                 STD_CopyString(model->name, data_ov006_021ec864);
             }
         }
         self->model = model;
-        func_020417e0(self->model, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
+        TexObj_SetRes(self->model, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
         self->model->flags |= 2;
         self->model->flags &= ~0x80000;
         self->model->flags |= 0x400000;
-        func_02041d9c(self->model, 2, data_ov006_021eb824[self->kind].part);
+        TexObj_SelectImage(self->model, 2, data_ov006_021eb824[self->kind].part);
     }
     self->label = ov006_TextWin_New();
     text = data_ov006_021ec1b5;

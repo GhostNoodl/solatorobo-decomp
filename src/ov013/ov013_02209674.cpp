@@ -5,9 +5,9 @@ extern "C" {
 extern void *data_02097e4c;
 extern char data_ov013_0220be82[];
 extern void HitSphere_Link(ActorSub48 *p);
-extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
-extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
+extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *a, s32 b);
+extern void *SndMgr_PlayAtPitch(void *a, s32 b, VecFx32 *c, s32 d);
+extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *t, s32 a);
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 a);
@@ -20,11 +20,11 @@ static inline Ov003Actor *Ov013_FindActor(u16 id) {
 }
 
 static inline void Ov013_Land(Ov013Act_02207968 *self) {
-    func_ov000_02190cb0(self->model, data_ov013_0220be82, 0x155, 0);
-    func_ov000_02191318(self->model, 0x96000);
-    func_0204a028(data_02097e4c, 0x39, &self->pos, 2);
+    Model0218fe1c_SetAnim(self->model, data_ov013_0220be82, 0x155, 0);
+    Model0218fe1c_SetAnimFrame(self->model, 0x96000);
+    SndMgr_PlayAtPitch(data_02097e4c, 0x39, &self->pos, 2);
     self->unk_f0 = 2;
-    func_ov000_02198360(self->fsm, 1, 0);
+    History_SetState(self->fsm, 1, 0);
     self->fsm->st = 7;
 }
 
@@ -68,7 +68,7 @@ void Ov013Act_02207968_StateHurt(Ov013Act_02207968 *self) {
         if (self->pos.y < 0x4800) {
             self->pos.y = 0x4800;
         }
-        func_02049f44(data_02097e4c, 0x63, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x63, &self->pos, 0);
     }
     Ov003Actor_StateHurt(self);
     if (self->pos.y < 0x4800) {
@@ -85,7 +85,7 @@ void Ov013Act_02207968_StateKnockBack(Ov013Act_02207968 *self) {
         if (self->pos.y < 0x4800) {
             self->pos.y = 0x4800;
         }
-        func_02049f44(data_02097e4c, 0x63, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x63, &self->pos, 0);
     }
     Ov003Actor_StateHurt(self);
     if (self->pos.y < 0x4800) {
@@ -104,7 +104,7 @@ void Ov013Act_02207968_StateDown(Ov013Act_02207968 *self) {
         m->unk_9a_1 = 1;
         m->unk_9a_4 = 1;
         self->rot_x = 0;
-        func_02049f44(data_02097e4c, 0x63, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x63, &self->pos, 0);
     }
     Ov003Actor_StateDown(self);
     if (self->fsm->current == 0x14) {
@@ -118,7 +118,7 @@ void Ov013Act_02207968_StateDie(Ov013Act_02207968 *self) {
         EffectObj *fx;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4811, 10);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4813, 10);
-        fx = func_02065f88(0x69, &self->pos);
+        fx = Effect_SpawnId(0x69, &self->pos);
         if (fx != NULL) {
             fx->SetScaleAll(0x3000);
             fx->AddPosXYZ(0, self->centerY, 0);

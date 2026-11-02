@@ -16,8 +16,8 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
-void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-BOOL func_ov000_0219aae8(Actor *a, Actor *b, u16 c, u8 d, u16 mask, const VecFx32 *ofs, Rot16 *rot,
+void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
+BOOL Hit_ApplyInArea(Actor *a, Actor *b, u16 c, u8 d, u16 mask, const VecFx32 *ofs, Rot16 *rot,
                          s32 r, s32 rr, s16 h, s32 i);
 void func_ov000_0218bed8(void *a, s32 b, Actor *actor);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
@@ -76,7 +76,7 @@ void Ov006ActVt_021ec67c_StateIdle(ActorEx *self) {
     ActorSub40 *st;
     switch (self->fsm->st) {
     case 0:
-        p = func_02065f88(0x324, &self->pos);
+        p = Effect_SpawnId(0x324, &self->pos);
         if (p != NULL) {
             self->unk_bc = p->id;
             p->SetScaleAll(0x2000);
@@ -124,12 +124,12 @@ void Ov006ActVt_021ec67c_StateIdle(ActorEx *self) {
         }
         break;
     case 2:
-        p = func_02065f88(5, &self->pos);
+        p = Effect_SpawnId(5, &self->pos);
         if (p != NULL) {
             p->SetScaleAll(0x5000);
         }
-        func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
-        func_ov000_0219aae8(self, self, 1, 0x11, 0x80, NULL, NULL, 0x7800, 0, -1, 0x1000);
+        SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
+        Hit_ApplyInArea(self, self, 1, 0x11, 0x80, NULL, NULL, 0x7800, 0, -1, 0x1000);
         func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
         self->vfunc_08();
         break;

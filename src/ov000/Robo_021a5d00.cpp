@@ -20,20 +20,20 @@ Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 u16 FX_Atan2(s32 y, s32 x);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
+BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
 void Actor_Move(Actor *self, s32 turn);
-void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
+void Body_Update(void *a, s32 b, s32 c, s32 d);
 void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s32 d, s32 e);
-BOOL func_ov000_02191120(void *a);
+BOOL Model0218fe1c_IsAnimDone(void *a);
 void func_02062764(s32 a, s32 b);
 void func_020627a0(u16 a, u16 b);
 void func_ov000_02182590(void *p);
 BOOL func_0205b1fc(void);
-void func_ov000_0218d46c(void *o, u16 id, s32 c);
+void Actor_SendMsgU8(void *o, u16 id, s32 c);
 void Target_Set(ActorSub4c *info, Actor *actor);
-void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
-BOOL func_ov000_02198360(St_021a5d00 *st, s32 state, s32 x);
+void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
+BOOL History_SetState(St_021a5d00 *st, s32 state, s32 x);
 
 static inline Actor *FindActor021a5d00(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -72,7 +72,7 @@ static inline void Reset021a5d00(Robo021ca458 *self) {
     self->unk_b1c = 0xffff;
     self->unk_b1e = 0xffff;
     self->unk_b24_7 = self->unk_b24_9;
-    func_ov000_02198360((St_021a5d00 *)self->fsm, 1, 0);
+    History_SetState((St_021a5d00 *)self->fsm, 1, 0);
 }
 
 void func_ov000_021a5d00(Robo021ca458 *self) {
@@ -101,11 +101,11 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
                 st->timer++;
                 if (st->timer < 0xf) {
                     if (!Hit_DiffInCylinder(&a->pos, &pos, (a->radius << 1) + 0x19a, 0x3800)) {
-                        func_ov000_02190cb0(self->model, data_ov000_021cc61e, 0x400, 0);
-                        func_ov000_021915a0(self->model);
+                        Model0218fe1c_SetAnim(self->model, data_ov000_021cc61e, 0x400, 0);
+                        Model0218fe1c_SetLoop(self->model);
                         self->speed = 0x15c;
                         Actor_Move(self, 0);
-                        func_ov000_021987b8(self->hit, 0, 0, 0);
+                        Body_Update(self->hit, 0, 0, 0);
                         return;
                     }
                 }
@@ -114,7 +114,7 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
                 lbl = data_ov000_021cc660;
             }
         }
-        func_ov000_02190cb0(self->model, lbl, 0x400, 0);
+        Model0218fe1c_SetAnim(self->model, lbl, 0x400, 0);
         ((St_021a5d00 *)self->fsm)->state++;
         self->speed = 0;
         self->velY = 0;
@@ -124,7 +124,7 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
     }
     case 1:
         Fx021a5d00(self, info);
-        if (!func_ov000_02191120(self->model)) {
+        if (!Model0218fe1c_IsAnimDone(self->model)) {
             return;
         }
         if (a != NULL && info != NULL) {
@@ -151,13 +151,13 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
                     self->unk_b24_7 = 3;
                     self->unk_b1c = self->target;
                     self->target = 0xffff;
-                    func_ov000_0218d46c(a, self->id, 0xd);
+                    Actor_SendMsgU8(a, self->id, 0xd);
                     Target_Set(info, self);
                     info->unk_01 = 9;
                     if (info->unk_03 != 10 && info->unk_03 != 11) {
-                        func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
+                        SndMgr_PlayVolume(data_02097e4c, 0x4a, -1, -1, -1);
                     }
-                    func_ov000_02190cb0(self->model, data_ov000_021cc684, 0x1000, 0);
+                    Model0218fe1c_SetAnim(self->model, data_ov000_021cc684, 0x1000, 0);
                     ((St_021a5d00 *)self->fsm)->state++;
                     ((St_021a5d00 *)self->fsm)->timer = 0;
                     return;
@@ -167,7 +167,7 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
         Reset021a5d00(self);
         return;
     case 2:
-        if (func_ov000_02191120(self->model)) {
+        if (Model0218fe1c_IsAnimDone(self->model)) {
             St_021a5d00 *st = (St_021a5d00 *)self->fsm;
             st->timer++;
             if (st->timer > 0x14) {

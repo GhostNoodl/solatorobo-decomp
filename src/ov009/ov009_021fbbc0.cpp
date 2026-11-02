@@ -5,8 +5,8 @@
 extern "C" {
 
 extern char data_ov009_02216ab6[];
-extern void func_ov000_02190758(Model0218fe1c *m, u16 *rot, s32 a);
-extern void func_0203f364(ActorSub48 *p);
+extern void Obj02190758_SetRot(Model0218fe1c *m, u16 *rot, s32 a);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern char data_ov009_02216ac2[];
 extern char data_ov009_02216aaa[];
 extern u8 data_ov009_02216abc[];
@@ -27,8 +27,8 @@ void Ov009ActVt_022166a4_StateShoot(Ov009ActVt_022166a4 *self) {
         self->velY = 0;
         self->friction = 0;
         self->gravity = 0;
-        func_ov000_02190cb0(self->model, data_ov009_02216ab6, 0x200, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov009_02216ab6, 0x200, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st++;
         self->unk_ea_0 = self->unk_b0->unk_0a_7;
         self->unk_ec_0 = 1;
@@ -58,7 +58,7 @@ void Ov009ActVt_022166a4_StateDie(Ov009ActVt_022166a4 *self) {
 
 void Ov009ActVt_022166a4_StateDown(Ov009ActVt_022166a4 *self) {
     if ((self->hp[2] >> 12) == 5) {
-        func_ov000_02198360(self->fsm, 0x15, 0);
+        History_SetState(self->fsm, 0x15, 0);
         return;
     }
     if (self->fsm->st == 0) {
@@ -70,13 +70,13 @@ void Ov009ActVt_022166a4_StateDown(Ov009ActVt_022166a4 *self) {
     }
     Ov003Actor_StateDown(self);
     if (self->fsm->current == 4) {
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
     }
 }
 
 void Ov009ActVt_022166a4_StateKnockBack(Ov009ActVt_022166a4 *self) {
     if ((self->hp[2] >> 12) == 5) {
-        func_ov000_02198360(self->fsm, 0x15, 0);
+        History_SetState(self->fsm, 0x15, 0);
         return;
     }
     if (self->fsm->st == 0) {
@@ -87,7 +87,7 @@ void Ov009ActVt_022166a4_StateKnockBack(Ov009ActVt_022166a4 *self) {
             Ov009_SpawnChild(self);
         }
         if (self->kind == 0x5425) {
-            func_ov000_02190cb0(self->model, data_ov009_02216ac2, 0x800, 1);
+            Model0218fe1c_SetAnim(self->model, data_ov009_02216ac2, 0x800, 1);
         }
         q = (Ov009Pair *)&self->hp[4];
         if ((u8)(q->b + 0xf0) <= 1) {
@@ -96,13 +96,13 @@ void Ov009ActVt_022166a4_StateKnockBack(Ov009ActVt_022166a4 *self) {
     }
     Ov003Actor_StateKnockBack(self);
     if (self->fsm->current == 4) {
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
     }
 }
 
 void Ov009ActVt_022163f4_Start(Ov009ActVt_022163f4 *self) {
     Ov003Actor_Start(self);
-    func_ov000_02198360(self->fsm, 0x20, 0);
+    History_SetState(self->fsm, 0x20, 0);
 }
 
 BOOL Ov009ActVt_022163f4_Draw(Ov009ActVt_022163f4 *self) {
@@ -115,7 +115,7 @@ BOOL Ov009ActVt_022163f4_Draw(Ov009ActVt_022163f4 *self) {
     t = self->pos;
     t.y += self->unk_f4;
     self->model->trans = t;
-    func_ov000_02190758(self->model, &self->rot_x, 0);
+    Obj02190758_SetRot(self->model, &self->rot_x, 0);
     self->unk_93_0 = 1;
     return Ov003Actor_Draw(self);
 }
@@ -137,8 +137,8 @@ void Ov009ActVt_022163f4_State20(Ov009ActVt_022163f4 *self) {
         self->unk_f4 = -0xccd;
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
-        func_ov000_02190cb0(self->model, data_ov009_02216ab6, 0x1000, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov009_02216ab6, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st++;
         break;
     }
@@ -146,7 +146,7 @@ void Ov009ActVt_022163f4_State20(Ov009ActVt_022163f4 *self) {
         if (Ov009_GameIdle()) {
             st->timer++;
             if (st->timer > 0x78) {
-                func_ov000_02198360(self->fsm, 1, 0);
+                History_SetState(self->fsm, 1, 0);
             }
         }
         break;
@@ -194,7 +194,7 @@ void Ov009ActVt_02216348_Start(Ov009ActVt_02216348 *self) {
     self->unk_f0 = 0;
     s48->unk_9a_0 = 0;
     s48->unk_9a_3 = 0;
-    func_0203f364(s48);
+    HitSphere_Unlink_0203f364(s48);
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_44 != NULL) {
@@ -232,7 +232,7 @@ void Ov009ActVt_02216348_Update(Ov009ActVt_02216348 *self) {
             s32 m = p->fsm != NULL ? p->fsm->current : 0;
             if (m == 7 || m == 0x16 || m == 0x17 || (u8)(m + 0xf1) <= 2) {
                 self->fsm->flags |= 0x80000;
-                func_0204a028(data_02097e4c, 0x1e, &self->pos, 0xc);
+                SndMgr_PlayAtPitch(data_02097e4c, 0x1e, &self->pos, 0xc);
                 self->unk_f0 = 0x3c;
             } else if (Ov009_GameIdle() && self->unk_f0 == 0) {
                 Ov009HitMsg msg;
@@ -257,7 +257,7 @@ void Ov009ActVt_02216348_Update(Ov009ActVt_02216348 *self) {
         }
     }
     if (self->model->anim_state == 1) {
-        func_0204a028(data_02097e4c, 0x1e, &self->pos, 0xc);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x1e, &self->pos, 0xc);
     }
 }
 

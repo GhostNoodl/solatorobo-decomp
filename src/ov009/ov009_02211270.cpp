@@ -19,8 +19,8 @@ void Ov009ActVt_02217aac_StateIdle(Ov009ActVt_02217aac *self) {
         return;
     }
     if (self->fsm->st == 0) {
-        func_ov000_02190cb0(self->model, data_ov009_022179b4, 0x155, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov009_022179b4, 0x155, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st++;
     }
     t = Actor_GetTarget(self);

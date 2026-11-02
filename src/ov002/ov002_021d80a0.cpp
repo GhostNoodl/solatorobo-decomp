@@ -6,7 +6,7 @@ void func_ov002_021d80a0(Obj021efe9c *self) {
     if (self->unk_80 == NULL) {
         return;
     }
-    if (!func_0203e63c(self->unk_84) || self->unk_ac == 0) {
+    if (!Vram_IsTransferDone(self->unk_84) || self->unk_ac == 0) {
         return;
     }
     func_ov002_021d83f0(self);
@@ -53,11 +53,11 @@ void func_ov002_021d8148(Obj021efe9c *self) {
     u32 *q;
     char buf[16];
     u8 *info;
-    info = func_0206ede8(self->unk_48);
+    info = Param_GetEntry(self->unk_48);
     n8 = FIELD(info, 0x8, void *);
     nc = FIELD(info, 0xc, void *);
-    res = func_02035d5c((char *)data_ov002_021efdf6);
-    self->unk_78 = (u32 *)func_02034ec0(res, (char *)n8);
+    res = ResMgr_GetArcList((char *)data_ov002_021efdf6);
+    self->unk_78 = (u32 *)ResList_FindType4(res, (char *)n8);
     MIi_CpuClear32(0, buf, sizeof(buf));
     STD_CopyLString(buf, (char *)nc, sizeof(buf));
     self->unk_7c = (NNSG3dResMdl *)ov002_findEntry((u8 *)NNS_G3dGetMdlSet((NNSG3dResFileHeader *)*self->unk_78), buf);
@@ -72,7 +72,7 @@ void func_ov002_021d8148(Obj021efe9c *self) {
     NNS_G3dMdlSetMdlXLDepthUpdateAll(self->unk_7c, 0);
     NNS_G3dRenderObjSetCallBack(self->unk_80, (NNSG3dSbcCallBackFunc)func_ov002_021e0420, NULL, 4, NNS_G3D_SBC_CALLBACK_TIMING_B);
     self->unk_80->ptrUser = (u8 *)self + 0x9c;
-    q = (u32 *)func_02034ff8(res, (char *)n8);
+    q = (u32 *)ResList_FindType6(res, (char *)n8);
     MIi_CpuClear32(0, buf, sizeof(buf));
     STD_CopyLString(buf, (char *)nc, sizeof(buf));
     if (q[0] != 0) {

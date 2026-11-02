@@ -17,7 +17,7 @@ extern "C" {
 s32 FX_Div(s32 a, s32 b);
 BOOL func_01ffc318(VecFx32 *a, FieldExit *item, VecFx32 *min, VecFx32 *max, VecFx16 *rot);
 
-FieldExit *func_ov000_021b68b8(FieldMgr *self, VecFx32 *pos) {
+FieldExit *FieldMgr_FindExitAt(FieldMgr *self, VecFx32 *pos) {
     FieldExit *ret = NULL;
     FieldExit *item;
     u8 i;

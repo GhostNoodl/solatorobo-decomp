@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov000_0215eab4(void *p);
+void Obj0215eab4_Draw(void *p);
 
 void func_ov000_02169938(Lo021cb798 *self) {
     LO_FREE_M(self, 0xa4);

@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov000_021c54f4(Lo021ccb54 *self) {
+void Lo021ccb54_ClearLabels(Lo021ccb54 *self) {
     self->unk_f4 = NULL;
     self->unk_f8 = NULL;
     self->unk_fc = NULL;

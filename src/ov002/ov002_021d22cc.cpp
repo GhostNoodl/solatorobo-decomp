@@ -8,7 +8,7 @@ Task021ef99c *func_ov002_021d22cc(void) {
         int i;
         TaskBase_ctor(p);
         *(VFunc **)p = data_ov002_021ef99c;
-        __cxa_vec_ctor(p->unk_4c, 7, 0x18, (void (*)(void *))func_ov002_021e4714, (void (*)(void *))Ov002Vt_021f00fc_Dtor);
+        __cxa_vec_ctor(p->unk_4c, 7, 0x18, (void (*)(void *))Ov002LevelTable_Ctor, (void (*)(void *))Ov002Vt_021f00fc_Dtor);
         p->unk_3c = NULL;
         p->unk_40 = NULL;
         p->unk_44 = NULL;
@@ -30,10 +30,10 @@ BOOL func_ov002_021d2390(UiObj *self, ListRow *arg) {
         if (i <= 7) {
             void *str = owner->unk_4c[i].desc;
             if (owner->unk_40 != NULL) {
-                func_ov000_0215bb14(owner->unk_40, str);
+                Obj0215bb14_SetText(owner->unk_40, str);
                 owner->unk_40->vfunc_70();
             }
-            func_02049a48(data_02097e4c, 0x1d, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1d, -1, -1, -1);
         }
     }
     return TRUE;

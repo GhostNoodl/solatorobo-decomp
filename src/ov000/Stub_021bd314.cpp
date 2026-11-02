@@ -6,7 +6,7 @@ extern "C" {
 s32 FX_Div(s32 a, s32 b);
 extern const s16 FX_SinCosTable_[];
 
-BOOL func_ov000_021bd314(ActorMarker *self, s32 x) {
+BOOL ActorMarker_SetKind(ActorMarker *self, s32 x) {
     if (self->nextKind == x) {
         return TRUE;
     }
@@ -22,7 +22,7 @@ BOOL func_ov000_021bd314(ActorMarker *self, s32 x) {
     return TRUE;
 }
 
-BOOL func_ov000_021bd374(ActorMarker *self, s32 len) {
+BOOL ActorMarker_UpdateFade(ActorMarker *self, s32 len) {
     s32 v;
     if (!(self->show == 1 ? TRUE : FALSE) || (self->change == 1 ? TRUE : FALSE)) {
         self->work.fade -= 0x1000;

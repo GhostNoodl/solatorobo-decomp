@@ -6,7 +6,7 @@ extern "C" {
 
 extern void *data_02149ef8;
 void *MsgRes_GetString(void *a, s32 b);
-void func_ov000_0215eab4(void *p);
+void Obj0215eab4_Draw(void *p);
 
 void func_ov000_0215ba4c(LoBase021cafc0_021cb0b8 *self, s32 unused, s32 *pos) {
     s32 h = self->vfunc_40() << 12;
@@ -27,7 +27,7 @@ void func_ov000_0215ba4c(LoBase021cafc0_021cb0b8 *self, s32 unused, s32 *pos) {
         o->unk_08 = y - 0x2000;
     }
     o->unk_0c = z;
-    func_ov000_0215eab4(((u8 *)self->panel));
+    Obj0215eab4_Draw(((u8 *)self->panel));
 }
 
 }

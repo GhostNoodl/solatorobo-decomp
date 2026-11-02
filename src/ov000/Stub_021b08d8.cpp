@@ -24,10 +24,10 @@ extern VecFx32 data_ov000_021ca024;
 extern u8 data_ov000_021ca2a8[];
 extern u8 data_ov000_021ca2e4[];
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u16 ang);
-void *func_ov000_0219be1c(s32 kind, VecFx32 *pos, void *rot, u16 a, u16 b);
-void *func_0204a028(void *a, s32 b, void *c, s32 d);
-void *func_02049f44(void *a, s32 b, void *c, s32 d);
-BOOL func_ov000_02198360(void *s, s32 a, s32 b);
+void *Actor_SpawnKind(s32 kind, VecFx32 *pos, void *rot, u16 a, u16 b);
+void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
+void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
+BOOL History_SetState(void *s, s32 a, s32 b);
 void func_ov000_02168e18(Lo021cb840 *self, s32 a, s32 b, VecFx32 *p);
 
 static inline void SetPal(Model0218fe1c *sub) {
@@ -58,13 +58,13 @@ void func_ov000_021b08ec(Robo021ca458 *self) {
                 break;
             }
             if (t == 0xc) {
-                func_0204a028(data_02097e4c, 0x5b, (u8 *)self + 0x70, 2);
+                SndMgr_PlayAtPitch(data_02097e4c, 0x5b, (u8 *)self + 0x70, 2);
             } else if (t == 0x23) {
-                func_0204a028(data_02097e4c, 0x44, (u8 *)self + 0x70, 2);
-                func_02049f44(data_02097e4c, 0x78, (u8 *)self + 0x70, 0);
+                SndMgr_PlayAtPitch(data_02097e4c, 0x44, (u8 *)self + 0x70, 2);
+                SndMgr_PlayAt(data_02097e4c, 0x78, (u8 *)self + 0x70, 0);
                 SetPal(self->model);
             } else if (t >= 0x41) {
-                func_02049f44(data_02097e4c, 0x36, (u8 *)self + 0x70, 0);
+                SndMgr_PlayAt(data_02097e4c, 0x36, (u8 *)self + 0x70, 0);
                 SetPal(self->model);
                 self->fsm->timer = 0x23;
             }
@@ -107,14 +107,14 @@ void func_ov000_021b08ec(Robo021ca458 *self) {
             rot.x = ((-0x6800 - self->unk_af0.y) >> 5) + 0xfa00;
             rot.y = 0x8000;
             rot.z = 0;
-            o = (VObj *)func_ov000_0219be1c(kind, &pos, &rot, self->id, 0xffff);
+            o = (VObj *)Actor_SpawnKind(kind, &pos, &rot, self->id, 0xffff);
             if (o != NULL) {
                 EffectObj *e;
                 LFLD(u8 *, o, 0x60) = tbl;
                 if (LFLD(u8 *, o, 0x4c) != NULL) {
                     LFLD(u8, LFLD(u8 *, o, 0x4c), 0x18) |= 0x40;
                 }
-                e = func_02065f88(0x68, &pos);
+                e = Effect_SpawnId(0x68, &pos);
                 self->unk_b48 = e->id;
                 self->unk_b5e = ang;
                 self->unk_b4c = 0;
@@ -138,7 +138,7 @@ void func_ov000_021b08ec(Robo021ca458 *self) {
             if (self->unk_b36 != 0) {
                 self->fsm->st = 0;
             } else {
-                func_ov000_02198360(self->fsm, 1, 0);
+                History_SetState(self->fsm, 1, 0);
             }
         }
         break;

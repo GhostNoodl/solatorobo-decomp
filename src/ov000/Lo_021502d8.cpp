@@ -11,15 +11,15 @@ extern "C" {
 
 extern void *data_02fe152c;
 extern void *data_02097e4c;
-void *func_0205976c(void *a, s32 b);
-u32 func_0205975c(void *a, s32 b);
+void *DataRes_GetTable(void *a, s32 b);
+u32 DataRes_GetCount(void *a, s32 b);
 u32 func_ov000_0214bf2c(u16 a);
-u16 func_02059544(void *a, void *b, void *c, s32 d, s32 e);
+u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, s32 d, s32 e);
 BOOL StageRes_IsAllLoaded(void *p);
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 void *Task_FindById(s32 kind);
-Robo021ca458 *func_ov000_0219bf90(void);
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+Robo021ca458 *ActorMgr_FindPlayer(void);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 typedef struct {
     u8 b0 : 1;
@@ -44,7 +44,7 @@ static inline BOOL LoIsLoaded24(void) {
     return r;
 }
 
-BOOL func_ov000_021502d8(Lo021ca9c4 *self) {
+BOOL Lo021ca9c4_IsLoaded(Lo021ca9c4 *self) {
     BOOL r = TRUE;
     if (self->unk_42 == 0xffff) {
         if (!LoIsLoaded24()) {
@@ -72,16 +72,16 @@ extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021caac8[];
 extern char data_ov000_021ca93e[];
 void *MsgRes_GetString(void *g, u32 id);
-BOOL func_0205aa30(void *p);
-void *func_02034d88(void *a, void *b);
-void *func_02035d5c(void *a);
+BOOL StageRes_Bind(void *p);
+void *ResList_FindType2(void *a, void *b);
+void *ResMgr_GetArcList(void *a);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void func_0204ca70(void *p);
+void TextWin_RenderToVram(void *p);
 s32 func_02061e7c(u16 a);
-void *func_0204c08c(void *a, u16 id, void *out, s32 n);
-void func_0204c6bc(void *a, void *b, void *c, void *fn);
+void *MsgRes_GetLines(void *a, u16 id, void *out, s32 n);
+void Text_ScanTags(void *a, void *b, void *c, void *fn);
 void func_02040a98(char *buf, s32 n);
-SceneScript *func_ov000_021824d0(SceneStage *self, u16 index);
+SceneScript *SceneStage_GetScript(SceneStage *self, u16 index);
 s32 func_ov000_02151610(VObj *self, s32 a, s32 b, s32 c);
 void func_ov000_0215158c(void *self);
 
@@ -90,7 +90,7 @@ static inline void LoTextInit(TextWin *t) {
     data_02097ce0->unk_004 = t->font;
 }
 
-void func_ov000_02150338(Lo021ca9c4 *self) {
+void Lo021ca9c4_Start(Lo021ca9c4 *self) {
     Model *m;
     const char *arc;
     const char *name;
@@ -103,36 +103,36 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     if (self->vfunc_28()) {
         return;
     }
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
     if (self->unk_42 == 0xffff) {
         if (!data_ov000_021ccd24.unk_08->vfunc_34()) {
-            func_0205aa30(data_ov000_021ccd24.unk_08);
+            StageRes_Bind(data_ov000_021ccd24.unk_08);
         }
     }
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
         arc = data_ov000_021ca8d8[0];
         name = data_ov000_021ca8d8[1];
-        func_02041218(&m->pltt);
-        func_02041440(m, name, 0);
+        PlttRes_Init_02041218(&m->pltt);
+        TexObj_Init(m, name, 0);
         STD_CopyString(m->name, arc);
     }
     self->unk_44 = m;
-    func_020417e0(self->unk_44, func_02034d88((void *)self->unk_3c->vfunc_10(), (u8 *)self->unk_44 + 0x4c));
+    TexObj_SetRes(self->unk_44, ResList_FindType2((void *)self->unk_3c->vfunc_10(), (u8 *)self->unk_44 + 0x4c));
     self->unk_44->flags |= 2;
-    func_02041d9c(self->unk_44, 0, 0);
+    TexObj_SelectImage(self->unk_44, 0, 0);
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
         arc = data_0208cca0;
         name = data_0208cb74;
-        func_02041218(&m->pltt);
-        func_02041440(m, name, 0);
+        PlttRes_Init_02041218(&m->pltt);
+        TexObj_Init(m, name, 0);
         STD_CopyString(m->name, arc);
     }
     self->unk_48 = m;
-    func_020417e0(self->unk_48, func_02034d88(func_02035d5c(m->name), self->unk_48->unk_04c));
+    TexObj_SetRes(self->unk_48, ResList_FindType2(ResMgr_GetArcList(m->name), self->unk_48->unk_04c));
     self->unk_48->flags |= 2;
-    func_02041d9c(self->unk_48, 0, 0xb);
+    TexObj_SelectImage(self->unk_48, 0, 0xb);
     g = data_02149ef8;
     if (self->unk_42 == 0xffff) {
         o = (VObj *)Heap_Alloc(0xe0);
@@ -203,7 +203,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     }
     p = (MsgEntryEx *)Heap_Alloc(sizeof(MsgEntryEx));
     if (p != NULL) {
-        func_ov000_02153f90(p);
+        MsgEntry_Init(p);
         p->vals[0] = 0;
         p->vals[1] = 0;
         p->vals[2] = 0;
@@ -213,11 +213,11 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     if (self->unk_42 != 0xffff) {
         p->id = self->unk_42;
     } else {
-        self->unk_54->id = func_ov000_021824d0(&SceneCmd_Get()->stage, 0)->id;
+        self->unk_54->id = SceneStage_GetScript(&SceneCmd_Get()->stage, 0)->id;
     }
     {
-        void *r = func_0204c08c(data_ov000_021ccd24.unk_08->sub, self->unk_54->id, out, 2);
-        func_0204c6bc(out[0], r, self->unk_54, (void *)func_ov000_0214dc20);
+        void *r = MsgRes_GetLines(data_ov000_021ccd24.unk_08->sub, self->unk_54->id, out, 2);
+        Text_ScanTags(out[0], r, self->unk_54, (void *)func_ov000_0214dc20);
     }
 
     self->text[0].font = 8;
@@ -229,7 +229,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     self->text[0].flags |= 0x40;
     self->text[0].flags |= 0x1400000;
     self->text[0].flags |= 0x40000004;
-    func_0204ca70(&self->text[0]);
+    TextWin_RenderToVram(&self->text[0]);
 
     self->text[1].spacing = 3;
     self->text[1].font = 8;
@@ -238,7 +238,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     self->text[1].flags |= 0x40;
     self->text[1].flags |= 0x1000000;
     self->text[1].flags |= 0x40000004;
-    func_0204ca70(&self->text[1]);
+    TextWin_RenderToVram(&self->text[1]);
 
     self->text[2].font = 8;
     self->text[2].str = (u32)MsgRes_GetString(g, 0x115);
@@ -249,7 +249,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     self->text[2].flags |= 0x40;
     self->text[2].flags |= 0x1400000;
     self->text[2].flags |= 0x40000004;
-    func_0204ca70(&self->text[2]);
+    TextWin_RenderToVram(&self->text[2]);
 
     if (self->unk_54->vals[1] != 0) {
         func_02040a98(buf, self->unk_54->vals[1]);
@@ -264,7 +264,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     self->text[3].flags |= 0x40;
     self->text[3].flags |= 0x1000000;
     self->text[3].flags |= 0x4;
-    func_0204ca70(&self->text[3]);
+    TextWin_RenderToVram(&self->text[3]);
 
     self->text[4].font = 8;
     self->text[4].str = (u32)MsgRes_GetString(g, 0x116);
@@ -275,7 +275,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     self->text[4].flags |= 0x40;
     self->text[4].flags |= 0x1400000;
     self->text[4].flags |= 0x40000004;
-    func_0204ca70(&self->text[4]);
+    TextWin_RenderToVram(&self->text[4]);
 
     {
         u16 n = self->unk_54->vals[2];
@@ -290,7 +290,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     self->text[5].flags |= 0x40;
     self->text[5].flags |= 0x1000000;
     self->text[5].flags |= 0x40000004;
-    func_0204ca70(&self->text[5]);
+    TextWin_RenderToVram(&self->text[5]);
 }
 
 }

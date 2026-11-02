@@ -30,8 +30,8 @@ extern char data_ov009_022179c7[];
 extern char data_ov009_022179d1[];
 extern char data_ov009_022179d8[];
 extern s32 func_ov000_021909a8(Model0218fe1c *m, const char *a, const char *b);
-extern void func_0203f2b8(void *p);
-extern u8 *func_0206fef8(void *res);
+extern void HitSphere_Unlink_0203f2b8(void *p);
+extern u8 *Tbl_FindEntry_0206fef8(void *res);
 extern void HitMesh_Init(void *p);
 extern void HitMesh_SetRes(void *p, s32 v);
 extern void HitMesh_SetScale(void *p, s32 v);
@@ -69,13 +69,13 @@ void Ov009ActSpin_Start(Ov009ActSpin *self) {
     if (self->hit != NULL) {
         ActorSub48 *d = self->hit;
         if (d != NULL) {
-            func_0203f2b8(d);
+            HitSphere_Unlink_0203f2b8(d);
             Heap_Free(d);
         }
         self->hit = NULL;
     }
     data_02097dd0->cur = saved;
-    c = func_0206fef8((void *)self->kind);
+    c = Tbl_FindEntry_0206fef8((void *)self->kind);
     o = ((Ov009Names *)self->unk_34)->unk_84;
     v = o != NULL ? *o : 0;
     if (v != 0) {
@@ -132,7 +132,7 @@ void Ov009ActSpin_Start(Ov009ActSpin *self) {
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
         p->flags.unk_0 = 0;
-        func_ov000_0218b700(p, 0x3000, 0);
+        GroupNode_SetSpawnRange(p, 0x3000, 0);
     }
     self->unk_b6 = 0x1e;
     self->unk_ea_0 = 0;

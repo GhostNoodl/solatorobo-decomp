@@ -148,16 +148,16 @@ extern EffectMgr *data_0214a420;
 
 
 // Effect API used by the overlays (defined in Effect.cpp, Effect_4.cpp and Effect_5.cpp).
-EffectObj *func_02065f88(s32 id, const VecFx32 *pos);
-EffectObj *func_020657b0(EffectMgr *m, u32 id);
+EffectObj *Effect_SpawnId(s32 id, const VecFx32 *pos);
+EffectObj *Effect_Find_020657b0(EffectMgr *m, u32 id);
 BOOL EffectMgr_Contains(EffectMgr *m, EffectObj *obj);
 void EffectMgr_Kill(EffectMgr *m, u32 id);
 void EffectMgr_StopLoop(EffectMgr *m, u32 id);
 void EffectMgr_FreeAll(EffectMgr *m);
 EffectObj *func_020658cc(EffectMgr *m, s32 v);
-void func_02065ac0(EffectMgr *m);
+void EffectMgr_Update(EffectMgr *m);
 struct Effect3D *Effect3D_Create(const char *arc, const char *mdl, const char *anm, const VecFx32 *pos);
-struct Effect3D *func_0206682c(const char *arc, const char *mdl, const char *anm, const VecFx32 *pos);
+struct Effect3D *Effect3D_NewAt(const char *arc, const char *mdl, const char *anm, const VecFx32 *pos);
 struct EffectGroup *EffectGroup_Create(const char *arc, const char *name, const VecFx32 *pos);
 // Fixed screen effects (Effect_5.cpp: EffectHud_Create with a built-in archive/model name).
 struct Effect3D *func_02066c58(void);

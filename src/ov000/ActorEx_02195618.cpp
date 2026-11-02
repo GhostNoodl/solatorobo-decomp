@@ -16,9 +16,9 @@ typedef struct {
 extern "C" {
 
 extern Act02195618Entry data_ov000_021c9e18[];
-void func_0203f920(void *p);
+void HitMesh_Unlink_0203f920(void *p);
 void func_ov000_0219af3c(u8 *self, void *p);
-void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
+void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline BOOL PlayerIdle02195618(void) {
@@ -35,7 +35,7 @@ static inline BOOL PlayerIdle02195618(void) {
     return TRUE;
 }
 
-void func_ov000_02195618(ActorEx *self) {
+void ActorEx_RunState(ActorEx *self) {
     s32 k;
     s32 i;
     EffectObj *o;
@@ -44,7 +44,7 @@ void func_ov000_02195618(ActorEx *self) {
     VecFx32 v;
 
     if (self->hitMesh != NULL) {
-        func_0203f920(self->hitMesh);
+        HitMesh_Unlink_0203f920(self->hitMesh);
     }
     k = self->fsm->current;
     for (i = 0; i < 15; i++) {
@@ -69,7 +69,7 @@ void func_ov000_02195618(ActorEx *self) {
                         ofs.z = hit->unk_1c;
                         ofs.x = 0;
                         ofs.y = 0;
-                        func_ov000_0219a210(&pos, &ofs, self->rot_y);
+                        Geom_AddRotatedOffset(&pos, &ofs, self->rot_y);
                     }
                     r = self->unk_44->unk_0c.y;
                     if (r == 0) {
@@ -85,7 +85,7 @@ void func_ov000_02195618(ActorEx *self) {
                 self->unk_5c->unk_50 = pos;
                 self->unk_5c->height = r;
             }
-            func_ov000_021bd624(self->unk_5c);
+            ActorMarker_Update(self->unk_5c);
         } else {
             self->unk_5c->show = 0;
             func_ov000_021bd300(self->unk_5c);
@@ -94,7 +94,7 @@ void func_ov000_02195618(ActorEx *self) {
     if (self->unk_bc == NULL) {
         return;
     }
-    o = func_020657b0(data_0214a420, self->unk_bc);
+    o = Effect_Find_020657b0(data_0214a420, self->unk_bc);
     if (o == NULL) {
         self->unk_bc = NULL;
         return;

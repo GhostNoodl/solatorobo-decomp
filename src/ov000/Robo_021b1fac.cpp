@@ -5,9 +5,9 @@ extern "C" {
 
 void func_ov000_021b209c(Robo021ca458 *self);
 void Actor_Move(Actor *self, s32 a);
-void func_ov000_021987b8(ActorSub48 *p, s32 a, s32 b, s32 c);
+void Body_Update(ActorSub48 *p, s32 a, s32 b, s32 c);
 
-void func_ov000_021b1fac(Robo021ca458 *self, BOOL a, s32 b) {
+void Robo021ca458_Move(Robo021ca458 *self, BOOL a, s32 b) {
     s32 ox;
     s32 oy;
     if (self->unk_b24_12) {
@@ -34,7 +34,7 @@ void func_ov000_021b1fac(Robo021ca458 *self, BOOL a, s32 b) {
             self->unk_ba8 &= 0xfff;
         }
     }
-    func_ov000_021987b8(self->hit, b, 0, 0);
+    Body_Update(self->hit, b, 0, 0);
     if (self->velY < 0 && (self->hit->unk_50 & 0x20000000)) {
         self->velY = 0;
     }

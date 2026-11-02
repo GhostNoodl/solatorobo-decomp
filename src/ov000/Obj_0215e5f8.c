@@ -25,9 +25,9 @@ void *func_02061d54(s32 a);
 void *MsgRes_GetString(void *a, void *b);
 void func_ov000_0215e344(Obj0215e5f8 *self);
 void func_0206281c(void);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 
-void func_ov000_0215e5f8(Obj0215e5f8 *self) {
+void Ov000Vt_021cafc0_Setup(Obj0215e5f8 *self) {
     self->unk_1dc = MsgRes_GetString(data_02149ef8, func_02061d54(0x18));
     func_ov000_0215e344(self);
 }
@@ -38,21 +38,21 @@ void func_ov000_0215e62c(void) {
 void func_ov000_0215e630(void) {
 }
 
-BOOL func_ov000_0215e634(Obj0215e5f8 *self, Msg0215e634 *msg) {
+BOOL Ov000Vt_021cafc0_OnDecide(Obj0215e5f8 *self, Msg0215e634 *msg) {
     if (self->unk_84 != NULL) {
         return self->unk_84(self, msg);
     }
     if (msg == NULL) {
         func_0206281c();
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         return FALSE;
     }
     if (msg->unk_06 == 0) {
         data_02fe1534.unk_7c = 1;
-        func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
     } else if (msg->unk_06 == 1) {
         data_02fe1534.unk_7c = 0;
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     }
     return FALSE;
 }

@@ -6,15 +6,15 @@
 
 extern "C" {
 
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL func_ov000_021b4738(void);
 void func_020627fc(u16 a);
 void func_0206280c(u16 a);
 void func_ov000_02182590(void *p);
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *data_02097e4c;
 
-void func_ov000_0216e894(LoTimer *self) {
+void LoTimer_Finish(LoTimer *self) {
     if (self->b13 == 1) {
         return;
     }
@@ -29,7 +29,7 @@ void func_ov000_0216e894(LoTimer *self) {
     if (self->b6 != 1) {
         return;
     }
-    func_ov000_0219bf90();
+    ActorMgr_FindPlayer();
     if (!func_ov000_021b4738()) {
         s32 v = self->time;
         FieldState *g;
@@ -57,7 +57,7 @@ static inline void Bounce(LoTimer *self) {
 void func_ov000_0216e968(LoTimer *self) {
     s32 t;
     if (!self->b16) {
-        func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x4a, -1, -1, -1);
         self->b16 = 1;
     }
     self->unk_38 += 0x1000;
@@ -71,13 +71,13 @@ void func_ov000_0216e968(LoTimer *self) {
                         if (self->b17 == 1 && !self->b14 && self->unk_28 != 0 && self->unk_28 < self->time) {
                             Bounce(self);
                         } else {
-                            func_ov000_0216e894(self);
+                            LoTimer_Finish(self);
                         }
                     } else {
                         if (self->b17 == 1 && !self->b14 && self->unk_28 != 0 && self->unk_28 > self->time) {
                             Bounce(self);
                         } else {
-                            func_ov000_0216e894(self);
+                            LoTimer_Finish(self);
                         }
                     }
                     self->unk_38 = 0;

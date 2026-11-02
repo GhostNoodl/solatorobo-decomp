@@ -7,12 +7,12 @@ extern u8 data_0208ba70[];
 extern u8 data_0208bbc8[];
 void func_ov000_021bc3ec(FieldFade *fade, s32 mode, s32 duration);
 void func_ov000_021bc458(FieldFade *fade);
-void func_0204bfcc(MsgRes *res);
-void func_0204bfe4(MsgRes *res, const char *arc, const char *name);
-BOOL func_0204c030(MsgRes *res);
-s32 func_0204c08c(MsgRes *res, u16 id, char **out, s32 d);
-void func_0204c7d0(TextWin *win);
-void func_02050f70(SlideWin *win);
+void MsgRes_Reset_0204bfcc(MsgRes *res);
+void MsgRes_OpenLocalized(MsgRes *res, const char *arc, const char *name);
+BOOL MsgRes_Bind(MsgRes *res);
+s32 MsgRes_GetLines(MsgRes *res, u16 id, char **out, s32 d);
+void TextWin_Init(TextWin *win);
+void TwScene_Init(SlideWin *win);
 
 static inline BOOL Fade021633ac_Done(void) {
     return data_ov000_021ccd70->state == 0 ? TRUE : FALSE;
@@ -24,13 +24,13 @@ static inline MsgRes *MsgRes_New(const char *arc, const char *name) {
         VOBJ_SET_VTABLE(o, data_0208b318);
         o->Clear();
         VOBJ_SET_VTABLE(o, data_0208ba30);
-        func_0204bfcc(o);
+        MsgRes_Reset_0204bfcc(o);
     }
-    func_0204bfe4(o, arc, name);
+    MsgRes_OpenLocalized(o, arc, name);
     return o;
 }
 
-BOOL func_ov000_021633ac(MsgBox *self) {
+BOOL MsgBox_Update(MsgBox *self) {
     BOOL ret = TRUE;
     SlideWin *o;
     switch (self->state) {
@@ -44,14 +44,14 @@ BOOL func_ov000_021633ac(MsgBox *self) {
         }
         break;
     case 2:
-        func_0204c030(self->res);
-        self->numLines = func_0204c08c(self->res, self->msgId, &self->text, 1);
+        MsgRes_Bind(self->res);
+        self->numLines = MsgRes_GetLines(self->res, self->msgId, &self->text, 1);
         o = (SlideWin *)Heap_Alloc(sizeof(SlideWin));
         if (o != NULL) {
             VOBJ_SET_VTABLE(o, data_0208ba70);
-            func_0204c7d0(o);
+            TextWin_Init(o);
             VOBJ_SET_VTABLE(o, data_0208bbc8);
-            func_02050f70(o);
+            TwScene_Init(o);
         }
         self->win = o;
         o->font = 8;

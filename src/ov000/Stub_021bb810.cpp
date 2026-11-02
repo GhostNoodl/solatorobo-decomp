@@ -28,7 +28,7 @@ static inline void Obj021bb810_Init(Obj021bb810 *self, s32 a) {
     self->unk_1c = 0;
 }
 
-void func_ov000_021bb810(Obj021bb810 *self, s32 a) {
+void Obj021bb810_Init_021bb810(Obj021bb810 *self, s32 a) {
     self->unk_00 = 1;
     self->unk_04 = a;
     self->unk_08 = 1;

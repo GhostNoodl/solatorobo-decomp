@@ -101,11 +101,11 @@ u8 func_ov000_02199f08(Target *self) {
     return r;
 }
 
-void func_ov000_02199f48(Target *self, ActorT *actor) {
+void Target_SetActor(Target *self, ActorT *actor) {
     self->unk_04 = actor != NULL ? actor->id : 0xffff;
 }
 
-ActorT *func_ov000_02199f60(Target *self) {
+ActorT *Target_GetActor(Target *self) {
     return FindActor(self->unk_04);
 }
 

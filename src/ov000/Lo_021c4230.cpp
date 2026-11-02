@@ -4,12 +4,12 @@
 
 extern "C" {
 struct Win021c4460;
-void func_ov000_021c4460(struct Win021c4460 *self);
+void Win021c4460_Update(struct Win021c4460 *self);
 void func_ov000_021c4b00(void *self);
 void func_ov000_0215f330(void *p);
 void func_ov000_021c4c10(void *self);
 extern void *data_02097e4c;
-void *func_02049a48(void *a, int b, int c, int d, int e);
+void *SndMgr_PlayVolume(void *a, int b, int c, int d, int e);
 
 void func_ov000_021c4230(LoBase021ccb54_021ccbe0 *self) {
     s32 i;
@@ -18,14 +18,14 @@ void func_ov000_021c4230(LoBase021ccb54_021ccbe0 *self) {
     switch (self->state) {
     case 0:
         if (self->flag4) {
-            func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         }
         break;
     case 2:
         if (self->hidden) {
             self->state = 1;
         }
-        func_ov000_021c4460((struct Win021c4460 *)self);
+        Win021c4460_Update((struct Win021c4460 *)self);
         func_ov000_021c4b00(self);
         self->unk_d4++;
         if (self->unk_d4 < 20) {
@@ -39,7 +39,7 @@ void func_ov000_021c4230(LoBase021ccb54_021ccbe0 *self) {
         break;
     case 1:
         if (self->flag4) {
-            func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
         }
         break;
     }
@@ -69,7 +69,7 @@ void func_ov000_021c4230(LoBase021ccb54_021ccbe0 *self) {
 }
 }
 
-// func_ov000_021c4460 (round bgR2): the e4 callback takes the selected line as its second argument, like
+// Win021c4460_Update (round bgR2): the e4 callback takes the selected line as its second argument, like
 // e8. With `self->unk_e4(self, n)` n is coalesced into the r1 argument, which gives the ROM's idx r0 / n r1 /
 // callback r2 (every earlier draft called it with self only and stopped at 10 / 0).
 typedef struct Line021c4460 {
@@ -112,11 +112,11 @@ typedef struct Win021c4460 {
 extern "C" {
 
 extern void *data_02097e4c;
-void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_ov000_021c47bc(Win021c4460 *self, s32 up, u8 *moved, u8 *scrolled);
 s32 func_ov000_021c4964(Win021c4460 *self, s32 n);
 
-void func_ov000_021c4460(Win021c4460 *self) {
+void Win021c4460_Update(Win021c4460 *self) {
     u16 cur;
     u16 trig;
     u32 key;
@@ -168,7 +168,7 @@ void func_ov000_021c4460(Win021c4460 *self) {
         if (self->unk_e8 != NULL) {
             self->unk_e8(self, self->unk_a0);
         } else if (self->b4) {
-            func_02049a48(data_02097e4c, 0x1d, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1d, -1, -1, -1);
         }
     }
     done = FALSE;
@@ -192,7 +192,7 @@ void func_ov000_021c4460(Win021c4460 *self) {
         if (self->unk_e4 != NULL) {
             self->unk_e4(self, n);
         } else if (self->b4) {
-            func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
         }
     }
     if (done) {

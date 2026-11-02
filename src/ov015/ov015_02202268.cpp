@@ -7,7 +7,7 @@ void func_ov015_02208070(Ov015Ship *p);
 void func_ov015_02209b8c(Ov015Fish *self);
 void func_ov015_02210d04(Ov015MsgMgr *self);
 void func_ov015_02212264(Ov015Obj292c *self);
-BOOL func_ov000_021903b4(void *a);
+BOOL Model021903b4_Draw(void *a);
 void func_ov015_0220101c(Ov015Game *self);
 void func_ov015_02211878(Ov015Info38 *p);
 extern u8 data_ov015_0221296c[];
@@ -17,17 +17,17 @@ extern u8 data_ov015_022127ec[];
 extern char data_ov015_022128c1[];
 extern u8 data_ov015_0221293c[];
 extern char data_ov015_022128ab[];
-void func_0206e900(char *buf, const char *name);
+void LangData_LocalizePath(char *buf, const char *name);
 extern u8 data_ov015_0221294c[];
-void *func_ov000_0218fee4(void *a);
-void *func_ov000_0218ea20(void *a);
+void *Model0218fe1c_FreeAnims(void *a);
+void *ResSet_ReleaseAll(void *a);
 extern u8 data_ov015_022128ec[];
 extern u8 data_ov015_022128fc[];
 void func_ov015_02209270(Ov015Fish *p);
-void func_0203f2b8(void *p);
-void *func_ov000_02191b04(void *p);
-void *func_ov000_0218fee4(void *p);
-void *func_ov000_0218ea20(void *p);
+void HitSphere_Unlink_0203f2b8(void *p);
+void *Shadow_DtorBase(void *p);
+void *Model0218fe1c_FreeAnims(void *p);
+void *ResSet_ReleaseAll(void *p);
 void func_ov015_0220900c(Ov015FishInfo *p);
 extern u8 data_ov015_0221292c[];
 void func_ov015_022120fc(Ov015Obj292c *self);
@@ -53,9 +53,9 @@ static inline void Ov015_022022ac_Draw(Ov015Game *self) {
     Ov015Node *n;
     func_ov015_02208070(self->ship);
     p = self->unk_20;
-    func_ov000_021903b4(&p->p[0].mdl);
-    func_ov000_021903b4(&p->p[1].mdl);
-    func_ov000_021903b4(&p->p[2].mdl);
+    Model021903b4_Draw(&p->p[0].mdl);
+    Model021903b4_Draw(&p->p[1].mdl);
+    Model021903b4_Draw(&p->p[2].mdl);
     NNS_G3dGeFlushBuffer();
     for (n = self->fishList->head; n != NULL; n = n->next) {
         func_ov015_02209b8c(n->fish);
@@ -95,7 +95,7 @@ void *Ov015Game_DtorDelete(Ov015Game *self) {
     void *saved;
     SET_VT(self, data_ov015_0221296c);
     func_ov015_0220101c(self);
-    func_02036838(data_02097cdc, data_ov015_022128c1, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_ov015_022128c1, 7, 0);
     HEAP_PUSH(saved);
     DELETE_V(self->result);
     HEAP_POP(saved);
@@ -136,7 +136,7 @@ void *Ov015Game_Dtor(Ov015Game *self) {
     void *saved;
     SET_VT(self, data_ov015_0221296c);
     func_ov015_0220101c(self);
-    func_02036838(data_02097cdc, data_ov015_022128c1, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_ov015_022128c1, 7, 0);
     HEAP_PUSH(saved);
     DELETE_V(self->result);
     HEAP_POP(saved);
@@ -182,8 +182,8 @@ void *func_ov015_022027e8(Ov015Hud *self) {
             Model *o = self->mdl0;
             if (o != NULL) {
                 if (o != NULL) {
-                    func_02041558(o);
-                    func_02041278(&o->pltt);
+                    TexObj_Release(o);
+                    PlttRes_Release(&o->pltt);
                     Heap_Free(o);
                 }
                 self->mdl0 = NULL;
@@ -198,8 +198,8 @@ void *func_ov015_022027e8(Ov015Hud *self) {
             Model *o = self->mdl1;
             if (o != NULL) {
                 if (o != NULL) {
-                    func_02041558(o);
-                    func_02041278(&o->pltt);
+                    TexObj_Release(o);
+                    PlttRes_Release(&o->pltt);
                     Heap_Free(o);
                 }
                 self->mdl1 = NULL;
@@ -207,20 +207,20 @@ void *func_ov015_022027e8(Ov015Hud *self) {
         }
         HEAP_POP(saved);
     }
-    func_0206e900(buf, data_ov015_022128ab);
-    func_02036838(data_02097cdc, buf, 7, 0);
+    LangData_LocalizePath(buf, data_ov015_022128ab);
+    ResMgr_ReleaseByName(data_02097cdc, buf, 7, 0);
 
     return self;
 }
 
 void *func_ov015_022028dc(u8 *self) {
     SET_VT(self, data_ov015_0221294c);
-    func_ov000_0218fee4(self + 0x57c);
-    func_ov000_0218ea20(self + 0x444);
-    func_ov000_0218fee4(self + 0x35c);
-    func_ov000_0218ea20(self + 0x224);
-    func_ov000_0218fee4(self + 0x13c);
-    func_ov000_0218ea20(self + 0x4);
+    Model0218fe1c_FreeAnims(self + 0x57c);
+    ResSet_ReleaseAll(self + 0x444);
+    Model0218fe1c_FreeAnims(self + 0x35c);
+    ResSet_ReleaseAll(self + 0x224);
+    Model0218fe1c_FreeAnims(self + 0x13c);
+    ResSet_ReleaseAll(self + 0x4);
     return self;
 }
 
@@ -233,12 +233,12 @@ void *Ov015Result_Dtor(Ov015Result *self) {
 void *Ov015Fish_Dtor(Ov015Fish *self) {
     SET_VT(self, data_ov015_022128fc);
     func_ov015_02209270(self);
-    func_0203f2b8(&self->hit);
-    func_ov000_02191b04(&self->shadow);
-    func_ov000_0218fee4(&self->model2);
-    func_ov000_0218ea20(&self->res2);
-    func_ov000_0218fee4(&self->model);
-    func_ov000_0218ea20(&self->res);
+    HitSphere_Unlink_0203f2b8(&self->hit);
+    Shadow_DtorBase(&self->shadow);
+    Model0218fe1c_FreeAnims(&self->model2);
+    ResSet_ReleaseAll(&self->res2);
+    Model0218fe1c_FreeAnims(&self->model);
+    ResSet_ReleaseAll(&self->res);
     func_ov015_0220900c(&self->info);
     return self;
 }
@@ -331,16 +331,16 @@ Ov015Node *func_ov015_02202bb4(Ov015Node *self) {
     return self;
 }
 
-void func_ov015_02202be4(void) {
+void Ov015Scene2a88_Load(void) {
 }
 
-s32 func_ov015_02202be8(void) {
+s32 Ov015Scene2a88_IsLoaded(void) {
     return 1;
 }
 
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_ov015_02206bf0(s32 idx, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
-void func_ov015_02202bf0(Ov015Scene2a88 *self) {
+void Ov015Scene2a88_Start(Ov015Scene2a88 *self) {
     SndQueue *p = data_02097e48.queue;
     void *name;
     void *file;
@@ -367,14 +367,14 @@ void func_ov015_02202bf0(Ov015Scene2a88 *self) {
     if (l != NULL) {
         file = (void *)data_0208cca0;
         name = data_0208ccc0;
-        func_02041218(&l->pltt);
-        func_02041440(l, (char *)name, 0);
+        PlttRes_Init_02041218(&l->pltt);
+        TexObj_Init(l, (char *)name, 0);
         STD_CopyString(l->name, (char *)file);
     }
     self->model = l;
-    func_020417e0(self->model, func_02034d88(func_02035d5c(data_0208cca0), data_0208ccc0));
+    TexObj_SetRes(self->model, ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208ccc0));
     self->model->flags |= 2;
-    func_02041d9c(self->model, 0, 0);
+    TexObj_SelectImage(self->model, 0, 0);
     {
         Model *p = self->model;
         p->x = 0;
@@ -385,7 +385,7 @@ void func_ov015_02202bf0(Ov015Scene2a88 *self) {
     func_02041c20(self->model, 0, &self->unk_44);
     self->parent = NULL;
     self->unk_40 = 1;
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
     func_0203cb78(0x14000, 0, 1);
     func_0203cb78(0x14000, 0, 0);
 }

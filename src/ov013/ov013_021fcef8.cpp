@@ -25,8 +25,8 @@ static inline s32 Ov013_DistXZ(const VecFx32 *a, const VecFx32 *b) {
 void Ov013ActVt_0220b5e0_StateMove(Ov013ActVt_0220b5e0 *self) {
     switch (self->fsm->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov013_0220b5ca, 0x2ab, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220b5ca, 0x2ab, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->friction = 0;
         self->gravity = 0;
         self->speed = 0x214;
@@ -62,7 +62,7 @@ void Ov013ActVt_0220b5e0_StateMove(Ov013ActVt_0220b5e0 *self) {
             }
             self->model->alpha = v;
         } else {
-            func_ov000_02198360(self->fsm, 0x15, 0);
+            History_SetState(self->fsm, 0x15, 0);
         }
         break;
     }

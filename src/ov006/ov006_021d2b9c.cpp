@@ -8,8 +8,8 @@ extern "C" {
 
 void ov006_Slot_Pack(ov006_Slot *self, void *buf);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
-void func_ov000_02162a20(ov006_Actor58 *self);
-void func_ov000_02162a58(ov006_Actor58 *self);
+void ModelViewer_Update(ov006_Actor58 *self);
+void ModelViewer_Draw(ov006_Actor58 *self);
 void ov006_Caption_Update(ov006_Caption *self);
 void func_ov006_021e0b80(ov006_Caption *self);
 void ov006_Gauge_Update(ov006_Gauge *self);
@@ -32,19 +32,19 @@ void ov006_TaskD1F_UpdateActive(ov006_TaskD1F *self) {
     if (trg & 2) {
         if (self->unk48) {
             if (self->param == 0) {
-                func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
             }
             self->step = 5;
             self->subStep = 0;
         } else {
-            func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
         }
         return;
     }
     if (!(trg & 1)) {
         return;
     }
-    func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
     self->step = 1;
     self->subStep = 0;
 }
@@ -74,7 +74,7 @@ void ov006_TaskD1F_PreUpdate(ov006_TaskD1F *self) {
         }
     }
     self->unk54->vfunc_1c();
-    func_ov000_02162a20(self->unk58);
+    ModelViewer_Update(self->unk58);
     {
         ov006_Actor58 *a = self->unk58;
         // x is read through a const view, so it is not merged with the earlier read of a->pos.

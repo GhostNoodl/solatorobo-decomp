@@ -7,7 +7,7 @@ extern "C" {
 
 
 void Heap_Free(void *ptr);
-s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m);
+s16 *AnimEvent_Exec(s16 *p, Model0218fe1c *m);
 void *Heap_Alloc(u32 size);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
 void *NNS_G3dGetTex(void *file);
@@ -16,11 +16,11 @@ void NNSi_G3dModifyMatFlag(void *mdl, s32 a, u32 mask);
 void NNS_G3dRenderObjInit(void *obj, void *mdl);
 s32 NNS_G3dGetResDictIdxByName(void *dict, const char *name);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, AnmObj *anm);
-BOOL func_ov000_0218f874(AnimCtrl *self, void *obj, s16 speed);
-BOOL func_ov000_0218fa28(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
-BOOL func_ov000_0218fb64(AnimCtrl *self, void *obj, void *tex, void *file, s32 index, s16 blend, u8 force);
-s16 *func_ov000_02192a28(s16 *p);
-BOOL func_ov000_0218fd84(AnimCtrl *self);
+BOOL AnimCtrl_Update(AnimCtrl *self, void *obj, s16 speed);
+BOOL AnimCtrl_SetAnim(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
+BOOL AnimCtrl_SetAnimByIndex(AnimCtrl *self, void *obj, void *tex, void *file, s32 index, s16 blend, u8 force);
+s16 *AnimEvent_Next(s16 *p);
+BOOL AnimCtrl_IsDone(AnimCtrl *self);
 
 static inline void *ResDict_GetDataByIdx(const ResDict *dict, u32 idx) {
     if (dict != NULL && idx < dict->num_entry) {
@@ -83,7 +83,7 @@ static inline void FreeOnHeap(AnimCtrl **ptr) {
 #define FX_SIN_IDX(idx) (FX_SinCosTable_[((idx) >> 4) * 2])
 #define FX_COS_IDX(idx) (FX_SinCosTable_[((idx) >> 4) * 2 + 1])
 
-AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i) {
+AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i) {
     AnimCtrl *ret = NULL;
     switch (i) {
     case 0:
@@ -105,7 +105,7 @@ AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i) {
     return ret;
 }
 
-void func_ov000_02190a80(Model0218fe1c *self, s16 speed) {
+void Model0218fe1c_UpdateAnim(Model0218fe1c *self, s16 speed) {
     s32 frame;
     s16 *ev;
     s16 *best;
@@ -119,7 +119,7 @@ void func_ov000_02190a80(Model0218fe1c *self, s16 speed) {
         return;
     }
     if (self->unk_0c != NULL) {
-        if (func_ov000_0218f874(self->unk_0c, self->renderObj, speed)) {
+        if (AnimCtrl_Update(self->unk_0c, self->renderObj, speed)) {
             self->evCursor = self->evScript;
         }
         if (self->evCursor != NULL) {
@@ -144,7 +144,7 @@ void func_ov000_02190a80(Model0218fe1c *self, s16 speed) {
                     if (best == NULL || *best < *it) {
                         best = it;
                     }
-                    it = func_ov000_02192a28(it + 1);
+                    it = AnimEvent_Next(it + 1);
                 }
                 if (*self->evCursor >= 0) {
                     ev = it;
@@ -155,7 +155,7 @@ void func_ov000_02190a80(Model0218fe1c *self, s16 speed) {
                 if (best == NULL) {
                     best = it;
                     while (*best >= 0) {
-                        best = func_ov000_02192a28(best + 1);
+                        best = AnimEvent_Next(best + 1);
                     }
                 }
                 self->evCursor = best;
@@ -164,20 +164,20 @@ void func_ov000_02190a80(Model0218fe1c *self, s16 speed) {
     }
 done:
     if (self->unk_10 != NULL) {
-        func_ov000_0218f874(self->unk_10, self->renderObj, speed);
+        AnimCtrl_Update(self->unk_10, self->renderObj, speed);
     }
     if (self->unk_14 != NULL) {
-        func_ov000_0218f874(self->unk_14, self->renderObj, speed);
+        AnimCtrl_Update(self->unk_14, self->renderObj, speed);
     }
     if (self->unk_18 != NULL && !self->unk_c2_6) {
-        func_ov000_0218f874(self->unk_18, self->renderObj, speed);
+        AnimCtrl_Update(self->unk_18, self->renderObj, speed);
     }
     if (self->unk_1c != NULL) {
-        func_ov000_0218f874(self->unk_1c, self->renderObj, speed);
+        AnimCtrl_Update(self->unk_1c, self->renderObj, speed);
     }
 }
 
-BOOL func_ov000_02190cb0(Model0218fe1c *self, const char *name, s16 blend, u8 force) {
+BOOL Model0218fe1c_SetAnim(Model0218fe1c *self, const char *name, s16 blend, u8 force) {
     BOOL ret;
     AnimList *list = self->res->anims;
     AnimEventEntry *entry;
@@ -188,20 +188,20 @@ BOOL func_ov000_02190cb0(Model0218fe1c *self, const char *name, s16 blend, u8 fo
     }
     ret = FALSE;
     if (self->unk_0c != NULL) {
-        ret = func_ov000_0218fa28(self->unk_0c, self->renderObj, self->res, list->list[0], name, blend, force);
+        ret = AnimCtrl_SetAnim(self->unk_0c, self->renderObj, self->res, list->list[0], name, blend, force);
     }
     if (self->unk_10 != NULL) {
-        func_ov000_0218fa28(self->unk_10, self->renderObj, self->res, list->list[1], name, blend, force);
+        AnimCtrl_SetAnim(self->unk_10, self->renderObj, self->res, list->list[1], name, blend, force);
     }
     if (self->unk_14 != NULL) {
-        func_ov000_0218fa28(self->unk_14, self->renderObj, self->res, list->list[2], name, 0, force);
+        AnimCtrl_SetAnim(self->unk_14, self->renderObj, self->res, list->list[2], name, 0, force);
     }
     if (self->unk_18 != NULL && !self->unk_c2_6) {
-        func_ov000_0218fa28(self->unk_18, self->renderObj, self->res, list->list[3], name, 0, force);
+        AnimCtrl_SetAnim(self->unk_18, self->renderObj, self->res, list->list[3], name, 0, force);
     }
     if (self->unk_1c != NULL) {
         AnimCtrl_Stop(self->unk_1c, self->renderObj);
-        func_ov000_0218fa28(self->unk_1c, self->renderObj, self->res, list->list[4], name, 0, force);
+        AnimCtrl_SetAnim(self->unk_1c, self->renderObj, self->res, list->list[4], name, 0, force);
     }
     if (ret) {
         i = 0;
@@ -233,27 +233,27 @@ BOOL func_ov000_02190cb0(Model0218fe1c *self, const char *name, s16 blend, u8 fo
     return ret;
 }
 
-void func_ov000_02190e98(Model0218fe1c *self, s32 index, s16 blend, u8 force) {
+void Model0218fe1c_SetAnimByIndex(Model0218fe1c *self, s32 index, s16 blend, u8 force) {
     AnimList *list = self->res->anims;
     AnimCtrl *ctrl;
     if (list == NULL) {
         return;
     }
     if (self->unk_0c != NULL) {
-        func_ov000_0218fb64(self->unk_0c, self->renderObj, self->tex, list->list[0], index, blend, force);
+        AnimCtrl_SetAnimByIndex(self->unk_0c, self->renderObj, self->tex, list->list[0], index, blend, force);
     }
     if (self->unk_10 != NULL) {
-        func_ov000_0218fb64(self->unk_10, self->renderObj, self->tex, self->res->anims->list[1], index, blend, force);
+        AnimCtrl_SetAnimByIndex(self->unk_10, self->renderObj, self->tex, self->res->anims->list[1], index, blend, force);
     }
     if (self->unk_14 != NULL) {
-        func_ov000_0218fb64(self->unk_14, self->renderObj, self->tex, self->res->anims->list[2], index, 0, force);
+        AnimCtrl_SetAnimByIndex(self->unk_14, self->renderObj, self->tex, self->res->anims->list[2], index, 0, force);
     }
     if (!self->unk_c2_6 && self->unk_18 != NULL) {
         ResSet *res = self->res;
         if (self->unk_20 != NULL) {
             res = self->unk_20;
         }
-        func_ov000_0218fb64(self->unk_18, self->renderObj, self->tex, res->anims->list[3], index, 0, force);
+        AnimCtrl_SetAnimByIndex(self->unk_18, self->renderObj, self->tex, res->anims->list[3], index, 0, force);
     }
     ctrl = self->unk_1c;
     if (ctrl == NULL) {
@@ -261,11 +261,11 @@ void func_ov000_02190e98(Model0218fe1c *self, s32 index, s16 blend, u8 force) {
     }
     AnimCtrl_Stop(ctrl, self->renderObj);
     if (self->unk_1c != NULL) {
-        func_ov000_0218fb64(self->unk_1c, self->renderObj, self->tex, self->res->anims->list[4], index, 0, force);
+        AnimCtrl_SetAnimByIndex(self->unk_1c, self->renderObj, self->tex, self->res->anims->list[4], index, 0, force);
     }
 }
 
-void func_ov000_02191008(Model0218fe1c *self) {
+void Model0218fe1c_StopAnim(Model0218fe1c *self) {
     AnimCtrl *a;
     u8 none = 0xff;
     u8 zero = 0;
@@ -312,38 +312,38 @@ void func_ov000_02191008(Model0218fe1c *self) {
     }
 }
 
-BOOL func_ov000_02191120(Model0218fe1c *self) {
+BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *self) {
     BOOL done = TRUE;
 
     if (self->unk_0c != NULL) {
-        if (!func_ov000_0218fd84(self->unk_0c) && !(self->unk_e4 & 0x20000000)) {
+        if (!AnimCtrl_IsDone(self->unk_0c) && !(self->unk_e4 & 0x20000000)) {
             done = FALSE;
         }
     }
     if (self->unk_10 != NULL) {
-        if (!func_ov000_0218fd84(self->unk_10)) {
+        if (!AnimCtrl_IsDone(self->unk_10)) {
             done = FALSE;
         }
     }
     if (self->unk_14 != NULL) {
-        if (!func_ov000_0218fd84(self->unk_14)) {
+        if (!AnimCtrl_IsDone(self->unk_14)) {
             done = FALSE;
         }
     }
     if (self->unk_18 != NULL && !self->unk_c2_6) {
-        if (!func_ov000_0218fd84(self->unk_18)) {
+        if (!AnimCtrl_IsDone(self->unk_18)) {
             done = FALSE;
         }
     }
     if (self->unk_1c != NULL) {
-        if (!func_ov000_0218fd84(self->unk_1c)) {
+        if (!AnimCtrl_IsDone(self->unk_1c)) {
             done = FALSE;
         }
     }
     return done;
 }
 
-void func_ov000_021911c8(Model0218fe1c *self, s16 speed) {
+void Model0218fe1c_SetAnimSpeed(Model0218fe1c *self, s16 speed) {
     if (self->unk_0c != NULL) {
         self->unk_0c->speed = speed;
     }
@@ -372,7 +372,7 @@ static inline void AnimCtrl_SetFrame(AnimCtrl *a, s32 frame) {
     }
 }
 
-s16 *func_ov000_0219122c(Model0218fe1c *self, s32 frame) {
+s16 *Model0218fe1c_SeekMainAnim(Model0218fe1c *self, s32 frame) {
     s16 *ret = NULL;
     AnimCtrl *a = self->unk_0c;
     AnmObj *cur;
@@ -392,11 +392,11 @@ s16 *func_ov000_0219122c(Model0218fe1c *self, s32 frame) {
             }
             if (!AnimCtrl_IsReverse(a)) {
                 while (self->evCursor[0] >= 0 && self->evCursor[0] < (f >> 12)) {
-                    self->evCursor = func_ov000_02192a28(self->evCursor + 1);
+                    self->evCursor = AnimEvent_Next(self->evCursor + 1);
                 }
             } else {
                 while (self->evCursor[0] >= 0 && self->evCursor[0] <= (f >> 12)) {
-                    next = func_ov000_02192a28(self->evCursor + 1);
+                    next = AnimEvent_Next(self->evCursor + 1);
                     if (next[0] > (f >> 12) || next[0] < 0) {
                         break;
                     }
@@ -409,11 +409,11 @@ s16 *func_ov000_0219122c(Model0218fe1c *self, s32 frame) {
     return ret;
 }
 
-s16 *func_ov000_02191318(Model0218fe1c *self, s32 frame) {
+s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *self, s32 frame) {
     s16 *ret = NULL;
 
     if (self->unk_0c != NULL) {
-        ret = func_ov000_0219122c(self, frame);
+        ret = Model0218fe1c_SeekMainAnim(self, frame);
     }
     if (self->unk_10 != NULL) {
         AnimCtrl_SetFrame(self->unk_10, frame);
@@ -430,7 +430,7 @@ s16 *func_ov000_02191318(Model0218fe1c *self, s32 frame) {
     return ret;
 }
 
-void func_ov000_02191418(Model0218fe1c *self, u16 delay, BOOL force) {
+void Model0218fe1c_SetAnimDelay(Model0218fe1c *self, u16 delay, BOOL force) {
     if (self->unk_0c != NULL && (force || self->unk_0c->delay < delay)) {
         self->unk_0c->delay = delay;
     }
@@ -448,7 +448,7 @@ void func_ov000_02191418(Model0218fe1c *self, u16 delay, BOOL force) {
     }
 }
 
-BOOL func_ov000_02191508(Model0218fe1c *self) {
+BOOL Model0218fe1c_IsAnimDelayed(Model0218fe1c *self) {
     BOOL busy = FALSE;
 
     if (self->unk_0c != NULL && self->unk_0c->delay != 0) {
@@ -469,7 +469,7 @@ BOOL func_ov000_02191508(Model0218fe1c *self) {
     return busy;
 }
 
-void func_ov000_021915a0(Model0218fe1c *self) {
+void Model0218fe1c_SetLoop(Model0218fe1c *self) {
     if (self->unk_0c != NULL) {
         self->unk_0c->loop = 1;
     }
@@ -487,7 +487,7 @@ void func_ov000_021915a0(Model0218fe1c *self) {
     }
 }
 
-void func_ov000_02191618(Model0218fe1c *self) {
+void Model0218fe1c_ClearLoop(Model0218fe1c *self) {
     if (self->unk_0c != NULL) {
         self->unk_0c->loop = 0;
     }
@@ -505,7 +505,7 @@ void func_ov000_02191618(Model0218fe1c *self) {
     }
 }
 
-void func_ov000_02191690(Model0218fe1c *self) {
+void Model0218fe1c_PauseAnim(Model0218fe1c *self) {
     if (self->unk_0c != NULL) {
         self->unk_0c->paused = 1;
     }
@@ -523,7 +523,7 @@ void func_ov000_02191690(Model0218fe1c *self) {
     }
 }
 
-void func_ov000_02191708(Model0218fe1c *self) {
+void Model0218fe1c_ResumeAnim(Model0218fe1c *self) {
     if (self->unk_0c != NULL) {
         self->unk_0c->paused = 0;
     }
@@ -541,7 +541,7 @@ void func_ov000_02191708(Model0218fe1c *self) {
     }
 }
 
-void func_ov000_02191780(Model0218fe1c *self) {
+void Model0218fe1c_SetReverse(Model0218fe1c *self) {
     if (self->unk_0c != NULL) {
         self->unk_0c->reverse = 1;
     }
@@ -559,7 +559,7 @@ void func_ov000_02191780(Model0218fe1c *self) {
     }
 }
 
-void func_ov000_021917f8(Model0218fe1c *self) {
+void Model0218fe1c_ClearReverse(Model0218fe1c *self) {
     if (self->unk_0c != NULL) {
         self->unk_0c->reverse = 0;
     }
@@ -596,7 +596,7 @@ void func_ov000_02191920(Model0218fe1c *self, s32 index, s16 blend, u8 force) {
     if (self->unk_20 != NULL) {
         res = self->unk_20;
     }
-    func_ov000_0218fb64(self->unk_18, self->renderObj, self->tex, res->anims->list[3], index, blend, force);
+    AnimCtrl_SetAnimByIndex(self->unk_18, self->renderObj, self->tex, res->anims->list[3], index, blend, force);
 }
 
 }

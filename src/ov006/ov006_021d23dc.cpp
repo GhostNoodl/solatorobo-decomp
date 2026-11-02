@@ -20,8 +20,8 @@ extern const u8 data_ov006_021eb740[];
 
 void ov006_Manager_DispatchMenuCb(int a, void *b, int c);
 UiListItem *ListOwner_GetNth(UiList *self, int n);
-void *func_ov000_02162124(void *p);
-void func_ov000_021627ac(void *p);
+void *ModelViewer_Ctor(void *p);
+void ModelViewer_InitCamera(void *p);
 void func_ov000_02162910(void *p, const void *a, const void *b, const void *c);
 void func_ov000_0216295c(void *p, const void *v, int s);
 ov006_Caption *ov006_Caption_Ctor(ov006_Caption *self);
@@ -35,9 +35,9 @@ void ov006_Slot_Pack(ov006_Slot *self, void *buf);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 void func_ov006_021d3498(ov006_TaskD1F *self, u16 id, BOOL dir);
 ov006_Unk020706a0 *func_020706a0(u16 id);
-void func_02043904(void *p);
-void func_02043b20(void *p);
-void func_ov000_02173648(Task *self);
+void Gfx3DState_SetDefaults(void *p);
+void Gfx3DState_Apply(void *p);
+void TaskList_Insert(Task *self);
 BOOL func_ov006_021d1df8(UiList *window, UiListItem *node);
 BOOL ov006_ListCb_StoreId(UiList *window, UiListItem *node);
 
@@ -83,7 +83,7 @@ void ov006_TaskD1F_Setup(ov006_TaskD1F *self) {
     func_ov000_021548cc(self->unk54, data_ov006_021eb6fe[data_ov006_021ec884->unk5]);
     if (self->unk4A != 0xffff) {
         UiList *w = self->unk54;
-        w->vfunc_a8(func_ov000_02154b58(w, self->unk4A));
+        w->vfunc_a8(UiList_GetItemById(w, self->unk4A));
     } else {
         self->unk54->vfunc_a8(ListOwner_GetNth(self->unk54, 0));
     }
@@ -92,11 +92,11 @@ void ov006_TaskD1F_Setup(ov006_TaskD1F *self) {
     {
         void *p = Heap_Alloc(0x708);
         if (p != NULL) {
-            p = func_ov000_02162124(p);
+            p = ModelViewer_Ctor(p);
         }
         self->unk58 = (ov006_Actor58 *)p;
     }
-    func_ov000_021627ac(self->unk58);
+    ModelViewer_InitCamera(self->unk58);
     func_ov000_02162910(self->unk58, data_ov006_021eb71c, data_ov006_021eb728, data_ov006_021eb770);
     func_ov000_0216295c(self->unk58, data_ov006_021eb740, 0x3d7);
     self->unk5C = ov006_NewLo021cadcc();
@@ -116,7 +116,7 @@ void ov006_TaskD1F_Setup(ov006_TaskD1F *self) {
     self->unk60->posZ = -0x1666;
     self->unk60->flags |= 2;
     self->unk64 = ov006_NewLo021cad50();
-    func_ov000_0215c1bc(self->unk64, 0x74, MsgRes_GetString(res, 0x139));
+    Obj0215c1bc_SetText(self->unk64, 0x74, MsgRes_GetString(res, 0x139));
     self->unk64->flags |= 0x10000;
     self->unk64->flags &= ~0x20000;
     self->unk64->flags |= 2;
@@ -159,10 +159,10 @@ void ov006_TaskD1F_Setup(ov006_TaskD1F *self) {
     }
     {
         GfxSys *g = data_02097d48;
-        func_02043904(g->unk_8b0);
+        Gfx3DState_SetDefaults(g->unk_8b0);
         g->unk_8b0[0] |= 0x30;
         *(vu16 *)0x4000060 = (*(vu16 *)0x4000060 & ~0x3000) | 0x20;
-        func_02043b20(g->unk_8b0);
+        Gfx3DState_Apply(g->unk_8b0);
     }
     if (self->unk54->items != NULL) {
         UiListItem *node = UiList_GetCurrent(self->unk54);
@@ -172,7 +172,7 @@ void ov006_TaskD1F_Setup(ov006_TaskD1F *self) {
         self->unk4A = id;
         str = MsgRes_GetString(data_02149ef8, data_ov006_021eb78c[(u16)(id & 0xfff)]);
         if (self->unk5C != NULL && str != NULL) {
-            func_ov000_0215bb14(self->unk5C, str);
+            Obj0215bb14_SetText(self->unk5C, str);
             self->unk5C->vfunc_70();
         }
         func_ov006_021d3498(self, id, FALSE);
@@ -184,7 +184,7 @@ void ov006_TaskD1F_Setup(ov006_TaskD1F *self) {
     }
     self->fadeLen += self->unk54->openLen;
     self->unk_04 &= ~2;
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
     func_0203cb78(0x14000, 0, 0);
     func_0203cb78(0x14000, 0, 1);
 }

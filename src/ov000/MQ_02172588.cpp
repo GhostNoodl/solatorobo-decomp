@@ -69,9 +69,9 @@ static inline void LoMessageQueueDtor(MessageQueue *self) {
         } \
         self->unk_118 = NULL; \
         func_ov000_021bd09c(); \
-        func_02036838(data_02097cdc, data_0208cc94, 7, 0); \
-        func_02036838(data_02097cdc, data_0208cca0, 7, 0); \
-        func_02036838(data_02097cdc, data_0214b105, 7, 0); \
+        ResMgr_ReleaseByName(data_02097cdc, data_0208cc94, 7, 0); \
+        ResMgr_ReleaseByName(data_02097cdc, data_0208cca0, 7, 0); \
+        ResMgr_ReleaseByName(data_02097cdc, data_0214b105, 7, 0); \
         LoMessageQueueDtor(self); \
     } while (0)
 

@@ -10,12 +10,12 @@ extern "C" {
 extern u8 data_ov014_02217968[];
 extern char data_ov014_02217a0c[];
 extern Ov003Actor *Target_Get(void *p);
-extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
-extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
+extern s32 Actor_FindInRadius(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
+extern Ov003Actor *Obj021984c8_GetActor(Ov003Actor *p);
 extern void Ov003Pickup_Update(Actor *self, s32 a);
 extern void func_ov000_0218996c(u8 a, u8 b);
-extern void func_02049678(SndMgr *a, s32 b, s32 c, s32 d);
-extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
+extern void SndMgr_RequestLoad_02049678(SndMgr *a, s32 b, s32 c, s32 d);
+extern BOOL Actor_IsReady(Ov003Actor *self);
 extern BOOL SndMgr_IsLoadDone(SndMgr *a);
 extern BOOL Ov003Actor_HandleMsg(Ov003Actor *self, Ov014Msg *msg);
 extern const Ov003Step data_ov014_02216a60[];
@@ -39,18 +39,18 @@ void Ov014ActEx_02208618_HitNearby(Ov014ActEx_02208618 *self) {
     }
     self->hit->unk_44 = r;
     k = Target_Get(self->targetObj)->id & 0xf000;
-    n = func_ov000_0219a510(self, ~(1 << (k >> 12)), &self->pos, r, 0, list);
+    n = Actor_FindInRadius(self, ~(1 << (k >> 12)), &self->pos, r, 0, list);
     if (n == 0) {
         return;
     }
     for (i = 0; i < n; i++) {
         Ov003Actor *q;
-        if (list[i] != NULL && (q = func_ov000_021985c0(list[i])) != NULL) {
+        if (list[i] != NULL && (q = Obj021984c8_GetActor(list[i])) != NULL) {
             ActorSub4c *s = q->targetObj;
             if (s == NULL || k != (u16)(s->target & 0xf000)) {
                 Ov003Pickup_Update(self, 0);
                 self->unk_d0 |= 0x1000;
-                func_ov000_02198360(self->fsm, 0x15, 0);
+                History_SetState(self->fsm, 0x15, 0);
                 func_ov000_0218996c(5, 8);
                 return;
             }
@@ -59,24 +59,24 @@ void Ov014ActEx_02208618_HitNearby(Ov014ActEx_02208618 *self) {
 }
 
 Ov014ActExVt_02217838 *Ov014ActExVt_02217838_DtorDelete(Ov014ActExVt_02217838 *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 Ov014ActExVt_02217838 *Ov014ActExVt_02217838_Dtor(Ov014ActExVt_02217838 *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 Ov014ActExGrow *Ov014ActExGrow_DtorDelete(Ov014ActExGrow *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 Ov014ActExGrow *Ov014ActExGrow_Dtor(Ov014ActExGrow *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
@@ -163,7 +163,7 @@ Ov003Actor *Ov014Act_02209280_Ctor(Ov014Act_02209280 *self) {
 
 static inline void Ov014_Kill1f0(Ov014Act_02209280 *self) {
     EffectObj *o;
-    if (data_0214a420 != NULL && (o = func_020657b0(data_0214a420, self->unk_1f0)) != NULL) {
+    if (data_0214a420 != NULL && (o = Effect_Find_020657b0(data_0214a420, self->unk_1f0)) != NULL) {
         void *saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->heapHi;
         if (o != NULL) {
@@ -178,7 +178,7 @@ static inline void Ov014_Kill1f0(Ov014Act_02209280 *self) {
 Ov014Act_02209280 *Ov014Act_02209280_Dtor(Ov014Act_02209280 *self) {
     *(void **)self = data_ov014_02217968;
     Ov014_Kill1f0(self);
-    func_02036838(data_02097cdc, data_ov014_02217a0c, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_ov014_02217a0c, 7, 0);
     Ov003Vt_021f7974_Dtor(&self->scripts);
     Ov003Actor_DtorBase(self);
     return self;
@@ -187,7 +187,7 @@ Ov014Act_02209280 *Ov014Act_02209280_Dtor(Ov014Act_02209280 *self) {
 Ov014Act_02209280 *Ov014Act_02209280_DtorDelete(Ov014Act_02209280 *self) {
     *(void **)self = data_ov014_02217968;
     Ov014_Kill1f0(self);
-    func_02036838(data_02097cdc, data_ov014_02217a0c, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_ov014_02217a0c, 7, 0);
     Ov003Vt_021f7974_Dtor(&self->scripts);
     Ov003Actor_DtorBase(self);
     Heap_Free(self);
@@ -196,14 +196,14 @@ Ov014Act_02209280 *Ov014Act_02209280_DtorDelete(Ov014Act_02209280 *self) {
 
 void Ov014Act_02209280_Init(Ov014Act_02209280 *self) {
     Ov003Actor_Init(self);
-    func_020359d0(data_ov014_02217a0c, 7, 0);
-    func_02049678(data_02097e4c, 4, 0xc, -1);
+    ResMgr_Load(data_ov014_02217a0c, 7, 0);
+    SndMgr_RequestLoad_02049678(data_02097e4c, 4, 0xc, -1);
 }
 
 BOOL Ov014Act_02209280_IsReady(Ov014Act_02209280 *self) {
     BOOL r = TRUE;
-    r = (r & func_ov000_0218cf5c(self)) ? TRUE : FALSE;
-    r = (r & func_02035b90(data_ov014_02217a0c, 7)) ? TRUE : FALSE;
+    r = (r & Actor_IsReady(self)) ? TRUE : FALSE;
+    r = (r & ResMgr_IsLoaded(data_ov014_02217a0c, 7)) ? TRUE : FALSE;
     return (r & SndMgr_IsLoadDone(data_02097e4c)) ? TRUE : FALSE;
 }
 
@@ -258,8 +258,8 @@ void Ov014Act_02209280_Start(Ov014Act_02209280 *self) {
     self->unk_1b0 = self->pos.z;
 }
 
-extern Ov003Actor *func_ov000_0219bf90(void);
-extern BOOL func_ov000_021983b0(ActorSub40 *p, u8 a, s32 b, BOOL c);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
+extern BOOL History_HasState(ActorSub40 *p, u8 a, s32 b, BOOL c);
 
 static inline BOOL Ov014_TickB6(Ov014Act_02209280 *self) {
     BOOL r = FALSE;
@@ -276,7 +276,7 @@ void Ov014Act_02209280_Update(Ov014Act_02209280 *self) {
     if (!Ov014_GameIdle()) {
         return;
     }
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     self->target = 0xffff;
     if (pl != NULL) {
         self->target = pl->id;
@@ -302,15 +302,15 @@ void Ov014Act_02209280_Update(Ov014Act_02209280 *self) {
     }
     switch (self->unk_b4) {
     case 0:
-        if (func_ov000_021983b0(self->fsm, 0x14, 1, 1)) {
+        if (History_HasState(self->fsm, 0x14, 1, 1)) {
             self->unk_b4 = 0x64;
             break;
         }
-        if (func_ov000_021983b0(self->fsm, 0xb, 3, 1)) {
+        if (History_HasState(self->fsm, 0xb, 3, 1)) {
             self->unk_b4 = 0x6e;
             break;
         }
-        if (func_ov000_021983b0(self->fsm, 0x13, 1, 1)) {
+        if (History_HasState(self->fsm, 0x13, 1, 1)) {
             self->unk_b4 = 0x50;
         } else {
             self->unk_b4 = 10;
@@ -363,7 +363,7 @@ void Ov014Act_02209280_Update(Ov014Act_02209280 *self) {
         break;
     }
     case 0x1e:
-        func_ov000_02198360(self->fsm, 0xe, 0);
+        History_SetState(self->fsm, 0xe, 0);
         self->fsm->st = 0;
         self->unk_b6 = 0xffff;
         self->unk_b4++;
@@ -378,7 +378,7 @@ void Ov014Act_02209280_Update(Ov014Act_02209280 *self) {
         self->unk_b6 = self->step->b;
         break;
     case 0x32:
-        func_ov000_02198360(self->fsm, 0x10, 0);
+        History_SetState(self->fsm, 0x10, 0);
         self->fsm->st = 0;
         self->unk_b6 = 0xffff;
         self->unk_b4++;
@@ -393,7 +393,7 @@ void Ov014Act_02209280_Update(Ov014Act_02209280 *self) {
         self->unk_b6 = self->step->b;
         break;
     case 0x28:
-        func_ov000_02198360(self->fsm, 0xf, 0);
+        History_SetState(self->fsm, 0xf, 0);
         self->fsm->st = 0;
         self->unk_b6 = 0xffff;
         self->unk_b4++;
@@ -408,7 +408,7 @@ void Ov014Act_02209280_Update(Ov014Act_02209280 *self) {
         self->unk_b6 = self->step->b;
         break;
     case 0x3c:
-        func_ov000_02198360(self->fsm, 0x11, 0);
+        History_SetState(self->fsm, 0x11, 0);
         self->fsm->st = 0;
         self->unk_b6 = 0xffff;
         self->unk_b4++;

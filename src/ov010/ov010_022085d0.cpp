@@ -23,11 +23,11 @@ void Ov010ActVt_0220ffe4_State23(Ov010Obj0220ffe4 *self) {
         self->fsm->st = 0x1e;
         break;
     case 0x1e:
-        func_02065f88(0x389, &data_ov010_0220f114)->SetScaleAll(0x2000);
-        func_02065f88(0x322, &data_ov010_0220f114)->SetScaleAll(0x1800);
-        func_02065f88(0x389, &data_ov010_0220f120)->SetScaleAll(0x2000);
-        func_02065f88(0x322, &data_ov010_0220f114)->SetScaleAll(0x1800);
-        func_02049f44(data_02097e4c, 0x79, &self->pos, 0);
+        Effect_SpawnId(0x389, &data_ov010_0220f114)->SetScaleAll(0x2000);
+        Effect_SpawnId(0x322, &data_ov010_0220f114)->SetScaleAll(0x1800);
+        Effect_SpawnId(0x389, &data_ov010_0220f120)->SetScaleAll(0x2000);
+        Effect_SpawnId(0x322, &data_ov010_0220f114)->SetScaleAll(0x1800);
+        SndMgr_PlayAt(data_02097e4c, 0x79, &self->pos, 0);
         self->fsm->st = 0x1f;
         self->fsm->timer = 0x28;
         break;
@@ -53,9 +53,9 @@ void Ov010ActVt_0220ffe4_State23(Ov010Obj0220ffe4 *self) {
         o->rot_x = r.v[0];
         o->rot_y = r.v[1];
         o->rot_z = r.v[2];
-        func_02065f88(0x579, &data_ov010_0220f114)->SetScaleAll(0x2000);
-        func_02065f88(0x579, &data_ov010_0220f120)->SetScaleAll(0x2000);
-        func_02049f44(data_02097e4c, 0x5c, &self->pos, 0);
+        Effect_SpawnId(0x579, &data_ov010_0220f114)->SetScaleAll(0x2000);
+        Effect_SpawnId(0x579, &data_ov010_0220f120)->SetScaleAll(0x2000);
+        SndMgr_PlayAt(data_02097e4c, 0x5c, &self->pos, 0);
         self->fsm->st = 100;
         break;
     }

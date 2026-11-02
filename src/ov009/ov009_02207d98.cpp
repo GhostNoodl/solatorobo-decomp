@@ -4,9 +4,9 @@ extern "C" {
 
 extern char data_ov009_022172af[];
 extern char data_ov009_022172b5[];
-extern BOOL func_ov000_0218ffdc(Model0218fe1c *m, ResSet *res, u8 a, BOOL b);
-extern void func_ov000_02190758(Model0218fe1c *m, u16 *rot, s32 a);
-extern BOOL func_ov000_021903b4(Model0218fe1c *m);
+extern BOOL Model0218fe1c_SetRes(Model0218fe1c *m, ResSet *res, u8 a, BOOL b);
+extern void Obj02190758_SetRot(Model0218fe1c *m, u16 *rot, s32 a);
+extern BOOL Model021903b4_Draw(Model0218fe1c *m);
 
 struct Ov009Bits16 {
     u16 b0 : 1;
@@ -17,7 +17,7 @@ BOOL Ov009Multi_Draw(Ov009Multi *self) {
     BOOL r = Ov003Actor_Draw(self);
     s32 i;
     for (i = 0; i < 4; i++) {
-        func_ov000_021903b4(&self->models[i]);
+        Model021903b4_Draw(&self->models[i]);
     }
     return r;
 }
@@ -162,16 +162,16 @@ void Ov009Multi_RunState(Ov009Multi *self) {
     rot[2] = 0;
     rot[0] = FX_Atan2(self->unk_494.y - self->pos.y, len);
     rot[1] = FX_Atan2(self->pos.x - self->unk_494.x, self->pos.z - self->unk_494.z);
-    func_ov000_02190758(&self->models[1], rot, 0);
+    Obj02190758_SetRot(&self->models[1], rot, 0);
     self->models[1].scale.x = 0x1000;
     s = Ov009m_Mul(len, 0x666);
     self->models[1].scale.y = 0x1000;
     self->models[1].scale.z = s;
-    func_ov000_02190758(&self->models[2], rot, 0);
+    Obj02190758_SetRot(&self->models[2], rot, 0);
     self->models[2].scale.x = 0x1000;
     self->models[2].scale.y = 0x1000;
     self->models[2].scale.z = s;
-    func_ov000_02190758(&self->models[3], rot, 0);
+    Obj02190758_SetRot(&self->models[3], rot, 0);
     self->models[3].scale.x = 0x1000;
     self->models[3].scale.y = 0x1000;
     self->models[3].scale.z = s;

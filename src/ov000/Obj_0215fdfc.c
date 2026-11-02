@@ -15,14 +15,14 @@ typedef struct {
 
 extern u8 data_ov000_021c9912[];
 
-void func_ov000_0215fdfc(Obj0215fdfc *self, s32 index, void *entry) {
+void Obj0215fdfc_SetEntry(Obj0215fdfc *self, s32 index, void *entry) {
     if (entry == NULL) {
         entry = &data_ov000_021c9912[index * 6];
     }
     self->unk_10[index] = entry;
 }
 
-void func_ov000_0215fe1c(Obj0215fdfc *self, s32 lo, s32 hi) {
+void Obj0215fdfc_SetRange(Obj0215fdfc *self, s32 lo, s32 hi) {
     self->unk_64 = lo << 12;
     self->unk_60 = hi << 12;
     if (self->unk_5c > self->unk_64) {

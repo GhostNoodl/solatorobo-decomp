@@ -22,7 +22,7 @@ extern void *data_02097e4c;
 extern Dtcm02fe1534 data_02fe1534;
 
 void func_0206281c(void);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 
 VObj *Lo021caac8_Dtor(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021caac8);
@@ -59,15 +59,15 @@ VObj *Menu021ca94c_Dtor(VObj *self) {
 BOOL func_ov000_021521ec(void *self, Msg021521ec *msg) {
     if (msg == NULL) {
         func_0206281c();
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         return FALSE;
     }
     if (msg->unk_06 == 0) {
         data_02fe1534.unk_7c = 1;
-        func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
     } else if (msg->unk_06 == 1) {
         data_02fe1534.unk_7c = 0;
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     }
     return FALSE;
 }

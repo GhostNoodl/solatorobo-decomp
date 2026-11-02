@@ -118,7 +118,7 @@ extern s32 data_02097d78[5];
 extern void func_0203c9e8(int a, int b);
 extern void func_0203cc58(int a, int b, int c);
 extern s32 Rand_UpTo(s32 max);
-extern void func_02043d20(void *obj, int a);
+extern void Gfx3D_SendDL(void *obj, int a);
 extern s32 func_02043d84(void *obj);
 extern void func_02052fcc(GameScene *scene);
 extern s32 func_020572f8(GameScene *scene, void *p);
@@ -153,7 +153,7 @@ static inline void Model_ApplyPart(Model *model, s32 idx) {
     } else {
         tex = NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx) + 0xc));
     }
-    func_02042628(model, tex, part, 0);
+    TexObj_DrawCell(model, tex, part, 0);
 }
 
 static inline s32 GameScene_FxMul(s32 a, s32 b) {

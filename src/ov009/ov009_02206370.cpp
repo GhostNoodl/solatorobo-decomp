@@ -7,21 +7,21 @@ extern void *data_ov009_0221707c;
 extern char data_ov009_02216bb4[];
 extern char data_ov009_02216bba[];
 extern void *Ov003FxList_Dtor(void *p);
-extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern s16 *func_ov000_02191318(Model0218fe1c *m, s32 a);
+extern void *SndMgr_PlayAtPitch(void *mgr, s32 id, const VecFx32 *pos, s32 a);
+extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *m, s32 a);
 
 static inline void Ov009_SpawnSparks(Ov009ActVt_02216dcc *self) {
     EffectObj *e;
     Rot16 r;
-    func_0204a028(data_02097e4c, 0x54, &self->pos, 3);
-    e = func_02065f88(0x25d, &self->pos);
+    SndMgr_PlayAtPitch(data_02097e4c, 0x54, &self->pos, 3);
+    e = Effect_SpawnId(0x25d, &self->pos);
     e->AddPosXYZ(0, 0x1333, 0);
     e->SetScaleAll(0xb33);
     r.y = self->rot_y + 0x6000;
     r.x = 0x800;
     r.z = 0;
     e->SetRot(&r);
-    e = func_02065f88(0x25d, &self->pos);
+    e = Effect_SpawnId(0x25d, &self->pos);
     e->AddPosXYZ(0, 0x1333, 0);
     e->SetScaleAll(0xb33);
     r.y = self->rot_y - 0x6000;
@@ -54,8 +54,8 @@ void Ov009ActVt_02216dcc_StateAttack2(Ov009ActVt_02216dcc *self) {
         self->unk_f0 = 0;
         self->unk_c4 = 0;
         if (self->unk_f2 != 0) {
-            func_ov000_02190cb0(self->model, data_ov009_02216bb4, 0x400, 0);
-            func_ov000_02191318(self->model, 0x2c000);
+            Model0218fe1c_SetAnim(self->model, data_ov009_02216bb4, 0x400, 0);
+            Model0218fe1c_SetAnimFrame(self->model, 0x2c000);
         }
     }
     Ov003Actor_StateAttack(self);
@@ -64,12 +64,12 @@ void Ov009ActVt_02216dcc_StateAttack2(Ov009ActVt_02216dcc *self) {
     }
     self->unk_f2++;
     if (self->unk_f2 < 3) {
-        func_ov000_02198360(self->fsm, 0x10, 0);
+        History_SetState(self->fsm, 0x10, 0);
         return;
     }
     self->unk_f2 = 0;
     self->unk_b6 = 0x96;
-    func_ov000_02190cb0(self->model, data_ov009_02216bba, 0x22, 0);
+    Model0218fe1c_SetAnim(self->model, data_ov009_02216bba, 0x22, 0);
     Ov009_SpawnSparks(self);
 }
 
@@ -225,7 +225,7 @@ Ov009ActVt_02216dcc *Ov009ActVt_02216dcc_DtorDelete(Ov009ActVt_02216dcc *self) {
     Heap_Free(self);
     return self;
 }
-extern void func_0203f2b8(void *p);
+extern void HitSphere_Unlink_0203f2b8(void *p);
 
 static inline void Ov009_VecSet3(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
@@ -246,7 +246,7 @@ void Ov009ActVt_022178f0_Start(Ov009ActVt_022178f0 *self) {
         if (self->hit != NULL) {
             void *q = self->hit;
             if (q != NULL) {
-                func_0203f2b8(q);
+                HitSphere_Unlink_0203f2b8(q);
                 Heap_Free(q);
             }
             self->hit = NULL;

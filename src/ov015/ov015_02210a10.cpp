@@ -4,21 +4,21 @@ extern "C" {
 
 s32 Interp_QuadLerp(s32 t, s32 a, s32 b);
 extern void *data_0208cb74;
-void func_02035acc(void *a, void *b, int c);
-void func_020359fc(void *a, void *b, int c, int d);
-int func_02035bd4(void *a, void *b, int c);
+void ResMgr_ReleaseArchive(void *a, void *b, int c);
+void ResMgr_LoadArchive(void *a, void *b, int c, int d);
+int ResMgr_IsArchiveLoaded(void *a, void *b, int c);
 void *Ov015Msg_Ctor(Ov015Msg *self);
 extern u8 data_ov015_02213198[];
 extern u8 data_ov015_02213188[];
 void func_ov015_0220ec40(Ov015ResultPanel *self);
 extern u8 data_ov015_022131ac[];
-void func_ov000_021c2310(Lo021cca40 *self); // the row base teardown (ctor func_ov000_021c22d8)
+void ListRow_Unlink(Lo021cca40 *self); // the row base teardown (ctor ListRow_Init)
 extern u8 data_ov015_02213200[];
 
 void func_ov015_02210a10(Ov015Msg *self) {
     self->label->flags |= 2;
     self->textBox->flags |= 2;
-    func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
 }
 
 static inline BOOL Ov015_IsState5(UiObj *o) {
@@ -63,15 +63,15 @@ void func_ov015_02210b58(Ov015MsgMgr *self) {
     DELETE_V(self->unk_04);
     HEAP_POP(saved);
     if (self->unk_09 != 0) {
-        func_02035acc((void *)data_0208cca0, data_0208cb74, 2);
+        ResMgr_ReleaseArchive((void *)data_0208cca0, data_0208cb74, 2);
     }
 }
 
 int func_ov015_02210bd8(Ov015MsgMgr *self) {
     if (self->unk_09 == 0) {
-        func_020359fc((void *)data_0208cca0, data_0208cb74, 2, 0);
+        ResMgr_LoadArchive((void *)data_0208cca0, data_0208cb74, 2, 0);
     }
-    return func_02035bd4((void *)data_0208cca0, data_0208cb74, 2);
+    return ResMgr_IsArchiveLoaded((void *)data_0208cca0, data_0208cb74, 2);
 }
 
 BOOL func_ov015_02210c28(void) {
@@ -194,7 +194,7 @@ void *Ov015MsgMgr_Dtor(Ov015MsgMgr *self) {
     DELETE_V(self->unk_04);
     HEAP_POP(saved);
     if (self->unk_09 != 0) {
-        func_02035acc((void *)data_0208cca0, data_0208cb74, 2);
+        ResMgr_ReleaseArchive((void *)data_0208cca0, data_0208cb74, 2);
     }
     return self;
 }
@@ -207,7 +207,7 @@ void *Ov015ResultPanel_Dtor(Ov015ResultPanel *self) {
 
 void *func_ov015_02210fdc(Lo021cca40 *self) {
     SET_VT(self, data_ov015_022131ac);
-    func_ov000_021c2310(self);
+    ListRow_Unlink(self);
     Heap_Free(self);
     return self;
 }
@@ -220,7 +220,7 @@ void func_ov015_02211008(void) {
 
 void *func_ov015_0221100c(Lo021cca40 *self) {
     SET_VT(self, data_ov015_022131ac);
-    func_ov000_021c2310(self);
+    ListRow_Unlink(self);
 
     return self;
 }

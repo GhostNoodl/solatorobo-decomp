@@ -5,7 +5,7 @@
 
 extern "C" {
 
-const char *func_02039674(const void *path);
+const char *Path_SkipDir(const void *path);
 
 static inline void RotZYX(MtxFx33 *m, const u16 *rot) {
     MtxFx33 t;
@@ -63,7 +63,7 @@ void func_ov000_021b8014(FieldProp *self, const FieldPropDef *def, s32 a, u8 b) 
     }
     self->loader.state = 0;
     self->loader.def = def;
-    self->loader.name = func_02039674(def);
+    self->loader.name = Path_SkipDir(def);
     self->model.trans = def->pos;
     RotZYX(&self->model.rot, def->rot);
     if (def->boxTest) {

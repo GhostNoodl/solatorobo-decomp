@@ -67,7 +67,7 @@ extern void SndMgr_LoadHeapState(SndMgr *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
 extern void func_ov000_0218999c(u8 a, u8 b);
 extern void func_ov000_0218996c(u8 a, u8 b);
-extern Ov003FvPlayer *func_ov000_0219bf90(void);
+extern Ov003FvPlayer *ActorMgr_FindPlayer(void);
 extern void func_ov000_021b6b4c(Ov003FvCtx *ctx, u16 a, VecFx32 *v);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
@@ -142,7 +142,7 @@ void Ov003ActVt_021f8220_State21(Ov003Fv *self) {
             return;
         }
         func_ov000_0218996c(5, 0xf);
-        func_02049a48(data_02097e4c, 0x46, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x46, -1, -1, -1);
         self->work->state++;
         return;
     case 2:
@@ -150,7 +150,7 @@ void Ov003ActVt_021f8220_State21(Ov003Fv *self) {
         if (w->timer > 300 && self->unk_1a == 0) {
             area = data_ov000_021ccd6c->area;
             if (Ov003Fv_Level(data_ov000_021ccd6c->lv) >= 2) {
-                pl = func_ov000_0219bf90();
+                pl = ActorMgr_FindPlayer();
                 if (!(pl->unk_b24_1 ? TRUE : FALSE) && Ov003Fv_SameCol(&data_ov000_021ccd54->unk_ca, Ov003Fv_PlCol(pl))) {
                     data_ov000_021ccd6c->unk_1f0 = self->unk_0e;
                     d.x = pl->unk_75c.x;
@@ -192,7 +192,7 @@ void Ov003ActVt_021f8220_State21(Ov003Fv *self) {
             Ov003Fv_Bgm(data_02097e48.queue, 0x222);
         }
         if (self->work->timer == 0x60) {
-            func_02049a48(data_02097e4c, 0x223, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x223, -1, -1, -1);
         }
         if ((self->work->timer & 0x3f) == 0) {
             func_ov000_0218999c(3, 10);
@@ -244,7 +244,7 @@ void Ov003ActVt_021f8220_State22(Ov003Fv *self) {
             return;
         }
         func_ov000_0218999c(5, 0xf);
-        func_02049a48(data_02097e4c, 0x46, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x46, -1, -1, -1);
         self->work->state++;
         return;
     case 2:
@@ -252,7 +252,7 @@ void Ov003ActVt_021f8220_State22(Ov003Fv *self) {
         if (w->timer > 300 && self->unk_1a == 0) {
             area = data_ov000_021ccd6c->area;
             if (Ov003Fv_Level(data_ov000_021ccd6c->lv) >= 3) {
-                pl = func_ov000_0219bf90();
+                pl = ActorMgr_FindPlayer();
                 if (!(pl->unk_b24_1 ? TRUE : FALSE) && Ov003Fv_SameCol(&data_ov000_021ccd54->unk_ca, Ov003Fv_PlCol(pl))) {
                     data_ov000_021ccd6c->unk_1f0 = self->unk_0e;
                     d.x = pl->unk_75c.x;
@@ -294,7 +294,7 @@ void Ov003ActVt_021f8220_State22(Ov003Fv *self) {
             Ov003Fv_Bgm(data_02097e48.queue, 0x222);
         }
         if (self->work->timer == 0x60) {
-            func_02049a48(data_02097e4c, 0x223, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x223, -1, -1, -1);
         }
         if ((self->work->timer & 0x3f) == 0) {
             func_ov000_0218999c(3, 10);

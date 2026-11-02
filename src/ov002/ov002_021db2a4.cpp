@@ -63,7 +63,7 @@ void func_ov002_021db2a4(Obj021eff74 *self) {
             str = data_ov002_021efe30;
             break;
         }
-        func_ov000_0215bb14(self->unk_10, str);
+        Obj0215bb14_SetText(self->unk_10, str);
         self->unk_10->vfunc_70();
     }
     self->unk_14 = id;
@@ -71,19 +71,19 @@ void func_ov002_021db2a4(Obj021eff74 *self) {
     if (flags & 1) {
         switch (id) {
         case 0:
-            func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             self->unk_08 = 1;
             ov002_Menu_Close(self);
             break;
         case 1:
             if (self->unk_20 == 0) {
-                func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
                 self->unk_08 = 2;
                 ov002_Menu_Close(self);
             } else {
                 void *str;
                 void *g;
-                func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
                 g = data_02149ef8;
                 str = NULL;
                 if (self->unk_20 == 1) {
@@ -92,19 +92,19 @@ void func_ov002_021db2a4(Obj021eff74 *self) {
                     str = MsgRes_GetString(g, 0xc1);
                 }
                 if (str != NULL) {
-                    func_ov000_0215bb14(self->unk_10, str);
+                    Obj0215bb14_SetText(self->unk_10, str);
                     self->unk_10->vfunc_70();
                 }
             }
             break;
         case 2:
-            func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             self->unk_08 = 3;
             ov002_Menu_Close(self);
             break;
         }
     } else if (flags & 2) {
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         self->unk_08 = 3;
         ov002_Menu_Close(self);
     }

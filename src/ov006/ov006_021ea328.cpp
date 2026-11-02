@@ -20,12 +20,12 @@ void Ov006Racer_AddBoost(Ov006Racer *self) {
         self->unk_21e[1] = 99;
     }
     if (self->unk_19c_0 & 1) {
-        EffectObj *fx = func_02065f88(0x195, &self->pos);
+        EffectObj *fx = Effect_SpawnId(0x195, &self->pos);
         if (fx != NULL) {
             self->unk_1d0 = fx->id;
             fx->speed = 0x2800;
         }
-        func_02049f44(data_02097e4c, 0x11, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x11, &self->pos, 0);
     }
 }
 

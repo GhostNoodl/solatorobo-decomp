@@ -20,13 +20,13 @@ typedef struct {
 
 extern "C" {
 
-BOOL func_02054f10(void *a, int b);
+BOOL Model_IsReady(void *a, int b);
 void func_ov000_0215ed18(Obj0215eab4 *self);
 
-void func_ov000_0215eab4(Obj0215eab4 *self) {
+void Obj0215eab4_Draw(Obj0215eab4 *self) {
     s32 x;
     s32 y;
-    if (!func_02054f10(self->model, 0xffff)) {
+    if (!Model_IsReady(self->model, 0xffff)) {
         return;
     }
     if (!self->b3) {

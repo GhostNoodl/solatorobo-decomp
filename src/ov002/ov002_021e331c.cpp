@@ -4,11 +4,11 @@ extern "C" {
 
 extern VFunc data_0208ba70[];
 
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 
-void func_ov002_021e331c(Obj021f002c *self) {
+void Obj021f002c_CreateText(Obj021f002c *self) {
     Ov002Text2 *p;
     {
         void *saved;
@@ -19,7 +19,7 @@ void func_ov002_021e331c(Obj021f002c *self) {
     p = (Ov002Text2 *)Heap_Alloc(0xb8);
     if (p != NULL) {
         *(VFunc **)p = data_0208ba70;
-        func_0204c7d0(p);
+        TextWin_Init(p);
     }
     self->text = p;
     p->font = 8;

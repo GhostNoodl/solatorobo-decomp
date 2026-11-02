@@ -11,7 +11,7 @@ extern "C" {
 
 extern char data_ov006_021ec4ad[];
 extern char data_ov006_021ec4e0[];
-void func_ov000_021987b8(ActorSub48 *col, s32 a, VecFx32 *b, Rot16 *c);
+void Body_Update(ActorSub48 *col, s32 a, VecFx32 *b, Rot16 *c);
 void func_ov000_02198e34(ActorSub48 *col, Rot16 *out, VecFx32 *v, s32 a);
 ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 ov006_SlotSub *ov006_Slot_GetSub2C(ov006_Slot *self);
@@ -81,7 +81,7 @@ void Ov006Racer_Move(Ov006Racer *self) {
         self->unk_1f4--;
     }
     f = 0;
-    func_ov000_021987b8(self->hit, f, &self->unk_1c0, &self->rot);
+    Body_Update(self->hit, f, &self->unk_1c0, &self->rot);
     if (self->hit->unk_50 == 0) {
         return;
     }
@@ -163,15 +163,15 @@ void Ov006Racer_Move(Ov006Racer *self) {
                             e->SetScaleAll(0x3ccd);
                         }
                         if (self->idx == data_ov006_021ec884->unk5) {
-                            func_02049f44(data_02097e4c, 0x35, &p, 0);
+                            SndMgr_PlayAt(data_02097e4c, 0x35, &p, 0);
                         }
                     } else {
-                        EffectObj *e = func_02065f88(0x66, &p);
+                        EffectObj *e = Effect_SpawnId(0x66, &p);
                         if (e != NULL) {
                             e->SetRotXYZ(FX_AcosIdx(ny), FX_Atan2(nx, nz), 0);
                         }
                         if (self->idx == data_ov006_021ec884->unk5) {
-                            func_02049f44(data_02097e4c, 0x52, &p, 0);
+                            SndMgr_PlayAt(data_02097e4c, 0x52, &p, 0);
                         }
                     }
                 }

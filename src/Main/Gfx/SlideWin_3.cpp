@@ -60,8 +60,8 @@ struct SlideWinX : TextWin {
 
 struct SlideModel : Model {
     SlideModel(const char *name, const char *file, int a) {
-        func_02041218(&pltt);
-        func_02041440(this, file, a);
+        PlttRes_Init_02041218(&pltt);
+        TexObj_Init(this, file, a);
         STD_CopyString(this->name, name);
     }
     static void *operator new(unsigned long size) {
@@ -74,13 +74,13 @@ extern "C" {
 extern void func_0203a4dc(GfxMgr *mgr, void *arg);
 extern void func_0203a5a4(GfxMgr *mgr, u16 c);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
-extern BOOL func_0204cc18(TextWin *win, const char **s);
+extern BOOL TextWin_ParseTag(TextWin *win, const char **s);
 extern void func_0204cb28(TextWin *win, u32 arg);
 extern void func_02051f70(SlideWinX *win);
 extern const char *func_0206ffa0(u16 id);
 extern void func_020708fc(u16 id, char *out);
 extern void func_02070b98(u16 id, char *out, u16 a, u16 b);
-extern void func_020359fc(const char *a, const char *b, u16 c, u8 d);
+extern void ResMgr_LoadArchive(const char *a, const char *b, u16 c, u8 d);
 extern const char *data_0208b9cc[];
 extern const char *data_0208cc90;
 
@@ -128,7 +128,7 @@ static inline TextWin *SlideMsg_NewWin(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
-        func_0204c7d0(win);
+        TextWin_Init(win);
     }
     return win;
 }
@@ -254,9 +254,9 @@ static inline void SlidePanel_Open(SlidePanel *panel, BOOL sound) {
             panel->unk_20 = 0;
             if (sound && Gfx_IsFadeIdle(0)) {
                 if (panel->kind >= 3) {
-                    func_02049a48(data_02097e4c, 0x2f, -1, -1, -1);
+                    SndMgr_PlayVolume(data_02097e4c, 0x2f, -1, -1, -1);
                 } else {
-                    func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
+                    SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
                 }
             }
         }
@@ -344,7 +344,7 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
             if (c == '\\') {
                 c = fn((const void **)&win->str);
             } else if (c == '<') {
-                func_0204cc18(win, &win->str);
+                TextWin_ParseTag(win, &win->str);
                 switch (win->code) {
                 case 20:
                     func_0204cb28(win, (u32)win->str);
@@ -562,12 +562,12 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
                                 {
                                     SlideModel *m = new SlideModel(name, file, 1);
                                     panel->nextModel = m;
-                                    func_020359fc(m->name, m->unk_04c, 2, 0);
+                                    ResMgr_LoadArchive(m->name, m->unk_04c, 2, 0);
                                 }
                                 if (panel->kind > 2) {
                                     SlideModel *m = new SlideModel(data_0208cc90, data_0208b9cc[panel->unk_0_10], 1);
                                     panel->nextModel2 = m;
-                                    func_020359fc(m->name, m->unk_04c, 2, 0);
+                                    ResMgr_LoadArchive(m->name, m->unk_04c, 2, 0);
                                 }
                                 if (!panel->flag27 || panel->unk_10 != panel->unk_12) {
                                     for (int i = 0; i < 3; i++) {
@@ -646,7 +646,7 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
             func_0203a5a4(data_02097ce0, c);
             count++;
             if (c < 0x80 || c > 0xaf) {
-                func_02049a48(data_02097e4c, 0x23, 0xe, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x23, 0xe, -1, -1);
             }
             {
                 u32 n;

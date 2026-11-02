@@ -20,21 +20,21 @@ extern void *data_02097e4c;
 extern char data_ov000_021cc62a[];
 extern char data_ov000_021cc71d[];
 extern char data_ov000_021cc723[];
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
-void func_ov000_021911c8(void *a, s32 b);
-void func_ov000_02191418(void *a, u16 delay, BOOL force);
-void func_ov000_02191780(void *a);
-void func_ov000_021917f8(void *a);
-BOOL func_ov000_02198360(St_021af464 *st, s32 state, s32 x);
-void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
+BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
+void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
+void Model0218fe1c_SetAnimDelay(void *a, u16 delay, BOOL force);
+void Model0218fe1c_SetReverse(void *a);
+void Model0218fe1c_ClearReverse(void *a);
+BOOL History_SetState(St_021af464 *st, s32 state, s32 x);
+void Body_Update(void *a, s32 b, s32 c, s32 d);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Actor_MoveToPos(Actor *self, const void *target, s32 turn);
 void Actor_Move(Actor *self, s32 turn);
 s32 func_ov000_021b288c(void *self);
 void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_0203f364(void *obj);
-void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
+void HitSphere_Unlink_0203f364(void *obj);
+void *SndMgr_PlayAt(void *mgr, s32 id, void *pos, s32 a);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
 static inline Actor *FindActor021af464(u16 id) {
@@ -113,7 +113,7 @@ void func_ov000_021af464(Robo021ca458 *self) {
     if (((St_021af464 *)self->fsm)->state < 10) {
         ActorSub48 *s48 = self->hit;
         s48->unk_9a_3 = 0;
-        func_0203f364(s48);
+        HitSphere_Unlink_0203f364(s48);
         self->hit->unk_9a_4 = 0;
     }
     switch (((St_021af464 *)self->fsm)->state) {
@@ -127,11 +127,11 @@ void func_ov000_021af464(Robo021ca458 *self) {
             }
         } else {
             self->unk_b24_14 = 0;
-            func_ov000_02198360(((St_021af464 *)self->fsm), 1, 0);
+            History_SetState(((St_021af464 *)self->fsm), 1, 0);
             break;
         }
-        func_02049f44(data_02097e4c, 7, &self->pos, 0);
-        func_ov000_02190cb0(self->model, data_ov000_021cc62a, 0x800, 0);
+        SndMgr_PlayAt(data_02097e4c, 7, &self->pos, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov000_021cc62a, 0x800, 0);
         self->speed = Dist021af464(pos.x - self->pos.x, pos.z - self->pos.z) >> 4;
         self->velY = ((pos.y - self->pos.y) >> 4) + 0x185;
         self->friction = 0;
@@ -149,12 +149,12 @@ void func_ov000_021af464(Robo021ca458 *self) {
                 break;
             }
         }
-        func_ov000_02190cb0(self->model,
+        Model0218fe1c_SetAnim(self->model,
                             self->unk_b24_14 == 1 ? data_ov000_021cc71d : data_ov000_021cc723,
                             0x400, 0);
-        func_ov000_021915a0(self->model);
-        func_ov000_021911c8(self->model, 0x1400);
-        func_ov000_02191418(self->model, 10, 0);
+        Model0218fe1c_SetLoop(self->model);
+        Model0218fe1c_SetAnimSpeed(self->model, 0x1400);
+        Model0218fe1c_SetAnimDelay(self->model, 10, 0);
         ((St_021af464 *)self->fsm)->timer = 0;
         ((St_021af464 *)self->fsm)->state++;
         break;
@@ -166,7 +166,7 @@ void func_ov000_021af464(Robo021ca458 *self) {
             self->rot_y = ang;
             self->moveYaw = ang;
             self->target = 0xffff;
-            func_02049f44(data_02097e4c, 1, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 1, &self->pos, 0);
             ((St_021af464 *)self->fsm)->state++;
         } else {
             VecFx32 d;
@@ -197,29 +197,29 @@ void func_ov000_021af464(Robo021ca458 *self) {
             }
             self->friction = 0;
             self->unk_b29 |= 2;
-            func_ov000_02190cb0(self->model, data_ov000_021cc62a, 0x800, 0);
-            func_02049f44(data_02097e4c, 7, &self->pos, 0);
+            Model0218fe1c_SetAnim(self->model, data_ov000_021cc62a, 0x800, 0);
+            SndMgr_PlayAt(data_02097e4c, 7, &self->pos, 0);
             ((St_021af464 *)self->fsm)->state = 10;
         } else if (self->velY == 0) {
-            func_ov000_02191418(self->model, 1, 0);
+            Model0218fe1c_SetAnimDelay(self->model, 1, 0);
         } else if (self->velY < 0) {
-            func_ov000_02191780(self->model);
+            Model0218fe1c_SetReverse(self->model);
         } else {
-            func_ov000_021917f8(self->model);
+            Model0218fe1c_ClearReverse(self->model);
         }
         break;
     }
     case 10:
         self->unk_b29 |= 2;
         Actor_Move(self, 0);
-        func_ov000_021987b8(self->hit, 0, 0, 0);
+        Body_Update(self->hit, 0, 0, 0);
         if (self->velY > 0) {
             break;
         }
         if (!(self->hit->unk_50 & 0x20000000)) {
             break;
         }
-        func_ov000_02198360(((St_021af464 *)self->fsm), 4, 0);
+        History_SetState(((St_021af464 *)self->fsm), 4, 0);
         break;
     }
     if (Ev19_021af464()) {

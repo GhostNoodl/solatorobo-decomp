@@ -159,7 +159,7 @@ struct Ov007SprSeq {
     u16 **unk_0c;
 };
 
-// ov000 model resource (0x138 bytes, func_ov000_0218e9c4).
+// ov000 model resource (0x138 bytes, ResSet_Init).
 struct Ov007Anim {
     s16 unk_00;
     u8 unk_02;
@@ -173,13 +173,13 @@ struct Ov007Anim {
 };
 OV007_SIZE(Ov007Anim, 0x138);
 
-// What func_ov000_02190a30 returns for a model.
+// What Model0218fe1c_GetAnimCtrl returns for a model.
 struct Ov007MdlAnm {
     u8 unk_00[0x112];
     s16 unk_112;
 };
 
-// ov000 model (0xe8 bytes, func_ov000_0218fe1c).
+// ov000 model (0xe8 bytes, Model0218fe1c_Init).
 struct Ov007Model {
     u8 unk_00[0x4];
     void *unk_04;
@@ -254,7 +254,7 @@ public:
 };
 OV007_SIZE(Ov007Player, 0xe8);
 
-// Title camera (0xbc bytes, func_0204b370).
+// Title camera (0xbc bytes, Camera_Ctor).
 class Ov007Cam : public Ov007V {
 public:
     u8 unk_04[0x24];
@@ -340,8 +340,8 @@ extern "C" {
         if ((field) != NULL) {                          \
             Model *p_ = (field);                  \
             if (p_ != NULL) {                           \
-                func_02041558(p_);                      \
-                func_02041278(&p_->pltt);         \
+                TexObj_Release(p_);                      \
+                PlttRes_Release(&p_->pltt);         \
                 Heap_Free(p_);                      \
             }                                           \
             (field) = NULL;                             \
@@ -399,7 +399,7 @@ void func_ov007_021cef80(Ov007Scene *s);
 void func_ov007_021ce038(Ov007Scene *s);
 void func_0203cb78(s32 a, int b, int c);
 BOOL func_ov000_02189068(void *p);
-void func_ov000_0215c1bc(void *self, u32 flags, char *str);
+void Obj0215c1bc_SetText(void *self, u32 flags, char *str);
 }
 
 // OV007_DEL_V for a TextWin (its deleting destructor is the second virtual).
@@ -432,8 +432,8 @@ void func_ov000_0215c1bc(void *self, u32 flags, char *str);
     if ((field) != NULL) {                              \
         Model *p_ = (field);                      \
         if (p_ != NULL) {                               \
-            func_02041558(p_);                          \
-            func_02041278(&p_->pltt);             \
+            TexObj_Release(p_);                          \
+            PlttRes_Release(&p_->pltt);             \
             Heap_Free(p_);                          \
         }                                               \
         (field) = NULL;                                 \
@@ -479,9 +479,9 @@ extern const Ov007Row data_ov007_021cfa5c[];
 extern const Ov007Row data_ov007_021cfa60[];
 extern const Ov007RowB data_ov007_021cfa64[];
 
-BOOL func_02054f10(Model *a, u32 b);
-void func_ov000_02180660(int a, int b);
-void func_ov000_02180754(void);
+BOOL Model_IsReady(Model *a, u32 b);
+void TaskHost_Create(int a, int b);
+void TaskHost_Destroy(void);
 Ov007Menu8 *Task_FindById(int id);
 
 }
@@ -547,7 +547,7 @@ static inline Ov007Player *Ov007_NewPlayer(Ov007Scene *s, s32 id) {
     s->player->flags |= 0x20000;
     s->player->unk_1c = 4;
     s->player->v08();
-    func_ov000_0215c1bc(s->player, 0x8000, (char *)MsgRes_GetString(data_02149ef8, id));
+    Obj0215c1bc_SetText(s->player, 0x8000, (char *)MsgRes_GetString(data_02149ef8, id));
     s->player->posZ = -0x299a;
     s->player->v70();
     return p;

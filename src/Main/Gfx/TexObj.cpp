@@ -65,15 +65,15 @@ typedef struct TexObj {
 extern void MTX_Identity22_(TexObjVec *v);
 extern void NNS_G2dInitImageProxy(TexObj *obj);
 extern int NNS_G2dGetImageLocation(TexObj *obj, int idx);
-extern void func_0203bd40(GfxSys *sys, u32 offset, BOOL sub);
+extern void GfxSys_FreeVram(GfxSys *sys, u32 offset, BOOL sub);
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(u32 key);
-extern void func_0203e58c(u32 id);
-extern void func_02035acc(const char *arc, const char *name, u16 mode);
+extern void Vram_CancelTransfer(u32 id);
+extern void ResMgr_ReleaseArchive(const char *arc, const char *name, u16 mode);
 
 
 void func_020416b4(TexObj *obj, int i);
 
-void func_02041440(TexObj *obj, const char *name, u8 owned) {
+void TexObj_Init(TexObj *obj, const char *name, u8 owned) {
     int i;
     obj->owned = owned;
     obj->unk_06c = 0;
@@ -110,23 +110,23 @@ void func_02041440(TexObj *obj, const char *name, u8 owned) {
     STD_CopyString(obj->name, name);
 }
 
-void func_02041558(TexObj *obj) {
+void TexObj_Release(TexObj *obj) {
     u16 i;
     int slot;
     slot = NNS_G2dGetImageLocation(obj, 1);
     if (slot != -1 && !(obj->unk_084 & 2)) {
-        func_0203bd40(data_02097d48, slot, 0);
+        GfxSys_FreeVram(data_02097d48, slot, 0);
     }
     slot = NNS_G2dGetImageLocation(obj, 2);
     if (slot != -1 && !(obj->unk_084 & 4)) {
-        func_0203bd40(data_02097d48, slot, 1);
+        GfxSys_FreeVram(data_02097d48, slot, 1);
     }
     if (obj->texKey != 0) {
         NNS_GfdDefaultFuncFreeTexVram(obj->texKey);
     }
     NNS_G2dInitImageProxy(obj);
     obj->texKey = 0;
-    func_02041278(&obj->pltt);
+    PlttRes_Release(&obj->pltt);
     for (i = 0; i < obj->count; i++) {
         func_020416b4(obj, i);
     }
@@ -136,12 +136,12 @@ void func_02041558(TexObj *obj) {
     }
     if (obj->owned && obj->name[0] != 0) {
         if (obj->arcName[0] != 0) {
-            func_02035acc(obj->arcName, obj->name, 2);
+            ResMgr_ReleaseArchive(obj->arcName, obj->name, 2);
         } else {
-            func_02036838(data_02097cdc, obj->name, 2, 0);
+            ResMgr_ReleaseByName(data_02097cdc, obj->name, 2, 0);
         }
     }
-    func_02041440(obj, NULL, 0);
+    TexObj_Init(obj, NULL, 0);
 }
 
 void func_020416b4(TexObj *obj, int i) {
@@ -152,10 +152,10 @@ void func_020416b4(TexObj *obj, int i) {
     }
     e = &obj->entries[i];
     if (e->slot0 != -1) {
-        func_0203bd40(data_02097d48, e->slot0, 0);
+        GfxSys_FreeVram(data_02097d48, e->slot0, 0);
     }
     if (e->slot1 != -1) {
-        func_0203bd40(data_02097d48, e->slot1, 1);
+        GfxSys_FreeVram(data_02097d48, e->slot1, 1);
     }
     if (e->key != -1) {
         NNS_GfdDefaultFuncFreeTexVram(e->key);
@@ -164,7 +164,7 @@ void func_020416b4(TexObj *obj, int i) {
     e->slot1 = -1;
     e->key = -1;
     for (j = 0; j < 3; j++) {
-        func_0203e58c(e->transfers[j]);
+        Vram_CancelTransfer(e->transfers[j]);
         e->transfers[j] = 0;
     }
     e->unk_08 = 0;
@@ -288,7 +288,7 @@ typedef struct TexObjRes3 {
 } TexObjRes3;
 
 extern u32 func_0203bc20(GfxSys *sys, u32 size, BOOL sub, GfxVramNode *cur, GfxVramNode *node);
-extern u32 func_0203e458(int type, u32 src, u32 dst, u32 size, u32 chunk);
+extern u32 Vram_QueueTransfer(int type, u32 src, u32 dst, u32 size, u32 chunk);
 extern void NNS_G2dSetImageLocation(TexObj *obj, int idx, u32 addr);
 extern void NNS_G2dLoadImage1DMapping(TexObjImageInfo *img, u32 addr, int idx, TexObj *obj);
 extern void func_0203e098(const char *name, u32 value);
@@ -297,11 +297,11 @@ extern u32 (*NNS_GfdDefaultFuncAllocTexVram)(u32 size, int is4x4, int opt);
 }
 
 #ifdef NONMATCHING
-// Status (round drA): func_020417e0 is 38 / 31 (raw / register-masked, dsi/1.3 with the project flags); this is the
+// Status (round drA): TexObj_SetRes is 38 / 31 (raw / register-masked, dsi/1.3 with the project flags); this is the
 // best clean draft. Blocker: the NULL arm's zero is hoisted to the entry (move-constant-loads step 34 -> 5, block 5
 // pressure 6 vs 11) and SetData's data is numbered above Upload's size. History: docs/MATCHING.md rounds mcA, hzS,
 // hzT, qpE, nmA, cvA (search for the address); the full list is docs/UNMATCHED.md.
-// func_020417e0: 11 raw / 4 register-masked (was 26 / 4). Round mcA: InitAnim's `anim` is declared before
+// TexObj_SetRes: 11 raw / 4 register-masked (was 26 / 4). Round mcA: InitAnim's `anim` is declared before
 // `data`, which numbers it below `data` (inline locals are numbered in their own declaration order) and gives
 // the ROM's sb/r8 in the entry loop. Left: (1) the ROM sets the NULL arm's zero (`mov fp, sl`) in the second
 // loop's preheader, ours hoists it to the entry with the count loop's zero; (2) in the inlined SetData/Upload the
@@ -374,7 +374,7 @@ static inline void TexObj_ResetEntry(TexObj *obj, const u16 &idx) {
     obj->entries[idx].unk_0c = 0;
 }
 
-void func_020417e0(TexObj *obj, const TexObjRes *res) {
+void TexObj_SetRes(TexObj *obj, const TexObjRes *res) {
     int n;
     u16 count;
     u8 *anims;

@@ -3,7 +3,7 @@
 
 extern "C" {
 
-u32 func_0204045c(void);
+u32 Rand_GetGlobal(void);
 
 void func_ov000_0216926c(Lo021cb7ec *self) {
     self->unk_a0 = -1;

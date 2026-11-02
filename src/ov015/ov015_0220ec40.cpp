@@ -18,18 +18,18 @@ extern u8 data_ov000_021cb5a8[];
 extern u8 data_ov000_021cae48[];
 extern char data_ov015_02213100[];
 void *MsgRes_GetString(void *a, s32 b);
-void func_ov000_02157c90(void *a, void *b);
+void UiList021cb4a8_SetLabel(void *a, void *b);
 const char *func_0206ffa0(u16 id);
 void func_ov000_021c3af4(void *p);
-void func_ov000_021c54f4(void *p);
-void func_ov000_021c22d8(void *p);
+void Lo021ccb54_ClearLabels(void *p);
+void ListRow_Init(void *p);
 void func_ov000_021c5bac(void *p);
-void *func_0206ec48(u16 id);
+void *Param_Get(u16 id);
 u8 *func_0206ee20(u16 id);
-void func_ov000_021c3fd4(void *a, void *b);
-void func_ov000_021c55e8(void *a, void *b);
-void func_ov000_021c5630(void *a, void *b);
-void func_ov000_021c5678(void *a, void *b);
+void LoBase021ccb54_021ccbe0_AppendRow(void *a, void *b);
+void Obj021c55e8_SetLabel1(void *a, void *b);
+void Obj021c55e8_SetLabel2(void *a, void *b);
+void Obj021c55e8_SetLabel3(void *a, void *b);
 
 
 static inline void Ov015_SetUiPos(UiObj *o, s16 x, s16 y, s16 z) {
@@ -84,7 +84,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
         STD_CopyLString(self->name, (const char *)MsgRes_GetString(res, 0xcf), 0x40);
         break;
     case 1:
-        func_ov000_02157c90(self->unk_04, MsgRes_GetString(res, 0xce));
+        UiList021cb4a8_SetLabel(self->unk_04, MsgRes_GetString(res, 0xce));
         STD_CopyLString(self->name, func_0206ffa0(sh->catchId), 0x40);
         break;
     default:
@@ -101,7 +101,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
         SET_VT(p, data_ov000_021ccbe0);
         func_ov000_021c3af4(p);
         SET_VT(p, data_ov000_021ccb54);
-        func_ov000_021c54f4(p);
+        Lo021ccb54_ClearLabels(p);
     }
     self->unk_08 = p;
     p->width = 0xf8;
@@ -124,11 +124,11 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
             e = (Lo021cca40 *)Heap_Alloc(0x48);
             if (e != NULL) {
                 SET_VT(e, data_ov015_022131ac);
-                func_ov000_021c22d8(e);
+                ListRow_Init(e);
                 SET_VT(e, data_ov000_021cca40);
                 func_ov000_021c5bac(e);
             }
-            name = func_0206ec48(items[i].id);
+            name = Param_Get(items[i].id);
             k = 0;
             d = func_0206ee20(items[i].id);
             if (d != NULL) {
@@ -138,12 +138,12 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
             e->unk_38 = name;
             e->unk_3c = n;
             e->unk_40 = k * n;
-            func_ov000_021c3fd4(self->unk_08, e);
+            LoBase021ccb54_021ccbe0_AppendRow(self->unk_08, e);
         }
     }
-    func_ov000_021c55e8(self->unk_08, MsgRes_GetString(res, 0x9a));
-    func_ov000_021c5630(self->unk_08, MsgRes_GetString(res, 0xd3));
-    func_ov000_021c5678(self->unk_08, MsgRes_GetString(res, 0x3f));
+    Obj021c55e8_SetLabel1(self->unk_08, MsgRes_GetString(res, 0x9a));
+    Obj021c55e8_SetLabel2(self->unk_08, MsgRes_GetString(res, 0xd3));
+    Obj021c55e8_SetLabel3(self->unk_08, MsgRes_GetString(res, 0x3f));
     self->unk_08->vfunc_08();
     self->unk_08->flags |= 4;
     p = (UiObj *)Heap_Alloc(0xe0);

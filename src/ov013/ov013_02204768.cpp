@@ -8,10 +8,10 @@ extern char data_ov013_0220ba60[];
 extern void Ov003Vec_RotateY(VecFx32 *out, u16 rot, const VecFx32 *v);
 extern void *Ov003Vt_021f79a8_Ctor(void *p);
 extern void *Ov003Vt_021f79a8_Dtor(void *p);
-extern void *func_ov000_0218ea20(void *p);
-extern void *func_ov000_0218fee4(void *p);
-extern ResSet *func_ov000_0218e9c4(ResSet *p);
-extern BOOL func_ov000_0218f110(void *p);
+extern void *ResSet_ReleaseAll(void *p);
+extern void *Model0218fe1c_FreeAnims(void *p);
+extern ResSet *ResSet_Init(ResSet *p);
+extern BOOL ResSet_UpdateLoad(void *p);
 
 static inline void Ov013_InitDc(Ov013ActEx_02204454 *self) {
     self->unk_ce_0 = 0;
@@ -35,7 +35,7 @@ static inline void Ov013_DtorDc(Ov013ActEx_02204454 *self) {
     if (self->unk_dc != NULL) {
         Ov013Names *p = self->unk_dc;
         if (p != NULL) {
-            func_ov000_0218ea20(p);
+            ResSet_ReleaseAll(p);
             Heap_Free(p);
         }
         self->unk_dc = NULL;
@@ -46,7 +46,7 @@ static inline void Ov013_DtorDc(Ov013ActEx_02204454 *self) {
     if (self->unk_e0 != NULL) {
         Model0218fe1c *p = self->unk_e0;
         if (p != NULL) {
-            func_ov000_0218fee4(p);
+            Model0218fe1c_FreeAnims(p);
             Heap_Free(p);
         }
         self->unk_e0 = NULL;
@@ -54,7 +54,7 @@ static inline void Ov013_DtorDc(Ov013ActEx_02204454 *self) {
     data_02097dd0->cur = saved;
     Ov013_InitDc(self);
     Ov003Vt_021f79a8_Dtor(self->unk_ec);
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
 }
 
 static inline void Ov013_SetRes(Ov013Names *p, const char *a, const char *b) {
@@ -84,14 +84,14 @@ struct Ov013Shadow {
 };
 
 extern void func_ov003_021cf33c(void *p, void *q);
-extern Ov003Actor *func_ov000_0219bf90(void);
-extern void func_ov000_02190758(void *m, u16 *rot, s32 a);
-extern BOOL func_ov000_021903b4(void *m);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
+extern void Obj02190758_SetRot(void *m, u16 *rot, s32 a);
+extern BOOL Model021903b4_Draw(void *m);
 extern Ov013Prm data_ov013_0220b2ec;
 extern u8 *func_020704b4(s32 kind);
 
 static inline u16 Ov013_LockId(void) {
-    return ((Robo021ca458 *)func_ov000_0219bf90())->unk_b1c;
+    return ((Robo021ca458 *)ActorMgr_FindPlayer())->unk_b1c;
 }
 
 static inline void Ov013_SetShadow(Ov013Shadow *s, u8 a, u8 b, u8 c, u8 d, u16 size, u16 f, Ov013ShadowSub sub) {
@@ -105,9 +105,9 @@ static inline void Ov013_SetShadow(Ov013Shadow *s, u8 a, u8 b, u8 c, u8 d, u16 s
 }
 
 BOOL Ov013ActEx_02204454_IsReady(Ov013ActEx_02204454 *self) {
-    BOOL r = func_ov000_021946f8(self);
+    BOOL r = ActorEx_IsReady(self);
     if (self->unk_dc->unk_00 >= 0) {
-        r = (r & func_ov000_0218f110(self->unk_dc)) ? TRUE : FALSE;
+        r = (r & ResSet_UpdateLoad(self->unk_dc)) ? TRUE : FALSE;
     }
     return r;
 }
@@ -129,8 +129,8 @@ BOOL Ov013ActEx_02204454_Draw(Ov013ActEx_02204454 *self) {
     u16 lk = Ov013_LockId();
     if (lk == self->id) {
         self->unk_e0->trans = self->pos;
-        func_ov000_02190758(self->unk_e0, &self->rot_x, 0);
-        return func_ov000_021903b4(self->unk_e0);
+        Obj02190758_SetRot(self->unk_e0, &self->rot_x, 0);
+        return Model021903b4_Draw(self->unk_e0);
     }
     {
         Model0218fe1c *m = self->model;
@@ -144,7 +144,7 @@ BOOL Ov013ActEx_02204454_Draw(Ov013ActEx_02204454 *self) {
         m->scale.z = FX_Mul(z, 0xd00);
         sc = self->unk_3c->unk_14;
         self->unk_3c->unk_14 = FX_Mul(sc, 0x59a);
-        r = func_ov000_02194c08(self);
+        r = ActorEx_Draw(self);
         self->unk_3c->unk_14 = sc;
         m = self->model;
         m->scale.x = x;
@@ -164,7 +164,7 @@ void Ov013ActEx_02204454_StartMove(Ov013ActEx_02204454 *self, u16 a, u16 b, u16 
     self->target = b;
     self->unk_d8 = &data_ov013_0220b2ec;
     self->moveYaw = c;
-    func_ov000_02198360(self->fsm, 0xe, 0);
+    History_SetState(self->fsm, 0xe, 0);
 }
 
 u32 Ov013ActEx_02204454_IsDone(Ov013ActEx_02204454 *self) {

@@ -3,8 +3,8 @@
 
 extern "C" {
 
-extern void func_02043e2c(void *ptr);
-extern void *func_02043e1c(u32 size);
+extern void Gfx3D_FreeHi(void *ptr);
+extern void *Gfx3D_AllocHi(u32 size);
 extern void *func_0203465c(void);
 extern void *func_020346d4(void);
 extern void *func_02034740(void);
@@ -49,7 +49,7 @@ BOOL func_02033858(MoPlayer *player, MoStream *stream, u32 flags) {
         player->audioCodec != 4) {
         return FALSE;
     }
-    dec = (MoVideoDecoder *)func_02043e1c(0x454);
+    dec = (MoVideoDecoder *)Gfx3D_AllocHi(0x454);
     player->decoder = dec;
     MIi_CpuClearFast(0, dec, 0x454);
     player->decodeFunc = (int (*)(MoVideoDecoder *))func_0203465c();
@@ -68,27 +68,27 @@ BOOL func_02033858(MoPlayer *player, MoStream *stream, u32 flags) {
         return FALSE;
     }
     player->numBuffers = flags;
-    player->framesY = (void **)func_02043e1c(flags * 4);
+    player->framesY = (void **)Gfx3D_AllocHi(flags * 4);
     if (player->framesY == NULL) {
         return FALSE;
     }
-    player->framesUV = (void **)func_02043e1c(player->numBuffers * 4);
+    player->framesUV = (void **)Gfx3D_AllocHi(player->numBuffers * 4);
     if (player->framesUV == NULL) {
         return FALSE;
     }
     for (i = 0; i < player->numBuffers; i++) {
-        player->framesY[i] = func_02043e1c(player->height << 8);
+        player->framesY[i] = Gfx3D_AllocHi(player->height << 8);
         if (player->framesY[i] == NULL) {
             return FALSE;
         }
-        player->framesUV[i] = func_02043e1c((player->height >> 1) << 8);
+        player->framesUV[i] = Gfx3D_AllocHi((player->height >> 1) << 8);
         if (player->framesUV[i] == NULL) {
             return FALSE;
         }
         MIi_CpuClearFast(0, player->framesY[i], player->height << 8);
         MI_CpuFill8(player->framesUV[i], 0x80, (player->height >> 1) << 8);
     }
-    player->unk_64 = (u32 *)func_02043e1c(player->numBuffers * 4);
+    player->unk_64 = (u32 *)Gfx3D_AllocHi(player->numBuffers * 4);
     if (player->unk_64 == NULL) {
         return FALSE;
     }
@@ -101,13 +101,13 @@ BOOL func_02033858(MoPlayer *player, MoStream *stream, u32 flags) {
     player->decodedFrames = 0;
     player->shownFrames = 0;
     for (k = 0; k < 2; k++) {
-        player->chunkBuffers[k] = func_02043e1c(MOFLD(u32, player, 0x24) + 0x400);
+        player->chunkBuffers[k] = Gfx3D_AllocHi(MOFLD(u32, player, 0x24) + 0x400);
         if (player->chunkBuffers[k] == NULL) {
             return FALSE;
         }
     }
     if (player->audioCodec != 0) {
-        player->audioDecoders = (MoAudioDecoder *)func_02043e1c(player->audioChannels * sizeof(MoAudioDecoder));
+        player->audioDecoders = (MoAudioDecoder *)Gfx3D_AllocHi(player->audioChannels * sizeof(MoAudioDecoder));
         if (player->audioDecoders == NULL) {
             return FALSE;
         }
@@ -115,7 +115,7 @@ BOOL func_02033858(MoPlayer *player, MoStream *stream, u32 flags) {
     }
     pos = player->stream->position;
     player->stream->Seek(MOFLD(u32, player, 0x2c) + player->dataOffset);
-    player->keyFrames = (MoKeyFrame *)func_02043e1c(player->numKeyFrames * 8);
+    player->keyFrames = (MoKeyFrame *)Gfx3D_AllocHi(player->numKeyFrames * 8);
     if (!player->stream->Read(player->keyFrames, player->numKeyFrames * 8)) {
         return FALSE;
     }
@@ -156,39 +156,39 @@ void func_02033df0(MoPlayer *player) {
             player->stream->Release();
         }
     }
-    func_02043e2c(player->decoder);
+    Gfx3D_FreeHi(player->decoder);
     if (player->framesY != NULL) {
         for (i = 0; i < player->numBuffers; i++) {
-            func_02043e2c(player->framesY[i]);
+            Gfx3D_FreeHi(player->framesY[i]);
         }
-        func_02043e2c(player->framesY);
+        Gfx3D_FreeHi(player->framesY);
     }
     if (player->framesUV != NULL) {
         for (i = 0; i < player->numBuffers; i++) {
-            func_02043e2c(player->framesUV[i]);
+            Gfx3D_FreeHi(player->framesUV[i]);
         }
-        func_02043e2c(player->framesUV);
+        Gfx3D_FreeHi(player->framesUV);
     }
     if (player->unk_64 != NULL) {
-        func_02043e2c(player->unk_64);
+        Gfx3D_FreeHi(player->unk_64);
     }
     if (player->tmpY != NULL) {
-        func_02043e2c(player->tmpY);
+        Gfx3D_FreeHi(player->tmpY);
     }
     if (player->tmpUV != NULL) {
-        func_02043e2c(player->tmpUV);
+        Gfx3D_FreeHi(player->tmpUV);
     }
     for (j = 0; j < 2; j++) {
         if (player->chunkBuffers[j] != NULL) {
-            func_02043e2c(player->chunkBuffers[j]);
+            Gfx3D_FreeHi(player->chunkBuffers[j]);
         }
         player->chunkBuffers[j] = NULL;
     }
     if (player->keyFrames != NULL) {
-        func_02043e2c(player->keyFrames);
+        Gfx3D_FreeHi(player->keyFrames);
     }
     if (player->audioDecoders != NULL) {
-        func_02043e2c(player->audioDecoders);
+        Gfx3D_FreeHi(player->audioDecoders);
     }
     player->stream = NULL;
     player->framesY = NULL;
@@ -321,13 +321,13 @@ BOOL func_02034298(MoPlayer *player, void *dst, u32 stride, int mode) {
     }
     if (mode != 0) {
         if (player->tmpY == NULL) {
-            player->tmpY = func_02043e1c(player->height << 8);
+            player->tmpY = Gfx3D_AllocHi(player->height << 8);
             if (player->tmpY == NULL) {
                 return FALSE;
             }
         }
         if (player->tmpUV == NULL) {
-            player->tmpUV = func_02043e1c((player->height >> 1) << 8);
+            player->tmpUV = Gfx3D_AllocHi((player->height >> 1) << 8);
             if (player->tmpUV == NULL) {
                 return FALSE;
             }

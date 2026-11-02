@@ -45,7 +45,7 @@ typedef struct FieldPlayer {
 } FieldPlayer;
 
 extern FieldPlayer *data_ov000_021ccd30;
-extern BOOL func_ov000_0216f674(FieldPlayer *player, int id);
+extern BOOL MessageQueue_GetById(FieldPlayer *player, int id);
 extern BOOL func_ov000_02170568(void *p);
 extern void func_ov000_021bc458(FieldFade *fade);
 
@@ -55,16 +55,16 @@ static inline BOOL Field_IsPlayerBusy(void) {
     if (player == NULL) {
         return FALSE;
     }
-    if (func_ov000_0216f674(player, 0x10)) {
+    if (MessageQueue_GetById(player, 0x10)) {
         return TRUE;
     }
-    if (func_ov000_0216f674(player, 0x11)) {
+    if (MessageQueue_GetById(player, 0x11)) {
         return TRUE;
     }
-    if (func_ov000_0216f674(player, 0x12)) {
+    if (MessageQueue_GetById(player, 0x12)) {
         return TRUE;
     }
-    if (func_ov000_0216f674(player, 0x13)) {
+    if (MessageQueue_GetById(player, 0x13)) {
         return TRUE;
     }
     if (player->unk_11c == NULL) {

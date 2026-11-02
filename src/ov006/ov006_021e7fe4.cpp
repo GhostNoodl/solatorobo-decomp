@@ -41,8 +41,8 @@ extern "C" {
 extern const char data_ov006_021ec48c[];
 extern const char data_ov006_021ec49b[];
 
-s32 func_ov000_02199128(ov006_Finder021e7fe4 *self, ov006_Query021e7fe4 *q, void **out, s32 max);
-s32 func_02049bdc(SndMgr *a, s32 b, s32 c);
+s32 Finder_CollectActors(ov006_Finder021e7fe4 *self, ov006_Query021e7fe4 *q, void **out, s32 max);
+s32 SndMgr_PlayPan(SndMgr *a, s32 b, s32 c);
 
 static inline void ov006_FinderQuery_Init(ov006_FinderQuery021e7fe4 *fq) {
     fq->q.mask = 0;
@@ -73,7 +73,7 @@ void Ov006Racer_CheckItems(Ov006Racer *self) {
         fq.q.unk_18 = 0;
         fq.q.unk_1c = 0x46000;
         fq.q.bits.b2 = 0;
-        n = func_ov000_02199128(&fq.finder, &fq.q, (void **)hits, 0x20);
+        n = Finder_CollectActors(&fq.finder, &fq.q, (void **)hits, 0x20);
         for (i = 0; i < n; i++) {
             Actor *h = hits[i];
             if (h->target == self->id) {
@@ -94,12 +94,12 @@ void Ov006Racer_CheckItems(Ov006Racer *self) {
                 eff->speed = 0x2000;
             }
             if (self->idx == data_ov006_021ec884->unk5) {
-                func_02049bdc(data_02097e4c, 0x44, 5);
+                SndMgr_PlayPan(data_02097e4c, 0x44, 5);
             }
         } else {
             self->unk_1fc++;
             if ((self->unk_1fc & 0xf) == 0 && self->idx == data_ov006_021ec884->unk5) {
-                func_02049bdc(data_02097e4c, 0x11, 0xc);
+                SndMgr_PlayPan(data_02097e4c, 0x11, 0xc);
             }
         }
     } else {

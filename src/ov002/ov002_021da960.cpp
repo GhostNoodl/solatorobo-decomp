@@ -3,9 +3,9 @@
 extern "C" {
 
 
-BOOL func_ov000_021903b4(Model0218fe1c *a);
+BOOL Model021903b4_Draw(Model0218fe1c *a);
 
-void func_ov002_021da960(Obj021efe7c *self) {
+void Obj021efe7c_Draw(Obj021efe7c *self) {
     Obj021efe6c *w = self->board;
     Ov002CamPos *cam = w->cam;
     Obj021efe4c *q;
@@ -22,11 +22,11 @@ void func_ov002_021da960(Obj021efe7c *self) {
         MI_Copy36B(&q->rot, &q->unk_08->rot);
         q->unk_08->trans = q->trans;
         q->unk_08->scale = q->scale;
-        func_ov000_021903b4(q->unk_08);
+        Model021903b4_Draw(q->unk_08);
         MI_Copy36B(&q->rot, &q->unk_10->rot);
         q->unk_10->trans = q->trans;
         q->unk_10->scale = q->scale;
-        func_ov000_021903b4(q->unk_10);
+        Model021903b4_Draw(q->unk_10);
     }
     for (n = w->pieces; n != NULL; n = n->next) {
         if (n->unk_4a == 2) {

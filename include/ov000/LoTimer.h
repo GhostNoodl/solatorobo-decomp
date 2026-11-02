@@ -1,10 +1,10 @@
 #ifndef OV000_LOTIMER_H
 #define OV000_LOTIMER_H
 
-// The field's stage timer (0x54 bytes, ctor func_ov000_0216e574; ListBuffer021cb940::unk_54, made by
-// func_ov000_02171478). func_ov000_0216da2c starts it counting up to `limit` (mode 1) or down from it
-// to 0 (mode 2); func_ov000_0216dae4 runs it (state 0..9), func_ov000_0216df28 draws it with its two
-// models (built by func_ov000_0216e67c, freed by func_ov000_0216e5d0). Times are in frames
+// The field's stage timer (0x54 bytes, ctor LoTimer_Init; ListBuffer021cb940::unk_54, made by
+// func_ov000_02171478). LoTimer_Setup starts it counting up to `limit` (mode 1) or down from it
+// to 0 (mode 2); LoTimer_Update runs it (state 0..9), LoTimer_Draw draws it with its two
+// models (built by func_ov000_0216e67c, freed by LoTimer_FreeModels). Times are in frames
 // (0x57e40: 99:59.99).
 
 #include "types.h"
@@ -64,13 +64,13 @@ typedef struct LoTimer {
 extern "C" {
 #endif
 
-void func_ov000_0216e574(LoTimer *self);
-void func_ov000_0216da2c(LoTimer *self, s32 mode, s32 limit, s32 c);
-BOOL func_ov000_0216dae4(LoTimer *self);
-void func_ov000_0216df28(LoTimer *self);
-void func_ov000_0216e5d0(LoTimer *self);
+void LoTimer_Init(LoTimer *self);
+void LoTimer_Setup(LoTimer *self, s32 mode, s32 limit, s32 c);
+BOOL LoTimer_Update(LoTimer *self);
+void LoTimer_Draw(LoTimer *self);
+void LoTimer_FreeModels(LoTimer *self);
 void func_ov000_0216e67c(LoTimer *self);
-void func_ov000_0216e894(LoTimer *self);
+void LoTimer_Finish(LoTimer *self);
 void func_ov000_0216e968(LoTimer *self);
 void func_ov000_0216eaf8(LoTimer *self);
 

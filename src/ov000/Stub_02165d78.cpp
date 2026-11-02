@@ -5,7 +5,7 @@
 
 extern "C" {
 
-void func_ov000_02165d78(Lo021cb6b0 *self) {
+void Lo021cb6b0_FreeAnim(Lo021cb6b0 *self) {
     Ctx0216607c *p = self->unk_30;
     if (p != NULL && p->anim != NULL) {
         Heap_FreeHi(p->anim);

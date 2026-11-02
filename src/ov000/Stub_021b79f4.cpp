@@ -5,12 +5,12 @@
 
 extern "C" {
 
-void func_0203f920(void *p);
+void HitMesh_Unlink_0203f920(void *p);
 void HitMesh_Detach(void *p);
 void Heap_Free(void *p);
-void func_0203f0b4(void *p);
+void Vram_FreeRes(void *p);
 FieldPropModel *func_ov000_021b700c(FieldPropModel *p);
-void func_02036838(void *mgr, const char *name, s32 type, s32 force);
+void ResMgr_ReleaseByName(void *mgr, const char *name, s32 type, s32 force);
 
 FieldPropModel *func_ov000_021b6f94(FieldPropModel *p);
 
@@ -45,7 +45,7 @@ FieldProp *func_ov000_021b7a7c(FieldProp *self) {
     if (self->hitMesh != NULL) {
         void *saved;
         void *p;
-        func_0203f920(self->hitMesh);
+        HitMesh_Unlink_0203f920(self->hitMesh);
         saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->heapHi;
         p = self->hitMesh;
@@ -60,13 +60,13 @@ FieldProp *func_ov000_021b7a7c(FieldProp *self) {
     }
     func_ov000_021b700c(&self->model);
     if (self->loader.mdl != NULL) {
-        func_0203f0b4(*self->loader.mdl);
+        Vram_FreeRes(*self->loader.mdl);
     }
     if (self->loader.tex != NULL) {
-        func_0203f0b4(*self->loader.tex);
+        Vram_FreeRes(*self->loader.tex);
     }
     if (self->loader.flag0 && self->loader.flag1) {
-        func_02036838(data_02097cdc, self->loader.path, 7, 0);
+        ResMgr_ReleaseByName(data_02097cdc, self->loader.path, 7, 0);
     }
     return self;
 }

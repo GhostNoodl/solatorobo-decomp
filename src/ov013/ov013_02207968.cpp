@@ -3,7 +3,7 @@
 extern "C" {
 
 extern void *data_ov013_0220bd2c;
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 
 Ov013Act_02207968 *Ov013Act_02207968_Ctor(Ov013Act_02207968 *self) {
     Ov003Actor_Ctor(self);
@@ -36,7 +36,7 @@ void Ov013Act_02207968_Start(Ov013Act_02207968 *self) {
     m->unk_9a_4 = 0;
     Ov013_VecSet(&self->unk_44->unk_0c, 0, -0x4cd, 0);
     self->target = 0xffff;
-    p = func_ov000_0219bf90();
+    p = ActorMgr_FindPlayer();
     if (p != NULL) {
         self->target = p->id;
     }

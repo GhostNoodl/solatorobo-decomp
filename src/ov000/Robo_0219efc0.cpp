@@ -18,7 +18,7 @@ void func_ov000_021b2d48(Robo021ca458 *self);
 void func_ov000_02168e18(Lo021cb840 *self, s32 a, s32 b, VecFx32 *p);
 void func_02062764(s32 a, s32 b);
 BOOL func_ov000_0219b3b4(void *p);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_ov000_021b1814(Robo021ca458 *self, s32 a, s32 b);
 BOOL func_ov000_021b3e90(Robo021ca458 *self);
 void func_ov000_021b1a54(Robo021ca458 *self, s32 a);
@@ -149,7 +149,7 @@ static inline BOOL CanMove_0219efc0(Robo021ca458 *self) {
     return r;
 }
 
-void func_ov000_0219efc0(Robo021ca458 *self) {
+void Robo021ca458_UpdateMode1(Robo021ca458 *self) {
     Param0206ef10 *p;
     Actor *t9;
     BOOL x;
@@ -440,7 +440,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
         self->unk_b22_9 == 0 && self->unk_b24_1 && self->unk_93_4 && !self->unk_b29_3 && self->unk_b22_0 == 0 &&
         self->unk_b24_12 == 0 && self->fsm->current != 0x11 && (self->fsm->current != 0xb || !self->unk_b24_26) &&
         data_0214a424->unk_026 >= 0x2d0) {
-        func_02049a48(data_02097e4c, 0x30b, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x30b, -1, -1, -1);
         func_ov000_021b1814(self, 1, 0);
     }
     x = FALSE;

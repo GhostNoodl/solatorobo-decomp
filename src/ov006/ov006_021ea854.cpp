@@ -9,8 +9,8 @@
 
 extern "C" {
 
-int func_ov000_0219a510(Actor *self, int a, VecFx32 *pos, s32 r, int b, void **out);
-Ov006Racer *func_ov000_021985c0(void *p);
+int Actor_FindInRadius(Actor *self, int a, VecFx32 *pos, s32 r, int b, void **out);
+Ov006Racer *Obj021984c8_GetActor(void *p);
 BOOL Ov006Racer_IsFinished(Ov006Racer *p);
 void Ov006Racer_AddBoost(Ov006Racer *p);
 
@@ -41,7 +41,7 @@ void Ov006ActVt_021ec54c_StateIdle(ActorEx *self) {
         if (data_ov006_021ec884->unk13D == 2) {
             return;
         }
-        n = func_ov000_0219a510(self, 0x80, &self->pos, self->radius + 0x3000, 0, hits);
+        n = Actor_FindInRadius(self, 0x80, &self->pos, self->radius + 0x3000, 0, hits);
         if (n == 0) {
             return;
         }
@@ -50,7 +50,7 @@ void Ov006ActVt_021ec54c_StateIdle(ActorEx *self) {
             if (hits[i] == NULL) {
                 continue;
             }
-            p = func_ov000_021985c0(hits[i]);
+            p = Obj021984c8_GetActor(hits[i]);
             if (p == NULL) {
                 continue;
             }
@@ -59,7 +59,7 @@ void Ov006ActVt_021ec54c_StateIdle(ActorEx *self) {
             }
             Ov006Racer_AddBoost(p);
             self->vel = p->pos;
-            func_02065f88(0x57d, &self->pos);
+            Effect_SpawnId(0x57d, &self->pos);
             ov006_Item_Next(self);
             return;
         }

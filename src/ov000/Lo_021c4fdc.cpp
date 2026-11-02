@@ -21,7 +21,7 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_0215eab4(Obj0215eab4 *p);
+void Obj0215eab4_Draw(Obj0215eab4 *p);
 
 static inline void SetPos0215eab4(Obj0215eab4 *p, s32 x, s32 y, s32 z) {
     p->unk_04 = x;
@@ -39,7 +39,7 @@ void func_ov000_021c4fdc(Obj021c4fdc *self, s32 a, const VecFx32 *v) {
     p.y += self->unk_ac << 12;
     p.z = self->unk_68 - 0x100;
     SetPos0215eab4(self->unk_90, p.x, p.y, p.z);
-    func_ov000_0215eab4(self->unk_90);
+    Obj0215eab4_Draw(self->unk_90);
 }
 
 }

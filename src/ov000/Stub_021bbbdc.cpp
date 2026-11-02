@@ -10,7 +10,7 @@ typedef struct {
 
 extern "C" {
 
-void func_02043d20(void *p, s32 a);
+void Gfx3D_SendDL(void *p, s32 a);
 void func_ov000_021bbf78(Obj021bbbdc *self);
 
 void func_ov000_021bbbdc(Obj021bbbdc *self) {
@@ -19,7 +19,7 @@ void func_ov000_021bbbdc(Obj021bbbdc *self) {
     case 11:
     case 12:
     case 13:
-        func_02043d20(data_02097d48->unk_8b0, 0);
+        Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
         func_ov000_021bbf78(self);
         if (self->unk_5c != NULL) {
             self->unk_5c->vfunc_20();

@@ -35,7 +35,7 @@ typedef struct ObjPoolEntry {
 } ObjPoolEntry;
 
 typedef struct ObjPool {
-    /* 0x000 */ VecFx32 playerPos; // the robot's position, stored each frame by func_ov000_021a0d4c
+    /* 0x000 */ VecFx32 playerPos; // the robot's position, stored each frame by Robo021ca458_RunState
     /* 0x00c */ ObjPoolEntry *head;
     /* 0x010 */ ObjPoolEntry entries[16];
 } ObjPool;
@@ -119,10 +119,10 @@ extern UnkSys *data_02097dd0;
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *ptr);
 extern void Heap_FreeHi(void *ptr);
-extern void func_0203f2b8(void *obj);
+extern void HitSphere_Unlink_0203f2b8(void *obj);
 extern void HitMesh_Detach(void *obj);
 
-void func_020599f4(ObjPool *pool, ObjPoolEntry *entry);
+void ObjPool_FreeEntry(ObjPool *pool, ObjPoolEntry *entry);
 
 static inline s32 ObjPool_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -150,7 +150,7 @@ static inline void ObjPool_Reset(ObjPool *pool) {
     }
     for (e = pool->head; e != NULL; e = next) {
         next = e->next;
-        func_020599f4(pool, e);
+        ObjPool_FreeEntry(pool, e);
     }
     ObjPool_Init(pool);
 }

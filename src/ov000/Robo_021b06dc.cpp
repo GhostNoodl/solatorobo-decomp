@@ -16,7 +16,7 @@ extern "C" {
 
 extern Robo021b06dcEntry data_ov000_021ca1b0[];
 void func_ov000_021697dc(Lo021cb798 *p, u16 a, u16 b);
-void func_ov000_0216b508(Lo0216b474 *p, s32 want, BOOL part22);
+void Lo0216b474_Ask(Lo0216b474 *p, s32 want, BOOL part22);
 
 static inline BOOL PlayerIdle021b06dc(void) {
     FieldState *pl = data_ov000_021ccd54;
@@ -70,7 +70,7 @@ void func_ov000_021b06dc(Robo021ca458 *self) {
         BOOL f = data_0214a424->bits18.flag10 ? TRUE : FALSE;
         ListBuffer021cb940 *o = (ListBuffer021cb940 *)data_ov000_021ccd30->unk_11c;
         if (o != NULL) {
-            func_ov000_0216b508(o->unk_68, 1, f);
+            Lo0216b474_Ask(o->unk_68, 1, f);
         }
     }
 }

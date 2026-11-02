@@ -14,8 +14,8 @@ void Ov009ActVt_022166a4_StateMove(Ov009ActVt_022166a4 *self) {
         if (self->unk_ee_0) {
             anim = data_ov009_02216abc;
         }
-        func_ov000_02190cb0(self->model, (char *)anim, 0x2ab, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, (char *)anim, 0x2ab, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st++;
         self->velY = 0;
         self->friction = 0;
@@ -29,7 +29,7 @@ void Ov009ActVt_022166a4_StateMove(Ov009ActVt_022166a4 *self) {
     if (self->pos.y - v.y > 0x3000) {
         self->hit->unk_30 = 0x80000000;
     }
-    func_ov000_021987b8(self->hit, 1, 0, 0);
+    Body_Update(self->hit, 1, 0, 0);
     self->hit->unk_30 = 0xc0000000;
 }
 
@@ -48,13 +48,13 @@ void Ov009ActVt_022166a4_StateAttack(Ov009ActVt_022166a4 *self) {
     ActorSub40 *st;
     s32 g;
     if (!Ov009_GameIdle()) {
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         return;
     }
     st = self->fsm;
     switch (st->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov009_02216aa4, 0x200, 1);
+        Model0218fe1c_SetAnim(self->model, data_ov009_02216aa4, 0x200, 1);
         self->fsm->st++;
         self->speed = 0;
         self->velY = 0;
@@ -71,8 +71,8 @@ void Ov009ActVt_022166a4_StateAttack(Ov009ActVt_022166a4 *self) {
         g = self->hit->check.y;
         st->timer++;
         if (st->timer > 0x2d || self->pos.y < g + 0xc00) {
-            func_ov000_02190cb0(self->model, data_ov009_02216ab6, 0x200, 0);
-            func_ov000_021915a0(self->model);
+            Model0218fe1c_SetAnim(self->model, data_ov009_02216ab6, 0x200, 0);
+            Model0218fe1c_SetLoop(self->model);
             self->fsm->timer = 0;
             self->fsm->st++;
             if (self->pos.y < g + 0xc00) {
@@ -86,7 +86,7 @@ void Ov009ActVt_022166a4_StateAttack(Ov009ActVt_022166a4 *self) {
         g = self->unk_1c;
         st->timer++;
         if (st->timer > g) {
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
             self->speed = 0;
             self->velY = 0;
             self->friction = 0;
@@ -95,7 +95,7 @@ void Ov009ActVt_022166a4_StateAttack(Ov009ActVt_022166a4 *self) {
         break;
     }
     Actor_Move(self, 0);
-    func_ov000_021987b8(self->hit, 0, 0, 0);
+    Body_Update(self->hit, 0, 0, 0);
 }
 
 }

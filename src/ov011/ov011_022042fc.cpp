@@ -9,7 +9,7 @@ static inline void Ov011_FreeSub48(Ov003Actor *self) {
     if (self->hit != NULL) {
         void *p = self->hit;
         if (p != NULL) {
-            func_0203f2b8(p);
+            HitSphere_Unlink_0203f2b8(p);
             Heap_Free(p);
         }
         self->hit = NULL;
@@ -40,7 +40,7 @@ void Ov011Act7c4c_SelectState(Ov011Act7c4c *self) {
         return;
     }
     if (f & 0x200000) {
-        func_ov000_02198360(s, 0x15, 0);
+        History_SetState(s, 0x15, 0);
         return;
     }
     if (f & 0x40000) {

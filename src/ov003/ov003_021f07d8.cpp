@@ -6,34 +6,34 @@ extern "C" {
 extern void Heap_Free(void *p);
 
 ActorEx *Ov003ActVt_021fa07c_Dtor(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021fa07c_DtorDelete(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021fa114_Dtor(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021fa114_DtorDelete(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021f9fe4_Dtor(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021f9fe4_DtorDelete(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
@@ -55,7 +55,7 @@ typedef struct {
     u32 unk_b24_12 : 2;
 } Ov003HitPlr;
 
-extern Ov003HitPlr *func_ov000_0219bf90(void);
+extern Ov003HitPlr *ActorMgr_FindPlayer(void);
 extern BOOL Hit_DiffInCylinder(void *a, Ov003HitVec *v, s32 r, s32 h);
 
 Ov003HitPlr *Ov003_FindPlayerInRange(void *a, s32 r, s32 h) {
@@ -67,7 +67,7 @@ Ov003HitPlr *Ov003_FindPlayerInRange(void *a, s32 r, s32 h) {
     s32 y;
     Ov003HitVec v;
     ret = NULL;
-    p = func_ov000_0219bf90();
+    p = ActorMgr_FindPlayer();
     if (p != NULL) {
         big = p->unk_b24_1 ? TRUE : FALSE;
         r += 0xccd;

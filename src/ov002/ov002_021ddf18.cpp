@@ -13,9 +13,9 @@ extern VFunc data_ov002_021f0044[];
 extern VFunc data_ov002_021ef684[];
 extern VFunc data_ov002_021f002c[];
 void func_ov000_021c3af4(void *self);
-void func_ov000_021c22d8(void *self);
-void func_ov002_021e2f54(Obj021f002c *self);
-void func_ov000_021c3fd4(void *list, void *item);
+void ListRow_Init(void *self);
+void Obj021f002c_Init(Obj021f002c *self);
+void LoBase021ccb54_021ccbe0_AppendRow(void *list, void *item);
 BOOL func_ov002_021ddcbc(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev);
 BOOL func_ov002_021ddd30(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev);
 
@@ -23,15 +23,15 @@ static inline void ov002_AddItem(LoBase021ccb54_021ccbe0 *list, s32 k, void *str
     Obj021f002c *q = (Obj021f002c *)Heap_Alloc(sizeof(Obj021f002c));
     if (q != NULL) {
         *(VFunc **)q = data_ov002_021ef684;
-        func_ov000_021c22d8(q);
+        ListRow_Init(q);
         *(VFunc **)q = data_ov002_021f002c;
-        func_ov002_021e2f54(q);
+        Obj021f002c_Init(q);
     }
     q->index = k;
     q->str = str;
     q->unk_40 = desc;
     q->unk_44 = 1;
-    func_ov000_021c3fd4(list, q);
+    LoBase021ccb54_021ccbe0_AppendRow(list, q);
 }
 
 static inline Obj021efe8c *ov002_NewCursor(void) {
@@ -67,7 +67,7 @@ static inline void ov002_Cursor_SetMode(Obj021efe8c *c) {
         c->unk_84 = 0xcd;
         break;
     }
-    func_ov002_021d7620(&c->mdl);
+    Ov002Mdl021efe3c_Load(&c->mdl);
 }
 
 static inline void ov002_CamMove(Obj021efe6c *c, const VecFx32 *pos, s32 tx, s32 ty, s32 tz) {
@@ -166,7 +166,7 @@ void func_ov002_021ddf18(Obj021efef0 *self, Obj021eff50 *owner, s32 h, Obj021efe
         if (id == 0xffff) {
             self->unk_1c = 0;
         } else {
-            self->unk_28 = *func_0206ede8(id);
+            self->unk_28 = *Param_GetEntry(id);
             self->unk_1c = 10;
         }
     }

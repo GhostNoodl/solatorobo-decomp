@@ -25,7 +25,7 @@ typedef struct {
 
 extern ColState data_02fe0f14;
 
-s32 func_ov000_0219a2f4(VecFx32 *pos, s32 height, s32 depth);
+s32 Geom_SnapToGround(VecFx32 *pos, s32 height, s32 depth);
 
 typedef struct {
     u8 unk_00[0x70];
@@ -42,9 +42,9 @@ extern ActorMgr *data_ov000_021ccd68;
 ActorC *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u32 angle);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
-void func_0203f260(ActorSub48 *self);
+void HitSphere_Init(ActorSub48 *self);
 void HitSphere_Link(ActorSub48 *self);
-void func_0203f364(ActorSub48 *self);
+void HitSphere_Unlink_0203f364(ActorSub48 *self);
 void func_ov000_02198ad8(ActorSub48 *self, VecFx32 *pos, VecFx32 *offset);
 
 static inline ActorC *FindActor(u16 id) {
@@ -55,25 +55,25 @@ static inline ActorC *FindActor(u16 id) {
     return ActorMgr_GetActor(mgr, id);
 }
 
-void func_ov000_0219830c(void) {
+void ActorEx_State23(void) {
 }
 
-void func_ov000_02198310(void) {
+void ActorEx_State22(void) {
 }
 
-void func_ov000_02198314(void) {
+void ActorEx_State21(void) {
 }
 
-void func_ov000_02198318(void) {
+void ActorEx_State20(void) {
 }
 
-void func_ov000_0219831c(void) {
+void ActorEx_StateHurt(void) {
 }
 
-void func_ov000_02198320(void) {
+void ActorEx_State0e(void) {
 }
 
-void func_ov000_02198324(void) {
+void ActorEx_StateMove(void) {
 }
 
 ActorSub40 *History_Init(ActorSub40 *self) {
@@ -103,11 +103,11 @@ static inline BOOL History_Push(ActorSub40 *self, u8 value, BOOL force) {
     return TRUE;
 }
 
-BOOL func_ov000_02198360(ActorSub40 *self, u8 value, BOOL force) {
+BOOL History_SetState(ActorSub40 *self, u8 value, BOOL force) {
     return History_Push(self, value, force);
 }
 
-BOOL func_ov000_021983b0(ActorSub40 *self, u8 value, s32 count, BOOL checkCurrent) {
+BOOL History_HasState(ActorSub40 *self, u8 value, s32 count, BOOL checkCurrent) {
     BOOL found = FALSE;
     s32 i;
     if (checkCurrent && self->current == value) {
@@ -126,7 +126,7 @@ BOOL func_ov000_021983b0(ActorSub40 *self, u8 value, s32 count, BOOL checkCurren
     return found;
 }
 
-s32 func_ov000_0219840c(ActorSub40 *self, s32 *list, s32 count, BOOL push) {
+s32 History_PickFlagged(ActorSub40 *self, s32 *list, s32 count, BOOL push) {
     s32 result = 0;
     s32 i;
     if (self->flags != 0) {
@@ -144,7 +144,7 @@ s32 func_ov000_0219840c(ActorSub40 *self, s32 *list, s32 count, BOOL push) {
     return result;
 }
 
-Obj021984c8 *func_ov000_021984c8(Obj021984c8 *self) {
+Obj021984c8 *Obj021984c8_Init(Obj021984c8 *self) {
     self->offset.x = 0;
     self->offset.y = 0;
     self->offset.z = 0;
@@ -155,7 +155,7 @@ Obj021984c8 *func_ov000_021984c8(Obj021984c8 *self) {
     return self;
 }
 
-void func_ov000_021984f4(Obj021984c8 *self, VecFx32 *pos, u16 *rot) {
+void Obj021984c8_UpdatePos(Obj021984c8 *self, VecFx32 *pos, u16 *rot) {
     VecFx32 base;
     VecFx32 ofs;
     ActorC *actor = FindActor(self->unk_20);
@@ -182,12 +182,12 @@ void func_ov000_021984f4(Obj021984c8 *self, VecFx32 *pos, u16 *rot) {
     VEC_Add(&base, &ofs, &self->pos);
 }
 
-ActorC *func_ov000_021985c0(Obj021984c8 *self) {
+ActorC *Obj021984c8_GetActor(Obj021984c8 *self) {
     return FindActor(self->unk_20);
 }
 
-ActorSub48 *func_ov000_021985e8(ActorSub48 *self) {
-    func_0203f260(self);
+ActorSub48 *ActorSub48_Init(ActorSub48 *self) {
+    HitSphere_Init(self);
     self->owner = 0xffff;
     self->unk_44 = 0;
     self->unk_48 = 0;
@@ -205,19 +205,19 @@ ActorSub48 *func_ov000_021985e8(ActorSub48 *self) {
     return self;
 }
 
-void func_ov000_0219864c(ActorSub48 *self, VecFx32 *pos, u16 *rot) {
+void ActorSub48_UpdatePos(ActorSub48 *self, VecFx32 *pos, u16 *rot) {
     VecFx32 base;
     VecFx32 ofs;
     ActorC *actor = FindActor(self->owner);
 
     if (actor == NULL) {
-        func_0203f364(self);
+        HitSphere_Unlink_0203f364(self);
         self->unk_50 = 0;
         self->unk_54 = 0;
         self->unk_58 = 0;
     } else {
         if (!self->unk_9a_3) {
-            func_0203f364(self);
+            HitSphere_Unlink_0203f364(self);
         } else {
             HitSphere_Link(self);
         }

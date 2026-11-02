@@ -23,7 +23,7 @@ void SndMgr_LoadHeapState(SndMgr *mgr, s32 level, s32 idx) {
     mgr->heapLevels[idx] = level;
 }
 
-void func_020495ac(SndMgr *mgr, s32 type, s32 id) {
+void SndMgr_LoadNow(SndMgr *mgr, s32 type, s32 id) {
     switch (type) {
         case 0:
             break;
@@ -50,7 +50,7 @@ void func_020495ac(SndMgr *mgr, s32 type, s32 id) {
     NNS_SndHeapGetFreeSize(data_02097e48.mgr->heaps[1]);
 }
 
-void func_02049678(SndMgr *mgr, s32 type, s32 id, s32 arg) {
+void SndMgr_RequestLoad_02049678(SndMgr *mgr, s32 type, s32 id, s32 arg) {
     SndMgr_RequestLoad(mgr, type, id, arg);
 }
 

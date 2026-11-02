@@ -4,9 +4,9 @@ extern "C" {
 
 extern char data_ov014_02217a4e[];
 extern char data_ov014_02217a72[];
-extern void *func_ov000_02191318(void *a, s32 b);
-extern void func_ov000_02191618(void *p);
-extern void func_ov000_021911c8(void *a, s32 b);
+extern void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
+extern void Model0218fe1c_ClearLoop(void *p);
+extern void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
 extern void func_ov014_0220a2d0(Ov014Act_02209280 *self, s32 a);
 
 static inline void Ov014_TickA(ActorSub40 *st) {
@@ -21,10 +21,10 @@ void Ov014Act_02209280_StateShoot(Ov014Act_02209280 *self) {
     case 0: {
         u32 mask = 0;
         const Ov003Step *p;
-        func_ov000_02190cb0(self->model, data_ov014_02217a72, 0x2ab, 0);
-        func_ov000_021911c8(self->model, 0x1000);
-        func_ov000_02191318(self->model, 0);
-        func_ov000_02191618(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov014_02217a72, 0x2ab, 0);
+        Model0218fe1c_SetAnimSpeed(self->model, 0x1000);
+        Model0218fe1c_SetAnimFrame(self->model, 0);
+        Model0218fe1c_ClearLoop(self->model);
         p = self->step;
         self->unk_fc = 1;
         self->unk_f8 = p->a;
@@ -86,19 +86,19 @@ void Ov014Act_02209280_StateShoot(Ov014Act_02209280 *self) {
         FieldState *g;
         EffectObj *e;
         if (self->model->anim_state == 3) {
-            e = func_02065f88(0x648, &self->pos);
+            e = Effect_SpawnId(0x648, &self->pos);
             e->SetScaleAll(0x3000);
             e->loopCount = 2;
-            func_02049f44(data_02097e4c, 0xc00, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0xc00, &self->pos, 0);
         }
         if (self->model->anim_state != 1) {
             return;
         }
-        e = func_02065f88(0x66, &self->pos);
+        e = Effect_SpawnId(0x66, &self->pos);
         e->AddPosXYZ(0, 0x4000, 0);
         e->SetScaleAll(0x4000);
         e->SetRotXYZ(0x3fff, 0, 0);
-        func_02049f44(data_02097e4c, 0xc06, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0xc06, &self->pos, 0);
         g = data_ov000_021ccd54;
         g->cam.base.shakeX = 1;
         g->cam.base.shakeY = 1;
@@ -122,9 +122,9 @@ void Ov014Act_02209280_StateShoot(Ov014Act_02209280 *self) {
     case 3: {
         ActorSub40 *st = self->fsm;
         if (st->timer == 0) {
-            if (func_ov000_02191120(self->model)) {
-                func_ov000_02190cb0(self->model, data_ov014_02217a4e, 0xcd, 0);
-                func_ov000_021915a0(self->model);
+            if (Model0218fe1c_IsAnimDone(self->model)) {
+                Model0218fe1c_SetAnim(self->model, data_ov014_02217a4e, 0xcd, 0);
+                Model0218fe1c_SetLoop(self->model);
             }
             self->fsm->st--;
             break;
@@ -157,18 +157,18 @@ void Ov014Act_02209280_StateAttack(Ov014Act_02209280 *self) {
 extern char data_ov014_02217a4e[];
 extern char data_ov014_02217a78[];
 extern char data_ov014_02217a7e[];
-extern void *func_ov000_02191318(void *a, s32 b);
-extern void func_ov000_02191618(void *p);
-extern void func_ov000_021911c8(void *a, s32 b);
+extern void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
+extern void Model0218fe1c_ClearLoop(void *p);
+extern void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
 extern void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 b);
 
 void Ov014Act_02209280_StateAttack2(Ov014Act_02209280 *self) {
     ActorSub40 *st = self->fsm;
     switch (st->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov014_02217a4e, 0x2ab, 0);
-        func_ov000_02191318(self->model, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov014_02217a4e, 0x2ab, 0);
+        Model0218fe1c_SetAnimFrame(self->model, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->unk_fc = 1;
         self->fsm->st++;
         break;
@@ -180,7 +180,7 @@ void Ov014Act_02209280_StateAttack2(Ov014Act_02209280 *self) {
         g->cam.base.shakeTime = 10;
         g->cam.base.shakeLen = 10;
         g->cam.base.shakeCur = 10;
-        func_02049f44(data_02097e4c, 0xc03, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0xc03, &self->pos, 0);
         self->fsm->st++;
         self->fsm->timer = 0x28;
         break;
@@ -195,9 +195,9 @@ void Ov014Act_02209280_StateAttack2(Ov014Act_02209280 *self) {
         break;
     case 10:
         self->unk_f4 = 0;
-        func_ov000_02190cb0(self->model, data_ov014_02217a78, 0x2ab, 0);
-        func_ov000_02191318(self->model, 0);
-        func_ov000_02191618(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov014_02217a78, 0x2ab, 0);
+        Model0218fe1c_SetAnimFrame(self->model, 0);
+        Model0218fe1c_ClearLoop(self->model);
         switch (self->step->op) {
         case 5:
             self->unk_f8 = 3;
@@ -216,7 +216,7 @@ void Ov014Act_02209280_StateAttack2(Ov014Act_02209280 *self) {
         if (self->model->anim_state != 1) {
             break;
         }
-        func_02049f44(data_02097e4c, 0xc04, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0xc04, &self->pos, 0);
         self->model->anim_state = 0;
         g = data_ov000_021ccd54;
         g->cam.base.shakeX = 1;
@@ -234,18 +234,18 @@ void Ov014Act_02209280_StateAttack2(Ov014Act_02209280 *self) {
     case 12:
         if (self->unk_f8 != 0) {
             s32 v;
-            func_ov000_02190cb0(self->model, ((s32)self->unk_f4) != 0 ? data_ov014_02217a7e : data_ov014_02217a78, 0xcd, 0);
+            Model0218fe1c_SetAnim(self->model, ((s32)self->unk_f4) != 0 ? data_ov014_02217a7e : data_ov014_02217a78, 0xcd, 0);
             v = FX_Div(0x50000, self->step->time << 12);
             if (v > 0x2000) {
                 v = 0x2000;
             } else if (v < 0x800) {
                 v = 0x800;
             }
-            func_ov000_021911c8(self->model, (s16)v);
-            func_ov000_02191318(self->model, 0);
-            func_ov000_02191618(self->model);
+            Model0218fe1c_SetAnimSpeed(self->model, (s16)v);
+            Model0218fe1c_SetAnimFrame(self->model, 0);
+            Model0218fe1c_ClearLoop(self->model);
             self->fsm->st = 11;
-        } else if (func_ov000_02191120(self->model)) {
+        } else if (Model0218fe1c_IsAnimDone(self->model)) {
             self->fsm->st = 0x14;
         }
         break;

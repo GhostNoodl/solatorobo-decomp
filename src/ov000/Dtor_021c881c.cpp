@@ -30,8 +30,8 @@ static inline void Task021cbac8_Dtor(Task021cbac8 *self) {
 
 static inline void Obj02041558_Delete(Model *obj) {
     if (obj != NULL) {
-        func_02041558(obj);
-        func_02041278(&obj->pltt);
+        TexObj_Release(obj);
+        PlttRes_Release(&obj->pltt);
         Heap_Free(obj);
     }
 }

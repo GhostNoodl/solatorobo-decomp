@@ -5,8 +5,8 @@
 //
 // The row base has vtable data_ov000_021cbac8 (ov002 builds its rows over its own copy,
 // data_ov002_021ef684). Each subclass constructor stores the base vtable, calls
-// func_ov000_021c22d8 (which clears the base fields), then stores its own vtable and calls its own
-// init. The dtor (func_ov000_021c2310 inlined) unlinks the row. func_ov000_021c3fd4 appends a row to
+// ListRow_Init (which clears the base fields), then stores its own vtable and calls its own
+// init. The dtor (ListRow_Unlink inlined) unlinks the row. LoBase021ccb54_021ccbe0_AppendRow appends a row to
 // a list, func_ov000_021c4014 finds one by index, and func_ov000_021c5028 places and draws the shown
 // rows one below the other. Slot 0x08 of a subclass updates the row, slot 0x0c draws it.
 
@@ -42,8 +42,8 @@ struct ListRow : public VObj {
     ListRow *prev; // 0x2c
 };
 
-// Vtable data_ov000_021cca10 (0x48 bytes, init func_ov000_021c2334, release func_ov000_021c2364):
-// two 2D models and a name text (func_ov000_021c2a88 sets it), built by slot 0x08 (func_ov000_021c2450)
+// Vtable data_ov000_021cca10 (0x48 bytes, init func_ov000_021c2334, release Hud021cca10_Release):
+// two 2D models and a name text (Hud021cca10_SetText sets it), built by slot 0x08 (func_ov000_021c2450)
 // and drawn by slot 0x0c (func_ov000_021c28cc).
 struct Hud021cca10 : public ListRow {
     Model *unk_30;
@@ -57,7 +57,7 @@ struct Hud021cca10 : public ListRow {
 
 // Vtable data_ov000_021cc9f8 (0x44 bytes, init func_ov000_021c2bb0): a bar display and a label
 // (func_ov000_021c2c0c), built by slot 0x08 (func_ov000_021c2d48) and drawn by slot 0x0c
-// (func_ov000_021c2e64). The bar shows value out of max (ov002's level list, func_ov002_021d278c, sets
+// (func_ov000_021c2e64). The bar shows value out of max (ov002's level list, Task021ef99c_Start, sets
 // value to level * 100 + the percent of the way to the next threshold and max to 300).
 struct ListRowGauge : public ListRow {
     ObjBase021cac0c_021cb6f0 *bar; // 0x30 (vtable data_ov000_021cca88)
@@ -74,7 +74,7 @@ struct ListRowGauge : public ListRow {
 struct ListRowText : public ListRow {
     Lo021cb3a8 *win; // 0x30
     char *unk_34; // the window's srcStr
-    char *unk_38; // handed to func_ov000_02158c60
+    char *unk_38; // handed to Lo021cb3a8_SetText
     s32 state; // 0x3c
     u16 unk_40; // id of the item selected when the window opens
     u8 unk_42[0x2];
@@ -87,11 +87,11 @@ typedef struct ListRowItem {
     u16 mask; // 0x06 one bit per part; a set bit draws the part with the first model
     u8 count; // 0x08 set bits of mask below n
     u8 n; // 0x09 parts (4)
-    u8 unk_0a; // func_02059688 found the id in save block 11
+    u8 unk_0a; // DataRes_ReadBitsById_02059688 found the id in save block 11
     u8 unk_0b;
 } ListRowItem;
 
-// Vtable data_ov000_021cca70 (0x7c bytes, init func_ov000_021c2f10, release func_ov000_021c2f90): an
+// Vtable data_ov000_021cca70 (0x7c bytes, init func_ov000_021c2f10, release ListRow021cca70_Release): an
 // item drawn as n parts with two models, loaded by slot 0x08 (func_ov000_021c3158) and drawn by slot 0x0c
 // (func_ov000_021c34cc).
 struct ListRow021cca70 : public ListRow {
@@ -99,7 +99,7 @@ struct ListRow021cca70 : public ListRow {
     char *name; // 0x34
     Model *unk_38; // the part model for a set bit of item.mask
     Model *unk_3c; // and for a clear bit
-    void *unk_40; // the row's text (ov002 func_ov002_021d1970: func_0206ec48(id))
+    void *unk_40; // the row's text (ov002 Task021ef69c_Start: Param_Get(id))
     s32 unk_44;
     ListRowItem item; // 0x48
     u8 alpha; // 0x54

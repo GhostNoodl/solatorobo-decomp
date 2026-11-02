@@ -279,23 +279,23 @@ extern "C" {
 void *Heap_Alloc(u32 size); // Main/Gfx/ObjPool.h
 void Heap_Free(void *ptr);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-void func_ov000_021915a0(void *a);
+BOOL History_SetState(void *a, s32 b, s32 c);
+void Model0218fe1c_SetLoop(void *a);
 s32 Rand_PlusMinus(s32 max);
 u32 Rand_UpTo(u32 max);
-void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-s32 func_ov000_0219a2f4(VecFx32 *v, s32 y, s32 b);
-BOOL func_ov000_02191120(Model0218fe1c *p);
+void Body_Update(void *a, s32 b, s32 c, s32 d);
+s32 Geom_SnapToGround(VecFx32 *v, s32 y, s32 b);
+BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *p);
 char *func_0207011c(void *res);
 char *func_020701d4(void *res);
 u8 *func_02070558(void *res);
 }
 extern "C" {
-void func_ov000_021953b4(ActorEx *self);
+void ActorEx_Update(ActorEx *self);
 void Ov003FxList_Prune(void *p);
-void func_ov000_0219763c(Actor *self);
+void ActorEx_StateDie(Actor *self);
 s32 func_0203db40(void *p);
-void func_ov000_02190a80(void *a, s32 b);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
 }
 
 
@@ -672,11 +672,11 @@ extern "C" {
 ActorEx *ActorEx_Ctor(ActorEx *self);
 void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
 void Actor_TurnToPos(Actor *self, const VecFx32 *target, s32 step);
-VecFx32 *func_ov000_0218d2e0(Actor *self);
-ActorEx *func_ov000_0219429c(ActorEx *self);
-void func_ov000_02194758(ActorEx *self);
-BOOL func_ov000_02194c08(ActorEx *self);
-void func_ov000_02195d88(ActorEx *self);
+VecFx32 *Actor_GetTargetSub44(Actor *self);
+ActorEx *ActorEx_DtorBase(ActorEx *self);
+void ActorEx_Start(ActorEx *self);
+BOOL ActorEx_Draw(ActorEx *self);
+void ActorEx_StateHeld(ActorEx *self);
 }
 
 #endif

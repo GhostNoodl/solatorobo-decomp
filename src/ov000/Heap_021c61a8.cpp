@@ -16,11 +16,11 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_0215ec80(void *p);
+void UiPanel_Release(void *p);
 
-void func_ov000_021c61a8(Obj021c61a8 *self) {
+void Obj021c61a8_Release(Obj021c61a8 *self) {
     Node021c61a8 *node;
-    HEAP_DELETE_FN(self->unk_9c, func_ov000_0215ec80);
+    HEAP_DELETE_FN(self->unk_9c, UiPanel_Release);
     HEAP_DELETE_VOBJ(self->unk_a0);
     node = self->unk_84;
     while (node != NULL) {

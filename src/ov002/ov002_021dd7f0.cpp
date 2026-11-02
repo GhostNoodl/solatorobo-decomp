@@ -17,7 +17,7 @@ static inline Ov002Cell *ov002_GetCell(Obj021efe6c *w, Vec2 *pos) {
 
 static inline void ov002_ShowMsg(Obj021eff10 *self, void *str) {
     Obj021eff50 *t = self->owner;
-    func_ov000_0215bb14(t->unk_20, str);
+    Obj0215bb14_SetText(t->unk_20, str);
     t->unk_20->vfunc_70();
     self->unk_20 = 0;
 }

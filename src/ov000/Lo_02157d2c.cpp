@@ -5,7 +5,7 @@
 
 extern "C" {
 
-void func_ov000_02157d2c(UiList021cb4a8 *self, u32 text) {
+void UiList021cb4a8_SetCenteredLabel(UiList021cb4a8 *self, u32 text) {
     UiLabel *p = (UiLabel *)Heap_Alloc(sizeof(UiLabel));
     if (p) {
         UiLabel_Reset(p);
@@ -15,7 +15,7 @@ void func_ov000_02157d2c(UiList021cb4a8 *self, u32 text) {
         self->unk_d8->bits.altFrame = 1;
     }
     self->unk_d8->bits.centered = 1;
-    func_ov000_0215f0ec(self->unk_d8, text);
+    UiLabel_SetText(self->unk_d8, text);
     {
         UiLabel *q = self->unk_d8;
         q->width = q->text->width + 0x10;

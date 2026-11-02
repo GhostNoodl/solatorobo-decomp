@@ -37,12 +37,12 @@ void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const vo
     tail->next = msg;
 }
 
-void func_ov000_0218d46c(Actor *self, u16 id, u8 value) {
+void Actor_SendMsgU8(Actor *self, u16 id, u8 value) {
     u8 buf = value;
     Actor_SendMsg(self, id, 2, 1, 1, &buf);
 }
 
-BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
+BOOL Actor_HandleMsg(Actor *self, ActorMsg *msg) {
     s32 zero = 0;
     BOOL handled = FALSE;
     ActorSub40 *sub40;
@@ -54,11 +54,11 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
     switch (msg->type) {
     case 1:
         if (self->fsm != NULL) {
-            func_ov000_02198360(self->fsm, 0, 0);
+            History_SetState(self->fsm, 0, 0);
         }
         if (self->model != NULL) {
-            func_ov000_02190e98(self->model, zero, 0x1000, zero);
-            func_ov000_02190cb0(self->model, data_ov000_021cc404, 0x1000, zero);
+            Model0218fe1c_SetAnimByIndex(self->model, zero, 0x1000, zero);
+            Model0218fe1c_SetAnim(self->model, data_ov000_021cc404, 0x1000, zero);
         }
         handled = TRUE;
         break;
@@ -85,9 +85,9 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
         }
         if (self->model != NULL) {
             MsgData4 *data = (MsgData4 *)msg->data;
-            func_ov000_02190cb0(self->model, (const char *)data->unk_08, data->unk_0c, 0);
+            Model0218fe1c_SetAnim(self->model, (const char *)data->unk_08, data->unk_0c, 0);
             if (data->unk_0e) {
-                func_ov000_021915a0(self->model);
+                Model0218fe1c_SetLoop(self->model);
             }
         }
         handled = TRUE;
@@ -99,9 +99,9 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
         }
         if (self->model != NULL) {
             MsgData5 *data = (MsgData5 *)msg->data;
-            func_ov000_02190e98(self->model, data->unk_08, data->unk_0a, 0);
+            Model0218fe1c_SetAnimByIndex(self->model, data->unk_08, data->unk_0a, 0);
             if (data->unk_0c) {
-                func_ov000_021915a0(self->model);
+                Model0218fe1c_SetLoop(self->model);
             }
         }
         handled = TRUE;
@@ -186,7 +186,7 @@ void Actor_ProcessMsgs(Actor *self) {
     } while (next != NULL);
 }
 
-void func_ov000_0218d7e8(Actor *self, u8 arg) {
+void Actor_DropStateMsgs(Actor *self, u8 arg) {
     ActorMsg *prev = NULL;
     ActorMsg *msg = self->msgs;
     ActorMsg *next;

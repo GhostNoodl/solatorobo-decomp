@@ -5,7 +5,7 @@
 
 extern "C" {
 
-BOOL func_02054f10(void *a, int b);
+BOOL Model_IsReady(void *a, int b);
 u8 Gfx3DState_NextPolyId(void *a);
 
 static inline void ov006_Model_SetPolyId(Model *m, int id) {
@@ -23,7 +23,7 @@ void ov006_Label_Draw(ov006_Label *self) {
     if (self->model == NULL) {
         return;
     }
-    if (!func_02054f10(self->model, 0xffff)) {
+    if (!Model_IsReady(self->model, 0xffff)) {
         return;
     }
     alpha = (u8)self->alpha;

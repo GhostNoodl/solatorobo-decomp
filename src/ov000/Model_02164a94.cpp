@@ -14,9 +14,9 @@ extern char data_ov000_021cb8e0[];
 extern char data_ov000_021cb8f1[];
 extern char data_ov000_021cb8fd[];
 extern char data_ov000_021cb909[];
-void *func_02035d5c(const char *a);
-void func_0206e900(char *dst, const char *src);
-void *func_02034d88(void *a, void *b);
+void *ResMgr_GetArcList(const char *a);
+void LangData_LocalizePath(char *dst, const char *src);
+void *ResList_FindType2(void *a, void *b);
 void func_02041c5c(void *model, void *fn);
 void func_02041c18(void *model, void *arg);
 void *func_ov000_021640fc(void *self, void *a, void *oam, u16 *cnt);
@@ -26,8 +26,8 @@ static inline Model *NewModel(char *nm) {
     if (m) {
         char *n = nm;
         if (n) {
-            func_02041218(&m->pltt);
-            func_02041440(m, n, 0);
+            PlttRes_Init_02041218(&m->pltt);
+            TexObj_Init(m, n, 0);
         }
     }
     return m;
@@ -40,26 +40,26 @@ void func_ov000_02164a94(Lo021cb6b0 *self) {
     s32 *pp;
     s32 saved;
     Model *m;
-    func_02035d5c(data_0214b105);
-    a = func_02035d5c(data_0208cca0);
-    func_0206e900(buf, data_ov000_021cb8e0);
-    b = func_02035d5c(buf);
+    ResMgr_GetArcList(data_0214b105);
+    a = ResMgr_GetArcList(data_0208cca0);
+    LangData_LocalizePath(buf, data_ov000_021cb8e0);
+    b = ResMgr_GetArcList(buf);
     self->unk_50 = ((s32)data_0214a424->unk_020);
     pp = &data_02097d48->pltt.id;
     saved = *pp;
     *pp = -1;
     m = NewModel(data_ov000_021cb8f1);
     self->unk_28 = m;
-    func_020417e0(self->unk_28, func_02034d88(b, m->unk_04c));
-    func_02041d9c(self->unk_28, 2, 0xffff);
+    TexObj_SetRes(self->unk_28, ResList_FindType2(b, m->unk_04c));
+    TexObj_SelectImage(self->unk_28, 2, 0xffff);
     m = NewModel(data_ov000_021cb8fd);
     self->unk_2c = m;
-    func_020417e0(self->unk_2c, func_02034d88(b, m->unk_04c));
-    func_02041d9c(self->unk_2c, 2, 0xffff);
+    TexObj_SetRes(self->unk_2c, ResList_FindType2(b, m->unk_04c));
+    TexObj_SelectImage(self->unk_2c, 2, 0xffff);
     m = NewModel(data_ov000_021cb909);
     self->unk_24 = m;
-    func_020417e0(self->unk_24, func_02034d88(a, m->unk_04c));
-    func_02041d9c(self->unk_24, 2, 0xffff);
+    TexObj_SetRes(self->unk_24, ResList_FindType2(a, m->unk_04c));
+    TexObj_SelectImage(self->unk_24, 2, 0xffff);
     func_02041c5c(self->unk_24, (void *)func_ov000_021640fc);
     func_02041c18(self->unk_24, self);
     *pp = saved;
@@ -134,7 +134,7 @@ void func_ov000_02164c50(Lo021cb6b0 *self, u8 *arg) {
     p->markCount = 0;
     m = (PlttRes *)Heap_Alloc(sizeof(PlttRes));
     if (m != NULL) {
-        func_02041218(m);
+        PlttRes_Init_02041218(m);
     }
     p->pltt = m;
     func_02040be0(m, self->unk_24);

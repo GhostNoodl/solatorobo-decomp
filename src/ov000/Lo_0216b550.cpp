@@ -11,7 +11,7 @@ extern "C" {
 extern s32 data_02097d78[5];
 extern const char *data_0208cc94;
 extern const char *data_0208cc88;
-BOOL func_02054f10(void *a, s32 b);
+BOOL Model_IsReady(void *a, s32 b);
 s32 FX_Div(s32 a, s32 b);
 
 
@@ -57,18 +57,18 @@ void func_ov000_0216b550(Lo0216b474 *self) {
         self->state = 5;
         break;
     case 5: {
-        void *res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+        void *res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
         Model *m = (Model *)Heap_Alloc(sizeof(Model));
         if (m) {
             const char *nm = data_0208cc88;
-            func_02041218(&m->pltt);
-            func_02041440(m, nm, 0);
+            PlttRes_Init_02041218(&m->pltt);
+            TexObj_Init(m, nm, 0);
         }
         self->model = m;
-        func_020417e0(m, res);
+        TexObj_SetRes(m, res);
         self->model->flags |= 2;
-        func_02041d9c(self->model, 0, 0x22);
-        func_02041d9c(self->model, 0, 0x23);
+        TexObj_SelectImage(self->model, 0, 0x22);
+        TexObj_SelectImage(self->model, 0, 0x23);
         self->model->flags |= 0x80000;
         self->model->flags |= 0x200000;
         MODEL_FLAGS(self->model)->alpha = 0x1e;
@@ -76,7 +76,7 @@ void func_ov000_0216b550(Lo0216b474 *self) {
         break;
     }
     case 6:
-        if (!func_02054f10(self->model, 0xffff)) {
+        if (!Model_IsReady(self->model, 0xffff)) {
             return;
         }
         self->frame = 0;

@@ -15,8 +15,8 @@ extern "C" {
 
 extern u8 data_ov000_021c9a9c[];
 extern s32 data_02097d78[5];
-Robo021ca458 *func_ov000_0219bf90(void);
-void func_ov000_021658e8(Lo021cb6b0 *self);
+Robo021ca458 *ActorMgr_FindPlayer(void);
+void Lo021cb6b0_FreeSlots(Lo021cb6b0 *self);
 u8 *func_ov000_02165f94(Lo021cb6b0 *self);
 Item0216607c *func_ov000_02165e2c(Lo021cb6b0 *self, Node0216607c *area);
 void func_ov000_02164c50(Lo021cb6b0 *self, u8 *tgt);
@@ -56,7 +56,7 @@ static inline s32 FxMulS64_02166be8(s32 a, s64 b) {
 
 static inline BOOL Skip02166be8(void) {
     BOOL skip = FALSE;
-    if (func_ov000_0219bf90() == NULL) {
+    if (ActorMgr_FindPlayer() == NULL) {
         skip = TRUE;
     }
     if (FieldState_HasCmd(data_ov000_021ccd54, 9) || FieldState_HasCmd(data_ov000_021ccd54, 10)) {
@@ -82,7 +82,7 @@ void func_ov000_02166be8(Lo021cb6b0 *self) {
     k = 0x1000;
     switch (self->unk_34) {
     case 4:
-        func_ov000_021658e8(self);
+        Lo021cb6b0_FreeSlots(self);
         if (Skip02166be8()) {
             return;
         }
@@ -394,7 +394,7 @@ void func_ov000_0216715c(Lo021cb6b0 *self, Work715c *p) {
     if (p->count2 != 0 && p->unk_cd8 > 0x800) {
         NNS_G2dEntryOamManagerOam(mgr, p->oams, p->count2);
     }
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (pl != NULL) {
         NNS_G2dEntryOamManagerOam(mgr, &p->oamPl, 1);
         if (pl->unk_b28_0 == 0) {

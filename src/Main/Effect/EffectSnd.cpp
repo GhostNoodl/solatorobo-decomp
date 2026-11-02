@@ -9,10 +9,10 @@ typedef struct EffectSndCmd {
 } EffectSndCmd;
 
 extern SndMgr *data_02097e4c;
-extern SndHandle *func_02049a48(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
+extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 
 BOOL func_02069f10(void *a, void *b, const EffectSndCmd *cmd) {
-    func_02049a48(data_02097e4c, cmd->id, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, cmd->id, -1, -1, -1);
     return TRUE;
 }
 

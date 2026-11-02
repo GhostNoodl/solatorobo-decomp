@@ -5,7 +5,7 @@ extern "C" {
 
 s32 FX_Div(s32 a, s32 b);
 
-void func_ov000_021c403c(LoBase021ccb54_021ccbe0 *self, s32 sel) {
+void LoBase021ccb54_021ccbe0_Select(LoBase021ccb54_021ccbe0 *self, s32 sel) {
     s32 vis;
     s32 n;
     s32 half;

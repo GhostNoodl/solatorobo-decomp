@@ -18,7 +18,7 @@ extern void Heap_FreeLo(void *ptr);
 extern void func_020435e8(GfxPltt *src, void *dst, u32 size);
 
 
-VramBlock *func_0203994c(GfxMgr *mgr, VramBlock *block) {
+VramBlock *GfxMgr_FreeBlock(GfxMgr *mgr, VramBlock *block) {
     VramBlock *prev;
     VramBlock *next;
     block->addr -= block->pad;
@@ -110,12 +110,12 @@ void func_02039a34(GfxMgr *mgr) {
     mgr->unk_67a = 0x16;
 }
 
-void func_02039c54(GfxMgr *mgr, int mode) {
+void GfxMgr_FreeAll(GfxMgr *mgr, int mode) {
     VramBlock *block;
     block = mgr->pools[0].blocks;
     do {
         if (block->used) {
-            block = func_0203994c(mgr, block);
+            block = GfxMgr_FreeBlock(mgr, block);
         } else {
             block = block->next;
         }
@@ -123,7 +123,7 @@ void func_02039c54(GfxMgr *mgr, int mode) {
     block = mgr->pools[1].blocks;
     do {
         if (block->used) {
-            block = func_0203994c(mgr, block);
+            block = GfxMgr_FreeBlock(mgr, block);
         } else {
             block = block->next;
         }
@@ -164,7 +164,7 @@ void func_02039e0c(GfxMgr *mgr) {
     block = mgr->pools[0].blocks;
     do {
         if (block->used && block->temporary == TRUE) {
-            block = func_0203994c(mgr, block);
+            block = GfxMgr_FreeBlock(mgr, block);
         } else {
             block = block->next;
         }
@@ -172,7 +172,7 @@ void func_02039e0c(GfxMgr *mgr) {
     block = mgr->pools[1].blocks;
     do {
         if (block->used && block->temporary == TRUE) {
-            block = func_0203994c(mgr, block);
+            block = GfxMgr_FreeBlock(mgr, block);
         } else {
             block = block->next;
         }
@@ -208,7 +208,7 @@ void func_02039f84(GfxMgr *mgr) {
     block = mgr->pools[0].blocks;
     do {
         if (block->used && block->temporary == TRUE) {
-            block = func_0203994c(mgr, block);
+            block = GfxMgr_FreeBlock(mgr, block);
         } else {
             block = block->next;
         }
@@ -216,7 +216,7 @@ void func_02039f84(GfxMgr *mgr) {
     block = mgr->pools[1].blocks;
     do {
         if (block->used && block->temporary == TRUE) {
-            block = func_0203994c(mgr, block);
+            block = GfxMgr_FreeBlock(mgr, block);
         } else {
             block = block->next;
         }

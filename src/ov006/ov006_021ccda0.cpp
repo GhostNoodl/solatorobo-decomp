@@ -73,8 +73,8 @@ void ov006_Task_Draw(void) {
 static inline void ov006_Manager_Dtor(ov006_Manager *self) {
     self->vtbl = &data_ov006_021ebb48;
     OV006_DELETE_OBJECT(self->task);
-    func_02036838(data_02097cdc, data_0208cca0, 7, 0);
-    func_02036838(data_02097cdc, data_ov006_021ebb88, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_0208cca0, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_ov006_021ebb88, 7, 0);
     ov006_Menu_Delete();
     func_02044b20();
     ov006_DeleteSlotManager();
@@ -99,7 +99,7 @@ void ov006_Manager_Create(void) {
     if (obj != NULL) {
         obj->vtbl = &data_ov006_021ebb48;
         func_0201bbfc(0);
-        func_0206e900(data_ov006_021ec864, data_ov006_021ebb78);
+        LangData_LocalizePath(data_ov006_021ec864, data_ov006_021ebb78);
         obj->state = 0;
         obj->subState = 0;
         obj->taskType = 4;
@@ -120,7 +120,7 @@ void ov006_Manager_Delete(void) {
 #pragma force_active reset
 
 static inline BOOL ov006_IsLoaded(void) {
-    return ((func_02035b90(data_0208cca0, 7) != 0) & func_02035b90(data_ov006_021ebb88, 7)) != 0;
+    return ((ResMgr_IsLoaded(data_0208cca0, 7) != 0) & ResMgr_IsLoaded(data_ov006_021ebb88, 7)) != 0;
 }
 
 int ov006_Manager_LoadRes(ov006_Manager *self) {
@@ -131,8 +131,8 @@ int ov006_Manager_LoadRes(ov006_Manager *self) {
 
     switch (self->state) {
     case 0:
-        func_020359d0(data_0208cca0, 7, zero);
-        func_020359d0(data_ov006_021ebb88, 7, zero);
+        ResMgr_Load(data_0208cca0, 7, zero);
+        ResMgr_Load(data_ov006_021ebb88, 7, zero);
         self->state = 1;
         self->subState = zero;
     case 1:

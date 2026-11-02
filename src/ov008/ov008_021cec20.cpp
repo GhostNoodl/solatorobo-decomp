@@ -9,7 +9,7 @@ struct Ov008Pos16 {
 
 extern Ov008Pos16 data_ov008_021d02fc[];
 void func_ov008_021cf040(Ov008Mgr *m);
-BOOL func_ov000_021903b4(void *p);
+BOOL Model021903b4_Draw(void *p);
 void func_ov008_021ccf44(Ov008Panel *p);
 
 static inline void Ov008_SetPos(Model *e, Ov008Pos16 *p) {
@@ -32,8 +32,8 @@ void func_ov008_021cec20(Ov008Mgr *m) {
     func_ov008_021cf040(m);
     if (m->state >= 5 && m->unk_c8 != NULL && m->unk_d0 != NULL) {
         m->cam.v00();
-        func_ov000_021903b4(m->unk_c8);
-        func_ov000_021903b4(m->unk_d0);
+        Model021903b4_Draw(m->unk_c8);
+        Model021903b4_Draw(m->unk_d0);
     }
     switch (m->state) {
     case 0:

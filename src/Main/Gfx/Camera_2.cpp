@@ -92,7 +92,7 @@ static inline void Camera_Init(Camera *cam) {
 
 Camera *func_0204b2c0(Camera *cam);
 
-Camera *func_0204b370(Camera *cam);
+Camera *Camera_Ctor(Camera *cam);
 
 void func_0204b420(Camera *cam);
 

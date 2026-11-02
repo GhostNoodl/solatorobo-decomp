@@ -21,9 +21,9 @@ extern u16 Camera_GetYaw(Camera *cam);
 extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 extern Ov003BmInfo *func_020704b4(u16 id);
-extern void func_ov000_0219b400(void *a, void *b, s32 c, VecFx32 *pos, Rot16 *rot, s32 d);
+extern void Drop_SpawnWeighted(void *a, void *b, s32 c, VecFx32 *pos, Rot16 *rot, s32 d);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
-extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *sc, s32 a, s32 b, s32 c, s32 d);
+extern void *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *sc, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218996c(u8 a, u8 b);
 
 static inline u16 Camera_GetAngle(Camera *cam) {
@@ -42,10 +42,10 @@ void Ov003ActVt_021f8480_State21(Ov003Bomb *self) {
             v.z = 0x5000;
             func_01ffc9fc(&v, &v, Camera_GetAngle(cam) + 0x8000);
             VEC_Add(&v, &self->pos, &v);
-            fx = func_02065f88(5, &v);
+            fx = Effect_SpawnId(5, &v);
             fx->SetScaleXYZ(0x7800, 0x7800, 0x7800);
             fx->speed = 0xccd;
-            fx = func_02065f88(0x6d, &v);
+            fx = Effect_SpawnId(0x6d, &v);
             fx->SetScaleXYZ(0x3000, 0x3000, 0x3000);
             fx->speed = 0x333;
             cam->shakeX = 1;
@@ -54,8 +54,8 @@ void Ov003ActVt_021f8480_State21(Ov003Bomb *self) {
             cam->shakeTime = 0x19;
             cam->shakeLen = 0x32;
             cam->shakeCur = 0x32;
-            func_0204a028(data_02097e4c, 0x79, &self->pos, -0xf);
-            func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
+            SndMgr_PlayAtPitch(data_02097e4c, 0x79, &self->pos, -0xf);
+            SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
         }
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4030, 0x15);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4031, 0x15);
@@ -65,7 +65,7 @@ void Ov003ActVt_021f8480_State21(Ov003Bomb *self) {
     case 1:
         if (self->fsm->timer >= 0x120) {
             Ov003BmInfo *inf = func_020704b4(self->kind);
-            func_ov000_0219b400(inf->unk_20, inf->unk_24, 2, &self->pos, &self->rot, 0);
+            Drop_SpawnWeighted(inf->unk_20, inf->unk_24, 2, &self->pos, &self->rot, 0);
             func_ov000_02197dec(self, 0xf, 4);
             func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
             self->vfunc_08();
@@ -92,7 +92,7 @@ void Ov003ActVt_021f8480_State21(Ov003Bomb *self) {
             sc.x = 0x5000;
             sc.y = 0x3000;
             sc.z = 0x3800;
-            func_ov000_0219b71c(&self->pos, &sc, 0x1000, 0x2800, a, b);
+            Spawn_ScatterEffect(&self->pos, &sc, 0x1000, 0x2800, a, b);
             func_ov000_0218996c(0xf, 0x1e);
         }
         self->fsm->timer++;

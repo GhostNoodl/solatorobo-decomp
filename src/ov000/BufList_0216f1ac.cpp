@@ -7,7 +7,7 @@ extern u8 data_ov000_021cb6d0[];
 extern u8 data_ov000_021cb960[];
 
 void *Heap_Alloc(u32 size);
-void func_ov000_0216f1ac(ListBuffer *buf, BufferList *list);
+void ListBuffer_AddToList(ListBuffer *buf, BufferList *list);
 
 }
 
@@ -33,7 +33,7 @@ static inline ListBuffer *MessageQueue_AddBuffer(MessageQueue *self, ListBuffer 
     b->unk_10 = 0;
     b->unk_14 = 0;
     b->unk_0c = (u32)owner;
-    func_ov000_0216f1ac(b, &self->list);
+    ListBuffer_AddToList(b, &self->list);
     if (allocated) {
         b->flags |= 0x10;
     }
@@ -42,7 +42,7 @@ static inline ListBuffer *MessageQueue_AddBuffer(MessageQueue *self, ListBuffer 
 
 extern "C" {
 
-void func_ov000_0216f1ac(ListBuffer *buf, BufferList *list) {
+void ListBuffer_AddToList(ListBuffer *buf, BufferList *list) {
     ListBuffer *cur;
     ListBuffer *prev;
     if (buf->flags & 2) {
@@ -133,7 +133,7 @@ void MessageQueue_Init(MessageQueue *self) {
 void func_ov000_0216f394(void) {
 }
 
-ListBuffer *func_ov000_0216f398(MessageQueue *self, ListBuffer *buf, u32 priority, void *owner) {
+ListBuffer *MessageQueue_AddBuffer_0216f398(MessageQueue *self, ListBuffer *buf, u32 priority, void *owner) {
     return MessageQueue_AddBuffer(self, buf, priority, owner);
 }
 

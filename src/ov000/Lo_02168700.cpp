@@ -6,12 +6,12 @@
 
 extern "C" {
 
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
 s32 func_02043d84(void *a);
 
 void func_ov000_02168700(Lo021cb894 *self) {
-    Robo021ca458 *p = func_ov000_0219bf90();
+    Robo021ca458 *p = ActorMgr_FindPlayer();
     if (p == NULL) {
         return;
     }

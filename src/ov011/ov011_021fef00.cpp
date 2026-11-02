@@ -63,7 +63,7 @@ void Ov011SceneActor_Start(Ov011SceneActor *self) {
         s->timer = 0;
     }
     self->hit->unk_30 = 0x60000000;
-    self->target = ((Actor *)func_ov000_0219bf90())->id;
+    self->target = ((Actor *)ActorMgr_FindPlayer())->id;
     if (func_020621c4()) {
         Ov003Actor_ScaleStats(self, data_ov011_0220726e);
     }
@@ -84,13 +84,13 @@ BOOL Ov011SceneActor_HandleMsg(Ov011SceneActor *self, Ov011ActMsg *msg) {
                 st = &self->unk_104->seq;
                 if (st->current == 0) {
                     st->flags |= 2;
-                    func_0204a028(data_02097e4c, 9, &self->pos, -2);
+                    SndMgr_PlayAtPitch(data_02097e4c, 9, &self->pos, -2);
                 }
             } else if (sub == 1) {
                 st = &self->unk_104->seq;
                 if (st->current == 1) {
                     st->flags |= 4;
-                    func_02049f44(data_02097e4c, 0x5b, &self->pos, 0);
+                    SndMgr_PlayAt(data_02097e4c, 0x5b, &self->pos, 0);
                 }
             } else if (sub == 2) {
                 st = &self->unk_104->seq;
@@ -122,8 +122,8 @@ BOOL Ov011SceneActor_HandleMsg(Ov011SceneActor *self, Ov011ActMsg *msg) {
                 s->b1 = 0;
                 s->b2 = 0;
                 s->timer = 0;
-                func_ov000_02190cb0(self->model, data_ov011_02207258, 0x1000, 0);
-                func_ov000_021915a0(self->model);
+                Model0218fe1c_SetAnim(self->model, data_ov011_02207258, 0x1000, 0);
+                Model0218fe1c_SetLoop(self->model);
             }
             break;
         }

@@ -7,11 +7,11 @@
 extern "C" {
 
 extern s32 Rand_PlusMinus(s32 max);
-extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
+extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
 
 extern void HitSphere_Link(ActorSub48 *ctl);
 extern void func_ov000_02199dc0(ActorSub4c *p, void *out);
-extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
+extern void Body_Update(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 extern s32 FX_Div(s32 a, s32 b);
 
 
@@ -33,9 +33,9 @@ void Ov003Actor_StateThrown(Ov003Actor *self) {
         self->fsm->st++;
         self->fsm->timer = 0;
         if (self->hp[0] == 0 || self->targetObj->unk_19 != 0) {
-            func_02049f44(data_02097e4c, 0x32, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x32, &self->pos, 0);
         } else {
-            func_02049f44(data_02097e4c, 0xb, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0xb, &self->pos, 0);
         }
         func_ov000_02199dc0(self->targetObj, self);
         self->moveYaw = self->rot_y;
@@ -47,7 +47,7 @@ void Ov003Actor_StateThrown(Ov003Actor *self) {
             self->unk_e4 = NULL;
         }
         if (self->unk_e4 == NULL) {
-            EffectObj *fx = func_02065f88(0x321, &self->pos);
+            EffectObj *fx = Effect_SpawnId(0x321, &self->pos);
             s32 r;
             s32 t;
             self->unk_e4 = fx->id;
@@ -61,10 +61,10 @@ void Ov003Actor_StateThrown(Ov003Actor *self) {
     case 1:
         w->timer++;
         if (w->timer > 2) {
-            func_ov000_02198360(self->fsm, 4, 0);
+            History_SetState(self->fsm, 4, 0);
         }
         Actor_Move(self, 0);
-        func_ov000_021987b8(self->hit, 0, 0, 0);
+        Body_Update(self->hit, 0, 0, 0);
         if (self->velY > 0 && (self->hit->unk_50 & 0x80000000)) {
             self->velY = -0xcd;
         }
@@ -87,9 +87,9 @@ void Ov003Actor_StateBounce(Ov003Actor *self) {
         break;
     case 1:
         if (self->hp[0] == 0) {
-            func_ov000_02198360(self->fsm, 0x14, 0);
+            History_SetState(self->fsm, 0x14, 0);
         } else {
-            func_ov000_02198360(self->fsm, 4, 0);
+            History_SetState(self->fsm, 4, 0);
         }
         break;
     }

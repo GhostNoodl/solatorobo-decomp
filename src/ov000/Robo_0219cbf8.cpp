@@ -16,7 +16,7 @@ extern "C" {
 extern Glb0219cbf8 NNS_G3dGlb;
 void Body_SetPos(void *body, VecFx32 *pos, u32 angle);
 
-void func_ov000_0219cbf8(Robo021ca458 *self, VecFx32 *pos, u16 *rot) {
+void Robo021ca458_SetPosRot(Robo021ca458 *self, VecFx32 *pos, u16 *rot) {
     self->pos.x = pos->x;
     self->pos.y = pos->y;
     self->pos.z = pos->z;
@@ -49,11 +49,11 @@ void func_ov000_0219cbf8(Robo021ca458 *self, VecFx32 *pos, u16 *rot) {
     }
     if (self->unk_5c != NULL) {
         func_ov000_021bd300(self->unk_5c);
-        func_ov000_021bd438(self->unk_5c, &self->pos, 0);
+        ActorMarker_SetPos(self->unk_5c, &self->pos, 0);
     }
     if (self->unk_9b0 != NULL) {
         func_ov000_021bd300(self->unk_9b0);
-        func_ov000_021bd438(self->unk_9b0, &self->unk_75c, 0);
+        ActorMarker_SetPos(self->unk_9b0, &self->unk_75c, 0);
     }
     Body_SetPos(&self->hit0, &self->pos, self->rot_y);
     self->hit0.unk_50 = 0;
@@ -80,11 +80,11 @@ extern "C" {
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern void *data_02097e4c;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-void func_ov000_02191008(void *p);
+void Model0218fe1c_StopAnim(void *p);
 void SndMgr_StopSeqArc(void *mgr, s32 id);
 void func_ov000_021697dc(Lo021cb798 *self, u16 a, u16 b);
-void func_ov000_0218ec60(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_0218edf0(void *p, s32 a, s32 b, s32 c, s32 d);
+void ResSet_SetName0(void *p, s32 a, s32 b, s32 c, s32 d);
+void ResSet_SetName1(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0218ef10(void *p, s32 a, s32 b, s32 c, s32 d);
 void *NNS_G3dGetMdlSet(void *file);
 void NNS_G3dReleaseMdlSet(void *mdl);
@@ -131,7 +131,7 @@ void func_ov000_0219cdb8(Robo021ca458 *self) {
     self->unk_b24_2 = 0;
     if (self->unk_b22_0 != 0) {
         if (self->unk_998 != NULL) {
-            func_ov000_02191008(self->unk_998);
+            Model0218fe1c_StopAnim(self->unk_998);
         }
         if (self->seSlot >= 0) {
             SndMgr_StopSeqArc(data_02097e4c, self->seSlot);
@@ -190,18 +190,18 @@ void func_ov000_0219cdb8(Robo021ca458 *self) {
             self->unk_b22_12 = 0;
             self->mdl1.visible = 0;
             t = ((s32 *)self->unk_ba0);
-            func_ov000_02191008(&self->mdl1);
+            Model0218fe1c_StopAnim(&self->mdl1);
             if ((u8 *)self->unk_998 != NULL) {
                 LFLD(H1_0219cdb8, self->unk_998, 0xc2).b0 = 0;
             }
             self->mdl0.visible = 0;
             res = (void **)self->mdl0.res->mdl_handle;
             NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet(res != NULL ? *res : NULL));
-            func_ov000_0218ec60(&self->res1, t[0], t[1], 1, 1);
-            func_ov000_0218edf0(&self->res1, t[2], t[3], 1, 1);
+            ResSet_SetName0(&self->res1, t[0], t[1], 1, 1);
+            ResSet_SetName1(&self->res1, t[2], t[3], 1, 1);
             func_ov000_0218ef10(&self->res1, t[4], t[5], 1, 1);
             if (LFLD(u8, t, 0x18) != 0) {
-                func_ov000_0218edf0(&self->res2, t[0], t[1], 1, 1);
+                ResSet_SetName1(&self->res2, t[0], t[1], 1, 1);
             }
             self->unk_b22_11 = 1;
         }

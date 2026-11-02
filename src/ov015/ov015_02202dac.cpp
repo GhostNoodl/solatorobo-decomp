@@ -4,18 +4,18 @@ extern "C" {
 
 extern void *data_02149ef8;
 void *MsgRes_GetString(void *a, s32 b);
-void func_ov000_0215bb14(void *a, void *b);
+void Obj0215bb14_SetText(void *a, void *b);
 void *func_ov015_02207738(Ov015Ship *p);
 extern u8 data_ov015_022129c0[];
-void func_ov000_02163254(void *p);
-void *func_ov000_02191b04(void *p);
+void MsgBox_Release(void *p);
+void *Shadow_DtorBase(void *p);
 extern u8 data_ov015_022129d0[];
 void *func_ov015_0220765c(Ov015Ship *p);
 void func_ov015_02207858(Ov015Ship *p);
-void *func_ov000_0219196c(void *p);
+void *Shadow_CtorBase(void *p);
 void Shadow_Load(void *p);
 BOOL func_ov015_022078bc(Ov015Ship *p);
-BOOL func_ov000_02191b9c(void *p);
+BOOL Shadow_UpdateLoad(void *p);
 
 static inline bool Ov015Task_Flag4(Task *t) {
     return t->unk_04_4;
@@ -26,7 +26,7 @@ bool Ov015Task_GetFlag4(Task *self) {
     return r;
 }
 
-void func_ov015_02202dd0(Task *self) {
+void Ov015Scene2a88_PreUpdate(Task *self) {
     Task *o;
     if (self->state == 8) {
         return;
@@ -34,7 +34,7 @@ void func_ov015_02202dd0(Task *self) {
     if (self->state != 0xc) {
         return;
     }
-    o = func_ov000_0218084c(data_ov000_021ccd44, 0x1f, 0);
+    o = TaskHost_RequestSwitch(data_ov000_021ccd44, 0x1f, 0);
     o->param = self->param;
     self->vfunc_4c();
 }
@@ -60,7 +60,7 @@ bool func_ov015_02202e74(Task *self) {
     return r;
 }
 
-void func_ov015_02202e9c(Ov015Scene2a88 *self) {
+void Ov015Scene2a88_PostUpdate(Ov015Scene2a88 *self) {
     s32 a = self->unk_44;
     s32 r = 0;
     if (a < 0x1000000) {
@@ -74,7 +74,7 @@ void func_ov015_02202e9c(Ov015Scene2a88 *self) {
     }
 }
 
-void func_ov015_02202ec8(Ov015Scene2a88 *self) {
+void Ov015Scene2a88_Draw(Ov015Scene2a88 *self) {
     Model *model = self->model;
     ModelRes *res;
     ModelPart *anim;
@@ -93,16 +93,16 @@ void func_ov015_02202ec8(Ov015Scene2a88 *self) {
         void *e = NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0);
         arg = NNS_G2dGetCellDataByIdx(res->texRes, **(u16 **)FLD(void *, e, 0xc));
     }
-    func_02042628(model, arg, anim, 0);
+    TexObj_DrawCell(model, arg, anim, 0);
 }
 
 BOOL func_ov015_02202f44(UiList *self, UiListItem *ev) {
     if (ev != NULL) {
         if (ev->unk_10 != -1) {
             ((Ov015Scene2a08 *)self->owner)->unk_a4 = 1;
-            func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
         } else {
-            func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
         }
     }
     return TRUE;
@@ -124,7 +124,7 @@ BOOL func_ov015_02202fa8(UiList *self, UiListItem *ev) {
         break;
     }
     if (o->unk_84 != NULL) {
-        func_ov000_0215bb14(o->unk_84, m);
+        Obj0215bb14_SetText(o->unk_84, m);
         o->unk_84->vfunc_70();
     }
     return TRUE;
@@ -163,18 +163,18 @@ void func_ov015_02203020(Ov015Scene2a08 *self) {
 
 void *func_ov015_0220318c(Ov015MsgBox *self) {
     SET_VT(self, data_ov015_022129c0);
-    func_ov000_02163254(self);
+    MsgBox_Release(self);
     Heap_Free(self);
     return self;
 }
 
 void *func_ov015_022031b4(Ov015Shadow *self) {
-    func_ov000_02191b04(self);
+    Shadow_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
-void func_ov015_022031d0(Ov015Scene2a08 *self) {
+void Ov015Scene2a08_Load(Ov015Scene2a08 *self) {
     Ov015Ship *p;
     void *q;
     p = (Ov015Ship *)Heap_Alloc(0xd58);
@@ -186,14 +186,14 @@ void func_ov015_022031d0(Ov015Scene2a08 *self) {
     ((Ov015Ship *)self->ship)->modelIdx = data_ov015_02213368->unk_2c;
     q = Heap_Alloc(0x1c);
     if (q != NULL) {
-        func_ov000_0219196c(q);
+        Shadow_CtorBase(q);
         SET_VT(q, data_ov015_022129d0);
     }
     self->shadow = (Ov015Shadow *)q;
     Shadow_Load(q);
 }
 
-BOOL func_ov015_02203244(Ov015Scene2a08 *self) {
+BOOL Ov015Scene2a08_IsLoaded(Ov015Scene2a08 *self) {
     BOOL r = func_ov015_022078bc(self->ship) & 1 ? TRUE : FALSE;
     u8 st = self->shadow->state;
     BOOL idle = TRUE;
@@ -201,7 +201,7 @@ BOOL func_ov015_02203244(Ov015Scene2a08 *self) {
         idle = FALSE;
     }
     if (!idle) {
-        r = r & func_ov000_02191b9c(self->shadow) ? TRUE : FALSE;
+        r = r & Shadow_UpdateLoad(self->shadow) ? TRUE : FALSE;
     }
     return r;
 }
@@ -215,10 +215,10 @@ extern u8 data_ov015_0221299d[];
 extern u8 data_ov015_02213360;
 BOOL func_ov015_02207adc(Ov015Ship *p);
 void func_020434e0(void *p);
-void func_ov000_02163224(void *p);
-void func_ov000_021632f0(void *p, s32 a, void *b, void *c, s32 d);
-void func_02043904(void *p);
-void func_02043b20(void *p);
+void MsgBox_Init(void *p);
+void MsgBox_Open(void *p, s32 a, void *b, void *c, s32 d);
+void Gfx3DState_SetDefaults(void *p);
+void Gfx3DState_Apply(void *p);
 
 
 static inline void Ov015_SetUiPos(UiObj *o, s16 x, s16 y, s16 z) {
@@ -233,7 +233,7 @@ static inline void Ov015_SetUiSlide(UiObj *o, s32 x, s32 y, s32 z) {
     o->slideZ = z;
 }
 
-void func_ov015_02203298(Ov015Scene2a08 *self) {
+void Ov015Scene2a08_Start(Ov015Scene2a08 *self) {
     VObj *p;
     void *res;
     if (self->vfunc_28()) {
@@ -311,7 +311,7 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
     self->unk_80->vfunc_74(MsgRes_GetString(res, 0xd4), 2, 0xffff, 0xffff);
     {
         UiList *o = self->unk_80;
-        o->vfunc_a8(func_ov000_02154b58(o, 0));
+        o->vfunc_a8(UiList_GetItemById(o, 0));
     }
     self->unk_80->onDecide = func_ov015_02202f44;
     self->unk_80->onCursor = func_ov015_02202fa8;
@@ -330,7 +330,7 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
     Ov015_SetUiPos(self->unk_84, 4, 0x95, -0xccd);
     Ov015_SetUiSlide(self->unk_84, -0x100, 0, -0xccd);
     self->unk_84->slideMode = 1;
-    func_ov000_0215bb14(self->unk_84, MsgRes_GetString(res, 0xc7));
+    Obj0215bb14_SetText(self->unk_84, MsgRes_GetString(res, 0xc7));
     self->unk_84->vfunc_70();
     self->unk_84->vfunc_08();
     switch (self->param) {
@@ -339,20 +339,20 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
             p = (VObj *)Heap_Alloc(0x2c);
             if (p != NULL) {
                 SET_VT(p, data_ov015_022129c0);
-                func_ov000_02163224(p);
+                MsgBox_Init(p);
             }
             self->unk_8c = (Ov015MsgBox *)p;
-            func_ov000_021632f0(self->unk_8c, 5, data_ov015_02212990, data_ov015_0221299d, 0);
+            MsgBox_Open(self->unk_8c, 5, data_ov015_02212990, data_ov015_0221299d, 0);
             self->unk_80->flags |= 4;
             self->unk_84->flags |= 4;
             self->unk_88->flags |= 2;
             self->unk_84->flags |= 2;
         }
     case 2: {
-        UiListItem *o = func_ov000_02154b58(self->unk_80, 1);
+        UiListItem *o = UiList_GetItemById(self->unk_80, 1);
         o->unk_24 = 0xe;
         o->unk_10 = -1;
-        o = func_ov000_02154b58(self->unk_80, 2);
+        o = UiList_GetItemById(self->unk_80, 2);
         o->unk_24 = 0xe;
         o->unk_10 = -1;
         break;
@@ -360,12 +360,12 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
     }
     {
         GfxSys *g = data_02097d48;
-        func_02043904(g->unk_8b0);
+        Gfx3DState_SetDefaults(g->unk_8b0);
         g->unk_8b0[0] |= 0x30;
         REG16(0x4000060) = (REG16(0x4000060) & ~0x3000) | 0x20;
-        func_02043b20(g->unk_8b0);
+        Gfx3DState_Apply(g->unk_8b0);
     }
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
     if (++data_ov015_02213360 > 100) {
         data_ov015_02213360 = 100;
     }

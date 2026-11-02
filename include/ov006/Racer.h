@@ -43,7 +43,7 @@ void Ov006Marker_Project(Ov006Marker *self, const VecFx32 *pos, const MtxFx43 *c
 // A racer's parameter record (Ov006Racer::prm, the 0xa-byte table entry func_020706a0 returns).
 typedef struct Ov006RacerPrm {
     s16 unk_00; // scales the model's anim speed (Ov006Racer_UpdateRun)
-    s16 unk_02; // engine sound (func_02049afc)
+    s16 unk_02; // engine sound (SndMgr_StartSeqArc)
     s8 unk_04; // acceleration
     s8 unk_05; // top speed
     s8 unk_06; // steering
@@ -113,7 +113,7 @@ public:
     u16 unk_1f8;
     u16 unk_1fa;
     u16 unk_1fc;
-    s16 seq; // engine sound handle (func_02049afc); -1 for none
+    s16 seq; // engine sound handle (SndMgr_StartSeqArc); -1 for none
     Ov006RacerPt *pts;
     Ov006RacerPt *goal;
     u8 ptCount;

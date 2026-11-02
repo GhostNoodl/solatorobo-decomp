@@ -6,9 +6,9 @@ extern u32 data_0208c23c[];
 extern u32 data_0208c290[];
 extern u32 data_0208c2e4[];
 extern char data_0208c4da[];
-extern void func_02063a34(EffectObj *obj);
-extern void func_02063f90(Effect3D *e);
-extern void func_02064d3c(EffectObj *obj, EffectObj *child);
+extern void EffectObj_Register(EffectObj *obj);
+extern void Effect3D_Init(Effect3D *e);
+extern void EffectObj_AddChild(EffectObj *obj, EffectObj *child);
 extern void EffectGroup_Reset(EffectGroup *g);
 extern s32 Rand_PlusMinus(s32 range);
 extern char data_0208c5e5[];
@@ -63,9 +63,9 @@ static inline Effect3D *Effect3D_New(void) {
     Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
         *(u32 **)e = data_0208c2e4;
-        func_02063a34(e);
+        EffectObj_Register(e);
         *(u32 **)e = data_0208c290;
-        func_02063f90(e);
+        Effect3D_Init(e);
     }
     return e;
 }
@@ -74,7 +74,7 @@ static inline EffectGroup *EffectGroup_New(void) {
     EffectGroup *g = (EffectGroup *)Heap_Alloc(sizeof(EffectGroup));
     if (g != NULL) {
         *(u32 **)g = data_0208c2e4;
-        func_02063a34(g);
+        EffectObj_Register(g);
         *(u32 **)g = data_0208c23c;
         EffectGroup_Reset(g);
     }
@@ -99,7 +99,7 @@ EffectGroup *func_02067984(const VecFx32 *pos) {
             e->SetRotXYZ(0, Rand_PlusMinus(0x1000), 0xe000);
             break;
         }
-        func_02064d3c(g, e);
+        EffectObj_AddChild(g, e);
     }
     g->unk_20 = 0x69;
     g->SetPos(pos);

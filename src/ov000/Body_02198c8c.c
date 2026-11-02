@@ -49,7 +49,7 @@ typedef struct {
 } HitInfo02198ad8;
 
 extern HitInfo02198ad8 data_02fe0f14;
-s32 func_ov000_0219a2f4(VecFx32 *pos, s32 a, s32 b);
+s32 Geom_SnapToGround(VecFx32 *pos, s32 a, s32 b);
 
 typedef struct ActorMgr ActorMgr;
 
@@ -57,7 +57,7 @@ extern ActorMgr *data_ov000_021ccd68;
 
 ActorC *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u32 angle);
-void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *offset, u32 angle);
+void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *offset, u32 angle);
 
 static inline ActorC *FindActor(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;
@@ -114,7 +114,7 @@ typedef struct {
 
 GroupL *ActorMgr_GetGroup(ActorMgr *mgr, u16 key);
 BOOL func_ov000_02199684(Finder *self, ActorL *actor);
-ActorL *func_ov000_02199000(Finder *self, Query *q, ActorL *from);
+ActorL *Finder_NextActor(Finder *self, Query *q, ActorL *from);
 
 static inline BOOL Query_MatchKind(Query *q, ActorL *a) {
     if (q->kind != 0xffff && q->kind != a->kind) {
@@ -123,8 +123,8 @@ static inline BOOL Query_MatchKind(Query *q, ActorL *a) {
     return TRUE;
 }
 
-BOOL func_ov000_021997e8(Finder *self, Part *part);
-Part *func_ov000_021992b4(Finder *self, Query *q, Part *from);
+BOOL Finder_TestPart(Finder *self, Part *part);
+Part *Finder_NextPart(Finder *self, Query *q, Part *from);
 
 static inline s32 Finder_FindAll(Finder *self, Query *q, ActorL **out, s32 max) {
     s32 n = 0;
@@ -133,7 +133,7 @@ static inline s32 Finder_FindAll(Finder *self, Query *q, ActorL **out, s32 max) 
     if (q != NULL) {
         actor = NULL;
         for (; n < max; n++) {
-            actor = func_ov000_02199000(self, q, actor);
+            actor = Finder_NextActor(self, q, actor);
             if (actor == NULL) {
                 break;
             }
@@ -159,7 +159,7 @@ void func_ov000_02198ad8(Body *self, VecFx32 *pos, const VecFx32 *vel) {
             r = self->unk_38 >> 1;
         }
         y0 = self->check.y;
-        if (func_ov000_0219a2f4(&self->check, r + vel->y, -h) != -0x1000) {
+        if (Geom_SnapToGround(&self->check, r + vel->y, -h) != -0x1000) {
             BOOL hit = FALSE;
             if (self->unk_9a_5) {
                 if (self->check.y - y0 >= -0x666) {
@@ -197,7 +197,7 @@ void func_ov000_02198ad8(Body *self, VecFx32 *pos, const VecFx32 *vel) {
     pos->z -= vel->z;
 }
 
-void func_ov000_02198c8c(Body *self, u16 id) {
+void Body_SetOwner(Body *self, u16 id) {
     VecFx32 p;
     ActorC *actor;
 
@@ -209,7 +209,7 @@ void func_ov000_02198c8c(Body *self, u16 id) {
     p.x = actor->pos.x;
     p.y = actor->pos.y;
     p.z = actor->pos.z;
-    func_ov000_0219a210(&p, &self->offset, actor->rot_y);
+    Geom_AddRotatedOffset(&p, &self->offset, actor->rot_y);
     self->prev.x = self->pos.x; self->prev.y = self->pos.y; self->prev.z = self->pos.z;
     self->pos.x = p.x;
     self->pos.y = p.y;
@@ -320,7 +320,7 @@ s32 func_ov000_02198efc(s32 count, SortLink *links, s32 *keys) {
     return head;
 }
 
-ActorL *func_ov000_02199000(Finder *self, Query *q, ActorL *from) {
+ActorL *Finder_NextActor(Finder *self, Query *q, ActorL *from) {
     ActorL *found;
     u32 mask;
     GroupL *group;
@@ -366,7 +366,7 @@ ActorL *func_ov000_02199000(Finder *self, Query *q, ActorL *from) {
     return found;
 }
 
-s32 func_ov000_02199128(Finder *self, Query *q, ActorL **out, s32 max) {
+s32 Finder_CollectActors(Finder *self, Query *q, ActorL **out, s32 max) {
     s32 n;
     ActorL *actor;
 
@@ -376,7 +376,7 @@ s32 func_ov000_02199128(Finder *self, Query *q, ActorL **out, s32 max) {
     n = 0;
     actor = NULL;
     for (; n < max; n++) {
-        actor = func_ov000_02199000(self, q, actor);
+        actor = Finder_NextActor(self, q, actor);
         if (actor == NULL) {
             break;
         }

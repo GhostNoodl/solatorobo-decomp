@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_02163594(MsgBox *self) {
+void MsgBox_Render(MsgBox *self) {
     SlideWin *win = self->win;
     if (win != NULL) {
         win->Render();

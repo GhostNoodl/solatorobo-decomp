@@ -12,7 +12,7 @@ typedef struct {
 
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
-extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
+extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
 
 void Ov003Actor_State20(Ov003Actor *self) {
     if (self->unk_b0->unk_0a_5) {
@@ -20,7 +20,7 @@ void Ov003Actor_State20(Ov003Actor *self) {
         func_020627dc(4);
         data_ov000_021ccd54->stageFlags = 1;
     }
-    func_ov000_02198360(self->fsm, 1, 0);
+    History_SetState(self->fsm, 1, 0);
 }
 
 extern const u8 data_ov003_021f43dc[];
@@ -34,7 +34,7 @@ extern const u8 data_ov003_021f4437[];
 extern const u8 data_ov003_021f443c[];
 extern const u8 data_ov003_021f4441[];
 extern void Ov003_AddMeter_021cedf4(u16 n);
-extern Ov003EvPlayer *func_ov000_0219bf90(void);
+extern Ov003EvPlayer *ActorMgr_FindPlayer(void);
 
 static inline BOOL Ov003EvPlayer_Flag(Ov003EvPlayer *pl) {
     return pl->unk_b24_1 ? TRUE : FALSE;
@@ -155,7 +155,7 @@ u8 Ov003Actor_ApplyHit(Ov003Actor *self, ActorMsgHit *hit) {
     }
     self->unk_ea_11 = 0;
     if (dmg == 0 && (res == 0x12 || res == 0x13)) {
-        Ov003EvPlayer *pl = func_ov000_0219bf90();
+        Ov003EvPlayer *pl = ActorMgr_FindPlayer();
         if (pl != NULL && Ov003EvPlayer_Flag(pl) == FALSE) {
             self->unk_ea_11 = 1;
         }

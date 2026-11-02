@@ -5,15 +5,15 @@
 
 extern "C" {
 
-BOOL func_02054f10(void *a, s32 b);
-BOOL func_0203e63c(void *p);
-BOOL func_ov000_021580e8(UiList *self);
+BOOL Model_IsReady(void *a, s32 b);
+BOOL Vram_IsTransferDone(void *p);
+BOOL UiList_IsLoaded(UiList *self);
 
 static inline BOOL TextReady(TextWin *t) {
     if (t->unk_6c == NULL) {
         return TRUE;
     }
-    if (func_0203e63c(t->unk_6c)) {
+    if (Vram_IsTransferDone(t->unk_6c)) {
         t->unk_6c = NULL;
     } else {
         return t->noVram ? FALSE : TRUE;
@@ -26,14 +26,14 @@ static inline BOOL LabelReady(UiLabel *q) {
     if (q->text && !TextReady(q->text)) {
         r = FALSE;
     }
-    if (q->model && !func_02054f10(q->model, 0xffff)) {
+    if (q->model && !Model_IsReady(q->model, 0xffff)) {
         r = FALSE;
     }
     return r;
 }
 
 BOOL func_ov000_02157fc0(UiList021cb4a8 *self) {
-    BOOL ok = func_ov000_021580e8(self);
+    BOOL ok = UiList_IsLoaded(self);
     if (self->unk_d4 && !LabelReady(self->unk_d4)) {
         ok = FALSE;
     }

@@ -250,30 +250,30 @@ extern "C" {
 void *Heap_Alloc(u32 size); // Main/Gfx/ObjPool.h
 void Heap_Free(void *ptr);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-void func_ov000_021915a0(void *a);
+BOOL History_SetState(void *a, s32 b, s32 c);
+void Model0218fe1c_SetLoop(void *a);
 s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
-void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-s32 func_ov000_0219a2f4(VecFx32 *v, s32 y, s32 b);
-BOOL func_ov000_02191120(Model0218fe1c *p);
+void Body_Update(void *a, s32 b, s32 c, s32 d);
+s32 Geom_SnapToGround(VecFx32 *v, s32 y, s32 b);
+BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *p);
 char *func_0207011c(void *res);
 char *func_020701d4(void *res);
 u8 *func_02070558(void *res);
 }
 extern "C" {
-void func_ov000_021953b4(ActorEx *self);
+void ActorEx_Update(ActorEx *self);
 void Ov003FxList_Prune(void *p);
 // ov000 ActorEx members used by the ov013 classes (declared once, round acD).
 ActorEx *ActorEx_Ctor(ActorEx *self);
-ActorEx *func_ov000_0219429c(ActorEx *self);
-void func_ov000_0219433c(ActorEx *self);
-BOOL func_ov000_021946f8(ActorEx *self);
-void func_ov000_02194758(ActorEx *self);
-BOOL func_ov000_02194c08(ActorEx *self);
-void func_ov000_02196060(ActorEx *self);
+ActorEx *ActorEx_DtorBase(ActorEx *self);
+void ActorEx_InitActor(ActorEx *self);
+BOOL ActorEx_IsReady(ActorEx *self);
+void ActorEx_Start(ActorEx *self);
+BOOL ActorEx_Draw(ActorEx *self);
+void ActorEx_StateThrown(ActorEx *self);
 s32 func_0203db40(void *p);
-void func_ov000_02190a80(void *a, s32 b);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
 }
 
 
@@ -310,8 +310,8 @@ public:
     u16 unk_d4;
     u8 unk_d6[0x2];
     Ov013Prm *unk_d8;
-    Ov013Names *unk_dc; // func_ov000_0218e9c4 / func_ov000_0218ea20
-    Model0218fe1c *unk_e0; // func_ov000_0218fee4; drawn at pos while the player locks on to this actor
+    Ov013Names *unk_dc; // ResSet_Init / ResSet_ReleaseAll
+    Model0218fe1c *unk_e0; // Model0218fe1c_FreeAnims; drawn at pos while the player locks on to this actor
     Ov013Pmf unk_e4;
     u8 unk_ec[0x10]; // Ov003Vt_021f79a8_Ctor / Ov003Vt_021f79a8_Dtor
 };
@@ -407,7 +407,7 @@ SIZE_ASSERT(Ov013ActEx_0220a9a8, 0xd8);
 // The ov000-factory class with vtable data_ov013_0220b7d0 (0xdc bytes).
 class Ov013ActExVt_0220b7d0 : public ActorEx {
 public:
-    s32 unk_d0[2]; // effect handles (func_020657b0)
+    s32 unk_d0[2]; // effect handles (Effect_Find_020657b0)
     s32 unk_d8;
 };
 SIZE_ASSERT(Ov013ActExVt_0220b7d0, 0xdc);

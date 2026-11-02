@@ -11,7 +11,7 @@ extern "C" {
 
 Info021b4f28 *Lang_GetGroup(u32 id);
 void func_0206dfd4(char *buf, u8 *src);
-void func_02035acc(void *a, void *b, s32 c);
+void ResMgr_ReleaseArchive(void *a, void *b, s32 c);
 void *func_ov000_021b7a7c(FieldProp *node);
 void HitMesh_Detach(void *obj);
 void func_0206e6c0(void);
@@ -23,7 +23,7 @@ static inline void FieldMgr_Delete(FieldMgr *o) {
         Info021b4f28 *info = Lang_GetGroup(g->unk_ca.c[0]);
         char buf[0x20];
         func_0206dfd4(buf, &g->unk_ca.c[0]);
-        func_02035acc(info->unk_08, buf, 0);
+        ResMgr_ReleaseArchive(info->unk_08, buf, 0);
         {
             FieldCam *sub = &data_ov000_021ccd54->cam;
             sub->unk_c8 = 0;

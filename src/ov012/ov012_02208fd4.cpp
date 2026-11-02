@@ -7,8 +7,8 @@ extern char data_ov012_0220b34d[];
 extern char data_ov012_0220b341[];
 extern char data_ov012_0220b335[];
 extern u8 data_ov012_0220a88c[];
-extern void func_ov000_021911c8(Model0218fe1c *p, s16 a);
-extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
+extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *p, s16 a);
+extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *a, s32 b);
 
 
 #define OV012T_SQRTCNT (*(volatile u16 *)0x40002b0)
@@ -61,7 +61,7 @@ static inline void Ov012_Query_SetPosRot(Ov012Query *q, const VecFx32 *pos, u16 
 extern "C" {
 
 extern char data_ov012_0220b347[];
-extern s32 func_ov000_02199128(s32 *out, Ov012Query *q, void **list, s32 max);
+extern s32 Finder_CollectActors(s32 *out, Ov012Query *q, void **list, s32 max);
 
 #define OV012Q_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV012Q_SQRT_RESULT (*(volatile u32 *)0x40002b4)
@@ -70,15 +70,15 @@ extern s32 func_ov000_02199128(s32 *out, Ov012Query *q, void **list, s32 max);
 void Ov012ActVt_0220b280_StateAttack3(Ov012ActVt_0220b280 *self) {
     switch (self->fsm->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov012_0220b347, 0x1000, 0);
-        func_ov000_021911c8(self->model, 0xccd);
+        Model0218fe1c_SetAnim(self->model, data_ov012_0220b347, 0x1000, 0);
+        Model0218fe1c_SetAnimSpeed(self->model, 0xccd);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;
         self->gravity = 0;
         self->fsm->st++;
         if (self->unk_1a == 0) {
-            func_02049f44(data_02097e4c, 0x600, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x600, &self->pos, 0);
         }
     case 1: {
         Ov003Actor *list[0x20];
@@ -86,7 +86,7 @@ void Ov012ActVt_0220b280_StateAttack3(Ov012ActVt_0220b280 *self) {
         self->unk_44->unk_22_1 = 0;
         p48 = self->hit;
         p48->unk_9a_3 = 0;
-        func_0203f364(p48);
+        HitSphere_Unlink_0203f364(p48);
         Ov012Query q;
         VecFx32 v;
         s32 out;
@@ -104,7 +104,7 @@ void Ov012ActVt_0220b280_StateAttack3(Ov012ActVt_0220b280 *self) {
         q.bits.b1 = 1;
         q.bits.b2 = 0;
         out = 0;
-        n = func_ov000_02199128(&out, &q, (void **)list, 0x20);
+        n = Finder_CollectActors(&out, &q, (void **)list, 0x20);
         if (n != 0) {
             tgt = Ov012_FindActor(self->target);
             if ((tgt == NULL || tgt == self) != 0) {
@@ -145,17 +145,17 @@ void Ov012ActVt_0220b280_StateAttack3(Ov012ActVt_0220b280 *self) {
                             func_ov000_0219bebc(o, 0x1800);
                         }
                     }
-                    func_02065f88(0x69, &v)->SetScaleAll(0xccd);
-                    func_02049f44(data_02097e4c, 0x2c, &self->pos, 0);
+                    Effect_SpawnId(0x69, &v)->SetScaleAll(0xccd);
+                    SndMgr_PlayAt(data_02097e4c, 0x2c, &self->pos, 0);
                 }
             }
         }
-        func_ov000_02191418(self->model, 0, 1);
-        if (!func_ov000_02191120(self->model)) {
+        Model0218fe1c_SetAnimDelay(self->model, 0, 1);
+        if (!Model0218fe1c_IsAnimDone(self->model)) {
             break;
         }
-        func_ov000_02190cb0(self->model, data_ov012_0220b341, 0x19a, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov012_0220b341, 0x19a, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st++;
         break;
     }
@@ -163,7 +163,7 @@ void Ov012ActVt_0220b280_StateAttack3(Ov012ActVt_0220b280 *self) {
         ActorSub40 *s = self->fsm;
         s->timer++;
         if (s->timer > 0x5a) {
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }
@@ -189,7 +189,7 @@ void Ov012ActVt_0220b280_StateShoot(Ov012ActVt_0220b280 *self) {
     s = self->fsm;
     switch (s->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov012_0220b34d, 0x333, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov012_0220b34d, 0x333, 0);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;
@@ -273,28 +273,28 @@ void Ov012ActVt_0220b280_StateShoot(Ov012ActVt_0220b280 *self) {
         break;
     }
     case 3:
-        if (func_ov000_02191120(self->model)) {
-            func_ov000_02190cb0(self->model, data_ov012_0220b341, 0x19a, 0);
-            func_ov000_021915a0(self->model);
+        if (Model0218fe1c_IsAnimDone(self->model)) {
+            Model0218fe1c_SetAnim(self->model, data_ov012_0220b341, 0x19a, 0);
+            Model0218fe1c_SetLoop(self->model);
             self->fsm->st++;
         }
         break;
     case 4:
         if (self->hit->unk_50 & 0x20000000) {
-            func_ov000_02190cb0(self->model, data_ov012_0220b335, 0x800, 0);
-            func_ov000_02191318(self->model, 0x8000);
+            Model0218fe1c_SetAnim(self->model, data_ov012_0220b335, 0x800, 0);
+            Model0218fe1c_SetAnimFrame(self->model, 0x8000);
             self->fsm->st++;
         }
         break;
     case 5:
         s->timer++;
         if (s->timer > 10) {
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }
     Actor_Move(self, 0);
-    func_ov000_021987b8(self->hit, 0, 0, 0);
+    Body_Update(self->hit, 0, 0, 0);
     if (self->hit->unk_50 & 0x20000000) {
         self->velY = 0;
     }
@@ -308,11 +308,11 @@ void Ov012ActVt_0220b280_StateDown(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0) {
         if (*self->hp == 0) {
             if (self->unk_1a == 0) {
-                func_02049f44(data_02097e4c, 0x603, &self->pos, 0);
+                SndMgr_PlayAt(data_02097e4c, 0x603, &self->pos, 0);
             }
         } else {
             if (self->unk_1a == 0) {
-                func_02049f44(data_02097e4c, 0x602, &self->pos, 0);
+                SndMgr_PlayAt(data_02097e4c, 0x602, &self->pos, 0);
             }
         }
     }
@@ -323,7 +323,7 @@ void Ov012ActVt_0220b280_StateDown(Ov012ActVt_0220b280 *self) {
 extern "C" {
 void Ov012ActVt_0220b280_StateHurt(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0 && self->unk_1a == 0) {
-        func_02049f44(data_02097e4c, 0x602, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x602, &self->pos, 0);
     }
     Ov003Actor_StateHurt(self);
 }
@@ -332,7 +332,7 @@ void Ov012ActVt_0220b280_StateHurt(Ov012ActVt_0220b280 *self) {
 extern "C" {
 void Ov012ActVt_0220b280_StateKnockBack(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0 && self->unk_1a == 0) {
-        func_02049f44(data_02097e4c, 0x603, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x603, &self->pos, 0);
     }
     Ov003Actor_StateKnockBack(self);
 }
@@ -343,7 +343,7 @@ void Ov012ActVt_0220b280_StateDie(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0) {
         EffectObj *e;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x480e, 0x15);
-        e = func_02065f88(0x69, &self->pos);
+        e = Effect_SpawnId(0x69, &self->pos);
         if (e != NULL) {
             e->SetScaleAll(0x2400);
             e->AddPosXYZ(0, self->centerY, 0);
@@ -355,7 +355,7 @@ void Ov012ActVt_0220b280_StateDie(Ov012ActVt_0220b280 *self) {
 
 extern "C" {
 Ov012ActVt_0220b280 *Ov012ActVt_0220b280_Dtor(Ov012ActVt_0220b280 *self) {
-    func_ov000_0218ea20(&self->unk_f0);
+    ResSet_ReleaseAll(&self->unk_f0);
     Ov003Actor_DtorBase(self);
     return self;
 }
@@ -363,7 +363,7 @@ Ov012ActVt_0220b280 *Ov012ActVt_0220b280_Dtor(Ov012ActVt_0220b280 *self) {
 
 extern "C" {
 Ov012ActVt_0220b280 *Ov012ActVt_0220b280_DtorDelete(Ov012ActVt_0220b280 *self) {
-    func_ov000_0218ea20(&self->unk_f0);
+    ResSet_ReleaseAll(&self->unk_f0);
     Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
@@ -374,13 +374,13 @@ extern "C" {
 void Ov012ActVt_0220b35c_Init(Ov003Actor *self) {
     Ov003Actor_Init(self);
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
-    func_02049678(data_02097e4c, 4, 7, -1);
+    SndMgr_RequestLoad_02049678(data_02097e4c, 4, 7, -1);
 }
 }
 
 extern "C" {
 BOOL Ov012ActVt_0220b35c_IsReady(Ov003Actor *self) {
-    BOOL r = func_ov000_0218cf5c(self);
+    BOOL r = Actor_IsReady(self);
     if (r && !SndMgr_IsLoadDone(data_02097e4c)) {
         r = FALSE;
     }

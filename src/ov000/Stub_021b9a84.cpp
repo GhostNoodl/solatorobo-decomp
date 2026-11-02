@@ -20,7 +20,7 @@ typedef struct {
 
 extern "C" {
 
-void func_02043d20(void *p, s32 a);
+void Gfx3D_SendDL(void *p, s32 a);
 void func_ov000_021b9b14(Obj021b9a84 *self);
 void func_ov000_021ba338(Obj021b9a84 *self);
 
@@ -29,7 +29,7 @@ void func_ov000_021b9a84(Obj021b9a84 *self) {
     case 11:
     case 12:
     case 13:
-        func_02043d20(data_02097d48->unk_8b0, 0);
+        Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
         func_ov000_021b9b14(self);
         if (self->unk_0c == 1 || self->unk_0c == 3) {
             func_ov000_021ba338(self);
@@ -220,7 +220,7 @@ static inline void PlayPart(Model_021b9b14 *m, int idx) {
         anim = NNS_G2dGetCellDataByIdx(res->cells,
                                        **((Seq_021b9b14 *)NNS_G2dGetAnimSequenceByIdx(res->seqs, idx))->frames);
     }
-    func_02042628((Model *)m, anim, (ModelPart *)part, 0);
+    TexObj_DrawCell((Model *)m, anim, (ModelPart *)part, 0);
 }
 
 typedef enum { SPR_DEPTH_021b9b14 = -0x81a } SprDepth_021b9b14;

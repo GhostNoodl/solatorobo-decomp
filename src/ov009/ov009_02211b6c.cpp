@@ -3,9 +3,9 @@
 extern "C" {
 
 extern char data_ov009_022179b4[];
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern void Actor_TurnToPos(Ov003Actor *self, const VecFx32 *v, s32 a);
-extern void func_ov000_021911c8(Model0218fe1c *m, s16 a);
+extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *m, s16 a);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 static inline void Ov009_NextState(Ov009ActVt_02217aac *self) {
@@ -18,12 +18,12 @@ void Ov009ActVt_02217aac_State21(Ov009ActVt_02217aac *self) {
     ActorSub40 *st;
     switch (self->fsm->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov009_022179b4, 0x1000, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov009_022179b4, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
         Ov009_NextState(self);
         break;
     case 1: {
-        Ov003Actor *t = func_ov000_0219bf90();
+        Ov003Actor *t = ActorMgr_FindPlayer();
         s32 tx = t->pos.x;
         s32 ty = t->pos.y;
         s32 tz = t->pos.z;
@@ -36,7 +36,7 @@ void Ov009ActVt_02217aac_State21(Ov009ActVt_02217aac *self) {
         st = self->fsm;
         st->timer++;
         if (st->timer > 10) {
-            func_ov000_021911c8(self->model, 0x1800);
+            Model0218fe1c_SetAnimSpeed(self->model, 0x1800);
             self->moveYaw = self->rot_y;
             self->velY = 0;
             self->gravity = 0;

@@ -5,12 +5,12 @@
 
 extern "C" {
 
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 void func_020627fc(u16 a);
 void func_0206280c(u16 a);
 void func_ov000_02182590(void *p);
 
-void func_ov000_02153fd8(MsgEntry *self) {
+void MsgEntry_Release(MsgEntry *self) {
     LO_FREE_V(self, 0x1c);
     LO_FREE_V(self, 0x20);
     self->unk_00 = 0;

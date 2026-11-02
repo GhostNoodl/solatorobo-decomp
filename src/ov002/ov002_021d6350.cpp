@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021d6350(Task021efc24 *self) {
+void Task021efc24_PostUpdate(Task021efc24 *self) {
     s32 x = self->unk_40;
     s32 v = 0;
     if (x < 0x1000000) {

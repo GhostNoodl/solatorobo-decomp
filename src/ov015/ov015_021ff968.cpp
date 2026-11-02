@@ -4,14 +4,14 @@ extern "C" {
 
 extern u8 data_ov015_022128fc[];
 void func_ov015_02209270(Ov015Fish *p);
-void func_0203f2b8(void *p);
-void *func_ov000_02191b04(void *p);
-void *func_ov000_0218fee4(void *p);
-void *func_ov000_0218ea20(void *p);
+void HitSphere_Unlink_0203f2b8(void *p);
+void *Shadow_DtorBase(void *p);
+void *Model0218fe1c_FreeAnims(void *p);
+void *ResSet_ReleaseAll(void *p);
 void func_ov015_0220900c(Ov015FishInfo *p);
 BOOL func_ov015_022121b4(Ov015Obj292c *self);
 void func_ov015_022123c4(Ov015Obj292c *self);
-void *func_ov000_02191318(void *a, s32 b);
+void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
 BOOL func_ov015_02209790(Ov015Fish *self, s32 a);
 void Ov015Fish_SetNextState(Ov015Fish *self, s32 a, s32 b);
 Ov015FishState40 *Ov015FishState40_Ctor(Ov015FishState40 *self);
@@ -21,8 +21,8 @@ extern u8 data_ov015_022132e0[];
 void func_ov015_022120c0(Ov015Obj292c *self);
 void func_ov015_02212180(Ov015Obj292c *self);
 int func_ov015_0221219c(Ov015Obj292c *self);
-void *func_ov000_0218e9c4(void *p);
-void *func_ov000_0218fe1c(void *p);
+void *ResSet_Init(void *p);
+void *Model0218fe1c_Init(void *p);
 void func_ov015_022119e8(Ov015Obj290 *self);
 void func_ov015_021ff9e8(Ov015Obj30 *self);
 BOOL func_ov015_021ffb90(Ov015Obj30 *self);
@@ -30,8 +30,8 @@ BOOL func_ov015_021ffdd4(Ov015Obj30 *self);
 Ov015FishState08 *Ov015FishState08_Ctor(Ov015FishState08 *self);
 s32 func_ov015_02209fb8(s32 x);
 void func_ov015_022029d4(Ov015List *self, Ov015Fish *fish);
-void func_ov015_021fd00c(Ov015CamPair *self, s32 mode, const void *v);
-void func_ov015_0220a058(Ov015Fish *self, void *out);
+void Ov015CamPair_SetMode(Ov015CamPair *self, s32 mode, const void *v);
+void Ov015Fish_GetFrontPos(Ov015Fish *self, void *out);
 
 static inline s32 Ov015_FxMul64(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
@@ -56,8 +56,8 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
         o = (VObj *)Heap_Alloc(0x290);
         if (o != NULL) {
             SET_VT(o, data_ov015_022132e0);
-            func_ov000_0218e9c4(&((Ov015Obj290 *)o)->res);
-            func_ov000_0218fe1c(&((Ov015Obj290 *)o)->model);
+            ResSet_Init(&((Ov015Obj290 *)o)->res);
+            Model0218fe1c_Init(&((Ov015Obj290 *)o)->model);
             func_ov015_022119e8((Ov015Obj290 *)o);
         }
         self->unk_14 = (Ov015Obj290 *)o;
@@ -146,7 +146,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
         BOOL done = FALSE;
         if (self->unk_0c == 0) {
             Ov015Node *n;
-            func_ov015_021fd00c(self->cam, 7, &self->unk_10->pos);
+            Ov015CamPair_SetMode(self->cam, 7, &self->unk_10->pos);
             for (n = self->fishList->head; n != NULL; n = n->next) {
                 func_ov015_02209790(n->fish, 1);
             }
@@ -165,8 +165,8 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
         BOOL done = FALSE;
         if (self->unk_0c == 0) {
             Ov015Vec v;
-            func_ov015_0220a058(self->fish, &v);
-            func_ov015_021fd00c(self->cam, 8, &v);
+            Ov015Fish_GetFrontPos(self->fish, &v);
+            Ov015CamPair_SetMode(self->cam, 8, &v);
             self->unk_14->vfunc_18();
             func_ov015_02209790(self->fish, 1);
             if ((self->fish)->stateId == 2) {
@@ -202,19 +202,19 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
 void *Ov015Fish_DtorDelete(Ov015Fish *self) {
     SET_VT(self, data_ov015_022128fc);
     func_ov015_02209270(self);
-    func_0203f2b8(&self->hit);
-    func_ov000_02191b04(&self->shadow);
-    func_ov000_0218fee4(&self->model2);
-    func_ov000_0218ea20(&self->res2);
-    func_ov000_0218fee4(&self->model);
-    func_ov000_0218ea20(&self->res);
+    HitSphere_Unlink_0203f2b8(&self->hit);
+    Shadow_DtorBase(&self->shadow);
+    Model0218fe1c_FreeAnims(&self->model2);
+    ResSet_ReleaseAll(&self->res2);
+    Model0218fe1c_FreeAnims(&self->model);
+    ResSet_ReleaseAll(&self->res);
     func_ov015_0220900c(&self->info);
     Heap_Free(self);
     return self;
 }
 
 void *func_ov015_021ff9d4(Ov015Shadow *self) {
-    func_ov000_02191b04(self);
+    Shadow_DtorBase(self);
     return self;
 }
 
@@ -254,7 +254,7 @@ void func_ov015_021ff9e8(Ov015Obj30 *self) {
         obj->pos.x = FX_Mul(q, 0x64000) - 0x32000;
         obj->pos.y = -0x32000;
         obj->pos.z = FX_Mul(q, -0x41000) - 0x4b000;
-        func_ov000_02191318(&obj->model, FX_Mul(q, 0x3c000));
+        Model0218fe1c_SetAnimFrame(&obj->model, FX_Mul(q, 0x3c000));
         obj->minX = -0x32000;
         obj->maxX = 0x32000;
         obj->maxZ = -0x4b000;
@@ -273,7 +273,7 @@ BOOL func_ov015_021ffb90(Ov015Obj30 *self) {
     BOOL r = FALSE;
     Ov015Fish *found;
     Ov015Node *n;
-    func_ov015_021fd00c(self->cam, 7, &self->unk_10->pos);
+    Ov015CamPair_SetMode(self->cam, 7, &self->unk_10->pos);
     if (self->unk_0c != 0) return r;
     if (data_02097dc8->trig & 1) {
         Ov015Vec v = self->unk_10->pos;
@@ -282,9 +282,9 @@ BOOL func_ov015_021ffb90(Ov015Obj30 *self) {
         r = TRUE;
         self->ship->unk_d3c = r;
         // m[3] as a byte offset from the matrix: a field path folds to one constant and changes the code.
-        e = func_02065f88(0x325, &FLD(Ov015Vec, &self->ship->nodeMtx, 0x24));
+        e = Effect_SpawnId(0x325, &FLD(Ov015Vec, &self->ship->nodeMtx, 0x24));
         e->unk_d4 = 3;
-        func_02049a48(data_02097e4c, 0x19, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x19, -1, -1, -1);
     }
     found = NULL;
     n = self->fishList->head;

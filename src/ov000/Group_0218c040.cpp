@@ -27,7 +27,7 @@ static inline BOOL IsHere0218c040(GroupNode *e) {
 
 // Collects up to max positions of the group's nodes in the current field: their actors (or the
 // recorded position of an actor that is gone), or the node's own position before it spawned.
-s32 func_ov000_0218c040(Group *list, s32 max, VecFx32 *out, s32 kind, u16 id) {
+s32 Group_GetSpawnPositions(Group *list, s32 max, VecFx32 *out, s32 kind, u16 id) {
     s32 n = 0;
     GroupNode *e;
     s32 i;

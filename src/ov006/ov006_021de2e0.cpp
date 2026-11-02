@@ -43,11 +43,11 @@ extern "C" {
 
 extern const char data_ov006_021ec094[];
 extern const char data_ov006_021ec0a0[];
-BOOL func_02054f10(void *a, int b);
+BOOL Model_IsReady(void *a, int b);
 void Interp_SinLerpVec(VecFx32 *out, fx32 t, const VecFx32 *from, const VecFx32 *to);
 void ov006_Unk021dd0e4_Update(ov006_Obj14_021de2e0 *p);
-void func_ov000_0215fdfc(void *self, s32 a, const void *b);
-BOOL func_ov000_0216dae4(void *p);
+void Obj0215fdfc_SetEntry(void *self, s32 a, const void *b);
+BOOL LoTimer_Update(void *p);
 
 static inline void ov006_Obj14_SetPos(ov006_Obj14_021de2e0 *o, s32 x, s32 y, s32 z) {
     o->x = x;
@@ -63,14 +63,14 @@ static inline void ov006_Obj18_SetPos(ov006_Obj18_021de2e0 *o, s32 x, s32 y, s32
 
 static inline void ov006_Obj18_Update(ov006_Obj18_021de2e0 *o) {
     if (!o->ready) {
-        if (o->unk1C != NULL && func_02054f10(o->unk1C, 0xffff)) {
+        if (o->unk1C != NULL && Model_IsReady(o->unk1C, 0xffff)) {
             o->ready = 1;
         }
     } else {
         if (o->unk8 && ((u8)++o->unk9 & 1)) {
-            func_ov000_0215fdfc(o->unk18, 2, data_ov006_021ec094);
+            Obj0215fdfc_SetEntry(o->unk18, 2, data_ov006_021ec094);
         } else {
-            func_ov000_0215fdfc(o->unk18, 2, data_ov006_021ec0a0);
+            Obj0215fdfc_SetEntry(o->unk18, 2, data_ov006_021ec0a0);
         }
         o->unk18->vfunc_0c();
     }
@@ -79,13 +79,13 @@ static inline void ov006_Obj18_Update(ov006_Obj18_021de2e0 *o) {
 void ov006_Unk021de2e0_Update(ov006_Unk021de2e0 *self) {
     fx32 t;
     if (self->state == 0) {
-        if (self->unk20 == NULL || !func_02054f10(self->unk20, 0xffff)) {
+        if (self->unk20 == NULL || !Model_IsReady(self->unk20, 0xffff)) {
             return;
         }
-        if (self->unk24 == NULL || !func_02054f10(self->unk24, 0xffff)) {
+        if (self->unk24 == NULL || !Model_IsReady(self->unk24, 0xffff)) {
             return;
         }
-        if (self->unk34 == NULL || !func_02054f10(self->unk34, 0xffff)) {
+        if (self->unk34 == NULL || !Model_IsReady(self->unk34, 0xffff)) {
             return;
         }
         self->state = 1;
@@ -155,7 +155,7 @@ void ov006_Unk021de2e0_Update(ov006_Unk021de2e0 *self) {
         ov006_Obj18_SetPos(self->unk18, out.x & ~0xfff, (u32)FX_Whole(out.y) << 12, self->unk18->z);
     }
     ov006_Obj18_Update(self->unk18);
-    func_ov000_0216dae4(self->unk1C);
+    LoTimer_Update(self->unk1C);
     {
         VecFx32 from;
         VecFx32 to;

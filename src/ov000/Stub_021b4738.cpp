@@ -6,9 +6,9 @@ extern "C" {
 
 extern char data_ov000_021cc5e3[];
 extern MessageQueue021cb980 *data_ov000_021ccd30;
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 void func_ov000_021697dc(Lo021cb798 *self, u16 a, u16 b);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL History_SetState(void *a, s32 b, s32 c);
 
 u16 func_ov000_02198da8(ActorSub48 *body, u16 angle);
 
@@ -45,12 +45,12 @@ BOOL func_ov000_021b4738(Actor *self) {
     return r;
 }
 
-void func_ov000_021b4774(Robo021ca458 *self) {
+void Robo021ca458_RestoreHp(Robo021ca458 *self) {
     u16 *p;
     u16 v;
     ListBuffer021cb940 *o;
 
-    func_ov000_02190cb0(self->model, data_ov000_021cc5e3, 0x400, 0);
+    Model0218fe1c_SetAnim(self->model, data_ov000_021cc5e3, 0x400, 0);
     self->unk_b24_0 = 0;
     p = self->hp;
     v = p[1];
@@ -63,7 +63,7 @@ void func_ov000_021b4774(Robo021ca458 *self) {
     }
     self->model->visible = 1;
     self->unk_3c->unk_19 = 0xff;
-    func_ov000_02198360(self->fsm, 1, 0);
+    History_SetState(self->fsm, 1, 0);
 }
 
 }

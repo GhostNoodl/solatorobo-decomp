@@ -71,16 +71,16 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_ov000_021ccd64;
 
 void func_0203cb78(s32 a, s32 b, s32 c);
-BOOL func_ov000_0216f674(void *mgr, s32 a);
+BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL func_ov000_021705a0(void *p, s32 a);
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 void func_ov000_02188ed0(SceneCmd *self);
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_ov000_021721f4(void *p);
 BOOL func_ov000_02181d70(SceneStage *self, u16 id);
 void func_02062424(FieldId *id);
-void func_0204aa10(void *p);
-void func_ov000_0216bcbc(void *p);
+void SndQueue_ResetNodes_0204aa10(void *p);
+void LoTicker_Clear(void *p);
 void func_ov000_021645a4(s32 a);
 void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(ActorMgr *p);
@@ -104,9 +104,9 @@ static inline BOOL Busy(void) {
     Mgr021ccd30 *mgr = data_ov000_021ccd30;
     if (mgr == NULL) {
         r = FALSE;
-    } else if (func_ov000_0216f674(mgr, 9)) {
+    } else if (MessageQueue_GetById(mgr, 9)) {
         r = TRUE;
-    } else if (func_ov000_0216f674(mgr, 0xa)) {
+    } else if (MessageQueue_GetById(mgr, 0xa)) {
         r = TRUE;
     } else if (mgr->unk_11c == NULL) {
         r = FALSE;
@@ -121,7 +121,7 @@ static inline BOOL Locked(void) {
 }
 
 static inline void PlayerIdle(void) {
-    Robo021ca458 *p = func_ov000_0219bf90();
+    Robo021ca458 *p = ActorMgr_FindPlayer();
     if (p != NULL && p->unk_b28_0 == 0) {
         p->mode = 3;
         p->unk_b28_0 = 0;
@@ -195,7 +195,7 @@ s32 func_ov000_02189194(SceneCmd *self) {
             busy = 1;
         } else {
             if (self->unk_ca.c[0] != 0xfe) {
-                Robo021ca458 *p = func_ov000_0219bf90();
+                Robo021ca458 *p = ActorMgr_FindPlayer();
                 if (p != NULL && p->unk_b28_0 == 0) {
                     p->mode = 1;
                     p->unk_b28_0 = 0;
@@ -258,7 +258,7 @@ s32 func_ov000_02189194(SceneCmd *self) {
             break;
         }
         {
-            Robo021ca458 *p = func_ov000_0219bf90();
+            Robo021ca458 *p = ActorMgr_FindPlayer();
             if (p != NULL) {
                 u16 trg = data_02097dc8->trig;
                 if (trg & 0x400) {
@@ -313,13 +313,13 @@ s32 func_ov000_02189194(SceneCmd *self) {
             break;
         }
         func_02062424(&self->unk_cd);
-        func_0204aa10(data_02097e48);
+        SndQueue_ResetNodes_0204aa10(data_02097e48);
         data_02097e48->b2 = 0;
         self->unk_d0 = self->unk_ca;
         self->unk_ca = self->unk_cd;
         BITS0E(self).mode = 2;
         if (data_ov000_021ccd30->unk_11c != NULL && data_ov000_021ccd30->unk_11c->unk_7c != NULL) {
-            func_ov000_0216bcbc(data_ov000_021ccd30->unk_11c->unk_7c);
+            LoTicker_Clear(data_ov000_021ccd30->unk_11c->unk_7c);
         }
         {
             Mgr021ccd30 *mgr = data_ov000_021ccd30;

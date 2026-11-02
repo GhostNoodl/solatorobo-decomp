@@ -3,7 +3,7 @@
 
 extern "C" {
 
-u32 func_0204045c(void);
+u32 Rand_GetGlobal(void);
 
 void func_ov000_0216b490(Lo0216b474 *self) {
     LO_FREE_M(self, 0x8);
@@ -14,7 +14,7 @@ void func_ov000_0216b490(Lo0216b474 *self) {
     self->ratio = 0;
 }
 
-void func_ov000_0216b508(Lo0216b474 *self, s32 want, s32 part22) {
+void Lo0216b474_Ask(Lo0216b474 *self, s32 want, s32 part22) {
     self->want = want != 0 ? 1 : 0;
     self->part22 = part22 != 0 ? 1 : 0;
     self->asked = 1;

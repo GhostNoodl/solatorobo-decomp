@@ -26,7 +26,7 @@ extern ov006_Unk021ccd6c *data_ov000_021ccd6c;
 
 ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 void *ActorMgr_GetActor(void *a, u16 id);
-int func_0206e264(ov006_Party *party);
+int LangBlockB_GetData(ov006_Party *party);
 ov006_RaceInfo *ov006_Slot_GetSub2C(ov006_Slot *self);
 void ov006_Slot_SetSub3C(ov006_Slot *self, const ov006_RaceInfo *src);
 ov006_RaceInfo *ov006_Slot_GetSub3C(ov006_Slot *self);
@@ -58,7 +58,7 @@ static inline int ov006_GetPartyValue(ov006_Unk021ccd6c *self) {
     if (self->party == NULL || self->party->count == 0) {
         return 0;
     }
-    return func_0206e264(self->party);
+    return LangBlockB_GetData(self->party);
 }
 
 static inline int ov006_GetCheckpoints(void) {

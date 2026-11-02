@@ -8,8 +8,8 @@ BOOL Ov012ActExVt_0220b1e8_Draw(Ov012ActExVt_0220b1e8 *self) {
         self->mdl.trans.x = self->pos.x;
         self->mdl.trans.y = self->pos.y;
         self->mdl.trans.z = self->pos.z;
-        func_ov000_02190758(&self->mdl, &self->rot_x, 0);
-        r = func_ov000_021903b4(&self->mdl);
+        Obj02190758_SetRot(&self->mdl, &self->rot_x, 0);
+        r = Model021903b4_Draw(&self->mdl);
         if (r && self->unk_3c != NULL && self->hit != NULL) {
             ActorSub48 *m = self->hit;
             u8 v;
@@ -23,20 +23,20 @@ BOOL Ov012ActExVt_0220b1e8_Draw(Ov012ActExVt_0220b1e8 *self) {
                 n->unk_18_4 = n->unk_18_0;
                 n->unk_18_0 = v;
             }
-            func_ov000_02191c24(self->unk_3c, &self->pos);
+            Shadow_Draw(self->unk_3c, &self->pos);
         }
     } else {
-        r = func_ov000_02194c08(self);
+        r = ActorEx_Draw(self);
     }
     return r;
 }
 
 void Ov012ActExVt_0220b1e8_Animate(Ov012ActExVt_0220b1e8 *self) {
     if (self->model != NULL) {
-        func_ov000_02190a80(self->model, func_0203db40((u8 *)self + 0x24));
+        Model0218fe1c_UpdateAnim(self->model, func_0203db40((u8 *)self + 0x24));
     }
     if (!(self->unk_d0 & 0x100000)) {
-        func_ov000_02190a80(&self->mdl, func_0203db40((u8 *)self + 0x24));
+        Model0218fe1c_UpdateAnim(&self->mdl, func_0203db40((u8 *)self + 0x24));
     }
 }
 }
@@ -44,7 +44,7 @@ void Ov012ActExVt_0220b1e8_Animate(Ov012ActExVt_0220b1e8 *self) {
 extern "C" {
 extern char data_ov012_0220b0a7[];
 void Ov012ActExVt_0220b1e8_Start(Ov012ActExVt_0220b1e8 *self) {
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     self->unk_d0 = 0;
     self->unk_2f8 = 1;
     self->unk_d4 = self->unk_18;
@@ -59,22 +59,22 @@ void Ov012ActExVt_0220b1e8_Start(Ov012ActExVt_0220b1e8 *self) {
         m = self->hit;
         m->unk_9a_0 = 0;
         m->unk_9a_3 = 0;
-        func_0203f364(m);
+        HitSphere_Unlink_0203f364(m);
         m = self->hit;
         m->unk_9a_2 = 0;
         m->unk_9a_5 = 0;
     } else {
         self->model->visible = 0;
-        func_ov000_0218ffdc(&self->mdl, &self->unk_d8, 0, 1);
+        Model0218fe1c_SetRes(&self->mdl, &self->unk_d8, 0, 1);
         self->mdl.scale.x = 0x2800;
         self->mdl.scale.y = 0x2800;
         self->mdl.scale.z = 0x2800;
         self->mdl.visible = 1;
-        func_ov000_02190758(&self->mdl, &self->rot_x, 0);
-        func_ov000_02190cb0(&self->mdl, data_ov012_0220b0a7, 0x1000, 0);
-        func_ov000_021915a0(&self->mdl);
+        Obj02190758_SetRot(&self->mdl, &self->rot_x, 0);
+        Model0218fe1c_SetAnim(&self->mdl, data_ov012_0220b0a7, 0x1000, 0);
+        Model0218fe1c_SetLoop(&self->mdl);
     }
-    func_ov000_02198360(self->fsm, 0xb, 0);
+    History_SetState(self->fsm, 0xb, 0);
 }
 }
 
@@ -109,7 +109,7 @@ void Ov012ActExVt_0220b1e8_StateThrown(Ov012ActExVt_0220b1e8 *self) {
         ActorSub48 *m = g->hit;
         if (m != NULL && m->unk_9a_3) {
             m->unk_9a_3 = 0;
-            func_0203f364(m);
+            HitSphere_Unlink_0203f364(m);
         }
     }
     if (g->kind == 0x1000) {
@@ -141,7 +141,7 @@ void Ov012ActExVt_0220b1e8_StateThrown(Ov012ActExVt_0220b1e8 *self) {
         Actor_TurnToPos(self, &self->unk_84, 0x1000);
         Actor_MoveToPos(self, &self->unk_84, 0);
         Ov012ActExVt_0220b1e8_HitNearby(self);
-        func_ov000_021987b8(self->hit, 1, 0, 0);
+        Body_Update(self->hit, 1, 0, 0);
         if (VEC_Distance(&self->pos, &self->unk_84) <= 0x800) {
             ActorSub48 *m;
             ActorSub44 *n;
@@ -155,21 +155,21 @@ void Ov012ActExVt_0220b1e8_StateThrown(Ov012ActExVt_0220b1e8 *self) {
             m = self->hit;
             m->unk_9a_0 = 0;
             m->unk_9a_3 = 0;
-            func_0203f364(m);
+            HitSphere_Unlink_0203f364(m);
             m = self->hit;
             m->unk_9a_2 = 0;
             m->unk_9a_5 = 0;
-            o = func_02065f88(0x57c, &self->pos);
+            o = Effect_SpawnId(0x57c, &self->pos);
             o->SetScaleAll(0x2000);
-            o = func_02065f88(0x6b, &self->pos);
+            o = Effect_SpawnId(0x6b, &self->pos);
             o->SetScaleAll(0x2000);
-            func_02049f44(data_02097e4c, 0x1a, &self->pos, 0);
-            func_02049a48(data_02097e4c, 0x4f, 0x6e, -1, -1);
+            SndMgr_PlayAt(data_02097e4c, 0x1a, &self->pos, 0);
+            SndMgr_PlayVolume(data_02097e4c, 0x4f, 0x6e, -1, -1);
             func_ov012_02206508(self);
             self->fsm->st = 10;
         }
         if (self->hit->unk_50 & 0x60000000) {
-            func_ov000_02198360(self->fsm, 0x15, 0);
+            History_SetState(self->fsm, 0x15, 0);
         }
         break;
     case 10: {
@@ -182,7 +182,7 @@ void Ov012ActExVt_0220b1e8_StateThrown(Ov012ActExVt_0220b1e8 *self) {
         self->speed = Ov012_FxMul64d(OV012_SIN(a), 0x2b8);
         self->velY = Ov012_FxMul64d(OV012_COS(a), 0x2b8);
         b = 1;
-        func_ov000_0219bd20(0x5c03, self->kind, 6, 1, 1, &b);
+        ActorMgr_SendToKindOthers(0x5c03, self->kind, 6, 1, 1, &b);
         self->fsm->st++;
         break;
     }
@@ -212,7 +212,7 @@ void Ov012ActExVt_0220b1e8_StateThrown(Ov012ActExVt_0220b1e8 *self) {
         a = FX_Atan2(d, pp.y - self->pos.y);
         self->speed = Ov012_FxMul64d(OV012_SIN(a), 0x333);
         self->velY = Ov012_FxMul64d(OV012_COS(a), 0x333);
-        func_02049de8(data_02097e4c, 0x4f);
+        SndMgr_Stop(data_02097e4c, 0x4f);
         self->fsm->st++;
         break;
     }
@@ -221,14 +221,14 @@ void Ov012ActExVt_0220b1e8_StateThrown(Ov012ActExVt_0220b1e8 *self) {
         self->moveYaw = self->rot_y;
         Actor_Move(self, 0);
         Ov012ActExVt_0220b1e8_HitNearby(self);
-        func_ov000_021987b8(self->hit, 1, 0, 0);
+        Body_Update(self->hit, 1, 0, 0);
         if (self->hit->unk_50 & 0x60000000) {
-            func_ov000_02198360(self->fsm, 0x15, 0);
+            History_SetState(self->fsm, 0x15, 0);
         }
         break;
     }
     } else {
-        func_ov000_02198360(self->fsm, 0x15, 0);
+        History_SetState(self->fsm, 0x15, 0);
     }
 }
 }

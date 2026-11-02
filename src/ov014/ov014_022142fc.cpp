@@ -24,11 +24,11 @@ static inline s32 Ov014_Approach(s32 cur, s32 target) {
 extern "C" {
 
 extern u8 data_ov014_02217fb0[];
-extern void func_0203f364(ActorSub48 *p);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern Ov003Actor *Target_Get(void *p);
-extern Ov003Actor *func_ov000_0219bf90(void);
-extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
-extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
+extern s32 Actor_FindInRadius(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
+extern Ov003Actor *Obj021984c8_GetActor(Ov003Actor *p);
 
 #pragma force_active on
 Ov014ActEx_022142fc *Ov014ActEx_022142fc_Ctor(Ov014ActEx_022142fc *self) {
@@ -44,12 +44,12 @@ Ov014ActEx_022142fc *Ov014ActEx_022142fc_Ctor(Ov014ActEx_022142fc *self) {
 #pragma force_active reset
 
 Ov014ActEx_022142fc *Ov014ActEx_022142fc_Dtor(Ov014ActEx_022142fc *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 Ov014ActEx_022142fc *Ov014ActEx_022142fc_DtorDelete(Ov014ActEx_022142fc *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
@@ -57,7 +57,7 @@ Ov014ActEx_022142fc *Ov014ActEx_022142fc_DtorDelete(Ov014ActEx_022142fc *self) {
 void Ov014ActEx_022142fc_Start(Ov014ActEx_022142fc *self) {
     ActorSub44 *n;
     ActorSub48 *m;
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     n = self->unk_44;
     n->unk_22_0 = 0;
     n->unk_22_1 = 0;
@@ -66,13 +66,13 @@ void Ov014ActEx_022142fc_Start(Ov014ActEx_022142fc *self) {
     m = self->hit;
     m->unk_9a_0 = 0;
     m->unk_9a_3 = 0;
-    func_0203f364(m);
+    HitSphere_Unlink_0203f364(m);
     self->hit->unk_4c = 0x28000;
-    func_ov000_02198360(self->fsm, 0xb, 0);
+    History_SetState(self->fsm, 0xb, 0);
 }
 
 void Ov014ActEx_022142fc_Draw(Ov014ActEx_022142fc *self) {
-    func_ov000_02194c08(self);
+    ActorEx_Draw(self);
 }
 
 BOOL func_ov014_022143f4(Actor *self) {
@@ -86,7 +86,7 @@ BOOL func_ov014_022143f4(Actor *self) {
     s32 rad;
     s32 n;
     o = Target_Get(self->targetObj);
-    p = func_ov000_0219bf90();
+    p = ActorMgr_FindPlayer();
     k = o->id & 0xf000;
     mask = ~(1 << (k >> 12));
     rad = self->radius;
@@ -95,11 +95,11 @@ BOOL func_ov014_022143f4(Actor *self) {
     } else if (p != NULL && ((Robo021ca458 *)p)->unk_b1e == self->id) {
         rad >>= 1;
     }
-    n = func_ov000_0219a510(self, mask, &self->pos, rad, 0, list);
+    n = Actor_FindInRadius(self, mask, &self->pos, rad, 0, list);
     if (n != 0) {
         for (i = 0; i < n; i++) {
             Ov003Actor *q;
-            if (list[i] != NULL && (q = func_ov000_021985c0(list[i])) != NULL && q->kind != self->kind) {
+            if (list[i] != NULL && (q = Obj021984c8_GetActor(list[i])) != NULL && q->kind != self->kind) {
                 ActorSub4c *s = q->targetObj;
                 if (s == NULL || k != (u16)(s->target & 0xf000)) {
                     r = TRUE;
@@ -117,7 +117,7 @@ extern char data_ov014_0221805b[];
 extern Actor *Actor_GetTarget(Actor *self);
 extern void func_ov014_02214f10(Actor *self);
 extern void HitSphere_Link(ActorSub48 *p);
-extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
+extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern void func_ov000_0218996c(u8 a, u8 b);
 
 void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
@@ -132,7 +132,7 @@ void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
     o = Target_Get(self->targetObj);
     Actor_GetTarget(self);
     if (o == NULL) {
-        func_ov000_02198360(self->fsm, 0x15, 0);
+        History_SetState(self->fsm, 0x15, 0);
         return;
     }
     if (o->kind == 0x1000) {
@@ -185,7 +185,7 @@ void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
         self->speed = FX_Mul(self->speed, self->unk_dc);
         self->velY = FX_Mul(self->velY, self->unk_dc);
         self->friction = FX_Mul(self->friction, self->unk_dc);
-        func_02049f44(data_02097e4c, 0x2b, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x2b, &self->pos, 0);
         self->fsm->st++;
         self->fsm->timer = 0x14;
         break;
@@ -200,7 +200,7 @@ void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
             }
             break;
         }
-        func_02049f44(data_02097e4c, 0x50, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x50, &self->pos, 0);
         self->fsm->st = 10;
         self->fsm->timer = 0;
         break;
@@ -254,14 +254,14 @@ void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
         oldy = self->pos.y;
         VEC_Add((VecFx32 *)&self->speed, &self->pos, &self->pos);
         if (self->pos.y < 0xa000 && oldy >= 0xa000) {
-            func_02049f44(data_02097e4c, 0x32, &self->pos, 0);
-            EffectObj *e = func_02065f88(0x4b0, &self->pos);
+            SndMgr_PlayAt(data_02097e4c, 0x32, &self->pos, 0);
+            EffectObj *e = Effect_SpawnId(0x4b0, &self->pos);
             e->SetScaleXYZ(0x59a, 0x1333, 0x59a);
             e->SetRotXYZ(0x3fff, 0, 0);
             self->unk_e0 = e->id;
         }
         {
-            EffectObj *e2 = func_020657b0(data_0214a420, self->unk_e0);
+            EffectObj *e2 = Effect_Find_020657b0(data_0214a420, self->unk_e0);
             if (e2 != NULL) {
                 e2->SetPos(&self->pos);
             }
@@ -288,7 +288,7 @@ void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
                 mask = ~(1 << ((u16)(a->id & 0xf000) >> 12));
             }
             mask &= (u16)~(1 << ((u16)(self->id & 0xf000) >> 12));
-            func_ov000_0219aae8(self, a, self->targetObj->unk_08, self->targetObj->unk_0a, mask, &v, 0,
+            Hit_ApplyInArea(self, a, self->targetObj->unk_08, self->targetObj->unk_0a, mask, &v, 0,
                                 r, 0, 0x64, 0x1000);
         }
         self->targetObj->target = 0xffff;
@@ -297,7 +297,7 @@ void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
             EffectObj *f = EffectGroup_Create(data_ov014_02218040, data_ov014_0221805b, &self->pos);
             f->SetScaleXYZ(sc, sc, sc);
         }
-        func_ov000_02198360(self->fsm, 0x15, 0);
+        History_SetState(self->fsm, 0x15, 0);
         break;
     }
     case 0x1e: {
@@ -313,7 +313,7 @@ void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
         w.y = self->hit->check.y;
         e = Effect3D_Create(data_ov014_02218040, data_ov014_0221804f, 0, &w);
         e->SetScaleXYZ(0x24cd, 0x299a, 0x24cd);
-        func_02049f44(data_02097e4c, 0x56, &w, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x56, &w, 0);
         func_ov000_0218996c(0xc, 0x19);
         self->fsm->st++;
         self->fsm->timer = 0x14;
@@ -331,7 +331,7 @@ void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
             v2.y = self->hit->check.y - self->pos.y;
             v2.x = 0;
             v2.z = 0;
-            func_ov000_0219aae8(self, a, self->targetObj->unk_08, self->targetObj->unk_0a, mask, &v2, 0,
+            Hit_ApplyInArea(self, a, self->targetObj->unk_08, self->targetObj->unk_0a, mask, &v2, 0,
                                 self->radius + 0xccd, 0x3000, 0x64, 0x1000);
         }
         st = self->fsm;
@@ -341,7 +341,7 @@ void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
         if (st->timer != 0) {
             break;
         }
-        func_ov000_02198360(self->fsm, 0x15, 0);
+        History_SetState(self->fsm, 0x15, 0);
         break;
     }
 }
@@ -368,7 +368,7 @@ void func_ov014_02214f10(Actor *self) {
             q->unk_58 = 0;
         }
         self->hit->unk_30 = 0;
-        p = func_ov000_0218d2e0(self);
+        p = Actor_GetTargetSub44(self);
         if (p != NULL) {
             s32 r;
             s32 dx;
@@ -430,7 +430,7 @@ void func_ov014_02214f10(Actor *self) {
                 mask = ~(1 << ((u16)(a->id & 0xf000) >> 12));
             }
             mask &= (u16)~(1 << ((u16)(self->id & 0xf000) >> 12));
-            func_ov000_0219aae8(self, a, self->targetObj->unk_08, self->targetObj->unk_0a, mask, &v, 0,
+            Hit_ApplyInArea(self, a, self->targetObj->unk_08, self->targetObj->unk_0a, mask, &v, 0,
                                 r, 0, 0x64, 0x1000);
         }
         self->targetObj->target = 0xffff;
@@ -439,7 +439,7 @@ void func_ov014_02214f10(Actor *self) {
             EffectObj *f = EffectGroup_Create(data_ov014_02218040, data_ov014_0221805b, &self->pos);
             f->SetScaleXYZ(sc, sc, sc);
         }
-        func_ov000_02198360(self->fsm, 0x15, 0);
+        History_SetState(self->fsm, 0x15, 0);
         break;
     }
 }

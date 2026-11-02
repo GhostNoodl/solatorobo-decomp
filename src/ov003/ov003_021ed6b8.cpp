@@ -112,18 +112,18 @@ extern "C" {
 extern const s16 FX_SinCosTable_[];
 extern char data_ov003_021f9fd0[];
 extern char data_ov003_021f9fd6[];
-extern s32 func_ov000_021993fc(Ov003LfFinder *f, Ov003LfQuery *q, Ov003LfHit **out, s32 max);
-extern Ov003LfTgt *func_ov000_021985c0(Ov003LfHit *h);
+extern s32 Finder_CollectParts(Ov003LfFinder *f, Ov003LfQuery *q, Ov003LfHit **out, s32 max);
+extern Ov003LfTgt *Obj021984c8_GetActor(Ov003LfHit *h);
 extern BOOL Ov003Switch_IsTarget(Ov003LfTgt *t, void *def);
 extern BOOL func_ov000_02199d40(void *t);
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
-extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
-extern void func_ov000_021915a0(void *p);
-extern void func_ov000_021911c8(void *p, s32 a);
-extern void *func_ov000_02191318(void *p, s32 a);
+extern BOOL Model0218fe1c_SetAnim(void *p, const char *name, s32 a, s32 b);
+extern void Model0218fe1c_SetLoop(void *p);
+extern void Model0218fe1c_SetAnimSpeed(void *p, s32 a);
+extern void *Model0218fe1c_SetAnimFrame(void *p, s32 a);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern void Actor_SendMsg(Ov003LfTgt *o, u16 id, s32 a, s32 b, s32 c, void *p);
-extern Ov003LfTgt *func_ov000_0219bf90(void);
+extern Ov003LfTgt *ActorMgr_FindPlayer(void);
 extern Ov003LfTgt *Actor_GetTarget(Ov003Lift *self);
 extern void HitMesh_SetMtx(void *o, MtxFx43 *m);
 extern BOOL func_ov000_021b4738(void);
@@ -191,7 +191,7 @@ static inline s32 Ov003Lf_RideKind(Ov003LfTgt *p) {
 }
 
 static inline void Ov003Lf_Notify(Ov003Lift *self, Ov003LfTgt *t) {
-    if (func_ov000_0219bf90() != NULL && !func_ov000_021b4738()) {
+    if (ActorMgr_FindPlayer() != NULL && !func_ov000_021b4738()) {
         u16 id = 0;
         if (t != NULL) {
             id = t->unk_0e;
@@ -209,8 +209,8 @@ static inline void Ov003Lf_Notify(Ov003Lift *self, Ov003LfTgt *t) {
 }
 
 static inline void Ov003Lf_Sound(Ov003Lift *self) {
-    if (VEC_Distance(&self->pos, &func_ov000_0219bf90()->pos) <= 0x3800) {
-        func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
+    if (VEC_Distance(&self->pos, &ActorMgr_FindPlayer()->pos) <= 0x3800) {
+        SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
         func_ov000_0218996c(5, 10);
     }
 }
@@ -265,7 +265,7 @@ void Ov003ActVt_021f9f40_StateIdle(Ov003Lift *self) {
         q.mask = 0x10;
         q.unk_10 = 0xffff;
         f.q = NULL;
-        n = func_ov000_021993fc(&f, &q, list, 0x20);
+        n = Finder_CollectParts(&f, &q, list, 0x20);
         res = 0;
         cnt = 0;
         found = NULL;
@@ -278,7 +278,7 @@ void Ov003ActVt_021f9f40_StateIdle(Ov003Lift *self) {
             if (h->pos.y - h->unk_10 - self->pos.y - self->unk_68 > 0x666) {
                 continue;
             }
-            o = func_ov000_021985c0(h);
+            o = Obj021984c8_GetActor(h);
             if (o == NULL) {
                 continue;
             }
@@ -312,7 +312,7 @@ void Ov003ActVt_021f9f40_StateIdle(Ov003Lift *self) {
         }
         if (res == 0 && found == NULL) {
             if (self->unk_4c == NULL || !func_ov000_02199d40(self->unk_4c)) {
-                Ov003LfTgt *pl = func_ov000_0219bf90();
+                Ov003LfTgt *pl = ActorMgr_FindPlayer();
                 if (!Ov003Lf_Flag(pl) || Ov003Lf_RideKind(pl) == 1 || Ov003Lf_RideKind(pl) == 2 || pl->unk_9c == 0) {
                     VecFx32 p;
                     p.x = pl->pos2.x;
@@ -350,7 +350,7 @@ void Ov003ActVt_021f9f40_StateIdle(Ov003Lift *self) {
             char *name;
             s32 frame;
             if (self->state == 1 && res == 2) {
-                if (func_ov000_0219bf90() != NULL && !func_ov000_021b4738()) {
+                if (ActorMgr_FindPlayer() != NULL && !func_ov000_021b4738()) {
                     func_020627b4();
                     func_020627a0(self->unk_0e, self->unk_0c);
                     func_020627dc(0);
@@ -385,11 +385,11 @@ void Ov003ActVt_021f9f40_StateIdle(Ov003Lift *self) {
                 self->unk_90 = 0xffff;
             }
             if (self->model != NULL && name != NULL) {
-                func_ov000_02190cb0(self->model, name, frame, 0);
-                func_ov000_021915a0(self->model);
-                func_ov000_021911c8(self->model, 0x4cd);
+                Model0218fe1c_SetAnim(self->model, name, frame, 0);
+                Model0218fe1c_SetLoop(self->model);
+                Model0218fe1c_SetAnimSpeed(self->model, 0x4cd);
                 if (frame == 0x1000) {
-                    func_ov000_02191318(self->model, -1);
+                    Model0218fe1c_SetAnimFrame(self->model, -1);
                 }
             }
             if (self->cfg->type == 0 || res == 0 || self->work->timer != 0) {
@@ -407,18 +407,18 @@ void Ov003ActVt_021f9f40_StateIdle(Ov003Lift *self) {
         if (!flag) {
             return;
         }
-        func_02049f44(data_02097e4c, 0x18, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x18, &self->pos, 0);
         {
             VecFx32 v;
-            Ov003LfTgt *pl = func_ov000_0219bf90();
+            Ov003LfTgt *pl = ActorMgr_FindPlayer();
             if (pl == NULL) {
                 return;
             }
             v.x = pl->pos.x;
             v.y = pl->pos.y;
             v.z = pl->pos.z;
-            func_02065f88(0x44f, &v)->AddPosXYZ(0, pl->unk_68, 0);
-            func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
+            Effect_SpawnId(0x44f, &v)->AddPosXYZ(0, pl->unk_68, 0);
+            SndMgr_PlayVolume(data_02097e4c, 0x4a, -1, -1, -1);
         }
         return;
     }

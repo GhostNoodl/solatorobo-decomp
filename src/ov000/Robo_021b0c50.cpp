@@ -27,7 +27,7 @@ extern "C" {
 
 extern char data_ov000_021cc6c6[];
 void func_ov000_021b0db0(Actor *self, s32 id);
-BOOL func_ov000_02191120(void *p);
+BOOL Model0218fe1c_IsAnimDone(void *p);
 void func_ov000_0218996c(u8 a, u8 b);
 void func_ov000_021ad130(Actor *self);
 s32 Rand_PlusMinus(s32 max);
@@ -36,7 +36,7 @@ s32 Rand_UpTo(s32 max);
 void func_ov000_021b0c50(Actor *self) {
     switch (self->fsm->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov000_021cc6c6, 0x800, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov000_021cc6c6, 0x800, 0);
         func_ov000_0218996c(8, 0xc);
         self->speed = 0;
         self->velY = 0;
@@ -44,13 +44,13 @@ void func_ov000_021b0c50(Actor *self) {
         self->gravity = 0;
         self->fsm->st++;
     case 1:
-        if (func_ov000_02191120(self->model)) {
+        if (Model0218fe1c_IsAnimDone(self->model)) {
             switch (ROBO_FLAGS(self)->bit0) {
             default:
-                func_ov000_02198360(self->fsm, 0x14, 0);
+                History_SetState(self->fsm, 0x14, 0);
                 break;
             case 0:
-                func_ov000_02198360(self->fsm, 1, 0);
+                History_SetState(self->fsm, 1, 0);
                 break;
             }
         }
@@ -62,7 +62,7 @@ void func_ov000_021b0c50(Actor *self) {
 void func_ov000_021b0d04(Actor *self) {
     func_ov000_021ad130(self);
     if (*self->hp == 0 && !(self->fsm->timer & 0x1f)) {
-        EffectObj *e = func_02065f88(0x38f, &self->pos);
+        EffectObj *e = Effect_SpawnId(0x38f, &self->pos);
         s32 a;
         s32 b;
         s32 c;

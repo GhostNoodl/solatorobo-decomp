@@ -4,8 +4,8 @@
 
 extern "C" {
 
-BOOL func_02054f10(void *a, s32 b);
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+BOOL Model_IsReady(void *a, s32 b);
+extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *data_02097e4c;
 BOOL func_ov000_02151664(UiList *p, UiListItem *msg);
 
@@ -23,7 +23,7 @@ void func_ov000_0215af64(LoBase021cafc0_021cb0b8 *self, void *a, void *b, s32 d)
     }
     self->vfunc_e8(a, b, d);
     self->vfunc_d8(a, b, d);
-    if (func_02054f10(self->model, 0xffff)) {
+    if (Model_IsReady(self->model, 0xffff)) {
         self->vfunc_60(a, b, d);
         self->flags |= 0x200;
     }

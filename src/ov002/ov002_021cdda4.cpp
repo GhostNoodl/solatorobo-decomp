@@ -2,15 +2,15 @@
 
 extern "C" {
 
-void func_ov002_021cdda4(Task021ef530 *self) {
+void Task021ef530_PreUpdate(Task021ef530 *self) {
     switch (self->state) {
     case 8:
         self->unk_40->flags &= ~2;
         self->unk_44->flags &= ~2;
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         break;
     case 10:
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         self->unk_40->flags |= 2;
         self->unk_44->flags |= 2;
         break;

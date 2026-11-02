@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_02151014(void) {
+void Lo021ca9c4_PreUpdate(void) {
 }
 
 }

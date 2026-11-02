@@ -21,7 +21,7 @@ void func_ov002_021dc510(Obj021eff10 *self, Obj021eff50 *other) {
     }
     other->unk_28 = self->unk_24;
     other->unk_2c = self->unk_28;
-    func_ov002_021dbdb8(self);
+    Obj021eff10_Release(self);
 }
 
 }

@@ -18,23 +18,23 @@ extern "C" {
 
 extern char data_ov003_021f9fd6[];
 extern char data_ov003_021f9fd0[];
-extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
-extern void func_ov000_021915a0(void *p);
-extern void func_ov000_021911c8(void *p, s32 a);
+extern BOOL Model0218fe1c_SetAnim(void *p, const char *name, s32 a, s32 b);
+extern void Model0218fe1c_SetLoop(void *p);
+extern void Model0218fe1c_SetAnimSpeed(void *p, s32 a);
 extern void func_020627b4(void);
 extern void *Target_Get(void *p);
 extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
-extern BOOL func_ov000_02191120(void *p);
-extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
-extern Ov003LvPlayer *func_ov000_0219bf90(void);
+extern BOOL Model0218fe1c_IsAnimDone(void *p);
+extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
+extern Ov003LvPlayer *ActorMgr_FindPlayer(void);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern u32 Rand_UpTo(u32 max);
 
 void Ov003Lever_SetState(Ov003Lever *self, s16 kind, BOOL notify, s32 sound);
 
 void Ov003ActVt_021f9ea8_Start(Ov003Lever *self) {
-    func_ov000_02194758(self);
-    func_ov000_02197d80(self);
+    ActorEx_Start(self);
+    Obj02197d80_LoadValue(self);
     Ov003Lever_SetState(self, self->unk_18, 0, -1);
     if (self->unk_18 == 1 && self->unk_1a != 0) {
         ActorSub44 *p = self->unk_44;
@@ -48,7 +48,7 @@ void Ov003ActVt_021f9ea8_StateIdle(Ov003Lever *self) {
     ActorSub40 *w = self->fsm;
     switch (w->st) {
     case 0:
-        func_ov000_02197d80(self);
+        Obj02197d80_LoadValue(self);
         if (self->unk_18 == 1) {
             self->unk_93_1 = 1;
             if (self->param->unk_01 != 1) {
@@ -139,7 +139,7 @@ void Ov003ActVt_021f9ea8_State06(Ov003Lever *self) {
     case 2:
         if (self->unk_1c != 0 && self->unk_ce < 0x41) {
             if (!(self->unk_ce & 0x1f)) {
-                func_02049f44(data_02097e4c, 0x84, &self->pos, 0);
+                SndMgr_PlayAt(data_02097e4c, 0x84, &self->pos, 0);
             }
             self->unk_ce++;
         }
@@ -153,7 +153,7 @@ void Ov003ActVt_021f9ea8_State06(Ov003Lever *self) {
         if (w->timer != 0) {
             return;
         }
-        if (self->model != NULL && !func_ov000_02191120(self->model)) {
+        if (self->model != NULL && !Model0218fe1c_IsAnimDone(self->model)) {
             return;
         }
         if (sp != NULL) {
@@ -167,7 +167,7 @@ void Ov003ActVt_021f9ea8_State06(Ov003Lever *self) {
             p->unk_22_0 = 0;
             p->unk_22_1 = 0;
         } else {
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     case 10:
@@ -185,12 +185,12 @@ void Ov003Lever_SetState(Ov003Lever *self, s16 kind, BOOL notify, s32 sound) {
         name = data_ov003_021f9fd0;
     }
     if (self->model != NULL && name != NULL) {
-        func_ov000_02190cb0(self->model, name, 0x1000, 0);
-        func_ov000_021915a0(self->model);
-        func_ov000_021911c8(self->model, 0x4cd);
+        Model0218fe1c_SetAnim(self->model, name, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
+        Model0218fe1c_SetAnimSpeed(self->model, 0x4cd);
     }
     if (sound >= 0) {
-        func_02049f44(data_02097e4c, sound, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, sound, &self->pos, 0);
     }
     self->unk_18 = kind;
     if (notify) {
@@ -215,11 +215,11 @@ void Ov003ActVt_021f9ce0_StateIdle(Ov003Lever *self) {
     switch (w->st) {
     case 0:
         if (!(w->timer & 0x7f)) {
-            Ov003LvPlayer *pl = func_ov000_0219bf90();
+            Ov003LvPlayer *pl = ActorMgr_FindPlayer();
             if (pl != NULL && Hit_DiffInSphere(&pl->pos, &self->pos, pl->radius + 0xf000)) {
-                EffectObj *e = func_02065f88(0x322, &self->pos);
+                EffectObj *e = Effect_SpawnId(0x322, &self->pos);
                 e->SetScaleXYZ(0xe66, 0xe66, 0xe66);
-                func_02049f44(data_02097e4c, Rand_UpTo(1) + 0x79, &self->pos, 0);
+                SndMgr_PlayAt(data_02097e4c, Rand_UpTo(1) + 0x79, &self->pos, 0);
                 self->fsm->st++;
                 self->fsm->timer = 0;
                 return;
@@ -231,7 +231,7 @@ void Ov003ActVt_021f9ce0_StateIdle(Ov003Lever *self) {
         w->timer++;
         w = self->fsm;
         if (w->timer < 0x37) {
-            func_ov000_0219aae8(self, self, 0x32, 0x20, 2, NULL, NULL, 0x1800, 0, 0x322, 0x800);
+            Hit_ApplyInArea(self, self, 0x32, 0x20, 2, NULL, NULL, 0x1800, 0, 0x322, 0x800);
             return;
         }
         if (w->timer >= 0x87 - (self->unk_1a << 4)) {
@@ -256,7 +256,7 @@ void Ov003ActVt_021f9ce0_State06(Ov003Lever *self) {
         p = self->unk_44;
         p->unk_22_0 = 0;
         p->unk_22_1 = 0;
-        func_02049f44(data_02097e4c, 0x6e, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x6e, &self->pos, 0);
         self->fsm->timer = 0x78;
         self->fsm->st++;
         break;
@@ -277,14 +277,14 @@ void Ov003ActVt_021f9ce0_State06(Ov003Lever *self) {
             self->fsm->st++;
             return;
         }
-        func_ov000_02198360(self->fsm, 0x15, 0);
+        History_SetState(self->fsm, 0x15, 0);
         break;
     }
     case 2:
         if (!Ov003_GameIdle()) {
             return;
         }
-        func_ov000_02198360(w, 0x15, 0);
+        History_SetState(w, 0x15, 0);
         break;
     }
 }

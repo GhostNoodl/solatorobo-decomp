@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021d9ed8(Obj021efe6c *self, Obj021efeb8 *obj, bool del) {
+void Obj021efe6c_RemovePiece(Obj021efe6c *self, Obj021efeb8 *obj, bool del) {
     s32 j;
     s32 i;
     void *saved;
@@ -123,7 +123,7 @@ void func_ov002_021da184(Obj021efe6c *self, Obj021efeb8 *obj) {
     func_ov002_021e38f8(org, &obj->shape);
     cols = obj->shape.w;
     rows = obj->shape.h;
-    func_ov002_021e391c(m, obj->shape.rot);
+    Ov002_QuarterRotMtx(m, obj->shape.rot);
     for (i = 0; i < rows; i++) {
         for (j = 0; j < cols; j++) {
             if (obj->shape.grid[i * cols + j] == 1) {
@@ -137,7 +137,7 @@ void func_ov002_021da184(Obj021efe6c *self, Obj021efeb8 *obj) {
                 H = g->h;
                 if (v[0] >= 0 && v[1] >= 0 && v[0] < W && v[1] < H && g->grid[v[1] * H + v[0]] == 0) {
                     e = &self->cells[v[0] + v[1] * H];
-                    u8 *info = func_0206ede8(obj->unk_48);
+                    u8 *info = Param_GetEntry(obj->unk_48);
                     e->id = obj->unk_48;
                     e->unk_2 = obj->unk_4a;
                     e->unk_3 = info[0];

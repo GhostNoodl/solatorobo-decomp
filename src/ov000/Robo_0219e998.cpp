@@ -6,7 +6,7 @@
 
 extern "C" {
 
-BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg);
+BOOL Actor_HandleMsg(Actor *self, ActorMsg *msg);
 
 static inline void MinB32_0219e998(Robo021ca458 *self, u16 n) {
     if (self->unk_b32 < n) {
@@ -15,7 +15,7 @@ static inline void MinB32_0219e998(Robo021ca458 *self, u16 n) {
 }
 
 // g is a local; as a trailing parameter it gets the target's registers.
-BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
+BOOL Robo021ca458_HandleMsg(Actor *self, ActorMsg *msg, FieldState *g) {
     Robo021ca458 *s = (Robo021ca458 *)self;
     BOOL callBase;
     BOOL ok;
@@ -148,7 +148,7 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
             m->blend = 0xb;
             m->blendMax = 0xa;
         }
-        e = func_02065f88(0xcb, &s->pos);
+        e = Effect_SpawnId(0xcb, &s->pos);
         s->unk_b44 = e->id;
         e->SetScaleXYZ(0x99a, 0x1000, 0x99a);
         MinB32_0219e998(s, 0x5a);
@@ -211,7 +211,7 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
         break;
     }
     }
-    if (callBase && func_ov000_0218d494(self, msg)) {
+    if (callBase && Actor_HandleMsg(self, msg)) {
         return TRUE;
     }
     self->msg_flags |= 1 << msg->type;

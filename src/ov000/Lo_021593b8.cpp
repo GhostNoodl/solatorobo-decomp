@@ -24,7 +24,7 @@ typedef struct {
 extern "C" {
 
 u8 Gfx3DState_NextPolyId(void *p);
-void func_ov000_02153c48(void *item, s32 a, s32 b, s32 c, s32 d);
+void Obj02153c48_CreateText(void *item, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_02153f30(VObj *self, s32 a);
 void func_ov000_02153f60(VObj *self, s32 a);
 
@@ -89,7 +89,7 @@ void func_ov000_021593b8(Lo021cb3a8 *self, s32 on, s32 *pos) {
         if (it->index >= lo && it->index < hi) {
             if (((s32)it->name) != 0) {
                 if (it->label == NULL) {
-                    func_ov000_02153c48(it, self->font, 0, 1, 0);
+                    Obj02153c48_CreateText(it, self->font, 0, 1, 0);
                 }
                 if (k < first || k > last) {
                     dim = 1;

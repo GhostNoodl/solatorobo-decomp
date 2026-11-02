@@ -14,7 +14,7 @@ typedef struct {
 
 extern "C" {
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL History_SetState(void *a, s32 b, s32 c);
 void Actor_TurnClamped(Actor *self, u16 angle, u16 center, u16 range, s32 step);
 void Actor_SendMsg(void *t, u16 id, s32 a, s32 b, s32 c, void *arg);
 
@@ -47,7 +47,7 @@ void func_ov000_021b2b08(Robo021ca458 *self) {
         self->gravity = 0x52;
         self->rot_x = 0;
         self->unk_b29 |= 2;
-        func_ov000_02198360(((void *)self->fsm), 0x1d, 0);
+        History_SetState(((void *)self->fsm), 0x1d, 0);
         self->fsm->st = 0x64;
         return;
     }

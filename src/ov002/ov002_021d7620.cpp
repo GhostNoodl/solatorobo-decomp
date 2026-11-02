@@ -24,14 +24,14 @@ static inline void *ov002_findEntry(u8 *d, char *name) {
     return NULL;
 }
 
-void func_ov002_021d7620(Ov002Mdl021efe3c *self) {
+void Ov002Mdl021efe3c_Load(Ov002Mdl021efe3c *self) {
     ResList *res;
     char buf[16];
     void **anms;
     const char *name;
-    res = func_02035d5c(self->arc);
+    res = ResMgr_GetArcList(self->arc);
     self->renderObj = (NNSG3dRenderObj *)Heap_Alloc(sizeof(NNSG3dRenderObj));
-    self->file = func_02034ec0(res, self->name);
+    self->file = ResList_FindType4(res, self->name);
     ov002_strSet(buf, &self->name, sizeof(buf));
     self->mdl = (NNSG3dResMdl *)ov002_findEntry((u8 *)NNS_G3dGetMdlSet(self->file->data), buf);
     name = self->name;
@@ -40,7 +40,7 @@ void func_ov002_021d7620(Ov002Mdl021efe3c *self) {
     }
     self->texTask = func_0203ebf8(name);
     NNS_G3dRenderObjInit(self->renderObj, self->mdl);
-    anms = (void **)func_02034ff8(res, self->anmName);
+    anms = (void **)ResList_FindType6(res, self->anmName);
     ov002_strSet(buf, &self->anmName, sizeof(buf));
     if (anms[0] != NULL) {
         void *a = NNS_G3dGetAnmByName(anms[0], (NNSG3dResName *)buf);

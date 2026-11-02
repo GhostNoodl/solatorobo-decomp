@@ -63,7 +63,7 @@ void *Ov002Vt_021f0ce8_DtorDelete(Ov002Msg021f0ce8 *self) {
     return self;
 }
 
-void func_ov002_021ebfd0(Ov002Msg021f0ce8 *self) {
+void Ov002Msg021f0ce8_Init(Ov002Msg021f0ce8 *self) {
     self->res = NULL;
     self->index = 0;
     self->count = 0;
@@ -79,7 +79,7 @@ void func_ov002_021ebfd0(Ov002Msg021f0ce8 *self) {
     self->text = NULL;
 }
 
-void func_ov002_021ec010(Ov002Msg021f0ce8 *self, const void *src) {
+void Ov002Msg021f0ce8_Load(Ov002Msg021f0ce8 *self, const void *src) {
     const Ov002MsgRes *res = (const Ov002MsgRes *)src;
     ov002_Hdr021ec010 hdr;
     u8 *d = res->data;

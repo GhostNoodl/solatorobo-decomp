@@ -12,8 +12,8 @@ extern ov006_Unk02097e40 *data_02097e40;
 
 void ov006_Slot_Pack(const ov006_Slot *self, ov006_SlotPacked *buf);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
-void func_ov000_02162a20(ov006_Actor58 *self);
-void func_ov000_02162a58(ov006_Actor58 *self);
+void ModelViewer_Update(ov006_Actor58 *self);
+void ModelViewer_Draw(ov006_Actor58 *self);
 void ov006_Caption_Update(ov006_Caption *self);
 void func_ov006_021e0b80(ov006_Caption *self);
 void ov006_Gauge_Update(ov006_Gauge *self);
@@ -82,7 +82,7 @@ void func_ov006_021d2ff0(ov006_TaskD1F *self) {
         self->unk60->flags &= ~2;
         {
             Lo021cb0b8 *w = self->unk60;
-            w->vfunc_a8(func_ov000_02154b58(w, 1));
+            w->vfunc_a8(UiList_GetItemById(w, 1));
         }
         self->subStep++;
         break;
@@ -184,7 +184,7 @@ void func_ov006_021d3224(ov006_TaskD1F *self) {
             return;
         }
         ov006_TaskD1F_Finish(self);
-        func_ov000_0218084c(data_ov000_021ccd44, 0x26, 0);
+        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x26, 0);
         self->step = 6;
         self->subStep = 0;
         break;
@@ -197,7 +197,7 @@ void func_ov006_021d33f4(ov006_TaskD1F *self) {
         return;
     }
     self->unk54->vfunc_20();
-    func_ov000_02162a58(self->unk58);
+    ModelViewer_Draw(self->unk58);
     self->unk5C->vfunc_20();
     self->unk60->vfunc_20();
     self->unk64->vfunc_20();

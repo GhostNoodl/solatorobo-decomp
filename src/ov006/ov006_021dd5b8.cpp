@@ -10,11 +10,11 @@ typedef struct ov006_Unk021dd5b8 {
 
 extern "C" {
 
-void func_ov000_0215fe1c(void *a, int b, int c);
+void Obj0215fdfc_SetRange(void *a, int b, int c);
 
 void ov006_Unk021dd5b8_SetText(ov006_Unk021dd5b8 *self, int a, int b, u8 c) {
     if (self->unk18 != NULL) {
-        func_ov000_0215fe1c(self->unk18, a, b);
+        Obj0215fdfc_SetRange(self->unk18, a, b);
     }
     self->unk8 = c;
 }

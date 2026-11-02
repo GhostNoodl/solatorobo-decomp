@@ -7,9 +7,9 @@ extern "C" {
 
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
-void func_ov000_0215ce8c(void *self, s32 id);
+void Obj0215c1bc_SetMsg(void *self, s32 id);
 
-void func_ov000_02151018(Lo021ca9c4 *self) {
+void Lo021ca9c4_PostUpdate(Lo021ca9c4 *self) {
     switch (self->state) {
     case 13: {
         s32 n;
@@ -33,7 +33,7 @@ void func_ov000_02151018(Lo021ca9c4 *self) {
                     }
                     self->unk_58->font = 4;
                     self->unk_58->vfunc_08();
-                    func_ov000_0215ce8c(self->unk_58, id);
+                    Obj0215c1bc_SetMsg(self->unk_58, id);
                     self->unk_58->posZ = -0x1666;
                     self->unk_58->vfunc_70();
                     self->unk_5c = 0xffff;

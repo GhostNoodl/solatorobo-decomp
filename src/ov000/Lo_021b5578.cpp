@@ -32,22 +32,22 @@ Lang021b5578 *Lang_GetGroup(u8 id);
 void func_0206dde4(char *buf, u8 *ids);
 void func_0206dedc(char *buf, u8 *ids);
 void func_0206dfd4(char *buf, u8 *ids);
-void func_020359fc(void *a, char *buf, s32 b, s32 c);
-BOOL func_02035bd4(void *a, char *buf, s32 b);
+void ResMgr_LoadArchive(void *a, char *buf, s32 b, s32 c);
+BOOL ResMgr_IsArchiveLoaded(void *a, char *buf, s32 b);
 void **func_02035fe8(void *a, char *buf);
 Ent021b5578 *func_0206e1bc(LangBlockA *r);
-u16 func_0206e7ec(u32 a, u32 b);
+u16 LangData_GetIndex(u32 a, u32 b);
 u8 *func_020704b4(u16 id);
-u8 *func_0206e150(LangBlockA *r);
-u8 *func_0206e180(LangBlockA *r);
-void *func_020359d0(void *e, s32 a, s32 b);
-BOOL func_02035b90(void *e, s32 a);
-void *func_02035d5c(void *e);
-void *func_02039674(void *e);
-void **func_02034f5c(void *m, void *k);
-void **func_02034ec0(void *m, void *k);
+u8 *LangBlockA_GetData(LangBlockA *r);
+u8 *LangBlockA_GetData1(LangBlockA *r);
+void *ResMgr_Load(void *e, s32 a, s32 b);
+BOOL ResMgr_IsLoaded(void *e, s32 a);
+void *ResMgr_GetArcList(void *e);
+void *Path_SkipDir(void *e);
+void **ResList_FindType5(void *m, void *k);
+void **ResList_FindType4(void *m, void *k);
 BOOL func_0203ed04(void *k, void *r);
-BOOL func_0203e688(void);
+BOOL Vram_IsIdle(void);
 void func_02039494(void *r);
 FieldExit *func_0206e230(LangBlockB *r);
 FieldPropDef *func_0206e2a4(LangBlockB *r);
@@ -84,7 +84,7 @@ static inline u16 Kind021b5578(u16 v) {
     return v >> 12;
 }
 
-BOOL func_ov000_021b5578(FieldMgr *self) {
+BOOL FieldMgr_UpdateLoad(FieldMgr *self) {
     BOOL ret = FALSE;
     BOOL ok_0 = TRUE;
     u8 st;
@@ -102,21 +102,21 @@ BOOL func_ov000_021b5578(FieldMgr *self) {
         }
     case 10:
         func_0206dde4(buf, ids);
-        func_020359fc(t->unk_08, buf, 0, 0);
+        ResMgr_LoadArchive(t->unk_08, buf, 0, 0);
         st = 0xb;
         goto set;
     case 0xb:
         func_0206dde4(buf, ids);
-        if (!func_02035bd4(t->unk_08, buf, 0)) {
+        if (!ResMgr_IsArchiveLoaded(t->unk_08, buf, 0)) {
             break;
         }
         func_0206dedc(buf, ids);
-        func_020359fc(t->unk_08, buf, 0, 0);
+        ResMgr_LoadArchive(t->unk_08, buf, 0, 0);
         self->state = 0x10;
     case 0x10: {
         void **r_0;
         func_0206dedc(buf, ids);
-        if (!func_02035bd4(t->unk_08, buf, 0)) {
+        if (!ResMgr_IsArchiveLoaded(t->unk_08, buf, 0)) {
             break;
         }
         r_0 = func_02035fe8(t->unk_08, buf);
@@ -148,7 +148,7 @@ BOOL func_ov000_021b5578(FieldMgr *self) {
                     s32 mode;
                     s32 k_0;
                     if (f != 0xff) {
-                        int nib = GetNibble021b5578(func_0206e7ec(ids[0], ids[1]), f);
+                        int nib = GetNibble021b5578(LangData_GetIndex(ids[0], ids[1]), f);
                         if (nib == 0xf) {
                             continue;
                         }
@@ -162,7 +162,7 @@ BOOL func_ov000_021b5578(FieldMgr *self) {
                             }
                             if (m_0 != 1 && m_0 != 2 && m_0 != 3 && m_0 != 4) {
                                 u8 f2 = e_0->flag;
-                                SetNibble021b5578(func_0206e7ec(ids[0], ids[1]), f2, (u8)(h | 8));
+                                SetNibble021b5578(LangData_GetIndex(ids[0], ids[1]), f2, (u8)(h | 8));
                             }
                         }
                     }
@@ -198,20 +198,20 @@ BOOL func_ov000_021b5578(FieldMgr *self) {
             }
         }
         {
-            u8 *e_1 = func_0206e150(self->blockA);
+            u8 *e_1 = LangBlockA_GetData(self->blockA);
             s32 i_1;
             if (e_1 != NULL) {
                 for (i_1 = 0; i_1 < self->blockA->count0; i_1++, e_1 += 0x18) {
-                    func_020359d0(e_1, 7, 0);
+                    ResMgr_Load(e_1, 7, 0);
                 }
                 self->state = 0x14;
             }
-            e_1 = func_0206e180(self->blockA);
+            e_1 = LangBlockA_GetData1(self->blockA);
             if (e_1 == NULL) {
                 break;
             }
             for (i_1 = 0; i_1 < self->blockA->count1; i_1++, e_1 += 0x18) {
-                func_020359d0(e_1, 7, 0);
+                ResMgr_Load(e_1, 7, 0);
             }
             st = 0x14;
         }
@@ -220,19 +220,19 @@ BOOL func_ov000_021b5578(FieldMgr *self) {
     case 0x14: {
         u8 *e_2;
         s32 i_2;
-        e_2 = func_0206e150(self->blockA);
+        e_2 = LangBlockA_GetData(self->blockA);
         if (e_2 != NULL) {
             for (i_2 = 0; i_2 < self->blockA->count0; i_2++, e_2 += 0x18) {
-                if (!func_02035b90(e_2, 7)) {
+                if (!ResMgr_IsLoaded(e_2, 7)) {
                     ok_0 = FALSE;
                     break;
                 }
             }
         }
-        e_2 = func_0206e180(self->blockA);
+        e_2 = LangBlockA_GetData1(self->blockA);
         if (e_2 != NULL) {
             for (i_2 = 0; i_2 < self->blockA->count1; i_2++, e_2 += 0x18) {
-                if (!func_02035b90(e_2, 7)) {
+                if (!ResMgr_IsLoaded(e_2, 7)) {
                     ok_0 = FALSE;
                     break;
                 }
@@ -241,19 +241,19 @@ BOOL func_ov000_021b5578(FieldMgr *self) {
         if (!ok_0) {
             break;
         }
-        e_2 = func_0206e150(self->blockA);
+        e_2 = LangBlockA_GetData(self->blockA);
         if (e_2 != NULL) {
             for (i_2 = 0; i_2 < self->blockA->count0; i_2++, e_2 += 0x18) {
-                void *m_1 = func_02035d5c(e_2);
+                void *m_1 = ResMgr_GetArcList(e_2);
                 if (m_1 != NULL) {
-                    void *k_1 = func_02039674(e_2);
-                    void **r_1 = func_02034f5c(m_1, k_1);
+                    void *k_1 = Path_SkipDir(e_2);
+                    void **r_1 = ResList_FindType5(m_1, k_1);
                     if (r_1 != NULL) {
                         if (r_1 != NULL) {
                             func_0203ed04(k_1, *r_1);
                         }
                     } else {
-                        r_1 = func_02034ec0(m_1, k_1);
+                        r_1 = ResList_FindType4(m_1, k_1);
                         if (r_1 != NULL) {
                             func_0203ed04(k_1, *r_1);
                         }
@@ -264,23 +264,23 @@ BOOL func_ov000_021b5578(FieldMgr *self) {
         self->state = 0x15;
     }
     case 0x15:
-        if (func_0203e688()) {
+        if (Vram_IsIdle()) {
             self->state = 0x16;
         }
         break;
     case 0x16: {
-        u8 *e_3 = func_0206e150(self->blockA);
+        u8 *e_3 = LangBlockA_GetData(self->blockA);
         s32 i_3;
         if (e_3 != NULL) {
             for (i_3 = 0; i_3 < self->blockA->count0; i_3++, e_3 += 0x18) {
-                void *m_2 = func_02035d5c(e_3);
+                void *m_2 = ResMgr_GetArcList(e_3);
                 if (m_2 != NULL) {
-                    void *k_2 = func_02039674(e_3);
-                    void **r_2 = func_02034f5c(m_2, k_2);
+                    void *k_2 = Path_SkipDir(e_3);
+                    void **r_2 = ResList_FindType5(m_2, k_2);
                     if (r_2 != NULL) {
                         func_02039494(*r_2);
                     } else {
-                        r_2 = func_02034ec0(m_2, k_2);
+                        r_2 = ResList_FindType4(m_2, k_2);
                         if (r_2 != NULL) {
                             func_02039494(*r_2);
                         }
@@ -296,7 +296,7 @@ BOOL func_ov000_021b5578(FieldMgr *self) {
             break;
         }
         func_0206dfd4(buf, ids);
-        func_020359fc(t->unk_08, buf, 0, 0);
+        ResMgr_LoadArchive(t->unk_08, buf, 0, 0);
         st = 0x1f;
     set:
         self->state = st;
@@ -304,7 +304,7 @@ BOOL func_ov000_021b5578(FieldMgr *self) {
     case 0x1f: {
         func_0206dfd4(buf, ids);
         void **r_3;
-        if (!func_02035bd4(t->unk_08, buf, 0)) {
+        if (!ResMgr_IsArchiveLoaded(t->unk_08, buf, 0)) {
             break;
         }
         r_3 = func_02035fe8(t->unk_08, buf);
@@ -319,7 +319,7 @@ BOOL func_ov000_021b5578(FieldMgr *self) {
             self->exits = func_0206e230(self->blockB);
             d = func_0206e2a4(self->blockB);
             n_1 = self->blockB->count2;
-            e_4 = func_0206e150(self->blockA);
+            e_4 = LangBlockA_GetData(self->blockA);
             for (i_4 = 0; i_4 < n_1; i_4++) {
                 FieldProp *nd = (FieldProp *)Heap_Alloc(sizeof(FieldProp));
                 if (nd != NULL) {
@@ -356,7 +356,7 @@ BOOL func_ov000_021b5578(FieldMgr *self) {
         break;
     }
     case 0xff:
-        if (func_0203e688()) {
+        if (Vram_IsIdle()) {
             self->state = 0xff;
             ret = TRUE;
         }

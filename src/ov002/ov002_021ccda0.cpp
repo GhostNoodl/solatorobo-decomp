@@ -27,9 +27,9 @@ void func_ov002_021ccde4(void) {
     if (p != NULL) {
         if (p != NULL) {
             if (p->unk_04 >= 1) {
-                func_02036838(data_02097cdc, data_0208cca0, 7, 0);
-                func_02036838(data_02097cdc, data_0208cc94, 7, 0);
-                func_02036838(data_02097cdc, data_0214b105, 7, 0);
+                ResMgr_ReleaseByName(data_02097cdc, data_0208cca0, 7, 0);
+                ResMgr_ReleaseByName(data_02097cdc, data_0208cc94, 7, 0);
+                ResMgr_ReleaseByName(data_02097cdc, data_0214b105, 7, 0);
             }
             Heap_Free(p);
         }
@@ -41,23 +41,23 @@ void func_ov002_021ccde4(void) {
 void func_ov002_021cceb4(Unk021cceb4 *self) {
     switch (self->state) {
     case 0:
-        if (func_020594bc(data_02fe152c, 5, 1, 0) == 1) {
+        if (DataRes_ReadEntry(data_02fe152c, 5, 1, 0) == 1) {
             data_0214a424->bits18.flag8 = 0;
             data_0214a424->bits18.flag9 = 0;
         }
-        func_020359d0(data_0208cca0, 7, 0);
-        func_020359d0(data_0208cc94, 7, 0);
-        func_020359d0(data_0214b105, 7, 0);
+        ResMgr_Load(data_0208cca0, 7, 0);
+        ResMgr_Load(data_0208cc94, 7, 0);
+        ResMgr_Load(data_0214b105, 7, 0);
         self->state = 1;
     case 1:
-        func_02035b90(data_0208cca0, 7);
-        func_02035b90(data_0208cc94, 7);
-        if (func_02035b90(data_0214b105, 7) == 0) {
+        ResMgr_IsLoaded(data_0208cca0, 7);
+        ResMgr_IsLoaded(data_0208cc94, 7);
+        if (ResMgr_IsLoaded(data_0214b105, 7) == 0) {
             return;
         }
         self->state = 2;
     case 2:
-        func_ov000_02180660(0x10, 0);
+        TaskHost_Create(0x10, 0);
         {
             BitByte *b = (BitByte *)(data_02097d48->unk_8b0);
             b->b4 = 0;
@@ -69,7 +69,7 @@ void func_ov002_021cceb4(Unk021cceb4 *self) {
     case 3:
         BOOL r = func_ov002_inline_flag1();
         if (r) {
-            func_ov000_02180754();
+            TaskHost_Destroy();
             func_0203cc58(0x1e000, 2, -1);
             self->flags.flag0 = 1;
             self->state = 4;
@@ -90,13 +90,13 @@ Task021ef530 *func_ov002_021cd06c(void) {
     return p;
 }
 
-void func_ov002_021cd0d4(Task021ef530 *self) {
-    func_020359fc(data_ov002_021ef3e4, data_ov002_021ef3ec, 2, 0);
+void Task021ef530_Load(Task021ef530 *self) {
+    ResMgr_LoadArchive(data_ov002_021ef3e4, data_ov002_021ef3ec, 2, 0);
     self->unk_4d = 1;
 }
 
-int func_ov002_021cd104(void) {
-    return func_02035bd4(data_ov002_021ef3e4, data_ov002_021ef3ec, 2);
+int Task021ef530_IsLoaded(void) {
+    return ResMgr_IsArchiveLoaded(data_ov002_021ef3e4, data_ov002_021ef3ec, 2);
 }
 
 }
@@ -108,11 +108,11 @@ void func_0204aab0(SndQueue *p);
 void func_ov000_021547e8(void *a, void *b, const char *c, int d);
 BOOL func_020624d8(void);
 BOOL func_ov000_02188dfc(void);
-void func_ov000_0216f144(void *p);
+void Buffer0216f144_Init(void *p);
 void func_ov000_0216f828(void *p);
-void *func_ov000_0216f398(void *a, void *b, s32 c, void *d);
+void *MessageQueue_AddBuffer_0216f398(void *a, void *b, s32 c, void *d);
 
-void func_ov002_021cd124(Task021ef530 *self) {
+void Task021ef530_Start(Task021ef530 *self) {
     void *g;
     void *res;
     Model *m;
@@ -139,16 +139,16 @@ void func_ov002_021cd124(Task021ef530 *self) {
         return;
     }
     g = data_02149ef8;
-    res = func_02034d88(func_02035f30(data_ov002_021ef3e4, data_ov002_021ef3ec, 2), data_ov002_021ef3ec);
+    res = ResList_FindType2(ResMgr_GetArchiveList(data_ov002_021ef3e4, data_ov002_021ef3ec, 2), data_ov002_021ef3ec);
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
-        func_02041218(&m->pltt);
-        func_02041440(m, NULL, 0);
+        PlttRes_Init_02041218(&m->pltt);
+        TexObj_Init(m, NULL, 0);
     }
     self->unk_3c = m;
-    func_020417e0(m, res);
+    TexObj_SetRes(m, res);
     self->unk_3c->flags |= 2;
-    func_02041d9c(self->unk_3c, 0, 0);
+    TexObj_SelectImage(self->unk_3c, 0, 0);
     o = (UiObj *)Heap_Alloc(0xd4);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
@@ -193,7 +193,7 @@ void func_ov002_021cd124(Task021ef530 *self) {
     }
     {
         VObj *mm = self->unk_40;
-        mm->vfunc_a8(func_ov000_02154b58(mm, self->unk_4c));
+        mm->vfunc_a8(UiList_GetItemById(mm, self->unk_4c));
     }
     func_ov000_021547e8(self->unk_40, data_0214b105, data_0208cb7c, 0xb);
     self->unk_40->vfunc_08();
@@ -224,17 +224,17 @@ void func_ov002_021cd124(Task021ef530 *self) {
     self->unk_44->vfunc_08();
     self->unk_48_1 = !func_020624d8();
     self->unk_48_0 = func_ov000_02188dfc() != 0;
-    if (func_020594bc(data_02fe152c, 5, 1, 0) == 0) {
+    if (DataRes_ReadEntry(data_02fe152c, 5, 1, 0) == 0) {
         self->unk_48_2 = 1;
     }
     if (self->unk_48_0) {
-        func_ov000_02154b58(self->unk_40, 0)->unk_24 = 0xe;
+        UiList_GetItemById(self->unk_40, 0)->unk_24 = 0xe;
     }
     if (self->unk_48_2) {
-        func_ov000_02154b58(self->unk_40, 1)->unk_24 = 0xe;
+        UiList_GetItemById(self->unk_40, 1)->unk_24 = 0xe;
     }
     if (self->unk_48_1) {
-        func_ov000_02154b58(self->unk_40, 5)->unk_24 = 0xe;
+        UiList_GetItemById(self->unk_40, 5)->unk_24 = 0xe;
     }
     self->vfunc_78(self->unk_4c);
     {
@@ -244,12 +244,12 @@ void func_ov002_021cd124(Task021ef530 *self) {
                 TimedBuffer021cb920 *task = (TimedBuffer021cb920 *)Heap_Alloc(sizeof(TimedBuffer021cb920));
                 if (task != NULL) {
                     *(VFunc **)task = data_ov002_021ef410;
-                    func_ov000_0216f144(task);
+                    Buffer0216f144_Init(task);
                     *(VFunc **)task = data_ov000_021cb920;
                     func_ov000_0216f828(task);
                 }
                 t->unk_118 = task;
-                func_ov000_0216f398(t, task, 0x10000, t);
+                MessageQueue_AddBuffer_0216f398(t, task, 0x10000, t);
                 t->unk_118->flags |= 0x10;
             }
             if (data_ov000_021ccd30->unk_118 != NULL) {
@@ -260,6 +260,6 @@ void func_ov002_021cd124(Task021ef530 *self) {
     if (func_ov002_isMode4()) {
         func_0203cb78(self->fadeLen, 0, 0);
     }
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 }

@@ -14,7 +14,7 @@ typedef struct {
 extern "C" {
 extern void *data_ov000_021ccd64;
 extern Save02196258 *data_0214a424;
-void func_0203f364(void *a);
+void HitSphere_Unlink_0203f364(void *a);
 void *Target_Get(void *p);
 void Ov003Pickup_Update(void *self, s32 a);
 void Actor_Move(Actor *self, s32 a);
@@ -23,7 +23,7 @@ void func_02062764(s32 a, s32 b);
 void func_020627a0(u16 kind, u16 id);
 void func_020627c8(void);
 void func_ov000_02182590(u8 *p);
-u16 func_0206e7ec(u32 a, u32 b);
+u16 LangData_GetIndex(u32 a, u32 b);
 
 static inline s32 FxMul02196258(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -72,7 +72,7 @@ static inline void Die02196258(VObj *obj) {
         u8 idx = self->unk_17;
         s32 row;
         if (idx != 0xff) {
-            row = func_0206e7ec(self->unk_ac, self->unk_ad);
+            row = LangData_GetIndex(self->unk_ac, self->unk_ad);
             if (row != 0xffff) {
                 u8 val = 0xf;
                 val |= GetNibble02196258(row, idx) & 8;
@@ -101,7 +101,7 @@ void func_ov000_02196258(VObj *obj) {
             ActorSub48 *q = self->hit;
             q->unk_9a_0 = 0;
             q->unk_9a_3 = 0;
-            func_0203f364(q);
+            HitSphere_Unlink_0203f364(q);
             q = self->hit;
             q->unk_9a_1 = 0;
             q->unk_9a_4 = 0;
@@ -197,7 +197,7 @@ void func_ov000_02196258(VObj *obj) {
         return;
     case 0x14:
         Ov003Pickup_Update(self, 0);
-        func_02065f88(0xc8, &self->pos);
+        Effect_SpawnId(0xc8, &self->pos);
         Die02196258(obj);
         return;
     }

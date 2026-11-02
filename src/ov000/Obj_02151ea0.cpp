@@ -19,13 +19,13 @@ VObj *Lo021caa44_Dtor(VObj *self) {
     return self;
 }
 
-void func_ov000_02151ee4(UiObj *self, void *arg, void *arg2) {
+void UiObj_DrawItem(UiObj *self, void *arg, void *arg2) {
     if (self->onDrawItem != NULL) {
         self->onDrawItem(arg, self, arg2);
     }
 }
 
-bool func_ov000_02151f08(UiObj *self) {
+bool UiObj_IsShown(UiObj *self) {
     return IsState2(self);
 }
 
@@ -46,14 +46,14 @@ BOOL func_ov000_02151f84(UiList *self, UiListItem *arg) {
     return self->unk_8c(self, arg);
 }
 
-BOOL func_ov000_02151fa0(UiList *self, UiListItem *arg) {
+BOOL UiList_OnCursor(UiList *self, UiListItem *arg) {
     if (self->onCursor == NULL) {
         return TRUE;
     }
     return self->onCursor(self, arg);
 }
 
-BOOL func_ov000_02151fbc(UiList *self, UiListItem *arg) {
+BOOL UiList_OnDecide(UiList *self, UiListItem *arg) {
     if (self->onDecide == NULL) {
         return TRUE;
     }
@@ -70,7 +70,7 @@ s32 func_ov000_02151fe4(UiObj *self) {
     return a + b + self->vfunc_38();
 }
 
-s32 func_ov000_02152030(UiObj *self) {
+s32 UiObj_GetHeight(UiObj *self) {
     s32 a = self->vfunc_40() * self->rows;
     s32 b = self->vfunc_34();
     return a + b + self->vfunc_38();

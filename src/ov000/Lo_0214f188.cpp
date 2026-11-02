@@ -4,7 +4,7 @@
 
 extern "C" {
 extern u8 data_0208ba70[];
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 u32 *Lang_GetGroup(u8 id);
 
@@ -33,7 +33,7 @@ void func_ov000_0214f188(Obj0214f188 *self, s32 idx) {
     p = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
-        func_0204c7d0(p);
+        TextWin_Init(p);
     }
     p->font = 8;
     p->str = val;

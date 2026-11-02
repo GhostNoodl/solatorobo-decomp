@@ -13,7 +13,7 @@ extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 void func_02041c5c(void *m, void *fn);
 void func_02041c20(void *m, s32 a, void *b);
-void func_ov000_02153c48(void *node, void *a, s32 b, s32 c, s32 d);
+void Obj02153c48_CreateText(void *node, void *a, s32 b, s32 c, s32 d);
 void func_ov000_0215a088(void *self);
 void *func_ov000_02159998(void *self, u16 *msg, void *arr, u16 *cnt);
 
@@ -30,16 +30,16 @@ static inline BOOL LoadModel9aac(Lo021cb5a8 *self) {
         MODEL_NEW(self->model, data_0208cb74, data_0208cca0);
     }
     {
-        ResList *a = func_02035d5c(self->model->name);
-        void *b = func_02034d88(a, self->model->unk_04c);
-        func_020417e0(self->model, b);
+        ResList *a = ResMgr_GetArcList(self->model->name);
+        void *b = ResList_FindType2(a, self->model->unk_04c);
+        TexObj_SetRes(self->model, b);
     }
     self->model->flags |= 2;
-    func_02041d9c(self->model, 0, 7);
+    TexObj_SelectImage(self->model, 0, 7);
     return TRUE;
 }
 
-void func_ov000_02159aac(Lo021cb5a8 *self) {
+void Lo021cb5a8_Setup(Lo021cb5a8 *self) {
     s32 w2;
     UiListItem *n;
     s32 maxw;
@@ -52,7 +52,7 @@ void func_ov000_02159aac(Lo021cb5a8 *self) {
     maxw = 0;
     self->rows = 1;
     for (n = self->items; n != NULL; n = (UiListItem *)((u8 *)n->next)) {
-        func_ov000_02153c48(n, ((void *)self->font), 1, 0, 0);
+        Obj02153c48_CreateText(n, ((void *)self->font), 1, 0, 0);
         w = LFLD(s32, n->label, 0x44);
         if (w > maxw) {
             maxw = w;
@@ -96,8 +96,8 @@ void func_ov000_02159aac(Lo021cb5a8 *self) {
         self->height = a + b + ((VObj *)self)->vfunc_38();
     }
     if (LoadModel9aac(self)) {
-        func_02041d9c(self->model, 0, 8);
-        func_02041d9c(self->model, 0, 2);
+        TexObj_SelectImage(self->model, 0, 8);
+        TexObj_SelectImage(self->model, 0, 2);
         func_02041c5c(self->model, (void *)func_ov000_02159998);
         func_02041c20(self->model, 8, self);
         func_02041c20(self->model, 2, self);

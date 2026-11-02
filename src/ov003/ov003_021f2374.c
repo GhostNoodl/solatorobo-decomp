@@ -62,11 +62,11 @@ extern Ov003MultiMgr *data_ov003_021fa680;
 extern const Ov003MultiDef data_ov003_021f7470[];
 
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
-extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
-extern BOOL func_ov000_0218f110(s16 *p);
-extern BOOL func_ov000_0218ffdc(Ov003MultiModel *m, Ov003MultiSlot *slot, s32 a, s32 b);
-extern void func_ov000_02190e98(Ov003MultiModel *m, s32 a, s32 b, s32 c);
-extern void func_ov000_021915a0(Ov003MultiModel *m);
+extern void ResSet_SetFile(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
+extern BOOL ResSet_UpdateLoad(s16 *p);
+extern BOOL Model0218fe1c_SetRes(Ov003MultiModel *m, Ov003MultiSlot *slot, s32 a, s32 b);
+extern void Model0218fe1c_SetAnimByIndex(Ov003MultiModel *m, s32 a, s32 b, s32 c);
+extern void Model0218fe1c_SetLoop(Ov003MultiModel *m);
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, BOOL on, u32 mask);
 extern void NNSi_G3dModifyMatFlag(void *mdl, BOOL on, u32 flag);
 extern s32 func_ov000_021909a8(Ov003MultiModel *m, const void *a, const void *b);
@@ -121,7 +121,7 @@ void Ov003ActVt_021fa390_Init(Ov003Multi *self) {
         n = 8;
     }
     for (i = 0; i < n; i++) {
-        func_ov000_0218f074(&self->slots[i].res, def->res[i].res, 1, 1, 0, 0);
+        ResSet_SetFile(&self->slots[i].res, def->res[i].res, 1, 1, 0, 0);
         self->slots[i].res = 0;
     }
 }
@@ -132,7 +132,7 @@ BOOL Ov003ActVt_021fa390_IsReady(Ov003Multi *self) {
     s32 i = 0;
     for (; i < def->count; i++) {
         if (self->slots[i].res >= 0) {
-            if (!func_ov000_0218f110(&self->slots[i].res)) {
+            if (!ResSet_UpdateLoad(&self->slots[i].res)) {
                 r = FALSE;
             }
         }
@@ -160,10 +160,10 @@ void Ov003ActVt_021fa390_Start(Ov003Multi *self) {
             idx = 0;
         }
         m = &self->models[i];
-        func_ov000_0218ffdc(m, &self->slots[idx], 0, 1);
+        Model0218fe1c_SetRes(m, &self->slots[idx], 0, 1);
         m->unk_c2_4 = 0;
-        func_ov000_02190e98(m, 0, 0x1000, 0);
-        func_ov000_021915a0(m);
+        Model0218fe1c_SetAnimByIndex(m, 0, 0x1000, 0);
+        Model0218fe1c_SetLoop(m);
         m->unk_a8 = def->res[idx].x;
         m->unk_ac = def->res[idx].y;
         m->unk_b0 = def->res[idx].z;

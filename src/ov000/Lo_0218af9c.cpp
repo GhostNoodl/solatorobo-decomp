@@ -7,7 +7,7 @@
 
 extern "C" {
 extern Group *data_ov000_021ccd64;
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL Hit_DiffInBox(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max);
 u16 FX_Atan2(s32 x, s32 z);
@@ -52,7 +52,7 @@ void func_ov000_0218af9c(GroupNode *self) {
     mode = 0;
     best = NULL;
     any = FALSE;
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     on = FALSE;
     fl = &self->flags;
     if (self->flags.unk_0 && data_ov000_021ccd64->unk_0c.bits.flag_1) {

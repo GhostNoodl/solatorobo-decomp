@@ -145,7 +145,7 @@ static inline BOOL F24c_Valid(Actor *a) {
     if (a == NULL) {
         return FALSE;
     }
-    pl = (Robo021ca458 *)func_ov000_0219bf90();
+    pl = (Robo021ca458 *)ActorMgr_FindPlayer();
     if (pl == NULL) {
         return FALSE;
     }
@@ -303,7 +303,7 @@ void Ov011SceneActor_Update(Ov011SceneActor *self) {
     func_ov011_02200310(self);
     func_ov011_02202a38();
     {
-        Robo021ca458 *pl = (Robo021ca458 *)func_ov000_0219bf90();
+        Robo021ca458 *pl = (Robo021ca458 *)ActorMgr_FindPlayer();
         if (pl != NULL) {
             VEC_Add(&self->pos, &self->unk_f4, &v);
             pl->unk_b90 = v;
@@ -329,16 +329,16 @@ void Ov011SceneActor_State20(Ov011SceneActor *self) {
     ActorSub40 *s = self->fsm;
     switch (s->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov011_022078e1, 0x1000, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov011_022078e1, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->model->visible = 0;
         self->fsm->st++;
         break;
     case 1: {
         EffectObj *p;
         if (++s->timer > 100) {
-            func_02049a48(data_02097e4c, 50, 100, -1, -1);
-            p = func_02065f88(50 + 0x358, &self->pos);
+            SndMgr_PlayVolume(data_02097e4c, 50, 100, -1, -1);
+            p = Effect_SpawnId(50 + 0x358, &self->pos);
             p->SetScaleXYZ(0x1666, 0x1666, 0x1666);
             p->AddPosXYZ(0, 0x1000, 0);
             self->model->visible = 1;
@@ -352,7 +352,7 @@ void Ov011SceneActor_State20(Ov011SceneActor *self) {
                 s32 z;
                 s32 a;
                 s32 b;
-                p = func_02065f88(0x398 - 15, &self->pos);
+                p = Effect_SpawnId(0x398 - 15, &self->pos);
                 p->SetScaleXYZ(0x1666, 0x1666, 0x1666);
                 x = self->radius;
                 z = self->centerY;
@@ -369,7 +369,7 @@ void Ov011SceneActor_State20(Ov011SceneActor *self) {
             func_020627dc(4);
             data_ov000_021ccd54->stageFlags = 1;
             self->model->alpha = 0x1f;
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         } else if (self->fsm->timer > 30) {
             u8 v = self->model->alpha + 1;
             if (v > 0x1f) {

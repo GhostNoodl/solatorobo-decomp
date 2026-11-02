@@ -142,7 +142,7 @@ void Gfx3DState_Reset(Gfx3DState *st) {
     st->unk_003 = 2;
 }
 
-void func_02043904(Gfx3DState *st) {
+void Gfx3DState_SetDefaults(Gfx3DState *st) {
     int i;
     REG_DISP3DCNT &= 0xcffb;
     st->alphaTest = FALSE;
@@ -187,7 +187,7 @@ void func_02043904(Gfx3DState *st) {
     MTX_OrthoW(0, 0xc0000, 0, 0x100000, 0, 0x20000, 0x400000, &st->unk_13c);
 }
 
-void func_02043b20(Gfx3DState *st) {
+void Gfx3DState_Apply(Gfx3DState *st) {
     if (st->alphaTest) {
         G3X_AlphaTest(TRUE, st->alphaRef);
     } else {
@@ -218,7 +218,7 @@ void func_02043b20(Gfx3DState *st) {
     GfxLight_Apply(&st->light);
 }
 
-void func_02043d20(Gfx3DState *st, BOOL flush) {
+void Gfx3D_SendDL(Gfx3DState *st, BOOL flush) {
     NNS_G3dGeSendDL(data_02fe00e8, 100);
     if (flush) {
         NNS_G3dGeFlushBuffer();
@@ -270,11 +270,11 @@ void func_02043db4(int idx, int x, int y, u32 color) {
     NNS_G3dGeSendDL(data_0208b3d0[idx], data_020828f8[idx]);
 }
 
-void *func_02043e1c(u32 size) {
+void *Gfx3D_AllocHi(u32 size) {
     return Heap_AllocHi(size, 4);
 }
 
-void func_02043e2c(void *ptr) {
+void Gfx3D_FreeHi(void *ptr) {
     Heap_FreeHi(ptr);
 }
 

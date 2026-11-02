@@ -9,18 +9,18 @@ extern VFunc data_ov000_021cb4a8[];
 void func_ov000_02176560(void);
 void func_ov000_02176590(u16 v);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-void func_ov000_02157c90(void *a, void *b);
-void func_ov000_02157d2c(void *a, void *b);
+void UiList021cb4a8_SetLabel(void *a, void *b);
+void UiList021cb4a8_SetCenteredLabel(void *a, void *b);
 void *func_0206ee58(u16 id);
 BOOL func_ov002_021d3b10(UiList *self, UiListItem *ev);
 BOOL func_ov002_021d3c30(UiList *self, UiListItem *ev);
 
 static inline bool Ov002_Avail(u8 *blk, void *tbl, u16 i) {
-    bool a = func_02059544(data_02fe152c, blk, tbl, 1, i) & 1;
-    return a & (func_02059544(data_02fe152c, blk, tbl, 0x101, i) == 0);
+    bool a = DataRes_ReadBitsAt_02059544(data_02fe152c, blk, tbl, 1, i) & 1;
+    return a & (DataRes_ReadBitsAt_02059544(data_02fe152c, blk, tbl, 0x101, i) == 0);
 }
 
-void func_ov002_021d3e14(Task021ef81c *self) {
+void Task021ef81c_Start(Task021ef81c *self) {
     void *g;
     u8 *blk;
     u32 count;
@@ -58,7 +58,7 @@ void func_ov002_021d3e14(Task021ef81c *self) {
     }
     self->unk_40->slideMode = 1;
     self->unk_40->color = 0xb;
-    func_ov000_0215bb14(self->unk_40, MsgRes_GetString(g, 0xf3));
+    Obj0215bb14_SetText(self->unk_40, MsgRes_GetString(g, 0xf3));
     self->unk_40->vfunc_70();
     self->unk_4c = 1;
     self->unk_40->vfunc_08();
@@ -145,33 +145,33 @@ void func_ov002_021d3e14(Task021ef81c *self) {
     self->unk_3c->flags &= ~0x800000;
     self->unk_3c->unk_c1 = 5;
     self->unk_3c->unk_c0 = 0x78;
-    func_ov000_02157c90(self->unk_3c, MsgRes_GetString(g, 0xa2));
-    func_ov000_02157d2c(self->unk_3c, MsgRes_GetString(g, 0x40));
+    UiList021cb4a8_SetLabel(self->unk_3c, MsgRes_GetString(g, 0xa2));
+    UiList021cb4a8_SetCenteredLabel(self->unk_3c, MsgRes_GetString(g, 0x40));
     self->unk_3c->onDecide = func_ov002_021d3b10;
     self->unk_3c->onCursor = func_ov002_021d3c30;
     self->unk_3c->owner = self;
     func_ov000_02176590(((u32)self->param));
 
     blk = data_02fe152c->data + 0x110;
-    tbl = func_0205976c(data_02fe152c, 8);
-    count = func_0205975c(data_02fe152c, 8);
+    tbl = DataRes_GetTable(data_02fe152c, 8);
+    count = DataRes_GetCount(data_02fe152c, 8);
     for (i = 0; i < count; i++) {
         if (Ov002_Avail(blk, tbl, i)) {
             id = i | 0x4000;
-            self->unk_3c->vfunc_74(func_0206ec48(id), id, 0xffff, FIELD(func_0206ee58(id), 2, u16));
+            self->unk_3c->vfunc_74(Param_Get(id), id, 0xffff, FIELD(func_0206ee58(id), 2, u16));
         }
     }
     {
         VObj *m = self->unk_3c;
         if (FIELD(m, 0x9c, s16) == 0) {
-            func_ov000_0215bb14(self->unk_40, MsgRes_GetString(data_02149ef8, 0x9d));
+            Obj0215bb14_SetText(self->unk_40, MsgRes_GetString(data_02149ef8, 0x9d));
             self->unk_40->vfunc_70();
         } else {
-            m->vfunc_a8(func_ov000_02154b58(m, 0));
+            m->vfunc_a8(UiList_GetItemById(m, 0));
         }
     }
     self->unk_3c->vfunc_08();
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 }

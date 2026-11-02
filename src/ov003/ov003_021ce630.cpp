@@ -146,7 +146,7 @@ static inline void Ov003Log_Add(s32 type, const char *text) {
 }
 
 extern "C" Ov003Save *data_0214a424;
-extern "C" s32 func_02049bdc(void *mgr, s32 a, s32 b);
+extern "C" s32 SndMgr_PlayPan(void *mgr, s32 a, s32 b);
 
 static inline void Ov003_AddMeter(u16 add) {
     u16 c;
@@ -157,7 +157,7 @@ static inline void Ov003_AddMeter(u16 add) {
     if (c < 0x2d0) {
         c += add;
         if (c >= 0x2d0) {
-            func_02049bdc(data_02097e4c, 0x44, 5);
+            SndMgr_PlayPan(data_02097e4c, 0x44, 5);
             c = 0x2d0;
         }
     } else {
@@ -181,8 +181,8 @@ static inline void Ov003Log_AddEmpty(s32 type) {
 extern "C" {
 
 extern Ov003Save *data_0214a424;
-extern Ov003Player *func_ov000_0219bf90(void);
-extern s16 *func_ov000_02191f18(s16 *p, Ov003Hit *hit);
+extern Ov003Player *ActorMgr_FindPlayer(void);
+extern s16 *AnimEvent_Exec(s16 *p, Ov003Hit *hit);
 extern s32 Ov003_SurfaceSoundId(u32 color);
 extern u8 func_0206d37c(Ov003Save *save, s32 a);
 extern u16 Ov003_ScaleDamage(u16 v);
@@ -190,7 +190,7 @@ extern u8 data_ov000_021c9fe4;
 extern void *data_02149ef8;
 extern BOOL func_020621f8(void);
 extern Ov003Area *func_0206ef10(u16 id);
-extern s32 func_02049bdc(void *mgr, s32 a, s32 b);
+extern s32 SndMgr_PlayPan(void *mgr, s32 a, s32 b);
 extern void func_02040a98(char *buf, u16 v);
 extern u32 *func_ov000_0219bf7c(void);
 extern const char *MsgRes_GetString(void *mgr, s32 id);
@@ -199,22 +199,22 @@ extern void Ov003_AddLevels(s32 n);
 s16 *func_ov003_021ce630(s16 *p, Ov003Hit *hit) {
     Ov003Player *pl;
     u32 color;
-    func_ov000_0219bf90();
+    ActorMgr_FindPlayer();
     if (*p != 1) {
-        p = func_ov000_02191f18(p, hit);
+        p = AnimEvent_Exec(p, hit);
     } else {
         p++;
-        pl = func_ov000_0219bf90();
+        pl = ActorMgr_FindPlayer();
         color = pl->res->color;
         if (color & 0x20000000) {
             Ov003Vec pos = pl->pos;
             s32 id;
             if (pl->hard) {
-                func_02049f44(data_02097e4c, 0, &pos, 0);
+                SndMgr_PlayAt(data_02097e4c, 0, &pos, 0);
             }
             id = Ov003_SurfaceSoundId(color);
             if (id >= 0) {
-                func_0204a028(data_02097e4c, id, &pos, -5);
+                SndMgr_PlayAtPitch(data_02097e4c, id, &pos, -5);
             }
         }
         hit->flags |= 2;
@@ -238,7 +238,7 @@ u16 Ov003_ScaleDamage(u16 v) {
     if (v == 0) {
         return v;
     }
-    if (func_ov000_0219bf90()->hard) {
+    if (ActorMgr_FindPlayer()->hard) {
         u16 a = func_0206d37c(data_0214a424, 0);
         v = a + v;
     }
@@ -280,7 +280,7 @@ u16 Ov003_ScaleReward(u16 v) {
         return v;
     }
     base = 0;
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     hard = pl->hard ? TRUE : base;
     if (!hard) {
         v = v + (((u32)v << 15) >> 16);
@@ -352,7 +352,7 @@ void Ov003_AddExp(u16 exp) {
         if (area != NULL) {
             Ov003Player *pl;
             bonus = area->bonus;
-            pl = func_ov000_0219bf90();
+            pl = ActorMgr_FindPlayer();
             if (pl != NULL) {
                 if (pl->boosted) {
                     boosted = TRUE;
@@ -405,10 +405,10 @@ void Ov003_AddLevels(s32 n) {
     if (lv + n > data_ov000_021c9fe4) {
         n = (u8)(data_ov000_021c9fe4 - lv);
     }
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (pl != NULL) {
         Ov003Vec pos = pl->pos;
-        EffectObj *fx = func_02065f88(0x191, &pos);
+        EffectObj *fx = Effect_SpawnId(0x191, &pos);
         Ov003Hp *hp;
         fx->SetScaleAll(0x1400);
         pl->unk_b44 = fx->id;

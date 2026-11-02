@@ -86,7 +86,7 @@ void func_ov002_021dd9dc(Obj021eff10 *self, Obj021efe6c *w) {
         do {
             next = (Obj021efe9c *)a->next;
             if (a->unk_4a == 1) {
-                func_ov002_021d9ed8(w, a, 1);
+                Obj021efe6c_RemovePiece(w, a, 1);
             }
             a = next;
         } while (a != NULL);
@@ -95,13 +95,13 @@ void func_ov002_021dd9dc(Obj021eff10 *self, Obj021efe6c *w) {
     if (e->id != 0xffff) {
         do {
             u16 id = e->id | 0x2000;
-            if (func_0206ede8(id)[0] != 0x80) {
+            if (Param_GetEntry(id)[0] != 0x80) {
             a = (Obj021efe9c *)Heap_Alloc(sizeof(Obj021efe9c));
             if (a != NULL) {
                 *(VFunc **)a = data_ov002_021efeb8;
-                func_ov002_021d7b80(a);
+                Obj021efeb8_Init(a);
                 *(VFunc **)a = data_ov002_021efe9c;
-                func_ov002_021d7e54(a);
+                Obj021efe9c_Init(a);
             }
             a->unk_48 = id;
             a->vfunc_08();
@@ -123,7 +123,7 @@ void func_ov002_021dd9dc(Obj021eff10 *self, Obj021efe6c *w) {
                 a->unk_54 = x;
                 a->unk_58 = y;
             }
-            func_ov002_021e3b0c(&a->trans.x, &a->unk_54, &a->unk_64);
+            Ov002_CellToPos(&a->trans.x, &a->unk_54, &a->unk_64);
             ov002_Piece_SetRot(a, (u8)e->rot);
             ov002_Board_Add(w, a);
             }

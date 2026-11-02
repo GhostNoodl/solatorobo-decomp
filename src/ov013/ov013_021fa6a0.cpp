@@ -7,7 +7,7 @@ extern "C" {
 extern char data_ov013_0220ae4e[];
 extern char data_ov013_0220b5b8[];
 extern char data_ov013_0220b5ca[];
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern BOOL func_020621c4(void);
 extern BOOL Ov003Actor_HandleMsg(Ov003Actor *self, Ov013Msg *msg);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
@@ -15,7 +15,7 @@ extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *t, s32 a);
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(ActorGroup *group, u16 kind);
 extern Ov003Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
-extern BOOL func_ov000_021983b0(ActorSub40 *a, u8 b, s32 c, BOOL d);
+extern BOOL History_HasState(ActorSub40 *a, u8 b, s32 c, BOOL d);
 s32 Ov013Boss_ChooseAttack(Ov013Boss *self);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
@@ -33,7 +33,7 @@ void Ov013Boss_Start(Ov013Boss *self) {
     Ov013_VecSet(&self->unk_44->unk_0c, 0, 0x2000, 0);
     self->unk_93_4 = 1;
     self->target = 0xffff;
-    p = func_ov000_0219bf90();
+    p = ActorMgr_FindPlayer();
     if (p != NULL) {
         self->target = p->id;
     }
@@ -60,7 +60,7 @@ void Ov013Boss_Update(Ov013Boss *self) {
         return;
     }
     self->target = 0xffff;
-    p = func_ov000_0219bf90();
+    p = ActorMgr_FindPlayer();
     if (p != NULL) {
         self->target = p->id;
     }
@@ -83,8 +83,8 @@ void Ov013Boss_Update(Ov013Boss *self) {
 
 void Ov013Boss_HandleMsg(Ov013Boss *self, Ov013Msg *msg) {
     if (msg->type == 9) {
-        func_02049f44(data_02097e4c, 0x41, &self->pos, 0);
-        func_02049f44(data_02097e4c, 0x40, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x41, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x40, &self->pos, 0);
     }
     Ov003Actor_HandleMsg(self, msg);
 }
@@ -94,8 +94,8 @@ void Ov013Boss_State20(Ov013Boss *self) {
     ActorSub44 *n;
     switch (s->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov013_0220b5b8, 0x2ab, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220b5b8, 0x2ab, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->model->alpha = 0;
         self->rot_y = 0;
         n = self->unk_44;
@@ -125,7 +125,7 @@ void Ov013Boss_State20(Ov013Boss *self) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
             data_ov000_021ccd54->stageFlags = 1;
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }
@@ -135,8 +135,8 @@ void Ov013Boss_StateIdle(Ov013Boss *self) {
     Ov003Actor *t;
     if (self->fsm->st == 0) {
         ActorSub44 *n;
-        func_ov000_02190cb0(self->model, data_ov013_0220b5b8, 0x2ab, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220b5b8, 0x2ab, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;
@@ -192,8 +192,8 @@ void Ov013Boss_StateAttack(Ov013Boss *self) {
     v.z = self->unk_b8.z;
     switch (self->fsm->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov013_0220b5be, 0x2ab, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220b5be, 0x2ab, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->velY = 0xa4;
         self->speed = 0;
         self->friction = 0;
@@ -211,7 +211,7 @@ void Ov013Boss_StateAttack(Ov013Boss *self) {
     case 1:
         Actor_MoveToPos(self, &v, 0);
         if (VEC_Distance(&self->pos, &v) == 0) {
-            func_ov000_02190cb0(self->model, data_ov013_0220b5c4, 0x2ab, 0);
+            Model0218fe1c_SetAnim(self->model, data_ov013_0220b5c4, 0x2ab, 0);
             self->speed = 0;
             self->velY = 0;
             self->friction = 0;
@@ -275,7 +275,7 @@ void Ov013Boss_StateAttack(Ov013Boss *self) {
         break;
     case 0x15:
         Actor_Move(self, 0);
-        if (func_ov000_02191120(self->model)) {
+        if (Model0218fe1c_IsAnimDone(self->model)) {
             self->fsm->st = 0x16;
             self->fsm->timer = 0;
         }
@@ -290,8 +290,8 @@ void Ov013Boss_StateAttack(Ov013Boss *self) {
                 break;
             }
         }
-        func_ov000_02190cb0(self->model, data_ov013_0220b5be, 0x400, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220b5be, 0x400, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->velY = 0x333;
         self->speed = 0;
         self->friction = 0;
@@ -350,8 +350,8 @@ void Ov013Boss_StateAttack(Ov013Boss *self) {
             break;
         }
         self->pos.y = 0;
-        func_ov000_02190cb0(self->model, data_ov013_0220b5b8, 0x155, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220b5b8, 0x155, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st = 0x64;
         self->fsm->timer = 0;
         break;
@@ -361,7 +361,7 @@ void Ov013Boss_StateAttack(Ov013Boss *self) {
         if (q->timer <= 0x14) {
             break;
         }
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         break;
     }
     }

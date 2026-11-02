@@ -2,14 +2,14 @@
 
 extern "C" {
 
-void func_ov000_02190a80(void *a, s32 b);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
 
-s32 **func_ov000_02190a30(void *a, int b);
+s32 **Model0218fe1c_GetAnimCtrl(void *a, int b);
 
 
 void Interp_SinLerpVec(VecFx32 *out, s32 t, void *a, void *b);
 
-void func_ov002_021d9728(Obj021efe6c *self) {
+void Obj021efe6c_Update(Obj021efe6c *self) {
     VecFx32 a;
     VecFx32 b;
     Obj021efe4c *o;
@@ -17,10 +17,10 @@ void func_ov002_021d9728(Obj021efe6c *self) {
     Obj021efeb8 *n;
     Task021efba4 *t;
     o = self->field;
-    func_ov000_02190a80(o->unk_08, 0x1000);
-    func_ov000_02190a80(o->unk_10, 0x1000);
+    Model0218fe1c_UpdateAnim(o->unk_08, 0x1000);
+    Model0218fe1c_UpdateAnim(o->unk_10, 0x1000);
     {
-        s32 **pp = func_ov000_02190a30(o->unk_10, 0);
+        s32 **pp = Model0218fe1c_GetAnimCtrl(o->unk_10, 0);
         x = 0;
         if (*pp != NULL) {
             x = **pp;
@@ -35,7 +35,7 @@ void func_ov002_021d9728(Obj021efe6c *self) {
         Ov002Hud *m = t->hud;
         u8 k = self->unk_74;
         if (m != NULL) {
-            func_ov002_021e2690(m, k, 0);
+            Ov002Hud_SetRow(m, k, 0);
         }
         self->unk_75 = 0;
     }

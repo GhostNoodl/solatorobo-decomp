@@ -31,13 +31,13 @@ extern char data_0208c735[];
 extern char data_0208c73b[];
 extern char data_0208c741[];
 extern char data_0208c747[];
-extern void func_02063a34(EffectObj *obj);
-extern void func_02063f90(Effect3D *e);
+extern void EffectObj_Register(EffectObj *obj);
+extern void Effect3D_Init(Effect3D *e);
 extern void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
-extern void func_02064d3c(EffectObj *obj, EffectObj *child);
+extern void EffectObj_AddChild(EffectObj *obj, EffectObj *child);
 extern void EffectGroup_SetName(EffectGroup *g, const char *prefix, const char *name, const char *suffix);
 extern void EffectGroup_Reset(EffectGroup *g);
-extern void func_0206e900(char *dst, const char *src);
+extern void LangData_LocalizePath(char *dst, const char *src);
 extern u32 data_0208c1d8[];
 extern char data_0208c74d[];
 extern char data_0208c75f[];
@@ -49,7 +49,7 @@ extern char data_0208c7b9[];
 extern char data_0208c7cb[];
 extern char data_0208c7dd[];
 extern char data_0208c7ef[];
-extern EffectFile *func_02034b98(void *arc, const char *name);
+extern EffectFile *ResList_FindType0(void *arc, const char *name);
 extern EffectObj *func_02068544(EffectSetup *setup);
 
 typedef struct EffectSetupBuf {
@@ -78,9 +78,9 @@ static inline Effect3D *Effect3D_New(void) {
     Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
         *(u32 **)e = data_0208c2e4;
-        func_02063a34(e);
+        EffectObj_Register(e);
         *(u32 **)e = data_0208c290;
-        func_02063f90(e);
+        Effect3D_Init(e);
     }
     return e;
 }
@@ -89,7 +89,7 @@ static inline EffectGroup *EffectGroup_New(void) {
     EffectGroup *g = (EffectGroup *)Heap_Alloc(sizeof(EffectGroup));
     if (g != NULL) {
         *(u32 **)g = data_0208c2e4;
-        func_02063a34(g);
+        EffectObj_Register(g);
         *(u32 **)g = data_0208c23c;
         EffectGroup_Reset(g);
     }
@@ -97,7 +97,7 @@ static inline EffectGroup *EffectGroup_New(void) {
 }
 
 static inline EffectFile *Effect_GetFile(const char *name) {
-    return func_02034b98(func_02035d5c(data_0208c7ef), name);
+    return ResList_FindType0(ResMgr_GetArcList(data_0208c7ef), name);
 }
 
 EffectObj *func_02067e9c(s32 id, const VecFx32 *pos) {
@@ -108,12 +108,12 @@ EffectObj *func_02067e9c(s32 id, const VecFx32 *pos) {
         g = EffectGroup_New();
         Effect_SetStr(g->name, EFFECT_STR(data_0208c6a5));
         e = Effect3D_New();
-        func_0206e900(buf, data_0208c380);
+        LangData_LocalizePath(buf, data_0208c380);
         STD_CopyString(e->arcName, buf);
         Effect_SetStr(e->mdlName, EFFECT_STR(data_0208c6b7));
         e->unk_50 = -0x14000;
         e->unk_54 = -0x14000;
-        func_02064d3c(g, e);
+        EffectObj_AddChild(g, e);
         EffectObj_AddSndCue(g, 0x85, 0);
     }
     g->SetPos(pos);
@@ -271,7 +271,7 @@ EffectGroup *func_02068354(s32 id, const VecFx32 *pos) {
     setup.chunk1c = NULL;
     setup.chunk20 = NULL;
     setup.chunk24 = NULL;
-    func_02064d3c(g, func_02068544((EffectSetup *)&setup));
+    EffectObj_AddChild(g, func_02068544((EffectSetup *)&setup));
     setup.vt = data_0208c1d8;
     g->unk_20 = id;
     for (c = g->child; c != NULL; c = c->child) {

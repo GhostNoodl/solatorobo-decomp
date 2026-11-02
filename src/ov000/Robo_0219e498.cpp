@@ -16,9 +16,9 @@ typedef struct {
 
 extern "C" {
 void HitSphere_Link(void *a);
-void func_0203f364(void *a);
-void func_ov000_0219864c(void *a, void *b, void *c);
-void func_ov000_021987b8(void *a, s32 b, void *c, void *d);
+void HitSphere_Unlink_0203f364(void *a);
+void ActorSub48_UpdatePos(void *a, void *b, void *c);
+void Body_Update(void *a, s32 b, void *c, void *d);
 
 #define BODY(s, off) LFLD(Body_0219e498, s, (off) + 0x9a)
 
@@ -39,7 +39,7 @@ static inline void Show0219e498(u8 *s, u32 off) {
 static inline void Hide0219e498(u8 *s, u32 off) {
     BODY(s, off).b0 = 0;
     BODY(s, off).b3 = 0;
-    func_0203f364(s + off);
+    HitSphere_Unlink_0203f364(s + off);
 }
 
 static inline void Hide2_0219e498(Robo021ca458 *s, u32 off) {
@@ -59,7 +59,7 @@ static inline BOOL RgbEq0219e498(FieldId *a, FieldId *b) {
     return r;
 }
 
-void func_ov000_0219e498(Robo021ca458 *self) {
+void Robo021ca458_UpdateHit(Robo021ca458 *self) {
     if (self->unk_b24_1) {
         s32 a = 0;
         s32 b = 0x266;
@@ -86,11 +86,11 @@ void func_ov000_0219e498(Robo021ca458 *self) {
         if (!On2_0219e498(self, 0x6c0)) {
             self->hit1.unk_9a |= 0x12;
         }
-        func_ov000_0219864c(&self->hit1, NULL, NULL);
+        ActorSub48_UpdatePos(&self->hit1, NULL, NULL);
         self->unk_75c = self->pos;
         Hide0219e498((u8 *)self, 0x2cc);
         Hide2_0219e498(self, 0x2cc);
-        func_ov000_0219864c(&self->hit0, NULL, NULL);
+        ActorSub48_UpdatePos(&self->hit0, NULL, NULL);
         return;
     }
     if (!G9_0219e498() && RgbEq0219e498(&data_ov000_021ccd54->unk_ca, &self->fieldId)) {
@@ -110,13 +110,13 @@ void func_ov000_0219e498(Robo021ca458 *self) {
         }
         if (self->unk_b24_24 || self->unk_768 != 0) {
             self->unk_b24_24 = 0;
-            func_ov000_021987b8(&self->hit1, 0, (u8 *)self + 0x75c, (u8 *)self + 0x76c);
+            Body_Update(&self->hit1, 0, (u8 *)self + 0x75c, (u8 *)self + 0x76c);
         }
     } else {
         Hide0219e498((u8 *)self, 0x6c0);
         Hide2_0219e498(self, 0x6c0);
     }
-    func_ov000_0219864c(&self->hit1, (u8 *)self + 0x75c, (u8 *)self + 0x76c);
+    ActorSub48_UpdatePos(&self->hit1, (u8 *)self + 0x75c, (u8 *)self + 0x76c);
     if (self->unk_b24_2 != 1) {
         if (self->hit0.unk_50 & 0x400) {
             self->hit0.radius = (self->radius >> 1) + (self->radius >> 2);
@@ -132,6 +132,6 @@ void func_ov000_0219e498(Robo021ca458 *self) {
         self->hit0.unk_58 = 0;
         Hide2_0219e498(self, 0x2cc);
     }
-    func_ov000_0219864c(&self->hit0, NULL, NULL);
+    ActorSub48_UpdatePos(&self->hit0, NULL, NULL);
 }
 }

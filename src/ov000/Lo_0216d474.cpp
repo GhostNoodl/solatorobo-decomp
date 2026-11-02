@@ -4,7 +4,7 @@
 extern "C" {
 extern void *data_ov000_021ccd64;
 s32 FX_Div(s32 a, s32 b);
-s32 func_ov000_0218c040(void *mgr, s32 max, VecFx32 *out, s32 kind, u16 id);
+s32 Group_GetSpawnPositions(void *mgr, s32 max, VecFx32 *out, s32 kind, u16 id);
 
 static inline s32 DistSq(const VecFx32 *a, const VecFx32 *b) {
     s32 dx = a->x - b->x;
@@ -34,7 +34,7 @@ void func_ov000_0216d474(Obj0216d474 *self) {
         self->unk_14 = 0x7fffffff;
         return;
     }
-    n = func_ov000_0218c040(data_ov000_021ccd64, 0x20, pts, self->unk_2a >> 12, self->unk_2a);
+    n = Group_GetSpawnPositions(data_ov000_021ccd64, 0x20, pts, self->unk_2a >> 12, self->unk_2a);
     if (n == 0) {
         return;
     }

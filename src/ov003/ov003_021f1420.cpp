@@ -43,14 +43,14 @@ extern void Heap_Free(void *p);
 extern void *Actor_Ctor(void *p);
 extern void Actor_JoinGroup(void *p, u16 a, u16 b, s32 c);
 extern s32 func_0206ffa0(u16 id);
-extern void func_ov000_021bd228(void *p);
-extern void *func_ov000_0218c928(void *p);
-extern Ov003PropInfo *func_0206fef8(u16 id);
+extern void ActorMarker_Release(void *p);
+extern void *Actor_DtorBase(void *p);
+extern Ov003PropInfo *Tbl_FindEntry_0206fef8(u16 id);
 extern void *func_0207011c(s32 id);
-extern Ov003PropRes *func_ov000_0218e9c4(void *p);
-extern Ov003PropShadow *func_ov000_021919c8(void *p);
+extern Ov003PropRes *ResSet_Init(void *p);
+extern Ov003PropShadow *Shadow_Ctor(void *p);
 extern void Shadow_Load(Ov003PropShadow *p);
-extern void func_ov000_0218f074(Ov003PropRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
+extern void ResSet_SetFile(Ov003PropRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
 
 Ov003Prop *Ov003Prop_New(Ov003PropDef *def) {
     Ov003Prop *p = (Ov003Prop *)Heap_Alloc(0xb4);
@@ -73,13 +73,13 @@ static inline void Ov003Prop_Dtor(Ov003Prop *self) {
     p = self->unk_ac;
     if (p != NULL) {
         if (p != NULL) {
-            func_ov000_021bd228(p);
+            ActorMarker_Release(p);
             Heap_Free(p);
         }
         self->unk_ac = NULL;
     }
     data_02097dd0->cur = old;
-    func_ov000_0218c928(self);
+    Actor_DtorBase(self);
 }
 
 Ov003Prop *Ov003ActVt_021fa1b8_Dtor(Ov003Prop *self) {
@@ -94,7 +94,7 @@ Ov003Prop *Ov003ActVt_021fa1b8_DtorDelete(Ov003Prop *self) {
 }
 
 void Ov003ActVt_021fa1b8_Init(Ov003Prop *self) {
-    Ov003PropInfo *info = func_0206fef8(self->id);
+    Ov003PropInfo *info = Tbl_FindEntry_0206fef8(self->id);
     void *data = func_0207011c(self->id);
     Ov003PropRes *res;
     Ov003PropShadow *sh;
@@ -103,13 +103,13 @@ void Ov003ActVt_021fa1b8_Init(Ov003Prop *self) {
     }
     res = (Ov003PropRes *)Heap_Alloc(0x138);
     if (res != NULL) {
-        res = func_ov000_0218e9c4(res);
+        res = ResSet_Init(res);
     }
     self->res = res;
     {
         BOOL loop = info->loop ? 1 : 0;
         BOOL reverse = info->reverse ? 1 : 0;
-        func_ov000_0218f074(self->res, data, loop, reverse, 0, 0);
+        ResSet_SetFile(self->res, data, loop, reverse, 0, 0);
     }
     self->res->handle = 0;
     if (!info->shadow) {
@@ -117,7 +117,7 @@ void Ov003ActVt_021fa1b8_Init(Ov003Prop *self) {
     }
     sh = (Ov003PropShadow *)Heap_Alloc(0x1c);
     if (sh != NULL) {
-        sh = func_ov000_021919c8(sh);
+        sh = Shadow_Ctor(sh);
     }
     self->shadow = sh;
     Shadow_Load(sh);

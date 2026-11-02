@@ -74,7 +74,7 @@ static inline void G3_Scale(s32 x, s32 y, s32 z) {
     NNS_G3dGeBufferOP_N(0x1b, v, 3);
 }
 
-BOOL func_ov000_021903b4(Model021903b4 *self) {
+BOOL Model021903b4_Draw(Model021903b4 *self) {
     BOOL drawn = FALSE;
     BOOL restore;
     s32 polyId;

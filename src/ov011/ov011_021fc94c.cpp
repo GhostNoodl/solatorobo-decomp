@@ -166,7 +166,7 @@ void func_ov011_021fc94c(Ov011Tut *self) {
                 pos.x = a->pos.x;
                 pos.y = a->pos.y;
                 pos.z = a->pos.z;
-                func_02049f44(data_02097e4c, 0x5b, &pos, 0);
+                SndMgr_PlayAt(data_02097e4c, 0x5b, &pos, 0);
             }
         }
         break;
@@ -288,7 +288,7 @@ void func_ov011_021fce2c(Ov011Tut *self) {
             v.x = a->pos.x;
             v.y = a->pos.y;
             v.z = a->pos.z;
-            func_02065f88(0x12e, &v)->SetScaleXYZ(0x1400, 0x600, 0x1400);
+            Effect_SpawnId(0x12e, &v)->SetScaleXYZ(0x1400, 0x600, 0x1400);
         }
         break;
     }

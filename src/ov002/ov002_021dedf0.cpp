@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021e3b40(s32 *out, s32 x, s32 z, s32 *origin);
+void Ov002_CellXZToPos(s32 *out, s32 x, s32 z, s32 *origin);
 void func_ov002_021e3a18(Vec2 *out, int rot, Vec2 *a, Vec2 *b, Vec2 *c);
 
 typedef struct Bits021e0280 {
@@ -13,12 +13,12 @@ typedef struct Bits021e0280 {
 
 static inline void updateModel(Obj021efe8c *m) {
     s32 v[3];
-    func_ov002_021e3b40(v, m->unk_74, m->unk_78, &m->unk_7c);
+    Ov002_CellXZToPos(v, m->unk_74, m->unk_78, &m->unk_7c);
     v[1] = m->unk_84;
     m->mdl.trans.x = v[0];
     m->mdl.trans.y = v[1];
     m->mdl.trans.z = v[2];
-    if (m->mdl.renderObj != NULL && func_0203e63c(m->mdl.texTask)) {
+    if (m->mdl.renderObj != NULL && Vram_IsTransferDone(m->mdl.texTask)) {
         NNS_G3dGlbSetBaseTrans(&m->mdl.trans);
         NNS_G3dGlbSetBaseScale(&m->mdl.scale);
         MI_Copy36B(&m->mdl.rot, data_020928b4);
@@ -44,7 +44,7 @@ void func_ov002_021dedf0(Obj021efef0 *self, s32 i) {
     sh = NULL;
     t = FIELD(((u8 *)self->unk_0c), 0xa0, u8 *);
     if (t != NULL) {
-        sh = func_02070dcc(func_0206ede8(FIELD(t, 0x38, u16))[1]);
+        sh = func_02070dcc(Param_GetEntry(FIELD(t, 0x38, u16))[1]);
     }
     pos.x = self->unk_2c;
     pos.y = self->unk_30;

@@ -40,10 +40,10 @@ extern "C" {
 // Resource lookups ov002 used to get from Effect.h, at the types Effect.h gave them. The defining TUs say
 // void *(ResList *, const char *) (Main/Res/ResList.c) and (const char *, u32 *) (Main/Sys/NamePool.cpp);
 // ov002's callers pass untyped FIELD() values, so these stay as they were.
-extern EffectFile *func_02034ec0(void *arc, const char *name);
-extern EffectFile *func_02034ff8(void *arc, const char *name);
+extern EffectFile *ResList_FindType4(void *arc, const char *name);
+extern EffectFile *ResList_FindType6(void *arc, const char *name);
 extern BOOL func_0203ed04(const char *name, void *data);
-extern void func_0203f0b4(void *data);
+extern void Vram_FreeRes(void *data);
 
 #ifdef __cplusplus
 typedef int (*VFunc)(...);
@@ -93,9 +93,9 @@ typedef struct {
 
 extern BitWord *data_ov000_021ccd44;
 
-u16 func_020594bc(void *a, int b, int c, int d);
-void func_ov000_02180660(int a, int b);
-void func_ov000_02180754(void);
+u16 DataRes_ReadEntry(void *a, int b, int c, int d);
+void TaskHost_Create(int a, int b);
+void TaskHost_Destroy(void);
 
 static inline bool func_ov002_inline_flag1(void) {
     return data_ov000_021ccd44->flag1;
@@ -105,11 +105,11 @@ extern VFunc data_ov002_021ef530[];
 extern char data_ov002_021ef3e4[];
 extern char data_ov002_021ef3ec[];
 extern char data_ov002_021ef3f8[];
-void func_02035acc(void *a, void *b, u16 c);
-void func_020359fc(void *a, void *b, u16 c, u8 d);
-int func_02035bd4(void *a, void *b, u16 c);
-void *func_ov000_0218084c(void *a, int b, int c);
-void func_ov000_0215bb14(void *a, void *b);
+void ResMgr_ReleaseArchive(void *a, void *b, u16 c);
+void ResMgr_LoadArchive(void *a, void *b, u16 c, u8 d);
+int ResMgr_IsArchiveLoaded(void *a, void *b, u16 c);
+void *TaskHost_RequestSwitch(void *a, int b, int c);
+void Obj0215bb14_SetText(void *a, void *b);
 
 
 static inline void TaskBase_ctor(Task *self) {
@@ -134,8 +134,8 @@ static inline Task021ef530 *Task_021cd06c_ctor(Task021ef530 *self) {
 
 extern void *data_ov000_021ccd40;
 extern s32 data_ov000_021ccd38;
-int func_02054f10(void *a, int b);
-void func_ov000_0217357c(void *self);
+int Model_IsReady(void *a, int b);
+void Task_Draw(void *self);
 extern char data_ov002_021ef3f9[];
 
 static inline bool Task_getFlag4(Task *self) {
@@ -146,8 +146,8 @@ static inline bool func_ov002_isCurrent021ccd40(void *p) {
     return data_ov000_021ccd40 == p;
 }
 
-void *func_02035f30(void *a, void *b, u16 c);
-void func_ov000_02173648(void *self);
+void *ResMgr_GetArchiveList(void *a, void *b, u16 c);
+void TaskList_Insert(void *self);
 extern u8 data_ov000_021ccd34;
 void func_0203cb78(s32 a, int b, int c);
 void func_ov002_021ce7b8(Task021ef4b0 *self);
@@ -192,7 +192,7 @@ extern VFunc data_ov002_021ef4b0[];
 extern VFunc data_ov002_021ef430[];
 extern VFunc data_ov002_021ef410[];
 extern VFunc data_ov002_021ef79c[];
-void func_ov000_0216f168(void *self);
+void Buffer0216f144_Free(void *self);
 
 static inline void TaskBase_dtor(Task *self) {
     *(VFunc **)self = (VFunc *)data_ov000_021cc060;
@@ -205,8 +205,8 @@ template <class T> static inline void Task_deleteModel(T *self) {
     void *p = self->unk_3c;
     if (p != NULL) {
         if (p != NULL) {
-            func_02041558((Model *)p);
-            func_02041278(&((Model *)p)->pltt);
+            TexObj_Release((Model *)p);
+            PlttRes_Release(&((Model *)p)->pltt);
             Heap_Free(p);
         }
         self->unk_3c = NULL;
@@ -232,7 +232,7 @@ extern VFunc data_ov002_021ef89c[];
 s16 *func_0206ee90(u32 id);
 extern s32 data_ov002_021f0f84[];
 extern VFunc data_ov002_021ef71c[];
-void func_ov002_021e916c(void);
+void Ov002Stage_Delete_021e916c(void);
 void func_ov002_021d0b98(Task021ef89c *self);
 
 typedef struct Info0206ee90 {
@@ -240,15 +240,15 @@ typedef struct Info0206ee90 {
     u16 flag : 1;
 } Info0206ee90;
 
-u32 func_0205975c(void *a, int idx);
-void *func_0205976c(void *a, int idx);
-u16 func_02059544(void *a, void *b, void *c, u16 d, u16 e);
+u32 DataRes_GetCount(void *a, int idx);
+void *DataRes_GetTable(void *a, int idx);
+u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, u16 d, u16 e);
 
 void func_ov002_021e90dc(void);
 void func_ov002_021e8f04(s32 id);
 bool func_ov002_021e90ac(void);
 extern VFunc data_ov002_021ef69c[];
-void func_ov000_021c64b4(void *a, void *b);
+void Obj021c64b4_SetText(void *a, void *b);
 void func_ov000_021c7000(void *a);
 void func_ov002_021d1f70(Task021ef69c *self);
 
@@ -274,8 +274,8 @@ static inline void func_ov002_021e4904_inline(Ov002LevelTable *self) {
     self->label = NULL;
     self->desc = NULL;
 }
-void func_ov002_021e4714(Ov002LevelTable *self);
-void func_ov002_021e49a0(Ov002StrTable *self);
+void Ov002LevelTable_Ctor(Ov002LevelTable *self);
+void Ov002StrTable_Ctor(Ov002StrTable *self);
 extern VFunc data_ov002_021ef91c[];
 
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
@@ -283,71 +283,71 @@ Ov002LevelTable *Ov002Vt_021f00fc_Dtor(Ov002LevelTable *self);
 
 extern VFunc data_ov002_021ef99c[];
 
-void func_ov002_021e4b80(Ov002StrTable *self);
+void Ov002StrTable_Clear(Ov002StrTable *self);
 void func_ov002_021d37f8(Task021ef91c *self);
 extern VFunc data_ov002_021ef81c[];
 void func_ov000_021763c8(void);
 u32 func_ov000_02176538(void);
 u32 func_ov000_02180838(void *a);
-void func_ov002_021d3ccc(Task021ef81c *self);
+void Task021ef81c_FreeWindows(Task021ef81c *self);
 
 Ov002StrTable *Ov002Vt_021f00ec_Dtor(Ov002StrTable *self);
-void func_ov002_021d25ec(Task021ef99c *self);
+void Task021ef99c_FreeWindows(Task021ef99c *self);
 void __cxa_vec_cleanup(void *arr, int n, u32 size, void (*dtor)(void *));
 extern VFunc data_ov002_021ef684[];
-void func_ov000_021c2310(void *self);
+void ListRow_Unlink(void *self);
 
 extern VFunc data_ov002_021efba4[];
 extern VFunc data_ov002_021efb14[];
 extern char data_ov002_021efad1[];
-void func_ov002_021e1d28(Ov002Hud *self);
+void Ov002Hud_Release(Ov002Hud *self);
 
-void func_ov002_021e1cc8(Ov002Hud *self);
-void func_ov002_021e1ed8(Ov002Hud *self);
-void func_ov002_021e2690(Ov002Hud *self, u8 row, int force);
-void func_ov002_021e23ac(Ov002Hud *self);
+void Ov002Hud_Init(Ov002Hud *self);
+void Ov002Hud_Load(Ov002Hud *self);
+void Ov002Hud_SetRow(Ov002Hud *self, u8 row, int force);
+void Ov002Hud_Update(Ov002Hud *self);
 void func_ov002_021e2528(Ov002Hud *self);
 extern VFunc data_ov002_021efb24[];
-void func_ov002_021da2fc(void);
-Obj021efe7c *func_ov002_021da420(void);
-void func_ov002_021da5c0(Obj021efe7c *self);
-BOOL func_ov002_021da800(Obj021efe7c *self);
-void func_ov002_021da894(Obj021efe7c *self);
-void func_ov002_021da960(Obj021efe7c *self);
+void Obj021efe7c_Create(void);
+Obj021efe7c *Obj021efe7c_Get(void);
+void Obj021efe7c_Setup(Obj021efe7c *self);
+BOOL Obj021efe7c_IsLoaded(Obj021efe7c *self);
+void Obj021efe7c_Start(Obj021efe7c *self);
+void Obj021efe7c_Draw(Obj021efe7c *self);
 
 static inline bool Task_isFlag1Clear(Task *self) {
     return !self->unk_04_1;
 }
 
 void func_ov002_021dab58(Obj021efe7c *a, int b);
-BOOL func_ov002_021da8d8(Obj021efe7c *a);
+BOOL Obj021efe7c_Update(Obj021efe7c *a);
 extern VFunc data_ov002_021efc24[];
 void func_ov002_021d5f60(Task021efc24 *self);
 void *Task_FindById(int id);
 extern VFunc data_ov002_021efb04[];
-void func_ov000_02163254(void *self);
+void MsgBox_Release(void *self);
 extern VFunc data_ov000_021caec8[];
 extern VFunc data_ov000_021cac60[];
 
 void *func_0206ec8c(u32 id);
 Param0206ef10 *func_0206ef10(u32 id);
-void func_ov000_02162b40(void *a, const char *mdlArc, const char *mdlName, const char *anmArc, const char *anmName, const char *anim, s32 frame, s16 speed);
+void ModelViewer_SetModel(void *a, const char *mdlArc, const char *mdlName, const char *anmArc, const char *anmName, const char *anim, s32 frame, s16 speed);
 void func_ov000_021c95ac(void *a, u16 id);
-void func_ov002_021e2754(Ov002Hud *self, u16 id);
+void Ov002Hud_SetInfo(Ov002Hud *self, u16 id);
 extern char data_ov002_021efaeb[];
 extern char data_ov002_021efae1[];
 
-void func_ov002_021da39c(void);
+void Obj021efe7c_Delete(void);
 
 static inline bool func_ov002_isState2(void *self) {
     return FIELD(self, 0x4, s32) == 2;
 }
 
 
-BOOL func_ov002_021d6cf0(UiObj *self);
+BOOL Ov002RowList_IsLoaded(UiObj *self);
 
-void *func_ov000_0218fee4(void *p);
-void *func_ov000_0218ea20(void *p);
+void *Model0218fe1c_FreeAnims(void *p);
+void *ResSet_ReleaseAll(void *p);
 
 #define DELETE_WITH(field, dtor)        \
     do {                                \
@@ -367,9 +367,9 @@ extern VFunc data_ov002_021efe8c[];
 
 Ov002Mdl021efe3c *Ov002Vt_021efe3c_Ctor(Ov002Mdl021efe3c *self);
 Ov002Mdl021efe3c *Ov002Vt_021efe3c_Dtor(Ov002Mdl021efe3c *self);
-void func_ov002_021d7620(Ov002Mdl021efe3c *self);
-void func_ov002_021d788c(Obj021efe8c *self);
-void func_ov002_021d792c(Obj021efe5c *self);
+void Ov002Mdl021efe3c_Load(Ov002Mdl021efe3c *self);
+void Obj021efe8c_SyncAnmFrame(Obj021efe8c *self);
+void Obj021efe5c_SyncAnmFrame(Obj021efe5c *self);
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 u8 *func_0206ef50(u32 id);
@@ -377,12 +377,12 @@ Ov002Shape *func_02070dcc(int id);
 void NNS_G3dMdlSetMdlAlpha(void *res, int idx, int val);
 extern char data_ov002_021efddd[];
 
-u8 *func_0206ede8(u16 id);
+u8 *Param_GetEntry(u16 id);
 BOOL func_ov002_021e38f8(s32 *out, Ov002Shape *shape);
 void func_ov002_021d8148(Obj021efe9c *self);
 
 static inline void func_ov002_021d7c04_inline(Obj021efeb8 *self) {
-    u8 *info = func_0206ede8(self->unk_48);
+    u8 *info = Param_GetEntry(self->unk_48);
     Ov002Shape *v;
     self->unk_4a = info[0] == 0x80 ? 2 : 1;
     v = func_02070dcc(self->unk_4b = info[1]);
@@ -393,22 +393,22 @@ static inline void func_ov002_021d7c04_inline(Obj021efeb8 *self) {
 void func_ov002_021d83f0(Obj021efe9c *self);
 u8 Gfx3DState_NextPolyId(void *a);
 void NNS_G3dMdlSetMdlPolygonIDAll(void *mdl, int polygonID);
-void func_ov002_021e3b0c(s32 *out, s32 *pos, s32 *origin);
+void Ov002_CellToPos(s32 *out, s32 *pos, s32 *origin);
 
 typedef struct Vec2 {
     s32 x;
     s32 y;
 } Vec2;
 
-void func_ov002_021eae48(Ov002StageFile *self);
-// The board's selection (unk_00, an index into the mode menu) and its top object (func_ov002_021da2fc).
+void Ov002StageFile_Free(Ov002StageFile *self);
+// The board's selection (unk_00, an index into the mode menu) and its top object (Obj021efe7c_Create).
 typedef struct Ov002BoardRef {
     u8 unk_00;
     u8 unk_01[0x3];
     Obj021efe7c *top;
 } Ov002BoardRef;
 extern Ov002BoardRef data_ov002_021f0f90;
-void func_ov002_021df1c4(Obj021eff30 *self);
+void Obj021eff30_Release(Obj021eff30 *self);
 
 typedef struct Bits16 {
     u16 b0 : 1;
@@ -438,44 +438,44 @@ extern VFunc data_ov002_021efe4c[];
 extern VFunc data_ov002_021f0684[];
 extern VFunc data_ov002_021f00ec[];
 extern Ov002Obj021f07d4 *data_ov002_021f0f98; // the model being drawn (func_ov002_021e5b08)
-void func_ov002_021ddd80(Obj021efef0 *self);
-void func_ov002_021da430(Obj021efe7c *self);
-void func_ov002_021dddd0(Obj021efef0 *self);
-void func_ov002_021dbdb8(Obj021eff10 *self);
-void func_ov002_021db64c(Obj021eff50 *self);
-void func_ov002_021d6ec4(Obj021efe4c *self);
-void func_ov002_021d6e48(Obj021efe4c *self);
+void Obj021efef0_Init(Obj021efef0 *self);
+void Obj021efe7c_Release(Obj021efe7c *self);
+void Obj021efef0_Release(Obj021efef0 *self);
+void Obj021eff10_Release(Obj021eff10 *self);
+void Obj021eff50_Release(Obj021eff50 *self);
+void Obj021efe4c_Release(Obj021efe4c *self);
+void Obj021efe4c_Init(Obj021efe4c *self);
 void func_ov002_021d7058(Obj021efe4c *self);
 void func_ov002_021d7238(Obj021efe4c *self);
 void func_ov002_021d7320(Obj021efe4c *self, s32 t, s32 range);
-void func_ov002_021d9444(Obj021efe6c *self);
+void Obj021efe6c_Init(Obj021efe6c *self);
 void func_ov002_021d98ac(Obj021efe6c *self);
 void func_ov002_021d9c04(Obj021efe6c *self);
-void func_ov002_021d9e38(Obj021efe6c *self, Obj021efeb8 *node);
-void func_ov002_021d9ed8(Obj021efe6c *self, Obj021efeb8 *obj, bool del);
+void Obj021efe6c_AppendPiece(Obj021efe6c *self, Obj021efeb8 *node);
+void Obj021efe6c_RemovePiece(Obj021efe6c *self, Obj021efeb8 *obj, bool del);
 void func_ov002_021da054(Obj021efe6c *self);
 void func_ov002_021da184(Obj021efe6c *self, Obj021efeb8 *obj);
 u8 *func_ov002_021dd9d4(Obj021efe6c *self);
 u16 func_ov002_021d9e30(Obj021efeb8 *self);
-void func_ov002_021d8b04(Obj021efe9c *self, Vec2 *out);
-void func_ov002_021d8b2c(Obj021efe9c *self, Vec2 *out);
-Ov002Shape *func_ov002_021d8b40(Obj021efe9c *self);
-u8 func_ov002_021d8b48(Obj021efe9c *self);
+void Obj021efe9c_GetCell(Obj021efe9c *self, Vec2 *out);
+void Obj021efe9c_GetOrigin(Obj021efe9c *self, Vec2 *out);
+Ov002Shape *Obj021efe9c_GetShape(Obj021efe9c *self);
+u8 Obj021efe9c_GetRot(Obj021efe9c *self);
 u8 func_ov002_021d8b74(Obj021efe9c *self);
 void func_ov002_021d8b7c(Obj021efe9c *self);
 void func_ov002_021d8ba4(Obj021efe9c *self);
 void func_ov002_021d8bcc(Obj021efe9c *self);
 s32 func_ov002_021dc834(Obj021efe9c *self);
-void func_ov002_021d7c54(Obj021efe9c *self, u16 rot);
-void func_ov002_021df7b4(Obj021efe9c *self, Vec2 *pos);
+void Obj021efe9c_SetRot(Obj021efe9c *self, u16 rot);
+void Obj021efe9c_SetCell(Obj021efe9c *self, Vec2 *pos);
 void func_ov002_021dbd08(Obj021eff50 *self, VObj *child, s32 state);
-Obj021efe6c *func_ov002_021dc270(Obj021eff50 *self);
+Obj021efe6c *Obj021eff50_GetBoard(Obj021eff50 *self);
 Obj021eff10 *Ov002Vt_021eff10_Ctor(Obj021eff10 *self);
 Obj021efef0 *Ov002Vt_021efef0_Ctor(Obj021efef0 *self);
 void func_ov002_021dfc44(Obj021efef0 *self, u16 id);
-void func_ov002_021d7b80(Obj021efeb8 *self);
-void func_ov002_021d7e54(Obj021efe9c *self);
-void func_ov002_021d8e48(Obj021efed4 *self);
+void Obj021efeb8_Init(Obj021efeb8 *self);
+void Obj021efe9c_Init(Obj021efe9c *self);
+void Obj021efed4_Init(Obj021efed4 *self);
 void func_ov002_021eae3c(Ov002StageFile *self);
 
 typedef struct Nibbles16 {
@@ -500,17 +500,17 @@ typedef struct Bits32 {
 extern VFunc data_ov002_021f00fc[];
 extern VFunc data_ov002_021f0cf8[];
 extern VFunc data_ov002_021f0ef4[];
-UiListItem *func_ov000_02154b58(void *list, u16 id);
-void func_ov000_02153c48(UiListItem *item, s32 font, BOOL show, BOOL center, u8 e);
+UiListItem *UiList_GetItemById(void *list, u16 id);
+void Obj02153c48_CreateText(UiListItem *item, s32 font, BOOL show, BOOL center, u8 e);
 
 extern VFunc data_ov002_021efeb8[];
 extern VFunc data_ov002_021f0674[];
-void func_ov002_021e7dac(Ov002Stage *self);
+void Ov002Stage_Release(Ov002Stage *self);
 void func_ov002_021e0420(NNSG3dRS *rs);
 void func_ov000_021c524c(void *a, void *b, VecFx32 *pos, s32 d);
 
 extern VFunc data_ov000_021ccbe0[];
-void func_ov000_021c3bb0(void *self);
+void LoBase021ccb54_021ccbe0_Release(void *self);
 void func_ov002_021d95e0(Obj021efe6c *a);
 
 static inline void *func_ov002_021e0b08_inline(void *self) {
@@ -534,8 +534,8 @@ extern VFunc data_ov002_021f0e4c[];
 extern VFunc data_ov002_021f0f2c[];
 extern VFunc data_ov002_021efed4[];
 extern VFunc data_ov002_021efe9c[];
-void func_ov002_021d8e90(Obj021efed4 *self);
-void func_ov002_021d7ed8(Obj021efe9c *self);
+void Obj021efed4_Release(Obj021efed4 *self);
+void Obj021efe9c_Release(Obj021efe9c *self);
 
 typedef struct Bits021e0420 {
     u32 lo : 16;
@@ -545,7 +545,7 @@ typedef struct Bits021e0420 {
 
 extern VFunc data_ov002_021f0ce8[];
 int func_ov002_021e3dac(Vec2 *pos, Ov002Shape *map, Ov002Shape *shape, Vec2 *out);
-void func_ov002_021d7d5c(Obj021efe9c *self, Ov002Shape *map);
+void Obj021efe9c_ClampToBoard(Obj021efe9c *self, Ov002Shape *map);
 void func_ov002_021d8c34(Obj021efe9c *self, s32 d, Ov002Shape *map);
 
 
@@ -598,7 +598,7 @@ static inline void func_ov002_021e4d4c_inline(Ov002Obj *self) {
     }
 }
 
-void func_ov002_021ec2ac(Ov002Snd021f0cf8 *self);
+void Ov002Snd021f0cf8_Next(Ov002Snd021f0cf8 *self);
 
 BOOL func_ov002_021d52e0(UiList *self, UiListItem *ev);
 typedef BOOL (*EvCallback)(void *, void *);
@@ -606,7 +606,7 @@ void func_ov000_02152294(void *self, u16 a, int b, EvCallback cb);
 u8 LangData_GetLang(void);
 void func_ov002_021d4540(void *dst, u32 size, const void *a, const void *b, int mode);
 // The resource-name table data_ov002_021ef5ac (defined in ov002_021ef150.cpp). Not const:
-// func_ov002_021d278c reloads it after every call in its loop.
+// Task021ef99c_Start reloads it after every call in its loop.
 typedef struct Ov002ResNames {
     const char *hdExt;
     const char *bmExt;
@@ -622,12 +622,12 @@ void func_ov000_021c4ab8(void *self);
 extern u8 data_ov002_021ef038[];
 
 extern VFunc data_ov002_021f075c[];
-void func_ov002_021e5d88(Ov002Obj021f075c *self);
+void Ov002Obj021f075c_FreeAnims(Ov002Obj021f075c *self);
 void func_ov002_021e8cc4(Ov002Stage *self);
-void *func_ov000_0214b6d8(void *p);
-void func_ov000_0214b88c(void *p, const void *a);
+void *Twl0214b6d8_Init(void *p);
+void Loader_Start(void *p, const void *a);
 void func_ov000_0214b810(void *p);
-BOOL func_ov000_0214b8d8(void *p);
+BOOL Loader_IsDone(void *p);
 // The staff-roll configuration (defined in ov002_021ef380.cpp).
 struct Ov002StaffCfg {
     s32 w0, w4;
@@ -651,21 +651,21 @@ extern char data_ov002_021f00cc[];
 extern char data_ov002_021f00d8[];
 
 extern VFunc data_ov002_021f07d4[];
-void func_ov002_021e51f8(Ov002Obj021f07d4 *self);
-void func_ov002_021d9728(Obj021efe6c *p);
+void Ov002Obj021f07d4_Release(Ov002Obj021f07d4 *self);
+void Obj021efe6c_Update(Obj021efe6c *p);
 
-void func_ov002_021e391c(s32 *m, int rot);
+void Ov002_QuarterRotMtx(s32 *m, int rot);
 
 int STD_TSNPrintf(void *dst, u32 size, const void *fmt, ...);
 extern void *data_ov002_021f0624[];
 extern u8 data_ov002_021f064c[];
 extern u8 data_ov002_021f0647[];
 
-BOOL func_ov000_0218f110(void *p);
+BOOL ResSet_UpdateLoad(void *p);
 extern char data_ov002_021efdf6[];
 
-void func_ov002_021d9504(Obj021efe6c *self);
-void func_ov002_021ebfd0(Ov002Msg021f0ce8 *p);
+void Obj021efe6c_FreePieces(Obj021efe6c *self);
+void Ov002Msg021f0ce8_Init(Ov002Msg021f0ce8 *p);
 extern VFunc data_ov002_021efe6c[];
 
 void func_ov000_021c9544(void *a, void *b);
@@ -687,21 +687,21 @@ typedef struct Oam021e7ab8 {
 
 void func_ov002_021d36b8(Task021ef91c *self, s32 n);
 extern VFunc data_ov002_021eff74[];
-void func_ov002_021eacd0(Ov002StageFile *self);
+void Ov002StageFile_Init(Ov002StageFile *self);
 void Gfx3DState_Init(void *p);
-void func_ov002_021e7cb4(Ov002Stage *self);
+void Ov002Stage_Init(Ov002Stage *self);
 
 BOOL func_ov002_021e41cc(Vec2 *a, Vec2 *b, Ov002Shape *c, Ov002Shape *d, Vec2 *out);
 BOOL func_ov002_021e4578(const Vec2 *pos, const Vec2 *d, Ov002Shape *map, Ov002Shape *shape);
 BOOL func_ov002_021e45c4(Obj021efeb8 *self, Obj021efeb8 *list, Ov002Shape *map);
-void func_ov002_021e63f0(Ov002Obj021f075c *self);
+void Ov002Obj021f075c_UpdateAnims(Ov002Obj021f075c *self);
 extern VFunc data_ov002_021f0694[];
 
 
-Ov002Obj *func_ov002_021e9974(s32 a, s32 b, s16 c, void *d);
+Ov002Obj *Ov002Obj021f06e4_New(s32 a, s32 b, s16 c, void *d);
 
 void *func_02035fe8(void *a, void *b);
-void func_ov002_021ec010(Ov002Msg021f0ce8 *p, const void *src);
+void Ov002Msg021f0ce8_Load(Ov002Msg021f0ce8 *p, const void *src);
 extern VFunc data_ov002_021f07ac[];
 void *Ov002Vt_021f0ce8_Dtor(Ov002Msg021f0ce8 *p);
 
@@ -726,22 +726,22 @@ void func_ov000_021c4738(void *self, void *a);
 extern u16 data_ov002_021ef058[][5];
 typedef int (*SortCmp)(void *, void *);
 
-void func_ov000_02162a58(void *p);
-void func_ov000_02163594(void *p);
+void ModelViewer_Draw(void *p);
+void MsgBox_Render(void *p);
 
 void func_0206e3a0(void *a, void *b);
-void func_02043b20(void *p);
-void func_ov002_021e5d0c(Ov002Obj021f075c *self);
+void Gfx3DState_Apply(void *p);
+void Ov002Obj021f075c_Init(Ov002Obj021f075c *self);
 
 void *Ov002Vt_021f0ce8_Ctor(Ov002Msg021f0ce8 *p);
-void func_ov002_021e6a14(Ov002Obj021f07ac *self);
-void func_ov002_021ec1e0(Ov002Snd021f0cf8 *self, void *src);
+void Ov002Obj021f07ac_Init(Ov002Obj021f07ac *self);
+void Ov002Snd021f0cf8_Load(Ov002Snd021f0cf8 *self, void *src);
 
 extern VFunc data_ov002_021f06e4[];
 
 void func_ov002_021e6290(Ov002Obj021f075c *self);
 
-void *func_0206ec48(u16 id);
+void *Param_Get(u16 id);
 void func_ov002_021e019c(Obj021eff30 *self, u8 a, u8 b);
 
 void func_ov000_0216f844(TimedBuffer021cb920 *p, int a);
@@ -749,7 +749,7 @@ extern VFunc data_ov002_021f070c[];
 
 extern const u8 data_ov002_021eef74[];
 
-void func_ov002_021e5140(Ov002Obj021f07d4 *self);
+void Ov002Obj021f07d4_Init(Ov002Obj021f07d4 *self);
 void *func_02035d2c(void *a);
 
 #ifdef __cplusplus

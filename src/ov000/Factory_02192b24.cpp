@@ -95,8 +95,8 @@ extern u8 data_ov013_0220b7d0[];
 void *Heap_Alloc(u32 size);
 Info02192b24 *func_020704b4(u16 id);
 s32 func_0206ffa0(u16 id);
-void *func_ov000_0218e9c4(void *p);
-void *func_ov000_0218fe1c(void *p);
+void *ResSet_Init(void *p);
+void *Model0218fe1c_Init(void *p);
 void *ActorEx_Ctor(void *p);
 void *func_ov000_021940e4(void *p);
 void *func_ov000_02193e34(void *p);
@@ -149,7 +149,7 @@ void *Ov014ActEx_022152e8_Ctor(void *p);
         p = t;                                 \
     }
 
-u8 *func_ov000_02192b24(Spawn02192b24 *s) {
+u8 *Factory_New4000(Spawn02192b24 *s) {
     u8 *p;
     switch (func_020704b4(s->id)->type) {
     default:
@@ -165,7 +165,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
                 if (t != NULL) {
                     Base(t);
                     VOBJ_SET_VTABLE(t, data_ov003_021f8a60);
-                    func_ov000_0218e9c4(t + 0xd0);
+                    ResSet_Init(t + 0xd0);
                 }
                 p = t;
             }
@@ -238,8 +238,8 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
                 if (t != NULL) {
                     Base(t);
                     VOBJ_SET_VTABLE(t, data_ov012_0220b1e8);
-                    func_ov000_0218e9c4(t + 0xd8);
-                    func_ov000_0218fe1c(t + 0x210);
+                    ResSet_Init(t + 0xd8);
+                    Model0218fe1c_Init(t + 0x210);
                 }
                 p = t;
             }
@@ -303,9 +303,9 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
                 if (t != NULL) {
                     Base(t);
                     VOBJ_SET_VTABLE(t, data_ov003_021f8af8);
-                    func_ov000_0218e9c4(t + 0xd0);
-                    func_ov000_0218e9c4(t + 0x208);
-                    func_ov000_0218fe1c(t + 0x340);
+                    ResSet_Init(t + 0xd0);
+                    ResSet_Init(t + 0x208);
+                    Model0218fe1c_Init(t + 0x340);
                     __cxa_vec_ctor(t + 0x46c, 4, 0x98, (void (*)(void *))func_ov000_02193e34, (void (*)(void *))func_ov000_02193e48);
                     __cxa_vec_ctor(t + 0x6cc, 4, 0x98, (void (*)(void *))func_ov000_02193e34, (void (*)(void *))func_ov000_02193e48);
                     __cxa_vec_ctor(t + 0x92c, 3, 0x98, (void (*)(void *))func_ov000_02193e34, (void (*)(void *))func_ov000_02193e48);
@@ -339,7 +339,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
                 if (t != NULL) {
                     Base(t);
                     VOBJ_SET_VTABLE(t, data_ov003_021f953c);
-                    func_ov000_0218fe1c(t + 0xd0);
+                    Model0218fe1c_Init(t + 0xd0);
                 }
                 p = t;
             }
@@ -448,8 +448,8 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             if (t != NULL) {
                 Base(t);
                 VOBJ_SET_VTABLE(t, data_ov003_021f9834);
-                func_ov000_0218e9c4(t + 0xd0);
-                func_ov000_0218fe1c(t + 0x208);
+                ResSet_Init(t + 0xd0);
+                Model0218fe1c_Init(t + 0x208);
             }
             p = t;
         }
@@ -460,8 +460,8 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             if (t != NULL) {
                 Base(t);
                 VOBJ_SET_VTABLE(t, data_ov003_021f9704);
-                func_ov000_0218e9c4(t + 0xd0);
-                func_ov000_0218fe1c(t + 0x208);
+                ResSet_Init(t + 0xd0);
+                Model0218fe1c_Init(t + 0x208);
                 LFLD(u16, t, 0x2fc) = 0;
                 LFLD(u16, t, 0x2fe) = 0;
             }
@@ -474,8 +474,8 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             if (t != NULL) {
                 Base(t);
                 VOBJ_SET_VTABLE(t, data_ov003_021f979c);
-                func_ov000_0218e9c4(t + 0xd0);
-                func_ov000_0218fe1c(t + 0x208);
+                ResSet_Init(t + 0xd0);
+                Model0218fe1c_Init(t + 0x208);
             }
             p = t;
         }
@@ -513,7 +513,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             if (t != NULL) {
                 Base(t);
                 VOBJ_SET_VTABLE(t, data_ov003_021f8638);
-                func_ov000_0218e9c4(t + 0xd0);
+                ResSet_Init(t + 0xd0);
             }
             p = t;
         }
@@ -527,7 +527,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             if (t != NULL) {
                 Base(t);
                 VOBJ_SET_VTABLE(t, data_ov003_021f8c28);
-                func_ov000_0218e9c4(t + 0xd0);
+                ResSet_Init(t + 0xd0);
             }
             p = t;
         }
@@ -538,7 +538,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             if (t != NULL) {
                 Base(t);
                 VOBJ_SET_VTABLE(t, data_ov003_021f89c8);
-                func_ov000_0218e9c4(t + 0xd0);
+                ResSet_Init(t + 0xd0);
             }
             p = t;
         }
@@ -573,7 +573,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             if (t != NULL) {
                 Base(t);
                 VOBJ_SET_VTABLE(t, data_ov003_021f8768);
-                func_ov000_0218e9c4(t + 0xd0);
+                ResSet_Init(t + 0xd0);
                 LFLD(s32, t, 0x208) = 0;
             }
             p = t;

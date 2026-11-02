@@ -54,7 +54,7 @@ void Ov009ActSpin_RunState(Ov009ActVt_02217a00 *self) {
     }
     a = Ov009_FindActor(self->unk_f0);
     if (self->fsm->current != 0x15 && (a == NULL || Ov009_Mode(a) == 9)) {
-        func_ov000_02198360(self->fsm, 0x15, 0);
+        History_SetState(self->fsm, 0x15, 0);
         func_ov000_02184508(data_ov000_021ccd54);
     }
     if (a == NULL) {

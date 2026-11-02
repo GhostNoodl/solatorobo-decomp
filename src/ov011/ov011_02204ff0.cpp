@@ -12,7 +12,7 @@ void Ov011Act7da4_Update(Ov011Act7da4 *self) {
         return;
     }
     self->target = 0xffff;
-    pl = (Ov003Actor *)func_ov000_0219bf90();
+    pl = (Ov003Actor *)ActorMgr_FindPlayer();
     if (pl == NULL) {
         return;
     }

@@ -2,30 +2,30 @@
 
 extern "C" {
 
-s32 func_ov000_0218f110(void *a);
+s32 ResSet_UpdateLoad(void *a);
 extern const Ov015ShipCfg data_ov015_02212db0;
 extern char data_ov015_02212e14[];
 extern char data_ov015_02212e15[];
 s32 func_ov000_021909a8(void *a, const void *b, const void *c);
-u8 *func_0206fef8(u16 id);
-BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
-void func_ov000_02191618(void *a);
-void func_ov000_02191690(void *a);
-void *func_ov000_02191318(void *a, s32 b);
-void func_ov000_02190a80(void *a, s32 b);
-BOOL func_ov000_021903b4(void *a);
+u8 *Tbl_FindEntry_0206fef8(u16 id);
+BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
+BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
+void Model0218fe1c_ClearLoop(void *a);
+void Model0218fe1c_PauseAnim(void *a);
+void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
+BOOL Model021903b4_Draw(void *a);
 extern u8 data_ov015_02212eb0[];
 extern u8 data_ov015_02212f64[];
 
 BOOL func_ov015_0220e024(Ov015StageMdl *self) {
     BOOL r = TRUE;
     if (self->res0.unk_00 >= 0) {
-        if (func_ov000_0218f110(&self->res0) == 0) r = FALSE;
+        if (ResSet_UpdateLoad(&self->res0) == 0) r = FALSE;
     }
     if (self->res1.unk_00 >= 0) {
-        if (func_ov000_0218f110(&self->res1) == 0) r = FALSE;
+        if (ResSet_UpdateLoad(&self->res1) == 0) r = FALSE;
     }
     return r;
 }
@@ -34,22 +34,22 @@ BOOL func_ov015_0220e074(Ov015StageMdl *self) {
     s32 i;
     s32 cur;
     Ov002Obj *n;
-    func_ov000_0218ffdc(&self->mdl0, &self->res0, 0, 1);
+    Model0218fe1c_SetRes(&self->mdl0, &self->res0, 0, 1);
     self->mdl0.boxTest = 0;
-    func_ov000_021915a0(&self->mdl0);
+    Model0218fe1c_SetLoop(&self->mdl0);
     self->mdl0.visible = 1;
     NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)self->mdl0.renderObj, func_ov015_022090fc);
     self->mdl0.clearInit = 0;
     self->mdl0.renderUser = &self->unk_49c;
     self->mdl0.flushVP = 1;
     self->unk_4cc = func_ov000_021909a8(&self->mdl0, data_ov015_02212e14, data_ov015_02212e15);
-    self->unk_50c = FLD(s16, func_0206fef8(self->unk_498), 0x10);
-    func_ov000_0218ffdc(&self->mdl1, &self->res1, 0, 1);
+    self->unk_50c = FLD(s16, Tbl_FindEntry_0206fef8(self->unk_498), 0x10);
+    Model0218fe1c_SetRes(&self->mdl1, &self->res1, 0, 1);
     if (self->unk_3a4 != 0) {
-        func_ov000_02190cb0(&self->mdl1, data_ov015_02212db0.name, 0x1000, 0);
-        func_ov000_02191690(&self->mdl1);
-        func_ov000_02191618(&self->mdl1);
-        func_ov000_02191318(&self->mdl1, self->unk_3a4 << 12);
+        Model0218fe1c_SetAnim(&self->mdl1, data_ov015_02212db0.name, 0x1000, 0);
+        Model0218fe1c_PauseAnim(&self->mdl1);
+        Model0218fe1c_ClearLoop(&self->mdl1);
+        Model0218fe1c_SetAnimFrame(&self->mdl1, self->unk_3a4 << 12);
     }
     self->mdl1.boxTest = 0;
     self->mdl1.visible = 1;
@@ -62,11 +62,11 @@ BOOL func_ov015_0220e074(Ov015StageMdl *self) {
     }
     self->slot = cur;
     if (cur >= 0) {
-        func_ov000_02190cb0(&self->mdl0, self->slots[cur].anim, 0x1000, 0);
+        Model0218fe1c_SetAnim(&self->mdl0, self->slots[cur].anim, 0x1000, 0);
         if (self->slots[self->slot].c) {
-            func_ov000_021915a0(&self->mdl0);
+            Model0218fe1c_SetLoop(&self->mdl0);
         } else {
-            func_ov000_02191618(&self->mdl0);
+            Model0218fe1c_ClearLoop(&self->mdl0);
         }
         self->unk_490 = self->slots[self->slot].speed;
     }
@@ -107,11 +107,11 @@ BOOL func_ov015_0220e294(Ov015StageMdl *self) {
         }
     }
     if (sel >= 0 && sel != cur) {
-        func_ov000_02190cb0(&self->mdl0, self->slots[sel].anim, 0x1000, 0);
+        Model0218fe1c_SetAnim(&self->mdl0, self->slots[sel].anim, 0x1000, 0);
         if (self->slots[sel].c) {
-            func_ov000_021915a0(&self->mdl0);
+            Model0218fe1c_SetLoop(&self->mdl0);
         } else {
-            func_ov000_02191618(&self->mdl0);
+            Model0218fe1c_ClearLoop(&self->mdl0);
         }
         self->unk_490 = self->slots[sel].speed;
     }
@@ -119,15 +119,15 @@ BOOL func_ov015_0220e294(Ov015StageMdl *self) {
     found = NULL;
     o = self->unk_520;
     if (o == NULL) {
-        found = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 3, -1);
+        found = (Ov002Obj021f075c *)Ov002Obj_FindChildKind(self, 3, -1);
     } else if (o->done) {
-        found = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 3, o->unk_18);
+        found = (Ov002Obj021f075c *)Ov002Obj_FindChildKind(self, 3, o->unk_18);
     }
     if (found != NULL) {
         if (self->unk_520 != NULL) {
-            func_ov002_021e6360(self->unk_520);
+            Ov002Obj021f075c_RemoveAnims(self->unk_520);
         }
-        func_ov002_021e61b4(found);
+        Ov002Obj021f075c_LoadAnim(found);
         self->unk_520 = found;
     }
     o = self->unk_520;
@@ -136,8 +136,8 @@ BOOL func_ov015_0220e294(Ov015StageMdl *self) {
         MI_Copy36B(&o->jnt.rot, &self->unk_4dc);
         self->unk_500 = self->unk_520->jnt.scale;
     }
-    func_ov000_02190a80(&self->mdl0, self->unk_490);
-    func_ov000_02190a80(&self->mdl1, self->unk_490);
+    Model0218fe1c_UpdateAnim(&self->mdl0, self->unk_490);
+    Model0218fe1c_UpdateAnim(&self->mdl1, self->unk_490);
     return TRUE;
 }
 
@@ -165,10 +165,10 @@ void func_ov015_0220e434(Ov015StageMdl *self) {
         self->mdl0.scale.y = y;
         self->mdl0.scale.z = z;
     }
-    func_ov000_021903b4(&self->mdl0);
+    Model021903b4_Draw(&self->mdl0);
     self->mdl1.trans = self->unk_4c0;
     MI_Copy36B(&self->unk_49c, &self->mdl1.rot);
-    func_ov000_021903b4(&self->mdl1);
+    Model021903b4_Draw(&self->mdl1);
     NNS_G3dGeFlushBuffer();
 }
 
@@ -176,7 +176,7 @@ BOOL func_ov015_0220e55c(Ov015StageMdl *self) {
     return self->unk_0c >= 3;
 }
 
-void func_ov015_0220e570(Ov015StageMdl *self, const char *anim, s32 endTime, u8 c, s16 speed) {
+void Ov015StageMdl_QueueAnim(Ov015StageMdl *self, const char *anim, s32 endTime, u8 c, s16 speed) {
     s32 i;
     for (i = 0; i < 8; i++) {
         if (self->slots[i].anim == NULL) {
@@ -196,7 +196,7 @@ void *Ov015FishState_Dtor(Ov015FishState *self) {
 
 void *func_ov015_0220e5c8(Ov002Obj *self) {
     SET_VT(self, data_ov015_02212f64);
-    func_ov002_021e4d4c(self);
+    Ov002Obj_Detach(self);
     Heap_Free(self);
     return self;
 }
@@ -222,7 +222,7 @@ BOOL func_ov015_0220e60c(void) {
 
 void *func_ov015_0220e614(Ov002Obj *self) {
     SET_VT(self, data_ov015_02212f64);
-    func_ov002_021e4d4c(self);
+    Ov002Obj_Detach(self);
     return self;
 }
 

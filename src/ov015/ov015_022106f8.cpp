@@ -27,7 +27,7 @@ BOOL func_ov015_022106f8(Ov015Msg *self) {
         }
         self->timer = 0;
         self->step++;
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
     }
     case 3: {
         s32 y = FX_Mul(FX_SinCosTable_[((self->timer * 0x3fff / 40) >> 4) * 2], 0x6000) - 0x46000;
@@ -48,7 +48,7 @@ BOOL func_ov015_022106f8(Ov015Msg *self) {
 
 
 s32 func_0204c2f4(void *p, s32 n, void *src);
-void func_ov000_0215bb14(void *a, void *b);
+void Obj0215bb14_SetText(void *a, void *b);
 void func_ov015_0220866c(Ov015UiText *self, void *msg);
 
 BOOL func_ov015_02210860(Ov015Msg *self) {
@@ -65,7 +65,7 @@ BOOL func_ov015_02210860(Ov015Msg *self) {
             if (self->label != NULL && self->pages[n] != NULL) {
                 Lo021cadcc *o;
                 func_0204c2f4(self->text, 0x80, self->pages[n]);
-                func_ov000_0215bb14(self->label, self->text);
+                Obj0215bb14_SetText(self->label, self->text);
                 self->label->vfunc_70();
                 FLD(u32, self->label->unk_84, 0x4) |= 0x4000000;
                 o = self->label;

@@ -2,14 +2,14 @@
 
 extern "C" {
 
-s32 func_ov000_0218f110(void *a);
-s32 func_ov000_02191b9c(void *a);
+s32 ResSet_UpdateLoad(void *a);
+s32 Shadow_UpdateLoad(void *a);
 extern const Ov015ShipCfg data_ov015_02212db0;
 extern u8 data_ov015_02212e0d[];
 extern char data_ov015_02212e14[];
 extern char data_ov015_02212e15[];
 s32 func_ov000_021909a8(void *a, const void *b, const void *c);
-// The object record func_0206fef8 returns (Main/Lang/TblEntry.cpp; Main/Res/Stage.cpp reads height).
+// The object record Tbl_FindEntry_0206fef8 returns (Main/Lang/TblEntry.cpp; Main/Res/Stage.cpp reads height).
 typedef struct Ov015ObjInfo {
     u8 unk_00[0x10];
     s16 scale; // 0x10 fx scale of the model
@@ -20,23 +20,23 @@ typedef struct Ov015ObjInfo {
     s16 height; // 0x16
 } Ov015ObjInfo;
 
-Ov015ObjInfo *func_0206fef8(u16 id);
-BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
-void func_ov000_02191618(void *a);
-void func_ov000_02191690(void *a);
-void *func_ov000_02191318(void *a, s32 b);
-void func_0203f364(void *a);
+Ov015ObjInfo *Tbl_FindEntry_0206fef8(u16 id);
+BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
+BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
+void Model0218fe1c_ClearLoop(void *a);
+void Model0218fe1c_PauseAnim(void *a);
+void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
+void HitSphere_Unlink_0203f364(void *a);
 void *Ov015FishState2c_Ctor(Ov015FishState2c *self);
-void func_ov000_02190a80(void *a, s32 b);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
 void func_ov015_02209a50(Ov015Fish *self);
 int func_0203f3d0(void *a);
 extern u32 data_02fe0f04;
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 void func_ov015_02209c90(Ov015Fish *self);
-void func_ov015_0220daf4(Ov015Shadow *a, Ov015Vec *pos, s32 b, s32 c, s32 ang, s32 d);
-BOOL func_ov000_021903b4(void *a);
+void Ov015Shadow_DrawAt(Ov015Shadow *a, Ov015Vec *pos, s32 b, s32 c, s32 ang, s32 d);
+BOOL Model021903b4_Draw(void *a);
 s32 Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);
 extern u8 data_ov015_02212e94[];
 extern u8 data_ov015_02212eb0[];
@@ -49,13 +49,13 @@ static inline BOOL Ov015_IsIdle567(Ov015Fish *self) {
 BOOL func_ov015_0220947c(Ov015Fish *self) {
     BOOL r = TRUE;
     if (self->res.unk_00 >= 0) {
-        if (func_ov000_0218f110(&self->res) == 0) r = FALSE;
+        if (ResSet_UpdateLoad(&self->res) == 0) r = FALSE;
     }
     if (self->res2.unk_00 >= 0) {
-        if (func_ov000_0218f110(&self->res2) == 0) r = FALSE;
+        if (ResSet_UpdateLoad(&self->res2) == 0) r = FALSE;
     }
     if (!Ov015_IsIdle567(self)) {
-        if (func_ov000_02191b9c(&self->shadow) == 0) r = FALSE;
+        if (Shadow_UpdateLoad(&self->shadow) == 0) r = FALSE;
     }
     return r;
 }
@@ -64,8 +64,8 @@ BOOL func_ov015_02209500(Ov015Fish *self) {
     u8 *p;
     u32 n;
     VObj *m;
-    func_ov000_0218ffdc(&self->model, &self->res, 0, 1);
-    func_ov000_02190cb0(&self->model, data_ov015_02212e0d, 0x1000, 0);
+    Model0218fe1c_SetRes(&self->model, &self->res, 0, 1);
+    Model0218fe1c_SetAnim(&self->model, data_ov015_02212e0d, 0x1000, 0);
     p = NULL;
     if (self->res.evHandle != NULL) p = FLD(u8 *, self->res.evHandle, 0) + 8;
     self->model.evTable = p;
@@ -73,32 +73,32 @@ BOOL func_ov015_02209500(Ov015Fish *self) {
         self->model.evData = p + 4 + FLD(u16, p, 0) * 12;
     }
     self->model.flags.boxTest = 0;
-    func_ov000_021915a0(&self->model);
+    Model0218fe1c_SetLoop(&self->model);
     self->model.flags.visible = 1;
     NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->model.renderObj), func_ov015_022090fc);
     self->model.flags.clearInit = 0;
     self->model.flags.flushVP = 1;
     self->model.renderObj.ptrUser = &self->rot2[0].x;
     self->unk_3c = func_ov000_021909a8(&self->model, data_ov015_02212e14, data_ov015_02212e15);
-    func_ov000_0218ffdc(&self->model2, &self->res2, 0, 1);
-    n = func_0206fef8(self->id)->unk_12_5;
+    Model0218fe1c_SetRes(&self->model2, &self->res2, 0, 1);
+    n = Tbl_FindEntry_0206fef8(self->id)->unk_12_5;
     if (n != 0) {
-        func_ov000_02190cb0(&self->model2, data_ov015_02212db0.name, 0x1000, 0);
-        func_ov000_02191618(&self->model2);
-        func_ov000_02191690(&self->model2);
-        func_ov000_02191318(&self->model2, n << 12);
+        Model0218fe1c_SetAnim(&self->model2, data_ov015_02212db0.name, 0x1000, 0);
+        Model0218fe1c_ClearLoop(&self->model2);
+        Model0218fe1c_PauseAnim(&self->model2);
+        Model0218fe1c_SetAnimFrame(&self->model2, n << 12);
     }
     self->model2.flags.boxTest = 0;
     self->model2.flags.visible = 1;
     self->shadow.prev = self->shadow.type;
     self->shadow.type = 3;
     self->pos.z = (0x800 - 0x37800) - FX_Mul(FX_Div(data_ov015_0221332c.unk_00, 0x3e8000), 0x73000);
-    { s32 v = func_0206fef8(self->info.id)->scale; self->scale.x = v; self->scale.y = v; self->scale.z = v; }
-    if (self->hit.active != 0) func_0203f364(&self->hit);
+    { s32 v = Tbl_FindEntry_0206fef8(self->info.id)->scale; self->scale.x = v; self->scale.y = v; self->scale.z = v; }
+    if (self->hit.active != 0) HitSphere_Unlink_0203f364(&self->hit);
     self->hit.group = 0x100;
     self->hit.mask = 0x100;
-    self->unk_94 = func_0206fef8(self->info.id)->height << 4;
-    self->unk_98 = func_0206fef8(self->info.id)->unk_14 << 4;
+    self->unk_94 = Tbl_FindEntry_0206fef8(self->info.id)->height << 4;
+    self->unk_98 = Tbl_FindEntry_0206fef8(self->info.id)->unk_14 << 4;
     m = (VObj *)Heap_Alloc(0x2c);
     if (m != NULL) m = (VObj *)Ov015FishState2c_Ctor((Ov015FishState2c *)m);
     self->state = m;
@@ -108,8 +108,8 @@ BOOL func_ov015_02209500(Ov015Fish *self) {
 }
 
 BOOL func_ov015_02209790(Ov015Fish *self, BOOL b) {
-    func_ov000_02190a80(&self->model, self->animSpeed);
-    func_ov000_02190a80(&self->model2, 0);
+    Model0218fe1c_UpdateAnim(&self->model, self->animSpeed);
+    Model0218fe1c_UpdateAnim(&self->model2, 0);
     if (!b) {
         return TRUE;
     }
@@ -182,7 +182,7 @@ void func_ov015_02209a50(Ov015Fish *self) {
         self->unk_8c = 0x666;
         self->shadowAlpha = 10;
     }
-    f = FX_Mul(self->unk_8c, func_0206fef8(self->info.id)->scale);
+    f = FX_Mul(self->unk_8c, Tbl_FindEntry_0206fef8(self->info.id)->scale);
     self->unk_8c = f;
     self->radius = 0x28000;
     self->unk_84 = 0x1000;
@@ -203,7 +203,7 @@ static inline void Ov015_UpdateMove(Ov015Fish *self) {
     v = self->pos;
     v.y = 0;
     self->shadow.unk_10 = -0x1666;
-    func_ov015_0220daf4(&self->shadow, &v, self->radius, self->unk_88, ang, 0);
+    Ov015Shadow_DrawAt(&self->shadow, &v, self->radius, self->unk_88, ang, 0);
     self->shadow.alpha = self->shadowAlpha;
 }
 void func_ov015_02209b8c(Ov015Fish *self) {
@@ -262,10 +262,10 @@ void func_ov015_02209c90(Ov015Fish *self) {
     self->model.scale.x = sx;
     self->model.scale.y = sy;
     self->model.scale.z = sz;
-    func_ov000_021903b4(&self->model);
+    Model021903b4_Draw(&self->model);
     self->model2.trans = *(Ov015Vec *)&self->pos2;
     MI_Copy36B(&self->rot2[0].x, &self->model2.rot[0].x);
-    func_ov000_021903b4(&self->model2);
+    Model021903b4_Draw(&self->model2);
     NNS_G3dGeFlushBuffer();
 }
 
@@ -286,7 +286,7 @@ BOOL func_ov015_0220a028(Ov015Fish *self, void *a) {
     return r;
 }
 
-void func_ov015_0220a058(Ov015Fish *self, void *out) {
+void Ov015Fish_GetFrontPos(Ov015Fish *self, void *out) {
     s32 z = FX_Mul(self->scale.x, 0xa000);
     Ov015Vec v;
     v.x = 0;
@@ -337,9 +337,9 @@ BOOL Ov015FishState2c_Enter(Ov015FishState2c *self, Ov015Fish *p) {
     self->unk_0c = p->info.unk_1c;
     p->unk_a8 = 0;
     p->unk_bc = 1;
-    func_ov000_02190cb0(&p->model, data_ov015_02212e0d, 0x19a, 0);
+    Model0218fe1c_SetAnim(&p->model, data_ov015_02212e0d, 0x19a, 0);
     p->animSpeed = 0x800;
-    func_ov000_021915a0(&p->model);
+    Model0218fe1c_SetLoop(&p->model);
     self->step = 0;
     return TRUE;
 }

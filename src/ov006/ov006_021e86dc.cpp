@@ -45,9 +45,9 @@ void Ov006Racer_UpdateSpeed(Ov006Racer *self) {
             if (self->trig & 2) {
                 drain = 1000 - self->prm->unk_07 * 8;
                 if ((self->unk_19c_0 & 1) && data_ov006_021ec884->unk13D == 0) {
-                    func_02049f44(data_02097e4c, 0x32, &self->pos, 0);
+                    SndMgr_PlayAt(data_02097e4c, 0x32, &self->pos, 0);
                     if (self->unk_1d4 != 0) {
-                        EffectObj *old = func_020657b0(data_0214a420, self->unk_1d4);
+                        EffectObj *old = Effect_Find_020657b0(data_0214a420, self->unk_1d4);
                         if (old != NULL) {
                             old->state = 4;
                             self->unk_1d4 = 0;
@@ -62,7 +62,7 @@ void Ov006Racer_UpdateSpeed(Ov006Racer *self) {
                     }
                 }
             } else if (self->unk_1d4 == 0 && (self->unk_19c_0 & 1) && data_ov006_021ec884->unk13D == 0) {
-                e = func_02065f88(0x4b0, &self->pos);
+                e = Effect_SpawnId(0x4b0, &self->pos);
                 if (e != NULL) {
                     self->unk_1d4 = e->id;
                     e->SetScaleAll(0x1ccd);
@@ -130,7 +130,7 @@ void Ov006Racer_UpdateSpeed(Ov006Racer *self) {
                         e->unk_29 = 1;
                     }
                     if (self->idx == data_ov006_021ec884->unk5) {
-                        func_02049a48(data_02097e4c, 0x51, -1, -1, -1);
+                        SndMgr_PlayVolume(data_02097e4c, 0x51, -1, -1, -1);
                     }
                 }
                 if (++self->unk_227 > 30) {

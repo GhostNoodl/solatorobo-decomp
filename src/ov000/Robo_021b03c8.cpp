@@ -8,11 +8,11 @@ extern void *data_02097e4c;
 extern VecFx32 data_ov000_021ca000;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u16 ang);
-void *func_ov000_0219be1c(s32 kind, VecFx32 *pos, void *rot, u16 a, u16 b);
+void *Actor_SpawnKind(s32 kind, VecFx32 *pos, void *rot, u16 a, u16 b);
 void func_ov000_0218996c(u8 a, u8 b);
-void *func_0204a028(void *a, s32 b, void *c, s32 d);
-void *func_02049f44(void *a, s32 b, void *c, s32 d);
-BOOL func_ov000_02198360(void *s, s32 a, s32 b);
+void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
+void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
+BOOL History_SetState(void *s, s32 a, s32 b);
 void func_ov000_021b2b08(Robo021ca458 *self);
 
 static inline Actor *FindActor021b03c8(u16 id) {
@@ -49,13 +49,13 @@ void func_ov000_021b03c8(Robo021ca458 *self) {
             sub = a->targetObj;
         }
         if (sub == NULL || sub->unk_1e == 0) {
-            func_0204a028(data_02097e4c, 0x48, &self->pos, -5);
+            SndMgr_PlayAtPitch(data_02097e4c, 0x48, &self->pos, -5);
             Next021b03c8(self);
             return;
         }
         func_01ffc9fc(&v, &data_ov000_021ca000, self->rot_y);
         VEC_Add(&v, (VecFx32 *)((u8 *)self + 0x70), &v);
-        o = func_ov000_0219be1c(0x4800, &v, (u8 *)self + 0x7c, self->id, 0xffff);
+        o = Actor_SpawnKind(0x4800, &v, (u8 *)self + 0x7c, self->id, 0xffff);
         if (o == NULL) {
             return;
         }
@@ -65,7 +65,7 @@ void func_ov000_021b03c8(Robo021ca458 *self) {
         }
         sub->unk_1e--;
         func_ov000_0218996c(3, 6);
-        func_02049f44(data_02097e4c, 0x66, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x66, &self->pos, 0);
         Next021b03c8(self);
         break;
     case 1:
@@ -76,7 +76,7 @@ void func_ov000_021b03c8(Robo021ca458 *self) {
             if (self->unk_b36 != 0) {
                 self->fsm->st = 0;
             } else {
-                func_ov000_02198360(self->fsm, 1, 0);
+                History_SetState(self->fsm, 1, 0);
             }
         }
         func_ov000_021b2b08(self);

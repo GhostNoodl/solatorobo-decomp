@@ -4,7 +4,7 @@ extern "C" {
 
 void *Heap_AllocArray(u32 size);
 
-void func_ov002_021e4a78(Ov002StrTable *self, u8 *src) {
+void Ov002StrTable_Load(Ov002StrTable *self, u8 *src) {
     u8 *p;
     u16 i;
     self->src = NULL;

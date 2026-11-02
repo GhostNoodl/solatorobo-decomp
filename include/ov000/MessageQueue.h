@@ -48,15 +48,15 @@ struct Lo021cb894;
 struct Model;
 
 // 0x1c bytes, ListBuffer021cb940::unk_68 (init func_ov000_0216b474, release func_ov000_0216b490): a 2D model
-// that slides in while something keeps asking for it each frame (func_ov000_0216b508, from the robot's
+// that slides in while something keeps asking for it each frame (Lo0216b474_Ask, from the robot's
 // update) and slides out once it stops. func_ov000_0216b550 updates it, func_ov000_0216b880 places it.
 struct Lo0216b474 {
     union {
         u32 flags;
         struct {
             u32 opening : 1; // sliding in (else out)
-            u32 want : 1; // set by func_ov000_0216b508; cleared when the field is busy
-            u32 asked : 1; // set by each func_ov000_0216b508 call; want is dropped after a frame without one
+            u32 want : 1; // set by Lo0216b474_Ask; cleared when the field is busy
+            u32 asked : 1; // set by each Lo0216b474_Ask call; want is dropped after a frame without one
             u32 part22 : 1; // show model part 0x22 (else 0x23)
             u32 unk_00_4 : 28;
         };
@@ -68,8 +68,8 @@ struct Lo0216b474 {
     s32 ratio; // 0x18 fx32 slide position, 0..0x1000
 };
 
-// Vtable data_ov000_021cb940 (0x80 bytes; base vtable data_ov000_021cb6d0, init func_ov000_0216faac,
-// dtor func_ov000_0216fb14): the field's sub-object holder, data_ov000_021ccd30's 0x11c buffer, made by
+// Vtable data_ov000_021cb940 (0x80 bytes; base vtable data_ov000_021cb6d0, init ListBuffer021cb940_Init,
+// dtor ListBuffer021cb940_Release): the field's sub-object holder, data_ov000_021ccd30's 0x11c buffer, made by
 // func_ov000_02171478 / func_ov000_021854d4. func_ov000_02170a58 updates the object state selects (each
 // is deleted once it reports done) and draws the always-present ones; func_ov000_02171270 draws.
 class ListBuffer021cb940 : public ListBuffer {

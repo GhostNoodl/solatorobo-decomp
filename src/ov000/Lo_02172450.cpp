@@ -13,7 +13,7 @@ extern u8 data_ov000_021cb940[];
 extern u8 data_ov000_021cb6d0[];
 void func_ov000_0216f23c(void *p, s32 a);
 BOOL func_ov000_02180900(void *p);
-void func_ov000_0216fb14(void *p);
+void ListBuffer021cb940_Release(void *p);
 
 typedef struct { u32 lo : 4; } LoNib;
 

@@ -33,7 +33,7 @@ struct Ov009PosMsg {
 };
 
 extern void HitMesh_Link(void *mesh);
-extern void func_0203f920(void *mesh);
+extern void HitMesh_Unlink_0203f920(void *mesh);
 
 struct Ov009Bit84 {
     u16 b0 : 1;
@@ -63,7 +63,7 @@ void Ov009ActVt_02217d5c_RunState(Ov009ActVt_02217d5c *self) {
             }
         } else {
             if (FLD(Ov009Bit84, self->hitMesh, 0x84).b0) {
-                func_0203f920(self->hitMesh);
+                HitMesh_Unlink_0203f920(self->hitMesh);
             }
         }
     }

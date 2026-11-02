@@ -11,9 +11,9 @@ extern const char *data_0208cc88;
 extern const char *data_0208cc94;
 void func_02041c5c(void *m, void *fn);
 void func_02041c20(void *m, s32 a, void *b);
-BOOL func_ov000_02152e5c(void *self);
+BOOL Obj02152e5c_LoadModel(void *self);
 void func_ov000_0215ec44(UiPanel *self);
-void func_ov000_0215e8b0(UiPanel *self);
+void Obj0215e8b0_LoadModel(UiPanel *self);
 void *func_ov000_021c77bc(u8 *self, u16 *cmd, void *arr, u16 *count);
 void *func_ov000_021c782c(u8 *self, void *req, void *buf, u16 *count);
 
@@ -58,10 +58,10 @@ void func_ov000_021c3d20(LoBase021ccb54_021ccbe0 *self) {
         self->unk_b8 = 0x20000;
     }
     self->unk_a0 = self->unk_94;
-    if (func_ov000_02152e5c(self)) {
-        func_02041d9c(self->model, 0, 2);
-        func_02041d9c(self->model, 0, 4);
-        func_02041d9c(self->model, 0, 6);
+    if (Obj02152e5c_LoadModel(self)) {
+        TexObj_SelectImage(self->model, 0, 2);
+        TexObj_SelectImage(self->model, 0, 4);
+        TexObj_SelectImage(self->model, 0, 6);
         func_02041c5c(self->model, (void *)func_ov000_021c77bc);
         func_02041c20(self->model, 2, self);
     }
@@ -72,17 +72,17 @@ void func_ov000_021c3d20(LoBase021ccb54_021ccbe0 *self) {
             const char *name;
             name = data_0208cc88;
             arc = data_0208cc94;
-            func_02041218(&m->pltt);
-            func_02041440(m, name, 0);
+            PlttRes_Init_02041218(&m->pltt);
+            TexObj_Init(m, name, 0);
             STD_CopyString(m->name, arc);
         }
         self->unk_84 = m;
-        func_020417e0(self->unk_84, func_02034d88(func_02035d5c(m->name), self->unk_84->unk_04c));
+        TexObj_SetRes(self->unk_84, ResList_FindType2(ResMgr_GetArcList(m->name), self->unk_84->unk_04c));
         self->unk_84->flags |= 2;
-        func_02041d9c(self->unk_84, 0, 6);
+        TexObj_SelectImage(self->unk_84, 0, 6);
         func_02041c20(self->unk_84, 6, self);
         if (self->flags & 0x800000) {
-            func_02041d9c(self->unk_84, 0, 7);
+            TexObj_SelectImage(self->unk_84, 0, 7);
         }
         func_02041c5c(self->unk_84, (void *)func_ov000_021c782c);
     }
@@ -92,7 +92,7 @@ void func_ov000_021c3d20(LoBase021ccb54_021ccbe0 *self) {
             func_ov000_0215ec44(o);
         }
         self->unk_90 = o;
-        func_ov000_0215e8b0(o);
+        Obj0215e8b0_LoadModel(o);
         self->unk_90->unk_10 = self->unk_b0 << 12;
         self->unk_90->model->flags &= ~0x200000;
     }

@@ -25,7 +25,7 @@ extern "C" {
 void func_ov000_0214bc10(void);
 void func_ov000_0214c210(void);
 
-void func_ov000_021b8ecc(Obj021b8ecc *self) {
+void Obj021b8ecc_Release(Obj021b8ecc *self) {
     HEAP_DELETE_VOBJ(self->unk_18);
     HEAP_DELETE_VOBJ(self->unk_1c);
     HEAP_DELETE_VOBJ(self->unk_14);
@@ -70,7 +70,7 @@ extern u8 data_0208ba70[];
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021ca94c[];
 extern void *data_02097e4c;
-void func_0206e900(void *buf, const char *s);
+void LangData_LocalizePath(void *buf, const char *s);
 void func_ov000_0214bb80(void);
 void func_ov000_0214c1ac(void);
 BOOL func_ov000_0214c270(void);
@@ -80,15 +80,15 @@ void *func_02061d54(s32 id);
 void *func_02061df0(u16 id);
 void *func_02061e7c(u16 id);
 void *MsgRes_GetString(void *g, void *id);
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void *func_02034d88(s32 a, void *b);
-BOOL func_ov000_0219bf90(void);
-void func_ov000_021b4774(void);
-BOOL func_02054f10(void *m, s32 a);
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *ResList_FindType2(s32 a, void *b);
+BOOL ActorMgr_FindPlayer(void);
+void Robo021ca458_RestoreHp(void);
+BOOL Model_IsReady(void *m, s32 a);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 void *func_ov000_0214c064(u16 id);
-void func_0204c6bc(void *a, s32 b, void *c, void *fn);
+void Text_ScanTags(void *a, s32 b, void *c, void *fn);
 void func_ov000_0214c668(VObj *o, u16 a);
 BOOL func_ov000_0214c6a0(void *o);
 
@@ -96,7 +96,7 @@ static inline TextWin *NewTextWin_021b9010(void) {
     TextWin *p = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
-        func_0204c7d0(p);
+        TextWin_Init(p);
     }
     return p;
 }
@@ -139,7 +139,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
             p->vfunc_08();
         }
         self->unk_04 = p;
-        func_0206e900(buf, data_ov000_021cc858[0]);
+        LangData_LocalizePath(buf, data_ov000_021cc858[0]);
         LFLD(s32, self->unk_04, 0x44) = 7;
         self->unk_04->vfunc_1c(buf);
         func_ov000_0214bb80();
@@ -198,18 +198,18 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
             const char *nm = data_ov000_021cc858[1];
-            func_02041218(&m->pltt);
-            func_02041440(m, nm, 0);
+            PlttRes_Init_02041218(&m->pltt);
+            TexObj_Init(m, nm, 0);
         }
         self->unk_20 = m;
-        func_020417e0(self->unk_20, func_02034d88(self->unk_04->vfunc_10(), self->unk_20->unk_04c));
+        TexObj_SetRes(self->unk_20, ResList_FindType2(self->unk_04->vfunc_10(), self->unk_20->unk_04c));
         self->unk_20->flags |= 2;
-        func_02041d9c(self->unk_20, 0, 1);
+        TexObj_SelectImage(self->unk_20, 0, 1);
         if (self->mode == 1 || self->mode == 3) {
             self->unk_20->flags |= 2;
-            func_02041d9c(self->unk_20, 0, 0);
-            if (func_ov000_0219bf90()) {
-                func_ov000_021b4774();
+            TexObj_SelectImage(self->unk_20, 0, 0);
+            if (ActorMgr_FindPlayer()) {
+                Robo021ca458_RestoreHp();
             }
         }
         func_ov000_0214bc94();
@@ -219,9 +219,9 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
             o->vfunc_28();
             VOBJ_SET_VTABLE(o, data_ov000_021ca94c);
             VOBJ_SET_VTABLE((u8 *)o + 0x90, data_0208ba70);
-            func_0204c7d0((u8 *)o + 0x90);
+            TextWin_Init((u8 *)o + 0x90);
             VOBJ_SET_VTABLE((u8 *)o + 0x148, data_0208ba70);
-            func_0204c7d0((u8 *)o + 0x148);
+            TextWin_Init((u8 *)o + 0x148);
             o->vfunc_28();
         }
         self->unk_14 = o;
@@ -231,17 +231,17 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         break;
     }
     case 10:
-        if (!func_02054f10(self->unk_20, 0xffff)) {
+        if (!Model_IsReady(self->unk_20, 0xffff)) {
             break;
         }
         self->state = 11;
     case 11:
-        if (!func_02054f10(self->unk_20, 0xffff)) {
+        if (!Model_IsReady(self->unk_20, 0xffff)) {
             break;
         }
         if (self->mode == 0 || self->mode == 2) {
             if (self->timer == 0) {
-                func_02049a48(data_02097e4c, 0x25, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x25, -1, -1, -1);
             }
             if (++self->timer > 0xb4) {
                 self->timer = 0;
@@ -254,7 +254,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
             self->v34 = Ease_021b9010(self->timer - 0x5a, 0x5a000);
         } else {
             if (self->timer == 0) {
-                func_02049a48(data_02097e4c, 0x26, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x26, -1, -1, -1);
             }
             if (++self->timer > 0x78) {
                 self->timer = 0;
@@ -324,15 +324,15 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
             }
             break;
         case 0xf:
-            func_ov000_02153f90(&tb);
+            MsgEntry_Init(&tb);
             tb.vals[0] = 0;
             tb.vals[1] = 0;
             tb.vals[2] = 0;
             tb.vals[3] = 0;
-            func_0204c6bc(func_ov000_0214c064(self->unk_10), 1, &tb, (void *)func_ov000_0214dc20);
+            Text_ScanTags(func_ov000_0214c064(self->unk_10), 1, &tb, (void *)func_ov000_0214dc20);
             func_ov000_0214c668(self->unk_14, tb.vals[3]);
             self->unk_12 = 0x10;
-            func_ov000_02153fd8(&tb);
+            MsgEntry_Release(&tb);
             break;
         case 0x10:
             if (!func_ov000_0214c6a0(o)) {

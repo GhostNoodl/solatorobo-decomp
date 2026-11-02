@@ -28,20 +28,20 @@ extern char data_ov003_021f803c[];
 extern char data_ov003_021f8041[];
 extern char data_ov003_021f8046[];
 extern char data_ov003_021f804b[];
-extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
-extern void func_ov000_021911c8(void *model, s32 v);
-extern BOOL func_ov000_02191120(void *model);
-extern Ov003SwAnim *func_ov000_02190a30(void *model, s32 n);
+extern BOOL Model0218fe1c_SetAnim(void *model, const char *name, s32 a, s32 b);
+extern void Model0218fe1c_SetAnimSpeed(void *model, s32 v);
+extern BOOL Model0218fe1c_IsAnimDone(void *model);
+extern Ov003SwAnim *Model0218fe1c_GetAnimCtrl(void *model, s32 n);
 extern void HitMesh_Link(void *p);
-extern void func_0203f920(void *p);
+extern void HitMesh_Unlink_0203f920(void *p);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern Actor *Target_Get(ActorSub4c *p);
 extern void Actor_SendMsg(Actor *p, u16 id, s32 a, s32 b, s32 c, s32 d);
 extern s32 Ov003CntSelf_CountLiving(ActorSub4c *p);
-extern BOOL func_ov000_02198360(ActorSub40 *w, s32 a, s32 b);
+extern BOOL History_SetState(ActorSub40 *w, s32 a, s32 b);
 extern BOOL Ov003Switch_AreTargetsDone(ActorSub4c *p, s32 a);
-extern void *func_ov000_02191318(void *model, s32 a);
-extern Ov003SwPlayer *func_ov000_0219bf90(void);
+extern void *Model0218fe1c_SetAnimFrame(void *model, s32 a);
+extern Ov003SwPlayer *ActorMgr_FindPlayer(void);
 extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
 extern void func_020627b4(void);
 extern s32 func_0205b1fc(void);
@@ -61,7 +61,7 @@ static inline void Ov003SwSub44_Clear(ActorSub44 *p) {
 }
 
 static inline void Ov003Sw_Anim2(Ov003Switch *self) {
-    Ov003SwAnim *a = func_ov000_02190a30(self->model, 2);
+    Ov003SwAnim *a = Model0218fe1c_GetAnimCtrl(self->model, 2);
     if (a != NULL) {
         a->unk_111_2 = 1;
         a->unk_112 = 0x800;
@@ -79,8 +79,8 @@ static inline void Ov003Sw_Play(Ov003Switch *self, const char *name, s32 slow) {
         if (k != 2) {
             frame = 0x800;
         }
-        func_ov000_02190cb0(self->model, name, speed, 0);
-        func_ov000_021911c8(self->model, frame);
+        Model0218fe1c_SetAnim(self->model, name, speed, 0);
+        Model0218fe1c_SetAnimSpeed(self->model, frame);
         Ov003Sw_Anim2(self);
     }
 }
@@ -100,7 +100,7 @@ static inline void Ov003Sw_Next(Ov003Switch *self) {
 static inline void Ov003Sw_Sound(Ov003Switch *self) {
     if (self->param->unk_01 == 3) {
         func_ov000_0218996c(7, 0x14);
-        func_02049f44(data_02097e4c, 0x47, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x47, &self->pos, 0);
     }
 }
 
@@ -145,7 +145,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
             break;
         }
         if (snd != 0xffff) {
-            func_02049f44(data_02097e4c, snd, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, snd, &self->pos, 0);
         }
         break;
     case 4:
@@ -174,7 +174,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
             break;
         }
         if (snd != 0xffff) {
-            func_02049f44(data_02097e4c, snd, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, snd, &self->pos, 0);
         }
         break;
     case 2:
@@ -206,8 +206,8 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
         if (Ov003Switch_AreTargetsDone(self->targetObj, res)) {
             if (self->unk_18 == 3) {
                 next = 10;
-                func_ov000_02190cb0(self->model, data_ov003_021f8046, 0x1000, 0);
-                func_ov000_02191318(self->model, -1);
+                Model0218fe1c_SetAnim(self->model, data_ov003_021f8046, 0x1000, 0);
+                Model0218fe1c_SetAnimFrame(self->model, -1);
             }
         } else {
             if (self->unk_18 != 3) {
@@ -222,7 +222,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
         if (self->unk_1c != 0) {
             dist = self->unk_1c << 4;
         }
-        pl = func_ov000_0219bf90();
+        pl = ActorMgr_FindPlayer();
         if (pl != NULL) {
             BOOL neg = FALSE;
             if (dist < 0) {
@@ -263,7 +263,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
             break;
         }
         if (snd != 0xffff) {
-            func_02049f44(data_02097e4c, snd, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, snd, &self->pos, 0);
         }
         break;
     }
@@ -273,19 +273,19 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
             switch (self->unk_18) {
             case 3:
                 Ov003SwFsm_Clear(self->fsm);
-                func_ov000_02198360(self->fsm, 1, 0);
+                History_SetState(self->fsm, 1, 0);
                 self->fsm->st = 40;
                 snd = self->targetObj->unk_06;
                 break;
             case 0:
                 Ov003SwFsm_Clear(self->fsm);
-                func_ov000_02198360(self->fsm, 1, 0);
+                History_SetState(self->fsm, 1, 0);
                 self->fsm->st = 10;
                 snd = self->targetObj->unk_06;
                 break;
             case 2:
                 Ov003SwFsm_Clear(self->fsm);
-                func_ov000_02198360(self->fsm, 1, 0);
+                History_SetState(self->fsm, 1, 0);
                 self->fsm->st = 20;
                 snd = self->targetObj->unk_06;
                 if (self->unk_44 != NULL) {
@@ -294,7 +294,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
                 break;
             }
             if (snd != 0xffff) {
-                func_02049f44(data_02097e4c, snd, &self->pos, 0);
+                SndMgr_PlayAt(data_02097e4c, snd, &self->pos, 0);
             }
             func_ov000_02197dec(self, self->unk_18, -1);
             self->unk_93_1 = (u8)(u16)self->unk_18;
@@ -324,7 +324,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
         func_020627b4();
         func_ov000_02197dec(self, m, m);
         if (func_0205b1fc() == 1) {
-            pl = func_ov000_0219bf90();
+            pl = ActorMgr_FindPlayer();
             if (pl != NULL && pl->unk_b28_0 == 0) {
                 pl->unk_15 = 3;
                 pl->unk_b28_0 = 0;
@@ -351,7 +351,7 @@ void Ov003ActVt_021f7fac_StateIdle(Ov003Switch *self) {
             if (w->timer < 0x14) {
                 return;
             }
-            if (!func_ov000_02191120(self->model)) {
+            if (!Model0218fe1c_IsAnimDone(self->model)) {
                 return;
             }
         }
@@ -372,9 +372,9 @@ void Ov003ActVt_021f7fac_StateIdle(Ov003Switch *self) {
             if (k != 2) {
                 frame = 0x800;
             }
-            func_ov000_02190cb0(self->model, data_ov003_021f8046, speed, 0);
-            func_ov000_02190cb0(self->model, data_ov003_021f804b, 0xcd, 0);
-            func_ov000_021911c8(self->model, frame);
+            Model0218fe1c_SetAnim(self->model, data_ov003_021f8046, speed, 0);
+            Model0218fe1c_SetAnim(self->model, data_ov003_021f804b, 0xcd, 0);
+            Model0218fe1c_SetAnimSpeed(self->model, frame);
             Ov003Sw_Anim2(self);
         }
         Ov003Sw_On(self);
@@ -386,7 +386,7 @@ void Ov003ActVt_021f7fac_StateIdle(Ov003Switch *self) {
             if (w->timer < 0x14) {
                 return;
             }
-            if (!func_ov000_02191120(self->model)) {
+            if (!Model0218fe1c_IsAnimDone(self->model)) {
                 return;
             }
         }
@@ -403,13 +403,13 @@ void Ov003ActVt_021f7fac_StateIdle(Ov003Switch *self) {
             if (w->timer < 0x1e) {
                 return;
             }
-            if (!func_ov000_02191120(self->model)) {
+            if (!Model0218fe1c_IsAnimDone(self->model)) {
                 return;
             }
         }
         self->unk_cc_0 = 0;
         if (self->hitMesh != NULL) {
-            func_0203f920(self->hitMesh);
+            HitMesh_Unlink_0203f920(self->hitMesh);
         }
         if (self->unk_44 != NULL) {
             Ov003SwSub44_Clear(self->unk_44);
@@ -428,7 +428,7 @@ void Ov003ActVt_021f7fac_StateIdle(Ov003Switch *self) {
             if (w->timer < 0x1e) {
                 return;
             }
-            if (!func_ov000_02191120(self->model)) {
+            if (!Model0218fe1c_IsAnimDone(self->model)) {
                 return;
             }
         }

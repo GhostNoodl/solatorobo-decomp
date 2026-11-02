@@ -26,7 +26,7 @@ static inline void Ov003Sl_RotX(VecFx32 *out, const VecFx32 *in, u16 ang) {
 }
 
 static inline EffectObj *Ov003Sl_GetFx(Ov003Beam *self, s32 i) {
-    return func_020657b0(data_0214a420, self->layers[i]);
+    return Effect_Find_020657b0(data_0214a420, self->layers[i]);
 }
 
 void Ov003Beam_UpdateLayer(Ov003Beam *self, s32 i, s32 mode) {
@@ -48,7 +48,7 @@ void Ov003Beam_UpdateLayer(Ov003Beam *self, s32 i, s32 mode) {
         if (def->arc != NULL && ent->mdl != NULL) {
             nfx = Effect3D_Create(def->arc, ent->mdl, 0, &self->pos);
         } else if (ent->fx != -1) {
-            nfx = func_02065f88(ent->fx, &self->pos);
+            nfx = Effect_SpawnId(ent->fx, &self->pos);
         }
         if (nfx != NULL) {
             a.x = self->unk_84.x;

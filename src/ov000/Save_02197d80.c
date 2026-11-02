@@ -31,8 +31,8 @@ typedef struct {
 extern Player021ccd54 *data_ov000_021ccd54;
 extern SaveData *data_0214a424;
 
-u16 func_0206e7ec(u32 a, u32 b);
-void *func_ov000_0219bf90(void);
+u16 LangData_GetIndex(u32 a, u32 b);
+void *ActorMgr_FindPlayer(void);
 BOOL func_ov000_021b4738(void);
 void func_020627a0(u16 kind, u16 id);
 void func_020627dc(u16 sfx);
@@ -54,7 +54,7 @@ static inline void Obj_StoreValue(Obj02197d80 *self, u8 value) {
     s32 row;
 
     if (idx != 0xff) {
-        row = func_0206e7ec(self->unk_ac, self->unk_ad);
+        row = LangData_GetIndex(self->unk_ac, self->unk_ad);
         if (row != 0xffff) {
             value |= SaveData_GetNibble(row, idx) & 8;
             SaveData_SetNibble(row, idx, value);
@@ -62,20 +62,20 @@ static inline void Obj_StoreValue(Obj02197d80 *self, u8 value) {
     }
 }
 
-void func_ov000_02197d80(Obj02197d80 *self) {
+void Obj02197d80_LoadValue(Obj02197d80 *self) {
     u8 idx = self->index;
     s32 row;
 
     if (idx == 0xff) {
         return;
     }
-    row = func_0206e7ec(data_ov000_021ccd54->unk_ca, data_ov000_021ccd54->unk_cb);
+    row = LangData_GetIndex(data_ov000_021ccd54->unk_ca, data_ov000_021ccd54->unk_cb);
     self->value = SaveData_GetNibble(row, idx) & 7;
 }
 
 void func_ov000_02197dec(Obj02197d80 *self, u8 value, s16 sfx) {
     Obj_StoreValue(self, value);
-    if (sfx > 0 && func_ov000_0219bf90() != NULL && !func_ov000_021b4738()) {
+    if (sfx > 0 && ActorMgr_FindPlayer() != NULL && !func_ov000_021b4738()) {
         func_020627a0(self->kind, self->id);
         func_020627dc(sfx);
         {

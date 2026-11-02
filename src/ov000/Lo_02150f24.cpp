@@ -4,13 +4,13 @@
 
 extern "C" {
 
-BOOL func_02054f10(void *a, s32 b);
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+BOOL Model_IsReady(void *a, s32 b);
+extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *data_02097e4c;
 void func_ov000_02152294(UiList *self, s32 a, s32 b, void *cb);
 BOOL func_ov000_02151664(UiList *p, UiListItem *msg);
 
-void func_ov000_02150f24(Lo021ca9c4 *self) {
+void Lo021ca9c4_UpdateActive(Lo021ca9c4 *self) {
     u16 k;
     Lo021caac8 *p;
     if (self->unk_58) {
@@ -35,7 +35,7 @@ void func_ov000_02150f24(Lo021ca9c4 *self) {
     if (!(k & 2)) {
         return;
     }
-    func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     self->vfunc_0c(0);
 }
 

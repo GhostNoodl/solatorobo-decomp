@@ -17,7 +17,7 @@ extern VecFx32 data_ov000_021c9850;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
 void *Heap_Alloc(u32 size);
-void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_ov000_0215c744(VObj *o, s32 a, s32 b);
 
 struct Obj0214ccf8 {
@@ -49,9 +49,9 @@ void func_ov000_0214ccf8(Obj0214ccf8 *self) {
         if (self->unk_214 == 0) {
 
             data_02fe1534.unk_58++;
-            func_02049a48(data_02097e4c, 0x11, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x11, -1, -1, -1);
             VecFx32 v = data_ov000_021c9850;
-            func_02065f88(0x2714, &v);
+            Effect_SpawnId(0x2714, &v);
         }
         self->unk_214 += 0x1000;
         t = FX_Div(self->unk_214, 0x1e000);
@@ -88,7 +88,7 @@ void func_ov000_0214ccf8(Obj0214ccf8 *self) {
         return;
     }
     if (self->unk_20c == 0) {
-        func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x4a, -1, -1, -1);
     }
     self->unk_20c += 0x1000;
     t = FX_Div(self->unk_20c, 0x8000);

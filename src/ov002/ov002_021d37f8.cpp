@@ -61,14 +61,14 @@ void func_ov002_021d37f8(Task021ef91c *self) {
     func_0203cb78(0xc000, 0, 1);
     m = Heap_Alloc(0x160);
     if (m != NULL) {
-        func_02041218((PlttRes *)((u8 *)m + 0x88));
-        func_02041440((Model *)m, NULL, 0);
+        PlttRes_Init_02041218((PlttRes *)((u8 *)m + 0x88));
+        TexObj_Init((Model *)m, NULL, 0);
     }
     self->unk_c4 = (Model *)m;
-    func_020417e0((Model *)m, res);
+    TexObj_SetRes((Model *)m, res);
     self->unk_c4->flags |= 2;
     self->unk_c4->unk_150 = -0x2000;
-    func_02041d9c((Model *)self->unk_c4, 2, 0);
+    TexObj_SelectImage((Model *)self->unk_c4, 2, 0);
 }
 
 }

@@ -136,8 +136,8 @@ void ov006_Unk021dd2d8_Show(void *p, s8 v);
 void func_0203cb78(s32 a, int b, int c);
 void func_0203cc58(s32 a, int b, int c);
 struct EffectObj *ov006_CreateEffect(int type, const VecFx32 *pos);
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_020498ac(void *p, s32 a);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+void SndMgr_RequestBgm(void *p, s32 a);
 void SndMgr_StopSeqNo(void *p, int a, int b);
 void *ActorMgr_GetGroup(void *mgr, u16 id);
 void ActorGroup_BroadcastKind(void *p, u16 a, int b);
@@ -422,7 +422,7 @@ BOOL ov006_Race_Update(ov006_Task021d6ff0 *self) {
                 v.y = 0;
                 v.z = -0x1000;
                 ov006_CreateEffect(0, &v);
-                func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x4a, -1, -1, -1);
                 self->timer = 0;
                 self->subStep++;
             }
@@ -432,7 +432,7 @@ BOOL ov006_Race_Update(ov006_Task021d6ff0 *self) {
             self->timer++;
             t = self->timer;
             if (t < 90 && t % 30 == 0) {
-                func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x4a, -1, -1, -1);
             }
             if (self->timer >= 30 && self->timer >= 60 && self->timer >= 90) {
                 void *o;
@@ -443,8 +443,8 @@ BOOL ov006_Race_Update(ov006_Task021d6ff0 *self) {
                 if (o != NULL) {
                     ActorGroup_BroadcastKind(o, 0xffff, 2);
                 }
-                func_020498ac(data_02097e4c, info->unk8);
-                func_02049a48(data_02097e4c, 0x2c, -1, -1, -1);
+                SndMgr_RequestBgm(data_02097e4c, info->unk8);
+                SndMgr_PlayVolume(data_02097e4c, 0x2c, -1, -1, -1);
                 self->step = 2;
                 self->subStep = 0;
                 self->timer = 0;
@@ -502,7 +502,7 @@ BOOL ov006_Race_Update(ov006_Task021d6ff0 *self) {
                 data_ov006_021ec884->unk13D = 2;
                 ov006_Gauge_Finish(self->gauge, FALSE);
                 SndMgr_StopSeqNo(data_02097e4c, info->unk8, 0);
-                func_020498ac(data_02097e4c, 0x24);
+                SndMgr_RequestBgm(data_02097e4c, 0x24);
                 ov006_UpdateRanks(self);
                 ov006_UpdateMap(self);
                 self->step = 4;
@@ -520,7 +520,7 @@ BOOL ov006_Race_Update(ov006_Task021d6ff0 *self) {
             data_ov006_021ec884->unk13D = 1;
             ov006_Gauge_Finish(self->gauge, TRUE);
             SndMgr_StopSeqNo(data_02097e4c, info->unk8, 0);
-            func_020498ac(data_02097e4c, 0x26);
+            SndMgr_RequestBgm(data_02097e4c, 0x26);
             self->step = 3;
             self->subStep = 0;
             self->timer = 0;
@@ -594,14 +594,14 @@ BOOL ov006_Race_Update(ov006_Task021d6ff0 *self) {
             }
             PlayTime_FromFrames(&total, time);
             total.millis = total.millis / 10 * 10;
-            func_02048bfc(&total, TRUE);
+            PlayTime_Normalize_02048bfc(&total, TRUE);
             PlayTime_Clamp(&total, 0, 99, 59, 990);
             MI_CpuFill8(split, 0, sizeof(split));
             for (i = 0; i < n; i++) {
                 t = &split[i];
                 PlayTime_FromFrames(t, self->splits[i]);
                 split[i].millis = (split[i].millis + 5) / 10 * 10;
-                func_02048bfc(t, TRUE);
+                PlayTime_Normalize_02048bfc(t, TRUE);
                 PlayTime_Clamp(t, 0, 99, 59, 990);
             }
             PlayTime_Clear(&sum);
@@ -621,7 +621,7 @@ BOOL ov006_Race_Update(ov006_Task021d6ff0 *self) {
             }
             for (i = 0; i < n; i++) {
                 hl = i < laps;
-                func_02048bfc(&split[i], TRUE);
+                PlayTime_Normalize_02048bfc(&split[i], TRUE);
                 if (self->result->sub != NULL) {
                     /* Byte arithmetic keeps MWCC from reusing the &split[i] above. */
                     ov006_Unk021df9e8_SetRect(self->result->sub, (PlayTime *)((u8 *)split + i * 8), i, hl);

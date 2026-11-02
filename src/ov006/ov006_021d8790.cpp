@@ -17,7 +17,7 @@ extern "C" {
 extern ov006_Fade021d8790 data_02097d78;
 void func_0203cb78(s32 a, int b, int c);
 void func_0203cc58(s32 a, int b, int c);
-void func_0203cd10(void);
+void GfxSys_UpdateFade(void);
 void ov006_Menu_ShowObj(ov006_Unk021ec888 *p);
 
 static inline BOOL ov006_FadeIdle(void) {
@@ -70,7 +70,7 @@ u8 ov006_Scene_UpdateFade(ov006_Scene021d8790 *self) {
         break;
     }
     if (self->unk6E != 0) {
-        func_0203cd10();
+        GfxSys_UpdateFade();
     }
     return self->unk6E;
 }

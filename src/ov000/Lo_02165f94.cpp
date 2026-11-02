@@ -12,8 +12,8 @@ extern "C" {
 extern u8 NNS_G3dGlb[];
 extern u8 data_02092844[];
 extern u8 data_02092800[];
-void func_ov000_02190758(void *m, void *p, s32 a);
-BOOL func_ov000_021903b4(void *m);
+void Obj02190758_SetRot(void *m, void *p, s32 a);
+BOOL Model021903b4_Draw(void *m);
 
 static inline BOOL LoAnimValid(LoAnimC *p) {
     if (p == NULL || p->state == 0) {
@@ -131,7 +131,7 @@ extern "C" {
 typedef struct { s8 dx; s8 dy; u16 hf : 1; u16 vf : 1; u16 idx : 4; } Dir2_6180;
 extern const Dir2_6180 data_ov000_021c9b40[];
 extern const s8 data_ov000_021c9b41[];
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 
 static inline void SetXY6180(MapOam *o, u16 x, u16 y) {
     o->w0.x = x;
@@ -335,7 +335,7 @@ void func_ov000_02166180(Lo021cb6b0 *self) {
             }
         }
     }
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (pl != NULL && p->sel != NULL) {
         cam = &data_ov000_021ccd54->cam;
         if (!p->sel->f3) {

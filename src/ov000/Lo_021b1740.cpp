@@ -18,8 +18,8 @@ typedef struct {
 extern "C" {
 extern Obj02097e48 *data_02097e48;
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-Robo021ca458 *func_ov000_0219bf90(void);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 void func_02062764(s32 a, s32 b);
 
 
@@ -39,7 +39,7 @@ void func_ov000_021b1740(Robo021ca458 *self, BOOL flag) {
         self->unk_b22_6 = (u16)st;
         self->unk_b22_9 = 1;
         self->fsm->flags |= 0x80000000;
-        func_ov000_02198360(self->fsm, 0x1f, 0);
+        History_SetState(self->fsm, 0x1f, 0);
     }
     func_02062764(0x30, 0x10);
     if (flag) {

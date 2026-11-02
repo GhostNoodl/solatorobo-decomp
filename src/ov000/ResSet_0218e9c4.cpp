@@ -39,10 +39,10 @@ extern const char data_ov000_021cc41d[];
 extern const char data_ov000_021cc424[];
 extern const char data_ov000_021cc42b[];
 
-void func_0203f0b4(void *a);
-BOOL func_0203e63c(void *a);
-void func_0203e58c(void *a);
-void func_02035acc(const char *name, const char *ext, s32 type);
+void Vram_FreeRes(void *a);
+BOOL Vram_IsTransferDone(void *a);
+void Vram_CancelTransfer(void *a);
+void ResMgr_ReleaseArchive(const char *name, const char *ext, s32 type);
 
 }
 
@@ -54,13 +54,13 @@ static inline void ResEntry_Init(ResEntry *entry) {
 
 static inline void ResSet_Release0(ResSet *self) {
     if (self->entries[0].handle != NULL) {
-        func_0203f0b4(self->entries[0].handle->unk_00);
-        if (self->unk_04 != NULL && !func_0203e63c(self->unk_04)) {
-            func_0203e58c(self->unk_04);
+        Vram_FreeRes(self->entries[0].handle->unk_00);
+        if (self->unk_04 != NULL && !Vram_IsTransferDone(self->unk_04)) {
+            Vram_CancelTransfer(self->unk_04);
         }
     }
     if (self->loaded_1 && self->owned_1) {
-        func_02035acc(self->entries[0].name, self->entries[0].ext, 4);
+        ResMgr_ReleaseArchive(self->entries[0].name, self->entries[0].ext, 4);
     }
     self->unk_04 = NULL;
     self->loaded_1 = 0;
@@ -69,7 +69,7 @@ static inline void ResSet_Release0(ResSet *self) {
 
 static inline void ResSet_Release1(ResSet *self) {
     if (self->loaded_2 && self->owned_2) {
-        func_02035acc(self->entries[1].name, self->entries[1].ext, 6);
+        ResMgr_ReleaseArchive(self->entries[1].name, self->entries[1].ext, 6);
     }
     self->loaded_2 = 0;
     self->entries[1].handle = NULL;
@@ -80,7 +80,7 @@ static inline void ResSet_Release3(ResSet *self) {
     if (self->loaded_4 && self->owned_4) {
         STD_CopyString(buf, self->entries[3].ext);
         STD_ConcatenateString(buf, data_ov000_021cc424);
-        func_02035acc(self->entries[3].name, buf, 0);
+        ResMgr_ReleaseArchive(self->entries[3].name, buf, 0);
     }
     self->entries[3].handle = NULL;
     self->loaded_4 = 0;
@@ -88,9 +88,9 @@ static inline void ResSet_Release3(ResSet *self) {
 
 extern "C" {
 
-const char *func_02039674(const char *path);
+const char *Path_SkipDir(const char *path);
 
-ResSet *func_ov000_0218e9c4(ResSet *self) {
+ResSet *ResSet_Init(ResSet *self) {
     self->unk_00 = -1;
     *((u8 *)self + 2) = 0;
     *((u8 *)self + 3) = 0;
@@ -104,48 +104,48 @@ ResSet *func_ov000_0218e9c4(ResSet *self) {
     return self;
 }
 
-ResSet *func_ov000_0218ea20(ResSet *self) {
+ResSet *ResSet_ReleaseAll(ResSet *self) {
     char buf2[0x18];
     char buf3[0x18];
     ResSet_Release0(self);
     if (self->loaded_2 && self->owned_2) {
-        func_02035acc(self->entries[1].name, self->entries[1].ext, 6);
+        ResMgr_ReleaseArchive(self->entries[1].name, self->entries[1].ext, 6);
     }
     self->entries[1].handle = NULL;
     self->loaded_2 = 0;
     if (self->loaded_3 && self->owned_3) {
         STD_CopyString(buf2, self->entries[2].ext);
         STD_ConcatenateString(buf2, data_ov000_021cc41d);
-        func_02035acc(self->entries[2].name, buf2, 0);
+        ResMgr_ReleaseArchive(self->entries[2].name, buf2, 0);
     }
     self->entries[2].handle = NULL;
     self->loaded_3 = 0;
     if (self->loaded_4 && self->owned_4) {
         STD_CopyString(buf3, self->entries[3].ext);
         STD_ConcatenateString(buf3, data_ov000_021cc424);
-        func_02035acc(self->entries[3].name, buf3, 0);
+        ResMgr_ReleaseArchive(self->entries[3].name, buf3, 0);
     }
     self->entries[3].handle = NULL;
     self->loaded_4 = 0;
     if (self->entries[4].handle != NULL) {
-        func_0203f0b4(self->entries[4].handle->unk_00);
-        if (self->unk_08 != NULL && !func_0203e63c(self->unk_08)) {
-            func_0203e58c(self->unk_08);
+        Vram_FreeRes(self->entries[4].handle->unk_00);
+        if (self->unk_08 != NULL && !Vram_IsTransferDone(self->unk_08)) {
+            Vram_CancelTransfer(self->unk_08);
         }
     }
     if (self->loaded_5) {
-        func_02036838(data_02097cdc, self->entries[4].name, 7, 0);
+        ResMgr_ReleaseByName(data_02097cdc, self->entries[4].name, 7, 0);
     }
     self->unk_08 = NULL;
     self->loaded_5 = 0;
     self->entries[4].handle = NULL;
     if (self->owned_0 && self->loaded_0) {
-        func_02036838(data_02097cdc, self->entries[0].name, 7, 0);
+        ResMgr_ReleaseByName(data_02097cdc, self->entries[0].name, 7, 0);
     }
     return self;
 }
 
-void func_ov000_0218ec60(ResSet *self, const char *name, const char *ext, BOOL owned, u8 force) {
+void ResSet_SetName0(ResSet *self, const char *name, const char *ext, BOOL owned, u8 force) {
     if (name != NULL && ext != NULL) {
         if (!force && !STD_CompareString(self->entries[0].name, name) && !STD_CompareString(self->entries[0].ext, ext)) {
             return;
@@ -165,7 +165,7 @@ void func_ov000_0218ec60(ResSet *self, const char *name, const char *ext, BOOL o
     }
 }
 
-void func_ov000_0218edf0(ResSet *self, const char *name, const char *ext, BOOL owned, u8 force) {
+void ResSet_SetName1(ResSet *self, const char *name, const char *ext, BOOL owned, u8 force) {
     if (name != NULL && ext != NULL) {
         if (!force && !STD_CompareString(self->entries[2].name, name) && !STD_CompareString(self->entries[1].ext, ext)) {
             return;
@@ -205,9 +205,9 @@ void func_ov000_0218ef10(ResSet *self, const char *name, const char *ext, BOOL o
     }
 }
 
-void func_ov000_0218f074(ResSet *self, const char *name, BOOL a, BOOL b, u8 c, u8 d) {
+void ResSet_SetFile(ResSet *self, const char *name, BOOL a, BOOL b, u8 c, u8 d) {
     STD_CopyString(self->entries[0].name, name);
-    STD_CopyString(self->entries[0].ext, func_02039674(name));
+    STD_CopyString(self->entries[0].ext, Path_SkipDir(name));
     self->owned_0 = 1;
     if (a) {
         self->owned_1 = 1;
@@ -227,14 +227,14 @@ void func_ov000_0218f074(ResSet *self, const char *name, BOOL a, BOOL b, u8 c, u
 }
 
 extern "C" {
-ResHandle *func_02034ec0(void *arc, const char *name);
+ResHandle *ResList_FindType4(void *arc, const char *name);
 BOOL func_0203ed04(const char *name, void *data);
 void *func_0203ebf8(void);
-ResHandle *func_02034ff8(void *arc, const char *name);
+ResHandle *ResList_FindType6(void *arc, const char *name);
 ResHandle *ResList_FindPath(void *arc, const char *name, const char *ext);
 void func_02039494(void *a);
-void func_020359fc(const char *name, const char *ext, s32 type, s32 d);
-BOOL func_02035bd4(const char *name, const char *ext, s32 type);
+void ResMgr_LoadArchive(const char *name, const char *ext, s32 type, s32 d);
+BOOL ResMgr_IsArchiveLoaded(const char *name, const char *ext, s32 type);
 ResHandle *func_02036188(const char *name, const char *ext);
 ResHandle *func_02036258(const char *name, const char *ext);
 ResHandle *func_02035fe8(const char *name, const char *ext);
@@ -254,7 +254,7 @@ static inline void ResSet_Free(ResHandle *h) {
     }
 }
 
-extern "C" BOOL func_ov000_0218f110(ResSet *self) {
+extern "C" BOOL ResSet_UpdateLoad(ResSet *self) {
     BOOL ret = FALSE;
     BOOL again;
     char buf[0x18];
@@ -267,7 +267,7 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
             break;
         case 10:
             if (self->owned_0) {
-                func_020359d0(self->entries[0].name, 7, 0);
+                ResMgr_Load(self->entries[0].name, 7, 0);
                 self->loaded_0 = true;
                 self->unk_00++;
             } else {
@@ -277,20 +277,20 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
             break;
         case 11: {
             void *arc;
-            if (!func_02035b90(self->entries[0].name, 7)) {
+            if (!ResMgr_IsLoaded(self->entries[0].name, 7)) {
                 break;
             }
-            arc = func_02035d5c(self->entries[0].name);
+            arc = ResMgr_GetArcList(self->entries[0].name);
             self->unk_04 = NULL;
             if (self->owned_1) {
-                if ((self->entries[0].handle = func_02034ec0(arc, self->entries[0].ext)) != NULL) {
+                if ((self->entries[0].handle = ResList_FindType4(arc, self->entries[0].ext)) != NULL) {
                     STD_CopyString(buf, self->entries[0].ext);
                     STD_ConcatenateString(buf, data_ov000_021cc42b);
                     self->unk_04 = ResSet_Bind(self->entries[0].handle, buf);
                 }
             }
             if (self->owned_2) {
-                self->entries[1].handle = func_02034ff8(arc, self->entries[0].ext);
+                self->entries[1].handle = ResList_FindType6(arc, self->entries[0].ext);
             }
             if (self->owned_4) {
                 self->entries[3].handle = ResList_FindPath(arc, self->entries[0].ext, data_ov000_021cc424);
@@ -303,7 +303,7 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
             break;
         }
         case 12:
-            if (func_0203e63c(self->unk_04)) {
+            if (Vram_IsTransferDone(self->unk_04)) {
                 self->unk_04 = NULL;
                 self->unk_00++;
             }
@@ -321,7 +321,7 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
             if (self->entries[0].handle == NULL && self->entries[0].name[0] != 0 && self->entries[0].ext[0] != 0) {
                 self->loaded_1 = 1;
                 if (self->owned_1) {
-                    func_020359fc(self->entries[0].name, self->entries[0].ext, 4, 0);
+                    ResMgr_LoadArchive(self->entries[0].name, self->entries[0].ext, 4, 0);
                 }
                 self->unk_00++;
             } else {
@@ -330,7 +330,7 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
             again = TRUE;
             break;
         case 21:
-            if (self->owned_1 && func_02035bd4(self->entries[0].name, self->entries[0].ext, 4)) {
+            if (self->owned_1 && ResMgr_IsArchiveLoaded(self->entries[0].name, self->entries[0].ext, 4)) {
                 self->entries[0].handle = func_02036188(self->entries[0].name, self->entries[0].ext);
                 self->unk_00++;
             }
@@ -339,7 +339,7 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
             }
             break;
         case 22:
-            if (func_0203e63c(self->unk_04)) {
+            if (Vram_IsTransferDone(self->unk_04)) {
                 self->unk_04 = NULL;
                 self->unk_00++;
             }
@@ -356,7 +356,7 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
             if (self->entries[1].handle == NULL && self->entries[1].name[0] != 0 && self->entries[1].ext[0] != 0) {
                 self->loaded_2 = 1;
                 if (self->owned_2) {
-                    func_020359fc(self->entries[1].name, self->entries[1].ext, 6, 0);
+                    ResMgr_LoadArchive(self->entries[1].name, self->entries[1].ext, 6, 0);
                 }
                 self->unk_00++;
             } else {
@@ -365,7 +365,7 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
             again = TRUE;
             break;
         case 31:
-            if (self->owned_2 && func_02035bd4(self->entries[1].name, self->entries[1].ext, 6)) {
+            if (self->owned_2 && ResMgr_IsArchiveLoaded(self->entries[1].name, self->entries[1].ext, 6)) {
                 self->entries[1].handle = func_02036258(self->entries[1].name, self->entries[1].ext);
                 self->unk_00 = 40;
                 again = TRUE;
@@ -377,7 +377,7 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
                 if (self->owned_3) {
                     STD_CopyString(buf, self->entries[2].ext);
                     STD_ConcatenateString(buf, data_ov000_021cc41d);
-                    func_020359fc(self->entries[2].name, buf, 0, 0);
+                    ResMgr_LoadArchive(self->entries[2].name, buf, 0, 0);
                 }
                 self->unk_00++;
             } else {
@@ -389,7 +389,7 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
             if (self->owned_3) {
                 STD_CopyString(buf, self->entries[2].ext);
                 STD_ConcatenateString(buf, data_ov000_021cc41d);
-                if (func_02035bd4(self->entries[2].name, buf, 0)) {
+                if (ResMgr_IsArchiveLoaded(self->entries[2].name, buf, 0)) {
                     self->entries[2].handle = func_02035fe8(self->entries[2].name, buf);
                     self->unk_00 = 50;
                     again = TRUE;
@@ -402,7 +402,7 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
                 if (self->owned_4) {
                     STD_CopyString(buf, self->entries[3].ext);
                     STD_ConcatenateString(buf, data_ov000_021cc424);
-                    func_020359fc(self->entries[3].name, buf, 0, 0);
+                    ResMgr_LoadArchive(self->entries[3].name, buf, 0, 0);
                 }
                 self->unk_00++;
             } else {
@@ -414,7 +414,7 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
             if (self->owned_4) {
                 STD_CopyString(buf, self->entries[3].ext);
                 STD_ConcatenateString(buf, data_ov000_021cc424);
-                if (func_02035bd4(self->entries[3].name, buf, 0)) {
+                if (ResMgr_IsArchiveLoaded(self->entries[3].name, buf, 0)) {
                     self->entries[3].handle = func_02035fe8(self->entries[3].name, buf);
                     self->unk_00 = 60;
                     again = TRUE;
@@ -426,7 +426,7 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
             if (self->entries[4].handle == NULL && self->entries[4].name[0] != 0 && self->entries[4].ext[0] != 0) {
                 self->loaded_5 = 1;
                 if (self->owned_5) {
-                    func_020359d0(self->entries[4].name, 7, 0);
+                    ResMgr_Load(self->entries[4].name, 7, 0);
                 }
                 self->unk_00++;
             } else {
@@ -435,7 +435,7 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
             again = TRUE;
             break;
         case 61:
-            if (self->owned_5 && func_02035b90(self->entries[4].name, 7)) {
+            if (self->owned_5 && ResMgr_IsLoaded(self->entries[4].name, 7)) {
                 self->entries[4].handle = func_02035e88(self->entries[4].name, self->entries[4].ext);
                 self->unk_00++;
                 again = TRUE;
@@ -445,7 +445,7 @@ extern "C" BOOL func_ov000_0218f110(ResSet *self) {
             }
             break;
         case 62:
-            if (func_0203e63c(self->unk_08)) {
+            if (Vram_IsTransferDone(self->unk_08)) {
                 self->unk_08 = NULL;
                 self->unk_00++;
             }

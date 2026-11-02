@@ -3,11 +3,11 @@
 
 extern "C" {
 
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *data_02097e4c;
 extern u8 data_02fe1534[];
 void func_0206281c(void);
-u32 func_0204045c(void);
+u32 Rand_GetGlobal(void);
 extern const s16 FX_SinCosTable_[];
 typedef BOOL (*LoMsgFn)(void *, void *);
 

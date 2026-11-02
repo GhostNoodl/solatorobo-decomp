@@ -10,8 +10,8 @@ int func_ov002_021e4674(void *a, void *b) {
     int r;
     ia = FIELD(a, 0x38, u16);
     ib = FIELD(b, 0x38, u16);
-    ca = func_0206ede8(ia)[2];
-    cb = func_0206ede8(ib)[2];
+    ca = Param_GetEntry(ia)[2];
+    cb = Param_GetEntry(ib)[2];
     if (ca == cb) {
         if (ia < ib) {
             r = 1;
@@ -36,8 +36,8 @@ int func_ov002_021e46c4(void *a, void *b) {
     int r;
     ia = FIELD(a, 0x38, u16);
     ib = FIELD(b, 0x38, u16);
-    ca = func_0206ede8(ia)[2];
-    cb = func_0206ede8(ib)[2];
+    ca = Param_GetEntry(ia)[2];
+    cb = Param_GetEntry(ib)[2];
     if (ca == cb) {
         if (ia > ib) {
             r = 1;

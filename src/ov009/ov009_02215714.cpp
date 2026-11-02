@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern VecFx32 *func_ov000_0218d2e0(Actor *self);
+extern VecFx32 *Actor_GetTargetSub44(Actor *self);
 extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
 extern void HitSphere_Link(ActorSub48 *p);
 extern void Ov009ActExVt_0221802c_HitNearby(Ov009ActExVt_0221802c *self);
@@ -32,7 +32,7 @@ void func_ov009_02215714(Ov009ActExVt_0221802c *self) {
         self->velY = 0;
         self->friction = 0;
         self->gravity = 0;
-        p = func_ov000_0218d2e0(self);
+        p = Actor_GetTargetSub44(self);
         if (p != NULL) {
             s32 r;
             s32 dx;
@@ -86,9 +86,9 @@ void func_ov009_02215714(Ov009ActExVt_0221802c *self) {
             Actor_Move(self, 0);
         }
         Ov009ActExVt_0221802c_HitNearby(self);
-        func_ov000_021987b8(self->hit, 1, 0, 0);
+        Body_Update(self->hit, 1, 0, 0);
         if ((self->hit->unk_50 & 0x60000000) || ++self->unk_d4 >= 150) {
-            func_ov000_02198360(self->fsm, 0x15, 0);
+            History_SetState(self->fsm, 0x15, 0);
         }
         break;
     }

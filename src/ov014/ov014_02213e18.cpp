@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
+extern void ActorMgr_SendToKindOthers(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
 
@@ -63,7 +63,7 @@ BOOL func_ov014_02213e18(Ov014Watch *self) {
     switch (self->step) {
     case 0: {
         u8 a = 4;
-        func_ov000_0219bd20(0x5c16, 0xffff, 6, 0, 1, &a);
+        ActorMgr_SendToKindOthers(0x5c16, 0xffff, 6, 0, 1, &a);
         self->step++;
         break;
     }
@@ -107,7 +107,7 @@ BOOL func_ov014_02213f74(Ov014Watch *self) {
     switch (self->step) {
     case 0: {
         u8 a = 8;
-        func_ov000_0219bd20(0x5c16, 0xffff, 6, 0, 1, &a);
+        ActorMgr_SendToKindOthers(0x5c16, 0xffff, 6, 0, 1, &a);
         self->step++;
         break;
     }
@@ -173,7 +173,7 @@ BOOL func_ov014_02214138(Ov014Watch *self) {
     switch (self->step) {
     case 0: {
         u8 a = 16;
-        func_ov000_0219bd20(0x5c16, 0xffff, 6, 0, 1, &a);
+        ActorMgr_SendToKindOthers(0x5c16, 0xffff, 6, 0, 1, &a);
         self->step++;
         break;
     }

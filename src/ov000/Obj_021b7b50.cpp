@@ -5,11 +5,11 @@ extern "C" {
 
 BOOL func_ov000_021b7f0c(FieldProp *self);
 void HitMesh_Link(void *p);
-void func_0203f920(void *p);
+void HitMesh_Unlink_0203f920(void *p);
 BOOL func_01ffc23c(VecFx32 *v, VecFx32 *min, VecFx32 *max);
 s32 VEC_Mag(const VecFx32 *v);
 s32 FX_Div(s32 a, s32 b);
-void func_ov000_021b7838(FieldPropModel *p, s32 speed);
+void FieldPropModel_UpdateAnim(FieldPropModel *p, s32 speed);
 
 static inline struct NNSG3dRenderObj_ *FieldProp_GetModel(FieldProp *self, u8 n) {
     if (n == 0) {
@@ -62,7 +62,7 @@ s32 func_ov000_021b7b50(FieldProp *self) {
         if (!func_01ffc23c(&d, &self->viewMin, &self->viewMax)) {
             self->visible = 0;
             if (self->hitMesh != NULL && !self->keepHit) {
-                func_0203f920(self->hitMesh);
+                HitMesh_Unlink_0203f920(self->hitMesh);
             }
             break;
         }
@@ -75,7 +75,7 @@ s32 func_ov000_021b7b50(FieldProp *self) {
             if (mag > 0xc3000) {
                 self->visible = 0;
                 if (self->hitMesh != NULL && !self->keepHit) {
-                    func_0203f920(self->hitMesh);
+                    HitMesh_Unlink_0203f920(self->hitMesh);
                 }
                 break;
             }
@@ -89,7 +89,7 @@ s32 func_ov000_021b7b50(FieldProp *self) {
                 if (mag < 0x3c000) {
                     HitMesh_Link(self->hitMesh);
                 } else {
-                    func_0203f920(self->hitMesh);
+                    HitMesh_Unlink_0203f920(self->hitMesh);
                 }
             }
         }
@@ -107,11 +107,11 @@ s32 func_ov000_021b7b50(FieldProp *self) {
             }
         }
         if (mag < 0xaf000) {
-            func_ov000_021b7838(&self->model, 0x1000);
+            FieldPropModel_UpdateAnim(&self->model, 0x1000);
         }
         break;
     case 10:
-        func_ov000_021b7838(&self->model, 0x1000);
+        FieldPropModel_UpdateAnim(&self->model, 0x1000);
         self->visible = 1;
         break;
     }

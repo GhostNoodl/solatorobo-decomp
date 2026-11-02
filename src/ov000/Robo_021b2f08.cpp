@@ -52,7 +52,7 @@ typedef struct {
 extern "C" {
 s32 func_ov000_02199554(Finder_021b2f08 *f, Query_021b2f08 *q, Part_021b2f08 **list, s32 max);
 s32 func_ov000_02199454(Finder_021b2f08 *f, Query_021b2f08 *q, Part_021b2f08 **list, s32 count);
-Act_021b2f08 *func_ov000_021985c0(Part_021b2f08 *p);
+Act_021b2f08 *Obj021984c8_GetActor(Part_021b2f08 *p);
 BOOL func_ov000_02199c70(void *sub, u16 kind);
 void *Target_Get(void *p);
 
@@ -80,7 +80,7 @@ static inline Act_021b2f08 *Get_021b2f08(Robo021ca458 *self, Part_021b2f08 *p) {
     if (p == NULL) {
         return NULL;
     }
-    a = func_ov000_021985c0(p);
+    a = Obj021984c8_GetActor(p);
     if (a == NULL) {
         return NULL;
     }
@@ -265,7 +265,7 @@ Part_021b2f08 *func_ov000_021b2f08(Robo021ca458 *self, u16 tgt, void *sub, u8 fl
         for (j = 0; j < n2; j++) {
             u16 kk;
             u8 k;
-            a = func_ov000_021985c0(list2[j]);
+            a = Obj021984c8_GetActor(list2[j]);
             kk = (u32)(u16)(a->id & 0xf000) >> 12;
             k = a->sub[0];
             if (kk == 5 || (kk == 4 && k == 0xe && self->unk_b24_1)) {
@@ -301,7 +301,7 @@ Part_021b2f08 *func_ov000_021b2f08(Robo021ca458 *self, u16 tgt, void *sub, u8 fl
         for (m = 0; m < n2; m++) {
             u16 kk;
             u8 k;
-            a = func_ov000_021985c0(list[m]);
+            a = Obj021984c8_GetActor(list[m]);
             kk = (u32)(u16)(a->id & 0xf000) >> 12;
             k = a->sub[0];
             if (kk != 4) {

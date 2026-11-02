@@ -15,7 +15,7 @@ extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb0b8[];
 extern u8 data_ov000_021cb1b0[];
 void Heap_Free(void *ptr);
-void func_02043d20(void *p, s32 a);
+void Gfx3D_SendDL(void *p, s32 a);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
 VObj *Ov000Vt_021cb0b8_DtorDelete(VObj *self) {
@@ -40,7 +40,7 @@ void UiObj_Draw(UiObj *self) {
     s32 id;
     GfxSys *gfx = data_02097d48;
     self->flags &= ~0x200;
-    func_02043d20(gfx->unk_8b0, 0);
+    Gfx3D_SendDL(gfx->unk_8b0, 0);
     scale.x = 0x1000;
     scale.y = 0x1000;
     scale.z = 0x1000;

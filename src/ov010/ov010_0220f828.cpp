@@ -51,8 +51,8 @@ extern "C" {
 extern const VecFx32 data_ov010_0220ec80;
 extern const VecFx32 data_ov010_0220ec74;
 extern void func_ov000_0218a358(void *a, const void *b, Ov010Rot *c, s32 d, s32 e, s32 f, s32 g, s32 h);
-extern void func_ov000_021984f4(void *a, s32 b, s32 c);
-extern void func_ov000_0219864c(void *a, s32 b, s32 c);
+extern void Obj021984c8_UpdatePos(void *a, s32 b, s32 c);
+extern void ActorSub48_UpdatePos(void *a, s32 b, s32 c);
 
 static inline void Ov010_SetSky(void) {
     FieldState *g = data_ov000_021ccd54;
@@ -73,13 +73,13 @@ BOOL Ov010Vt_0220fcac_Init(Ov010Toggle *o) {
 
 void Ov010ActorBase_UpdateSub44(Actor *self) {
     if (self->unk_44 != NULL) {
-        func_ov000_021984f4(self->unk_44, 0, 0);
+        Obj021984c8_UpdatePos(self->unk_44, 0, 0);
     }
 }
 
 void Ov010Actor_UpdateHit(Ov003Actor *self) {
     if (self->hit != NULL) {
-        func_ov000_0219864c(self->hit, 0, 0);
+        ActorSub48_UpdatePos(self->hit, 0, 0);
     }
 }
 
@@ -165,11 +165,11 @@ struct Ov010FxRot {
 extern "C" {
 
 extern void *data_ov000_021ccd68;
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL History_SetState(void *p, s32 a, s32 b);
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern Actor *func_ov000_021985c0(void *hit);
+extern Actor *Obj021984c8_GetActor(void *hit);
 extern s32 func_ov000_0219a5c8(Actor *self, u16 mask, VecFx32 *pos, Ov010FxRot *rot, s32 r, s32 a, VecFx32 **list);
-extern BOOL func_ov000_0219a8bc(void *hit, void *a, void *b, s32 c, u8 d, const VecFx32 *pos, s16 h, s32 i, s32 scale);
+extern BOOL Hit_Apply(void *hit, void *a, void *b, s32 c, u8 d, const VecFx32 *pos, s16 h, s32 i, s32 scale);
 
 static inline s32 Ov010g_FxMul(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
@@ -248,10 +248,10 @@ void Ov010FxObj_Update(Ov010FxObj *o) {
                         if (list[j] == NULL) {
                             continue;
                         }
-                        if (!func_ov000_0219a8bc(list[j], a, a, o->unk_02, o->unk_01, &data_ov010_0220ef8c, -1, o->unk_06, 0x1000)) {
+                        if (!Hit_Apply(list[j], a, a, o->unk_02, o->unk_01, &data_ov010_0220ef8c, -1, o->unk_06, 0x1000)) {
                             continue;
                         }
-                        b = func_ov000_021985c0(list[j]);
+                        b = Obj021984c8_GetActor(list[j]);
                         if (b == NULL) {
                             continue;
                         }
@@ -260,7 +260,7 @@ void Ov010FxObj_Update(Ov010FxObj *o) {
                         }
                         p = *list[j];
                         if (b->unk_93_5) {
-                            EffectObj *e = func_02065f88(0x327, &p);
+                            EffectObj *e = Effect_SpawnId(0x327, &p);
                             e->SetScaleAll(b->radius << 1);
                         } else {
                             EffectObj *e = EffectGroup_Create(m0, m3, &p);
@@ -275,7 +275,7 @@ void Ov010FxObj_Update(Ov010FxObj *o) {
             break;
         }
         case 0x64:
-            func_ov000_02198360(&o->st, 2, 1);
+            History_SetState(&o->st, 2, 1);
             break;
         }
     } else if (o->st.current == 2) {
@@ -295,7 +295,7 @@ void Ov010FxObj_Update(Ov010FxObj *o) {
             }
             break;
         case 0xa: {
-            EffectObj *e = func_02065f88(0x25d, &o->pos);
+            EffectObj *e = Effect_SpawnId(0x25d, &o->pos);
             e->SetPos(&o->pos);
             e->SetScaleXYZ(o->unk_06, o->unk_06, o->unk_0a);
             e->SetRotXYZ(0, o->ry, 0);
@@ -304,7 +304,7 @@ void Ov010FxObj_Update(Ov010FxObj *o) {
             break;
         }
         case 0xb:
-            if (func_020657b0(data_0214a420, o->fx2) == NULL) {
+            if (Effect_Find_020657b0(data_0214a420, o->fx2) == NULL) {
                 o->st.st = 0x14;
             }
             break;
@@ -315,7 +315,7 @@ void Ov010FxObj_Update(Ov010FxObj *o) {
             o->fx0 = 0;
             o->fx1 = 0;
             o->fx2 = 0;
-            func_ov000_02198360(&o->st, 0, 1);
+            History_SetState(&o->st, 0, 1);
             break;
         }
     }
@@ -325,7 +325,7 @@ void Ov010FxObj_Update(Ov010FxObj *o) {
     h[0] = o->fx0;
     h[1] = o->fx1;
     for (i = 0; i < 2; i++) {
-        EffectObj *e = func_020657b0(data_0214a420, h[i]);
+        EffectObj *e = Effect_Find_020657b0(data_0214a420, h[i]);
         if (e != NULL) {
             e->SetPos(&o->pos);
             e->SetScaleXYZ(o->unk_08, o->unk_08, o->unk_0a);
@@ -342,7 +342,7 @@ void Ov010FxObj_Update(Ov010FxObj *o) {
 namespace m_02200670 {
 extern "C" {
 
-extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL History_SetState(void *a, s32 b, s32 c);
 extern void *History_Init(void *p);
 extern void Ov010BeamSet_Release(Ov010BeamSet *p);
 BOOL Ov010Beam_Init(Ov010Beam *o, u16 a, u16 b, u8 c, u16 d);
@@ -385,14 +385,14 @@ BOOL Ov010Beam_Init(Ov010Beam *o, u16 a, u16 b, u8 c, u16 d) {
     o->pos = data_ov010_0220fd90;
     Ov003ActorSub40_ForceState(&o->st, 0);
     o->st.timer = 0;
-    func_ov000_02198360(&o->st, 5, 0);
+    History_SetState(&o->st, 5, 0);
     return TRUE;
 }
 
 extern void *data_02097e4c;
 extern BOOL Ov010FxObj_Init(Ov010FxObj *o, u16 a, u16 b, u8 c, u16 d);
 extern BOOL Ov010Beam_FadeIn(Ov010Beam *o);
-extern void *func_0204a028(void *a, s32 b, void *c, s32 d);
+extern void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
 extern void Ov010FxObj_Update(Ov010FxObj *o);
 
 static inline BOOL Ov010Beam_IsDone(Ov010FxObj *s) {
@@ -424,18 +424,18 @@ void Ov010Beam_Update(Ov010Beam *o) {
             o->fx.fx2 = 0;
         }
         Ov010FxObj_Init(&o->fx, o->unk_04, o->unk_06, o->unk_02, o->unk_08);
-        func_ov000_02198360(&o->st, 1, 0);
+        History_SetState(&o->st, 1, 0);
         break;
     case 1:
         if (Ov010Beam_FadeIn(o)) {
-            func_ov000_02198360(&o->st, 2, 0);
+            History_SetState(&o->st, 2, 0);
         }
         break;
     case 2:
         o->st.timer++;
         if (o->st.timer > 10) {
             o->st.timer = 0;
-            func_ov000_02198360(&o->st, 3, 0);
+            History_SetState(&o->st, 3, 0);
         }
         break;
     case 3:
@@ -448,19 +448,19 @@ void Ov010Beam_Update(Ov010Beam *o) {
                 g->cam.base.shakeTime = 0xf;
                 g->cam.base.shakeLen = 10;
                 g->cam.base.shakeCur = 10;
-                func_0204a028(data_02097e4c, 0x5c, &o->pos, 5);
+                SndMgr_PlayAtPitch(data_02097e4c, 0x5c, &o->pos, 5);
             }
             o->st.st++;
         } else if (Ov010Beam_IsDone(&o->fx)) {
             o->mode = 2;
-            func_ov000_02198360(&o->st, 4, 0);
+            History_SetState(&o->st, 4, 0);
         }
         break;
     case 4:
         if (o->fx.b0 && o->fx.st.current == 1) {
             Ov003ActorSub40_ForceState(&o->fx.st, 2);
         }
-        func_ov000_02198360(&o->st, 5, 0);
+        History_SetState(&o->st, 5, 0);
         break;
     }
     k = 0;
@@ -699,9 +699,9 @@ struct Ov010PlFlags {
 
 extern "C" {
 
-extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL History_SetState(void *a, s32 b, s32 c);
 extern void Ov010Beam_Draw(Ov010Beam *o);
-extern Robo021ca458 *func_ov000_0219bf90(void);
+extern Robo021ca458 *ActorMgr_FindPlayer(void);
 extern s32 Ov003Vec_DistSq(const VecFx32 *a, const VecFx32 *b);
 
 static inline void Ov010Fx_Free(Ov010FxObj *s) {
@@ -908,7 +908,7 @@ void Ov010BeamSet_Update(Ov010BeamSet *self) {
             }
             if (last->beam.on != 0 && last->beam.st.current == 5) {
                 last->beam.st.timer = 0;
-                func_ov000_02198360(&last->beam.st, 0, 0);
+                History_SetState(&last->beam.st, 0, 0);
                 last->beam.pos.x = self->unk_20.x;
                 last->beam.pos.y = self->unk_20.y;
                 last->beam.pos.z = self->unk_20.z;

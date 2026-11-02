@@ -13,7 +13,7 @@ void func_02047f60(SaveBase *s) {
             }
             break;
         case 1:
-            if (func_02046e48(data_02097e44, s->data, SaveBase_DataOffset(s, s->curSlot), s->dataSize) != 1) {
+            if (SysCard_Read(data_02097e44, s->data, SaveBase_DataOffset(s, s->curSlot), s->dataSize) != 1) {
                 s->step = 2;
             }
             break;
@@ -92,7 +92,7 @@ void func_020481c0(SaveBase *s) {
     SaveData *data = s->data;
     switch (s->step) {
         case 0:
-            if (func_02046e48(data_02097e44, data, SaveBase_DataOffset(s, s->curSlot), s->dataSize) != 1) {
+            if (SysCard_Read(data_02097e44, data, SaveBase_DataOffset(s, s->curSlot), s->dataSize) != 1) {
                 s->step = 1;
             }
             break;
@@ -115,7 +115,7 @@ void func_020481c0(SaveBase *s) {
             s->backupIdx = hdr->backupIdx;
             s->backupStart = hdr->backupIdx;
         case 3:
-            if (func_02046e48(data_02097e44, data, SaveBase_BackupOffset(s, s->backupIdx), s->dataSize) != 1) {
+            if (SysCard_Read(data_02097e44, data, SaveBase_BackupOffset(s, s->backupIdx), s->dataSize) != 1) {
                 s->step = 4;
             }
             break;

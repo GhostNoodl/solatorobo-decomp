@@ -31,20 +31,20 @@ void func_ov002_021dd130(Obj021eff10 *self) {
         u16 x = ((u16)e->unk_8a);
         e->unk_8a = x > y ? x - y : 0;
         func_ov000_0215d980(FIELD(((u8 *)self->owner), 0x24, void *), ((u16)e->unk_8a), 0);
-        func_ov002_021d9ed8(e, self->unk_2c, 1);
-        func_02049a48(data_02097e4c, 0x6e, -1, -1, -1);
-        func_02049a48(data_02097e4c, 0x44, -1, -1, -1);
+        Obj021efe6c_RemovePiece(e, self->unk_2c, 1);
+        SndMgr_PlayVolume(data_02097e4c, 0x6e, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x44, -1, -1, -1);
         a[0] = FIELD(((u8 *)self->unk_2c), 0x54, s32);
         a[1] = FIELD(((u8 *)self->unk_2c), 0x58, s32);
         b[0] = FIELD(((u8 *)self->unk_2c), 0x64, s32);
         b[1] = FIELD(((u8 *)self->unk_2c), 0x68, s32);
-        func_ov002_021e3b0c(out, a, b);
+        Ov002_CellToPos(out, a, b);
         out[1] = 0x266;
         func_ov002_021e3874(out, 0x80, 1);
-        func_02065f88(0x6d, (VecFx32 *)out); // out is s32[3]
+        Effect_SpawnId(0x6d, (VecFx32 *)out); // out is s32[3]
         func_ov002_021dd7f0(self, (u8 *)self + 0x24, (u8 *)self + 0x24, 1);
     } else {
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     }
     self->unk_18 = 10;
     self->unk_2c = NULL;
@@ -55,7 +55,7 @@ static inline bool ov002_flag1(void *p) {
 }
 
 
-s32 func_02049bdc(void *a, int b, int c);
+s32 SndMgr_PlayPan(void *a, int b, int c);
 
 void func_ov002_021dd29c(Obj021eff10 *self) {
     switch (self->unk_18) {
@@ -67,7 +67,7 @@ void func_ov002_021dd29c(Obj021eff10 *self) {
         if (self->unk_1c == 0) {
             Obj021efe9c *o = self->unk_30;
             if (o->unk_ac != 8 && o->unk_a4 == 0) {
-                func_ov002_021e3b0c(&o->unk_bc.x, &o->unk_54, &o->unk_64);
+                Ov002_CellToPos(&o->unk_bc.x, &o->unk_54, &o->unk_64);
                 o->unk_bc.y = 0x400;
                 o->unk_b0.x = 0xb33;
                 o->unk_b0.z = 0;
@@ -77,10 +77,10 @@ void func_ov002_021dd29c(Obj021eff10 *self) {
                 o->unk_ac = 8;
             }
             self->unk_18++;
-            func_02049bdc(data_02097e4c, 0x47, -5);
+            SndMgr_PlayPan(data_02097e4c, 0x47, -5);
         } else {
             self->unk_18 += 2;
-            func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         }
         break;
     }
@@ -92,7 +92,7 @@ void func_ov002_021dd29c(Obj021eff10 *self) {
         }
         q = self->owner->board;
         q->unk_08[(u16)(o->unk_48 & 0xfff)]++;
-        func_ov002_021d9ed8(q, o, 1);
+        Obj021efe6c_RemovePiece(q, o, 1);
         func_ov002_021dd7f0(self, (u8 *)self + 0x24, (u8 *)self + 0x24, 1);
         self->unk_18++;
         break;
@@ -123,7 +123,7 @@ void func_ov002_021dd434(Obj021eff10 *self) {
             Obj021eff50 *m;
             for (o = (Obj021efe9c *)w->pieces; o != NULL; o = (Obj021efe9c *)o->next) {
                 if (o->unk_4a == 1 && o->unk_ac != 8 && o->unk_a4 == 0) {
-                    func_ov002_021e3b0c(&o->unk_bc.x, &o->unk_54, &o->unk_64);
+                    Ov002_CellToPos(&o->unk_bc.x, &o->unk_54, &o->unk_64);
                     o->unk_bc.y = 0x400;
                     o->unk_b0.x = 0xb33;
                     o->unk_b0.z = 0;
@@ -134,13 +134,13 @@ void func_ov002_021dd434(Obj021eff10 *self) {
                 }
             }
             m = self->owner;
-            func_ov000_0215bb14(m->unk_20, data_ov002_021efe30);
+            Obj0215bb14_SetText(m->unk_20, data_ov002_021efe30);
             m->unk_20->vfunc_70();
             self->unk_18++;
-            func_02049bdc(data_02097e4c, 0x5c, 5);
+            SndMgr_PlayPan(data_02097e4c, 0x5c, 5);
         } else {
             self->unk_18 += 2;
-            func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         }
         break;
     }
@@ -160,7 +160,7 @@ void func_ov002_021dd434(Obj021eff10 *self) {
             if (o->unk_4a == 1) {
                 Obj021efe6c *q = self->owner->board;
                 (&FIELD(q, 8, u8))[(u16)(o->unk_48 & 0xfff)]++;
-                func_ov002_021d9ed8(q, o, 1);
+                Obj021efe6c_RemovePiece(q, o, 1);
             }
         }
         self->unk_18++;

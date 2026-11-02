@@ -24,26 +24,26 @@ extern const Ov003GmTable data_ov003_021f99c8;
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_020627b4(void);
-extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
-extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
+extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
+extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern void *Target_Get(ActorSub4c *p);
 extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
-extern void *func_ov000_0218e9c4(ActorRes *res);
-extern void func_ov000_0218f074(ActorRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
-extern BOOL func_ov000_0218f110(ActorRes *p);
-extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
-extern void func_ov000_021915a0(void *model);
+extern void *ResSet_Init(ActorRes *res);
+extern void ResSet_SetFile(ActorRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
+extern BOOL ResSet_UpdateLoad(ActorRes *p);
+extern BOOL Model0218fe1c_SetAnim(void *model, const char *name, s32 a, s32 b);
+extern void Model0218fe1c_SetLoop(void *model);
 extern u32 Rand_UpTo(u32 max);
 extern void func_ov003_021ec668(Ov003Gimmick *self);
-extern void func_ov000_0219bd20(u16 id, u16 a, s32 type, s32 b, s32 c, Ov003GmSig *sig);
+extern void ActorMgr_SendToKindOthers(u16 id, u16 a, s32 type, s32 b, s32 c, Ov003GmSig *sig);
 extern void func_ov003_021ec9e0(Ov003Gimmick *self);
 
 static inline void Ov003Gimmick_Finish(Ov003Gimmick *self) {
     func_020627a0(self->kind, self->id);
     func_020627dc(4);
     data_ov000_021ccd54->stageFlags = 1;
-    func_ov000_02198360(self->fsm, 1, 0);
+    History_SetState(self->fsm, 1, 0);
 }
 
 void Ov003ActVt_021f9c48_State21(Ov003Gimmick *self) {
@@ -60,9 +60,9 @@ void Ov003ActVt_021f9c48_State21(Ov003Gimmick *self) {
         v.x = 0x1333;
         v.y = 0x2000;
         v.z = 0x7800;
-        func_ov000_0219b71c(&pos, &v, 0x666, 0x1000, 0, 0x3c);
+        Spawn_ScatterEffect(&pos, &v, 0x666, 0x1000, 0, 0x3c);
         func_ov000_0218996c(8, 8);
-        func_02049a48(data_02097e4c, 0x35, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
     }
     if (t <= 0xf0) {
         return;
@@ -95,7 +95,7 @@ void Ov003ActVt_021f9bb0_State06(Ov003Gimmick *self) {
 Ov003Gimmick *Ov003ActVt_021f99e8_Ctor(Ov003Gimmick *self) {
     ActorEx_Ctor(self);
     *(void **)self = data_ov003_021f99e8;
-    func_ov000_0218e9c4(&self->res);
+    ResSet_Init(&self->res);
     self->unk_ce_u = 1;
     self->unk_cf_u = 3;
     return self;
@@ -103,14 +103,14 @@ Ov003Gimmick *Ov003ActVt_021f99e8_Ctor(Ov003Gimmick *self) {
 
 void Ov003ActVt_021f99e8_Init(Ov003Gimmick *self) {
     Ov003GmTable tbl = data_ov003_021f99c8;
-    func_ov000_0219433c(self);
-    func_ov000_0218f074(&self->res, tbl.res[self->kind - 0x4063], 1, 0, 0, 0);
+    ActorEx_InitActor(self);
+    ResSet_SetFile(&self->res, tbl.res[self->kind - 0x4063], 1, 0, 0, 0);
     self->res.unk_00 = 0;
 }
 
 BOOL Ov003ActVt_021f99e8_IsReady(Ov003Gimmick *self) {
-    BOOL r = func_ov000_021946f8(self);
-    if (self->res.unk_00 >= 0 && !func_ov000_0218f110(&self->res)) {
+    BOOL r = ActorEx_IsReady(self);
+    if (self->res.unk_00 >= 0 && !ResSet_UpdateLoad(&self->res)) {
         r = FALSE;
     }
     return r;
@@ -119,7 +119,7 @@ BOOL Ov003ActVt_021f99e8_IsReady(Ov003Gimmick *self) {
 void Ov003ActVt_021f99e8_Start(Ov003Gimmick *self) {
     s16 k;
     u8 i;
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     k = self->unk_18;
     self->unk_ce_u = k;
     if (!(k & 0xff)) {
@@ -131,8 +131,8 @@ void Ov003ActVt_021f99e8_Start(Ov003Gimmick *self) {
     self->rotOfs.x = 0x4000;
     self->unk_d6 = 0;
     if (self->kind == 0x4064) {
-        func_ov000_02190cb0(self->model, data_ov003_021f99d8, 0x1000, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov003_021f99d8, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
         if (self->unk_1e == 0) {
             self->unk_1e = 0x78;
         }
@@ -154,7 +154,7 @@ void Ov003ActVt_021f99e8_HandleMsg(Ov003Gimmick *self, ActorMsg *msg) {
         self->msg_flags |= 1 << msg->type;
         msg->type = 0;
     }
-    func_ov000_021950e8(self, msg);
+    ActorEx_HandleMsg(self, msg);
 }
 
 void Ov003ActVt_021f99e8_Update(Ov003Gimmick *self) {
@@ -192,7 +192,7 @@ void Ov003ActVt_021f99e8_StateIdle(Ov003Gimmick *self) {
         if (w->timer >= 0x96) {
             EffectObj *e;
             self->fsm->timer = Rand_UpTo(0xf);
-            e = func_02065f88(0x322, &self->pos);
+            e = Effect_SpawnId(0x322, &self->pos);
             e->AddPosXYZ(0, self->centerY, 0);
             e->SetScaleXYZ(self->radius, self->radius, self->radius);
             e->speed = 0x4000;
@@ -208,7 +208,7 @@ void Ov003ActVt_021f99e8_StateIdle(Ov003Gimmick *self) {
         }
     }
     if (!(self->hit->unk_50 & 0x20000000)) {
-        func_ov000_02198360(self->fsm, 4, 0);
+        History_SetState(self->fsm, 4, 0);
     }
 }
 
@@ -261,8 +261,8 @@ void func_ov003_021ec668(Ov003Gimmick *self) {
     case 0: {
         u8 n = 0;
         u8 i;
-        func_ov000_02190cb0(self->model, data_ov003_021f99d8, 0x1000, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov003_021f99d8, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
         for (i = 0; i < 3; i++) {
             if (i != self->unk_1c && self->unk_1c < 3 && self->vals[i] != 0) {
                 n++;
@@ -275,7 +275,7 @@ void func_ov003_021ec668(Ov003Gimmick *self) {
         self->fxOffset.y = 0x1333;
         self->fxOffset.z = 0;
         VEC_Add(&self->pos, &self->fxOffset, &v);
-        fx = (EffectObj *)func_02065f88(0x25e, &v);
+        fx = (EffectObj *)Effect_SpawnId(0x25e, &v);
         if (fx == NULL) {
             return;
         }
@@ -287,12 +287,12 @@ void func_ov003_021ec668(Ov003Gimmick *self) {
         self->fsm->st++;
         sig0.idx = self->unk_1c;
         sig0.on = 1;
-        func_ov000_0219bd20(0x4064, self->id, 0xe, 1, 2, &sig0);
-        func_0204a028(data_02097e4c, 0x54, &self->pos, 3);
+        ActorMgr_SendToKindOthers(0x4064, self->id, 0xe, 1, 2, &sig0);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x54, &self->pos, 3);
         break;
     }
     case 1:
-        fx = func_020657b0(data_0214a420, self->unk_bc);
+        fx = Effect_Find_020657b0(data_0214a420, self->unk_bc);
         if (fx != NULL) {
             s16 lim = self->unk_1e;
             ActorSub40 *w = self->fsm;
@@ -310,7 +310,7 @@ void func_ov003_021ec668(Ov003Gimmick *self) {
             self->fsm->timer = 0;
             sig1.idx = self->unk_1c;
             sig1.on = 0;
-            func_ov000_0219bd20(0x4064, self->id, 0xe, 1, 2, &sig1);
+            ActorMgr_SendToKindOthers(0x4064, self->id, 0xe, 1, 2, &sig1);
             self->unk_d6 = self->unk_1e;
             return;
         }
@@ -318,7 +318,7 @@ void func_ov003_021ec668(Ov003Gimmick *self) {
         r.x = self->rot.x + self->rotOfs.x;
         r.y = self->rot.y + self->rotOfs.y;
         r.z = self->rot.z + self->rotOfs.z;
-        func_ov000_0219aae8(self, self, 0x3c, 0x11, 2, &self->fxOffset, &r, 0x800, 0x5400, 100, 0x1000);
+        Hit_ApplyInArea(self, self, 0x3c, 0x11, 2, &self->fxOffset, &r, 0x800, 0x5400, 100, 0x1000);
         r.x = 0;
         fx->SetRot(&r);
         break;

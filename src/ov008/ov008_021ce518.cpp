@@ -39,15 +39,15 @@ void func_ov008_021cce38(Ov008Caption *p);
 BOOL func_ov008_021cf878(Ov008Menu *self, Ov008Sel *sel);
 void func_0203cb78(s32 a, int b, int c);
 void func_0203cc58(int a, int b, int c);
-void *func_0204c08c(void *a, u16 b, s32 *c, int d);
+void *MsgRes_GetLines(void *a, u16 b, s32 *c, int d);
 void func_ov000_0214c6b4(void *a, s32 b, void *c, int d);
 u16 func_02061d54(s32 a);
 s32 MsgRes_GetString(void *p, s32 id);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_02041cb4(void *a, int b);
-void func_ov000_02190a80(void *a, s32 b);
-BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
-Ov008MdlAnm *func_ov000_02190a30(void *a, s32 b);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
+BOOL Model0218fe1c_SetAnim(void *a, const char *b, s32 c, s32 d);
+Ov008MdlAnm *Model0218fe1c_GetAnimCtrl(void *a, s32 b);
 
 }
 
@@ -122,7 +122,7 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
                     m->menu->flags &= ~4;
                 } else {
                     s32 t;
-                    void *r = func_0204c08c(m->unk_fc->unk_bc, m->unk_110, &t, 1);
+                    void *r = MsgRes_GetLines(m->unk_fc->unk_bc, m->unk_110, &t, 1);
                     func_ov000_0214c6b4(m->talk, t, r, 0x3c);
                     m->menu->flags |= 4;
                     m->unk_110 = 0xffff;
@@ -222,20 +222,20 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
     case 13: {
         const char *s = data_ov008_021d04f4;
         m->unk_114 = 0;
-        func_ov000_02190cb0(m->unk_d0, s, 0, 1);
-        func_ov000_02190a30(m->unk_d0, 0)->unk_112 = 0xb33;
-        func_ov000_02190cb0(m->unk_c8, s, 0, 1);
-        func_ov000_02190a30(m->unk_c8, 0)->unk_112 = 0xb33;
+        Model0218fe1c_SetAnim(m->unk_d0, s, 0, 1);
+        Model0218fe1c_GetAnimCtrl(m->unk_d0, 0)->unk_112 = 0xb33;
+        Model0218fe1c_SetAnim(m->unk_c8, s, 0, 1);
+        Model0218fe1c_GetAnimCtrl(m->unk_c8, 0)->unk_112 = 0xb33;
         m->state = 14;
     }
     case 14:
         switch (++m->unk_114) {
         case 11:
-            func_02049a48(data_02097e4c, 0x35, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
             break;
         case 16:
         case 30:
-            func_02049a48(data_02097e4c, 0x32, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x32, -1, -1, -1);
             break;
         case 20:
             if (m->panel != NULL) {
@@ -265,8 +265,8 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
     }
     func_ov008_021cee4c(m);
     if (m->state >= 5) {
-        func_ov000_02190a80(m->unk_c8, 0x1000);
-        func_ov000_02190a80(m->unk_d0, 0x1000);
+        Model0218fe1c_UpdateAnim(m->unk_c8, 0x1000);
+        Model0218fe1c_UpdateAnim(m->unk_d0, 0x1000);
     }
     if (m->caption != NULL) {
         func_ov008_021cce38(m->caption);

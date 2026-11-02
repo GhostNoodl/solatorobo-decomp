@@ -14,7 +14,7 @@ extern void *data_ov000_021ccd68;
 extern const VecFx32 data_ov003_021f4988;
 extern void *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(void *obj, u16 id);
-extern BOOL func_ov000_0219bf90(void);
+extern BOOL ActorMgr_FindPlayer(void);
 extern BOOL func_ov000_021b4738(void);
 extern u32 Rand_UpTo(u32 v);
 
@@ -98,7 +98,7 @@ BOOL Ov003Actor_CanAct(Ov003Actor *self) {
     if (Ov003Kind_Get(self->fsm) == 0x20 || Ov003Kind_Get(self->fsm) == 0) {
         return FALSE;
     }
-    if (!func_ov000_0219bf90() || func_ov000_021b4738()) {
+    if (!ActorMgr_FindPlayer() || func_ov000_021b4738()) {
         return FALSE;
     }
     return TRUE;
@@ -113,7 +113,7 @@ static inline EffectObj *Ov003_SpawnScatter(const Ov003Vec *base, s32 range, s32
     v.z = 0;
     MTX_MultVec33(&v, (const MtxFx33 *)NNS_G3dGlbGetInvV(), &v); // the inverse view matrix's rotation rows
     VEC_Add(base, &v, &p);
-    return func_02065f88(fx, &p);
+    return Effect_SpawnId(fx, &p);
 }
 
 void Ov003Actor_SpawnScatterFx(Actor *self, s32 range, s32 fx, s32 base, s32 top) {

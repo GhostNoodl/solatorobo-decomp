@@ -31,7 +31,7 @@ typedef struct ov006_Marks {
 
 extern "C" {
 
-BOOL func_02054f10(void *a, int b);
+BOOL Model_IsReady(void *a, int b);
 s32 FX_Div(s32 numer, s32 denom);
 
 void ov006_Unk021e2878_Update(ov006_Unk021e2878 *self) {
@@ -41,7 +41,7 @@ void ov006_Unk021e2878_Update(ov006_Unk021e2878 *self) {
     if (self->unk60 == NULL) {
         return;
     }
-    if (func_02054f10(self->unk60, 0xffff)) {
+    if (Model_IsReady(self->unk60, 0xffff)) {
         self->unk4 = 1;
     }
 }

@@ -5,10 +5,10 @@ extern "C" {
 extern char data_ov009_022172c1[];
 extern char data_ov009_022172af[];
 extern Ov009Path data_ov009_02215fbc[];
-extern void func_ov000_021911c8(Model0218fe1c *m, s16 a);
+extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *m, s16 a);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnClamped(Ov003Actor *self, u16 ang, u16 b, s32 c, s32 d);
-extern void func_0203f2b8(void *p);
+extern void HitSphere_Unlink_0203f2b8(void *p);
 
 static inline Ov003Actor *Ov009_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -45,8 +45,8 @@ void Ov009Multi_StateIdle(Ov009Multi *self) {
             moved = TRUE;
             break;
         }
-        func_ov000_02190cb0(self->model, data_ov009_022172bb, 0x200, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov009_022172bb, 0x200, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st++;
     case 1: {
         Ov003Actor *a;
@@ -85,8 +85,8 @@ void Ov009Multi_StateIdle(Ov009Multi *self) {
             s->timer--;
         }
         if (s->timer <= 0x19) {
-            func_ov000_02190cb0(self->model, data_ov009_022172bb, 0xa4, 0);
-            func_ov000_021915a0(self->model);
+            Model0218fe1c_SetAnim(self->model, data_ov009_022172bb, 0xa4, 0);
+            Model0218fe1c_SetLoop(self->model);
             self->fsm->st++;
         }
         self->rot_y = func_01ffc128(self->unk_492, self->rot_y, self->unk_b0->unk_02 << 1, 1, 0x8000);
@@ -107,8 +107,8 @@ void Ov009Multi_StateIdle(Ov009Multi *self) {
                 self->fsm->timer = 0x2d;
             } else {
                 self->unk_490 = 4;
-                func_ov000_02190cb0(self->model, data_ov009_022172bb, 0x200, 0);
-                func_ov000_021915a0(self->model);
+                Model0218fe1c_SetAnim(self->model, data_ov009_022172bb, 0x200, 0);
+                Model0218fe1c_SetLoop(self->model);
                 self->fsm->st = 1;
             }
         }
@@ -135,9 +135,9 @@ void Ov009Multi_StateHurt(Ov009Multi *self) {
     } else {
         self->unk_490 = 0;
     }
-    func_ov000_02190cb0(self->model, data_ov009_022172c1, 0x1000, 1);
-    func_ov000_021911c8(self->model, 0xe66);
-    func_ov000_02198360(self->fsm, 1, 0);
+    Model0218fe1c_SetAnim(self->model, data_ov009_022172c1, 0x1000, 1);
+    Model0218fe1c_SetAnimSpeed(self->model, 0xe66);
+    History_SetState(self->fsm, 1, 0);
 }
 
 void Ov009Multi_StateKnockBack(Ov009Multi *self) {
@@ -146,9 +146,9 @@ void Ov009Multi_StateKnockBack(Ov009Multi *self) {
     } else {
         self->unk_490 = 0;
     }
-    func_ov000_02190cb0(self->model, data_ov009_022172c1, 0x1000, 1);
-    func_ov000_021911c8(self->model, 0xe66);
-    func_ov000_02198360(self->fsm, 1, 0);
+    Model0218fe1c_SetAnim(self->model, data_ov009_022172c1, 0x1000, 1);
+    Model0218fe1c_SetAnimSpeed(self->model, 0xe66);
+    History_SetState(self->fsm, 1, 0);
 }
 
 void Ov009Multi_StateAttack(Ov009Multi *self) {
@@ -156,7 +156,7 @@ void Ov009Multi_StateAttack(Ov009Multi *self) {
     u16 ang;
     switch (self->fsm->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov009_022172af, 0x200, 1);
+        Model0218fe1c_SetAnim(self->model, data_ov009_022172af, 0x200, 1);
         self->fsm->st++;
         self->speed = 0;
         self->velY = 0;
@@ -176,8 +176,8 @@ void Ov009Multi_StateAttack(Ov009Multi *self) {
         }
         break;
     case 2:
-        if (func_ov000_02191120(self->model)) {
-            func_ov000_02198360(self->fsm, 1, 0);
+        if (Model0218fe1c_IsAnimDone(self->model)) {
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }
@@ -225,7 +225,7 @@ void Ov009ActVt_02217798_Start(Ov003Actor *self) {
     if (self->hit != NULL) {
         ActorSub48 *p = self->hit;
         if (p != NULL) {
-            func_0203f2b8(p);
+            HitSphere_Unlink_0203f2b8(p);
             Heap_Free(p);
         }
         self->hit = NULL;

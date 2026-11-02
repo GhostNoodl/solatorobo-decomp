@@ -34,11 +34,11 @@ u16 func_02041060(int count) {
 }
 
 
-extern u32 func_0203e458(int type, u32 src, u32 dst, u32 size, u32 chunk);
+extern u32 Vram_QueueTransfer(int type, u32 src, u32 dst, u32 size, u32 chunk);
 extern void NNS_G2dLoadPaletteEx(int *fmt, u16 *count, u32 addr, int idx, PlttSub *sub);
 
 
-extern void func_0203e58c(u32 id);
+extern void Vram_CancelTransfer(u32 id);
 extern void GfxSys_FreeSlots(GfxSys *sys, int shift, int count, int idx);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(u32 key);
 
@@ -88,11 +88,11 @@ u32 func_02041080(PlttRes *res, int idx, u32 mask, int load) {
             size = PLTT_SIZE_256;
         }
         if (idx == 0 && mask == 0xffff) {
-            ret = func_0203e458(type, (u32)res->buf, addr, size * count, 0);
+            ret = Vram_QueueTransfer(type, (u32)res->buf, addr, size * count, 0);
         } else {
             for (j = 0; j < count; j++) {
                 if (mask & (1 << j)) {
-                    ret = func_0203e458(type, (u32)res->buf + size * j, addr + size * tbl[j], size, 0);
+                    ret = Vram_QueueTransfer(type, (u32)res->buf + size * j, addr + size * tbl[j], size, 0);
                 }
             }
         }

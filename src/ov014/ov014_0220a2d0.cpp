@@ -102,8 +102,8 @@ void func_ov014_0220a490(Ov014Act_02209280 *self, VecFx32 *vel, u16 a, u16 b, u1
 extern char data_ov014_02217a48[];
 extern char data_ov014_02217a4e[];
 extern u8 data_ov014_02217a54[];
-extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
-extern BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
+extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *a, s16 b);
+extern BOOL Interp_MoveTo(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
 
 void Ov014Act_02209280_StateIdle(Ov014Act_02209280 *self) {
     if (self->fsm->st == 0) {
@@ -115,9 +115,9 @@ void Ov014Act_02209280_StateIdle(Ov014Act_02209280 *self) {
         if (self->unk_ee_0) {
             anim = data_ov014_02217a54;
         }
-        func_ov000_02190cb0(self->model, (char *)anim, 0xcd, 0);
-        func_ov000_021911c8(self->model, 0xc00);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, (char *)anim, 0xcd, 0);
+        Model0218fe1c_SetAnimSpeed(self->model, 0xc00);
+        Model0218fe1c_SetLoop(self->model);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;
@@ -125,11 +125,11 @@ void Ov014Act_02209280_StateIdle(Ov014Act_02209280 *self) {
         self->fsm->st++;
     }
     if (self->unk_1a5 == 0) {
-        func_02049244(&self->pos, 0xcd, &self->pos, (VecFx32 *)((u8 *)self + 0x1a8), 0xcd);
+        Interp_MoveTo(&self->pos, 0xcd, &self->pos, (VecFx32 *)((u8 *)self + 0x1a8), 0xcd);
     } else if (self->hit->unk_9a_4) {
         self->hit->unk_9a_5 = 1;
         if (!(self->hit->unk_50 & 0x20000000)) {
-            func_ov000_02198360(self->fsm, 4, 0);
+            History_SetState(self->fsm, 4, 0);
         }
     }
 }
@@ -142,8 +142,8 @@ extern char data_ov014_02217a60[];
 extern u8 data_ov014_02217a66[];
 extern u8 data_ov014_02217a6c[];
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, s32 c, s32 d);
-extern void func_ov000_02191618(Model0218fe1c *p);
-extern BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
+extern void Model0218fe1c_ClearLoop(Model0218fe1c *p);
+extern BOOL Interp_MoveTo(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
 static inline Ov003Actor *Ov014h_FindById(u16 id) {
@@ -190,12 +190,12 @@ void Ov014Act_02209280_StateMove(Ov014Act_02209280 *self) {
         } else {
             anim = data_ov014_02217a6c;
         }
-        func_ov000_02190cb0(self->model, (char *)anim, 0x2ab, 0);
-        func_ov000_02191618(self->model);
+        Model0218fe1c_SetAnim(self->model, (char *)anim, 0x2ab, 0);
+        Model0218fe1c_ClearLoop(self->model);
         self->unk_1b4 = self->pos;
         c = self->hit->check;
         ang = FX_Atan2(b.x - self->pos.x, b.z - self->pos.z);
-        e = func_02065f88(0x67, &c);
+        e = Effect_SpawnId(0x67, &c);
         e->SetScaleAll(0x2000);
         e->SetRotXYZ(0, ang, 0);
         self->fsm->st = 0xa;
@@ -228,7 +228,7 @@ void Ov014Act_02209280_StateMove(Ov014Act_02209280 *self) {
             near = TRUE;
         }
         if (self->fsm->timer == 0x46) {
-            EffectObj *e = func_02065f88(0x192, &self->pos);
+            EffectObj *e = Effect_SpawnId(0x192, &self->pos);
             e->SetScaleAll(0x3000);
             e->SetRotXYZ(0, FX_Atan2(t.x - self->pos.x, t.z - self->pos.z), 0);
         }
@@ -249,7 +249,7 @@ void Ov014Act_02209280_StateMove(Ov014Act_02209280 *self) {
         break;
     }
     case 0x14:
-        func_ov000_02190cb0(self->model, data_ov014_02217a48, 0xcd, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov014_02217a48, 0xcd, 0);
         self->fsm->st++;
         self->fsm->timer = 0x1e;
     case 0x15: {
@@ -259,7 +259,7 @@ void Ov014Act_02209280_StateMove(Ov014Act_02209280 *self) {
         ActorSub40 *m;
         q = self->unk_b8;
         r = self->pos;
-        func_02049244(&r, 0x19a, &r, &q, 0x800);
+        Interp_MoveTo(&r, 0x19a, &r, &q, 0x800);
         self->pos = r;
         o = Ov014h_FindById(self->target);
         if (o != NULL) {
@@ -278,7 +278,7 @@ void Ov014Act_02209280_StateMove(Ov014Act_02209280 *self) {
         self->fsm->st = 0xffff;
         break;
     }
-    func_ov000_021987b8(self->hit, 1, 0, 0);
+    Body_Update(self->hit, 1, 0, 0);
 }
 
 }

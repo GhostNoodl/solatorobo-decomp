@@ -85,9 +85,9 @@ void func_0206dedc(char *dst, const LangId *id);
 
 void func_0206dfd4(char *dst, const LangId *id);
 
-u8 *func_0206e150(LangBlockA *b);
+u8 *LangBlockA_GetData(LangBlockA *b);
 
-u8 *func_0206e180(LangBlockA *b);
+u8 *LangBlockA_GetData1(LangBlockA *b);
 
 u8 *func_0206e1bc(LangBlockA *b);
 
@@ -95,7 +95,7 @@ u8 *func_0206e200(LangBlockB *b);
 
 u8 *func_0206e230(LangBlockB *b);
 
-u8 *func_0206e264(LangBlockB *b);
+u8 *LangBlockB_GetData(LangBlockB *b);
 
 u8 *func_0206e2a4(LangBlockB *b);
 
@@ -173,7 +173,7 @@ void func_0206e648(LangBlockB *b);
 
 void func_0206e660(LangBlockA *b);
 
-void func_0206e900(char *dst, const char *src);
+void LangData_LocalizePath(char *dst, const char *src);
 void func_0206e6e4(void);
 
 typedef struct LangArc {
@@ -185,7 +185,7 @@ extern LangArc data_0214b0b8;
 void func_02038638(LangArc *arc, const char *name);
 void func_02038520(LangArc *arc);
 void *func_02038dbc(LangArc *arc);
-LangTable **func_02034b98(void *res, const char *name);
+LangTable **ResList_FindType0(void *res, const char *name);
 
 void func_0206e678(void);
 
@@ -195,7 +195,7 @@ void func_0206e6e4(void);
 
 LangGroup *Lang_GetGroup(int i);
 
-u16 func_0206e7ec(int group, int index);
+u16 LangData_GetIndex(int group, int index);
 
 typedef struct OSOwnerInfo {
     u8 language;
@@ -205,7 +205,7 @@ typedef struct OSOwnerInfo {
 void OS_GetOwnerInfo(OSOwnerInfo *info);
 extern char data_0214b105[];
 extern char data_0208cc36[];
-void func_0206e900(char *dst, const char *src);
+void LangData_LocalizePath(char *dst, const char *src);
 
 // The path of the language's base file. It is this TU's .data (only func_0206e858 reads it), and
 // that matters for the schedule: a load from an object the TU defines is not disambiguated from the
@@ -221,30 +221,30 @@ void func_0206e858(void) {
     switch (info.language) {
     case 1:
         data_0214b104.lang = 1;
-        func_0206e900(data_0214b105, data_0208cb88);
+        LangData_LocalizePath(data_0214b105, data_0208cb88);
         break;
     case 2:
         data_0214b104.lang = 2;
-        func_0206e900(data_0214b105, data_0208cb88);
+        LangData_LocalizePath(data_0214b105, data_0208cb88);
         break;
     case 3:
         data_0214b104.lang = 3;
-        func_0206e900(data_0214b105, data_0208cb88);
+        LangData_LocalizePath(data_0214b105, data_0208cb88);
         break;
     case 4:
         data_0214b104.lang = 4;
-        func_0206e900(data_0214b105, data_0208cb88);
+        LangData_LocalizePath(data_0214b105, data_0208cb88);
         break;
     case 5:
         data_0214b104.lang = 5;
-        func_0206e900(data_0214b105, data_0208cb88);
+        LangData_LocalizePath(data_0214b105, data_0208cb88);
         break;
     default:
         data_0214b104.lang = 1;
-        func_0206e900(data_0214b105, data_0208cb88);
+        LangData_LocalizePath(data_0214b105, data_0208cb88);
         break;
     }
-    func_0206e900(data_0214b105, data_0208cb88);
+    LangData_LocalizePath(data_0214b105, data_0208cb88);
 }
 
 u8 LangData_GetLang(void) {
@@ -258,7 +258,7 @@ extern char data_0208cc7b[];
 extern char data_0208cc7f[];
 extern char data_0208cc83[];
 
-void func_0206e900(char *dst, const char *src) {
+void LangData_LocalizePath(char *dst, const char *src) {
     char ext[8];
     char buf[0x20];
     const char *suffix;
@@ -350,8 +350,8 @@ void LangData_CreateRes(void) {
     LangRes *res = LangRes_New();
     data_0214b128.res = res;
     res->type = 0;
-    func_0206e900(arcName, data_0208ccb0);
-    func_0206e900(name, data_0208cca8);
+    LangData_LocalizePath(arcName, data_0208ccb0);
+    LangData_LocalizePath(name, data_0208cca8);
     data_0214b128.res->Open(arcName, name);
 }
 

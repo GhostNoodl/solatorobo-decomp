@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021d7b80(Obj021efeb8 *self) {
+void Obj021efeb8_Init(Obj021efeb8 *self) {
     self->trans.x = 0;
     self->trans.z = 0;
     self->trans.y = -0x3000;
@@ -29,7 +29,7 @@ void func_ov002_021d7b80(Obj021efeb8 *self) {
 }
 
 void func_ov002_021d7c04(Obj021efeb8 *self) {
-    u8 *info = func_0206ede8(self->unk_48);
+    u8 *info = Param_GetEntry(self->unk_48);
     Ov002Shape *v;
     self->unk_4a = info[0] == 0x80 ? 2 : 1;
     v = func_02070dcc(self->unk_4b = info[1]);

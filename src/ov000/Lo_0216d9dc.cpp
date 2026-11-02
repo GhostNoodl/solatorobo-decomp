@@ -20,7 +20,7 @@ void func_ov000_0216d9dc(void *self, s32 unused, u16 *msg) {
     MTX_RotY43_((MtxFx43 *)self, FX_SinCosTable_[(ang >> 4) * 2], FX_SinCosTable_[(ang >> 4) * 2 + 1]);
 }
 
-void func_ov000_0216da2c(LoTimer *self, s32 mode, s32 limit, s32 c) {
+void LoTimer_Setup(LoTimer *self, s32 mode, s32 limit, s32 c) {
     self->mode = mode;
     self->limit = limit;
     self->unk_28 = c;
@@ -64,7 +64,7 @@ extern "C" {
 extern const s16 FX_SinCosTable_[];
 extern int data_02097d78[];
 bool func_ov000_021735e8(void);
-BOOL func_02054f10(void *a, s32 b);
+BOOL Model_IsReady(void *a, s32 b);
 s32 FX_Div(s32 a, s32 b);
 void func_020627fc(s32 a);
 void func_ov000_02182590(void *p);
@@ -94,7 +94,7 @@ static inline BOOL FadeIdle0216dae4(void) {
 }
 
 static inline BOOL Ready0216dae4(LoTimer *self) {
-    if (!func_02054f10(self->unk_10, 0xffff) || !func_02054f10(self->unk_14, 0xffff)) {
+    if (!Model_IsReady(self->unk_10, 0xffff) || !Model_IsReady(self->unk_14, 0xffff)) {
         return FALSE;
     }
     return TRUE;
@@ -117,7 +117,7 @@ static inline void Done0216dae4(LoTimer *self) {
     }
 }
 
-BOOL func_ov000_0216dae4(LoTimer *self) {
+BOOL LoTimer_Update(LoTimer *self) {
     if (self->b2 == 1) {
         if (!self->b0 && !func_ov000_021735e8()) {
             self->b4 = 1;

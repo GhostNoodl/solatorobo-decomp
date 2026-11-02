@@ -7,7 +7,7 @@
 
 extern "C" {
 
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
 s32 func_02043d84(void *a);
 

@@ -45,7 +45,7 @@ BOOL func_ov002_021e046c(UiList *self, UiListItem *item) {
 // removes its accesses (round frA). The template is read through a pointer to
 // the last cell (chr first), and the object's two positions are read into
 // locals before the vector is built (round frB).
-void func_ov002_021e3b6c(s32 *out, s32 *v, void *m);
+void Ov002_ProjectToScreen(s32 *out, s32 *v, void *m);
 
 static inline void SetV0488(s32 *v, s32 x, s32 y, s32 z) {
     v[0] = x;
@@ -79,7 +79,7 @@ Oam0488 *func_ov002_021e0488(void *ctx, u16 *cell, Oam0488 *oam, u16 *num) {
                 s32 ox = FIELD(o, 0x64, s32);
                 s32 oz = FIELD(o, 0x68, s32);
                 SetV0488(v, (px - ox) * 0x28f - 0xa3, 0, (pz - oz) * 0x28f - 0xa3);
-                func_ov002_021e3b6c(out, v, mtx);
+                Ov002_ProjectToScreen(out, v, mtx);
                 val = FIELD(o, 0xa8, u16);
                 div = 1;
                 for (k = 1; k < 2; k++) {

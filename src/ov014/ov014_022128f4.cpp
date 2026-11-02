@@ -17,7 +17,7 @@ s32 Ov014Act_0221267c_HandleMsg(Ov014Act_0221267c *self, Ov014Msg *msg) {
 }
 
 
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
@@ -41,7 +41,7 @@ void Ov014Act_0221267c_Update(Ov014Act_0221267c *self) {
         return;
     }
     self->target = 0xffff;
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (pl != NULL) {
         self->target = pl->id;
     }
@@ -125,20 +125,20 @@ void Ov014Act_0221267c_Update(Ov014Act_0221267c *self) {
         if (!Ov014_WaitB6(self)) {
             break;
         }
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         self->fsm->st = 0;
         self->unk_b6 = 0xffff;
         break;
     case 0x14:
         switch (self->unk_348) {
         case 0:
-            func_ov000_02198360(self->fsm, 0xf, 0);
+            History_SetState(self->fsm, 0xf, 0);
             break;
         case 1:
-            func_ov000_02198360(self->fsm, 0x10, 0);
+            History_SetState(self->fsm, 0x10, 0);
             break;
         case 2:
-            func_ov000_02198360(self->fsm, 0x11, 0);
+            History_SetState(self->fsm, 0x11, 0);
             break;
         default:
             self->fsm->flags |= 0x8000;

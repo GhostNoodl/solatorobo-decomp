@@ -6,7 +6,7 @@
 extern "C" {
 
 extern Ov008Mgr *data_ov008_021d0500;
-void *func_0204b370(void *p);
+void *Camera_Ctor(void *p);
 void func_0204b420(void *p);
 void func_ov008_021cd500(Ov008Mgr *m);
 void func_ov008_021cd584(Ov008Mgr *m);
@@ -28,11 +28,11 @@ extern char data_ov008_021d04c5[];
 extern char data_ov008_021d04d1[];
 extern char data_ov008_021d04d9[];
 extern char data_ov008_021d04e1[];
-void *func_ov000_0218e9c4(void *p);
-BOOL func_ov000_0218f110(void *p);
-void func_0206e900(char *dst, const char *src);
-void func_0205a6a0(void *p);
-void func_0205a840(void *p, const char *a, const char *b);
+void *ResSet_Init(void *p);
+BOOL ResSet_UpdateLoad(void *p);
+void LangData_LocalizePath(char *dst, const char *src);
+void StageRes_Init(void *p);
+void StageRes_Open(void *p, const char *a, const char *b);
 BOOL StageRes_IsAllLoaded(void *p);
 void func_ov000_0214bb80(void);
 void func_ov000_0214c1ac(void);
@@ -56,7 +56,7 @@ static inline void Ov008_SetNameB(Ov008Anim *p, const char *a, const char *b) {
 static inline Ov008Anim *Ov008_NewMsg(void) {
     Ov008Anim *p = (Ov008Anim *)Heap_Alloc(0x138);
     if (p != NULL) {
-        p = (Ov008Anim *)func_ov000_0218e9c4(p);
+        p = (Ov008Anim *)ResSet_Init(p);
     }
     return p;
 }
@@ -83,16 +83,16 @@ BOOL func_ov008_021cddc8(Ov008Mgr *m) {
     if (((Ov008V *)m->unk_e4)->v2c() == 0) {
         r = FALSE;
     }
-    if (m->unk_c4->unk_00 >= 0 && !func_ov000_0218f110(m->unk_c4)) {
+    if (m->unk_c4->unk_00 >= 0 && !ResSet_UpdateLoad(m->unk_c4)) {
         r = FALSE;
     }
-    if (m->unk_cc->unk_00 >= 0 && !func_ov000_0218f110(m->unk_cc)) {
+    if (m->unk_cc->unk_00 >= 0 && !ResSet_UpdateLoad(m->unk_cc)) {
         r = FALSE;
     }
-    if (!func_02035b90(data_0208cca0, 7)) {
+    if (!ResMgr_IsLoaded(data_0208cca0, 7)) {
         r = FALSE;
     }
-    if (!func_02035b90(data_0208cc94, 7)) {
+    if (!ResMgr_IsLoaded(data_0208cc94, 7)) {
         r = FALSE;
     }
     if (!StageRes_IsAllLoaded(m->unk_fc)) {

@@ -48,7 +48,7 @@ void func_ov000_021be220(Marker021be220 *self) {
             return;
         }
     case 10:
-        if (func_ov000_021bd374(self, 0x8000)) {
+        if (ActorMarker_UpdateFade(self, 0x8000)) {
             return;
         }
         if (++self->unk_90 < 0x12) {
@@ -60,7 +60,7 @@ void func_ov000_021be220(Marker021be220 *self) {
             self->unk_94 += FX_MUL(-self->unk_94, 0xcd);
         }
         pos = self->unk_50;
-        func_ov000_021bd474(self, &pos);
+        ActorMarker_UpdateScreenPos(self, &pos);
         self->work.z = -0x1ccd;
         break;
     case 0:

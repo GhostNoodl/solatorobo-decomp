@@ -11,11 +11,11 @@ s32 Rand_PlusMinus(s32 max);
 extern const VecFx32 data_02092a50;
 extern u8 data_ov011_0220755c[];
 extern char data_ov011_022075d4[];
-Actor *func_ov000_0219be1c(s32 kind, VecFx32 *pos, Ov011Rot *rot, u16 a, u16 b);
+Actor *Actor_SpawnKind(s32 kind, VecFx32 *pos, Ov011Rot *rot, u16 a, u16 b);
 
 #pragma force_active on
 void Ov011Act7da4_StateHurt(Ov011Act7da4 *self) {
-    func_ov000_02198360(self->fsm, 1, 0);
+    History_SetState(self->fsm, 1, 0);
 }
 
 void Ov011Act7da4_StateShoot(Ov011Act7da4 *self) {
@@ -36,14 +36,14 @@ void Ov011Act7da4_StateShoot(Ov011Act7da4 *self) {
             Ov011_VecSet(&self->unk_84, Rand_PlusMinus(0x4000), -Rand_UpTo(0x3000), -0xf000);
             Ov011_MulVec33(&self->unk_84, NNS_G3dGlbGetInvV(), &v);
             VEC_Add(&v, &data_02092a50, &v);
-            e = func_02065f88(0x389, &v);
+            e = Effect_SpawnId(0x389, &v);
             if (e == NULL) {
                 return;
             }
             e->SetScaleAll(0x2000);
             e->speed = 0x299a;
         } else if (self->fsm->timer == 0) {
-            Robo021ca458 *pl = (Robo021ca458 *)func_ov000_0219bf90();
+            Robo021ca458 *pl = (Robo021ca458 *)ActorMgr_FindPlayer();
             if (pl != NULL) {
                 Actor *o;
                 v.x = pl->unk_af0.x;
@@ -57,7 +57,7 @@ void Ov011Act7da4_StateShoot(Ov011Act7da4 *self) {
                 rot.x = FX_Atan(-v.y);
                 rot.y = FX_Atan2(v.x, v.z);
                 rot.z = 0;
-                o = func_ov000_0219be1c(0x4805, &self->unk_84, &rot, self->id, pl->id);
+                o = Actor_SpawnKind(0x4805, &self->unk_84, &rot, self->id, pl->id);
                 if (o != NULL) {
                     o->unk_60 = data_ov011_0220755c;
                 }
@@ -66,7 +66,7 @@ void Ov011Act7da4_StateShoot(Ov011Act7da4 *self) {
             if (self->unk_f0 < 5) {
                 self->fsm->timer = 20;
             } else {
-                func_ov000_02198360(self->fsm, 1, 0);
+                History_SetState(self->fsm, 1, 0);
             }
         }
         break;
@@ -93,14 +93,14 @@ void Ov011Act7da4_StateAttack3(Ov011Act7da4 *self) {
             }
             Ov011_MulVec33(&self->unk_84, NNS_G3dGlbGetInvV(), &v);
             VEC_Add(&v, &data_02092a50, &v);
-            e = func_02065f88(0x389, &v);
+            e = Effect_SpawnId(0x389, &v);
             if (e == NULL) {
                 return;
             }
             e->SetScaleAll(0x2000);
             e->speed = 0x299a;
         } else if (self->fsm->timer == 0) {
-            Robo021ca458 *pl = (Robo021ca458 *)func_ov000_0219bf90();
+            Robo021ca458 *pl = (Robo021ca458 *)ActorMgr_FindPlayer();
             if (pl != NULL) {
                 Actor *o;
                 v.x = pl->unk_af0.x;
@@ -119,7 +119,7 @@ void Ov011Act7da4_StateAttack3(Ov011Act7da4 *self) {
                 } else {
                     rot.y -= 0x4000;
                 }
-                o = func_ov000_0219be1c(0x4804, &self->unk_84, &rot, self->id, pl->id);
+                o = Actor_SpawnKind(0x4804, &self->unk_84, &rot, self->id, pl->id);
                 if (o != NULL) {
                     o->unk_60 = data_ov011_022075d4;
                 }
@@ -128,7 +128,7 @@ void Ov011Act7da4_StateAttack3(Ov011Act7da4 *self) {
             if (self->unk_f0 < 6) {
                 self->fsm->timer = 20;
             } else {
-                func_ov000_02198360(self->fsm, 1, 0);
+                History_SetState(self->fsm, 1, 0);
             }
         }
         break;

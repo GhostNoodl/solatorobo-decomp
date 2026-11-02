@@ -29,7 +29,7 @@ typedef struct {
 extern "C" {
 
 extern u32 data_ov000_021c9880[];
-void func_02043064(const Oam0215a8c8 *attr, u32 *w, u32 *h);
+void Oam_GetSize(const Oam0215a8c8 *attr, u32 *w, u32 *h);
 void NNS_G3dGeSendDL(const void *src, u32 szByte);
 void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 num);
 
@@ -61,7 +61,7 @@ static inline void Draw0215a8c8(s32 x, s32 y, s32 z, const Oam0215a8c8 *oam, con
     y += oy << 12;
     charName = (u16)oam->charName;
     shift = ((s32)(img->mappingType & 0x700000) >> 20) + 5;
-    func_02043064(oam, &w, &h);
+    Oam_GetSize(oam, &w, &h);
     REG_TEXIMAGE_PARAM = ((charBase + (charName << shift)) >> 3) | (img->fmt << 26) | 0x40000000 | (w << 20) |
                          (h << 23) | (img->plttUse << 29);
     fmt = data_ov000_021c9880[(*(u32 *)oam << 18) >> 31];

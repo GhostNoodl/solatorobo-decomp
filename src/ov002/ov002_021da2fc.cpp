@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021da2fc(void) {
+void Obj021efe7c_Create(void) {
     Obj021efe7c *p;
     if (data_ov002_021f0f90.top != NULL) {
         void *saved;
@@ -21,7 +21,7 @@ void func_ov002_021da2fc(void) {
     data_ov002_021f0f90.top = p;
 }
 
-void func_ov002_021da39c(void) {
+void Obj021efe7c_Delete(void) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(data_ov002_021f0f90.top);
@@ -30,12 +30,12 @@ void func_ov002_021da39c(void) {
 
 Obj021efe7c *Ov002Vt_021efe7c_DtorDelete(Obj021efe7c *self) {
     *(VFunc **)self = data_ov002_021efe7c;
-    func_ov002_021da430(self);
+    Obj021efe7c_Release(self);
     Heap_Free(self);
     return self;
 }
 
-Obj021efe7c *func_ov002_021da420(void) {
+Obj021efe7c *Obj021efe7c_Get(void) {
     return data_ov002_021f0f90.top;
 }
 

@@ -14,7 +14,7 @@ void func_ov015_0220afcc(Ov015FishState2c *self) {
     Ov015Vec base;
     Ov015Vec sc;
     u16 ang;
-    EffectObj *e = func_020657b0(data_0214a420, self->unk_24);
+    EffectObj *e = Effect_Find_020657b0(data_0214a420, self->unk_24);
     if (e == NULL) {
         e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &self->fish->pos);
         e->unk_d4 = 1;
@@ -49,13 +49,13 @@ void func_ov015_0220afcc(Ov015FishState2c *self) {
 }
 
 s32 Rand_PlusMinus(s32 n);
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
+BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
 extern u8 data_ov015_02212e40[];
 extern u8 data_ov015_02212e0d[];
 
 static inline void Ov015_Spark(Ov015Vec *a, Ov015Vec *s) {
-    EffectObj *e = func_02065f88(0x44d, a);
+    EffectObj *e = Effect_SpawnId(0x44d, a);
     u16 rr;
     e->SetScale(s);
     e->unk_50 = -0xa000;
@@ -138,9 +138,9 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
         b = o->pos;
         b.y += 0x8000;
         b.z += FX_Mul(o->scale.x, 0xc000);
-        e = func_020657b0(data_0214a420, self->unk_28);
+        e = Effect_Find_020657b0(data_0214a420, self->unk_28);
         if (e == NULL) {
-            e = func_02065f88(0x325, &b);
+            e = Effect_SpawnId(0x325, &b);
             e->unk_d4 = 1;
             e->loopCount = -2;
             e->SetRotXYZ(0xbffd, 0, 0);
@@ -153,12 +153,12 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
         EffectMgr_StopLoop(data_0214a420, self->unk_28);
     }
     if (((u8)self->unk_14)) {
-        func_ov000_02190cb0(&self->fish->model, data_ov015_02212e40, 0x19a, 0);
-        func_ov000_021915a0(&self->fish->model);
+        Model0218fe1c_SetAnim(&self->fish->model, data_ov015_02212e40, 0x19a, 0);
+        Model0218fe1c_SetLoop(&self->fish->model);
         (self->fish)->animSpeed = FX_Mul(r, 0x4cc) + 0x19a;
     } else {
-        func_ov000_02190cb0(&self->fish->model, data_ov015_02212e0d, 0x19a, 0);
-        func_ov000_021915a0(&self->fish->model);
+        Model0218fe1c_SetAnim(&self->fish->model, data_ov015_02212e0d, 0x19a, 0);
+        Model0218fe1c_SetLoop(&self->fish->model);
         (self->fish)->animSpeed = 0x99a;
     }
 }

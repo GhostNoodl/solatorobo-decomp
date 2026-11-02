@@ -7,14 +7,14 @@
 extern "C" {
 extern char data_ov000_021cc456[];
 extern void *data_02097e4c;
-BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
+BOOL Model0218fe1c_SetAnim(void *a, const char *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
 void func_ov000_02199dc0(ActorSub4c *self, Actor *out);
-void *func_02049f44(void *a, s32 b, void *c, s32 d);
+void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 void HitSphere_Link(void *a);
-BOOL func_ov000_02198360(void *s, s32 a, s32 b);
+BOOL History_SetState(void *s, s32 a, s32 b);
 void Actor_Move(Actor *self, s32 a);
-void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
+void Body_Update(void *a, s32 b, s32 c, s32 d);
 
 static inline void SetVel02196060(ActorEx *self, s32 x, s32 y, s32 z) {
     self->speed = x;
@@ -22,15 +22,15 @@ static inline void SetVel02196060(ActorEx *self, s32 x, s32 y, s32 z) {
     self->friction = z;
 }
 
-void func_ov000_02196060(ActorEx *self) {
+void ActorEx_StateThrown(ActorEx *self) {
     ActorSub40 *s = self->fsm;
     switch (s->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov000_021cc456, 0x1000, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov000_021cc456, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
         if (self->targetObj->unk_01 == 1) {
             func_ov000_02199dc0(self->targetObj, self);
-            func_02049f44(data_02097e4c, 0xb, (u8 *)self + 0x70, 0);
+            SndMgr_PlayAt(data_02097e4c, 0xb, (u8 *)self + 0x70, 0);
             self->fsm->st++;
         } else {
             SetVel02196060(self, 0x229, 0x27, 0);
@@ -54,13 +54,13 @@ void func_ov000_02196060(ActorEx *self) {
     case 1:
         s->timer++;
         if (s->timer > 2) {
-            func_ov000_02198360(self->fsm, 4, 0);
+            History_SetState(self->fsm, 4, 0);
         }
         if (self->velY > 0 && (self->hit->unk_50 & 0x80000000)) {
             self->velY = -0xcd;
         }
         {
-            FieldExit *o = func_ov000_021b68b8(data_ov000_021ccd6c, &self->pos);
+            FieldExit *o = FieldMgr_FindExitAt(data_ov000_021ccd6c, &self->pos);
             if (o != NULL) {
                 u16 ang = (u64)o->dir;
                 self->speed = FX_Mul(self->speed, 0x59a);
@@ -73,7 +73,7 @@ void func_ov000_02196060(ActorEx *self) {
         }
         Actor_Move(self, 0);
         if (self->hit != NULL) {
-            func_ov000_021987b8(self->hit, 0, 0, 0);
+            Body_Update(self->hit, 0, 0, 0);
         }
         break;
     }

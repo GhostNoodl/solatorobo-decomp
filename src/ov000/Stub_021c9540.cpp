@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_021c9540(void) {
+void Ov000TaskVt_021ccc94_Draw(void) {
 }
 
 }

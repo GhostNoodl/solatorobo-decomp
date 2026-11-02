@@ -38,7 +38,7 @@ static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx) + 0xc));
     }
-    func_02042628(model, anim, part, flag);
+    TexObj_DrawCell(model, anim, part, flag);
 }
 
 void func_ov000_021c6d64(Obj021c6d64 *self, void *unused, VecFx32 *pos, s32 arg) {

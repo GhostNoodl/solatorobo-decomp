@@ -4,13 +4,13 @@ extern "C" {
 
 static inline void ov002_Model_Delete(Model *m) {
     if (m != NULL) {
-        func_02041558(m);
-        func_02041278(&m->pltt);
+        TexObj_Release(m);
+        PlttRes_Release(&m->pltt);
         Heap_Free(m);
     }
 }
 
-void func_ov002_021e1d28(Ov002Hud *self) {
+void Ov002Hud_Release(Ov002Hud *self) {
     void *saved;
     Model *p;
     s32 i;
@@ -61,7 +61,7 @@ extern char data_ov002_021effbc[];
 extern char data_ov002_021effc8[];
 extern char data_ov002_021effd2[];
 
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void TextWin_InitLines(Ov002Text2 *a, int b);
 void *func_02035de0(const char *file, const char *name);
@@ -72,7 +72,7 @@ static inline Ov002Text2 *ov002_Anim_New(void) {
     Ov002Text2 *anim = (Ov002Text2 *)Heap_Alloc(0xb8);
     if (anim != NULL) {
         *(VFunc **)anim = data_0208ba70;
-        func_0204c7d0(anim);
+        TextWin_Init(anim);
     }
     return anim;
 }
@@ -86,8 +86,8 @@ static inline void ov002_Anim_Start(Ov002Text2 *s, s32 str) {
 static inline Model *ov002_Model_New(char *name, char *file) {
     Model *m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
-        func_02041218(&m->pltt);
-        func_02041440(m, name, 0);
+        PlttRes_Init_02041218(&m->pltt);
+        TexObj_Init(m, name, 0);
         STD_CopyString(m->name, file);
     }
     return m;
@@ -113,33 +113,33 @@ static inline Ov002Caption *ov002_Caption_New(void) {
     return c;
 }
 
-void func_ov002_021e1ed8(Ov002Hud *self) {
+void Ov002Hud_Load(Ov002Hud *self) {
     void *res = data_02149ef8;
     char buf[0x20];
     void *arc;
     void *data;
     s32 i;
-    func_0206e900(buf, data_ov002_021eff94);
-    arc = func_02035d5c(buf);
+    LangData_LocalizePath(buf, data_ov002_021eff94);
+    arc = ResMgr_GetArcList(buf);
     {
         char *name = data_ov002_021effa4;
-        data = func_02034d88(arc, name);
+        data = ResList_FindType2(arc, name);
         self->unk_04 = ov002_Model_New(name, buf);
     }
-    func_020417e0(self->unk_04, data);
+    TexObj_SetRes(self->unk_04, data);
     self->unk_04->flags |= 2;
     self->unk_04->unk_150 = -0x2000;
-    func_02041d9c(self->unk_04, 2, 0);
+    TexObj_SelectImage(self->unk_04, 2, 0);
     self->pending |= 1;
     {
         char *name = data_ov002_021effb0;
-        data = func_02034d88(arc, name);
+        data = ResList_FindType2(arc, name);
         self->unk_08 = ov002_Model_New(name, buf);
     }
-    func_020417e0(self->unk_08, data);
+    TexObj_SetRes(self->unk_08, data);
     self->unk_08->flags |= 2;
     self->unk_08->unk_150 = -0x1ccd;
-    func_02041d9c(self->unk_08, 2, 0);
+    TexObj_SelectImage(self->unk_08, 2, 0);
     self->pending |= 2;
     {
         char *file = buf;
@@ -147,10 +147,10 @@ void func_ov002_021e1ed8(Ov002Hud *self) {
         data = func_02035de0(file, name);
         self->unk_0c = ov002_Model_New(name, file);
     }
-    func_020417e0(self->unk_0c, data);
+    TexObj_SetRes(self->unk_0c, data);
     self->unk_0c->flags |= 2;
     self->unk_0c->unk_150 = -0x2000;
-    func_02041d9c(self->unk_0c, 2, 0);
+    TexObj_SelectImage(self->unk_0c, 2, 0);
     self->pending |= 4;
     {
         char *file = data_ov002_021effc8;
@@ -158,14 +158,14 @@ void func_ov002_021e1ed8(Ov002Hud *self) {
         data = func_02035de0(file, name);
         self->unk_10 = ov002_Model_New(name, file);
     }
-    func_020417e0(self->unk_10, data);
+    TexObj_SetRes(self->unk_10, data);
     self->unk_10->flags |= 2;
     self->unk_10->unk_150 = -0x1ccd;
     func_02041c5c(self->unk_10, (void *)func_ov002_021e1988);
-    func_02041d9c(self->unk_10, 2, 1);
-    func_02041d9c(self->unk_10, 2, 8);
-    func_02041d9c(self->unk_10, 2, 9);
-    func_02041d9c(self->unk_10, 2, 10);
+    TexObj_SelectImage(self->unk_10, 2, 1);
+    TexObj_SelectImage(self->unk_10, 2, 8);
+    TexObj_SelectImage(self->unk_10, 2, 9);
+    TexObj_SelectImage(self->unk_10, 2, 10);
     self->pending |= 8;
     for (i = 0; i < 5; i++) {
         Ov002Caption *c;

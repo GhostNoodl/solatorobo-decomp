@@ -13,10 +13,10 @@ extern char data_ov014_022170d8[];
 extern char data_ov014_022170e7[];
 extern char data_ov014_022170f4[];
 
-extern void *func_ov000_0218e9c4(void *p);
-extern void *func_ov000_0218fe1c(void *p);
-extern void *func_ov000_0218fee4(void *p);
-extern void *func_ov000_0218ea20(void *p);
+extern void *ResSet_Init(void *p);
+extern void *Model0218fe1c_Init(void *p);
+extern void *Model0218fe1c_FreeAnims(void *p);
+extern void *ResSet_ReleaseAll(void *p);
 extern void SndMgr_LoadHeapState(SndMgr *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
 
@@ -25,8 +25,8 @@ Ov003Actor *Ov014Act_021fa6a0_Ctor(Ov014Act_021fa6a0 *self) {
     u8 i;
     Ov003Actor_Ctor(self);
     *(void **)self = data_ov014_02217114;
-    func_ov000_0218e9c4(&self->unk_124);
-    func_ov000_0218fe1c(&self->mdl);
+    ResSet_Init(&self->unk_124);
+    Model0218fe1c_Init(&self->mdl);
     Ov003ScriptList_Init(&self->scripts);
     for (i = 0; i < 2; i++) {
         ((Ov014A *)self)->unk_f8[i] = data_ov014_02216468[i];
@@ -42,8 +42,8 @@ Ov003Actor *Ov014Act_021fa6a0_Ctor(Ov014Act_021fa6a0 *self) {
 #pragma force_active reset
 
 static inline void Ov014_StopSnd(void) {
-    if (func_02035b90(data_ov014_022170d8, 7)) {
-        func_02036838(data_02097cdc, data_ov014_022170d8, 7, 0);
+    if (ResMgr_IsLoaded(data_ov014_022170d8, 7)) {
+        ResMgr_ReleaseByName(data_02097cdc, data_ov014_022170d8, 7, 0);
     }
 }
 
@@ -51,8 +51,8 @@ Ov014Act_021fa6a0 *Ov014Act_021fa6a0_Dtor(Ov014Act_021fa6a0 *self) {
     *(void **)self = data_ov014_02217114;
     Ov014_StopSnd();
     Ov003Vt_021f7974_Dtor(&self->scripts);
-    func_ov000_0218fee4(&self->mdl);
-    func_ov000_0218ea20(&self->unk_124);
+    Model0218fe1c_FreeAnims(&self->mdl);
+    ResSet_ReleaseAll(&self->unk_124);
     Ov003Actor_DtorBase(self);
     return self;
 }
@@ -61,8 +61,8 @@ Ov014Act_021fa6a0 *Ov014Act_021fa6a0_DtorDelete(Ov014Act_021fa6a0 *self) {
     *(void **)self = data_ov014_02217114;
     Ov014_StopSnd();
     Ov003Vt_021f7974_Dtor(&self->scripts);
-    func_ov000_0218fee4(&self->mdl);
-    func_ov000_0218ea20(&self->unk_124);
+    Model0218fe1c_FreeAnims(&self->mdl);
+    ResSet_ReleaseAll(&self->unk_124);
     Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;

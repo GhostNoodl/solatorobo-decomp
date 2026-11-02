@@ -13,10 +13,10 @@ struct Ov003SpawnInfo {
 extern "C" {
 
 extern Actor *Ov003Prop_New(Ov003SpawnInfo *info);
-extern Actor *func_ov000_02192b24(Ov003SpawnInfo *info);
+extern Actor *Factory_New4000(Ov003SpawnInfo *info);
 extern Actor *Ov003_NewActor(Ov003SpawnInfo *info);
-extern Actor *func_ov000_021b4828(Ov003SpawnInfo *info);
-extern BOOL func_ov000_02198360(ActorSub40 *self, u8 idx, BOOL flag);
+extern Actor *Factory_New6000(Ov003SpawnInfo *info);
+extern BOOL History_SetState(ActorSub40 *self, u8 idx, BOOL flag);
 
 void Ov003Actor_SetMotion(Actor *self, s32 speed, s32 velY, s32 friction, s32 gravity) {
     if (self == NULL) {
@@ -57,13 +57,13 @@ Actor *Ov003_SpawnById(u16 id) {
         obj = Ov003Prop_New(&info);
         break;
     case 0x4000:
-        obj = func_ov000_02192b24(&info);
+        obj = Factory_New4000(&info);
         break;
     case 0x5000:
         obj = Ov003_NewActor(&info);
         break;
     case 0x6000:
-        obj = func_ov000_021b4828(&info);
+        obj = Factory_New6000(&info);
         break;
     }
     if (obj != NULL) {
@@ -85,13 +85,13 @@ void Ov003ActorSub40_ApplyFlags(ActorSub40 *self) {
             break;
         }
     }
-    func_ov000_02198360(self, idx, 0);
+    History_SetState(self, idx, 0);
     self->flags = 0;
 }
 
 void Ov003ActorSub40_ForceState(ActorSub40 *self, u8 idx) {
     self->flags = 0;
-    func_ov000_02198360(self, idx, 1);
+    History_SetState(self, idx, 1);
 }
 
 EffectObj *Ov003_SpawnScatterFx(const Ov003Vec *base, s32 range, s32 fxId) {
@@ -103,7 +103,7 @@ EffectObj *Ov003_SpawnScatterFx(const Ov003Vec *base, s32 range, s32 fxId) {
     v.z = 0;
     MTX_MultVec33(&v, (const MtxFx33 *)NNS_G3dGlbGetInvV(), &v); // the inverse view matrix's rotation rows
     VEC_Add(base, &v, &p);
-    return func_02065f88(fxId, &p);
+    return Effect_SpawnId(fxId, &p);
 }
 
 

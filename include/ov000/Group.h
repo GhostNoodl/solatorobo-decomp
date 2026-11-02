@@ -46,7 +46,7 @@ typedef struct GroupNodeFlags {
     u8 useRange : 1;
     u8 useHeight : 1; // without it the spawn volume has no height limit (func_ov000_0218b420)
     u8 useAngle : 1; // the despawn range shrinks with the view's angle to the actor
-    u8 toGround : 1; // the spawn position is moved down onto the ground (func_ov000_0219a2f4)
+    u8 toGround : 1; // the spawn position is moved down onto the ground (Geom_SnapToGround)
     u8 unk_5 : 1; // func_ov000_0218b4b4 keeps the entry's position and field
     u8 unk_6 : 1;
     u8 unk_7 : 1;
@@ -66,12 +66,12 @@ typedef struct GroupNode {
     VecFx32 spawnMax;
     VecFx32 despawnMin; // the volume the actor must leave to be removed (func_ov000_0218af9c)
     VecFx32 despawnMax;
-    // The volumes are rebuilt from these by func_ov000_0218b420 and scaled by func_ov000_0218b700.
+    // The volumes are rebuilt from these by func_ov000_0218b420 and scaled by GroupNode_SetSpawnRange.
     fx32 spawnRange; // the spawn volume's half width, and the range from a view when useRange is set
     fx32 despawnRange;
     fx32 spawnHeight;
     fx32 despawnHeight;
-    fx32 fadeStart; // the actor fades out from this distance to the camera up to spawnRange (func_ov000_02194c08)
+    fx32 fadeStart; // the actor fades out from this distance to the camera up to spawnRange (ActorEx_Draw)
     VecFx32 pos;
     Rot16 rot;
     u16 unk_9a; // seconds to wait in state 3
@@ -112,18 +112,18 @@ GroupNode *func_ov000_0218a9d8(GroupNode *self);
 GroupNode *func_ov000_0218b9ec(GroupActorDesc *desc, const FieldId *fieldId, const FieldId *fieldFilter, VecFx32 *pos, Rot16 *rot);
 void func_ov000_0218b420(GroupNode *self);
 void func_ov000_0218b60c(GroupNode *self, const FieldId *fieldId, const VecFx32 *pos, const Rot16 *rot);
-void func_ov000_0218b700(GroupNode *self, s32 scaleXZ, s32 scaleY);
+void GroupNode_SetSpawnRange(GroupNode *self, s32 scaleXZ, s32 scaleY);
 void func_ov000_0218b7c0(GroupNode *self, s32 kind, s32 mode);
 void func_ov000_0218ab00(GroupNode *self);
 void func_ov000_0218ac98(GroupNode *self);
 void func_ov000_0218adf0(GroupNode *self);
 void Group_Add(Group *g, GroupNode *node);
-s32 func_ov000_0218c040(Group *g, s32 max, VecFx32 *out, s32 kind, u16 id);
+s32 Group_GetSpawnPositions(Group *g, s32 max, VecFx32 *out, s32 kind, u16 id);
 void Obj0218c208_AddPoint(Group *self, const VecFx32 *pos, u16 yaw);
 void func_ov000_0218c25c(Group *self);
 void Group_RemoveNode(Group *g, GroupNode *node, BOOL notify);
 BOOL func_01ffc89c(GroupNode *node, GroupView *view);
-s32 func_ov000_0219a2f4(VecFx32 *pos, s32 up, s32 down);
+s32 Geom_SnapToGround(VecFx32 *pos, s32 up, s32 down);
 
 #ifdef __cplusplus
 }

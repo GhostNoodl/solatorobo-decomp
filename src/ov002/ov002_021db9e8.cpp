@@ -2,9 +2,9 @@
 
 extern "C" {
 
-BOOL func_ov000_02191120(Model0218fe1c *a);
-void func_ov000_02191780(Model0218fe1c *a);
-s32 **func_ov000_02190a30(Model0218fe1c *a, int b);
+BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *a);
+void Model0218fe1c_SetReverse(Model0218fe1c *a);
+s32 **Model0218fe1c_GetAnimCtrl(Model0218fe1c *a, int b);
 
 extern Ov002SndCue data_ov002_021eeffc[];
 
@@ -36,7 +36,7 @@ static inline u8 ov002_IsDone(UiObj *p) {
 }
 
 static inline bool ov002_Ready(Obj021efe4c *m) {
-    return m->unk_5d != 0 && m->unk_10 != NULL && func_ov000_02191120(m->unk_10);
+    return m->unk_5d != 0 && m->unk_10 != NULL && Model0218fe1c_IsAnimDone(m->unk_10);
 }
 
 void func_ov002_021db9e8(Obj021eff50 *self) {
@@ -106,11 +106,11 @@ void func_ov002_021db9e8(Obj021eff50 *self) {
             Ov002SndCue *k;
             Obj021efe4c *m = self->board->field;
             s32 x;
-            func_ov000_02191780(m->unk_10);
+            Model0218fe1c_SetReverse(m->unk_10);
             k = data_ov002_021eeffc;
             m->cues = k;
             {
-                s32 **pp = func_ov000_02190a30(m->unk_10, 0);
+                s32 **pp = Model0218fe1c_GetAnimCtrl(m->unk_10, 0);
                 x = 0;
                 if (*pp != NULL) {
                     x = **pp;

@@ -45,52 +45,52 @@ typedef struct {
 } Obj0218ce38;
 
 void *func_0203db40(void *a);
-void func_ov000_02190a80(void *a, void *b);
-void func_ov000_02190758(Sub0218ce38 *a, void *b, s32 c);
-BOOL func_ov000_021903b4(Sub0218ce38 *a);
-void func_ov000_02191c24(Sub0218ce3c *a, void *b);
-BOOL func_ov000_0218f110(Sub0218ce34 *a);
-BOOL func_ov000_02191b9c(Sub0218ce3c *a);
-void func_ov000_0219864c(void *a, s32 b, s32 c);
-void func_ov000_021984f4(void *a, s32 b, s32 c);
+void Model0218fe1c_UpdateAnim(void *a, void *b);
+void Obj02190758_SetRot(Sub0218ce38 *a, void *b, s32 c);
+BOOL Model021903b4_Draw(Sub0218ce38 *a);
+void Shadow_Draw(Sub0218ce3c *a, void *b);
+BOOL ResSet_UpdateLoad(Sub0218ce34 *a);
+BOOL Shadow_UpdateLoad(Sub0218ce3c *a);
+void ActorSub48_UpdatePos(void *a, s32 b, s32 c);
+void Obj021984c8_UpdatePos(void *a, s32 b, s32 c);
 
 void Actor_Start(void) {
 }
 
-void func_ov000_0218ce24(void) {
+void Actor_UpdateMode1(void) {
 }
 
-void func_ov000_0218ce28(void) {
+void Actor_Update(void) {
 }
 
-void func_ov000_0218ce2c(void) {
+void Actor_UpdateMode3(void) {
 }
 
-void func_ov000_0218ce30(void) {
+void Actor_SelectState(void) {
 }
 
-void func_ov000_0218ce34(void) {
+void Actor_RunState(void) {
 }
 
-void func_ov000_0218ce38(Obj0218ce38 *self) {
+void Actor_Animate(Obj0218ce38 *self) {
     if (self->unk_38 != NULL) {
-        func_ov000_02190a80(self->unk_38, func_0203db40(self->unk_24));
+        Model0218fe1c_UpdateAnim(self->unk_38, func_0203db40(self->unk_24));
     }
 }
 
-void func_ov000_0218ce64(Obj0218ce38 *self) {
+void Actor_UpdateHit(Obj0218ce38 *self) {
     if (self->unk_48 != NULL) {
-        func_ov000_0219864c(self->unk_48, 0, 0);
+        ActorSub48_UpdatePos(self->unk_48, 0, 0);
     }
 }
 
-void func_ov000_0218ce84(Obj0218ce38 *self) {
+void Actor_UpdateSub44(Obj0218ce38 *self) {
     if (self->unk_44 != NULL) {
-        func_ov000_021984f4(self->unk_44, 0, 0);
+        Obj021984c8_UpdatePos(self->unk_44, 0, 0);
     }
 }
 
-BOOL func_ov000_0218cea4(Obj0218ce38 *self) {
+BOOL Actor_Draw(Obj0218ce38 *self) {
     Sub0218ce38 *sub = self->unk_38;
     BOOL ret = FALSE;
     if (sub != NULL) {
@@ -98,10 +98,10 @@ BOOL func_ov000_0218cea4(Obj0218ce38 *self) {
             sub->unk_78 = self->unk_70;
             sub->unk_7c = self->unk_74;
             sub->unk_80 = self->unk_78;
-            func_ov000_02190758(self->unk_38, self->unk_7c, 0);
+            Obj02190758_SetRot(self->unk_38, self->unk_7c, 0);
         }
         self->unk_93_0 = 0;
-        ret = func_ov000_021903b4(self->unk_38);
+        ret = Model021903b4_Draw(self->unk_38);
     }
     if (ret && self->unk_3c != NULL) {
         if (self->unk_48 != NULL) {
@@ -110,7 +110,7 @@ BOOL func_ov000_0218cea4(Obj0218ce38 *self) {
         if (self->unk_38->unk_be < 0xf) {
             self->unk_3c->unk_19 = self->unk_38->unk_be;
         }
-        func_ov000_02191c24(self->unk_3c, &self->unk_70);
+        Shadow_Draw(self->unk_3c, &self->unk_70);
     }
     return ret;
 }
@@ -123,15 +123,15 @@ static inline BOOL IsIdle0218cf5c(Sub0218ce3c *sub) {
     return ret;
 }
 
-BOOL func_ov000_0218cf5c(Obj0218ce38 *self) {
+BOOL Actor_IsReady(Obj0218ce38 *self) {
     BOOL ret = TRUE;
     if (self->unk_34 != NULL && self->unk_34->unk_00 >= 0) {
-        if (!func_ov000_0218f110(self->unk_34)) {
+        if (!ResSet_UpdateLoad(self->unk_34)) {
             ret = FALSE;
         }
     }
     if (self->unk_3c != NULL && !IsIdle0218cf5c(self->unk_3c)) {
-        if (!func_ov000_02191b9c(self->unk_3c)) {
+        if (!Shadow_UpdateLoad(self->unk_3c)) {
             ret = FALSE;
         }
     }

@@ -24,7 +24,7 @@ extern u8 OVERLAY_11_ID[];
 extern u8 OVERLAY_12_ID[];
 extern u8 OVERLAY_13_ID[];
 extern u8 OVERLAY_14_ID[];
-extern void func_0204b270(SceneMgr *a, s32 b, s32 c);
+extern void Scene_SetSubOverlay_0204b270(SceneMgr *a, s32 b, s32 c);
 
 s32 Ov003_OverlayForKind(Ov003NodeSub *sub) {
     s32 r;
@@ -86,7 +86,7 @@ s32 Ov003_OverlayForKind(Ov003NodeSub *sub) {
         break;
     }
     if (r != -1) {
-        func_0204b270(data_02149ef0, r, 1);
+        Scene_SetSubOverlay_0204b270(data_02149ef0, r, 1);
     }
     return r;
 }
@@ -104,6 +104,6 @@ void Ov003_LoadKindOverlay(void) {
         }
     }
     if (r == -1) {
-        func_0204b270(data_02149ef0, (s32)OVERLAY_9_ID, 1);
+        Scene_SetSubOverlay_0204b270(data_02149ef0, (s32)OVERLAY_9_ID, 1);
     }
 }

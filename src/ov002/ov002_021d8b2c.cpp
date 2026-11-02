@@ -2,16 +2,16 @@
 
 extern "C" {
 
-void func_ov002_021d8b2c(Obj021efe9c *self, Vec2 *out) {
+void Obj021efe9c_GetOrigin(Obj021efe9c *self, Vec2 *out) {
     out->x = self->unk_64;
     out->y = self->unk_68;
 }
 
-Ov002Shape *func_ov002_021d8b40(Obj021efe9c *self) {
+Ov002Shape *Obj021efe9c_GetShape(Obj021efe9c *self) {
     return &self->shape;
 }
 
-u8 func_ov002_021d8b48(Obj021efe9c *self) {
+u8 Obj021efe9c_GetRot(Obj021efe9c *self) {
     return self->shape.rot;
 }
 
@@ -46,7 +46,7 @@ void func_ov002_021d8bcc(Obj021efe9c *self) {
     if (self->unk_a4 != 0) {
         return;
     }
-    func_ov002_021e3b0c((s32 *)((u8 *)self + 0xbc), (s32 *)((u8 *)self + 0x54), (s32 *)((u8 *)self + 0x64));
+    Ov002_CellToPos((s32 *)((u8 *)self + 0xbc), (s32 *)((u8 *)self + 0x54), (s32 *)((u8 *)self + 0x64));
     self->unk_bc.y = 0x400;
     self->unk_b0.x = 0xb33;
     self->unk_b0.z = 0;

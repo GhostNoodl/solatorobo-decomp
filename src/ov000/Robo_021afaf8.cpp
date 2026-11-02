@@ -38,17 +38,17 @@ extern "C" {
 extern RoboDef data_ov000_021ca398[];
 extern RoboDef data_ov000_021ca248[];
 Param0206ef10 *func_0206ef10(u16 id);
-void *func_ov000_0218fee4(void *p);
-void *func_ov000_0218ea20(void *p);
-void *func_ov000_0218e9c4(void *p);
+void *Model0218fe1c_FreeAnims(void *p);
+void *ResSet_ReleaseAll(void *p);
+void *ResSet_Init(void *p);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Actor_SendMsg(void *a, u16 id, s32 b, s32 c, s32 d, void *e);
-void func_ov000_0218d46c(void *a, u16 id, s32 b);
-void func_ov000_02191008(void *p);
-void func_ov000_0218ec60(void *p, const char *name, const char *ext, s32 c, s32 d);
-void func_ov000_0218edf0(void *p, const char *name, const char *ext, s32 c, s32 d);
+void Actor_SendMsgU8(void *a, u16 id, s32 b);
+void Model0218fe1c_StopAnim(void *p);
+void ResSet_SetName0(void *p, const char *name, const char *ext, s32 c, s32 d);
+void ResSet_SetName1(void *p, const char *name, const char *ext, s32 c, s32 d);
 void func_ov000_0218ef10(void *p, const char *name, const char *ext, s32 c, s32 d);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL History_SetState(void *a, s32 b, s32 c);
 
 static inline BOOL GBusy_021afaf8(FieldState *g) {
     return g->head != g->tail ? TRUE : FALSE;
@@ -91,7 +91,7 @@ static inline void FreeModels_021afaf8(Robo021ca458 *self) {
         if (self->unk_998 != NULL) {
             void *p = self->unk_998;
             if (p != NULL) {
-                func_ov000_0218fee4(p);
+                Model0218fe1c_FreeAnims(p);
                 Heap_Free(p);
             }
             self->unk_998 = NULL;
@@ -104,7 +104,7 @@ static inline void FreeModels_021afaf8(Robo021ca458 *self) {
         if (self->unk_99c != NULL) {
             void *p = self->unk_99c;
             if (p != NULL) {
-                func_ov000_0218ea20(p);
+                ResSet_ReleaseAll(p);
                 Heap_Free(p);
             }
             self->unk_99c = NULL;
@@ -190,8 +190,8 @@ void func_ov000_021afaf8(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
                 p_0.y = self->pos.y;
                 p_0.z = self->pos.z;
                 p_0.y += 0x1800;
-                func_02065f88(0x5e0, &p_0);
-                func_02065f88(0x384, &p_0);
+                Effect_SpawnId(0x5e0, &p_0);
+                Effect_SpawnId(0x384, &p_0);
             }
             break;
         case 5:
@@ -231,7 +231,7 @@ void func_ov000_021afaf8(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
             {
                 void *p_1 = Heap_Alloc(0x138);
                 if (p_1 != NULL) {
-                    p_1 = func_ov000_0218e9c4(p_1);
+                    p_1 = ResSet_Init(p_1);
                 }
                 self->unk_99c = p_1;
             }
@@ -269,7 +269,7 @@ void func_ov000_021afaf8(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
                     st.rz = a->rot_z;
                     st.unk = 0;
                     Actor_SendMsg(a, self->id, 7, 1, 0x18, &st);
-                    func_ov000_0218d46c(a, self->id, 0xa);
+                    Actor_SendMsgU8(a, self->id, 0xa);
                     if (a->targetObj != NULL) {
                         a->targetObj->unk_18_0 = 0;
                     }
@@ -287,12 +287,12 @@ void func_ov000_021afaf8(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
                     }
                     v = self->unk_75c;
                     v.y += ofs;
-                    func_02065f88(0x5dc, &v);
-                    func_02065f88(0x384, &v);
+                    Effect_SpawnId(0x5dc, &v);
+                    Effect_SpawnId(0x384, &v);
                 }
             }
             self->mdl1.visible = 0;
-            func_ov000_02191008((u8 *)self + 0x368);
+            Model0218fe1c_StopAnim((u8 *)self + 0x368);
             if ((u8 *)self->unk_998 != NULL) {
                 LFLD(H_021afaf8, self->unk_998, 0xc2).b0 = 0;
             }
@@ -301,11 +301,11 @@ void func_ov000_021afaf8(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
                 NNSG3dResFileHeader **res = (NNSG3dResFileHeader **)self->mdl0.res->mdl_handle;
                 NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet(res != NULL ? *res : NULL));
             }
-            func_ov000_0218ec60((u8 *)self + 0x450, def->name[0], def->name[1], 1, 1);
-            func_ov000_0218edf0((u8 *)self + 0x450, def->name[2], def->name[3], 1, 1);
+            ResSet_SetName0((u8 *)self + 0x450, def->name[0], def->name[1], 1, 1);
+            ResSet_SetName1((u8 *)self + 0x450, def->name[2], def->name[3], 1, 1);
             func_ov000_0218ef10((u8 *)self + 0x450, def->name[4], def->name[5], 1, 1);
             if (def->unk_18 != 0) {
-                func_ov000_0218edf0((u8 *)self + 0x588, def->name[0], def->name[1], 1, 1);
+                ResSet_SetName1((u8 *)self + 0x588, def->name[0], def->name[1], 1, 1);
             }
             self->unk_b22_11 = 1;
             self->unk_b22_12 = 1;
@@ -313,7 +313,7 @@ void func_ov000_021afaf8(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
         } else {
             self->unk_b24_19 = 1;
             self->unk_b22_9 = 0;
-            func_ov000_02198360(((u8 *)self->fsm), 1, 0);
+            History_SetState(((u8 *)self->fsm), 1, 0);
         }
         break;
     }
@@ -323,7 +323,7 @@ void func_ov000_021afaf8(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
         }
         self->unk_b22_13 = 0;
         self->unk_b22_9 = 0;
-        func_ov000_02198360(((u8 *)self->fsm), 1, 0);
+        History_SetState(((u8 *)self->fsm), 1, 0);
         return;
         break;
     }

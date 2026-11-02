@@ -5,9 +5,9 @@
 extern "C" {
 extern u8 data_ov000_021cb8e0[];
 extern u8 *data_ov000_021ccd30;
-void func_0206e900(char *buf, const void *s);
-void *func_020359d0(const char *name, s32 a, s32 b);
-BOOL func_02035b90(const char *name, s32 a);
+void LangData_LocalizePath(char *buf, const void *s);
+void *ResMgr_Load(const char *name, s32 a, s32 b);
+BOOL ResMgr_IsLoaded(const char *name, s32 a);
 void func_ov000_02164a94(Lo021cb6b0 *self);
 void func_ov000_02167d64(Lo021cb6b0 *self);
 void func_ov000_02166be8(Lo021cb6b0 *self);
@@ -16,17 +16,17 @@ void func_ov000_021645b8(Lo021cb6b0 *self) {
     switch (self->unk_20) {
     case 0: {
         char buf[0x20];
-        func_0206e900(buf, data_ov000_021cb8e0);
-        func_020359d0(buf, 7, 0);
+        LangData_LocalizePath(buf, data_ov000_021cb8e0);
+        ResMgr_Load(buf, 7, 0);
         self->unk_20 = 1;
     }
     case 1: {
         char buf[0x20];
-        func_0206e900(buf, data_ov000_021cb8e0);
+        LangData_LocalizePath(buf, data_ov000_021cb8e0);
         if (LBIT(data_ov000_021ccd30, 0x114).b0) {
             return;
         }
-        if (!func_02035b90(buf, 7)) {
+        if (!ResMgr_IsLoaded(buf, 7)) {
             return;
         }
         self->unk_20 = 2;

@@ -37,7 +37,7 @@ extern Ent02197ad0 data_ov000_021c9de8[];
 extern void *data_02097e4c;
 extern char data_ov000_021cc46f[];
 u16 func_ov000_02198da8(Body02197ad0 *b, u16 angle);
-void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
+void *SndMgr_PlayAt(void *mgr, s32 id, VecFx32 *pos, s32 a);
 void Ov003Pickup_Update(Actor *self, s32 a);
 
 static inline s32 DistXZSq(const VecFx32 *a, const VecFx32 *b) {
@@ -60,7 +60,7 @@ void func_ov000_02197ad0(Actor *self, BOOL b) {
     if ((((Body02197ad0 *)self->hit)->flags & 0x40000000) || ((Body02197ad0 *)self->hit)->unk_58 != 0) {
         self->moveYaw = func_ov000_02198da8(((Body02197ad0 *)self->hit), self->moveYaw);
         if ((((Body02197ad0 *)self->hit)->flags & 0x40000000) && e->se >= 0 && ((Body02197ad0 *)self->hit)->unk_58 == 0) {
-            func_02049f44(data_02097e4c, e->se, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, e->se, &self->pos, 0);
         }
         self->speed = FX_MUL(self->speed, e->m8);
         if (self->speed < 0x8f) {
@@ -74,11 +74,11 @@ void func_ov000_02197ad0(Actor *self, BOOL b) {
         self->gravity = 0x52;
     }
     if (((Body02197ad0 *)self->hit)->flags & 0x20000000) {
-        func_ov000_02190cb0(self->model, data_ov000_021cc46f, 0x1000, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov000_021cc46f, 0x1000, 0);
         if (self->unk_92 == 0 && e->se2 >= 0 && self->velY <= -0xcd) {
             Camera *cam = &data_ov000_021ccd54->cam.base;
             if (cam != NULL && DistXZSq(&cam->eye, &self->pos) < 0x19000) {
-                func_02049f44(data_02097e4c, e->se2, &self->pos, 0);
+                SndMgr_PlayAt(data_02097e4c, e->se2, &self->pos, 0);
                 u8 s1;
                 u8 s2;
                 if ((s1 = e->shake) != 0 && (s2 = e->shake2) != 0) {

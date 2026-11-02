@@ -19,16 +19,16 @@ extern const char *data_0208cca0;
 extern const char *data_0208cb7c;
 extern Ent_021bd8ac data_ov000_021cc8f0[];
 extern char data_ov000_021cc920[];
-void *func_ov000_0218e9c4(void *p);
-BOOL func_ov000_0218f110(void *p);
+void *ResSet_Init(void *p);
+BOOL ResSet_UpdateLoad(void *p);
 
 static inline Model *NewModel_021bd8ac(const char **name) {
     const char *nm;
     Model *m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
         nm = *name;
-        func_02041218(&m->pltt);
-        func_02041440(m, nm, 0);
+        PlttRes_Init_02041218(&m->pltt);
+        TexObj_Init(m, nm, 0);
     }
     return m;
 }
@@ -49,7 +49,7 @@ BOOL func_ov000_021bd8ac(ActorMarker *self) {
     void *res;
     s32 n;
 
-    if (!func_02035d5c(data_0214b105) || !func_02035d5c(data_0208cca0) || !func_02035d5c(data_0208cc94)) {
+    if (!ResMgr_GetArcList(data_0214b105) || !ResMgr_GetArcList(data_0208cca0) || !ResMgr_GetArcList(data_0208cc94)) {
         return FALSE;
     }
     n = self->nextKind;
@@ -59,122 +59,122 @@ BOOL func_ov000_021bd8ac(ActorMarker *self) {
     Model *mdl[4] = {NULL, NULL, NULL, NULL};
     switch (n) {
     case 0:
-        res = func_02034d88(func_02035d5c(data_0208cca0), data_0208cb74);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
         mdl[0] = NewModel_021bd8ac(&data_0208cb74);
-        func_020417e0(mdl[0], res);
+        TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
-        func_02041d9c(mdl[0], 0, 3);
+        TexObj_SelectImage(mdl[0], 0, 3);
         break;
     case 1:
-        res = func_02034d88(func_02035d5c(data_0208cca0), data_0208cb74);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
         mdl[0] = NewModel_021bd8ac(&data_0208cb74);
-        func_020417e0(mdl[0], res);
+        TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
-        func_02041d9c(mdl[0], 0, 4);
+        TexObj_SelectImage(mdl[0], 0, 4);
         break;
     case 2:
-        res = func_02034d88(func_02035d5c(data_0208cca0), data_0208cb74);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
         mdl[0] = NewModel_021bd8ac(&data_0208cb74);
-        func_020417e0(mdl[0], res);
+        TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
-        func_02041d9c(mdl[0], 0, 0xf);
+        TexObj_SelectImage(mdl[0], 0, 0xf);
         break;
     case 3:
-        res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
         mdl[0] = NewModel_021bd8ac(&data_0208cc88);
-        func_020417e0(mdl[0], res);
+        TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
-        func_02041d9c(mdl[0], 0, 2);
-        res = func_02034d88(func_02035d5c(data_0208cca0), data_0208cb74);
+        TexObj_SelectImage(mdl[0], 0, 2);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
         mdl[1] = NewModel_021bd8ac(&data_0208cb74);
-        func_020417e0(mdl[1], res);
+        TexObj_SetRes(mdl[1], res);
         mdl[1]->flags |= 2;
-        func_02041d9c(mdl[1], 0, 2);
-        res = func_02034d88(func_02035d5c(data_0214b105), data_0208cb7c);
+        TexObj_SelectImage(mdl[1], 0, 2);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0214b105), data_0208cb7c);
         mdl[2] = NewModel_021bd8ac(&data_0208cb7c);
-        func_020417e0(mdl[2], res);
+        TexObj_SetRes(mdl[2], res);
         mdl[2]->flags |= 2;
-        func_02041d9c(mdl[2], 0, 7);
+        TexObj_SelectImage(mdl[2], 0, 7);
         break;
     case 4:
-        res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
         mdl[0] = NewModel_021bd8ac(&data_0208cc88);
-        func_020417e0(mdl[0], res);
+        TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
-        func_02041d9c(mdl[0], 0, 3);
-        func_02041d9c(mdl[0], 0, 0x10);
+        TexObj_SelectImage(mdl[0], 0, 3);
+        TexObj_SelectImage(mdl[0], 0, 0x10);
         break;
     case 5:
-        res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
         mdl[0] = NewModel_021bd8ac(&data_0208cc88);
-        func_020417e0(mdl[0], res);
+        TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
-        func_02041d9c(mdl[0], 0, 3);
-        func_02041d9c(mdl[0], 0, 0x11);
+        TexObj_SelectImage(mdl[0], 0, 3);
+        TexObj_SelectImage(mdl[0], 0, 0x11);
         break;
     case 6:
-        res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
         mdl[0] = NewModel_021bd8ac(&data_0208cc88);
-        func_020417e0(mdl[0], res);
+        TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
-        func_02041d9c(mdl[0], 0, 2);
-        res = func_02034d88(func_02035d5c(data_0208cca0), data_0208cb74);
+        TexObj_SelectImage(mdl[0], 0, 2);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
         mdl[1] = NewModel_021bd8ac(&data_0208cb74);
-        func_020417e0(mdl[1], res);
+        TexObj_SetRes(mdl[1], res);
         mdl[1]->flags |= 2;
-        func_02041d9c(mdl[1], 0, 2);
-        res = func_02034d88(func_02035d5c(data_0214b105), data_0208cb7c);
+        TexObj_SelectImage(mdl[1], 0, 2);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0214b105), data_0208cb7c);
         mdl[2] = NewModel_021bd8ac(&data_0208cb7c);
-        func_020417e0(mdl[2], res);
+        TexObj_SetRes(mdl[2], res);
         mdl[2]->flags |= 2;
-        func_02041d9c(mdl[2], 0, 6);
+        TexObj_SelectImage(mdl[2], 0, 6);
         break;
     case 7:
-        res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
         mdl[0] = NewModel_021bd8ac(&data_0208cc88);
-        func_020417e0(mdl[0], res);
+        TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
-        func_02041d9c(mdl[0], 0, 3);
-        func_02041d9c(mdl[0], 0, 4);
+        TexObj_SelectImage(mdl[0], 0, 3);
+        TexObj_SelectImage(mdl[0], 0, 4);
         break;
     case 8:
-        res = func_02034d88(func_02035d5c(data_0214b105), data_0208cb7c);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0214b105), data_0208cb7c);
         mdl[0] = NewModel_021bd8ac(&data_0208cb7c);
-        func_020417e0(mdl[0], res);
+        TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
-        func_02041d9c(mdl[0], 0, 8);
-        res = func_02034d88(func_02035d5c(data_0208cca0), data_0208cb74);
+        TexObj_SelectImage(mdl[0], 0, 8);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
         mdl[1] = NewModel_021bd8ac(&data_0208cb74);
-        func_020417e0(mdl[1], res);
+        TexObj_SetRes(mdl[1], res);
         mdl[1]->flags |= 2;
-        func_02041d9c(mdl[1], 0, 2);
+        TexObj_SelectImage(mdl[1], 0, 2);
         break;
     case 9:
-        res = func_02034d88(func_02035d5c(data_0214b105), data_0208cb7c);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0214b105), data_0208cb7c);
         mdl[0] = NewModel_021bd8ac(&data_0208cb7c);
-        func_020417e0(mdl[0], res);
+        TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
-        func_02041d9c(mdl[0], 0, 9);
-        res = func_02034d88(func_02035d5c(data_0208cca0), data_0208cb74);
+        TexObj_SelectImage(mdl[0], 0, 9);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
         mdl[1] = NewModel_021bd8ac(&data_0208cb74);
-        func_020417e0(mdl[1], res);
+        TexObj_SetRes(mdl[1], res);
         mdl[1]->flags |= 2;
-        func_02041d9c(mdl[1], 0, 2);
+        TexObj_SelectImage(mdl[1], 0, 2);
         break;
     case 10:
-        res = func_02034d88(func_02035d5c(data_0208cca0), data_0208cb74);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
         mdl[0] = NewModel_021bd8ac(&data_0208cb74);
-        func_020417e0(mdl[0], res);
+        TexObj_SetRes(mdl[0], res);
         mdl[0]->flags |= 2;
-        func_02041d9c(mdl[0], 0, 0);
-        func_02041d9c(mdl[0], 0, 1);
+        TexObj_SelectImage(mdl[0], 0, 0);
+        TexObj_SelectImage(mdl[0], 0, 1);
         break;
     case 11:
         if (self->res == NULL) {
             Ent_021bd8ac *e = &data_ov000_021cc8f0[self->nextKind - 0xc];
             u8 *p = (u8 *)Heap_Alloc(0x138);
             if (p != NULL) {
-                p = (u8 *)func_ov000_0218e9c4(p);
+                p = (u8 *)ResSet_Init(p);
             }
             self->res = (ActorRes *)p;
             SetA_021bd8ac(p, data_ov000_021cc920, e->name);
@@ -182,7 +182,7 @@ BOOL func_ov000_021bd8ac(ActorMarker *self) {
             self->res->unk_00 = 0;
         }
         if (self->res != NULL) {
-            func_ov000_0218f110(self->res);
+            ResSet_UpdateLoad(self->res);
             return self->res->unk_00 < 0 ? TRUE : FALSE;
         }
         break;

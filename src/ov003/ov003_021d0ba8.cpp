@@ -63,15 +63,15 @@ typedef struct {
     char unk_120[0x20];
 } Ov003Res;
 
-extern Ov003ResInfo *func_0206fef8(u16 id);
+extern Ov003ResInfo *Tbl_FindEntry_0206fef8(u16 id);
 extern Ov003ResParam *func_02070558(u16 id);
 extern char *func_0207011c(u16 id);
 extern char *func_020701d4(u16 id);
 extern char *Tbl_GetEntryData(u16 id, s32 n);
-extern void func_ov000_0218f074(Ov003Res *p, char *res, s32 a, s32 b, s32 c, s32 d);
+extern void ResSet_SetFile(Ov003Res *p, char *res, s32 a, s32 b, s32 c, s32 d);
 
 void Ov003Res_SetNames(Ov003Res *res, u16 id) {
-    Ov003ResInfo *info = func_0206fef8(id);
+    Ov003ResInfo *info = Tbl_FindEntry_0206fef8(id);
     Ov003ResParam *param = func_02070558(id);
     char *name = func_0207011c(id);
     char *a;
@@ -93,7 +93,7 @@ void Ov003Res_SetNames(Ov003Res *res, u16 id) {
         STD_CopyString(res->unk_e4, alt);
         res->unk_03 |= 0x10;
     } else {
-        func_ov000_0218f074(res, name, info->flags.bit0 != 0, info->flags.bit1 != 0, 0, 0);
+        ResSet_SetFile(res, name, info->flags.bit0 != 0, info->flags.bit1 != 0, 0, 0);
     }
     a = Tbl_GetEntryData(id, 0);
     b = Tbl_GetEntryData(id, 1);
@@ -157,9 +157,9 @@ Ov003Actor *name(Ov003Actor *self) {         \
 OV003_OBJ_CTOR(Ov003Actor_Ctor)
 OV003_OBJ_CTOR(Ov003Actor_Ctor_021d0c94)
 
-extern void *func_ov000_0218fee4(void *p);
+extern void *Model0218fe1c_FreeAnims(void *p);
 extern void Heap_Free(void *p);
-extern void *func_ov000_0218c928(Actor *self);
+extern void *Actor_DtorBase(Actor *self);
 
 static inline void Ov003Actor_DtorBody(Ov003Actor *self) {
     s32 i;
@@ -172,7 +172,7 @@ static inline void Ov003Actor_DtorBody(Ov003Actor *self) {
             m = self->unk_d0->models[i];
             if (m != NULL) {
                 if (m != NULL) {
-                    func_ov000_0218fee4(m);
+                    Model0218fe1c_FreeAnims(m);
                     Heap_Free(m);
                 }
                 self->unk_d0->models[i] = NULL;
@@ -189,7 +189,7 @@ static inline void Ov003Actor_DtorBody(Ov003Actor *self) {
         EffectMgr_Kill(data_0214a420, self->unk_e0);
         self->unk_e0 = NULL;
     }
-    func_ov000_0218c928(self);
+    Actor_DtorBase(self);
 }
 
 Ov003Actor *Ov003Actor_Dtor(Ov003Actor *self) {
@@ -216,11 +216,11 @@ typedef struct {
 } Ov003InitInfo;
 
 extern void *Heap_Alloc(u32 size);
-extern void *func_ov000_0218e9c4(void *p);
-extern ActorShadow *func_ov000_021919c8(void *p);
+extern void *ResSet_Init(void *p);
+extern ActorShadow *Shadow_Ctor(void *p);
 extern void Shadow_Load(ActorShadow *p);
 extern void *History_Init(void *p);
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL History_SetState(void *p, s32 a, s32 b);
 
 static inline void Ov003Shadow_Push(ActorShadow *s, u8 v) {
     s->unk_18_4 = s->unk_18_0;
@@ -228,12 +228,12 @@ static inline void Ov003Shadow_Push(ActorShadow *s, u8 v) {
 }
 
 void Ov003Actor_Init(Ov003Actor *self) {
-    Ov003InitInfo *info = (Ov003InitInfo *)func_0206fef8(self->kind);
+    Ov003InitInfo *info = (Ov003InitInfo *)Tbl_FindEntry_0206fef8(self->kind);
     void *p;
     self->unk_b0 = (Ov003Param *)((u8 *)func_02070558(self->kind) + 0x10);
     p = Heap_Alloc(0x138);
     if (p != NULL) {
-        p = func_ov000_0218e9c4(p);
+        p = ResSet_Init(p);
     }
     self->unk_34 = p;
     if (self->nameFunc != NULL) {
@@ -244,7 +244,7 @@ void Ov003Actor_Init(Ov003Actor *self) {
     if (info->unk_12_12 != 0) {
         ActorShadow *s = (ActorShadow *)Heap_Alloc(0x1c);
         if (s != NULL) {
-            s = func_ov000_021919c8(s);
+            s = Shadow_Ctor(s);
         }
         self->unk_3c = s;
         if (info->unk_12_14 == 0) {
@@ -260,7 +260,7 @@ void Ov003Actor_Init(Ov003Actor *self) {
     }
     self->fsm = (ActorSub40 *)p;
     if (self->unk_b0->unk_0a_13) {
-        func_ov000_02198360(p, 0x20, 0);
+        History_SetState(p, 0x20, 0);
     }
     self->moveYaw = self->rot_y;
     self->unk_ea_0 = self->unk_b0->unk_0a_7;

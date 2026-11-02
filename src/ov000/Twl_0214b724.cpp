@@ -31,11 +31,11 @@ typedef struct {
 extern "C" {
 
 BOOL OS_IsRunOnTwl(void);
-BOOL func_0203e63c(void *a);
-void *func_02035f30(void *a, char *name, s32 b);
-Data02034f5c *func_02034f5c(void *a, char *name);
-void func_0203f0b4(void *p);
-void func_02035acc(void *a, char *name, s32 b);
+BOOL Vram_IsTransferDone(void *a);
+void *ResMgr_GetArchiveList(void *a, char *name, s32 b);
+Data02034f5c *ResList_FindType5(void *a, char *name);
+void Vram_FreeRes(void *p);
+void ResMgr_ReleaseArchive(void *a, char *name, s32 b);
 void Heap_FreeArray(void *p);
 void func_ov000_0214b910(TwlLoader *self);
 
@@ -73,11 +73,11 @@ TwlLoader *func_ov000_0214b724(TwlLoader *self) {
             func_0222e784(self);
             break;
         case 1:
-            if (self->unk_14 != NULL && func_0203e63c(self->unk_14)) {
+            if (self->unk_14 != NULL && Vram_IsTransferDone(self->unk_14)) {
                 void *a = data_ov000_021c9838;
-                void *d = func_02035f30(a, self->unk_1c, 5);
-                func_0203f0b4(func_02034f5c(d, self->unk_1c)->unk_00);
-                func_02035acc(a, self->unk_1c, 5);
+                void *d = ResMgr_GetArchiveList(a, self->unk_1c, 5);
+                Vram_FreeRes(ResList_FindType5(d, self->unk_1c)->unk_00);
+                ResMgr_ReleaseArchive(a, self->unk_1c, 5);
             }
             break;
         }

@@ -61,7 +61,7 @@ static inline ActorT *FindActor(u16 id) {
     return ActorMgr_GetActor(mgr, id);
 }
 
-Target *func_ov000_02199b00(Target *self) {
+Target *Target_Init(Target *self) {
     s32 i;
 
     self->type = 0;
@@ -98,7 +98,7 @@ ActorT *Target_Get(Target *self) {
     return FindActor(self->target);
 }
 
-u16 func_ov000_02199bc8(Target *self, VecFx32 *pos, u16 t, u16 dur) {
+u16 Target_LerpToDest(Target *self, VecFx32 *pos, u16 t, u16 dur) {
     VecFx32 d;
 
     if (!self->unk_18_3 && t < dur) {
@@ -137,7 +137,7 @@ BOOL func_ov000_02199c70(Target *self, u16 kind) {
     return found;
 }
 
-BOOL func_ov000_02199cd8(Target *self, u16 id) {
+BOOL Target_MatchesId(Target *self, u16 id) {
     BOOL found = FALSE;
     s32 i;
 

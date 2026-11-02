@@ -28,7 +28,7 @@ static inline void SetText021c2450(Hud021cca10 *self, char *str0) {
         t = (TextWin *)Heap_Alloc(0xb8);
         if (t != NULL) {
             VOBJ_SET_VTABLE(t, data_0208ba70);
-            func_0204c7d0(t);
+            TextWin_Init(t);
         }
         self->text = t;
     }
@@ -56,14 +56,14 @@ void func_ov000_021c2450(Hud021cca10 *self) {
         if (m != NULL) {
             char *name = data_0208cc94;
             char *a = data_0208cc88;
-            func_02041218(&m->pltt);
-            func_02041440(m, a, 0);
+            PlttRes_Init_02041218(&m->pltt);
+            TexObj_Init(m, a, 0);
             STD_CopyString(m->name, name);
         }
         self->unk_30 = m;
-        func_020417e0(self->unk_30, func_02034d88(func_02035d5c(m->name), self->unk_30->unk_04c));
+        TexObj_SetRes(self->unk_30, ResList_FindType2(ResMgr_GetArcList(m->name), self->unk_30->unk_04c));
         self->unk_30->flags |= 2;
-        func_02041d9c(self->unk_30, 0, 6);
+        TexObj_SelectImage(self->unk_30, 0, 6);
         func_02041c20(self->unk_30, 6, (void *)self->unk_3c);
         func_02041c5c(self->unk_30, (void *)func_ov000_021c7608);
         self->unk_30->flags |= 0x80000;
@@ -73,14 +73,14 @@ void func_ov000_021c2450(Hud021cca10 *self) {
         m2 = (Model *)Heap_Alloc(sizeof(Model));
         if (m2 != NULL) {
             char *a = data_0208cb7c;
-            func_02041218(&m2->pltt);
-            func_02041440(m2, a, 0);
+            PlttRes_Init_02041218(&m2->pltt);
+            TexObj_Init(m2, a, 0);
             STD_CopyString(m2->name, data_0214b105);
         }
         self->unk_34 = m2;
-        func_020417e0(self->unk_34, func_02034d88(func_02035d5c(m2->name), self->unk_34->unk_04c));
+        TexObj_SetRes(self->unk_34, ResList_FindType2(ResMgr_GetArcList(m2->name), self->unk_34->unk_04c));
         self->unk_34->flags |= 2;
-        func_02041d9c(self->unk_34, 0, 4);
+        TexObj_SelectImage(self->unk_34, 0, 4);
         self->unk_34->flags |= 0x80000;
         ((MdlFlags021c2450 *)&self->unk_34->flags)->lay = 0x1e;
         self->unk_34->flags |= 0x100000;

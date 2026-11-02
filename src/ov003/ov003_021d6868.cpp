@@ -3,8 +3,8 @@
 
 extern "C" {
 
-extern Actor *func_ov000_0219be1c(s32 kind, const VecFx32 *pos, const void *rot, u16 owner, u16 target);
-extern void func_ov000_0218d46c(Actor *p, u16 id, s32 v);
+extern Actor *Actor_SpawnKind(s32 kind, const VecFx32 *pos, const void *rot, u16 owner, u16 target);
+extern void Actor_SendMsgU8(Actor *p, u16 id, s32 v);
 
 void Ov003Actor_SetColor(Ov003Actor *self, u16 color) {
     Model0218fe1c *a = self->model;
@@ -73,9 +73,9 @@ void Ov003Actor_SetAlpha(Ov003Actor *self, u8 alpha) {
 }
 
 Actor *Ov003Actor_SpawnAtSelf(Actor *self, s32 kind, s32 v) {
-    Actor *p = func_ov000_0219be1c(kind, &self->pos, &self->rot_x, 0xffff, 0xffff);
+    Actor *p = Actor_SpawnKind(kind, &self->pos, &self->rot_x, 0xffff, 0xffff);
     if (p != NULL && v != 0) {
-        func_ov000_0218d46c(p, self->id, v);
+        Actor_SendMsgU8(p, self->id, v);
     }
     return p;
 }
@@ -86,7 +86,7 @@ Actor *Ov003Actor_SpawnChild(Ov003Actor *self, s32 kind, const VecFx32 *pos, con
     if (other != NULL) {
         o = other->id;
     }
-    p = func_ov000_0219be1c(kind, pos, rot, self->id, o);
+    p = Actor_SpawnKind(kind, pos, rot, self->id, o);
     if (p != NULL) {
         self->target_id = p->id;
     }

@@ -17,13 +17,13 @@ typedef struct {
 extern "C" {
 extern const u32 data_0208bb1c[];
 void func_0204f49c(void *win);
-void func_0204ca70(TextWin *win);
+void TextWin_RenderToVram(TextWin *win);
 
 static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
-        func_0204c7d0(win);
+        TextWin_Init(win);
     }
     return win;
 }
@@ -32,7 +32,7 @@ static inline TextWinEx *TextWinEx_New(void) {
     TextWinEx *win = (TextWinEx *)Heap_Alloc(0x3dc);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
-        func_0204c7d0(win);
+        TextWin_Init(win);
         *(const u32 **)win = data_0208bb1c;
         func_0204f49c(win);
     }
@@ -63,7 +63,7 @@ struct Obj0215bb14 : public VObj {
     TextWin *unk_84;
 };
 
-void func_ov000_0215bb14(Obj0215bb14 *self, u32 text) {
+void Obj0215bb14_SetText(Obj0215bb14 *self, u32 text) {
     BOOL flag;
     self->unk_0c &= ~0x40000;
     {
@@ -110,7 +110,7 @@ void func_ov000_0215bb14(Obj0215bb14 *self, u32 text) {
         self->unk_84->flag31 = 1;
     }
     if (self->unk_0c & 0x80000) {
-        func_0204ca70(self->unk_84);
+        TextWin_RenderToVram(self->unk_84);
     }
 }
 

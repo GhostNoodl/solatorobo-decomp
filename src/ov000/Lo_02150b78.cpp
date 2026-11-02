@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov000_02172f7c(Task *self, void *arg);
+void Task_Exit(Task *self, void *arg);
 
 static inline BOOL LoIsState5(void *o) {
     return LFLD(s32, o, 4) == 5 ? TRUE : FALSE;
@@ -23,7 +23,7 @@ void func_ov000_02150b78(Lo021ca9c4 *self, void *arg) {
         ok = FALSE;
     }
     if (ok) {
-        func_ov000_02172f7c(self, arg);
+        Task_Exit(self, arg);
         return;
     }
     if (q) {

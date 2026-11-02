@@ -5,22 +5,22 @@ void Ov012Names_Fill(Ov012Names *n, void *res);
 void Ov012ActVt_0220b280_Init(Ov012ActVt_0220b280 *self) {
     self->unk_d8 = (void *)Ov012Names_Fill;
     Ov003Actor_Init(self);
-    func_ov000_0218f074(&self->unk_f0, func_0207011c((void *)0x480e), 1, 0, 0, 0);
+    ResSet_SetFile(&self->unk_f0, func_0207011c((void *)0x480e), 1, 0, 0, 0);
     self->unk_f0.unk_00 = 0;
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     if (self->kind == 0x5029 || self->kind == 0x5057) {
         self->unk_1a = 1;
         return;
     }
-    func_02049678(data_02097e4c, 4, 6, -1);
+    SndMgr_RequestLoad_02049678(data_02097e4c, 4, 6, -1);
     self->unk_1a = 0;
 }
 }
 
 extern "C" {
 BOOL Ov012ActVt_0220b280_IsReady(Ov012ActVt_0220b280 *self) {
-    BOOL r = func_ov000_0218cf5c(self);
-    if (self->unk_f0.unk_00 >= 0 && !func_ov000_0218f110(&self->unk_f0)) {
+    BOOL r = Actor_IsReady(self);
+    if (self->unk_f0.unk_00 >= 0 && !ResSet_UpdateLoad(&self->unk_f0)) {
         r = FALSE;
     }
     if (r && !SndMgr_IsLoadDone(data_02097e4c)) {
@@ -80,7 +80,7 @@ struct Ov012FinderQuery {
     Ov012Query q;
 };
 
-extern s32 func_ov000_02199128(Ov012Finder *self, Ov012Query *q, void **out, s32 max);
+extern s32 Finder_CollectActors(Ov012Finder *self, Ov012Query *q, void **out, s32 max);
 
 static inline void Ov012_FinderQuery_Init(Ov012FinderQuery *fq) {
     fq->q.mask = 0;
@@ -129,7 +129,7 @@ void Ov012ActVt_0220b280_Update(Ov012ActVt_0220b280 *self) {
         return;
     }
     self->target = 0xffff;
-    pl = (Ov003Actor *)func_ov000_0219bf90();
+    pl = (Ov003Actor *)ActorMgr_FindPlayer();
     if (pl == NULL) {
         return;
     }
@@ -144,7 +144,7 @@ void Ov012ActVt_0220b280_Update(Ov012ActVt_0220b280 *self) {
     if (kind != 0x10) {
         self->unk_ea_3 = 0;
     }
-    if (Ov012_HpPct(self) < 0x50 && !func_ov000_021983b0(self->fsm, 0x11, 5, 1)) {
+    if (Ov012_HpPct(self) < 0x50 && !History_HasState(self->fsm, 0x11, 5, 1)) {
         Ov012FinderQuery fq;
         Ov003Actor *hits[0x20];
         found = FALSE;
@@ -157,7 +157,7 @@ void Ov012ActVt_0220b280_Update(Ov012ActVt_0220b280 *self) {
         fq.q.bits.b1 = 1;
         fq.q.bits.b2 = 0;
         fq.finder.query = NULL;
-        n = func_ov000_02199128(&fq.finder, &fq.q, (void **)hits, 0x20);
+        n = Finder_CollectActors(&fq.finder, &fq.q, (void **)hits, 0x20);
         if (n != 0) {
             for (i = 0; i < n; i++) {
                 if (hits[i] != NULL && Ov012_Kind(hits[i]) == 0xb) {
@@ -188,8 +188,8 @@ void Ov012ActVt_0220b280_Update(Ov012ActVt_0220b280 *self) {
     if (hp < 0x3c) {
         lvl = 2;
     }
-    if (lvl != 0 && (func_ov000_021983b0(self->fsm, 0x12, lvl, 1) || func_ov000_021983b0(self->fsm, 0x13, lvl, 1) ||
-                     func_ov000_021983b0(self->fsm, 0x14, lvl, 1))) {
+    if (lvl != 0 && (History_HasState(self->fsm, 0x12, lvl, 1) || History_HasState(self->fsm, 0x13, lvl, 1) ||
+                     History_HasState(self->fsm, 0x14, lvl, 1))) {
         self->unk_b8 = v;
         self->fsm->flags |= 0x10000;
         self->unk_228 = 0;
@@ -206,7 +206,7 @@ void Ov012ActVt_0220b280_Update(Ov012ActVt_0220b280 *self) {
             self->unk_b6 = 0x87;
         }
     } else if (dist < 0xa000) {
-        if (!func_ov000_021983b0(self->fsm, 0xe, 2, 1)) {
+        if (!History_HasState(self->fsm, 0xe, 2, 1)) {
             self->fsm->flags |= 0x4000;
             self->unk_b6 = 0xe1;
         }

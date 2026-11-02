@@ -20,7 +20,7 @@ typedef char Gm10c021cfab4_size_check[(sizeof(Gm10c021cfab4) == 0x10c) ? 1 : -1]
 typedef struct {
     void *vtbl;
     u8 unk_04[0xf0];
-    u8 unk_f4[2][0x138]; // built with func_ov000_0218e9c4
+    u8 unk_f4[2][0x138]; // built with ResSet_Init
     s32 unk_364;
     s32 unk_368;
     u8 unk_36c[0x30];
@@ -95,10 +95,10 @@ extern u8 *data_ov000_021ccd54;
 void *Heap_Alloc(u32 size);
 s32 func_0206ffa0(u16 id);
 s32 Ov003_OverlayForKind(Spawn021cfab4 *s);
-void *func_ov000_0218e9c4(void *p);
-ResSet *func_ov000_0218ea20(ResSet *p);
-void *func_ov000_0218fe1c(void *p);
-Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *p);
+void *ResSet_Init(void *p);
+ResSet *ResSet_ReleaseAll(ResSet *p);
+void *Model0218fe1c_Init(void *p);
+Model0218fe1c *Model0218fe1c_FreeAnims(Model0218fe1c *p);
 void *Ov003Actor_Ctor_021d0c94(void *p);
 void Actor_JoinGroup(void *p, u16 sub, u16 id, s32 a);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
@@ -244,8 +244,8 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
             if (t != NULL) {
                 Base(t);
                 ((GmHead021cfab4 *)t)->vtbl = data_ov009_02217844;
-                func_ov000_0218e9c4(t + 0xf0);
-                func_ov000_0218fe1c(t + 0x228);
+                ResSet_Init(t + 0xf0);
+                Model0218fe1c_Init(t + 0x228);
             }
             p = t;
         }
@@ -267,7 +267,7 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
             if (t != NULL) {
                 Base(t);
                 ((GmHead021cfab4 *)t)->vtbl = data_ov009_0221743c;
-                __cxa_vec_ctor(t + 0xf0, 4, 0xe8, (void (*)(void *))func_ov000_0218fe1c, (void (*)(void *))func_ov000_0218fee4);
+                __cxa_vec_ctor(t + 0xf0, 4, 0xe8, (void (*)(void *))Model0218fe1c_Init, (void (*)(void *))Model0218fe1c_FreeAnims);
             }
             p = t;
         }
@@ -363,7 +363,7 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
             if (t != NULL) {
                 Base(t);
                 ((GmHead021cfab4 *)t)->vtbl = data_ov012_0220b280;
-                func_ov000_0218e9c4(t + 0xf0);
+                ResSet_Init(t + 0xf0);
             }
             p = t;
         }
@@ -410,7 +410,7 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
             if (t != NULL) {
                 Base(t);
                 t->vtbl = data_ov011_02207da4;
-                __cxa_vec_ctor(t->unk_f4, 2, 0x138, (void (*)(void *))func_ov000_0218e9c4, (void (*)(void *))func_ov000_0218ea20);
+                __cxa_vec_ctor(t->unk_f4, 2, 0x138, (void (*)(void *))ResSet_Init, (void (*)(void *))ResSet_ReleaseAll);
                 t->unk_364 = 0;
                 t->unk_368 = 0;
             }
@@ -472,8 +472,8 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
             if (t != NULL) {
                 Base(t);
                 ((GmHead021cfab4 *)t)->vtbl = data_ov009_02217594;
-                func_ov000_0218e9c4(t + 0xf0);
-                func_ov000_0218fe1c(t + 0x228);
+                ResSet_Init(t + 0xf0);
+                Model0218fe1c_Init(t + 0x228);
             }
             p = t;
         }

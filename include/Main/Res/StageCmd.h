@@ -14,8 +14,8 @@ extern "C" {
 extern void *data_02149ef8;
 extern int (*const data_0208bf9c[])(StageResSlot *slot);
 extern const u32 data_02082a28[];
-extern BOOL func_0206f21c(u16 id, int a);
-extern BOOL func_0206f5e4(u16 id, int a);
+extern BOOL Item_Give(u16 id, int a);
+extern BOOL Item_Set_0206f5e4(u16 id, int a);
 extern void func_ov000_02184ea4(FieldState *state, s32 id);
 extern void func_ov000_02184bb0(FieldState *state, s32 a);
 extern void func_ov000_02184d90(FieldState *state, s32 a);
@@ -145,7 +145,7 @@ struct StagePlayer {
 };
 
 extern void func_ov000_021b1110(StagePlayer *player, int a);
-extern StagePlayer *func_ov000_0219bf90(void);
+extern StagePlayer *ActorMgr_FindPlayer(void);
 
 extern void func_ov000_02172288(FieldPlayer *player, int a, s32 b);
 extern BOOL func_ov000_021705a0(FieldActor *actor, int a);
@@ -169,10 +169,10 @@ static inline BOOL Field_IsPlayerActing(void) {
     if (player == NULL) {
         return FALSE;
     }
-    if (func_ov000_0216f674(player, 9)) {
+    if (MessageQueue_GetById(player, 9)) {
         return TRUE;
     }
-    if (func_ov000_0216f674(player, 10)) {
+    if (MessageQueue_GetById(player, 10)) {
         return TRUE;
     }
     if (player->unk_11c == NULL) {
@@ -251,7 +251,7 @@ typedef struct StageLight {
 } StageLight;
 
 extern void Group_RemoveNode(void *mgr, void *obj, int a);
-extern void *func_ov000_0218bddc(void *mgr, u16 id, u8 a);
+extern void *Group_FindNodeByKind(void *mgr, u16 id, u8 a);
 extern StageObj3D *ActorMgr_FindKindNear(void *mgr, u16 kind, u16 id, StageVec *pos, s32 r);
 extern void func_ov000_0218b60c(void *obj, u8 *color, StageVec *pos, s16 *rot);
 extern s32 FX_Div(s32 a, s32 b);
@@ -260,7 +260,7 @@ extern StageLightObj *Group_FindNode(void *mgr, u16 idx);
 extern void Body_SetPos(void *p, StageVec *pos, u32 rot);
 extern void *ActorMgr_GetGroup(void *mgr, u16 kind);
 extern void ActorGroup_BroadcastKind(void *p, u16 id, s32 m);
-extern void func_ov000_0218d46c(StageObj3D *o, u16 id, s32 m);
+extern void Actor_SendMsgU8(StageObj3D *o, u16 id, s32 m);
 
 static inline StageObj3D *Stage_FindObj3DByIdx(u16 idx) {
     if (data_ov000_021ccd68 == NULL) {
@@ -282,7 +282,7 @@ static inline void *Stage_FindLight1(u16 id, u16 b) {
 }
 
 static inline void *Stage_FindLight2(u16 id, u16 b) {
-    return func_ov000_0218bddc(data_ov000_021ccd64, id, (u8)b);
+    return Group_FindNodeByKind(data_ov000_021ccd64, id, (u8)b);
 }
 
 struct FieldMgr; // ov000/FieldMgr.h
@@ -328,7 +328,7 @@ extern void func_ov000_021b1540(StagePlayer *player, int a, int b);
 extern void func_ov000_021b1740(StagePlayer *player, int a);
 extern void func_ov000_021b1814(StagePlayer *player, int a, int b);
 extern void func_ov000_021b1a54(StagePlayer *player, int a);
-extern void func_ov000_021b4774(StagePlayer *player);
+extern void Robo021ca458_RestoreHp(StagePlayer *player);
 
 static inline BOOL Stage_IsWirelessReady(void) {
     BOOL r;

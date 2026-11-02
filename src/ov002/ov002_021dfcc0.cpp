@@ -1,7 +1,7 @@
 #include "ov002/ov002.h"
 
 extern "C" {
-s32 func_02049bdc(void *a, int b, int c);
+s32 SndMgr_PlayPan(void *a, int b, int c);
 }
 
 static inline void ov002_CamMove(Obj021efe6c *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, s32 tz) {
@@ -36,7 +36,7 @@ static inline BOOL ov002_TryMove(Obj021efe9c *g, s32 dx, s32 dy, Ov002Shape *map
         g->unk_54 += d.x;
         g->unk_58 += d.y;
         if (g->unk_ac == 1) {
-            func_ov002_021e3b0c(&g->unk_b0.x, &g->unk_54, &g->unk_64);
+            Ov002_CellToPos(&g->unk_b0.x, &g->unk_54, &g->unk_64);
             g->unk_b0.y = g->trans.y;
             g->unk_bc.x = g->trans.x;
             g->unk_bc.y = g->trans.y;
@@ -44,7 +44,7 @@ static inline BOOL ov002_TryMove(Obj021efe9c *g, s32 dx, s32 dy, Ov002Shape *map
             g->unk_a4 = 4;
             g->unk_a8 = 4;
             g->unk_ac = 4;
-            func_02049a48(data_02097e4c, 0x22, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x22, -1, -1, -1);
         }
         r = TRUE;
     }
@@ -72,7 +72,7 @@ void func_ov002_021dfcc0(Obj021eff30 *self) {
             return;
         }
         self->unk_18 = 0x1e;
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         return;
     }
     if (trg & 1) {
@@ -83,7 +83,7 @@ void func_ov002_021dfcc0(Obj021eff30 *self) {
             self->unk_18 = 0x14;
             return;
         }
-        func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
         return;
     }
     map = GetMap021dfcc0(unit);
@@ -117,7 +117,7 @@ void func_ov002_021dfcc0(Obj021eff30 *self) {
         {
             void *s = MsgRes_GetString(mgr, 0x10c);
             Obj021eff50 *o = self->owner;
-            func_ov000_0215bb14(((void *)o->unk_20), s);
+            Obj0215bb14_SetText(((void *)o->unk_20), s);
             ((VObj *)(((void *)o->unk_20)))->vfunc_70();
         }
         unit->unk_74 = 8;
@@ -125,7 +125,7 @@ void func_ov002_021dfcc0(Obj021eff30 *self) {
         cam = self->owner->board;
         { s32 a44 = *(s32 *)(data_ov002_021eef74 + 0x44); s32 a48 = *(s32 *)(data_ov002_021eef74 + 0x48); ov002_CamMove(cam, 0xb33, a44, a48, 0xb33, 0, 0xa4); }
         self->unk_18 = 10;
-        func_02049a48(data_02097e4c, 0xe, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0xe, -1, -1, -1);
         return;
     }
     if (!(trg & 0x300)) {
@@ -137,7 +137,7 @@ void func_ov002_021dfcc0(Obj021eff30 *self) {
         func_ov002_021d8c34(self->unk_10, 1, map);
     }
     ov002_SyncCursor(self);
-    func_02049bdc(data_02097e4c, 0x47, 6);
+    SndMgr_PlayPan(data_02097e4c, 0x47, 6);
 }
 
 }

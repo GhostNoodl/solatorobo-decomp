@@ -19,12 +19,12 @@ extern BOOL PauseNode_IsUpdatePaused(UnkSysNode *node, BOOL recurse);
 extern BOOL PauseNode_IsDrawPaused(UnkSysNode *node, BOOL recurse);
 extern void func_0201bbfc(u32 a);
 extern void func_0203caf8(int a);
-extern void func_0206c4c4(StageFlags *obj);
+extern void StageFlags_Reset(StageFlags *obj);
 extern void func_0204a904(void);
 extern void func_02039e0c(GfxMgr *mgr);
 extern void GfxSys_SetBackdrop(GfxSys *sys, u16 color);
 extern void GfxSys_SetBackdropSub(GfxSys *sys, u16 color);
-extern void func_02043904(void *obj);
+extern void Gfx3DState_SetDefaults(void *obj);
 extern BOOL func_02046ac4(void);
 extern void func_0204a2e0(SndMgr *mgr, int fadeFrames);
 extern void GX_DispOn(void);
@@ -106,7 +106,7 @@ void func_0204af00(SceneMgr *mgr) {
                         }
                     }
                     data_02149ef0->noReset = FALSE;
-                    func_0206c4c4(data_0214a424);
+                    StageFlags_Reset(data_0214a424);
                     func_0204a904();
                     func_02039e0c(data_02097ce0);
                 }
@@ -118,7 +118,7 @@ void func_0204af00(SceneMgr *mgr) {
         case 1:
             GfxSys_SetBackdrop(data_02097d48, 0);
             GfxSys_SetBackdropSub(data_02097d48, 0);
-            func_02043904(data_02097d48->unk_8b0);
+            Gfx3DState_SetDefaults(data_02097d48->unk_8b0);
             if (mgr->cur.onExit != NULL) {
                 mgr->cur.onExit();
             }
@@ -168,7 +168,7 @@ void func_0204af00(SceneMgr *mgr) {
     mgr->frame++;
 }
 
-void func_0204b270(SceneMgr *mgr, s32 id, s32 idx) {
+void Scene_SetSubOverlay_0204b270(SceneMgr *mgr, s32 id, s32 idx) {
     Scene_SetSubOverlay(mgr, id, idx);
 }
 

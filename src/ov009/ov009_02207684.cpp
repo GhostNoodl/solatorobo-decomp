@@ -4,8 +4,8 @@ extern "C" {
 
 extern char data_ov009_0221729c[];
 extern char data_ov009_022172a7[];
-extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
-extern BOOL func_ov000_0218f110(void *p);
+extern BOOL Actor_IsReady(Ov003Actor *self);
+extern BOOL ResSet_UpdateLoad(void *p);
 
 static inline void Ov009Names_Set(Ov009Names *n, const char *a, const char *b) {
     STD_CopyString(n->mdlDir, a);
@@ -18,22 +18,22 @@ static inline void Ov009Names_Set(Ov009Names *n, const char *a, const char *b) {
 }
 
 BOOL Ov009ActVt_02217844_IsReady(Ov009ActVt_02217844 *self) {
-    BOOL r = func_ov000_0218cf5c(self);
-    if (self->anim.unk_00 >= 0 && !func_ov000_0218f110(&self->anim)) {
+    BOOL r = Actor_IsReady(self);
+    if (self->anim.unk_00 >= 0 && !ResSet_UpdateLoad(&self->anim)) {
         r = FALSE;
     }
     return r;
 }
 
-extern void func_0203f2b8(void *p);
+extern void HitSphere_Unlink_0203f2b8(void *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void NNSi_G3dModifyMatFlag(void *p, s32 a, s32 b);
-extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-extern void func_ov000_02190758(void *a, const void *b, s32 c);
+extern BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
+extern void Obj02190758_SetRot(void *a, const void *b, s32 c);
 void Ov009ActVt_02217844_Start(Ov009ActVt_02217844 *self) {
     void *saved;
     Ov003Actor_Start(self);
-    func_ov000_0218ffdc(&self->modelObj, &self->anim, 0, 1);
+    Model0218fe1c_SetRes(&self->modelObj, &self->anim, 0, 1);
     self->modelObj.actor_id = self->id;
     if (self->unk_1a == 0) {
         self->modelObj.trans = self->pos;
@@ -57,7 +57,7 @@ void Ov009ActVt_02217844_Start(Ov009ActVt_02217844 *self) {
             s->z = 0xccd;
         }
     }
-    func_ov000_02190758(&self->modelObj, &self->rot_x, 0);
+    Obj02190758_SetRot(&self->modelObj, &self->rot_x, 0);
     NNSi_G3dModifyPolygonAttrMask(self->modelObj.mdl, 1, 0x3f000000);
     NNSi_G3dModifyMatFlag(self->modelObj.mdl, 1, 0x40);
     NNSi_G3dModifyMatFlag(self->modelObj.mdl, 1, 0x80);
@@ -79,7 +79,7 @@ void Ov009ActVt_02217844_Start(Ov009ActVt_02217844 *self) {
     if (self->hit != NULL) {
         ActorSub48 *p = self->hit;
         if (p != NULL) {
-            func_0203f2b8(p);
+            HitSphere_Unlink_0203f2b8(p);
             Heap_Free(p);
         }
         self->hit = NULL;

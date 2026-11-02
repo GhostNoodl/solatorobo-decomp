@@ -5,9 +5,9 @@
 extern "C" {
 
 extern Ov009Path data_ov009_02215fd0[];
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
-extern BOOL func_ov000_0219aae8(Actor *self, Actor *src, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+extern BOOL Hit_ApplyInArea(Actor *self, Actor *src, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 
 static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->event != 0;
@@ -23,20 +23,20 @@ void Ov009ActVt_02217798_Update(Ov003Actor *self) {
     }
     st = self->fsm;
     if (st->current == 1 && st->timer >= 0x2d) {
-        Ov003Actor *a = func_ov000_0219bf90();
+        Ov003Actor *a = ActorMgr_FindPlayer();
         VecFx32 v = self->unk_84;
         v.y -= 0x3000;
         s32 r = data_ov009_02215fd0[self->unk_1a].start.x;
         if (Hit_DiffInCylinder(&a->pos, &v, r + a->radius, 0x5000)) {
             self->fsm->flags = 0;
-            func_ov000_02198360(self->fsm, 0xf, 0);
+            History_SetState(self->fsm, 0xf, 0);
         }
     }
     if (self->fsm->current == 0xf) {
-        func_ov000_0219aae8(self, self, 0x78, self->targetObj->unk_0a & 0xff, 2, 0, 0, 0x3000, 0x1b33, 0x64, 0x1000);
+        Hit_ApplyInArea(self, self, 0x78, self->targetObj->unk_0a & 0xff, 2, 0, 0, 0x3000, 0x1b33, 0x64, 0x1000);
     }
     if (self->model->anim_state == 1) {
-        func_0204a028(data_02097e4c, 9, &self->pos, -3);
+        SndMgr_PlayAtPitch(data_02097e4c, 9, &self->pos, -3);
     }
 }
 
@@ -45,8 +45,8 @@ extern void *data_ov009_02215ee4[];
 void Ov009ActVt_02217798_StateIdle(Ov003Actor *self) {
     switch (self->fsm->st) {
     case 0:
-        func_ov000_02190cb0(self->model, (char *)data_ov009_02215ee4[0], 0x111, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, (char *)data_ov009_02215ee4[0], 0x111, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;
@@ -87,9 +87,9 @@ static inline s32 Ov009_DistXZ(const VecFx32 *a, const VecFx32 *b) {
 // p->end.x reads in case 3 are one load across the unk_9c store (round qpC).
 extern const Ov009Path data_ov009_02215fbc[];
 extern char data_ov009_022172c7[];
-extern void func_ov000_021911c8(Model0218fe1c *m, s16 a);
-extern s16 *func_ov000_02191318(Model0218fe1c *m, s32 a);
-extern void func_ov000_02191780(Model0218fe1c *m);
+extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *m, s16 a);
+extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *m, s32 a);
+extern void Model0218fe1c_SetReverse(Model0218fe1c *m);
 
 void Ov009ActVt_02217798_StateAttack(Ov003Actor *self) {
     VecFx32 v;
@@ -99,10 +99,10 @@ void Ov009ActVt_02217798_StateAttack(Ov003Actor *self) {
     u16 state = self->fsm->st;
     switch (state) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov009_022172c7, 0x111, 0);
-        func_ov000_02191318(self->model, 0x3c000);
-        func_ov000_021911c8(self->model, 0x1800);
-        func_ov000_02191780(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov009_022172c7, 0x111, 0);
+        Model0218fe1c_SetAnimFrame(self->model, 0x3c000);
+        Model0218fe1c_SetAnimSpeed(self->model, 0x1800);
+        Model0218fe1c_SetReverse(self->model);
         self->speed = 0;
         self->friction = 0;
         self->gravity = 0;
@@ -110,10 +110,10 @@ void Ov009ActVt_02217798_StateAttack(Ov003Actor *self) {
         self->fsm->timer = 0;
         self->fsm->st++;
     case 1:
-        if (func_ov000_02191120(self->model)) {
-            func_ov000_02190cb0(self->model, (char *)data_ov009_02215ee4[1], 0x2ab, 0);
-            func_ov000_021915a0(self->model);
-            func_ov000_021911c8(self->model, 0xccd);
+        if (Model0218fe1c_IsAnimDone(self->model)) {
+            Model0218fe1c_SetAnim(self->model, (char *)data_ov009_02215ee4[1], 0x2ab, 0);
+            Model0218fe1c_SetLoop(self->model);
+            Model0218fe1c_SetAnimSpeed(self->model, 0xccd);
             self->fsm->timer = 0;
             self->fsm->st++;
         }
@@ -122,7 +122,7 @@ void Ov009ActVt_02217798_StateAttack(Ov003Actor *self) {
         ActorSub40 *s = self->fsm;
         s->timer++;
         if (s->timer >= 0x2d) {
-            func_ov000_021911c8(self->model, 0x1400);
+            Model0218fe1c_SetAnimSpeed(self->model, 0x1400);
             self->fsm->timer = 0;
             self->fsm->st++;
         }
@@ -167,7 +167,7 @@ void Ov009ActVt_02217798_StateAttack(Ov003Actor *self) {
         s->timer++;
         t = s->timer;
         if (t == 0x96) {
-            func_ov000_02190cb0(self->model, data_ov009_022172c7, 0x1000, 0);
+            Model0218fe1c_SetAnim(self->model, data_ov009_022172c7, 0x1000, 0);
         }
         if (t > 0x96) {
             v = self->unk_b8;
@@ -183,11 +183,11 @@ void Ov009ActVt_02217798_StateAttack(Ov003Actor *self) {
                 self->velY = 0;
                 self->friction = 0;
                 self->gravity = 0;
-                func_ov000_02198360(self->fsm, 1, 0);
+                History_SetState(self->fsm, 1, 0);
             }
-            if (func_ov000_02191120(self->model)) {
-                func_ov000_02190cb0(self->model, (char *)data_ov009_02215ee4[0], 0x89, 0);
-                func_ov000_021915a0(self->model);
+            if (Model0218fe1c_IsAnimDone(self->model)) {
+                Model0218fe1c_SetAnim(self->model, (char *)data_ov009_02215ee4[0], 0x89, 0);
+                Model0218fe1c_SetLoop(self->model);
             }
         }
         break;

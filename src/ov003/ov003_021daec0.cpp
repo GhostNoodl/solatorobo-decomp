@@ -9,14 +9,14 @@ extern "C" {
 extern Ov003ShotDef data_ov003_021f4a34[];
 extern Ov003ShotStep data_ov003_021f49c4[];
 extern const VecFx32 data_02092a50;
-extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
+extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
 
 #define OV003AK_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003AK_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
 void Ov003Shot_Start(Ov003Shot *self) {
-    func_ov000_02194758(self);
-    func_ov000_02198360(self->fsm, 0xb, 0);
+    ActorEx_Start(self);
+    History_SetState(self->fsm, 0xb, 0);
     if (self->shotDef != NULL) {
         self->def = self->shotDef;
     } else {
@@ -44,10 +44,10 @@ void Ov003Shot_Start(Ov003Shot *self) {
         VEC_Add(&self->pos, &data_02092a50, &self->pos);
     }
     if (self->def->sound >= 0) {
-        func_02049f44(data_02097e4c, self->def->sound, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, self->def->sound, &self->pos, 0);
     }
     if (self->def->spawn.id != -1) {
-        EffectObj *e = func_02065f88(self->def->spawn.id, &self->pos);
+        EffectObj *e = Effect_SpawnId(self->def->spawn.id, &self->pos);
         VecFx32 v;
         MtxFx33 m;
         MtxFx33 t;

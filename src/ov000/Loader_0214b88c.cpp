@@ -37,20 +37,20 @@ extern const char data_ov000_021ca917[];
 void *Heap_AllocArray(u32 size);
 void *Heap_Alloc(u32 size);
 BOOL OS_IsRunOnTwl(void);
-void func_020359fc(void *a, char *name, s32 b, s32 c);
-BOOL func_02035bd4(void *a, char *name, s32 b);
-void *func_02035f30(void *a, char *name, s32 b);
-Data02034f5c *func_02034f5c(void *a, char *name);
+void ResMgr_LoadArchive(void *a, char *name, s32 b, s32 c);
+BOOL ResMgr_IsArchiveLoaded(void *a, char *name, s32 b);
+void *ResMgr_GetArchiveList(void *a, char *name, s32 b);
+Data02034f5c *ResList_FindType5(void *a, char *name);
 char *func_0203ed04(char *name, u32 a);
 void *func_0203ebf8(char *name);
 Data0202aca0 *NNS_G3dGetTex(u32 a);
-BOOL func_0203e63c(void *a);
-void func_0205a6a0(VObj *obj);
-void func_0205a840(VObj *obj, char *a, const char *b);
+BOOL Vram_IsTransferDone(void *a);
+void StageRes_Init(VObj *obj);
+void StageRes_Open(VObj *obj, char *a, const char *b);
 BOOL StageRes_IsAllLoaded(VObj *obj);
-s32 func_0205aa30(VObj *obj);
+s32 StageRes_Bind(VObj *obj);
 
-void func_ov000_0214b88c(Loader *self, const char *name) {
+void Loader_Start(Loader *self, const char *name) {
     s32 len = STD_GetStringLength(name);
     self->unk_1c = (char *)Heap_AllocArray(len + 1);
     STD_CopyLString(self->unk_1c, name, len + 1);
@@ -58,7 +58,7 @@ void func_ov000_0214b88c(Loader *self, const char *name) {
     self->unk_04 = OS_IsRunOnTwl() ? 0 : 1;
 }
 
-BOOL func_ov000_0214b8d8(Loader *self) {
+BOOL Loader_IsDone(Loader *self) {
     return self->unk_08 == 2;
 }
 
@@ -79,17 +79,17 @@ void func_ov000_0214b910(Loader *self) {
     char *name;
     switch (self->unk_0c) {
     case 0:
-        func_020359fc(data_ov000_021c9838, self->unk_1c, 5, 0);
+        ResMgr_LoadArchive(data_ov000_021c9838, self->unk_1c, 5, 0);
         self->unk_0c = 1;
         break;
     case 1:
-        if (func_02035bd4(data_ov000_021c9838, self->unk_1c, 5)) {
+        if (ResMgr_IsArchiveLoaded(data_ov000_021c9838, self->unk_1c, 5)) {
             self->unk_0c = 2;
         }
         break;
     case 2:
-        data = func_02035f30(data_ov000_021c9838, self->unk_1c, 5);
-        entry = func_02034f5c(data, self->unk_1c);
+        data = ResMgr_GetArchiveList(data_ov000_021c9838, self->unk_1c, 5);
+        entry = ResList_FindType5(data, self->unk_1c);
         name = self->unk_1c;
         if (entry != NULL) {
             name = func_0203ed04(name, entry->unk_00);
@@ -99,7 +99,7 @@ void func_ov000_0214b910(Loader *self) {
         self->unk_0c = 3;
         break;
     case 3:
-        if (func_0203e63c(self->unk_14)) {
+        if (Vram_IsTransferDone(self->unk_14)) {
             self->unk_0c = 4;
         }
         break;
@@ -117,7 +117,7 @@ static inline SceneRes *CreateLoader(void) {
         VOBJ_SET_VTABLE(obj, data_0208b318);
         obj->vfunc_08();
         VOBJ_SET_VTABLE(obj, data_0208bf54);
-        func_0205a6a0(obj);
+        StageRes_Init(obj);
     }
     return obj;
 }
@@ -127,7 +127,7 @@ void func_ov000_0214ba18(void) {
     data_ov000_021ccd24.unk_04 = CreateLoader();
     STD_CopyString(path, data_ov000_021ca8f7);
     STD_ConcatenateString(path, data_ov000_021ca8ff);
-    func_0205a840(data_ov000_021ccd24.unk_04, path, data_ov000_021ca907);
+    StageRes_Open(data_ov000_021ccd24.unk_04, path, data_ov000_021ca907);
 }
 
 void func_ov000_0214baa8(void) {
@@ -155,7 +155,7 @@ s32 func_ov000_0214bb2c(void) {
     if (ret != 0) {
         return ret;
     }
-    return func_0205aa30(data_ov000_021ccd24.unk_04);
+    return StageRes_Bind(data_ov000_021ccd24.unk_04);
 }
 
 void func_ov000_0214bb5c(void) {
@@ -167,7 +167,7 @@ void func_ov000_0214bb80(void) {
     data_ov000_021ccd24.unk_08 = CreateLoader();
     STD_CopyString(path, data_ov000_021ca8f7);
     STD_ConcatenateString(path, data_ov000_021ca8ff);
-    func_0205a840(data_ov000_021ccd24.unk_08, path, data_ov000_021ca917);
+    StageRes_Open(data_ov000_021ccd24.unk_08, path, data_ov000_021ca917);
 }
 
 void func_ov000_0214bc10(void) {
@@ -195,7 +195,7 @@ s32 func_ov000_0214bc94(void) {
     if (ret != 0) {
         return ret;
     }
-    return func_0205aa30(data_ov000_021ccd24.unk_08);
+    return StageRes_Bind(data_ov000_021ccd24.unk_08);
 }
 
 }

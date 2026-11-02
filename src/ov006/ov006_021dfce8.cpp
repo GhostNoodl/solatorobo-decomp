@@ -101,37 +101,37 @@ void ov006_Unk021dfce8_Load(ov006_Unk021dfce8 *self) {
         icon->unkE = 1;
     }
     item->unk18 = icon;
-    res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+    res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
     m1 = (Model *)Heap_Alloc(sizeof(Model));
     if (m1 != NULL) {
         const char *name = data_0208cc94;
-        func_02041218(&m1->pltt);
-        func_02041440(m1, name, 0);
+        PlttRes_Init_02041218(&m1->pltt);
+        TexObj_Init(m1, name, 0);
     }
     icon->unk1C = m1;
-    func_020417e0(m1, res);
+    TexObj_SetRes(m1, res);
     icon->unk1C->flags |= 2;
-    func_02041d9c(icon->unk1C, 0, 0x1e);
+    TexObj_SelectImage(icon->unk1C, 0, 0x1e);
     func_02041c34(icon->unk1C, 0x1e, (void *)ov006_OamCb_TimeDigits, 0);
-    func_02041d9c(icon->unk1C, 0, 0x1f);
+    TexObj_SelectImage(icon->unk1C, 0, 0x1f);
     func_02041c34(icon->unk1C, 0x1f, (void *)ov006_OamCb_TimeDigits, 0);
-    func_02041d9c(icon->unk1C, 0, 0x24);
+    TexObj_SelectImage(icon->unk1C, 0, 0x24);
     func_02041c34(icon->unk1C, 0x24, (void *)ov006_OamCb_TimeDigits, 0);
     icon->unk1C->flags |= 0x80000;
     icon->unk1C->flags = (icon->unk1C->flags & ~0x7c) | 0x78;
     m1 = (Model *)Heap_Alloc(sizeof(Model));
     if (m1 != NULL) {
         const char *name = data_0208cb7c;
-        func_02041218(&m1->pltt);
-        func_02041440(m1, name, 0);
+        PlttRes_Init_02041218(&m1->pltt);
+        TexObj_Init(m1, name, 0);
         STD_CopyString(m1->name, data_0214b105);
     }
     item->unk14 = m1;
-    func_020417e0(item->unk14, func_02035de0(data_0214b105, data_0208cb7c));
+    TexObj_SetRes(item->unk14, func_02035de0(data_0214b105, data_0208cb7c));
     item->unk14->flags |= 2;
     item->unk14->flags |= 0x80000;
-    func_02041d9c(item->unk14, 0, 0xd);
-    func_02041d9c(item->unk14, 0, 0xf);
+    TexObj_SelectImage(item->unk14, 0, 0xd);
+    TexObj_SelectImage(item->unk14, 0, 0xf);
     self->unk1C->unk8.z = -0x1ccd;
     ov006_Vec_Set021dfce8(&self->unk1C->unk8, 0x100000, 0xc0000, self->unk1C->unk8.z);
     panel = (ov006_Panel021dfce8 *)Heap_Alloc(sizeof(ov006_Panel021dfce8));

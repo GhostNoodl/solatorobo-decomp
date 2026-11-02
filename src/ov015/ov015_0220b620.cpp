@@ -5,8 +5,8 @@ extern "C" {
 extern u8 data_ov015_02212f20[];
 extern u8 data_ov015_02212eb0[];
 extern u8 data_ov015_02212e47[];
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-void func_ov000_02191618(void *a);
+BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
+void Model0218fe1c_ClearLoop(void *a);
 
 void *Ov015FishState18_Dtor(Ov015FishState18 *self) {
     SET_VT(self, data_ov015_02212f20);
@@ -27,8 +27,8 @@ BOOL Ov015FishState18_Enter(Ov015FishState18 *self, Ov015Fish *p) {
     self->step = 0;
     self->timer = 0x50;
     self->duration = p->info.unk_14;
-    func_ov000_02190cb0(&p->model, data_ov015_02212e47, 0x19a, 0);
-    func_ov000_02191618(&p->model);
+    Model0218fe1c_SetAnim(&p->model, data_ov015_02212e47, 0x19a, 0);
+    Model0218fe1c_ClearLoop(&p->model);
     p->animSpeed = 0x800;
     p->unk_bc = 1;
     return TRUE;
@@ -38,8 +38,8 @@ extern char data_ov015_02212e20[];
 extern char data_ov015_02212e55[];
 extern u8 data_ov015_02212e4e[];
 extern u8 data_ov015_02212e61[];
-BOOL func_ov000_02191120(void *p);
-void func_ov000_021915a0(void *a);
+BOOL Model0218fe1c_IsAnimDone(void *p);
+void Model0218fe1c_SetLoop(void *a);
 void func_ov015_0220bb68(Ov015FishState18 *self, Ov015Fish *p);
 void func_ov015_0220be38(Ov015FishState18 *self, Ov015Fish *p);
 static inline void Ov015_SpeedB6f0(Ov015Fish *p) {
@@ -62,9 +62,9 @@ BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
     switch (self->step) {
     case 0:
         func_ov015_0220bb68(self, p);
-        if (func_ov000_02191120(&p->model)) {
-            func_ov000_02190cb0(&p->model, data_ov015_02212e4e, 0x19a, 0);
-            func_ov000_021915a0(&p->model);
+        if (Model0218fe1c_IsAnimDone(&p->model)) {
+            Model0218fe1c_SetAnim(&p->model, data_ov015_02212e4e, 0x19a, 0);
+            Model0218fe1c_SetLoop(&p->model);
             p->animSpeed = 0x1000;
             self->step = 1;
             self->timer = self->duration;
@@ -88,7 +88,7 @@ BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
         a.x = q->pos.x;
         a.y = q->pos.y > 0 ? 0 : q->pos.y;
         a.z = q->pos.z;
-        e = func_020657b0(data_0214a420, self->fxKey);
+        e = Effect_Find_020657b0(data_0214a420, self->fxKey);
         if (e == NULL) {
             e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e55, 0, &self->fish->pos);
             e->unk_d4 = 1;
@@ -109,16 +109,16 @@ BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
         }
         e->SetScale(&b);
         if (self->timer % 50 == 0) {
-            func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
         }
         if (self->timer <= 0) {
             p->animSpeed = 0x800;
             self->step = 2;
             self->timer = 0x50;
-            func_ov000_02190cb0(&p->model, data_ov015_02212e61, 0x19a, 0);
-            func_ov000_02191618(&p->model);
+            Model0218fe1c_SetAnim(&p->model, data_ov015_02212e61, 0x19a, 0);
+            Model0218fe1c_ClearLoop(&p->model);
             p->animSpeed = 0x800;
-            e = func_020657b0(data_0214a420, self->fxKey);
+            e = Effect_Find_020657b0(data_0214a420, self->fxKey);
             if (e != NULL) {
                 void *saved;
                 HEAP_PUSH(saved);
@@ -134,7 +134,7 @@ BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
     }
     case 2:
         func_ov015_0220be38(self, p);
-        if (func_ov000_02191120(&p->model)) {
+        if (Model0218fe1c_IsAnimDone(&p->model)) {
             Ov015_SpeedB6f0(p);
             return FALSE;
         }

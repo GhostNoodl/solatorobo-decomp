@@ -14,20 +14,20 @@ extern char data_ov003_021f9fd6[];
 extern char data_ov003_021f9fd0[];
 extern void Heap_Free(void *p);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
-extern BOOL func_ov000_021903b4(void *anim);
+extern BOOL Model021903b4_Draw(void *anim);
 extern void *func_0203db40(void *p);
-extern void func_ov000_02190a80(void *a, void *b);
+extern void Model0218fe1c_UpdateAnim(void *a, void *b);
 extern void *Heap_Alloc(u32 size);
-extern ActorSub48 *func_ov000_021985e8(void *p);
-extern void func_ov000_02198c8c(ActorSub48 *p, u16 id);
+extern ActorSub48 *ActorSub48_Init(void *p);
+extern void Body_SetOwner(ActorSub48 *p, u16 id);
 extern void HitSphere_Link(ActorSub48 *p);
-extern Model0218fe1c *func_ov000_0218fe1c(void *p);
-extern BOOL func_ov000_0218ffdc(Model0218fe1c *anim, void *res, s32 a, s32 b);
-extern void func_ov000_02190758(Model0218fe1c *anim, void *p, s32 a);
-extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
-extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
-extern void func_ov000_021915a0(void *p);
-extern void func_ov000_021911c8(void *p, s32 a);
+extern Model0218fe1c *Model0218fe1c_Init(void *p);
+extern BOOL Model0218fe1c_SetRes(Model0218fe1c *anim, void *res, s32 a, s32 b);
+extern void Obj02190758_SetRot(Model0218fe1c *anim, void *p, s32 a);
+extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
+extern BOOL Model0218fe1c_SetAnim(void *p, const char *name, s32 a, s32 b);
+extern void Model0218fe1c_SetLoop(void *p);
+extern void Model0218fe1c_SetAnimSpeed(void *p, s32 a);
 
 static inline void Ov003Bridge_Dtor(Ov003Bridge *self) {
     Model0218fe1c *p;
@@ -38,13 +38,13 @@ static inline void Ov003Bridge_Dtor(Ov003Bridge *self) {
     p = self->anim;
     if (p != NULL) {
         if (p != NULL) {
-            func_ov000_0218fee4(p);
+            Model0218fe1c_FreeAnims(p);
             Heap_Free(p);
         }
         self->anim = NULL;
     }
     data_02097dd0->cur = old;
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
 }
 
 Ov003Bridge *Ov003ActVt_021f9e10_Dtor(Ov003Bridge *self) {
@@ -60,12 +60,12 @@ Ov003Bridge *Ov003ActVt_021f9e10_DtorDelete(Ov003Bridge *self) {
 
 void Ov003ActVt_021f9e10_Init(Ov003Bridge *self) {
     Ov003Unit *u;
-    func_ov000_0219433c(self);
+    ActorEx_InitActor(self);
     u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u != NULL) {
         u->unk_a2_0 = 0;
     }
-    func_ov000_02197d80(self);
+    Obj02197d80_LoadValue(self);
     s16 kind;
     self->unk_93_1 = 0;
     kind = self->unk_18;
@@ -80,25 +80,25 @@ void Ov003ActVt_021f9e10_Init(Ov003Bridge *self) {
 }
 
 BOOL Ov003ActVt_021f9e10_Draw(Ov003Bridge *self) {
-    BOOL r = func_ov000_02194c08(self);
+    BOOL r = ActorEx_Draw(self);
     if (r && self->anim != NULL) {
-        func_ov000_021903b4(self->anim);
+        Model021903b4_Draw(self->anim);
     }
     return r;
 }
 
 void Ov003Bridge_Animate(Ov003Bridge *self) {
     if (self->model != NULL) {
-        func_ov000_02190a80(self->model, func_0203db40(&self->pause));
+        Model0218fe1c_UpdateAnim(self->model, func_0203db40(&self->pause));
     }
     if (self->anim != NULL) {
-        func_ov000_02190a80(self->anim, func_0203db40(&self->pause));
+        Model0218fe1c_UpdateAnim(self->anim, func_0203db40(&self->pause));
     }
 }
 
 void Ov003ActVt_021f9e10_Start(Ov003Bridge *self) {
     const char *name;
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     if (self->unk_93_1 != 0) {
         void *res;
         s32 i;
@@ -107,10 +107,10 @@ void Ov003ActVt_021f9e10_Start(Ov003Bridge *self) {
         if (self->hit == NULL) {
             ActorSub48 *c = (ActorSub48 *)Heap_Alloc(0x9c);
             if (c != NULL) {
-                c = func_ov000_021985e8(c);
+                c = ActorSub48_Init(c);
             }
             self->hit = c;
-            func_ov000_02198c8c(c, self->id);
+            Body_SetOwner(c, self->id);
             self->hit->unk_28 = 0x10;
             self->hit->radius = self->radius;
             self->hit->offset.y = self->centerY;
@@ -131,22 +131,22 @@ void Ov003ActVt_021f9e10_Start(Ov003Bridge *self) {
         if (res != NULL) {
             Model0218fe1c *a = (Model0218fe1c *)Heap_Alloc(0xe8);
             if (a != NULL) {
-                a = func_ov000_0218fe1c(a);
+                a = Model0218fe1c_Init(a);
             }
             self->anim = a;
-            func_ov000_0218ffdc(a, res, 0, 1);
+            Model0218fe1c_SetRes(a, res, 0, 1);
             { VecFx32 v; v.x = self->pos.x; v.y = self->pos.y; v.z = self->pos.z; v.y += self->unk_1c << 4; self->anim->trans = v; }
-            func_ov000_02190758(self->anim, &self->rot, 0);
+            Obj02190758_SetRot(self->anim, &self->rot, 0);
         }
-        func_ov000_02198360(self->fsm, 1, 1);
+        History_SetState(self->fsm, 1, 1);
         self->fsm->st = 10;
     } else {
         name = data_ov003_021f9fd0;
     }
     if (self->model != NULL) {
-        func_ov000_02190cb0(self->model, name, 0x1000, 0);
-        func_ov000_021915a0(self->model);
-        func_ov000_021911c8(self->model, 0x4cd);
+        Model0218fe1c_SetAnim(self->model, name, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
+        Model0218fe1c_SetAnimSpeed(self->model, 0x4cd);
     }
 }
 

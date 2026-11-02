@@ -3,11 +3,11 @@
 extern "C" {
 
 extern Ov003Actor *Target_Get(void *p);
-extern Ov003Actor *func_ov000_0219bf90(void);
-extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
-extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
+extern s32 Actor_FindInRadius(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
+extern Ov003Actor *Obj021984c8_GetActor(Ov003Actor *p);
 
-extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
+extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *a, s16 b);
 extern void Ov003Pickup_Update(Actor *self, s32 a);
 extern BOOL func_ov014_02216324(Actor *self);
 
@@ -24,7 +24,7 @@ void func_ov014_02215ffc(Ov014ActEx_022152e8 *self) {
     switch (self->fsm->st) {
     case 0: {
         VecFx32 *p;
-        func_ov000_021911c8(self->model, 0x1000);
+        Model0218fe1c_SetAnimSpeed(self->model, 0x1000);
         {
             ActorSub4c *m = self->targetObj;
             m->unk_50 = 0x1000;
@@ -32,7 +32,7 @@ void func_ov014_02215ffc(Ov014ActEx_022152e8 *self) {
             m->unk_58 = 0;
         }
         self->hit->unk_30 = 0;
-        p = func_ov000_0218d2e0(self);
+        p = Actor_GetTargetSub44(self);
         if (p != NULL) {
             VecFx32 d;
             s32 r;
@@ -80,7 +80,7 @@ void func_ov014_02215ffc(Ov014ActEx_022152e8 *self) {
         self->unk_f4++;
         if ((self->hit->unk_50 & 0xe0000000) || func_ov014_02216324(self) || self->unk_f4 >= 0xf0) {
             Ov003Pickup_Update(self, 0);
-            func_ov000_02198360(self->fsm, 0x15, 0);
+            History_SetState(self->fsm, 0x15, 0);
         }
         break;
     }
@@ -88,11 +88,11 @@ void func_ov014_02215ffc(Ov014ActEx_022152e8 *self) {
 }
 
 void Ov014ActEx_022152e8_StateHeld(Ov014ActEx_022152e8 *self) {
-    func_ov000_02195d88(self);
+    ActorEx_StateHeld(self);
 }
 
 void Ov014ActEx_022152e8_State0a(Ov014ActEx_022152e8 *self) {
-    func_ov000_02198360(self->fsm, 0x15, 0);
+    History_SetState(self->fsm, 0x15, 0);
 }
 
 BOOL func_ov014_02216324(Actor *self) {
@@ -106,7 +106,7 @@ BOOL func_ov014_02216324(Actor *self) {
     s32 rad;
     s32 n;
     o = Target_Get(self->targetObj);
-    p = func_ov000_0219bf90();
+    p = ActorMgr_FindPlayer();
     k = o->id & 0xf000;
     mask = ~(1 << (k >> 12));
     rad = self->radius;
@@ -115,11 +115,11 @@ BOOL func_ov014_02216324(Actor *self) {
     } else if (p != NULL && ((Robo021ca458 *)p)->unk_b1e == self->id) {
         rad >>= 1;
     }
-    n = func_ov000_0219a510(self, mask, &self->pos, rad, 0, list);
+    n = Actor_FindInRadius(self, mask, &self->pos, rad, 0, list);
     if (n != 0) {
         for (i = 0; i < n; i++) {
             Ov003Actor *q;
-            if (list[i] != NULL && (q = func_ov000_021985c0(list[i])) != NULL) {
+            if (list[i] != NULL && (q = Obj021984c8_GetActor(list[i])) != NULL) {
                 ActorSub4c *s = q->targetObj;
                 if (s == NULL || k != (u16)(s->target & 0xf000)) {
                     r = TRUE;

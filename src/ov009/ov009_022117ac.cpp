@@ -13,13 +13,13 @@ void Ov009ActVt_02217aac_StateHurt(Ov009ActVt_02217aac *self) {
     Ov003Actor_StateHurt(self);
 }
 
-extern Ov003Actor *func_ov000_0219bf90(void);
-extern void func_0203f364(ActorSub48 *p);
-extern void func_ov000_02199f48(void *p, Ov003Actor *a);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
+extern void Target_SetActor(void *p, Ov003Actor *a);
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
-extern void func_ov000_021911c8(Model0218fe1c *m, s16 a);
+extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *m, s16 a);
 extern void func_ov000_0218996c(u8 a, u8 b);
-extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
+extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
 void Ov009ActVt_02217aac_StateDie(Ov009ActVt_02217aac *self) {
     VecFx32 p;
     VecFx32 v;
@@ -35,12 +35,12 @@ void Ov009ActVt_02217aac_StateDie(Ov009ActVt_02217aac *self) {
         s48 = self->hit;
         s48->unk_9a_0 = 0;
         s48->unk_9a_3 = 0;
-        func_0203f364(s48);
-        func_ov000_02199f48(self->hp, func_ov000_0219bf90());
+        HitSphere_Unlink_0203f364(s48);
+        Target_SetActor(self->hp, ActorMgr_FindPlayer());
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4802, 0x15);
         self->unk_93_4 = 0;
         self->fsm->st++;
-        func_ov000_021911c8(self->model, 0x800);
+        Model0218fe1c_SetAnimSpeed(self->model, 0x800);
     }
     case 1: {
         u16 t;
@@ -52,9 +52,9 @@ void Ov009ActVt_02217aac_StateDie(Ov009ActVt_02217aac *self) {
                 return;
             }
             func_ov000_0218996c(0x19, 0x3c);
-            func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
-            func_02049f44(data_02097e4c, 0x53, &self->pos, 0);
-            e = func_02065f88(5, &self->pos);
+            SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x53, &self->pos, 0);
+            e = Effect_SpawnId(5, &self->pos);
             e->AddPosXYZ(0, self->centerY + (self->centerY >> 1), 0);
             e->SetScaleXYZ((self->radius >> 1) + 0x3800, (self->radius >> 1) + 0x3800, (self->radius >> 1) + 0x3800);
             return;
@@ -84,9 +84,9 @@ void Ov009ActVt_02217aac_StateDie(Ov009ActVt_02217aac *self) {
         v.x = self->radius + (self->radius >> 1);
         v.y = self->height >> 1;
         v.z = self->radius + (self->radius >> 1);
-        func_ov000_0219b71c(&p, &v, 0x800, 0xccd, 3, 0x32);
+        Spawn_ScatterEffect(&p, &v, 0x800, 0xccd, 3, 0x32);
         func_ov000_0218996c(10, 0xf);
-        func_02049f44(data_02097e4c, 0x35, &p, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x35, &p, 0);
         return;
     }
     case 2: {
@@ -106,7 +106,7 @@ void Ov009ActVt_02217aac_StateDie(Ov009ActVt_02217aac *self) {
         q.z += Rand_PlusMinus(self->radius);
         h = self->height;
         q.y += h + Rand_PlusMinus(h >> 2);
-        e = func_02065f88(0x325, &q);
+        e = Effect_SpawnId(0x325, &q);
         e->SetRotXYZ(0xc000, 0, 0);
         e->SetScaleAll(0xccd);
         self->fsm->timer = Rand_UpTo(0x28) + 0x3c;

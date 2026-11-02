@@ -47,9 +47,9 @@ BOOL func_020544e4(SlidePanel *panel, BOOL sound) {
             panel->unk_20 = 0;
             if (sound && Gfx_IsFadeIdle(0)) {
                 if (panel->kind >= 3) {
-                    func_02049a48(data_02097e4c, 0x2f, -1, -1, -1);
+                    SndMgr_PlayVolume(data_02097e4c, 0x2f, -1, -1, -1);
                 } else {
-                    func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
+                    SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
                 }
             }
         }
@@ -59,11 +59,11 @@ BOOL func_020544e4(SlidePanel *panel, BOOL sound) {
     return FALSE;
 }
 
-s32 func_02054894(SlidePanel *panel) {
+s32 SlidePanel_GetTarget_02054894(SlidePanel *panel) {
     return SlidePanel_GetTarget(panel);
 }
 
-s32 func_020548c8(SlidePanel *panel) {
+s32 SlidePanel_GetEdge_020548c8(SlidePanel *panel) {
     return SlidePanel_GetEdge(panel);
 }
 
@@ -159,7 +159,7 @@ void func_02054bb4(SlidePanel *panel) {
         panel->frame = 0;
         panel->unk_20 = 0;
         if (Gfx_IsFadeIdle(0) && panel->cur != 3) {
-            func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         }
     } else {
         panel->moving = 0;

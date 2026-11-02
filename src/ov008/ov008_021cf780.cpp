@@ -11,8 +11,8 @@ extern Ov008Mgr *data_ov008_021d0500;
 void func_02062524(void);
 void func_ov000_02187b50(void *p);
 Ov008Def *Lang_GetGroup(u8 id);
-u16 func_020594bc(void *a, int b, int c, int d);
-Ov008Item *func_ov000_02154b58(void *a, u32 id);
+u16 DataRes_ReadEntry(void *a, int b, int c, int d);
+Ov008Item *UiList_GetItemById(void *a, u32 id);
 
 s32 func_ov008_021cf780(void) {
     return 6;
@@ -25,7 +25,7 @@ s32 func_ov008_021cf788(void) {
 BOOL func_ov008_021cf790(Ov008Menu *self, Ov008Sel *sel) {
     Ov008Mgr *m;
     if (sel == NULL) {
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         m = data_ov008_021d0500;
         if (!m->flags.b4) {
             m->flags.b4 = 1;
@@ -61,7 +61,7 @@ BOOL func_ov008_021cf844(Ov008Menu *self, Ov008Sel *sel) {
 BOOL func_ov008_021cf878(Ov008Menu *self, Ov008Sel *sel) {
     u16 id;
     if (sel == NULL) {
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         return FALSE;
     }
     id = sel->id;
@@ -80,16 +80,16 @@ BOOL func_ov008_021cf878(Ov008Menu *self, Ov008Sel *sel) {
             func_02062524();
             func_ov000_02187b50(data_ov000_021ccd54);
             data_ov008_021d0500->flags.b1 = 1;
-            func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
         } else {
-            func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         }
         return FALSE;
     }
     if (id != 1) {
         return TRUE;
     }
-    func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     return FALSE;
 }
 
@@ -98,10 +98,10 @@ void func_ov008_021cf9b8(Ov008Mgr *m, u32 id) {
     Ov008Def *e = Lang_GetGroup(id);
     Ov008Item *p;
     m->menu->v74(e->unk_00, id, 0xffff, 0xffff);
-    if (!func_020594bc(data_02fe152c, 0, 0x201, id)) {
+    if (!DataRes_ReadEntry(data_02fe152c, 0, 0x201, id)) {
         return;
     }
-    p = func_ov000_02154b58(m->menu, id);
+    p = UiList_GetItemById(m->menu, id);
     if (p != NULL) {
         p->unk_0a = 10;
     }

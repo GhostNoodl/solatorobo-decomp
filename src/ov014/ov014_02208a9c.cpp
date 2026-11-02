@@ -22,7 +22,7 @@ void func_ov014_02208a9c(Ov014ActEx_02208618 *self) {
         self->velY = 0;
         self->friction = 0;
         self->gravity = 0;
-        p = func_ov000_0218d2e0(self);
+        p = Actor_GetTargetSub44(self);
         if (p != NULL) {
             s32 r;
             s32 dx;
@@ -77,7 +77,7 @@ void func_ov014_02208a9c(Ov014ActEx_02208618 *self) {
         Ov014ActEx_02208618_HitNearby(self);
         if ((self->hit->unk_50 & 0x20000000) || ++self->unk_d4 >= 200) {
             self->unk_d0 |= 0x1000;
-            func_ov000_02198360(self->fsm, 0x15, 0);
+            History_SetState(self->fsm, 0x15, 0);
         }
         break;
     }

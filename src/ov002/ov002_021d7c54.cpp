@@ -9,7 +9,7 @@ typedef struct {
 } Rot7c54;
 
 
-void func_ov002_021d7c54(Obj021efe9c *self, u16 rot) {
+void Obj021efe9c_SetRot(Obj021efe9c *self, u16 rot) {
     self->shape.rot = rot;
     switch (rot) {
     case 0:
@@ -42,7 +42,7 @@ void func_ov002_021d7c54(Obj021efe9c *self, u16 rot) {
     }
 }
 
-void func_ov002_021d7d5c(Obj021efe9c *self, Ov002Shape *b) {
+void Obj021efe9c_ClampToBoard(Obj021efe9c *self, Ov002Shape *b) {
     Vec2 out;
     while (func_ov002_021e3dac((Vec2 *)&self->unk_54, b, &self->shape, &out)) {
         if (out.x < 0) {

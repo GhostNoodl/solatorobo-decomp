@@ -6,8 +6,8 @@ extern "C" {
 
 extern u8 data_02fe1534[];
 extern void *data_02fe152c;
-void func_ov000_0215eab4(void *p);
-void func_020592c4(void *a, s32 b, s32 c, u16 d, s32 e);
+void Obj0215eab4_Draw(void *p);
+void DataRes_WriteEntry(void *a, s32 b, s32 c, u16 d, s32 e);
 
 void func_ov000_02156ca0(UiList *self, s32 unused, s32 *pos) {
     s32 cur;
@@ -47,7 +47,7 @@ void func_ov000_02156ca0(UiList *self, s32 unused, s32 *pos) {
     t->unk_08 = yy - 0x2000;
     }
     t->unk_0c = z;
-    func_ov000_0215eab4(self->panel);
+    Obj0215eab4_Draw(self->panel);
 }
 
 }

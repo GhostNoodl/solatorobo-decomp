@@ -11,30 +11,30 @@
 #ifdef __cplusplus
 extern "C" {
 ActorEx *ActorEx_Ctor(ActorEx *self);
-ActorEx *func_ov000_0219429c(ActorEx *self);
-void func_ov000_0219433c(ActorEx *self);
-BOOL func_ov000_021946f8(ActorEx *self);
-void func_ov000_02194758(ActorEx *self);
-BOOL func_ov000_02194c08(ActorEx *self);
-void func_ov000_02195d88(ActorEx *self);
-void func_ov000_02196060(ActorEx *self);
-void func_ov000_02196860(ActorEx *self);
-void func_ov000_02197d80(ActorEx *self);
+ActorEx *ActorEx_DtorBase(ActorEx *self);
+void ActorEx_InitActor(ActorEx *self);
+BOOL ActorEx_IsReady(ActorEx *self);
+void ActorEx_Start(ActorEx *self);
+BOOL ActorEx_Draw(ActorEx *self);
+void ActorEx_StateHeld(ActorEx *self);
+void ActorEx_StateThrown(ActorEx *self);
+void ActorEx_State0a(ActorEx *self);
+void Obj02197d80_LoadValue(ActorEx *self);
 void func_ov000_02197dec(ActorEx *self, u8 value, s16 sfx);
-void func_ov000_02196c40(ActorEx *self);
-void func_ov000_021953b4(ActorEx *self);
-BOOL func_ov000_021950e8(ActorEx *self, ActorMsg *msg);
+void ActorEx_StateFly(ActorEx *self);
+void ActorEx_Update(ActorEx *self);
+BOOL ActorEx_HandleMsg(ActorEx *self, ActorMsg *msg);
 void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
 void Actor_MoveToPos(Actor *self, const VecFx32 *target, s32 turn);
 void Actor_TurnToPos(Actor *self, const VecFx32 *target, s32 step);
 void Actor_Move(Actor *self, s32 rate);
 Actor *Actor_GetTarget(Actor *self);
 void func_ov000_02197ad0(Actor *self, BOOL b);
-void func_ov000_0219763c(Actor *self);
+void ActorEx_StateDie(Actor *self);
 void func_ov000_02197ee0(Actor *self, Ov003AiState *st, s32 near, s32 arg, s32 radius);
-void func_ov000_02195848(VObj *obj);
-BOOL func_ov000_0218cea4(Actor *self);
-BOOL func_ov000_0219aae8(Actor *a, Actor *b, u16 c, u8 d, u16 mask, const VecFx32 *ofs, Rot16 *rot, s32 r, s32 rr, s16 h, s32 i);
+void ActorEx_StateIdle(VObj *obj);
+BOOL Actor_Draw(Actor *self);
+BOOL Hit_ApplyInArea(Actor *a, Actor *b, u16 c, u8 d, u16 mask, const VecFx32 *ofs, Rot16 *rot, s32 r, s32 rr, s16 h, s32 i);
 }
 #endif
 

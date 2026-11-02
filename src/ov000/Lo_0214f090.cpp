@@ -4,11 +4,11 @@
 
 extern "C" {
 
-void func_ov000_02172f7c(Task *self, void *arg);
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+void Task_Exit(Task *self, void *arg);
+extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *data_02097e4c;
 extern s32 data_02097d78[5];
-BOOL func_02054f10(void *a, s32 b);
+BOOL Model_IsReady(void *a, s32 b);
 
 typedef struct {
     u8 pad[0x98];
@@ -58,7 +58,7 @@ void func_ov000_0214f090(Lo021caa44 *self, void *arg) {
         ok = FALSE;
     }
     if (ok) {
-        func_ov000_02172f7c(self, arg);
+        Task_Exit(self, arg);
         return;
     }
     if (q) {

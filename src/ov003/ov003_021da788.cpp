@@ -45,7 +45,7 @@ extern void Ov003Follower_FollowRot(Ov003Follow *self);
 static inline Ov003Follow *Ov003_SpawnFollow(s32 fxId, Ov003Src *src, const Ov003Vec *offset) {
     Ov003Follow *p = NULL;
     if (src != NULL && offset != NULL) {
-        p = (Ov003Follow *)func_02065f88(fxId, &data_ov003_021f7cc4);
+        p = (Ov003Follow *)Effect_SpawnId(fxId, &data_ov003_021f7cc4);
         if (p != NULL) {
             p->id = src->id;
             p->offset = *offset;
@@ -78,7 +78,7 @@ void Ov003Scaled_ApplyScale(Ov003Scaled *self) {
 }
 
 Ov003Follow *Ov003_SpawnScaledFx(s32 fxId, const VecFx32 *pos, s32 scale) {
-    Ov003Follow *p = (Ov003Follow *)func_02065f88(fxId, pos);
+    Ov003Follow *p = (Ov003Follow *)Effect_SpawnId(fxId, pos);
     p->id = scale;
     p->callback = (void (*)(Ov003Follow *))Ov003Scaled_ApplyScale;
     return p;
@@ -189,7 +189,7 @@ void Ov003FxList_Place(Ov003FxList *self, u8 id, const VecFx32 *pos, const Effec
     Ov003FxNode *n;
     for (n = self->head; n != NULL; n = n->next) {
         if (id == n->id) {
-            EffectObj *o = func_020657b0(data_0214a420, n->handle);
+            EffectObj *o = Effect_Find_020657b0(data_0214a420, n->handle);
             if (o != NULL) {
                 VecFx32 vp = data_ov003_021f4988;
                 if (ofs != NULL) {

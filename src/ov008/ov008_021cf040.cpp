@@ -26,7 +26,7 @@ static inline void Ov008_DrawModelIdx(Model *m, int idx) {
     ModelRes *res = m->res;
     if (res != NULL) {
         ModelPart *anim = idx >= m->numParts ? NULL : &m->parts[idx];
-        func_02042628(m, Ov008_GetTexIdx(res, anim, idx), anim, 0);
+        TexObj_DrawCell(m, Ov008_GetTexIdx(res, anim, idx), anim, 0);
     }
 }
 
@@ -56,9 +56,9 @@ static inline void Ov008_SetXY(Model *o, s32 x, s32 y) {
 extern "C" {
 
 extern const Ov008Tbl5 data_ov008_021d02e8;
-BOOL func_02054f10(Model *a, u32 b);
+BOOL Model_IsReady(Model *a, u32 b);
 u8 Gfx3DState_NextPolyId(void *p);
-Ov008Item *func_ov000_02154b58(void *a, u32 id);
+Ov008Item *UiList_GetItemById(void *a, u32 id);
 void func_02041c20(void *a, int b, int c);
 
 // One local holds first the sprite unk_e0 and then the panel unk_f8. Two typed locals
@@ -81,7 +81,7 @@ void func_ov008_021cf040(Ov008Mgr *m) {
         case 9:
         case 16:
         case 18:
-            if (func_02054f10(((Ov008Panel *)p)->sprite, 0xffff)) {
+            if (Model_IsReady(((Ov008Panel *)p)->sprite, 0xffff)) {
                 s32 a = (u8)((Ov008Panel *)p)->alpha;
                 s32 px = (((Ov008Panel *)p)->unk_5c + (((Ov008Panel *)p)->offset + 0x3d000)) & ~0xfff;
                 if (a > 0) {
@@ -99,7 +99,7 @@ void func_ov008_021cf040(Ov008Mgr *m) {
     }
     item = NULL;
     if (m->menu != NULL && m->unk_112 != 0xffff) {
-        item = func_ov000_02154b58(m->menu, m->unk_112);
+        item = UiList_GetItemById(m->menu, m->unk_112);
     }
     v.x = 0;
     v.y = 0;

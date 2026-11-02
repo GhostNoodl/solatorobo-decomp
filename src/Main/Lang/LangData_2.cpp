@@ -85,7 +85,7 @@ void func_0206dedc(char *dst, const LangId *id);
 
 void func_0206dfd4(char *dst, const LangId *id);
 
-u8 *func_0206e150(LangBlockA *b) {
+u8 *LangBlockA_GetData(LangBlockA *b) {
     if (b == NULL) {
         return NULL;
     }
@@ -95,7 +95,7 @@ u8 *func_0206e150(LangBlockA *b) {
     return func_0206dd6c(&b->flags, b->data);
 }
 
-u8 *func_0206e180(LangBlockA *b) {
+u8 *LangBlockA_GetData1(LangBlockA *b) {
     if (b == NULL) {
         return NULL;
     }
@@ -134,7 +134,7 @@ u8 *func_0206e230(LangBlockB *b) {
     return func_0206dd6c(&b->flags, b->data) + 0xa8;
 }
 
-u8 *func_0206e264(LangBlockB *b) {
+u8 *LangBlockB_GetData(LangBlockB *b) {
     if (b == NULL) {
         return NULL;
     }
@@ -244,7 +244,7 @@ void func_0206e648(LangBlockB *b);
 
 void func_0206e660(LangBlockA *b);
 
-void func_0206e900(char *dst, const char *src);
+void LangData_LocalizePath(char *dst, const char *src);
 void func_0206e6e4(void);
 
 typedef struct LangArc {
@@ -256,7 +256,7 @@ extern LangArc data_0214b0b8;
 void func_02038638(LangArc *arc, const char *name);
 void func_02038520(LangArc *arc);
 void *func_02038dbc(LangArc *arc);
-LangTable **func_02034b98(void *res, const char *name);
+LangTable **ResList_FindType0(void *res, const char *name);
 
 void func_0206e678(void);
 
@@ -266,7 +266,7 @@ void func_0206e6e4(void);
 
 LangGroup *Lang_GetGroup(int i);
 
-u16 func_0206e7ec(int group, int index);
+u16 LangData_GetIndex(int group, int index);
 
 typedef struct OSOwnerInfo {
     u8 language;
@@ -288,7 +288,7 @@ extern char data_0208cc7b[];
 extern char data_0208cc7f[];
 extern char data_0208cc83[];
 
-void func_0206e900(char *dst, const char *src);
+void LangData_LocalizePath(char *dst, const char *src);
 
 }
 

@@ -11,12 +11,12 @@ static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
-        func_0204c7d0(win);
+        TextWin_Init(win);
     }
     return win;
 }
 
-void func_ov000_021c64b4(Obj021c64b4 *self, u32 text) {
+void Obj021c64b4_SetText(Obj021c64b4 *self, u32 text) {
     TextWin *win;
     {
         void *saved = data_02097dd0->cur;

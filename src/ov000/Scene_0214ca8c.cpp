@@ -19,19 +19,19 @@ typedef struct {
 
 extern "C" {
 
-BOOL func_02054f10(void *obj, u32 mask);
+BOOL Model_IsReady(void *obj, u32 mask);
 void func_ov000_0214ccf8(Scene0214ca8c *self);
 
-BOOL func_ov000_0214ca8c(Scene0214ca8c *self) {
+BOOL Menu021ca94c_IsLoaded(Scene0214ca8c *self) {
     BOOL done = TRUE;
 
-    if (self->unk_10 != NULL && !func_02054f10(self->unk_10, 0xffff)) {
+    if (self->unk_10 != NULL && !Model_IsReady(self->unk_10, 0xffff)) {
         done = FALSE;
     }
-    if (self->unk_84 != NULL && !func_02054f10(self->unk_84, 0xffff)) {
+    if (self->unk_84 != NULL && !Model_IsReady(self->unk_84, 0xffff)) {
         done = FALSE;
     }
-    if (self->unk_88 != NULL && !func_02054f10(self->unk_88, 0xffff)) {
+    if (self->unk_88 != NULL && !Model_IsReady(self->unk_88, 0xffff)) {
         done = FALSE;
     }
     return done;

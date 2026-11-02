@@ -47,10 +47,10 @@ s32 func_0203db40(void *p);
 void func_ov000_02176264(void *p);
 void func_ov000_021761f0(void *p);
 void *Actor_Ctor(void *p);
-void *func_ov000_0218c928(void *p);
-void func_ov000_021984f4(void *p, s32 a, s32 b);
-void func_ov000_0219864c(void *p, s32 a, s32 b);
-void func_ov000_02190a80(void *a, s32 b);
+void *Actor_DtorBase(void *p);
+void Obj021984c8_UpdatePos(void *p, s32 a, s32 b);
+void ActorSub48_UpdatePos(void *p, s32 a, s32 b);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
 void func_ov004_021ce50c(void);
 }
 

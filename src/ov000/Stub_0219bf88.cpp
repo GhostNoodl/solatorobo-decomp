@@ -17,7 +17,7 @@ s32 func_ov000_0219bf88(void) {
     return 0x14;
 }
 
-void *func_ov000_0219bf90(void) {
+void *ActorMgr_FindPlayer(void) {
     ActorMgr *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;

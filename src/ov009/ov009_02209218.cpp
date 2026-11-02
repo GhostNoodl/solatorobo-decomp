@@ -2,20 +2,20 @@
 
 extern "C" {
 
-extern BOOL func_ov000_021903b4(void *p);
-extern void func_ov000_02190a80(Model0218fe1c *p, s16 a);
+extern BOOL Model021903b4_Draw(void *p);
+extern void Model0218fe1c_UpdateAnim(Model0218fe1c *p, s16 a);
 
 BOOL Ov009ActVt_02217594_Draw(Ov009ActVt_02217594 *self) {
     BOOL r = Ov003Actor_Draw(self);
     if (r) {
-        func_ov000_021903b4(&self->modelObj);
+        Model021903b4_Draw(&self->modelObj);
     }
     return r;
 }
 
 void Ov009ActVt_02217594_Animate(Ov009ActVt_02217594 *self) {
     Ov003Actor_Animate(self);
-    func_ov000_02190a80(&self->modelObj, 0x1000);
+    Model0218fe1c_UpdateAnim(&self->modelObj, 0x1000);
 }
 
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);

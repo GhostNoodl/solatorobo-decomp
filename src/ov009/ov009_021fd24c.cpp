@@ -30,8 +30,8 @@ void Ov009ActVt_02216750_State20(Ov009ActVt_02216750 *self) {
     switch (self->fsm->st) {
     case 0: {
         ActorSub44 *s44;
-        func_ov000_02190cb0(self->model, (char *)anim, 0x2ab, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, (char *)anim, 0x2ab, 0);
+        Model0218fe1c_SetLoop(self->model);
         {
             u16 r = self->rot_y;
             s32 x = path->start.x;
@@ -60,7 +60,7 @@ void Ov009ActVt_02216750_State20(Ov009ActVt_02216750 *self) {
             s44->unk_22_1 = 1;
             self->unk_f0 = self->pos;
             self->unk_fc = self->pos;
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }
@@ -86,7 +86,7 @@ void Ov009ActVt_02216750_StateIdle(Ov009ActVt_02216750 *self) {
     VEC_MultAdd(0x31, &d, &self->pos, &self->pos);
 }
 
-extern Ov003Actor *func_ov000_02199f60(void *p);
+extern Ov003Actor *Target_GetActor(void *p);
 static inline u16 Ov009_AngleTo(Ov003Actor *a, Ov003Actor *b) {
     if (a != NULL && a != b) {
         return FX_Atan2(a->pos.x - b->pos.x, a->pos.z - b->pos.z);
@@ -110,7 +110,7 @@ void Ov009ActVt_02216750_StateHurt(Ov009ActVt_02216750 *self) {
             self->unk_fc.y = self->unk_f0.y - 0x1000;
         }
         if (data_ov000_021ccd54->unk_ca.c[0] != 0x11) {
-            p = func_ov000_02199f60(self->hp);
+            p = Target_GetActor(self->hp);
             if (p != NULL) {
                 u16 a = Ov009_AngleTo(self, p);
                 self->unk_fc.x += FX_Mul(OV009_SIN(a), 0x1000);
@@ -118,7 +118,7 @@ void Ov009ActVt_02216750_StateHurt(Ov009ActVt_02216750 *self) {
             }
         }
         if (self->unk_18 == 1) {
-            func_02049f44(data_02097e4c, 0xd03, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0xd03, &self->pos, 0);
         }
         self->fsm->st++;
     }
@@ -126,7 +126,7 @@ void Ov009ActVt_02216750_StateHurt(Ov009ActVt_02216750 *self) {
         st = self->fsm;
         st->timer++;
         if (st->timer > 0x2d) {
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         d.x = self->unk_fc.x - self->pos.x;
         d.y = self->unk_fc.y - self->pos.y;

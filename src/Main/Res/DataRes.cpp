@@ -97,24 +97,24 @@ static inline DataRes *DataRes_New(u32 size, const u32 *vtbl) {
 static inline void DataRes_Open152c(const char *arcName, const char *name) {
     char arc[0x20];
     char file[0x20];
-    func_0206e900(arc, arcName);
-    func_0206e900(file, name);
+    LangData_LocalizePath(arc, arcName);
+    LangData_LocalizePath(file, name);
     data_02fe152c->Open(arc, file);
 }
 
 static inline void DataRes_Open1530(const char *arcName, const char *name) {
     char arc[0x20];
     char file[0x20];
-    func_0206e900(arc, arcName);
-    func_0206e900(file, name);
+    LangData_LocalizePath(arc, arcName);
+    LangData_LocalizePath(file, name);
     data_02fe1530->Open(arc, file);
 }
 
 static inline void DataRes_Open1530_18(const char *arcName, const char *name) {
     char arc[0x20];
     char file[0x20];
-    func_0206e900(arc, arcName);
-    func_0206e900(file, name);
+    LangData_LocalizePath(arc, arcName);
+    LangData_LocalizePath(file, name);
     data_02fe1530->Open18(arc, file);
 }
 

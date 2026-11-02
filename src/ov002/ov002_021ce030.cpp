@@ -20,13 +20,13 @@ Task021ef430 *func_ov002_021ce030(void) {
     return p;
 }
 
-void func_ov002_021ce0b0(Task021ef430 *self) {
-    func_020359fc(data_ov002_021ef3e4, data_ov002_021ef3f9, 2, 0);
+void Task021ef430_Load(Task021ef430 *self) {
+    ResMgr_LoadArchive(data_ov002_021ef3e4, data_ov002_021ef3f9, 2, 0);
     self->unk_4f = 1;
 }
 
-bool func_ov002_021ce0e0(void) {
-    return func_02035bd4(data_ov002_021ef3e4, data_ov002_021ef3f9, 2) & 1;
+bool Task021ef430_IsLoaded(void) {
+    return ResMgr_IsArchiveLoaded(data_ov002_021ef3e4, data_ov002_021ef3f9, 2) & 1;
 }
 
 }

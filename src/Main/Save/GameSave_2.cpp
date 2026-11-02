@@ -41,7 +41,7 @@ void func_0206d5e0(GameSave *s) {
 
 void func_0206d5fc(GameSave *s) {
     if (s->bits.active) {
-        func_020473ac(s, 2);
+        SaveBase_SetState_020473ac(s, 2);
     }
 }
 
@@ -50,27 +50,27 @@ void func_0206d61c(GameSave *s) {
     if (slot->flags & 2) {
         s->bits.flag11 = 1;
     }
-    func_020473ac(s, 4);
+    SaveBase_SetState_020473ac(s, 4);
 }
 
 void func_0206d650(GameSave *s) {
     s->bits.flag1 = 0;
     if (s->bits.flag3) {
-        func_020473ac(s, 5);
+        SaveBase_SetState_020473ac(s, 5);
     } else if (s->bits.flag12) {
-        func_020473ac(s, 12);
+        SaveBase_SetState_020473ac(s, 12);
     } else if (s->bits.flag14) {
-        func_020473ac(s, 15);
+        SaveBase_SetState_020473ac(s, 15);
     } else if (s->bits.flag5) {
         if (s->bits.flag9) {
-            func_020473ac(s, 7);
+            SaveBase_SetState_020473ac(s, 7);
         }
     } else if (s->bits.flag6) {
         s->bits.flag7 = 0;
         if (s->bits.flag8) {
-            func_020473ac(s, 7);
+            SaveBase_SetState_020473ac(s, 7);
         } else if (s->bits.flag10) {
-            func_020473ac(s, 9);
+            SaveBase_SetState_020473ac(s, 9);
         } else {
             s->bits.flag7 = 1;
         }
@@ -82,7 +82,7 @@ void func_0206d650(GameSave *s) {
 void func_0206d724(GameSave *s) {
     s->bits.flag3 = 0;
     s->bits.flag1 = 1;
-    func_020473ac(s, 0);
+    SaveBase_SetState_020473ac(s, 0);
 }
 
 void func_0206d744(GameSave *s) {
@@ -106,7 +106,7 @@ void func_0206d7b0(GameSave *s) {
     s->bits.flag8 = 0;
     s->bits.flag9 = 0;
     s->bits.flag1 = 1;
-    func_020473ac(s, 0);
+    SaveBase_SetState_020473ac(s, 0);
 }
 
 void func_0206d7d4(GameSave *s) {
@@ -114,20 +114,20 @@ void func_0206d7d4(GameSave *s) {
     if (s->step == 1) {
         s->bits.flag10 = 0;
         s->bits.flag1 = 1;
-        func_020473ac(s, 0);
+        SaveBase_SetState_020473ac(s, 0);
     }
 }
 
 void func_0206d80c(GameSave *s) {
     s->bits.flag11 = 1;
     if (s->bits.flag12) {
-        func_020473ac(s, 12);
+        SaveBase_SetState_020473ac(s, 12);
     }
 }
 
 void func_0206d834(GameSave *s) {
     s->bits.flag13 = 1;
-    func_020473ac(s, 0);
+    SaveBase_SetState_020473ac(s, 0);
 }
 
 void func_0206d850(GameSave *s) {
@@ -135,19 +135,19 @@ void func_0206d850(GameSave *s) {
     if (s->step == 1) {
         s->bits.flag12 = 0;
         s->bits.flag1 = 1;
-        func_020473ac(s, 0);
+        SaveBase_SetState_020473ac(s, 0);
     }
 }
 
 void func_0206d888(GameSave *s) {
     s->bits.flag14 = 0;
     s->bits.flag1 = 1;
-    func_020473ac(s, 0);
+    SaveBase_SetState_020473ac(s, 0);
 }
 
 void func_0206d8a8(GameSave *s) {
     if (s->bits.active) {
-        func_020473ac(s, 4);
+        SaveBase_SetState_020473ac(s, 4);
     }
 }
 
@@ -166,7 +166,7 @@ void func_0206d8c8(GameSave *s) {
         s->step = 4;
         break;
     case 4:
-        func_020473ac(s, 8);
+        SaveBase_SetState_020473ac(s, 8);
         break;
     default:
         s->step = 1;
@@ -180,14 +180,14 @@ void func_0206d938(GameSave *s) {
         if (func_02047694(s)) {
             s->step = 1;
         } else {
-            func_020473ac(s, 11);
+            SaveBase_SetState_020473ac(s, 11);
         }
         break;
     case 1:
         s->step = 2;
         break;
     case 2:
-        func_020473ac(s, 10);
+        SaveBase_SetState_020473ac(s, 10);
         break;
     }
 }

@@ -16,14 +16,14 @@ extern "C" {
 extern const s16 FX_SinCosTable_[];
 extern const VecFx32 data_ov003_021f4c58;
 extern const u8 data_ov003_021f4c50[];
-extern Actor *func_ov000_0219be1c(s32 id, const void *pos, const void *rot, u16 a, u16 b);
+extern Actor *Actor_SpawnKind(s32 id, const void *pos, const void *rot, u16 a, u16 b);
 extern Actor *ActorMgr_FindKind(ActorMgr *mgr, s32 a, s32 b);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern u16 Camera_GetYaw(Camera *cam);
 extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
-extern void func_ov000_02191008(void *p);
-extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
+extern void Model0218fe1c_StopAnim(void *p);
+extern void *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 extern void *data_ov000_021ccd64;
 extern char data_ov003_021f8350[];
@@ -32,7 +32,7 @@ extern void ActorMgr_BroadcastKind(ActorMgr *mgr, u16 a, s32 b);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern void SndMgr_StopSeqArc(SndMgr *mgr, s32 id);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
-extern void func_ov000_0218b700(Ov003Unit *u, s32 a, s32 b);
+extern void GroupNode_SetSpawnRange(Ov003Unit *u, s32 a, s32 b);
 
 void Ov003Prop_State22(ActorEx *self) {
     ActorSub40 *w = self->fsm;
@@ -43,14 +43,14 @@ void Ov003Prop_State22(ActorEx *self) {
             EffectObj *e;
             ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4035, 0x15);
             func_ov000_0218996c(0x3c, 0x78);
-            e = func_02065f88(5, &self->pos);
+            e = Effect_SpawnId(5, &self->pos);
             if (e != NULL) {
                 e->SetScaleXYZ(0x9800, 0x9800, 0x9800);
                 e->AddPosXYZ(0, -0x32000, 0x1e000);
                 ((Ov003DfEffectData *)e)->unk_3c = 0xccd;
             }
-            func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
-            func_02049a48(data_02097e4c, 0x53, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x53, -1, -1, -1);
             self->fsm->timer = 0;
             self->fsm->st++;
         } else {
@@ -73,7 +73,7 @@ void Ov003Prop_State22(ActorEx *self) {
             s32 b = 100;
             switch (self->fsm->timer & 0x3f) {
             case 0:
-                func_02049a48(data_02097e4c, 0x19, a, a, a);
+                SndMgr_PlayVolume(data_02097e4c, 0x19, a, a, a);
                 func_ov000_0218996c(0xf, 0x1e);
                 a = 3;
                 break;
@@ -84,7 +84,7 @@ void Ov003Prop_State22(ActorEx *self) {
                 b = 100;
                 break;
             case 0x20:
-                func_02049a48(data_02097e4c, 0x19, a, a, a);
+                SndMgr_PlayVolume(data_02097e4c, 0x19, a, a, a);
                 func_ov000_0218996c(0xf, 0x1e);
                 break;
             }
@@ -96,7 +96,7 @@ void Ov003Prop_State22(ActorEx *self) {
             sc.x = 0x5000;
             sc.y = 0x2800;
             sc.z = 0x1800;
-            func_ov000_0219b71c(&p, &sc, 0x2800, 0x3800, a, b);
+            Spawn_ScatterEffect(&p, &sc, 0x2800, 0x3800, a, b);
         }
         self->fsm->timer++;
         self->pos.y -= 0xcd;
@@ -110,7 +110,7 @@ Ov003ActExSeq *Ov003ActVt_021f8350_Dtor(Ov003ActExSeq *self) {
     if (self->seq >= 0) {
         SndMgr_StopSeqArc(data_02097e4c, self->seq);
     }
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
@@ -119,7 +119,7 @@ Ov003ActExSeq *Ov003ActVt_021f8350_DtorDelete(Ov003ActExSeq *self) {
     if (self->seq >= 0) {
         SndMgr_StopSeqArc(data_02097e4c, self->seq);
     }
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
@@ -127,7 +127,7 @@ Ov003ActExSeq *Ov003ActVt_021f8350_DtorDelete(Ov003ActExSeq *self) {
 void Ov003ActVt_021f8350_Start(Ov003ActExSeq *self) {
     Ov003Unit *u;
     s32 s;
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     s = self->unk_1a;
     if (s != 0) {
         Model0218fe1c *m = self->model;
@@ -141,9 +141,9 @@ void Ov003ActVt_021f8350_Start(Ov003ActExSeq *self) {
     u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u != NULL) {
         u->unk_a2_0 = 0;
-        func_ov000_0218b700(u, 0x5000, 0);
+        GroupNode_SetSpawnRange(u, 0x5000, 0);
     }
-    self->seq = func_02049afc(data_02097e4c, 0x3f);
+    self->seq = SndMgr_StartSeqArc(data_02097e4c, 0x3f);
 }
 
 void Ov003ActExSeq_Bob(Ov003ActExSeq *self) {
@@ -184,10 +184,10 @@ void Ov003ActExSeq_State21(Ov003ActExSeq *self) {
         VecFx32 v;
         Actor *sp;
         VEC_Add(&self->pos, &data_ov003_021f4c58, &v);
-        sp = func_ov000_0219be1c(0x480b, &v, data_ov003_021f4c50, self->id, 0xffff);
+        sp = Actor_SpawnKind(0x480b, &v, data_ov003_021f4c50, self->id, 0xffff);
         if (sp != NULL) {
             sp->unk_18 = 7;
-            func_02065f88(0x325, &v)->SetRotXYZ(0, 0x3800, 0);
+            Effect_SpawnId(0x325, &v)->SetRotXYZ(0, 0x3800, 0);
         }
         self->fsm->st++;
         break;
@@ -202,19 +202,19 @@ void Ov003ActExSeq_State21(Ov003ActExSeq *self) {
         if (a != NULL && Ov003DfKind_Get(a->fsm) != 0x15) {
             goto end;
         }
-        func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
         if (a != NULL) {
             VecFx32 p;
             EffectObj *e;
             p.x = a->pos.x;
             p.y = a->pos.y;
             p.z = a->pos.z;
-            e = func_02065f88(0x325, &p);
+            e = Effect_SpawnId(0x325, &p);
             if (e != NULL) {
                 e->SetScaleAll(0x1c00);
                 e->SetRotXYZ(0, 0x3800, 0);
             }
-            func_02065f88(3, &p);
+            Effect_SpawnId(3, &p);
         }
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
@@ -242,7 +242,7 @@ void Ov003ActExSeq_State22(Ov003ActExSeq *self) {
         func_01ffc9fc(&v, &v, Camera_GetAngle(cam));
         VEC_Add(&self->pos, &v, &self->pos);
         self->rot_x = 0xfff0;
-        func_ov000_02191008(self->model);
+        Model0218fe1c_StopAnim(self->model);
         SndMgr_StopSeqArc(data_02097e4c, self->seq);
         self->seq = -1;
         self->fsm->st++;
@@ -275,7 +275,7 @@ void Ov003ActExSeq_State22(Ov003ActExSeq *self) {
             sc.x = 0x2800;
             sc.y = 0x2800;
             sc.z = 0x2800;
-            func_ov000_0219b71c(&p, &sc, 0xccd, 0x159a, a, b);
+            Spawn_ScatterEffect(&p, &sc, 0xccd, 0x159a, a, b);
         }
         if (self->fsm->timer > 0x1c2) {
             func_ov000_02197dec(self, 0xf, 4);

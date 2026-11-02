@@ -5,11 +5,11 @@ extern "C" {
 extern VFunc data_ov000_021cb5a8[];
 extern VFunc data_ov000_021cca10[];
 void func_ov000_021c3af4(void *self);
-void func_ov000_021c22d8(void *self);
+void ListRow_Init(void *self);
 void func_ov000_021c2334(void *self);
-void func_ov000_021c2a88(void *self, void *a);
-void func_ov000_021c3fd4(void *list, void *item);
-void func_ov000_021c403c(void *list, s32 a);
+void Hud021cca10_SetText(void *self, void *a);
+void LoBase021ccb54_021ccbe0_AppendRow(void *list, void *item);
+void LoBase021ccb54_021ccbe0_Select(void *list, s32 a);
 BOOL func_ov002_021d0270(void *self, void *ev);
 void func_ov000_021c41a4(void *list, s32 a);
 
@@ -18,7 +18,7 @@ typedef struct {
     u16 b;
 } Pair021d03c8;
 
-void func_ov002_021d03c8(Task021efa1c *self) {
+void Task021efa1c_Start(Task021efa1c *self) {
     void *g;
     UiObj *p;
     self->unk_04 &= ~2;
@@ -55,23 +55,23 @@ void func_ov002_021d03c8(Task021efa1c *self) {
         u8 *q;
         u32 count;
         base = data_02fe152c->data + 0x10 + 8 * 0x20;
-        tbl = func_0205976c(data_02fe152c, 8);
-        count = func_0205975c(data_02fe152c, 8);
+        tbl = DataRes_GetTable(data_02fe152c, 8);
+        count = DataRes_GetCount(data_02fe152c, 8);
         for (i = 0; i < count; i++) {
-            if (func_02059544(data_02fe152c, base, tbl, 0x101, i)) {
+            if (DataRes_ReadBitsAt_02059544(data_02fe152c, base, tbl, 0x101, i)) {
                 q = (u8 *)Heap_Alloc(0x48);
                 if (q != NULL) {
                     *(VFunc **)q = data_ov002_021ef684;
-                    func_ov000_021c22d8(q);
+                    ListRow_Init(q);
                     *(VFunc **)q = data_ov000_021cca10;
                     func_ov000_021c2334(q);
                 }
                 FIELD(q, 0x4, s32) = i;
                 FIELD(q, 0x3c, s32) = (u16)(i + 1);
-                id = ((Pair021d03c8 *)func_0205976c(data_02fe152c, 8))[i].b | 0x4000;
-                func_ov000_021c2a88(q, func_0206ec48(id));
+                id = ((Pair021d03c8 *)DataRes_GetTable(data_02fe152c, 8))[i].b | 0x4000;
+                Hud021cca10_SetText(q, Param_Get(id));
                 FIELD(q, 0x8, s32) = id;
-                func_ov000_021c3fd4(self->unk_3c, q);
+                LoBase021ccb54_021ccbe0_AppendRow(self->unk_3c, q);
             }
         }
     }
@@ -104,7 +104,7 @@ void func_ov002_021d03c8(Task021efa1c *self) {
     self->unk_40->vfunc_f4(2, MsgRes_GetString(g, 0x33));
     self->unk_40->vfunc_08();
     self->fadeLen = self->unk_3c->openLen + 0x5000;
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 }

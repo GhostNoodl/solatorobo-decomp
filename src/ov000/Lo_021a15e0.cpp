@@ -14,7 +14,7 @@ static inline void SetS(S0219bebc *p, S0219bebc v) {
 }
 
 extern "C" {
-void func_ov000_0215eab4(void *p);
+void Obj0215eab4_Draw(void *p);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 
 static inline Actor *FindA(u16 id) {

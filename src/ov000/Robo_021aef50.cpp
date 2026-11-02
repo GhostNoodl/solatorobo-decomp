@@ -29,15 +29,15 @@ extern "C" {
 extern void *data_02097e4c;
 extern char data_ov000_021cc62a[];
 extern char data_ov000_021cc630[];
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
-BOOL func_ov000_02198360(St_021aef50 *st, s32 state, s32 x);
+BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
+BOOL History_SetState(St_021aef50 *st, s32 state, s32 x);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Actor_TurnToPos(Actor *self, void *v, s32 a);
 void Actor_MoveToPos(Actor *self, const void *target, s32 turn);
 void Actor_Move(Actor *self, s32 turn);
-s32 func_ov000_0219a2f4(void *pos, s32 up, s32 down);
-void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
-void *func_0204a028(void *a, s32 b, void *c, s32 d);
+s32 Geom_SnapToGround(void *pos, s32 up, s32 down);
+void *SndMgr_PlayAt(void *mgr, s32 id, void *pos, s32 a);
+void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
 static inline Actor *FindActor021aef50(u16 id) {
@@ -89,12 +89,12 @@ void func_ov000_021aef50(Robo021ca458 *self) {
             }
         } else {
             self->unk_b24_12 = 0;
-            func_ov000_02198360(((St_021aef50 *)self->fsm), 1, 0);
+            History_SetState(((St_021aef50 *)self->fsm), 1, 0);
             return;
         }
         self->unk_b20 = self->target;
         self->target = 0xffff;
-        func_ov000_02190cb0(self->model, data_ov000_021cc62a, 0x800, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov000_021cc62a, 0x800, 0);
         {
             s32 d = Dist021aef50(pos.x - self->pos.x, pos.z - self->pos.z);
             self->speed = d >> 4;
@@ -102,13 +102,13 @@ void func_ov000_021aef50(Robo021ca458 *self) {
             self->friction = 0;
             self->gravity = 0x52;
         }
-        func_02049f44(data_02097e4c, 7, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 7, &self->pos, 0);
         ((St_021aef50 *)self->fsm)->state++;
         break;
     case 1:
         if (a == NULL) {
             self->unk_b24_12 = 0;
-            func_ov000_02198360(((St_021aef50 *)self->fsm), 4, 0);
+            History_SetState(((St_021aef50 *)self->fsm), 4, 0);
         }
         Actor_TurnToPos(self, &pos, 0x59a);
         Actor_MoveToPos(self, &pos, 0);
@@ -119,15 +119,15 @@ void func_ov000_021aef50(Robo021ca458 *self) {
                 break;
             }
         }
-        func_ov000_02190cb0(self->model, data_ov000_021cc630, 0x400, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov000_021cc630, 0x400, 0);
         ((St_021aef50 *)self->fsm)->timer = 0;
         ((St_021aef50 *)self->fsm)->state++;
         if (self->unk_b24_12 == 1) {
-            EffectObj *e = func_02065f88(0x6d, &pos);
+            EffectObj *e = Effect_SpawnId(0x6d, &pos);
             e->SetScaleAll(0xb33);
             e->SetRotXYZ(0xf000, 0, 0);
         } else if (self->unk_b24_12 == 3) {
-            func_0204a028(data_02097e4c, 0xe, &self->pos, -5);
+            SndMgr_PlayAtPitch(data_02097e4c, 0xe, &self->pos, -5);
         }
         break;
     case 2: {
@@ -146,7 +146,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
                     self->moveYaw = ry;
                 }
             }
-            func_ov000_02198360(((St_021aef50 *)self->fsm), 1, 0);
+            History_SetState(((St_021aef50 *)self->fsm), 1, 0);
         } else {
             VecFx32 d;
             self->rot_y = func_01ffc128(a->rot_y, self->rot_y, 0x800, 1, 0x8000);
@@ -165,7 +165,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
         self->unk_b20 = 0xffff;
         self->unk_b24_12 = 0;
         self->rot_x = 0;
-        func_02049f44(data_02097e4c, 7, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 7, &self->pos, 0);
         ((St_021aef50 *)self->fsm)->state++;
     case 101:
         self->unk_b29 |= 2;
@@ -173,11 +173,11 @@ void func_ov000_021aef50(Robo021ca458 *self) {
         if (self->velY >= 0) {
             break;
         }
-        if (func_ov000_0219a2f4(&self->pos, self->height << 1, -0x66) == -0x1000) {
+        if (Geom_SnapToGround(&self->pos, self->height << 1, -0x66) == -0x1000) {
             break;
         }
         data_ov000_021ccd54->cam.base.groundClip = 0;
-        func_ov000_02198360(((St_021aef50 *)self->fsm), 4, 0);
+        History_SetState(((St_021aef50 *)self->fsm), 4, 0);
         break;
     }
 }

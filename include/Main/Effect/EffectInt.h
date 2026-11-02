@@ -193,10 +193,10 @@ static inline u8 Effect_NextPolyId(void) {
     return data_0214a41c + (u8)((s32)n % 16);
 }
 
-extern EffectFile *func_02034ec0(void *arc, const char *name);
-extern EffectFile *func_02034ff8(void *arc, const char *name);
+extern EffectFile *ResList_FindType4(void *arc, const char *name);
+extern EffectFile *ResList_FindType6(void *arc, const char *name);
 extern BOOL func_0203ed04(const char *name, void *data);
-extern void func_0203f0b4(void *data);
+extern void Vram_FreeRes(void *data);
 extern void *Heap_AllocHi(u32 size, u32 align);
 extern void Heap_FreeHi(void *ptr);
 extern void Heap_Free(void *ptr);

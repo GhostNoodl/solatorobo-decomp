@@ -4,7 +4,7 @@ extern "C" {
 
 
 
-void func_ov002_021da430(Obj021efe7c *self) {
+void Obj021efe7c_Release(Obj021efe7c *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(FIELD(self, 8, VObj *));
@@ -12,7 +12,7 @@ void func_ov002_021da430(Obj021efe7c *self) {
     HEAP_PUSH(saved);
     DELETE_VOBJ(FIELD(self, 4, VObj *));
     HEAP_POP(saved);
-    func_02036838(data_02097cdc, data_ov002_021efdf6, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_ov002_021efdf6, 7, 0);
     if (self->unk_10) {
         EffectMgr_RestoreList(data_0214a420);
         if (data_ov000_021ccd54 != NULL) {

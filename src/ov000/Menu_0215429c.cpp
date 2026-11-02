@@ -53,7 +53,7 @@ public:
     }
 };
 
-void func_ov000_0215e8b0(Panel0215429c *p);
+void Obj0215e8b0_LoadModel(Panel0215429c *p);
 
 static inline BOOL LoadModel0215429c(UiList *self) {
     if (self->model != NULL) {
@@ -65,24 +65,24 @@ static inline BOOL LoadModel0215429c(UiList *self) {
         self->model = new ModelObj(data_0208cb74, data_0208cca0);
     }
     {
-        ResList *a = func_02035d5c(self->model->name);
-        func_020417e0(self->model, func_02034d88(a, self->model->unk_04c));
+        ResList *a = ResMgr_GetArcList(self->model->name);
+        TexObj_SetRes(self->model, ResList_FindType2(a, self->model->unk_04c));
     }
     self->model->flags |= 2;
-    func_02041d9c(self->model, 0, 7);
+    TexObj_SelectImage(self->model, 0, 7);
     return TRUE;
 }
 
-void func_ov000_0215429c(UiList *self) {
+void UiList_Setup(UiList *self) {
     if (!(self->flags & 0x20000)) {
         self->rows = self->itemCount;
     }
     self->height = self->vfunc_44();
     if (LoadModel0215429c(self)) {
         if (self->flags & 0x40000) {
-            func_02041d9c(self->model, 0, 2);
-            func_02041d9c(self->model, 0, 10);
-            func_02041d9c(self->model, 0, 6);
+            TexObj_SelectImage(self->model, 0, 2);
+            TexObj_SelectImage(self->model, 0, 10);
+            TexObj_SelectImage(self->model, 0, 6);
         }
         func_02041c5c(self->model, (void *)func_ov000_021540b0);
         func_02041c20(self->model, 2, self);
@@ -95,20 +95,20 @@ void func_ov000_0215429c(UiList *self) {
             const char *name;
             name = data_0208cc88;
             arc = data_0208cc94;
-            func_02041218(&m->pltt);
-            func_02041440(m, name, 0);
+            PlttRes_Init_02041218(&m->pltt);
+            TexObj_Init(m, name, 0);
             STD_CopyString(m->name, arc);
         }
         self->unk_b4 = m;
         {
-            ResList *a = func_02035d5c(m->name);
-            func_020417e0(self->unk_b4, func_02034d88(a, self->unk_b4->unk_04c));
+            ResList *a = ResMgr_GetArcList(m->name);
+            TexObj_SetRes(self->unk_b4, ResList_FindType2(a, self->unk_b4->unk_04c));
         }
         self->unk_b4->flags |= 2;
-        func_02041d9c(self->unk_b4, 0, 6);
+        TexObj_SelectImage(self->unk_b4, 0, 6);
         func_02041c20(self->unk_b4, 6, self);
         if (self->flags & 0x800000) {
-            func_02041d9c(self->unk_b4, 0, 7);
+            TexObj_SelectImage(self->unk_b4, 0, 7);
         }
         func_02041c5c(self->unk_b4, (void *)func_ov000_02154128);
     }
@@ -117,7 +117,7 @@ void func_ov000_0215429c(UiList *self) {
         if (self->flag6 ? TRUE : FALSE) {
             ((Panel0215429c *)self->panel)->flags.b4 = 1;
         }
-        func_ov000_0215e8b0((Panel0215429c *)self->panel);
+        Obj0215e8b0_LoadModel((Panel0215429c *)self->panel);
         if (self->flags & 0x1000000) {
             ((Panel0215429c *)self->panel)->unk_10 = (self->width + 0x10) << 12;
             ((Panel0215429c *)self->panel)->flags.b0 = 1;

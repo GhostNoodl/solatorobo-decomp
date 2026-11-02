@@ -5,8 +5,8 @@
 extern "C" {
 
 BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
-void func_ov000_02190758(Model0218fe1c *a, Rot16 *b, int c);
-int func_ov000_021903b4(Model0218fe1c *a);
+void Obj02190758_SetRot(Model0218fe1c *a, Rot16 *b, int c);
+int Model021903b4_Draw(Model0218fe1c *a);
 
 int Ov006ActVt_021ec7ac_Draw(ActorEx *self) {
     Model0218fe1c *m;
@@ -19,8 +19,8 @@ int Ov006ActVt_021ec7ac_Draw(ActorEx *self) {
         target.z = data_ov000_021ccd54->cam.base.eye.z;
         if (Hit_DiffInSphere(&self->unk_84, &target, 0x190000)) {
             m->trans = self->unk_84;
-            func_ov000_02190758(m, &self->rot, 1);
-            r = func_ov000_021903b4(m);
+            Obj02190758_SetRot(m, &self->rot, 1);
+            r = Model021903b4_Draw(m);
         }
     }
     return r;

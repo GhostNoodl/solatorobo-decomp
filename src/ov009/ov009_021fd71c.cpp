@@ -9,8 +9,8 @@ struct Ov009Rot {
 };
 
 extern void *data_02097e4c;
-extern Ov003Actor *func_ov000_0219be1c(u16 kind, const VecFx32 *pos, const void *rot, u16 id, u16 parent);
-extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
+extern Ov003Actor *Actor_SpawnKind(u16 kind, const VecFx32 *pos, const void *rot, u16 id, u16 parent);
+extern void *SndMgr_PlayAt(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
 
@@ -26,9 +26,9 @@ void Ov009ActVt_02216750_StateShoot(Ov009ActVt_02216750 *self) {
         p.y -= 0x2800;
         kind = 0x482d;
     }
-    o = func_ov000_0219be1c(kind, &p, &self->rot_x, self->id, self->target);
+    o = Actor_SpawnKind(kind, &p, &self->rot_x, self->id, self->target);
     if (self->unk_18 == 1) {
-        func_02049f44(data_02097e4c, 0xd02, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0xd02, &self->pos, 0);
         t = Actor_GetTarget(self);
         if (t != NULL) {
             VecFx32 tp;
@@ -42,15 +42,15 @@ void Ov009ActVt_02216750_StateShoot(Ov009ActVt_02216750 *self) {
             }
         }
     }
-    func_ov000_02198360(self->fsm, 1, 0);
+    History_SetState(self->fsm, 1, 0);
 }
 
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
-extern void func_0203f364(ActorSub48 *p);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void func_ov000_0218996c(u8 a, u8 b);
-extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
+extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 
 static inline void Ov009_VecSet(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
@@ -87,7 +87,7 @@ void Ov009ActVt_02216750_StateDie(Ov009ActVt_02216750 *self) {
         s48 = self->hit;
         s48->unk_9a_0 = 0;
         s48->unk_9a_3 = 0;
-        func_0203f364(s48);
+        HitSphere_Unlink_0203f364(s48);
         s44 = self->unk_44;
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
@@ -105,8 +105,8 @@ void Ov009ActVt_02216750_StateDie(Ov009ActVt_02216750 *self) {
     case 1:
         if (self->fsm->timer > 0x78) {
             func_ov000_0218996c(10, 0x28);
-            func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
-            e = func_02065f88(5, &self->pos);
+            SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
+            e = Effect_SpawnId(5, &self->pos);
             spd = 0x6000;
             if (self->kind != 0x5012) {
                 spd = 0x4800;
@@ -138,7 +138,7 @@ void Ov009ActVt_02216750_StateDie(Ov009ActVt_02216750 *self) {
             v.x = 0x3000;
             v.y = 0x2800;
             v.z = 0x1800;
-            func_ov000_0219b71c(&self->pos, &v, 0xc00, 0x1400, a, b);
+            Spawn_ScatterEffect(&self->pos, &v, 0xc00, 0x1400, a, b);
             func_ov000_0218996c(6, 10);
         }
         self->fsm->timer++;

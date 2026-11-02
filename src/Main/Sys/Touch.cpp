@@ -44,7 +44,7 @@ extern BOOL TP_GetUserInfo(void *calib);
 extern void TP_SetCalibrateParam(void *calib);
 extern void func_02021b9c(void);
 
-void func_0203d45c(TouchQuad *q, u16 a, u16 b, u16 c, u16 d) {
+void TouchQuad_Init(TouchQuad *q, u16 a, u16 b, u16 c, u16 d) {
     q->ad = (u16)(a - d) >> 1;
     q->ba = (u16)(b - a) >> 1;
     q->dc = (u16)(d - c) >> 1;

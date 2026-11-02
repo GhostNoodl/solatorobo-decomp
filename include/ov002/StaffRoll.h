@@ -9,7 +9,7 @@
 // The staff roll: a script file of timed entries, one node object per entry, all driven by the
 // clock of the staff object (data_ov002_021f0fa4).
 
-// One script entry (0x14 bytes). func_ov002_021ec2d8 fixes it up after loading.
+// One script entry (0x14 bytes). Ov002StaffLoader_Parse fixes it up after loading.
 typedef struct Ov002StaffEntry {
     /* 0x00 */ s32 kind; // node class: 3 base, 4 text, 5 model, 6 photo, 7 sound (1, 2, 8 make no node)
     /* 0x04 */ s32 time; // start time on the staff clock: frames in the file, fx32 once loaded
@@ -94,7 +94,7 @@ struct Ov002StaffModel : public Ov002StaffNode {
 
 // Photo node (0x50 bytes, vtable data_ov002_021f0ebc over the model node's; entry kind 6).
 struct Ov002StaffPhoto : public Ov002StaffModel {
-    /* 0x4c */ void *photo; // built by func_ov000_0214b6d8 (0x3c bytes)
+    /* 0x4c */ void *photo; // built by Twl0214b6d8_Init (0x3c bytes)
 };
 
 typedef struct Ov002StaffLine {
@@ -118,7 +118,7 @@ struct Ov002StaffLoader : public Ov002StaffRes {
     /* 0x4c */ Ov002StaffScript *script;
 };
 
-// The staff object (0x30 bytes, func_ov002_021edf98).
+// The staff object (0x30 bytes, Ov002Staff_Create).
 typedef struct Ov002Staff {
     /* 0x00 */ s32 id; // picks the script file
     /* 0x04 */ Ov002StaffClock clock;

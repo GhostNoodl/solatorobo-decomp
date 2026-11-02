@@ -5,9 +5,9 @@ extern "C" {
 
 extern char data_ov013_0220b860[];
 extern void *data_ov013_0220b7d0[];
-extern void func_ov000_021984f4(void *a, s32 b, s32 c);
-extern void func_ov000_0219864c(ActorSub48 *a, VecFx32 *b, u16 *c);
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern void Obj021984c8_UpdatePos(void *a, s32 b, s32 c);
+extern void ActorSub48_UpdatePos(ActorSub48 *a, VecFx32 *b, u16 *c);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 
 void Ov013ActVt_0220b5e0_StateDie(Ov013ActVt_0220b5e0 *self) {
     if (self->fsm->st == 0) {
@@ -22,13 +22,13 @@ void Ov013ActVt_0220b5e0_StateDie(Ov013ActVt_0220b5e0 *self) {
 
 void Ov013ActorBase_UpdateSub44(Ov003Actor *self) {
     if (self->unk_44 != NULL) {
-        func_ov000_021984f4(self->unk_44, 0, 0);
+        Obj021984c8_UpdatePos(self->unk_44, 0, 0);
     }
 }
 
 void Ov013Actor_UpdateHit(Ov003Actor *self) {
     if (self->hit != NULL) {
-        func_ov000_0219864c(self->hit, 0, 0);
+        ActorSub48_UpdatePos(self->hit, 0, 0);
     }
 }
 
@@ -100,48 +100,48 @@ Ov013ActVt_0220b5e0 *Ov013ActVt_0220b5e0_DtorDelete(Ov013ActVt_0220b5e0 *self) {
 static inline void Ov013_StopHtr(Ov013ActExVt_0220b7d0 *self) {
     s32 i;
     for (i = 0; i < 2; i++) {
-        EffectObj *p = func_020657b0(data_0214a420, self->unk_d0[i]);
+        EffectObj *p = Effect_Find_020657b0(data_0214a420, self->unk_d0[i]);
         if (p != NULL) {
             p->state = 4;
         }
     }
-    if (func_02035b90(data_ov013_0220b860, 7)) {
-        func_02036838(data_02097cdc, data_ov013_0220b860, 7, 0);
+    if (ResMgr_IsLoaded(data_ov013_0220b860, 7)) {
+        ResMgr_ReleaseByName(data_02097cdc, data_ov013_0220b860, 7, 0);
     }
 }
 
 Ov013ActExVt_0220b7d0 *Ov013ActExVt_0220b7d0_Dtor(Ov013ActExVt_0220b7d0 *self) {
     *(void **)self = data_ov013_0220b7d0;
     Ov013_StopHtr(self);
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 Ov013ActExVt_0220b7d0 *Ov013ActExVt_0220b7d0_DtorDelete(Ov013ActExVt_0220b7d0 *self) {
     *(void **)self = data_ov013_0220b7d0;
     Ov013_StopHtr(self);
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 void Ov013ActExVt_0220b7d0_Init(Ov013ActExVt_0220b7d0 *self) {
-    func_ov000_0219433c(self);
-    func_020359d0(data_ov013_0220b860, 7, 0);
+    ActorEx_InitActor(self);
+    ResMgr_Load(data_ov013_0220b860, 7, 0);
 }
 
 BOOL Ov013ActExVt_0220b7d0_IsReady(Ov013ActExVt_0220b7d0 *self) {
-    BOOL r = func_ov000_021946f8(self);
-    return (r & func_02035b90(data_ov013_0220b860, 7)) ? TRUE : FALSE;
+    BOOL r = ActorEx_IsReady(self);
+    return (r & ResMgr_IsLoaded(data_ov013_0220b860, 7)) ? TRUE : FALSE;
 }
 
 void Ov013ActExVt_0220b7d0_Start(Ov013ActExVt_0220b7d0 *self) {
     Ov003Actor *p;
     s32 i;
-    func_ov000_02194758(self);
-    func_ov000_02198360(self->fsm, 0xb, 0);
+    ActorEx_Start(self);
+    History_SetState(self->fsm, 0xb, 0);
     self->target = 0xffff;
-    p = func_ov000_0219bf90();
+    p = ActorMgr_FindPlayer();
     if (p != NULL) {
         self->target = p->id;
     }
@@ -163,10 +163,10 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern const VecFx32 data_ov013_0220aeb8;
 extern char data_ov013_0220b86f[];
 extern char data_ov013_0220b87b[];
-extern void func_ov000_0219a210(VecFx32 *v, const VecFx32 *off, s32 rot);
+extern void Geom_AddRotatedOffset(VecFx32 *v, const VecFx32 *off, s32 rot);
 extern BOOL func_ov000_021b4738(Ov003Actor *p);
 extern void Actor_TurnToPos(Actor *self, VecFx32 *p, s32 a);
-extern BOOL func_ov000_0219aae8(Actor *a, Actor *b, u16 c, u8 d, u16 e, VecFx32 *f, void *g, s32 h, s32 i, s16 j, s32 k);
+extern BOOL Hit_ApplyInArea(Actor *a, Actor *b, u16 c, u8 d, u16 e, VecFx32 *f, void *g, s32 h, s32 i, s16 j, s32 k);
 extern void func_ov000_0219b808(u16 id, VecFx32 *pos, void *box, s32 a, s32 b);
 
 struct Ov013HitBox {
@@ -210,7 +210,7 @@ void Ov013ActExVt_0220b7d0_StateThrown(Ov013ActExVt_0220b7d0 *self) {
         pos.x = self->pos.x;
         pos.y = self->pos.y;
         pos.z = self->pos.z;
-        func_ov000_0219a210(&pos, &data_ov013_0220aeb8, self->rot_y);
+        Geom_AddRotatedOffset(&pos, &data_ov013_0220aeb8, self->rot_y);
         f = data_ov013_0220b860;
         o = Effect3D_Create(f, data_ov013_0220b86f, 0, &pos);
         o->loopCount = -1;
@@ -228,7 +228,7 @@ void Ov013ActExVt_0220b7d0_StateThrown(Ov013ActExVt_0220b7d0 *self) {
     case 1: {
         Ov003Actor *p;
         self->unk_d8 += 0x31;
-        p = func_ov000_0219bf90();
+        p = ActorMgr_FindPlayer();
         if (p == NULL || func_ov000_021b4738(p)) {
             self->unk_ce = 1;
         }
@@ -241,7 +241,7 @@ void Ov013ActExVt_0220b7d0_StateThrown(Ov013ActExVt_0220b7d0 *self) {
         break;
     }
     case 2: {
-        EffectObj *o = func_020657b0(data_0214a420, self->unk_d0[0]);
+        EffectObj *o = Effect_Find_020657b0(data_0214a420, self->unk_d0[0]);
         s32 v = 0;
         if (o != NULL) {
             EffectObj *o2;
@@ -253,14 +253,14 @@ void Ov013ActExVt_0220b7d0_StateThrown(Ov013ActExVt_0220b7d0 *self) {
                 v = 0;
             }
             Ov013_SetAlpha(o, v);
-            o2 = func_020657b0(data_0214a420, self->unk_d0[1]);
+            o2 = Effect_Find_020657b0(data_0214a420, self->unk_d0[1]);
             Ov013_SetAlpha(o2, v);
             if (o2->child != NULL) {
                 Ov013_SetAlpha(o2->child, v);
             }
         }
         if (v <= 0) {
-            func_ov000_02198360(self->fsm, 0x15, 0);
+            History_SetState(self->fsm, 0x15, 0);
         }
         break;
     }
@@ -274,7 +274,7 @@ void Ov013ActExVt_0220b7d0_StateThrown(Ov013ActExVt_0220b7d0 *self) {
     }
     Actor_Move(self, 0);
     for (i = 0; i < 2; i++) {
-        EffectObj *o = func_020657b0(data_0214a420, self->unk_d0[i]);
+        EffectObj *o = Effect_Find_020657b0(data_0214a420, self->unk_d0[i]);
         if (o != NULL) {
             if (i == 0) {
                 o->SetScaleXYZ(self->unk_d8, FX_Mul(self->unk_d8, 0x1333), self->unk_d8);
@@ -287,7 +287,7 @@ void Ov013ActExVt_0220b7d0_StateThrown(Ov013ActExVt_0220b7d0 *self) {
     if (self->pos.y < 0) {
         self->pos.y = 0;
     }
-    func_ov000_0219aae8(self, self, self->targetObj->unk_08, self->targetObj->unk_0a, 1 << (pl->id >> 12), NULL, NULL, FX_Mul(self->unk_d8, 0x800), 0x2000, 100, 0x1000);
+    Hit_ApplyInArea(self, self, self->targetObj->unk_08, self->targetObj->unk_0a, 1 << (pl->id >> 12), NULL, NULL, FX_Mul(self->unk_d8, 0x800), 0x2000, 100, 0x1000);
     if (pl->hp[0] == 0) {
         return;
     }

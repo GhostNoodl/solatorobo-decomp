@@ -8,8 +8,8 @@ void Heap_Free(void *ptr);
 
 static inline void Obj0214e014_Delete(Model *obj) {
     if (obj != NULL) {
-        func_02041558(obj);
-        func_02041278(&obj->pltt);
+        TexObj_Release(obj);
+        PlttRes_Release(&obj->pltt);
         Heap_Free(obj);
     }
 }

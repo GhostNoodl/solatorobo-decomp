@@ -12,7 +12,7 @@ extern "C" {
 extern int data_02097d78[];
 extern u8 data_0208b318[];
 extern char data_ov000_021cc885[];
-void func_0206e900(char *dst, const char *src);
+void LangData_LocalizePath(char *dst, const char *src);
 BOOL func_ov000_02184498(void *g);
 void func_0203c9e8(s32 a, s32 b);
 void func_0203cc58(s32 a, s32 b, s32 c);
@@ -68,7 +68,7 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
             p->vfunc_08();
         }
         self->unk_24 = p;
-        func_0206e900(buf, data_ov000_021cc885);
+        LangData_LocalizePath(buf, data_ov000_021cc885);
         LFLD(s32, self->unk_24, 0x44) = 2;
         self->unk_24->vfunc_24(buf, self->unk_04);
         self->unk_28 = 2;
@@ -98,12 +98,12 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
         }
         p = (Model *)Heap_Alloc(sizeof(Model));
         if (p != NULL) {
-            func_02041218(&p->pltt);
-            func_02041440(p, self->unk_04, 0);
+            PlttRes_Init_02041218(&p->pltt);
+            TexObj_Init(p, self->unk_04, 0);
         }
         self->unk_30 = p;
-        func_020417e0(self->unk_30, (void *)self->unk_24->vfunc_10());
-        func_02041d9c(self->unk_30, 1, 0xffff);
+        TexObj_SetRes(self->unk_30, (void *)self->unk_24->vfunc_10());
+        TexObj_SelectImage(self->unk_30, 1, 0xffff);
         func_0203cb78(0, 1, 0);
         func_0203cc58(0, 1, 2);
         self->unk_28 = 6;

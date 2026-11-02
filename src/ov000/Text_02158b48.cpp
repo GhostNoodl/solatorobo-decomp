@@ -6,9 +6,9 @@
 
 extern "C" {
 extern char data_ov000_021cabf4[];
-void func_ov000_0215429c(UiList *self);
+void UiList_Setup(UiList *self);
 
-void func_ov000_02158b48(Lo021cb3a8 *self) {
+void Lo021cb3a8_Setup(Lo021cb3a8 *self) {
     u16 line;
     BOOL done;
     char *p;
@@ -34,7 +34,7 @@ void func_ov000_02158b48(Lo021cb3a8 *self) {
         s = p + 1;
         line++;
     } while (!done && *s != 0);
-    func_ov000_0215429c(self);
+    UiList_Setup(self);
     self->panel->unk_10 = (self->width - 0x10) << 12;
     for (n = self->items; n != NULL; n = (UiListItem *)((u8 *)n->next)) {
         if (n->id == 0) {
@@ -46,15 +46,15 @@ void func_ov000_02158b48(Lo021cb3a8 *self) {
 }
 
 extern "C" {
-void func_0204ca70(void *p);
+void TextWin_RenderToVram(void *p);
 
-void func_ov000_02158c60(Lo021cb3a8 *self, s32 arg) {
+void Lo021cb3a8_SetText(Lo021cb3a8 *self, s32 arg) {
     TextWin *p;
     HEAP_DELETE(TextWin *, self->text, p->unk_vf04());
     p = (TextWin *)Heap_Alloc(0xb8);
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
-        func_0204c7d0(p);
+        TextWin_Init(p);
     }
     self->text = p;
     p->font = 8;
@@ -67,6 +67,6 @@ void func_ov000_02158c60(Lo021cb3a8 *self, s32 arg) {
     self->text->flags |= 0x400000;
     self->text->flags |= 0x40000000;
     self->text->flags |= 0x4;
-    func_0204ca70(self->text);
+    TextWin_RenderToVram(self->text);
 }
 }

@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-BOOL func_02054f10(void *a, int b);
+BOOL Model_IsReady(void *a, int b);
 
 #ifdef __cplusplus
 }
@@ -18,7 +18,7 @@ BOOL func_02054f10(void *a, int b);
 static inline void ov006_Slider_Update(ov006_Caption *self) {
     switch (self->visible) {
     case 0:
-        if (self->model != NULL && !func_02054f10(self->model, 0xffff)) {
+        if (self->model != NULL && !Model_IsReady(self->model, 0xffff)) {
             return;
         }
         self->visible = 1;

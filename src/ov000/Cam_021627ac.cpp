@@ -14,7 +14,7 @@ static inline void SetFrustum021627ac(ModelViewer *self, s32 x, s32 y, s32 z, s3
     MTX_FrustumW(LO_FX_MUL(self->projOfs.y + 0xf5c, s), LO_FX_MUL(self->projOfs.y - 0xf5c, s), LO_FX_MUL(self->projOfs.x - 0x147b, s), LO_FX_MUL(self->projOfs.x + 0x147b, s), 0x1000, 0x1e000, 0x1000, &self->proj);
 }
 
-void func_ov000_021627ac(ModelViewer *self) {
+void ModelViewer_InitCamera(ModelViewer *self) {
     self->eye.x = 0x20cd;
     self->eye.y = 0;
     self->eye.z = 0x7ca4;

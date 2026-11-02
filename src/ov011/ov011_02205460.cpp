@@ -125,7 +125,7 @@ void Ov011Act7da4_State21(Ov011Act7da4 *self) {
         break;
     case 1:
         if (Ov011_GameIdle()) {
-            func_ov000_02198360(st, 0x23, 0);
+            History_SetState(st, 0x23, 0);
         }
         break;
     }
@@ -157,7 +157,7 @@ void Ov011Act7da4_State23(Ov011Act7da4 *self) {
         if (o != NULL) {
             self->unk_36c = o->id;
             o->flags_0 = 1;
-            func_ov000_0218d46c((StageObj3D *)o, self->id, 6);
+            Actor_SendMsgU8((StageObj3D *)o, self->id, 6);
         }
         self->fsm->st++;
     }
@@ -178,7 +178,7 @@ void Ov011Act7da4_State23(Ov011Act7da4 *self) {
         break;
     case 2:
         if (Ov011_GameIdle()) {
-            func_ov000_02198360(st, 0x24, 0);
+            History_SetState(st, 0x24, 0);
         }
         break;
     }
@@ -230,7 +230,7 @@ void Ov011Act7da4_State24(Ov011Act7da4 *self) {
         break;
     case 3:
         if (Ov011_GameIdle()) {
-            func_ov000_02198360(st, 0x22, 0);
+            History_SetState(st, 0x22, 0);
         }
         break;
     }
@@ -295,7 +295,7 @@ void Ov011Act7da4_State22(Ov011Act7da4 *self) {
             q = self->unk_44;
             q->unk_22_0 = 1;
             q->unk_22_1 = 1;
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }

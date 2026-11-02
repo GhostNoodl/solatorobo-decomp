@@ -23,7 +23,7 @@ typedef struct {
 extern "C" {
 
 extern u32 data_ov002_021eef4c[];
-void func_02043064(const Ov002Oam *attr, u32 *w, u32 *h);
+void Oam_GetSize(const Ov002Oam *attr, u32 *w, u32 *h);
 void NNS_G3dGeBufferOP_N(u32 op, const void *args, u32 num);
 void NNS_G3dGeFlushBuffer(void);
 
@@ -57,7 +57,7 @@ void func_ov002_021d66b0(void *self, s32 x, s32 y, s32 z, s32 unused, Ov002Oam *
     shift = ((s32)(img->mappingType & 0x700000) >> 20) + 5;
     ox = ofs[0];
     oy = ofs[1];
-    func_02043064(oam, &w, &h);
+    Oam_GetSize(oam, &w, &h);
     *(vu32 *)0x40004a8 = ((charBase + (charName << shift)) >> 3) | (img->fmt << 26) | 0x40000000 | (w << 20) |
                          (h << 23) | 0x30000 | (img->plttUse << 29);
     fmt = data_ov002_021eef4c[(*(u32 *)oam << 18) >> 31];

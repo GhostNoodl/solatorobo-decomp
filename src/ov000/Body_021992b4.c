@@ -49,7 +49,7 @@ extern ActorMgr *data_ov000_021ccd68;
 
 ActorC *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u32 angle);
-void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *offset, u32 angle);
+void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *offset, u32 angle);
 
 static inline ActorC *FindActor(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;
@@ -106,7 +106,7 @@ typedef struct {
 
 GroupL *ActorMgr_GetGroup(ActorMgr *mgr, u16 key);
 BOOL func_ov000_02199684(Finder *self, ActorL *actor);
-ActorL *func_ov000_02199000(Finder *self, Query *q, ActorL *from);
+ActorL *Finder_NextActor(Finder *self, Query *q, ActorL *from);
 
 static inline BOOL Query_MatchKind(Query *q, ActorL *a) {
     if (q->kind != 0xffff && q->kind != a->kind) {
@@ -115,8 +115,8 @@ static inline BOOL Query_MatchKind(Query *q, ActorL *a) {
     return TRUE;
 }
 
-BOOL func_ov000_021997e8(Finder *self, Part *part);
-Part *func_ov000_021992b4(Finder *self, Query *q, Part *from);
+BOOL Finder_TestPart(Finder *self, Part *part);
+Part *Finder_NextPart(Finder *self, Query *q, Part *from);
 
 static inline s32 Finder_FindAll(Finder *self, Query *q, ActorL **out, s32 max) {
     s32 n = 0;
@@ -125,7 +125,7 @@ static inline s32 Finder_FindAll(Finder *self, Query *q, ActorL **out, s32 max) 
     if (q != NULL) {
         actor = NULL;
         for (; n < max; n++) {
-            actor = func_ov000_02199000(self, q, actor);
+            actor = Finder_NextActor(self, q, actor);
             if (actor == NULL) {
                 break;
             }
@@ -135,7 +135,7 @@ static inline s32 Finder_FindAll(Finder *self, Query *q, ActorL **out, s32 max) 
     return n;
 }
 
-Part *func_ov000_021992b4(Finder *self, Query *q, Part *from) {
+Part *Finder_NextPart(Finder *self, Query *q, Part *from) {
     u32 mask;
     GroupL *group;
     Part *part;
@@ -177,7 +177,7 @@ Part *func_ov000_021992b4(Finder *self, Query *q, Part *from) {
             for (; actor != NULL; actor = actor->next) {
                 if (Query_MatchKind(self->query, actor)) {
                     part = actor->part;
-                    if (part != NULL && func_ov000_021997e8(self, part)) {
+                    if (part != NULL && Finder_TestPart(self, part)) {
                         return part;
                     }
                 }
@@ -187,7 +187,7 @@ Part *func_ov000_021992b4(Finder *self, Query *q, Part *from) {
     return NULL;
 }
 
-s32 func_ov000_021993fc(Finder *self, Query *q, ActorL **out, s32 max) {
+s32 Finder_CollectParts(Finder *self, Query *q, ActorL **out, s32 max) {
     s32 n;
     ActorL *actor;
 
@@ -197,7 +197,7 @@ s32 func_ov000_021993fc(Finder *self, Query *q, ActorL **out, s32 max) {
     n = 0;
     actor = NULL;
     for (; n < max; n++) {
-        actor = (ActorL *)func_ov000_021992b4(self, q, (Part *)actor);
+        actor = (ActorL *)Finder_NextPart(self, q, (Part *)actor);
         if (actor == NULL) {
             break;
         }
@@ -230,7 +230,7 @@ s32 func_ov000_02199454(Finder *self, Query *q, Part **list, s32 count) {
         if (!Query_MatchKind(self->query, actor)) {
             continue;
         }
-        if (!func_ov000_021997e8(self, part)) {
+        if (!Finder_TestPart(self, part)) {
             continue;
         }
         tmp[n] = part;
@@ -274,7 +274,7 @@ s32 func_ov000_02199554(Finder *self, Query *q, Part **out, s32 max) {
     if (q != NULL) {
         part = NULL;
         for (; n < max; n++) {
-            part = func_ov000_021992b4(self, q, part);
+            part = Finder_NextPart(self, q, part);
             if (part == NULL) {
                 break;
             }

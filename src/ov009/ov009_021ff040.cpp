@@ -8,13 +8,13 @@ extern char data_ov009_02216ace[];
 extern void SndMgr_LoadHeapState(SndMgr *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
-extern void func_ov000_021984f4(void *a, s32 b, s32 c);
-extern void func_ov000_0219864c(ActorSub48 *a, VecFx32 *b, u16 *c);
+extern void Obj021984c8_UpdatePos(void *a, s32 b, s32 c);
+extern void ActorSub48_UpdatePos(ActorSub48 *a, VecFx32 *b, u16 *c);
 
 void Ov009ActVt_022165f8_StateKnockBack(Ov009ActVt_022165f8 *self) {
     Ov003Actor_StateKnockBack(self);
     if (self->velY < -0x133) {
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
     }
 }
 
@@ -76,16 +76,16 @@ void Ov009ActVt_0221654c_State20(Ov003Actor *self) {
         }
         if (go) {
             self->model->visible = 1;
-            func_ov000_02190cb0(self->model, data_ov009_02216ace, 0x1000, 0);
+            Model0218fe1c_SetAnim(self->model, data_ov009_02216ace, 0x1000, 0);
             self->fsm->st++;
         }
         break;
     case 2:
-        if (func_ov000_02191120(self->model)) {
+        if (Model0218fe1c_IsAnimDone(self->model)) {
             ActorSub44 *s44 = self->unk_44;
             s44->unk_22_0 = 1;
             s44->unk_22_1 = 1;
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }
@@ -93,21 +93,21 @@ void Ov009ActVt_0221654c_State20(Ov003Actor *self) {
 
 void Ov009ActVt_0221654c_StateDie(Ov003Actor *self) {
     if (self->fsm->st == 0) {
-        func_ov000_02190cb0(self->model, data_ov009_02216ab6, 0xcd, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov009_02216ab6, 0xcd, 0);
+        Model0218fe1c_SetLoop(self->model);
     }
     Ov003Actor_StateDie(self);
 }
 
 void Ov009ActorBase_UpdateSub44(Ov003Actor *self) {
     if (self->unk_44 != NULL) {
-        func_ov000_021984f4(self->unk_44, 0, 0);
+        Obj021984c8_UpdatePos(self->unk_44, 0, 0);
     }
 }
 
 void Ov009Actor_UpdateHit(Ov003Actor *self) {
     if (self->hit != NULL) {
-        func_ov000_0219864c(self->hit, 0, 0);
+        ActorSub48_UpdatePos(self->hit, 0, 0);
     }
 }
 
@@ -321,7 +321,7 @@ void Ov009ActVt_022171d4_Start(Ov009ActVt_022171d4 *self) {
     case 0x5421:
         self->unk_f2 = 0x50;
         if (self->unk_1a == 0) {
-            func_ov000_02198360(self->fsm, 0x20, 0);
+            History_SetState(self->fsm, 0x20, 0);
             self->unk_f4 = 0xf0;
         }
         break;

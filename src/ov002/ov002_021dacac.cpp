@@ -10,7 +10,7 @@ void *ListOwner_GetNth(void *a, u8 b);
 
 static inline void ov002_SetId(Ov002Hud *x, u16 id) {
     if (x != NULL) {
-        func_ov002_021e2754(x, id);
+        Ov002Hud_SetInfo(x, id);
     }
 }
 
@@ -62,9 +62,9 @@ void func_ov002_021dacac(Obj021eff74 *self) {
     self->unk_0c->owner = self;
     self->unk_0c->onDecide = (UiItemFn)func_ov002_021dac8c;
     self->unk_0c->vfunc_74(MsgRes_GetString(g, 0xbc), 0, 0xffff, 0xffff);
-    if (func_020594bc(data_02fe152c, 5, 1, 1)) {
+    if (DataRes_ReadEntry(data_02fe152c, 5, 1, 1)) {
         UiListItem *e = (UiListItem *)self->unk_0c->vfunc_74(MsgRes_GetString(g, 0xbe), 1, 0xffff, 0xffff);
-        if (func_ov000_0219bf90()) {
+        if (ActorMgr_FindPlayer()) {
             if ((self->unk_20 = func_ov000_0219d5a0()) != 0) {
                 e->unk_24 = 0xe;
             }
@@ -116,7 +116,7 @@ void func_ov002_021dacac(Obj021eff74 *self) {
                 str = data_ov002_021efe30;
                 break;
             }
-            func_ov000_0215bb14(self->unk_10, str);
+            Obj0215bb14_SetText(self->unk_10, str);
             self->unk_10->vfunc_70();
         }
     }

@@ -4,7 +4,7 @@
 
 extern "C" {
 
-void func_ov000_0218b700(GroupNode *u, s32 a, s32 b) {
+void GroupNode_SetSpawnRange(GroupNode *u, s32 a, s32 b) {
     if (b == 0) {
         b = a;
     }

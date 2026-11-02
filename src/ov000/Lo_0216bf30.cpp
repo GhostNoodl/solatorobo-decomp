@@ -8,7 +8,7 @@
 
 extern "C" {
 
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
 s32 func_02043d84(void *a);
 
@@ -29,7 +29,7 @@ void func_ov000_0216bf30(LoTicker *self) {
 
 void func_ov000_0216bf90(LoTicker *self) {
     s32 i;
-    func_ov000_0216bcbc(self);
+    LoTicker_Clear(self);
     for (i = 0; i < 10; i++) {
         if (self->res[i].win != NULL && --self->res[i].count == 0) {
             HEAP_DELETE(TextWin *, self->res[i].win, p->unk_vf04());
@@ -37,14 +37,14 @@ void func_ov000_0216bf90(LoTicker *self) {
     }
 }
 
-void func_0204ca70(TextWin *win);
+void TextWin_RenderToVram(TextWin *win);
 void func_ov000_0216bf18(NNSG3dRS *rs);
 
 static inline TextWin *NewText0216c018(void) {
     TextWin *t = (TextWin *)Heap_Alloc(0xb8);
     if (t != NULL) {
         *(const u32 **)t = data_0208ba70;
-        func_0204c7d0(t);
+        TextWin_Init(t);
     }
     return t;
 }
@@ -117,7 +117,7 @@ void func_ov000_0216c018(LoTicker *self) {
         s->text->flags |= 0x400000;
         s->text->flags |= 0x40000000;
         s->text->flags |= 4;
-        func_0204ca70(s->text);
+        TextWin_RenderToVram(s->text);
     } else {
         s->text = NULL;
     }

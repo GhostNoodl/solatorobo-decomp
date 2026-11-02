@@ -20,21 +20,21 @@ void func_ov000_021685f4(Lo021cb894 *self) {
     self->unk_74 = 0;
     self->unk_78 = 0;
     self->unk_7c = -0x2000;
-    res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+    res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {
         const char *nm = data_0208cc88;
-        func_02041218(&m->pltt);
-        func_02041440(m, nm, 0);
+        PlttRes_Init_02041218(&m->pltt);
+        TexObj_Init(m, nm, 0);
     }
     self->unk_9c = (Model *)(m);
-    func_020417e0(m, res);
+    TexObj_SetRes(m, res);
     self->unk_9c->flags |= 2;
     self->unk_9c->flags |= 0x200000;
     self->unk_9c->flags |= 0x80000;
-    func_02041d9c(self->unk_9c, 0, 0x1a);
-    func_02041d9c(self->unk_9c, 0, 0x1b);
-    func_02041d9c(self->unk_9c, 0, 0x1c);
+    TexObj_SelectImage(self->unk_9c, 0, 0x1a);
+    TexObj_SelectImage(self->unk_9c, 0, 0x1b);
+    TexObj_SelectImage(self->unk_9c, 0, 0x1c);
 }
 
 }

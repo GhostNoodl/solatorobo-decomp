@@ -53,7 +53,7 @@ extern "C" {
 
 extern void *data_ov000_021cac60[];
 extern void *data_ov000_021cad50[];
-extern void func_ov000_0215c1bc(void *a, s32 b, const char *c);
+extern void Obj0215c1bc_SetText(void *a, s32 b, const char *c);
 extern void func_ov000_02188140(void *p, s32 a, s32 b, s32 c);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
@@ -93,7 +93,7 @@ void Ov011Act7da4_State20(Ov011Act7da4 *self) {
             self->unk_398->flags |= 0x20000;
             self->unk_398->unk_1c = 4;
             self->unk_398->v08();
-            func_ov000_0215c1bc(self->unk_398, 0x8000, (char *)MsgRes_GetString(data_02149ef8, 0x76));
+            Obj0215c1bc_SetText(self->unk_398, 0x8000, (char *)MsgRes_GetString(data_02149ef8, 0x76));
             self->unk_398->unk_68 = -0x299a;
             self->unk_398->v70();
             func_ov000_02188140(data_ov000_021ccd54, 0xffff, 0, 0);
@@ -125,7 +125,7 @@ void Ov011Act7da4_State20(Ov011Act7da4 *self) {
         break;
     case 1:
         if (Ov011_GameIdle()) {
-            func_ov000_02198360(self->fsm, 0x21, 0);
+            History_SetState(self->fsm, 0x21, 0);
         }
         break;
     }

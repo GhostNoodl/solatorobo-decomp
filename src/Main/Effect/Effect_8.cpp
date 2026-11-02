@@ -61,8 +61,8 @@ extern u32 data_0208c364[];
 extern u32 data_0208c850[];
 extern u32 data_0208c868[];
 extern u32 data_0208c8bc[];
-extern void func_02063a34(EffectObj *obj);
-extern void func_02063f90(Effect3D *e);
+extern void EffectObj_Register(EffectObj *obj);
+extern void Effect3D_Init(Effect3D *e);
 extern void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
 extern void func_02069184(EffectEmitterSub *sub);
 extern void EffectEmitter_Reset(EffectEmitter *em);
@@ -93,9 +93,9 @@ EffectObj *func_020687f8(EffectSetup *setup, EffectDef *def) {
         Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
         if (e != NULL) {
             *(u32 **)e = data_0208c2e4;
-            func_02063a34(e);
+            EffectObj_Register(e);
             *(u32 **)e = data_0208c290;
-            func_02063f90(e);
+            Effect3D_Init(e);
         }
         ret = e;
         Effect_SetStr(e->arcName, def->arcName[0] != 0 ? def->arcName : NULL);
@@ -111,7 +111,7 @@ EffectObj *func_020687f8(EffectSetup *setup, EffectDef *def) {
         EffectPartSet *parts;
         if (em != NULL) {
             *(u32 **)em = data_0208c2e4;
-            func_02063a34(em);
+            EffectObj_Register(em);
             *(u32 **)em = data_0208c868;
             *(u32 **)&em->sub = data_0208c354;
             func_02069184(&em->sub);

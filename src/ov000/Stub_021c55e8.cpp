@@ -21,21 +21,21 @@ static inline UiLabel *New0215f514(void) {
     return p;
 }
 
-void func_ov000_021c55e8(Obj021c55e8 *self, s32 a) {
+void Obj021c55e8_SetLabel1(Obj021c55e8 *self, s32 a) {
     self->unk_f4 = New0215f514();
-    func_ov000_0215f0ec(self->unk_f4, a);
+    UiLabel_SetText(self->unk_f4, a);
     self->unk_f4->width = self->unk_f4->text->width + 0x10;
 }
 
-void func_ov000_021c5630(Obj021c55e8 *self, s32 a) {
+void Obj021c55e8_SetLabel2(Obj021c55e8 *self, s32 a) {
     self->unk_f8 = New0215f514();
-    func_ov000_0215f0ec(self->unk_f8, a);
+    UiLabel_SetText(self->unk_f8, a);
     self->unk_f8->width = self->unk_f8->text->width + 0x10;
 }
 
-void func_ov000_021c5678(Obj021c55e8 *self, s32 a) {
+void Obj021c55e8_SetLabel3(Obj021c55e8 *self, s32 a) {
     self->unk_fc = New0215f514();
-    func_ov000_0215f0ec(self->unk_fc, a);
+    UiLabel_SetText(self->unk_fc, a);
     self->unk_fc->width = self->unk_fc->text->width + 0x10;
 }
 

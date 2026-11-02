@@ -3,8 +3,8 @@
 extern "C" {
 
 extern char data_ov009_022172af[];
-extern BOOL func_ov000_021903b4(void *p);
-extern void func_ov000_02190a80(Model0218fe1c *p, s16 a);
+extern BOOL Model021903b4_Draw(void *p);
+extern void Model0218fe1c_UpdateAnim(Model0218fe1c *p, s16 a);
 
 struct Ov009Bits16 {
     u16 b0 : 1;
@@ -16,8 +16,8 @@ BOOL Ov009ActVt_02217844_Draw(Ov009ActVt_02217844 *self) {
     if (r) {
         VecFx32 p;
         p = self->pos;
-        if (func_ov000_0219a2f4(&p, 0x2000, -0x5000) != -0x1000) {
-            func_ov000_021903b4(&self->modelObj);
+        if (Geom_SnapToGround(&p, 0x2000, -0x5000) != -0x1000) {
+            Model021903b4_Draw(&self->modelObj);
         }
     }
     return r;
@@ -25,21 +25,21 @@ BOOL Ov009ActVt_02217844_Draw(Ov009ActVt_02217844 *self) {
 
 void Ov009ActVt_02217844_Animate(Ov009ActVt_02217844 *self) {
     Ov003Actor_Animate(self);
-    func_ov000_02190a80(&self->modelObj, 0x1000);
+    Model0218fe1c_UpdateAnim(&self->modelObj, 0x1000);
 }
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 
 void Ov009ActVt_02217844_Update(Ov009ActVt_02217844 *self) {
     Ov003Actor *pl;
     if (!Ov009_GameIdle()) {
         return;
     }
-    if (func_ov000_0219a2f4(&self->pos, 0x1000, -0x3000) == -0x1000) {
+    if (Geom_SnapToGround(&self->pos, 0x1000, -0x3000) == -0x1000) {
         return;
     }
     self->target = 0xffff;
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (pl != NULL) {
         self->target = pl->id;
     }

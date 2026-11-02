@@ -9,7 +9,7 @@ extern const char *data_0208cb7c;
 extern const char *data_0208cc94;
 extern const char *data_0208cc88;
 extern u8 data_ov000_021c9ab6[];
-void func_ov000_0215fdfc(ObjBase021cac0c_021cb6f0 *self, s32 a, const void *b);
+void Obj0215fdfc_SetEntry(ObjBase021cac0c_021cb6f0 *self, s32 a, const void *b);
 
 void func_ov000_021699f0(Lo021cb798 *self) {
     void *res;
@@ -34,38 +34,38 @@ void func_ov000_021699f0(Lo021cb798 *self) {
         self->unk_78 = 3;
         self->unk_7c = -0x199a;
         self->unk_a8 = 1;
-        func_ov000_0215fdfc(self, 2, data_ov000_021c9ab6);
+        Obj0215fdfc_SetEntry(self, 2, data_ov000_021c9ab6);
         break;
     }
-    res = func_02034d88(func_02035d5c(data_0214b105), data_0208cb7c);
+    res = ResList_FindType2(ResMgr_GetArcList(data_0214b105), data_0208cb7c);
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {
         const char *nm = data_0208cb7c;
-        func_02041218(&m->pltt);
-        func_02041440(m, nm, 0);
+        PlttRes_Init_02041218(&m->pltt);
+        TexObj_Init(m, nm, 0);
     }
     self->unk_a4 = m;
-    func_020417e0(m, res);
+    TexObj_SetRes(m, res);
     self->unk_a4->flags |= 2;
     self->unk_a4->flags |= 0x200000;
     self->unk_a4->flags |= 0x80000;
-    func_02041d9c(self->unk_a4, 0, (u16)self->unk_9c);
+    TexObj_SelectImage(self->unk_a4, 0, (u16)self->unk_9c);
     if (self->unk_a8 != 0xff) {
         Model *m2;
         void *res2;
-        res2 = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+        res2 = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
         m2 = (Model *)Heap_Alloc(sizeof(Model));
         if (m2) {
             const char *nm = data_0208cc88;
-            func_02041218(&m2->pltt);
-            func_02041440(m2, nm, 0);
+            PlttRes_Init_02041218(&m2->pltt);
+            TexObj_Init(m2, nm, 0);
         }
         self->unk_a0 = m2;
-        func_020417e0(m2, res2);
+        TexObj_SetRes(m2, res2);
         self->unk_a0->flags |= 2;
         self->unk_a0->flags |= 0x200000;
         self->unk_a0->flags |= 0x80000;
-        func_02041d9c(self->unk_a0, 0, self->unk_a8);
+        TexObj_SelectImage(self->unk_a0, 0, self->unk_a8);
     }
     self->unk_28 = 2;
     self->unk_30 = 0xc000;

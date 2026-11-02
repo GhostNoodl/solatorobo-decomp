@@ -1,9 +1,9 @@
-// SndMgr.h declares func_02049690(SndMgr *) for its callers. The definition takes
+// SndMgr.h declares SndMgr_UpdateLoad(SndMgr *) for its callers. The definition takes
 // an extra parameter that it assigns before use (it only changes register
 // allocation), so the header's prototype is renamed out of the way here.
-#define func_02049690 func_02049690_hdr
+#define SndMgr_UpdateLoad func_02049690_hdr
 #include "Main/Snd/SndMgr.h"
-#undef func_02049690
+#undef SndMgr_UpdateLoad
 
 extern "C" {
 
@@ -17,7 +17,7 @@ static inline void SndMgr_StartBgm(SndMgr *mgr, s32 seq, s32 vol) {
     NNS_SndPlayerSetPlayerPriority(&mgr->bgm, 0x7f);
 }
 
-void func_02049690(SndMgr *mgr, s32 seq) {
+void SndMgr_UpdateLoad(SndMgr *mgr, s32 seq) {
     s32 i;
     switch (mgr->loadType) {
         case 0:

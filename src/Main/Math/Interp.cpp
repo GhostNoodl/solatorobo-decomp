@@ -17,7 +17,7 @@ s32 Interp_QuadLerp(s32 t, s32 from, s32 to) {
     return from + Interp_FxMul(to - from, Interp_FxMul(t, t));
 }
 
-BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist) {
+BOOL Interp_MoveTo(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist) {
     VecFx32 d;
     BOOL done = FALSE;
     Interp_VecSub(to, from, &d);

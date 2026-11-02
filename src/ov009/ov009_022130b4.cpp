@@ -13,8 +13,8 @@ extern u8 data_ov009_022160c4[];
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void func_ov000_0219a210(VecFx32 *v, const void *a, u16 b);
-extern Ov003Actor *func_ov000_0219be1c(u16 kind, const VecFx32 *pos, const void *rot, u16 id, u16 parent);
+extern void Geom_AddRotatedOffset(VecFx32 *v, const void *a, u16 b);
+extern Ov003Actor *Actor_SpawnKind(u16 kind, const VecFx32 *pos, const void *rot, u16 id, u16 parent);
 
 static inline Ov003Actor *Ov009_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -50,7 +50,7 @@ void Ov009ActVt_02217d5c_StateShoot(Ov009ActVt_02217d5c *self) {
         Ov003Actor *o;
         u16 s;
         p = self->pos;
-        func_ov000_0219a210(&p, data_ov009_022160ac, self->rot_y);
+        Geom_AddRotatedOffset(&p, data_ov009_022160ac, self->rot_y);
         a = Ov009_FindActor(self->unk_f0);
         r.x = a->rot_x;
         r.y = a->rot_y;
@@ -61,8 +61,8 @@ void Ov009ActVt_02217d5c_StateShoot(Ov009ActVt_02217d5c *self) {
             s32 t = Rand_UpTo(0x400);
             r.y += (u16)(t + (s * 0x600 + 0xee00));
         }
-        func_ov000_0219a210(&p, data_ov009_022160c4, r.y);
-        o = func_ov000_0219be1c(0x483f, &p, &r, self->id, self->target);
+        Geom_AddRotatedOffset(&p, data_ov009_022160c4, r.y);
+        o = Actor_SpawnKind(0x483f, &p, &r, self->id, self->target);
         if (o != NULL) {
             o->unk_1a = 1;
         }
@@ -70,7 +70,7 @@ void Ov009ActVt_02217d5c_StateShoot(Ov009ActVt_02217d5c *self) {
             self->fsm->st++;
             return;
         }
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         break;
     }
     }

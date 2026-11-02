@@ -31,22 +31,22 @@ ResMdlSet *NNS_G3dGetMdlSet(void *file);
 BOOL NNS_G3dBindMdlSet(ResMdlSet *set, void *tex);
 void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 a, u32 mask);
 void NNSi_G3dModifyMatFlag(void *mdl, s32 a, u32 mask);
-BOOL func_ov000_0218ffdc(Model0218fe1c *self, Res0219badc *res, u8 mode, s32 e);
-void func_ov000_02190e98(Model0218fe1c *self, s32 index, s16 blend, u8 force);
-void func_ov000_021915a0(Model0218fe1c *self);
-AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
+BOOL Model0218fe1c_SetRes(Model0218fe1c *self, Res0219badc *res, u8 mode, s32 e);
+void Model0218fe1c_SetAnimByIndex(Model0218fe1c *self, s32 index, s16 blend, u8 force);
+void Model0218fe1c_SetLoop(Model0218fe1c *self);
+AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
 void func_ov000_02191920(Model0218fe1c *self, s32 index, s16 blend, u8 force);
 
-void func_ov000_0219badc(Model0218fe1c *self, Res0219badc *res, const Cfg0219badc *cfg) {
+void Model0218fe1c_Setup(Model0218fe1c *self, Res0219badc *res, const Cfg0219badc *cfg) {
     void *tex;
     AnimCtrl *ctrl;
     AnimEventTable *tbl;
-    if (!func_ov000_0218ffdc(self, res, cfg->mode, 1)) {
+    if (!Model0218fe1c_SetRes(self, res, cfg->mode, 1)) {
         return;
     }
     if (res->anim != NULL) {
-        func_ov000_02190e98(self, 0, 0x1000, 0);
-        func_ov000_021915a0(self);
+        Model0218fe1c_SetAnimByIndex(self, 0, 0x1000, 0);
+        Model0218fe1c_SetLoop(self);
     }
     tex = res->texFile != NULL ? NNS_G3dGetTex(*res->texFile) : NULL;
     if (tex != NULL) {
@@ -76,7 +76,7 @@ void func_ov000_0219badc(Model0218fe1c *self, Res0219badc *res, const Cfg0219bad
     if (cfg->f11) {
         *(u16 *)((u8 *)self + 0xc2) |= 4;
     }
-    ctrl = func_ov000_02190a30(self, 3);
+    ctrl = Model0218fe1c_GetAnimCtrl(self, 3);
     if (ctrl != NULL) {
         u32 v;
         float f;

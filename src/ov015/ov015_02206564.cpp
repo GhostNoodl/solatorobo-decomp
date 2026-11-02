@@ -6,14 +6,14 @@ extern u8 data_ov000_021ccd34;
 extern void *data_02149ef8;
 void *MsgRes_GetString(void *a, int id);
 u8 *func_0206f000(u16 id);
-BOOL func_0206f21c(u16 id, s32 n);
-BOOL func_0206f5e4(u16 id, s32 n);
-void func_ov000_0215c1bc(void *a, s32 b, void *c);
+BOOL Item_Give(u16 id, s32 n);
+BOOL Item_Set_0206f5e4(u16 id, s32 n);
+void Obj0215c1bc_SetText(void *a, s32 b, void *c);
 extern Ov015Globals data_ov015_02213320;
-void func_ov000_02180660(s32 a, s32 b);
+void TaskHost_Create(s32 a, s32 b);
 extern u8 data_ov015_02213360[];
 
-void func_ov015_02206564(Ov015Scene2b08 *self) {
+void Ov015Scene2b08_UpdateActive(Ov015Scene2b08 *self) {
     Pad *pd = data_02097dc8;
     u16 pad = pd->trig;
     BOOL on = self->unk_4c->hidden ? TRUE : FALSE;
@@ -24,14 +24,14 @@ void func_ov015_02206564(Ov015Scene2b08 *self) {
     if (!(pad & 2)) {
         return;
     }
-    func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     self->unk_54 = 0;
     self->unk_3c->flags |= 2;
     self->unk_44->flags |= 2;
     self->unk_40->flags |= 2;
     self->unk_48->flags |= 2;
     self->unk_50->flags |= 2;
-    func_ov000_0218084c(data_ov000_021ccd44, 0x1f, self->param);
+    TaskHost_RequestSwitch(data_ov000_021ccd44, 0x1f, self->param);
     self->unk_04 |= 6;
 }
 
@@ -42,13 +42,13 @@ static inline BOOL Ov015_IsFinished(UiObj *o) {
     }
     return r;
 }
-void func_ov015_02206648(Ov015Scene2b08 *self) {
+void Ov015Scene2b08_PreUpdate(Ov015Scene2b08 *self) {
     switch (self->state) {
     case 8:
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         break;
     case 0xa:
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         break;
     }
     if (!Ov015_IsFinished(self->unk_4c) || !Ov015_IsFinished(self->unk_50)) {
@@ -71,12 +71,12 @@ static inline bool Ov015Child_Is2(Ov015Child *c) {
     return c->state == 2;
 }
 
-bool func_ov015_022067b4(Ov015Child *self) {
+bool Ov015Vt_02212d3c_IsShown(Ov015Child *self) {
     BOOL r = Ov015Child_Is2(self);
     return r;
 }
 
-void func_ov015_022067d4(Ov015Scene2b08 *self) {
+void Ov015Scene2b08_PostUpdate(Ov015Scene2b08 *self) {
     s32 a = self->unk_58;
     s32 r = 0;
     if (a < 0x1000000) {
@@ -90,11 +90,11 @@ void func_ov015_022067d4(Ov015Scene2b08 *self) {
     }
 }
 
-void func_ov015_02206800(Ov015Scene2b08 *self) {
+void Ov015Scene2b08_Draw(Ov015Scene2b08 *self) {
     if (self->vfunc_28() == 0) {
         return;
     }
-    func_ov000_0217357c(self);
+    Task_Draw(self);
     self->unk_3c->vfunc_20();
     self->unk_40->vfunc_20();
     self->unk_44->vfunc_20();
@@ -114,7 +114,7 @@ static inline UiListItem *Ov015_ListNth3(UiList *o) {
     return p;
 }
 static inline void Ov015_ShopMsg(Ov015Scene2b08 *self, s32 id) {
-    func_ov000_0215c1bc(self->unk_50, 0x8000, MsgRes_GetString(data_02149ef8, id));
+    Obj0215c1bc_SetText(self->unk_50, 0x8000, MsgRes_GetString(data_02149ef8, id));
     self->unk_50->flags &= ~2;
     self->unk_50->vfunc_70();
 }
@@ -138,7 +138,7 @@ BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
             if (self->unk_50 != NULL) Ov015_ShopMsg(self, 0x9e);
             r = FALSE;
         } else {
-            func_0206f21c(FLD(u16, def, 0x2), consume);
+            Item_Give(FLD(u16, def, 0x2), consume);
             if (def[1] == 0) consume = FALSE;
         }
         break;
@@ -153,7 +153,7 @@ BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
         func_ov000_0215d980(self->unk_40, self->unk_40->value - item->unk_0c, 0);
         if (consume) {
             self->unk_3c->vfunc_70(item);
-            func_0206f5e4(id, 1);
+            Item_Set_0206f5e4(id, 1);
         }
         {
             StageFlags *save = data_0214a424;
@@ -173,7 +173,7 @@ void func_ov015_02206aa0(Ov015SceneSeq *self) {
 }
 
 BOOL func_ov015_02206abc(void) {
-    func_ov000_02180660(0x1e, data_ov015_02213320.mainSeq->unk_04);
+    TaskHost_Create(0x1e, data_ov015_02213320.mainSeq->unk_04);
     return TRUE;
 }
 
@@ -269,7 +269,7 @@ typedef struct {
 } Ov015ImgAttr;
 
 extern u32 data_ov015_02212600[];
-void func_02043064(const Ov015Oam *attr, u32 *w, u32 *h);
+void Oam_GetSize(const Ov015Oam *attr, u32 *w, u32 *h);
 
 static inline void Ov015_G3Cmd2(u32 op, u32 a, u32 b) {
     u32 v[2];
@@ -301,7 +301,7 @@ void func_ov015_02206bf0(s32 idx, s32 x, s32 y, s32 z, s32 unused, Ov015Oam *oam
     shift = ((s32)(img->mappingType & 0x700000) >> 20) + 5;
     ox = ofs[0];
     oy = ofs[1];
-    func_02043064(oam, &w, &h);
+    Oam_GetSize(oam, &w, &h);
     *(vu32 *)0x40004a8 = ((charBase + (charName << shift)) >> 3) | (img->fmt << 26) | 0x40000000 | (w << 20) |
                          (h << 23) | 0x30000 | (img->plttUse << 29);
     fmt = data_ov015_02212600[(*(u32 *)oam << 18) >> 31];

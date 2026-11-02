@@ -4,7 +4,7 @@
 
 extern "C" {
 
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 
 static inline BOOL Active02165e2c(LoAnimC *c) {
     if (c == NULL || c->state == 0) {
@@ -20,7 +20,7 @@ Item0216607c *func_ov000_02165e2c(Lo021cb6b0 *self, Node0216607c *area) {
     c = self->unk_30->anim;
     j = 0;
     if (!Active02165e2c(c)) {
-        Robo021ca458 *pl = func_ov000_0219bf90();
+        Robo021ca458 *pl = ActorMgr_FindPlayer();
         if (pl == NULL) {
             return NULL;
         } else {

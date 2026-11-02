@@ -2,11 +2,11 @@
 
 extern "C" {
 
-void func_ov002_021d3dd4(Task021ef81c *self) {
+void Task021ef81c_Load(Task021ef81c *self) {
     func_ov000_021763c8();
 }
 
-bool func_ov002_021d3de0(void) {
+bool Task021ef81c_IsLoaded(void) {
     bool a = func_ov000_02176538() & 1;
     return a & func_ov000_02180838(data_ov000_021ccd44);
 }

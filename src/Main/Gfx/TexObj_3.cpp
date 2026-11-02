@@ -47,12 +47,12 @@ typedef struct TexObjTexRes {
     /* 0x8 */ u32 shift;
 } TexObjTexRes;
 
-extern BOOL func_0203e63c(u32 id);
+extern BOOL Vram_IsTransferDone(u32 id);
 extern u16 NNS_G2dMakeCellToOams(TexObjOam *dst, u16 max, void *cell, const void *mtx, const TexObjPair *trans, u16 affineIdx, BOOL doubleAffine);
 
 extern void *func_0203bbfc(GfxSys *sys, int which);
 
-BOOL func_02042958(TexObj *obj, int idx, TexObjEntry *e);
+BOOL TexObj_CheckTransfer(TexObj *obj, int idx, TexObjEntry *e);
 
 void func_02042720(TexObj *obj, int idx, TexObjOam *oam, void *cell, TexObjEntry *e, u8 affine);
 void func_020429a0(TexObj *obj, TexObjOam *oam, void *cell, TexObjEntry *e, u8 affine);
@@ -68,12 +68,12 @@ static inline int Oam_GetWidthShift(const OamShape *shape) {
 }
 
 static inline void TexObj_ReleaseTransfer(u32 *p) {
-    if (*p != 0 && func_0203e63c(*p)) {
+    if (*p != 0 && Vram_IsTransferDone(*p)) {
         *p = 0;
     }
 }
 
-void func_02042628(TexObj *obj, void *cell, TexObjEntry *e, u8 affine) {
+void TexObj_DrawCell(TexObj *obj, void *cell, TexObjEntry *e, u8 affine) {
     TexObjOam oam[0x80];
     if (((obj->unk_06c << 25) >> 27) == 0) {
         return;
@@ -96,7 +96,7 @@ void func_02042720(TexObj *obj, int idx, TexObjOam *oam, void *cell, TexObjEntry
     TexObjPair trans;
     u16 count;
     int i;
-    func_02042958(obj, idx, e);
+    TexObj_CheckTransfer(obj, idx, e);
     if (idx == 1) {
         mgr = (NNSG2dOamManagerInstance *)func_0203bbfc(data_02097d48, 0);
     } else {
@@ -138,11 +138,11 @@ void func_02042720(TexObj *obj, int idx, TexObjOam *oam, void *cell, TexObjEntry
     NNS_G2dEntryOamManagerOam(mgr, (GXOamAttr *)oam, count);
 }
 
-BOOL func_02042958(TexObj *obj, int idx, TexObjEntry *e) {
+BOOL TexObj_CheckTransfer(TexObj *obj, int idx, TexObjEntry *e) {
     if (e->transfers[idx] == 0) {
         return TRUE;
     }
-    if (func_0203e63c(e->transfers[idx])) {
+    if (Vram_IsTransferDone(e->transfers[idx])) {
         e->transfers[idx] = 0;
     } else {
         return FALSE;
@@ -155,7 +155,7 @@ typedef void (*TexObjMtxFunc)(MtxFx43 *mtx, TexObj *obj, TexObjEntry *e);
 typedef void (*TexObjDrawFunc)(int i, int x, int y, int z, u16 color, TexObjOam *oam, int *tex, u32 texBase, u32 plttBase, MtxFx43 *mtx, int arg);
 
 extern const u8 data_0208288c[];
-extern void func_02043d20(void *obj, int a);
+extern void Gfx3D_SendDL(void *obj, int a);
 extern void NNS_G3dGeSendDL(const void *list, u32 size);
 extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void NNS_G2dSetImageLocation(TexObj *obj, int idx, u32 addr);
@@ -234,8 +234,8 @@ void func_020429a0(TexObj *obj, TexObjOam *oam, void *cell, TexObjEntry *e, u8 a
     BOOL vflip;
     u32 plttBase;
     MtxFx43 mtx;
-    func_02042958(obj, 0, e);
-    func_02043d20(data_02097d48->unk_8b0, 0);
+    TexObj_CheckTransfer(obj, 0, e);
+    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
     NNS_G3dGeSendDL(data_0208288c, 0xc);
     if (obj->plttPtr->fmt == 4) {
         obj->unk_018 = 1;

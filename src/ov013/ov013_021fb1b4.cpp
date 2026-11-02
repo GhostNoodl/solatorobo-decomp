@@ -31,18 +31,18 @@ extern char data_ov013_0220b5be[];
 extern char data_ov013_0220b5ca[];
 extern const Ov013Rot16 data_ov013_0220ae48;
 extern const VecFx32 data_ov013_0220ae7c;
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(ActorGroup *group, u16 kind);
 extern VecFx32 Ov003Vec_DirXZ(const VecFx32 *a, const VecFx32 *b);
 extern void Actor_TurnToPos(Ov003Actor *self, VecFx32 *p, s32 a);
 extern void Actor_MoveToPos(Ov003Actor *self, VecFx32 *v, s32 a);
-extern void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-extern void func_02049de8(void *p, s32 a);
+extern void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+extern void SndMgr_Stop(void *p, s32 a);
 extern u32 Rand_Fx(void);
 extern u32 Rand_Get(void);
 extern void HitSphere_Link(ActorSub48 *p);
-extern void func_0203f364(ActorSub48 *p);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, s32 r, s32 h);
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov013SpawnDesc *d, VecFx32 *pos, u16 *rot, u16 a);
 extern void func_ov000_0218a358(void *a, const VecFx32 *b, Ov013Rot16 *c, s32 d, s32 e, s32 f, s32 g, s32 h);
@@ -112,8 +112,8 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
         ActorGroup *a_0;
         u16 n_0;
         Actor *p_0;
-        func_ov000_02190cb0(self->model, data_ov013_0220b5be, 0x2ab, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220b5be, 0x2ab, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->speed = 0x19a;
         self->friction = 0;
         self->gravity = 0;
@@ -138,9 +138,9 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
         Ov013_VecCopy(&v_1, &self->unk_b8);
         Actor_MoveToPos(self, &v_1, 0);
         if (VEC_Distance(&self->pos, &v_1) == 0) {
-            func_ov000_02190cb0(self->model, data_ov013_0220b5ca, 0x89, 0);
-            func_ov000_021915a0(self->model);
-            func_02049a48(data_02097e4c, 0x4f, -1, -1, -1);
+            Model0218fe1c_SetAnim(self->model, data_ov013_0220b5ca, 0x89, 0);
+            Model0218fe1c_SetLoop(self->model);
+            SndMgr_PlayVolume(data_02097e4c, 0x4f, -1, -1, -1);
             range = 0xf000 - (self->radius << 3);
             z_0 = FX_Mul(Rand_PlusMinus(0x1000), range) - 0x7800;
             for (cnt_1 = 0, i = 0; i < 4; i++) {
@@ -204,7 +204,7 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
             m = self->hit;
             m->unk_9a_0 = 0;
             m->unk_9a_3 = 0;
-            func_0203f364(m);
+            HitSphere_Unlink_0203f364(m);
             shake = TRUE;
         }
         if (VEC_Distance(&self->pos, &v_1) == 0) {
@@ -308,9 +308,9 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
             self->rot_y = func_01ffc128(0, self->rot_y, self->unk_b0->unk_02, 1, 0x8000);
             self->speed = 0;
             self->velY = -0xcd;
-            func_ov000_02190cb0(self->model, data_ov013_0220b5be, 0x155, 0);
-            func_ov000_021915a0(self->model);
-            func_02049de8(data_02097e4c, 0x4f);
+            Model0218fe1c_SetAnim(self->model, data_ov013_0220b5be, 0x155, 0);
+            Model0218fe1c_SetLoop(self->model);
+            SndMgr_Stop(data_02097e4c, 0x4f);
             self->fsm->st = 0x64;
             self->fsm->timer = 0;
         } else {
@@ -323,8 +323,8 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
             Actor_Move(self, 0);
             Ov013_Show(self);
         } else {
-            func_ov000_02190cb0(self->model, data_ov013_0220b5b8, 0x155, 0);
-            func_ov000_021915a0(self->model);
+            Model0218fe1c_SetAnim(self->model, data_ov013_0220b5b8, 0x155, 0);
+            Model0218fe1c_SetLoop(self->model);
             self->rot_y = 0;
             self->fsm->st = 0x65;
             self->fsm->timer = 0;
@@ -333,7 +333,7 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
     case 0x65:
         s->timer++;
         if (s->timer > 0x14) {
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }
@@ -343,7 +343,7 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
         if (cam == NULL) {
             return;
         }
-        pl = (Robo021ca458 *)func_ov000_0219bf90();
+        pl = (Robo021ca458 *)ActorMgr_FindPlayer();
         if (pl == NULL) {
             return;
         }

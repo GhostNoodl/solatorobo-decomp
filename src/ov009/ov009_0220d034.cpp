@@ -2,8 +2,8 @@
 
 extern "C" {
 
-extern Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *p);
-extern void *func_ov000_0218ea20(void *p);
+extern Model0218fe1c *Model0218fe1c_FreeAnims(Model0218fe1c *p);
+extern void *ResSet_ReleaseAll(void *p);
 
 void Ov009ActVt_02217640_StateKnockBack(Ov009ActVt_02217640 *self) {
     self->vfunc_7c();
@@ -29,28 +29,28 @@ Ov009ActVt_022178f0 *Ov009ActVt_022178f0_DtorDelete(Ov009ActVt_022178f0 *self) {
 }
 
 Ov009ActVt_02217844 *Ov009ActVt_02217844_Dtor(Ov009ActVt_02217844 *self) {
-    func_ov000_0218fee4(&self->modelObj);
-    func_ov000_0218ea20(&self->anim);
+    Model0218fe1c_FreeAnims(&self->modelObj);
+    ResSet_ReleaseAll(&self->anim);
     Ov003Actor_DtorBase(self);
     return self;
 }
 
 Ov009ActVt_02217844 *Ov009ActVt_02217844_DtorDelete(Ov009ActVt_02217844 *self) {
-    func_ov000_0218fee4(&self->modelObj);
-    func_ov000_0218ea20(&self->anim);
+    Model0218fe1c_FreeAnims(&self->modelObj);
+    ResSet_ReleaseAll(&self->anim);
     Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 Ov009Multi *Ov009Multi_Dtor(Ov009Multi *self) {
-    __cxa_vec_cleanup(self->models, 4, 0xe8, (void *)func_ov000_0218fee4);
+    __cxa_vec_cleanup(self->models, 4, 0xe8, (void *)Model0218fe1c_FreeAnims);
     Ov003Actor_DtorBase(self);
     return self;
 }
 
 Ov009Multi *Ov009Multi_DtorDelete(Ov009Multi *self) {
-    __cxa_vec_cleanup(self->models, 4, 0xe8, (void *)func_ov000_0218fee4);
+    __cxa_vec_cleanup(self->models, 4, 0xe8, (void *)Model0218fe1c_FreeAnims);
     Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
@@ -68,15 +68,15 @@ Ov003Actor *Ov009ActVt_02217798_DtorDelete(Ov003Actor *self) {
 }
 
 Ov009ActVt_02217594 *Ov009ActVt_02217594_Dtor(Ov009ActVt_02217594 *self) {
-    func_ov000_0218fee4(&self->modelObj);
-    func_ov000_0218ea20(&self->anim);
+    Model0218fe1c_FreeAnims(&self->modelObj);
+    ResSet_ReleaseAll(&self->anim);
     Ov003Actor_DtorBase(self);
     return self;
 }
 
 Ov009ActVt_02217594 *Ov009ActVt_02217594_DtorDelete(Ov009ActVt_02217594 *self) {
-    func_ov000_0218fee4(&self->modelObj);
-    func_ov000_0218ea20(&self->anim);
+    Model0218fe1c_FreeAnims(&self->modelObj);
+    ResSet_ReleaseAll(&self->anim);
     Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;

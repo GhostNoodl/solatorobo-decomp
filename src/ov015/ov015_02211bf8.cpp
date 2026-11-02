@@ -3,15 +3,15 @@
 extern "C" {
 
 extern Ov015Obj290 *data_ov015_0221336c;
-BOOL func_ov000_021903b4(void *a);
-BOOL func_ov000_02191120(void *p);
-void func_ov000_02190a80(void *a, s32 b);
+BOOL Model021903b4_Draw(void *a);
+BOOL Model0218fe1c_IsAnimDone(void *p);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
 extern char data_ov015_02213286[];
 extern char data_ov015_0221329a[];
 extern u8 data_ov015_022132a6[];
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-void *func_ov000_02191318(void *a, s32 b);
-void func_ov000_021911c8(void *a, s32 b);
+BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
+void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
+void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
 extern u8 data_ov015_02213280[];
 
 BOOL func_ov015_02211bf8(Ov015Obj290 *self) {
@@ -48,7 +48,7 @@ void func_ov015_02211ca0(Ov015Obj290 *self) {
     self->model.scale.x = 0x1000;
     self->model.scale.y = 0x1000;
     self->model.scale.z = 0x1000;
-    func_ov000_021903b4(&self->model);
+    Model021903b4_Draw(&self->model);
     data_ov015_0221336c = NULL;
 }
 
@@ -73,14 +73,14 @@ BOOL func_ov015_02211d14(Ov015Obj290 *self) {
         }
     }
     if (self->unk_10 % 10 == 0) {
-        EffectObj *e = func_02065f88(0x12d, &self->unk_234);
+        EffectObj *e = Effect_SpawnId(0x12d, &self->unk_234);
         e->unk_d4 = 3;
         e->unk_50 = 0xa000;
     }
     self->unk_10 = (u16)(self->unk_10 + 1);
-    func_ov000_02190a80(&self->model, 0x1000);
-    if (func_ov000_02191120(&self->model)) {
-        func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
+    Model0218fe1c_UpdateAnim(&self->model, 0x1000);
+    if (Model0218fe1c_IsAnimDone(&self->model)) {
+        SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
         r = FALSE;
     }
     return r;
@@ -96,27 +96,27 @@ BOOL func_ov015_02211e88(Ov015Obj290 *self) {
     o->unk_28 = 1;
     o->unk_50 = -0xc8000;
     o->SetScaleXYZ(0x59a, 0x59a, 0x59a);
-    func_ov000_02190cb0(&self->model, data_ov015_022132a6, 0x1000, 0);
-    func_ov000_02191318(&self->model, 0);
-    func_ov000_021911c8(&self->model, 0x1000);
+    Model0218fe1c_SetAnim(&self->model, data_ov015_022132a6, 0x1000, 0);
+    Model0218fe1c_SetAnimFrame(&self->model, 0);
+    Model0218fe1c_SetAnimSpeed(&self->model, 0x1000);
     self->model.flags.visible = 1;
     return FALSE;
 }
 
 BOOL func_ov015_02211f54(Ov015Obj290 *self) {
     BOOL r = TRUE;
-    func_ov000_02190a80(&self->model, 0x1000);
-    if (func_ov000_02191120(&self->model)) {
+    Model0218fe1c_UpdateAnim(&self->model, 0x1000);
+    if (Model0218fe1c_IsAnimDone(&self->model)) {
         r = FALSE;
-        func_ov000_02190cb0(&self->model, data_ov015_02213280, 0x1000, 0);
-        func_ov000_02191318(&self->model, 0);
+        Model0218fe1c_SetAnim(&self->model, data_ov015_02213280, 0x1000, 0);
+        Model0218fe1c_SetAnimFrame(&self->model, 0);
         self->model.flags.visible = 0;
 
     }
     return r;
 }
 
-void func_ov000_02191618(void *a);
+void Model0218fe1c_ClearLoop(void *a);
 void func_ov015_02211fc0(Ov015Obj290 *self, const Ov015Vec *to, const Ov015Vec *from) {
     Ov015Vec d;
     s32 x, y, z;
@@ -134,10 +134,10 @@ void func_ov015_02211fc0(Ov015Obj290 *self, const Ov015Vec *to, const Ov015Vec *
     d.z = t.z - self->unk_270.z;
     VEC_Normalize(&d, &d);
     self->yaw = FX_Atan2(d.x, d.z) + 0x7fff;
-    func_ov000_02190cb0(&self->model, data_ov015_02213280, 0x1000, 0);
-    func_ov000_021911c8(&self->model, (s16)self->animSpeed);
-    func_ov000_02191318(&self->model, 0);
-    func_ov000_02191618(&self->model);
+    Model0218fe1c_SetAnim(&self->model, data_ov015_02213280, 0x1000, 0);
+    Model0218fe1c_SetAnimSpeed(&self->model, (s16)self->animSpeed);
+    Model0218fe1c_SetAnimFrame(&self->model, 0);
+    Model0218fe1c_ClearLoop(&self->model);
     self->model.flags.visible = 1;
     self->step = 1;
 }

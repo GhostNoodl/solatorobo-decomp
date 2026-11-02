@@ -87,7 +87,7 @@ extern "C" {
 extern const u32 data_0208b318[];
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *ptr);
-extern void func_0206e900(char *dst, const char *src);
+extern void LangData_LocalizePath(char *dst, const char *src);
 
 static inline SaveBlock *DataRes_Block(DataRes *res, u32 idx) {
     return &((SaveLayout *)res->data)->blocks[idx];

@@ -32,12 +32,12 @@ void Heap_Free(void *p);
 
 extern char data_ov000_021cc87b[];
 Obj0206e7d0 *Lang_GetGroup(u8 a);
-void func_02070874(char *dst, const char *fmt, ...);
+void Tbl_Format_02070874(char *dst, const char *fmt, ...);
 void func_0203cc58(s32 a, s32 b, s32 c);
 
 void func_ov000_021b8884(Obj021b8884 *self, u16 a) {
     self->unk_00 = 0;
-    func_02070874(self->unk_04, data_ov000_021cc87b, Lang_GetGroup(a)->unk_04);
+    Tbl_Format_02070874(self->unk_04, data_ov000_021cc87b, Lang_GetGroup(a)->unk_04);
     self->unk_2c = a;
     self->unk_24 = 0;
     self->unk_28 = 1;
@@ -57,8 +57,8 @@ void func_ov000_021b88d8(Obj021b88d8 *self) {
     p = self->unk_30;
     if (p != NULL) {
         if (p != NULL) {
-            func_02041558(p);
-            func_02041278(&p->pltt);
+            TexObj_Release(p);
+            PlttRes_Release(&p->pltt);
             Heap_Free(p);
         }
         self->unk_30 = NULL;

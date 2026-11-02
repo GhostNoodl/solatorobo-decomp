@@ -7,24 +7,24 @@
 extern "C" {
 extern u8 data_ov000_021cc774[];
 void *Actor_Ctor(Actor *self);
-void *func_ov000_0218fe1c(void *p);
-void *func_ov000_0218e9c4(void *p);
-void *func_ov000_021985e8(void *p);
-void func_0203d45c(void *q, u16 a, u16 b, u16 c, u16 d);
+void *Model0218fe1c_Init(void *p);
+void *ResSet_Init(void *p);
+void *ActorSub48_Init(void *p);
+void TouchQuad_Init(void *q, u16 a, u16 b, u16 c, u16 d);
 
 Robo021ca458 *Robo021ca458_Ctor(Robo021ca458 *self) {
     u32 mode;
     Actor_Ctor(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cc774);
-    func_ov000_0218fe1c(&self->mdl0);
-    func_ov000_0218e9c4(&self->res0);
-    func_ov000_021985e8(&self->hit0);
-    func_ov000_0218fe1c(&self->mdl1);
-    func_ov000_0218e9c4(&self->res1);
-    func_ov000_0218e9c4(&self->res2);
-    func_ov000_021985e8(&self->hit1);
-    func_ov000_0218fe1c(&self->mdl2);
-    func_ov000_0218e9c4(&self->res3);
+    Model0218fe1c_Init(&self->mdl0);
+    ResSet_Init(&self->res0);
+    ActorSub48_Init(&self->hit0);
+    Model0218fe1c_Init(&self->mdl1);
+    ResSet_Init(&self->res1);
+    ResSet_Init(&self->res2);
+    ActorSub48_Init(&self->hit1);
+    Model0218fe1c_Init(&self->mdl2);
+    ResSet_Init(&self->res3);
     self->unk_ae8 = 0;
     self->unk_aea = 0;
     self->unk_aec = 0;
@@ -84,7 +84,7 @@ Robo021ca458 *Robo021ca458_Ctor(Robo021ca458 *self) {
     self->padTrig = 0;
     self->padRelease = 0;
     self->padDir = 0;
-    func_0203d45c(self->unk_b70, 0, 0x4000, 0x8000, 0xc000);
+    TouchQuad_Init(self->unk_b70, 0, 0x4000, 0x8000, 0xc000);
     self->unk_b0c = 0x1000;
     self->unk_b9c = 0;
     mode = data_0214a424->bits18.mode;

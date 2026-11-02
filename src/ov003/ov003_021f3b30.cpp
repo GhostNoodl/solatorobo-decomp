@@ -17,7 +17,7 @@ void Ov003ActVt_021fa5a0_RunState(Ov003Prop021fa5a0 *self) {
     s32 b;
     self->unk_2d0++;
     if (!(self->unk_2d0 & 0x3f)) {
-        e = func_02065f88(0x325, &self->pos);
+        e = Effect_SpawnId(0x325, &self->pos);
         if (e != NULL) {
             e->SetRotXYZ(0xc000, 0, 0);
             e->SetScaleXYZ(0x666, 0x733, 0x666);
@@ -33,7 +33,7 @@ void Ov003ActVt_021fa5a0_RunState(Ov003Prop021fa5a0 *self) {
     if (Rand_UpTo(3) == 0) {
         id = 4;
     }
-    e = func_02065f88(id, &self->pos);
+    e = Effect_SpawnId(id, &self->pos);
     if (e == NULL) {
         return;
     }

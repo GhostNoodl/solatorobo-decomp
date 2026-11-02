@@ -5,13 +5,13 @@
 
 extern "C" {
 
-BOOL func_ov000_02152a58(UiObj *self);
-BOOL func_02054f10(void *p, s32 a);
+BOOL UiObj_IsLoaded(UiObj *self);
+BOOL Model_IsReady(void *p, s32 a);
 
 
-BOOL func_ov000_021580e8(UiList *self) {
-    BOOL r = func_ov000_02152a58(self);
-    if (self->unk_b4 != NULL && !func_02054f10(self->unk_b4, 0xffff)) {
+BOOL UiList_IsLoaded(UiList *self) {
+    BOOL r = UiObj_IsLoaded(self);
+    if (self->unk_b4 != NULL && !Model_IsReady(self->unk_b4, 0xffff)) {
         r = FALSE;
     }
     return r;

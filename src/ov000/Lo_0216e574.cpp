@@ -8,7 +8,7 @@ void func_020627fc(s32 a);
 void func_ov000_02182590(void *p);
 void func_ov000_02188140(void *p, s32 a, s32 b, s32 c);
 
-void func_ov000_0216e574(LoTimer *self) {
+void LoTimer_Init(LoTimer *self) {
     self->flags = 0;
     self->state = 0;
     self->mode = 0;

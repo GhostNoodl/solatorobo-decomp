@@ -5,7 +5,7 @@ extern "C" {
 
 extern Ov015Ship *data_ov015_02213364;
 extern void *data_0208cb74;
-void *func_02035f30(void *a, void *b, int c);
+void *ResMgr_GetArchiveList(void *a, void *b, int c);
 void func_02041c34(void *a, int b, void *cb, void *arg);
 Ov015Glyph *func_ov015_0220848c(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count);
 void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src);
@@ -13,28 +13,28 @@ void func_ov015_02208a28(Ov015UiText *self, void *p);
 s32 func_02041b10(void *m, void *anim);
 s32 func_02041bb0(void *m, void *anim);
 extern u8 data_0208ba70[];
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 u32 Text_Measure(u32 a, u32 b, u32 c, u32 *outW, u32 *outH, BOOL d);
 u8 Gfx3DState_NextPolyId(void *p);
 const char *func_0206ffa0(u16 id);
 s32 func_0201e950(const void *s, const void *t, s32 n);
-BOOL func_0204cc18(void *p, const char **s);
-int func_02054f10(void *a, int b);
-s32 func_0203e63c(void *p);
+BOOL TextWin_ParseTag(void *p, const char **s);
+int Model_IsReady(void *a, int b);
+s32 Vram_IsTransferDone(void *p);
 extern u8 data_ov015_02212d3c[];
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov015_022128fc[];
 extern u8 data_ov015_02212e84[];
 extern u8 data_ov015_022129d0[];
-void *func_ov000_0218e9c4(void *a);
-void *func_ov000_0218fe1c(void *a);
-void *func_ov000_0219196c(void *a);
-void func_0203f260(void *a);
+void *ResSet_Init(void *a);
+void *Model0218fe1c_Init(void *a);
+void *Shadow_CtorBase(void *a);
+void HitSphere_Init(void *a);
 extern u8 data_ov015_02212eb0[];
 
-void func_ov000_02191c24(void *a, void *b);
-void func_ov000_02190758(void *m, const void *rot, s32 c);
-BOOL func_ov000_021903b4(void *m);
+void Shadow_Draw(void *a, void *b);
+void Obj02190758_SetRot(void *m, const void *rot, s32 c);
+BOOL Model021903b4_Draw(void *m);
 
 #define OV015_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV015_SQRT_RESULT (*(volatile u32 *)0x40002b4)
@@ -55,11 +55,11 @@ void func_ov015_02208070(Ov015Ship *self) {
     }
     data_ov015_02213364 = self;
     if (self->unk_d41 != 0) {
-        func_ov000_02191c24(&self->shadow, &self->pos);
+        Shadow_Draw(&self->shadow, &self->pos);
     }
     *(Ov015Vec *)&self->model.trans = self->pos;
-    func_ov000_02190758(&self->model, &self->rotX, 0);
-    func_ov000_021903b4(&self->model);
+    Obj02190758_SetRot(&self->model, &self->rotX, 0);
+    Model021903b4_Draw(&self->model);
     {
         s32 h;
         p = self->nodeMtx.m[3];
@@ -90,9 +90,9 @@ void func_ov015_02208070(Ov015Ship *self) {
             for (i = 0; i < 8; i++) {
                 // Byte offsets kept: indexing unk_358[i] makes the compiler hoist and reorder
                 // the address math, which changes the register allocation.
-                func_ov000_02190758((u8 *)self + 0x358 + i * 0xe8, rot, 0);
+                Obj02190758_SetRot((u8 *)self + 0x358 + i * 0xe8, rot, 0);
                 FLD(Ov015Vec, (u8 *)self + i * 0xe8, 0x3d0) = p;
-                func_ov000_021903b4((u8 *)self + 0x358 + i * 0xe8);
+                Model021903b4_Draw((u8 *)self + 0x358 + i * 0xe8);
                 VEC_Add(&d, &p, &p);
             }
             self->unk_d08 = p;
@@ -101,7 +101,7 @@ void func_ov015_02208070(Ov015Ship *self) {
         case 2:
             MI_Copy36B(self->nodeMtx.m, self->model3.rot);
             *(Ov015Vec *)&self->model3.trans = p;
-            func_ov000_021903b4(&self->model3);
+            Model021903b4_Draw(&self->model3);
             break;
         }
     }
@@ -170,26 +170,26 @@ void func_ov015_02208544(Ov015UiText *self) {
 }
 
 static inline void Ov015Label_Ctor(Model *l, const char *name, void *dict) {
-    func_02041218(&l->pltt);
-    func_02041440(l, (char *)dict, 0);
+    PlttRes_Init_02041218(&l->pltt);
+    TexObj_Init(l, (char *)dict, 0);
     STD_CopyString(l->name, name);
 }
 
-void func_ov015_02208584(Ov015UiText *self) {
+void Ov015Vt_02212d3c_Setup(Ov015UiText *self) {
     Model *l = (Model *)Heap_Alloc(sizeof(Model));
     void *r;
     if (l != NULL) {
         Ov015Label_Ctor(l, data_0208cca0, data_0208cb74);
     }
     self->model = l;
-    r = func_02034d88(func_02035f30(l->name, l->unk_04c, 2), self->model->unk_04c);
-    func_020417e0(self->model, r);
+    r = ResList_FindType2(ResMgr_GetArchiveList(l->name, l->unk_04c, 2), self->model->unk_04c);
+    TexObj_SetRes(self->model, r);
     self->model->flags |= 2;
     func_02041c34(self->model, 0, (void *)func_ov015_0220848c, NULL);
     if (self->title != NULL) {
-        func_02041d9c(self->model, 0, 7);
+        TexObj_SelectImage(self->model, 0, 7);
     }
-    func_02041d9c(self->model, 0, 0);
+    TexObj_SelectImage(self->model, 0, 0);
     self->flags &= ~2;
 }
 
@@ -292,7 +292,7 @@ void func_ov015_02208a28(Ov015UiText *self, void *name) {
     o = (TextWin *)Heap_Alloc(0xb8);
     if (o != NULL) {
         SET_VT(o, data_0208ba70);
-        func_0204c7d0(o);
+        TextWin_Init(o);
     }
     self->unk_84 = o;
     self->unk_84->font = 4;
@@ -333,12 +333,12 @@ void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src) {
     Ov015TagParser p;
     s = src;
     SET_VT(&p, data_0208ba70);
-    func_0204c7d0(&p);
+    TextWin_Init(&p);
     out[0] = 0;
     *outId = -1;
     while (*s != 0) {
         if (fn(&s) == '<') {
-            func_0204cc18(&p, &s);
+            TextWin_ParseTag(&p, &s);
             Ov015TagRes *r = &p.res;
             if (r->type == 0) {
                 *outId = r->value;
@@ -360,7 +360,7 @@ static inline BOOL Ov015Res_Ready(TextWin *t) {
     if (t->unk_6c == NULL) {
         return TRUE;
     }
-    if (func_0203e63c(t->unk_6c) != 0) {
+    if (Vram_IsTransferDone(t->unk_6c) != 0) {
         t->unk_6c = NULL;
     } else {
         return !t->noVram;
@@ -368,10 +368,10 @@ static inline BOOL Ov015Res_Ready(TextWin *t) {
     return TRUE;
 }
 
-BOOL func_ov015_02208cb8(Ov015UiText *self) {
+BOOL Ov015Vt_02212d3c_IsLoaded(Ov015UiText *self) {
     BOOL r = TRUE;
     TextWin *t;
-    if (self->model != NULL && func_02054f10(self->model, 0xffff) == 0) {
+    if (self->model != NULL && Model_IsReady(self->model, 0xffff) == 0) {
         r = FALSE;
     }
     t = (TextWin *)self->title;
@@ -386,14 +386,14 @@ BOOL func_ov015_02208cb8(Ov015UiText *self) {
 }
 
 
-void func_ov015_02208d8c(Ov015UiText *self, void *arg, void *arg2) {
+void Ov015Vt_02212d3c_DrawItem(Ov015UiText *self, void *arg, void *arg2) {
     UiDrawItemFn cb = self->onDrawItem;
     if (cb == NULL) {
         return;
     }
     cb(arg, self, arg2);
 }
-s32 func_ov015_02208db0(Ov015UiText *self) {
+s32 Ov015Vt_02212d3c_GetHeight(Ov015UiText *self) {
     s32 a = self->vfunc_40() * self->rows;
     s32 b = self->vfunc_34();
     s32 c = self->vfunc_38();
@@ -401,7 +401,7 @@ s32 func_ov015_02208db0(Ov015UiText *self) {
     return d + c;
 }
 
-s32 func_ov015_02208dfc(Ov015UiText *self) {
+s32 Ov015Vt_02212d3c_GetLineHeight(Ov015UiText *self) {
     s32 a;
     data_02097ce0->unk_004 = self->font;
     a = (*(s8 **)GfxMgr_GetFont(data_02097ce0))[1];
@@ -512,13 +512,13 @@ void *Ov015Fish_Ctor(Ov015Fish *self) {
     self->info.unk_20 = 0;
     self->info.unk_24 = 0;
     self->info.unk_28 = 0;
-    func_ov000_0218e9c4(&self->res);
-    func_ov000_0218fe1c(&self->model);
-    func_ov000_0218e9c4(&self->res2);
-    func_ov000_0218fe1c(&self->model2);
-    func_ov000_0219196c(&self->shadow);
+    ResSet_Init(&self->res);
+    Model0218fe1c_Init(&self->model);
+    ResSet_Init(&self->res2);
+    Model0218fe1c_Init(&self->model2);
+    Shadow_CtorBase(&self->shadow);
     SET_VT(&self->shadow, data_ov015_022129d0);
-    func_0203f260(&self->hit);
+    HitSphere_Init(&self->hit);
     self->id = 0xffff;
     self->unk_08 = 0;
     MIi_CpuClearFast(0, &self->rot2[0].x, 0x34);

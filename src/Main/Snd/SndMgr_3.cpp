@@ -16,7 +16,7 @@ void SndMgr_LoadBgm(SndMgr *mgr, s32 seq) {
     SndMgr_RequestLoad(mgr, 1, seq, -1);
 }
 
-void func_020498ac(SndMgr *mgr, s32 seq) {
+void SndMgr_RequestBgm(SndMgr *mgr, s32 seq) {
     if (seq != mgr->loadedSeq && seq != mgr->loadedSeqEx[0] && seq != mgr->loadedSeqEx[1] && seq != mgr->loadedSeqEx[2]) {
         mgr->playAfterLoad = TRUE;
         SndMgr_RequestLoad(mgr, 1, seq, -1);
@@ -42,7 +42,7 @@ void SndMgr_StopAll(SndMgr *mgr, int fadeFrames) {
     NNS_SndPlayerStopSeqAll(fadeFrames);
 }
 
-SndHandle *func_02049984(SndMgr *mgr, s32 id, s32 *outSeqArc, s32 *outIndex) {
+SndHandle *SndMgr_LookupSe(SndMgr *mgr, s32 id, s32 *outSeqArc, s32 *outIndex) {
     SndHandle *handle;
     s32 group;
     *outIndex = id & 0xff;
@@ -89,14 +89,14 @@ SndHandle *func_02049984(SndMgr *mgr, s32 id, s32 *outSeqArc, s32 *outIndex) {
     return handle;
 }
 
-SndHandle *func_02049a48(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames) {
+SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames) {
     s32 seqArc;
     s32 index;
     SndHandle *handle;
     if (id < 0) {
         return NULL;
     }
-    handle = func_02049984(mgr, id, &seqArc, &index);
+    handle = SndMgr_LookupSe(mgr, id, &seqArc, &index);
     if (handle == NULL) {
         return NULL;
     }
@@ -125,12 +125,12 @@ static inline s32 SndMgr_FindFreeSeqArc(SndMgr *mgr) {
     return -1;
 }
 
-s32 func_02049afc(SndMgr *mgr, s32 id) {
+s32 SndMgr_StartSeqArc(SndMgr *mgr, s32 id) {
     s32 seqArc;
     s32 index;
     s32 i;
     SndHandle *handle;
-    if (func_02049984(mgr, id, &seqArc, &index) == NULL) {
+    if (SndMgr_LookupSe(mgr, id, &seqArc, &index) == NULL) {
         return -1;
     }
     i = SndMgr_FindFreeSeqArc(mgr);

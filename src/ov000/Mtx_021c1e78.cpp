@@ -29,7 +29,7 @@ typedef struct { u16 b0 : 5; u16 b5 : 1; u16 rest : 10; } Bits16;
 extern "C" {
 
 void NNS_G3dRenderObjSetInitFunc(void *obj, void *fn);
-BOOL func_ov000_021903b4(void *m);
+BOOL Model021903b4_Draw(void *m);
 void func_ov000_021c2078(void *self);
 
 void func_ov000_021c1e78(Obj021c1e78 *self) {
@@ -89,7 +89,7 @@ void func_ov000_021c1e78(Obj021c1e78 *self) {
     NNS_G3dRenderObjSetInitFunc(model + 0x24, (void *)func_ov000_021c2078);
     LFLD(Bits16, model, 0xc2).b5 = 0;
     LFLD(u8, self->model, 0xbe) = alpha;
-    func_ov000_021903b4(self->model);
+    Model021903b4_Draw(self->model);
 }
 
 }

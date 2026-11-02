@@ -23,7 +23,7 @@ extern u8 data_02092800[];
 extern u8 data_02092844[];
 extern Ofs021c17dc data_ov000_021cc8f0[];
 void NNS_G3dGlbPolygonAttr(int light, int polyMode, int cullMode, int polygonID, int alpha, int misc);
-BOOL func_ov000_021903b4(void *m);
+BOOL Model021903b4_Draw(void *m);
 
 /* NNS_G3dGlbSetProjectionMtx on the split-out projection matrix symbol. */
 static inline void SetProj021c17dc(const void *m) {
@@ -68,7 +68,7 @@ void func_ov000_021c17dc(ActorMarker3D *self) {
     data_ov000_021ccd74.unk_00 = LO_FX_MUL(self->work.alpha, 0x1e000) >> 12;
     self->unk_90->trans = p;
     SetScale021c17dc(self->unk_90, 0x1000, -0x1000, 0x1000);
-    func_ov000_021903b4(self->unk_90);
+    Model021903b4_Draw(self->unk_90);
     SetProj021c17dc(proj);
     MI_Copy48B(cam, cm);
 }

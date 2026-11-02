@@ -2,8 +2,8 @@
 
 extern "C" {
 
-extern void func_ov000_0219864c(ActorSub48 *a, VecFx32 *b, u16 *c);
-extern void func_ov000_021984f4(void *a, VecFx32 *b, s32 c);
+extern void ActorSub48_UpdatePos(ActorSub48 *a, VecFx32 *b, u16 *c);
+extern void Obj021984c8_UpdatePos(void *a, VecFx32 *b, s32 c);
 
 void Ov014Act_02209280_UpdateHit(Ov014Act_02209280 *self) {
     u16 k = self->unk_b4;
@@ -14,7 +14,7 @@ void Ov014Act_02209280_UpdateHit(Ov014Act_02209280 *self) {
         self->hit->offset.y = 0x1000;
         self->hit->radius = 0x1000;
     }
-    func_ov000_0219864c(self->hit, 0, 0);
+    ActorSub48_UpdatePos(self->hit, 0, 0);
 }
 
 void Ov014Act_02209280_UpdateSub44(Ov014Act_02209280 *self) {
@@ -25,10 +25,10 @@ void Ov014Act_02209280_UpdateSub44(Ov014Act_02209280 *self) {
     if (k != 100 && k != 110) {
         v.y += 0x5000;
         v.z += 0x2000;
-        func_ov000_021984f4(self->unk_44, &v, 0);
+        Obj021984c8_UpdatePos(self->unk_44, &v, 0);
     } else {
         v.y += 0x1000;
-        func_ov000_021984f4(self->unk_44, &v, 0);
+        Obj021984c8_UpdatePos(self->unk_44, &v, 0);
     }
 }
 

@@ -12,20 +12,20 @@ extern "C" {
 extern const u8 data_ov000_021cc480[];
 
 void *Actor_Ctor(Actor *self);
-void *func_ov000_0218c928(Actor *self);
-ResSet *func_ov000_0218ea20(ResSet *self);
+void *Actor_DtorBase(Actor *self);
+ResSet *ResSet_ReleaseAll(ResSet *self);
 void Heap_Free(void *ptr);
-BOOL func_ov000_0218cf5c(void *self);
-BOOL func_ov000_0218f110(AnimRes *res);
+BOOL Actor_IsReady(void *self);
+BOOL ResSet_UpdateLoad(AnimRes *res);
 void *Target_Get(void *p);
-void *func_ov000_0219bf90(void);
-void func_0203f364(ActorSub48 *obj);
+void *ActorMgr_FindPlayer(void);
+void HitSphere_Unlink_0203f364(ActorSub48 *obj);
 void HitMesh_Link(void *obj);
-void func_ov000_0219864c(ActorSub48 *obj, VecFx32 *pos, s32 c);
+void ActorSub48_UpdatePos(ActorSub48 *obj, VecFx32 *pos, s32 c);
 
 static inline void ResSet_Delete(ResSet *res) {
     if (res != NULL) {
-        func_ov000_0218ea20(res);
+        ResSet_ReleaseAll(res);
         Heap_Free(res);
     }
 }
@@ -68,18 +68,18 @@ static inline void ActorEx_Destroy(ActorEx *self) {
     if (self->unk_bc != NULL) {
         EffectMgr_Kill(data_0214a420, self->unk_bc);
     }
-    func_ov000_0218c928(self);
+    Actor_DtorBase(self);
 }
 
-BOOL func_ov000_021946f8(ActorEx *self) {
-    BOOL ret = func_ov000_0218cf5c(self);
+BOOL ActorEx_IsReady(ActorEx *self) {
+    BOOL ret = Actor_IsReady(self);
     s32 i;
 
     if (self->targetObj != NULL) {
         for (i = 0; i < 2; i++) {
             AnimRes *res = (AnimRes *)self->res[i];
             if (res != NULL && res->state >= 0) {
-                if (!func_ov000_0218f110(res)) {
+                if (!ResSet_UpdateLoad(res)) {
                     ret = FALSE;
                 }
             }

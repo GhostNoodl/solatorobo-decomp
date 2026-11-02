@@ -22,10 +22,10 @@ typedef struct ov006_Unk021df44c {
 
 extern "C" {
 
-BOOL func_02054f10(void *a, int b);
+BOOL Model_IsReady(void *a, int b);
 
 static inline void ov006_Loader021df44c_Update(ov006_Loader021df44c *self) {
-    if (!self->unk4 && self->unk1C != NULL && func_02054f10(self->unk1C, 0xffff)) {
+    if (!self->unk4 && self->unk1C != NULL && Model_IsReady(self->unk1C, 0xffff)) {
         self->unk4 = 1;
     }
 }

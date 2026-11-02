@@ -16,21 +16,21 @@ s16 *func_ov003_021ce630(s16 *p, void *hit);
 void *Heap_Alloc(u32 size);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
 BOOL NNS_G3dBindMdlSet(ResMdlSet *set, void *tex);
-BOOL func_ov000_0218ffdc(Model0218fe1c *self, void *res, u8 mode, s32 e);
-Model0218fe1c *func_ov000_0218fe1c(Model0218fe1c *self);
-BOOL func_ov000_02190cb0(Model0218fe1c *self, const char *name, s32 blend, s32 force);
-void func_ov000_021915a0(Model0218fe1c *self);
+BOOL Model0218fe1c_SetRes(Model0218fe1c *self, void *res, u8 mode, s32 e);
+Model0218fe1c *Model0218fe1c_Init(Model0218fe1c *self);
+BOOL Model0218fe1c_SetAnim(Model0218fe1c *self, const char *name, s32 blend, s32 force);
+void Model0218fe1c_SetLoop(Model0218fe1c *self);
 void func_ov000_02191870(Model0218fe1c *self, void *p);
-AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
+AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
 void func_ov000_02191920(Model0218fe1c *self, s32 index, s16 blend, u8 force);
-void func_ov000_02190a80(Model0218fe1c *self, s32 a);
+void Model0218fe1c_UpdateAnim(Model0218fe1c *self, s32 a);
 s32 func_ov000_021909a8(Model0218fe1c *self, void *p, const char *name);
 
 void func_ov000_0219c8e0(Robo021ca458 *self) {
     AnimEventTable *tbl;
     u8 *base;
     const char *name;
-    func_ov000_0218ffdc(&self->mdl1, &self->res1, 0, 1);
+    Model0218fe1c_SetRes(&self->mdl1, &self->res1, 0, 1);
     self->mdl1.actor_id = self->id;
     tbl = self->res1.unk_c0 != NULL ? (AnimEventTable *)((u8 *)*self->res1.unk_c0 + 8) : NULL;
     self->mdl1.evTable = tbl;
@@ -45,9 +45,9 @@ void func_ov000_0219c8e0(Robo021ca458 *self) {
         if (!self->unk_b24_1) {
             nm = data_ov000_021cc5e9;
         }
-        func_ov000_02190cb0(&self->mdl1, nm, 0x1000, 1);
+        Model0218fe1c_SetAnim(&self->mdl1, nm, 0x1000, 1);
     }
-    func_ov000_021915a0(&self->mdl1);
+    Model0218fe1c_SetLoop(&self->mdl1);
     if (self->unk_ba0 != NULL) {
         AnimCtrl *ctrl;
         void *q = NULL;
@@ -55,7 +55,7 @@ void func_ov000_0219c8e0(Robo021ca458 *self) {
             q = &self->res2;
         }
         func_ov000_02191870(&self->mdl1, q);
-        ctrl = func_ov000_02190a30(&self->mdl1, 3);
+        ctrl = Model0218fe1c_GetAnimCtrl(&self->mdl1, 3);
         if (ctrl != NULL) {
             u32 v;
             float f;
@@ -79,7 +79,7 @@ void func_ov000_0219c8e0(Robo021ca458 *self) {
         }
     }
     self->mdl1.unk_c2_6 = 1;
-    func_ov000_02190a80(&self->mdl1, 0x1000);
+    Model0218fe1c_UpdateAnim(&self->mdl1, 0x1000);
     self->unk_ae3 = 0;
     self->mdl1.visible = 1;
     self->unk_ae4 = 0;
@@ -108,10 +108,10 @@ void func_ov000_0219c8e0(Robo021ca458 *self) {
     if (self->unk_b22_0 != 0 && self->unk_99c != NULL) {
         Model0218fe1c *p = (Model0218fe1c *)Heap_Alloc(0xe8);
         if (p != NULL) {
-            p = func_ov000_0218fe1c(p);
+            p = Model0218fe1c_Init(p);
         }
         self->unk_998 = p;
-        func_ov000_0218ffdc(p, self->unk_99c, 0, 1);
+        Model0218fe1c_SetRes(p, self->unk_99c, 0, 1);
     }
     if (self->unk_998 != NULL) {
         ((Model0218fe1c *)self->unk_998)->visible = 1;

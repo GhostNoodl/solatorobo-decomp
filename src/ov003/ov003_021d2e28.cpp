@@ -6,30 +6,30 @@ extern "C" {
 extern s32 data_ov003_021f43f0[];
 extern s32 data_ov003_021f437c[];
 extern s32 data_ov003_021f440c[];
-extern s32 func_ov000_0219840c(ActorSub40 *self, s32 *list, s32 count, BOOL push);
-extern BOOL func_ov000_02198360(ActorSub40 *self, u8 value, BOOL force);
-extern void func_ov000_0218d7e8(Actor *self, u8 state);
+extern s32 History_PickFlagged(ActorSub40 *self, s32 *list, s32 count, BOOL push);
+extern BOOL History_SetState(ActorSub40 *self, u8 value, BOOL force);
+extern void Actor_DropStateMsgs(Actor *self, u8 state);
 
 void Ov003Actor_SelectState(Ov003Actor *self) {
     ActorSub40 *h = self->fsm;
-    if (h->flags != 0 && func_ov000_0219840c(h, data_ov003_021f43f0, 7, TRUE) == 0) {
+    if (h->flags != 0 && History_PickFlagged(h, data_ov003_021f43f0, 7, TRUE) == 0) {
         h = self->fsm;
         if (h->current != 0x15) {
             if (h->flags & 0x100000) {
-                func_ov000_02198360(h, 0x14, TRUE);
+                History_SetState(h, 0x14, TRUE);
             } else if (h->flags & 0x2) {
-                func_ov000_02198360(h, 1, TRUE);
+                History_SetState(h, 1, TRUE);
             } else if (h->flags & 0x80000) {
-                func_ov000_02198360(h, 0x13, TRUE);
+                History_SetState(h, 0x13, TRUE);
             } else if (h->flags & 0x40000) {
-                func_ov000_02198360(h, 0x12, TRUE);
+                History_SetState(h, 0x12, TRUE);
             }
         }
     }
     h = self->fsm;
     switch (h->current) {
     case 9:
-        func_ov000_0219840c(h, data_ov003_021f437c, 3, TRUE);
+        History_PickFlagged(h, data_ov003_021f437c, 3, TRUE);
         break;
     case 4:
     case 11:
@@ -41,25 +41,25 @@ void Ov003Actor_SelectState(Ov003Actor *self) {
     case 19:
     case 20:
         if (h->flags & 0x200) {
-            func_ov000_02198360(h, 9, FALSE);
+            History_SetState(h, 9, FALSE);
         }
         break;
     case 0:
-        func_ov000_0219840c(h, data_ov003_021f440c, 7, TRUE);
+        History_PickFlagged(h, data_ov003_021f440c, 7, TRUE);
         break;
     case 1:
     case 2:
-        if (func_ov000_0219840c(h, data_ov003_021f440c, 7, TRUE) == 0) {
+        if (History_PickFlagged(h, data_ov003_021f440c, 7, TRUE) == 0) {
             h = self->fsm;
             if (h->flags & 0x4) {
-                func_ov000_02198360(h, 2, FALSE);
+                History_SetState(h, 2, FALSE);
             } else {
-                func_ov000_02198360(h, 1, FALSE);
+                History_SetState(h, 1, FALSE);
             }
         }
         break;
     }
-    func_ov000_0218d7e8(self, self->fsm->current);
+    Actor_DropStateMsgs(self, self->fsm->current);
 }
 
 }

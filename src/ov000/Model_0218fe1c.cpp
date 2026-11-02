@@ -7,7 +7,7 @@ extern "C" {
 
 
 void Heap_Free(void *ptr);
-s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m);
+s16 *AnimEvent_Exec(s16 *p, Model0218fe1c *m);
 void *Heap_Alloc(u32 size);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
 void *NNS_G3dGetTex(void *file);
@@ -16,10 +16,10 @@ void NNSi_G3dModifyMatFlag(void *mdl, s32 a, u32 mask);
 void NNS_G3dRenderObjInit(void *obj, void *mdl);
 s32 NNS_G3dGetResDictIdxByName(void *dict, const char *name);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, AnmObj *anm);
-BOOL func_ov000_0218f874(AnimCtrl *self, void *obj, s16 speed);
-BOOL func_ov000_0218fa28(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
-BOOL func_ov000_0218fb64(AnimCtrl *self, void *obj, void *tex, void *file, s32 index, s16 blend, u8 force);
-s16 *func_ov000_02192a28(s16 *p);
+BOOL AnimCtrl_Update(AnimCtrl *self, void *obj, s16 speed);
+BOOL AnimCtrl_SetAnim(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
+BOOL AnimCtrl_SetAnimByIndex(AnimCtrl *self, void *obj, void *tex, void *file, s32 index, s16 blend, u8 force);
+s16 *AnimEvent_Next(s16 *p);
 
 static inline void *ResDict_GetDataByIdx(const ResDict *dict, u32 idx) {
     if (dict != NULL && idx < dict->num_entry) {
@@ -82,7 +82,7 @@ static inline void FreeOnHeap(AnimCtrl **ptr) {
 #define FX_SIN_IDX(idx) (FX_SinCosTable_[((idx) >> 4) * 2])
 #define FX_COS_IDX(idx) (FX_SinCosTable_[((idx) >> 4) * 2 + 1])
 
-Model0218fe1c *func_ov000_0218fe1c(Model0218fe1c *self) {
+Model0218fe1c *Model0218fe1c_Init(Model0218fe1c *self) {
     self->res = NULL;
     self->mdl = NULL;
     self->tex = NULL;
@@ -110,7 +110,7 @@ Model0218fe1c *func_ov000_0218fe1c(Model0218fe1c *self) {
     self->evData = NULL;
     self->evScript = NULL;
     self->evCursor = NULL;
-    self->evFunc = (void *)func_ov000_02191f18;
+    self->evFunc = (void *)AnimEvent_Exec;
     self->unk_e4 = 0;
     self->blend = 0;
     self->blendMax = 0;
@@ -122,7 +122,7 @@ Model0218fe1c *func_ov000_0218fe1c(Model0218fe1c *self) {
     return self;
 }
 
-Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *self) {
+Model0218fe1c *Model0218fe1c_FreeAnims(Model0218fe1c *self) {
     FreeOnHeap(&self->unk_0c);
     FreeOnHeap(&self->unk_10);
     FreeOnHeap(&self->unk_14);
@@ -131,7 +131,7 @@ Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *self) {
     return self;
 }
 
-BOOL func_ov000_0218ffdc(Model0218fe1c *self, ResSet *res, u8 idx, BOOL anim) {
+BOOL Model0218fe1c_SetRes(Model0218fe1c *self, ResSet *res, u8 idx, BOOL anim) {
     void *file;
     ResMdlSet *set;
     self->unk_c0 = idx;

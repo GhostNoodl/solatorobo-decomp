@@ -5,7 +5,7 @@ extern "C" {
 
 extern char data_ov015_02213111[];
 char *func_0207011c(u16 id);
-u8 *func_0206fef8(u16 id);
+u8 *Tbl_FindEntry_0206fef8(u16 id);
 u8 *func_02070744(u16 id);
 extern char data_ov015_02213123[];
 extern char data_ov015_0221312a[];
@@ -16,8 +16,8 @@ extern char data_ov015_02213158[];
 extern u8 data_ov015_022131c4[];
 extern char data_ov015_02213163[];
 extern char data_ov015_02213170[];
-void func_0204bfcc(void *p);
-void func_0204bfe4(void *p, const void *a, const void *b);
+void MsgRes_Reset_0204bfcc(void *p);
+void MsgRes_OpenLocalized(void *p, const void *a, const void *b);
 
 void func_ov015_0220f7a8(Ov015Result *self) {
     Ov015ResultPanel *o;
@@ -87,14 +87,14 @@ void func_ov015_0220f878(Ov015Result *self) {
     id = data_ov015_02213368->catchId;
     name = func_0207011c(id);
     {
-        u8 *info = func_0206fef8(id);
+        u8 *info = Tbl_FindEntry_0206fef8(id);
         u16 k = FLD(Ov015ItemBitsF878, info, 0x12).kind;
         o->unk_510 = name;
         o->unk_514 = data_ov015_02213111;
         o->unk_3a4 = k;
     }
     o->unk_498 = id;
-    func_ov015_0220e570(o, data_ov015_0221311c, 0, 0, 0x1000);
+    Ov015StageMdl_QueueAnim(o, data_ov015_0221311c, 0, 0, 0x1000);
     {
         Ov002ResName a[2];
         Ov015ResFile b[2];
@@ -113,30 +113,30 @@ void func_ov015_0220f878(Ov015Result *self) {
         *(Ov015ResNameOne *)&e = data_ov015_02212fb8;
         *(Ov015ResNameOne *)&f = data_ov015_02212fdc;
         n = data_ov015_02213368->unk_2c;
-        p5 = (Ov002Obj021f07d4 *)func_ov002_021e91c8(0, 0x96000, 3, 0, 0);
-        p4 = (Ov002Obj021f07d4 *)func_ov002_021e91c8(0, 0x96000, 3, 0, 0);
+        p5 = (Ov002Obj021f07d4 *)Ov002Obj021f07d4_New(0, 0x96000, 3, 0, 0);
+        p4 = (Ov002Obj021f07d4 *)Ov002Obj021f07d4_New(0, 0x96000, 3, 0, 0);
         p5->res.arc = a[n].arc;
         p5->res.name = a[n].name;
         p5->res.item = a[n].item;
-        t = (Ov002Obj021f075c *)func_ov002_021e92b0(0, 0x50000, 3, 0, 0x1000);
+        t = (Ov002Obj021f075c *)Ov002Obj021f075c_New(0, 0x50000, 3, 0, 0x1000);
         t->res = e;
         t->owner = p5;
-        func_ov002_021e4dac(p5, t);
-        t = (Ov002Obj021f075c *)func_ov002_021e92b0(0, 0x96000, 3, 0, 0x1000);
+        Ov002Obj_AddChild(p5, t);
+        t = (Ov002Obj021f075c *)Ov002Obj021f075c_New(0, 0x96000, 3, 0, 0x1000);
         t->unk_04 = 3;
         t->res = f;
         t->owner = p5;
-        func_ov002_021e4dac(p5, t);
+        Ov002Obj_AddChild(p5, t);
         p4->res.arc = b[n].arc;
         p4->res.name = b[n].name;
         p4->res.item = NULL;
         func_ov002_021e50d8(p4, c[n].arc, c[n].name);
-        t = (Ov002Obj021f075c *)func_ov002_021e92b0(0, 0x78000, 3, 0, 0x1000);
+        t = (Ov002Obj021f075c *)Ov002Obj021f075c_New(0, 0x78000, 3, 0, 0x1000);
         t->res.arc = d[n].arc;
         t->res.name = d[n].name;
         t->res.item = d[n].item;
         t->owner = p4;
-        func_ov002_021e4dac(p4, t);
+        Ov002Obj_AddChild(p4, t);
     }
 }
 
@@ -161,28 +161,28 @@ void func_ov015_0220fb78(Ov015Result *self) {
     id = data_ov015_02213368->catchId;
     name = func_0207011c(id);
     {
-        u8 *info = func_0206fef8(id);
+        u8 *info = Tbl_FindEntry_0206fef8(id);
         u16 k = FLD(Ov015ItemBits, info, 0x12).kind;
         o->unk_510 = name;
         o->unk_514 = data_ov015_02213111;
         o->unk_3a4 = k;
     }
     o->unk_498 = id;
-    func_ov015_0220e570(o, data_ov015_02213123, 0x78000, 0, 0x800);
-    func_ov015_0220e570(o, data_ov015_0221312a, 0x168000, 1, 0x1000);
-    t = (Ov002Obj021f075c *)func_ov002_021e92b0(0, 0x78000, 3, 0, 0x800);
+    Ov015StageMdl_QueueAnim(o, data_ov015_02213123, 0x78000, 0, 0x800);
+    Ov015StageMdl_QueueAnim(o, data_ov015_0221312a, 0x168000, 1, 0x1000);
+    t = (Ov002Obj021f075c *)Ov002Obj021f075c_New(0, 0x78000, 3, 0, 0x800);
     t->res.arc = data_ov015_02213131;
     t->res.name = data_ov015_02213147;
     t->res.item = data_ov015_0221314d;
     t->unk_04 = 3;
-    func_ov002_021e4dac(o, t);
+    Ov002Obj_AddChild(o, t);
     t->owner = o;
-    t = (Ov002Obj021f075c *)func_ov002_021e92b0(0x79000, 0x168000, 3, 1, 0x1000);
+    t = (Ov002Obj021f075c *)Ov002Obj021f075c_New(0x79000, 0x168000, 3, 1, 0x1000);
     t->res.arc = data_ov015_02213131;
     t->res.name = data_ov015_02213147;
     t->res.item = data_ov015_02213158;
     t->unk_04 = 3;
-    func_ov002_021e4dac(o, t);
+    Ov002Obj_AddChild(o, t);
     t->owner = o;
 }
 
@@ -222,8 +222,8 @@ void *Ov015Msg_Dtor(Ov015Msg *self) {
     Model *o = self->model;
     if (o != NULL) {
         if (o != NULL) {
-            func_02041558(o);
-            func_02041278(&o->pltt);
+            TexObj_Release(o);
+            PlttRes_Release(&o->pltt);
             Heap_Free(o);
         }
         self->model = NULL;
@@ -258,8 +258,8 @@ void *Ov015Msg_DtorDelete(Ov015Msg *self) {
     Model *o = self->model;
     if (o != NULL) {
         if (o != NULL) {
-            func_02041558(o);
-            func_02041278(&o->pltt);
+            TexObj_Release(o);
+            PlttRes_Release(&o->pltt);
             Heap_Free(o);
         }
         self->model = NULL;
@@ -359,10 +359,10 @@ void func_ov015_02210298(Ov015Msg *self) {
         SET_VT(p, data_0208b318);
         p->Clear();
         SET_VT(p, data_0208ba30);
-        func_0204bfcc(p);
+        MsgRes_Reset_0204bfcc(p);
     }
     self->msgRes = p;
-    func_0204bfe4(p, data_ov015_02213163, data_ov015_02213170);
+    MsgRes_OpenLocalized(p, data_ov015_02213163, data_ov015_02213170);
 }
 
 void func_ov015_022102fc(Ov015Msg *self) {
@@ -377,16 +377,16 @@ extern u8 data_0208ba70[];
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cadcc[];
 extern u8 data_ov015_02212d3c[];
-BOOL func_0204c030(void *p);
-s32 func_0204c08c(void *p, u16 id, void *buf, s32 n);
+BOOL MsgRes_Bind(void *p);
+s32 MsgRes_GetLines(void *p, u16 id, void *buf, s32 n);
 void *func_02035de0(void *a, void *b);
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 void *MsgRes_GetString(void *a, s32 b);
 u32 Text_Measure(u32 a, u32 b, u32 c, u32 *outW, u32 *outH, BOOL d);
-void func_0204ca70(void *p);
+void TextWin_RenderToVram(void *p);
 void func_ov015_02208544(Ov015UiText *self);
 s32 func_0204c2f4(void *p, s32 n, void *src);
-void func_ov000_0215bb14(void *a, void *b);
+void Obj0215bb14_SetText(void *a, void *b);
 void func_ov015_0220866c(Ov015UiText *self, void *msg);
 
 static inline void Ov015T_SetPos(UiObj *o, s16 x, s16 y, s16 z) {
@@ -404,26 +404,26 @@ static inline void Ov015T_SetSlide(UiObj *o, s32 x, s32 y, s32 z) {
 BOOL func_ov015_02210314(Ov015Msg *self) {
     UiObj *p;
     Model *m;
-    func_0204c030(self->msgRes);
-    self->pageCount = func_0204c08c(self->msgRes, self->msgIdx, self->pages, 0x20);
+    MsgRes_Bind(self->msgRes);
+    self->pageCount = MsgRes_GetLines(self->msgRes, self->msgIdx, self->pages, 0x20);
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
         void *file = data_0208cc94;
         void *name = data_0208cc88;
-        func_02041218(&m->pltt);
-        func_02041440(m, (char *)name, 0);
+        PlttRes_Init_02041218(&m->pltt);
+        TexObj_Init(m, (char *)name, 0);
         STD_CopyString(m->name, (char *)file);
     }
     self->model = m;
-    func_020417e0(self->model, func_02035de0(data_0208cc94, data_0208cc88));
+    TexObj_SetRes(self->model, func_02035de0(data_0208cc94, data_0208cc88));
     self->model->flags |= 2;
-    func_02041d9c((Model *)(self->model), 0, 0x1d);
+    TexObj_SelectImage((Model *)(self->model), 0, 0x1d);
     self->model->unk_150 = -0xccd;
     {
         TextWin *w = (TextWin *)Heap_Alloc(0xb8);
         if (w != NULL) {
             SET_VT(w, data_0208ba70);
-            func_0204c7d0(w);
+            TextWin_Init(w);
         }
         self->textWin = w;
         w->font = 4;
@@ -444,7 +444,7 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
     self->textWin->unk_4_8 = 0x1e;
     self->textWin->flags |= 0x40000000;
     self->textWin->flags |= 4;
-    func_0204ca70(self->textWin);
+    TextWin_RenderToVram(self->textWin);
     p = (UiObj *)Heap_Alloc(0x8c);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
@@ -476,7 +476,7 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
     if (self->label != NULL && self->pages[0] != NULL) {
         Lo021cadcc *o;
         func_0204c2f4(self->text, 0x80, self->pages[0]);
-        func_ov000_0215bb14(self->label, self->text);
+        Obj0215bb14_SetText(self->label, self->text);
         self->label->vfunc_70();
         FLD(u32, self->label->unk_84, 0x4) |= 0x4000000;
         o = self->label;

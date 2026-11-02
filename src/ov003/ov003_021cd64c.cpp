@@ -67,15 +67,15 @@ typedef struct {
 extern "C" {
 
 extern Ov003Sys *data_02fe152c;
-extern s32 func_0205976c(Ov003Sys *sys, s32 a);
-extern void func_02059360(Ov003Sys *sys, void *p, s32 a, s32 b, u16 c, s32 d);
+extern s32 DataRes_GetTable(Ov003Sys *sys, s32 a);
+extern void DataRes_WriteBitsById(Ov003Sys *sys, void *p, s32 a, s32 b, u16 c, s32 d);
 extern void func_ov003_021cd91c(Ov003Menu *self);
 
 extern char data_ov003_021f78c4[];
 extern char data_ov003_021f78cd[];
 extern void func_ov000_021c8408(u32 a, u32 b, u32 c, u32 d, u16 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k);
 extern void func_ov000_021c2208(void *p);
-extern BOOL func_02035bd4(const char *a, const char *b, u16 c);
+extern BOOL ResMgr_IsArchiveLoaded(const char *a, const char *b, u16 c);
 
 bool Ov003TaskVt_021f78f4_GetFlag4(Ov003FlagSet *self) {
     BOOL r = self->b4 ? TRUE : FALSE;
@@ -88,14 +88,14 @@ void Ov003TaskVt_021f78f4_UpdateActive(void) {
 void Ov003TaskVt_021f78f4_PreUpdate(Ov003Menu *self) {
     switch (self->state) {
     case 0xc:
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         break;
     case 0xa:
         if (self->unk_68 == self->unk_69) {
             u8 *base = data_02fe152c->unk_4c;
-            s32 v = func_0205976c(data_02fe152c, 0xb);
-            func_02059360(data_02fe152c, base + 0x170, v, 1, self->unk_64, 1);
-            func_02059360(data_02fe152c, base + 0x170, v, 0x101, self->unk_64, 1);
+            s32 v = DataRes_GetTable(data_02fe152c, 0xb);
+            DataRes_WriteBitsById(data_02fe152c, base + 0x170, v, 1, self->unk_64, 1);
+            DataRes_WriteBitsById(data_02fe152c, base + 0x170, v, 0x101, self->unk_64, 1);
         }
         break;
     }

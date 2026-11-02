@@ -5,7 +5,7 @@
 
 extern "C" {
 
-BOOL func_02054f10(void *p, s32 a);
+BOOL Model_IsReady(void *p, s32 a);
 void func_ov000_021c34fc(ListRow021cca70 *self);
 
 void func_ov000_021c34cc(ListRow021cca70 *self) {
@@ -13,7 +13,7 @@ void func_ov000_021c34cc(ListRow021cca70 *self) {
     if (p == NULL) {
         return;
     }
-    if (func_02054f10(p, 0) == 0) {
+    if (Model_IsReady(p, 0) == 0) {
         return;
     }
     func_ov000_021c34fc(self);
@@ -32,7 +32,7 @@ static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, (u16)idx) + 0xc));
     }
-    func_02042628(model, anim, part, flag);
+    TexObj_DrawCell(model, anim, part, flag);
 }
 
 static inline void Put(ListRow021cca70 *self, Model **pm, VecFx32 *p, s32 i) {

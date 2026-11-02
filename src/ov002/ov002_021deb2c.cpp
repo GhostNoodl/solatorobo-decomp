@@ -13,7 +13,7 @@ void func_ov002_021deb2c(Obj021efef0 *self, Obj021eff50 *dst) {
     dst->unk_28 = self->unk_2c;
     dst->unk_2c = self->unk_30;
     dst->unk_30 = id;
-    func_ov002_021dddd0(self);
+    Obj021efef0_Release(self);
 }
 
 }

@@ -11,53 +11,53 @@ extern "C" {
 extern void *data_ov000_021ccd64;
 extern char data_ov003_021f9fd0[];
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
-extern BOOL func_ov000_02190cb0(Model0218fe1c *p, const char *name, s16 a, u8 b);
-extern void func_ov000_021915a0(Model0218fe1c *p);
-extern void func_ov000_021911c8(Model0218fe1c *p, s16 a);
+extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *p, const char *name, s16 a, u8 b);
+extern void Model0218fe1c_SetLoop(Model0218fe1c *p);
+extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *p, s16 a);
 extern void Heap_Free(void *p);
 
 Ov003Gimmick *Ov003ActVt_021f99e8_DtorDelete(Ov003Gimmick *self) {
-    func_ov000_0218ea20(&self->res);
-    func_ov000_0219429c(self);
+    ResSet_ReleaseAll(&self->res);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 Ov003Gimmick *Ov003ActVt_021f99e8_Dtor(Ov003Gimmick *self) {
-    func_ov000_0218ea20(&self->res);
-    func_ov000_0219429c(self);
+    ResSet_ReleaseAll(&self->res);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021f9bb0_DtorDelete(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021f9bb0_Dtor(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021f9c48_DtorDelete(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021f9c48_Dtor(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021f9b18_Dtor(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 ActorEx *Ov003ActVt_021f9b18_DtorDelete(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
@@ -75,7 +75,7 @@ Ov003HomingShot *Ov003ActVt_021f9a80_DtorDelete(Ov003HomingShot *self) {
 
 void Ov003ActVt_021f9f40_Init(ActorEx *self) {
     Ov003Unit *unit;
-    func_ov000_0219433c(self);
+    ActorEx_InitActor(self);
     self->unk_ce = 0;
     unit = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (unit != NULL) {
@@ -84,11 +84,11 @@ void Ov003ActVt_021f9f40_Init(ActorEx *self) {
 }
 
 void Ov003ActVt_021f9f40_Start(ActorEx *self) {
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     if (self->model != NULL) {
-        func_ov000_02190cb0(self->model, data_ov003_021f9fd0, 0x1000, 0);
-        func_ov000_021915a0(self->model);
-        func_ov000_021911c8(self->model, 0x4cd);
+        Model0218fe1c_SetAnim(self->model, data_ov003_021f9fd0, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
+        Model0218fe1c_SetAnimSpeed(self->model, 0x4cd);
     }
     self->fsm->timer = 10;
 }

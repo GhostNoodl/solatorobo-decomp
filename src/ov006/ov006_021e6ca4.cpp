@@ -13,8 +13,8 @@ extern VecFx32 data_ov006_021eb8bc;
 extern fx32 data_ov006_021ec484[2];
 
 BOOL func_01ffc23c(VecFx32 *p, VecFx32 *min, VecFx32 *max);
-void func_ov000_02190758(Model0218fe1c *a, Rot16 *b, int c);
-BOOL func_ov000_021903b4(Model0218fe1c *a);
+void Obj02190758_SetRot(Model0218fe1c *a, Rot16 *b, int c);
+BOOL Model021903b4_Draw(Model0218fe1c *a);
 
 BOOL Ov006ActVt_021ec4f4_Draw(Ov006Racer *self) {
     VecFx32 d;
@@ -35,8 +35,8 @@ BOOL Ov006ActVt_021ec4f4_Draw(Ov006Racer *self) {
     done = FALSE;
     if (func_01ffc23c(&d, &data_ov006_021eb8ec, &data_ov006_021eb8d4) && HitMagSq(&d) <= data_ov006_021ec484[0]) {
         self->model->trans = self->pos;
-        func_ov000_02190758(self->model, &self->rot, 1);
-        ret = func_ov000_021903b4(self->model);
+        Obj02190758_SetRot(self->model, &self->rot, 1);
+        ret = Model021903b4_Draw(self->model);
         if (ret) {
             self->unk_19c_0 |= 1;
         }
@@ -44,8 +44,8 @@ BOOL Ov006ActVt_021ec4f4_Draw(Ov006Racer *self) {
     }
     if (!done && func_01ffc23c(&d, &data_ov006_021eb8e0, &data_ov006_021eb8bc) && HitMagSq(&d) <= data_ov006_021ec484[1]) {
         self->mdl.trans = self->pos;
-        func_ov000_02190758(&self->mdl, &self->rot, 1);
-        ret = func_ov000_021903b4(&self->mdl);
+        Obj02190758_SetRot(&self->mdl, &self->rot, 1);
+        ret = Model021903b4_Draw(&self->mdl);
         if (ret) {
             self->unk_19c_0 |= 2;
         }

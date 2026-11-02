@@ -113,10 +113,10 @@ void Ov003Timer_Update(Ov003Timer *self) {
             o.z = sub->unk_0c.z;
             VEC_Add(&p, &o, &p);
         }
-        fx = func_02065f88(5, &p);
+        fx = Effect_SpawnId(5, &p);
         sc = self->unk_06 + 0x3800;
         fx->SetScaleXYZ(sc, sc, sc);
-        func_0204a028(data_02097e4c, 0x56, &p, -3);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x56, &p, -3);
         func_ov000_0218996c(0x10, 0x5a);
         self->state = 4;
         break;
@@ -136,7 +136,7 @@ void Ov003Timer_Update(Ov003Timer *self) {
         p.y = self->target->pos.y;
         p.z = self->target->pos.z;
         func_ov000_0218996c(8, 0xc);
-        func_02049f44(data_02097e4c, 0x35, &p, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x35, &p, 0);
     }
 }
 

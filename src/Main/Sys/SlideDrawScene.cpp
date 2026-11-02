@@ -84,7 +84,7 @@ void GfxGe_PopMtx(s32 num, ...);
 extern void func_020435e8(void *pltt, void *src, u32 size);
 BOOL func_02056c48(void);
 s16 func_0204e2ac(s32 angle);
-s32 func_0204e2c4(s32 a, s32 b);
+s32 Text_FxMul(s32 a, s32 b);
 s32 func_020534c4(s32 x);
 s32 func_020534d4(SlideDrawScene *scene);
 u8 func_02056c94(u8 *p);
@@ -92,19 +92,19 @@ int func_02043d84(void *st);
 s32 func_02054ae8(Model *model, s32 idx);
 s32 func_02056148(SlideDrawScene *scene, SlidePanel *panel, SlidePanel *other);
 BOOL func_020554c8(SlidePanel *panel);
-BOOL func_02056c9c(SlidePanel *panel);
+BOOL SlidePanel_IsIdle(SlidePanel *panel);
 void func_0205311c(SlideDrawScene *scene);
-s32 func_02054894(SlidePanel *panel);
-s32 func_020548c8(SlidePanel *panel);
+s32 SlidePanel_GetTarget_02054894(SlidePanel *panel);
+s32 SlidePanel_GetEdge_020548c8(SlidePanel *panel);
 void Obj3DLayer_SetCur(SlidePanel *panel, u32 v);
 void func_020543bc(SlidePanel *panel);
 void func_02050ea4(Model *model, u32 v);
 void func_02050e94(Model *model);
 void func_02056cb8(Model *model);
-void func_0205563c(Model *model, int idx, ModelPos *pos);
+void Model_SetPartPos(Model *model, int idx, ModelPos *pos);
 void func_0204e2dc(Model *model, s32 v);
 void Model_SetColorRGB(Model *model, u32 r, u32 g, u32 b);
-void func_0204e2e4(Model *model, s32 idx);
+void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 void Model_MovePos(Model *model, int idx, s32 dx, s32 dy);
 void func_02056d04(Model *model);
 void func_02056d14(Model *model);
@@ -153,7 +153,7 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
         top = bottom;
     }
     if (panel && panel && panel) {}
-    dy = func_020534c4(func_0204e2c4(scene->dimT, 0x7000));
+    dy = func_020534c4(Text_FxMul(scene->dimT, 0x7000));
     lift = func_020534d4(scene);
     GfxGe_PushMtx();
     if (scene->fadeOut) {
@@ -161,16 +161,16 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
     } else {
         s = func_0204e2ac((scene->fadeT << 14) >> 12);
     }
-    func_0204e2c4(0x80000, s);
+    Text_FxMul(0x80000, s);
     GfxGe_PolygonAttr(0, 1, 3, func_02056c94(gfx), 0x12, 0);
     GfxGe_PushMtx();
-    GfxGe_Translate(sx + (func_0204e2c4(0x110000, s) - 0x90000), sy + (dy + 0x35000) - (lift << 12), -0xa9a);
+    GfxGe_Translate(sx + (Text_FxMul(0x110000, s) - 0x90000), sy + (dy + 0x35000) - (lift << 12), -0xa9a);
     GfxGe_Scale(0x1000, 0x1000, 0x1000);
     GfxGe_Color(0);
     scene->DrawBox(0x100, 4);
     GfxGe_PopMtx(1);
     GfxGe_PushMtx();
-    GfxGe_Translate(sx + (func_0204e2c4(-0x110000, s) + 0x190000), sy + (dy + 0x77000) - (lift << 12), -0xa9a);
+    GfxGe_Translate(sx + (Text_FxMul(-0x110000, s) + 0x190000), sy + (dy + 0x77000) - (lift << 12), -0xa9a);
     GfxGe_Scale(0x1000, 0x1000, 0x1000);
     GfxGe_Color(0);
     scene->DrawBox(0x100, 4);
@@ -195,11 +195,11 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
             }
             if (i <= 2) {
                 if (!first->flag22) {
-                    off[2] = func_0204e2c4(func_02056148(scene, first, &scene->panels[2]), 0x18000);
-                    off[0] = func_0204e2c4(func_02056148(scene, first, &scene->panels[0]), 0x24000);
+                    off[2] = Text_FxMul(func_02056148(scene, first, &scene->panels[2]), 0x18000);
+                    off[0] = Text_FxMul(func_02056148(scene, first, &scene->panels[0]), 0x24000);
                 } else {
-                    off[1] = -func_0204e2c4(func_02056148(scene, first, &scene->panels[1]), 0x18000);
-                    off[0] = -func_0204e2c4(func_02056148(scene, first, &scene->panels[0]), 0x24000);
+                    off[1] = -Text_FxMul(func_02056148(scene, first, &scene->panels[1]), 0x18000);
+                    off[0] = -Text_FxMul(func_02056148(scene, first, &scene->panels[0]), 0x24000);
                 }
             }
         } else {
@@ -213,22 +213,22 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
                 if (i == 1) {
                     if (!func_020554c8(first)) {
                         first = panel;
-                    } else if (func_02056c9c(first) && func_02056c9c(panel) && panel->unk_20 < first->unk_20) {
+                    } else if (SlidePanel_IsIdle(first) && SlidePanel_IsIdle(panel) && panel->unk_20 < first->unk_20) {
                         first = panel;
                     }
-                    off[2] = func_0204e2c4(func_02056148(scene, first, &scene->panels[2]), 0xc000);
+                    off[2] = Text_FxMul(func_02056148(scene, first, &scene->panels[2]), 0xc000);
                     if (flag == FALSE) {
-                        off[0] = func_0204e2c4(func_02056148(scene, first, &scene->panels[0]), 0x18000);
+                        off[0] = Text_FxMul(func_02056148(scene, first, &scene->panels[0]), 0x18000);
                     }
                 } else if (i == 2) {
                     if (!func_020554c8(first)) {
                         first = panel;
-                    } else if (func_02056c9c(first) && func_02056c9c(panel) && panel->unk_20 < first->unk_20) {
+                    } else if (SlidePanel_IsIdle(first) && SlidePanel_IsIdle(panel) && panel->unk_20 < first->unk_20) {
                         first = panel;
                     }
-                    off[1] = -func_0204e2c4(func_02056148(scene, first, &scene->panels[1]), 0xc000);
+                    off[1] = -Text_FxMul(func_02056148(scene, first, &scene->panels[1]), 0xc000);
                     if (flag == TRUE) {
-                        off[0] = -func_0204e2c4(func_02056148(scene, first, &scene->panels[0]), 0x18000);
+                        off[0] = -Text_FxMul(func_02056148(scene, first, &scene->panels[0]), 0x18000);
                     }
                 }
             }
@@ -240,9 +240,9 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
             continue;
         }
         if (panel->state == 0) {
-            s32 a = func_02054894(panel);
-            s32 b = func_020548c8(panel);
-            x = a + (func_0204e2c4(func_0204e2ac((panel->unk_20 << 14) >> 12), (b - a) << 12) >> 12);
+            s32 a = SlidePanel_GetTarget_02054894(panel);
+            s32 b = SlidePanel_GetEdge_020548c8(panel);
+            x = a + (Text_FxMul(func_0204e2ac((panel->unk_20 << 14) >> 12), (b - a) << 12) >> 12);
             if (panel->unk_20 == 0x1000) {
                 if (panel->cur == 4) {
                     Obj3DLayer_SetCur(panel, panel->next);
@@ -250,9 +250,9 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
                 panel->state = 0xf;
             }
         } else if (panel->state == 1) {
-            s32 a = func_020548c8(panel);
-            s32 b = func_02054894(panel);
-            x = a + (func_0204e2c4(func_0204e2ac((panel->unk_20 << 14) >> 12), (b - a) << 12) >> 12);
+            s32 a = SlidePanel_GetEdge_020548c8(panel);
+            s32 b = SlidePanel_GetTarget_02054894(panel);
+            x = a + (Text_FxMul(func_0204e2ac((panel->unk_20 << 14) >> 12), (b - a) << 12) >> 12);
             if (panel->unk_20 == 0x1000) {
                 panel->flag4 = 1;
                 if (!panel->flag27) {
@@ -262,11 +262,11 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
             }
         } else if (panel->state == 2) {
             u8 alpha;
-            x = func_020548c8(panel);
+            x = SlidePanel_GetEdge_020548c8(panel);
             if (panel->unk_20 == 0x1000) {
                 panel->state = 0xf;
             }
-            alpha = func_0204e2c4(panel->unk_20, 0x1f000) >> 12;
+            alpha = Text_FxMul(panel->unk_20, 0x1f000) >> 12;
             func_02050ea4(panel->model, alpha);
             if (panel->model2 != NULL) {
                 func_02050e94(panel->model2);
@@ -274,11 +274,11 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
             }
         } else if (panel->state == 3) {
             u8 alpha;
-            x = func_020548c8(panel);
+            x = SlidePanel_GetEdge_020548c8(panel);
             if (panel->unk_20 == 0x1000) {
                 panel->flag4 = 1;
             }
-            alpha = 0x1f - (func_0204e2c4(panel->unk_20, 0x1f000) >> 12);
+            alpha = 0x1f - (Text_FxMul(panel->unk_20, 0x1f000) >> 12);
             func_02050ea4(panel->model, alpha);
             if (panel->model2 != NULL) {
                 func_02050e94(panel->model2);
@@ -286,9 +286,9 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
             }
         } else {
             if (panel->state == 10) {
-                x = func_02054894(panel);
+                x = SlidePanel_GetTarget_02054894(panel);
             } else {
-                x = func_020548c8(panel);
+                x = SlidePanel_GetEdge_020548c8(panel);
             }
         }
         pos.x = sx + (x << 12);
@@ -298,11 +298,11 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
             y -= 0x40;
             func_02056cb8(panel->model2);
             pos.y += 0xa000;
-            func_0205563c(panel->model2, 0, &pos);
+            Model_SetPartPos(panel->model2, 0, &pos);
             func_0204e2dc(panel->model2, -0x99a - y);
             Model_SetColorRGB(panel->model2, 0x1f, 0x1f, 0x1f);
-            func_0204e2e4(panel->model2, 0);
-            func_0205563c(panel->model2, 0, &pos);
+            Model_ApplyPart_0204e2e4(panel->model2, 0);
+            Model_SetPartPos(panel->model2, 0, &pos);
             if (i == 3) {
                 pos.x -= 0x10000;
                 Model_MovePos(panel->model2, 0, 3, 4);
@@ -313,7 +313,7 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
             pos.y -= 0x30000;
             func_0204e2dc(panel->model2, -0x99a - (y + 0x10));
             Model_SetColorRGB(panel->model2, 0, 0, 0);
-            func_0204e2e4(panel->model2, 0);
+            Model_ApplyPart_0204e2e4(panel->model2, 0);
             func_02056d04(panel->model2);
             func_02056d14(panel->model);
             func_02050e94(panel->model);
@@ -336,9 +336,9 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
             pos.y += dy;
         }
         func_02056d38(panel->model, func_02043d84(gfx));
-        func_0205563c(panel->model, 0, &pos);
+        Model_SetPartPos(panel->model, 0, &pos);
         func_0204e2dc(panel->model, -0x99a - y);
-        func_0204e2e4(panel->model, 0);
+        Model_ApplyPart_0204e2e4(panel->model, 0);
         func_02056d50(panel->model);
     }
     }

@@ -16,8 +16,8 @@ extern void *data_ov006_021ec444;
 extern u16 data_ov006_021eb840[];
 
 
-BOOL func_0203e63c(void *a);
-BOOL func_02054f10(Model *a, int b);
+BOOL Vram_IsTransferDone(void *a);
+BOOL Model_IsReady(Model *a, int b);
 BOOL ov006_ListWin_IsReadyB(ov006_ListWin *self);
 BOOL ov006_ListWin_IsReadyA(ov006_ListWin *self);
 
@@ -115,7 +115,7 @@ static inline BOOL ov006_TextWin_IsReady(TextWin *self) {
     if (self->unk_6c == NULL) {
         return TRUE;
     }
-    if (func_0203e63c(self->unk_6c)) {
+    if (Vram_IsTransferDone(self->unk_6c)) {
         self->unk_6c = NULL;
     } else {
         return !self->noVram;
@@ -134,7 +134,7 @@ BOOL ov006_ListWin_IsReady(ov006_ListWin *self) {
 
 BOOL ov006_ListWin_IsReadyB(ov006_ListWin *self) {
     BOOL result = ov006_ListWin_IsReadyA(self);
-    if (self->unk_b4 != NULL && !func_02054f10(self->unk_b4, 0xffff)) {
+    if (self->unk_b4 != NULL && !Model_IsReady(self->unk_b4, 0xffff)) {
         result = FALSE;
     }
     return result;
@@ -142,7 +142,7 @@ BOOL ov006_ListWin_IsReadyB(ov006_ListWin *self) {
 
 BOOL ov006_ListWin_IsReadyA(ov006_ListWin *self) {
     BOOL result = TRUE;
-    if (self->model != NULL && !func_02054f10(self->model, 0xffff)) {
+    if (self->model != NULL && !Model_IsReady(self->model, 0xffff)) {
         result = FALSE;
     }
     if (self->title != NULL && !ov006_TextWin_IsReady(self->title)) {
@@ -177,19 +177,19 @@ void ov006_ModelHolder_Load(ov006_ModelHolder *self, int a) {
     OV006_DELETE_MODEL(self->model);
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
-        func_02041218(&model->pltt);
-        func_02041440(model, name, 0);
+        PlttRes_Init_02041218(&model->pltt);
+        TexObj_Init(model, name, 0);
         STD_CopyString(model->name, file);
     }
     self->model = model;
-    func_020417e0(self->model, func_02035de0(file, name));
+    TexObj_SetRes(self->model, func_02035de0(file, name));
     self->model->flags |= 2;
     self->model->flags |= 0x80000;
     self->model->flags |= 0x400000;
-    func_02041d9c(self->model, a, 0);
-    func_02041d9c(self->model, a, 1);
-    func_02041d9c(self->model, a, 2);
-    func_02041d9c(self->model, a, 3);
+    TexObj_SelectImage(self->model, a, 0);
+    TexObj_SelectImage(self->model, a, 1);
+    TexObj_SelectImage(self->model, a, 2);
+    TexObj_SelectImage(self->model, a, 3);
     self->unk8 = a;
 }
 

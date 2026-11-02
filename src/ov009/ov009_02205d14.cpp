@@ -10,8 +10,8 @@ extern char data_ov009_02216bba[];
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 extern void *Ov003FxList_Dtor(void *p);
-extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern s16 *func_ov000_02191318(Model0218fe1c *m, s32 a);
+extern void *SndMgr_PlayAtPitch(void *mgr, s32 id, const VecFx32 *pos, s32 a);
+extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *m, s32 a);
 void Ov009Names_Fill_02205d94(Ov009Names *self, void *res);
 
 struct Ov009Rot {
@@ -115,8 +115,8 @@ void Ov009ActVt_02216dcc_Init(Ov009ActVt_02216dcc *self) {
 // This file's .text ends at 0x02206084, so it goes here once it matches. Blocker: the ROM reads pl->id before the
 // unk_93 bit-field store; ours orders them the other way (the strh/strb pair has no memory edge, so list order
 // decides). History: docs/MATCHING.md rounds near7, bgV, nmA, mtA, cvA; docs/UNMATCHED.md.
-extern Ov003Actor *func_ov000_0219bf90(void);
-extern BOOL func_ov000_021983b0(ActorSub40 *st, s32 a, s32 b, s32 c);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
+extern BOOL History_HasState(ActorSub40 *st, s32 a, s32 b, s32 c);
 extern s32 _s32_div_f(s32 a, s32 b);
 
 #define OV009_SQRTCNT (*(volatile u16 *)0x40002b0)
@@ -133,7 +133,7 @@ void Ov009ActVt_02216dcc_Update(Ov009ActVt_02216dcc *self) {
         return;
     }
     self->target = 0xffff;
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (pl == NULL) {
         return;
     }
@@ -149,7 +149,7 @@ void Ov009ActVt_02216dcc_Update(Ov009ActVt_02216dcc *self) {
         self->unk_b6--;
     }
     if (self->unk_b6 == 0 && self->fsm->current == 1) {
-        if (func_ov000_021983b0(self->fsm, 0x12, 2, 1) || func_ov000_021983b0(self->fsm, 0x13, 2, 1)) {
+        if (History_HasState(self->fsm, 0x12, 2, 1) || History_HasState(self->fsm, 0x13, 2, 1)) {
             self->unk_f4++;
             if (self->unk_f4 >= 2) {
                 self->unk_f4 = 0;

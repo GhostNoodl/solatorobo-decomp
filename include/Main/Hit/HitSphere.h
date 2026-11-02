@@ -21,7 +21,7 @@ typedef struct HitSphere {
     /* 0x40 */ struct HitSphere *next;
 } HitSphere;
 
-void func_0203f260(HitSphere *hit);
+void HitSphere_Init(HitSphere *hit);
 void HitSphere_Link(HitSphere *hit);
 
 }

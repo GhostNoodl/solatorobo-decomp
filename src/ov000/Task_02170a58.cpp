@@ -34,13 +34,13 @@ BOOL func_ov000_0216ca70(void *p);
 void func_ov000_02182524(SceneStage *self);
 void func_ov000_0216b550(Lo0216b474 *p);
 void func_ov000_0216adf8(void *p);
-void func_ov000_021bbcac(void *p);
+void Obj021bbc68_Release(void *p);
 void func_020507d8(void *p);
-void func_ov000_0216c9b0(void *p);
+void Obj0216c9b0_Release(void *p);
 void func_ov000_021b8800(void *p);
 void func_ov000_021b88d8(void *p);
-void func_ov000_021b8ecc(void *p);
-void func_ov000_021bacf4(void *p);
+void Obj021b8ecc_Release(void *p);
+void Obj021bacf4_Release(void *p);
 void func_ov000_021bb840(void *p);
 
 typedef struct {
@@ -129,7 +129,7 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
         }
     case 10:
         if (self->unk_3c != NULL && !func_ov000_021b9010(self->unk_3c)) {
-            HEAP_DELETE_FN(self->unk_3c, func_ov000_021b8ecc);
+            HEAP_DELETE_FN(self->unk_3c, Obj021b8ecc_Release);
             if (self->state == 10) {
                 self->state = 3;
             }
@@ -148,13 +148,13 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
         break;
     case 8:
         if (self->unk_40 != NULL && !func_ov000_021ba92c(self->unk_40)) {
-            HEAP_DELETE_FN(self->unk_40, func_ov000_021bacf4);
+            HEAP_DELETE_FN(self->unk_40, Obj021bacf4_Release);
             self->state = 3;
         }
         break;
     case 9:
         if (self->unk_44 != NULL && !func_ov000_021bb8dc(self->unk_44)) {
-            HEAP_DELETE(u8 *, (u8 *)self->unk_44, func_ov000_021bbcac(p); *(void **)(p + 4) = data_0208b318; ((VObj *)(p + 4))->vfunc_0c(); Heap_Free(p));
+            HEAP_DELETE(u8 *, (u8 *)self->unk_44, Obj021bbc68_Release(p); *(void **)(p + 4) = data_0208b318; ((VObj *)(p + 4))->vfunc_0c(); Heap_Free(p));
             self->state = 3;
         }
         break;
@@ -184,10 +184,10 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
         HEAP_DELETE_FN(self->unk_34, func_ov000_021b8800);
     }
     if (self->unk_50 != NULL && !func_ov000_0216ca70(self->unk_50)) {
-        HEAP_DELETE_FN(self->unk_50, func_ov000_0216c9b0);
+        HEAP_DELETE_FN(self->unk_50, Obj0216c9b0_Release);
     }
-    if (self->unk_54 != NULL && !func_ov000_0216dae4(self->unk_54)) {
-        HEAP_DELETE(LoTimer *, self->unk_54, func_ov000_0216e5d0(p); Heap_Free(p));
+    if (self->unk_54 != NULL && !LoTimer_Update(self->unk_54)) {
+        HEAP_DELETE(LoTimer *, self->unk_54, LoTimer_FreeModels(p); Heap_Free(p));
     }
     if (self->unk_58 != NULL) {
         self->unk_58->vfunc_0c();

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021d01cc(Task021ef79c *self) {
+void Task021ef79c_Draw(Task021ef79c *self) {
     if (self->vfunc_28() == 0) {
         return;
     }

@@ -54,7 +54,7 @@ typedef struct {
 extern Ov003Trail *data_ov003_021fa680;
 extern void MTX_Copy33To43_(const Ov003Mtx33 *src, Ov003Mtx43 *dst);
 extern void NNSi_G3dModifyPolygonAttrMask(void *res, BOOL on, u32 mask);
-extern BOOL func_ov000_021903b4(Ov003TrailModel *model);
+extern BOOL Model021903b4_Draw(Ov003TrailModel *model);
 extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 
 static inline void VSub(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *o) { o->x = a->x - b->x; o->y = a->y - b->y; o->z = a->z - b->z; }
@@ -91,7 +91,7 @@ BOOL Ov003ActVt_021fa390_Draw(Ov003Trail *self) {
         mdl->pos.x = m.t.x;
         mdl->pos.y = m.t.y;
         mdl->pos.z = m.t.z;
-        func_ov000_021903b4(mdl);
+        Model021903b4_Draw(mdl);
         MI_Copy48B(&self->hist[idx], &m);
         idx++;
         if (idx >= 6) {

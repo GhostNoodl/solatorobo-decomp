@@ -32,51 +32,51 @@ struct Ov003GmTable {
 extern "C" {
 
 extern char data_ov003_021f99d8[];
-extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
-extern void func_ov000_021911c8(void *model, s32 v);
-extern void func_ov000_02191618(void *model);
-extern void *func_ov000_02191318(void *model, s32 v);
-extern void func_ov000_02191708(void *model);
-extern void func_ov000_02191690(void *model);
-extern BOOL func_ov000_02191120(void *model);
-extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
-extern Ov003GmPlayer *func_ov000_0219bf90(void);
-extern BOOL func_ov000_0219a8bc(void *a, void *b, void *c, s32 d, s32 e, VecFx32 *f, s32 g, s32 h, s32 i);
-extern void func_ov000_0219bd20(s32 id, u16 a, s32 b, s32 c, s32 d, Ov003GmArg *arg);
-extern void *func_0206fef8(u16 id);
-extern void func_ov000_0219badc(void *model, void *p, void *info);
+extern BOOL Model0218fe1c_SetAnim(void *model, const char *name, s32 a, s32 b);
+extern void Model0218fe1c_SetAnimSpeed(void *model, s32 v);
+extern void Model0218fe1c_ClearLoop(void *model);
+extern void *Model0218fe1c_SetAnimFrame(void *model, s32 v);
+extern void Model0218fe1c_ResumeAnim(void *model);
+extern void Model0218fe1c_PauseAnim(void *model);
+extern BOOL Model0218fe1c_IsAnimDone(void *model);
+extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
+extern Ov003GmPlayer *ActorMgr_FindPlayer(void);
+extern BOOL Hit_Apply(void *a, void *b, void *c, s32 d, s32 e, VecFx32 *f, s32 g, s32 h, s32 i);
+extern void ActorMgr_SendToKindOthers(s32 id, u16 a, s32 b, s32 c, s32 d, Ov003GmArg *arg);
+extern void *Tbl_FindEntry_0206fef8(u16 id);
+extern void Model0218fe1c_Setup(void *model, void *p, void *info);
 extern void HitSphere_Link(ActorSub48 *ctl);
-extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
-extern void func_ov000_021915a0(void *model);
+extern void Body_Update(ActorSub48 *ctl, s32 a, s32 b, s32 c);
+extern void Model0218fe1c_SetLoop(void *model);
 extern void func_ov000_0218996c(u8 a, u8 b);
 
 void func_ov003_021ec9e0(Ov003Gimmick *self) {
     ActorSub40 *w = self->fsm;
     switch (w->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov003_021f99d8, 0x1000, 0);
-        func_ov000_021911c8(self->model, 0x800);
-        func_ov000_02191618(self->model);
-        func_ov000_02191318(self->model, 0);
-        func_ov000_02191708(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov003_021f99d8, 0x1000, 0);
+        Model0218fe1c_SetAnimSpeed(self->model, 0x800);
+        Model0218fe1c_ClearLoop(self->model);
+        Model0218fe1c_SetAnimFrame(self->model, 0);
+        Model0218fe1c_ResumeAnim(self->model);
         self->fsm->st++;
         break;
     case 1:
         w->timer++;
         if (w->timer >= 0xf && w->timer <= 0x64) {
-            Ov003GmPlayer *pl = func_ov000_0219bf90();
+            Ov003GmPlayer *pl = ActorMgr_FindPlayer();
             u16 id;
-            func_ov000_0219aae8(self, self, 0x78, 0x11, (u16)(1 << (pl->unk_0c >> 12)), NULL, NULL,
+            Hit_ApplyInArea(self, self, 0x78, 0x11, (u16)(1 << (pl->unk_0c >> 12)), NULL, NULL,
                                 self->radius + (self->radius >> 1), self->height, 0x6d, 0xccd);
             id = pl->target;
             if (id != 0xffff && id == self->id) {
-                func_ov000_0219a8bc(pl->unk_44, self, self, 0xa, 0x11, &self->pos, 0x6d, 0xccd, 0x1000);
+                Hit_Apply(pl->unk_44, self, self, 0xa, 0x11, &self->pos, 0x6d, 0xccd, 0x1000);
             }
         }
-        if (!func_ov000_02191120(self->model)) {
+        if (!Model0218fe1c_IsAnimDone(self->model)) {
             return;
         }
-        func_ov000_02198360(self->fsm, 1, 1);
+        History_SetState(self->fsm, 1, 1);
         break;
     }
 }
@@ -96,15 +96,15 @@ void Ov003ActVt_021f99e8_StateHeld(Ov003Gimmick *self) {
                 self->unk_bc = NULL;
                 arg.a = self->unk_1c;
                 arg.b = 0;
-                func_ov000_0219bd20(0x4064, self->id, 0xe, 1, 2, &arg);
+                ActorMgr_SendToKindOthers(0x4064, self->id, 0xe, 1, 2, &arg);
             }
         } else if (self->kind == 0x4065 && self->unk_cf_u == 0) {
-            func_ov000_02190cb0(self->model, data_ov003_021f99d8, 0x1000, 0);
-            func_ov000_02191690(self->model);
-            func_ov000_02191318(self->model, 0);
+            Model0218fe1c_SetAnim(self->model, data_ov003_021f99d8, 0x1000, 0);
+            Model0218fe1c_PauseAnim(self->model);
+            Model0218fe1c_SetAnimFrame(self->model, 0);
         }
     }
-    func_ov000_02195d88(self);
+    ActorEx_StateHeld(self);
 }
 
 void Ov003ActVt_021f99e8_StateDie(Ov003Gimmick *self) {
@@ -118,7 +118,7 @@ void Ov003ActVt_021f99e8_StateDie(Ov003Gimmick *self) {
             EffectMgr_Kill(data_0214a420, self->unk_bc);
             self->unk_bc = NULL;
         }
-        func_ov000_0219763c(self);
+        ActorEx_StateDie(self);
         return;
     }
     switch (self->fsm->st) {
@@ -132,7 +132,7 @@ void Ov003ActVt_021f99e8_StateDie(Ov003Gimmick *self) {
                 if (self->kind == 0x4064) {
                     arg.a = self->unk_1c;
                     arg.b = 0;
-                    func_ov000_0219bd20(0x4064, self->id, 0xe, 1, 2, &arg);
+                    ActorMgr_SendToKindOthers(0x4064, self->id, 0xe, 1, 2, &arg);
                 }
             }
             self->unk_cf_u = 1;
@@ -140,14 +140,14 @@ void Ov003ActVt_021f99e8_StateDie(Ov003Gimmick *self) {
             if (self->unk_ce_u == 0) {
                 self->unk_ce_u = 1;
             }
-            func_ov000_0219badc(self->model, &self->res, func_0206fef8(self->kind));
-            e = func_02065f88(0x6d, &self->pos);
+            Model0218fe1c_Setup(self->model, &self->res, Tbl_FindEntry_0206fef8(self->kind));
+            e = Effect_SpawnId(0x6d, &self->pos);
             e->SetScaleXYZ(self->radius + (self->radius >> 3), self->radius + (self->radius >> 3), self->radius + (self->radius >> 3));
-            e = func_02065f88(4, &self->pos);
+            e = Effect_SpawnId(4, &self->pos);
             e->SetScaleXYZ(self->radius + (self->radius >> 3), self->radius + (self->radius >> 3), self->radius + (self->radius >> 3));
             e->AddPosXYZ(0, self->centerY, 0);
-            func_02049f44(data_02097e4c, 0x16, &self->pos, 0);
-            func_02049f44(data_02097e4c, 0x19, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x16, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x19, &self->pos, 0);
         }
         {
             ActorSub48 *c = self->hit;
@@ -162,14 +162,14 @@ void Ov003ActVt_021f99e8_StateDie(Ov003Gimmick *self) {
     case 1:
         func_ov000_02197ad0(self, 0);
         Actor_Move(self, 0);
-        func_ov000_021987b8(self->hit, 1, 0, 0);
+        Body_Update(self->hit, 1, 0, 0);
         if (self->hit->unk_50 & 0x20000000) {
             ActorSub44 *s = self->unk_44;
             s->unk_22_0 = 1;
             s->unk_22_1 = 1;
-            func_ov000_02190cb0(self->model, data_ov003_021f99d8, 0x1000, 0);
-            func_ov000_021915a0(self->model);
-            func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
+            Model0218fe1c_SetAnim(self->model, data_ov003_021f99d8, 0x1000, 0);
+            Model0218fe1c_SetLoop(self->model);
+            SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
             func_ov000_0218996c(0xf, 0x14);
             self->velY = 0;
             self->fsm->st++;
@@ -188,7 +188,7 @@ void Ov003ActVt_021f99e8_StateDie(Ov003Gimmick *self) {
         if (self->hit->unk_54 & 0x20000000) {
             return;
         }
-        func_ov000_02198360(self->fsm, 0x15, 1);
+        History_SetState(self->fsm, 0x15, 1);
         break;
     case 2:
         self->hit->unk_9a |= 0x20;
@@ -198,11 +198,11 @@ void Ov003ActVt_021f99e8_StateDie(Ov003Gimmick *self) {
             return;
         }
         self->fsm->timer = 6;
-        if (!func_ov000_02191120(self->model) && self->fsm->flags == 0) {
+        if (!Model0218fe1c_IsAnimDone(self->model) && self->fsm->flags == 0) {
             return;
         }
         self->targetObj->target = 0xffff;
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         break;
     }
 }

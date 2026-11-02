@@ -19,7 +19,7 @@ int func_ov002_021e3dac(Vec2 *pos, Ov002Shape *map, Ov002Shape *sh, Vec2 *out) {
     int ox;
     int oy;
     hit = 0;
-    func_ov002_021e391c(m, sh->rot);
+    Ov002_QuarterRotMtx(m, sh->rot);
     ox = sh->ox;
     w = map->w;
     rows = sh->h;

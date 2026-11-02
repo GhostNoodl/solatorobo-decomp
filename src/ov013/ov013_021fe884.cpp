@@ -8,26 +8,26 @@ struct Ov013Spot {
 extern "C" {
 
 extern char data_ov013_0220b88d[];
-extern void func_ov000_0219763c(Actor *self);
-extern void func_ov000_02195d88(Actor *self);
+extern void ActorEx_StateDie(Actor *self);
+extern void ActorEx_StateHeld(Actor *self);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 extern BOOL Ov003Vec_Equal(void *a, const Ov013Spot *b);
 
 void Ov013ActEx_021fdb70_StateDie(Ov013ActEx_021fdb70 *self) {
     if (self->fsm->st == 0) {
-        EffectObj *p = func_020657b0(data_0214a420, self->unk_d0);
+        EffectObj *p = Effect_Find_020657b0(data_0214a420, self->unk_d0);
         if (p != NULL) {
             p->state = 4;
             self->unk_d0 = -1;
         }
     }
-    func_ov000_0219763c(self);
+    ActorEx_StateDie(self);
 }
 
 void Ov013ActorEx_Animate(Ov003Actor *self) {
     if (self->model != NULL) {
-        func_ov000_02190a80(self->model, func_0203db40((u8 *)self + 0x24));
+        Model0218fe1c_UpdateAnim(self->model, func_0203db40((u8 *)self + 0x24));
     }
 }
 
@@ -50,13 +50,13 @@ void Ov013ActorEx_StateMove(void) {
 }
 
 Ov013ActEx_021fdb70 *Ov013ActEx_021fdb70_DtorDelete(Ov013ActEx_021fdb70 *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 Ov013ActEx_021fdb70 *Ov013ActEx_021fdb70_Dtor(Ov013ActEx_021fdb70 *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 

@@ -6,16 +6,16 @@
 extern "C" {
 
 extern void *data_ov003_021f738c[];
-extern Ov003BlinkTarget *func_ov000_0219bf90(void);
-extern BOOL func_ov000_02191120(void *model);
+extern Ov003BlinkTarget *ActorMgr_FindPlayer(void);
+extern BOOL Model0218fe1c_IsAnimDone(void *model);
 extern char data_ov003_021fa2d2[];
 
-extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
-extern void func_ov000_021915a0(void *model);
-extern void func_ov000_021911c8(void *model, s32 v);
+extern BOOL Model0218fe1c_SetAnim(void *model, const void *name, s32 a, s32 b);
+extern void Model0218fe1c_SetLoop(void *model);
+extern void Model0218fe1c_SetAnimSpeed(void *model, s32 v);
 extern s32 Rand_PlusMinus(s32 max);
-extern Ov003BlinkInfo *func_0206fef8(u16 id);
-extern BOOL func_ov000_021903b4(void *model);
+extern Ov003BlinkInfo *Tbl_FindEntry_0206fef8(u16 id);
+extern BOOL Model021903b4_Draw(void *model);
 
 void Ov003PropBlink_Apply(Ov003PropBlink *self) {
     u16 v = (u16)self->unk_18 >> ((3 - self->phase) * 4);
@@ -27,9 +27,9 @@ void Ov003PropBlink_Apply(Ov003PropBlink *self) {
     }
     self->model->visible = 1;
     if (n >= 2) {
-        func_ov000_02190cb0(self->model, data_ov003_021f738c[self->phase], 0x19a, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov003_021f738c[self->phase], 0x19a, 0);
         if (n >= 3) {
-            func_ov000_021915a0(self->model);
+            Model0218fe1c_SetLoop(self->model);
         }
     }
     a = 0x40;
@@ -47,7 +47,7 @@ void Ov003PropBlink_Apply(Ov003PropBlink *self) {
         a = (u16)self->unk_1c;
         break;
     }
-    func_ov000_021911c8(self->model, (s16)((u8)a << 6));
+    Model0218fe1c_SetAnimSpeed(self->model, (s16)((u8)a << 6));
 }
 
 void Ov003ActVt_021fa3e8_Start(Ov003PropDrift *self) {
@@ -56,8 +56,8 @@ void Ov003ActVt_021fa3e8_Start(Ov003PropDrift *self) {
     self->offset.y = 0;
     self->offset.z = 0;
     self->phase = 0;
-    func_ov000_02190cb0(self->model, data_ov003_021fa2d2, 0x1000, 0);
-    func_ov000_021915a0(self->model);
+    Model0218fe1c_SetAnim(self->model, data_ov003_021fa2d2, 0x1000, 0);
+    Model0218fe1c_SetLoop(self->model);
 }
 
 void Ov003ActVt_021fa3e8_RunState(Ov003PropDrift *self) {
@@ -75,7 +75,7 @@ void Ov003ActVt_021fa3e8_RunState(Ov003PropDrift *self) {
 }
 
 BOOL Ov003ActVt_021fa3e8_Draw(Ov003PropDrift *self) {
-    s32 s = func_0206fef8(self->kind)->scale;
+    s32 s = Tbl_FindEntry_0206fef8(self->kind)->scale;
     BOOL r;
     VecFx32 v;
     Model0218fe1c *model;
@@ -88,7 +88,7 @@ BOOL Ov003ActVt_021fa3e8_Draw(Ov003PropDrift *self) {
     model->trans.x = self->pos.x;
     model->trans.y = self->pos.y;
     model->trans.z = self->pos.z;
-    r = func_ov000_0218cea4(self);
+    r = Actor_Draw(self);
     if (r) {
         s32 d = s + FX_Mul(self->phase, 0x59a);
         model = self->model;
@@ -101,7 +101,7 @@ BOOL Ov003ActVt_021fa3e8_Draw(Ov003PropDrift *self) {
         model->trans.x = v.x;
         model->trans.y = v.y;
         model->trans.z = v.z;
-        func_ov000_021903b4(self->model);
+        Model021903b4_Draw(self->model);
     }
     return r;
 }
@@ -109,7 +109,7 @@ BOOL Ov003ActVt_021fa3e8_Draw(Ov003PropDrift *self) {
 void Ov003ActVt_021fa338_Start(Ov003Prop *self) {
     s16 rot;
     Ov000ActVt_021cc7cc_Start(self);
-    if (func_0206fef8(self->kind)->flip) {
+    if (Tbl_FindEntry_0206fef8(self->kind)->flip) {
         u16 a = self->rot_y;
         if (a > 0x4000 && a < 0xc000) {
             self->model->flipX = 1;
@@ -117,7 +117,7 @@ void Ov003ActVt_021fa338_Start(Ov003Prop *self) {
     }
     rot = 0x1c3;
     rot += (s16)Rand_PlusMinus(0xa4);
-    func_ov000_021911c8(self->model, rot);
+    Model0218fe1c_SetAnimSpeed(self->model, rot);
 }
 
 } // extern "C"

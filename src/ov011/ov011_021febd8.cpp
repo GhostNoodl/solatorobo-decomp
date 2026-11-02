@@ -48,7 +48,7 @@ void func_ov011_021febd8(Ov011Scene *self) {
     for (n = self->head; n != NULL; n = n->next) {
         Actor *a = Ov011_FindActor(n->id);
         if (a != NULL) {
-            func_ov000_0218d46c((StageObj3D *)a, 0xffff, 0x15);
+            Actor_SendMsgU8((StageObj3D *)a, 0xffff, 0x15);
         }
     }
     self->b2 = 1;

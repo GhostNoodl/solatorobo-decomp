@@ -4,14 +4,14 @@
 
 extern "C" {
 
-void func_ov000_0215ec80(void *p);
+void UiPanel_Release(void *p);
 
-void func_ov000_021c3bb0(LoBase021ccb54_021ccbe0 *self) {
+void LoBase021ccb54_021ccbe0_Release(LoBase021ccb54_021ccbe0 *self) {
     ListRow *n;
     HEAP_DELETE_MODEL(self->unk_84);
     HEAP_DELETE_MODEL(self->unk_88);
     HEAP_DELETE_MODEL(self->unk_8c);
-    HEAP_DELETE_FN(self->unk_90, func_ov000_0215ec80);
+    HEAP_DELETE_FN(self->unk_90, UiPanel_Release);
     n = self->unk_94;
     while (n != NULL) {
         ListRow *next = n->next;

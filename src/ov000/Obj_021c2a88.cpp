@@ -4,13 +4,13 @@
 
 extern "C" {
 
-void func_ov000_021c2a88(Hud021cca10 *self, char *arg) {
+void Hud021cca10_SetText(Hud021cca10 *self, char *arg) {
     TextWin *p;
     if (self->text == NULL) {
         p = (TextWin *)Heap_Alloc(0xb8);
         if (p != NULL) {
             VOBJ_SET_VTABLE(p, data_0208ba70);
-            func_0204c7d0(p);
+            TextWin_Init(p);
         }
         self->text = p;
     }

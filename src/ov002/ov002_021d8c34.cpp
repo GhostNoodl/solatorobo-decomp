@@ -17,8 +17,8 @@ void func_ov002_021d8c34(Obj021efe9c *self, s32 d, Ov002Shape *arg) {
         r = 4 - r;
     }
     self->shape.rot = (u8)r;
-    func_ov002_021d7d5c(self, arg);
-    func_ov002_021e3b0c((s32 *)((u8 *)self + 0x4), (s32 *)((u8 *)self + 0x54), (s32 *)((u8 *)self + 0x64));
+    Obj021efe9c_ClampToBoard(self, arg);
+    Ov002_CellToPos((s32 *)((u8 *)self + 0x4), (s32 *)((u8 *)self + 0x54), (s32 *)((u8 *)self + 0x64));
     self->unk_c8 = ((d < 0 ? -d : d) % 4) * 0x3fff;
     if (d < 0) {
         self->unk_c8 = -self->unk_c8;

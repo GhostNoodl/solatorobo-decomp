@@ -16,7 +16,7 @@ Ov002Stage *data_ov002_021f0f9c;
 namespace m_021e4b80 {
 extern "C" {
 
-void func_ov002_021e4b80(Ov002StrTable *self) {
+void Ov002StrTable_Clear(Ov002StrTable *self) {
     self->src = NULL;
     self->count = 0;
     {
@@ -30,14 +30,14 @@ void func_ov002_021e4b80(Ov002StrTable *self) {
     }
 }
 
-char *func_ov002_021e4bd0(Ov002StrTable *self, u32 idx) {
+char *Ov002StrTable_GetLabel(Ov002StrTable *self, u32 idx) {
     if (idx >= self->count || self->pairs == NULL) {
         return NULL;
     }
     return self->pairs[idx].label;
 }
 
-char *func_ov002_021e4c00(Ov002StrTable *self, u32 idx) {
+char *Ov002StrTable_GetDesc(Ov002StrTable *self, u32 idx) {
     if (idx >= self->count || self->pairs == NULL) {
         return NULL;
     }
@@ -72,7 +72,7 @@ u32 func_ov002_021e4c30(int which) {
     return r;
 }
 
-void func_ov002_021e4cd8(Ov002Obj *self) {
+void Ov002Obj_Init(Ov002Obj *self) {
     Ov002Stage *ctx;
     self->unk_04 = -1;
     self->unk_08 = 1;
@@ -94,7 +94,7 @@ void func_ov002_021e4cd8(Ov002Obj *self) {
     ctx->tail = self;
 }
 
-void func_ov002_021e4d4c(Ov002Obj *self) {
+void Ov002Obj_Detach(Ov002Obj *self) {
     int i;
     Ov002Obj *owner = self->owner;
     if (owner != NULL) {
@@ -114,7 +114,7 @@ void func_ov002_021e4d4c(Ov002Obj *self) {
     }
 }
 
-void func_ov002_021e4dac(Ov002Obj *self, Ov002Obj *item) {
+void Ov002Obj_AddChild(Ov002Obj *self, Ov002Obj *item) {
     int i;
     for (i = 0; i < 8; i++) {
         if (self->children[i] == NULL) {
@@ -202,7 +202,7 @@ BOOL func_ov002_021e4ed8(void) {
 void func_ov002_021e4ee0(void) {
 }
 
-Ov002Obj *func_ov002_021e4ee4(Ov002Obj *self, s32 kind, s32 min) {
+Ov002Obj *Ov002Obj_FindChildKind(Ov002Obj *self, s32 kind, s32 min) {
     s32 limit;
     Ov002Obj *best = NULL;
     limit = data_ov002_021f0f9c->unk_d0;
@@ -291,7 +291,7 @@ void func_ov002_021e4fac(NNSG3dRS *rs) {
 namespace m_021e50a8 {
 extern "C" {
 
-void func_ov002_021e50a8(Ov002Obj021f07d4 *self, Ov002ObjLink *src) {
+void Ov002Obj021f07d4_AddLink(Ov002Obj021f07d4 *self, Ov002ObjLink *src) {
     MIi_CpuCopy32(src, (u8 *)self + 0xc0 + self->linkCount * 0x1c, 0x1c);
     self->linkCount++;
 }
@@ -356,7 +356,7 @@ static inline void setv021e5140(Ov002Obj021f07d4 *self, s32 v) {
     self->unk_20 = v;
 }
 
-void func_ov002_021e5140(Ov002Obj021f07d4 *self) {
+void Ov002Obj021f07d4_Init(Ov002Obj021f07d4 *self) {
     s32 i;
     self->unk_04 = 0;
     self->unk_20 = -0xa66;
@@ -394,26 +394,26 @@ void func_ov002_021e5140(Ov002Obj021f07d4 *self) {
     self->unk_1f0 = 0;
 }
 
-void func_ov002_021e51f8(Ov002Obj021f07d4 *self) {
+void Ov002Obj021f07d4_Release(Ov002Obj021f07d4 *self) {
     s32 i;
     if (self->unk_10 >= 0x28) {
         if (self->unk_5c != NULL) {
-            func_0203f0b4((void *)*self->unk_5c);
+            Vram_FreeRes((void *)*self->unk_5c);
         }
         for (i = 0; i < self->linkCount; i++) {
             Ov002ObjLink *e = &self->links[i];
             if (e->res != NULL) {
-                func_0203f0b4((void *)*e->res);
+                Vram_FreeRes((void *)*e->res);
             } else if (e->alt) {
-                func_0203f0b4((void *)*e->res2);
+                Vram_FreeRes((void *)*e->res2);
             }
         }
     }
     if (self->unk_14 != 0) {
         if (self->res.arc != NULL) {
-            func_02035acc(self->res.arc, self->res.name, 4);
+            ResMgr_ReleaseArchive(self->res.arc, self->res.name, 4);
         } else {
-            func_02036838(data_02097cdc, self->res.name, 4, 0);
+            ResMgr_ReleaseByName(data_02097cdc, self->res.name, 4, 0);
         }
     }
     for (i = 0; i < self->linkCount; i++) {
@@ -421,12 +421,12 @@ void func_ov002_021e51f8(Ov002Obj021f07d4 *self) {
         if (e->loaded) {
             if (e->arc != NULL) {
                 if (e->alt) {
-                    func_02035acc(e->arc, e->name, 4);
+                    ResMgr_ReleaseArchive(e->arc, e->name, 4);
                 } else {
-                    func_02035acc(e->arc, e->name, 5);
+                    ResMgr_ReleaseArchive(e->arc, e->name, 5);
                 }
             } else {
-                func_02036838(data_02097cdc, e->name, 5, 0);
+                ResMgr_ReleaseByName(data_02097cdc, e->name, 5, 0);
             }
         }
     }
@@ -447,8 +447,8 @@ BOOL func_ov002_021e5344(void) {
 
 extern "C" {
 extern char data_ov002_021f0640[];
-void *func_02034ec0(void *a, void *b);
-void *func_02034f5c(void *a, void *b);
+void *ResList_FindType4(void *a, void *b);
+void *ResList_FindType5(void *a, void *b);
 void *func_02035ccc(void *a);
 void func_02035cfc(void *a);
 void func_02039494(u32 a);
@@ -492,22 +492,22 @@ BOOL func_ov002_021e534c(Ov002Obj021f07d4 *self) {
     switch (self->unk_10) {
     case 0:
         if (self->res.arc != NULL) {
-            func_020359fc(self->res.arc, self->res.name, 4, 0);
+            ResMgr_LoadArchive(self->res.arc, self->res.name, 4, 0);
         } else {
-            func_020359d0(self->res.name, 4, 0);
+            ResMgr_Load(self->res.name, 4, 0);
         }
         self->unk_14 = 1;
         self->unk_10 = 10;
     case 10: {
         void *res;
         if (self->res.arc != NULL) {
-            if (!func_02035bd4(self->res.arc, self->res.name, 4)) {
+            if (!ResMgr_IsArchiveLoaded(self->res.arc, self->res.name, 4)) {
                 break;
             }
-            void *p = func_02035f30(self->res.arc, self->res.name, 4);
-            res = func_02034ec0(p, self->res.name);
+            void *p = ResMgr_GetArchiveList(self->res.arc, self->res.name, 4);
+            res = ResList_FindType4(p, self->res.name);
         } else {
-            if (!func_02035b90(self->res.name, 4)) {
+            if (!ResMgr_IsLoaded(self->res.name, 4)) {
                 break;
             }
             res = func_02035ccc(self->res.name);
@@ -538,7 +538,7 @@ BOOL func_ov002_021e534c(Ov002Obj021f07d4 *self) {
         self->unk_10++;
     }
     case 12:
-        if (func_0203e63c((unsigned int)self->unk_bc)) {
+        if (Vram_IsTransferDone((unsigned int)self->unk_bc)) {
             self->unk_bc = 0;
             self->unk_10++;
         }
@@ -548,9 +548,9 @@ BOOL func_ov002_021e534c(Ov002Obj021f07d4 *self) {
         for (s32 i = 0; i < self->linkCount; i++) {
             Ent021e534c *e = &((Ent021e534c *)((u8 *)self + 0xc0))[i];
             if (e->arc != NULL) {
-                func_020359fc(e->arc, e->name, 5, 0);
+                ResMgr_LoadArchive(e->arc, e->name, 5, 0);
             } else {
-                func_020359d0(e->name, 5, 0);
+                ResMgr_Load(e->name, 5, 0);
             }
             e->loaded = 1;
         }
@@ -561,9 +561,9 @@ BOOL func_ov002_021e534c(Ov002Obj021f07d4 *self) {
             Ent021e534c *e = &((Ent021e534c *)((u8 *)self + 0xc0))[i];
             BOOL r;
             if (e->arc != NULL) {
-                r = func_02035bd4(e->arc, e->name, 5);
+                r = ResMgr_IsArchiveLoaded(e->arc, e->name, 5);
             } else {
-                r = func_02035b90(e->name, 5);
+                r = ResMgr_IsLoaded(e->name, 5);
             }
             ok = (ok & r) ? TRUE : FALSE;
         }
@@ -576,11 +576,11 @@ BOOL func_ov002_021e534c(Ov002Obj021f07d4 *self) {
         for (s32 i = 0; i < self->linkCount; i++) {
             Ent021e534c *e = &((Ent021e534c *)((u8 *)self + 0xc0))[i];
             if (e->arc != NULL) {
-                void *p = func_02035f30(e->arc, e->name, 5);
-                u32 *r = (u32 *)func_02034f5c(p, e->name);
+                void *p = ResMgr_GetArchiveList(e->arc, e->name, 5);
+                u32 *r = (u32 *)ResList_FindType5(p, e->name);
                 if (r == NULL) {
-                    func_02035acc(e->arc, e->name, 5);
-                    func_020359fc(e->arc, e->name, 4, 0);
+                    ResMgr_ReleaseArchive(e->arc, e->name, 5);
+                    ResMgr_LoadArchive(e->arc, e->name, 4, 0);
                     e->alt = 1;
                 }
                 e->res = r;
@@ -594,7 +594,7 @@ BOOL func_ov002_021e534c(Ov002Obj021f07d4 *self) {
         for (s32 i = 0; i < self->linkCount; i++) {
             Ent021e534c *e = &((Ent021e534c *)((u8 *)self + 0xc0))[i];
             if (e->alt) {
-                ok = (ok & func_02035bd4(e->arc, e->name, 4)) ? TRUE : FALSE;
+                ok = (ok & ResMgr_IsArchiveLoaded(e->arc, e->name, 4)) ? TRUE : FALSE;
             }
         }
         if (!ok) {
@@ -606,8 +606,8 @@ BOOL func_ov002_021e534c(Ov002Obj021f07d4 *self) {
         for (s32 i = 0; i < self->linkCount; i++) {
             Ent021e534c *e = &((Ent021e534c *)((u8 *)self + 0xc0))[i];
             if (e->alt) {
-                void *p = func_02035f30(e->arc, e->name, 4);
-                e->res2 = (u32 *)func_02034ec0(p, e->name);
+                void *p = ResMgr_GetArchiveList(e->arc, e->name, 4);
+                e->res2 = (u32 *)ResList_FindType4(p, e->name);
             }
         }
         self->unk_10 = 30;
@@ -637,7 +637,7 @@ BOOL func_ov002_021e534c(Ov002Obj021f07d4 *self) {
     case 31: {
         BOOL ok = TRUE;
         for (s32 i = 0; i < self->linkCount; i++) {
-            if (!func_0203e63c((unsigned int)((Ent021e534c *)((u8 *)self + 0xc0))[i].task)) {
+            if (!Vram_IsTransferDone((unsigned int)((Ent021e534c *)((u8 *)self + 0xc0))[i].task)) {
                 ok = FALSE;
                 break;
             }
@@ -727,13 +727,13 @@ BOOL func_ov002_021e5a10(Ov002Obj021f07d4 *self) {
     n = NULL;
     c = self->unk_1e8;
     if (c == NULL) {
-        n = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 2, -1);
+        n = (Ov002Obj021f075c *)Ov002Obj_FindChildKind(self, 2, -1);
     } else if (c->done) {
-        n = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 2, c->unk_18);
+        n = (Ov002Obj021f075c *)Ov002Obj_FindChildKind(self, 2, c->unk_18);
     }
     if (n != NULL) {
         if (self->unk_1e8 != NULL) {
-            func_ov002_021e6360(self->unk_1e8);
+            Ov002Obj021f075c_RemoveAnims(self->unk_1e8);
         }
         func_ov002_021e5fe4(n);
         self->unk_1e8 = n;
@@ -741,15 +741,15 @@ BOOL func_ov002_021e5a10(Ov002Obj021f07d4 *self) {
     n = NULL;
     c = self->unk_1ec;
     if (c == NULL) {
-        n = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 3, -1);
+        n = (Ov002Obj021f075c *)Ov002Obj_FindChildKind(self, 3, -1);
     } else if (c->done) {
-        n = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 3, c->unk_18);
+        n = (Ov002Obj021f075c *)Ov002Obj_FindChildKind(self, 3, c->unk_18);
     }
     if (n != NULL) {
         if (self->unk_1ec != NULL) {
-            func_ov002_021e6360(self->unk_1ec);
+            Ov002Obj021f075c_RemoveAnims(self->unk_1ec);
         }
-        func_ov002_021e61b4(n);
+        Ov002Obj021f075c_LoadAnim(n);
         self->unk_1ec = n;
     }
     return TRUE;
@@ -819,7 +819,7 @@ BOOL func_ov002_021e5cf8(Ov002Obj021f07d4 *self) {
     return self->unk_0c >= 3;
 }
 
-void func_ov002_021e5d0c(Ov002Obj021f075c *self) {
+void Ov002Obj021f075c_Init(Ov002Obj021f075c *self) {
     self->unk_04 = 2;
     self->unk_10 = 0;
     self->res.arc = NULL;
@@ -843,7 +843,7 @@ void func_ov002_021e5d0c(Ov002Obj021f075c *self) {
     self->unk_e8 = 0;
 }
 
-void func_ov002_021e5d88(Ov002Obj021f075c *self) {
+void Ov002Obj021f075c_FreeAnims(Ov002Obj021f075c *self) {
     if (self->unk_64 != NULL) {
         Heap_FreeHi(self->unk_64);
         self->unk_64 = NULL;
@@ -866,9 +866,9 @@ void func_ov002_021e5d88(Ov002Obj021f075c *self) {
     }
     if (self->unk_14 != 0) {
         if (self->res.arc != NULL) {
-            func_02035acc(self->res.arc, self->res.name, 6);
+            ResMgr_ReleaseArchive(self->res.arc, self->res.name, 6);
         } else {
-            func_02036838(data_02097cdc, self->res.name, 6, 0);
+            ResMgr_ReleaseByName(data_02097cdc, self->res.name, 6, 0);
         }
     }
 }
@@ -882,24 +882,24 @@ BOOL func_ov002_021e5e44(Ov002Obj021f075c *self) {
     switch (self->unk_10) {
     case 0:
         if (self->res.arc != NULL) {
-            func_020359fc(self->res.arc, self->res.name, 6, 0);
+            ResMgr_LoadArchive(self->res.arc, self->res.name, 6, 0);
         } else {
-            func_020359d0(self->res.name, 6, 0);
+            ResMgr_Load(self->res.name, 6, 0);
         }
         self->unk_14 = 1;
         self->unk_10++;
         break;
     case 1:
         if (self->res.arc != NULL) {
-            if (func_02035bd4(self->res.arc, self->res.name, 6) == 0) {
+            if (ResMgr_IsArchiveLoaded(self->res.arc, self->res.name, 6) == 0) {
                 break;
             }
             {
-                void *t = func_02035f30(self->res.arc, self->res.name, 6);
-                self->unk_60 = (void **)func_02034ff8(t, self->res.name);
+                void *t = ResMgr_GetArchiveList(self->res.arc, self->res.name, 6);
+                self->unk_60 = (void **)ResList_FindType6(t, self->res.name);
             }
         } else {
-            if (func_02035b90(self->res.name, 6) == 0) {
+            if (ResMgr_IsLoaded(self->res.name, 6) == 0) {
                 break;
             }
             self->unk_60 = (void **)func_02035d2c(self->res.name);
@@ -934,7 +934,7 @@ BOOL func_ov002_021e5f34(Ov002Obj021f075c *self) {
             self->done = 1;
         }
     }
-    func_ov002_021e63f0(self);
+    Ov002Obj021f075c_UpdateAnims(self);
     if (!self->done) {
         self->unk_7c += data_ov002_021f0f9c->unk_d8;
     }
@@ -976,11 +976,11 @@ void func_ov002_021e5fe4(Ov002Obj021f075c *self) {
     ov002_021e5fe4_Load(&self->unk_6c, self->unk_60[2], name, mdl, tex, (u8 *)obj + 0x68);
     ov002_021e5fe4_Load(&self->unk_70, self->unk_60[3], name, mdl, tex, (u8 *)obj + 0x68);
     ov002_021e5fe4_Load(&self->unk_74, self->unk_60[4], name, mdl, tex, (u8 *)obj + 0x68);
-    func_ov002_021e63f0(self);
+    Ov002Obj021f075c_UpdateAnims(self);
     func_ov002_021e6290(self);
 }
 
-void func_ov002_021e61b4(Ov002Obj021f075c *self) {
+void Ov002Obj021f075c_LoadAnim(Ov002Obj021f075c *self) {
     char name[0x10];
     void *anm;
     self->unk_04 = 3;
@@ -1000,7 +1000,7 @@ void func_ov002_021e61b4(Ov002Obj021f075c *self) {
     self->unk_64->resTex = NULL;
     self->unk_64->priority = 0x7f;
     self->unk_64->numMapData = 0;
-    func_ov002_021e63f0(self);
+    Ov002Obj021f075c_UpdateAnims(self);
     func_ov002_021e6290(self);
 }
 
@@ -1033,7 +1033,7 @@ void func_ov002_021e6290(Ov002Obj021f075c *self) {
     self->started = 1;
 }
 
-void func_ov002_021e6360(Ov002Obj021f075c *self) {
+void Ov002Obj021f075c_RemoveAnims(Ov002Obj021f075c *self) {
     u8 *o = ((u8 *)self->owner);
     if (self->unk_04 == 2) {
         if (self->unk_64 != NULL) {
@@ -1076,7 +1076,7 @@ static inline s32 Ov002Anm_Frame(Ov002Obj021f075c *self) {
 
 extern "C" {
 
-void func_ov002_021e6508(Ov002Obj021f075c *self, void *out);
+void Ov002Obj021f075c_UpdateAnmFrame(Ov002Obj021f075c *self, void *out);
 
 extern void *NNS_G3dRS;
 
@@ -1086,23 +1086,23 @@ void MIi_CpuClearFast(int v, void *dst, u32 size);
 
 typedef void (*Func0208b000)(void *a, void *b, int c);
 
-void func_ov002_021e63f0(Ov002Obj021f075c *self) {
+void Ov002Obj021f075c_UpdateAnims(Ov002Obj021f075c *self) {
     u8 buf[0x188];
     u32 fl;
     if (self->unk_64 != NULL) {
-        func_ov002_021e6508(self, self->unk_64);
+        Ov002Obj021f075c_UpdateAnmFrame(self, self->unk_64);
     }
     if (self->unk_68 != NULL) {
-        func_ov002_021e6508(self, self->unk_68);
+        Ov002Obj021f075c_UpdateAnmFrame(self, self->unk_68);
     }
     if (self->unk_6c != NULL) {
-        func_ov002_021e6508(self, self->unk_6c);
+        Ov002Obj021f075c_UpdateAnmFrame(self, self->unk_6c);
     }
     if (self->unk_70 != NULL) {
-        func_ov002_021e6508(self, self->unk_70);
+        Ov002Obj021f075c_UpdateAnmFrame(self, self->unk_70);
     }
     if (self->unk_74 != NULL) {
-        func_ov002_021e6508(self, self->unk_74);
+        Ov002Obj021f075c_UpdateAnmFrame(self, self->unk_74);
     }
     if (self->unk_64 == NULL) {
         return;
@@ -1128,7 +1128,7 @@ void func_ov002_021e63f0(Ov002Obj021f075c *self) {
     NNS_G3dRS = NULL;
 }
 
-void func_ov002_021e6508(Ov002Obj021f075c *self, void *out) {
+void Ov002Obj021f075c_UpdateAnmFrame(Ov002Obj021f075c *self, void *out) {
     s32 n = FIELD(FIELD(out, 0x8, u8 *), 0x4, u16) << 12;
     s32 f;
     f = Ov002Anm_Frame(self);
@@ -1190,7 +1190,7 @@ BOOL func_ov002_021e65ac(Ov002Obj021f070c *self) {
         return TRUE;
     }
     if (self->unk_18 > g->unk_d4 && self->unk_18 <= now) {
-        func_ov002_021e61b4(self->unk_60);
+        Ov002Obj021f075c_LoadAnim(self->unk_60);
     }
     if (self->unk_64 == 1) {
         while (ov002_inWindow(self->unk_6c)) {
@@ -1201,7 +1201,7 @@ BOOL func_ov002_021e65ac(Ov002Obj021f070c *self) {
         func_ov002_021e6784(self);
     }
     for (i = 0; i < 4; i++) {
-        EffectObj *o = func_020657b0(data_0214a420, ((u32 *)((u8 *)self + 0x50))[i]);
+        EffectObj *o = Effect_Find_020657b0(data_0214a420, ((u32 *)((u8 *)self + 0x50))[i]);
         if (o == NULL) {
             ((u32 *)((u8 *)self + 0x50))[i] = 0;
         } else {
@@ -1245,7 +1245,7 @@ void func_ov002_021e6784(Ov002Obj021f070c *self) {
             zero.x = 0;
             zero.y = 0;
             zero.z = 0;
-            o = func_02065f88(self->unk_4c, &zero);
+            o = Effect_SpawnId(self->unk_4c, &zero);
             m = self->unk_60;
             pos.x = m->jnt.trans.x;
             pos.y = m->jnt.trans.y;
@@ -1288,7 +1288,7 @@ BOOL func_ov002_021e68d4(Ov002Obj021f06bc *self) {
     switch (self->unk_10) {
     case 0:
         if (self->unk_4c[0] != 0 && self->unk_6c[0] != 0) {
-            func_020359fc(self->unk_4c, self->unk_6c, 0, 0);
+            ResMgr_LoadArchive(self->unk_4c, self->unk_6c, 0, 0);
             self->unk_10++;
             self->unk_14 = 1;
         } else {
@@ -1297,14 +1297,14 @@ BOOL func_ov002_021e68d4(Ov002Obj021f06bc *self) {
             break;
         }
     case 1:
-        if (func_02035bd4(self->unk_4c, self->unk_6c, 0) == 0) {
+        if (ResMgr_IsArchiveLoaded(self->unk_4c, self->unk_6c, 0) == 0) {
             break;
         }
         self->unk_10++;
     case 2: {
         void *t = func_02035fe8(self->unk_4c, self->unk_6c);
         if (t != NULL) {
-            func_ov002_021ec1e0(&self->snd, t);
+            Ov002Snd021f0cf8_Load(&self->snd, t);
         }
         self->unk_10 = -1;
         break;
@@ -1332,8 +1332,8 @@ BOOL func_ov002_021e69b0(Ov002Obj021f06bc *self) {
     s16 *p;
     s32 v;
     while ((p = self->snd.cur) != NULL && data_ov002_021f0f9c->unk_d4 < (v = *p << 12) && v <= data_ov002_021f0f9c->unk_d0) {
-        func_0204aaec(data_02097e48.queue, (SndCmd *)p);
-        func_ov002_021ec2ac(&self->snd);
+        SndQueue_Exec(data_02097e48.queue, (SndCmd *)p);
+        Ov002Snd021f0cf8_Next(&self->snd);
     }
     return TRUE;
 }
@@ -1345,12 +1345,12 @@ BOOL func_ov002_021e69b0(Ov002Obj021f06bc *self) {
 namespace m_021e6a14 {
 extern "C" {
 
-void func_ov002_021e6a14(Ov002Obj021f07ac *self) {
+void Ov002Obj021f07ac_Init(Ov002Obj021f07ac *self) {
     self->unk_04 = 5;
     self->unk_20 = -0x29;
     MI_CpuFill8(self->unk_4c, 0, 0x20);
     MI_CpuFill8(self->unk_6c, 0, 0x20);
-    func_ov002_021ebfd0(&self->msg);
+    Ov002Msg021f0ce8_Init(&self->msg);
     self->unk_b4 = 0;
     self->unk_b8 = 0;
     self->unk_bc = 0;
@@ -1370,7 +1370,7 @@ BOOL func_ov002_021e6aac(Ov002Obj021f07ac *self) {
     switch (self->unk_10) {
     case 0:
         if (self->unk_4c[0] != 0 && self->unk_6c[0] != 0) {
-            func_020359fc(self->unk_4c, self->unk_6c, 0, 0);
+            ResMgr_LoadArchive(self->unk_4c, self->unk_6c, 0, 0);
             self->unk_14 = 1;
             self->unk_10++;
         } else {
@@ -1379,7 +1379,7 @@ BOOL func_ov002_021e6aac(Ov002Obj021f07ac *self) {
             break;
         }
     case 1:
-        if (func_02035bd4(self->unk_4c, self->unk_6c, 0) == 0) {
+        if (ResMgr_IsArchiveLoaded(self->unk_4c, self->unk_6c, 0) == 0) {
             break;
         }
         self->unk_10++;
@@ -1397,7 +1397,7 @@ BOOL func_ov002_021e6b54(Ov002Obj021f07ac *self) {
         if (t == NULL) {
             self->unk_08 = 0;
         } else {
-            func_ov002_021ec010(&self->msg, t);
+            Ov002Msg021f0ce8_Load(&self->msg, t);
             self->unk_08 = 2;
         }
     }
@@ -1426,9 +1426,9 @@ BOOL func_ov002_021e6b54(Ov002Obj021f07ac *self) {
 namespace m_021e6c0c {
 extern "C" {
 
-void func_ov002_021ec0cc(Ov002Msg021f0ce8 *p);
+void Ov002Msg021f0ce8_Next(Ov002Msg021f0ce8 *p);
 
-void func_ov002_021e6e40(Ov002Obj021f07ac *self);
+void Ov002Obj021f07ac_UpdateText(Ov002Obj021f07ac *self);
 
 static inline bool isVisible021e6c0c(Ov002Obj021f07ac *self) {
     BOOL in = FALSE;
@@ -1463,11 +1463,11 @@ BOOL func_ov002_021e6c0c(Ov002Obj021f07ac *self) {
             } else {
                 self->unk_148 = 1;
             }
-            func_ov002_021ec0cc(&self->msg);
+            Ov002Msg021f0ce8_Next(&self->msg);
         }
     }
     if (!isVisible021e6c0c(self)) {
-        func_ov002_021e6e40(self);
+        Ov002Obj021f07ac_UpdateText(self);
     }
     if (isVisible021e6c0c(self)) {
         self->unk_148 = 0xff;
@@ -1546,7 +1546,7 @@ void func_ov002_021e6d4c(Ov002Obj021f07ac *self) {
 namespace m_021e6e40 {
 extern "C" {
 
-void func_ov002_021e6fbc(Ov002Obj021f07ac *self, s32 ch);
+void Ov002Obj021f07ac_AppendChar(Ov002Obj021f07ac *self, s32 ch);
 
 static inline s32 classifyChar(s32 ch) {
     if (ch == 0) {
@@ -1570,7 +1570,7 @@ static inline s32 classifyChar(s32 ch) {
     return 0;
 }
 
-void func_ov002_021e6e40(Ov002Obj021f07ac *self) {
+void Ov002Obj021f07ac_UpdateText(Ov002Obj021f07ac *self) {
     char *s = self->unk_c0;
     if (s == NULL || s[0] == 0) {
         return;
@@ -1595,21 +1595,21 @@ void func_ov002_021e6e40(Ov002Obj021f07ac *self) {
             self->unk_b4 += self->unk_bc != 0 ? 0xa000 : 0;
             break;
         case 4:
-            func_ov002_021e6fbc(self, ch);
+            Ov002Obj021f07ac_AppendChar(self, ch);
             ch = self->unk_15c(&self->unk_c0);
             break;
         case 5:
             ch = self->unk_15c(&self->unk_c0);
             break;
         }
-        func_ov002_021e6fbc(self, ch);
+        Ov002Obj021f07ac_AppendChar(self, ch);
         self->unk_b4 += self->unk_bc << 12;
     }
 }
 
 typedef u8 Buf80[0x80];
 
-void func_ov002_021e6fbc(Ov002Obj021f07ac *self, s32 ch) {
+void Ov002Obj021f07ac_AppendChar(Ov002Obj021f07ac *self, s32 ch) {
     // unk_c4 + 0x7e, spelled so that the base address is formed before the offset is added
     if (self->unk_144 > (char *)FIELD(self, 0xc4, Buf80) + 0x7e) {
         return;
@@ -1824,15 +1824,15 @@ BOOL func_ov002_021e75f0(Ov002Cam021f0828 *self) {
     n = NULL;
     c = self->unk_c8;
     if (c == NULL) {
-        n = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 3, -1);
+        n = (Ov002Obj021f075c *)Ov002Obj_FindChildKind(self, 3, -1);
     } else if (c->done) {
-        n = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 3, c->unk_18);
+        n = (Ov002Obj021f075c *)Ov002Obj_FindChildKind(self, 3, c->unk_18);
     }
     if (n != NULL) {
         if (self->unk_c8 != NULL) {
-            func_ov002_021e6360(self->unk_c8);
+            Ov002Obj021f075c_RemoveAnims(self->unk_c8);
         }
-        func_ov002_021e61b4(n);
+        Ov002Obj021f075c_LoadAnim(n);
         self->unk_c8 = n;
     }
     m = self->unk_c8;
@@ -1853,7 +1853,7 @@ BOOL func_ov002_021e75f0(Ov002Cam021f0828 *self) {
     return TRUE;
 }
 
-void func_ov002_021e772c(Ov002Cam021f0828 *self, s32 deg) {
+void Ov002Cam021f0828_SetFovy(Ov002Cam021f0828 *self, s32 deg) {
     s32 idx;
     self->unk_b8 = (u16)(((s64)deg * 0xb60b60b60bLL + 0x80000000000LL) >> 44);
     self->unk_b4 = deg;
@@ -1916,15 +1916,15 @@ BOOL func_ov002_021e7900(Ov002Cam021f07fc *self) {
     Ov002Obj021f075c *found = NULL;
     Ov002Obj021f075c *cur = self->unk_b4;
     if (cur == NULL) {
-        found = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 3, -1);
+        found = (Ov002Obj021f075c *)Ov002Obj_FindChildKind(self, 3, -1);
     } else if (cur->done) {
-        found = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 3, cur->unk_18);
+        found = (Ov002Obj021f075c *)Ov002Obj_FindChildKind(self, 3, cur->unk_18);
     }
     if (found != NULL) {
         if (self->unk_b4 != NULL) {
-            func_ov002_021e6360(self->unk_b4);
+            Ov002Obj021f075c_RemoveAnims(self->unk_b4);
         }
-        func_ov002_021e61b4(found);
+        Ov002Obj021f075c_LoadAnim(found);
         self->unk_b4 = found;
     }
     cur = self->unk_b4;
@@ -1964,7 +1964,7 @@ BOOL func_ov002_021e79c4(Ov002Obj021f06e4 *self) {
             G3X_SetFog(0, (GXFogBlend)g->fogMode, (GXFogSlope)g->fogSlope, g->fogOffset);
             g->fog = 0;
         }
-        func_02043b20(g);
+        Gfx3DState_Apply(g);
         r = FALSE;
     }
     return r;
@@ -1993,7 +1993,7 @@ Oam021e7ab8 *func_ov002_021e7ab8(TexObj *obj, TexObjEntry *entry, Oam021e7ab8 *o
     return oam;
 }
 
-void func_ov002_021e7b58(void) {
+void Ov002Stage_Create(void) {
     Ov002Stage *p;
     {
         void *saved;
@@ -2005,9 +2005,9 @@ void func_ov002_021e7b58(void) {
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0674;
         *(VFunc **)&p->file = data_ov002_021f0684;
-        func_ov002_021eacd0(&p->file);
+        Ov002StageFile_Init(&p->file);
         Gfx3DState_Init(&p->unk_14c);
-        func_ov002_021e7cb4(p);
+        Ov002Stage_Init(p);
     }
     data_ov002_021f0f9c = p;
 }
@@ -2018,7 +2018,7 @@ void *Ov002Vt_021f0684_Dtor(Ov002StageFile *self) {
     return self;
 }
 
-void func_ov002_021e7c1c(void) {
+void Ov002Stage_Delete(void) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(*&data_ov002_021f0f9c);
@@ -2027,7 +2027,7 @@ void func_ov002_021e7c1c(void) {
 
 void *Ov002Vt_021f0674_DtorDelete(Ov002Stage *self) {
     *(VFunc **)self = data_ov002_021f0674;
-    func_ov002_021e7dac(self);
+    Ov002Stage_Release(self);
     *(VFunc **)&self->file = data_ov002_021f0684;
     func_ov002_021eae3c(&self->file);
     Heap_Free(self);
@@ -2043,7 +2043,7 @@ extern "C" {
 
 void MTX_OrthoW(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, void *out);
 
-void func_ov002_021e7cb4(Ov002Stage *self) {
+void Ov002Stage_Init(Ov002Stage *self) {
     self->state = 0;
     self->step = 0;
     self->unk_0c = 1;
@@ -2076,28 +2076,28 @@ void func_ov002_021e7cb4(Ov002Stage *self) {
     MI_CpuFill8((u8 *)self + 0x14c, 0, 0x180);
 }
 
-void func_ov002_021e8c0c(Ov002Stage *self);
+void Ov002Stage_FreeObjs(Ov002Stage *self);
 
 
 void GXx_SetMasterBrightness_(u32 reg, int v);
 
 extern void *data_ov002_021f0104[];
 
-void func_ov002_021e7dac(Ov002Stage *self) {
-    func_ov002_021e8c0c(self);
+void Ov002Stage_Release(Ov002Stage *self) {
+    Ov002Stage_FreeObjs(self);
     if (self->unk_44 != NULL) {
         if (self->unk_20 != NULL) {
-            func_02035acc((u8 *)self + 0x24, (u8 *)self + 0x48, 0);
+            ResMgr_ReleaseArchive((u8 *)self + 0x24, (u8 *)self + 0x48, 0);
         } else {
-            func_02036838(data_02097cdc, (char *)((u8 *)self + 0x48), 0, 0);
+            ResMgr_ReleaseByName(data_02097cdc, (char *)((u8 *)self + 0x48), 0, 0);
         }
     }
-    func_02035acc(data_ov002_021f0104[1], data_ov002_021f0104[2], 2);
+    ResMgr_ReleaseArchive(data_ov002_021f0104[1], data_ov002_021f0104[2], 2);
     SndQueue_StopSeqArcs(data_02097e48.queue);
     if (self->unk_148) {
         u8 *g = (u8 *)data_02097d48;
         MIi_CpuCopy32((u8 *)self + 0x14c, g + 0x8b0, 0x180);
-        func_02043b20(g + 0x8b0);
+        Gfx3DState_Apply(g + 0x8b0);
         self->unk_148 = 0;
     }
     data_02097d48->nextState = 1;
@@ -2119,11 +2119,11 @@ static inline void GX_SetMasterBrightness(int b) { GXx_SetMasterBrightness_((vu1
 static inline void GXS_SetMasterBrightness(int b) { GXx_SetMasterBrightness_((vu16 *)0x400106c, b); }
 
 int func_0203ca84(int a);
-void func_02043904(void *p);
+void Gfx3DState_SetDefaults(void *p);
 BOOL func_ov002_021e828c(Ov002Stage *self);
 BOOL func_ov002_021e86a0(Ov002Stage *self);
 BOOL func_ov002_021e8828(Ov002Stage *self);
-void func_ov002_021e8c0c(Ov002Stage *self);
+void Ov002Stage_FreeObjs(Ov002Stage *self);
 
 static inline void ov002_SetBright(int v) {
     GX_SetMasterBrightness(v);
@@ -2169,7 +2169,7 @@ BOOL func_ov002_021e7ea8(Ov002Stage *self) {
         self->unk_144 = 0;
         gx = (Gfx3DState *)data_02097d48->unk_8b0;
         MIi_CpuCopy32(gx, (u8 *)self + 0x14c, 0x180);
-        func_02043904(gx);
+        Gfx3DState_SetDefaults(gx);
         gx->edgeMarking = 0;
         gx->unk_000_5 = 1;
         G3X_EdgeMarking(FALSE);
@@ -2177,7 +2177,7 @@ BOOL func_ov002_021e7ea8(Ov002Stage *self) {
         gx->light.ambient = 0x1084;
         gx->light.specular = 0x739c;
         gx->light.emission = 0;
-        func_02043b20(gx);
+        Gfx3DState_Apply(gx);
         self->unk_148 = 1;
         data_02097d48->nextState = 2;
         data_0214a420->drawFilter = 1;
@@ -2246,7 +2246,7 @@ BOOL func_ov002_021e7ea8(Ov002Stage *self) {
             }
         }
         if (done) {
-            func_ov002_021e8c0c(self);
+            Ov002Stage_FreeObjs(self);
             EffectMgr_FreeAll(data_0214a420);
             data_0214a420->drawFilter = 0;
             data_02097d48->nextState = 1;
@@ -2258,7 +2258,7 @@ BOOL func_ov002_021e7ea8(Ov002Stage *self) {
         ov002_SetBright(0);
         g = (u8 *)data_02097d48;
         MIi_CpuCopy32((u8 *)self + 0x14c, g + 0x8b0, 0x180);
-        func_02043b20(g + 0x8b0);
+        Gfx3DState_Apply(g + 0x8b0);
         self->unk_148 = 0;
         ov002_SetState(self, 7);
     }
@@ -2283,12 +2283,12 @@ void func_ov002_021e9d7c(void *dst, u32 size, void *src, int mode, u8 idx);
 static inline BOOL ov002_ResReady(Ov002Stage *self) {
     BOOL r = FALSE;
     if (self->unk_20 != NULL) {
-        if (func_02035bd4((u8 *)self + 0x24, (u8 *)self + 0x48, 0)) {
+        if (ResMgr_IsArchiveLoaded((u8 *)self + 0x24, (u8 *)self + 0x48, 0)) {
             r = TRUE;
             self->unk_68 = (u8 **)(func_02035fe8((u8 *)self + 0x24, (u8 *)self + 0x48));
         }
     } else {
-        if (func_02035b90((char *)((u8 *)self + 0x48), 0)) {
+        if (ResMgr_IsLoaded((char *)((u8 *)self + 0x48), 0)) {
             r = TRUE;
             self->unk_68 = (u8 **)(func_02035c9c((u8 *)self + 0x48));
         }
@@ -2298,17 +2298,17 @@ static inline BOOL ov002_ResReady(Ov002Stage *self) {
 
 static inline void ov002_ResLoad(Ov002Stage *self) {
     if (self->unk_20 != NULL) {
-        func_020359fc((u8 *)self + 0x24, (u8 *)self + 0x48, 0, 0);
+        ResMgr_LoadArchive((u8 *)self + 0x24, (u8 *)self + 0x48, 0, 0);
     } else {
-        func_020359d0((char *)((u8 *)self + 0x48), 0, 0);
+        ResMgr_Load((char *)((u8 *)self + 0x48), 0, 0);
     }
 }
 
 static inline void ov002_ResFree(Ov002Stage *self) {
     if (self->unk_20 != NULL) {
-        func_02035acc((u8 *)self + 0x24, (u8 *)self + 0x48, 0);
+        ResMgr_ReleaseArchive((u8 *)self + 0x24, (u8 *)self + 0x48, 0);
     } else {
-        func_02036838(data_02097cdc, (char *)((u8 *)self + 0x48), 0, 0);
+        ResMgr_ReleaseByName(data_02097cdc, (char *)((u8 *)self + 0x48), 0, 0);
     }
 }
 
@@ -2316,7 +2316,7 @@ BOOL func_ov002_021e828c(Ov002Stage *self) {
     BOOL r = FALSE;
     switch (self->step) {
     case 0:
-        func_020359fc(data_ov002_021f0104[1], data_ov002_021f0104[2], 2, 0);
+        ResMgr_LoadArchive(data_ov002_021f0104[1], data_ov002_021f0104[2], 2, 0);
         if (self->unk_44 != NULL) {
             ov002_ResLoad(self);
             self->step = 10;
@@ -2337,10 +2337,10 @@ BOOL func_ov002_021e828c(Ov002Stage *self) {
     case 0x14:
         if (self->unk_20 != NULL) {
             func_ov002_021e9d7c((u8 *)self + 0x48, 0x20, self->unk_44, 0, 1);
-            func_020359fc((u8 *)self + 0x24, (u8 *)self + 0x48, 0, 0);
+            ResMgr_LoadArchive((u8 *)self + 0x24, (u8 *)self + 0x48, 0, 0);
         } else {
             func_ov002_021e9d7c((u8 *)self + 0x48, 0x20, self->unk_44, 0, 1);
-            func_020359d0((char *)((u8 *)self + 0x48), 0, 0);
+            ResMgr_Load((char *)((u8 *)self + 0x48), 0, 0);
         }
         self->step++;
     case 0x15:
@@ -2360,10 +2360,10 @@ BOOL func_ov002_021e828c(Ov002Stage *self) {
             STD_CopyLString((char *)((u8 *)self + 0x24), n, 0x20);
             STD_TSNPrintf((u8 *)self + 0x24, 0x20, data_ov002_021f0647, n, data_ov002_021f0104[0x520 / 4]);
             func_ov002_021e9d7c((u8 *)self + 0x48, 0x20, self->unk_44, 0, 0);
-            func_020359fc((u8 *)self + 0x24, (u8 *)self + 0x48, 0, 0);
+            ResMgr_LoadArchive((u8 *)self + 0x24, (u8 *)self + 0x48, 0, 0);
         } else {
             func_ov002_021e9d7c((u8 *)self + 0x48, 0x20, self->unk_44, 0, 0);
-            func_020359d0((char *)((u8 *)self + 0x48), 0, 0);
+            ResMgr_Load((char *)((u8 *)self + 0x48), 0, 0);
         }
         self->step++;
     }
@@ -2373,7 +2373,7 @@ BOOL func_ov002_021e828c(Ov002Stage *self) {
         }
         self->step = 0x28;
     case 0x28:
-        if (!func_02035bd4(data_ov002_021f0104[1], data_ov002_021f0104[2], 2)) {
+        if (!ResMgr_IsArchiveLoaded(data_ov002_021f0104[1], data_ov002_021f0104[2], 2)) {
             break;
         }
         self->step = 0x64;
@@ -2406,7 +2406,7 @@ void func_ov002_021eaf20(Ov002StageFile *self);
 
 Oam021e7ab8 *func_ov002_021e7ab8(TexObj *obj, TexObjEntry *entry, Oam021e7ab8 *oam, u16 *count);
 
-void func_ov002_021ead1c(Ov002StageFile *self, u8 *data, char *name, u8 c);
+void Ov002StageFile_Open(Ov002StageFile *self, u8 *data, char *name, u8 c);
 
 BOOL func_ov002_021e86a0(Ov002Stage *self) {
     BOOL r = FALSE;
@@ -2418,24 +2418,24 @@ BOOL func_ov002_021e86a0(Ov002Stage *self) {
         if (m != NULL) {
             void *file = data_ov002_021f0104[1];
             void *name = data_ov002_021f0104[2];
-            func_02041218((PlttRes *)((u8 *)m + 0x88));
-            func_02041440((Model *)m, (char *)name, 0);
+            PlttRes_Init_02041218((PlttRes *)((u8 *)m + 0x88));
+            TexObj_Init((Model *)m, (char *)name, 0);
             STD_CopyString((char *)((u8 *)m + 0x2c), (char *)file);
         }
         self->unk_124 = (struct Model *)m;
         tbl = data_ov002_021f0104;
-        res = func_02035f30(tbl[1], tbl[2], 2);
-        func_020417e0(self->unk_124, func_02034d88(res, tbl[2]));
+        res = ResMgr_GetArchiveList(tbl[1], tbl[2], 2);
+        TexObj_SetRes(self->unk_124, ResList_FindType2(res, tbl[2]));
         self->unk_124->flags |= 2;
         self->unk_124->unk_150 = -9;
         func_02041c34(self->unk_124, 0, func_ov002_021e7ab8, 0);
-        func_02041d9c(self->unk_124, 0, 0);
+        TexObj_SelectImage(self->unk_124, 0, 0);
         self->unk_124->flags |= 0x80000;
         self->unk_124->flags |= 0x200000;
         self->unk_124->flags = (self->unk_124->flags & ~0x7c) | 0x78;
         func_0204aad0(data_02097e48.queue);
         if (self->unk_68 != NULL) {
-            func_ov002_021ead1c(&self->file, *self->unk_68, self->unk_44, 1);
+            Ov002StageFile_Open(&self->file, *self->unk_68, self->unk_44, 1);
             func_ov002_021eaf20(&self->file);
         }
         func_0204a360(data_02097e4c, -1);
@@ -2455,7 +2455,7 @@ BOOL func_ov002_021e86a0(Ov002Stage *self) {
 
 BOOL func_ov002_021e4dd4(Ov002Obj *n);
 
-void func_ov002_021e8bbc(Ov002Stage *self, void *n);
+void Ov002Stage_RemoveObj(Ov002Stage *self, void *n);
 
 void MI_Copy64B(void *src, void *dst);
 
@@ -2497,7 +2497,7 @@ BOOL func_ov002_021e8828(Ov002Stage *self) {
             if (n->unk_04 == 9) {
                 ret = FALSE;
             }
-            func_ov002_021e8bbc(self, n);
+            Ov002Stage_RemoveObj(self, n);
             {
                 void *saved;
                 HEAP_PUSH(saved);
@@ -2523,7 +2523,7 @@ BOOL func_ov002_021e8828(Ov002Stage *self) {
             EffectObj *p;
             self->unk_d4 = self->unk_d0;
             self->unk_d0 = self->unk_d0 + self->unk_d8;
-            func_02065ac0(data_0214a420);
+            EffectMgr_Update(data_0214a420);
             for (p = (data_0214a420->head); p != NULL; p = (p->drawNext)) {
                 p->speed = self->unk_d8;
             }
@@ -2569,7 +2569,7 @@ void func_ov002_021e8b3c(Ov002Stage *self) {
     }
 }
 
-void func_ov002_021e8bbc(Ov002Stage *self, Ov002Obj *item) {
+void Ov002Stage_RemoveObj(Ov002Stage *self, Ov002Obj *item) {
     Ov002Obj *node = self->head;
     Ov002Obj *prev = NULL;
     if (node == item) {
@@ -2589,7 +2589,7 @@ void func_ov002_021e8bbc(Ov002Stage *self, Ov002Obj *item) {
     }
 }
 
-void func_ov002_021e8c0c(Ov002Stage *self) {
+void Ov002Stage_FreeObjs(Ov002Stage *self) {
     VObj *o = self->head;
     while (o != NULL) {
         VObj *next = ((Ov002Obj *)o)->next;
@@ -2611,8 +2611,8 @@ void func_ov002_021e8c0c(Ov002Stage *self) {
             void *p = self->unk_124;
             if (p != NULL) {
                 if (p != NULL) {
-                    func_02041558((Model *)p);
-                    func_02041278((PlttRes *)((u8 *)p + 0x88));
+                    TexObj_Release((Model *)p);
+                    PlttRes_Release((PlttRes *)((u8 *)p + 0x88));
                     Heap_Free(p);
                 }
                 self->unk_124 = NULL;
@@ -2725,9 +2725,9 @@ void func_ov002_021e8f04(s32 idx) {
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0674;
         *(VFunc **)&p->file = data_ov002_021f0684;
-        func_ov002_021eacd0(&p->file);
+        Ov002StageFile_Init(&p->file);
         Gfx3DState_Init(&p->unk_14c);
-        func_ov002_021e7cb4(p);
+        Ov002Stage_Init(p);
     }
     off = idx * 0xc;
     GAME = (u8 *)p;
@@ -2800,7 +2800,7 @@ void func_ov002_021e90dc(void) {
     }
 }
 
-void func_ov002_021e916c(void) {
+void Ov002Stage_Delete_021e916c(void) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(*&data_ov002_021f0f9c);
@@ -2828,13 +2828,13 @@ static inline void func_ov002_021e4cd8_inline5(Ov002Obj *self) {
     }
     ctx->tail = self;
 }
-Ov002Obj *func_ov002_021e91c8(s32 a, s32 b, s32 c, bool d, u8 e) {
+Ov002Obj *Ov002Obj021f07d4_New(s32 a, s32 b, s32 c, bool d, u8 e) {
     Ov002Obj021f07d4 *p = (Ov002Obj021f07d4 *)Heap_Alloc(0x1f4);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline5(p);
         *(VFunc **)p = data_ov002_021f07d4;
-        func_ov002_021e5140(p);
+        Ov002Obj021f07d4_Init(p);
     }
     p->unk_18 = a;
     p->unk_1c = b;
@@ -2865,13 +2865,13 @@ static inline void func_ov002_021e4cd8_inline2(Ov002Obj *self) {
     }
     ctx->tail = self;
 }
-Ov002Obj *func_ov002_021e92b0(s32 a, s32 b, s32 c, s32 d, s32 e) {
+Ov002Obj *Ov002Obj021f075c_New(s32 a, s32 b, s32 c, s32 d, s32 e) {
     Ov002Obj021f075c *p = (Ov002Obj021f075c *)Heap_Alloc(0xec);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
         *(VFunc **)p = data_ov002_021f075c;
-        func_ov002_021e5d0c(p);
+        Ov002Obj021f075c_Init(p);
     }
     p->unk_18 = a;
     p->unk_1c = b;
@@ -2910,7 +2910,7 @@ static inline void func_ov002_021e4cd8_inline2(Ov002Obj *self) {
     ctx->tail = self;
 }
 
-Ov002Obj *func_ov002_021e9380(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f) {
+Ov002Obj *Ov002Obj021f070c_New(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f) {
     Ov002Obj021f070c *p = (Ov002Obj021f070c *)Heap_Alloc(0x70);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
@@ -2932,7 +2932,7 @@ Ov002Obj *func_ov002_021e9380(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f) {
 
 extern VFunc data_ov002_021f0784[];
 
-Ov002Obj *func_ov002_021e9478(s32 a, s32 b, s32 c, s32 d, u16 e, s32 mode, u8 f, u8 g) {
+Ov002Obj *Ov002Obj021f0784_New(s32 a, s32 b, s32 c, s32 d, u16 e, s32 mode, u8 f, u8 g) {
     Ov002Obj021f0784 *p = (Ov002Obj021f0784 *)Heap_Alloc(0x60);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
@@ -2981,7 +2981,7 @@ extern const VecFx32 data_ov002_021ef0ec;
 
 extern const VecFx32 data_ov002_021ef0c8;
 
-Ov002Obj *func_ov002_021e95c4(Ov002Obj *a, Ov002Obj *b) {
+Ov002Obj *Ov002Cam021f0828_New(Ov002Obj *a, Ov002Obj *b) {
     s32 i;
     Ov002Cam021f0828 *p = (Ov002Cam021f0828 *)Heap_Alloc(0xcc);
     if (p != NULL) {
@@ -3043,7 +3043,7 @@ void MTX_OrthoW(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, void *out);
 
 extern VFunc data_ov002_021f07fc[];
 
-Ov002Obj *func_ov002_021e97e8(Ov002Obj *a, Ov002Obj *b) {
+Ov002Obj *Ov002Cam021f07fc_New(Ov002Obj *a, Ov002Obj *b) {
     s32 i;
     Ov002Cam021f07fc *p = (Ov002Cam021f07fc *)Heap_Alloc(0xb8);
     if (p != NULL) {
@@ -3111,7 +3111,7 @@ static inline void func_ov002_021e4cd8_inline4(Ov002Obj *self) {
     }
     ctx->tail = self;
 }
-Ov002Obj *func_ov002_021e9974(s32 a, s32 b, s16 c, void *d) {
+Ov002Obj *Ov002Obj021f06e4_New(s32 a, s32 b, s16 c, void *d) {
     Ov002Obj021f06e4 *p = (Ov002Obj021f06e4 *)Heap_Alloc(0x54);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
@@ -3150,14 +3150,14 @@ static inline void func_ov002_021e4cd8_inline3(Ov002Obj *self) {
     }
     ctx->tail = self;
 }
-Ov002Obj *func_ov002_021e9a50(void *a, void *b) {
+Ov002Obj *Ov002Obj021f07ac_New(void *a, void *b) {
     Ov002Obj021f07ac *p = (Ov002Obj021f07ac *)Heap_Alloc(0x160);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline3(p);
         *(VFunc **)p = data_ov002_021f07ac;
         Ov002Vt_021f0ce8_Ctor(&p->msg);
-        func_ov002_021e6a14(p);
+        Ov002Obj021f07ac_Init(p);
     }
     STD_CopyLString((char *)((u8 *)p + 0x4c), (char *)a, 0x20);
     STD_CopyLString((char *)((u8 *)p + 0x6c), (char *)b, 0x20);
@@ -3230,9 +3230,9 @@ extern VFunc data_ov002_021f06bc[];
 
 void *Ov002Vt_021f0cf8_Ctor(Ov002Snd021f0cf8 *p);
 
-void func_ov002_021ec1c4(Ov002Snd021f0cf8 *p);
+void Ov002Snd021f0cf8_Init(Ov002Snd021f0cf8 *p);
 
-Ov002Obj *func_ov002_021e9bd8(void *a, void *b) {
+Ov002Obj *Ov002Obj021f06bc_New(void *a, void *b) {
     Ov002Obj021f06bc *p = (Ov002Obj021f06bc *)Heap_Alloc(0xac);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
@@ -3244,7 +3244,7 @@ Ov002Obj *func_ov002_021e9bd8(void *a, void *b) {
         MI_CpuFill8((u8 *)p + 0x6c, 0, 0x20);
         p->unk_8c = 0;
         p->unk_90 = 0;
-        func_ov002_021ec1c4(&p->snd);
+        Ov002Snd021f0cf8_Init(&p->snd);
     }
     STD_CopyLString((char *)((u8 *)p + 0x4c), (char *)a, 0x20);
     STD_CopyLString((char *)((u8 *)p + 0x6c), (char *)b, 0x20);

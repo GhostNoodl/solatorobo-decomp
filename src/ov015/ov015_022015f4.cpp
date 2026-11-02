@@ -10,7 +10,7 @@ extern u8 data_ov015_0221291c[];
 extern u8 data_ov015_02213198[];
 extern u8 data_ov015_0221290c[];
 extern u8 data_ov015_0221295c[];
-void *func_0204b370(void *p);
+void *Camera_Ctor(void *p);
 u8 *func_02070744(u16 id);
 void Ov015CamPair_Init(Ov015CamPair *self);
 void func_ov015_02210b3c(Ov015MsgMgr *self);
@@ -20,7 +20,7 @@ void *Ov015Fish_Ctor(Ov015Fish *self);
 void func_ov015_02209364(Ov015Fish *self);
 
 BOOL func_ov015_022015f4(void) {
-    return func_02035b90(data_ov015_022128c1, 7) != 0 ? TRUE : FALSE;
+    return ResMgr_IsLoaded(data_ov015_022128c1, 7) != 0 ? TRUE : FALSE;
 }
 
 BOOL func_ov015_02201618(Ov015Game *self) {
@@ -32,8 +32,8 @@ BOOL func_ov015_02201618(Ov015Game *self) {
     o = (Ov015CamPair *)Heap_Alloc(0x1a0);
     if (o != NULL) {
         SET_VT(o, data_ov015_0221291c);
-        func_0204b370(&o->cam0);
-        func_0204b370(&o->cam1);
+        Camera_Ctor(&o->cam0);
+        Camera_Ctor(&o->cam1);
         o->mode = 1;
         o->target.x = 0;
         o->target.y = 0;
@@ -112,21 +112,21 @@ extern char data_ov015_0221289f[];
 extern char data_ov015_022128a5[];
 extern s32 data_ov015_02213328;
 void func_0203cb78(s32 a, s32 b, s32 c);
-Ov015Fade *func_ov015_021fa6d0(void);
+Ov015Fade *Ov015_GetFade(void);
 void Ov015Fade_ToClear(Ov015Fade *self, s32 c, u16 d);
 void Ov015Fade_ToOpaque(Ov015Fade *self, s32 c, u16 d);
 BOOL func_ov015_022078bc(Ov015Ship *p);
-s32 func_ov000_0218f110(void *a);
+s32 ResSet_UpdateLoad(void *a);
 BOOL func_ov015_0220947c(Ov015Fish *self);
-void func_0206e900(char *buf, const char *name);
+void LangData_LocalizePath(char *buf, const char *name);
 int func_ov015_02210bd8(Ov015MsgMgr *self);
 BOOL func_ov015_02207adc(Ov015Ship *self);
-BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
+BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
+BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
 BOOL func_ov015_02209500(Ov015Fish *self);
 BOOL func_ov015_02210c28(void);
-void func_ov000_02190a80(void *a, s32 b);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
 s32 func_ov015_02210c30(Ov015MsgMgr *self, Ov015Stat *a, s32 b);
 BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a, Ov015CamPair *b, Ov015List *c, Ov015Info38 *d);
 BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamPair *c, Ov015Info38 *d);
@@ -179,15 +179,15 @@ static inline void Ov015_ModelsReset(Ov015MdlSet *p) {
     p->p[0].mdl.trans.x = 0;
     p->p[0].mdl.trans.y = 0;
     p->p[0].mdl.trans.z = 0;
-    func_ov000_02190a80(&p->p[0].mdl, 0x800);
+    Model0218fe1c_UpdateAnim(&p->p[0].mdl, 0x800);
     p->p[1].mdl.trans.x = 0;
     p->p[1].mdl.trans.y = 0x1000;
     p->p[1].mdl.trans.z = 0;
-    func_ov000_02190a80(&p->p[1].mdl, 0x800);
+    Model0218fe1c_UpdateAnim(&p->p[1].mdl, 0x800);
     p->p[2].mdl.trans.x = 0;
     p->p[2].mdl.trans.y = 0x23333;
     p->p[2].mdl.trans.z = 0x4cd;
-    func_ov000_02190a80(&p->p[2].mdl, 0x400);
+    Model0218fe1c_UpdateAnim(&p->p[2].mdl, 0x400);
 }
 
 typedef enum { OV015_SYS_MODE_2 = 2 } Ov015SysMode;
@@ -205,7 +205,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
             sys->nextState = v;
             func_0203cb78(0x1000, 0, v - 3);
         }
-        Ov015Fade_ToOpaque(func_ov015_021fa6d0(), 0x1000, 0);
+        Ov015Fade_ToOpaque(Ov015_GetFade(), 0x1000, 0);
         self->step = 0x14;
         break;
     }
@@ -225,13 +225,13 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         }
         p = self->unk_20;
         b = true;
-        if (p->p[0].res.unk_00 >= 0 && !func_ov000_0218f110(&p->p[0].res)) {
+        if (p->p[0].res.unk_00 >= 0 && !ResSet_UpdateLoad(&p->p[0].res)) {
             b = false;
         }
-        if (p->p[1].res.unk_00 >= 0 && !func_ov000_0218f110(&p->p[1].res)) {
+        if (p->p[1].res.unk_00 >= 0 && !ResSet_UpdateLoad(&p->p[1].res)) {
             b = false;
         }
-        if (p->p[2].res.unk_00 >= 0 && !func_ov000_0218f110(&p->p[2].res)) {
+        if (p->p[2].res.unk_00 >= 0 && !ResSet_UpdateLoad(&p->p[2].res)) {
             b = false;
         }
         b = a & b;
@@ -242,13 +242,13 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         c = b & c;
         q = self->hud;
         d = false;
-        func_0206e900(buf, data_ov015_022128ab);
+        LangData_LocalizePath(buf, data_ov015_022128ab);
         switch (q->unk_04) {
         case 0:
-            func_020359d0(buf, 7, 0);
+            ResMgr_Load(buf, 7, 0);
             q->unk_04 = 10;
         case 10:
-            if (func_02035b90(buf, 7) == 0) {
+            if (ResMgr_IsLoaded(buf, 7) == 0) {
                 break;
             }
             q->unk_04 = 0x1e;
@@ -271,17 +271,17 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         Ov015Node *n;
         func_ov015_02207adc(self->ship);
         p = self->unk_20;
-        func_ov000_0218ffdc(&p->p[0].mdl, &p->p[0].res, 0, 1);
-        func_ov000_02190cb0(&p->p[0].mdl, data_ov015_02212899, 0x1000, 0);
-        func_ov000_021915a0(&p->p[0].mdl);
+        Model0218fe1c_SetRes(&p->p[0].mdl, &p->p[0].res, 0, 1);
+        Model0218fe1c_SetAnim(&p->p[0].mdl, data_ov015_02212899, 0x1000, 0);
+        Model0218fe1c_SetLoop(&p->p[0].mdl);
         p->p[0].mdl.flags.visible = 1;
-        func_ov000_0218ffdc(&p->p[1].mdl, &p->p[1].res, 0, 1);
-        func_ov000_02190cb0(&p->p[1].mdl, data_ov015_0221289f, 0x1000, 0);
-        func_ov000_021915a0(&p->p[1].mdl);
+        Model0218fe1c_SetRes(&p->p[1].mdl, &p->p[1].res, 0, 1);
+        Model0218fe1c_SetAnim(&p->p[1].mdl, data_ov015_0221289f, 0x1000, 0);
+        Model0218fe1c_SetLoop(&p->p[1].mdl);
         p->p[1].mdl.flags.visible = 1;
-        func_ov000_0218ffdc(&p->p[2].mdl, &p->p[2].res, 0, 1);
-        func_ov000_02190cb0(&p->p[2].mdl, data_ov015_022128a5, 0x1000, 0);
-        func_ov000_021915a0(&p->p[2].mdl);
+        Model0218fe1c_SetRes(&p->p[2].mdl, &p->p[2].res, 0, 1);
+        Model0218fe1c_SetAnim(&p->p[2].mdl, data_ov015_022128a5, 0x1000, 0);
+        Model0218fe1c_SetLoop(&p->p[2].mdl);
         p->p[2].mdl.flags.visible = 1;
         for (n = self->fishList->head; n != NULL; n = n->next) {
             func_ov015_02209500(n->fish);
@@ -291,16 +291,16 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
             func_ov015_02210c28();
         }
         data_0214a420->drawFilter = 1;
-        Ov015Fade_ToClear(func_ov015_021fa6d0(), 0x1e000, 0);
+        Ov015Fade_ToClear(Ov015_GetFade(), 0x1e000, 0);
         self->step = 0x28;
-        func_02049a48(data_02097e4c, 0x4f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x4f, -1, -1, -1);
         Ov015_BgmFadeTo(0x23);
         break;
     }
     case 0x28:
         Ov015_ModelsReset(self->unk_20);
         if (data_ov015_02213328 == 0) {
-            func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
         }
         {
         Ov015MsgMgr *m = self->unk_90;
@@ -315,7 +315,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         }
         if (!func_ov015_021ff4a0(&self->phase1, self->ship, self->cam, self->fishList, &self->info)) {
             self->step = 0x32;
-            func_02049de8(data_02097e4c, 0x4f);
+            SndMgr_Stop(data_02097e4c, 0x4f);
         }
         {
         Ov015CamPair *cp = self->cam;
@@ -336,10 +336,10 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
             if (!func_ov015_02200204((Ov015Obj34 *)&self->phase2, self->ship, self->fishList->head->fish,
                                      self->cam, &self->info)) {
                 self->step = 0x3c;
-                Ov015Fade_ToOpaque(func_ov015_021fa6d0(), 0x1e000, 0x7fff);
+                Ov015Fade_ToOpaque(Ov015_GetFade(), 0x1e000, 0x7fff);
                 data_ov015_02213320.mainSeq->unk_08 = Dup::data_ov015_0221332c.unk_30;
                 if (Dup::data_ov015_0221332c.unk_30 == 2) {
-                    Ov015Fade_ToClear(func_ov015_021fa6d0(), 0x1000, 0x7fff);
+                    Ov015Fade_ToClear(Ov015_GetFade(), 0x1000, 0x7fff);
                     self->step = 0x50;
                 }
             }
@@ -349,7 +349,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
     case 0x3c: {
         Ov015Fade *f;
         Ov015_CamUpdate(self);
-        f = func_ov015_021fa6d0();
+        f = Ov015_GetFade();
         if (f->time < f->duration) {
             break;
         }
@@ -364,7 +364,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         }
         func_ov015_0220101c(self);
         EffectMgr_FreeAll(data_0214a420);
-        Ov015Fade_ToClear(func_ov015_021fa6d0(), 0x1000, 0x7fff);
+        Ov015Fade_ToClear(Ov015_GetFade(), 0x1000, 0x7fff);
         {
             u32 v = data_0214a424->unk_61c + 1;
             if (v >= 1000) {

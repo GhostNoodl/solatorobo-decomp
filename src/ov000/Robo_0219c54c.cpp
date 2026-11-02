@@ -12,9 +12,9 @@ void *func_0207011c(u16 id);
 s32 func_020701d4(u16 id);
 Param0206ef10 *func_0206ef10(u16 id);
 void *Heap_Alloc(u32 size);
-void *func_ov000_021919c8(void *p);
+void *Shadow_Ctor(void *p);
 void Shadow_Load(void *s);
-void func_ov000_0218f074(void *o, void *a, BOOL b, BOOL c, s32 d, BOOL e);
+void ResSet_SetFile(void *o, void *a, BOOL b, BOOL c, s32 d, BOOL e);
 
 static inline void SetNames0219c54c(char *d0, char *d1, const char *a, const char *b) {
     STD_CopyString(d0, a);
@@ -29,7 +29,7 @@ void Robo021ca458_Init(Robo021ca458 *self) {
 
     res = func_0207011c(self->kind);
     func_020701d4(self->kind);
-    func_ov000_0218f074(&self->res0, res, TRUE, TRUE, 1, FALSE);
+    ResSet_SetFile(&self->res0, res, TRUE, TRUE, 1, FALSE);
     self->res0.unk_00 = 0;
     {
         const char *b = data_ov000_021cc5d2;
@@ -42,7 +42,7 @@ void Robo021ca458_Init(Robo021ca458 *self) {
     self->res3.unk_00 = 0;
     p = Heap_Alloc(0x1c);
     if (p != NULL) {
-        p = func_ov000_021919c8(p);
+        p = Shadow_Ctor(p);
     }
     self->unk_3c = (ActorShadow *)p;
     Shadow_Load(p);

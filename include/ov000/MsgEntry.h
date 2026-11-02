@@ -5,8 +5,8 @@
 
 class VObj;
 
-// A 0x30-byte record (ctor func_ov000_02153f90, dtor func_ov000_02153fd8) about the message `id`
-// (looked up with func_0204c08c, func_02061e7c and func_ov000_0214bf2c). The prev / next words link
+// A 0x30-byte record (ctor MsgEntry_Init, dtor MsgEntry_Release) about the message `id`
+// (looked up with MsgRes_GetLines, func_02061e7c and func_ov000_0214bf2c). The prev / next words link
 // it into the list of func_ov000_0214dd3c.
 typedef struct MsgEntry {
     /* 0x00 */ s32 unk_00;
@@ -26,7 +26,7 @@ typedef struct MsgEntry {
 } MsgEntry;
 
 // The 0x38-byte form, with the four values that command 0x25 of the message's script sets
-// (func_ov000_0214dc20, the func_0204c6bc callback).
+// (func_ov000_0214dc20, the Text_ScanTags callback).
 struct MsgEntryEx : MsgEntry {
     /* 0x30 */ u16 vals[4];
 };
@@ -35,8 +35,8 @@ struct MsgEntryEx : MsgEntry {
 extern "C" {
 #endif
 
-void func_ov000_02153f90(MsgEntry *self);
-void func_ov000_02153fd8(MsgEntry *self);
+void MsgEntry_Init(MsgEntry *self);
+void MsgEntry_Release(MsgEntry *self);
 void func_ov000_0214dc20(MsgEntryEx *self, s32 *cmd);
 
 #ifdef __cplusplus

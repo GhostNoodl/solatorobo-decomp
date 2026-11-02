@@ -12,7 +12,7 @@ typedef struct {
 
 extern "C" {
 
-Twl0214b570 *func_ov000_0214b570(Twl0214b570 *self) {
+Twl0214b570 *Twl0214b570_Init(Twl0214b570 *self) {
     self->unk_00 = 0;
     self->state = 0;
     self->unk_08 = -1;

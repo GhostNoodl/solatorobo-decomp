@@ -4,20 +4,20 @@ extern "C" {
 
 extern u8 data_ov015_02212f64[];
 extern u8 data_ov015_02212f3c[];
-void *func_ov000_0218e9c4(void *a);
-void *func_ov000_0218fe1c(void *a);
-void *func_ov000_0218fee4(void *a);
-void *func_ov000_0218ea20(void *a);
+void *ResSet_Init(void *a);
+void *Model0218fe1c_Init(void *a);
+void *Model0218fe1c_FreeAnims(void *a);
+void *ResSet_ReleaseAll(void *a);
 
 void *func_ov015_0220dde8(Ov015StageMdl *self) {
     s32 i;
     SET_VT(self, data_ov015_02212f64);
-    func_ov002_021e4cd8(self);
+    Ov002Obj_Init(self);
     SET_VT(self, data_ov015_02212f3c);
-    func_ov000_0218e9c4(&self->res0);
-    func_ov000_0218fe1c(&self->mdl0);
-    func_ov000_0218e9c4(&self->res1);
-    func_ov000_0218fe1c(&self->mdl1);
+    ResSet_Init(&self->res0);
+    Model0218fe1c_Init(&self->mdl0);
+    ResSet_Init(&self->res1);
+    Model0218fe1c_Init(&self->mdl1);
     self->unk_490 = 0x1000;
     self->slot = -1;
     self->unk_498 = 0xffff;
@@ -43,22 +43,22 @@ void *func_ov015_0220dde8(Ov015StageMdl *self) {
 }
 
 void *func_ov015_0220deb8(Ov015StageMdl *self) {
-    func_ov000_0218fee4(&self->mdl1);
-    func_ov000_0218ea20(&self->res1);
-    func_ov000_0218fee4(&self->mdl0);
-    func_ov000_0218ea20(&self->res0);
+    Model0218fe1c_FreeAnims(&self->mdl1);
+    ResSet_ReleaseAll(&self->res1);
+    Model0218fe1c_FreeAnims(&self->mdl0);
+    ResSet_ReleaseAll(&self->res0);
     SET_VT(self, data_ov015_02212f64);
-    func_ov002_021e4d4c(self);
+    Ov002Obj_Detach(self);
     return self;
 }
 
 void *func_ov015_0220defc(Ov015StageMdl *self) {
-    func_ov000_0218fee4(&self->mdl1);
-    func_ov000_0218ea20(&self->res1);
-    func_ov000_0218fee4(&self->mdl0);
-    func_ov000_0218ea20(&self->res0);
+    Model0218fe1c_FreeAnims(&self->mdl1);
+    ResSet_ReleaseAll(&self->res1);
+    Model0218fe1c_FreeAnims(&self->mdl0);
+    ResSet_ReleaseAll(&self->res0);
     SET_VT(self, data_ov015_02212f64);
-    func_ov002_021e4d4c(self);
+    Ov002Obj_Detach(self);
     Heap_Free(self);
     return self;
 }

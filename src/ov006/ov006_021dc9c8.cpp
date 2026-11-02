@@ -4,7 +4,7 @@
 
 extern "C" {
 
-BOOL func_02054f10(Model *a, int b);
+BOOL Model_IsReady(Model *a, int b);
 
 void Ov006Marker_Update(Ov006Marker *self) {
     VecFx32 d;
@@ -12,7 +12,7 @@ void Ov006Marker_Update(Ov006Marker *self) {
         if (self->model == NULL) {
             return;
         }
-        if (!func_02054f10(self->model, 0xffff)) {
+        if (!Model_IsReady(self->model, 0xffff)) {
             return;
         }
         self->active = 1;

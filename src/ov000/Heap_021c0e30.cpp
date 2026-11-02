@@ -36,7 +36,7 @@ extern "C" {
 
 extern VFunc data_0208ba70[];
 void *Heap_Alloc(u32 size);
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void *func_0206ffa0(s32 id);
 
@@ -80,7 +80,7 @@ void func_ov000_021c0e30(Marker021c0e30 *self) {
             t = (Ov000Text021c0e30 *)Heap_Alloc(0xb8);
             if (t != NULL) {
                 t->vtbl = data_0208ba70;
-                func_0204c7d0(t);
+                TextWin_Init(t);
             }
             self->unk_90 = t;
             t->unk_28 = 4;
@@ -110,11 +110,11 @@ void func_ov000_021c0e30(Marker021c0e30 *self) {
             return;
         }
     case 10:
-        if (func_ov000_021bd374(self, 0x6000)) {
+        if (ActorMarker_UpdateFade(self, 0x6000)) {
             return;
         }
         pos = self->unk_50;
-        func_ov000_021bd474(self, &pos);
+        ActorMarker_UpdateScreenPos(self, &pos);
         self->work.z = -0x2000;
         break;
     case 0:

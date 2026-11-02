@@ -11,16 +11,16 @@ typedef struct {
 extern "C" {
 extern u8 data_0208ba70[];
 extern void *data_02149ef8;
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 s32 MsgRes_GetString(void *p, s32 a);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
-void func_0204ca70(void *p);
+void TextWin_RenderToVram(void *p);
 
 static inline TextWin *NewTw02153c48(void) {
     TextWin *o = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (o != NULL) {
         VOBJ_SET_VTABLE(o, data_0208ba70);
-        func_0204c7d0(o);
+        TextWin_Init(o);
     }
     return o;
 }
@@ -35,7 +35,7 @@ struct Obj02153c48 {
     s32 unk_24;
 };
 
-void func_ov000_02153c48(Obj02153c48 *self, s32 a, BOOL show, BOOL center, u8 d) {
+void Obj02153c48_CreateText(Obj02153c48 *self, s32 a, BOOL show, BOOL center, u8 d) {
     TextWin *w;
     LO_FREE_V(self, 0x1c);
     LO_FREE_V(self, 0x20);
@@ -60,7 +60,7 @@ void func_ov000_02153c48(Obj02153c48 *self, s32 a, BOOL show, BOOL center, u8 d)
     self->unk_1c->flags |= 0x40000000;
     self->unk_1c->flags |= 4;
     if (show) {
-        func_0204ca70(self->unk_1c);
+        TextWin_RenderToVram(self->unk_1c);
     }
     if (!(self->unk_0c == -1 ? TRUE : FALSE)) {
         return;
@@ -86,7 +86,7 @@ void func_ov000_02153c48(Obj02153c48 *self, s32 a, BOOL show, BOOL center, u8 d)
     self->unk_20->flags |= 0x40000000;
     self->unk_20->flags |= 4;
     if (show) {
-        func_0204ca70(self->unk_20);
+        TextWin_RenderToVram(self->unk_20);
     }
 }
 

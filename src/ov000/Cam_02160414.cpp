@@ -12,7 +12,7 @@ typedef struct {
 } Cam02160414;
 
 extern "C" {
-int func_0204061c(s32 *out, VecFx32 *pos);
+int Math_ProjectToScreen(s32 *out, VecFx32 *pos);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
@@ -25,7 +25,7 @@ void func_ov000_02160414(Cam02160414 *self) {
     s32 k;
 
     pos = self->unk_80;
-    func_0204061c(scr, &pos);
+    Math_ProjectToScreen(scr, &pos);
     scr[0] <<= 12;
     scr[1] <<= 12;
     d = FX_Mul(scr[0] - self->unk_8c, scr[0] - self->unk_8c) + FX_Mul(scr[1] - self->unk_90, scr[1] - self->unk_90);

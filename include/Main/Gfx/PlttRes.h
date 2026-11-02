@@ -113,8 +113,8 @@ static inline void PlttRes_SetData(PlttRes *res, const void *data, u32 size) {
     PlttRes_Upload(res, data, 0, res->size);
 }
 
-void func_02041218(PlttRes *res);
-void func_02041278(PlttRes *res);
+void PlttRes_Init_02041218(PlttRes *res);
+void PlttRes_Release(PlttRes *res);
 
 #ifdef __cplusplus
 }

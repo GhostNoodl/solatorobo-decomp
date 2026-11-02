@@ -7,8 +7,8 @@ typedef struct Ov008SaveEnt { u16 unk_00; u16 id; } Ov008SaveEnt;
 extern "C" {
 extern Ov008Save *data_02fe152c;
 Ov008Def *Lang_GetGroup(u8 id);
-u16 func_020594bc(void *a, int b, int c, int d);
-Ov008Item *func_ov000_02154b58(void *a, u32 id);
+u16 DataRes_ReadEntry(void *a, int b, int c, int d);
+Ov008Item *UiList_GetItemById(void *a, u32 id);
 BOOL func_ov008_021cf790(Ov008Menu *self, Ov008Sel *sel);
 BOOL func_ov008_021cf844(Ov008Menu *self, Ov008Sel *sel);
 extern void *data_02149ef8;
@@ -20,26 +20,26 @@ extern u8 *data_0214a424;
 s32 MsgRes_GetString(void *p, s32 id);
 BOOL func_020624d8(void);
 void func_ov000_021547e8(void *list, const char *arc, const char *file, int part);
-Ov008SaveEnt *func_0205976c(void *res, u32 idx);
-u32 func_0205975c(void *res, u32 idx);
-u16 func_02059544(void *res, void *block, Ov008SaveEnt *entries, int packed, u32 id);
-Ov008Chr *func_ov000_021824d0(void *p, s32 a);
-void func_ov000_02153f90(Ov008Tag *t);
-void func_ov000_02153fd8(Ov008Tag *t);
+Ov008SaveEnt *DataRes_GetTable(void *res, u32 idx);
+u32 DataRes_GetCount(void *res, u32 idx);
+u16 DataRes_ReadBitsAt_02059544(void *res, void *block, Ov008SaveEnt *entries, int packed, u32 id);
+Ov008Chr *SceneStage_GetScript(void *p, s32 a);
+void MsgEntry_Init(Ov008Tag *t);
+void MsgEntry_Release(Ov008Tag *t);
 u32 func_ov000_0214c01c(u16 a);
 u32 func_ov000_0214bf2c(u16 id);
 const char *func_ov000_0214c064(u16 id);
-void func_0204c6bc(const char *str, s32 maxLines, void *arg, void (*cb)(void *arg, s32 *tag));
+void Text_ScanTags(const char *str, s32 maxLines, void *arg, void (*cb)(void *arg, s32 *tag));
 void func_ov000_0214dc20(void *arg, s32 *tag);
 void func_ov008_021cf5c8(s32 type, void *list, void *info);
 static inline void Ov008_AddEntry(Ov008Mgr *m, u32 id) {
     Ov008Def *e = Lang_GetGroup(id);
     Ov008Item *p;
     m->menu->v74(e->unk_00, id, 0xffff, 0xffff);
-    if (!func_020594bc(data_02fe152c, 0, 0x201, id)) {
+    if (!DataRes_ReadEntry(data_02fe152c, 0, 0x201, id)) {
         return;
     }
-    p = func_ov000_02154b58(m->menu, id);
+    p = UiList_GetItemById(m->menu, id);
     if (p != NULL) {
         p->unk_0a = 10;
     }
@@ -105,12 +105,12 @@ void func_ov008_021cfa38(Ov008Mgr *m) {
     }
     if (func_020624d8()) {
         Ov008Menu *u = m->menu;
-        u->va8(func_ov000_02154b58(u, data_02fe1534.unk_52));
+        u->va8(UiList_GetItemById(u, data_02fe1534.unk_52));
     } else {
         Ov008Menu *u = m->menu;
         for (it = u->topItem; it != NULL; it = it->next) {
             if (it->unk_0a == 10) {
-                u->va8(func_ov000_02154b58(u, it->id));
+                u->va8(UiList_GetItemById(u, it->id));
                 break;
             }
         }
@@ -123,11 +123,11 @@ void func_ov008_021cfa38(Ov008Mgr *m) {
     m->menu->v08();
     func_ov000_021547e8(m->menu, data_0214b105, data_0208cb7c, 10);
     base = data_02fe152c->unk_4c;
-    ents = func_0205976c(data_02fe152c, 1);
-    cnt = func_0205975c(data_02fe152c, 1);
+    ents = DataRes_GetTable(data_02fe152c, 1);
+    cnt = DataRes_GetCount(data_02fe152c, 1);
     i = 0;
-    cur = func_ov000_021824d0((u8 *)data_ov000_021ccd54 + 0xac, 0);
-    func_ov000_02153f90(&tag);
+    cur = SceneStage_GetScript((u8 *)data_ov000_021ccd54 + 0xac, 0);
+    MsgEntry_Init(&tag);
     tag.id = 0;
     tag.unk_32 = 0;
     tag.unk_34 = 0;
@@ -138,27 +138,27 @@ void func_ov008_021cfa38(Ov008Mgr *m) {
         if (flags & 0x20) {
             ok = OV008_ENT_NEW;
         } else {
-            ok = (Ov008EntState)func_02059544(data_02fe152c, base + 0x30, ents, 0x301, i);
+            ok = (Ov008EntState)DataRes_ReadBitsAt_02059544(data_02fe152c, base + 0x30, ents, 0x301, i);
         }
         if (cur != NULL && cur->unk_c6 == ents[i].id) {
             ok = OV008_ENT_KNOWN;
         }
-        if (func_02059544(data_02fe152c, base + 0x30, ents, 1, i) == 1 && ok == OV008_ENT_NEW) {
+        if (DataRes_ReadBitsAt_02059544(data_02fe152c, base + 0x30, ents, 1, i) == 1 && ok == OV008_ENT_NEW) {
             tag.id = 0xffff;
-            func_0204c6bc(func_ov000_0214c064(ents[i].id), 1, &tag, func_ov000_0214dc20);
+            Text_ScanTags(func_ov000_0214c064(ents[i].id), 1, &tag, func_ov000_0214dc20);
             ok = OV008_ENT_NEW;
             if (tag.id != 0xffff) {
                 if (flags & 0x80) {
-                    if (func_020594bc(data_02fe152c, 5, 1, 0x29)) {
+                    if (DataRes_ReadEntry(data_02fe152c, 5, 1, 0x29)) {
                         ok = OV008_ENT_KNOWN;
                     }
                 }
                 if (ok == OV008_ENT_NEW) {
-                    e = func_ov000_02154b58(m->menu, tag.id);
+                    e = UiList_GetItemById(m->menu, tag.id);
                     if (e != NULL) {
                         e->unk_32++;
                         if (!Ov008Entry_IsSet(e)) {
-                            if (func_02059544(data_02fe152c, base + 0x30, ents, 0x101, i) == 1 && e->unk_0a == 0xffff) {
+                            if (DataRes_ReadBitsAt_02059544(data_02fe152c, base + 0x30, ents, 0x101, i) == 1 && e->unk_0a == 0xffff) {
                                 e->flags.b0 = 1;
                             }
                         }
@@ -170,6 +170,6 @@ void func_ov008_021cfa38(Ov008Mgr *m) {
             }
         }
     }
-    func_ov000_02153fd8(&tag);
+    MsgEntry_Release(&tag);
 }
 }

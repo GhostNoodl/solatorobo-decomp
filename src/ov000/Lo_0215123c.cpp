@@ -8,15 +8,15 @@ extern "C" {
 
 extern void *data_02fe152c;
 extern void *data_02097e4c;
-void *func_0205976c(void *a, s32 b);
-u32 func_0205975c(void *a, s32 b);
+void *DataRes_GetTable(void *a, s32 b);
+u32 DataRes_GetCount(void *a, s32 b);
 u32 func_ov000_0214bf2c(u16 a);
-u16 func_02059544(void *a, void *b, void *c, s32 d, s32 e);
+u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, s32 d, s32 e);
 BOOL StageRes_IsAllLoaded(void *p);
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 void *Task_FindById(s32 kind);
-Robo021ca458 *func_ov000_0219bf90(void);
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+Robo021ca458 *ActorMgr_FindPlayer(void);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 typedef struct {
     u8 b0 : 1;
@@ -41,7 +41,7 @@ static inline BOOL LoIsLoaded24(void) {
     return r;
 }
 
-void func_ov000_0215123c(Lo021ca9c4 *self) {
+void Lo021ca9c4_Draw(Lo021ca9c4 *self) {
     s32 s;
     if (self->fadeRatio == 0 || (s = self->state) == 0) {
         return;

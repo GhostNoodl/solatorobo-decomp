@@ -7,7 +7,7 @@
 extern "C" {
 
 extern Ov003BeamDef data_ov003_021f49ec[];
-extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
+extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
 
 void Ov003Shot_ResetTimers(Ov003Shot *self) {
     self->age = 0;
@@ -18,7 +18,7 @@ void Ov003Shot_ResetTimers(Ov003Shot *self) {
 }
 
 void Ov003Shot_State0a(Ov003Shot *self) {
-    func_ov000_02198360(self->fsm, 0x15, 0);
+    History_SetState(self->fsm, 0x15, 0);
 }
 
 void Ov003Shot_StateDie(Ov003Shot *self) {
@@ -33,7 +33,7 @@ void Ov003Shot_StateDie(Ov003Shot *self) {
             self->centerY = (v << 4) >> 1;
         }
     }
-    func_ov000_0219763c(self);
+    ActorEx_StateDie(self);
 }
 
 void Ov003Shot_StateHeld(Ov003Shot *self) {
@@ -44,13 +44,13 @@ void Ov003Shot_StateHeld(Ov003Shot *self) {
         }
         self->age = 0;
     }
-    func_ov000_02195d88(self);
+    ActorEx_StateHeld(self);
 }
 
 void Ov003ActVt_021f7d4c_Start(Ov003Beam *self) {
     Ov003BeamDef *def;
     u8 i;
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     def = self->beamDef;
     if (def == NULL) {
         def = &data_ov003_021f49ec[self->unk_18];
@@ -67,10 +67,10 @@ void Ov003ActVt_021f7d4c_Start(Ov003Beam *self) {
     self->unk_84.y = def->offset.y;
     self->unk_84.z = def->offset.z;
     if (def->sound >= 0) {
-        func_02049f44(data_02097e4c, 0x5c, &self->pos, 0);
-        func_02049f44(data_02097e4c, self->def->sound, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x5c, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, self->def->sound, &self->pos, 0);
     }
-    func_ov000_02198360(self->fsm, 0xb, 0);
+    History_SetState(self->fsm, 0xb, 0);
 }
 
 void Ov003Beam_StateThrown(Ov003Beam *self) {
@@ -96,13 +96,13 @@ void Ov003Beam_StateThrown(Ov003Beam *self) {
         Ov003Beam_UpdateLayer(self, 0, st);
         if (self->scales[1].x == 0 && self->scales[1].y == 0) {
             for (i = 0; i < 2; i++) {
-                EffectObj *fx = func_020657b0(data_0214a420, self->layers[i]);
+                EffectObj *fx = Effect_Find_020657b0(data_0214a420, self->layers[i]);
                 if (fx != NULL) {
                     fx->alpha = FX_Div(0, 0x1f000);
                     EffectObj_StopLoop(fx);
                 }
             }
-            func_ov000_02198360(self->fsm, 0x15, 0);
+            History_SetState(self->fsm, 0x15, 0);
         }
         break;
     }
@@ -113,7 +113,7 @@ void Ov003Beam_StateDie(Ov003Beam *self) {
         EffectMgr_Kill(data_0214a420, self->layers[1]);
         EffectMgr_Kill(data_0214a420, self->layers[0]);
     }
-    func_ov000_0219763c(self);
+    ActorEx_StateDie(self);
 }
 
 }

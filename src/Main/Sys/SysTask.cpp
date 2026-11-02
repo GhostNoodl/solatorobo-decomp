@@ -82,14 +82,14 @@ extern char data_0208c1a4[];
 extern char data_0208c1a8[];
 extern BOOL func_02063484(Unk0214a418 *p);
 extern BOOL func_02063650(Unk0214a418 *p);
-extern void *func_ov000_0218fe1c(void *p);
-extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-extern BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
-extern void func_ov000_021915a0(void *a);
-extern void func_ov000_02191618(void *a);
+extern void *Model0218fe1c_Init(void *p);
+extern BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
+extern BOOL Model0218fe1c_SetAnim(void *a, const char *b, s32 c, s32 d);
+extern void Model0218fe1c_SetLoop(void *a);
+extern void Model0218fe1c_ClearLoop(void *a);
 extern void func_02041d8c(void *a);
-extern BOOL func_02054f10(Model *a, u32 b);
-extern void func_02043d20(void *a, s32 b);
+extern BOOL Model_IsReady(Model *a, u32 b);
+extern void Gfx3D_SendDL(void *a, s32 b);
 extern void NNS_G3dGeBufferOP_N(u32 cmd, const void *data, u32 count);
 extern void NNS_G3dGeSendDL(const void *src, u32 size);
 
@@ -111,7 +111,7 @@ static inline void ST_DrawModel(Model *m) {
         void *e = NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0);
         arg = NNS_G2dGetCellDataByIdx(res->texRes, **(u16 **)ST_FLD(void *, e, 0xc));
     }
-    func_02042628(m, arg, part, 0);
+    TexObj_DrawCell(m, arg, part, 0);
 }
 
 static inline void ST_DrawBg(int idx, int x, int y, u32 color) {
@@ -134,7 +134,7 @@ static inline void ST_Draw(Unk0214a418 *p, u32 size) {
     int scale[3];
     u32 c;
     u32 one;
-    func_02043d20(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
     s.x = 0x1000;
     s.y = 0x1000;
     s.z = 0x1000;
@@ -173,8 +173,8 @@ static inline BOOL ST_IsReady(Unk0214a418 *p) {
 }
 
 static inline void ST_ModelCtor(Model *m, void *res, BOOL f) {
-    func_02041218(&m->pltt);
-    func_02041440(m, (const char *)res + 4, f);
+    PlttRes_Init_02041218(&m->pltt);
+    TexObj_Init(m, (const char *)res + 4, f);
 }
 static inline Model *ST_NewModel(void *res, BOOL f) {
     Model *m = (Model *)Heap_Alloc(sizeof(Model));
@@ -199,10 +199,10 @@ s32 func_02062ac8(Unk0214a418 *p, s32 argv) {
             if (p->unk_0c == NULL) {
                 void *o = Heap_Alloc(0xe8);
                 if (o != NULL) {
-                    o = func_ov000_0218fe1c(o);
+                    o = Model0218fe1c_Init(o);
                 }
                 p->unk_0c = o;
-                func_ov000_0218ffdc(o, p->unk_08, 0, 1);
+                Model0218fe1c_SetRes(o, p->unk_08, 0, 1);
                 ST_FLD(u16, p->unk_0c, 0xb4) = 0;
             }
             if (p->unk_14 == NULL) {
@@ -212,13 +212,13 @@ s32 func_02062ac8(Unk0214a418 *p, s32 argv) {
                     BOOL f;
                     res = p->unk_10;
                     f = p->unk_14 != NULL;
-                    func_02041218(&m->pltt);
-                    func_02041440(m, (const char *)res + 4, f);
+                    PlttRes_Init_02041218(&m->pltt);
+                    TexObj_Init(m, (const char *)res + 4, f);
                 }
                 p->unk_14 = m;
-                func_020417e0(p->unk_14, ((SysTaskRes *)p->unk_10)->vf10());
+                TexObj_SetRes(p->unk_14, ((SysTaskRes *)p->unk_10)->vf10());
                 p->unk_14->flags |= 2;
-                func_02041d9c(p->unk_14, 0, 0xffff);
+                TexObj_SelectImage(p->unk_14, 0, 0xffff);
             }
         }
         return arg->state;
@@ -229,10 +229,10 @@ s32 func_02062ac8(Unk0214a418 *p, s32 argv) {
         again = FALSE;
         switch (p->unk_00) {
         case 0:
-            if (func_02054f10(p->unk_14, 0xffff)) {
+            if (Model_IsReady(p->unk_14, 0xffff)) {
                 func_02041d8c(p->unk_14);
-                func_ov000_02190cb0(p->unk_0c, data_0208c1a0, 0, 1);
-                func_ov000_02191618(p->unk_0c);
+                Model0218fe1c_SetAnim(p->unk_0c, data_0208c1a0, 0, 1);
+                Model0218fe1c_ClearLoop(p->unk_0c);
                 p->unk_00 = 1;
                 again = TRUE;
             }
@@ -242,16 +242,16 @@ s32 func_02062ac8(Unk0214a418 *p, s32 argv) {
                 ST_Draw(p, size);
             }
             if (func_02063650(p)) {
-                func_ov000_02190cb0(p->unk_0c, data_0208c1a4, 0, 1);
-                func_ov000_021915a0(p->unk_0c);
+                Model0218fe1c_SetAnim(p->unk_0c, data_0208c1a4, 0, 1);
+                Model0218fe1c_SetLoop(p->unk_0c);
                 p->unk_00 = 2;
             }
             break;
         case 2:
             ST_Draw(p, size);
             func_02063650(p);
-            func_ov000_02190cb0(p->unk_0c, data_0208c1a8, 0, 1);
-            func_ov000_02191618(p->unk_0c);
+            Model0218fe1c_SetAnim(p->unk_0c, data_0208c1a8, 0, 1);
+            Model0218fe1c_ClearLoop(p->unk_0c);
             p->unk_00 = 3;
             break;
         case 3:

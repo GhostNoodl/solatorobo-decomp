@@ -17,13 +17,13 @@ extern u8 data_ov000_021cc648[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void Actor_TurnToActor(Actor *self, void *other, s32 step);
-BOOL func_ov000_02190cb0(void *p, void *a, s32 b, s32 c);
-void func_ov000_021915a0(void *p);
+BOOL Model0218fe1c_SetAnim(void *p, void *a, s32 b, s32 c);
+void Model0218fe1c_SetLoop(void *p);
 void func_020627a0(u16 a, u16 b);
-BOOL func_ov000_0216f674(void *mgr, s32 a);
+BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL func_ov000_021700c4(void *p);
 void *Task_FindById(s32 kind);
-BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+BOOL History_SetState(void *p, s32 a, s32 b);
 
 static inline Actor *FindActor021a3e50(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;
@@ -38,7 +38,7 @@ static inline BOOL IsBusy021a3e50(void) {
     u8 *m = data_ov000_021ccd30;
     if (m == NULL) {
         r = FALSE;
-    } else if (func_ov000_0216f674(m, 6)) {
+    } else if (MessageQueue_GetById(m, 6)) {
         r = TRUE;
     } else if (LFLD(void *, m, 0x11c) == NULL) {
         r = FALSE;
@@ -90,9 +90,9 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
             if (!self->unk_b24_1) {
                 anim = data_ov000_021cc648;
             }
-            func_ov000_02190cb0(self->model, anim, 0x400, 0);
+            Model0218fe1c_SetAnim(self->model, anim, 0x400, 0);
         }
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->timer = 0;
         self->speed = 0;
         self->velY = 0;
@@ -136,7 +136,7 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
         }
         self->unk_b2f = 0x2d;
         self->target = 0xffff;
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         break;
     }
     Actor_TurnToActor(self, t, 0x400);

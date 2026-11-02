@@ -30,9 +30,9 @@ extern char *data_0208ccc0;
 
 void ov006_DrawSprite3D(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 void ov006_Emblem_LoadModels(ov006_Emblem *self);
-void func_ov000_02173648(Task *self);
+void TaskList_Insert(Task *self);
 void func_02041c20(Model *self, int a, void *b);
-BOOL func_02054f10(Model *a, int b);
+BOOL Model_IsReady(Model *a, int b);
 
 void ov006_Emblem_LoadRes(void) {
 }
@@ -49,7 +49,7 @@ void ov006_Emblem_Setup(ov006_Emblem *self) {
     ov006_Emblem_LoadModels(self);
     self->unk44 = 1;
     self->parent = NULL;
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 static inline BOOL ov006_Emblem_Bit4(ov006_Emblem *self) {
@@ -67,27 +67,27 @@ void ov006_Emblem_LoadModels(ov006_Emblem *self) {
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         const char *name = "cefly1pic00";
-        func_02041218(&model->pltt);
-        func_02041440(model, name, 0);
+        PlttRes_Init_02041218(&model->pltt);
+        TexObj_Init(model, name, 0);
         STD_CopyString(model->name, data_ov006_021ec864);
     }
     self->unk3C = model;
-    func_020417e0(self->unk3C, func_02035de0(data_ov006_021ec864, "cefly1pic00"));
+    TexObj_SetRes(self->unk3C, func_02035de0(data_ov006_021ec864, "cefly1pic00"));
     self->unk3C->flags |= 2;
     self->unk3C->flags |= 0x80000;
-    func_02041d9c(self->unk3C, 2, 0xffff);
+    TexObj_SelectImage(self->unk3C, 2, 0xffff);
     model2 = (Model *)Heap_Alloc(sizeof(Model));
     if (model2 != NULL) {
         const char *file = data_0208cca0;
         const char *name = data_0208ccc0;
-        func_02041218(&model2->pltt);
-        func_02041440(model2, name, 0);
+        PlttRes_Init_02041218(&model2->pltt);
+        TexObj_Init(model2, name, 0);
         STD_CopyString(model2->name, file);
     }
     self->unk40 = model2;
-    func_020417e0(self->unk40, func_02034d88(func_02035d5c(data_0208cca0), data_0208ccc0));
+    TexObj_SetRes(self->unk40, ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208ccc0));
     self->unk40->flags |= 2;
-    func_02041d9c(self->unk40, 0, 0);
+    TexObj_SelectImage(self->unk40, 0, 0);
     ov006_Model_SetPos(self->unk40, 0, 0, 0);
     self->unk40->unk_150 = 0xfffe019a;
     self->unk40->unk_158 = (void *)ov006_DrawSprite3D;
@@ -107,9 +107,9 @@ extern char *data_0208ccc0;
 
 void ov006_Emblem_LoadModels(ov006_Emblem *self);
 void ov006_DrawSprite3D(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
-void func_ov000_02173648(Task *self);
+void TaskList_Insert(Task *self);
 void func_02041c20(Model *self, int a, void *b);
-BOOL func_02054f10(Model *a, int b);
+BOOL Model_IsReady(Model *a, int b);
 
 void ov006_Emblem_PreUpdate(void) {
 }
@@ -127,10 +127,10 @@ void func_ov006_021ce590(ov006_Emblem *self) {
     if (!self->unk44) {
         return;
     }
-    if (self->unk40 != NULL && func_02054f10(self->unk40, 0xffff)) {
+    if (self->unk40 != NULL && Model_IsReady(self->unk40, 0xffff)) {
         Model_PlayPart(self->unk40, 0);
     }
-    if (self->unk3C != NULL && func_02054f10(self->unk3C, 0xffff)) {
+    if (self->unk3C != NULL && Model_IsReady(self->unk3C, 0xffff)) {
         Model_PlayPart(self->unk3C, 0);
     }
 }
@@ -179,7 +179,7 @@ ov006_TaskCE *ov006_TaskCE_New(void) {
 static inline void ov006_TaskCE_Open(ov006_TaskCE *self, int id) {
     OV006_DELETE_OBJECT(self->unk4C);
     self->unk4C = ov006_MsgBox_New();
-    func_ov000_021632f0(self->unk4C, id, "script/other", "skyhelp.ccmes", 1);
+    MsgBox_Open(self->unk4C, id, "script/other", "skyhelp.ccmes", 1);
     self->unk44->flags |= 4;
     self->unk48->flags |= 2;
 }
@@ -188,7 +188,7 @@ BOOL func_ov006_021ce734(UiList *list, UiListItem *arg) {
     ov006_TaskCE *self = (ov006_TaskCE *)list->owner;
     if (arg != NULL) {
         u16 id;
-        func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
         id = arg->id;
         if (self->step == 3) {
             switch (id) {
@@ -244,7 +244,7 @@ ov006_TaskCE *func_ov006_021ce974(ov006_TaskCE *self) {
 
 ov006_MsgBox *ov006_MsgBox_DtorDelete(ov006_MsgBox *self) {
     self->vtbl = &data_ov006_021ebc70;
-    func_ov000_02163254(self);
+    MsgBox_Release(self);
     Heap_Free(self);
     return self;
 }
@@ -293,14 +293,14 @@ extern void *data_ov000_021cca28;
 extern void *data_ov006_021ebc80;
 
 void *MsgRes_GetString(void *a, int id);
-void func_02043904(void *p);
-void func_02043b20(void *p);
-void func_ov000_02173648(Task *self);
+void Gfx3DState_SetDefaults(void *p);
+void Gfx3DState_Apply(void *p);
+void TaskList_Insert(Task *self);
 void ov006_SlotManager_Reset_021daea0(ov006_SlotManager *a);
 u8 ov006_SlotManager_CountItems(ov006_SlotManager *self);
 void ov006_InitOwnerSlot(void);
 ov006_Entry021cec68 *ov006_GetPriceEntry(u32 id);
-void func_ov000_021c22d8(void *self);
+void ListRow_Init(void *self);
 void func_ov000_021c5fc4(void *self);
 void func_ov000_021c5fd0(void *self, const void *s);
 void ov006_CaptionPanel_PlayText(ov006_CaptionPanel *self, const void *s);
@@ -332,11 +332,11 @@ void ov006_TaskCE_Setup(ov006_TaskCE *self) {
     }
     {
         g = data_02097d48;
-        func_02043904(g->unk_8b0);
+        Gfx3DState_SetDefaults(g->unk_8b0);
         g->unk_8b0_4 = 1;
         g->unk_8b0_5 = 1;
         *(vu16 *)0x4000060 = (*(vu16 *)0x4000060 & ~0x3000) | 0x20;
-        func_02043b20(g->unk_8b0);
+        Gfx3DState_Apply(g->unk_8b0);
     }
     self->unk_04 &= ~2;
     ov006_SlotManager_Reset_021daea0(data_ov006_021ec884);
@@ -367,7 +367,7 @@ void ov006_TaskCE_Setup(ov006_TaskCE *self) {
     self->unk44->vfunc_74(MsgRes_GetString(res, 0x146), 5, 0xffff, 0xffff);
     {
         UiList *w = self->unk44;
-        w->vfunc_a8(func_ov000_02154b58(w, 0));
+        w->vfunc_a8(UiList_GetItemById(w, 0));
     }
     self->unk44->onDecide = func_ov006_021ce734;
     self->unk44->onCursor = func_ov006_021ce954;
@@ -387,7 +387,7 @@ void ov006_TaskCE_Setup(ov006_TaskCE *self) {
     if (n != 0) {
         if (data_ov006_021ec884->unk149 == 0) {
             self->unk50 = ov006_NewHudList();
-            func_ov000_021c55e8(self->unk50, MsgRes_GetString(res, 0x183));
+            Obj021c55e8_SetLabel1(self->unk50, MsgRes_GetString(res, 0x183));
             self->unk50->rows = (n == 1) ? 2 : n;
             self->unk50->width = 0xc0;
             ov006_Window_SetPos(self->unk50, 0x20, 0x3c, -0x1ccd);
@@ -397,12 +397,12 @@ void ov006_TaskCE_Setup(ov006_TaskCE *self) {
                     item = Heap_Alloc(0x34);
                     if (item != NULL) {
                         *(void **)item = &data_ov006_021ebc80;
-                        func_ov000_021c22d8(item);
+                        ListRow_Init(item);
                         *(void **)item = &data_ov000_021cca28;
                         func_ov000_021c5fc4(item);
                     }
                     func_ov000_021c5fd0(item, MsgRes_GetString(res, e->name));
-                    func_ov000_021c3fd4(self->unk50, item);
+                    LoBase021ccb54_021ccbe0_AppendRow(self->unk50, item);
                 }
             }
             self->unk50->flags &= ~0x40000;
@@ -436,7 +436,7 @@ void ov006_TaskCE_Setup(ov006_TaskCE *self) {
     self->subStep = 0;
     func_0203cb78(0x14000, 0, 0);
     func_0203cb78(0x14000, 0, 1);
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 }
@@ -473,9 +473,9 @@ void func_ov006_021cf89c(ov006_TaskCE *self);
 void func_ov006_021cfa80(ov006_TaskCE *self);
 void func_ov006_021cfc60(ov006_TaskCE *self);
 void ov006_SetupDefaultSlots(void);
-void *func_0205976c(ov006_DataRes *res, u32 idx);
-u32 func_0205975c(ov006_DataRes *res, u32 idx);
-u16 func_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
+void *DataRes_GetTable(ov006_DataRes *res, u32 idx);
+u32 DataRes_GetCount(ov006_DataRes *res, u32 idx);
+u16 DataRes_ReadBitsAt_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
 ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 void ov006_Unk021e2f3c_Update(ov006_CaptionPanel *a);
 
@@ -506,7 +506,7 @@ void ov006_TaskCE_ShowHelp(ov006_TaskCE *self, u16 id) {
         break;
     }
     if (self->unk48 != NULL) {
-        func_ov000_0215bb14(self->unk48, str);
+        Obj0215bb14_SetText(self->unk48, str);
         self->unk48->vfunc_70();
     }
 }
@@ -548,9 +548,9 @@ void func_ov006_021cf89c(ov006_TaskCE *self);
 void func_ov006_021cfa80(ov006_TaskCE *self);
 void func_ov006_021cfc60(ov006_TaskCE *self);
 void ov006_SetupDefaultSlots(void);
-void *func_0205976c(ov006_DataRes *res, u32 idx);
-u32 func_0205975c(ov006_DataRes *res, u32 idx);
-u16 func_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
+void *DataRes_GetTable(ov006_DataRes *res, u32 idx);
+u32 DataRes_GetCount(ov006_DataRes *res, u32 idx);
+u16 DataRes_ReadBitsAt_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
 ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 void ov006_Unk021e2f3c_Update(ov006_CaptionPanel *a);
 
@@ -568,7 +568,7 @@ void ov006_TaskCE_PreUpdate(ov006_TaskCE *self) {
         case 0:
             OV006_DELETE_OBJECT(self->unk4C);
             self->unk4C = ov006_MsgBox_New();
-            func_ov000_021632f0(self->unk4C, 1, "script/other", "skyhelp.ccmes", 0);
+            MsgBox_Open(self->unk4C, 1, "script/other", "skyhelp.ccmes", 0);
             self->unk44->flags |= 4;
             self->unk48->flags |= 2;
             self->unk44->flags |= 4;
@@ -577,7 +577,7 @@ void ov006_TaskCE_PreUpdate(ov006_TaskCE *self) {
             self->subStep++;
             break;
         case 1:
-            if (!func_ov000_021633ac(self->unk4C)) {
+            if (!MsgBox_Update(self->unk4C)) {
                 OV006_DELETE_OBJECT(self->unk4C);
                 self->unk44->flags &= ~4;
                 self->unk48->flags &= ~2;
@@ -601,15 +601,15 @@ void ov006_TaskCE_PreUpdate(ov006_TaskCE *self) {
     case 4: {
         ov006_SetupDefaultSlots();
         block = data_02fe152c->unk4C + 0x1d0;
-        ent = func_0205976c(data_02fe152c, 0xe);
-        n = func_0205975c(data_02fe152c, 0xe);
+        ent = DataRes_GetTable(data_02fe152c, 0xe);
+        n = DataRes_GetCount(data_02fe152c, 0xe);
         for (i = 0; i < n; i++) {
-            if (func_02059544(data_02fe152c, block, ent, 1, i)) {
+            if (DataRes_ReadBitsAt_02059544(data_02fe152c, block, ent, 1, i)) {
                 ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC = i | 0x7000;
                 break;
             }
         }
-        func_ov000_0218084c(data_ov000_021ccd44, 0x29, 0);
+        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x29, 0);
         data_ov006_021ec860->unk1C = 0;
         self->unk44->flags |= 4;
         self->unk44->flags |= 2;
@@ -620,7 +620,7 @@ void ov006_TaskCE_PreUpdate(ov006_TaskCE *self) {
         break;
     }
     case 5:
-        func_ov000_0218084c(data_ov000_021ccd44, 0x27, TRUE);
+        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x27, TRUE);
         data_ov006_021ec860->unk1C = TRUE;
         self->unk44->flags |= 4;
         self->unk44->flags |= 2;
@@ -700,7 +700,7 @@ void func_ov006_021cf89c(ov006_TaskCE *self) {
         self->unk44->flags |= 2;
         self->unk48->flags |= 2;
         self->unk50->flags &= ~2;
-        func_02049a48(data_02097e4c, 0x26, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x26, -1, -1, -1);
         self->subStep++;
         break;
     case 1:
@@ -710,7 +710,7 @@ void func_ov006_021cf89c(ov006_TaskCE *self) {
         if (!(data_02097dc8->trig & 1)) {
             return;
         }
-        func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
         self->unk50->flags |= 2;
         self->subStep++;
         break;
@@ -749,14 +749,14 @@ void func_ov006_021cfa80(ov006_TaskCE *self) {
         if (!(data_02097dc8->trig & 2)) {
             return;
         }
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         {
             UiList *w = self->unk44;
-            w->vfunc_a8(func_ov000_02154b58(w, 5));
+            w->vfunc_a8(UiList_GetItemById(w, 5));
         }
         break;
     case 2:
-        if (func_ov000_021633ac(self->unk4C)) {
+        if (MsgBox_Update(self->unk4C)) {
             return;
         }
         OV006_DELETE_OBJECT(self->unk4C);
@@ -781,7 +781,7 @@ void func_ov006_021cfc60(ov006_TaskCE *self) {
         if (!ov006_Window_IsState5(self->unk48)) {
             return;
         }
-        func_ov000_0218084c(data_ov000_021ccd44, 7, 1);
+        TaskHost_RequestSwitch(data_ov000_021ccd44, 7, 1);
         self->vfunc_4c();
         self->subStep++;
         break;
@@ -846,7 +846,7 @@ void func_ov006_021cfe84(ov006_TaskCE *self) {
         self->unk48->vfunc_20();
     }
     if (self->unk4C != NULL) {
-        func_ov000_02163594(self->unk4C);
+        MsgBox_Render(self->unk4C);
     }
     if (self->unk50 != NULL) {
         self->unk50->vfunc_20();
@@ -938,7 +938,7 @@ BOOL func_ov006_021e4ce8(ov006_Unk021ec888 *self, ov006_MenuData *data);
 void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
 ov006_MenuNode *ov006_Menu_FindNode(ov006_Unk021ec888 *self, int id);
 void *MsgRes_GetString(void *a, int id);
-void func_ov000_02173648(Task *self);
+void TaskList_Insert(Task *self);
 void func_02040b0c(void *dst, int *dstLen, const void *src, int *srcLen);
 void ov006_TaskD0_RefreshList(ov006_TaskD0 *self);
 
@@ -979,17 +979,17 @@ void ov006_TaskD0_Setup(ov006_TaskD0 *self) {
     if (self->unk110) {
         self->unk10C = ov006_NewLo021cad50();
         self->unk10C->vfunc_08();
-        func_ov000_0215c1bc(self->unk10C, 0x8000, MsgRes_GetString(res, 0x19e));
+        Obj0215c1bc_SetText(self->unk10C, 0x8000, MsgRes_GetString(res, 0x19e));
         self->unk10C->vfunc_70();
         self->unk_04 &= ~2;
-        func_ov000_02173648(self);
+        TaskList_Insert(self);
         return;
     }
     self->unk104 = ov006_NewUiList021cb4a8();
     self->unk104->vfunc_10(MsgRes_GetString(res, 0x12d));
     self->unk104->vfunc_14(MsgRes_GetString(res, 0x12e));
-    func_ov000_02157c90(self->unk104, MsgRes_GetString(res, 0x12f));
-    func_ov000_02157d2c(self->unk104, MsgRes_GetString(res, 0x130));
+    UiList021cb4a8_SetLabel(self->unk104, MsgRes_GetString(res, 0x12f));
+    UiList021cb4a8_SetCenteredLabel(self->unk104, MsgRes_GetString(res, 0x130));
     self->unk104->unk_4a = 0x2c00;
     self->unk104->rows = 5;
     ov006_Window_SetPos(self->unk104, 0, 0x2c, -0x1ccd);
@@ -1010,7 +1010,7 @@ void ov006_TaskD0_Setup(ov006_TaskD0 *self) {
     item->unk_10 = 0;
     {
         UiList *w = self->unk104;
-        w->vfunc_a8(func_ov000_02154b58(w, 0));
+        w->vfunc_a8(UiList_GetItemById(w, 0));
     }
     self->unk104->vfunc_08();
     self->unk104->flags &= ~2;
@@ -1021,11 +1021,11 @@ void ov006_TaskD0_Setup(ov006_TaskD0 *self) {
     ov006_Window_SetSlide(self->unk108, -0x100, 0, -0x199a);
     self->unk108->slideMode = 1;
     self->unk108->vfunc_08();
-    func_ov000_0215bb14(self->unk108, MsgRes_GetString(res, 0x132));
+    Obj0215bb14_SetText(self->unk108, MsgRes_GetString(res, 0x132));
     self->unk108->vfunc_70();
     self->fadeLen = self->unk104->openLen;
     self->unk_04 &= ~2;
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 static inline void ov006_TaskD0_HideWindows(ov006_TaskD0 *self) {
@@ -1061,26 +1061,26 @@ void ov006_TaskD0_UpdateActive(ov006_TaskD0 *self) {
             if (node->id == 4) {
                 func_ov006_021e4cb4(data_ov006_021ec888);
                 data_ov006_021ec888->unk15E = 2;
-                func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
                 ov006_TaskD0_Close(self);
                 self->subStep = 2;
                 ov006_TaskD0_HideWindows(self);
             } else {
-                func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
             }
         } else if (node->unk_0c >= 4) {
-            func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
         } else {
             ov006_MenuNode *menu = ov006_Menu_FindNode(data_ov006_021ec888, node->unk_10);
             if (menu != NULL) {
                 func_ov006_021e4ce8(data_ov006_021ec888, &menu->data);
                 data_ov006_021ec888->unk15E = 2;
-                func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
                 self->subStep = 1;
                 ov006_TaskD0_Close(self);
                 ov006_TaskD0_HideWindows(self);
             } else {
-                func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
                 ov006_TaskD0_RefreshList(self);
             }
         }
@@ -1109,13 +1109,13 @@ void ov006_TaskD0_PostUpdate(ov006_TaskD0 *self) {
     }
     switch (self->subStep) {
     case 0:
-        func_ov000_0218084c(data_ov000_021ccd44, 0x26, 0);
+        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x26, 0);
         break;
     case 1:
-        func_ov000_0218084c(data_ov000_021ccd44, 0x28, 2);
+        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x28, 2);
         break;
     case 2:
-        func_ov000_0218084c(data_ov000_021ccd44, 0x28, 1);
+        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x28, 1);
         break;
     }
     self->subStep = 3;
@@ -1157,7 +1157,7 @@ void ov006_TaskD0_RefreshList(ov006_TaskD0 *self) {
     }
     for (j = 0; j < 4; j++) {
         u32 v;
-        item = func_ov000_02154b58(self->unk104, j);
+        item = UiList_GetItemById(self->unk104, j);
         id = ids[j];
         if (id != 0) {
             int srcLen;
@@ -1177,7 +1177,7 @@ void ov006_TaskD0_RefreshList(ov006_TaskD0 *self) {
         item->name = NULL;
         OV006_DELETE_OBJECT(item->label);
         item->name = self->names[j];
-        func_ov000_02153c48(item, 8, 0, 1, 1);
+        Obj02153c48_CreateText(item, 8, 0, 1, 1);
     }
 }
 
@@ -1256,7 +1256,7 @@ extern void *data_ov000_021cadcc;
 extern u8 *data_02097e40;
 
 void *MsgRes_GetString(void *a, int id);
-void func_ov000_02173648(Task *self);
+void TaskList_Insert(Task *self);
 void ov006_SlotManager_Reset_021daea0(ov006_SlotManager *a);
 BOOL ov006_SlotManager_HasItem(ov006_SlotManager *a, int b);
 u32 ov006_CopyOwnerInfo(void *a, int b);
@@ -1285,8 +1285,8 @@ void ov006_TaskD0C_Setup(ov006_TaskD0C *self) {
     self->unk11C = ov006_NewUiList021cb4a8();
     self->unk11C->vfunc_10(MsgRes_GetString(res, 0x133));
     self->unk11C->vfunc_14(MsgRes_GetString(res, 0x134));
-    func_ov000_02157c90(self->unk11C, MsgRes_GetString(res, 0x135));
-    func_ov000_02157d2c(self->unk11C, MsgRes_GetString(res, 0x136));
+    UiList021cb4a8_SetLabel(self->unk11C, MsgRes_GetString(res, 0x135));
+    UiList021cb4a8_SetCenteredLabel(self->unk11C, MsgRes_GetString(res, 0x136));
     self->unk11C->unk_4a = 0x2c00;
     self->unk11C->rows = 4;
     ov006_Window_SetPos(self->unk11C, 0, 0x2c, -0x1ccd);
@@ -1313,13 +1313,13 @@ void ov006_TaskD0C_Setup(ov006_TaskD0C *self) {
     ov006_Window_SetSlide(self->unk120, -0x100, 0, -0x199a);
     self->unk120->slideMode = 1;
     self->unk120->vfunc_08();
-    func_ov000_0215bb14(self->unk120, MsgRes_GetString(res, 0x138));
+    Obj0215bb14_SetText(self->unk120, MsgRes_GetString(res, 0x138));
     self->unk120->vfunc_70();
     self->unk124 = ov006_NewLo021cad50();
     self->unk124->flags |= 0x10000;
     self->unk124->flags |= 0x20000;
     self->unk124->flags |= 2;
-    func_ov000_0215c1bc(self->unk124, 0x8000, MsgRes_GetString(res, 0x198));
+    Obj0215c1bc_SetText(self->unk124, 0x8000, MsgRes_GetString(res, 0x198));
     ov006_SlotManager_Reset_021daea0(data_ov006_021ec884);
     data_ov006_021ec860->unk1C = 1;
     MI_CpuFill8(data_02097e40 + 0x18e0, 0, 0x200);
@@ -1342,7 +1342,7 @@ void ov006_TaskD0C_Setup(ov006_TaskD0C *self) {
     }
     self->fadeLen = self->unk11C->openLen;
     self->unk_04 &= ~2;
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 }
@@ -1386,7 +1386,7 @@ void ov006_TaskD0C_UpdateActive(ov006_TaskD0C *self) {
         self->unk3C = 5;
         return;
     }
-    func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
 }
 
 void ov006_TaskD0C_PreUpdate(ov006_TaskD0C *self) {
@@ -1401,10 +1401,10 @@ void ov006_TaskD0C_PreUpdate(ov006_TaskD0C *self) {
                 if (self->param == 1) {
                     void *res = data_02149ef8;
                     if (self->unk40 <= 1 && n >= 2) {
-                        func_ov000_0215bb14(self->unk120, MsgRes_GetString(res, 0x137));
+                        Obj0215bb14_SetText(self->unk120, MsgRes_GetString(res, 0x137));
                         self->unk120->vfunc_70();
                     } else if (self->unk40 >= 2 && n <= 1) {
-                        func_ov000_0215bb14(self->unk120, MsgRes_GetString(res, 0x138));
+                        Obj0215bb14_SetText(self->unk120, MsgRes_GetString(res, 0x138));
                         self->unk120->vfunc_70();
                     }
                 }
@@ -1510,12 +1510,12 @@ void func_ov006_021d16a0(ov006_TaskD0C *self) {
             data_ov006_021ec884->items[0] = 9;
         } else if (mn == 2) {
             data_ov006_021ec884->items[0] = 10;
-            func_ov000_0215c1bc(self->unk124, 0x8000, MsgRes_GetString(data_02149ef8, 0x199));
+            Obj0215c1bc_SetText(self->unk124, 0x8000, MsgRes_GetString(data_02149ef8, 0x199));
         }
         self->unk124->vfunc_70();
         self->unk124->flags &= ~2;
         *(u16 *)self->unk3E = 0;
-        func_02049a48(data_02097e4c, 0x26, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x26, -1, -1, -1);
         self->unk3C++;
         break;
     }
@@ -1553,14 +1553,14 @@ void func_ov006_021d16a0(ov006_TaskD0C *self) {
     case 50:
         ov006_TaskD0C_ShowAll(self);
         self->unk_04 |= 6;
-        func_ov000_0218084c(data_ov000_021ccd44, 0x26, 0);
+        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x26, 0);
         ov006_Menu_RequestShutdown(data_ov006_021ec888);
         self->unk3C = 70;
         break;
     case 60:
         ov006_TaskD0C_ShowAll(self);
         self->unk_04 |= 6;
-        func_ov000_0218084c(data_ov000_021ccd44, 0x29, self->param);
+        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x29, self->param);
         self->unk3C = 70;
         break;
     }
@@ -1624,14 +1624,14 @@ void ov006_TaskD0C_RefreshSlots(ov006_TaskD0C *self) {
     UiListItem *item;
     for (i = 0; i < 4; i++) {
         slot = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i);
-        item = (UiListItem *)func_ov000_02154b58(self->unk11C, i);
+        item = (UiListItem *)UiList_GetItemById(self->unk11C, i);
         if (slot->active) {
             int srcLen = 0xb;
             int dstLen = 0x30;
             func_02040b0c(self->names[i], &dstLen, slot->name, &srcLen);
             OV006_LISTNODE_SETTEXT(item, self->names[i]);
             item->unk_24 = data_ov006_021eb77c[i];
-            func_ov000_02153c48(item, 8, 0, 1, 1);
+            Obj02153c48_CreateText(item, 8, 0, 1, 1);
             item->unk_0c = (u16)(i + 1);
             if (i == data_ov006_021ec884->unk5) {
                 UiList *w = self->unk11C;
@@ -1648,7 +1648,7 @@ void ov006_TaskD0C_RefreshSlots(ov006_TaskD0C *self) {
         } else {
             OV006_LISTNODE_SETTEXT(item, data_ov006_021ebbac);
             item->unk_24 = 0;
-            func_ov000_02153c48(item, 8, 0, 0, 0);
+            Obj02153c48_CreateText(item, 8, 0, 0, 0);
             item->unk_0c = 0xffff;
         }
     }
@@ -1676,7 +1676,7 @@ BOOL func_ov006_021d1df8(UiList *window, UiListItem *node) {
         t->unk4A = id;
         str = MsgRes_GetString(data_02149ef8, data_ov006_021eb78c[(u16)(id & 0xfff)]);
         if (t->unk5C != NULL && str != NULL) {
-            func_ov000_0215bb14(t->unk5C, str);
+            Obj0215bb14_SetText(t->unk5C, str);
             t->unk5C->vfunc_70();
         }
         func_ov006_021d3498(t, id, old > id);
@@ -1692,10 +1692,10 @@ BOOL func_ov006_021d1df8(UiList *window, UiListItem *node) {
 BOOL ov006_ListCb_StoreId(UiList *window, UiListItem *node) {
     int *out = (int *)window->owner;
     if (node != NULL) {
-        func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
         *out = node->id;
     } else {
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         *out = -1;
     }
     return FALSE;

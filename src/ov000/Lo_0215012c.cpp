@@ -6,9 +6,9 @@ extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021ca9c4[];
 extern u8 data_0208ba70[];
 void *Heap_Alloc(u32 size);
-void func_0204c7d0(TextWin *win);
+void TextWin_Init(TextWin *win);
 
-#define TEXTWIN_INIT(win) VOBJ_SET_VTABLE(win, data_0208ba70); func_0204c7d0(win)
+#define TEXTWIN_INIT(win) VOBJ_SET_VTABLE(win, data_0208ba70); TextWin_Init(win)
 
 Lo021ca9c4 *Lo021ca9c4_New(void) {
     Lo021ca9c4 *o = (Lo021ca9c4 *)Heap_Alloc(sizeof(Lo021ca9c4));

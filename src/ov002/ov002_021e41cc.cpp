@@ -26,8 +26,8 @@ BOOL func_ov002_021e41cc(Vec2 *pa, Vec2 *pb, Ov002Shape *sa, Ov002Shape *sb, Vec
     s32 xb;
     s32 yb;
     hit = 0;
-    func_ov002_021e391c(ma, sa->rot);
-    func_ov002_021e391c(mb, sb->rot);
+    Ov002_QuarterRotMtx(ma, sa->rot);
+    Ov002_QuarterRotMtx(mb, sb->rot);
     oxa = sa->ox;
     ca = sa->grid;
     cb = sb->grid;

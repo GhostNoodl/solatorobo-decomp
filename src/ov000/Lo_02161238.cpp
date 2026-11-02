@@ -20,8 +20,8 @@ typedef struct {
 } LoGlyph;
 
 extern s32 data_02097d78[5];
-BOOL func_ov000_02190a30(void *p, s32 a);
-void func_ov000_02190a80(void *p, s32 a);
+BOOL Model0218fe1c_GetAnimCtrl(void *p, s32 a);
+void Model0218fe1c_UpdateAnim(void *p, s32 a);
 void func_0203cb78(s32 a, s32 b, s32 c);
 
 static inline BOOL LoIsMode4(void) {

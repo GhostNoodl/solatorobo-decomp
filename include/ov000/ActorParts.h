@@ -13,7 +13,7 @@
 typedef Rot16 ActorRot;
 
 // The actor's state block (Actor::fsm, ctor History_Init, 0x14 bytes): the step and
-// frame timer of the current state, flag bits, and the last states. func_ov000_02198360
+// frame timer of the current state, flag bits, and the last states. History_SetState
 // switches to a new state and pushes the old one (History_0219830c.c).
 typedef struct ActorSub40 {
     u16 st;
@@ -34,7 +34,7 @@ static inline u16 ActorSub40_Timer(const ActorSub40 *s) {
     return s->timer;
 }
 
-// The block at Actor::unk_44 (0x24 bytes; func_ov000_021984f4 sets it up).
+// The block at Actor::unk_44 (0x24 bytes; Obj021984c8_UpdatePos sets it up).
 typedef struct ActorSub44 {
     VecFx32 pos;
     VecFx32 unk_0c;
@@ -64,14 +64,14 @@ typedef struct ActorHp {
     u16 unk_0a;
     u16 unk_0c;
     u16 unk_0e;
-    s32 (*unk_10)(s32 dmg); // applied to the damage this actor deals (func_ov000_0219a8bc)
+    s32 (*unk_10)(s32 dmg); // applied to the damage this actor deals (Hit_Apply)
     u32 unk_14;
-    s32 (*unk_18)(s32 dmg); // applied to the damage this actor takes (func_ov000_0219a8bc)
+    s32 (*unk_18)(s32 dmg); // applied to the damage this actor takes (Hit_Apply)
 } ActorHp;
 
-// The actor's collision sphere (Actor::hit, ctor func_ov000_021985e8, 0x9c bytes). It starts with a
-// Main HitSphere (func_0203f260, HitSphere_Link; the names up to radius are HitSphere's) and follows
-// its owner actor (func_ov000_0219864c).
+// The actor's collision sphere (Actor::hit, ctor ActorSub48_Init, 0x9c bytes). It starts with a
+// Main HitSphere (HitSphere_Init, HitSphere_Link; the names up to radius are HitSphere's) and follows
+// its owner actor (ActorSub48_UpdatePos).
 typedef struct ActorSub48 {
     VecFx32 pos;
     VecFx32 prev;
@@ -93,7 +93,7 @@ typedef struct ActorSub48 {
     u32 unk_58;
     VecFx32 offset;
     VecFx32 check;
-    VecFx32 unk_74; // contact point of the last map hit (func_ov000_021987b8); unk_80..88: its normal
+    VecFx32 unk_74; // contact point of the last map hit (Body_Update); unk_80..88: its normal
     s32 unk_80;
     s32 unk_84;
     s32 unk_88;
@@ -118,7 +118,7 @@ typedef struct ActorSub48 {
 } ActorSub48;
 SIZE_ASSERT(ActorSub48, 0x9c);
 
-// The actor's resource block (Actor::unk_34, 0x138 bytes, ctor func_ov000_0218e9c4); the robot embeds four.
+// The actor's resource block (Actor::unk_34, 0x138 bytes, ctor ResSet_Init); the robot embeds four.
 typedef struct ActorRes {
     s16 unk_00; // negative until the resources are loaded
     u8 unk_02;
@@ -130,7 +130,7 @@ typedef struct ActorRes {
     u8 unk_03_5 : 1;
     u8 unk_03_6 : 2;
     // From 0x0c, five 0x3c-byte entries (a handle, a 0x20-byte name and a 0x18-byte extension;
-    // func_ov000_0218e9c4 clears them). The ov003 actors read entries 2 and 4.
+    // ResSet_Init clears them). The ov003 actors read entries 2 and 4.
     u8 unk_04[0x8];
     void **unk_0c; // entry 0's handle
     char unk_10[0x20]; // entry 0's name

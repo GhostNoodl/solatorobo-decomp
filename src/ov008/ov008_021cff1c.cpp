@@ -7,8 +7,8 @@ extern "C" {
 
 extern void *data_ov000_021caec8;
 extern void *data_ov000_021cac60;
-BOOL func_02054f10(Model *a, u32 b);
-BOOL func_0203e63c(void *p);
+BOOL Model_IsReady(Model *a, u32 b);
+BOOL Vram_IsTransferDone(void *p);
 BOOL func_ov008_021d01b0(Ov008Menu *self);
 
 }
@@ -34,7 +34,7 @@ static inline BOOL Ov008_ModelDone(Ov008MenuRes *p) {
     if (p->unk_6c == NULL) {
         return TRUE;
     }
-    if (func_0203e63c(p->unk_6c)) {
+    if (Vram_IsTransferDone(p->unk_6c)) {
         p->unk_6c = NULL;
     } else {
         return p->unk_04.b6 == 0;

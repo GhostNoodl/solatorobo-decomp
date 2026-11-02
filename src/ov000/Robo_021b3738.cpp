@@ -8,8 +8,8 @@
 #define SC(r) FX_SinCosTable_[((r) >> 4) * 2], FX_SinCosTable_[((r) >> 4) * 2 + 1]
 
 extern "C" {
-Actor *func_ov000_021985c0(ActorSub44 *hit);
-void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
+Actor *Obj021984c8_GetActor(ActorSub44 *hit);
+void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
 BOOL func_ov000_0219b3b4(void *p);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 
@@ -65,7 +65,7 @@ void func_ov000_021b3738(Robo021ca458 *self, ActorSub44 *hit) {
     MtxFx33 m;
     s32 r;
     if (hit != NULL && (self->fsm->current != 0x18 || self->unk_b1e == 0xffff)) {
-        Actor *a = func_ov000_021985c0(hit);
+        Actor *a = Obj021984c8_GetActor(hit);
         BOOL flag;
         ActorSub4c *e;
         pos = hit->pos;
@@ -73,7 +73,7 @@ void func_ov000_021b3738(Robo021ca458 *self, ActorSub44 *hit) {
             ofs.z = hit->unk_1c;
             ofs.x = 0;
             ofs.y = 0;
-            func_ov000_0219a210(&pos, &ofs, a->rot_y);
+            Geom_AddRotatedOffset(&pos, &ofs, a->rot_y);
         }
         r = hit->unk_0c.y;
         if (r == 0) {
@@ -95,7 +95,7 @@ void func_ov000_021b3738(Robo021ca458 *self, ActorSub44 *hit) {
                 }
             }
         }
-        func_ov000_021bd314(self->unk_5c, 0);
+        ActorMarker_SetKind(self->unk_5c, 0);
         if (self->unk_5c->kind == 0) {
             LFLD(s32, self->unk_5c, 0x98) = flag;
         } else {
@@ -109,7 +109,7 @@ void func_ov000_021b3738(Robo021ca458 *self, ActorSub44 *hit) {
             goto end;
         }
         if (o->targetObj->unk_1e == 0) {
-            func_ov000_021bd314(self->unk_5c, 5);
+            ActorMarker_SetKind(self->unk_5c, 5);
             pos = self->pos;
             r = self->height;
         } else {
@@ -125,25 +125,25 @@ void func_ov000_021b3738(Robo021ca458 *self, ActorSub44 *hit) {
             pos.z = d;
             MTX_MultVec33(&pos, &m, &pos);
             VEC_Add(&pos, &self->pos, &pos);
-            func_ov000_021bd314(self->unk_5c, 2);
+            ActorMarker_SetKind(self->unk_5c, 2);
         }
         self->unk_5c->show = 1;
     } else {
         pos = self->pos;
         r = self->centerY;
         self->unk_5c->show = 0;
-        func_ov000_021bd438(self->unk_5c, &self->pos, 0);
+        ActorMarker_SetPos(self->unk_5c, &self->pos, 0);
     }
 end:
     self->unk_5c->height = r;
     self->unk_5c->unk_50 = pos;
-    func_ov000_021bd624(self->unk_5c);
+    ActorMarker_Update(self->unk_5c);
     if (self->unk_b24_4 && !IsShown_021b3738(self->unk_5c) && (data_ov000_021ccd68->frame & 0x3f) < 0x2c) {
         self->unk_9b0->show = 1;
     } else {
         self->unk_9b0->show = 0;
     }
     self->unk_9b0->unk_50 = self->unk_75c;
-    func_ov000_021bd624(self->unk_9b0);
+    ActorMarker_Update(self->unk_9b0);
 }
 }

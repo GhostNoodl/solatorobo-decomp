@@ -11,7 +11,7 @@ void *Heap_Alloc(u32 size);
 }
 #endif
 
-// Allocates a Model, builds it with func_02041440 (name NAME) and copies the archive name ARC.
+// Allocates a Model, builds it with TexObj_Init (name NAME) and copies the archive name ARC.
 #define MODEL_NEW(out, NAME, ARC)                       \
     do {                                                \
         Model *m_ = (Model *)Heap_Alloc(sizeof(Model)); \
@@ -20,8 +20,8 @@ void *Heap_Alloc(u32 size);
             const char *name_;                          \
             name_ = NAME;                               \
             arc_ = ARC;                                 \
-            func_02041218(&m_->pltt);                   \
-            func_02041440(m_, name_, 0);                \
+            PlttRes_Init_02041218(&m_->pltt);                   \
+            TexObj_Init(m_, name_, 0);                \
             STD_CopyString(m_->name, arc_);             \
         }                                               \
         out = m_;                                       \
@@ -32,8 +32,8 @@ void *Heap_Alloc(u32 size);
 struct ModelObj : Model {
     static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     ModelObj(const char *nm, const char *arc) {
-        func_02041218(&pltt);
-        func_02041440(this, nm, 0);
+        PlttRes_Init_02041218(&pltt);
+        TexObj_Init(this, nm, 0);
         STD_CopyString(name, arc);
     }
 };
@@ -76,10 +76,10 @@ static inline void Model_PlayPart(Model *model, s32 idx) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx) + 0xc));
     }
-    func_02042628(model, anim, part, 0);
+    TexObj_DrawCell(model, anim, part, 0);
 }
 
-// Model_PlayPart with the last argument of func_02042628 given.
+// Model_PlayPart with the last argument of TexObj_DrawCell given.
 static inline void Model_PlayPartF(Model *model, s32 idx, s32 f) {
     ModelRes *res = model->res;
     ModelPart *part;
@@ -93,7 +93,7 @@ static inline void Model_PlayPartF(Model *model, s32 idx, s32 f) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx) + 0xc));
     }
-    func_02042628(model, anim, part, f);
+    TexObj_DrawCell(model, anim, part, f);
 }
 
 #endif

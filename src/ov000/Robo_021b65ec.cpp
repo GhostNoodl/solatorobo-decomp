@@ -7,11 +7,11 @@ extern "C" {
 
 extern ActorMgr *data_ov000_021ccd68;
 extern void *data_02fe152c;
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_021b13cc(u8 *pl, s32 a);
 void func_ov000_021b12c0(u8 *pl, s32 a);
-u16 func_020594bc(void *a, s32 b, s32 c, s32 d);
+u16 DataRes_ReadEntry(void *a, s32 b, s32 c, s32 d);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline Actor *FindActor021b65ec(u16 id) {
@@ -51,7 +51,7 @@ void func_ov000_021b65ec(FieldMgr *self) {
     Robo021ca458 *pl;
     FieldExit *item;
     // DECL-END
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (pl == NULL) {
         return;
     }
@@ -108,7 +108,7 @@ void func_ov000_021b65ec(FieldMgr *self) {
     }
     case 3: {
         FieldId c;
-        if (func_020594bc(data_02fe152c, 5, 1, 0) != 1) {
+        if (DataRes_ReadEntry(data_02fe152c, 5, 1, 0) != 1) {
             return;
         }
         if (pl->unk_b24_1 ? TRUE : FALSE) {

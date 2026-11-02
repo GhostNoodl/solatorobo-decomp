@@ -30,7 +30,7 @@ struct Obj02152e5c {
     Model *unk_10;
 };
 
-BOOL func_ov000_02152e5c(Obj02152e5c *self) {
+BOOL Obj02152e5c_LoadModel(Obj02152e5c *self) {
     if (self->unk_10) {
         return TRUE;
     }
@@ -40,12 +40,12 @@ BOOL func_ov000_02152e5c(Obj02152e5c *self) {
         MODEL_NEW(self->unk_10, data_0208cb74, data_0208cca0);
     }
     {
-        ResList *a = func_02035d5c(self->unk_10->name);
-        void *b = func_02034d88(a, self->unk_10->unk_04c);
-        func_020417e0(self->unk_10, b);
+        ResList *a = ResMgr_GetArcList(self->unk_10->name);
+        void *b = ResList_FindType2(a, self->unk_10->unk_04c);
+        TexObj_SetRes(self->unk_10, b);
     }
     self->unk_10->flags |= 2;
-    func_02041d9c(self->unk_10, 0, 7);
+    TexObj_SelectImage(self->unk_10, 0, 7);
     return TRUE;
 }
 

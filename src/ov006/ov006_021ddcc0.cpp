@@ -51,14 +51,14 @@ typedef struct ov006_Unk021ddcc0 {
 extern "C" {
 
 extern u8 data_ov006_021ec2bc[];
-void func_ov000_0216e5d0(void *p);
-void func_ov000_0216e574(void *p);
+void LoTimer_FreeModels(void *p);
+void LoTimer_Init(void *p);
 extern u8 data_ov006_021ec24c[];
 extern u8 data_ov006_021ec21c[];
 extern char data_ov006_021ec178[];
 extern char data_ov006_021ec185[];
 extern char data_ov006_021ec191[];
-void func_0206e900(char *dst, const char *src);
+void LangData_LocalizePath(char *dst, const char *src);
 void ov006_Unk021dcf7c_Load(ov006_ObjA021de008 *p);
 void ov006_Unk021dd450_Load(ov006_ObjB021de008 *p);
 
@@ -72,7 +72,7 @@ static inline void ov006_Unk021ddcc0_dtor(ov006_Unk021ddcc0 *self) {
         if (self->unk1C != NULL) {
             if (self->unk1C != NULL) {
                 void *p = self->unk1C;
-                func_ov000_0216e5d0(p);
+                LoTimer_FreeModels(p);
                 Heap_Free(p);
             }
             self->unk1C = NULL;
@@ -132,7 +132,7 @@ void ov006_Unk021ddcc0_Load(ov006_Unk021ddcc0 *self) {
     self->unk18->unk14 = -0x2000;
     c = (ov006_ObjC021de008 *)Heap_Alloc(sizeof(ov006_ObjC021de008));
     if (c != NULL) {
-        func_ov000_0216e574(c);
+        LoTimer_Init(c);
     }
     self->unk1C = c;
     c->unk48 = 0;
@@ -140,56 +140,56 @@ void ov006_Unk021ddcc0_Load(ov006_Unk021ddcc0 *self) {
     c->unk50 = -0x2000;
     self->unk1C->unk18 = 2;
     self->unk1C->unk0 |= 0x400000;
-    func_0206e900(file, data_ov006_021ec178);
+    LangData_LocalizePath(file, data_ov006_021ec178);
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec191;
         const char *path = file;
         if (path) {
-            func_02041218(&model->pltt);
-            func_02041440(model, name, 0);
+            PlttRes_Init_02041218(&model->pltt);
+            TexObj_Init(model, name, 0);
             STD_CopyString(model->name, path);
         }
     }
     self->unk20 = model;
-    func_020417e0(self->unk20, func_02035de0(file, data_ov006_021ec191));
+    TexObj_SetRes(self->unk20, func_02035de0(file, data_ov006_021ec191));
     self->unk20->flags |= 2;
     self->unk20->flags |= 0x80000;
     self->unk20->unk_150 = -0x2000;
-    func_02041d9c(self->unk20, 0, 7);
-    func_02041d9c(self->unk20, 0, 8);
+    TexObj_SelectImage(self->unk20, 0, 7);
+    TexObj_SelectImage(self->unk20, 0, 8);
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec191;
         const char *path = file;
         if (path) {
-            func_02041218(&model->pltt);
-            func_02041440(model, name, 0);
+            PlttRes_Init_02041218(&model->pltt);
+            TexObj_Init(model, name, 0);
             STD_CopyString(model->name, path);
         }
     }
     self->unk24 = model;
-    func_020417e0(self->unk24, func_02035de0(file, data_ov006_021ec191));
+    TexObj_SetRes(self->unk24, func_02035de0(file, data_ov006_021ec191));
     self->unk24->flags |= 2;
     self->unk24->flags |= 0x80000;
     self->unk24->unk_150 = -0x2000;
-    func_02041d9c(self->unk24, 0, 0xffff);
+    TexObj_SelectImage(self->unk24, 0, 0xffff);
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec185;
         const char *path = file;
         if (path) {
-            func_02041218(&model->pltt);
-            func_02041440(model, name, 0);
+            PlttRes_Init_02041218(&model->pltt);
+            TexObj_Init(model, name, 0);
             STD_CopyString(model->name, path);
         }
     }
     self->unk34 = model;
-    func_020417e0(self->unk34, func_02035de0(file, data_ov006_021ec185));
+    TexObj_SetRes(self->unk34, func_02035de0(file, data_ov006_021ec185));
     self->unk34->flags |= 2;
     self->unk34->flags |= 0x80000;
     self->unk34->unk_150 = -0x2000;
-    func_02041d9c(self->unk34, 0, 0xffff);
+    TexObj_SelectImage(self->unk34, 0, 0xffff);
     self->unk4 = 1;
 }
 

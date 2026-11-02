@@ -21,8 +21,8 @@ static inline Model *ov006_NewModel021e16b0(void) {
     if (model != NULL) {
         const char *name = data_ov006_021ec1a9;
         if (name) {
-            func_02041218(&model->pltt);
-            func_02041440(model, name, 0);
+            PlttRes_Init_02041218(&model->pltt);
+            TexObj_Init(model, name, 0);
             STD_CopyString(model->name, data_ov006_021ec864);
         }
     }
@@ -51,16 +51,16 @@ static inline void ov006_Caption_Build(ov006_Caption *s) {
     TextWin *t;
     if (s->kind != 2) {
         s->model = ov006_NewModel021e16b0();
-        func_020417e0(s->model, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
+        TexObj_SetRes(s->model, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
         s->model->flags |= 2;
         s->model->flags &= ~0x80000;
         s->model->flags |= 0x400000;
-        func_02041d9c(s->model, 2, data_ov006_021eb824[s->kind].part);
+        TexObj_SelectImage(s->model, 2, data_ov006_021eb824[s->kind].part);
     }
     t = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (t != NULL) {
         *(const u32 **)t = data_0208ba70;
-        func_0204c7d0(t);
+        TextWin_Init(t);
     }
     s->label = t;
     ov006_Caption_ResetText(s, data_ov006_021ec1b5);
@@ -133,11 +133,11 @@ void ov006_Unk021e16b0_Load(ov006_Unk021e16b0 *self) {
     l->unkE0 = 2;
     ov006_Lbl_SetMove(self->unk2C, zero, zero, zero, zero, zero);
     self->unk28 = ov006_NewModel021e16b0();
-    func_020417e0(self->unk28, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
+    TexObj_SetRes(self->unk28, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
     self->unk28->flags |= 2;
     self->unk28->flags |= 0x80000;
     self->unk28->flags |= 0x400000;
-    func_02041d9c(self->unk28, 2, 8);
+    TexObj_SelectImage(self->unk28, 2, 8);
 }
 
 }

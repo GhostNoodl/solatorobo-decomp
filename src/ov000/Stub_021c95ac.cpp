@@ -25,13 +25,13 @@ typedef struct Node021c9544 {
     struct Node021c9544 *next;
 } Node021c9544;
 
-u8 *func_0206ede8(u16 id);
+u8 *Param_GetEntry(u16 id);
 
 void func_ov000_021c9544(s16 *out, Node021c9544 *n) {
     MI_CpuFill8(out, 0, 10);
     for (; n != NULL; n = n->next) {
         if (n->unk_4a != 2 && n->unk_6c == 0) {
-            u8 *p = func_0206ede8(n->unk_48);
+            u8 *p = Param_GetEntry(n->unk_48);
             out[p[0]] += p[2];
         }
     }
@@ -89,7 +89,7 @@ void func_ov000_021c95fc(s16 *out) {
     slots = data_0214a424->slots;
     for (i = 0; i < 0x25; i++) {
         if (slots[i].id != 0xffff && !slots[i].flags_8) {
-            u8 *p = func_0206ede8(slots[i].id);
+            u8 *p = Param_GetEntry(slots[i].id);
             if (p[0] < 5) {
                 out[p[0]] += p[2];
             }

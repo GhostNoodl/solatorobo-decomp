@@ -37,17 +37,17 @@ void ov006_CaptionPanel_Load(ov006_CaptionPanel *self) {
     if (model != NULL) {
         const char *name = data_ov006_021ec1a9;
         if (name) {
-            func_02041218(&model->pltt);
-            func_02041440(model, name, 0);
+            PlttRes_Init_02041218(&model->pltt);
+            TexObj_Init(model, name, 0);
             STD_CopyString(model->name, data_ov006_021ec864);
         }
     }
     self->model = model;
-    func_020417e0(self->model, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
+    TexObj_SetRes(self->model, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
     self->model->flags |= 2;
     self->model->flags |= 0x80000;
     self->model->flags |= 0x400000;
-    func_02041d9c(self->model, 2, 9);
+    TexObj_SelectImage(self->model, 2, 9);
 }
 
 }

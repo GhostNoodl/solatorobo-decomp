@@ -3,16 +3,16 @@
 
 extern "C" {
 
-void func_ov002_021e3b40(s32 *out, s32 x, s32 z, s32 *origin);
+void Ov002_CellXZToPos(s32 *out, s32 x, s32 z, s32 *origin);
 
 static inline void updateModel(Obj021efe8c *m) {
     s32 v[3];
-    func_ov002_021e3b40(v, m->unk_74, m->unk_78, &m->unk_7c);
+    Ov002_CellXZToPos(v, m->unk_74, m->unk_78, &m->unk_7c);
     v[1] = m->unk_84;
     m->mdl.trans.x = v[0];
     m->mdl.trans.y = v[1];
     m->mdl.trans.z = v[2];
-    if (m->mdl.renderObj != NULL && func_0203e63c(m->mdl.texTask)) {
+    if (m->mdl.renderObj != NULL && Vram_IsTransferDone(m->mdl.texTask)) {
         NNS_G3dGlbSetBaseTrans(&m->mdl.trans);
         NNS_G3dGlbSetBaseScale(&m->mdl.scale);
         MI_Copy36B(&m->mdl.rot, data_020928b4);
@@ -67,7 +67,7 @@ void func_ov002_021dc730(Obj021eff10 *self) {
             next = (Obj021efe9c *)a->next;
             if (a->unk_4a == 1 && a->unk_6c) {
                 if (a->unk_ac == 3) {
-                    func_ov002_021d9ed8(w, a, 1);
+                    Obj021efe6c_RemovePiece(w, a, 1);
                 } else {
                     done = FALSE;
                 }

@@ -24,7 +24,7 @@ extern const ov006_Price021da208 data_ov006_021eb7b4[];
 extern const ov006_Price021da208 data_ov006_021eb7c4[];
 extern const ov006_Price021da208 data_ov006_021eb7e4;
 
-void func_ov000_021c22d8(void *self);
+void ListRow_Init(void *self);
 void func_ov000_021c5bac(void *self);
 BOOL ov006_ListCb_StoreIdOrCancel(UiList *self, UiListItem *item);
 
@@ -58,7 +58,7 @@ static inline ov006_Entry021da208 *ov006_NewEntry(void) {
     ov006_Entry021da208 *e = (ov006_Entry021da208 *)Heap_Alloc(0x48);
     if (e != NULL) {
         e->vtbl = &data_ov006_021ebc80;
-        func_ov000_021c22d8(e);
+        ListRow_Init(e);
         e->vtbl = &data_ov000_021cca40;
         func_ov000_021c5bac(e);
     }
@@ -87,8 +87,8 @@ void ov006_Task021ec040_BuildShopList(ov006_Task021ec040 *self) {
     self->unk10->vfunc_10(MsgRes_GetString(res, 0x18e));
     self->unk10->vfunc_14(MsgRes_GetString(res, 0x18f));
     self->unk10->unk_4a = 0x2c00;
-    func_ov000_02157c90(self->unk10, MsgRes_GetString(res, 0x190));
-    func_ov000_02157d2c(self->unk10, MsgRes_GetString(res, 0x3e));
+    UiList021cb4a8_SetLabel(self->unk10, MsgRes_GetString(res, 0x190));
+    UiList021cb4a8_SetCenteredLabel(self->unk10, MsgRes_GetString(res, 0x3e));
     self->unk10->width = 0xf8;
     self->unk10->rows = 1;
     ov006_Window_SetPos(self->unk10, 0, 0x19, -0x199a);
@@ -104,16 +104,16 @@ void ov006_Task021ec040_BuildShopList(ov006_Task021ec040 *self) {
     self->unk10->flags &= ~0x2000000;
     {
         UiList021cb4a8 *w = self->unk10;
-        w->vfunc_a8(func_ov000_02154b58(w, 0));
+        w->vfunc_a8(UiList_GetItemById(w, 0));
     }
     self->unk10->flags |= 4;
     self->unk10->vfunc_08();
     self->unk10->flags &= ~2;
 
     self->unk14 = ov006_NewHudList();
-    func_ov000_021c55e8(self->unk14, MsgRes_GetString(res, 0x191));
-    func_ov000_021c5630(self->unk14, MsgRes_GetString(res, 0x192));
-    func_ov000_021c5678(self->unk14, MsgRes_GetString(res, 0x3e));
+    Obj021c55e8_SetLabel1(self->unk14, MsgRes_GetString(res, 0x191));
+    Obj021c55e8_SetLabel2(self->unk14, MsgRes_GetString(res, 0x192));
+    Obj021c55e8_SetLabel3(self->unk14, MsgRes_GetString(res, 0x3e));
     self->unk14->width = 0xf8;
     self->unk14->rows = 4;
     ov006_Window_SetPos(self->unk14, 2, 0x3b, -0x199a);
@@ -123,7 +123,7 @@ void ov006_Task021ec040_BuildShopList(ov006_Task021ec040 *self) {
         ov006_Entry021da208 *e = ov006_NewEntry();
         ov006_Entry_Set(e, res, p, data_ov006_021ec884->numActive);
         e->unk14 = -0x199a;
-        func_ov000_021c3fd4(self->unk14, e);
+        LoBase021ccb54_021ccbe0_AppendRow(self->unk14, e);
     }
     for (i = 0; i < 3; i++) {
         u8 item = ov006_SlotManager_GetItem(data_ov006_021ec884, i);
@@ -136,7 +136,7 @@ void ov006_Task021ec040_BuildShopList(ov006_Task021ec040 *self) {
             }
             e = ov006_NewEntry();
             ov006_Entry_Set(e, res, p, cnt);
-            func_ov000_021c3fd4(self->unk14, e);
+            LoBase021ccb54_021ccbe0_AppendRow(self->unk14, e);
         }
     }
     self->unk14->flags &= ~0x40000;
@@ -170,7 +170,7 @@ void ov006_Task021ec040_BuildShopList(ov006_Task021ec040 *self) {
     self->unk20->flags |= 2;
 
     self->unk24 = ov006_NewLo021cad50();
-    func_ov000_0215c1bc(self->unk24, 0x74, MsgRes_GetString(res, 0x197));
+    Obj0215c1bc_SetText(self->unk24, 0x74, MsgRes_GetString(res, 0x197));
     self->unk24->flags |= 0x10000;
     self->unk24->flags &= ~0x20000;
     self->unk24->flags |= 2;

@@ -17,7 +17,7 @@ typedef struct {
 extern "C" {
 extern char data_ov000_021cc5e3[];
 extern char data_ov000_021cc5e9[];
-void func_ov000_02190a80(void *a, s32 b);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
 void func_02062764(s32 a, s32 b);
 
@@ -30,7 +30,7 @@ static inline void Reset12c0(Robo021ca458 *self, BOOL flag) {
     self->unk_76c = self->rot_x;
     self->unk_76e = self->rot_y;
     self->unk_770 = self->rot_z;
-    func_ov000_02190cb0(&self->mdl1, data_ov000_021cc5e3, 0x1000, 1);
+    Model0218fe1c_SetAnim(&self->mdl1, data_ov000_021cc5e3, 0x1000, 1);
     anm = ((Anm021b12c0 *)self->mdl1.unk_1c);
     if (anm != NULL) {
         NNS_G3dRenderObjRemoveAnmObj((u8 *)self + 0x38c, *(void **)anm);
@@ -76,7 +76,7 @@ void func_ov000_021b1814(Robo021ca458 *self, BOOL flag, BOOL mode) {
         self->unk_b22_6 = 4;
         self->unk_b22_9 = 1;
         self->fsm->flags |= 0x80000000;
-        func_ov000_02198360(self->fsm, 0x1f, 0);
+        History_SetState(self->fsm, 0x1f, 0);
     }
     func_02062764(0xc00, 0x800);
     if (flag) {
@@ -89,7 +89,7 @@ static inline void SetSt(Robo021ca458 *self, u16 st) {
         self->unk_b22_6 = st;
         self->unk_b22_9 = 1;
         self->fsm->flags |= 0x80000000;
-        func_ov000_02198360(self->fsm, 0x1f, 0);
+        History_SetState(self->fsm, 0x1f, 0);
     }
 }
 
@@ -142,7 +142,7 @@ void func_ov000_021b1b88(Robo021ca458 *self, s32 mode) {
             self->unk_76c = self->rot_x;
             self->unk_76e = self->rot_y;
             self->unk_770 = self->rot_z;
-            func_ov000_02190cb0(&self->mdl1, data_ov000_021cc5e3, 0x1000, 1);
+            Model0218fe1c_SetAnim(&self->mdl1, data_ov000_021cc5e3, 0x1000, 1);
             anm = (Anm021b12c0 *)self->mdl1.unk_1c;
             if (anm != NULL) {
                 NNS_G3dRenderObjRemoveAnmObj((u8 *)self + 0x38c, *(void **)anm);

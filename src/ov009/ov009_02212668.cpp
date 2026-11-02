@@ -2,17 +2,17 @@
 
 extern "C" {
 
-extern void func_ov000_021984f4(void *a, void *b, s32 c);
+extern void Obj021984c8_UpdatePos(void *a, void *b, s32 c);
 
 void Ov009ActSpin_UpdateSub44(Ov003Actor *self) {
     if (self->unk_44 == NULL) {
         return;
     }
-    func_ov000_021984f4(self->unk_44, (u8 *)self + 0x11c, 0);
+    Obj021984c8_UpdatePos(self->unk_44, (u8 *)self + 0x11c, 0);
 }
 
 extern char data_ov009_022179b4[];
-extern void func_ov000_021911c8(Model0218fe1c *model, s16 a);
+extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *model, s16 a);
 
 void Ov009ActSpin_StateIdle(Ov009ActSpin *self) {
     VecFx32 d;
@@ -26,9 +26,9 @@ void Ov009ActSpin_StateIdle(Ov009ActSpin *self) {
     d.y = y - self->pos.y;
     d.z = z - self->pos.z;
     VEC_MultAdd(0x7b, &d, &self->pos, &self->pos);
-    func_ov000_02190cb0(self->model, data_ov009_022179b4, 0x2ab, 0);
-    func_ov000_021915a0(self->model);
-    func_ov000_021911c8(self->model, 0x99a);
+    Model0218fe1c_SetAnim(self->model, data_ov009_022179b4, 0x2ab, 0);
+    Model0218fe1c_SetLoop(self->model);
+    Model0218fe1c_SetAnimSpeed(self->model, 0x99a);
 }
 
 }

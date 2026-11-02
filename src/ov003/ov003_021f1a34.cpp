@@ -62,8 +62,8 @@ public:
 
 extern "C" {
 
-extern BOOL func_ov000_0218cea4(Ov003Pd *self);
-extern void func_ov000_021bd7a0(void *p);
+extern BOOL Actor_Draw(Ov003Pd *self);
+extern void ActorMarker_Draw(void *p);
 
 static inline BOOL Ov003Game_IsBusy(FieldState *g) {
     return g->head != g->tail;
@@ -103,14 +103,14 @@ BOOL Ov003ActVt_021fa1b8_Draw(Ov003Pd *self) {
         m->pos.x = self->pos.x;
         m->pos.y = self->pos.y;
         m->pos.z = self->pos.z;
-        r = func_ov000_0218cea4(self);
+        r = Actor_Draw(self);
     }
     if (Ov003_GameIdle() && !Ov003_GameHasD4()) {
         if (self->unk_5c != NULL) {
-            func_ov000_021bd7a0(self->unk_5c);
+            ActorMarker_Draw(self->unk_5c);
         }
         if (self->unk_ac != NULL) {
-            func_ov000_021bd7a0(self->unk_ac);
+            ActorMarker_Draw(self->unk_ac);
         }
     }
     return r;
@@ -118,12 +118,12 @@ BOOL Ov003ActVt_021fa1b8_Draw(Ov003Pd *self) {
 
 extern Ov003PdMsg *data_ov000_021ccd30;
 extern void *data_ov000_021ccd64;
-extern void *func_ov000_0216f674(Ov003PdMsg *mgr, s32 id);
+extern void *MessageQueue_GetById(Ov003PdMsg *mgr, s32 id);
 extern BOOL func_ov000_021700c4(void *p);
 extern void *Task_FindById(s32 id);
-extern Ov003PdPlr *func_ov000_0219bf90(void);
-extern void func_ov000_021bd624(Ov003PdIcon *p);
-extern BOOL func_ov000_021bd314(Ov003PdIcon *p, s32 id);
+extern Ov003PdPlr *ActorMgr_FindPlayer(void);
+extern void ActorMarker_Update(Ov003PdIcon *p);
+extern BOOL ActorMarker_SetKind(Ov003PdIcon *p, s32 id);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *actor);
 
 static inline void Ov003Icon_SetPos(Ov003PdIcon *ic, VecFx32 *v) {
@@ -137,7 +137,7 @@ static inline BOOL Ov003_MsgBusy(void) {
     if (m == NULL) {
         return FALSE;
     }
-    if (func_ov000_0216f674(m, 6) != NULL) {
+    if (MessageQueue_GetById(m, 6) != NULL) {
         return TRUE;
     }
     if (m->unk_11c == NULL) {
@@ -153,30 +153,30 @@ void Ov003ActVt_021fa1b8_RunState(Ov003Pd *self) {
         self->unk_5c->flags &= ~2;
         s = self->unk_44;
         if (s != NULL && s->unk_22_0 == 1 && s->unk_22_1 == 1 && !Ov003_MsgBusy() && Task_FindById(7) == NULL) {
-            Ov003PdPlr *p = func_ov000_0219bf90();
+            Ov003PdPlr *p = ActorMgr_FindPlayer();
             if (p != NULL && p->unk_90 == self->unk_0c) {
                 show = FALSE;
                 self->unk_5c->flags |= 2;
                 Ov003Icon_SetPos(self->unk_5c, &self->pos);
             }
         }
-        func_ov000_021bd624(self->unk_5c);
+        ActorMarker_Update(self->unk_5c);
     }
     if (self->unk_ac != NULL) {
         s16 id = self->unk_22;
         self->unk_ac->flags &= ~2;
         if (show && id != -1) {
-            Ov003PdPlr *p = func_ov000_0219bf90();
+            Ov003PdPlr *p = ActorMgr_FindPlayer();
             if (p != NULL && p->unk_16_2 && self->unk_0e != 0x2105) {
                 func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
                 ((Ov003PdV *)self)->Destroy();
                 return;
             }
-            func_ov000_021bd314(self->unk_ac, id);
+            ActorMarker_SetKind(self->unk_ac, id);
             self->unk_ac->flags |= 2;
             Ov003Icon_SetPos(self->unk_ac, &self->pos);
         }
-        func_ov000_021bd624(self->unk_ac);
+        ActorMarker_Update(self->unk_ac);
     }
 }
 

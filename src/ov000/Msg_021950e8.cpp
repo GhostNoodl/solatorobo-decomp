@@ -11,16 +11,16 @@ typedef struct {
 } Bits021950e8;
 
 extern "C" {
-Actor *func_ov000_0219bf90(void);
+Actor *ActorMgr_FindPlayer(void);
 BOOL func_ov000_0219b3b4(void *p);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
-BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg);
+BOOL Actor_HandleMsg(Actor *self, ActorMsg *msg);
 
 static inline BOOL IsB1021950e8(Actor *p) {
     return LFLD(Bits021950e8, p, 0xb24).b1 ? TRUE : FALSE;
 }
 
-BOOL func_ov000_021950e8(ActorEx *self, ActorMsg *msg) {
+BOOL ActorEx_HandleMsg(ActorEx *self, ActorMsg *msg) {
     BOOL handled = FALSE;
     BOOL callBase = TRUE;
     switch (msg->type) {
@@ -41,7 +41,7 @@ BOOL func_ov000_021950e8(ActorEx *self, ActorMsg *msg) {
                 ((ActorSub40 *)self->fsm)->flags |= 0x40000;
             } else if (k2 == 1 && ((k != 0x11 && k != 0x12 && k != 0x13 && k != 0x14) || LFLD(u16, msg->data, 0) != 0)) {
                 if (!self->unk_cc_2) {
-                    Actor *p = func_ov000_0219bf90();
+                    Actor *p = ActorMgr_FindPlayer();
                     if (p != NULL && msg->id == p->id) {
                         StageFlags *g = data_0214a424;
                         u32 n = g->unk_016 + 1;
@@ -53,7 +53,7 @@ BOOL func_ov000_021950e8(ActorEx *self, ActorMsg *msg) {
                     }
                 }
             } else if (LFLD(u16, msg->data, 0) == 0 && sub->target == 0xffff) {
-                Actor *p = func_ov000_0219bf90();
+                Actor *p = ActorMgr_FindPlayer();
                 if (p != NULL && !IsB1021950e8(p) && msg->id == p->id && p->target == self->id &&
                     func_ov000_0219b3b4(self->targetObj) && self->hit != NULL &&
                     (self->hit->unk_54 & 0x20000000)) {
@@ -80,7 +80,7 @@ BOOL func_ov000_021950e8(ActorEx *self, ActorMsg *msg) {
         }
         break;
     }
-    if (callBase && func_ov000_0218d494(self, msg)) {
+    if (callBase && Actor_HandleMsg(self, msg)) {
         return TRUE;
     }
     if (handled) {

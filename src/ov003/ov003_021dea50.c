@@ -39,20 +39,20 @@ extern char data_ov003_021f83e8[];
 extern const char data_ov003_021f8510[];
 extern char data_ov003_021f8516[];
 extern void Heap_Free(void *p);
-extern void *func_ov000_0219429c(void *p);
-extern void func_ov000_02194758(void *p);
+extern void *ActorEx_DtorBase(void *p);
+extern void ActorEx_Start(void *p);
 extern void SndMgr_StopSeqArc(void *mgr, s32 id);
-extern s32 func_02049afc(void *mgr, s32 v);
-extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
-extern void *func_ov000_02191318(void *p, s32 v);
-extern void func_ov000_021915a0(void *p);
+extern s32 SndMgr_StartSeqArc(void *mgr, s32 v);
+extern BOOL Model0218fe1c_SetAnim(void *p, const char *name, s32 a, s32 b);
+extern void *Model0218fe1c_SetAnimFrame(void *p, s32 v);
+extern void Model0218fe1c_SetLoop(void *p);
 
 Ov003Prop *Ov003ActVt_021f83e8_Dtor(Ov003Prop *self) {
     self->vtbl = data_ov003_021f83e8;
     if (self->unk_d0 >= 0) {
         SndMgr_StopSeqArc(data_02097e4c, self->unk_d0);
     }
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
@@ -61,28 +61,28 @@ Ov003Prop *Ov003ActVt_021f83e8_DtorDelete(Ov003Prop *self) {
     if (self->unk_d0 >= 0) {
         SndMgr_StopSeqArc(data_02097e4c, self->unk_d0);
     }
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 void Ov003ActVt_021f83e8_Start(Ov003Prop *self) {
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     if (self->unk_18 >= 3) {
-        func_ov000_02190cb0(self->unk_38, data_ov003_021f8510, 0x1000, 0);
-        func_ov000_02191318(self->unk_38, -1);
+        Model0218fe1c_SetAnim(self->unk_38, data_ov003_021f8510, 0x1000, 0);
+        Model0218fe1c_SetAnimFrame(self->unk_38, -1);
     } else {
-        func_ov000_02190cb0(self->unk_38, data_ov003_021f8516, 0x1000, 0);
-        func_ov000_021915a0(self->unk_38);
+        Model0218fe1c_SetAnim(self->unk_38, data_ov003_021f8516, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->unk_38);
     }
     self->unk_44->unk_22_2 = 2;
     self->unk_44->unk_10 = -0x3800;
     self->unk_48->unk_60 = -0x3800;
-    self->unk_d0 = func_02049afc(data_02097e4c, 0x3f);
+    self->unk_d0 = SndMgr_StartSeqArc(data_02097e4c, 0x3f);
 }
 
 extern void func_ov000_0218996c(u8 a, u8 b);
-extern void *func_ov000_0219b71c(Ov003PropVec *pos, Ov003PropVec *v, s32 a, s32 b, s32 c, s32 d);
+extern void *Spawn_ScatterEffect(Ov003PropVec *pos, Ov003PropVec *v, s32 a, s32 b, s32 c, s32 d);
 
 void Ov003ActVt_021f83e8_StateIdle(Ov003Prop *self) {
     ActorSub40 *w;
@@ -123,5 +123,5 @@ void Ov003ActVt_021f83e8_StateIdle(Ov003Prop *self) {
     sc.x = 0x5000;
     sc.y = 0x3000;
     sc.z = 0x3800;
-    func_ov000_0219b71c(&p, &sc, 0x1000, 0x2800, a, b);
+    Spawn_ScatterEffect(&p, &sc, 0x1000, 0x2800, a, b);
 }

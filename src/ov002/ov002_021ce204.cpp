@@ -3,22 +3,22 @@
 extern "C" {
 
 static inline BOOL ov002_ResReady(void) {
-    return (func_02035bd4(data_ov002_021ef3e4, data_ov002_021ef3f9, 2) & 1) ? TRUE : FALSE;
+    return (ResMgr_IsArchiveLoaded(data_ov002_021ef3e4, data_ov002_021ef3f9, 2) & 1) ? TRUE : FALSE;
 }
 
-void func_ov002_021ce204(Task021ef430 *self) {
+void Task021ef430_PreUpdate(Task021ef430 *self) {
     void *saved;
     switch (self->state) {
     case 8:
         break;
     case 0xc:
-        func_ov000_0218084c(*(void **)&data_ov000_021ccd44, 0x12, 0);
+        TaskHost_RequestSwitch(*(void **)&data_ov000_021ccd44, 0x12, 0);
         self->vfunc_4c();
         break;
     }
     switch (self->unk_4e) {
     case 0:
-        func_020359fc(data_ov002_021ef3e4, data_ov002_021ef3f9, 2, 0);
+        ResMgr_LoadArchive(data_ov002_021ef3e4, data_ov002_021ef3f9, 2, 0);
         self->unk_4f = 1;
         self->unk_4e = 1;
     case 1:
@@ -32,15 +32,15 @@ void func_ov002_021ce204(Task021ef430 *self) {
             char *nm = data_ov002_021ef3f9;
             char *file = data_ov002_021ef3e4;
             if (nm) {
-                func_02041218((PlttRes *)((u8 *)m + 0x88));
-                func_02041440((Model *)m, nm, 0);
+                PlttRes_Init_02041218((PlttRes *)((u8 *)m + 0x88));
+                TexObj_Init((Model *)m, nm, 0);
                 STD_CopyString((char *)((u8 *)m + 0x2c), file);
             }
         }
         self->unk_3c = (Model *)m;
-        func_020417e0((Model *)self->unk_3c, func_02034d88(func_02035f30(data_ov002_021ef3e4, data_ov002_021ef3f9, 2), data_ov002_021ef3f9));
+        TexObj_SetRes((Model *)self->unk_3c, ResList_FindType2(ResMgr_GetArchiveList(data_ov002_021ef3e4, data_ov002_021ef3f9, 2), data_ov002_021ef3f9));
         self->unk_3c->flags |= 2;
-        func_02041d9c((Model *)self->unk_3c, 0, 0);
+        TexObj_SelectImage((Model *)self->unk_3c, 0, 0);
         {
             void *p = self->unk_3c;
             FIELD(p, 0xfc, s32) = 0;
@@ -60,8 +60,8 @@ void func_ov002_021ce204(Task021ef430 *self) {
             void *p = self->unk_3c;
             if (p != NULL) {
                 if (p != NULL) {
-                    func_02041558((Model *)p);
-                    func_02041278((PlttRes *)((u8 *)p + 0x88));
+                    TexObj_Release((Model *)p);
+                    PlttRes_Release((PlttRes *)((u8 *)p + 0x88));
                     Heap_Free(p);
                 }
                 self->unk_3c = NULL;
@@ -69,7 +69,7 @@ void func_ov002_021ce204(Task021ef430 *self) {
         }
         HEAP_POP(saved);
         if (self->unk_4f != 0) {
-            func_02035acc(data_ov002_021ef3e4, data_ov002_021ef3f9, 2);
+            ResMgr_ReleaseArchive(data_ov002_021ef3e4, data_ov002_021ef3f9, 2);
         }
         self->unk_4f = 0;
         self->unk_4e = 4;

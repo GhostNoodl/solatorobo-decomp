@@ -68,16 +68,16 @@ s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 u16 FX_Atan2(s32 x, s32 z);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 void Actor_SendMsg(void *a, u16 id, s32 b, s32 c, s32 d, void *e);
-void *func_02049f44(void *snd, s32 id, void *pos, s32 a);
+void *SndMgr_PlayAt(void *snd, s32 id, void *pos, s32 a);
 void func_ov000_0218996c(s32 a, s32 b);
-BOOL func_ov000_0219aae8(void *a, void *b, s32 c, s32 d, s32 e, VecFx32 *f, void *g, s32 h, s32 i, s32 j, s32 k);
+BOOL Hit_ApplyInArea(void *a, void *b, s32 c, s32 d, s32 e, VecFx32 *f, void *g, s32 h, s32 i, s32 j, s32 k);
 void Actor_Move(Actor *self, s32 a);
-void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-s32 func_02049afc(void *snd, s32 se);
+void Body_Update(void *a, s32 b, s32 c, s32 d);
+s32 SndMgr_StartSeqArc(void *snd, s32 se);
 void func_0204a0d4(void *snd, s32 h, s32 arg);
 void SndMgr_StopSeqArc(void *snd, s32 h);
-void func_ov000_0218d46c(void *a, u16 id, s32 b);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+void Actor_SendMsgU8(void *a, u16 id, s32 b);
+BOOL History_SetState(void *a, s32 b, s32 c);
 
 static inline Actor *FindActor_021b209c(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -170,17 +170,17 @@ void func_ov000_021b209c(Robo021ca458 *self) {
             arg.a = 0xa;
             arg.b = 1;
             Actor_SendMsg(self, self->id, 9, 0, 6, &arg);
-            func_02049f44(data_02097e4c, 0x309, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x309, &self->pos, 0);
             func_ov000_0218996c(0xa, 0xf);
             v.y = self->centerY;
             v.x = 0;
             v.z = 0;
-            func_ov000_0219aae8(self, self, 0xa, 0, 0x30, &v, 0, self->radius + 0xccd, 0, -1, 0x1000);
+            Hit_ApplyInArea(self, self, 0xa, 0, 0x30, &v, 0, self->radius + 0xccd, 0, -1, 0x1000);
         }
     }
     self->friction = 0;
     Actor_Move(self, 0);
-    func_ov000_021987b8(self->hit, 1, 0, 0);
+    Body_Update(self->hit, 1, 0, 0);
     {
         ActorSub48 *body = self->hit;
         if (body->unk_50 & 0x20000000) {
@@ -188,16 +188,16 @@ void func_ov000_021b209c(Robo021ca458 *self) {
                 self->velY = -0x800;
                 body->unk_9a |= 0x20;
                 if (info->se0 >= 0 && self->seSlot < 0) {
-                    self->seSlot = func_02049afc(data_02097e4c, info->se0);
+                    self->seSlot = SndMgr_StartSeqArc(data_02097e4c, info->se0);
                     func_0204a0d4(data_02097e4c, self->seSlot, info->se0arg);
                 }
                 if (info->se1 >= 0 && self->unk_b66 < 0) {
-                    self->unk_b66 = func_02049afc(data_02097e4c, info->se1);
+                    self->unk_b66 = SndMgr_StartSeqArc(data_02097e4c, info->se1);
                     func_0204a0d4(data_02097e4c, self->unk_b66, info->se1arg);
                 }
             }
             if ((self->hit->unk_50 & 0x400) && (data_ov000_021ccd68->frame & 0x1f)) {
-                func_02065f88(0x2bd, &self->pos);
+                Effect_SpawnId(0x2bd, &self->pos);
             }
         } else {
             if (self->seSlot >= 0) {
@@ -231,7 +231,7 @@ void func_ov000_021b209c(Robo021ca458 *self) {
         return;
     }
     if (info->mode == 2) {
-        func_ov000_0218d46c(actor, self->id, 0xa);
+        Actor_SendMsgU8(actor, self->id, 0xa);
     }
     if (info->mode == 3) {
         self->speed = info->speed;
@@ -246,7 +246,7 @@ void func_ov000_021b209c(Robo021ca458 *self) {
     self->friction = 0;
     self->gravity = 0x52;
     if (self->unk_b24_12 == 1) {
-        EffectObj *e = func_02065f88(0x6d, &self->pos);
+        EffectObj *e = Effect_SpawnId(0x6d, &self->pos);
         e->SetScaleAll(0xccd);
         e->SetRotXYZ(0x2000, 0, 0);
     }
@@ -259,7 +259,7 @@ void func_ov000_021b209c(Robo021ca458 *self) {
         self->unk_b66 = -1;
     }
     self->unk_b29_1 = 1;
-    func_ov000_02198360(((void *)self->fsm), 0x1d, 0);
+    History_SetState(((void *)self->fsm), 0x1d, 0);
     self->fsm->st = 0x64;
 }
 }

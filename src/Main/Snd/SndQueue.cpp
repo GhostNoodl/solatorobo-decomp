@@ -49,28 +49,28 @@ extern SndAreaEntry data_0208b7c8[];
 extern s32 data_0208b704;
 extern s32 data_0208b744[];
 
-extern int func_0204061c(s32 *out, const VecFx32 *pos);
+extern int Math_ProjectToScreen(s32 *out, const VecFx32 *pos);
 extern void NNS_SndPlayerPause(SndHandle *handle, int pause);
 extern s32 OS_GetThreadPriority(void *thread);
 extern BOOL OS_SetThreadPriority(void *thread, s32 prio);
 
-s32 func_02049bdc(SndMgr *mgr, s32 id, s32 pan);
+s32 SndMgr_PlayPan(SndMgr *mgr, s32 id, s32 pan);
 
 s32 func_02049c80(SndMgr *mgr, s32 id, s32 volume, s32 pan, s32 pitch, s32 useSlot, u32 slot);
 
 static inline void SndMgr_StopSe(SndMgr *mgr, s32 id) {
     s32 seqArc;
     s32 index;
-    if (func_02049984(mgr, id, &seqArc, &index) == NULL) {
+    if (SndMgr_LookupSe(mgr, id, &seqArc, &index) == NULL) {
         return;
     }
     NNS_SndPlayerStopSeqBySeqArcIdx(seqArc, index, 0);
 }
 
-void func_02049de8(SndMgr *mgr, s32 id) {
+void SndMgr_Stop(SndMgr *mgr, s32 id) {
     s32 seqArc;
     s32 index;
-    if (func_02049984(mgr, id, &seqArc, &index) == NULL) {
+    if (SndMgr_LookupSe(mgr, id, &seqArc, &index) == NULL) {
         return;
     }
     NNS_SndPlayerStopSeqBySeqArcIdx(seqArc, index, 0);
@@ -122,9 +122,9 @@ s32 func_02049e20(SndMgr *mgr, const VecFx32 *pos) {
     return vol;
 }
 
-SndHandle *func_02049f44(SndMgr *mgr, s32 id, const VecFx32 *pos, s32 pitch);
+SndHandle *SndMgr_PlayAt(SndMgr *mgr, s32 id, const VecFx32 *pos, s32 pitch);
 
-SndHandle *func_0204a028(SndMgr *mgr, s32 id, const VecFx32 *pos, s32 pitch);
+SndHandle *SndMgr_PlayAtPitch(SndMgr *mgr, s32 id, const VecFx32 *pos, s32 pitch);
 
 static inline SndHandle *SndMgr_GetSlotHandle(SndMgr *mgr, u32 slot) {
     return slot >= 5 ? NULL : mgr->seqArcHandles[slot];
@@ -144,7 +144,7 @@ static inline void SndMgr_SetSlotVolume(SndMgr *mgr, u32 slot, s32 volume, s32 f
     NNS_SndPlayerMoveVolume(handle, volume, frames);
 }
 
-void func_0204a058(SndMgr *mgr, u32 slot, s32 volume, s32 frames);
+void SndMgr_SetSlotVolume_0204a058(SndMgr *mgr, u32 slot, s32 volume, s32 frames);
 
 void func_0204a094(SndMgr *mgr, u32 slot, s32 pan);
 
@@ -156,13 +156,13 @@ void SndMgr_PauseAll(SndMgr *mgr);
 
 void SndMgr_ResumeAll(SndMgr *mgr);
 
-void func_0204a20c(SndMgr *mgr, s32 strmNo);
+void SndMgr_PlayStrm(SndMgr *mgr, s32 strmNo);
 
-void func_0204a284(SndMgr *mgr, s32 arg);
+void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 arg);
 
 void func_0204a2a8(SndMgr *mgr, s32 volume, s32 frames);
 
-s32 func_0204a2c8(SndMgr *mgr, s32 seq);
+s32 SndMgr_GetSeqVolume_0204a2c8(SndMgr *mgr, s32 seq);
 
 void func_0204a2e0(SndMgr *mgr, int fadeFrames);
 
@@ -208,25 +208,25 @@ extern SndAreaEntry data_0208b7c8[];
 extern s32 data_0208b704;
 extern s32 data_0208b744[];
 
-extern int func_0204061c(s32 *out, const VecFx32 *pos);
+extern int Math_ProjectToScreen(s32 *out, const VecFx32 *pos);
 extern void NNS_SndPlayerPause(SndHandle *handle, int pause);
 extern s32 OS_GetThreadPriority(void *thread);
 extern BOOL OS_SetThreadPriority(void *thread, s32 prio);
 
-s32 func_02049bdc(SndMgr *mgr, s32 id, s32 pan);
+s32 SndMgr_PlayPan(SndMgr *mgr, s32 id, s32 pan);
 
 s32 func_02049c80(SndMgr *mgr, s32 id, s32 volume, s32 pan, s32 pitch, s32 useSlot, u32 slot);
 
 static inline void SndMgr_StopSe(SndMgr *mgr, s32 id) {
     s32 seqArc;
     s32 index;
-    if (func_02049984(mgr, id, &seqArc, &index) == NULL) {
+    if (SndMgr_LookupSe(mgr, id, &seqArc, &index) == NULL) {
         return;
     }
     NNS_SndPlayerStopSeqBySeqArcIdx(seqArc, index, 0);
 }
 
-void func_02049de8(SndMgr *mgr, s32 id);
+void SndMgr_Stop(SndMgr *mgr, s32 id);
 
 static inline BOOL SndMgr_IsArea(SndListener *listener, u8 a, u8 b, u8 c) {
     return (listener->a == a && listener->b == b && listener->c == c) ? TRUE : FALSE;
@@ -234,7 +234,7 @@ static inline BOOL SndMgr_IsArea(SndListener *listener, u8 a, u8 b, u8 c) {
 
 s32 func_02049e20(SndMgr *mgr, const VecFx32 *pos);
 
-SndHandle *func_02049f44(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch) {
+SndHandle *SndMgr_PlayAt(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch) {
     s32 seqArc;
     s32 index;
     s32 vol;
@@ -248,7 +248,7 @@ SndHandle *func_02049f44(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch) {
     if (vol <= 0) {
         return NULL;
     }
-    func_0204061c(out, vec);
+    Math_ProjectToScreen(out, vec);
     p = out[0] - 0x80;
     if (p > 0x7f) {
         p = 0x7f;
@@ -256,7 +256,7 @@ SndHandle *func_02049f44(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch) {
     if (p < -0x80) {
         p = -0x80;
     }
-    handle = func_02049984(mgr, id, &seqArc, &index);
+    handle = SndMgr_LookupSe(mgr, id, &seqArc, &index);
     if (handle == NULL) {
         return NULL;
     }
@@ -269,11 +269,11 @@ SndHandle *func_02049f44(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch) {
     return handle;
 }
 
-SndHandle *func_0204a028(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch) {
+SndHandle *SndMgr_PlayAtPitch(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch) {
     if (pitch < -0x200 || pitch > 0x1ff) {
         return NULL;
     }
-    return func_02049f44(mgr, id, vec, pitch << 6);
+    return SndMgr_PlayAt(mgr, id, vec, pitch << 6);
 }
 
 static inline SndHandle *SndMgr_GetSlotHandle(SndMgr *mgr, u32 slot) {
@@ -294,7 +294,7 @@ static inline void SndMgr_SetSlotVolume(SndMgr *mgr, u32 slot, s32 volume, s32 f
     NNS_SndPlayerMoveVolume(handle, volume, frames);
 }
 
-void func_0204a058(SndMgr *mgr, u32 slot, s32 volume, s32 frames) {
+void SndMgr_SetSlotVolume_0204a058(SndMgr *mgr, u32 slot, s32 volume, s32 frames) {
     SndMgr_SetSlotVolume(mgr, slot, volume, frames);
 }
 
@@ -358,7 +358,7 @@ void SndMgr_ResumeAll(SndMgr *mgr) {
     }
 }
 
-void func_0204a20c(SndMgr *mgr, s32 strmNo) {
+void SndMgr_PlayStrm(SndMgr *mgr, s32 strmNo) {
     void *thread;
     s32 prio;
     if (func_02031904((StrmHandle *)&mgr->strm, strmNo, 0)) {
@@ -377,7 +377,7 @@ void func_0204a20c(SndMgr *mgr, s32 strmNo) {
     }
 }
 
-void func_0204a284(SndMgr *mgr, s32 arg) {
+void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 arg) {
     SndMgr_StopStrm(mgr);
 }
 
@@ -385,7 +385,7 @@ void func_0204a2a8(SndMgr *mgr, s32 volume, s32 frames) {
     SndMgr_SetStrmVolume(mgr, volume, frames);
 }
 
-s32 func_0204a2c8(SndMgr *mgr, s32 seq) {
+s32 SndMgr_GetSeqVolume_0204a2c8(SndMgr *mgr, s32 seq) {
     return SndMgr_GetSeqVolume(seq);
 }
 
@@ -439,7 +439,7 @@ void func_0204a3b8(SndMgr *mgr, SndCmd *cmd) {
         }
         break;
     case 9:
-        func_0204a20c(mgr, cmd->args[1]);
+        SndMgr_PlayStrm(mgr, cmd->args[1]);
         break;
     case 10:
         SndMgr_StopStrm(mgr);
@@ -624,7 +624,7 @@ static inline void SndQueue_Reset(SndQueue *queue) {
 
 void func_0204a924(SndQueue *queue);
 
-void func_0204aa10(SndQueue *queue);
+void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 
 void SndQueue_Pop(SndQueue *queue);
 
@@ -634,7 +634,7 @@ u16 SndQueue_Peek(SndQueue *queue);
 
 void func_0204aad0(SndQueue *queue);
 
-void func_0204aaec(SndQueue *queue, SndCmd *cmd);
+void SndQueue_Exec(SndQueue *queue, SndCmd *cmd);
 
 void SndQueue_StopSeqArcs(SndQueue *queue);
 
@@ -706,7 +706,7 @@ void func_0204a924(SndQueue *queue) {
     SndQueue_ResetNodes(queue);
 }
 
-void func_0204aa10(SndQueue *queue) {
+void SndQueue_ResetNodes_0204aa10(SndQueue *queue) {
     SndQueue_ResetNodes(queue);
 }
 
@@ -730,7 +730,7 @@ void func_0204aad0(SndQueue *queue) {
     mgr->unk_9c = 0;
 }
 
-void func_0204aaec(SndQueue *queue, SndCmd *cmd) {
+void SndQueue_Exec(SndQueue *queue, SndCmd *cmd) {
     switch (cmd->type) {
         case 0:
             if (!queue->flag0) {
@@ -808,7 +808,7 @@ void func_0204ab8c(SndQueue *queue) {
                 }
                 queue->unk_72 = queue->unk_74;
                 queue->unk_74 = 0xffff;
-                queue->unk_78 = func_02049afc(SND_MGR, queue->unk_72);
+                queue->unk_78 = SndMgr_StartSeqArc(SND_MGR, queue->unk_72);
                 break;
             case 0:
                 if (queue->unk_72 != 0xffff) {
@@ -838,7 +838,7 @@ void func_0204ab8c(SndQueue *queue) {
                 }
                 queue->unk_7e = queue->unk_80;
                 queue->unk_80 = 0xffff;
-                func_0204a20c(SND_MGR, queue->unk_7e);
+                SndMgr_PlayStrm(SND_MGR, queue->unk_7e);
                 SndMgr_SetStrmVolume(SND_MGR, 0x32, 0);
                 break;
             case 0:

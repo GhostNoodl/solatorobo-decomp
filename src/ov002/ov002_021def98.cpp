@@ -17,9 +17,9 @@ extern Id021def98 data_ov002_021eef90[];
 extern VFunc data_ov002_021f0044[];
 
 void func_ov000_021c3af4(void *self);
-void func_ov000_021c22d8(void *self);
-void func_ov002_021e2f54(Obj021f002c *self);
-void func_ov000_021c3fd4(void *list, void *item);
+void ListRow_Init(void *self);
+void Obj021f002c_Init(Obj021f002c *self);
+void LoBase021ccb54_021ccbe0_AppendRow(void *list, void *item);
 BOOL func_ov002_021ddcbc(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev);
 BOOL func_ov002_021ddd30(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev);
 void func_ov002_021e34fc(void *self, s32 (*cmp)(void *, void *));
@@ -48,21 +48,21 @@ Ov002RowList *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
     counts = self->owner->board->unk_08;
     for (i = 0; i < 100; i++) {
         id = i | 0x2000;
-        u8 t = func_0206ede8(id)[0];
+        u8 t = Param_GetEntry(id)[0];
         if (t == kind) {
             n = counts[i];
             for (j = 0; j < n; j++) {
                 q = (Obj021f002c *)Heap_Alloc(sizeof(Obj021f002c));
                 if (q != NULL) {
                     *(VFunc **)q = data_ov002_021ef684;
-                    func_ov000_021c22d8(q);
+                    ListRow_Init(q);
                     *(VFunc **)q = data_ov002_021f002c;
-                    func_ov002_021e2f54(q);
+                    Obj021f002c_Init(q);
                 }
                 q->id = id;
-                q->str = func_0206ec48(id);
+                q->str = Param_Get(id);
                 q->hasModel = 1;
-                func_ov000_021c3fd4(p, q);
+                LoBase021ccb54_021ccbe0_AppendRow(p, q);
             }
         }
     }
@@ -82,7 +82,7 @@ Ov002RowList *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
         func_ov002_021e34fc(p, data_ov002_021eef8c[k].fn);
         r = MsgRes_GetString(data_02149ef8, data_ov002_021eef90[k].id);
         w = self->owner;
-        func_ov000_0215bb14(((void *)w->unk_20), r);
+        Obj0215bb14_SetText(((void *)w->unk_20), r);
         w->unk_20->vfunc_70();
     }
     return p;

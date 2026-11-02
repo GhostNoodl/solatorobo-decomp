@@ -4,7 +4,7 @@ extern "C" {
 
 void *Heap_AllocArray(u32 size);
 
-void func_ov002_021e4814(Ov002LevelTable *self, u8 *src) {
+void Ov002LevelTable_Load(Ov002LevelTable *self, u8 *src) {
     u8 *p;
     func_ov002_021e4904_inline(self);
     self->src = src;

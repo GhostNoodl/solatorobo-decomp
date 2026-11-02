@@ -45,11 +45,11 @@ extern Ov003Game30 *data_ov000_021ccd30;
 extern u8 *func_02070558(s32 id);
 extern void func_ov000_0219a088(void *p);
 extern void func_ov000_0219af3c(Ov003Actor *self, void *icon);
-extern void func_ov000_0219a210(VecFx32 *v, const VecFx32 *a, s32 rot);
-extern void func_ov000_021bd624(void *p);
+extern void Geom_AddRotatedOffset(VecFx32 *v, const VecFx32 *a, s32 rot);
+extern void ActorMarker_Update(void *p);
 extern void func_ov000_021697dc(void *p, u16 a, u16 b);
 extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
-extern Ov003EnPl *func_ov000_0219bf90(void);
+extern Ov003EnPl *ActorMgr_FindPlayer(void);
 
 static inline BOOL Ov003Game_IsBusy(FieldState *g) {
     return g->head != g->tail;
@@ -148,7 +148,7 @@ void Ov003Actor_RunState(Ov003Actor *self) {
                     v.z = self->unk_44->unk_1c;
                     v.x = 0;
                     v.y = 0;
-                    func_ov000_0219a210(&pos, &v, self->rot_y);
+                    Geom_AddRotatedOffset(&pos, &v, self->rot_y);
                 }
                 r = self->unk_44->unk_0c.y;
                 if (r == 0) {
@@ -166,7 +166,7 @@ void Ov003Actor_RunState(Ov003Actor *self) {
             }
             ((Ov003EnSub5c *)self->unk_5c)->pos = pos;
             ((Ov003EnSub5c *)self->unk_5c)->unk_5c = r;
-            func_ov000_021bd624(self->unk_5c);
+            ActorMarker_Update(self->unk_5c);
         }
         if (self->unk_ea_6 != 1) {
             if (self->unk_b0->unk_0a_5) {
@@ -180,7 +180,7 @@ void Ov003Actor_RunState(Ov003Actor *self) {
                     if (self->targetObj != NULL && (self->msg_flags & 0x200)) {
                         b = TRUE;
                     }
-                    pl = func_ov000_0219bf90();
+                    pl = ActorMgr_FindPlayer();
                     if (pl != NULL && (pl->unk_90 == self->id || self->targetObj->target == pl->unk_0c)) {
                         b = TRUE;
                     }
@@ -192,7 +192,7 @@ void Ov003Actor_RunState(Ov003Actor *self) {
         }
     }
     if (self->unk_e4 != NULL) {
-        EffectObj *fx = func_020657b0(data_0214a420, self->unk_e4);
+        EffectObj *fx = Effect_Find_020657b0(data_0214a420, self->unk_e4);
         if (fx != NULL) {
             if (self->unk_e8 == 0 || (self->fsm->current != 0x14 && self->fsm->current != 0xb && self->fsm->current != 4)) {
                 fx->state = 4;
@@ -220,7 +220,7 @@ void Ov003Actor_RunState(Ov003Actor *self) {
         }
     }
     if (self->unk_e0 != NULL) {
-        EffectObj *fx = func_020657b0(data_0214a420, self->unk_e0);
+        EffectObj *fx = Effect_Find_020657b0(data_0214a420, self->unk_e0);
         if (fx == NULL) {
             self->unk_e0 = NULL;
         } else {
@@ -229,7 +229,7 @@ void Ov003Actor_RunState(Ov003Actor *self) {
         }
     }
     if (self->unk_b0->unk_0a_6) {
-        Ov003EnPl *pl = func_ov000_0219bf90();
+        Ov003EnPl *pl = ActorMgr_FindPlayer();
         if (pl != NULL) {
             pl->unk_b90 = self->pos;
             pl->unk_b9c = 0x4b8;

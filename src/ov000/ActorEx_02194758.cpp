@@ -102,18 +102,18 @@ typedef struct {
 
 extern "C" {
 void *Heap_Alloc(u32 size);
-Info02194758 *func_0206fef8(u16 id);
+Info02194758 *Tbl_FindEntry_0206fef8(u16 id);
 void *func_020704b4(u16 id);
-Model02194758 *func_ov000_0218fe1c(void *p);
-void func_ov000_0219badc(Model02194758 *m, Res02194758 *res, Info02194758 *info);
-Obj48_02194758 *func_ov000_021985e8(void *p);
-void func_ov000_02198c8c(Obj48_02194758 *o, u16 id);
+Model02194758 *Model0218fe1c_Init(void *p);
+void Model0218fe1c_Setup(Model02194758 *m, Res02194758 *res, Info02194758 *info);
+Obj48_02194758 *ActorSub48_Init(void *p);
+void Body_SetOwner(Obj48_02194758 *o, u16 id);
 void HitSphere_Link(Obj48_02194758 *o);
-void func_0203f364(Obj48_02194758 *o);
-void func_ov000_0219864c(Obj48_02194758 *o, void *a, s32 b);
-BOOL func_ov000_02198360(void *p, s32 a, s32 b);
-Obj44_02194758 *func_ov000_021984c8(void *p);
-void func_ov000_021984f4(Obj44_02194758 *o, void *a, s32 b);
+void HitSphere_Unlink_0203f364(Obj48_02194758 *o);
+void ActorSub48_UpdatePos(Obj48_02194758 *o, void *a, s32 b);
+BOOL History_SetState(void *p, s32 a, s32 b);
+Obj44_02194758 *Obj021984c8_Init(void *p);
+void Obj021984c8_UpdatePos(Obj44_02194758 *o, void *a, s32 b);
 void HitMesh_Init(void *p);
 void HitMesh_SetRes(void *mesh, void *res);
 void HitMesh_SetScale(void *mesh, s32 scale);
@@ -125,7 +125,7 @@ void HitMesh_SetMtx(void *mesh, const MtxFx43 *mtx);
 static inline Model02194758 *NewModel02194758(void) {
     void *p = Heap_Alloc(0xe8);
     if (p != NULL) {
-        p = func_ov000_0218fe1c(p);
+        p = Model0218fe1c_Init(p);
     }
     return (Model02194758 *)p;
 }
@@ -133,7 +133,7 @@ static inline Model02194758 *NewModel02194758(void) {
 static inline Obj48_02194758 *NewObj48_02194758(void) {
     void *p = Heap_Alloc(0x9c);
     if (p != NULL) {
-        p = func_ov000_021985e8(p);
+        p = ActorSub48_Init(p);
     }
     return (Obj48_02194758 *)p;
 }
@@ -141,7 +141,7 @@ static inline Obj48_02194758 *NewObj48_02194758(void) {
 static inline Obj44_02194758 *NewObj44_02194758(void) {
     void *p = Heap_Alloc(0x24);
     if (p != NULL) {
-        p = func_ov000_021984c8(p);
+        p = Obj021984c8_Init(p);
     }
     return (Obj44_02194758 *)p;
 }
@@ -157,7 +157,7 @@ static inline void *NewMesh02194758(void) {
 static inline ActorMarker *NewMarker02194758(void) {
     ActorMarker *p = (ActorMarker *)Heap_Alloc(0xa8);
     if (p != NULL) {
-        func_ov000_021bd198(p);
+        ActorMarker_Init(p);
     }
     return p;
 }
@@ -166,8 +166,8 @@ static inline void *GetRes02194758(Res02194758 *res) {
     return res->unk_84 != NULL ? *res->unk_84 : NULL;
 }
 
-void func_ov000_02194758(Actor02194758 *self) {
-    Info02194758 *info = func_0206fef8(self->id);
+void ActorEx_Start(Actor02194758 *self) {
+    Info02194758 *info = Tbl_FindEntry_0206fef8(self->id);
     func_020704b4(self->id);
     self->unk_64 = info->unk_14 << 4;
     self->unk_68 = info->unk_16 << 4;
@@ -176,7 +176,7 @@ void func_ov000_02194758(Actor02194758 *self) {
     if (info->b0) {
         self->unk_38 = NewModel02194758();
         self->unk_38->unk_b4 = self->unk_0c;
-        func_ov000_0219badc(self->unk_38, self->unk_34, info);
+        Model0218fe1c_Setup(self->unk_38, self->unk_34, info);
     }
     if (self->unk_3c != NULL) {
         self->unk_3c->unk_14 = self->unk_64 + (s32)((u32)self->unk_64 + (self->unk_64 >> 2));
@@ -184,7 +184,7 @@ void func_ov000_02194758(Actor02194758 *self) {
     if (self->unk_b0->type != 0) {
         Obj48_02194758 *o;
         self->unk_48 = NewObj48_02194758();
-        func_ov000_02198c8c(self->unk_48, self->unk_0c);
+        Body_SetOwner(self->unk_48, self->unk_0c);
         self->unk_48->unk_28 = 0x10;
         self->unk_48->unk_38 = self->unk_64;
         self->unk_48->unk_60 = self->unk_6c;
@@ -196,7 +196,7 @@ void func_ov000_02194758(Actor02194758 *self) {
         if (self->unk_b0->type == 2) {
             o = self->unk_48;
             o->b3 = 0;
-            func_0203f364(o);
+            HitSphere_Unlink_0203f364(o);
         } else if (self->unk_b0->type == 3) {
             o = self->unk_48;
             o->b1 = 0;
@@ -205,9 +205,9 @@ void func_ov000_02194758(Actor02194758 *self) {
         if (self->unk_64 >> 1 < 0x4cd) {
             self->unk_48->unk_48 = 0x4cd;
         }
-        func_ov000_0219864c(self->unk_48, NULL, 0);
+        ActorSub48_UpdatePos(self->unk_48, NULL, 0);
     } else {
-        func_ov000_02198360(self->unk_40, 1, 0);
+        History_SetState(self->unk_40, 1, 0);
     }
     if (self->unk_b0->unk_02_4 != 0) {
         Obj44_02194758 *o;
@@ -223,7 +223,7 @@ void func_ov000_02194758(Actor02194758 *self) {
         } else if (self->unk_b0->unk_02_4 == 4) {
             self->unk_44->b5 = 1;
         }
-        func_ov000_021984f4(self->unk_44, NULL, 0);
+        Obj021984c8_UpdatePos(self->unk_44, NULL, 0);
         if (self->unk_b0->unk_02_4 == 2) {
             if (self->unk_4c != NULL) {
                 self->unk_4c->b5 = 1;
@@ -277,7 +277,7 @@ void func_ov000_02194758(Actor02194758 *self) {
     if (self->unk_b0->unk_02_7) {
         ActorMarker *p = NewMarker02194758();
         self->unk_5c = p;
-        func_ov000_021bd314(p, 1);
+        ActorMarker_SetKind(p, 1);
         self->unk_5c->height = self->unk_68;
     }
 }

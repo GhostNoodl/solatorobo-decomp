@@ -11,9 +11,9 @@ extern "C" {
 
 Info021c308c *func_0206eed0(u32 id);
 u16 func_0206f788(u32 v);
-u16 func_02059688(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id);
-u32 func_0205975c(DataRes *res, u32 idx);
-SaveEntry *func_0205976c(DataRes *res, u32 idx);
+u16 DataRes_ReadBitsById_02059688(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id);
+u32 DataRes_GetCount(DataRes *res, u32 idx);
+SaveEntry *DataRes_GetTable(DataRes *res, u32 idx);
 
 void func_ov000_021c308c(ListRow021cca70 *self, u32 id) {
     Info021c308c *info = func_0206eed0(id);
@@ -34,9 +34,9 @@ void func_ov000_021c308c(ListRow021cca70 *self, u32 id) {
         }
     }
     layout = (SaveLayout *)data_02fe152c->data;
-    entries = func_0205976c(data_02fe152c, 11);
-    func_0205975c(data_02fe152c, 11);
-    sub->unk_0a = func_02059688(data_02fe152c, &layout->blocks[11], entries, 0x101, id) != 0;
+    entries = DataRes_GetTable(data_02fe152c, 11);
+    DataRes_GetCount(data_02fe152c, 11);
+    sub->unk_0a = DataRes_ReadBitsById_02059688(data_02fe152c, &layout->blocks[11], entries, 0x101, id) != 0;
 }
 
 }

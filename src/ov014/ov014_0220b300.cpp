@@ -22,8 +22,8 @@ void Ov014Act_02209280_StateDown(Ov014Act_02209280 *self) {
 
 extern char data_ov014_02217a84[];
 extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
-extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
-extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
+extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *a, s16 b);
+extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
 
 void Ov014Act_02209280_StateDie(Ov014Act_02209280 *self) {
     switch (self->fsm->st) {
@@ -35,9 +35,9 @@ void Ov014Act_02209280_StateDie(Ov014Act_02209280 *self) {
         self->unk_1e0 = NULL;
         EffectMgr_StopLoop(data_0214a420, self->unk_1e4);
         self->unk_1e4 = 0;
-        func_ov000_02190cb0(self->model, data_ov014_02217a84, 0xcd, 0);
-        func_ov000_021915a0(self->model);
-        func_ov000_021911c8(self->model, 0x800);
+        Model0218fe1c_SetAnim(self->model, data_ov014_02217a84, 0xcd, 0);
+        Model0218fe1c_SetLoop(self->model);
+        Model0218fe1c_SetAnimSpeed(self->model, 0x800);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4819, 0x15);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x481d, 0x15);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x481e, 0x15);
@@ -56,19 +56,19 @@ void Ov014Act_02209280_StateDie(Ov014Act_02209280 *self) {
         self->rot_y = func_01ffc128(0, self->rot_y, self->unk_b0->unk_02, 1, 0x8000);
         t = self->fsm->timer;
         v = 0;
-        a = func_ov000_02190a30(self->model, 0);
+        a = Model0218fe1c_GetAnimCtrl(self->model, 0);
         if (a->cur != NULL) {
             v = a->cur->frame;
         }
         if (v > 0x14000) {
-            func_ov000_021911c8(self->model, 0);
+            Model0218fe1c_SetAnimSpeed(self->model, 0);
         }
         if (t % 90 == 0) {
             EffectObj *e;
             pos.x = self->pos.x + Rand_PlusMinus(0x7000);
             pos.y = self->pos.y + Rand_UpTo(0x5000) + 0x2000;
             pos.z = self->pos.z + 0x3000;
-            e = func_02065f88(0x38a, &pos);
+            e = Effect_SpawnId(0x38a, &pos);
             {
                 s32 r = Rand_UpTo(0xccd) + 0xccd;
                 e->SetScaleAll(r);
@@ -79,7 +79,7 @@ void Ov014Act_02209280_StateDie(Ov014Act_02209280 *self) {
             pos2.x = self->pos.x + Rand_PlusMinus(0x7000);
             pos2.y = self->pos.y + Rand_UpTo(0x5000) + 0x2000;
             pos2.z = self->pos.z + 0x3000;
-            e = func_02065f88(4, &pos2);
+            e = Effect_SpawnId(4, &pos2);
             e->SetScaleAll(Rand_UpTo(0xccd) + 0xccd);
             EffectObj_AddSndCue(e, 0x56, 2);
         }
@@ -87,7 +87,7 @@ void Ov014Act_02209280_StateDie(Ov014Act_02209280 *self) {
             EffectObj *e;
             p3 = self->pos;
             p3.y += 0x3800;
-            e = func_02065f88(0x322, &p3);
+            e = Effect_SpawnId(0x322, &p3);
             e->SetScaleAll(0x2e66);
             e->loopCount = -1;
             self->unk_1f0 = e->id;
@@ -106,7 +106,7 @@ void Ov014Act_02209280_StateDie(Ov014Act_02209280 *self) {
         p4.x = 0;
         p4.y = 0x3800;
         p4.z = 0;
-        func_02065f88(0x38a, &p4)->SetScaleAll(0x3000);
+        Effect_SpawnId(0x38a, &p4)->SetScaleAll(0x3000);
         break;
     }
     case 2:
@@ -116,7 +116,7 @@ void Ov014Act_02209280_StateDie(Ov014Act_02209280 *self) {
         self->fsm->timer = 0x190;
         break;
     case 3: {
-        EffectObj *e = func_020657b0(data_0214a420, self->unk_1f0);
+        EffectObj *e = Effect_Find_020657b0(data_0214a420, self->unk_1f0);
         VecFx32 v;
         if (e == NULL) {
             break;
@@ -149,7 +149,7 @@ void Ov014Act_02209280_State21(Ov014Act_02209280 *self) {
             EffectObj *e;
             p = self->pos;
             p.y += 0x3800;
-            e = func_02065f88(0x390, &p);
+            e = Effect_SpawnId(0x390, &p);
             e->SetScaleXYZ(0x2000, 0x2000, 0x2000);
             e->loopCount = -1;
             e->unk_50 = -0x1e000;
@@ -185,7 +185,7 @@ void Ov014Act_02209280_State21(Ov014Act_02209280 *self) {
             EffectMgr_StopLoop(data_0214a420, self->unk_1f0);
             p = self->pos;
             p.y += 0x3800;
-            e = func_02065f88(0x391, &p);
+            e = Effect_SpawnId(0x391, &p);
             e->speed = 0x99a;
             e->loopCount = -2;
         } else if (t > 0xb4) {
@@ -228,7 +228,7 @@ void Ov014Act_02209280_State21(Ov014Act_02209280 *self) {
                 p.x = self->pos.x + Rand_PlusMinus(0x7000);
                 p.y = self->pos.y + Rand_UpTo(0x5000) + 0x2000;
                 p.z = self->pos.z + 0x3000;
-                e = func_02065f88(4, &p);
+                e = Effect_SpawnId(4, &p);
                 {
                     s32 r = Rand_UpTo(0xccd) + 0xccd;
                     e->SetScaleAll(r);
@@ -256,7 +256,7 @@ void Ov014Act_02209280_State21(Ov014Act_02209280 *self) {
             p.x = self->pos.x + Rand_PlusMinus(0x7000);
             p.y = self->pos.y + Rand_UpTo(0x5000) + 0x2000;
             p.z = self->pos.z + 0x3000;
-            e = func_02065f88(4, &p);
+            e = Effect_SpawnId(4, &p);
             {
                 s32 r = Rand_UpTo(0xccd) + 0xccd;
                 e->SetScaleAll(r);
@@ -268,8 +268,8 @@ void Ov014Act_02209280_State21(Ov014Act_02209280 *self) {
             p.x = self->pos.x + Rand_PlusMinus(0x7000);
             p.y = self->pos.y + Rand_UpTo(0x5000) + 0x2000;
             p.z = self->pos.z + 0x3000;
-            func_02065f88(4, &p)->SetScaleAll(r);
-            e = func_02065f88(0x6d, &p);
+            Effect_SpawnId(4, &p)->SetScaleAll(r);
+            e = Effect_SpawnId(0x6d, &p);
             e->SetScaleAll(r);
             EffectObj_AddSndCue(e, 0x56, 0);
         }
@@ -279,8 +279,8 @@ void Ov014Act_02209280_State21(Ov014Act_02209280 *self) {
             p.x = self->pos.x + Rand_PlusMinus(0x7000);
             p.y = self->pos.y + Rand_UpTo(0x5000) + 0x2000;
             p.z = self->pos.z + 0x3000;
-            func_02065f88(0x322, &p)->SetScaleAll(r);
-            e = func_02065f88(0x320, &p);
+            Effect_SpawnId(0x322, &p)->SetScaleAll(r);
+            e = Effect_SpawnId(0x320, &p);
             e->SetScaleAll(r);
             e->time = -0x1e000;
             EffectObj_AddSndCue(e, 0x56, 0);

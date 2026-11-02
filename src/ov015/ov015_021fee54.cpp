@@ -2,7 +2,7 @@
 
 extern "C" {
 
-BOOL func_02049244(Ov015Vec *a, s32 b, Ov015Vec *c, Ov015Vec *d, s32 e);
+BOOL Interp_MoveTo(Ov015Vec *a, s32 b, Ov015Vec *c, Ov015Vec *d, s32 e);
 
 void func_ov015_021fee54(Ov015CamPair *self) {
     Ov015Vec res1;
@@ -20,7 +20,7 @@ void func_ov015_021fee54(Ov015CamPair *self) {
     tgt.y += 0x7000;
     tgt.z = -0x6b800;
     prev = self->cam0.at;
-    func_02049244(&tgt, 0x7b, &prev, &tgt, 0x1000);
+    Interp_MoveTo(&tgt, 0x7b, &prev, &tgt, 0x1000);
     d1.x = self->unk_18c.x - self->target.x;
     d1.y = self->unk_18c.y - self->target.y;
     d1.z = self->unk_18c.z - self->target.z;
@@ -28,7 +28,7 @@ void func_ov015_021fee54(Ov015CamPair *self) {
     VEC_MultAdd(self->unk_198, &d1, (&self->unk_18c), &res1);
     res1.y += 0x1e000;
     prev = self->cam0.pos;
-    func_02049244(&res1, 0x7b, &prev, &res1, 0x1000);
+    Interp_MoveTo(&res1, 0x7b, &prev, &res1, 0x1000);
     self->cam0.pos = res1;
     self->cam0.at = tgt;
     d2.x = self->unk_18c.x - tgt.x;
@@ -66,9 +66,9 @@ void func_ov015_021ff044(Ov015CamPair *self) {
     VEC_Normalize(&d, &d);
     VEC_MultAdd(self->unk_198, &d, (&self->unk_18c), &res);
     tgt = self->cam0.at;
-    func_02049244(&tgt, 0x19a, &tgt, &o, 0);
+    Interp_MoveTo(&tgt, 0x19a, &tgt, &o, 0);
     cam = self->cam0.pos;
-    func_02049244(&cam, 0x29, &cam, &res, 0);
+    Interp_MoveTo(&cam, 0x29, &cam, &res, 0);
     self->cam0.pos = cam;
     up = self->cam0.up;
     self->cam0.at = tgt;
@@ -89,10 +89,10 @@ void func_ov015_021ff044(Ov015CamPair *self) {
     MTX_MultVec33(&e, (MtxFx33 *)&m, &r);
     VEC_Add(&r, &p, &r);
     w = self->cam1.at;
-    func_02049244(&w, 0x29, &w, &r, 0);
+    Interp_MoveTo(&w, 0x29, &w, &r, 0);
     self->cam1.at = w;
     w = self->cam1.pos;
-    func_02049244(&w, 0x29, &w, &p, 0);
+    Interp_MoveTo(&w, 0x29, &w, &p, 0);
     self->cam1.pos = w;
 }
 

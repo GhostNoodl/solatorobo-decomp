@@ -78,7 +78,7 @@ static inline void ov002_AddNode(Obj021efe6c *self, Obj021efeb8 *node) {
 
 void func_ov002_021d98ac(Obj021efe6c *self) {
     int i;
-    func_ov002_021d9504(self);
+    Obj021efe6c_FreePieces(self);
     func_ov002_021da054(self);
     MI_CpuCopy8((u8 *)data_0214a424 + 0x2a, self->unk_08, sizeof(self->unk_08));
     for (i = 0; i < 0x25; i++) {
@@ -88,13 +88,13 @@ void func_ov002_021d98ac(Obj021efe6c *self) {
         if (id == 0xffff) {
             break;
         }
-        if (func_0206ede8(id)[0] == 0x80) {
+        if (Param_GetEntry(id)[0] == 0x80) {
             n = (Obj021efeb8 *)Heap_Alloc(sizeof(Obj021efed4));
             if (n != NULL) {
                 *(VFunc **)n = data_ov002_021efeb8;
-                func_ov002_021d7b80(n);
+                Obj021efeb8_Init(n);
                 *(VFunc **)n = data_ov002_021efed4;
-                func_ov002_021d8e48((Obj021efed4 *)n);
+                Obj021efed4_Init((Obj021efed4 *)n);
             }
             n->unk_48 = id;
             n->vfunc_08();
@@ -103,9 +103,9 @@ void func_ov002_021d98ac(Obj021efe6c *self) {
             n = (Obj021efeb8 *)Heap_Alloc(sizeof(Obj021efe9c));
             if (n != NULL) {
                 *(VFunc **)n = data_ov002_021efeb8;
-                func_ov002_021d7b80(n);
+                Obj021efeb8_Init(n);
                 *(VFunc **)n = data_ov002_021efe9c;
-                func_ov002_021d7e54((Obj021efe9c *)n);
+                Obj021efe9c_Init((Obj021efe9c *)n);
             }
             n->unk_48 = id;
             n->vfunc_08();
@@ -126,7 +126,7 @@ void func_ov002_021d98ac(Obj021efe6c *self) {
             n->unk_54 = x;
             n->unk_58 = z;
         }
-        func_ov002_021e3b0c(&n->trans.x, &n->unk_54, &n->unk_64);
+        Ov002_CellToPos(&n->trans.x, &n->unk_54, &n->unk_64);
         ov002_SetRot(n, e->info.rot);
         ov002_AddNode(self, n);
     }

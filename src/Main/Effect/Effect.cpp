@@ -134,7 +134,7 @@ void EffectObj_StopLoop(EffectObj *obj) {
     }
 }
 
-void func_02063a34(EffectObj *obj) {
+void EffectObj_Register(EffectObj *obj) {
     EffectMgr *mgr = data_0214a420;
     u32 id;
     do {
@@ -201,7 +201,7 @@ void func_02063a34(EffectObj *obj) {
     mgr->count++;
 }
 
-void func_02063bd0(EffectObj *obj) {
+void EffectObj_Unregister(EffectObj *obj) {
     EffectObj *prev;
     EffectMgr *mgr = data_0214a420;
     EffectObj *cur;
@@ -231,7 +231,7 @@ void func_02063bd0(EffectObj *obj) {
             return;
         }
         if (func_0204a118(data_02097e4c, id)) {
-            func_02049de8(data_02097e4c, id);
+            SndMgr_Stop(data_02097e4c, id);
         }
     }
 }
@@ -266,9 +266,9 @@ void func_02063cac(EffectObj *obj) {
         }
         if (Effect_CueHit(obj, cue->frame)) {
             if (obj->unk_c4) {
-                func_02049f44(data_02097e4c, id, &obj->pos, 0);
+                SndMgr_PlayAt(data_02097e4c, id, &obj->pos, 0);
             } else {
-                func_02049a48(data_02097e4c, id, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, id, -1, -1, -1);
             }
             if (func_0204a118(data_02097e4c, id)) {
                 cue->frame = 0x30000;
@@ -345,7 +345,7 @@ void func_02063e24(Effect3D *e) {
     }
 }
 
-void func_02063f90(Effect3D *e) {
+void Effect3D_Init(Effect3D *e) {
     e->unk_14 = 0;
     e->arcName[0] = 0;
     e->mdlName[0] = 0;
@@ -363,9 +363,9 @@ void func_02063f90(Effect3D *e) {
     e->onDraw = NULL;
 }
 
-void func_02063fd4(Effect3D *e) {
+void Effect3D_Release(Effect3D *e) {
     if (e->mdlFile != NULL) {
-        func_0203f0b4(e->mdlFile->data);
+        Vram_FreeRes(e->mdlFile->data);
     }
     if (e->anmObjs[0] != NULL) {
         Heap_FreeHi(e->anmObjs[0]);
@@ -388,9 +388,9 @@ void func_02063fd4(Effect3D *e) {
         e->anmObjs[4] = NULL;
     }
     if (e->unk_34) {
-        func_02036838(data_02097cdc, e->arcName, 7, 0);
+        ResMgr_ReleaseByName(data_02097cdc, e->arcName, 7, 0);
     }
-    func_02063f90(e);
+    Effect3D_Init(e);
 }
 
 
@@ -407,18 +407,18 @@ BOOL func_0206408c(Effect3D *e) {
             e->unk_2c += 2;
             break;
         }
-        func_020359d0(e->arcName, 7, 0);
+        ResMgr_Load(e->arcName, 7, 0);
         e->unk_34 = 1;
         e->unk_2c++;
     case 1:
-        if (!func_02035b90(e->arcName, 7)) {
+        if (!ResMgr_IsLoaded(e->arcName, 7)) {
             break;
         }
         e->unk_2c++;
     case 2:
-        arc = func_02035d5c(e->arcName);
-        e->mdlFile = func_02034ec0(arc, e->mdlName);
-        e->anmFiles = func_02034ff8(arc, e->anmName);
+        arc = ResMgr_GetArcList(e->arcName);
+        e->mdlFile = ResList_FindType4(arc, e->mdlName);
+        e->anmFiles = ResList_FindType6(arc, e->anmName);
         if (e->mdlFile != NULL) {
             func_0203ed04(e->mdlName, e->mdlFile->data);
         }
@@ -756,14 +756,14 @@ void func_02064b54(Effect3D *e) {
 namespace m_02064d3c {
 extern "C" {
 
-extern EffectFile *func_02034b98(void *arc, const char *name);
+extern EffectFile *ResList_FindType0(void *arc, const char *name);
 extern void EffectSetup_Init(struct EffectSetup *setup, void *data, VecFx32 *pos);
 extern EffectObj *func_02068544(struct EffectSetup *setup);
 extern void func_02068540(struct EffectSetup *setup);
 extern u32 data_0208c1d8[];
 extern u32 data_0208c2e4[];
 
-void func_02064d3c(EffectObj *obj, EffectObj *child) {
+void EffectObj_AddChild(EffectObj *obj, EffectObj *child) {
     EffectObj *p = obj->child;
     if (p == NULL) {
         obj->child = child;
@@ -810,14 +810,14 @@ BOOL func_02064df8(EffectGroup *g) {
     switch (g->unk_2c) {
     case 0:
         if (g->arcName[0] != 0) {
-            func_020359d0(arcName, 7, 0);
+            ResMgr_Load(arcName, 7, 0);
         }
         g->unk_2c++;
     case 1:
-        if (!func_02035b90(arcName, 7)) {
+        if (!ResMgr_IsLoaded(arcName, 7)) {
             break;
         }
-        g->arc = func_02035d5c(arcName);
+        g->arc = ResMgr_GetArcList(arcName);
         g->unk_2c = 10;
     case 10:
         ret = TRUE;
@@ -837,7 +837,7 @@ BOOL func_02064e98(EffectGroup *g) {
     void *saved;
 
     if (g->name[0] != 0) {
-        file = func_02034b98(g->arc, g->name);
+        file = ResList_FindType0(g->arc, g->name);
         setup = (EffectSetup *)Heap_Alloc(0x28);
         if (setup != NULL) {
             *(u32 **)setup = data_0208c1d8;
@@ -1061,8 +1061,8 @@ static inline void EffectMgr_Clear2(EffectMgr *m) {
 static inline void EffectMgr_Dtor(EffectMgr *m) {
     EffectMgr_Clear(m);
     EffectMgr_Clear2(m);
-    func_02036838(data_02097cdc, data_0208c330, 7, 0);
-    func_02036838(data_02097cdc, data_0208c33c, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_0208c330, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_0208c33c, 7, 0);
     EffectMgr_Reset(m);
 }
 
@@ -1091,11 +1091,11 @@ void EffectMgr_FreeAll(EffectMgr *m) {
     m->count = 0;
 }
 
-void func_02063bd0(EffectObj *obj);
+void EffectObj_Unregister(EffectObj *obj);
 
 EffectObj *EffectObj_DtorDelete(EffectObj *obj) {
     *(u32 **)obj = data_0208c2e4;
-    func_02063bd0(obj);
+    EffectObj_Unregister(obj);
     Heap_Free(obj);
     return obj;
 }
@@ -1115,7 +1115,7 @@ BOOL EffectMgr_Contains(EffectMgr *m, EffectObj *obj) {
     return FALSE;
 }
 
-EffectObj *func_020657b0(EffectMgr *m, u32 id) {
+EffectObj *Effect_Find_020657b0(EffectMgr *m, u32 id) {
     EffectObj *o;
     for (o = m->head; o != NULL; o = o->next) {
         if (id == o->id) {
@@ -1204,22 +1204,22 @@ BOOL func_020659c4(EffectMgr *m) {
         cont = FALSE;
         switch (m->loadStep) {
         case 0:
-            func_020359d0(data_0208c330, 7, 0);
-            func_020359d0(data_0208c33c, 7, 0);
+            ResMgr_Load(data_0208c330, 7, 0);
+            ResMgr_Load(data_0208c33c, 7, 0);
             m->loadStep++;
         case 1:
-            if (!func_02035b90(data_0208c330, 7)) {
+            if (!ResMgr_IsLoaded(data_0208c330, 7)) {
                 break;
             }
-            m->arc3d = func_02035d5c(data_0208c330);
+            m->arc3d = ResMgr_GetArcList(data_0208c330);
             m->loadStep = 10;
             cont = TRUE;
             break;
         case 10:
-            if (!func_02035b90(data_0208c33c, 7)) {
+            if (!ResMgr_IsLoaded(data_0208c33c, 7)) {
                 break;
             }
-            m->arcSetup = func_02035d5c(data_0208c33c);
+            m->arcSetup = ResMgr_GetArcList(data_0208c33c);
             m->loadStep = 100;
             cont = TRUE;
             break;
@@ -1234,7 +1234,7 @@ BOOL func_020659c4(EffectMgr *m) {
 
 extern BOOL PauseNode_IsUpdatePaused(void *task, s32 arg);
 
-void func_02065ac0(EffectMgr *m) {
+void EffectMgr_Update(EffectMgr *m) {
     EffectObj *o;
     EffectObj *next;
     switch (m->state) {

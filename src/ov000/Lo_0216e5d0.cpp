@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov000_0216e5d0(LoTimer *self) {
+void LoTimer_FreeModels(LoTimer *self) {
     LO_FREE_M(self, 0x10); // unk_10
     LO_FREE_M(self, 0x14); // unk_14
 }

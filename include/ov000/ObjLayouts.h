@@ -88,12 +88,12 @@ SIZE_ASSERT(ActorEx, 0xd0);
 
 // A robot definition (the entries of data_ov000_021ca398, indexed by Robo021ca458::unk_b22_6, and of
 // data_ov000_021ca248; also Param0206ef10::def). Robo021ca458_Init copies the names into the robot's
-// resource sets, func_ov000_021afaf8 loads them with func_ov000_0218ec60 / 0218edf0 / 0218ef10.
+// resource sets, func_ov000_021afaf8 loads them with ResSet_SetName0 / 0218edf0 / 0218ef10.
 typedef struct RoboDef {
     const char *name[6]; // three (name, ext) pairs
     u8 unk_18; // func_ov000_021afaf8 also loads the first pair into res2 when set
     u8 unk_19[0x3];
-    const char *unk_1c; // the anmName ov002 hands func_ov000_02162b40 with the first pair
+    const char *unk_1c; // the anmName ov002 hands ModelViewer_SetModel with the first pair
 } RoboDef;
 
 // A 0x2c-byte parameter record returned by func_0206ef10 (Main/Lang/ParamTbl.cpp). The robot keeps the one
@@ -102,7 +102,7 @@ typedef struct RoboDef {
 typedef struct Param0206ef10 {
     s8 unk_00[0x4]; // copied by func_ov000_021c95ac
     u8 unk_04_0 : 4;
-    u8 unk_04_4 : 4; // times 10: the robot's gauge (func_ov000_021a0d4c)
+    u8 unk_04_4 : 4; // times 10: the robot's gauge (Robo021ca458_RunState)
     u8 unk_05_0 : 4;
     u8 unk_05_4 : 4; // added to a count (func_ov000_021a6280, func_ov000_021aa5c8)
     union {
@@ -153,7 +153,7 @@ struct Robo021ca458 : public Actor {
     u8 unk_775[0x3];
     Model0218fe1c mdl2; // 0x778
     ActorRes res3; // 0x860
-    // Optional extra model (a Model0218fe1c, 0xe8 bytes, func_ov000_0218fe1c) and its resources
+    // Optional extra model (a Model0218fe1c, 0xe8 bytes, Model0218fe1c_Init) and its resources
     // (an ActorRes, 0x138 bytes). Kept void *: with the class types Robo_021afaf8 allocates
     // registers differently.
     void *unk_998;
@@ -312,9 +312,9 @@ struct Robo021ca458 : public Actor {
     u16 unk_b5c;
     u16 unk_b5e;
     s32 unk_b60;
-    s16 seSlot; // looping sound (func_02049afc / SndMgr_StopSeqArc), -1: none
+    s16 seSlot; // looping sound (SndMgr_StartSeqArc / SndMgr_StopSeqArc), -1: none
     s16 unk_b66;
-    u16 padCur; // copies of Pad cur / trig / release taken each frame (func_ov000_0219efc0)
+    u16 padCur; // copies of Pad cur / trig / release taken each frame (Robo021ca458_UpdateMode1)
     u16 padTrig;
     u16 padRelease;
     u16 padDir; // Pad_LookupDir angle, added to the camera yaw for movement
@@ -377,7 +377,7 @@ struct Lo021ca9c4 : public Task {
     struct MsgEntryEx *unk_54; // ov000/MsgEntry.h
     Lo021cad50 *unk_58;
     s32 unk_5c;
-    TextWin text[6]; // built in place by Lo021ca9c4_New (func_0204c7d0, vtable data_0208ba70)
+    TextWin text[6]; // built in place by Lo021ca9c4_New (TextWin_Init, vtable data_0208ba70)
 };
 
 // Vtable data_ov000_021caa44; methods in 6 files, Lo_0214e7f0.cpp .. Lo_0214f9ec.cpp.
@@ -428,7 +428,7 @@ struct ObjBase021cac0c_021cb6f0 : public VObj {
             u32 unk_0c_17 : 15;
         };
     };
-    u16 *colors[6]; // three RGB555 colours each (default data_ov000_021c9912; func_ov000_0215fdfc)
+    u16 *colors[6]; // three RGB555 colours each (default data_ov000_021c9912; Obj0215fdfc_SetEntry)
     s32 unk_28;
     s32 unk_2c;
     s32 unk_30;
@@ -443,7 +443,7 @@ struct ObjBase021cac0c_021cb6f0 : public VObj {
     s32 unk_54;
     s32 unk_58;
     s32 unk_5c; // shown value
-    s32 unk_60; // maximum (func_ov000_0215fe1c)
+    s32 unk_60; // maximum (Obj0215fdfc_SetRange)
     s32 unk_64; // target value
     s32 unk_68;
     s32 unk_6c;
@@ -520,7 +520,7 @@ struct Lo021cb3a8 : public UiList021cb4a8 {
     char *srcStr;
     char *str;
     s32 strSize;
-    TextWin *text; // built from str by func_ov000_02158c60
+    TextWin *text; // built from str by Lo021cb3a8_SetText
 };
 
 // Vtable data_ov000_021cb5a8; methods in 6 files, Lo_02159aac.cpp .. Lo_0215a7d8.cpp.
@@ -624,14 +624,14 @@ struct Lo021cca40 {
 
 // Row list: vtable data_ov000_021ccbe0 (0xf4 bytes; the constructor calls UiObj_Init through slot 0x28,
 // then func_ov000_021c3af4) over the base vtable data_ov000_021ccb54; ov002's subclass data_ov002_021f0044
-// keeps the size. Both dtors release it with func_ov000_021c3bb0. Methods in Lo_021c4d90.cpp, Lo_021c5028.cpp,
+// keeps the size. Both dtors release it with LoBase021ccb54_021ccbe0_Release. Methods in Lo_021c4d90.cpp, Lo_021c5028.cpp,
 // Lo_021c5128.cpp, Text_021c524c.cpp, Unit_021c3d20.cpp and the files of func_ov000_021c3aa0 .. 021c56c0.
 struct LoBase021ccb54_021ccbe0 : public UiObj {
-    Model *unk_84; // the three models and the object freed by func_ov000_021c3bb0 (both dtors)
+    Model *unk_84; // the three models and the object freed by LoBase021ccb54_021ccbe0_Release (both dtors)
     Model *unk_88;
     Model *unk_8c;
-    UiPanel *unk_90; // made by slot 0x08 (func_ov000_021c3d20), released with func_ov000_0215ec80
-    ListRow *unk_94; // the rows (ov000/ListRow.h), appended by func_ov000_021c3fd4
+    UiPanel *unk_90; // made by slot 0x08 (func_ov000_021c3d20), released with UiPanel_Release
+    ListRow *unk_94; // the rows (ov000/ListRow.h), appended by LoBase021ccb54_021ccbe0_AppendRow
     s32 unk_98; // row count
     s32 unk_9c;
     ListRow *unk_a0; // a row (ov002 reads its id and texts)
@@ -668,7 +668,7 @@ struct LoBase021ccb54_021ccbe0 : public UiObj {
 SIZE_ASSERT(LoBase021ccb54_021ccbe0, 0xf4);
 
 // Vtable data_ov000_021ccb54 (0x100 bytes; ov006 builds it): the row list with three labels, cleared by
-// func_ov000_021c54f4, ticked by slot 0x54 (func_ov000_021c56c0) and released by func_ov000_021c5508.
+// Lo021ccb54_ClearLabels, ticked by slot 0x54 (func_ov000_021c56c0) and released by Lo021ccb54_FreeLabels.
 struct Lo021ccb54 : public LoBase021ccb54_021ccbe0 {
     UiLabel *unk_f4;
     UiLabel *unk_f8;

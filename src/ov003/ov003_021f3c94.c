@@ -65,12 +65,12 @@ typedef struct {
 } Ov003NmObj;
 
 extern Ov003NmSave *data_0214a424;
-extern Ov003NmPlayer *func_ov000_0219bf90(void);
-extern Ov003NmInfo *func_0206fef8(u16 id);
+extern Ov003NmPlayer *ActorMgr_FindPlayer(void);
+extern Ov003NmInfo *Tbl_FindEntry_0206fef8(u16 id);
 extern u8 *func_020705fc(s32 id);
 extern void *Heap_Alloc(u32 size);
-extern Ov003NmLabel *func_ov000_0218e9c4(void *p);
-extern void *func_ov000_021919c8(void *p);
+extern Ov003NmLabel *ResSet_Init(void *p);
+extern void *Shadow_Ctor(void *p);
 extern void Shadow_Load(void *p);
 
 void Ov003ActVt_021fa548_Init(Ov003NmObj *self) {
@@ -80,12 +80,12 @@ void Ov003ActVt_021fa548_Init(Ov003NmObj *self) {
     const char *a;
     const char *b;
     Ov003NmLabel *l;
-    names = func_ov000_0219bf90()->names;
-    info = func_0206fef8(self->unk_0e);
+    names = ActorMgr_FindPlayer()->names;
+    info = Tbl_FindEntry_0206fef8(self->unk_0e);
     self->unk_ac = func_020705fc(self->unk_0e);
     l = (Ov003NmLabel *)Heap_Alloc(0x138);
     if (l != NULL) {
-        l = func_ov000_0218e9c4(l);
+        l = ResSet_Init(l);
     }
     self->label = l;
     {
@@ -116,7 +116,7 @@ void Ov003ActVt_021fa548_Init(Ov003NmObj *self) {
     if (info->unk_12_c) {
         p = Heap_Alloc(0x1c);
         if (p != NULL) {
-            p = func_ov000_021919c8(p);
+            p = Shadow_Ctor(p);
         }
         self->unk_3c = p;
         Shadow_Load(p);

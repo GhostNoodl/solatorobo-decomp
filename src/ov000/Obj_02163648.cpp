@@ -33,13 +33,13 @@ public:
     Model *unk_d4;
 };
 
-extern "C" BOOL func_0203e63c(void *a);
+extern "C" BOOL Vram_IsTransferDone(void *a);
 
 static inline BOOL Model_IsIdle(Model *model) {
     if (model->unk_6c == NULL) {
         return TRUE;
     }
-    if (func_0203e63c(model->unk_6c)) {
+    if (Vram_IsTransferDone(model->unk_6c)) {
         model->unk_6c = NULL;
     } else {
         return !model->unk_04_6;
@@ -64,10 +64,10 @@ extern u8 data_ov000_021cacd8[];
 extern u8 data_ov000_021cac60[];
 
 void Heap_Free(void *ptr);
-void func_02041558(Model *model);
-void func_02041278(void *a);
-s32 func_ov000_021580e8(Obj02163648 *self);
-BOOL func_02054f10(void *a, u32 b);
+void TexObj_Release(Model *model);
+void PlttRes_Release(void *a);
+s32 UiList_IsLoaded(Obj02163648 *self);
+BOOL Model_IsReady(void *a, u32 b);
 
 Obj02163648 *Lo021cacd8_Dtor(Obj02163648 *self) {
     void *saved;
@@ -78,8 +78,8 @@ Obj02163648 *Lo021cacd8_Dtor(Obj02163648 *self) {
     model = self->unk_84;
     if (model != NULL) {
         if (model != NULL) {
-            func_02041558(model);
-            func_02041278(model->unk_88);
+            TexObj_Release(model);
+            PlttRes_Release(model->unk_88);
             Heap_Free(model);
         }
         self->unk_84 = NULL;
@@ -120,7 +120,7 @@ s32 func_ov000_02163754(void) {
 }
 
 s32 func_ov000_0216375c(Obj02163648 *self) {
-    s32 ret = func_ov000_021580e8(self);
+    s32 ret = UiList_IsLoaded(self);
     Model *model = self->unk_d4;
     if (model != NULL && !Model_IsIdle(model)) {
         ret = 0;
@@ -182,13 +182,13 @@ s32 func_ov000_021639c8(void) {
     return 0x10;
 }
 
-BOOL func_ov000_021639d0(Obj02163648 *self) {
+BOOL Lo021cae48_IsLoaded(Obj02163648 *self) {
     BOOL ret = TRUE;
     Model *model;
-    if (self->unk_10 != NULL && !func_02054f10(self->unk_10, 0xffff)) {
+    if (self->unk_10 != NULL && !Model_IsReady(self->unk_10, 0xffff)) {
         ret = FALSE;
     }
-    if (self->unk_90 != NULL && !func_02054f10(self->unk_90, 0xffff)) {
+    if (self->unk_90 != NULL && !Model_IsReady(self->unk_90, 0xffff)) {
         ret = FALSE;
     }
     model = self->unk_94;
@@ -295,7 +295,7 @@ VObj *Lo021cb3a8_DtorDelete(VObj *self) {
     return self;
 }
 
-s32 func_ov000_02163d6c(Obj02163648 *self) {
+s32 Lo021cb3a8_GetHeight(Obj02163648 *self) {
     s32 a = self->vfunc_40() * self->unk_20;
     s32 b = self->vfunc_34();
     return a + b + self->vfunc_38();
@@ -374,7 +374,7 @@ VObj *UiObj_DtorDelete(VObj *self) {
     return self;
 }
 
-void func_ov000_02164008(void) {
+void UiObj_Setup(void) {
 }
 
 VObj *UiObj_Dtor(VObj *self) {

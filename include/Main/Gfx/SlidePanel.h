@@ -17,9 +17,9 @@ extern SndMgr *data_02097e4c;
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *ptr);
 extern s32 func_02041b10(Model *model, void *tex);
-extern BOOL func_0203e63c(u32 id);
-extern BOOL func_02042958(Model *model, u32 slot, ModelPart *part);
-extern SndHandle *func_02049a48(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
+extern BOOL Vram_IsTransferDone(u32 id);
+extern BOOL TexObj_CheckTransfer(Model *model, u32 slot, ModelPart *part);
+extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 
 typedef struct SlidePanelItem {
     /* 0x00 */ union {
@@ -138,7 +138,7 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
             PlttRes *p = panel->pltt; \
             if (p != NULL) { \
                 if (p != NULL) { \
-                    func_02041278(p); \
+                    PlttRes_Release(p); \
                     Heap_Free(p); \
                 } \
                 panel->pltt = NULL; \
@@ -153,8 +153,8 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
             Model *p = panel->model; \
             if (p != NULL) { \
                 if (p != NULL) { \
-                    func_02041558(p); \
-                    func_02041278(&p->pltt); \
+                    TexObj_Release(p); \
+                    PlttRes_Release(&p->pltt); \
                     Heap_Free(p); \
                 } \
                 panel->model = NULL; \
@@ -169,8 +169,8 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
             Model *p = panel->model2; \
             if (p != NULL) { \
                 if (p != NULL) { \
-                    func_02041558(p); \
-                    func_02041278(&p->pltt); \
+                    TexObj_Release(p); \
+                    PlttRes_Release(&p->pltt); \
                     Heap_Free(p); \
                 } \
                 panel->model2 = NULL; \
@@ -289,7 +289,7 @@ static inline BOOL Transfer_Check(u32 *p) {
     if (*p == 0) {
         return TRUE;
     }
-    if (func_0203e63c(*p)) {
+    if (Vram_IsTransferDone(*p)) {
         *p = 0;
     } else {
         return FALSE;

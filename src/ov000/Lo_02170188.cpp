@@ -10,10 +10,10 @@ extern "C" {
 extern u8 data_0208ba70[];
 extern u8 data_0208bbc8[];
 BOOL func_ov000_02184498(FieldState *p);
-s32 func_0204c08c(MsgRes *res, u16 id, char **out, s32 max);
+s32 MsgRes_GetLines(MsgRes *res, u16 id, char **out, s32 max);
 void *Heap_Alloc(u32 size);
-void func_0204c7d0(TextWin *win);
-void func_02050f70(SlideWin *win);
+void TextWin_Init(TextWin *win);
+void TwScene_Init(SlideWin *win);
 
 static inline void SlideWin_SetText(SlideWin *e, char *text, s32 numLines) {
     e->text = text;
@@ -51,13 +51,13 @@ BOOL func_ov000_02170188(ListBuffer021cb940 *self, MsgRes *msg, u32 arg) {
         return FALSE;
     }
     hi = arg >> 16;
-    numLines = func_0204c08c(msg, arg, &text, 1);
+    numLines = MsgRes_GetLines(msg, arg, &text, 1);
     e = (SlideWin *)Heap_Alloc(sizeof(SlideWin));
     if (e != NULL) {
         VOBJ_SET_VTABLE(e, data_0208ba70);
-        func_0204c7d0(e);
+        TextWin_Init(e);
         VOBJ_SET_VTABLE(e, data_0208bbc8);
-        func_02050f70(e);
+        TwScene_Init(e);
     }
     self->win = e;
     e->font = 8;

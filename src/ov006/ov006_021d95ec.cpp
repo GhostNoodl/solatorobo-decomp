@@ -3,14 +3,14 @@
 
 extern "C" {
 
-void func_ov000_02180660(int a, int b);
+void TaskHost_Create(int a, int b);
 void ov006_Task021ec040_SetupPrices(ov006_Task021ec040 *self);
 void ov006_Task021ec040_BuildShopList(ov006_Task021ec040 *self);
 
 BOOL Ov006Vt_021ec040_Setup(ov006_Task021ec040 *self) {
     switch (self->subState) {
     case 0:
-        func_ov000_02180660(0x23, 0);
+        TaskHost_Create(0x23, 0);
         data_02097d48->unk_8b0[0] |= 0x30;
         *(vu16 *)0x4000060 = (*(vu16 *)0x4000060 & ~0x3000) | 0x20;
         self->subState++;

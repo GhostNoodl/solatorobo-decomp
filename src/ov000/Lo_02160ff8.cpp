@@ -27,16 +27,16 @@ static inline BOOL EnsureModel(Lo021cacd8 *self) {
         MODEL_NEW(self->model, data_0208cb74, data_0208cca0);
     }
     {
-        ResList *a = func_02035d5c(self->model->name);
-        void *b = func_02034d88(a, self->model->unk_04c);
-        func_020417e0(self->model, b);
+        ResList *a = ResMgr_GetArcList(self->model->name);
+        void *b = ResList_FindType2(a, self->model->unk_04c);
+        TexObj_SetRes(self->model, b);
     }
     self->model->flags |= 2;
-    func_02041d9c(self->model, 0, 7);
+    TexObj_SelectImage(self->model, 0, 7);
     return TRUE;
 }
 
-void func_ov000_02160ff8(Lo021cacd8 *self) {
+void Lo021cacd8_Setup(Lo021cacd8 *self) {
     self->width = 0x50;
     self->height = 0x1e;
     self->posX = 0x80;
@@ -44,14 +44,14 @@ void func_ov000_02160ff8(Lo021cacd8 *self) {
     self->slideMode = 0;
     self->color = 0x294a;
     MODEL_NEW(self->unk_84, data_0208cc88, data_0208cc94);
-    func_020417e0(self->unk_84, func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88));
+    TexObj_SetRes(self->unk_84, ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88));
     self->unk_84->flags |= 2;
-    func_02041d9c(self->unk_84, 0, 6);
+    TexObj_SelectImage(self->unk_84, 0, 6);
     func_02041c20(self->unk_84, 6, self);
-    func_02041d9c(self->unk_84, 0, 8);
+    TexObj_SelectImage(self->unk_84, 0, 8);
     func_02041c5c(self->unk_84, (void *)func_ov000_02160e28);
     if (EnsureModel(self)) {
-        func_02041d9c(self->model, 0, 10);
+        TexObj_SelectImage(self->model, 0, 10);
         self->model->flags |= 0x80000;
     }
 }

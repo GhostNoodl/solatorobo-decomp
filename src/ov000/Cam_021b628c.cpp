@@ -12,7 +12,7 @@ public:
 extern "C" {
 
 FieldExit *func_0206e230(LangBlockB *b);
-FieldStart *func_0206e264(LangBlockB *b);
+FieldStart *LangBlockB_GetData(LangBlockB *b);
 BOOL func_02062698(void);
 void func_02062724(VecFx32 *pos);
 u16 func_02062754(void);
@@ -25,9 +25,9 @@ BOOL func_02062648(void);
 u16 func_020625ac(void);
 BOOL func_02062670(void);
 s32 func_020625d0(void);
-Robo021ca458 *func_ov000_0219bf90(void);
-void func_ov000_0219cbf8(Robo021ca458 *pl, VecFx32 *pos, u16 *rot);
-void func_0203d45c(void *q, u16 a, u16 b, u16 c, u16 d);
+Robo021ca458 *ActorMgr_FindPlayer(void);
+void Robo021ca458_SetPosRot(Robo021ca458 *pl, VecFx32 *pos, u16 *rot);
+void TouchQuad_Init(void *q, u16 a, u16 b, u16 c, u16 d);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline void SetRot021b628c(u16 *r, u16 x, u16 y, u16 z) {
@@ -73,7 +73,7 @@ void func_ov000_021b628c(FieldMgr *self) {
         func_02062724(&pos);
         SetRot021b628c(rot, 0, func_02062754(), 0);
     } else if (self->blockB != NULL && self->blockB->count1 != 0) {
-        FieldStart *st = func_0206e264(self->blockB);
+        FieldStart *st = LangBlockB_GetData(self->blockB);
         if (st != NULL) {
             pos = st->pos;
             SetRot021b628c(rot, 0, st->rot, 0);
@@ -118,11 +118,11 @@ void func_ov000_021b628c(FieldMgr *self) {
         ((Cam021b628c *)cam)->vfunc_00();
         cam->base.smooth = 1;
     }
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (pl == NULL) {
         return;
     }
-    func_ov000_0219cbf8(pl, &pos, rot);
+    Robo021ca458_SetPosRot(pl, &pos, rot);
     ((Pl021b628c *)pl)->vfunc_18();
     if (pl->unk_b2e < 10) {
         pl->unk_b2e = 10;
@@ -131,10 +131,10 @@ void func_ov000_021b628c(FieldMgr *self) {
     self->playerPos = pos;
     r = self->blockB;
     if (r != NULL) {
-        func_0203d45c(pl->unk_b70, r->unk_0a, r->unk_0c, r->unk_0e, r->unk_10);
+        TouchQuad_Init(pl->unk_b70, r->unk_0a, r->unk_0c, r->unk_0e, r->unk_10);
         pl->unk_b0c = self->blockB->unk_12;
     } else {
-        func_0203d45c(pl->unk_b70, 0, 0x4000, 0x8000, 0xc000);
+        TouchQuad_Init(pl->unk_b70, 0, 0x4000, 0x8000, 0xc000);
         pl->unk_b0c = 0x1000;
     }
 }

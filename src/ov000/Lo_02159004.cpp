@@ -21,7 +21,7 @@ typedef struct Node02155160 {
 extern "C" {
 extern void *data_02097e4c;
 void Heap_Free(void *ptr);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 }
 
 class Obj02155160 : public VObj {
@@ -84,7 +84,7 @@ void func_ov000_02159004(Obj02155160 *self, s32 n, s32 commit) {
             self->unk_0c |= 2;
         }
         if (!commit) {
-            func_02049a48(data_02097e4c, 0x1d, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1d, -1, -1, -1);
         }
         self->unk_b3++;
     } else {

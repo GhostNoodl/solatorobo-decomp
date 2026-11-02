@@ -323,18 +323,18 @@ extern int func_ov003_021cf330(void *p, const char *name, u8 a);
 extern void HitSphere_Link(ActorSub48 *p);
 extern BOOL Ov003Flag_Init(void *p);
 extern void Ov003Sequence_SetEntries(void *p, void *tbl, s32 n);
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern BOOL Ov003StateMachine_Init(void *p);
 extern void Ov003StateMachine_AddState(void *p, s32 a, void *b);
 extern void Ov013_CopyVec(void *dst, const void *src, void *owner);
-extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
-extern BOOL func_ov000_0218fa28(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
-extern void func_ov000_021bd228(void *p);
+extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
+extern BOOL AnimCtrl_SetAnim(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
+extern void ActorMarker_Release(void *p);
 extern BOOL func_020621c4(void);
 
 static inline void Ov013B_PartFlag(Model0218fe1c *m, s32 i) {
-    if (func_ov000_02190a30(m, i) != NULL) {
-        func_ov000_02190a30(m, i)->loop = 1;
+    if (Model0218fe1c_GetAnimCtrl(m, i) != NULL) {
+        Model0218fe1c_GetAnimCtrl(m, i)->loop = 1;
     }
 }
 
@@ -376,7 +376,7 @@ void Ov013Act_021fea8c_Start(Ov013Act_021fea8c *self) {
     }
     Ov003Flag_Init((u8 *)self + 0x14c);
     Ov003Sequence_SetEntries((u8 *)self + 0x14c, data_ov013_0220b150, 0xf);
-    self->target = func_ov000_0219bf90()->id;
+    self->target = ActorMgr_FindPlayer()->id;
     ar = (Ov013Cam *)Heap_Alloc(sizeof(Ov013Cam));
     if (ar != NULL) {
         ar->vtbl = (void *)data_ov013_0220b930.fn;
@@ -421,13 +421,13 @@ void Ov013Act_021fea8c_Start(Ov013Act_021fea8c *self) {
     o3->fn = (void *)Ov013_CopyVec;
     o3->b0 = 1;
     anim = data_ov013_0220aee0;
-    func_ov000_02190cb0(self->model, anim, 0x1000, 1);
+    Model0218fe1c_SetAnim(self->model, anim, 0x1000, 1);
     m = self->model;
     if (m->unk_14 != NULL) {
         ResSet *o = m->res;
-        func_ov000_0218fa28(m->unk_14, m->renderObj, o, o->anims->list[2], anim, 0x1000, 0);
+        AnimCtrl_SetAnim(m->unk_14, m->renderObj, o, o->anims->list[2], anim, 0x1000, 0);
     }
-    func_ov000_02190a30(self->model, 2)->loop = 1;
+    Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
     m = self->model;
     if (m != NULL) {
         Ov013B_PartFlag(m, 0);
@@ -441,7 +441,7 @@ void Ov013Act_021fea8c_Start(Ov013Act_021fea8c *self) {
         if (self->unk_5c != NULL) {
             void *p = self->unk_5c;
             if (p != NULL) {
-                func_ov000_021bd228(p);
+                ActorMarker_Release(p);
                 Heap_Free(p);
             }
             self->unk_5c = NULL;
@@ -501,8 +501,8 @@ extern void Ov003Seq_Update(void *p);
 extern BOOL Ov003Sequence_IsReady(void *p);
 extern Ov013Pair Ov003Sequence_GetPair(void *p);
 extern void Ov003ActorSub40_ApplyFlags(void *p);
-extern void func_ov000_0218d7e8(Ov003Actor *self, s32 a);
-extern void func_ov000_02191418(void *a, s32 b, s32 c);
+extern void Actor_DropStateMsgs(Ov003Actor *self, s32 a);
+extern void Model0218fe1c_SetAnimDelay(void *a, s32 b, s32 c);
 extern BOOL Ov003Actor_HandleMsg(Ov003Actor *self, Ov013Msg *msg);
 
 void Ov013Act_021fea8c_UpdateMode1(void) {
@@ -523,12 +523,12 @@ void Ov013Act_021fea8c_Update(Ov013Act_021fea8c *self) {
     p = Ov003Sequence_GetPair((u8 *)self + 0x14c);
     self->unk_15c = p.a;
     self->unk_15d = p.b;
-    func_ov000_02198360(self->fsm, p.a, 1);
+    History_SetState(self->fsm, p.a, 1);
 }
 
 void Ov013Act_021fea8c_SelectState(Ov013Act_021fea8c *self) {
     Ov003ActorSub40_ApplyFlags(self->fsm);
-    func_ov000_0218d7e8(self, self->fsm->current);
+    Actor_DropStateMsgs(self, self->fsm->current);
 }
 
 static inline void Ov013_Ack(Ov013Act_021fea8c *self, Ov013Msg *msg) {
@@ -585,11 +585,11 @@ BOOL Ov013Act_021fea8c_HandleMsg(Ov013Act_021fea8c *self, Ov013Msg *msg) {
             Ov003Actor_ApplyHit(self, &msg->hit);
             Ov003Actor_FadeColor(self, 0x14bf, 0x739f, 10);
             self->hp[5] = 5;
-            func_ov000_02191418(self->model, 5, 0);
+            Model0218fe1c_SetAnimDelay(self->model, 5, 0);
             if (self->hp[0] == 0) {
                 self->fsm->flags |= 0x200000;
             } else if (Ov013_CanFlinch(self, msg)) {
-                func_ov000_02198360(self->fsm, 0x12, 1);
+                History_SetState(self->fsm, 0x12, 1);
             }
         }
         self->msg_flags |= 1 << msg->type;
@@ -600,10 +600,10 @@ BOOL Ov013Act_021fea8c_HandleMsg(Ov013Act_021fea8c *self, Ov013Msg *msg) {
 }
 
 extern const Ov013StEnt data_ov013_0220b1ac[];
-extern BOOL func_ov000_0218fa28(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
+extern BOOL AnimCtrl_SetAnim(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
 extern int func_ov003_021cf408(void);
 extern void Ov003Vec_RotateY(VecFx32 *out, u16 rot, const VecFx32 *v);
-extern void func_0203f364(void *p);
+extern void HitSphere_Unlink_0203f364(void *p);
 extern void HitSphere_Link(void *p);
 
 struct Ov013Blk12 {
@@ -643,7 +643,7 @@ void Ov013Act_021fea8c_RunState(Ov013Act_021fea8c *self) {
         m = self->model;
         if (m->unk_1c != NULL) {
             ResSet *o = m->res;
-            func_ov000_0218fa28(m->unk_1c, m->renderObj, o, o->anims->list[4], anim, 0x1000, 0);
+            AnimCtrl_SetAnim(m->unk_1c, m->renderObj, o, o->anims->list[4], anim, 0x1000, 0);
         }
     }
     self->unk_f0.b4 = 1;
@@ -671,7 +671,7 @@ void Ov013Act_021fea8c_RunState(Ov013Act_021fea8c *self) {
                 Ov013_VecCopy(&pos, &q->unk_14->pos);
                 q->unk_18(&off, &q->v, q->unk_14);
                 VEC_Add(&pos, &off, &pos);
-                func_02065f88(0x66, &pos)->SetScaleAll(q->unk_02);
+                Effect_SpawnId(0x66, &pos)->SetScaleAll(q->unk_02);
             }
             q->unk_04++;
         }
@@ -685,14 +685,14 @@ void Ov013Act_021fea8c_RunState(Ov013Act_021fea8c *self) {
     }
     self->unk_f0.b1 = 0;
     if (self->pos.y > -0xee1) {
-        if (func_020657b0(data_0214a420, self->unk_104) == NULL && !self->unk_f0.b2) {
+        if (Effect_Find_020657b0(data_0214a420, self->unk_104) == NULL && !self->unk_f0.b2) {
             VecFx32 v;
             EffectObj *e;
             Ov003Vec_RotateY(&v, self->rot_y, &data_ov013_0220af34);
             VEC_Add(&v, &self->pos, &v);
             *(Ov013Blk12 *)&w = *(Ov013Blk12 *)&v;
             w.y = 0x1000;
-            e = func_02065f88(0x2bd, &w);
+            e = Effect_SpawnId(0x2bd, &w);
             e->SetScaleAll(0x4000);
             self->unk_104 = e->id;
         }
@@ -725,7 +725,7 @@ void Ov013Act_021fea8c_RunState(Ov013Act_021fea8c *self) {
         if (m != NULL) {
             m->unk_9a_0 = 0;
             m->unk_9a_3 = 0;
-            func_0203f364(m);
+            HitSphere_Unlink_0203f364(m);
         }
         self->unk_ea_0 = self->unk_b0->unk_0a_7;
     } else {
@@ -755,21 +755,21 @@ extern void Ov003Seq_Update(void *p);
 extern BOOL Ov003Sequence_IsReady(void *p);
 extern Ov013Pair Ov003Sequence_GetPair(void *p);
 extern void Ov003ActorSub40_ApplyFlags(void *p);
-extern void func_ov000_0218d7e8(Ov003Actor *self, s32 a);
-extern void func_ov000_02191418(void *a, s32 b, s32 c);
+extern void Actor_DropStateMsgs(Ov003Actor *self, s32 a);
+extern void Model0218fe1c_SetAnimDelay(void *a, s32 b, s32 c);
 extern BOOL Ov003Actor_HandleMsg(Ov003Actor *self, Ov013Msg *msg);
 
-extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
-extern BOOL func_ov000_0218fa28(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
+extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
+extern BOOL AnimCtrl_SetAnim(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
 extern void Ov013_PickRandomSpot(VecFx32 *outPos, u16 *outRot, const Ov013Spot *list, u32 count, void *exclude);
 extern BOOL func_ov013_022038a8(Ov013Act_021fea8c *self, VecFx32 *pos, u16 rot);
 extern void Ov003Sequence_Signal(void *p, s32 a);
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern void func_ov013_02202dc8(Ov013Act_021fea8c *self, s32 a, s32 b, BOOL c, s32 d);
 
 static inline void Ov013_PartFlag(Model0218fe1c *m, s32 i) {
-    if (func_ov000_02190a30(m, i) != NULL) {
-        func_ov000_02190a30(m, i)->loop = 1;
+    if (Model0218fe1c_GetAnimCtrl(m, i) != NULL) {
+        Model0218fe1c_GetAnimCtrl(m, i)->loop = 1;
     }
 }
 
@@ -799,13 +799,13 @@ void Ov013Act_021fea8c_StateIdle(Ov013Act_021fea8c *self) {
     self->velY = 0;
     self->friction = 0;
     self->gravity = 0;
-    func_ov000_02190cb0(self->model, anim, 0x266, 0);
+    Model0218fe1c_SetAnim(self->model, anim, 0x266, 0);
     m = self->model;
     if (m->unk_14 != NULL) {
         ResSet *o = m->res;
-        func_ov000_0218fa28(m->unk_14, m->renderObj, o, o->anims->list[2], anim, 0x1000, 0);
+        AnimCtrl_SetAnim(m->unk_14, m->renderObj, o, o->anims->list[2], anim, 0x1000, 0);
     }
-    func_ov000_02190a30(self->model, 2)->loop = 1;
+    Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
     m = self->model;
     if (m != NULL) {
         Ov013_PartFlag(m, 0);
@@ -822,7 +822,7 @@ void Ov013Act_021fea8c_StateMove(Ov013Act_021fea8c *self) {
     if (self->fsm->st == 0) {
         VecFx32 p;
         u32 best;
-        Ov003Actor *pl = func_ov000_0219bf90();
+        Ov003Actor *pl = ActorMgr_FindPlayer();
         p.x = pl->pos.x;
         p.y = pl->pos.y;
         p.z = pl->pos.z;
@@ -849,13 +849,13 @@ void Ov013Act_021fea8c_StateMove(Ov013Act_021fea8c *self) {
         self->unk_108 = self->unk_114;
         self->unk_fa = self->unk_fc;
         Ov003Sequence_Signal((u8 *)self + 0x14c, 1);
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
     }
 }
 
 extern void *data_02097e4c;
-extern void func_0203f364(ActorSub48 *p);
-extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
+extern void *SndMgr_PlayAtPitch(void *a, s32 b, VecFx32 *c, s32 d);
 extern s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 extern BOOL Ov003Vec_Equal(VecFx32 *a, VecFx32 *b);
 extern void Ov003Vec_ApproachWithin(VecFx32 *out, const VecFx32 *a, const VecFx32 *b, s32 dist, s32 yoff);
@@ -868,13 +868,13 @@ void func_ov013_021ffc90(Ov013Act_021fea8c *self) {
     case 0: {
         Model0218fe1c *m;
         move = TRUE;
-        func_ov000_02190cb0(self->model, data_ov013_0220af04, 0x266, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220af04, 0x266, 0);
         m = self->model;
         if (m->unk_14 != NULL) {
             ResSet *o = m->res;
-            func_ov000_0218fa28(m->unk_14, m->renderObj, o, o->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
+            AnimCtrl_SetAnim(m->unk_14, m->renderObj, o, o->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
         }
-        func_ov000_02190a30(self->model, 2)->loop = 1;
+        Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
         m = self->model;
         if (m != NULL) {
             Ov013_PartFlag(m, 0);
@@ -897,9 +897,9 @@ void func_ov013_021ffc90(Ov013Act_021fea8c *self) {
             ActorSub48 *s = self->hit;
             s->unk_9a_0 = 0;
             s->unk_9a_3 = 0;
-            func_0203f364(s);
+            HitSphere_Unlink_0203f364(s);
         }
-        func_0204a028(data_02097e4c, 0x3e, &self->pos, 5);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x3e, &self->pos, 5);
         break;
     }
     case 1: {
@@ -958,7 +958,7 @@ extern "C" {
 extern void Ov013_PickRandomSpot(VecFx32 *outPos, u16 *outRot, const Ov013Spot *list, u32 count, void *exclude);
 extern BOOL func_ov013_02203ea4(Ov013Act_021fea8c *self, VecFx32 *pos);
 extern void Ov003Sequence_Signal(void *p, s32 a);
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern void HitSphere_Link(ActorSub48 *p);
 
 static inline u32 Ov013_Nearest(const VecFx32 *p, const Ov013Spot *tbl, u32 n) {
@@ -977,7 +977,7 @@ void func_ov013_021fffd0(Ov013Act_021fea8c *self) {
         VecFx32 p;
         u32 best;
         ActorSub48 *m;
-        Ov003Actor *pl = func_ov000_0219bf90();
+        Ov003Actor *pl = ActorMgr_FindPlayer();
         p.x = pl->pos.x;
         p.y = pl->pos.y;
         p.z = pl->pos.z;
@@ -1032,13 +1032,13 @@ void Ov013Act_021fea8c_StateAttack(Ov013Act_021fea8c *self) {
 // ---- merged from ov013_02200fe8.cpp
 namespace m_02200fe8 {
 extern "C" {
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern void *data_02097e4c;
-extern void *func_0206fef8(u16 id);
-extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
-extern BOOL func_ov000_0218fa28(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
+extern void *Tbl_FindEntry_0206fef8(u16 id);
+extern void *SndMgr_PlayAtPitch(void *a, s32 b, VecFx32 *c, s32 d);
+extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
+extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
+extern BOOL AnimCtrl_SetAnim(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Ov003Vec_RotateY(VecFx32 *out, u16 rot, const VecFx32 *v);
 extern void Ov013ActEx_02205ae4_Launch(Ov013ActEx_02205ae4 *self, const VecFx32 *v, u16 id, u16 plid, u16 r, u16 rot);
@@ -1112,20 +1112,20 @@ static inline Ov013ActEx_02205ae4 *Ov013b_Find(u16 id) {
 }
 
 static inline void Ov013b_PartSet(Model0218fe1c *m, s32 i) {
-    if (func_ov000_02190a30(m, i) != NULL) {
-        func_ov000_02190a30(m, i)->paused = 1;
+    if (Model0218fe1c_GetAnimCtrl(m, i) != NULL) {
+        Model0218fe1c_GetAnimCtrl(m, i)->paused = 1;
     }
 }
 
 static inline void Ov013b_PartClr(Model0218fe1c *m, s32 i) {
-    if (func_ov000_02190a30(m, i) != NULL) {
-        func_ov000_02190a30(m, i)->paused = 0;
+    if (Model0218fe1c_GetAnimCtrl(m, i) != NULL) {
+        Model0218fe1c_GetAnimCtrl(m, i)->paused = 0;
     }
 }
 
 static inline void Ov013b_PartB2(Model0218fe1c *m, s32 i) {
-    if (func_ov000_02190a30(m, i) != NULL) {
-        func_ov000_02190a30(m, i)->loop = 1;
+    if (Model0218fe1c_GetAnimCtrl(m, i) != NULL) {
+        Model0218fe1c_GetAnimCtrl(m, i)->loop = 1;
     }
 }
 
@@ -1160,7 +1160,7 @@ static inline void Ov013b_Fade(void) {
 static inline void Ov013b_Link(Ov013Act_021fea8c *self, u16 *out, s32 kind) {
     Actor *o = Ov003_SpawnById(kind);
     o->flags_0 = 1;
-    o->target = func_ov000_0219bf90()->id;
+    o->target = ActorMgr_FindPlayer()->id;
     o->targetObj->target = self->id;
     o->rot_y = self->rot_y;
     *out = o->id;
@@ -1188,7 +1188,7 @@ void Ov013Act_021fea8c_StateAttack2(Ov013Act_021fea8c *self) {
         self->velY = 0x800;
         self->speed = 0;
         self->friction = 0;
-        info = func_0206fef8(self->kind);
+        info = Tbl_FindEntry_0206fef8(self->kind);
         k = FX_Mul(FLD(s16, info, 0x16) << 4, FLD(s16, info, 0x10));
         Ov013b_Set84(self, Ov013b_Lift(k));
         o = Effect3D_Create(data_ov013_0220aee4, data_ov013_0220aee8, 0, &self->pos);
@@ -1196,16 +1196,16 @@ void Ov013Act_021fea8c_StateAttack2(Ov013Act_021fea8c *self) {
         o->SetScale(&data_ov013_0220af7c);
         self->rot_x = 0;
         Ov013b_Fade();
-        func_ov000_02190cb0(self->model, data_ov013_0220af08, 0x1000, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220af08, 0x1000, 0);
         m = self->model;
         if (m->unk_14 != NULL) {
             ResSet *p = m->res;
-            func_ov000_0218fa28(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
+            AnimCtrl_SetAnim(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
         }
-        func_ov000_02190a30(self->model, 2)->loop = 1;
+        Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
         self->fsm->st = 0xa;
-        func_0204a028(data_02097e4c, 0x3e, &self->pos, 5);
-        func_0204a028(data_02097e4c, 0x3c, &self->pos, -5);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x3e, &self->pos, 5);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x3c, &self->pos, -5);
         break;
     }
     case 0xa:
@@ -1231,14 +1231,14 @@ void Ov013Act_021fea8c_StateAttack2(Ov013Act_021fea8c *self) {
         self->friction = 0;
         self->gravity = 0;
         self->fsm->st = 0x29;
-        func_02049f44(data_02097e4c, 0x54, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x54, &self->pos, 0);
         break;
     case 0x29:
         if (self->model->anim_state == 2) {
             Ov003Actor *pl;
             a = Ov013b_Find(self->unk_f4);
             b = Ov013b_Find(self->unk_f6);
-            pl = func_ov000_0219bf90();
+            pl = ActorMgr_FindPlayer();
             if (a == NULL || b == NULL || pl == NULL) {
                 self->fsm->st = 0x50;
             } else {
@@ -1259,7 +1259,7 @@ void Ov013Act_021fea8c_StateAttack2(Ov013Act_021fea8c *self) {
                 VEC_Add(&v, &self->pos, &v);
                 Ov013ActEx_02205ae4_Launch(b, &v, self->id, pl->id, r, self->rot_y);
             }
-            func_0204a028(data_02097e4c, 0x32, &self->pos, 10);
+            SndMgr_PlayAtPitch(data_02097e4c, 0x32, &self->pos, 10);
         }
         if (self->model->anim_state == 3) {
             Ov013b_PartsSet(self->model);
@@ -1290,7 +1290,7 @@ void Ov013Act_021fea8c_StateAttack2(Ov013Act_021fea8c *self) {
             }
         }
         if (a == NULL && b == NULL) {
-            func_0204a028(data_02097e4c, 0x66, &self->pos, -5);
+            SndMgr_PlayAtPitch(data_02097e4c, 0x66, &self->pos, -5);
             self->fsm->st = 0x3c;
         }
         break;
@@ -1335,14 +1335,14 @@ void Ov013Act_021fea8c_StateAttack2(Ov013Act_021fea8c *self) {
             o->unk_28 = 0;
             o->SetScale(&data_ov013_0220af88);
         }
-        func_0204a028(data_02097e4c, 0x3e, &self->pos, 5);
-        func_0204a028(data_02097e4c, 0x3d, &self->pos, -5);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x3e, &self->pos, 5);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x3d, &self->pos, -5);
         break;
     }
     case 0x47:
         path = FALSE;
         self->fsm->timer++;
-        if (self->fsm->timer > 0x14 && func_ov000_02191120(self->model)) {
+        if (self->fsm->timer > 0x14 && Model0218fe1c_IsAnimDone(self->model)) {
             self->fsm->timer = 0;
             self->fsm->st = 0x50;
             break;
@@ -1363,13 +1363,13 @@ void Ov013Act_021fea8c_StateAttack2(Ov013Act_021fea8c *self) {
         self->unk_f4 = 0xffff;
         self->unk_f6 = 0xffff;
         name = data_ov013_0220aee0;
-        func_ov000_02190cb0(self->model, name, 0x800, 0);
+        Model0218fe1c_SetAnim(self->model, name, 0x800, 0);
         m = self->model;
         if (m->unk_14 != NULL) {
             ResSet *p = m->res;
-            func_ov000_0218fa28(m->unk_14, m->renderObj, p, p->anims->list[2], name, 0x1000, 0);
+            AnimCtrl_SetAnim(m->unk_14, m->renderObj, p, p->anims->list[2], name, 0x1000, 0);
         }
-        func_ov000_02190a30(self->model, 2)->loop = 1;
+        Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
         m = self->model;
         if (m != NULL) {
             Ov013b_PartB2(m, 0);
@@ -1378,7 +1378,7 @@ void Ov013Act_021fea8c_StateAttack2(Ov013Act_021fea8c *self) {
             Ov013b_PartB2(m, 4);
         }
         Ov003Sequence_Signal((u8 *)self + 0x14c, 1);
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         break;
     }
     }
@@ -1398,13 +1398,13 @@ void Ov013Act_021fea8c_StateAttack2(Ov013Act_021fea8c *self) {
 extern void *data_02097e4c;
 extern u8 data_ov013_0220b090[];
 extern u8 data_ov013_0220b0cc[];
-extern void func_ov000_02191418(void *a, s32 b, s32 c);
+extern void Model0218fe1c_SetAnimDelay(void *a, s32 b, s32 c);
 extern void Ov003Vec_RotateY(VecFx32 *out, u16 rot, const VecFx32 *v);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
+extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 extern void func_ov013_02203494(Ov013Act_021fea8c *self, BOOL a, BOOL b, s32 c, void *d);
 
 static inline EffectObj *Ov013_SpawnFx(s32 id, const VecFx32 &pos) {
-    return func_02065f88(id, &pos);
+    return Effect_SpawnId(id, &pos);
 }
 
 static inline VecFx32 Ov013_FrontPos(Ov013Act_021fea8c *self, const VecFx32 *off) {
@@ -1418,10 +1418,10 @@ void func_ov013_02200fe8(Ov013Act_021fea8c *self) {
     if (self->fsm->st != 0) {
         return;
     }
-    func_ov000_02191418(self->model, 0x28, 1);
+    Model0218fe1c_SetAnimDelay(self->model, 0x28, 1);
     Ov013_SpawnFx(0x196, Ov013_FrontPos(self, &data_ov013_0220af34))->SetScaleAll(0x2000);
-    func_02049f44(data_02097e4c, 0x44, &self->pos, 0);
-    func_02049f44(data_02097e4c, 0x36, &self->pos, 0);
+    SndMgr_PlayAt(data_02097e4c, 0x44, &self->pos, 0);
+    SndMgr_PlayAt(data_02097e4c, 0x36, &self->pos, 0);
     self->fsm->st++;
 }
 
@@ -1477,7 +1477,7 @@ void Ov013Act_021fea8c_State20(Ov013Act_021fea8c *self) {
         } else {
             s->timer++;
             if (self->fsm->timer > 0x1e) {
-                func_ov000_02198360(self->fsm, 1, 0);
+                History_SetState(self->fsm, 1, 0);
             }
         }
         break;
@@ -1502,15 +1502,15 @@ extern u8 data_ov013_0220b150[];
 extern u8 data_ov013_0220b218[];
 extern void Ov003Sequence_Signal(void *p, s32 a);
 extern void Ov003Sequence_SetPaused(void *p, s32 a);
-extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
-extern BOOL func_ov000_0218fa28(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
-extern Ov003Actor *func_ov000_02199f60(void *p);
+extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
+extern BOOL AnimCtrl_SetAnim(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
+extern Ov003Actor *Target_GetActor(void *p);
 extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
-extern s32 func_02049bdc(void *a, s32 b, s32 c);
-extern BOOL func_ov000_0218fd84(void *a);
-extern BOOL func_ov000_02191508(void *m);
-extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
-extern void *func_0206fef8(u16 id);
+extern s32 SndMgr_PlayPan(void *a, s32 b, s32 c);
+extern BOOL AnimCtrl_IsDone(void *a);
+extern BOOL Model0218fe1c_IsAnimDelayed(void *m);
+extern void *SndMgr_PlayAtPitch(void *a, s32 b, VecFx32 *c, s32 d);
+extern void *Tbl_FindEntry_0206fef8(u16 id);
 extern BOOL Ov003Sequence_HasEntries(void *p, void *tbl);
 extern void Ov003Sequence_SetEntries(void *p, void *tbl, s32 n);
 
@@ -1548,16 +1548,16 @@ void Ov013Act_021fea8c_StateHurt(Ov013Act_021fea8c *self) {
         u16 ang;
         Ov003Sequence_Signal((u8 *)self + 0x14c, 1);
         Ov003Sequence_SetPaused((u8 *)self + 0x14c, 1);
-        func_ov000_02190cb0(self->model, data_ov013_0220af00, 0x800, 1);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220af00, 0x800, 1);
         m = self->model;
         if (m->unk_14 != NULL) {
             ResSet *p = m->res;
-            func_ov000_0218fa28(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
+            AnimCtrl_SetAnim(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
         }
-        func_ov000_02190a30(self->model, 2)->loop = 1;
-        func_ov000_02191418(self->model, 5, 1);
+        Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
+        Model0218fe1c_SetAnimDelay(self->model, 5, 1);
         if (((void *)self->hp) != NULL) {
-            Ov003Actor *a = func_ov000_02199f60(((void *)self->hp));
+            Ov003Actor *a = Target_GetActor(((void *)self->hp));
             if (a != NULL && a != self) {
                 ang = FX_Atan2(a->pos.x - self->pos.x, a->pos.z - self->pos.z);
             } else {
@@ -1575,7 +1575,7 @@ void Ov013Act_021fea8c_StateHurt(Ov013Act_021fea8c *self) {
         self->gravity = 0x52;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4808, 0x15);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4809, 0x15);
-        func_02049bdc(data_02097e4c, 0x41, 4);
+        SndMgr_PlayPan(data_02097e4c, 0x41, 4);
         if (self->pos.y - 0x2000 > 0x2000) {
             self->fsm->st = 0x14;
         } else {
@@ -1589,12 +1589,12 @@ void Ov013Act_021fea8c_StateHurt(Ov013Act_021fea8c *self) {
             self->velY = 0;
             self->friction = 0;
             self->gravity = 0;
-            if (func_ov000_0218fd84(func_ov000_02190a30(self->model, 0))) {
+            if (AnimCtrl_IsDone(Model0218fe1c_GetAnimCtrl(self->model, 0))) {
                 self->fsm->st = 0x64;
             }
             break;
         }
-        if (!func_ov000_02191508(self->model)) {
+        if (!Model0218fe1c_IsAnimDelayed(self->model)) {
             Actor_Move(self, 0);
         }
         break;
@@ -1607,7 +1607,7 @@ void Ov013Act_021fea8c_StateHurt(Ov013Act_021fea8c *self) {
             self->fsm->st = 0x1e;
             break;
         }
-        if (!func_ov000_02191508(self->model)) {
+        if (!Model0218fe1c_IsAnimDelayed(self->model)) {
             Actor_Move(self, 0);
         }
         break;
@@ -1619,9 +1619,9 @@ void Ov013Act_021fea8c_StateHurt(Ov013Act_021fea8c *self) {
         o = Effect3D_Create(data_ov013_0220aee4, data_ov013_0220aee8, 0, &t);
         o->unk_28 = 0;
         o->SetScale(&data_ov013_0220af88);
-        func_0204a028(data_02097e4c, 0x3e, &self->pos, 5);
-        func_0204a028(data_02097e4c, 0x3d, &self->pos, -5);
-        info = func_0206fef8(self->kind);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x3e, &self->pos, 5);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x3d, &self->pos, -5);
+        info = Tbl_FindEntry_0206fef8(self->kind);
         k = FX_Mul(FLD(s16, info, 0x16) << 4, FLD(s16, info, 0x10));
         {
             VecFx32 w2 = Ov013_Lift(k);
@@ -1633,7 +1633,7 @@ void Ov013Act_021fea8c_StateHurt(Ov013Act_021fea8c *self) {
     }
     case 0x1f:
         self->fsm->timer++;
-        if (self->fsm->timer > 0xf && func_ov000_02191120(self->model)) {
+        if (self->fsm->timer > 0xf && Model0218fe1c_IsAnimDone(self->model)) {
             self->fsm->timer = 0;
             self->fsm->st = 0x64;
             break;
@@ -1660,13 +1660,13 @@ void Ov013Act_021fea8c_StateHurt(Ov013Act_021fea8c *self) {
             }
         }
         Ov003Sequence_SetPaused((u8 *)self + 0x14c, 0);
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         break;
     }
     }
 }
 
-extern void func_0203f364(ActorSub48 *p);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern VecFx32 Ov003Actor_GetSub44Offset(Ov003Actor *self);
 extern void *Ov003_SpawnScatterFx(VecFx32 *pos, s32 a, s32 b);
 extern void func_ov000_0218996c(s32 a, s32 b);
@@ -1681,14 +1681,14 @@ void Ov013Act_021fea8c_StateDie(Ov013Act_021fea8c *self) {
         ActorSub48 *m48;
         ActorSub44 *n;
         u16 ang;
-        func_ov000_02190cb0(self->model, data_ov013_0220af00, 0x800, 1);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220af00, 0x800, 1);
         m = self->model;
         if (m->unk_14 != NULL) {
             ResSet *p = m->res;
-            func_ov000_0218fa28(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
+            AnimCtrl_SetAnim(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
         }
-        func_ov000_02190a30(self->model, 2)->loop = 1;
-        func_ov000_02191418(self->model, 5, 1);
+        Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
+        Model0218fe1c_SetAnimDelay(self->model, 5, 1);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x483e, 0x15);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4808, 0x15);
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4809, 0x15);
@@ -1698,7 +1698,7 @@ void Ov013Act_021fea8c_StateDie(Ov013Act_021fea8c *self) {
         m48 = self->hit;
         m48->unk_9a_0 = 0;
         m48->unk_9a_3 = 0;
-        func_0203f364(m48);
+        HitSphere_Unlink_0203f364(m48);
         n = self->unk_44;
         n->unk_22_0 = 0;
         n->unk_22_1 = 0;
@@ -1708,7 +1708,7 @@ void Ov013Act_021fea8c_StateDie(Ov013Act_021fea8c *self) {
         self->friction = 0xcb8;
         self->gravity = 0x52;
         if (((void *)self->hp) != NULL) {
-            Ov003Actor *a = func_ov000_02199f60(((void *)self->hp));
+            Ov003Actor *a = Target_GetActor(((void *)self->hp));
             if (a != NULL && a != self) {
                 ang = FX_Atan2(a->pos.x - self->pos.x, a->pos.z - self->pos.z);
             } else {
@@ -1729,18 +1729,18 @@ void Ov013Act_021fea8c_StateDie(Ov013Act_021fea8c *self) {
     case 0xa:
         if (self->hit->unk_50 & 0x20000000) {
             VecFx32 p = Ov003Actor_GetSub44Offset(self);
-            EffectObj *o = func_02065f88(0x390, &self->pos);
+            EffectObj *o = Effect_SpawnId(0x390, &self->pos);
             if (o != NULL) {
                 self->unk_100 = o->id;
                 o->AddPos(&p);
                 o->SetScaleAll(0x1800);
             }
-            o = func_02065f88(0x69, &self->pos);
+            o = Effect_SpawnId(0x69, &self->pos);
             if (o != NULL) {
                 o->AddPos(&p);
                 o->SetScaleAll(0x5000);
             }
-            func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
             func_ov000_0218996c(0xc, 0x28);
             self->fsm->st = 0x14;
         }
@@ -1756,7 +1756,7 @@ void Ov013Act_021fea8c_StateDie(Ov013Act_021fea8c *self) {
                 VEC_Add(&self->pos, &a, &b);
                 Ov003_SpawnScatterFx(&b, self->radius, 0x38b);
                 func_ov000_0218996c(8, 8);
-                func_02049f44(data_02097e4c, 0x35, &self->pos, 0);
+                SndMgr_PlayAt(data_02097e4c, 0x35, &self->pos, 0);
             }
             if (t >= 0x12b) {
                 func_ov000_0218996c(0x14, 0x78);
@@ -1765,7 +1765,7 @@ void Ov013Act_021fea8c_StateDie(Ov013Act_021fea8c *self) {
             }
         } else {
             if (t % 25 == 0) {
-                func_02049f44(data_02097e4c, 0x44, &self->pos, 0);
+                SndMgr_PlayAt(data_02097e4c, 0x44, &self->pos, 0);
             }
             if (t == 0x6e) {
                 EffectMgr_StopLoop(data_0214a420, self->unk_100);
@@ -1776,19 +1776,19 @@ void Ov013Act_021fea8c_StateDie(Ov013Act_021fea8c *self) {
     }
     case 0x1e: {
         VecFx32 p = Ov003Actor_GetSub44Offset(self);
-        EffectObj *o = func_02065f88(0x38b, &self->pos);
+        EffectObj *o = Effect_SpawnId(0x38b, &self->pos);
         if (o != NULL) {
             o->AddPos(&p);
             o->SetScaleAll(0x3000);
         }
-        o = func_02065f88(0x69, &self->pos);
+        o = Effect_SpawnId(0x69, &self->pos);
         if (o != NULL) {
             o->AddPos(&p);
             o->SetScaleAll(0x5000);
             o->speed = 0xccd;
         }
-        func_0204a028(data_02097e4c, 0x56, &self->pos, -8);
-        func_0204a028(data_02097e4c, 0x41, &self->pos, 4);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x56, &self->pos, -8);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x41, &self->pos, 4);
         self->fsm->st = 0x64;
         break;
     }
@@ -1808,7 +1808,7 @@ void Ov013Act_021fea8c_StateDie(Ov013Act_021fea8c *self) {
         }
         break;
     }
-    func_ov000_021987b8(self->hit, 1, 0, 0);
+    Body_Update(self->hit, 1, 0, 0);
     if (self->hit->unk_50 & 0x20000000) {
         self->speed = 0;
         self->velY = 0;
@@ -1839,11 +1839,11 @@ extern void Ov013_RotateByActorYaw(VecFx32 *out, VecFx32 *v, Ov003Actor *a);
 extern s32 Ov003_CountActorsOfKind(u16 kind);
 extern void Ov003Sequence_Update(void *p);
 extern s32 Ov013_FindActorsNear(Ov003Actor **out, s32 max, u16 kind, VecFx32 *pos, s32 dist);
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 
 static inline void Ov013_PartFlagB2(Model0218fe1c *m, s32 i) {
-    if (func_ov000_02190a30(m, i) != NULL) {
-        func_ov000_02190a30(m, i)->loop = 1;
+    if (Model0218fe1c_GetAnimCtrl(m, i) != NULL) {
+        Model0218fe1c_GetAnimCtrl(m, i)->loop = 1;
     }
 }
 
@@ -1917,10 +1917,10 @@ static inline BOOL Ov013_IsMarked(Ov003Actor *a) {
     if (Ov013_Mode(a) != 0xb) {
         return FALSE;
     }
-    if (func_ov000_0219bf90() == NULL) {
+    if (ActorMgr_FindPlayer() == NULL) {
         return FALSE;
     }
-    u16 id = func_ov000_0219bf90()->id;
+    u16 id = ActorMgr_FindPlayer()->id;
     if (id != a->targetObj->target) {
         return FALSE;
     }
@@ -1937,13 +1937,13 @@ void func_ov013_02201de8(Ov013Act_021fea8c *self) {
         EffectObj *o;
         void *info;
         s32 k;
-        func_ov000_02190cb0(self->model, data_ov013_0220af10, 0x266, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220af10, 0x266, 0);
         m = self->model;
         if (m->unk_14 != NULL) {
             ResSet *p = m->res;
-            func_ov000_0218fa28(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
+            AnimCtrl_SetAnim(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
         }
-        func_ov000_02190a30(self->model, 2)->loop = 1;
+        Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
         m = self->model;
         if (m != NULL) {
             Ov013_PartFlagB2(m, 0);
@@ -1957,12 +1957,12 @@ void func_ov013_02201de8(Ov013Act_021fea8c *self) {
         Ov013Obj_SetFn(((Ov013Obj1c *)self->unk_124), Ov013_RotateByActorYaw);
         self->rot_x = 0;
         self->rot_z = 0;
-        func_0204a028(data_02097e4c, 0x44, &self->pos, 3);
-        o = func_02065f88(0x69, &self->pos);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x44, &self->pos, 3);
+        o = Effect_SpawnId(0x69, &self->pos);
         o->SetScaleAll(0x2000);
         EffectMgr_Kill(data_0214a420, self->unk_100);
         self->unk_100 = o->id;
-        info = func_0206fef8(self->kind);
+        info = Tbl_FindEntry_0206fef8(self->kind);
         k = FX_Mul(FLD(s16, info, 0x16) << 4, FLD(s16, info, 0x10));
         {
             VecFx32 w2 = Ov013_Lift2(k);
@@ -1973,7 +1973,7 @@ void func_ov013_02201de8(Ov013Act_021fea8c *self) {
             m48 = self->hit;
             m48->unk_9a_0 = 0;
             m48->unk_9a_3 = 0;
-            func_0203f364(m48);
+            HitSphere_Unlink_0203f364(m48);
         }
         self->fsm->st = 1;
     }
@@ -1998,9 +1998,9 @@ void func_ov013_02201de8(Ov013Act_021fea8c *self) {
         if (found) {
             Ov003Sequence_SetPaused((u8 *)self + 0x14c, 1);
             Ov003Sequence_Update((u8 *)self + 0x14c);
-            func_ov000_02198360(self->fsm, 0x31, 1);
+            History_SetState(self->fsm, 0x31, 1);
         }
-        p = func_020657b0(data_0214a420, self->unk_100);
+        p = Effect_Find_020657b0(data_0214a420, self->unk_100);
         if (p == NULL) {
             self->unk_100 = 0;
         } else {
@@ -2028,7 +2028,7 @@ struct Ov013HitArg {
 static inline void Ov013_Hit(Ov003Actor *t, Ov003Actor *self) {
     Ov013HitArg arg;
     arg.a = 1;
-    t->target = func_ov000_0219bf90()->id;
+    t->target = ActorMgr_FindPlayer()->id;
     Actor_SendMsg(t, self->id, 0xe, 0, 1, &arg);
 }
 
@@ -2040,20 +2040,20 @@ void func_ov013_02202394(Ov013Act_021fea8c *self) {
         Model0218fe1c *m;
         void *info;
         s32 k;
-        info = func_0206fef8(self->kind);
+        info = Tbl_FindEntry_0206fef8(self->kind);
         k = FX_Mul(FLD(s16, info, 0x16) << 4, FLD(s16, info, 0x10));
         Ov013b_Set84(self, Ov013_Lift3(k));
         Ov013_PathSpeed(self, 0x19a);
         Ov003Sequence_SetPaused((u8 *)self + 0x14c, 1);
-        func_ov000_02190cb0(self->model, data_ov013_0220aefc, 0x800, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220aefc, 0x800, 0);
         m = self->model;
         if (m->unk_14 != NULL) {
             ResSet *q = m->res;
-            func_ov000_0218fa28(m->unk_14, m->renderObj, q, q->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
+            AnimCtrl_SetAnim(m->unk_14, m->renderObj, q, q->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
         }
-        func_ov000_02190a30(self->model, 2)->loop = 1;
+        Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
         self->fsm->st = 0xa;
-        func_02049f44(data_02097e4c, 0x65, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x65, &self->pos, 0);
         break;
     }
     case 0xa:
@@ -2064,7 +2064,7 @@ void func_ov013_02202394(Ov013Act_021fea8c *self) {
         break;
     case 0x14:
         Ov013_PathTarget(self, data_ov013_0220af28);
-        if (func_ov000_0218fd84(func_ov000_02190a30(self->model, 0))) {
+        if (AnimCtrl_IsDone(Model0218fe1c_GetAnimCtrl(self->model, 0))) {
             self->fsm->st = 0x28;
         }
         break;
@@ -2075,7 +2075,7 @@ void func_ov013_02202394(Ov013Act_021fea8c *self) {
         } else {
             self->unk_f8 = 0x118;
         }
-        func_ov000_02198360(self->fsm, 0x32, 0);
+        History_SetState(self->fsm, 0x32, 0);
         break;
     }
     }
@@ -2101,18 +2101,18 @@ void func_ov013_02202394(Ov013Act_021fea8c *self) {
             Ov013HitArg arg;
             EffectObj *e;
             arg.a = 1;
-            list[i]->target = func_ov000_0219bf90()->id;
+            list[i]->target = ActorMgr_FindPlayer()->id;
             Actor_SendMsg((Actor *)list[i], self->id, 0xe, 0, 1, &arg);
             p = list[i]->pos;
-            e = func_02065f88(0x6d, &p);
+            e = Effect_SpawnId(0x6d, &p);
             e->SetRotXYZ(0x4000, (u16)(list[i]->rot_y + 0x7fff), 0);
             e->SetScaleAll(0x4000);
             hit = TRUE;
         }
     }
     if (hit) {
-        func_ov000_02191418(self->model, 3, 1);
-        func_0204a028(data_02097e4c, 0x2c, &self->pos, -3);
+        Model0218fe1c_SetAnimDelay(self->model, 3, 1);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x2c, &self->pos, -3);
     }
     }
 }
@@ -2123,17 +2123,17 @@ extern const VecFx32 data_ov013_0220afdc;
 
 static inline void Ov013c_Anim(Ov013Act_021fea8c *self, const char *nm, s32 sp, s32 loop) {
     Model0218fe1c *m;
-    func_ov000_02190cb0(self->model, nm, sp, loop);
+    Model0218fe1c_SetAnim(self->model, nm, sp, loop);
     m = self->model;
     if (m->unk_14 != NULL) {
         ResSet *p = m->res;
-        func_ov000_0218fa28(m->unk_14, m->renderObj, p, p->anims->list[2], nm, 0x1000, 0);
+        AnimCtrl_SetAnim(m->unk_14, m->renderObj, p, p->anims->list[2], nm, 0x1000, 0);
     }
 }
 
 static inline void Ov013c_Parts(Ov013Act_021fea8c *self) {
     Model0218fe1c *m;
-    func_ov000_02190a30(self->model, 2)->loop = 1;
+    Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
     m = self->model;
     if (m != NULL) {
         Ov013_PartFlagB2(m, 0);
@@ -2162,8 +2162,8 @@ void func_ov013_02202800(Ov013Act_021fea8c *self) {
             q->st = 0x14;
         } else {
             self->unk_f0.b2 = 1;
-            func_ov000_02190a30(self->model, 0)->speed = 0x800;
-            func_ov000_02190a30(self->model, 2)->speed = 0x800;
+            Model0218fe1c_GetAnimCtrl(self->model, 0)->speed = 0x800;
+            Model0218fe1c_GetAnimCtrl(self->model, 2)->speed = 0x800;
             self->fsm->timer++;
             break;
         }
@@ -2175,7 +2175,7 @@ void func_ov013_02202800(Ov013Act_021fea8c *self) {
         EffectObj *o;
         Ov003Vec_RotateY(&v, self->rot_y, &b);
         VEC_Add(&v, &self->pos, &v);
-        o = func_02065f88(0x25d, &v);
+        o = Effect_SpawnId(0x25d, &v);
         o->SetScale(&a);
         o->SetRotXYZ(0, self->rot_y, 0);
         self->fsm->st = 0x15;
@@ -2186,8 +2186,8 @@ void func_ov013_02202800(Ov013Act_021fea8c *self) {
             q->timer = 0;
             self->fsm->st = 0x64;
         } else {
-            func_ov000_02190a30(self->model, 0)->speed = 0x1000;
-            func_ov000_02190a30(self->model, 2)->speed = 0x1000;
+            Model0218fe1c_GetAnimCtrl(self->model, 0)->speed = 0x1000;
+            Model0218fe1c_GetAnimCtrl(self->model, 2)->speed = 0x1000;
             self->fsm->timer++;
             break;
         }
@@ -2279,27 +2279,27 @@ void func_ov013_02202d50(Ov013Act_021fea8c *self) {
 
 
 extern void *data_02097e4c;
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
-extern BOOL func_ov000_0218fa28(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
+extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
+extern BOOL AnimCtrl_SetAnim(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *t, s32 a);
 extern void Ov003Vec_RotateY(VecFx32 *out, u16 rot, const VecFx32 *v);
 extern void Ov013ActEx_02204454_StartMove(Ov013ActEx_02204454 *self, u16 a, u16 b, u16 c, u16 d);
 extern void Ov013ActEx_02204454_SetSpeedScale(Ov013ActEx_02204454 *self, s32 a);
 extern void Ov013ActEx_02204454_SetD2(Ov013ActEx_02204454 *self, u16 a);
 extern u32 Ov013ActEx_02204454_IsDone(Ov013ActEx_02204454 *self);
-extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
+extern void *SndMgr_PlayAtPitch(void *a, s32 b, VecFx32 *c, s32 d);
 
 static inline void Ov013_PartFlagB2(Model0218fe1c *m, s32 i) {
-    if (func_ov000_02190a30(m, i) != NULL) {
-        func_ov000_02190a30(m, i)->loop = 1;
+    if (Model0218fe1c_GetAnimCtrl(m, i) != NULL) {
+        Model0218fe1c_GetAnimCtrl(m, i)->loop = 1;
     }
 }
 
 static inline void Ov013_PartFlagB3(Model0218fe1c *m, s32 i, s32 v) {
-    if (func_ov000_02190a30(m, i) != NULL) {
-        func_ov000_02190a30(m, i)->paused = v;
+    if (Model0218fe1c_GetAnimCtrl(m, i) != NULL) {
+        Model0218fe1c_GetAnimCtrl(m, i)->paused = v;
     }
 }
 
@@ -2317,18 +2317,18 @@ void func_ov013_02202dc8(Ov013Act_021fea8c *self, u16 a, s32 b, BOOL c, u16 d) {
         Actor *o;
         const char *anim;
         Model0218fe1c *m;
-        self->target = func_ov000_0219bf90()->id;
+        self->target = ActorMgr_FindPlayer()->id;
         o = Ov003_SpawnById(0x483e);
         o->flags_0 = 1;
         self->unk_f2 = o->id;
         anim = data_ov013_0220aee0;
-        func_ov000_02190cb0(self->model, anim, 0x266, 0);
+        Model0218fe1c_SetAnim(self->model, anim, 0x266, 0);
         m = self->model;
         if (m->unk_14 != NULL) {
             ResSet *p = m->res;
-            func_ov000_0218fa28(m->unk_14, m->renderObj, p, p->anims->list[2], anim, 0x1000, 0);
+            AnimCtrl_SetAnim(m->unk_14, m->renderObj, p, p->anims->list[2], anim, 0x1000, 0);
         }
-        func_ov000_02190a30(self->model, 2)->loop = 1;
+        Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
         m = self->model;
         if (m != NULL) {
             Ov013_PartFlagB2(m, 0);
@@ -2341,13 +2341,13 @@ void func_ov013_02202dc8(Ov013Act_021fea8c *self, u16 a, s32 b, BOOL c, u16 d) {
     }
     case 0x1e: {
         Model0218fe1c *m;
-        func_ov000_02190cb0(self->model, data_ov013_0220aef4, 0x1000, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220aef4, 0x1000, 0);
         m = self->model;
         if (m->unk_14 != NULL) {
             ResSet *p = m->res;
-            func_ov000_0218fa28(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
+            AnimCtrl_SetAnim(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
         }
-        func_ov000_02190a30(self->model, 2)->loop = 1;
+        Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
         self->fsm->st = 0x1f;
         break;
     }
@@ -2375,7 +2375,7 @@ void func_ov013_02202dc8(Ov013Act_021fea8c *self, u16 a, s32 b, BOOL c, u16 d) {
         if (c) {
             Ov013ActEx_02204454_SetD2(o, d);
         }
-        func_02065f88(0x57a, &self->pos)->SetScaleAll(0x2800);
+        Effect_SpawnId(0x57a, &self->pos)->SetScaleAll(0x2800);
         m = self->model;
         if (m != NULL) {
             Ov013_PartFlagB3(m, 0, 1);
@@ -2383,7 +2383,7 @@ void func_ov013_02202dc8(Ov013Act_021fea8c *self, u16 a, s32 b, BOOL c, u16 d) {
             Ov013_PartFlagB3(m, 3, 1);
             Ov013_PartFlagB3(m, 4, 1);
         }
-        func_0204a028(data_02097e4c, 0x2b, &self->pos, -5);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x2b, &self->pos, -5);
         self->fsm->st = 0x28;
         break;
     }
@@ -2411,7 +2411,7 @@ void func_ov013_02202dc8(Ov013Act_021fea8c *self, u16 a, s32 b, BOOL c, u16 d) {
         if (VEC_Distance(&self->pos, &v) >= 0x3000) {
             break;
         }
-        func_0204a028(data_02097e4c, 0x66, &self->pos, -5);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x66, &self->pos, -5);
         self->unk_f0.b3 = 1;
         o->vfunc_08();
         self->fsm->st = 0x3c;
@@ -2427,20 +2427,20 @@ void func_ov013_02202dc8(Ov013Act_021fea8c *self, u16 a, s32 b, BOOL c, u16 d) {
             Ov013_PartFlagB3(m, 3, 0);
             Ov013_PartFlagB3(m, 4, 0);
         }
-        if (!func_ov000_02191120(self->model)) {
+        if (!Model0218fe1c_IsAnimDone(self->model)) {
             break;
         }
         self->unk_f2 = 0xffff;
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         break;
     }
     }
 }
 
-extern s32 func_ov000_0218fd84(void *p);
+extern s32 AnimCtrl_IsDone(void *p);
 extern void Ov013ActEx_022065ac_SetF6(Ov003Actor *o, u16 a);
 extern void Ov013ActEx_022065ac_SetF4(Ov003Actor *o, s32 a);
-extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
+extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 
 struct Ov013Rot3 {
     u16 x;
@@ -2452,13 +2452,13 @@ void func_ov013_02203494(Ov013Act_021fea8c *self, BOOL a, BOOL b, u16 c, s32 d) 
     switch (self->fsm->st) {
     case 0: {
         Model0218fe1c *m;
-        func_ov000_02190cb0(self->model, data_ov013_0220af14, 0x1000, 1);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220af14, 0x1000, 1);
         m = self->model;
         if (m->unk_14 != NULL) {
             ResSet *p = m->res;
-            func_ov000_0218fa28(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
+            AnimCtrl_SetAnim(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
         }
-        func_ov000_02190a30(self->model, 2)->loop = 1;
+        Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
         self->fsm->st = 10;
         break;
     }
@@ -2505,9 +2505,9 @@ void func_ov013_02203494(Ov013Act_021fea8c *self, BOOL a, BOOL b, u16 c, s32 d) 
             Ov013ActEx_022065ac_SetF6(o, c);
             Ov013ActEx_022065ac_SetF4(o, 1);
             o->flags_0 = 1;
-            func_02049f44(data_02097e4c, 0x54, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x54, &self->pos, 0);
         }
-        if (func_ov000_0218fd84(func_ov000_02190a30(self->model, 0))) {
+        if (AnimCtrl_IsDone(Model0218fe1c_GetAnimCtrl(self->model, 0))) {
             self->fsm->st = 100;
         }
         break;
@@ -2517,13 +2517,13 @@ void func_ov013_02203494(Ov013Act_021fea8c *self, BOOL a, BOOL b, u16 c, s32 d) 
         const char *anim;
         Ov003Sequence_Signal((u8 *)self + 0x14c, 1);
         anim = data_ov013_0220aee0;
-        func_ov000_02190cb0(self->model, anim, 0x266, 0);
+        Model0218fe1c_SetAnim(self->model, anim, 0x266, 0);
         m = self->model;
         if (m->unk_14 != NULL) {
             ResSet *p = m->res;
-            func_ov000_0218fa28(m->unk_14, m->renderObj, p, p->anims->list[2], anim, 0x1000, 0);
+            AnimCtrl_SetAnim(m->unk_14, m->renderObj, p, p->anims->list[2], anim, 0x1000, 0);
         }
-        func_ov000_02190a30(self->model, 2)->loop = 1;
+        Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
         m = self->model;
         if (m != NULL) {
             Ov013_PartFlagB2(m, 0);
@@ -2544,10 +2544,10 @@ extern "C" {
 
 extern const VecFx32 data_ov013_0220afe8;
 extern void *data_02097e4c;
-extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
-extern BOOL func_ov000_0218fa28(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
+extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
+extern BOOL AnimCtrl_SetAnim(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
 extern void Ov003Vec_RotateY(VecFx32 *out, u16 rot, const VecFx32 *v);
-extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
+extern void *SndMgr_PlayAtPitch(void *a, s32 b, VecFx32 *c, s32 d);
 extern BOOL Ov003Vec_Equal(VecFx32 *a, VecFx32 *b);
 extern void Ov003Vec_ApproachWithin(VecFx32 *out, const VecFx32 *a, const VecFx32 *b, s32 dist, s32 yoff);
 extern void Ov003StateMachine_ChangeState(void *p, s32 a);
@@ -2555,8 +2555,8 @@ extern void Ov003StateMachine_Leave(void *p);
 extern u16 Ov003Vec_Yaw(VecFx32 *v);
 
 static inline void Ov013_PartFlagB2(Model0218fe1c *m, s32 i) {
-    if (func_ov000_02190a30(m, i) != NULL) {
-        func_ov000_02190a30(m, i)->loop = 1;
+    if (Model0218fe1c_GetAnimCtrl(m, i) != NULL) {
+        Model0218fe1c_GetAnimCtrl(m, i)->loop = 1;
     }
 }
 
@@ -2600,13 +2600,13 @@ BOOL func_ov013_022038a8(Ov013Act_021fea8c *self, const VecFx32 *pos, u16 rot) {
         Model0218fe1c *m;
         move = FALSE;
         turn = FALSE;
-        func_ov000_02190cb0(self->model, data_ov013_0220af04, 0x266, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220af04, 0x266, 0);
         m = self->model;
         if (m->unk_14 != NULL) {
             ResSet *p = m->res;
-            func_ov000_0218fa28(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
+            AnimCtrl_SetAnim(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
         }
-        func_ov000_02190a30(self->model, 2)->loop = 1;
+        Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
         m = self->model;
         if (m != NULL) {
             Ov013_PartFlagB2(m, 0);
@@ -2621,7 +2621,7 @@ BOOL func_ov013_022038a8(Ov013Act_021fea8c *self, const VecFx32 *pos, u16 rot) {
         self->rot_x = 0;
         self->rot_z = 0;
         self->fsm->st = 10;
-        func_0204a028(data_02097e4c, 0x3e, &self->pos, 5);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x3e, &self->pos, 5);
         break;
     }
     case 10:
@@ -2692,7 +2692,7 @@ BOOL func_ov013_022038a8(Ov013Act_021fea8c *self, const VecFx32 *pos, u16 rot) {
         if (Ov003Vec_Equal(&w, &self->pos) || self->speed < 8) {
             self->fsm->st = 40;
             turn = FALSE;
-            func_0204a028(data_02097e4c, 0x3e, &self->pos, 5);
+            SndMgr_PlayAtPitch(data_02097e4c, 0x3e, &self->pos, 5);
         }
         break;
     }
@@ -2727,17 +2727,17 @@ namespace m_02203ea4 {
 extern "C" {
 
 extern void *data_02097e4c;
-extern Ov003Actor *func_ov000_0219bf90(void);
-extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
-extern BOOL func_ov000_0218fa28(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
-extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
+extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
+extern BOOL AnimCtrl_SetAnim(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
+extern void *SndMgr_PlayAtPitch(void *a, s32 b, VecFx32 *c, s32 d);
 extern BOOL Ov003Vec_Equal(VecFx32 *a, VecFx32 *b);
 extern void Ov003Vec_ApproachWithin(VecFx32 *out, const VecFx32 *a, const VecFx32 *b, s32 dist, s32 yoff);
 extern void Ov003StateMachine_ChangeState(void *p, s32 a);
 
 static inline void Ov013_PartFlagB2(Model0218fe1c *m, s32 i) {
-    if (func_ov000_02190a30(m, i) != NULL) {
-        func_ov000_02190a30(m, i)->loop = 1;
+    if (Model0218fe1c_GetAnimCtrl(m, i) != NULL) {
+        Model0218fe1c_GetAnimCtrl(m, i)->loop = 1;
     }
 }
 
@@ -2761,7 +2761,7 @@ BOOL func_ov013_02203ea4(Ov013Act_021fea8c *self, const VecFx32 *dst) {
         self->pos.y = v.y - 0xf000;
         move = TRUE;
         self->rot_x = 0xbfff;
-        o = func_02065f88(0x2bd, (VecFx32 *)dst);
+        o = Effect_SpawnId(0x2bd, (VecFx32 *)dst);
         o->SetScaleAll(0x3000);
         o->loopCount = -1;
         self->unk_100 = o->id;
@@ -2770,13 +2770,13 @@ BOOL func_ov013_02203ea4(Ov013Act_021fea8c *self, const VecFx32 *dst) {
         self->friction = 0;
         self->gravity = 0;
         Ov003StateMachine_ChangeState((u8 *)self + 0x12c, 0);
-        func_ov000_02190cb0(self->model, data_ov013_0220af04, 0x266, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220af04, 0x266, 0);
         m = self->model;
         if (m->unk_14 != NULL) {
             ResSet *p = m->res;
-            func_ov000_0218fa28(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
+            AnimCtrl_SetAnim(m->unk_14, m->renderObj, p, p->anims->list[2], data_ov013_0220aee0, 0x1000, 0);
         }
-        func_ov000_02190a30(self->model, 2)->loop = 1;
+        Model0218fe1c_GetAnimCtrl(self->model, 2)->loop = 1;
         m = self->model;
         if (m != NULL) {
             Ov013_PartFlagB2(m, 0);
@@ -2785,7 +2785,7 @@ BOOL func_ov013_02203ea4(Ov013Act_021fea8c *self, const VecFx32 *dst) {
             Ov013_PartFlagB2(m, 4);
         }
         self->fsm->st = 10;
-        func_0204a028(data_02097e4c, 0x3e, &self->pos, 5);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x3e, &self->pos, 5);
         break;
     }
     case 10:
@@ -2796,7 +2796,7 @@ BOOL func_ov013_02203ea4(Ov013Act_021fea8c *self, const VecFx32 *dst) {
         }
         break;
     case 20: {
-        Ov003Actor *a = func_ov000_0219bf90();
+        Ov003Actor *a = ActorMgr_FindPlayer();
         u16 r;
         if (a == NULL || a == self) {
             r = self->rot_y;
@@ -2851,13 +2851,13 @@ extern char data_ov013_0220ba60[];
 extern void Ov003Vec_RotateY(VecFx32 *out, u16 rot, const VecFx32 *v);
 extern void *Ov003Vt_021f79a8_Ctor(void *p);
 extern void *Ov003Vt_021f79a8_Dtor(void *p);
-extern void *func_ov000_0218ea20(void *p);
-extern void *func_ov000_0218fee4(void *p);
-extern void *func_ov000_0218e9c4(void *p);
-extern BOOL func_ov000_0218f110(void *p);
+extern void *ResSet_ReleaseAll(void *p);
+extern void *Model0218fe1c_FreeAnims(void *p);
+extern void *ResSet_Init(void *p);
+extern BOOL ResSet_UpdateLoad(void *p);
 
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern Robo021ca458 *func_ov000_0219bf90(void);
+extern Robo021ca458 *ActorMgr_FindPlayer(void);
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -2882,7 +2882,7 @@ void Ov013Cam_Follow(Ov013Cam *self) {
         return;
     }
     t = Ov013_FindActor(self->id);
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (t == NULL || pl == NULL) {
         return;
     }

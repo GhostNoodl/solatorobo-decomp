@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern u8 *func_0206fef8(void *res);
+extern u8 *Tbl_FindEntry_0206fef8(void *res);
 
 struct Ov009Bits16 {
     u16 b0 : 1;
@@ -13,7 +13,7 @@ struct Ov009Bits16 {
 void Ov009Names_Fill_02211da4(Ov009Names *self, void *res) {
     char *a = func_0207011c(res);
     char *b = func_020701d4(res);
-    u8 *c = func_0206fef8(res);
+    u8 *c = Tbl_FindEntry_0206fef8(res);
     if (FLD(Ov009Bits16, c, 0x12).b0) {
         STD_CopyString(self->mdlDir, a);
         STD_CopyString(self->mdlName, b);
@@ -37,7 +37,7 @@ struct Ov009SpawnDesc {
     s16 parent;
 };
 
-extern Ov003Actor *func_ov000_02192b24(void *desc);
+extern Ov003Actor *Factory_New4000(void *desc);
 
 void Ov009ActSpin_Init(Ov009ActSpin *self) {
     Ov009SpawnDesc desc;
@@ -59,7 +59,7 @@ void Ov009ActSpin_Init(Ov009ActSpin *self) {
     if (self->unk_1a == 1) {
         self->pos.z += 0x3000;
     }
-    o = func_ov000_02192b24(&desc);
+    o = Factory_New4000(&desc);
     if (o == NULL) {
         return;
     }

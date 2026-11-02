@@ -18,7 +18,7 @@ static inline void Advance021b7838(FieldPropModel *self, NNSG3dAnmObj *a, s32 st
     }
 }
 
-void func_ov000_021b7838(FieldPropModel *self, s32 speed) {
+void FieldPropModel_UpdateAnim(FieldPropModel *self, s32 speed) {
     s32 step;
     if (self->stop) {
         return;

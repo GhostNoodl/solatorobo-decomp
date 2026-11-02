@@ -71,47 +71,47 @@ void ov006_Unk021def9c_Load(ov006_Unk021def9c *self) {
         icon->unkE = 1;
     }
     self->unk88 = icon;
-    res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+    res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
     m1 = (Model *)Heap_Alloc(sizeof(Model));
     if (m1 != NULL) {
         const char *name = data_0208cc94;
-        func_02041218(&m1->pltt);
-        func_02041440(m1, name, 0);
+        PlttRes_Init_02041218(&m1->pltt);
+        TexObj_Init(m1, name, 0);
     }
     icon->unk1C = m1;
-    func_020417e0(m1, res);
+    TexObj_SetRes(m1, res);
     icon->unk1C->flags |= 2;
-    func_02041d9c(icon->unk1C, 0, 0x1e);
+    TexObj_SelectImage(icon->unk1C, 0, 0x1e);
     func_02041c34(icon->unk1C, 0x1e, (void *)ov006_OamCb_TimeDigits, 0);
-    func_02041d9c(icon->unk1C, 0, 0x1f);
+    TexObj_SelectImage(icon->unk1C, 0, 0x1f);
     func_02041c34(icon->unk1C, 0x1f, (void *)ov006_OamCb_TimeDigits, 0);
-    func_02041d9c(icon->unk1C, 0, 0x24);
+    TexObj_SelectImage(icon->unk1C, 0, 0x24);
     func_02041c34(icon->unk1C, 0x24, (void *)ov006_OamCb_TimeDigits, 0);
     icon->unk1C->flags |= 0x80000;
     icon->unk1C->flags = (icon->unk1C->flags & ~0x7c) | 0x78;
     m2 = (Model *)Heap_Alloc(sizeof(Model));
     if (m2 != NULL) {
         const char *name = data_0208cb7c;
-        func_02041218(&m2->pltt);
-        func_02041440(m2, name, 0);
+        PlttRes_Init_02041218(&m2->pltt);
+        TexObj_Init(m2, name, 0);
         STD_CopyString(m2->name, data_0214b105);
     }
     self->unk8C = m2;
-    func_020417e0(self->unk8C, func_02035de0(data_0214b105, data_0208cb7c));
+    TexObj_SetRes(self->unk8C, func_02035de0(data_0214b105, data_0208cb7c));
     self->unk8C->flags |= 2;
     self->unk8C->flags |= 0x80000;
-    func_02041d9c(self->unk8C, 0, 0xe);
+    TexObj_SelectImage(self->unk8C, 0, 0xe);
     m3 = (Model *)Heap_Alloc(sizeof(Model));
     if (m3 != NULL) {
         const char *name = data_0208cc94;
-        func_02041218(&m3->pltt);
-        func_02041440(m3, name, 0);
+        PlttRes_Init_02041218(&m3->pltt);
+        TexObj_Init(m3, name, 0);
     }
     self->unk90 = m3;
-    func_020417e0(self->unk90, func_02035de0(data_0208cc94, data_0208cc88));
+    TexObj_SetRes(self->unk90, func_02035de0(data_0208cc94, data_0208cc88));
     self->unk90->flags |= 2;
     self->unk90->flags |= 0x80000;
-    func_02041d9c(self->unk90, 0, 0x1e);
+    TexObj_SelectImage(self->unk90, 0, 0x1e);
     func_02041c34(self->unk90, 0x1e, (void *)ov006_Counter_OamCb, 0);
     self->unk4 = 6;
     self->unk8 = 0;

@@ -13,7 +13,7 @@ static inline void Res_Release(LoTextHolder *r) {
     }
 }
 
-void func_ov000_0216bcbc(LoTicker *self) {
+void LoTicker_Clear(LoTicker *self) {
     s32 i;
     LoTickerSlot *slot;
     for (i = 0; i < 16; i++) {

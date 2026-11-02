@@ -8,7 +8,7 @@ extern "C" {
 
 extern char data_ov000_021cc9bc[];
 
-void func_ov000_021c22d8(ListRow *self) {
+void ListRow_Init(ListRow *self) {
     self->index = 0;
     self->x = 0;
     self->y = 0;
@@ -21,7 +21,7 @@ void func_ov000_021c22d8(ListRow *self) {
     self->unk_24 = 0;
 }
 
-void func_ov000_021c2310(ListRow *self) {
+void ListRow_Unlink(ListRow *self) {
     if (self->prev != NULL) {
         self->prev->next = self->next;
     }
@@ -40,7 +40,7 @@ void func_ov000_021c2334(Hud021cca10 *self) {
     self->built = 0;
 }
 
-void func_ov000_021c2364(Hud021cca10 *self) {
+void Hud021cca10_Release(Hud021cca10 *self) {
     HEAP_DELETE_MODEL(self->unk_30);
     HEAP_DELETE_MODEL(self->unk_34);
     {

@@ -128,7 +128,7 @@ extern int WM_EndDataSharing(void *dsInfo);
 extern int WM_SetGameInfo(void (*cb)(void *arg), void *info, u16 length, u32 ggid, u16 tgid, u8 attr);
 extern int WM_MeasureChannel(void (*cb)(void *arg), u16 a, u16 b, u16 channel, u16 time);
 extern int WM_SetEntry(void (*cb)(void *arg), BOOL enabled);
-extern u32 func_0204045c(void);
+extern u32 Rand_GetGlobal(void);
 
 typedef struct WhCbArg {
     /* 0x00 */ u16 apiid;

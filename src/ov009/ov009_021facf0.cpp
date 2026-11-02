@@ -42,7 +42,7 @@ void Ov009ActVt_022164a0_State20(Ov009ActVt_022164a0 *self) {
     switch (st->st) {
     case 0:
         if (self->unk_1a != 0) {
-            func_ov000_02198360(st, 1, 0);
+            History_SetState(st, 1, 0);
             return;
         }
         self->pos.y += 0x5000;
@@ -51,16 +51,16 @@ void Ov009ActVt_022164a0_State20(Ov009ActVt_022164a0 *self) {
         s44->unk_22_1 = 0;
         self->velY = -0x19a;
         self->gravity = 0x52;
-        func_02049f44(data_02097e4c, 0x63, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x63, &self->pos, 0);
         self->fsm->st++;
     case 1:
         Actor_Move(self, 0);
-        func_ov000_021987b8(self->hit, 0, 0, 0);
+        Body_Update(self->hit, 0, 0, 0);
         if (!(self->hit->unk_50 & 0x20000000)) {
             return;
         }
-        func_ov000_02190cb0(self->model, data_ov009_02216ab0, 0x200, 0);
-        func_02065f88(0x12e, &self->pos)->SetScaleAll(0x1400);
+        Model0218fe1c_SetAnim(self->model, data_ov009_02216ab0, 0x200, 0);
+        Effect_SpawnId(0x12e, &self->pos)->SetScaleAll(0x1400);
         s44 = self->unk_44;
         s44->unk_22_0 = 1;
         s44->unk_22_1 = 1;
@@ -72,15 +72,15 @@ void Ov009ActVt_022164a0_State20(Ov009ActVt_022164a0 *self) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
             data_ov000_021ccd54->stageFlags = 1;
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }
 }
 
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void func_ov000_021911c8(Model0218fe1c *model, s16 a);
-extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
+extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *model, s16 a);
+extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 extern void func_01ffc9fc(VecFx32 *out, VecFx32 *a, u16 b);
 static inline Ov003Actor *Ov009_FindActor5(u16 id) {
@@ -95,13 +95,13 @@ void Ov009ActVt_022164a0_StateAttack2(Ov009ActVt_022164a0 *self) {
     ActorSub40 *st;
     switch (self->fsm->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov009_02216ab0, 0x200, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov009_02216ab0, 0x200, 0);
         {
             Model0218fe1c *m = self->model;
             m->evScript = NULL;
             m->evCursor = NULL;
         }
-        func_ov000_021911c8(self->model, 0x800);
+        Model0218fe1c_SetAnimSpeed(self->model, 0x800);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;
@@ -131,18 +131,18 @@ void Ov009ActVt_022164a0_StateAttack2(Ov009ActVt_022164a0 *self) {
         u16 a;
         ActorGroup *g;
         Actor_Move(self, 0);
-        func_ov000_021987b8(self->hit, 0, 0, 0);
+        Body_Update(self->hit, 0, 0, 0);
         if (self->velY < 0) {
             self->gravity = 0x52;
         }
         if (!(self->hit->unk_50 & 0x20000000)) {
             return;
         }
-        func_ov000_02190cb0(self->model, data_ov009_02216ab0, 0x800, 1);
+        Model0218fe1c_SetAnim(self->model, data_ov009_02216ab0, 0x800, 1);
         if (t != NULL) {
-            func_ov000_0219aae8(self, self, self->unk_f0, 0x20, (u16)(1 << (t->id >> 12)), NULL, 0, 0x3400, 0x2800, 0x64, 0x1000);
+            Hit_ApplyInArea(self, self, self->unk_f0, 0x20, (u16)(1 << (t->id >> 12)), NULL, 0, 0x3400, 0x2800, 0x64, 0x1000);
         }
-        func_02065f88(0x66, &self->pos)->SetScaleAll(0x1c00);
+        Effect_SpawnId(0x66, &self->pos)->SetScaleAll(0x1c00);
         g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
         if (g != NULL && g->count <= 3) {
             do {
@@ -174,7 +174,7 @@ void Ov009ActVt_022164a0_StateAttack2(Ov009ActVt_022164a0 *self) {
         st = self->fsm;
         st->timer++;
         if (st->timer > 0x1e) {
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         self->hit->unk_9a_5 = 1;
         break;

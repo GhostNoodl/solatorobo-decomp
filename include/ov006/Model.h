@@ -39,8 +39,8 @@ static inline void ov006_Model_SetPos(Model *self, int idx, s32 x, s32 y) {
         if ((obj) != NULL) {                                     \
             if ((obj) != NULL) {                                 \
                 Model *m_ = (obj);                               \
-                func_02041558(m_);                               \
-                func_02041278(&m_->pltt);                        \
+                TexObj_Release(m_);                               \
+                PlttRes_Release(&m_->pltt);                        \
                 Heap_Free(m_);                                   \
             }                                                    \
             (obj) = NULL;                                        \

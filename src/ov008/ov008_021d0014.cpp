@@ -7,8 +7,8 @@ extern "C" {
 
 extern void *data_ov000_021caec8;
 extern void *data_ov000_021cac60;
-BOOL func_02054f10(Model *a, u32 b);
-BOOL func_0203e63c(void *p);
+BOOL Model_IsReady(Model *a, u32 b);
+BOOL Vram_IsTransferDone(void *p);
 BOOL func_ov008_021d01b0(Ov008Menu *self);
 
 }
@@ -34,7 +34,7 @@ static inline BOOL Ov008_ModelDone(Ov008MenuRes *p) {
     if (p->unk_6c == NULL) {
         return TRUE;
     }
-    if (func_0203e63c(p->unk_6c)) {
+    if (Vram_IsTransferDone(p->unk_6c)) {
         p->unk_6c = NULL;
     } else {
         return p->unk_04.b6 == 0;
@@ -108,7 +108,7 @@ s32 func_ov008_021d016c(Ov008Menu *self) {
 
 BOOL func_ov008_021d0178(Ov008Menu *self) {
     BOOL r = func_ov008_021d01b0(self);
-    if (self->unk_b4 != NULL && !func_02054f10(self->unk_b4, 0xffff)) {
+    if (self->unk_b4 != NULL && !Model_IsReady(self->unk_b4, 0xffff)) {
         r = FALSE;
     }
     return r;
@@ -117,7 +117,7 @@ BOOL func_ov008_021d0178(Ov008Menu *self) {
 BOOL func_ov008_021d01b0(Ov008Menu *self) {
     BOOL r = TRUE;
     Ov008MenuRes *p;
-    if (self->unk_10 != NULL && !func_02054f10(self->unk_10, 0xffff)) {
+    if (self->unk_10 != NULL && !Model_IsReady(self->unk_10, 0xffff)) {
         r = FALSE;
     }
     p = self->unk_14;

@@ -20,7 +20,7 @@ extern void Actor_MoveToPos(Ov003Actor *self, VecFx32 *v, s32 a);
 
 extern ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 a);
 extern u16 ActorGroup_CountKind(ActorGroup *p, u16 a);
-extern BOOL func_ov000_021983b0(ActorSub40 *a, u8 b, s32 c, BOOL d);
+extern BOOL History_HasState(ActorSub40 *a, u8 b, s32 c, BOOL d);
 
 
 s32 Ov013Act_02207968_ChooseAttack(Ov013Act_02207968 *self) {
@@ -37,7 +37,7 @@ s32 Ov013Act_02207968_ChooseAttack(Ov013Act_02207968 *self) {
     }
     if (st == 0xe) {
         if (pct <= 0x32) {
-            if (!func_ov000_021983b0(self->fsm, 0x10, 3, 1)) {
+            if (!History_HasState(self->fsm, 0x10, 3, 1)) {
                 st = 0x10;
                 if (n != 0) {
                     st = 1;
@@ -53,7 +53,7 @@ s32 Ov013Act_02207968_ChooseAttack(Ov013Act_02207968 *self) {
     if (st == 0xe && n >= 3) {
         st = 0xf;
     }
-    if (!func_ov000_021983b0(self->fsm, 0xf, 7, 1)) {
+    if (!History_HasState(self->fsm, 0xf, 7, 1)) {
         if (self->unk_f1 != 0xf) {
             st = 0xf;
         }
@@ -104,8 +104,8 @@ void Ov013ActVt_0220bc80_State20(Ov013ActVt_0220bc80 *self) {
     VecFx32 d;
     switch (self->fsm->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov013_0220be7c, 0x1000, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220be7c, 0x1000, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st++;
     case 1: {
         ActorSub40 *q = self->fsm;
@@ -114,7 +114,7 @@ void Ov013ActVt_0220bc80_State20(Ov013ActVt_0220bc80 *self) {
             ActorSub44 *n = self->unk_44;
             n->unk_22_0 = 1;
             n->unk_22_1 = 1;
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }
@@ -123,15 +123,15 @@ void Ov013ActVt_0220bc80_State20(Ov013ActVt_0220bc80 *self) {
     d.y = self->unk_100.y - self->pos.y;
     d.z = self->unk_100.z - self->pos.z;
     VEC_MultAdd(0xcd, &d, &self->pos, &self->pos);
-    func_ov000_021987b8(self->hit, 0, 0, 0);
+    Body_Update(self->hit, 0, 0, 0);
 }
 
 void Ov013ActVt_0220bc80_StateIdle(Ov013ActVt_0220bc80 *self) {
     VecFx32 d;
     switch (self->fsm->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov013_0220be7c, 0x200, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220be7c, 0x200, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st++;
     case 1: {
         ActorSub40 *q = self->fsm;
@@ -156,7 +156,7 @@ void Ov013ActVt_0220bc80_StateIdle(Ov013ActVt_0220bc80 *self) {
     d.z = FX_Mul(d.z, 0x33);
     d.y *= 3;
     VEC_Add(&self->pos, &d, &self->pos);
-    func_ov000_021987b8(self->hit, 1, 0, 0);
+    Body_Update(self->hit, 1, 0, 0);
 }
 
 void Ov013ActVt_0220bc80_StateMove(Ov013ActVt_0220bc80 *self) {
@@ -166,8 +166,8 @@ void Ov013ActVt_0220bc80_StateMove(Ov013ActVt_0220bc80 *self) {
         if (self->unk_ee_0) {
             name = data_ov013_0220bea6;
         }
-        func_ov000_02190cb0(self->model, name, 0x2ab, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, name, 0x2ab, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st++;
         self->velY = 0;
         self->friction = 0;
@@ -177,19 +177,19 @@ void Ov013ActVt_0220bc80_StateMove(Ov013ActVt_0220bc80 *self) {
     v = self->unk_b8;
     Actor_MoveToPos(self, &v, self->unk_b0->unk_02);
     self->pos.y += FX_Mul(v.y + 0x1800 - self->pos.y, 0xcd);
-    func_ov000_021987b8(self->hit, 1, 0, 0);
+    Body_Update(self->hit, 1, 0, 0);
 }
 
 void Ov013ActVt_0220bc80_StateAttack(Ov013ActVt_0220bc80 *self) {
     ActorSub40 *q;
     if (!Ov013_GameIdle()) {
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         return;
     }
     q = self->fsm;
     switch (q->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov013_0220be82, 0x200, 1);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220be82, 0x200, 1);
         self->fsm->st++;
         self->speed = 0;
         self->velY = 0;
@@ -206,8 +206,8 @@ void Ov013ActVt_0220bc80_StateAttack(Ov013ActVt_0220bc80 *self) {
         s32 y = self->hit->check.y;
         q->timer++;
         if (q->timer > 0x2d || self->pos.y < y + 0x1400) {
-            func_ov000_02190cb0(self->model, data_ov013_0220be7c, 0x200, 0);
-            func_ov000_021915a0(self->model);
+            Model0218fe1c_SetAnim(self->model, data_ov013_0220be7c, 0x200, 0);
+            Model0218fe1c_SetLoop(self->model);
             self->fsm->timer = 0;
             self->fsm->st++;
             if (self->pos.y < y + 0x1400) {
@@ -223,7 +223,7 @@ void Ov013ActVt_0220bc80_StateAttack(Ov013ActVt_0220bc80 *self) {
         lim = self->unk_1c;
         q->timer++;
         if (q->timer > lim) {
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
             self->speed = 0;
             self->velY = 0;
             self->friction = 0;
@@ -233,7 +233,7 @@ void Ov013ActVt_0220bc80_StateAttack(Ov013ActVt_0220bc80 *self) {
     }
     }
     Actor_Move(self, 0);
-    func_ov000_021987b8(self->hit, 0, 0, 0);
+    Body_Update(self->hit, 0, 0, 0);
 }
 
 }

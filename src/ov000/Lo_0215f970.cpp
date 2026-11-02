@@ -38,7 +38,7 @@ extern "C" {
 
 extern u32 data_ov000_021c9880[];
 extern Entry0215f970 data_02fe0188[];
-void func_02043064(const Oam0215f970 *attr, u32 *w, u32 *h);
+void Oam_GetSize(const Oam0215f970 *attr, u32 *w, u32 *h);
 void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 num);
 
 #define REG_TEXIMAGE_PARAM (*(vu32 *)0x40004a8)
@@ -102,7 +102,7 @@ void func_ov000_0215f970(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const Oam02
     y += oy << 12;
     pal = (u16)oam->charName;
     shift = ((s32)(img->mappingType & 0x700000) >> 20) + 5;
-    func_02043064(oam, &w, &h);
+    Oam_GetSize(oam, &w, &h);
     REG_TEXIMAGE_PARAM = ((charBase + (pal << shift)) >> 3) | (img->fmt << 26) | 0x40000000 | (w << 20) |
                          (h << 23) | (img->plttUse << 29);
     fmt = data_ov000_021c9880[(*(u32 *)oam << 18) >> 31];

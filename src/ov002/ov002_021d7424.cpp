@@ -2,8 +2,8 @@
 
 extern "C" {
 
-void func_ov002_021d7424(int se) {
-    func_02049a48(data_02097e4c, se, -1, -1, -1);
+void Ov002_PlaySe(int se) {
+    SndMgr_PlayVolume(data_02097e4c, se, -1, -1, -1);
 }
 
 Ov002Mdl021efe3c *Ov002Vt_021efe3c_Ctor(Ov002Mdl021efe3c *self) {
@@ -53,7 +53,7 @@ Ov002Mdl021efe3c *Ov002Vt_021efe3c_Dtor(Ov002Mdl021efe3c *self) {
         Heap_FreeHi(self->anm[2]);
         self->anm[2] = NULL;
     }
-    func_0203f0b4(self->file->data);
+    Vram_FreeRes(self->file->data);
     return self;
 }
 
@@ -80,7 +80,7 @@ Ov002Mdl021efe3c *Ov002Vt_021efe3c_DtorDelete(Ov002Mdl021efe3c *self) {
         Heap_FreeHi(self->anm[2]);
         self->anm[2] = NULL;
     }
-    func_0203f0b4(self->file->data);
+    Vram_FreeRes(self->file->data);
     Heap_Free(self);
     return self;
 }

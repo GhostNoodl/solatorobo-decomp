@@ -1,8 +1,8 @@
 #ifndef OV003_ACTEX_H
 #define OV003_ACTEX_H
 
-// ov003 actors of the ActorEx family (dtor func_ov000_0219429c) that keep members in place
-// (round acC). The sizes and member offsets come from their allocations in func_ov000_02192b24,
+// ov003 actors of the ActorEx family (dtor ActorEx_DtorBase) that keep members in place
+// (round acC). The sizes and member offsets come from their allocations in Factory_New4000,
 // which constructs the members right after ActorEx_Ctor; the dtors destroy them in reverse order.
 // The ov003 actors allocated with NEW_BASIC(0xd0, ...) are plain ActorEx objects.
 
@@ -19,7 +19,7 @@ typedef struct Ov003HitMesh {
 // (0x20c), 021f8768 (0x214) and 021f8638 (0x218) add fields after it).
 class Ov003ActExRes : public ActorEx {
 public:
-    ActorRes res; // ctor func_ov000_0218e9c4, dtor func_ov000_0218ea20
+    ActorRes res; // ctor ResSet_Init, dtor ResSet_ReleaseAll
 };
 SIZE_ASSERT(Ov003ActExRes, 0x208);
 
@@ -27,7 +27,7 @@ SIZE_ASSERT(Ov003ActExRes, 0x208);
 // ov003_021ebff8.cpp destroy both).
 class Ov003ActExResMdl : public Ov003ActExRes {
 public:
-    Model0218fe1c mdl; // ctor func_ov000_0218fe1c, dtor func_ov000_0218fee4
+    Model0218fe1c mdl; // ctor Model0218fe1c_Init, dtor Model0218fe1c_FreeAnims
 };
 SIZE_ASSERT(Ov003ActExResMdl, 0x2f0);
 
@@ -48,7 +48,7 @@ typedef struct Ov003AiState {
     VecFx32 pos;
 } Ov003AiState;
 
-// Vtable 021f8898 (0xe0 bytes; func_ov000_02192b24 clears ai.st and ai.timer): an ActorEx that
+// Vtable 021f8898 (0xe0 bytes; Factory_New4000 clears ai.st and ai.timer): an ActorEx that
 // walks with func_ov000_02197ee0 and runs to ai.pos (ov003_021e0e8c.cpp).
 class Ov003ActExWalk : public ActorEx {
 public:
@@ -56,7 +56,7 @@ public:
 };
 SIZE_ASSERT(Ov003ActExWalk, 0xe0);
 
-// Vtable 021f9704 (ov003_021eae44.cpp, ov003_021eba54.cpp), 0x314 bytes; func_ov000_02192b24
+// Vtable 021f9704 (ov003_021eae44.cpp, ov003_021eba54.cpp), 0x314 bytes; Factory_New4000
 // clears ai.st when it builds it. hasModel is set by Init when Actor::unk_1a is not 0: the actor
 // then loads the resources and draws the model, rotated by rotOfs, which eases toward rotGoal.
 class Ov003ActExSway : public Ov003ActExResMdl {
@@ -101,8 +101,8 @@ public:
 };
 SIZE_ASSERT(Ov003ActExMesh, 0xb1c);
 
-// Plain 0xd0-byte ActorEx objects (NEW_BASIC(0xd0, ...) in func_ov000_02192b24), named by the
-// files that use them. Actor::unk_18 is the value func_ov000_02197d80 loads from the save and
+// Plain 0xd0-byte ActorEx objects (NEW_BASIC(0xd0, ...) in Factory_New4000), named by the
+// files that use them. Actor::unk_18 is the value Obj02197d80_LoadValue loads from the save and
 // func_ov000_02197dec stores.
 // - The lever (vtables 021f9ea8 and 021f9ce0): unk_93_1 is the position shown, unk_1c selects the
 //   long sound and unk_ce counts its frames.
@@ -114,7 +114,7 @@ typedef ActorEx Ov003Switch;
 typedef ActorEx Ov003Bomb;
 
 // An ActorEx with a looping sound (vtables 021f8350 and 021f83e8, 0xd4 bytes; ov003_021df370.cpp,
-// ov003_021dec88.cpp): seq is the handle func_02049afc returns, stopped with SndMgr_StopSeqArc.
+// ov003_021dec88.cpp): seq is the handle SndMgr_StartSeqArc returns, stopped with SndMgr_StopSeqArc.
 class Ov003ActExSeq : public ActorEx {
 public:
     s32 seq;
@@ -122,7 +122,7 @@ public:
 SIZE_ASSERT(Ov003ActExSeq, 0xd4);
 
 // The bridge (vtable 021f9e10, 0xd4 bytes; ov003_021eeb04.cpp, ov003_021eeecc.cpp). unk_18 is the
-// saved value (func_ov000_02197d80); unk_93_1 is set while the bridge is down. Its model, built at the
+// saved value (Obj02197d80_LoadValue); unk_93_1 is set while the bridge is down. Its model, built at the
 // first start, sits at pos raised by unk_1c << 4; the hit sphere is made then too.
 class Ov003Bridge : public ActorEx {
 public:
@@ -131,7 +131,7 @@ public:
 SIZE_ASSERT(Ov003Bridge, 0xd4);
 
 // The gimmick (vtable 021f99e8, ctor Ov003ActVt_021f99e8_Ctor, 0x214 bytes: NEW_CTOR in
-// func_ov000_02192b24; ov003_021ec130.cpp, ov003_021ec9e0.cpp). Kinds 0x4064 and 0x4065.
+// Factory_New4000; ov003_021ec130.cpp, ov003_021ec9e0.cpp). Kinds 0x4064 and 0x4065.
 // ActorEx::unk_ce_u is a counter (Ov003ActVt_021f99e8_StateDie counts it down) and unk_cf_u the state
 // (1 once Ov003ActVt_021f99e8_StateDie has swapped the model; 0, 2, 3 follow the 0x4064 model's direction).
 class Ov003Gimmick : public ActorEx {
@@ -140,14 +140,14 @@ public:
     u16 unk_d6; // frames until the 0x4064 effect starts again
     u8 vals[3]; // set by message 0xe (index, value)
     u8 unk_db;
-    ActorRes res; // ctor func_ov000_0218e9c4
+    ActorRes res; // ctor ResSet_Init
 };
 SIZE_ASSERT(Ov003Gimmick, 0x214);
 
 extern "C" {
-ActorEx *func_ov000_0219429c(ActorEx *self); // ActorEx dtor
-ActorRes *func_ov000_0218ea20(ActorRes *self); // ActorRes dtor
-Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *self); // Model0218fe1c dtor
+ActorEx *ActorEx_DtorBase(ActorEx *self); // ActorEx dtor
+ActorRes *ResSet_ReleaseAll(ActorRes *self); // ActorRes dtor
+Model0218fe1c *Model0218fe1c_FreeAnims(Model0218fe1c *self); // Model0218fe1c dtor
 }
 
 #endif

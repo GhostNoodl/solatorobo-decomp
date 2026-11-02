@@ -4,9 +4,9 @@
 
 extern "C" {
 extern s32 data_ov000_021c9ff8[];
-BOOL func_ov000_02198360(void *s, s32 a, s32 b);
-BOOL func_ov000_0219840c(void *s, s32 *list, s32 count, BOOL push);
-void func_ov000_0218d7e8(Actor *self, u8 arg);
+BOOL History_SetState(void *s, s32 a, s32 b);
+BOOL History_PickFlagged(void *s, s32 *list, s32 count, BOOL push);
+void Actor_DropStateMsgs(Actor *self, u8 arg);
 
 void func_ov000_021b05b0(Robo021ca458 *self) {
     ActorSub40 *s;
@@ -19,11 +19,11 @@ void func_ov000_021b05b0(Robo021ca458 *self) {
             return;
         }
         if (s->flags & 0x80000000) {
-            func_ov000_02198360(s, 0x1f, 0);
+            History_SetState(s, 0x1f, 0);
         } else if (s->flags & 2) {
-            func_ov000_02198360(s, 1, 1);
+            History_SetState(s, 1, 1);
         } else if ((s->flags & 0x40000) || (s->flags & 0x80000)) {
-            func_ov000_02198360(s, 0x12, 1);
+            History_SetState(s, 0x12, 1);
         }
     }
     s = self->fsm;
@@ -33,11 +33,11 @@ void func_ov000_021b05b0(Robo021ca458 *self) {
             break;
         }
     case 2:
-        if (!func_ov000_0219840c(s, data_ov000_021c9ff8, 2, TRUE)) {
-            func_ov000_02198360(self->fsm, 1, 0);
+        if (!History_PickFlagged(s, data_ov000_021c9ff8, 2, TRUE)) {
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }
-    func_ov000_0218d7e8(self, self->fsm->current);
+    Actor_DropStateMsgs(self, self->fsm->current);
 }
 }

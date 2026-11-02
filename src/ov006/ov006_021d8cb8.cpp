@@ -24,7 +24,7 @@ extern ov006_PriceEntry data_ov006_021eb7c4[];
 
 ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 void *ActorMgr_GetActor(void *a, u16 id);
-int func_0206e264(ov006_Party *party);
+int LangBlockB_GetData(ov006_Party *party);
 
 u8 ov006_CountFinished(void) {
     u8 count;
@@ -53,7 +53,7 @@ static inline int ov006_GetPartyValue(ov006_Unk021ccd6c *self) {
     if (self->party == NULL || self->party->count == 0) {
         return 0;
     }
-    return func_0206e264(self->party);
+    return LangBlockB_GetData(self->party);
 }
 
 int func_ov006_021d8d4c(void) {

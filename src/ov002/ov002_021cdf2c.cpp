@@ -7,7 +7,7 @@ bool func_ov002_021cdf2c(void *p) {
     return r;
 }
 
-void func_ov002_021cdf54(void) {
+void Task021ef530_PostUpdate(void) {
 }
 
 }

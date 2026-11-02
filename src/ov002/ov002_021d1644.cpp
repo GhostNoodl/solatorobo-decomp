@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021d1644(Task021ef71c *self) {
+void Task021ef71c_Draw(Task021ef71c *self) {
     if (self->unk_68 == 0 && self->state == 0xd && self->unk_64 == 1) {
         func_ov002_021e90dc();
     }
@@ -56,7 +56,7 @@ BOOL func_ov002_021d178c(Task021ef71c *self) {
             self->unk_5c = 7;
         }
         if (!func_ov002_021e90ac()) {
-            func_ov002_021e916c();
+            Ov002Stage_Delete_021e916c();
             self->unk_64 = 0;
             self->unk_5c++;
         }
@@ -90,7 +90,7 @@ Task021ef69c *func_ov002_021d184c(void) {
 }
 
 BOOL func_ov002_021d18d4(void *self, void *arg) {
-    func_ov000_021c64b4(self, FIELD(arg, 0x40, void *));
+    Obj021c64b4_SetText(self, FIELD(arg, 0x40, void *));
     return TRUE;
 }
 
@@ -98,13 +98,13 @@ BOOL func_ov002_021d18e8(void *self, void *ev) {
     void *owner = FIELD(self, 0x8, void *);
     if (FIELD(ev, 0x52, u8) != 0) {
         if (FIELD(ev, 0x58, s32) <= 0x99a) {
-            func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             FIELD(owner, 0x44, void *) = ev;
             func_ov000_021c7000(FIELD(owner, 0x3c, void *));
             FIELD(ev, 0x6c, u8) = 1;
         }
     } else {
-        func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
     }
     return TRUE;
 }

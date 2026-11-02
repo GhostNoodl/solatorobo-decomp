@@ -8,18 +8,18 @@ struct Ov013Spot {
 extern "C" {
 
 extern char data_ov013_0220b88d[];
-extern void func_ov000_0219763c(Actor *self);
-extern void func_ov000_02195d88(Actor *self);
+extern void ActorEx_StateDie(Actor *self);
+extern void ActorEx_StateHeld(Actor *self);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 extern BOOL Ov003Vec_Equal(void *a, const Ov013Spot *b);
 
 void Ov013ActEx_021fdb70_StateHeld(Ov013ActEx_021fdb70 *self) {
     if (self->fsm->st == 0) {
-        func_ov000_02190cb0(self->model, data_ov013_0220b88d, 0x2ab, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220b88d, 0x2ab, 0);
+        Model0218fe1c_SetLoop(self->model);
     }
-    func_ov000_02195d88(self);
+    ActorEx_StateHeld(self);
 }
 
 static inline s32 Ov013_Sqrt64(s64 v) {
@@ -42,8 +42,8 @@ static inline s32 Ov013_DistXZ(const VecFx32 *a, const VecFx32 *b) {
 void Ov013ActEx_021fdb70_StateThrown(Ov013ActEx_021fdb70 *self) {
     if (self->fsm->st == 0) {
         Ov003Actor *t = NULL;
-        func_ov000_02190cb0(self->model, data_ov013_0220b88d, 0x2ab, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov013_0220b88d, 0x2ab, 0);
+        Model0218fe1c_SetLoop(self->model);
         {
             u16 id = self->target;
             if (data_ov000_021ccd68 != NULL) {
@@ -61,7 +61,7 @@ void Ov013ActEx_021fdb70_StateThrown(Ov013ActEx_021fdb70 *self) {
         }
         self->hit->unk_30 = 0;
     }
-    func_ov000_02196060(self);
+    ActorEx_StateThrown(self);
 }
 
 }

@@ -2,30 +2,30 @@
 
 extern "C" {
 
-extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
-extern BOOL func_ov000_0218f110(void *p);
+extern BOOL Actor_IsReady(Ov003Actor *self);
+extern BOOL ResSet_UpdateLoad(void *p);
 
 BOOL Ov009ActVt_02217594_IsReady(Ov009ActVt_02217594 *self) {
-    BOOL r = func_ov000_0218cf5c(self);
-    if (self->anim.unk_00 >= 0 && !func_ov000_0218f110(&self->anim)) {
+    BOOL r = Actor_IsReady(self);
+    if (self->anim.unk_00 >= 0 && !ResSet_UpdateLoad(&self->anim)) {
         r = FALSE;
     }
     return r;
 }
 
-extern void func_0203f364(ActorSub48 *p);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void NNSi_G3dModifyMatFlag(void *p, s32 a, s32 b);
-extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-extern void func_ov000_02190758(void *a, const void *b, s32 c);
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
+extern void Obj02190758_SetRot(void *a, const void *b, s32 c);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 void Ov009ActVt_02217594_Start(Ov009ActVt_02217594 *self) {
     void *saved;
     ActorSub48 *s48;
     ActorSub44 *s44;
     Ov003Actor *t;
     Ov003Actor_Start(self);
-    func_ov000_0218ffdc(&self->modelObj, &self->anim, 0, 1);
+    Model0218fe1c_SetRes(&self->modelObj, &self->anim, 0, 1);
     self->modelObj.actor_id = self->id;
     switch (self->unk_1a) {
     case 0:
@@ -58,7 +58,7 @@ void Ov009ActVt_02217594_Start(Ov009ActVt_02217594 *self) {
         self->unk_44->unk_0c.y = 0x5000;
         break;
     }
-    func_ov000_02190758(&self->modelObj, &self->rot_x, 0);
+    Obj02190758_SetRot(&self->modelObj, &self->rot_x, 0);
     NNSi_G3dModifyPolygonAttrMask(self->modelObj.mdl, 1, 0x3f000000);
     NNSi_G3dModifyMatFlag(self->modelObj.mdl, 1, 0x40);
     NNSi_G3dModifyMatFlag(self->modelObj.mdl, 1, 0x80);
@@ -78,7 +78,7 @@ void Ov009ActVt_02217594_Start(Ov009ActVt_02217594 *self) {
     s48 = self->hit;
     s48->unk_9a_0 = 0;
     s48->unk_9a_3 = 0;
-    func_0203f364(s48);
+    HitSphere_Unlink_0203f364(s48);
     s48 = self->hit;
     s48->unk_9a_1 = 0;
     s48->unk_9a_4 = 0;
@@ -90,7 +90,7 @@ void Ov009ActVt_02217594_Start(Ov009ActVt_02217594 *self) {
     s44->unk_22_1 = 0;
     self->unk_44->unk_22_2 = 2;
     self->target = 0xffff;
-    t = func_ov000_0219bf90();
+    t = ActorMgr_FindPlayer();
     if (t != NULL) {
         self->target = t->id;
     }

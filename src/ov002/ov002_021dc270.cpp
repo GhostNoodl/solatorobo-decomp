@@ -2,7 +2,7 @@
 
 extern "C" {
 
-Obj021efe6c *func_ov002_021dc270(Obj021eff50 *self) {
+Obj021efe6c *Obj021eff50_GetBoard(Obj021eff50 *self) {
     return self->board;
 }
 

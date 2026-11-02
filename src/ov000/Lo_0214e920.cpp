@@ -18,12 +18,12 @@ extern void *data_ov000_021ccd44;
 extern u8 data_ov000_021c9b28[];
 void func_020708fc(s32 a, LoFadeP *out);
 void func_02070b98(s32 a, LoFadeP *out, s32 b, s32 c);
-BOOL func_02035bd4(LoFadeP *a, LoFadeP *b, s32 c);
+BOOL ResMgr_IsArchiveLoaded(LoFadeP *a, LoFadeP *b, s32 c);
 BOOL StageRes_IsAllLoaded(void *p);
 u32 func_ov000_02180838(void *a);
 void func_02041c5c(void *obj, void *value);
 void func_02041c18(void *obj, s32 value);
-u8 *func_0206ede8(u16 id);
+u8 *Param_GetEntry(u16 id);
 
 static inline BOOL LoFadeDone(void) {
     LoFadeP a;
@@ -31,7 +31,7 @@ static inline BOOL LoFadeDone(void) {
     BOOL ret = TRUE;
     func_020708fc(0x1000, &a);
     func_02070b98(0x1000, &b, 1, 2);
-    if (!func_02035bd4(&a, &b, 2)) {
+    if (!ResMgr_IsArchiveLoaded(&a, &b, 2)) {
         ret = FALSE;
     }
     return ret;
@@ -47,7 +47,7 @@ static inline BOOL LoResReady(void) {
 
 static inline u32 LoIdKind(u32 id) { return (id << 4) >> 16; }
 static inline u32 LoIdKind2(u16 id) { u32 r = (u32)(id << 4) >> 16; return r; }
-BOOL func_ov000_0214e920(Lo021caa44 *self) {
+BOOL Lo021caa44_IsLoaded(Lo021caa44 *self) {
     BOOL ok = TRUE;
     if (!LoFadeDone()) {
         ok = FALSE;

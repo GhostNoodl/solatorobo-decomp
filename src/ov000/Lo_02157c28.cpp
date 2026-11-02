@@ -6,13 +6,13 @@
 
 extern "C" {
 
-void func_ov000_0215429c(UiList *self);
+void UiList_Setup(UiList *self);
 
 void func_ov000_02157c28(UiList021cb4a8 *self) {
     s32 v;
     self->posX = (self->flags & 0x4000000) ? 0 : 0xc;
     self->width = 0x100 - self->posX * 2;
-    func_ov000_0215429c(self);
+    UiList_Setup(self);
     v = self->width;
     self->slideMode = 1;
     self->slideX = v + 0x10;
@@ -21,7 +21,7 @@ void func_ov000_02157c28(UiList021cb4a8 *self) {
     self->panel->unk_10 = (v - 0x10) << 12;
 }
 
-void func_ov000_02157c90(UiList021cb4a8 *self, u32 text) {
+void UiList021cb4a8_SetLabel(UiList021cb4a8 *self, u32 text) {
     UiLabel *p = (UiLabel *)Heap_Alloc(sizeof(UiLabel));
     if (p != NULL) {
         UiLabel_Reset(p);
@@ -30,7 +30,7 @@ void func_ov000_02157c90(UiList021cb4a8 *self, u32 text) {
     if (self->flag6 ? TRUE : FALSE) {
         self->unk_d4->bits.altFrame = 1;
     }
-    func_ov000_0215f0ec(self->unk_d4, text);
+    UiLabel_SetText(self->unk_d4, text);
     self->unk_d4->width = self->unk_d4->text->width + 0x10;
 }
 

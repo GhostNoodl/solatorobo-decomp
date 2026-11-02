@@ -32,10 +32,10 @@ extern Ov003SdObj *ActorMgr_GetActor(void *mgr, u16 id);
 extern s32 FX_Div(s32 a, s32 b);
 extern void NNS_G3dRenderObjSetInitFunc(void *rob, void *func);
 extern void Ov003Obj_StartCapture(void *rs);
-extern u16 func_ov000_0218cea4(Ov003Actor *self);
-extern u16 func_ov000_021903b4(Model0218fe1c *m);
+extern u16 Actor_Draw(Ov003Actor *self);
+extern u16 Model021903b4_Draw(Model0218fe1c *m);
 extern void func_01ffc9fc(VecFx32 *out, VecFx32 *in, u16 ang);
-extern void func_ov000_021bd7a0(void *p);
+extern void ActorMarker_Draw(void *p);
 
 }
 
@@ -180,13 +180,13 @@ extern "C" u16 Ov003Actor_Draw(Ov003Actor *self) {
         }
     }
     if (alpha == 0x1f) {
-        r = func_ov000_0218cea4(self);
+        r = Actor_Draw(self);
     } else if (alpha != 0) {
         u8 old = self->model->alpha;
         if (old > alpha) {
             self->model->alpha = alpha;
         }
-        r = func_ov000_0218cea4(self);
+        r = Actor_Draw(self);
         self->model->alpha = old;
     }
     if (self->unk_d0 != NULL && self->unk_ea_3) {
@@ -198,13 +198,13 @@ extern "C" u16 Ov003Actor_Draw(Ov003Actor *self) {
                 sub->trans.y = mt->_31;
                 sub->trans.z = mt->_32;
                 if (alpha == 0x1f) {
-                    func_ov000_021903b4(sub);
+                    Model021903b4_Draw(sub);
                 } else if (alpha != 0) {
                     u8 old = sub->alpha;
                     if (old > alpha) {
                         sub->alpha = alpha;
                     }
-                    r = func_ov000_021903b4(sub);
+                    r = Model021903b4_Draw(sub);
                     sub->alpha = old;
                 }
             } else if (self->unk_d0->unk_62[i] != 0xffff) {
@@ -226,7 +226,7 @@ extern "C" u16 Ov003Actor_Draw(Ov003Actor *self) {
         }
     }
     if (r && self->unk_5c != NULL && Ov003_GameIdle() && !Ov003_GameHasD4()) {
-        func_ov000_021bd7a0(self->unk_5c);
+        ActorMarker_Draw(self->unk_5c);
     }
     self->unk_ea_13 = r;
     return r;

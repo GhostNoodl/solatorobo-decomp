@@ -29,7 +29,7 @@ typedef struct SndMgr {
     /* 0x28 */ SndHandle seqArc[5];
     /* 0x3c */ s32 curBgm;
     /* 0x40 */ s32 heapLevels[2];
-    /* 0x48 */ s32 curStrm; // stream playing on strm (func_0204a20c), -1: none
+    /* 0x48 */ s32 curStrm; // stream playing on strm (SndMgr_PlayStrm), -1: none
     /* 0x4c */ s32 loadType;
     /* 0x50 */ s32 loadId;
     /* 0x54 */ s32 loadArg;
@@ -92,16 +92,16 @@ extern const s32 data_0208b688[];
 
 struct SndCmd;
 void func_0204aad0(SndQueue *queue);
-void func_0204aaec(SndQueue *queue, struct SndCmd *cmd);
+void SndQueue_Exec(SndQueue *queue, struct SndCmd *cmd);
 void SndQueue_StopSeqArcs(SndQueue *queue);
-void func_02049690(SndMgr *mgr);
-SndHandle *func_02049984(SndMgr *mgr, s32 id, s32 *outSeqArc, s32 *outIndex);
-s32 func_02049afc(SndMgr *mgr, s32 id);
-SndHandle *func_02049a48(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
-SndHandle *func_02049f44(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch);
-SndHandle *func_0204a028(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch);
+void SndMgr_UpdateLoad(SndMgr *mgr);
+SndHandle *SndMgr_LookupSe(SndMgr *mgr, s32 id, s32 *outSeqArc, s32 *outIndex);
+s32 SndMgr_StartSeqArc(SndMgr *mgr, s32 id);
+SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
+SndHandle *SndMgr_PlayAt(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch);
+SndHandle *SndMgr_PlayAtPitch(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch);
 BOOL func_0204a118(SndMgr *mgr, s32 id);
-void func_02049de8(SndMgr *mgr, s32 id);
+void SndMgr_Stop(SndMgr *mgr, s32 id);
 
 static inline s32 SndMgr_GetSeqVolume(s32 seq) {
     return (u32)seq >= 0x4f ? 0 : data_0208b778[seq];
@@ -111,7 +111,7 @@ static inline void SndMgr_RequestLoad(SndMgr *mgr, s32 type, s32 id, s32 arg) {
     mgr->loadType = type;
     mgr->loadId = id;
     mgr->loadArg = arg;
-    func_02049690(mgr);
+    SndMgr_UpdateLoad(mgr);
 }
 
 static inline void SndMgr_PlayBgm(SndMgr *mgr, s32 seq) {
@@ -146,7 +146,7 @@ static inline void SndMgr_SetStrmVolume(SndMgr *mgr, s32 volume, s32 frames) {
     func_0203195c((StrmHandle *)&mgr->strm, volume, frames);
 }
 
-void func_0204a20c(SndMgr *mgr, s32 strmNo);
+void SndMgr_PlayStrm(SndMgr *mgr, s32 strmNo);
 
 #ifdef __cplusplus
 }

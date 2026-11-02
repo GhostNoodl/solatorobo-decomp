@@ -12,9 +12,9 @@ struct Model;
 struct PlttRes; // Main/Gfx/PlttRes.h
 
 void Heap_Free(void *p);
-void func_02041558(struct Model *model);
-void func_02041218(struct PlttRes *res);
-void func_02041278(struct PlttRes *res);
+void TexObj_Release(struct Model *model);
+void PlttRes_Init_02041218(struct PlttRes *res);
+void PlttRes_Release(struct PlttRes *res);
 
 #ifdef __cplusplus
 }
@@ -38,8 +38,8 @@ void func_02041278(struct PlttRes *res);
     }
 
 #define MODEL_DELETE(p)                \
-    func_02041558((struct Model *)(p)); \
-    func_02041278((struct PlttRes *)((u8 *)(p) + 0x88)); \
+    TexObj_Release((struct Model *)(p)); \
+    PlttRes_Release((struct PlttRes *)((u8 *)(p) + 0x88)); \
     Heap_Free(p)
 
 #define HEAP_DELETE_MODEL(field) HEAP_DELETE(void *, field, MODEL_DELETE(p))

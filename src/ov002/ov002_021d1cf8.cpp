@@ -8,7 +8,7 @@ typedef int (*VFunc)();
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 extern const s16 FX_SinCosTable_[];
 
-void func_ov002_021d1cf8(Task021ef69c *self) {
+void Task021ef69c_PreUpdate(Task021ef69c *self) {
     void *o;
     s32 bz;
     s32 by;
@@ -19,14 +19,14 @@ void func_ov002_021d1cf8(Task021ef69c *self) {
     s32 z;
     switch (self->state) {
         case 8:
-            func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
             self->unk_3c->flags &= ~2;
             self->unk_40->flags &= ~2;
             break;
         case 10:
             self->unk_3c->flags |= 2;
             self->unk_40->flags |= 2;
-            func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
             break;
     }
     ((void (*)(void *))(*(VFunc **)self->unk_3c)[7])(self->unk_3c);

@@ -10,7 +10,7 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_021bacf4(Obj021bacf4 *self) {
+void Obj021bacf4_Release(Obj021bacf4 *self) {
     HEAP_DELETE_VOBJ(self->unk_0c);
     HEAP_DELETE_VOBJ(self->unk_10);
     HEAP_DELETE_MODEL(self->unk_14);

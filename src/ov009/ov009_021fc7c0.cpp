@@ -29,7 +29,7 @@ void Ov009ActVt_022167fc_State20(Ov003Actor *self) {
     case 1:
         if (Ov009_GameIdle()) {
             self->model->visible = 1;
-            func_ov000_02198360(self->fsm, 4, 0);
+            History_SetState(self->fsm, 4, 0);
         }
         break;
     }
@@ -60,15 +60,15 @@ void Ov009ActVt_022167fc_State21(Ov003Actor *self) {
         data_ov000_021ccd54->stageFlags = 1;
         m = self->model;
         m->visible = 1;
-        func_ov000_02190cb0(self->model, data_ov009_02216ac8, 0x400, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov009_02216ac8, 0x400, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->gravity = 0x52;
         self->fsm->st++;
         break;
     case 2:
         if (self->hit->unk_50 & 0x20000000) {
-            func_ov000_02190cb0(self->model, data_ov009_02216ab0, 0x800, 0);
-            func_02049a48(data_02097e4c, 8, -1, -1, -1);
+            Model0218fe1c_SetAnim(self->model, data_ov009_02216ab0, 0x800, 0);
+            SndMgr_PlayVolume(data_02097e4c, 8, -1, -1, -1);
             func_ov000_0218999c(8, 0xa);
             self->speed = 0;
             self->velY = 0;
@@ -77,19 +77,19 @@ void Ov009ActVt_022167fc_State21(Ov003Actor *self) {
             self->fsm->st++;
         } else {
             Actor_Move(self, 0);
-            func_ov000_021987b8(self->hit, 1, 0, 0);
+            Body_Update(self->hit, 1, 0, 0);
         }
         break;
     case 3:
         self->hit->unk_9a_5 = 1;
-        if (func_ov000_02191120(self->model)) {
-            func_ov000_02198360(self->fsm, 1, 0);
+        if (Model0218fe1c_IsAnimDone(self->model)) {
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }
 }
 
-extern void func_0203f364(ActorSub48 *p);
+extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern void func_ov000_0219b5dc(u16 id, const VecFx32 *pos, const u16 *rot);
@@ -112,7 +112,7 @@ void Ov009ActVt_022167fc_StateDie(Ov003Actor *self) {
             ActorSub48 *s48 = self->hit;
             s48->unk_9a_0 = 0;
             s48->unk_9a_3 = 0;
-            func_0203f364(s48);
+            HitSphere_Unlink_0203f364(s48);
         }
         if (self->unk_44 != NULL) {
             ActorSub44 *s44 = self->unk_44;
@@ -127,7 +127,7 @@ void Ov009ActVt_022167fc_StateDie(Ov003Actor *self) {
         func_ov000_0218996c(8, 0xa);
         p = self->pos;
         p.y += (self->height >> 1) - (self->height >> 3);
-        o = func_02065f88(3, &p);
+        o = Effect_SpawnId(3, &p);
         if (o != NULL) {
             s32 s = self->radius + (self->radius >> 3);
             o->SetScaleXYZ(s, s, s);

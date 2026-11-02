@@ -41,7 +41,7 @@ BOOL Ov011Scene_Init(Ov011Scene *self, Actor *owner) {
     self->s1b4.id = 0;
     self->s1b4.scene = NULL;
     self->s1b4.ent = NULL;
-    func_ov000_02198360(&self->s1b4.seq, 2, 0);
+    History_SetState(&self->s1b4.seq, 2, 0);
     self->mgr.unk_04 = -1;
     self->mgr.b0 = 1;
     self->mgr.arr8 = NULL;

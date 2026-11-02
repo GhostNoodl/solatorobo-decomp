@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov000_021c3fd4(LoBase021ccb54_021ccbe0 *self, ListRow *n) {
+void LoBase021ccb54_021ccbe0_AppendRow(LoBase021ccb54_021ccbe0 *self, ListRow *n) {
     ListRow *p = self->unk_94;
     if (p == NULL) {
         self->unk_94 = n;

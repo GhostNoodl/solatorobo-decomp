@@ -182,7 +182,7 @@ void func_ov002_021eceb8(Ov002StaffModel *self) {
         void *e = NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0);
         arg = NNS_G2dGetCellDataByIdx(res->texRes, **(u16 **)FIELD(e, 0xc, void *));
     }
-    func_02042628(model, arg, anim, 0);
+    TexObj_DrawCell(model, arg, anim, 0);
 }
 
 }
@@ -212,16 +212,16 @@ BOOL func_ov002_021ed044(Ov002StaffPhoto *self) {
     case 0: {
         void *p = Heap_Alloc(0x3c);
         if (p != NULL) {
-            p = func_ov000_0214b6d8(p);
+            p = Twl0214b6d8_Init(p);
         }
         self->photo = p;
-        func_ov000_0214b88c(p, data_ov002_021f0d88.photo);
+        Loader_Start(p, data_ov002_021f0d88.photo);
         self->clock.sub++;
         break;
     }
     case 1:
         func_ov000_0214b810(self->photo);
-        if (func_ov000_0214b8d8(self->photo)) {
+        if (Loader_IsDone(self->photo)) {
             return TRUE;
         }
         break;
@@ -289,16 +289,16 @@ void func_ov002_021ed1dc(Ov002StaffText *self) {
 extern "C" {
 
 extern VFunc data_0208ba70[];
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void func_0204ca70(void *p);
-char *func_02040ab0(char *s, int c);
+void TextWin_RenderToVram(void *p);
+char *Str_FindCharMb(char *s, int c);
 
 static inline Ov002Text2 *ov002_021ed270_newText(char *str) {
     Ov002Text2 *t = (Ov002Text2 *)Heap_Alloc(0xb8);
     if (t != NULL) {
         *(VFunc **)t = data_0208ba70;
-        func_0204c7d0(t);
+        TextWin_Init(t);
     }
     t->font = 4;
     t->str = (s32)str;
@@ -309,7 +309,7 @@ static inline Ov002Text2 *ov002_021ed270_newText(char *str) {
 
 static inline void ov002_021ed270_create(Ov002StaffText *self, char *str) {
     Ov002Text2 *t;
-    char *sub = func_02040ab0(str, '/');
+    char *sub = Str_FindCharMb(str, '/');
     if (sub) {
         *sub = 0;
         sub++;
@@ -381,7 +381,7 @@ void func_ov002_021ed270(Ov002StaffText *self) {
         if (m != NULL) {
             self->line[0].y += m->line[0].y & 0xfff;
         }
-        func_0204ca70(self->line[0].text);
+        TextWin_RenderToVram(self->line[0].text);
     }
     if (self->line[1].text != NULL) {
         Ov002StaffText *m;
@@ -390,7 +390,7 @@ void func_ov002_021ed270(Ov002StaffText *self) {
         if (m != NULL) {
             self->line[1].y += m->line[0].y & 0xfff;
         }
-        func_0204ca70(self->line[1].text);
+        TextWin_RenderToVram(self->line[1].text);
     }
 }
 
@@ -534,7 +534,7 @@ extern "C" {
 
 void SndMgr_LoadBgm(SndMgr *mgr, s32 seq);
 
-s32 func_0204a2c8(SndMgr *mgr, s32 seq);
+s32 SndMgr_GetSeqVolume_0204a2c8(SndMgr *mgr, s32 seq);
 
 void SndMgr_MoveBgmVolume(SndMgr *mgr, int volume, int frames);
 
@@ -558,7 +558,7 @@ BOOL func_ov002_021ede5c(Ov002StaffNode *self) {
             if (t >= 0x1000) {
                 t = 0x1000;
             }
-            tot = func_0204a2c8(data_02097e4c, self->entry->seq);
+            tot = SndMgr_GetSeqVolume_0204a2c8(data_02097e4c, self->entry->seq);
             cur = FX_MUL(tot << 12, FX_SINCOS_TABLE[((t << 14) >> 16) * 2]) >> 12;
             SndMgr_MoveBgmVolume(data_02097e4c, cur, 0);
             if (cur != tot) {
@@ -595,7 +595,7 @@ static inline void func_ov002_021edf98_setC(Ov002Staff *p, s32 v) {
         p->clock.next = v;
     }
 }
-void func_ov002_021edf98(s32 id) {
+void Ov002Staff_Create(s32 id) {
     Ov002Staff *p = (Ov002Staff *)Heap_Alloc(0x30);
     int i;
     if (p != NULL) {
@@ -627,7 +627,7 @@ namespace m_021ee024 {
 extern "C" {
 
 
-void func_0204a284(SndMgr *mgr, s32 fade);
+void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
 void func_ov002_021ee024(void) {
     void *saved;
@@ -640,7 +640,7 @@ void func_ov002_021ee024(void) {
     x = data_ov002_021f0fa4;
     if (x != NULL) {
         if (x != NULL) {
-            func_0204a284(data_02097e4c, -1);
+            SndMgr_StopStrm_0204a284(data_02097e4c, -1);
             for (n = data_ov002_021f0fa0; n != NULL; n = next) {
                 s32 k = n->entry->kind;
                 Ov002StaffNode *c;
@@ -716,8 +716,8 @@ extern char data_ov002_021f0e06[];
 extern ov002_Disp021ee1a8 *data_ov000_021ccd54;
 
 int func_0200779c(char *dst, const char *fmt, ...);
-void func_02070874(char *dst, const char *fmt, ...);
-void func_ov002_021ec2d8(Ov002StaffLoader *self);
+void Tbl_Format_02070874(char *dst, const char *fmt, ...);
+void Ov002StaffLoader_Parse(Ov002StaffLoader *self);
 BOOL func_ov002_021ee55c(Ov002Staff *self, u16 start, int count);
 void func_ov002_021ee7f8(Ov002Staff *self);
 
@@ -774,9 +774,9 @@ void func_ov002_021ee1a8(void) {
             }
             s->loader = o;
             id = s->id;
-            func_0206e900(dir, data_ov002_021f0d88.dir2);
+            LangData_LocalizePath(dir, data_ov002_021f0d88.dir2);
             func_0200779c(num, data_ov002_021f0e06, id);
-            func_02070874(path, data_ov002_021f0d88.pathFmt, num);
+            Tbl_Format_02070874(path, data_ov002_021f0d88.pathFmt, num);
             o->vfunc_24(dir, path);
             s->clock.sub = 4;
         }
@@ -784,7 +784,7 @@ void func_ov002_021ee1a8(void) {
             if (!s->loader->vfunc_2c()) {
                 break;
             }
-            func_ov002_021ec2d8(s->loader);
+            Ov002StaffLoader_Parse(s->loader);
             s->nextStep = 0x1000;
             ov002_Staff_SetNext(s, 6);
             break;
@@ -864,7 +864,7 @@ void func_ov002_021ee4d0(void) {
 namespace m_021ee55c {
 extern "C" {
 
-void func_ov002_021ec6fc(Ov002StaffNode *node);
+void Ov002StaffNode_Link(Ov002StaffNode *node);
 
 // Construction views of the node classes in StaffRoll.h (each constructor stores its vtable and
 // calls the init slot 0x10).
@@ -936,7 +936,7 @@ BOOL func_ov002_021ee55c(Ov002Staff *self, s32 start, s32 count) {
             break;
         }
         o->e = e;
-        func_ov002_021ec6fc((Ov002StaffNode *)o);
+        Ov002StaffNode_Link((Ov002StaffNode *)o);
     }
     return clipped;
 }

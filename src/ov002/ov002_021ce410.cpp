@@ -9,19 +9,19 @@ BOOL func_ov002_021ce410(Task *self) {
     return TRUE;
 }
 
-void func_ov002_021ce464(Task021ef430 *self) {
+void Task021ef430_PostUpdate(Task021ef430 *self) {
     if (self->state != 0) {
         return;
     }
     if (!self->unk_04_2) {
         return;
     }
-    FIELD(func_ov000_0218084c(data_ov000_021ccd44, 0x10, 0), 0x2c, s32) = 0;
+    FIELD(TaskHost_RequestSwitch(data_ov000_021ccd44, 0x10, 0), 0x2c, s32) = 0;
     data_ov000_021ccd34 = 1;
     data_ov000_021ccd44->flag0 = 0;
 }
 
-void func_ov002_021ce4c8(Task021ef430 *self) {
+void Task021ef430_Draw(Task021ef430 *self) {
     Model *model = self->unk_3c;
     ModelRes *res;
     ModelPart *anim;
@@ -40,7 +40,7 @@ void func_ov002_021ce4c8(Task021ef430 *self) {
         void *e = NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0);
         arg = NNS_G2dGetCellDataByIdx(res->texRes, **(u16 **)FIELD(e, 0xc, void *));
     }
-    func_02042628(model, arg, anim, 0);
+    TexObj_DrawCell(model, arg, anim, 0);
 }
 
 Task021ef4b0 *func_ov002_021ce53c(void) {
@@ -57,11 +57,11 @@ Task021ef4b0 *func_ov002_021ce53c(void) {
     return p;
 }
 
-void func_ov002_021ce5a8(Task021ef4b0 *self, int arg) {
-    func_ov000_0218084c(data_ov000_021ccd44, arg, 0);
+void Task021ef4b0_SwitchTo(Task021ef4b0 *self, int arg) {
+    TaskHost_RequestSwitch(data_ov000_021ccd44, arg, 0);
 }
 
-void func_ov002_021ce5c4(Task021ef4b0 *self) {
+void Task021ef4b0_Start(Task021ef4b0 *self) {
     self->unk_04_1 = 0;
     if (self->vfunc_28() != 0) {
         return;
@@ -71,7 +71,7 @@ void func_ov002_021ce5c4(Task021ef4b0 *self) {
         func_0203cb78(self->fadeLen, 0, -1);
     }
     self->vfunc_3c();
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 void Ov002Task_SetFlag7(Task *self) {
@@ -92,7 +92,7 @@ void func_ov002_021ce660(Task021ef4b0 *self, u32 arg) {
     self->unk_40->flags |= 2;
 }
 
-void func_ov002_021ce724(Task021ef4b0 *self) {
+void Task021ef4b0_FreeWindows(Task021ef4b0 *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->unk_3c);
@@ -126,11 +126,11 @@ static inline BOOL ov002_021ce7b8_check(int idx, u32 arg) {
     BOOL ok;
     u16 i;
     ok = TRUE;
-    count = func_0205975c(data_02fe152c, idx);
+    count = DataRes_GetCount(data_02fe152c, idx);
     base = data_02fe152c->data + 0x10 + idx * 0x20;
-    tbl = func_0205976c(data_02fe152c, idx);
+    tbl = DataRes_GetTable(data_02fe152c, idx);
     for (i = 0; i < count; i++) {
-        if (func_02059544(data_02fe152c, base, tbl, arg, i)) {
+        if (DataRes_ReadBitsAt_02059544(data_02fe152c, base, tbl, arg, i)) {
             ok = FALSE;
             break;
         }
@@ -149,7 +149,7 @@ void func_ov002_021ce7b8(Task021ef4b0 *self) {
     self->unk_48_0 = ok;
     self->unk_48_2 = ov002_021ce7b8_check(9, 0x101);
     self->unk_48_4 = ov002_021ce7b8_check(10, 1);
-    self->unk_48_6 = !func_020594bc(data_02fe152c, 5, 1, 5);
+    self->unk_48_6 = !DataRes_ReadEntry(data_02fe152c, 5, 1, 5);
     o = (UiObj *)Heap_Alloc(0xd4);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
@@ -210,7 +210,7 @@ void func_ov002_021ce7b8(Task021ef4b0 *self) {
     self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xe3), 4, 0xffff, 4);
     {
         VObj *m = self->unk_3c;
-        m->vfunc_a8(func_ov000_02154b58(m, self->unk_44));
+        m->vfunc_a8(UiList_GetItemById(m, self->unk_44));
     }
     self->unk_3c->vfunc_08();
     o = (UiObj *)Heap_Alloc(0x8c);
@@ -255,7 +255,7 @@ static inline UiListItem *ov002_021cedec_getSelected(UiList *list) {
     }
     return item;
 }
-void func_ov002_021cedec(Task021ef4b0 *self) {
+void Task021ef4b0_UpdateActive(Task021ef4b0 *self) {
     u16 keys;
     u32 id;
     keys = data_02097dc8->trig;
@@ -269,45 +269,45 @@ void func_ov002_021cedec(Task021ef4b0 *self) {
         case 0:
             if (!self->unk_48_0) {
                 self->vfunc_60(0x13, 0);
-                func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             } else {
-                func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
             }
             return;
         case 1:
             if (!self->unk_48_2) {
                 self->vfunc_60(0x15, 0);
-                func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             } else {
-                func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
             }
             return;
         case 2:
             if (!self->unk_48_4) {
                 self->vfunc_60(0x17, 0);
-                func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             } else {
-                func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
             }
             return;
         case 3:
             if (!self->unk_48_6) {
                 self->vfunc_60(0x18, 0);
-                func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             } else {
-                func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
             }
             return;
         case 4:
             self->vfunc_0c(0);
             func_0203cc58(self->fadeLen, 2, -1);
-            func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             return;
         }
     } else if (keys & 2) {
         self->vfunc_0c(0);
         func_0203cc58(self->fadeLen, 2, -1);
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     }
 }
 }

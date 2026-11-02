@@ -4,7 +4,7 @@
 
 extern "C" {
 
-BOOL func_02054f10(void *a, int b);
+BOOL Model_IsReady(void *a, int b);
 
 void ov006_Gauge_Load(ov006_Gauge *self) {
     Model *model;
@@ -25,22 +25,22 @@ void ov006_Gauge_Load(ov006_Gauge *self) {
     if (model != NULL) {
         const char *name = data_ov006_021ec1a9;
         if (name) {
-            func_02041218(&model->pltt);
-            func_02041440(model, name, 0);
+            PlttRes_Init_02041218(&model->pltt);
+            TexObj_Init(model, name, 0);
             STD_CopyString(model->name, data_ov006_021ec864);
         }
     }
     self->model = model;
-    func_020417e0(self->model, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
+    TexObj_SetRes(self->model, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
     self->model->flags |= 2;
     self->model->flags &= ~0x80000;
     self->model->flags |= 0x400000;
-    func_02041d9c(self->model, 2, 2);
-    func_02041d9c(self->model, 2, 3);
-    func_02041d9c(self->model, 2, 4);
-    func_02041d9c(self->model, 2, 5);
-    func_02041d9c(self->model, 2, 6);
-    func_02041d9c(self->model, 2, 7);
+    TexObj_SelectImage(self->model, 2, 2);
+    TexObj_SelectImage(self->model, 2, 3);
+    TexObj_SelectImage(self->model, 2, 4);
+    TexObj_SelectImage(self->model, 2, 5);
+    TexObj_SelectImage(self->model, 2, 6);
+    TexObj_SelectImage(self->model, 2, 7);
 }
 
 static inline s32 ov006_ApproachFx(s32 cur, s32 target, fx32 rate) {
@@ -56,7 +56,7 @@ void ov006_Gauge_Update(ov006_Gauge *self) {
         if (self->model == NULL) {
             return;
         }
-        if (!func_02054f10(self->model, 0xffff)) {
+        if (!Model_IsReady(self->model, 0xffff)) {
             return;
         }
         self->unk4 = 1;

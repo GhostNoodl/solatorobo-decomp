@@ -4,11 +4,11 @@
 #include "ov000/FieldMgr.h"
 
 extern "C" {
-Robo021ca458 *func_ov000_0219bf90(void);
-void func_0203d45c(void *q, u16 a, u16 b, u16 c, u16 d);
+Robo021ca458 *ActorMgr_FindPlayer(void);
+void TouchQuad_Init(void *q, u16 a, u16 b, u16 c, u16 d);
 
 void func_ov000_021b6c60(FieldMgr *self) {
-    Robo021ca458 *pl = func_ov000_0219bf90();
+    Robo021ca458 *pl = ActorMgr_FindPlayer();
     LangBlockB *r;
     FieldCam *cam;
     if (pl == NULL || (r = self->blockB) == NULL) {
@@ -24,9 +24,9 @@ void func_ov000_021b6c60(FieldMgr *self) {
             d = -0x5000;
         }
         q = d / 7;
-        func_0203d45c(pl->unk_b70, r->unk_0a - q, r->unk_0c, r->unk_0e - q, r->unk_10);
+        TouchQuad_Init(pl->unk_b70, r->unk_0a - q, r->unk_0c, r->unk_0e - q, r->unk_10);
     } else {
-        func_0203d45c(pl->unk_b70, r->unk_0a, r->unk_0c, r->unk_0e, r->unk_10);
+        TouchQuad_Init(pl->unk_b70, r->unk_0a, r->unk_0c, r->unk_0e, r->unk_10);
     }
 }
 

@@ -65,9 +65,9 @@ void NNS_G3dAnmObjInit(AnmObj *anm, void *res, void *mdl, void *tex);
 void *NNS_G3dGetAnmByIdx(void *file, s32 index);
 void *NNS_G3dGetAnmByName(void *file, const char *name);
 void *NNS_G3dGetTex(void *tex);
-void func_ov000_0218fc28(AnimCtrl *self, RenderObj *obj, void *res, void *tex, s16 blend);
+void AnimCtrl_Start(AnimCtrl *self, RenderObj *obj, void *res, void *tex, s16 blend);
 
-BOOL func_ov000_0218f874(AnimCtrl *self, RenderObj *obj, s16 speed) {
+BOOL AnimCtrl_Update(AnimCtrl *self, RenderObj *obj, s16 speed) {
     s32 zero = 0;
     BOOL ret = FALSE;
     u16 delay = self->delay;
@@ -128,7 +128,7 @@ BOOL func_ov000_0218f874(AnimCtrl *self, RenderObj *obj, s16 speed) {
     return ret;
 }
 
-BOOL func_ov000_0218fa28(AnimCtrl *self, RenderObj *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force) {
+BOOL AnimCtrl_SetAnim(AnimCtrl *self, RenderObj *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force) {
     BOOL ret;
     char buf[0x10];
     u32 i;
@@ -161,13 +161,13 @@ BOOL func_ov000_0218fa28(AnimCtrl *self, RenderObj *obj, ResSet *res, void *file
         if (res->entries[0].handle != NULL) {
             tex = res->entries[0].handle->unk_00;
         }
-        func_ov000_0218fc28(self, obj, anm, NNS_G3dGetTex(tex), blend);
+        AnimCtrl_Start(self, obj, anm, NNS_G3dGetTex(tex), blend);
         ret = TRUE;
     }
     return ret;
 }
 
-BOOL func_ov000_0218fb64(AnimCtrl *self, RenderObj *obj, void *tex, void *file, s32 index, s16 blend, u8 force) {
+BOOL AnimCtrl_SetAnimByIndex(AnimCtrl *self, RenderObj *obj, void *tex, void *file, s32 index, s16 blend, u8 force) {
     BOOL ret;
     void *anm;
     self->same = 0;
@@ -187,13 +187,13 @@ BOOL func_ov000_0218fb64(AnimCtrl *self, RenderObj *obj, void *tex, void *file, 
     if (anm != NULL) {
         self->index = index;
         self->name[0] = 0;
-        func_ov000_0218fc28(self, obj, anm, tex, blend);
+        AnimCtrl_Start(self, obj, anm, tex, blend);
         ret = TRUE;
     }
     return ret;
 }
 
-void func_ov000_0218fc28(AnimCtrl *self, RenderObj *obj, void *res, void *tex, s16 blend) {
+void AnimCtrl_Start(AnimCtrl *self, RenderObj *obj, void *res, void *tex, s16 blend) {
     s32 ratio;
     void *mdl;
     self->playing = 1;
@@ -240,7 +240,7 @@ void func_ov000_0218fc28(AnimCtrl *self, RenderObj *obj, void *res, void *tex, s
     self->reverse = 0;
 }
 
-BOOL func_ov000_0218fd84(AnimCtrl *self) {
+BOOL AnimCtrl_IsDone(AnimCtrl *self) {
     BOOL ret;
     if (self->delay != 0) {
         return FALSE;

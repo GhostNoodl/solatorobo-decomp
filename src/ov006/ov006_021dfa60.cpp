@@ -16,7 +16,7 @@ extern u8 data_ov006_021ec23c[];
 
 static inline void ov006_Unk021dfa60_Kill(int id) {
     if (id != -1) {
-        EffectObj *o = func_020657b0(data_0214a420, id);
+        EffectObj *o = Effect_Find_020657b0(data_0214a420, id);
         if (o != NULL) {
             void *saved = data_02097dd0->cur;
             data_02097dd0->cur = data_02097dd0->heapHi;

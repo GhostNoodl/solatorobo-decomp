@@ -3,7 +3,7 @@
 extern "C" {
 #include "types.h"
 
-VObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *sc, s32 a, s32 b, s32 c, s32 d);
+VObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *sc, s32 a, s32 b, s32 c, s32 d);
 u32 Rand_UpTo(u32 max);
 
 typedef enum { OV003_SPARK_KIND = 0x325 } Ov003SparkKind;
@@ -29,7 +29,7 @@ void Ov003ActVt_021f8480_StateIdle(Ov003Bomb *self) {
     sc.x = 0x5000;
     sc.y = 0x3000;
     sc.z = 0x3800;
-    e = func_ov000_0219b71c(&self->pos, &sc, 0x1800, 0x2000, kind, 100);
+    e = Spawn_ScatterEffect(&self->pos, &sc, 0x1800, 0x2000, kind, 100);
     if (e == NULL) {
         return;
     }

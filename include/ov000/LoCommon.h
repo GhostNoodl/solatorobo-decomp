@@ -52,7 +52,7 @@ extern "C" {
 
 extern LoCreateFn data_ov000_021c9c6c[];
 void *Heap_Alloc(u32 size);
-void func_ov000_02173648(void *self);
+void TaskList_Insert(void *self);
 void func_ov000_02178dcc(void *p, BOOL add);
 
 #ifdef __cplusplus
@@ -88,8 +88,8 @@ void func_ov000_02178dcc(void *p, BOOL add);
         if (LFLD(void *, self, off) != NULL) {        \
             void *p_ = LFLD(void *, self, off);       \
             if (p_ != NULL) {                         \
-                func_02041558((struct Model *)p_);    \
-                func_02041278((struct PlttRes *)((u8 *)p_ + 0x88)); \
+                TexObj_Release((struct Model *)p_);    \
+                PlttRes_Release((struct PlttRes *)((u8 *)p_ + 0x88)); \
                 Heap_Free(p_);                    \
             }                                         \
             LFLD(void *, self, off) = NULL;           \

@@ -18,11 +18,11 @@ struct Ov014Mtx33 {
 
 extern "C" {
 
-extern void func_ov000_021984f4(void *a, void *b, s32 c);
+extern void Obj021984c8_UpdatePos(void *a, void *b, s32 c);
 
 void Ov014Act_0220f9d0_UpdateSub44(Ov014Act_0220f9d0 *self) {
     if (self->unk_44 != NULL) {
-        func_ov000_021984f4(self->unk_44, (u8 *)self + 0x118, 0);
+        Obj021984c8_UpdatePos(self->unk_44, (u8 *)self + 0x118, 0);
     }
 }
 
@@ -30,7 +30,7 @@ extern const Ov014Blk12 data_ov014_02216bf4;
 extern const Ov014Blk12 data_ov014_02216c00;
 extern u8 data_ov014_02216cb8[];
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, VecFx32 *pos, Rot16 *rot, u16 a);
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 
 Ov003Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
     VecFx32 v;
@@ -64,7 +64,7 @@ Ov003Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
     rot.x = 0xe001;
     rot.z = 0;
     rot.y = ang;
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     px = pl->pos.x;
     pz = pl->pos.z;
     px += Rand_PlusMinus(0x6000);

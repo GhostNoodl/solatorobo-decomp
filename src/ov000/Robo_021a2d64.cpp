@@ -14,13 +14,13 @@ extern void *data_02097e4c;
 extern char data_ov000_021cc62a[];
 extern char data_ov000_021cc63c[];
 extern char data_ov000_021cc642[];
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
-BOOL func_ov000_02198360(void *st, s32 state, s32 x);
-void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
+BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
+BOOL History_SetState(void *st, s32 state, s32 x);
+void Body_Update(void *a, s32 b, s32 c, s32 d);
+void Robo021ca458_WalkByPad(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
 u16 FX_Atan2(s32 y, s32 x);
-void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
+void *SndMgr_PlayAt(void *mgr, s32 id, void *pos, s32 a);
 
 static inline BOOL GBusy021a2d64(FieldState *g) {
     return g->head != g->tail ? TRUE : FALSE;
@@ -69,18 +69,18 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
                 self->velY = 0;
             }
             if (idle) {
-                EffectObj *e = func_02065f88(0x2bd, &self->pos);
+                EffectObj *e = Effect_SpawnId(0x2bd, &self->pos);
                 e->speed = 0x2000;
                 e->SetScaleAll(0x159a);
-                func_02049f44(data_02097e4c, 0x35, (u8 *)self + 0x70, 0);
+                SndMgr_PlayAt(data_02097e4c, 0x35, (u8 *)self + 0x70, 0);
             }
             ((St_021a2d64 *)self->fsm)->sub = 2;
             ((St_021a2d64 *)self->fsm)->state++;
         } else if (idle && self->unk_ba4 != NULL && self->unk_ba4->unk_06_7 &&
                    self->unk_b38 >= 10) {
             u16 prev;
-            func_ov000_02190cb0(self->model, data_ov000_021cc63c, 0x400, 0);
-            func_ov000_021915a0(self->model);
+            Model0218fe1c_SetAnim(self->model, data_ov000_021cc63c, 0x400, 0);
+            Model0218fe1c_SetLoop(self->model);
             if (!flag) {
                 if (self->speed > 0x29) {
                     if (self->velY < -0x60) {
@@ -90,15 +90,15 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
                     self->velY = 0x85;
                 }
             }
-            func_ov000_021b1dd8((u8 *)self, self->unk_b08 >> 2, 0x200, 0xf00, 0, 1);
+            Robo021ca458_WalkByPad((u8 *)self, self->unk_b08 >> 2, 0x200, 0xf00, 0, 1);
             prev = self->rot_y;
             self->rot_y = prev + 0xe00;
             if (prev > 0x8000 && self->rot_y < 0x8000) {
-                func_02049f44(data_02097e4c, 0x35, (u8 *)self + 0x70, 0);
+                SndMgr_PlayAt(data_02097e4c, 0x35, (u8 *)self + 0x70, 0);
             }
             ((St_021a2d64 *)self->fsm)->sub = 2;
         } else if (((St_021a2d64 *)self->fsm)->sub == 0) {
-            func_ov000_02190cb0(self->model, data_ov000_021cc642, 0x1000, 1);
+            Model0218fe1c_SetAnim(self->model, data_ov000_021cc642, 0x1000, 1);
             if (!flag) {
                 if (self->speed > 0x29) {
                     if (self->velY < -0x60) {
@@ -132,15 +132,15 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
         if (fall) {
             self->unk_b24_18 = 1;
             self->gravity = 0x52;
-            func_ov000_02198360(self->fsm, 4, 0);
+            History_SetState(self->fsm, 4, 0);
         }
         break;
     }
     case 1:
         if (idle) {
-            func_ov000_021b1dd8((u8 *)self, self->unk_b08 >> 2, 0x200, 0xf00, 0x466, 1);
+            Robo021ca458_WalkByPad((u8 *)self, self->unk_b08 >> 2, 0x200, 0xf00, 0x466, 1);
         } else {
-            func_ov000_021987b8(self->hit, 0, 0, 0);
+            Body_Update(self->hit, 0, 0, 0);
         }
         st = (St_021a2d64 *)self->fsm;
         if (st->sub != 0) {
@@ -150,7 +150,7 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
             if (!self->unk_b22_3) {
                 self->gravity = 0x52;
             }
-            func_ov000_02198360(self->fsm, 4, 0);
+            History_SetState(self->fsm, 4, 0);
         }
         break;
     }
@@ -170,8 +170,8 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
     if (!turned) {
         return;
     }
-    func_ov000_02190cb0(self->model, data_ov000_021cc62a, 0x800, 0);
-    func_ov000_02198360(self->fsm, 4, 0);
+    Model0218fe1c_SetAnim(self->model, data_ov000_021cc62a, 0x800, 0);
+    History_SetState(self->fsm, 4, 0);
 }
 
 }

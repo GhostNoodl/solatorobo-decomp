@@ -11,7 +11,7 @@ extern u8 data_ov000_021cacd8[];
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021c9b28[];
 extern u8 data_ov000_021c9b2e[];
-void func_ov000_0215fdfc(ObjBase021cac0c_021cb6f0 *self, s32 a, const void *b);
+void Obj0215fdfc_SetEntry(ObjBase021cac0c_021cb6f0 *self, s32 a, const void *b);
 
 void func_ov000_02168ee0(Lo021cb840 *self) {
     self->unk_28 = 0;
@@ -23,8 +23,8 @@ void func_ov000_02168ee0(Lo021cb840 *self) {
     self->unk_74 = 0;
     self->unk_78 = 0;
     self->unk_7c = -0x2000;
-    func_ov000_0215fdfc(self, 1, data_ov000_021c9b28);
-    func_ov000_0215fdfc(self, 2, data_ov000_021c9b2e);
+    Obj0215fdfc_SetEntry(self, 1, data_ov000_021c9b28);
+    Obj0215fdfc_SetEntry(self, 2, data_ov000_021c9b2e);
 }
 
 }

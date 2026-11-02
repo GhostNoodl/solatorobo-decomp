@@ -14,7 +14,7 @@ typedef struct {
 
 extern "C" {
 u8 Gfx3DState_NextPolyId(void *p);
-void func_02043d20(void *p, int a);
+void Gfx3D_SendDL(void *p, int a);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
 static inline void G3_Vec(int cmd, int x, int y, int z) {
@@ -60,7 +60,7 @@ void func_ov000_0214cff4(Menu021ca94c *self, s32 a1, s32 *pos) {
     u8 *g;
     g = data_02097d48->unk_8b0;
     z = self->posZ - 0x110;
-    func_02043d20(g, 0);
+    Gfx3D_SendDL(g, 0);
     G3_Cmd1(0x2a, 0x20000000);
     sy = self->height << 12;
     G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, Gfx3DState_NextPolyId(g), 0x1e, 0x800));

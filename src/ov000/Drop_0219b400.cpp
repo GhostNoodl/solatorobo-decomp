@@ -22,7 +22,7 @@ extern void *data_ov000_021ccd64;
 BOOL func_020621f8(void);
 s32 Rand_UpTo(s32 max);
 Actor0219b400 *Group_SpawnActor(void *mgr, GroupActorDesc *d, void *pos, void *rot, u16 a);
-void func_ov000_0218d46c(Actor0219b400 *o, u16 id, s32 m);
+void Actor_SendMsgU8(Actor0219b400 *o, u16 id, s32 m);
 
 static inline void Spawn0219b400_Init(GroupActorDesc *d, u16 k) {
     s32 i;
@@ -40,7 +40,7 @@ static inline void Actor0219b400_SetPos(Actor0219b400 *o, s32 x, s32 y, s32 z) {
     o->unk_a4 = z;
 }
 
-void func_ov000_0219b400(u16 *ids, u8 *rates, s32 n, void *pos, void *rot, u8 check) {
+void Drop_SpawnWeighted(u16 *ids, u8 *rates, s32 n, void *pos, void *rot, u8 check) {
     s32 w[32];
     GroupActorDesc desc;
     s32 total;
@@ -86,7 +86,7 @@ void func_ov000_0219b400(u16 *ids, u8 *rates, s32 n, void *pos, void *rot, u8 ch
                     }
                     Actor0219b400_SetPos(o, Rand_UpTo(0x7b) + 0xf6, Rand_UpTo(0xb8) + 0x2e1, 0);
                     o->unk_a8 = 0x52;
-                    func_ov000_0218d46c(o, 0xffff, 4);
+                    Actor_SendMsgU8(o, 0xffff, 4);
                     return;
                 }
             }

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern u8 *func_0206ede8(u16 id);
+extern u8 *Param_GetEntry(u16 id);
 
 #define STAGE_ITEM_NONE 0xffff
 
@@ -25,9 +25,9 @@ typedef struct StageItemPos {
 extern u8 *func_0206ef50(u16 id);
 extern StageItemShape *func_02070dcc(int kind);
 extern int func_ov002_021e3dac(StageItemPos *pos, StageItemShape *a, StageItemShape *b, StageItemPos *out);
-extern BOOL func_0206d0d4(StageFlags *f, u16 id, u8 x, u8 y, u8 rot, int used);
+extern BOOL StageFlags_AddEntry(StageFlags *f, u16 id, u8 x, u8 y, u8 rot, int used);
 extern s32 func_0206d2ec(StageFlags *f, u16 id, u32 n);
-u16 func_0206d02c(StageFlags *f);
+u16 StageFlags_CountItems(StageFlags *f);
 
 static inline void StageFlags_ClearEntries(StageFlags *f) {
     s32 i;
@@ -82,7 +82,7 @@ void func_0206ccb8(StageFlags *f, u16 id) {
                 item = STAGE_ITEM_NONE;
                 break;
             }
-            func_0206d0d4(data_0214a424, item, x, y, 0, 0);
+            StageFlags_AddEntry(data_0214a424, item, x, y, 0, 0);
         }
     }
     f->shapeId = id;
@@ -101,7 +101,7 @@ void func_0206ce78(StageFlags *f, u16 id) {
     func_0206ccb8(f, id);
     for (i = 0; i < STAGE_ITEM_ENTRY_MAX; i++) {
         StageItemEntry *e = &entries[i];
-        u8 *info = func_0206ede8(e->id);
+        u8 *info = Param_GetEntry(e->id);
         if (e->id != STAGE_ITEM_NONE && info[0] != 0x80) {
             BOOL used;
             pos.x = newShape->ox - oldShape->ox + e->bits.a;
@@ -110,16 +110,16 @@ void func_0206ce78(StageFlags *f, u16 id) {
             shape.rot = e->bits.c;
             used = e->bits.used ? TRUE : FALSE;
             if (func_ov002_021e3dac(&pos, newShape, &shape, NULL) == 0) {
-                func_0206d0d4(data_0214a424, e->id, pos.x, pos.y, shape.rot, used);
+                StageFlags_AddEntry(data_0214a424, e->id, pos.x, pos.y, shape.rot, used);
             } else if (!used) {
                 func_0206d2ec(data_0214a424, e->id, 1);
             }
         }
     }
-    func_0206d02c(f);
+    StageFlags_CountItems(f);
 }
 
-u16 func_0206d02c(StageFlags *f) {
+u16 StageFlags_CountItems(StageFlags *f) {
     u16 total = 0;
     s32 i;
     for (i = 0; i < 100; i++) {
@@ -127,7 +127,7 @@ u16 func_0206d02c(StageFlags *f) {
     }
     for (i = 0; i < STAGE_ITEM_ENTRY_MAX; i++) {
         if (f->entries[i].id != STAGE_ITEM_NONE) {
-            if (*func_0206ede8(f->entries[i].id) != 0x80) {
+            if (*Param_GetEntry(f->entries[i].id) != 0x80) {
                 total++;
             }
         }

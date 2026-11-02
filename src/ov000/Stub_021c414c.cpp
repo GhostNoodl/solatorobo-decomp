@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov000_021c403c(LoBase021ccb54_021ccbe0 *self, u16 index);
+void LoBase021ccb54_021ccbe0_Select(LoBase021ccb54_021ccbe0 *self, u16 index);
 
 static inline void SelectNode(LoBase021ccb54_021ccbe0 *self, ListRow *target) {
     ListRow *n = self->unk_94;
@@ -19,9 +19,9 @@ static inline void SelectNode(LoBase021ccb54_021ccbe0 *self, ListRow *target) {
         i = -1;
     }
     if (i >= 0) {
-        func_ov000_021c403c(self, i);
+        LoBase021ccb54_021ccbe0_Select(self, i);
     } else {
-        func_ov000_021c403c(self, 0);
+        LoBase021ccb54_021ccbe0_Select(self, 0);
     }
 }
 
@@ -39,9 +39,9 @@ void func_ov000_021c414c(LoBase021ccb54_021ccbe0 *self, ListRow *target) {
         i = -1;
     }
     if (i >= 0) {
-        func_ov000_021c403c(self, i);
+        LoBase021ccb54_021ccbe0_Select(self, i);
     } else {
-        func_ov000_021c403c(self, 0);
+        LoBase021ccb54_021ccbe0_Select(self, 0);
     }
 }
 
@@ -56,7 +56,7 @@ void func_ov000_021c41a4(LoBase021ccb54_021ccbe0 *self, s32 id) {
     if (n != NULL) {
         SelectNode(self, n);
     } else {
-        func_ov000_021c403c(self, 0);
+        LoBase021ccb54_021ccbe0_Select(self, 0);
     }
 }
 

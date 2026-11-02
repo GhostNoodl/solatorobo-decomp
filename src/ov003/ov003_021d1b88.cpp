@@ -9,9 +9,9 @@ typedef struct {
 } Ov003DispPos;
 
 extern s32 func_0203db40(void *p);
-extern void func_ov000_02190a80(void *a, s32 b);
-extern void func_ov000_02191418(Model0218fe1c *m, u16 a, BOOL b);
-extern BOOL func_ov000_0218d494(Ov003Actor *self, ActorMsg *ev);
+extern void Model0218fe1c_UpdateAnim(void *a, s32 b);
+extern void Model0218fe1c_SetAnimDelay(Model0218fe1c *m, u16 a, BOOL b);
+extern BOOL Actor_HandleMsg(Ov003Actor *self, ActorMsg *ev);
 
 static inline void Ov003_SetColor(Model0218fe1c *m, u16 c0, u16 c1) {
     m->color = c0;
@@ -23,14 +23,14 @@ static inline void Ov003_SetColor(Model0218fe1c *m, u16 c0, u16 c1) {
 void Ov003Actor_Animate(Ov003Actor *self) {
     s32 i;
     if (self->model != NULL) {
-        func_ov000_02190a80(self->model, func_0203db40(&self->pause));
+        Model0218fe1c_UpdateAnim(self->model, func_0203db40(&self->pause));
     }
     if (self->unk_d0 == NULL || self->unk_ea_3 == 0) {
         return;
     }
     for (i = 0; i < 2; i++) {
         if (self->unk_d0->models[i] != NULL) {
-            func_ov000_02190a80(self->unk_d0->models[i], 0x1000);
+            Model0218fe1c_UpdateAnim(self->unk_d0->models[i], 0x1000);
         }
     }
 }
@@ -57,7 +57,7 @@ BOOL Ov003Actor_HandleMsg(Ov003Actor *self, ActorMsg *ev) {
                 self->fsm->flags |= (1ULL << n);
             }
             if (b != 1) {
-                func_ov000_02191418(self->model, 5, 0);
+                Model0218fe1c_SetAnimDelay(self->model, 5, 0);
             }
             if (ev->id != self->id) {
                 self->hpObj->unk_0a = 5;
@@ -100,7 +100,7 @@ BOOL Ov003Actor_HandleMsg(Ov003Actor *self, ActorMsg *ev) {
     }
     }
     if (base) {
-        if (func_ov000_0218d494(self, ev)) {
+        if (Actor_HandleMsg(self, ev)) {
             return TRUE;
         }
     }

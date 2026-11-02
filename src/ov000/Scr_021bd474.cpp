@@ -12,16 +12,16 @@ typedef struct {
 
 extern "C" {
 
-int func_0204061c(Scr021bd474 *out, const VecFx32 *pos);
+int Math_ProjectToScreen(Scr021bd474 *out, const VecFx32 *pos);
 
-void func_ov000_021bd474(ActorMarker *self, VecFx32 *v) {
+void ActorMarker_UpdateScreenPos(ActorMarker *self, VecFx32 *v) {
     Scr021bd474 scr;
     VecFx32 p;
     if (self->snap) {
         self->snap = 0;
         p = self->work.pos;
         p.y = p.y + (self->height + 0x19a);
-        func_0204061c(&scr, &p);
+        Math_ProjectToScreen(&scr, &p);
         scr.x <<= 12;
         scr.y <<= 12;
         self->work.x = scr.x;
@@ -35,7 +35,7 @@ void func_ov000_021bd474(ActorMarker *self, VecFx32 *v) {
         s64 ey;
         p = *v;
         p.y = p.y + (self->height + 0x19a);
-        func_0204061c(&scr, &p);
+        Math_ProjectToScreen(&scr, &p);
         scr.x <<= 12;
         scr.y <<= 12;
         dx = scr.x - self->work.x;

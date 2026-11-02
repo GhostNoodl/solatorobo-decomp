@@ -3,7 +3,7 @@
 extern "C" {
 
 void func_0204aab0(SndQueue *p);
-void func_ov002_021ce724(Task021ef4b0 *p);
+void Task021ef4b0_FreeWindows(Task021ef4b0 *p);
 void func_ov002_021ce660(Task021ef4b0 *p, u32 a);
 BOOL func_ov002_021d166c(Task021ef71c *self);
 BOOL func_ov002_021d178c(Task021ef71c *self);
@@ -48,7 +48,7 @@ static inline void ov002_PlayBgm(u16 id) {
     }
 }
 
-void func_ov002_021d1258(Task021ef71c *self) {
+void Task021ef71c_PreUpdate(Task021ef71c *self) {
     switch (self->state) {
     case 8: {
         Task021ef89c *t = (Task021ef89c *)Task_FindById(0x15);
@@ -60,7 +60,7 @@ void func_ov002_021d1258(Task021ef71c *self) {
         list = (Task021ef4b0 *)Task_FindById(0x12);
         if (list != NULL) {
             self->unk_6c = list->unk_44;
-            func_ov002_021ce724(list);
+            Task021ef4b0_FreeWindows(list);
         }
         o = (Task021ef430 *)Task_FindById(0x11);
         if (o != NULL) {

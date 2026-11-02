@@ -174,7 +174,7 @@ static inline void Ov009Pair_SetB(Ov009Pair *p, u8 b) {
     *p = v;
 }
 
-// The 0x138-byte animation object (func_ov000_0218e9c4); unk_00 is negative until it is ready.
+// The 0x138-byte animation object (ResSet_Init); unk_00 is negative until it is ready.
 struct Ov009Names {
     s16 unk_00;
     u8 unk_02;
@@ -242,13 +242,13 @@ void *Heap_Alloc(u32 size); // Main/Gfx/ObjPool.h
 GroupNode *Group_FindNode(void *mgr, u16 id);
 void Heap_Free(void *ptr);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-void func_ov000_021915a0(void *a);
+BOOL History_SetState(void *a, s32 b, s32 c);
+void Model0218fe1c_SetLoop(void *a);
 s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
-void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-s32 func_ov000_0219a2f4(VecFx32 *v, s32 y, s32 b);
-BOOL func_ov000_02191120(Model0218fe1c *p);
+void Body_Update(void *a, s32 b, s32 c, s32 d);
+s32 Geom_SnapToGround(VecFx32 *v, s32 y, s32 b);
+BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *p);
 char *func_0207011c(void *res);
 char *func_020701d4(void *res);
 u8 *func_02070558(void *res);
@@ -597,7 +597,7 @@ public:
 class Ov009ActModel : public Ov003Actor {
 public:
     Ov009Names anim;
-    Model0218fe1c modelObj; // built with func_ov000_0218fe1c
+    Model0218fe1c modelObj; // built with Model0218fe1c_Init
 };
 OV009_SIZE(Ov009ActModel, 0x310);
 OV009_SIZE(Model0218fe1c, 0xe8);
@@ -613,7 +613,7 @@ public:
     u16 step;
     u8 unk_312;
     u8 unk_313;
-    s32 unk_314; // effect handle (func_020657b0)
+    s32 unk_314; // effect handle (Effect_Find_020657b0)
     u8 unk_318;
     u8 unk_319[0x3];
 };

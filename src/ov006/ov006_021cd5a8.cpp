@@ -8,11 +8,11 @@ typedef struct ov006_DataRes {
 extern "C" {
 
 
-void *func_0206ec48(u32 id);
+void *Param_Get(u32 id);
 void *func_0206ffa0(s32 id);
-void *func_0205976c(ov006_DataRes *res, u32 idx);
-u32 func_0205975c(ov006_DataRes *res, u32 idx);
-u16 func_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
+void *DataRes_GetTable(ov006_DataRes *res, u32 idx);
+u32 DataRes_GetCount(ov006_DataRes *res, u32 idx);
+u16 DataRes_ReadBitsAt_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
 void ov006_SlotManager_ClearState_021daf60(ov006_SlotManager *self);
 
 static inline u16 ov006_SlotId(ov006_SlotManager *m) {
@@ -28,22 +28,22 @@ void func_ov006_021cd5a8(int type, UiList *obj, int arg) {
         break;
     case 2:
         if (data_ov006_021ec860->unk18 == 0) {
-            func_ov000_0218084c(data_ov000_021ccd44, 0x26, 0);
+            TaskHost_RequestSwitch(data_ov000_021ccd44, 0x26, 0);
             break;
         }
         switch (data_ov006_021ec860->unk20) {
         case 2:
             if (data_ov006_021ec860->unk1C) {
-                func_ov000_0218084c(data_ov000_021ccd44, 0x29,
+                TaskHost_RequestSwitch(data_ov000_021ccd44, 0x29,
                                     ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->aid == 0 ? 1 : 2);
             } else {
-                func_ov000_0218084c(data_ov000_021ccd44, 0x29, 0);
+                TaskHost_RequestSwitch(data_ov000_021ccd44, 0x29, 0);
             }
             ov006_SlotManager_ClearState_021daf60(data_ov006_021ec884);
             break;
         case 1:
         default:
-            func_ov000_0218084c(data_ov000_021ccd44, 0x26, 0);
+            TaskHost_RequestSwitch(data_ov000_021ccd44, 0x26, 0);
             break;
         }
         break;
@@ -56,11 +56,11 @@ void func_ov006_021cd5a8(int type, UiList *obj, int arg) {
         void *tbl;
         res = (ov006_DataRes *)data_02fe152c;
         base = res->unk4C;
-        tbl = func_0205976c(res, 14);
-        n = func_0205975c((ov006_DataRes *)data_02fe152c, 14);
+        tbl = DataRes_GetTable(res, 14);
+        n = DataRes_GetCount((ov006_DataRes *)data_02fe152c, 14);
         for (i = 0; i < n; i++) {
             id = i | 0x7000;
-            if (func_02059544((ov006_DataRes *)data_02fe152c, base + 0x1d0, tbl, 1, i)) {
+            if (DataRes_ReadBitsAt_02059544((ov006_DataRes *)data_02fe152c, base + 0x1d0, tbl, 1, i)) {
                 obj->vfunc_74(func_0206ffa0(id), id, 0xffff, 0xffff);
             }
         }
@@ -68,23 +68,23 @@ void func_ov006_021cd5a8(int type, UiList *obj, int arg) {
     }
     case 4:
         if (obj != NULL) {
-            func_ov000_0218084c(data_ov000_021ccd44, 0x2a, arg);
+            TaskHost_RequestSwitch(data_ov000_021ccd44, 0x2a, arg);
         } else {
-            func_ov000_0218084c(data_ov000_021ccd44, 0x26, arg);
+            TaskHost_RequestSwitch(data_ov000_021ccd44, 0x26, arg);
         }
         break;
     case 5:
-        obj->vfunc_74(func_0206ec48(0xb000), 0xb000, 0xffff, 0xffff);
-        obj->vfunc_74(func_0206ec48(0xb001), 0xb001, 0xffff, 0xffff);
-        obj->vfunc_74(func_0206ec48(0xb002), 0xb002, 0xffff, 0xffff);
-        obj->vfunc_74(func_0206ec48(0xb003), 0xb003, 0xffff, 0xffff);
-        obj->vfunc_74(func_0206ec48(0xb004), 0xb004, 0xffff, 0xffff);
+        obj->vfunc_74(Param_Get(0xb000), 0xb000, 0xffff, 0xffff);
+        obj->vfunc_74(Param_Get(0xb001), 0xb001, 0xffff, 0xffff);
+        obj->vfunc_74(Param_Get(0xb002), 0xb002, 0xffff, 0xffff);
+        obj->vfunc_74(Param_Get(0xb003), 0xb003, 0xffff, 0xffff);
+        obj->vfunc_74(Param_Get(0xb004), 0xb004, 0xffff, 0xffff);
         break;
     case 6:
         if (obj != NULL) {
             data_ov006_021ec860->taskType = 1;
         } else {
-            func_ov000_0218084c(data_ov000_021ccd44, 0x29, arg);
+            TaskHost_RequestSwitch(data_ov000_021ccd44, 0x29, arg);
         }
         break;
     case 7: {

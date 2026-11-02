@@ -13,7 +13,7 @@ extern char data_ov014_02217ccf[];
 extern u8 data_ov014_02217e6c[];
 extern char data_ov014_02217d1d[];
 extern void *History_Init(void *p);
-extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
+extern BOOL Actor_IsReady(Ov003Actor *self);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern BOOL Ov003Actor_HandleMsg(Ov003Actor *self, Ov014Msg *msg);
 extern u8 data_ov014_02217d2c[];
@@ -23,7 +23,7 @@ extern const Ov003Step data_ov014_02216c80[];
 extern const Ov003Step data_ov014_02216e50[];
 extern const Ov003Step data_ov014_02216ea8[];
 extern const Ov003Step data_ov014_02216f00[];
-extern void func_0203f2b8(void *p);
+extern void HitSphere_Unlink_0203f2b8(void *p);
 extern s32 func_ov000_021909a8(void *a, const void *b, const void *c);
 
 EffectObj *Ov014_CreateEffect(s32 k, VecFx32 *pos) {
@@ -138,8 +138,8 @@ static inline void Ov014_Free154(Ov014Act_0220f9d0 *self) {
 }
 
 static inline void Ov014_StopSnd(void) {
-    if (func_02035b90(data_ov014_02217d1d, 7)) {
-        func_02036838(data_02097cdc, data_ov014_02217d1d, 7, 0);
+    if (ResMgr_IsLoaded(data_ov014_02217d1d, 7)) {
+        ResMgr_ReleaseByName(data_02097cdc, data_ov014_02217d1d, 7, 0);
     }
 }
 
@@ -164,12 +164,12 @@ Ov014Act_0220f9d0 *Ov014Act_0220f9d0_DtorDelete(Ov014Act_0220f9d0 *self) {
 
 void Ov014Act_0220f9d0_Init(Ov014Act_0220f9d0 *self) {
     Ov003Actor_Init(self);
-    func_020359d0(data_ov014_02217d1d, 7, 0);
+    ResMgr_Load(data_ov014_02217d1d, 7, 0);
 }
 
 BOOL Ov014Act_0220f9d0_IsReady(Ov014Act_0220f9d0 *self) {
-    BOOL r = func_ov000_0218cf5c(self);
-    return (r & func_02035b90(data_ov014_02217d1d, 7)) ? TRUE : FALSE;
+    BOOL r = Actor_IsReady(self);
+    return (r & ResMgr_IsLoaded(data_ov014_02217d1d, 7)) ? TRUE : FALSE;
 }
 
 void Ov014Act_0220f9d0_HandleMsg(Ov014Act_0220f9d0 *self, Ov014Msg *msg) {
@@ -215,7 +215,7 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
         if (self->hit != NULL) {
             ActorSub48 *q = self->hit;
             if (q != NULL) {
-                func_0203f2b8(q);
+                HitSphere_Unlink_0203f2b8(q);
                 Heap_Free(q);
             }
             self->hit = NULL;
@@ -274,7 +274,7 @@ static inline void Ov014SpawnB_Init(Ov014SpawnDescB *d, u16 k) {
 }
 
 extern VecFx32 data_ov014_02216c18[];
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern BOOL Ov014Watch_CountAlive(Ov014Watch *self);
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDescB *d, VecFx32 *pos, Ov014Vec16 *rot, u16 a);
 
@@ -313,7 +313,7 @@ void Ov014Act_0220f9d0_Update(Ov014Act_0220f9d0 *self) {
         return;
     }
     self->target = 0xffff;
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     if (pl != NULL) {
         self->target = pl->id;
     }
@@ -446,7 +446,7 @@ void Ov014Act_0220f9d0_Update(Ov014Act_0220f9d0 *self) {
     case 0x28:
         self->target_id = 0;
         self->unk_180 = 0;
-        func_ov000_02198360(self->fsm, 0xf, 0);
+        History_SetState(self->fsm, 0xf, 0);
         self->fsm->st = 0;
         self->unk_b6 = 0xffff;
         self->unk_b4++;
@@ -478,9 +478,9 @@ void Ov014Act_0220f9d0_Update(Ov014Act_0220f9d0 *self) {
         self->target_id = 0;
         self->unk_180 = 0;
         if (self->step->op == 4) {
-            func_ov000_02198360(self->fsm, 0x10, 0);
+            History_SetState(self->fsm, 0x10, 0);
         } else {
-            func_ov000_02198360(self->fsm, 0x11, 0);
+            History_SetState(self->fsm, 0x11, 0);
         }
         self->fsm->st = 0;
         self->unk_b6 = 0xffff;

@@ -3,21 +3,21 @@
 extern "C" {
 
 
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 s32 Rand_PlusMinus(s32 max);
 extern const VecFx32 data_02092a50;
 extern void *data_02097e4c;
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 void func_ov000_0218996c(u8 a, u8 b);
-void *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 kind, s32 chance);
+void *Spawn_ScatterEffect(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 kind, s32 chance);
 
 struct Ov011RotB {
     u16 x, y, z;
 };
 
-void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
-void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-Actor *func_ov000_0219be1c(s32 kind, VecFx32 *pos, u16 *rot, u16 a, u16 b);
+void *SndMgr_PlayAtPitch(void *a, s32 b, VecFx32 *c, s32 d);
+void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
+Actor *Actor_SpawnKind(s32 kind, VecFx32 *pos, u16 *rot, u16 a, u16 b);
 extern u8 data_ov011_02207658[];
 
 struct Ov011Tbl63 {
@@ -62,16 +62,16 @@ void Ov011Act7da4_StateAttack(Ov011Act7da4 *self) {
             Ov011_MulVec33(p, NNS_G3dGlbGetInvV(), &v);
         }
         VEC_Add(&v, &data_02092a50, &v);
-        e = func_02065f88(0x389, &v);
+        e = Effect_SpawnId(0x389, &v);
         if (e != NULL) {
             e->SetScaleAll(0x3000);
             e->speed = 0xccd;
         }
-        e = func_02065f88(0x5e4, &v);
+        e = Effect_SpawnId(0x5e4, &v);
         if (e != NULL) {
             e->SetScaleAll(0x2000);
         }
-        func_02049f44(data_02097e4c, 0x5b, &v, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x5b, &v, 0);
         if (++self->unk_36e >= 3) {
             self->unk_36e = 0;
             self->fsm->st = 10;
@@ -93,7 +93,7 @@ void Ov011Act7da4_StateAttack(Ov011Act7da4 *self) {
         Ov011_MulVec33(p, NNS_G3dGlbGetInvV(), &w);
         VEC_Add(&w, &data_02092a50, &w);
         h = 0xffff;
-        o = func_ov000_0219be1c(0x4838, &w, &r.x, self->id, self->target);
+        o = Actor_SpawnKind(0x4838, &w, &r.x, self->id, self->target);
         if (o != NULL) {
             o->unk_60 = data_ov011_02207610;
             h = o->id;
@@ -140,7 +140,7 @@ void Ov011Act7da4_StateAttack(Ov011Act7da4 *self) {
         if (self->unk_36e < 3) {
             self->fsm->st = 10;
         } else {
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }
@@ -155,20 +155,20 @@ void Ov011Act7da4_StateAttack2(Ov011Act7da4 *self) {
         Ov011_VecSet(&self->unk_84, 0, 0x3000, -0xf000);
         Ov011_MulVec33(&self->unk_84, NNS_G3dGlbGetInvV(), &v);
         VEC_Add(&v, &data_02092a50, &v);
-        e = func_02065f88(0x389, &v);
+        e = Effect_SpawnId(0x389, &v);
         if (e != NULL) {
             e->SetScaleAll(0x5000);
             e->speed = 0xccd;
         }
-        e = func_02065f88(0x5e4, &v);
+        e = Effect_SpawnId(0x5e4, &v);
         if (e != NULL) {
             e->SetScaleAll(0x3800);
         }
-        e = func_02065f88(0x322, &v);
+        e = Effect_SpawnId(0x322, &v);
         if (e != NULL) {
             e->SetScaleAll(0x3000);
         }
-        func_0204a028(data_02097e4c, 0x5b, &v, -2);
+        SndMgr_PlayAtPitch(data_02097e4c, 0x5b, &v, -2);
         self->fsm->st++;
         self->fsm->timer = 0x5a;
         break;
@@ -186,7 +186,7 @@ void Ov011Act7da4_StateAttack2(Ov011Act7da4 *self) {
         h = 0xffff;
         Ov011_MulVec33(&self->unk_84, NNS_G3dGlbGetInvV(), &w);
         VEC_Add(&w, &data_02092a50, &w);
-        o = func_ov000_0219be1c(0x4839, &w, &self->rot_x, self->id, self->target);
+        o = Actor_SpawnKind(0x4839, &w, &self->rot_x, self->id, self->target);
         if (o != NULL) {
             o->unk_60 = data_ov011_02207658;
             h = o->id;
@@ -213,7 +213,7 @@ void Ov011Act7da4_StateAttack2(Ov011Act7da4 *self) {
         if (s->timer == 0) {
             Robo021ca458 *pl;
             self->fsm->timer = 0x28;
-            pl = (Robo021ca458 *)func_ov000_0219bf90();
+            pl = (Robo021ca458 *)ActorMgr_FindPlayer();
             if (pl != NULL) {
                 self->unk_370[0].x = pl->unk_af0.x;
                 self->unk_370[0].y = pl->unk_af0.y;
@@ -221,7 +221,7 @@ void Ov011Act7da4_StateAttack2(Ov011Act7da4 *self) {
             }
             Ov011_MulVec33(&self->unk_370[0], NNS_G3dGlbGetInvV(), &v);
             VEC_Add(&v, &data_02092a50, &v);
-            func_02049f44(data_02097e4c, 0x5c, &v, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x5c, &v, 0);
         }
         o = (Ov003Actor *)Ov011_FindActor(self->target_id);
         if (o != NULL) {
@@ -240,7 +240,7 @@ void Ov011Act7da4_StateAttack2(Ov011Act7da4 *self) {
             *(Ov011RotB *)&o->rot_x = r;
         } else {
             self->target_id = 0xffff;
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }
@@ -266,7 +266,7 @@ void Ov011Act7da4_StateDie(Ov011Act7da4 *self) {
         if (o != NULL) {
             o->unk_1a = 1;
         }
-        e = func_02065f88(0x69, &self->pos);
+        e = Effect_SpawnId(0x69, &self->pos);
         e->SetScaleXYZ(0x7800, 0x7800, 0x7800);
         self->fsm->st++;
     }
@@ -275,8 +275,8 @@ void Ov011Act7da4_StateDie(Ov011Act7da4 *self) {
         if (t > 0x78) {
             EffectObj *e;
             func_ov000_0218996c(0xf, 0x3c);
-            func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
-            e = func_02065f88(0x322, &self->pos);
+            SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
+            e = Effect_SpawnId(0x322, &self->pos);
             e->SetScaleXYZ(0x5800, 0x5800, 0x5800);
             self->fsm->timer = 0x29;
             self->fsm->st++;
@@ -290,7 +290,7 @@ void Ov011Act7da4_StateDie(Ov011Act7da4 *self) {
             switch (t & 0x3f) {
             case 0:
                 kind = 0x38a;
-                func_02049a48(data_02097e4c, 0x35, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
                 func_ov000_0218996c(10, 0x14);
                 break;
             case 0x10:
@@ -298,7 +298,7 @@ void Ov011Act7da4_StateDie(Ov011Act7da4 *self) {
                 chance = 0x19;
                 break;
             case 0x20:
-                func_02049a48(data_02097e4c, 0x35, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
                 func_ov000_0218996c(10, 0x14);
                 break;
             case 0x30:
@@ -314,7 +314,7 @@ void Ov011Act7da4_StateDie(Ov011Act7da4 *self) {
             v.z = -0xf000;
             Ov011_MulVec33(&v, NNS_G3dGlbGetInvV(), &v);
             VEC_Add(&v, &data_02092a50, &v);
-            func_ov000_0219b71c(&v, &w, 0x1000, 0x1c00, kind, chance);
+            Spawn_ScatterEffect(&v, &w, 0x1000, 0x1c00, kind, chance);
         }
         self->fsm->timer++;
         VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);

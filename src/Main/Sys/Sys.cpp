@@ -11,7 +11,7 @@ extern void GX_DispOff(void);
 extern void FX_Init(void);
 extern void OS_InitTick(void);
 extern void RTC_Init(void);
-extern void func_0203d770(void);
+extern void Sys_ResetVram(void);
 extern s32 GX_VBlankIntr(int a);
 extern void OS_GetLowEntropyData(void *dt);
 extern void Rand_Seed(u64 seed);
@@ -87,7 +87,7 @@ void func_0203d6b4(void) {
     FX_Init();
     OS_InitTick();
     RTC_Init();
-    func_0203d770();
+    Sys_ResetVram();
     OS_SetIrqFunction(1, func_0203d824);
     OS_EnableIrqMask(1);
     {
@@ -99,7 +99,7 @@ void func_0203d6b4(void) {
     Rand_Seed((u32)(dt[1] * 3 + dt[3] * 5 + dt[5] * 7 + dt[7] * 11));
 }
 
-void func_0203d770(void) {
+void Sys_ResetVram(void) {
     GX_ResetBankForTex();
     GX_ResetBankForTexPltt();
     GX_ResetBankForBG();

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-s16 *func_ov000_02192a28(s16 *p) {
+s16 *AnimEvent_Next(s16 *p) {
     switch (*p++) {
     case 0:
         p += 1;

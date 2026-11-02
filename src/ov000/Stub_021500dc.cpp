@@ -10,7 +10,7 @@ extern u32 data_ov000_021ccd38;
 
 void func_ov000_0214f188(void *a, s32 b);
 
-void func_ov000_0215008c(VObj *self) {
+void Task_ReleaseCurrent(VObj *self) {
     if (!self->vfunc_54()) {
         return;
     }
@@ -22,7 +22,7 @@ void func_ov000_0215008c(VObj *self) {
     data_ov000_021ccd40 = NULL;
 }
 
-bool func_ov000_021500dc(void *self) {
+bool Task_IsCurrent(void *self) {
     return IsCur_Inline(self);
 }
 

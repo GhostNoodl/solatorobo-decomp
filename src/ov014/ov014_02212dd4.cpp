@@ -3,8 +3,8 @@
 extern "C" {
 
 extern char data_ov014_02217d3a[];
-extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *a, s32 b);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
 
 static inline void Ov014_TimerTick(ActorSub40 *s) {
@@ -17,9 +17,9 @@ void Ov014Act_0221267c_State20(Ov014Act_0221267c *self) {
     ActorSub40 *s = self->fsm;
     switch (ActorSub40_State(s)) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov014_02217d3a, 0x19a, 0);
-        func_ov000_02191318(self->model, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, data_ov014_02217d3a, 0x19a, 0);
+        Model0218fe1c_SetAnimFrame(self->model, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st++;
         self->fsm->timer = 120;
         break;
@@ -29,7 +29,7 @@ void Ov014Act_0221267c_State20(Ov014Act_0221267c *self) {
         self->model->alpha = b;
         self->mdl.alpha = b;
         if (t == 50) {
-            func_02065f88(0xcb, &self->pos)->SetScaleXYZ(0x2000, 0x2000, 0x2000);
+            Effect_SpawnId(0xcb, &self->pos)->SetScaleXYZ(0x2000, 0x2000, 0x2000);
         }
         if (t == 20) {
             VecFx32 v;
@@ -37,9 +37,9 @@ void Ov014Act_0221267c_State20(Ov014Act_0221267c *self) {
             v.y = self->pos.y;
             v.z = self->pos.z;
             v.y += 0x2000;
-            func_02065f88(0x38a, &v)->SetScaleXYZ(0x2000, 0x2000, 0x2000);
+            Effect_SpawnId(0x38a, &v)->SetScaleXYZ(0x2000, 0x2000, 0x2000);
         }
-        Actor_TurnToActor(self, func_ov000_0219bf90(), 0x400);
+        Actor_TurnToActor(self, ActorMgr_FindPlayer(), 0x400);
         s = self->fsm;
         if (ActorSub40_Timer(s) == 0) {
             s->st++;

@@ -8,15 +8,15 @@
 extern "C" {
 
 extern UiLabelStyle data_02fe0188[];
-BOOL func_02054f10(void *model, u32 id);
+BOOL Model_IsReady(void *model, u32 id);
 void func_ov000_0215f970(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx0);
 
-void func_ov000_0215f334(UiLabel *self) {
+void UiLabel_Draw(UiLabel *self) {
     s32 pos[3];
     TextWin *t;
     UiLabelStyle *e;
 
-    if (!func_02054f10(self->model, 0xffff)) {
+    if (!Model_IsReady(self->model, 0xffff)) {
         return;
     }
     e = &data_02fe0188[self->style];

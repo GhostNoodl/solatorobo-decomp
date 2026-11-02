@@ -8,7 +8,7 @@
 
 extern "C" {
 
-void *func_ov000_0219bf90(void);
+void *ActorMgr_FindPlayer(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
 s32 func_02043d84(void *a);
 
@@ -42,7 +42,7 @@ extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern s32 data_02097d78[5];
 extern const char *data_0208cc94;
 extern const char *data_0208cc88;
-BOOL func_02054f10(void *m, s32 id);
+BOOL Model_IsReady(void *m, s32 id);
 s32 FX_Div(s32 a, s32 b);
 
 typedef struct {
@@ -127,20 +127,20 @@ void func_ov000_0216adf8(Obj0216adf8 *self) {
         void *res;
         Model *m;
         self->unk_14 = 0xc;
-        res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+        res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
         m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
             const char *nm = data_0208cc88;
-            func_02041218((struct PlttRes *)((u8 *)m + 0x88));
-            func_02041440(m, nm, 0);
+            PlttRes_Init_02041218((struct PlttRes *)((u8 *)m + 0x88));
+            TexObj_Init(m, nm, 0);
         }
         self->unk_0c = m;
-        func_020417e0(m, res);
+        TexObj_SetRes(m, res);
         self->unk_0c->flags |= 2;
-        func_02041d9c(self->unk_0c, 0, 0xb);
-        func_02041d9c(self->unk_0c, 0, self->unk_14);
-        func_02041d9c(self->unk_0c, 0, 7);
-        func_02041d9c(self->unk_0c, 0, 6);
+        TexObj_SelectImage(self->unk_0c, 0, 0xb);
+        TexObj_SelectImage(self->unk_0c, 0, self->unk_14);
+        TexObj_SelectImage(self->unk_0c, 0, 7);
+        TexObj_SelectImage(self->unk_0c, 0, 6);
         self->unk_0c->flags |= 0x80000;
         self->unk_0c->flags |= 0x200000;
         MODEL_FLAGS(self->unk_0c)->alpha = 0x1e;
@@ -148,7 +148,7 @@ void func_ov000_0216adf8(Obj0216adf8 *self) {
         break;
     }
     case 6:
-        if (func_02054f10(self->unk_0c, 0xffff)) {
+        if (Model_IsReady(self->unk_0c, 0xffff)) {
             self->unk_18 = 0;
             self->unk_1c = 0x1000;
             self->unk_04 = 8;

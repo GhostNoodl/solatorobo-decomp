@@ -9,7 +9,7 @@ extern "C" {
 extern u8 data_ov000_021cc9bc[];
 extern u8 data_ov000_021cc9d3[];
 extern u8 data_ov000_021cc9dc[];
-void func_02035acc(void *a, void *b, s32 c);
+void ResMgr_ReleaseArchive(void *a, void *b, s32 c);
 
 void func_ov000_021c2f10(ListRow021cca70 *self) {
     self->width = 0xc8;
@@ -37,12 +37,12 @@ void func_ov000_021c2f10(ListRow021cca70 *self) {
     self->unk_78 = 0;
 }
 
-void func_ov000_021c2f90(ListRow021cca70 *self) {
+void ListRow021cca70_Release(ListRow021cca70 *self) {
     HEAP_DELETE_MODEL(self->unk_38);
     HEAP_DELETE_MODEL(self->unk_3c);
     if (self->unk_68 != 0) {
-        func_02035acc(self->arc, self->name, 2);
-        func_02035acc(data_ov000_021cc9d3, data_ov000_021cc9dc, 2);
+        ResMgr_ReleaseArchive(self->arc, self->name, 2);
+        ResMgr_ReleaseArchive(data_ov000_021cc9d3, data_ov000_021cc9dc, 2);
     }
     self->unk_6c = 0;
     self->alpha = 0;

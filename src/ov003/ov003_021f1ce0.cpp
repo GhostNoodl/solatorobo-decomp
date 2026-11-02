@@ -38,12 +38,12 @@ typedef struct {
 
 extern const Ov003FlickerEntry data_ov003_021f7560[];
 
-extern BOOL func_ov000_02191120(void *model);
+extern BOOL Model0218fe1c_IsAnimDone(void *model);
 extern u32 Rand_UpTo(u32 max);
-extern void func_ov000_02190e98(void *model, s32 a, s32 b, s32 c);
-extern void func_ov000_02191618(void *model);
-extern void func_ov000_021911c8(void *model, s32 v);
-extern Ov003FlickerInfo *func_0206fef8(u16 id);
+extern void Model0218fe1c_SetAnimByIndex(void *model, s32 a, s32 b, s32 c);
+extern void Model0218fe1c_ClearLoop(void *model);
+extern void Model0218fe1c_SetAnimSpeed(void *model, s32 v);
+extern Ov003FlickerInfo *Tbl_FindEntry_0206fef8(u16 id);
 extern void *Heap_Alloc(u32 size);
 extern ActorSub40 *History_Init(void *p);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
@@ -72,7 +72,7 @@ void Ov003ActVt_021fa4f0_Start(Ov003PropFlicker *self) {
 void Ov003ActVt_021fa4f0_RunState(Ov003PropFlicker *self) {
     s32 period;
     u16 t;
-    if (!func_ov000_02191120(self->model)) {
+    if (!Model0218fe1c_IsAnimDone(self->model)) {
         return;
     }
     period = self->unk_1e;
@@ -100,8 +100,8 @@ void Ov003PropFlicker_Randomize(Ov003PropFlicker *self) {
             a = b + Rand_UpTo(a - b);
         }
     }
-    func_ov000_02190e98(self->model, a, 0x1000, 1);
-    func_ov000_02191618(self->model);
+    Model0218fe1c_SetAnimByIndex(self->model, a, 0x1000, 1);
+    Model0218fe1c_ClearLoop(self->model);
     lo = self->unk_1a;
     if (lo < 0) {
         lo = 0;
@@ -121,7 +121,7 @@ void Ov003PropFlicker_Randomize(Ov003PropFlicker *self) {
             lo = hi + Rand_UpTo(lo - hi);
         }
     }
-    func_ov000_021911c8(self->model, lo);
+    Model0218fe1c_SetAnimSpeed(self->model, lo);
 }
 
 void Ov003ActVt_021fa498_Start(Ov003PropFlicker *self) {
@@ -129,10 +129,10 @@ void Ov003ActVt_021fa498_Start(Ov003PropFlicker *self) {
     ActorSub40 *p;
     Ov000ActVt_021cc7cc_Start(self);
     e = &data_ov003_021f7560[self->unk_18];
-    if (func_0206fef8(self->kind)->rotate) {
-        func_ov000_021911c8(self->model, e->angle);
+    if (Tbl_FindEntry_0206fef8(self->kind)->rotate) {
+        Model0218fe1c_SetAnimSpeed(self->model, e->angle);
         if (e->kind != 1) {
-            func_ov000_02191618(self->model);
+            Model0218fe1c_ClearLoop(self->model);
         }
     }
     p = (ActorSub40 *)Heap_Alloc(0x14);
@@ -202,9 +202,9 @@ void Ov003ActVt_021fa498_RunState(Ov003PropFlicker *self) {
             self->vel.y = 0;
             self->vel.z = 0;
             if (e->kind == 2) {
-                func_ov000_02190e98(self->model, 0, 0x1000, 1);
+                Model0218fe1c_SetAnimByIndex(self->model, 0, 0x1000, 1);
             } else if (e->kind == 3) {
-                func_ov000_02190e98(self->model, self->timer & 1, 0x1000, 1);
+                Model0218fe1c_SetAnimByIndex(self->model, self->timer & 1, 0x1000, 1);
             }
         }
         break;

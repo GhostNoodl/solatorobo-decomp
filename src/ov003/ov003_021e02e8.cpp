@@ -13,7 +13,7 @@ typedef struct {
     s32 unk_14;
 } Ov003LampMsg;
 
-// The lamp (vtable data_ov003_021f80f0, 0x104 bytes: NEW_BASIC in func_ov000_02192b24). Its
+// The lamp (vtable data_ov003_021f80f0, 0x104 bytes: NEW_BASIC in Factory_New4000). Its
 // model's render callback (Ov003Obj_StartLampCapture / 021e02e8) copies the matrix of node joint into
 // mtx; the actor of kind 0x404f is found and read the same way.
 class Ov003Lamp : public ActorEx {
@@ -49,14 +49,14 @@ extern Ov003Lamp *ActorMgr_FindKind(ActorMgr *mgr, s32 a, s32 b);
 
 extern const s16 FX_SinCosTable_[];
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
-extern BOOL func_ov000_021903b4(Model0218fe1c *model);
+extern BOOL Model021903b4_Draw(Model0218fe1c *model);
 
 static inline void Ov003Ln_Draw(ActorEx *self, const VecFx32 *p) {
     Model0218fe1c *m = self->model;
     m->trans.x = p->x;
     m->trans.y = p->y;
     m->trans.z = p->z;
-    func_ov000_021903b4(self->model);
+    Model021903b4_Draw(self->model);
 }
 
 static inline void Ov003Ln_Sub(const VecFx32 *a, const VecFx32 *b, VecFx32 *o) {
@@ -77,7 +77,7 @@ BOOL Ov003ActVt_021f8220_Draw(ActorEx *self) {
     MTX_MultVec33(&d, &m, &d);
     switch (self->fsm->current) {
     default:
-        func_ov000_02194c08(self);
+        ActorEx_Draw(self);
         break;
     case 0x21:
         Ov003Ln_Draw(self, &p);
@@ -130,20 +130,20 @@ void Ov003Obj_StartLampCapture(Ov003Obj *self) {
 extern char data_ov003_021f851c[];
 extern char data_ov003_021f8525[];
 extern s32 func_ov000_021909a8(void *model, s32 a, const char *name);
-extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
-extern void func_ov000_021915a0(void *model);
+extern BOOL Model0218fe1c_SetAnim(void *model, const void *name, s32 a, s32 b);
+extern void Model0218fe1c_SetLoop(void *model);
 
 void Ov003ActVt_021f80f0_Start(Ov003Lamp *self) {
     Model0218fe1c *m;
     SndQueue *g;
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     self->joint = func_ov000_021909a8(self->model, 0, data_ov003_021f851c);
     m = self->model;
     NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->renderObj, (NNSG3dSbcCallBackFunc)Ov003Obj_StartLampCapture);
     m->clearInit = 0;
     self->model->flushVP = 1;
-    func_ov000_02190cb0(self->model, data_ov003_021f8525, 0x1000, 0);
-    func_ov000_021915a0(self->model);
+    Model0218fe1c_SetAnim(self->model, data_ov003_021f8525, 0x1000, 0);
+    Model0218fe1c_SetLoop(self->model);
     g = data_02097e48.queue;
     if (g->flag0 != 1 || g->unk_74 != 0xffff || g->unk_72 != 0x4e) {
         g->unk_74 = 0x4e;
@@ -177,14 +177,14 @@ void Ov003ActVt_021f80f0_StateIdle(Ov003Lamp *self) {
         }
         w->timer++;
         if ((w->timer & 0x3f) == 0) {
-            EffectObj *fx = func_02065f88(0x325, &self->mtxTrans);
+            EffectObj *fx = Effect_SpawnId(0x325, &self->mtxTrans);
             fx->AddPosXYZ(Rand_PlusMinus(0x1800), Rand_PlusMinus(0x800) - 0x800, Rand_PlusMinus(0x1800));
             fx->SetRotXYZ(0, 0x4000, 0);
         }
         break;
     case 1:
         if ((w->timer & 0x3f) == 0) {
-            EffectObj *fx = func_02065f88(0x322, &self->mtxTrans);
+            EffectObj *fx = Effect_SpawnId(0x322, &self->mtxTrans);
             fx->AddPosXYZ(Rand_PlusMinus(0x1800), Rand_PlusMinus(0x800) - 0x800, Rand_PlusMinus(0x1800));
         }
         self->fsm->timer++;
@@ -217,7 +217,7 @@ void Ov003ActVt_021f80f0_StateIdle(Ov003Lamp *self) {
 }
 
 extern void func_ov000_0218996c(u8 a, u8 b);
-extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
+extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 
 void Ov003ActVt_021f80f0_State21(Ov003Lamp *self) {
     ActorSub40 *w = self->fsm;
@@ -247,7 +247,7 @@ void Ov003ActVt_021f80f0_State21(Ov003Lamp *self) {
         a = 0x131;
         break;
     case 0x30:
-        func_02049f44(data_02097e4c, 0x35, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x35, &self->pos, 0);
         a = 3;
         b = 0x19;
         break;
@@ -259,7 +259,7 @@ void Ov003ActVt_021f80f0_State21(Ov003Lamp *self) {
     p.y = self->pos.y;
     p.z = self->pos.z;
     p.y += 0x5800;
-    fx = func_ov000_0219b71c(&p, &sc, 0x800, 0x1000, a, b);
+    fx = Spawn_ScatterEffect(&p, &sc, 0x800, 0x1000, a, b);
     r.x = self->rot_x;
     r.y = self->rot_y;
     r.z = self->rot_z;

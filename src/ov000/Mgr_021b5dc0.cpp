@@ -26,10 +26,10 @@ extern char data_ov000_021cc83d[];
 
 void func_0206e660(LangBlockA *p);
 void func_0206e648(LangBlockB *p);
-void func_02043b20(void *p);
+void Gfx3DState_Apply(void *p);
 s32 func_0206e340(LangBlockB *r);
 Ent021b5dc0 *func_0206e2ec(LangBlockB *r);
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Body_SetPos(void *body, VecFx32 *pos, u16 angle);
@@ -83,7 +83,7 @@ void func_ov000_021b5dc0(FieldMgr *self) {
     if (self->blockB != NULL) {
         func_0206e648(self->blockB);
     }
-    func_02043b20(data_02097d48->unk_8b0);
+    Gfx3DState_Apply(data_02097d48->unk_8b0);
     v = self->blockB->count4;
     cam = &data_ov000_021ccd54->cam;
     cam->unk_c8 = func_0206e340(self->blockB);
@@ -123,8 +123,8 @@ void func_ov000_021b5dc0(FieldMgr *self) {
         }
     }
     if (self->unk_1f0 != 0xffff) {
-        pl = func_ov000_0219bf90();
-        if (func_ov000_0218c040(data_ov000_021ccd64, 1, &base, self->unk_1f0 >> 12, self->unk_1f0)) {
+        pl = ActorMgr_FindPlayer();
+        if (Group_GetSpawnPositions(data_ov000_021ccd64, 1, &base, self->unk_1f0 >> 12, self->unk_1f0)) {
             for (i = 0; i < 0x20; i++) {
                 id = self->ids[i];
                 if (id == 0xffff) {

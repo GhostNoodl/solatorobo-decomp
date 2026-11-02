@@ -15,8 +15,8 @@ extern const char data_ov006_021ec09a[];
 extern const char data_ov006_021ec0a0[];
 extern char data_ov006_021ec178[];
 extern char data_ov006_021ec191[];
-void func_0206e900(char *dst, const char *src);
-void func_ov000_0215fdfc(ObjBase021cac0c_021cb6f0 *self, s32 a, const void *b);
+void LangData_LocalizePath(char *dst, const char *src);
+void Obj0215fdfc_SetEntry(ObjBase021cac0c_021cb6f0 *self, s32 a, const void *b);
 
 static inline void ov006_SetPos021dd450(ObjBase021cac0c_021cb6f0 *o, fx32 x, fx32 y, fx32 z) {
     o->unk_38 = x;
@@ -42,21 +42,21 @@ void ov006_Unk021dd450_Load(ov006_Unk021dd450 *self) {
     ov006_SetPos021dd450(self->unk18, 0, 0, 0);
     self->unk18->unk_28 = 2;
     self->unk18->unk_30 = 0;
-    func_ov000_0215fdfc(self->unk18, 1, data_ov006_021ec09a);
-    func_ov000_0215fdfc(self->unk18, 2, data_ov006_021ec0a0);
+    Obj0215fdfc_SetEntry(self->unk18, 1, data_ov006_021ec09a);
+    Obj0215fdfc_SetEntry(self->unk18, 2, data_ov006_021ec0a0);
     self->unk18->unk_58 = 0;
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
-        func_02041218(&model->pltt);
-        func_02041440(model, NULL, 0);
+        PlttRes_Init_02041218(&model->pltt);
+        TexObj_Init(model, NULL, 0);
     }
     self->unk1C = model;
-    func_0206e900(file, data_ov006_021ec178);
-    func_020417e0(self->unk1C, func_02035de0(file, data_ov006_021ec191));
+    LangData_LocalizePath(file, data_ov006_021ec178);
+    TexObj_SetRes(self->unk1C, func_02035de0(file, data_ov006_021ec191));
     self->unk1C->flags |= 2;
     self->unk1C->flags |= 0x80000;
     self->unk1C->unk_150 = -0x2000;
-    func_02041d9c(self->unk1C, 0, 2);
+    TexObj_SelectImage(self->unk1C, 0, 2);
 }
 
 }

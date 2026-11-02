@@ -6,7 +6,7 @@ extern const VecFx32 data_02092a50;
 extern const VecFx32 data_02092a38;
 extern char data_ov011_022075d4[];
 s32 Rand_PlusMinus(s32 max);
-Actor *func_ov000_0219be1c(s32 id, VecFx32 *pos, u16 *rot, u16 a, u16 b);
+Actor *Actor_SpawnKind(s32 id, VecFx32 *pos, u16 *rot, u16 a, u16 b);
 
 void Ov011Act7c4c_StateIdle(Ov011Act7c4c *self) {
     VecFx32 v;
@@ -46,7 +46,7 @@ void Ov011Act7c4c_StateIdle(Ov011Act7c4c *self) {
             self->target_id = 0xffff;
             Ov011_MulVec33(&self->unk_104, NNS_G3dGlbGetInvV(), &v);
             VEC_Add(&v, &data_02092a50, &v);
-            e = func_02065f88(0x389, &v);
+            e = Effect_SpawnId(0x389, &v);
             if (e != NULL) {
                 self->unk_100 = e->id;
                 e->SetScaleAll(0x4800);
@@ -61,7 +61,7 @@ void Ov011Act7c4c_StateIdle(Ov011Act7c4c *self) {
             self->fsm->timer--;
         }
         if (self->unk_100 != 0) {
-            EffectObj *e = func_020657b0(data_0214a420, self->unk_100);
+            EffectObj *e = Effect_Find_020657b0(data_0214a420, self->unk_100);
             if (e != NULL) {
                 if (self->fsm->timer == 0) {
                     e->state = 4;
@@ -74,7 +74,7 @@ void Ov011Act7c4c_StateIdle(Ov011Act7c4c *self) {
             }
         }
         if (self->fsm->timer == 0) {
-            Robo021ca458 *pl = (Robo021ca458 *)func_ov000_0219bf90();
+            Robo021ca458 *pl = (Robo021ca458 *)ActorMgr_FindPlayer();
             if (pl != NULL) {
                 VecFx32 d;
                 u16 rot[3];
@@ -93,7 +93,7 @@ void Ov011Act7c4c_StateIdle(Ov011Act7c4c *self) {
                 } else {
                     rot[1] -= 0x4000;
                 }
-                r = func_ov000_0219be1c(0x4804, &self->unk_104, rot, self->id, pl->id);
+                r = Actor_SpawnKind(0x4804, &self->unk_104, rot, self->id, pl->id);
                 if (r != NULL) {
                     r->unk_60 = data_ov011_022075d4;
                 }

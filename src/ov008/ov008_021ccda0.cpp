@@ -6,16 +6,16 @@ extern "C" {
 extern void *data_02097e4c;
 extern char data_ov008_021d0458[];
 extern char data_ov008_021d0462[];
-void func_ov000_02153f90(void *p);
+void MsgEntry_Init(void *p);
 Ov008Def *Lang_GetGroup(u8 id);
-void func_02070874(char *dst, const char *fmt, ...);
-void *func_02049a48(void *a, int b, int c, int d, int e);
+void Tbl_Format_02070874(char *dst, const char *fmt, ...);
+void *SndMgr_PlayVolume(void *a, int b, int c, int d, int e);
 
 Ov008Item *func_ov008_021ccda0(Ov008Menu *list, s32 a, s16 b, s16 c, s32 d) {
     Ov008Item *n = (Ov008Item *)Heap_Alloc(0x34);
     Ov008Item *p;
     if (n != NULL) {
-        func_ov000_02153f90(n);
+        MsgEntry_Init(n);
         n->unk_30 = 0;
         n->unk_32 = 0;
     }
@@ -51,7 +51,7 @@ void func_ov008_021cce38(Ov008Caption *o) {
             u16 v = o->next;
             o->shown = v;
             o->next = 0xffff;
-            func_02070874(buf, data_ov008_021d0458, Lang_GetGroup(v)->unk_04);
+            Tbl_Format_02070874(buf, data_ov008_021d0458, Lang_GetGroup(v)->unk_04);
             o->pic.v0c();
             o->pic.unk_44 = 2;
             o->pic.v24(data_ov008_021d0462, buf);
@@ -82,17 +82,17 @@ void func_ov008_021ccf44(Ov008Panel *o) {
         }
         break;
     case 0xf:
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
-            func_02041218(&m->pltt);
-            func_02041440(m, o->pic.cell, 1);
+            PlttRes_Init_02041218(&m->pltt);
+            TexObj_Init(m, o->pic.cell, 1);
             STD_CopyString(m->name, o->pic.file);
         }
         o->sprite = m;
-        func_020417e0(o->sprite, (void *)o->pic.v10());
+        TexObj_SetRes(o->sprite, (void *)o->pic.v10());
         o->sprite->flags |= 2;
-        func_02041d9c(o->sprite, 0, 0xffff);
+        TexObj_SelectImage(o->sprite, 0, 0xffff);
         o->sprite->unk_150 = 0xfffe0333;
         o->sprite->flags |= 0x80000;
         o->unk_58 = 0;
@@ -109,7 +109,7 @@ void func_ov008_021ccf44(Ov008Panel *o) {
         }
         break;
     case 0x11:
-        func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
         o->state = 0x12;
     case 0x12:
         t = FX_Div(o->offset + 0x20000, 0x20000);

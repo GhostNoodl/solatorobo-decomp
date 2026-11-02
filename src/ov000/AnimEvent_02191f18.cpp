@@ -12,13 +12,13 @@
 extern "C" {
 extern void *data_02097e4c;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-void *func_02049f44(void *a, s32 b, void *c, s32 d);
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 Rand_UpTo(s32 n);
-s16 *func_ov000_0219122c(Model0218fe1c *self, s32 frame);
-BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 mask, VecFx32 *ofs, void *rot, s32 r, s32 rr, s32 h, s32 i);
+s16 *Model0218fe1c_SeekMainAnim(Model0218fe1c *self, s32 frame);
+BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, s32 mask, VecFx32 *ofs, void *rot, s32 r, s32 rr, s32 h, s32 i);
 BOOL func_ov000_0219aca8(void *a, void *b, u16 c, u8 d, VecFx32 *ofs, u16 *box, s32 r, s32 hgt, s32 h, s32 i);
-void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
+void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
 void func_ov000_0218996c(s32 a, s32 b);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
@@ -41,7 +41,7 @@ static inline s32 AnimFrame_02191f18(AnimCtrl *a) {
     return a->cur != NULL ? a->cur->frame : 0;
 }
 
-s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
+s16 *AnimEvent_Exec(s16 *p, Model0218fe1c *m) {
     u16 f;
     AnimCtrl *a;
     s32 prev;
@@ -60,9 +60,9 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
             v.x = actor->pos.x;
             v.y = actor->pos.y;
             v.z = actor->pos.z;
-            func_02049f44(data_02097e4c, (u16)p[0], &v, 0);
+            SndMgr_PlayAt(data_02097e4c, (u16)p[0], &v, 0);
         } else {
-            func_02049a48(data_02097e4c, (u16)p[0], -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, (u16)p[0], -1, -1, -1);
         }
         p += 1;
         break;
@@ -79,9 +79,9 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
             v.x = actor->pos.x;
             v.y = actor->pos.y;
             v.z = actor->pos.z;
-            func_02049f44(data_02097e4c, id, &v, 0);
+            SndMgr_PlayAt(data_02097e4c, id, &v, 0);
         } else {
-            func_02049a48(data_02097e4c, id, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, id, -1, -1, -1);
         }
         p += 2;
         break;
@@ -113,7 +113,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
         if (a != NULL && a->cur != NULL) {
             prev = a->cur->frame;
         }
-        p = func_ov000_0219122c(m, f << 12);
+        p = Model0218fe1c_SeekMainAnim(m, f << 12);
         if (a != NULL && prev >= AnimFrame_02191f18(a)) {
             m->unk_e4 |= 0x20000000;
         }
@@ -256,7 +256,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
                 k = TRUE;
             }
             c = k ? (u16)(((s64)c * sc + 0x800) >> 12) : c;
-            if (func_ov000_0219aae8(actor, actor, c, (u16)p[0] & 0xff, mask, &v, NULL, p[4] << 4, 0, h, 0x1000)) {
+            if (Hit_ApplyInArea(actor, actor, c, (u16)p[0] & 0xff, mask, &v, NULL, p[4] << 4, 0, h, 0x1000)) {
                 m->unk_e4 |= 0x8000000;
             }
         }
@@ -284,7 +284,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
                 k = TRUE;
             }
             c = k ? (u16)(((s64)c * sc + 0x800) >> 12) : c;
-            if (func_ov000_0219aae8(actor, actor, c, (u16)p[0] & 0xff, mask, &v, NULL, p[4] << 4, p[5] << 4, h, 0x1000)) {
+            if (Hit_ApplyInArea(actor, actor, c, (u16)p[0] & 0xff, mask, &v, NULL, p[4] << 4, p[5] << 4, h, 0x1000)) {
                 m->unk_e4 |= 0x8000000;
             }
         }
@@ -312,7 +312,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
                 k = TRUE;
             }
             c = k ? (u16)(((s64)c * sc + 0x800) >> 12) : c;
-            if (func_ov000_0219aae8(actor, actor, c, (u16)p[0] & 0xff, mask, &v, p + 4, p[7] << 4, p[8] << 4, h, 0x1000)) {
+            if (Hit_ApplyInArea(actor, actor, c, (u16)p[0] & 0xff, mask, &v, p + 4, p[7] << 4, p[8] << 4, h, 0x1000)) {
                 m->unk_e4 |= 0x8000000;
             }
         }
@@ -343,8 +343,8 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
             pos.x = actor->pos.x;
             pos.y = actor->pos.y;
             pos.z = actor->pos.z;
-            func_ov000_0219a210(&pos, &ofs, actor->rot_y);
-            e = func_02065f88(p[0], &pos);
+            Geom_AddRotatedOffset(&pos, &ofs, actor->rot_y);
+            e = Effect_SpawnId(p[0], &pos);
             r = actor->rot;
             r.x += p[4];
             r.y += p[5];

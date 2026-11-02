@@ -7,11 +7,11 @@ extern VFunc data_ov000_021ccadc[];
 extern VFunc data_ov000_021cca70[];
 extern VFunc data_ov002_021ef674[];
 void func_ov000_021c6140(void *self);
-void func_ov000_021c22d8(void *self);
+void ListRow_Init(void *self);
 void func_ov000_021c2208(void *self);
 void func_ov000_021c2f10(void *self);
 void func_ov000_021c308c(void *self, u16 id);
-void func_ov000_021c6474(void *list, void *item);
+void List021c6474_Append(void *list, void *item);
 void func_ov000_021c65e0(void *list, s32 a);
 u16 func_0206f788(u16 id);
 void *func_0206eed0(u16 id);
@@ -23,7 +23,7 @@ typedef struct {
     u16 b;
 } Pair021d1970;
 
-void func_ov002_021d1970(Task021ef69c *self) {
+void Task021ef69c_Start(Task021ef69c *self) {
     void *g;
     UiObj *p;
     self->unk_04 &= ~2;
@@ -51,8 +51,8 @@ void func_ov002_021d1970(Task021ef69c *self) {
         ListRow021cca70 *q;
         Pair021d1970 *tbl;
         u32 count;
-        tbl = (Pair021d1970 *)func_0205976c(data_02fe152c, 11);
-        count = func_0205975c(data_02fe152c, 11);
+        tbl = (Pair021d1970 *)DataRes_GetTable(data_02fe152c, 11);
+        count = DataRes_GetCount(data_02fe152c, 11);
         for (i = 0; i < count; i++) {
             id = tbl[i].b;
             if (func_0206f788(id)) {
@@ -60,7 +60,7 @@ void func_ov002_021d1970(Task021ef69c *self) {
                 q = (ListRow021cca70 *)Heap_Alloc(sizeof(ListRow021cca70));
                 if (q != NULL) {
                     *(VFunc **)q = data_ov002_021ef684;
-                    func_ov000_021c22d8(q);
+                    ListRow_Init(q);
                     *(VFunc **)q = data_ov000_021cca70;
                     *(VFunc **)&q->item = data_ov002_021ef674;
                     func_ov000_021c2208(&q->item);
@@ -69,8 +69,8 @@ void func_ov002_021d1970(Task021ef69c *self) {
                 q->index = ((u32)tbl[i].b << 4) >> 16;
                 func_ov000_021c308c(q, id);
                 q->unk_44 = i + 1;
-                q->unk_40 = func_0206ec48(id);
-                func_ov000_021c6474(self->unk_3c, q);
+                q->unk_40 = Param_Get(id);
+                List021c6474_Append(self->unk_3c, q);
             }
         }
     }
@@ -79,7 +79,7 @@ void func_ov002_021d1970(Task021ef69c *self) {
     self->unk_3c->owner = self;
     self->unk_3c->vfunc_08();
     func_ov000_021c65e0(self->unk_3c, data_ov002_021f0f84[2]);
-    func_ov000_021c64b4(self->unk_3c, ((ListRow021cca70 *)self->unk_3c->unk_88)->unk_40);
+    Obj021c64b4_SetText(self->unk_3c, ((ListRow021cca70 *)self->unk_3c->unk_88)->unk_40);
     p = (UiObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
         *(VFunc **)p = data_ov000_021cac60;
@@ -110,7 +110,7 @@ void func_ov002_021d1970(Task021ef69c *self) {
     self->unk_60 = 0;
     self->unk_58 = -0x199a;
     self->unk_64 = -0x199a;
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 }

@@ -4,7 +4,7 @@
 extern "C" {
 void Ov012ActVt_0220b280_StateAttack(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0 && self->unk_1a == 0) {
-        func_02049f44(data_02097e4c, 0x600, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x600, &self->pos, 0);
     }
     Ov003Actor_StateAttack(self);
 }
@@ -12,7 +12,7 @@ void Ov012ActVt_0220b280_StateAttack(Ov012ActVt_0220b280 *self) {
 extern char data_ov012_0220b335[];
 extern char data_ov012_0220b33b[];
 extern char data_ov012_0220b341[];
-extern void func_ov000_021911c8(Model0218fe1c *p, s16 a);
+extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *p, s16 a);
 
 
 static inline u16 Ov012_HpPct8294(Ov003Actor *self) {
@@ -25,7 +25,7 @@ void Ov012ActVt_0220b280_StateAttack2(Ov012ActVt_0220b280 *self) {
     VecFx32 t;
     switch (s->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov012_0220b335, 0x400, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov012_0220b335, 0x400, 0);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;
@@ -38,8 +38,8 @@ void Ov012ActVt_0220b280_StateAttack2(Ov012ActVt_0220b280 *self) {
         s->timer++;
         if (s->timer > 0x14) {
             EffectObj *e;
-            func_02049f44(data_02097e4c, 0x29, &self->pos, 0);
-            e = func_02065f88(0x192, &self->pos);
+            SndMgr_PlayAt(data_02097e4c, 0x29, &self->pos, 0);
+            e = Effect_SpawnId(0x192, &self->pos);
             e->AddPosXYZ(0, 0x1333, 0);
             e->SetScaleAll(0x1333);
             e->SetRotXYZ(0, self->moveYaw, 0);
@@ -53,7 +53,7 @@ void Ov012ActVt_0220b280_StateAttack2(Ov012ActVt_0220b280 *self) {
     case 2:
         s->timer++;
         if (s->timer > 0x2d || VEC_Distance(&self->pos, &self->unk_b8) < 0x4800) {
-            func_ov000_02190cb0(self->model, data_ov012_0220b33b, 0x19a, 0);
+            Model0218fe1c_SetAnim(self->model, data_ov012_0220b33b, 0x19a, 0);
             self->unk_94_1 = 1;
             self->unk_ea_0 = 3;
             self->friction = 0xc00;
@@ -68,7 +68,7 @@ void Ov012ActVt_0220b280_StateAttack2(Ov012ActVt_0220b280 *self) {
         Actor_TurnToActor(self, pl, 0x400);
         self->fsm->timer++;
         if (self->fsm->timer == 5 || self->fsm->timer == 0x23) {
-            EffectObj *e = func_02065f88(0x384, &self->pos);
+            EffectObj *e = Effect_SpawnId(0x384, &self->pos);
             e->AddPosXYZ(0, 0x1333, 0);
             e->SetScaleAll(0xe66);
         }
@@ -85,21 +85,21 @@ void Ov012ActVt_0220b280_StateAttack2(Ov012ActVt_0220b280 *self) {
         Actor_Move(self, 0);
         break;
     case 4:
-        if (func_ov000_02191120(self->model)) {
+        if (Model0218fe1c_IsAnimDone(self->model)) {
             self->unk_ea_3 = 0;
             self->unk_ea_0 = self->unk_b0->unk_0a_7;
-            func_ov000_02190cb0(self->model, data_ov012_0220b341, 0x19a, 0);
-            func_ov000_021915a0(self->model);
+            Model0218fe1c_SetAnim(self->model, data_ov012_0220b341, 0x19a, 0);
+            Model0218fe1c_SetLoop(self->model);
             self->speed = 0;
             self->velY = 0;
             self->friction = 0;
             self->gravity = 0;
             if (Ov012_HpPct8294(self) < 0x28 && self->unk_228 == 0) {
                 self->unk_228++;
-                func_ov000_02198360(self->fsm, 0x10, 1);
+                History_SetState(self->fsm, 0x10, 1);
             } else {
-                func_ov000_02190cb0(self->model, data_ov012_0220b335, 0x19a, 0);
-                func_ov000_021911c8(self->model, 0x666);
+                Model0218fe1c_SetAnim(self->model, data_ov012_0220b335, 0x19a, 0);
+                Model0218fe1c_SetAnimSpeed(self->model, 0x666);
                 self->fsm->timer = 0;
                 self->fsm->st++;
             }
@@ -111,15 +111,15 @@ void Ov012ActVt_0220b280_StateAttack2(Ov012ActVt_0220b280 *self) {
         if (s->timer > 0x14) {
             EffectObj *e;
             Rot16 r;
-            func_0204a028(data_02097e4c, 0x54, &self->pos, 3);
-            e = func_02065f88(0x25d, &self->pos);
+            SndMgr_PlayAtPitch(data_02097e4c, 0x54, &self->pos, 3);
+            e = Effect_SpawnId(0x25d, &self->pos);
             e->AddPosXYZ(0, 0x1333, 0);
             e->SetScaleAll(0xb33);
             r.y = self->rot_y + 0x6000;
             r.x = 0x800;
             r.z = 0;
             e->SetRot(&r);
-            e = func_02065f88(0x25d, &self->pos);
+            e = Effect_SpawnId(0x25d, &self->pos);
             e->AddPosXYZ(0, 0x1333, 0);
             e->SetScaleAll(0xb33);
             r.y = self->rot_y - 0x6000;
@@ -134,12 +134,12 @@ void Ov012ActVt_0220b280_StateAttack2(Ov012ActVt_0220b280 *self) {
         s->timer++;
         if (s->timer > 100) {
             self->unk_228 = 0;
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         break;
     }
     self->hit->unk_9a_5 = 1;
-    func_ov000_021987b8(self->hit, 0, 0, 0);
+    Body_Update(self->hit, 0, 0, 0);
     if (self->hit->unk_50 & 0x20000000) {
         self->velY = 0;
     }

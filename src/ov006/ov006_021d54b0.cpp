@@ -56,10 +56,10 @@ extern int data_ov000_021ccd38;
 void ov006_Task_Ctor(ov006_Task *self);
 void func_ov006_021ccddc(ov006_Task *self);
 void ov006_Manager_DispatchMenuCb(int a, int b, int c);
-void func_ov000_02180754(void);
-void func_ov000_02180660(int a, int b);
+void TaskHost_Destroy(void);
+void TaskHost_Create(int a, int b);
 bool func_ov000_021735e8(void);
-void func_ov000_021c2310(void *self);
+void ListRow_Unlink(void *self);
 void func_0204aab0(ov006_Unk02097e48 *a);
 
 ov006_Task0 *func_ov006_021d54b0(ov006_Task0 *self) {
@@ -71,9 +71,9 @@ ov006_Task0 *func_ov006_021d54b0(ov006_Task0 *self) {
 
 static inline void ov006_Task0_Dtor(ov006_Task0 *self) {
     *(void **)self = &data_ov006_021ebc98;
-    func_ov000_02180754();
-    func_02036838(data_02097cdc, data_0208cc94, 7, 0);
-    func_02036838(data_02097cdc, data_ov006_021ec864, 7, 0);
+    TaskHost_Destroy();
+    ResMgr_ReleaseByName(data_02097cdc, data_0208cc94, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_ov006_021ec864, 7, 0);
     func_ov006_021ccddc(self);
 }
 
@@ -106,19 +106,19 @@ BOOL Ov006Vt_021ebc98_Load(void) {
             p->unk8 = 10;
         }
     }
-    func_020359d0(data_0208cc94, 7, 0);
-    func_020359d0(data_ov006_021ec864, 7, 0);
+    ResMgr_Load(data_0208cc94, 7, 0);
+    ResMgr_Load(data_ov006_021ec864, 7, 0);
     return TRUE;
 }
 
 BOOL Ov006Vt_021ebc98_IsLoaded(void) {
-    return ((func_02035b90(data_0208cc94, 7) != 0) & func_02035b90(data_ov006_021ec864, 7)) != 0;
+    return ((ResMgr_IsLoaded(data_0208cc94, 7) != 0) & ResMgr_IsLoaded(data_ov006_021ec864, 7)) != 0;
 }
 
 BOOL Ov006Vt_021ebc98_Setup(ov006_Task0 *self) {
     switch (self->subState) {
     case 0:
-        func_ov000_02180660(0x23, 0);
+        TaskHost_Create(0x23, 0);
         self->subState++;
     case 1:
         if (data_ov000_021ccd40 != NULL) {
@@ -239,7 +239,7 @@ ov006_Emblem *Ov006TaskVt_021ebe40_Dtor(ov006_Emblem *self) {
 
 void *Ov006Vt_021ebc80_DtorDelete(void **self) {
     *self = &data_ov006_021ebc80;
-    func_ov000_021c2310(self);
+    ListRow_Unlink(self);
     Heap_Free(self);
     return self;
 }
@@ -252,13 +252,13 @@ void func_ov006_021d5ac0(void) {
 
 void *Ov006Vt_021ebc80_Dtor(void **self) {
     *self = &data_ov006_021ebc80;
-    func_ov000_021c2310(self);
+    ListRow_Unlink(self);
     return self;
 }
 
 ov006_MsgBox *func_ov006_021d5ae4(ov006_MsgBox *self) {
     self->vtbl = &data_ov006_021ebc70;
-    func_ov000_02163254(self);
+    MsgBox_Release(self);
     return self;
 }
 

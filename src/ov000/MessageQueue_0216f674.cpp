@@ -2,7 +2,7 @@
 
 extern "C" {
 
-Message *func_ov000_0216f674(MessageQueue *self, s32 id) {
+Message *MessageQueue_GetById(MessageQueue *self, s32 id) {
     return MessageQueue_FindById(self, id);
 }
 

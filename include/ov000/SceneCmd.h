@@ -14,14 +14,14 @@
 // handlers (the pointer-to-member callbacks of data_ov000_021cc1a0) take it as `self`.
 
 // The stage script block at SceneCmd 0xac (FieldState::stageFlags): cleared by
-// func_ov000_021819a4, saved/loaded by func_ov000_02181af4/02181c4c and stepped by
+// SceneStage_FreeScripts, saved/loaded by SceneStage_Serialize/02181c4c and stepped by
 // func_ov000_02182590.
 typedef struct SceneStage {
     /* 0x00 */ u8 pending;           // set to ask for a step, cleared by func_ov000_02182590
     /* 0x04 */ SceneRes *res;       // the resource group `group` (func_ov000_02181d70)
     /* 0x08 */ u16 group;           // Lang_GetGroup id, 0xfe for the special group, 0xffff for none
     /* 0x0c */ SceneScript *main;   // func_ov000_02181f54
-    /* 0x10 */ SceneScript *scripts; // func_ov000_02182190 / 02182374
+    /* 0x10 */ SceneScript *scripts; // SceneStage_AddScript / 02182374
     /* 0x14 */ SceneRes *cur;       // the script that is running (func_ov000_02182590)
     /* 0x18 */ u8 unk_18;           // cur is a SceneScript or the main script
 } SceneStage;

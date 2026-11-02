@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov002_021e3b6c(s32 *out, s32 *v, void *m);
+void Ov002_ProjectToScreen(s32 *out, s32 *v, void *m);
 
 static inline void setPos(Obj021efe5c *self, s32 x, s32 y) {
     self->model.x = x << 12;
@@ -36,7 +36,7 @@ void func_ov002_021d7988(Obj021efe5c *self) {
     self->mdl.trans.x = x;
     self->mdl.trans.y = y;
     self->mdl.trans.z = z;
-    if (self->mdl.renderObj != NULL && func_0203e63c(self->mdl.texTask)) {
+    if (self->mdl.renderObj != NULL && Vram_IsTransferDone(self->mdl.texTask)) {
         NNS_G3dGlbSetBaseTrans(&self->mdl.trans);
         NNS_G3dGlbSetBaseScale(&self->mdl.scale);
         MI_Copy36B(&self->mdl.rot, data_020928b4);
@@ -58,7 +58,7 @@ void func_ov002_021d7988(Obj021efe5c *self) {
     }
     MTX_Copy43To44_((MtxFx43 *)data_02092844, (MtxFx44 *)m);
     MTX_Concat44((MtxFx44 *)m, (MtxFx44 *)data_02092800, (MtxFx44 *)m);
-    func_ov002_021e3b6c(out, v, m);
+    Ov002_ProjectToScreen(out, v, m);
     setPos(self, out[0], out[1]);
     Model_PlayPartF(&self->model, 4, 1);
 }

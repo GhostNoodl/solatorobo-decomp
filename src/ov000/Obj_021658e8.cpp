@@ -5,7 +5,7 @@
 
 extern "C" {
 
-void func_ov000_021658e8(Lo021cb6b0 *self) {
+void Lo021cb6b0_FreeSlots(Lo021cb6b0 *self) {
     s32 i;
     if (self->unk_30 == NULL) {
         return;
@@ -32,7 +32,7 @@ void func_ov000_021658e8(Lo021cb6b0 *self) {
         Heap_FreeHi(self->unk_30->parts);
         self->unk_30->parts = NULL;
     }
-    HEAP_DELETE(PlttRes *, self->unk_30->pltt, func_02041278(p); Heap_Free(p));
+    HEAP_DELETE(PlttRes *, self->unk_30->pltt, PlttRes_Release(p); Heap_Free(p));
     if (self->unk_30 != NULL) {
         Heap_FreeHi(self->unk_30);
         self->unk_30 = NULL;

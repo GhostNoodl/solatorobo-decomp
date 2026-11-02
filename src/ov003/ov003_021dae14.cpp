@@ -10,24 +10,24 @@ extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void Heap_Free(void *p);
 
 Ov003Shot *Ov003ActVt_021f7de4_Dtor(Ov003Shot *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 Ov003Shot *Ov003ActVt_021f7de4_DtorDelete(Ov003Shot *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 ActorEx *Ov003ActorEx_Ctor(ActorEx *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 void Ov003Shot_Init(ActorEx *self) {
     VecFx32 v;
-    func_ov000_0219433c(self);
+    ActorEx_InitActor(self);
     v.x = 0;
     v.y = 0;
     v.z = 0x1000;

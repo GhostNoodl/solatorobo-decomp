@@ -38,7 +38,7 @@ extern "C" {
 
 void *NNS_G2dGetAnimSequenceByIdx(void *a, u16 b);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, int d);
+void TexObj_DrawCell(void *a, void *b, void *c, int d);
 
 static inline void *Ov003_Model_GetPart(void *self, int idx) {
     if (idx >= FIELD(self, 0x80, s32)) {
@@ -60,7 +60,7 @@ static inline void Ov003_Model_PlayPart(void *model, u16 idx) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), idx), 0xc, void *));
     }
-    func_02042628(model, anim, part, 1);
+    TexObj_DrawCell(model, anim, part, 1);
 }
 
 static inline void Ov003_Model_PlayPartChk(void *model, u16 idx) {
@@ -77,7 +77,7 @@ static inline void Ov003_Model_PlayPartChk(void *model, u16 idx) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), idx), 0xc, void *));
     }
-    func_02042628(model, anim, part, 1);
+    TexObj_DrawCell(model, anim, part, 1);
 }
 
 void func_ov003_021cd744(Ov003Menu2 *self) {
@@ -195,14 +195,14 @@ extern void *data_02149ef8;
 extern void *data_ov000_021cac60;
 extern void *data_ov000_021cad50;
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
-BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
-s32 func_02049bdc(void *a, s32 b, s32 c);
+BOOL Interp_MoveTo(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
+s32 SndMgr_PlayPan(void *a, s32 b, s32 c);
 void func_02041c18(void *m, u16 c);
 void func_02041c20(void *m, u16 a, u16 b);
 void func_02041c5c(void *m, void *fn);
 void *Heap_Alloc(u32 size);
 void *MsgRes_GetString(void *a, int id);
-void func_ov000_0215c1bc(void *a, int b, const void *c);
+void Obj0215c1bc_SetText(void *a, int b, const void *c);
 void Ov003Oam_Offset(void);
 
 static inline void Ov003Cd_SetSprite(Ov003CdSprite *o, const VecFx32 *p, fx32 s, u16 ang) {
@@ -243,7 +243,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
         self->ofs.y = self->unk5C >= 2 ? -0x30000 : 0x30000;
         self->ofs.z = 0;
         self->timer = 0x3c;
-        func_02049bdc(data_02097e4c, 0x87, 5);
+        SndMgr_PlayPan(data_02097e4c, 0x87, 5);
         self->state++;
     case 1:
         Ov003Cd_SetSprite(self->unk48, &self->pos, 0x99a, 0);
@@ -266,14 +266,14 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
         zero.x = 0;
         zero.y = 0;
         zero.z = 0;
-        if (func_02049244(&self->ofs, 0x19a, &self->ofs, &zero, 0x19a)) {
+        if (Interp_MoveTo(&self->ofs, 0x19a, &self->ofs, &zero, 0x19a)) {
             if (self->unk68 != self->unk69) {
                 self->state = 0x1e;
                 self->timer = 0x28;
             } else {
                 self->state = 0x14;
                 self->timer = 0x14;
-                func_02049bdc(data_02097e4c, 0x26, -2);
+                SndMgr_PlayPan(data_02097e4c, 0x26, -2);
             }
         }
         s = Interp_SinLerp(t, 0x99a, 0x1000);
@@ -336,7 +336,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
             w->vfunc_28();
         }
         self->unk40 = w;
-        func_ov000_0215c1bc(self->unk40, 0x11, MsgRes_GetString(res, 0x5d));
+        Obj0215c1bc_SetText(self->unk40, 0x11, MsgRes_GetString(res, 0x5d));
         self->unk40->flags &= ~0x10000;
         self->unk40->vfunc_08();
         self->unk40->vfunc_70();
@@ -365,7 +365,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
         break;
     case 0x32:
         self->unk3C->flags |= 2;
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         self->vfunc_0c(0);
         self->state++;
     case 0x33:

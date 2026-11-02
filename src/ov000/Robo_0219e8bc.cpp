@@ -31,9 +31,9 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_021984f4(Sub0219e8bc *p, s32 a, s32 b);
+void Obj021984c8_UpdatePos(Sub0219e8bc *p, s32 a, s32 b);
 
-void func_ov000_0219e8bc(Robo0219e8bc *self) {
+void Robo021ca458_UpdateSub44(Robo0219e8bc *self) {
     if (self->unk_b24_1) {
         s32 x = 0;
         s32 y = 0;
@@ -58,7 +58,7 @@ void func_ov000_0219e8bc(Robo0219e8bc *self) {
         self->unk_44->unk_1c = self->unk_64 >> 1;
         self->unk_44->unk_10 = self->unk_68 >> 2;
     }
-    func_ov000_021984f4(self->unk_44, 0, 0);
+    Obj021984c8_UpdatePos(self->unk_44, 0, 0);
 }
 
 }

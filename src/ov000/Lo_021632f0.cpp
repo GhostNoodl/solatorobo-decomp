@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov000_021632f0(MsgBox *self, s32 msgId, char *arcName, char *name, u8 a4) {
+void MsgBox_Open(MsgBox *self, s32 msgId, char *arcName, char *name, u8 a4) {
     HEAP_DELETE(SlideWin *, self->win, p->unk_vf04());
     HEAP_DELETE(MsgRes *, self->res, p->DeletingDtor());
     self->msgId = msgId;

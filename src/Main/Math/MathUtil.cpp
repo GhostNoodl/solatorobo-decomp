@@ -34,7 +34,7 @@ u32 Rand_Get(void) {
     return Rand_Next(&data_02097de8, 0);
 }
 
-u32 func_0204045c(void) {
+u32 Rand_GetGlobal(void) {
     return Rand_Next(&data_02097de8, 0);
 }
 
@@ -79,7 +79,7 @@ void Math_DirToAngles(u16 *ang, VecFx32 *v) {
     ang[2] = 0;
 }
 
-int func_0204061c(int *out, const VecFx32 *pos) {
+int Math_ProjectToScreen(int *out, const VecFx32 *pos) {
     VecFx32 p;
     MtxFx43 mtx;
     int z;
@@ -252,7 +252,7 @@ void func_02040a98(void *a, void *b) {
     func_0200779c(a, data_0208b3cc, b);
 }
 
-char *func_02040ab0(char *str, int ch) {
+char *Str_FindCharMb(char *str, int ch) {
     int len = STD_GetStringLength(str);
     int i;
     for (i = 0; i < len; i++) {

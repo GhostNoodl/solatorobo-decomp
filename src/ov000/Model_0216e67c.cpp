@@ -21,30 +21,30 @@ void func_ov000_0216e67c(LoTimer *self) {
     if (self->built == 1) {
         return;
     }
-    res = func_02034d88(func_02035d5c(data_0214b105), data_0208cb7c);
+    res = ResList_FindType2(ResMgr_GetArcList(data_0214b105), data_0208cb7c);
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {
         const char *n = data_0208cb7c;
-        func_02041218(&m->pltt);
-        func_02041440(m, n, 0);
+        PlttRes_Init_02041218(&m->pltt);
+        TexObj_Init(m, n, 0);
     }
     self->unk_10 = m;
-    func_020417e0(m, res);
+    TexObj_SetRes(m, res);
     self->unk_10->flags |= 2;
     self->unk_10->unk_150 = -0x2000;
-    func_02041d9c(self->unk_10, 0, 0xc);
-    func_02041d9c(self->unk_10, 0, 0xf);
+    TexObj_SelectImage(self->unk_10, 0, 0xc);
+    TexObj_SelectImage(self->unk_10, 0, 0xf);
     self->unk_10->flags |= 0x80000;
     MODEL_FLAGS(self->unk_10)->alpha = 0x1e;
-    res2 = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+    res2 = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
     m2 = (Model *)Heap_Alloc(sizeof(Model));
     if (m2) {
         const char *n = data_0208cc88;
-        func_02041218(&m2->pltt);
-        func_02041440(m2, n, 0);
+        PlttRes_Init_02041218(&m2->pltt);
+        TexObj_Init(m2, n, 0);
     }
     self->unk_14 = m2;
-    func_020417e0(m2, res2);
+    TexObj_SetRes(m2, res2);
     self->unk_14->flags |= 2;
     self->unk_14->unk_150 = -0x2000;
     {
@@ -53,11 +53,11 @@ void func_ov000_0216e67c(LoTimer *self) {
         q->unk_148 = 0x800;
         q->unk_14c = 0x800;
     }
-    func_02041d9c(self->unk_14, 0, 0x1e);
+    TexObj_SelectImage(self->unk_14, 0, 0x1e);
     func_02041c34(self->unk_14, 0x1e, (void *)func_ov000_0216d5b0, self);
-    func_02041d9c(self->unk_14, 0, 0x1f);
+    TexObj_SelectImage(self->unk_14, 0, 0x1f);
     func_02041c34(self->unk_14, 0x1f, (void *)func_ov000_0216d5b0, self);
-    func_02041d9c(self->unk_14, 0, 0x20);
+    TexObj_SelectImage(self->unk_14, 0, 0x20);
     self->unk_14->flags |= 0x80000;
     MODEL_FLAGS(self->unk_14)->alpha = 0x1e;
     self->b17 = 1;

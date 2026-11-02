@@ -5,8 +5,8 @@ namespace Dup { extern "C" Ov015Stat data_ov015_0221332c; }
 extern "C" {
 
 void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b);
-void func_ov015_0220a058(Ov015Fish *b, Ov015Vec *out);
-void func_ov015_021fd00c(Ov015CamPair *self, s32 mode, const Ov015Vec *v);
+void Ov015Fish_GetFrontPos(Ov015Fish *b, Ov015Vec *out);
+void Ov015CamPair_SetMode(Ov015CamPair *self, s32 mode, const Ov015Vec *v);
 void func_ov015_02207c30(Ov015Ship *p);
 BOOL func_ov015_02209790(Ov015Fish *self, s32 a);
 
@@ -48,20 +48,20 @@ BOOL func_ov015_022003ec(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
         }
     }
     if (g->unk_28 == 3) {
-        func_ov015_021fd00c(c, 3, &b->pos);
+        Ov015CamPair_SetMode(c, 3, &b->pos);
     } else if (g->unk_08 == 3) {
-        func_ov015_0220a058(b, &v);
+        Ov015Fish_GetFrontPos(b, &v);
         {
             s32 y = v.y;
             if (y < 0) y = 0;
             v.y = y;
         }
-        func_ov015_021fd00c(c, 2, &v);
+        Ov015CamPair_SetMode(c, 2, &v);
     } else if (g->unk_08 == 4) {
-        func_ov015_0220a058(b, &w);
-        func_ov015_021fd00c(c, 4, &w);
+        Ov015Fish_GetFrontPos(b, &w);
+        Ov015CamPair_SetMode(c, 4, &w);
     } else {
-        func_ov015_021fd00c(c, 0, &b->pos);
+        Ov015CamPair_SetMode(c, 0, &b->pos);
     }
     {
         Ov015Vec t(*(Ov015Vec *)&b->pos);
@@ -117,9 +117,9 @@ void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b) {
         self->unk_10 = -0x3c;
     }
     if (self->unk_10 == 6) {
-        func_02049a48(data_02097e4c, 0, 0x7f, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0, 0x7f, -1, -1);
         // m[3] as a byte offset from the matrix: a field path folds to one constant and changes the code.
-        func_02065f88(0x6d, &FLD(Ov015Vec, &a->nodeMtx, 0x24))->SetScaleXYZ(0x800, 0x800, 0x800);
+        Effect_SpawnId(0x6d, &FLD(Ov015Vec, &a->nodeMtx, 0x24))->SetScaleXYZ(0x800, 0x800, 0x800);
     }
     g->unk_1c = self->unk_10 > 0;
     g->unk_1d = self->unk_10 == 6;
@@ -215,7 +215,7 @@ void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b) {
         g->unk_00 = nv;
         g->unk_04 = nv - cur;
         if (nv >= 0x2bc000 && (self->unk_0c >> 12) % 60 == 0) {
-            func_02049a48(data_02097e4c, 0x37, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x37, -1, -1, -1);
         }
     }
     g->unk_2c = self->unk_0c >> 12;

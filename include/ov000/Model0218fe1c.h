@@ -4,9 +4,9 @@
 #include "types.h"
 #include "nitro/fx.h"
 
-// Animated 3D model object built by func_ov000_0218fe1c (ctor) / func_ov000_0218fee4 (dtor), with its
-// animation controllers (func_ov000_02190a30 ...) and the animation event interpreter
-// (func_ov000_02191f18). Shared by Model_0218fe1c, Model_02190a30, Model_0219badc, Robo_0219c8e0
+// Animated 3D model object built by Model0218fe1c_Init (ctor) / Model0218fe1c_FreeAnims (dtor), with its
+// animation controllers (Model0218fe1c_GetAnimCtrl ...) and the animation event interpreter
+// (AnimEvent_Exec). Shared by Model_0218fe1c, Model_02190a30, Model_0219badc, Robo_0219c8e0
 // and AnimEvent_02191f18.
 
 typedef struct {
@@ -140,7 +140,7 @@ typedef struct {
     s16 *evData; // the inline scripts after evTable's entries
     s16 *evScript; // script of the current animation (looked up by name in evTable)
     s16 *evCursor; // next event in evScript (frame number, then the command)
-    void *evFunc; // AnimEventFunc that runs one event (func_ov000_02191f18)
+    void *evFunc; // AnimEventFunc that runs one event (AnimEvent_Exec)
     u32 unk_e4;
 } Model0218fe1c;
 

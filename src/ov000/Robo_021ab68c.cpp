@@ -25,16 +25,16 @@ extern void *data_02097e4c;
 extern char data_ov000_021cc6ba[];
 extern char data_ov000_021cc5e3[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-BOOL func_ov000_02191508(void *a);
-void *func_ov000_02191318(void *a, s32 b);
+BOOL Model0218fe1c_IsAnimDelayed(void *a);
+void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
 void func_ov000_0218999c(s32 a, s32 b);
-void *func_02049f44(void *a, s32 b, void *c, s32 d);
+void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 u16 FX_Atan2(s32 a, s32 b);
-BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
-void func_ov000_0218d46c(Actor *o, u16 id, s32 m);
+BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
+void Actor_SendMsgU8(Actor *o, u16 id, s32 m);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
-BOOL func_ov000_02198360(void *s, s32 a, s32 b);
+BOOL History_SetState(void *s, s32 a, s32 b);
 
 static inline Actor *FindActor021ab68c(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;
@@ -75,7 +75,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
     st = self->fsm;
     switch (st->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov000_021cc6ba, 0x555, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov000_021cc6ba, 0x555, 0);
         self->fsm->st++;
         return;
     case 1:
@@ -115,23 +115,23 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
         } else if (lvl < 5 && self->unk_b2b >= 4) {
             self->unk_b2b = 0;
             if (!(lvl & 1)) {
-                func_ov000_02191318(self->model, 0xa000);
+                Model0218fe1c_SetAnimFrame(self->model, 0xa000);
             }
             hit = FALSE;
         }
         func_ov000_0218999c(0x14, 0x28);
-        func_02049f44(data_02097e4c, 0x52, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x52, &self->pos, 0);
         if (!hit) {
             VecFx32 p;
             EffectObj *o;
             p = sub->dest;
             p.y = self->pos.y;
-            o = func_02065f88(0x67, &p);
+            o = Effect_SpawnId(0x67, &p);
             o->SetScaleAll(0x1800);
             o->SetRotXYZ(0, AngleTo021ab68c(a, (Actor *)self), 0);
         }
         lvl2 = self->unk_b2c_7 * 2;
-        func_ov000_0219aae8(a, self, lvl2 * 3, 0x31, 0x30, NULL, 0, a->radius + 0x2333, 0, 0x64, 0x1000);
+        Hit_ApplyInArea(a, self, lvl2 * 3, 0x31, 0x30, NULL, 0, a->radius + 0x2333, 0, 0x64, 0x1000);
         if (!hit) {
             Hit021ab68c msg;
             msg.val = lvl2;
@@ -143,7 +143,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
             goto again;
         }
         if (hit) {
-            func_ov000_0218d46c(a, self->id, 0xb);
+            Actor_SendMsgU8(a, self->id, 0xb);
             a->rot_y = AngleTo021ab68c((Actor *)self, a);
             sub->unk_50 = 0x19a;
             sub->unk_54 = -0x1000;
@@ -187,10 +187,10 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
         return;
     }
     case 0x14:
-        if (func_ov000_02191508(self->model)) {
+        if (Model0218fe1c_IsAnimDelayed(self->model)) {
             return;
         }
-        func_ov000_02190cb0(self->model, data_ov000_021cc5e3, 0x89, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov000_021cc5e3, 0x89, 0);
         self->fsm->timer = 0;
         self->fsm->st++;
         return;
@@ -200,7 +200,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
             return;
         }
         self->unk_b2c_2 = 0;
-        func_ov000_02198360(self->fsm, 1, 0);
+        History_SetState(self->fsm, 1, 0);
         return;
     }
 }

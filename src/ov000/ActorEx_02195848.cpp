@@ -8,15 +8,15 @@
 extern "C" {
 extern void *data_ov000_021ccd64;
 extern u8 data_ov000_021cc456[];
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
+BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
 void *Ov003_FindPlayerInRange(void *a, s32 r, s32 h);
 void Target_Set(void *body, void *p);
-BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+BOOL History_SetState(void *p, s32 a, s32 b);
 void func_ov000_0218bed8(void *a, s32 b, void *c);
 void HitSphere_Link(void *p);
-void func_0203f364(void *p);
-void func_ov000_021987b8(void *p, s32 a, s32 b, s32 c);
+void HitSphere_Unlink_0203f364(void *p);
+void Body_Update(void *p, s32 a, s32 b, s32 c);
 void HitMesh_SetMtx(void *p, MtxFx43 *m);
 
 static inline BOOL PlayerIdle02195848(void) {
@@ -59,7 +59,7 @@ static inline void RotZYX02195848(MtxFx43 *m, MtxFx43 *tp, u16 rx, u16 ry, u16 r
     }
 }
 
-void func_ov000_02195848(VObj *obj) {
+void ActorEx_StateIdle(VObj *obj) {
     ActorEx *self = (ActorEx *)obj;
     MtxFx43 t;
     MtxFx43 m;
@@ -72,8 +72,8 @@ void func_ov000_02195848(VObj *obj) {
     switch (self->fsm->st) {
     case 0:
         if ((void *)self->model != NULL) {
-            func_ov000_02190cb0(((u8 *)self->model), data_ov000_021cc456, 0x1000, 0);
-            func_ov000_021915a0(((u8 *)self->model));
+            Model0218fe1c_SetAnim(((u8 *)self->model), data_ov000_021cc456, 0x1000, 0);
+            Model0218fe1c_SetLoop(((u8 *)self->model));
         }
         self->fsm->st++;
         self->speed = 0;
@@ -87,7 +87,7 @@ void func_ov000_02195848(VObj *obj) {
             void *r = Ov003_FindPlayerInRange((u8 *)self + 0x70, self->radius, self->height);
             if (r != NULL) {
                 Target_Set(((u8 *)self->targetObj), r);
-                func_ov000_02198360(((u8 *)self->fsm), 0xd, 0);
+                History_SetState(((u8 *)self->fsm), 0xd, 0);
                 break;
             }
         }
@@ -117,7 +117,7 @@ void func_ov000_02195848(VObj *obj) {
             h->unk_9a_0 = 1;
             h->unk_9a |= 8;
             HitSphere_Link(h);
-            func_ov000_021987b8(self->hit, 0, 0, 0);
+            Body_Update(self->hit, 0, 0, 0);
         }
         break;
     }
@@ -148,7 +148,7 @@ void func_ov000_02195848(VObj *obj) {
         }
         if (self->hitMesh != NULL && self->unk_cc_0 && k != 1) {
             h->unk_9a_3 = 0;
-            func_0203f364(h);
+            HitSphere_Unlink_0203f364(h);
         }
     }
     if (!self->unk_cc_1) {
@@ -159,7 +159,7 @@ void func_ov000_02195848(VObj *obj) {
     self->hit->unk_9a |= 0x20;
     if (!(self->hit->unk_50 & 0x20000000)) {
         if (PlayerIdle02195848()) {
-            func_ov000_02198360(((u8 *)self->fsm), 4, 0);
+            History_SetState(((u8 *)self->fsm), 4, 0);
         }
         return;
     }

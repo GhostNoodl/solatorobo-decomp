@@ -19,8 +19,8 @@ void func_ov002_021d36b8(Task021ef91c *self, s32 n) {
             void *p = self->unk_c4;
             if (p != NULL) {
                 if (p != NULL) {
-                    func_02041558((Model *)p);
-                    func_02041278((PlttRes *)((u8 *)p + 0x88));
+                    TexObj_Release((Model *)p);
+                    PlttRes_Release((PlttRes *)((u8 *)p + 0x88));
                     Heap_Free(p);
                 }
                 self->unk_c4 = NULL;

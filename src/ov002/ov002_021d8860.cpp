@@ -3,7 +3,7 @@
 extern "C" {
 
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
-void func_ov002_021e398c(void *m, u8 dir);
+void Ov002_QuarterRotMtx33(void *m, u8 dir);
 void *func_ov002_021e3874(s32 *pos, u8 type, u8 a);
 
 typedef struct {
@@ -24,7 +24,7 @@ void func_ov002_021d8860(Obj021efe9c *self) {
     if (t < 0x78) {
         self->unk_9c = FX_MUL(FX_SINCOS((((t * 0x444) % 0x7fff) >> 4) * 2), 0xb5c) + 0x429;
         if (t % 30 == 0) {
-            func_02049a48(data_02097e4c, 0x44, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x44, -1, -1, -1);
         }
     } else if (t == 0x78) {
         s32 org[2];
@@ -32,13 +32,13 @@ void func_ov002_021d8860(Obj021efe9c *self) {
         s32 out[3];
         u8 m[0x24];
         s32 v[3];
-        func_02049a48(data_02097e4c, 0x5c, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x5c, -1, -1, -1);
         pos[0] = self->unk_54;
         pos[1] = self->unk_58;
         org[0] = self->unk_64;
         org[1] = self->unk_68;
-        func_ov002_021e3b0c(out, pos, org);
-        func_ov002_021e398c(m, self->shape.rot);
+        Ov002_CellToPos(out, pos, org);
+        Ov002_QuarterRotMtx33(m, self->shape.rot);
         v[0] = FX_MUL((FIELD(self, 0x50, Bits50).x - FIELD(self, 0x52, Bits52).x * 2) << 11, 0x28f) - 0x147;
         v[1] = 0;
         v[2] = FX_MUL((FIELD(self, 0x50, Bits50).z - FIELD(self, 0x52, Bits52).z * 2) << 11, 0x28f) - 0x147;
@@ -48,7 +48,7 @@ void func_ov002_021d8860(Obj021efe9c *self) {
         out[2] += v[2];
         func_ov002_021e3874(out, self->unk_4a, self->shape.w);
         {
-            void *p = func_02065f88(0x6d, (VecFx32 *)out); // out is s32[3]
+            void *p = Effect_SpawnId(0x6d, (VecFx32 *)out); // out is s32[3]
             if (p != NULL) {
                 FIELD(p, 0x3c, s32) = 0x800;
             }

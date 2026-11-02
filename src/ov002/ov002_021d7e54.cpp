@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021d7e54(Obj021efe9c *self) {
+void Obj021efe9c_Init(Obj021efe9c *self) {
     self->unk_78 = NULL;
     self->unk_7c = NULL;
     self->unk_80 = NULL;
@@ -29,7 +29,7 @@ void func_ov002_021d7e54(Obj021efe9c *self) {
     self->unk_d0 = 0;
 }
 
-void func_ov002_021d7ed8(Obj021efe9c *self) {
+void Obj021efe9c_Release(Obj021efe9c *self) {
     void *saved;
     HEAP_PUSH(saved);
     if (self->unk_80 != NULL) {
@@ -55,7 +55,7 @@ void func_ov002_021d7ed8(Obj021efe9c *self) {
         self->unk_90 = NULL;
     }
     HEAP_POP(saved);
-    func_0203f0b4(*FIELD(self, 0x78, void **));
+    Vram_FreeRes(*FIELD(self, 0x78, void **));
 }
 
 void func_ov002_021d7fb8(Obj021efe9c *self) {

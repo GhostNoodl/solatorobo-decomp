@@ -13,8 +13,8 @@ extern void *func_02034818(u32 size);
 extern void func_02034824(void *ptr);
 extern BOOL func_02034830(MoStream *stream, void *file);
 extern BOOL func_02033858(MoPlayer *player, MoStream *stream, u32 flags);
-extern void *func_02043e1c(u32 size);
-extern void func_02043e2c(void *ptr);
+extern void *Gfx3D_AllocHi(u32 size);
+extern void Gfx3D_FreeHi(void *ptr);
 
 
 BOOL func_02033550(MoPlayer *player, MoStream *stream, u32 flags) {
@@ -157,11 +157,11 @@ BOOL func_020337d8(MoPlayer *player, void *out) {
 }
 
 void *func_020337fc(u32 size) {
-    return func_02043e1c(size);
+    return Gfx3D_AllocHi(size);
 }
 
 void func_02033808(void *ptr) {
-    func_02043e2c(ptr);
+    Gfx3D_FreeHi(ptr);
 }
 
 MoPlayer *func_02033814(MoPlayer *player) {

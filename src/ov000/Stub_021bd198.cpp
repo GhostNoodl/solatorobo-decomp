@@ -5,9 +5,9 @@
 
 extern "C" {
 
-void *func_ov000_0218ea20(void *p);
+void *ResSet_ReleaseAll(void *p);
 
-void func_ov000_021bd198(ActorMarker *self) {
+void ActorMarker_Init(ActorMarker *self) {
     s32 i;
     self->flags = 0;
     self->res = NULL;
@@ -31,13 +31,13 @@ void func_ov000_021bd198(ActorMarker *self) {
     self->work.state = 4;
 }
 
-void func_ov000_021bd228(ActorMarker *self) {
+void ActorMarker_Release(ActorMarker *self) {
     s32 i;
     self->work.state = 5;
     if (self->update != NULL) {
         self->update(self);
     }
-    HEAP_DELETE_FN(self->res, func_ov000_0218ea20);
+    HEAP_DELETE_FN(self->res, ResSet_ReleaseAll);
     for (i = 4; i < 8; i++) {
         void *saved = data_02097dd0->cur;
         void *p;
@@ -51,7 +51,7 @@ void func_ov000_021bd228(ActorMarker *self) {
         }
         data_02097dd0->cur = saved;
     }
-    func_ov000_021bd198(self);
+    ActorMarker_Init(self);
 }
 
 }

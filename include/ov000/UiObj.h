@@ -91,7 +91,7 @@ struct UiObj : public VObj {
     VObj *child;        // 0x74 ticked and drawn with the window, freed when its slot 0x1c returns FALSE
     UiStateFn onState;  // 0x78 called on each open/close state change
     UiDrawFn onDraw;    // 0x7c draw filter (UiObj_Draw)
-    UiDrawItemFn onDrawItem; // 0x80 called by slot 0x48 (func_ov000_02151ee4; Ov008Menu sets it)
+    UiDrawItemFn onDrawItem; // 0x80 called by slot 0x48 (UiObj_DrawItem; Ov008Menu sets it)
 };
 
 // List entry (0x30 bytes, UiList_AddItem).
@@ -105,7 +105,7 @@ struct UiListItem {
     u32 unk_10;
     u32 unk_14;
     u32 unk_18;
-    VObj *label;        // 0x1c TextWin of the name (func_ov000_02153c48)
+    VObj *label;        // 0x1c TextWin of the name (Obj02153c48_CreateText)
     VObj *unk_20;
     u32 unk_24;
     UiListItem *prev;   // 0x28
@@ -136,15 +136,15 @@ struct UiPanel {
 };
 
 // A text label in a frame (0x2c bytes): reset by func_ov000_0215f514, released by
-// func_ov000_0215f548, built by func_ov000_0215f0ec (the frame model and the text window) and
-// drawn by func_ov000_0215f334, which centres the text in width x height.
+// UiLabel_Release, built by UiLabel_SetText (the frame model and the text window) and
+// drawn by UiLabel_Draw, which centres the text in width x height.
 struct UiLabel {
     union {
         u32 flags;
         struct {
-            u32 centered : 1; // x is the centre (func_ov000_0215f334)
+            u32 centered : 1; // x is the centre (UiLabel_Draw)
             u32 b1 : 3;
-            u32 altFrame : 1; // the frame comes from the second archive (func_ov000_0215f0ec)
+            u32 altFrame : 1; // the frame comes from the second archive (UiLabel_SetText)
             u32 rest : 27;
         } bits;
     };
@@ -206,8 +206,8 @@ struct UiList : public UiObj {
 // List subclass (vtable data_ov000_021cb4a8, 0xe0 bytes); data_ov000_021cb2a8 (0xe0), data_ov000_021caac8
 // (0xe4) and data_ov000_021cb3a8 (0xf0) derive from it.
 struct UiList021cb4a8 : public UiList {
-    UiLabel *unk_d4;    // func_ov000_02157c90
-    UiLabel *unk_d8;    // func_ov000_02157d2c
+    UiLabel *unk_d4;    // UiList021cb4a8_SetLabel
+    UiLabel *unk_d8;    // UiList021cb4a8_SetCenteredLabel
     u8 unk_dc;          // func_ov000_021520a4: row height - 0x12
     u8 unk_dd[0x3];
 };
@@ -238,10 +238,10 @@ static inline void UiLabel_Reset(UiLabel *self) {
 }
 
 extern "C" {
-void func_ov000_0215f0ec(UiLabel *self, u32 text);
-void func_ov000_0215f334(UiLabel *self);
+void UiLabel_SetText(UiLabel *self, u32 text);
+void UiLabel_Draw(UiLabel *self);
 void func_ov000_0215f514(UiLabel *self);
-void func_ov000_0215f548(UiLabel *self);
+void UiLabel_Release(UiLabel *self);
 void func_ov000_0215f618(UiLabel *self, s32 *pos);
 }
 

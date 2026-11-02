@@ -26,10 +26,10 @@ extern "C" {
 
 // The TU's .bss. Every function here reaches these through the 0x021ccd34 pool literal plus an
 // offset; other TUs name 021ccd34, 021ccd38, 021ccd40 and 021ccd44 directly. The first function
-// (func_ov000_02172f7c) already reads 021ccd34/3c/40/44 through the pool, so those are defined
+// (Task_Exit) already reads 021ccd34/3c/40/44 through the pool, so those are defined
 // before it, together with 021ccd35 and 021ccd38, which lie between them. Objects defined before
 // a TU's first function are not laid out in definition order; this order gives the ROM layout.
-// The shop script and its factory (021ccd48, 021ccd4c) are defined after func_ov000_02172f7c.
+// The shop script and its factory (021ccd48, 021ccd4c) are defined after Task_Exit.
 s32 data_ov000_021ccd38;         // id of the last task that finished
 u8 data_ov000_021ccd34;          // a task switch is pending
 void *data_ov000_021ccd3c;       // task list, sorted by priority (linked through +0x38)
@@ -112,7 +112,7 @@ static inline TaskHost *GetCur02172f7c(void) {
     return data_ov000_021ccd44;
 }
 
-void func_ov000_02172f7c(Task *self, void *arg) {
+void Task_Exit(Task *self, void *arg) {
     BOOL fl = FALSE;
     if (self->unk_04_7 == 1) {
         fl = TRUE;
@@ -234,7 +234,7 @@ static inline void LoMessageQueueDtor(MessageQueue *self) {
     self->writeIndex = 0;
 }
 
-void func_ov000_021731a0(Task *self) {
+void Task_Init(Task *self) {
     self->unk_04 = 0;
     self->state = 0;
     self->param = 0;
@@ -260,7 +260,7 @@ namespace m_Stub_021731e4 {
 
 extern "C" {
 
-s32 func_ov000_021731e4(VObj *self) {
+s32 Task_Release(VObj *self) {
     return self->vfunc_58();
 }
 
@@ -345,7 +345,7 @@ static inline void LoMessageQueueDtor(MessageQueue *self) {
     self->writeIndex = 0;
 }
 
-void func_ov000_021731f8(void *self, s32 kind) {
+void Task_SwitchTo(void *self, s32 kind) {
     LoSwitchTask(kind);
 }
 
@@ -388,7 +388,7 @@ static inline BOOL Fade_CanShow(Task *self) {
     return r;
 }
 
-void func_ov000_021732a8(Task *self) {
+void Task_Update(Task *self) {
     self->vfunc_6c();
     switch (self->state) {
     case 0:
@@ -459,10 +459,10 @@ extern "C" {
 
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
-void func_ov000_02173528(void) {
+void Task_PreUpdate(void) {
 }
 
-BOOL func_ov000_0217352c(Task *self) {
+BOOL Task_TryReleaseCurrent(Task *self) {
     if (self->vfunc_54()) {
         if (data_ov000_021ccd40 != NULL) {
             data_ov000_021ccd38 = ((Task *)data_ov000_021ccd40)->id;
@@ -474,15 +474,15 @@ BOOL func_ov000_0217352c(Task *self) {
     return TRUE;
 }
 
-void func_ov000_02173574(void) {
+void Task_UpdateActive(void) {
 }
 
-void func_ov000_02173578(void) {
+void Task_PostUpdate(void) {
 }
 
-void func_ov000_0217357c(Task *self) {
+void Task_Draw(Task *self) {
     VecFx32 scale;
-    func_02043d20(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
     scale.x = 0x1000;
     scale.y = 0x1000;
     scale.z = 0x1000;
@@ -527,7 +527,7 @@ Task *Task_FindById(s32 id) {
     return NULL;
 }
 
-void func_ov000_02173648(Task *task) {
+void TaskList_Insert(Task *task) {
     Task *cur = (Task *)data_ov000_021ccd3c;
     Task *prev;
     if (cur == NULL) {
@@ -640,7 +640,7 @@ void Task021cbce0_Load(void *a) {
     func_ov000_0214c1ac();
 }
 
-BOOL func_ov000_02173898(void) {
+BOOL Task021cbce0_IsReady(void) {
     Task *task = data_ov000_021ccd30->unk_11c->unk_54;
     BOOL ret = TRUE;
     if (task != NULL && !(*(s32 *)((u8 *)task + 4) == 4 ? TRUE : FALSE)) {
@@ -662,19 +662,19 @@ extern "C" {
 extern void *data_0208cca0;
 extern void *data_0208ccc0;
 void *Heap_Alloc(u32 size);
-void func_02041440(void *p, void *name, s32 c);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
+void TexObj_Init(void *p, void *name, s32 c);
+void *ResMgr_GetArcList(void *a);
+void *ResList_FindType2(void *a, void *b);
+void TexObj_SetRes(void *model, void *a);
+void TexObj_SelectImage(void *model, s32 a, s32 b);
 void func_02041c20(void *model, s32 a, void *b);
 void *STD_CopyString(void *dst, void *src);
 void func_ov000_02173d9c(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);
-void func_ov000_02173648(VObj *self);
+void TaskList_Insert(VObj *self);
 
 static inline void Init(u8 *m, void *s, void *nm) {
-    func_02041218((struct PlttRes *)(m + 0x88));
-    func_02041440(m, nm, 0);
+    PlttRes_Init_02041218((struct PlttRes *)(m + 0x88));
+    TexObj_Init(m, nm, 0);
     STD_CopyString(m + 0x2c, s);
 }
 
@@ -685,19 +685,19 @@ void Task021cbce0_Start(Task021cbce0 *self) {
     if (self->vfunc_28() != 0) {
         return;
     }
-    res = func_02034d88(func_02035d5c(data_0208cca0), data_0208ccc0);
+    res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208ccc0);
     m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         Init(m, data_0208cca0, data_0208ccc0);
     }
     self->unk_4c = (Model *)m;
-    func_020417e0(m, res);
+    TexObj_SetRes(m, res);
     self->unk_4c->flags |= 2;
-    func_02041d9c(self->unk_4c, 0, 0);
+    TexObj_SelectImage(self->unk_4c, 0, 0);
     self->unk_4c->unk_158 = (void *)func_ov000_02173d9c;
     func_02041c20(self->unk_4c, 0, self);
     self->unk_3c = -0xcd;
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 }
@@ -730,8 +730,8 @@ void Task021cbce0_Release(Task021cbce0 *self) {
     model = self->unk_4c;
     if (model != NULL) {
         if (model != NULL) {
-            func_02041558(model);
-            func_02041278(&model->pltt);
+            TexObj_Release(model);
+            PlttRes_Release(&model->pltt);
             Heap_Free(model);
         }
         self->unk_4c = NULL;
@@ -758,10 +758,10 @@ extern "C" {
 extern Task *(*const data_ov000_021c9c6c[])(void);
 extern void *data_02097e4c;
 extern Player02173a5c *data_ov000_021ccd54;
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 void SndMgr_PauseAll(void *a);
 void SndMgr_ResumeAll(void *a);
-void func_02043b20(void *p);
+void Gfx3DState_Apply(void *p);
 
 static inline Task *TaskList_Find(s32 id) {
     Task *task;
@@ -792,17 +792,17 @@ static inline void TaskList_Start(s32 id, s32 arg) {
     }
 }
 
-void func_ov000_02173a5c(Task021cbce0 *self) {
+void Task021cbce0_PreUpdate(Task021cbce0 *self) {
     switch (self->state) {
     case 8:
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         SndMgr_PauseAll(data_02097e4c);
         break;
     case 10:
         self->unk_3c = -0xcd;
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         SndMgr_ResumeAll(data_02097e4c);
-        func_02043b20(data_02097d48->unk_8b0);
+        Gfx3DState_Apply(data_02097d48->unk_8b0);
         data_ov000_021ccd54->b2 = 0;
         break;
     case 12:
@@ -823,7 +823,7 @@ namespace m_Obj_02173bec {
 
 extern "C" {
 
-void func_ov000_02173bec(Task021cbce0 *self) {
+void Task021cbce0_PostUpdate(Task021cbce0 *self) {
     if (self->state != 0xd) {
         return;
     }
@@ -849,7 +849,7 @@ namespace m_Obj_02173c30 {
 
 extern "C" {
 extern const s16 FX_SinCosTable_[];
-void func_02043d20(void *obj, int a);
+void Gfx3D_SendDL(void *obj, int a);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
 static inline void G3_Vec(int cmd, int x, int y, int z) {
@@ -877,7 +877,7 @@ void Task021cbce0_Draw(Task021cbce0 *self) {
     if (FindTask(0x1a) != NULL) {
         return;
     }
-    func_02043d20(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
     G3_Vec(0x1b, 0x1000, 0x1000, 0x1000);
     self->fadeSin = FX_SinCosTable_[((s32)(self->fadeRatio << 14) >> 16) * 2];
     {
@@ -924,7 +924,7 @@ typedef struct {
 extern "C" {
 
 extern u32 data_ov000_021c9c08[];
-void func_02043064(const Oam02173d9c *attr, u32 *w, u32 *h);
+void Oam_GetSize(const Oam02173d9c *attr, u32 *w, u32 *h);
 void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 num);
 
 #define REG_TEXIMAGE_PARAM (*(vu32 *)0x40004a8)
@@ -967,7 +967,7 @@ void func_ov000_02173d9c(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const Oam02
     c = *(const Ctx02173d9c *const *)&ctx;
     charName = (u16)oam->charName;
     shift = ((s32)(img->mappingType & 0x700000) >> 20) + 5;
-    func_02043064(oam, &w, &h);
+    Oam_GetSize(oam, &w, &h);
     REG_TEXIMAGE_PARAM = ((charBase + (charName << shift)) >> 3) | (img->fmt << 26) | 0x40000000 | (w << 20) |
                          (h << 23) | 0x30000 | (img->plttUse << 29);
     fmt = data_ov000_021c9c08[(*(u32 *)oam << 18) >> 31];
@@ -1017,10 +1017,10 @@ extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbbe0[];
 extern u8 data_0208ba70[];
 extern const s16 FX_SinCosTable_[];
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 void func_0203cc58(s32 a, s32 b, s32 c);
 s32 FX_Div(s32 a, s32 b);
-void func_02043d20(void *a, s32 b);
+void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 void func_ov000_0217558c(void *self);
 
@@ -1031,17 +1031,17 @@ VObj *Task021cbbe0_New(void) {
         obj->vfunc_58();
         VOBJ_SET_VTABLE(obj, data_ov000_021cbbe0);
         VOBJ_SET_VTABLE((u8 *)obj + 0x60, data_0208ba70);
-        func_0204c7d0((u8 *)obj + 0x60);
+        TextWin_Init((u8 *)obj + 0x60);
         VOBJ_SET_VTABLE((u8 *)obj + 0x118, data_0208ba70);
-        func_0204c7d0((u8 *)obj + 0x118);
+        TextWin_Init((u8 *)obj + 0x118);
         VOBJ_SET_VTABLE((u8 *)obj + 0x1d0, data_0208ba70);
-        func_0204c7d0((u8 *)obj + 0x1d0);
+        TextWin_Init((u8 *)obj + 0x1d0);
         VOBJ_SET_VTABLE((u8 *)obj + 0x288, data_0208ba70);
-        func_0204c7d0((u8 *)obj + 0x288);
+        TextWin_Init((u8 *)obj + 0x288);
         VOBJ_SET_VTABLE((u8 *)obj + 0x340, data_0208ba70);
-        func_0204c7d0((u8 *)obj + 0x340);
+        TextWin_Init((u8 *)obj + 0x340);
         VOBJ_SET_VTABLE((u8 *)obj + 0x3f8, data_0208ba70);
-        func_0204c7d0((u8 *)obj + 0x3f8);
+        TextWin_Init((u8 *)obj + 0x3f8);
         obj->vfunc_58();
     }
     obj->vfunc_08(2, 100);
@@ -1150,7 +1150,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 BOOL func_ov000_0214c270(void);
 
 void func_ov000_021742b4(Obj021742b4 *self) {
@@ -1169,12 +1169,12 @@ BOOL func_ov000_021742c8(Obj021742b4 *self, Msg021742c8 *msg) {
     if (msg->unk_06 != 0xffff) {
         if (msg->unk_24 != 0xe) {
             obj->vfunc_60(msg->unk_06, 1);
-            func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
         } else {
-            func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
         }
     } else {
-        func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
     }
     return TRUE;
 }
@@ -1213,7 +1213,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 BOOL func_ov000_0214c270(void);
 
 void Task021cbbe0_Load(void) {
@@ -1366,7 +1366,7 @@ public:
 
 extern "C" {
 void *Heap_Alloc(u32 size);
-void func_ov000_02173648(void *self);
+void TaskList_Insert(void *self);
 extern void *data_02149ef8;
 extern void *data_02fe152c;
 extern u8 *data_ov000_021ccd54;
@@ -1383,22 +1383,22 @@ extern void *data_0208cc94;
 extern void *data_0208cc88;
 extern s32 data_02097d78[];
 void *MsgRes_GetString(void *g, s32 id);
-void *func_ov000_02154b58(void *p, u16 a);
-u16 func_020594bc(void *a, u32 b, s32 c, s32 d);
-void *func_ov000_021824d0(void *a, u16 b);
-void *func_0205976c(void *a, u32 b);
-u32 func_0205975c(void *a, u32 b);
-u16 func_02059544(void *a, void *b, void *c, s32 d, u16 e);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
-void func_02041440(void *p, void *name, u8 c);
+void *UiList_GetItemById(void *p, u16 a);
+u16 DataRes_ReadEntry(void *a, u32 b, s32 c, s32 d);
+void *SceneStage_GetScript(void *a, u16 b);
+void *DataRes_GetTable(void *a, u32 b);
+u32 DataRes_GetCount(void *a, u32 b);
+u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, s32 d, u16 e);
+void *ResMgr_GetArcList(void *a);
+void *ResList_FindType2(void *a, void *b);
+void TexObj_Init(void *p, void *name, u8 c);
 char *STD_CopyString(void *dst, void *src);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, u32 b);
+void TexObj_SetRes(void *model, void *a);
+void TexObj_SelectImage(void *model, s32 a, u32 b);
 void func_02041c5c(void *model, int fn);
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, const char *c, s32 *d, s32 *e, bool f);
-void func_0204ca70(void *p);
+void TextWin_RenderToVram(void *p);
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_ov000_021742b4(Obj021742b4 *self);
 BOOL func_ov000_021742c8(Obj021742b4 *self, Msg021742c8 *msg);
@@ -1428,7 +1428,7 @@ static inline void InitWin021743bc(u8 *p, void *s) {
     W->color0 = 0x4fdf;
     W->color1 = 0x1e1e;
     W->flags |= 4;
-    func_0204ca70(p);
+    TextWin_RenderToVram(p);
     W->posZ = -0x1cad;
 }
 #undef W
@@ -1507,17 +1507,17 @@ void Task021cbbe0_Start(Task021cbbe0 *self) {
     ((MenuList021743bc *)self->unk_40)->AddItem((const char *)MsgRes_GetString(g, 0xc2), 6, 0xffff, 0xffff);
     ((MenuList021743bc *)self->unk_40)->AddItem((const char *)MsgRes_GetString(g, 0x112), 0xf, 0xffff, 0xffff);
     ((MenuList021743bc *)self->unk_40)->AddItem((const char *)MsgRes_GetString(g, 0x118), 5, 0xffff, 0xffff);
-    if (func_020594bc(data_02fe152c, 5, 1, 0) == 0) {
-        LFLD(s32, func_ov000_02154b58(self->unk_40, 0x1a), 0x24) = 0xe;
+    if (DataRes_ReadEntry(data_02fe152c, 5, 1, 0) == 0) {
+        LFLD(s32, UiList_GetItemById(self->unk_40, 0x1a), 0x24) = 0xe;
     }
-    if (func_ov000_021824d0(data_ov000_021ccd54 + 0xac, 0) == 0) {
-        LFLD(s32, func_ov000_02154b58(self->unk_40, 0xf), 0x24) = 0xe;
+    if (SceneStage_GetScript(data_ov000_021ccd54 + 0xac, 0) == 0) {
+        LFLD(s32, UiList_GetItemById(self->unk_40, 0xf), 0x24) = 0xe;
     }
     sub = LFLD(void *, data_02fe152c, 0x4c);
-    a = func_0205976c(data_02fe152c, 3);
-    n = func_0205975c(data_02fe152c, 3);
+    a = DataRes_GetTable(data_02fe152c, 3);
+    n = DataRes_GetCount(data_02fe152c, 3);
     for (i = 0; i < n; i++) {
-        if (func_02059544(data_02fe152c, (u8 *)sub + 0x70, a, 1, i) != 0) {
+        if (DataRes_ReadBitsAt_02059544(data_02fe152c, (u8 *)sub + 0x70, a, 1, i) != 0) {
             has = TRUE;
             goto found;
         }
@@ -1525,15 +1525,15 @@ void Task021cbbe0_Start(Task021cbbe0 *self) {
     has = FALSE;
 found:
     if (!has) {
-        LFLD(s32, func_ov000_02154b58(self->unk_40, 5), 0x24) = 0xe;
+        LFLD(s32, UiList_GetItemById(self->unk_40, 5), 0x24) = 0xe;
     }
     {
         MenuList021743bc *t = (MenuList021743bc *)self->unk_40;
         if (data_ov000_021ccd38 == 0) {
             MenuItem021743bc id = MENU021743BC_ITEM_TOP;
-            t->Select(func_ov000_02154b58(t, id));
+            t->Select(UiList_GetItemById(t, id));
         } else {
-            t->Select(func_ov000_02154b58(t, (u16)data_ov000_021ccd38));
+            t->Select(UiList_GetItemById(t, (u16)data_ov000_021ccd38));
         }
     }
     ((MenuList021743bc *)self->unk_40)->Show();
@@ -1542,35 +1542,35 @@ found:
         s_3->shape = (VecFx16 *)data_ov000_021c9c28;
         s_3->shapeCount = 5;
     }
-    res = func_02034d88(func_02035d5c(data_0208ccc8), data_ov000_021cba0c);
+    res = ResList_FindType2(ResMgr_GetArcList(data_0208ccc8), data_ov000_021cba0c);
     m = (u8 *)Heap_Alloc(0x160);
     if (m != NULL) {
         void *file = data_0208ccc8;
         void *nm = data_ov000_021cba0c;
-        func_02041218((struct PlttRes *)(m + 0x88));
-        func_02041440(m, nm, 0);
+        PlttRes_Init_02041218((struct PlttRes *)(m + 0x88));
+        TexObj_Init(m, nm, 0);
         STD_CopyString(m + 0x2c, file);
     }
     self->unk_58 = (Model *)m;
-    func_020417e0(m, res);
+    TexObj_SetRes(m, res);
     self->unk_58->flags |= 2;
-    func_02041d9c(self->unk_58, 0, 0xffff);
+    TexObj_SelectImage(self->unk_58, 0, 0xffff);
     self->unk_58->unk_150 = -0x1cbd;
-    res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+    res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
     m2 = (u8 *)Heap_Alloc(0x160);
     if (m2 != NULL) {
         void *file = data_0208cc94;
         void *nm = data_0208cc88;
-        func_02041218((struct PlttRes *)(m2 + 0x88));
-        func_02041440(m2, nm, 0);
+        PlttRes_Init_02041218((struct PlttRes *)(m2 + 0x88));
+        TexObj_Init(m2, nm, 0);
         STD_CopyString(m2 + 0x2c, file);
     }
     self->unk_5c = (Model *)m2;
-    func_020417e0(m2, res);
+    TexObj_SetRes(m2, res);
     self->unk_5c->flags |= 2;
-    func_02041d9c(self->unk_5c, 0, 6);
-    func_02041d9c(self->unk_5c, 0, 9);
-    func_02041d9c(self->unk_5c, 0, 0xa);
+    TexObj_SelectImage(self->unk_5c, 0, 6);
+    TexObj_SelectImage(self->unk_5c, 0, 9);
+    TexObj_SelectImage(self->unk_5c, 0, 0xa);
     self->unk_5c->flags |= 0x80000;
     self->unk_5c->flags = (self->unk_5c->flags & ~0x7c) | 0x78;
     self->unk_5c->unk_150 = -0x1c9d;
@@ -1587,9 +1587,9 @@ found:
         o->vfunc_28();
         *(void **)o = data_ov000_021ca94c;
         LFLD(void *, (UiObj *)o, 0x90) = data_0208ba70;
-        func_0204c7d0((u8 *)o + 0x90);
+        TextWin_Init((u8 *)o + 0x90);
         LFLD(void *, (UiObj *)o, 0x148) = data_0208ba70;
-        func_0204c7d0((u8 *)o + 0x148);
+        TextWin_Init((u8 *)o + 0x148);
         o->vfunc_28();
     }
     self->unk_48 = (UiObj *)o;
@@ -1599,7 +1599,7 @@ found:
     if (IsMode4_021743bc()) {
         func_0203cb78(self->fadeLen, 0, -1);
     }
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 }
@@ -1615,10 +1615,10 @@ extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbbe0[];
 extern u8 data_0208ba70[];
 extern const s16 FX_SinCosTable_[];
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 void func_0203cc58(s32 a, s32 b, s32 c);
 s32 FX_Div(s32 a, s32 b);
-void func_02043d20(void *a, s32 b);
+void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 void func_ov000_0217558c(Task021cbbe0 *self);
 
@@ -1649,7 +1649,7 @@ void Task021cbbe0_Release(Task021cbbe0 *self) {
     LO_FREE_V(self, 0x48);
 }
 
-void func_ov000_02175080(Task021cbbe0 *self, s32 kind) {
+void Task021cbbe0_SwitchTo(Task021cbbe0 *self, s32 kind) {
     switch (kind) {
     case 0x1a: {
         Task *t;
@@ -1681,7 +1681,7 @@ namespace m_Stub_021752cc {
 
 extern "C" {
 
-void func_ov000_021752cc(Task021cbbe0 *self) {
+void Task021cbbe0_UpdateActive(Task021cbbe0 *self) {
     if (*(s32 *)((u8 *)self + 0x4c) == -1) {
         u8 *p = *(u8 **)((u8 *)self + 0x40);
         if (p != NULL) {
@@ -1703,14 +1703,14 @@ extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbbe0[];
 extern u8 data_0208ba70[];
 extern const s16 FX_SinCosTable_[];
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 void func_0203cc58(s32 a, s32 b, s32 c);
 s32 FX_Div(s32 a, s32 b);
-void func_02043d20(void *a, s32 b);
+void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 void func_ov000_0217558c(Task021cbbe0 *self);
 
-void func_ov000_021752f0(Task021cbbe0 *self) {
+void Task021cbbe0_PreUpdate(Task021cbbe0 *self) {
     switch (self->state) {
     case 8:
         self->parent = (Task *)LoFindTask(1);
@@ -1732,7 +1732,7 @@ void func_ov000_021752f0(Task021cbbe0 *self) {
     }
 }
 
-void func_ov000_021753a0(Task021cbbe0 *self) {
+void Task021cbbe0_PostUpdate(Task021cbbe0 *self) {
     s32 m = self->unk_4c;
     if (m == 1) {
         s32 v;
@@ -1779,7 +1779,7 @@ void Task021cbbe0_Draw(Task021cbbe0 *self) {
     if (self->fadeRatio == 0) {
         return;
     }
-    func_02043d20(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
     scale[0] = 0x1000;
     scale[1] = 0x1000;
     scale[2] = 0x1000;
@@ -1803,8 +1803,8 @@ void Task021cbbe0_Draw(Task021cbbe0 *self) {
 
 extern "C" {
 extern const s16 FX_SinCosTable_[];
-BOOL func_02054f10(void *p, s32 id);
-Robo021ca458 *func_ov000_0219bf90(void);
+BOOL Model_IsReady(void *p, s32 id);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 u8 Gfx3DState_NextPolyId(void *p);
 void func_02041c20(Model *m, s32 a, s32 b);
 void func_02041c18(Model *m, s32 v);
@@ -1882,7 +1882,7 @@ static inline void Model_PlayPartChk(Model *model, s32 idx) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx) + 0xc));
     }
-    func_02042628(model, anim, part, 0);
+    TexObj_DrawCell(model, anim, part, 0);
 }
 
 void func_ov000_0217558c(Task021cbbe0 *self) {
@@ -1894,10 +1894,10 @@ void func_ov000_0217558c(Task021cbbe0 *self) {
     if ((void *)self->unk_40 == NULL || self->unk_58 == NULL) {
         return;
     }
-    if (!func_02054f10(self->unk_58, 0xffff)) {
+    if (!Model_IsReady(self->unk_58, 0xffff)) {
         return;
     }
-    if (!func_02054f10(self->unk_5c, 0xffff)) {
+    if (!Model_IsReady(self->unk_5c, 0xffff)) {
         return;
     }
     x = (s32)(((s64)(0x1000 - FX_SinCosTable_[((s32)(self->unk_54 << 14) >> 16) * 2]) * 0x80000 + 0x800) >> 12);
@@ -1905,7 +1905,7 @@ void func_ov000_0217558c(Task021cbbe0 *self) {
     Model_SetPos((Model *)self->unk_58, x & ~0xfff, 0);
     m = (Model *)self->unk_58;
     Model_PlayPart(m, 1);
-    func_ov000_0219bf90();
+    ActorMgr_FindPlayer();
     MODEL_FLAGS(((Model *)self->unk_5c))->polygon_id = Gfx3DState_NextPolyId(g);
     xi = x >> 12;
     TEXT(0x60)->unk_vf20(xi + 0xc2 - (self->unk_a4 >> 1), 0x30);
@@ -1990,12 +1990,12 @@ extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
-s32 func_0206ec48(void *p);
+s32 Param_Get(void *p);
 s32 func_0206f080(void *p);
-s32 func_0206f0f4(void *p);
+s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
 
@@ -2013,7 +2013,7 @@ BOOL func_ov000_02175e6c(UiList *self, UiListItem *msg) {
     s32 v;
     if (msg == NULL) {
         if (self->flags & 0x4000000) {
-            func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
             return TRUE;
         }
         v = 0xff;
@@ -2022,10 +2022,10 @@ BOOL func_ov000_02175e6c(UiList *self, UiListItem *msg) {
     }
     o->unk_44 = v;
     if (o->callback(o, 2)) {
-        func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
     } else {
         ((VObj *)o)->vfunc_0c(0);
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     }
     return FALSE;
 }
@@ -2036,7 +2036,7 @@ void Task021cbfe0_Start(Task021cbfe0 *self) {
         return;
     }
     self->callback(self, 0);
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 }
@@ -2068,12 +2068,12 @@ extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
-s32 func_0206ec48(void *p);
+s32 Param_Get(void *p);
 s32 func_0206f080(void *p);
-s32 func_0206f0f4(void *p);
+s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
 
@@ -2099,10 +2099,10 @@ namespace m_Stub_02176028 {
 
 extern "C" {
 
-void func_ov000_02176028(void) {
+void Task021cbfe0_UpdateActive(void) {
 }
 
-void func_ov000_0217602c(void) {
+void Task021cbfe0_PreUpdate(void) {
 }
 
 }
@@ -2118,12 +2118,12 @@ extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
-s32 func_0206ec48(void *p);
+s32 Param_Get(void *p);
 s32 func_0206f080(void *p);
-s32 func_0206f0f4(void *p);
+s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
 
@@ -2135,7 +2135,7 @@ static inline BOOL LoIsLoaded(void) {
     return r;
 }
 
-void func_ov000_02176030(Task021cbfe0 *self) {
+void Task021cbfe0_PostUpdate(Task021cbfe0 *self) {
     BOOL a = FALSE;
     BOOL b = a;
     if (self->unk_3c != NULL) {
@@ -2221,12 +2221,12 @@ extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
-s32 func_0206ec48(void *p);
+s32 Param_Get(void *p);
 s32 func_0206f080(void *p);
-s32 func_0206f0f4(void *p);
+s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
 
@@ -2293,12 +2293,12 @@ extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
-s32 func_0206ec48(void *p);
+s32 Param_Get(void *p);
 s32 func_0206f080(void *p);
-s32 func_0206f0f4(void *p);
+s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
 
@@ -2318,7 +2318,7 @@ void func_ov000_021762e4(void *a, s32 mode) {
         return;
     }
     m = LFLD(VObj *, t, 0x4c);
-    r = (void *)m->vfunc_74(func_0206ec48(a), a, (u16)func_0206f080(a), func_0206f0f4(a));
+    r = (void *)m->vfunc_74(Param_Get(a), a, (u16)func_0206f080(a), Param_GetValue(a));
     if (mode == 1 && func_0206f66c(a)) {
         mode = 0;
         LFLD(s32, r, 0x10) = mode;
@@ -2343,17 +2343,17 @@ extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
 extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_0205a6a0(void *p);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
-void func_0205a840(void *p, void *buf, const void *s);
+void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
-void func_ov000_0215bb14(void *a, void *b);
+void Obj0215bb14_SetText(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
-void func_02043d20(void *a, s32 b);
+void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
 void func_ov000_021763c8(void) {
@@ -2366,12 +2366,12 @@ void func_ov000_021763c8(void) {
             VOBJ_SET_VTABLE(obj, data_0208b318);
             obj->vfunc_08();
             VOBJ_SET_VTABLE(obj, data_0208bf54);
-            func_0205a6a0(obj);
+            StageRes_Init(obj);
         }
         data_ov000_021ccd48 = obj;
         STD_CopyString(buf, "script/");
         STD_ConcatenateString(buf, "shpinfo");
-        func_0205a840(data_ov000_021ccd48, buf, "shop.ccscp");
+        StageRes_Open(data_ov000_021ccd48, buf, "shop.ccscp");
     }
     data_ov000_021ccd35 = data_ov000_021ccd35 + 1;
 }
@@ -2389,12 +2389,12 @@ extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
-s32 func_0206ec48(void *p);
+s32 Param_Get(void *p);
 s32 func_0206f080(void *p);
-s32 func_0206f0f4(void *p);
+s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
 
@@ -2425,7 +2425,7 @@ extern "C" {
 
 extern u8 data_02fe1534[];
 s32 StageRes_IsAllLoaded(void *p);
-BOOL func_0205aa30(void *p);
+BOOL StageRes_Bind(void *p);
 
 BOOL func_ov000_02176538(void) {
     BOOL result = TRUE;
@@ -2437,7 +2437,7 @@ BOOL func_ov000_02176538(void) {
 
 void func_ov000_02176560(void) {
     if (data_ov000_021ccd48->vfunc_34() == 0) {
-        func_0205aa30(data_ov000_021ccd48);
+        StageRes_Bind(data_ov000_021ccd48);
     }
 }
 
@@ -2462,17 +2462,17 @@ extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
 extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_0205a6a0(void *p);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
-void func_0205a840(void *p, void *buf, const void *s);
+void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
-void func_ov000_0215bb14(void *a, void *b);
+void Obj0215bb14_SetText(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
-void func_02043d20(void *a, s32 b);
+void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
 void Task021cbee0_Load(void) {
@@ -2485,12 +2485,12 @@ void Task021cbee0_Load(void) {
             VOBJ_SET_VTABLE(obj, data_0208b318);
             obj->vfunc_08();
             VOBJ_SET_VTABLE(obj, data_0208bf54);
-            func_0205a6a0(obj);
+            StageRes_Init(obj);
         }
         data_ov000_021ccd48 = obj;
         STD_CopyString(buf, "script/");
         STD_ConcatenateString(buf, "shpinfo");
-        func_0205a840(data_ov000_021ccd48, buf, "shop.ccscp");
+        StageRes_Open(data_ov000_021ccd48, buf, "shop.ccscp");
     }
     data_ov000_021ccd35 = data_ov000_021ccd35 + 1;
 }
@@ -2508,12 +2508,12 @@ extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
-s32 func_0206ec48(void *p);
+s32 Param_Get(void *p);
 s32 func_0206f080(void *p);
-s32 func_0206f0f4(void *p);
+s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
 
@@ -2561,20 +2561,20 @@ extern u8 data_ov000_021cadcc[];
 extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021cb2a8[];
 void *MsgRes_GetString(void *g, u32 id);
-BOOL func_0205aa30(void *p);
+BOOL StageRes_Bind(void *p);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-void func_ov000_0215d990(void *self, s32 a);
-void func_ov000_0215bb14(void *o, void *s);
-void func_ov000_02157c90(void *self, void *a);
-void func_ov000_02157d2c(void *self, void *arg);
+void Obj0215d990_SetMsg(void *self, s32 a);
+void Obj0215bb14_SetText(void *o, void *s);
+void UiList021cb4a8_SetLabel(void *self, void *a);
+void UiList021cb4a8_SetCenteredLabel(void *self, void *arg);
 void func_ov000_021546ec(void *a, const void *b, const char *c, u16 d);
 s32 func_ov000_02184a04(s32 x);
-u8 *func_0205976c(void *a, s32 b);
-u32 func_0205975c(void *a, s32 b);
-u16 func_02059544(void *a, void *b, void *c, int d, u16 e);
-void *func_0206ec48(u32 id);
+u8 *DataRes_GetTable(void *a, s32 b);
+u32 DataRes_GetCount(void *a, s32 b);
+u16 DataRes_ReadBitsAt_02059544(void *a, void *b, void *c, int d, u16 e);
+void *Param_Get(u32 id);
 s32 func_0206f080(u32 id);
-u32 func_0206f0f4(u32 id);
+u32 Param_GetValue(u32 id);
 BOOL func_ov000_021774a4(void);
 s32 func_ov000_02177698(void);
 
@@ -2587,9 +2587,9 @@ void Task021cbee0_Start(Task021cbee0 *self) {
     if (self->vfunc_28()) {
         return;
     }
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
     if (!data_ov000_021ccd48->vfunc_34()) {
-        func_0205aa30(data_ov000_021ccd48);
+        StageRes_Bind(data_ov000_021ccd48);
     }
     g = data_02149ef8;
     o = (VObj *)Heap_Alloc(0xe0);
@@ -2691,7 +2691,7 @@ void Task021cbee0_Start(Task021cbee0 *self) {
             s->slideZ = 0;
         }
         self->unk_44->vfunc_08();
-        func_ov000_0215d990(self->unk_44, 0x120);
+        Obj0215d990_SetMsg(self->unk_44, 0x120);
         self->unk_44->width = 0x66;
         self->unk_44->height = 0x19;
         o = (VObj *)Heap_Alloc(0x98);
@@ -2718,7 +2718,7 @@ void Task021cbee0_Start(Task021cbee0 *self) {
             s->slideZ = 0;
         }
         self->unk_48->vfunc_08();
-        func_ov000_0215d990(self->unk_48, 0x121);
+        Obj0215d990_SetMsg(self->unk_48, 0x121);
         self->unk_48->width = 0x66;
         self->unk_48->height = 0;
         o = (VObj *)Heap_Alloc(0xe0);
@@ -2734,8 +2734,8 @@ void Task021cbee0_Start(Task021cbee0 *self) {
         self->unk_4c = (UiList021cb4a8 *)o;
         self->unk_4c->vfunc_10(MsgRes_GetString(g, 0x98));
         self->unk_4c->vfunc_14(MsgRes_GetString(g, 0x99));
-        func_ov000_02157c90(self->unk_4c, MsgRes_GetString(g, 0xa1));
-        func_ov000_02157d2c(self->unk_4c, MsgRes_GetString(g, 0x3e));
+        UiList021cb4a8_SetLabel(self->unk_4c, MsgRes_GetString(g, 0xa1));
+        UiList021cb4a8_SetCenteredLabel(self->unk_4c, MsgRes_GetString(g, 0x3e));
         func_ov000_021546ec(self->unk_4c, data_0208ccc8, "cem3d1icn00", 0xffff);
         break;
     case 1:
@@ -2751,23 +2751,23 @@ void Task021cbee0_Start(Task021cbee0 *self) {
         self->unk_4c = (UiList021cb4a8 *)o;
         self->unk_4c->vfunc_10(MsgRes_GetString(g, 0xa9));
         self->unk_4c->vfunc_14(MsgRes_GetString(g, 0x99));
-        func_ov000_02157c90(self->unk_4c, MsgRes_GetString(g, 0xa3));
-        func_ov000_02157d2c(self->unk_4c, MsgRes_GetString(g, 0x3e));
+        UiList021cb4a8_SetLabel(self->unk_4c, MsgRes_GetString(g, 0xa3));
+        UiList021cb4a8_SetCenteredLabel(self->unk_4c, MsgRes_GetString(g, 0x3e));
         {
             u8 *base;
             u16 i;
             u32 n;
             base = LFLD(u8 *, data_02fe152c, 0x4c) + 0x130;
-            o = (VObj *)func_0205976c(data_02fe152c, 9);
-            n = func_0205975c(data_02fe152c, 9);
+            o = (VObj *)DataRes_GetTable(data_02fe152c, 9);
+            n = DataRes_GetCount(data_02fe152c, 9);
             for (i = 0; i < n; i++) {
-                BOOL a = func_02059544(data_02fe152c, base, o, 1, i) & 1 ? TRUE : FALSE;
-                BOOL b = func_02059544(data_02fe152c, base, o, 0x101, i) == 0 ? TRUE : FALSE;
+                BOOL a = DataRes_ReadBitsAt_02059544(data_02fe152c, base, o, 1, i) & 1 ? TRUE : FALSE;
+                BOOL b = DataRes_ReadBitsAt_02059544(data_02fe152c, base, o, 0x101, i) == 0 ? TRUE : FALSE;
                 if ((a & b) ? TRUE : FALSE) {
                     u16 id = ((Pair02176714 *)o)[i].b;
-                    void *x = func_0206ec48(id);
+                    void *x = Param_Get(id);
                     s32 y = func_0206f080(id);
-                    self->unk_4c->vfunc_74(x, ((Pair02176714 *)o)[i].b, (u16)y, func_0206f0f4(id));
+                    self->unk_4c->vfunc_74(x, ((Pair02176714 *)o)[i].b, (u16)y, Param_GetValue(id));
                 }
             }
         }
@@ -2785,8 +2785,8 @@ void Task021cbee0_Start(Task021cbee0 *self) {
         self->unk_4c = (UiList021cb4a8 *)o;
         self->unk_4c->vfunc_10(MsgRes_GetString(g, 0xaa));
         self->unk_4c->vfunc_14(MsgRes_GetString(g, 0x99));
-        func_ov000_02157c90(self->unk_4c, MsgRes_GetString(g, 0xa6));
-        func_ov000_02157d2c(self->unk_4c, MsgRes_GetString(g, 0x3e));
+        UiList021cb4a8_SetLabel(self->unk_4c, MsgRes_GetString(g, 0xa6));
+        UiList021cb4a8_SetCenteredLabel(self->unk_4c, MsgRes_GetString(g, 0x3e));
         func_ov000_021546ec(self->unk_4c, data_0208ccc8, "cem3d1icn00", 0xffff);
         break;
     }
@@ -2816,7 +2816,7 @@ void Task021cbee0_Start(Task021cbee0 *self) {
     if (self->unk_4c->itemCount != 0) {
         return;
     }
-    func_ov000_0215bb14(self->unk_50, MsgRes_GetString(g, 0x9d));
+    Obj0215bb14_SetText(self->unk_50, MsgRes_GetString(g, 0x9d));
     self->unk_50->vfunc_70();
 }
 
@@ -2833,12 +2833,12 @@ extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
-s32 func_0206ec48(void *p);
+s32 Param_Get(void *p);
 s32 func_0206f080(void *p);
-s32 func_0206f0f4(void *p);
+s32 Param_GetValue(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
 
@@ -2895,14 +2895,14 @@ namespace m_Stub_02177224 {
 
 extern "C" {
 
-void func_ov000_02177224(Task021cbee0 *self) {
+void Task021cbee0_UpdateActive(Task021cbee0 *self) {
     u8 *p = *(u8 **)((u8 *)self + 0x4c);
     if (p != NULL) {
         *(u32 *)(p + 0xc) &= ~4;
     }
 }
 
-void func_ov000_0217723c(void) {
+void Task021cbee0_PreUpdate(void) {
 }
 
 }
@@ -2925,7 +2925,7 @@ static inline BOOL IsBusy02177240(VObj *o) {
     return o != NULL && o->vfunc_1c();
 }
 
-void func_ov000_02177240(Task021cbee0 *self) {
+void Task021cbee0_PostUpdate(Task021cbee0 *self) {
     s32 n;
     if (self->state == 0xd) {
         VObj *o = self->unk_58;
@@ -2971,7 +2971,7 @@ namespace m_Lo_021773cc {
 extern "C" {
 
 extern u8 *data_ov000_021ccd54;
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL func_ov000_021b4738(void);
 void func_020627fc(u16 a);
 void func_0206280c(u16 a);
@@ -3027,9 +3027,9 @@ extern void *data_02149ef8;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
 void *Heap_Alloc(u32 size);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 s32 MsgRes_GetString(void *msg, s32 id);
-void func_ov000_0215c1bc(void *p, s32 a, s32 b);
+void Obj0215c1bc_SetText(void *p, s32 a, s32 b);
 void func_ov000_02152294(void *self, s32 a, s32 b, void *cb);
 s32 func_ov000_02177bd8(void);
 
@@ -3053,7 +3053,7 @@ BOOL func_ov000_021774a4(Self021774a4 *self, BOOL ok) {
     UiListItem *item = List021774a4_Cur(m->unk_4c);
 
     if (!ok) {
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         SET_HIDE(m->unk_3c);
         SET_HIDE(m->unk_40);
         SET_HIDE(m->unk_44);
@@ -3077,7 +3077,7 @@ BOOL func_ov000_021774a4(Self021774a4 *self, BOOL ok) {
         m->unk_58->font = 4;
         m->unk_58->vfunc_08();
         m->unk_58->flags |= 0x20000;
-        func_ov000_0215c1bc(m->unk_58, 0x8000, MsgRes_GetString(data_02149ef8, 0x9f));
+        Obj0215c1bc_SetText(m->unk_58, 0x8000, MsgRes_GetString(data_02149ef8, 0x9f));
         m->unk_58->posZ = -0x199a;
         m->unk_58->vfunc_70();
     } else {
@@ -3103,7 +3103,7 @@ extern Data02fe1534 data_02fe1534;
 extern void *data_02097e4c;
 void func_ov000_0215d980(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 static inline UiListItem *GetNth(UiList *m) {
     UiListItem *p = m->topItem;
@@ -3123,7 +3123,7 @@ static inline UiListItem *GetNth(UiList *m) {
 extern "C" {
 extern void *data_02149ef8;
 void *MsgRes_GetString(void *p, s32 a);
-void func_ov000_0215bb14(void *a, void *b);
+void Obj0215bb14_SetText(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 
 
@@ -3135,7 +3135,7 @@ s32 func_ov000_02177698(UiList *self, UiListItem *item) {
             u16 id;
             Lo021cae48 *a;
             func_0206ecd4(0x100, o->unk_5c, item->id);
-            func_ov000_0215bb14(t, o->unk_5c);
+            Obj0215bb14_SetText(t, o->unk_5c);
             t->vfunc_70();
             id = item->id;
             a = o->unk_44;
@@ -3159,7 +3159,7 @@ s32 func_ov000_02177698(UiList *self, UiListItem *item) {
                 }
             }
         } else {
-            func_ov000_0215bb14(t, MsgRes_GetString(data_02149ef8, 0x9d));
+            Obj0215bb14_SetText(t, MsgRes_GetString(data_02149ef8, 0x9d));
             t->vfunc_70();
         }
     }
@@ -3185,7 +3185,7 @@ s32 func_ov000_021777d4(Task021cbee0 *self, u16 id) {
             func_ov000_0215d980(o48, StageFlags_CountEntries(data_0214a424, id), 1);
         }
     }
-    func_02049a48(data_02097e4c, 0x31, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, 0x31, -1, -1, -1);
     return 0;
 }
 }
@@ -3193,9 +3193,9 @@ s32 func_ov000_021777d4(Task021cbee0 *self, u16 id) {
 extern "C" {
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
-BOOL func_0206f21c(u16 a, s32 b);
-void func_ov000_0215c1bc(void *self, s32 id, void *v);
-void func_ov000_02153c48(UiListItem *self, s32 a, BOOL show, BOOL center, u8 d);
+BOOL Item_Give(u16 a, s32 b);
+void Obj0215c1bc_SetText(void *self, s32 id, void *v);
+void Obj02153c48_CreateText(UiListItem *self, s32 a, BOOL show, BOOL center, u8 d);
 
 static inline void ShowMsg021778f0(Task021cbee0 *self, s32 msg) {
     if (self->unk_58 == NULL) {
@@ -3211,7 +3211,7 @@ static inline void ShowMsg021778f0(Task021cbee0 *self, s32 msg) {
     self->unk_58->font = 4;
     self->unk_58->vfunc_08();
     self->unk_58->flags |= 0x20000;
-    func_ov000_0215c1bc(self->unk_58, 0x8000, MsgRes_GetString(data_02149ef8, msg));
+    Obj0215c1bc_SetText(self->unk_58, 0x8000, MsgRes_GetString(data_02149ef8, msg));
     self->unk_58->posZ = -0x199a;
     self->unk_58->vfunc_70();
 }
@@ -3221,7 +3221,7 @@ static inline BOOL IsCost021778f0(u32 c) {
 }
 
 static inline void Snd021778f0(s32 id) {
-    func_02049a48(data_02097e4c, id, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, id, -1, -1, -1);
 }
 
 static inline void SetBit021778f0(UiObj *p) {
@@ -3244,7 +3244,7 @@ static inline void ResetItem021778f0(UiListItem *item) {
         item->unk_0c = -1;
         item->unk_24 = 0xe;
         if (((void *)item->label) != NULL) {
-            func_ov000_02153c48(item, 8, TRUE, 0, 0);
+            Obj02153c48_CreateText(item, 8, TRUE, 0, 0);
         }
     }
 }
@@ -3263,9 +3263,9 @@ BOOL func_ov000_021778f0(Task021cbee0 *self, UiListItem *item) {
         }
         return TRUE;
     case 1:
-        if (func_0206f21c(id, TRUE)) {
+        if (Item_Give(id, TRUE)) {
             if (func_ov000_021777d4(self, id)) {
-                func_0206f21c(id, FALSE);
+                Item_Give(id, FALSE);
                 return TRUE;
             }
             ResetItem021778f0(item);
@@ -3274,18 +3274,18 @@ BOOL func_ov000_021778f0(Task021cbee0 *self, UiListItem *item) {
         }
         break;
     case 4:
-        if (func_0206f21c(id, TRUE)) {
+        if (Item_Give(id, TRUE)) {
             if (func_ov000_021777d4(self, id)) {
-                func_0206f21c(id, FALSE);
+                Item_Give(id, FALSE);
                 return TRUE;
             }
             self->unk_4c->vfunc_70(item);
         }
         break;
     case 7:
-        if (func_0206f21c(id, TRUE)) {
+        if (Item_Give(id, TRUE)) {
             if (func_ov000_021777d4(self, id)) {
-                func_0206f21c(id, FALSE);
+                Item_Give(id, FALSE);
                 return TRUE;
             }
             ResetItem021778f0(item);
@@ -3354,17 +3354,17 @@ extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
 extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_0205a6a0(void *p);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
-void func_0205a840(void *p, void *buf, const void *s);
+void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
-void func_ov000_0215bb14(void *a, void *b);
+void Obj0215bb14_SetText(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
-void func_02043d20(void *a, s32 b);
+void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
 VObj *Task021cbe60_New(void) {
@@ -3396,7 +3396,7 @@ namespace m_Lo_02177f40 {
 extern "C" {
 
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 
 BOOL func_ov000_02177f40(UiList *self, UiListItem *msg) {
@@ -3421,7 +3421,7 @@ BOOL func_ov000_02177f40(UiList *self, UiListItem *msg) {
         o->unk_54->hidden = 0;
         o->unk_54->unk_88 = 1;
         o->unk_3c->flag2 = 1;
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
     }
     return TRUE;
 }
@@ -3442,17 +3442,17 @@ extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
 extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_0205a6a0(void *p);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
-void func_0205a840(void *p, void *buf, const void *s);
+void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
-void func_ov000_0215bb14(void *a, void *b);
+void Obj0215bb14_SetText(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
-void func_02043d20(void *a, s32 b);
+void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
 
@@ -3460,12 +3460,12 @@ BOOL func_ov000_02178010(UiList *self, UiListItem *msg) {
     void *o = (Task021cbe60 *)self->owner; // reused below for the 0x4c window
     if (msg == NULL || msg->id == 0xffff) {
         VObj *p = LFLD(VObj *, o, 0x40);
-        func_ov000_0215bb14(p, MsgRes_GetString(data_02149ef8, 0x9d));
+        Obj0215bb14_SetText(p, MsgRes_GetString(data_02149ef8, 0x9d));
         p->vfunc_70();
     } else {
         VObj *p = LFLD(VObj *, o, 0x40);
         func_0206ecd4(0x100, (u8 *)o + 0x58, msg->id);
-        func_ov000_0215bb14(p, (u8 *)o + 0x58);
+        Obj0215bb14_SetText(p, (u8 *)o + 0x58);
         p->vfunc_70();
         if (LFLD(void *, o, 0x48) != NULL) {
             func_ov000_0215d980(LFLD(void *, o, 0x48), data_0214a424->items[(u16)(msg->id & 0xfff)], 1);
@@ -3494,13 +3494,13 @@ extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-s32 func_ov000_02154b58(void *p, s32 a);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+s32 UiList_GetItemById(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
-void func_ov000_0215bb14(void *a, void *b);
-BOOL func_0206f21c(u16 a, s32 b);
-void *func_020359d0(void *a, s32 b, s32 c);
-s32 func_02035b90(void *a, s32 b);
+void Obj0215bb14_SetText(void *a, void *b);
+BOOL Item_Give(u16 a, s32 b);
+void *ResMgr_Load(void *a, s32 b, s32 c);
+s32 ResMgr_IsLoaded(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
 
@@ -3517,7 +3517,7 @@ namespace m_Lo_02178110 {
 
 extern "C" {
 
-void func_ov000_02178110(Task021cbe60 *self) {
+void Task021cbe60_FreeWindows(Task021cbe60 *self) {
     HEAP_DELETE(VObj *, self->unk_3c, p->vfunc_04());
     HEAP_DELETE(VObj *, self->unk_40, p->vfunc_04());
     HEAP_DELETE(VObj *, self->unk_44, p->vfunc_04());
@@ -3562,18 +3562,18 @@ extern u8 data_ov000_021cacd8[];
 extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021cb2a8[];
 void *MsgRes_GetString(void *g, u32 id);
-void func_ov000_0215bb14(void *o, void *s);
+void Obj0215bb14_SetText(void *o, void *s);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-void func_ov000_0215d990(void *self, s32 a);
+void Obj0215d990_SetMsg(void *self, s32 a);
 void func_ov000_02160fc8(void *self);
-void func_ov000_02157c90(void *self, void *a);
-void func_ov000_02157d2c(void *self, void *arg);
+void UiList021cb4a8_SetLabel(void *self, void *a);
+void UiList021cb4a8_SetCenteredLabel(void *self, void *arg);
 void func_ov000_021546ec(void *a, const void *b, const char *c, u16 d);
-s32 func_ov000_02154b58(void *p, s32 a);
-s32 func_0206ec48(u16 id);
+s32 UiList_GetItemById(void *p, s32 a);
+s32 Param_Get(u16 id);
 s32 func_0206f080(u16 id);
-u32 func_0206f0f4(u16 id);
-u8 *func_0206ede8(u16 id);
+u32 Param_GetValue(u16 id);
+u8 *Param_GetEntry(u16 id);
 void func_ov000_02178100(void);
 BOOL func_ov000_02177f40(void);
 BOOL func_ov000_02178010(void);
@@ -3590,7 +3590,7 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     u8 *e;
     VObj *o;
     g = data_02149ef8;
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
     o = (VObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -3616,7 +3616,7 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     self->unk_40->slideMode = 1;
     self->unk_40->color = 0xb;
     self->unk_40->vfunc_08();
-    func_ov000_0215bb14(self->unk_40, MsgRes_GetString(g, 0x9d));
+    Obj0215bb14_SetText(self->unk_40, MsgRes_GetString(g, 0x9d));
     self->unk_40->vfunc_70();
     o = (VObj *)Heap_Alloc(0x98);
     if (o != NULL) {
@@ -3662,7 +3662,7 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
         s->slideZ = 0;
     }
     self->unk_48->vfunc_08();
-    func_ov000_0215d990(self->unk_48, 0x120);
+    Obj0215d990_SetMsg(self->unk_48, 0x120);
     self->unk_48->width = 0x66;
     self->unk_48->height = 0x19;
     o = (VObj *)Heap_Alloc(0x98);
@@ -3689,7 +3689,7 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
         s->slideZ = 0;
     }
     self->unk_4c->vfunc_08();
-    func_ov000_0215d990(self->unk_4c, 0x121);
+    Obj0215d990_SetMsg(self->unk_4c, 0x121);
     self->unk_4c->width = 0x66;
     self->unk_4c->height = 0;
     o = (VObj *)Heap_Alloc(0xe0);
@@ -3768,8 +3768,8 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     self->unk_3c->flags &= ~0x800000;
     self->unk_3c->unk_c1 = 5;
     self->unk_3c->unk_c0 = 0x78;
-    func_ov000_02157c90(self->unk_3c, MsgRes_GetString(g, 0x9a));
-    func_ov000_02157d2c(self->unk_3c, MsgRes_GetString(g, 0x3e));
+    UiList021cb4a8_SetLabel(self->unk_3c, MsgRes_GetString(g, 0x9a));
+    UiList021cb4a8_SetCenteredLabel(self->unk_3c, MsgRes_GetString(g, 0x3e));
     self->unk_3c->onDecide = (UiItemFn)func_ov000_02177f40;
     self->unk_3c->onCursor = (UiItemFn)func_ov000_02178010;
     self->unk_3c->owner = self;
@@ -3778,15 +3778,15 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
         id = i + 0x2000;
         if (data_0214a424->items[ItemIdx021782e0(id)] != 0) {
             o = LFLD(VObj *, LoFindTask(10), 0x3c);
-            a = func_0206ec48(id);
+            a = Param_Get(id);
             b = func_0206f080(id);
-            e = (u8 *)o->vfunc_74(a, id, (u16)b, func_0206f0f4(id) >> 2);
-            LFLD(s32, e, 0x10) = *func_0206ede8(id);
+            e = (u8 *)o->vfunc_74(a, id, (u16)b, Param_GetValue(id) >> 2);
+            LFLD(s32, e, 0x10) = *Param_GetEntry(id);
         }
     }
     {
         VObj *t = self->unk_3c;
-        t->vfunc_a8(func_ov000_02154b58(t, 0));
+        t->vfunc_a8(UiList_GetItemById(t, 0));
     }
     self->unk_3c->vfunc_08();
 }
@@ -3807,20 +3807,20 @@ extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
 extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_0205a6a0(void *p);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
-void func_0205a840(void *p, void *buf, const void *s);
+void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
-void func_ov000_0215bb14(void *a, void *b);
+void Obj0215bb14_SetText(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
-void func_02043d20(void *a, s32 b);
+void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
-void func_ov000_02178a5c(Task021cbe60 *self) {
+void Task021cbe60_UpdateActive(Task021cbe60 *self) {
     u16 v;
     if (self->unk_54->state != 5) {
         return;
@@ -3854,12 +3854,12 @@ namespace m_Lo_02178b10 {
 
 extern "C" {
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 id, s32 a, s32 b, s32 c);
+void *SndMgr_PlayVolume(void *p, s32 id, s32 a, s32 b, s32 c);
 
-void func_ov000_02178b10(Task021cbe60 *self) {
+void Task021cbe60_PreUpdate(Task021cbe60 *self) {
     switch (self->state) {
     case 8:
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         break;
     case 13: {
         bool done;
@@ -3886,7 +3886,7 @@ void func_ov000_02178b10(Task021cbe60 *self) {
         break;
     }
     case 10:
-        func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
         break;
     }
 }
@@ -3899,7 +3899,7 @@ namespace m_Stub_02178ccc {
 
 extern "C" {
 
-void func_ov000_02178ccc(void) {
+void Task021cbe60_PostUpdate(void) {
 }
 
 }
@@ -3918,27 +3918,27 @@ extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
 extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_0205a6a0(void *p);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
-void func_0205a840(void *p, void *buf, const void *s);
+void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
-void func_ov000_0215bb14(void *a, void *b);
+void Obj0215bb14_SetText(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
-void func_02043d20(void *a, s32 b);
+void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 void func_0206f3f0(u16 id, s32 v);
-u16 func_0206d02c(void *a);
+u16 StageFlags_CountItems(void *a);
 
 void Task021cbe60_Draw(Task021cbe60 *self) {
     s32 scale[3];
     if (self->fadeRatio == 0) {
         return;
     }
-    func_02043d20(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
     scale[0] = 0x1000;
     scale[1] = 0x1000;
     scale[2] = 0x1000;
@@ -3976,7 +3976,7 @@ void func_ov000_02178dcc(void *p, BOOL on) {
         }
         node = NULL;
         func_ov000_0215d980(self->unk_44, data_0214a424->unk_020, 0);
-        func_02049a48(data_02097e4c, 0x30, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x30, -1, -1, -1);
         list = (UiListItem *)((u8 *)self->unk_3c->topItem);
         if (list != NULL) {
             s32 i = self->unk_3c->cursor;
@@ -3992,7 +3992,7 @@ void func_ov000_02178dcc(void *p, BOOL on) {
                 c = 0;
             }
             func_0206f3f0(node->id, c);
-            func_0206d02c(data_0214a424);
+            StageFlags_CountItems(data_0214a424);
         }
         if (self->unk_48 != NULL) {
             func_ov000_0215d980(self->unk_48, data_0214a424->items[ItemIdx(node->id)], 1);
@@ -4046,11 +4046,11 @@ extern "C" {
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
 extern void *data_02097e4c;
-void func_0204bfcc(void *p);
+void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
-void func_0204bfe4(void *p, void *buf, const void *s);
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void Task021cbde0_Load(Task021cbde0 *self) {
     u8 buf[0x20];
@@ -4059,12 +4059,12 @@ void Task021cbde0_Load(Task021cbde0 *self) {
         VOBJ_SET_VTABLE(obj, data_0208b318);
         obj->vfunc_08();
         VOBJ_SET_VTABLE(obj, data_0208ba30);
-        func_0204bfcc(obj);
+        MsgRes_Reset_0204bfcc(obj);
     }
     self->unk_3c = obj;
     STD_CopyString(buf, "script/");
     STD_ConcatenateString(buf, "other");
-    func_0204bfe4(self->unk_3c, buf, "help.ccmes");
+    MsgRes_OpenLocalized(self->unk_3c, buf, "help.ccmes");
 }
 
 BOOL Task021cbde0_IsLoaded(Task021cbde0 *self) {
@@ -4086,18 +4086,18 @@ extern u8 data_ov000_021cb5a8[];
 extern u8 data_ov000_021ccbe0[];
 extern u8 data_ov000_021cbac8[];
 extern u8 data_ov000_021cca10[];
-void func_ov000_02173648(void *self);
-BOOL func_0204c030(void *p);
+void TaskList_Insert(void *self);
+BOOL MsgRes_Bind(void *p);
 void *MsgRes_GetString(void *g, s32 id);
 void func_ov000_021c3af4(void *self);
-void func_ov000_021c22d8(ListRow *self);
+void ListRow_Init(ListRow *self);
 void func_ov000_021c2334(Hud021cca10 *self);
-void func_ov000_021c2a88(Hud021cca10 *self, char *str);
-void func_ov000_021c3fd4(LoBase021ccb54_021ccbe0 *list, ListRow *row);
+void Hud021cca10_SetText(Hud021cca10 *self, char *str);
+void LoBase021ccb54_021ccbe0_AppendRow(LoBase021ccb54_021ccbe0 *list, ListRow *row);
 BOOL func_ov000_02179910(void);
-void *func_0205976c(void *mgr, s32 kind);
-u32 func_0205975c(void *mgr, s32 kind);
-u16 func_02059544(void *mgr, void *a, void *tbl, s32 b, u16 i);
+void *DataRes_GetTable(void *mgr, s32 kind);
+u32 DataRes_GetCount(void *mgr, s32 kind);
+u16 DataRes_ReadBitsAt_02059544(void *mgr, void *a, void *tbl, s32 b, u16 i);
 void *func_02062138(u16 id);
 void MI_CpuFill8(void *dst, u8 val, u32 size);
 
@@ -4109,8 +4109,8 @@ void Task021cbde0_Start(Task021cbde0 *self) {
     if (((VObj *)self)->vfunc_28()) {
         return;
     }
-    func_ov000_02173648(self);
-    func_0204c030(self->unk_3c);
+    TaskList_Insert(self);
+    MsgRes_Bind(self->unk_3c);
     g = data_02149ef8;
     p = (VObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
@@ -4158,12 +4158,12 @@ void Task021cbde0_Start(Task021cbde0 *self) {
     {
         u8 *base = LFLD(u8 *, data_02fe152c, 0x4c);
         u16 i;
-        u8 *tbl = (u8 *)func_0205976c(data_02fe152c, 3);
-        u32 n = func_0205975c(data_02fe152c, 3);
+        u8 *tbl = (u8 *)DataRes_GetTable(data_02fe152c, 3);
+        u32 n = DataRes_GetCount(data_02fe152c, 3);
         u16 used[0x40];
         MI_CpuFill8(used, 0, sizeof(used));
         for (i = 0; i < n; i++) {
-            if (func_02059544(data_02fe152c, base + 0x70, tbl, 1, i)) {
+            if (DataRes_ReadBitsAt_02059544(data_02fe152c, base + 0x70, tbl, 1, i)) {
                 used[LFLD(u16, tbl + i * 4, 2)] = i + 1;
             }
         }
@@ -4172,14 +4172,14 @@ void Task021cbde0_Start(Task021cbde0 *self) {
                 Hud021cca10 *it = (Hud021cca10 *)Heap_Alloc(sizeof(Hud021cca10));
                 if (it != NULL) {
                     VOBJ_SET_VTABLE(it, data_ov000_021cbac8);
-                    func_ov000_021c22d8(it);
+                    ListRow_Init(it);
                     VOBJ_SET_VTABLE(it, data_ov000_021cca10);
                     func_ov000_021c2334(it);
                 }
                 it->index = i;
                 it->unk_3c = i + 1;
-                func_ov000_021c2a88(it, (char *)func_02062138(i));
-                func_ov000_021c3fd4(self->unk_44, it);
+                Hud021cca10_SetText(it, (char *)func_02062138(i));
+                LoBase021ccb54_021ccbe0_AppendRow(self->unk_44, it);
             }
         }
     }
@@ -4198,11 +4198,11 @@ extern "C" {
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
 extern void *data_02097e4c;
-void func_0204bfcc(void *p);
+void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
-void func_0204bfe4(void *p, void *buf, const void *s);
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void Task021cbde0_Init(Task021cbde0 *self) {
     self->fadeLen = 0x1000;
@@ -4233,11 +4233,11 @@ extern "C" {
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021ccbe0[];
 void Heap_Free(void *ptr);
-void func_ov000_021c3bb0(void *ptr);
+void LoBase021ccb54_021ccbe0_Release(void *ptr);
 
 VObj *Ov000Vt_021ccbe0_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021ccbe0);
-    func_ov000_021c3bb0(self);
+    LoBase021ccb54_021ccbe0_Release(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cac60);
     self->vfunc_2c();
     Heap_Free(self);
@@ -4256,13 +4256,13 @@ extern "C" {
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
 extern void *data_02097e4c;
-void func_0204bfcc(void *p);
+void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
-void func_0204bfe4(void *p, void *buf, const void *s);
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
-void func_ov000_021795a4(Task021cbde0 *self) {
+void Task021cbde0_UpdateActive(Task021cbde0 *self) {
     void *p = self->unk_44;
     u16 v;
     if (p == NULL) {
@@ -4282,7 +4282,7 @@ void func_ov000_021795a4(Task021cbde0 *self) {
     if (!(v & 2)) {
         return;
     }
-    func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     if ((void *)self->unk_40 != NULL) {
         self->unk_40->hidden = 1;
     }
@@ -4300,7 +4300,7 @@ namespace m_Stub_02179680 {
 
 extern "C" {
 
-void func_ov000_02179680(void) {
+void Task021cbde0_PreUpdate(void) {
 }
 
 }
@@ -4314,11 +4314,11 @@ extern "C" {
 extern u8 data_0208ba70[];
 extern u8 data_0208bbc8[];
 void *Heap_Alloc(u32 size);
-s32 func_0204c08c(void *res, u16 id, s32 *out, s32 d);
-void func_0204c7d0(void *p);
-void func_02050f70(void *p);
+s32 MsgRes_GetLines(void *res, u16 id, s32 *out, s32 d);
+void TextWin_Init(void *p);
+void TwScene_Init(void *p);
 
-void func_ov000_02179684(Task021cbde0 *self) {
+void Task021cbde0_PostUpdate(Task021cbde0 *self) {
     if (self->state == 0xd) {
         switch (self->unk_48) {
         case 0: {
@@ -4334,13 +4334,13 @@ void func_ov000_02179684(Task021cbde0 *self) {
             }
             if (self->unk_4c != 0xffff) {
                 s32 ofs;
-                s32 n = func_0204c08c(self->unk_3c, self->unk_4c, &ofs, 1);
+                s32 n = MsgRes_GetLines(self->unk_3c, self->unk_4c, &ofs, 1);
                 VObj *o = (VObj *)Heap_Alloc(0xb80);
                 if (o != NULL) {
                     VOBJ_SET_VTABLE(o, data_0208ba70);
-                    func_0204c7d0(o);
+                    TextWin_Init(o);
                     VOBJ_SET_VTABLE(o, data_0208bbc8);
-                    func_02050f70(o);
+                    TwScene_Init(o);
                 }
                 self->unk_50 = o;
                 ((SlideWin *)o)->font = 8;
@@ -4388,7 +4388,7 @@ namespace m_Lo_0217987c {
 extern "C" {
 
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0216f23c(void *p, s32 a);
 
 void Task021cbde0_Draw(Task021cbde0 *self) {
@@ -4429,7 +4429,7 @@ BOOL func_ov000_02179910(UiList *self, UiListItem *msg) {
     if (o->unk_44 != NULL) {
         o->unk_44->hidden = 1;
     }
-    func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
     return TRUE;
 }
 
@@ -4470,11 +4470,11 @@ extern "C" {
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
 extern void *data_02097e4c;
-void func_0204bfcc(void *p);
+void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
-void func_0204bfe4(void *p, void *buf, const void *s);
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void Task021cbd60_Load(Task021cbd60 *self) {
     u8 buf[0x20];
@@ -4483,12 +4483,12 @@ void Task021cbd60_Load(Task021cbd60 *self) {
         VOBJ_SET_VTABLE(obj, data_0208b318);
         obj->vfunc_08();
         VOBJ_SET_VTABLE(obj, data_0208ba30);
-        func_0204bfcc(obj);
+        MsgRes_Reset_0204bfcc(obj);
     }
     self->unk_3c = obj;
     STD_CopyString(buf, "script/");
     STD_ConcatenateString(buf, "other");
-    func_0204bfe4(self->unk_3c, buf, "memory.ccmes");
+    MsgRes_OpenLocalized(self->unk_3c, buf, "memory.ccmes");
 }
 
 BOOL Task021cbd60_IsLoaded(Task021cbd60 *self) {
@@ -4517,10 +4517,10 @@ extern u8 data_ov000_021cb5a8[];
 extern u8 data_ov000_021cadcc[];
 extern u8 data_ov000_021c9c46[];
 void *Heap_Alloc(u32 size);
-BOOL func_0204c030(void *p);
+BOOL MsgRes_Bind(void *p);
 void *MsgRes_GetString(void *g, u32 id);
-void func_ov000_0215bb14(void *o, void *s);
-void func_ov000_02173648(void *self);
+void Obj0215bb14_SetText(void *o, void *s);
+void TaskList_Insert(void *self);
 
 void Task021cbd60_Start(Task021cbd60 *self) {
     VObj *o;
@@ -4530,7 +4530,7 @@ void Task021cbd60_Start(Task021cbd60 *self) {
     if (self->vfunc_28()) {
         return;
     }
-    func_0204c030(self->unk_3c);
+    MsgRes_Bind(self->unk_3c);
     g = data_02149ef8;
     o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
@@ -4592,14 +4592,14 @@ void Task021cbd60_Start(Task021cbd60 *self) {
     self->unk_40->flags |= 0x80000;
     n = data_0214a424->unk_518_8;
     if (n != 0) {
-        func_ov000_0215bb14(self->unk_40, MsgRes_GetString(self->unk_3c, (u16)(n - 1)));
+        Obj0215bb14_SetText(self->unk_40, MsgRes_GetString(self->unk_3c, (u16)(n - 1)));
     }
     {
         Lo021cadcc *s = self->unk_40;
         s->shape = (VecFx16 *)data_ov000_021c9c46;
         s->shapeCount = 6;
     }
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 }
 
@@ -4613,11 +4613,11 @@ extern "C" {
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
 extern void *data_02097e4c;
-void func_0204bfcc(void *p);
+void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
-void func_0204bfe4(void *p, void *buf, const void *s);
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void Task021cbd60_Init(Task021cbd60 *self) {
     self->fadeLen = 0x1000;
@@ -4632,11 +4632,11 @@ void Task021cbd60_Release(Task021cbd60 *self) {
     LO_FREE_V(self, 0x3c);
 }
 
-void func_ov000_02179e68(Task021cbd60 *self) {
+void Task021cbd60_UpdateActive(Task021cbd60 *self) {
     if (!(data_02097dc8->trig & 2)) {
         return;
     }
-    func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     if ((void *)self->unk_40 != NULL) {
         self->unk_40->hidden = 1;
     }
@@ -4655,7 +4655,7 @@ namespace m_Stub_02179ef0 {
 
 extern "C" {
 
-void func_ov000_02179ef0(void) {
+void Task021cbd60_PreUpdate(void) {
 }
 
 }
@@ -4670,13 +4670,13 @@ extern "C" {
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
 extern void *data_02097e4c;
-void func_0204bfcc(void *p);
+void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
-void func_0204bfe4(void *p, void *buf, const void *s);
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
-void func_ov000_02179ef4(Task021cbd60 *self) {
+void Task021cbd60_PostUpdate(Task021cbd60 *self) {
     s32 n;
     VObj *p;
     if (self->state != 0xd) {
@@ -4786,7 +4786,7 @@ extern u8 data_ov000_021cb1b0[];
 extern u8 data_ov000_021cb0b8[];
 void *MsgRes_GetString(void *a, s32 b);
 void *Heap_Alloc(u32 size);
-void *func_ov000_02154b58(Win0217a034 *w, s32 b);
+void *UiList_GetItemById(Win0217a034 *w, s32 b);
 BOOL func_ov000_02175e6c(void);
 
 BOOL func_ov000_0217a034(Obj0217a034 *self, s32 msg) {
@@ -4820,7 +4820,7 @@ BOOL func_ov000_0217a034(Obj0217a034 *self, s32 msg) {
         self->win->unk_68 = -0x1666;
         self->b0 = 1;
         w = self->win;
-        w->vfunc_a8(func_ov000_02154b58(w, 0));
+        w->vfunc_a8(UiList_GetItemById(w, 0));
         w->unk_48 = 0x2803;
         break;
     }
@@ -4847,11 +4847,11 @@ extern "C" {
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
 extern void *data_02097e4c;
-void func_0204bfcc(void *p);
+void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
-void func_0204bfe4(void *p, void *buf, const void *s);
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void Task021cbc60_IsLoaded(void) {
     LoTaskObj()->vfunc_2c();
@@ -4873,7 +4873,7 @@ typedef enum { LO_TEXT_MASK_EMPTY = 0 } LoTextMask;
 extern "C" {
 VObj *func_ov000_02176208(void);
 void func_ov000_0217a328(Task021cbc60 *self, s32 a, s32 b);
-void func_ov000_02173648(VObj *self);
+void TaskList_Insert(VObj *self);
 
 void Task021cbc60_Start(Task021cbc60 *self) {
     VObj *o;
@@ -4893,7 +4893,7 @@ void Task021cbc60_Start(Task021cbc60 *self) {
     }
     self->unk_44 = o;
     o->vfunc_08();
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 }
@@ -4907,11 +4907,11 @@ extern "C" {
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
 extern void *data_02097e4c;
-void func_0204bfcc(void *p);
+void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
-void func_0204bfe4(void *p, void *buf, const void *s);
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void Task021cbc60_Init(Task021cbc60 *self) {
     self->fadeLen = 0x1000;
@@ -4939,8 +4939,8 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
 extern void *data_02149ef8;
 void *MsgRes_GetString(void *p, u16 a);
-void func_ov000_0215c1bc(void *a, s32 b, void *c);
-void func_ov000_0215ce8c(void *a, s32 b);
+void Obj0215c1bc_SetText(void *a, s32 b, void *c);
+void Obj0215c1bc_SetMsg(void *a, s32 b);
 
 void func_ov000_0217a328(Task021cbc60 *self, s32 a, s32 b) {
     if (self->unk_48 == NULL) {
@@ -4969,9 +4969,9 @@ void func_ov000_0217a328(Task021cbc60 *self, s32 a, s32 b) {
     self->unk_48->font = 4;
     self->unk_48->vfunc_08();
     if (b != -1) {
-        func_ov000_0215c1bc(self->unk_48, 0x8000, MsgRes_GetString(data_02149ef8, b));
+        Obj0215c1bc_SetText(self->unk_48, 0x8000, MsgRes_GetString(data_02149ef8, b));
     } else {
-        func_ov000_0215ce8c(self->unk_48, a);
+        Obj0215c1bc_SetMsg(self->unk_48, a);
     }
     self->unk_48->posZ = -0x1ccd;
     self->unk_48->vfunc_70();
@@ -4985,10 +4985,10 @@ namespace m_Stub_0217a478 {
 
 extern "C" {
 
-void func_ov000_0217a478(void) {
+void Task021cbc60_UpdateActive(void) {
 }
 
-void func_ov000_0217a47c(void) {
+void Task021cbc60_PreUpdate(void) {
 }
 
 }
@@ -5004,7 +5004,7 @@ void func_0206c620(void *p);
 void func_0206c670(void *p);
 void func_ov000_0217a328(Task021cbc60 *self, s32 a, s32 b);
 BOOL func_ov000_0217a034(void *self, s32 msg);
-void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 
 static inline u8 Raw0217a480(StageFlags *g) {
     return g->unk_518_16;
@@ -5022,7 +5022,7 @@ static inline BOOL IsB2_0217a480(VObj *p) {
     return LBIT(p, 0x48).b2 ? TRUE : FALSE;
 }
 
-void func_ov000_0217a480(Task021cbc60 *self) {
+void Task021cbc60_PostUpdate(Task021cbc60 *self) {
     if (self->unk_48 != NULL && !self->unk_48->vfunc_1c()) {
         LO_FREE_V(self, 0x48);
     }
@@ -5104,7 +5104,7 @@ void func_ov000_0217a480(Task021cbc60 *self) {
             return;
         }
         if (self->param == 0) {
-            func_02049a48(data_02097e4c, 0x85, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x85, -1, -1, -1);
             func_ov000_0217a328(self, 0x7a, -1);
         }
         self->unk_3c = 5;
@@ -5287,13 +5287,13 @@ extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-s32 func_ov000_02154b58(void *p, s32 a);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+s32 UiList_GetItemById(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
-void func_ov000_0215bb14(void *a, void *b);
-BOOL func_0206f21c(u16 a, s32 b);
-void *func_020359d0(void *a, s32 b, s32 c);
-s32 func_02035b90(void *a, s32 b);
+void Obj0215bb14_SetText(void *a, void *b);
+BOOL Item_Give(u16 a, s32 b);
+void *ResMgr_Load(void *a, s32 b, s32 c);
+s32 ResMgr_IsLoaded(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
 void Task021cbb60_Load(Task021cbb60 *self) {
@@ -5332,17 +5332,17 @@ extern void *data_0208cb74;
 extern void *data_0208cca0;
 extern void *data_0208cb78;
 extern void *data_0208cc9c;
-void func_02041440(void *p, void *name, s32 c);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
+void TexObj_Init(void *p, void *name, s32 c);
+void *ResMgr_GetArcList(void *a);
+void *ResList_FindType2(void *a, void *b);
+void TexObj_SetRes(void *model, void *a);
+void TexObj_SelectImage(void *model, s32 a, s32 b);
 void *STD_CopyString(void *dst, void *src);
 VObj *func_ov000_02176208(void);
 
 static inline void ModelInit(u8 *m, void *s, void *nm) {
-    func_02041218((struct PlttRes *)(m + 0x88));
-    func_02041440(m, nm, 0);
+    PlttRes_Init_02041218((struct PlttRes *)(m + 0x88));
+    TexObj_Init(m, nm, 0);
     STD_CopyString(m + 0x2c, s);
 }
 
@@ -5367,16 +5367,16 @@ void Task021cbb60_Start(Task021cbb60 *self) {
         ModelInit(m, data_0208cc9c, data_0208cb78);
     }
     self->unk_a0 = (Model *)m;
-    func_020417e0((u8 *)self->unk_a0, func_02034d88(func_02035d5c(m + 0x2c), (u8 *)self->unk_a0 + 0x4c));
+    TexObj_SetRes((u8 *)self->unk_a0, ResList_FindType2(ResMgr_GetArcList(m + 0x2c), (u8 *)self->unk_a0 + 0x4c));
     self->unk_a0->flags |= 2;
-    func_02041d9c((u8 *)self->unk_a0, 0, 1);
-    func_02041d9c((u8 *)self->unk_a0, 0, 2);
-    func_02041d9c((u8 *)self->unk_a0, 0, 3);
-    func_02041d9c((u8 *)self->unk_a0, 0, 4);
+    TexObj_SelectImage((u8 *)self->unk_a0, 0, 1);
+    TexObj_SelectImage((u8 *)self->unk_a0, 0, 2);
+    TexObj_SelectImage((u8 *)self->unk_a0, 0, 3);
+    TexObj_SelectImage((u8 *)self->unk_a0, 0, 4);
     self->unk_a0->flags |= 0x200000;
     self->unk_a0->flags |= 0x80000;
     self->unk_a0->flags = (self->unk_a0->flags & ~0x7c) | 0x78;
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
     self->unk_04 |= 0x10000;
     if (self->unk_44 != 7) {
         self->unk_44 = 1;
@@ -5400,13 +5400,13 @@ extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-s32 func_ov000_02154b58(void *p, s32 a);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+s32 UiList_GetItemById(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
-void func_ov000_0215bb14(void *a, void *b);
-BOOL func_0206f21c(u16 a, s32 b);
-void *func_020359d0(void *a, s32 b, s32 c);
-s32 func_02035b90(void *a, s32 b);
+void Obj0215bb14_SetText(void *a, void *b);
+BOOL Item_Give(u16 a, s32 b);
+void *ResMgr_Load(void *a, s32 b, s32 c);
+s32 ResMgr_IsLoaded(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
 void Task021cbb60_Init(Task021cbb60 *self) {
@@ -5556,15 +5556,15 @@ extern "C" {
 extern u8 data_0208ba70[];
 extern Data02097ce0 *data_02097ce0;
 void *Heap_Alloc(u32 size);
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
-void func_0204ca70(void *p);
+void TextWin_RenderToVram(void *p);
 
 Obj0217b230 *func_ov000_0217b230(void *unused, s32 a1, s32 a2) {
     Obj0217b230 *o = (Obj0217b230 *)Heap_Alloc(0xb8);
     if (o != NULL) {
         VOBJ_SET_VTABLE(o, data_0208ba70);
-        func_0204c7d0(o);
+        TextWin_Init(o);
     }
     o->unk_37 = 1;
     o->unk_28 = a2;
@@ -5582,7 +5582,7 @@ Obj0217b230 *func_ov000_0217b230(void *unused, s32 a1, s32 a2) {
     o->b24 = 1;
     o->vfunc_14();
     o->b2 = 1;
-    func_0204ca70(o);
+    TextWin_RenderToVram(o);
     return o;
 }
 
@@ -5665,7 +5665,7 @@ char *MsgRes_GetString(void *msg, s32 id);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void func_02040a98(char *dst, s32 n);
-void func_02070874(char *dst, const char *src, const char *arg);
+void Tbl_Format_02070874(char *dst, const char *src, const char *arg);
 char *func_02061df0(u16 lv);
 char *func_020620ac(u16 id);
 int func_0200779c(char *dst, const char *fmt, ...);
@@ -5739,7 +5739,7 @@ void func_ov000_0217b324(Self *self, s32 idx) {
     } else {
         STD_CopyString(buf, MsgRes_GetString(msg, 0xb3));
         func_02040a98(num, 2);
-        func_02070874(buf, buf, num);
+        Tbl_Format_02070874(buf, buf, num);
         STD_ConcatenateString(buf, " ");
     }
     STD_CopyString(tmp, MsgRes_GetString(msg, 0xb4));
@@ -5758,7 +5758,7 @@ void func_ov000_0217b324(Self *self, s32 idx) {
             STD_CopyString(tmp, MsgRes_GetString(msg, 0xb7));
         } else if (n != 0) {
             func_02040a98(num, n);
-            func_02070874(tmp, tmp, num);
+            Tbl_Format_02070874(tmp, tmp, num);
         } else {
             STD_CopyString(tmp, MsgRes_GetString(msg, 0xb5));
         }
@@ -5785,13 +5785,13 @@ void func_ov000_0217b324(Self *self, s32 idx) {
     STD_CopyString(buf, MsgRes_GetString(msg, 0xb2));
     n = rec->time / 216000;
     func_0200779c(num, "%.2d", n);
-    func_02070874(buf, buf, num);
+    Tbl_Format_02070874(buf, buf, num);
     n = rec->time % 216000 / 3600;
     func_0200779c(num, "%.2d", n);
-    func_02070874(buf, buf, num);
+    Tbl_Format_02070874(buf, buf, num);
     n = rec->time % 216000 % 3600 / 60;
     func_0200779c(num, "%.2d", n);
-    func_02070874(buf, buf, num);
+    Tbl_Format_02070874(buf, buf, num);
     self->slots[idx].p98 = (VObj *)func_ov000_0217b230(self, buf, 4);
     self->slots[idx].p94 = (VObj *)func_ov000_0217b230(self, MsgRes_GetString(msg, 0xb1), 4);
     OS_GetOwnerInfo(&info);
@@ -5837,8 +5837,8 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
 void *MsgRes_GetString(void *a, u16 b);
 void *Heap_Alloc(u32 size);
-void func_ov000_0215c1bc(Lo021cad50 *w, s32 a, void *b);
-void func_ov000_0215ce8c(Lo021cad50 *w, s32 a);
+void Obj0215c1bc_SetText(Lo021cad50 *w, s32 a, void *b);
+void Obj0215c1bc_SetMsg(Lo021cad50 *w, s32 a);
 
 static inline BOOL Win_IsHidden(Lo021cad50 *w) {
     return (w->flags & 0x10000) == 0 ? TRUE : FALSE;
@@ -5881,9 +5881,9 @@ BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 id) {
     self->unk_64->font = 4;
     self->unk_64->vfunc_08();
     if (id != -1) {
-        func_ov000_0215c1bc(self->unk_64, 0x8000, MsgRes_GetString(data_02149ef8, id));
+        Obj0215c1bc_SetText(self->unk_64, 0x8000, MsgRes_GetString(data_02149ef8, id));
     } else {
-        func_ov000_0215ce8c(self->unk_64, a);
+        Obj0215c1bc_SetMsg(self->unk_64, a);
     }
     self->unk_64->posZ = -0x199a;
     self->unk_64->vfunc_70();
@@ -5900,8 +5900,8 @@ namespace m_Lo_0217bf34 {
 struct LoDE { s32 d; s32 *e; };
 extern "C" {
 
-u32 func_0204045c(void);
-void func_ov000_0215fe1c(void *self, s32 a, s32 b);
+u32 Rand_GetGlobal(void);
+void Obj0215fdfc_SetRange(void *self, s32 a, s32 b);
 void func_ov000_021c216c(void *p);
 void func_ov000_0216c954(void *self, u16 a, s32 b);
 
@@ -5933,14 +5933,14 @@ namespace m_Stub_0217c004 {
 
 extern "C" {
 
-BOOL func_ov000_0217bfe4(Task021cbb60 *self) {
+BOOL Task021cbb60_UpdateActive(Task021cbb60 *self) {
     if (*(void **)((u8 *)self + 0x64) != NULL) {
         return (BOOL)self;
     }
     return (*(u32 *)((u8 *)self + 0x4) & 0x10000) ? TRUE : FALSE;
 }
 
-void func_ov000_0217c004(void) {
+void Task021cbb60_PreUpdate(void) {
 }
 
 }
@@ -5991,7 +5991,7 @@ static inline BOOL Lo0217c008_Flag(VObj *o) {
     return LBIT(o, 0x48).b2 ? TRUE : FALSE;
 }
 
-void func_ov000_0217c008(Task021cbb60 *self) {
+void Task021cbb60_PostUpdate(Task021cbb60 *self) {
     if (self->state != 0xd) {
         return;
     }
@@ -6327,9 +6327,9 @@ extern void *data_ov000_021c9bf4[];
 void *Heap_Alloc(u32 size);
 void func_ov000_0214b810(void *p);
 void *func_ov000_0214b724(void *p);
-void *func_ov000_0214b6d8(void *p);
-void func_ov000_0214b88c(void *p, void *name);
-BOOL func_ov000_0214b8d8(void *p);
+void *Twl0214b6d8_Init(void *p);
+void Loader_Start(void *p, void *name);
+BOOL Loader_IsDone(void *p);
 u8 func_ov000_0214b8f4(void *p);
 s32 func_ov000_0214b6d0(void *p);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
@@ -6391,15 +6391,15 @@ void func_ov000_0217cf10(Task021cbb60 *self) {
         HEAP_DELETE(void *, self->unk_6c, func_ov000_0214b724(p); Heap_Free(p));
         p = Heap_Alloc(0x3c);
         if (p != NULL) {
-            p = func_ov000_0214b6d8(p);
+            p = Twl0214b6d8_Init(p);
         }
         self->unk_6c = p;
-        func_ov000_0214b88c(p, data_ov000_021c9bf4[1]);
+        Loader_Start(p, data_ov000_021c9bf4[1]);
         self->unk_48 = 1;
         break;
     }
     case 1:
-        if (!func_ov000_0214b8d8(self->unk_6c)) {
+        if (!Loader_IsDone(self->unk_6c)) {
             break;
         }
         if (!func_ov000_0214b8f4(self->unk_6c)) {
@@ -6452,8 +6452,8 @@ namespace m_Lo_0217d0c4 {
 
 extern "C" {
 
-void func_020473ac(void *s, s32 state);
-void func_0206c4c4(void *p);
+void SaveBase_SetState_020473ac(void *s, s32 state);
+void StageFlags_Reset(void *p);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
 static inline BOOL Ready0217d0c4(Lo021cad50 *o) {
@@ -6497,7 +6497,7 @@ static inline void Exit0217d0c4(Task021cbb60 *self, s32 next) {
 void func_ov000_0217d0c4(Task021cbb60 *self) {
     switch (self->unk_48) {
     case 0:
-        func_020473ac(self->unk_5c, 1);
+        SaveBase_SetState_020473ac(self->unk_5c, 1);
         LFLD(u32, self->unk_5c, 0x48) |= 0x40;
         LBIT(self->unk_5c, 0x48).b0 = 1;
         self->unk_48 = 1;
@@ -6554,13 +6554,13 @@ void func_ov000_0217d0c4(Task021cbb60 *self) {
         }
         o->flags |= 0x40000;
         self->unk_04 |= 0x100000;
-        func_0206c4c4(data_0214a424);
+        StageFlags_Reset(data_0214a424);
         Exit0217d0c4(self, 5);
         break;
     }
     case 6:
         self->unk_04 |= 0x200000;
-        func_0206c4c4(data_0214a424);
+        StageFlags_Reset(data_0214a424);
         Exit0217d0c4(self, 4);
         break;
     case 7: {
@@ -6617,7 +6617,7 @@ void func_ov000_0217d0c4(Task021cbb60 *self) {
         break;
     case 14:
         self->unk_5c->vfunc_74();
-        func_020473ac(self->unk_5c, 4);
+        SaveBase_SetState_020473ac(self->unk_5c, 4);
         self->unk_48 = 0xf;
         break;
     case 15:
@@ -6686,9 +6686,9 @@ namespace m_Lo_0217d66c {
 extern "C" {
 
 extern void *data_02097e4c;
-BOOL func_0203e688(void);
-void func_020473ac(void *s, s32 state);
-void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+BOOL Vram_IsIdle(void);
+void SaveBase_SetState_020473ac(void *s, s32 state);
+void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_ov000_0217b324(void *self, s32 a);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
@@ -6718,7 +6718,7 @@ static inline BOOL Waiting0217d66c(Task021cbb60 *self) {
 }
 
 static inline void SePlay0217d66c(s32 id) {
-    func_02049a48(data_02097e4c, id, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, id, -1, -1, -1);
 }
 
 void func_ov000_0217d66c(Task021cbb60 *self) {
@@ -6744,13 +6744,13 @@ void func_ov000_0217d66c(Task021cbb60 *self) {
             return;
         }
         self->unk_5c->vfunc_74();
-        func_020473ac(self->unk_5c, 4);
+        SaveBase_SetState_020473ac(self->unk_5c, 4);
         func_ov000_0217b324(self, 0);
         self->unk_48 = 1;
         break;
     }
     case 1:
-        if (!func_0203e688()) {
+        if (!Vram_IsIdle()) {
             return;
         }
         SePlay0217d66c(0x27);
@@ -6899,7 +6899,7 @@ namespace m_Lo_0217dba4 {
 
 extern "C" {
 extern void *data_ov000_021ccd54;
-void func_0206c994(void *p);
+void StageFlags_Restore(void *p);
 void func_ov000_02186204(void *p, s32 a);
 void func_ov000_0218781c(void *p, s32 a);
 void func_ov000_02187588(void *p);
@@ -6953,12 +6953,12 @@ void func_ov000_0217dba4(Task021cbb60 *self) {
     if (!(f & 0x20000000)) {
         if (Bit(f, 0x1000000)) {
             if (!Bit(f, 0x200000)) {
-                func_0206c994(data_0214a424);
+                StageFlags_Restore(data_0214a424);
             }
             func_ov000_02186204(data_ov000_021ccd54, 0);
         } else if (Bit(f, 0x2000000)) {
             if (!Bit(f, 0x200000)) {
-                func_0206c994(data_0214a424);
+                StageFlags_Restore(data_0214a424);
             }
             func_ov000_0218781c(data_ov000_021ccd54, 0);
         } else if (Bit(f, 0x8000000)) {
@@ -6995,13 +6995,13 @@ extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-s32 func_ov000_02154b58(void *p, s32 a);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+s32 UiList_GetItemById(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
-void func_ov000_0215bb14(void *a, void *b);
-BOOL func_0206f21c(u16 a, s32 b);
-void *func_020359d0(void *a, s32 b, s32 c);
-s32 func_02035b90(void *a, s32 b);
+void Obj0215bb14_SetText(void *a, void *b);
+BOOL Item_Give(u16 a, s32 b);
+void *ResMgr_Load(void *a, s32 b, s32 c);
+s32 ResMgr_IsLoaded(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
 void func_ov000_0217ddd4(Task021cbb60 *self) {
@@ -7071,10 +7071,10 @@ extern "C" {
 extern u8 data_0208b3d0[];
 extern VecFx32 data_ov000_021c9c10;
 u8 Gfx3DState_NextPolyId(void *p);
-void func_02043d20(void *p, s32 a);
+void Gfx3D_SendDL(void *p, s32 a);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, int d);
+void TexObj_DrawCell(void *a, void *b, void *c, int d);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
 s32 func_ov000_0214b8ec(void *p);
@@ -7128,7 +7128,7 @@ void func_ov000_0217df5c(Task021cbb60 *self, VecFx32 *pos) {
             v.x += 0xc000;
         }
     }
-    func_02043d20(g + 0x8b0, 0);
+    Gfx3D_SendDL(g + 0x8b0, 0);
     G3_Vec(0x1b, 0x1000, 0x1000, 0x1000);
     G3_Cmd1(0x2a, 0x20000000);
     G3_Cmd1(0x29, 0x1f00d0);
@@ -7182,7 +7182,7 @@ extern s16 FX_SinCosTable_[];
 s32 FX_Div(s32 a, s32 b);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, int d);
+void TexObj_DrawCell(void *a, void *b, void *c, int d);
 
 // The menu items (func_ov000_0217b230) are 0xb8-byte TextWins. Main/Gfx/TextWin.h clashes with
 // LoCommon.h, so this is its vtable up to Render (0x90). SetPos (0x20) and Render return void.
@@ -7350,7 +7350,7 @@ extern u8 data_ov000_021cb1b0[];
 extern u8 data_ov000_021cb0b8[];
 void *MsgRes_GetString(void *g, u32 id);
 BOOL StageFlags_IsValid(void);
-u16 func_02059454(void *a, s32 b, s32 c, s32 d);
+u16 DataRes_ReadBitRange(void *a, s32 b, s32 c, s32 d);
 BOOL func_ov000_02175e6c(void);
 
 class Obj0217ea30 {
@@ -7397,7 +7397,7 @@ s32 func_ov000_0217ea30(Lo0217ea30 *self, s32 msg) {
     switch (msg) {
     case 0:
         if (StageFlags_IsValid()) {
-            if (func_02059454(data_02fe152c, 5, 1, 4)) {
+            if (DataRes_ReadBitRange(data_02fe152c, 5, 1, 4)) {
                 g = data_02149ef8;
                 text.desc = MsgRes_GetString(g, 0x1d);
                 text.title = MsgRes_GetString(g, 0x8d);
@@ -7431,7 +7431,7 @@ s32 func_ov000_0217ea30(Lo0217ea30 *self, s32 msg) {
         break;
     case 2:
         if (StageFlags_IsValid()) {
-            if (func_02059454(data_02fe152c, 5, 1, 4)) {
+            if (DataRes_ReadBitRange(data_02fe152c, 5, 1, 4)) {
                 if (self->unk_44 == 0) {
                     LFLD(s32, p, 0x44) = 0;
                 } else if (self->unk_44 == 1) {
@@ -7473,13 +7473,13 @@ extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-s32 func_ov000_02154b58(void *p, s32 a);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+s32 UiList_GetItemById(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
-void func_ov000_0215bb14(void *a, void *b);
-BOOL func_0206f21c(u16 a, s32 b);
-void *func_020359d0(void *a, s32 b, s32 c);
-s32 func_02035b90(void *a, s32 b);
+void Obj0215bb14_SetText(void *a, void *b);
+BOOL Item_Give(u16 a, s32 b);
+void *ResMgr_Load(void *a, s32 b, s32 c);
+s32 ResMgr_IsLoaded(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
 void Task021cbae0_IsLoaded(void) {
@@ -7491,7 +7491,7 @@ void Task021cbae0_Start(Task021cbae0 *self) {
     if (self->vfunc_28()) {
         return;
     }
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 void Task021cbae0_Init(Task021cbae0 *self) {
@@ -7521,10 +7521,10 @@ namespace m_Stub_0217ef34 {
 
 extern "C" {
 
-void func_ov000_0217ef34(void) {
+void Task021cbae0_UpdateActive(void) {
 }
 
-void func_ov000_0217ef38(void) {
+void Task021cbae0_PreUpdate(void) {
 }
 
 }
@@ -7546,24 +7546,24 @@ extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd64;
 extern u8 data_0208b318[];
 extern void *data_02097e4c;
-u16 func_02059454(void *p, s32 a, s32 b, s32 c);
+u16 DataRes_ReadBitRange(void *p, s32 a, s32 b, s32 c);
 s32 func_ov000_0217ea30(VObj *self, s32 msg);
 void MessageQueue_FreeBuffer(void *a, void *b);
 void EffectMgr_FreeAll(void *p);
 void ActorMgr_ClearGroup(void *p, s32 a);
-void func_0206e900(char *dst, const char *src);
-void func_02041440(void *p, void *name, s32 c);
+void LangData_LocalizePath(char *dst, const char *src);
+void TexObj_Init(void *p, void *name, s32 c);
 void *STD_CopyString(void *dst, void *src);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
+void TexObj_SetRes(void *model, void *a);
+void TexObj_SelectImage(void *model, s32 a, s32 b);
 void func_0204a2e0(void *mgr, s32 a);
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0204aab0(void *p);
 void func_0203cc58(s32 a, s32 b, s32 c);
 void func_ov000_02187150(void *p, s32 a);
 void func_ov000_02182b0c(void *p);
-Robo021ca458 *func_ov000_0219bf90(void);
-void func_ov000_021b4774(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
+void Robo021ca458_RestoreHp(void);
 void func_020623fc(void);
 void func_ov000_02182590(void *p);
 
@@ -7640,18 +7640,18 @@ static inline u8 *NewWorldMapModel(void) {
     if (m) {
         char *n = "cewor1map00";
         char *a = "menu/worldmap";
-        func_02041218((struct PlttRes *)(m + 0x88));
-        func_02041440(m, n, 0);
+        PlttRes_Init_02041218((struct PlttRes *)(m + 0x88));
+        TexObj_Init(m, n, 0);
         STD_CopyString(m + 0x2c, a);
     }
     return m;
 }
 
-void func_ov000_0217ef3c(Task021cbae0 *self) {
+void Task021cbae0_PostUpdate(Task021cbae0 *self) {
     char buf[0x20];
     switch (self->unk_3c) {
     case 0:
-        if (func_02059454(data_02fe152c, 5, 1, 3)) {
+        if (DataRes_ReadBitRange(data_02fe152c, 5, 1, 3)) {
             LoSwitchTaskC(3, 0)->callback = (TaskCallback)func_ov000_0217ea30;
             self->vfunc_48();
             self->unk_3c = 1;
@@ -7707,7 +7707,7 @@ void func_ov000_0217ef3c(Task021cbae0 *self) {
         EffectMgr_FreeAll(data_0214a420);
         ActorMgr_ClearGroup(data_ov000_021ccd68, 0xf000);
         LFLD(LoBits8, data_ov000_021ccd64, 0xc).b0 = 0;
-        func_0206e900(buf, "pic/title");
+        LangData_LocalizePath(buf, "pic/title");
         o = NewLoader();
         self->unk_48 = o;
         LFLD(s32, o, 0x44) = 2;
@@ -7737,12 +7737,12 @@ void func_ov000_0217ef3c(Task021cbae0 *self) {
         self->unk_40 = 0;
         m = NewWorldMapModel();
         self->unk_4c = (Model *)m;
-        func_020417e0(self->unk_4c, (void *)self->unk_48->vfunc_10());
-        func_02041d9c(self->unk_4c, 2, 0xffff);
+        TexObj_SetRes(self->unk_4c, (void *)self->unk_48->vfunc_10());
+        TexObj_SelectImage(self->unk_4c, 2, 0xffff);
         m = NewWorldMapModel();
         self->unk_54 = (Model *)m;
-        func_020417e0(self->unk_54, (void *)self->unk_50->vfunc_10());
-        func_02041d9c(self->unk_54, 0, 0xffff);
+        TexObj_SetRes(self->unk_54, (void *)self->unk_50->vfunc_10());
+        TexObj_SelectImage(self->unk_54, 0, 0xffff);
         self->unk_54->unk_150 = -0x1ccd;
         func_0204a2e0(data_02097e4c, 0);
         func_0203cb78(0x3c000, 0, -1);
@@ -7807,8 +7807,8 @@ void func_ov000_0217ef3c(Task021cbae0 *self) {
         }
         self->fadeLen = 0x1000;
         self->vfunc_0c(0);
-        if (func_ov000_0219bf90()) {
-            func_ov000_021b4774();
+        if (ActorMgr_FindPlayer()) {
+            Robo021ca458_RestoreHp();
         }
         func_020623fc();
         { u8 *q = data_ov000_021ccd54; q[0xac] = 1;
@@ -7827,7 +7827,7 @@ namespace m_Lo_0217f778 {
 
 extern "C" {
 extern const s16 FX_SinCosTable_[];
-void func_02043d20(void *obj, int a);
+void Gfx3D_SendDL(void *obj, int a);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
 static inline void G3_Vec(int cmd, int x, int y, int z) {
@@ -7843,7 +7843,7 @@ void Task021cbae0_Draw(Task021cbae0 *self) {
     if (self->fadeRatio == 0) {
         return;
     }
-    func_02043d20(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
     G3_Vec(0x1b, 0x1000, 0x1000, 0x1000);
     self->fadeSin = FX_SinCosTable_[((s32)(self->fadeRatio << 14) >> 16) * 2];
     m = self->unk_4c;
@@ -7874,13 +7874,13 @@ extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-s32 func_ov000_02154b58(void *p, s32 a);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+s32 UiList_GetItemById(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
-void func_ov000_0215bb14(void *a, void *b);
-BOOL func_0206f21c(u16 a, s32 b);
-void *func_020359d0(void *a, s32 b, s32 c);
-s32 func_02035b90(void *a, s32 b);
+void Obj0215bb14_SetText(void *a, void *b);
+BOOL Item_Give(u16 a, s32 b);
+void *ResMgr_Load(void *a, s32 b, s32 c);
+s32 ResMgr_IsLoaded(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
 VObj *Task021cbf60_New(void) {
@@ -7914,8 +7914,8 @@ BOOL func_ov000_0217f958(UiList *self, UiListItem *msg) {
         o->unk_44->hidden = 0;
         o->unk_44->flag2 = 0;
         p = o->unk_44;
-        p->vfunc_a8(func_ov000_02154b58(p, 1));
-        func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+        p->vfunc_a8(UiList_GetItemById(p, 1));
+        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
     }
     return TRUE;
 }
@@ -7926,7 +7926,7 @@ BOOL func_ov000_0217f9e8(UiList *self, UiListItem *msg) {
         Task021cbf60 *o = (Task021cbf60 *)self->owner;
         func_0206ecd4(0x100, o->unk_5f, msg->id);
         if (o->unk_40 != NULL) {
-            func_ov000_0215bb14(o->unk_40, o->unk_5f);
+            Obj0215bb14_SetText(o->unk_40, o->unk_5f);
             o->unk_40->vfunc_70();
         }
     }
@@ -7949,9 +7949,9 @@ BOOL func_ov000_0217fa34(UiList *self, UiListItem *msg) {
                 }
             }
             if (n->id != o->unk_5c) {
-                func_0206f21c(n->id, 0);
+                Item_Give(n->id, 0);
                 if (o->unk_5c != 0) {
-                    func_0206f21c(o->unk_5c, 1);
+                    Item_Give(o->unk_5c, 1);
                 }
             }
             o->unk_44->hidden = 1;
@@ -7959,11 +7959,11 @@ BOOL func_ov000_0217fa34(UiList *self, UiListItem *msg) {
         }
         o->unk_44->hidden = 1;
         o->unk_44->flag2 = 1;
-        func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
     } else {
         o->unk_44->hidden = 1;
         o->unk_44->flag2 = 1;
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     }
     return FALSE;
 }
@@ -7980,16 +7980,16 @@ extern "C" {
 extern void *data_02097cdc;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
-void func_02036838(void *a, void *b, s32 c, s32 d);
+void ResMgr_ReleaseByName(void *a, void *b, s32 c, s32 d);
 
-void func_ov000_0217fb44(Task021cbf60 *self) {
+void Task021cbf60_FreeWindows(Task021cbf60 *self) {
     HEAP_DELETE_VOBJ(self->unk_3c);
     HEAP_DELETE_VOBJ(self->unk_40);
     HEAP_DELETE_VOBJ(self->unk_44);
     HEAP_DELETE_VOBJ(self->unk_48);
     HEAP_DELETE_MODEL(self->unk_4c);
-    func_02036838(data_02097cdc, data_0208cca0, 7, 0);
-    func_02036838(data_02097cdc, data_0208cc94, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_0208cca0, 7, 0);
+    ResMgr_ReleaseByName(data_02097cdc, data_0208cc94, 7, 0);
 }
 
 }
@@ -8008,24 +8008,24 @@ extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_02097e4c;
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-s32 func_ov000_02154b58(void *p, s32 a);
+void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
+s32 UiList_GetItemById(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
-void func_ov000_0215bb14(void *a, void *b);
-BOOL func_0206f21c(u16 a, s32 b);
-void *func_020359d0(void *a, s32 b, s32 c);
-s32 func_02035b90(void *a, s32 b);
+void Obj0215bb14_SetText(void *a, void *b);
+BOOL Item_Give(u16 a, s32 b);
+void *ResMgr_Load(void *a, s32 b, s32 c);
+s32 ResMgr_IsLoaded(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
 void Task021cbf60_Load(void) {
-    func_020359d0(data_0208cca0, 7, 0);
-    func_020359d0(data_0208cc94, 7, 0);
+    ResMgr_Load(data_0208cca0, 7, 0);
+    ResMgr_Load(data_0208cc94, 7, 0);
 }
 
 BOOL Task021cbf60_IsLoaded(void) {
     BOOL r = LoTaskObj()->vfunc_2c() ? TRUE : FALSE;
-    r = (r & func_02035b90(data_0208cca0, 7)) ? TRUE : FALSE;
-    return (r & func_02035b90(data_0208cc94, 7)) ? TRUE : FALSE;
+    r = (r & ResMgr_IsLoaded(data_0208cca0, 7)) ? TRUE : FALSE;
+    return (r & ResMgr_IsLoaded(data_0208cc94, 7)) ? TRUE : FALSE;
 }
 
 }
@@ -8050,14 +8050,14 @@ extern u8 data_ov000_021cb0b8[];
 extern u8 data_ov000_021cafc0[];
 void *Heap_Alloc(u32 size);
 void *MsgRes_GetString(void *g, u32 id);
-void func_ov000_0215bb14(void *o, void *s);
-void func_ov000_02173648(void *self);
+void Obj0215bb14_SetText(void *o, void *s);
+void TaskList_Insert(void *self);
 void func_ov000_021547e8(void *a, void *b, void *c, int d);
 void func_ov000_021546ec(void *a, const void *b, const char *c, u16 d);
-s32 func_ov000_02154b58(void *p, s32 a);
-s32 func_0206ec48(u16 id);
+s32 UiList_GetItemById(void *p, s32 a);
+s32 Param_Get(u16 id);
 s32 func_0206f080(u16 id);
-u8 *func_0206ede8(u16 id);
+u8 *Param_GetEntry(u16 id);
 BOOL func_ov000_0217f958(void);
 BOOL func_ov000_0217f9e8(void);
 BOOL func_ov000_0217fa34(void);
@@ -8118,10 +8118,10 @@ void Task021cbf60_Start(Task021cbf60 *self) {
     }
     id = self->unk_5c;
     if (ItemCat0217fd70(id) == 1) {
-        a = func_0206ec48(id);
+        a = Param_Get(id);
         b = func_0206f080(id);
         e = (u8 *)self->unk_3c->vfunc_74(a, id, (u16)b, 1);
-        LFLD(s32, e, 0x10) = *func_0206ede8(self->unk_5c);
+        LFLD(s32, e, 0x10) = *Param_GetEntry(self->unk_5c);
         LFLD(s16, e, 0xa) = 0xb;
         LFLD(s32, e, 0x24) = 4;
     }
@@ -8131,10 +8131,10 @@ void Task021cbf60_Start(Task021cbf60 *self) {
             n = base[i];
             iid = i | 0x2000;
             if (n > 0) {
-                a = func_0206ec48(iid);
+                a = Param_Get(iid);
                 b = func_0206f080(iid);
                 e = (u8 *)self->unk_3c->vfunc_74(a, iid, (u16)b, n);
-                LFLD(s32, e, 0x10) = *func_0206ede8(self->unk_5c);
+                LFLD(s32, e, 0x10) = *Param_GetEntry(self->unk_5c);
             }
         }
     }
@@ -8143,7 +8143,7 @@ void Task021cbf60_Start(Task021cbf60 *self) {
     self->unk_3c->onCursor = (UiItemFn)func_ov000_0217f9e8;
     {
         VObj *t = self->unk_3c;
-        t->vfunc_a8(func_ov000_02154b58(t, 0));
+        t->vfunc_a8(UiList_GetItemById(t, 0));
     }
     self->unk_3c->vfunc_08();
     self->unk_3c->flags &= ~2;
@@ -8170,7 +8170,7 @@ void Task021cbf60_Start(Task021cbf60 *self) {
         s->slideZ = -0xccd;
     }
     self->unk_40->slideMode = 1;
-    func_ov000_0215bb14(self->unk_40, MsgRes_GetString(g, 0x11d));
+    Obj0215bb14_SetText(self->unk_40, MsgRes_GetString(g, 0x11d));
     self->unk_40->vfunc_70();
     self->unk_40->vfunc_08();
     o = (VObj *)Heap_Alloc(0x1e4);
@@ -8221,7 +8221,7 @@ void Task021cbf60_Start(Task021cbf60 *self) {
     self->unk_48->flags |= 0x20000000;
     self->unk_48->vfunc_f4(1, MsgRes_GetString(g, 0x32));
     self->unk_48->vfunc_08();
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 }
@@ -8233,7 +8233,7 @@ namespace m_Stub_02180350 {
 
 extern "C" {
 extern void *data_02097e4c;
-void *func_02049a48(void *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
+void *SndMgr_PlayVolume(void *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 }
 
 typedef struct {
@@ -8252,7 +8252,7 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_02180350(Task021cbf60 *self) {
+void Task021cbf60_UpdateActive(Task021cbf60 *self) {
     Inner02180350 *in = (Inner02180350 *)self->unk_44;
     u16 trig = data_02097dc8->trig;
     BOOL ok = FALSE;
@@ -8270,7 +8270,7 @@ void func_ov000_02180350(Task021cbf60 *self) {
         return;
     }
     if (trig & 2) {
-        func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
     }
 }
 
@@ -8283,7 +8283,7 @@ namespace m_Lo_02180400 {
 
 extern "C" {
 
-void func_ov000_02180400(Task021cbf60 *self) {
+void Task021cbf60_PreUpdate(Task021cbf60 *self) {
     switch (self->state) {
     case 8:
         self->unk_5e = 0;
@@ -8331,7 +8331,7 @@ void func_02065b84(void *p);
 void func_ov000_021bc6c0(void *p);
 void func_0205a69c(void *p);
 
-void func_ov000_02180524(Task021cbf60 *self) {
+void Task021cbf60_PostUpdate(Task021cbf60 *self) {
     s32 ok;
     LoBase021cafc0_021cb0b8 *p;
     if (self->unk_5e == 0) {
@@ -8395,7 +8395,7 @@ static inline Task *TaskList_Find02180754(s32 id) {
     return NULL;
 }
 
-void func_ov000_02180660(s32 id, s32 arg) {
+void TaskHost_Create(s32 id, s32 arg) {
     TaskHost *h = (TaskHost *)Heap_Alloc(sizeof(TaskHost));
     s32 mode;
     if (h != NULL) {
@@ -8422,7 +8422,7 @@ void func_ov000_02180660(s32 id, s32 arg) {
     }
 }
 
-void func_ov000_02180754(void) {
+void TaskHost_Destroy(void) {
     Task *task;
     Task *next;
     void *saved;
@@ -8500,11 +8500,11 @@ typedef struct {
 } Finder;
 
 extern "C" {
-s32 func_ov000_021993fc(Finder *self, Query *q, void **out, s32 max);
-s32 func_ov000_02199128(Finder *self, Query *q, void **out, s32 max);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+s32 Finder_CollectParts(Finder *self, Query *q, void **out, s32 max);
+s32 Finder_CollectActors(Finder *self, Query *q, void **out, s32 max);
+BOOL History_SetState(void *a, s32 b, s32 c);
 
-void *func_ov000_0218084c(TaskHost *cur, s32 kind, s32 c) {
+void *TaskHost_RequestSwitch(TaskHost *cur, s32 kind, s32 c) {
     s32 st;
     data_ov000_021ccd34 = 1;
     cur->task = LoFindTask(kind);
@@ -8685,20 +8685,20 @@ extern u8 data_0208ba70[];
 extern u8 data_ov000_021cbac8[];
 extern u8 data_ov000_021cbbe0[];
 extern u8 data_ov000_021cbce0[];
-void func_ov000_021c2310(void *ptr);
+void ListRow_Unlink(void *ptr);
 
 void Heap_Free(void *ptr);
-void func_ov000_0217fb44(Task021cbf60 *self);
-void func_ov000_02178110(VObj *self);
+void Task021cbf60_FreeWindows(Task021cbf60 *self);
+void Task021cbe60_FreeWindows(VObj *self);
 
-void func_ov000_02180bec(void) {
+void Task_Load(void) {
 }
 
-BOOL func_ov000_02180bf0(void) {
+BOOL Task_IsLoaded(void) {
     return TRUE;
 }
 
-void func_ov000_02180bf8(void) {
+void Task_Start(void) {
 }
 
 void func_ov000_02180bfc(Obj021810e8 *self) {
@@ -8716,7 +8716,7 @@ void func_ov000_02180bfc(Obj021810e8 *self) {
 
 VObj *Task021cbf60_DtorDelete(Task021cbf60 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbf60);
-    func_ov000_0217fb44(self);
+    Task021cbf60_FreeWindows(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
     Heap_Free(self);
@@ -8725,7 +8725,7 @@ VObj *Task021cbf60_DtorDelete(Task021cbf60 *self) {
 
 VObj *Task021cbf60_Dtor(Task021cbf60 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbf60);
-    func_ov000_0217fb44(self);
+    Task021cbf60_FreeWindows(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
     return self;
@@ -8818,7 +8818,7 @@ VObj *Task021cbde0_Dtor(VObj *self) {
 
 VObj *Task021cbe60_DtorDelete(Task021cbe60 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbe60);
-    func_ov000_02178110(self);
+    Task021cbe60_FreeWindows(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
     Heap_Free(self);
@@ -8827,7 +8827,7 @@ VObj *Task021cbe60_DtorDelete(Task021cbe60 *self) {
 
 VObj *Task021cbe60_Dtor(Task021cbe60 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbe60);
-    func_ov000_02178110(self);
+    Task021cbe60_FreeWindows(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
     return self;
@@ -8859,7 +8859,7 @@ VObj *Task021cbfe0_DtorDelete(Task021cbfe0 *self) {
     return self;
 }
 
-BOOL func_ov000_021810e8(Obj021810e8 *self) {
+BOOL Task021cbfe0_TryReleaseCurrent(Obj021810e8 *self) {
     if (self->unk_3c != 0) {
         return FALSE;
     }
@@ -8907,7 +8907,7 @@ static inline BOOL IsState5(Obj021810e8 *obj) {
     return obj->unk_04 == 5 ? TRUE : FALSE;
 }
 
-BOOL func_ov000_02181250(Obj021810e8 *self) {
+BOOL Task021cbbe0_TryReleaseCurrent(Obj021810e8 *self) {
     if (self->unk_40 != NULL && !IsState5(self->unk_40)) {
         return FALSE;
     }
@@ -8967,7 +8967,7 @@ VObj *Task021cbce0_Dtor(VObj *self) {
 
 VObj *Ov000Vt_021cbac8_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbac8);
-    func_ov000_021c2310(self);
+    ListRow_Unlink(self);
     Heap_Free(self);
     return self;
 }
@@ -8980,7 +8980,7 @@ void func_ov000_02181490(void) {
 
 VObj *Ov000Vt_021cbac8_Dtor(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbac8);
-    func_ov000_021c2310(self);
+    ListRow_Unlink(self);
     return self;
 }
 

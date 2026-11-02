@@ -6,10 +6,10 @@ extern "C" {
 extern char data_ov015_022132ac[];
 extern char data_ov015_022132bb[];
 void func_ov015_02212430(Ov015Obj292c *self);
-s32 func_02049bdc(void *a, s32 b, s32 c);
+s32 SndMgr_PlayPan(void *a, s32 b, s32 c);
 extern u8 data_ov015_022132e0[];
-void *func_ov000_0218fee4(void *a);
-void *func_ov000_0218ea20(void *a);
+void *Model0218fe1c_FreeAnims(void *a);
+void *ResSet_ReleaseAll(void *a);
 
 void func_ov015_022120c0(Ov015Obj292c *self) {
     self->fx = NULL;
@@ -37,7 +37,7 @@ void func_ov015_022120fc(Ov015Obj292c *self) {
     o = self->marker;
     if (o != NULL) {
         if (o != NULL) {
-            func_ov000_021bd228(o);
+            ActorMarker_Release(o);
             Heap_Free(o);
         }
         self->marker = NULL;
@@ -46,11 +46,11 @@ void func_ov015_022120fc(Ov015Obj292c *self) {
 }
 
 void func_ov015_02212180(Ov015Obj292c *self) {
-    func_020359d0(data_ov015_022132ac, 7, 0);
+    ResMgr_Load(data_ov015_022132ac, 7, 0);
 }
 
 int func_ov015_0221219c(Ov015Obj292c *self) {
-    return func_02035b90(data_ov015_022132ac, 7);
+    return ResMgr_IsLoaded(data_ov015_022132ac, 7);
 }
 
 BOOL func_ov015_022121b4(Ov015Obj292c *self) {
@@ -64,7 +64,7 @@ BOOL func_ov015_022121b4(Ov015Obj292c *self) {
     self->fx->speed = 0x800;
     q = (ActorMarker *)Heap_Alloc(0xa8);
     if (q != NULL) {
-        func_ov000_021bd198(q);
+        ActorMarker_Init(q);
     }
     self->marker = q;
     q->show = 0;
@@ -99,8 +99,8 @@ void func_ov015_02212264(Ov015Obj292c *self) {
         o->unk_50.x = self->unk_24.x;
         o->unk_50.y = self->unk_24.y;
         o->unk_50.z = self->unk_24.z;
-        func_ov000_021bd624(self->marker);
-        func_ov000_021bd7a0(self->marker);
+        ActorMarker_Update(self->marker);
+        ActorMarker_Draw(self->marker);
     }
 }
 
@@ -116,9 +116,9 @@ void func_ov015_0221234c(Ov015Obj292c *self) {
     if (Ov015_MarkerShown(o)) {
         return;
     }
-    func_ov000_021bd314(o, 4);
+    ActorMarker_SetKind(o, 4);
     self->marker->show = 1;
-    func_02049bdc(data_02097e4c, 0xe, 5);
+    SndMgr_PlayPan(data_02097e4c, 0xe, 5);
     if (self->fx != NULL) {
         self->fx->speed = 0x2000;
     }
@@ -133,7 +133,7 @@ void func_ov015_022123c4(Ov015Obj292c *self) {
         return;
     }
     o->show = 0;
-    func_02049bdc(data_02097e4c, 0x1f, -3);
+    SndMgr_PlayPan(data_02097e4c, 0x1f, -3);
     if (self->fx != NULL) {
         self->fx->speed = 0x800;
     }
@@ -163,8 +163,8 @@ BOOL func_ov015_022124e4(Ov015Obj290 *self) {
 
 void *Ov015Obj290_Dtor(Ov015Obj290 *self) {
     SET_VT(self, data_ov015_022132e0);
-    func_ov000_0218fee4(&self->model);
-    func_ov000_0218ea20(&self->res);
+    Model0218fe1c_FreeAnims(&self->model);
+    ResSet_ReleaseAll(&self->res);
     return self;
 }
 

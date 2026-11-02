@@ -6,13 +6,13 @@ void *Heap_AllocArray(u32 size);
 
 void func_ov002_021eb964(Ov002StageFile *self);
 
-void func_ov002_021ead1c(Ov002StageFile *self, u8 *data, char *name, u8 c) {
+void Ov002StageFile_Open(Ov002StageFile *self, u8 *data, char *name, u8 c) {
     s32 hdr;
     s32 n0;
     s32 n1;
     s32 n2;
     s32 n3;
-    func_ov002_021eae48(self);
+    Ov002StageFile_Free(self);
     self->unk_04 = name;
     self->data = data;
     self->unk_0c = c;

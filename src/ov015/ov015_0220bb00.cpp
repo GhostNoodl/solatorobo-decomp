@@ -7,13 +7,13 @@ extern char data_ov015_02212e68[];
 extern char data_ov015_02212e55[];
 extern u8 data_ov015_02212eb0[];
 extern u8 data_ov015_02212e0d[];
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
+BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
 
 BOOL Ov015FishState18_Exit(Ov015FishState18 *self) {
     EffectObj *o;
     void *saved;
-    o = func_020657b0(data_0214a420, self->fxKey);
+    o = Effect_Find_020657b0(data_0214a420, self->fxKey);
     if (o != NULL) {
         HEAP_PUSH(saved);
         if (o != NULL) {
@@ -52,8 +52,8 @@ static inline void Ov015_Spawn0bb68(Ov015FishState18 *self, s32 s1, s32 s2) {
         b.z = FX_Mul(q->scale.z, k);
     }
     o->SetScale(&b);
-    func_02049a48(data_02097e4c, s1, -1, -1, -1);
-    func_02049a48(data_02097e4c, s2, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, s1, -1, -1, -1);
+    SndMgr_PlayVolume(data_02097e4c, s2, -1, -1, -1);
 }
 void func_ov015_0220bb68(Ov015FishState18 *self, Ov015Fish *p) {
     Ov015Vec t(*(Ov015Vec *)&p->pos);
@@ -93,7 +93,7 @@ void func_ov015_0220be38(Ov015FishState18 *self, Ov015Fish *p) {
     a.x = q->pos.x;
     a.y = q->pos.y > 0 ? 0 : q->pos.y;
     a.z = q->pos.z;
-    e = func_020657b0(data_0214a420, self->fxKey);
+    e = Effect_Find_020657b0(data_0214a420, self->fxKey);
     if (e == NULL) {
         e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e55, 0, &self->fish->pos);
         e->unk_d4 = 1;
@@ -127,7 +127,7 @@ void func_ov015_0220be38(Ov015FishState18 *self, Ov015Fish *p) {
         d.z = FX_Mul(e->scale.z, s);
         e->SetScale(&d);
         if (self->timer == 1) {
-            func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
         }
     }
 }
@@ -149,9 +149,9 @@ BOOL Ov015FishState1c_Enter(Ov015FishState1c *self, Ov015Fish *p) {
     self->timer = 0x1e;
     self->unk_0c = 0x4b0;
     self->unk_10 = 0;
-    func_ov000_02190cb0(&p->model, data_ov015_02212e0d, 0x19a, 0);
+    Model0218fe1c_SetAnim(&p->model, data_ov015_02212e0d, 0x19a, 0);
     p->animSpeed = 0x1000;
-    func_ov000_021915a0(&p->model);
+    Model0218fe1c_SetLoop(&p->model);
     p->unk_bc = 4;
     p->drawMode = 2;
 
@@ -162,7 +162,7 @@ BOOL Ov015FishState1c_Enter(Ov015FishState1c *self, Ov015Fish *p) {
 BOOL func_ov015_0220c810(Ov015FishState1c *self);
 void func_ov015_0220c6c8(Ov015FishState1c *self, Ov015Fish *p);
 s32 Rand_UpTo(s32 n);
-void func_ov000_02191618(void *a);
+void Model0218fe1c_ClearLoop(void *a);
 extern u8 data_ov015_02212e74[];
 
 BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
@@ -175,9 +175,9 @@ BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
     if (self->step != 0 && self->step != 5 && !func_ov015_0220c810(self)) {
         self->step = 5;
         self->timer = 0x5a;
-        func_ov000_02190cb0(&p->model, data_ov015_02212e74, 0x19a, 0);
+        Model0218fe1c_SetAnim(&p->model, data_ov015_02212e74, 0x19a, 0);
         p->animSpeed = 0x800;
-        func_ov000_02191618(&p->model);
+        Model0218fe1c_ClearLoop(&p->model);
         p->unk_bc = 0;
     }
     switch (self->step) {
@@ -234,7 +234,7 @@ BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
             VEC_Normalize(&d2, (&p->dir));
         }
         if (self->timer == 0xf) {
-            func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
         }
         if (self->timer <= 0) {
             s32 w;
@@ -264,7 +264,7 @@ BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
             VEC_Normalize(&d2, (&p->dir));
         }
         if (self->timer == 0xf) {
-            func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
         }
         if (self->timer <= 0) {
             self->step = 2;

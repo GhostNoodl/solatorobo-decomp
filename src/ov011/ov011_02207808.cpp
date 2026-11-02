@@ -22,12 +22,12 @@ namespace m_02200aac {
 extern "C" {
 
 s16 Ov003Ticker_GetValue(void *p);
-void func_ov000_021984f4(void *p, s32 a, s32 b);
-void func_ov000_0219864c(void *p, s32 a, s32 b);
-s32 func_0206fef8(u32 id);
-void *func_ov000_0218fe1c(void *p);
-BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-void func_ov000_0219badc(void *a, void *b, s32 c);
+void Obj021984c8_UpdatePos(void *p, s32 a, s32 b);
+void ActorSub48_UpdatePos(void *p, s32 a, s32 b);
+s32 Tbl_FindEntry_0206fef8(u32 id);
+void *Model0218fe1c_Init(void *p);
+BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
+void Model0218fe1c_Setup(void *a, void *b, s32 c);
 
 s32 Ov011Ticker_ScaledValue(void *p, s32 b) {
     return FX_Mul(Ov003Ticker_GetValue(p), b);
@@ -35,13 +35,13 @@ s32 Ov011Ticker_ScaledValue(void *p, s32 b) {
 
 void Ov011ActorBase_UpdateSub44(Ov003Actor *self) {
     if (self->unk_44 != NULL) {
-        func_ov000_021984f4(self->unk_44, 0, 0);
+        Obj021984c8_UpdatePos(self->unk_44, 0, 0);
     }
 }
 
 void Ov011Actor_UpdateHit(Ov003Actor *self) {
     if (self->hit != NULL) {
-        func_ov000_0219864c(self->hit, 0, 0);
+        ActorSub48_UpdatePos(self->hit, 0, 0);
     }
 }
 
@@ -91,15 +91,15 @@ BOOL Ov011Model2_Init(Ov011Model2 *self, void *a, void *b) {
     self->b2 = 0;
     self->unk_02 = 0;
     self->unk_04 = 0;
-    r = func_0206fef8((u32)b);
+    r = Tbl_FindEntry_0206fef8((u32)b);
     p = Heap_Alloc(0xe8);
     if (p != NULL) {
-        p = func_ov000_0218fe1c(p);
+        p = Model0218fe1c_Init(p);
     }
     self->model = (Model0218fe1c *)p;
-    func_ov000_0218ffdc(p, a, 0, 1);
+    Model0218fe1c_SetRes(p, a, 0, 1);
     self->model->actor_id = 0xffff;
-    func_ov000_0219badc(self->model, a, r);
+    Model0218fe1c_Setup(self->model, a, r);
     self->model->visible = 1;
     return TRUE;
 }
@@ -186,7 +186,7 @@ extern "C" {
 
 extern u8 data_ov011_022079f0[];
 void *ActorEx_Ctor(void *p);
-void *func_ov000_0219429c(void *p);
+void *ActorEx_DtorBase(void *p);
 void Ov003Ticker_Clear_021d7ca8(void *p);
 void Ov003Ticker_Release_021d7d8c(void *p);
 void Ov003Ticker_Release_021d7ce0(void *p);
@@ -216,7 +216,7 @@ void *Ov011Npc_Dtor(Ov011Npc *self) {
     Ov003Ticker_Release_021d7ce0(self->unk_f0);
     Ov003Ticker_Release_021d7ce0(self->unk_e4);
     Ov003Ticker_Release_021d7ce0(self->unk_d8);
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
@@ -232,14 +232,14 @@ void *Ov011Npc_DtorDelete(Ov011Npc *self) {
     Ov003Ticker_Release_021d7ce0(self->unk_f0);
     Ov003Ticker_Release_021d7ce0(self->unk_e4);
     Ov003Ticker_Release_021d7ce0(self->unk_d8);
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 extern u16 data_ov011_02207f00;
 s32 Ov011Ticker_ScaledValue(void *p, s32 b);
-s32 func_ov000_02194c08(void *p);
+s32 ActorEx_Draw(void *p);
 
 #define OV011_ABS(x) ((x) < 0 ? -(x) : (x))
 
@@ -277,7 +277,7 @@ s32 Ov011Npc_Draw(Ov011Npc *self) {
     old = self->unk_3c->unk_14;
     self->unk_3c->unk_14 = FX_Mul(old, 0x2800);
     self->model->trans = self->pos;
-    r = func_ov000_02194c08(self);
+    r = ActorEx_Draw(self);
     self->unk_3c->unk_14 = old;
     self->pos = saved;
     m = self->model;
@@ -352,23 +352,23 @@ struct Ov011Bits94 {
 
 extern "C" {
 
-void func_ov000_02194758(void *p);
+void ActorEx_Start(void *p);
 BOOL Ov003Ticker_Start_021d7d24(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_021953b4(void *p);
+void ActorEx_Update(void *p);
 void Ov003Ticker_Update_021d7dd0(void *p);
-void func_ov000_02195848(void *p);
+void ActorEx_StateIdle(void *p);
 void *Target_Get(void *p);
 Actor *Actor_GetTarget(void *p);
-BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, VecFx32 *v, s32 e, s32 f, s32 g, s32 h, s32 i);
-void func_ov000_02196c40(void *p);
-void func_ov000_02196060(void *p);
-void func_ov000_0219763c(void *p);
+BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 mask, VecFx32 *v, s32 e, s32 f, s32 g, s32 h, s32 i);
+void ActorEx_StateFly(void *p);
+void ActorEx_StateThrown(void *p);
+void ActorEx_StateDie(void *p);
 void *History_Init(void *p);
 void Ov011Fx_Release(Ov011Fx *p);
 
 void Ov011Npc_Start(Ov011Npc *self) {
     ActorSub44 *p;
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     Ov003Ticker_Start_021d7d24(self->unk_d8, 0, 0, 1, 1);
     Ov003Ticker_Start_021d7d24(self->unk_e4, 0, 0, 1, 1);
     Ov003Ticker_Start_021d7d24(self->unk_f0, 0, 0, 1, 1);
@@ -380,7 +380,7 @@ void Ov011Npc_Start(Ov011Npc *self) {
 }
 
 void Ov011Npc_Update(Ov011Npc *self) {
-    func_ov000_021953b4(self);
+    ActorEx_Update(self);
     if (self->unk_ce_0) {
         self->fsm->flags |= 2;
         self->unk_44->unk_22_1 = 0;
@@ -399,7 +399,7 @@ void Ov011Npc_StateIdle(Ov011Npc *self) {
     u16 mask;
     void *a;
     if (!self->unk_ce_0) {
-        func_ov000_02195848(self);
+        ActorEx_StateIdle(self);
     }
     mask = 0;
     a = Target_Get(self->targetObj);
@@ -418,7 +418,7 @@ void Ov011Npc_StateIdle(Ov011Npc *self) {
     if (mask == 0) {
         return;
     }
-    func_ov000_0219aae8(self, self, self->targetObj->unk_08, self->targetObj->unk_0a, mask, &v, 0,
+    Hit_ApplyInArea(self, self, self->targetObj->unk_08, self->targetObj->unk_0a, mask, &v, 0,
                         self->radius, self->height, 100, 0x1000);
 }
 
@@ -427,9 +427,9 @@ void Ov011Npc_StateThrown(Ov011Npc *self) {
         self->friction = 0;
         self->gravity = 0;
         self->velY = 0;
-        func_ov000_02196c40(self);
+        ActorEx_StateFly(self);
     } else {
-        func_ov000_02196060(self);
+        ActorEx_StateThrown(self);
     }
 }
 
@@ -438,7 +438,7 @@ void Ov011Npc_StateDie(Ov011Npc *self) {
         self->unk_ce_0 = 0;
         self->radius = 0xb33;
     }
-    func_ov000_0219763c(self);
+    ActorEx_StateDie(self);
 }
 
 void *Ov011Fx_Ctor(Ov011Fx *self) {
@@ -463,11 +463,11 @@ void *Ov011Fx_Dtor(Ov011Fx *self) {
 
 extern "C" {
 
-void *func_ov000_0218e9c4(void *p);
-void *func_ov000_0218ea20(void *p);
-void *func_ov000_0218fee4(void *p);
+void *ResSet_Init(void *p);
+void *ResSet_ReleaseAll(void *p);
+void *Model0218fe1c_FreeAnims(void *p);
 void func_ov000_02193e5c(void *p, s32 a);
-BOOL func_ov000_0218f110(void *p);
+BOOL ResSet_UpdateLoad(void *p);
 
 BOOL Ov011Fx_Init(Ov011Fx *self) {
     void *p;
@@ -477,12 +477,12 @@ BOOL Ov011Fx_Init(Ov011Fx *self) {
     self->unk_02 = 0;
     p = Heap_Alloc(0x138);
     if (p != NULL) {
-        p = func_ov000_0218e9c4(p);
+        p = ResSet_Init(p);
     }
     self->anim = (Ov011Anim *)p;
     p = Heap_Alloc(0xe8);
     if (p != NULL) {
-        p = func_ov000_0218fe1c(p);
+        p = Model0218fe1c_Init(p);
     }
     self->model = (Model0218fe1c *)p;
     {
@@ -515,7 +515,7 @@ static inline void Ov011_FreeAnim(Ov011Fx *self) {
     if (self->anim != NULL) {
         Ov011Anim *p = self->anim;
         if (p != NULL) {
-            func_ov000_0218ea20(p);
+            ResSet_ReleaseAll(p);
             Heap_Free(p);
         }
         self->anim = NULL;
@@ -529,7 +529,7 @@ static inline void Ov011_FreeModel(Ov011Fx *self) {
     if (self->model != NULL) {
         Model0218fe1c *p = self->model;
         if (p != NULL) {
-            func_ov000_0218fee4(p);
+            Model0218fe1c_FreeAnims(p);
             Heap_Free(p);
         }
         self->model = NULL;
@@ -559,11 +559,11 @@ void Ov011Fx_Update(Ov011Fx *self) {
         if (self->anim->unk_00 < 0) {
             s32 r;
             self->b1 = 1;
-            r = func_0206fef8(0x4812);
+            r = Tbl_FindEntry_0206fef8(0x4812);
             self->model->actor_id = 0xffff;
-            func_ov000_0219badc(self->model, self->anim, r);
+            Model0218fe1c_Setup(self->model, self->anim, r);
         } else {
-            func_ov000_0218f110(self->anim);
+            ResSet_UpdateLoad(self->anim);
         }
     } else if (self->b2) {
         switch (self->state) {
@@ -573,7 +573,7 @@ void Ov011Fx_Update(Ov011Fx *self) {
             OV011_BLKCPY(&a, &data_ov011_02207420);
             MTX_MultVec33(&self->v0c, &self->mtx, &b);
             VEC_Add(&b, &self->v18, &b);
-            func_02065f88(0x648, &b)->SetScale(&a);
+            Effect_SpawnId(0x648, &b)->SetScale(&a);
             break;
         case 1:
             self->timer++;
@@ -611,7 +611,7 @@ void Ov011Fx_Update(Ov011Fx *self) {
 extern "C" {
 
 extern u8 data_ov011_02207468[];
-BOOL func_ov000_021903b4(void *p);
+BOOL Model021903b4_Draw(void *p);
 
 void Ov011Fx_Draw(Ov011Fx *self) {
     VecFx32 p;
@@ -650,7 +650,7 @@ void Ov011Fx_Draw(Ov011Fx *self) {
     }
     self->model->trans = q;
     self->model->scale = s;
-    func_ov000_021903b4(self->model);
+    Model021903b4_Draw(self->model);
     self->model->trans = p;
     {
         Model0218fe1c *m = self->model;
@@ -761,18 +761,18 @@ void Ov003Ticker_Release_021d7d8c(void *p);
 void Ov003Ticker_Update_021d7dd0(void *p);
 BOOL Ov003Ticker_Start_021d7d24(void *p, s32 a, s32 b, s32 c, s32 d);
 void __cxa_vec_ctor(void *arr, s32 count, u32 size, void *ctor, void *dtor);
-void *func_ov000_0218e9c4(void *p);
-void *func_ov000_0218fe1c(void *p);
-void *func_ov000_0218ea20(void *p);
-void *func_ov000_0218fee4(void *p);
+void *ResSet_Init(void *p);
+void *Model0218fe1c_Init(void *p);
+void *ResSet_ReleaseAll(void *p);
+void *Model0218fe1c_FreeAnims(void *p);
 void func_ov000_02193e5c(void *p, s32 a);
-BOOL func_ov000_0218f110(void *p);
-s32 func_0206fef8(u32 id);
-void func_ov000_0219badc(void *a, void *b, s32 c);
+BOOL ResSet_UpdateLoad(void *p);
+s32 Tbl_FindEntry_0206fef8(u32 id);
+void Model0218fe1c_Setup(void *a, void *b, s32 c);
 BOOL Ov011Model2_Init(Ov011Model2 *self, void *a, u32 b);
 void Ov011Model2_Update(Ov011Model2 *self);
 s32 Ov011Ticker_ScaledValue(void *p, s32 b);
-BOOL func_ov000_021903b4(void *p);
+BOOL Model021903b4_Draw(void *p);
 }
 
 static inline void Ov011_FreeModelP(Model0218fe1c **pp) {
@@ -781,7 +781,7 @@ static inline void Ov011_FreeModelP(Model0218fe1c **pp) {
     if (*pp != NULL) {
         Model0218fe1c *p = *pp;
         if (p != NULL) {
-            func_ov000_0218fee4(p);
+            Model0218fe1c_FreeAnims(p);
             Heap_Free(p);
         }
         *pp = NULL;
@@ -795,7 +795,7 @@ static inline void Ov011_FreeAnimP(Ov011Anim **pp) {
     if (*pp != NULL) {
         Ov011Anim *p = *pp;
         if (p != NULL) {
-            func_ov000_0218ea20(p);
+            ResSet_ReleaseAll(p);
             Heap_Free(p);
         }
         *pp = NULL;
@@ -876,12 +876,12 @@ Ov011Chr *Ov011Chr_Ctor(Ov011Chr *self) {
     self->b1 = 0;
     p = Heap_Alloc(0x138);
     if (p != NULL) {
-        p = func_ov000_0218e9c4(p);
+        p = ResSet_Init(p);
     }
     self->anim = (Ov011Anim *)p;
     p = Heap_Alloc(0xe8);
     if (p != NULL) {
-        p = func_ov000_0218fe1c(p);
+        p = Model0218fe1c_Init(p);
     }
     self->model = (Model0218fe1c *)p;
     return self;
@@ -956,13 +956,13 @@ void Ov011Chr_Update(Ov011Chr *self) {
         if (self->anim->unk_00 < 0) {
             s32 r;
             self->b1 = 1;
-            r = func_0206fef8(0x4812);
+            r = Tbl_FindEntry_0206fef8(0x4812);
             self->model->actor_id = 0xffff;
-            func_ov000_0219badc(self->model, self->anim, r);
+            Model0218fe1c_Setup(self->model, self->anim, r);
             self->model->visible = 0;
             Ov011Model2_Init(&self->m28, self->anim, 0x4812);
         } else {
-            func_ov000_0218f110(self->anim);
+            ResSet_UpdateLoad(self->anim);
         }
         return;
     }
@@ -1007,7 +1007,7 @@ void Ov011Chr_Draw(Ov011Chr *self) {
         s.y = s.x;
         self->model->trans = q;
         self->model->scale = s;
-        func_ov000_021903b4(self->model);
+        Model021903b4_Draw(self->model);
         self->model->trans = sv;
         self->model->scale = sa;
     }
@@ -1017,7 +1017,7 @@ void Ov011Chr_Draw(Ov011Chr *self) {
     if (!self->m28.b2) {
         return;
     }
-    func_ov000_021903b4(self->m28.model);
+    Model021903b4_Draw(self->m28.model);
 }
 
 void Ov011Chr_StartMode1(Ov011Chr *self) {
@@ -1112,7 +1112,7 @@ void Ov011Chr_UpdateMode1(Ov011Chr *self) {
         self->model->visible = 1;
         pos = self->model->trans;
         OV011_BLKCPY(&c, &data_ov011_02207480);
-        self->unk_24 = func_02065f88(0x38a, &pos);
+        self->unk_24 = Effect_SpawnId(0x38a, &pos);
         self->unk_24->SetScale(&c);
         self->unk_24->AddPosXYZ(0, -0x14cd, 0);
         self->mode = 2;
@@ -1158,7 +1158,7 @@ void Ov011Chr_UpdateMode3(Ov011Chr *self) {
         self->model->scale = s;
         self->model->visible = 1;
         pos = self->model->trans;
-        self->unk_24 = func_02065f88(0x648, &pos);
+        self->unk_24 = Effect_SpawnId(0x648, &pos);
         self->unk_24->SetScaleXYZ(0x2000, 0x2000, 0x2000);
         b = s.x + 0x1500;
         a = s.x;
@@ -1216,7 +1216,7 @@ void Ov011Chr_UpdateMode5(Ov011Chr *self) {
         self->model->scale = s;
         OV011_BLKCPY(&c, &data_ov011_0220742c);
         pos = self->model->trans;
-        self->unk_24 = func_02065f88(0x579, &pos);
+        self->unk_24 = Effect_SpawnId(0x579, &pos);
         self->unk_24->SetScale(&c);
         self->mode = 6;
         break;
@@ -1268,7 +1268,7 @@ extern u8 data_ov011_022079d0[];
 extern u8 data_ov011_022079b0[];
 extern u8 data_ov011_022074f8[];
 s32 func_0203db40(void *p);
-void func_ov000_02190a80(void *a, s32 b);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
 BOOL func_020621c4(void);
 
 void func_ov011_02202a38(void) {
@@ -1507,7 +1507,7 @@ void Ov011Npc_Animate(Actor *self) {
     if (self->model == NULL) {
         return;
     }
-    func_ov000_02190a80(self->model, func_0203db40(&self->pause));
+    Model0218fe1c_UpdateAnim(self->model, func_0203db40(&self->pause));
 }
 
 void Ov011Npc_State23(Ov003Actor *self) {

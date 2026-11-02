@@ -22,7 +22,7 @@ static inline void ov006_Model_PlayPart16(Model *model, u16 idx) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(res->texRes, **((ov006_Unk02023390 *)((ov006_SeqFn16)NNS_G2dGetAnimSequenceByIdx)(model->res->mdlRes, idx))->unkC);
     }
-    func_02042628(model, anim, part, 0);
+    TexObj_DrawCell(model, anim, part, 0);
 }
 
 extern "C" {

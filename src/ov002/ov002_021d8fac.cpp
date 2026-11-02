@@ -32,14 +32,14 @@ static inline void ov002_setXY(Model *o, s32 x, s32 y) {
     o->y = y << 12;
 }
 
-void func_ov002_021e3b6c(s32 *out, s32 *v, void *m);
+void Ov002_ProjectToScreen(s32 *out, s32 *v, void *m);
 
 void func_ov002_021d9070(Obj021efed4 *self) {
     s32 out[2];
     if (self->unk_80 == NULL) {
         return;
     }
-    if (!func_0203e63c(self->unk_84)) {
+    if (!Vram_IsTransferDone(self->unk_84)) {
         return;
     }
     NNS_G3dGlbSetBaseTrans(&self->trans);
@@ -58,7 +58,7 @@ void func_ov002_021d9070(Obj021efed4 *self) {
     v[0] = (self->unk_54 - 2) * 0x28f;
     v[1] = 0;
     v[2] = (self->unk_58 - 2) * 0x28f;
-    func_ov002_021e3b6c(out, v, m);
+    Ov002_ProjectToScreen(out, v, m);
     ov002_setXY((Model *)self->unk_90, out[0], out[1] >> 12);
     }
     Model_PlayPart((Model *)self->unk_90, 6);
@@ -103,9 +103,9 @@ void func_ov002_021d91d8(Obj021efed4 *self) {
     u32 *q;
     char *name;
     void *a;
-    res = func_02035d5c((char *)data_ov002_021efdf6);
-    info = func_0206ede8(self->unk_48);
-    self->unk_78 = (u32 *)func_02034ec0(res, (char *)FIELD(info, 0x8, void *));
+    res = ResMgr_GetArcList((char *)data_ov002_021efdf6);
+    info = Param_GetEntry(self->unk_48);
+    self->unk_78 = (u32 *)ResList_FindType4(res, (char *)FIELD(info, 0x8, void *));
     ov002_strSet(buf, &FIELD(info, 0xc, void *), sizeof(buf));
     self->unk_7c = (NNSG3dResMdl *)ov002_findEntry((u8 *)NNS_G3dGetMdlSet((NNSG3dResFileHeader *)*self->unk_78), buf);
     name = (char *)self->unk_78;
@@ -117,7 +117,7 @@ void func_ov002_021d91d8(Obj021efed4 *self) {
     NNS_G3dRenderObjInit(self->unk_80, self->unk_7c);
     NNS_G3dRenderObjSetCallBack(self->unk_80, (NNSG3dSbcCallBackFunc)func_ov002_021e0420, NULL, 4, NNS_G3D_SBC_CALLBACK_TIMING_B);
     self->unk_80->ptrUser = (u8 *)self + 0xa4;
-    q = (u32 *)func_02034ff8(res, (char *)FIELD(info, 0x8, void *));
+    q = (u32 *)ResList_FindType6(res, (char *)FIELD(info, 0x8, void *));
     STD_CopyLString(buf, (char *)FIELD(info, 0xc, void *), sizeof(buf));
     a = NNS_G3dGetAnmByName((void *)q[1], (NNSG3dResName *)buf);
     self->unk_88 = (NNSG3dAnmObj *)Heap_AllocHi(NNS_G3dAnmObjCalcSizeRequired(a, self->unk_7c), 4);
@@ -129,17 +129,17 @@ void func_ov002_021d91d8(Obj021efed4 *self) {
         if (m != NULL) {
             const char *file = data_0208cc94;
             const char *nm = data_0208cc88;
-            func_02041218(&m->pltt);
-            func_02041440(m, nm, 0);
+            PlttRes_Init_02041218(&m->pltt);
+            TexObj_Init(m, nm, 0);
             STD_CopyString(m->name, file);
         }
         self->unk_90 = m;
-        func_020417e0((Model *)self->unk_90, func_02035de0(data_0208cc94, data_0208cc88));
+        TexObj_SetRes((Model *)self->unk_90, func_02035de0(data_0208cc94, data_0208cc88));
         ((Model *)self->unk_90)->flags |= 2;
         ((Model *)self->unk_90)->unk_150 = -0x2000;
         func_02041c20((Model *)self->unk_90, 6, self);
         func_02041c34(self->unk_90, 6, (void *)func_ov002_021d8d00, 0);
-        func_02041d9c((Model *)self->unk_90, 0, 6);
+        TexObj_SelectImage((Model *)self->unk_90, 0, 6);
     }
     self->trans.y = 0;
 }

@@ -3,25 +3,25 @@
 extern "C" {
 
 extern void *data_ov015_02212db8[];
-void func_0203f364(void *a);
+void HitSphere_Unlink_0203f364(void *a);
 extern char data_ov015_02212e20[];
 extern char data_ov015_02212e34[];
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 extern u8 data_ov015_02212ecc[];
 extern u8 data_ov015_02212eb0[];
 extern u8 data_ov015_02212e47[];
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-void *func_ov000_02191318(void *a, s32 b);
+BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
+void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
 extern char data_ov015_02212e68[];
 extern u8 data_ov015_02212e0d[];
-BOOL func_ov000_02191120(void *p);
+BOOL Model0218fe1c_IsAnimDone(void *p);
 void *Ov015FishState2c_Ctor(Ov015FishState2c *self);
-void func_ov000_021915a0(void *a);
+void Model0218fe1c_SetLoop(void *a);
 
 BOOL Ov015FishState40_Exit(Ov015FishState40 *self, Ov015Fish *p) {
     s32 i;
     p->drawMode = 0;
-    func_0203f364(&p->hit);
+    HitSphere_Unlink_0203f364(&p->hit);
     Ov015_DeleteFound(data_0214a420, self->unk_08);
     for (i = 0; i < 1; i++) {
         if (data_ov015_02212db8[i] == self) {
@@ -48,7 +48,7 @@ void func_ov015_0220d328(Ov015FishState40 *self, Ov015Fish *o) {
     if (p.y > 0) p.y = 0;
     o->pos = p;
     o->drawMode = 2;
-    e = func_020657b0(data_0214a420, self->unk_08);
+    e = Effect_Find_020657b0(data_0214a420, self->unk_08);
     if (e == NULL) {
         e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &o->pos);
         e->unk_d4 = 3;
@@ -64,8 +64,8 @@ void func_ov015_0220d328(Ov015FishState40 *self, Ov015Fish *o) {
     e->SetScale(&o->scale);
     e->SetRotXYZ(0, FX_Atan2(o->dir.x, o->dir.z), 0);
     if (self->unk_10 == 0x3c) {
-        func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
-        func_02049a48(data_02097e4c, 0x55, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x55, -1, -1, -1);
     }
 }
 
@@ -86,10 +86,10 @@ void func_ov015_0220d578(Ov015FishState40 *self, Ov015Fish *o) {
     o->pos = p;
     o->drawMode = 2;
     if (self->unk_10 == 0x3c) {
-        func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
-        func_02049a48(data_02097e4c, 0x55, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x55, -1, -1, -1);
     }
-    e = func_020657b0(data_0214a420, self->unk_08);
+    e = Effect_Find_020657b0(data_0214a420, self->unk_08);
     if (e == NULL) {
         e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &o->pos);
         e->unk_d4 = 3;
@@ -147,8 +147,8 @@ void *Ov015FishState08_DtorDelete(Ov015FishState08 *self) {
 
 BOOL Ov015FishState08_Enter(Ov015FishState08 *self, Ov015Fish *p) {
     Ov015Vec v;
-    func_ov000_02190cb0(&p->model, data_ov015_02212e47, 0x19a, 0);
-    func_ov000_02191318(&p->model, 0x7000);
+    Model0218fe1c_SetAnim(&p->model, data_ov015_02212e47, 0x19a, 0);
+    Model0218fe1c_SetAnimFrame(&p->model, 0x7000);
     p->animSpeed = 0x800;
     v = *(Ov015Vec *)&p->dir;
     v.y = 0;
@@ -179,18 +179,18 @@ BOOL Ov015FishState08_Update(Ov015FishState08 *self, Ov015Fish *p) {
             o->unk_28 = 0;
             o->unk_50 = -0xc8000;
             o->speed = 0x800;
-            func_02049a48(data_02097e4c, 0x1b, -1, -1, -1);
-            func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1b, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
         }
-        if (func_ov000_02191120(&p->model)) {
-            func_ov000_02190cb0(&p->model, data_ov015_02212e0d, 0x19a, 0);
+        if (Model0218fe1c_IsAnimDone(&p->model)) {
+            Model0218fe1c_SetAnim(&p->model, data_ov015_02212e0d, 0x19a, 0);
             p->animSpeed = 0x800;
             self->step = 2;
         }
         break;
     }
     case 2:
-        if (func_ov000_02191120(&p->model)) {
+        if (Model0218fe1c_IsAnimDone(&p->model)) {
             void *q = Heap_Alloc(0x2c);
             if (q != NULL) {
                 q = Ov015FishState2c_Ctor((Ov015FishState2c *)q);
@@ -204,9 +204,9 @@ BOOL Ov015FishState08_Update(Ov015FishState08 *self, Ov015Fish *p) {
 }
 
 BOOL Ov015FishState08_Exit(u8 *self, Ov015Fish *p) {
-    func_ov000_02190cb0(&p->model, data_ov015_02212e0d, 0x19a, 0);
+    Model0218fe1c_SetAnim(&p->model, data_ov015_02212e0d, 0x19a, 0);
     p->animSpeed = 0x800;
-    func_ov000_021915a0(&p->model);
+    Model0218fe1c_SetLoop(&p->model);
     p->drawMode = 0;
     return TRUE;
 }
@@ -257,7 +257,7 @@ static inline void *Ov015_Find0daf4(void *file, u32 idx) {
     }
     return NULL;
 }
-void func_ov015_0220daf4(Ov015Shadow *self, const Ov015Vec *pos, s32 sx, s32 sz, u16 ry, u16 rx) {
+void Ov015Shadow_DrawAt(Ov015Shadow *self, const Ov015Vec *pos, s32 sx, s32 sz, u16 ry, u16 rx) {
     if (self->mdl == NULL || self->type != self->prev) {
         if (self->res != NULL) {
             u32 idx = self->type;

@@ -30,14 +30,14 @@ extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern u8 *func_02070558(s32 id);
 extern void func_01ffc9fc(VecFx32 *out, VecFx32 *in, u16 ang);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
-extern Actor *func_ov000_0219be1c(u16 id, VecFx32 *pos, void *rot, u16 a, s32 b);
-extern void func_ov000_0218d46c(Actor *u, u16 a, s32 b);
-extern BOOL func_ov000_02191120(Model0218fe1c *model);
-extern void func_ov000_021915a0(Model0218fe1c *model);
-extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
+extern Actor *Actor_SpawnKind(u16 id, VecFx32 *pos, void *rot, u16 a, s32 b);
+extern void Actor_SendMsgU8(Actor *u, u16 a, s32 b);
+extern BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *model);
+extern void Model0218fe1c_SetLoop(Model0218fe1c *model);
+extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
 extern void Actor_Move(Actor *self, s32 a);
-extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
-extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s16 a, u8 b);
+extern void Body_Update(ActorSub48 *ctl, s32 a, s32 b, s32 c);
+extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const char *name, s16 a, u8 b);
 
 static inline Actor *Ov003Kb_FindUnit(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -55,7 +55,7 @@ void Ov003Actor_StateShoot(Ov003Actor *self) {
     ActorSub40 *w = self->fsm;
     switch (w->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov003_021f7a38[self->unk_ee_5][self->unk_ee_6], 0x400, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov003_021f7a38[self->unk_ee_5][self->unk_ee_6], 0x400, 0);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;
@@ -91,7 +91,7 @@ void Ov003Actor_StateShoot(Ov003Actor *self) {
                 if (pl != NULL) {
                     b = pl->id;
                 }
-                o = func_ov000_0219be1c(id, &v, &self->rot_x, self->id, b);
+                o = Actor_SpawnKind(id, &v, &self->rot_x, self->id, b);
             }
             if (o != NULL) {
                 self->target_id = o->id;
@@ -106,7 +106,7 @@ void Ov003Actor_StateShoot(Ov003Actor *self) {
         if ((u16)(s16)(k - 3) <= 1) {
             Actor *o = Ov003Kb_FindUnit(self->target_id);
             if (o != NULL) {
-                func_ov000_0218d46c(o, self->id, 0xb);
+                Actor_SendMsgU8(o, self->id, 0xb);
                 self->target_id = 0xffff;
             }
             if (k == 4) {
@@ -127,7 +127,7 @@ void Ov003Actor_StateShoot(Ov003Actor *self) {
             self->speed >>= 1;
             self->friction = 0xc00;
         }
-        if (func_ov000_02191120(self->model)) {
+        if (Model0218fe1c_IsAnimDone(self->model)) {
             if (self->hit->unk_9a_4 && !(self->hit->unk_50 & 0x20000000)) {
                 self->gravity = 0x52;
             }
@@ -144,8 +144,8 @@ void Ov003Actor_StateShoot(Ov003Actor *self) {
         if (self->unk_ee_0) {
             a = data_ov003_021f7a66;
         }
-        func_ov000_02190cb0(self->model, a, 0x200, 0);
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetAnim(self->model, a, 0x200, 0);
+        Model0218fe1c_SetLoop(self->model);
         self->fsm->st++;
         if (self->fsm->timer < 0x14) {
             self->fsm->timer = 0x14;
@@ -160,7 +160,7 @@ void Ov003Actor_StateShoot(Ov003Actor *self) {
             w->timer--;
         }
         if (w->timer == 0) {
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
         self->hit->unk_9a_5 = 1;
         break;
@@ -169,7 +169,7 @@ void Ov003Actor_StateShoot(Ov003Actor *self) {
         return;
     }
     Actor_Move(self, 0);
-    func_ov000_021987b8(self->hit, 1, 0, 0);
+    Body_Update(self->hit, 1, 0, 0);
     if (self->velY < 0 && (self->hit->unk_50 & 0x20000000)) {
         self->velY = 0;
         self->gravity = 0;
@@ -178,13 +178,13 @@ void Ov003Actor_StateShoot(Ov003Actor *self) {
 }
 
 extern char data_ov003_021f7a91[];
-extern void func_ov000_02191418(Model0218fe1c *model, u16 a, BOOL b);
-extern Ov003KbObj *func_ov000_02199f60(ActorHp *t);
+extern void Model0218fe1c_SetAnimDelay(Model0218fe1c *model, u16 a, BOOL b);
+extern Ov003KbObj *Target_GetActor(ActorHp *t);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern void func_ov000_02199f88(ActorHp *t, Ov003Actor *self);
-extern Ov003KbAnim *func_ov000_02190a30(void *model, s32 n);
-extern void func_ov000_021911c8(Model0218fe1c *model, s16 v);
-extern BOOL func_ov000_02191508(Model0218fe1c *model);
+extern Ov003KbAnim *Model0218fe1c_GetAnimCtrl(void *model, s32 n);
+extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *model, s16 v);
+extern BOOL Model0218fe1c_IsAnimDelayed(Model0218fe1c *model);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 step, u32 a, u16 b);
 
 void Ov003Actor_StateHurt(Ov003Actor *self) {
@@ -192,10 +192,10 @@ void Ov003Actor_StateHurt(Ov003Actor *self) {
     switch (self->fsm->st) {
     case 0: {
         u16 ang;
-        func_ov000_02190cb0(self->model, data_ov003_021f7a91, 0x800, 1);
-        func_ov000_02191418(self->model, 5, 1);
+        Model0218fe1c_SetAnim(self->model, data_ov003_021f7a91, 0x800, 1);
+        Model0218fe1c_SetAnimDelay(self->model, 5, 1);
         if (self->hpObj != NULL) {
-            Ov003KbObj *o = func_ov000_02199f60(self->hpObj);
+            Ov003KbObj *o = Target_GetActor(self->hpObj);
             if (o == NULL || o == (Ov003KbObj *)self) {
                 ang = self->rot_y;
             } else {
@@ -229,8 +229,8 @@ void Ov003Actor_StateHurt(Ov003Actor *self) {
             self->gravity = 0x52;
         }
         if (self->hpObj != NULL && self->hpObj->kind2 == 0x11) {
-            Ov003KbAnim *a = func_ov000_02190a30(self->model, 0);
-            func_ov000_021911c8(self->model, (s16)(((s64)a->unk_112 * 0xccd + 0x800) >> 12));
+            Ov003KbAnim *a = Model0218fe1c_GetAnimCtrl(self->model, 0);
+            Model0218fe1c_SetAnimSpeed(self->model, (s16)(((s64)a->unk_112 * 0xccd + 0x800) >> 12));
         }
         if (self->hpObj != NULL && self->hpObj->kind == 0x42) {
             self->fsm->timer = 0x3c;
@@ -243,11 +243,11 @@ void Ov003Actor_StateHurt(Ov003Actor *self) {
         self->fsm->st++;
         break;
     case 2:
-        if (func_ov000_02191120(self->model)) {
-            func_ov000_02190cb0(self->model, data_ov003_021f7a60, 0x200, 0);
+        if (Model0218fe1c_IsAnimDone(self->model)) {
+            Model0218fe1c_SetAnim(self->model, data_ov003_021f7a60, 0x200, 0);
             self->fsm->st++;
             if (self->unk_ea_11) {
-                EffectObj *e = func_02065f88(0x322, &self->pos);
+                EffectObj *e = Effect_SpawnId(0x322, &self->pos);
                 self->unk_e0 = e->id;
                 e->AddPosXYZ(0, self->centerY, 0);
                 e->SetScaleAll(self->radius);
@@ -264,11 +264,11 @@ void Ov003Actor_StateHurt(Ov003Actor *self) {
             self->velY = 0;
             self->friction = 0;
             self->gravity = 0;
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
         }
-        if (!func_ov000_02191508(self->model) && !self->unk_b0->unk_0a_10) {
+        if (!Model0218fe1c_IsAnimDelayed(self->model) && !self->unk_b0->unk_0a_10) {
             Actor_Move(self, 0);
-            func_ov000_021987b8(self->hit, 0, 0, 0);
+            Body_Update(self->hit, 0, 0, 0);
             if (self->hit->unk_50 & 0x20000000) {
                 self->velY = 0;
             }
@@ -290,7 +290,7 @@ extern u16 func_ov000_02198da8(ActorSub48 *ctl, u16 a);
 static inline u16 Ov003Kb_Angle(Ov003Actor *self) {
     u16 ang;
     if (self->hpObj != NULL) {
-        Ov003KbObj *o = func_ov000_02199f60(self->hpObj);
+        Ov003KbObj *o = Target_GetActor(self->hpObj);
         if (o == NULL || o == (Ov003KbObj *)self) {
             ang = self->rot_y;
         } else {
@@ -305,10 +305,10 @@ static inline u16 Ov003Kb_Angle(Ov003Actor *self) {
 void Ov003Actor_StateKnockBack(Ov003Actor *self) {
     switch (self->fsm->st) {
     case 0:
-        if (!func_ov000_02190cb0(self->model, data_ov003_021f7a97, 0x800, 1)) {
-            func_ov000_02190cb0(self->model, data_ov003_021f7a91, 0x800, 1);
+        if (!Model0218fe1c_SetAnim(self->model, data_ov003_021f7a97, 0x800, 1)) {
+            Model0218fe1c_SetAnim(self->model, data_ov003_021f7a91, 0x800, 1);
         }
-        func_ov000_02191418(self->model, 5, 1);
+        Model0218fe1c_SetAnimDelay(self->model, 5, 1);
         self->unk_96 = Ov003Kb_Angle(self);
         self->moveYaw = self->unk_96 + 0x8000 + Rand_PlusMinus(0x2000);
         if (self->unk_b0->unk_0a_11) {
@@ -362,10 +362,10 @@ void Ov003Actor_StateKnockBack(Ov003Actor *self) {
             }
             if (self->hit->unk_50 & 0x20000000) {
                 if (self->unk_92 == 0 && self->hpObj != NULL) {
-                    func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
+                    SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
                 }
                 if (++self->unk_92 <= 2) {
-                    func_ov000_02190cb0(self->model, data_ov003_021f7a9d, 0x400, 1);
+                    Model0218fe1c_SetAnim(self->model, data_ov003_021f7a9d, 0x400, 1);
                     self->velY = -self->velY >> 2;
                     self->speed = self->speed - (self->speed >> 2);
                 } else {
@@ -383,26 +383,26 @@ void Ov003Actor_StateKnockBack(Ov003Actor *self) {
         if (!self->unk_b0->unk_0a_11) {
             self->rot_y = func_01ffc128(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
         }
-        if (!func_ov000_02191508(self->model) || self->unk_92 != 0) {
+        if (!Model0218fe1c_IsAnimDelayed(self->model) || self->unk_92 != 0) {
             Actor_Move(self, 0);
             s32 a = 1;
             if (self->unk_b0->unk_0a_10) {
                 a = 0;
             }
-            func_ov000_021987b8(self->hit, a, 0, 0);
+            Body_Update(self->hit, a, 0, 0);
         }
         w = self->fsm;
         w->timer++;
         if (w->timer > 0x46) {
             self->fsm->timer = 0x46;
             if (!(self->hit->unk_54 & 0x20000000)) {
-                func_ov000_02198360(self->fsm, 0x15, 0);
+                History_SetState(self->fsm, 0x15, 0);
             }
         }
         break;
     }
     case 10:
-        if (func_ov000_02191120(self->model)) {
+        if (Model0218fe1c_IsAnimDone(self->model)) {
             self->unk_ea_0 = self->unk_b0->unk_0a_7;
             if (self->hpObj != NULL) {
                 if (self->hpObj->kind == 0x42) {
@@ -414,7 +414,7 @@ void Ov003Actor_StateKnockBack(Ov003Actor *self) {
             if (self->unk_ea_11) {
                 EffectObj *e;
                 self->fsm->timer = 0x78;
-                e = func_02065f88(0x322, &self->pos);
+                e = Effect_SpawnId(0x322, &self->pos);
                 self->unk_e0 = e->id;
                 e->AddPosXYZ(0, self->centerY, 0);
                 e->SetScaleAll(self->radius);
@@ -434,7 +434,7 @@ void Ov003Actor_StateKnockBack(Ov003Actor *self) {
             w->timer--;
         }
         if (w->timer == 0) {
-            func_ov000_02190cb0(self->model, data_ov003_021f7aa3, 0x800, 1);
+            Model0218fe1c_SetAnim(self->model, data_ov003_021f7aa3, 0x800, 1);
             self->fsm->st++;
             self->unk_ec_1 = 1;
         }
@@ -442,8 +442,8 @@ void Ov003Actor_StateKnockBack(Ov003Actor *self) {
         break;
     }
     case 12:
-        if (func_ov000_02191120(self->model)) {
-            func_ov000_02198360(self->fsm, 1, 0);
+        if (Model0218fe1c_IsAnimDone(self->model)) {
+            History_SetState(self->fsm, 1, 0);
         }
         self->hit->unk_9a_5 = 1;
         self->unk_ec_1 = 1;
@@ -467,7 +467,7 @@ typedef struct {
 extern char data_ov003_021f7a7f[];
 extern u8 Ov003_GetMaxCombo(void);
 extern void HitSphere_Link(ActorSub48 *ctl);
-extern Ov003KbPlayer *func_ov000_0219bf90(void);
+extern Ov003KbPlayer *ActorMgr_FindPlayer(void);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
@@ -501,19 +501,19 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
         u16 ang;
         s32 spd;
         Ov003KbObj *o;
-        func_ov000_02190cb0(self->model, data_ov003_021f7a7f, 0x2ab, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov003_021f7a7f, 0x2ab, 0);
         if (self->targetObj->type == 0) {
-            func_ov000_02198360(self->fsm, 0x15, 0);
+            History_SetState(self->fsm, 0x15, 0);
             return;
         }
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetLoop(self->model);
         self->targetObj->target = 0xffff;
         {
             ActorSub4c *d = self->targetObj;
             d->unk_19 = 0;
             d->unk_1b = 0;
         }
-        o = func_ov000_02199f60(self->hpObj);
+        o = Target_GetActor(self->hpObj);
         if (o == NULL || o == (Ov003KbObj *)self) {
             ang = self->rot_y;
         } else {
@@ -584,7 +584,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
             q->unk_22_1 = 1;
         }
         {
-            Ov003KbPlayer *p = func_ov000_0219bf90();
+            Ov003KbPlayer *p = ActorMgr_FindPlayer();
             if (p != NULL && p->unk_b24_1) {
                 func_020627a0(self->kind, self->id);
                 func_020627dc(3);
@@ -603,7 +603,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
             self->unk_e4 = NULL;
         }
         if (self->unk_e4 == NULL && !z) {
-            EffectObj *e = func_02065f88(0x387, &self->pos);
+            EffectObj *e = Effect_SpawnId(0x387, &self->pos);
             s32 s;
             self->unk_e4 = e->id;
             s = self->radius + (self->radius >> 2);
@@ -629,7 +629,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
         if (self->velY > 0 || self->unk_b0->unk_0a_10) {
             a = 0;
         }
-        func_ov000_021987b8(self->hit, a, 0, 0);
+        Body_Update(self->hit, a, 0, 0);
         if (self->velY > 0) {
             if (self->hit->unk_50 & 0x80000000) {
                 self->velY = 0;
@@ -643,7 +643,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
             }
             if (self->hit->unk_50 & 0x20000000) {
                 if (self->unk_92 == 0) {
-                    func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
+                    SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
                 }
                 if (++self->unk_92 <= 2 && self->targetObj->unk_1a <= 1) {
                     self->speed = self->speed - (self->speed >> 2);
@@ -663,14 +663,14 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
                     }
                 }
                 if (self->unk_e4 != NULL) {
-                    EffectObj *f = func_020657b0(data_0214a420, self->unk_e4);
+                    EffectObj *f = Effect_Find_020657b0(data_0214a420, self->unk_e4);
                     if (f != NULL && (f->unk_20 != 0x388 || self->hpObj->cur == 0)) {
                         f->state = 4;
                         self->unk_e4 = NULL;
                     }
                 }
                 if (self->unk_e4 == NULL && self->hpObj->cur != 0) {
-                    EffectObj *e = func_02065f88(0x388, &self->pos);
+                    EffectObj *e = Effect_SpawnId(0x388, &self->pos);
                     s32 s;
                     self->unk_e4 = e->id;
                     s = self->radius + (self->radius >> 1);
@@ -686,7 +686,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
         if (w->timer > 0x64) {
             self->fsm->timer = 0x46;
             if (!(self->hit->unk_54 & 0x20000000)) {
-                func_ov000_02198360(self->fsm, 0x15, 0);
+                History_SetState(self->fsm, 0x15, 0);
             }
         }
         return;
@@ -709,8 +709,8 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
             self->velY = 0x266;
             self->friction = 0;
             self->gravity = 0x52;
-            func_ov000_02190cb0(self->model, data_ov003_021f7a60, 0x200, 0);
-            func_ov000_02198360(self->fsm, 4, 0);
+            Model0218fe1c_SetAnim(self->model, data_ov003_021f7a60, 0x200, 0);
+            History_SetState(self->fsm, 4, 0);
         }
     case 10:
         self->hit->unk_9a_5 = 1;

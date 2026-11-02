@@ -59,7 +59,7 @@ void func_ov000_021c0560(Marker021c0560 *self) {
             return;
         }
     case 10:
-        if (!func_ov000_021bd374(self, 0x6000)) {
+        if (!ActorMarker_UpdateFade(self, 0x6000)) {
             self->work.z = -0x1ccd;
         }
         break;

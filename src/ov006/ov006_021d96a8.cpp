@@ -87,7 +87,7 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
                 }
                 func_ov000_0215d980(self->unk18, 0, 0);
                 func_ov000_0215d980(self->unk1C, data_0214a424->unk_020, 0);
-                func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
                 self->unk34 = 0;
                 self->subState++;
             }
@@ -102,12 +102,12 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
                 func_ov000_0215d980(self->unk1C, data_0214a424->unk_020, 1);
             } else {
                 if (++self->unk34 % 4 == 0) {
-                    func_02049a48(data_02097e4c, 0x18, -1, -1, -1);
+                    SndMgr_PlayVolume(data_02097e4c, 0x18, -1, -1, -1);
                 }
                 break;
             }
         }
-        func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x4a, -1, -1, -1);
         self->unk34 = 0;
         self->subState++;
         break;
@@ -116,7 +116,7 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
             if (data_ov006_021ec888->state == 9) {
                 self->subState = 0x32;
             } else if (data_02097dc8->trig & 1) {
-                func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
                 self->unk20->flags |= 2;
                 self->subState = 10;
             }

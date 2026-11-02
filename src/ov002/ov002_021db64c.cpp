@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021db64c(Obj021eff50 *self) {
+void Obj021eff50_Release(Obj021eff50 *self) {
     void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->unk_10);
@@ -29,9 +29,9 @@ extern u8 data_ov002_021efe30[];
 
 void func_ov000_0215d980(void *a, u16 b, int c);
 
-void func_ov000_021917f8(void *a);
+void Model0218fe1c_ClearReverse(void *a);
 
-void *func_ov000_02190a30(void *a, int b);
+void *Model0218fe1c_GetAnimCtrl(void *a, int b);
 
 void func_ov002_021db750(Obj021eff50 *self) {
     UiObj *o;
@@ -61,7 +61,7 @@ void func_ov002_021db750(Obj021eff50 *self) {
     self->unk_20->slideMode = 1;
     self->unk_20->vfunc_10(MsgRes_GetString(g, 0xbc));
     self->unk_20->vfunc_14(MsgRes_GetString(g, 0x10a));
-    func_ov000_0215bb14(self->unk_20, data_ov002_021efe30);
+    Obj0215bb14_SetText(self->unk_20, data_ov002_021efe30);
     self->unk_20->vfunc_08();
     self->unk_20->vfunc_70();
     self->unk_20->flags &= ~2;
@@ -96,10 +96,10 @@ void func_ov002_021db750(Obj021eff50 *self) {
     if (p->unk_5d == 0) {
         s32 val = 0;
         s32 *q;
-        func_ov000_021917f8(p->unk_10);
+        Model0218fe1c_ClearReverse(p->unk_10);
         e = data_ov002_021ef016;
         p->cues = e;
-        q = *(s32 **)func_ov000_02190a30(p->unk_10, 0);
+        q = *(s32 **)Model0218fe1c_GetAnimCtrl(p->unk_10, 0);
         if (q != NULL) {
             val = *q;
         }

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 
 void Ov009ActVt_02217cb0_Start(Ov009ActVt_02217cb0 *self) {
     GroupNode *p;
@@ -13,7 +13,7 @@ void Ov009ActVt_02217cb0_Start(Ov009ActVt_02217cb0 *self) {
         p->flags.unk_0 = 0;
     }
     self->target = 0xffff;
-    a = func_ov000_0219bf90();
+    a = ActorMgr_FindPlayer();
     if (a != NULL) {
         self->target = a->id;
     }

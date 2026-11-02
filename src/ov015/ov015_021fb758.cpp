@@ -127,7 +127,7 @@ void func_ov015_021fb758(Ov015Hud *self) {
     Ov015Model_PlayPart(self->mdl0, 0, 0);
     self->mdl0->unk_150 = -0x1fe0;
     Ov015Model_PlayPart(self->mdl0, 1, 0);
-    func_02043d20(data_02097d48->unk_8b0, 1);
+    Gfx3D_SendDL(data_02097d48->unk_8b0, 1);
     mtxMode = 2;
     NNS_G3dGeBufferOP_N(0x10, (unsigned int *)&mtxMode, 1);
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);

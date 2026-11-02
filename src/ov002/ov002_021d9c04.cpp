@@ -10,7 +10,7 @@ typedef struct Bits021da184 {
 
 void func_0206d0a8(void *a);
 
-BOOL func_0206d0d4(void *a, u16 id, u8 x, u8 y, u8 rot, int e);
+BOOL StageFlags_AddEntry(void *a, u16 id, u8 x, u8 y, u8 rot, int e);
 
 u8 StageFlags_CountEntries(void *a, u16 id);
 
@@ -20,7 +20,7 @@ void func_0206d3ac(void *a, int b, u8 x, u8 y, s32 *org);
 
 void func_0206d390(void *a, u8 b, u8 c);
 
-u16 func_0206d02c(void *a);
+u16 StageFlags_CountItems(void *a);
 
 void func_ov002_021d9c04(Obj021efe6c *self) {
     u16 id;
@@ -34,7 +34,7 @@ void func_ov002_021d9c04(Obj021efe6c *self) {
     u8 c;
     u8 *shape;
     for (func_0206d0a8(data_0214a424), n = ((u8 *)self->pieces); n != NULL; n = FIELD(n, 0x70, u8 *)) {
-        func_0206d0d4(data_0214a424, FIELD(n, 0x48, u16), FIELD(n, 0x54, s32), FIELD(n, 0x58, s32), FIELD(n, 0x52, Bits021da184).rot, 0);
+        StageFlags_AddEntry(data_0214a424, FIELD(n, 0x48, u16), FIELD(n, 0x54, s32), FIELD(n, 0x58, s32), FIELD(n, 0x52, Bits021da184).rot, 0);
     }
     for (i = 0; i < 0x53; i++) {
         p = (u8 *)self + i;
@@ -83,7 +83,7 @@ void func_ov002_021d9c04(Obj021efe6c *self) {
         }
         FIELD(g, 0x24, u16) = c;
     }
-    func_0206d02c(data_0214a424);
+    StageFlags_CountItems(data_0214a424);
 }
 
 }

@@ -32,13 +32,13 @@ extern "C" {
 extern char *data_ov000_021cc8a0[2];
 extern char data_ov000_021cc92d[];
 void *Heap_Alloc(u32 size);
-u8 *func_ov000_0218e9c4(void *p);
-u8 *func_ov000_0218fe1c(void *p);
-BOOL func_ov000_0218f110(u8 *o);
-BOOL func_ov000_0218ffdc(u8 *m, u8 *o, s32 a, s32 b);
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
-void func_ov000_02190a80(void *a, s32 b);
+u8 *ResSet_Init(void *p);
+u8 *Model0218fe1c_Init(void *p);
+BOOL ResSet_UpdateLoad(u8 *o);
+BOOL Model0218fe1c_SetRes(u8 *m, u8 *o, s32 a, s32 b);
+BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
 void Math_DirToAngles(u16 *out, VecFx32 *dir);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
@@ -67,7 +67,7 @@ static inline u8 *GetObj021c194c(Self021c194c *s) {
 static inline BOOL Ready021c194c(u8 *o) {
     BOOL r = TRUE;
     if (o != NULL && LFLD(s16, o, 0) >= 0) {
-        if (!func_ov000_0218f110(o)) {
+        if (!ResSet_UpdateLoad(o)) {
             r = FALSE;
         }
     }
@@ -96,7 +96,7 @@ void func_ov000_021c194c(Self021c194c *self, BOOL flag, u8 *p) {
     case 1: {
         p = (u8 *)Heap_Alloc(0x138);
         if (p != NULL) {
-            p = func_ov000_0218e9c4(p);
+            p = ResSet_Init(p);
         }
         self->obj = p;
         SetNamesA021c194c(p);
@@ -111,13 +111,13 @@ void func_ov000_021c194c(Self021c194c *self, BOOL flag, u8 *p) {
         }
         m_1 = (Model0218fe1c *)Heap_Alloc(0xe8);
         if (m_1 != NULL) {
-            m_1 = (Model0218fe1c *)func_ov000_0218fe1c(m_1);
+            m_1 = (Model0218fe1c *)Model0218fe1c_Init(m_1);
         }
         self->model = (u8 *)m_1;
-        func_ov000_0218ffdc((u8 *)m_1, GetObj021c194c(self), 0, 1);
-        func_ov000_02190cb0(self->model, data_ov000_021cc92d, 0, 1);
+        Model0218fe1c_SetRes((u8 *)m_1, GetObj021c194c(self), 0, 1);
+        Model0218fe1c_SetAnim(self->model, data_ov000_021cc92d, 0, 1);
         LFLD(u16, self->model, 0xb4) = 0;
-        func_ov000_021915a0(self->model);
+        Model0218fe1c_SetLoop(self->model);
         m_1 = (Model0218fe1c *)self->model;
         m_1->scale.x = 0xb33;
         m_1->scale.y = 0xb33;
@@ -230,7 +230,7 @@ void func_ov000_021c194c(Self021c194c *self, BOOL flag, u8 *p) {
             LFLD(s32, md, 0x7c) = self->pos.y;
             LFLD(s32, md, 0x80) = self->pos.z;
         }
-        func_ov000_02190a80(self->model, 0x1000);
+        Model0218fe1c_UpdateAnim(self->model, 0x1000);
         break;
     }
     }

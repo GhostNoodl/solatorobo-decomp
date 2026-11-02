@@ -24,7 +24,7 @@ extern char data_0208c4a8[];
 extern char data_0208c4af[];
 extern u32 data_0208c23c[];
 extern u32 data_0208c2e4[];
-extern void func_02063a34(EffectObj *obj);
+extern void EffectObj_Register(EffectObj *obj);
 extern void EffectGroup_Reset(EffectGroup *g);
 extern void EffectGroup_SetName(EffectGroup *g, const char *prefix, const char *name, const char *suffix);
 extern char data_0208c4b6[];
@@ -53,7 +53,7 @@ extern char data_0208c5c1[];
 extern char data_0208c5cd[];
 extern char data_0208c5d9[];
 extern u32 data_0208c290[];
-extern void func_02063f90(Effect3D *e);
+extern void Effect3D_Init(Effect3D *e);
 extern char data_0208c427[];
 extern char data_0208c436[];
 extern void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
@@ -71,7 +71,7 @@ static inline EffectGroup *Effect6_GroupNew(void) {
     EffectGroup *g = (EffectGroup *)Heap_Alloc(sizeof(EffectGroup));
     if (g != NULL) {
         *(u32 **)g = data_0208c2e4;
-        func_02063a34(g);
+        EffectObj_Register(g);
         *(u32 **)g = data_0208c23c;
         EffectGroup_Reset(g);
     }
@@ -181,9 +181,9 @@ static inline Effect3D *Effect6_3DNew(void) {
     Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
         *(u32 **)e = data_0208c2e4;
-        func_02063a34(e);
+        EffectObj_Register(e);
         *(u32 **)e = data_0208c290;
-        func_02063f90(e);
+        Effect3D_Init(e);
     }
     return e;
 }

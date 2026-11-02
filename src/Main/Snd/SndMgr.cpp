@@ -31,7 +31,7 @@ extern u32 NNS_SndArcGetWaveArcCount(void);
 extern u32 NNS_SndArcGetGroupCount(void);
 extern u32 NNS_SndArcGetStrmCount(void);
 extern void NNS_SndPlayerSetPlayableSeqCount(int playerNo, int seqCount);
-void func_020495ac(SndMgr *mgr, s32 type, s32 id);
+void SndMgr_LoadNow(SndMgr *mgr, s32 type, s32 id);
 extern u8 data_020bbef0[];
 extern u8 data_02097ef0[];
 extern u8 data_02097e50[];
@@ -98,9 +98,9 @@ void func_02049344(SndMgr *mgr) {
     }
     NNS_SndPlayerSetPlayerPriority(&mgr->voice, 0x40);
     NNS_SndPlayerSetPlayerPriority(&mgr->se, 0x40);
-    func_020495ac(data_02097e48.mgr, 4, 0);
-    func_020495ac(data_02097e48.mgr, 4, 1);
-    func_020495ac(data_02097e48.mgr, 4, 3);
+    SndMgr_LoadNow(data_02097e48.mgr, 4, 0);
+    SndMgr_LoadNow(data_02097e48.mgr, 4, 1);
+    SndMgr_LoadNow(data_02097e48.mgr, 4, 3);
 }
 
 }

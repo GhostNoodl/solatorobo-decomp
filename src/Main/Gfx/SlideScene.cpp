@@ -102,8 +102,8 @@ extern void func_0204e29c(Model *model);
 extern void func_02054254(SlidePanel *panel);
 extern void Obj3DLayer_SetCur(SlidePanel *panel, u32 v);
 extern BOOL func_020544e4(SlidePanel *panel, BOOL sound);
-extern BOOL func_02035bd4(const char *name, void *arcName, u16 id);
-extern void *func_02035f30(const char *name, void *arcName, u16 id);
+extern BOOL ResMgr_IsArchiveLoaded(const char *name, void *arcName, u16 id);
+extern void *ResMgr_GetArchiveList(const char *name, void *arcName, u16 id);
 extern void func_02054b70(Model *model);
 extern void func_02054b80(Model *model);
 extern void func_02050e94(Model *model);
@@ -115,7 +115,7 @@ extern void func_02040dd8(PlttRes *res, int idx, bool load);
 extern void func_02054bac(Model *model, void *pltt);
 extern void func_02054bb4(SlidePanel *panel);
 extern BOOL func_02054b4c(int ch);
-extern BOOL func_02054f10(Model *model, u32 idx);
+extern BOOL Model_IsReady(Model *model, u32 idx);
 extern void func_02055068(SlidePanel *panel, SlidePanel *prev);
 extern void func_020554e4(SlidePanel *panel);
 extern void SlideCtrl_Lock(SlideScene *scene);
@@ -174,7 +174,7 @@ BOOL func_020534dc(SlideScene *scene) {
     }
     scene->flag5 = 1;
     scene->flag6 = 1;
-    if (!scene->loaded && func_02035d5c(data_0208cca0) != NULL) {
+    if (!scene->loaded && ResMgr_GetArcList(data_0208cca0) != NULL) {
         scene->loaded = 1;
         heap = Heap_GetCurrent();
         Heap_SetCurrentHi();
@@ -200,11 +200,11 @@ BOOL func_020534dc(SlideScene *scene) {
             }
             scene->model = model;
         }
-        res = func_02035d5c(Model_GetName(scene->model));
-        func_020417e0(scene->model, func_02034d88(res, func_0204e294(scene->model)));
+        res = ResMgr_GetArcList(Model_GetName(scene->model));
+        TexObj_SetRes(scene->model, ResList_FindType2(res, func_0204e294(scene->model)));
         func_0204e29c(scene->model);
-        func_02041d9c(scene->model, 0, 4);
-        func_02041d9c(scene->model, 0, 0);
+        TexObj_SelectImage(scene->model, 0, 4);
+        TexObj_SelectImage(scene->model, 0, 0);
     }
     count = 0;
     for (i = 0, panel = scene->panels; i < 5; i++, panel++) {
@@ -220,18 +220,18 @@ BOOL func_020534dc(SlideScene *scene) {
                     break;
                 }
             }
-            if (!func_02035bd4(Model_GetName(panel->nextModel), func_0204e294(panel->nextModel), 2)) {
+            if (!ResMgr_IsArchiveLoaded(Model_GetName(panel->nextModel), func_0204e294(panel->nextModel), 2)) {
                 goto check;
             }
             model = panel->nextModel2;
             if (model != NULL) {
-                if (!func_02035bd4(Model_GetName(model), func_0204e294(model), 2)) {
+                if (!ResMgr_IsArchiveLoaded(Model_GetName(model), func_0204e294(model), 2)) {
                     goto check;
                 }
             }
-            res = func_02035f30(Model_GetName(panel->nextModel), func_0204e294(panel->nextModel), 2);
+            res = ResMgr_GetArchiveList(Model_GetName(panel->nextModel), func_0204e294(panel->nextModel), 2);
             func_02054254(panel);
-            func_020417e0(panel->nextModel, func_02034d88(res, func_0204e294(panel->nextModel)));
+            TexObj_SetRes(panel->nextModel, ResList_FindType2(res, func_0204e294(panel->nextModel)));
             if (panel->flag22) {
                 func_02054b70(panel->nextModel);
             }
@@ -240,7 +240,7 @@ BOOL func_020534dc(SlideScene *scene) {
             }
             func_0204e29c(panel->nextModel);
             func_02050e94(panel->nextModel);
-            func_02041d9c(panel->nextModel, 0, 0);
+            TexObj_SelectImage(panel->nextModel, 0, 0);
             if (panel->flag26) {
                 u32 *buf;
                 void *pltt = Heap_Alloc(0x64);
@@ -257,20 +257,20 @@ BOOL func_020534dc(SlideScene *scene) {
             }
             model = panel->nextModel2;
             if (model != NULL) {
-                res = func_02035f30(Model_GetName(model), func_0204e294(model), 2);
-                func_020417e0(panel->nextModel2, func_02034d88(res, func_0204e294(panel->nextModel2)));
+                res = ResMgr_GetArchiveList(Model_GetName(model), func_0204e294(model), 2);
+                TexObj_SetRes(panel->nextModel2, ResList_FindType2(res, func_0204e294(panel->nextModel2)));
                 if (i == 3) {
                     func_02054b70(panel->nextModel2);
                 }
                 func_0204e29c(panel->nextModel2);
-                func_02041d9c(panel->nextModel2, 0, 0xffff);
+                TexObj_SelectImage(panel->nextModel2, 0, 0xffff);
             }
             func_02054bb4(panel);
             panel->flag20 = 0;
             if (!scene->fading) {
                 scene->fading = 1;
                 if (func_02054b4c(0) && !scene->faded) {
-                    func_02049a48(data_02097e4c, 0x27, 0x3c, -1, -1);
+                    SndMgr_PlayVolume(data_02097e4c, 0x27, 0x3c, -1, -1);
                 }
             }
         }
@@ -279,10 +279,10 @@ BOOL func_020534dc(SlideScene *scene) {
             continue;
         }
         if (!panel->flag20 && panel->nextModel != NULL) {
-            if (!func_02054f10(panel->nextModel, 0xffff)) {
+            if (!Model_IsReady(panel->nextModel, 0xffff)) {
                 continue;
             }
-            if (panel->nextModel2 != NULL && !func_02054f10(panel->nextModel2, 0xffff)) {
+            if (panel->nextModel2 != NULL && !Model_IsReady(panel->nextModel2, 0xffff)) {
                 continue;
             }
             for (j = 0, other = scene->panels; j < 5; j++, other++) {
@@ -349,7 +349,7 @@ BOOL func_020534dc(SlideScene *scene) {
                 }
             }
         } else if (scene->skip == 1 && count == 0) {
-            func_02049a48(data_02097e4c, 0x28, 0x3c, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x28, 0x3c, -1, -1);
             scene->fadeTimer = 0;
             scene->faded = 0;
             scene->fadeOut = 1;
@@ -376,7 +376,7 @@ BOOL func_020534dc(SlideScene *scene) {
     }
     hud = scene->huds;
     if (hud->flag14) {
-        if (hud->closing && func_02054f10(scene->model, 0xffff)) {
+        if (hud->closing && Model_IsReady(scene->model, 0xffff)) {
             if (hud->shown == 1) {
                 hud->t2 = hud->t;
             } else {
@@ -422,7 +422,7 @@ BOOL func_020534dc(SlideScene *scene) {
             hit = FALSE;
             if (!scene->waitPage) {
                 if (pad2 & 0x81) {
-                    func_02049a48(data_02097e4c, 0x24, 0x50, -1, -1);
+                    SndMgr_PlayVolume(data_02097e4c, 0x24, 0x50, -1, -1);
                     scene->cancel = 1;
                     scene->pressed = 1;
                     hit = TRUE;

@@ -18,20 +18,20 @@ extern void *data_ov000_021ccd64;
 extern s32 Ov003CntSelf_CountLiving(void *p);
 extern void func_020627b4(void);
 extern s32 func_0205b1fc(void);
-extern Ov003Plr *func_ov000_0219bf90(void);
+extern Ov003Plr *ActorMgr_FindPlayer(void);
 extern char data_ov003_021f803c[];
 extern char data_ov003_021f8046[];
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
-extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
+extern BOOL Model0218fe1c_SetAnim(void *model, const void *name, s32 a, s32 b);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
-extern void func_0203f920(void *p);
+extern void HitMesh_Unlink_0203f920(void *p);
 extern void HitMesh_Link(void *p);
-extern void *func_ov000_02191318(Model0218fe1c *m, s32 a);
-extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *m, s32 a);
+extern void *Model0218fe1c_SetAnimFrame(Model0218fe1c *m, s32 a);
+extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *m, s32 a);
 
 void Ov003ActVt_021f7f14_Init(Ov003Switch *self) {
     Ov003Unit *u;
-    func_ov000_0219433c(self);
+    ActorEx_InitActor(self);
     u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u != NULL) {
         u->unk_a2_0 = 0;
@@ -40,11 +40,11 @@ void Ov003ActVt_021f7f14_Init(Ov003Switch *self) {
 
 void Ov003ActVt_021f7f14_Start(Ov003Switch *self) {
     AnimCtrl *a;
-    func_ov000_02194758(self);
-    func_ov000_02197d80(self);
+    ActorEx_Start(self);
+    Obj02197d80_LoadValue(self);
     switch (self->unk_18) {
     case 2:
-        func_ov000_02190cb0(self->model, data_ov003_021f803c, 0x1000, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov003_021f803c, 0x1000, 0);
         if (self->unk_1c == 1) {
             NNSi_G3dModifyPolygonAttrMask(self->model->mdl, 0, 0x1f0000);
             self->model->alpha = 0;
@@ -52,14 +52,14 @@ void Ov003ActVt_021f7f14_Start(Ov003Switch *self) {
         if (self->unk_1c != 2) {
             self->unk_cc_0 = 0;
             if (self->hitMesh != NULL) {
-                func_0203f920(self->hitMesh);
+                HitMesh_Unlink_0203f920(self->hitMesh);
             }
         }
         break;
     case 0:
     case 1:
     case 3:
-        func_ov000_02190cb0(self->model, data_ov003_021f8046, 0x1000, 0);
+        Model0218fe1c_SetAnim(self->model, data_ov003_021f8046, 0x1000, 0);
         if (self->unk_1c == 1) {
             NNSi_G3dModifyPolygonAttrMask(self->model->mdl, 1, 0x1f0000);
         }
@@ -69,9 +69,9 @@ void Ov003ActVt_021f7f14_Start(Ov003Switch *self) {
         }
         break;
     }
-    func_ov000_02191318(self->model, -1);
+    Model0218fe1c_SetAnimFrame(self->model, -1);
     self->fsm->st = 0;
-    a = func_ov000_02190a30(self->model, 2);
+    a = Model0218fe1c_GetAnimCtrl(self->model, 2);
     if (a != NULL) {
         s16 s;
         a->loop = 1;
@@ -122,7 +122,7 @@ void Ov003ActVt_021f7f14_Update(Ov003Switch *self) {
         if (func_0205b1fc() != 1) {
             return;
         }
-        p = func_ov000_0219bf90();
+        p = ActorMgr_FindPlayer();
         if (p == NULL) {
             return;
         }
@@ -162,16 +162,16 @@ void Ov003ActVt_021f7f14_Update(Ov003Switch *self) {
     }
 }
 
-extern BOOL func_ov000_0218fa28(void *ctrl, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
+extern BOOL AnimCtrl_SetAnim(void *ctrl, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
 extern void func_ov000_0218996c(u8 a, u8 b);
-extern BOOL func_ov000_02191120(Model0218fe1c *m);
+extern BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *m);
 extern void *Target_Get(ActorSub4c *def);
 extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
 
 static inline void Model0218fe1c_PlayAnim0(Model0218fe1c *m, const char *name, s16 blend, u8 force) {
     const char *n = name;
     if (m->unk_0c != NULL) {
-        func_ov000_0218fa28(m->unk_0c, m->renderObj, m->res, m->res->anims->list[0], n, blend, force);
+        AnimCtrl_SetAnim(m->unk_0c, m->renderObj, m->res, m->res->anims->list[0], n, blend, force);
     }
 }
 
@@ -181,7 +181,7 @@ void Ov003ActVt_021f7f14_StateIdle(Ov003Switch *self) {
         break;
     case 10:
         Model0218fe1c_PlayAnim0(self->model, data_ov003_021f8046, 0x22, 0);
-        func_ov000_02190a30(self->model, 2)->speed = 0x800;
+        Model0218fe1c_GetAnimCtrl(self->model, 2)->speed = 0x800;
         if (self->unk_1c == 1 && self->fsm->timer == 0) {
             NNSi_G3dModifyPolygonAttrMask(self->model->mdl, 0, 0x1f0000);
             self->model->alpha = 0;
@@ -190,7 +190,7 @@ void Ov003ActVt_021f7f14_StateIdle(Ov003Switch *self) {
         if (self->hitMesh != NULL) {
             HitMesh_Link(self->hitMesh);
         }
-        func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
         func_ov000_0218996c(2, 0x3c);
         self->fsm->timer = 0x50;
         self->fsm->st++;
@@ -207,7 +207,7 @@ void Ov003ActVt_021f7f14_StateIdle(Ov003Switch *self) {
                 self->model->alpha = a / 2;
             }
         }
-        if (!func_ov000_02191120(self->model)) {
+        if (!Model0218fe1c_IsAnimDone(self->model)) {
             return;
         }
         NNSi_G3dModifyPolygonAttrMask(self->model->mdl, 1, 0x1f0000);
@@ -215,14 +215,14 @@ void Ov003ActVt_021f7f14_StateIdle(Ov003Switch *self) {
         break;
     case 20:
         Model0218fe1c_PlayAnim0(self->model, data_ov003_021f803c, 0x1b, 0);
-        func_ov000_02190a30(self->model, 2)->speed = 0xc00;
+        Model0218fe1c_GetAnimCtrl(self->model, 2)->speed = 0xc00;
         if (self->unk_1c != 2) {
             self->unk_cc_0 = 0;
             if (self->hitMesh != NULL) {
-                func_0203f920(self->hitMesh);
+                HitMesh_Unlink_0203f920(self->hitMesh);
             }
         }
-        func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
         func_ov000_0218996c(2, 0x3c);
         self->fsm->timer = 0x50;
         self->fsm->st++;
@@ -238,7 +238,7 @@ void Ov003ActVt_021f7f14_StateIdle(Ov003Switch *self) {
                 self->model->alpha = self->fsm->timer >> 1;
             }
         }
-        if (!func_ov000_02191120(self->model)) {
+        if (!Model0218fe1c_IsAnimDone(self->model)) {
             return;
         }
         if (self->unk_1c == 1) {

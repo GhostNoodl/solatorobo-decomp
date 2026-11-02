@@ -71,7 +71,7 @@ typedef struct FieldState {
     /* 0x0a6 */ u16 unk_a6;
     /* 0x0a8 */ u16 unk_a8;
     /* 0x0aa */ u8 unk_aa[2];
-    // 0xac..0xc7: the stage flag sub-object of func_ov000_021819a4 / func_ov000_02182590
+    // 0xac..0xc7: the stage flag sub-object of SceneStage_FreeScripts / func_ov000_02182590
     /* 0x0ac */ u8 stageFlags; // start of the stage flag block (StageFlags_SaveBuf / LoadBuf)
     /* 0x0b0 */ s32 unk_b0;
     /* 0x0b4 */ u16 unk_b4;

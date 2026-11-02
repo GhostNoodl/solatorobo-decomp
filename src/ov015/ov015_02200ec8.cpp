@@ -5,11 +5,11 @@ extern "C" {
 extern u8 data_ov015_022128ec[];
 void *func_ov015_02207738(Ov015Ship *p);
 extern u8 data_ov015_0221294c[];
-void *func_ov000_0218fee4(void *p);
-void *func_ov000_0218ea20(void *p);
+void *Model0218fe1c_FreeAnims(void *p);
+void *ResSet_ReleaseAll(void *p);
 extern u8 data_ov015_0221293c[];
 extern char data_ov015_022128ab[];
-void func_0206e900(char *buf, const char *name);
+void LangData_LocalizePath(char *buf, const char *name);
 extern u8 data_ov015_02213198[];
 void func_ov015_02210b58(void *p);
 
@@ -36,7 +36,7 @@ s32 func_ov015_02200ec8(Ov015Obj34 *self, Ov015Stat *st, s32 base) {
             }
             if ((self->unk_0c >> 12) % 20 == 0) {
 
-                func_02049a48(data_02097e4c, 0x48, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x48, -1, -1, -1);
             }
         }
         break;
@@ -118,12 +118,12 @@ void func_ov015_0220101c(Ov015Game *self) {
 
 void *func_ov015_022011c4(u8 *self) {
     SET_VT(self, data_ov015_0221294c);
-    func_ov000_0218fee4(self + 0x57c);
-    func_ov000_0218ea20(self + 0x444);
-    func_ov000_0218fee4(self + 0x35c);
-    func_ov000_0218ea20(self + 0x224);
-    func_ov000_0218fee4(self + 0x13c);
-    func_ov000_0218ea20(self + 0x4);
+    Model0218fe1c_FreeAnims(self + 0x57c);
+    ResSet_ReleaseAll(self + 0x444);
+    Model0218fe1c_FreeAnims(self + 0x35c);
+    ResSet_ReleaseAll(self + 0x224);
+    Model0218fe1c_FreeAnims(self + 0x13c);
+    ResSet_ReleaseAll(self + 0x4);
     Heap_Free(self);
     return self;
 }
@@ -138,8 +138,8 @@ void *func_ov015_02201220(Ov015Hud *self) {
             Model *o = self->mdl0;
             if (o != NULL) {
                 if (o != NULL) {
-                    func_02041558(o);
-                    func_02041278(&o->pltt);
+                    TexObj_Release(o);
+                    PlttRes_Release(&o->pltt);
                     Heap_Free(o);
                 }
                 self->mdl0 = NULL;
@@ -154,8 +154,8 @@ void *func_ov015_02201220(Ov015Hud *self) {
             Model *o = self->mdl1;
             if (o != NULL) {
                 if (o != NULL) {
-                    func_02041558(o);
-                    func_02041278(&o->pltt);
+                    TexObj_Release(o);
+                    PlttRes_Release(&o->pltt);
                     Heap_Free(o);
                 }
                 self->mdl1 = NULL;
@@ -163,8 +163,8 @@ void *func_ov015_02201220(Ov015Hud *self) {
         }
         HEAP_POP(saved);
     }
-    func_0206e900(buf, data_ov015_022128ab);
-    func_02036838(data_02097cdc, buf, 7, 0);
+    LangData_LocalizePath(buf, data_ov015_022128ab);
+    ResMgr_ReleaseByName(data_02097cdc, buf, 7, 0);
     Heap_Free(self);
     return self;
 }

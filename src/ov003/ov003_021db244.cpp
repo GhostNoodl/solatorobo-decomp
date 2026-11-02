@@ -6,12 +6,12 @@ extern "C" {
 
 extern Ov003ShotStep data_ov003_021f49ba[];
 extern const VecFx32 data_02092a50;
-extern Robo021ca458 *func_ov000_0219bf90(void);
+extern Robo021ca458 *ActorMgr_FindPlayer(void);
 extern Actor *Target_Get(ActorSub4c *t);
-extern VecFx32 *func_ov000_0218d2e0(Actor *self);
+extern VecFx32 *Actor_GetTargetSub44(Actor *self);
 extern void func_01ffc9fc(VecFx32 *dst, VecFx32 *src, u16 ry);
 extern void HitSphere_Link(ActorSub48 *a);
-extern void func_ov000_021987b8(ActorSub48 *a, s32 b, s32 c, s32 d);
+extern void Body_Update(ActorSub48 *a, s32 b, s32 c, s32 d);
 
 #define OV003PJ_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003PJ_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
@@ -60,7 +60,7 @@ void Ov003Shot_StateThrown(Ov003Shot *self) {
     Actor *part;
     u16 mode;
     VecFx32 *tgt;
-    pl = func_ov000_0219bf90();
+    pl = ActorMgr_FindPlayer();
     part = Target_Get(self->targetObj);
     switch (self->fsm->st) {
     case 0: {
@@ -74,7 +74,7 @@ void Ov003Shot_StateThrown(Ov003Shot *self) {
         self->vel.y = 0;
         self->vel.z = 0;
         mode = cfg->mode;
-        tgt = func_ov000_0218d2e0(self);
+        tgt = Actor_GetTargetSub44(self);
         if (part->kind == 0x1000 && !self->def->noAim) {
             s32 a;
             mode = 2;
@@ -170,7 +170,7 @@ void Ov003Shot_StateThrown(Ov003Shot *self) {
         }
         self->curSpeed = self->steps->speed;
         if (self->def->fly.id != -1 && self->unk_bc == NULL) {
-            EffectObj *e = func_02065f88(self->def->fly.id, &self->pos);
+            EffectObj *e = Effect_SpawnId(self->def->fly.id, &self->pos);
             s32 s = self->def->fly.scale << 4;
             e->SetScaleXYZ(s, s, s);
             e->SetRot(&self->rot);
@@ -211,7 +211,7 @@ void Ov003Shot_StateThrown(Ov003Shot *self) {
                 EffectObj *e;
                 s32 s;
                 self->trailTimer = 0;
-                e = func_02065f88(cfg->trail.id, &self->pos);
+                e = Effect_SpawnId(cfg->trail.id, &self->pos);
                 cfg = self->def;
                 v.x = cfg->trail.x << 4;
                 v.y = cfg->trail.y << 4;
@@ -262,7 +262,7 @@ void Ov003Shot_StateThrown(Ov003Shot *self) {
             self->vel.z = OV003PJ_MUL(self->vel.z, spd);
         }
         if (ent->homing != 0) {
-            tgt = func_ov000_0218d2e0(self);
+            tgt = Actor_GetTargetSub44(self);
             if (tgt != NULL) {
                 d = *tgt;
             } else {
@@ -335,7 +335,7 @@ void Ov003Shot_StateThrown(Ov003Shot *self) {
         if (!(self->param->type & 2)) {
             Ov003Pj_Show(self->hit);
         }
-        func_ov000_021987b8(self->hit, 0, 0, 0);
+        Body_Update(self->hit, 0, 0, 0);
         break;
     }
     }

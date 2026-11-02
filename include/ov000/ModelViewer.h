@@ -23,9 +23,9 @@ typedef struct ModelViewerRes {
     /* 0x2e8 */ ActorRes b[2];
 } ModelViewerRes;
 
-// A 3D model drawn with its own camera and projection (0x708 bytes, ctor func_ov000_02162124, vtable
-// data_ov000_021cabc8, dtors func_ov000_02162294 / 0216251c). func_ov000_02162b40 requests new
-// resources, func_ov000_02162bd4 steps the state machine, func_ov000_02162a58 draws.
+// A 3D model drawn with its own camera and projection (0x708 bytes, ctor ModelViewer_Ctor, vtable
+// data_ov000_021cabc8, dtors func_ov000_02162294 / 0216251c). ModelViewer_SetModel requests new
+// resources, func_ov000_02162bd4 steps the state machine, ModelViewer_Draw draws.
 typedef struct ModelViewer {
     /* 0x000 */ void *vtbl;
     /* 0x004 */ ModelViewerRes res;
@@ -39,9 +39,9 @@ typedef struct ModelViewer {
     /* 0x6b8 */ s32 state;
     /* 0x6bc */ u8 request;
     /* 0x6bd */ u8 unk_6bd[3];
-    /* 0x6c0 */ const char *anim; // func_ov000_02190cb0
+    /* 0x6c0 */ const char *anim; // Model0218fe1c_SetAnim
     /* 0x6c4 */ s32 frame;
-    /* 0x6c8 */ s16 speed; // func_ov000_021911c8
+    /* 0x6c8 */ s16 speed; // Model0218fe1c_SetAnimSpeed
     /* 0x6ca */ u8 unk_6ca[2];
     /* 0x6cc */ VecFx32 home;
     /* 0x6d8 */ VecFx32 pos; // copied to model.trans when drawn

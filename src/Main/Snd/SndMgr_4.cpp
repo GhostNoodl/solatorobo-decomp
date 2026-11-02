@@ -25,9 +25,9 @@ extern SndAreaEntry data_0208b7c8[];
 extern s32 data_0208b704;
 extern s32 data_0208b744[];
 
-extern int func_0204061c(s32 *out, const VecFx32 *pos);
+extern int Math_ProjectToScreen(s32 *out, const VecFx32 *pos);
 
-s32 func_02049bdc(SndMgr *mgr, s32 id, s32 pan) {
+s32 SndMgr_PlayPan(SndMgr *mgr, s32 id, s32 pan) {
     s32 seqArc;
     s32 index;
     SndHandle *handle;
@@ -37,7 +37,7 @@ s32 func_02049bdc(SndMgr *mgr, s32 id, s32 pan) {
     if (pan < -0x200 || pan > 0x1ff) {
         return -1;
     }
-    handle = func_02049984(mgr, id, &seqArc, &index);
+    handle = SndMgr_LookupSe(mgr, id, &seqArc, &index);
     if (handle == NULL) {
         return -1;
     }
@@ -73,7 +73,7 @@ static inline s32 SndMgr_LoadSlot(SndMgr *mgr, s32 id, u32 slot) {
     if (slot >= 5) {
         return -1;
     }
-    r = func_02049afc(mgr, id);
+    r = SndMgr_StartSeqArc(mgr, id);
     mgr->seqArcSlots[slot] = r;
     return r;
 }
@@ -88,7 +88,7 @@ s32 func_02049c80(SndMgr *mgr, s32 id, s32 volume, s32 pitch, s32 pan, s32 useSl
     }
     result = 0;
     if (!useSlot) {
-        handle = func_02049984(mgr, id, &seqArc, &index);
+        handle = SndMgr_LookupSe(mgr, id, &seqArc, &index);
         if (handle == NULL) {
             return -1;
         }
@@ -142,13 +142,13 @@ s32 func_02049c80(SndMgr *mgr, s32 id, s32 volume, s32 pitch, s32 pan, s32 useSl
 static inline void SndMgr_StopSe(SndMgr *mgr, s32 id) {
     s32 seqArc;
     s32 index;
-    if (func_02049984(mgr, id, &seqArc, &index) == NULL) {
+    if (SndMgr_LookupSe(mgr, id, &seqArc, &index) == NULL) {
         return;
     }
     NNS_SndPlayerStopSeqBySeqArcIdx(seqArc, index, 0);
 }
 
-void func_02049de8(SndMgr *mgr, s32 id);
+void SndMgr_Stop(SndMgr *mgr, s32 id);
 
 static inline BOOL SndMgr_IsArea(SndListener *listener, u8 a, u8 b, u8 c) {
     return (listener->a == a && listener->b == b && listener->c == c) ? TRUE : FALSE;
@@ -156,9 +156,9 @@ static inline BOOL SndMgr_IsArea(SndListener *listener, u8 a, u8 b, u8 c) {
 
 s32 func_02049e20(SndMgr *mgr, const VecFx32 *pos);
 
-SndHandle *func_02049f44(SndMgr *mgr, s32 id, const VecFx32 *pos, s32 pitch);
+SndHandle *SndMgr_PlayAt(SndMgr *mgr, s32 id, const VecFx32 *pos, s32 pitch);
 
-SndHandle *func_0204a028(SndMgr *mgr, s32 id, const VecFx32 *pos, s32 pitch);
+SndHandle *SndMgr_PlayAtPitch(SndMgr *mgr, s32 id, const VecFx32 *pos, s32 pitch);
 
 static inline SndHandle *SndMgr_GetSlotHandle(SndMgr *mgr, u32 slot) {
     return slot >= 5 ? NULL : mgr->seqArcHandles[slot];
@@ -178,7 +178,7 @@ static inline void SndMgr_SetSlotVolume(SndMgr *mgr, u32 slot, s32 volume, s32 f
     NNS_SndPlayerMoveVolume(handle, volume, frames);
 }
 
-void func_0204a058(SndMgr *mgr, u32 slot, s32 volume, s32 frames);
+void SndMgr_SetSlotVolume_0204a058(SndMgr *mgr, u32 slot, s32 volume, s32 frames);
 
 void func_0204a094(SndMgr *mgr, u32 slot, s32 pan);
 
@@ -190,13 +190,13 @@ void SndMgr_PauseAll(SndMgr *mgr);
 
 void SndMgr_ResumeAll(SndMgr *mgr);
 
-void func_0204a20c(SndMgr *mgr, s32 strmNo);
+void SndMgr_PlayStrm(SndMgr *mgr, s32 strmNo);
 
-void func_0204a284(SndMgr *mgr);
+void SndMgr_StopStrm_0204a284(SndMgr *mgr);
 
 void func_0204a2a8(SndMgr *mgr, s32 volume, s32 frames);
 
-s32 func_0204a2c8(SndMgr *mgr, s32 seq);
+s32 SndMgr_GetSeqVolume_0204a2c8(SndMgr *mgr, s32 seq);
 
 void func_0204a2e0(SndMgr *mgr, int fadeFrames);
 

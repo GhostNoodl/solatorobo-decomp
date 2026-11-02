@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021d9444(Obj021efe6c *self) {
+void Obj021efe6c_Init(Obj021efe6c *self) {
     self->field = NULL;
     MI_CpuFill8((u8 *)self + 8, 0, 0x64);
     self->pieces = NULL;
@@ -31,12 +31,12 @@ void func_ov002_021d9444(Obj021efe6c *self) {
 
 void *Ov002Vt_021efe4c_DtorDelete(Obj021efe4c *self) {
     *(VFunc **)self = data_ov002_021efe4c;
-    func_ov002_021d6ec4(self);
+    Obj021efe4c_Release(self);
     Heap_Free(self);
     return self;
 }
 
-void func_ov002_021d9504(Obj021efe6c *self) {
+void Obj021efe6c_FreePieces(Obj021efe6c *self) {
     VObj *o = self->pieces;
     while (o != NULL) {
         VObj *next = FIELD(o, 0x70, VObj *);

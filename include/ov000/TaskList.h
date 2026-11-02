@@ -10,8 +10,8 @@
 #include "Main/Res/ResArc.h"
 
 
-// The task host data_ov000_021ccd44 (0x58 bytes, built by func_ov000_02180660 and freed by
-// func_ov000_02180754, updated by func_ov000_02180900): a pending task switch and the task it
+// The task host data_ov000_021ccd44 (0x58 bytes, built by TaskHost_Create and freed by
+// TaskHost_Destroy, updated by func_ov000_02180900): a pending task switch and the task it
 // switches to. Its state (unk_04) runs the switch: 5 calls the task's vfunc_10, 6 waits for its
 // vfunc_14, 7 starts it once no task is finishing.
 struct TaskHost {
@@ -44,7 +44,7 @@ extern void *data_0208ccc0;
 
 void *Heap_Alloc(u32 size);
 void Heap_Free(void *ptr);
-void func_02043d20(void *a, s32 b);
+void Gfx3D_SendDL(void *a, s32 b);
 void func_ov000_0214c1ac(void);
 void func_02041c20(Model *model, s32 a, void *b);
 void func_ov000_02173d9c(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);

@@ -74,7 +74,7 @@ static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->event != 0;
 }
 
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 extern void func_01ffc9fc(VecFx32 *dst, VecFx32 *src, u16 angle);
 extern void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
@@ -94,7 +94,7 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
         return;
     }
     self->target = 0xffff;
-    pl = (Robo021ca458 *)func_ov000_0219bf90();
+    pl = (Robo021ca458 *)ActorMgr_FindPlayer();
     if (pl == NULL) {
         return;
     }

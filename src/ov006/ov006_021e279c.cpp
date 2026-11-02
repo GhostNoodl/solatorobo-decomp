@@ -15,20 +15,20 @@ void ov006_Unk021e279c_Load(ov006_Unk021e279c *self) {
     if (model != NULL) {
         const char *name = data_ov006_021ec1a9;
         if (name) {
-            func_02041218(&model->pltt);
-            func_02041440(model, name, 0);
+            PlttRes_Init_02041218(&model->pltt);
+            TexObj_Init(model, name, 0);
             STD_CopyString(model->name, data_ov006_021ec864);
         }
     }
     self->unk60 = model;
-    func_020417e0(self->unk60, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
+    TexObj_SetRes(self->unk60, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
     self->unk60->flags |= 2;
     self->unk60->flags |= 0x80000;
     self->unk60->flags |= 0x400000;
-    func_02041d9c(self->unk60, 2, 0xc);
-    func_02041d9c(self->unk60, 2, 0xd);
-    func_02041d9c(self->unk60, 2, 0xe);
-    func_02041d9c(self->unk60, 2, 0xf);
+    TexObj_SelectImage(self->unk60, 2, 0xc);
+    TexObj_SelectImage(self->unk60, 2, 0xd);
+    TexObj_SelectImage(self->unk60, 2, 0xe);
+    TexObj_SelectImage(self->unk60, 2, 0xf);
 }
 
 }

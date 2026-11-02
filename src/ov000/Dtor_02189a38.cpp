@@ -5,7 +5,7 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208bf54[];
-void func_0205a6e8(void *ptr);
+void StageRes_CancelSlots(void *ptr);
 void *func_0204b2c0(void *self);
 extern u8 data_ov000_021cc3a0[];
 extern u8 data_ov000_021c9d4c[];
@@ -33,7 +33,7 @@ typedef struct {
 
 VObj *Ov000Vt_021cc158_Dtor(VObj *self) {
     VOBJ_SET_VTABLE(self, data_0208bf54);
-    func_0205a6e8(self);
+    StageRes_CancelSlots(self);
     VOBJ_SET_VTABLE(self, data_0208b318);
     self->vfunc_0c();
     return self;

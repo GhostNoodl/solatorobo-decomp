@@ -2,7 +2,7 @@
 
 extern "C" {
 
-s32 func_02049bdc(void *a, int b, int c);
+s32 SndMgr_PlayPan(void *a, int b, int c);
 void *func_ov002_021dd6a4(Obj021eff10 *self, s32 a, u16 b);
 void func_ov002_021dd7f0(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c);
 
@@ -19,7 +19,7 @@ static inline Ov002Cell *ov002_GetCell(Obj021efe6c *w, Vec2 *pos) {
 
 static inline void ov002_ShowMsg(Obj021eff10 *self, void *str) {
     Obj021eff50 *t = self->owner;
-    func_ov000_0215bb14(t->unk_20, str);
+    Obj0215bb14_SetText(t->unk_20, str);
     t->unk_20->vfunc_70();
 }
 
@@ -44,7 +44,7 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
     Ov002Cell *cell;
     if (trig & 2) {
         self->unk_18 = 0x46;
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         return;
     }
     if (trig & 1) {
@@ -53,7 +53,7 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
         case 1: {
             Obj021eff30 *p;
             self->unk_30 = (Obj021efe9c *)cell->obj;
-            func_02049bdc(data_02097e4c, 0x47, -5);
+            SndMgr_PlayPan(data_02097e4c, 0x47, -5);
             p = (Obj021eff30 *)Heap_Alloc(0x30);
             if (p != NULL) {
                 *(VFunc **)p = data_ov002_021eff30;
@@ -85,7 +85,7 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
                 return;
             }
             ov002_ShowMsg(self, MsgRes_GetString(msg, 0x106));
-            func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
             self->unk_20 = 1;
             return;
         }
@@ -98,21 +98,21 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
             }
             if (sum == 0) {
                 ov002_ShowMsg(self, MsgRes_GetString(msg, 0x107));
-                func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
                 self->unk_20 = 1;
                 return;
             }
             p = (Obj021efef0 *)Heap_Alloc(sizeof(Obj021efef0));
             if (p != NULL) {
                 *(VFunc **)p = data_ov002_021efef0;
-                func_ov002_021ddd80(p);
+                Obj021efef0_Init(p);
             }
             {
                 Obj021eff50 *t = self->owner;
                 t->unk_10 = p;
                 t->unk_0c = 0x14;
             }
-            func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             return;
         }
         }
@@ -153,7 +153,7 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
             Obj021efe6c *c;
             s32 d;
             s32 px, py, pz, tz;
-            func_02049a48(data_02097e4c, 0x22, -1, -1, -1);
+            SndMgr_PlayVolume(data_02097e4c, 0x22, -1, -1, -1);
             old.x = self->unk_24;
             old.y = self->unk_28;
             func_ov002_021dd7f0(self, &np, &old, 0);
@@ -181,7 +181,7 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
         if (np.x < map->w) {
             return;
         }
-        func_02049a48(data_02097e4c, 0xe, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0xe, -1, -1, -1);
         {
             Obj021efe6c *c = self->owner->board;
             s32 py = *(s32 *)(data_ov002_021eef74 + 0x5c);

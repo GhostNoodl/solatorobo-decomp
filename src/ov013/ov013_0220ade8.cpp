@@ -3,7 +3,7 @@
 extern "C" {
 
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, void *v, s32 e, s32 f, s32 g, s32 h, s32 i);
+extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 mask, void *v, s32 e, s32 f, s32 g, s32 h, s32 i);
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -17,7 +17,7 @@ void Ov013ActEx_0220a9a8_State0a(Ov013ActEx_0220a9a8 *self) {
     s32 v = 0;
     EffectObj *p;
     Ov003Actor *t;
-    p = func_020657b0(data_0214a420, ((s32)self->unk_bc));
+    p = Effect_Find_020657b0(data_0214a420, ((s32)self->unk_bc));
     if (p != NULL) {
         EffectObj *q;
         v = p->alpha;
@@ -33,7 +33,7 @@ void Ov013ActEx_0220a9a8_State0a(Ov013ActEx_0220a9a8 *self) {
         }
     }
     if (v <= 0) {
-        func_ov000_02198360(self->fsm, 0x15, 0);
+        History_SetState(self->fsm, 0x15, 0);
         if (p != NULL) {
             p->state = 4;
         }
@@ -43,29 +43,29 @@ void Ov013ActEx_0220a9a8_State0a(Ov013ActEx_0220a9a8 *self) {
     if (t == NULL) {
         return;
     }
-    func_ov000_0219aae8(self, self, self->targetObj->unk_08, self->targetObj->unk_0a, 1 << (t->id >> 12), NULL, 0,
+    Hit_ApplyInArea(self, self, self->targetObj->unk_08, self->targetObj->unk_0a, 1 << (t->id >> 12), NULL, 0,
                         self->hit->radius, self->unk_d0, -1, 0x1000);
 }
 
 Ov013ActEx_0220a9a8 *Ov013ActEx_0220a9a8_DtorDelete(Ov013ActEx_0220a9a8 *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 Ov013ActEx_0220a9a8 *Ov013ActEx_0220a9a8_Dtor(Ov013ActEx_0220a9a8 *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 
 Ov013ActEx_0220a4e0 *Ov013ActEx_0220a4e0_DtorDelete(Ov013ActEx_0220a4e0 *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 Ov013ActEx_0220a4e0 *Ov013ActEx_0220a4e0_Dtor(Ov013ActEx_0220a4e0 *self) {
-    func_ov000_0219429c(self);
+    ActorEx_DtorBase(self);
     return self;
 }
 

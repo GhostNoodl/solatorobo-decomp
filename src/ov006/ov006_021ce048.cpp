@@ -23,7 +23,7 @@ typedef struct {
 extern "C" {
 
 extern u32 data_ov006_021eb708[];
-void func_02043064(const Oam021ce048 *attr, u32 *w, u32 *h);
+void Oam_GetSize(const Oam021ce048 *attr, u32 *w, u32 *h);
 void NNS_G3dGeBufferOP_N(u32 op, const void *args, u32 num);
 
 #define REG_TEXIMAGE_PARAM (*(vu32 *)0x40004a8)
@@ -59,7 +59,7 @@ void ov006_DrawSprite3D(void *self, s32 x, s32 y, s32 z, s32 unused, Oam021ce048
     shift = ((s32)(img->mappingType & 0x700000) >> 20) + 5;
     ox = ofs[0];
     oy = ofs[1];
-    func_02043064(oam, &w, &h);
+    Oam_GetSize(oam, &w, &h);
     REG_TEXIMAGE_PARAM = ((charBase + (charName << shift)) >> 3) | (img->fmt << 26) | 0x40000000 | (w << 20) |
                          (h << 23) | 0x30000 | (img->plttUse << 29);
     oam->pal = 1;

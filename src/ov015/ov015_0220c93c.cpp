@@ -6,8 +6,8 @@ extern u8 data_ov015_02212ee8[];
 extern u8 data_ov015_02212eb0[];
 extern void *data_ov015_02212db8[];
 extern u8 data_ov015_02212e0d[];
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
+BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
 s32 Rand_PlusMinus(s32 max);
 void HitSphere_Link(void *a);
 
@@ -41,7 +41,7 @@ void *Ov015FishState40_Dtor(Ov015FishState40 *self) {
             break;
         }
     }
-    o = func_020657b0(data_0214a420, self->unk_08);
+    o = Effect_Find_020657b0(data_0214a420, self->unk_08);
     if (o != NULL) {
         HEAP_PUSH(saved);
         if (o != NULL) {
@@ -67,7 +67,7 @@ void *Ov015FishState40_DtorDelete(Ov015FishState40 *self) {
             break;
         }
     }
-    o = func_020657b0(data_0214a420, self->unk_08);
+    o = Effect_Find_020657b0(data_0214a420, self->unk_08);
     if (o != NULL) {
         HEAP_PUSH(saved);
         if (o != NULL) {
@@ -86,9 +86,9 @@ static inline void Ov015_SetXZ(s32 *v, s32 x, s32 z) { v[0] = x; v[2] = z; }
 BOOL Ov015FishState40_Enter(Ov015FishState40 *self, Ov015Fish *p) {
     s32 a;
     s32 x, z;
-    func_ov000_02190cb0(&p->model, data_ov015_02212e0d, 0x19a, 0);
+    Model0218fe1c_SetAnim(&p->model, data_ov015_02212e0d, 0x19a, 0);
     p->animSpeed = 0x59a;
-    func_ov000_021915a0(&p->model);
+    Model0218fe1c_SetLoop(&p->model);
     p->drawMode = 1;
     self->unk_0c = FX_Mul(p->info.unk_0a << 4, 0x19a) + 0x23d;
     a = Rand_PlusMinus(0x1000);
@@ -260,7 +260,7 @@ clamp:
         }
         p->pos = v2;
         VEC_Normalize((&self->unk_1c), (&p->dir));
-        e = func_020657b0(data_0214a420, self->unk_08);
+        e = Effect_Find_020657b0(data_0214a420, self->unk_08);
         if (e == NULL) {
             e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &p->pos);
             e->unk_d4 = 3;

@@ -37,7 +37,7 @@ typedef struct {
 } Ov003FxUnit;
 
 // A prop that moves along a path of waypoints (vtable data_ov003_021f9fe4, 0xe0 bytes: NEW_BASIC in
-// func_ov000_02192b24). Actor::unk_1a picks its data_ov003_021f6fc8 entry; unk_84 is the waypoint
+// Factory_New4000). Actor::unk_1a picks its data_ov003_021f6fc8 entry; unk_84 is the waypoint
 // it moves to, with vel per frame.
 class Ov003FxProp : public ActorEx {
 public:
@@ -53,11 +53,11 @@ extern void *data_ov000_021ccd64;
 extern const Ov003FxEntry data_ov003_021f6fc8[];
 extern Ov003FxUnit *Group_FindNode(void *mgr, u16 id);
 extern const char data_ov003_021fa1aa[];
-extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
-extern void func_ov000_021915a0(void *model);
+extern BOOL Model0218fe1c_SetAnim(void *model, const char *name, s32 a, s32 b);
+extern void Model0218fe1c_SetLoop(void *model);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern u32 Rand_UpTo(u32 max);
-extern s32 func_02049bdc(SndMgr *mgr, s32 a, s32 b);
+extern s32 SndMgr_PlayPan(SndMgr *mgr, s32 a, s32 b);
 
 static inline BOOL Ov003FxGame_IsBusy(FieldState *g) {
     BOOL r = g->head != g->tail;
@@ -86,7 +86,7 @@ void Ov003ActVt_021f9fe4_Start(Ov003FxProp *self) {
     Ov003FxUnit *u;
     const Ov003FxEntry *e;
     EffectObj *fx;
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u != NULL) {
         u->unk_a2_5 = 1;
@@ -97,7 +97,7 @@ void Ov003ActVt_021f9fe4_Start(Ov003FxProp *self) {
     if (e->effect == -1) {
         return;
     }
-    fx = func_02065f88(e->effect, &self->pos);
+    fx = Effect_SpawnId(e->effect, &self->pos);
     if (fx == NULL) {
         return;
     }
@@ -115,8 +115,8 @@ void Ov003ActVt_021f9fe4_StateIdle(Ov003FxProp *self) {
         case 10: {
             Ov003FxWaypoint *wp;
             s32 spd;
-            func_ov000_02190cb0(self->model, data_ov003_021fa1aa, 0x400, 0);
-            func_ov000_021915a0(self->model);
+            Model0218fe1c_SetAnim(self->model, data_ov003_021fa1aa, 0x400, 0);
+            Model0218fe1c_SetLoop(self->model);
             wp = &e->path[self->point];
             spd = wp->speed;
             self->unk_84 = self->basePos;
@@ -136,9 +136,9 @@ void Ov003ActVt_021f9fe4_StateIdle(Ov003FxProp *self) {
                     vol += (s16)Rand_UpTo(e->volumeRand);
                 }
                 if (self->kind == 0x4048) {
-                    func_02049bdc(data_02097e4c, e->sound, vol);
+                    SndMgr_PlayPan(data_02097e4c, e->sound, vol);
                 } else {
-                    func_0204a028(data_02097e4c, e->sound, &self->pos, vol);
+                    SndMgr_PlayAtPitch(data_02097e4c, e->sound, &self->pos, vol);
                 }
             }
             self->fsm->st++;
@@ -164,7 +164,7 @@ void Ov003ActVt_021f9fe4_StateIdle(Ov003FxProp *self) {
                 }
             } else if (self->fsm->st == 12 && self->kind == 0x4048 && Ov003Fx_GameIdle()) {
                 if (self->fsm->timer % 120 == 30) {
-                    func_02049a48(data_02097e4c, 0x3e, 0x28, -1, -1);
+                    SndMgr_PlayVolume(data_02097e4c, 0x3e, 0x28, -1, -1);
                 }
             }
             self->vel.x = (s32)(((s64)self->vel.x * 0x80 + 0x800) >> 12);
@@ -184,9 +184,9 @@ void Ov003ActVt_021f9fe4_StateIdle(Ov003FxProp *self) {
         shape.x = e->shape[0] << 4;
         shape.y = e->shape[1] << 4;
         shape.z = e->shape[2] << 4;
-        if (func_ov000_0219aae8(self, self, e->unk_00, e->unk_02, 2, &shape, &rot, e->shape[3] << 4, e->shape[4] << 4, e->unk_18, e->unk_1a)) {
+        if (Hit_ApplyInArea(self, self, e->unk_00, e->unk_02, 2, &shape, &rot, e->shape[3] << 4, e->shape[4] << 4, e->unk_18, e->unk_1a)) {
             if (e->unk_18 == 6) {
-                func_0204a028(data_02097e4c, 0x79, &self->pos, 5);
+                SndMgr_PlayAtPitch(data_02097e4c, 0x79, &self->pos, 5);
             }
         }
     }

@@ -15,8 +15,8 @@ void func_02063374(Unk0214a418 *self) {
     m = self->unk_14;
     if (m != NULL) {
         if (m != NULL) {
-            func_02041558(m);
-            func_02041278(&m->pltt);
+            TexObj_Release(m);
+            PlttRes_Release(&m->pltt);
             Heap_Free(m);
         }
         self->unk_14 = NULL;
@@ -39,7 +39,7 @@ void func_02063374(Unk0214a418 *self) {
     p = self->unk_0c;
     if (p != NULL) {
         if (p != NULL) {
-            func_ov000_0218fee4(p);
+            Model0218fe1c_FreeAnims(p);
             Heap_Free(p);
         }
         self->unk_0c = NULL;
@@ -51,7 +51,7 @@ void func_02063374(Unk0214a418 *self) {
     p = self->unk_08;
     if (p != NULL) {
         if (p != NULL) {
-            func_ov000_0218ea20(p);
+            ResSet_ReleaseAll(p);
             Heap_Free(p);
         }
         self->unk_08 = NULL;
@@ -92,13 +92,13 @@ struct SysTaskLoader {
 
 extern "C" {
 
-extern void func_0206e900(char *dst, const char *src);
+extern void LangData_LocalizePath(char *dst, const char *src);
 extern char data_0208c1ac[];
 extern char data_0208c1b5[];
 extern char data_0208c1c1[];
 extern u32 data_0208b318[];
-extern void *func_ov000_0218e9c4(void *p);
-extern BOOL func_ov000_0218f110(void *p);
+extern void *ResSet_Init(void *p);
+extern BOOL ResSet_UpdateLoad(void *p);
 
 BOOL func_02063484(Unk0214a418 *self) {
     char buf[0x20];
@@ -109,7 +109,7 @@ BOOL func_02063484(Unk0214a418 *self) {
     SysTaskLoader *ld;
 
     done = FALSE;
-    func_0206e900(buf, data_0208c1ac);
+    LangData_LocalizePath(buf, data_0208c1ac);
     do {
         cont = FALSE;
         switch (self->unk_04) {
@@ -121,7 +121,7 @@ BOOL func_02063484(Unk0214a418 *self) {
             if (self->unk_08 == NULL) {
                 res = (SysTaskRes *)Heap_Alloc(0x138);
                 if (res != NULL) {
-                    res = (SysTaskRes *)func_ov000_0218e9c4(res);
+                    res = (SysTaskRes *)ResSet_Init(res);
                 }
                 self->unk_08 = res;
                 STD_CopyString(res->name0, buf);
@@ -141,7 +141,7 @@ BOOL func_02063484(Unk0214a418 *self) {
             break;
         case 2:
             if (((SysTaskRes *)self->unk_08)->state >= 0) {
-                if (func_ov000_0218f110(self->unk_08)) {
+                if (ResSet_UpdateLoad(self->unk_08)) {
                     self->unk_04 = 3;
                     cont = TRUE;
                 }
@@ -202,9 +202,9 @@ extern const VecFx32 data_02082b98;
 
 extern void NNS_G3dGeFlushBuffer(void);
 extern void NNS_G3dGlbPolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
-extern void func_ov000_02190a80(void *a, s32 b);
-extern BOOL func_ov000_021903b4(void *a);
-extern BOOL func_ov000_02191120(void *a);
+extern void Model0218fe1c_UpdateAnim(void *a, s32 b);
+extern BOOL Model021903b4_Draw(void *a);
+extern BOOL Model0218fe1c_IsAnimDone(void *a);
 
 static inline void SysTask_SetProjectionMtx(const MtxFx44 *mtx) {
     MIi_CpuCopyFast(mtx, &NNS_G3dGlb.projMtx, sizeof(MtxFx44));
@@ -231,16 +231,16 @@ BOOL func_02063650(Unk0214a418 *self) {
     MTX_Identity43_(gc);
     gc->m[3][2] = 0;
     NNS_G3dGlbPolygonAttr(0, 0, 3, 0, 0, 0);
-    func_ov000_02190a80(self->unk_0c, 0x1000);
+    Model0218fe1c_UpdateAnim(self->unk_0c, 0x1000);
     {
         VecFx32 v = data_02082b98;
         SysTaskModel_SetPos((SysTaskModel *)self->unk_0c, &v);
     }
-    func_ov000_021903b4(self->unk_0c);
+    Model021903b4_Draw(self->unk_0c);
     NNS_G3dGeFlushBuffer();
     SysTask_SetProjectionMtx(&proj);
     MI_Copy48B(&cam, gc);
-    return func_ov000_02191120(self->unk_0c);
+    return Model0218fe1c_IsAnimDone(self->unk_0c);
 }
 
 }

@@ -85,9 +85,9 @@ void func_0206dedc(char *dst, const LangId *id);
 
 void func_0206dfd4(char *dst, const LangId *id);
 
-u8 *func_0206e150(LangBlockA *b);
+u8 *LangBlockA_GetData(LangBlockA *b);
 
-u8 *func_0206e180(LangBlockA *b);
+u8 *LangBlockA_GetData1(LangBlockA *b);
 
 u8 *func_0206e1bc(LangBlockA *b);
 
@@ -95,7 +95,7 @@ u8 *func_0206e200(LangBlockB *b);
 
 u8 *func_0206e230(LangBlockB *b);
 
-u8 *func_0206e264(LangBlockB *b);
+u8 *LangBlockB_GetData(LangBlockB *b);
 
 u8 *func_0206e2a4(LangBlockB *b);
 
@@ -177,7 +177,7 @@ void func_0206e660(LangBlockA *b) {
     func_0206e3a0(&b->flags, b->data);
 }
 
-void func_0206e900(char *dst, const char *src);
+void LangData_LocalizePath(char *dst, const char *src);
 void func_0206e6e4(void);
 
 typedef struct LangArc {
@@ -189,12 +189,12 @@ extern LangArc data_0214b0b8;
 void func_02038638(LangArc *arc, const char *name);
 void func_02038520(LangArc *arc);
 void *func_02038dbc(LangArc *arc);
-LangTable **func_02034b98(void *res, const char *name);
+LangTable **ResList_FindType0(void *res, const char *name);
 
 void func_0206e678(void) {
     char buf[0x20];
     data_0214b0b8.unk_44 = 7;
-    func_0206e900(buf, data_02082bf8[2]);
+    LangData_LocalizePath(buf, data_02082bf8[2]);
     func_02038638(&data_0214b0b8, buf);
     func_0206e6e4();
 }
@@ -214,8 +214,8 @@ void func_0206e6e4(void) {
 
     STD_CopyString(buf, data_02082bf8[0]);
     STD_ConcatenateString(buf, data_02082bf8[1]);
-    func_0206e900(buf, buf);
-    table = *func_02034b98(res, buf);
+    LangData_LocalizePath(buf, buf);
+    table = *ResList_FindType0(res, buf);
     data_0214b0a8 = table;
     group = table->groups;
     str = (char *)table + table->strOffset + 4;
@@ -237,7 +237,7 @@ LangGroup *Lang_GetGroup(int i) {
     return &data_0214b0a8->groups[i];
 }
 
-u16 func_0206e7ec(int group, int index) {
+u16 LangData_GetIndex(int group, int index) {
     u16 sum;
     int i;
     LangGroup *groups;
@@ -272,7 +272,7 @@ extern char data_0208cc7b[];
 extern char data_0208cc7f[];
 extern char data_0208cc83[];
 
-void func_0206e900(char *dst, const char *src);
+void LangData_LocalizePath(char *dst, const char *src);
 
 }
 

@@ -24,21 +24,21 @@ extern void *data_02097e4c;
 extern char data_ov000_021cc68a[];
 extern char data_ov000_021ca12c[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+BOOL History_SetState(void *p, s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
-BOOL func_ov000_02190cb0(void *p, void *a, s32 b, s32 c);
-BOOL func_ov000_02191120(void *a);
-s32 **func_ov000_02190a30(void *a, int b);
-void *func_ov000_0219122c(void *a, s32 frame);
+BOOL Model0218fe1c_SetAnim(void *p, void *a, s32 b, s32 c);
+BOOL Model0218fe1c_IsAnimDone(void *a);
+s32 **Model0218fe1c_GetAnimCtrl(void *a, int b);
+void *Model0218fe1c_SeekMainAnim(void *a, s32 frame);
 void Actor_Move(Actor *self, s32 a);
 void Actor_MoveByPad(Actor *self, u16 base, s32 turn, void *p);
 u16 Actor_YawToPos(Actor *self, void *target);
-void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
+void Body_Update(void *a, s32 b, s32 c, s32 d);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-void func_ov000_0218d46c(void *o, u16 id, s32 c);
+void Actor_SendMsgU8(void *o, u16 id, s32 c);
 u8 *Group_SpawnActor(void *mgr, GroupActorDesc *d, void *pos, void *rot, u16 a);
-void *func_0204a028(void *a, s32 b, void *c, s32 d);
-void *func_02049f44(void *a, s32 b, void *c, s32 d);
+void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
+void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
 void func_ov000_02168e18(void *self, s32 a, s32 b, VecFx32 *p);
@@ -67,7 +67,7 @@ static inline u16 AngleTo_021a9be8(Robo021ca458 *self, Actor *other) {
 
 static inline s32 Frame_021a9be8(Model0218fe1c *m) {
     s32 f = 0;
-    s32 **a = func_ov000_02190a30(m, f);
+    s32 **a = Model0218fe1c_GetAnimCtrl(m, f);
     if (*a != NULL) {
         f = **a;
     }
@@ -137,7 +137,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
     }
     switch (self->fsm->st) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov000_021cc68a, 0x555, 1);
+        Model0218fe1c_SetAnim(self->model, data_ov000_021cc68a, 0x555, 1);
         self->speed = 0;
         self->velY = 0;
         if (self->unk_b36 != 0) {
@@ -150,15 +150,15 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         break;
     case 1:
         if (self->unk_b36 == 0) {
-            func_ov000_02198360(self->fsm, 1, 0);
+            History_SetState(self->fsm, 1, 0);
             break;
         }
         if (Frame_021a9be8(self->model) > 0x14000) {
-            func_ov000_0219122c(self->model, 0x14000);
+            Model0218fe1c_SeekMainAnim(self->model, 0x14000);
             self->unk_ae4_0 = 1;
         }
         if (self->fsm->timer == 0x14) {
-            o = func_02065f88(0x640, &self->unk_a74);
+            o = Effect_SpawnId(0x640, &self->unk_a74);
             if (o != NULL) {
                 SetFx_021a9be8(self, o, 0);
             }
@@ -168,8 +168,8 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         if (s->timer >= 0x20) {
             s32 i;
             self->fsm->timer = 0x20;
-            func_0204a028(data_02097e4c, 0x44, &self->pos, 2);
-            func_02049f44(data_02097e4c, 0x78, &self->pos, 0);
+            SndMgr_PlayAtPitch(data_02097e4c, 0x44, &self->pos, 2);
+            SndMgr_PlayAt(data_02097e4c, 0x78, &self->pos, 0);
             desc.kind = 0x480c;
             desc.group = 0x4000;
             for (i = 0; i < 4; i++) {
@@ -186,11 +186,11 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
                     p->target = self->id;
                     p->unk_18 |= 8;
                 }
-                func_ov000_0218d46c(a, self->id, 9);
+                Actor_SendMsgU8(a, self->id, 9);
                 self->unk_b24_5 = 1;
                 self->unk_b24_7 = 0;
                 self->unk_b1c = a->id;
-                o = func_02065f88(0x195, &self->pos);
+                o = Effect_SpawnId(0x195, &self->pos);
                 if (o != NULL) {
                     SetFx_021a9be8(self, o, -0x7b);
                 }
@@ -200,7 +200,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         break;
     case 2:
         if (Frame_021a9be8(self->model) > 0x14000) {
-            func_ov000_0219122c(self->model, 0x14000);
+            Model0218fe1c_SeekMainAnim(self->model, 0x14000);
         }
         if (self->unk_b36 == 0) {
             a = FindActor_021a9be8(self->unk_b1c);
@@ -214,7 +214,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         a = FindActor_021a9be8(self->unk_b1c);
         if (a != NULL) {
             u16 ang;
-            func_ov000_0218d46c(a, self->id, 0xb);
+            Actor_SendMsgU8(a, self->id, 0xb);
             if (a != NULL) {
                 VecFx32 *q = LFLD(VecFx32 *, a, 0x48);
                 if (q != NULL) {
@@ -261,7 +261,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
             a->rot_z = 0;
             a->target = self->target;
             self->rot_y = func_01ffc128(ang, self->rot_y, 0x400, 1, 0x8000);
-            func_02049f44(data_02097e4c, 0x5c, &self->pos, 0);
+            SndMgr_PlayAt(data_02097e4c, 0x5c, &self->pos, 0);
         }
         self->unk_b1c = 0xffff;
         self->unk_b1e = 0xffff;
@@ -271,12 +271,12 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         self->fsm->st++;
         break;
     case 11:
-        if (func_ov000_02191120(self->model)) {
+        if (Model0218fe1c_IsAnimDone(self->model)) {
             self->moveYaw = self->rot_y;
             if (self->unk_b36 != 0) {
                 self->fsm->st = 0;
             } else {
-                func_ov000_02198360(self->fsm, 1, 0);
+                History_SetState(self->fsm, 1, 0);
             }
         }
         break;
@@ -307,7 +307,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
     } else {
         Actor_Move(self, 0);
     }
-    func_ov000_021987b8(self->hit, 1, 0, 0);
+    Body_Update(self->hit, 1, 0, 0);
     if (self->velY < 0 && (self->hit->unk_50 & 0x20000000)) {
         self->velY = 0;
         self->hit->unk_9a |= 0x20;

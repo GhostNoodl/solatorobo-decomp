@@ -21,7 +21,7 @@ extern "C" {
 
 extern u8 data_ov014_02216cf4[];
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, VecFx32 *pos, Ov014Vec16 *rot, u16 a);
-extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
 Ov003Actor *func_ov014_02210c5c(Ov014Act_0220f9d0 *self) {
@@ -53,7 +53,7 @@ Ov003Actor *func_ov014_02210c5c(Ov014Act_0220f9d0 *self) {
     rot.z = self->rot_z;
     Ov014Spawn_Init(&desc, 0x4814);
     o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
-    o->target = func_ov000_0219bf90()->id;
+    o->target = ActorMgr_FindPlayer()->id;
     o->flags_0 = 1;
     if (o->targetObj != NULL) {
         o->targetObj->target = self->id;

@@ -56,7 +56,7 @@ struct Ov010Flags8 {
 // keeps a list of three Ov010BeamNode (0x8c); each node holds an Ov010Beam (0x80, drawn by
 // Ov010Beam_Draw and stepped by Ov010Beam_Update), which holds its hit effect
 // Ov010FxObj (0x44, Ov010FxObj_Init / Ov010FxObj_Update). The st members are the ov000
-// state blocks (History_Init / func_ov000_02198360).
+// state blocks (History_Init / History_SetState).
 struct Ov010FxObj {
     u8 b0 : 1;
     u8 b1 : 1;
@@ -489,8 +489,8 @@ public:
     Ov010CamPreset *unk_11c;
     Ov010CamPreset *unk_120;
     s16 *unk_124; // knockback: angle, speed, decay (0x0220441c / 02204b74)
-    s32 sndBank;  // loaded through func_02049678; SndMgr_IsLoadDone waits for it
-    s32 sfx[9];   // sound ids played with func_02049f44 (filled by vfunc_ac)
+    s32 sndBank;  // loaded through SndMgr_RequestLoad_02049678; SndMgr_IsLoadDone waits for it
+    s32 sfx[9];   // sound ids played with SndMgr_PlayAt (filled by vfunc_ac)
     VecFx32 moveDir;
     s32 unk_15c;
     Ov010Seq seq;
@@ -573,7 +573,7 @@ struct Ov010Fade {
     u16 timer;
     u16 unk_06;
     s32 state;
-    s32 fxId; // effect id (func_02065f88)
+    s32 fxId; // effect id (Effect_SpawnId)
     s32 key;
     void (*getPos)(VecFx32 *out, Actor *obj);
 };
@@ -659,7 +659,7 @@ public:
     VObj *unk_110; // states of sm (Ov003StateMachine_AddState ids 1..3)
     VObj *unk_114;
     VObj *unk_118;
-    s32 seqHandle; // music (func_02049afc, SndMgr_StopSeqArc)
+    s32 seqHandle; // music (SndMgr_StartSeqArc, SndMgr_StopSeqArc)
     VecFx32 unk_120;
     VecFx32 unk_12c;
     Ov010Fade fade;
@@ -676,18 +676,18 @@ public:
 // ov000 / ov003 actor functions, typed (round acD; the same set as ov014.h).
 extern "C" {
 ActorEx *ActorEx_Ctor(ActorEx *self);
-ActorEx *func_ov000_0219429c(ActorEx *self);
-void func_ov000_02194758(ActorEx *self);
-BOOL func_ov000_02194c08(ActorEx *self);
-BOOL func_ov000_021950e8(ActorEx *self, ActorMsg *msg);
-void func_ov000_021953b4(ActorEx *self);
-void func_ov000_02195d88(ActorEx *self);
-void func_ov000_02196060(ActorEx *self);
-void func_ov000_02196c40(ActorEx *self);
+ActorEx *ActorEx_DtorBase(ActorEx *self);
+void ActorEx_Start(ActorEx *self);
+BOOL ActorEx_Draw(ActorEx *self);
+BOOL ActorEx_HandleMsg(ActorEx *self, ActorMsg *msg);
+void ActorEx_Update(ActorEx *self);
+void ActorEx_StateHeld(ActorEx *self);
+void ActorEx_StateThrown(ActorEx *self);
+void ActorEx_StateFly(ActorEx *self);
 void func_ov000_02197dec(ActorEx *self, u8 a, s16 b);
-BOOL func_ov000_0218cea4(Actor *self);
-BOOL func_ov000_0218cf5c(Actor *self);
-void func_ov000_0218d7e8(Actor *self, u8 a);
+BOOL Actor_Draw(Actor *self);
+BOOL Actor_IsReady(Actor *self);
+void Actor_DropStateMsgs(Actor *self, u8 a);
 void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
 void Actor_TurnToPos(Actor *self, const VecFx32 *target, s32 step);
 void Actor_Move(Actor *self, s32 turn);

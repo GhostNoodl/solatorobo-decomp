@@ -64,7 +64,7 @@ GroupNode *func_ov000_0218a9d8(GroupNode *self) {
 
 
 extern Group *data_ov000_021ccd64;
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 key);
 void func_ov000_0218df68(ActorGroup *group, Actor *actor);
@@ -103,7 +103,7 @@ void func_ov000_0218ab00(GroupNode *self) {
     if (g->unk_c9 != 0) {
         changed = TRUE;
     }
-    ctx = func_ov000_0219bf90();
+    ctx = ActorMgr_FindPlayer();
     for (i = 0; i < self->count; i++) {
         // The entry is reached from the slot base (node + i * 0x24) at each use: with
         // entries[i] the tests below load the player's id before the entry's.

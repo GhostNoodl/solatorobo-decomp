@@ -263,7 +263,7 @@ void func_0203e3e8(void) {
     data_02fe00e4 = 1;
 }
 
-u32 func_0203e458(int type, u32 src, u32 dst, u32 size, u32 chunk) {
+u32 Vram_QueueTransfer(int type, u32 src, u32 dst, u32 size, u32 chunk) {
     VramTransfer *t;
     int i;
     VramTransfer *last;
@@ -334,7 +334,7 @@ static inline void VramTransfer_Release(VramTransfer *t) {
     t->used = 0;
 }
 
-void func_0203e58c(u32 id) {
+void Vram_CancelTransfer(u32 id) {
     VramTransfer *t;
     int i;
     if (id == 0) {
@@ -348,7 +348,7 @@ void func_0203e58c(u32 id) {
     }
 }
 
-BOOL func_0203e63c(u32 id) {
+BOOL Vram_IsTransferDone(u32 id) {
     VramTransfer *t;
     int i;
     if (id == 0) {
@@ -362,7 +362,7 @@ BOOL func_0203e63c(u32 id) {
     return TRUE;
 }
 
-BOOL func_0203e688(void) {
+BOOL Vram_IsIdle(void) {
     VramTransfer *t;
     int i;
     for (i = 0, t = data_02fe04f4; i < 64; i++, t++) {
@@ -579,7 +579,7 @@ void func_0203ec08(ResTex *tex) {
     if (!(tex->texInfo.flag & 1)) {
         size = (u32)tex->texInfo.sizeTex << 3;
         if (size != 0) {
-            data_02097ddc = func_0203e458(0, (u32)tex + tex->texInfo.ofsTex, (tex->texInfo.vramKey & 0xffff) << 3, size, 0);
+            data_02097ddc = Vram_QueueTransfer(0, (u32)tex + tex->texInfo.ofsTex, (tex->texInfo.vramKey & 0xffff) << 3, size, 0);
             tex->texInfo.flag |= 1;
         }
     }
@@ -594,8 +594,8 @@ void func_0203ec08(ResTex *tex) {
     key = tex->tex4x4Info.vramKey;
     type = 0;
     addr = (key & 0xffff) << 3;
-    data_02097ddc = func_0203e458(type, (u32)tex + tex->tex4x4Info.ofsTex, addr, sz, type);
-    data_02097de0 = func_0203e458(type, (u32)tex + ofsPltt, ((addr & 0x1ffff) >> 1) + 0x20000 + ((addr & 0x40000) >> 2), sz >> 1, type);
+    data_02097ddc = Vram_QueueTransfer(type, (u32)tex + tex->tex4x4Info.ofsTex, addr, sz, type);
+    data_02097de0 = Vram_QueueTransfer(type, (u32)tex + ofsPltt, ((addr & 0x1ffff) >> 1) + 0x20000 + ((addr & 0x40000) >> 2), sz >> 1, type);
     tex->tex4x4Info.flag |= 1;
 }
 
@@ -664,7 +664,7 @@ BOOL func_0203ed04(const char *name, u32 *res) {
                     ofs = tex->ofsPlttData;
                     u32 addr = (key & 0xffff) << 3;
                     func_020435e8(&data_02097d48->pltt, (u8 *)tex + ofs, size);
-                    data_02097dd4 = func_0203e458(1, (u32)tex + ofs, addr, size, 0);
+                    data_02097dd4 = Vram_QueueTransfer(1, (u32)tex + ofs, addr, size, 0);
                     tex->plttFlag |= 1;
                 }
             }
@@ -690,7 +690,7 @@ extern void NNS_G3dReleaseMdlSet(void *mdl);
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(u32 key);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(u32 key);
 
-void func_0203f0b4(u32 *res) {
+void Vram_FreeRes(u32 *res) {
     switch (*res) {
     case 0x30444d42:
     case 0x30585442: {

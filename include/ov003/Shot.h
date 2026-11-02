@@ -2,7 +2,7 @@
 #define OV003_SHOT_H
 
 // The ov003 shot and beam actors: two ActorEx classes that the ov000 factory builds directly
-// (func_ov000_02192b24 types 12 and 13), each driven by a def record from an ov003 table indexed
+// (Factory_New4000 types 12 and 13), each driven by a def record from an ov003 table indexed
 // by Actor::unk_18, or by the record a spawner put in Actor::shotDef / Actor::beamDef.
 
 #include "types.h"

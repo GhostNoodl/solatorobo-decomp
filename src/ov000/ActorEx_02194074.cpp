@@ -13,19 +13,19 @@ extern "C" {
 extern const u8 data_ov000_021cc480[];
 
 void *Actor_Ctor(Actor *self);
-void *func_ov000_0218c928(Actor *self);
-ResSet *func_ov000_0218ea20(ResSet *self);
+void *Actor_DtorBase(Actor *self);
+ResSet *ResSet_ReleaseAll(ResSet *self);
 void Heap_Free(void *ptr);
-BOOL func_ov000_0218f110(AnimRes *res);
+BOOL ResSet_UpdateLoad(AnimRes *res);
 void *Target_Get(void *p);
-void *func_ov000_0219bf90(void);
-void func_0203f364(ActorSub48 *obj);
+void *ActorMgr_FindPlayer(void);
+void HitSphere_Unlink_0203f364(ActorSub48 *obj);
 void HitMesh_Link(void *obj);
-void func_ov000_0219864c(ActorSub48 *obj, VecFx32 *pos, s32 c);
+void ActorSub48_UpdatePos(ActorSub48 *obj, VecFx32 *pos, s32 c);
 
 static inline void ResSet_Delete(ResSet *res) {
     if (res != NULL) {
-        func_ov000_0218ea20(res);
+        ResSet_ReleaseAll(res);
         Heap_Free(res);
     }
 }
@@ -68,7 +68,7 @@ static inline void ActorEx_Destroy(ActorEx *self) {
     if (self->unk_bc != NULL) {
         EffectMgr_Kill(data_0214a420, self->unk_bc);
     }
-    func_ov000_0218c928(self);
+    Actor_DtorBase(self);
 }
 
 ActorEx *ActorEx_Ctor(ActorEx *self) {
@@ -92,7 +92,7 @@ ActorEx *ActorEx_DtorDelete(ActorEx *self) {
     return self;
 }
 
-ActorEx *func_ov000_0219429c(ActorEx *self) {
+ActorEx *ActorEx_DtorBase(ActorEx *self) {
     ActorEx_Destroy(self);
     return self;
 }
@@ -180,15 +180,15 @@ typedef struct {
 
 extern "C" {
 void *Heap_Alloc(u32 size);
-Info0219433c *func_0206fef8(u16 id);
+Info0219433c *Tbl_FindEntry_0206fef8(u16 id);
 Data0219433c *func_020704b4(u16 id);
-void *func_ov000_0218e9c4(void *p);
+void *ResSet_Init(void *p);
 void func_ov000_02193e5c(void *p, u16 id);
-void *func_ov000_021919c8(void *p);
+void *Shadow_Ctor(void *p);
 void Shadow_Load(void *p);
 void *History_Init(void *p);
-void *func_ov000_02199b00(void *p);
-BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+void *Target_Init(void *p);
+BOOL History_SetState(void *p, s32 a, s32 b);
 
 #define SIN0219433c(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define COS0219433c(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
@@ -196,7 +196,7 @@ BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 static inline void *NewRes0219433c(void) {
     void *p = Heap_Alloc(0x138);
     if (p != NULL) {
-        p = func_ov000_0218e9c4(p);
+        p = ResSet_Init(p);
     }
     return p;
 }
@@ -204,7 +204,7 @@ static inline void *NewRes0219433c(void) {
 static inline void *NewA0219433c(void) {
     void *p = Heap_Alloc(0x1c);
     if (p != NULL) {
-        p = func_ov000_021919c8(p);
+        p = Shadow_Ctor(p);
     }
     return p;
 }
@@ -220,7 +220,7 @@ static inline void *NewB0219433c(void) {
 static inline Sub0219433c *NewSub0219433c(void) {
     void *p = Heap_Alloc(0x5c);
     if (p != NULL) {
-        p = func_ov000_02199b00(p);
+        p = Target_Init(p);
     }
     return (Sub0219433c *)p;
 }
@@ -279,8 +279,8 @@ static inline void SetMtx0219433c(Actor0219433c *self, Sub0219433c *sub) {
     MI_Copy48B(&m, &self->unk_4c->mtx);
 }
 
-void func_ov000_0219433c(Actor0219433c *self) {
-    Info0219433c *info = func_0206fef8(self->id);
+void ActorEx_InitActor(Actor0219433c *self) {
+    Info0219433c *info = Tbl_FindEntry_0206fef8(self->id);
     Data0219433c *d = func_020704b4(self->id);
     s32 i;
     self->unk_b0 = &d->param;
@@ -310,7 +310,7 @@ void func_ov000_0219433c(Actor0219433c *self) {
         }
         self->unk_4c->f1 = TRUE;
         if (self->unk_20 == 0xffff && d->hdr.a != 1) {
-            func_ov000_02198360(self->unk_40, 10, 0);
+            History_SetState(self->unk_40, 10, 0);
         }
     }
     if (self->unk_4c != NULL) {

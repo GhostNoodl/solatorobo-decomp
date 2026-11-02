@@ -105,26 +105,26 @@ extern void *data_ov000_021cadcc[];
 extern char data_ov003_021f78c4[];
 extern char data_ov003_021f78cd[];
 extern void *Heap_Alloc(u32 size);
-extern const char *func_0206ec48(u16 id);
+extern const char *Param_Get(u16 id);
 extern void Ov003_FormatMsg(void *self, char *dst, u32 size, const char *arg);
-extern void func_ov000_0215bb14(Ov003TlLabel *l, char *s);
-extern ResList *func_02035f30(const char *a, const char *b, u16 c);
+extern void Obj0215bb14_SetText(Ov003TlLabel *l, char *s);
+extern ResList *ResMgr_GetArchiveList(const char *a, const char *b, u16 c);
 extern void func_02041c5c(Model *s, void *cb);
 extern void func_02041c18(Model *s, s32 a);
 extern void func_02041c20(Model *s, u16 a, u16 b);
-extern void func_ov000_02173648(Ov003Tl *self);
+extern void TaskList_Insert(Ov003Tl *self);
 extern void func_ov003_021cceb4(u32 a, u32 b, u32 c, u32 d, u32 unused, u32 e, u32 f, u32 g, u32 h, u32 i, u32 j);
 extern void *Ov003Oam_Offset(void *owner, u16 *flip, void *oam, u16 *count);
 extern void func_ov000_021c8408(void *self, int x, int y, int z, u16 color, const void *oam, const void *tex, u32 texBase, u32 plttBase, const void *mtx, u32 arg);
 
 static inline void Ov003Model_Init(Model *s, const char *file, const char *name) {
-    func_02041218(&s->pltt);
-    func_02041440(s, name, 0);
+    PlttRes_Init_02041218(&s->pltt);
+    TexObj_Init(s, name, 0);
     STD_CopyString(s->name, file);
 }
 
 static inline void Ov003Model_Load(Model *s, const char *file, const char *name) {
-    func_020417e0(s, func_02034d88(func_02035f30(file, name, 2), name));
+    TexObj_SetRes(s, ResList_FindType2(ResMgr_GetArchiveList(file, name, 2), name));
 }
 
 void Ov003TaskVt_021f78f4_Setup(Ov003Tl *self) {
@@ -156,8 +156,8 @@ void Ov003TaskVt_021f78f4_Setup(Ov003Tl *self) {
         p->unk_60 = -0x1000;
     }
     self->unk_3c->unk_2c = 1;
-    Ov003_FormatMsg(self, self->unk_8c, 0x40, func_0206ec48(self->unk_64));
-    func_ov000_0215bb14(self->unk_3c, self->unk_8c);
+    Ov003_FormatMsg(self, self->unk_8c, 0x40, Param_Get(self->unk_64));
+    Obj0215bb14_SetText(self->unk_3c, self->unk_8c);
     self->unk_3c->v70();
     self->unk_3c->unk_84->unk_04 |= 0x4000000;
     {
@@ -180,8 +180,8 @@ void Ov003TaskVt_021f78f4_Setup(Ov003Tl *self) {
         }
         self->unk_44 = s;
     }
-    res = func_02035f30(self->unk_50, self->unk_54, 2);
-    func_020417e0(self->unk_44, func_02034d88(res, self->unk_54));
+    res = ResMgr_GetArchiveList(self->unk_50, self->unk_54, 2);
+    TexObj_SetRes(self->unk_44, ResList_FindType2(res, self->unk_54));
     self->unk_44->flags |= 2;
     self->unk_44->flags |= 0x80000;
     self->unk_44->unk_150 = -0x1ccd;
@@ -189,7 +189,7 @@ void Ov003TaskVt_021f78f4_Setup(Ov003Tl *self) {
     func_02041c18(self->unk_44, 0xa0a);
     self->unk_44->unk_158 = (void *)func_ov003_021cceb4;
     func_02041c20(self->unk_44, self->unk_5c, 0x7fff);
-    func_02041d9c(self->unk_44, 0, (u16)self->unk_5c);
+    TexObj_SelectImage(self->unk_44, 0, (u16)self->unk_5c);
 
     {
         Model *s = (Model *)Heap_Alloc(sizeof(Model));
@@ -198,8 +198,8 @@ void Ov003TaskVt_021f78f4_Setup(Ov003Tl *self) {
         }
         self->unk_48 = s;
     }
-    res = func_02035f30(self->unk_50, self->unk_54, 2);
-    func_020417e0(self->unk_48, func_02034d88(res, self->unk_54));
+    res = ResMgr_GetArchiveList(self->unk_50, self->unk_54, 2);
+    TexObj_SetRes(self->unk_48, ResList_FindType2(res, self->unk_54));
     self->unk_48->flags |= 2;
     self->unk_48->flags |= 0x80000;
     self->unk_48->unk_150 = -0x2000;
@@ -212,18 +212,18 @@ void Ov003TaskVt_021f78f4_Setup(Ov003Tl *self) {
         if (s != NULL) {
             const char *name = data_ov003_021f78cd;
             const char *file = data_ov003_021f78c4;
-            func_02041218(&s->pltt);
+            PlttRes_Init_02041218(&s->pltt);
             // fake match: the always-true check splits the block so name/file stay in
             // callee-saved registers instead of being rematerialized after the call
             if (name) {
-                func_02041440(s, name, 0);
+                TexObj_Init(s, name, 0);
             }
             STD_CopyString(s->name, file);
         }
         self->unk_4c = s;
     }
-    res = func_02035f30(data_ov003_021f78c4, data_ov003_021f78cd, 2);
-    func_020417e0(self->unk_4c, func_02034d88(res, data_ov003_021f78cd));
+    res = ResMgr_GetArchiveList(data_ov003_021f78c4, data_ov003_021f78cd, 2);
+    TexObj_SetRes(self->unk_4c, ResList_FindType2(res, data_ov003_021f78cd));
     self->unk_4c->flags |= 2;
     self->unk_4c->flags |= 0x80000;
     self->unk_4c->unk_150 = -0x2000;
@@ -237,14 +237,14 @@ void Ov003TaskVt_021f78f4_Setup(Ov003Tl *self) {
         for (i = 0; i < n; i++) {
             if (i != self->unk_5c) {
                 if (mask & (1 << i)) {
-                    func_02041d9c(self->unk_48, 0, i);
+                    TexObj_SelectImage(self->unk_48, 0, i);
                 } else {
-                    func_02041d9c(self->unk_4c, 0, i);
+                    TexObj_SelectImage(self->unk_4c, 0, i);
                 }
             }
         }
     }
-    func_ov000_02173648(self);
+    TaskList_Insert(self);
 }
 
 }

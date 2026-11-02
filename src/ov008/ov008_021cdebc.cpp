@@ -47,13 +47,13 @@ void func_ov008_021cce38(Ov008Caption *p);
 BOOL func_ov008_021cf878(void);
 void func_0203cb78(s32 a, int b, int c);
 void func_0203cc58(int a, int b, int c);
-void *func_0204c08c(void *a, u16 b, s32 *c, int d);
+void *MsgRes_GetLines(void *a, u16 b, s32 *c, int d);
 void func_ov000_0214c6b4(void *a, s32 b, void *c, int d);
 u16 func_02061d54(s32 a);
 s32 MsgRes_GetString(void *p, s32 id);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_02041cb4(void *a, int b);
-void func_ov000_02190a80(void *a, s32 b);
+void Model0218fe1c_UpdateAnim(void *a, s32 b);
 
 extern char data_ov008_021d04a7[];
 extern void *data_0208b318;
@@ -68,18 +68,18 @@ extern void *data_ov000_021ca94c;
 extern void *data_0208ba70;
 extern Ov008Snd *data_02097e48;
 
-void *func_ov000_0218fe1c(void *p);
-BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
-Ov008MdlAnm *func_ov000_02190a30(void *a, s32 b);
+void *Model0218fe1c_Init(void *p);
+BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
+BOOL Model0218fe1c_SetAnim(void *a, const char *b, s32 c, s32 d);
+void Model0218fe1c_SetLoop(void *a);
+Ov008MdlAnm *Model0218fe1c_GetAnimCtrl(void *a, s32 b);
 void func_02041cf8(void *a, int b);
 void func_02041c18(void *a, void *b);
 void func_02041c34(void *a, int b, void *f, int c);
 void func_02041c5c(void *a, void *f);
-BOOL func_0205aa30(void *p);
+BOOL StageRes_Bind(void *p);
 s32 func_ov000_0214bc94(void);
-void func_0204c7d0(TextWin *win);
+void TextWin_Init(TextWin *win);
 void func_0204aab0(void *p);
 void func_020626c0(void);
 void *func_ov008_021cd26c(void);
@@ -90,7 +90,7 @@ void *func_ov008_021cd3dc(void);
 static inline Ov008Model *Ov008_NewMdl(void) {
     Ov008Model *a = (Ov008Model *)Heap_Alloc(0xe8);
     if (a != NULL) {
-        a = (Ov008Model *)func_ov000_0218fe1c(a);
+        a = (Ov008Model *)Model0218fe1c_Init(a);
     }
     return a;
 }
@@ -115,56 +115,56 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     m->cam.mode = 1;
 
     m->unk_c8 = Ov008_NewMdl();
-    func_ov000_0218ffdc(m->unk_c8, m->unk_c4, 0, 1);
-    func_ov000_02190cb0(m->unk_c8, data_ov008_021d04f0, 0, 1);
+    Model0218fe1c_SetRes(m->unk_c8, m->unk_c4, 0, 1);
+    Model0218fe1c_SetAnim(m->unk_c8, data_ov008_021d04f0, 0, 1);
     m->unk_c8->unk_b4 = 0;
-    func_ov000_021915a0(m->unk_c8);
-    func_ov000_02190a30(m->unk_c8, 0)->unk_112 = 0x400;
+    Model0218fe1c_SetLoop(m->unk_c8);
+    Model0218fe1c_GetAnimCtrl(m->unk_c8, 0)->unk_112 = 0x400;
 
     m->unk_d0 = Ov008_NewMdl();
-    func_ov000_0218ffdc(m->unk_d0, m->unk_cc, 0, 1);
-    func_ov000_02190cb0(m->unk_d0, data_ov008_021d04f0, 0, 1);
+    Model0218fe1c_SetRes(m->unk_d0, m->unk_cc, 0, 1);
+    Model0218fe1c_SetAnim(m->unk_d0, data_ov008_021d04f0, 0, 1);
     m->unk_d0->unk_b4 = 0;
-    func_ov000_021915a0(m->unk_d0);
-    func_ov000_02190a30(m->unk_d0, 0)->unk_112 = 0x400;
+    Model0218fe1c_SetLoop(m->unk_d0);
+    Model0218fe1c_GetAnimCtrl(m->unk_d0, 0)->unk_112 = 0x400;
 
     p = (Model *)Heap_Alloc(sizeof(Model));
     if (p != NULL) {
         const char *name = data_ov008_021d04a7;
         if (name) {
-            func_02041218(&p->pltt);
-            func_02041440(p, name, 0);
+            PlttRes_Init_02041218(&p->pltt);
+            TexObj_Init(p, name, 0);
         }
     }
     m->unk_d8 = p;
-    func_020417e0(m->unk_d8, (void *)m->unk_d4->v10());
-    func_02041d9c(m->unk_d8, 2, 0xffff);
+    TexObj_SetRes(m->unk_d8, (void *)m->unk_d4->v10());
+    TexObj_SelectImage(m->unk_d8, 2, 0xffff);
 
     p = (Model *)Heap_Alloc(sizeof(Model));
     if (p != NULL) {
         const char *name = data_ov008_021d04a7;
         if (name) {
-            func_02041218(&p->pltt);
-            func_02041440(p, name, 0);
+            PlttRes_Init_02041218(&p->pltt);
+            TexObj_Init(p, name, 0);
         }
     }
     m->unk_e0 = p;
-    func_020417e0(m->unk_e0, (void *)m->unk_dc->v10());
-    func_02041d9c(m->unk_e0, 0, 0xffff);
+    TexObj_SetRes(m->unk_e0, (void *)m->unk_dc->v10());
+    TexObj_SelectImage(m->unk_e0, 0, 0xffff);
     m->unk_e0->unk_150 = -0x1fe66;
 
     p = (Model *)Heap_Alloc(sizeof(Model));
     if (p != NULL) {
         const char *name = data_ov008_021d04c5;
         if (name) {
-            func_02041218(&p->pltt);
-            func_02041440(p, name, 0);
+            PlttRes_Init_02041218(&p->pltt);
+            TexObj_Init(p, name, 0);
         }
     }
     m->unk_e8 = p;
-    func_020417e0(m->unk_e8, (void *)m->unk_e4->v10());
-    func_02041d9c(m->unk_e8, 2, 0xffff);
-    func_02041d9c(m->unk_e8, 0, 0xffff);
+    TexObj_SetRes(m->unk_e8, (void *)m->unk_e4->v10());
+    TexObj_SelectImage(m->unk_e8, 2, 0xffff);
+    TexObj_SelectImage(m->unk_e8, 0, 0xffff);
     func_02041cf8(m->unk_e8, 0);
     m->unk_e8->unk_085 &= (u8)~4;
     m->unk_e8->unk_085 &= (u8)~1;
@@ -173,36 +173,36 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
 
     {
     Model *q;
-    res = func_02034d88(func_02035d5c(data_0208cca0), data_0208cb74);
+    res = ResList_FindType2(ResMgr_GetArcList(data_0208cca0), data_0208cb74);
     q = (Model *)Heap_Alloc(sizeof(Model));
     if (q != NULL) {
         const char *file = data_0208cca0;
         const char *nm = data_0208cb74;
-        func_02041218(&q->pltt);
-        func_02041440(q, (char *)nm, 0);
+        PlttRes_Init_02041218(&q->pltt);
+        TexObj_Init(q, (char *)nm, 0);
         STD_CopyString(q->name, (char *)file);
     }
     m->unk_ec = q;
-    func_020417e0(q, res);
+    TexObj_SetRes(q, res);
     m->unk_ec->flags |= 2;
-    func_02041d9c(m->unk_ec, 0, 0xd);
+    TexObj_SelectImage(m->unk_ec, 0, 0xd);
     }
 
     {
     Model *q;
-    res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+    res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
     q = (Model *)Heap_Alloc(sizeof(Model));
     if (q != NULL) {
         const char *file = data_0208cc94;
         const char *nm = data_0208cc88;
-        func_02041218(&q->pltt);
-        func_02041440(q, (char *)nm, 0);
+        PlttRes_Init_02041218(&q->pltt);
+        TexObj_Init(q, (char *)nm, 0);
         STD_CopyString(q->name, (char *)file);
     }
     m->unk_f0 = q;
-    func_020417e0(q, res);
+    TexObj_SetRes(q, res);
     m->unk_f0->flags |= 2;
-    func_02041d9c(m->unk_f0, 0, 6);
+    TexObj_SelectImage(m->unk_f0, 0, 6);
     }
     m->unk_f0->flags |= 0x80000;
     MODEL_FLAGS(m->unk_f0)->alpha = 0x1e;
@@ -235,7 +235,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     }
     m->panel = pn;
 
-    func_0205aa30(m->unk_fc);
+    StageRes_Bind(m->unk_fc);
     func_ov000_0214bc94();
 
     t = (Ov008Talk *)Heap_Alloc(0x21c);
@@ -244,9 +244,9 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
         t->v28();
         OV008_SET_VT(t, &data_ov000_021ca94c);
         OV008_SET_VT(&t->win, &data_0208ba70);
-        func_0204c7d0(&t->win);
+        TextWin_Init(&t->win);
         OV008_SET_VT(&t->win2, &data_0208ba70);
-        func_0204c7d0(&t->win2);
+        TextWin_Init(&t->win2);
         t->v28();
     }
     m->talk = t;

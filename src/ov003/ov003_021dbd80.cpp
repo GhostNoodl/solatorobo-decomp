@@ -4,15 +4,15 @@
 
 extern "C" {
 
-extern Robo021ca458 *func_ov000_0219bf90(void);
+extern Robo021ca458 *ActorMgr_FindPlayer(void);
 extern Actor *Target_Get(ActorSub4c *t);
-extern BOOL func_ov000_0218d2e0(Actor *self);
-extern s32 func_ov000_0219a510(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list);
-extern Actor *func_ov000_021985c0(void *p);
-extern BOOL func_ov000_0219a8bc(void *a, Actor *b, Actor *c, u16 d, u8 e, VecFx32 *f, s32 g, s32 h, s32 i);
+extern BOOL Actor_GetTargetSub44(Actor *self);
+extern s32 Actor_FindInRadius(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list);
+extern Actor *Obj021984c8_GetActor(void *p);
+extern BOOL Hit_Apply(void *a, Actor *b, Actor *c, u16 d, u8 e, VecFx32 *f, s32 g, s32 h, s32 i);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern void Ov003Pickup_Update(Ov003Shot *self, u16 mask);
-extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
+extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
 
 static inline u8 Ov003HtPlayer_Kind(Robo021ca458 *pl) {
     if (pl->fsm != NULL) {
@@ -23,7 +23,7 @@ static inline u8 Ov003HtPlayer_Kind(Robo021ca458 *pl) {
 
 BOOL Ov003Shot_CheckHits(Ov003Shot *self) {
     void *list[32];
-    Robo021ca458 *pl = func_ov000_0219bf90();
+    Robo021ca458 *pl = ActorMgr_FindPlayer();
     Actor *part = Target_Get(self->targetObj);
     s32 hit = 0;
     u16 mask = self->def->hitMask;
@@ -48,7 +48,7 @@ BOOL Ov003Shot_CheckHits(Ov003Shot *self) {
     if (hit == 0 && self->hit != NULL) {
         u32 fl = self->def->stopFlags;
         if (self->def->flags & 2) {
-            if (!func_ov000_0218d2e0(self)) {
+            if (!Actor_GetTargetSub44(self)) {
                 fl = 0xe0000000;
             }
         }
@@ -68,14 +68,14 @@ BOOL Ov003Shot_CheckHits(Ov003Shot *self) {
                 self->age--;
             }
         }
-        n = func_ov000_0219a510(self, mask, &self->pos, r, 0, list);
+        n = Actor_FindInRadius(self, mask, &self->pos, r, 0, list);
         if (n != 0) {
         for (i = 0; i < n; i++) {
             Actor *o;
             if (list[i] == NULL) {
                 continue;
             }
-            o = func_ov000_021985c0(list[i]);
+            o = Obj021984c8_GetActor(list[i]);
             if (o == NULL) {
                 continue;
             }
@@ -92,7 +92,7 @@ BOOL Ov003Shot_CheckHits(Ov003Shot *self) {
                 if (def->unk_18_6) {
                     a = -1;
                 }
-                func_ov000_0219a8bc(list[i], self, part, def->unk_08, (u8)def->unk_0a, &self->pos, a, 0x1000, 0x1000);
+                Hit_Apply(list[i], self, part, def->unk_08, (u8)def->unk_0a, &self->pos, a, 0x1000, 0x1000);
             }
         }
         }
@@ -120,7 +120,7 @@ BOOL Ov003Shot_CheckHits(Ov003Shot *self) {
                 self->centerY = v >> 1;
             }
             Ov003Pickup_Update(self, mask);
-            func_ov000_02198360(self->fsm, 0x15, 0);
+            History_SetState(self->fsm, 0x15, 0);
         } else {
             self->vfunc_08();
         }

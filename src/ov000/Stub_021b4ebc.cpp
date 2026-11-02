@@ -3,18 +3,18 @@
 
 extern "C" {
 
-Actor *func_ov000_0218c928(Actor *self);
+Actor *Actor_DtorBase(Actor *self);
 void Heap_Free(void *ptr);
 void *Heap_Alloc(u32 size);
 void func_0206e678(void);
 
 Actor *Ov000ActVt_021cc7cc_Dtor(Actor *self) {
-    func_ov000_0218c928(self);
+    Actor_DtorBase(self);
     return self;
 }
 
 Actor *Ov000ActVt_021cc7cc_DtorDelete(Actor *self) {
-    func_ov000_0218c928(self);
+    Actor_DtorBase(self);
     Heap_Free(self);
     return self;
 }

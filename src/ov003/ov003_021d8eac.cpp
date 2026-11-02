@@ -32,7 +32,7 @@ typedef struct {
 
 extern "C" {
 
-extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL History_SetState(void *p, s32 a, s32 b);
 
 void Ov003Timer_Start(Ov003Timer *self, void *target, s16 duration, bool loop) {
     if (!self->active) {
@@ -44,7 +44,7 @@ void Ov003Timer_Start(Ov003Timer *self, void *target, s16 duration, bool loop) {
     self->duration = duration;
     self->unk_10 = 0;
     self->unk_14 = 0;
-    func_ov000_02198360(self->unk_0c, 0, 1);
+    History_SetState(self->unk_0c, 0, 1);
 }
 
 BOOL Ov003Timer_IsStopped(Ov003Timer *self) {

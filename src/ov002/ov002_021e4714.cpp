@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021e4714(Ov002LevelTable *self) {
+void Ov002LevelTable_Ctor(Ov002LevelTable *self) {
     *(VFunc **)self = data_ov002_021f00fc;
     self->src = NULL;
     self->count = 0;

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-u32 func_0204045c(void);
+u32 Rand_GetGlobal(void);
 
 struct Obj0216ad34 {
     s32 unk_00;

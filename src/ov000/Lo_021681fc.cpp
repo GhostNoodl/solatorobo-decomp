@@ -6,7 +6,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern s32 data_02097d78[5];
-BOOL func_02054f10(void *a, s32 b);
+BOOL Model_IsReady(void *a, s32 b);
 
 typedef struct {
     u8 pad[0x98];
@@ -47,7 +47,7 @@ BOOL func_ov000_021681fc(Lo021cb6f0 *self) {
         }
         return FALSE;
     case 1:
-        if (!func_02054f10(self->unk_9c, 0xffff)) {
+        if (!Model_IsReady(self->unk_9c, 0xffff)) {
             return FALSE;
         }
         self->unk_0c_3 = 1;

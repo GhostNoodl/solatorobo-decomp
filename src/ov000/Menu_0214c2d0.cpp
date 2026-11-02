@@ -14,22 +14,22 @@ extern "C" {
 extern const char *data_0208cc88;
 extern const char *data_0208cc94;
 extern void *data_02149ef8;
-void *func_02034d88(void *a, void *b);
-void *func_02035d5c(void *a);
-void *func_02035f30(void *a, void *b, s32 c);
+void *ResList_FindType2(void *a, void *b);
+void *ResMgr_GetArcList(void *a);
+void *ResMgr_GetArchiveList(void *a, void *b, s32 c);
 void func_02041c5c(void *m, void *fn);
 void func_02041c20(void *m, s32 a, void *b);
-BOOL func_ov000_02152e5c(void *self);
+BOOL Obj02152e5c_LoadModel(void *self);
 void *func_ov000_0214c084(u8 *self, u16 *cmd, void *arr, u16 *count);
 void func_020708fc(s32 a, LoName16 *out);
 void func_02070b98(s32 a, LoName16 *out, s32 b, s32 c);
 s32 func_0206ffa0(s32 a);
 s32 MsgRes_GetString(void *p, s32 a);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
-void func_0204ca70(void *win);
+void TextWin_RenderToVram(void *win);
 
 
-void func_ov000_0214c2d0(Menu021ca94c *self) {
+void Menu021ca94c_Setup(Menu021ca94c *self) {
     LoName16 a;
     LoName16 b;
     void *res;
@@ -42,11 +42,11 @@ void func_ov000_0214c2d0(Menu021ca94c *self) {
     self->posX = 0;
     self->posY = 0xc0 - self->height;
     self->posZ = -0x1000;
-    if (func_ov000_02152e5c(self)) {
-        func_02041d9c(self->model, 0, 0xb);
-        func_02041d9c(self->model, 0, 0xc);
-        func_02041d9c(self->model, 0, 0xd);
-        func_02041d9c(self->model, 0, 0xe);
+    if (Obj02152e5c_LoadModel(self)) {
+        TexObj_SelectImage(self->model, 0, 0xb);
+        TexObj_SelectImage(self->model, 0, 0xc);
+        TexObj_SelectImage(self->model, 0, 0xd);
+        TexObj_SelectImage(self->model, 0, 0xe);
     }
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {
@@ -54,34 +54,34 @@ void func_ov000_0214c2d0(Menu021ca94c *self) {
         const char *name;
         name = data_0208cc88;
         arc = data_0208cc94;
-        func_02041218(&m->pltt);
-        func_02041440(m, name, 0);
+        PlttRes_Init_02041218(&m->pltt);
+        TexObj_Init(m, name, 0);
         STD_CopyString(m->name, arc);
     }
     self->unk_88 = m;
     {
-        void *x = func_02035d5c(self->unk_88->name);
-        void *y = func_02034d88(x, self->unk_88->unk_04c);
-        func_020417e0(self->unk_88, y);
+        void *x = ResMgr_GetArcList(self->unk_88->name);
+        void *y = ResList_FindType2(x, self->unk_88->unk_04c);
+        TexObj_SetRes(self->unk_88, y);
     }
     self->unk_88->flags |= 2;
-    func_02041d9c(self->unk_88, 0, 6);
+    TexObj_SelectImage(self->unk_88, 0, 6);
     func_02041c5c(self->unk_88, (void *)func_ov000_0214c084);
     func_02041c20(self->unk_88, 6, self);
 
     func_020708fc(0x1000, &a);
     func_02070b98(0x1000, &b, 1, 2);
-    res = func_02034d88(func_02035f30(&a, &b, 2), &b);
+    res = ResList_FindType2(ResMgr_GetArchiveList(&a, &b, 2), &b);
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {
-        func_02041218(&m->pltt);
-        func_02041440(m, b.s, 0);
+        PlttRes_Init_02041218(&m->pltt);
+        TexObj_Init(m, b.s, 0);
         STD_CopyString(m->name, a.s);
     }
     self->unk_84 = m;
-    func_020417e0(m, res);
+    TexObj_SetRes(m, res);
     self->unk_84->flags |= 2;
-    func_02041d9c(self->unk_84, 0, 0xffff);
+    TexObj_SelectImage(self->unk_84, 0, 0xffff);
     self->unk_84->flags |= 0x80000;
     MODEL_FLAGS(self->unk_84)->alpha = 0x1e;
     self->unk_84->flags |= 0x100000;
@@ -103,7 +103,7 @@ void func_ov000_0214c2d0(Menu021ca94c *self) {
     self->unk_94 |= 0x40;
     self->unk_94 |= 0x1000000;
     self->unk_94 |= 0x40000004;
-    func_0204ca70((u8 *)self + 0x90);
+    TextWin_RenderToVram((u8 *)self + 0x90);
 
     self->unk_170 = 4;
     self->unk_16c = MsgRes_GetString(fnt, 0x117);
@@ -112,7 +112,7 @@ void func_ov000_0214c2d0(Menu021ca94c *self) {
     self->unk_14c |= 0x40;
     self->unk_14c |= 0x1000000;
     self->unk_14c |= 0x40000004;
-    func_0204ca70((u8 *)self + 0x148);
+    TextWin_RenderToVram((u8 *)self + 0x148);
     self->busy = 1;
 }
 

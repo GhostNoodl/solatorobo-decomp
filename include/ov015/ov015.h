@@ -31,7 +31,7 @@ struct Ov015ShipCfg {
 
 // The overlay's vector: a VecFx32 with a user-declared (empty) default constructor and a member-wise
 // copy constructor. Both are load-bearing: copy-initialised locals (func_ov015_021fd0f4,
-// func_ov015_02203d64, func_ov015_021ffb90, ...) are built field by field, where a plain VecFx32 (or a
+// Ov015Scene2a08_Draw, func_ov015_021ffb90, ...) are built field by field, where a plain VecFx32 (or a
 // class with only the implicit copy) is copied as one 12-byte block. Being derived from VecFx32, it
 // passes to the SDK's VecFx32 * parameters without a cast. (Ov015Vec, which spelled the copy as a
 // mem-initialiser list, gives the same code and is merged into it.)
@@ -76,7 +76,7 @@ struct Ov015Info38;
 struct Ov015Obj290;
 struct Ov015Obj292c;
 
-// Fishing phase state (0x2c bytes, vtable data_ov015_022127ec, func_ov015_021ff350).
+// Fishing phase state (0x2c bytes, vtable data_ov015_022127ec, Ov015Obj30_Init).
 struct Ov015Obj30 : public VObj {
     s32 step;
     s32 timer;
@@ -114,7 +114,7 @@ struct Ov015Mtx33 {
     s32 m[3][3];
 };
 
-// Camera (0xbc bytes, func_0204b370 / func_0204b420).
+// Camera (0xbc bytes, Camera_Ctor / func_0204b420).
 struct Ov015Bits8a0 {
     u8 b0 : 2;
     u8 shakeX : 1;
@@ -158,7 +158,7 @@ struct Ov015CamPair : public VObj {
     s32 timer; // timer
 };
 
-// ov000 model resource (0x138 bytes, func_ov000_0218e9c4 / func_ov000_0218ea20).
+// ov000 model resource (0x138 bytes, ResSet_Init / ResSet_ReleaseAll).
 struct Ov015Anim {
     s16 unk_00;
     u8 unk_02;
@@ -179,7 +179,7 @@ struct Ov015Anim {
     u8 unk_104[0x34];
 };
 
-// ov000 Shadow (0x1c bytes, func_ov000_0219196c / func_ov000_021919c8 / Ov000Vt_021cc438_Dtor).
+// ov000 Shadow (0x1c bytes, Shadow_CtorBase / Shadow_Ctor / Ov000Vt_021cc438_Dtor).
 struct Ov015Shadow {
     const void *vtbl;
     void *res;
@@ -281,7 +281,7 @@ struct Ov015Main : public VObj {
 };
 
 // data_ov015_02213320: the running main sequence (func_ov015_021fa77c) and the screen fade it
-// creates (func_ov015_021fa6d0 returns it).
+// creates (Ov015_GetFade returns it).
 struct Ov015Globals {
     Ov015Main *mainSeq;
     Ov015Fade *fade;
@@ -305,21 +305,21 @@ SIZE_ASSERT(Ov015SceneSeq, 0x14);
 
 void func_ov015_021fa6cc(Ov015Child *self);
 
-// ov000 task helpers: func_ov000_02173648 inserts a task into the list by priority (then calls its
-// slot 0x20); func_ov000_0217357c resets the draw scale and updates fadeSin.
-void func_ov000_02173648(Task *task);
-void func_ov000_0217357c(Task *self);
+// ov000 task helpers: TaskList_Insert inserts a task into the list by priority (then calls its
+// slot 0x20); Task_Draw resets the draw scale and updates fadeSin.
+void TaskList_Insert(Task *task);
+void Task_Draw(Task *self);
 
-// ov000 task host (data_ov000_021ccd44) and the scene task globals: func_ov000_0218084c switches the
+// ov000 task host (data_ov000_021ccd44) and the scene task globals: TaskHost_RequestSwitch switches the
 // host to task kind `kind` (creating it with param c) and returns that task; data_ov000_021ccd40 is
 // the current scene task and data_ov000_021ccd38 the id of the previous one.
 extern TaskHost *data_ov000_021ccd44;
 extern Task *data_ov000_021ccd40;
 extern u32 data_ov000_021ccd38;
-Task *func_ov000_0218084c(TaskHost *cur, s32 kind, s32 c);
+Task *TaskHost_RequestSwitch(TaskHost *cur, s32 kind, s32 c);
 
 // The item of a list with the given id (ov000 List_02154a68.cpp).
-UiListItem *func_ov000_02154b58(UiList *self, u16 id);
+UiListItem *UiList_GetItemById(UiList *self, u16 id);
 void func_ov015_02206aa0(Ov015SceneSeq *self);
 
 struct Ov015ItemEnt {
@@ -397,14 +397,14 @@ extern "C" {
 struct Ov015Slot524 {
     const char *anim; // animation name for mdl0 (NULL: unused slot)
     s32 endTime;      // used while the stage time is at most this
-    u8 c;             // set: func_ov000_021915a0, clear: func_ov000_02191618
+    u8 c;             // set: Model0218fe1c_SetLoop, clear: Model0218fe1c_ClearLoop
     s16 speed;
 };
 
 // Animated stage model (0x584, vtable data_ov015_02212f3c; ctor func_ov015_0220dde8, base vtable
 // data_ov015_02212f64): two resource sets and models on an ov002 stage object. The model pose
 // (unk_4d0/unk_4dc/unk_500) is copied from the object at unk_520 each frame; slots pick the
-// animation by time (func_ov015_0220e570 adds one).
+// animation by time (Ov015StageMdl_QueueAnim adds one).
 struct Ov015StageMdl : public Ov002Obj {
     ActorRes res0;
     Model0218fe1c mdl0;
@@ -413,7 +413,7 @@ struct Ov015StageMdl : public Ov002Obj {
     Model0218fe1c mdl1;
     s16 unk_490; // animation speed of both models
     s32 slot;    // current slot (-1: none)
-    u16 unk_498; // id passed to func_0206fef8
+    u16 unk_498; // id passed to Tbl_FindEntry_0206fef8
     MtxFx33 unk_49c; // mdl0's render user data
     VecFx32 unk_4c0;
     s32 unk_4cc;
@@ -431,11 +431,11 @@ struct Ov015StageMdl : public Ov002Obj {
 SIZE_ASSERT(Ov015StageMdl, 0x584);
 
 void *func_ov015_0220dde8(Ov015StageMdl *self);
-void func_ov015_0220e570(Ov015StageMdl *self, const char *anim, s32 endTime, u8 c, s16 speed);
+void Ov015StageMdl_QueueAnim(Ov015StageMdl *self, const char *anim, s32 endTime, u8 c, s16 speed);
 
 
 static inline void Ov015_DeleteFound(EffectMgr *mgr, u32 key) {
-    EffectObj *o = func_020657b0(mgr, key);
+    EffectObj *o = Effect_Find_020657b0(mgr, key);
     void *saved;
     if (o != NULL) {
         HEAP_PUSH(saved);
@@ -522,7 +522,7 @@ struct Ov015FishInfo : public VObj {
     s32 unk_28;
 };
 OV015_SIZE(Ov015FishInfo, 0x2c);
-// ov000 model instance (0xe8 bytes, func_ov000_0218fe1c).
+// ov000 model instance (0xe8 bytes, Model0218fe1c_Init).
 struct Ov015Model {
     u8 unk_00[0x24];
     Ov015RenderObj renderObj;
@@ -553,7 +553,7 @@ struct Ov015MdlSet : public VObj {
     Ov015MdlPair p[3];
 };
 OV015_SIZE(Ov015MdlSet, 0x664);
-// Main object (0x48 bytes, func_0203f260 / func_0203f2b8).
+// Main object (0x48 bytes, HitSphere_Init / HitSphere_Unlink_0203f2b8).
 struct Ov015Obj48 {
     Ov015Vec pos;
     Ov015Vec prev;
@@ -839,8 +839,8 @@ struct Ov015Scene2a88 : public Task {
 };
 SIZE_ASSERT(Ov015Scene2a88, 0x58);
 
-// Message box, vtable data_ov015_022129c0 (0x2c bytes). Built by func_ov000_02163224,
-// opened by func_ov000_021632f0, torn down by func_ov000_02163254.
+// Message box, vtable data_ov015_022129c0 (0x2c bytes). Built by MsgBox_Init,
+// opened by MsgBox_Open, torn down by MsgBox_Release.
 struct Ov015MsgBox : public VObj {
     u32 unk_04;
     s32 unk_08;
@@ -1070,7 +1070,7 @@ static inline void Ov015Model_PlayPart(Model *model, int idx, int flag) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(res->texRes, **(u16 **)FLD(void *, NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx), 0xc));
     }
-    func_02042628(model, anim, part, flag);
+    TexObj_DrawCell(model, anim, part, flag);
 }
 
 static inline s32 Ov015c_Sin(s32 t) {

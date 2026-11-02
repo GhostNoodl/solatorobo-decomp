@@ -112,27 +112,27 @@ extern "C" {
 extern Ov003InHit data_02fe0f14;
 extern FieldId data_ov003_021f7388;
 extern char data_ov003_021fa208[];
-extern Ov003InRes *func_0206fef8(u16 id);
+extern Ov003InRes *Tbl_FindEntry_0206fef8(u16 id);
 extern Ov003InB0 *func_020702c8(u16 id);
 extern Ov003InB0 *func_02070410(u16 id);
 extern Ov003InB0 *func_0207036c(u16 id);
 extern void *Heap_Alloc(u32 size);
-extern Ov003InModel *func_ov000_0218fe1c(void *p);
-extern void func_ov000_0219badc(Ov003InModel *model, void *p, Ov003InRes *res);
+extern Ov003InModel *Model0218fe1c_Init(void *p);
+extern void Model0218fe1c_Setup(Ov003InModel *model, void *p, Ov003InRes *res);
 extern s32 Rand_PlusMinus(s32 max);
-extern void func_ov000_021911c8(Ov003InModel *model, s32 v);
-extern s32 func_ov000_0219a2f4(VecFx32 *pos, s32 a, s32 b);
+extern void Model0218fe1c_SetAnimSpeed(Ov003InModel *model, s32 v);
+extern s32 Geom_SnapToGround(VecFx32 *pos, s32 a, s32 b);
 extern void func_ov000_02191ec4(Ov003InS3c *p, s32 a, u32 b);
 extern char *Tbl_GetEntryData(u16 id, s32 n);
-extern Ov003InCtl *func_ov000_021985e8(void *p);
-extern void func_ov000_02198c8c(Ov003InCtl *p, u16 id);
+extern Ov003InCtl *ActorSub48_Init(void *p);
+extern void Body_SetOwner(Ov003InCtl *p, u16 id);
 extern void HitSphere_Link(Ov003InCtl *p);
-extern void func_ov000_0219864c(Ov003InCtl *p, s32 a, s32 b);
-extern Ov003InS44 *func_ov000_021984c8(void *p);
-extern Ov003InS4c *func_ov000_02199b00(void *p);
-extern void func_ov000_021bd198(Ov003InIcon *p);
-extern BOOL func_ov000_021bd314(Ov003InIcon *p, s32 id);
-extern void func_ov000_02190758(Ov003InModel *model, u16 *rot, s32 a);
+extern void ActorSub48_UpdatePos(Ov003InCtl *p, s32 a, s32 b);
+extern Ov003InS44 *Obj021984c8_Init(void *p);
+extern Ov003InS4c *Target_Init(void *p);
+extern void ActorMarker_Init(Ov003InIcon *p);
+extern BOOL ActorMarker_SetKind(Ov003InIcon *p, s32 id);
+extern void Obj02190758_SetRot(Ov003InModel *model, u16 *rot, s32 a);
 
 static inline void Ov003In_Icon(Ov003InIcon *icon, u16 id) {
     if (icon->unk_44 == 10 && icon->unk_68 == 10) {
@@ -150,7 +150,7 @@ static inline BOOL Ov003In_SameField(const FieldId *a, FieldId b) {
 }
 
 void Ov003ActVt_021fa1b8_Start(Ov003In *self) {
-    Ov003InRes *res = func_0206fef8(self->unk_0e);
+    Ov003InRes *res = Tbl_FindEntry_0206fef8(self->unk_0e);
     Ov003InIcon *icon;
     char *name;
     {
@@ -177,11 +177,11 @@ skip:
         Ov003InModel *m = (Ov003InModel *)Heap_Alloc(0xe8);
         s16 v;
         if (m != NULL) {
-            m = func_ov000_0218fe1c(m);
+            m = Model0218fe1c_Init(m);
         }
         self->model = m;
         m->unk_b4 = self->unk_0c;
-        func_ov000_0219badc(self->model, self->unk_34, res);
+        Model0218fe1c_Setup(self->model, self->unk_34, res);
         if (res->unk_12_11 && self->rot[1] > 0x4000 && self->rot[1] < 0xc000) {
             self->model->unk_c2_3 = 1;
         }
@@ -189,10 +189,10 @@ skip:
             v = 0x1c3;
             v += (s16)Rand_PlusMinus(0xa4);
         }
-        func_ov000_021911c8(self->model, v);
+        Model0218fe1c_SetAnimSpeed(self->model, v);
         if (self->unk_3c != NULL) {
             self->unk_3c->unk_14 = self->unk_64 * 3;
-            if (func_ov000_0219a2f4(&self->pos, self->unk_68, -0x5000) != -0x1000) {
+            if (Geom_SnapToGround(&self->pos, self->unk_68, -0x5000) != -0x1000) {
                 func_ov000_02191ec4(self->unk_3c, 1, data_02fe0f14.unk_2c);
                 if (data_02fe0f14.unk_2c & 0x80000) {
                     self->model->unk_bf = 0x13;
@@ -205,10 +205,10 @@ skip:
         if (res->unk_12_12) {
             Ov003InCtl *c = (Ov003InCtl *)Heap_Alloc(0x9c);
             if (c != NULL) {
-                c = func_ov000_021985e8(c);
+                c = ActorSub48_Init(c);
             }
             self->ctl = c;
-            func_ov000_02198c8c(c, self->unk_0c);
+            Body_SetOwner(c, self->unk_0c);
             self->ctl->unk_28 = 8;
             self->ctl->unk_38 = self->unk_64;
             self->ctl->unk_60 = self->unk_6c;
@@ -219,12 +219,12 @@ skip:
             c = self->ctl;
             c->unk_9a_1 = 0;
             c->unk_9a_4 = 0;
-            func_ov000_0219864c(self->ctl, 0, 0);
+            ActorSub48_UpdatePos(self->ctl, 0, 0);
         }
         if (!Ov003In_SameField(&data_ov000_021ccd54->unk_ca, data_ov003_021f7388)) {
             Ov003InS44 *s = (Ov003InS44 *)Heap_Alloc(0x24);
             if (s != NULL) {
-                s = func_ov000_021984c8(s);
+                s = Obj021984c8_Init(s);
             }
             self->unk_44 = s;
             s->unk_1c = self->unk_64;
@@ -240,7 +240,7 @@ skip:
         {
             Ov003InS4c *d = (Ov003InS4c *)Heap_Alloc(0x5c);
             if (d != NULL) {
-                d = func_ov000_02199b00(d);
+                d = Target_Init(d);
             }
             self->unk_4c = d;
             d->unk_00 = 3;
@@ -248,21 +248,21 @@ skip:
         }
         icon = (Ov003InIcon *)Heap_Alloc(0xa8);
         if (icon != NULL) {
-            func_ov000_021bd198(icon);
+            ActorMarker_Init(icon);
         }
         self->unk_5c = icon;
-        func_ov000_021bd314(icon, 10);
+        ActorMarker_SetKind(icon, 10);
         Ov003In_Icon(self->unk_5c, self->unk_0e);
         self->unk_5c->unk_5c = self->unk_68;
     }
     icon = (Ov003InIcon *)Heap_Alloc(0xa8);
     if (icon != NULL) {
-        func_ov000_021bd198(icon);
+        ActorMarker_Init(icon);
     }
     self->unk_ac = icon;
     icon->unk_5c = self->unk_68 + 0x800;
     if (self->model != NULL) {
-        func_ov000_02190758(self->model, self->rot, 0);
+        Obj02190758_SetRot(self->model, self->rot, 0);
     }
 }
 

@@ -25,7 +25,7 @@ void func_ov000_0215ec44(UiPanel *self) {
     LoInitEC44(self);
 }
 
-void func_ov000_0215ec80(UiPanel *self) {
+void UiPanel_Release(UiPanel *self) {
     LO_FREE_M(self, 0x28);
     LoInitEC44(self);
 }

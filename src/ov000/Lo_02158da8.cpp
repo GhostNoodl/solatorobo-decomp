@@ -6,15 +6,15 @@
 
 extern "C" {
 
-BOOL func_ov000_021580e8(UiList *self);
-BOOL func_02054f10(void *p, s32 a);
-BOOL func_0203e63c(void *p);
+BOOL UiList_IsLoaded(UiList *self);
+BOOL Model_IsReady(void *p, s32 a);
+BOOL Vram_IsTransferDone(void *p);
 
 static inline BOOL LoSubReady(TextWin *p) {
     if (p->unk_6c == NULL) {
         return TRUE;
     }
-    if (func_0203e63c(p->unk_6c)) {
+    if (Vram_IsTransferDone(p->unk_6c)) {
         p->unk_6c = NULL;
     } else {
         return p->noVram == 0 ? TRUE : FALSE;
@@ -30,8 +30,8 @@ void func_ov000_02158da8(Lo021cb3a8 *self) {
     HEAP_DELETE(TextWin *, self->text, p->unk_vf04());
 }
 
-BOOL func_ov000_02158e14(Lo021cb3a8 *self) {
-    BOOL r = func_ov000_021580e8(self);
+BOOL Lo021cb3a8_IsLoaded(Lo021cb3a8 *self) {
+    BOOL r = UiList_IsLoaded(self);
     TextWin *p = self->text;
     if (p != NULL && !LoSubReady(p)) {
         r = FALSE;

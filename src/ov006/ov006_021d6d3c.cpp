@@ -46,7 +46,7 @@ void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(void *p);
 void func_ov000_021b53f4(void *p);
 void func_0203cc58(s32 a, int b, int c);
-void func_0203cd10(void);
+void GfxSys_UpdateFade(void);
 BOOL func_ov006_021cd2a8(ov006_Manager *m);
 void *ov006_GetSlotManager(void);
 void ov006_Manager_DispatchMenuCb(int a, void *b, int c);
@@ -97,7 +97,7 @@ BOOL Ov006Vt_021ebfc0_Exit(ov006_Scene021d6d3c *self) {
             func_0203cc58(0x1000, 0, 0);
             func_0203cc58(0x1000, 0, 1);
         }
-        func_0203cd10();
+        GfxSys_UpdateFade();
         if (func_ov006_021cd2a8(data_ov006_021ec860)) {
             self->unkC = 2;
         } else {

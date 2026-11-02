@@ -18,7 +18,7 @@ void func_ov002_021eb7c0(Ov002StageFile *self) {
         MI_CpuCopy8(p, &size, 4);
         MI_CpuCopy8(p + 4, &id, 4);
         MI_CpuCopy8(p + 8, v, 0xc);
-        func_ov002_021e9974(v[0], v[1], (s16)id, p + 0x14);
+        Ov002Obj021f06e4_New(v[0], v[1], (s16)id, p + 0x14);
         p += size;
     }
 }

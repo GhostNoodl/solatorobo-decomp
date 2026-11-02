@@ -59,7 +59,7 @@ extern void GX_SetGraphicsMode(int a, int b, int c);
 extern void NNS_G2dApplyAndResetOamManagerBuffer(void *obj);
 extern void G3X_Reset(void);
 extern void Gfx3DState_Reset(void *obj);
-extern void func_02043d20(void *obj, int a);
+extern void Gfx3D_SendDL(void *obj, int a);
 extern void NNS_G3dGeSendDL(void *a, int b);
 extern void NNS_G3dGeFlushBuffer(void);
 extern void *G2S_GetBG0CharPtr(void);
@@ -85,13 +85,13 @@ extern void NNS_GfdInitLnkTexVramManager(u32 a, u32 b, void *c, void *d, BOOL e)
 extern void NNS_GfdInitLnkPlttVramManager(u32 a, void *b, void *c, BOOL d);
 extern void func_0203c2bc(GfxSys *sys);
 extern void func_0203c638(GfxSys *sys);
-extern void func_0203d770(void);
+extern void Sys_ResetVram(void);
 extern void GXS_SetGraphicsMode(int a);
 extern void GX_SetBankForLCDC(int a);
 extern void GX_SetBankForBG(int a);
 extern void GX_SetBankForSubBG(int a);
 extern void GX_SetBankForSubOBJ(int a);
-extern void func_02039c54(GfxMgr *mgr, int state);
+extern void GfxMgr_FreeAll(GfxMgr *mgr, int state);
 extern u32 func_0203e8e0(u32 size, int is4x4, int opt);
 extern int func_0203ea00(u32 key);
 extern u32 func_0203ea6c(u32 size, int is4pltt, int opt);
@@ -145,7 +145,7 @@ static inline void GfxVramHeap_Init(GfxVramHeap *heap, u32 size) {
 
 extern void GX_SetBankForOBJ(int a);
 extern void GX_SetBankForSubOBJExtPltt(int a);
-extern void func_02043904(void *obj);
+extern void Gfx3DState_SetDefaults(void *obj);
 
 // NitroSDK-style register inlines (GX_SetVisiblePlane, G2_SetBGnPriority, ...).
 // With the same writes spelled out as plain REG expressions, func_0203c2bc
@@ -179,7 +179,7 @@ extern "C" {
 
 extern void GX_SetBankForOBJ(int a);
 extern void GX_SetBankForSubOBJExtPltt(int a);
-extern void func_02043904(void *obj);
+extern void Gfx3DState_SetDefaults(void *obj);
 
 }
 
@@ -363,7 +363,7 @@ void func_0203b96c(GfxSys *sys) {
         if (OS_IsRunOnTwl()) {
             return;
         }
-        func_02043d20(g->unk_8b0, 0);
+        Gfx3D_SendDL(g->unk_8b0, 0);
         NNS_G3dGeSendDL(data_02fe00a0, 0x44);
     } else {
         REG32(0x4000000) &= ~0xe000;
@@ -499,7 +499,7 @@ u32 func_0203bc20(GfxSys *sys, u32 size, BOOL sub, GfxVramNode *cur, GfxVramNode
     return -1;
 }
 
-void func_0203bd40(GfxSys *sys, u32 offset, BOOL sub) {
+void GfxSys_FreeVram(GfxSys *sys, u32 offset, BOOL sub) {
     GfxVramHeap *heap = &sys->heaps[0];
     if (sub) {
         heap = &sys->heaps[1];
@@ -577,7 +577,7 @@ void func_0203beac(GfxSys *sys, int state) {
         sys->unk_a30_4 = 0;
         sys->unk_a30_0 = 1;
         sys->unk_a30_1 = 0;
-        func_0203d770();
+        Sys_ResetVram();
         GX_SetGraphicsMode(1, 3, 1);
         GXS_SetGraphicsMode(5);
         GX_SetBankForLCDC(0x1ff);
@@ -602,7 +602,7 @@ void func_0203beac(GfxSys *sys, int state) {
         }
         if (data_02097ce0 != NULL) {
             GfxMgr *mgr;
-            func_02039c54(data_02097ce0, state);
+            GfxMgr_FreeAll(data_02097ce0, state);
             mgr = data_02097ce0;
             mgr->unk_678 = 0x20;
             mgr->unk_67a = 0x18;
@@ -627,7 +627,7 @@ void func_0203beac(GfxSys *sys, int state) {
 void func_0203c2bc(GfxSys *sys) {
     int i;
     REG16(0x4000304) = (u16)(REG16(0x4000304) & ~0x8000);
-    func_0203d770();
+    Sys_ResetVram();
     GX_SetGraphicsMode(1, 5, 1);
     GXS_SetGraphicsMode(5);
     GX_SetBankForLCDC(0x1ff);
@@ -654,7 +654,7 @@ void func_0203c2bc(GfxSys *sys) {
     sys->unk_a30_0 = 1;
     sys->unk_a30_1 = 0;
     G2_BlendNone();
-    func_02043904(sys->unk_8b0);
+    Gfx3DState_SetDefaults(sys->unk_8b0);
     sys->unk_00c = 0;
     sys->unk_010 = 1;
     GfxVramHeap_Init(&sys->heaps[0], 0x8000 << ((GX_GetOBJVRamModeChar() >> 20) & 3));
@@ -664,7 +664,7 @@ void func_0203c2bc(GfxSys *sys) {
     }
     if (data_02097ce0 != NULL) {
         GfxMgr *mgr;
-        func_02039c54(data_02097ce0, 1);
+        GfxMgr_FreeAll(data_02097ce0, 1);
         mgr = data_02097ce0;
         mgr->unk_678 = 0x14;
         mgr->unk_67a = 0x16;
@@ -692,7 +692,7 @@ void func_0203c638(GfxSys *sys) {
     }
     if (data_02097ce0 != NULL) {
         GfxMgr *mgr;
-        func_02039c54(data_02097ce0, 1);
+        GfxMgr_FreeAll(data_02097ce0, 1);
         mgr = data_02097ce0;
         mgr->unk_678 = 0x14;
         mgr->unk_67a = 0x16;
@@ -856,7 +856,7 @@ void func_0203cc58(int duration, int mode, int ch) {
     }
 }
 
-void func_0203cd10(void) {
+void GfxSys_UpdateFade(void) {
     int i;
     if ((*(volatile u16 *)0x2ffffa8 & 0x8000) >> 15) {
         return;
@@ -984,7 +984,7 @@ void func_0203d040(int v) {
     }
     sys = data_02097d48;
     t = FX_Div((v < 0 ? -v : v) << 12, 16 << 12);
-    func_02043d20(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
     polyAttr = G3_PackPolygonAttr(0, 1, 3, Gfx3DState_NextPolyId(sys->unk_8b0), FX_Mul(t, 0x1f000) >> 12, 0);
     NNS_G3dGeBufferOP_N(0x29, &polyAttr, 1);
     texParam = 0x20000000;

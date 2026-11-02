@@ -37,7 +37,7 @@ void func_ov002_021ec6c4(Ov002StaffNode *self, s32 screen) {
     }
 }
 
-void func_ov002_021ec6fc(Ov002StaffNode *node) {
+void Ov002StaffNode_Link(Ov002StaffNode *node) {
     Ov002StaffNode *p = (Ov002StaffNode *)data_ov002_021f0fa0[0];
     Ov002StaffNode *prev;
     if (p == NULL) {
@@ -118,8 +118,8 @@ void func_ov002_021ec838(Ov002StaffModel *self) {
         Model *p = self->model;
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558(p);
-                func_02041278(&p->pltt);
+                TexObj_Release(p);
+                PlttRes_Release(&p->pltt);
                 Heap_Free(p);
             }
             self->model = NULL;
@@ -239,21 +239,21 @@ BOOL func_ov002_021eca14(StaffTask_eca14 *self) {
             m = (StaffModel_eca14 *)Heap_Alloc(0x160);
             if (m != NULL) {
                 void *r = self->res;
-                func_02041218((PlttRes *)((u8 *)m + 0x88));
-                func_02041440((Model *)m, (char *)((u8 *)r + 0x24), 0);
+                PlttRes_Init_02041218((PlttRes *)((u8 *)m + 0x88));
+                TexObj_Init((Model *)m, (char *)((u8 *)r + 0x24), 0);
                 STD_CopyString((char *)((u8 *)m + 0x2c), (char *)((u8 *)r + 4));
             }
             self->model = m;
-            func_020417e0((Model *)(self->model), (void *)self->res->vfunc_10());
+            TexObj_SetRes((Model *)(self->model), (void *)self->res->vfunc_10());
             self->model->flags |= 2;
-            func_02041d9c((Model *)(self->model), 0, 0xffff);
+            TexObj_SelectImage((Model *)(self->model), 0, 0xffff);
             self->model->flags |= 0x80000;
             self->flags.b6 = 1;
         }
         self->state++;
         break;
     case 1:
-        if (self->model != NULL && func_02054f10(self->model, 0xffff) == 0) {
+        if (self->model != NULL && Model_IsReady(self->model, 0xffff) == 0) {
             break;
         }
         {

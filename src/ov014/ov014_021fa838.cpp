@@ -27,7 +27,7 @@ void Ov014Act_021fa6a0_Init(Ov014Act_021fa6a0 *self) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     func_ov000_02187a20(data_ov000_021ccd54, 9);
     func_ov000_02187a20(data_ov000_021ccd54, 10);
-    func_020359d0(data_ov014_022170d8, 7, 0);
+    ResMgr_Load(data_ov014_022170d8, 7, 0);
 }
 
 }

@@ -306,7 +306,7 @@ struct Ov011TwObj {
     Ov011Tw tw;
 };
 
-// The 0x138-byte animation object (func_ov000_0218e9c4); unk_00 is negative until it is ready.
+// The 0x138-byte animation object (ResSet_Init); unk_00 is negative until it is ready.
 struct Ov011Anim {
     s16 unk_00;
     u8 unk_02[0x2];
@@ -631,7 +631,7 @@ static inline BOOL Ov011_ActorValid(u16 id) {
     if (a == NULL) {
         return FALSE;
     }
-    pl = (Robo021ca458 *)func_ov000_0219bf90();
+    pl = (Robo021ca458 *)ActorMgr_FindPlayer();
     if (pl == NULL) {
         return FALSE;
     }

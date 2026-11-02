@@ -2,7 +2,7 @@
 
 extern "C" {
 
-BOOL func_02054f10(void *a, int b);
+BOOL Model_IsReady(void *a, int b);
 
 void ov006_MarkerSet_Update(ov006_MarkerSet *self) {
     int i;
@@ -10,7 +10,7 @@ void ov006_MarkerSet_Update(ov006_MarkerSet *self) {
         if (self->model == NULL) {
             return;
         }
-        if (!func_02054f10(self->model, 0xffff)) {
+        if (!Model_IsReady(self->model, 0xffff)) {
             return;
         }
         self->unk4 = 1;

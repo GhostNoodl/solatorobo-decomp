@@ -31,7 +31,7 @@ static inline void ov002_Slot1148(Ov002HudInfo *self, s32 *n, s32 text) {
     (*n)++;
 }
 
-void func_ov002_021e1148(Ov002HudInfo *self, u16 id) {
+void Ov002HudInfo_SetId(Ov002HudInfo *self, u16 id) {
     void *mgr;
     int i;
     Param0206ef10 *info;
@@ -84,7 +84,7 @@ void func_ov002_021e1148(Ov002HudInfo *self, u16 id) {
         }
     }
     {
-        s32 text = (s32)func_0206ec48(id);
+        s32 text = (s32)Param_Get(id);
         if (self->unk_04 == NULL) {
             return;
         }

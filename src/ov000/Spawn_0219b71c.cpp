@@ -10,7 +10,7 @@ s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
 const MtxFx43 *NNS_G3dGlbGetInvV(void);
 
-EffectObj *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 kind, u8 chance) {
+EffectObj *Spawn_ScatterEffect(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 kind, u8 chance) {
     VecFx32 v;
     s32 scale;
     BOOL big;
@@ -34,7 +34,7 @@ EffectObj *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, 
         kind = 4;
         scale += scale >> 2;
     }
-    obj = func_02065f88(kind, &v);
+    obj = Effect_SpawnId(kind, &v);
     obj->SetScaleXYZ(scale, scale, scale);
     return obj;
 }
@@ -62,7 +62,7 @@ typedef struct {
 
 extern "C" {
 
-Robo021ca458 *func_ov000_0219bf90(void);
+Robo021ca458 *ActorMgr_FindPlayer(void);
 ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 kind);
 BOOL func_01ffc318(VecFx32 *pos, void *a, const VecFx32 *min, const VecFx32 *max, const Rot0219b808 *rot);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
@@ -90,7 +90,7 @@ u16 func_ov000_0219b808(u16 id, void *a1, const Shape0219b808 *q, u16 *out, u32 
     ActorGroup *grp;
     Actor *a;
     if (q->mask & 2) {
-        pl = func_ov000_0219bf90();
+        pl = ActorMgr_FindPlayer();
         if (pl != NULL && !(pl->unk_b24 << 30 >> 31 ? TRUE : FALSE) &&
             SameId0219b808(&data_ov000_021ccd54->unk_ca, PlId0219b808(pl)) &&
             q->flags == (q->flags & pl->hit1.unk_50)) {

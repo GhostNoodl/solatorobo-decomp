@@ -18,9 +18,9 @@ extern "C" {
 
 u8 Gfx3DState_NextPolyId(void *p);
 
-BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
+BOOL Interp_MoveTo(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
 void ov006_ResLoader_Update(ov006_ResLoader *self);
-BOOL func_02054f10(void *a, int b);
+BOOL Model_IsReady(void *a, int b);
 
 void ov006_Label_Update(ov006_Label *self) {
     VecFx32 v = {0, 0, 0};
@@ -39,15 +39,15 @@ void ov006_Label_Update(ov006_Label *self) {
         {
             Model *model = (Model *)Heap_Alloc(sizeof(Model));
             if (model != NULL) {
-                func_02041218(&model->pltt);
-                func_02041440(model, self->loader.res.name, 1);
+                PlttRes_Init_02041218(&model->pltt);
+                TexObj_Init(model, self->loader.res.name, 1);
                 STD_CopyString(model->name, self->loader.res.arcName);
             }
             self->model = model;
         }
-        func_020417e0(self->model, (void *)self->loader.res.vfunc_10());
+        TexObj_SetRes(self->model, (void *)self->loader.res.vfunc_10());
         self->model->flags |= 2;
-        func_02041d9c(self->model, self->unkE0, id);
+        TexObj_SelectImage(self->model, self->unkE0, id);
         self->model->flags |= 0x80000;
         self->model->flags |= 0x400000;
         self->loader.res.vfunc_08();
@@ -61,7 +61,7 @@ void ov006_Label_Update(ov006_Label *self) {
         zero.x = 0;
         zero.y = 0;
         zero.z = 0;
-        func_02049244(&self->pos, 0x400 - 0xcd, &self->pos, &zero, 0xcd);
+        Interp_MoveTo(&self->pos, 0x400 - 0xcd, &self->pos, &zero, 0xcd);
         d = VEC_Distance(&self->pos, &zero);
         t = FX_Div(FX_Mul(self->speed, 0x1200) - d, self->speed);
         if (d < 0xcd) {
@@ -83,7 +83,7 @@ void ov006_Label_Update(ov006_Label *self) {
             self->timer++;
             break;
         }
-        if (func_02054f10(self->model, 0xffff)) {
+        if (Model_IsReady(self->model, 0xffff)) {
             self->timer++;
         }
         break;

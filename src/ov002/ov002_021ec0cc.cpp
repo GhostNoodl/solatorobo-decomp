@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021ec0cc(Ov002Msg021f0ce8 *self) {
+void Ov002Msg021f0ce8_Next(Ov002Msg021f0ce8 *self) {
     u8 *p;
     if (self->index >= self->count) {
         return;
@@ -47,7 +47,7 @@ void *Ov002Vt_021f0cf8_DtorDelete(Ov002Snd021f0cf8 *self) {
     return self;
 }
 
-void func_ov002_021ec1c4(Ov002Snd021f0cf8 *self) {
+void Ov002Snd021f0cf8_Init(Ov002Snd021f0cf8 *self) {
     self->src = NULL;
     self->index = 0;
     self->mask = 0;
@@ -55,7 +55,7 @@ void func_ov002_021ec1c4(Ov002Snd021f0cf8 *self) {
     self->cur = NULL;
 }
 
-void func_ov002_021ec1e0(Ov002Snd021f0cf8 *self, void *src) {
+void Ov002Snd021f0cf8_Load(Ov002Snd021f0cf8 *self, void *src) {
     s16 n;
     s16 rec[8];
     u8 *p = *(u8 **)src;
@@ -81,7 +81,7 @@ void func_ov002_021ec1e0(Ov002Snd021f0cf8 *self, void *src) {
     self->index = 1;
 }
 
-void func_ov002_021ec2ac(Ov002Snd021f0cf8 *self) {
+void Ov002Snd021f0cf8_Next(Ov002Snd021f0cf8 *self) {
     if (self->index >= self->count) {
         self->cur = NULL;
     } else {

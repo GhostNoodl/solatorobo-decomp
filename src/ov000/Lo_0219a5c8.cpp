@@ -34,7 +34,7 @@ typedef struct {
 } Rot0219a5c8;
 
 extern "C" {
-s32 func_ov000_021993fc(Finder *self, Query *q, void **out, s32 max);
+s32 Finder_CollectParts(Finder *self, Query *q, void **out, s32 max);
 BOOL func_01ffc624(void *o, const VecFx32 *pos, Rot0219a5c8 *rot, s32 r, s32 a);
 
 s32 func_ov000_0219a5c8(Actor *self, u16 mask, const VecFx32 *pos, Rot0219a5c8 *rot, s32 r, s32 a, void **list) {
@@ -69,7 +69,7 @@ s32 func_ov000_0219a5c8(Actor *self, u16 mask, const VecFx32 *pos, Rot0219a5c8 *
         if (self != NULL) {
             q.exclude = self->id;
         }
-        ret = func_ov000_021993fc(&f, &q, list, 0x20);
+        ret = Finder_CollectParts(&f, &q, list, 0x20);
     } else {
         void *tmp[0x20];
         Finder f;
@@ -96,7 +96,7 @@ s32 func_ov000_0219a5c8(Actor *self, u16 mask, const VecFx32 *pos, Rot0219a5c8 *
         if (self != NULL) {
             q.exclude = self->id;
         }
-        n = func_ov000_021993fc(&f, &q, tmp, 0x20);
+        n = Finder_CollectParts(&f, &q, tmp, 0x20);
         cnt = 0;
         for (i = 0; i < n; i++) {
             void *o = tmp[i];

@@ -3,7 +3,7 @@
 struct LoDE { s32 d; s32 *e; };
 extern "C" {
 
-u32 func_0204045c(void);
+u32 Rand_GetGlobal(void);
 void func_ov000_021c216c(void *p);
 void func_ov000_0216c954(void *self, u16 a, s32 b);
 
@@ -12,7 +12,7 @@ struct Obj0216c9b0 {
     void *unk_10;
 };
 
-void func_ov000_0216c9b0(Obj0216c9b0 *self) {
+void Obj0216c9b0_Release(Obj0216c9b0 *self) {
     u32 saved;
     void *p;
     LO_HEAP_PUSH(saved);

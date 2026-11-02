@@ -81,10 +81,10 @@ static inline BOOL GameScene_IsPlayerActing(void) {
     if (player == NULL) {
         return FALSE;
     }
-    if (func_ov000_0216f674(player, 9)) {
+    if (MessageQueue_GetById(player, 9)) {
         return TRUE;
     }
-    if (func_ov000_0216f674(player, 10)) {
+    if (MessageQueue_GetById(player, 10)) {
         return TRUE;
     }
     if (player->unk_11c == NULL) {

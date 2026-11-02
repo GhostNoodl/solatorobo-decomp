@@ -19,7 +19,7 @@ static inline void SysCard_End(SysCard *card) {
     if (card->state == 8) {
         return;
     }
-    func_020471f0(data_02097e44, 11);
+    SysCard_CheckError(data_02097e44, 11);
     SysCard_Unlock(card);
     SysCard_SetState(card, 1);
 }
@@ -65,7 +65,7 @@ void func_02046d1c(SysCard *card) {
         SysCard_Lock(card);
     }
     if (!CARD_IdentifyBackup(0xd01)) {
-        func_020471f0(data_02097e44, 11);
+        SysCard_CheckError(data_02097e44, 11);
     }
     SysCard_Unlock(card);
     card->totalSize = CARD_GetBackupPageSize();
@@ -86,7 +86,7 @@ BOOL func_02046e28(SysCard *card) {
     return SysCard_IsLocked(card) ? TRUE : FALSE;
 }
 
-s32 func_02046e48(SysCard *card, void *dst, u32 src, u32 len) {
+s32 SysCard_Read(SysCard *card, void *dst, u32 src, u32 len) {
     if (card->state == 8) {
         return 2;
     }
@@ -95,12 +95,12 @@ s32 func_02046e48(SysCard *card, void *dst, u32 src, u32 len) {
     }
     SysCard_SetState(card, 3);
     if (!SysCard_IsReady()) {
-        func_020471f0(data_02097e44, 8);
+        SysCard_CheckError(data_02097e44, 8);
         SysCard_End(card);
         return 2;
     }
     CARDi_RequestStreamCommand(src, (u32)dst, len, func_02046fac, card, TRUE, 6, 1, 0);
-    func_020471f0(data_02097e44, 11);
+    SysCard_CheckError(data_02097e44, 11);
     return 0;
 }
 
@@ -121,16 +121,16 @@ s32 func_02047004(SysCard *card, u32 dst, const void *src, u32 len) {
     }
     SysCard_SetState(card, 5);
     if (dst + len > card->sectorSize) {
-        func_020471f0(data_02097e44, 9);
+        SysCard_CheckError(data_02097e44, 9);
         return 2;
     }
     if (!SysCard_IsReady()) {
-        func_020471f0(data_02097e44, 8);
+        SysCard_CheckError(data_02097e44, 8);
         SysCard_End(card);
         return 2;
     }
     CARDi_RequestStreamCommand((u32)src, dst, len, func_02047198, card, TRUE, 8, 10, 2);
-    func_020471f0(data_02097e44, 11);
+    SysCard_CheckError(data_02097e44, 11);
     return 0;
 }
 
@@ -142,7 +142,7 @@ void func_02047198(void *arg) {
     SysCard_SetState(data_02097e44, 2);
 }
 
-BOOL func_020471f0(SysCard *card, s32 err) {
+BOOL SysCard_CheckError(SysCard *card, s32 err) {
     if (card->state == 7) {
         return FALSE;
     }

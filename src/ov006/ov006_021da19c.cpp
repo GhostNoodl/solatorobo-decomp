@@ -9,10 +9,10 @@ BOOL ov006_ListCb_StoreIdOrCancel(UiList *self, UiListItem *item) {
     s32 *dst = (s32 *)self->owner;
     BOOL r = FALSE;
     if (item != NULL) {
-        func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
         *dst = item->id;
     } else {
-        func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
         r = TRUE;
     }
     return r;

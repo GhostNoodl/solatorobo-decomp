@@ -11,14 +11,14 @@ extern "C" {
 
 extern void NNS_G2dInitImageProxy(TexObj *obj);
 extern int NNS_G2dGetImageLocation(TexObj *obj, int idx);
-extern void func_0203bd40(GfxSys *sys, u32 offset, BOOL sub);
+extern void GfxSys_FreeVram(GfxSys *sys, u32 offset, BOOL sub);
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(u32 key);
-extern void func_0203e58c(u32 id);
-extern void func_02035acc(const char *arc, const char *name, u16 mode);
+extern void Vram_CancelTransfer(u32 id);
+extern void ResMgr_ReleaseArchive(const char *arc, const char *name, u16 mode);
 
 
 void func_020416b4(TexObj *obj, int i);
-void func_02041440(TexObj *obj, const char *name, u8 owned);
+void TexObj_Init(TexObj *obj, const char *name, u8 owned);
 
 
 
@@ -195,7 +195,7 @@ typedef struct TexObjRes2 {
 extern void func_02040dd8(PlttRes *res, int idx, int load);
 void func_02041e74(TexObj *obj, int idx);
 
-void func_02041d9c(TexObj *obj, int idx, u32 value) {
+void TexObj_SelectImage(TexObj *obj, int idx, u32 value) {
     TexObjImage *img;
     obj->unk_085 |= (u8)(1 << idx);
     if (idx == 1) {
@@ -238,7 +238,7 @@ typedef struct TexObjRes3 {
 } TexObjRes3;
 
 extern u32 func_0203bc20(GfxSys *sys, u32 size, BOOL sub);
-extern u32 func_0203e458(int type, u32 src, u32 dst, u32 size, u32 chunk);
+extern u32 Vram_QueueTransfer(int type, u32 src, u32 dst, u32 size, u32 chunk);
 extern void NNS_G2dSetImageLocation(TexObj *obj, int idx, u32 addr);
 extern void NNS_G2dLoadImage1DMapping(TexObjImageInfo *img, u32 addr, int idx, TexObj *obj);
 extern void func_0203e098(const char *name, u32 value);
@@ -270,7 +270,7 @@ void func_02041e74(TexObj *obj, int idx) {
             }
         }
         if ((obj->unk_06c << 30) >> 31) {
-            func_0203e458(type, img->data, slot, img->size, 0);
+            Vram_QueueTransfer(type, img->data, slot, img->size, 0);
             NNS_G2dSetImageLocation(obj, idx, slot);
         } else {
             NNS_G2dLoadImage1DMapping(img, slot, idx, obj);
@@ -286,7 +286,7 @@ void func_02041e74(TexObj *obj, int idx) {
         }
         if ((obj->unk_06c << 30) >> 31) {
             u32 addr = (slot << 15) >> 12;
-            func_0203e458(0, img->data, addr, img->size, 0);
+            Vram_QueueTransfer(0, img->data, addr, img->size, 0);
             NNS_G2dSetImageLocation(obj, 0, addr);
         } else {
             NNS_G2dLoadImage1DMapping(img, (slot << 15) >> 12, 0, obj);
@@ -426,7 +426,7 @@ void func_0204205c(TexObj *obj, int idx, int value) {
         info.size = total;
         info.data += first;
         if ((obj->unk_06c << 30) >> 31) {
-            e->transfers[idx] = func_0203e458(type, info.data, slot, info.size, 0);
+            e->transfers[idx] = Vram_QueueTransfer(type, info.data, slot, info.size, 0);
             return;
         }
         ((int *)obj)[idx] = -1;
@@ -479,7 +479,7 @@ void func_0204205c(TexObj *obj, int idx, int value) {
         info.size = total;
         info.data += first;
         if ((obj->unk_06c << 30) >> 31) {
-            e->transfers[idx] = func_0203e458(0, info.data, ((u32)(&e->key)[idx] << 15) >> 12, info.size, 0);
+            e->transfers[idx] = Vram_QueueTransfer(0, info.data, ((u32)(&e->key)[idx] << 15) >> 12, info.size, 0);
             return;
         }
         ((int *)obj)[idx] = -1;

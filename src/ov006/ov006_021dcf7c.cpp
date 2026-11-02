@@ -14,44 +14,44 @@ extern "C" {
 extern char data_ov006_021ec178[];
 extern char data_ov006_021ec191[];
 extern char data_ov006_021ec19d[];
-void func_0206e900(char *dst, const char *src);
+void LangData_LocalizePath(char *dst, const char *src);
 
 void ov006_Unk021dcf7c_Load(ov006_Unk021dcf7c *self) {
     char file[0x20];
     Model *model;
 
-    func_0206e900(file, data_ov006_021ec178);
+    LangData_LocalizePath(file, data_ov006_021ec178);
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec191;
         const char *path = file;
         if (path) {
-            func_02041218(&model->pltt);
-            func_02041440(model, name, 0);
+            PlttRes_Init_02041218(&model->pltt);
+            TexObj_Init(model, name, 0);
             STD_CopyString(model->name, path);
         }
     }
     self->unkC = model;
-    func_020417e0(self->unkC, func_02035de0(file, data_ov006_021ec191));
+    TexObj_SetRes(self->unkC, func_02035de0(file, data_ov006_021ec191));
     self->unkC->flags |= 2;
     self->unkC->flags |= 0x80000;
-    func_02041d9c(self->unkC, 0, 0);
-    func_02041d9c(self->unkC, 0, 1);
+    TexObj_SelectImage(self->unkC, 0, 0);
+    TexObj_SelectImage(self->unkC, 0, 1);
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec19d;
         const char *path = file;
         if (path) {
-            func_02041218(&model->pltt);
-            func_02041440(model, name, 0);
+            PlttRes_Init_02041218(&model->pltt);
+            TexObj_Init(model, name, 0);
             STD_CopyString(model->name, path);
         }
     }
     self->unk10 = model;
-    func_020417e0(self->unk10, func_02035de0(file, data_ov006_021ec19d));
+    TexObj_SetRes(self->unk10, func_02035de0(file, data_ov006_021ec19d));
     self->unk10->flags |= 2;
     self->unk10->flags |= 0x80000;
-    func_02041d9c(self->unk10, 0, 0xffff);
+    TexObj_SelectImage(self->unk10, 0, 0xffff);
     self->unk5 = -1;
     self->unk6 = 4;
 }

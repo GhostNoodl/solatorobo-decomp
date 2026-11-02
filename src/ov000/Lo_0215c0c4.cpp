@@ -9,8 +9,8 @@ extern "C" {
 extern u8 NNS_G3dGlb[];
 extern u8 data_02092844[];
 extern u8 data_02092800[];
-void func_ov000_02190758(void *m, void *p, s32 a);
-BOOL func_ov000_021903b4(void *m);
+void Obj02190758_SetRot(void *m, void *p, s32 a);
+BOOL Model021903b4_Draw(void *m);
 
 typedef struct LoAnimC {
     u8 rgb[4];

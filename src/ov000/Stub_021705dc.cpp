@@ -35,7 +35,7 @@ bool func_ov000_021705ec(ListBuffer021cb940 *self) {
     return NotNull54_Inline(self);
 }
 
-s32 func_ov000_0217060c(ListBuffer021cb940 *self) {
+s32 ListBuffer021cb940_HasDialog(ListBuffer021cb940 *self) {
     return self->dialog != NULL ? 0x1 : 0x0;
 }
 

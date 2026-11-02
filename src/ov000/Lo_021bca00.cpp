@@ -17,12 +17,12 @@ extern const char *data_0208cc88;
 extern const u32 data_0208ba70[];
 extern void *data_02149ef8;
 void *Heap_Alloc(u32 size);
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 u32 MsgRes_GetString(void *p, s32 a);
 u32 Text_Measure(u32 a, u32 b, u32 c, u32 *d, u32 *e, BOOL f);
-void func_0204ca70(void *p);
+void TextWin_RenderToVram(void *p);
 void func_ov000_02184508(void *p);
-BOOL func_02054f10(void *p, s32 a);
+BOOL Model_IsReady(void *p, s32 a);
 s32 FX_Div(s32 a, s32 b);
 BOOL func_ov000_021bc474(void *self);
 
@@ -34,7 +34,7 @@ static inline TextWin *Lo_TextWinNew(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
-        func_0204c7d0(win);
+        TextWin_Init(win);
     }
     return win;
 }
@@ -61,23 +61,23 @@ struct Obj021bca00 {
 BOOL func_ov000_021bca00(Obj021bca00 *self) {
     switch (self->unk_0c) {
     case 0: {
-        void *res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+        void *res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
         Model *m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
             const char *arc;
             const char *name;
             name = data_0208cc88;
             arc = data_0208cc94;
-            func_02041218(&m->pltt);
-            func_02041440(m, name, 0);
+            PlttRes_Init_02041218(&m->pltt);
+            TexObj_Init(m, name, 0);
             STD_CopyString(m->name, arc);
         }
         self->unk_14 = (Model *)m;
-        func_020417e0((Model *)m, res);
+        TexObj_SetRes((Model *)m, res);
         self->unk_14->flags |= 2;
         MODEL_FLAGS(self->unk_14)->unk_19 = 1;
         MODEL_FLAGS(self->unk_14)->alpha = 0x1e;
-        func_02041d9c(self->unk_14, 0, 0x1d);
+        TexObj_SelectImage(self->unk_14, 0, 0x1d);
         self->unk_10 = Lo_TextWinNew();
         self->unk_10->font = 4;
         Lo_SetText(self->unk_10, MsgRes_GetString(data_02149ef8, 0x118));
@@ -90,13 +90,13 @@ BOOL func_ov000_021bca00(Obj021bca00 *self) {
         self->unk_10->unk_4_8 = 0x1e;
         self->unk_10->unk_4_30 = 1;
         self->unk_10->rendering = 1;
-        func_0204ca70(self->unk_10);
+        TextWin_RenderToVram(self->unk_10);
         func_ov000_02184508(data_ov000_021ccd54);
         self->unk_0c = 1;
         break;
     }
     case 1:
-        if (!func_02054f10(self->unk_14, 0xffff)) {
+        if (!Model_IsReady(self->unk_14, 0xffff)) {
             break;
         }
         self->unk_0c = 2;

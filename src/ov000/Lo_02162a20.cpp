@@ -20,8 +20,8 @@ typedef struct {
 
 extern s32 data_02097d78[5];
 void func_ov000_02162bd4(ModelViewer *self);
-BOOL func_ov000_02190a30(void *p, s32 a);
-void func_ov000_02190a80(void *p, s32 a);
+BOOL Model0218fe1c_GetAnimCtrl(void *p, s32 a);
+void Model0218fe1c_UpdateAnim(void *p, s32 a);
 void func_0203cb78(s32 a, s32 b, s32 c);
 
 static inline BOOL LoIsMode4(void) {
@@ -31,10 +31,10 @@ static inline BOOL LoIsMode4(void) {
     return data_02097d78[1] == 4 ? TRUE : FALSE;
 }
 
-void func_ov000_02162a20(ModelViewer *self) {
+void ModelViewer_Update(ModelViewer *self) {
     func_ov000_02162bd4(self);
-    if (func_ov000_02190a30(&self->model, 0)) {
-        func_ov000_02190a80(&self->model, 0x1000);
+    if (Model0218fe1c_GetAnimCtrl(&self->model, 0)) {
+        Model0218fe1c_UpdateAnim(&self->model, 0x1000);
     }
 }
 

@@ -76,7 +76,7 @@ void func_ov000_0218cfc8(Actor *self) {
 }
 
 
-BOOL func_ov000_0218d17c(Actor *self) {
+BOOL Actor_IsActive(Actor *self) {
     return self->state == 2;
 }
 

@@ -2,10 +2,10 @@
 
 extern "C" {
 
-void func_ov002_021d1e44(void) {
+void Task021ef69c_PostUpdate(void) {
 }
 
-void func_ov002_021d1e48(Task021ef69c *self) {
+void Task021ef69c_UpdateActive(Task021ef69c *self) {
     u16 keys = data_02097dc8->trig;
     void *ev = self->unk_44;
     if (ev != NULL) {
@@ -18,7 +18,7 @@ void func_ov002_021d1e48(Task021ef69c *self) {
         FIELD(ev, 0x6c, u8) = 0;
         self->unk_44 = NULL;
         func_ov000_021c701c(self->unk_3c);
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     } else {
         ListRow *m;
         if (!(keys & 2)) {
@@ -29,12 +29,12 @@ void func_ov002_021d1e48(Task021ef69c *self) {
         if (m != NULL) {
             data_ov002_021f0f84[2] = m->index;
         }
-        func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         self->vfunc_0c(0);
     }
 }
 
-void func_ov002_021d1f20(Task021ef69c *self) {
+void Task021ef69c_Draw(Task021ef69c *self) {
     if (self->unk_3c != NULL) {
         self->unk_3c->vfunc_20();
     }
@@ -70,7 +70,7 @@ static inline void ov002_Model_PlayPartR(Model *model, int idx, ModelRes *&res) 
     } else {
         anim = NNS_G2dGetCellDataByIdx(res->texRes, **(u16 **)FIELD(NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx), 0xc, void *));
     }
-    func_02042628(model, anim, part, 0);
+    TexObj_DrawCell(model, anim, part, 0);
 }
 
 static inline void ov002_Model_PlayPart(Model *model, int idx) {

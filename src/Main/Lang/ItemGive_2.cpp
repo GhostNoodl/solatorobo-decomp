@@ -10,9 +10,9 @@ extern u8 StageFlags_CountEntries(StageFlags *f, u16 id);
 extern void func_02059280(DataRes *res, SaveRef *ref, u32 idx, u16 unk);
 extern u16 func_0205973c(DataRes *res, SaveRef *ref, u32 id);
 extern void func_02059428(DataRes *res, SaveRef *ref, u32 id, u16 val);
-extern u32 func_0205975c(DataRes *res, u32 idx);
-extern SaveEntry *func_0205976c(DataRes *res, u32 idx);
-extern u16 func_02059544(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u16 sub);
+extern u32 DataRes_GetCount(DataRes *res, u32 idx);
+extern SaveEntry *DataRes_GetTable(DataRes *res, u32 idx);
+extern u16 DataRes_ReadBitsAt_02059544(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u16 sub);
 
 static inline u16 Item_Cat(u32 id) {
     return id >> 12;
@@ -51,13 +51,13 @@ static inline BOOL Item_Set(u16 id, u16 val) {
     return ok ? TRUE : FALSE;
 }
 
-BOOL func_0206f21c(u16 id, int n);
+BOOL Item_Give(u16 id, int n);
 
 void func_0206f3f0(u16 id, int n);
 
 void func_0206f518(SaveRef *ref, u32 id);
 
-BOOL func_0206f5e4(u16 id, int n);
+BOOL Item_Set_0206f5e4(u16 id, int n);
 
 BOOL func_0206f66c(u16 id);
 
@@ -77,11 +77,11 @@ u16 func_0206f788(u16 id) {
     parts = ((ItemDef *)data_0208d268[(u16)(Item_Cat(id) - 1)])[Item_Idx(id)].parts;
     data = data_02fe152c->data;
     mask = 0;
-    entries = func_0205976c(data_02fe152c, 10);
-    func_0205975c(data_02fe152c, 10);
+    entries = DataRes_GetTable(data_02fe152c, 10);
+    DataRes_GetCount(data_02fe152c, 10);
     for (i = 0; i < 4; i++) {
         if (parts[i] >= 0) {
-            if (func_02059544(data_02fe152c, (SaveBlock *)(data + 0x150), entries, 1, Item_Idx(parts[i]))) {
+            if (DataRes_ReadBitsAt_02059544(data_02fe152c, (SaveBlock *)(data + 0x150), entries, 1, Item_Idx(parts[i]))) {
                 mask |= (u16)(1 << i);
             }
         }
@@ -99,8 +99,8 @@ BOOL func_0206f85c(u32 n) {
     u32 count;
     done = FALSE;
     block = (SaveBlock *)(data_02fe152c->data + 0x10) + n;
-    entries = func_0205976c(data_02fe152c, n);
-    count = func_0205975c(data_02fe152c, n);
+    entries = DataRes_GetTable(data_02fe152c, n);
+    count = DataRes_GetCount(data_02fe152c, n);
     a = 0;
     b = 0;
     switch (n) {
@@ -114,8 +114,8 @@ BOOL func_0206f85c(u32 n) {
         break;
     }
     for (i = 0; i < count; i++) {
-        BOOL x = (func_02059544(data_02fe152c, block, entries, a, i) & 1) ? TRUE : FALSE;
-        BOOL y = func_02059544(data_02fe152c, block, entries, b, i) == 0 ? TRUE : FALSE;
+        BOOL x = (DataRes_ReadBitsAt_02059544(data_02fe152c, block, entries, a, i) & 1) ? TRUE : FALSE;
+        BOOL y = DataRes_ReadBitsAt_02059544(data_02fe152c, block, entries, b, i) == 0 ? TRUE : FALSE;
         done = (x & y) ? TRUE : FALSE;
         if (done) {
             break;

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_02163224(MsgBox *self) {
+void MsgBox_Init(MsgBox *self) {
     self->arcName = NULL;
     self->name = NULL;
     self->unk_10 = 0;

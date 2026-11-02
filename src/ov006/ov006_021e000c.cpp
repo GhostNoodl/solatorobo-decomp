@@ -51,12 +51,12 @@ extern "C" {
 
 EffectObj *ov006_CreateEffect(int type, const VecFx32 *pos);
 s32 Interp_SinLerp(fx32 t, s32 a, s32 b);
-BOOL func_02054f10(void *a, int b);
+BOOL Model_IsReady(void *a, int b);
 void ov006_Unk021df44c_Update(ov006_Win021e000c *self);
 
 static inline void ov006_Unk021e000c_Kill(int id) {
     if (id != -1) {
-        VObj *o = (VObj *)func_020657b0(data_0214a420, id);
+        VObj *o = (VObj *)Effect_Find_020657b0(data_0214a420, id);
         if (o != NULL) {
             void *saved = data_02097dd0->cur;
             data_02097dd0->cur = data_02097dd0->heapHi;
@@ -77,7 +77,7 @@ static inline void ov006_Pic021e000c_SetPos(ov006_Pic021e000c *p, s32 x, s32 y, 
 }
 
 static inline void ov006_Loader021e000c_Update(ov006_Loader021e000c *self) {
-    if (!self->ready && self->unk1C != NULL && func_02054f10(self->unk1C, 0xffff)) {
+    if (!self->ready && self->unk1C != NULL && Model_IsReady(self->unk1C, 0xffff)) {
         self->ready = 1;
     }
 }
@@ -146,11 +146,11 @@ void ov006_Unk021e000c_Update(ov006_Unk021e000c *self) {
         break;
     case 5: {
         fx32 t = (self->timer << 12) / 20;
-        EffectObj *o = func_020657b0(data_0214a420, self->id1);
+        EffectObj *o = Effect_Find_020657b0(data_0214a420, self->id1);
         if (o != NULL) {
             o->SetScaleXYZ(0x1000, FX_Mul(t, 0x800) + 0x1000, 0x1000);
         }
-        o = func_020657b0(data_0214a420, self->id2);
+        o = Effect_Find_020657b0(data_0214a420, self->id2);
         if (o != NULL) {
             o->SetPosXYZ(FX_Mul(t, -0x80000), 0, o->pos.z);
         }
@@ -185,7 +185,7 @@ void ov006_Unk021e000c_Update(ov006_Unk021e000c *self) {
     {
         ov006_Pic021e000c *p = self->unk1C;
         if (!p->ready) {
-            if (p->unk14 == NULL || !func_02054f10(p->unk14, 0xffff)) {
+            if (p->unk14 == NULL || !Model_IsReady(p->unk14, 0xffff)) {
                 goto skip;
             }
             p->ready = 1;

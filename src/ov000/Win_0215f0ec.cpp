@@ -15,7 +15,7 @@ static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
-        func_0204c7d0(win);
+        TextWin_Init(win);
     }
     return win;
 }
@@ -26,7 +26,7 @@ static inline void SetText(TextWin *win, u32 text) {
     data_02097ce0->unk_004 = win->font;
 }
 
-void func_ov000_0215f0ec(UiLabel *self, u32 text) {
+void UiLabel_SetText(UiLabel *self, u32 text) {
     UiLabelStyle *e;
     TextWin *win;
     if (self->model != NULL) {
@@ -39,12 +39,12 @@ void func_ov000_0215f0ec(UiLabel *self, u32 text) {
         MODEL_NEW(self->model, data_0208cb74, data_0208cca0);
     }
     {
-        ResList *a = func_02035d5c(self->model->name);
-        void *b = func_02034d88(a, self->model->unk_04c);
-        func_020417e0((Model *)self->model, b);
+        ResList *a = ResMgr_GetArcList(self->model->name);
+        void *b = ResList_FindType2(a, self->model->unk_04c);
+        TexObj_SetRes((Model *)self->model, b);
     }
     self->model->flags |= 2;
-    func_02041d9c((Model *)self->model, 0, e->part);
+    TexObj_SelectImage((Model *)self->model, 0, e->part);
     func_02041c20(self->model, e->part, self);
     win = TextWin_New();
     self->text = win;

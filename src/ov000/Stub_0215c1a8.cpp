@@ -57,9 +57,9 @@ void func_ov000_0215c1a8(void *self, s32 *msg) {
 extern VFunc0215c1bc data_0208ba70[];
 extern char data_ov000_021cabf4[];
 void *Heap_Alloc(u32 size);
-void func_0204c7d0(void *p);
+void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, char *c, void *d, void *e, BOOL f);
-void func_0204c6bc(char *s, s32 a, s32 *out, void *cb);
+void Text_ScanTags(char *s, s32 a, s32 *out, void *cb);
 
 static inline BOOL Bit3_0215c1bc(VObj *self) {
     return LBIT(self, 0xc).b3 ? TRUE : FALSE;
@@ -92,7 +92,7 @@ struct Obj0215c1bc : public VObj {
     Text0215c1bc *unk_98;
 };
 
-void func_ov000_0215c1bc(Obj0215c1bc *self, u32 flags, char *str) {
+void Obj0215c1bc_SetText(Obj0215c1bc *self, u32 flags, char *str) {
     char *lines[13];
     s32 font;
     s32 i;
@@ -165,12 +165,12 @@ void func_ov000_0215c1bc(Obj0215c1bc *self, u32 flags, char *str) {
     self->unk_20 = n;
     self->unk_28 = self->vfunc_44();
     font = 0;
-    func_0204c6bc(str, 1, &font, (void *)func_ov000_0215c1a8);
+    Text_ScanTags(str, 1, &font, (void *)func_ov000_0215c1a8);
     f = font;
     tt = (Text0215c1bc *)Heap_Alloc(0xb8);
     if (tt != NULL) {
         tt->vtbl = data_0208ba70;
-        func_0204c7d0(tt);
+        TextWin_Init(tt);
     }
     tt->unk_28 = self->unk_1c;
     tt->unk_2c = f;
@@ -192,7 +192,7 @@ void func_ov000_0215c1bc(Obj0215c1bc *self, u32 flags, char *str) {
             tt = (Text0215c1bc *)Heap_Alloc(0xb8);
             if (tt != NULL) {
                 tt->vtbl = data_0208ba70;
-                func_0204c7d0(tt);
+                TextWin_Init(tt);
             }
             tt->unk_28 = self->unk_1c;
             tt->unk_2c = f;
@@ -263,10 +263,10 @@ s32 func_ov000_0215c720(Obj0215c720 *self) {
 extern void *data_02149ef8;
 u16 func_02061d54(u16 a);
 char *MsgRes_GetString(void *p, s32 a);
-char *func_02040ab0(char *str, int c);
-void func_02070874(char *dst, const char *fmt, const char *arg);
+char *Str_FindCharMb(char *str, int c);
+void Tbl_Format_02070874(char *dst, const char *fmt, const char *arg);
 void func_020707e8(char *dst, const char *fmt, const char *arg, int c);
-BOOL func_0206f21c(u16 id, int n);
+BOOL Item_Give(u16 id, int n);
 void func_ov000_02184ea4(void *self, s32 a);
 char *func_ov000_0215cfd0(void *self);
 
@@ -324,15 +324,15 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
     if (lines[0] != NULL) {
         self->unk_94++;
     }
-    if (STD_SearchString(str, data_ov000_021cabf4) != NULL || func_02040ab0(str, '%') != NULL) {
+    if (STD_SearchString(str, data_ov000_021cabf4) != NULL || Str_FindCharMb(str, '%') != NULL) {
         len = STD_GetStringLength(str) + 1;
-        if (func_02040ab0(str, '%') != NULL) {
+        if (Str_FindCharMb(str, '%') != NULL) {
             self->unk_90 = (char *)Heap_AllocHi(len + STD_GetStringLength(lines[0]), 4);
-            func_02070874(self->unk_90, str, lines[0]);
+            Tbl_Format_02070874(self->unk_90, str, lines[0]);
             id = 0;
             lines[0] = NULL;
             self->unk_94--;
-        } else if (func_02040ab0(str, '*') != NULL) {
+        } else if (Str_FindCharMb(str, '*') != NULL) {
             self->unk_90 = (char *)Heap_AllocHi(len + STD_GetStringLength(lines[0]), 4);
             func_020707e8(self->unk_90, str, lines[0], '*');
             self->unk_94--;
@@ -384,7 +384,7 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
         tt = (Text0215c1bc *)Heap_Alloc(0xb8);
         if (tt != NULL) {
             tt->vtbl = data_0208ba70;
-            func_0204c7d0(tt);
+            TextWin_Init(tt);
         }
         tt->unk_28 = self->unk_1c;
         tt->unk_2c = 0;
@@ -406,7 +406,7 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
             tt = (Text0215c1bc *)Heap_Alloc(0xb8);
             if (tt != NULL) {
                 tt->vtbl = data_0208ba70;
-                func_0204c7d0(tt);
+                TextWin_Init(tt);
             }
             tt->unk_28 = self->unk_1c;
             tt->unk_2c = 0;
@@ -499,7 +499,7 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
     }
     ok = TRUE;
     if (self->unk_84 == 0x854) {
-        ok = func_0206f21c(self->unk_88, 1);
+        ok = Item_Give(self->unk_88, 1);
     }
     v = self->unk_88;
     if (ItemKind_0215c744(v) - 1 == 1 && !ok) {

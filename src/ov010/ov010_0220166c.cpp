@@ -9,9 +9,9 @@ struct Ov010PlFlags {
 
 extern "C" {
 
-extern BOOL func_ov000_02198360(ActorSub40 *a, u8 b, BOOL c);
+extern BOOL History_SetState(ActorSub40 *a, u8 b, BOOL c);
 extern void Ov010Beam_Draw(Ov010Beam *o);
-extern Robo021ca458 *func_ov000_0219bf90(void);
+extern Robo021ca458 *ActorMgr_FindPlayer(void);
 extern s32 Ov003Vec_DistSq(const VecFx32 *a, const VecFx32 *b);
 
 static inline void Ov010Fx_Free(Ov010FxObj *s) {
@@ -73,7 +73,7 @@ void Ov010BeamSet_StopAll(Ov010BeamSet *o) {
     for (n = o->beams; n != NULL; n = n->next) {
         if (n->beam.on != 0) {
             Ov003ActorSub40_ForceState(&n->beam.st, 0);
-            func_ov000_02198360(&n->beam.st, 5, 0);
+            History_SetState(&n->beam.st, 5, 0);
             if (n->beam.fx.b0) {
                 EffectMgr_Kill(data_0214a420, n->beam.fx.fx0);
                 EffectMgr_Kill(data_0214a420, n->beam.fx.fx1);
@@ -82,7 +82,7 @@ void Ov010BeamSet_StopAll(Ov010BeamSet *o) {
                 n->beam.fx.fx1 = 0;
                 n->beam.fx.fx2 = 0;
                 Ov003ActorSub40_ForceState(&n->beam.fx.st, 0);
-                func_ov000_02198360(&n->beam.fx.st, 0, 1);
+                History_SetState(&n->beam.fx.st, 0, 1);
             }
         }
     }
@@ -118,7 +118,7 @@ void Ov010BeamSet_SetTarget(Ov010BeamSet *o, const VecFx32 *v) {
 
 BOOL Ov010_IsPlayerNear(u16 id, const VecFx32 *a, const VecFx32 *b) {
     BOOL r = FALSE;
-    Robo021ca458 *pl = func_ov000_0219bf90();
+    Robo021ca458 *pl = ActorMgr_FindPlayer();
     if (id == pl->id && pl->unk_b24_12 == 0) {
         if (Ov003Vec_DistSq(a, b) < 0x51000) {
             r = TRUE;

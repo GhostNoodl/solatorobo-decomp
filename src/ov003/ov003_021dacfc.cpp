@@ -21,7 +21,7 @@ void Ov003FxList_Prune(Ov003FxList *self) {
     Ov003FxNode *n = self->head;
     Ov003FxNode *prev = NULL;
     while (n != NULL) {
-        if (func_020657b0(data_0214a420, n->handle) == NULL) {
+        if (Effect_Find_020657b0(data_0214a420, n->handle) == NULL) {
             if (prev == NULL) {
                 self->head = n->next;
                 Ov003_HeapDelete(n);

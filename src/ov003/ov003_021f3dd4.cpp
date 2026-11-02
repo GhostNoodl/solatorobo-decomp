@@ -62,30 +62,30 @@ struct Ov003Save {
 extern "C" {
 extern s32 Rand_PlusMinus(s32 max);
 extern u32 Rand_UpTo(u32 max);
-extern Ov003FxPlayer *func_ov000_0219bf90(void);
-extern Ov003Info *func_0206fef8(u16 id);
+extern Ov003FxPlayer *ActorMgr_FindPlayer(void);
+extern Ov003Info *Tbl_FindEntry_0206fef8(u16 id);
 extern u8 *func_020705fc(s32 id);
 extern void *Heap_Alloc(u32 size);
-extern ActorRes *func_ov000_0218e9c4(void *p);
-extern ActorShadow *func_ov000_021919c8(void *p);
+extern ActorRes *ResSet_Init(void *p);
+extern ActorShadow *Shadow_Ctor(void *p);
 extern void Shadow_Load(ActorShadow *p);
-extern BOOL func_ov000_02191b9c(ActorShadow *p);
-extern BOOL func_ov000_0218f110(ActorRes *p);
+extern BOOL Shadow_UpdateLoad(ActorShadow *p);
+extern BOOL ResSet_UpdateLoad(ActorRes *p);
 extern Ov003Save *data_0214a424;
 extern char data_ov003_021fa662[];
-extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern BOOL Model0218fe1c_SetAnim(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_02191870(void *model, ActorRes *res);
-extern Ov003AnimLayer *func_ov000_02190a30(void *model, s32 n);
+extern Ov003AnimLayer *Model0218fe1c_GetAnimCtrl(void *model, s32 n);
 extern void func_ov000_02191920(void *model, s32 a, s32 b, s32 c);
 extern ActorSub40 *History_Init(void *p);
 extern u8 *func_0206ef10(u16 id);
-extern void func_ov000_02191008(Model0218fe1c *model);
-extern void func_ov000_0218ec60(ActorRes *res, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov000_0218edf0(ActorRes *res, s32 a, s32 b, s32 c, s32 d);
+extern void Model0218fe1c_StopAnim(Model0218fe1c *model);
+extern void ResSet_SetName0(ActorRes *res, s32 a, s32 b, s32 c, s32 d);
+extern void ResSet_SetName1(ActorRes *res, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218ef10(ActorRes *res, s32 a, s32 b, s32 c, s32 d);
-extern BOOL func_ov000_0218ffdc(Model0218fe1c *model, ActorRes *res, s32 a, s32 b);
+extern BOOL Model0218fe1c_SetRes(Model0218fe1c *model, ActorRes *res, s32 a, s32 b);
 
-// Actor::unk_34 is the actor's main ActorRes (built by func_ov000_0218e9c4).
+// Actor::unk_34 is the actor's main ActorRes (built by ResSet_Init).
 static inline ActorRes *Ov003Prop_MainRes(Ov003Prop021fa548 *self) {
     return (ActorRes *)self->unk_34;
 }
@@ -113,14 +113,14 @@ static inline BOOL ActorShadow_IsIdle(ActorShadow *sh) {
 
 BOOL Ov003ActVt_021fa548_IsReady(Ov003Prop021fa548 *self) {
     BOOL r = TRUE;
-    if (Ov003Prop_MainRes(self)->unk_00 >= 0 && !func_ov000_0218f110(Ov003Prop_MainRes(self))) {
+    if (Ov003Prop_MainRes(self)->unk_00 >= 0 && !ResSet_UpdateLoad(Ov003Prop_MainRes(self))) {
         r = FALSE;
     }
-    if (self->altFrame != 0 && self->res.unk_00 >= 0 && !func_ov000_0218f110(&self->res)) {
+    if (self->altFrame != 0 && self->res.unk_00 >= 0 && !ResSet_UpdateLoad(&self->res)) {
         r = FALSE;
     }
     if (self->unk_3c != NULL && !ActorShadow_IsIdle(self->unk_3c)) {
-        if (!func_ov000_02191b9c(self->unk_3c)) {
+        if (!Shadow_UpdateLoad(self->unk_3c)) {
             r = FALSE;
         }
     }
@@ -130,10 +130,10 @@ BOOL Ov003ActVt_021fa548_IsReady(Ov003Prop021fa548 *self) {
 void Ov003ActVt_021fa548_Start(Ov003Prop021fa548 *self) {
     Ov003AnimLayer *layer;
     Ov000ActVt_021cc7cc_Start(self);
-    func_ov000_02190cb0(self->model, data_ov003_021fa662, 0x1000, 1);
+    Model0218fe1c_SetAnim(self->model, data_ov003_021fa662, 0x1000, 1);
     if (self->altFrame != 0) {
         func_ov000_02191870(self->model, &self->res);
-        layer = func_ov000_02190a30(self->model, 3);
+        layer = Model0218fe1c_GetAnimCtrl(self->model, 3);
         if (layer != NULL) {
             s32 frame;
             s32 n;
@@ -185,15 +185,15 @@ void Ov003ActVt_021fa548_RunState(Ov003Prop021fa548 *self) {
         v.y = self->pos.y;
         v.z = self->pos.z;
         v.y += 0xccd;
-        func_02065f88(0x5dc, &v);
-        func_02065f88(0x384, &v);
+        Effect_SpawnId(0x5dc, &v);
+        Effect_SpawnId(0x384, &v);
         Model0218fe1c_SetVisible(self->model, FALSE);
-        func_ov000_02191008(self->model);
-        func_ov000_0218ec60(Ov003Prop_MainRes(self), def->a, def->b, 1, 0);
-        func_ov000_0218edf0(Ov003Prop_MainRes(self), def->c, def->d, 1, 0);
+        Model0218fe1c_StopAnim(self->model);
+        ResSet_SetName0(Ov003Prop_MainRes(self), def->a, def->b, 1, 0);
+        ResSet_SetName1(Ov003Prop_MainRes(self), def->c, def->d, 1, 0);
         func_ov000_0218ef10(Ov003Prop_MainRes(self), def->e, def->f, 1, 0);
         if (def->alt != 0) {
-            func_ov000_0218edf0(&self->res, def->a, def->b, 1, 0);
+            ResSet_SetName1(&self->res, def->a, def->b, 1, 0);
         }
         self->altFrame = def->alt;
         (self->fsm->st)++;
@@ -201,22 +201,22 @@ void Ov003ActVt_021fa548_RunState(Ov003Prop021fa548 *self) {
     }
     case 1: {
         BOOL r = TRUE;
-        if (Ov003Prop_MainRes(self)->unk_00 >= 0 && !func_ov000_0218f110(Ov003Prop_MainRes(self))) {
+        if (Ov003Prop_MainRes(self)->unk_00 >= 0 && !ResSet_UpdateLoad(Ov003Prop_MainRes(self))) {
             r = FALSE;
         }
-        if (self->altFrame != 0 && self->res.unk_00 >= 0 && !func_ov000_0218f110(&self->res)) {
+        if (self->altFrame != 0 && self->res.unk_00 >= 0 && !ResSet_UpdateLoad(&self->res)) {
             r = FALSE;
         }
         if (!r) {
             return;
         }
-        func_ov000_0218ffdc(self->model, Ov003Prop_MainRes(self), 0, 1);
+        Model0218fe1c_SetRes(self->model, Ov003Prop_MainRes(self), 0, 1);
         Model0218fe1c_SetVisible(self->model, TRUE);
-        func_ov000_02190cb0(self->model, data_ov003_021fa662, 0x1000, 1);
+        Model0218fe1c_SetAnim(self->model, data_ov003_021fa662, 0x1000, 1);
         if (self->altFrame != 0) {
             Ov003AnimLayer *layer;
             func_ov000_02191870(self->model, &self->res);
-            layer = func_ov000_02190a30(self->model, 3);
+            layer = Model0218fe1c_GetAnimCtrl(self->model, 3);
             if (layer != NULL) {
                 s32 frame;
                 s32 n;

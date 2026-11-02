@@ -115,7 +115,7 @@ static inline SaveSlot *SaveBase_GetSlot(SaveBase *s, s32 idx) {
 }
 
 static inline s32 SaveBase_ReadHeader(SaveBase *s, SaveHeader *hdr) {
-    return func_02046e48(data_02097e44, hdr, s->baseOffset, s->headerSize);
+    return SysCard_Read(data_02097e44, hdr, s->baseOffset, s->headerSize);
 }
 
 static inline s32 SaveBase_WriteHeader(SaveBase *s, SaveHeader *hdr) {

@@ -16,19 +16,19 @@ typedef struct {
 } Ov003Prop;
 
 extern void *data_ov000_021ccd64;
-extern void func_ov000_02194758(void *p);
+extern void ActorEx_Start(void *p);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
-extern void func_ov000_0218b700(Ov003Unit *u, s32 a, s32 b);
+extern void GroupNode_SetSpawnRange(Ov003Unit *u, s32 a, s32 b);
 
 void Ov003ActVt_021f8188_Start(Ov003Prop *self) {
     Ov003Unit *u;
-    func_ov000_02194758(self);
+    ActorEx_Start(self);
     u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u == NULL) {
         return;
     }
     u->unk_a2_0 = 0;
-    func_ov000_0218b700(u, 0x5000, 0);
+    GroupNode_SetSpawnRange(u, 0x5000, 0);
 }
 
 extern void func_ov000_0218996c(u8 a, u8 b);

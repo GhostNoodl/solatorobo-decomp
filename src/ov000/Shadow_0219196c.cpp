@@ -61,10 +61,10 @@ extern MtxFx33 data_020928b4;
 extern GxState NNS_G3dGlb;
 
 ShadowRes *func_02035e34(void *file, void *name);
-void func_0203f0b4(void *file);
-int func_02035b90(void *a, int b);
-void *func_020359d0(void *a, int b, int c);
-void func_02036838(void *a, void *b, int c, int d);
+void Vram_FreeRes(void *file);
+int ResMgr_IsLoaded(void *a, int b);
+void *ResMgr_Load(void *a, int b, int c);
+void ResMgr_ReleaseByName(void *a, void *b, int c, int d);
 char *func_0203ed04(void *name, void *file);
 void Heap_Free(void *ptr);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
@@ -128,19 +128,19 @@ static inline void Shadow_Init(Shadow *self) {
 static inline void Shadow_Destroy(Shadow *self) {
     self->vtbl = data_ov000_021cc438;
     if (self->res != NULL) {
-        func_0203f0b4(func_02035e34(data_ov000_021c9d80.file, data_ov000_021c9d80.name)->file);
+        Vram_FreeRes(func_02035e34(data_ov000_021c9d80.file, data_ov000_021c9d80.name)->file);
     }
     if (self->state != 0) {
-        func_02036838(data_02097cdc, data_ov000_021c9d80.file, 7, 0);
+        ResMgr_ReleaseByName(data_02097cdc, data_ov000_021c9d80.file, 7, 0);
     }
 }
 
-Shadow *func_ov000_0219196c(Shadow *self) {
+Shadow *Shadow_CtorBase(Shadow *self) {
     Shadow_Init(self);
     return self;
 }
 
-Shadow *func_ov000_021919c8(Shadow *self) {
+Shadow *Shadow_Ctor(Shadow *self) {
     Shadow_Init(self);
     return self;
 }
@@ -156,17 +156,17 @@ Shadow *Ov000Vt_021cc438_DtorDelete(Shadow *self) {
     return self;
 }
 
-Shadow *func_ov000_02191b04(Shadow *self) {
+Shadow *Shadow_DtorBase(Shadow *self) {
     Shadow_Destroy(self);
     return self;
 }
 
 void Shadow_Load(Shadow *self) {
-    func_020359d0(data_ov000_021c9d80.file, 7, 0);
+    ResMgr_Load(data_ov000_021c9d80.file, 7, 0);
     self->state = 1;
 }
 
-BOOL func_ov000_02191b9c(Shadow *self) {
+BOOL Shadow_UpdateLoad(Shadow *self) {
     BOOL ret = FALSE;
     void *file;
     void *name;
@@ -176,7 +176,7 @@ BOOL func_ov000_02191b9c(Shadow *self) {
         self->state = 2;
     case 2:
         file = data_ov000_021c9d80.file;
-        if (!func_02035b90(file, 7)) {
+        if (!ResMgr_IsLoaded(file, 7)) {
             break;
         }
         name = data_ov000_021c9d80.name;
@@ -196,7 +196,7 @@ BOOL func_ov000_02191b9c(Shadow *self) {
    constant-propagated, so it is coloured after the unk_14 load (round lfA). */
 typedef enum { SHADOW_SCALE_Y = 0x1000 } ShadowScale;
 
-void func_ov000_02191c24(Shadow *self, VecFx32 *pos) {
+void Shadow_Draw(Shadow *self, VecFx32 *pos) {
     VecFx32 scale;
     VecFx32 trans;
     MtxFx33 mtx;

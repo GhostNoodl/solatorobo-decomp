@@ -34,7 +34,7 @@ SIZE_ASSERT(Obj021bbc68, 0x78);
 extern "C" {
 
 extern Game021bbcac *data_ov000_021ccd30;
-void func_ov000_02165d78(void *p);
+void Lo021cb6b0_FreeAnim(void *p);
 
 void func_ov000_021bbc68(Obj021bbc68 *self, u8 a, u8 b, u8 c) {
     self->unk_00 = 0;
@@ -63,10 +63,10 @@ static inline void *GetSub021bbcac(void) {
     return q->unk_30;
 }
 
-void func_ov000_021bbcac(Obj021bbc68 *self) {
+void Obj021bbc68_Release(Obj021bbc68 *self) {
     void *p = GetSub021bbcac();
     if (p != NULL) {
-        func_ov000_02165d78(p);
+        Lo021cb6b0_FreeAnim(p);
     }
     VOBJ_AT(self, 0x4)->vfunc_0c();
     HEAP_DELETE_MODEL(self->unk_58);

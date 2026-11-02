@@ -4,8 +4,8 @@
 
 extern "C" {
 
-extern BOOL func_ov000_0219aae8(Actor *a, Actor *b, u16 c, u8 d, s32 e, VecFx32 *pos, ActorRot *rot, s32 f, s32 g, s32 h, s32 i);
-extern Robo021ca458 *func_ov000_0219bf90(void);
+extern BOOL Hit_ApplyInArea(Actor *a, Actor *b, u16 c, u8 d, s32 e, VecFx32 *pos, ActorRot *rot, s32 f, s32 g, s32 h, s32 i);
+extern Robo021ca458 *ActorMgr_FindPlayer(void);
 
 static inline void Ov003_RotX(VecFx32 *out, const VecFx32 *in, u16 ang) {
     s32 y = 0;
@@ -46,17 +46,17 @@ BOOL Ov003Beam_Fire(Ov003Beam *self) {
     pos.y = self->unk_84.y;
     pos.z = self->unk_84.z;
     Ov003_RotX(&pos, &pos, self->rot_x);
-    ok = func_ov000_0219aae8(self, self, size, (u8)self->targetObj->unk_0a, 2, &pos, &rot,
+    ok = Hit_ApplyInArea(self, self, size, (u8)self->targetObj->unk_0a, 2, &pos, &rot,
                              (s32)(((s64)self->scales[1].x * 0x666 + 0x800) >> 12),
                              (s32)(((s64)self->scales[1].z * 0xf800 + 0x800) >> 12), -1, 0x1000);
     if (ok) {
-        pl = func_ov000_0219bf90();
+        pl = ActorMgr_FindPlayer();
         if (pl != NULL) {
             ppos.x = pl->pos.x;
             ppos.y = pl->pos.y;
             ppos.z = pl->pos.z;
             if (pl->unk_93_5) {
-                e = func_02065f88(0x327, &ppos);
+                e = Effect_SpawnId(0x327, &ppos);
                 e->SetScaleAll(pl->radius * 2);
             } else {
                 Ov003BeamDef *r = self->def;
@@ -65,7 +65,7 @@ BOOL Ov003Beam_Fire(Ov003Beam *self) {
                     EffectObj_AddSndCue(e, 0x10, 0);
                     e->SetScaleAll(0x99a);
                 } else {
-                    e = func_02065f88(0x64, &ppos);
+                    e = Effect_SpawnId(0x64, &ppos);
                 }
             }
             if (e != NULL) {

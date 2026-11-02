@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 // Pointers in Main's .data to archive / file name strings, passed as the name arguments of the ResArc
-// functions (func_020359d0, func_02035b90, func_02035d5c, func_02036838) and of func_02041440 / STD_CopyString
+// functions (ResMgr_Load, ResMgr_IsLoaded, ResMgr_GetArcList, ResMgr_ReleaseByName) and of TexObj_Init / STD_CopyString
 // when a Model is built.
 extern const char *data_0208cb74;
 extern const char *data_0208cb78;

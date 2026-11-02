@@ -37,20 +37,20 @@ u16 Ov003_ScaleDamage(u16 v);
 u16 Ov003_ScaleDamageHalf(u16 v);
 u16 Ov003_ScaleReward(u16 v);
 void *Heap_Alloc(u32 size);
-Info0219d1a8 *func_0206fef8(u16 id);
-BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
+Info0219d1a8 *Tbl_FindEntry_0206fef8(u16 id);
+BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 s32 func_ov000_021909a8(void *m, void *p, const char *name);
 void func_ov000_0219c8e0(u8 *self);
-void func_ov000_02198c8c(void *o, u16 id);
-void func_0203f364(void *o);
-void *func_ov000_021984c8(void *p);
+void Body_SetOwner(void *o, u16 id);
+void HitSphere_Unlink_0203f364(void *o);
+void *Obj021984c8_Init(void *p);
 void *History_Init(void *p);
 void func_02062764(s32 a, s32 b);
 
 static inline void *NewObj44_0219d1a8(void) {
     void *p = Heap_Alloc(0x24);
     if (p != NULL) {
-        p = func_ov000_021984c8(p);
+        p = Obj021984c8_Init(p);
     }
     return p;
 }
@@ -66,7 +66,7 @@ static inline void *NewObj40_0219d1a8(void) {
 static inline ActorMarker *NewMarker_0219d1a8(void) {
     ActorMarker *p = (ActorMarker *)Heap_Alloc(0xa8);
     if (p != NULL) {
-        func_ov000_021bd198(p);
+        ActorMarker_Init(p);
     }
     return p;
 }
@@ -98,7 +98,7 @@ static inline Trio0219d1a8 *NewTrio0219d1a8(void) {
 }
 
 void Robo021ca458_Start(Robo021ca458 *self) {
-    Info0219d1a8 *info = func_0206fef8(self->kind);
+    Info0219d1a8 *info = Tbl_FindEntry_0206fef8(self->kind);
     AnimEventTable *p;
     u32 *q;
     s32 x;
@@ -108,7 +108,7 @@ void Robo021ca458_Start(Robo021ca458 *self) {
     self->radius = info->hx << 4;
     self->height = info->hy << 4;
     self->centerY = self->height >> 1;
-    func_ov000_0218ffdc(&self->mdl0, &self->res0, 0, 1);
+    Model0218fe1c_SetRes(&self->mdl0, &self->res0, 0, 1);
     self->mdl0.actor_id = self->id;
     self->mdl0.evFunc = (void *)func_ov003_021ce630;
     p = NULL;
@@ -127,25 +127,25 @@ void Robo021ca458_Start(Robo021ca458 *self) {
     }
     self->unk_a4c = 0;
     self->unk_a48 = func_ov000_021909a8(&self->mdl0, (u8 *)self + 0x200, data_ov000_021cc60f);
-    func_ov000_0218ffdc(&self->mdl2, &self->res3, 0, 1);
+    Model0218fe1c_SetRes(&self->mdl2, &self->res3, 0, 1);
     self->mdl2.actor_id = self->id;
     func_ov000_0219c8e0((u8 *)self);
     x = self->radius;
     z = self->centerY;
-    func_ov000_02198c8c(&self->hit0, self->id);
+    Body_SetOwner(&self->hit0, self->id);
     self->hit0.radius = (x >> 1) + (x >> 3);
     self->hit0.unk_28 = 2;
     self->hit0.offset.y = z - (z >> 3);
     self->hit0.unk_9a_0 = 0;
     self->hit0.unk_9a_3 = 0;
-    func_0203f364(&self->hit0);
-    func_ov000_02198c8c(&self->hit1, self->id);
+    HitSphere_Unlink_0203f364(&self->hit0);
+    Body_SetOwner(&self->hit1, self->id);
     self->hit1.unk_28 = 2;
     self->hit1.unk_9a_0 = 0;
     self->hit1.radius = x;
     self->hit1.offset.y = z;
     self->hit1.unk_9a_3 = 0;
-    func_0203f364(&self->hit1);
+    HitSphere_Unlink_0203f364(&self->hit1);
     self->hit1.unk_48 = x;
     self->unk_44 = (ActorSub44 *)(NewObj44_0219d1a8());
     self->unk_44->unk_20 = self->id;
@@ -169,14 +169,14 @@ void Robo021ca458_Start(Robo021ca458 *self) {
     self->unk_54 = NewTrio0219d1a8();
     self->mode = 3;
     self->unk_5c = NewMarker_0219d1a8();
-    func_ov000_021bd314(self->unk_5c, 0);
+    ActorMarker_SetKind(self->unk_5c, 0);
     self->unk_5c->rate = 0x400;
     self->unk_9b0 = NewMarker_0219d1a8();
     self->unk_9b0->unk_28[0] = 3;
-    func_ov000_021bd314(self->unk_9b0, 6);
+    ActorMarker_SetKind(self->unk_9b0, 6);
     self->unk_9b0->height = z >> 1;
     self->unk_9b4 = NewMarker_0219d1a8();
-    func_ov000_021bd314(self->unk_9b4, 9);
+    ActorMarker_SetKind(self->unk_9b4, 9);
     {
         s32 v = 1;
         if (!self->unk_b24_1) {

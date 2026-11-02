@@ -9,7 +9,7 @@ void func_ov002_021dfc44(Obj021efef0 *self, u16 v) {
 void func_ov002_021dfc4c(Obj021eff30 *self, Obj021eff50 *dst) {
     dst->unk_28 = self->unk_1c;
     dst->unk_2c = self->unk_20;
-    func_ov002_021df1c4(self);
+    Obj021eff30_Release(self);
 }
 
 void func_ov002_021dfc68(Obj021eff30 *self, Obj021eff50 *arg) {

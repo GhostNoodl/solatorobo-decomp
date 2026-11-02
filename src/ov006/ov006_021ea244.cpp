@@ -24,12 +24,12 @@ void Ov006Racer_UpdateCpuItem(Ov006Racer *self) {
         self->unk_21e[2] = 99;
     }
     if (self->unk_19c_0 & 1) {
-        EffectObj *fx = func_02065f88(0x196, &self->pos);
+        EffectObj *fx = Effect_SpawnId(0x196, &self->pos);
         if (fx != NULL) {
             self->unk_1d0 = fx->id;
             fx->speed = 0x2800;
         }
-        func_02049f44(data_02097e4c, 0x85, &self->pos, 0);
+        SndMgr_PlayAt(data_02097e4c, 0x85, &self->pos, 0);
     }
 }
 

@@ -4,7 +4,7 @@
 
 extern "C" {
 
-void func_ov000_021bd438(ActorMarker *self, VecFx32 *v, s32 dy) {
+void ActorMarker_SetPos(ActorMarker *self, VecFx32 *v, s32 dy) {
     if (self->work.state == 10) {
         return;
     }

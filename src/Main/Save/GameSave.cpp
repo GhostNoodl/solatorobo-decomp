@@ -11,7 +11,7 @@ void func_0206d3f4(GameSave *s) {
     s->bits.flag12 = 0;
     s->bits.flag13 = 0;
     s->bits.flag14 = 0;
-    func_020473ac(s, 0);
+    SaveBase_SetState_020473ac(s, 0);
     func_02046cd0(data_02097e44);
 }
 
