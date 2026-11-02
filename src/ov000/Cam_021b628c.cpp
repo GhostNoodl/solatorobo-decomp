@@ -3,8 +3,6 @@
 #include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
 typedef struct {
     VecFx32 pos;
     u8 unk_0c[8];
@@ -39,20 +37,6 @@ typedef struct {
     u8 pad_18[0xc];
     VecFx32 unk_24;
 } Obj021b628c;
-
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 2;
-    u8 b4 : 1;
-    u8 b5 : 1;
-    u8 b6 : 2;
-} Bits021b628c;
-
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 7;
-} Bit0_021b628c;
 
 class Cam021b628c {
 public:
@@ -101,7 +85,7 @@ void func_ov000_021b628c(Obj021b628c *self) {
     VecFx32 pos;
     VecFx32 t;
     u16 rot[3];
-    u8 *cam;
+    FieldCam *cam;
     Robo021ca458 *pl;
     Rect021b628c *r;
     u8 idx = self->unk_0a;
@@ -135,38 +119,38 @@ void func_ov000_021b628c(Obj021b628c *self) {
         SetRot021b628c(rot, 0, 0, 0);
     }
     func_020626c0();
-    cam = (u8 *)data_ov000_021ccd54 + 0xf4;
+    cam = &data_ov000_021ccd54->cam;
     if (cam != NULL) {
-        LFLD(u8, cam, 0xda) = 0;
-        LFLD(u16, cam, 0x42) = rot[0];
-        LFLD(u16, cam, 0x44) = rot[1];
-        LFLD(u16, cam, 0x46) = rot[2];
-        LFLD(VecFx32, cam, 0xbc) = pos;
-        LFLD(VecFx32, cam, 0x10) = pos;
+        cam->unk_da = 0;
+        cam->base.pitch = rot[0];
+        cam->base.yaw = rot[1];
+        cam->base.roll = rot[2];
+        cam->unk_bc = pos;
+        cam->base.at = pos;
         t = pos;
         t.x -= FX_SinCosTable_[(rot[1] >> 4) * 2];
         t.z -= FX_SinCosTable_[(rot[1] >> 4) * 2 + 1];
-        LFLD(VecFx32, cam, 0x4) = t;
+        cam->base.eye = t;
         if (func_020625f8()) {
             func_02062540(&t);
-            LFLD(VecFx32, cam, 0xe8) = t;
-            LFLD(u8, cam, 0xda) |= 2;
+            cam->unk_e8 = t;
+            cam->unk_da_1 = 1;
         }
         if (func_02062620()) {
-            LFLD(u16, cam, 0xf8) = func_02062588();
-            LFLD(u8, cam, 0xda) |= 0x10;
+            cam->unk_f8 = func_02062588();
+            cam->unk_da_4 = 1;
         }
         if (func_02062648()) {
-            LFLD(u16, cam, 0xfa) = func_020625ac();
-            LFLD(u8, cam, 0xda) |= 0x20;
+            cam->unk_fa = func_020625ac();
+            cam->unk_da_5 = 1;
         }
         if (func_02062670()) {
-            LFLD(s32, cam, 0xf4) = func_020625d0();
-            LFLD(Bits021b628c, cam, 0xda).b2 = 1;
+            cam->unk_f4 = func_020625d0();
+            cam->unk_da_2 = 1;
         }
-        LFLD(Bit0_021b628c, cam, 0x9c).b0 = 0;
+        cam->base.smooth = 0;
         ((Cam021b628c *)cam)->vfunc_00();
-        LFLD(Bit0_021b628c, cam, 0x9c).b0 = 1;
+        cam->base.smooth = 1;
     }
     pl = func_ov000_0219bf90();
     if (pl == NULL) {

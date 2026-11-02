@@ -1,3 +1,4 @@
+#include "ov000/FieldCam.h"
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
@@ -14,7 +15,6 @@ extern "C" {
 extern void *data_ov000_021ccd68;
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-u16 Camera_GetYaw(void *cam);
 void Actor_TurnClamped(void *self, u16 angle, u16 center, u16 range, s32 step);
 void Actor_SendMsg(void *t, u16 id, s32 a, s32 b, s32 c, void *arg);
 
@@ -29,7 +29,7 @@ static inline Actor *FindActor021b2b08(u16 id) {
 void func_ov000_021b2b08(Robo021ca458 *self) {
     Actor *a = FindActor021b2b08(self->unk_b20);
     void *sub = NULL;
-    u8 *cam;
+    FieldCam *cam;
     u16 ang;
     u16 ry;
     u16 rx;
@@ -51,12 +51,8 @@ void func_ov000_021b2b08(Robo021ca458 *self) {
         self->fsm->st = 0x64;
         return;
     }
-    cam = (u8 *)data_ov000_021ccd54 + 0xf4;
-    if (LFLD(u16, cam, 0x40) != 0) {
-        ang = LFLD(u16, cam, 0x44);
-    } else {
-        ang = Camera_GetYaw(cam);
-    }
+    cam = &data_ov000_021ccd54->cam;
+    ang = FieldCam_GetYaw(cam);
     ry = self->rot_y;
     if (self->padCur & 0x20) {
         ry += 0x280;
@@ -66,7 +62,7 @@ void func_ov000_021b2b08(Robo021ca458 *self) {
     Actor_TurnClamped(self, ry, ang, 0x1500, 0x400);
     {
         u16 f = self->padCur;
-        u16 base = LFLD(u16, cam, 0x42);
+        u16 base = cam->base.pitch;
         rx = self->rot_x;
         if (f & 0x40) {
             u16 d;

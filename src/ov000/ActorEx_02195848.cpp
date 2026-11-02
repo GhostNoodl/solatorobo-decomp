@@ -84,7 +84,7 @@ void func_ov000_02195848(VObj *obj) {
         self->unk_cc |= 2;
         break;
     case 1:
-        if (((u8 *)self->targetObj) != NULL && self->targetObj->type == 2) {
+        if (self->targetObj != NULL && self->targetObj->type == 2) {
             void *r = func_ov003_021f0868((u8 *)self + 0x70, self->radius, self->height);
             if (r != NULL) {
                 Target_Set(((u8 *)self->targetObj), r);
@@ -102,7 +102,7 @@ void func_ov000_02195848(VObj *obj) {
                         obj->vfunc_08();
                         break;
                     }
-                    if (((u8 *)self->model) != NULL) {
+                    if (self->model != NULL) {
                         if ((st->timer & 7) > 2) {
                             self->model->alpha = 10;
                         } else {
@@ -110,7 +110,7 @@ void func_ov000_02195848(VObj *obj) {
                         }
                     }
                 }
-            } else if (((u8 *)self->model) != NULL) {
+            } else if (self->model != NULL) {
                 self->model->alpha = 0x1f;
             }
         }

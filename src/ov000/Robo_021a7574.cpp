@@ -1,14 +1,7 @@
 #include "ov000/LoCommon.h"
-#include "Main/Sys/FieldState.h"
+#include "ov000/FieldCam.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
-
-typedef struct {
-    u8 pad_00[0x40];
-    u16 unk_40;
-    u16 pad_42;
-    u16 yaw;
-} Cam021a783c;
 
 extern "C" {
 
@@ -27,14 +20,6 @@ u8 *Actor_GetTarget(void *self);
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_ov000_0218d46c(void *a, u16 id, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
-u16 Camera_GetYaw(Cam021a783c *cam);
-
-static inline u16 CamYaw(Cam021a783c *cam) {
-    if (cam->unk_40 != 0) {
-        return cam->yaw;
-    }
-    return Camera_GetYaw(cam);
-}
 
 static inline Actor *FindActor021a783c(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -111,7 +96,7 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
         } else {
             ang = self->rot_y;
             if (self->mode == 1 && (self->padCur & 0xf0)) {
-                ang = CamYaw((Cam021a783c *)((u8 *)data_ov000_021ccd54 + 0xf4)) + self->padDir;
+                ang = FieldCam_GetYaw(&data_ov000_021ccd54->cam) + self->padDir;
             }
         }
         self->rot_y = func_01ffc128(ang, self->rot_y, 0x59a, 1, 0x8000);
@@ -284,7 +269,7 @@ void func_ov000_021a783c(Robo021ca458 *self) {
         } else {
             ang = self->rot_y;
             if (self->mode == 1 && (self->padCur & 0xf0)) {
-                ang = CamYaw((Cam021a783c *)((u8 *)data_ov000_021ccd54 + 0xf4)) + self->padDir;
+                ang = FieldCam_GetYaw(&data_ov000_021ccd54->cam) + self->padDir;
             }
         }
         self->rot_y = func_01ffc128(ang, self->rot_y, 0x8cd, 1, 0x8000);

@@ -90,7 +90,7 @@ BOOL func_ov000_021b8284(Obj021b8284 *self) {
         func_020417e0(self->unk_4c, func_02034d88(res, p->unk_04c));
         self->unk_4c->flags |= 2;
         {
-            u8 *q = ((u8 *)self->unk_4c->res);
+            ModelRes *q = (ModelRes *)((u8 *)self->unk_4c->res);
             self->unk_58 = q != NULL ? *LFLD(u16 *, q, 0xc) : 0;
         }
         for (i = 0; i < self->unk_58; i++) {

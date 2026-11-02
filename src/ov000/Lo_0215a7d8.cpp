@@ -18,9 +18,9 @@ void func_ov000_0215a7d8(Lo021cb5a8 *self, s32 unused, s32 *pos) {
     {
         s32 px = pos[0];
         s32 py = pos[1];
-        u8 *o = (u8 *)self->model;
-        LFLD(s32, o, 0xfc) = px;
-        LFLD(s32, o, 0x100) = py;
+        Model *o = self->model;
+        o->x = px;
+        o->y = py;
     }
     self->model->unk_150 = z;
     Model_PlayPart(self->model, 8);

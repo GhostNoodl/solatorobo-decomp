@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov000/MessageQueue.h"
 #include "Main/Gfx/Model.h"
 #include "ov000/ModelPart.h"
 
@@ -11,25 +12,25 @@ typedef struct {
 } Flags0216b1b4;
 
 extern "C" {
-extern u8 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 void func_02041c34(void *a, int b, void *c, void *d);
 void *func_ov000_0216ac14(void *self, u16 *msg, void *arr, u16 *cnt);
 
 static inline void *GetObj0216b1b4(void) {
-    void *o = LFLD(void *, data_ov000_021ccd30, 0x11c);
-    return o != NULL ? LFLD(void *, o, 0x58) : NULL;
+    ListBuffer021cb940 *o = data_ov000_021ccd30->unk_11c;
+    return o != NULL ? o->unk_58 : NULL;
 }
 
 static inline BOOL SubFlag0216b1b4(void *s) {
     return LFLD(Flags0216b1b4, s, 0xc).b3 ? TRUE : FALSE;
 }
 
-static inline BOOL IsFlag0216b1b4(u8 *g) {
+static inline BOOL IsFlag0216b1b4(MessageQueue021cb980 *g) {
     void *s;
-    if (LFLD(void *, g, 0x11c) == NULL) {
+    if (g->unk_11c == NULL) {
         return FALSE;
     }
-    s = LFLD(void *, LFLD(void *, g, 0x11c), 0x64);
+    s = g->unk_11c->unk_64;
     if (s != NULL) {
         return SubFlag0216b1b4(s) != 0 ? TRUE : FALSE;
     }

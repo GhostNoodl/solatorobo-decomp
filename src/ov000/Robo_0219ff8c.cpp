@@ -38,9 +38,9 @@ void func_ov000_0219ff8c(Robo021ca458 *self) {
     self->unk_b36 = 0;
     self->unk_b38 = 0;
     self->unk_b2c_4 = 0;
-    LFLD(Bits32_0219ff8c, ((u8 *)self->unk_5c), 0).b1 = 0;
+    LFLD(Bits32_0219ff8c, self->unk_5c, 0).b1 = 0;
     func_ov000_021bd300(((u8 *)self->unk_5c));
-    LFLD(Bits32_0219ff8c, ((u8 *)self->unk_9b0), 0).b1 = 0;
+    LFLD(Bits32_0219ff8c, self->unk_9b0, 0).b1 = 0;
     func_ov000_021bd300(((u8 *)self->unk_9b0));
     if (self->unk_b24_0) {
         self->unk_b24_0 = 0;

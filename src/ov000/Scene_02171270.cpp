@@ -1,31 +1,5 @@
-#include "ov000/VObj.h"
-
-typedef struct {
-    u8 pad_00[0x24];
-    s32 unk_24;
-    VObj *unk_28;
-    void *unk_2c;
-    VObj *unk_30;
-    void *unk_34;
-    void *unk_38;
-    void *unk_3c;
-    void *unk_40;
-    void *unk_44;
-    VObj *unk_48;
-    u8 pad_4c[4];
-    void *unk_50;
-    void *unk_54;
-    VObj *unk_58;
-    VObj *unk_5c;
-    VObj *unk_60;
-    VObj *unk_64;
-    void *unk_68;
-    VObj *unk_6c;
-    VObj *unk_70;
-    VObj *unk_74;
-    void *unk_78;
-    void *unk_7c;
-} Scene02171270;
+#include "ov000/MessageQueue.h"
+#include "ov000/LoTicker.h"
 
 extern "C" {
 void func_ov000_021b9a84(void *p);
@@ -38,10 +12,9 @@ void func_ov000_0216d14c(void *p);
 void func_ov000_0216df28(void *p);
 void func_ov000_0216b880(void *p);
 void func_ov000_0216b1b4(void *p);
-void func_ov000_0216be94(void *p);
 
-void func_ov000_02171270(Scene02171270 *self) {
-    switch (self->unk_24) {
+void func_ov000_02171270(ListBuffer021cb940 *self) {
+    switch (self->state) {
     case 4:
         if (self->unk_28 != NULL) {
             self->unk_28->vfunc_90();
@@ -117,8 +90,8 @@ void func_ov000_02171270(Scene02171270 *self) {
     if (self->unk_74 != NULL) {
         self->unk_74->vfunc_10();
     }
-    if (self->unk_7c != NULL) {
-        func_ov000_0216be94(self->unk_7c);
+    if (self->ticker != NULL) {
+        func_ov000_0216be94(self->ticker);
     }
 }
 }

@@ -9,14 +9,6 @@ typedef struct {
 
 typedef struct {
     u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 2;
-    u8 b4 : 1;
-    u8 b5 : 3;
-} B18_021a5d00;
-
-typedef struct {
-    u8 b0 : 1;
     u8 b1 : 7;
 } B19_021a5d00;
 
@@ -44,7 +36,7 @@ void func_020627a0(u16 a, u16 b);
 void func_ov000_02182590(void *p);
 BOOL func_0205b1fc(void);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
-void Target_Set(u8 *info, u8 *self);
+void Target_Set(ActorSub4c *info, Actor *actor);
 void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 BOOL func_ov000_02198360(St_021a5d00 *st, s32 state, s32 x);
 
@@ -70,8 +62,8 @@ static inline BOOL Ev19_021a5d00(void) {
     return FALSE;
 }
 
-static inline void Fx021a5d00(Robo021ca458 *self, u8 *info) {
-    if (!Ev19_021a5d00() && !(info != NULL && (LFLD(B18_021a5d00, info, 0x18).b4 ? TRUE : FALSE))) {
+static inline void Fx021a5d00(Robo021ca458 *self, ActorSub4c *info) {
+    if (!Ev19_021a5d00() && !(info != NULL && (info->unk_18_4 ? TRUE : FALSE))) {
         VecFx32 v;
         v = *(VecFx32 *)((u8 *)self + 0x70);
         v.y += self->height;
@@ -90,12 +82,12 @@ static inline void Reset021a5d00(Robo021ca458 *self) {
 
 void func_ov000_021a5d00(Robo021ca458 *self) {
     Actor *a;
-    u8 *info;
+    ActorSub4c *info;
     self->hit->unk_9a |= 0x20;
     a = FindActor021a5d00(self->target);
     info = NULL;
     if (a != NULL) {
-        info = ((u8 *)a->targetObj);
+        info = a->targetObj;
     }
     if (self->unk_b2f == 0) {
         self->unk_b2f++;
@@ -145,7 +137,7 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
             u8 *o44;
             o44 = ((u8 *)a->unk_44);
             done = FALSE;
-            if (LFLD(B18_021a5d00, info, 0x18).b1 && info[3] != 10 && info[3] != 11) {
+            if (info->unk_18_1 && info->unk_03 != 10 && info->unk_03 != 11) {
                 FieldState *g;
                 func_02062764(0x3c0, 0x80);
                 func_020627a0(a->kind, a->id);
@@ -157,17 +149,17 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
                 }
             }
             if (!done && o44 != NULL) {
-                u8 k0 = info[0];
-                u8 k1 = info[1];
+                u8 k0 = info->type;
+                u8 k1 = info->unk_01;
                 if ((k0 == 5 || k0 == 7) && (k1 == 4 || k1 == 6)) {
                     self->unk_b24_5 = 3;
                     self->unk_b24_7 = 3;
                     self->unk_b1c = self->target;
                     self->target = 0xffff;
                     func_ov000_0218d46c(a, self->id, 0xd);
-                    Target_Set(info, (u8 *)self);
-                    info[1] = 9;
-                    if (info[3] != 10 && info[3] != 11) {
+                    Target_Set(info, self);
+                    info->unk_01 = 9;
+                    if (info->unk_03 != 10 && info->unk_03 != 11) {
                         func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
                     }
                     func_ov000_02190cb0(self->model, data_ov000_021cc684, 0x1000, 0);

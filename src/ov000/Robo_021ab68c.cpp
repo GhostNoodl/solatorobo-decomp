@@ -140,7 +140,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
             msg.id = 0xffff;
             Actor_SendMsg(a, self->id, 9, 1, 6, &msg);
         }
-        if (!hit && LFLD(u16, ((u8 *)a->hp), 0) != 0) {
+        if (!hit && a->hpObj->cur != 0) {
             goto again;
         }
         if (hit) {

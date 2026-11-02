@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/MessageQueue.h"
 #include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
@@ -16,7 +17,7 @@ typedef struct {
 
 extern "C" {
 extern void *data_ov000_021ccd68;
-extern u8 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern void *data_02097dc8;
 extern void *data_02097e4c;
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
@@ -81,14 +82,14 @@ static inline void LockKeys_0219efc0(Robo021ca458 *self) {
 }
 
 static inline void Gauge_0219efc0(s32 a, s32 b, VecFx32 *p) {
-    u8 *o = LFLD(u8 *, data_ov000_021ccd30, 0x11c);
+    ListBuffer021cb940 *o = data_ov000_021ccd30->unk_11c;
     if (o == NULL) {
         return;
     }
-    if (LFLD(void *, o, 0x70) == NULL) {
+    if (o->unk_70 == NULL) {
         return;
     }
-    func_ov000_02168e18(LFLD(void *, o, 0x70), a, b, p);
+    func_ov000_02168e18(o->unk_70, a, b, p);
 }
 
 struct RgbEq_0219efc0Self {

@@ -1,3 +1,4 @@
+#include "ov000/FieldCam.h"
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
@@ -32,7 +33,6 @@ void SndMgr_StopSeqArc(void *mgr, s32 id);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 void *func_0204a028(void *mgr, s32 id, void *pos, s32 a);
 void func_02062790(u16 a);
-u16 Camera_GetYaw(void *cam);
 void Actor_Move(void *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *v, s32 f, s32 g, s32 h, s32 i, s32 j);
@@ -55,13 +55,6 @@ static inline BOOL GIdle_021ad8ac(void) {
         return TRUE;
     }
     return TRUE;
-}
-
-static inline u16 CamAng_021ad8ac(FieldCam *cam) {
-    if (cam->base.mode != 0) {
-        return cam->base.yaw;
-    }
-    return Camera_GetYaw(cam);
 }
 
 static inline void Kill_021ad8ac(Robo021ca458 *self) {
@@ -150,7 +143,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             self->unk_9aa = func_01ffc128(0, self->unk_9aa, 0x2cd, 1, 0x8000);
             StopSnd_021ad8ac(self);
         } else {
-            u16 c = CamAng_021ad8ac(cam);
+            u16 c = FieldCam_GetYaw(cam);
             u16 f;
             ang = c + self->padDir;
             f = self->padCur;

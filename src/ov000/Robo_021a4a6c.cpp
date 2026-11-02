@@ -135,8 +135,8 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
     sub = NULL;
     if (IsIdle_021a4a6c()) {
         t = FindActor_021a4a6c(self->target);
-        if (t != NULL && ((u8 *)t->unk_44) != NULL && LFLD(H22_021a4a6c, ((u8 *)t->unk_44), 0x22).b0 == 1 &&
-            LFLD(H22_021a4a6c, ((u8 *)t->unk_44), 0x22).b1 == 1) {
+        if (t != NULL && t->unk_44 != NULL && t->unk_44->unk_22_0 == 1 &&
+            t->unk_44->unk_22_1 == 1) {
             sub = (ActorSub4c *)((u8 *)t->targetObj);
             if (self->unk_b2f == 0) {
                 self->unk_b2f++;
@@ -487,8 +487,8 @@ end:
                 m.x = 0;
                 Actor_SendMsg(a, self->id, 7, TRUE, 0x18, &m);
                 func_ov000_0218d46c(a, self->id, 10);
-                if (((u8 *)a->targetObj) != NULL) {
-                    LFLD(S18_021a4a6c, ((u8 *)a->targetObj), 0x18).b0 = 0;
+                if (a->targetObj != NULL) {
+                    a->targetObj->unk_18_0 = 0;
                 }
             }
             self->unk_b24_5 = 0;
@@ -500,7 +500,7 @@ end:
     if (t == NULL || sub == NULL) {
         return;
     }
-    if (LFLD(S18_021a4a6c, sub, 0x18).b4 ? TRUE : FALSE) {
+    if (sub->unk_18_4 ? TRUE : FALSE) {
         return;
     }
     if (self->unk_b22_0 != 0) {

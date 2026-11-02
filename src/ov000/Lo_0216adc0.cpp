@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/MessageQueue.h"
 #include "ov000/ModelPart.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/Model.h"
@@ -6,25 +7,10 @@
 
 extern "C" {
 
-typedef struct {
-    s32 timer;
-    s32 unk_04;
-    VObj *obj;
-} LoTimedObj;
-
-typedef struct {
-    u8 pad[0x360];
-    LoTimedObj objs[10];
-} LoTimedHost;
-
 extern void *data_ov000_021ccd54;
 void *func_ov000_0219bf90(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
-void func_ov000_0216c018(void *self);
-void func_ov000_0216c310(void *self);
-void func_ov000_0216c6fc(void *self);
 s32 func_02043d84(void *a);
-void func_ov000_0216bcbc(void *self);
 
 struct Obj0216adc0 {
     u32 unk_00;
@@ -52,7 +38,7 @@ void func_ov000_0216adc0(Obj0216adc0 *self, s32 a, s32 b) {
 }
 
 extern "C" {
-extern u8 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern u8 data_02097d78[];
 extern const char *data_0208cc94;
 extern const char *data_0208cc88;
@@ -68,7 +54,7 @@ typedef struct {
 
 
 static inline void *GetObj0216adf8(void) {
-    void *o = LFLD(void *, data_ov000_021ccd30, 0x11c);
+    void *o = data_ov000_021ccd30->unk_11c;
     return o != NULL ? LFLD(void *, o, 0x58) : NULL;
 }
 

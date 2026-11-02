@@ -1,3 +1,4 @@
+#include "ov000/FieldCam.h"
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
@@ -37,7 +38,6 @@ void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 BOOL func_ov000_02198360(void *st, s32 state, s32 x);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
-u16 Camera_GetYaw(void *cam);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
 s32 Rand_UpTo(s32 max);
@@ -47,13 +47,6 @@ void func_ov000_0218996c(s32 a, s32 b);
 void *func_ov000_021b68b8(void *a, void *pos);
 void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
-
-static inline u16 CamYaw_021a3220(u8 *cam) {
-    if (LFLD(u16, cam, 0x40) != 0) {
-        return LFLD(u16, cam, 0x44);
-    }
-    return Camera_GetYaw(cam);
-}
 
 static inline Actor *FindActor_021a3220(u16 id) {
     u8 *mgr = data_ov000_021ccd68;
@@ -159,7 +152,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
             self->fsm->timer = 0;
             self->fsm->st++;
             if (self->padCur & 0xf0) {
-                u16 yaw = CamYaw_021a3220((u8 *)data_ov000_021ccd54 + 0xf4);
+                u16 yaw = FieldCam_GetYaw(&data_ov000_021ccd54->cam);
                 self->moveYaw = yaw + self->padDir;
             }
             e = func_02065f88(0x192, &self->pos);
@@ -268,8 +261,8 @@ void func_ov000_021a3220(Robo021ca458 *self) {
                 m.x = 0;
                 Actor_SendMsg(a, self->id, 7, TRUE, 0x18, &m);
                 func_ov000_0218d46c(a, self->id, 10);
-                if (((u8 *)a->targetObj) != NULL) {
-                    LFLD(B19_021a3220, ((u8 *)a->targetObj), 0x18).b0 = 0;
+                if (a->targetObj != NULL) {
+                    a->targetObj->unk_18_0 = 0;
                 }
             }
             self->unk_b24_5 = 0;

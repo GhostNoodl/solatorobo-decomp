@@ -1,3 +1,4 @@
+#include "ov000/FieldCam.h"
 #include "ov000/LoCommon.h"
 #include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
@@ -182,7 +183,6 @@ typedef struct { s8 dx; s8 dy; u16 hf : 1; u16 vf : 1; u16 idx : 4; } Dir2_6180;
 extern const Dir2_6180 data_ov000_021c9b40[];
 extern const s8 data_ov000_021c9b41[];
 Robo021ca458 *func_ov000_0219bf90(void);
-u16 Camera_GetYaw(void *cam);
 
 static inline void SetXY6180(Oam6180 *o, u16 x, u16 y) {
     o->w0.x = x;
@@ -249,7 +249,7 @@ void func_ov000_02166180(Obj0216607c *self) {
     Robo021ca458 *pl;
     s8 *pal;
     Oam6180 *ob;
-    u8 *cam;
+    FieldCam *cam;
     u8 *anim;
     u8 d;
     s32 off;
@@ -388,16 +388,12 @@ void func_ov000_02166180(Obj0216607c *self) {
     }
     pl = func_ov000_0219bf90();
     if (pl != NULL && LFLD(u8 *, p, 0xcb8) != NULL) {
-        cam = (u8 *)data_ov000_021ccd54 + 0xf4;
+        cam = &data_ov000_021ccd54->cam;
         if (!LFLD(QBits6180, LFLD(u8 *, p, 0xcb8), 0).b3) {
             xx = LFLD(Oam6180, p, 0xc).w0.x;
             yy = LFLD(Oam6180, p, 0xc).w0.y;
             pa = pl->rot_y;
-            if (LFLD(u16, cam, 0x40) != 0) {
-                ca = LFLD(u16, cam, 0x44);
-            } else {
-                ca = Camera_GetYaw(cam);
-            }
+            ca = FieldCam_GetYaw(cam);
             a = ca - pa;
         } else {
             a = 0x8000 - pl->rot_y;

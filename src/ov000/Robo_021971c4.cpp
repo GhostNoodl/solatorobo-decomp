@@ -70,7 +70,7 @@ void func_ov000_021971c4(VObj *obj) {
                 if (a != NULL) {
                     func_ov000_0218d46c(a, self->id, 6);
                     a->target = none;
-                    if (((void *)a->targetObj) != NULL) {
+                    if (a->targetObj != NULL) {
                         Target_Set(((void *)a->targetObj), self);
                     }
                 }

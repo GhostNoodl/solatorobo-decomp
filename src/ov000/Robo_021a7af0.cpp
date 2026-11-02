@@ -1,17 +1,10 @@
 #include "ov000/LoCommon.h"
+#include "ov000/MessageQueue.h"
 #include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
-
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 2;
-    u8 b4 : 1;
-    u8 rest : 3;
-} I18_021a7af0;
 
 typedef struct {
     u16 b0 : 8;
@@ -27,7 +20,7 @@ typedef struct {
 extern "C" {
 extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd6c;
-extern u8 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern void *data_02097e4c;
 extern char data_ov000_021cc672[];
 extern char data_ov000_021cc5e3[];
@@ -115,18 +108,18 @@ static inline BOOL IsIdle_021a7af0(void) {
 }
 
 static inline s32 SubKind_021a7af0(Actor *a) {
-    return ((u8 *)a->fsm) != NULL ? LFLD(u8, ((u8 *)a->fsm), 0x13) : 0;
+    return a->fsm != NULL ? a->fsm->current : 0;
 }
 
 static inline void Gauge_021a7af0(s32 a, s32 b, VecFx32 *p, VecFx32 *q) {
-    u8 *o = LFLD(u8 *, data_ov000_021ccd30, 0x11c);
+    ListBuffer021cb940 *o = data_ov000_021ccd30->unk_11c;
     if (o == NULL) {
         return;
     }
-    if (LFLD(void *, o, 0x74) == NULL) {
+    if (o->unk_74 == NULL) {
         return;
     }
-    func_ov000_02168490(LFLD(void *, o, 0x74), a, b, p, q);
+    func_ov000_02168490(o->unk_74, a, b, p, q);
 }
 
 static inline BOOL Flag19_021a7af0(u8 *g) {
@@ -138,7 +131,7 @@ static inline BOOL Flag19_021a7af0(u8 *g) {
 }
 
 static inline BOOL Info18b4_021a7af0(ActorSub4c *info) {
-    return LFLD(I18_021a7af0, info, 0x18).b4 ? TRUE : FALSE;
+    return info->unk_18_4 ? TRUE : FALSE;
 }
 
 static inline BOOL HasD4_021a7af0(FieldState *g) {

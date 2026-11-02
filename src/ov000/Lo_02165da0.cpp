@@ -6,24 +6,9 @@
 
 extern "C" {
 
-typedef struct {
-    s32 timer;
-    s32 unk_04;
-    VObj *obj;
-} LoTimedObj;
-
-typedef struct {
-    u8 pad[0x360];
-    LoTimedObj objs[10];
-} LoTimedHost;
-
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
-void func_ov000_0216c018(void *self);
-void func_ov000_0216c310(void *self);
-void func_ov000_0216c6fc(void *self);
 s32 func_02043d84(void *a);
-void func_ov000_0216bcbc(void *self);
 
 struct Obj02165da0 {
     u8 unk_00[0x30];

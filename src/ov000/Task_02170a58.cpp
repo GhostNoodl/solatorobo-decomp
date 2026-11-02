@@ -1,4 +1,5 @@
-#include "ov000/VObj.h"
+#include "ov000/MessageQueue.h"
+#include "ov000/LoTicker.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/HeapScope.h"
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
@@ -16,13 +17,9 @@ extern u8 data_ov000_021cb894[];
 void *Heap_Alloc(u32 size);
 void func_ov000_0216b474(void *p);
 void func_ov000_0216ad04(void *p);
-void func_ov000_0216bf30(void *p);
-void *func_ov000_0217006c(void *p);
-void func_ov000_0217125c(void *p);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void func_ov000_021bce90(void);
 BOOL func_0204c120(void);
-void func_ov000_0216bbec(void *p);
 BOOL func_ov000_021b9010(void *p);
 BOOL func_ov000_021ba92c(void *p);
 BOOL func_ov000_021bb8dc(void *p);
@@ -35,7 +32,6 @@ BOOL func_ov000_0216dae4(void *p);
 void func_ov000_02182524(void *p);
 void func_ov000_0216b550(void *p);
 void func_ov000_0216adf8(void *p);
-void func_ov000_0216be58(void *p);
 void func_ov000_021bbcac(void *p);
 void func_020507d8(void *p);
 void func_ov000_0216c9b0(void *p);
@@ -62,44 +58,15 @@ static inline VObj *NewObj2(u32 size, void *vt) {
     return p;
 }
 
-struct Obj02170a58 {
-    u8 unk_00[0xc];
-    u8 *unk_0c;
-    u8 unk_10[0x10];
-    u32 unk_20;
-    s32 unk_24;
-    VObj *unk_28;
-    void *unk_2c;
-    VObj *unk_30;
-    void *unk_34;
-    void *unk_38;
-    void *unk_3c;
-    void *unk_40;
-    void *unk_44;
-    VObj *unk_48;
-    void *unk_4c;
-    void *unk_50;
-    void *unk_54;
-    VObj *unk_58;
-    VObj *unk_5c;
-    VObj *unk_60;
-    VObj *unk_64;
-    void *unk_68;
-    VObj *unk_6c;
-    VObj *unk_70;
-    VObj *unk_74;
-    void *unk_78;
-    void *unk_7c;
-};
-
-void func_ov000_02170a58(Obj02170a58 *self) {
-    u8 *c = self->unk_0c;
-    switch (self->unk_24) {
+void func_ov000_02170a58(ListBuffer021cb940 *self) {
+    u8 *c = (u8 *)self->unk_0c;
+    switch (self->state) {
     case 0:
-        self->unk_24 = 1;
+        self->state = 1;
     case 1: {
         VObj *p;
         u8 *q;
+        LoTicker *tk;
         if (LFLD(Bit0, c, 0x114).b0) {
             break;
         }
@@ -136,33 +103,33 @@ void func_ov000_02170a58(Obj02170a58 *self) {
             func_ov000_0216ad04(q);
         }
         self->unk_78 = q;
-        q = (u8 *)Heap_Alloc(0x3d8);
-        if (q != NULL) {
-            __cxa_vec_ctor(q + 0x360, 10, 0xc, (void (*)(void *))func_ov000_0217125c, (void (*)(void *))func_ov000_0217006c);
-            func_ov000_0216bf30(q);
+        tk = (LoTicker *)Heap_Alloc(sizeof(LoTicker));
+        if (tk != NULL) {
+            __cxa_vec_ctor(tk->res, 10, sizeof(LoTextHolder), (void (*)(void *))func_ov000_0217125c, (void (*)(void *))func_ov000_0217006c);
+            func_ov000_0216bf30(tk);
         }
-        self->unk_7c = q;
+        self->ticker = tk;
         func_ov000_021bce90();
-        self->unk_24 = 2;
+        self->state = 2;
     }
     case 2:
         if (!func_0204c120()) {
             return;
         }
-        func_ov000_0216bbec(self->unk_7c);
+        func_ov000_0216bbec(self->ticker);
         self->unk_20 |= 2;
-        self->unk_24 = 3;
+        self->state = 3;
         break;
     case 4:
         if ((void *)self->unk_48 == NULL && !self->unk_28->vfunc_8c()) {
             HEAP_DELETE(VObj *, self->unk_28, p->vfunc_04());
-            self->unk_24 = 3;
+            self->state = 3;
         }
     case 10:
         if (self->unk_3c != NULL && !func_ov000_021b9010(self->unk_3c)) {
             HEAP_DELETE_FN(self->unk_3c, func_ov000_021b8ecc);
-            if (self->unk_24 == 10) {
-                self->unk_24 = 3;
+            if (self->state == 10) {
+                self->state = 3;
             }
         }
     case 11:
@@ -172,39 +139,39 @@ void func_ov000_02170a58(Obj02170a58 *self) {
                 self->unk_28->vfunc_0c();
             }
             func_ov000_02182524((u8 *)data_ov000_021ccd54 + 0xac);
-            if (self->unk_24 == 11) {
-                self->unk_24 = 3;
+            if (self->state == 11) {
+                self->state = 3;
             }
         }
         break;
     case 8:
         if (self->unk_40 != NULL && !func_ov000_021ba92c(self->unk_40)) {
             HEAP_DELETE_FN(self->unk_40, func_ov000_021bacf4);
-            self->unk_24 = 3;
+            self->state = 3;
         }
         break;
     case 9:
         if (self->unk_44 != NULL && !func_ov000_021bb8dc(self->unk_44)) {
             HEAP_DELETE(u8 *, (u8 *)self->unk_44, func_ov000_021bbcac(p); *(void **)(p + 4) = data_0208b318; ((VObj *)(p + 4))->vfunc_0c(); Heap_Free(p));
-            self->unk_24 = 3;
+            self->state = 3;
         }
         break;
     case 5:
         if (!func_0204fd60(self->unk_2c)) {
             HEAP_DELETE_FN(self->unk_2c, func_020507d8);
-            self->unk_24 = 3;
+            self->state = 3;
         }
         break;
     case 6:
         if (!self->unk_30->vfunc_1c()) {
             HEAP_DELETE(VObj *, self->unk_30, p->vfunc_04());
-            self->unk_24 = 3;
+            self->state = 3;
         }
         break;
     case 7:
         if (!func_ov000_021b8994(self->unk_38)) {
             HEAP_DELETE_FN(self->unk_38, func_ov000_021b88d8);
-            self->unk_24 = 3;
+            self->state = 3;
         }
         break;
     }
@@ -247,15 +214,15 @@ void func_ov000_02170a58(Obj02170a58 *self) {
     if (self->unk_74 != NULL) {
         self->unk_74->vfunc_0c();
     }
-    if (self->unk_7c != NULL) {
-        func_ov000_0216be58(self->unk_7c);
+    if (self->ticker != NULL) {
+        func_ov000_0216be58(self->ticker);
     }
 }
 
-void func_ov000_0217125c(void *self) {
-    *(s32 *)((u8 *)self + 0x0) = 0x0;
-    *(s32 *)((u8 *)self + 0x4) = 0x0;
-    *(s32 *)((u8 *)self + 0x8) = 0x0;
+void func_ov000_0217125c(LoTextHolder *self) {
+    self->count = 0;
+    self->text = NULL;
+    self->win = NULL;
 }
 
 }

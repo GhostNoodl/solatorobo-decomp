@@ -1,3 +1,4 @@
+#include "ov000/FieldCam.h"
 #include "ov000/LoCommon.h"
 #include "Main/Res/StageCmd.h"
 #include "Main/Sys/FieldState.h"
@@ -5,7 +6,6 @@
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
-u16 Camera_GetYaw(void *cam);
 void Actor_MoveByPad(void *self, u16 base, s32 turn, void *range);
 void Actor_MoveToPos(void *self, const VecFx32 *target, s32 turn);
 void Actor_Move(void *self, s32 turn);
@@ -23,13 +23,9 @@ void func_ov000_021b1dd8(Robo021ca458 *self, s32 target, s32 rate, s32 speed, s3
             return;
         }
         if (self->padCur & 0xf0) {
-            u8 *cam = (u8 *)data_ov000_021ccd54 + 0xf4;
+            FieldCam *cam = &data_ov000_021ccd54->cam;
             u16 ang;
-            if (LFLD(u16, cam, 0x40) != 0) {
-                ang = LFLD(u16, cam, 0x44);
-            } else {
-                ang = Camera_GetYaw(cam);
-            }
+            ang = FieldCam_GetYaw(cam);
             self->speed += LO_FX_MUL(rate, target - self->speed);
             if (self->speed >= target) {
                 self->friction = speed;

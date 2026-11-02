@@ -53,8 +53,8 @@ void func_ov000_021b06dc(Robo021ca458 *self) {
             break;
         }
     }
-    if (LFLD(u16, ((u8 *)self->hp), 0xa) != 0) {
-        LFLD(u16, ((u8 *)self->hp), 0xa)--;
+    if (self->hpObj->unk_0a != 0) {
+        self->hpObj->unk_0a--;
     }
     {
         ActorSub40 *st = (ActorSub40 *)((u8 *)self->fsm);
@@ -62,7 +62,7 @@ void func_ov000_021b06dc(Robo021ca458 *self) {
     }
     self->hit->unk_9a_4 = 0;
     if (PlayerIdle021b06dc()) {
-        SetGauge021b06dc(LFLD(u16, ((u8 *)self->hp), 0), LFLD(u16, ((u8 *)self->hp), 2));
+        SetGauge021b06dc(self->hpObj->cur, self->hpObj->max);
     }
     {
         BOOL f = data_0214a424->bits18.flag10 ? TRUE : FALSE;

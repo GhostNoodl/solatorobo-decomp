@@ -4,11 +4,6 @@
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
-    u8 b0 : 1;
-    u8 rest : 7;
-} C18_021a0268;
-
-typedef struct {
     VecFx32 pos;
     u16 rot[3];
     s32 z;
@@ -89,11 +84,11 @@ void func_ov000_021a0268(Robo021ca458 *self) {
     if (self->unk_b0c != 0x1000) {
         self->unk_b08 = FxMul021a0268(self->unk_b08, self->unk_b0c);
     }
-    if (LFLD(u16, ((u8 *)self->unk_54), 0) != 0 && LFLD(s16, ((u8 *)self->unk_54), 2) != 0) {
-        self->unk_b08 = FxMul021a0268(self->unk_b08, LFLD(s16, ((u8 *)self->unk_54), 2));
+    if (LFLD(u16, self->unk_54, 0) != 0 && LFLD(s16, self->unk_54, 2) != 0) {
+        self->unk_b08 = FxMul021a0268(self->unk_b08, LFLD(s16, self->unk_54, 2));
     }
     {
-        u16 t = LFLD(u16, ((u8 *)self->unk_54), 4);
+        u16 t = LFLD(u16, self->unk_54, 4);
         if (t != 0) {
             if (self->unk_9ac > t) {
                 self->unk_9ac -= t;
@@ -116,8 +111,8 @@ void func_ov000_021a0268(Robo021ca458 *self) {
                 m.z = 0;
                 Actor_SendMsg((Actor *)o, self->id, 7, 1, 0x18, &m);
                 func_ov000_0218d46c(o, self->id, 10);
-                if (((u8 *)o->targetObj) != NULL) {
-                    LFLD(C18_021a0268, ((u8 *)o->targetObj), 0x18).b0 = 0;
+                if (o->targetObj != NULL) {
+                    o->targetObj->unk_18_0 = 0;
                 }
             }
             Reset021a0268(self);
@@ -200,7 +195,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
         }
         break;
     case 1:
-        if (LFLD(u16, ((u8 *)self->hp), 0) == 0) {
+        if (self->hpObj->cur == 0) {
             func_ov000_02198360(s, 0x14, 0);
             break;
         }

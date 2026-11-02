@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/MessageQueue.h"
 #include "nitro/std.h"
 #include "Main/Gfx/Model.h"
 
@@ -8,7 +9,7 @@ typedef struct {
 
 extern "C" {
 extern void *data_02149ef8;
-extern u8 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb5a8[];
@@ -16,7 +17,7 @@ char *MsgRes_GetString(void *msg, s32 id);
 void func_ov000_02165a20(s32 a, Rgb021bbd94 *c);
 
 static inline s32 Ccd30_Value(void) {
-    void *p = LFLD(void *, data_ov000_021ccd30, 0x118);
+    void *p = data_ov000_021ccd30->unk_118;
     s32 r = 0;
     if (p != NULL && LFLD(s32, p, 0x28) == 1) {
         r = LFLD(s32, p, 0x30);

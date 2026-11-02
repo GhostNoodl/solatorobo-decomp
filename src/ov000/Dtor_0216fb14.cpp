@@ -1,15 +1,14 @@
-#include "ov000/VObj.h"
+#include "ov000/MessageQueue.h"
 #include "ov000/HeapScope.h"
+#include "ov000/LoTicker.h"
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
 
 extern u8 data_0208b318[];
 void func_ov000_021bd09c(void);
-void func_ov000_0216faac(void *self);
+void func_ov000_0216faac(ListBuffer021cb940 *self);
 void func_ov000_021bbcac(void *p);
-void func_ov000_0216bf90(void *p);
-void *func_ov000_0217006c(void *p);
 void __cxa_vec_cleanup(void *arr, int n, u32 size, void (*dtor)(void *));
 void func_020507d8(void *p);
 void func_ov000_0216ad34(void *p);
@@ -22,33 +21,7 @@ void func_ov000_021b8ecc(void *p);
 void func_ov000_021bacf4(void *p);
 void func_ov000_021bb840(void *p);
 
-struct Obj0216fb14 {
-    u8 unk_00[0x28];
-    VObj *unk_28;
-    void *unk_2c;
-    VObj *unk_30;
-    void *unk_34;
-    void *unk_38;
-    void *unk_3c;
-    void *unk_40;
-    u8 *unk_44;
-    VObj *unk_48;
-    void *unk_4c;
-    void *unk_50;
-    void *unk_54;
-    VObj *unk_58;
-    VObj *unk_5c;
-    VObj *unk_60;
-    VObj *unk_64;
-    void *unk_68;
-    VObj *unk_6c;
-    VObj *unk_70;
-    VObj *unk_74;
-    void *unk_78;
-    u8 *unk_7c;
-};
-
-void func_ov000_0216fb14(Obj0216fb14 *self) {
+void func_ov000_0216fb14(ListBuffer021cb940 *self) {
     func_ov000_021bd09c();
     HEAP_DELETE(VObj *, self->unk_28, p->vfunc_04());
     HEAP_DELETE_FN(self->unk_2c, func_020507d8);
@@ -71,7 +44,7 @@ void func_ov000_0216fb14(Obj0216fb14 *self) {
     HEAP_DELETE(VObj *, self->unk_70, p->vfunc_04());
     HEAP_DELETE(VObj *, self->unk_74, p->vfunc_04());
     HEAP_DELETE_FN(self->unk_78, func_ov000_0216ad34);
-    HEAP_DELETE(u8 *, self->unk_7c, func_ov000_0216bf90(p); __cxa_vec_cleanup(p + 0x360, 0xa, 0xc, (void (*)(void *))func_ov000_0217006c); Heap_Free(p));
+    HEAP_DELETE(LoTicker *, self->ticker, func_ov000_0216bf90(p); __cxa_vec_cleanup(p->res, 10, sizeof(LoTextHolder), (void (*)(void *))func_ov000_0217006c); Heap_Free(p));
     func_ov000_0216faac(self);
 }
 

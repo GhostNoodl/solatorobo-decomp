@@ -53,7 +53,7 @@ void func_ov000_02159aac(Lo021cb5a8 *self) {
     self->rows = 1;
     for (n = self->items; n != NULL; n = (UiListItem *)((u8 *)n->next)) {
         func_ov000_02153c48(n, ((void *)self->font), 1, 0, 0);
-        w = LFLD(s32, ((u8 *)n->label), 0x44);
+        w = LFLD(s32, n->label, 0x44);
         if (w > maxw) {
             maxw = w;
         }
@@ -78,7 +78,7 @@ void func_ov000_02159aac(Lo021cb5a8 *self) {
     y = 0;
     x = 0;
     for (n = self->items; n != NULL; n = (UiListItem *)((u8 *)n->next)) {
-        w2 = LFLD(s32, ((u8 *)n->label), 0x44) + 0x14;
+        w2 = LFLD(s32, n->label, 0x44) + 0x14;
         if (x != 0 && x + w2 > lim) {
             x = 0;
             y += ((VObj *)self)->vfunc_40();

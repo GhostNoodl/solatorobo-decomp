@@ -8,19 +8,6 @@ typedef struct {
 } St_021af464;
 
 typedef struct {
-    u16 b0 : 3;
-    u16 b3 : 1;
-    u16 b4 : 1;
-    u16 b5 : 11;
-} B9a_021af464;
-
-typedef struct {
-    u8 b0 : 4;
-    u8 b4 : 1;
-    u8 b5 : 3;
-} B18_021af464;
-
-typedef struct {
     u8 b0 : 1;
     u8 b1 : 7;
 } B19_021af464;
@@ -108,14 +95,14 @@ static inline BOOL Ev19_021af464(void) {
 
 void func_ov000_021af464(Robo021ca458 *self) {
     Actor *a;
-    u8 *info;
+    ActorSub4c *info;
     VecFx32 pos;
     u16 ang;
     VecFx32 v;
     a = FindActor021af464(self->target);
     info = NULL;
     if (a != NULL) {
-        info = ((u8 *)a->targetObj);
+        info = (ActorSub4c *)((u8 *)a->targetObj);
         pos = a->pos;
         ang = a->rot_y;
         {
@@ -137,7 +124,7 @@ void func_ov000_021af464(Robo021ca458 *self) {
     switch (((St_021af464 *)self->fsm)->state) {
     case 0:
         if (info != NULL) {
-            u8 k = info[0];
+            u8 k = info->type;
             if (k == 9) {
                 self->unk_b24_14 = 1;
             } else if (k == 10) {
@@ -243,7 +230,7 @@ void func_ov000_021af464(Robo021ca458 *self) {
     if (Ev19_021af464()) {
         return;
     }
-    if (info != NULL && (LFLD(B18_021af464, info, 0x18).b4 ? TRUE : FALSE)) {
+    if (info != NULL && (info->unk_18_4 ? TRUE : FALSE)) {
         return;
     }
     if (self->unk_b24_27) {

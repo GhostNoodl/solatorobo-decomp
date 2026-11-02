@@ -5,30 +5,6 @@
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
-typedef struct {
-    u16 st;
-    u16 timer;
-    s32 unk_04;
-    s32 unk_08;
-} State02196c40;
-
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 b4 : 1;
-    u16 b5 : 1;
-    u16 b6 : 1;
-    u16 rest : 9;
-} Bits02196c40;
-
-typedef struct {
-    u8 b0 : 2;
-    u8 b2 : 1;
-    u8 rest : 5;
-} Bits8_02196c40;
-
 class VObj02196c40 {
 public:
     virtual void vfunc_00();
@@ -48,7 +24,7 @@ void HitSphere_Link(void *a);
 void func_0203f364(void *a);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 Robo021ca458 *func_ov000_0219bf90(void);
-void *Target_Get(void *p);
+Actor *Target_Get(ActorSub4c *p);
 void Target_Set(void *a, void *b);
 void func_ov003_021f0c60(void *self, s32 a);
 void *func_ov003_021f0868(void *pos, s32 a, s32 b);
@@ -62,21 +38,21 @@ static inline s32 FxMul02196c40(s32 a, s64 b) {
     return (a * b + 0x800) >> 12;
 }
 
-static inline BOOL IsB2_02196c40(u8 *m) {
-    return LFLD(Bits8_02196c40, m, 0x18).b2 ? TRUE : FALSE;
+static inline BOOL IsB2_02196c40(ActorSub4c *m) {
+    return m->unk_18_2 ? TRUE : FALSE;
 }
 
 void func_ov000_02196c40(ActorEx *self) {
     BOOL flag = TRUE;
     self->hit->unk_9a_6 = 0;
-    switch (((State02196c40 *)self->fsm)->st) {
+    switch (self->fsm->st) {
     case 0:
         if (self->gravity == 0) {
             self->gravity = 0x52;
         }
         self->unk_92 = 0;
         self->unk_cc_6 = 0;
-        ((State02196c40 *)self->fsm)->st++;
+        self->fsm->st++;
         break;
     case 1: {
         u32 in = self->hit->unk_50;
@@ -113,11 +89,11 @@ void func_ov000_02196c40(ActorEx *self) {
             self->gravity = 0x52;
             flag = FALSE;
         }
-        if (hit != NULL || (in & 0x20000000) || ((in & 0x40000000) && !IsB2_02196c40(((u8 *)self->targetObj))) ||
+        if (hit != NULL || (in & 0x20000000) || ((in & 0x40000000) && !IsB2_02196c40(self->targetObj)) ||
             ((s32)self->hit->unk_58) != 0) {
             s32 kind = 0;
             BOOL got = FALSE;
-            ((State02196c40 *)self->fsm)->timer = 0;
+            self->fsm->timer = 0;
             if (hit != NULL || self->targetObj->target != 0xffff) {
                 if (self->targetObj->unk_01 == 1) {
                     kind = self->targetObj->unk_02;
@@ -154,13 +130,13 @@ void func_ov000_02196c40(ActorEx *self) {
                 if (self->targetObj->unk_03 != 0) {
                     func_ov003_021f0c60(self, 0);
                 }
-                func_ov000_02198360(((State02196c40 *)self->fsm), 0x15, 0);
+                func_ov000_02198360(self->fsm, 0x15, 0);
                 break;
             }
             default:
                 func_ov000_02197ad0(self, got);
                 if (((in & 0x20000000) && self->velY == 0) || self->unk_92 > 3) {
-                    ((State02196c40 *)self->fsm)->st++;
+                    self->fsm->st++;
                     self->velY = 0;
                     self->gravity = 0;
                     self->friction = 0x800;
@@ -169,40 +145,40 @@ void func_ov000_02196c40(ActorEx *self) {
             }
         }
         if (self->velY < 0) {
-            State02196c40 *st;
+            ActorSub40 *st;
             func_ov000_02190cb0(self->model, data_ov000_021cc463, 0x1000, 0);
             func_ov000_021915a0(self->model);
-            st = ((State02196c40 *)self->fsm);
+            st = self->fsm;
             st->timer++;
             if (st->timer > 0x46) {
-                ((State02196c40 *)self->fsm)->timer = 0x46;
+                self->fsm->timer = 0x46;
                 if (!(self->hit->unk_54 & 0x20000000)) {
-                    func_ov000_02198360(((State02196c40 *)self->fsm), 0x15, 0);
+                    func_ov000_02198360(self->fsm, 0x15, 0);
                 }
             }
         }
         break;
     }
     case 2: {
-        State02196c40 *st;
+        ActorSub40 *st;
         self->hit->unk_9a_5 = 1;
-        st = ((State02196c40 *)self->fsm);
+        st = self->fsm;
         st->timer++;
         if (st->timer < 6) {
             break;
         }
-        ((State02196c40 *)self->fsm)->timer = 6;
-        if (!func_ov000_02191120(self->model) && LFLD(s64, ((State02196c40 *)self->fsm), 4) == 0) {
+        self->fsm->timer = 6;
+        if (!func_ov000_02191120(self->model) && ((s64)self->fsm->flags) == 0) {
             break;
         }
         self->targetObj->target = 0xffff;
-        func_ov000_02198360(((State02196c40 *)self->fsm), 1, 0);
+        func_ov000_02198360(self->fsm, 1, 0);
         break;
     }
     }
     Actor_Move(self, 0);
     if (self->hit != NULL) {
-        u8 *other;
+        ActorSub48 *other;
         BOOL saved;
         ActorSub4c *m;
         if (self->param->type == 2) {
@@ -216,29 +192,29 @@ void func_ov000_02196c40(ActorEx *self) {
         saved = FALSE;
         if (m != NULL && m->target != 0xffff && m->unk_01 == 1) {
             s32 h = self->radius + 0x4cd;
-            u8 *t;
+            Actor *t;
             if (h < 0xccd) {
                 h = 0xccd;
             }
             self->hit->unk_44 = h;
-            t = (u8 *)Target_Get(((u8 *)self->targetObj));
-            if (t != NULL && (other = LFLD(u8 *, t, 0x48)) != NULL && LFLD(Bits02196c40, other, 0x9a).b3) {
-                LFLD(Bits02196c40, other, 0x9a).b3 = 0;
+            t = Target_Get(self->targetObj);
+            if (t != NULL && (other = (ActorSub48 *)((u8 *)t->hit)) != NULL && other->unk_9a_3) {
+                other->unk_9a_3 = 0;
                 func_0203f364(other);
                 saved = TRUE;
             }
         }
         func_ov000_021987b8(self->hit, flag, 0, 0);
         if (saved) {
-            LFLD(Bits02196c40, other, 0x9a).b3 = 1;
+            other->unk_9a_3 = 1;
             HitSphere_Link(other);
         }
     }
-    if (((u8 *)self->targetObj) != NULL && self->targetObj->type == 2) {
+    if (self->targetObj != NULL && self->targetObj->type == 2) {
         void *r = func_ov003_021f0868(&self->pos, self->radius, self->height);
         if (r != NULL) {
-            Target_Set(((u8 *)self->targetObj), r);
-            func_ov000_02198360(((State02196c40 *)self->fsm), 0xd, 0);
+            Target_Set(self->targetObj, r);
+            func_ov000_02198360(self->fsm, 0xd, 0);
         }
     }
 }

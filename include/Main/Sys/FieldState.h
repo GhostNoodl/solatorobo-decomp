@@ -19,8 +19,8 @@ typedef struct FieldCam {
     /* 0xc8 */ s32 unk_c8;
     /* 0xcc */ s32 unk_cc;
     /* 0xd0 */ u8 unk_d0[4];
-    /* 0xd4 */ s16 unk_d4;
-    /* 0xd6 */ s16 unk_d6;
+    /* 0xd4 */ u16 unk_d4;
+    /* 0xd6 */ u16 unk_d6;
     /* 0xd8 */ union {
         u8 unk_d8;
         struct {
@@ -43,7 +43,7 @@ typedef struct FieldCam {
     };
     /* 0xdb */ u8 unk_db;
     /* 0xdc */ VecFx32 unk_dc;
-    /* 0xe8 */ u8 unk_e8[0xc];
+    /* 0xe8 */ VecFx32 unk_e8;
     /* 0xf4 */ s32 unk_f4;
     /* 0xf8 */ u16 unk_f8;
     /* 0xfa */ u16 unk_fa;

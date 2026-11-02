@@ -171,7 +171,7 @@ void func_ov000_02164c50(Obj02164c50 *self, u8 *arg) {
     cell = LoModelGetCell(self->unk_24, 2);
     base = LFLD(u16, self->unk_24, 0xf4);
     oa = LFLD(OamAttr02164c50 *, cell, 0x4);
-    LFLD(s32, p, 0xc90) = LFLD(s32, ((void *)self->unk_24->extPltt), 0x58);
+    LFLD(s32, p, 0xc90) = LFLD(s32, self->unk_24->extPltt, 0x58);
     *(OamAttr02164c50 *)(p + 0x2c) = *oa;
     LFLD(OamW2_02164c50, p, 0x30).tile += base;
     p[1]++;

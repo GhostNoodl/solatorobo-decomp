@@ -1,21 +1,21 @@
-#include "ov000/VObj.h"
+#include "ov000/MessageQueue.h"
 
-static inline BOOL NotNull54_Inline(void *self) { return *(void **)((u8 *)self + 0x54) != NULL; }
+static inline BOOL NotNull54_Inline(ListBuffer021cb940 *self) { return self->unk_54 != NULL; }
 
 extern "C" {
 
 void func_ov000_0216ca64(void *self, s32 a, s32 b);
 
-BOOL func_ov000_02170568(void *self) {
-    if (*(s32 *)((u8 *)self + 0x24) == 7 || *(s32 *)((u8 *)self + 0x3c) != 0 ||
-        *(s32 *)((u8 *)self + 0x40) != 0 || *(s32 *)((u8 *)self + 0x44) != 0) {
+BOOL func_ov000_02170568(ListBuffer021cb940 *self) {
+    if (self->state == 7 || self->unk_3c != NULL ||
+        self->unk_40 != NULL || self->unk_44 != NULL) {
         return TRUE;
     }
     return FALSE;
 }
 
-BOOL func_ov000_021705a0(void *self, s32 check) {
-    void *p = *(void **)((u8 *)self + 0x34);
+BOOL func_ov000_021705a0(ListBuffer021cb940 *self, s32 check) {
+    void *p = self->unk_34;
     if (p == NULL) {
         return FALSE;
     }
@@ -27,16 +27,16 @@ BOOL func_ov000_021705a0(void *self, s32 check) {
     return TRUE;
 }
 
-void func_ov000_021705dc(void *self, s32 a, s32 b) {
-    func_ov000_0216ca64(*(void **)((u8 *)self + 0x50), a, b);
+void func_ov000_021705dc(ListBuffer021cb940 *self, s32 a, s32 b) {
+    func_ov000_0216ca64(self->unk_50, a, b);
 }
 
-bool func_ov000_021705ec(void *self) {
+bool func_ov000_021705ec(ListBuffer021cb940 *self) {
     return NotNull54_Inline(self);
 }
 
-s32 func_ov000_0217060c(void *self) {
-    return *(void **)((u8 *)self + 0x48) != NULL ? 0x1 : 0x0;
+s32 func_ov000_0217060c(ListBuffer021cb940 *self) {
+    return self->unk_48 != NULL ? 0x1 : 0x0;
 }
 
 }

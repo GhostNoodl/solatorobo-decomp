@@ -27,8 +27,8 @@ BOOL func_ov000_0219a8bc(void *hit, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *po
     if (t != NULL && t != b && t->vfunc_14()) {
         s50 = ((u8 *)t->hp);
         if (s50 == NULL || !IsLocked(s50)) {
-            if (((u8 *)b->hp) != NULL && LFLD(Fn0219a8bc, ((u8 *)b->hp), 0x10) != NULL) {
-                c = LFLD(Fn0219a8bc, ((u8 *)b->hp), 0x10)(c);
+            if (b->hp != NULL && LFLD(Fn0219a8bc, b->hpObj, 0x10) != NULL) {
+                c = LFLD(Fn0219a8bc, b->hpObj, 0x10)(c);
             }
             if (s50 != NULL && LFLD(Fn0219a8bc, s50, 0x18) != NULL) {
                 c = LFLD(Fn0219a8bc, s50, 0x18)(c);

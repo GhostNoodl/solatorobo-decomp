@@ -1,3 +1,4 @@
+#include "ov000/FieldCam.h"
 #include "ov000/Vec.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorBase.h"
@@ -22,7 +23,6 @@ void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
 void func_ov000_0218996c(s32 a, s32 b);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
-u16 Camera_GetYaw(void *cam);
 
 static inline Actor *FindActor_02191f18(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -36,13 +36,6 @@ static inline void SetOfs_02191f18(Actor *a, s32 w, s32 x, s32 y, s32 z) {
     a->velY = x;
     a->friction = y;
     a->gravity = z;
-}
-
-static inline u16 CamYaw_02191f18(u8 *cam) {
-    if (LFLD(u16, cam, 0x40) != 0) {
-        return LFLD(u16, cam, 0x44);
-    }
-    return Camera_GetYaw(cam);
 }
 
 static inline s32 AnimFrame_02191f18(AnimCtrl *a) {
@@ -156,7 +149,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
         break;
     case 23:
         if (actor != NULL) {
-            actor->moveYaw = (u16)p[0] + CamYaw_02191f18((u8 *)data_ov000_021ccd54 + 0xf4);
+            actor->moveYaw = (u16)p[0] + FieldCam_GetYaw(&data_ov000_021ccd54->cam);
             SetOfs_02191f18(actor, p[1] << 4, p[2] << 4, p[3] << 4, p[4] << 4);
         }
         p += 5;

@@ -1,15 +1,9 @@
 #include "types.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/VObj.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
-u16 Camera_GetYaw(void *cam);
-void func_0204b924(void *p, s32 v);
-
-typedef struct {
-    s32 a, b, c;
-} Ent0218c25c;
+void func_0204b924(Camera *cam, s32 speed);
 
 static inline BOOL IsBusy021b6be4(FieldState *m) {
     return m->head != m->tail ? TRUE : FALSE;
@@ -39,12 +33,12 @@ struct Obj021b6be4 {
 
 void func_ov000_021b6be4(Obj021b6be4 *self) {
     FieldState *m;
-    u8 *s;
+    Camera *s;
     if (self->unk_1f2 == 0) {
         return;
     }
     m = data_ov000_021ccd54;
-    s = (u8 *)m + 0xf4;
+    s = &m->cam.base;
     if (s == NULL) {
         return;
     }

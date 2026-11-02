@@ -9,12 +9,6 @@ typedef struct {
 } Rgb021aa5c8;
 
 typedef struct {
-    u16 st;
-    u8 pad02[0x11];
-    u8 kind;
-} State021aa5c8;
-
-typedef struct {
     u8 b0 : 1;
     u8 b1 : 1;
     u8 b2 : 1;
@@ -77,7 +71,7 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
         sub = (ActorSub4c *)((u8 *)actor->targetObj);
     }
     g = data_ov000_021ccd54;
-    if (((State021aa5c8 *)self->fsm)->st == 0) {
+    if (self->fsm->st == 0) {
         EffectObj *e = func_02065f88(0x391, &self->pos);
         e->AddPosXYZ(0, self->height - (self->height >> 2), 0);
         e->SetScaleXYZ(0x159a, 0x159a, 0x159a);
@@ -111,7 +105,7 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
     } else if (self->unk_b2c_2) {
         func_ov000_021ab68c((u8 *)self);
     }
-    if (((State021aa5c8 *)self->fsm)->st <= 1 && sub != NULL && !(LFLD(Bits8021aa5c8, sub, 0x18).b4 ? TRUE : FALSE)) {
+    if (self->fsm->st <= 1 && sub != NULL && !(sub->unk_18_4 ? TRUE : FALSE)) {
         d = actor->pos;
         d.x -= self->pos.x;
         d.y -= self->pos.y;
@@ -123,7 +117,7 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
         VEC_Add(&d, (VecFx32 *)((u8 *)self + 0x70), &out);
         func_ov000_0218a358((u8 *)g + 0xf4, &out, 0, actor->radius + 0x8c00, 1, 0x2333, 0x1000, 1);
     }
-    if (((State021aa5c8 *)self->fsm)->kind != 0x11) {
+    if (self->fsm->current != 0x11) {
         return;
     }
     if (self->unk_b2c_0 || self->unk_b2c_1 || self->unk_b2c_2) {

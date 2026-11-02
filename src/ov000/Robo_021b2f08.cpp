@@ -1,3 +1,4 @@
+#include "ov000/FieldCam.h"
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
@@ -49,7 +50,6 @@ typedef struct {
 } Act_021b2f08;
 
 extern "C" {
-u16 Camera_GetYaw(void *cam);
 s32 func_ov000_02199554(Finder_021b2f08 *f, Query_021b2f08 *q, Part_021b2f08 **list, s32 max);
 s32 func_ov000_02199454(Finder_021b2f08 *f, Query_021b2f08 *q, Part_021b2f08 **list, s32 count);
 Act_021b2f08 *func_ov000_021985c0(Part_021b2f08 *p);
@@ -124,12 +124,8 @@ Part_021b2f08 *func_ov000_021b2f08(Robo021ca458 *self, u16 tgt, void *sub, u8 fl
         flag = TRUE;
     }
     if (flag) {
-        u8 *cam = (u8 *)data_ov000_021ccd54 + 0xf4;
-        if (LFLD(u16, cam, 0x40) != 0) {
-            ang = LFLD(u16, cam, 0x44);
-        } else {
-            ang = Camera_GetYaw(cam);
-        }
+        FieldCam *cam = &data_ov000_021ccd54->cam;
+        ang = FieldCam_GetYaw(cam);
         r += 0x18ccd;
         if (self->unk_b22_0 != 0) {
             r += 0xc666;

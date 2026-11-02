@@ -9,12 +9,6 @@ typedef struct {
     u32 rest : 30;
 } Bd_0219e998;
 
-typedef struct {
-    u16 b0 : 5;
-    u16 b5 : 1;
-    u16 rest : 10;
-} B9a_0219e998;
-
 extern "C" {
 
 void func_ov000_021bd300(void *p);
@@ -45,7 +39,7 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
     switch (msg->type) {
     case 9:
         callBase = FALSE;
-        if (!s->unk_b29_0 && LFLD(u16, ((u8 *)s->hp), 0xa) == 0) {
+        if (!s->unk_b29_0 && s->hpObj->unk_0a == 0) {
             g = data_ov000_021ccd54;
             if (g != NULL) {
                 ok = g->head != g->tail ? TRUE : FALSE;
@@ -63,7 +57,7 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
             ActorHp *p50 = (ActorHp *)s->hp;
             p50->unk_04 = msg->id;
             dmg = *(u16 *)msg->data;
-            if (LFLD(u8, ((u8 *)s->fsm), 0x13) == 0x16 && !(LFLD(u32, ((u8 *)s->hit), 0x50) & 0x20000000)) {
+            if (s->fsm->current == 0x16 && !(s->hit->unk_50 & 0x20000000)) {
                 dmg += dmg / 2;
             }
             if (s->unk_93_5 != 0 && dmg > 1) {
@@ -87,7 +81,7 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
                     case 0x10:
                     case 0x11:
                         bit = 0x12;
-                        if (!(LFLD(u32, ((u8 *)s->hit), 0x50) & 0x20000000) || mode == 3) {
+                        if (!(s->hit->unk_50 & 0x20000000) || mode == 3) {
                             MinB32_0219e998(s, 0x96);
                             bit = 0x13;
                             kind = 0x20;
@@ -104,17 +98,17 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
                     }
                 }
             } else if (s->unk_b24_12 - 1 <= 1) {
-                LFLD(u16, ((u8 *)s->hp), 0) = 1;
+                s->hpObj->cur = 1;
             } else {
                 s->unk_b24_0 = 1;
                 s->unk_93_5 = 0;
                 MinB32_0219e998(s, 0x96);
                 s->target = 0xffff;
-                LFLD(Bd_0219e998, ((u8 *)s->unk_5c), 0).b1 = 0;
+                LFLD(Bd_0219e998, s->unk_5c, 0).b1 = 0;
                 bit = 0x13;
                 kind = 0x20;
                 func_ov000_021bd300(s->unk_5c);
-                LFLD(Bd_0219e998, ((u8 *)s->unk_9b0), 0).b1 = 0;
+                LFLD(Bd_0219e998, s->unk_9b0, 0).b1 = 0;
                 func_ov000_021bd300(s->unk_9b0);
             }
             p50 = (ActorHp *)s->hp;
@@ -125,9 +119,9 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
                 ((ActorSub40 *)self->fsm)->flags |= (u64)1 << bit;
             }
             if (msg->data[2] != 1) {
-                LFLD(u16, ((u8 *)s->hp), 0xa) = 0x5a;
+                s->hpObj->unk_0a = 0x5a;
             } else {
-                LFLD(u16, ((u8 *)s->hp), 0xa) = 10;
+                s->hpObj->unk_0a = 10;
             }
             {
                 Model0218fe1c *m = s->model;
@@ -147,7 +141,7 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
         u8 *p;
         EffectObj *e;
         callBase = FALSE;
-        LFLD(u16, ((u8 *)s->hp), 4) = msg->id;
+        s->hpObj->unk_04 = msg->id;
         p = ((u8 *)s->hp);
         LFLD(u16, p, 0) += *(u16 *)msg->data;
         if (LFLD(u16, p, 0) > LFLD(u16, p, 2)) {
@@ -177,14 +171,14 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
             break;
         }
         case 2:
-            LFLD(u16, ((u8 *)s->unk_54), 4) = *(u16 *)(msg->data + 4);
+            LFLD(u16, s->unk_54, 4) = *(u16 *)(msg->data + 4);
             break;
         }
         break;
     case 12:
         callBase = FALSE;
         if (msg->data[0] == 2) {
-            LFLD(u16, ((u8 *)s->unk_54), 4) = 0;
+            LFLD(u16, s->unk_54, 4) = 0;
         }
         break;
     case 7: {
@@ -217,7 +211,7 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
                 }
             }
             s->gravity = 0x52;
-            LFLD(B9a_0219e998, ((u8 *)s->hit), 0x9a).b5 = 0;
+            s->hit->unk_9a_5 = 0;
             s->unk_b24_16 = 0;
         }
         break;

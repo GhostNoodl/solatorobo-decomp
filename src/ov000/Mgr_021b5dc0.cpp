@@ -81,10 +81,10 @@ Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_0218c040(void *mgr, s32 a, VecFx32 *out, s32 b, s32 c);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
-void Body_SetPos(u8 *a, VecFx32 *v, u16 b);
+void Body_SetPos(void *body, VecFx32 *pos, u16 angle);
 void **func_02035edc(const char *a, const char *b);
 void *NNS_G3dGetAnmByIdx(void *p, s32 idx);
-void Camera_SetAnim(u8 *cam, void *anm);
+void Camera_SetAnim(Camera *cam, void *anim);
 void func_ov000_021b7e60(Node021b5dc0 *n, s32 v);
 
 static inline BOOL SameArea021b5dc0(void) {
@@ -114,7 +114,7 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
     Spawn021b5dc0 s;
     VecFx32 base;
     VecFx32 out;
-    u8 *cam;
+    FieldCam *cam;
     FieldState *g;
     Ent021b5dc0 *ents;
     s32 i;
@@ -123,7 +123,7 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
     u8 v;
     s32 mode;
     Robo021ca458 *pl;
-    u8 *a;
+    Actor *a;
     Node021b5dc0 *n;
 
     if (self->unk_10 != NULL) {
@@ -134,9 +134,9 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
     }
     func_02043b20(data_02097d48->unk_8b0);
     v = self->unk_14->unk_18;
-    cam = (u8 *)data_ov000_021ccd54 + 0xf4;
-    LFLD(s32, cam, 0xc8) = func_0206e340(self->unk_14);
-    LFLD(u16, cam, 0xd6) = v;
+    cam = &data_ov000_021ccd54->cam;
+    cam->unk_c8 = func_0206e340(self->unk_14);
+    cam->unk_d6 = v;
     g = data_ov000_021ccd54;
     ents = func_0206e2ec(self->unk_14);
     if (ents != NULL && (!SameArea021b5dc0() || ((u8 *)data_ov000_021ccd54)[0xc9] != 0)) {
@@ -184,16 +184,16 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
                     pl->unk_75c = out;
                     pl->fieldId = data_ov000_021ccd54->unk_ca;
                 } else {
-                    a = data_ov000_021ccd68 == NULL ? NULL : (u8 *)ActorMgr_GetActor(data_ov000_021ccd68, id);
+                    a = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, id);
                     if (a != NULL) {
                         VEC_Add(&base, &self->unk_70[i], &out);
-                        LFLD(VecFx32, a, 0x70) = out;
-                        LFLD(s32, a, 0x9c) = 0;
-                        LFLD(s32, a, 0xa0) = 0;
-                        LFLD(s32, a, 0xa4) = 0;
-                        LFLD(s32, a, 0xa8) = 0;
-                        if (LFLD(void *, a, 0x48) != NULL) {
-                            Body_SetPos(LFLD(u8 *, a, 0x48), &out, LFLD(u16, a, 0x7e));
+                        a->pos = out;
+                        a->speed = 0;
+                        a->velY = 0;
+                        a->friction = 0;
+                        a->gravity = 0;
+                        if (a->hit != NULL) {
+                            Body_SetPos(a->hit, &out, a->rot_y);
                         }
                     }
                 }
@@ -207,12 +207,12 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
     if (((u8 *)g)[0xca] == 0x10 && ((u8 *)g)[0xcb] == 0 && (((u8 *)g)[0xcc] == 0 || ((u8 *)g)[0xcc] == 3)) {
         void **res = func_02035edc(data_ov000_021cc82c, data_ov000_021cc83d);
         if (res != NULL && *res != NULL) {
-            Camera_SetAnim(cam, NNS_G3dGetAnmByIdx(*res, 0));
+            Camera_SetAnim(&cam->base, NNS_G3dGetAnmByIdx(*res, 0));
             self->unk_1f2 = 0x52;
             if (((u8 *)g)[0xcc] == 3) {
                 self->unk_1f2 = 0xa4;
             }
-            LFLD(s16, cam, 0x9e) = self->unk_1f2;
+            cam->base.speed = self->unk_1f2;
             self->unk_28c = data_ov000_021cc81c;
         }
     }

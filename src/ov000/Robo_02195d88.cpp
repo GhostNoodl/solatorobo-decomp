@@ -6,12 +6,6 @@
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 3;
-    u8 rest : 4;
-} Bits8_02195d88;
-
-typedef struct {
     u16 x, y, z;
 } Rot02195d88;
 
@@ -67,7 +61,7 @@ void func_ov000_02195d88(ActorEx *self) {
             self->unk_cc_0 = 0;
         }
         if (self->param->unk_02_8) {
-            LFLD(Bits8_02195d88, ((u8 *)self->targetObj), 0x18).b0 = 1;
+            self->targetObj->unk_18_0 = 1;
         }
         self->speed = 0;
         self->velY = 0;

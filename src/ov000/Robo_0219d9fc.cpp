@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/MessageQueue.h"
 #include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
@@ -15,7 +16,7 @@ typedef struct {
 
 extern "C" {
 extern void *data_ov000_021ccd68;
-extern u8 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern u8 data_ov000_021ca320[];
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_ov000_02191ec4(void *a, s32 b, u32 c);
@@ -109,7 +110,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
     if (self->unk_b28_3) {
         return FALSE;
     }
-    func_ov000_02191ec4(((void *)self->unk_3c), 1, self->hit->unk_54);
+    func_ov000_02191ec4(self->unk_3c, 1, self->hit->unk_54);
     m = self->model;
     v = m->bright;
     if (self->hit->unk_54 & 0x80000) {
@@ -134,7 +135,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
 
     lvl = 0x1f;
     {
-        u16 w = LFLD(u16, ((u8 *)self->hp), 0xa);
+        u16 w = self->hpObj->unk_0a;
         n = 0;
         if (w != 0) {
             if (self->model->blend == 0) {
@@ -183,9 +184,9 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
     }
     self->model->alpha = lvl;
     if (self->unk_b24_1) {
-        if (self->unk_b22_0 && ((u8 *)self->unk_998) != NULL) {
+        if (self->unk_b22_0 && self->unk_998 != NULL) {
             Flash_0219d9fc((Model0218fe1c *)self->unk_998, ca, cb, n);
-            LFLD(u8, ((u8 *)self->unk_998), 0xbe) = lvl;
+            LFLD(u8, self->unk_998, 0xbe) = lvl;
         }
     } else if (self->unk_b24_21) {
         if (n != 0) {
@@ -325,20 +326,20 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
     }
     fl = self->hit->unk_54;
     if ((fl & 0xf0f0f0) != 0xe0e000 && (fl & 0x20000) != 0x20000) {
-        LFLD(s32, ((void *)self->unk_3c), 0x14) = off;
-        LFLD(s32, ((void *)self->unk_3c), 0x10) = self->pos.y - h;
-        LFLD(u8, ((void *)self->unk_3c), 0x1a) = alpha;
+        self->unk_3c->unk_14 = off;
+        self->unk_3c->unk_10 = self->pos.y - h;
+        self->unk_3c->unk_1a = alpha;
         if (self->unk_93_0 && !self->unk_b24_1) {
             VecFx32 w;
             w.x = self->mdl0.trans.x;
             w.y = self->mdl0.trans.y;
             w.z = self->mdl0.trans.z;
-            func_ov000_02191c24(((void *)self->unk_3c), &w);
+            func_ov000_02191c24(self->unk_3c, &w);
         } else {
-            func_ov000_02191c24(((void *)self->unk_3c), &self->pos);
+            func_ov000_02191c24(self->unk_3c, &self->pos);
         }
     }
-    if (self->unk_b22_0 && ((u8 *)self->unk_998) != NULL && res >= 0 && self->mdl1.visible) {
+    if (self->unk_b22_0 && self->unk_998 != NULL && res >= 0 && self->mdl1.visible) {
         if (res != 0) {
             BOOL set;
             u16 rz;
@@ -346,7 +347,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
             u16 rx;
             MtxFx33 mm;
             MtxFx33 mt;
-            LFLD(VecFx32, ((u8 *)self->unk_998), 0x78) = self->unk_ad4;
+            LFLD(VecFx32, self->unk_998, 0x78) = self->unk_ad4;
             ry = self->unk_9a8;
             rz = self->unk_9aa;
             rx = self->unk_9a6;
@@ -375,14 +376,14 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
             }
             MTX_Concat33(&mm, (const MtxFx33 *)((u8 *)self + 0xab0), &mm);
             MI_Copy36B(&mm, ((u8 *)self->unk_998) + 0x84);
-            LFLD(u8, ((u8 *)self->unk_998), 0xc1) = alpha;
-            func_ov000_021903b4(((u8 *)self->unk_998));
+            LFLD(u8, self->unk_998, 0xc1) = alpha;
+            func_ov000_021903b4(self->unk_998);
         }
         if (self->unk_9ac < self->unk_9ae) {
             if (self->unk_b24_1) {
-                u8 *o = LFLD(u8 *, data_ov000_021ccd30, 0x11c);
-                if (o != NULL && LFLD(void *, o, 0x6c) != NULL) {
-                    func_ov000_02167fac(LFLD(void *, o, 0x6c), self->unk_9ac, self->unk_9ae);
+                ListBuffer021cb940 *o = data_ov000_021ccd30->unk_11c;
+                if (o != NULL && o->unk_6c != NULL) {
+                    func_ov000_02167fac(o->unk_6c, self->unk_9ac, self->unk_9ae);
                 }
             }
         }

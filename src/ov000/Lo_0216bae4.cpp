@@ -1,4 +1,5 @@
 #include "Main/Gfx/FieldMsg.h"
+#include "ov000/LoTicker.h"
 
 extern "C" {
 
@@ -20,16 +21,10 @@ typedef struct {
     u32 hi : 9;
 } LoTwBits;
 
-typedef struct {
-    s32 cnt;
-    u32 text;
-    TextWin *win;
-} LoTextHolder;
-
-void func_ov000_0216bae4(LoTextHolder *self, u32 text) {
+void func_ov000_0216bae4(LoTextHolder *self, void *text) {
     TextWin *win;
     if (self->win) {
-        self->cnt++;
+        self->count++;
         return;
     }
     if (!text) {
@@ -42,7 +37,7 @@ void func_ov000_0216bae4(LoTextHolder *self, u32 text) {
     }
     win = LoTextWin_New();
     win->font = 4;
-    win->str = text;
+    win->str = (u32)text;
     win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
     data_02097ce0->unk_004 = win->font;
     win->color0 = 0x2b9f;
@@ -55,7 +50,7 @@ void func_ov000_0216bae4(LoTextHolder *self, u32 text) {
     win->unk_4_30 = 1;
     func_0204ca70(win);
     self->win = win;
-    self->cnt = 1;
+    self->count = 1;
 }
 
 }

@@ -174,7 +174,7 @@ void func_ov000_021ac3ec(Robo021ca458 *self) {
                 self->unk_9a4 = 0;
             }
         }
-        LFLD(u16, ((u8 *)self->hp), 0xa) = 0x5a;
+        self->hpObj->unk_0a = 0x5a;
         func_ov000_0218996c(6, 10);
         o = GetObj021ac3ec(self->unk_b1c);
         if (o != NULL) {

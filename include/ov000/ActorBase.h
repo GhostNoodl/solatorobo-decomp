@@ -61,7 +61,9 @@ typedef struct {
         struct {
             u8 unk_18_0 : 1;
             u8 unk_18_1 : 1;
-            u8 unk_18_2 : 3;
+            u8 unk_18_2 : 1;
+            u8 unk_18_3 : 1;
+            u8 unk_18_4 : 1;
             u8 unk_18_5 : 1;
             u8 unk_18_6 : 1; // the ov003 shot's hit passes -1 instead of 100 to func_ov000_0219a8bc
             u8 unk_18_7 : 1;

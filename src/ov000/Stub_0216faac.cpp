@@ -1,32 +1,32 @@
-#include "ov000/VObj.h"
+#include "ov000/MessageQueue.h"
 
 extern "C" {
 
-void func_ov000_0216faac(void *self) {
-    *(s32 *)((u8 *)self + 0x20) = 0x0;
-    *(s32 *)((u8 *)self + 0x24) = 0x0;
-    *(s32 *)((u8 *)self + 0x28) = 0x0;
-    *(s32 *)((u8 *)self + 0x2c) = 0x0;
-    *(s32 *)((u8 *)self + 0x30) = 0x0;
-    *(s32 *)((u8 *)self + 0x34) = 0x0;
-    *(s32 *)((u8 *)self + 0x38) = 0x0;
-    *(s32 *)((u8 *)self + 0x3c) = 0x0;
-    *(s32 *)((u8 *)self + 0x40) = 0x0;
-    *(s32 *)((u8 *)self + 0x44) = 0x0;
-    *(s32 *)((u8 *)self + 0x48) = 0x0;
-    *(s32 *)((u8 *)self + 0x4c) = 0x0;
-    *(s32 *)((u8 *)self + 0x50) = 0x0;
-    *(s32 *)((u8 *)self + 0x54) = 0x0;
-    *(s32 *)((u8 *)self + 0x58) = 0x0;
-    *(s32 *)((u8 *)self + 0x5c) = 0x0;
-    *(s32 *)((u8 *)self + 0x60) = 0x0;
-    *(s32 *)((u8 *)self + 0x64) = 0x0;
-    *(s32 *)((u8 *)self + 0x68) = 0x0;
-    *(s32 *)((u8 *)self + 0x6c) = 0x0;
-    *(s32 *)((u8 *)self + 0x70) = 0x0;
-    *(s32 *)((u8 *)self + 0x74) = 0x0;
-    *(s32 *)((u8 *)self + 0x78) = 0x0;
-    *(s32 *)((u8 *)self + 0x7c) = 0x0;
+void func_ov000_0216faac(ListBuffer021cb940 *self) {
+    self->unk_20 = 0;
+    self->state = 0;
+    self->unk_28 = NULL;
+    self->unk_2c = NULL;
+    self->unk_30 = NULL;
+    self->unk_34 = NULL;
+    self->unk_38 = NULL;
+    self->unk_3c = NULL;
+    self->unk_40 = NULL;
+    self->unk_44 = NULL;
+    self->unk_48 = NULL;
+    self->unk_4c = NULL;
+    self->unk_50 = NULL;
+    self->unk_54 = NULL;
+    self->unk_58 = NULL;
+    self->unk_5c = NULL;
+    self->unk_60 = NULL;
+    self->unk_64 = NULL;
+    self->unk_68 = NULL;
+    self->unk_6c = NULL;
+    self->unk_70 = NULL;
+    self->unk_74 = NULL;
+    self->unk_78 = NULL;
+    self->ticker = NULL;
 }
 
 }

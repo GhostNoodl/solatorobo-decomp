@@ -43,9 +43,9 @@ void func_ov000_0214cb44(Obj0214cb44 *self, s32 a, s32 *pos, s32 d) {
         y = pos[1] + (((self->unk_28 >> 1) - 0x60) << 12);
         MODEL_FLAGS(self->unk_84)->polygon_id = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
         {
-            u8 *o = (u8 *)self->unk_84;
-            LFLD(s32, o, 0xfc) = x;
-            LFLD(s32, o, 0x100) = y;
+            Model *o = self->unk_84;
+            o->x = x;
+            o->y = y;
         }
         self->unk_84->unk_150 = z;
         Model_PlayPart(self->unk_84, 0);

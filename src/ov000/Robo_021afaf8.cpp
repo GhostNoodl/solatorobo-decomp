@@ -277,8 +277,8 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
                     st.unk = 0;
                     Actor_SendMsg(a, self->id, 7, 1, 0x18, &st);
                     func_ov000_0218d46c(a, self->id, 0xa);
-                    if (((u8 *)a->targetObj) != NULL) {
-                        LFLD(C_021afaf8, ((u8 *)a->targetObj), 0x18).b0 = 0;
+                    if (a->targetObj != NULL) {
+                        a->targetObj->unk_18_0 = 0;
                     }
                 }
             }

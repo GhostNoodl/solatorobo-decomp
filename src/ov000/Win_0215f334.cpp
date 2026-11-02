@@ -55,9 +55,9 @@ void func_ov000_0215f334(Win0215f334 *self) {
     {
         s32 px = pos[0];
         s32 py = pos[1];
-        u8 *o = (u8 *)self->unk_28;
-        LFLD(s32, o, 0xfc) = px << 12;
-        LFLD(s32, o, 0x100) = py << 12;
+        Model *o = self->unk_28;
+        o->x = px << 12;
+        o->y = py << 12;
     }
     self->unk_28->unk_150 = pos[2] - 0x40;
     Model_PlayPart(self->unk_28, e->id);

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/LoTicker.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "nnsys/g3d.h"
@@ -6,26 +7,11 @@
 
 extern "C" {
 
-typedef struct {
-    s32 timer;
-    s32 unk_04;
-    VObj *obj;
-} LoTimedObj;
-
-typedef struct {
-    u8 pad[0x360];
-    LoTimedObj objs[10];
-} LoTimedHost;
-
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
-void func_ov000_0216c018(void *self);
-void func_ov000_0216c310(void *self);
-void func_ov000_0216c6fc(void *self);
 s32 func_02043d84(void *a);
-void func_ov000_0216bcbc(void *self);
 
-void func_ov000_0216be58(void *self) {
+void func_ov000_0216be58(LoTicker *self) {
     if (PauseNode_IsDrawPaused((u8 *)data_ov000_021ccd54 + 8, 1)) {
         return;
     }
@@ -33,7 +19,7 @@ void func_ov000_0216be58(void *self) {
     func_ov000_0216c310(self);
 }
 
-void func_ov000_0216be94(void *self) {
+void func_ov000_0216be94(LoTicker *self) {
     if (PauseNode_IsDrawPaused((u8 *)data_ov000_021ccd54 + 8, 1)) {
         return;
     }

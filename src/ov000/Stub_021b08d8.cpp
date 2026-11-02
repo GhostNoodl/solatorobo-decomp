@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/MessageQueue.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
@@ -18,7 +19,7 @@ void func_ov000_021b08d8(Robo021ca458 *self) {
 }
 
 extern void *data_02097e4c;
-extern u8 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern VecFx32 data_ov000_021ca024;
 extern u8 data_ov000_021ca2a8[];
 extern u8 data_ov000_021ca2e4[];
@@ -52,7 +53,7 @@ void func_ov000_021b08ec(Robo021ca458 *self) {
         if (s->timer <= self->unk_b36) {
             u16 t = self->fsm->timer;
             VecFx32 ofs;
-            u8 *p;
+            ListBuffer021cb940 *p;
             if (t < 0xc) {
                 break;
             }
@@ -73,9 +74,9 @@ void func_ov000_021b08ec(Robo021ca458 *self) {
             if (t > 0x23) {
                 t = 0x23;
             }
-            p = LFLD(u8 *, data_ov000_021ccd30, 0x11c);
-            if (p != NULL && LFLD(void *, p, 0x70) != NULL) {
-                func_ov000_02168e18(LFLD(void *, p, 0x70), t, 0x23, &ofs);
+            p = data_ov000_021ccd30->unk_11c;
+            if (p != NULL && p->unk_70 != NULL) {
+                func_ov000_02168e18(p->unk_70, t, 0x23, &ofs);
             }
             self->unk_b08 = 0x166;
         } else {

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/MessageQueue.h"
 
 typedef struct {
     u8 pad_00[0x12];
@@ -6,7 +7,7 @@ typedef struct {
 } Pad021bb8dc;
 
 extern "C" {
-extern u8 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern char *data_ov000_021cc858;
 extern char data_ov000_021cc894[];
 extern Pad021bb8dc *data_02097dc8;
@@ -22,14 +23,14 @@ BOOL func_ov000_02165df4(void *p);
 void func_ov000_02165d78(void *p);
 
 static inline void *Get021bb8dc(void) {
-    u8 *p = LFLD(u8 *, data_ov000_021ccd30, 0x118);
+    TimedBuffer021cb920 *p = data_ov000_021ccd30->unk_118;
     if (p == NULL) {
         return NULL;
     }
-    if (LFLD(s32, p, 0x28) != 1) {
+    if (((s32)p->unk_28) != 1) {
         return NULL;
     }
-    return LFLD(void *, p, 0x30);
+    return p->unk_30;
 }
 
 struct Obj021bb8dc {

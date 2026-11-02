@@ -1,5 +1,5 @@
 #include "ov000/VObj.h"
-#include "Main/Sys/FieldState.h"
+#include "ov000/FieldCam.h"
 #include "ov000/Vec.h"
 
 typedef struct {
@@ -21,24 +21,15 @@ void Obj0218c208_AddPoint(Obj0218c208 *self, const VecFx32 *v, u16 id) {
     self->count++;
 }
 
-u16 Camera_GetYaw(void *cam);
-
-static inline u16 CamYaw0218c25c(u8 *cam) {
-    if (*(u16 *)(cam + 0x40) != 0) {
-        return *(u16 *)(cam + 0x44);
-    }
-    return Camera_GetYaw(cam);
-}
-
 void func_ov000_0218c25c(Obj0218c208 *self) {
-    u8 *cam = (u8 *)data_ov000_021ccd54 + 0xf4;
+    FieldCam *cam = &data_ov000_021ccd54->cam;
     VecFx32 v;
     u16 id;
     if (cam == NULL) {
         return;
     }
-    v = *(VecFx32 *)(cam + 4);
-    id = CamYaw0218c25c(cam);
+    v = cam->base.eye;
+    id = FieldCam_GetYaw(cam);
     if (self->count >= 4) {
         return;
     }

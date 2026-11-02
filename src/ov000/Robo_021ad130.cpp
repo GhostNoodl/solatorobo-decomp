@@ -229,7 +229,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
                 anm = data_ov000_021cc618;
             }
             func_ov000_02190cb0(self->model, anm, 0x400, 0);
-            LFLD(u16, ((u8 *)self->hp), 0xa) = 0xf0;
+            self->hpObj->unk_0a = 0xf0;
             self->unk_b24_0 = 0;
             ((St021ad130 *)self->fsm)->timer = 0;
             ((St021ad130 *)self->fsm)->state++;
@@ -254,7 +254,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
         return;
     }
     self->hit->unk_9a |= 0x20;
-    if (!(self->msg_flags & 0x80) && LFLD(u16, ((u8 *)self->hp), 0) == 0) {
+    if (!(self->msg_flags & 0x80) && self->hpObj->cur == 0) {
         return;
     }
     func_ov000_021987b8(self->hit, 0, 0, 0);

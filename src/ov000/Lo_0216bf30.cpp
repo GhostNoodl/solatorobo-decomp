@@ -3,202 +3,145 @@
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
 #include "Main/Gfx/GfxMgr.h"
+#include "Main/Gfx/FieldMsg.h"
+#include "ov000/LoTicker.h"
 
 extern "C" {
 
-typedef struct {
-    s32 timer;
-    s32 unk_04;
-    VObj *obj;
-} LoTimedObj;
-
-typedef struct {
-    u8 pad[0x360];
-    LoTimedObj objs[10];
-} LoTimedHost;
-
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
-void func_ov000_0216c018(void *self);
-struct LoHost0216c310;
-void func_ov000_0216c310(struct LoHost0216c310 *self);
-void func_ov000_0216c6fc(void *self);
 s32 func_02043d84(void *a);
-void func_ov000_0216bcbc(void *self);
 
-struct Obj0216bf30 {
-    s32 unk_00;
-    u8 unk_04[0x240];
-    s32 unk_244;
-    s32 unk_248;
-    s32 unk_24c;
-    s32 unk_250;
-    u8 unk_254[0x108];
-    s32 unk_35c;
-};
-
-void func_ov000_0216bf30(Obj0216bf30 *self) {
+void func_ov000_0216bf30(LoTicker *self) {
     s32 i;
-    self->unk_00 = 0x1000;
+    self->speed = 0x1000;
     for (i = 0; i < 0x10; i++) {
-        u8 *e = (u8 *)self + i * 0x24;
-        LFLD(s32, e, 4) = -1;
-        LFLD(u8, e, 8) = 0;
+        self->msgs[i].kind = -1;
+        self->msgs[i].text[0] = 0;
     }
-    self->unk_244 = 0;
-    self->unk_248 = 0;
-    self->unk_24c = 0;
-    self->unk_250 = 0;
-    MI_CpuFill8((u8 *)self + 0x254, 0, 0x108);
-    self->unk_35c = 0;
+    self->read = 0;
+    self->write = 0;
+    self->head = NULL;
+    self->tail = NULL;
+    MI_CpuFill8(self->slots, 0, sizeof(self->slots));
+    self->cur = NULL;
 }
 
-void func_ov000_0216bf90(void *self) {
+void func_ov000_0216bf90(LoTicker *self) {
     s32 i;
     func_ov000_0216bcbc(self);
     for (i = 0; i < 10; i++) {
-        if (LFLD(VObj *, (u8 *)self + i * 12, 0x368) != NULL && --LFLD(s32, (u8 *)self + i * 12, 0x360) == 0) {
-            LO_FREE_V((u8 *)self + i * 12, 0x368);
+        if (self->res[i].win != NULL && --self->res[i].count == 0) {
+            HEAP_DELETE(TextWin *, self->res[i].win, p->unk_vf04());
         }
     }
 }
 
-typedef struct {
-    void *vtbl;
-    u32 flags;
-    u8 pad08[0x1c];
-    s32 unk_24;
-    s32 unk_28;
-    u8 pad2c[0xb];
-    s8 unk_37;
-    s32 unk_38;
-    u8 pad3c[0x8];
-    s32 unk_44;
-    s32 unk_48;
-    s32 unk_4c;
-    u8 pad50[0x20];
-    s32 unk_70;
-    u16 unk_74;
-    u16 unk_76;
-} LoText0216c018;
-
-typedef struct {
-    s32 a;
-    s32 b;
-} LoPair0216c018;
-
-extern u8 data_0208ba70[];
-extern LoPair0216c018 data_ov000_021c9bb4[];
-void func_0204c7d0(void *p);
-s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void func_0204ca70(void *p);
-void func_ov000_0216bae4(void *p, s32 b);
+void func_0204ca70(TextWin *win);
 void func_ov000_0216bf18(NNSG3dRS *rs);
 
-static inline LoText0216c018 *NewText0216c018(void) {
-    LoText0216c018 *t = (LoText0216c018 *)Heap_Alloc(0xb8);
+static inline TextWin *NewText0216c018(void) {
+    TextWin *t = (TextWin *)Heap_Alloc(0xb8);
     if (t != NULL) {
-        t->vtbl = data_0208ba70;
+        *(const u32 **)t = data_0208ba70;
         func_0204c7d0(t);
     }
     return t;
 }
 
-static inline void SetText0216c018(LoText0216c018 *t, char *str) {
-    t->unk_24 = (s32)str;
-    t->unk_4c = Text_Measure(t->unk_28, t->unk_38, t->unk_24, &t->unk_44, &t->unk_48, t->unk_37 != 0);
-    data_02097ce0->unk_004 = t->unk_28;
+static inline void SetText0216c018(TextWin *t, char *str) {
+    t->str = (u32)str;
+    t->unk_4c = Text_Measure(t->font, t->spacing, t->str, &t->width, &t->height, (s8)t->unk_37 != 0);
+    data_02097ce0->unk_004 = t->font;
 }
 
-static inline BOOL HasPending0216c018(u8 *self) {
-    return LFLD(s32, self, 0x244) != LFLD(s32, self, 0x248) ? TRUE : FALSE;
+static inline BOOL HasPending0216c018(LoTicker *self) {
+    return self->read != self->write ? TRUE : FALSE;
 }
 
-static inline u8 *GetCur0216c018(u8 *self) {
-    return self + 4 + LFLD(s32, self, 0x244) * 0x24;
+static inline LoTickerMsg *GetCur0216c018(LoTicker *self) {
+    return &self->msgs[self->read];
 }
 
-void func_ov000_0216c018(void *obj) {
-    u8 *self = (u8 *)obj;
+void func_ov000_0216c018(LoTicker *self) {
     s32 sc;
-    LoPair0216c018 *tbl;
-    u8 *s;
+    const LoTickerIcons *tbl;
+    LoTickerSlot *s;
     s32 i;
     s32 n;
-    u8 *e;
+    LoTickerMsg *e;
     if (!HasPending0216c018(self)) {
         return;
     }
-    n = LFLD(s32, self, 0x248) - LFLD(s32, self, 0x244);
+    n = self->write - self->read;
     if (n < 0) {
         n += 16;
     }
     sc = LO_FX_MUL(n << 12, 0x400);
-    LFLD(s32, self, 0) = sc;
+    self->speed = sc;
     if (sc < 0x1000) {
-        LFLD(s32, self, 0) = 0x1000;
+        self->speed = 0x1000;
     } else if (sc > 0x3000) {
-        LFLD(s32, self, 0) = 0x3000;
+        self->speed = 0x3000;
     }
-    if (LFLD(void *, self, 0x35c) != NULL ? TRUE : FALSE) {
+    if (self->cur != NULL ? TRUE : FALSE) {
         return;
     }
     e = GetCur0216c018(self);
     tbl = data_ov000_021c9bb4;
     for (i = 0; i < 6; i++) {
-        if (!(LFLD(u32, self + i * 0x2c, 0x254) & 1)) {
+        if (!(self->slots[i].flags & 1)) {
             break;
         }
     }
-    s = i == 6 ? NULL : self + 0x254 + i * 0x2c;
+    s = i == 6 ? NULL : &self->slots[i];
     if (s == NULL) {
         return;
     }
-    LFLD(s32, s, 0) = 3;
-    LFLD(s32, s, 4) = LFLD(s32, e, 0);
-    LFLD(s32, s, 0xc) = 0;
-    LFLD(s32, s, 0x10) = 0;
-    LFLD(s32, s, 0x1c) = 0;
-    LFLD(s32, s, 0x20) = 0;
-    LFLD(s32, s, 0x24) = 0;
-    if (LFLD(s8, e, 4) != 0) {
-        LFLD(LoText0216c018 *, s, 8) = NewText0216c018();
-        LFLD(LoText0216c018 *, s, 8)->unk_28 = 4;
-        SetText0216c018(LFLD(LoText0216c018 *, s, 8), (char *)e + 4);
-        LFLD(LoText0216c018 *, s, 8)->unk_74 = 0x7fff;
-        LFLD(LoText0216c018 *, s, 8)->unk_76 = 0x3b7f;
-        LFLD(LoText0216c018 *, s, 8)->flags |= 0x40;
-        LFLD(LoText0216c018 *, s, 8)->unk_70 = -0x1000;
-        LFLD(LoText0216c018 *, s, 8)->flags |= 0x1000000;
-        LFLD(LoText0216c018 *, s, 8)->flags |= 0x400000;
-        LFLD(LoText0216c018 *, s, 8)->flags |= 0x40000000;
-        LFLD(LoText0216c018 *, s, 8)->flags |= 4;
-        func_0204ca70(LFLD(LoText0216c018 *, s, 8));
+    s->flags = 3;
+    s->kind = e->kind;
+    s->t = 0;
+    s->drop = 0;
+    s->base = 0;
+    s->timer = 0;
+    s->eff = NULL;
+    if (e->text[0] != 0) {
+        s->text = NewText0216c018();
+        s->text->font = 4;
+        SetText0216c018(s->text, e->text);
+        s->text->color0 = 0x7fff;
+        s->text->color1 = 0x3b7f;
+        s->text->flags |= 0x40;
+        s->text->posZ = -0x1000;
+        s->text->flags |= 0x1000000;
+        s->text->flags |= 0x400000;
+        s->text->flags |= 0x40000000;
+        s->text->flags |= 4;
+        func_0204ca70(s->text);
     } else {
-        LFLD(void *, s, 8) = NULL;
+        s->text = NULL;
     }
-    func_ov000_0216bae4(self + 0x360 + tbl[LFLD(s32, s, 4)].a * 12, 0);
-    func_ov000_0216bae4(self + 0x360 + tbl[LFLD(s32, s, 4)].b * 12, 0);
-    if (LFLD(s32, s, 4) == 7) {
-        LFLD(Effect3D *, s, 0x24) = func_02066c58();
-        LFLD(Effect3D *, s, 0x24)->initCallback = func_ov000_0216bf18;
-        LFLD(Effect3D *, s, 0x24)->loopStart = 0x7fffffff;
-        LFLD(Effect3D *, s, 0x24)->loopCount = -1;
+    func_ov000_0216bae4(&self->res[tbl[s->kind].a], NULL);
+    func_ov000_0216bae4(&self->res[tbl[s->kind].b], NULL);
+    if (s->kind == 7) {
+        s->eff = func_02066c58();
+        s->eff->initCallback = func_ov000_0216bf18;
+        s->eff->loopStart = 0x7fffffff;
+        s->eff->loopCount = -1;
     }
-    if (LFLD(void *, self, 0x24c) == NULL) {
-        LFLD(void *, self, 0x24c) = s;
+    if (self->head == NULL) {
+        self->head = s;
     } else {
-        LFLD(void *, LFLD(u8 *, self, 0x250), 0x28) = s;
+        self->tail->next = s;
     }
-    LFLD(void *, self, 0x250) = s;
-    LFLD(void *, self, 0x35c) = s;
-    LFLD(s32, self + LFLD(s32, self, 0x244) * 0x24, 4) = -1;
-    LFLD(u8, self + LFLD(s32, self, 0x244) * 0x24, 8) = 0;
-    if (++LFLD(s32, self, 0x244) >= 16) {
-        LFLD(s32, self, 0x244) = 0;
+    self->tail = s;
+    self->cur = s;
+    self->msgs[self->read].kind = -1;
+    self->msgs[self->read].text[0] = 0;
+    if (++self->read >= 16) {
+        self->read = 0;
     }
 }
-
 }
 
 #ifdef NONMATCHING
@@ -238,58 +181,31 @@ void func_ov000_0216c018(void *obj) {
 extern "C" {
 
 
-typedef struct LoSlot0216c310 LoSlot0216c310;
-struct LoSlot0216c310 {
-    u32 flags;
-    s32 kind;
-    VObj *obj;
-    s32 t;
-    s32 drop;
-    s32 x;
-    s32 y;
-    s32 base;
-    s32 timer;
-    EffectObj *eff;
-    LoSlot0216c310 *next;
-};
-
-struct LoHost0216c310 {
-    s32 speed;
-    u8 unk_04[0x240];
-    s32 unk_244;
-    s32 unk_248;
-    LoSlot0216c310 *head;
-    LoSlot0216c310 *tail;
-    LoSlot0216c310 slots[6];
-    LoSlot0216c310 *cur;
-    LoTimedObj res[10];
-};
-
-static inline BOOL IsCur0216c310(LoHost0216c310 *self) {
+static inline BOOL IsCur0216c310(LoTicker *self) {
     return self->cur != NULL ? TRUE : FALSE;
 }
 
-static inline void Release0216c310(LoTimedObj *slot) {
-    if (slot->obj != NULL && --slot->timer == 0) {
-        HEAP_DELETE_VOBJ(slot->obj);
+static inline void Release0216c310(LoTextHolder *slot) {
+    if (slot->win != NULL && --slot->count == 0) {
+        HEAP_DELETE(TextWin *, slot->win, p->unk_vf04());
     }
 }
 
-static inline BOOL IsCurNode0216c310(LoHost0216c310 *self, LoSlot0216c310 *n) {
+static inline BOOL IsCurNode0216c310(LoTicker *self, LoTickerSlot *n) {
     return self->cur == n ? TRUE : FALSE;
 }
 
-void func_ov000_0216c310(LoHost0216c310 *self) {
+void func_ov000_0216c310(LoTicker *self) {
     s32 s;
     s32 m;
     s32 r;
     s32 y;
-    LoSlot0216c310 *h;
-    LoTimedObj *slA;
-    LoTimedObj *slB;
-    LoSlot0216c310 *prev;
-    LoSlot0216c310 *n;
-    LoSlot0216c310 *next;
+    LoTickerSlot *h;
+    LoTextHolder *slA;
+    LoTextHolder *slB;
+    LoTickerSlot *prev;
+    LoTickerSlot *n;
+    LoTickerSlot *next;
     prev = NULL;
     for (n = self->head; n != NULL; n = next) {
         next = n->next;
@@ -347,7 +263,7 @@ void func_ov000_0216c310(LoHost0216c310 *self) {
                 n->kind = -1;
                 n->flags = 0;
                 n->next = NULL;
-                HEAP_DELETE_VOBJ(n->obj);
+                HEAP_DELETE(TextWin *, n->text, p->unk_vf04());
                 if (n->eff != NULL && EffectMgr_Contains(data_0214a420, n->eff)) {
                     n->eff->state = 4;
                 }

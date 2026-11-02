@@ -7,28 +7,6 @@ typedef struct {
     u32 b0 : 1;
 } Bit02171478;
 
-typedef struct {
-    u8 pad[0x24];
-    s32 state;
-    u8 pad28[0xc];
-    void *unk_34;
-    void *unk_38;
-    void *unk_3c;
-    void *unk_40;
-    void *unk_44;
-    u8 pad48[4];
-    void *unk_4c;
-    void *unk_50;
-    void *unk_54;
-} Task02171478;
-
-class Mgr02171478 : public MessageQueue {
-public:
-    Bit02171478 flags;
-    ListBuffer *unk_118;
-    Task02171478 *unk_11c;
-};
-
 extern "C" {
 
 extern u8 data_0214b105[];
@@ -39,19 +17,19 @@ extern u8 data_ov000_021cb6d0[];
 extern u8 data_ov000_021cb920[];
 extern u8 data_ov000_021cb940[];
 extern CmdQueue *data_ov000_021ccd54;
-extern Mgr02171478 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern s32 data_02097d78[];
 void *Heap_Alloc(u32 size);
 void *func_020359d0(void *a, s32 b, s32 c);
 void func_ov000_0216f1ac(ListBuffer *buf, BufferList *list);
-void func_ov000_0216faac(void *p);
+void func_ov000_0216faac(ListBuffer021cb940 *self);
 VObj *func_ov000_0219bf90(void);
 void func_ov000_021848d0(CmdQueue *q);
-BOOL func_ov000_02170188(Task02171478 *t, s32 b, s32 c);
-BOOL func_ov000_0217032c(Task02171478 *t, s32 b, s32 c);
-BOOL func_ov000_02170448(Task02171478 *t, s32 b, s32 c);
-BOOL func_ov000_02170620(Task02171478 *t, s32 b, s32 c);
-BOOL func_ov000_021708ec(Task02171478 *t, s32 b, s32 c);
+BOOL func_ov000_02170188(ListBuffer021cb940 *t, s32 b, s32 c);
+BOOL func_ov000_0217032c(ListBuffer021cb940 *t, s32 b, s32 c);
+BOOL func_ov000_02170448(ListBuffer021cb940 *t, s32 b, s32 c);
+BOOL func_ov000_02170620(ListBuffer021cb940 *t, s32 b, s32 c);
+BOOL func_ov000_021708ec(ListBuffer021cb940 *t, s32 b, s32 c);
 void func_ov000_021b87d8(void *p, u16 a);
 void func_ov000_0216c954(void *p, u16 a, s32 b);
 void func_ov000_0216ca64(void *p, s32 a, s32 b);
@@ -77,7 +55,7 @@ static inline void ListBuffer_Init02171478(ListBuffer *b) {
     b->next = NULL;
 }
 
-static inline ListBuffer *AddBuffer02171478(MessageQueue *self, ListBuffer *buf, u32 priority, Mgr02171478 *owner) {
+static inline ListBuffer *AddBuffer02171478(MessageQueue *self, ListBuffer *buf, u32 priority, MessageQueue021cb980 *owner) {
     ListBuffer *b = buf;
     BOOL allocated = FALSE;
     if (b == NULL) {
@@ -128,7 +106,7 @@ static inline Message *FindById02171478(MessageQueue *self, s32 id) {
 }
 
 static inline BOOL QueueBusy02171478(void) {
-    Mgr02171478 *q = data_ov000_021ccd30;
+    MessageQueue021cb980 *q = data_ov000_021ccd30;
     Message *m;
     if (q == NULL) {
         return FALSE;
@@ -159,7 +137,7 @@ static inline BOOL Pl_Busy02171478(VObj *pl) {
     return LFLD(u8, pl, 0xb2e) != 0 ? TRUE : FALSE;
 }
 
-static inline BOOL Task_Start34(Task02171478 *t, u32 b) {
+static inline BOOL Task_Start34(ListBuffer021cb940 *t, u32 b) {
     void *p;
     if (t->unk_34 != NULL) {
         return FALSE;
@@ -180,7 +158,7 @@ static inline BOOL Task_Stop(void *p) {
     return TRUE;
 }
 
-static inline BOOL Task_Start50(Task02171478 *t, u32 b, u32 c) {
+static inline BOOL Task_Start50(ListBuffer021cb940 *t, u32 b, u32 c) {
     void *p;
     u16 bh;
     s32 bl;
@@ -202,7 +180,7 @@ static inline BOOL Task_Start50(Task02171478 *t, u32 b, u32 c) {
     return TRUE;
 }
 
-static inline BOOL Task_Start54(Task02171478 *t, u32 b, s32 c) {
+static inline BOOL Task_Start54(ListBuffer021cb940 *t, u32 b, s32 c) {
     void *p;
     u8 lo;
     u32 hi;
@@ -230,7 +208,7 @@ static inline BOOL Task_Stop54(void *p) {
     return TRUE;
 }
 
-static inline BOOL Task_Start38(Task02171478 *t, u32 b) {
+static inline BOOL Task_Start38(ListBuffer021cb940 *t, u32 b) {
     void *p;
     if (t->state != 3) {
         return FALSE;
@@ -247,7 +225,7 @@ static inline BOOL Task_Start38(Task02171478 *t, u32 b) {
     return TRUE;
 }
 
-static inline BOOL Task_Start40(Task02171478 *t, u32 b) {
+static inline BOOL Task_Start40(ListBuffer021cb940 *t, u32 b) {
     void *p;
     if (t->unk_40 != NULL) {
         return FALSE;
@@ -261,7 +239,7 @@ static inline BOOL Task_Start40(Task02171478 *t, u32 b) {
     return TRUE;
 }
 
-static inline BOOL Task_Start44(Task02171478 *t, u32 b) {
+static inline BOOL Task_Start44(ListBuffer021cb940 *t, u32 b) {
     void *p;
     u8 x2;
     u8 x1;
@@ -283,7 +261,7 @@ static inline BOOL Task_Start44(Task02171478 *t, u32 b) {
     return TRUE;
 }
 
-static inline BOOL Task_Start3c(Task02171478 *t, s32 b, u32 c) {
+static inline BOOL Task_Start3c(ListBuffer021cb940 *t, s32 b, u32 c) {
     void *p;
     if (t->unk_3c != NULL) {
         return FALSE;
@@ -299,7 +277,7 @@ static inline BOOL Task_Start3c(Task02171478 *t, s32 b, u32 c) {
     return TRUE;
 }
 
-static inline BOOL Task_Start4c(Task02171478 *t, u32 b, s32 c) {
+static inline BOOL Task_Start4c(ListBuffer021cb940 *t, u32 b, s32 c) {
     void *p;
     u16 lo;
     BOOL f;
@@ -328,15 +306,15 @@ static inline BOOL Task_Start4c(Task02171478 *t, u32 b, s32 c) {
 
 extern "C" {
 
-void func_ov000_02171478(Mgr02171478 *self, s32 a, s32 kind, s32 b, s32 c) {
+void func_ov000_02171478(MessageQueue021cb980 *self, s32 a, s32 kind, s32 b, s32 c) {
     switch (kind) {
     case 1:
-        self->flags.b0 = 1;
+        self->flag0 = 1;
         func_020359d0(data_0214b105, 7, 0);
         func_020359d0(data_0208cca0, 7, 0);
         func_020359d0(data_0208cc94, 7, 0);
         if (self->unk_118 == NULL) {
-            TimedBuffer *t = (TimedBuffer *)Heap_Alloc(0x34);
+            TimedBuffer021cb920 *t = (TimedBuffer021cb920 *)Heap_Alloc(0x34);
             if (t != NULL) {
                 ListBuffer_Init02171478(t);
                 VOBJ_SET_VTABLE(t, data_ov000_021cb920);
@@ -344,22 +322,22 @@ void func_ov000_02171478(Mgr02171478 *self, s32 a, s32 kind, s32 b, s32 c) {
                 t->unk_24 = 0;
                 t->unk_28 = 0;
                 t->unk_2c = 0;
-                LFLD(u32, t, 0x30) = 0;
+                t->unk_30 = NULL;
             }
             self->unk_118 = t;
             AddBuffer02171478(self, t, 0x10000, self);
             self->unk_118->flags |= 0x10;
         }
         if (self->unk_11c == NULL) {
-            Task02171478 *t = (Task02171478 *)Heap_Alloc(0x80);
+            ListBuffer021cb940 *t = (ListBuffer021cb940 *)Heap_Alloc(0x80);
             if (t != NULL) {
-                ListBuffer_Init02171478((ListBuffer *)t);
+                ListBuffer_Init02171478(t);
                 VOBJ_SET_VTABLE(t, data_ov000_021cb940);
                 func_ov000_0216faac(t);
             }
             self->unk_11c = t;
-            AddBuffer02171478(self, (ListBuffer *)t, 0x10000, self);
-            LFLD(u32, self->unk_11c, 4) |= 0x10;
+            AddBuffer02171478(self, t, 0x10000, self);
+            self->unk_11c->flags |= 0x10;
         }
         break;
     case 5: {

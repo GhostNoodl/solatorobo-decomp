@@ -1,85 +1,37 @@
-#include "ov000/LoCommon.h"
-#include "Main/Sys/FieldState.h"
-#include "Main/Gfx/Model.h"
-#include "Main/Res/ResArc.h"
+#include "ov000/LoTicker.h"
 
 extern "C" {
 
-extern s32 data_02097d78[5];
-BOOL func_02054f10(void *a, s32 b);
-extern void *data_0208cc94;
-extern void *data_0208cc88;
-void func_ov000_0215fdfc(void *self, s32 a, const void *b);
-extern u8 data_ov000_021c9ab0[];
-extern s32 data_ov000_021c9bb4[];
-
-typedef struct {
-    s32 a;
-    u8 **list;
-} LoPair;
-
-typedef struct {
-    s32 a;
-    s32 b;
-} LoIdx2;
-
-static inline BOOL LoGBusy(FieldState *g) {
-    return g->head != g->tail ? TRUE : FALSE;
-}
-
-static inline BOOL LoGIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
-    if (g != NULL) {
-        if (LoGBusy(g)) {
-            return FALSE;
-        }
-        if (g->state != 3) {
-            return FALSE;
-        }
-        return TRUE;
-    }
-    return TRUE;
-}
-
-static inline BOOL LoD78Idle(void) {
-    return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
-}
-
-struct Obj0216c6fc {
-    u8 unk_00[0x24c];
-    u8 *unk_24c;
-};
-
-void func_ov000_0216c6fc(Obj0216c6fc *self) {
-    LoIdx2 *tbl = (LoIdx2 *)data_ov000_021c9bb4;
-    u8 *n = self->unk_24c;
+void func_ov000_0216c6fc(LoTicker *self) {
+    const LoTickerIcons *tbl = data_ov000_021c9bb4;
+    LoTickerSlot *n = self->head;
     if (n == NULL) {
         return;
     }
     do {
-        s32 k = LFLD(s32, n, 4);
-        s32 x = LFLD(s32, n, 0x14);
+        s32 k = n->kind;
+        s32 x = n->x;
         s32 y;
-        VObj *o1;
-        VObj *o2;
-        o1 = LFLD(VObj *, (u8 *)self + tbl[k].a * 0xc, 0x368);
-        y = LFLD(s32, n, 0x18);
-        o2 = LFLD(VObj *, (u8 *)self + tbl[k].b * 0xc, 0x368);
+        TextWin *o1;
+        TextWin *o2;
+        o1 = self->res[tbl[k].a].win;
+        y = n->y;
+        o2 = self->res[tbl[k].b].win;
         if (o1) {
-            o1->vfunc_20(x, y);
-            o1->vfunc_90();
-            x = x + LFLD(s32, o1, 0x44) + 8;
+            o1->unk_vf20(x, y);
+            o1->Render();
+            x = x + o1->width + 8;
         }
-        if (LFLD(VObj *, n, 8)) {
-            LFLD(VObj *, n, 8)->vfunc_20(x, y);
-            LFLD(VObj *, n, 8)->vfunc_90();
-            x += LFLD(s32, LFLD(VObj *, n, 8), 0x44);
+        if (n->text) {
+            n->text->unk_vf20(x, y);
+            n->text->Render();
+            x += n->text->width;
         }
         if (o2) {
-            o2->vfunc_20(x + 4, y);
-            o2->vfunc_90();
+            o2->unk_vf20(x + 4, y);
+            o2->Render();
         }
-        n = LFLD(u8 *, n, 0x28);
+        n = n->next;
     } while (n);
 }
 

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/MessageQueue.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
@@ -77,7 +78,7 @@ typedef struct {
 
 extern "C" {
 extern void *data_ov000_021ccd68;
-extern u8 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern u8 *data_ov000_021ccd6c;
 extern void *data_02097e4c;
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
@@ -164,20 +165,20 @@ void func_ov000_0219cdb8(Robo021ca458 *self) {
     }
     if (((u8 *)data_ov000_021ccd54)[0xc9] != 0) {
         u16 *w = self->hp;
-        u8 *a;
+        ListBuffer021cb940 *a;
         u16 v;
         w[0] = v = w[1];
-        a = LFLD(u8 *, data_ov000_021ccd30, 0x11c);
-        if (a != NULL && LFLD(u8 *, a, 0x58) != NULL) {
-            func_ov000_021697dc(LFLD(u8 *, a, 0x58), v, v);
-            LFLD(u32, LFLD(u8 *, a, 0x58), 0xc) |= 0x80;
+        a = data_ov000_021ccd30->unk_11c;
+        if (a != NULL && a->unk_58 != NULL) {
+            func_ov000_021697dc(a->unk_58, v, v);
+            LFLD(u32, a->unk_58, 0xc) |= 0x80;
         }
-        LFLD(u16, self->hp, 0xa) = 0;
+        self->hpObj->unk_0a = 0;
         Reset0219cdb8(self);
     }
     {
-        u8 *a = LFLD(u8 *, data_ov000_021ccd30, 0x11c);
-        u8 *m = a != NULL ? LFLD(u8 *, a, 0x58) : NULL;
+        ListBuffer021cb940 *a = data_ov000_021ccd30->unk_11c;
+        u8 *m = a != NULL ? ((u8 *)a->unk_58) : NULL;
         if (m != NULL) {
             LFLD(s32, m, 0x5c) = LFLD(s32, m, 0x64);
             LFLD(s32, m, 0x68) = LFLD(s32, m, 0x64);

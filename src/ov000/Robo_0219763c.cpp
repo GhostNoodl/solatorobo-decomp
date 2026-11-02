@@ -177,7 +177,7 @@ void func_ov000_0219763c(VObj *obj) {
             Die0219763c(obj);
             return;
         }
-        if (((u8 *)self->model) != NULL) {
+        if (self->model != NULL) {
             self->model->alpha = 0x1f - (self->fsm->timer << 2);
         }
         return;

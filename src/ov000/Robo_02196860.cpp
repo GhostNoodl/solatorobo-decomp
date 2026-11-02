@@ -118,7 +118,7 @@ void func_ov000_02196860(ActorEx *self) {
         func_ov000_02198360(self->fsm, 4, 0);
         break;
     }
-    if (((u8 *)self->targetObj) != NULL && self->targetObj->type == 2) {
+    if (self->targetObj != NULL && self->targetObj->type == 2) {
         void *r = func_ov003_021f0868(&self->pos, self->radius, self->height);
         if (r != NULL) {
             Target_Set(((u8 *)self->targetObj), r);

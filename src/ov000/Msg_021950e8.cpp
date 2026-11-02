@@ -33,8 +33,8 @@ BOOL func_ov000_021950e8(ActorEx *self, ActorMsg *msg) {
             if (k == 0x15) {
                 if (LFLD(u16, msg->data, 0) != 0) {
                     ((ActorSub40 *)self->fsm)->flags |= 0x40;
-                    if (((void *)self->hp) != NULL) {
-                        LFLD(u16, ((void *)self->hp), 4) = LFLD(u16, msg->data, 4);
+                    if (self->hp != NULL) {
+                        self->hpObj->unk_04 = LFLD(u16, msg->data, 4);
                     }
                 }
             } else if (k == 0xb) {
@@ -55,7 +55,7 @@ BOOL func_ov000_021950e8(ActorEx *self, ActorMsg *msg) {
             } else if (LFLD(u16, msg->data, 0) == 0 && sub->target == 0xffff) {
                 Actor *p = func_ov000_0219bf90();
                 if (p != NULL && !IsB1021950e8(p) && msg->id == p->id && p->target == self->id &&
-                    func_ov000_0219b3b4(self->targetObj) && ((void *)self->hit) != NULL &&
+                    func_ov000_0219b3b4(self->targetObj) && self->hit != NULL &&
                     (self->hit->unk_54 & 0x20000000)) {
                     VecFx32 a;
                     VecFx32 b;

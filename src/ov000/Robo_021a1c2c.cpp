@@ -1,3 +1,4 @@
+#include "ov000/FieldCam.h"
 #include "ov000/LoCommon.h"
 #include "Main/Res/StageCmd.h"
 #include "Main/Sys/FieldState.h"
@@ -29,19 +30,11 @@ void func_ov000_021915a0(void *a);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_021b468c(void *self);
-u16 Camera_GetYaw(void *cam);
 u16 Pad_LookupDir(void *rng, void *p);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 void func_02062764(s32 a, s32 b);
 void Body_SetPos(void *body, VecFx32 *pos, u32 angle);
 BOOL func_ov000_02191120(void *a);
-
-static inline u16 CamYaw_021a1c2c(u8 *cam) {
-    if (LFLD(u16, cam, 0x40) != 0) {
-        return LFLD(u16, cam, 0x44);
-    }
-    return Camera_GetYaw(cam);
-}
 
 void func_ov000_021a1c2c(Robo021ca458 *self) {
     VecFx32 p;
@@ -53,7 +46,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
 
     switch (((const State_021a1c2c *)self->fsm)->st) {
     case 0:
-        ((State_021a1c2c *)self->fsm)->st++;
+        self->fsm->st++;
         self->unk_b2b = 0;
         self->unk_b24_16 = 0;
         self->unk_b24_18 = 0;
@@ -99,7 +92,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
             return;
         }
         if (self->hit->unk_50 & 0x20000000) {
-            ((State_021a1c2c *)self->fsm)->timer = 6;
+            self->fsm->timer = 6;
             self->unk_b24_19 = 0;
             name = data_ov000_021cc630;
             se = func_ov003_021ce5b8(self->hit->unk_50);
@@ -122,7 +115,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
                 name = data_ov000_021cc618;
                 func_02065f88(se, &self->pos);
                 func_02065f88(se + 1, &self->pos);
-                ((State_021a1c2c *)self->fsm)->timer = 0xc;
+                self->fsm->timer = 0xc;
                 se = -1;
             }
             func_ov000_02190cb0(self->model, name, 0x1000, 0);
@@ -135,7 +128,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
                     func_02065f88(0x2bd, &p)->SetScaleAll(0x1800);
                 }
             }
-            ((State_021a1c2c *)self->fsm)->st++;
+            self->fsm->st++;
             self->velY = 0;
             self->gravity = 0;
             self->friction = 0x800;
@@ -151,7 +144,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
         }
         if (!self->unk_b24_1) {
             if (self->unk_b2b >= 8 && self->unk_b2b <= 0x10) {
-                u16 yaw = CamYaw_021a1c2c((u8 *)data_ov000_021ccd54 + 0xf4);
+                u16 yaw = FieldCam_GetYaw(&data_ov000_021ccd54->cam);
                 u16 ang = yaw + Pad_LookupDir(data_02097dc8, (u8 *)self + 0xb70);
                 s32 h;
                 s32 r;
@@ -204,7 +197,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
                 return;
             }
         }
-        LFLD(u16, ((u8 *)self->hp), 0xa) = 0xf0;
+        self->hpObj->unk_0a = 0xf0;
         func_02049f44(data_02097e4c, 0x34, (u8 *)self + 0x70, 0);
         if (self->unk_b22_0) {
             if (!self->unk_b24_1) {

@@ -11,21 +11,6 @@ typedef struct {
 
 extern "C" {
 
-typedef struct {
-    s32 v[3];
-} Lo3W;
-
-typedef struct {
-    u32 lo : 12;
-    u32 pal : 4;
-    u32 hi : 16;
-} LoGlyphW;
-
-typedef struct {
-    u32 unk_00;
-    LoGlyphW w;
-} LoGlyph;
-
 extern u8 data_02097d78[];
 void func_ov000_02161798(void *self, s32 a, s32 b, s32 c);
 void func_ov000_02161994(void *self, s32 a, s32 b, s32 c);
@@ -47,7 +32,6 @@ void func_ov000_02164708(void) {
     }
 }
 
-
 void func_02041c20(void *a, int b, int c);
 void func_ov000_0216715c(void *self, u8 *p);
 void func_ov000_021675ec(void *self, u8 *p);
@@ -57,7 +41,6 @@ static inline void LoPlayIf(Model *m, int idx) {
         Model_PlayPart(m, idx);
     }
 }
-
 
 static inline void *LoGetQ(u8 *p) {
     if (p == NULL || LFLD(void *, p, 0xcb4) == NULL) {
@@ -89,7 +72,7 @@ static inline void LoTail(Lo021cb6b0 *self, u8 *p) {
 }
 
 void func_ov000_02164750(Lo021cb6b0 *self) {
-    void *m;
+    Model *m;
     VObj *o;
     void *q;
     u8 *p;
@@ -99,8 +82,8 @@ void func_ov000_02164750(Lo021cb6b0 *self) {
     LoPlayIf(self->unk_28, 0);
     m = self->unk_24;
     if (m != NULL) {
-        LFLD(s32, m, 0x10c) = 0;
-        LFLD(s32, m, 0x110) = 0;
+        m->unk_10c = 0;
+        m->unk_110 = 0;
         Model_PlayPart(self->unk_24, 0);
         func_02041c20(self->unk_24, 1, 0);
         Model_PlayPart(self->unk_24, 1);

@@ -4,11 +4,6 @@
 #include "nitro/mi.h"
 
 typedef struct {
-    u8 b0 : 1;
-    u8 rest : 7;
-} B8_02194c08;
-
-typedef struct {
     u16 b0 : 12;
     u16 b12 : 2;
     u16 b14 : 2;
@@ -72,16 +67,16 @@ BOOL func_ov000_02194c08(ActorEx *self) {
     BOOL ret;
     u8 *p;
     u8 *q;
-    if (!GIdle02194c08() && ((u8 *)self->targetObj) != NULL && *((u8 *)self->targetObj) == 2) {
+    if (!GIdle02194c08() && self->targetObj != NULL && *((u8 *)self->targetObj) == 2) {
         return FALSE;
     }
     p = NULL;
     q = p;
     ret = TRUE;
-    if (((u8 *)self->model) != NULL) {
+    if (self->model != NULL) {
         u8 alpha;
         u8 *cam;
-        if (((u8 *)self->targetObj) != NULL) {
+        if (self->targetObj != NULL) {
             p = Target_Get(((u8 *)self->targetObj));
         }
         if (p == NULL) {
@@ -98,7 +93,7 @@ BOOL func_ov000_02194c08(ActorEx *self) {
                 s->bright = 0x1f;
             }
         }
-        if (((u8 *)self->targetObj) != NULL && LFLD(B8_02194c08, ((u8 *)self->targetObj), 0x18).b0) {
+        if (self->targetObj != NULL && self->targetObj->unk_18_0) {
             Mtx_02194c08 m;
             Model0218fe1c *s;
             MI_Copy48B(((u8 *)self->targetObj) + 0x20, &m);
@@ -186,7 +181,7 @@ BOOL func_ov000_02194c08(ActorEx *self) {
             func_ov000_02191c24(self->unk_3c, (u8 *)self + 0x70);
         }
     }
-    if (ret && ((u8 *)self->unk_5c) != NULL) {
+    if (ret && self->unk_5c != NULL) {
         if (GIdle02194c08() && !GHasD4_02194c08()) {
             func_ov000_021bd7a0(((u8 *)self->unk_5c));
         }

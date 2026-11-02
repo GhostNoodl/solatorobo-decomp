@@ -5,11 +5,6 @@
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
-    u8 b0 : 1;
-    u8 rest : 7;
-} B8_021ac844;
-
-typedef struct {
     VecFx32 pos;
     u16 rx;
     u16 ry;
@@ -118,7 +113,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
             }
         }
         if (!self->unk_b24_0) {
-            LFLD(u16, ((u8 *)self->hp), 0xa) = 0x96;
+            self->hpObj->unk_0a = 0x96;
         } else {
             func_02049a48(data_02097e4c, 0x30a, -1, -1, -1);
         }
@@ -135,8 +130,8 @@ void func_ov000_021ac844(Robo021ca458 *self) {
             pose.unk = 0;
             Actor_SendMsg(a, self->id, 7, 1, 0x18, &pose);
             func_ov000_0218d46c(a, self->id, 0xa);
-            if (((u8 *)a->targetObj) != NULL) {
-                LFLD(B8_021ac844, ((u8 *)a->targetObj), 0x18).b0 = 0;
+            if (a->targetObj != NULL) {
+                a->targetObj->unk_18_0 = 0;
             }
         }
         self->unk_b1c = 0xffff;
@@ -239,7 +234,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
                     self->speed = self->speed - (self->speed >> 2);
                     stop = FALSE;
                     r = func_0206d204(data_0214a424, 0);
-                    if (LFLD(u16, ((u8 *)self->hp), 0) == 0 && r == 0) {
+                    if (self->hpObj->cur == 0 && r == 0) {
                         stop = TRUE;
                     }
                     if (stop) {

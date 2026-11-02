@@ -33,20 +33,6 @@ typedef struct {
     u16 unk_06;
 } Def02197ad0;
 
-typedef struct {
-    u8 pad_00[4];
-    VecFx32 pos;
-    u8 pad_10[0x89];
-    u8 unk_99;
-    u8 unk_9a;
-    u8 unk_9b;
-    u8 b0 : 2;
-    u8 sh0 : 1;
-    u8 sh1 : 1;
-    u8 sh2 : 1;
-    u8 b5 : 3;
-} Cam02197ad0;
-
 extern "C" {
 extern Ent02197ad0 data_ov000_021c9de8[];
 extern void *data_02097e4c;
@@ -91,18 +77,18 @@ void func_ov000_02197ad0(Actor *self, BOOL b) {
     if (((Body02197ad0 *)self->hit)->flags & 0x20000000) {
         func_ov000_02190cb0(self->model, data_ov000_021cc46f, 0x1000, 0);
         if (self->unk_92 == 0 && e->se2 >= 0 && self->velY <= -0xcd) {
-            Cam02197ad0 *cam = (Cam02197ad0 *)((u8 *)data_ov000_021ccd54 + 0xf4);
-            if (cam != NULL && DistXZSq(&cam->pos, &self->pos) < 0x19000) {
+            Camera *cam = &data_ov000_021ccd54->cam.base;
+            if (cam != NULL && DistXZSq(&cam->eye, &self->pos) < 0x19000) {
                 func_02049f44(data_02097e4c, e->se2, &self->pos, 0);
                 u8 s1;
                 u8 s2;
                 if ((s1 = e->shake) != 0 && (s2 = e->shake2) != 0) {
-                    cam->sh0 = 1;
-                    cam->sh1 = 1;
-                    cam->sh2 = 1;
-                    cam->unk_99 = s1;
-                    cam->unk_9a = s2;
-                    cam->unk_9b = s2;
+                    cam->shakeX = 1;
+                    cam->shakeY = 1;
+                    cam->shakeZ = 1;
+                    cam->shakeTime = s1;
+                    cam->shakeLen = s2;
+                    cam->shakeCur = s2;
                 }
             }
         }

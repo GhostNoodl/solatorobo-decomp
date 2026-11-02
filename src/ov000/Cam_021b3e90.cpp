@@ -1,59 +1,15 @@
 #include "ov000/Actor.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/FieldCam.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 2;
-    u8 b4 : 1;
-    u8 b5 : 1;
-    u8 b6 : 2;
-} CamFlags021b3e90;
-
-typedef struct {
-    u8 b0 : 6;
-    u8 b6 : 1;
-    u8 b7 : 1;
-} CamFlags9c021b3e90;
-
-typedef struct {
-    u8 pad_00[0x40];
-    u16 unk_40;
-    u16 pitch;
-    u16 yaw;
-    u8 pad_46[0x56];
-    CamFlags9c021b3e90 unk_9c;
-    u8 pad_9d[0x37];
-    u16 unk_d4;
-    u16 unk_d6;
-    u8 pad_d8[2];
-    CamFlags021b3e90 unk_da;
-    u8 pad_db;
-    s32 unk_dc;
-    s32 unk_e0;
-    s32 unk_e4;
-    u8 pad_e8[0xc];
-    s32 unk_f4;
-    u16 unk_f8;
-    u16 unk_fa;
-} Cam021b3e90;
 
 extern "C" {
 
 extern ActorMgr *data_ov000_021ccd68;
-u16 Camera_GetYaw(Cam021b3e90 *cam);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 u16 Actor_YawToPos(Actor *self, void *target);
 u16 FX_Atan2(s32 y, s32 x);
-
-static inline u16 CamYaw(Cam021b3e90 *cam) {
-    if (cam->unk_40 != 0) {
-        return cam->yaw;
-    }
-    return Camera_GetYaw(cam);
-}
 
 static inline Actor *FindActor021b3e90(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -76,20 +32,17 @@ BOOL func_ov000_021b3e90(Robo021ca458 *self) {
     BOOL ret;
     u16 dp;
     u16 dy;
-    Cam021b3e90 *cam;
+    FieldCam *cam;
     ret = FALSE;
-    {
-        u8 *g = (u8 *)data_ov000_021ccd54;
-        cam = (Cam021b3e90 *)(g + 0xf4);
-    }
+    cam = &data_ov000_021ccd54->cam;
     if (cam == NULL) {
         return ret;
     }
     if (cam->unk_d6 - 1 != cam->unk_d4) {
-        cam->unk_9c.b6 = 0;
+        cam->base.wallClip = 0;
         return ret;
     }
-    cam->unk_9c.b6 = 1;
+    cam->base.wallClip = 1;
     dp = 0;
     dy = 0;
     switch (self->unk_b31) {
@@ -110,7 +63,7 @@ BOOL func_ov000_021b3e90(Robo021ca458 *self) {
                 dp = 0x800;
             }
             if (dp != 0) {
-                dp += cam->pitch;
+                dp += cam->base.pitch;
                 if (dp > 0x8000) {
                     s32 t;
                     if (dp < 0xf200) {
@@ -118,16 +71,16 @@ BOOL func_ov000_021b3e90(Robo021ca458 *self) {
                     }
                     t = 0x10000 - dp;
                     cam->unk_f4 = 0x8000 - t * 4;
-                    cam->unk_da.b2 = 1;
-                    cam->unk_dc = 0;
-                    cam->unk_e0 = t + 0x1800;
-                    cam->unk_e4 = 0;
-                    cam->unk_da.b0 = 1;
+                    cam->unk_da_2 = 1;
+                    cam->unk_dc.x = 0;
+                    cam->unk_dc.y = t + 0x1800;
+                    cam->unk_dc.z = 0;
+                    cam->unk_da_0 = 1;
                 } else if (dp > 0x2800) {
                     dp = 0x2800;
                 }
                 cam->unk_f8 = dp;
-                cam->unk_da.b4 = 1;
+                cam->unk_da_4 = 1;
             }
             keys = self->padCur;
             if (keys & 0x10) {
@@ -136,8 +89,8 @@ BOOL func_ov000_021b3e90(Robo021ca458 *self) {
                 dy = 0xc00;
             }
             if (dy != 0) {
-                cam->unk_fa = dy + CamYaw(cam);
-                cam->unk_da.b5 = 1;
+                cam->unk_fa = dy + FieldCam_GetYaw(cam);
+                cam->unk_da_5 = 1;
             }
         }
         if (self->unk_b30 != 0) {
@@ -153,18 +106,18 @@ BOOL func_ov000_021b3e90(Robo021ca458 *self) {
                     ang = AngleTo(self, t);
                 }
                 cam->unk_fa = ang;
-                cam->unk_da.b5 = 1;
+                cam->unk_da_5 = 1;
             }
         }
         break;
     case 1: {
         ret = TRUE;
-        if ((u16)(CamYaw(cam) - self->rot_y + 0x600) < 0xc00) {
+        if ((u16)(FieldCam_GetYaw(cam) - self->rot_y + 0x600) < 0xc00) {
             self->unk_b30 = 0;
             self->unk_b31 = 0;
         } else {
             cam->unk_fa = self->rot_y;
-            cam->unk_da.b5 = 1;
+            cam->unk_da_5 = 1;
         }
         break;
     }

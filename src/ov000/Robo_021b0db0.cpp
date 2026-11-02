@@ -1,3 +1,4 @@
+#include "ov000/FieldCam.h"
 #include "ov000/LoCommon.h"
 #include "Main/Res/StageCmd.h"
 #include "Main/Sys/FieldState.h"
@@ -12,7 +13,6 @@ extern u8 data_ov000_021cc751[];
 extern u8 data_ov000_021cc757[];
 extern u8 data_ov000_021cc75d[];
 extern u8 data_ov000_021cc763[];
-u16 Camera_GetYaw(void *cam);
 u16 Pad_LookupDir(void *rng, s32 range);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
@@ -36,12 +36,8 @@ static inline BOOL Flip021b0db0(void) {
 void func_ov000_021b0db0(Robo021ca458 *self, s32 spd) {
     u16 yaw;
     u16 tilt;
-    u8 *cam = (u8 *)data_ov000_021ccd54 + 0xf4;
-    if (LFLD(u16, cam, 0x40) != 0) {
-        yaw = LFLD(u16, cam, 0x44);
-    } else {
-        yaw = Camera_GetYaw(cam);
-    }
+    FieldCam *cam = &data_ov000_021ccd54->cam;
+    yaw = FieldCam_GetYaw(cam);
     tilt = 0;
     if (spd > 0) {
         u16 ang = Pad_LookupDir(data_02097dc8, 0) + 0x8000;

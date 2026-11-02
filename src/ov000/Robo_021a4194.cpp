@@ -3,13 +3,6 @@
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 2;
-    u8 b3 : 1;
-    u8 rest : 4;
-} B8_021a4194;
-
-typedef struct {
     u32 b0 : 1;
     u32 b1 : 1;
     u32 rest : 30;
@@ -134,8 +127,8 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                             pose.unk = 0;
                             Actor_SendMsg(a, self->id, 7, 1, 0x18, &pose);
                             func_ov000_0218d46c(a, self->id, 0xa);
-                            if (((u8 *)a->targetObj) != NULL) {
-                                LFLD(B8_021a4194, ((u8 *)a->targetObj), 0x18).b0 = 0;
+                            if (a->targetObj != NULL) {
+                                a->targetObj->unk_18_0 = 0;
                             }
                         }
                     }

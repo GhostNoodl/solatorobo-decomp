@@ -68,7 +68,7 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
             if (t->kind == 0x2003) {
                 u16 v;
                 self->fsm->st++;
-                v = LFLD(u16, ((u8 *)self->hp), 2);
+                v = self->hpObj->max;
                 Actor_SendMsg(self, self->id, 10, TRUE, 2, &v);
             } else {
                 self->fsm->st = 10;

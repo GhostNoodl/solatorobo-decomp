@@ -38,13 +38,13 @@ void func_ov000_02156d48(UiList *self, s32 unused, s32 *pos) {
     MODEL_FLAGS(self->model)->alpha = 0x1e;
     {
         s32 k;
-        u8 *o;
+        Model *o;
         px = pos[0];
         py = pos[1];
         k = self->vfunc_90();
-        o = (u8 *)self->model;
-        LFLD(s32, o, 0xfc) = px + (k << 12);
-        LFLD(s32, o, 0x100) = py;
+        o = self->model;
+        o->x = px + (k << 12);
+        o->y = py;
     }
     self->model->unk_150 = z;
     Model_PlayPart(self->model, 6);
