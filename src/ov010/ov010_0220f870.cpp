@@ -57,8 +57,8 @@ struct Ov010Task {
     u16 unk_06;
     u16 id;
     u8 unk_0a[2];
-    Ov010Vec v0c;
-    Ov010Vec v18;
+    VecFx32 v0c;
+    VecFx32 v18;
 };
 SIZE_ASSERT(Ov010Task, 0x24);
 
@@ -67,17 +67,16 @@ extern "C" {
 extern void *data_ov000_021ccd68;
 extern u8 data_ov010_0220fdf4[];
 extern Actor *ActorMgr_GetActor(void *a, u16 b);
-extern u8 *func_ov003_021da32c(s32 kind);
 extern void MTX_RotX33_(Ov010Mtx33 *m, s32 s, s32 c);
 extern void MTX_RotY33_(Ov010Mtx33 *m, s32 s, s32 c);
 extern void MTX_RotZ33_(Ov010Mtx33 *m, s32 s, s32 c);
-extern void MTX_MultVec33(const Ov010Vec *v, const Ov010Mtx33 *m, Ov010Vec *o);
-extern void VEC_Add(Ov010Vec *a, const Ov010Vec *b, Ov010Vec *c);
+extern void MTX_MultVec33(const VecFx32 *v, const Ov010Mtx33 *m, VecFx32 *o);
+extern void VEC_Add(VecFx32 *a, const VecFx32 *b, VecFx32 *c);
 extern void Ov003Vec_ToRot(Ov010Col *out, const void *p);
-extern void func_ov010_022024c4(u8 *e, u16 a, Ov010Vec *b, Ov010Vec *c, Ov010Col *d);
-extern void func_ov010_02202560(u8 *e, u16 a, Ov010Vec *b, Ov010Vec *c, Ov010Rot *d);
+extern void func_ov010_022024c4(u8 *e, u16 a, VecFx32 *b, VecFx32 *c, Ov010Col *d);
+extern void func_ov010_02202560(u8 *e, u16 a, VecFx32 *b, VecFx32 *c, Ov010Rot *d);
 extern void func_ov010_02202600(u8 *e, void *fn);
-extern BOOL func_ov010_022018c4(u16 id, const Ov010Vec *a, const Ov010Vec *b);
+extern BOOL func_ov010_022018c4(u16 id, const VecFx32 *a, const VecFx32 *b);
 
 static inline Actor *Ov010_FindObjById(u16 id) {
     if (data_ov000_021ccd68 != NULL) {
@@ -87,12 +86,12 @@ static inline Actor *Ov010_FindObjById(u16 id) {
 }
 
 static inline u8 *Ov010_SpawnShot(Ov010Task *t) {
-    u8 *e = func_ov003_021da32c(0x4829);
-    FLD(Ov010Flags8, e, 0x16).b0 = 1;
-    if (FLD(u8 *, e, 0x4c) != NULL) {
-        FLD(u16, FLD(u8 *, e, 0x4c), 0x1c) = t->id;
+    Actor *e = func_ov003_021da32c(0x4829);
+    e->flags_0 = 1;
+    if (e->targetObj != NULL) {
+        e->targetObj->target = t->id;
     }
-    return e;
+    return (u8 *)e;
 }
 
 u8 *func_ov010_02201cc8(Ov010Task *t) {
@@ -103,9 +102,9 @@ u8 *func_ov010_02201cc8(Ov010Task *t) {
             Ov010Mtx33 mx;
             Ov010Mtx33 my;
             Ov010Mtx33 mz;
-            Ov010Vec p;
-            Ov010Vec d;
-            Ov010Vec o;
+            VecFx32 p;
+            VecFx32 d;
+            VecFx32 o;
             Ov010Col c;
             Ov010Rot r;
             e = Ov010_SpawnShot(t);
@@ -116,7 +115,7 @@ u8 *func_ov010_02201cc8(Ov010Task *t) {
             MTX_MultVec33(&t->v18, &mz, &d);
             MTX_MultVec33(&d, &mx, &d);
             MTX_MultVec33(&d, &my, &d);
-            p = FLD(Ov010Vec, obj, 0x70);
+            p = FLD(VecFx32, obj, 0x70);
             VEC_Add(&p, &d, &p);
             MTX_MultVec33(&t->v0c, &mz, &o);
             MTX_MultVec33(&o, &mx, &o);
@@ -129,7 +128,7 @@ u8 *func_ov010_02201cc8(Ov010Task *t) {
     return e;
 }
 
-void func_ov010_02201eac(Ov010Task *t, u16 a, u16 id, const Ov010Vec *v0, const Ov010Vec *v1) {
+void func_ov010_02201eac(Ov010Task *t, u16 a, u16 id, const VecFx32 *v0, const VecFx32 *v1) {
     t->b0 = 1;
     t->unk_06 = a;
     t->id = id;
@@ -159,12 +158,12 @@ u8 *func_ov010_02201f44(Ov010Task *t) {
     if (t->b0) {
         Actor *obj = Ov010_FindObjById(t->id);
         if (obj != NULL) {
-            Ov010Vec p;
-            Ov010Vec d;
-            Ov010Vec o;
+            VecFx32 p;
+            VecFx32 d;
+            VecFx32 o;
             Ov010Rot r;
             e = Ov010_SpawnShot(t);
-            p = FLD(Ov010Vec, obj, 0x70);
+            p = FLD(VecFx32, obj, 0x70);
             OV010_BLKCPY(&d, &t->v18);
             func_ov003_021d9980(&d, obj->rot_y, &d);
             VEC_Add(&p, &d, &p);
@@ -179,7 +178,7 @@ u8 *func_ov010_02201f44(Ov010Task *t) {
     return e;
 }
 
-void func_ov010_02202074(Ov010Task *t, u16 a, u16 id, const Ov010Vec *v0, const Ov010Vec *v1) {
+void func_ov010_02202074(Ov010Task *t, u16 a, u16 id, const VecFx32 *v0, const VecFx32 *v1) {
     t->b0 = 1;
     t->unk_06 = a;
     t->id = id;

@@ -11,17 +11,15 @@
 
 
 // Vtable data_ov010_0220ffe4; methods in ov010_02207520.cpp, ov010_022085d0.cpp, ov010_02208898.cpp.
-struct Ov010Obj0220ffe4 : public Ov010Obj {
-    u8 unk_ac[0xc];
-    Ov010Vec unk_b8;
-    u8 unk_c4[0x2f];
+struct Ov010Obj0220ffe4 : public Ov003Actor {
+    u8 unk_f0[0x3];
     u8 unk_f3;
     u8 unk_f4[0x24];
-    Ov010V *unk_118;
+    VObj *unk_118;
     u8 unk_11c[0x8];
     s16 *unk_124;
     u8 unk_128[0x28];
-    Ov010Vec unk_150;
+    VecFx32 unk_150;
     u8 unk_15c[0xa0];
     u8 unk_1fc;
     u8 unk_1fd[0x3];
@@ -29,24 +27,13 @@ struct Ov010Obj0220ffe4 : public Ov010Obj {
 };
 
 // Vtable data_ov010_0220ffe4, data_ov010_0221009c, data_ov010_02210154; methods in ov010_02204204.cpp, ov010_0220f958.cpp.
-struct Ov010ObjBase0220ffe4_0221009c : public Ov010Obj {
-    u8 unk_ac[0x4];
-    s16 *unk_b0;
-    u16 unk_b4;
-    u16 unk_b6;
-    Ov010Vec unk_b8;
-    s32 unk_c4;
-    u8 unk_c8[0x16];
-    u16 unk_de;
-    u8 unk_e0[0xc];
-    Ov010Flags8 unk_ec;
-    u8 unk_ed[0x3];
+struct Ov010ObjBase0220ffe4_0221009c : public Ov003Actor {
     u8 unk_f0;
     u8 unk_f1;
     u8 unk_f2;
     u8 unk_f3;
     u8 unk_f4[0x4];
-    Ov010Vec *unk_f8;
+    VecFx32 *unk_f8;
     s32 unk_fc;
     s32 unk_100;
     void *unk_104;
@@ -66,15 +53,15 @@ struct Ov010ObjBase0220ffe4_0221009c : public Ov010Obj {
     u8 unk_144[0x4];
     s32 unk_148;
     u8 unk_14c[0x4];
-    Ov010Vec unk_150;
+    VecFx32 unk_150;
     s32 unk_15c;
     u8 unk_160[0x11];
     u8 unk_171;
 };
 
 // Vtable data_ov010_0221009c; methods in ov010_02208898.cpp, ov010_022089d8.cpp, ov010_02208c3c.cpp.
-struct Ov010Obj0221009c : public Ov010Obj {
-    u8 unk_ac[0x47];
+struct Ov010Obj0221009c : public Ov003Actor {
+    u8 unk_f0[0x3];
     u8 unk_f3;
 };
 

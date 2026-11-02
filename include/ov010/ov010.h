@@ -2,139 +2,8 @@
 #define OV010_H
 
 #include "types.h"
-
-// Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
-class Ov010V {
-public:
-    virtual s32 v00(...);
-    virtual s32 v04(...);
-    virtual s32 v08(...);
-    virtual s32 v0c(...);
-    virtual s32 v10(...);
-    virtual s32 v14(...);
-    virtual s32 v18(...);
-    virtual s32 v1c(...);
-    virtual s32 v20(...);
-    virtual s32 v24(...);
-    virtual s32 v28(...);
-    virtual s32 v2c(...);
-    virtual s32 v30(...);
-    virtual s32 v34(...);
-    virtual s32 v38(...);
-    virtual s32 v3c(...);
-    virtual s32 v40(...);
-    virtual s32 v44(...);
-    virtual s32 v48(...);
-    virtual s32 v4c(...);
-    virtual s32 v50(...);
-    virtual s32 v54(...);
-    virtual s32 v58(...);
-    virtual s32 v5c(...);
-    virtual s32 v60(...);
-    virtual s32 v64(...);
-    virtual s32 v68(...);
-    virtual s32 v6c(...);
-    virtual s32 v70(...);
-    virtual s32 v74(...);
-    virtual s32 v78(...);
-    virtual s32 v7c(...);
-    virtual s32 v80(...);
-    virtual s32 v84(...);
-    virtual s32 v88(...);
-    virtual s32 v8c(...);
-    virtual s32 v90(...);
-    virtual s32 v94(...);
-    virtual s32 v98(...);
-    virtual s32 v9c(...);
-    virtual s32 va0(...);
-    virtual s32 va4(...);
-    virtual s32 va8(...);
-    virtual s32 vac(...);
-    virtual s32 vb0(...);
-    virtual s32 vb4(...);
-    virtual s32 vb8(...);
-    virtual s32 vbc(...);
-    virtual s32 vc0(...);
-    virtual s32 vc4(...);
-    virtual s32 vc8(...);
-    virtual s32 vcc(...);
-    virtual s32 vd0(...);
-    virtual s32 vd4(...);
-    virtual s32 vd8(...);
-    virtual s32 vdc(...);
-    virtual s32 ve0(...);
-    virtual s32 ve4(...);
-    virtual s32 ve8(...);
-    virtual s32 vec(...);
-    virtual s32 vf0(...);
-    virtual s32 vf4(...);
-    virtual s32 vf8(...);
-    virtual s32 vfc(...);
-    virtual s32 v100(...);
-    virtual s32 v104(...);
-    virtual s32 v108(...);
-    virtual s32 v10c(...);
-    virtual s32 v110(...);
-    virtual s32 v114(...);
-    virtual s32 v118(...);
-    virtual s32 v11c(...);
-    virtual s32 v120(...);
-    virtual s32 v124(...);
-    virtual s32 v128(...);
-    virtual s32 v12c(...);
-    virtual s32 v130(...);
-    virtual s32 v134(...);
-    virtual s32 v138(...);
-    virtual s32 v13c(...);
-    virtual s32 v140(...);
-    virtual s32 v144(...);
-    virtual s32 v148(...);
-    virtual s32 v14c(...);
-    virtual s32 v150(...);
-    virtual s32 v154(...);
-    virtual s32 v158(...);
-    virtual s32 v15c(...);
-    virtual s32 v160(...);
-    virtual s32 v164(...);
-    virtual s32 v168(...);
-    virtual s32 v16c(...);
-    virtual s32 v170(...);
-    virtual s32 v174(...);
-    virtual s32 v178(...);
-    virtual s32 v17c(...);
-    virtual s32 v180(...);
-    virtual s32 v184(...);
-    virtual s32 v188(...);
-    virtual s32 v18c(...);
-    virtual s32 v190(...);
-    virtual s32 v194(...);
-    virtual s32 v198(...);
-    virtual s32 v19c(...);
-    virtual s32 v1a0(...);
-    virtual s32 v1a4(...);
-    virtual s32 v1a8(...);
-    virtual s32 v1ac(...);
-    virtual s32 v1b0(...);
-    virtual s32 v1b4(...);
-    virtual s32 v1b8(...);
-    virtual s32 v1bc(...);
-    virtual s32 v1c0(...);
-    virtual s32 v1c4(...);
-    virtual s32 v1c8(...);
-    virtual s32 v1cc(...);
-    virtual s32 v1d0(...);
-    virtual s32 v1d4(...);
-    virtual s32 v1d8(...);
-    virtual s32 v1dc(...);
-    virtual s32 v1e0(...);
-    virtual s32 v1e4(...);
-    virtual s32 v1e8(...);
-    virtual s32 v1ec(...);
-    virtual s32 v1f0(...);
-    virtual s32 v1f4(...);
-    virtual s32 v1f8(...);
-    virtual s32 v1fc(...);
-};
+#include "nitro/fx.h"
+#include "ov000/VObj.h"
 
 #define FLD(type, p, off) (*(type *)((u8 *)(p) + (off)))
 
@@ -177,75 +46,9 @@ struct Ov010Flags8 {
     u8 b7 : 1;
 };
 
-struct Ov010Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-};
-
-// ov000's VecFx32 is this layout; a TU that has not seen nitro/fx.h gets it as Ov010Vec (as the
-// merged TUs spelled it locally), so the ov000 part structs below share one vector type.
-#ifndef VECFX32_DEFINED
-#define VECFX32_DEFINED
-typedef Ov010Vec VecFx32;
-#endif
-#include "ov000/ActorParts.h"
-#include "ov000/Model0218fe1c.h"
-
-// The ov000 actor base (ov000 Actor, ctor Actor_Ctor, 0xac bytes) as ov010 uses it; the named
-// members are the ov000 Actor's (see ov000/ActorBase.h).
-class Ov010Obj : public Ov010V {
-public:
-    Ov010Obj *prev;
-    Ov010Obj *next;
-    u16 id;
-    u16 kind;
-    s32 unk_10;
-    u8 state;
-    u8 mode;
-    u8 unk_16;
-    u8 unk_17;
-    s16 unk_18[4];
-    u16 unk_20;
-    s16 unk_22;
-    u8 unk_24[0x8];
-    void *msgs;
-    u32 msg_flags;
-    s32 unk_34;
-    Model0218fe1c *model;
-    void *unk_3c;
-    ActorSub40 *fsm; // state block (ov000 Actor::fsm)
-    void *unk_44;
-    ActorSub48 *hit; // collision sphere (ov000 Actor::hit)
-    u8 *targetObj;
-    u16 *hp; // hp gauge (ov000 Actor::hp)
-    void *unk_54;
-    void *hitMesh;
-    void *unk_5c;
-    void *unk_60;
-    s32 radius;
-    s32 height;
-    s32 centerY;
-    Ov010Vec pos;
-    u16 rot_x;
-    u16 rot_y;
-    u16 rot_z;
-    u8 unk_82[0x2];
-    Ov010Vec unk_84;
-    u16 target;
-    u8 unk_92;
-    Ov010Flags8 unk_93;
-    u8 unk_94;
-    u8 unk_95;
-    u16 unk_96;
-    u16 moveYaw;
-    u16 unk_9a;
-    s32 speed;
-    s32 velY;
-    s32 friction;
-    s32 gravity;
-};
-SIZE_ASSERT(Ov010Obj, 0xac);
+// ov010 objects are ov000 actors (ov000/ActorBase.h: Actor, 0xac bytes, ctor Actor_Ctor).
+#include "ov000/ActorBase.h"
+#include "ov003/Actor.h"
 
 // The beam effect of ov010_0220f828.cpp (round svG). An Ov010BeamSet (0x40, func_ov010_02200dcc)
 // keeps a list of three Ov010BeamNode (0x8c); each node holds an Ov010Beam (0x80, drawn by
@@ -270,7 +73,7 @@ struct Ov010FxObj {
     s32 fx1;
     s32 fx2;
     s32 unk_20;
-    Ov010Vec pos;
+    VecFx32 pos;
     ActorSub40 st;
 };
 SIZE_ASSERT(Ov010FxObj, 0x44);
@@ -290,7 +93,7 @@ struct Ov010Beam {
     u16 ry;
     s32 alpha;
     s32 mode;
-    Ov010Vec pos;
+    VecFx32 pos;
     Ov010FxObj fx;
     ActorSub40 st;
 };
@@ -318,8 +121,8 @@ struct Ov010BeamSet {
     u16 unk_0c;
     u8 unk_0e[0x2];
     Ov010BeamNode *beams;
-    Ov010Vec unk_14;
-    Ov010Vec unk_20;
+    VecFx32 unk_14;
+    VecFx32 unk_20;
     ActorSub40 st;
 };
 SIZE_ASSERT(Ov010BeamSet, 0x40);
@@ -330,20 +133,20 @@ struct Ov010Blk12 {
 };
 #define OV010_BLKCPY(dst, src) (*(Ov010Blk12 *)(dst) = *(const Ov010Blk12 *)(src))
 
-static inline void Ov010_VecSet(Ov010Vec *v, s32 x, s32 y, s32 z) {
+static inline void Ov010_VecSet(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
     v->y = y;
     v->z = z;
 }
 
-static inline void Ov010_VecCopy(Ov010Vec *d, const Ov010Vec *s) {
+static inline void Ov010_VecCopy(VecFx32 *d, const VecFx32 *s) {
     d->x = s->x;
     d->y = s->y;
     d->z = s->z;
 }
 
 // Copy that loads y and z before x (matches the original's load order)
-static inline void Ov010_VecCopyYZ(Ov010Vec *d, const Ov010Vec *s) {
+static inline void Ov010_VecCopyYZ(VecFx32 *d, const VecFx32 *s) {
     s32 y = s->y;
     s32 z = s->z;
     d->x = s->x;
@@ -365,22 +168,75 @@ extern "C" {
 void Heap_Free(void *p);
 void *Heap_Alloc(u32 size);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
-void func_ov003_021d9900(Ov010Vec *a, u16 b, const Ov010Vec *c);
-void func_ov003_021d9980(Ov010Vec *a, u16 b, const Ov010Vec *c);
-extern const Ov010Vec data_ov010_0220ec20;
+void func_ov003_021d9900(VecFx32 *a, u16 b, const VecFx32 *c);
+void func_ov003_021d9980(VecFx32 *a, u16 b, const VecFx32 *c);
+
+// ov003 helpers that ov010 calls (state blocks, fx lists, pools, vector math), declared once here.
+// The ov003 sources define them on their own local types, so these take void * where ov010 has no
+// shared type for the argument. The actor API is in ov003/Actor.h.
+void func_ov003_021cedf4(s32 a);
+void func_ov003_021cf340(const char *p);
+void func_ov003_021cf39c(s32 a, const char *b);
+void func_ov003_021cf3fc(s32 a);
+void func_ov003_021cf400(s32 a);
+void func_ov003_021cf404(s32 a);
+int func_ov003_021cf408(void);
+void func_ov003_021cf418(void *p);
+void func_ov003_021cf4ac(void *p);
+void func_ov003_021cf4ec(void *p);
+void *func_ov003_021cf52c(void *g, void *obj, u16 a, u16 b);
+void func_ov003_021d7848(void *p);
+BOOL func_ov003_021d7894(void *p, s32 a, s32 b);
+void func_ov003_021d85c8(void *p, s32 a, s32 b, s32 c, s32 d);
+void func_ov003_021d883c(void *a, VecFx32 *b, VecFx32 *c, s32 d);
+void func_ov003_021d8a30(void *p, u8 id, void *st);
+void func_ov003_021d8a7c(void *p, s32 a);
+BOOL func_ov003_021d8c10(void *p);
+void func_ov003_021d8eac(void *a, void *b, s32 c, s32 d);
+void func_ov003_021d8f24(void *p);
+void func_ov003_021d8f34(void *p);
+BOOL func_ov003_021d8f4c(void *p);
+void func_ov003_021d8fa8(void *p);
+void func_ov003_021d8fc0(void *p);
+void func_ov003_021d95e8(void *p, void *tbl, u16 n);
+void func_ov003_021d969c(void *p, s32 a);
+void func_ov003_021d9740(void *p, s32 a);
+void func_ov003_021d97fc(void *p, s32 a);
+void func_ov003_021d982c(void *p, u8 v);
+BOOL func_ov003_021d9878(void *p);
+BOOL func_ov003_021d98a0(void *p);
+void func_ov003_021d9a00(VecFx32 *out, s32 angle, const VecFx32 *in);
+void func_ov003_021d9aec(VecFx32 *out, const VecFx32 *in, s32 max);
+void func_ov003_021d9b8c(VecFx32 *out, const VecFx32 *in, s32 max, s32 sub);
+void func_ov003_021d9d28(VecFx32 *out, VecFx32 *pos, u16 ang, void *c);
+void func_ov003_021d9dbc(VecFx32 *out, const VecFx32 *a, const VecFx32 *b, s32 dist, s32 yoff);
+void func_ov003_021d9f80(void *rot, const VecFx32 *a, const VecFx32 *b);
+VecFx32 func_ov003_021da214(void *actor);
+void func_ov003_021da40c(void *p);
+void func_ov003_021da48c(void *p, s32 a);
+VObj *func_ov003_021da788(s32 id, void *self, const VecFx32 *ofs);
+VObj *func_ov003_021da7e8(s32 id, void *src, const VecFx32 *ofs);
+VObj *func_ov003_021da8e4(s32 a, VecFx32 *pos, s32 b);
+void func_ov003_021da904(VObj *e, void *src, const VecFx32 *off);
+void func_ov003_021f0c60(void *self, s32 a);
+extern const VecFx32 data_ov010_0220ec20;
+
+// Effect 0x192 at the actor's centre, turned by (a, b) / along a -> b (ov010_0220ea84.cpp).
+VObj *func_ov010_0220ea84(Actor *self, u16 a, u16 b);
+VObj *func_ov010_0220eaf0(Actor *self, const VecFx32 *a, const VecFx32 *b);
 }
 
 // Offset of the actor's attach point (func_ov010_021fa7e0)
-static inline Ov010Vec Ov010_AttachOffset(void *obj) {
-    Ov010Vec v = data_ov010_0220ec20;
-    void *p;
-    if (obj != NULL && (p = FLD(void *, obj, 0x44)) != NULL) {
+static inline VecFx32 Ov010_AttachOffset(Actor *obj) {
+    VecFx32 v = data_ov010_0220ec20;
+    ActorSub44 *p;
+    if (obj != NULL && (p = obj->unk_44) != NULL) {
         u16 ry;
-        v.x = FLD(s32, p, 0xc);
-        v.y = FLD(s32, p, 0x10);
-        v.z = FLD(s32, p, 0x14);
-        ry = FLD(u16, obj, 0x7e);
-        func_ov003_021d9900(&v, FLD(u16, obj, 0x7c), &v);
+        v.x = p->unk_0c.x;
+        v.y = p->unk_0c.y;
+        v.z = p->unk_0c.z;
+        ry = obj->rot_y;
+        func_ov003_021d9900(&v, obj->rot_x, &v);
         func_ov003_021d9980(&v, ry, &v);
     }
     return v;

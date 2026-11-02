@@ -47,12 +47,11 @@ struct Ov010Toggle {
 
 extern "C" {
 
-extern const Ov010Vec data_ov010_0220ec80;
-extern const Ov010Vec data_ov010_0220ec74;
+extern const VecFx32 data_ov010_0220ec80;
+extern const VecFx32 data_ov010_0220ec74;
 extern void func_ov000_0218a358(void *a, const void *b, Ov010Rot *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 extern void func_ov000_0219864c(void *a, s32 b, s32 c);
-extern void func_ov003_021da48c(void *p, s32 a);
 
 static inline void Ov010_SetSky(void) {
     FieldState *g = data_ov000_021ccd54;
@@ -71,22 +70,13 @@ BOOL func_ov010_021fff80(Ov010Toggle *o) {
     return TRUE;
 }
 
-struct Obj021fffa0 : public Ov010Obj {
-
-};
-
-void func_ov010_021fffa0(Obj021fffa0 *self) {
+void func_ov010_021fffa0(Actor *self) {
     if (self->unk_44 != NULL) {
         func_ov000_021984f4(self->unk_44, 0, 0);
     }
 }
 
-struct Obj021fffc0 : public Ov010Obj {
-    u8 unk_ac[0x42];
-    Ov010Flags unk_ee;
-};
-
-void func_ov010_021fffc0(Obj021fffc0 *self) {
+void func_ov010_021fffc0(Ov003Actor *self) {
     if (self->hit != NULL) {
         func_ov000_0219864c(self->hit, 0, 0);
     }
@@ -113,13 +103,13 @@ void func_ov010_021ffff4(void) {
 void func_ov010_021ffff8(void) {
 }
 
-void func_ov010_021ffffc(Obj021fffc0 *self) {
-    self->v54();
+void func_ov010_021ffffc(Ov003Actor *self) {
+    self->vfunc_54();
 }
 
-void func_ov010_02200010(Obj021fffc0 *self) {
-    self->unk_ee.b5 = 1;
-    self->v70();
+void func_ov010_02200010(Ov003Actor *self) {
+    self->unk_ee_5 = 1;
+    self->vfunc_70();
 }
 
 void func_ov010_02200030(void) {
@@ -181,17 +171,17 @@ extern "C" {
 
 extern void *data_ov000_021ccd68;
 extern void *data_0214a420;
-extern Ov010V *Effect3D_Create(const char *a, const char *b, s32 c, Ov010Vec *pos);
-extern Ov010V *EffectGroup_Create(const char *a, const char *b, Ov010Vec *pos);
-extern Ov010V *func_02065f88(s32 id, Ov010Vec *pos);
-extern Ov010V *func_020657b0(void *mgr, s32 h);
+extern VObj *Effect3D_Create(const char *a, const char *b, s32 c, VecFx32 *pos);
+extern VObj *EffectGroup_Create(const char *a, const char *b, VecFx32 *pos);
+extern VObj *func_02065f88(s32 id, VecFx32 *pos);
+extern VObj *func_020657b0(void *mgr, s32 h);
 extern void EffectMgr_Kill(void *mgr, s32 h);
 extern void EffectMgr_StopLoop(void *mgr, s32 h);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void *func_ov000_021985c0(void *p);
-extern s32 func_ov000_0219a5c8(void *self, u16 mask, Ov010Vec *pos, Ov010FxRot *rot, s32 r, s32 a, Ov010Vec **list);
-extern BOOL func_ov000_0219a8bc(void *hit, void *a, void *b, s32 c, u8 d, const Ov010Vec *pos, s16 h, s32 i, s32 scale);
+extern s32 func_ov000_0219a5c8(void *self, u16 mask, VecFx32 *pos, Ov010FxRot *rot, s32 r, s32 a, VecFx32 **list);
+extern BOOL func_ov000_0219a8bc(void *hit, void *a, void *b, s32 c, u8 d, const VecFx32 *pos, s16 h, s32 i, s32 scale);
 
 static inline s32 Ov010g_FxMul(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
@@ -224,12 +214,12 @@ void func_ov010_022000d8(Ov010FxObj *o) {
         switch (o->st.st) {
         case 0: {
             const char *m = data_ov010_0220ef68;
-            Ov010V *e;
-            e = (Ov010V *)Effect3D_Create(m, data_ov010_0220ef70, 0, &o->pos);
+            VObj *e;
+            e = (VObj *)Effect3D_Create(m, data_ov010_0220ef70, 0, &o->pos);
             FLD(u8, e, 0x28) = 0;
             FLD(s32, e, 0xc8) = -1;
             o->fx0 = FLD(s32, e, 0x24);
-            e = (Ov010V *)Effect3D_Create(m, data_ov010_0220ef6c, 0, &o->pos);
+            e = (VObj *)Effect3D_Create(m, data_ov010_0220ef6c, 0, &o->pos);
             FLD(u8, e, 0x28) = 0;
             FLD(s32, e, 0xc8) = -1;
             o->fx1 = FLD(s32, e, 0x24);
@@ -253,8 +243,8 @@ void func_ov010_022000d8(Ov010FxObj *o) {
             o->timer = t;
             a = Ov010g_Find(o->targetId);
             if (a != NULL) {
-                Ov010Vec *list[32];
-                Ov010Vec p;
+                VecFx32 *list[32];
+                VecFx32 p;
                 Ov010FxRot rot = {0, 0, 0};
                 s32 n;
                 s32 j;
@@ -282,11 +272,11 @@ void func_ov010_022000d8(Ov010FxObj *o) {
                         }
                         p = *list[j];
                         if (FLD(Ov010FxBits, b, 0x93).f) {
-                            Ov010V *e = func_02065f88(0x327, &p);
-                            e->v0c(FLD(s32, b, 0x64) << 1);
+                            VObj *e = func_02065f88(0x327, &p);
+                            e->vfunc_0c(FLD(s32, b, 0x64) << 1);
                         } else {
-                            Ov010V *e = EffectGroup_Create(m0, m3, &p);
-                            e->v14(o->unk_06, o->unk_06, o->unk_06);
+                            VObj *e = EffectGroup_Create(m0, m3, &p);
+                            e->vfunc_14(o->unk_06, o->unk_06, o->unk_06);
                         }
                     } while (++j < n);
                 }
@@ -317,10 +307,10 @@ void func_ov010_022000d8(Ov010FxObj *o) {
             }
             break;
         case 0xa: {
-            Ov010V *e = func_02065f88(0x25d, &o->pos);
-            e->v18(&o->pos);
-            e->v14(o->unk_06, o->unk_06, o->unk_0a);
-            e->v34(0, o->ry, 0);
+            VObj *e = func_02065f88(0x25d, &o->pos);
+            e->vfunc_18(&o->pos);
+            e->vfunc_14(o->unk_06, o->unk_06, o->unk_0a);
+            e->vfunc_34(0, o->ry, 0);
             o->fx2 = FLD(s32, e, 0x24);
             o->st.st = 0xb;
             break;
@@ -347,11 +337,11 @@ void func_ov010_022000d8(Ov010FxObj *o) {
     h[0] = o->fx0;
     h[1] = o->fx1;
     for (i = 0; i < 2; i++) {
-        Ov010V *e = func_020657b0(data_0214a420, h[i]);
+        VObj *e = func_020657b0(data_0214a420, h[i]);
         if (e != NULL) {
-            e->v18(&o->pos);
-            e->v14(o->unk_08, o->unk_08, o->unk_0a);
-            e->v34(o->rx, o->ry, 0);
+            e->vfunc_18(&o->pos);
+            e->vfunc_14(o->unk_08, o->unk_08, o->unk_0a);
+            e->vfunc_34(o->rx, o->ry, 0);
         }
     }
     }
@@ -364,13 +354,12 @@ void func_ov010_022000d8(Ov010FxObj *o) {
 namespace m_02200670 {
 extern "C" {
 
-extern void func_ov003_021da48c(void *p, s32 a);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern void *History_Init(void *p);
 extern void func_ov010_02200ee0(Ov010BeamSet *p);
 BOOL func_ov010_022006fc(Ov010Beam *o, u16 a, u16 b, u8 c, u16 d);
 
-void func_ov010_02200670(Ov010FxObj *o, const Ov010Vec *v, u16 a, u16 b, s16 c, s16 d, u8 e, u16 g) {
+void func_ov010_02200670(Ov010FxObj *o, const VecFx32 *v, u16 a, u16 b, s16 c, s16 d, u8 e, u16 g) {
     if (!o->b0) {
         return;
     }
@@ -503,8 +492,8 @@ void func_ov010_0220078c(Ov010Beam *o) {
 extern u8 data_020928b4[];
 extern u8 NNS_G3dGlb[];
 extern u8 *data_02097d48;
-extern void NNS_G3dGlbSetBaseTrans(Ov010Vec *v);
-extern void NNS_G3dGlbSetBaseScale(Ov010Vec *v);
+extern void NNS_G3dGlbSetBaseTrans(VecFx32 *v);
+extern void NNS_G3dGlbSetBaseScale(VecFx32 *v);
 extern void NNS_G3dGlbFlushVP(void);
 extern void NNS_G3dGeBufferOP_N(s32 cmd, const void *data, s32 n);
 extern u8 Gfx3DState_NextPolyId(void *p);
@@ -637,7 +626,6 @@ BOOL func_ov010_02200c98(Ov010Beam *o) {
 namespace m_02200d94 {
 extern "C" {
 
-extern void func_ov003_021da48c(void *p, s32 a);
 extern void *History_Init(void *p);
 extern void func_ov010_02200ee0(Ov010BeamSet *p);
 extern BOOL func_ov010_022006fc(Ov010Beam *o, u16 a, u16 b, u8 c, u16 d);
@@ -736,11 +724,10 @@ extern "C" {
 extern void *data_0214a420;
 extern Ov010Heap *data_02097dd0;
 extern void EffectMgr_Kill(void *a, s32 b);
-extern void func_ov003_021da48c(void *p, s32 a);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern void func_ov010_02200a00(Ov010Beam *o);
 extern Robo021ca458 *func_ov000_0219bf90(void);
-extern s32 Ov003Vec_DistSq(const Ov010Vec *a, const Ov010Vec *b);
+extern s32 Ov003Vec_DistSq(const VecFx32 *a, const VecFx32 *b);
 
 static inline void Ov010Fx_Free(Ov010FxObj *s) {
     if (s->b0) {
@@ -797,10 +784,9 @@ extern "C" {
 extern s32 Rand_UpTo(s32 max);
 extern s32 Rand_PlusMinus(s32 n);
 extern s32 Rand_Fx(void);
-extern void func_ov003_021d9a00(Ov010Vec *out, s32 angle, const Ov010Vec *in);
-extern u16 Ov003Vec_YawTo(Ov010Vec *a, Ov010Vec *b);
-extern u16 Ov003Vec_Pitch(Ov010Vec *v);
-extern u16 Ov003Vec_Yaw(Ov010Vec *v);
+extern u16 Ov003Vec_YawTo(VecFx32 *a, VecFx32 *b);
+extern u16 Ov003Vec_Pitch(VecFx32 *v);
+extern u16 Ov003Vec_Yaw(VecFx32 *v);
 extern void func_ov010_0220078c(Ov010Beam *p);
 
 static inline s32 Ov010k_Mul(s32 a, s64 b) {
@@ -865,10 +851,10 @@ void func_ov010_02201064(Ov010BeamSet *self) {
     Ov010BeamNode *n;
     Ov010BeamNode *n1;
     Ov010BeamNode *n2;
-    Ov010Vec tmp;
-    Ov010Vec res;
-    Ov010Vec d;
-    Ov010Vec v;
+    VecFx32 tmp;
+    VecFx32 res;
+    VecFx32 d;
+    VecFx32 v;
     if (!self->flags.b0) {
         return;
     }

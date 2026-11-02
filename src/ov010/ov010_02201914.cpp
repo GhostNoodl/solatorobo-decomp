@@ -7,7 +7,7 @@ struct Ov010Heap {
 };
 
 struct Ov010TaskNode {
-    Ov010V *obj;
+    VObj *obj;
     u32 time;
     Ov010TaskNode *next;
 };
@@ -28,9 +28,7 @@ extern "C" {
 extern u8 data_ov010_0220fe1c[];
 extern u8 data_ov010_0220fe08[];
 extern Ov010Heap *data_02097dd0;
-extern void func_ov003_021d7848(void *p);
 extern void *Ov003Pool_Dtor(void *p);
-extern BOOL func_ov003_021d7894(void *p, s32 a, s32 b);
 extern void Ov003Pool_Release(void *p);
 extern Ov010TaskNode *Ov003Pool_Alloc(void *p);
 extern void Ov003Pool_Free(void *p, Ov010TaskNode *n);
@@ -45,14 +43,14 @@ Ov010TaskList *Ov010Vt_0220fe1c_Ctor(Ov010TaskList *o) {
 
 Ov010TaskList *Ov010Vt_0220fe1c_Dtor(Ov010TaskList *o) {
     o->vtbl = data_ov010_0220fe1c;
-    ((Ov010V *)o)->v08();
+    ((VObj *)o)->vfunc_08();
     Ov003Pool_Dtor(o->pool);
     return o;
 }
 
 Ov010TaskList *Ov010Vt_0220fe1c_DtorDelete(Ov010TaskList *o) {
     o->vtbl = data_ov010_0220fe1c;
-    ((Ov010V *)o)->v08();
+    ((VObj *)o)->vfunc_08();
     Ov003Pool_Dtor(o->pool);
     Heap_Free(o);
     return o;

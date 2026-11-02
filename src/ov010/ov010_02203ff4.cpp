@@ -1,16 +1,7 @@
 #include "ov010/ov010.h"
 
-class Ov010Fx {
+class Ov010Fx : public VObj {
 public:
-    virtual s32 v00(...);
-    virtual s32 v04(...);
-    virtual s32 v08(...);
-    virtual s32 v0c(...);
-    virtual s32 v10(...);
-    virtual s32 v14(...);
-    virtual s32 v18(...);
-    virtual s32 v1c(...);
-    virtual s32 v20(...);
     s32 timer;
     s32 scale;
 };
@@ -32,11 +23,7 @@ static inline s32 Ov010_Clamp(s32 v, s32 lo, s32 hi) {
     return v;
 }
 
-struct Obj02203ff4 : public Ov010Obj {
-
-};
-
-void func_ov010_02203ff4(Obj02203ff4 *self) {
+void func_ov010_02203ff4(Actor *self) {
     if (self->model == NULL) {
         return;
     }
@@ -61,13 +48,13 @@ void func_ov010_0220402c(void) {
 // allocation of the loop's LICM'd preheader values; two of the misses are bl against the ROM's blx to the Thumb
 // MTX_RotY33_ (only the link resolves that). History: docs/MATCHING.md rounds qpA, pmA, nmA, mtA; docs/UNMATCHED.md.
 typedef struct Ov010Ring4030 {
-    Ov010Vec pos;
+    VecFx32 pos;
     s32 unk_0c;
     s32 r;
 } Ov010Ring4030;
 
 // MTX_RotY33_, MTX_MultVec33 and VEC_Add come from nitro/fx.h (through ov010/ov010.h).
-extern s32 Ov003Vec_DistSq(const Ov010Vec *a, const Ov010Vec *b);
+extern s32 Ov003Vec_DistSq(const VecFx32 *a, const VecFx32 *b);
 
 static inline s16 Ov010_SinIdx(int idx) {
     return FX_SinCosTable_[idx * 2];
@@ -81,9 +68,9 @@ static inline void Ov010_RotY33(MtxFx33 *m, s32 s, s32 c) {
     MTX_RotY33_(m, s, c);
 }
 
-void func_ov010_02204030(Ov010Vec *out, const Ov010Ring4030 *c, const Ov010Vec *tgt, s32 n, u16 ang) {
-    Ov010Vec v;
-    Ov010Vec t;
+void func_ov010_02204030(VecFx32 *out, const Ov010Ring4030 *c, const VecFx32 *tgt, s32 n, u16 ang) {
+    VecFx32 v;
+    VecFx32 t;
     MtxFx33 m;
     MtxFx33 m2;
     u16 cur = ang;

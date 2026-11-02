@@ -9,7 +9,7 @@ struct Ov010Sw {
     u8 b1 : 1;
     u8 b2 : 6;
     u8 unk_05[3];
-    Ov010Vec unk_08;
+    VecFx32 unk_08;
     u16 unk_14[4];
     s32 unk_1c;
 };
@@ -23,17 +23,13 @@ extern u8 data_ov010_0220ffc4[];
 extern u8 data_ov010_02210154[];
 extern void *data_0214a420;
 extern BOOL Ov003Sequence_HasEntries(void *p, void *d);
-extern void func_ov003_021d95e8(void *p, void *d, s32 n);
 extern Robo021ca458 *func_ov000_0219bf90(void);
 extern void func_ov000_0218a358(void *a, const void *b, void *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern s32 FX_Div(s32 a, s32 b);
-extern void func_ov003_021cf3fc(s32 a);
 extern void func_ov010_022075bc(void *p);
 extern void *Ov003Vt_021f7cd8_Dtor(void *p);
 extern void *Ov003Vt_021f7d10_Dtor(void *p);
 extern void *Ov010Coll_Dtor(void *p);
-extern void func_ov003_021d8f34(void *p);
-extern void *func_ov003_021d0edc(void *p);
 extern void EffectMgr_Kill(void *a, s32 b);
 
 static inline void Ov010_PlayIfIdle(Ov010Obj0221009c *self, void *anim, s32 n) {
@@ -76,13 +72,13 @@ struct Obj02208d60 {
 
 void *Ov010Vt_0220ffc4_Dtor(Obj02208d60 *self) {
     self->unk_00 = data_ov010_0220ffc4;
-    ((Ov010V *)self)->v0c();
+    ((VObj *)self)->vfunc_0c();
     return self;
 }
 
 void *Ov010Vt_0220ffc4_DtorDelete(Obj02208d60 *self) {
     self->unk_00 = data_ov010_0220ffc4;
-    ((Ov010V *)self)->v0c();
+    ((VObj *)self)->vfunc_0c();
     Heap_Free(self);
     return self;
 }
@@ -176,8 +172,8 @@ void func_ov010_02209074(void *p) {
     FLD(s32, p, 0xdc) = 0;
 }
 
-extern s32 Ov003Vec_DistSq(const Ov010Vec *a, const Ov010Vec *b);
-BOOL func_ov010_022090b4(s32 type, const s32 *rect, const s32 *circ, const Ov010Vec *p) {
+extern s32 Ov003Vec_DistSq(const VecFx32 *a, const VecFx32 *b);
+BOOL func_ov010_022090b4(s32 type, const s32 *rect, const s32 *circ, const VecFx32 *p) {
     BOOL r;
     switch (type) {
     case 0: {
@@ -187,11 +183,11 @@ BOOL func_ov010_022090b4(s32 type, const s32 *rect, const s32 *circ, const Ov010
         break;
     }
     case 1: {
-        Ov010Vec a = {0, 0, 0};
+        VecFx32 a = {0, 0, 0};
         r = FALSE;
         a.x = p->x;
         a.z = p->z;
-        Ov010Vec b = {0, 0, 0};
+        VecFx32 b = {0, 0, 0};
         b.x = circ[0];
         b.z = circ[2];
         if (Ov003Vec_DistSq(&a, &b) > Ov010_FxMul(circ[3], circ[3])) {

@@ -4,16 +4,13 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern u8 data_ov010_0220f024[];
-extern const Ov010Vec data_ov010_0220f144;
+extern const VecFx32 data_ov010_0220f144;
 extern BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
-extern void *func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
-extern Ov010V *func_02065f88(s32 id, Ov010Vec *pos);
-extern void func_ov003_021d9dbc(Ov010Vec *out, const Ov010Vec *a, const Ov010Vec *b, s32 dist, s32 yoff);
-extern void func_ov003_021d64f0(void *self);
+extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
+extern VObj *func_02065f88(s32 id, VecFx32 *pos);
 extern u16 FX_Atan2(s32 y, s32 x);
-extern s32 VEC_Distance(const Ov010Vec *a, const Ov010Vec *b);
-extern void func_ov003_021da2c8(void *self, s32 a, s32 b, s32 c, s32 d);
+extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 static inline BOOL Ov010_Begin(u16 *st) {
@@ -24,13 +21,9 @@ static inline BOOL Ov010_Begin(u16 *st) {
     return FALSE;
 }
 
-struct Obj022089d8 : public Ov010Obj {
-
-};
-
-void func_ov010_022089d8(Obj022089d8 *self) {
+void func_ov010_022089d8(Ov003Actor *self) {
     BOOL anim = FALSE;
-    switch (self->unk_18[0]) {
+    switch (self->unk_18) {
     case 0: {
         ActorSub40 *st = self->fsm;
         if (st->st == 0) {
@@ -47,7 +40,7 @@ void func_ov010_022089d8(Obj022089d8 *self) {
             func_02049f44(data_02097e4c, 0x51, &self->pos, 0);
             self->fsm->st++;
         } else {
-            const Ov010Vec *t = &data_ov010_0220f144;
+            const VecFx32 *t = &data_ov010_0220f144;
             if (self->speed >= 0x40) {
                 if (self->friction == 0) {
                     if (VEC_Distance(t, &self->pos) < 0x2000) {
@@ -59,7 +52,7 @@ void func_ov010_022089d8(Obj022089d8 *self) {
                 self->moveYaw = FX_Atan2(t->x - self->pos.x, t->z - self->pos.z);
             } else {
                 if (st->timer == 0) {
-                    func_02065f88(0x12f, &self->pos)->v0c(0xe66);
+                    func_02065f88(0x12f, &self->pos)->vfunc_0c(0xe66);
                 }
                 self->fsm->timer++;
                 if (self->fsm->timer > 0x5a) {

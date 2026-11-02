@@ -7,7 +7,7 @@ struct Ov010Heap {
 };
 
 struct Ov010TaskNode {
-    Ov010V *obj;
+    VObj *obj;
     u32 time;
     Ov010TaskNode *next;
 };
@@ -28,9 +28,7 @@ extern "C" {
 extern u8 data_ov010_0220fe1c[];
 extern u8 data_ov010_0220fe08[];
 extern Ov010Heap *data_02097dd0;
-extern void func_ov003_021d7848(void *p);
 extern void *Ov003Pool_Dtor(void *p);
-extern BOOL func_ov003_021d7894(void *p, s32 a, s32 b);
 extern void Ov003Pool_Release(void *p);
 extern Ov010TaskNode *Ov003Pool_Alloc(void *p);
 extern void Ov003Pool_Free(void *p, Ov010TaskNode *n);
@@ -59,7 +57,7 @@ void func_ov010_02201a28(Ov010TaskList *o) {
     max = n->time;
     for (; n != NULL; n = n->next) {
         if (n->time == o->time) {
-            n->obj->v08();
+            n->obj->vfunc_08();
             o->b2 = 1;
         }
         if (n->time > max) {
@@ -96,8 +94,8 @@ static inline const Ov010TLFlags *Ov010TL_Flags(const Ov010TaskList *o) {
     return (const Ov010TLFlags *)((const u8 *)o + 4);
 }
 
-Ov010V *func_ov010_02201ad4(Ov010TaskList *o, Ov010V *(*fn)(void), u32 time) {
-    Ov010V *obj = NULL;
+VObj *func_ov010_02201ad4(Ov010TaskList *o, VObj *(*fn)(void), u32 time) {
+    VObj *obj = NULL;
     Ov010TaskNode *n;
     if (o->b0 && Ov010TL_Flags(o)->b0 && !Ov010TL_Flags(o)->b1) {
         obj = fn();
@@ -125,9 +123,9 @@ void func_ov010_02201b48(Ov010TaskList *o) {
         saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->def;
         if (n->obj != NULL) {
-            Ov010V *p = n->obj;
+            VObj *p = n->obj;
             if (p != NULL) {
-                p->v04();
+                p->vfunc_04();
             }
             n->obj = NULL;
         }

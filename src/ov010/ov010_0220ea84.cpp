@@ -2,31 +2,31 @@
 
 extern "C" {
 
-extern Ov010V *func_02065f88(s32 a, Ov010Vec *b);
-extern u16 Ov003Vec_Pitch(Ov010Vec *a);
-extern u16 Ov003Vec_Yaw(Ov010Vec *a);
+extern VObj *func_02065f88(s32 a, VecFx32 *b);
+extern u16 Ov003Vec_Pitch(VecFx32 *a);
+extern u16 Ov003Vec_Yaw(VecFx32 *a);
 
-static inline Ov010V *Ov010_SpawnFx192(void *self, u16 a, u16 b) {
-    Ov010Vec p;
-    Ov010V *fx;
+static inline VObj *Ov010_SpawnFx192(Actor *self, u16 a, u16 b) {
+    VecFx32 p;
+    VObj *fx;
     {
-        s32 y = FLD(s32, self, 0x74);
-        s32 z = FLD(s32, self, 0x78);
-        p.x = FLD(s32, self, 0x70);
-        p.y = y + FLD(s32, self, 0x68) / 2;
+        s32 y = self->pos.y;
+        s32 z = self->pos.z;
+        p.x = self->pos.x;
+        p.y = y + self->height / 2;
         p.z = z;
     }
     fx = func_02065f88(0x192, &p);
-    fx->v34(a, b, 0);
+    fx->vfunc_34(a, b, 0);
     return fx;
 }
 
-Ov010V *func_ov010_0220ea84(void *self, u16 a, u16 b) {
+VObj *func_ov010_0220ea84(Actor *self, u16 a, u16 b) {
     return Ov010_SpawnFx192(self, a, b);
 }
 
-Ov010V *func_ov010_0220eaf0(void *self, const Ov010Vec *a, const Ov010Vec *b) {
-    Ov010Vec d;
+VObj *func_ov010_0220eaf0(Actor *self, const VecFx32 *a, const VecFx32 *b) {
+    VecFx32 d;
     u16 ra, rb;
     d.x = b->x - a->x;
     d.y = b->y - a->y;

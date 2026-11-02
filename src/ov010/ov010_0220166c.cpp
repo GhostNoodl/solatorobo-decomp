@@ -18,11 +18,10 @@ extern "C" {
 extern void *data_0214a420;
 extern Ov010Heap *data_02097dd0;
 extern void EffectMgr_Kill(void *a, s32 b);
-extern void func_ov003_021da48c(void *p, s32 a);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern void func_ov010_02200a00(Ov010Beam *o);
 extern Robo021ca458 *func_ov000_0219bf90(void);
-extern s32 Ov003Vec_DistSq(const Ov010Vec *a, const Ov010Vec *b);
+extern s32 Ov003Vec_DistSq(const VecFx32 *a, const VecFx32 *b);
 
 static inline void Ov010Fx_Free(Ov010FxObj *s) {
     if (s->b0) {
@@ -53,7 +52,7 @@ void func_ov010_0220166c(Ov010BeamSet *o) {
     }
 }
 
-void func_ov010_022016a0(Ov010BeamSet *o, const Ov010Vec *a, const Ov010Vec *b, u16 c) {
+void func_ov010_022016a0(Ov010BeamSet *o, const VecFx32 *a, const VecFx32 *b, u16 c) {
     if (!o->flags.b0) {
         return;
     }
@@ -106,7 +105,7 @@ BOOL Ov010BeamSet_IsDone(Ov010BeamSet *o) {
     return r;
 }
 
-void func_ov010_02201830(Ov010BeamSet *o, const Ov010Vec *v) {
+void func_ov010_02201830(Ov010BeamSet *o, const VecFx32 *v) {
     Ov010BeamNode *n;
     if (!o->flags.b0) {
         return;
@@ -119,14 +118,14 @@ void func_ov010_02201830(Ov010BeamSet *o, const Ov010Vec *v) {
     }
 }
 
-void func_ov010_02201898(Ov010BeamSet *o, const Ov010Vec *v) {
+void func_ov010_02201898(Ov010BeamSet *o, const VecFx32 *v) {
     if (!o->flags.b0) {
         return;
     }
     o->unk_14 = *v;
 }
 
-BOOL func_ov010_022018c4(u16 id, const Ov010Vec *a, const Ov010Vec *b) {
+BOOL func_ov010_022018c4(u16 id, const VecFx32 *a, const VecFx32 *b) {
     BOOL r = FALSE;
     Robo021ca458 *pl = func_ov000_0219bf90();
     if (id == pl->id && pl->unk_b24_12 == 0) {
