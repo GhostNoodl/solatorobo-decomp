@@ -35,14 +35,20 @@ typedef struct FieldCam {
             u8 unk_da_0 : 1;
             u8 unk_da_1 : 1;
             u8 unk_da_2 : 2;
-            u8 unk_da_4_f : 4;
+            u8 unk_da_4 : 1;
+            u8 unk_da_5 : 1;
+            u8 unk_da_6 : 1;
+            u8 unk_da_7 : 1;
         };
     };
     /* 0xdb */ u8 unk_db;
     /* 0xdc */ VecFx32 unk_dc;
     /* 0xe8 */ u8 unk_e8[0xc];
     /* 0xf4 */ s32 unk_f4;
-    /* 0xf8 */ u8 unk_f8[0x28];
+    /* 0xf8 */ u16 unk_f8;
+    /* 0xfa */ u16 unk_fa;
+    /* 0xfc */ s16 unk_fc;
+    /* 0xfe */ u8 unk_fe[0x22];
 } FieldCam;
 SIZE_ASSERT(FieldCam, 0x120);
 

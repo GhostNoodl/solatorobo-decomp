@@ -7,29 +7,64 @@
 #include "Main/Gfx/Model.h"
 #include "nitro/std.h"
 
+// The ov000 task base (vtable data_ov000_021cc060, 0x3c bytes; func_ov000_021731a0 clears it).
+// Tasks are kept in a list sorted by priority (data_ov000_021ccd3c, func_ov000_02173648) and
+// looked up by id (Task_FindById). The shared update (slot 0x68, func_ov000_021732a8) runs the
+// fade state machine below. The menu task classes derived from it are in ov000/MenuTask.h.
 class Task : public VObj {
 public:
-    u32 unk_04_0 : 1;
-    u32 unk_04_1 : 1;
-    u32 unk_04_2 : 1;
-    u32 unk_04_3 : 29;
-    u8 unk_08[0x8];
+    union {
+        u32 unk_04;
+        struct {
+            u32 unk_04_0 : 1; // fading (func_ov000_021732a8)
+            u32 unk_04_1 : 1; // fade out requested
+            u32 unk_04_2 : 1; // removed: func_ov000_02173784 unlinks and deletes the task
+            u32 unk_04_3 : 1;
+            u32 unk_04_4 : 1; // Task_SetFlag4 / ClearFlag4
+            u32 unk_04_5 : 1;
+            u32 unk_04_6 : 1;
+            u32 unk_04_7 : 1;
+            u32 unk_04_8 : 24;
+        };
+    };
+    s32 state; // fade state (func_ov000_021732a8): 0 idle, 8..9 fading in, 10..11 out, 12..13 shown
+    s32 param; // set by the creator (LoSwitchTaskC)
     u32 priority;
     s32 id;
-    u8 unk_18[0x8];
-    s32 unk_20;
-    s32 unk_24;
-    s32 unk_28;
-    u8 unk_2c[0x8];
+    s32 pendingId; // task to switch to (slot 0x60) once the task is idle
+    s32 fadeCur;
+    s32 fadeLen;
+    s32 fadeRatio; // fadeCur / fadeLen
+    s32 fadeSin;   // sine of fadeRatio (slot 0x74)
+    Task *parent;  // the task that was finishing when this one was created; returned to on exit
+    s32 (*callback)(void *self, s32 arg); // set by the creator; Task021cbfe0 calls it (0 on start)
     Task *prev;
     Task *next;
-    s32 unk_3c;
-    u32 unk_40;
-    u32 unk_44;
-    u32 unk_48;
-    Model *unk_4c;
-    u8 unk_50[0x4];
 };
+SIZE_ASSERT(Task, 0x3c);
+
+// The task host data_ov000_021ccd44 (0x58 bytes, built by func_ov000_02180660 and freed by
+// func_ov000_02180754, updated by func_ov000_02180900): a pending task switch and the task it
+// switches to. Its state (unk_04) runs the switch: 5 calls the task's vfunc_10, 6 waits for its
+// vfunc_14, 7 starts it once no task is finishing.
+struct TaskHost {
+    union {
+        u32 unk_00;
+        struct {
+            u32 unk_00_0 : 1;
+            u32 unk_00_1 : 1;
+            u32 mode : 2; // pending switch: 1 to a new task, 2 to one already in the list
+            u32 unk_00_4 : 28;
+        };
+    };
+    s32 unk_04;
+    VObj res; // vtable data_0208b318; its vfunc_1c loads (func_ov000_02180900)
+    u8 unk_0c[0x40];
+    s32 unk_4c; // inside res
+    u8 unk_50[0x4];
+    Task *task; // the task being switched to
+};
+SIZE_ASSERT(TaskHost, 0x58);
 
 extern "C" {
 

@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Res/StageFlags.h"
 
 typedef struct {
     u8 pad_00[0x14];
@@ -29,7 +30,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_0214a424;
 extern char data_ov000_021cc60f[];
 s16 *func_ov003_021ce630(s16 *p, void *hit);
 u16 func_ov003_021ce6fc(u16 v);
@@ -100,7 +100,7 @@ static inline Trio0219d1a8 *NewTrio0219d1a8(void) {
 
 void Robo021ca458_Start(Robo021ca458 *self) {
     Info0219d1a8 *info = func_0206fef8(self->kind);
-    u8 *p;
+    AnimEventTable *p;
     u32 *q;
     s32 x;
     s32 z;
@@ -109,44 +109,44 @@ void Robo021ca458_Start(Robo021ca458 *self) {
     self->radius = info->hx << 4;
     self->height = info->hy << 4;
     self->centerY = self->height >> 1;
-    func_ov000_0218ffdc((u8 *)self + 0xac, (u8 *)self + 0x194, 0, 1);
+    func_ov000_0218ffdc(&self->mdl0, &self->res0, 0, 1);
     self->mdl0.actor_id = self->id;
     self->mdl0.evFunc = (void *)func_ov003_021ce630;
     p = NULL;
     q = self->res0.unk_c0;
     if (q != NULL) {
-        p = (u8 *)*q + 8;
+        p = (AnimEventTable *)((u8 *)*q + 8);
     }
-    self->mdl0.evTable = (AnimEventTable *)p;
-    if (p != NULL && LFLD(u16, p, 2) == 0) {
-        self->mdl0.evData = (s16 *)(p + 4 + LFLD(u16, p, 0) * 12);
+    self->mdl0.evTable = p;
+    if (p != NULL && p->is_ptr == 0) {
+        self->mdl0.evData = (s16 *)&p->entries[p->count];
     }
     self->unk_a4b = 0;
     self->mdl0.unk_c2 |= 0x100;
-    if (!LBIT(self, 0xb24).b1) {
+    if (!self->unk_b24_1) {
         self->mdl0.unk_cc = 0x320;
     }
     self->unk_a4c = 0;
-    self->unk_a48 = func_ov000_021909a8((u8 *)self + 0xac, (u8 *)self + 0x200, data_ov000_021cc60f);
-    func_ov000_0218ffdc((u8 *)self + 0x778, (u8 *)self + 0x860, 0, 1);
+    self->unk_a48 = func_ov000_021909a8(&self->mdl0, (u8 *)self + 0x200, data_ov000_021cc60f);
+    func_ov000_0218ffdc(&self->mdl2, &self->res3, 0, 1);
     self->mdl2.actor_id = self->id;
     func_ov000_0219c8e0((u8 *)self);
     x = self->radius;
     z = self->centerY;
-    func_ov000_02198c8c((u8 *)self + 0x2cc, self->id);
+    func_ov000_02198c8c(&self->hit0, self->id);
     self->hit0.radius = (x >> 1) + (x >> 3);
     self->hit0.unk_28 = 2;
     self->hit0.offset.y = z - (z >> 3);
     self->hit0.unk_9a_0 = 0;
     self->hit0.unk_9a_3 = 0;
-    func_0203f364((u8 *)self + 0x2cc);
-    func_ov000_02198c8c((u8 *)self + 0x6c0, self->id);
+    func_0203f364(&self->hit0);
+    func_ov000_02198c8c(&self->hit1, self->id);
     self->hit1.unk_28 = 2;
     self->hit1.unk_9a_0 = 0;
     self->hit1.radius = x;
     self->hit1.offset.y = z;
     self->hit1.unk_9a_3 = 0;
-    func_0203f364((u8 *)self + 0x6c0);
+    func_0203f364(&self->hit1);
     self->hit1.unk_48 = x;
     self->unk_44 = (ActorSub44 *)(NewObj44_0219d1a8());
     self->unk_44->unk_20 = self->id;
@@ -158,7 +158,7 @@ void Robo021ca458_Start(Robo021ca458 *self) {
         o->unk_22_1 = 1;
     }
     self->fsm = (ActorSub40 *)NewObj40_0219d1a8();
-    n = data_0214a424[0x1a] * 100 + 500;
+    n = data_0214a424->unk_01a * 100 + 500;
     self->hp = (u16 *) NewGauge0219d1a8();
     ((Gauge0219d1a8 *)self->hp)->max = n;
     ((Gauge0219d1a8 *)self->hp)->cur = n;
@@ -180,7 +180,7 @@ void Robo021ca458_Start(Robo021ca458 *self) {
     func_ov000_021bd314(self->unk_9b4, 9);
     {
         s32 v = 1;
-        if (!LBIT(self, 0xb24).b1) {
+        if (!self->unk_b24_1) {
             v = 2;
         }
         func_02062764(3, v);

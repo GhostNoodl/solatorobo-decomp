@@ -91,6 +91,9 @@ struct Robo021ca458 : public Actor {
     u8 unk_775[0x3];
     Model0218fe1c mdl2; // 0x778
     ActorRes res3; // 0x860
+    // Optional extra model (a Model0218fe1c, 0xe8 bytes, func_ov000_0218fe1c) and its resources
+    // (an ActorRes, 0x138 bytes). Kept void *: with the class types Robo_021afaf8 allocates
+    // registers differently.
     void *unk_998;
     void *unk_99c;
     u16 unk_9a0;
@@ -116,7 +119,10 @@ struct Robo021ca458 : public Actor {
     VecFx32 unk_aa4;
     u8 unk_ab0[0x24];
     VecFx32 unk_ad4;
-    u8 unk_ae0[0x4];
+    u8 unk_ae0; // animation indices from func_ov000_021909a8
+    u8 unk_ae1;
+    u8 unk_ae2;
+    u8 unk_ae3;
     union {
         u8 unk_ae4;
         struct {
@@ -643,6 +649,7 @@ struct Lo021cadcc : public VObj {
     s32 unk_70;
     u8 unk_74[0x10];
     VObj *unk_84;
+    s32 unk_88;
 };
 
 // Vtable data_ov000_021cae48; methods in Lo_0215dae0.cpp, Lo_0215deb4.cpp, TextWin_0215d758.cpp, Win_0215db70.cpp.

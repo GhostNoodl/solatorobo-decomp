@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/CmdQueue.h"
+#include "Main/Res/StageFlags.h"
 #include "nitro/fx.h"
 // Mini-map markers: quest targets, visible actors and point markers.
 #define ABS021675ec(x) ((x) < 0 ? -(x) : (x))
@@ -42,7 +43,6 @@ extern "C" {
 
 extern CmdQueue *data_ov000_021ccd54;
 extern u8 *data_02097d48;
-extern u8 *data_0214a424;
 extern void *data_ov000_021ccd64;
 // In .rodata; declaring it const lets the 0x74 copy load both words before either store.
 extern const u8 data_ov000_021c9a9c[];
@@ -174,7 +174,7 @@ void func_ov000_021675ec(Obj021675ec *self, u8 *w) {
     pl = func_ov000_0219bf90();
     Ctr021675ec c(pl->pos.x, pl->pos.z);
     Pos021675ec m;
-    ents = (Ent021675ec *)(data_0214a424 + 0x60c);
+    ents = (Ent021675ec *)data_0214a424->slots;
     w[2] = 0;
     for (i = 0; i < 2; i++) {
         if (ents[i].kind == 2) {

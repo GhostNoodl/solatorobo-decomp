@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Res/StageFlags.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -21,7 +22,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_0214a424;
 u32 *func_ov000_0219bf7c(void);
 u32 func_ov000_0219bf88(void);
 
@@ -42,7 +42,7 @@ Oam021640fc *func_ov000_021640fc(Obj021640fc *self, Arg021640fc *a, Oam021640fc 
     switch (a->kind) {
     case 0: {
         u32 t = e->tile;
-        u32 v = data_0214a424[0x1a];
+        u32 v = data_0214a424->unk_01a;
         s32 x = e->x;
         if (x > 0xff) {
             x |= ~0xff;
@@ -66,8 +66,8 @@ Oam021640fc *func_ov000_021640fc(Obj021640fc *self, Arg021640fc *a, Oam021640fc 
         u32 *tbl = func_ov000_0219bf7c();
         u32 lim = func_ov000_0219bf88();
         u32 t = e->tile;
-        u8 *d = data_0214a424;
-        u8 lv = d[0x1a];
+        StageFlags *d = data_0214a424;
+        u8 lv = d->unk_01a;
         BOOL started = FALSE;
         s32 xpos;
         s32 ypos;
@@ -82,7 +82,7 @@ Oam021640fc *func_ov000_021640fc(Obj021640fc *self, Arg021640fc *a, Oam021640fc 
             if (lv >= lim) {
                 val = 0;
             } else {
-                val = tbl[lv] - LFLD(u32, d, 0x1c);
+                val = tbl[lv] - d->unk_01c;
                 if ((s32)val < 0) {
                     val = 0;
                 }

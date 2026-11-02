@@ -2,32 +2,24 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
-
-typedef struct {
-    u16 b0 : 8;
-    u16 b8 : 1;
-    u16 b9 : 1;
-    u16 rest : 6;
-} Bits0214a424_ac;
+#include "ov000/Actor.h"
+#include "Main/Res/StageFlags.h"
 
 extern "C" {
-extern u8 data_ov000_021cc5e9[];
-extern u8 data_ov000_021cc6c0[];
-extern u8 data_ov000_021cc636[];
-extern u8 *data_0214a424;
+extern char data_ov000_021cc5e9[];
+extern char data_ov000_021cc6c0[];
+extern char data_ov000_021cc636[];
 extern void *data_02097e4c;
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_02062764(s32 a, s32 b);
 u16 func_ov000_0219a36c(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32 mask);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
-u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
-static inline void SetRgb021ac080(u8 *g, u8 r, u8 gr, u8 b) {
-    LFLD(u8, g, 0x134) = r;
-    LFLD(u8, g, 0x135) = gr;
-    LFLD(u8, g, 0x136) = b;
+static inline void SetRgb021ac080(StageFlags *g, u8 r, u8 gr, u8 b) {
+    g->color.r = r;
+    g->color.g = gr;
+    g->color.b = b;
 }
 
 static inline BOOL GBusy021ac080(FieldState *g) {
@@ -59,14 +51,14 @@ void func_ov000_021ac080(Robo021ca458 *self) {
         self->unk_b24_1 = 0;
         self->target = 0xffff;
         self->fieldId = data_ov000_021ccd54->unk_ca;
-        LFLD(Bits0214a424_ac, data_0214a424, 0x18).b8 = 1;
-        LFLD(VecFx32, data_0214a424, 0x148) = self->unk_75c;
-        LFLD(u16, data_0214a424, 0x156) = self->unk_76e;
+        data_0214a424->bits18.flag8 = 1;
+        data_0214a424->target = self->unk_75c;
+        data_0214a424->targetRotY = self->unk_76e;
         SetRgb021ac080(data_0214a424, self->unk_772, self->unk_773, self->unk_774);
         func_02062764(3, 2);
         data_ov000_021ccd54->stageFlags = 1;
         self->pos.y += 0x119a;
-        func_ov000_02190cb0((u8 *)self + 0x368, data_ov000_021cc5e9, 0x155, 0);
+        func_ov000_02190cb0(&self->mdl1, data_ov000_021cc5e9, 0x155, 0);
         func_ov000_02190cb0(&self->mdl0, data_ov000_021cc6c0, 0x400, 0);
         self->mdl0.unk_cc = 0x320;
         self->fsm->st++;
@@ -115,29 +107,21 @@ void func_ov000_021ac080(Robo021ca458 *self) {
 }
 
 typedef struct {
-    u8 b0 : 1;
-    u8 rest : 7;
-} C1_021ac3ec;
-
-typedef struct {
     VecFx32 pos;
     u16 rot[3];
     s32 z;
 } Msg021ac3ec;
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern char data_ov000_021cc6c6[];
 extern char data_ov000_021cc6cc[];
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_02191008(void *p);
 void SndMgr_StopSeqArc(void *mgr, s32 id);
 void func_ov000_0218996c(s32 a, s32 b);
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
-void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, void *e);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
-u8 *func_ov000_02199f60(void *p);
+Actor *func_ov000_02199f60(void *p);
 void func_ov000_02199f88(void *t, void *self);
 void func_ov000_02191418(void *a, s32 b, s32 c);
 BOOL func_ov000_02191120(void *a);
@@ -145,7 +129,6 @@ BOOL func_ov000_02191508(void *m);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 u16 FX_Atan2(s32 x, s32 z);
-u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
 
 static inline Actor *GetObj021ac3ec(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -204,8 +187,8 @@ void func_ov000_021ac3ec(Robo021ca458 *self) {
             m.z = 0;
             Actor_SendMsg(o, self->id, 7, 1, 0x18, &m);
             func_ov000_0218d46c(o, self->id, 10);
-            if (((u8 *)o->targetObj) != NULL) {
-                LFLD(C1_021ac3ec, ((u8 *)o->targetObj), 0x18).b0 = 0;
+            if (o->targetObj != NULL) {
+                o->targetObj->unk_18_0 = 0;
             }
         }
         Reset021ac3ec(self);
@@ -217,12 +200,12 @@ void func_ov000_021ac3ec(Robo021ca458 *self) {
             self->unk_93_5 = 2;
         }
         {
-            u8 *t = func_ov000_02199f60(((u8 *)self->hp));
+            Actor *t = func_ov000_02199f60(((u8 *)self->hp));
             u16 ang;
-            if (t == NULL || t == (u8 *)self) {
+            if (t == NULL || t == self) {
                 ang = self->rot_y;
             } else {
-                ang = FX_Atan2(LFLD(s32, t, 0x70) - self->pos.x, LFLD(s32, t, 0x78) - self->pos.z);
+                ang = FX_Atan2(t->pos.x - self->pos.x, t->pos.z - self->pos.z);
             }
             self->unk_96 = ang;
         }

@@ -1,0 +1,189 @@
+#ifndef OV000_MENUTASK_H
+#define OV000_MENUTASK_H
+
+// The menu task classes of Menu_021763c8.cpp. Each derives from the task base (ov000/TaskList.h);
+// the class name is its vtable, the size the allocation in its <Class>_New. The vtables share the
+// base slots (0x08..0x0c, 0x1c..0x54, 0x60, 0x68); slot 0x58 (Init) is called by New after each
+// vtable store and clears the class's fields, slot 0x5c (Release) is called by the Dtor at each
+// level and frees what the task owns. Slot 0x18 builds the task's windows and links the task
+// (func_ov000_02173648). Fields are named by offset unless the code shows what they hold.
+
+#include "ov000/TaskList.h"
+#include "ov000/ObjLayouts.h"
+#include "nitro/fx.h"
+
+// Vtable data_ov000_021cbae0, 0x58 bytes.
+class Task021cbae0 : public Task {
+public:
+    s32 unk_3c;
+    s32 unk_40;
+    s32 unk_44;
+    VObj *unk_48;
+    Model *unk_4c;
+    VObj *unk_50;
+    Model *unk_54;
+};
+SIZE_ASSERT(Task021cbae0, 0x58);
+
+// Vtable data_ov000_021cbb60, 0xc4 bytes.
+class Task021cbb60 : public Task {
+public:
+    VObj *unk_3c;
+    s32 unk_40;
+    s32 unk_44;
+    s32 unk_48;
+    s32 unk_4c;
+    s32 unk_50;
+    s32 unk_54;
+    s32 unk_58;
+    VObj *unk_5c;
+    VObj *unk_60;
+    VObj *unk_64;
+    s32 unk_68;
+    void *unk_6c;
+    u8 unk_70;
+    u8 unk_71;
+    u8 unk_72[0x2];
+    s32 unk_74;
+    s32 unk_78;
+    s32 unk_7c;
+    s32 unk_80;
+    s32 unk_84;
+    s32 unk_88;
+    s32 unk_8c;
+    s32 unk_90;
+    s32 unk_94;
+    s32 unk_98;
+    s32 unk_9c;
+    void *unk_a0;
+    s32 unk_a4;
+    u8 unk_a8[0x10];
+    s16 unk_b8;
+    s16 unk_ba;
+    s32 unk_bc;
+    s32 unk_c0;
+};
+SIZE_ASSERT(Task021cbb60, 0xc4);
+
+// Vtable data_ov000_021cbbe0, 0x4b0 bytes. 0x60..0x4b0 holds six text windows of 0xb8 bytes
+// (vtable data_0208ba70, reset by the Dtor); unk_a4 is the first one's TextWin::width.
+class Task021cbbe0 : public Task {
+public:
+    s32 unk_3c;
+    LoBase021caac8_021caec8 *unk_40;
+    Lo021cb5a8 *unk_44;
+    LoBase021ca94c_021caac8 *unk_48;
+    s32 unk_4c;
+    s32 unk_50;
+    s32 unk_54;
+    void *unk_58;
+    void *unk_5c;
+    u8 unk_60[0x44];
+    s32 unk_a4;
+    u8 unk_a8[0x408];
+};
+SIZE_ASSERT(Task021cbbe0, 0x4b0);
+
+// Vtable data_ov000_021cbc60, 0x50 bytes.
+class Task021cbc60 : public Task {
+public:
+    s32 unk_3c;
+    s32 unk_40;
+    VObj *unk_44;
+    VObj *unk_48;
+    s32 unk_4c;
+};
+SIZE_ASSERT(Task021cbc60, 0x50);
+
+// Vtable data_ov000_021cbce0, 0x90 bytes.
+class Task021cbce0 : public Task {
+public:
+    s32 unk_3c;
+    s32 unk_40;
+    s32 unk_44;
+    u32 unk_48;
+    Model *unk_4c;
+    MtxFx44 unk_50;
+};
+SIZE_ASSERT(Task021cbce0, 0x90);
+
+// Vtable data_ov000_021cbd60, 0x48 bytes.
+class Task021cbd60 : public Task {
+public:
+    VObj *unk_3c;
+    Lo021cadcc *unk_40;
+    Lo021cb5a8 *unk_44;
+};
+SIZE_ASSERT(Task021cbd60, 0x48);
+
+// Vtable data_ov000_021cbde0, 0x54 bytes.
+class Task021cbde0 : public Task {
+public:
+    VObj *unk_3c;
+    Lo021cb5a8 *unk_40;
+    VObj *unk_44;
+    s32 unk_48;
+    u16 unk_4c;
+    u8 unk_4e[0x2];
+    VObj *unk_50;
+};
+SIZE_ASSERT(Task021cbde0, 0x54);
+
+// Vtable data_ov000_021cbe60, 0x158 bytes.
+class Task021cbe60 : public Task {
+public:
+    LoBase021caac8_021cb2a8 *unk_3c;
+    Lo021cadcc *unk_40;
+    Lo021cae48 *unk_44;
+    Lo021cae48 *unk_48;
+    Lo021cae48 *unk_4c;
+    Lo021cb5a8 *unk_50;
+    Lo021cacd8 *unk_54;
+    u8 unk_58[0x100]; // text buffer, filled by func_0206ecd4(0x100, ...)
+};
+SIZE_ASSERT(Task021cbe60, 0x158);
+
+// Vtable data_ov000_021cbee0, 0x15c bytes.
+class Task021cbee0 : public Task {
+public:
+    Lo021cb5a8 *unk_3c;
+    Lo021cae48 *unk_40;
+    Lo021cae48 *unk_44;
+    Lo021cae48 *unk_48;
+    LoBase021caac8_021cb2a8 *unk_4c;
+    Lo021cadcc *unk_50;
+    s32 unk_54;
+    VObj *unk_58;
+    u8 unk_5c[0x100]; // text buffer, filled by func_0206ecd4(0x100, ...)
+};
+SIZE_ASSERT(Task021cbee0, 0x15c);
+
+// Vtable data_ov000_021cbf60, 0x160 bytes.
+class Task021cbf60 : public Task {
+public:
+    LoBase021caac8_021cb2a8 *unk_3c;
+    Lo021cadcc *unk_40;
+    LoBase021cafc0_021cb0b8 *unk_44;
+    Lo021cb5a8 *unk_48;
+    Model *unk_4c;
+    s32 unk_50;
+    s32 unk_54;
+    s32 unk_58;
+    u16 unk_5c;
+    u8 unk_5e;
+    u8 unk_5f[0x100]; // text buffer, filled by func_0206ecd4(0x100, ...)
+    u8 unk_15f;
+};
+SIZE_ASSERT(Task021cbf60, 0x160);
+
+// Vtable data_ov000_021cbfe0, 0x48 bytes.
+class Task021cbfe0 : public Task {
+public:
+    VObj *unk_3c;
+    VObj *unk_40;
+    u16 unk_44; // set from the closing message (func_ov000_02175e6c)
+    u8 unk_46[0x2];
+};
+SIZE_ASSERT(Task021cbfe0, 0x48);
+
+#endif
