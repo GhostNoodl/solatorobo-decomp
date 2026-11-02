@@ -34,10 +34,10 @@ extern VFunc data_ov000_021cad50[];
 
 extern void *data_ov002_021ef634[];
 
-BOOL func_ov002_021d2410(UiObj *self, void *ev) {
+BOOL func_ov002_021d2410(UiObj *self, Ov002Row *ev) {
     Task021ef99c *owner = (Task021ef99c *)self->owner;
     if (ev != NULL) {
-        u16 idx = FIELD(ev, 0x4, u32);
+        u16 idx = ev->index;
         s32 n = func_ov002_021e4960(&owner->unk_4c[idx], func_ov002_021e4c30(idx));
         if (n <= 0) {
             UiObj *p;
@@ -125,13 +125,13 @@ void *func_02035d8c(void *a, void *b);
 void func_ov002_021e4814(Ov002LevelTable *self, u8 *src);
 u32 func_ov002_021e4c30(int which);
 u32 func_ov002_021e4960(Ov002LevelTable *self, s32 val);
-void func_ov000_021c3af4(void *self);
-void func_ov000_021c22d8(void *self);
-void func_ov000_021c2bb0(void *self);
-void func_ov000_021c2c0c(void *self, void *a);
+void func_ov000_021c3af4(Ov002RowList *self);
+void func_ov000_021c22d8(Ov002Row *self);
+void func_ov000_021c2bb0(Ov002GaugeRow *self);
+void func_ov000_021c2c0c(Ov002GaugeRow *self, void *a);
 void func_ov000_021c3fd4(void *list, void *item);
-BOOL func_ov002_021d2390(UiObj *self, void *arg);
-BOOL func_ov002_021d2410(UiObj *self, void *ev);
+BOOL func_ov002_021d2390(UiObj *self, Ov002Row *arg);
+BOOL func_ov002_021d2410(UiObj *self, Ov002Row *ev);
 
 static inline s32 ov002_Thresh(Ov002LevelTable *e, s32 idx) {
     s32 *arr = e->thresholds;
@@ -158,15 +158,15 @@ void func_ov002_021d278c(Task021ef99c *self) {
         func_ov002_021e4814(&self->unk_4c[i], *(u8 **)func_02035d8c(self->unk_f4, buf));
     }
     {
-        VObj *p = (VObj *)Heap_Alloc(0xf4);
+        Ov002RowList *p = (Ov002RowList *)Heap_Alloc(sizeof(Ov002RowList));
         if (p != NULL) {
             *(VFunc **)p = data_ov000_021cac60;
             p->vfunc_28();
             *(VFunc **)p = data_ov000_021ccbe0;
             func_ov000_021c3af4(p);
         }
-        self->unk_3c = (UiObj *)p;
-        FIELD(p, 0x24, s32) = 0xdb;
+        self->unk_3c = p;
+        p->width = 0xdb;
     }
     self->unk_3c->rows = 7;
     {
@@ -181,15 +181,15 @@ void func_ov002_021d278c(Task021ef99c *self) {
     for (i = 0; i < 7; i++) {
         u32 val;
         u32 lvl;
-        u8 *q;
-        q = (u8 *)Heap_Alloc(0x44);
+        Ov002GaugeRow *q;
+        q = (Ov002GaugeRow *)Heap_Alloc(sizeof(Ov002GaugeRow));
         if (q != NULL) {
             *(VFunc **)q = data_ov002_021ef684;
             func_ov000_021c22d8(q);
             *(VFunc **)q = data_ov000_021cc9f8;
             func_ov000_021c2bb0(q);
         }
-        FIELD(q, 0x4, s32) = i;
+        q->index = i;
         func_ov000_021c2c0c(q, self->unk_4c[i].label);
         val = func_ov002_021e4c30(i);
         lvl = func_ov002_021e4960(&self->unk_4c[i], val);
@@ -200,27 +200,27 @@ void func_ov002_021d278c(Task021ef99c *self) {
                 lo = ov002_Thresh(&self->unk_4c[i], lvl - 1);
             }
             hi = ov002_Thresh(&self->unk_4c[i], lvl);
-            FIELD(q, 0x3c, s32) = (s32)((val - lo) * 100) / (hi - lo) + lvl * 100;
+            q->unk_3c = (s32)((val - lo) * 100) / (hi - lo) + lvl * 100;
         } else {
-            FIELD(q, 0x3c, s32) = 300;
+            q->unk_3c = 300;
         }
-        FIELD(q, 0x38, s32) = 300;
+        q->unk_38 = 300;
         func_ov000_021c3fd4(self->unk_3c, q);
     }
     self->unk_3c->owner = self;
-    FIELD(self->unk_3c, 0xe8, void *) = (void *)func_ov002_021d2390;
-    FIELD(self->unk_3c, 0xe4, void *) = (void *)func_ov002_021d2410;
+    self->unk_3c->onCursor = (void *)func_ov002_021d2390;
+    self->unk_3c->onDecide = (void *)func_ov002_021d2410;
     self->unk_3c->vfunc_08();
     {
-        VObj *p = (VObj *)Heap_Alloc(0x8c);
+        Lo021cadcc *p = (Lo021cadcc *)Heap_Alloc(sizeof(Lo021cadcc));
         if (p != NULL) {
             *(VFunc **)p = data_ov000_021cac60;
             p->vfunc_28();
             *(VFunc **)p = data_ov000_021cadcc;
             p->vfunc_28();
         }
-        self->unk_40 = (Lo021cadcc *)p;
-        FIELD(p, 0x24, s32) = 0xf5;
+        self->unk_40 = p;
+        p->width = 0xf5;
     }
     self->unk_40->rows = 1;
     {
@@ -240,7 +240,7 @@ void func_ov002_021d278c(Task021ef99c *self) {
     self->unk_40->color = 0xb;
     self->unk_40->vfunc_08();
     {
-        VObj *p = (VObj *)Heap_Alloc(0xe0);
+        Lo021cb5a8 *p = (Lo021cb5a8 *)Heap_Alloc(sizeof(Lo021cb5a8));
         if (p != NULL) {
             *(VFunc **)p = data_ov000_021cac60;
             p->vfunc_28();
@@ -249,8 +249,8 @@ void func_ov002_021d278c(Task021ef99c *self) {
             *(VFunc **)p = data_ov000_021cb5a8;
             p->vfunc_28();
         }
-        self->unk_44 = (Lo021cb5a8 *)p;
-        FIELD(p, 0xc, u32) |= 0x4000000;
+        self->unk_44 = p;
+        p->flags |= 0x4000000;
     }
     self->unk_44->slideMode = 1;
     {
@@ -309,7 +309,7 @@ void func_ov002_021d2ca4(Task021ef99c *self) {
         self->unk_44->flags &= ~2;
         break;
     case 12: {
-        void *x = self->unk_4c[FIELD(FIELD(self->unk_3c, 0xa0, void *), 4, s32)].desc;
+        void *x = self->unk_4c[((Ov002Row *)self->unk_3c->unk_a0)->index].desc;
         if (self->unk_40 != NULL) {
             func_ov000_0215bb14(self->unk_40, x);
             self->unk_40->vfunc_70();
@@ -405,9 +405,9 @@ void func_ov002_021e4814(Ov002LevelTable *self, u8 *src);
 void func_ov002_021e4a78(Ov002StrTable *self, u8 *src);
 char *func_ov002_021e4bd0(Ov002StrTable *self, u32 idx);
 char *func_ov002_021e4c00(Ov002StrTable *self, u32 idx);
-void func_ov000_021c22d8(void *self);
-void func_ov000_021c37bc(void *self);
-void func_ov000_021c6140(void *self);
+void func_ov000_021c22d8(Ov002Row *self);
+void func_ov000_021c37bc(Ov002TextRow *self);
+void func_ov000_021c6140(UiObj *self);
 void func_ov000_021c6474(void *list, void *item);
 
 static inline bool ov002_IsActive(TimedBuffer021cb920 *p) {
@@ -471,23 +471,23 @@ void func_ov002_021d2fdc(Task021ef91c *self) {
             *(VFunc **)p = data_ov000_021ccadc;
             func_ov000_021c6140(p);
         }
-        self->unk_3c = (UiObj *)p;
+        self->unk_3c = (Ov002TextList *)p;
         p->vfunc_10(self->unk_94.label);
     }
     self->unk_3c->vfunc_14(self->unk_94.desc);
     self->unk_3c->posZ = -0x199a;
-    FIELD(self->unk_3c, 0xc4, u32) &= ~2;
-    FIELD(self->unk_3c, 0xc4, u32) &= ~1;
+    self->unk_3c->unk_c4 &= ~2;
+    self->unk_3c->unk_c4 &= ~1;
     for (i = 0; i < ((u32)self->unk_c0); i++) {
-        u8 *q = (u8 *)Heap_Alloc(0x44);
+        Ov002TextRow *q = (Ov002TextRow *)Heap_Alloc(sizeof(Ov002TextRow));
         if (q != NULL) {
             *(VFunc **)q = data_ov002_021ef684;
             func_ov000_021c22d8(q);
             *(VFunc **)q = data_ov000_021cca58;
             func_ov000_021c37bc(q);
         }
-        FIELD(q, 0x38, char *) = func_ov002_021e4bd0(&self->unk_ac, i);
-        FIELD(q, 0x34, char *) = func_ov002_021e4c00(&self->unk_ac, i);
+        q->unk_38 = func_ov002_021e4bd0(&self->unk_ac, i);
+        q->unk_34 = func_ov002_021e4c00(&self->unk_ac, i);
         func_ov000_021c6474(self->unk_3c, q);
     }
     self->unk_3c->vfunc_08();
@@ -533,18 +533,18 @@ extern "C" {
 void func_ov002_021d331c(Task021ef91c *self) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x3c, VObj *));
+    DELETE_VOBJ(self->unk_3c);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x40, VObj *));
+    DELETE_VOBJ(self->unk_40);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
     {
-        void *p = self->unk_c4;
+        Model *p = self->unk_c4;
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558((Model *)p);
-                func_02041278((PlttRes *)((u8 *)p + 0x88));
+                func_02041558(p);
+                func_02041278(&p->pltt);
                 Heap_Free(p);
             }
             self->unk_c4 = NULL;
@@ -552,7 +552,7 @@ void func_ov002_021d331c(Task021ef91c *self) {
     }
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0xc8, VObj *));
+    DELETE_VOBJ(self->unk_c8);
     HEAP_POP(saved);
     func_ov002_021e4b80(&self->unk_ac);
 }
@@ -615,7 +615,7 @@ void func_ov002_021d3530(Task021ef91c *self) {
     }
     cnt = 0;
     if (self->unk_3c != NULL && self->unk_3c->vfunc_1c()) {
-        s32 n = FIELD(self->unk_3c, 0x94, s32) + self->unk_bc * 3;
+        s32 n = self->unk_3c->unk_94 + self->unk_bc * 3;
         cnt++;
         if (self->unk_cc != n) {
             func_ov002_021d36b8(self, n);
@@ -637,11 +637,11 @@ namespace m_021d35d4 {
 extern "C" {
 
 void func_ov002_021d35d4(Task021ef91c *self) {
-    void *model;
-    void *res;
-    void *anim;
+    Model *model;
+    ModelRes *res;
+    ModelPart *anim;
     void *arg;
-    void *t;
+    ModelPartRes *t;
     if (self->fadeRatio == 0 || self->state == 0) {
         return;
     }
@@ -661,20 +661,20 @@ void func_ov002_021d35d4(Task021ef91c *self) {
         return;
     }
     model = self->unk_c4;
-    if ((res = FIELD(model, 0x28, void *)) == NULL) {
+    if ((res = model->res) == NULL) {
         return;
     }
     anim = NULL;
-    if (FIELD(model, 0x80, s32) > 0) {
-        anim = FIELD(model, 0x78, void *);
+    if (model->numParts > 0) {
+        anim = model->parts;
     }
-    if (anim != NULL && (t = FIELD(anim, 0x4, void *)) != NULL) {
-        arg = FIELD(t, 0x30, void *);
+    if (anim != NULL && (t = anim->res) != NULL) {
+        arg = t->tex;
     } else {
-        void *e = NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), 0);
-        arg = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(e, 0xc, void *));
+        void *e = NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0);
+        arg = NNS_G2dGetCellDataByIdx(res->texRes, **(u16 **)FIELD(e, 0xc, void *));
     }
-    func_02042628((Model *)model, arg, (ModelPart *)anim, 0);
+    func_02042628(model, arg, anim, 0);
 }
 
 }

@@ -30,8 +30,8 @@ void func_ov015_0220c6c8(Ov015FishState1c *self, Ov015Fish *p) {
         o->unk_50 = -0xc8000;
         v = self->fish->pos;
         v.y = 0;
-        VCALL(o)->v18(&v);
-        VCALL(o)->v10(&self->fish->scale);
+        o->SetPos(&v);
+        o->SetScale(&self->fish->scale);
     } else if (self->timer == 1) {
         func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
     }

@@ -75,7 +75,7 @@ BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
             self->fx = Effect3D_Create(data_ov015_022128c1, data_ov015_022128d5, 0, &v);
             self->fx->unk_d4 = 3;
             self->fx->unk_50 = -0x32000;
-            VCALL(self->fx)->v14(0x333, 0x333, 0x333);
+            self->fx->SetScaleXYZ(0x333, 0x333, 0x333);
             self->fx->loopCount = -1;
             self->unk_0c = 0;
             self->step = 2;

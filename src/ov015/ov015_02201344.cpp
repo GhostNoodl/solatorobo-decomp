@@ -1,27 +1,6 @@
 #include "ov015/ov015.h"
 #include "nitro/std.h"
 
-struct Ov015Mdl {
-    u16 unk_00;
-    u8 unk_02;
-    u8 flags;
-    u8 unk_04[0xc];
-    char mdlDir[0x20];
-    char mdlName[0x1c];
-    char anmDir[0x20];
-    char anmName[0xcc];
-};
-
-struct Ov015MdlPair {
-    Ov015Mdl mdl;
-    u8 anm[0xe8];
-};
-
-struct Ov015MdlSet {
-    void *vt;
-    Ov015MdlPair p[3];
-};
-
 extern "C" {
 
 extern u8 data_ov015_0221294c[];
@@ -50,7 +29,7 @@ static inline Model *Ov015_NewTex(void) {
 
 BOOL func_ov015_02201344(Ov015Game *self) {
     Ov015Ship *s;
-    u8 *o;
+    Ov015MdlSet *o;
     Ov015Hud *q;
     s = (Ov015Ship *)Heap_Alloc(0xd58);
     if (s != NULL) {
@@ -59,73 +38,73 @@ BOOL func_ov015_02201344(Ov015Game *self) {
     self->ship = s;
     func_ov015_02207858(s);
     self->ship->modelIdx = data_ov015_02213368->unk_2c;
-    o = (u8 *)Heap_Alloc(0x664);
+    o = (Ov015MdlSet *)Heap_Alloc(sizeof(Ov015MdlSet));
     if (o != NULL) {
         SET_VT(o, data_ov015_0221294c);
-        func_ov000_0218e9c4(o + 0x4);
-        func_ov000_0218fe1c(o + 0x13c);
-        func_ov000_0218e9c4(o + 0x224);
-        func_ov000_0218fe1c(o + 0x35c);
-        func_ov000_0218e9c4(o + 0x444);
-        func_ov000_0218fe1c(o + 0x57c);
+        func_ov000_0218e9c4(&o->p[0].res);
+        func_ov000_0218fe1c(&o->p[0].mdl);
+        func_ov000_0218e9c4(&o->p[1].res);
+        func_ov000_0218fe1c(&o->p[1].mdl);
+        func_ov000_0218e9c4(&o->p[2].res);
+        func_ov000_0218fe1c(&o->p[2].mdl);
     }
     self->unk_20 = o;
     {
-        Ov015MdlSet *s = (Ov015MdlSet *)o;
+        Ov015MdlSet *s = o;
         {
             const char *b = data_ov015_02212830;
             const char *a = data_ov015_0221283b;
             if (a) {
-                STD_CopyString(s->p[0].mdl.mdlDir, a);
-                STD_CopyString(s->p[0].mdl.mdlName, b);
-                s->p[0].mdl.flags |= 2;
+                STD_CopyString(s->p[0].res.mdlDir, a);
+                STD_CopyString(s->p[0].res.mdlName, b);
+                s->p[0].res.ownMdl = 1;
                 {
                     const char *c = data_ov015_02212851;
                     if (c) {
-                        STD_CopyString(s->p[0].mdl.anmDir, a);
-                        STD_CopyString(s->p[0].mdl.anmName, c);
-                        s->p[0].mdl.flags |= 4;
+                        STD_CopyString(s->p[0].res.anmDir, a);
+                        STD_CopyString(s->p[0].res.anmName, c);
+                        s->p[0].res.ownAnm = 1;
                     }
                 }
             }
         }
-        s->p[0].mdl.unk_00 = 0;
+        s->p[0].res.unk_00 = 0;
         {
             const char *b = data_ov015_02212857;
             const char *a = data_ov015_02212862;
             if (a) {
-                STD_CopyString(s->p[1].mdl.mdlDir, a);
-                STD_CopyString(s->p[1].mdl.mdlName, b);
-                s->p[1].mdl.flags |= 2;
+                STD_CopyString(s->p[1].res.mdlDir, a);
+                STD_CopyString(s->p[1].res.mdlName, b);
+                s->p[1].res.ownMdl = 1;
                 {
                     const char *c = data_ov015_02212851;
                     if (c) {
-                        STD_CopyString(s->p[1].mdl.anmDir, a);
-                        STD_CopyString(s->p[1].mdl.anmName, c);
-                        s->p[1].mdl.flags |= 4;
+                        STD_CopyString(s->p[1].res.anmDir, a);
+                        STD_CopyString(s->p[1].res.anmName, c);
+                        s->p[1].res.ownAnm = 1;
                     }
                 }
             }
         }
-        s->p[1].mdl.unk_00 = 0;
+        s->p[1].res.unk_00 = 0;
         {
             const char *b = data_ov015_02212878;
             const char *a = data_ov015_02212883;
             if (a) {
-                STD_CopyString(s->p[2].mdl.mdlDir, a);
-                STD_CopyString(s->p[2].mdl.mdlName, b);
-                s->p[2].mdl.flags |= 2;
+                STD_CopyString(s->p[2].res.mdlDir, a);
+                STD_CopyString(s->p[2].res.mdlName, b);
+                s->p[2].res.ownMdl = 1;
                 {
                     const char *c = data_ov015_02212851;
                     if (c) {
-                        STD_CopyString(s->p[2].mdl.anmDir, a);
-                        STD_CopyString(s->p[2].mdl.anmName, c);
-                        s->p[2].mdl.flags |= 4;
+                        STD_CopyString(s->p[2].res.anmDir, a);
+                        STD_CopyString(s->p[2].res.anmName, c);
+                        s->p[2].res.ownAnm = 1;
                     }
                 }
             }
         }
-        s->p[2].mdl.unk_00 = 0;
+        s->p[2].res.unk_00 = 0;
     }
     q = (Ov015Hud *)Heap_Alloc(0x30);
     if (q != NULL) {

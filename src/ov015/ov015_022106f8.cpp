@@ -47,7 +47,6 @@ BOOL func_ov015_022106f8(Ov015Msg *self) {
 }
 
 
-extern u8 *data_02097dc8;
 s32 func_0204c2f4(void *p, s32 n, void *src);
 void func_ov000_0215bb14(void *a, void *b);
 void func_ov015_0220866c(Ov015UiText *self, void *msg);
@@ -58,19 +57,19 @@ BOOL func_ov015_02210860(Ov015Msg *self) {
     self->posY = FX_Mul(FX_SinCosTable_[((self->timer * 0x3fff / 80) >> 4) * 2], 0x6000) - 0x46000;
     self->posZ = -0x333;
     self->timer = (self->timer + 1) % 80;
-    VCALL(self->label)->v1c();
-    VCALL(self->textBox)->v1c();
-    if (VCALL(self->label)->v0c() && (FLD(u16, data_02097dc8, 0x12) & 1)) {
+    self->label->vfunc_1c();
+    self->textBox->vfunc_1c();
+    if (self->label->vfunc_0c() && (data_02097dc8->trig & 1)) {
         s32 n = ++self->page;
         if (n < self->pageCount) {
             if (self->label != NULL && self->pages[n] != NULL) {
-                u8 *o;
+                Lo021cadcc *o;
                 func_0204c2f4(self->text, 0x80, self->pages[n]);
                 func_ov000_0215bb14(self->label, self->text);
-                VCALL(self->label)->v70();
+                self->label->vfunc_70();
                 FLD(u32, self->label->unk_84, 0x4) |= 0x4000000;
-                o = ((u8 *)self->label);
-                VCALL(FLD(u8 *, o, 0x84))->v1c(FLD(s16, o, 0x64) + FLD(s32, o, 0x24) - 0x14, FLD(s16, o, 0x66) + FLD(s32, o, 0x28) - 0xc, -0xcbd);
+                o = self->label;
+                o->unk_84->vfunc_1c(o->posX + o->width - 0x14, o->posY + o->height - 0xc, -0xcbd);
                 func_ov015_0220866c(self->textBox, self->pages[n]);
             }
         } else {

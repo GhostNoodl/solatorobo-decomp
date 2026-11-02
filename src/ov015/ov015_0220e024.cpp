@@ -144,7 +144,7 @@ BOOL func_ov015_0220e294(Ov015StageMdl *self) {
 void func_ov015_0220e434(Ov015StageMdl *self) {
     void *o;
     s32 c;
-    if (VCALL(self)->v08() == 0) {
+    if (self->vfunc_08() == 0) {
         return;
     }
     c = data_ov002_021f0f9c->unk_0c;

@@ -53,7 +53,7 @@ struct Ov015Bits09500 { u16 b0 : 5; u16 b5 : 3; u16 b8 : 8; };
 BOOL func_ov015_02209500(Ov015Fish *self) {
     u8 *p;
     u32 n;
-    Ov015V *m;
+    VObj *m;
     func_ov000_0218ffdc(&self->model, &self->res, 0, 1);
     func_ov000_02190cb0(&self->model, data_ov015_02212e0d, 0x1000, 0);
     p = NULL;
@@ -89,11 +89,11 @@ BOOL func_ov015_02209500(Ov015Fish *self) {
     self->hit.mask = 0x100;
     self->unk_94 = FLD(s16, func_0206fef8(self->info.id), 0x16) << 4;
     self->unk_98 = FLD(s16, func_0206fef8(self->info.id), 0x14) << 4;
-    m = (Ov015V *)Heap_Alloc(0x2c);
-    if (m != NULL) m = (Ov015V *)Ov015FishState2c_Ctor((Ov015FishState2c *)m);
+    m = (VObj *)Heap_Alloc(0x2c);
+    if (m != NULL) m = (VObj *)Ov015FishState2c_Ctor((Ov015FishState2c *)m);
     self->state = m;
     self->stateId = 2;
-    m->v08(self);
+    m->vfunc_08(self);
     return TRUE;
 }
 
@@ -108,26 +108,26 @@ BOOL func_ov015_02209790(Ov015Fish *self, BOOL b) {
         HEAP_PUSH(saved);
         DELETE_V(self->prevState);
         HEAP_POP(saved);
-        self->state->v10(self);
+        self->state->vfunc_10(self);
         self->prevState = self->state;
         self->prevStateId = self->stateId;
-        self->nextState->v08(self);
+        self->nextState->vfunc_08(self);
         self->state = self->nextState;
         self->stateId = self->nextStateId;
         self->nextState = NULL;
         self->nextStateId = 0;
     }
-    if (self->state != NULL && !self->state->v0c(self)) {
+    if (self->state != NULL && !self->state->vfunc_0c(self)) {
         void *saved;
-        Ov015V *o;
-        self->state->v10(self);
+        VObj *o;
+        self->state->vfunc_10(self);
         HEAP_PUSH(saved);
         DELETE_V(self->state);
         HEAP_POP(saved);
         o = self->prevState;
         self->state = o;
         self->stateId = self->prevStateId;
-        o->v08(self);
+        o->vfunc_08(self);
         self->prevState = NULL;
         self->prevStateId = 0;
     }
@@ -183,7 +183,7 @@ void func_ov015_02209a50(Ov015Fish *self) {
 }
 
 void Ov015Fish_SetNextState(Ov015Fish *self, s32 a, s32 b) {
-    self->nextState = (Ov015V *)a;
+    self->nextState = (VObj *)a;
     self->nextStateId = b;
 }
 
@@ -306,14 +306,14 @@ void *Ov015FishState2c_Ctor(Ov015FishState2c *self) {
 
 void *Ov015FishState2c_Dtor(Ov015FishState2c *self) {
     SET_VT(self, data_ov015_02212e94);
-    VCALL(self)->v10(0);
+    self->vfunc_10(0);
     SET_VT(self, data_ov015_02212eb0);
     return self;
 }
 
 void *Ov015FishState2c_DtorDelete(Ov015FishState2c *self) {
     SET_VT(self, data_ov015_02212e94);
-    VCALL(self)->v10(0);
+    self->vfunc_10(0);
     SET_VT(self, data_ov015_02212eb0);
     Heap_Free(self);
     return self;

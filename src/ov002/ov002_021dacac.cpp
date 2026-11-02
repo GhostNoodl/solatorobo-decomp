@@ -31,7 +31,7 @@ void func_ov002_021dacac(Obj021eff74 *self) {
     void *g = data_02149ef8;
     UiObj *o;
     VObj *m;
-    u8 *s;
+    UiObj *s;
     Obj021efe6c *w;
     Task021efba4 *t;
     o = (UiObj *)Heap_Alloc(0xd4);
@@ -46,15 +46,15 @@ void func_ov002_021dacac(Obj021eff74 *self) {
     self->unk_0c->vfunc_14(MsgRes_GetString(g, 0xbb));
     self->unk_0c->rows = 2;
     self->unk_0c->width = 0x78;
-    s = ((u8 *)self->unk_0c);
-    FIELD(s, 0x64, s16) = 0;
-    FIELD(s, 0x66, s16) = 0x1e;
-    FIELD(s, 0x68, s16) = -0x2000;
+    s = self->unk_0c;
+    s->posX = 0;
+    s->posY = 0x1e;
+    s->posZ = -0x2000;
     self->unk_0c->posZ = -0x2000;
-    s = ((u8 *)self->unk_0c);
-    FIELD(s, 0x58, s32) = -0xff;
-    FIELD(s, 0x5c, s32) = 0;
-    FIELD(s, 0x60, s32) = -0x2000;
+    s = self->unk_0c;
+    s->slideX = -0xff;
+    s->slideY = 0;
+    s->slideZ = -0x2000;
     self->unk_0c->flags &= ~0x400000;
     self->unk_0c->flags &= ~0x80000;
     self->unk_0c->flags &= ~0x40000;
@@ -63,10 +63,10 @@ void func_ov002_021dacac(Obj021eff74 *self) {
     self->unk_0c->onDecide = (UiItemFn)func_ov002_021dac8c;
     self->unk_0c->vfunc_74(MsgRes_GetString(g, 0xbc), 0, 0xffff, 0xffff);
     if (func_020594bc(data_02fe152c, 5, 1, 1)) {
-        u8 *e = (u8 *)self->unk_0c->vfunc_74(MsgRes_GetString(g, 0xbe), 1, 0xffff, 0xffff);
+        UiListItem *e = (UiListItem *)self->unk_0c->vfunc_74(MsgRes_GetString(g, 0xbe), 1, 0xffff, 0xffff);
         if (func_ov000_0219bf90()) {
             if ((self->unk_20 = func_ov000_0219d5a0()) != 0) {
-                FIELD(e, 0x24, s32) = 0xe;
+                e->unk_24 = 0xe;
             }
         }
     }
@@ -87,14 +87,14 @@ void func_ov002_021dacac(Obj021eff74 *self) {
     self->unk_10 = (Lo021cadcc *)o;
     o->width = 0xf8;
     self->unk_10->rows = 2;
-    s = ((u8 *)self->unk_10);
-    FIELD(s, 0x64, s16) = 4;
-    FIELD(s, 0x66, s16) = 0x96;
-    FIELD(s, 0x68, s16) = -0x2000;
-    s = ((u8 *)self->unk_10);
-    FIELD(s, 0x58, s32) = -0x100;
-    FIELD(s, 0x5c, s32) = 0;
-    FIELD(s, 0x60, s32) = -0x2000;
+    s = self->unk_10;
+    s->posX = 4;
+    s->posY = 0x96;
+    s->posZ = -0x2000;
+    s = self->unk_10;
+    s->slideX = -0x100;
+    s->slideY = 0;
+    s->slideZ = -0x2000;
     self->unk_10->slideMode = 1;
     self->unk_10->vfunc_08();
     {

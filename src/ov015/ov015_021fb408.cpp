@@ -1,11 +1,12 @@
 #include "ov015/ov015.h"
+#include "Main/Gfx/TexObj.h"
 
 namespace Dup { extern "C" Ov015Stat data_ov015_0221332c; }
 
 extern "C" {
 
-Ov015Glyph *func_ov015_021fb25c(u8 *self, u16 *ctx, Ov015Glyph *e, u16 *count);
-Ov015Glyph *func_ov015_021fb408(void *self, u16 *ctx, Ov015Glyph *e, u16 *count);
+Ov015Glyph *func_ov015_021fb25c(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count);
+Ov015Glyph *func_ov015_021fb408(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count);
 void func_0206e900(char *buf, const char *name);
 void func_02041c34(void *a, int b, void *cb, void *arg);
 extern char data_ov015_022128ab[];
@@ -13,9 +14,9 @@ extern char data_ov015_022128b5[];
 extern void *data_0208cc94;
 extern void *data_0208cc88;
 
-Ov015Glyph *func_ov015_021fb408(void *self, u16 *ctx, Ov015Glyph *e, u16 *count) {
+Ov015Glyph *func_ov015_021fb408(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count) {
     Ov015Glyph *last = &e[*count - 1];
-    if (*ctx == 0x10) {
+    if (entry->index == 0x10) {
         e[0].w = last->w;
         e[0].x = 0;
         e[0].code = 0;

@@ -24,15 +24,15 @@ BOOL func_ov002_021ddcbc(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev);
 BOOL func_ov002_021ddd30(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev);
 void func_ov002_021e34fc(void *self, s32 (*cmp)(void *, void *));
 
-LoBase021ccb54_021ccbe0 *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
+Ov002RowList *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
     u16 id;
     s32 n;
     s32 j;
-    LoBase021ccb54_021ccbe0 *p;
+    Ov002RowList *p;
     Obj021f002c *q;
     s32 i;
     u8 *counts;
-    p = (LoBase021ccb54_021ccbe0 *)Heap_Alloc(0xf4);
+    p = (Ov002RowList *)Heap_Alloc(sizeof(Ov002RowList));
     if (p != NULL) {
         *(VFunc **)p = data_ov000_021cac60;
         p->vfunc_28();
@@ -67,8 +67,8 @@ LoBase021ccb54_021ccbe0 *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
         }
     }
     p->owner = (u8 *)self + 0x22;
-    FIELD(p, 0xe4, void *) = (void *)func_ov002_021ddcbc;
-    FIELD(p, 0xe8, void *) = (void *)func_ov002_021ddd30;
+    p->onDecide = (void *)func_ov002_021ddcbc;
+    p->onCursor = (void *)func_ov002_021ddd30;
     p->vfunc_08();
     p->slideX = 0x100;
     p->slideY = 0;

@@ -2,34 +2,31 @@
 
 extern "C" {
 
-Ov015V *func_ov015_021fa6d0(void);
+Ov015Fade *func_ov015_021fa6d0(void);
 void Ov015Fade_Start(Ov015Fade *self, u8 a, u8 b, s32 c, u16 d);
-extern u8 *data_02097dc8;
 extern u8 data_ov015_022128ec[];
 extern u8 data_ov015_02213188[];
 void func_ov015_0220ec40(Ov015ResultPanel *self);
 
-extern u8 *data_0214a424;
-void func_ov000_0215d980(void *a, s32 b, s32 c);
 
 static inline BOOL Ov015_IsKind5f1a4(UiObj *o) {
     return o->state == 5 ? TRUE : FALSE;
 }
 
-static inline void Ov015_SetMoney2(u8 *g, u32 v) {
+static inline void Ov015_SetMoney2(StageFlags *g, u32 v) {
     if (v > 99999) {
         v = 99999;
     }
-    FLD(u32, g, 0x618) = v;
+    g->unk_618 = v;
 }
 BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
     BOOL r = TRUE;
     switch (self->state) {
     case 0:
-        Ov015Fade_Start((Ov015Fade *)func_ov015_021fa6d0(), 0, 0xf, 0x3c000, 0x2639);
+        Ov015Fade_Start(func_ov015_021fa6d0(), 0, 0xf, 0x3c000, 0x2639);
         self->state++;
     case 1: {
-        Ov015Fade *f = (Ov015Fade *)func_ov015_021fa6d0();
+        Ov015Fade *f = func_ov015_021fa6d0();
         if (f->time >= f->duration) {
             self->timer = 0;
             self->state++;
@@ -56,7 +53,7 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
     case 0x14: {
         s32 n = data_ov015_02213368->total;
         if (n != 0) {
-            if (FLD(u16, data_02097dc8, 0x12) & 1) {
+            if (data_02097dc8->trig & 1) {
                 func_ov000_0215d980(self->unk_10, ((s32)self->unk_10->value) + n, 0);
                 func_ov000_0215d980(self->unk_0c, 0, 0);
                 func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
@@ -69,9 +66,9 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
         break;
     }
     case 0x1e: {
-        u8 *a = ((u8 *)self->unk_10);
-        if (FLD(s32, a, 0x8c) != FLD(s32, a, 0x88) || ((s32)self->unk_0c->value) != self->unk_0c->unk_88) {
-            if (FLD(u16, data_02097dc8, 0x12) & 1) {
+        Ov015UiNum *a = self->unk_10;
+        if ((s32)a->value != a->unk_88 || ((s32)self->unk_0c->value) != self->unk_0c->unk_88) {
+            if (data_02097dc8->trig & 1) {
                 func_ov000_0215d980(self->unk_10, ((s32)self->unk_10->value), 1);
                 func_ov000_0215d980(self->unk_0c, 0, 1);
             } else {
@@ -88,7 +85,7 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
     }
     case 0x28:
         if (self->timer >= 0x14000) {
-            if (FLD(u16, data_02097dc8, 0x12) & 1) {
+            if (data_02097dc8->trig & 1) {
                 func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
                 Ov015_SetMoney2(data_0214a424, self->unk_10->value);
                 self->unk_04->flags |= 2;
@@ -122,11 +119,11 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
         break;
     }
     if (self->state >= 10) {
-        ((Ov015V *)self->unk_04)->v1c();
-        VCALL(self->unk_08)->v1c();
-        ((Ov015V *)self->unk_0c)->v1c();
-        ((Ov015V *)self->unk_10)->v1c();
-        ((Ov015V *)self->unk_14)->v1c();
+        self->unk_04->vfunc_1c();
+        self->unk_08->vfunc_1c();
+        self->unk_0c->vfunc_1c();
+        self->unk_10->vfunc_1c();
+        self->unk_14->vfunc_1c();
     }
     return r;
 }
@@ -136,10 +133,10 @@ BOOL func_ov015_0220f1a4(Ov015ResultPanel *self) {
     BOOL r = TRUE;
     switch (self->state) {
     case 0:
-        Ov015Fade_Start((Ov015Fade *)func_ov015_021fa6d0(), 0, 0x14, 0x3c000, 0x2639);
+        Ov015Fade_Start(func_ov015_021fa6d0(), 0, 0x14, 0x3c000, 0x2639);
         self->state++;
     case 1: {
-        Ov015Fade *f = (Ov015Fade *)func_ov015_021fa6d0();
+        Ov015Fade *f = func_ov015_021fa6d0();
         if (f->time >= f->duration) {
             self->timer = 0;
             self->state++;
@@ -157,7 +154,7 @@ BOOL func_ov015_0220f1a4(Ov015ResultPanel *self) {
         break;
     case 10: {
         u32 t;
-        if (self->timer >= self->unk_14->openLen && (t = FLD(u16, data_02097dc8, 0x12) & 1) != 0) {
+        if (self->timer >= self->unk_14->openLen && (t = data_02097dc8->trig & 1) != 0) {
             if (t) {
                 func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
             }
@@ -192,11 +189,11 @@ BOOL func_ov015_0220f1a4(Ov015ResultPanel *self) {
         break;
     }
     if (self->state >= 10) {
-        ((Ov015V *)self->unk_04)->v1c();
-        VCALL(self->unk_08)->v1c();
-        ((Ov015V *)self->unk_0c)->v1c();
-        ((Ov015V *)self->unk_10)->v1c();
-        ((Ov015V *)self->unk_14)->v1c();
+        self->unk_04->vfunc_1c();
+        self->unk_08->vfunc_1c();
+        self->unk_0c->vfunc_1c();
+        self->unk_10->vfunc_1c();
+        self->unk_14->vfunc_1c();
     }
     return r;
 }
@@ -262,7 +259,7 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
         data_ov002_021f0f9c->unk_1a = 0;
         data_ov002_021f0f9c->unk_130 = 1;
         data_ov002_021f0f9c->unk_134 = 2;
-        self->mode = FLD(s32, data_ov015_02213320.unk_00, 0x8);
+        self->mode = data_ov015_02213320.mainSeq->unk_08;
         switch (self->mode) {
         case 1:
             func_ov015_0220f878(self);
@@ -326,7 +323,7 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
         }
         if (busy == 0) {
             func_ov002_021e7c1c();
-            Ov015Fade_Reset((Ov015Fade *)func_ov015_021fa6d0());
+            Ov015Fade_Reset(func_ov015_021fa6d0());
             r = FALSE;
         }
         break;

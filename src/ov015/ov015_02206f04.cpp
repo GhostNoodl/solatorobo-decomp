@@ -12,8 +12,6 @@ extern u8 data_ov015_02212b08[];
 extern u8 data_ov015_022129e0[];
 extern u8 data_ov015_0221280c[];
 void func_ov000_02180754(void);
-extern void *data_ov000_021ccd40;
-extern void *data_ov000_021ccd38;
 void func_ov015_02205c7c(Ov015Scene2b08 *self);
 void func_ov015_02204110(Ov015Scene2c08 *self);
 void func_ov015_02203020(Ov015Scene2a08 *self);
@@ -42,7 +40,7 @@ void *func_ov015_02206f04(void) {
         p->unk_50 = 0;
         p->unk_54 = 0;
     }
-    VCALL(p)->v08(0x1e, 0xc8);
+    p->vfunc_08(0x1e, 0xc8);
     return p;
 }
 
@@ -68,7 +66,7 @@ void *func_ov015_02206f7c(void) {
         p->frame = 0;
         p->unk_ac = 0;
     }
-    VCALL(p)->v08(0x1f, 0xc8);
+    p->vfunc_08(0x1f, 0xc8);
     return p;
 }
 
@@ -91,7 +89,7 @@ void *func_ov015_02207020(void) {
         p->unk_68 = 0xa000;
         p->unk_6a = 0;
     }
-    VCALL(p)->v08(0x20, 0xc8);
+    p->vfunc_08(0x20, 0xc8);
     return p;
 }
 
@@ -108,7 +106,7 @@ void *func_ov015_022070b8(void) {
         p->unk_50 = 1;
         p->unk_54 = 0xffff;
     }
-    VCALL(p)->v08(0x21, 0xc8);
+    p->vfunc_08(0x21, 0xc8);
     return p;
 }
 
@@ -129,7 +127,7 @@ void *func_ov015_02207138(void) {
         p->unk_60 = 0;
         p->textBuf[0] = 0;
     }
-    VCALL(p)->v08(0x22, 0xc8);
+    p->vfunc_08(0x22, 0xc8);
     return p;
 }
 
@@ -150,23 +148,23 @@ void *func_ov015_02207200(Ov015SceneSeq *self) {
     return self;
 }
 
-void func_ov015_02207234(void *p) {
+void func_ov015_02207234(Task *self) {
     if (data_ov000_021ccd40 != NULL) {
-        data_ov000_021ccd38 = FLD(void *, data_ov000_021ccd40, 0x14);
+        data_ov000_021ccd38 = data_ov000_021ccd40->id;
     } else {
-        data_ov000_021ccd38 = NULL;
+        data_ov000_021ccd38 = 0;
     }
-    data_ov000_021ccd40 = p;
+    data_ov000_021ccd40 = self;
 }
 
 void func_ov015_02207268(Task *self) {
-    if (VCALL(self)->v54() == 0) {
+    if (self->vfunc_54() == 0) {
         return;
     }
     if (data_ov000_021ccd40 != NULL) {
-        data_ov000_021ccd38 = FLD(void *, data_ov000_021ccd40, 0x14);
+        data_ov000_021ccd38 = data_ov000_021ccd40->id;
     } else {
-        data_ov000_021ccd38 = NULL;
+        data_ov000_021ccd38 = 0;
     }
     data_ov000_021ccd40 = NULL;
 }
@@ -282,11 +280,11 @@ void *Ov015Scene2a88_DtorDelete(Ov015Scene2a88 *self) {
     SET_VT(self, data_ov015_02212a88);
     HEAP_PUSH(saved);
     {
-        u8 *p = self->model;
+        Model *p = self->model;
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558((Model *)p);
-                func_02041278((PlttRes *)(p + 0x88));
+                func_02041558(p);
+                func_02041278(&p->pltt);
                 Heap_Free(p);
             }
             self->model = NULL;
@@ -304,11 +302,11 @@ void *Ov015Scene2a88_Dtor(Ov015Scene2a88 *self) {
     SET_VT(self, data_ov015_02212a88);
     HEAP_PUSH(saved);
     {
-        u8 *p = self->model;
+        Model *p = self->model;
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558((Model *)p);
-                func_02041278((PlttRes *)(p + 0x88));
+                func_02041558(p);
+                func_02041278(&p->pltt);
                 Heap_Free(p);
             }
             self->model = NULL;

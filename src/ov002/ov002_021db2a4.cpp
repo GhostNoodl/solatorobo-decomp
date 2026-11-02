@@ -21,12 +21,12 @@ static inline u8 *ov002_Menu_GetSel(u8 *m) {
     return p;
 }
 
-static inline void ov002_Menu_Close(void *self) {
-    FIELD(FIELD(self, 0xc, void *), 0xc, u32) |= 2;
-    FIELD(FIELD(self, 0x10, void *), 0xc, u32) |= 2;
-    data_ov002_021f0f90.unk_00 = FIELD(self, 0x14, s32);
-    FIELD(self, 0x18, s32) = 2;
-    if (FIELD(self, 0x8, s32) == 2 || FIELD(self, 0x8, s32) == 3) {
+static inline void ov002_Menu_Close(Obj021eff74 *self) {
+    self->unk_0c->flags |= 2;
+    self->unk_10->flags |= 2;
+    data_ov002_021f0f90.unk_00 = self->unk_14;
+    self->unk_18 = 2;
+    if (self->unk_08 == 2 || self->unk_08 == 3) {
         func_0203cc58(0xa000, 2, -1);
     }
 }

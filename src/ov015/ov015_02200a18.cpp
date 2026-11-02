@@ -2,13 +2,13 @@
 
 extern "C" {
 
-s32 func_ov015_02200bf4(Ov015Obj34 *self, u8 *b, s32 c);
+s32 func_ov015_02200bf4(Ov015Obj34 *self, Ov015Stat *b, s32 c);
 s32 func_ov015_022090f0(Ov015FishInfo *p);
 
-void func_ov015_02200a18(Ov015Obj34 *self, u8 *b) {
+void func_ov015_02200a18(Ov015Obj34 *self, Ov015Stat *b) {
     s32 spd = self->unk_1c;
-    s32 pos = FLD(s32, b, 0x24);
-    switch (FLD(s32, b, 0x28)) {
+    s32 pos = b->unk_24;
+    switch (b->unk_28) {
     case 3:
         spd = -0x666;
         if ((self->unk_0c >> 12) % 20 == 0) {
@@ -21,22 +21,22 @@ void func_ov015_02200a18(Ov015Obj34 *self, u8 *b) {
         }
         if (pos <= 0) {
             pos = 0;
-            FLD(s32, b, 0x28) = pos;
+            b->unk_28 = pos;
         }
         break;
     case 2:
         spd = -0x3000;
         if (--self->unk_14 <= 0) {
             self->unk_14 = 0;
-            FLD(s32, b, 0x28) = 0;
+            b->unk_28 = 0;
         }
         break;
     case 1:
-        if (pos >= 0x64000 && FLD(s32, b, 0x8) != 3) {
-            FLD(s32, b, 0x28) = 3;
+        if (pos >= 0x64000 && b->unk_08 != 3) {
+            b->unk_28 = 3;
             func_02049a48(data_02097e4c, 0x1b, -1, -1, -1);
         } else if (pos < 0x46000) {
-            FLD(s32, b, 0x28) = 0;
+            b->unk_28 = 0;
         }
         if ((self->unk_0c >> 12) % 10 == 0) {
             func_02049a48(data_02097e4c, 0x59, -1, -1, -1);
@@ -45,7 +45,7 @@ void func_ov015_02200a18(Ov015Obj34 *self, u8 *b) {
         break;
     case 0:
         if (pos > 0x46000) {
-            FLD(s32, b, 0x28) = 1;
+            b->unk_28 = 1;
             break;
         }
         spd = func_ov015_02200bf4(self, b, spd);
@@ -58,15 +58,15 @@ void func_ov015_02200a18(Ov015Obj34 *self, u8 *b) {
     } else if (pos > 0x64000) {
         pos = 0x64000;
     }
-    FLD(s32, b, 0x24) = pos;
+    b->unk_24 = pos;
 }
 
-s32 func_ov015_02200bf4(Ov015Obj34 *self, u8 *b, s32 c) {
+s32 func_ov015_02200bf4(Ov015Obj34 *self, Ov015Stat *b, s32 c) {
     BOOL flag = TRUE;
     s32 base;
     s32 q, d, na, nb, ax, bx;
     Ov015Info38 *o;
-    if (FLD(s32, b, 0x14) == 1) flag = FALSE;
+    if (b->unk_14 == 1) flag = FALSE;
     base = self->info->unk_30;
     d = func_ov015_022090f0(&self->fish->info) - base;
     if (d < 0x800) d = 0x800;
@@ -80,9 +80,9 @@ s32 func_ov015_02200bf4(Ov015Obj34 *self, u8 *b, s32 c) {
     nb = -bx;
     if (self->fish->stateId == 3) {
         c = na;
-    } else if (FLD(u8, b, 0x1c) != 0) {
-        s32 t3 = FLD(s32, b, 0x14);
-        s32 t4 = FLD(s32, b, 0x10);
+    } else if (b->unk_1c != 0) {
+        s32 t3 = b->unk_14;
+        s32 t4 = b->unk_10;
         if (!((t3 == 3 && t4 == 2) || (t3 == 2 && t4 == 3) || (t3 == 4 && t4 == 4) ||
             ((t3 != 1 && t3 != 0) && t4 == 1))) {
             self->unk_20 = 0;

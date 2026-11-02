@@ -11,7 +11,6 @@ void func_ov000_021bd624(void *p);
 void func_ov000_021bd7a0(void *p);
 s32 func_02049bdc(void *a, s32 b, s32 c);
 BOOL func_ov000_021bd314(void *o, s32 a);
-extern u8 *data_02097dc8;
 extern u8 data_ov015_022132e0[];
 void *func_ov000_0218fee4(void *a);
 void *func_ov000_0218ea20(void *a);
@@ -25,9 +24,9 @@ void func_ov015_022120c0(Ov015Obj292c *self) {
     self->scale.x = 0x1000;
     self->scale.y = 0x1000;
     self->scale.z = 0x1000;
-    self->unk_24 = 0;
-    self->unk_28 = 0;
-    self->unk_2c = 0;
+    self->unk_24.x = 0;
+    self->unk_24.y = 0;
+    self->unk_24.z = 0;
     self->unk_30 = 0;
 }
 
@@ -36,7 +35,7 @@ void func_ov015_022120fc(Ov015Obj292c *self) {
     void *o;
     if (EffectMgr_Contains(data_0214a420, self->fx)) {
         self->fx->state = 4;
-        FLD(void *, self, 0x4) = NULL;
+        self->fx = NULL;
     }
     HEAP_PUSH(saved);
     o = self->unk_08;
@@ -71,7 +70,7 @@ BOOL func_ov015_022121b4(Ov015Obj292c *self) {
     if (q != NULL) {
         func_ov000_021bd198(q);
     }
-    FLD(u8 *, self, 0x8) = q;
+    self->unk_08 = (void *)q;
     FLD(u32, q, 0x0) &= ~2;
     self->unk_30 = 0x800;
     return TRUE;
@@ -95,15 +94,15 @@ void func_ov015_02212264(Ov015Obj292c *self) {
         v.z = 0xa000;
         MTX_MultVec33(&v, (MtxFx33 *)m, &v);
         VEC_Add(&v, (&self->pos), &w);
-        VCALL(self->fx)->v18(&w);
-        VCALL(self->fx)->v10(&self->scale);
-        VCALL(self->fx)->v34(0xe00, FX_Atan2(v.x, v.z), 0);
+        self->fx->SetPos(&w);
+        self->fx->SetScale(&self->scale);
+        self->fx->SetRotXYZ(0xe00, FX_Atan2(v.x, v.z), 0);
     }
     o = ((u8 *)self->unk_08);
     if (o != NULL) {
-        FLD(s32, o, 0x50) = self->unk_24;
-        FLD(s32, o, 0x54) = self->unk_28;
-        FLD(s32, o, 0x58) = self->unk_2c;
+        FLD(s32, o, 0x50) = self->unk_24.x;
+        FLD(s32, o, 0x54) = self->unk_24.y;
+        FLD(s32, o, 0x58) = self->unk_24.z;
         func_ov000_021bd624(self->unk_08);
         func_ov000_021bd7a0(self->unk_08);
     }
@@ -141,7 +140,7 @@ void func_ov015_022123c4(Ov015Obj292c *self) {
 }
 
 void func_ov015_02212430(Ov015Obj292c *self) {
-    u16 pad = FLD(u16, data_02097dc8, 0x10);
+    u16 pad = data_02097dc8->cur;
     if (pad & 0x20) {
         self->pos.x -= self->unk_30;
         if (self->pos.x < -0x32000) self->pos.x = -0x32000;

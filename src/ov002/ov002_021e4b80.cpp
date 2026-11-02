@@ -1,4 +1,5 @@
 #include "ov002/ov002.h"
+#include "Main/Gfx/TexObj.h"
 #include "ov000/ModelPart.h"
 #include "types.h"
 
@@ -1977,10 +1978,10 @@ BOOL func_ov002_021e7a94(Ov002Obj *self) {
     return r;
 }
 
-Oam021e7ab8 *func_ov002_021e7ab8(void *self, u16 *flag, Oam021e7ab8 *oam, u16 *count) {
+Oam021e7ab8 *func_ov002_021e7ab8(TexObj *obj, TexObjEntry *entry, Oam021e7ab8 *oam, u16 *count) {
     u16 n = *count;
-    if (*flag == 0) {
-        u8 pal = FIELD(self, 0x70, s32);
+    if (entry->index == 0) {
+        u8 pal = obj->unk_070;
         int i;
         for (i = 0; i < n; i++) {
             oam[i].x -= 0x80;
@@ -2403,7 +2404,7 @@ BOOL SndMgr_IsLoadDone(void *a);
 
 void func_ov002_021eaf20(Ov002StageFile *self);
 
-Oam021e7ab8 *func_ov002_021e7ab8(void *self, u16 *flag, Oam021e7ab8 *oam, u16 *count);
+Oam021e7ab8 *func_ov002_021e7ab8(TexObj *obj, TexObjEntry *entry, Oam021e7ab8 *oam, u16 *count);
 
 void func_ov002_021ead1c(Ov002StageFile *self, u8 *data, char *name, u8 c);
 

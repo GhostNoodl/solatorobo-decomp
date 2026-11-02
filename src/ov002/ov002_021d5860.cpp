@@ -34,30 +34,30 @@ BOOL func_ov002_021d5444(UiList *self, UiListItem *ev);
 BOOL func_ov002_021d5350(UiList *self, UiListItem *ev);
 void func_ov002_021d66b0(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 
-static inline u8 *ov002_021d58b8_sel(void *g) {
-    u8 *p = FIELD(g, 0x98, u8 *);
+static inline UiListItem *ov002_021d58b8_sel(UiList *g) {
+    UiListItem *p = g->topItem;
     if (p == NULL) {
         p = NULL;
     } else {
-        s32 n = FIELD(g, 0xb1, s8);
+        s32 n = g->cursor;
         while (n-- != 0) {
-            p = FIELD(p, 0x2c, u8 *);
+            p = p->next;
         }
     }
     return p;
 }
 
-static inline void ov002_021d58b8_setName(void *self, u16 id) {
-    if (FIELD(self, 0x54, void *) != NULL) {
-        func_ov000_0215bb14(FIELD(self, 0x54, void *), func_0206ec8c(id));
-        FIELD(self, 0x54, VObj *)->vfunc_70();
+static inline void ov002_021d58b8_setName(Task021efc24 *self, u16 id) {
+    if (self->unk_54 != NULL) {
+        func_ov000_0215bb14(self->unk_54, func_0206ec8c(id));
+        self->unk_54->vfunc_70();
     }
 }
 
-static inline void ov002_021d58b8_setInfo(void *self, u16 id) {
-    if (FIELD(self, 0x58, void *) != NULL) {
+static inline void ov002_021d58b8_setInfo(Task021efc24 *self, u16 id) {
+    if (self->unk_58 != NULL) {
         u8 *info = func_0206ef10(id);
-        func_ov000_02162b40(FIELD(self, 0x58, void *), FIELD(info, 0xc, s32), FIELD(info, 0x10, s32), data_ov002_021efae1,
+        func_ov000_02162b40(self->unk_58, FIELD(info, 0xc, s32), FIELD(info, 0x10, s32), data_ov002_021efae1,
                             FIELD(info, 0x28, s32), data_ov002_021efaeb, info[0x24], 0x1000);
     }
 }
@@ -78,7 +78,7 @@ void func_ov002_021d58b8(Task021efc24 *self) {
     u16 i;
     u16 id;
     u32 count;
-    u8 *e;
+    UiListItem *e;
     self->unk_74 = data_0214a424->bits18.unk_3 + 0x8000;
     res = func_02035de0(data_ov002_021efaf1, data_0208ccc0);
     m = Heap_Alloc(0x160);
@@ -165,9 +165,9 @@ void func_ov002_021d58b8(Task021efc24 *self) {
     for (i = 0; i < count; i++) {
         if (func_02059544(data_02fe152c, base + 0x190, tbl, 1, i)) {
             id = i + 0x8000;
-            e = (u8 *)self->unk_50->vfunc_74(func_0206ec48(id), id, 0xffff, 0xffff);
+            e = (UiListItem *)self->unk_50->vfunc_74(func_0206ec48(id), id, 0xffff, 0xffff);
             if (self->unk_74 == id) {
-                FIELD(e, 0x24, s32) = 4;
+                e->unk_24 = 4;
             }
         }
     }
@@ -203,17 +203,17 @@ void func_ov002_021d58b8(Task021efc24 *self) {
     self->unk_54->slideMode = 1;
     self->unk_54->vfunc_08();
     {
-        u8 *p = NULL;
-        u8 *it = ((u8 *)self->unk_50->topItem);
+        UiListItem *p = NULL;
+        UiListItem *it = self->unk_50->topItem;
         if (it != NULL) {
             s32 n = self->unk_50->cursor;
             while (n-- != 0) {
-                it = FIELD(it, 0x2c, u8 *);
+                it = it->next;
             }
             p = it;
         }
         if (p != NULL) {
-            ov002_021d58b8_setName(self, FIELD(p, 0x6, u16));
+            ov002_021d58b8_setName(self, p->id);
         }
     }
     {
@@ -225,9 +225,9 @@ void func_ov002_021d58b8(Task021efc24 *self) {
         func_ov000_021627ac(q);
     }
     {
-        u8 *p = ov002_021d58b8_sel(self->unk_50);
+        UiListItem *p = ov002_021d58b8_sel(self->unk_50);
         if (p != NULL) {
-            ov002_021d58b8_setInfo(self, FIELD(p, 0x6, u16));
+            ov002_021d58b8_setInfo(self, p->id);
         }
     }
     {

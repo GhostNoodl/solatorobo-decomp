@@ -23,10 +23,10 @@ Task021ef99c *func_ov002_021d22cc(void) {
     return p;
 }
 
-BOOL func_ov002_021d2390(UiObj *self, void *arg) {
+BOOL func_ov002_021d2390(UiObj *self, Ov002Row *arg) {
     Task021ef99c *owner = (Task021ef99c *)self->owner;
     if (arg != NULL) {
-        u16 i = FIELD(arg, 0x4, u32);
+        u16 i = arg->index;
         if (i <= 7) {
             void *str = owner->unk_4c[i].desc;
             if (owner->unk_40 != NULL) {

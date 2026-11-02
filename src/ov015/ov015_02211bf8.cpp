@@ -18,16 +18,16 @@ BOOL func_ov015_02211bf8(Ov015Obj290 *self) {
     BOOL r = TRUE;
     switch (self->step) {
     case 0:
-        if (VCALL(self)->v2c() == 0) self->step = 1;
+        if (self->vfunc_2c() == 0) self->step = 1;
         break;
     case 1:
-        if (VCALL(self)->v30() == 0) self->step = 2;
+        if (self->vfunc_30() == 0) self->step = 2;
         break;
     case 2:
-        if (VCALL(self)->v34() == 0) self->step = 3;
+        if (self->vfunc_34() == 0) self->step = 3;
         break;
     case 3:
-        if (VCALL(self)->v38() == 0) self->step = 4;
+        if (self->vfunc_38() == 0) self->step = 4;
         break;
     case 4:
         r = FALSE;
@@ -95,7 +95,7 @@ BOOL func_ov015_02211e88(Ov015Obj290 *self) {
     o->unk_d4 = 1;
     o->unk_28 = 1;
     o->unk_50 = -0xc8000;
-    VCALL(o)->v14(0x59a, 0x59a, 0x59a);
+    o->SetScaleXYZ(0x59a, 0x59a, 0x59a);
     func_ov000_02190cb0(&self->model, data_ov015_022132a6, 0x1000, 0);
     func_ov000_02191318(&self->model, 0);
     func_ov000_021911c8(&self->model, 0x1000);
@@ -110,7 +110,7 @@ BOOL func_ov015_02211f54(Ov015Obj290 *self) {
         r = FALSE;
         func_ov000_02190cb0(&self->model, data_ov015_02213280, 0x1000, 0);
         func_ov000_02191318(&self->model, 0);
-        FLD(Ov015Flags18, self, 0x20e).b0 = 0;
+        self->model.flags.visible = 0;
 
     }
     return r;

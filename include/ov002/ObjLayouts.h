@@ -17,6 +17,42 @@
 
 #ifdef __cplusplus
 
+// Row list (0xf4 bytes; vtable data_ov000_021ccbe0, init func_ov000_021c3af4; ov002's subclass
+// vtable data_ov002_021f0044 keeps the size). onDecide is called with the chosen row, onCursor with
+// the row under the cursor (func_ov002_021d2410 / func_ov002_021d2390 for the level list).
+struct Ov002RowList : public LoBase021ccb54_021ccbe0 {
+    void *onDecide;
+    void *onCursor;
+    u8 unk_ec[0x8];
+};
+SIZE_ASSERT(Ov002RowList, 0xf4);
+
+// Text list (0xd4 bytes; vtable data_ov000_021ccadc, init func_ov000_021c6140; rows are appended by
+// func_ov000_021c6474). onDecide gets the chosen row (func_ov002_021d18e8), onCursor the row under
+// the cursor (func_ov002_021d18d4).
+struct Ov002TextList : public UiObj {
+    VObj *unk_84;
+    VObj *unk_88; // a row: func_ov002_021d1970 shows its text at 0x40
+    u8 unk_8c[0x8];
+    s32 unk_94;   // index of the row under the cursor (func_ov002_021d3530)
+    u8 unk_98[0xc];
+    s32 unk_a4;
+    s32 unk_a8;
+    u8 unk_ac[0x18];
+    union {
+        u32 unk_c4;
+        struct {
+            s32 unk_c4_0 : 1;
+            u32 unk_c4_1 : 1;
+            u32 unk_c4_2 : 30;
+        };
+    };
+    void *onDecide;
+    void *onCursor;
+    s32 unk_d0;
+};
+SIZE_ASSERT(Ov002TextList, 0xd4);
+
 // Animated model (0x70, vtable data_ov002_021efe3c; Ov002Vt_021efe3c_Ctor, Ov002Vt_021efe3c_Dtor).
 // func_ov002_021d7620 loads model file `name` and animation file `anmName` from archive `arc`;
 // each animation is bound to the render object, and frameCount is the first one's length.
@@ -238,8 +274,8 @@ SIZE_ASSERT(Obj021efed4, 0xb4);
 // Vtable data_ov002_021efef0, 0x138 bytes.
 struct Obj021efef0 : public VObj {
     struct Obj021eff50 *owner;
-    LoBase021ccb54_021ccbe0 *unk_08; // vtable data_ov002_021f0044
-    LoBase021ccb54_021ccbe0 *unk_0c; // vtable data_ov002_021f0044 (func_ov002_021def98)
+    Ov002RowList *unk_08; // vtable data_ov002_021f0044
+    Ov002RowList *unk_0c; // vtable data_ov002_021f0044 (func_ov002_021def98)
     Obj021efe8c *unk_10;
     Obj021efe8c *unk_14;
     u16 unk_18;
@@ -381,6 +417,27 @@ struct Ov002Row : public VObj {
     struct Ov002Row *prev;
 };
 SIZE_ASSERT(Ov002Row, 0x30);
+
+// Gauge row (0x44 bytes; vtable data_ov000_021cc9f8 over Ov002Row, init func_ov000_021c2bb0). The
+// level list (func_ov002_021d278c) fills one per level: unk_3c is level * 100 + the percent of the
+// way to the next threshold, unk_38 the maximum (300).
+struct Ov002GaugeRow : public Ov002Row {
+    u8 unk_30[0x8];
+    s32 unk_38;
+    s32 unk_3c;
+    u8 unk_40[0x4];
+};
+SIZE_ASSERT(Ov002GaugeRow, 0x44);
+
+// Two-text row (0x44 bytes; vtable data_ov000_021cca58 over Ov002Row, init func_ov000_021c37bc):
+// func_ov002_021d2fdc sets both strings from its Ov002StrTable.
+struct Ov002TextRow : public Ov002Row {
+    u8 unk_30[0x4];
+    char *unk_34;
+    char *unk_38;
+    u8 unk_3c[0x8];
+};
+SIZE_ASSERT(Ov002TextRow, 0x44);
 
 // Board item row (vtable data_ov002_021f002c, 0x4c bytes; ctor func_ov002_021e2f54, dtors
 // Ov002Vt_021f002c_Dtor/DtorDelete). Slot 0x08 (func_ov002_021e2fb4) steps state: 0 builds the

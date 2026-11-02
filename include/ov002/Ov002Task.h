@@ -11,6 +11,7 @@
 #include "ov000/Task.h"
 #include "ov000/UiObj.h"
 #include "ov000/ObjLayouts.h"
+#include "ov002/ObjLayouts.h"
 
 #ifdef __cplusplus
 
@@ -76,11 +77,11 @@ SIZE_ASSERT(Task021ef530, 0x50);
 // Vtable data_ov002_021ef69c, 0x68 bytes.
 class Task021ef69c : public Task {
 public:
-    UiObj *unk_3c; // vtable data_ov000_021ccadc
+    Ov002TextList *unk_3c;
     Lo021cb5a8 *unk_40;
     VObj *unk_44;
-    void *unk_48;
-    void *unk_4c;
+    Model *unk_48; // number drawing (func_ov002_021d1f70)
+    Model *unk_4c;
     s32 unk_50;
     s32 unk_54;
     s32 unk_58;
@@ -129,7 +130,7 @@ SIZE_ASSERT(Task021ef81c, 0x50);
 // Vtable data_ov002_021ef89c, 0x44 bytes.
 class Task021ef89c : public Task {
 public:
-    UiObj *unk_3c; // vtable data_ov000_021ccbe0
+    Ov002RowList *unk_3c;
     Lo021cb5a8 *unk_40;
 };
 SIZE_ASSERT(Task021ef89c, 0x44);
@@ -165,7 +166,7 @@ SIZE_ASSERT(Ov002StrTable, 0x10);
 // Vtable data_ov002_021ef91c, 0xd0 bytes.
 class Task021ef91c : public Task {
 public:
-    UiObj *unk_3c; // vtable data_ov000_021ccadc
+    Ov002TextList *unk_3c;
     Lo021cb5a8 *unk_40;
     char unk_44[0x20];
     char unk_64[0x18];
@@ -183,7 +184,7 @@ SIZE_ASSERT(Task021ef91c, 0xd0);
 // Vtable data_ov002_021ef99c, 0x118 bytes.
 class Task021ef99c : public Task {
 public:
-    UiObj *unk_3c; // vtable data_ov000_021ccbe0
+    Ov002RowList *unk_3c;
     Lo021cadcc *unk_40;
     Lo021cb5a8 *unk_44;
     UiObj *unk_48; // vtable data_ov000_021cad50 (0xe8 bytes)
@@ -196,7 +197,7 @@ SIZE_ASSERT(Task021ef99c, 0x118);
 // Vtable data_ov002_021efa1c, 0x44 bytes.
 class Task021efa1c : public Task {
 public:
-    UiObj *unk_3c; // vtable data_ov000_021ccbe0
+    Ov002RowList *unk_3c;
     Lo021cb5a8 *unk_40;
 };
 SIZE_ASSERT(Task021efa1c, 0x44);

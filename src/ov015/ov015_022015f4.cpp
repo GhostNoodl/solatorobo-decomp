@@ -13,7 +13,7 @@ extern u8 data_ov015_0221295c[];
 void *func_0204b370(void *p);
 u8 *func_02070744(u16 id);
 void Ov015CamPair_Init(Ov015CamPair *self);
-void func_ov015_02210b3c(u8 *self);
+void func_ov015_02210b3c(Ov015MsgMgr *self);
 void func_ov015_02211890(Ov015Info38 *self, u16 id, s32 mode);
 void func_ov015_02209024(Ov015FishInfo *self, u16 a, const void *src);
 void *Ov015Fish_Ctor(Ov015Fish *self);
@@ -46,8 +46,8 @@ BOOL func_ov015_02201618(Ov015Game *self) {
     }
     self->cam = o;
     Ov015CamPair_Init(o);
-    if ((u32)(FLD(s32, data_ov015_02213320.unk_00, 0x4) - 1) <= 1) {
-        u8 *p = (u8 *)Heap_Alloc(0x14);
+    if ((u32)(data_ov015_02213320.mainSeq->unk_04 - 1) <= 1) {
+        Ov015MsgMgr *p = (Ov015MsgMgr *)Heap_Alloc(sizeof(Ov015MsgMgr));
         if (p != NULL) {
             SET_VT(p, data_ov015_02213198);
             func_ov015_02210b3c(p);
@@ -80,7 +80,7 @@ BOOL func_ov015_02201618(Ov015Game *self) {
         nd = (Ov015Node *)Heap_Alloc(0x10);
         if (nd != NULL) {
             SET_VT(nd, data_ov015_0221295c);
-            nd->key = (s32)e;
+            nd->fish = e;
             nd->prev = NULL;
             nd->next = NULL;
         }
@@ -111,16 +111,15 @@ extern char data_ov015_02212899[];
 extern char data_ov015_0221289f[];
 extern char data_ov015_022128a5[];
 extern s32 data_ov015_02213328;
-extern u8 *data_0214a424;
 void func_0203cb78(s32 a, s32 b, s32 c);
-Ov015V *func_ov015_021fa6d0(void);
+Ov015Fade *func_ov015_021fa6d0(void);
 void Ov015Fade_ToClear(Ov015Fade *self, s32 c, u16 d);
 void Ov015Fade_ToOpaque(Ov015Fade *self, s32 c, u16 d);
 BOOL func_ov015_022078bc(Ov015Ship *p);
 s32 func_ov000_0218f110(void *a);
 BOOL func_ov015_0220947c(Ov015Fish *self);
 void func_0206e900(char *buf, const char *name);
-int func_ov015_02210bd8(u8 *self);
+int func_ov015_02210bd8(Ov015MsgMgr *self);
 BOOL func_ov015_02207adc(Ov015Ship *self);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
@@ -128,7 +127,7 @@ void func_ov000_021915a0(void *a);
 BOOL func_ov015_02209500(Ov015Fish *self);
 BOOL func_ov015_02210c28(void);
 void func_ov000_02190a80(void *a, s32 b);
-s32 func_ov015_02210c30(u8 *self, Ov015Stat *a, s32 b);
+s32 func_ov015_02210c30(Ov015MsgMgr *self, Ov015Stat *a, s32 b);
 BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a, Ov015CamPair *b, Ov015List *c, Ov015Info38 *d);
 BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamPair *c, Ov015Info38 *d);
 void func_ov015_0220101c(Ov015Game *self);
@@ -150,11 +149,11 @@ static inline void Ov015_CamUpdate(Ov015Game *self) {
     if (Ov015_SysB4()) {
         Ov015CamPair *cp = self->cam;
         Ov015_CamFovy(&cp->cam0);
-        VCALL(&cp->cam0)->v00();
+        (&cp->cam0)->vfunc_00();
     } else {
         Ov015CamPair *cp = self->cam;
         Ov015_CamFovy(&cp->cam1);
-        VCALL(&cp->cam1)->v00();
+        (&cp->cam1)->vfunc_00();
     }
 }
 
@@ -176,19 +175,19 @@ static inline void Ov015_BgmFadeTo(u16 id) {
     }
 }
 
-static inline void Ov015_ModelsReset(u8 *p) {
-    FLD(s32, p, 0x1b4) = 0;
-    FLD(s32, p, 0x1b8) = 0;
-    FLD(s32, p, 0x1bc) = 0;
-    func_ov000_02190a80(p + 0x13c, 0x800);
-    FLD(s32, p, 0x3d4) = 0;
-    FLD(s32, p, 0x3d8) = 0x1000;
-    FLD(s32, p, 0x3dc) = 0;
-    func_ov000_02190a80(p + 0x35c, 0x800);
-    FLD(s32, p, 0x5f4) = 0;
-    FLD(s32, p, 0x5f8) = 0x23333;
-    FLD(s32, p, 0x5fc) = 0x4cd;
-    func_ov000_02190a80(p + 0x57c, 0x400);
+static inline void Ov015_ModelsReset(Ov015MdlSet *p) {
+    p->p[0].mdl.trans.x = 0;
+    p->p[0].mdl.trans.y = 0;
+    p->p[0].mdl.trans.z = 0;
+    func_ov000_02190a80(&p->p[0].mdl, 0x800);
+    p->p[1].mdl.trans.x = 0;
+    p->p[1].mdl.trans.y = 0x1000;
+    p->p[1].mdl.trans.z = 0;
+    func_ov000_02190a80(&p->p[1].mdl, 0x800);
+    p->p[2].mdl.trans.x = 0;
+    p->p[2].mdl.trans.y = 0x23333;
+    p->p[2].mdl.trans.z = 0x4cd;
+    func_ov000_02190a80(&p->p[2].mdl, 0x400);
 }
 
 typedef enum { OV015_SYS_MODE_2 = 2 } Ov015SysMode;
@@ -206,7 +205,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
             sys->nextState = v;
             func_0203cb78(0x1000, 0, v - 3);
         }
-        Ov015Fade_ToOpaque((Ov015Fade *)func_ov015_021fa6d0(), 0x1000, 0);
+        Ov015Fade_ToOpaque(func_ov015_021fa6d0(), 0x1000, 0);
         self->step = 0x14;
         break;
     }
@@ -214,7 +213,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         Ov015Node *n;
         bool a;
         Ov015Hud *q;
-        u8 *p;
+        Ov015MdlSet *p;
         bool d;
         bool c;
         bool b;
@@ -226,19 +225,19 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         }
         p = self->unk_20;
         b = true;
-        if (FLD(s16, p, 0x4) >= 0 && !func_ov000_0218f110(p + 0x4)) {
+        if (p->p[0].res.unk_00 >= 0 && !func_ov000_0218f110(&p->p[0].res)) {
             b = false;
         }
-        if (FLD(s16, p, 0x224) >= 0 && !func_ov000_0218f110(p + 0x224)) {
+        if (p->p[1].res.unk_00 >= 0 && !func_ov000_0218f110(&p->p[1].res)) {
             b = false;
         }
-        if (FLD(s16, p, 0x444) >= 0 && !func_ov000_0218f110(p + 0x444)) {
+        if (p->p[2].res.unk_00 >= 0 && !func_ov000_0218f110(&p->p[2].res)) {
             b = false;
         }
         b = a & b;
         c = true;
         for (n = self->fishList->head; n != NULL; n = n->next) {
-            c &= func_ov015_0220947c((Ov015Fish *)n->key);
+            c &= func_ov015_0220947c(n->fish);
         }
         c = b & c;
         q = self->hud;
@@ -268,31 +267,31 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         break;
     }
     case 0x1e: {
-        u8 *p;
+        Ov015MdlSet *p;
         Ov015Node *n;
         func_ov015_02207adc(self->ship);
         p = self->unk_20;
-        func_ov000_0218ffdc(p + 0x13c, p + 0x4, 0, 1);
-        func_ov000_02190cb0(p + 0x13c, data_ov015_02212899, 0x1000, 0);
-        func_ov000_021915a0(p + 0x13c);
-        ((Ov015AnimFlags *)(p + 0x1fe))->visible = 1;
-        func_ov000_0218ffdc(p + 0x35c, p + 0x224, 0, 1);
-        func_ov000_02190cb0(p + 0x35c, data_ov015_0221289f, 0x1000, 0);
-        func_ov000_021915a0(p + 0x35c);
-        ((Ov015AnimFlags *)(p + 0x41e))->visible = 1;
-        func_ov000_0218ffdc(p + 0x57c, p + 0x444, 0, 1);
-        func_ov000_02190cb0(p + 0x57c, data_ov015_022128a5, 0x1000, 0);
-        func_ov000_021915a0(p + 0x57c);
-        ((Ov015AnimFlags *)(p + 0x63e))->visible = 1;
+        func_ov000_0218ffdc(&p->p[0].mdl, &p->p[0].res, 0, 1);
+        func_ov000_02190cb0(&p->p[0].mdl, data_ov015_02212899, 0x1000, 0);
+        func_ov000_021915a0(&p->p[0].mdl);
+        p->p[0].mdl.flags.visible = 1;
+        func_ov000_0218ffdc(&p->p[1].mdl, &p->p[1].res, 0, 1);
+        func_ov000_02190cb0(&p->p[1].mdl, data_ov015_0221289f, 0x1000, 0);
+        func_ov000_021915a0(&p->p[1].mdl);
+        p->p[1].mdl.flags.visible = 1;
+        func_ov000_0218ffdc(&p->p[2].mdl, &p->p[2].res, 0, 1);
+        func_ov000_02190cb0(&p->p[2].mdl, data_ov015_022128a5, 0x1000, 0);
+        func_ov000_021915a0(&p->p[2].mdl);
+        p->p[2].mdl.flags.visible = 1;
         for (n = self->fishList->head; n != NULL; n = n->next) {
-            func_ov015_02209500((Ov015Fish *)n->key);
+            func_ov015_02209500(n->fish);
         }
         func_ov015_021fb474(self->hud);
         if (self->unk_90 != NULL) {
             func_ov015_02210c28();
         }
         data_0214a420->drawFilter = 1;
-        Ov015Fade_ToClear((Ov015Fade *)func_ov015_021fa6d0(), 0x1e000, 0);
+        Ov015Fade_ToClear(func_ov015_021fa6d0(), 0x1e000, 0);
         self->step = 0x28;
         func_02049a48(data_02097e4c, 0x4f, -1, -1, -1);
         Ov015_BgmFadeTo(0x23);
@@ -304,7 +303,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
             func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         }
         {
-        u8 *m = self->unk_90;
+        Ov015MsgMgr *m = self->unk_90;
         data_ov015_02213328 = (data_ov015_02213328 + 1) & 0xff;
         if (m != NULL) {
             if (func_ov015_02210c30(m, &data_ov015_0221332c, 0x28)) {
@@ -322,10 +321,10 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         Ov015CamPair *cp = self->cam;
         if (Ov015_SysB4()) {
             Ov015_CamFovy(&cp->cam0);
-            VCALL(&cp->cam0)->v00();
+            (&cp->cam0)->vfunc_00();
         } else {
             Ov015_CamFovy(&cp->cam1);
-            VCALL(&cp->cam1)->v00();
+            (&cp->cam1)->vfunc_00();
         }
         }
         break;
@@ -334,13 +333,13 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         if (self->unk_90 == NULL || self->phase2.step < 2 ||
             !func_ov015_02210c30(self->unk_90, &data_ov015_0221332c, 0x32)) {
             func_ov015_021fb5d4(self->hud);
-            if (!func_ov015_02200204((Ov015Obj34 *)&self->phase2, self->ship, (Ov015Fish *)self->fishList->head->key,
+            if (!func_ov015_02200204((Ov015Obj34 *)&self->phase2, self->ship, self->fishList->head->fish,
                                      self->cam, &self->info)) {
                 self->step = 0x3c;
-                Ov015Fade_ToOpaque((Ov015Fade *)func_ov015_021fa6d0(), 0x1e000, 0x7fff);
-                FLD(s32, data_ov015_02213320.unk_00, 8) = Dup::data_ov015_0221332c.unk_30;
+                Ov015Fade_ToOpaque(func_ov015_021fa6d0(), 0x1e000, 0x7fff);
+                data_ov015_02213320.mainSeq->unk_08 = Dup::data_ov015_0221332c.unk_30;
                 if (Dup::data_ov015_0221332c.unk_30 == 2) {
-                    Ov015Fade_ToClear((Ov015Fade *)func_ov015_021fa6d0(), 0x1000, 0x7fff);
+                    Ov015Fade_ToClear(func_ov015_021fa6d0(), 0x1000, 0x7fff);
                     self->step = 0x50;
                 }
             }
@@ -350,7 +349,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
     case 0x3c: {
         Ov015Fade *f;
         Ov015_CamUpdate(self);
-        f = (Ov015Fade *)func_ov015_021fa6d0();
+        f = func_ov015_021fa6d0();
         if (f->time < f->duration) {
             break;
         }
@@ -365,13 +364,13 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         }
         func_ov015_0220101c(self);
         EffectMgr_FreeAll(data_0214a420);
-        Ov015Fade_ToClear((Ov015Fade *)func_ov015_021fa6d0(), 0x1000, 0x7fff);
+        Ov015Fade_ToClear(func_ov015_021fa6d0(), 0x1000, 0x7fff);
         {
-            u32 v = FLD(u16, data_0214a424, 0x61c) + 1;
+            u32 v = data_0214a424->unk_61c + 1;
             if (v >= 1000) {
                 v = 1000;
             }
-            FLD(u16, data_0214a424, 0x61c) = v;
+            data_0214a424->unk_61c = v;
         }
         break;
     }

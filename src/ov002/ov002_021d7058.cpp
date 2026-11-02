@@ -41,7 +41,7 @@ static inline void ov002_bindPal(Model0218fe1c *anim, void *pal) {
 
 void func_ov002_021d7058(Obj021efe4c *self) {
     void *pal;
-    void *src = FIELD(self->unk_04, 0xfc, void *);
+    void *src = ((void *)self->unk_04->unk_fc);
     Ov002SndCue *k;
     s32 x;
     if (src == NULL) {

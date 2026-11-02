@@ -97,9 +97,9 @@ void func_ov015_0220101c(Ov015Game *self) {
     DELETE_V(self->unk_20);
     HEAP_POP(saved);
     if (self->fishList != NULL) {
-        u8 *n;
-        for (n = ((u8 *)self->fishList->head); n != NULL; n = FLD(u8 *, n, 0xc)) {
-            if (FLD(void *, n, 0x4) != NULL) VCALL(FLD(void *, n, 0x4))->v04();
+        Ov015Node *n;
+        for (n = self->fishList->head; n != NULL; n = n->next) {
+            if (n->fish != NULL) n->fish->vfunc_04();
         }
         HEAP_PUSH(saved);
         DELETE_V(self->fishList);

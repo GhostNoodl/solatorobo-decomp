@@ -77,9 +77,9 @@ BOOL func_ov015_022003ec(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
                 u.y = p->unk_d08.y;
                 u.z = p->unk_d08.z;
             }
-            VCALL(self->fx)->v18(&u);
+            self->fx->SetPos(&u);
         } else {
-            VCALL(self->fx)->v08(0);
+            self->fx->SetParam(0);
         }
     }
     func_ov015_02207c30(a);
@@ -90,7 +90,6 @@ BOOL func_ov015_022003ec(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
 }
 
 
-extern u8 *data_02097dc8;
 void func_ov015_02200a18(Ov015Obj34 *self, Ov015Stat *g);
 s32 func_ov015_022090bc(Ov015FishInfo *p);
 s32 func_ov015_02200d50(Ov015Obj34 *self, Ov015Stat *g, s32 v);
@@ -101,9 +100,9 @@ static inline s32 Ov015B_FxMul64(s32 a, s64 b) {
 }
 
 void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b) {
-    u8 *pad = data_02097dc8;
-    u16 trg = FLD(u16, pad, 0x12);
-    u16 cont = FLD(u16, pad, 0x10);
+    Pad *pad = data_02097dc8;
+    u16 trg = pad->trig;
+    u16 cont = pad->cur;
     Ov015Stat *g = &data_ov015_0221332c;
     s32 dir;
     s32 lim;

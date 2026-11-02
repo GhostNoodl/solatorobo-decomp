@@ -6,16 +6,16 @@ void Interp_SinLerpVec(void *out, s32 t, void *a, void *b);
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 void func_ov002_021d8860(Obj021efe9c *self);
 
-static inline void ov002_SetState(void *self, s32 st) {
-    if (FIELD(self, 0xac, s32) != st) {
-        FIELD(self, 0xac, s32) = st;
-        FIELD(self, 0xa4, s32) = 0;
-        FIELD(self, 0xa8, s32) = 5;
+static inline void ov002_SetState(Obj021efe9c *self, s32 st) {
+    if (self->unk_ac != st) {
+        self->unk_ac = st;
+        self->unk_a4 = 0;
+        self->unk_a8 = 5;
     }
 }
 
-static inline s32 ov002_GetT(void *self) {
-    return FX_Div(FIELD(self, 0xa4, s32) << 12, FIELD(self, 0xa8, s32) << 12);
+static inline s32 ov002_GetT(Obj021efe9c *self) {
+    return FX_Div(self->unk_a4 << 12, self->unk_a8 << 12);
 }
 
 void func_ov002_021d83f0(Obj021efe9c *self) {

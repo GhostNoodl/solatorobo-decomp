@@ -17,10 +17,10 @@ static inline Ov002Cell *ov002_GetCell(Obj021efe6c *w, Vec2 *pos) {
     return &base[y * q->map->h + x];
 }
 
-static inline void ov002_ShowMsg(void *self, void *str) {
-    u8 *t = FIELD(self, 0x4, u8 *);
-    func_ov000_0215bb14(FIELD(t, 0x20, void *), str);
-    FIELD(t, 0x20, VObj *)->vfunc_70();
+static inline void ov002_ShowMsg(Obj021eff10 *self, void *str) {
+    Obj021eff50 *t = self->owner;
+    func_ov000_0215bb14(t->unk_20, str);
+    t->unk_20->vfunc_70();
 }
 
 static inline void ov002_CamMove(Obj021efe6c *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, s32 tz) {
@@ -51,27 +51,27 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
         cell = ov002_GetCell(w, (Vec2 *)((u8 *)self + 0x24));
         switch (cell->unk_2) {
         case 1: {
-            void *p;
+            Obj021eff30 *p;
             self->unk_30 = (Obj021efe9c *)cell->obj;
             func_02049bdc(data_02097e4c, 0x47, -5);
-            p = Heap_Alloc(0x30);
+            p = (Obj021eff30 *)Heap_Alloc(0x30);
             if (p != NULL) {
                 *(VFunc **)p = data_ov002_021eff30;
-                FIELD(p, 0x4, s32) = 0;
-                FIELD(p, 0x8, s32) = -1;
-                FIELD(p, 0xc, s32) = 0;
-                FIELD(p, 0x10, s32) = 0;
-                FIELD(p, 0x14, s32) = 0;
-                FIELD(p, 0x18, s32) = 0;
-                FIELD(p, 0x20, s32) = 0;
-                FIELD(p, 0x1c, s32) = 0;
-                FIELD(p, 0x28, s32) = 0;
-                FIELD(p, 0x24, s32) = 0;
-                FIELD(p, 0x2c, u8) = 0;
+                p->owner = NULL;
+                p->unk_08 = -1;
+                p->unk_0c = NULL;
+                p->unk_10 = NULL;
+                p->unk_14 = NULL;
+                p->unk_18 = 0;
+                p->unk_20 = 0;
+                p->unk_1c = 0;
+                p->unk_28 = 0;
+                p->unk_24 = 0;
+                p->unk_2c = 0;
             }
             {
                 Obj021eff50 *t = self->owner;
-                t->unk_10 = (VObj *)p;
+                t->unk_10 = p;
                 t->unk_0c = 0x1e;
             }
             return;
@@ -193,11 +193,11 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
         ov002_ShowMsg(self, MsgRes_GetString(msg, 0x10b));
         cell = ov002_GetCell(w, (Vec2 *)((u8 *)self + 0x24));
         if (cell->unk_2 == 1) {
-            u8 *t = ((u8 *)cell->obj);
-            FIELD(t, 0xcd, u8) = 0;
-            FIELD(t, 0x9c, s32) = 0xf85;
+            Obj021efe9c *t = (Obj021efe9c *)cell->obj;
+            t->unk_cd = 0;
+            t->unk_9c = 0xf85;
         } else if (cell->unk_2 == 2) {
-            FIELD(((u8 *)cell->obj), 0x9c, u8) = 0;
+            ((Obj021efed4 *)cell->obj)->unk_9c = 0;
         }
         self->unk_18 = 0x14;
     }

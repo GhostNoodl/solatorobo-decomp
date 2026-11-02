@@ -1,4 +1,5 @@
 #include "ov015/ov015.h"
+#include "Main/Gfx/TexObj.h"
 
 extern "C" {
 
@@ -6,7 +7,7 @@ extern Ov015Ship *data_ov015_02213364;
 extern void *data_0208cb74;
 void *func_02035f30(void *a, void *b, int c);
 void func_02041c34(void *a, int b, void *cb, void *arg);
-Ov015Glyph *func_ov015_0220848c(void *self, u16 *ctx, Ov015Glyph *e, u16 *count);
+Ov015Glyph *func_ov015_0220848c(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count);
 void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src);
 void func_ov015_02208a28(Ov015UiText *self, void *p);
 s32 func_02041b10(void *m, void *anim);
@@ -142,13 +143,13 @@ void func_ov015_02208474(NNSG3dRS *rs) {
     rs->cbVecTiming[NNS_G3D_SBC_NODEDESC] = NNS_G3D_SBC_CALLBACK_TIMING_C;
 }
 
-Ov015Glyph *func_ov015_0220848c(void *self, u16 *ctx, Ov015Glyph *e, u16 *count) {
+Ov015Glyph *func_ov015_0220848c(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count) {
     u16 n = *count;
-    if (ctx[0] == 0) {
+    if (entry->index == 0) {
         u32 x0 = e[0].x;
         u32 c0 = e[0].code;
         u32 p0 = e[0].pal;
-        u32 v = FLD(u32, ctx, 0x8) & 0xff;
+        u32 v = (u32)entry->unk_08 & 0xff;
         s32 i;
         for (i = 0; i < n; i++) {
             e[i].x = e[i].x - (x0 + 0x80);
@@ -234,8 +235,8 @@ void func_ov015_022086d0(Ov015UiText *self) {
 }
 
 void func_ov015_02208750(Ov015UiText *self, s32 a, s32 b, s32 c) {
-    VCALL(self)->v60(a, b, c);
-    VCALL(self)->v70(a, b, c);
+    self->vfunc_60(a, b, c);
+    self->vfunc_70(a, b, c);
 }
 
 static inline void *Ov015_MdlAnim0(Model *m) {
@@ -316,6 +317,8 @@ struct Ov015TagRes {
     s32 type;
     s32 value;
 };
+// A TextWin (0xb8) built on the stack; a plain struct, since a local TextWin would get an implicit
+// constructor. code/value/text are TextWin::code, value and text.
 struct Ov015TagParser {
     void *vt;
     u8 pad[0x7c];
@@ -346,7 +349,7 @@ void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src) {
         }
     }
     SET_VT(&p, data_0208ba70);
-    VCALL(&p)->v08();
+    ((TextWin *)&p)->unk_vf08();
 }
 
 s32 func_ov015_02208cb0(void) {
@@ -391,9 +394,9 @@ void func_ov015_02208d8c(Ov015UiText *self, void *arg, void *arg2) {
     cb(arg, self, arg2);
 }
 s32 func_ov015_02208db0(Ov015UiText *self) {
-    s32 a = VCALL(self)->v40() * self->rows;
-    s32 b = VCALL(self)->v34();
-    s32 c = VCALL(self)->v38();
+    s32 a = self->vfunc_40() * self->rows;
+    s32 b = self->vfunc_34();
+    s32 c = self->vfunc_38();
     s32 d = a + b;
     return d + c;
 }
@@ -402,7 +405,7 @@ s32 func_ov015_02208dfc(Ov015UiText *self) {
     s32 a;
     data_02097ce0->unk_004 = self->font;
     a = (*(s8 **)GfxMgr_GetFont(data_02097ce0))[1];
-    return a + VCALL(self)->v3c();
+    return a + self->vfunc_3c();
 }
 
 s32 func_ov015_02208e40(void) {
@@ -422,7 +425,7 @@ s32 func_ov015_02208e58(void) {
 }
 
 s32 func_ov015_02208e60(Ov015UiText *self, s32 a, s32 b, s32 c) {
-    return VCALL(self)->v60(a, b, c);
+    return self->vfunc_60(a, b, c);
 }
 
 void *func_ov015_02208e74(Ov015UiText *self) {
@@ -432,7 +435,7 @@ void *func_ov015_02208e74(Ov015UiText *self) {
     DELETE_V(self->unk_84);
     HEAP_POP(saved);
     SET_VT(self, data_ov000_021cac60);
-    VCALL(self)->v2c();
+    self->vfunc_2c();
     Heap_Free(self);
     return self;
 }
@@ -444,7 +447,7 @@ void *func_ov015_02208efc(Ov015UiText *self) {
     DELETE_V(self->unk_84);
     HEAP_POP(saved);
     SET_VT(self, data_ov000_021cac60);
-    VCALL(self)->v2c();
+    self->vfunc_2c();
     return self;
 }
 

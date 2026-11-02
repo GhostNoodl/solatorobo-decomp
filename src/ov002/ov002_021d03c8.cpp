@@ -34,7 +34,7 @@ void func_ov002_021d03c8(Task021efa1c *self) {
             *(VFunc **)p = data_ov000_021ccbe0;
             func_ov000_021c3af4(p);
         }
-        self->unk_3c = (UiObj *)p;
+        self->unk_3c = (Ov002RowList *)p;
         p->rows = 7;
     }
     self->unk_3c->width = 0xf9;
@@ -46,7 +46,7 @@ void func_ov002_021d03c8(Task021efa1c *self) {
     }
     self->unk_3c->vfunc_10(MsgRes_GetString(g, 0xf2));
     self->unk_3c->vfunc_14(MsgRes_GetString(g, 0xf4));
-    FIELD(self->unk_3c, 0xe4, void *) = (void *)func_ov002_021d0270;
+    self->unk_3c->onDecide = (void *)func_ov002_021d0270;
     {
         u16 i;
         u8 *base;

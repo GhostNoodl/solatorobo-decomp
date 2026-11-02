@@ -43,7 +43,7 @@ static inline void Ov015_Spawn0bb68(Ov015FishState18 *self, s32 s1, s32 s2) {
     if (y <= 0) m = y;
     a.y = m;
     a.z = q->pos.z;
-    VCALL(o)->v18(&a);
+    o->SetPos(&a);
     q = self->fish;
     {
         s32 k = q->scaleMul;
@@ -51,7 +51,7 @@ static inline void Ov015_Spawn0bb68(Ov015FishState18 *self, s32 s1, s32 s2) {
         b.y = FX_Mul(q->scale.y, k);
         b.z = FX_Mul(q->scale.z, k);
     }
-    VCALL(o)->v10(&b);
+    o->SetScale(&b);
     func_02049a48(data_02097e4c, s1, -1, -1, -1);
     func_02049a48(data_02097e4c, s2, -1, -1, -1);
 }

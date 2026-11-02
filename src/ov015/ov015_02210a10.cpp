@@ -12,7 +12,7 @@ extern u8 data_ov015_02213198[];
 extern u8 data_ov015_02213188[];
 void func_ov015_0220ec40(Ov015ResultPanel *self);
 extern u8 data_ov015_022131ac[];
-void func_ov000_021c2310(void *self);
+void func_ov000_021c2310(Lo021cca40 *self); // the row base teardown (ctor func_ov000_021c22d8)
 extern u8 data_ov015_02213200[];
 
 void func_ov015_02210a10(Ov015Msg *self) {
@@ -44,8 +44,8 @@ BOOL func_ov015_02210a58(Ov015Msg *self) {
         }
         break;
     }
-    VCALL(self->label)->v1c();
-    VCALL(self->textBox)->v1c();
+    self->label->vfunc_1c();
+    self->textBox->vfunc_1c();
     return r;
 }
 
@@ -78,24 +78,24 @@ BOOL func_ov015_02210c28(void) {
     return TRUE;
 }
 
-s32 func_ov015_02210c30(Ov015MsgMgr *self, s32 a, s32 b) {
+s32 func_ov015_02210c30(Ov015MsgMgr *self, Ov015Stat *a, s32 b) {
     s32 r = 0;
     switch (self->unk_0c) {
     case 0:
-        self->unk_04 = (void *)VCALL(self)->v08(a, b);
+        self->unk_04 = (VObj *)self->vfunc_08(a, b);
         if (self->unk_04 == NULL) {
             break;
         }
         self->unk_0c = 1;
     case 1:
-        if (VCALL(self->unk_04)->v08() == 0) {
+        if (self->unk_04->vfunc_08() == 0) {
             void *saved;
             HEAP_PUSH(saved);
             DELETE_V(self->unk_04);
             HEAP_POP(saved);
             self->unk_0c = 0;
         } else {
-            r = VCALL(self->unk_04)->v10();
+            r = self->unk_04->vfunc_10();
         }
         break;
     }
@@ -107,9 +107,9 @@ u8 func_ov015_02210cfc(Ov015Msg *self) {
 }
 
 void func_ov015_02210d04(Ov015MsgMgr *self) {
-    void *o = self->unk_04;
+    VObj *o = self->unk_04;
     if (o != NULL) {
-        VCALL(o)->v0c();
+        o->vfunc_0c();
     }
 }
 
@@ -126,7 +126,7 @@ static inline Ov015Msg *Ov015_NewMsg(void) {
     if (o != NULL) o = (Ov015Msg *)Ov015Msg_Ctor(o);
     return o;
 }
-Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, u8 *b, s32 msg) {
+Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, Ov015Stat *b, s32 msg) {
     Ov015Msg *r = NULL;
     switch (msg) {
     case 0x28:
@@ -139,7 +139,7 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, u8 *b, s32 msg) {
         }
         break;
     case 0x32:
-        if (!FLD(Ov015Bits10d24, self, 0x8).b4 && FLD(s32, b, 0x8) == 3) {
+        if (!FLD(Ov015Bits10d24, self, 0x8).b4 && b->unk_08 == 3) {
             r = Ov015_NewMsg();
             r->msgIdx = 4;
             r->unk_08 = 0x3c;
@@ -149,7 +149,7 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, u8 *b, s32 msg) {
             break;
         }
         if (!FLD(Ov015Bits10d24, self, 0x8).b1) {
-            if ((u32)(FLD(s32, b, 0x10) - 2) <= 1) {
+            if ((u32)(b->unk_10 - 2) <= 1) {
                 r = Ov015_NewMsg();
                 r->msgIdx = 1;
                 r->unk_08 = 0x28;
@@ -161,8 +161,8 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, u8 *b, s32 msg) {
             s32 t4;
             s32 t3;
             BOOL x;
-            t3 = FLD(s32, b, 0x14);
-            t4 = FLD(s32, b, 0x10);
+            t3 = b->unk_14;
+            t4 = b->unk_10;
             if ((t3 == 2 && t4 == 3) || (t3 == 3 && t4 == 2)) {
                 x = TRUE;
             } else {
@@ -183,7 +183,7 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, u8 *b, s32 msg) {
                 break;
             }
         }
-        if (!FLD(Ov015Bits10d24, self, 0x8).b3 && FLD(s32, b, 0x24) > 0x1e000) {
+        if (!FLD(Ov015Bits10d24, self, 0x8).b3 && b->unk_24 > 0x1e000) {
             r = Ov015_NewMsg();
             r->msgIdx = 3;
             r->unk_08 = 0;

@@ -6,7 +6,7 @@ Ov002Row *func_ov000_021c4014(LoBase021ccb54_021ccbe0 *list, int idx);
 void func_ov000_021c414c(LoBase021ccb54_021ccbe0 *list, Ov002Row *item);
 void func_ov000_021c403c(LoBase021ccb54_021ccbe0 *list, int idx);
 void func_ov002_021e331c(Obj021f002c *self);
-LoBase021ccb54_021ccbe0 *func_ov002_021def98(Obj021efef0 *self, u32 kind);
+Ov002RowList *func_ov002_021def98(Obj021efef0 *self, u32 kind);
 Obj021f002c *func_ov002_021e35c0(LoBase021ccb54_021ccbe0 *self, u16 id);
 void func_ov002_021dec74(Obj021efef0 *self);
 void func_0206ecd4(int a, void *b, u16 c);

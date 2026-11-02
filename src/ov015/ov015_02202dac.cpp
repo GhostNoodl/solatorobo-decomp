@@ -2,10 +2,6 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd44;
-u8 *func_ov000_0218084c(void *a, s32 b, s32 c);
-extern void *data_ov000_021ccd40;
-extern void *data_ov000_021ccd38;
 extern void *data_02149ef8;
 void *MsgRes_GetString(void *a, s32 b);
 void func_ov000_0215bb14(void *a, void *b);
@@ -31,7 +27,7 @@ bool Ov015Task_GetFlag4(Task *self) {
 }
 
 void func_ov015_02202dd0(Task *self) {
-    u8 *o;
+    Task *o;
     if (self->state == 8) {
         return;
     }
@@ -39,16 +35,16 @@ void func_ov015_02202dd0(Task *self) {
         return;
     }
     o = func_ov000_0218084c(data_ov000_021ccd44, 0x1f, 0);
-    FLD(s32, o, 0xc) = self->param;
-    VCALL(self)->v4c();
+    o->param = self->param;
+    self->vfunc_4c();
 }
 
 BOOL func_ov015_02202e20(Task *self) {
-    if (VCALL(self)->v54()) {
+    if (self->vfunc_54()) {
         if (data_ov000_021ccd40 != NULL) {
-            data_ov000_021ccd38 = FLD(void *, data_ov000_021ccd40, 0x14);
+            data_ov000_021ccd38 = data_ov000_021ccd40->id;
         } else {
-            data_ov000_021ccd38 = NULL;
+            data_ov000_021ccd38 = 0;
         }
         data_ov000_021ccd40 = NULL;
     }
@@ -79,31 +75,31 @@ void func_ov015_02202e9c(Ov015Scene2a88 *self) {
 }
 
 void func_ov015_02202ec8(Ov015Scene2a88 *self) {
-    u8 *model = self->model;
-    u8 *res;
-    u8 *anim;
-    u8 *t;
+    Model *model = self->model;
+    ModelRes *res;
+    ModelPart *anim;
+    ModelPartRes *t;
     void *arg;
-    if (model == NULL || self->unk_40 == 0 || (res = FLD(u8 *, model, 0x28)) == NULL) {
+    if (model == NULL || self->unk_40 == 0 || (res = model->res) == NULL) {
         return;
     }
     anim = NULL;
-    if (FLD(s32, model, 0x80) > 0) {
-        anim = FLD(u8 *, model, 0x78);
+    if (model->numParts > 0) {
+        anim = model->parts;
     }
-    if (anim != NULL && (t = FLD(u8 *, anim, 0x4)) != NULL) {
-        arg = FLD(void *, t, 0x30);
+    if (anim != NULL && (t = anim->res) != NULL) {
+        arg = t->tex;
     } else {
-        void *e = NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), 0);
-        arg = NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **(u16 **)FLD(void *, e, 0xc));
+        void *e = NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0);
+        arg = NNS_G2dGetCellDataByIdx(res->texRes, **(u16 **)FLD(void *, e, 0xc));
     }
-    func_02042628((Model *)model, arg, (ModelPart *)anim, 0);
+    func_02042628(model, arg, anim, 0);
 }
 
 BOOL func_ov015_02202f44(UiList *self, UiListItem *ev) {
     if (ev != NULL) {
         if (ev->unk_10 != -1) {
-            FLD(u8, self->owner, 0xa4) = 1;
+            ((Ov015Scene2a08 *)self->owner)->unk_a4 = 1;
             func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
         } else {
             func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
@@ -129,7 +125,7 @@ BOOL func_ov015_02202fa8(UiList *self, UiListItem *ev) {
     }
     if (o->unk_84 != NULL) {
         func_ov000_0215bb14(o->unk_84, m);
-        VCALL(o->unk_84)->v70();
+        o->unk_84->vfunc_70();
     }
     return TRUE;
 }
@@ -219,17 +215,11 @@ extern u8 data_ov015_0221299d[];
 extern u8 data_ov015_02213360;
 BOOL func_ov015_02207adc(Ov015Ship *p);
 void func_020434e0(void *p);
-void *func_ov000_02154b58(void *a, s32 b);
 void func_ov000_02163224(void *p);
 void func_ov000_021632f0(void *p, s32 a, void *b, void *c, s32 d);
 void func_02043904(void *p);
 void func_02043b20(void *p);
-void func_ov000_02173648(void *self);
 
-struct Ov015Nib {
-    u8 lo : 4;
-    u8 hi : 4;
-};
 
 static inline void Ov015_SetUiPos(UiObj *o, s16 x, s16 y, s16 z) {
     o->posX = x;
@@ -244,9 +234,9 @@ static inline void Ov015_SetUiSlide(UiObj *o, s32 x, s32 y, s32 z) {
 }
 
 void func_ov015_02203298(Ov015Scene2a08 *self) {
-    u8 *p;
+    VObj *p;
     void *res;
-    if (VCALL(self)->v28()) {
+    if (self->vfunc_28()) {
         return;
     }
     res = data_02149ef8;
@@ -254,16 +244,16 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
     func_ov015_02207adc(self->ship);
     {
         Ov015Ship *o = self->ship;
-        FLD(s16, o, 0xd20) = 0;
-        FLD(s16, o, 0xd22) = 0;
-        FLD(s16, o, 0xd24) = 0;
+        o->rotX = 0;
+        o->rotY = 0;
+        o->rotZ = 0;
     }
     self->ship->unk_d40 = 0;
     self->ship->unk_d41 = 0;
     {
-        Ov015Nib *n = &FLD(Ov015Nib, self->shadow, 0x18);
-        n->hi = n->lo;
-        n->lo = 3;
+        Ov015Shadow *n = self->shadow;
+        n->prev = n->type;
+        n->type = 3;
     }
     self->shadow->unk_10 = 0;
     self->shadow->unk_0c = 0;
@@ -278,14 +268,14 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
     self->camView.up.y = 0x1000;
     self->camView.up.z = 0;
     func_020434e0(&self->camView.fovSin);
-    p = (u8 *)Heap_Alloc(0xe0);
+    p = (VObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
-        VCALL(p)->v28();
+        p->vfunc_28();
         SET_VT(p, data_ov000_021caec8);
-        VCALL(p)->v28();
+        p->vfunc_28();
         SET_VT(p, data_ov000_021cb5a8);
-        VCALL(p)->v28();
+        p->vfunc_28();
     }
     self->unk_88 = (UiList *)p;
     self->unk_88->flags |= 0x4000000;
@@ -293,18 +283,18 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
     Ov015_SetUiPos(self->unk_88, 0x91, 0x12, -0x333);
     Ov015_SetUiSlide(self->unk_88, 0x100, 0, -0x333);
     self->unk_88->flags |= 0x20000000;
-    VCALL(self->unk_88)->vf4(1, MsgRes_GetString(res, 0x32));
-    VCALL(self->unk_88)->v08();
-    p = (u8 *)Heap_Alloc(0xd4);
+    self->unk_88->vfunc_f4(1, MsgRes_GetString(res, 0x32));
+    self->unk_88->vfunc_08();
+    p = (VObj *)Heap_Alloc(0xd4);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
-        VCALL(p)->v28();
+        p->vfunc_28();
         SET_VT(p, data_ov000_021caec8);
-        VCALL(p)->v28();
+        p->vfunc_28();
     }
     self->unk_80 = (UiList *)p;
-    VCALL(self->unk_80)->v10(MsgRes_GetString(res, 0xc4));
-    VCALL(self->unk_80)->v14(MsgRes_GetString(res, 0xc5));
+    self->unk_80->vfunc_10(MsgRes_GetString(res, 0xc4));
+    self->unk_80->vfunc_14(MsgRes_GetString(res, 0xc5));
     self->unk_80->width = 0x88;
     self->unk_80->rows = 4;
     Ov015_SetUiPos(self->unk_80, 0, 0x1e, -0xccd);
@@ -316,37 +306,37 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
     self->unk_80->flags &= ~0x80000;
     self->unk_80->flags &= ~0x40000;
     self->unk_80->flags &= ~0x10000;
-    VCALL(self->unk_80)->v74(MsgRes_GetString(res, 0xc6), 0, 0xffff, 0xffff);
-    VCALL(self->unk_80)->v74(MsgRes_GetString(res, 0xca), 1, 0xffff, 0xffff);
-    VCALL(self->unk_80)->v74(MsgRes_GetString(res, 0xd4), 2, 0xffff, 0xffff);
+    self->unk_80->vfunc_74(MsgRes_GetString(res, 0xc6), 0, 0xffff, 0xffff);
+    self->unk_80->vfunc_74(MsgRes_GetString(res, 0xca), 1, 0xffff, 0xffff);
+    self->unk_80->vfunc_74(MsgRes_GetString(res, 0xd4), 2, 0xffff, 0xffff);
     {
         UiList *o = self->unk_80;
-        VCALL(o)->va8(func_ov000_02154b58(o, 0));
+        o->vfunc_a8(func_ov000_02154b58(o, 0));
     }
     self->unk_80->onDecide = func_ov015_02202f44;
     self->unk_80->onCursor = func_ov015_02202fa8;
     self->unk_80->owner = self;
-    VCALL(self->unk_80)->v08();
-    p = (u8 *)Heap_Alloc(0x8c);
+    self->unk_80->vfunc_08();
+    p = (VObj *)Heap_Alloc(0x8c);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
-        VCALL(p)->v28();
+        p->vfunc_28();
         SET_VT(p, data_ov000_021cadcc);
-        VCALL(p)->v28();
+        p->vfunc_28();
     }
-    self->unk_84 = (Ov015UiLabel *)p;
+    self->unk_84 = (Lo021cadcc *)p;
     self->unk_84->width = 0xf8;
     self->unk_84->rows = 2;
     Ov015_SetUiPos(self->unk_84, 4, 0x95, -0xccd);
     Ov015_SetUiSlide(self->unk_84, -0x100, 0, -0xccd);
     self->unk_84->slideMode = 1;
     func_ov000_0215bb14(self->unk_84, MsgRes_GetString(res, 0xc7));
-    VCALL(self->unk_84)->v70();
-    VCALL(self->unk_84)->v08();
+    self->unk_84->vfunc_70();
+    self->unk_84->vfunc_08();
     switch (self->param) {
     case 1:
         if (data_ov015_02213360 == 0) {
-            p = (u8 *)Heap_Alloc(0x2c);
+            p = (VObj *)Heap_Alloc(0x2c);
             if (p != NULL) {
                 SET_VT(p, data_ov015_022129c0);
                 func_ov000_02163224(p);
@@ -359,12 +349,12 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
             self->unk_84->flags |= 2;
         }
     case 2: {
-        u8 *o = (u8 *)func_ov000_02154b58(self->unk_80, 1);
-        FLD(s32, o, 0x24) = 0xe;
-        FLD(s32, o, 0x10) = -1;
-        o = (u8 *)func_ov000_02154b58(self->unk_80, 2);
-        FLD(s32, o, 0x24) = 0xe;
-        FLD(s32, o, 0x10) = -1;
+        UiListItem *o = func_ov000_02154b58(self->unk_80, 1);
+        o->unk_24 = 0xe;
+        o->unk_10 = -1;
+        o = func_ov000_02154b58(self->unk_80, 2);
+        o->unk_24 = 0xe;
+        o->unk_10 = -1;
         break;
     }
     }

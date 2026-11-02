@@ -87,7 +87,7 @@ void func_ov015_022119d0(NNSG3dRS *rs) {
 }
 
 void func_ov015_022119e8(Ov015Obj290 *self) {
-    VCALL(self)->v08();
+    self->vfunc_08();
     self->unk_04 = 0;
     self->unk_0c = 0;
     self->unk_10 = 0;

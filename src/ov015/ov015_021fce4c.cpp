@@ -7,7 +7,7 @@ void func_0204b420(void *p);
 
 extern const VecFx32 data_ov015_02212584;
 extern const VecFx32 data_ov015_02212590;
-void func_ov000_021c8408(void *self, int x, int y, int z, u16 color, const void *oam, const void *tex, u32 texBase, u32 plttBase, const void *mtx, u32 arg);
+void func_ov000_021c8408(s32 idx, int x, int y, int z, u16 color, const void *oam, const void *tex, u32 texBase, u32 plttBase, const void *mtx, u32 arg);
 
 void func_ov015_021fcb1c(Ov015Hud *self) {
     VecFx32 off;

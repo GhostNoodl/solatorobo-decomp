@@ -174,7 +174,7 @@ BOOL Ov015FishState08_Update(Ov015FishState08 *self, Ov015Fish *p) {
             v.z = z;
             v.y = 0;
             o = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e68, 0, &v);
-            VCALL(o)->v10(&p->scale);
+            o->SetScale(&p->scale);
             o->unk_d4 = 3;
             o->unk_28 = 0;
             o->unk_50 = -0xc8000;
@@ -195,7 +195,7 @@ BOOL Ov015FishState08_Update(Ov015FishState08 *self, Ov015Fish *p) {
             if (q != NULL) {
                 q = Ov015FishState2c_Ctor((Ov015FishState2c *)q);
             }
-            p->nextState = (Ov015V *)q;
+            p->nextState = (VObj *)q;
             p->nextStateId = 2;
         }
         break;

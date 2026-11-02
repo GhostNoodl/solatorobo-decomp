@@ -1,15 +1,18 @@
 #include "ov015/ov015.h"
+#include "Main/Gfx/TexObj.h"
 
 extern "C" {
 
-static inline u8 *Src(u8 *s) {
-    if (FLD(s32, s, 0x80) <= 15) {
+// Entry 15 of the model, whose callback argument (unk_08) is the stats block.
+static inline TexObjEntry *Src(TexObj *obj) {
+    if (obj->count <= 15) {
         return NULL;
     }
-    return FLD(u8 *, s, 0x78) + 0x258;
+    return &obj->entries[15];
 }
 
-Ov015Glyph *func_ov015_021fb25c(u8 *self, u16 *ctx, Ov015Glyph *e, u16 *count) {
+// Glyph callback of entries 0xe/0xf (func_02041c34): writes the value of the stats block as digits.
+Ov015Glyph *func_ov015_021fb25c(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count) {
     Ov015Glyph *last;
     s32 val;
     u16 i;
@@ -22,14 +25,14 @@ Ov015Glyph *func_ov015_021fb25c(u8 *self, u16 *ctx, Ov015Glyph *e, u16 *count) {
     idx = i - 1;
     last = &e[idx];
     w = last->w;
-    val = FLD(s32, FLD(u8 *, Src(self), 8), 0) >> 12;
+    val = ((Ov015Stat *)Src(obj)->unk_08)->unk_00 >> 12;
     n = 0;
     v = val;
     do {
         n++;
         v /= 10;
     } while (v != 0);
-    switch (*ctx) {
+    switch (entry->index) {
     case 0xf:
         x = ((n + 1) * 12 >> 1) - 12;
         i = 0;

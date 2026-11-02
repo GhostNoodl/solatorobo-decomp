@@ -20,7 +20,6 @@ void GXx_SetMasterBrightness_(u32 reg, s32 v);
 
 
 
-extern u8 *data_0214a424;
 extern u8 data_ov015_022127fc[];
 extern u8 data_ov015_022129e0[];
 extern u8 data_ov015_0221296c[];
@@ -37,8 +36,8 @@ u8 Gfx3DState_NextPolyId(void *p);
 void func_02043db4(s32 a, s32 b, s32 c, s32 d);
 BOOL func_ov015_021faa74(Ov015Main *self);
 
-static inline Ov015V *Ov015_NewChild(Ov015Main *self, s32 kind) {
-    Ov015V *c = NULL;
+static inline VObj *Ov015_NewChild(Ov015Main *self, s32 kind) {
+    VObj *c = NULL;
     switch (kind) {
     case 1: {
         Ov015SceneSeq *p = (Ov015SceneSeq *)Heap_Alloc(sizeof(Ov015SceneSeq));
@@ -48,7 +47,7 @@ static inline Ov015V *Ov015_NewChild(Ov015Main *self, s32 kind) {
             SET_VT(p, data_ov015_022129e0);
             func_ov015_02206aa0(p);
         }
-        c = (Ov015V *)p;
+        c = (VObj *)p;
         break;
     }
     case 2: {
@@ -66,7 +65,7 @@ static inline Ov015V *Ov015_NewChild(Ov015Main *self, s32 kind) {
             func_ov015_02211828(&p->info);
             func_ov015_02200f74(p);
         }
-        c = (Ov015V *)p;
+        c = (VObj *)p;
         break;
     }
     }
@@ -116,8 +115,8 @@ void func_ov015_021fa6c8(void) {
 void func_ov015_021fa6cc(Ov015Child *self) {
 }
 
-Ov015V *func_ov015_021fa6d0(void) {
-    return data_ov015_02213320.unk_04;
+Ov015Fade *func_ov015_021fa6d0(void) {
+    return data_ov015_02213320.fade;
 }
 
 void func_ov015_021fa6e0(void) {
@@ -163,10 +162,10 @@ void Ov015Fade_Reset(Ov015Fade *self) {
 
 void func_ov015_021fa77c(void) {
     Ov015Main *p;
-    if (data_ov015_02213320.unk_00 != NULL) {
+    if (data_ov015_02213320.mainSeq != NULL) {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_V(data_ov015_02213320.unk_00);
+        DELETE_V(data_ov015_02213320.mainSeq);
         HEAP_POP(saved);
     }
     p = (Ov015Main *)Heap_Alloc(sizeof(Ov015Main));
@@ -185,13 +184,13 @@ void func_ov015_021fa77c(void) {
         REG16(0x4000060) = (REG16(0x4000060) & ~0x3000) | 0x20;
         func_02043b20(sys->unk_8b0);
     }
-    data_ov015_02213320.unk_00 = (Ov015V *)p;
+    data_ov015_02213320.mainSeq = p;
 }
 
 void func_ov015_021fa868(void) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_V(data_ov015_02213320.unk_00);
+    DELETE_V(data_ov015_02213320.mainSeq);
     HEAP_POP(saved);
 }
 
@@ -210,7 +209,7 @@ void func_ov015_021fa8ec(Ov015Main *self) {
     HEAP_POP(saved);
     func_ov015_022110f0();
     HEAP_PUSH(saved);
-    DELETE_V(data_ov015_02213320.unk_04);
+    DELETE_V(data_ov015_02213320.fade);
     HEAP_POP(saved);
     func_02036838(data_02097cdc, data_0208cca0, 7, 0);
     func_02036838(data_02097cdc, (char *)data_0208cc94, 7, 0);
@@ -274,9 +273,9 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
         Ov015Fade *f;
         s32 kind;
         func_ov015_0221102c();
-        data_ov015_02213368->unk_2c = ((Ov015Flags18 *)(data_0214a424 + 0x18))->b1 ? 1 : 0;
+        data_ov015_02213368->unk_2c = data_0214a424->bits18.mode ? 1 : 0;
         HEAP_PUSH(saved);
-        DELETE_V(data_ov015_02213320.unk_04);
+        DELETE_V(data_ov015_02213320.fade);
         HEAP_POP(saved);
         f = (Ov015Fade *)Heap_Alloc(sizeof(Ov015Fade));
         if (f != NULL) {
@@ -289,7 +288,7 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
             f->time = 0;
             f->alpha = 0;
         }
-        data_ov015_02213320.unk_04 = (Ov015V *)f;
+        data_ov015_02213320.fade = f;
         switch (self->unk_04) {
         case 3:
         case 4:
@@ -303,7 +302,7 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
         *(void **)data_0214a420->task = NULL;
         kind = self->unk_14;
         {
-            Ov015V *c = Ov015_NewChild(self, kind);
+            VObj *c = Ov015_NewChild(self, kind);
             self->unk_14 = kind;
             self->child = c;
         }
@@ -315,27 +314,27 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
         s32 res = 0;
         switch (c->state) {
         case 0:
-            if (!VCALL(c)->v08()) {
+            if (!c->vfunc_08()) {
                 break;
             }
             c->state = 1;
         case 1:
-            if (!VCALL(c)->v0c()) {
+            if (!c->vfunc_0c()) {
                 break;
             }
             c->state = 2;
         case 2:
-            if (!VCALL(c)->v10()) {
+            if (!c->vfunc_10()) {
                 break;
             }
             c->state = 3;
         case 3:
-            if (VCALL(c)->v14()) {
+            if (c->vfunc_14()) {
                 break;
             }
             c->state = 4;
         case 4:
-            res = VCALL(c)->v18();
+            res = c->vfunc_18();
             break;
         }
         if (res == 3) {
@@ -349,13 +348,13 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
             DELETE_V(self->child);
             HEAP_POP(saved);
             {
-                Ov015V *n = Ov015_NewChild(self, res);
+                VObj *n = Ov015_NewChild(self, res);
                 self->unk_14 = res;
                 self->child = n;
             }
         }
         func_02065ac0(data_0214a420);
-        Ov015Fade_Update((Ov015Fade *)data_ov015_02213320.unk_04);
+        Ov015Fade_Update(data_ov015_02213320.fade);
         break;
     }
     case 4: {
@@ -399,9 +398,9 @@ void func_ov015_021fb088(Ov015Main *self) {
     s32 trans[3];
     Ov015Child *c = (Ov015Child *)self->child;
     if (c != NULL && c->state == 3) {
-        VCALL(c)->v1c();
+        c->vfunc_1c();
     }
-    fd = (Ov015Fade *)data_ov015_02213320.unk_04;
+    fd = data_ov015_02213320.fade;
     if (fd == NULL || fd->alpha == 0) {
         return;
     }

@@ -9,6 +9,8 @@
 #include "Main/Gfx/TextWin.h"
 #include "Main/Sys/Field.h"
 #include "Main/Snd/SndMgr.h"
+#include "Main/Sys/Pad.h"
+#include "Main/Res/StageFlags.h"
 #include "Main/Effect/Effect.h"
 #include "Main/Gfx/G3dGlbSyms.h"
 #include "ov000/TaskList.h"
@@ -27,139 +29,6 @@ struct Ov015ShipCfg {
     s32 scale;
 };
 
-// Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
-class Ov015V {
-public:
-    virtual s32 v00(...);
-    virtual s32 v04(...);
-    virtual s32 v08(...);
-    virtual s32 v0c(...);
-    virtual s32 v10(...);
-    virtual s32 v14(...);
-    virtual s32 v18(...);
-    virtual s32 v1c(...);
-    virtual s32 v20(...);
-    virtual s32 v24(...);
-    virtual s32 v28(...);
-    virtual s32 v2c(...);
-    virtual s32 v30(...);
-    virtual s32 v34(...);
-    virtual s32 v38(...);
-    virtual s32 v3c(...);
-    virtual s32 v40(...);
-    virtual s32 v44(...);
-    virtual s32 v48(...);
-    virtual s32 v4c(...);
-    virtual s32 v50(...);
-    virtual s32 v54(...);
-    virtual s32 v58(...);
-    virtual s32 v5c(...);
-    virtual s32 v60(...);
-    virtual s32 v64(...);
-    virtual s32 v68(...);
-    virtual s32 v6c(...);
-    virtual s32 v70(...);
-    virtual s32 v74(...);
-    virtual s32 v78(...);
-    virtual s32 v7c(...);
-    virtual s32 v80(...);
-    virtual s32 v84(...);
-    virtual s32 v88(...);
-    virtual s32 v8c(...);
-    virtual s32 v90(...);
-    virtual s32 v94(...);
-    virtual s32 v98(...);
-    virtual s32 v9c(...);
-    virtual s32 va0(...);
-    virtual s32 va4(...);
-    virtual s32 va8(...);
-    virtual s32 vac(...);
-    virtual s32 vb0(...);
-    virtual s32 vb4(...);
-    virtual s32 vb8(...);
-    virtual s32 vbc(...);
-    virtual s32 vc0(...);
-    virtual s32 vc4(...);
-    virtual s32 vc8(...);
-    virtual s32 vcc(...);
-    virtual s32 vd0(...);
-    virtual s32 vd4(...);
-    virtual s32 vd8(...);
-    virtual s32 vdc(...);
-    virtual s32 ve0(...);
-    virtual s32 ve4(...);
-    virtual s32 ve8(...);
-    virtual s32 vec(...);
-    virtual s32 vf0(...);
-    virtual s32 vf4(...);
-    virtual s32 vf8(...);
-    virtual s32 vfc(...);
-    virtual s32 v100(...);
-    virtual s32 v104(...);
-    virtual s32 v108(...);
-    virtual s32 v10c(...);
-    virtual s32 v110(...);
-    virtual s32 v114(...);
-    virtual s32 v118(...);
-    virtual s32 v11c(...);
-    virtual s32 v120(...);
-    virtual s32 v124(...);
-    virtual s32 v128(...);
-    virtual s32 v12c(...);
-    virtual s32 v130(...);
-    virtual s32 v134(...);
-    virtual s32 v138(...);
-    virtual s32 v13c(...);
-    virtual s32 v140(...);
-    virtual s32 v144(...);
-    virtual s32 v148(...);
-    virtual s32 v14c(...);
-    virtual s32 v150(...);
-    virtual s32 v154(...);
-    virtual s32 v158(...);
-    virtual s32 v15c(...);
-    virtual s32 v160(...);
-    virtual s32 v164(...);
-    virtual s32 v168(...);
-    virtual s32 v16c(...);
-    virtual s32 v170(...);
-    virtual s32 v174(...);
-    virtual s32 v178(...);
-    virtual s32 v17c(...);
-    virtual s32 v180(...);
-    virtual s32 v184(...);
-    virtual s32 v188(...);
-    virtual s32 v18c(...);
-    virtual s32 v190(...);
-    virtual s32 v194(...);
-    virtual s32 v198(...);
-    virtual s32 v19c(...);
-    virtual s32 v1a0(...);
-    virtual s32 v1a4(...);
-    virtual s32 v1a8(...);
-    virtual s32 v1ac(...);
-    virtual s32 v1b0(...);
-    virtual s32 v1b4(...);
-    virtual s32 v1b8(...);
-    virtual s32 v1bc(...);
-    virtual s32 v1c0(...);
-    virtual s32 v1c4(...);
-    virtual s32 v1c8(...);
-    virtual s32 v1cc(...);
-    virtual s32 v1d0(...);
-    virtual s32 v1d4(...);
-    virtual s32 v1d8(...);
-    virtual s32 v1dc(...);
-    virtual s32 v1e0(...);
-    virtual s32 v1e4(...);
-    virtual s32 v1e8(...);
-    virtual s32 v1ec(...);
-    virtual s32 v1f0(...);
-    virtual s32 v1f4(...);
-    virtual s32 v1f8(...);
-    virtual s32 v1fc(...);
-};
-
 // The overlay's vector: a VecFx32 with a user-declared (empty) default constructor and a member-wise
 // copy constructor. Both are load-bearing: copy-initialised locals (func_ov015_021fd0f4,
 // func_ov015_02203d64, func_ov015_021ffb90, ...) are built field by field, where a plain VecFx32 (or a
@@ -176,7 +45,6 @@ struct Ov015Vec : public VecFx32 {
 };
 
 #define FLD(type, p, off) (*(type *)((u8 *)(p) + (off)))
-#define VCALL(p) ((Ov015V *)(p))
 #define SET_VT(p, vt) (*(void **)(p) = (void *)(vt))
 #define REG16(a) (*(volatile u16 *)(a))
 #define REG32(a) (*(volatile u32 *)(a))
@@ -185,15 +53,16 @@ extern "C" {
 
 
 
-struct Ov015Node {
-    void *vt;
-    s32 key;
+struct Ov015Fish;
+
+// List node (0x10, vtable data_ov015_0221295c); the fish list is the only list.
+struct Ov015Node : public VObj {
+    Ov015Fish *fish;
     Ov015Node *prev;
     Ov015Node *next;
 };
 
-struct Ov015List {
-    void *vt;
+struct Ov015List : public VObj {
     Ov015Node *head;
     Ov015Node *tail;
     s32 count;
@@ -208,8 +77,7 @@ struct Ov015Obj290;
 struct Ov015Obj292c;
 
 // Fishing phase state (0x2c bytes, vtable data_ov015_022127ec, func_ov015_021ff350).
-struct Ov015Obj30 {
-    void *vt;
+struct Ov015Obj30 : public VObj {
     s32 step;
     s32 timer;
     u8 unk_0c;
@@ -255,8 +123,7 @@ struct Ov015Bits8a0 {
     u8 rest : 3;
 };
 
-struct Ov015Cam {
-    void *vt;
+struct Ov015Cam : public VObj {
     Ov015Vec pos;
     Ov015Vec at;
     Ov015Vec up;
@@ -281,8 +148,7 @@ struct Ov015Cam {
 
 // The camera object (0x1a0 bytes, vtable data_ov015_0221291c): the top and bottom screen
 // cameras plus the follow state.
-struct Ov015CamPair {
-    void *vt;
+struct Ov015CamPair : public VObj {
     Ov015Cam cam0;
     Ov015Cam cam1;
     s32 mode; // mode
@@ -381,8 +247,7 @@ struct Ov015Stat {
 };
 extern Ov015Stat data_ov015_0221332c;
 
-struct Ov015Gauge {
-    void *vt;
+struct Ov015Gauge : public VObj {
     s32 state;
     s32 unk_08;
     s32 unk_0c;
@@ -396,13 +261,7 @@ struct Ov015Gauge {
 };
 
 
-struct Ov015Globals {
-    Ov015V *unk_00;
-    Ov015V *unk_04;
-};
-
-struct Ov015Fade {
-    void *vt;
+struct Ov015Fade : public VObj {
     u32 posZ;
     u8 alphaFrom;
     u8 alphaTo;
@@ -412,21 +271,26 @@ struct Ov015Fade {
     u8 alpha;
 };
 
-struct Ov015Main {
-    void *vt;
+struct Ov015Main : public VObj {
     s32 unk_04;
     s32 unk_08;
     s32 unk_0c;
     s32 unk_10;
     s32 unk_14;
-    Ov015V *child;
+    VObj *child;
+};
+
+// data_ov015_02213320: the running main sequence (func_ov015_021fa77c) and the screen fade it
+// creates (func_ov015_021fa6d0 returns it).
+struct Ov015Globals {
+    Ov015Main *mainSeq;
+    Ov015Fade *fade;
 };
 
 // Base of the top-level ov015 sequences (vtable data_ov015_0221280c, dtor func_ov015_021fb230):
 // Ov015Main steps state through vtable slots 0x08..0x18; slot 0x18 returns the next sequence
 // (1: Ov015SceneSeq, 2: Ov015Game, 3: quit).
-struct Ov015Child {
-    void *vt;
+struct Ov015Child : public VObj {
     s32 state;
     s32 unk_08;
 };
@@ -440,6 +304,22 @@ struct Ov015SceneSeq : public Ov015Child {
 SIZE_ASSERT(Ov015SceneSeq, 0x14);
 
 void func_ov015_021fa6cc(Ov015Child *self);
+
+// ov000 task helpers: func_ov000_02173648 inserts a task into the list by priority (then calls its
+// slot 0x20); func_ov000_0217357c resets the draw scale and updates fadeSin.
+void func_ov000_02173648(Task *task);
+void func_ov000_0217357c(Task *self);
+
+// ov000 task host (data_ov000_021ccd44) and the scene task globals: func_ov000_0218084c switches the
+// host to task kind `kind` (creating it with param c) and returns that task; data_ov000_021ccd40 is
+// the current scene task and data_ov000_021ccd38 the id of the previous one.
+extern TaskHost *data_ov000_021ccd44;
+extern Task *data_ov000_021ccd40;
+extern u32 data_ov000_021ccd38;
+Task *func_ov000_0218084c(TaskHost *cur, s32 kind, s32 c);
+
+// The item of a list with the given id (ov000 List_02154a68.cpp).
+UiListItem *func_ov000_02154b58(UiList *self, u16 id);
 void func_ov015_02206aa0(Ov015SceneSeq *self);
 
 struct Ov015ItemEnt {
@@ -449,8 +329,7 @@ struct Ov015ItemEnt {
 
 // Data shared by the ov015 sequences (0x30 bytes, vtable data_ov015_02213200, built by
 // func_ov015_0221102c into data_ov015_02213368).
-struct Ov015Shared {
-    void *vt;
+struct Ov015Shared : public VObj {
     s32 unk_04; // sequence kind (Ov015Main::unk_04)
     u16 unk_08; // item id (price from func_0206ef88)
     u16 unk_0a; // id of the func_0206f040 table that func_ov015_02211160 picks from
@@ -486,13 +365,13 @@ u64 _u32_div_f(u32 a, u32 b);
 
 extern "C" {
 
-static inline void Ov015TaskBase_Ctor(void *p) {
+static inline void Ov015TaskBase_Ctor(Task *p) {
     SET_VT(p, data_ov000_021cc060);
-    VCALL(p)->v58();
+    p->vfunc_58();
 }
-static inline void Ov015TaskBase_Dtor(void *p) {
+static inline void Ov015TaskBase_Dtor(Task *p) {
     SET_VT(p, data_ov000_021cc060);
-    VCALL(p)->v5c();
+    p->vfunc_5c();
 }
 }
 
@@ -505,10 +384,10 @@ static inline void Ov015TaskBase_Dtor(void *p) {
 
 #define DELETE_V(field)                 \
     do {                                \
-        Ov015V *o_ = (Ov015V *)(field); \
+        VObj *o_ = (VObj *)(field); \
         if (o_ != NULL) {               \
             if (o_ != NULL) {           \
-                o_->v04();              \
+                o_->vfunc_04();            \
             }                           \
             (field) = NULL;             \
         }                               \
@@ -633,8 +512,7 @@ struct Ov015ShipMtx {
 };
 OV015_SIZE(Ov015ShipMtx, 0x34);
 // Fish data block (0x2c bytes, vtable data_ov015_02212e84).
-struct Ov015FishInfo {
-    void *unk_00;
+struct Ov015FishInfo : public VObj {
     u16 id;
     u16 unk_06;
     u8 unk_08[0x2];
@@ -674,6 +552,16 @@ struct Ov015Model {
     u8 unk_d8[0x10];
 };
 OV015_SIZE(Ov015Model, 0xe8);
+// A model resource and its model.
+struct Ov015MdlPair {
+    Ov015Anim res;
+    Ov015Model mdl;
+};
+// Three models (0x664, vtable data_ov015_0221294c; built by func_ov015_02201344, Ov015Game::unk_20).
+struct Ov015MdlSet : public VObj {
+    Ov015MdlPair p[3];
+};
+OV015_SIZE(Ov015MdlSet, 0x664);
 // Main object (0x48 bytes, func_0203f260 / func_0203f2b8).
 struct Ov015Obj48 {
     Ov015Vec pos;
@@ -690,8 +578,7 @@ struct Ov015Obj48 {
 };
 OV015_SIZE(Ov015Obj48, 0x48);
 // Fish (0x5b0 bytes, vtable data_ov015_022128fc, ctor Ov015Fish_Ctor).
-struct Ov015Fish {
-    void *unk_00;
+struct Ov015Fish : public VObj {
     u16 id;
     u8 unk_06[0x2];
     s32 unk_08;
@@ -719,11 +606,11 @@ struct Ov015Fish {
     s32 unk_bc;
     Ov015FishInfo info;
     s32 nextStateId;
-    Ov015V *nextState;
+    VObj *nextState;
     s32 stateId;
-    Ov015V *state;
+    VObj *state;
     s32 prevStateId;
-    Ov015V *prevState;
+    VObj *prevState;
     s16 animSpeed;
     u8 unk_106[0x2];
     s32 drawMode;
@@ -736,8 +623,7 @@ struct Ov015Fish {
 };
 OV015_SIZE(Ov015Fish, 0x5b0);
 // Fishing phase state (0x34 bytes, func_ov015_0220015c / func_ov015_02200194).
-struct Ov015Obj34 {
-    void *vt;
+struct Ov015Obj34 : public VObj {
     EffectObj *fx;
     s32 step;
     s32 unk_0c;
@@ -787,8 +673,7 @@ struct Ov015Ship {
 };
 OV015_SIZE(Ov015Ship, 0xd58);
 // Fish info block (0x38 bytes, vtable data_ov015_022132d0, ctor func_ov015_02211828).
-struct Ov015Info38 {
-    void *vt;
+struct Ov015Info38 : public VObj {
     u16 id;
     u8 unk_06[0x2];
     s32 unk_08;
@@ -809,8 +694,7 @@ OV015_SIZE(Ov015Info38, 0x38);
 // Fishing HUD (0x30, vtable data_ov015_0221293c; built by func_ov015_02201344, dtor
 // func_ov015_022027e8). func_ov015_021fb5d4 updates the counters from data_ov015_0221332c each frame;
 // func_ov015_021fb758 draws the two 2D models.
-struct Ov015Hud {
-    void *vt;
+struct Ov015Hud : public VObj {
     s32 unk_04;
     s32 frame; // frame counter, wraps at 0x7fff
     s32 unk_0c;
@@ -838,13 +722,13 @@ struct Ov015Game : public Ov015Child {
     s32 unk_14;
     Ov015Ship *ship;
     Ov015List *fishList;
-    u8 *unk_20;
+    Ov015MdlSet *unk_20;
     Ov015CamPair *cam;
     Ov015Hud *hud;
     struct Ov015Result *result;
     Ov015Obj30 phase1;
     Ov015Obj34 phase2;
-    u8 *unk_90;
+    struct Ov015MsgMgr *unk_90;
     Ov015Info38 info;
 };
 OV015_SIZE(Ov015Game, 0xcc);
@@ -854,19 +738,11 @@ OV015_SIZE(Ov015Game, 0xcc);
 extern "C" {
 // Fish behaviour state (abstract base, vtable data_ov015_02212eb0, dtor Ov015FishState_Dtor).
 // The fish calls v08 on entry (with itself), v0c each frame and v10 on exit.
-struct Ov015FishState {
-    void *vt;
+struct Ov015FishState : public VObj {
 };
 }
 
 struct Ov015UiText;
-
-// ov000 text label (0x8c bytes, vtables data_ov000_021cac60 -> data_ov000_021cadcc).
-struct Ov015UiLabel : public UiObj {
-    s32 unk_84;
-    u8 unk_88[0x4];
-};
-SIZE_ASSERT(Ov015UiLabel, 0x8c);
 
 // ov000 number display (0x98 bytes, vtables data_ov000_021cac60 -> data_ov000_021cae48).
 struct Ov015UiNum : public UiObj {
@@ -876,16 +752,8 @@ struct Ov015UiNum : public UiObj {
     u8 unk_90[0x8];
 };
 SIZE_ASSERT(Ov015UiNum, 0x98);
-
-// ov000 yes/no dialog (0x1e4 bytes, vtables data_ov000_021caec8 -> data_ov000_021cb1b0 ->
-// data_ov000_021cb0b8).
-struct Ov015Dialog : public UiList {
-    u8 unk_d4[0x108];
-    void *text; // text
-    u16 unk_1e0;
-    u8 unk_1e2[0x2];
-};
-SIZE_ASSERT(Ov015Dialog, 0x1e4);
+// Sets value (and unk_88 too when both is set).
+extern "C" void func_ov000_0215d980(Ov015UiNum *self, s32 value, BOOL both);
 
 // Camera view block: eye/at/up and the projection, laid out like Main Camera 0x04..0x3f
 // (0x3c bytes; initialised by GfxCamPos_Init and func_020434e0).
@@ -969,7 +837,7 @@ SIZE_ASSERT(Ov015FishState08, 0x8);
 
 // Scene task, vtable data_ov015_02212a88 (0x58 bytes, built by func_ov015_02206f04).
 struct Ov015Scene2a88 : public Task {
-    u8 *model;
+    Model *model;
     u8 unk_40;
     u8 unk_41[0x3];
     s32 unk_44;
@@ -1003,7 +871,7 @@ struct Ov015Scene2a08 : public Task {
     Ov015Shadow *shadow;
     Ov015CamView camView;
     UiList *unk_80;
-    Ov015UiLabel *unk_84;
+    Lo021cadcc *unk_84;
     UiList *unk_88;
     Ov015MsgBox *unk_8c;
     s32 unk_90;
@@ -1021,7 +889,7 @@ SIZE_ASSERT(Ov015Scene2a08, 0xb0);
 // Scene task, vtable data_ov015_02212c08 (0x6c bytes, built by func_ov015_02207020).
 struct Ov015Scene2c08 : public Task {
     UiList *unk_3c;
-    Ov015UiLabel *unk_40;
+    Lo021cadcc *unk_40;
     UiList *unk_44;
     Ov015UiNum *unk_48;
     void *unk_4c;
@@ -1040,23 +908,24 @@ SIZE_ASSERT(Ov015Scene2c08, 0x6c);
 // Scene task, vtable data_ov015_02212b88 (0x58 bytes, built by func_ov015_022070b8).
 struct Ov015Scene2b88 : public Task {
     UiList *unk_3c;
-    Ov015UiLabel *unk_40;
+    Lo021cadcc *unk_40;
     UiList *unk_44;
-    Ov015Dialog *unk_48;
+    Lo021cb0b8 *unk_48;
     Ov015MsgBox *unk_4c;
     s32 unk_50;
     u16 unk_54;
     u8 unk_56[0x2];
 };
 SIZE_ASSERT(Ov015Scene2b88, 0x58);
+extern "C" void func_ov015_0220566c(Ov015Scene2b88 *self, s32 a);
 
 // Scene task, vtable data_ov015_02212b08 (0x164 bytes, built by func_ov015_02207138).
 struct Ov015Scene2b08 : public Task {
     UiList *unk_3c;
     Ov015UiNum *unk_40;
-    Ov015UiLabel *unk_44;
+    Lo021cadcc *unk_44;
     UiList *unk_48;
-    Ov015Dialog *unk_4c;
+    Lo021cb0b8 *unk_4c;
     UiObj *unk_50; // 0xe8 object, vtables data_ov000_021cac60 -> data_ov000_021cad50
     s32 unk_54;
     s32 unk_58;
@@ -1067,20 +936,19 @@ struct Ov015Scene2b08 : public Task {
 SIZE_ASSERT(Ov015Scene2b08, 0x164);
 
 // Event message task, vtable data_ov015_022131c4 (0x144 bytes, ctor Ov015Msg_Ctor).
-struct Ov015Msg {
-    void *vt;
+struct Ov015Msg : public VObj {
     u8 unk_04;
     u8 unk_05[0x3];
     s32 unk_08;
     u16 msgIdx;
     u8 unk_0e[0x2];
-    void *msgRes;
+    struct MsgRes *msgRes;
     Model *model;
     TextWin *textWin;
     s32 posX;
     s32 posY;
     s32 posZ;
-    Ov015UiLabel *label;
+    Lo021cadcc *label;
     Ov015UiText *textBox;
     void *pages[0x20]; // message pages
     s32 pageCount; // page count
@@ -1103,9 +971,8 @@ struct Ov015UiText : public UiObj {
 SIZE_ASSERT(Ov015UiText, 0xb4);
 
 // Event message manager, vtable data_ov015_02213198 (0x14 bytes, init func_ov015_02210b3c).
-struct Ov015MsgMgr {
-    void *vt;
-    void *unk_04;
+struct Ov015MsgMgr : public VObj {
+    VObj *unk_04;
     u8 unk_08;
     u8 unk_09;
     u8 unk_0a[0x2];
@@ -1116,8 +983,7 @@ SIZE_ASSERT(Ov015MsgMgr, 0x14);
 
 // Result panel (0x64 bytes, vtable data_ov015_02213188, built by func_ov015_0220f470 and set up by
 // func_ov015_0220e634).
-struct Ov015ResultPanel {
-    void *vt;
+struct Ov015ResultPanel : public VObj {
     Lo021cb3a8 *unk_04;
     UiObj *unk_08; // 0x100 bytes, vtable data_ov000_021ccb54
     Ov015UiNum *unk_0c;
@@ -1131,8 +997,7 @@ struct Ov015ResultPanel {
 SIZE_ASSERT(Ov015ResultPanel, 0x64);
 
 // Result sequence (0x14 bytes, vtable data_ov015_022128ec, ctor Ov015Result_Ctor).
-struct Ov015Result {
-    void *vt;
+struct Ov015Result : public VObj {
     s32 state; // state
     s8 mode; // mode
     u8 unk_09[0x3];
@@ -1153,8 +1018,7 @@ void func_ov015_0220f7a8(Ov015Result *self);
 
 // Fishing tackle object (0x290 bytes, vtable data_ov015_022132e0, init func_ov015_022119e8), with
 // its own animation and model; data_ov015_0221336c points to it.
-struct Ov015Obj290 {
-    void *vt;
+struct Ov015Obj290 : public VObj {
     s32 unk_04;
     s32 step;
     s32 unk_0c;
@@ -1173,15 +1037,12 @@ struct Ov015Obj290 {
 SIZE_ASSERT(Ov015Obj290, 0x290);
 
 // Object holding a spawned effect (0x34 bytes, vtable data_ov015_0221292c, init func_ov015_022120c0).
-struct Ov015Obj292c {
-    void *vt;
+struct Ov015Obj292c : public VObj {
     EffectObj *fx; // effect object
     void *unk_08;
     Ov015Vec pos; // position
     Ov015Vec scale; // scale
-    s32 unk_24;
-    s32 unk_28;
-    s32 unk_2c;
+    Ov015Vec unk_24; // a found fish's position (func_ov015_021fffc4); func_ov015_02212264 copies it to unk_08 + 0x50
     s32 unk_30;
 };
 SIZE_ASSERT(Ov015Obj292c, 0x34);

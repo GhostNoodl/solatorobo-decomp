@@ -2,27 +2,20 @@
 
 extern "C" {
 
-extern u8 *data_02097dc8;
-extern u8 *data_ov000_021ccd44;
-void *func_ov000_0218084c(void *a, s32 b, s32 c);
 extern u8 data_ov000_021ccd34;
-void func_ov000_0217357c(void *self);
-extern u8 *data_0214a424;
 extern void *data_02149ef8;
 void *MsgRes_GetString(void *a, int id);
 u8 *func_0206f000(u16 id);
 BOOL func_0206f21c(u16 id, s32 n);
 BOOL func_0206f5e4(u16 id, s32 n);
-void func_ov000_0215d980(void *a, u32 b, s32 c);
 void func_ov000_0215c1bc(void *a, s32 b, void *c);
 extern Ov015Globals data_ov015_02213320;
 void func_ov000_02180660(s32 a, s32 b);
-extern void *data_ov000_021ccd40;
 extern u8 data_ov015_02213360[];
 
 void func_ov015_02206564(Ov015Scene2b08 *self) {
-    u8 *pd = data_02097dc8;
-    u16 pad = FLD(u16, pd, 0x12);
+    Pad *pd = data_02097dc8;
+    u16 pad = pd->trig;
     BOOL on = self->unk_4c->hidden ? TRUE : FALSE;
     if (!on) {
 
@@ -45,7 +38,7 @@ void func_ov015_02206564(Ov015Scene2b08 *self) {
 static inline BOOL Ov015_IsFinished(UiObj *o) {
     BOOL r = FALSE;
     if (o->hidden ? TRUE : FALSE) {
-        if (VCALL(o)->v0c() == 0) r = TRUE;
+        if (o->vfunc_0c() == 0) r = TRUE;
     }
     return r;
 }
@@ -66,12 +59,12 @@ void func_ov015_02206648(Ov015Scene2b08 *self) {
         self->unk_3c->flags &= ~4;
     }
 
-    VCALL(self->unk_3c)->v1c();
-    VCALL(self->unk_40)->v1c();
-    VCALL(self->unk_44)->v1c();
-    VCALL(self->unk_48)->v1c();
-    VCALL(self->unk_4c)->v1c();
-    VCALL(self->unk_50)->v1c();
+    self->unk_3c->vfunc_1c();
+    self->unk_40->vfunc_1c();
+    self->unk_44->vfunc_1c();
+    self->unk_48->vfunc_1c();
+    self->unk_4c->vfunc_1c();
+    self->unk_50->vfunc_1c();
 }
 
 static inline bool Ov015Child_Is2(Ov015Child *c) {
@@ -98,16 +91,16 @@ void func_ov015_022067d4(Ov015Scene2b08 *self) {
 }
 
 void func_ov015_02206800(Ov015Scene2b08 *self) {
-    if (VCALL(self)->v28() == 0) {
+    if (self->vfunc_28() == 0) {
         return;
     }
     func_ov000_0217357c(self);
-    VCALL(self->unk_3c)->v20();
-    VCALL(self->unk_40)->v20();
-    VCALL(self->unk_44)->v20();
-    VCALL(self->unk_48)->v20();
-    VCALL(self->unk_4c)->v20();
-    VCALL(self->unk_50)->v20();
+    self->unk_3c->vfunc_20();
+    self->unk_40->vfunc_20();
+    self->unk_44->vfunc_20();
+    self->unk_48->vfunc_20();
+    self->unk_4c->vfunc_20();
+    self->unk_50->vfunc_20();
 }
 
 static inline UiListItem *Ov015_ListNth3(UiList *o) {
@@ -123,11 +116,11 @@ static inline UiListItem *Ov015_ListNth3(UiList *o) {
 static inline void Ov015_ShopMsg(Ov015Scene2b08 *self, s32 id) {
     func_ov000_0215c1bc(self->unk_50, 0x8000, MsgRes_GetString(data_02149ef8, id));
     self->unk_50->flags &= ~2;
-    VCALL(self->unk_50)->v70();
+    self->unk_50->vfunc_70();
 }
 static inline void Ov015_SetMoney24(u16 v) {
     if (v > 9999) v = 9999;
-    FLD(u16, data_0214a424, 0x24) = v;
+    data_0214a424->unk_024 = v;
 }
 BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
     UiListItem *item = Ov015_ListNth3(self->unk_3c);
@@ -141,7 +134,7 @@ BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
     }
     switch (def[0]) {
     case 0:
-        if (FLD(u16, data_0214a424, 0x28) >= 100) {
+        if (data_0214a424->itemTotal >= 100) {
             if (self->unk_50 != NULL) Ov015_ShopMsg(self, 0x9e);
             r = FALSE;
         } else {
@@ -150,7 +143,7 @@ BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
         }
         break;
     case 1: {
-        u32 s = def[1] + FLD(u16, data_0214a424, 0x24);
+        u32 s = def[1] + data_0214a424->unk_024;
         if (s > 9999) s = 9999;
         Ov015_SetMoney24(s);
         break;
@@ -159,14 +152,14 @@ BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
     if (r) {
         func_ov000_0215d980(self->unk_40, self->unk_40->value - item->unk_0c, 0);
         if (consume) {
-            VCALL(self->unk_3c)->v70(item);
+            self->unk_3c->vfunc_70(item);
             func_0206f5e4(id, 1);
         }
         {
-            u8 *save = data_0214a424;
+            StageFlags *save = data_0214a424;
             u32 m = self->unk_40->value;
             if (m > 99999) m = 99999;
-            FLD(u32, save, 0x618) = m;
+            save->unk_618 = m;
 
         }
     }
@@ -180,7 +173,7 @@ void func_ov015_02206aa0(Ov015SceneSeq *self) {
 }
 
 BOOL func_ov015_02206abc(void) {
-    func_ov000_02180660(0x1e, ((Ov015Main *)data_ov015_02213320.unk_00)->unk_04);
+    func_ov000_02180660(0x1e, data_ov015_02213320.mainSeq->unk_04);
     return TRUE;
 }
 
@@ -199,27 +192,21 @@ BOOL func_ov015_02206afc(void) {
     return TRUE;
 }
 
-struct Ov015Flags0 {
-    u32 flag0 : 1;
-    u32 flag1 : 1;
-    u32 rest : 30;
-};
-
 static inline bool Ov015Task_Flag1(Task *t) {
     return t->unk_04_1;
 }
 
-static inline bool Ov015Flags0_Flag1(Ov015Flags0 *t) {
-    return t->flag1;
+static inline bool Ov015Host_Flag1(TaskHost *t) {
+    return t->unk_00_1;
 }
 
 BOOL func_ov015_02206b1c(Ov015SceneSeq *self) {
     BOOL r;
     Task *t;
-    self->scene = (Task *)data_ov000_021ccd40;
+    self->scene = data_ov000_021ccd40;
     r = TRUE;
     {
-        BOOL b = Ov015Flags0_Flag1((Ov015Flags0 *)data_ov000_021ccd44);
+        BOOL b = Ov015Host_Flag1(data_ov000_021ccd44);
         if (b) {
             r = FALSE;
         }
@@ -228,16 +215,16 @@ BOOL func_ov015_02206b1c(Ov015SceneSeq *self) {
     if (t != NULL && Ov015Task_Flag1(t) != 0) {
         switch (t->id) {
         case 0x1f:
-            self->next = FLD(s32, t, 0x94);
+            self->next = ((Ov015Scene2a08 *)t)->unk_94;
             break;
         case 0x20:
-            self->next = FLD(s32, t, 0x58);
+            self->next = ((Ov015Scene2c08 *)t)->unk_58;
             break;
         case 0x21:
-            self->next = FLD(s32, t, 0x50);
+            self->next = ((Ov015Scene2b88 *)t)->unk_50;
             break;
         case 0x22:
-            self->next = FLD(s32, t, 0x54);
+            self->next = ((Ov015Scene2b08 *)t)->unk_54;
             break;
         }
     }
@@ -296,7 +283,7 @@ static inline void Ov015_G3Cmd1(u32 op, u32 v) {
     NNS_G3dGeBufferOP_N(op, &a, 1);
 }
 
-void func_ov015_02206bf0(void *self, s32 x, s32 y, s32 z, s32 unused, Ov015Oam *oam,
+void func_ov015_02206bf0(s32 idx, s32 x, s32 y, s32 z, s32 unused, Ov015Oam *oam,
                          const Ov015ImgAttr *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs) {
     s32 mv[3];
     s32 tv[3];

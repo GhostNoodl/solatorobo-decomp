@@ -1,4 +1,5 @@
 #include "ov015/ov015.h"
+#include "Main/Res/MsgRes.h"
 
 extern "C" {
 
@@ -13,8 +14,6 @@ extern char data_ov015_02213147[];
 extern char data_ov015_0221314d[];
 extern char data_ov015_02213158[];
 extern u8 data_ov015_022131c4[];
-extern u8 data_0208b318[];
-extern u8 data_0208ba30[];
 extern char data_ov015_02213163[];
 extern char data_ov015_02213170[];
 void func_0204bfcc(void *p);
@@ -35,11 +34,11 @@ void func_ov015_0220f7a8(Ov015Result *self) {
     if (data_02097d48->unk_a30_4) {
         return;
     }
-    if (o->unk_04 != NULL) VCALL(o->unk_04)->v20();
-    if (o->unk_08 != NULL) VCALL(o->unk_08)->v20();
-    if (o->unk_0c != NULL) VCALL(o->unk_0c)->v20();
-    if (o->unk_10 != NULL) VCALL(o->unk_10)->v20();
-    if (o->unk_14 != NULL) VCALL(o->unk_14)->v20();
+    if (o->unk_04 != NULL) o->unk_04->vfunc_20();
+    if (o->unk_08 != NULL) o->unk_08->vfunc_20();
+    if (o->unk_0c != NULL) o->unk_0c->vfunc_20();
+    if (o->unk_10 != NULL) o->unk_10->vfunc_20();
+    if (o->unk_14 != NULL) o->unk_14->vfunc_20();
 }
 
 struct Ov015ItemBitsF878 {
@@ -292,33 +291,33 @@ BOOL func_ov015_02210014(Ov015Msg *self) {
     BOOL r = TRUE;
     switch (self->seq) {
     case 0:
-        VCALL(self)->v14();
+        self->vfunc_14();
         Ov015_SetSeq(self, self->seq + 1);
     case 1:
-        if (VCALL(self)->v18()) {
+        if (self->vfunc_18()) {
             Ov015_SetSeq(self, 10);
         }
         break;
     case 10:
-        if (VCALL(self)->v1c()) {
+        if (self->vfunc_1c()) {
             Ov015_SetSeq(self, 20);
         }
         break;
     case 20:
-        if (VCALL(self)->v20()) {
+        if (self->vfunc_20()) {
             self->unk_08 = 0;
             Ov015_SetSeq(self, 30);
         }
         break;
     case 30:
-        if (!VCALL(self)->v24()) {
-            VCALL(self)->v28();
+        if (!self->vfunc_24()) {
+            self->vfunc_28();
             self->unk_08 = 0;
             Ov015_SetSeq(self, 40);
         }
         break;
     case 40:
-        if (VCALL(self)->v2c()) {
+        if (self->vfunc_2c()) {
             Ov015_SetSeq(self, 50);
         }
         break;
@@ -335,10 +334,10 @@ void func_ov015_0221015c(Ov015Msg *self) {
         return;
     }
     if (self->label != NULL) {
-        VCALL(self->label)->v20();
+        self->label->vfunc_20();
     }
     if (self->textBox != NULL) {
-        VCALL(self->textBox)->v20();
+        self->textBox->vfunc_20();
     }
     if (self->model != NULL) {
         Model *m = self->model;
@@ -355,10 +354,10 @@ void func_ov015_0221015c(Ov015Msg *self) {
 }
 
 void func_ov015_02210298(Ov015Msg *self) {
-    void *p = Heap_Alloc(0x58);
+    MsgRes *p = (MsgRes *)Heap_Alloc(sizeof(MsgRes));
     if (p != NULL) {
         SET_VT(p, data_0208b318);
-        VCALL(p)->v08();
+        p->Clear();
         SET_VT(p, data_0208ba30);
         func_0204bfcc(p);
     }
@@ -367,7 +366,7 @@ void func_ov015_02210298(Ov015Msg *self) {
 }
 
 void func_ov015_022102fc(Ov015Msg *self) {
-    VCALL(self->msgRes)->v2c();
+    self->msgRes->Load();
 }
 
 
@@ -403,18 +402,19 @@ static inline void Ov015T_SetSlide(UiObj *o, s32 x, s32 y, s32 z) {
 }
 
 BOOL func_ov015_02210314(Ov015Msg *self) {
-    u8 *p;
+    UiObj *p;
+    Model *m;
     func_0204c030(self->msgRes);
     self->pageCount = func_0204c08c(self->msgRes, self->msgIdx, self->pages, 0x20);
-    p = (u8 *)Heap_Alloc(0x160);
-    if (p != NULL) {
+    m = (Model *)Heap_Alloc(sizeof(Model));
+    if (m != NULL) {
         void *file = data_0208cc94;
         void *name = data_0208cc88;
-        func_02041218((PlttRes *)(p + 0x88));
-        func_02041440((Model *)p, (char *)name, 0);
-        STD_CopyString((char *)(p + 0x2c), (char *)file);
+        func_02041218(&m->pltt);
+        func_02041440(m, (char *)name, 0);
+        STD_CopyString(m->name, (char *)file);
     }
-    self->model = (Model *)p;
+    self->model = m;
     func_020417e0(self->model, func_02035de0(data_0208cc94, data_0208cc88));
     self->model->flags |= 2;
     func_02041d9c((Model *)(self->model), 0, 0x1d);
@@ -445,42 +445,42 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
     self->textWin->flags |= 0x40000000;
     self->textWin->flags |= 4;
     func_0204ca70(self->textWin);
-    p = (u8 *)Heap_Alloc(0x8c);
+    p = (UiObj *)Heap_Alloc(0x8c);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
-        VCALL(p)->v28();
+        p->vfunc_28();
         SET_VT(p, data_ov000_021cadcc);
-        VCALL(p)->v28();
+        p->vfunc_28();
     }
-    FLD(u8 *, self, 0x28) = p;
-    FLD(s32, p, 0x24) = 0xf8;
+    self->label = (Lo021cadcc *)p;
+    p->width = 0xf8;
     Ov015T_SetSlide(self->label, -0x100, 0, -0xccd);
     self->label->slideMode = 1;
     self->label->flags |= 0x80000;
     self->label->rows = 3;
     Ov015T_SetPos(self->label, 4, 0x86, -0xccd);
-    VCALL(self->label)->v08();
-    p = (u8 *)Heap_Alloc(0xb4);
+    self->label->vfunc_08();
+    p = (UiObj *)Heap_Alloc(0xb4);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
-        VCALL(p)->v28();
+        p->vfunc_28();
         SET_VT(p, data_ov015_02212d3c);
         func_ov015_02208544((Ov015UiText *)p);
     }
     self->textBox = (Ov015UiText *)p;
-    Ov015T_SetPos((UiObj *)p, 0, 0x7b, -0x99a);
+    Ov015T_SetPos(p, 0, 0x7b, -0x99a);
     Ov015T_SetSlide(self->textBox, -0x100, 0, -0x99a);
     self->textBox->slideMode = 1;
     self->textBox->flags &= ~0x10000;
-    VCALL(self->textBox)->v08();
+    self->textBox->vfunc_08();
     if (self->label != NULL && self->pages[0] != NULL) {
-        u8 *o;
+        Lo021cadcc *o;
         func_0204c2f4(self->text, 0x80, self->pages[0]);
         func_ov000_0215bb14(self->label, self->text);
-        VCALL(self->label)->v70();
+        self->label->vfunc_70();
         FLD(u32, self->label->unk_84, 0x4) |= 0x4000000;
-        o = ((u8 *)self->label);
-        VCALL(FLD(u8 *, o, 0x84))->v1c(FLD(s16, o, 0x64) + FLD(s32, o, 0x24) - 0x14, FLD(s16, o, 0x66) + FLD(s32, o, 0x28) - 0xc, -0xcbd);
+        o = self->label;
+        o->unk_84->vfunc_1c(o->posX + o->width - 0x14, o->posY + o->height - 0xc, -0xcbd);
         func_ov015_0220866c(self->textBox, self->pages[0]);
     }
     return TRUE;

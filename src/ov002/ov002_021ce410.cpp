@@ -22,25 +22,25 @@ void func_ov002_021ce464(Task021ef430 *self) {
 }
 
 void func_ov002_021ce4c8(Task021ef430 *self) {
-    void *model = self->unk_3c;
-    void *res;
-    void *anim;
+    Model *model = self->unk_3c;
+    ModelRes *res;
+    ModelPart *anim;
     void *arg;
-    void *t;
-    if (model == NULL || (res = FIELD(model, 0x28, void *)) == NULL) {
+    ModelPartRes *t;
+    if (model == NULL || (res = model->res) == NULL) {
         return;
     }
     anim = NULL;
-    if (FIELD(model, 0x80, s32) > 0) {
-        anim = FIELD(model, 0x78, void *);
+    if (model->numParts > 0) {
+        anim = model->parts;
     }
-    if (anim != NULL && (t = FIELD(anim, 0x4, void *)) != NULL) {
-        arg = FIELD(t, 0x30, void *);
+    if (anim != NULL && (t = anim->res) != NULL) {
+        arg = t->tex;
     } else {
-        void *e = NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), 0);
-        arg = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(e, 0xc, void *));
+        void *e = NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0);
+        arg = NNS_G2dGetCellDataByIdx(res->texRes, **(u16 **)FIELD(e, 0xc, void *));
     }
-    func_02042628((Model *)model, arg, (ModelPart *)anim, 0);
+    func_02042628(model, arg, anim, 0);
 }
 
 Task021ef4b0 *func_ov002_021ce53c(void) {
@@ -141,7 +141,7 @@ static inline BOOL ov002_021ce7b8_check(int idx, u32 arg) {
 void func_ov002_021ce7b8(Task021ef4b0 *self) {
     void *g = data_02149ef8;
     UiObj *o;
-    u8 *e;
+    UiListItem *e;
     BOOL ok = ov002_021ce7b8_check(8, 1);
     if (ok) {
         ok = ov002_021ce7b8_check(8, 0x101);
@@ -182,30 +182,30 @@ void func_ov002_021ce7b8(Task021ef4b0 *self) {
     self->unk_3c->flags &= ~0x40000;
     self->unk_3c->flags &= ~0x10000;
     func_ov000_021547e8(self->unk_3c, data_0214b105, data_0208cb7c, 0xb);
-    e = (u8 *)self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xe8), 0, 0xffff, 0);
+    e = (UiListItem *)self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xe8), 0, 0xffff, 0);
     if (self->unk_48_0) {
-        FIELD(e, 0x24, s32) = 0xe;
+        e->unk_24 = 0xe;
     }
     if (self->unk_48_1) {
-        FIELD(e, 0xa, s16) = 0xb;
+        e->unk_0a = 0xb;
     }
-    e = (u8 *)self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xeb), 1, 0xffff, 1);
+    e = (UiListItem *)self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xeb), 1, 0xffff, 1);
     if (self->unk_48_2) {
-        FIELD(e, 0x24, s32) = 0xe;
+        e->unk_24 = 0xe;
     }
     if (self->unk_48_3) {
-        FIELD(e, 0xa, s16) = 0xb;
+        e->unk_0a = 0xb;
     }
-    e = (u8 *)self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xee), 2, 0xffff, 2);
+    e = (UiListItem *)self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xee), 2, 0xffff, 2);
     if (self->unk_48_4) {
-        FIELD(e, 0x24, s32) = 0xe;
+        e->unk_24 = 0xe;
     }
     if (self->unk_48_5) {
-        FIELD(e, 0xa, s16) = 0xb;
+        e->unk_0a = 0xb;
     }
-    e = (u8 *)self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xe5), 3, 0xffff, 3);
+    e = (UiListItem *)self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xe5), 3, 0xffff, 3);
     if (self->unk_48_6) {
-        FIELD(e, 0x24, s32) = 0xe;
+        e->unk_24 = 0xe;
     }
     self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xe3), 4, 0xffff, 4);
     {
@@ -243,24 +243,23 @@ void func_ov002_021ce7b8(Task021ef4b0 *self) {
 extern "C" {
 void func_ov002_021cf280(Task021ef4b0 *self, u32 id);
 
-static inline u8 *ov002_021cedec_getSelected(void *list) {
-    u8 *item = FIELD(list, 0x98, u8 *);
+static inline UiListItem *ov002_021cedec_getSelected(UiList *list) {
+    UiListItem *item = list->topItem;
     if (item == NULL) {
         item = NULL;
     } else {
-        s32 n = FIELD(list, 0xb1, s8);
+        s32 n = list->cursor;
         while (n-- != 0) {
-            item = FIELD(item, 0x2c, u8 *);
+            item = item->next;
         }
     }
     return item;
 }
-
 void func_ov002_021cedec(Task021ef4b0 *self) {
     u16 keys;
     u32 id;
     keys = data_02097dc8->trig;
-    id = FIELD(ov002_021cedec_getSelected(self->unk_3c), 0x6, u16);
+    id = ov002_021cedec_getSelected(self->unk_3c)->id;
     if (self->unk_44 != id) {
         func_ov002_021cf280(self, id);
     }

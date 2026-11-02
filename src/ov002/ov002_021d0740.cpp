@@ -19,7 +19,7 @@ void func_ov002_021d0740(Task021efa1c *self) {
         return;
     }
     func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
-    data_ov002_021f0f84[0] = FIELD(FIELD(self->unk_3c, 0xa0, void *), 4, s32);
+    data_ov002_021f0f84[0] = ((Ov002Row *)self->unk_3c->unk_a0)->index;
     self->vfunc_0c(0);
 }
 

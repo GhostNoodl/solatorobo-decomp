@@ -10,14 +10,14 @@ void func_ov000_02191618(void *a);
 
 void *Ov015FishState18_Dtor(Ov015FishState18 *self) {
     SET_VT(self, data_ov015_02212f20);
-    VCALL(self)->v10(0);
+    self->vfunc_10(0);
     SET_VT(self, data_ov015_02212eb0);
     return self;
 }
 
 void *Ov015FishState18_DtorDelete(Ov015FishState18 *self) {
     SET_VT(self, data_ov015_02212f20);
-    VCALL(self)->v10(0);
+    self->vfunc_10(0);
     SET_VT(self, data_ov015_02212eb0);
     Heap_Free(self);
     return self;

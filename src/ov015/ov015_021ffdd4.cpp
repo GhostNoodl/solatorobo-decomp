@@ -13,12 +13,12 @@ BOOL func_ov015_02209ff0(Ov015Fish *self, void *a);
 BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
     BOOL r = FALSE;
     Ov015Fish *found;
-    u8 *n;
+    Ov015Node *n;
     if (self->unk_0c != 0) return r;
     func_ov015_021fd00c(self->cam, 7, (const Ov015Vec *)&self->unk_10->pos);
-    VCALL(self->unk_14)->v18();
+    self->unk_14->vfunc_18();
     self->fish = func_ov015_021fffc4(self);
-    if (VCALL(self->unk_14)->v20() || self->fish != NULL) {
+    if (self->unk_14->vfunc_20() || self->fish != NULL) {
         if (self->fish != NULL) {
             Ov015CamPair *p = self->cam;
             p->cam0.shakeTime = 200;
@@ -38,11 +38,11 @@ BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
         r = TRUE;
     }
     found = NULL;
-    n = ((u8 *)self->fishList->head);
+    n = self->fishList->head;
     while (n != NULL) {
-        Ov015Fish *obj = FLD(Ov015Fish *, n, 0x4);
+        Ov015Fish *obj = n->fish;
         Ov015Vec v;
-        n = FLD(u8 *, n, 0xc);
+        n = n->next;
         v = self->unk_10->pos;
         if (func_ov015_0220a028(obj, &v)) {
             found = obj;
@@ -51,17 +51,17 @@ BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
     }
     if (found != NULL) {
         s32 d = FX_Mul(found->scale.x, 0x14000);
-        Ov015Vec t(*(Ov015Vec *)&found->pos);
+        Ov015Vec t(found->pos);
         t.y += d;
         if (t.y < 0) t.y = 0;
-        FLD(Ov015Vec, self->unk_10, 0x24) = t;
+        self->unk_10->unk_24 = t;
         func_ov015_0221234c(self->unk_10);
     } else {
         func_ov015_022123c4(self->unk_10);
     }
     self->ship->unk_d3e = 0x1000;
-    for (n = ((u8 *)self->fishList->head); n != NULL; n = FLD(u8 *, n, 0xc)) {
-        func_ov015_02209790(FLD(Ov015Fish *, n, 0x4), 1);
+    for (n = self->fishList->head; n != NULL; n = n->next) {
+        func_ov015_02209790(n->fish, 1);
     }
     return r;
 }
@@ -70,42 +70,33 @@ BOOL func_ov015_021fffb0(Ov015Obj30 *self) {
     return self->timer >= 2 ? TRUE : FALSE;
 }
 
-class Ov015Eff {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08(s32 a);
-    virtual void v0c(s32 a);
-    virtual void v10();
-    virtual void v14(s32 x, s32 y, s32 z);
-};
 Ov015Fish *func_ov015_021fffc4(Ov015Obj30 *self) {
     Ov015Fish *found = NULL;
-    u8 *n = ((u8 *)self->fishList->head);
+    Ov015Node *n = self->fishList->head;
     while (n != NULL) {
-        Ov015Fish *obj = FLD(Ov015Fish *, n, 0x4);
-        n = FLD(u8 *, n, 0xc);
+        Ov015Fish *obj = n->fish;
+        n = n->next;
         if (func_ov015_02209ff0(obj, &self->unk_14->unk_234)) {
             Ov015Vec v;
-            Ov015Eff *e;
+            EffectObj *e;
             v = FLD(Ov015Vec, self->unk_14, 0x240);
             found = obj;
-            e = (Ov015Eff *)func_02065f88(0x69, &v);
-            e->v08(1);
-            e->v14(0x5800, 0x5800, 0x5800);
-            e = (Ov015Eff *)func_02065f88(0x69, &v);
-            e->v08(1);
-            e->v14(0x3800, 0x3800, 0x3800);
-            e = (Ov015Eff *)func_02065f88(0x6c, &v);
-            FLD(s32, e, 0x50) = -0x64000;
-            e->v08(1);
-            e->v14(0x6800, 0x6800, 0x6800);
-            FLD(s32, e, 0x3c) = 0x1800;
+            e = func_02065f88(0x69, &v);
+            e->SetParam(1);
+            e->SetScaleXYZ(0x5800, 0x5800, 0x5800);
+            e = func_02065f88(0x69, &v);
+            e->SetParam(1);
+            e->SetScaleXYZ(0x3800, 0x3800, 0x3800);
+            e = func_02065f88(0x6c, &v);
+            e->unk_50 = -0x64000;
+            e->SetParam(1);
+            e->SetScaleXYZ(0x6800, 0x6800, 0x6800);
+            e->speed = 0x1800;
             v.y += 0x5000;
-            e = (Ov015Eff *)func_02065f88(0x44c, &v);
-            e->v08(1);
-            FLD(s32, e, 0x50) = -0xa000;
-            e->v0c(0x1400);
+            e = func_02065f88(0x44c, &v);
+            e->SetParam(1);
+            e->unk_50 = -0xa000;
+            e->SetScaleAll(0x1400);
             break;
         }
     }

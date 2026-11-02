@@ -16,7 +16,7 @@ static inline s32 Ov015_FxMul64(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-static inline Ov015V *Ov015_NewTask18(void) {
+static inline VObj *Ov015_NewTask18(void) {
     Ov015FishState18 *t = (Ov015FishState18 *)Heap_Alloc(0x18);
     if (t != NULL) {
         SET_VT(t, data_ov015_02212f20);
@@ -26,10 +26,10 @@ static inline Ov015V *Ov015_NewTask18(void) {
         t->duration = 0;
         t->fxKey = 0;
     }
-    return (Ov015V *)t;
+    return (VObj *)t;
 }
 
-static inline Ov015V *Ov015_NewTask1c(void) {
+static inline VObj *Ov015_NewTask1c(void) {
     Ov015FishState1c *t = (Ov015FishState1c *)Heap_Alloc(0x1c);
     if (t != NULL) {
         SET_VT(t, data_ov015_02212f04);
@@ -39,7 +39,7 @@ static inline Ov015V *Ov015_NewTask1c(void) {
         t->unk_10 = 0;
         t->fish = 0;
     }
-    return (Ov015V *)t;
+    return (VObj *)t;
 }
 
 static inline void Ov015_Sounds(void) {

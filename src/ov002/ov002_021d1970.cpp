@@ -38,13 +38,13 @@ void func_ov002_021d1970(Task021ef69c *self) {
         *(VFunc **)p = data_ov000_021ccadc;
         func_ov000_021c6140(p);
     }
-    self->unk_3c = (UiObj *)p;
+    self->unk_3c = (Ov002TextList *)p;
     self->unk_3c->vfunc_10(MsgRes_GetString(g, 0xee));
     self->unk_3c->vfunc_14(MsgRes_GetString(g, 0xf0));
     self->unk_3c->posZ = -0x199a;
-    FIELD(self->unk_3c, 0xc4, u32) |= 2;
-    FIELD(self->unk_3c, 0xc4, BitWord).flag0 = 1;
-    FIELD(self->unk_3c, 0xa4, s32) = 0xf0;
+    self->unk_3c->unk_c4 |= 2;
+    self->unk_3c->unk_c4_0 = 1;
+    self->unk_3c->unk_a4 = 0xf0;
     {
         u16 i;
         u16 id;
@@ -74,12 +74,12 @@ void func_ov002_021d1970(Task021ef69c *self) {
             }
         }
     }
-    FIELD(self->unk_3c, 0xcc, void *) = (void *)func_ov002_021d18d4;
-    FIELD(self->unk_3c, 0xc8, void *) = (void *)func_ov002_021d18e8;
+    self->unk_3c->onCursor = (void *)func_ov002_021d18d4;
+    self->unk_3c->onDecide = (void *)func_ov002_021d18e8;
     self->unk_3c->owner = self;
     self->unk_3c->vfunc_08();
     func_ov000_021c65e0(self->unk_3c, data_ov002_021f0f84[2]);
-    func_ov000_021c64b4(self->unk_3c, FIELD(FIELD(self->unk_3c, 0x88, void *), 0x40, void *));
+    func_ov000_021c64b4(self->unk_3c, FIELD(((void *)self->unk_3c->unk_88), 0x40, void *));
     p = (UiObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
         *(VFunc **)p = data_ov000_021cac60;

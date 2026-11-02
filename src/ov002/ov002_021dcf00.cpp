@@ -7,10 +7,10 @@ extern "C" {
 
 void func_ov002_021dd7f0(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c);
 
-static inline void ov002_ShowMsg(void *self, void *str) {
-    u8 *t = FIELD(self, 0x4, u8 *);
-    func_ov000_0215bb14(FIELD(t, 0x20, void *), str);
-    FIELD(t, 0x20, VObj *)->vfunc_70();
+static inline void ov002_ShowMsg(Obj021eff10 *self, void *str) {
+    Obj021eff50 *t = self->owner;
+    func_ov000_0215bb14(t->unk_20, str);
+    t->unk_20->vfunc_70();
 }
 
 static inline void ov002_CamMove(Obj021efe6c *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, s32 tz) {

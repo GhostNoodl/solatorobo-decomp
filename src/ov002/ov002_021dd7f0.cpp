@@ -15,11 +15,11 @@ static inline Ov002Cell *ov002_GetCell(Obj021efe6c *w, Vec2 *pos) {
     return &base[y * q->map->h + x];
 }
 
-static inline void ov002_ShowMsg(void *self, void *str) {
-    u8 *t = FIELD(self, 0x4, u8 *);
-    func_ov000_0215bb14(FIELD(t, 0x20, void *), str);
-    FIELD(t, 0x20, VObj *)->vfunc_70();
-    FIELD(self, 0x20, u8) = 0;
+static inline void ov002_ShowMsg(Obj021eff10 *self, void *str) {
+    Obj021eff50 *t = self->owner;
+    func_ov000_0215bb14(t->unk_20, str);
+    t->unk_20->vfunc_70();
+    self->unk_20 = 0;
 }
 
 void func_ov002_021dd7f0(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c) {
@@ -33,7 +33,7 @@ void func_ov002_021dd7f0(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c) {
             w->unk_74 = 1;
             w->unk_75 = 1;
             func_0206ecd4(0x100, (u8 *)self + 0x34, nxt->obj->unk_48);
-            ov002_ShowMsg(self, (u8 *)self + 0x34);
+            ov002_ShowMsg(self, self->unk_34);
         }
         break;
     case 0:

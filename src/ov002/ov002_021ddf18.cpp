@@ -105,7 +105,7 @@ void func_ov002_021ddf18(Obj021efef0 *self, Obj021eff50 *owner, s32 h, Obj021efe
         func_ov000_021c3af4(p);
         *(VFunc **)p = data_ov002_021f0044;
     }
-    self->unk_08 = (LoBase021ccb54_021ccbe0 *)p;
+    self->unk_08 = (Ov002RowList *)p;
     p->rows = 5;
     self->unk_08->width = 0x69;
     {
@@ -130,8 +130,8 @@ void func_ov002_021ddf18(Obj021efef0 *self, Obj021eff50 *owner, s32 h, Obj021efe
     }
     self->unk_08->slideMode = 1;
     self->unk_08->owner = (u8 *)self + 0x20;
-    FIELD(self->unk_08, 0xe4, void *) = (void *)func_ov002_021ddcbc;
-    FIELD(self->unk_08, 0xe8, void *) = (void *)func_ov002_021ddd30;
+    self->unk_08->onDecide = (void *)func_ov002_021ddcbc;
+    self->unk_08->onCursor = (void *)func_ov002_021ddd30;
     self->unk_08->flags |= 2;
     self->unk_08->flags &= ~4;
     self->unk_08->flags |= 0x10;

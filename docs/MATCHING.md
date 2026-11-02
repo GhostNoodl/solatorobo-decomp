@@ -8604,3 +8604,35 @@ Readability only; every function stays byte-identical (per-function code+reloc c
   - `ov006_Obj58` (vtable `021ec2fc`, 0xec) keeps `F(…, 0xb0..0xb8)` in `d3498`: its ctor file's view is nested and not yet a class.
   - The remaining `VCALL` uses are on the `void *vtbl` records (Emblem, the caption/marker/model holders, `ov006_Task`/`Manager`).
 - **Renames:** none (fields and types only).
+
+### Round acM (ov015 on ov000 VObj/UiObj/Task, VCALL removed; ov002 records and base pointers typed)
+
+Readability only; every function stays byte-identical (per-function code+reloc compare of all 1906 objects against a baseline built first, then the full gate).
+
+**Counts** (`VCALL(` outside `#define`; raw = `LFLD`/`FLD`/`FIELD`/`ST_FLD`/`F`/`BXF` uses; `void *self` in src+include (src))
+
+| | before | after |
+|---|---|---|
+| ov015 `VCALL(` | 269 | 0 |
+| ov015 raw-offset macros | 220 | 58 |
+| ov015 `void *self` | 17 (17) | 0 (0) |
+| ov002 raw-offset macros | 502 | 341 |
+| ov002 `void *self` | 81 (68) | 63 (50) |
+
+- **ov015 (`include/ov015/ov015.h`).**
+  - The `Ov015V` stand-in and the `VCALL` macro are gone. Every record with a leading `void *vt` derives from `VObj` (also `Ov015Fish`/`Ov015FishInfo`); calls are `->vfunc_XX()`, or the named slots of `EffectObj` (`Delete`, `SetParam`, `SetScale*`, `SetPos`, `SetRotXYZ`), `MsgRes` and `TextWin`.
+  - `Ov015TaskBase_Ctor`/`Dtor` take `Task *` (`vfunc_58`/`5c`); `DELETE_V` uses `VObj *`/`vfunc_04`.
+  - Window locals are `VObj *`/`UiObj *`; `Ov015UiLabel`/`Ov015Dialog` were the ov000 `Lo021cadcc`/`Lo021cb0b8` and are replaced by them (`Ov015UiNum` stays: its `u32 value` is load-bearing). `Ov015Eff` was `EffectObj`.
+  - New: `Ov015MdlPair {res, mdl}` and `Ov015MdlSet : VObj` (0x664, three pairs) for `Ov015Game::unk_20`; `Ov015Globals {mainSeq, fade}`; `Ov015Node::fish`; `Ov015Obj292c::unk_24` is an `Ov015Vec`; `Ov015Scene2a88::model` is `Model *`.
+  - Glyph callbacks (`021fb25c`, `021fb408`, `0220848c`) take `(TexObj *, TexObjEntry *, oam, u16 *)`. Model drawing uses `Model`/`ModelRes`/`ModelPart` fields; the pad and stage flags use `Pad`/`StageFlags`.
+  - Shared ov000 prototypes (`func_ov000_02173648`/`0217357c` on `Task *`, `0218084c` returning `Task *`, `02154b58` returning `UiListItem *`, `0215d980`, `data_ov000_021ccd44` as `TaskHost *`) are declared once in `ov015.h`.
+  - Left: the 58 raw uses are on records with no class yet (the stack `TextWin` of `02208424` stays a plain struct, since a local polymorphic object would get a constructor) and the fish-name file `0220df48`, deliberately untouched.
+- **ov002.**
+  - `ObjLayouts.h`: `Ov002RowList : LoBase021ccb54_021ccbe0` (0xf4, `onDecide`/`onCursor`), `Ov002TextList : UiObj` (0xd4), `Ov002GaugeRow`/`Ov002TextRow : Ov002Row` (0x44); `Obj021efef0::unk_08/unk_0c` are `Ov002RowList *`.
+  - `Ov002Task.h` includes `ObjLayouts.h`; the row-list/text-list members are typed, and `Task021ef69c::unk_48/unk_4c` are `Model *`.
+  - `021ef150`: rows, models and windows typed, `DELETE_VOBJ` on members, the level-list callbacks `021d2390`/`021d2410` take `Ov002Row *`.
+  - `021ce410`, `021d1e44`: the model-part blocks use `Model`/`ModelRes`/`ModelPart`/`ModelPartRes`; list items are `UiListItem` (`unk_24`, `unk_0a`, `id`) and the selected-item walks use `topItem`/`cursor`/`next` (also `021d5860`).
+  - `021dc83c`/`021dcf00`/`021dd7f0`: `ov002_ShowMsg` on `Obj021eff10`/`Obj021eff50`; the `Obj021eff30` allocation is typed; cell pieces are `Obj021efe9c`/`Obj021efed4`.
+  - `021db2a4` (`Obj021eff74` menu close), `021d83f0` (`Obj021efe9c` state helpers), `021dacac` (window pos/slide), `021db64c` (`UiObj` window, `Obj021efe4c`, cue table typed as `Ov002SndCue[]`), `021e4b80` (OAM callback on `TexObj`), plus `021d22cc`, `021d0740`, `021d03c8`, `021d0b98`, `021ddf18`, `021def98`, `021de544`, `021d1970`, `021d7058`.
+  - Left: `021e4b80` (stage/link edits changed code and were reverted), the event objects of `021d1e44`/`021e0420`, the item info records of `func_0206ef10`, and `__sinit_ov002_021ef1f0` (not touched).
+- **Renames:** none (fields and types only).
