@@ -74,7 +74,7 @@ void func_ov002_021ce5c4(Task50 *self) {
     func_ov000_02173648(self);
 }
 
-void func_ov002_021ce650(Task50 *self) {
+void Ov002Task_SetFlag7(Task50 *self) {
     self->flag7 = 1;
 }
 

@@ -98,7 +98,7 @@ void func_ov003_021ce3f4(Ov003Scene *self) {
     }
 }
 
-bool func_ov003_021ce444(u32 *self, u32 mask) {
+bool Ov003Task_TestFlags(u32 *self, u32 mask) {
     BOOL r = (self[1] & mask) ? TRUE : FALSE;
     return r;
 }

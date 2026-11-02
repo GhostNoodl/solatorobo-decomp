@@ -8,38 +8,38 @@ void func_ov002_021cf3b4(Task50 *self) {
     }
 }
 
-bool func_ov002_021cf404(Task50 *self, u32 mask) {
+bool Ov002Task_TestFlags(Task50 *self, u32 mask) {
     BOOL r = Task50_testFlags(self, mask);
     return r;
 }
 
-void func_ov002_021cf424(Task50 *self) {
+void Ov002Task_ClearFlag7(Task50 *self) {
     self->flag7 = 0;
 }
 
-bool func_ov002_021cf434(Task50 *self) {
+bool Ov002Task_GetFlag6(Task50 *self) {
     BOOL r = Task50_getFlag6(self);
     return r;
 }
 
-void func_ov002_021cf458(Task50 *self) {
+void Ov002Task_SetFlag6(Task50 *self) {
     self->flag6 = 1;
 }
 
-bool func_ov002_021cf468(Task50 *self) {
+bool Ov002Task_GetFlag5(Task50 *self) {
     BOOL r = Task50_getFlag5(self);
     return r;
 }
 
-void func_ov002_021cf48c(Task50 *self) {
+void Ov002Task_SetFlag5(Task50 *self) {
     self->flag5 = 1;
 }
 
-void func_ov002_021cf49c(Task50 *self) {
+void Ov002Task_ClearFlag4(Task50 *self) {
     self->flag4 = 0;
 }
 
-void func_ov002_021cf4ac(Task50 *self) {
+void Ov002Task_SetFlag4(Task50 *self) {
     self->flag4 = 1;
 }
 

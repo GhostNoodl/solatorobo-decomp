@@ -208,11 +208,11 @@ static inline BOOL ov006_Flags_Test(ov006_Flags *self, u32 mask) {
     return (((u32 *)self)[1] & mask) != 0;
 }
 
-BOOL func_ov006_021d5808(ov006_Flags *self, u32 mask) {
+BOOL Ov006Task_TestFlags(ov006_Flags *self, u32 mask) {
     return ov006_Flags_Test(self, mask) ? TRUE : FALSE;
 }
 
-void func_ov006_021d5828(ov006_Flags *self) {
+void Ov006Task_ClearFlag7(ov006_Flags *self) {
     self->bit7 = 0;
 }
 
@@ -220,11 +220,11 @@ static inline BOOL ov006_Flags_Bit6(ov006_Flags *self) {
     return self->bit6 != 0;
 }
 
-BOOL func_ov006_021d5838(ov006_Flags *self) {
+BOOL Ov006Task_GetFlag6(ov006_Flags *self) {
     return ov006_Flags_Bit6(self) ? TRUE : FALSE;
 }
 
-void func_ov006_021d585c(ov006_Flags *self) {
+void Ov006Task_SetFlag6(ov006_Flags *self) {
     self->bit6 = 1;
 }
 
@@ -232,19 +232,19 @@ static inline BOOL ov006_Flags_Bit5(ov006_Flags *self) {
     return self->bit5 != 0;
 }
 
-BOOL func_ov006_021d586c(ov006_Flags *self) {
+BOOL Ov006Task_GetFlag5(ov006_Flags *self) {
     return ov006_Flags_Bit5(self) ? TRUE : FALSE;
 }
 
-void func_ov006_021d5890(ov006_Flags *self) {
+void Ov006Task_SetFlag5(ov006_Flags *self) {
     self->bit5 = 1;
 }
 
-void func_ov006_021d58a0(ov006_Flags *self) {
+void Ov006Task_ClearFlag4(ov006_Flags *self) {
     self->bit4 = 0;
 }
 
-void func_ov006_021d58b0(ov006_Flags *self) {
+void Ov006Task_SetFlag4(ov006_Flags *self) {
     self->bit4 = 1;
 }
 

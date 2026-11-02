@@ -2,7 +2,7 @@
 
 extern "C" {
 
-bool func_ov002_021cd7bc(Task50 *self) {
+bool Ov002Task_GetFlag4(Task50 *self) {
     BOOL r = Task50_getFlag4(self);
     return r;
 }

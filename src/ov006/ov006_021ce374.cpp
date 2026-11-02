@@ -54,7 +54,7 @@ static inline BOOL ov006_Emblem_Bit4(ov006_Emblem *self) {
     return self->unk4_4 != 0;
 }
 
-BOOL func_ov006_021ce3cc(ov006_Emblem *self) {
+BOOL Ov006Task_GetFlag4(ov006_Emblem *self) {
     return ov006_Emblem_Bit4(self) ? TRUE : FALSE;
 }
 
@@ -511,7 +511,7 @@ typedef struct ov006_Unk021cf350 {
 
 extern "C" {
 
-void func_ov006_021cf350(ov006_Unk021cf350 *self) {
+void Ov006Task_SetFlag7(ov006_Unk021cf350 *self) {
     self->unk4_7 = 1;
 }
 
