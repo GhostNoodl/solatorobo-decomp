@@ -1,6 +1,5 @@
 #include "ov010/ov010.h"
 #include "Main/Sys/FieldState.h"
-#include "ov010/ObjLayouts.h"
 
 struct Ov010Rot {
     s16 v[3];

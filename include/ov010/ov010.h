@@ -242,4 +242,362 @@ static inline VecFx32 Ov010_AttachOffset(Actor *obj) {
     return v;
 }
 
+// A u16 rotation (x, y, z), as copied into Actor::rot_x..rot_z.
+struct Ov010Ang3 {
+    u16 x;
+    u16 y;
+    u16 z;
+};
+
+// ---- Sub-objects that ov010 classes embed. ov003 defines these on its own local types, so ov010
+// keeps these views; the ov003 helpers that take them are declared above with void *.
+
+// Ov003Mover (vtable data_ov003_021f7d2c, ctor Ov003Vt_021f7d2c_Ctor): moves a point from start
+// toward target (Ov003Mover_Start); vfunc_08 stops it, vfunc_10 returns the point, vfunc_14 says
+// whether it arrived.
+class Ov010Mover : public VObj {
+public:
+    u8 active : 1;
+    u8 noSnap : 1;
+    u8 done : 1;
+    s32 speed;
+    s32 dist;
+    s32 maxDist;
+    VecFx32 pos;
+    VecFx32 target;
+    VecFx32 dir;
+};
+SIZE_ASSERT(Ov010Mover, 0x38);
+
+// A marker effect (0x28, func_ov010_0220e38c): effect handle, position and a state block.
+struct Ov010Trail {
+    u8 b0 : 1;
+    u8 b1 : 1;
+    u8 b2 : 1;
+    u8 rest : 5;
+    u8 pad_01;
+    u16 life;
+    s32 key; // effect handle (EffectMgr_Kill)
+    VecFx32 pos;
+    ActorSub40 st;
+};
+SIZE_ASSERT(Ov010Trail, 0x28);
+
+// An effect that follows an actor and then sends it a message (0x6c, func_ov010_0220e740 /
+// func_ov010_0220e7c8).
+struct Ov010Path {
+    u8 b0 : 1;
+    u8 b1 : 1;
+    u8 b2 : 6;
+    u8 unk_01;
+    u16 timer;
+    u16 duration;
+    u16 unk_06;
+    s32 fxHandle; // EffectMgr_StopLoop
+    s32 fxId;     // effect id (func_ov003_021da8e4)
+    s32 unk_10;
+    s32 scale;    // VObj::vfunc_0c of the effect
+    Actor *owner; // the effect follows its position; the message goes to its id
+    VecFx32 offset;
+    u8 msg[0x30]; // ActorMgr_SendMsg payload
+    ActorSub40 sm;
+};
+SIZE_ASSERT(Ov010Path, 0x6c);
+
+extern "C" {
+BOOL func_ov010_0220e740(Ov010Path *self, Actor *owner, const void *msg, s32 size, const VecFx32 *offset, s32 fxId);
+void func_ov010_0220e7c8(Ov010Path *self);
+void func_ov010_0220e38c(Ov010Trail *self);
+}
+
+// A list of spawned 0x4817 actors (Obj0220a6b0) with a handler object (0x3c, ctor
+// func_ov010_0220d79c). pool is an Ov003Pool of list nodes.
+struct Ov010CollNode {
+    u16 id;
+    u16 unk_02;
+    Ov010CollNode *next;
+};
+
+struct Ov010Coll {
+    u8 b0 : 1;
+    u8 b1 : 7;
+    u8 count;
+    u16 ids[0x11];
+    Ov010CollNode *list;
+    VObj *handler;
+    u8 pool[0x10];
+};
+SIZE_ASSERT(Ov010Coll, 0x3c);
+
+extern "C" {
+Ov010Coll *func_ov010_0220d79c(Ov010Coll *self);
+Ov010Coll *Ov010Coll_Dtor(Ov010Coll *self);
+BOOL Ov010Coll_Init(Ov010Coll *self);
+void Ov010Coll_Release(Ov010Coll *self);
+void func_ov010_0220d858(Ov010Coll *self);
+s32 Ov010Coll_GetCount(Ov010Coll *self);
+void Ov010Coll_SetHandler(Ov010Coll *self, VObj *h);
+void Ov010Coll_ClearHandler(Ov010Coll *self);
+BOOL Ov010Coll_IsFree(Ov010Coll *self);
+}
+
+// ---- The 0x4817 actor (vtable data_ov010_02210378, ctor Ov010ActVt_02210378_Ctor).
+// Spawned by func_ov010_0220da74 and set up by func_ov010_0220a948. Its methods are in
+// ov010_0220f9b4.cpp (0220a6a0..0220d3d8). It is built by ActorEx_Ctor, but uses 0xce as a byte of
+// flag bits and 0xcf as a byte, where ActorEx::unk_ce is one u16 (a counter in ov009/ov013), so it
+// derives from Actor and declares 0xac.. itself.
+class Obj0220a6b0 : public Actor {
+public:
+    u8 unk_ac[0x20];
+    Ov010Flags unk_cc;
+    Ov010Flags8 unk_ce; // b0/b1: run fsmA/fsmB through their state tables (Update)
+    u8 unk_cf;
+    u16 unk_d0;
+    u16 unk_d2;
+    u16 unk_d4;
+    u16 unk_d6;
+    s32 unk_d8;
+    s32 unk_dc;      // area kind: 0 rectangle (unk_e0), 1 circle (unk_e4) (func_ov010_022090b4)
+    s32 *unk_e0;     // {x0, z0, x1, z1, y}
+    VecFx32 *unk_e4; // centre, followed by the radius
+    Ov010Trail *trail;
+    Ov010Path *path;
+    VecFx32 unk_f0;
+    VecFx32 unk_fc;
+    VecFx32 unk_108;
+    VecFx32 unk_114;
+    Ov010Mover mover;
+    ActorSub40 fsmA;
+    ActorSub40 fsmB;
+    u16 unk_180;
+    u16 unk_182;
+    VecFx32 unk_184;
+    Ov010Ang3 unk_190;
+    Ov010Ang3 unk_196;
+};
+SIZE_ASSERT(Obj0220a6b0, 0x19c);
+
+extern "C" {
+// Coll filters: func_ov010_0220d918 keeps the ids of the listed actors fn accepts.
+BOOL func_ov010_0220d77c(Obj0220a6b0 *p);
+void func_ov010_0220d918(Ov010Coll *self, BOOL (*fn)(Obj0220a6b0 *obj));
+}
+
+// ---- More ov003 sub-objects (views; see above).
+
+// Ov003Sequence (func_ov003_021d8f24 / 021d8f34, Ov003Sequence_HasEntries, func_ov003_021d95e8): plays
+// a list of steps; func_ov003_021d9644 returns the current step's two bytes.
+struct Ov010Seq {
+    u8 active : 1;
+    u8 b1 : 1;
+    u8 b2 : 1;
+    u8 b3 : 1;
+    u8 b4 : 1;
+    u8 b5 : 1;
+    u8 b6 : 1;
+    u8 pairA;
+    u8 pairB;
+    u16 unk_04;
+    u16 index;
+    u16 length;
+    void *entries;
+};
+SIZE_ASSERT(Ov010Seq, 0x10);
+
+// The two bytes of a sequence step (func_ov003_021d9644).
+struct Ov010B2 {
+    u8 a;
+    u8 b;
+};
+
+extern "C" Ov010B2 func_ov003_021d9644(void *p);
+
+// Ov003TickerSet (vtable data_ov003_021f7d10, Ov003TickerSet_Init).
+class Ov010TickerSet : public VObj {
+public:
+    u8 unk_04[0x28];
+};
+SIZE_ASSERT(Ov010TickerSet, 0x2c);
+
+// Ov003Timer (vtable data_ov003_021f7cd8, func_ov003_021d8c10 / 021d8eac, Ov003Timer_IsStopped).
+class Ov010Timer : public VObj {
+public:
+    u8 active : 1;
+    u8 running : 1;
+    u8 loop : 1;
+    s16 duration;
+    void *target;
+    u8 unk_0c[0x14];
+};
+SIZE_ASSERT(Ov010Timer, 0x20);
+
+// A camera preset (vtable data_ov010_0220ffc4, 0x20): position, angles and distance.
+class Ov010CamPreset : public VObj {
+public:
+    u8 b0 : 1;
+    u8 b1 : 1;
+    u8 b2 : 6;
+    s32 x;
+    s32 y;
+    s32 z;
+    u16 a;
+    u16 b;
+    u16 c;
+    s32 w;
+};
+SIZE_ASSERT(Ov010CamPreset, 0x20);
+
+// The arena a 02210154 actor moves in (0x14 records data_ov010_0220f160 / 0220f174): the actor
+// circles its centre at the radius (polar vectors of that length around it).
+struct Ov010Arena {
+    VecFx32 center;
+    s32 unk_0c;
+    s32 radius;
+};
+
+// ---- The 02210154 actors (ctor Ov010ActVt_02210154_Ctor, ov010_02204204.cpp; methods in
+// ov010_0220f958.cpp and ov010_02207520.cpp). Two subclasses: vtables data_ov010_0220ffe4 and
+// data_ov010_0221009c.
+class Ov010Obj02210154 : public Ov003Actor {
+public:
+    u8 unk_f0; // set once the sound bank load was requested (func_ov010_02204344)
+    u8 unk_f1;
+    u8 unk_f2;
+    u8 unk_f3;
+    u16 unk_f4; // hp does not drop below this (func_ov010_0220441c)
+    u8 unk_f6[0x2];
+    Ov010Arena *arena;
+    const s32 *unk_fc;      // area rectangle {x0, z0, x1, z1, y}, for the Ov010Trig handlers
+    const VecFx32 *unk_100; // area circle (centre and radius)
+    VObj *unk_104; // handlers that run on coll (Ov010Coll_SetHandler)
+    VObj *unk_108;
+    VObj *unk_10c;
+    VObj *unk_110;
+    VObj *unk_114;
+    VObj *unk_118; // Ov003StateMachine (ctor Ov003Vt_021f7cf4_Ctor)
+    Ov010CamPreset *unk_11c;
+    Ov010CamPreset *unk_120;
+    s16 *unk_124; // knockback: angle, speed, decay (0x0220441c / 02204b74)
+    s32 sndBank;  // loaded through func_02049678; SndMgr_IsLoadDone waits for it
+    s32 sfx[9];   // sound ids played with func_02049f44 (filled by vfunc_ac)
+    VecFx32 moveDir;
+    s32 unk_15c;
+    Ov010Seq seq;
+    Ov010B2 step; // the current step of seq (func_ov003_021d9644)
+    u8 unk_172[0x2];
+    Ov010Coll coll;
+    Ov010TickerSet ticker;
+    Ov010Timer timer;
+};
+SIZE_ASSERT(Ov010Obj02210154, 0x1fc);
+
+class Ov010Obj0220ffe4 : public Ov010Obj02210154 {
+public:
+    u8 unk_1fc;
+    u8 unk_1fd[0x3];
+    s32 unk_200;
+};
+
+class Ov010Obj0221009c : public Ov010Obj02210154 {
+};
+
+// ---- The Obj021fa860 actor (vtable data_ov010_0220fccc, ctor Ov010ActVt_0220fccc_Ctor; all its
+// methods are in ov010_0220f5dc.cpp, which defines the types it points to).
+
+struct Ov010MovePath;
+struct Ov010Shake;
+struct Ov010Wobble;
+
+// A list of timed tasks (vtable data_ov010_0220fe1c, 0x20; Ov010TaskList_Init,
+// ov010_02201914.cpp .. ov010_02201c34.cpp). pool is an Ov003Pool of nodes.
+struct Ov010TaskNode {
+    VObj *obj;
+    u32 time;
+    Ov010TaskNode *next;
+};
+
+struct Ov010TaskList {
+    void *vtbl;
+    u8 b0 : 1;
+    u8 b1 : 1;
+    u8 b2 : 1;
+    u8 b3 : 5;
+    u32 time;
+    Ov010TaskNode *head;
+    u8 pool[0x10];
+};
+SIZE_ASSERT(Ov010TaskList, 0x20);
+
+// An effect that follows an actor and fades (func_ov010_021ffa6c): getPos returns the point on the
+// actor (func_ov010_021fa7e0), key is the effect handle (EffectMgr_Kill).
+struct Ov010Fade {
+    u8 b0 : 1;
+    u8 b1 : 1;
+    u8 b2 : 6;
+    u8 unk_01;
+    u16 id;
+    u16 timer;
+    u16 unk_06;
+    s32 state;
+    s32 fxId; // effect id (func_02065f88)
+    s32 key;
+    void (*getPos)(VecFx32 *out, u8 *obj);
+};
+SIZE_ASSERT(Ov010Fade, 0x18);
+
+// Ov003FlagObj (vtable data_ov003_021f79a8, func_ov003_021cf330).
+class Ov010FlagObj : public VObj {
+public:
+    u8 active : 1;
+    u8 unk_05[0xb];
+};
+SIZE_ASSERT(Ov010FlagObj, 0x10);
+
+// Ov003StateMachine (vtable data_ov003_021f7cf4, Ov003StateMachine_Init / _SendMessage / _Leave).
+class Ov010StateMachine : public VObj {
+public:
+    u8 active;
+    void *cur;
+    void *list;
+};
+SIZE_ASSERT(Ov010StateMachine, 0x10);
+
+// Ov003Group (func_ov003_021cf418, Ov003Group_Init, func_ov003_021cf52c adds objects to it).
+struct Ov010Group {
+    u8 active : 1;
+    u16 unk_02;
+    void *list4;
+    void *list8;
+};
+SIZE_ASSERT(Ov010Group, 0xc);
+
+class Obj021fa860 : public Ov003Actor {
+public:
+    Ov010Flags8 unk_f0;
+    u8 unk_f1;
+    s16 unk_f2;
+    s32 unk_f4;
+    u16 *unk_f8;
+    Ov010MovePath *unk_fc;
+    Ov010BeamSet *beams; // func_ov010_02200d94 / 02200dcc
+    Ov010Shake *unk_104;
+    Ov010Wobble *unk_108;
+    Ov010Timer *unk_10c;
+    VObj *unk_110; // states of sm (func_ov003_021d8a30 ids 1..3)
+    VObj *unk_114;
+    VObj *unk_118;
+    s32 seqHandle; // music (func_02049afc, SndMgr_StopSeqArc)
+    VecFx32 unk_120;
+    VecFx32 unk_12c;
+    Ov010Fade fade;
+    Ov010TickerSet ticker;
+    Ov010TaskList tasks;
+    Ov010FlagObj flagObj;
+    Ov010Seq seq;
+    Ov010B2 step; // the current step of seq (func_ov003_021d9644)
+    u8 unk_1be[0x2];
+    Ov010StateMachine sm;
+    Ov010Group group;
+};
+
 #endif

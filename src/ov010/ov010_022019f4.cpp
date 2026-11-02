@@ -6,22 +6,7 @@ struct Ov010Heap {
     u32 def;
 };
 
-struct Ov010TaskNode {
-    VObj *obj;
-    u32 time;
-    Ov010TaskNode *next;
-};
-
-struct Ov010TaskList {
-    void *vtbl;
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 1;
-    u8 b3 : 5;
-    u32 time;
-    Ov010TaskNode *head;
-    u8 pool[0x10];
-};
+// Ov010TaskList is in ov010.h.
 
 extern "C" {
 

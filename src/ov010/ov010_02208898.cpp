@@ -1,6 +1,4 @@
 #include "ov010/ov010.h"
-#include "ov010/ObjLayouts.h"
-#include "ov010/ObjLayouts.h"
 
 extern "C" {
 
@@ -10,8 +8,8 @@ extern u8 data_ov010_0220f1d0[];
 extern BOOL Ov003Sequence_HasEntries(void *p, void *a);
 
 static inline void Ov010_PlayAnim(Ov010Obj0220ffe4 *self, void *anim, s32 n) {
-    if (!Ov003Sequence_HasEntries((u8 *)self + 0x160, anim)) {
-        func_ov003_021d95e8((u8 *)self + 0x160, anim, n);
+    if (!Ov003Sequence_HasEntries(&self->seq, anim)) {
+        func_ov003_021d95e8(&self->seq, anim, n);
     }
 }
 

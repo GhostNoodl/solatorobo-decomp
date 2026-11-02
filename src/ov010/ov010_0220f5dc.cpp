@@ -24,7 +24,7 @@ struct Ov010Rec { u16 v[8]; const char *name; Ov010Rot rot; VecFx32 a; VecFx32 b
 typedef void (*Ov010Fn)(void);
 
 struct Ov010Shake {
-    u8 unk_00[4];
+    void *vtbl; // data_ov010_0220fc34
     u8 active;
     u8 unk_05;
     s16 decay;
@@ -59,20 +59,6 @@ struct Ov010Wobble {
     u16 unk_0a;
 };
 
-
-struct Ov010Fade {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 6;
-    u8 unk_01;
-    u16 id;
-    u16 timer;
-    u16 unk_06;
-    s32 state;
-    s32 unk_0c;
-    s32 key;
-    void (*getPos)(VecFx32 *out, u8 *obj);
-};
 
 struct Ov010Toggle {
     void *vtbl;
@@ -267,38 +253,7 @@ VecFx32 func_ov010_021fa7e0(Actor *obj) {
 }  // namespace m_021fa6a0
 
 // ---- merged from ov010_021fa860.cpp
-struct Ov010Path;
-
-struct Obj021fa860 : public Ov003Actor {
-    Ov010Flags8 unk_f0;
-    u8 unk_f1[0x1];
-    s16 unk_f2;
-    s32 unk_f4;
-    u16 *unk_f8;
-    Ov010Path *unk_fc;
-    void *unk_100;
-    Ov010Shake *unk_104;
-    u8 *unk_108;
-    void *unk_10c;
-    void *unk_110;
-    void *unk_114;
-    void *unk_118;
-    s32 unk_11c;
-    VecFx32 unk_120;
-    VecFx32 unk_12c;
-    Ov010Flags8 unk_138;
-    u8 unk_139;
-    u16 unk_13a;
-    u16 unk_13c;
-    u8 unk_13e[0x2];
-    s32 unk_140;
-    s32 unk_144;
-    s32 unk_148;
-    void *unk_14c;
-    u8 unk_150[0x6c];
-    u8 unk_1bc;
-    u8 unk_1bd;
-};
+struct Ov010MovePath;
 
 namespace m_021fa860 {
 extern "C" {
@@ -333,13 +288,13 @@ extern BOOL SndMgr_IsLoadDone(void *a);
 void *Ov010ActVt_0220fccc_Ctor(Obj021fa860 *self) {
     func_ov003_021d0c1c(self);
     *(void * *)self = data_ov010_0220fccc;
-    self->unk_138.b0 = 0;
-    Ov003Vt_021f7d10_Ctor((u8 *)self + 0x150);
-    Ov010Vt_0220fe1c_Ctor((u8 *)self + 0x17c);
-    Ov003Vt_021f79a8_Ctor((u8 *)self + 0x19c);
-    func_ov003_021d8f24((u8 *)self + 0x1ac);
-    Ov003Vt_021f7cf4_Ctor((u8 *)self + 0x1c0);
-    func_ov003_021cf418((u8 *)self + 0x1d0);
+    self->fade.b0 = 0;
+    Ov003Vt_021f7d10_Ctor(&self->ticker);
+    Ov010Vt_0220fe1c_Ctor(&self->tasks);
+    Ov003Vt_021f79a8_Ctor(&self->flagObj);
+    func_ov003_021d8f24(&self->seq);
+    Ov003Vt_021f7cf4_Ctor(&self->sm);
+    func_ov003_021cf418(&self->group);
     func_ov003_021cf340(data_ov010_0220fbd0);
     func_ov003_021cf3fc(1);
     func_ov003_021cf39c(0, data_ov010_0220fbdd);
@@ -353,17 +308,17 @@ void *Ov010ActVt_0220fccc_Ctor(Obj021fa860 *self) {
 static inline void Ov010_021fa91c_Body(Obj021fa860 *self) {
     *(void * *)self = data_ov010_0220fccc;
     func_ov003_021cf3fc(0);
-    SndMgr_StopSeqArc(data_02097e4c, self->unk_11c);
+    SndMgr_StopSeqArc(data_02097e4c, self->seqHandle);
     func_ov010_021fee70(self);
-    Ov003Group_Dtor((u8 *)self + 0x1d0);
-    Ov003Vt_021f7cf4_Dtor((u8 *)self + 0x1c0);
-    func_ov003_021d8f34((u8 *)self + 0x1ac);
-    Ov003Vt_021f79a8_Dtor((u8 *)self + 0x19c);
-    Ov010Vt_0220fe1c_Dtor((u8 *)self + 0x17c);
-    Ov003Vt_021f7d10_Dtor((u8 *)self + 0x150);
-    if (self->unk_138.b0) {
-        EffectMgr_Kill(data_0214a420, self->unk_148);
-        self->unk_138.b0 = 0;
+    Ov003Group_Dtor(&self->group);
+    Ov003Vt_021f7cf4_Dtor(&self->sm);
+    func_ov003_021d8f34(&self->seq);
+    Ov003Vt_021f79a8_Dtor(&self->flagObj);
+    Ov010Vt_0220fe1c_Dtor(&self->tasks);
+    Ov003Vt_021f7d10_Dtor(&self->ticker);
+    if (self->fade.b0) {
+        EffectMgr_Kill(data_0214a420, self->fade.key);
+        self->fade.b0 = 0;
     }
     func_ov003_021d0edc(self);
 }
@@ -404,18 +359,18 @@ BOOL Ov010ActVt_0220fccc_Draw(Obj021fa860 *self) {
     u8 m1[0x24];
     u8 m2[0x24];
     VecFx32 v;
-    func_ov003_021cf4ec((u8 *)self + 0x1d0);
+    func_ov003_021cf4ec(&self->group);
     MTX_RotZ33_(m1, OV010_SIN(self->rot_z), OV010_COS(self->rot_z));
     MTX_RotX33_(m2, OV010_SIN(self->rot_x), OV010_COS(self->rot_x));
     MTX_Concat33(m1, m2, m1);
     MTX_RotY33_(m2, OV010_SIN(self->rot_y), OV010_COS(self->rot_y));
     MTX_Concat33(m1, m2, m1);
-    func_ov003_021d883c((u8 *)self + 0x150, &v, &self->pos, self->unk_f2);
+    func_ov003_021d883c(&self->ticker, &v, &self->pos, self->unk_f2);
     self->unk_93_0 = 1;
     MI_Copy36B(m1, &self->model->rot);
     self->model->trans = v;
     r = func_ov003_021d16cc(self);
-    func_ov010_0220166c(self->unk_100);
+    func_ov010_0220166c(self->beams);
     return r;
 }
 
@@ -489,31 +444,31 @@ static inline Actor *Ov010e_FindActor(u16 id) {
     return a;
 }
 
-static inline VObj *Ov010e_Eff(u8 *p) {
+static inline VObj *Ov010e_Eff(Ov010Fade *p) {
     VObj *e = NULL;
     if (p != NULL) {
-        e = func_020657b0(data_0214a420, FLD(Ov010Flags8, p, 0).b0 ? FLD(s32, p, 0x10) : 0);
+        e = func_020657b0(data_0214a420, p->b0 ? p->key : 0);
     }
     return e;
 }
 
 static inline void Ov010e_Spawn(Obj021fa860 *self) {
-    if (self->unk_138.b0 && self->unk_140 == 0) {
-        Actor *a = Ov010e_FindActor(self->unk_13a);
+    if (self->fade.b0 && self->fade.state == 0) {
+        Actor *a = Ov010e_FindActor(self->fade.id);
         if (a != NULL) {
             VObj *e;
             VecFx32 w;
-            VecFx32 u = ((Ov010PosFn)self->unk_14c)(a);
+            VecFx32 u = ((Ov010PosFn)self->fade.getPos)(a);
             w.x = a->pos.x;
             w.y = a->pos.y;
             w.z = a->pos.z;
             VEC_Add(&w, &u, &w);
-            e = func_02065f88(self->unk_144, &w);
+            e = func_02065f88(self->fade.fxId, &w);
             FLD(u8, e, 0xd0) = 1;
-            self->unk_148 = FLD(s32, e, 0x24);
-            self->unk_139 = 0x1f;
-            self->unk_140 = 1;
-            self->unk_13c = 0;
+            self->fade.key = FLD(s32, e, 0x24);
+            self->fade.unk_01 = 0x1f;
+            self->fade.state = 1;
+            self->fade.timer = 0;
         }
     }
 }
@@ -532,19 +487,19 @@ BOOL func_ov010_021fac1c(Obj021fa860 *self, Ov010Msg *msg) {
             if (c[1] >= 0x14) {
                 c[0] = 0;
                 c[1] = 0;
-                func_ov003_021d97fc((u8 *)self + 0x1ac, 1);
+                func_ov003_021d97fc(&self->seq, 1);
                 c = self->unk_f8;
                 c[0] = 0;
                 c[1] = 0;
-                if (self->unk_138.b0 && self->unk_140 == 1) {
-                    self->unk_140 = 2;
-                    self->unk_13c = 0;
+                if (self->fade.b0 && self->fade.state == 1) {
+                    self->fade.state = 2;
+                    self->fade.timer = 0;
                 }
                 func_ov000_02198360(self->fsm, 0x14, 0);
             } else {
                 if (c[1] == 0xf) {
                     Ov010e_Spawn(self);
-                    Ov010e_Eff((u8 *)self + 0x138)->vfunc_0c(0x1800);
+                    Ov010e_Eff(&self->fade)->vfunc_0c(0x1800);
                     VecFx32 p = Ov010e_AttachPos(self);
                     VecFx32 off = data_ov010_0220ed10;
                     VecFx32 rr;
@@ -552,7 +507,7 @@ BOOL func_ov010_021fac1c(Obj021fa860 *self, Ov010Msg *msg) {
                     VEC_Add(&p, &rr, &p);
                     func_02065f88(0x44c, &p)->vfunc_0c(0x2000);
                     self->unk_f2 = 0x800;
-                    func_ov003_021d85c8((u8 *)self + 0x150, 10, 0, 0, 0);
+                    func_ov003_021d85c8(&self->ticker, 10, 0, 0, 0);
                     {
                         FieldState *g = data_ov000_021ccd54;
                         ((u8 *)g)[0x190] |= 0x1c;
@@ -562,7 +517,7 @@ BOOL func_ov010_021fac1c(Obj021fa860 *self, Ov010Msg *msg) {
                     }
                 } else {
                     self->unk_f2 = 0x500;
-                    func_ov003_021d85c8((u8 *)self + 0x150, 7, 0, 0, 0);
+                    func_ov003_021d85c8(&self->ticker, 7, 0, 0, 0);
                 }
                 {
                     u16 *hp = self->hp;
@@ -631,69 +586,77 @@ struct Ov010StBits {
     u8 b4 : 4;
 };
 
-static inline void *Ov010e_NewVt(u32 size, void *vt) {
-    void *o = Heap_Alloc(size);
+static inline VObj *Ov010e_NewVt(u32 size, void *vt) {
+    VObj *o = (VObj *)Heap_Alloc(size);
     if (o != NULL) {
-        FLD(void *, o, 0) = vt;
+        *(void **)o = vt;
     }
     return o;
 }
 
-static inline void *Ov010e_NewC(void) {
-    void *o = Heap_Alloc(0x18);
+// State 3 of the state machine (vtable data_ov010_0220fc6c, 0x18).
+class Ov010State3 : public VObj {
+public:
+    u8 unk_04;
+    s32 unk_08;
+    VecFx32 unk_0c;
+};
+
+static inline Ov010State3 *Ov010e_NewC(void) {
+    Ov010State3 *o = (Ov010State3 *)Heap_Alloc(sizeof(Ov010State3));
     if (o != NULL) {
-        FLD(void *, o, 0) = data_ov010_0220fc6c;
-        FLD(u8, o, 4) = 0;
-        FLD(s32, o, 8) = 0;
-        OV010_BLKCPY((u8 *)o + 0xc, &data_ov010_0220fa88);
+        *(void **)o = data_ov010_0220fc6c;
+        o->unk_04 = 0;
+        o->unk_08 = 0;
+        OV010_BLKCPY(&o->unk_0c, &data_ov010_0220fa88);
     }
     return o;
 }
 
-static inline void *Ov010e_NewD(void) {
-    void *o = Heap_Alloc(0xc);
+static inline Ov010Wobble *Ov010e_NewD(void) {
+    Ov010Wobble *o = (Ov010Wobble *)Heap_Alloc(sizeof(Ov010Wobble));
     if (o != NULL) {
-        FLD(void *, o, 0) = data_ov010_0220fc50;
-        FLD(Ov010StBits, o, 4).b0 = 0;
-        FLD(Ov010StBits, o, 4).b1 = 0;
-        FLD(Ov010StBits, o, 4).b2 = 0;
-        FLD(Ov010StBits, o, 4).b3 = 0;
-        FLD(u16, o, 6) = 0;
-        FLD(u16, o, 8) = 0;
+        o->vtbl = data_ov010_0220fc50;
+        o->b0 = 0;
+        o->b1 = 0;
+        o->b2 = 0;
+        o->b3 = 0;
+        o->unk_06 = 0;
+        o->unk_08 = 0;
     }
     return o;
 }
 
-static inline void *Ov010e_NewE(void) {
-    void *o = Heap_Alloc(0x68);
+static inline Ov010Shake *Ov010e_NewE(void) {
+    Ov010Shake *o = (Ov010Shake *)Heap_Alloc(sizeof(Ov010Shake));
     if (o != NULL) {
-        FLD(void *, o, 0) = data_ov010_0220fc34;
-        FLD(u8, o, 4) = 0;
-        FLD(u16, o, 6) = 0;
+        o->vtbl = data_ov010_0220fc34;
+        o->active = 0;
+        o->decay = 0;
         VecFx32 t = data_ov010_0220ec20;
-        FLD(Ov010Blk12, o, 8) = *(Ov010Blk12 *)&t;
-        FLD(Ov010Blk12, o, 0x14) = *(Ov010Blk12 *)&t;
-        FLD(Ov010Blk12, o, 0x20) = *(Ov010Blk12 *)&t;
-        FLD(Ov010Blk12, o, 0x2c) = *(Ov010Blk12 *)&t;
-        History_Init((u8 *)o + 0x38);
-        func_ov003_021da48c((u8 *)o + 0x38, 0);
+        OV010_BLKCPY(&o->a, &t);
+        OV010_BLKCPY(&o->b, &t);
+        OV010_BLKCPY(&o->vel, &t);
+        OV010_BLKCPY(&o->pos, &t);
+        History_Init(&o->state);
+        func_ov003_021da48c(&o->state, 0);
     }
     return o;
 }
 
-static inline void Ov010e_StartE(u8 *o) {
-    if (FLD(u8, o, 4) == 0) {
-        FLD(u8, o, 4) = 1;
-        OV010_BLKCPY(o + 0x4c, &data_ov010_0220fa94.dir);
-        FLD(s16, o, 0x58) = data_ov010_0220fa94.lim;
-        FLD(s16, o, 0x5a) = data_ov010_0220fa94.acc;
-        FLD(u16, o, 0x5c) = data_ov010_0220fa94.dur;
-        FLD(s16, o, 0x5e) = data_ov010_0220fa94.k5e;
-        FLD(s16, o, 0x60) = data_ov010_0220fa94.k60;
-        FLD(s16, o, 0x62) = data_ov010_0220fa94.k62;
-        FLD(s16, o, 0x64) = data_ov010_0220fa94.k64;
-        FLD(s16, o, 0x66) = data_ov010_0220fa94.k66;
-        func_ov003_021da48c(o + 0x38, 0);
+static inline void Ov010e_StartE(Ov010Shake *s) {
+    if (s->active == 0) {
+        s->active = 1;
+        OV010_BLKCPY(&s->dir, &data_ov010_0220fa94.dir);
+        s->lim = data_ov010_0220fa94.lim;
+        s->acc = data_ov010_0220fa94.acc;
+        s->dur = data_ov010_0220fa94.dur;
+        s->k5e = data_ov010_0220fa94.k5e;
+        s->k60 = data_ov010_0220fa94.k60;
+        s->k62 = data_ov010_0220fa94.k62;
+        s->k64 = data_ov010_0220fa94.k64;
+        s->k66 = data_ov010_0220fa94.k66;
+        func_ov003_021da48c(&s->state, 0);
     }
 }
 
@@ -705,20 +668,20 @@ void Ov010ActVt_0220fccc_Start(Obj021fa860 *self) {
     func_ov003_021cf404(1);
     func_ov003_021cf400(1);
     self->unk_f0.b2 = 1;
-    self->unk_138.b0 = 1;
-    self->unk_138.b1 = 0;
-    self->unk_144 = 0x322;
-    self->unk_14c = (void *)func_ov010_021fa7e0;
-    self->unk_139 = 0x1f;
-    self->unk_13a = self->id;
-    self->unk_13c = 0;
-    self->unk_140 = 0;
-    self->unk_148 = 0;
-    Ov003TickerSet_Init((u8 *)self + 0x150);
-    func_ov003_021cf330((u8 *)self + 0x19c, data_ov010_0220fc0f, data_ov003_021f4340);
-    Ov010TaskList_Init((u8 *)self + 0x17c);
-    func_ov003_021d8f4c((u8 *)self + 0x1ac);
-    func_ov003_021d95e8((u8 *)self + 0x1ac, data_ov010_0220ee6c, 0x2a);
+    self->fade.b0 = 1;
+    self->fade.b1 = 0;
+    self->fade.fxId = 0x322;
+    self->fade.getPos = (void (*)(VecFx32 *, u8 *))func_ov010_021fa7e0; // returns the VecFx32 through out
+    self->fade.unk_01 = 0x1f;
+    self->fade.id = self->id;
+    self->fade.timer = 0;
+    self->fade.state = 0;
+    self->fade.key = 0;
+    Ov003TickerSet_Init(&self->ticker);
+    func_ov003_021cf330(&self->flagObj, data_ov010_0220fc0f, data_ov003_021f4340);
+    Ov010TaskList_Init(&self->tasks);
+    func_ov003_021d8f4c(&self->seq);
+    func_ov003_021d95e8(&self->seq, data_ov010_0220ee6c, 0x2a);
     {
         ActorSub44 *p = self->unk_44;
         p->unk_0c.x = 0;
@@ -746,35 +709,37 @@ void Ov010ActVt_0220fccc_Start(Obj021fa860 *self) {
     self->unk_110 = Ov010e_NewVt(8, data_ov010_0220fcac);
     self->unk_114 = Ov010e_NewVt(8, data_ov010_0220fc8c);
     self->unk_118 = Ov010e_NewC();
-    Ov003StateMachine_Init((u8 *)self + 0x1c0);
-    func_ov003_021d8a30((u8 *)self + 0x1c0, 1, self->unk_110);
-    func_ov003_021d8a30((u8 *)self + 0x1c0, 2, self->unk_114);
-    func_ov003_021d8a30((u8 *)self + 0x1c0, 3, self->unk_118);
+    Ov003StateMachine_Init(&self->sm);
+    func_ov003_021d8a30(&self->sm, 1, self->unk_110);
+    func_ov003_021d8a30(&self->sm, 2, self->unk_114);
+    func_ov003_021d8a30(&self->sm, 3, self->unk_118);
     o = Heap_Alloc(0x40);
     if (o != NULL) {
         o = func_ov010_02200d94(o);
     }
-    self->unk_100 = o;
-    func_ov010_02200dcc(self->unk_100, self->id, 0x78, 0x30, 2);
-    self->unk_108 = (u8 *)(Ov010e_NewD());
-    o = Ov010e_NewE();
-    self->unk_104 = (Ov010Shake *)(o);
-    Ov010e_StartE((u8 *)o);
+    self->beams = (Ov010BeamSet *)o;
+    func_ov010_02200dcc(self->beams, self->id, 0x78, 0x30, 2);
+    self->unk_108 = Ov010e_NewD();
+    {
+        Ov010Shake *sh = Ov010e_NewE();
+        self->unk_104 = sh;
+        Ov010e_StartE(sh);
+    }
     o = Heap_Alloc(0x20);
     if (o != NULL) {
         o = Ov003Vt_021f7cd8_Ctor(o);
     }
-    self->unk_10c = o;
+    self->unk_10c = (Ov010Timer *)o;
     func_ov003_021d8c10(o);
-    Ov003Group_Init((u8 *)self + 0x1d0);
+    Ov003Group_Init(&self->group);
     k = data_ov003_021f435c;
-    func_ov003_021cf52c((u8 *)self + 0x1d0, self->unk_104, k, k);
-    func_ov003_021cf52c((u8 *)self + 0x1d0, self->unk_108, k, k);
-    func_ov003_021cf52c((u8 *)self + 0x1d0, self->unk_10c, k, k);
-    func_ov003_021cf52c((u8 *)self + 0x1d0, (u8 *)self + 0x150, k, k);
-    func_ov003_021cf52c((u8 *)self + 0x1d0, (u8 *)self + 0x17c, k, k);
-    func_ov003_021cf52c((u8 *)self + 0x1d0, (u8 *)self + 0x19c, k, k);
-    func_ov003_021cf52c((u8 *)self + 0x1d0, (u8 *)self + 0x1c0, k, k);
+    func_ov003_021cf52c(&self->group, self->unk_104, k, k);
+    func_ov003_021cf52c(&self->group, self->unk_108, k, k);
+    func_ov003_021cf52c(&self->group, self->unk_10c, k, k);
+    func_ov003_021cf52c(&self->group, &self->ticker, k, k);
+    func_ov003_021cf52c(&self->group, &self->tasks, k, k);
+    func_ov003_021cf52c(&self->group, &self->flagObj, k, k);
+    func_ov003_021cf52c(&self->group, &self->sm, k, k);
     {
         u8 *u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
         if (u != NULL) {
@@ -789,13 +754,13 @@ void Ov010ActVt_0220fccc_Start(Obj021fa860 *self) {
     switch (self->unk_18) {
     case 0:
         self->unk_f0.b2 = 0;
-        self->unk_11c = func_02049afc(data_02097e4c, 0x4e);
-        func_0204a058(data_02097e4c, self->unk_11c, 0x78, 0);
-        func_0204a058(data_02097e4c, self->unk_11c, 0x28, 0x258);
+        self->seqHandle = func_02049afc(data_02097e4c, 0x4e);
+        func_0204a058(data_02097e4c, self->seqHandle, 0x78, 0);
+        func_0204a058(data_02097e4c, self->seqHandle, 0x28, 0x258);
         break;
     case 1:
         func_ov000_02198360(self->fsm, 0x2c, 0);
-        func_ov003_021d97fc((u8 *)self + 0x1ac, 1);
+        func_ov003_021d97fc(&self->seq, 1);
         self->unk_f0.b2 = 0;
         break;
     case 2: {
@@ -884,8 +849,8 @@ static inline BOOL Ov010_PlFlag(void) {
 
 static inline void Ov010_SetAlpha(Ov010Cls *self, u8 a) {
     self->model->alpha = a;
-    if (self->unk_138.b0 && self->unk_140 != 0) {
-        self->unk_139 = a;
+    if (self->fade.b0 && self->fade.state != 0) {
+        self->fade.unk_01 = a;
     }
     if (self->unk_d0 != NULL && self->unk_ea_3) {
         s32 i;
@@ -952,18 +917,18 @@ void func_ov010_021fb5c8(Ov010Cls *self) {
                 if (f[0] > 0x96) {
                     f[0] = 0;
                     f[1] = 0;
-                    if (self->unk_138.b0 && self->unk_140 == 1) {
-                        self->unk_140 = 2;
-                        self->unk_13c = 0;
+                    if (self->fade.b0 && self->fade.state == 1) {
+                        self->fade.state = 2;
+                        self->fade.timer = 0;
                     }
                 }
             } else {
                 if (f[0] > 0x5a) {
                     f[0] = 0;
                     f[1] = 0;
-                    if (self->unk_138.b0 && self->unk_140 == 1) {
-                        self->unk_140 = 2;
-                        self->unk_13c = 0;
+                    if (self->fade.b0 && self->fade.state == 1) {
+                        self->fade.state = 2;
+                        self->fade.timer = 0;
                     }
                 }
             }
@@ -974,17 +939,17 @@ void func_ov010_021fb5c8(Ov010Cls *self) {
         func_ov003_021d88ec(&cmd);
         cmd.a = 1;
         cmd.b = 0;
-        Ov003StateMachine_SendMessage((u8 *)self + 0x1c0, &cmd);
+        Ov003StateMachine_SendMessage(&self->sm, &cmd);
     } else {
         Ov010Cmd cmd;
         func_ov003_021d88ec(&cmd);
         cmd.a = 1;
         cmd.b = 1;
-        Ov003StateMachine_SendMessage((u8 *)self + 0x1c0, &cmd);
+        Ov003StateMachine_SendMessage(&self->sm, &cmd);
     }
-    func_ov003_021cf4ac((u8 *)self + 0x1d0);
-    func_ov010_021ffa6c(&self->unk_138);
-    func_ov010_02201064(self->unk_100);
+    func_ov003_021cf4ac(&self->group);
+    func_ov010_021ffa6c(&self->fade);
+    func_ov010_02201064(self->beams);
     self->unk_f8[0]++;
 }
 
@@ -998,11 +963,6 @@ extern "C" {
 extern u8 data_ov010_0220edd4[];
 extern BOOL Ov003Sequence_HasEntries(void *p, void *a);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-struct Ov010B2 {
-    u8 a;
-    u8 b;
-};
-extern Ov010B2 func_ov003_021d9644(void *p);
 extern BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
 
@@ -1012,21 +972,21 @@ void Ov010ActVt_0220fccc_Update(Obj021fa860 *self) {
     if (!func_ov003_021da03c(self)) {
         return;
     }
-    a = func_ov003_021d98a0((u8 *)self + 0x1ac) ? FALSE : TRUE;
-    b = Ov003Sequence_HasEntries((u8 *)self + 0x1ac, data_ov010_0220edd4) ? FALSE : TRUE;
-    func_ov003_021d8fc0((u8 *)self + 0x1ac);
+    a = func_ov003_021d98a0(&self->seq) ? FALSE : TRUE;
+    b = Ov003Sequence_HasEntries(&self->seq, data_ov010_0220edd4) ? FALSE : TRUE;
+    func_ov003_021d8fc0(&self->seq);
     if (a && b) {
         u16 *hp = self->hp;
         if (((hp[0] << 12) / hp[1]) <= 0x333) {
-            func_ov003_021d95e8((u8 *)self + 0x1ac, data_ov010_0220edd4, 0x19);
-            func_ov003_021d97fc((u8 *)self + 0x1ac, 1);
+            func_ov003_021d95e8(&self->seq, data_ov010_0220edd4, 0x19);
+            func_ov003_021d97fc(&self->seq, 1);
             func_ov000_02198360(self->fsm, 0x14, 1);
             return;
         }
     }
-    if (func_ov003_021d9878((u8 *)self + 0x1ac)) {
-        Ov010B2 r = func_ov003_021d9644((u8 *)self + 0x1ac);
-        FLD(Ov010B2, self, 0x1bc) = r;
+    if (func_ov003_021d9878(&self->seq)) {
+        Ov010B2 r = func_ov003_021d9644(&self->seq);
+        self->step = r;
         func_ov000_02198360(self->fsm, r.a, 1);
     }
 }
@@ -1034,19 +994,19 @@ void Ov010ActVt_0220fccc_Update(Obj021fa860 *self) {
 void func_ov010_021fba6c(void) {
 }
 
-static inline void Ov010Cam_Start(u8 *cam) {
-    if (FLD(u8, cam, 0x4) == 0) {
-        FLD(u8, cam, 0x4) = 1;
-        OV010_BLKCPY(cam + 0x4c, &data_ov010_0220fa94.dir);
-        FLD(s16, cam, 0x58) = data_ov010_0220fa94.lim;
-        FLD(s16, cam, 0x5a) = data_ov010_0220fa94.acc;
-        FLD(u16, cam, 0x5c) = data_ov010_0220fa94.dur;
-        FLD(s16, cam, 0x5e) = data_ov010_0220fa94.k5e;
-        FLD(s16, cam, 0x60) = data_ov010_0220fa94.k60;
-        FLD(s16, cam, 0x62) = data_ov010_0220fa94.k62;
-        FLD(s16, cam, 0x64) = data_ov010_0220fa94.k64;
-        FLD(s16, cam, 0x66) = data_ov010_0220fa94.k66;
-        func_ov003_021da48c(cam + 0x38, 0);
+static inline void Ov010Cam_Start(Ov010Shake *cam) {
+    if (cam->active == 0) {
+        cam->active = 1;
+        OV010_BLKCPY(&cam->dir, &data_ov010_0220fa94.dir);
+        cam->lim = data_ov010_0220fa94.lim;
+        cam->acc = data_ov010_0220fa94.acc;
+        cam->dur = data_ov010_0220fa94.dur;
+        cam->k5e = data_ov010_0220fa94.k5e;
+        cam->k60 = data_ov010_0220fa94.k60;
+        cam->k62 = data_ov010_0220fa94.k62;
+        cam->k64 = data_ov010_0220fa94.k64;
+        cam->k66 = data_ov010_0220fa94.k66;
+        func_ov003_021da48c(&cam->state, 0);
     }
 }
 
@@ -1054,7 +1014,7 @@ void func_ov010_021fba70(Obj021fa860 *self) {
     if (self->fsm->st != 0) {
         return;
     }
-    Ov010Cam_Start((u8 *)self->unk_104);
+    Ov010Cam_Start(self->unk_104);
     func_ov000_02190cb0(self->model, data_ov010_0220ebe0, 0xcd, 0);
     func_ov000_021915a0(self->model);
     self->fsm->st++;
@@ -1069,17 +1029,6 @@ struct Ov010Cmd {
     s32 a;
     s32 b;
     u8 unk_08[0x8];
-};
-
-struct Ov010Obj108 {
-    void *vtbl;
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 1;
-    u8 b3 : 1;
-    u8 b4 : 4;
-    u8 unk_05;
-    u16 unk_06;
 };
 
 struct Ov010MoveParam {
@@ -1142,7 +1091,7 @@ void func_ov010_021fbb40(Obj021fa860 *self) {
     Ov010MoveParam *p = NULL;
     u32 i;
     for (i = 0; i < 5; i++) {
-        if (self->unk_1bd == data_ov010_0220ed28[i].key) {
+        if (self->step.b == data_ov010_0220ed28[i].key) {
             p = data_ov010_0220ed28[i].param;
         }
     }
@@ -1170,7 +1119,7 @@ void func_ov010_021fbb40(Obj021fa860 *self) {
         cam = self->unk_104;
         cam->active = 0;
         cam->decay = 0xf00;
-        Ov010_Cmd((u8 *)self + 0x1c0, 4, p->unk_02);
+        Ov010_Cmd(&self->sm, 4, p->unk_02);
         self->fsm->st = 10;
         if (self->unk_f0.b1) {
             self->unk_f0.b1 = 0;
@@ -1194,11 +1143,11 @@ void func_ov010_021fbb40(Obj021fa860 *self) {
         break;
     }
     case 100:
-        func_ov003_021d969c((u8 *)self + 0x1ac, 1);
+        func_ov003_021d969c(&self->seq, 1);
         break;
     }
     {
-        Ov010Obj108 *o = FLD(Ov010Obj108 *, self, 0x108);
+        Ov010Wobble *o = self->unk_108;
         o->b2 = 1;
         o->unk_06 = 0;
     }
@@ -1207,7 +1156,7 @@ void func_ov010_021fbb40(Obj021fa860 *self) {
 }
 }  // namespace m_021fbb40
 
-struct Ov010Path {
+struct Ov010MovePath {
     const char *anim0;
     const char *anim1;
     VecFx32 a;
@@ -1256,8 +1205,8 @@ static inline void Ov010e_StartE(Ov010Shake *s) {
     }
 }
 
-static inline Ov010Path *Ov010e_NewPath(const char *n0, const char *n1, const VecFx32 *a, const VecFx32 *b) {
-    Ov010Path *o = (Ov010Path *)Heap_Alloc(0x20);
+static inline Ov010MovePath *Ov010e_NewPath(const char *n0, const char *n1, const VecFx32 *a, const VecFx32 *b) {
+    Ov010MovePath *o = (Ov010MovePath *)Heap_Alloc(0x20);
     if (o != NULL) {
         o->anim0 = n0;
         o->anim1 = n1;
@@ -1268,10 +1217,10 @@ static inline Ov010Path *Ov010e_NewPath(const char *n0, const char *n1, const Ve
 }
 
 struct Ov010Fns2 { Ov010Fn f[2]; };
-static inline Ov010Path *Ov010e_MkPath(u8 sel) {
+static inline Ov010MovePath *Ov010e_MkPath(u8 sel) {
     VecFx32 v0;
     VecFx32 v1;
-    Ov010Path *o = NULL;
+    Ov010MovePath *o = NULL;
     switch (sel) {
     case 0:
         func_ov003_021d9900(&v0, 0x1000, (VecFx32 *)&data_ov010_0220ec38);
@@ -1315,11 +1264,11 @@ void func_ov010_021fbda0(Obj021fa860 *self) {
     VecFx32 dv;
     switch (self->fsm->st) {
     case 0: {
-        Ov010Path *o;
+        Ov010MovePath *o;
         if ((void *)self->unk_fc != NULL) {
             Heap_Free(self->unk_fc);
         }
-        o = Ov010e_MkPath(self->unk_1bd);
+        o = Ov010e_MkPath(self->step.b);
         self->unk_fc = o;
         if (o == NULL) {
             self->fsm->st = 100;
@@ -1330,12 +1279,12 @@ void func_ov010_021fbda0(Obj021fa860 *self) {
             cam->active = 0;
             cam->decay = 0xf00;
         }
-        Ov010e_Cmd((u8 *)self + 0x1c0, 4, 1);
+        Ov010e_Cmd(&self->sm, 4, 1);
         self->fsm->st = 10;
         break;
     }
     case 10: {
-        Ov010Path *p;
+        Ov010MovePath *p;
         VObj *e;
         u16 a;
         func_ov000_02190cb0(self->model, self->unk_fc->anim0, data_ov010_0220fa24, 0);
@@ -1360,7 +1309,7 @@ void func_ov010_021fbda0(Obj021fa860 *self) {
         break;
     }
     case 11: {
-        Ov010Path *p = self->unk_fc;
+        Ov010MovePath *p = self->unk_fc;
         d11.x = p->a.x - self->pos.x;
         d11.y = p->a.y - self->pos.y;
         d11.z = p->a.z - self->pos.z;
@@ -1383,21 +1332,21 @@ void func_ov010_021fbda0(Obj021fa860 *self) {
             self->fsm->st = 100;
             return;
         }
-        func_ov010_02201b48((u8 *)self + 0x17c);
+        func_ov010_02201b48(&self->tasks);
         Ov010Fns2 fns = *(const Ov010Fns2 *)data_ov010_0220ec0c;
         id = pl->id;
         for (i = 0; i < 2; i++) {
-            void *t = func_ov010_02201ad4((u8 *)self + 0x17c, (void *)Ov010Vt_0220fe08_New, i * 15);
+            void *t = func_ov010_02201ad4(&self->tasks, (void *)Ov010Vt_0220fe08_New, i * 15);
             *(Ov010Blk12 *)&r = ((Ov010OfsFn)fns.f[i])(self->unk_fc->anim1);
             func_ov010_02201eac(t, id, self->id, &self->unk_fc->b, &r);
         }
-        func_ov010_02201bf4((u8 *)self + 0x17c);
+        func_ov010_02201bf4(&self->tasks);
         Ov010e_StartE(self->unk_104);
         self->fsm->st = 0x15;
         break;
     }
     case 0x15:
-        if (func_ov010_02201c5c((u8 *)self + 0x17c)) {
+        if (func_ov010_02201c5c(&self->tasks)) {
             Ov010Shake *c;
             dv.x = Ov010_FxMul(data_ov010_0220fa64.x, 0x1000);
             dv.y = Ov010_FxMul(data_ov010_0220fa64.y, 0x1000);
@@ -1413,8 +1362,8 @@ void func_ov010_021fbda0(Obj021fa860 *self) {
                 func_02049a48(data_02097e4c, 0xb01, -1, -1, -1);
             }
         }
-        if (func_ov010_02201c34((u8 *)self + 0x17c)) {
-            func_ov010_02201b48((u8 *)self + 0x17c);
+        if (func_ov010_02201c34(&self->tasks)) {
+            func_ov010_02201b48(&self->tasks);
             self->fsm->st = 0x1e;
         }
         break;
@@ -1429,7 +1378,7 @@ void func_ov010_021fbda0(Obj021fa860 *self) {
         }
         break;
     case 100:
-        func_ov003_021d969c((u8 *)self + 0x1ac, 1);
+        func_ov003_021d969c(&self->seq, 1);
         break;
     }
 }
@@ -1484,7 +1433,7 @@ void func_ov010_021fc4ac(Obj021fa860 *self) {
             cam->active = i;
             cam->decay = i;
         }
-        Ov010e_Cmd((u8 *)self + 0x1c0, 4, 1);
+        Ov010e_Cmd(&self->sm, 4, 1);
         self->speed = i;
         self->velY = i;
         self->friction = i;
@@ -1495,7 +1444,7 @@ void func_ov010_021fc4ac(Obj021fa860 *self) {
         self->pos.x = 0x9600;
         self->pos.y = 0x17d9e;
         self->pos.z = i;
-        func_ov010_02201b48((u8 *)self + 0x17c);
+        func_ov010_02201b48(&self->tasks);
         pl = func_ov000_0219bf90();
         if (pl == NULL) {
             func_ov000_02198360(self->fsm, 100, i);
@@ -1507,7 +1456,7 @@ void func_ov010_021fc4ac(Obj021fa860 *self) {
             ofs.x = -0x1333;
             ofs.y = 0x8000;
             ofs.z = 0x2666;
-            t = func_ov010_02201ad4((u8 *)self + 0x17c, (void *)Ov010Vt_0220fdf4_New, i * 15 + 0x50);
+            t = func_ov010_02201ad4(&self->tasks, (void *)Ov010Vt_0220fdf4_New, i * 15 + 0x50);
             func_ov010_02202074(t, pl->id, self->id, &rot, &ofs);
         }
         self->fsm->st = 10;
@@ -1566,7 +1515,7 @@ void func_ov010_021fc4ac(Obj021fa860 *self) {
         break;
     case 0x32:
         func_ov000_02190cb0(self->model, anim, 0x90, 0);
-        func_ov010_02201bf4((u8 *)self + 0x17c);
+        func_ov010_02201bf4(&self->tasks);
         self->fsm->st = 0x33;
         func_02049a48(data_02097e4c, 0xb03, -1, -1, -1);
         break;
@@ -1576,7 +1525,7 @@ void func_ov010_021fc4ac(Obj021fa860 *self) {
         VEC_MultAdd(4, &data_ov010_0220ec38, &self->unk_120, &self->unk_120);
         func_ov003_021d9aec(&self->unk_120, &self->unk_120, 0x2000);
         self->fsm->timer++;
-        if ((s32)self->fsm->timer > 0xf0 && func_ov010_02201c34((u8 *)self + 0x17c)) {
+        if ((s32)self->fsm->timer > 0xf0 && func_ov010_02201c34(&self->tasks)) {
             self->model->visible = 0;
             self->fsm->timer = 0;
             self->fsm->st = 100;
@@ -1584,15 +1533,15 @@ void func_ov010_021fc4ac(Obj021fa860 *self) {
         break;
     case 100:
         func_ov000_02190cb0(self->model, data_ov010_0220ebe0, 0x1000, 0);
-        func_ov010_02201b48((u8 *)self + 0x17c);
-        func_ov003_021d969c((u8 *)self + 0x1ac, 1);
+        func_ov010_02201b48(&self->tasks);
+        func_ov003_021d969c(&self->seq, 1);
         break;
     }
     VEC_Add(&self->pos, &self->unk_120, &self->pos);
     {
-        u8 *c = self->unk_108;
-        FLD(Ov010StBits, c, 4).b2 = 1;
-        FLD(u16, c, 6) = 0;
+        Ov010Wobble *c = self->unk_108;
+        c->b2 = 1;
+        c->unk_06 = 0;
     }
 }
 
@@ -1648,7 +1597,7 @@ void func_ov010_021fca40(Obj021fa860 *self) {
     case 0x28: {
         VObj *e;
         rate = 0x100;
-        Ov010e_Cmd((u8 *)self + 0x1c0, 3, -0x2800);
+        Ov010e_Cmd(&self->sm, 3, -0x2800);
         e = func_ov003_021da788(0x196, self, &data_ov010_0220ec5c);
         if (e != NULL) {
             e->vfunc_0c(0x1a00);
@@ -1671,13 +1620,13 @@ void func_ov010_021fca40(Obj021fa860 *self) {
         rate = 0x100;
         func_ov003_021d9980(&v, self->rot_y, (VecFx32 *)&data_ov010_0220ec5c);
         VEC_Add(&v, &self->pos, &v);
-        func_ov010_022016a0(self->unk_100, &self->unk_12c, &v, 0x2bc);
+        func_ov010_022016a0(self->beams, &self->unk_12c, &v, 0x2bc);
         {
             Ov010Shake *cam = self->unk_104;
             cam->active = 0;
             cam->decay = 0xf00;
         }
-        Ov010e_Cmd((u8 *)self + 0x1c0, 3, 0x3000);
+        Ov010e_Cmd(&self->sm, 3, 0x3000);
         self->fsm->st = 0x33;
         break;
     }
@@ -1687,8 +1636,8 @@ void func_ov010_021fca40(Obj021fa860 *self) {
         rate = 0x100;
         func_ov003_021d9980(&v, self->rot_y, (VecFx32 *)&data_ov010_0220ec5c);
         VEC_Add(&v, &self->pos, &v);
-        func_ov010_02201830(self->unk_100, &v);
-        func_ov010_02201898(self->unk_100, &self->unk_12c);
+        func_ov010_02201830(self->beams, &v);
+        func_ov010_02201898(self->beams, &self->unk_12c);
         self->fsm->timer++;
         if (self->fsm->timer > 0x3c) {
             Actor *a = Ov010e_FindActor(self->target);
@@ -1698,17 +1647,17 @@ void func_ov010_021fca40(Obj021fa860 *self) {
                 p.y = a->pos.y;
                 p.z = a->pos.z;
                 if (VEC_Distance(&p, &self->unk_84) > 0x10000) {
-                    Ov010BeamSet_Stop(self->unk_100);
+                    Ov010BeamSet_Stop(self->beams);
                 }
             }
         }
-        if (Ov010BeamSet_IsDone(self->unk_100)) {
+        if (Ov010BeamSet_IsDone(self->beams)) {
             self->fsm->st = 0x3c;
         }
         break;
     }
     case 0x3c:
-        Ov010e_Cmd((u8 *)self + 0x1c0, 3, 0);
+        Ov010e_Cmd(&self->sm, 3, 0);
         self->fsm->st = 0x3d;
         break;
     case 0x3d:
@@ -1725,12 +1674,12 @@ void func_ov010_021fca40(Obj021fa860 *self) {
         break;
     case 0x47:
         if (func_ov000_02191120(self->model)) {
-            Ov010e_Cmd((u8 *)self + 0x1c0, 2, 1);
+            Ov010e_Cmd(&self->sm, 2, 1);
             self->fsm->st = 100;
         }
         break;
     case 100:
-        func_ov003_021d969c((u8 *)self + 0x1ac, 1);
+        func_ov003_021d969c(&self->seq, 1);
         break;
     }
     Ov010e_Pull(self, rate);
@@ -1741,9 +1690,9 @@ void func_ov010_021fca40(Obj021fa860 *self) {
     }
     Actor_TurnToPos(self, &self->unk_84, 0x180);
     {
-        u8 *c = self->unk_108;
-        FLD(Ov010StBits, c, 4).b2 = 1;
-        FLD(u16, c, 6) = 0;
+        Ov010Wobble *c = self->unk_108;
+        c->b2 = 1;
+        c->unk_06 = 0;
     }
 }
 
@@ -1772,31 +1721,31 @@ extern u8 data_ov010_0220edd4[];
 
 typedef Ov010Blk12 (*Ov010PosFn)(void *a);
 
-static inline u16 Ov010e_AngTo(Obj021fa860 *self, u8 *a) {
-    if (a == NULL || a == (void *)self) {
+static inline u16 Ov010e_AngTo(Obj021fa860 *self, Actor *a) {
+    if (a == NULL || a == self) {
         return self->rot_y;
     }
-    return FX_Atan2(FLD(s32, a, 0x70) - self->pos.x, FLD(s32, a, 0x78) - self->pos.z);
+    return FX_Atan2(a->pos.x - self->pos.x, a->pos.z - self->pos.z);
 }
 
 static inline void Ov010e_Spawn(Obj021fa860 *self) {
-    if (self->unk_138.b0 && self->unk_140 == 0) {
-        Actor *a = Ov010e_FindActor(self->unk_13a);
+    if (self->fade.b0 && self->fade.state == 0) {
+        Actor *a = Ov010e_FindActor(self->fade.id);
         if (a != NULL) {
             VObj *e;
             VecFx32 w;
             VecFx32 u;
-            *(Ov010Blk12 *)&u = ((Ov010PosFn)self->unk_14c)(a);
+            *(Ov010Blk12 *)&u = ((Ov010PosFn)self->fade.getPos)(a);
             w.x = a->pos.x;
             w.y = a->pos.y;
             w.z = a->pos.z;
             VEC_Add(&w, &u, &w);
-            e = func_02065f88(self->unk_144, &w);
+            e = func_02065f88(self->fade.fxId, &w);
             FLD(u8, e, 0xd0) = 1;
-            self->unk_148 = FLD(s32, e, 0x24);
-            self->unk_139 = 0x1f;
-            self->unk_13c = 0;
-            self->unk_140 = 1;
+            self->fade.key = FLD(s32, e, 0x24);
+            self->fade.unk_01 = 0x1f;
+            self->fade.timer = 0;
+            self->fade.state = 1;
         }
     }
 }
@@ -1811,7 +1760,7 @@ void func_ov010_021fcf70(Obj021fa860 *self) {
     case 1:
         if (st == 0) {
             if (self->hp != NULL && func_ov000_02199f60(self->hp) != NULL) {
-                self->moveYaw = Ov010e_AngTo(self, (u8 *)func_ov000_02199f60(self->hp));
+                self->moveYaw = Ov010e_AngTo(self, (Actor *)func_ov000_02199f60(self->hp));
             } else {
                 self->moveYaw = self->rot_y;
             }
@@ -1820,20 +1769,20 @@ void func_ov010_021fcf70(Obj021fa860 *self) {
             self->unk_120.y = data_ov010_0220ec20.y;
             self->unk_120.z = data_ov010_0220ec20.z;
             func_ov000_02191418(self->model, 3, 0);
-            Ov010e_Cmd((u8 *)self + 0x1c0, 2, 1);
-            func_ov010_0220172c(self->unk_100);
-            func_ov010_02201b48((u8 *)self + 0x17c);
+            Ov010e_Cmd(&self->sm, 2, 1);
+            func_ov010_0220172c(self->beams);
+            func_ov010_02201b48(&self->tasks);
             self->fsm->st = 1;
         }
         func_ov003_021d6868(self, 0x739f);
-        if (self->unk_138.b0) {
-            self->unk_138.b1 = 1;
+        if (self->fade.b0) {
+            self->fade.b1 = 1;
         }
         if (self->fsm->timer > 3) {
             self->fsm->timer = 0;
             self->fsm->st = 0x14;
         } else {
-            self->fsm->timer = FLD(const u16, self->fsm, 2) + 1;
+            self->fsm->timer = ActorSub40_Timer(self->fsm) + 1;
         }
         break;
     case 0x14:
@@ -1855,7 +1804,7 @@ void func_ov010_021fcf70(Obj021fa860 *self) {
                 }
             }
             self->unk_f2 = 0x1000;
-            func_ov003_021d85c8((u8 *)self + 0x150, 0x14, 0, 0, 0);
+            func_ov003_021d85c8(&self->ticker, 0x14, 0, 0, 0);
             {
                 FieldState *g = data_ov000_021ccd54;
                 ((u8 *)g)[0x190] |= 0x1c;
@@ -1868,9 +1817,9 @@ void func_ov010_021fcf70(Obj021fa860 *self) {
             self->unk_120.x = Ov010_FxMul(self->unk_120.x, 0x800);
             self->unk_120.y = Ov010_FxMul(self->unk_120.y, 0x800);
             self->unk_120.z = Ov010_FxMul(self->unk_120.z, 0x800);
-            if (self->unk_138.b0 && self->unk_140 == 1) {
-                self->unk_140 = 2;
-                self->unk_13c = 0;
+            if (self->fade.b0 && self->fade.state == 1) {
+                self->fade.state = 2;
+                self->fade.timer = 0;
             }
             func_ov000_02190cb0(self->model, data_ov010_0220fc19, 0x800, 1);
             self->unk_b4 = 0;
@@ -1905,9 +1854,9 @@ void func_ov010_021fcf70(Obj021fa860 *self) {
             u16 *hp = self->hp;
             if ((hp[0] << 12) / hp[1] <= 0x333) {
                 Ov010e_Spawn(self);
-                if (!Ov003Sequence_HasEntries((u8 *)self + 0x1ac, data_ov010_0220edd4)) {
-                    func_ov003_021d95e8((u8 *)self + 0x1ac, data_ov010_0220edd4, 0x19);
-                    func_ov003_021d97fc((u8 *)self + 0x1ac, 1);
+                if (!Ov003Sequence_HasEntries(&self->seq, data_ov010_0220edd4)) {
+                    func_ov003_021d95e8(&self->seq, data_ov010_0220edd4, 0x19);
+                    func_ov003_021d97fc(&self->seq, 1);
                 }
             }
             self->fsm->st = 100;
@@ -1920,7 +1869,7 @@ void func_ov010_021fcf70(Obj021fa860 *self) {
         func_ov000_02198360(self->fsm, 0x2b, 0);
         break;
     }
-    FLD(Ov010Flags8b, self->unk_108, 4).b1 = 1;
+    self->unk_108->b1 = 1;
     {
         Ov010Shake *cam = self->unk_104;
         cam->active = 0;
@@ -1964,17 +1913,17 @@ static inline VecFx32 Ov010f_AttachPos(Obj021fa860 *self) {
 void func_ov010_021fd694(Obj021fa860 *self) {
     switch (self->fsm->st) {
     case 0:
-        if (Ov003StateMachine_IsState((u8 *)self + 0x1c0, 1)) {
-            Ov010e_Cmd((u8 *)self + 0x1c0, 2, 1);
+        if (Ov003StateMachine_IsState(&self->sm, 1)) {
+            Ov010e_Cmd(&self->sm, 2, 1);
         } else {
-            func_ov003_021d8a7c((u8 *)self + 0x1c0, 3);
+            func_ov003_021d8a7c(&self->sm, 3);
         }
-        if (self->unk_138.b0 && self->unk_140 == 1) {
-            self->unk_140 = 2;
-            self->unk_13c = 0;
+        if (self->fade.b0 && self->fade.state == 1) {
+            self->fade.state = 2;
+            self->fade.timer = 0;
         }
-        func_ov010_0220172c(self->unk_100);
-        func_ov003_021d97fc((u8 *)self + 0x1ac, 1);
+        func_ov010_0220172c(self->beams);
+        func_ov003_021d97fc(&self->seq, 1);
         self->hp[0] = 0;
         {
             ActorSub44 *s44 = self->unk_44;
@@ -1986,9 +1935,9 @@ void func_ov010_021fd694(Obj021fa860 *self) {
         self->unk_120.y = data_ov010_0220ec20.y;
         self->unk_120.z = data_ov010_0220ec20.z;
         {
-            u8 *c = self->unk_108;
-            FLD(Ov010Flags8b, c, 4).b2 = 1;
-            FLD(u16, c, 6) = 0;
+            Ov010Wobble *c = self->unk_108;
+            c->b2 = 1;
+            c->unk_06 = 0;
         }
         {
             Ov010Shake *cam = self->unk_104;
@@ -2006,7 +1955,7 @@ void func_ov010_021fd694(Obj021fa860 *self) {
         self->fsm->st = 11;
     case 11:
         if (self->fsm->timer < 5) {
-            self->fsm->timer = FLD(const u16, self->fsm, 2) + 1;
+            self->fsm->timer = ActorSub40_Timer(self->fsm) + 1;
             break;
         }
         func_0203cb78(0x1e000, 1, 0);
@@ -2044,7 +1993,7 @@ void func_ov010_021fd694(Obj021fa860 *self) {
             self->fsm->timer = 0;
             self->fsm->st = 0x1e;
         } else {
-            self->fsm->timer = FLD(const u16, self->fsm, 2) + 1;
+            self->fsm->timer = ActorSub40_Timer(self->fsm) + 1;
         }
         break;
     case 0x1e: {
@@ -2101,21 +2050,21 @@ void func_ov010_021fd694(Obj021fa860 *self) {
             self->unk_120.y = data_ov010_0220ec20.y;
             self->unk_120.z = data_ov010_0220ec20.z;
             self->fsm->st = 0x3c;
-            func_ov003_021d8a7c((u8 *)self + 0x1c0, 1);
+            func_ov003_021d8a7c(&self->sm, 1);
             {
-                u8 *o = (u8 *)self->unk_104;
-                if (FLD(u8, o, 4) == 0) {
-                    FLD(u8, o, 4) = 1;
-                    OV010_BLKCPY(o + 0x4c, &data_ov010_0220fa94.dir);
-                    FLD(s16, o, 0x58) = data_ov010_0220fa94.lim;
-                    FLD(s16, o, 0x5a) = data_ov010_0220fa94.acc;
-                    FLD(u16, o, 0x5c) = data_ov010_0220fa94.dur;
-                    FLD(s16, o, 0x5e) = data_ov010_0220fa94.k5e;
-                    FLD(s16, o, 0x60) = data_ov010_0220fa94.k60;
-                    FLD(s16, o, 0x62) = data_ov010_0220fa94.k62;
-                    FLD(s16, o, 0x64) = data_ov010_0220fa94.k64;
-                    FLD(s16, o, 0x66) = data_ov010_0220fa94.k66;
-                    func_ov003_021da48c(o + 0x38, 0);
+                Ov010Shake *o = self->unk_104;
+                if (o->active == 0) {
+                    o->active = 1;
+                    OV010_BLKCPY(&o->dir, &data_ov010_0220fa94.dir);
+                    o->lim = data_ov010_0220fa94.lim;
+                    o->acc = data_ov010_0220fa94.acc;
+                    o->dur = data_ov010_0220fa94.dur;
+                    o->k5e = data_ov010_0220fa94.k5e;
+                    o->k60 = data_ov010_0220fa94.k60;
+                    o->k62 = data_ov010_0220fa94.k62;
+                    o->k64 = data_ov010_0220fa94.k64;
+                    o->k66 = data_ov010_0220fa94.k66;
+                    func_ov003_021da48c(&o->state, 0);
                 }
             }
         }
@@ -2128,48 +2077,17 @@ void func_ov010_021fd694(Obj021fa860 *self) {
         }
         break;
     case 100:
-        SndMgr_StopSeqArc(data_02097e4c, self->unk_11c);
-        Ov010e_Cmd((u8 *)self + 0x1c0, 1, 1);
+        SndMgr_StopSeqArc(data_02097e4c, self->seqHandle);
+        Ov010e_Cmd(&self->sm, 1, 1);
         func_ov003_021d6a3c(self, self->unk_f0.b2, 1, 1);
         func_ov000_02198360(self->fsm, 0x2c, 0);
         break;
     }
 }
 
-struct Ov010Obj108 {
-    void *vtbl;
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 1;
-    u8 b3 : 1;
-    u8 b4 : 4;
-    u8 unk_05;
-    u16 unk_06;
-    u16 unk_08;
-    u16 unk_0a;
-};
-
 extern void Ov003Vec_MultAdd(void *out, VecFx32 *dir, void *in, s32 speed, s32 e);
 
-struct Obj021fe084 : public Ov003Actor {
-    Ov010Flags8 unk_f0;
-    u8 unk_f1[0x7];
-    u16 *unk_f8;
-    u8 unk_fc[0x8];
-    u8 *unk_104;
-    Ov010Obj108 *unk_108;
-    u8 unk_10c[0x2c];
-    Ov010Flags8 unk_138;
-    u8 unk_139[0x3];
-    u16 unk_13c;
-    u8 unk_13e[0x2];
-    s32 unk_140;
-    u8 unk_144[0x78];
-    u8 unk_1bc;
-    u8 unk_1bd;
-};
-
-static inline void Ov010_SetAnim(Obj021fe084 *self, void *model, const void *anim, s32 n) {
+static inline void Ov010_SetAnim(Obj021fa860 *self, void *model, const void *anim, s32 n) {
     self->speed = 0;
     self->velY = 0;
     self->friction = 0;
@@ -2177,20 +2095,20 @@ static inline void Ov010_SetAnim(Obj021fe084 *self, void *model, const void *ani
     func_ov000_02190cb0(model, anim, n, 0);
 }
 
-void func_ov010_021fe084(Obj021fe084 *self) {
+void func_ov010_021fe084(Obj021fa860 *self) {
     VecFx32 pos;
     VecFx32 d;
     Ov010Cmd cmd;
     u16 st = self->fsm->st;
     switch (st) {
     case 0: {
-        u8 *cam = self->unk_104;
-        FLD(u8, cam, 4) = 0;
-        FLD(u16, cam, 6) = 0xf00;
+        Ov010Shake *cam = self->unk_104;
+        cam->active = 0;
+        cam->decay = 0xf00;
         func_ov003_021d88ec(&cmd);
         cmd.a = 4;
         cmd.b = 1;
-        Ov003StateMachine_SendMessage((u8 *)self + 0x1c0, &cmd);
+        Ov003StateMachine_SendMessage(&self->sm, &cmd);
         Ov010_SetAnim(self, self->model, data_ov010_0220ebdc, 0x266);
         self->fsm->st = 10;
         break;
@@ -2228,11 +2146,11 @@ void func_ov010_021fe084(Obj021fe084 *self) {
         break;
     }
     case 100:
-        func_ov003_021d969c((u8 *)self + 0x1ac, 1);
+        func_ov003_021d969c(&self->seq, 1);
         break;
     }
     {
-        Ov010Obj108 *o = self->unk_108;
+        Ov010Wobble *o = self->unk_108;
         o->b2 = 1;
         o->unk_06 = 0;
     }
@@ -2241,7 +2159,7 @@ void func_ov010_021fe084(Obj021fe084 *self) {
 
 extern void *ActorMgr_GetGroup(void *a, s32 b);
 extern Actor *ActorMgr_FindKind(void *a, u16 b, s32 c);
-static inline void Ov010h_AttachWorld(Obj021fe084 *obj, VecFx32 *out) {
+static inline void Ov010h_AttachWorld(Obj021fa860 *obj, VecFx32 *out) {
     VecFx32 a;
     VecFx32 v = data_ov010_0220ec20;
     ActorSub44 *p;
@@ -2271,15 +2189,15 @@ static inline s32 Ov010h_Mul64(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-static inline void Ov010h_Cmd(Obj021fe084 *self) {
+static inline void Ov010h_Cmd(Obj021fa860 *self) {
     Ov010Cmd cmd;
     func_ov003_021d88ec(&cmd);
     cmd.a = 4;
     cmd.b = 1;
-    Ov003StateMachine_SendMessage((u8 *)self + 0x1c0, &cmd);
+    Ov003StateMachine_SendMessage(&self->sm, &cmd);
 }
 
-void func_ov010_021fe2a4(Obj021fe084 *self) {
+void func_ov010_021fe2a4(Obj021fa860 *self) {
     const VecFx32 *goal = &data_ov010_0220ecb0;
     BOOL flag = FALSE;
     s32 i;
@@ -2296,9 +2214,9 @@ void func_ov010_021fe2a4(Obj021fe084 *self) {
         }
         self->target = FLD(u16, a, 0xc);
         {
-            u8 *cam = self->unk_104;
-            FLD(u8, cam, 4) = 0;
-            FLD(u16, cam, 6) = 0;
+            Ov010Shake *cam = self->unk_104;
+            cam->active = 0;
+            cam->decay = 0;
         }
         Ov010h_Cmd(self);
         func_ov000_02190cb0(self->model, data_ov010_0220ebc4, 0x1000, 0);
@@ -2358,23 +2276,23 @@ void func_ov010_021fe2a4(Obj021fe084 *self) {
     case 0x1f:
         flag = TRUE;
         if (self->fsm->st == 0x1e) {
-            u8 *cam;
+            Ov010Shake *cam;
             func_ov000_02190cb0(self->model, data_ov010_0220ebc8, 0x100, 0);
             func_0204a028(data_02097e4c, 0xf, &self->pos, -5);
-            func_ov003_021d8a7c((u8 *)self + 0x1c0, 3);
+            func_ov003_021d8a7c(&self->sm, 3);
             cam = self->unk_104;
-            if (FLD(u8, cam, 4) == 0) {
-                FLD(u8, cam, 4) = 1;
-                OV010_BLKCPY(cam + 0x4c, &data_ov010_0220fab0.dir);
-                FLD(s16, cam, 0x58) = data_ov010_0220fab0.lim;
-                FLD(s16, cam, 0x5a) = data_ov010_0220fab0.acc;
-                FLD(u16, cam, 0x5c) = data_ov010_0220fab0.dur;
-                FLD(s16, cam, 0x5e) = data_ov010_0220fab0.k5e;
-                FLD(s16, cam, 0x60) = data_ov010_0220fab0.k60;
-                FLD(s16, cam, 0x62) = data_ov010_0220fab0.k62;
-                FLD(s16, cam, 0x64) = data_ov010_0220fab0.k64;
-                FLD(s16, cam, 0x66) = data_ov010_0220fab0.k66;
-                func_ov003_021da48c(cam + 0x38, 0);
+            if (cam->active == 0) {
+                cam->active = 1;
+                OV010_BLKCPY(&cam->dir, &data_ov010_0220fab0.dir);
+                cam->lim = data_ov010_0220fab0.lim;
+                cam->acc = data_ov010_0220fab0.acc;
+                cam->dur = data_ov010_0220fab0.dur;
+                cam->k5e = data_ov010_0220fab0.k5e;
+                cam->k60 = data_ov010_0220fab0.k60;
+                cam->k62 = data_ov010_0220fab0.k62;
+                cam->k64 = data_ov010_0220fab0.k64;
+                cam->k66 = data_ov010_0220fab0.k66;
+                func_ov003_021da48c(&cam->state, 0);
             }
             func_ov003_021d68e0(self, 0x2bde, 0x6739, 0x50);
             self->fsm->st = 0x1f;
@@ -2406,11 +2324,11 @@ void func_ov010_021fe2a4(Obj021fe084 *self) {
     case 100:
         flag = TRUE;
         self->rot_y = func_01ffc128(self->target, self->rot_y, 0x180, 1, 0x8000);
-        func_ov003_021d969c((u8 *)self + 0x1ac, 1);
+        func_ov003_021d969c(&self->seq, 1);
         break;
     }
     {
-        Ov010Obj108 *o = self->unk_108;
+        Ov010Wobble *o = self->unk_108;
         o->b2 = 1;
         o->unk_06 = 0;
     }
@@ -2432,29 +2350,29 @@ struct Ov010Node {
 
 extern void func_ov010_021fbb40(void *self);
 
-static inline void Ov010Cam_Start(u8 *cam) {
-    if (FLD(u8, cam, 0x4) == 0) {
-        FLD(u8, cam, 0x4) = 1;
-        OV010_BLKCPY(cam + 0x4c, &data_ov010_0220fa94.dir);
-        FLD(s16, cam, 0x58) = data_ov010_0220fa94.lim;
-        FLD(s16, cam, 0x5a) = data_ov010_0220fa94.acc;
-        FLD(u16, cam, 0x5c) = data_ov010_0220fa94.dur;
-        FLD(s16, cam, 0x5e) = data_ov010_0220fa94.k5e;
-        FLD(s16, cam, 0x60) = data_ov010_0220fa94.k60;
-        FLD(s16, cam, 0x62) = data_ov010_0220fa94.k62;
-        FLD(s16, cam, 0x64) = data_ov010_0220fa94.k64;
-        FLD(s16, cam, 0x66) = data_ov010_0220fa94.k66;
-        func_ov003_021da48c(cam + 0x38, 0);
+static inline void Ov010Cam_Start(Ov010Shake *cam) {
+    if (cam->active == 0) {
+        cam->active = 1;
+        OV010_BLKCPY(&cam->dir, &data_ov010_0220fa94.dir);
+        cam->lim = data_ov010_0220fa94.lim;
+        cam->acc = data_ov010_0220fa94.acc;
+        cam->dur = data_ov010_0220fa94.dur;
+        cam->k5e = data_ov010_0220fa94.k5e;
+        cam->k60 = data_ov010_0220fa94.k60;
+        cam->k62 = data_ov010_0220fa94.k62;
+        cam->k64 = data_ov010_0220fa94.k64;
+        cam->k66 = data_ov010_0220fa94.k66;
+        func_ov003_021da48c(&cam->state, 0);
     }
 }
 
-void func_ov010_021fe928(Obj021fe084 *self) {
+void func_ov010_021fe928(Obj021fa860 *self) {
     u16 st = self->fsm->st;
     if (st == 0) {
-        Ov010Obj108 *o;
-        self->unk_1bc = 2;
-        self->unk_1bd = 3;
-        func_ov003_021d8a7c((u8 *)self + 0x1c0, 1);
+        Ov010Wobble *o;
+        self->step.a = 2;
+        self->step.b = 3;
+        func_ov003_021d8a7c(&self->sm, 1);
         o = self->unk_108;
         o->b2 = 0;
         o->b3 = 0;
@@ -2462,8 +2380,8 @@ void func_ov010_021fe928(Obj021fe084 *self) {
         o->unk_08 = 0;
         o->unk_0a = 0;
     } else if (st == 100) {
-        func_ov003_021d97fc((u8 *)self + 0x1ac, 0);
-        func_ov003_021d9740((u8 *)self + 0x1ac, 0xff);
+        func_ov003_021d97fc(&self->seq, 0);
+        func_ov003_021d9740(&self->seq, 0xff);
     }
     func_ov010_021fbb40(self);
 }
@@ -2471,11 +2389,11 @@ void func_ov010_021fe928(Obj021fe084 *self) {
 void func_ov010_021fe9b4(void) {
 }
 
-void func_ov010_021fe9b8(Obj021fe084 *self) {
+void func_ov010_021fe9b8(Obj021fa860 *self) {
     self->hp[5] = 5;
 }
 
-void func_ov010_021fe9c8(Obj021fe084 *self) {
+void func_ov010_021fe9c8(Obj021fa860 *self) {
     VecFx32 v;
     VecFx32 off;
     Ov010Cmd cmd;
@@ -2494,7 +2412,7 @@ void func_ov010_021fe9c8(Obj021fe084 *self) {
         func_ov003_021d88ec(&cmd);
         cmd.a = 2;
         cmd.b = 1;
-        Ov003StateMachine_SendMessage((u8 *)self + 0x1c0, &cmd);
+        Ov003StateMachine_SendMessage(&self->sm, &cmd);
         self->fsm->st++;
     }
     self->fsm->timer++;
@@ -2517,38 +2435,38 @@ void func_ov010_021fe9c8(Obj021fe084 *self) {
     }
 }
 
-void func_ov010_021febfc(Obj021fe084 *self) {
+void func_ov010_021febfc(Obj021fa860 *self) {
     Ov010Cmd cmd;
     ActorSub40 *st = self->fsm;
     if (*(const u16 *)st != 0) {
         return;
     }
     st->st++;
-    switch (self->unk_1bd) {
+    switch (self->step.b) {
     case 0:
-        func_ov003_021d8a7c((u8 *)self + 0x1c0, 3);
+        func_ov003_021d8a7c(&self->sm, 3);
         break;
     case 1:
-        func_ov003_021d8a7c((u8 *)self + 0x1c0, 2);
+        func_ov003_021d8a7c(&self->sm, 2);
         func_ov003_021d88ec(&cmd);
         cmd.a = 4;
         cmd.b = 1;
-        Ov003StateMachine_SendMessage((u8 *)self + 0x1c0, &cmd);
+        Ov003StateMachine_SendMessage(&self->sm, &cmd);
         break;
     case 2:
-        func_ov003_021d8a7c((u8 *)self + 0x1c0, 1);
+        func_ov003_021d8a7c(&self->sm, 1);
         break;
     }
 }
 
-void func_ov010_021fecb0(Obj021fe084 *self) {
+void func_ov010_021fecb0(Obj021fa860 *self) {
     u16 *c = self->unk_f8;
     c[0] = 0;
     c[1] = 0;
-    if (self->unk_138.b0) {
-        if (self->unk_140 == 1) {
-            self->unk_140 = 2;
-            self->unk_13c = 0;
+    if (self->fade.b0) {
+        if (self->fade.state == 1) {
+            self->fade.state = 2;
+            self->fade.timer = 0;
         }
     }
 }
@@ -2560,7 +2478,7 @@ static inline Ov010Node *Ov010List_Next(Ov010Node *head, Ov010Node *n) {
     return head;
 }
 
-void func_ov010_021fecec(Obj021fe084 *self) {
+void func_ov010_021fecec(Obj021fa860 *self) {
     void *list = ActorMgr_GetGroup(data_ov000_021ccd68, 0x4829);
     BOOL found = FALSE;
     Robo021ca458 *pl = func_ov000_0219bf90();
@@ -2573,14 +2491,14 @@ void func_ov010_021fecec(Obj021fe084 *self) {
         }
     }
     if (found) {
-        func_ov003_021d969c((u8 *)self + 0x1ac, 1);
+        func_ov003_021d969c(&self->seq, 1);
     } else {
-        func_ov003_021d969c((u8 *)self + 0x1ac, 0);
+        func_ov003_021d969c(&self->seq, 0);
     }
 }
 
-void func_ov010_021fed88(Obj021fe084 *self) {
-    u8 k = self->unk_1bd;
+void func_ov010_021fed88(Obj021fa860 *self) {
+    u8 k = self->step.b;
     if (k == 0) {
         self->model->visible = 1;
     } else if (k == 1) {
@@ -2588,7 +2506,7 @@ void func_ov010_021fed88(Obj021fe084 *self) {
     }
 }
 
-void func_ov010_021fedc4(Obj021fe084 *self) {
+void func_ov010_021fedc4(Obj021fa860 *self) {
     self->unk_f0.b1 = 1;
 }
 
@@ -2601,18 +2519,18 @@ void func_ov010_021fedd4(Obj021fa860 *self) {
     self->unk_f4 = 0;
     self->unk_f8 = 0;
     self->unk_fc = 0;
-    self->unk_100 = 0;
+    self->beams = 0;
     self->unk_104 = 0;
     self->unk_108 = 0;
     self->unk_10c = 0;
     self->unk_110 = 0;
     self->unk_114 = 0;
     self->unk_118 = 0;
-    self->unk_11c = -1;
+    self->seqHandle = -1;
     self->unk_120 = data_ov010_0220ec20;
     self->unk_12c = self->unk_120;
-    self->unk_1bc = 0;
-    self->unk_1bd = 0xff;
+    self->step.a = 0;
+    self->step.b = 0xff;
 }
 
 struct Ov010Heap {
@@ -2626,18 +2544,23 @@ extern void *func_ov010_02200db8(void *p);
 extern void Ov003Group_Release(void *p);
 extern void func_ov010_021fedd4(Obj021fa860 *self);
 
-static inline void Ov010_FreeV(Obj021fa860 *self, u32 off) {
+}
+
+// Deletes the object a field points to (vfunc_04) and clears the field.
+template <class T> static inline void Ov010_FreeV(T **pp) {
     u32 saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
-    if (FLD(void *, self, off) != NULL) {
-        VObj *p = FLD(VObj *, self, off);
+    if (*pp != NULL) {
+        VObj *p = (VObj *)*pp;
         if (p != NULL) {
             p->vfunc_04();
         }
-        FLD(void *, self, off) = NULL;
+        *pp = NULL;
     }
     data_02097dd0->cur = saved;
 }
+
+extern "C" {
 
 void func_ov010_021fee70(Obj021fa860 *self) {
     u32 saved;
@@ -2652,36 +2575,36 @@ void func_ov010_021fee70(Obj021fa860 *self) {
         self->unk_f8 = NULL;
     }
     data_02097dd0->cur = saved;
-    Ov010_FreeV(self, 0x110);
-    Ov010_FreeV(self, 0x114);
-    Ov010_FreeV(self, 0x118);
+    Ov010_FreeV(&self->unk_110);
+    Ov010_FreeV(&self->unk_114);
+    Ov010_FreeV(&self->unk_118);
     if ((void *)self->unk_fc != NULL) {
         Heap_Free(self->unk_fc);
     }
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
-    if (self->unk_100 != NULL) {
-        void *p = self->unk_100;
+    if (self->beams != NULL) {
+        void *p = self->beams;
         if (p != NULL) {
             func_ov010_02200db8(p);
             Heap_Free(p);
         }
-        self->unk_100 = NULL;
+        self->beams = NULL;
     }
     data_02097dd0->cur = saved;
-    Ov010_FreeV(self, 0x104);
-    Ov010_FreeV(self, 0x108);
-    Ov010_FreeV(self, 0x10c);
-    if (self->unk_138.b0) {
-        EffectMgr_Kill(data_0214a420, self->unk_148);
-        self->unk_138.b0 = 0;
+    Ov010_FreeV(&self->unk_104);
+    Ov010_FreeV(&self->unk_108);
+    Ov010_FreeV(&self->unk_10c);
+    if (self->fade.b0) {
+        EffectMgr_Kill(data_0214a420, self->fade.key);
+        self->fade.b0 = 0;
     }
-    ((VObj *)((u8 *)self + 0x150))->vfunc_08();
-    ((VObj *)((u8 *)self + 0x17c))->vfunc_08();
-    ((VObj *)((u8 *)self + 0x19c))->vfunc_08();
-    func_ov003_021d8fa8((u8 *)self + 0x1ac);
-    ((VObj *)((u8 *)self + 0x1c0))->vfunc_08();
-    Ov003Group_Release((u8 *)self + 0x1d0);
+    self->ticker.vfunc_08();
+    ((VObj *)(&self->tasks))->vfunc_08();
+    self->flagObj.vfunc_08();
+    func_ov003_021d8fa8(&self->seq);
+    self->sm.vfunc_08();
+    Ov003Group_Release(&self->group);
     func_ov010_021fedd4(self);
 }
 
@@ -2735,7 +2658,7 @@ static inline VecFx32 Ov010_TargetPos(void) {
     Actor *o = Ov010_FindObj(FLD(u16, ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000), 8), 0x5c06);
     VecFx32 p = data_ov010_0220fa88;
     if (o != NULL) {
-        p = FLD(VecFx32, o, 0x70);
+        p = o->pos;
         p.y = 0x7000;
     }
     return p;

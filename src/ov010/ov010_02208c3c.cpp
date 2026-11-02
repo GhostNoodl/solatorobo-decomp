@@ -1,7 +1,6 @@
 #include "ov010/ov010.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
-#include "ov010/ObjLayouts.h"
 
 struct Ov010Sw {
     void *vtbl;
@@ -29,12 +28,11 @@ extern s32 FX_Div(s32 a, s32 b);
 extern void func_ov010_022075bc(void *p);
 extern void *Ov003Vt_021f7cd8_Dtor(void *p);
 extern void *Ov003Vt_021f7d10_Dtor(void *p);
-extern void *Ov010Coll_Dtor(void *p);
 extern void EffectMgr_Kill(void *a, s32 b);
 
 static inline void Ov010_PlayIfIdle(Ov010Obj0221009c *self, void *anim, s32 n) {
-    if (!Ov003Sequence_HasEntries((u8 *)self + 0x160, anim)) {
-        func_ov003_021d95e8((u8 *)self + 0x160, anim, n);
+    if (!Ov003Sequence_HasEntries(&self->seq, anim)) {
+        func_ov003_021d95e8(&self->seq, anim, n);
     }
 }
 
@@ -127,23 +125,23 @@ u16 func_ov010_02208e90(s32 a, s32 b) {
     return (u16)(Ov010_FxMul(FX_Div(b, period), 0xffff000) >> 12);
 }
 
-static inline void Ov010_02208f14_Body(void *self) {
-    FLD(void *, self, 0) = data_ov010_02210154;
+static inline void Ov010_02208f14_Body(Ov010Obj02210154 *self) {
+    *(void **)self = data_ov010_02210154;
     func_ov003_021cf3fc(0);
     func_ov010_022075bc(self);
-    Ov003Vt_021f7cd8_Dtor((u8 *)self + 0x1dc);
-    Ov003Vt_021f7d10_Dtor((u8 *)self + 0x1b0);
-    Ov010Coll_Dtor((u8 *)self + 0x174);
-    func_ov003_021d8f34((u8 *)self + 0x160);
+    Ov003Vt_021f7cd8_Dtor(&self->timer);
+    Ov003Vt_021f7d10_Dtor(&self->ticker);
+    Ov010Coll_Dtor(&self->coll);
+    func_ov003_021d8f34(&self->seq);
     func_ov003_021d0edc(self);
 }
 
-void *Ov010ActVt_0220ffe4_Dtor(void *self) {
+void *Ov010ActVt_0220ffe4_Dtor(Ov010Obj0220ffe4 *self) {
     Ov010_02208f14_Body(self);
     return self;
 }
 
-void *Ov010ActVt_0220ffe4_DtorDelete(void *self) {
+void *Ov010ActVt_0220ffe4_DtorDelete(Ov010Obj0220ffe4 *self) {
     Ov010_02208f14_Body(self);
     Heap_Free(self);
     return self;

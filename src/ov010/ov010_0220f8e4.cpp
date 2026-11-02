@@ -51,30 +51,7 @@ const VecFx32 data_ov010_0220eff4 = {0, 0x1be, -0x125e};
 }
 
 // ---- merged from ov010_022020c8.cpp
-// Built by ActorEx_Ctor, but not an ActorEx here: these methods use 0xce as a byte of flag bits
-// and 0xcf as a byte (ActorEx::unk_ce is one u16).
-struct Obj022020c8 : public Actor {
-    u8 unk_ac[0x4];
-    void *unk_b0;
-    u8 unk_b4[0x1a];
-    Ov010Flags8 unk_ce;
-    u8 unk_cf;
-    u16 unk_d0;
-    s32 unk_d4;
-    void *unk_d8;
-    void *unk_dc;
-    VecFx32 unk_e0;
-    VecFx32 unk_ec;
-    VecFx32 unk_f8;
-};
-
-namespace m_022020c8 {
-struct Ov010Heap022 {
-    u32 cur;
-    u32 unk_04;
-    u32 def;
-};
-
+// The effect pair at 0xd8 (0x20, freed by the dtor).
 struct Ov010Snd {
     u8 b0 : 1;
     u8 b1 : 1;
@@ -92,6 +69,31 @@ struct Ov010Snd {
     s32 unk_14;
     s32 unk_18;
     s32 unk_1c;
+};
+
+// Built by ActorEx_Ctor, but not an ActorEx here: these methods use 0xce as a byte of flag bits
+// and 0xcf as a byte (ActorEx::unk_ce is one u16).
+struct Obj022020c8 : public Actor {
+    u8 unk_ac[0x4];
+    void *unk_b0;
+    u8 unk_b4[0x1a];
+    Ov010Flags8 unk_ce;
+    u8 unk_cf;
+    u16 unk_d0;
+    s32 unk_d4;
+    Ov010Snd *unk_d8;
+    void *unk_dc;
+    VecFx32 unk_e0;
+    VecFx32 unk_ec;
+    VecFx32 unk_f8;
+    Ov010FlagObj flagObj;
+};
+
+namespace m_022020c8 {
+struct Ov010Heap022 {
+    u32 cur;
+    u32 unk_04;
+    u32 def;
 };
 
 struct Ov010Rot3 {
@@ -156,34 +158,32 @@ extern void MTX_Concat33(void *a, void *b, void *c);
 extern void MI_Copy36B(void *m, void *b);
 extern BOOL func_ov000_0218cea4(void *self);
 
-static inline void Ov010_022020c8_Init(void *self) {
-    FLD(Ov010Flags8, self, 0xce).b0 = 0;
-    FLD(Ov010Flags8, self, 0xce).b1 = 0;
-    FLD(Ov010Flags8, self, 0xce).b2 = 0;
-    FLD(u16, self, 0xd0) = 0;
-    FLD(s32, self, 0xd4) = -1;
-    FLD(void *, self, 0xd8) = NULL;
-    FLD(void *, self, 0xdc) = NULL;
-    FLD(VecFx32, self, 0xf8) = FLD(VecFx32, self, 0xec) = FLD(VecFx32, self, 0xe0) = data_ov010_0220f000;
+static inline void Ov010_022020c8_Init(Obj022020c8 *self) {
+    self->unk_ce.b0 = 0;
+    self->unk_ce.b1 = 0;
+    self->unk_ce.b2 = 0;
+    self->unk_d0 = 0;
+    self->unk_d4 = -1;
+    self->unk_d8 = NULL;
+    self->unk_dc = NULL;
+    self->unk_f8 = self->unk_ec = self->unk_e0 = data_ov010_0220f000;
 }
 
 void *Ov010ActVt_0220fe6c_Ctor(Obj022020c8 *self) {
     ActorEx_Ctor(self);
     *(void * *)self = data_ov010_0220fe6c;
-    Ov003Vt_021f79a8_Ctor((u8 *)self + 0x104);
+    Ov003Vt_021f79a8_Ctor(&self->flagObj);
     Ov010_022020c8_Init(self);
     return self;
 }
 
-// Kept on FLD (round svA): the class struct is defined above this namespace, so 0xd8 can only be a
-// `void *` there, and the cast read `(Ov010Snd *)self->unk_d8` swaps r4/r5 in both callers.
-static inline void Ov010_022020c8_Dtor(void *self) {
+static inline void Ov010_022020c8_Dtor(Obj022020c8 *self) {
     u32 saved;
-    FLD(void *, self, 0) = data_ov010_0220fe6c;
+    *(void **)self = data_ov010_0220fe6c;
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
-    if (FLD(Ov010Snd *, self, 0xd8) != NULL) {
-        Ov010Snd *s = FLD(Ov010Snd *, self, 0xd8);
+    if (self->unk_d8 != NULL) {
+        Ov010Snd *s = self->unk_d8;
         if (s != NULL) {
             if (s->b0) {
                 s->b0 = 0;
@@ -194,21 +194,21 @@ static inline void Ov010_022020c8_Dtor(void *self) {
             }
             Heap_Free(s);
         }
-        FLD(Ov010Snd *, self, 0xd8) = NULL;
+        self->unk_d8 = NULL;
     }
     data_02097dd0->cur = saved;
-    ((VObj *)((u8 *)self + 0x104))->vfunc_08();
+    self->flagObj.vfunc_08();
     Ov010_022020c8_Init(self);
-    Ov003Vt_021f79a8_Dtor((u8 *)self + 0x104);
+    Ov003Vt_021f79a8_Dtor(&self->flagObj);
     func_ov000_0219429c(self);
 }
 
-void *Ov010ActVt_0220fe6c_Dtor(void *self) {
+void *Ov010ActVt_0220fe6c_Dtor(Obj022020c8 *self) {
     Ov010_022020c8_Dtor(self);
     return self;
 }
 
-void *Ov010ActVt_0220fe6c_DtorDelete(void *self) {
+void *Ov010ActVt_0220fe6c_DtorDelete(Obj022020c8 *self) {
     Ov010_022020c8_Dtor(self);
     Heap_Free(self);
     return self;
@@ -268,18 +268,18 @@ void Ov010ActVt_0220fe6c_Start(Obj022020c8 *self) {
     self->model->visible = 0;
     func_ov000_02198360(self->fsm, 0x20, 0);
     m = self->hit;
-    FLD(Ov010Flags, m, 0x9a).b1 = 0;
+    m->unk_9a_1 = 0;
     m->unk_9a_4 = 0;
     self->hit->unk_9a_7 = 1;
     m = self->hit;
-    FLD(Ov010Flags, m, 0x9a).b0 = 0;
+    m->unk_9a_0 = 0;
     m->unk_9a_3 = 0;
     func_0203f364(m);
     c = data_ov003_021f4340;
     self->hit->unk_9a_6 = 0;
     self->hit->unk_30 = 0;
     self->unk_44->unk_1c = self->radius * 2;
-    func_ov003_021cf330((u8 *)self + 0x104, data_ov010_0220fe5c, c);
+    func_ov003_021cf330(&self->flagObj, data_ov010_0220fe5c, c);
     s = (Ov010Snd *)Heap_Alloc(sizeof(Ov010Snd));
     if (s != NULL) {
         s->b0 = 0;

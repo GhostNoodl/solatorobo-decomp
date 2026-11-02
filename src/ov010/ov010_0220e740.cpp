@@ -1,34 +1,11 @@
 #include "ov010/ov010.h"
 
-struct Ov010PathSm {
-    u16 state;
-    u16 timer;
-    u8 unk_04[0xf];
-    u8 mode;
-};
-
-struct Ov010Path {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 6;
-    u8 unk_01;
-    u16 unk_02;
-    u16 unk_04;
-    u16 unk_06;
-    s32 unk_08;
-    s32 unk_0c;
-    s32 unk_10;
-    s32 unk_14;
-    void *unk_18;
-    VecFx32 unk_1c;
-    u8 unk_28[0x30];
-    Ov010PathSm sm;
-};
+// Ov010Path is in ov010.h.
 
 extern "C" {
 
 extern void *data_0214a420;
-extern void MI_CpuCopy8(s32 a, void *b, s32 c);
+extern void MI_CpuCopy8(const void *src, void *dst, s32 size);
 extern VObj *func_02065f88(s32 a, VecFx32 *b);
 extern void EffectMgr_StopLoop(void *a, s32 b);
 extern VObj *func_020657b0(void *a, s32 b);
@@ -36,17 +13,17 @@ extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *c);
 extern void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
-BOOL func_ov010_0220e740(Ov010Path *self, void *a, s32 b, s32 c, const VecFx32 *v, s32 e) {
+BOOL func_ov010_0220e740(Ov010Path *self, Actor *owner, const void *msg, s32 size, const VecFx32 *offset, s32 fxId) {
     self->b0 = 1;
     self->b1 = 0;
-    self->unk_18 = a;
-    self->unk_02 = 0;
-    self->unk_04 = 0;
-    self->unk_08 = 0;
-    self->unk_0c = e;
+    self->owner = owner;
+    self->timer = 0;
+    self->duration = 0;
+    self->fxHandle = 0;
+    self->fxId = fxId;
     self->unk_10 = 0x1000;
-    self->unk_1c = *v;
-    MI_CpuCopy8(b, self->unk_28, c);
+    self->offset = *offset;
+    MI_CpuCopy8(msg, self->msg, size);
     func_ov003_021da48c(&self->sm, 1);
     return TRUE;
 }
@@ -69,71 +46,71 @@ void func_ov010_0220e7c8(Ov010Path *self) {
     if (self->b1) {
         return;
     }
-    self->unk_02++;
-    switch (self->sm.mode) {
+    self->timer++;
+    switch (self->sm.current) {
     case 0:
     case 1:
         break;
     case 2: {
-        u16 lim = Ov010_SubClamp(self->unk_04, 80);
-        if (self->unk_02 < lim) {
+        u16 lim = Ov010_SubClamp(self->duration, 80);
+        if (self->timer < lim) {
             return;
         }
         func_ov000_02198360(&self->sm, 3, 0);
         break;
     }
     case 3:
-        if (self->sm.state == 0) {
+        if (self->sm.st == 0) {
             VecFx32 p;
             VObj *e;
-            p.x = FLD(s32, self->unk_18, 0x70);
-            p.y = FLD(s32, self->unk_18, 0x74);
-            p.z = FLD(s32, self->unk_18, 0x78);
+            p.x = self->owner->pos.x;
+            p.y = self->owner->pos.y;
+            p.z = self->owner->pos.z;
             e = func_02065f88(0x322, &p);
             e->vfunc_0c(0xf00);
-            e->vfunc_20(&self->unk_1c);
+            e->vfunc_20(&self->offset);
             FLD(s32, e, 0xc8) = -1;
-            func_ov003_021da904(e, self->unk_18, &self->unk_1c);
-            self->unk_08 = FLD(s32, e, 0x24);
-            self->sm.state++;
+            func_ov003_021da904(e, self->owner, &self->offset);
+            self->fxHandle = FLD(s32, e, 0x24);
+            self->sm.st++;
         } else {
-            u16 lim = Ov010_SubClamp(self->unk_04, 40);
-            if (self->unk_02 < lim) {
+            u16 lim = Ov010_SubClamp(self->duration, 40);
+            if (self->timer < lim) {
                 return;
             }
-            EffectMgr_StopLoop(data_0214a420, self->unk_08);
-            self->unk_08 = 0;
+            EffectMgr_StopLoop(data_0214a420, self->fxHandle);
+            self->fxHandle = 0;
             func_ov000_02198360(&self->sm, 4, 0);
         }
         break;
     case 4: {
         VObj *fx;
-        if (self->sm.state == 0) {
+        if (self->sm.st == 0) {
             VecFx32 p;
             VObj *e;
-            p.x = FLD(s32, self->unk_18, 0x70);
-            p.y = FLD(s32, self->unk_18, 0x74);
-            p.z = FLD(s32, self->unk_18, 0x78);
-            e = func_ov003_021da8e4(self->unk_0c, &p, 0xe66);
-            e->vfunc_0c(self->unk_14);
-            e->vfunc_20(&self->unk_1c);
+            p.x = self->owner->pos.x;
+            p.y = self->owner->pos.y;
+            p.z = self->owner->pos.z;
+            e = func_ov003_021da8e4(self->fxId, &p, 0xe66);
+            e->vfunc_0c(self->scale);
+            e->vfunc_20(&self->offset);
             FLD(s32, e, 0x3c) = self->unk_10;
-            self->unk_08 = FLD(s32, e, 0x24);
-            self->sm.state++;
+            self->fxHandle = FLD(s32, e, 0x24);
+            self->sm.st++;
         }
-        fx = func_020657b0(data_0214a420, self->unk_08);
+        fx = func_020657b0(data_0214a420, self->fxHandle);
         if (fx != NULL) {
             VecFx32 q;
-            q.x = FLD(s32, self->unk_18, 0x70);
-            q.y = FLD(s32, self->unk_18, 0x74);
-            q.z = FLD(s32, self->unk_18, 0x78);
-            VEC_Add(&q, &self->unk_1c, &q);
+            q.x = self->owner->pos.x;
+            q.y = self->owner->pos.y;
+            q.z = self->owner->pos.z;
+            VEC_Add(&q, &self->offset, &q);
             fx->vfunc_18(&q);
         }
-        if (self->unk_02 < self->unk_04) {
+        if (self->timer < self->duration) {
             return;
         }
-        ActorMgr_SendMsg(FLD(u16, self->unk_18, 0xc), 0xffff, 0xe, 1, 0x30, self->unk_28);
+        ActorMgr_SendMsg(self->owner->id, 0xffff, 0xe, 1, 0x30, self->msg);
         func_ov000_02198360(&self->sm, 1, 0);
         break;
     }
