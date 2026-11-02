@@ -389,7 +389,7 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
 }
 
 
-void *func_ov015_021fb048(void *self) {
+void *Ov015Obj30_Dtor(void *self) {
     SET_VT(self, data_ov015_022127ec);
     func_ov015_021ff380(self);
     return self;
@@ -445,7 +445,7 @@ void *func_ov015_021fb1c0(void *self) {
     return self;
 }
 
-void *func_ov015_021fb1e8(void *self) {
+void *Ov015Obj30_DtorDelete(void *self) {
     SET_VT(self, data_ov015_022127ec);
     func_ov015_021ff380(self);
     func_0203de1c(self);

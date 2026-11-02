@@ -12,7 +12,7 @@ void VEC_Normalize(void *src, void *dst);
 void func_ov015_0220afcc(Ov015FishState2c *self);
 void func_ov015_0220b1b8(Ov015FishState2c *self);
 
-BOOL func_ov015_0220ab84(Ov015FishState2c *self, Ov015Fish *a) {
+BOOL Ov015FishState2c_Exit(Ov015FishState2c *self, Ov015Fish *a) {
     Ov015V *o;
     u32 saved;
     self->unk_20 = a;

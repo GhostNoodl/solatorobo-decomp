@@ -6,7 +6,7 @@ extern void **data_0214a420;
 s32 func_02065748(void *a, void *b);
 s32 func_ov015_02209fb8(s32 x);
 u8 *func_02066774(void *a, void *b, int c, void *d);
-void *func_ov015_0220a0c8(Ov015FishState2c *self);
+void *Ov015FishState2c_Ctor(Ov015FishState2c *self);
 extern char data_ov015_022128c1[];
 extern char data_ov015_022128d5[];
 u8 *func_02066df0(void);
@@ -52,7 +52,7 @@ BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
         a->unk_d3c = 1;
         a->unk_d4c = b->unk_40;
         m = (u8 *)func_0203dd9c(0x2c);
-        if (m != NULL) m = (u8 *)func_ov015_0220a0c8((Ov015FishState2c *)m);
+        if (m != NULL) m = (u8 *)Ov015FishState2c_Ctor((Ov015FishState2c *)m);
         func_ov015_02209b80(b, (s32)m, 2);
         b->unk_ac = -0x32000;
         b->unk_b0 = 0x32000;

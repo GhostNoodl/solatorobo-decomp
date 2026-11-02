@@ -36,7 +36,7 @@ static inline BOOL Ov014_WaitB6(Ov014Actor *self) {
     return r;
 }
 
-void func_ov014_02212948(Ov014Act_0221267c *self) {
+void Ov014Act_0221267c_Update(Ov014Act_0221267c *self) {
     u8 *pl;
     if (!Ov014_GameIdle()) {
         return;

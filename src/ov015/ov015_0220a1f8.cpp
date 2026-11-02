@@ -93,7 +93,7 @@ static inline s32 Ov015_Wait(Ov015FishState2c *self) {
     return n;
 }
 
-BOOL func_ov015_0220a1f8(Ov015FishState2c *self, Ov015Fish *p) {
+BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
     Ov015Stat *g = &data_ov015_0221332c;
     self->unk_20 = p;
     self->unk_14 = FALSE;

@@ -79,7 +79,7 @@ void func_ov015_02200f74(Ov015Game *self) {
     data_ov015_0221332c.unk_30 = -1;
 }
 
-void *func_ov015_02200ff4(void *self) {
+void *Ov015Result_DtorDelete(void *self) {
     SET_VT(self, data_ov015_022128ec);
     func_ov015_0220f4d4(self);
     func_0203de1c(self);
@@ -176,7 +176,7 @@ void *func_ov015_02201220(u8 *self) {
     return self;
 }
 
-void *func_ov015_0220131c(void *self) {
+void *Ov015MsgMgr_DtorDelete(void *self) {
     SET_VT(self, data_ov015_02213198);
     func_ov015_02210b58(self);
     func_0203de1c(self);

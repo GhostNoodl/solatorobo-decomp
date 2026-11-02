@@ -116,7 +116,7 @@ static inline void Ov013_SetShadow(Ov013Shadow *s, u8 a, u8 b, u8 c, u8 d, u16 s
     s->sub = sub;
 }
 
-void *func_ov013_02204454(void *self) {
+void *Ov013ActEx_02204454_Ctor(void *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = data_ov013_0220bbb8;
     func_ov003_021cf2bc((u8 *)self + 0xec);
@@ -124,12 +124,12 @@ void *func_ov013_02204454(void *self) {
     return self;
 }
 
-void *func_ov013_022044c8(void *self) {
+void *Ov013ActEx_02204454_Dtor(void *self) {
     Ov013_DtorDc(self);
     return self;
 }
 
-void *func_ov013_022045e0(void *self) {
+void *Ov013ActEx_02204454_DtorDelete(void *self) {
     Ov013_DtorDc(self);
     func_0203de1c(self);
     return self;

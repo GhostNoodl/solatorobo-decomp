@@ -102,7 +102,7 @@ void func_ov009_02205ff0(Ov009Actor *self) {
     func_ov003_021d6054(self);
 }
 
-void func_ov009_02206014(Ov009ActVt_02216dcc *self) {
+void Ov009ActVt_02216dcc_Init(Ov009ActVt_02216dcc *self) {
     func_ov003_021d0fc0(self);
     func_02049564(data_02097e4c, 1, 1);
     func_ov000_02187a20(data_ov000_021ccd54, 0xd);
@@ -114,7 +114,7 @@ void func_ov009_02206014(Ov009ActVt_02216dcc *self) {
 }
 
 #ifdef NONMATCHING
-// func_ov009_02206084 (0x2ec bytes, update of the vtable data_ov009_02216dcc actor): 7 / 7 (raw / masked).
+// Ov009ActVt_02216dcc_Update (0x2ec bytes, update of the vtable data_ov009_02216dcc actor): 7 / 7 (raw / masked).
 // This file's .text ends at 0x02206084, so it goes here once it matches. Blocker: the ROM reads pl->id before the
 // unk_93 bit-field store; ours orders them the other way (the strh/strb pair has no memory edge, so list order
 // decides). History: docs/MATCHING.md rounds near7, bgV, nmA, mtA, cvA; docs/UNMATCHED.md.
@@ -126,7 +126,7 @@ extern s32 _s32_div_f(s32 a, s32 b);
 #define OV009_SQRT_RESULT (*(volatile u32 *)0x40002b4)
 #define OV009_SQRT_PARAM (*(volatile u64 *)0x40002b8)
 
-void func_ov009_02206084(Ov009ActVt_02216dcc *self) {
+void Ov009ActVt_02216dcc_Update(Ov009ActVt_02216dcc *self) {
     Ov009Actor *pl;
     Ov009Vec p;
     s32 pct;

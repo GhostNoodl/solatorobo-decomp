@@ -171,7 +171,7 @@ BOOL func_ov015_02204d48(Ov015Menu *self, Ov015MenuItem *ev) {
     return TRUE;
 }
 
-void *func_ov015_02204d68(Ov015Scene2b88 *self) {
+void *Ov015Scene2b88_Dtor(Ov015Scene2b88 *self) {
     u32 saved;
     SET_VT(self, data_ov015_02212b88);
     HEAP_PUSH(saved);
@@ -193,7 +193,7 @@ void *func_ov015_02204d68(Ov015Scene2b88 *self) {
     return self;
 }
 
-void *func_ov015_02204ec4(Ov015Scene2b88 *self) {
+void *Ov015Scene2b88_DtorDelete(Ov015Scene2b88 *self) {
     u32 saved;
     SET_VT(self, data_ov015_02212b88);
     HEAP_PUSH(saved);

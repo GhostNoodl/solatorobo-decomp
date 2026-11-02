@@ -121,7 +121,7 @@ static inline void Ov013_SetShadow(Ov013Shadow *s, u8 a, u8 b, u8 c, u8 d, u16 s
     s->sub = sub;
 }
 
-BOOL func_ov013_02204768(Ov013ActEx_02204454 *self) {
+BOOL Ov013ActEx_02204454_IsReady(Ov013ActEx_02204454 *self) {
     BOOL r = func_ov000_021946f8(self);
     if (*((s16 *)self->unk_dc) >= 0) {
         r = (r & func_ov000_0218f110(((void *)self->unk_dc))) ? TRUE : FALSE;
@@ -129,7 +129,7 @@ BOOL func_ov013_02204768(Ov013ActEx_02204454 *self) {
     return r;
 }
 
-BOOL func_ov013_022047a0(Ov013ActEx_02204454 *self) {
+BOOL Ov013ActEx_02204454_Draw(Ov013ActEx_02204454 *self) {
     if (FLD(s8, self, 0xcf) != 2) {
         void *m = self->unk_38;
         FLD(u16, m, 0xb6) = 0x5294;

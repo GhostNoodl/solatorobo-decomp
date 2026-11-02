@@ -9,7 +9,7 @@ void *func_02049a48(void *a, int b, int c, int d, int e);
 s32 FX_Div(s32 a, s32 b);
 u8 *func_02066774(void *a, void *b, int c, void *d);
 
-BOOL func_ov015_0220c6b4(Ov015FishState1c *self, Ov015Fish *p) {
+BOOL Ov015FishState1c_Exit(Ov015FishState1c *self, Ov015Fish *p) {
     self->unk_18 = p;
     p->unk_108 = 0;
     return TRUE;

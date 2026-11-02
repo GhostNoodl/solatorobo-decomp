@@ -14,7 +14,7 @@ extern BOOL func_ov000_0218cf5c(Ov014Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
 extern s32 func_ov003_021d1c00(Ov014Actor *self, Ov014Msg *msg);
 
-BOOL func_ov014_02212780(Ov014Act_0221267c *self) {
+BOOL Ov014Act_0221267c_IsReady(Ov014Act_0221267c *self) {
     BOOL r = func_ov000_0218cf5c(self);
     if (self->unk_f0 >= 0) {
         r = (r & func_ov000_0218f110((u8 *)self + 0xf0)) ? TRUE : FALSE;
@@ -22,7 +22,7 @@ BOOL func_ov014_02212780(Ov014Act_0221267c *self) {
     return r;
 }
 
-BOOL func_ov014_022127b8(Ov014Act_0221267c *self) {
+BOOL Ov014Act_0221267c_Draw(Ov014Act_0221267c *self) {
     return func_ov003_021d16cc(self);
 }
 
@@ -33,7 +33,7 @@ extern void MTX_Identity43_(void *m);
 extern void NNS_G3dRenderObjSetInitFunc(void *obj, void *fn);
 extern void func_ov014_0220f8e4(u8 *self);
 
-void func_ov014_022127c4(Ov014Act_0221267c *self) {
+void Ov014Act_0221267c_Start(Ov014Act_0221267c *self) {
     Ov014Sub38 *m;
     func_ov003_021d112c(self);
     {

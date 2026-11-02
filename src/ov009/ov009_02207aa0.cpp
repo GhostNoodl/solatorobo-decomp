@@ -69,7 +69,7 @@ BOOL func_ov009_02207cc4(void) {
 }
 
 static inline void Set(Ov009Multi *self, Ov009Vec p, u16 r) { self->unk_494.x = p.x; self->unk_492 = r; self->unk_494.y = p.y; self->unk_494.z = p.z; }
-void func_ov009_02207ccc(Ov009Multi *self) {
+void Ov009Multi_Start(Ov009Multi *self) {
     s32 i;
     func_ov003_021d112c(self);
     self->unk_492 = self->rot[1];

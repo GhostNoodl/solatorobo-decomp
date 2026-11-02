@@ -92,7 +92,7 @@ extern Ov009Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov009Actor *a);
 extern void func_02049bb4(void *mgr, s32 h);
 
-void func_ov009_0220d458(Ov009ActVt_02217f60 *self) {
+void Ov009ActVt_02217f60_Update(Ov009ActVt_02217f60 *self) {
     Ov009Actor *a;
     u16 t;
     if (!Ov009_GameIdle()) {
@@ -439,7 +439,7 @@ struct Ov009Byte {
     u8 b1 : 7;
 };
 
-void func_ov009_0220dfe8(Ov009ActVt_02217eb4 *self) {
+void Ov009ActVt_02217eb4_Start(Ov009ActVt_02217eb4 *self) {
     u32 saved;
     u8 *p;
     func_ov003_021d112c(self);
@@ -488,7 +488,7 @@ extern void MTX_Concat33(const Ov009Mtx33 *a, const Ov009Mtx33 *b, Ov009Mtx33 *o
 extern void MI_Copy36B(const Ov009Mtx33 *src, void *dst);
 extern BOOL func_ov000_0218cea4(Ov009Actor *self);
 
-void func_ov009_0220e0e4(Ov009ActVt_02217eb4 *self) {
+void Ov009ActVt_02217eb4_Draw(Ov009ActVt_02217eb4 *self) {
     Ov009Mtx33 m;
     Ov009Mtx33 t;
     if (self->unk_50 != NULL && *self->unk_50 == 0) {
@@ -535,7 +535,7 @@ extern "C" {
 
 extern Ov009Actor *func_ov000_0219bf90(void);
 
-void func_ov009_0220e2a4(Ov009ActVt_02217eb4 *self) {
+void Ov009ActVt_02217eb4_Update(Ov009ActVt_02217eb4 *self) {
     u8 k;
     if (!Ov009_GameIdle()) {
         return;
@@ -1022,7 +1022,7 @@ extern Ov009Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov009Actor *a);
 extern void func_02049bb4(void *mgr, s32 h);
 
-void func_ov009_0220f260(Ov009ActVt_02217b58 *self) {
+void Ov009ActPair110_Update(Ov009ActVt_02217b58 *self) {
     Ov009Actor *a;
     u16 pct;
     s32 n;
@@ -1299,7 +1299,7 @@ extern "C" {
 
 extern Ov009Actor *func_ov000_0219bf90(void);
 
-void func_ov009_0220f9f4(Ov009ActVt_02217e08 *self) {
+void Ov009ActVt_02217e08_Start(Ov009ActVt_02217e08 *self) {
     Ov009Actor *a;
     func_ov003_021d112c(self);
     self->unk_90 = 0xffff;
@@ -1336,7 +1336,7 @@ struct Ov009Group {
 
 extern Ov009Group *func_ov000_0218e4cc(void *mgr, u16 id);
 
-void func_ov009_0220fa20(Ov009ActVt_02217e08 *self) {
+void Ov009ActVt_02217e08_Update(Ov009ActVt_02217e08 *self) {
     Ov009Actor *p;
     Ov009Group *g;
     Ov009Actor *a;
@@ -1864,7 +1864,7 @@ struct Ov009Byte {
     u8 b1 : 7;
 };
 
-void func_ov009_022108e0(Ov009ActVt_02217c04 *self) {
+void Ov009ActVt_02217c04_Start(Ov009ActVt_02217c04 *self) {
     Ov009Sub48 *s48;
     u8 *p;
     func_ov003_021d112c(self);
@@ -1899,7 +1899,7 @@ static inline s32 Ov009_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
     sq += (s64)dz * dz;
     return Ov009_Sqrt64(sq);
 }
-void func_ov009_0221097c(Ov009ActVt_02217c04 *self) {
+void Ov009ActVt_02217c04_Update(Ov009ActVt_02217c04 *self) {
     Ov009Vec d;
     Ov009Actor *pl;
     Ov009Vec t;

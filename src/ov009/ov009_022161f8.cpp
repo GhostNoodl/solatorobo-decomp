@@ -9,7 +9,7 @@ struct VecFx16 { fx16 x, y, z; };
 // The functions of 0x021ff730..0x0220413c (19 files, merged in round dtB, each in its own
 // namespace) are part of this TU: they read the 16 name pointers through the .rodata base plus an
 // offset, and name them (data_ov009_02215d0c..02215d48) instead of a data_ov009_02215d0c[n] array
-// view. Round dtD merged 0x0220413c..0x02204a10 (five files) too: func_ov009_02204230 copies the
+// view. Round dtD merged 0x0220413c..0x02204a10 (five files) too: Ov009ActVt_02216bc8_Start copies the
 // zero vector data_ov009_02215d90 (base + 0x84) with struct assignments, into each trail entry and
 // then into the model's position. Written as x/y/z field reads its y/z loads are CSE'd (42 lines).
 
@@ -333,7 +333,7 @@ void func_ov009_021ffff4(Ov009ActVt_022171d4 *self) {
     func_ov003_021d5900(self);
 }
 
-void func_ov009_02200034(Ov009ActVt_02217128 *self) {
+void Ov009ActVt_02217128_Init(Ov009ActVt_02217128 *self) {
     u8 *p;
     func_ov003_021d0fc0(self);
     p = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
@@ -344,7 +344,7 @@ void func_ov009_02200034(Ov009ActVt_02217128 *self) {
     }
 }
 
-void func_ov009_02200070(Ov009ActVt_02217128 *self) {
+void Ov009ActVt_02217128_Start(Ov009ActVt_02217128 *self) {
     Ov009Vec t;
     u32 saved;
     func_ov003_021d112c(self);
@@ -417,7 +417,7 @@ static inline s32 Ov009_StateOf(Ov009Sub40 *s) {
     return s != NULL ? s->unk_13 : 0;
 }
 
-void func_ov009_022001e8(Ov009ActVt_02217128 *self) {
+void Ov009ActVt_02217128_Update(Ov009ActVt_02217128 *self) {
     Ov009Vec v;
     Ov009HitMsg2 msg;
     Ov009Actor *pl;
@@ -695,7 +695,7 @@ void func_ov009_022009c8(Ov009ActVt_02217128 *self) {
 }
 
 #pragma force_active on
-Ov009Act_02200b48 *func_ov009_02200b48(Ov009Act_02200b48 *self) {
+Ov009Act_02200b48 *Ov009Act_02200b48_Ctor(Ov009Act_02200b48 *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = &data_ov009_02216d20;
     MIi_CpuClear32(0, &FLD(u8, self, 0xf8), 0x34);
@@ -703,7 +703,7 @@ Ov009Act_02200b48 *func_ov009_02200b48(Ov009Act_02200b48 *self) {
 }
 #pragma force_active reset
 
-void func_ov009_02200b78(Ov009Act_02200b48 *self) {
+void Ov009Act_02200b48_Init(Ov009Act_02200b48 *self) {
     Ov009SpawnDesc desc;
     Ov009Actor *o;
     s32 i;
@@ -736,7 +736,7 @@ void func_ov009_02200b78(Ov009Act_02200b48 *self) {
     }
 }
 
-void func_ov009_02200c5c(Ov009Act_02200b48 *self) {
+void Ov009Act_02200b48_Start(Ov009Act_02200b48 *self) {
     Ov009Sub38 *m;
     func_ov003_021d112c(self);
     FLD(s32, self, 0xf8) = func_ov000_021909a8(self->unk_38, data_ov009_02216b89, data_ov009_02216b90);
@@ -750,7 +750,7 @@ void func_ov009_02200c5c(Ov009Act_02200b48 *self) {
     self->unk_f6 = 0x1000;
 }
 
-void func_ov009_02200cdc(Ov009Act_02200b48 *self) {
+void Ov009Act_02200b48_Update(Ov009Act_02200b48 *self) {
     if (self->unk_f0 & 1) {
         self->unk_ee_7 = 1;
     } else {
@@ -1056,7 +1056,7 @@ extern void func_ov000_02187a20(void *p, s32 a);
 extern void func_ov009_0220189c(Ov009ActVt_0221707c *self);
 extern void func_ov009_02201eac(Ov009ActVt_0221707c *self);
 
-void func_ov009_02201470(Ov009ActVt_0221707c *self) {
+void Ov009ActVt_0221707c_Init(Ov009ActVt_0221707c *self) {
     func_ov003_021d0fc0(self);
     func_02049564(data_02097e4c, 1, 1);
     switch (self->kind) {
@@ -1082,7 +1082,7 @@ void func_ov009_02201470(Ov009ActVt_0221707c *self) {
     self->unk_108 = -1;
 }
 
-void func_ov009_02201574(Ov009ActVt_0221707c *self) {
+void Ov009ActVt_0221707c_Start(Ov009ActVt_0221707c *self) {
     u32 *p;
     func_ov003_021d112c(self);
     p = (u32 *)func_0203dd9c(4);
@@ -1128,7 +1128,7 @@ extern void func_ov003_021da9ac(void *mgr, s32 id, void *obj);
 extern void func_ov003_021daa6c(void *mgr, s32 id);
 extern void func_ov003_021daae4(void *mgr, s32 id, const Ov009Vec *pos, s32 a, s32 b, const void *c, s32 d);
 extern void func_ov003_021dacfc(void *mgr);
-void func_ov009_02201678(Ov009ActVt_0221707c *self) {
+void Ov009ActVt_0221707c_Update(Ov009ActVt_0221707c *self) {
     Ov009V *obj;
     Ov009Vec v;
     func_ov003_021d1e8c(self);
@@ -1626,7 +1626,7 @@ void func_ov009_022026c8(Ov009Names *self, void *res) {
 }
 
 #pragma force_active on
-Ov009Act_02202788 *func_ov009_02202788(Ov009Act_02202788 *self) {
+Ov009Act_02202788 *Ov009Act_02202788_Ctor(Ov009Act_02202788 *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = &data_ov009_02216e78;
     MIi_CpuClear32(0, &FLD(u8, self, 0xf8), 0x34);
@@ -1634,7 +1634,7 @@ Ov009Act_02202788 *func_ov009_02202788(Ov009Act_02202788 *self) {
 }
 #pragma force_active reset
 
-Ov009Act_02202788 *func_ov009_022027b8(Ov009Act_02202788 *self) {
+Ov009Act_02202788 *Ov009Act_02202788_Dtor(Ov009Act_02202788 *self) {
     FLD(void *, self, 0) = &data_ov009_02216e78;
     if (self->kind == 0x5055 && func_02035b90(data_ov009_02216b98, 7)) {
         func_02036838(data_02097cdc, data_ov009_02216b98, 7, 0);
@@ -1643,7 +1643,7 @@ Ov009Act_02202788 *func_ov009_022027b8(Ov009Act_02202788 *self) {
     return self;
 }
 
-Ov009Act_02202788 *func_ov009_0220282c(Ov009Act_02202788 *self) {
+Ov009Act_02202788 *Ov009Act_02202788_DtorDelete(Ov009Act_02202788 *self) {
     FLD(void *, self, 0) = &data_ov009_02216e78;
     if (self->kind == 0x5055 && func_02035b90(data_ov009_02216b98, 7)) {
         func_02036838(data_02097cdc, data_ov009_02216b98, 7, 0);
@@ -1653,7 +1653,7 @@ Ov009Act_02202788 *func_ov009_0220282c(Ov009Act_02202788 *self) {
     return self;
 }
 
-BOOL func_ov009_022028a8(Ov009Act_02202788 *self) {
+BOOL Ov009Act_02202788_Draw(Ov009Act_02202788 *self) {
     BOOL r = func_ov003_021d16cc(self);
     self->unk_1e = r ? 1 : 0;
     return r;
@@ -1698,7 +1698,7 @@ struct Ov009SpawnDesc {
     }
 };
 
-void func_ov009_022028c8(Ov009Act_02202788 *self) {
+void Ov009Act_02202788_Init(Ov009Act_02202788 *self) {
     Ov009Names *n;
     Ov009Actor *o;
     u8 *p;
@@ -1775,7 +1775,7 @@ extern BOOL func_ov000_0218cf5c(Ov009Actor *self);
 extern void func_ov000_0219864c(void *a, s32 b, s32 c);
 extern void func_0203f8d8(void *p);
 
-BOOL func_ov009_02202acc(Ov009Act_02202788 *self) {
+BOOL Ov009Act_02202788_IsReady(Ov009Act_02202788 *self) {
     BOOL r = func_ov000_0218cf5c(self);
     if (self->kind == 0x5055) {
         r = (r & func_02035b90(data_ov009_02216b98, 7)) ? TRUE : FALSE;
@@ -1811,7 +1811,7 @@ struct Ov009Mtx43 {
     Ov009Vec t;
 };
 
-void func_ov009_02202b48(Ov009Act_02202788 *self) {
+void Ov009Act_02202788_Start(Ov009Act_02202788 *self) {
     Ov009Sub38 *m;
     u8 *c;
     u32 *o;
@@ -1901,7 +1901,7 @@ extern "C" {
 
 extern void *func_ov000_0219bf90(void);
 
-void func_ov009_02202db4(Ov009Act_02202788 *self) {
+void Ov009Act_02202788_Update(Ov009Act_02202788 *self) {
     u16 *p;
     u16 v;
     Ov009Sub38 *m;
@@ -2385,7 +2385,7 @@ void func_ov009_0220397c(Ov009Names *self, void *res) {
 
 extern void func_ov003_021d6bac(Ov009Actor *self, const void *a);
 
-void func_ov009_02203a3c(Ov009ActVt_02216c74 *self) {
+void Ov009ActVt_02216c74_Init(Ov009ActVt_02216c74 *self) {
     u8 *p;
     if (self->kind == 0x5053) {
         self->unk_d8 = (void *)func_ov009_0220397c;
@@ -2430,7 +2430,7 @@ extern "C" {
 extern void *data_0214a420;
 extern void func_02065804(void *mgr, void *p);
 
-void func_ov009_02203b8c(Ov009ActVt_02216c74 *self) {
+void Ov009ActVt_02216c74_Update(Ov009ActVt_02216c74 *self) {
     func_ov003_021d1e8c(self);
     if (self->unk_40->unk_13 == 0xf) {
         return;
@@ -2625,7 +2625,7 @@ struct Ov009Byte {
 
 void func_ov009_0220397c(Ov009Names *self, void *res);
 
-void func_ov009_0220413c(Ov009ActVt_02216bc8 *self) {
+void Ov009ActVt_02216bc8_Init(Ov009ActVt_02216bc8 *self) {
     u8 *p;
     if (self->kind != 0x5810 && self->kind != 0x5811) {
         self->unk_d8 = (void *)func_ov009_0220397c;
@@ -2658,7 +2658,7 @@ struct Ov009Trail {
     Ov009Vec trail[5];
 };
 
-void func_ov009_02204230(Ov009ActVt_02216bc8 *self) {
+void Ov009ActVt_02216bc8_Start(Ov009ActVt_02216bc8 *self) {
     s16 n;
     u8 i;
     func_ov003_021d112c(self);

@@ -22,10 +22,10 @@ void *func_ov000_02191318(void *a, s32 b);
 extern u8 data_ov015_02212e68[];
 extern u8 data_ov015_02212e0d[];
 BOOL func_ov000_02191120(void *p);
-void *func_ov015_0220a0c8(Ov015FishState2c *self);
+void *Ov015FishState2c_Ctor(Ov015FishState2c *self);
 void func_ov000_021915a0(void *a);
 
-BOOL func_ov015_0220d280(Ov015FishState40 *self, Ov015Fish *p) {
+BOOL Ov015FishState40_Exit(Ov015FishState40 *self, Ov015Fish *p) {
     s32 i;
     p->unk_108 = 0;
     func_0203f364(&p->unk_568);
@@ -135,24 +135,24 @@ BOOL func_ov015_0220d7d0(Ov015FishState40 *self, Ov015Vec *out, Ov015Vec *pos) {
     return r;
 }
 
-Ov015FishState08 *func_ov015_0220d878(Ov015FishState08 *self) {
+Ov015FishState08 *Ov015FishState08_Ctor(Ov015FishState08 *self) {
     SET_VT(self, data_ov015_02212ecc);
     self->unk_04 = 0;
     return self;
 }
 
-void *func_ov015_0220d890(void *self) {
+void *Ov015FishState08_Dtor(void *self) {
     SET_VT(self, data_ov015_02212eb0);
     return self;
 }
 
-void *func_ov015_0220d8a0(void *self) {
+void *Ov015FishState08_DtorDelete(void *self) {
     SET_VT(self, data_ov015_02212eb0);
     func_0203de1c(self);
     return self;
 }
 
-BOOL func_ov015_0220d8c0(Ov015FishState08 *self, Ov015Fish *p) {
+BOOL Ov015FishState08_Enter(Ov015FishState08 *self, Ov015Fish *p) {
     Ov015VecC v;
     func_ov000_02190cb0(&p->unk_244, data_ov015_02212e47, 0x19a, 0);
     func_ov000_02191318(&p->unk_244, 0x7000);
@@ -164,7 +164,7 @@ BOOL func_ov015_0220d8c0(Ov015FishState08 *self, Ov015Fish *p) {
     return TRUE;
 }
 
-BOOL func_ov015_0220d940(Ov015FishState08 *self, Ov015Fish *p) {
+BOOL Ov015FishState08_Update(Ov015FishState08 *self, Ov015Fish *p) {
     switch (self->unk_04) {
     case 1: {
         s32 z = p->unk_40.z;
@@ -200,7 +200,7 @@ BOOL func_ov015_0220d940(Ov015FishState08 *self, Ov015Fish *p) {
         if (func_ov000_02191120(&p->unk_244)) {
             void *q = func_0203dd9c(0x2c);
             if (q != NULL) {
-                q = func_ov015_0220a0c8((Ov015FishState2c *)q);
+                q = Ov015FishState2c_Ctor((Ov015FishState2c *)q);
             }
             p->unk_f0 = (Ov015V *)q;
             p->unk_ec = 2;
@@ -210,7 +210,7 @@ BOOL func_ov015_0220d940(Ov015FishState08 *self, Ov015Fish *p) {
     return TRUE;
 }
 
-BOOL func_ov015_0220daac(u8 *self, Ov015Fish *p) {
+BOOL Ov015FishState08_Exit(u8 *self, Ov015Fish *p) {
     func_ov000_02190cb0(&p->unk_244, data_ov015_02212e0d, 0x19a, 0);
     p->unk_104 = 0x800;
     func_ov000_021915a0(&p->unk_244);

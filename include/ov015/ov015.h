@@ -683,7 +683,7 @@ struct Ov015Obj48 {
     u32 unk_44;
 };
 OV015_SIZE(Ov015Obj48, 0x48);
-// Fish (0x5b0 bytes, vtable data_ov015_022128fc, ctor func_ov015_02209114).
+// Fish (0x5b0 bytes, vtable data_ov015_022128fc, ctor Ov015Fish_Ctor).
 struct Ov015Fish {
     void *unk_00;
     u16 unk_04;
@@ -826,7 +826,7 @@ OV015_SIZE(Ov015Game, 0xcc);
 }
 
 extern "C" {
-// Fish behaviour state (abstract base, vtable data_ov015_02212eb0, dtor func_ov015_0220e5b8).
+// Fish behaviour state (abstract base, vtable data_ov015_02212eb0, dtor Ov015FishState_Dtor).
 // The fish calls v08 on entry (with itself), v0c each frame and v10 on exit.
 struct Ov015FishState {
     void *vt;
@@ -938,7 +938,7 @@ struct Ov015CamView {
 };
 SIZE_ASSERT(Ov015CamView, 0x3c);
 
-// Fish state, vtable data_ov015_02212f20 (0x18 bytes; built in func_ov015_0220a1f8).
+// Fish state, vtable data_ov015_02212f20 (0x18 bytes; built in Ov015FishState2c_Update).
 struct Ov015FishState18 : public Ov015FishState {
     Ov015Fish *unk_04;
     s32 unk_08;
@@ -948,7 +948,7 @@ struct Ov015FishState18 : public Ov015FishState {
 };
 SIZE_ASSERT(Ov015FishState18, 0x18);
 
-// Fish state, vtable data_ov015_02212e94 (0x2c bytes, ctor func_ov015_0220a0c8).
+// Fish state, vtable data_ov015_02212e94 (0x2c bytes, ctor Ov015FishState2c_Ctor).
 struct Ov015FishState2c : public Ov015FishState {
     s16 unk_04;
     s16 unk_06;
@@ -968,7 +968,7 @@ struct Ov015FishState2c : public Ov015FishState {
 };
 SIZE_ASSERT(Ov015FishState2c, 0x2c);
 
-// Fish state, vtable data_ov015_02212f04 (0x1c bytes; built in func_ov015_0220a1f8).
+// Fish state, vtable data_ov015_02212f04 (0x1c bytes; built in Ov015FishState2c_Update).
 struct Ov015FishState1c : public Ov015FishState {
     s32 unk_04;
     s32 unk_08;
@@ -979,7 +979,7 @@ struct Ov015FishState1c : public Ov015FishState {
 };
 SIZE_ASSERT(Ov015FishState1c, 0x1c);
 
-// Fish state, vtable data_ov015_02212ee8 (0x40 bytes, ctor func_ov015_0220c93c).
+// Fish state, vtable data_ov015_02212ee8 (0x40 bytes, ctor Ov015FishState40_Ctor).
 struct Ov015FishState40 : public Ov015FishState {
     s32 unk_04;
     void *unk_08;
@@ -995,7 +995,7 @@ struct Ov015FishState40 : public Ov015FishState {
 };
 SIZE_ASSERT(Ov015FishState40, 0x40);
 
-// Fish state, vtable data_ov015_02212ecc (8 bytes, ctor func_ov015_0220d878).
+// Fish state, vtable data_ov015_02212ecc (8 bytes, ctor Ov015FishState08_Ctor).
 struct Ov015FishState08 : public Ov015FishState {
     s32 unk_04;
 };
@@ -1083,7 +1083,7 @@ struct Ov015Scene2b08 : public Ov015Task {
 };
 SIZE_ASSERT(Ov015Scene2b08, 0x164);
 
-// Event message task, vtable data_ov015_022131c4 (0x144 bytes, ctor func_ov015_0220fcec).
+// Event message task, vtable data_ov015_022131c4 (0x144 bytes, ctor Ov015Msg_Ctor).
 struct Ov015Msg {
     void *vt;
     u8 unk_04;
@@ -1147,7 +1147,7 @@ struct Ov015ResultPanel {
 };
 SIZE_ASSERT(Ov015ResultPanel, 0x64);
 
-// Result sequence (0x14 bytes, vtable data_ov015_022128ec, ctor func_ov015_0220f448).
+// Result sequence (0x14 bytes, vtable data_ov015_022128ec, ctor Ov015Result_Ctor).
 struct Ov015Result {
     void *vt;
     s32 unk_04; // state

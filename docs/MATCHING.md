@@ -7400,3 +7400,22 @@ FLD cleanup in `src/ov009`, `src/ov012`, `src/ov013` and `src/ov014` and their h
   - The mixed-form functions svB listed: ov014 0xf4 in `021fecc8`/`021ff318`/`021ff59c`/`021fb198`/`021fb554`, and `pos` in `0220de34`/`0220e72c`.
   - Non-self pointers whose source is untyped (`e`, `q`, `m`, the camera at `data_ov000_021ccd54+0xf4`).
   - Base-typed FLDs in ov012 (88) and ov013 (58), whose vtables are not yet tied to a class.
+
+### Round nmC
+
+First function-naming pass over `src/ov009`, `ov012`, `ov013`, `ov014` and `ov015`: **425 functions renamed** (ov009 151, ov012 39, ov013 59, ov014 105, ov015 71), no struct renamed, no file renamed. Renames only: every object is byte-identical and the `NONMATCHING` drafts touched (`ov009_02205d14.cpp`, `ov009_022161f8.cpp`) compile to the same code with `NONMATCHING` defined. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` 8138 matched (unchanged). All pairs are in `renames_final.txt`. Scratch is in the session scratchpad `nmC/`: `vt.py` (vtables rebuilt from `relocs.txt`, merging data symbols that split one table), `cls.py`/`cand.py` (vtable -> class), `gen.py` (the rename list), `apply.py` (word-bounded rename over every tracked file except `docs/`).
+
+- **Convention: `<Class>_<Verb>`**, where `<Class>` is the header's class for that vtable (svB/svH names such as `Ov012Lift`, `Ov013ActEx_0220a4e0` or `Ov014ActExVt_02217838`). A vtable is tied to a class by the header comment `vtable data_ovNNN_X`, by the `OvNNNAct(Ex)Vt_X` name, or by the one specific `self` type its own functions use. A class that would get two vtables is dropped. A function gets a slot name only when that vtable is the only one that uses it, in any module. Functions shared by several vtables keep their `func_` names.
+- **Actor vtable slots.** They come from the ov000 driver: `func_ov000_0218cbc8` (per-frame state machine), `0218e338`/`0218e3d4` (update and draw passes over the actor groups) and `0218bf1c` (spawn). The ov000 base classes are still unnamed, so the names are defined here:
+  - `0x00` **`Draw`**: called from the draw pass for actors in state 2.
+  - `0x04` **`Init`**: called once by the spawner after `id`/`pos`/`rot` are set. Overrides call `func_ov003_021d0fc0` or `func_ov000_0219433c` first.
+  - `0x08` is the kill request (`state = 3`, always `func_0205e958`, not overridden).
+  - `0x0c` **`IsReady`**: state 1 -> 2 waits on it, so it is the resources-loaded check. Overrides AND in `func_ov000_0218cf5c`/`021946f8` and their own resource tests.
+  - `0x20` **`Dtor`** and `0x24` **`DtorDelete`**: the same body, but `DtorDelete` ends with `func_0203de1c(self)`. Group removal calls `0x24`.
+  - `0x28` **`Start`**: called once on the move to state 2.
+  - `0x2c` **`Update`**: the per-frame update for the default mode (`unk_15 == 2`, set by the ov000 ctor). Modes 1/3 use `0x34`/`0x30`. Those and `0x38..0x48` are not named.
+  - The ov003 actor slots from `0x4c` up are not named.
+- **`<Class>_Ctor`**: a function that is in no vtable, takes `self`, stores the class's vtable last and returns `self` (38 of them, all at the address the class is named after, plus `Ov012Lift`, `Ov015Fish`, `Ov015Result`, `Ov015Msg` and the `Ov015FishState*` ctors).
+- **Non-actor vtables (ov015).** Slot 0 / 4 is `Dtor` / `DtorDelete` when the body stores a vtable and returns `self`, with `func_0203de1c(self)` only in slot 4. `Ov015FishState*` slots `0x08`/`0x0c`/`0x10` are `Enter`/`Update`/`Exit`: `func_ov015_02209790` calls `v10` on the old state, `v08` on the new one and `v0c` each frame until it returns FALSE.
+- **`Ov015Task` flag accessors** (the shared ov015 task-vtable slots): `Ov015Task_SetFlagN`/`ClearFlagN`/`GetFlagN` for single-bit `flag4..7` sets, clears and reads, and `Ov015Task_TestFlags` (`flags & mask`).
+- **Not named:** functions that several vtables share, the ov003 actor slots, ov015 task slots `0x10..0x18`, and helpers whose purpose is not clear from the code. No class struct was renamed: none of the address-named classes has a role that the code makes obvious.

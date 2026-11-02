@@ -58,7 +58,7 @@ void func_ov009_021fb3a8(Ov009Actor *self) {
 extern u8 data_ov009_02216ab6[];
 extern s32 func_02040498(s32 max);
 
-void func_ov009_021fb3f4(Ov009ActVt_022166a4 *self) {
+void Ov009ActVt_022166a4_Start(Ov009ActVt_022166a4 *self) {
     Ov009Vec *v = &self->unk_f4;
     func_ov003_021d112c(self);
     self->unk_f0 = self->rot[1] + func_02040528(0x3400);

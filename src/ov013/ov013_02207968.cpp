@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_ov013_0220bd2c;
 extern Ov013Actor *func_ov000_0219bf90(void);
 
-Ov013Act_02207968 *func_ov013_02207968(Ov013Act_02207968 *self) {
+Ov013Act_02207968 *Ov013Act_02207968_Ctor(Ov013Act_02207968 *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = &data_ov013_0220bd2c;
     self->unk_f0 = 0;
@@ -23,7 +23,7 @@ Ov013Act_02207968 *func_ov013_02207968(Ov013Act_02207968 *self) {
     return self;
 }
 
-void func_ov013_022079bc(Ov013Actor *self) {
+void Ov013Act_02207968_Start(Ov013Actor *self) {
     Ov013Sub48 *m;
     Ov013Actor *p;
     func_ov003_021d112c(self);

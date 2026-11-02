@@ -207,7 +207,7 @@ BOOL func_ov015_0220f1a4(Ov015ResultPanel *self) {
     return r;
 }
 
-Ov015Result *func_ov015_0220f448(Ov015Result *self) {
+Ov015Result *Ov015Result_Ctor(Ov015Result *self) {
     SET_VT(self, data_ov015_022128ec);
     self->unk_04 = 0;
     self->unk_08 = 1;
@@ -243,7 +243,7 @@ void func_ov015_0220f4d4(Ov015Result *self) {
     }
 }
 
-void *func_ov015_0220f540(Ov015ResultPanel *self) {
+void *Ov015ResultPanel_DtorDelete(Ov015ResultPanel *self) {
     SET_VT(self, data_ov015_02213188);
     func_ov015_0220ec40(self);
     func_0203de1c(self);

@@ -5,7 +5,7 @@ extern "C" {
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void func_ov000_0219864c(Ov009Sub48 *p, s32 a, s32 b);
 
-void func_ov009_0220a028(Ov009ActVt_02217390 *self) {
+void Ov009ActVt_02217390_Start(Ov009ActVt_02217390 *self) {
     Ov009Actor *a;
     Ov009Sub44 *s44;
     func_ov003_021d112c(self);
@@ -73,7 +73,7 @@ static inline BOOL Ov009_Skip(u8 st, u32 f) {
     return flag;
 }
 
-void func_ov009_0220a128(Ov009ActVt_02217390 *self, u8 st) {
+void Ov009ActVt_02217390_Update(Ov009ActVt_02217390 *self, u8 st) {
     Ov009Vec v;
     Ov009RotS r;
     Ov009Sub40 *s;

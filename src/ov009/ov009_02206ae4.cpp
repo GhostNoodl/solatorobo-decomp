@@ -36,7 +36,7 @@ struct Ov009Byte {
     u8 b1 : 7;
 };
 
-void func_ov009_02206ae4(Ov009ActVt_022178f0 *self) {
+void Ov009ActVt_022178f0_Update(Ov009ActVt_022178f0 *self) {
     Ov009Actor *a;
     if (!Ov009_GameIdle()) {
         return;

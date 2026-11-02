@@ -41,7 +41,7 @@ void *func_ov000_0218e9c4(void *p);
 void *func_ov000_0218fe1c(void *p);
 void func_02041218(void *p);
 void func_02041440(void *p, void *name, int c);
-void *func_ov015_0220f448(void *p);
+void *Ov015Result_Ctor(void *p);
 void func_ov015_0220f470(void *p);
 void *func_020359d0(void *a, int b, int c);
 
@@ -153,7 +153,7 @@ BOOL func_ov015_02201344(Ov015Game *self) {
     {
         void *f = func_0203dd9c(0x14);
         if (f != NULL) {
-            f = func_ov015_0220f448(f);
+            f = Ov015Result_Ctor(f);
         }
         self->unk_2c = (u8 *)f;
         func_ov015_0220f470(f);

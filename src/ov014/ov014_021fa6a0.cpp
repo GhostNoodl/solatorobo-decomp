@@ -35,7 +35,7 @@ extern void func_ov000_02187a20(void *a, s32 b);
 extern void *func_020359d0(void *a, s32 b, s32 c);
 
 #pragma force_active on
-Ov014Actor *func_ov014_021fa6a0(Ov014Act_021fa6a0 *self) {
+Ov014Actor *Ov014Act_021fa6a0_Ctor(Ov014Act_021fa6a0 *self) {
     u8 i;
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov014_02217114;
@@ -61,7 +61,7 @@ static inline void Ov014_StopSnd(void) {
     }
 }
 
-void *func_ov014_021fa740(void *self) {
+void *Ov014Act_021fa6a0_Dtor(void *self) {
     FLD(void *, self, 0) = data_ov014_02217114;
     Ov014_StopSnd();
     func_ov003_021cef0c((u8 *)self + 0x348);
@@ -71,7 +71,7 @@ void *func_ov014_021fa740(void *self) {
     return self;
 }
 
-void *func_ov014_021fa7b8(void *self) {
+void *Ov014Act_021fa6a0_DtorDelete(void *self) {
     FLD(void *, self, 0) = data_ov014_02217114;
     Ov014_StopSnd();
     func_ov003_021cef0c((u8 *)self + 0x348);

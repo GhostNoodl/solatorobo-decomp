@@ -22,7 +22,7 @@ static inline s32 Ov009_GetAng3(Ov009AngSrc3 *p) {
     return func_0204bfa8(p);
 }
 
-void func_ov009_021fdbc8(Ov009ActVt_022165f8 *self) {
+void Ov009ActVt_022165f8_Start(Ov009ActVt_022165f8 *self) {
     func_ov003_021d112c(self);
     switch (self->unk_1a) {
     case 0: {
@@ -84,7 +84,7 @@ extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern void func_02065804(void *mgr, s32 h);
 extern u16 FX_Atan2(s32 y, s32 x);
 
-void func_ov009_021fde1c(Ov009ActVt_022165f8 *self) {
+void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
     Ov009Vec t;
     Ov009Actor *pl;
     self->unk_93_4 = 0;

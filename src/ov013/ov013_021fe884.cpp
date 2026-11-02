@@ -53,13 +53,13 @@ void func_ov013_021fe90c(void) {
 void func_ov013_021fe910(void) {
 }
 
-Ov013Actor *func_ov013_021fe914(Ov013Actor *self) {
+Ov013Actor *Ov013ActEx_021fdb70_DtorDelete(Ov013Actor *self) {
     func_ov000_0219429c(self);
     func_0203de1c(self);
     return self;
 }
 
-Ov013Actor *func_ov013_021fe930(Ov013Actor *self) {
+Ov013Actor *Ov013ActEx_021fdb70_Dtor(Ov013Actor *self) {
     func_ov000_0219429c(self);
     return self;
 }

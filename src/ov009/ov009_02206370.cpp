@@ -110,7 +110,7 @@ void func_ov009_02206778(Ov009ActVt_02216dcc *self) {
     func_ov003_021d5348(self);
 }
 
-Ov009ActVt_0221707c *func_ov009_02206790(Ov009ActVt_0221707c *self) {
+Ov009ActVt_0221707c *Ov009ActVt_0221707c_DtorDelete(Ov009ActVt_0221707c *self) {
     u32 saved;
     FLD(void *, self, 0) = &data_ov009_0221707c;
     saved = data_02097dd0->cur;
@@ -129,7 +129,7 @@ Ov009ActVt_0221707c *func_ov009_02206790(Ov009ActVt_0221707c *self) {
     return self;
 }
 
-Ov009ActVt_0221707c *func_ov009_02206808(Ov009ActVt_0221707c *self) {
+Ov009ActVt_0221707c *Ov009ActVt_0221707c_Dtor(Ov009ActVt_0221707c *self) {
     u32 saved;
     FLD(void *, self, 0) = &data_ov009_0221707c;
     saved = data_02097dd0->cur;
@@ -147,56 +147,56 @@ Ov009ActVt_0221707c *func_ov009_02206808(Ov009ActVt_0221707c *self) {
     return self;
 }
 
-Ov009ActVt_022171d4 *func_ov009_02206878(Ov009ActVt_022171d4 *self) {
+Ov009ActVt_022171d4 *Ov009ActVt_022171d4_Dtor(Ov009ActVt_022171d4 *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov009ActVt_022171d4 *func_ov009_0220688c(Ov009ActVt_022171d4 *self) {
-    func_ov003_021d0edc(self);
-    func_0203de1c(self);
-    return self;
-}
-
-Ov009ActVt_02217128 *func_ov009_022068a8(Ov009ActVt_02217128 *self) {
-    func_ov003_021d0edc(self);
-    return self;
-}
-
-Ov009ActVt_02217128 *func_ov009_022068bc(Ov009ActVt_02217128 *self) {
+Ov009ActVt_022171d4 *Ov009ActVt_022171d4_DtorDelete(Ov009ActVt_022171d4 *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
 }
 
-Ov009Act_02200b48 *func_ov009_022068d8(Ov009Act_02200b48 *self) {
+Ov009ActVt_02217128 *Ov009ActVt_02217128_Dtor(Ov009ActVt_02217128 *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov009Act_02200b48 *func_ov009_022068ec(Ov009Act_02200b48 *self) {
-    func_ov003_021d0edc(self);
-    func_0203de1c(self);
-    return self;
-}
-
-Ov009ActVt_02216c74 *func_ov009_02206908(Ov009ActVt_02216c74 *self) {
-    func_ov003_021d0edc(self);
-    return self;
-}
-
-Ov009ActVt_02216c74 *func_ov009_0220691c(Ov009ActVt_02216c74 *self) {
+Ov009ActVt_02217128 *Ov009ActVt_02217128_DtorDelete(Ov009ActVt_02217128 *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
 }
 
-Ov009ActVt_02216bc8 *func_ov009_02206938(Ov009ActVt_02216bc8 *self) {
+Ov009Act_02200b48 *Ov009Act_02200b48_Dtor(Ov009Act_02200b48 *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov009ActVt_02216bc8 *func_ov009_0220694c(Ov009ActVt_02216bc8 *self) {
+Ov009Act_02200b48 *Ov009Act_02200b48_DtorDelete(Ov009Act_02200b48 *self) {
+    func_ov003_021d0edc(self);
+    func_0203de1c(self);
+    return self;
+}
+
+Ov009ActVt_02216c74 *Ov009ActVt_02216c74_Dtor(Ov009ActVt_02216c74 *self) {
+    func_ov003_021d0edc(self);
+    return self;
+}
+
+Ov009ActVt_02216c74 *Ov009ActVt_02216c74_DtorDelete(Ov009ActVt_02216c74 *self) {
+    func_ov003_021d0edc(self);
+    func_0203de1c(self);
+    return self;
+}
+
+Ov009ActVt_02216bc8 *Ov009ActVt_02216bc8_Dtor(Ov009ActVt_02216bc8 *self) {
+    func_ov003_021d0edc(self);
+    return self;
+}
+
+Ov009ActVt_02216bc8 *Ov009ActVt_02216bc8_DtorDelete(Ov009ActVt_02216bc8 *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
@@ -224,12 +224,12 @@ Ov009Actor *func_ov009_022069ac(Ov009Actor *self) {
     return self;
 }
 
-Ov009ActVt_02216dcc *func_ov009_022069c8(Ov009ActVt_02216dcc *self) {
+Ov009ActVt_02216dcc *Ov009ActVt_02216dcc_Dtor(Ov009ActVt_02216dcc *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov009ActVt_02216dcc *func_ov009_022069dc(Ov009ActVt_02216dcc *self) {
+Ov009ActVt_02216dcc *Ov009ActVt_02216dcc_DtorDelete(Ov009ActVt_02216dcc *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
@@ -249,7 +249,7 @@ static inline void Ov009_VecSet3(Ov009Vec *v, s32 x, s32 y, s32 z) {
     v->z = z;
 }
 
-void func_ov009_022069f8(Ov009ActVt_022178f0 *self) {
+void Ov009ActVt_022178f0_Start(Ov009ActVt_022178f0 *self) {
     u8 *p;
     func_ov003_021d112c(self);
     self->unk_f0 = self->pos;

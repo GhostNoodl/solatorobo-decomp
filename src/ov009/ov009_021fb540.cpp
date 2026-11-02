@@ -4,7 +4,7 @@ extern "C" {
 
 extern u8 data_ov009_02216ab6[];
 
-void func_ov009_021fb540(Ov009ActVt_022166a4 *self) {
+void Ov009ActVt_022166a4_Update(Ov009ActVt_022166a4 *self) {
     if (self->unk_1a != 0 || (self->kind != 0x540a && self->kind != 0x540b)) {
         self->unk_c8 = 0xf000;
         func_ov003_021d1e8c(self);

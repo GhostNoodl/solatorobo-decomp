@@ -6,7 +6,7 @@ typedef Ov013Vec VecFx32;
 // spot block. The objects before the empty asm function are the TU's size-sorted group (definition
 // order found with solve2.py); the vectors after it keep definition order. The spot block is one
 // object: its far[] entries are initialised before the separate near-spot array.
-// func_ov013_021fee10 is part of this TU: it reads data_ov013_0220aee0 and data_ov013_0220af28
+// Ov013Act_021fea8c_Start is part of this TU: it reads data_ov013_0220aee0 and data_ov013_0220af28
 // through the .rodata base plus an offset. So do the functions of the nine files around it
 // (0x021fea8c..0x02204454), merged in round dtB, each in its own namespace: they read the TU's
 // name pointers and vectors by name instead of FLD views of data_ov013_0220aedc. The second read of af28's x is
@@ -149,7 +149,7 @@ extern void func_ov003_021cf3fc(s32 a);
 void func_ov013_021fed64(Ov013Act_021fea8c *self);
 void func_ov013_021febf8(Ov013Act_021fea8c *self);
 
-Ov013Act_021fea8c *func_ov013_021fea8c(Ov013Act_021fea8c *self) {
+Ov013Act_021fea8c *Ov013Act_021fea8c_Ctor(Ov013Act_021fea8c *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov013_0220b9a0;
     func_ov003_021d8910((u8 *)self + 0x12c);
@@ -159,7 +159,7 @@ Ov013Act_021fea8c *func_ov013_021fea8c(Ov013Act_021fea8c *self) {
     return self;
 }
 
-Ov013Act_021fea8c *func_ov013_021feacc(Ov013Act_021fea8c *self) {
+Ov013Act_021fea8c *Ov013Act_021fea8c_Dtor(Ov013Act_021fea8c *self) {
     FLD(void *, self, 0) = data_ov013_0220b9a0;
     func_ov013_021febf8(self);
     func_ov003_021d8f34((u8 *)self + 0x14c);
@@ -169,7 +169,7 @@ Ov013Act_021fea8c *func_ov013_021feacc(Ov013Act_021fea8c *self) {
     return self;
 }
 
-Ov013Act_021fea8c *func_ov013_021feb0c(Ov013Act_021fea8c *self) {
+Ov013Act_021fea8c *Ov013Act_021fea8c_DtorDelete(Ov013Act_021fea8c *self) {
     FLD(void *, self, 0) = data_ov013_0220b9a0;
     func_ov013_021febf8(self);
     func_ov003_021d8f34((u8 *)self + 0x14c);
@@ -194,7 +194,7 @@ static inline Ov013Vec Ov013_GetOff(Ov013Opt120 *o) {
     return off;
 }
 
-BOOL func_ov013_021feb54(Ov013Act_021fea8c *self) {
+BOOL Ov013Act_021fea8c_Draw(Ov013Act_021fea8c *self) {
     Ov013Vec saved = self->pos;
     BOOL r;
     Ov013_AddVec(&self->pos, Ov013_GetOff(((Ov013Opt120 *)self->unk_120)), &self->pos);
@@ -356,7 +356,7 @@ static inline void Ov013Area_Set(Ov013Area *ar, u16 id) {
     ar->unk_1c = 0xc4cd;
 }
 
-void func_ov013_021fee10(Ov013Act_021fea8c *self) {
+void Ov013Act_021fea8c_Start(Ov013Act_021fea8c *self) {
     Ov013Sub48 *m48;
     Ov013Area *ar;
     Ov013Opt120B *o2;
@@ -517,7 +517,7 @@ extern BOOL func_ov003_021d1c00(Ov013Actor *self, Ov013Msg *msg);
 void func_ov013_021ff1ec(void) {
 }
 
-void func_ov013_021ff1f0(Ov013Act_021fea8c *self) {
+void Ov013Act_021fea8c_Update(Ov013Act_021fea8c *self) {
     Ov013Pair p;
     if (!func_ov003_021da03c(self)) {
         return;

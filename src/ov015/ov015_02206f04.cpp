@@ -181,16 +181,16 @@ static inline bool Ov015Task_Test(Ov015Task *t, u32 mask) {
     return FLD(u32, t, 0x4) & mask;
 }
 
-bool func_ov015_022072b8(Ov015Task *self, u32 mask) {
+bool Ov015Task_TestFlags(Ov015Task *self, u32 mask) {
     BOOL r = Ov015Task_Test(self, mask);
     return r;
 }
 
-void func_ov015_022072d8(Ov015Task *self) {
+void Ov015Task_ClearFlag7(Ov015Task *self) {
     self->flag7 = 0;
 }
 
-void func_ov015_022072e8(Ov015Task *self) {
+void Ov015Task_SetFlag7(Ov015Task *self) {
     self->flag7 = 1;
 }
 
@@ -198,12 +198,12 @@ static inline bool Ov015Task_Get_flag6(Ov015Task *t) {
     return t->flag6;
 }
 
-bool func_ov015_022072f8(Ov015Task *self) {
+bool Ov015Task_GetFlag6(Ov015Task *self) {
     BOOL r = Ov015Task_Get_flag6(self);
     return r;
 }
 
-void func_ov015_0220731c(Ov015Task *self) {
+void Ov015Task_SetFlag6(Ov015Task *self) {
     self->flag6 = 1;
 }
 
@@ -211,20 +211,20 @@ static inline bool Ov015Task_Get_flag5(Ov015Task *t) {
     return t->flag5;
 }
 
-bool func_ov015_0220732c(Ov015Task *self) {
+bool Ov015Task_GetFlag5(Ov015Task *self) {
     BOOL r = Ov015Task_Get_flag5(self);
     return r;
 }
 
-void func_ov015_02207350(Ov015Task *self) {
+void Ov015Task_SetFlag5(Ov015Task *self) {
     self->flag5 = 1;
 }
 
-void func_ov015_02207360(Ov015Task *self) {
+void Ov015Task_ClearFlag4(Ov015Task *self) {
     self->flag4 = 0;
 }
 
-void func_ov015_02207370(Ov015Task *self) {
+void Ov015Task_SetFlag4(Ov015Task *self) {
     self->flag4 = 1;
 }
 
@@ -232,7 +232,7 @@ s32 func_ov015_02207380(void) {
     return 1;
 }
 
-void *func_ov015_02207388(Ov015Scene2b08 *self) {
+void *Ov015Scene2b08_DtorDelete(Ov015Scene2b08 *self) {
     SET_VT(self, data_ov015_02212b08);
     func_ov015_02205c7c(self);
     Ov015TaskBase_Dtor(self);
@@ -240,7 +240,7 @@ void *func_ov015_02207388(Ov015Scene2b08 *self) {
     return self;
 }
 
-void *func_ov015_022073cc(Ov015Scene2b08 *self) {
+void *Ov015Scene2b08_Dtor(Ov015Scene2b08 *self) {
     SET_VT(self, data_ov015_02212b08);
     func_ov015_02205c7c(self);
     Ov015TaskBase_Dtor(self);
@@ -248,7 +248,7 @@ void *func_ov015_022073cc(Ov015Scene2b08 *self) {
     return self;
 }
 
-void *func_ov015_02207408(Ov015Scene2c08 *self) {
+void *Ov015Scene2c08_DtorDelete(Ov015Scene2c08 *self) {
     SET_VT(self, data_ov015_02212c08);
     func_ov015_02204110(self);
     Ov015TaskBase_Dtor(self);
@@ -256,7 +256,7 @@ void *func_ov015_02207408(Ov015Scene2c08 *self) {
     return self;
 }
 
-void *func_ov015_0220744c(Ov015Scene2c08 *self) {
+void *Ov015Scene2c08_Dtor(Ov015Scene2c08 *self) {
     SET_VT(self, data_ov015_02212c08);
     func_ov015_02204110(self);
     Ov015TaskBase_Dtor(self);
@@ -264,7 +264,7 @@ void *func_ov015_0220744c(Ov015Scene2c08 *self) {
     return self;
 }
 
-void *func_ov015_02207488(Ov015Scene2a08 *self) {
+void *Ov015Scene2a08_DtorDelete(Ov015Scene2a08 *self) {
     SET_VT(self, data_ov015_02212a08);
     func_ov015_02203020(self);
     Ov015TaskBase_Dtor(self);
@@ -272,7 +272,7 @@ void *func_ov015_02207488(Ov015Scene2a08 *self) {
     return self;
 }
 
-void *func_ov015_022074cc(Ov015Scene2a08 *self) {
+void *Ov015Scene2a08_Dtor(Ov015Scene2a08 *self) {
     SET_VT(self, data_ov015_02212a08);
     func_ov015_02203020(self);
     Ov015TaskBase_Dtor(self);
@@ -283,7 +283,7 @@ void *func_ov015_022074cc(Ov015Scene2a08 *self) {
 void func_ov015_02207508(void) {
 }
 
-void *func_ov015_0220750c(Ov015Scene2a88 *self) {
+void *Ov015Scene2a88_DtorDelete(Ov015Scene2a88 *self) {
     u32 saved;
     SET_VT(self, data_ov015_02212a88);
     HEAP_PUSH(saved);
@@ -305,7 +305,7 @@ void *func_ov015_0220750c(Ov015Scene2a88 *self) {
     return self;
 }
 
-void *func_ov015_022075a8(Ov015Scene2a88 *self) {
+void *Ov015Scene2a88_Dtor(Ov015Scene2a88 *self) {
     u32 saved;
     SET_VT(self, data_ov015_02212a88);
     HEAP_PUSH(saved);

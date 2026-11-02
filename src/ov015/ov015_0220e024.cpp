@@ -202,7 +202,7 @@ void func_ov015_0220e570(u8 *self, s32 a, s32 b, u8 c, s16 d) {
     }
 }
 
-void *func_ov015_0220e5b8(void *self) {
+void *Ov015FishState_Dtor(void *self) {
     SET_VT(self, data_ov015_02212eb0);
     return self;
 }

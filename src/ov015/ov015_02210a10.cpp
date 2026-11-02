@@ -11,7 +11,7 @@ extern void *data_0208cb74;
 void func_02035acc(void *a, void *b, int c);
 void func_020359fc(void *a, void *b, int c, int d);
 int func_02035bd4(void *a, void *b, int c);
-void *func_ov015_0220fcec(Ov015Msg *self);
+void *Ov015Msg_Ctor(Ov015Msg *self);
 extern u8 data_ov015_02213198[];
 extern u8 data_ov015_02213188[];
 void func_ov015_0220ec40(Ov015ResultPanel *self);
@@ -129,7 +129,7 @@ struct Ov015Bits10d24 {
 };
 static inline Ov015Msg *Ov015_NewMsg(void) {
     Ov015Msg *o = (Ov015Msg *)func_0203dd9c(0x144);
-    if (o != NULL) o = (Ov015Msg *)func_ov015_0220fcec(o);
+    if (o != NULL) o = (Ov015Msg *)Ov015Msg_Ctor(o);
     return o;
 }
 Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, u8 *b, s32 msg) {
@@ -201,7 +201,7 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, u8 *b, s32 msg) {
     return r;
 }
 
-void *func_ov015_02210f2c(Ov015MsgMgr *self) {
+void *Ov015MsgMgr_Dtor(Ov015MsgMgr *self) {
     u32 saved;
     SET_VT(self, data_ov015_02213198);
     HEAP_PUSH(saved);
@@ -213,7 +213,7 @@ void *func_ov015_02210f2c(Ov015MsgMgr *self) {
     return self;
 }
 
-void *func_ov015_02210fbc(Ov015ResultPanel *self) {
+void *Ov015ResultPanel_Dtor(Ov015ResultPanel *self) {
     SET_VT(self, data_ov015_02213188);
     func_ov015_0220ec40(self);
     return self;

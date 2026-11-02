@@ -8,7 +8,7 @@ extern BOOL func_ov000_021b4738(Ov009Actor *a);
 extern void func_0203f364(Ov009Sub48 *p);
 extern s32 func_01ffbd6c(Ov009Vec *a, Ov009Vec *b, s32 c, s32 d, s32 e, s32 f);
 extern Ov009Actor *func_ov000_0218e4cc(void *mgr, u16 id);
-void func_ov009_021fa6a0(Ov009ActVt_02216a00 *self) {
+void Ov009ActVt_02216a00_Update(Ov009ActVt_02216a00 *self) {
     s32 dist;
     Ov009Actor *o;
     if (!Ov009_GameIdle()) {

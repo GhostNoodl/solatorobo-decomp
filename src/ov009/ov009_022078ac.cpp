@@ -14,7 +14,7 @@ struct Ov009Bits16 {
     u16 b1 : 15;
 };
 
-BOOL func_ov009_022078ac(Ov009ActVt_02217844 *self) {
+BOOL Ov009ActVt_02217844_Draw(Ov009ActVt_02217844 *self) {
     BOOL r = func_ov003_021d16cc(self);
     if (r) {
         Ov009Vec p;
@@ -33,7 +33,7 @@ void func_ov009_02207910(Ov009ActVt_02217844 *self) {
 extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
 extern Ov009Actor *func_ov000_0219bf90(void);
 
-void func_ov009_0220792c(Ov009ActVt_02217844 *self) {
+void Ov009ActVt_02217844_Update(Ov009ActVt_02217844 *self) {
     Ov009Actor *pl;
     if (!Ov009_GameIdle()) {
         return;

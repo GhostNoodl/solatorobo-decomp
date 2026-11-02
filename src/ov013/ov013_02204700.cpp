@@ -8,7 +8,7 @@ void func_ov000_0219433c(void *self);
 void *func_ov000_0218e9c4(void *p);
 void *STD_CopyString(char *dst, const char *src);
 
-void func_ov013_02204700(Ov013ActEx_02204454 *self) {
+void Ov013ActEx_02204454_Init(Ov013ActEx_02204454 *self) {
     Ov013Names *n;
     func_ov000_0219433c(self);
     n = (Ov013Names *)func_0203dd9c(0x138);

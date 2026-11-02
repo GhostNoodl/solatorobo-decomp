@@ -24,14 +24,14 @@ void func_ov015_021ff380(Ov015Obj30 *self) {
     Ov015Obj30_Clear(self);
 }
 
-void *func_ov015_021ff440(Ov015Obj292c *self) {
+void *Ov015Obj292c_DtorDelete(Ov015Obj292c *self) {
     SET_VT(self, data_ov015_0221292c);
     func_ov015_022120fc(self);
     func_0203de1c(self);
     return self;
 }
 
-void *func_ov015_021ff468(Ov015Obj290 *self) {
+void *Ov015Obj290_DtorDelete(Ov015Obj290 *self) {
     SET_VT(self, data_ov015_022132e0);
     func_ov015_02211a18();
     func_ov000_0218fee4(&self->unk_14c);

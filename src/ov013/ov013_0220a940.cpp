@@ -32,7 +32,7 @@ void func_ov013_0220a940(Ov013Actor *self) {
 }
 
 #pragma force_active on
-Ov013ActEx_0220a9a8 *func_ov013_0220a9a8(Ov013ActEx_0220a9a8 *self) {
+Ov013ActEx_0220a9a8 *Ov013ActEx_0220a9a8_Ctor(Ov013ActEx_0220a9a8 *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = &data_ov013_0220beb4;
     self->unk_ce = 0;
@@ -42,7 +42,7 @@ Ov013ActEx_0220a9a8 *func_ov013_0220a9a8(Ov013ActEx_0220a9a8 *self) {
 }
 #pragma force_active reset
 
-void func_ov013_0220a9d8(Ov013ActEx_0220a9a8 *self) {
+void Ov013ActEx_0220a9a8_Start(Ov013ActEx_0220a9a8 *self) {
     Ov013Actor *pl;
     Ov013V *fx;
     func_ov000_02194758(self);

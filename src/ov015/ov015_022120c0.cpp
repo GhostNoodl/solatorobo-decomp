@@ -171,7 +171,7 @@ BOOL func_ov015_022124e4(Ov015Obj290 *self) {
     return self->unk_08 == 4 ? TRUE : FALSE;
 }
 
-void *func_ov015_022124f8(Ov015Obj290 *self) {
+void *Ov015Obj290_Dtor(Ov015Obj290 *self) {
     SET_VT(self, data_ov015_022132e0);
     func_ov000_0218fee4(&self->unk_14c);
     func_ov000_0218ea20(&self->unk_14);

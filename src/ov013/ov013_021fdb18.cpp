@@ -24,7 +24,7 @@ void func_ov013_021fdb18(Ov013ActExVt_0220b7d0 *self) {
     func_ov000_0219763c(self);
 }
 
-Ov013ActEx_021fdb70 *func_ov013_021fdb70(Ov013ActEx_021fdb70 *self) {
+Ov013ActEx_021fdb70 *Ov013ActEx_021fdb70_Ctor(Ov013ActEx_021fdb70 *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = data_ov013_0220b738;
     self->unk_ce = 0;
@@ -38,7 +38,7 @@ static inline void Ov013_SetSpd(Ov013Actor *self, Ov013Vec v) {
     Ov013_VecCopy(&FLD(Ov013Vec, self->unk_44, 0xc), &v);
 }
 
-void func_ov013_021fdba4(Ov013Actor *self) {
+void Ov013ActEx_021fdb70_Start(Ov013Actor *self) {
     Ov013Actor *p;
     func_ov000_02194758(self);
     func_ov000_02198360(self->unk_40, 0x20, 0);

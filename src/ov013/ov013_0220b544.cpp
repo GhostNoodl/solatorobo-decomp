@@ -102,7 +102,7 @@ static inline u16 Ov013_FaceAngle(Ov013Obj *self, Ov013Obj *a) {
     return self->unk_98 + 0x7fff;
 }
 
-void func_ov013_02204a3c(Ov013ActEx_02204454 *self) {
+void Ov013ActEx_02204454_Start(Ov013ActEx_02204454 *self) {
     s32 x;
     s32 y;
     s32 z;
@@ -142,7 +142,7 @@ void func_ov013_02204a3c(Ov013ActEx_02204454 *self) {
     func_ov003_021cf330((u8 *)self + 0xec, data_ov013_0220ba6c, data_ov003_021f4340);
 }
 
-void func_ov013_02204b60(Ov013ActEx_02204454 *self) {
+void Ov013ActEx_02204454_Update(Ov013ActEx_02204454 *self) {
     u32 *p = ((u32 *)self->unk_5c);
     if (p != NULL) {
         *p &= ~2;
@@ -825,7 +825,7 @@ extern void func_ov003_021cf33c(void *p, void *q);
 extern void *func_ov000_02194074(void *self);
 extern BOOL func_ov000_02194c08(void *self);
 
-void *func_ov013_02205ae4(Ov013ActEx_02205ae4 *self) {
+void *Ov013ActEx_02205ae4_Ctor(Ov013ActEx_02205ae4 *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = data_ov013_0220ba88;
     func_ov003_021cf2bc((u8 *)self + 0xe0);
@@ -837,7 +837,7 @@ void *func_ov013_02205ae4(Ov013ActEx_02205ae4 *self) {
     return self;
 }
 
-void *func_ov013_02205b4c(Ov013Actor *self) {
+void *Ov013ActEx_02205ae4_Dtor(Ov013Actor *self) {
     FLD(void *, self, 0) = data_ov013_0220ba88;
     ((Ov013V *)((u8 *)self + 0xe0))->v08();
     func_ov003_021cf2d8((u8 *)self + 0xe0);
@@ -845,7 +845,7 @@ void *func_ov013_02205b4c(Ov013Actor *self) {
     return self;
 }
 
-void *func_ov013_02205b88(Ov013Actor *self) {
+void *Ov013ActEx_02205ae4_DtorDelete(Ov013Actor *self) {
     FLD(void *, self, 0) = data_ov013_0220ba88;
     ((Ov013V *)((u8 *)self + 0xe0))->v08();
     func_ov003_021cf2d8((u8 *)self + 0xe0);
@@ -854,7 +854,7 @@ void *func_ov013_02205b88(Ov013Actor *self) {
     return self;
 }
 
-BOOL func_ov013_02205bcc(Ov013Actor *self) {
+BOOL Ov013ActEx_02205ae4_Draw(Ov013Actor *self) {
     func_ov003_021cf33c((u8 *)self + 0xe0, self->unk_40);
     return func_ov000_02194c08(self);
 }
@@ -1037,7 +1037,7 @@ extern void func_0203f364(Ov013Sub48 *p);
 extern int func_ov003_021cf330(void *p, const char *name, u8 a);
 extern BOOL func_ov000_021950e8(Ov013Obj *self, Ov013Msg *msg);
 
-void func_ov013_02205fa4(Ov013ActEx_02205ae4 *self) {
+void Ov013ActEx_02205ae4_Start(Ov013ActEx_02205ae4 *self) {
     Ov013Sub48 *m;
     func_ov000_02194758(self);
     switch (self->kind) {

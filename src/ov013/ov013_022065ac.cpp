@@ -14,7 +14,7 @@ extern Ov013Actor *func_ov000_0219bf90(void);
 extern BOOL func_020621c4(void);
 extern void func_ov003_021d6bac(Ov013Actor *self, const void *p);
 
-Ov013ActEx_022065ac *func_ov013_022065ac(Ov013ActEx_022065ac *self) {
+Ov013ActEx_022065ac *Ov013ActEx_022065ac_Ctor(Ov013ActEx_022065ac *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = &data_ov013_0220bb20;
     self->unk_f4 = 0;
@@ -45,18 +45,18 @@ void func_ov013_022065e8(Ov013ActEx_022065ac *self) {
     }
 }
 
-Ov013Actor *func_ov013_0220664c(Ov013Actor *self) {
+Ov013Actor *Ov013ActEx_022065ac_Dtor(Ov013Actor *self) {
     func_ov003_021dae44(self);
     return self;
 }
 
-Ov013Actor *func_ov013_02206660(Ov013Actor *self) {
+Ov013Actor *Ov013ActEx_022065ac_DtorDelete(Ov013Actor *self) {
     func_ov003_021dae44(self);
     func_0203de1c(self);
     return self;
 }
 
-void func_ov013_0220667c(Ov013ActVt_0220bdd8 *self) {
+void Ov013ActVt_0220bdd8_Start(Ov013ActVt_0220bdd8 *self) {
     Ov013Sub48 *m;
     Ov013Sub44 *n;
     Ov013Actor *p;
@@ -105,7 +105,7 @@ static inline s32 Ov013_Sqrt2(s64 sq) {
 
 // `b` is a local written as an unused trailing parameter, and `t` is `volatile`:
 // both are register-allocation / scheduling levers (docs/MATCHING.md).
-void func_ov013_02206764(Ov013Actor *self, Ov013Actor *b) {
+void Ov013ActVt_0220bdd8_Update(Ov013Actor *self, Ov013Actor *b) {
     BOOL ok;
     s32 n;
     s32 m;

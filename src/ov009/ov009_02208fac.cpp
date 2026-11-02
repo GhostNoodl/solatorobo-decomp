@@ -5,7 +5,7 @@ extern "C" {
 extern BOOL func_ov000_0218cf5c(Ov009Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
 
-BOOL func_ov009_02208fac(Ov009ActVt_02217594 *self) {
+BOOL Ov009ActVt_02217594_IsReady(Ov009ActVt_02217594 *self) {
     BOOL r = func_ov000_0218cf5c(self);
     if (self->anim.unk_00 >= 0 && !func_ov000_0218f110(&self->anim)) {
         r = FALSE;
@@ -19,7 +19,7 @@ extern void NNSi_G3dModifyMatFlag(void *p, s32 a, s32 b);
 extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 extern void func_ov000_02190758(void *a, const void *b, s32 c);
 extern Ov009Actor *func_ov000_0219bf90(void);
-void func_ov009_02208fe0(Ov009ActVt_02217594 *self) {
+void Ov009ActVt_02217594_Start(Ov009ActVt_02217594 *self) {
     u32 saved;
     Ov009Sub48 *s48;
     Ov009Sub44 *s44;

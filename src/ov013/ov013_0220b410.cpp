@@ -91,7 +91,7 @@ s32 func_ov013_021fc400(Ov013Actor *self) {
     return r;
 }
 
-void func_ov013_021fc518(Ov013ActVt_0220b5e0 *self) {
+void Ov013ActVt_0220b5e0_Start(Ov013ActVt_0220b5e0 *self) {
     Ov013Sub48 *m;
     s32 n;
     Ov013Actor *a;
@@ -122,7 +122,7 @@ void func_ov013_021fc518(Ov013ActVt_0220b5e0 *self) {
     self->unk_b6 = 100;
 }
 
-void func_ov013_021fc624(Ov013ActVt_0220b5e0 *self) {
+void Ov013ActVt_0220b5e0_Update(Ov013ActVt_0220b5e0 *self) {
     Ov013Actor *p;
     u8 k;
     if (!Ov013_GameIdle()) {

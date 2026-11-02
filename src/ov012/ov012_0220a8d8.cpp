@@ -26,17 +26,17 @@ typedef void (*Ov012Fn)(void);
 
 extern "C" {
 
-void func_ov012_021ffb90(void *self);
+void Ov012Act_021ffa68_Init(void *self);
 void func_0205e958(void *light);
-BOOL func_ov012_021ffb9c(void *self);
+BOOL Ov012Act_021ffa68_IsReady(void *self);
 void func_ov000_0218cfc8(void *self);
 BOOL func_ov000_0218d17c(void *self);
 void func_ov000_0218d190(void *self);
 void func_ov012_02201cb8(void);
-void *func_ov012_021ffaa8(void *self);
-void *func_ov012_021ffb18(void *self);
-void func_ov012_021ffba8(Ov012Act_021ffa68 *self);
-void func_ov012_021ffd34(Ov012Act_021ffa68 *self);
+void *Ov012Act_021ffa68_Dtor(void *self);
+void *Ov012Act_021ffa68_DtorDelete(void *self);
+void Ov012Act_021ffa68_Start(Ov012Act_021ffa68 *self);
+void Ov012Act_021ffa68_Update(Ov012Act_021ffa68 *self);
 void func_ov012_02201cb4(void);
 void func_ov012_02201cb0(void);
 void func_ov003_021d2e28(void *self);
@@ -60,21 +60,21 @@ void func_ov012_02201cc8(void);
 void func_ov012_02201cc4(void);
 void func_ov012_02201cc0(void);
 void func_ov012_02201cbc(void);
-void *func_ov012_02201d68(void *self);
-void *func_ov012_02201d4c(void *self);
-void func_ov012_021fee58(Ov012Act_021fee1c *self);
-void func_ov012_021fefc8(Ov012Act_021fee1c *self);
+void *Ov012Act_021fee1c_Dtor(void *self);
+void *Ov012Act_021fee1c_DtorDelete(void *self);
+void Ov012Act_021fee1c_Start(Ov012Act_021fee1c *self);
+void Ov012Act_021fee1c_Update(Ov012Act_021fee1c *self);
 void func_ov012_021fef64(Ov012Act_021fee1c *self, void *msg);
 void func_ov012_02201d28(void *self);
 void func_ov012_021ff20c(Ov012Act_021fee1c *self);
 void func_ov012_021ff674(Ov012Act_021fee1c *self);
-BOOL func_ov012_021fa91c(Ov012Lift *self);
-void func_ov012_021fa80c(Ov012Lift *self);
-BOOL func_ov012_021fa8b8(Ov012Lift *self);
-void *func_ov012_021fa724(void *self);
-void *func_ov012_021fa794(void *self);
-void func_ov012_021fa9e8(Ov012Lift *self);
-void func_ov012_021fab7c(Ov012Lift *self);
+BOOL Ov012Lift_Draw(Ov012Lift *self);
+void Ov012Lift_Init(Ov012Lift *self);
+BOOL Ov012Lift_IsReady(Ov012Lift *self);
+void *Ov012Lift_Dtor(void *self);
+void *Ov012Lift_DtorDelete(void *self);
+void Ov012Lift_Start(Ov012Lift *self);
+void Ov012Lift_Update(Ov012Lift *self);
 void func_ov012_021fa978(Ov012Lift *self, void *msg);
 void func_ov012_021fbe64(Ov012Actor *self);
 void func_ov012_021fbec8(Ov012Lift *self);
@@ -175,17 +175,17 @@ char data_ov012_0220ab33[] = "att20";
 u32 data_ov012_0220ab3c[2] = {0, 0};
 Ov012Fn data_ov012_0220ab44[41] = {
     (Ov012Fn)func_ov003_021d16cc,
-    (Ov012Fn)func_ov012_021ffb90,
+    (Ov012Fn)Ov012Act_021ffa68_Init,
     (Ov012Fn)func_0205e958,
-    (Ov012Fn)func_ov012_021ffb9c,
+    (Ov012Fn)Ov012Act_021ffa68_IsReady,
     (Ov012Fn)func_ov000_0218cfc8,
     (Ov012Fn)func_ov000_0218d17c,
     (Ov012Fn)func_ov000_0218d190,
     (Ov012Fn)func_ov012_02201cb8,
-    (Ov012Fn)func_ov012_021ffaa8,
-    (Ov012Fn)func_ov012_021ffb18,
-    (Ov012Fn)func_ov012_021ffba8,
-    (Ov012Fn)func_ov012_021ffd34,
+    (Ov012Fn)Ov012Act_021ffa68_Dtor,
+    (Ov012Fn)Ov012Act_021ffa68_DtorDelete,
+    (Ov012Fn)Ov012Act_021ffa68_Start,
+    (Ov012Fn)Ov012Act_021ffa68_Update,
     (Ov012Fn)func_ov012_02201cb4,
     (Ov012Fn)func_ov012_02201cb0,
     (Ov012Fn)func_ov003_021d2e28,
@@ -226,10 +226,10 @@ Ov012Fn data_ov012_0220abf0[41] = {
     (Ov012Fn)func_ov000_0218d17c,
     (Ov012Fn)func_ov000_0218d190,
     (Ov012Fn)func_ov012_02201cb8,
-    (Ov012Fn)func_ov012_02201d68,
-    (Ov012Fn)func_ov012_02201d4c,
-    (Ov012Fn)func_ov012_021fee58,
-    (Ov012Fn)func_ov012_021fefc8,
+    (Ov012Fn)Ov012Act_021fee1c_Dtor,
+    (Ov012Fn)Ov012Act_021fee1c_DtorDelete,
+    (Ov012Fn)Ov012Act_021fee1c_Start,
+    (Ov012Fn)Ov012Act_021fee1c_Update,
     (Ov012Fn)func_ov012_02201cb4,
     (Ov012Fn)func_ov012_02201cb0,
     (Ov012Fn)func_ov003_021d2e28,
@@ -262,18 +262,18 @@ Ov012Fn data_ov012_0220abf0[41] = {
 };
 u32 data_ov012_0220ac94[2] = {0, 0};
 Ov012Fn data_ov012_0220ac9c[41] = {
-    (Ov012Fn)func_ov012_021fa91c,
-    (Ov012Fn)func_ov012_021fa80c,
+    (Ov012Fn)Ov012Lift_Draw,
+    (Ov012Fn)Ov012Lift_Init,
     (Ov012Fn)func_0205e958,
-    (Ov012Fn)func_ov012_021fa8b8,
+    (Ov012Fn)Ov012Lift_IsReady,
     (Ov012Fn)func_ov000_0218cfc8,
     (Ov012Fn)func_ov000_0218d17c,
     (Ov012Fn)func_ov000_0218d190,
     (Ov012Fn)func_ov012_02201cb8,
-    (Ov012Fn)func_ov012_021fa724,
-    (Ov012Fn)func_ov012_021fa794,
-    (Ov012Fn)func_ov012_021fa9e8,
-    (Ov012Fn)func_ov012_021fab7c,
+    (Ov012Fn)Ov012Lift_Dtor,
+    (Ov012Fn)Ov012Lift_DtorDelete,
+    (Ov012Fn)Ov012Lift_Start,
+    (Ov012Fn)Ov012Lift_Update,
     (Ov012Fn)func_ov012_02201cb4,
     (Ov012Fn)func_ov012_02201cb0,
     (Ov012Fn)func_ov003_021d2e28,
@@ -320,7 +320,7 @@ namespace m_021fa6a0 {
 extern "C" {
 
 #pragma force_active on
-Ov012Lift *func_ov012_021fa6a0(Ov012Lift *self) {
+Ov012Lift *Ov012Lift_Ctor(Ov012Lift *self) {
     u8 i;
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov012_0220ac9c;
@@ -343,7 +343,7 @@ Ov012Lift *func_ov012_021fa6a0(Ov012Lift *self) {
 }
 
 extern "C" {
-void *func_ov012_021fa724(void *self) {
+void *Ov012Lift_Dtor(void *self) {
     FLD(void *, self, 0) = data_ov012_0220ac9c;
     Ov012_StopSnd();
     func_ov000_0218fee4((u8 *)self + 0x2ac);
@@ -354,7 +354,7 @@ void *func_ov012_021fa724(void *self) {
 }
 
 extern "C" {
-void *func_ov012_021fa794(void *self) {
+void *Ov012Lift_DtorDelete(void *self) {
     FLD(void *, self, 0) = data_ov012_0220ac9c;
     Ov012_StopSnd();
     func_ov000_0218fee4((u8 *)self + 0x2ac);
@@ -371,7 +371,7 @@ namespace m_021fa80c {
 extern "C" {
 
 
-void func_ov012_021fa80c(Ov012Lift *self) {
+void Ov012Lift_Init(Ov012Lift *self) {
     func_ov003_021d0fc0(self);
     self->unk_f0 = self->unk_18;
     func_02049564(data_02097e4c, 1, 1);
@@ -398,7 +398,7 @@ void func_ov012_021fa80c(Ov012Lift *self) {
 // ---- merged from ov012_021fa8b8.cpp
 namespace m_021fa8b8 {
 extern "C" {
-BOOL func_ov012_021fa8b8(Ov012Lift *self) {
+BOOL Ov012Lift_IsReady(Ov012Lift *self) {
     BOOL r = func_ov000_0218cf5c(self);
     r = (r & func_02035b90(data_ov012_0220aaf9, 7)) ? TRUE : FALSE;
     if (self->unk_f0 == 1 && ((s16)self->unk_174.unk_00) >= 0) {
@@ -415,7 +415,7 @@ struct Ov012_021fa91c {
     Ov012Vec arr[2];
 };
 extern "C" {
-BOOL func_ov012_021fa91c(Ov012Lift *self) {
+BOOL Ov012Lift_Draw(Ov012Lift *self) {
     if (self->unk_f0 == 1) {
         u8 i;
         for (i = 0; i < 2; i++) {
@@ -456,7 +456,7 @@ extern const u8 data_ov012_0220a498[];
 extern const u8 data_ov012_0220a480[];
 extern const Ov012Vec data_ov012_0220a4bc[];
 
-void func_ov012_021fa9e8(Ov012Lift *self) {
+void Ov012Lift_Start(Ov012Lift *self) {
     Ov012Actor *o;
     Ov012Sub48 *m;
     func_ov003_021d112c(self);
@@ -528,7 +528,7 @@ static inline u16 Ov012_Pct(u16 *p) {
 
 extern void MTX_MultVec33(const Ov012Vec *v, const void *m, Ov012Vec *out);
 
-void func_ov012_021fab7c(Ov012Lift *self) {
+void Ov012Lift_Update(Ov012Lift *self) {
     Ov012Vec w;
     Ov012Vec v;
     Ov012Actor *pl;
@@ -2463,7 +2463,7 @@ void func_ov012_021fec58(u8 *self, s32 i) {
 namespace m_021fee1c {
 extern "C" {
 #pragma force_active on
-Ov012Act_021fee1c *func_ov012_021fee1c(Ov012Act_021fee1c *self) {
+Ov012Act_021fee1c *Ov012Act_021fee1c_Ctor(Ov012Act_021fee1c *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov012_0220abf0;
     self->unk_fc = 0;
@@ -2476,7 +2476,7 @@ Ov012Act_021fee1c *func_ov012_021fee1c(Ov012Act_021fee1c *self) {
 }
 
 extern "C" {
-void func_ov012_021fee58(Ov012Act_021fee1c *self) {
+void Ov012Act_021fee1c_Start(Ov012Act_021fee1c *self) {
     Ov012Sub48 *m;
     Ov012Sub44 *n;
     func_ov003_021d112c(self);
@@ -2526,7 +2526,7 @@ void func_ov012_021fef64(Ov012Act_021fee1c *self, Ov012Msg *msg) {
 extern "C" {
 extern const Ov012Vec data_ov012_0220a4a4[];
 extern const Ov012Vec data_ov012_0220a4bc[];
-void func_ov012_021fefc8(Ov012Act_021fee1c *self) {
+void Ov012Act_021fee1c_Update(Ov012Act_021fee1c *self) {
     Ov012Actor *pl;
     Ov012Vec v;
     s32 a;
@@ -2844,7 +2844,7 @@ void func_ov012_021ff8b4(Ov012Act_021fee1c *self, s32 idx) {
 
 extern "C" {
 #pragma force_active on
-Ov012Act_021ffa68 *func_ov012_021ffa68(Ov012Act_021ffa68 *self) {
+Ov012Act_021ffa68 *Ov012Act_021ffa68_Ctor(Ov012Act_021ffa68 *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov012_0220ab44;
     self->unk_100 = 0;
@@ -2859,7 +2859,7 @@ Ov012Act_021ffa68 *func_ov012_021ffa68(Ov012Act_021ffa68 *self) {
 }
 
 extern "C" {
-void *func_ov012_021ffaa8(void *self) {
+void *Ov012Act_021ffa68_Dtor(void *self) {
     FLD(void *, self, 0) = data_ov012_0220ab44;
     Ov012_FreeFx(self, 0x108);
     func_ov003_021d0edc(self);
@@ -2868,7 +2868,7 @@ void *func_ov012_021ffaa8(void *self) {
 }
 
 extern "C" {
-void *func_ov012_021ffb18(void *self) {
+void *Ov012Act_021ffa68_DtorDelete(void *self) {
     FLD(void *, self, 0) = data_ov012_0220ab44;
     Ov012_FreeFx(self, 0x108);
     func_ov003_021d0edc(self);
@@ -2878,19 +2878,19 @@ void *func_ov012_021ffb18(void *self) {
 }
 
 extern "C" {
-void func_ov012_021ffb90(Ov012Actor *self) {
+void Ov012Act_021ffa68_Init(Ov012Actor *self) {
     func_ov003_021d0fc0(self);
 }
 }
 
 extern "C" {
-BOOL func_ov012_021ffb9c(Ov012Actor *self) {
+BOOL Ov012Act_021ffa68_IsReady(Ov012Actor *self) {
     return func_ov000_0218cf5c(self);
 }
 }
 
 extern "C" {
-void func_ov012_021ffba8(Ov012Act_021ffa68 *self) {
+void Ov012Act_021ffa68_Start(Ov012Act_021ffa68 *self) {
     Ov012Sub48 *m;
     Ov012Sub44 *n;
     func_ov003_021d112c(self);
@@ -2941,7 +2941,7 @@ void func_ov012_021ffcd0(Ov012Act_021ffa68 *self, Ov012Msg *msg) {
 
 extern "C" {
 extern const Ov012Vec data_ov012_0220a4a4[];
-void func_ov012_021ffd34(Ov012Act_021ffa68 *self) {
+void Ov012Act_021ffa68_Update(Ov012Act_021ffa68 *self) {
     Ov012Vec v;
     Ov012Vec w;
     s32 n;

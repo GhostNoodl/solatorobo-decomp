@@ -5,7 +5,7 @@ extern "C" {
 extern BOOL func_ov000_021903b4(void *p);
 extern void func_ov000_02190a80(void *p, s32 a);
 
-BOOL func_ov009_02209218(Ov009ActVt_02217594 *self) {
+BOOL Ov009ActVt_02217594_Draw(Ov009ActVt_02217594 *self) {
     BOOL r = func_ov003_021d16cc(self);
     if (r) {
         func_ov000_021903b4(&self->model);
@@ -21,7 +21,7 @@ void func_ov009_0220923c(Ov009ActVt_02217594 *self) {
 extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
 extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
 
-void func_ov009_02209258(Ov009ActVt_02217594 *self) {
+void Ov009ActVt_02217594_Update(Ov009ActVt_02217594 *self) {
     Ov009Actor *t;
     if (!Ov009_GameIdle()) {
         return;

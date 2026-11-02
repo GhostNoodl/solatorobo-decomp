@@ -17,7 +17,7 @@ static inline void Ov009Names_Set(Ov009Names *n, const char *a, const char *b) {
     n->unk_00 = 0;
 }
 
-BOOL func_ov009_02207684(Ov009ActVt_02217844 *self) {
+BOOL Ov009ActVt_02217844_IsReady(Ov009ActVt_02217844 *self) {
     BOOL r = func_ov000_0218cf5c(self);
     if (self->anim.unk_00 >= 0 && !func_ov000_0218f110(&self->anim)) {
         r = FALSE;
@@ -30,7 +30,7 @@ extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void NNSi_G3dModifyMatFlag(void *p, s32 a, s32 b);
 extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 extern void func_ov000_02190758(void *a, const void *b, s32 c);
-void func_ov009_022076b8(Ov009ActVt_02217844 *self) {
+void Ov009ActVt_02217844_Start(Ov009ActVt_02217844 *self) {
     u32 saved;
     func_ov003_021d112c(self);
     func_ov000_0218ffdc(&self->model, &self->anim, 0, 1);

@@ -15,7 +15,7 @@ void func_ov015_022123c4(Ov015Obj292c *self);
 void *func_ov000_02191318(void *a, s32 b);
 BOOL func_ov015_02209790(Ov015Fish *self, s32 a);
 void func_ov015_02209b80(Ov015Fish *self, s32 a, s32 b);
-Ov015FishState40 *func_ov015_0220c93c(Ov015FishState40 *self);
+Ov015FishState40 *Ov015FishState40_Ctor(Ov015FishState40 *self);
 
 extern u8 data_ov015_0221292c[];
 extern u8 data_ov015_022132e0[];
@@ -29,7 +29,7 @@ void func_ov015_022119e8(Ov015Obj290 *self);
 void func_ov015_021ff9e8(Ov015Obj30 *self);
 BOOL func_ov015_021ffb90(Ov015Obj30 *self);
 BOOL func_ov015_021ffdd4(Ov015Obj30 *self);
-Ov015FishState08 *func_ov015_0220d878(Ov015FishState08 *self);
+Ov015FishState08 *Ov015FishState08_Ctor(Ov015FishState08 *self);
 s32 func_ov015_02209fb8(s32 x);
 void func_ov015_02211334(void *a, u16 id);
 void func_ov015_022029d4(void *list, void *obj);
@@ -94,7 +94,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
             u32 saved;
             m = (u8 *)func_0203dd9c(8);
             if (m != NULL) {
-                m = (u8 *)func_ov015_0220d878((Ov015FishState08 *)m);
+                m = (u8 *)Ov015FishState08_Ctor((Ov015FishState08 *)m);
             }
             func_ov015_02209b80(self->unk_18, (s32)m, 6);
             (self->unk_18)->unk_108 = 0;
@@ -202,7 +202,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
     return ret;
 }
 
-void *func_ov015_021ff968(Ov015Fish *self) {
+void *Ov015Fish_DtorDelete(Ov015Fish *self) {
     SET_VT(self, data_ov015_022128fc);
     func_ov015_02209270(self);
     func_0203f2b8(&self->unk_568);
@@ -251,7 +251,7 @@ void func_ov015_021ff9e8(Ov015Obj30 *self) {
         Ov015Fish *obj = FLD(Ov015Fish *, n, 0x4);
         u8 *m = (u8 *)func_0203dd9c(0x40);
         s32 q;
-        if (m != NULL) m = (u8 *)func_ov015_0220c93c((Ov015FishState40 *)m);
+        if (m != NULL) m = (u8 *)Ov015FishState40_Ctor((Ov015FishState40 *)m);
         func_ov015_02209b80(obj, (s32)m, 5);
         q = FX_Div(i << 12, cnt << 12);
         obj->unk_40.x = Ov015_FxMul(q, 0x64000) - 0x32000;

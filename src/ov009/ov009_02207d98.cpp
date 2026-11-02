@@ -16,7 +16,7 @@ struct Ov009Bits16 {
     u16 b1 : 15;
 };
 
-BOOL func_ov009_02207d98(Ov009Multi *self) {
+BOOL Ov009Multi_Draw(Ov009Multi *self) {
     BOOL r = func_ov003_021d16cc(self);
     s32 i;
     for (i = 0; i < 4; i++) {
@@ -53,7 +53,7 @@ static inline void Ov009Query_Set(Ov009Query *q, const Ov009Vec *pos, u16 ang) {
 
 extern s32 func_ov000_02199180(Ov009Query *q, Ov009Vec *pos, Ov009Actor **out, s32 max);
 
-void func_ov009_02207dd0(Ov009Actor *self) {
+void Ov009Multi_Update(Ov009Actor *self) {
     Ov009Query q;
     Ov009Actor *res[0x20];
     s32 n;

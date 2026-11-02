@@ -4,7 +4,7 @@ extern "C" {
 
 extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
 
-void func_ov009_0220b48c(Ov009ActVt_022176ec *self) {
+void Ov009ActVt_022176ec_Start(Ov009ActVt_022176ec *self) {
     func_ov003_021d112c(self);
     self->unk_f0 = self->pos;
     self->unk_ea |= 0x1000;
@@ -20,7 +20,7 @@ extern void func_0203f364(Ov009Sub48 *p);
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern BOOL func_01ffc198(const Ov009Vec *a, const Ov009Vec *b, s32 r);
 extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
-void func_ov009_0220b4e4(Ov009ActVt_022176ec *self) {
+void Ov009ActVt_022176ec_Update(Ov009ActVt_022176ec *self) {
     Ov009Sub40 *st = self->unk_40;
     Ov009Sub48 *s48;
     Ov009Actor *t;

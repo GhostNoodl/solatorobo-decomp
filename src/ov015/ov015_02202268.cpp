@@ -104,7 +104,7 @@ void func_ov015_022022ac(Ov015Game *self) {
     }
 }
 
-void *func_ov015_02202448(Ov015Game *self) {
+void *Ov015Game_DtorDelete(Ov015Game *self) {
     u32 saved;
     SET_VT(self, data_ov015_0221296c);
     func_ov015_0220101c(self);
@@ -145,7 +145,7 @@ void *func_ov015_02202448(Ov015Game *self) {
     return self;
 }
 
-void *func_ov015_0220261c(Ov015Game *self) {
+void *Ov015Game_Dtor(Ov015Game *self) {
     u32 saved;
     SET_VT(self, data_ov015_0221296c);
     func_ov015_0220101c(self);
@@ -237,13 +237,13 @@ void *func_ov015_022028dc(u8 *self) {
     return self;
 }
 
-void *func_ov015_02202930(void *self) {
+void *Ov015Result_Dtor(void *self) {
     SET_VT(self, data_ov015_022128ec);
     func_ov015_0220f4d4(self);
     return self;
 }
 
-void *func_ov015_02202950(Ov015Fish *self) {
+void *Ov015Fish_Dtor(Ov015Fish *self) {
     SET_VT(self, data_ov015_022128fc);
     func_ov015_02209270(self);
     func_0203f2b8(&self->unk_568);
@@ -256,7 +256,7 @@ void *func_ov015_02202950(Ov015Fish *self) {
     return self;
 }
 
-void *func_ov015_022029b4(Ov015Obj292c *self) {
+void *Ov015Obj292c_Dtor(Ov015Obj292c *self) {
     SET_VT(self, data_ov015_0221292c);
     func_ov015_022120fc(self);
     return self;

@@ -34,7 +34,7 @@ extern s32 func_ov000_0219a510(Ov014Obj *self, u16 mask, Ov014Vec *pos, s32 r, s
 extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
 
 #pragma force_active on
-Ov014ActEx_022142fc *func_ov014_022142fc(Ov014ActEx_022142fc *self) {
+Ov014ActEx_022142fc *Ov014ActEx_022142fc_Ctor(Ov014ActEx_022142fc *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = data_ov014_02217fb0;
     self->unk_d0.x = 0;
@@ -46,18 +46,18 @@ Ov014ActEx_022142fc *func_ov014_022142fc(Ov014ActEx_022142fc *self) {
 }
 #pragma force_active reset
 
-void *func_ov014_02214334(void *self) {
+void *Ov014ActEx_022142fc_Dtor(void *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void *func_ov014_02214348(void *self) {
+void *Ov014ActEx_022142fc_DtorDelete(void *self) {
     func_ov000_0219429c(self);
     func_0203de1c(self);
     return self;
 }
 
-void func_ov014_02214364(Ov014ActEx_022142fc *self) {
+void Ov014ActEx_022142fc_Start(Ov014ActEx_022142fc *self) {
     Ov014Sub44 *n;
     Ov014Sub48 *m;
     func_ov000_02194758(self);
@@ -74,7 +74,7 @@ void func_ov014_02214364(Ov014ActEx_022142fc *self) {
     func_ov000_02198360(self->unk_40, 0xb, 0);
 }
 
-void func_ov014_022143e8(Ov014ActEx_022142fc *self) {
+void Ov014ActEx_022142fc_Draw(Ov014ActEx_022142fc *self) {
     func_ov000_02194c08(self);
 }
 

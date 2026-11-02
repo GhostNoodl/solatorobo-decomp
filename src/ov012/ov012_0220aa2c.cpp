@@ -120,7 +120,7 @@ void func_ov012_022065d8(Ov012Actor *self) {
 }
 
 extern "C" {
-void func_ov012_022066d8(Ov012ActExVt_0220b150 *self) {
+void Ov012ActExVt_0220b150_Start(Ov012ActExVt_0220b150 *self) {
     func_ov000_02194758(self);
     self->unk_dc = 0;
     self->unk_e0 = 0;
@@ -406,7 +406,7 @@ void func_ov012_02206f18(Ov012ActExVt_0220b150 *self) {
 extern "C" {
 extern u8 data_ov012_0220b0b8[];
 #pragma force_active on
-Ov012ActEx_02207018 *func_ov012_02207018(Ov012ActEx_02207018 *self) {
+Ov012ActEx_02207018 *Ov012ActEx_02207018_Ctor(Ov012ActEx_02207018 *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = data_ov012_0220b0b8;
     self->unk_d0 = 0;
@@ -418,7 +418,7 @@ Ov012ActEx_02207018 *func_ov012_02207018(Ov012ActEx_02207018 *self) {
 
 extern "C" {
 extern u8 data_ov012_0220b0b8[];
-void *func_ov012_02207044(void *self) {
+void *Ov012ActEx_02207018_Dtor(void *self) {
     FLD(void *, self, 0) = data_ov012_0220b0b8;
     Ov012_FreeFx(self, 0xd4);
     func_ov000_0219429c(self);
@@ -428,7 +428,7 @@ void *func_ov012_02207044(void *self) {
 
 extern "C" {
 extern u8 data_ov012_0220b0b8[];
-void *func_ov012_022070b4(void *self) {
+void *Ov012ActEx_02207018_DtorDelete(void *self) {
     FLD(void *, self, 0) = data_ov012_0220b0b8;
     Ov012_FreeFx(self, 0xd4);
     func_ov000_0219429c(self);
@@ -438,7 +438,7 @@ void *func_ov012_022070b4(void *self) {
 }
 
 extern "C" {
-void func_ov012_0220712c(Ov012ActEx_02207018 *self) {
+void Ov012ActEx_02207018_Start(Ov012ActEx_02207018 *self) {
     func_ov000_02194758(self);
     FLD(s32 *, self, 0xd4) = Ov012_NewFx();
     func_ov000_02198360(self->unk_40, 0xb, 0);
@@ -446,7 +446,7 @@ void func_ov012_0220712c(Ov012ActEx_02207018 *self) {
 }
 
 extern "C" {
-void func_ov012_02207164(Ov012ActEx_02207018 *self) {
+void Ov012ActEx_02207018_Update(Ov012ActEx_02207018 *self) {
     func_ov000_021953b4(self);
     func_ov003_021dacfc(((void *)self->unk_d4));
 }

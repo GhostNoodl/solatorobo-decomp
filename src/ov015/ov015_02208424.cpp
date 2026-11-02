@@ -567,7 +567,7 @@ void func_ov015_022090fc(u8 *self) {
     FLD(u8, self, 0x92) = 3;
 }
 
-void *func_ov015_02209114(Ov015Fish *self) {
+void *Ov015Fish_Ctor(Ov015Fish *self) {
     SET_VT(self, data_ov015_022128fc);
     SET_VT(&self->unk_c0, data_ov015_02212e84);
     self->unk_c0.unk_04 = 0xffff;
@@ -634,7 +634,7 @@ void func_ov015_02209270(Ov015Fish *self) {
     HEAP_POP(saved);
 }
 
-void *func_ov015_02209344(void *self) {
+void *Ov015FishState_DtorDelete(void *self) {
     SET_VT(self, data_ov015_02212eb0);
     func_0203de1c(self);
     return self;

@@ -618,7 +618,7 @@ public:
 };
 SIZE_ASSERT(Ov013ActEx_02204454, 0xfc);
 
-// Actor class of func_ov013_021fdb70 (vtable data_ov013_0220b738).
+// Actor class of Ov013ActEx_021fdb70_Ctor (vtable data_ov013_0220b738).
 class Ov013ActEx_021fdb70 : public Ov013ActorEx {
 public:
     s32 unk_d0;
@@ -627,7 +627,7 @@ public:
 };
 SIZE_ASSERT(Ov013ActEx_021fdb70, 0xd8);
 
-// Actor class of func_ov013_021fea8c (vtable data_ov013_0220b9a0).
+// Actor class of Ov013Act_021fea8c_Ctor (vtable data_ov013_0220b9a0).
 class Ov013Act_021fea8c : public Ov013Actor {
 public:
     Ov013Flags8 unk_f0;
@@ -653,7 +653,7 @@ public:
 };
 SIZE_ASSERT(Ov013Act_021fea8c, 0x160);
 
-// Actor class of func_ov013_02205ae4 (vtable data_ov013_0220ba88).
+// Actor class of Ov013ActEx_02205ae4_Ctor (vtable data_ov013_0220ba88).
 class Ov013ActEx_02205ae4 : public Ov013ActorEx {
 public:
     u16 unk_d0;
@@ -663,7 +663,7 @@ public:
 };
 SIZE_ASSERT(Ov013ActEx_02205ae4, 0xf0);
 
-// Actor class of func_ov013_022065ac (vtable data_ov013_0220bb20).
+// Actor class of Ov013ActEx_022065ac_Ctor (vtable data_ov013_0220bb20).
 class Ov013ActEx_022065ac : public Ov013ActorEx {
 public:
     u8 unk_d0[0x24];
@@ -673,7 +673,7 @@ public:
 };
 SIZE_ASSERT(Ov013ActEx_022065ac, 0xf8);
 
-// Actor class of func_ov013_02207968 (vtable data_ov013_0220bd2c).
+// Actor class of Ov013Act_02207968_Ctor (vtable data_ov013_0220bd2c).
 class Ov013Act_02207968 : public Ov013Actor {
 public:
     u8 unk_f0;
@@ -689,7 +689,7 @@ public:
 };
 SIZE_ASSERT(Ov013Act_02207968, 0x114);
 
-// Actor class of func_ov013_0220a4e0 (vtable data_ov013_0220bf4c).
+// Actor class of Ov013ActEx_0220a4e0_Ctor (vtable data_ov013_0220bf4c).
 class Ov013ActEx_0220a4e0 : public Ov013ActorEx {
 public:
     s32 unk_d0;
@@ -697,7 +697,7 @@ public:
 };
 SIZE_ASSERT(Ov013ActEx_0220a4e0, 0xe0);
 
-// Actor class of func_ov013_0220a9a8 (vtable data_ov013_0220beb4).
+// Actor class of Ov013ActEx_0220a9a8_Ctor (vtable data_ov013_0220beb4).
 class Ov013ActEx_0220a9a8 : public Ov013ActorEx {
 public:
     s32 unk_d0;

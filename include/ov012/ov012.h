@@ -924,7 +924,7 @@ extern "C" {
 extern Ov012Vec *func_ov000_0218d2e0(void *self);
 }
 
-// Actor class of func_ov012_021fee1c (vtable data_ov012_0220abf0).
+// Actor class of Ov012Act_021fee1c_Ctor (vtable data_ov012_0220abf0).
 class Ov012Act_021fee1c : public Ov012Actor {
 public:
     Ov012Vec unk_f0;
@@ -937,7 +937,7 @@ public:
 };
 SIZE_ASSERT(Ov012Act_021fee1c, 0x108);
 
-// Actor class of func_ov012_021ffa68 (vtable data_ov012_0220ab44).
+// Actor class of Ov012Act_021ffa68_Ctor (vtable data_ov012_0220ab44).
 class Ov012Act_021ffa68 : public Ov012Actor {
 public:
     Ov012Vec unk_f0;
@@ -950,7 +950,7 @@ public:
 };
 SIZE_ASSERT(Ov012Act_021ffa68, 0x10c);
 
-// Actor class of func_ov012_02202b10 (vtable data_ov012_0220afe4).
+// Actor class of Ov012Act_02202b10_Ctor (vtable data_ov012_0220afe4).
 class Ov012Act_02202b10 : public Ov012Actor {
 public:
     u32 unk_f0;
@@ -976,7 +976,7 @@ public:
 };
 SIZE_ASSERT(Ov012Act_02202b10, 0x128);
 
-// Actor class of func_ov012_02207018 (vtable data_ov012_0220b0b8).
+// Actor class of Ov012ActEx_02207018_Ctor (vtable data_ov012_0220b0b8).
 class Ov012ActEx_02207018 : public Ov012ActorEx {
 public:
     u32 unk_d0;

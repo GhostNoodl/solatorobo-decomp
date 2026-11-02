@@ -21,7 +21,7 @@ void *func_ov000_02191318(void *a, s32 b);
 s32 FX_Div(s32 a, s32 b);
 void func_0203f364(void *a);
 void *func_0203dd9c(u32 size);
-void *func_ov015_0220a0c8(Ov015FishState2c *self);
+void *Ov015FishState2c_Ctor(Ov015FishState2c *self);
 void func_ov000_02190a80(void *a, s32 b);
 void func_ov015_02209a50(Ov015Fish *self);
 int func_0203f3d0(void *a);
@@ -100,7 +100,7 @@ BOOL func_ov015_02209500(Ov015Fish *self) {
     self->unk_94 = FLD(s16, func_0206fef8(self->unk_c0.unk_04), 0x16) << 4;
     self->unk_98 = FLD(s16, func_0206fef8(self->unk_c0.unk_04), 0x14) << 4;
     m = (Ov015V *)func_0203dd9c(0x2c);
-    if (m != NULL) m = (Ov015V *)func_ov015_0220a0c8((Ov015FishState2c *)m);
+    if (m != NULL) m = (Ov015V *)Ov015FishState2c_Ctor((Ov015FishState2c *)m);
     self->unk_f8 = m;
     self->unk_f4 = 2;
     m->v08(self);
@@ -296,7 +296,7 @@ void func_ov015_0220a058(Ov015Fish *self, void *out) {
     VEC_Add(&v, &self->unk_30, out);
 }
 
-void *func_ov015_0220a0c8(Ov015FishState2c *self) {
+void *Ov015FishState2c_Ctor(Ov015FishState2c *self) {
     SET_VT(self, data_ov015_02212e94);
     self->unk_04 = 0;
     self->unk_06 = 0;
@@ -314,14 +314,14 @@ void *func_ov015_0220a0c8(Ov015FishState2c *self) {
     return self;
 }
 
-void *func_ov015_0220a110(void *self) {
+void *Ov015FishState2c_Dtor(void *self) {
     SET_VT(self, data_ov015_02212e94);
     VCALL(self)->v10(0);
     SET_VT(self, data_ov015_02212eb0);
     return self;
 }
 
-void *func_ov015_0220a148(void *self) {
+void *Ov015FishState2c_DtorDelete(void *self) {
     SET_VT(self, data_ov015_02212e94);
     VCALL(self)->v10(0);
     SET_VT(self, data_ov015_02212eb0);
@@ -329,7 +329,7 @@ void *func_ov015_0220a148(void *self) {
     return self;
 }
 
-BOOL func_ov015_0220a188(Ov015FishState2c *self, Ov015Fish *p) {
+BOOL Ov015FishState2c_Enter(Ov015FishState2c *self, Ov015Fish *p) {
     self->unk_20 = p;
     self->unk_06 = 0;
     self->unk_08 = 2;

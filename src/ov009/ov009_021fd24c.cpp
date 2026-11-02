@@ -14,7 +14,7 @@ static inline void Ov009_Notify(u16 id, u16 a, u16 b, const Ov009Vec *pos) {
     }
 }
 
-BOOL func_ov009_021fd24c(Ov009ActVt_02216750 *self) {
+BOOL Ov009ActVt_02216750_Draw(Ov009ActVt_02216750 *self) {
     BOOL r = func_ov003_021d16cc(self);
     if (r) {
         Ov009_Notify(self->id, self->unk_50[0], self->unk_50[1], &self->pos);

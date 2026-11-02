@@ -108,7 +108,7 @@ void func_ov012_02201d28(Ov012Actor *self) {
 }
 
 extern "C" {
-void *func_ov012_02201d4c(void *self) {
+void *Ov012Act_021fee1c_DtorDelete(void *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
@@ -116,7 +116,7 @@ void *func_ov012_02201d4c(void *self) {
 }
 
 extern "C" {
-void *func_ov012_02201d68(void *self) {
+void *Ov012Act_021fee1c_Dtor(void *self) {
     func_ov003_021d0edc(self);
     return self;
 }
@@ -124,7 +124,7 @@ void *func_ov012_02201d68(void *self) {
 
 extern "C" {
 extern const Ov012Vec data_ov012_0220a54c[];
-void func_ov012_02201d7c(Ov012ActExVt_0220af10 *self) {
+void Ov012ActExVt_0220af10_Start(Ov012ActExVt_0220af10 *self) {
     s16 t;
     void *p;
     Ov012Sub48 *m;
@@ -169,7 +169,7 @@ void func_ov012_02201d7c(Ov012ActExVt_0220af10 *self) {
 }
 
 extern "C" {
-void func_ov012_02201ecc(Ov012ActExVt_0220af10 *self) {
+void Ov012ActExVt_0220af10_Update(Ov012ActExVt_0220af10 *self) {
     Ov012Actor *o;
     func_ov000_021953b4(self);
     if (!(self->unk_48->unk_50 & 0x20000000)) {

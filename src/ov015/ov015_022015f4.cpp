@@ -19,7 +19,7 @@ void func_ov015_02210b3c(u8 *self);
 s32 func_ov015_02211160(u8 *self, u16 *out, u32 n);
 void func_ov015_02211890(Ov015Info38 *self, u16 id, s32 mode);
 void func_ov015_02209024(Ov015FishInfo *self, u16 a, const void *src);
-void *func_ov015_02209114(Ov015Fish *self);
+void *Ov015Fish_Ctor(Ov015Fish *self);
 void func_ov015_02209364(Ov015Fish *self);
 
 BOOL func_ov015_022015f4(void) {
@@ -73,7 +73,7 @@ BOOL func_ov015_02201618(Ov015Game *self) {
         Ov015Fish *e = (Ov015Fish *)func_0203dd9c(0x5b0);
         Ov015List *L;
         Ov015Node *nd;
-        if (e != NULL) e = (Ov015Fish *)func_ov015_02209114(e);
+        if (e != NULL) e = (Ov015Fish *)Ov015Fish_Ctor(e);
         e->unk_04 = id;
         func_ov015_02209024(&e->unk_c0, e->unk_04, def);
         e->unk_c0.unk_20 = self->unk_94.unk_20;

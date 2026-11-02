@@ -85,23 +85,23 @@ void func_ov013_021fd370(Ov013Actor *self) {
     self->v64();
 }
 
-Ov013Actor *func_ov013_021fd394(Ov013Actor *self) {
+Ov013Actor *Ov013Boss_Dtor(Ov013Actor *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov013Actor *func_ov013_021fd3a8(Ov013Actor *self) {
+Ov013Actor *Ov013Boss_DtorDelete(Ov013Actor *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
 }
 
-Ov013Actor *func_ov013_021fd3c4(Ov013Actor *self) {
+Ov013Actor *Ov013ActVt_0220b5e0_Dtor(Ov013Actor *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov013Actor *func_ov013_021fd3d8(Ov013Actor *self) {
+Ov013Actor *Ov013ActVt_0220b5e0_DtorDelete(Ov013Actor *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
@@ -120,14 +120,14 @@ static inline void Ov013_StopHtr(Ov013ActExVt_0220b7d0 *self) {
     }
 }
 
-Ov013ActExVt_0220b7d0 *func_ov013_021fd3f4(Ov013ActExVt_0220b7d0 *self) {
+Ov013ActExVt_0220b7d0 *Ov013ActExVt_0220b7d0_Dtor(Ov013ActExVt_0220b7d0 *self) {
     FLD(void *, self, 0) = data_ov013_0220b7d0;
     Ov013_StopHtr(self);
     func_ov000_0219429c(self);
     return self;
 }
 
-Ov013ActExVt_0220b7d0 *func_ov013_021fd488(Ov013ActExVt_0220b7d0 *self) {
+Ov013ActExVt_0220b7d0 *Ov013ActExVt_0220b7d0_DtorDelete(Ov013ActExVt_0220b7d0 *self) {
     FLD(void *, self, 0) = data_ov013_0220b7d0;
     Ov013_StopHtr(self);
     func_ov000_0219429c(self);
@@ -135,17 +135,17 @@ Ov013ActExVt_0220b7d0 *func_ov013_021fd488(Ov013ActExVt_0220b7d0 *self) {
     return self;
 }
 
-void func_ov013_021fd524(Ov013ActExVt_0220b7d0 *self) {
+void Ov013ActExVt_0220b7d0_Init(Ov013ActExVt_0220b7d0 *self) {
     func_ov000_0219433c(self);
     func_020359d0(data_ov013_0220b860, 7, 0);
 }
 
-BOOL func_ov013_021fd544(Ov013ActExVt_0220b7d0 *self) {
+BOOL Ov013ActExVt_0220b7d0_IsReady(Ov013ActExVt_0220b7d0 *self) {
     BOOL r = func_ov000_021946f8(self);
     return (r & func_02035b90(data_ov013_0220b860, 7)) ? TRUE : FALSE;
 }
 
-void func_ov013_021fd570(Ov013ActExVt_0220b7d0 *self) {
+void Ov013ActExVt_0220b7d0_Start(Ov013ActExVt_0220b7d0 *self) {
     Ov013Actor *p;
     s32 i;
     func_ov000_02194758(self);

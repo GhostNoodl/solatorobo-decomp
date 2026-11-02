@@ -19,7 +19,7 @@ static inline s32 Ov009_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
     return Ov009_Sqrt64(sq);
 }
 
-void func_ov009_02210fe4(Ov009ActVt_02217aac *self) {
+void Ov009ActVt_02217aac_Update(Ov009ActVt_02217aac *self) {
     Ov009Vec v;
     if (!Ov009_GameIdle()) {
         return;

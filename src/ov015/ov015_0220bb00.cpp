@@ -17,7 +17,7 @@ extern u8 data_ov015_02212e0d[];
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 
-BOOL func_ov015_0220bb00(Ov015FishState18 *self) {
+BOOL Ov015FishState18_Exit(Ov015FishState18 *self) {
     Ov015V *o;
     u32 saved;
     o = func_020657b0(data_0214a420, self->unk_14);
@@ -139,18 +139,18 @@ void func_ov015_0220be38(Ov015FishState18 *self, Ov015Fish *p) {
     }
 }
 
-void *func_ov015_0220c188(void *self) {
+void *Ov015FishState1c_Dtor(void *self) {
     SET_VT(self, data_ov015_02212eb0);
     return self;
 }
 
-void *func_ov015_0220c198(void *self) {
+void *Ov015FishState1c_DtorDelete(void *self) {
     SET_VT(self, data_ov015_02212eb0);
     func_0203de1c(self);
     return self;
 }
 
-BOOL func_ov015_0220c1b8(Ov015FishState1c *self, Ov015Fish *p) {
+BOOL Ov015FishState1c_Enter(Ov015FishState1c *self, Ov015Fish *p) {
     self->unk_18 = p;
     self->unk_04 = 0;
     self->unk_08 = 0x1e;
@@ -173,7 +173,7 @@ void func_ov000_02191618(void *a);
 void VEC_Normalize(void *src, void *dst);
 extern u8 data_ov015_02212e74[];
 
-BOOL func_ov015_0220c21c(Ov015FishState1c *self, Ov015Fish *p) {
+BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
     BOOL ret = TRUE;
     s32 a;
     s32 off;

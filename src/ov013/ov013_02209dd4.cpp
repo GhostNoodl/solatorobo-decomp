@@ -77,7 +77,7 @@ s32 func_ov013_02209b44(Ov013Act_02207968 *self) {
     return st;
 }
 
-void func_ov013_02209cac(Ov013ActVt_0220bc80 *self) {
+void Ov013ActVt_0220bc80_Start(Ov013ActVt_0220bc80 *self) {
     s32 r;
     Ov013Vec *v;
     func_ov003_021d112c(self);

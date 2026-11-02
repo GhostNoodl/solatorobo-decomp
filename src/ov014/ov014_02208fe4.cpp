@@ -73,24 +73,24 @@ void func_ov014_02208fe4(Ov014ActEx_02208618 *self) {
     }
 }
 
-void *func_ov014_022090fc(void *self) {
+void *Ov014ActExVt_02217838_DtorDelete(void *self) {
     func_ov000_0219429c(self);
     func_0203de1c(self);
     return self;
 }
 
-void *func_ov014_02209118(void *self) {
+void *Ov014ActExVt_02217838_Dtor(void *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void *func_ov014_0220912c(void *self) {
+void *Ov014ActExGrow_DtorDelete(void *self) {
     func_ov000_0219429c(self);
     func_0203de1c(self);
     return self;
 }
 
-void *func_ov014_02209148(void *self) {
+void *Ov014ActExGrow_Dtor(void *self) {
     func_ov000_0219429c(self);
     return self;
 }
@@ -143,7 +143,7 @@ void func_ov014_022091ec(void *self, Ov014Actor *a) {
 }
 
 #pragma force_active on
-Ov014Actor *func_ov014_02209280(Ov014Act_02209280 *self) {
+Ov014Actor *Ov014Act_02209280_Ctor(Ov014Act_02209280 *self) {
     s32 i;
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov014_02217968;
@@ -190,7 +190,7 @@ static inline void Ov014_Kill1f0(Ov014Act_02209280 *self) {
     }
 }
 
-Ov014Act_02209280 *func_ov014_02209334(Ov014Act_02209280 *self) {
+Ov014Act_02209280 *Ov014Act_02209280_Dtor(Ov014Act_02209280 *self) {
     FLD(void *, self, 0) = data_ov014_02217968;
     Ov014_Kill1f0(self);
     func_02036838(data_02097cdc, data_ov014_02217a0c, 7, 0);
@@ -199,7 +199,7 @@ Ov014Act_02209280 *func_ov014_02209334(Ov014Act_02209280 *self) {
     return self;
 }
 
-Ov014Act_02209280 *func_ov014_022093e0(Ov014Act_02209280 *self) {
+Ov014Act_02209280 *Ov014Act_02209280_DtorDelete(Ov014Act_02209280 *self) {
     FLD(void *, self, 0) = data_ov014_02217968;
     Ov014_Kill1f0(self);
     func_02036838(data_02097cdc, data_ov014_02217a0c, 7, 0);
@@ -209,13 +209,13 @@ Ov014Act_02209280 *func_ov014_022093e0(Ov014Act_02209280 *self) {
     return self;
 }
 
-void func_ov014_02209494(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_Init(Ov014Act_02209280 *self) {
     func_ov003_021d0fc0(self);
     func_020359d0(data_ov014_02217a0c, 7, 0);
     func_02049678(data_02097e4c, 4, 0xc, -1);
 }
 
-BOOL func_ov014_022094d0(Ov014Act_02209280 *self) {
+BOOL Ov014Act_02209280_IsReady(Ov014Act_02209280 *self) {
     BOOL r = TRUE;
     r = (r & func_ov000_0218cf5c(self)) ? TRUE : FALSE;
     r = (r & func_02035b90(data_ov014_02217a0c, 7)) ? TRUE : FALSE;
@@ -226,7 +226,7 @@ void func_ov014_02209520(Ov014Act_02209280 *self, Ov014Msg *msg) {
     func_ov003_021d1c00(self, msg);
 }
 
-void func_ov014_0220952c(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_Start(Ov014Act_02209280 *self) {
     Ov014Sub38 *m;
     func_ov003_021d112c(self);
     {
@@ -288,7 +288,7 @@ static inline BOOL Ov014_TickB6(Ov014Act_02209280 *self) {
     return r;
 }
 
-void func_ov014_022096e0(Ov014Act_02209280 *self) {
+void Ov014Act_02209280_Update(Ov014Act_02209280 *self) {
     u8 *pl;
     if (!Ov014_GameIdle()) {
         return;

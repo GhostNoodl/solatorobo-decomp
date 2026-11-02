@@ -51,7 +51,7 @@ static inline s32 Ov013_DistXZ(const Ov013Vec *a, const Ov013Vec *b) {
     return Ov013_Sqrt2((s64)dx * dx + (s64)dz * dz);
 }
 
-void func_ov013_02207a6c(Ov013Act_02207968 *self) {
+void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
     Ov013Actor *pl;
     s32 dist;
     if (!Ov013_GameIdle()) {

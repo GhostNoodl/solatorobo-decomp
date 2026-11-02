@@ -51,7 +51,7 @@ static inline void Ov009_SetPos(Ov009ActVt_02217640 *self, s32 x, s32 y, s32 z) 
     self->pos.z = z;
 }
 
-void func_ov009_0220b70c(Ov009ActVt_02217640 *self) {
+void Ov009ActVt_02217640_Start(Ov009ActVt_02217640 *self) {
     Ov009Sub48 *s48;
     func_ov003_021d112c(self);
     if (self->unk_1a != 0) {
@@ -108,7 +108,7 @@ static inline BOOL Ov009Game_IsPausedB(Ov009Game54 *g) {
     return g->unk_d4 != 0;
 }
 
-void func_ov009_0220b8a0(Ov009ActVt_02217640 *self) {
+void Ov009ActVt_02217640_Update(Ov009ActVt_02217640 *self) {
     Ov009Actor *pl;
     Ov009Vec d;
     Ov009Vec v;

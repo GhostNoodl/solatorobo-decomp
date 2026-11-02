@@ -638,7 +638,7 @@ static inline s32 *Ov014_NewFx(void) {
     return p;
 }
 
-// Actor class of func_ov014_021fa6a0 (vtable data_ov014_02217114).
+// Actor class of Ov014Act_021fa6a0_Ctor (vtable data_ov014_02217114).
 class Ov014Act_021fa6a0 : public Ov014Actor {
 public:
     u8 unk_f0;
@@ -675,7 +675,7 @@ public:
 };
 SIZE_ASSERT(Ov014Act_021fa6a0, 0x368);
 
-// Actor class of func_ov014_021fd4d4 (vtable data_ov014_02217588).
+// Actor class of Ov014Act_021fd4d4_Ctor (vtable data_ov014_02217588).
 class Ov014Act_021fd4d4 : public Ov014Actor {
 public:
     s16 unk_f0;
@@ -705,7 +705,7 @@ public:
 };
 SIZE_ASSERT(Ov014Act_021fd4d4, 0x17c);
 
-// Actor class of func_ov014_0220011c (vtable data_ov014_022174dc).
+// Actor class of Ov014Act_0220011c_Ctor (vtable data_ov014_022174dc).
 class Ov014Act_0220011c : public Ov014Actor {
 public:
     s16 unk_f0;
@@ -725,7 +725,7 @@ public:
 };
 SIZE_ASSERT(Ov014Act_0220011c, 0x124);
 
-// Actor class of func_ov014_02201b94 (vtable data_ov014_02217430).
+// Actor class of Ov014Act_02201b94_Ctor (vtable data_ov014_02217430).
 class Ov014Act_02201b94 : public Ov014Actor {
 public:
     s16 unk_f0;
@@ -758,7 +758,7 @@ public:
 };
 SIZE_ASSERT(Ov014Act_02201b94, 0x370);
 
-// Actor class of func_ov014_0221267c (vtable data_ov014_02217dc0).
+// Actor class of Ov014Act_0221267c_Ctor (vtable data_ov014_02217dc0).
 class Ov014Act_0221267c : public Ov014Actor {
 public:
     s16 unk_f0;
@@ -778,7 +778,7 @@ public:
 };
 SIZE_ASSERT(Ov014Act_0221267c, 0x358);
 
-// Actor class of func_ov014_02209280 (vtable data_ov014_02217968).
+// Actor class of Ov014Act_02209280_Ctor (vtable data_ov014_02217968).
 class Ov014Act_02209280 : public Ov014Actor {
 public:
     Ov014Step *step;
@@ -827,7 +827,7 @@ public:
 };
 SIZE_ASSERT(Ov014Act_02209280, 0x1f8);
 
-// Actor class of func_ov014_0220f9d0 (vtable data_ov014_02217e6c).
+// Actor class of Ov014Act_0220f9d0_Ctor (vtable data_ov014_02217e6c).
 class Ov014Act_0220f9d0 : public Ov014Actor {
 public:
     u8 unk_f0[0x28];
@@ -858,7 +858,7 @@ public:
 };
 SIZE_ASSERT(Ov014Act_0220f9d0, 0x184);
 
-// Actor class of func_ov014_02208618 (vtable data_ov014_02217708).
+// Actor class of Ov014ActEx_02208618_Ctor (vtable data_ov014_02217708).
 class Ov014ActEx_02208618 : public Ov014ActorEx {
 public:
     u32 unk_d0;
@@ -868,7 +868,7 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_02208618, 0xdc);
 
-// Actor class of func_ov014_0220d70c (vtable data_ov014_02217bdc).
+// Actor class of Ov014ActEx_0220d70c_Ctor (vtable data_ov014_02217bdc).
 class Ov014ActEx_0220d70c : public Ov014ActorEx {
 public:
     void *unk_d0;
@@ -878,7 +878,7 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_0220d70c, 0xe0);
 
-// Actor class of func_ov014_0220dcf4 (vtable data_ov014_02217b44).
+// Actor class of Ov014ActEx_0220dcf4_Ctor (vtable data_ov014_02217b44).
 class Ov014ActEx_0220dcf4 : public Ov014ActorEx {
 public:
     void *unk_d0;
@@ -890,14 +890,14 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_0220dcf4, 0xdc);
 
-// Actor class of func_ov014_021fbd64 (vtable data_ov014_022172c4).
+// Actor class of Ov014ActEx_021fbd64_Ctor (vtable data_ov014_022172c4).
 class Ov014ActEx_021fbd64 : public Ov014ActorEx {
 public:
     void *unk_d0;
 };
 SIZE_ASSERT(Ov014ActEx_021fbd64, 0xd4);
 
-// Actor class of func_ov014_021fc24c (vtable data_ov014_0221722c).
+// Actor class of Ov014ActEx_021fc24c_Ctor (vtable data_ov014_0221722c).
 class Ov014ActEx_021fc24c : public Ov014ActorEx {
 public:
     Ov014Vec unk_d0;
@@ -915,7 +915,7 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_021fc24c, 0x104);
 
-// Actor class of func_ov014_02206c68 (vtable data_ov014_02217670).
+// Actor class of Ov014ActEx_02206c68_Ctor (vtable data_ov014_02217670).
 class Ov014ActEx_02206c68 : public Ov014ActorEx {
 public:
     s32 unk_d0;
@@ -926,7 +926,7 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_02206c68, 0xe0);
 
-// Actor class of func_ov014_0220774c (vtable data_ov014_022177a0).
+// Actor class of Ov014ActEx_0220774c_Ctor (vtable data_ov014_022177a0).
 class Ov014ActEx_0220774c : public Ov014ActorEx {
 public:
     u32 unk_d0;
@@ -935,7 +935,7 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_0220774c, 0xdc);
 
-// Actor class of func_ov014_0220eca0 (vtable data_ov014_02217aac).
+// Actor class of Ov014ActEx_0220eca0_Ctor (vtable data_ov014_02217aac).
 class Ov014ActEx_0220eca0 : public Ov014ActorEx {
 public:
     s32 unk_d0;
@@ -951,7 +951,7 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_0220eca0, 0xf8);
 
-// Actor class of func_ov014_022142fc (vtable data_ov014_02217fb0).
+// Actor class of Ov014ActEx_022142fc_Ctor (vtable data_ov014_02217fb0).
 class Ov014ActEx_022142fc : public Ov014ActorEx {
 public:
     Ov014Vec unk_d0;
@@ -960,7 +960,7 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_022142fc, 0xe4);
 
-// Actor class of func_ov014_022152e8 (vtable data_ov014_02217f18).
+// Actor class of Ov014ActEx_022152e8_Ctor (vtable data_ov014_02217f18).
 class Ov014ActEx_022152e8 : public Ov014ActorEx {
 public:
     Ov014Vec unk_d0;

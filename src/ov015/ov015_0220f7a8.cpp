@@ -200,7 +200,7 @@ void func_ov015_0220fb78(Ov015Result *self) {
     FLD(u8 *, t, 0x48) = o;
 }
 
-void *func_ov015_0220fcec(Ov015Msg *self) {
+void *Ov015Msg_Ctor(Ov015Msg *self) {
     SET_VT(self, data_ov015_022131c4);
     self->unk_04 = 0;
     self->unk_0c = 0;
@@ -223,7 +223,7 @@ void *func_ov015_0220fcec(Ov015Msg *self) {
     return self;
 }
 
-void *func_ov015_0220fd74(Ov015Msg *self) {
+void *Ov015Msg_Dtor(Ov015Msg *self) {
     u32 saved;
     SET_VT(self, data_ov015_022131c4);
     HEAP_PUSH(saved);
@@ -259,7 +259,7 @@ void *func_ov015_0220fd74(Ov015Msg *self) {
     return self;
 }
 
-void *func_ov015_0220fec0(Ov015Msg *self) {
+void *Ov015Msg_DtorDelete(Ov015Msg *self) {
     u32 saved;
     SET_VT(self, data_ov015_022131c4);
     HEAP_PUSH(saved);

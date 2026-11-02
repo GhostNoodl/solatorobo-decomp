@@ -15,7 +15,7 @@ void func_ov009_02214360(Ov009ActExVt_0221828c *self, u8 *msg) {
     func_ov000_021950e8(self, msg);
 }
 
-void func_ov009_0221439c(Ov009ActExVt_0221828c *self) {
+void Ov009ActExVt_0221828c_Start(Ov009ActExVt_0221828c *self) {
     u8 *p;
     func_ov000_02194758(self);
     self->unk_d0 = 0;

@@ -15,7 +15,7 @@ extern BOOL func_ov000_0218f110(void *p);
 extern s32 func_ov003_021d1c00(Ov014Actor *self, Ov014Msg *msg);
 
 #pragma force_active on
-Ov014Actor *func_ov014_0221267c(Ov014Act_0221267c *self) {
+Ov014Actor *Ov014Act_0221267c_Ctor(Ov014Act_0221267c *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov014_02217dc0;
     func_ov000_0218e9c4((u8 *)self + 0xf0);
@@ -31,14 +31,14 @@ Ov014Actor *func_ov014_0221267c(Ov014Act_0221267c *self) {
 }
 #pragma force_active reset
 
-Ov014Act_0221267c *func_ov014_022126e0(Ov014Act_0221267c *self) {
+Ov014Act_0221267c *Ov014Act_0221267c_Dtor(Ov014Act_0221267c *self) {
     func_ov000_0218fee4((u8 *)self + 0x228);
     func_ov000_0218ea20((u8 *)self + 0xf0);
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov014Act_0221267c *func_ov014_02212708(Ov014Act_0221267c *self) {
+Ov014Act_0221267c *Ov014Act_0221267c_DtorDelete(Ov014Act_0221267c *self) {
     func_ov000_0218fee4((u8 *)self + 0x228);
     func_ov000_0218ea20((u8 *)self + 0xf0);
     func_ov003_021d0edc(self);
@@ -52,7 +52,7 @@ static inline void Ov014Names_Set(u8 *n, const char *a, const char *b) {
     FLD(Ov014Flags8, n, 3).b1 = 1;
 }
 
-void func_ov014_02212738(Ov014Act_0221267c *self) {
+void Ov014Act_0221267c_Init(Ov014Act_0221267c *self) {
     func_ov003_021d0fc0(self);
     {
         const char *b = data_ov014_02217d8e;

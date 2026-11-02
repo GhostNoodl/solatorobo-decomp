@@ -24,7 +24,7 @@ s32 func_ov013_021fc400(Ov013Actor *self);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
-void func_ov013_021fa6a0(Ov013Boss *self) {
+void Ov013Boss_Start(Ov013Boss *self) {
     Ov013Sub48 *m;
     Ov013Sub44 *n;
     Ov013Actor *p;
@@ -57,7 +57,7 @@ void func_ov013_021fa6a0(Ov013Boss *self) {
     }
 }
 
-void func_ov013_021fa78c(Ov013Actor *self) {
+void Ov013Boss_Update(Ov013Actor *self) {
     Ov013Actor *p;
     s32 n;
     if (!Ov013_GameIdle()) {

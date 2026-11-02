@@ -8,14 +8,14 @@ extern u8 data_ov015_02212e47[];
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_02191618(void *a);
 
-void *func_ov015_0220b620(void *self) {
+void *Ov015FishState18_Dtor(void *self) {
     SET_VT(self, data_ov015_02212f20);
     VCALL(self)->v10(0);
     SET_VT(self, data_ov015_02212eb0);
     return self;
 }
 
-void *func_ov015_0220b658(void *self) {
+void *Ov015FishState18_DtorDelete(void *self) {
     SET_VT(self, data_ov015_02212f20);
     VCALL(self)->v10(0);
     SET_VT(self, data_ov015_02212eb0);
@@ -23,7 +23,7 @@ void *func_ov015_0220b658(void *self) {
     return self;
 }
 
-BOOL func_ov015_0220b698(Ov015FishState18 *self, Ov015Fish *p) {
+BOOL Ov015FishState18_Enter(Ov015FishState18 *self, Ov015Fish *p) {
     self->unk_08 = 0;
     self->unk_0c = 0x50;
     self->unk_10 = p->unk_c0.unk_14;
@@ -59,7 +59,7 @@ static inline void Ov015_SpeedB6f0(Ov015Fish *p) {
     }
     p->unk_c0.unk_1c = r;
 }
-BOOL func_ov015_0220b6f0(Ov015FishState18 *self, Ov015Fish *p) {
+BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
     Ov015Vec b;
     Ov015Vec a;
     self->unk_04 = p;

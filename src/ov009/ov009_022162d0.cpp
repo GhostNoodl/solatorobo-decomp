@@ -223,7 +223,7 @@ extern "C" {
 
 extern void func_ov000_02194758(Ov009Obj *self);
 
-void func_ov009_02214810(Ov009ActExVt_022181f4 *self) {
+void Ov009ActExVt_022181f4_Start(Ov009ActExVt_022181f4 *self) {
     func_ov000_02194758(self);
     self->unk_d0 = 0x5a;
     self->unk_ce = 0xb4;
@@ -241,7 +241,7 @@ extern void *data_02097e4c;
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 
-void func_ov009_0221483c(Ov009ActExVt_022181f4 *self) {
+void Ov009ActExVt_022181f4_Update(Ov009ActExVt_022181f4 *self) {
     if (self->unk_ce != 0) {
         self->unk_ce--;
         if (self->unk_ce <= self->unk_d0) {
@@ -528,13 +528,13 @@ void func_ov009_02215014(Ov009ActorEx *self) {
     func_ov000_02198360(self->unk_40, 1, 0);
 }
 
-void func_ov009_02215044(Ov009ActExVt_0221802c *self) {
+void Ov009ActExVt_0221802c_Init(Ov009ActExVt_0221802c *self) {
     func_ov000_0219433c(self);
     self->rot[0] = 0xd548;
     self->unk_d0 = 0;
 }
 
-void func_ov009_02215068(Ov009ActExVt_0221802c *self) {
+void Ov009ActExVt_0221802c_Start(Ov009ActExVt_0221802c *self) {
     Ov009Sub48 *s48;
     u8 *p;
     func_ov000_02194758(self);

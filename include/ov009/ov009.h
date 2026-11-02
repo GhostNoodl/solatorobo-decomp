@@ -199,7 +199,7 @@ struct Ov009Sub38 {
     u8 alpha;
     u8 unk_bf[0x3];
     union {
-        u16 unk_c2; // or-ed whole in func_ov009_022076b8
+        u16 unk_c2; // or-ed whole in Ov009ActVt_02217844_Start
         struct {
             u16 unk_c2_0 : 1;
             u16 unk_c2_1 : 4;
@@ -565,7 +565,7 @@ char *func_020701d4(void *res);
 u8 *func_02070558(void *res);
 }
 
-// Actor class of func_ov009_02200b48 (vtable data_ov009_02216d20).
+// Actor class of Ov009Act_02200b48_Ctor (vtable data_ov009_02216d20).
 class Ov009Act_02200b48 : public Ov009Actor {
 public:
     u16 unk_f0;
@@ -579,7 +579,7 @@ public:
 };
 SIZE_ASSERT(Ov009Act_02200b48, 0x12c);
 
-// Actor class of func_ov009_02202788 (vtable data_ov009_02216e78).
+// Actor class of Ov009Act_02202788_Ctor (vtable data_ov009_02216e78).
 class Ov009Act_02202788 : public Ov009Actor {
 public:
     u16 unk_f0;

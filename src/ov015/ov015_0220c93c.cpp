@@ -14,7 +14,7 @@ s32 func_02040528(s32 max);
 void VEC_Normalize(void *src, void *dst);
 void func_0203f324(void *a);
 
-Ov015FishState40 *func_ov015_0220c93c(Ov015FishState40 *self) {
+Ov015FishState40 *Ov015FishState40_Ctor(Ov015FishState40 *self) {
     SET_VT(self, data_ov015_02212ee8);
     self->unk_04 = 0;
     self->unk_08 = 0;
@@ -33,7 +33,7 @@ Ov015FishState40 *func_ov015_0220c93c(Ov015FishState40 *self) {
     return self;
 }
 
-void *func_ov015_0220c98c(Ov015FishState40 *self) {
+void *Ov015FishState40_Dtor(Ov015FishState40 *self) {
     s32 i;
     Ov015V *o;
     u32 saved;
@@ -59,7 +59,7 @@ void *func_ov015_0220c98c(Ov015FishState40 *self) {
     return self;
 }
 
-void *func_ov015_0220ca38(Ov015FishState40 *self) {
+void *Ov015FishState40_DtorDelete(Ov015FishState40 *self) {
     s32 i;
     Ov015V *o;
     u32 saved;
@@ -86,7 +86,7 @@ void *func_ov015_0220ca38(Ov015FishState40 *self) {
 }
 
 static inline void Ov015_SetXZ(s32 *v, s32 x, s32 z) { v[0] = x; v[2] = z; }
-BOOL func_ov015_0220caec(Ov015FishState40 *self, Ov015Fish *p) {
+BOOL Ov015FishState40_Enter(Ov015FishState40 *self, Ov015Fish *p) {
     s32 a;
     s32 x, z;
     func_ov000_02190cb0(&p->unk_244, data_ov015_02212e0d, 0x19a, 0);
@@ -142,7 +142,7 @@ typedef struct {
     Ov015Sub568 sub;
 } Ov015Owner568;
 
-BOOL func_ov015_0220cbe8(Ov015FishState40 *self, Ov015Fish *p) {
+BOOL Ov015FishState40_Update(Ov015FishState40 *self, Ov015Fish *p) {
     Ov015Vec v0;
     Ov015Vec b;
     Ov015Vec a;

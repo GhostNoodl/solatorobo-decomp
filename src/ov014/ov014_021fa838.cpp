@@ -10,7 +10,7 @@ extern void func_02049564(void *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
 extern void *func_020359d0(const char *a, s32 b, s32 c);
 
-void func_ov014_021fa838(Ov014Act_021fa6a0 *self) {
+void Ov014Act_021fa6a0_Init(Ov014Act_021fa6a0 *self) {
     func_ov003_021d0fc0(self);
     {
         const char *a = data_ov014_022170e7;

@@ -31,7 +31,7 @@ static inline bool Ov015Task_Flag4(Ov015Task *t) {
     return t->flag4;
 }
 
-bool func_ov015_02202dac(Ov015Task *self) {
+bool Ov015Task_GetFlag4(Ov015Task *self) {
     BOOL r = Ov015Task_Flag4(self);
     return r;
 }

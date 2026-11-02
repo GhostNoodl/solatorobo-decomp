@@ -11,7 +11,7 @@ struct Ov009Byte {
     u8 b1 : 7;
 };
 
-void func_ov009_022137ac(Ov009ActVt_02217cb0 *self) {
+void Ov009ActVt_02217cb0_Start(Ov009ActVt_02217cb0 *self) {
     u8 *p;
     Ov009Actor *a;
     func_ov003_021d112c(self);

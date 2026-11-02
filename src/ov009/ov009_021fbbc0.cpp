@@ -106,12 +106,12 @@ void func_ov009_021fbe3c(Ov009ActVt_022166a4 *self) {
     }
 }
 
-void func_ov009_021fbf50(Ov009ActVt_022163f4 *self) {
+void Ov009ActVt_022163f4_Start(Ov009ActVt_022163f4 *self) {
     func_ov003_021d112c(self);
     func_ov000_02198360(self->unk_40, 0x20, 0);
 }
 
-BOOL func_ov009_021fbf70(Ov009ActVt_022163f4 *self) {
+BOOL Ov009ActVt_022163f4_Draw(Ov009ActVt_022163f4 *self) {
     Ov009Vec t;
     if (self->unk_f0 != 0 || self->unk_ec_1) {
         self->unk_f4 += Ov009_FxMul(-0xccd - self->unk_f4, 0x148);
@@ -126,7 +126,7 @@ BOOL func_ov009_021fbf70(Ov009ActVt_022163f4 *self) {
     return func_ov003_021d16cc(self);
 }
 
-void func_ov009_021fc03c(Ov009ActVt_022163f4 *self) {
+void Ov009ActVt_022163f4_Update(Ov009ActVt_022163f4 *self) {
     func_ov003_021d1e8c(self);
     if (self->unk_30 & 0x200) {
         self->unk_f0 = 0;
@@ -192,7 +192,7 @@ void func_ov009_021fc1e4(Ov009ActVt_022163f4 *self) {
     func_ov003_021d4b68(self);
 }
 
-void func_ov009_021fc228(Ov009ActVt_02216348 *self) {
+void Ov009ActVt_02216348_Start(Ov009ActVt_02216348 *self) {
     Ov009Sub48 *s48;
     u32 saved;
     func_ov003_021d112c(self);
@@ -222,7 +222,7 @@ struct Ov009HitMsg {
     u16 c;
 };
 
-void func_ov009_021fc2a8(Ov009ActVt_02216348 *self) {
+void Ov009ActVt_02216348_Update(Ov009ActVt_02216348 *self) {
     Ov009Actor *p;
     if (!Ov009_GameIdle()) {
         return;

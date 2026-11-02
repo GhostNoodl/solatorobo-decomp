@@ -50,24 +50,24 @@ void func_ov013_0220aca0(Ov013ActEx_0220a9a8 *self) {
                         self->unk_48->unk_38, self->unk_d0, -1, 0x1000);
 }
 
-Ov013Actor *func_ov013_0220ade8(Ov013Actor *self) {
+Ov013Actor *Ov013ActEx_0220a9a8_DtorDelete(Ov013Actor *self) {
     func_ov000_0219429c(self);
     func_0203de1c(self);
     return self;
 }
 
-Ov013Actor *func_ov013_0220ae04(Ov013Actor *self) {
+Ov013Actor *Ov013ActEx_0220a9a8_Dtor(Ov013Actor *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-Ov013Actor *func_ov013_0220ae18(Ov013Actor *self) {
+Ov013Actor *Ov013ActEx_0220a4e0_DtorDelete(Ov013Actor *self) {
     func_ov000_0219429c(self);
     func_0203de1c(self);
     return self;
 }
 
-Ov013Actor *func_ov013_0220ae34(Ov013Actor *self) {
+Ov013Actor *Ov013ActEx_0220a4e0_Dtor(Ov013Actor *self) {
     func_ov000_0219429c(self);
     return self;
 }

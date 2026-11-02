@@ -17,7 +17,7 @@ struct Ov009Byte {
     u8 b6 : 2;
 };
 
-void func_ov009_021fcce8(Ov009ActVt_02216750 *self) {
+void Ov009ActVt_02216750_Init(Ov009ActVt_02216750 *self) {
     u8 *p;
     func_ov003_021d0fc0(self);
     func_02049564(data_02097e4c, 1, 1);
@@ -39,7 +39,7 @@ void func_ov009_021fcce8(Ov009ActVt_02216750 *self) {
     }
 }
 
-void func_ov009_021fcda8(Ov009ActVt_02216750 *self) {
+void Ov009ActVt_02216750_Start(Ov009ActVt_02216750 *self) {
     Ov009Sub48 *s48;
     func_ov003_021d112c(self);
     self->unk_f0 = self->pos;
@@ -92,7 +92,7 @@ extern void func_01ffc9fc(Ov009Vec *dst, Ov009Vec *src, u16 angle);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern void func_ov000_0218d988(Ov009Actor *self, Ov009Actor *other, s32 a);
 
-void func_ov009_021fce9c(Ov009ActVt_02216750 *self) {
+void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
     Ov009Actor *pl;
     s32 dist;
     s32 dy;

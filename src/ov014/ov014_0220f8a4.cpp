@@ -120,7 +120,7 @@ void func_ov014_0220f8fc(void *self, Ov014Actor *a) {
 }
 
 #pragma force_active on
-Ov014Actor *func_ov014_0220f9d0(Ov014Act_0220f9d0 *self) {
+Ov014Actor *Ov014Act_0220f9d0_Ctor(Ov014Act_0220f9d0 *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov014_02217e6c;
     func_ov003_021ceedc((u8 *)self + 0x124);
@@ -158,7 +158,7 @@ static inline void Ov014_StopSnd(void) {
     }
 }
 
-Ov014Act_0220f9d0 *func_ov014_0220fa4c(Ov014Act_0220f9d0 *self) {
+Ov014Act_0220f9d0 *Ov014Act_0220f9d0_Dtor(Ov014Act_0220f9d0 *self) {
     FLD(void *, self, 0) = data_ov014_02217e6c;
     Ov014_Free154(self);
     Ov014_StopSnd();
@@ -167,7 +167,7 @@ Ov014Act_0220f9d0 *func_ov014_0220fa4c(Ov014Act_0220f9d0 *self) {
     return self;
 }
 
-Ov014Act_0220f9d0 *func_ov014_0220fafc(Ov014Act_0220f9d0 *self) {
+Ov014Act_0220f9d0 *Ov014Act_0220f9d0_DtorDelete(Ov014Act_0220f9d0 *self) {
     FLD(void *, self, 0) = data_ov014_02217e6c;
     Ov014_Free154(self);
     Ov014_StopSnd();
@@ -177,12 +177,12 @@ Ov014Act_0220f9d0 *func_ov014_0220fafc(Ov014Act_0220f9d0 *self) {
     return self;
 }
 
-void func_ov014_0220fbb4(Ov014Act_0220f9d0 *self) {
+void Ov014Act_0220f9d0_Init(Ov014Act_0220f9d0 *self) {
     func_ov003_021d0fc0(self);
     func_020359d0(data_ov014_02217d1d, 7, 0);
 }
 
-BOOL func_ov014_0220fbd4(Ov014Act_0220f9d0 *self) {
+BOOL Ov014Act_0220f9d0_IsReady(Ov014Act_0220f9d0 *self) {
     BOOL r = func_ov000_0218cf5c(self);
     return (r & func_02035b90(data_ov014_02217d1d, 7)) ? TRUE : FALSE;
 }
@@ -202,7 +202,7 @@ void func_ov014_0220fc00(Ov014Act_0220f9d0 *self, Ov014Msg *msg) {
     func_ov003_021d1c00(self, msg);
 }
 
-void func_ov014_0220fc5c(Ov014Act_0220f9d0 *self) {
+void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
     Ov014Sub38 *m;
     u8 *p;
     func_ov003_021d112c(self);
@@ -343,7 +343,7 @@ static inline void Ov014_SpawnPair(Ov014Act_0220f9d0 *self) {
     }
 }
 
-void func_ov014_0220fe6c(Ov014Act_0220f9d0 *self) {
+void Ov014Act_0220f9d0_Update(Ov014Act_0220f9d0 *self) {
     u8 *pl;
     if (!Ov014_GameIdle()) {
         return;

@@ -5,7 +5,7 @@ extern "C" {
 extern char data_ov009_0221729c[];
 extern char data_ov009_022172a7[];
 
-void func_ov009_02208f3c(Ov009ActVt_02217594 *self) {
+void Ov009ActVt_02217594_Init(Ov009ActVt_02217594 *self) {
     func_ov003_021d0fc0(self);
     {
         const char *a = data_ov009_0221729c;

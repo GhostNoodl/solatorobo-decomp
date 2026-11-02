@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov009_0220ae4c(Ov009ActVt_022172e4 *self) {
+void Ov009ActVt_022172e4_Start(Ov009ActVt_022172e4 *self) {
     Ov009Sub44 *s44;
     func_ov003_021d112c(self);
     self->unk_fc = self->rot[1];
@@ -30,7 +30,7 @@ extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern void func_0203f364(Ov009Sub48 *p);
 extern BOOL func_01ffc624(const Ov009Vec *a, const Ov009Vec *b, Ov009RotS *r, s32 c, s32 d);
 
-void func_ov009_0220aeb8(Ov009ActVt_022172e4 *self) {
+void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
     Ov009Vec v;
     Ov009RotS r;
     Ov009Actor *pl;

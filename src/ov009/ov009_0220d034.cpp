@@ -17,25 +17,25 @@ void func_ov009_0220d05c(Ov009ActVt_022178f0 *self) {
     self->v7c();
 }
 
-Ov009ActVt_022178f0 *func_ov009_0220d070(Ov009ActVt_022178f0 *self) {
+Ov009ActVt_022178f0 *Ov009ActVt_022178f0_Dtor(Ov009ActVt_022178f0 *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov009ActVt_022178f0 *func_ov009_0220d084(Ov009ActVt_022178f0 *self) {
+Ov009ActVt_022178f0 *Ov009ActVt_022178f0_DtorDelete(Ov009ActVt_022178f0 *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
 }
 
-Ov009ActVt_02217844 *func_ov009_0220d0a0(Ov009ActVt_02217844 *self) {
+Ov009ActVt_02217844 *Ov009ActVt_02217844_Dtor(Ov009ActVt_02217844 *self) {
     func_ov000_0218fee4(&self->model);
     func_ov000_0218ea20(&self->anim);
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov009ActVt_02217844 *func_ov009_0220d0c8(Ov009ActVt_02217844 *self) {
+Ov009ActVt_02217844 *Ov009ActVt_02217844_DtorDelete(Ov009ActVt_02217844 *self) {
     func_ov000_0218fee4(&self->model);
     func_ov000_0218ea20(&self->anim);
     func_ov003_021d0edc(self);
@@ -43,13 +43,13 @@ Ov009ActVt_02217844 *func_ov009_0220d0c8(Ov009ActVt_02217844 *self) {
     return self;
 }
 
-Ov009Multi *func_ov009_0220d0f8(Ov009Multi *self) {
+Ov009Multi *Ov009Multi_Dtor(Ov009Multi *self) {
     __cxa_vec_cleanup(self->models, 4, 0xe8, (void *)func_ov000_0218fee4);
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov009Multi *func_ov009_0220d128(Ov009Multi *self) {
+Ov009Multi *Ov009Multi_DtorDelete(Ov009Multi *self) {
     __cxa_vec_cleanup(self->models, 4, 0xe8, (void *)func_ov000_0218fee4);
     func_ov003_021d0edc(self);
     func_0203de1c(self);
@@ -67,14 +67,14 @@ Ov009Actor *func_ov009_0220d174(Ov009Actor *self) {
     return self;
 }
 
-Ov009ActVt_02217594 *func_ov009_0220d190(Ov009ActVt_02217594 *self) {
+Ov009ActVt_02217594 *Ov009ActVt_02217594_Dtor(Ov009ActVt_02217594 *self) {
     func_ov000_0218fee4(&self->model);
     func_ov000_0218ea20(&self->anim);
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov009ActVt_02217594 *func_ov009_0220d1b8(Ov009ActVt_02217594 *self) {
+Ov009ActVt_02217594 *Ov009ActVt_02217594_DtorDelete(Ov009ActVt_02217594 *self) {
     func_ov000_0218fee4(&self->model);
     func_ov000_0218ea20(&self->anim);
     func_ov003_021d0edc(self);
@@ -82,45 +82,45 @@ Ov009ActVt_02217594 *func_ov009_0220d1b8(Ov009ActVt_02217594 *self) {
     return self;
 }
 
-Ov009ActVt_02217390 *func_ov009_0220d1e8(Ov009ActVt_02217390 *self) {
+Ov009ActVt_02217390 *Ov009ActVt_02217390_Dtor(Ov009ActVt_02217390 *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov009ActVt_02217390 *func_ov009_0220d1fc(Ov009ActVt_02217390 *self) {
-    func_ov003_021d0edc(self);
-    func_0203de1c(self);
-    return self;
-}
-
-Ov009ActVt_022172e4 *func_ov009_0220d218(Ov009ActVt_022172e4 *self) {
-    func_ov003_021d0edc(self);
-    return self;
-}
-
-Ov009ActVt_022172e4 *func_ov009_0220d22c(Ov009ActVt_022172e4 *self) {
+Ov009ActVt_02217390 *Ov009ActVt_02217390_DtorDelete(Ov009ActVt_02217390 *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
 }
 
-Ov009ActVt_022176ec *func_ov009_0220d248(Ov009ActVt_022176ec *self) {
+Ov009ActVt_022172e4 *Ov009ActVt_022172e4_Dtor(Ov009ActVt_022172e4 *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov009ActVt_022176ec *func_ov009_0220d25c(Ov009ActVt_022176ec *self) {
+Ov009ActVt_022172e4 *Ov009ActVt_022172e4_DtorDelete(Ov009ActVt_022172e4 *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
 }
 
-Ov009ActVt_02217640 *func_ov009_0220d278(Ov009ActVt_02217640 *self) {
+Ov009ActVt_022176ec *Ov009ActVt_022176ec_Dtor(Ov009ActVt_022176ec *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov009ActVt_02217640 *func_ov009_0220d28c(Ov009ActVt_02217640 *self) {
+Ov009ActVt_022176ec *Ov009ActVt_022176ec_DtorDelete(Ov009ActVt_022176ec *self) {
+    func_ov003_021d0edc(self);
+    func_0203de1c(self);
+    return self;
+}
+
+Ov009ActVt_02217640 *Ov009ActVt_02217640_Dtor(Ov009ActVt_02217640 *self) {
+    func_ov003_021d0edc(self);
+    return self;
+}
+
+Ov009ActVt_02217640 *Ov009ActVt_02217640_DtorDelete(Ov009ActVt_02217640 *self) {
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
