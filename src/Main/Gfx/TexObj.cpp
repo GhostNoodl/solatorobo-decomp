@@ -204,7 +204,7 @@ extern void NNS_G2dSetCellAnimationSequence(TexObjAnim *anim, u16 *data);
 extern void NNS_G2dSetAnimCtrlCallBackFunctor(TexObjAnim *anim, int type, TexObj *obj, void (*cb)(TexObj *));
 extern u16 *NNS_G2dGetAnimSequenceByIdx(u16 *dict, int idx);
 extern void NNS_G2dTickCellAnimation(TexObjAnim *anim, int frame);
-extern void func_020435e8(GfxPltt *pltt, void *src, u32 size);
+extern void GfxPltt_ApplyFilter(GfxPltt *pltt, void *src, u32 size);
 void func_02041c90(TexObj *obj);
 
 
@@ -291,7 +291,7 @@ extern u32 GfxSys_AllocVram(GfxSys *sys, u32 size, BOOL sub, GfxVramNode *cur, G
 extern u32 Vram_QueueTransfer(int type, u32 src, u32 dst, u32 size, u32 chunk);
 extern void NNS_G2dSetImageLocation(TexObj *obj, int idx, u32 addr);
 extern void NNS_G2dLoadImage1DMapping(TexObjImageInfo *img, u32 addr, int idx, TexObj *obj);
-extern void func_0203e098(const char *name, u32 value);
+extern void NamePool_SetTexKey(const char *name, u32 value);
 extern u32 (*NNS_GfdDefaultFuncAllocTexVram)(u32 size, int is4x4, int opt);
 
 }
@@ -405,7 +405,7 @@ void TexObj_SetRes(TexObj *obj, const TexObjRes *res) {
     } else {
         PlttRes_SetSrc(&obj->pltt, (PlttResSrc *)obj);
         PlttRes_SetData(&obj->pltt, ((PlttResSrc *)obj)->info->header->data, obj->pltt.size);
-        func_020435e8(pltt, obj->pltt.buf, obj->pltt.size);
+        GfxPltt_ApplyFilter(pltt, obj->pltt.buf, obj->pltt.size);
     }
     obj->plttPtr = &obj->pltt;
 }

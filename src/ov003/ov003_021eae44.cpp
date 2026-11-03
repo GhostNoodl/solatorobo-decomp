@@ -63,10 +63,10 @@ extern void HitSphere_Unlink_0203f364(ActorSub48 *ctl);
 extern void Model0218fe1c_SetLoop(void *model);
 extern void Model0218fe1c_SetAnimSpeed(void *model, s32 a);
 extern s32 Rand_PlusMinus(s32 max);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 step, u32 a, u16 b);
+extern u16 Angle_Approach(u16 target, u16 cur, s32 step, u32 a, u16 b);
 extern char data_ov003_021f9983[];
 extern char data_ov003_021f9989[];
-extern s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 c, s32 d, s32 e, s32 f);
+extern s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, u32 c, s32 d, s32 e, s32 f);
 extern void Body_Update(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
 
@@ -313,8 +313,8 @@ void Ov003ActExSway_StateIdle(Ov003ActExSway *self) {
             self->rotGoal.x = Rand_PlusMinus(n) << 2;
             self->rotGoal.z = Rand_PlusMinus(n) << 2;
         }
-        self->rotOfs.x = func_01ffc128(self->rotGoal.x, self->rotOfs.x, 0x8cd, 1, 0x8000);
-        self->rotOfs.z = func_01ffc128(self->rotGoal.z, self->rotOfs.z, 0x8cd, 1, 0x8000);
+        self->rotOfs.x = Angle_Approach(self->rotGoal.x, self->rotOfs.x, 0x8cd, 1, 0x8000);
+        self->rotOfs.z = Angle_Approach(self->rotGoal.z, self->rotOfs.z, 0x8cd, 1, 0x8000);
     } else {
         Ov003Sub44_Clear(self->unk_44);
     }
@@ -356,7 +356,7 @@ void Ov003ActExSway_StateMove(Ov003ActExSway *self) {
                 b.z = pl->pos.z;
                 a.y += self->height;
                 b.y += pl->unk_6c;
-                if (func_01ffbd6c(&a, &b, -1, 0, 0, -1) == -0x1000) {
+                if (Hit_CastSegment(&a, &b, -1, 0, 0, -1) == -0x1000) {
                     on = TRUE;
                 }
             }

@@ -43,7 +43,7 @@ void Task021ef430_Draw(Task021ef430 *self) {
     TexObj_DrawCell(model, arg, anim, 0);
 }
 
-Task021ef4b0 *func_ov002_021ce53c(void) {
+Task021ef4b0 *Task021ef4b0_New(void) {
     Task021ef4b0 *p = (Task021ef4b0 *)Heap_Alloc(0x4c);
     if (p != NULL) {
         TaskBase_ctor(p);
@@ -106,7 +106,7 @@ void Task021ef4b0_FreeWindows(Task021ef4b0 *self) {
 
 extern "C" {
 extern VFunc data_ov000_021cadcc[];
-void func_ov000_021547e8(void *a, void *b, const char *c, int d);
+void UiList_SetMarkModel(void *a, void *b, const char *c, int d);
 
 typedef struct {
     u32 b0 : 1;
@@ -181,7 +181,7 @@ void func_ov002_021ce7b8(Task021ef4b0 *self) {
     self->unk_3c->flags &= ~0x80000;
     self->unk_3c->flags &= ~0x40000;
     self->unk_3c->flags &= ~0x10000;
-    func_ov000_021547e8(self->unk_3c, data_0214b105, data_0208cb7c, 0xb);
+    UiList_SetMarkModel(self->unk_3c, data_0214b105, data_0208cb7c, 0xb);
     e = (UiListItem *)self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xe8), 0, 0xffff, 0);
     if (self->unk_48_0) {
         e->unk_24 = 0xe;

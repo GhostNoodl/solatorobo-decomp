@@ -46,7 +46,7 @@ static inline BOOL LoD78Idle(void) {
     return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
 }
 
-void func_ov000_021692e0(Lo021cb7ec *self) {
+void Lo021cb7ec_Setup(Lo021cb7ec *self) {
     void *res = ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88);
     Model *m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {
@@ -71,7 +71,7 @@ void func_ov000_021692e0(Lo021cb7ec *self) {
     Obj0215fdfc_SetEntry(self, 2, data_ov000_021c9ab0);
 }
 
-BOOL func_ov000_021693e0(Lo021cb7ec *self) {
+BOOL Lo021cb7ec_CanUpdate(Lo021cb7ec *self) {
     if (!LoGIdle() || !LoD78Idle()) {
         self->unk_0c_1 = 1;
     }

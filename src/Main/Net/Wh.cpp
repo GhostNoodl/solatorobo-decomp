@@ -4,7 +4,7 @@ extern "C" {
 
 WhMgr *data_02097e40;
 
-void func_02044a0c(WhConfig *cfg) {
+void WH_CalcBufferSizes_02044a0c(WhConfig *cfg) {
     WH_CalcBufferSizes(cfg);
 }
 
@@ -38,11 +38,11 @@ void Wh_Create(void) {
     data_02097dd0->align = 4;
 }
 
-BOOL func_02044b20(void) {
+BOOL WH_Destroy_02044b20(void) {
     return WH_Destroy(data_02097e40);
 }
 
-BOOL func_02044c80(void) {
+BOOL WH_IsStopped_02044c80(void) {
     return WH_IsStopped(data_02097e40);
 }
 

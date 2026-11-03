@@ -22,7 +22,7 @@ extern char data_ov000_021cc660[];
 extern char data_ov000_021cc61e[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL History_SetState(void *p, s32 a, s32 b);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);
 BOOL Model0218fe1c_SetAnim(void *p, void *a, s32 b, s32 c);
 void Model0218fe1c_SetLoop(void *p);
@@ -43,7 +43,7 @@ static inline Actor *FindActor_021a4194(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-void func_ov000_021a4194(Robo021ca458 *self) {
+void Robo021ca458_State06(Robo021ca458 *self) {
     Actor *t;
     ActorSub4c *info;
     ActorSub40 *sub;
@@ -77,7 +77,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                 ang = FX_Atan2(t->pos.x - self->pos.x, t->pos.z - self->pos.z);
             }
             self->moveYaw = ang;
-            self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+            self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
             {
                 ActorSub40 *s;
                 pos.x = self->pos.x;
@@ -262,14 +262,14 @@ void func_ov000_021a4194(Robo021ca458 *self) {
             func_ov000_021bd300(self->unk_5c);
             ActorMarker_SetPos(self->unk_5c, (VecFx32 *)((u8 *)self + 0x70), 0);
         }
-        self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
         if (info->unk_02 == 6) {
             self->unk_b29_0 = 1;
             self->unk_b29_3 = 1;
         }
         return;
     case 0x14:
-        self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
         Actor_Move(self, 0);
         self->unk_b29_0 = 1;
         self->unk_b29_3 = 1;

@@ -182,7 +182,7 @@ void *Ov002Vt_021ef410_Dtor(void *self) {
     return self;
 }
 
-Task021ef79c *func_ov002_021cf9b8(void) {
+Task021ef79c *Task021ef79c_New(void) {
     Task021ef79c *p = (Task021ef79c *)Heap_Alloc(0x48);
     if (p != NULL) {
         TaskBase_ctor(p);

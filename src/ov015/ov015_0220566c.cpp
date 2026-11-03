@@ -231,7 +231,7 @@ extern void *data_0208ccc8;
 extern u8 data_ov015_022129ac[];
 void UiList021cb4a8_SetLabel(void *a, void *b);
 void UiList021cb4a8_SetCenteredLabel(void *a, void *b);
-void func_ov000_021546ec(void *a, void *b, void *c, u16 d);
+void UiList_SetIconModel(void *a, void *b, void *c, u16 d);
 BOOL func_0206f66c(u16 id);
 u8 *func_0206f000(u16 id);
 void *Param_Get(u16 id);
@@ -282,7 +282,7 @@ void Ov015Scene2b08_Start(Ov015Scene2b08 *self) {
     self->unk_3c->unk_c0 = 0x78;
     self->unk_3c->unk_c1 = 5;
     self->unk_3c->flags |= 0x40000;
-    func_ov000_021546ec(self->unk_3c, data_0208ccc8, data_ov015_022129ac, 0xffff);
+    UiList_SetIconModel(self->unk_3c, data_0208ccc8, data_ov015_022129ac, 0xffff);
     for (i = 0; i < 13; i++) {
         id = i | 0xc000;
         if (!func_0206f66c(id)) {
@@ -322,7 +322,7 @@ void Ov015Scene2b08_Start(Ov015Scene2b08 *self) {
     Ov015_SetUiSlide(self->unk_40, 0x100, 0, -0xccd);
     self->unk_40->slideMode = 1;
     self->unk_40->unk_84 = 1;
-    func_ov000_0215d980(self->unk_40, data_0214a424->unk_618, 0);
+    Lo021cae48_SetValue(self->unk_40, data_0214a424->unk_618, 0);
     self->unk_40->vfunc_08();
     p = (VObj *)Heap_Alloc(0x8c);
     if (p != NULL) {

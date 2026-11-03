@@ -37,7 +37,7 @@ void Obj02153c48_CreateText(void *item, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_02153f30(VObj *self, s32 a);
 void func_ov000_02153f60(VObj *self, s32 a);
 
-void func_ov000_02158588(UiList021cb4a8 *self, s32 on, s32 *pos) {
+void UiList021cb4a8_DrawItems(UiList021cb4a8 *self, s32 on, s32 *pos) {
     Item02158588 *sel;
     s32 lo;
     s32 k;

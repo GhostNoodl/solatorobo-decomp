@@ -658,7 +658,7 @@ extern "C" {
 void func_ov011_022011c0(Ov011Npc *self, u16 v);
 void func_ov011_02201214(Ov011Npc *self, void *p);
 u32 Ov011Npc_IsTracking(Ov011Npc *self);
-void *func_ov011_02201254(Ov011Npc *self);
+void *Ov011Npc_GetEntKey(Ov011Npc *self);
 BOOL Ov011Mov_Start(Ov011Mov *self, const VecFx32 *pos, const VecFx32 *vel, s32 scale, s32 accel);
 VecFx32 *Ov011Mov_GetPos(Ov011Mov *self);
 void *Ov011E40_Dtor(Ov011E40 *self);

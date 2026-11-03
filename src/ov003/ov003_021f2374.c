@@ -69,7 +69,7 @@ extern void Model0218fe1c_SetAnimByIndex(Ov003MultiModel *m, s32 a, s32 b, s32 c
 extern void Model0218fe1c_SetLoop(Ov003MultiModel *m);
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, BOOL on, u32 mask);
 extern void NNSi_G3dModifyMatFlag(void *mdl, BOOL on, u32 flag);
-extern s32 func_ov000_021909a8(Ov003MultiModel *m, const void *a, const void *b);
+extern s32 Model_FindResIdxByName(Ov003MultiModel *m, const void *a, const void *b);
 extern void MTX_Identity43_(Ov003MultiMtx *m);
 extern void NNS_G3dRenderObjSetInitFunc(void *rob, void *func);
 extern char data_ov003_021fa2ce[];
@@ -175,7 +175,7 @@ void Ov003ActVt_021fa390_Start(Ov003Multi *self) {
         m->unk_c2_7 = 1;
         NNSi_G3dModifyPolygonAttrMask(m->mdl, TRUE, 0x1f0000);
         {
-            u8 r = func_ov000_021909a8(m, 0, data_ov003_021fa2ce);
+            u8 r = Model_FindResIdxByName(m, 0, data_ov003_021fa2ce);
             self->mtx[i].unk_30 = r;
         }
         MTX_Identity43_(&self->mtx[i]);

@@ -205,7 +205,7 @@ void *Ov015ResultPanel_Dtor(Ov015ResultPanel *self) {
     return self;
 }
 
-void *func_ov015_02210fdc(Lo021cca40 *self) {
+void *Ov015Vt_022131ac_DtorDelete(Lo021cca40 *self) {
     SET_VT(self, data_ov015_022131ac);
     ListRow_Unlink(self);
     Heap_Free(self);
@@ -218,7 +218,7 @@ void func_ov015_02211004(void) {
 void func_ov015_02211008(void) {
 }
 
-void *func_ov015_0221100c(Lo021cca40 *self) {
+void *Ov015Vt_022131ac_Dtor(Lo021cca40 *self) {
     SET_VT(self, data_ov015_022131ac);
     ListRow_Unlink(self);
 
@@ -254,7 +254,7 @@ void func_ov015_022110f0(void) {
     HEAP_POP(saved);
 }
 
-void *func_ov015_0221114c(Ov015Shared *self) {
+void *Ov015Vt_02213200_DtorDelete(Ov015Shared *self) {
     Heap_Free(self);
     return self;
 }

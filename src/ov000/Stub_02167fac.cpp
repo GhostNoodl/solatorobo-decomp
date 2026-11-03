@@ -9,7 +9,7 @@ void func_ov000_02167fac(Lo021cb6f0 *self, s32 a, s32 b) {
     self->unk_0c = (self->unk_0c & ~2) | 0x10000;
 }
 
-void func_ov000_02167fcc(Lo021cb6f0 *self) {
+void Lo021cb6f0_Init(Lo021cb6f0 *self) {
     self->unk_9c = NULL;
 }
 

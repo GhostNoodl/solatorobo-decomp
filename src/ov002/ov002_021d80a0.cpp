@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021d80a0(Obj021efe9c *self) {
+void Ov002Vt_021efe9c_Draw(Obj021efe9c *self) {
     if (self->unk_80 == NULL) {
         return;
     }
@@ -63,14 +63,14 @@ void func_ov002_021d8148(Obj021efe9c *self) {
     self->unk_7c = (NNSG3dResMdl *)ov002_findEntry((u8 *)NNS_G3dGetMdlSet((NNSG3dResFileHeader *)*self->unk_78), buf);
     name = FIELD(info, 0x8, char *);
     if (self->unk_78 != NULL) {
-        name = (char *)func_0203ed04(name, (void *)*self->unk_78);
+        name = (char *)G3dRes_SetupVram(name, (void *)*self->unk_78);
     }
     self->unk_84 = func_0203ebf8(name);
     self->unk_80 = (NNSG3dRenderObj *)Heap_Alloc(sizeof(NNSG3dRenderObj));
     NNS_G3dRenderObjInit(self->unk_80, self->unk_7c);
     NNS_G3dMdlSetMdlCullModeAll(self->unk_7c, 2);
     NNS_G3dMdlSetMdlXLDepthUpdateAll(self->unk_7c, 0);
-    NNS_G3dRenderObjSetCallBack(self->unk_80, (NNSG3dSbcCallBackFunc)func_ov002_021e0420, NULL, 4, NNS_G3D_SBC_CALLBACK_TIMING_B);
+    NNS_G3dRenderObjSetCallBack(self->unk_80, (NNSG3dSbcCallBackFunc)Ov002_ScaleAlphaMatCb, NULL, 4, NNS_G3D_SBC_CALLBACK_TIMING_B);
     self->unk_80->ptrUser = (u8 *)self + 0x9c;
     q = (u32 *)ResList_FindType6(res, (char *)n8);
     MIi_CpuClear32(0, buf, sizeof(buf));

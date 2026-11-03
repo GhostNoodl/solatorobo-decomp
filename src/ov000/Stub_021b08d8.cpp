@@ -14,7 +14,7 @@ extern "C" {
 
 void func_ov000_021b0db0(Robo021ca458 *self, s32 id);
 
-void func_ov000_021b08d8(Robo021ca458 *self) {
+void Robo021ca458_Mode5_State02(Robo021ca458 *self) {
     func_ov000_021b0db0(self, 0x2cd);
 }
 
@@ -23,7 +23,7 @@ extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern VecFx32 data_ov000_021ca024;
 extern u8 data_ov000_021ca2a8[];
 extern u8 data_ov000_021ca2e4[];
-void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u16 ang);
+void Vec_RotateY(VecFx32 *out, const VecFx32 *in, u16 ang);
 void *Actor_SpawnKind(s32 kind, VecFx32 *pos, void *rot, u16 a, u16 b);
 void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
@@ -37,7 +37,7 @@ static inline void SetPal(Model0218fe1c *sub) {
     sub->blendMax = 0x14;
 }
 
-void func_ov000_021b08ec(Robo021ca458 *self) {
+void Robo021ca458_Mode5_State0e(Robo021ca458 *self) {
     ActorSub40 *s;
     s32 id;
     switch (self->fsm->st) {
@@ -102,7 +102,7 @@ void func_ov000_021b08ec(Robo021ca458 *self) {
                 }
                 s->timer = nt;
             }
-            func_01ffc9fc(&pos, &data_ov000_021ca024, self->rot_y);
+            Vec_RotateY(&pos, &data_ov000_021ca024, self->rot_y);
             VEC_Add(&pos, (VecFx32 *)((u8 *)self + 0xaf0), &pos);
             rot.x = ((-0x6800 - self->unk_af0.y) >> 5) + 0xfa00;
             rot.y = 0x8000;

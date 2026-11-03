@@ -27,7 +27,7 @@ void Model0218fe1c_StopAnim(void *a);
 BOOL Model0218fe1c_IsAnimDone(void *a);
 void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
 BOOL History_SetState(void *p, s32 a, s32 b);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 s32 SndMgr_StartSeqArc(void *mgr, s32 id);
 void SndMgr_StopSeqArc(void *mgr, s32 id);
 void *SndMgr_PlayAt(void *mgr, s32 id, void *pos, s32 a);
@@ -91,7 +91,7 @@ static inline void StartSnd_021ad8ac(Robo021ca458 *self) {
     }
 }
 
-void func_ov000_021ad8ac(Robo021ca458 *self) {
+void Robo021ca458_State19(Robo021ca458 *self) {
     u16 ang;
     BOOL turn;
     FieldCam *cam = &data_ov000_021ccd54->cam;
@@ -139,8 +139,8 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             Model0218fe1c_SetLoop(self->model);
             Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc6ed, 0x1000, 0);
             Model0218fe1c_SetLoop(self->unk_998);
-            self->unk_9a8 = func_01ffc128(0xc000, self->unk_9a8, 0x2cd, 1, 0x8000);
-            self->unk_9aa = func_01ffc128(0, self->unk_9aa, 0x2cd, 1, 0x8000);
+            self->unk_9a8 = Angle_Approach(0xc000, self->unk_9a8, 0x2cd, 1, 0x8000);
+            self->unk_9aa = Angle_Approach(0, self->unk_9aa, 0x2cd, 1, 0x8000);
             StopSnd_021ad8ac(self);
         } else {
             u16 c = FieldCam_GetYaw(cam);
@@ -151,10 +151,10 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             if (!(f & 0x100) && (f & 0xf0)) {
                 u16 d;
                 turn = TRUE;
-                self->rot_y = func_01ffc128(c, self->rot_y, 0x19a, 1, 0x8000);
+                self->rot_y = Angle_Approach(c, self->rot_y, 0x19a, 1, 0x8000);
                 d = self->moveYaw - ang;
                 if (d < 0x1000 || d > 0xf000) {
-                    self->moveYaw = func_01ffc128(ang, self->moveYaw, 0xcd, 1, 0x8000);
+                    self->moveYaw = Angle_Approach(ang, self->moveYaw, 0xcd, 1, 0x8000);
                     self->speed += LO_FX_MUL(0x133 - self->speed, 0x133);
                 } else {
                     self->speed -= self->speed >> 4;
@@ -235,8 +235,8 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
                     Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc6ed, 0x1000, 0);
                     Model0218fe1c_SetLoop(self->unk_998);
                 }
-                self->unk_9a8 = func_01ffc128(0xc000, self->unk_9a8, 0x2cd, 1, 0x8000);
-                self->unk_9aa = func_01ffc128(rot, self->unk_9aa, 0x2cd, 1, 0x8000);
+                self->unk_9a8 = Angle_Approach(0xc000, self->unk_9a8, 0x2cd, 1, 0x8000);
+                self->unk_9aa = Angle_Approach(rot, self->unk_9aa, 0x2cd, 1, 0x8000);
                 if (self->pos.y > 0x4b000) {
                     self->velY = -0x100;
                 }
@@ -253,8 +253,8 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
                 if (self->gravity > 0x14) {
                     self->gravity = 0x14;
                 }
-                self->unk_9a8 = func_01ffc128(0, self->unk_9a8, 0x2cd, 1, 0x8000);
-                self->unk_9aa = func_01ffc128(0, self->unk_9aa, 0x2cd, 1, 0x8000);
+                self->unk_9a8 = Angle_Approach(0, self->unk_9a8, 0x2cd, 1, 0x8000);
+                self->unk_9aa = Angle_Approach(0, self->unk_9aa, 0x2cd, 1, 0x8000);
                 StopSnd_021ad8ac(self);
                 if (self->pos.y - self->unk_afc.y < -0x2d000) {
                     Kill_021ad8ac(self);
@@ -280,7 +280,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
                 } else if (f & 0x40) {
                     t -= 0x2000;
                 }
-                cam->unk_f8 = func_01ffc128(t, cur, 0x266, 1, 0x8000);
+                cam->unk_f8 = Angle_Approach(t, cur, 0x266, 1, 0x8000);
                 cam->unk_da_4 = 1;
             }
         }
@@ -342,8 +342,8 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
     case 2: {
         ActorSub40 *st;
         Robo021ca458_Move(self, 1, 1);
-        self->unk_9a8 = func_01ffc128(0, self->unk_9a8, 0x800, 1, 0x8000);
-        self->unk_9aa = func_01ffc128(0, self->unk_9aa, 0x59a, 1, 0x8000);
+        self->unk_9a8 = Angle_Approach(0, self->unk_9a8, 0x800, 1, 0x8000);
+        self->unk_9aa = Angle_Approach(0, self->unk_9aa, 0x59a, 1, 0x8000);
         st = self->fsm;
         st->timer++;
         if (st->timer < 6) {
@@ -388,8 +388,8 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             self->friction = 0;
             self->velY = 0;
             self->gravity = 0;
-            self->rot_x = func_01ffc128(0, self->rot_x, 0x200, 1, 0x8000);
-            self->rot_z = func_01ffc128(0, self->rot_z, 0x266, 1, 0x8000);
+            self->rot_x = Angle_Approach(0, self->rot_x, 0x200, 1, 0x8000);
+            self->rot_z = Angle_Approach(0, self->rot_z, 0x266, 1, 0x8000);
             Model0218fe1c_SetAnim(self->model, data_ov000_021cc70b, 0x200, 0);
             Model0218fe1c_SetLoop(self->model);
             Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc6ed, 0x1000, 0);
@@ -406,8 +406,8 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
         if (!Model0218fe1c_IsAnimDone(self->model)) {
             s32 tgt = data_0214a424->bits18.mode == 1 ? 0x51f : 0x4cd;
             self->speed += LO_FX_MUL(tgt - self->speed, 0x200);
-            self->rot_x = func_01ffc128(0, self->rot_x, 0x266, 1, 0x8000);
-            self->rot_z = func_01ffc128(0, self->rot_z, 0x266, 1, 0x8000);
+            self->rot_x = Angle_Approach(0, self->rot_x, 0x266, 1, 0x8000);
+            self->rot_z = Angle_Approach(0, self->rot_z, 0x266, 1, 0x8000);
         } else if ((self->padTrig & 0x100) && self->unk_9ac != 0) {
             char *anim;
             EffectObj *e;
@@ -454,20 +454,20 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
                 }
             }
             if (f & 0x40) {
-                self->unk_9a0 = func_01ffc128(0x2000, self->unk_9a0, 0x133, 1, 0x8000);
+                self->unk_9a0 = Angle_Approach(0x2000, self->unk_9a0, 0x133, 1, 0x8000);
                 tgt = -0x414;
-                cur = func_01ffc128(0x1200, cur, 0x1ae, 1, 0x8000);
+                cur = Angle_Approach(0x1200, cur, 0x1ae, 1, 0x8000);
             } else if (f & 0x80) {
-                self->unk_9a0 = func_01ffc128(0xe000, self->unk_9a0, 0x133, 1, 0x8000);
+                self->unk_9a0 = Angle_Approach(0xe000, self->unk_9a0, 0x133, 1, 0x8000);
                 tgt = 0x414;
-                cur = func_01ffc128(0xee00, cur, 0x1ae, 1, 0x8000);
+                cur = Angle_Approach(0xee00, cur, 0x1ae, 1, 0x8000);
             } else {
-                self->unk_9a0 = func_01ffc128(0, self->unk_9a0, 0x10a, 1, 0x8000);
-                cur = func_01ffc128(0x200, cur, 0x2cd, 1, 0x8000);
+                self->unk_9a0 = Angle_Approach(0, self->unk_9a0, 0x10a, 1, 0x8000);
+                cur = Angle_Approach(0x200, cur, 0x2cd, 1, 0x8000);
             }
             cam->unk_f8 = cur;
             cam->unk_da_4 = 1;
-            self->rot_x = func_01ffc128(self->unk_9a0, self->rot_x, 0x59a, 1, 0x8000);
+            self->rot_x = Angle_Approach(self->unk_9a0, self->rot_x, 0x59a, 1, 0x8000);
             d = self->pos.y - self->unk_afc.y;
             if (d < -0x2d000) {
                 self->velY = 0;
@@ -483,10 +483,10 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             } else if (f & 0x10) {
                 t = 0xff20;
             }
-            self->unk_9a2 = func_01ffc128(t, self->unk_9a2, 0x133, 1, 0x8000);
+            self->unk_9a2 = Angle_Approach(t, self->unk_9a2, 0x133, 1, 0x8000);
             self->moveYaw = self->moveYaw + self->unk_9a2;
-            self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0xcd, 1, 0x8000);
-            self->rot_z = func_01ffc128(-((self->unk_9a2 << 5) + (self->unk_9a2 << 3)), self->rot_z, 0x59a, 1, 0x8000);
+            self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0xcd, 1, 0x8000);
+            self->rot_z = Angle_Approach(-((self->unk_9a2 << 5) + (self->unk_9a2 << 3)), self->rot_z, 0x59a, 1, 0x8000);
             sp = data_0214a424->bits18.mode == 1 ? 0x51f : 0x4cd;
             if (self->padCur & 0xf0) {
                 sp -= sp >> 2;
@@ -498,8 +498,8 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             Model0218fe1c_SetAnim(self->model, data_ov000_021cc70b, 0x200, 0);
             self->speed -= self->speed >> 5;
             self->velY += LO_FX_MUL(0x266 - self->velY, 0x414);
-            self->rot_x = func_01ffc128(0xc000, self->rot_x, 0x200, 1, 0x8000);
-            self->rot_z = func_01ffc128(0, self->rot_z, 0x266, 1, 0x8000);
+            self->rot_x = Angle_Approach(0xc000, self->rot_x, 0x200, 1, 0x8000);
+            self->rot_z = Angle_Approach(0, self->rot_z, 0x266, 1, 0x8000);
             self->fsm->timer++;
         }
         st = self->fsm;

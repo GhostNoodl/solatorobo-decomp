@@ -12,7 +12,7 @@ struct Marker021c0958 : ActorMarker {
 extern "C" {
 
 void *func_ov000_021c04e4(ActorMarkerWork *work, void *src, void *out, u16 *count);
-void func_02041c34(void *model, s32 a, void *cb, void *arg);
+void TexObj_SetOamFunc(void *model, s32 a, void *cb, void *arg);
 
 static inline BOOL Obj021c0958_Wait(Marker021c0958 *self) {
     if (!(self->show == 1 ? TRUE : FALSE) || (self->change == 1 ? TRUE : FALSE)) {
@@ -40,7 +40,7 @@ void func_ov000_021c0958(Marker021c0958 *self) {
             self->unk_8c->flags |= 0x80000;
             self->unk_90->flags |= 0x200000;
             self->unk_90->flags |= 0x80000;
-            func_02041c34(self->unk_90, 2, (void *)func_ov000_021c04e4, &self->work);
+            TexObj_SetOamFunc(self->unk_90, 2, (void *)func_ov000_021c04e4, &self->work);
         }
         self->work.state = 4;
     case 4:

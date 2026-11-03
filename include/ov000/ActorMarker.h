@@ -81,7 +81,7 @@ void ActorMarker_SetPos(ActorMarker *self, VecFx32 *pos, s32 dy);
 void ActorMarker_UpdateScreenPos(ActorMarker *self, VecFx32 *pos);
 void ActorMarker_Update(ActorMarker *self);
 void ActorMarker_Draw(ActorMarker *self);
-void func_ov000_021bd7b8(ActorMarker *self);
+void ActorMarker_FreeRes(ActorMarker *self);
 BOOL func_ov000_021bd8ac(ActorMarker *self);
 
 #ifdef __cplusplus

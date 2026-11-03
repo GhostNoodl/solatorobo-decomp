@@ -11,7 +11,7 @@ void *Ov011Chr_Ctor(void *p);
 void Ov011Mov_Init(void *p);
 void *Ov011Vt_022079b0_Ctor(void *p);
 BOOL Ov011Scene_Init(Ov011Scene *p, Actor *owner);
-BOOL func_020621c4(void);
+BOOL Stage_UseScaledStats(void);
 
 void Ov011SceneActor_Start(Ov011SceneActor *self) {
     Ov011Scene *p;
@@ -64,7 +64,7 @@ void Ov011SceneActor_Start(Ov011SceneActor *self) {
     }
     self->hit->unk_30 = 0x60000000;
     self->target = ((Actor *)ActorMgr_FindPlayer())->id;
-    if (func_020621c4()) {
+    if (Stage_UseScaledStats()) {
         Ov003Actor_ScaleStats(self, data_ov011_0220726e);
     }
     self->mode = 2;

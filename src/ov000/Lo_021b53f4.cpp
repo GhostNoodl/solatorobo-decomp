@@ -11,7 +11,7 @@ typedef struct {
 extern "C" {
 void Gfx3DState_SetDefaults(void *p);
 void Gfx3DState_Apply(void *p);
-void func_020434e0(s32 *proj);
+void GfxCamParam_Init(s32 *proj);
 void *func_ov000_021b7a7c(FieldProp *n);
 void Heap_Free(void *p);
 Ent021b53f4 *Lang_GetGroup(u8 id);
@@ -27,7 +27,7 @@ void func_ov000_021b53f4(FieldMgr *self) {
     Gfx3DState_SetDefaults(d48->unk_8b0);
     Gfx3DState_Apply(d48->unk_8b0);
     pb = data_ov000_021ccd54;
-    func_020434e0(&pb->cam.base.nearClip);
+    GfxCamParam_Init(&pb->cam.base.nearClip);
     pb->cam.base.wallClip = 0;
     pb->cam.unk_da = 0;
     pb->cam.unk_d9 = 0;

@@ -89,7 +89,7 @@ void Ov009Multi_StateIdle(Ov009Multi *self) {
             Model0218fe1c_SetLoop(self->model);
             self->fsm->st++;
         }
-        self->rot_y = func_01ffc128(self->unk_492, self->rot_y, self->unk_b0->unk_02 << 1, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->unk_492, self->rot_y, self->unk_b0->unk_02 << 1, 1, 0x8000);
         break;
     }
     case 11: {
@@ -112,7 +112,7 @@ void Ov009Multi_StateIdle(Ov009Multi *self) {
                 self->fsm->st = 1;
             }
         }
-        self->rot_y = func_01ffc128(self->unk_492, self->rot_y, self->unk_b0->unk_02 << 1, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->unk_492, self->rot_y, self->unk_b0->unk_02 << 1, 1, 0x8000);
         break;
     }
     }

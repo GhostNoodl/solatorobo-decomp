@@ -58,13 +58,13 @@ void func_ov015_021fcb1c(Ov015Hud *self) {
     }
 }
 
-void *func_ov015_021fce4c(u8 *self) {
+void *Ov015Vt_0221291c_Dtor(u8 *self) {
     func_0204b420(self + 0xc0);
     func_0204b420(self + 0x4);
     return self;
 }
 
-void *func_ov015_021fce6c(u8 *self) {
+void *Ov015Vt_0221291c_DtorDelete(u8 *self) {
     func_0204b420(self + 0xc0);
     func_0204b420(self + 0x4);
     Heap_Free(self);

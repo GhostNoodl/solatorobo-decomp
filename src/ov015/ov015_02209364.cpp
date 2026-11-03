@@ -27,7 +27,7 @@ extern char data_ov015_02212dd9[];
 extern char data_ov015_02212def[];
 extern char data_ov015_02212df5[];
 extern char *data_ov015_02212db0[];
-char *func_0207011c(u16 id);
+char *Tbl_GetResFile(u16 id);
 void Shadow_Load(void *p);
 
 void func_ov015_02209364(Ov015Fish *self) {
@@ -48,7 +48,7 @@ void func_ov015_02209364(Ov015Fish *self) {
         }
     }
     {
-        char *c = func_0207011c(self->info.id);
+        char *c = Tbl_GetResFile(self->info.id);
         const char *a = data_ov015_02212df5;
         if (a) {
             Ov015Anim_SetA(n2, a, c);

@@ -79,9 +79,9 @@ extern void LangData_LocalizePath(char *dst, const char *src);
 extern void MsgRes_Reset_0204bfcc(DataRes *res);
 extern void MsgRes_OpenLocalized(DataRes *res, const char *arcName, char *name);
 extern BOOL MsgRes_Bind(DataRes *res);
-extern BOOL func_02059784(PosEvRes *res);
+extern BOOL PosEvRes_Parse(PosEvRes *res);
 extern int (*data_0208bde8)(StageResSlot *slot);
-extern int func_0205bef8(StageResSlot *slot);
+extern int StageRes_DispatchSlot(StageResSlot *slot);
 extern DataRes *data_02fe152c;
 
 

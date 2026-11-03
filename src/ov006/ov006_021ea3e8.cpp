@@ -10,7 +10,7 @@ typedef struct ov006_Pos {
 extern "C" {
 
 Ov006Racer *Ov006ActVt_021ec4f4_Ctor(Ov006Racer *self);
-void *func_0206ffa0(s32 id);
+void *Tbl_GetText(s32 id);
 void Actor_JoinGroup(Actor *self, u16 type, u32 id, void *res);
 void Obj021984c8_UpdatePos(ActorSub44 *a, int b, int c);
 void ActorSub48_UpdatePos(ActorSub48 *a, int b, int c);
@@ -35,7 +35,7 @@ Ov006Racer *Ov006Racer_New(u32 id, u8 a, const ov006_Pos *pos, const u16 *rot) {
         prop = Ov006ActVt_021ec4f4_Ctor(prop);
     }
     if (prop != NULL) {
-        Actor_JoinGroup(prop, id & 0xf000, id, func_0206ffa0(id));
+        Actor_JoinGroup(prop, id & 0xf000, id, Tbl_GetText(id));
         prop->idx = a;
         prop->pos.x = pos->x;
         prop->pos.y = pos->y;

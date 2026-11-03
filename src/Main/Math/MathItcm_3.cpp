@@ -33,7 +33,7 @@ BOOL HitAabb_Overlap(VecFx32 *aMin, VecFx32 *aMax, VecFx32 *bMin, VecFx32 *bMax)
     return TRUE;
 }
 
-BOOL func_01ffc89c(HitVolume *vol, HitSegment *seg) {
+BOOL HitVolume_TestSegment(HitVolume *vol, HitSegment *seg) {
     fx32 dx;
     fx32 dz;
     fx64 t;

@@ -17,7 +17,7 @@ static inline void Arrive02155ac4(UiList *self, u8 *tgt) {
     }
 }
 
-void func_ov000_02155ac4(UiList *self) {
+void UiList_UpdateScroll(UiList *self) {
     s32 w = self->vfunc_40();
     u8 *cur;
     u8 *tgt;

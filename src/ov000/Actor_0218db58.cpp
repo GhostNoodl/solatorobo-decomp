@@ -20,7 +20,7 @@ void Actor_PitchToActor(Actor *self, Actor *other, s32 step) {
     }
     while (REG_SQRTCNT & 0x8000) {
     }
-    self->rot_x = func_01ffc128(FX_Atan2(self->pos.y - oy, (s32)(REG_SQRT_RESULT + 1) >> 1), self->rot_x, step, 1, 0x8000);
+    self->rot_x = Angle_Approach(FX_Atan2(self->pos.y - oy, (s32)(REG_SQRT_RESULT + 1) >> 1), self->rot_x, step, 1, 0x8000);
 }
 
 void Actor_TurnClamped(Actor *self, u16 angle, u16 center, u16 range, s32 step) {
@@ -32,7 +32,7 @@ void Actor_TurnClamped(Actor *self, u16 angle, u16 center, u16 range, s32 step) 
     } else if (diff > range) {
         angle = angle - (u16)(diff - range);
     }
-    self->rot_y = func_01ffc128(angle, self->rot_y, step, 1, 0x8000);
+    self->rot_y = Angle_Approach(angle, self->rot_y, step, 1, 0x8000);
 }
 
 #define AMUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
@@ -43,7 +43,7 @@ void Actor_Move(Actor *self, s32 rate) {
             self->rot_y = self->moveYaw;
         } else {
             u16 d;
-            self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, rate < 0 ? -rate : rate, 1, 0x8000);
+            self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, rate < 0 ? -rate : rate, 1, 0x8000);
             d = self->moveYaw - self->rot_y;
             if (d > 0x8000) {
                 d = -d;

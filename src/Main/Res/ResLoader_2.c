@@ -1,6 +1,6 @@
 #include "Main/Res/ResLoader.h"
 
-void func_0203584c(ResLoader *loader) {
+void ResLoader_Destroy(ResLoader *loader) {
     loader->req.index = 0;
     loader->state = 0;
     ResRequest_Init(&loader->req);

@@ -441,12 +441,12 @@ HitMeshRes *HitMesh_GetRes(HitMesh *mesh) {
     return mesh->res;
 }
 
-BOOL func_0203fc60(HitMesh *mesh) {
+BOOL HitMesh_UseBounds(HitMesh *mesh) {
     return mesh->unk_84_1 ? TRUE : FALSE;
 }
 
-extern s32 func_01ffbd6c(VecFx32 *from, VecFx32 *to, u32 a, s32 b, s32 c, s32 d);
-extern s32 func_01ffbf40(VecFx32 *pos, s32 radius, u32 a, s32 b, s32 c, s32 d);
+extern s32 Hit_CastSegment(VecFx32 *from, VecFx32 *to, u32 a, s32 b, s32 c, s32 d);
+extern s32 Hit_CastSphere(VecFx32 *pos, s32 radius, u32 a, s32 b, s32 c, s32 d);
 
 static inline BOOL HitVec_Equal(const VecFx32 *a, const VecFx32 *b) {
     return (a->x == b->x && a->y == b->y && a->z == b->z) ? TRUE : FALSE;
@@ -468,7 +468,7 @@ int func_0203fc78(VecFx32 *out, VecFx32 *pos, VecFx32 *prev, int radius, int a, 
     HitVec_Sub(pos, prev, &dir);
     VEC_Normalize(&dir, &dir);
     VEC_MultAdd(radius, &dir, pos, &p);
-    r = func_01ffbd6c(prev, &p, a, b, 0, -1);
+    r = Hit_CastSegment(prev, &p, a, b, 0, -1);
     if (r != -0x1000) {
         if (r > radius) {
             VEC_MultAdd(-(radius + 0x10), &dir, &data_02fe0f14.a, &p);
@@ -494,7 +494,7 @@ int func_0203fde8(VecFx32 *out, VecFx32 *pos, int radius, int a, int b) {
     p.x = pos->x;
     p.y = pos->y;
     p.z = pos->z;
-    r = func_01ffbf40(&p, radius, a, b, 0, -1);
+    r = Hit_CastSphere(&p, radius, a, b, 0, -1);
     if (r != -0x1000) {
         n = data_02fe0efc;
         if (n > 24) {

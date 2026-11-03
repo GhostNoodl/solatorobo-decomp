@@ -17,8 +17,8 @@ BOOL Shared_HasMark_02062698(void);
 void Shared_GetMarkPos(VecFx32 *pos);
 u16 Shared_GetMarkRot(void);
 void Shared_ClearMark(void);
-BOOL func_020625f8(void);
-void func_02062540(VecFx32 *v);
+BOOL Shared_HasPendingPos(void);
+void Shared_TakePendingPos(VecFx32 *v);
 BOOL func_02062620(void);
 u16 func_02062588(void);
 BOOL func_02062648(void);
@@ -97,8 +97,8 @@ void func_ov000_021b628c(FieldMgr *self) {
         t.x -= FX_SinCosTable_[(rot[1] >> 4) * 2];
         t.z -= FX_SinCosTable_[(rot[1] >> 4) * 2 + 1];
         cam->base.eye = t;
-        if (func_020625f8()) {
-            func_02062540(&t);
+        if (Shared_HasPendingPos()) {
+            Shared_TakePendingPos(&t);
             cam->unk_e8 = t;
             cam->unk_da_1 = 1;
         }

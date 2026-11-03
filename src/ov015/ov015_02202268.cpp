@@ -9,7 +9,7 @@ void func_ov015_02210d04(Ov015MsgMgr *self);
 void func_ov015_02212264(Ov015Obj292c *self);
 BOOL Model021903b4_Draw(void *a);
 void func_ov015_0220101c(Ov015Game *self);
-void func_ov015_02211878(Ov015Info38 *p);
+void Ov015Info38_Dtor(Ov015Info38 *p);
 extern u8 data_ov015_0221296c[];
 extern u8 data_ov015_0221280c[];
 extern u8 data_ov015_022127dc[];
@@ -28,7 +28,7 @@ void HitSphere_Unlink_0203f2b8(void *p);
 void *Shadow_DtorBase(void *p);
 void *Model0218fe1c_FreeAnims(void *p);
 void *ResSet_ReleaseAll(void *p);
-void func_ov015_0220900c(Ov015FishInfo *p);
+void Ov015FishInfo_Dtor(Ov015FishInfo *p);
 extern u8 data_ov015_0221292c[];
 void func_ov015_022120fc(Ov015Obj292c *self);
 extern u8 data_ov015_0221290c[];
@@ -102,7 +102,7 @@ void *Ov015Game_DtorDelete(Ov015Game *self) {
     EffectMgr_FreeAll(data_0214a420);
     data_0214a420->drawFilter = 0;
     data_02097d48->nextState = 1;
-    func_ov015_02211878(&self->info);
+    Ov015Info38_Dtor(&self->info);
     SET_VT(&self->phase2, data_ov015_022127dc);
     if (EffectMgr_Contains(data_0214a420, self->phase2.fx)) {
         HEAP_PUSH(saved);
@@ -143,7 +143,7 @@ void *Ov015Game_Dtor(Ov015Game *self) {
     EffectMgr_FreeAll(data_0214a420);
     data_0214a420->drawFilter = 0;
     data_02097d48->nextState = 1;
-    func_ov015_02211878(&self->info);
+    Ov015Info38_Dtor(&self->info);
     SET_VT(&self->phase2, data_ov015_022127dc);
     if (EffectMgr_Contains(data_0214a420, self->phase2.fx)) {
         HEAP_PUSH(saved);
@@ -213,7 +213,7 @@ void *func_ov015_022027e8(Ov015Hud *self) {
     return self;
 }
 
-void *func_ov015_022028dc(u8 *self) {
+void *Ov015Vt_0221294c_Dtor(u8 *self) {
     SET_VT(self, data_ov015_0221294c);
     Model0218fe1c_FreeAnims(self + 0x57c);
     ResSet_ReleaseAll(self + 0x444);
@@ -239,7 +239,7 @@ void *Ov015Fish_Dtor(Ov015Fish *self) {
     ResSet_ReleaseAll(&self->res2);
     Model0218fe1c_FreeAnims(&self->model);
     ResSet_ReleaseAll(&self->res);
-    func_ov015_0220900c(&self->info);
+    Ov015FishInfo_Dtor(&self->info);
     return self;
 }
 
@@ -275,7 +275,7 @@ void func_ov015_022029d4(Ov015List *self, Ov015Fish *fish) {
     self->count--;
 }
 
-Ov015List *func_ov015_02202a78(Ov015List *self) {
+Ov015List *Ov015List_DtorDelete(Ov015List *self) {
     Ov015Node *n;
     SET_VT(self, data_ov015_0221290c);
     n = self->head;
@@ -292,7 +292,7 @@ Ov015List *func_ov015_02202a78(Ov015List *self) {
     return self;
 }
 
-Ov015Node *func_ov015_02202af8(Ov015Node *self) {
+Ov015Node *Ov015Node_DtorDelete(Ov015Node *self) {
     SET_VT(self, data_ov015_0221295c);
     if (self->prev != NULL) {
         self->prev->next = self->next;
@@ -304,7 +304,7 @@ Ov015Node *func_ov015_02202af8(Ov015Node *self) {
     return self;
 }
 
-Ov015List *func_ov015_02202b3c(Ov015List *self) {
+Ov015List *Ov015List_Dtor(Ov015List *self) {
     Ov015Node *n;
     SET_VT(self, data_ov015_0221290c);
     n = self->head;
@@ -320,7 +320,7 @@ Ov015List *func_ov015_02202b3c(Ov015List *self) {
     return self;
 }
 
-Ov015Node *func_ov015_02202bb4(Ov015Node *self) {
+Ov015Node *Ov015Node_Dtor(Ov015Node *self) {
     SET_VT(self, data_ov015_0221295c);
     if (self->prev != NULL) {
         self->prev->next = self->next;
@@ -350,7 +350,7 @@ void Ov015Scene2a88_Start(Ov015Scene2a88 *self) {
             u16 v;
             if (p->unk_02 != 10 && p->unk_02 != 0) {
                 if (p->unk_06 != 0xffff) {
-                    func_0204aab0(p, p->unk_06);
+                    SndQueue_Push_0204aab0(p, p->unk_06);
                 }
                 v = 1;
             } else {
@@ -382,7 +382,7 @@ void Ov015Scene2a88_Start(Ov015Scene2a88 *self) {
     }
     self->model->unk_150 = 0xfffe019a;
     self->model->unk_158 = (void *)func_ov015_02206bf0;
-    func_02041c20(self->model, 0, &self->unk_44);
+    TexObj_SetOamFuncArg(self->model, 0, &self->unk_44);
     self->parent = NULL;
     self->unk_40 = 1;
     TaskList_Insert(self);

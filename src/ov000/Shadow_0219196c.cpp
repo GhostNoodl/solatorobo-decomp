@@ -65,7 +65,7 @@ void Vram_FreeRes(void *file);
 int ResMgr_IsLoaded(void *a, int b);
 void *ResMgr_Load(void *a, int b, int c);
 void ResMgr_ReleaseByName(void *a, void *b, int c, int d);
-char *func_0203ed04(void *name, void *file);
+char *G3dRes_SetupVram(void *name, void *file);
 void Heap_Free(void *ptr);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
 void NNS_G3dGlbSetBaseScale(VecFx32 *scale);
@@ -182,7 +182,7 @@ BOOL Shadow_UpdateLoad(Shadow *self) {
         name = data_ov000_021c9d80.name;
         self->res = func_02035e34(file, name);
         if (self->res != NULL) {
-            func_0203ed04(name, self->res->file);
+            G3dRes_SetupVram(name, self->res->file);
         }
         self->state = 3;
     default:

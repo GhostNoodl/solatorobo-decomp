@@ -25,7 +25,7 @@ extern u8 data_ov014_02217a1b[];
 extern u8 data_ov014_02217a1c[];
 extern u8 data_ov014_02217a28[];
 extern u8 data_ov014_02217a38[];
-extern s32 func_ov000_021909a8(void *a, const void *b, const void *c);
+extern s32 Model_FindResIdxByName(void *a, const void *b, const void *c);
 
 void Ov014ActEx_02208618_HitNearby(Ov014ActEx_02208618 *self) {
     Ov003Actor *list[0x20];
@@ -243,9 +243,9 @@ void Ov014Act_02209280_Start(Ov014Act_02209280 *self) {
     self->scripts.arg = self;
     self->scripts.func = (Ov003ScriptFunc)Ov014_SelectTrackByHp_022091ec;
     self->unk_100 = 3;
-    self->unk_104 = func_ov000_021909a8(self->model, data_ov014_02217a1b, data_ov014_02217a1c);
-    self->unk_138 = func_ov000_021909a8(self->model, data_ov014_02217a1b, data_ov014_02217a28);
-    self->unk_16c = func_ov000_021909a8(self->model, data_ov014_02217a1b, data_ov014_02217a38);
+    self->unk_104 = Model_FindResIdxByName(self->model, data_ov014_02217a1b, data_ov014_02217a1c);
+    self->unk_138 = Model_FindResIdxByName(self->model, data_ov014_02217a1b, data_ov014_02217a28);
+    self->unk_16c = Model_FindResIdxByName(self->model, data_ov014_02217a1b, data_ov014_02217a38);
     m = self->model;
     NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)Ov014Part_StartCapture);
     m->clearInit = 0;

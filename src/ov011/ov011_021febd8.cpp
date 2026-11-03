@@ -8,7 +8,7 @@ void Ov011Chr_Reset_0220205c(void *p);
 void Ov011Mov_Stop_02202fbc(void *p);
 void Ov011Mgr_Reset(Ov011Mgr *p);
 
-void func_ov011_021febd8(Ov011Scene *self) {
+void Ov011Scene_State0a(Ov011Scene *self) {
     Ov011Node *n;
     if (self->seq.st != 0) {
         return;

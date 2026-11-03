@@ -5,7 +5,7 @@ void Ov012Names_Fill(Ov012Names *n, u16 kind);
 void Ov012ActVt_0220b280_Init(Ov012ActVt_0220b280 *self) {
     self->unk_d8 = (void *)Ov012Names_Fill;
     Ov003Actor_Init(self);
-    ResSet_SetFile(&self->unk_f0, func_0207011c(0x480e), 1, 0, 0, 0);
+    ResSet_SetFile(&self->unk_f0, Tbl_GetResFile(0x480e), 1, 0, 0, 0);
     self->unk_f0.unk_00 = 0;
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     if (self->kind == 0x5029 || self->kind == 0x5057) {
@@ -36,7 +36,7 @@ extern const u8 data_ov012_0220a878[];
 void Ov012ActVt_0220b280_Start(Ov012ActVt_0220b280 *self) {
     Ov003Actor_Start(self);
     self->unk_ea_3 = 0;
-    if (func_020621c4()) {
+    if (Stage_UseScaledStats()) {
         Ov003Actor_ScaleStats(self, data_ov012_0220a870);
         return;
     }

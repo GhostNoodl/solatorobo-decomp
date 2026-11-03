@@ -4,7 +4,7 @@
 
 extern "C" {
 
-extern void func_01ffc9fc(VecFx32 *out, VecFx32 *in, u16 ang);
+extern void Vec_RotateY(VecFx32 *out, VecFx32 *in, u16 ang);
 
 static inline void Ov003Sl_RotX(VecFx32 *out, const VecFx32 *in, u16 ang) {
     s32 y = 0;
@@ -55,7 +55,7 @@ void Ov003Beam_UpdateLayer(Ov003Beam *self, s32 i, s32 mode) {
             a.y = self->unk_84.y;
             a.z = self->unk_84.z;
             Ov003Sl_RotX(&a, &a, self->rot_x);
-            func_01ffc9fc(&a, &a, self->rot_y);
+            Vec_RotateY(&a, &a, self->rot_y);
             nfx->AddPos(&a);
             al = ent->alpha;
             if (al > 0x1f) {
@@ -77,7 +77,7 @@ void Ov003Beam_UpdateLayer(Ov003Beam *self, s32 i, s32 mode) {
     b.y = y;
     b.z = z;
     Ov003Sl_RotX(&b, &b, self->rot_x);
-    func_01ffc9fc(&b, &b, self->rot_y);
+    Vec_RotateY(&b, &b, self->rot_y);
     VEC_Add(&b, &self->pos, &b);
     a.x = fx->pos.x;
     a.y = fx->pos.y;

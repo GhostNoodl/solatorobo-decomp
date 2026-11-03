@@ -25,9 +25,9 @@ struct Ov009RotS {
 };
 
 extern Ov003Actor *ActorMgr_FindPlayer(void);
-extern void func_01ffc9fc(VecFx32 *out, VecFx32 *a, u16 b);
+extern void Vec_RotateY(VecFx32 *out, VecFx32 *a, u16 b);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
-extern BOOL func_01ffc624(const VecFx32 *a, const VecFx32 *b, Ov009RotS *r, s32 c, s32 d);
+extern BOOL Hit_PointInRotCylinder(const VecFx32 *a, const VecFx32 *b, Ov009RotS *r, s32 c, s32 d);
 
 void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
     VecFx32 v;
@@ -80,7 +80,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
                 v.y = 0;
                 v.z = z;
             }
-            func_01ffc9fc(&v, &v, (u16)(self->unk_fc - 0x4000));
+            Vec_RotateY(&v, &v, (u16)(self->unk_fc - 0x4000));
             VEC_Add(&v, &self->unk_f0, &v);
             self->unk_b8 = v;
             self->unk_b6 = Rand_UpTo(0x1e) + 0x14;
@@ -105,7 +105,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
                 v.y = 0;
                 v.z = z;
             }
-            func_01ffc9fc(&v, &v, (u16)(self->unk_fc + 0x4000));
+            Vec_RotateY(&v, &v, (u16)(self->unk_fc + 0x4000));
             VEC_Add(&v, &self->unk_f0, &v);
             self->unk_b8 = v;
             self->unk_b6 = Rand_UpTo(0x1e) + 0x14;
@@ -124,7 +124,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
         r.y = ry;
         r.z = 0;
     }
-    if (!func_01ffc624(&pl->pos, &self->pos, &r, pl->radius + 0x1800, 0x6000)) {
+    if (!Hit_PointInRotCylinder(&pl->pos, &self->pos, &r, pl->radius + 0x1800, 0x6000)) {
         return;
     }
     self->fsm->flags |= 0x8000;

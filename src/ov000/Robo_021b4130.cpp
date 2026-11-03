@@ -6,7 +6,7 @@
 
 extern "C" {
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u16 angle);
+void Vec_RotateY(VecFx32 *out, const VecFx32 *in, u16 angle);
 
 static inline void VecSet_021b4130(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
@@ -93,7 +93,7 @@ void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
             return;
         }
         VecSet_021b4130(&v, -0xccd, self->height >> 1, 0xccd);
-        func_01ffc9fc(&v, &v, self->rot_y);
+        Vec_RotateY(&v, &v, self->rot_y);
         VEC_Add(&v, &self->unk_75c, &v);
         o->dest = v;
         return;
@@ -103,7 +103,7 @@ void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
             return;
         }
         VecSet_021b4130(&v, 0xccd, self->height >> 1, 0xccd);
-        func_01ffc9fc(&v, &v, self->rot_y);
+        Vec_RotateY(&v, &v, self->rot_y);
         VEC_Add(&v, &self->unk_75c, &v);
         o->dest = v;
         return;

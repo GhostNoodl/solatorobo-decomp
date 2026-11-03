@@ -69,12 +69,12 @@ extern HitRayMesh *data_02fe0f08;
 extern HitRayInfo data_02fe0f14;
 extern void HitSegQuery_CalcBox(HitRayQuery *q);
 extern BOOL HitAabb_Overlap(VecFx32 *aMin, VecFx32 *aMax, VecFx32 *bMin, VecFx32 *bMax);
-extern void func_01ffb83c(HitRayMesh **ray);
-extern void func_01ffae08(HitRayMesh **ray);
-extern void func_01ffbb14(HitRayMesh **q);
-extern void func_01ffb9b0(HitRayMesh **q);
+extern void HitTriRay_TestTreeMesh(HitRayMesh **ray);
+extern void HitTriRay_TestMesh(HitRayMesh **ray);
+extern void HitTriSphere_TestTreeMesh(HitRayMesh **q);
+extern void HitTriSphere_TestMesh(HitRayMesh **q);
 
-s32 func_01ffbd6c(VecFx32 *from, VecFx32 *to, u32 mask, s32 a, s32 b, s32 c) {
+s32 Hit_CastSegment(VecFx32 *from, VecFx32 *to, u32 mask, s32 a, s32 b, s32 c) {
     HitRayQuery q;
     HitRayMesh *mesh;
     HitRayInfo *hit;
@@ -99,9 +99,9 @@ s32 func_01ffbd6c(VecFx32 *from, VecFx32 *to, u32 mask, s32 a, s32 b, s32 c) {
         }
         q.mesh = mesh;
         if (mesh->unk_84_2 ? TRUE : FALSE) {
-            func_01ffb83c(&q.mesh);
+            HitTriRay_TestTreeMesh(&q.mesh);
         } else {
-            func_01ffae08(&q.mesh);
+            HitTriRay_TestMesh(&q.mesh);
         }
     }
     hit = data_02fe0ef8;
@@ -113,7 +113,7 @@ s32 func_01ffbd6c(VecFx32 *from, VecFx32 *to, u32 mask, s32 a, s32 b, s32 c) {
     return FX_Sqrt(data_02fe0f14.distSq);
 }
 
-s32 func_01ffbf40(VecFx32 *pos, s32 radius, u32 mask, s32 a, s32 b, s32 c) {
+s32 Hit_CastSphere(VecFx32 *pos, s32 radius, u32 mask, s32 a, s32 b, s32 c) {
     HitSphereQuery q;
     HitRayMesh *mesh;
     HitRayInfo *hit;
@@ -143,9 +143,9 @@ s32 func_01ffbf40(VecFx32 *pos, s32 radius, u32 mask, s32 a, s32 b, s32 c) {
         q.center2 = *pos;
         q.radius2 = radius;
         if (mesh->unk_84_2 ? TRUE : FALSE) {
-            func_01ffbb14(&q.mesh);
+            HitTriSphere_TestTreeMesh(&q.mesh);
         } else {
-            func_01ffb9b0(&q.mesh);
+            HitTriSphere_TestMesh(&q.mesh);
         }
     }
     hit = data_02fe0ef8;

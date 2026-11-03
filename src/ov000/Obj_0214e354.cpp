@@ -11,7 +11,7 @@ public:
 
 extern "C" {
 
-s32 func_ov000_0214e354(Obj0214e354 *self) {
+s32 Lo021caac8_GetIconWidth(Obj0214e354 *self) {
     return self->unk_b8 != NULL ? 0x15 : 0;
 }
 

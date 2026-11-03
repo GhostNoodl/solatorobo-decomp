@@ -49,7 +49,7 @@ void func_02046c6c(void) {
     func_02046d1c(card);
 }
 
-void func_02046cd0(SysCard *card) {
+void SysCard_Reset_02046cd0(SysCard *card) {
     SysCard_Reset(card);
 }
 

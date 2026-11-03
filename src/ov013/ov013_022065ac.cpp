@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_ov013_0220bb20;
 extern char data_ov013_0220b360[];
 extern Ov003Actor *ActorMgr_FindPlayer(void);
-extern BOOL func_020621c4(void);
+extern BOOL Stage_UseScaledStats(void);
 
 Ov013ActEx_022065ac *Ov013ActEx_022065ac_Ctor(Ov013ActEx_022065ac *self) {
     ActorEx_Ctor(self);
@@ -72,7 +72,7 @@ void Ov013ActVt_0220bdd8_Start(Ov013ActVt_0220bdd8 *self) {
     self->unk_93_4 = 1;
     self->unk_b6 = 0x5a;
     self->unk_fe = 0x1000;
-    if (func_020621c4()) {
+    if (Stage_UseScaledStats()) {
         Ov003Actor_ScaleStats(self, data_ov013_0220b360);
         self->unk_fe = 0x1800;
     }

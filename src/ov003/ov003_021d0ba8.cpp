@@ -60,15 +60,15 @@ typedef struct {
 } Ov003Res;
 
 extern Ov003ResInfo *Tbl_FindEntry_0206fef8(u16 id);
-extern char *func_0207011c(u16 id);
+extern char *Tbl_GetResFile(u16 id);
 extern char *func_020701d4(u16 id);
 extern char *Tbl_GetEntryData(u16 id, s32 n);
 extern void ResSet_SetFile(Ov003Res *p, char *res, s32 a, s32 b, s32 c, s32 d);
 
 void Ov003Res_SetNames(Ov003Res *res, u16 id) {
     Ov003ResInfo *info = Tbl_FindEntry_0206fef8(id);
-    TblActorParam *param = func_02070558(id);
-    char *name = func_0207011c(id);
+    TblActorParam *param = Tbl_GetActorParam(id);
+    char *name = Tbl_GetResFile(id);
     char *a;
     char *b;
     if (param->evName != NULL) {
@@ -225,7 +225,7 @@ static inline void Ov003Shadow_Push(ActorShadow *s, u8 v) {
 void Ov003Actor_Init(Ov003Actor *self) {
     Ov003InitInfo *info = (Ov003InitInfo *)Tbl_FindEntry_0206fef8(self->kind);
     void *p;
-    self->unk_b0 = (Ov003Param *)((u8 *)func_02070558(self->kind) + 0x10);
+    self->unk_b0 = (Ov003Param *)((u8 *)Tbl_GetActorParam(self->kind) + 0x10);
     p = Heap_Alloc(0x138);
     if (p != NULL) {
         p = ResSet_Init(p);

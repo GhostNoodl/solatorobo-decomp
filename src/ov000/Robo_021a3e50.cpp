@@ -48,7 +48,7 @@ static inline BOOL IsBusy021a3e50(void) {
     return r;
 }
 
-void func_ov000_021a3e50(Robo021ca458 *self) {
+void Robo021ca458_State05(Robo021ca458 *self) {
     Actor *t;
     ActorSub40 *sub;
     self->hit->unk_9a |= 0x20;

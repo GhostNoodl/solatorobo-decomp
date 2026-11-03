@@ -122,7 +122,7 @@ extern void Model0218fe1c_Setup(Ov003InModel *model, void *p, Ov003InRes *res);
 extern s32 Rand_PlusMinus(s32 max);
 extern void Model0218fe1c_SetAnimSpeed(Ov003InModel *model, s32 v);
 extern s32 Geom_SnapToGround(VecFx32 *pos, s32 a, s32 b);
-extern void func_ov000_02191ec4(Ov003InS3c *p, s32 a, u32 b);
+extern void Shadow_SetType(Ov003InS3c *p, s32 a, u32 b);
 extern char *Tbl_GetEntryData(u16 id, s32 n);
 extern Ov003InCtl *ActorSub48_Init(void *p);
 extern void Body_SetOwner(Ov003InCtl *p, u16 id);
@@ -193,7 +193,7 @@ skip:
         if (self->unk_3c != NULL) {
             self->unk_3c->unk_14 = self->unk_64 * 3;
             if (Geom_SnapToGround(&self->pos, self->unk_68, -0x5000) != -0x1000) {
-                func_ov000_02191ec4(self->unk_3c, 1, data_02fe0f14.unk_2c);
+                Shadow_SetType(self->unk_3c, 1, data_02fe0f14.unk_2c);
                 if (data_02fe0f14.unk_2c & 0x80000) {
                     self->model->unk_bf = 0x13;
                 }

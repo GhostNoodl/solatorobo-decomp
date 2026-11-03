@@ -15,7 +15,7 @@ typedef struct {
 
 extern "C" {
 s32 FX_Div(s32 a, s32 b);
-BOOL func_01ffc318(VecFx32 *a, FieldExit *item, VecFx32 *min, VecFx32 *max, VecFx16 *rot);
+BOOL Hit_PointInRotBox(VecFx32 *a, FieldExit *item, VecFx32 *min, VecFx32 *max, VecFx16 *rot);
 
 FieldExit *FieldMgr_FindExitAt(FieldMgr *self, VecFx32 *pos) {
     FieldExit *ret = NULL;
@@ -36,7 +36,7 @@ FieldExit *FieldMgr_FindExitAt(FieldMgr *self, VecFx32 *pos) {
             rot.y = item->rot;
             rot.x = 0;
             rot.z = 0;
-            if (func_01ffc318(pos, item, &min, &max, &rot)) {
+            if (Hit_PointInRotBox(pos, item, &min, &max, &rot)) {
                 ret = item;
                 break;
             }

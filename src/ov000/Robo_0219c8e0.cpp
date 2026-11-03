@@ -24,7 +24,7 @@ void Model0218fe1c_BindAnim3Res(Model0218fe1c *self, void *p);
 AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
 void Model0218fe1c_SetAnim3(Model0218fe1c *self, s32 index, s16 blend, u8 force);
 void Model0218fe1c_UpdateAnim(Model0218fe1c *self, s32 a);
-s32 func_ov000_021909a8(Model0218fe1c *self, void *p, const char *name);
+s32 Model_FindResIdxByName(Model0218fe1c *self, void *p, const char *name);
 
 void func_ov000_0219c8e0(Robo021ca458 *self) {
     AnimEventTable *tbl;
@@ -85,14 +85,14 @@ void func_ov000_0219c8e0(Robo021ca458 *self) {
     self->unk_ae4 = 0;
     if (!self->unk_b22_3) {
         base = (u8 *)self + 0xbc;
-        self->unk_ae1 = func_ov000_021909a8(&self->mdl1, base + 0x400, data_ov000_021cc5ef);
-        self->unk_ae0 = func_ov000_021909a8(&self->mdl1, base + 0x400, data_ov000_021cc5f6);
-        self->unk_ae2 = func_ov000_021909a8(&self->mdl1, base + 0x400, data_ov000_021cc5fd);
+        self->unk_ae1 = Model_FindResIdxByName(&self->mdl1, base + 0x400, data_ov000_021cc5ef);
+        self->unk_ae0 = Model_FindResIdxByName(&self->mdl1, base + 0x400, data_ov000_021cc5f6);
+        self->unk_ae2 = Model_FindResIdxByName(&self->mdl1, base + 0x400, data_ov000_021cc5fd);
     } else {
         base = (u8 *)self + 0xbc;
-        self->unk_ae1 = func_ov000_021909a8(&self->mdl1, base + 0x400, data_ov000_021cc605);
-        self->unk_ae0 = func_ov000_021909a8(&self->mdl1, base + 0x400, data_ov000_021cc60a);
-        self->unk_ae2 = func_ov000_021909a8(&self->mdl1, base + 0x400, data_ov000_021cc5fd);
+        self->unk_ae1 = Model_FindResIdxByName(&self->mdl1, base + 0x400, data_ov000_021cc605);
+        self->unk_ae0 = Model_FindResIdxByName(&self->mdl1, base + 0x400, data_ov000_021cc60a);
+        self->unk_ae2 = Model_FindResIdxByName(&self->mdl1, base + 0x400, data_ov000_021cc5fd);
     }
     if (!self->unk_b22_3 && data_0214a424->bits18.mode != 2) {
         Model0218fe1c *m2 = &self->mdl0;

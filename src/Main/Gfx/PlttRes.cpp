@@ -6,7 +6,7 @@
 
 extern "C" {
 
-void func_02040be0(PlttRes *res, PlttResSrc *src) {
+void PlttRes_SetSrc_02040be0(PlttRes *res, PlttResSrc *src) {
     PlttRes_SetSrc(res, src);
 }
 
@@ -15,17 +15,17 @@ void PlttRes_Load(PlttRes *res, PlttResSrc *src) {
     PlttRes_SetData(res, src->info->header->data, res->size);
 }
 
-void func_02040d14(PlttRes *res, const void *data, u32 size) {
+void PlttRes_SetData_02040d14(PlttRes *res, const void *data, u32 size) {
     PlttRes_SetData(res, data, size);
 }
 
-void func_02040d94(PlttRes *res, const void *data, u32 offset, u32 size) {
+void PlttRes_Upload_02040d94(PlttRes *res, const void *data, u32 offset, u32 size) {
     PlttRes_Upload(res, data, offset, size);
 }
 
 
 extern u32 (*NNS_GfdDefaultFuncAllocPlttVram)(u32 size, int is4pltt, int opt);
-extern void func_0203e134(const char *name, u32 value);
+extern void NamePool_SetPlttKey(const char *name, u32 value);
 extern void NNS_G2dSetImagePaletteLocation(PlttSub *sub, int idx, u32 addr);
 extern u16 GfxSys_AllocSlots(GfxSys *sys, int count, int idx);
 u32 func_02041080(PlttRes *res, int idx, u32 mask, int load);
@@ -75,7 +75,7 @@ void func_02040dd8(PlttRes *res, int idx, bool load) {
     res->table = tmp;
     if (idx == 0) {
         u16 n;
-        func_0203e134(res->name, res->loaded);
+        NamePool_SetPlttKey(res->name, res->loaded);
         n = res->count;
         if (res->fmt == 3) {
             res->key = NNS_GfdDefaultFuncAllocPlttVram(n << 5, 0, 0);

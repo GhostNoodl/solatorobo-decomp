@@ -120,13 +120,13 @@ extern void *data_ov000_021ccd68;
 extern Ov003MCtx *data_ov000_021ccd6c;
 
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 a, u16 b);
+extern u16 Angle_Approach(u16 target, u16 cur, s32 rate, u32 a, u16 b);
 extern BOOL Model0218fe1c_SetRes(Ov003MultiModel *m, Ov003MultiSlot *slot, s32 a, s32 b);
 extern void Model0218fe1c_SetAnimByIndex(Ov003MultiModel *m, s32 a, s32 b, s32 c);
 extern void Model0218fe1c_SetLoop(Ov003MultiModel *m);
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, BOOL on, u32 mask);
 extern void NNSi_G3dModifyMatFlag(void *mdl, BOOL on, u32 flag);
-extern s32 func_ov000_021909a8(Ov003MultiModel *m, const void *a, const void *b);
+extern s32 Model_FindResIdxByName(Ov003MultiModel *m, const void *a, const void *b);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern void VEC_MultAdd(s32 scale, const VecFx32 *dir, const VecFx32 *base, VecFx32 *out);
 extern u16 FX_Atan2(s32 y, s32 x);
@@ -191,7 +191,7 @@ void Ov003ActVt_021fa390_RunState(Ov003Multi *self) {
         NNSi_G3dModifyMatFlag(m->mdl, TRUE, 0x400);
         m->unk_c2_7 = 1;
         NNSi_G3dModifyPolygonAttrMask(m->mdl, TRUE, 0x1f0000);
-        self->mtx[self->unk_1119].unk_30 = func_ov000_021909a8(m, 0, data_ov003_021fa2ce);
+        self->mtx[self->unk_1119].unk_30 = Model_FindResIdxByName(m, 0, data_ov003_021fa2ce);
         MI_Copy36B(&self->mtx[self->unk_1119], &self->rot);
         MTX_Identity43_(&self->mtx[self->unk_1119].mtx);
         NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->rob, (NNSG3dSbcCallBackFunc)Ov003Multi_StartCapture);
@@ -231,7 +231,7 @@ void Ov003ActVt_021fa390_RunState(Ov003Multi *self) {
         MTX_MultVec43(&v, &self->mtx[self->unk_1119].mtx, &v);
         ang = FX_Atan2(v.x, v.z);
         if (ang != ry) {
-            ang = func_01ffc128(ang, ry, 0x400, 1, 0x8000);
+            ang = Angle_Approach(ang, ry, 0x400, 1, 0x8000);
             cam->unk_fa = ang;
             cam->unk_da_5 = 1;
             cam->unk_fc = (s16)((s16)ang - (s16)ry) >> 1;
@@ -247,7 +247,7 @@ void Ov003ActVt_021fa390_RunState(Ov003Multi *self) {
         }
         ang = FX_Atan2(-v.y >> 1, (s32)(OV003M_SQRT_RESULT + 1) >> 1) + 0x400;
         if (ang != rx) {
-            cam->unk_f8 = func_01ffc128(ang, rx, 0x400, 1, 0x8000);
+            cam->unk_f8 = Angle_Approach(ang, rx, 0x400, 1, 0x8000);
             cam->unk_da_4 = 1;
         }
     }

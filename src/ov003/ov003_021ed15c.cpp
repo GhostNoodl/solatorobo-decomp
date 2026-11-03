@@ -9,7 +9,7 @@ extern void *data_ov000_021ccd68;
 extern Actor *Target_Get(ActorSub4c *t);
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
-extern void func_01ffc9fc(VecFx32 *dst, VecFx32 *src, u16 ry);
+extern void Vec_RotateY(VecFx32 *dst, VecFx32 *src, u16 ry);
 extern void HitSphere_Link(ActorSub48 *a);
 extern void Body_Update(ActorSub48 *a, s32 b, s32 c, s32 d);
 
@@ -56,7 +56,7 @@ void Ov003ActVt_021f9a80_StateThrown(Ov003HomingShot *self) {
         self->gravity = 0;
         speed = 0x333;
         e = Effect_SpawnId(0x324, &self->pos);
-        func_01ffc9fc(&self->fxOffset, &ofs, self->rot_y);
+        Vec_RotateY(&self->fxOffset, &ofs, self->rot_y);
         e->SetScaleAll(0x2333);
         self->unk_bc = e->id;
         self->fsm->timer = 0;
@@ -123,7 +123,7 @@ void Ov003ActVt_021f9a80_StateThrown(Ov003HomingShot *self) {
         Effect_SpawnId(0x12d, &self->pos)->SetRot(&self->rot);
     }
     if (self->unk_bc != (u32)-1) { // the homing shot compares its effect id with -1
-        func_01ffc9fc(&self->fxOffset, &ofs, self->rot_y);
+        Vec_RotateY(&self->fxOffset, &ofs, self->rot_y);
     }
     if (self->hit != NULL) {
         if (!(self->param->type & 2)) {

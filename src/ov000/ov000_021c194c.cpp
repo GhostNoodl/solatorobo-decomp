@@ -18,7 +18,7 @@ BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 void Model0218fe1c_SetLoop(void *a);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
 void Math_DirToAngles(u16 *out, VecFx32 *dir);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
 static inline void SetNamesA021c194c(ActorRes *o) {
     char **names = data_ov000_021cc8a0;
@@ -173,8 +173,8 @@ void func_ov000_021c194c(Obj021c2114 *self, BOOL flag, ActorRes *p) {
         d.z = self->target.z - self->pos.z;
         VEC_Normalize(&d, &d);
         Math_DirToAngles(ang, &d);
-        self->rx = func_01ffc128(ang[0], self->rx, 0x266, 1, 0x8000);
-        self->ry = func_01ffc128(-ang[1], self->ry, 0x266, 1, 0x8000);
+        self->rx = Angle_Approach(ang[0], self->rx, 0x266, 1, 0x8000);
+        self->ry = Angle_Approach(-ang[1], self->ry, 0x266, 1, 0x8000);
         ry = self->ry;
         rz = self->rz;
         rx = self->rx;

@@ -6,7 +6,7 @@ s32 ResSet_UpdateLoad(void *a);
 extern const Ov015ShipCfg data_ov015_02212db0;
 extern char data_ov015_02212e14[];
 extern char data_ov015_02212e15[];
-s32 func_ov000_021909a8(void *a, const void *b, const void *c);
+s32 Model_FindResIdxByName(void *a, const void *b, const void *c);
 u8 *Tbl_FindEntry_0206fef8(u16 id);
 BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
@@ -42,7 +42,7 @@ BOOL func_ov015_0220e074(Ov015StageMdl *self) {
     self->mdl0.clearInit = 0;
     self->mdl0.renderUser = &self->unk_49c;
     self->mdl0.flushVP = 1;
-    self->unk_4cc = func_ov000_021909a8(&self->mdl0, data_ov015_02212e14, data_ov015_02212e15);
+    self->unk_4cc = Model_FindResIdxByName(&self->mdl0, data_ov015_02212e14, data_ov015_02212e15);
     self->unk_50c = FLD(s16, Tbl_FindEntry_0206fef8(self->unk_498), 0x10);
     Model0218fe1c_SetRes(&self->mdl1, &self->res1, 0, 1);
     if (self->unk_3a4 != 0) {
@@ -194,7 +194,7 @@ void *Ov015FishState_Dtor(Ov015FishState *self) {
     return self;
 }
 
-void *func_ov015_0220e5c8(Ov002Obj *self) {
+void *Ov015Vt_02212f64_DtorDelete(Ov002Obj *self) {
     SET_VT(self, data_ov015_02212f64);
     Ov002Obj_Detach(self);
     Heap_Free(self);
@@ -220,7 +220,7 @@ BOOL func_ov015_0220e60c(void) {
     return TRUE;
 }
 
-void *func_ov015_0220e614(Ov002Obj *self) {
+void *Ov015Vt_02212f64_Dtor(Ov002Obj *self) {
     SET_VT(self, data_ov015_02212f64);
     Ov002Obj_Detach(self);
     return self;

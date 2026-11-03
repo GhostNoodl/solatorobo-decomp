@@ -101,7 +101,7 @@ extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 void *Heap_Alloc(u32 size);
-void func_02041c34(Model *m, s32 a, void *cb, void *arg);
+void TexObj_SetOamFunc(Model *m, s32 a, void *cb, void *arg);
 struct Req0215e6f0;
 struct OamEntry0215e6f0;
 struct OamEntry0215e6f0 *func_ov000_0215e6f0(void *self, struct Req0215e6f0 *req, struct OamEntry0215e6f0 *buf, u16 *count);
@@ -136,7 +136,7 @@ void Obj0215e8b0_LoadModel(Obj0215e8b0 *self) {
         }
         self->model->flags |= 2;
         TexObj_SelectImage(self->model, 0, 5);
-        func_02041c34(self->model, 5, (void *)func_ov000_0215e6f0, self);
+        TexObj_SetOamFunc(self->model, 5, (void *)func_ov000_0215e6f0, self);
     }
     self->model->flags |= 0x80000;
     self->model->flags |= 0x200000;

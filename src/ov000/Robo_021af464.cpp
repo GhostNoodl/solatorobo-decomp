@@ -35,7 +35,7 @@ s32 func_ov000_021b288c(void *self);
 void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 void HitSphere_Unlink_0203f364(void *obj);
 void *SndMgr_PlayAt(void *mgr, s32 id, void *pos, s32 a);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
 static inline Actor *FindActor021af464(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -88,7 +88,7 @@ static inline BOOL Ev19_021af464(void) {
     return FALSE;
 }
 
-void func_ov000_021af464(Robo021ca458 *self) {
+void Robo021ca458_State1e(Robo021ca458 *self) {
     Actor *a;
     ActorSub4c *info;
     VecFx32 pos;
@@ -140,7 +140,7 @@ void func_ov000_021af464(Robo021ca458 *self) {
         ((St_021af464 *)self->fsm)->state++;
         break;
     case 1:
-        self->rot_y = func_01ffc128(ang, self->rot_y, 0x400, 1, 0x8000);
+        self->rot_y = Angle_Approach(ang, self->rot_y, 0x400, 1, 0x8000);
         Actor_MoveToPos(self, &pos, 0);
         {
             St_021af464 *st = ((St_021af464 *)self->fsm);
@@ -170,7 +170,7 @@ void func_ov000_021af464(Robo021ca458 *self) {
             ((St_021af464 *)self->fsm)->state++;
         } else {
             VecFx32 d;
-            self->rot_y = func_01ffc128(ang, self->rot_y, 0x8cd, 1, 0x8000);
+            self->rot_y = Angle_Approach(ang, self->rot_y, 0x8cd, 1, 0x8000);
             self->speed = 0;
             self->velY = 0;
             self->friction = 0;

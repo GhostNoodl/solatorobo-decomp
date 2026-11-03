@@ -16,7 +16,7 @@ void *Heap_Alloc(u32 size);
 static inline UiLabel *New0215f514(void) {
     UiLabel *p = (UiLabel *)Heap_Alloc(sizeof(UiLabel));
     if (p != NULL) {
-        func_ov000_0215f514(p);
+        UiLabel_Reset_0215f514(p);
     }
     return p;
 }

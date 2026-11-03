@@ -287,7 +287,7 @@ u32 Rand_UpTo(u32 max);
 void Body_Update(void *a, s32 b, s32 c, s32 d);
 s32 Geom_SnapToGround(VecFx32 *v, s32 y, s32 b);
 BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *p);
-char *func_0207011c(s32 id);
+char *Tbl_GetResFile(s32 id);
 char *func_020701d4(s32 id);
 }
 extern "C" {
@@ -418,7 +418,7 @@ SIZE_ASSERT(Ov014Act_02201b94, 0x370);
 // Render user data of a model: the draw callback (Ov014Part_CaptureMtx_0220f8a4) stores the current
 // matrix of the joint into mtx.
 struct Ov014JointMtx {
-    s32 joint; // func_ov000_021909a8 result
+    s32 joint; // Model_FindResIdxByName result
     union {
         MtxFx43 mtx;
         struct {

@@ -33,7 +33,7 @@ void func_ov015_02200f74(Ov015Game *p);
 void Ov015Obj30_Free(Ov015Obj30 *self);
 void func_ov015_02200194(Ov015Obj34 *self);
 u8 Gfx3DState_NextPolyId(void *p);
-void func_02043db4(s32 a, s32 b, s32 c, s32 d);
+void Gfx3D_DrawPrimScaled(s32 a, s32 b, s32 c, s32 d);
 BOOL func_ov015_021faa74(Ov015Main *self);
 
 static inline VObj *Ov015_NewChild(Ov015Main *self, s32 kind) {
@@ -119,10 +119,10 @@ Ov015Fade *Ov015_GetFade(void) {
     return data_ov015_02213320.fade;
 }
 
-void func_ov015_021fa6e0(void) {
+void Ov015Vt_022127fc_Dtor(void) {
 }
 
-void *func_ov015_021fa6e4(Ov015Fade *self) {
+void *Ov015Vt_022127fc_DtorDelete(Ov015Fade *self) {
     Heap_Free(self);
     return self;
 }
@@ -195,7 +195,7 @@ void func_ov015_021fa868(void) {
 }
 
 
-Ov015Main *func_ov015_021fa8c4(Ov015Main *self) {
+Ov015Main *Ov015Main_DtorDelete(Ov015Main *self) {
     SET_VT(self, data_ov015_022127cc);
     Ov015Main_Shutdown(self);
     Heap_Free(self);
@@ -222,7 +222,7 @@ void Ov015Main_Shutdown(Ov015Main *self) {
     GXx_SetMasterBrightness_(0x400106c, 0);
 }
 
-void *func_ov015_021faa54(Ov015Child *self) {
+void *Ov015Child_DtorDelete(Ov015Child *self) {
     SET_VT(self, data_ov015_0221280c);
     Heap_Free(self);
     return self;
@@ -379,7 +379,7 @@ void *Ov015Obj30_Dtor(Ov015Obj30 *self) {
     return self;
 }
 
-void *func_ov015_021fb068(Ov015Obj34 *self) {
+void *Ov015Obj34_Dtor(Ov015Obj34 *self) {
     SET_VT(self, data_ov015_022127dc);
     func_ov015_02200194(self);
     return self;
@@ -417,12 +417,12 @@ void func_ov015_021fb088(Ov015Main *self) {
     trans[0] = 0;
     trans[1] = 0;
     NNS_G3dGeBufferOP_N(0x1c, (unsigned int *)trans, 3);
-    func_02043db4(1, 0x100000, 0xc0000, fd->color);
+    Gfx3D_DrawPrimScaled(1, 0x100000, 0xc0000, fd->color);
     pop = 1;
     NNS_G3dGeBufferOP_N(0x12, (unsigned int *)&pop, 1);
 }
 
-void *func_ov015_021fb1c0(Ov015Obj34 *self) {
+void *Ov015Obj34_DtorDelete(Ov015Obj34 *self) {
     SET_VT(self, data_ov015_022127dc);
     func_ov015_02200194(self);
     Heap_Free(self);
@@ -436,13 +436,13 @@ void *Ov015Obj30_DtorDelete(Ov015Obj30 *self) {
     return self;
 }
 
-Ov015Main *func_ov015_021fb210(Ov015Main *self) {
+Ov015Main *Ov015Main_Dtor(Ov015Main *self) {
     SET_VT(self, data_ov015_022127cc);
     Ov015Main_Shutdown(self);
     return self;
 }
 
-void *func_ov015_021fb230(Ov015Child *self) {
+void *Ov015Child_Dtor(Ov015Child *self) {
     SET_VT(self, data_ov015_0221280c);
     return self;
 }

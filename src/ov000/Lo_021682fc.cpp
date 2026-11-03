@@ -12,7 +12,7 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021c9b28[];
 extern u8 data_ov000_021c9b2e[];
 
-void func_ov000_021682fc(Lo021cb6f0 *self) {
+void Lo021cb6f0_PostUpdate(Lo021cb6f0 *self) {
     s32 s = self->unk_04;
     if (s == 1 || s == 8 || s == 3 || s == 0xa) {
         if (self->unk_0c_1 ? TRUE : FALSE) {

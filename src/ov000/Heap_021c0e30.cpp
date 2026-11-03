@@ -38,7 +38,7 @@ extern VFunc data_0208ba70[];
 void *Heap_Alloc(u32 size);
 void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void *func_0206ffa0(s32 id);
+void *Tbl_GetText(s32 id);
 
 static inline BOOL Obj021c0e30_Wait(Marker021c0e30 *self) {
     if (!(self->show == 1 ? TRUE : FALSE) || (self->change == 1 ? TRUE : FALSE)) {
@@ -85,7 +85,7 @@ void func_ov000_021c0e30(Marker021c0e30 *self) {
             self->unk_90 = t;
             t->unk_28 = 4;
             self->unk_90->unk_2c = 0;
-            str = func_0206ffa0(self->unk_94);
+            str = Tbl_GetText(self->unk_94);
             t = self->unk_90;
             t->unk_24 = (s32)str;
             t->unk_4c = Text_Measure(t->unk_28, t->unk_38, t->unk_24, &t->unk_44, &t->unk_48, t->unk_37 != 0);

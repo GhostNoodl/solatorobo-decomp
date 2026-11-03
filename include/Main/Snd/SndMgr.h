@@ -42,7 +42,7 @@ typedef struct SndMgr {
     /* 0x84 */ s32 seqArcSlots[5];
     /* 0x98 */ s32 seqArcNext;
     /* 0x9c */ s32 unk_9c;
-    /* 0xa0 */ s32 fileBuf; // 0x10000 buffer func_0204a598 reads a file into (FS_ReadFile)
+    /* 0xa0 */ s32 fileBuf; // 0x10000 buffer SndMgr_LoadFileBuf reads a file into (FS_ReadFile)
     /* 0xa4 */ s32 fileSize;
     /* 0xa8 */ s32 loadedSeq;
     /* 0xac */ s32 loadedSeqEx[3];

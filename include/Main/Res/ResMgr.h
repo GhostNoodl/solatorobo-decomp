@@ -90,7 +90,7 @@ extern ResMgr *data_02097cdc;
 #define RES_MGR_HASH_TABLE(mgr) ((mgr)->hashTable)
 
 extern ResNode *func_0203662c(ResMgr *mgr);
-extern void func_020366d0(ResMgr *mgr, ResNode *node);
+extern void ResMgr_FreeNode_020366d0(ResMgr *mgr, ResNode *node);
 
 // Strings
 extern u16 MATH_CalcCRC16(u16 *table, const char *str, u32 len);

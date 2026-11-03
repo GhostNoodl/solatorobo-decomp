@@ -71,7 +71,7 @@ void HitSegQuery_CalcBox(HitSegQuery *q) {
     HitAabb_FromSeg(&q->box, &q->from, &q->to);
 }
 
-void func_01ff8330(HitBox *box) {
+void HitBox_CalcWorld(HitBox *box) {
     HitBoxOwner *owner = box->owner;
     MTX_MultVec43(&box->localA, &owner->mtx, &box->worldA);
     HitBox_ScaleVec(&box->worldA, owner->scale);

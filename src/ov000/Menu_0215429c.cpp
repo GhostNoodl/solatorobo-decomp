@@ -11,8 +11,8 @@ extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 extern const char *data_0208cc88;
 extern const char *data_0208cc94;
-void func_02041c5c(void *m, void *fn);
-void func_02041c20(void *m, s32 a, void *b);
+void TexObj_SetAllOamFuncs(void *m, void *fn);
+void TexObj_SetOamFuncArg(void *m, s32 a, void *b);
 void *func_ov000_021540b0(void *self, u16 *msg, void *g, u16 *count);
 void *func_ov000_02154128(u8 *self, void *req, void *buf, u16 *count);
 
@@ -84,9 +84,9 @@ void UiList_Setup(UiList *self) {
             TexObj_SelectImage(self->model, 0, 10);
             TexObj_SelectImage(self->model, 0, 6);
         }
-        func_02041c5c(self->model, (void *)func_ov000_021540b0);
-        func_02041c20(self->model, 2, self);
-        func_02041c20(self->model, 6, self);
+        TexObj_SetAllOamFuncs(self->model, (void *)func_ov000_021540b0);
+        TexObj_SetOamFuncArg(self->model, 2, self);
+        TexObj_SetOamFuncArg(self->model, 6, self);
     }
     if (self->flags & 0x400000) {
         Model *m = (Model *)Heap_Alloc(sizeof(Model));
@@ -106,11 +106,11 @@ void UiList_Setup(UiList *self) {
         }
         self->unk_b4->flags |= 2;
         TexObj_SelectImage(self->unk_b4, 0, 6);
-        func_02041c20(self->unk_b4, 6, self);
+        TexObj_SetOamFuncArg(self->unk_b4, 6, self);
         if (self->flags & 0x800000) {
             TexObj_SelectImage(self->unk_b4, 0, 7);
         }
-        func_02041c5c(self->unk_b4, (void *)func_ov000_02154128);
+        TexObj_SetAllOamFuncs(self->unk_b4, (void *)func_ov000_02154128);
     }
     if ((Panel0215429c *)self->panel == NULL) {
         self->panel = (UiPanel *)new Panel0215429c();

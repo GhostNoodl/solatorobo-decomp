@@ -65,7 +65,7 @@ void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void TextWin_InitLines(Ov002Text2 *a, int b);
 void *func_02035de0(const char *file, const char *name);
-void func_02041c5c(void *a, void *fn);
+void TexObj_SetAllOamFuncs(void *a, void *fn);
 void *func_ov002_021e1988(void *a, void *b, void *c, u16 *d);
 
 static inline Ov002Text2 *ov002_Anim_New(void) {
@@ -161,7 +161,7 @@ void Ov002Hud_Load(Ov002Hud *self) {
     TexObj_SetRes(self->unk_10, data);
     self->unk_10->flags |= 2;
     self->unk_10->unk_150 = -0x1ccd;
-    func_02041c5c(self->unk_10, (void *)func_ov002_021e1988);
+    TexObj_SetAllOamFuncs(self->unk_10, (void *)func_ov002_021e1988);
     TexObj_SelectImage(self->unk_10, 2, 1);
     TexObj_SelectImage(self->unk_10, 2, 8);
     TexObj_SelectImage(self->unk_10, 2, 9);

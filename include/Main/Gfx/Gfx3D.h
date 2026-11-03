@@ -83,8 +83,8 @@ typedef struct GfxOamAttr {
     u32 attr23;
 } GfxOamAttr;
 
-void func_02043578(GfxLight *light);
-void func_020436f8(GfxPltt *pltt, u16 *buf, u32 size);
+void GfxLight_Apply_02043578(GfxLight *light);
+void GfxPltt_ApplySepia(GfxPltt *pltt, u16 *buf, u32 size);
 
 #ifdef __cplusplus
 }

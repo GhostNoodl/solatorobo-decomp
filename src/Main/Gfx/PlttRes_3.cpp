@@ -8,7 +8,7 @@ extern "C" {
 
 
 extern u32 (*NNS_GfdDefaultFuncAllocPlttVram)(u32 size, int is4pltt, int opt);
-extern void func_0203e134(const char *name, u32 value);
+extern void NamePool_SetPlttKey(const char *name, u32 value);
 extern void NNS_G2dSetImagePaletteLocation(PlttSub *sub, int idx, u32 addr);
 extern u16 GfxSys_AllocSlots(GfxSys *sys, int count, int idx);
 u32 func_02041080(PlttRes *res, int idx, u32 mask, int load);

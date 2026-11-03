@@ -111,7 +111,7 @@ EffectGroup *EffectGroup_Create(const char *arc, const char *name, const VecFx32
     return g;
 }
 
-struct EffectSetup *func_020669ac(struct EffectSetup *setup) {
+struct EffectSetup *EffectSetup_Dtor(struct EffectSetup *setup) {
     *(u32 **)setup = data_0208c1d8;
     func_02068540(setup);
     return setup;

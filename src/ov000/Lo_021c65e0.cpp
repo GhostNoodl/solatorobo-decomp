@@ -70,7 +70,7 @@ static inline void Select2_021c65e0(TextList *self, s32 i) {
     self->cur = At2_021c65e0(self, i);
 }
 
-void func_ov000_021c65e0(TextList *self, s32 key) {
+void TextList_SelectByKey(TextList *self, s32 key) {
     ListRow *node = Find021c65e0(self, key);
     s32 i;
     if (node != NULL) {

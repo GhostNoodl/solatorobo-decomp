@@ -34,7 +34,7 @@ static inline BOOL Field_IsIdle(void) {
     return data_ov000_021ccd70->state == 0 ? TRUE : FALSE;
 }
 
-BOOL func_02055a4c(void) {
+BOOL Field_IsIdle_02055a4c(void) {
     return Field_IsIdle() ? TRUE : FALSE;
 }
 

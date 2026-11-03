@@ -41,13 +41,13 @@ void Lo021ccb54_ClearLabels(ov006_HudList *self);
 // The ov000 window methods the ov006 menus call (text arguments are message strings).
 UiListItem *UiList_GetItemById(UiList *self, u16 id);
 void Obj02153c48_CreateText(UiListItem *item, s32 a, BOOL show, BOOL center, u8 d);
-void func_ov000_021546ec(UiList *self, const char *file, const char *name, u32 b);
-void func_ov000_021548cc(UiList *self, u32 value);
+void UiList_SetIconModel(UiList *self, const char *file, const char *name, u32 b);
+void UiList_SetPanelColor(UiList *self, u32 value);
 void UiList021cb4a8_SetLabel(UiList021cb4a8 *self, const void *text);
 void UiList021cb4a8_SetCenteredLabel(UiList021cb4a8 *self, const void *text);
 void Obj0215bb14_SetText(Lo021cadcc *self, const void *text);
 void Obj0215c1bc_SetText(Lo021cad50 *self, u32 flags, const void *text);
-void func_ov000_0215d980(Lo021cae48 *self, s32 value, BOOL both);
+void Lo021cae48_SetValue(Lo021cae48 *self, s32 value, BOOL both);
 void LoBase021ccb54_021ccbe0_AppendRow(ov006_HudList *self, void *item);
 void Obj021c55e8_SetLabel1(ov006_HudList *self, const void *text);
 void Obj021c55e8_SetLabel2(ov006_HudList *self, const void *text);

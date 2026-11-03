@@ -10,7 +10,7 @@ BOOL History_SetState(ActorSub40 *st, s32 state, s32 x);
 void Robo021ca458_Move(Robo021ca458 *self, BOOL a, s32 b);
 u16 FX_Atan2(s32 y, s32 x);
 
-void func_ov000_021a5b50(Robo021ca458 *self) {
+void Robo021ca458_State1c(Robo021ca458 *self) {
     switch (self->fsm->st) {
     case 0:
         Model0218fe1c_SetAnim(self->model, data_ov000_021cc678, 0x200, 0);

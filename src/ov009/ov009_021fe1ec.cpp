@@ -86,7 +86,7 @@ extern VecFx32 data_ov009_02215cdc;
 extern VecFx32 data_ov009_02215ce8;
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
-extern void func_01ffc9fc(VecFx32 *dst, VecFx32 *src, u16 angle);
+extern void Vec_RotateY(VecFx32 *dst, VecFx32 *src, u16 angle);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
 extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 mask, const VecFx32 *v, s32 e, s32 f, s32 g, s32 h, s32 i);
 
@@ -155,7 +155,7 @@ void Ov009ActVt_022165f8_StateAttack(Ov009ActVt_022165f8 *self) {
                 self->unk_f8 = e->id;
                 return;
             }
-            self->rot_x = func_01ffc128(0x1000, self->rot_x, 0x19a, 1, 0x8000);
+            self->rot_x = Angle_Approach(0x1000, self->rot_x, 0x19a, 1, 0x8000);
             v = self->unk_b8;
             v.x = v.x - self->pos.x;
             v.y = v.y - self->pos.y;
@@ -199,7 +199,7 @@ void Ov009ActVt_022165f8_StateAttack(Ov009ActVt_022165f8 *self) {
             self->friction = OV009_FXMUL_K(self->friction, 0xa66);
             VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
             Body_Update(self->hit, 1, 0, 0);
-            self->rot_x = func_01ffc128(0, self->rot_x, 0xcd, 1, 0x8000);
+            self->rot_x = Angle_Approach(0, self->rot_x, 0xcd, 1, 0x8000);
             break;
         }
         break;
@@ -244,7 +244,7 @@ void Ov009ActVt_022165f8_StateAttack(Ov009ActVt_022165f8 *self) {
                 if (i == 1) {
                     v.x = -v.x;
                 }
-                func_01ffc9fc(&v, &v, self->rot_y);
+                Vec_RotateY(&v, &v, self->rot_y);
                 e->AddPos(&v);
                 e->SetScaleAll(0x800);
                 MIi_CpuClear32(-1, (u8 *)e + 0x84, 0x40);

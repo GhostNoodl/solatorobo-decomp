@@ -5,7 +5,7 @@
 
 extern "C" {
 
-void func_ov000_02158ed4(Lo021cb3a8 *self, s32 dmg, s32 arg) {
+void Lo021cb3a8_PageUp(Lo021cb3a8 *self, s32 dmg, s32 arg) {
     self->unk_b0 = self->cursor;
     if (self->flags & 0x20000) {
         self->cursor -= (s8)dmg;

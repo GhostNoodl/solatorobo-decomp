@@ -6,17 +6,17 @@ extern "C" {
 extern Ov015Ship *data_ov015_02213364;
 extern void *data_0208cb74;
 void *ResMgr_GetArchiveList(void *a, void *b, int c);
-void func_02041c34(void *a, int b, void *cb, void *arg);
+void TexObj_SetOamFunc(void *a, int b, void *cb, void *arg);
 Ov015Glyph *func_ov015_0220848c(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count);
 void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src);
 void func_ov015_02208a28(Ov015UiText *self, void *p);
-s32 func_02041b10(void *m, void *anim);
-s32 func_02041bb0(void *m, void *anim);
+s32 TexObj_GetCellWidth(void *m, void *anim);
+s32 TexObj_GetCellHeight(void *m, void *anim);
 extern u8 data_0208ba70[];
 void TextWin_Init(void *p);
 u32 Text_Measure(u32 a, u32 b, u32 c, u32 *outW, u32 *outH, BOOL d);
 u8 Gfx3DState_NextPolyId(void *p);
-const char *func_0206ffa0(u16 id);
+const char *Tbl_GetText(u16 id);
 s32 func_0201e950(const void *s, const void *t, s32 n);
 BOOL TextWin_ParseTag(void *p, const char **s);
 int Model_IsReady(void *a, int b);
@@ -185,7 +185,7 @@ void Ov015Vt_02212d3c_Setup(Ov015UiText *self) {
     r = ResList_FindType2(ResMgr_GetArchiveList(l->name, l->unk_04c, 2), self->model->unk_04c);
     TexObj_SetRes(self->model, r);
     self->model->flags |= 2;
-    func_02041c34(self->model, 0, (void *)func_ov015_0220848c, NULL);
+    TexObj_SetOamFunc(self->model, 0, (void *)func_ov015_0220848c, NULL);
     if (self->title != NULL) {
         TexObj_SelectImage(self->model, 0, 7);
     }
@@ -261,13 +261,13 @@ void func_ov015_02208790(Ov015UiText *self, s32 b, u8 *p) {
         t = (s32)(((s64)t * 0xffff000 + 0x800) >> 12);
         x += FX_Mul(FX_SinCosTable_[(t >> 16) * 2 + 1], 0x80000) - 0x80000;
     }
-    { Model *m = self->model; w = func_02041b10(m, Ov015_MdlAnim0(m)); }
-    { Model *m = self->model; h = func_02041bb0(m, Ov015_MdlAnim0(m)); }
+    { Model *m = self->model; w = TexObj_GetCellWidth(m, Ov015_MdlAnim0(m)); }
+    { Model *m = self->model; h = TexObj_GetCellHeight(m, Ov015_MdlAnim0(m)); }
     { s32 py = FLD(s32, p, 0x4) >> 12; Model *m = self->model;
     m->x = (x - 0x20000) & -0x1000;
     m->y = py << 12; }
     self->model->unk_150 = self->posZ;
-    func_02041c20(self->model, 0, (void *)(self->unk_ac));
+    TexObj_SetOamFuncArg(self->model, 0, (void *)(self->unk_ac));
     Ov015Model_PlayPart(self->model, 0, 0);
     o = self->unk_84;
     {
@@ -305,7 +305,7 @@ void func_ov015_02208a28(Ov015UiText *self, void *name) {
     self->unk_84->flag24 = 1;
     self->unk_84->noVram = 1;
     self->unk_84->rendering = 1;
-    id = func_0206ffa0(0x1000);
+    id = Tbl_GetText(0x1000);
     if (func_0201e950(name, id, STD_GetStringLength((char *)name)) == 0) {
         self->unk_ac = 0;
     } else {
@@ -342,7 +342,7 @@ void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src) {
             Ov015TagRes *r = &p.res;
             if (r->type == 0) {
                 *outId = r->value;
-                STD_CopyLString(out, func_0206ffa0(*outId), n);
+                STD_CopyLString(out, Tbl_GetText(*outId), n);
             } else if (r->type == 1) {
                 STD_CopyLString(out, p.str, n);
             }
@@ -463,10 +463,10 @@ void func_ov015_02208f7c(NNSG3dRS *rs) {
     MTX_Concat33((MtxFx33 *)t, (MtxFx33 *)m, (MtxFx33 *)t);
 }
 
-void func_ov015_0220900c(Ov015FishInfo *self) {
+void Ov015FishInfo_Dtor(Ov015FishInfo *self) {
 }
 
-void *func_ov015_02209010(Ov015FishInfo *self) {
+void *Ov015FishInfo_DtorDelete(Ov015FishInfo *self) {
     Heap_Free(self);
     return self;
 }

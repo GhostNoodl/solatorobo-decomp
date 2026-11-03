@@ -12,14 +12,14 @@ void **ResList_FindType4(void *list, const char *name);
 void **ResList_FindType5(void *list, const char *name);
 void **ResList_FindType6(void *list, const char *name);
 void **ResList_FindPath(void *list, const char *name, const char *ext);
-BOOL func_0203ed04(const char *name, void *data);
+BOOL G3dRes_SetupVram(const char *name, void *data);
 u32 func_0203ebf8(void);
 BOOL Vram_IsTransferDone(u32 task);
-void func_02039494(void *data);
+void G3dRes_DropTexData(void *data);
 
 static inline u32 Load021b6d28(const char *name, void **res) {
     if (res != NULL) {
-        func_0203ed04(name, *res);
+        G3dRes_SetupVram(name, *res);
     }
     return func_0203ebf8();
 }
@@ -93,10 +93,10 @@ BOOL func_ov000_021b6d28(FieldPropLoader *self) {
             break;
         case 14:
             if (self->mdl != NULL) {
-                func_02039494(*self->mdl);
+                G3dRes_DropTexData(*self->mdl);
             }
             if (self->tex != NULL) {
-                func_02039494(*self->tex);
+                G3dRes_DropTexData(*self->tex);
             }
             self->state = 100;
             again = TRUE;

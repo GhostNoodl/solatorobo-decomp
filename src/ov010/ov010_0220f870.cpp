@@ -119,7 +119,7 @@ void Ov010Task_Setup(Ov010Task *t, u16 a, u16 id, const VecFx32 *v0, const VecFx
     t->v18 = *v1;
 }
 
-void func_ov010_02201f00(void) {
+void Ov010Vt_0220fdf4_Dtor(void) {
 }
 
 void *Ov010Vt_0220fdf4_DtorDelete(void *o) {

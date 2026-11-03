@@ -40,7 +40,7 @@ void Ov006Marker_SetFrame(Ov006Marker *self, int frame, u8 alt);
 void Ov006Marker_Project(Ov006Marker *self, const VecFx32 *pos, const MtxFx43 *cam, const MtxFx44 *proj, u8 snap);
 }
 
-// A racer's parameter record (Ov006Racer::prm, the 0xa-byte table entry func_020706a0 returns).
+// A racer's parameter record (Ov006Racer::prm, the 0xa-byte table entry Tbl_Elem_020706a0 returns).
 typedef struct Ov006RacerPrm {
     s16 unk_00; // scales the model's anim speed (Ov006Racer_UpdateRun)
     s16 unk_02; // engine sound (SndMgr_StartSeqArc)

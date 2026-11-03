@@ -9,7 +9,7 @@ extern "C" {
 
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
-s32 func_02043d84(void *a);
+s32 Gfx3DState_NextPolyIdB(void *a);
 
 void func_ov000_02165da0(Lo021cb6b0 *self) {
     Ctx0216607c *o = self->unk_30;

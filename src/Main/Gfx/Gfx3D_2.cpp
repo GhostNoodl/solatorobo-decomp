@@ -16,7 +16,7 @@ typedef struct GfxCamParam {
     /* 0x16 */ u8 unk_16;
 } GfxCamParam;
 
-void func_020434e0(GfxCamParam *p) {
+void GfxCamParam_Init(GfxCamParam *p) {
     p->unk_10 = 0x22000;
     p->unk_0e = 0x182e;
     p->unk_08 = 0x182e - 0x1380;
@@ -64,7 +64,7 @@ static inline void GfxLight_Apply(GfxLight *light) {
     NNS_G3dGlbMaterialColorSpecEmi(light->specular, light->emission, TRUE);
 }
 
-void func_02043578(GfxLight *light) {
+void GfxLight_Apply_02043578(GfxLight *light) {
     GfxLight_Apply(light);
 }
 
@@ -72,7 +72,7 @@ static inline int FX_MulC(int a, int b) {
     return (int)(((s64)a * b + 0x800) >> 12);
 }
 
-void func_020435e8(GfxPltt *pltt, u16 *buf, u32 size) {
+void GfxPltt_ApplyFilter(GfxPltt *pltt, u16 *buf, u32 size) {
     u32 i;
     int v;
     switch (pltt->id) {
@@ -90,12 +90,12 @@ void func_020435e8(GfxPltt *pltt, u16 *buf, u32 size) {
         DC_FlushRange(buf, size);
         return;
     case 1:
-        func_020436f8(pltt, buf, size);
+        GfxPltt_ApplySepia(pltt, buf, size);
         return;
     }
 }
 
-void func_020436f8(GfxPltt *pltt, u16 *buf, u32 size) {
+void GfxPltt_ApplySepia(GfxPltt *pltt, u16 *buf, u32 size) {
     u32 i;
     int y;
     for (i = 0; i < size / 2; i++) {
@@ -242,7 +242,7 @@ int Gfx3DState_TakePolyIds(Gfx3DState *st, int n) {
     return id;
 }
 
-int func_02043d84(Gfx3DState *st) {
+int Gfx3DState_NextPolyIdB(Gfx3DState *st) {
     u8 id = st->unk_002;
     if (id < 0x13) {
         st->unk_002 = id + 1;
@@ -258,7 +258,7 @@ int func_02043d9c(Gfx3DState *st) {
     return id;
 }
 
-void func_02043db4(int idx, int x, int y, u32 color) {
+void Gfx3D_DrawPrimScaled(int idx, int x, int y, u32 color) {
     int scale[3];
     u32 c;
     scale[0] = x;

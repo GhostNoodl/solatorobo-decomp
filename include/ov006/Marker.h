@@ -37,7 +37,7 @@ extern "C" {
 #endif
 
 ov006_Marker *Ov006Vt_021ec2ec_Ctor(ov006_Marker *self);
-void func_ov006_021e1f68(ov006_Marker *self);
+void ov006_Marker_Dtor(ov006_Marker *self);
 void ov006_Marker_Update(ov006_Marker *self);
 
 #ifdef __cplusplus

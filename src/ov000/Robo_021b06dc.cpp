@@ -41,7 +41,7 @@ static inline void SetGauge021b06dc(u16 a, u16 b) {
     }
 }
 
-void func_ov000_021b06dc(Robo021ca458 *self) {
+void Robo021ca458_RunMode5State(Robo021ca458 *self) {
     s32 k;
     s32 i;
     self->unk_b29 = 0;

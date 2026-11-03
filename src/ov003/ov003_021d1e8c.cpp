@@ -186,7 +186,7 @@ extern "C" void Ov003Actor_Update(Ov003Actor *self) {
             return;
         }
     }
-    p = &func_02070558(self->kind)->aggro;
+    p = &Tbl_GetActorParam(self->kind)->aggro;
     dist = 0x7fffffff;
     dist2 = 0x7fffffff;
     range = 0x7fffffff;

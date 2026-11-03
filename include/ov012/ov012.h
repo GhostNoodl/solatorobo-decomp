@@ -255,7 +255,7 @@ u32 Rand_UpTo(u32 max);
 void Body_Update(void *a, s32 b, s32 c, s32 d);
 s32 Geom_SnapToGround(VecFx32 *v, s32 y, s32 b);
 BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *p);
-char *func_0207011c(s32 id);
+char *Tbl_GetResFile(s32 id);
 char *func_020701d4(s32 id);
 }
 extern "C" {
@@ -303,7 +303,7 @@ extern BOOL Actor_IsReady(Ov003Actor *self);
 extern BOOL ResSet_UpdateLoad(void *p);
 extern BOOL Model021903b4_Draw(void *p);
 extern s32 Ov003Actor_HandleMsg(Ov003Actor *self, Ov012Msg *msg);
-extern BOOL func_020621c4(void);
+extern BOOL Stage_UseScaledStats(void);
 extern BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 }
 
@@ -423,7 +423,7 @@ static inline void Ov012_ClearOwnerFlag(Ov003Actor *self) {
 
 
 extern "C" {
-extern void func_01ffc9fc(VecFx32 *a, const VecFx32 *b, u16 ang);
+extern void Vec_RotateY(VecFx32 *a, const VecFx32 *b, u16 ang);
 extern void func_ov000_0219bebc(void *o, s16 a);
 extern BOOL Actor_IsDead(void *o);
 extern void Actor_TurnToPos(void *self, const void *v, s32 a);

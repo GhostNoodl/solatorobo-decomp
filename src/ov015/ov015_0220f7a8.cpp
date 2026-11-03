@@ -4,7 +4,7 @@
 extern "C" {
 
 extern char data_ov015_02213111[];
-char *func_0207011c(u16 id);
+char *Tbl_GetResFile(u16 id);
 u8 *Tbl_FindEntry_0206fef8(u16 id);
 u8 *func_02070744(u16 id);
 extern char data_ov015_02213123[];
@@ -85,7 +85,7 @@ void func_ov015_0220f878(Ov015Result *self) {
     o->unk_1c = 0x96000;
     o->unk_08 = 3;
     id = data_ov015_02213368->catchId;
-    name = func_0207011c(id);
+    name = Tbl_GetResFile(id);
     {
         u8 *info = Tbl_FindEntry_0206fef8(id);
         u16 k = FLD(Ov015ItemBitsF878, info, 0x12).kind;
@@ -159,7 +159,7 @@ void func_ov015_0220fb78(Ov015Result *self) {
     o->unk_1c = 0x168000;
     o->unk_08 = 3;
     id = data_ov015_02213368->catchId;
-    name = func_0207011c(id);
+    name = Tbl_GetResFile(id);
     {
         u8 *info = Tbl_FindEntry_0206fef8(id);
         u16 k = FLD(Ov015ItemBits, info, 0x12).kind;

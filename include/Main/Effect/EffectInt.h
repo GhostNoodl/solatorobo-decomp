@@ -195,7 +195,7 @@ static inline u8 Effect_NextPolyId(void) {
 
 extern EffectFile *ResList_FindType4(void *arc, const char *name);
 extern EffectFile *ResList_FindType6(void *arc, const char *name);
-extern BOOL func_0203ed04(const char *name, void *data);
+extern BOOL G3dRes_SetupVram(const char *name, void *data);
 extern void Vram_FreeRes(void *data);
 extern void *Heap_AllocHi(u32 size, u32 align);
 extern void Heap_FreeHi(void *ptr);

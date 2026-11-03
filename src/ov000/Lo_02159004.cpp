@@ -50,7 +50,7 @@ public:
 
 extern "C" {
 
-void func_ov000_02159004(Obj02155160 *self, s32 n, s32 commit) {
+void Lo021cb3a8_Scroll(Obj02155160 *self, s32 n, s32 commit) {
     Node02155160 *p;
     Node02155160 *q;
     s32 i;

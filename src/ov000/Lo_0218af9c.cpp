@@ -149,7 +149,7 @@ void func_ov000_0218af9c(GroupNode *self) {
             }
             if (same) {
                 seg.from = self->entries[0].pos;
-                if (func_01ffc89c(self, &seg)) {
+                if (HitVolume_TestSegment(self, &seg)) {
                     mode = 3;
                 }
             }

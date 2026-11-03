@@ -10,7 +10,7 @@ struct ov006_Emblem : public Task {
     Model *unk3C;
     Model *unk40;
     u8 unk44;
-    int unk48; // the unk40 model's render argument (func_02041c20)
+    int unk48; // the unk40 model's render argument (TexObj_SetOamFuncArg)
     int unk4C;
     int unk50;
     int unk54;

@@ -39,7 +39,7 @@ BOOL Lo021cb3a8_IsLoaded(Lo021cb3a8 *self) {
     return r;
 }
 
-void func_ov000_02158e80(Lo021cb3a8 *self, s32 n, s32 b) {
+void Lo021cb3a8_CursorUp(Lo021cb3a8 *self, s32 n, s32 b) {
     s8 old = self->cursor;
     self->cursor = old - (s8)n;
     self->unk_b0 = old;

@@ -17,17 +17,17 @@ typedef struct {
 
 extern "C" {
 s32 FX_Div(s32 a, s32 b);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern Obj02097e48 *data_02097e48;
 void *STD_CopyString(void *a, const char *b);
 void *STD_ConcatenateString(void *a, const char *b);
 s32 NNS_G3dGetResDictIdxByName(void *dict, void *name);
 
 static inline u16 LerpAng(u16 a, u16 b, s32 t) {
-    return func_01ffc128(a, b, t, 1, 0x8000);
+    return Angle_Approach(a, b, t, 1, 0x8000);
 }
 
-s32 func_ov000_021909a8(void **self, const char *a, const char *b) {
+s32 Model_FindResIdxByName(void **self, const char *a, const char *b) {
     u32 name[4];
     u8 *res;
     u32 i;

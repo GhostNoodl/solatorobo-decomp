@@ -138,7 +138,7 @@ extern "C" void Ov003Actor_Start(Ov003Actor *self) {
     u8 n;
     s32 i;
     info = Tbl_FindEntry_0206fef8(self->kind);
-    param = &func_02070558(self->kind)->target;
+    param = &Tbl_GetActorParam(self->kind)->target;
     self->radius = info->unk_14 << 4;
     self->height = info->unk_16 << 4;
     self->centerY = self->height >> 1;

@@ -17,7 +17,7 @@ void *Heap_Alloc(u32 size);
 Obj0214e718 *Task_FindById(s32 id);
 s32 func_02061e7c(s32 a);
 
-s32 func_ov000_0214e718(Obj0214e718 *self) {
+s32 UiList_GetTextX(Obj0214e718 *self) {
     s32 value = self->vfunc_30();
     return self->unk_c0 + value + 0x12;
 }

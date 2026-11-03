@@ -40,7 +40,7 @@ static inline BOOL GIdle021ac080(void) {
     return TRUE;
 }
 
-void func_ov000_021ac080(Robo021ca458 *self) {
+void Robo021ca458_State1b(Robo021ca458 *self) {
     if (self->unk_b2f == 0) {
         self->unk_b2f++;
     }
@@ -80,7 +80,7 @@ void func_ov000_021ac080(Robo021ca458 *self) {
         s32 d;
         u16 t;
         u16 *s;
-        self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
         Robo021ca458_Move(self, FALSE, 1);
         d = self->pos.y - self->unk_75c.y;
         if (d < 0x1800) {
@@ -144,7 +144,7 @@ static inline void Reset021ac3ec(Robo021ca458 *self) {
     self->unk_b24_7 = self->unk_b24_9;
 }
 
-void func_ov000_021ac3ec(Robo021ca458 *self) {
+void Robo021ca458_State12(Robo021ca458 *self) {
     BOOL go;
     switch (self->fsm->st) {
     case 0: {
@@ -265,6 +265,6 @@ void func_ov000_021ac3ec(Robo021ca458 *self) {
     if (go) {
         History_SetState(self->fsm, 4, 0);
     }
-    self->rot_y = func_01ffc128(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
+    self->rot_y = Angle_Approach(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
 }
 }

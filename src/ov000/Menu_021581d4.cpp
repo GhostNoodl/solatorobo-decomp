@@ -4,7 +4,7 @@
 
 extern "C" {
 
-void func_ov000_021581d4(UiList021cb4a8 *self, s32 delta, s32 arg) {
+void UiList021cb4a8_CursorDown(UiList021cb4a8 *self, s32 delta, s32 arg) {
     s8 old;
     s32 total;
     s32 vis;

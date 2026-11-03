@@ -41,7 +41,7 @@ EffectObj *Spawn_ScatterEffect(VecFx32 *base, VecFx32 *range, s32 min, s32 max, 
 
 }
 
-// func_ov000_0219b808 (round swB): q is read-only, so it is `const` (the ITCM test func_01ffc318 reads
+// func_ov000_0219b808 (round swB): q is read-only, so it is `const` (the ITCM test Hit_PointInRotBox reads
 // min/max/rot only). With the const parameter the unk_30 load is no longer ordered behind the m.rot
 // stores, and the plain field order gives the ROM's list (rounds raA-raH needed it between x and y).
 #include "ov000/Actor.h"
@@ -64,7 +64,7 @@ extern "C" {
 
 Robo021ca458 *ActorMgr_FindPlayer(void);
 ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 kind);
-BOOL func_01ffc318(VecFx32 *pos, void *a, const VecFx32 *min, const VecFx32 *max, const Rot0219b808 *rot);
+BOOL Hit_PointInRotBox(VecFx32 *pos, void *a, const VecFx32 *min, const VecFx32 *max, const Rot0219b808 *rot);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline FieldId *PlId0219b808(Robo021ca458 *pl) {
@@ -97,7 +97,7 @@ u16 func_ov000_0219b808(u16 id, void *a1, const Shape0219b808 *q, u16 *out, u32 
             p1.x = pl->unk_75c.x;
             p1.y = pl->unk_75c.y;
             p1.z = pl->unk_75c.z;
-            if (func_01ffc318(&p1, a1, &q->min, &q->max, &q->rot)) {
+            if (Hit_PointInRotBox(&p1, a1, &q->min, &q->max, &q->rot)) {
                 VEC_Add(&p1, &q->ofs, &p1);
                 pl->unk_75c = p1;
                 pl->unk_b24 |= 0x1000000;
@@ -122,7 +122,7 @@ u16 func_ov000_0219b808(u16 id, void *a1, const Shape0219b808 *q, u16 *out, u32 
                 p2.x = a->pos.x;
                 p2.y = a->pos.y;
                 p2.z = a->pos.z;
-                if (func_01ffc318(&p2, a1, &q->min, &q->max, &q->rot) && a->vfunc_14()) {
+                if (Hit_PointInRotBox(&p2, a1, &q->min, &q->max, &q->rot) && a->vfunc_14()) {
                     m.pos.x = a->pos.x;
                     m.pos.y = a->pos.y;
                     m.pos.z = a->pos.z;

@@ -99,28 +99,28 @@ void *Ov004ActVt_021cf808_DtorDelete(void *p) {
     return p;
 }
 
-void func_ov004_021ccfb0(Ov004V *p) {
+void Ov004ActVt_021cf808_UpdateSub44(Ov004V *p) {
     if (p->unk_44 != NULL) {
         Obj021984c8_UpdatePos(p->unk_44, 0, 0);
     }
 }
 
-void func_ov004_021ccfd0(Ov004V *p) {
+void Ov004ActVt_021cf808_UpdateHit(Ov004V *p) {
     if (p->unk_48 != NULL) {
         ActorSub48_UpdatePos(p->unk_48, 0, 0);
     }
 }
 
-void func_ov004_021ccff0(Ov004V *p) {
+void Ov004ActVt_021cf808_Animate(Ov004V *p) {
     if (p->model != NULL) {
         Model0218fe1c_UpdateAnim(p->model, func_0203db40(p->unk_24));
     }
 }
 
-void func_ov004_021cd01c(void) {}
-void func_ov004_021cd020(void) {}
-void func_ov004_021cd024(void) {}
-void func_ov004_021cd028(void) {}
+void Ov004ActVt_021cf808_RunState(void) {}
+void Ov004ActVt_021cf808_SelectState(void) {}
+void Ov004ActVt_021cf808_UpdateMode1(void) {}
+void Ov004ActVt_021cf808_UpdateMode3(void) {}
 void Ov004ActVt_021cf808_Update(void) {}
 void Ov004ActVt_021cf808_Start(void) {}
 void func_ov004_021cd034(void) {}

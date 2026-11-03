@@ -73,11 +73,11 @@ extern "C" {
 
 extern void func_0203a4dc(GfxMgr *mgr, void *arg);
 extern void func_0203a5a4(GfxMgr *mgr, u16 c);
-extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
+extern VramBlock *VramBlock_AllocChar(u32 size, u32 arg, u32 c);
 extern BOOL TextWin_ParseTag(TextWin *win, const char **s);
 extern void func_0204cb28(TextWin *win, u32 arg);
 extern void func_02051f70(SlideWinX *win);
-extern const char *func_0206ffa0(u16 id);
+extern const char *Tbl_GetText(u16 id);
 extern void func_020708fc(u16 id, char *out);
 extern void func_02070b98(u16 id, char *out, u16 a, u16 b);
 extern void ResMgr_LoadArchive(const char *a, const char *b, u16 c, u8 d);
@@ -95,7 +95,7 @@ static inline void SlideMsg_Free(SlideMsg *msg, u32 v4, u32 v6) {
     for (i = 0; i < 0x80; i++) {
         if (msg->blocks[i] != NULL) {
             SlideMsg_ClearVram(msg->blocks[i], v4, v6);
-            func_02039828(msg->blocks[i]);
+            VramBlock_Free(msg->blocks[i]);
             msg->blocks[i] = NULL;
             msg->ids[i] = 0;
         }
@@ -500,7 +500,7 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
                     if (panel->unk_0a & 0xf000) {
                         nameChanged = 1;
                         if ((s8)panel->unk_128 == 0) {
-                            STD_CopyString((char *)win->text, func_0206ffa0(panel->unk_0a));
+                            STD_CopyString((char *)win->text, Tbl_GetText(panel->unk_0a));
                         } else {
                             STD_CopyString((char *)win->text, (char *)&panel->unk_128);
                         }
@@ -589,7 +589,7 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
                         }
                     }
                     if (!(win->args[1] & 1)) {
-                        STD_CopyString((char *)win->text, func_0206ffa0(win->value));
+                        STD_CopyString((char *)win->text, Tbl_GetText(win->value));
                     }
                     panel = NULL;
                 case 1:
@@ -637,7 +637,7 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
                     idx = font->pRes->alterCharIndex;
                 }
                 cw = NNS_G2dFontGetCharWidthsFromIndex(font, idx);
-                msg->blocks[msg->count] = func_020397fc(cw->left + font->pRes->pGlyph->cellWidth,
+                msg->blocks[msg->count] = VramBlock_AllocChar(cw->left + font->pRes->pGlyph->cellWidth,
                                                         font->pRes->pGlyph->cellHeight, 0);
             }
             func_0203a4dc(data_02097ce0, msg->blocks[msg->count]);

@@ -9,6 +9,6 @@ s32 UiList_GetPadTop(void) {
     return 6;
 }
 
-s32 func_ov000_021566ac(Obj021566ac *self) {
+s32 UiList_GetIconWidth(Obj021566ac *self) {
     return self->unk_b8 != NULL ? 0x12 : 0;
 }

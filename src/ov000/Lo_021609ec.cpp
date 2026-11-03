@@ -29,7 +29,7 @@ static inline void G3_VtxXY(s16 x, s16 y) {
     NNS_G3dGeBufferOP_N(0x25, &v, 1);
 }
 
-void func_ov000_021609ec(ObjBase021cac0c_021cb6f0 *self, s32 x, s32 y, s32 z, s32 sy, s32 idx) {
+void Ov000Vt_021cac0c_DrawBar(ObjBase021cac0c_021cb6f0 *self, s32 x, s32 y, s32 z, s32 sy, s32 idx) {
     u16 *col = self->colors[idx];
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, x, y, 0);
@@ -43,7 +43,7 @@ void func_ov000_021609ec(ObjBase021cac0c_021cb6f0 *self, s32 x, s32 y, s32 z, s3
     G3_Cmd1(0x12, 1);
 }
 
-void func_ov000_02160b18(ObjBase021cac0c_021cb6f0 *self, s32 x, s32 y, s32 z, s32 sx, s32 sy, s32 idx) {
+void Ov000Vt_021cac0c_DrawGradient(ObjBase021cac0c_021cb6f0 *self, s32 x, s32 y, s32 z, s32 sx, s32 sy, s32 idx) {
     u16 *col = self->colors[idx];
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, x, y, 0);

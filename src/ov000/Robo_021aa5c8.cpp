@@ -51,7 +51,7 @@ static inline s32 FxMulL021aa5c8(s32 a, s64 b) {
     return (a * b + 0x800) >> 12;
 }
 
-void func_ov000_021aa5c8(Robo021ca458 *self) {
+void Robo021ca458_State11(Robo021ca458 *self) {
     Actor *actor;
     ActorSub4c *sub;
     FieldState *g;

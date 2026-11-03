@@ -16,7 +16,7 @@ void Ov006Racer_UpdateSteer(Ov006Racer *self);
 void Ov006Racer_Move(Ov006Racer *self);
 s32 SndMgr_StartSeqArc(void *a, s16 b);
 void SndMgr_StopSeqArc(void *a);
-void func_0204a094(void *a, s16 b, int c);
+void SndMgr_SetSlotPitch(void *a, s16 b, int c);
 
 void Ov006Racer_UpdateRun(Ov006Racer *self) {
     if (Ov006Racer_IsOver(self) || ov006_CountFinished() <= 1) {
@@ -41,7 +41,7 @@ void Ov006Racer_UpdateRun(Ov006Racer *self) {
         SndMgr_StopSeqArc(data_02097e4c);
         self->seq = SndMgr_StartSeqArc(data_02097e4c, self->prm->unk_02);
     }
-    func_0204a094(data_02097e4c, self->seq, (self->runSpeed - 0xe66) >> 3);
+    SndMgr_SetSlotPitch(data_02097e4c, self->seq, (self->runSpeed - 0xe66) >> 3);
 }
 
 }

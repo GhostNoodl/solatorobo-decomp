@@ -16,7 +16,7 @@ extern SndMgr *data_02097e4c;
 
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *ptr);
-extern s32 func_02041b10(Model *model, void *tex);
+extern s32 TexObj_GetCellWidth(Model *model, void *tex);
 extern BOOL Vram_IsTransferDone(u32 id);
 extern BOOL TexObj_CheckTransfer(Model *model, u32 slot, ModelPart *part);
 extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
@@ -47,7 +47,7 @@ typedef struct SlidePanelItem {
     /* 0x48 */ u8 unk_48;
 } SlidePanelItem; // size 0x4c
 
-// Owner of the SlidePanel helpers at 0x02055654 (the class of func_020534dc).
+// Owner of the SlidePanel helpers at 0x02055654 (the class of MainVt_0208bbc8_Update).
 typedef struct SlideCtrl {
     /* 0x00 */ u8 unk_00[0xb8];
     /* 0xb8 */ u32 unk_b8_0 : 4;
@@ -115,7 +115,7 @@ static inline void *Model_GetPartTex(Model *model, s32 idx) {
 }
 
 static inline s32 Model_GetWidth(Model *model, s32 idx) {
-    return func_02041b10(model, Model_GetPartTex(model, idx));
+    return TexObj_GetCellWidth(model, Model_GetPartTex(model, idx));
 }
 
 static inline BOOL Gfx_IsFadeIdle(int ch) {

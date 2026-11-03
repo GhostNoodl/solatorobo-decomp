@@ -294,7 +294,7 @@ struct Ov015Globals {
     Ov015Fade *fade;
 };
 
-// Base of the top-level ov015 sequences (vtable data_ov015_0221280c, dtor func_ov015_021fb230):
+// Base of the top-level ov015 sequences (vtable data_ov015_0221280c, dtor Ov015Child_Dtor):
 // Ov015Main steps state through vtable slots 0x08..0x18; slot 0x18 returns the next sequence
 // (1: Ov015SceneSeq, 2: Ov015Game, 3: quit).
 struct Ov015Child : public VObj {
@@ -468,7 +468,7 @@ struct Ov015AnimFlags {
     u16 rest : 7;
 };
 
-void func_0204aab0(SndQueue *queue, u16 value); // defined in Main/Snd/SndQueue.cpp
+void SndQueue_Push_0204aab0(SndQueue *queue, u16 value); // defined in Main/Snd/SndQueue.cpp
 static inline void Ov015_BgmFade(void) {
     SndQueue *p = data_02097e48.queue;
     if (p->flag0) {
@@ -476,7 +476,7 @@ static inline void Ov015_BgmFade(void) {
             u16 v;
             if (p->unk_02 != 10 && p->unk_02 != 0) {
                 if (p->unk_06 != 0xffff) {
-                    func_0204aab0(p, p->unk_06);
+                    SndQueue_Push_0204aab0(p, p->unk_06);
                 }
                 v = 1;
             } else {
@@ -751,10 +751,10 @@ struct Ov015UiNum : public UiObj {
 };
 SIZE_ASSERT(Ov015UiNum, 0x98);
 // Sets value (and unk_88 too when both is set).
-extern "C" void func_ov000_0215d980(Ov015UiNum *self, s32 value, BOOL both);
+extern "C" void Lo021cae48_SetValue(Ov015UiNum *self, s32 value, BOOL both);
 
 // Camera view block: eye/at/up and the projection, laid out like Main Camera 0x04..0x3f
-// (0x3c bytes; initialised by GfxCamPos_Init and func_020434e0).
+// (0x3c bytes; initialised by GfxCamPos_Init and GfxCamParam_Init).
 struct Ov015CamView {
     Ov015Vec eye;
     Ov015Vec at;

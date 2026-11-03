@@ -6,7 +6,7 @@ extern "C" {
 BOOL func_ov000_021b7f0c(FieldProp *self);
 void HitMesh_Link(void *p);
 void HitMesh_Unlink_0203f920(void *p);
-BOOL func_01ffc23c(VecFx32 *v, VecFx32 *min, VecFx32 *max);
+BOOL Hit_PointInBox(VecFx32 *v, VecFx32 *min, VecFx32 *max);
 s32 VEC_Mag(const VecFx32 *v);
 s32 FX_Div(s32 a, s32 b);
 void FieldPropModel_UpdateAnim(FieldPropModel *p, s32 speed);
@@ -59,7 +59,7 @@ s32 func_ov000_021b7b50(FieldProp *self) {
             d.y -= gy;
             d.z -= gz;
         }
-        if (!func_01ffc23c(&d, &self->viewMin, &self->viewMax)) {
+        if (!Hit_PointInBox(&d, &self->viewMin, &self->viewMax)) {
             self->visible = 0;
             if (self->hitMesh != NULL && !self->keepHit) {
                 HitMesh_Unlink_0203f920(self->hitMesh);

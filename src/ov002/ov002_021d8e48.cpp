@@ -53,7 +53,7 @@ void Obj021efed4_Release(Obj021efed4 *self) {
     }
 }
 
-void func_ov002_021d8f4c(Obj021efed4 *self) {
+void Ov002Vt_021efed4_Setup(Obj021efed4 *self) {
     func_ov002_021d7c04_inline(self);
     self->unk_a8 = Param_GetEntry(self->unk_48)[2];
 }

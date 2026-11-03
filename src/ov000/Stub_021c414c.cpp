@@ -46,7 +46,7 @@ void func_ov000_021c414c(LoBase021ccb54_021ccbe0 *self, ListRow *target) {
 }
 
 
-void func_ov000_021c41a4(LoBase021ccb54_021ccbe0 *self, s32 id) {
+void LoBase021ccb54_021ccbe0_SelectById(LoBase021ccb54_021ccbe0 *self, s32 id) {
     ListRow *n;
     for (n = self->unk_94; n != NULL; n = n->next) {
         if (id == n->index) {

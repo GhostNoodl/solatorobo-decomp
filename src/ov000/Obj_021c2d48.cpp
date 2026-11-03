@@ -16,7 +16,7 @@ static inline void SetClamped(VObj *o, s32 v, s32 max) {
     Obj0215fdfc_SetRange(o, v);
 }
 
-void func_ov000_021c2d48(ListRowGauge *self) {
+void ListRowGauge_Update(ListRowGauge *self) {
     if (self->built == 0) {
         ObjBase021cac0c_021cb6f0 *o = (ObjBase021cac0c_021cb6f0 *)Heap_Alloc(sizeof(ObjBase021cac0c_021cb6f0));
         if (o != NULL) {

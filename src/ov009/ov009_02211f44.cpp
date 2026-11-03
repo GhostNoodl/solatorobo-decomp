@@ -29,7 +29,7 @@ extern char data_ov009_022179c0[];
 extern char data_ov009_022179c7[];
 extern char data_ov009_022179d1[];
 extern char data_ov009_022179d8[];
-extern s32 func_ov000_021909a8(Model0218fe1c *m, const char *a, const char *b);
+extern s32 Model_FindResIdxByName(Model0218fe1c *m, const char *a, const char *b);
 extern void HitSphere_Unlink_0203f2b8(void *p);
 extern u8 *Tbl_FindEntry_0206fef8(void *res);
 extern void HitMesh_Init(void *p);
@@ -52,10 +52,10 @@ void Ov009ActSpin_Start(Ov009ActSpin *self) {
     Ov003Actor_Start(self);
     switch (self->kind) {
     case 0x504f:
-        self->unk_f4 = func_ov000_021909a8(self->model, data_ov009_022179c0, data_ov009_022179c7);
+        self->unk_f4 = Model_FindResIdxByName(self->model, data_ov009_022179c0, data_ov009_022179c7);
         break;
     case 0x5050:
-        self->unk_f4 = func_ov000_021909a8(self->model, data_ov009_022179d1, data_ov009_022179d8);
+        self->unk_f4 = Model_FindResIdxByName(self->model, data_ov009_022179d1, data_ov009_022179d8);
         break;
     }
     MTX_Identity43_((MtxFx43 *)(&self->unk_f8));

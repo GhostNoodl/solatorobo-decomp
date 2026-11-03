@@ -24,7 +24,7 @@ typedef struct {
 extern "C" {
 
 void *func_ov000_021be564(ActorMarkerWork *work, void *src, void *out, u16 *count);
-void func_02041c34(void *model, s32 a, void *cb, void *arg);
+void TexObj_SetOamFunc(void *model, s32 a, void *cb, void *arg);
 extern u8 data_02092800[]; // NNS_G3dGlb.projMtx
 extern u8 data_02092844[];  // NNS_G3dGlb.cameraMtx
 
@@ -59,7 +59,7 @@ static inline s32 CalcDepth(VecFx32 *pos) {
     return DepthFromW((DepthCam021be5dc *)data_02097d48, FxMulL(q, 0x2000));
 }
 
-void func_ov000_021be5dc(Marker021be5dc *self) {
+void Ov000Vt_021cc938_DtorDelete(Marker021be5dc *self) {
     VecFx32 pos;
     switch (self->work.state) {
     case 5:
@@ -73,7 +73,7 @@ void func_ov000_021be5dc(Marker021be5dc *self) {
             self->unk_90 = 0;
             self->unk_94 = 0;
             self->unk_98 = self->unk_28[0];
-            func_02041c34(model, 4, (void *)func_ov000_021be564, &self->work);
+            TexObj_SetOamFunc(model, 4, (void *)func_ov000_021be564, &self->work);
         }
         self->work.state = 4;
     case 4:

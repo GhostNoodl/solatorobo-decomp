@@ -19,7 +19,7 @@ ov006_Slot *Ov006Vt_021ec078_Ctor(ov006_Slot *self) {
     return self;
 }
 
-void func_ov006_021dab5c(ov006_Slot *self) {
+void ov006_Slot_Dtor(ov006_Slot *self) {
 }
 
 ov006_Slot *ov006_Slot_DtorDelete(ov006_Slot *self) {

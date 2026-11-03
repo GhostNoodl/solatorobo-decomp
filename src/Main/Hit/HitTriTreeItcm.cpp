@@ -4,7 +4,7 @@
 
 extern "C" {
 
-void func_01ff868c(HitTriRay *ray, HitTriNode *node) {
+void HitTriRay_TestTree(HitTriRay *ray, HitTriNode *node) {
     HitTriBlock *block;
     HitTri *tri;
     HitTriInfo *info;

@@ -44,7 +44,7 @@ void func_ov000_0214c6b4(void *a, s32 b, void *c, int d);
 u16 func_02061d54(s32 a);
 s32 MsgRes_GetString(void *p, s32 id);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
-void func_02041cb4(void *a, int b);
+void TexObj_TickAnim(void *a, int b);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
 BOOL Model0218fe1c_SetAnim(void *a, const char *b, s32 c, s32 d);
 Ov008MdlAnm *Model0218fe1c_GetAnimCtrl(void *a, s32 b);
@@ -261,7 +261,7 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
         break;
     }
     if (m->unk_e8 != NULL) {
-        func_02041cb4(m->unk_e8, 0);
+        TexObj_TickAnim(m->unk_e8, 0);
     }
     func_ov008_021cee4c(m);
     if (m->state >= 5) {

@@ -25,7 +25,7 @@ public:
             VecFx32 mtxTrans; // mtx._30.._32
         };
     };
-    u8 joint; // func_ov000_021909a8's index of node data_ov003_021f851c
+    u8 joint; // Model_FindResIdxByName's index of node data_ov003_021f851c
 };
 SIZE_ASSERT(Ov003Lamp, 0x104);
 
@@ -129,7 +129,7 @@ void Ov003Obj_StartLampCapture(Ov003Obj *self) {
 
 extern char data_ov003_021f851c[];
 extern char data_ov003_021f8525[];
-extern s32 func_ov000_021909a8(void *model, s32 a, const char *name);
+extern s32 Model_FindResIdxByName(void *model, s32 a, const char *name);
 extern BOOL Model0218fe1c_SetAnim(void *model, const void *name, s32 a, s32 b);
 extern void Model0218fe1c_SetLoop(void *model);
 
@@ -137,7 +137,7 @@ void Ov003ActVt_021f80f0_Start(Ov003Lamp *self) {
     Model0218fe1c *m;
     SndQueue *g;
     ActorEx_Start(self);
-    self->joint = func_ov000_021909a8(self->model, 0, data_ov003_021f851c);
+    self->joint = Model_FindResIdxByName(self->model, 0, data_ov003_021f851c);
     m = self->model;
     NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->renderObj, (NNSG3dSbcCallBackFunc)Ov003Obj_StartLampCapture);
     m->clearInit = 0;

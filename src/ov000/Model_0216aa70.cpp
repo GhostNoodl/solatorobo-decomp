@@ -13,13 +13,13 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_02160534(Obj0216aa70 *self, s32 a, VecFx32 *pos, s32 c, s32 d);
+void Ov000Vt_021cac0c_DrawFrame(Obj0216aa70 *self, s32 a, VecFx32 *pos, s32 c, s32 d);
 
-void func_ov000_0216aa70(Obj0216aa70 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
+void Lo021cb744_DrawFrame(Obj0216aa70 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
     Model *m;
     s32 x;
     s32 y;
-    func_ov000_02160534(self, a, pos, c, d);
+    Ov000Vt_021cac0c_DrawFrame(self, a, pos, c, d);
     x = pos->x - 0x81000;
     y = pos->y - 0x61000;
     self->m0->unk_150 = pos->z;

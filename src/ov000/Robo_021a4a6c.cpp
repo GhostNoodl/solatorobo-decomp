@@ -48,7 +48,7 @@ void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
 void *Model0218fe1c_SetAnimFrame(void *a, s32 frame);
 void Model0218fe1c_SetAnimDelay(void *a, s32 b, s32 c);
 void Model0218fe1c_SetLoop(void *a);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL Hit_DiffInCylinder(void *hit, VecFx32 *pos, s32 r, s32 h);
 BOOL Hit_DiffInSphere(void *a, VecFx32 *b, s32 r);
 void Actor_TurnToActor(Actor *self, void *other, s32 step);
@@ -118,7 +118,7 @@ static inline BOOL Falling_021a4a6c(Robo021ca458 *self) {
     return drop;
 }
 
-void func_ov000_021a4a6c(Robo021ca458 *self) {
+void Robo021ca458_State07(Robo021ca458 *self) {
     Actor *t;
     ActorSub4c *sub;
     VecFx32 p1;
@@ -225,7 +225,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
                             Model0218fe1c_SetAnim(self->model, data_ov000_021cc61e, 0x400, 0);
                             Model0218fe1c_SetLoop(self->model);
                             self->speed = 0x229;
-                            self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+                            self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
                             goto end;
                         }
                     }

@@ -65,7 +65,7 @@ s32 UiList_GetHeight(UiList *self) {
     return ListOwner_CalcSize(self);
 }
 
-void func_ov000_021546ec(UiList *self, const char *name, void *a, u32 b) {
+void UiList_SetIconModel(UiList *self, const char *name, void *a, u32 b) {
     void *saved = data_02097dd0->cur;
     Model *model;
     data_02097dd0->cur = data_02097dd0->heapHi;
@@ -95,7 +95,7 @@ void func_ov000_021546ec(UiList *self, const char *name, void *a, u32 b) {
     }
 }
 
-void func_ov000_021547e8(UiList *self, const char *name, void *a, void *b) {
+void UiList_SetMarkModel(UiList *self, const char *name, void *a, void *b) {
     void *saved = data_02097dd0->cur;
     Model *model;
     data_02097dd0->cur = data_02097dd0->heapHi;
@@ -121,7 +121,7 @@ void func_ov000_021547e8(UiList *self, const char *name, void *a, void *b) {
     TexObj_SelectImage(self->unk_bc, 0, (int)b);
 }
 
-void func_ov000_021548cc(UiList *self, u32 value) {
+void UiList_SetPanelColor(UiList *self, u32 value) {
     if (self->panel != NULL) {
         self->panel->bits.b1 = value;
     }
@@ -131,7 +131,7 @@ static inline void ListOwner_ResetFlag0(UiList *self) {
     self->busy = 1;
 }
 
-void func_ov000_021548ec(UiList *self, ListArg *arg) {
+void UiList_RemoveItem(UiList *self, ListArg *arg) {
     s16 index = self->topItem->index;
     void *saved;
     self->unk_a8 = (void *)arg;

@@ -88,7 +88,7 @@ BOOL func_02035740(ResLoader *loader, ResRequest *req) {
     return result;
 }
 
-void func_0203581c(ResLoader *loader) {
+void ResLoader_Sleep(ResLoader *loader) {
     loader->state = 0;
     ResRequest_Init(&loader->req);
     OS_SleepThreadDirect(&loader->thread, NULL);

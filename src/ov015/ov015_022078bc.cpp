@@ -10,7 +10,7 @@ BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
 void Model0218fe1c_SetLoop(void *a);
 void Model0218fe1c_SetAnimByIndex(void *a, s32 b, s32 c, s32 d);
 void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
-s32 func_ov000_021909a8(void *a, const void *b, const void *c);
+s32 Model_FindResIdxByName(void *a, const void *b, const void *c);
 
 BOOL ResSet_UpdateLoad(void *p);
 void Shadow_Load(void *p);
@@ -94,7 +94,7 @@ BOOL func_ov015_02207adc(Ov015Ship *self) {
     NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->model.renderObj), func_ov015_02208474);
     self->model.flags.clearInit = 0;
     self->model.flags.flushVP = 1;
-    self->nodeMtx.id = func_ov000_021909a8(&self->model, self->res.anmName, "ang05");
+    self->nodeMtx.id = Model_FindResIdxByName(&self->model, self->res.anmName, "ang05");
     for (i = 0; i < 8; i++) {
         Model0218fe1c_SetRes(&self->subModels[i], &self->res2, 0, 1);
         Model0218fe1c_SetAnimByIndex(&self->subModels[i], 0, 0x1000, 0);
@@ -119,7 +119,7 @@ void Model0218fe1c_ClearLoop(void *a);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
 void Model0218fe1c_SetReverse(void *a);
 void Model0218fe1c_ClearReverse(void *a);
-u16 func_01ffc128(u16 a, u16 b, s32 c, s32 d, s32 e);
+u16 Angle_Approach(u16 a, u16 b, s32 c, s32 d, s32 e);
 s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
 
@@ -140,7 +140,7 @@ void func_ov015_02207c30(Ov015Ship *self) {
     }
     Model0218fe1c_UpdateAnim(&self->model, 0x1000);
     if (self->unk_d40) {
-        self->rotY = func_01ffc128(ang, self->rotY, 0x19a, 1, 0x8000);
+        self->rotY = Angle_Approach(ang, self->rotY, 0x19a, 1, 0x8000);
     }
     if (self->unk_d3c == 1) {
         s32 v = self->unk_d3e;

@@ -54,8 +54,8 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
         s32 n = data_ov015_02213368->total;
         if (n != 0) {
             if (data_02097dc8->trig & 1) {
-                func_ov000_0215d980(self->unk_10, ((s32)self->unk_10->value) + n, 0);
-                func_ov000_0215d980(self->unk_0c, 0, 0);
+                Lo021cae48_SetValue(self->unk_10, ((s32)self->unk_10->value) + n, 0);
+                Lo021cae48_SetValue(self->unk_0c, 0, 0);
                 SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
                 self->state = 0x1e;
             }
@@ -69,8 +69,8 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
         Ov015UiNum *a = self->unk_10;
         if ((s32)a->value != a->unk_88 || ((s32)self->unk_0c->value) != self->unk_0c->unk_88) {
             if (data_02097dc8->trig & 1) {
-                func_ov000_0215d980(self->unk_10, ((s32)self->unk_10->value), 1);
-                func_ov000_0215d980(self->unk_0c, 0, 1);
+                Lo021cae48_SetValue(self->unk_10, ((s32)self->unk_10->value), 1);
+                Lo021cae48_SetValue(self->unk_0c, 0, 1);
             } else {
                 if (++self->timer % 4 == 0) {
                     SndMgr_PlayVolume(data_02097e4c, 0x18, -1, -1, -1);

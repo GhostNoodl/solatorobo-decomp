@@ -15,7 +15,7 @@ extern void *Model0218fe1c_SetAnimFrame(Model0218fe1c *anim, s32 a);
 extern void *func_0203db40(void *p);
 extern void Model0218fe1c_UpdateAnim(void *a, void *b);
 extern BOOL Model021903b4_Draw(Model0218fe1c *anim);
-extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
+extern void Vec_RotateY(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void Shadow_Draw(ActorShadow *shadow, VecFx32 *pos);
 
 BOOL Ov003ActVt_021fa5a0_IsReady(Ov003Prop021fa5a0 *self) {
@@ -43,7 +43,7 @@ void Ov003ActVt_021fa5a0_Start(Ov003Prop021fa5a0 *self) {
     v.x = 0x199a;
     v.y = 0;
     v.z = 0;
-    func_01ffc9fc(&v, &v, self->rot_y);
+    Vec_RotateY(&v, &v, self->rot_y);
     VEC_Add(&v, &self->pos, &v);
     self->mdl.trans.x = v.x;
     self->mdl.trans.y = v.y;

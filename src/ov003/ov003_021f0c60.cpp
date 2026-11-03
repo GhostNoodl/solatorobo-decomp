@@ -87,7 +87,7 @@ void Ov003_AddExp(u16 id);
 u32 DataRes_GetCount(Ov003DataRes *res, u32 idx);
 void *DataRes_GetTable(Ov003DataRes *res, u32 idx);
 u16 DataRes_ReadBitsAt_02059544(Ov003DataRes *res, void *block, void *entries, int packed, u32 id);
-void func_0205c234(s32 a, s32 b);
+void StageRes_Push207(s32 a, s32 b);
 BOOL Item_Set_0206f5e4(u16 id, int n);
 BOOL Item_Give(u16 id, int n);
 const char *Param_Get(u16 id);
@@ -245,7 +245,7 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
                 }
             }
             if (found) {
-                func_0205c234(0x62, 0);
+                StageRes_Push207(0x62, 0);
             }
         }
         break;

@@ -76,7 +76,7 @@ ActorEx *ActorEx_Ctor(ActorEx *self) {
     return self;
 }
 
-ActorEx *func_ov000_021940e4(ActorEx *self) {
+ActorEx *ActorEx_CtorBase(ActorEx *self) {
     ActorEx_CtorBody(self);
     return self;
 }
@@ -181,7 +181,7 @@ typedef struct {
 extern "C" {
 void *Heap_Alloc(u32 size);
 Info0219433c *Tbl_FindEntry_0206fef8(u16 id);
-Data0219433c *func_020704b4(u16 id);
+Data0219433c *Tbl_Elem_020704b4(u16 id);
 void *ResSet_Init(void *p);
 void func_ov000_02193e5c(void *p, u16 id);
 void *Shadow_Ctor(void *p);
@@ -281,7 +281,7 @@ static inline void SetMtx0219433c(Actor0219433c *self, Sub0219433c *sub) {
 
 void ActorEx_Init(Actor0219433c *self) {
     Info0219433c *info = Tbl_FindEntry_0206fef8(self->id);
-    Data0219433c *d = func_020704b4(self->id);
+    Data0219433c *d = Tbl_Elem_020704b4(self->id);
     s32 i;
     self->unk_b0 = &d->param;
     if (info->b0 || info->b1 || self->unk_b0->unk_02_3) {

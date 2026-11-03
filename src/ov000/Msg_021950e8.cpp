@@ -13,7 +13,7 @@ typedef struct {
 extern "C" {
 Actor *ActorMgr_FindPlayer(void);
 BOOL func_ov000_0219b3b4(void *p);
-s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
+s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 BOOL Actor_HandleMsg(Actor *self, ActorMsg *msg);
 
 static inline BOOL IsB1021950e8(Actor *p) {
@@ -63,7 +63,7 @@ BOOL ActorEx_HandleMsg(ActorEx *self, ActorMsg *msg) {
                     b = p->pos;
                     a.y += self->centerY;
                     b.y += p->centerY;
-                    if (func_01ffbd6c(&a, &b, -1, 0, 0, -1) == -0x1000) {
+                    if (Hit_CastSegment(&a, &b, -1, 0, 0, -1) == -0x1000) {
                         ((ActorSub40 *)self->fsm)->flags |= 0x400;
                         self->targetObj->target = msg->id;
                         self->unk_cc_8 = 1;

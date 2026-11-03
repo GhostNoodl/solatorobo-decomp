@@ -13,8 +13,8 @@ extern "C" {
 
 extern ov006_Save0214a424 *data_0214a424;
 void *Tbl_FindEntry_0206fef8(u16 id);
-Ov006RacerPrm *func_020706a0(u16 id);
-int func_0207011c(u16 id);
+Ov006RacerPrm *Tbl_Elem_020706a0(u16 id);
+int Tbl_GetResFile(u16 id);
 ActorRes *ResSet_Init(void *p);
 void ResSet_SetFile(ActorRes *a, int b, int c, int d, int e, int f);
 
@@ -22,8 +22,8 @@ void Ov006ActVt_021ec4f4_Init(Ov006Racer *self) {
     int res;
     ActorRes *obj;
     Tbl_FindEntry_0206fef8(self->kind);
-    self->prm = func_020706a0(self->kind);
-    res = func_0207011c(self->kind);
+    self->prm = Tbl_Elem_020706a0(self->kind);
+    res = Tbl_GetResFile(self->kind);
     obj = (ActorRes *)Heap_Alloc(sizeof(ActorRes));
     if (obj != NULL) {
         obj = ResSet_Init(obj);

@@ -56,7 +56,7 @@ void Ov012ActVt_0220b35c_StateShoot(Ov003Actor *self) {
     case 10:
         if (pl != NULL) {
             self->unk_96 = Ov012_AngTo(self, pl);
-            self->rot_y = func_01ffc128(self->unk_96, self->rot_y, 0x59a, 1, 0x8000);
+            self->rot_y = Angle_Approach(self->unk_96, self->rot_y, 0x59a, 1, 0x8000);
         }
         if (self->model->anim_state != 1) {
             break;

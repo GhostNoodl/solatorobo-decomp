@@ -6,12 +6,12 @@ extern VFunc data_ov000_021cb5a8[];
 extern VFunc data_ov000_021cca10[];
 void func_ov000_021c3af4(void *self);
 void ListRow_Init(void *self);
-void func_ov000_021c2334(void *self);
+void Hud021cca10_Init(void *self);
 void Hud021cca10_SetText(void *self, void *a);
 void LoBase021ccb54_021ccbe0_AppendRow(void *list, void *item);
 void LoBase021ccb54_021ccbe0_Select(void *list, s32 a);
 BOOL func_ov002_021d0270(void *self, void *ev);
-void func_ov000_021c41a4(void *list, s32 a);
+void LoBase021ccb54_021ccbe0_SelectById(void *list, s32 a);
 
 typedef struct {
     u16 a;
@@ -64,7 +64,7 @@ void Task021efa1c_Start(Task021efa1c *self) {
                     *(VFunc **)q = data_ov002_021ef684;
                     ListRow_Init(q);
                     *(VFunc **)q = data_ov000_021cca10;
-                    func_ov000_021c2334(q);
+                    Hud021cca10_Init(q);
                 }
                 FIELD(q, 0x4, s32) = i;
                 FIELD(q, 0x3c, s32) = (u16)(i + 1);
@@ -76,7 +76,7 @@ void Task021efa1c_Start(Task021efa1c *self) {
         }
     }
     self->unk_3c->vfunc_08();
-    func_ov000_021c41a4(self->unk_3c, data_ov002_021f0f84[0]);
+    LoBase021ccb54_021ccbe0_SelectById(self->unk_3c, data_ov002_021f0f84[0]);
     {
         p = (UiObj *)Heap_Alloc(0xe0);
         if (p != NULL) {

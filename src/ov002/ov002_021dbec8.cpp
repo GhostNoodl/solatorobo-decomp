@@ -10,7 +10,7 @@ namespace K { extern "C" const char data_ov002_021efe26[]; }
 extern "C" {
 
 void *func_02035de0(const char *file, const char *name);
-void func_02041c34(void *a, int b, void *c, int d);
+void TexObj_SetOamFunc(void *a, int b, void *c, int d);
 void *func_ov002_021e0488(void *a, void *b, void *c, u16 *d);
 
 static inline void ov002_CamMove(Obj021efe6c *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, s32 tz) {
@@ -99,7 +99,7 @@ void func_ov002_021dbec8(Obj021eff10 *self, Obj021eff50 *owner) {
     TexObj_SetRes(self->unk_10, func_02035de0(data_0208cc94, data_0208cc88));
     self->unk_10->flags |= 2;
     self->unk_10->unk_150 = -0x2000;
-    func_02041c34(self->unk_10, 6, (void *)func_ov002_021e0488, 0);
+    TexObj_SetOamFunc(self->unk_10, 6, (void *)func_ov002_021e0488, 0);
     TexObj_SelectImage(self->unk_10, 0, 6);
     {
         Obj021efe8c *c = (Obj021efe8c *)Heap_Alloc(sizeof(Obj021efe8c));

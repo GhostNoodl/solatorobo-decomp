@@ -38,7 +38,7 @@ Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL Actor_IsDead(void);
 void *SndMgr_PlayAt(void *mgr, s32 id, void *pos, s32 a);
 void Field_ShakeCamera(u8 a, u8 b);
-u8 *func_020704b4(u16 id);
+u8 *Tbl_Elem_020704b4(u16 id);
 void Drop_SpawnWeighted(u16 *ids, u8 *rates, s32 n, void *pos, void *rot, u8 check);
 void Body_SetOwner(void *p, u16 id);
 
@@ -146,7 +146,7 @@ void ActorEx_StateDie(VObj *obj) {
             }
         }
         {
-            u8 *r = func_020704b4(self->kind);
+            u8 *r = Tbl_Elem_020704b4(self->kind);
             Drop_SpawnWeighted((u16 *)(r + 0x20), r + 0x24, 2, &p, (u8 *)self + 0x7c, zero);
         }
         if (self->unk_44 != NULL) {

@@ -25,7 +25,7 @@ extern void *data_02fe152c;
 extern s32 data_02097d78[];
 void func_ov000_021bb298(void *self);
 u16 DataRes_ReadEntry(void *res, u32 idx, int packed, int sub);
-void func_0204aab0(SndQueue *queue, u16 value);
+void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 u16 SndQueue_Peek(SndQueue *queue);
 void SndQueue_Pop(SndQueue *queue);
 void GfxSys_StartFadeIn(int duration, int mode, int ch);
@@ -58,7 +58,7 @@ static inline void Bgm021bb33c_Play(u16 id) {
         if (!(q->unk_06 == 0xffff && q->unk_04 == id)) {
             if (q->unk_02 != 10 && q->unk_02 != 0) {
                 if (q->unk_06 != 0xffff) {
-                    func_0204aab0(q, q->unk_06);
+                    SndQueue_Push_0204aab0(q, q->unk_06);
                 }
                 q->unk_02 = 1;
             } else {

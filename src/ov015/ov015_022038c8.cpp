@@ -432,7 +432,7 @@ void Ov015Scene2c08_Start(Ov015Scene2c08 *self) {
     Ov015_SetUiPos(self->unk_48, 0x86, 0x87, -0xccd);
     Ov015_SetUiSlide(self->unk_48, 0x100, 0, -0xccd);
     self->unk_48->slideMode = 1;
-    func_ov000_0215d980(self->unk_48, data_0214a424->unk_020, 0);
+    Lo021cae48_SetValue(self->unk_48, data_0214a424->unk_020, 0);
     self->unk_48->vfunc_08();
     if (self->param == 1 && data_ov015_02213360[1] == 0) {
         p = (VObj *)Heap_Alloc(0x2c);

@@ -21,17 +21,17 @@ extern char data_ov006_021ec4a7[];
 BOOL Model0218fe1c_SetAnim(void *a, const void *b, int c, int d);
 void Model0218fe1c_SetLoop(void *a);
 void Model0218fe1c_SetAnimSpeed(void *a, int b);
-u16 func_01ffc128(u16 a, u16 b, s32 c, u32 d, u16 e);
+u16 Angle_Approach(u16 a, u16 b, s32 c, u32 d, u16 e);
 
-void func_ov006_021e835c(ov006_Obj021e835c *self) {
+void Ov006Racer_State01(ov006_Obj021e835c *self) {
     if (self->unk40->unk0 == 0) {
         Model0218fe1c_SetAnim(self->unk38, data_ov006_021ec4a7, 0x1000, 0);
         Model0218fe1c_SetLoop(self->unk38);
         Model0218fe1c_SetAnimSpeed(self->unk38, 0x333);
         self->unk40->unk0++;
     }
-    self->unk7C = func_01ffc128(0, self->unk7C, 0x400, 1, 0x8000);
-    self->unk80 = func_01ffc128(0, self->unk80, 0x400, 1, 0x8000);
+    self->unk7C = Angle_Approach(0, self->unk7C, 0x400, 1, 0x8000);
+    self->unk80 = Angle_Approach(0, self->unk80, 0x400, 1, 0x8000);
 }
 
 }

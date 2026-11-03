@@ -8857,3 +8857,32 @@ Readability only; every function stays byte-identical. A baseline was built firs
 - **ov015.** `Ov015ParamPrice` (the 4-byte record of `func_0206ee20`: `price`) in `022113e8`, `02211334`, `0220ec40`; `021fb758`'s alpha view is on `Model::flags`. The `nodeMtx + 0x24` reads stay (`&nodeMtx.m[3]` folds the two adds).
 - **Left.** `Lo_02172450`'s `LBIT(self, 4)` (`ListBuffer::unk_0c` is the owner as `u32`); `Menu_021763c8`'s sound-queue views (its namespaces declare `data_02097e48` and `data_02097e4c` with their own types); the ov015 `TextWin`-as-`VObj` reads (`label->unk_84`); the board cell objects' subclass fields in `021dc278`; the `func_ov000_0215e6f0` draft.
 - **Renames:** none (types and fields only).
+
+## Unnamed functions named from vtable slots, state tables and call sites: no new match (round nmI)
+
+Readability only; every function stays byte-identical, and only symbol names change. The baseline was built at `4cc21d97` (after acQ). After each batch, objects were compared section by section (code and relocations, without debug sections). At the end all 3941 objects were compared: 0 differ. Gate: 0 FAILED, 19/19 ROM checks and `check symbols` OK, `ninja report` at 8138 matched, and `check_drafts.py --score` exits 0. There are 514 pairs, with no swaps or cycles: no new name is an old name, every name is fresh against all symbols.txt files and every identifier in src/include/libs, and `__sinit_ov002_021ef1f0` is untouched.
+
+**Counts by module:**
+
+| main | itcm | ov000 | ov002 | ov003 | ov004 | ov006 | ov010 | ov011 | ov013 | ov014 | ov015 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 142 | 17 | 218 | 28 | 4 | 7 | 7 | 26 | 20 | 9 | 1 | 35 |
+
+**Conventions used (on top of nmF to nmH):**
+- **State tables.** Pointer-to-member tables (`{id, fn, 0}`) give `<Class>_State<id>` with the hex id from the table. A handler shared by two ids is `State04_05`. The runner is `<Class>_RunState` / `RunMode5State`. Examples: `Robo021ca458_State01..1f`, the `Robo021ca458_Mode5_StateNN` table, `Ov010MovePath_`, `Ov011Mgr_`/`Mgr2_`/`Sub1b4_`/`Scene_`, `Ov013Act_021fea8c_State28..32`.
+- **Out-of-line copies of static inlines** are `<Inline>_<addr>`, for example `ResMgr_FreeNode_020366d0`, `SndQueue_Push_0204aab0` and `ov006_ObjectHolder_Dtor_021e5e20`.
+- **Factories.** A function that allocates a task class and runs its ctor is `<Class>_New` (the ov002 `Task021ef*_New`, `GameSave_New`, `MainVt_0208ca18_New`). A ctor that does not set the vtable is `_CtorBase`.
+- **Message pushers.** `MessageQueue021cb980_PushNN` is named by message id; `Push09_0a`-style names cover a pusher used for two ids.
+- **Gauge family** (`Ov000Vt_021cac0c` and the `Lo021cb6f0`..`Lo021cb894` / `Ov000Vt_021cca88` overrides): 0x14 `Init`, 0x18 `Release`, 0x1c `Load`, 0x20 `IsLoaded`, 0x24 `Setup`, 0x28 `Unload`, 0x2c `UpdateTarget`, 0x34 `CanUpdate`, 0x38 `PostUpdate`, 0x3c `DrawFrame`, 0x48 `DrawGradient3`.
+- **UiList slots** 0x70 and 0x8c–0xec: `RemoveItem`, `FinishRemove`, `GetIconWidth`, `GetTextX`, `SetCursorIndex`/`Item`, `CursorUp`/`PageUp`/`CursorDown`/`PageDown`, `Scroll`, `HandleInput`, `UpdateScroll`/`Arrows`/`MarkBounce`, and `DrawShade`/`Items`/`ItemIcon`/`ItemMark`/`ItemText`/`Cursor`/`Arrows`. The same names are used on the `UiList021cb4a8`, `Lo021cb3a8` and `Lo021caac8` overrides.
+- **TextWin / TextWinEx / `MainVt_0208bbc8` slots:** `Release`, `OnSkip`, `Update`, `Render`, `DrawCursor`.
+- **Dtors.** A function that sits only at vtable slot 0 (no `Heap_Free`) is `_Dtor`; one at slot 4 that calls `Heap_Free` is `_DtorDelete`. The class comes from the partner slot's existing name, or from the self type when both slots agree on it, and otherwise from `OvNNNVt_<addr>`/`MainVt_<addr>`. A self type that belongs to another module (ov015 objects typed `Ov002Obj` or `Lo021cca40`) gets the vtable tag instead.
+- **Other names come from code evidence:** the itcm hit tests (`Hit_*`, `HitTri*`), the sound manager and queue (`SndMgr_*`, `SndQueue_*`), the stage script VM (`StageRes_*`), `ObjPool_*`, `DataRes*`, the TWL request (`Twl0214b570_*`), the list rows and text lists, and the field props.
+
+**Left unnamed:**
+- String-keyed table lookups.
+- SDK-looking WH/card functions whose identification is not certain.
+- Setters of `unk_` fields.
+- Actor slots 0x18/0x1c (`func_ov000_0218d190`).
+- `func_ov003_021f3508`, because `Ov003Actor_RunState` is taken.
+- The slot-0 functions of vtables whose slot 4 is not a `Heap_Free` dtor (`0208b2ac`, `021cc3a0`, `021cf7a4`, `021eb6d8`).

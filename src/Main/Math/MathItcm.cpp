@@ -4,7 +4,7 @@
 
 extern "C" {
 
-u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep) {
+u16 Angle_Approach(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep) {
     u16 diff = (u16)(target - cur);
     BOOL neg;
     u32 step;
@@ -44,7 +44,7 @@ BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, fx32 r) {
     return ret;
 }
 
-BOOL func_01ffc23c(VecFx32 *p, VecFx32 *min, VecFx32 *max) {
+BOOL Hit_PointInBox(VecFx32 *p, VecFx32 *min, VecFx32 *max) {
     return HitInBox(p, min, max);
 }
 
@@ -58,7 +58,7 @@ BOOL Hit_DiffInBox(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max) {
 }
 
 
-BOOL func_01ffc318(VecFx32 *p, const VecFx32 *trans, const VecFx32 *min, const VecFx32 *max, const u16 *rot) {
+BOOL Hit_PointInRotBox(VecFx32 *p, const VecFx32 *trans, const VecFx32 *min, const VecFx32 *max, const u16 *rot) {
     MtxFx43 m;
     VecFx32 v;
     MtxFx43 tmp;

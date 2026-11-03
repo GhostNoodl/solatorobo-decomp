@@ -25,7 +25,7 @@ void func_ov000_02164708(void) {
     }
 }
 
-void func_02041c20(void *a, int b, int c);
+void TexObj_SetOamFuncArg(void *a, int b, int c);
 void func_ov000_0216715c(Lo021cb6b0 *self, Ctx0216607c *p);
 void func_ov000_021675ec(Lo021cb6b0 *self, Ctx0216607c *p);
 
@@ -62,9 +62,9 @@ void func_ov000_02164750(Lo021cb6b0 *self) {
         m->unk_10c = 0;
         m->unk_110 = 0;
         Model_PlayPart(self->unk_24, 0);
-        func_02041c20(self->unk_24, 1, 0);
+        TexObj_SetOamFuncArg(self->unk_24, 1, 0);
         Model_PlayPart(self->unk_24, 1);
-        func_02041c20(self->unk_24, 1, 1);
+        TexObj_SetOamFuncArg(self->unk_24, 1, 1);
         Model_PlayPart(self->unk_24, 1);
     }
     LoPlayIf(self->unk_2c, 0);

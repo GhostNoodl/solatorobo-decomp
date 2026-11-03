@@ -19,7 +19,7 @@ extern ov006_Ofs021e76d8 data_ov006_021eb954[];
 AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *a, int b);
 void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
-u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
+u16 Angle_Approach(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
 
 void Ov006Racer_UpdateCamera(Ov006Racer *self) {
     VecFx32 v1;
@@ -195,8 +195,8 @@ void Ov006Racer_UpdateCamera(Ov006Racer *self) {
                 MTX_RotZ33_(&m, OV006_SINCOS[(rz >> 4) * 2], OV006_SINCOS[(rz >> 4) * 2 + 1]);
             }
         }
-        r.x = func_01ffc128(self->rot.x, self->look2.x, 0x4cd, 1, 0x8000);
-        r.y = func_01ffc128(self->rot.y, self->look2.y, 0x4cd, 1, 0x8000);
+        r.x = Angle_Approach(self->rot.x, self->look2.x, 0x4cd, 1, 0x8000);
+        r.y = Angle_Approach(self->rot.y, self->look2.y, 0x4cd, 1, 0x8000);
         r.z = self->rot.z;
         if (self->unk_1d8 != 0) {
             e = Effect_Find_020657b0(data_0214a420, self->unk_1d8);

@@ -24,7 +24,7 @@ typedef struct ModelViewerRes {
 } ModelViewerRes;
 
 // A 3D model drawn with its own camera and projection (0x708 bytes, ctor ModelViewer_Ctor, vtable
-// data_ov000_021cabc8, dtors func_ov000_02162294 / 0216251c). ModelViewer_SetModel requests new
+// data_ov000_021cabc8, dtors ModelViewer_Dtor / 0216251c). ModelViewer_SetModel requests new
 // resources, func_ov000_02162bd4 steps the state machine, ModelViewer_Draw draws.
 typedef struct ModelViewer {
     /* 0x000 */ void *vtbl;

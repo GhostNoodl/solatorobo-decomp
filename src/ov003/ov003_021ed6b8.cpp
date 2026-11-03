@@ -115,7 +115,7 @@ extern char data_ov003_021f9fd6[];
 extern s32 Finder_CollectParts(Ov003LfFinder *f, Ov003LfQuery *q, Ov003LfHit **out, s32 max);
 extern Ov003LfTgt *Obj021984c8_GetActor(Ov003LfHit *h);
 extern BOOL Ov003Switch_IsTarget(Ov003LfTgt *t, void *def);
-extern BOOL func_ov000_02199d40(void *t);
+extern BOOL Target_HasAny(void *t);
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h);
 extern BOOL Model0218fe1c_SetAnim(void *p, const char *name, s32 a, s32 b);
 extern void Model0218fe1c_SetLoop(void *p);
@@ -311,7 +311,7 @@ void Ov003ActVt_021f9f40_StateIdle(Ov003Lift *self) {
             cnt++;
         }
         if (res == 0 && found == NULL) {
-            if (self->unk_4c == NULL || !func_ov000_02199d40(self->unk_4c)) {
+            if (self->unk_4c == NULL || !Target_HasAny(self->unk_4c)) {
                 Ov003LfTgt *pl = ActorMgr_FindPlayer();
                 if (!Ov003Lf_Flag(pl) || Ov003Lf_RideKind(pl) == 1 || Ov003Lf_RideKind(pl) == 2 || pl->unk_9c == 0) {
                     VecFx32 p;

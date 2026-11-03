@@ -5,7 +5,7 @@ extern "C" {
 extern char data_ov000_021cc5e3[];
 void func_ov000_021b0db0(Actor *self, s32 id);
 
-void func_ov000_021b0860(Actor *self) {
+void Robo021ca458_Mode5_State01(Actor *self) {
     switch (self->fsm->st) {
     case 0:
         Model0218fe1c_SetAnim(self->model, data_ov000_021cc5e3, 0x89, 0);

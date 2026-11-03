@@ -16,7 +16,7 @@ int Math_ProjectToScreen(s32 *out, VecFx32 *pos);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
-void func_ov000_02160414(Cam02160414 *self) {
+void Ov000Vt_021cac0c_FollowPos(Cam02160414 *self) {
     s32 scr[2];
     VecFx32 pos;
     s32 dx;

@@ -14,7 +14,7 @@ extern "C" {
 
 u8 Gfx3DState_NextPolyId(void *p);
 
-void func_ov000_021be420(Marker021be420 *self) {
+void Ov000Vt_021cc938_Dtor(Marker021be420 *self) {
     s32 x;
     s32 y;
     s32 a;

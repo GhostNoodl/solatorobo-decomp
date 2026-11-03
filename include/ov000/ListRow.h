@@ -7,7 +7,7 @@
 // data_ov002_021ef684). Each subclass constructor stores the base vtable, calls
 // ListRow_Init (which clears the base fields), then stores its own vtable and calls its own
 // init. The dtor (ListRow_Unlink inlined) unlinks the row. LoBase021ccb54_021ccbe0_AppendRow appends a row to
-// a list, func_ov000_021c4014 finds one by index, and func_ov000_021c5028 places and draws the shown
+// a list, LoBase021ccb54_021ccbe0_FindRow finds one by index, and func_ov000_021c5028 places and draws the shown
 // rows one below the other. Slot 0x08 of a subclass updates the row, slot 0x0c draws it.
 
 #include "types.h"
@@ -22,13 +22,13 @@ struct ObjBase021cac0c_021cb6f0;
 
 // 0x30 bytes.
 struct ListRow : public VObj {
-    s32 index; // 0x04 set by the creator; func_ov000_021c4014 looks a row up by it
+    s32 index; // 0x04 set by the creator; LoBase021ccb54_021ccbe0_FindRow looks a row up by it
     u8 unk_08[0x4];
     s32 x; // 0x0c draw position (fx32), set by func_ov000_021c5028 before the draw slot
     s32 y;
     s32 z;
     s32 height; // 0x18 pixels down to the next row (func_ov000_021c5028)
-    s32 width; // 0x1c the window width of the text row (func_ov000_021c37f0)
+    s32 width; // 0x1c the window width of the text row (ListRowText_Update)
     union {
         u8 unk_20;
         struct {
@@ -42,22 +42,22 @@ struct ListRow : public VObj {
     ListRow *prev; // 0x2c
 };
 
-// Vtable data_ov000_021cca10 (0x48 bytes, init func_ov000_021c2334, release Hud021cca10_Release):
+// Vtable data_ov000_021cca10 (0x48 bytes, init Hud021cca10_Init, release Hud021cca10_Release):
 // two 2D models and a name text (Hud021cca10_SetText sets it), built by slot 0x08 (func_ov000_021c2450)
 // and drawn by slot 0x0c (func_ov000_021c28cc).
 struct Hud021cca10 : public ListRow {
     Model *unk_30;
     Model *unk_34;
     TextWin *text; // 0x38
-    s32 unk_3c; // passed to the first model (func_02041c20)
+    s32 unk_3c; // passed to the first model (TexObj_SetOamFuncArg)
     char *str; // 0x40 the text shown in text
     u8 built; // 0x44 set once slot 0x08 has made the models
     u8 unk_45[0x3];
 };
 
-// Vtable data_ov000_021cc9f8 (0x44 bytes, init func_ov000_021c2bb0): a bar display and a label
-// (func_ov000_021c2c0c), built by slot 0x08 (func_ov000_021c2d48) and drawn by slot 0x0c
-// (func_ov000_021c2e64). The bar shows value out of max (ov002's level list, Task021ef99c_Start, sets
+// Vtable data_ov000_021cc9f8 (0x44 bytes, init ListRowGauge_Init): a bar display and a label
+// (func_ov000_021c2c0c), built by slot 0x08 (ListRowGauge_Update) and drawn by slot 0x0c
+// (ListRowGauge_Draw). The bar shows value out of max (ov002's level list, Task021ef99c_Start, sets
 // value to level * 100 + the percent of the way to the next threshold and max to 300).
 struct ListRowGauge : public ListRow {
     ObjBase021cac0c_021cb6f0 *bar; // 0x30 (vtable data_ov000_021cca88)
@@ -68,9 +68,9 @@ struct ListRowGauge : public ListRow {
     u8 unk_41[0x3];
 };
 
-// Vtable data_ov000_021cca58 (0x44 bytes, init func_ov000_021c37bc): slot 0x08 (func_ov000_021c37f0)
+// Vtable data_ov000_021cca58 (0x44 bytes, init ListRowText_Init): slot 0x08 (ListRowText_Update)
 // opens a list window over the two strings while the row is shown, slot 0x0c
-// (func_ov000_021c3aa0) moves it with the row.
+// (ListRowText_Draw) moves it with the row.
 struct ListRowText : public ListRow {
     Lo021cb3a8 *win; // 0x30
     char *unk_34; // the window's srcStr
@@ -80,8 +80,8 @@ struct ListRowText : public ListRow {
     u8 unk_42[0x2];
 };
 
-// Vtable data_ov000_021cca28 (0x34 bytes, init func_ov000_021c5fc4; ov006 builds them): a row that is
-// one line of text (func_ov000_021c5fd0 sets it), drawn by slot 0x0c (func_ov000_021c60f4).
+// Vtable data_ov000_021cca28 (0x34 bytes, init ListRowLabel_Init; ov006 builds them): a row that is
+// one line of text (func_ov000_021c5fd0 sets it), drawn by slot 0x0c (ListRowLabel_Draw).
 struct ListRowLabel : public ListRow {
     TextWin *text; // 0x30
 };
@@ -98,8 +98,8 @@ typedef struct ListRowItem {
 } ListRowItem;
 
 // Vtable data_ov000_021cca70 (0x7c bytes, init func_ov000_021c2f10, release ListRow021cca70_Release): an
-// item drawn as n parts with two models, loaded by slot 0x08 (func_ov000_021c3158) and drawn by slot 0x0c
-// (func_ov000_021c34cc).
+// item drawn as n parts with two models, loaded by slot 0x08 (ListRow021cca70_Update) and drawn by slot 0x0c
+// (ListRow021cca70_Draw).
 struct ListRow021cca70 : public ListRow {
     char *arc; // 0x30 the models' archive and file (func_ov000_021c308c)
     char *name; // 0x34

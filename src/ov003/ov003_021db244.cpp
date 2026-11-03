@@ -9,7 +9,7 @@ extern const VecFx32 data_02092a50;
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
 extern Actor *Target_Get(ActorSub4c *t);
 extern VecFx32 *Actor_GetTargetSub44(Actor *self);
-extern void func_01ffc9fc(VecFx32 *dst, VecFx32 *src, u16 ry);
+extern void Vec_RotateY(VecFx32 *dst, VecFx32 *src, u16 ry);
 extern void HitSphere_Link(ActorSub48 *a);
 extern void Body_Update(ActorSub48 *a, s32 b, s32 c, s32 d);
 
@@ -179,7 +179,7 @@ void Ov003Shot_StateThrown(Ov003Shot *self) {
             o.y = self->def->fly.y << 4;
             o.z = self->def->fly.z << 4;
             if (mode == 1 || mode == 2) {
-                func_01ffc9fc(&self->fxOffset, &o, self->rot_y);
+                Vec_RotateY(&self->fxOffset, &o, self->rot_y);
             } else {
                 MTX_MultVec33(&o, &m33, &self->fxOffset);
             }
@@ -216,7 +216,7 @@ void Ov003Shot_StateThrown(Ov003Shot *self) {
                 v.x = cfg->trail.x << 4;
                 v.y = cfg->trail.y << 4;
                 v.z = cfg->trail.z << 4;
-                func_01ffc9fc(&v, &v, self->rot_y);
+                Vec_RotateY(&v, &v, self->rot_y);
                 e->AddPos(&v);
                 s = self->def->trail.scale << 4;
                 e->SetScaleXYZ(s, s, s);

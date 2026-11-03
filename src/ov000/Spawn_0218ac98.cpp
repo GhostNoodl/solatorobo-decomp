@@ -75,7 +75,7 @@ void func_ov000_0218adf0(GroupNode *self) {
         seg.to.y = data_ov000_021ccd64->viewPos[i].y;
         seg.to.z = data_ov000_021ccd64->viewPos[i].z;
         seg.yaw = data_ov000_021ccd64->viewYaw[i];
-        if (func_01ffc89c(self, &seg)) {
+        if (HitVolume_TestSegment(self, &seg)) {
             BOOL done = FALSE;
             Actor *sp;
             pos = self->pos;

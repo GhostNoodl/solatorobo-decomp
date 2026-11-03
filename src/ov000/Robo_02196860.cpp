@@ -17,7 +17,7 @@ void Target_Set(void *a, void *b);
 void Ov003Pickup_Update(void *self, s32 a);
 void *Ov003_FindPlayerInRange(void *pos, s32 a, s32 b);
 s32 Rand_UpTo(s32 n);
-s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
+s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 
 void ActorEx_State0a(ActorEx *self) {
     switch (self->fsm->st) {
@@ -84,7 +84,7 @@ void ActorEx_State0a(ActorEx *self) {
                     a.y += LFLD(s32, t, 0x6c);
                     y = b.y + self->centerY;
                     b.y = y;
-                    if (func_01ffbd6c(&a, &b, -1, 0, 0, -1) != -0x1000) {
+                    if (Hit_CastSegment(&a, &b, -1, 0, 0, -1) != -0x1000) {
                         a.x = a.x - b.x;
                         a.y = a.y - b.y;
                         a.z = a.z - b.z;

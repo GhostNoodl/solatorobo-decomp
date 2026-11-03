@@ -24,7 +24,7 @@ typedef struct {
 extern "C" {
 
 extern Data02fe0f14 data_02fe0f14;
-s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
+s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 
 s32 func_ov000_021b288c(Obj021b288c *self) {
     s32 ret = 1;
@@ -37,7 +37,7 @@ s32 func_ov000_021b288c(Obj021b288c *self) {
     b = self->pos;
     a.y += self->height;
     b.y -= 0x19a;
-    if (func_01ffbd6c(&a, &b, 0x20000000, 0, 0, -1) != -0x1000) {
+    if (Hit_CastSegment(&a, &b, 0x20000000, 0, 0, -1) != -0x1000) {
         if ((self->flags & 0x80) || (data_02fe0f14.keys & 0x400)) {
             return -1;
         }
@@ -57,10 +57,10 @@ s32 func_ov000_021b288c(Obj021b288c *self) {
         a.z -= c >> 3;
         b.x += s;
         b.z += c;
-        if (func_01ffbd6c(&a, &b, 0x40000000, 0, 0, -1) == -0x1000) {
+        if (Hit_CastSegment(&a, &b, 0x40000000, 0, 0, -1) == -0x1000) {
             a.y += 0x333;
             b.y += 0x333;
-            if (func_01ffbd6c(&a, &b, 0x40000000, 0, 0, -1) != -0x1000) {
+            if (Hit_CastSegment(&a, &b, 0x40000000, 0, 0, -1) != -0x1000) {
                 ret = 1;
             }
         } else {

@@ -34,7 +34,7 @@ void ov006_Gauge_SetRatio(ov006_Gauge *self, int a, int b, u8 c);
 void ov006_Slot_Pack(ov006_Slot *self, void *buf);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 void func_ov006_021d3498(ov006_TaskD1F *self, u16 id, BOOL dir);
-ov006_Unk020706a0 *func_020706a0(u16 id);
+ov006_Unk020706a0 *Tbl_Elem_020706a0(u16 id);
 void Gfx3DState_SetDefaults(void *p);
 void Gfx3DState_Apply(void *p);
 void TaskList_Insert(Task *self);
@@ -80,7 +80,7 @@ void ov006_TaskD1F_Start(ov006_TaskD1F *self) {
     self->unk54->flags |= 0x10000;
     ov006_Manager_DispatchMenuCb(3, self->unk54, 0);
     self->unk54->vfunc_08();
-    func_ov000_021548cc(self->unk54, data_ov006_021eb6fe[data_ov006_021ec884->unk5]);
+    UiList_SetPanelColor(self->unk54, data_ov006_021eb6fe[data_ov006_021ec884->unk5]);
     if (self->unk4A != 0xffff) {
         UiList *w = self->unk54;
         w->vfunc_a8(UiList_GetItemById(w, self->unk4A));
@@ -176,7 +176,7 @@ void ov006_TaskD1F_Start(ov006_TaskD1F *self) {
             self->unk5C->vfunc_70();
         }
         func_ov006_021d3498(self, id, FALSE);
-        p = func_020706a0(id);
+        p = Tbl_Elem_020706a0(id);
         ov006_Gauge_SetRatio(self->gauges[0], p->unk4 << 12, 0xa000, 1);
         ov006_Gauge_SetRatio(self->gauges[1], p->unk5 << 12, 0xa000, 1);
         ov006_Gauge_SetRatio(self->gauges[2], p->unk6 << 12, 0xa000, 1);

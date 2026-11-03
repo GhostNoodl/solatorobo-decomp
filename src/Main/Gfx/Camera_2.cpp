@@ -5,12 +5,12 @@
 extern "C" {
 
 extern void *GfxCamPos_Init(VecFx32 *eye);
-extern void func_020434e0(s32 *proj);
+extern void GfxCamParam_Init(s32 *proj);
 extern void Heap_Free(void *ptr);
 extern void func_0204bcb0(Camera *cam);
 extern 
 void func_0204bac8(Camera *cam);
-extern s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
+extern s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 extern void *NNS_G3dFuncAnmJntNsBcaDefault[];
 extern u32 Rand_UpTo(u32 max);
 extern void *NNS_G3dRS;
@@ -31,7 +31,7 @@ typedef struct CamAnimWork {
 
 typedef void (*CamAnimFunc)(CamAnimResult *out, s32 *frame, s32 arg);
 extern s32 Rand_PlusMinus(s32 amp);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 a, u16 b);
+extern u16 Angle_Approach(u16 target, u16 cur, s32 rate, u32 a, u16 b);
 typedef struct CamState {
     /* 0x000 */ u8 unk_000[0xfc];
     /* 0x0fc */ u32 dirty;
@@ -58,7 +58,7 @@ static inline s32 Cam_FxMul(s32 a, s32 b) {
 static inline void Camera_Init(Camera *cam) {
     cam->vtable = data_0208b8c0;
     GfxCamPos_Init(&cam->eye);
-    func_020434e0(&cam->nearClip);
+    GfxCamParam_Init(&cam->nearClip);
     cam->mode = 1;
     cam->dist = 0xa000;
     cam->pitch = 0x1000;
@@ -90,7 +90,7 @@ static inline void Camera_Init(Camera *cam) {
     cam->speed = 0x1000;
 }
 
-Camera *func_0204b2c0(Camera *cam);
+Camera *Camera_CtorBase(Camera *cam);
 
 Camera *Camera_Ctor(Camera *cam);
 
@@ -311,13 +311,13 @@ void func_0204bcb0(Camera *cam) {
         }
     }
     if (cam->pitchRate != 0 && cam->pitchTarget != cam->pitch) {
-        cam->pitch = func_01ffc128(cam->pitchTarget, cam->pitch, cam->pitchRate, 1, 0x8000);
+        cam->pitch = Angle_Approach(cam->pitchTarget, cam->pitch, cam->pitchRate, 1, 0x8000);
     }
     if (cam->yawRate != 0 && cam->yawTarget != cam->yaw) {
-        cam->yaw = func_01ffc128(cam->yawTarget, cam->yaw, cam->yawRate, 1, 0x8000);
+        cam->yaw = Angle_Approach(cam->yawTarget, cam->yaw, cam->yawRate, 1, 0x8000);
     }
     if (cam->rollRate != 0 && cam->rollTarget != cam->roll) {
-        cam->roll = func_01ffc128(cam->rollTarget, cam->roll, cam->rollRate, 1, 0x8000);
+        cam->roll = Angle_Approach(cam->rollTarget, cam->roll, cam->rollRate, 1, 0x8000);
     }
 }
 

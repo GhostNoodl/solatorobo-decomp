@@ -40,7 +40,7 @@ typedef struct ActorMgr ActorMgr;
 extern ActorMgr *data_ov000_021ccd68;
 
 ActorC *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u32 angle);
+void Vec_RotateY(VecFx32 *out, const VecFx32 *in, u32 angle);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 void HitSphere_Init(ActorSub48 *self);
 void HitSphere_Link(ActorSub48 *self);
@@ -178,7 +178,7 @@ void Obj021984c8_UpdatePos(Obj021984c8 *self, VecFx32 *pos, u16 *rot) {
     }
     angle = rot != NULL ? rot[1] : actor->rot_y;
     self->angle = angle + self->unk_1a;
-    func_01ffc9fc(&ofs, &self->offset, angle);
+    Vec_RotateY(&ofs, &self->offset, angle);
     VEC_Add(&base, &ofs, &self->pos);
 }
 
@@ -236,7 +236,7 @@ void ActorSub48_UpdatePos(ActorSub48 *self, VecFx32 *pos, u16 *rot) {
                 base.y = actor->pos.y;
                 base.z = actor->pos.z;
             }
-            func_01ffc9fc(&ofs, &self->offset, rot != NULL ? rot[1] : actor->rot_y);
+            Vec_RotateY(&ofs, &self->offset, rot != NULL ? rot[1] : actor->rot_y);
             VEC_Add(&base, &ofs, &base);
             func_ov000_02198ad8(self, &base, &ofs);
             if (pos != NULL) {

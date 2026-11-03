@@ -71,8 +71,8 @@ struct GameHud {
 
 extern "C" {
 
-extern void func_020435e8(GfxPltt *pltt, u16 *src, u32 size);
-extern void func_02041c34(Model *model, int idx, void *cb, void *arg);
+extern void GfxPltt_ApplyFilter(GfxPltt *pltt, u16 *src, u32 size);
+extern void TexObj_SetOamFunc(Model *model, int idx, void *cb, void *arg);
 extern void *func_02050ebc(void *self, void *info, void *oam, u16 *num);
 extern BOOL func_ov000_021705a0(FieldActor *actor, int a);
 
@@ -117,7 +117,7 @@ void func_02056e74(GameScene *scene, GameHud *hud) {
     G3_Cmd1(0x13, 0);
     NNS_G3dGeBufferOP_N(0x15, NULL, 0);
     G3_Vec(0x1b, 0x1000, 0x1000, 0x1000);
-    G3_Cmd1(0x29, 0x1600d0 | (func_02043d84(data_02097d48->unk_8b0) << 24));
+    G3_Cmd1(0x29, 0x1600d0 | (Gfx3DState_NextPolyIdB(data_02097d48->unk_8b0) << 24));
     G3_Cmd1(0x2a, 0x20000000);
     col = 0;
     y = 0x8c;
@@ -136,7 +136,7 @@ void func_02056e74(GameScene *scene, GameHud *hud) {
                 col = 0xc63;
             }
         }
-        func_020435e8(pltt, &col, 2);
+        GfxPltt_ApplyFilter(pltt, &col, 2);
         G3_Cmd1(0x20, col);
         scene->unk_vfb0(0xf7, 0x30);
         G3_Cmd1(0x12, 1);
@@ -161,7 +161,7 @@ void func_02056e74(GameScene *scene, GameHud *hud) {
     x = (s32)(prod >> 12);
     x >>= 12;
     s = (y >> 12) - base;
-    func_02041c34(scene->model, 0, (void *)func_02050ebc, scene);
+    TexObj_SetOamFunc(scene->model, 0, (void *)func_02050ebc, scene);
     GameScene_SetModelPos(scene->model, x, s - 0x60);
     scene->model->unk_150 = -0x97a;
     scene->model->flags |= 0x80000;

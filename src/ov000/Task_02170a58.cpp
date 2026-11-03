@@ -22,7 +22,7 @@ void *Heap_Alloc(u32 size);
 void func_ov000_0216b474(Lo0216b474 *p);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void func_ov000_021bce90(void);
-BOOL func_0204c120(void);
+BOOL MsgRes_BindGlobal(void);
 BOOL func_ov000_021b9010(void *p);
 BOOL func_ov000_021ba92c(void *p);
 BOOL func_ov000_021bb8dc(void *p);
@@ -99,7 +99,7 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
         self->unk_78 = q;
         tk = (LoTicker *)Heap_Alloc(sizeof(LoTicker));
         if (tk != NULL) {
-            __cxa_vec_ctor(tk->res, 10, sizeof(LoTextHolder), (void (*)(void *))func_ov000_0217125c, (void (*)(void *))func_ov000_0217006c);
+            __cxa_vec_ctor(tk->res, 10, sizeof(LoTextHolder), (void (*)(void *))LoTextHolder_Init, (void (*)(void *))LoTextHolder_Dtor);
             func_ov000_0216bf30(tk);
         }
         self->ticker = tk;
@@ -107,7 +107,7 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
         self->state = 2;
     }
     case 2:
-        if (!func_0204c120()) {
+        if (!MsgRes_BindGlobal()) {
             return;
         }
         func_ov000_0216bbec(self->ticker);
@@ -213,7 +213,7 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
     }
 }
 
-void func_ov000_0217125c(LoTextHolder *self) {
+void LoTextHolder_Init(LoTextHolder *self) {
     self->count = 0;
     self->text = NULL;
     self->win = NULL;

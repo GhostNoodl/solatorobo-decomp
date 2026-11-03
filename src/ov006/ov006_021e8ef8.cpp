@@ -7,7 +7,7 @@
 
 extern "C" {
 
-u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
+u16 Angle_Approach(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
 
 static inline void ov006_Limit(u16 *p, u16 d, u16 lim) {
     if (d < 0x8000) {
@@ -73,9 +73,9 @@ void Ov006Racer_UpdateSteer(Ov006Racer *self) {
         } else if (dir & 0x80) {
             steer = -steer;
         } else {
-            steer = func_01ffc128(base, self->look.x, 0xcd, 1, 0x8000) - self->look.x;
+            steer = Angle_Approach(base, self->look.x, 0xcd, 1, 0x8000) - self->look.x;
         }
-        self->lookVX = func_01ffc128(steer, self->lookVX, (h << 5) + 0x6cd, 1, 0x8000);
+        self->lookVX = Angle_Approach(steer, self->lookVX, (h << 5) + 0x6cd, 1, 0x8000);
         self->look.x += self->lookVX;
         {
             u16 d = self->look.x - base;
@@ -90,11 +90,11 @@ void Ov006Racer_UpdateSteer(Ov006Racer *self) {
         if (self->turnMode == 1) {
             self->look2.x = self->look.x;
         } else {
-            self->look2.x = func_01ffc128(self->look.x, self->look2.x, 0x4cd, 1, 0x8000);
+            self->look2.x = Angle_Approach(self->look.x, self->look2.x, 0x4cd, 1, 0x8000);
         }
-        self->rot.x = func_01ffc128(self->look.x, self->rot.x, 0x533, 1, 0x8000);
+        self->rot.x = Angle_Approach(self->look.x, self->rot.x, 0x533, 1, 0x8000);
         if (cam != NULL) {
-            camv = func_01ffc128(self->look.x + 0xa0, camv, 0x600, 1, 0x8000);
+            camv = Angle_Approach(self->look.x + 0xa0, camv, 0x600, 1, 0x8000);
         }
     } else {
         u16 h2u;
@@ -131,12 +131,12 @@ void Ov006Racer_UpdateSteer(Ov006Racer *self) {
                 base -= t;
             }
         }
-        self->lookVX = func_01ffc128(steer, self->lookVX, 0x19a, 1, 0x8000);
+        self->lookVX = Angle_Approach(steer, self->lookVX, 0x19a, 1, 0x8000);
         self->look.x += self->lookVX;
-        self->look2.x = func_01ffc128(self->look.x, self->look2.x, 0x4cd, 1, 0x8000);
-        self->rot.x = func_01ffc128(base, self->rot.x, 0x533, 1, 0x8000);
+        self->look2.x = Angle_Approach(self->look.x, self->look2.x, 0x4cd, 1, 0x8000);
+        self->rot.x = Angle_Approach(base, self->rot.x, 0x533, 1, 0x8000);
         if (cam != NULL) {
-            camv = func_01ffc128(self->look.x, self->rot.x, 0xe66, 1, 0x8000);
+            camv = Angle_Approach(self->look.x, self->rot.x, 0xe66, 1, 0x8000);
         }
     }
     steer = 0;
@@ -152,15 +152,15 @@ void Ov006Racer_UpdateSteer(Ov006Racer *self) {
                 steer = -v;
             }
         }
-        self->lookVY = func_01ffc128(steer, self->lookVY, (h << 5) + 0x200, 1, 0x8000);
+        self->lookVY = Angle_Approach(steer, self->lookVY, (h << 5) + 0x200, 1, 0x8000);
         self->look.y += self->lookVY;
         ov006_Limit(&self->look.y, self->look.y - self->courseRot.y, 0x2a00);
         if (self->turnMode == 1) {
             self->look2.y = self->look.y;
         } else {
-            self->look2.y = func_01ffc128(self->look.y, self->look2.y, 0x4cd, 1, 0x8000);
+            self->look2.y = Angle_Approach(self->look.y, self->look2.y, 0x4cd, 1, 0x8000);
         }
-        self->rot.y = func_01ffc128(self->look.y, self->rot.y, 0x200, 1, 0x8000);
+        self->rot.y = Angle_Approach(self->look.y, self->rot.y, 0x200, 1, 0x8000);
         roll = -(self->lookVY * 0x28);
     } else {
         pitch = self->look.y;
@@ -198,18 +198,18 @@ void Ov006Racer_UpdateSteer(Ov006Racer *self) {
             }
             roll += 0x7d0;
         }
-        self->lookVY = func_01ffc128(steer, self->lookVY, 0x19a, 1, 0x8000);
+        self->lookVY = Angle_Approach(steer, self->lookVY, 0x19a, 1, 0x8000);
         self->look.y += self->lookVY;
-        self->look2.y = func_01ffc128(self->look.y, self->look2.y, 0x4cd, 1, 0x8000);
-        self->rot.y = func_01ffc128(pitch, self->rot.y, 0x200, 1, 0x8000);
+        self->look2.y = Angle_Approach(self->look.y, self->look2.y, 0x4cd, 1, 0x8000);
+        self->rot.y = Angle_Approach(pitch, self->rot.y, 0x200, 1, 0x8000);
     }
-    self->rot.z = func_01ffc128(roll, self->rot.z, 0x400, 1, 0x8000);
+    self->rot.z = Angle_Approach(roll, self->rot.z, 0x400, 1, 0x8000);
     if (cam == NULL) {
         return;
     }
     cam->unk_f8 = camv;
     cam->unk_da |= 0x10;
-    cam->unk_fa = func_01ffc128(self->look.y, self->rot.y, 0xc00, 1, 0x8000);
+    cam->unk_fa = Angle_Approach(self->look.y, self->rot.y, 0xc00, 1, 0x8000);
     cam->unk_da |= 0x20;
 }
 

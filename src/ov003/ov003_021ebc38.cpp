@@ -30,7 +30,7 @@ extern void Model0218fe1c_SetAnimByIndex(void *anim, s32 a, s32 b, s32 c);
 extern void Model0218fe1c_SetLoop(void *anim);
 extern void HitSphere_Unlink_0203f2b8(void *p);
 extern void Heap_Free(void *p);
-extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
+extern void Vec_RotateY(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void *func_0203db40(void *p);
 extern void Model0218fe1c_UpdateAnim(void *a, void *b);
 extern Ov003LiftPlayer *ActorMgr_FindPlayer(void);
@@ -92,7 +92,7 @@ void Ov003ActVt_021f979c_Start(Ov003Lift *self) {
         self->fxOffset.y = 0x1800;
         self->fxOffset.z = 0x800;
     }
-    func_01ffc9fc(&self->fxOffset, &self->fxOffset, self->rot.y);
+    Vec_RotateY(&self->fxOffset, &self->fxOffset, self->rot.y);
     self->unk_302 = 0;
 }
 

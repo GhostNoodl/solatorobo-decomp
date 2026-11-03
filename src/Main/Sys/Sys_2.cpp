@@ -16,8 +16,8 @@ extern void *OS_InitAlloc(int arena, void *lo, void *hi, int n);
 extern void OS_SetArenaLo(int arena, void *p);
 extern BOOL OS_IsRunOnTwl(void);
 extern void *func_0201998c(int arena);
-extern void func_0203dfb0(void);
-extern void func_0203e024(void);
+extern void NamePool_CreateTex(void);
+extern void NamePool_CreatePltt(void);
 extern void OS_WaitVBlankIntr(void);
 extern void func_0203e6bc(void);
 extern u32 OS_DisableInterrupts(void);
@@ -67,8 +67,8 @@ void func_0203d9e8(UnkSys *sys) {
     sys->heapHi = NNS_FndCreateExpHeapEx(start + size, (u8 *)hi - (start + size), 0);
     sys->align = 4;
     data_02097dd0->cur = data_02097dd0->heapHi;
-    func_0203dfb0();
-    func_0203e024();
+    NamePool_CreateTex();
+    NamePool_CreatePltt();
 }
 
 void Sys_WaitVBlank(UnkSys *sys) {
@@ -78,7 +78,7 @@ void Sys_WaitVBlank(UnkSys *sys) {
     sys->vcount = 0;
 }
 
-void func_0203dacc(UnkSys *sys) {
+void Sys_WaitFrame(UnkSys *sys) {
     if (sys->frameWait <= 1) {
         return;
     }

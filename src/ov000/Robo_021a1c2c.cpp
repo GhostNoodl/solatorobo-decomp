@@ -31,12 +31,12 @@ void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_021b468c(Robo021ca458 *self);
 u16 Pad_LookupDir(void *rng, void *p);
-s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
+s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 void Shared_ChangeFlags(s32 a, s32 b);
 void Body_SetPos(void *body, VecFx32 *pos, u32 angle);
 BOOL Model0218fe1c_IsAnimDone(void *a);
 
-void func_ov000_021a1c2c(Robo021ca458 *self) {
+void Robo021ca458_State04(Robo021ca458 *self) {
     VecFx32 p;
     VecFx32 a;
     VecFx32 b;
@@ -151,7 +151,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
                 a = self->pos;
                 b = self->pos;
                 b.y += self->height + 0x10;
-                r = func_01ffbd6c(&a, &b, 0xc0000000, 0, 0, -1);
+                r = Hit_CastSegment(&a, &b, 0xc0000000, 0, 0, -1);
                 if (r == -0x1000) {
                     h = self->height;
                 } else {
@@ -163,7 +163,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
                 b.y += h;
                 b.x += (s32)(((s64)(self->radius * 2) * FX_SinCosTable_[(ang >> 4) * 2] + 0x800) >> 12);
                 b.z += (s32)(((s64)(self->radius * 2) * FX_SinCosTable_[(ang >> 4) * 2 + 1] + 0x800) >> 12);
-                if (func_01ffbd6c(&a, &b, 0x40000000, 0, 0, -1) == -0x1000) {
+                if (Hit_CastSegment(&a, &b, 0x40000000, 0, 0, -1) == -0x1000) {
                     self->moveYaw = ang;
                     Model0218fe1c_SetAnim(self->model, data_ov000_021cc62a, 0x800, 1);
                     if (self->velY < 0x148) {

@@ -12,7 +12,7 @@ void func_ov000_021c2208(void *self);
 void func_ov000_021c2f10(void *self);
 void func_ov000_021c308c(void *self, u16 id);
 void List021c6474_Append(TextList *self, ListRow *row);
-void func_ov000_021c65e0(TextList *self, s32 index);
+void TextList_SelectByKey(TextList *self, s32 index);
 u16 func_0206f788(u16 id);
 void *func_0206eed0(u16 id);
 BOOL func_ov002_021d18d4(TextList *self, ListRow021cca70 *row);
@@ -78,7 +78,7 @@ void Task021ef69c_Start(Task021ef69c *self) {
     self->unk_3c->onDecide = (TextListFn)func_ov002_021d18e8;
     self->unk_3c->owner = self;
     self->unk_3c->vfunc_08();
-    func_ov000_021c65e0(self->unk_3c, data_ov002_021f0f84[2]);
+    TextList_SelectByKey(self->unk_3c, data_ov002_021f0f84[2]);
     Obj021c64b4_SetText(self->unk_3c, ((ListRow021cca70 *)self->unk_3c->cur)->unk_40);
     p = (UiObj *)Heap_Alloc(0xe0);
     if (p != NULL) {

@@ -627,7 +627,7 @@ void Ov009ActVt_02217eb4_StateShoot(Ov009ActVt_02217eb4 *self) {
         break;
     }
     case 1:
-        self->rot_z = func_01ffc128(0xd8e4, self->rot_z, 0x52, 1, 0x8000);
+        self->rot_z = Angle_Approach(0xd8e4, self->rot_z, 0x52, 1, 0x8000);
         d.x = self->unk_fc.x - self->pos.x;
         d.y = self->unk_fc.y - self->pos.y;
         d.z = self->unk_fc.z - self->pos.z;
@@ -649,7 +649,7 @@ void Ov009ActVt_02217eb4_StateShoot(Ov009ActVt_02217eb4 *self) {
         self->fsm->timer = Rand_UpTo(0x14) + 0x46;
         break;
     case 2:
-        self->rot_z = func_01ffc128(0, self->rot_z, 0x29, 1, 0x8000);
+        self->rot_z = Angle_Approach(0, self->rot_z, 0x29, 1, 0x8000);
         d.x = self->unk_fc.x - self->pos.x;
         d.y = self->unk_fc.y - self->pos.y;
         d.z = self->unk_fc.z - self->pos.z;
@@ -670,7 +670,7 @@ void Ov009ActVt_02217eb4_StateShoot(Ov009ActVt_02217eb4 *self) {
         break;
     case 3: {
         s32 dist;
-        self->rot_z = func_01ffc128(0, self->rot_z, 0x29, 1, 0x8000);
+        self->rot_z = Angle_Approach(0, self->rot_z, 0x29, 1, 0x8000);
         d.x = self->unk_fc.x - self->pos.x;
         d.y = self->unk_fc.y - self->pos.y;
         d.z = self->unk_fc.z - self->pos.z;
@@ -750,15 +750,15 @@ void Ov009ActVt_02217eb4_StateAttack(Ov009ActVt_02217eb4 *self) {
         }
         if (self->fsm->timer > 0x78) {
             Actor_TurnToActor(self, t, 0x29);
-            self->rot_z = func_01ffc128(0x71c, self->rot_z, 0x14, 1, 0x8000);
+            self->rot_z = Angle_Approach(0x71c, self->rot_z, 0x14, 1, 0x8000);
         } else {
-            self->rot_z = func_01ffc128(0xeaab, self->rot_z, 0x52, 1, 0x8000);
+            self->rot_z = Angle_Approach(0xeaab, self->rot_z, 0x52, 1, 0x8000);
         }
         break;
     case 2:
         Actor_TurnToActor(self, t, 0xa4);
-        self->rot_z = func_01ffc128(0xe39, self->rot_z, 0x52, 1, 0x8000);
-        self->rot_x = func_01ffc128(0x11c7, self->rot_x, 0x29, 1, 0x8000);
+        self->rot_z = Angle_Approach(0xe39, self->rot_z, 0x52, 1, 0x8000);
+        self->rot_x = Angle_Approach(0x11c7, self->rot_x, 0x29, 1, 0x8000);
         Actor_Move(self, 0);
         if (self->pos.y > 0x6000) {
             self->pos.y = 0x6000;
@@ -819,7 +819,7 @@ void Ov009ActVt_02217eb4_StateAttack(Ov009ActVt_02217eb4 *self) {
             s = self->unk_44;
             s->unk_22_0 = true;
             s->unk_22_1 = 1;
-            self->rot_z = func_01ffc128(0, self->rot_z, 0x29, 1, 0x8000);
+            self->rot_z = Angle_Approach(0, self->rot_z, 0x29, 1, 0x8000);
         }
         if (dist < 0x19a) {
             History_SetState(self->fsm, 1, 0);

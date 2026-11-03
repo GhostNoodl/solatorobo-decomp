@@ -78,9 +78,9 @@ u32 MsgRes_GetLines(MsgRes *res, s32 idx, char **out, s32 max) {
 
 char *MsgRes_GetString(MsgRes *res, s32 idx);
 
-BOOL func_0204c100(void);
+BOOL MsgRes_LoadGlobal(void);
 
-BOOL func_0204c120(void);
+BOOL MsgRes_BindGlobal(void);
 
 void func_0204c138(void);
 

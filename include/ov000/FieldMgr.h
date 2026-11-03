@@ -158,7 +158,7 @@ typedef struct FieldPropModel {
 
 // A prop of the field (0x114 bytes, ctor func_ov000_021b79f4, dtor func_ov000_021b7a7c), in the list
 // FieldMgr::head / tail. func_ov000_021b8014 sets it up from its record, func_ov000_021b7f0c loads
-// it, func_ov000_021b7b50 updates it and func_ov000_021b7e34 tests whether it is drawn.
+// it, func_ov000_021b7b50 updates it and FieldProp_Draw tests whether it is drawn.
 typedef struct FieldProp {
     /* 0x000 */ struct FieldProp *prev;
     /* 0x004 */ struct FieldProp *next;
@@ -178,7 +178,7 @@ typedef struct FieldProp {
             u8 unk_f6_4 : 4;
         };
     };
-    /* 0x0f8 */ s32 viewScale; // func_ov000_021b7e60
+    /* 0x0f8 */ s32 viewScale; // FieldProp_SetViewScale
     /* 0x0fc */ VecFx32 viewMin; // box around the camera the prop is updated in
     /* 0x108 */ VecFx32 viewMax;
 } FieldProp;
@@ -188,7 +188,7 @@ typedef void (FieldMgr::*FieldMgrFn)();
 
 // The field manager (0x294 bytes, ctor func_ov000_021b5054, made by func_ov000_021b4eec, deleted by
 // func_ov000_021b4f28): data_ov000_021ccd6c. FieldMgr_UpdateLoad loads the field's blocks and props,
-// FieldMgr_Update updates them and tests the exits, func_ov000_021b53a8 draws,
+// FieldMgr_Update updates them and tests the exits, FieldMgr_DrawProps draws,
 // func_ov000_021b53f4 unloads, func_ov000_021b628c places the player at the exit it arrives at.
 struct FieldMgr {
     /* 0x000 */ PauseNode pause;
@@ -203,7 +203,7 @@ struct FieldMgr {
     /* 0x01c */ FieldProp *head;
     /* 0x020 */ FieldProp *tail;
     /* 0x024 */ VecFx32 playerPos; // written by the robot each frame
-    /* 0x030 */ u16 ids[0x20]; // actors placed relative to group node unk_1f0 (func_ov000_021b6b4c)
+    /* 0x030 */ u16 ids[0x20]; // actors placed relative to group node unk_1f0 (FieldMgr_SetIdVec)
     /* 0x070 */ VecFx32 vecs[0x20];
     /* 0x1f0 */ u16 unk_1f0;
     /* 0x1f2 */ s16 unk_1f2;
@@ -221,7 +221,7 @@ void func_ov000_021b4eec(void);
 void func_ov000_021b4f28(void);
 FieldMgr *func_ov000_021b5054(FieldMgr *self);
 void FieldMgr_Update(FieldMgr *self);
-void func_ov000_021b53a8(FieldMgr *self);
+void FieldMgr_DrawProps(FieldMgr *self);
 void func_ov000_021b53f4(FieldMgr *self);
 BOOL FieldMgr_UpdateLoad(FieldMgr *self);
 void func_ov000_021b5dc0(FieldMgr *self);
@@ -229,7 +229,7 @@ void func_ov000_021b628c(FieldMgr *self);
 void func_ov000_021b65ec(FieldMgr *self);
 FieldExit *FieldMgr_FindExitAt(FieldMgr *self, VecFx32 *pos);
 void func_ov000_021b6994(FieldMgr *self, u8 all);
-void func_ov000_021b6b4c(FieldMgr *self, u16 id, const VecFx32 *v);
+void FieldMgr_SetIdVec(FieldMgr *self, u16 id, const VecFx32 *v);
 void func_ov000_021b6be4(FieldMgr *self);
 void func_ov000_021b6c60(FieldMgr *self);
 

@@ -159,7 +159,7 @@ BOOL Target_MatchesId(Target *self, u16 id) {
     return found;
 }
 
-BOOL func_ov000_02199d40(Target *self) {
+BOOL Target_HasAny(Target *self) {
     BOOL any = FALSE;
     s32 i;
 
@@ -172,7 +172,7 @@ BOOL func_ov000_02199d40(Target *self) {
     return any;
 }
 
-u16 func_ov000_02199d78(Target *self) {
+u16 Target_GetKindMask(Target *self) {
     u16 mask = 0;
     s32 i;
 

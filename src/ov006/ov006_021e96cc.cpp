@@ -12,7 +12,7 @@ extern "C" {
 extern char data_ov006_021ec4ad[];
 extern char data_ov006_021ec4e0[];
 void Body_Update(ActorSub48 *col, s32 a, VecFx32 *b, Rot16 *c);
-void func_ov000_02198e34(ActorSub48 *col, Rot16 *out, VecFx32 *v, s32 a);
+void Body_CalcReflectRot(ActorSub48 *col, Rot16 *out, VecFx32 *v, s32 a);
 ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 ov006_SlotSub *ov006_Slot_GetSub2C(ov006_Slot *self);
 
@@ -91,8 +91,8 @@ void Ov006Racer_Move(Ov006Racer *self) {
         Rot16 a;
         Rot16 b;
         kind = self->prm->unk_08;
-        func_ov000_02198e34(self->hit, &a, &self->vel, 0);
-        func_ov000_02198e34(self->hit, &b, &self->vel, 1);
+        Body_CalcReflectRot(self->hit, &a, &self->vel, 0);
+        Body_CalcReflectRot(self->hit, &b, &self->vel, 1);
         switch (kind) {
         case 0:
             f += 0x148;

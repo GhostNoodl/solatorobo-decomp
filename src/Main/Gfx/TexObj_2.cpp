@@ -39,7 +39,7 @@ extern void NNS_G2dInitCellAnimation(TexObjAnim *anim, u16 *data, void *res);
 extern void NNS_G2dSetCellAnimationSequence(TexObjAnim *anim, u16 *data);
 extern void NNS_G2dSetAnimCtrlCallBackFunctor(TexObjAnim *anim, int type, TexObj *obj, void (*cb)(TexObj *));
 extern void NNS_G2dTickCellAnimation(TexObjAnim *anim, int frame);
-extern void func_020435e8(GfxPltt *pltt, u16 *src, u32 size);
+extern void GfxPltt_ApplyFilter(GfxPltt *pltt, u16 *src, u32 size);
 void func_02041c90(TexObj *obj);
 
 
@@ -81,7 +81,7 @@ static inline int Oam_GetHeight(const OamShape *shape) {
 }
 
 // Sums the OAM widths of a cell's attributes.
-u32 func_02041b10(void *unused, OamList *list) {
+u32 TexObj_GetCellWidth(void *unused, OamList *list) {
     OamAttrs a;
     u32 total;
     u16 n;
@@ -104,7 +104,7 @@ u32 func_02041b10(void *unused, OamList *list) {
     return total;
 }
 
-u32 func_02041bb0(void *unused, OamRes *res) {
+u32 TexObj_GetCellHeight(void *unused, OamRes *res) {
     u32 total = 0;
     OamAttrs a = *res->attrs;
     OamShape shape = Oam_GetShape(&a);
@@ -116,18 +116,18 @@ void func_02041c18(TexObj *obj, int value) {
     obj->unk_070 = value;
 }
 
-void func_02041c20(TexObj *obj, int idx, int value) {
+void TexObj_SetOamFuncArg(TexObj *obj, int idx, int value) {
     obj->entries[idx].unk_08 = value;
 }
 
-void func_02041c34(TexObj *obj, int idx, int a, int b) {
+void TexObj_SetOamFunc(TexObj *obj, int idx, int a, int b) {
     obj->entries[idx].unk_0c = a;
     if (b != 0) {
         obj->entries[idx].unk_08 = b;
     }
 }
 
-void func_02041c5c(TexObj *obj, int value) {
+void TexObj_SetAllOamFuncs(TexObj *obj, int value) {
     u32 i;
     for (i = 0; i < obj->count; i++) {
         obj->entries[i].unk_0c = value;
@@ -148,7 +148,7 @@ static inline TexObjEntry *TexObj_GetEntry(TexObj *obj, int idx) {
     return idx >= obj->count ? NULL : &obj->entries[idx];
 }
 
-void func_02041cb4(TexObj *obj, int idx) {
+void TexObj_TickAnim(TexObj *obj, int idx) {
     TexObjEntry *e = TexObj_GetEntry(obj, idx);
     if (e == NULL || e->anim == NULL) {
         return;
@@ -157,7 +157,7 @@ void func_02041cb4(TexObj *obj, int idx) {
     NNS_G2dTickCellAnimation((TexObjAnim *)e->anim, obj->unk_074);
 }
 
-void func_02041cf8(TexObj *obj, int idx) {
+void TexObj_StartAnim(TexObj *obj, int idx) {
     u16 *data = NNS_G2dGetAnimSequenceByIdx(((TexObjRes *)obj->res)->dict, idx);
     TexObjEntry *e = TexObj_GetEntry(obj, idx);
     TexObjAnim *anim;
@@ -241,7 +241,7 @@ extern u32 GfxSys_AllocVram(GfxSys *sys, u32 size, BOOL sub);
 extern u32 Vram_QueueTransfer(int type, u32 src, u32 dst, u32 size, u32 chunk);
 extern void NNS_G2dSetImageLocation(TexObj *obj, int idx, u32 addr);
 extern void NNS_G2dLoadImage1DMapping(TexObjImageInfo *img, u32 addr, int idx, TexObj *obj);
-extern void func_0203e098(const char *name, u32 value);
+extern void NamePool_SetTexKey(const char *name, u32 value);
 extern u32 (*NNS_GfdDefaultFuncAllocTexVram)(u32 size, int is4x4, int opt);
 
 void func_02041e74(TexObj *obj, int idx) {
@@ -280,7 +280,7 @@ void func_02041e74(TexObj *obj, int idx) {
     case 0:
         img = ((TexObjRes3 *)obj->res)->image0;
         if (obj->texKey == 0) {
-            func_0203e098(obj->name, 0xffff);
+            NamePool_SetTexKey(obj->name, 0xffff);
             slot = NNS_GfdDefaultFuncAllocTexVram(img->size, 0, 0);
             obj->texKey = slot;
         }
@@ -473,7 +473,7 @@ void func_0204205c(TexObj *obj, int idx, int value) {
             }
         }
         if ((&e->key)[idx] == -1) {
-            func_0203e098(obj->name, value);
+            NamePool_SetTexKey(obj->name, value);
             (&e->key)[idx] = NNS_GfdDefaultFuncAllocTexVram(total, 0, 0);
         }
         info.size = total;

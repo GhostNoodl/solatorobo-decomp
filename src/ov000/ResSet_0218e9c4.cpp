@@ -228,11 +228,11 @@ void ResSet_SetFile(ResSet *self, const char *name, BOOL a, BOOL b, u8 c, u8 d) 
 
 extern "C" {
 ResHandle *ResList_FindType4(void *arc, const char *name);
-BOOL func_0203ed04(const char *name, void *data);
+BOOL G3dRes_SetupVram(const char *name, void *data);
 void *func_0203ebf8(void);
 ResHandle *ResList_FindType6(void *arc, const char *name);
 ResHandle *ResList_FindPath(void *arc, const char *name, const char *ext);
-void func_02039494(void *a);
+void G3dRes_DropTexData(void *a);
 void ResMgr_LoadArchive(const char *name, const char *ext, s32 type, s32 d);
 BOOL ResMgr_IsArchiveLoaded(const char *name, const char *ext, s32 type);
 ResHandle *func_02036188(const char *name, const char *ext);
@@ -243,14 +243,14 @@ ResHandle *func_02035e88(const char *name, const char *ext);
 
 static inline void *ResSet_Bind(ResHandle *h, const char *name) {
     if (h != NULL) {
-        func_0203ed04(name, h->unk_00);
+        G3dRes_SetupVram(name, h->unk_00);
     }
     return func_0203ebf8();
 }
 
 static inline void ResSet_Free(ResHandle *h) {
     if (h != NULL) {
-        func_02039494(h->unk_00);
+        G3dRes_DropTexData(h->unk_00);
     }
 }
 

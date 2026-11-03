@@ -20,7 +20,7 @@ typedef struct Oam0488 {
 extern "C" {
 
 // Material callback: scales the polygon alpha by the fx32 the render object's ptrUser points to.
-void func_ov002_021e0420(NNSG3dRS *rs) {
+void Ov002_ScaleAlphaMatCb(NNSG3dRS *rs) {
     NNSG3dMatAnmResult *mat = rs->pMatAnmResult;
     s32 w = mat->prmPolygonAttr;
     s32 v = (s32)(((s64)*(s32 *)rs->pRenderObj->ptrUser * (((w & 0x1f0000) >> 16) << 12) + 0x800) >> 12) >> 12;

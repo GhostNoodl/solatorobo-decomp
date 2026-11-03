@@ -19,7 +19,7 @@ extern "C" {
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern u8 data_ov000_021ca320[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-void func_ov000_02191ec4(void *a, s32 b, u32 c);
+void Shadow_SetType(void *a, s32 b, u32 c);
 int func_02043d9c(void *p);
 void Obj02190758_SetRot(void *model, void *rot, s32 a);
 BOOL Model021903b4_Draw(void *model);
@@ -110,7 +110,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
     if (self->unk_b28_3) {
         return FALSE;
     }
-    func_ov000_02191ec4(self->unk_3c, 1, self->hit->unk_54);
+    Shadow_SetType(self->unk_3c, 1, self->hit->unk_54);
     m = self->model;
     v = m->bright;
     if (self->hit->unk_54 & 0x80000) {

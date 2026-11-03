@@ -103,7 +103,7 @@ typedef struct {
 extern "C" {
 void *Heap_Alloc(u32 size);
 Info02194758 *Tbl_FindEntry_0206fef8(u16 id);
-void *func_020704b4(u16 id);
+void *Tbl_Elem_020704b4(u16 id);
 Model02194758 *Model0218fe1c_Init(void *p);
 void Model0218fe1c_Setup(Model02194758 *m, Res02194758 *res, Info02194758 *info);
 Obj48_02194758 *ActorSub48_Init(void *p);
@@ -168,7 +168,7 @@ static inline void *GetRes02194758(Res02194758 *res) {
 
 void ActorEx_Start(Actor02194758 *self) {
     Info02194758 *info = Tbl_FindEntry_0206fef8(self->id);
-    func_020704b4(self->id);
+    Tbl_Elem_020704b4(self->id);
     self->unk_64 = info->unk_14 << 4;
     self->unk_68 = info->unk_16 << 4;
     self->unk_6c = self->unk_68 >> 1;

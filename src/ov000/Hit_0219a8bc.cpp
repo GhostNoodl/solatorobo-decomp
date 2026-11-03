@@ -131,7 +131,7 @@ BOOL Hit_ApplyInArea(Actor *a, Actor *b, u16 c, u8 d, u16 mask, VecFx32 *ofs, vo
 void *Actor_GetTarget(Actor *a);
 ActorSub44 *Actor_GetTargetSub44(Actor *a);
 BOOL Hit_DiffInCylinder(void *hit, VecFx32 *pos, s32 r, s32 h);
-BOOL func_01ffc624(void *hit, VecFx32 *pos, u16 *box, s32 r, s32 h);
+BOOL Hit_PointInRotCylinder(void *hit, VecFx32 *pos, u16 *box, s32 r, s32 h);
 
 static inline BOOL IsSolid0219aca8(ActorSub44 *hit) {
     BOOL ret = FALSE;
@@ -197,7 +197,7 @@ BOOL func_ov000_0219aca8(Actor *a, Actor *b, u16 c, u8 d, VecFx32 *ofs, u16 *box
         if (!IsSolid0219aca8(hit)) {
             ok = FALSE;
         } else {
-            ok = func_01ffc624(hit, &pos, box, r + hit->unk_1c, hgt);
+            ok = Hit_PointInRotCylinder(hit, &pos, box, r + hit->unk_1c, hgt);
         }
     }
     if (!ok) {

@@ -51,7 +51,7 @@ static inline Model *NewModelObj021c3158(ListRow021cca70 *self) {
     return m;
 }
 
-void func_ov000_021c3158(ListRow021cca70 *self) {
+void ListRow021cca70_Update(ListRow021cca70 *self) {
     if (self->unk_68 != 0 && !self->shown) {
         if (self->unk_38 == NULL) {
             return;

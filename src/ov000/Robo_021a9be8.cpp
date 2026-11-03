@@ -25,7 +25,7 @@ extern char data_ov000_021cc68a[];
 extern char data_ov000_021ca12c[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL History_SetState(void *p, s32 a, s32 b);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL Model0218fe1c_SetAnim(void *p, void *a, s32 b, s32 c);
 BOOL Model0218fe1c_IsAnimDone(void *a);
 s32 **Model0218fe1c_GetAnimCtrl(void *a, int b);
@@ -39,7 +39,7 @@ void Actor_SendMsgU8(void *o, u16 id, s32 c);
 u8 *Group_SpawnActor(void *mgr, GroupActorDesc *d, void *pos, void *rot, u16 a);
 void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
-s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
+s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
 void func_ov000_02168e18(void *self, s32 a, s32 b, VecFx32 *p);
 
@@ -99,7 +99,7 @@ static inline void Bump_021a9be8(Robo021ca458 *self) {
     }
 }
 
-void func_ov000_021a9be8(Robo021ca458 *self) {
+void Robo021ca458_State0f(Robo021ca458 *self) {
     GroupActorDesc desc;
     VecFx32 z;
     Pose_021a9be8 m;
@@ -226,7 +226,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
                     t.y = a->pos.y;
                     t.z = a->pos.z;
                 }
-                if (func_01ffbd6c((VecFx32 *)((u8 *)self + 0x70), &t, -1, 0, 0, -1) != -0x1000) {
+                if (Hit_CastSegment((VecFx32 *)((u8 *)self + 0x70), &t, -1, 0, 0, -1) != -0x1000) {
                     t.x -= self->pos.x;
                     t.y -= self->pos.y;
                     t.z -= self->pos.z;
@@ -260,7 +260,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
             a->rot_y = ang;
             a->rot_z = 0;
             a->target = self->target;
-            self->rot_y = func_01ffc128(ang, self->rot_y, 0x400, 1, 0x8000);
+            self->rot_y = Angle_Approach(ang, self->rot_y, 0x400, 1, 0x8000);
             SndMgr_PlayAt(data_02097e4c, 0x5c, &self->pos, 0);
         }
         self->unk_b1c = 0xffff;
@@ -303,7 +303,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
                 ang = AngleTo_021a9be8(self,tg);
             }
         }
-        self->rot_y = func_01ffc128(ang, self->rot_y, 0x400, 1, 0x8000);
+        self->rot_y = Angle_Approach(ang, self->rot_y, 0x400, 1, 0x8000);
     } else {
         Actor_Move(self, 0);
     }

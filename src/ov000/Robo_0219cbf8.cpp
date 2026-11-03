@@ -103,7 +103,7 @@ static inline void Reset0219cdb8(Robo021ca458 *self) {
     self->unk_b24_7 = self->unk_b24_9;
 }
 
-void func_ov000_0219cdb8(Robo021ca458 *self) {
+void Robo021ca458_Destroy(Robo021ca458 *self) {
     if (self->unk_b24_12 == 3) {
         Actor *o = GetObj0219cdb8(self->unk_b20);
         if (o != NULL) {

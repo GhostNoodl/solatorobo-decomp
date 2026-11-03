@@ -93,12 +93,12 @@ extern u8 data_ov012_0220b150[];
 extern u8 data_ov012_0220b1e8[];
 extern u8 data_ov013_0220b7d0[];
 void *Heap_Alloc(u32 size);
-Info02192b24 *func_020704b4(u16 id);
-s32 func_0206ffa0(u16 id);
+Info02192b24 *Tbl_Elem_020704b4(u16 id);
+s32 Tbl_GetText(u16 id);
 void *ResSet_Init(void *p);
 void *Model0218fe1c_Init(void *p);
 void *ActorEx_Ctor(void *p);
-void *func_ov000_021940e4(void *p);
+void *ActorEx_CtorBase(void *p);
 void *func_ov000_02193e34(void *p);
 void *func_ov000_02193e48(void *p);
 void Actor_JoinGroup(void *p, u16 sub, u16 id, s32 a);
@@ -151,12 +151,12 @@ void *Ov014ActEx_022152e8_Ctor(void *p);
 
 u8 *Factory_New4000(Spawn02192b24 *s) {
     u8 *p;
-    switch (func_020704b4(s->id)->type) {
+    switch (Tbl_Elem_020704b4(s->id)->type) {
     default:
     case 0:
         switch (s->id) {
         default:
-            NEW_CTOR(0xd0, func_ov000_021940e4);
+            NEW_CTOR(0xd0, ActorEx_CtorBase);
             break;
         case 0x4009:
         case 0x4058:
@@ -584,7 +584,7 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
         break;
     }
     if (p != NULL) {
-        Actor_JoinGroup(p, s->sub, s->id, func_0206ffa0(s->id));
+        Actor_JoinGroup(p, s->sub, s->id, Tbl_GetText(s->id));
         *(FieldId *)(p + 0xac) = data_ov000_021ccd54->unk_ca;
     }
     return p;

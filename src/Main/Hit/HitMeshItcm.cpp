@@ -66,29 +66,29 @@ typedef struct HitMeshRay {
     /* 0x64 */ VecFx32 dir;
 } HitMeshRay;
 
-extern void func_01ff8330(HitMeshRay *ray);
+extern void HitBox_CalcWorld(HitMeshRay *ray);
 extern void HitSegLocal_Transform(s32 *box, HitMeshItcmBlock *block);
-extern void func_01ff868c(HitMeshRay *ray, void *table);
+extern void HitTriRay_TestTree(HitMeshRay *ray, void *table);
 extern HitMeshItcmRes *HitMesh_GetRes(void *mesh);
-extern BOOL func_0203fc60(void *mesh);
+extern BOOL HitMesh_UseBounds(void *mesh);
 extern s32 Hit_FxMul(s32 a, s32 b);
 extern void HitSphereMeshQuery_ToLocal(HitMeshQuery *q);
 extern void HitSphereLocal_Transform(s32 *box, HitMeshItcmBlock *block);
-extern void func_01ff9f9c(HitMeshQuery *q, HitMeshItcmBlock *block, void *tri);
-extern void func_01ff9060(HitMeshQuery *q, void *table);
+extern void HitTriSphere_TestTri(HitMeshQuery *q, HitMeshItcmBlock *block, void *tri);
+extern void HitTriSphere_TestTree(HitMeshQuery *q, void *table);
 
 static inline s32 HitMeshItcm_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
-void func_01ffb83c(HitMeshRay *ray) {
+void HitTriRay_TestTreeMesh(HitMeshRay *ray) {
     HitMeshItcmRes *res;
     void **table;
     HitMeshItcmBlock *block;
     u32 n;
     table = ray->owner->tables;
     res = ray->owner->res;
-    func_01ff8330(ray);
+    HitBox_CalcWorld(ray);
     if (ray->owner->unk_84_1) {
         if (ray->min[0] > res->max[0]) {
             return;
@@ -119,7 +119,7 @@ void func_01ffb83c(HitMeshRay *ray) {
             ray->dir.y = ray->to.y - ray->from.y;
             ray->dir.z = ray->to.z - ray->from.z;
             VEC_Normalize(&ray->dir, &ray->dir);
-            func_01ff868c(ray, *table);
+            HitTriRay_TestTree(ray, *table);
         }
         n--;
         block = (HitMeshItcmBlock *)((u8 *)block + (block->triCount * 0x4c + 0x78));
@@ -127,12 +127,12 @@ void func_01ffb83c(HitMeshRay *ray) {
     }
 }
 
-void func_01ffb9b0(HitMeshQuery *q) {
+void HitTriSphere_TestMesh(HitMeshQuery *q) {
     HitMeshItcmRes *res = HitMesh_GetRes(q->mesh);
     HitMeshItcmBlock *block;
     u32 n;
     HitSphereMeshQuery_ToLocal(q);
-    if (func_0203fc60(q->mesh)) {
+    if (HitMesh_UseBounds(q->mesh)) {
         if (q->min[0] > res->max[0]) {
             return;
         }
@@ -164,7 +164,7 @@ void func_01ffb9b0(HitMeshQuery *q) {
             cnt = block->triCount;
             tri = block->tris;
             while (cnt != 0) {
-                func_01ff9f9c(q, block, tri);
+                HitTriSphere_TestTri(q, block, tri);
                 cnt--;
                 tri += 0x4c;
             }
@@ -174,7 +174,7 @@ void func_01ffb9b0(HitMeshQuery *q) {
     }
 }
 
-void func_01ffbb14(HitMeshQuery *q) {
+void HitTriSphere_TestTreeMesh(HitMeshQuery *q) {
     HitMeshItcmOwner *owner = (HitMeshItcmOwner *)q->mesh;
     HitMeshItcmRes *res;
     void **table;
@@ -237,7 +237,7 @@ void func_01ffbb14(HitMeshQuery *q) {
         if (q->min[0] <= block->max[0] && q->max[0] >= block->min[0] && q->min[1] <= block->max[1] &&
             q->max[1] >= block->min[1] && q->min[2] <= block->max[2] && q->max[2] >= block->min[2]) {
             q->unk_90 = HitMeshItcm_FxMul(r, r);
-            func_01ff9060(q, *table);
+            HitTriSphere_TestTree(q, *table);
         }
         n--;
         block = (HitMeshItcmBlock *)((u8 *)block + (block->triCount * 0x4c + 0x78));

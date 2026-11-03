@@ -52,7 +52,7 @@ VObj *Menu021ca94c_Dtor(VObj *self) {
     return self;
 }
 
-// A UiItemFn (decide callback of the list func_ov000_02155770 opens): item id 0 sets
+// A UiItemFn (decide callback of the list UiList_HandleInput opens): item id 0 sets
 // data_02fe1534.unk_7c, id 1 clears it, and no item (cancel) only plays the sound.
 BOOL func_ov000_021521ec(UiList *self, UiListItem *item) {
     if (item == NULL) {

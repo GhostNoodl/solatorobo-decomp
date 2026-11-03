@@ -19,7 +19,7 @@ extern "C" {
         } \
     }
 
-void func_01ff9060(HitTriSphere *q, HitTriNode *root) {
+void HitTriSphere_TestTree(HitTriSphere *q, HitTriNode *root) {
     HitTriBlock *block;
     HitTri *tri;
     HitTri **tris;
@@ -238,7 +238,7 @@ void func_01ff9060(HitTriSphere *q, HitTriNode *root) {
     } while (top != 0);
 }
 
-void func_01ff9f9c(HitTriSphere *q, HitTriBlock *block, HitTri *tri) {
+void HitTriSphere_TestTri(HitTriSphere *q, HitTriBlock *block, HitTri *tri) {
     HitTriInfo *info;
     VecFx32 p;
     VecFx32 e;

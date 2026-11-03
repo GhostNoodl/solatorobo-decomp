@@ -30,7 +30,7 @@ extern BOOL Actor_IsReady(Ov003Actor *self);
 extern BOOL ResSet_UpdateLoad(void *p);
 extern BOOL Model021903b4_Draw(void *p);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
-extern BOOL func_020621c4(void);
+extern BOOL Stage_UseScaledStats(void);
 extern BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
@@ -77,7 +77,7 @@ void Ov014Act_021fa6a0_Start(Ov014Act_021fa6a0 *self) {
     m->offset.z = 0;
     n = self->unk_44;
     Ov014_VecSet(&n->unk_0c, -0x1000, n->unk_0c.y, 0);
-    if (func_020621c4()) {
+    if (Stage_UseScaledStats()) {
         Ov003Actor_ScaleStats(self, data_ov014_0221643a);
         self->unk_364 = 0x1800;
     }
@@ -178,7 +178,7 @@ extern BOOL Actor_IsReady(Ov003Actor *self);
 extern BOOL ResSet_UpdateLoad(void *p);
 extern BOOL Model021903b4_Draw(void *p);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
-extern BOOL func_020621c4(void);
+extern BOOL Stage_UseScaledStats(void);
 extern BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);

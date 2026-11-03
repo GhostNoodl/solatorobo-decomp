@@ -237,7 +237,7 @@ void Actor_TurnToPos(Actor *self, VecFx32 *target, s32 step) {
     if (Hit_DiffInSphere(&self->pos, target, self->radius + 0x400)) {
         return;
     }
-    self->rot_y = func_01ffc128(FX_Atan2(target->x - self->pos.x, target->z - self->pos.z), self->rot_y, step, 1, 0x8000);
+    self->rot_y = Angle_Approach(FX_Atan2(target->x - self->pos.x, target->z - self->pos.z), self->rot_y, step, 1, 0x8000);
 }
 
 void Actor_TurnToActor(Actor *self, Actor *other, s32 step) {
@@ -250,7 +250,7 @@ void Actor_TurnToActor(Actor *self, Actor *other, s32 step) {
     } else {
         angle = FX_Atan2(other->pos.x - self->pos.x, other->pos.z - self->pos.z);
     }
-    self->rot_y = func_01ffc128(angle, self->rot_y, step, 1, 0x8000);
+    self->rot_y = Angle_Approach(angle, self->rot_y, step, 1, 0x8000);
 }
 
 void Actor_PitchToPos(Actor *self, VecFx32 *target, s32 step) {
@@ -269,7 +269,7 @@ void Actor_PitchToPos(Actor *self, VecFx32 *target, s32 step) {
     }
     while (REG_SQRTCNT & 0x8000) {
     }
-    self->rot_x = func_01ffc128(FX_Atan2(self->pos.y - target->y, (s32)(REG_SQRT_RESULT + 1) >> 1), self->rot_x, step, 1, 0x8000);
+    self->rot_x = Angle_Approach(FX_Atan2(self->pos.y - target->y, (s32)(REG_SQRT_RESULT + 1) >> 1), self->rot_x, step, 1, 0x8000);
 }
 
 }

@@ -250,13 +250,13 @@ s32 Rand_UpTo(s32 max);
 void Body_Update(void *a, s32 b, s32 c, s32 d);
 s32 Geom_SnapToGround(VecFx32 *v, s32 y, s32 b);
 BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *p);
-char *func_0207011c(s32 id);
+char *Tbl_GetResFile(s32 id);
 char *func_020701d4(s32 id);
 }
 
 
 // Render user data of a model (the 0x34-byte block the joint draw callback fills): the joint
-// (func_ov000_021909a8) and its current matrix.
+// (Model_FindResIdxByName) and its current matrix.
 struct Ov009JointMtx {
     s32 joint;
     union {
@@ -452,7 +452,7 @@ class Ov009ActSpin : public Ov003Actor {
 public:
     u16 unk_f0;
     u16 unk_f2; // angle
-    s32 unk_f4; // from func_ov000_021909a8; the model's unk_50 points here
+    s32 unk_f4; // from Model_FindResIdxByName; the model's unk_50 points here
     u8 unk_f8;
     u8 unk_f9[0x23];
     VecFx32 unk_11c;

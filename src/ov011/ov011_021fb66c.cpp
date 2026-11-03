@@ -156,7 +156,7 @@ void Ov011Mgr2_Start(Ov011Mgr2 *self, s32 a, Ov011List *list, Ov011Ent *ent) {
     }
 }
 
-void func_ov011_021fb92c(Ov011Mgr2 *self) {
+void Ov011Mgr2_State01(Ov011Mgr2 *self) {
     Ov011Mgr2_Reset(self);
 }
 
@@ -290,7 +290,7 @@ static inline void Ov011_Attach(Ov011PNode *p, Actor *owner, Actor *a) {
     a->pos.z = r.z;
 }
 
-void func_ov011_021fb9b8(Ov011Mgr2 *self, Actor *owner) {
+void Ov011Mgr2_State02(Ov011Mgr2 *self, Actor *owner) {
     BOOL any;
     BOOL ok;
     Ov011Node *head;
@@ -336,8 +336,8 @@ void func_ov011_021fb9b8(Ov011Mgr2 *self, Actor *owner) {
                 }
                 Ov011Ent_SetY(self->ent, y);
                 e = self->ent;
-                if (Ov011Ent_Find(e, func_ov011_02201254(a)) != NULL) {
-                    Ov011_Attach(Ov011Ent_Find(e, func_ov011_02201254(a)), owner, a);
+                if (Ov011Ent_Find(e, Ov011Npc_GetEntKey(a)) != NULL) {
+                    Ov011_Attach(Ov011Ent_Find(e, Ov011Npc_GetEntKey(a)), owner, a);
                 }
             }
         }

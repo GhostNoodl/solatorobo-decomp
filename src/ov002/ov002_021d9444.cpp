@@ -61,7 +61,7 @@ void Obj021efe6c_FreePieces(Obj021efe6c *self) {
     }
 }
 
-void *func_ov002_021d959c(Obj021efeb8 *self) {
+void *Ov002Vt_021efeb8_DtorDelete(Obj021efeb8 *self) {
     func_ov002_021e0b08_inline(self);
     Heap_Free(self);
     return self;

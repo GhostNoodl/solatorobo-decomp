@@ -141,7 +141,7 @@ void Ov012ActVt_0220b280_StateAttack3(Ov012ActVt_0220b280 *self) {
                     o = Ov003Actor_SpawnChild(self, 0x480e, &v, &r, tgt);
                     if (o != NULL) {
                         o->unk_60 = data_ov012_0220a88c;
-                        if (func_020621c4()) {
+                        if (Stage_UseScaledStats()) {
                             func_ov000_0219bebc(o, 0x1800);
                         }
                     }
@@ -243,7 +243,7 @@ void Ov012ActVt_0220b280_StateShoot(Ov012ActVt_0220b280 *self) {
         v.y = y;
         v.z = 0x1000;
         }
-        func_01ffc9fc(&v, &v, r.y);
+        Vec_RotateY(&v, &v, r.y);
         VEC_Add(&v, &self->pos, &v);
         if (pl != NULL) {
             s32 sq_r;
@@ -265,7 +265,7 @@ void Ov012ActVt_0220b280_StateShoot(Ov012ActVt_0220b280 *self) {
             Actor *o = Ov003Actor_SpawnChild(self, 0x480e, &v, &r, pl);
             if (o != NULL) {
                 o->unk_60 = data_ov012_0220a88c;
-                if (func_020621c4()) {
+                if (Stage_UseScaledStats()) {
                     func_ov000_0219bebc(o, 0x1800);
                 }
             }
@@ -393,7 +393,7 @@ extern const u8 data_ov012_0220a8d0[];
 extern const u8 data_ov012_0220a8c8[];
 void Ov012ActVt_0220b35c_Start(Ov003Actor *self) {
     Ov003Actor_Start(self);
-    if (func_020621c4()) {
+    if (Stage_UseScaledStats()) {
         Ov003Actor_ScaleStats(self, data_ov012_0220a8d0);
         return;
     }

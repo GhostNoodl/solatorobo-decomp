@@ -163,7 +163,7 @@ static inline void Ov015_BgmFadeTo(u16 id) {
         if (p->unk_06 != 0xffff || p->unk_04 != id) {
             if (p->unk_02 != 10 && p->unk_02 != 0) {
                 if (p->unk_06 != 0xffff) {
-                    func_0204aab0(p, p->unk_06);
+                    SndQueue_Push_0204aab0(p, p->unk_06);
                 }
                 p->unk_02 = 1;
             } else {

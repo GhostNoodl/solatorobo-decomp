@@ -126,7 +126,7 @@ void Ov003Actor_RunState(Ov003Actor *self) {
     Dispatch(self, self->fsm->current);
     if (self->unk_e8 != 0 && *self->hp != 0 && self->fsm->current != 0x14) {
         self->unk_e8 = 0;
-        self->targetObj->type = func_02070558(self->kind)->target.type;
+        self->targetObj->type = Tbl_GetActorParam(self->kind)->target.type;
     }
     if (self->unk_e8 != 0) {
         self->unk_94_0 = 1;

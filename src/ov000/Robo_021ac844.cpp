@@ -21,7 +21,7 @@ extern char data_ov000_021cc6d8[];
 extern char data_ov000_021cc6de[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL History_SetState(void *p, s32 a, s32 b);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL Model0218fe1c_SetAnim(void *p, void *a, s32 b, s32 c);
 void Model0218fe1c_StopAnim(void *a);
 void Model0218fe1c_SetAnimDelay(void *a, s32 b, s32 c);
@@ -78,7 +78,7 @@ static inline void Bump_021ac844(Robo021ca458 *self) {
     }
 }
 
-void func_ov000_021ac844(Robo021ca458 *self) {
+void Robo021ca458_State13(Robo021ca458 *self) {
     BOOL upd = FALSE;
     Actor *a;
     Pose_021ac844 pose;
@@ -156,7 +156,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
         }
         self->unk_96 = ang;
         self->moveYaw = self->unk_96 + 0x8000;
-        self->rot_y = func_01ffc128(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;
@@ -243,7 +243,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
                 }
             }
         }
-        self->rot_y = func_01ffc128(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
         if (!Model0218fe1c_IsAnimDelayed(self->model)) {
             Actor_Move(self, 0);
         }
@@ -300,7 +300,7 @@ void func_ov000_021ac844(Robo021ca458 *self) {
             Robo021ca458_Move(self, 1, 1);
         }
         Bump_021ac844(self);
-        self->rot_y = func_01ffc128(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
         break;
     }
     if (upd) {

@@ -161,14 +161,14 @@ void func_ov015_02203020(Ov015Scene2a08 *self) {
     HEAP_POP(saved);
 }
 
-void *func_ov015_0220318c(Ov015MsgBox *self) {
+void *Ov015MsgBox_DtorDelete(Ov015MsgBox *self) {
     SET_VT(self, data_ov015_022129c0);
     MsgBox_Release(self);
     Heap_Free(self);
     return self;
 }
 
-void *func_ov015_022031b4(Ov015Shadow *self) {
+void *Ov015Shadow_DtorDelete(Ov015Shadow *self) {
     Shadow_DtorBase(self);
     Heap_Free(self);
     return self;
@@ -214,7 +214,7 @@ extern u8 data_ov015_02212990[];
 extern u8 data_ov015_0221299d[];
 extern u8 data_ov015_02213360;
 BOOL func_ov015_02207adc(Ov015Ship *p);
-void func_020434e0(void *p);
+void GfxCamParam_Init(void *p);
 void MsgBox_Init(void *p);
 void MsgBox_Open(void *p, s32 a, void *b, void *c, s32 d);
 void Gfx3DState_SetDefaults(void *p);
@@ -267,7 +267,7 @@ void Ov015Scene2a08_Start(Ov015Scene2a08 *self) {
     self->camView.up.x = 0;
     self->camView.up.y = 0x1000;
     self->camView.up.z = 0;
-    func_020434e0(&self->camView.fovSin);
+    GfxCamParam_Init(&self->camView.fovSin);
     p = (VObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);

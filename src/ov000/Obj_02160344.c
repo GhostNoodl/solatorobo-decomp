@@ -48,7 +48,7 @@ typedef struct {
 
 extern u8 data_ov000_021c9912[];
 
-void func_ov000_02160344(Obj02160344 *self) {
+void Ov000Vt_021cac0c_Init(Obj02160344 *self) {
     s32 i;
     self->unk_04 = 4;
     self->unk_08 = 0;
@@ -88,8 +88,8 @@ void func_ov000_02160344(Obj02160344 *self) {
     self->unk_98 = 0x1e;
 }
 
-void func_ov000_0216040c(void) {
+void Ov000Vt_021cac0c_Release(void) {
 }
 
-void func_ov000_02160410(void) {
+void Ov000Vt_021cac0c_PostUpdate(void) {
 }

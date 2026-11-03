@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_021c5bac(Lo021cca40 *self) {
+void Lo021cca40_Init(Lo021cca40 *self) {
     self->height = 0xf;
     self->text = NULL;
     self->unk_34 = NULL;

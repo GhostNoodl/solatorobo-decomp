@@ -15,7 +15,7 @@ extern void GXS_LoadOBJPltt(const void *src, u32 offset, u32 size);
 extern u16 GfxSys_AllocSlots(GfxSys *obj, int a, int b);
 extern void *GfxSys_AllocVram(GfxSys *obj, u32 size, int a);
 extern void Heap_FreeLo(void *ptr);
-extern void func_020435e8(GfxPltt *src, void *dst, u32 size);
+extern void GfxPltt_ApplyFilter(GfxPltt *src, void *dst, u32 size);
 
 
 VramBlock *GfxMgr_FreeBlock(GfxMgr *mgr, VramBlock *block) {
@@ -183,7 +183,7 @@ void func_02039e0c(GfxMgr *mgr) {
     id = pltt->id;
     if (mgr->unk_000 != id) {
         MI_CpuCopy8(data_02082798, data_02097ce4, 0x60);
-        func_020435e8(pltt, data_02097ce4, 0x60);
+        GfxPltt_ApplyFilter(pltt, data_02097ce4, 0x60);
         mgr->unk_000 = id;
         DC_FlushRange(data_02097ce4, 0x60);
         GX_LoadOBJPltt(data_02097ce4, mgr->plttSlots[2] << 5, 0x60);
@@ -227,7 +227,7 @@ void func_02039f84(GfxMgr *mgr) {
     id = pltt->id;
     if (mgr->unk_000 != id) {
         MI_CpuCopy8(data_02082798, data_02097ce4, 0x60);
-        func_020435e8(pltt, data_02097ce4, 0x60);
+        GfxPltt_ApplyFilter(pltt, data_02097ce4, 0x60);
         mgr->unk_000 = id;
         DC_FlushRange(data_02097ce4, 0x60);
         GX_LoadOBJPltt(data_02097ce4, mgr->plttSlots[2] << 5, 0x60);

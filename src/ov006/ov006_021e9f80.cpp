@@ -13,7 +13,7 @@ extern "C" {
 extern const VecFx32 data_ov006_021eb8a4;
 extern const VecFx32 data_ov006_021eb8b0;
 
-BOOL func_01ffc318(VecFx32 *col, const VecFx32 *pos, VecFx32 *min, VecFx32 *max, Rot16 *rot);
+BOOL Hit_PointInRotBox(VecFx32 *col, const VecFx32 *pos, VecFx32 *min, VecFx32 *max, Rot16 *rot);
 struct EffectObj *ov006_CreateEffect(int type, const VecFx32 *pos);
 
 static inline s64 ov006_Sq021e9f80(s32 v) {
@@ -37,7 +37,7 @@ void Ov006Racer_UpdateCheckpoint(Ov006Racer *self) {
         if (info->unkB == 0 && self->nextPt + 1 >= self->ptCount) {
             ok = FALSE;
         }
-        if (ok && func_01ffc318(&self->pos, &p->pos, &min, &max, &self->courseRot)) {
+        if (ok && Hit_PointInRotBox(&self->pos, &p->pos, &min, &max, &self->courseRot)) {
             self->lastPt = self->nextPt;
             if (self->lastPt == 0) {
                 self->laps++;
@@ -82,7 +82,7 @@ void Ov006Racer_UpdateCheckpoint(Ov006Racer *self) {
         rot.x = 0;
         rot.y = ry;
         rot.z = 0;
-        if (func_01ffc318(&self->pos, &self->goal->pos, &min, &max, &rot)) {
+        if (Hit_PointInRotBox(&self->pos, &self->goal->pos, &min, &max, &rot)) {
             if (!self->unk_19c_7) {
                 self->unk_19f++;
                 if (self->idx == data_ov006_021ec884->unk5 && data_ov006_021ec884->unk13D == 0 && info->unkB != 0) {

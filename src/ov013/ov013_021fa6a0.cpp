@@ -8,7 +8,7 @@ extern char data_ov013_0220ae4e[];
 extern char data_ov013_0220b5b8[];
 extern char data_ov013_0220b5ca[];
 extern Ov003Actor *ActorMgr_FindPlayer(void);
-extern BOOL func_020621c4(void);
+extern BOOL Stage_UseScaledStats(void);
 extern BOOL Ov003Actor_HandleMsg(Ov003Actor *self, Ov013Msg *msg);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *t, s32 a);
@@ -47,7 +47,7 @@ void Ov013Boss_Start(Ov013Boss *self) {
     self->unk_f4 = 0x1000;
     self->unk_f8 = 0;
     self->unk_b6 = 0x3c;
-    if (func_020621c4()) {
+    if (Stage_UseScaledStats()) {
         Ov003Actor_ScaleStats(self, data_ov013_0220ae4e);
         self->unk_f4 = 0x1800;
     }

@@ -5,10 +5,10 @@ extern "C" {
 extern VObj *data_02fe152c;
 extern VObj *data_02fe1530;
 extern MessageQueue021cb980 *data_ov000_021ccd30;
-BOOL func_0204c100(void);
+BOOL MsgRes_LoadGlobal(void);
 BOOL func_0206facc(void);
 BOOL func_0206ead8(void);
-BOOL func_0204c120(void);
+BOOL MsgRes_BindGlobal(void);
 void func_0206faec(void);
 void func_0206eaf8(void);
 
@@ -41,7 +41,7 @@ BOOL func_ov000_02189068(void *self) {
     if (!data_02fe1530->vfunc_2c()) {
         return FALSE;
     }
-    if (!func_0204c100()) {
+    if (!MsgRes_LoadGlobal()) {
         return FALSE;
     }
     if (!IsReady(data_ov000_021ccd30)) {
@@ -55,7 +55,7 @@ BOOL func_ov000_02189068(void *self) {
     }
     data_02fe152c->vfunc_30();
     data_02fe1530->vfunc_30();
-    func_0204c120();
+    MsgRes_BindGlobal();
     func_0206faec();
     func_0206eaf8();
     return TRUE;

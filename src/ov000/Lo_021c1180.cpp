@@ -14,10 +14,10 @@ typedef struct {
 
 extern "C" {
 u8 Gfx3DState_NextPolyId(void *p);
-s32 func_02041b10(Model *model, void *tex);
-s32 func_02041bb0(Model *model, void *tex);
+s32 TexObj_GetCellWidth(Model *model, void *tex);
+s32 TexObj_GetCellHeight(Model *model, void *tex);
 void func_02041774(Model *model, s32 idx);
-void func_02041c34(Model *model, s32 idx, void *cb, void *arg);
+void TexObj_SetOamFunc(Model *model, s32 idx, void *cb, void *arg);
 void *func_ov000_021c0d50(ActorMarkerWork *work, u16 *cmd, void *arr, u16 *count);
 
 static inline void *Lo_GetPartTex(Model *model, s32 idx) {
@@ -30,11 +30,11 @@ static inline void *Lo_GetPartTex(Model *model, s32 idx) {
 }
 
 static inline s32 Lo_GetWidth(Model *model, s32 idx) {
-    return func_02041b10(model, Lo_GetPartTex(model, idx));
+    return TexObj_GetCellWidth(model, Lo_GetPartTex(model, idx));
 }
 
 static inline s32 Lo_GetHeight(Model *model, s32 idx) {
-    return func_02041bb0(model, Lo_GetPartTex(model, idx));
+    return TexObj_GetCellHeight(model, Lo_GetPartTex(model, idx));
 }
 
 struct Marker021c1180 : ActorMarker {
@@ -79,7 +79,7 @@ void func_ov000_021c1180(Marker021c1180 *self) {
     }
     Model_SetPos(self->unk_8c, (p.x - 0x80) << 12, (p.y - 0x60) << 12);
     self->unk_8c->unk_150 = self->work.z;
-    func_02041c34(self->unk_8c, self->unk_96, (void *)func_ov000_021c0d50, &self->work);
+    TexObj_SetOamFunc(self->unk_8c, self->unk_96, (void *)func_ov000_021c0d50, &self->work);
     if (a < 0x1e) {
         MODEL_FLAGS(self->unk_8c)->unk_21 = 0;
     } else {

@@ -20,7 +20,7 @@ void LoBase021ccb54_021ccbe0_AppendRow(LoBase021ccb54_021ccbe0 *self, ListRow *n
     self->unk_98++;
 }
 
-ListRow *func_ov000_021c4014(LoBase021ccb54_021ccbe0 *self, s32 id) {
+ListRow *LoBase021ccb54_021ccbe0_FindRow(LoBase021ccb54_021ccbe0 *self, s32 id) {
     ListRow *n;
     for (n = self->unk_94; n != NULL; n = n->next) {
         if (id == n->index) {

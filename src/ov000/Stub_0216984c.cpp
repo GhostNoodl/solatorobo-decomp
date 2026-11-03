@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0216984c(Lo021cb798 *self) {
+void Lo021cb798_Init(Lo021cb798 *self) {
     self->unk_9c = 0;
     self->unk_a0 = NULL;
     self->unk_a4 = NULL;

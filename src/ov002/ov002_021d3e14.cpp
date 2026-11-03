@@ -8,7 +8,7 @@ extern VFunc data_ov000_021cb5a8[];
 extern VFunc data_ov000_021cb4a8[];
 void func_ov000_02176560(void);
 void func_ov000_02176590(u16 v);
-void func_ov000_0215d980(void *a, s32 b, s32 c);
+void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 void UiList021cb4a8_SetLabel(void *a, void *b);
 void UiList021cb4a8_SetCenteredLabel(void *a, void *b);
 void *func_0206ee58(u16 id);
@@ -82,7 +82,7 @@ void Task021ef81c_Start(Task021ef81c *self) {
     }
     self->unk_44->slideMode = 1;
     self->unk_44->style = 2;
-    func_ov000_0215d980(self->unk_44, ((s32)data_0214a424->unk_614), 0);
+    Lo021cae48_SetValue(self->unk_44, ((s32)data_0214a424->unk_614), 0);
     self->unk_44->vfunc_08();
 
     p = (UiObj *)Heap_Alloc(0xe0);

@@ -126,7 +126,7 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
             }
         }
         if (r != 0) {
-            a = func_01ffc128(r, a, 0x400, 1, 0x8000);
+            a = Angle_Approach(r, a, 0x400, 1, 0x8000);
         }
         dist = 0x6800;
         if (self->unk_f0 != 0 && !blocked) {
@@ -160,7 +160,7 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
     if (self->rot_x == 0) {
         return;
     }
-    self->rot_x = func_01ffc128(0, self->rot_x, 0x19a, 1, 0x8000);
+    self->rot_x = Angle_Approach(0, self->rot_x, 0x19a, 1, 0x8000);
 }
 
 }

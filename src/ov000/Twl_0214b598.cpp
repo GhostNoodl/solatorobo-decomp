@@ -10,14 +10,14 @@ void func_0222e2a4(Twl0214b570 *self);
 
 #pragma force_active on
 
-Twl0214b570 *func_ov000_0214b598(Twl0214b570 *self) {
+Twl0214b570 *Twl0214b570_Dtor(Twl0214b570 *self) {
     if (OS_IsRunOnTwl()) {
         func_0222e6d0(self);
     }
     return self;
 }
 
-void func_ov000_0214b5bc(Twl0214b570 *self) {
+void Twl0214b570_Poll(Twl0214b570 *self) {
     if (!OS_IsRunOnTwl()) {
         return;
     }

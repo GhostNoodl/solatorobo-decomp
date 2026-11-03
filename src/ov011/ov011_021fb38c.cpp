@@ -98,7 +98,7 @@ static inline Ov011PNode *Ov011Ent_Find2(Ov011Ent *e, void *k) {
 extern "C" {
 
 
-void func_ov011_021fb38c(Ov011Mgr *self) {
+void Ov011Mgr_State05(Ov011Mgr *self) {
     Ov011Node *n;
     Ov011Ent *e;
     Actor *owner = self->list->actor;
@@ -113,8 +113,8 @@ void func_ov011_021fb38c(Ov011Mgr *self) {
         Ov011Npc *a = Ov011_FindNpc(n->id);
         if (Ov011Npc_IsTracking(a)) {
             e = self->ent;
-            if (Ov011Ent_Find(e, func_ov011_02201254(a)) != NULL) {
-                Ov011PNode *p = Ov011Ent_Find2(e, func_ov011_02201254(a));
+            if (Ov011Ent_Find(e, Ov011Npc_GetEntKey(a)) != NULL) {
+                Ov011PNode *p = Ov011Ent_Find2(e, Ov011Npc_GetEntKey(a));
                 VecFx32 r;
                 VecFx32 o;
                 VecFx32 v;

@@ -19,7 +19,7 @@ static inline void SetVec(s32 *v, s32 x, s32 y, s32 z) {
     v[2] = z;
 }
 
-void func_ov000_021c37f0(ListRowText *self) {
+void ListRowText_Update(ListRowText *self) {
     switch (self->state) {
     case 0:
         if (!self->shown) {

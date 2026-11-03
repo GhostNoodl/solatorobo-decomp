@@ -92,12 +92,12 @@ static inline void CamDtor02162294(u8 *self) {
     SlotDtor02162294(sub);
 }
 
-u8 *func_ov000_02162294(ModelViewer *self) {
+u8 *ModelViewer_Dtor(ModelViewer *self) {
     CamDtor02162294((u8 *)self);
     return (u8 *)self;
 }
 
-u8 *func_ov000_0216251c(ModelViewer *self) {
+u8 *ModelViewer_DtorDelete(ModelViewer *self) {
     CamDtor02162294((u8 *)self);
     Heap_Free(self);
     return (u8 *)self;

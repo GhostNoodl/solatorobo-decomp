@@ -13,8 +13,8 @@ extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 extern const char *data_0208cc88;
 extern const char *data_0208cc94;
-void func_02041c20(void *model, s32 a, void *b);
-void func_02041c5c(void *model, void *cb);
+void TexObj_SetOamFuncArg(void *model, s32 a, void *b);
+void TexObj_SetAllOamFuncs(void *model, void *cb);
 void *func_ov000_02160e28(u8 *self, u16 *cmd, void *arr, u16 *count);
 
 static inline BOOL EnsureModel(Lo021cacd8 *self) {
@@ -47,9 +47,9 @@ void Lo021cacd8_Setup(Lo021cacd8 *self) {
     TexObj_SetRes(self->unk_84, ResList_FindType2(ResMgr_GetArcList(data_0208cc94), data_0208cc88));
     self->unk_84->flags |= 2;
     TexObj_SelectImage(self->unk_84, 0, 6);
-    func_02041c20(self->unk_84, 6, self);
+    TexObj_SetOamFuncArg(self->unk_84, 6, self);
     TexObj_SelectImage(self->unk_84, 0, 8);
-    func_02041c5c(self->unk_84, (void *)func_ov000_02160e28);
+    TexObj_SetAllOamFuncs(self->unk_84, (void *)func_ov000_02160e28);
     if (EnsureModel(self)) {
         TexObj_SelectImage(self->model, 0, 10);
         self->model->flags |= 0x80000;

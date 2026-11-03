@@ -18,7 +18,7 @@ BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 void Model0218fe1c_SetLoop(void *a);
 s32 *NNS_G3dGlbGetInvV(void);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
 static inline void MulVec33_021b0db0(const VecFx32 *v, const s32 *m, VecFx32 *out) {
     s32 x = v->x;
@@ -82,8 +82,8 @@ void func_ov000_021b0db0(Robo021ca458 *self, s32 spd) {
     }
     MulVec33_021b0db0((VecFx32 *)((u8 *)self + 0xaf0), NNS_G3dGlbGetInvV(), (VecFx32 *)((u8 *)self + 0x9c));
     VEC_Add((VecFx32 *)((u8 *)self + 0x9c), &data_02092a50, (VecFx32 *)((u8 *)self + 0x70));
-    self->rot_y = func_01ffc128(yaw, self->rot_y, 0x133, 1, 0x8000);
-    self->rot_z = func_01ffc128(tilt, self->rot_z, 0x133, 1, 0x8000);
+    self->rot_y = Angle_Approach(yaw, self->rot_y, 0x133, 1, 0x8000);
+    self->rot_z = Angle_Approach(tilt, self->rot_z, 0x133, 1, 0x8000);
     self->unk_75c = self->pos;
     self->unk_76c = self->rot_x;
     self->unk_76e = self->rot_y;

@@ -28,7 +28,7 @@ void Obj021efeb8_Init(Obj021efeb8 *self) {
     self->prev = NULL;
 }
 
-void func_ov002_021d7c04(Obj021efeb8 *self) {
+void Ov002Vt_021efeb8_Setup(Obj021efeb8 *self) {
     u8 *info = Param_GetEntry(self->unk_48);
     Ov002Shape *v;
     self->unk_4a = info[0] == 0x80 ? 2 : 1;

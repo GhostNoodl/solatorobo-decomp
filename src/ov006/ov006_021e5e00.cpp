@@ -34,7 +34,7 @@ static inline void ov006_ObjectHolder_Dtor(ov006_ObjectHolder *self) {
     OV006_DELETE_OBJECT(self->obj);
 }
 
-ov006_ObjectHolder *func_ov006_021e5e20(ov006_ObjectHolder *self) {
+ov006_ObjectHolder *ov006_ObjectHolder_Dtor_021e5e20(ov006_ObjectHolder *self) {
     ov006_ObjectHolder_Dtor(self);
     return self;
 }
@@ -132,7 +132,7 @@ BOOL ov006_Menu_AllEntriesMatch(int type, u16 mask) {
     return mask == ov006_Menu_GetEntryMask(type, mask);
 }
 
-void func_ov006_021e61f8(void) {
+void ov006_MenuNode_Dtor(void) {
 }
 
 void *Ov006Vt_021ec444_DtorDelete(void *self) {

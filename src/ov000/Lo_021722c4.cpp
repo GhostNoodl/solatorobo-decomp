@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_021722c4(VObj *o, BOOL en, s32 a, s32 b, s32 c, s32 d) {
+void MessageQueue021cb980_Push0b_0c(VObj *o, BOOL en, s32 a, s32 b, s32 c, s32 d) {
     u32 p0 = ((a & 0xffff) << 16) | (b & 0xffff);
     u32 p1 = ((d & 0xffff) << 16) | (c & 0xffff);
     if (en) {

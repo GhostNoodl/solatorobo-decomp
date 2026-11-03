@@ -6,7 +6,7 @@
 
 extern "C" {
 
-extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
+extern void Vec_RotateY(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void Heap_Free(void *p);
 
 Ov003Shot *Ov003ActVt_021f7de4_Dtor(Ov003Shot *self) {
@@ -31,7 +31,7 @@ void Ov003Shot_Init(ActorEx *self) {
     v.x = 0;
     v.y = 0;
     v.z = 0x1000;
-    func_01ffc9fc(&v, &v, self->rot_y);
+    Vec_RotateY(&v, &v, self->rot_y);
     VEC_Add(&v, &self->pos, &v);
     self->unk_84.x = v.x;
     self->unk_84.y = v.y;

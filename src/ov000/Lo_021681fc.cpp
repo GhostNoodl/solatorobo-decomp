@@ -35,7 +35,7 @@ static inline BOOL LoD78Idle(void) {
     return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
 }
 
-BOOL func_ov000_021681fc(Lo021cb6f0 *self) {
+BOOL Lo021cb6f0_CanUpdate(Lo021cb6f0 *self) {
     if (!LoGIdle() || !LoD78Idle()) {
         self->unk_0c_1 = 1;
     }

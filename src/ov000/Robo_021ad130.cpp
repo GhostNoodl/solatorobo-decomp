@@ -41,7 +41,7 @@ void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
 void Field_ShakeCamera(s32 a, s32 b);
 void func_02062410(void);
 void func_ov000_02182590(void *p);
-BOOL func_0205b29c(u16 *ids);
+BOOL StageRes_FindSlotByIds(u16 *ids);
 void SceneCmd_Push20(void *g);
 void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 BOOL Model0218fe1c_IsAnimDone(void *a);
@@ -84,7 +84,7 @@ static inline void Spawn021ad130(Robo021ca458 *self, s32 id, s32 scale) {
     }
 }
 
-void func_ov000_021ad130(Robo021ca458 *self) {
+void Robo021ca458_State14(Robo021ca458 *self) {
     switch (((St021ad130 *)self->fsm)->state) {
     case 0: {
         s32 r;
@@ -187,7 +187,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
             {
                 Ids021ad130 ids = data_ov000_021ca018;
                 Ids16_021ad130 ids16 = data_ov000_021c9ff2;
-                if (!QHas021ad130(ids.w) && !func_0205b29c(ids16.v)) {
+                if (!QHas021ad130(ids.w) && !StageRes_FindSlotByIds(ids16.v)) {
                     SceneCmd_Push20(data_ov000_021ccd54);
                 }
             }

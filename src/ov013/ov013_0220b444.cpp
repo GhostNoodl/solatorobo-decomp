@@ -330,7 +330,7 @@ extern void Ov013_CopyVec(void *dst, const void *src, void *owner);
 extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
 extern BOOL AnimCtrl_SetAnim(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
 extern void ActorMarker_Release(void *p);
-extern BOOL func_020621c4(void);
+extern BOOL Stage_UseScaledStats(void);
 
 static inline void Ov013B_PartFlag(Model0218fe1c *m, s32 i) {
     if (Model0218fe1c_GetAnimCtrl(m, i) != NULL) {
@@ -448,7 +448,7 @@ void Ov013Act_021fea8c_Start(Ov013Act_021fea8c *self) {
         }
         data_02097dd0->cur = saved;
     }
-    if (func_020621c4()) {
+    if (Stage_UseScaledStats()) {
         Ov003Actor_ScaleStats(self, data_ov013_0220af1e);
     }
     self->pos.y -= 0x1000;
@@ -860,7 +860,7 @@ extern s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 extern BOOL Ov003Vec_Equal(VecFx32 *a, VecFx32 *b);
 extern void Ov003Vec_ApproachWithin(VecFx32 *out, const VecFx32 *a, const VecFx32 *b, s32 dist, s32 yoff);
 
-void func_ov013_021ffc90(Ov013Act_021fea8c *self) {
+void Ov013Act_021fea8c_State29(Ov013Act_021fea8c *self) {
     BOOL move = FALSE;
     s32 c = 0;
     self->unk_44->unk_22_1 = 0;
@@ -972,7 +972,7 @@ static inline u32 Ov013_Nearest(const VecFx32 *p, const Ov013Spot *tbl, u32 n) {
     return best;
 }
 
-void func_ov013_021fffd0(Ov013Act_021fea8c *self) {
+void Ov013Act_021fea8c_State2a(Ov013Act_021fea8c *self) {
     if (self->fsm->st == 0) {
         VecFx32 p;
         u32 best;
@@ -1414,7 +1414,7 @@ static inline VecFx32 Ov013_FrontPos(Ov013Act_021fea8c *self, const VecFx32 *off
     return v;
 }
 
-void func_ov013_02200fe8(Ov013Act_021fea8c *self) {
+void Ov013Act_021fea8c_State28(Ov013Act_021fea8c *self) {
     if (self->fsm->st != 0) {
         return;
     }
@@ -1568,7 +1568,7 @@ void Ov013Act_021fea8c_StateHurt(Ov013Act_021fea8c *self) {
         }
         self->unk_96 = ang;
         self->moveYaw = self->unk_96 + 0x8000 + Rand_PlusMinus(0x2000);
-        self->rot_y = func_01ffc128(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
         self->speed = 0x27b;
         self->velY = 0x39a;
         self->friction = 0xcb8;
@@ -1927,7 +1927,7 @@ static inline BOOL Ov013_IsMarked(Ov003Actor *a) {
     return TRUE;
 }
 
-void func_ov013_02201de8(Ov013Act_021fea8c *self) {
+void Ov013Act_021fea8c_State30(Ov013Act_021fea8c *self) {
     Ov003Actor *list[8];
     self->unk_f0.b2 = 1;
     switch (self->fsm->st) {
@@ -2032,7 +2032,7 @@ static inline void Ov013_Hit(Ov003Actor *t, Ov003Actor *self) {
     Actor_SendMsg(t, self->id, 0xe, 0, 1, &arg);
 }
 
-void func_ov013_02202394(Ov013Act_021fea8c *self) {
+void Ov013Act_021fea8c_State31(Ov013Act_021fea8c *self) {
     self->unk_f0.b2 = 1;
     self->unk_f0.b0 = true;
     switch (self->fsm->st) {
@@ -2143,7 +2143,7 @@ static inline void Ov013c_Parts(Ov013Act_021fea8c *self) {
     }
 }
 
-void func_ov013_02202800(Ov013Act_021fea8c *self) {
+void Ov013Act_021fea8c_State32(Ov013Act_021fea8c *self) {
     switch (self->fsm->st) {
     case 0: {
         ActorSub48 *m48;
@@ -2215,7 +2215,7 @@ extern void Ov003Sequence_SetEntries(void *p, void *tbl, s32 n);
 extern void Ov003Sequence_Signal(void *p, s32 a);
 extern Ov003Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 
-void func_ov013_02202c88(Ov013Act_021fea8c *self) {
+void Ov013Act_021fea8c_State2b(Ov013Act_021fea8c *self) {
     void *tbl = NULL;
     s32 n = 0;
     switch (self->unk_15d) {
@@ -2233,7 +2233,7 @@ void func_ov013_02202c88(Ov013Act_021fea8c *self) {
     }
 }
 
-void func_ov013_02202cec(Ov013Act_021fea8c *self) {
+void Ov013Act_021fea8c_State2c(Ov013Act_021fea8c *self) {
     void *tbl = NULL;
     s32 n = 0;
     switch (self->unk_15d) {
@@ -2251,7 +2251,7 @@ void func_ov013_02202cec(Ov013Act_021fea8c *self) {
     }
 }
 
-void func_ov013_02202d50(Ov013Act_021fea8c *self) {
+void Ov013Act_021fea8c_State2e(Ov013Act_021fea8c *self) {
     BOOL f = FALSE;
     Ov003Actor *a;
     if (data_ov000_021ccd68 == NULL) {
@@ -2714,7 +2714,7 @@ BOOL func_ov013_022038a8(Ov013Act_021fea8c *self, const VecFx32 *pos, u16 rot) {
     if (turn) {
         VecFx32 d;
         Ov013_VecSubYZ(&d, &self->unk_b8, &self->pos);
-        self->rot_y = func_01ffc128(Ov003Vec_Yaw(&d), self->rot_y, rate, 1, 0x8000);
+        self->rot_y = Angle_Approach(Ov003Vec_Yaw(&d), self->rot_y, rate, 1, 0x8000);
     }
     return ret;
 }

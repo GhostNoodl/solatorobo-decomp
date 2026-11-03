@@ -76,7 +76,7 @@ static inline BOOL Ov009Game_IsPaused(FieldState *g) {
 
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
-extern void func_01ffc9fc(VecFx32 *dst, VecFx32 *src, u16 angle);
+extern void Vec_RotateY(VecFx32 *dst, VecFx32 *src, u16 angle);
 extern void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
 
 void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
@@ -166,7 +166,7 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
                 }
                 e = Ov003Actor_SpawnAtSelf(self, id, 0x20);
                 if (e != NULL) {
-                    func_01ffc9fc(&ofs, &ofs, self->rot_y);
+                    Vec_RotateY(&ofs, &ofs, self->rot_y);
                     VEC_Add(&ofs, &self->pos, &ofs);
                     e->pos = ofs;
                     e->unk_1a = 1;

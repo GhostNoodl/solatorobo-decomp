@@ -42,11 +42,11 @@ void func_02039750(void) {
     }
 }
 
-void *func_020397fc(void *arg1, void *arg2, void *arg3) {
+void *VramBlock_AllocChar(void *arg1, void *arg2, void *arg3) {
     return GfxMgr_AllocCharBlock(data_02097ce0, arg1, arg2, arg3);
 }
 
-VramBlock *func_02039828(VramBlock *block) {
+VramBlock *VramBlock_Free(VramBlock *block) {
     return GfxMgr_FreeBlock(data_02097ce0, block);
 }
 

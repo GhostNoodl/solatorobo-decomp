@@ -546,7 +546,7 @@ extern void HitSphere_Link(ActorSub48 *p);
 extern void func_ov009_02215714(Ov009ActExVt_0221802c *self);
 extern void Ov009ActExVt_0221802c_HitNearby(Ov009ActExVt_0221802c *self);
 extern void *SndMgr_PlayAt(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
+extern void Vec_RotateY(VecFx32 *out, const void *a, s32 b);
 extern void Actor_PitchToPos(Actor *self, const VecFx32 *v, s32 a);
 extern void Field_ShakeCamera(s32 a, s32 b);
 extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 mask, const VecFx32 *v, s32 e, s32 f, s32 g, s32 h, s32 i);
@@ -605,7 +605,7 @@ void Ov009ActExVt_0221802c_StateThrown(Ov009ActExVt_0221802c *self) {
         break;
     case 1: {
         VecFx32 a = data_ov009_022161ec;
-        func_01ffc9fc(&a, &a, self->rot_y);
+        Vec_RotateY(&a, &a, self->rot_y);
         VEC_Add(&a, &self->pos, &a);
         Actor_PitchToPos(self, &a, ((s32)self->unk_d8));
         if (self->hit->unk_50 & 0x40000000) {
@@ -615,7 +615,7 @@ void Ov009ActExVt_0221802c_StateThrown(Ov009ActExVt_0221802c *self) {
         }
         VecFx32 v = data_ov009_022161d4;
         Ov009_RotX(&v, &v, self->rot_x);
-        func_01ffc9fc(&v, &v, self->rot_y);
+        Vec_RotateY(&v, &v, self->rot_y);
         VEC_Normalize(&v, &v);
         self->speed = Ov009_FxMulL(v.x, 0x333);
         self->velY = Ov009_FxMulL(v.y, 0x333);

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-SndMgr *func_020492e0(SndMgr *mgr) {
+SndMgr *SndMgr_Ctor(SndMgr *mgr) {
     s32 i;
     for (i = 0; i < 2; i++) {
         mgr->heaps[i] = NULL;
@@ -37,7 +37,7 @@ extern u8 data_02097ef0[];
 extern u8 data_02097e50[];
 extern char data_0208b6cc[];
 
-void func_02049344(SndMgr *mgr) {
+void SndMgr_Init(SndMgr *mgr) {
     s32 i;
     NNSSndHeap *heap;
 

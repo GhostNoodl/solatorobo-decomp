@@ -291,7 +291,7 @@ void Ov012ActExVt_0220af10_StateThrown(Ov012ActExVt_0220af10 *self) {
             }
             {
                 VecFx32 v2 = data_ov012_0220a51c;
-                func_01ffc9fc(&v2, &v2, self->rot_y);
+                Vec_RotateY(&v2, &v2, self->rot_y);
                 VEC_Add(&self->pos, &v2, &v2);
                 Actor_PitchToPos(self, &v2, 0x11f);
             }
@@ -352,7 +352,7 @@ void Ov012ActExVt_0220af10_StateThrown(Ov012ActExVt_0220af10 *self) {
         }
         {
             VecFx32 v3 = data_ov012_0220a528;
-            func_01ffc9fc(&v3, &v3, self->rot_y);
+            Vec_RotateY(&v3, &v3, self->rot_y);
             VEC_Add(&self->pos, &v3, &v3);
             Actor_PitchToPos(self, &v3, 0x11f);
         }

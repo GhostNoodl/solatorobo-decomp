@@ -58,7 +58,7 @@ u8 Ov003_GetMaxCombo(void) {
     return r;
 }
 
-void func_ov003_021ceec4(void) {
+void Ov003Track_Dtor(void) {
 }
 
 void *Ov003Track_DtorDelete(Ov003Track *self) {

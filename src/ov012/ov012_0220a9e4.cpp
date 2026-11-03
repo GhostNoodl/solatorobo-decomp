@@ -249,7 +249,7 @@ void Ov012Act_02202b10_Start(Ov012Act_02202b10 *self) {
         self->hp[1] = 700;
         self->hp[0] = 700;
     }
-    if (func_020621c4()) {
+    if (Stage_UseScaledStats()) {
         Ov003Actor_ScaleStats(self, data_ov012_0220a59a);
         self->unk_124 = 0x1800;
     }
@@ -381,7 +381,7 @@ void Ov012Act_02202b10_Update(Ov012Act_02202b10 *self) {
                         if (self->unk_e8 != 0) {
                             self->unk_e8 = 0;
                             self->targetObj->unk_1a = 0;
-                            self->targetObj->type = func_02070558(self->kind)->target.type;
+                            self->targetObj->type = Tbl_GetActorParam(self->kind)->target.type;
                         }
                         self->unk_f0 = 0x400000;
                         self->fsm->flags |= 2;
@@ -477,7 +477,7 @@ void Ov012Act_02202b10_State16(Ov012Act_02202b10 *self) {
         tgt = data_ov012_0220a7a8[self->unk_fa];
     }
     if (!Hit_DiffInSphere(&self->pos, &tgt, self->radius + 0x400)) {
-        self->unk_f6 = func_01ffc128(FX_Atan2(tgt.x - self->pos.x, tgt.z - self->pos.z), self->unk_f6, 0x1000, 1, 0x8000);
+        self->unk_f6 = Angle_Approach(FX_Atan2(tgt.x - self->pos.x, tgt.z - self->pos.z), self->unk_f6, 0x1000, 1, 0x8000);
     }
     self->unk_ea_0 = 4;
     p = Actor_GetTarget(self)->pos;
@@ -509,7 +509,7 @@ void Ov012Act_02202b10_State16(Ov012Act_02202b10 *self) {
         for (i = 1; i <= 2; i++) {
             VecFx32 o;
             e = Effect_SpawnId(0x6c, &self->pos);
-            func_01ffc9fc(&o, &data_ov012_0220a65c[i], self->rot_y);
+            Vec_RotateY(&o, &data_ov012_0220a65c[i], self->rot_y);
             e->AddPos(&o);
             e->loopCount = -1;
             Ov003FxList_Add(self->fxList, (u8)(0xfd - i), e);
@@ -658,7 +658,7 @@ void Ov012Act_02202b10_StateShoot(Ov012Act_02202b10 *self) {
             self->unk_f0 |= 0x100000;
             Ov012Spawn_Init(&d, 0x480d);
             v = data_ov012_0220a624[self->unk_f9];
-            func_01ffc9fc(&v, &v, self->rot_y);
+            Vec_RotateY(&v, &v, self->rot_y);
             VEC_Add(&self->pos, &v, &v);
             o = Group_SpawnActor(data_ov000_021ccd64, &d, &v, &self->rot_x, 0xffff);
             if (o != NULL) {
@@ -730,7 +730,7 @@ void Ov012Act_02202b10_StateAttack(Ov012Act_02202b10 *self) {
         v.x = -0x1000;
         v.y = 0x2ccd;
         v.z = 0x4000;
-        func_01ffc9fc(&v, &v, self->rot_y);
+        Vec_RotateY(&v, &v, self->rot_y);
         e->AddPos(&v);
         Ov003FxList_Add(self->fxList, 0, e);
         Model0218fe1c_PauseAnim(self->model);
@@ -755,13 +755,13 @@ void Ov012Act_02202b10_StateAttack(Ov012Act_02202b10 *self) {
             v.x = -0x1000;
             v.y = 0x2ccd;
             v.z = 0x4000;
-            func_01ffc9fc(&v, &v, self->rot_y);
+            Vec_RotateY(&v, &v, self->rot_y);
             e->AddPos(&v);
             e = Effect_SpawnId(0x6b, &self->pos);
             v.x = -0x1000;
             v.y = 0x2ccd;
             v.z = 0x4000;
-            func_01ffc9fc(&v, &v, self->rot_y);
+            Vec_RotateY(&v, &v, self->rot_y);
             e->AddPos(&v);
         }
         if (Model0218fe1c_IsAnimDone(self->model)) {
@@ -879,7 +879,7 @@ void Ov012Act_02202b10_StateAttack2(Ov012Act_02202b10 *self) {
         v.x = -0xccd;
         v.y = 0;
         v.z = 0x2000;
-        func_01ffc9fc(&v, &v, self->rot_y);
+        Vec_RotateY(&v, &v, self->rot_y);
         VEC_Add(pos, &v, &v);
         o = Group_SpawnActor(data_ov000_021ccd64, &d, &v, &self->rot_x, 0xffff);
         if (o != NULL) {
@@ -895,25 +895,25 @@ void Ov012Act_02202b10_StateAttack2(Ov012Act_02202b10 *self) {
         q.x = -0xccd;
         q.y = 0;
         q.z = 0x2000;
-        func_01ffc9fc(&q, &q, self->rot_y);
+        Vec_RotateY(&q, &q, self->rot_y);
         e->AddPos(&q);
         e->SetRotXYZ(0xeaaa, self->rot_y, self->rot_z);
         e = Effect_SpawnId(0x12d, pos);
         q.x = -0xccd;
         q.y = 0;
         q.z = 0x2000;
-        func_01ffc9fc(&q, &q, self->rot_y);
+        Vec_RotateY(&q, &q, self->rot_y);
         e->AddPos(&q);
         e = Effect_SpawnId(0x6a, pos);
         q.x = -0xccd;
         q.y = 0;
         q.z = 0x2000;
-        func_01ffc9fc(&q, &q, self->rot_y);
+        Vec_RotateY(&q, &q, self->rot_y);
         e->AddPos(&q);
         q.x = 0;
         q.y = 0x1800;
         q.z = -0x1800;
-        func_01ffc9fc(&q, &q, self->rot_y);
+        Vec_RotateY(&q, &q, self->rot_y);
         VEC_Add(pos, &q, &t);
         self->unk_b8 = t;
         self->unk_84 = self->pos;
@@ -1039,14 +1039,14 @@ void Ov012Act_02202b10_StateAttack3(Ov012Act_02202b10 *self) {
             v.x = 0;
             v.y = 0x3000;
             v.z = 0x4000;
-            func_01ffc9fc(&v, &v, self->rot_y);
+            Vec_RotateY(&v, &v, self->rot_y);
             e->AddPos(&v);
             Ov003FxList_Add(self->fxList, 0xf9, e);
             e = Effect_SpawnId(0x6a, &self->pos);
             v.x = 0;
             v.y = 0x3000;
             v.z = 0x4000;
-            func_01ffc9fc(&v, &v, self->rot_y);
+            Vec_RotateY(&v, &v, self->rot_y);
             e->AddPos(&v);
             EffectObj_AddSndCue(e, 0x1a, 0);
             Field_ShakeCamera(10, 10);
@@ -1268,7 +1268,7 @@ void func_ov012_02205254(Ov012Act_02202b10 *self) {
     v.x = -0x1000;
     v.y = 0x2ccd;
     v.z = 0x4000;
-    func_01ffc9fc(&v, &v, self->rot_y);
+    Vec_RotateY(&v, &v, self->rot_y);
     VEC_Add(&self->pos, &v, &v);
     o = Group_SpawnActor(data_ov000_021ccd64, &d, &v, &self->rot_x, 0xffff);
     if (o == NULL) {
@@ -1303,7 +1303,7 @@ void func_ov012_022053a4(Ov012Act_02202b10 *self) {
     v.y = 0x3000;
     v.z = 0x4000;
     v.x = 0;
-    func_01ffc9fc(&v, &v, self->rot_y);
+    Vec_RotateY(&v, &v, self->rot_y);
     VEC_Add(&self->pos, &v, &v);
     o = Group_SpawnActor(data_ov000_021ccd64, &d, &v, &self->rot_x, 0xffff);
     if (o == NULL) {

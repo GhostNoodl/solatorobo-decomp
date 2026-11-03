@@ -12,7 +12,7 @@ extern VecFx32 data_ov006_021eb8e0;
 extern VecFx32 data_ov006_021eb8bc;
 extern fx32 data_ov006_021ec484[2];
 
-BOOL func_01ffc23c(VecFx32 *p, VecFx32 *min, VecFx32 *max);
+BOOL Hit_PointInBox(VecFx32 *p, VecFx32 *min, VecFx32 *max);
 void Obj02190758_SetRot(Model0218fe1c *a, Rot16 *b, int c);
 BOOL Model021903b4_Draw(Model0218fe1c *a);
 
@@ -33,7 +33,7 @@ BOOL Ov006ActVt_021ec4f4_Draw(Ov006Racer *self) {
         d.z = self->pos.z - cz;
     }
     done = FALSE;
-    if (func_01ffc23c(&d, &data_ov006_021eb8ec, &data_ov006_021eb8d4) && HitMagSq(&d) <= data_ov006_021ec484[0]) {
+    if (Hit_PointInBox(&d, &data_ov006_021eb8ec, &data_ov006_021eb8d4) && HitMagSq(&d) <= data_ov006_021ec484[0]) {
         self->model->trans = self->pos;
         Obj02190758_SetRot(self->model, &self->rot, 1);
         ret = Model021903b4_Draw(self->model);
@@ -42,7 +42,7 @@ BOOL Ov006ActVt_021ec4f4_Draw(Ov006Racer *self) {
         }
         done = TRUE;
     }
-    if (!done && func_01ffc23c(&d, &data_ov006_021eb8e0, &data_ov006_021eb8bc) && HitMagSq(&d) <= data_ov006_021ec484[1]) {
+    if (!done && Hit_PointInBox(&d, &data_ov006_021eb8e0, &data_ov006_021eb8bc) && HitMagSq(&d) <= data_ov006_021ec484[1]) {
         self->mdl.trans = self->pos;
         Obj02190758_SetRot(&self->mdl, &self->rot, 1);
         ret = Model021903b4_Draw(&self->mdl);

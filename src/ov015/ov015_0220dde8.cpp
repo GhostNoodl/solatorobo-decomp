@@ -42,7 +42,7 @@ void *func_ov015_0220dde8(Ov015StageMdl *self) {
     return self;
 }
 
-void *func_ov015_0220deb8(Ov015StageMdl *self) {
+void *Ov015StageMdl_Dtor(Ov015StageMdl *self) {
     Model0218fe1c_FreeAnims(&self->mdl1);
     ResSet_ReleaseAll(&self->res1);
     Model0218fe1c_FreeAnims(&self->mdl0);
@@ -52,7 +52,7 @@ void *func_ov015_0220deb8(Ov015StageMdl *self) {
     return self;
 }
 
-void *func_ov015_0220defc(Ov015StageMdl *self) {
+void *Ov015StageMdl_DtorDelete(Ov015StageMdl *self) {
     Model0218fe1c_FreeAnims(&self->mdl1);
     ResSet_ReleaseAll(&self->res1);
     Model0218fe1c_FreeAnims(&self->mdl0);

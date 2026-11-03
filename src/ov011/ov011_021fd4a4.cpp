@@ -175,7 +175,7 @@ void Ov011Scene_Update(Ov011Scene *self) {
         if (!Ov003_ActorExists(n)) {
             Ov011Npc *a = Ov011_FindNpc(n->id);
             if (a != NULL) {
-                Ov011Ent_Remove(&self->ent, func_ov011_02201254(a));
+                Ov011Ent_Remove(&self->ent, Ov011Npc_GetEntKey(a));
                 func_ov011_02201214(a, NULL);
             }
             self->head = Ov011Link_Remove(self->head, n);

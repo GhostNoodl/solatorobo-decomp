@@ -35,7 +35,7 @@ public:
 extern "C" {
 
 extern const VecFx32 data_ov003_021f4988;
-extern void func_01ffc9fc(Ov003Vec *out, const Ov003Vec *in, u16 ang);
+extern void Vec_RotateY(Ov003Vec *out, const Ov003Vec *in, u16 ang);
 extern const VecFx32 data_ov003_021f7cc4;
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *p);
@@ -197,7 +197,7 @@ void Ov003FxList_Place(Ov003FxList *self, u8 id, const VecFx32 *pos, const Effec
                 }
                 if (angles != NULL) {
                     Ov003_RotX((Ov003Vec *)&vp, (Ov003Vec *)&vp, angles[0]);
-                    func_01ffc9fc((Ov003Vec *)&vp, (Ov003Vec *)&vp, angles[1]);
+                    Vec_RotateY((Ov003Vec *)&vp, (Ov003Vec *)&vp, angles[1]);
                 }
                 VEC_Add(&vp, pos, &vp);
                 {

@@ -50,7 +50,7 @@ public:
 
 extern "C" {
 
-void func_ov000_02155160(Obj02155160 *self, s32 a) {
+void UiList_SetCursorIndex(Obj02155160 *self, s32 a) {
     Node02155160 *v = self->unk_94;
     self->unk_b1 = 0;
     self->unk_98 = v;
@@ -60,7 +60,7 @@ void func_ov000_02155160(Obj02155160 *self, s32 a) {
     }
 }
 
-void func_ov000_02155194(VObj *self, void *p) {
+void UiList_SetCursorItem(VObj *self, void *p) {
     if (p != NULL) {
         self->vfunc_a4(*(s16 *)((u8 *)p + 4));
     } else {
@@ -68,7 +68,7 @@ void func_ov000_02155194(VObj *self, void *p) {
     }
 }
 
-void func_ov000_021551c4(Obj02155160 *self, s32 n, s32 b) {
+void UiList_CursorUp(Obj02155160 *self, s32 n, s32 b) {
     s32 m;
     s32 lim;
     s32 v;
@@ -91,7 +91,7 @@ void func_ov000_021551c4(Obj02155160 *self, s32 n, s32 b) {
     self->unk_a2 = 4;
 }
 
-void func_ov000_02155238(Obj02155160 *self, s32 n, s32 b) {
+void UiList_PageUp(Obj02155160 *self, s32 n, s32 b) {
     s32 d;
     s8 old = self->unk_b1;
     self->unk_b0 = old;
@@ -113,7 +113,7 @@ void func_ov000_02155238(Obj02155160 *self, s32 n, s32 b) {
 }
 
 
-void func_ov000_021552b0(Obj02155160 *self, s32 n, s32 b) {
+void UiList_CursorDown(Obj02155160 *self, s32 n, s32 b) {
     s32 m;
     s32 lim;
     s32 v;
@@ -138,7 +138,7 @@ void func_ov000_021552b0(Obj02155160 *self, s32 n, s32 b) {
     self->unk_a2 = 4;
 }
 
-void func_ov000_02155338(Obj02155160 *self, s32 n, s32 b) {
+void UiList_PageDown(Obj02155160 *self, s32 n, s32 b) {
     s32 d;
     s32 cnt;
     s8 old = self->unk_b1;
@@ -163,7 +163,7 @@ void func_ov000_02155338(Obj02155160 *self, s32 n, s32 b) {
 }
 
 
-void func_ov000_021553c8(Obj02155160 *self, s32 n, s32 commit) {
+void UiList_Scroll(Obj02155160 *self, s32 n, s32 commit) {
     Node02155160 *p;
     Node02155160 *q;
     s32 i;
@@ -245,7 +245,7 @@ static inline void Node02155160_Delete(Node02155160 *node) {
     }
 }
 
-void func_ov000_021554f0(Obj02155160 *self) {
+void UiList_FinishRemove(Obj02155160 *self) {
     Node02155160 *node;
     Node02155160 *p;
     Node02155160 *q;

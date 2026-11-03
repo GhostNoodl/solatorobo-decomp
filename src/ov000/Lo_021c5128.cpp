@@ -19,7 +19,7 @@ typedef struct {
 
 extern "C" {
 
-void func_02041c20(Model *model, s32 a, void *b);
+void TexObj_SetOamFuncArg(Model *model, s32 a, void *b);
 void func_ov000_021c79a0(BOOL alt, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);
 
 void func_ov000_021c5128(LoBase021ccb54_021ccbe0 *self, s32 unused, s32 *pos) {
@@ -36,7 +36,7 @@ void func_ov000_021c5128(LoBase021ccb54_021ccbe0 *self, s32 unused, s32 *pos) {
         Model_SetPos(self->model, x, y);
     }
     self->model->unk_150 = z;
-    func_02041c20(self->model, 6, (u8 *)self + 0xc0);
+    TexObj_SetOamFuncArg(self->model, 6, (u8 *)self + 0xc0);
     Model_PlayPart(self->model, 6);
     self->model->unk_158 = NULL;
 }

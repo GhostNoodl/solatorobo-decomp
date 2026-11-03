@@ -7,7 +7,7 @@
 
 extern "C" {
 extern MessageQueue021cb980 *data_ov000_021ccd30;
-void func_02041c34(void *a, int b, void *c, void *d);
+void TexObj_SetOamFunc(void *a, int b, void *c, void *d);
 void *func_ov000_0216ac14(void *self, u16 *msg, void *arr, u16 *cnt);
 
 static inline Lo021cb798 *GetObj0216b1b4(void) {
@@ -46,7 +46,7 @@ void func_ov000_0216b1b4(Obj0216ad04 *self) {
     }
     base = IsFlag0216b1b4(data_ov000_021ccd30) ? 0xae000 : 0xb6000;
     SetPos0216b1b4(self->model, -0x53000, (base + (s32)(((s64)self->ratio * 0x40000 + 0x800) >> 12) - 0x61000) & ~0xfff);
-    func_02041c34(self->model, 6, (void *)func_ov000_0216ac14, self);
+    TexObj_SetOamFunc(self->model, 6, (void *)func_ov000_0216ac14, self);
     self->model->unk_150 = -0x1f80;
     Model_PlayPart(self->model, 6);
     Model_PlayPart(self->model, 7);

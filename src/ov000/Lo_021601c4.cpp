@@ -27,7 +27,7 @@ static inline void VecAdd021601c4(const VecFx32 *a, const VecFx32 *b, VecFx32 *o
     o->z = a->z + b->z;
 }
 
-void func_ov000_021601c4(ObjBase021cac0c_021cb6f0 *self) {
+void Ov000Vt_021cac0c_Draw(ObjBase021cac0c_021cb6f0 *self) {
     VecFx32 pos;
     s32 sn;
     s32 sy;

@@ -36,7 +36,7 @@ BOOL Ov010TaskList_IsFinished(Ov010TaskList *o) {
     return FALSE;
 }
 
-void func_ov010_02201c84(void) {
+void Ov010Vt_0220fe08_Dtor(void) {
 }
 
 void *Ov010Vt_0220fe08_DtorDelete(void *o) {

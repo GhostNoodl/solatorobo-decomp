@@ -35,7 +35,7 @@ struct Obj021569f8 : public VObj {
     Model *unk_b4;
 };
 
-void func_ov000_021569f8(Obj021569f8 *self, Item021569f8 *item, s32 x, s32 y, u8 col, u8 front) {
+void UiList_DrawItemText(Obj021569f8 *self, Item021569f8 *item, s32 x, s32 y, u8 col, u8 front) {
     Model *m;
     if (self->unk_b4 == NULL || item->id == 0xffff) {
         return;

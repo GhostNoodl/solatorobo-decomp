@@ -60,7 +60,7 @@ static inline void *Sys_Alloc04(u32 size, u32 align) {
     return p;
 }
 
-void func_0203dfb0(void) {
+void NamePool_CreateTex(void) {
     NamePool *pool;
     data_02097dd0->cur = data_02097dd0->heapLo;
     pool = (NamePool *)Sys_Alloc(sizeof(NamePool));
@@ -71,7 +71,7 @@ void func_0203dfb0(void) {
     data_02097dd0->cur = data_02097dd0->heapHi;
 }
 
-void func_0203e024(void) {
+void NamePool_CreatePltt(void) {
     NamePool *pool;
     data_02097dd0->cur = data_02097dd0->heapLo;
     pool = (NamePool *)Sys_Alloc(sizeof(NamePool));
@@ -99,7 +99,7 @@ static inline int NamePool_Hash(const char *name) {
     return hash % 6007;
 }
 
-void func_0203e098(const char *name, u32 value) {
+void NamePool_SetTexKey(const char *name, u32 value) {
     NamePool *pool = data_02097de4;
     if (pool == NULL) {
         return;
@@ -109,7 +109,7 @@ void func_0203e098(const char *name, u32 value) {
     pool->hash = NamePool_Hash(name);
 }
 
-void func_0203e134(const char *name, u32 value) {
+void NamePool_SetPlttKey(const char *name, u32 value) {
     NamePool *pool = data_02097dd8;
     if (pool == NULL) {
         return;
@@ -495,7 +495,7 @@ u32 func_0203e8e0(u32 size, int is4x4, int opt) {
     return key;
 }
 
-int func_0203ea00(u32 key) {
+int Vram_FreeTex(u32 key) {
     int r;
     if (data_02097de4 != NULL && func_0203e25c(data_02097de4, key) != NULL) {
         return 0;
@@ -527,7 +527,7 @@ u32 func_0203ea6c(u32 size, int is4pltt, int opt) {
     return key;
 }
 
-int func_0203eb8c(u32 key) {
+int Vram_FreePltt(u32 key) {
     int r;
     if (data_02097dd8 != NULL && func_0203e25c(data_02097dd8, key) != NULL) {
         return 0;
@@ -617,7 +617,7 @@ extern u32 NNS_G3dTexGetRequiredSize(ResTexFull *tex);
 extern u32 NNS_G3dTex4x4GetRequiredSize(ResTexFull *tex);
 extern u32 NNS_G3dPlttGetRequiredSize(ResTexFull *tex);
 extern BOOL NNS_G3dBindMdlSet(void *mdl, ResTexFull *tex);
-extern void func_020435e8(GfxPltt *pltt, void *src, u32 size);
+extern void GfxPltt_ApplyFilter(GfxPltt *pltt, void *src, u32 size);
 extern u32 (*NNS_GfdDefaultFuncAllocTexVram)(u32 size, int is4x4, int opt);
 extern u32 (*NNS_GfdDefaultFuncAllocPlttVram)(u32 size, int is4pltt, int opt);
 
@@ -630,7 +630,7 @@ static inline void NamePool_SetName(NamePool *pool, const char *name, u32 value)
     pool->hash = NamePool_Hash(name);
 }
 
-BOOL func_0203ed04(const char *name, u32 *res) {
+BOOL G3dRes_SetupVram(const char *name, u32 *res) {
     NamePool *pool = data_02097de4;
     if (pool != NULL) {
         NamePool_SetName(pool, name, 0);
@@ -663,7 +663,7 @@ BOOL func_0203ed04(const char *name, u32 *res) {
                     u32 key = tex->plttKey;
                     ofs = tex->ofsPlttData;
                     u32 addr = (key & 0xffff) << 3;
-                    func_020435e8(&data_02097d48->pltt, (u8 *)tex + ofs, size);
+                    GfxPltt_ApplyFilter(&data_02097d48->pltt, (u8 *)tex + ofs, size);
                     data_02097dd4 = Vram_QueueTransfer(1, (u32)tex + ofs, addr, size, 0);
                     tex->plttFlag |= 1;
                 }

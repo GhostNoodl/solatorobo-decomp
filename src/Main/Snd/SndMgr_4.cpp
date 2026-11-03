@@ -49,10 +49,10 @@ s32 SndMgr_PlayPan(SndMgr *mgr, s32 id, s32 pan) {
     return 1;
 }
 
-s32 func_02049c80(SndMgr *mgr, s32 id, s32 volume, s32 pan, s32 pitch, s32 useSlot, u32 slot);
+s32 SndMgr_PlaySeEx(SndMgr *mgr, s32 id, s32 volume, s32 pan, s32 pitch, s32 useSlot, u32 slot);
 
 #ifdef NONMATCHING
-// Status (round drA): func_02049c80 is 60 / 42 (raw / register-masked, dsi/1.3 with the project flags); this is the
+// Status (round drA): SndMgr_PlaySeEx is 60 / 42 (raw / register-masked, dsi/1.3 with the project flags); this is the
 // best clean draft. Blocker: extended-block shape of the -1 returns: the slot-fail block must lie outside the zero's
 // extended block, and no if/inline form gives both returns. History: docs/MATCHING.md rounds bgW, svA, swA, cvA
 // (search for the address); the full list is docs/UNMATCHED.md.
@@ -78,7 +78,7 @@ static inline s32 SndMgr_LoadSlot(SndMgr *mgr, s32 id, u32 slot) {
     return r;
 }
 
-s32 func_02049c80(SndMgr *mgr, s32 id, s32 volume, s32 pitch, s32 pan, s32 useSlot, u32 slot) {
+s32 SndMgr_PlaySeEx(SndMgr *mgr, s32 id, s32 volume, s32 pitch, s32 pan, s32 useSlot, u32 slot) {
     SndHandle *handle;
     s32 seqArc;
     s32 index;
@@ -154,7 +154,7 @@ static inline BOOL SndMgr_IsArea(SndListener *listener, u8 a, u8 b, u8 c) {
     return (listener->a == a && listener->b == b && listener->c == c) ? TRUE : FALSE;
 }
 
-s32 func_02049e20(SndMgr *mgr, const VecFx32 *pos);
+s32 SndMgr_CalcAreaVolume(SndMgr *mgr, const VecFx32 *pos);
 
 SndHandle *SndMgr_PlayAt(SndMgr *mgr, s32 id, const VecFx32 *pos, s32 pitch);
 
@@ -180,9 +180,9 @@ static inline void SndMgr_SetSlotVolume(SndMgr *mgr, u32 slot, s32 volume, s32 f
 
 void SndMgr_SetSlotVolume_0204a058(SndMgr *mgr, u32 slot, s32 volume, s32 frames);
 
-void func_0204a094(SndMgr *mgr, u32 slot, s32 pan);
+void SndMgr_SetSlotPitch(SndMgr *mgr, u32 slot, s32 pan);
 
-void func_0204a0d4(SndMgr *mgr, u32 slot, s32 pan);
+void SndMgr_SetSlotSemitones(SndMgr *mgr, u32 slot, s32 pan);
 
 BOOL func_0204a118(SndMgr *mgr, s32 id);
 
@@ -194,11 +194,11 @@ void SndMgr_PlayStrm(SndMgr *mgr, s32 strmNo);
 
 void SndMgr_StopStrm_0204a284(SndMgr *mgr);
 
-void func_0204a2a8(SndMgr *mgr, s32 volume, s32 frames);
+void SndMgr_SetStrmVolume_0204a2a8(SndMgr *mgr, s32 volume, s32 frames);
 
 s32 SndMgr_GetSeqVolume_0204a2c8(SndMgr *mgr, s32 seq);
 
-void func_0204a2e0(SndMgr *mgr, int fadeFrames);
+void SndMgr_StopAllSeq(SndMgr *mgr, int fadeFrames);
 
 void func_0204a2f0(SndMgr *mgr, s32 id);
 
@@ -210,7 +210,7 @@ typedef struct SndCmd {
     /* 0x4 */ s16 args[6];
 } SndCmd;
 
-void func_0204a3b8(SndMgr *mgr, SndCmd *cmd);
+void SndMgr_ExecCmd(SndMgr *mgr, SndCmd *cmd);
 
 }
-// @exclude func_0204a3b8
+// @exclude SndMgr_ExecCmd

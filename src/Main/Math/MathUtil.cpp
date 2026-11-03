@@ -104,7 +104,7 @@ int Math_ProjectToScreen(int *out, const VecFx32 *pos) {
 
 
 
-u32 func_02040778(char *str, int *outLen) {
+u32 Str_ParseHex(char *str, int *outLen) {
     char buf[0x10];
     int len = 0;
     char *dst = buf;
@@ -196,7 +196,7 @@ u32 func_02040778(char *str, int *outLen) {
 }
 
 
-void func_02040968(char *dst, int *dstLen, const u8 *src, int *srcLen) {
+void Str_Utf16ToUtf8(char *dst, int *dstLen, const u8 *src, int *srcLen) {
     int i;
     int out;
     int n;
@@ -270,20 +270,20 @@ char *Str_FindCharMb(char *str, int ch) {
 }
 
 
-int func_02040b6c(u16 *dst, int max, const u16 *src, int n);
+int Str_FilterUtf16(u16 *dst, int max, const u16 *src, int n);
 
-void func_02040b0c(char *dst, int *dstLen, const u16 *src, int *srcLen) {
+void Str_Utf16ToUtf8Filtered(char *dst, int *dstLen, const u16 *src, int *srcLen) {
     int len;
     int out;
     u16 buf[0x40];
     len = 0x40;
-    len = func_02040b6c(buf, len, src, *srcLen);
+    len = Str_FilterUtf16(buf, len, src, *srcLen);
     out = *dstLen - 1;
-    func_02040968(dst, &out, (const u8 *)buf, &len);
+    Str_Utf16ToUtf8(dst, &out, (const u8 *)buf, &len);
     dst[out] = 0;
 }
 
-int func_02040b6c(u16 *dst, int max, const u16 *src, int n) {
+int Str_FilterUtf16(u16 *dst, int max, const u16 *src, int n) {
     int out = 0;
     int i = 0;
     while (i < n && out + 1 < max) {

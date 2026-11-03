@@ -7,7 +7,7 @@ static inline BOOL WH_StateInEndScan(void) {
     return WH_CheckResult(WM_EndScan((void (*)(void *))func_02046418));
 }
 
-BOOL func_020463c8(WhMgr *wh) {
+BOOL WH_StateInEndScan_020463c8(WhMgr *wh) {
     return WH_StateInEndScan();
 }
 

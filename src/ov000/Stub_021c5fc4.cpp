@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_021c5fc4(ListRowLabel *self) {
+void ListRowLabel_Init(ListRowLabel *self) {
     self->text = NULL;
 }
 

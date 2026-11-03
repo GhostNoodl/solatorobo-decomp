@@ -7,7 +7,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern VecFx32 data_ov000_021ca000;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u16 ang);
+void Vec_RotateY(VecFx32 *out, const VecFx32 *in, u16 ang);
 void *Actor_SpawnKind(s32 kind, VecFx32 *pos, void *rot, u16 a, u16 b);
 void Field_ShakeCamera(u8 a, u8 b);
 void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
@@ -53,7 +53,7 @@ void func_ov000_021b03c8(Robo021ca458 *self) {
             Next021b03c8(self);
             return;
         }
-        func_01ffc9fc(&v, &data_ov000_021ca000, self->rot_y);
+        Vec_RotateY(&v, &data_ov000_021ca000, self->rot_y);
         VEC_Add(&v, (VecFx32 *)((u8 *)self + 0x70), &v);
         o = Actor_SpawnKind(0x4800, &v, (u8 *)self + 0x7c, self->id, 0xffff);
         if (o == NULL) {

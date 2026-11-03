@@ -24,7 +24,7 @@ extern const Ov003Step data_ov014_02216e50[];
 extern const Ov003Step data_ov014_02216ea8[];
 extern const Ov003Step data_ov014_02216f00[];
 extern void HitSphere_Unlink_0203f2b8(void *p);
-extern s32 func_ov000_021909a8(void *a, const void *b, const void *c);
+extern s32 Model_FindResIdxByName(void *a, const void *b, const void *c);
 
 EffectObj *Ov014_CreateEffect(s32 k, VecFx32 *pos) {
     EffectObj *r = NULL;
@@ -228,7 +228,7 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
         n->unk_22_0 = 1;
         n->unk_22_1 = 1;
     }
-    self->unk_f0.joint = func_ov000_021909a8(self->model, data_ov014_02217d2c, data_ov014_02217d33);
+    self->unk_f0.joint = Model_FindResIdxByName(self->model, data_ov014_02217d2c, data_ov014_02217d33);
     MTX_Identity43_(&self->unk_f0.mtx);
     m = self->model;
     NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)Ov014Part_StartCapture_0220f8e4);

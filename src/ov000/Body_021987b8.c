@@ -71,7 +71,7 @@ typedef struct {
 } Rot021987b8;
 
 ActorC *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u32 angle);
+void Vec_RotateY(VecFx32 *out, const VecFx32 *in, u32 angle);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 void VEC_Normalize(const VecFx32 *src, VecFx32 *dst);
 void HitSphere_Unlink_0203f364(Body *self);
@@ -119,7 +119,7 @@ void Body_Update(Body *self, u8 keep, VecFx32 *pos, const Rot021987b8 *rot) {
         VEC_Copy(&v, &actor->pos);
         angle = actor->rot_y;
     }
-    func_01ffc9fc(&off, &self->offset, angle);
+    Vec_RotateY(&off, &self->offset, angle);
     VEC_Add(&v, &off, &v);
     VEC_Copy(&self->prev, &self->pos);
     VEC_Copy(&self->pos, &v);

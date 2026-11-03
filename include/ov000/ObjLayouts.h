@@ -88,23 +88,23 @@ SIZE_ASSERT(ActorEx, 0xd0);
 
 // A robot definition (the entries of data_ov000_021ca398, indexed by Robo021ca458::unk_b22_6, and of
 // data_ov000_021ca248; also Param0206ef10::def). Robo021ca458_Init copies the names into the robot's
-// resource sets, func_ov000_021afaf8 loads them with ResSet_SetName0 / 0218edf0 / 0218ef10.
+// resource sets, Robo021ca458_State1f loads them with ResSet_SetName0 / 0218edf0 / 0218ef10.
 typedef struct RoboDef {
     const char *name[6]; // three (name, ext) pairs
-    u8 unk_18; // func_ov000_021afaf8 also loads the first pair into res2 when set
+    u8 unk_18; // Robo021ca458_State1f also loads the first pair into res2 when set
     u8 unk_19[0x3];
     const char *unk_1c; // the anmName ov002 hands ModelViewer_SetModel with the first pair
 } RoboDef;
 
 // A 0x2c-byte parameter record returned by func_0206ef10 (Main/Lang/ParamTbl.cpp). The robot keeps the one
-// of its kind (func_0206ef10(kind | 0x8000), Robo021ca458_Init / func_ov000_021afaf8) in unk_ba4; the
+// of its kind (func_0206ef10(kind | 0x8000), Robo021ca458_Init / Robo021ca458_State1f) in unk_ba4; the
 // bits at 0x06 enable its moves.
 typedef struct Param0206ef10 {
-    s8 unk_00[0x4]; // copied by func_ov000_021c95ac
+    s8 unk_00[0x4]; // copied by Obj021c95ac_Init_021c95ac
     u8 unk_04_0 : 4;
     u8 unk_04_4 : 4; // times 10: the robot's gauge (Robo021ca458_RunState)
     u8 unk_05_0 : 4;
-    u8 unk_05_4 : 4; // added to a count (func_ov000_021a6280, func_ov000_021aa5c8)
+    u8 unk_05_4 : 4; // added to a count (Robo021ca458_State0b, Robo021ca458_State11)
     union {
         u16 unk_06;
         struct {
@@ -181,7 +181,7 @@ struct Robo021ca458 : public Actor {
     VecFx32 unk_aa4;
     u8 unk_ab0[0x24];
     VecFx32 unk_ad4;
-    u8 unk_ae0; // animation indices from func_ov000_021909a8
+    u8 unk_ae0; // animation indices from Model_FindResIdxByName
     u8 unk_ae1;
     u8 unk_ae2;
     u8 unk_ae3;
@@ -401,13 +401,13 @@ struct Lo021caac8 : public UiList021cb4a8 {
 
 
 
-// Bar display base (vtable data_ov000_021cac0c, 0x9c bytes; slot 0x14 func_ov000_02160344 clears
+// Bar display base (vtable data_ov000_021cac0c, 0x9c bytes; slot 0x14 Ov000Vt_021cac0c_Init clears
 // it). Subclass vtables data_ov000_021cb6f0, 021cb744, 021cb798, 021cb7ec, 021cb840, 021cb894
-// (all built by func_ov000_02170a58) and 021cca88 (func_ov000_021c2d48) keep its slots 0x08..0x10
+// (all built by func_ov000_02170a58) and 021cca88 (ListRowGauge_Update) keep its slots 0x08..0x10
 // and 0x40..0x44. Methods in Obj_0215fe60.cpp, Lo_021601c4.cpp, Obj_02160344.c, Obj_0215fdfc.c,
 // Cam_02160414.cpp, ov000_02160534.cpp, Lo_021609ec.cpp, Lo_02160c7c.cpp.
 struct ObjBase021cac0c_021cb6f0 : public VObj {
-    s32 unk_04; // state (func_ov000_0215fe60)
+    s32 unk_04; // state (Ov000Vt_021cac0c_Update)
     u32 unk_08;
     union {
         u32 unk_0c;
@@ -419,7 +419,7 @@ struct ObjBase021cac0c_021cb6f0 : public VObj {
             u32 unk_0c_4 : 1;
             u32 unk_0c_5 : 1;
             u32 unk_0c_6 : 1;
-            u32 unk_0c_7 : 1; // unk_5c follows unk_64 (func_ov000_0215fe60, 0215fe1c)
+            u32 unk_0c_7 : 1; // unk_5c follows unk_64 (Ov000Vt_021cac0c_Update, 0215fe1c)
             u32 unk_0c_8 : 1;
             u32 unk_0c_9 : 1;
             u32 unk_0c_10 : 1; // set by slot 0x14
@@ -494,7 +494,7 @@ struct Lo021cadcc : public UiObj {
 };
 
 // Vtable data_ov000_021cae48: a number display (methods in Lo_0215dae0.cpp, Lo_0215deb4.cpp,
-// TextWin_0215d758.cpp, Win_0215db70.cpp). func_ov000_0215d980 sets value (and shown too when asked);
+// TextWin_0215d758.cpp, Win_0215db70.cpp). Lo021cae48_SetValue sets value (and shown too when asked);
 // slot 0x0c (Lo021cae48_PostUpdate) moves shown towards value, and the draw prints shown with the digits.
 struct Lo021cae48 : public UiObj {
     s32 style;      // 0x84 index into data_ov000_021cabe0 (the label part and string); 4: no label
@@ -614,7 +614,7 @@ struct Lo021cb894 : public ObjBase021cac0c_021cb6f0 {
     s32 unk_b8;
 };
 
-// Vtable data_ov000_021cca40 (0x48 bytes, init func_ov000_021c5bac; ov015 builds them): a list row with
+// Vtable data_ov000_021cca40 (0x48 bytes, init Lo021cca40_Init; ov015 builds them): a list row with
 // a name, a count and a value. Slot 0x08 (func_ov000_021c5bd4) makes the text and the digit model once,
 // slot 0x0c (func_ov000_021c5d9c) draws the name and the two numbers.
 struct Lo021cca40 : public ListRow {
@@ -631,7 +631,7 @@ SIZE_ASSERT(Lo021cca40, 0x48);
 // Row list: vtable data_ov000_021ccbe0 (0xf4 bytes; the constructor calls UiObj_Init through slot 0x28,
 // then func_ov000_021c3af4) over the base vtable data_ov000_021ccb54; ov002's subclass data_ov002_021f0044
 // keeps the size. Both dtors release it with LoBase021ccb54_021ccbe0_Release. Methods in Lo_021c4d90.cpp, Lo_021c5028.cpp,
-// Lo_021c5128.cpp, Text_021c524c.cpp, Unit_021c3d20.cpp and the files of func_ov000_021c3aa0 .. 021c56c0.
+// Lo_021c5128.cpp, Text_021c524c.cpp, Unit_021c3d20.cpp and the files of ListRowText_Draw .. 021c56c0.
 struct LoBase021ccb54_021ccbe0 : public UiObj {
     Model *unk_84; // the three models and the object freed by LoBase021ccb54_021ccbe0_Release (both dtors)
     Model *unk_88;

@@ -193,7 +193,7 @@ void ov006_ModelHolder_Load(ov006_ModelHolder *self, int a) {
     self->unk8 = a;
 }
 
-void func_ov006_021e3f0c(void) {
+void Ov006Vt_021ec444_Dtor(void) {
 }
 
 }

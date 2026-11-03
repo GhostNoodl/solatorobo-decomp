@@ -116,7 +116,7 @@ void func_ov015_0220101c(Ov015Game *self) {
     HEAP_POP(saved);
 }
 
-void *func_ov015_022011c4(u8 *self) {
+void *Ov015Vt_0221294c_DtorDelete(u8 *self) {
     SET_VT(self, data_ov015_0221294c);
     Model0218fe1c_FreeAnims(self + 0x57c);
     ResSet_ReleaseAll(self + 0x444);
@@ -128,7 +128,7 @@ void *func_ov015_022011c4(u8 *self) {
     return self;
 }
 
-void *func_ov015_02201220(Ov015Hud *self) {
+void *Ov015Hud_DtorDelete(Ov015Hud *self) {
     char buf[0x20];
     SET_VT(self, data_ov015_0221293c);
     {

@@ -38,7 +38,7 @@ static inline Group *Group_Init(Group *g) {
     return g;
 }
 
-Group *func_ov000_0218bb34(Group *g) {
+Group *Group_Init_0218bb34(Group *g) {
     return Group_Init(g);
 }
 

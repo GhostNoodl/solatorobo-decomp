@@ -158,7 +158,7 @@ void Ov013ActVt_0220b5e0_StateIdle(Ov013ActVt_0220b5e0 *self) {
         self->fsm->st = 0x63;
         self->fsm->timer = 0;
     }
-    self->rot_y = func_01ffc128(0, self->rot_y, 0xcd, 1, 0x8000);
+    self->rot_y = Angle_Approach(0, self->rot_y, 0xcd, 1, 0x8000);
     t = Actor_GetTarget(self);
     if (t != NULL) {
         Actor_TurnToActor(self, t, self->unk_b0->unk_02);

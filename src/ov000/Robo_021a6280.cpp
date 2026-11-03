@@ -41,13 +41,13 @@ BOOL Model0218fe1c_IsAnimDelayed(void *a);
 void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
 void *Model0218fe1c_SetAnimFrame(void *a, s32 frame);
 void Model0218fe1c_SetAnimDelay(void *a, s32 b, s32 c);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 s32 Rand_UpTo(s32 max);
 void Field_ShakeCamera(s32 a, s32 b);
 void func_ov000_021899d8(VecFx32 *a, s32 b, s32 c, s32 d, s16 e, s16 f);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void Actor_SendMsgU8(void *o, u16 id, s32 c);
-s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
+s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
 void Ov003_AddMeter_021cedf4(u16 add);
 u8 Ov003_GetMaxCombo(void);
@@ -80,7 +80,7 @@ static inline s32 FxMul_021a6280(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-void func_ov000_021a6280(Robo021ca458 *self) {
+void Robo021ca458_State0b(Robo021ca458 *self) {
     BOOL busy;
     u16 ang;
     Actor *a;
@@ -231,7 +231,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
         } else {
             ang = self->rot_y;
         }
-        self->rot_y = func_01ffc128(ang, self->rot_y, 0x59a, 1, 0x8000);
+        self->rot_y = Angle_Approach(ang, self->rot_y, 0x59a, 1, 0x8000);
         self->unk_b2c_3_f = 0;
         if (self->unk_b24_22 != 0 && self->unk_ba4 != NULL && self->unk_ba4->unk_06_3 && (self->padTrig & 1) &&
             self->unk_b2c_7 < 5 && sub != NULL) {
@@ -265,7 +265,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
                     } else {
                         v = a->pos;
                     }
-                    if (func_01ffbd6c((VecFx32 *)((u8 *)self + 0x70), &v, -1, 0, 0, -1) != -0x1000) {
+                    if (Hit_CastSegment((VecFx32 *)((u8 *)self + 0x70), &v, -1, 0, 0, -1) != -0x1000) {
                         v.x -= self->pos.x;
                         v.y -= self->pos.y;
                         v.z -= self->pos.z;

@@ -5,7 +5,7 @@ extern "C" {
 extern u8 data_ov015_02212a88[];
 extern u8 data_ov015_02212a08[];
 void *GfxCamPos_Init(void *p);
-void func_020434e0(void *p);
+void GfxCamParam_Init(void *p);
 extern u8 data_ov015_02212c08[];
 extern u8 data_ov015_02212b88[];
 extern u8 data_ov015_02212b08[];
@@ -25,7 +25,7 @@ void __cxa_vec_ctor(void *p, s32 n, s32 size, void *ctor, void *dtor);
 void *Ov000Vt_021cc438_Dtor(void *p);
 void *ResSet_ReleaseAll(void *p);
 void __cxa_vec_cleanup(void *p, s32 n, s32 size, void *dtor);
-void func_01ffc9fc(Ov015V3 *in, Ov015V3 *out, u16 ang);
+void Vec_RotateY(Ov015V3 *in, Ov015V3 *out, u16 ang);
 
 void *func_ov015_02206f04(void) {
     Ov015Scene2a88 *p = (Ov015Scene2a88 *)Heap_Alloc(0x58);
@@ -50,7 +50,7 @@ void *func_ov015_02206f7c(void) {
         Ov015TaskBase_Ctor(p);
         SET_VT(p, data_ov015_02212a08);
         GfxCamPos_Init(&p->camView.eye);
-        func_020434e0(&p->camView.fovSin);
+        GfxCamParam_Init(&p->camView.fovSin);
         p->ship = 0;
         p->shadow = 0;
         p->unk_80 = 0;
@@ -131,7 +131,7 @@ void *func_ov015_02207138(void) {
     return p;
 }
 
-void *func_ov015_022071c4(Ov015SceneSeq *self) {
+void *Ov015SceneSeq_DtorDelete(Ov015SceneSeq *self) {
     SET_VT(self, data_ov015_022129e0);
     TaskHost_Destroy();
     SET_VT(self, data_ov015_0221280c);
@@ -140,7 +140,7 @@ void *func_ov015_022071c4(Ov015SceneSeq *self) {
     return self;
 }
 
-void *func_ov015_02207200(Ov015SceneSeq *self) {
+void *Ov015SceneSeq_Dtor(Ov015SceneSeq *self) {
     SET_VT(self, data_ov015_022129e0);
     TaskHost_Destroy();
     SET_VT(self, data_ov015_0221280c);
@@ -319,7 +319,7 @@ void *Ov015Scene2a88_Dtor(Ov015Scene2a88 *self) {
     return self;
 }
 
-void *func_ov015_0220763c(Ov015MsgBox *self) {
+void *Ov015MsgBox_Dtor(Ov015MsgBox *self) {
     SET_VT(self, data_ov015_022129c0);
     MsgBox_Release(self);
     return self;
@@ -385,7 +385,7 @@ void func_ov015_02207858(Ov015Ship *self) {
     v.z = 0xa000;
     v.x = 0;
     v.y = 0;
-    func_01ffc9fc(&v, &v, self->rotY);
+    Vec_RotateY(&v, &v, self->rotY);
     VEC_Add((VecFx32 *)(&self->pos), (VecFx32 *)&v, (VecFx32 *)(&self->unk_d4c));
     self->loadStep = 10;
 }

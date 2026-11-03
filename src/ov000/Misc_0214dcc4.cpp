@@ -13,7 +13,7 @@ extern "C" {
 
 void UiList021cb4a8_Setup(Obj0214dcc4 *self);
 BOOL Obj02152e5c_LoadModel(Obj0214dcc4 *self);
-void func_02041c34(void *obj, s32 a, void (*cb)(void), void *arg);
+void TexObj_SetOamFunc(void *obj, s32 a, void (*cb)(void), void *arg);
 void *func_ov000_0214db04(u8 *self, u16 *cmd, void *arr, u16 *count);
 
 void Lo021caac8_Setup(Obj0214dcc4 *self) {
@@ -24,7 +24,7 @@ void Lo021caac8_Setup(Obj0214dcc4 *self) {
     }
     if (self->unk_b4 != NULL) {
         TexObj_SelectImage(self->unk_b4, 0, 0x1e);
-        func_02041c34(self->unk_b4, 0x1e, (void (*)(void))func_ov000_0214db04, self);
+        TexObj_SetOamFunc(self->unk_b4, 0x1e, (void (*)(void))func_ov000_0214db04, self);
     }
 }
 
@@ -71,7 +71,7 @@ s32 MsgRes_GetLines(void *res, u16 id, s32 *out, s32 d);
 void Text_ScanTags(s32 a, s32 b, void *c, void *d);
 void func_ov000_0214dc20(void *self, s32 *msg);
 u32 func_ov000_0214bf2c(u16 a);
-u16 func_020595c4(void *a, s32 b, s32 c, u16 d);
+u16 DataRes_ReadById(void *a, s32 b, s32 c, u16 d);
 }
 
 struct Node0214dd3c {
@@ -198,11 +198,11 @@ Node0214dd3c *Lo021caac8_AddItem(List0214dd3c *self, s32 a, u16 id, u16 c, s32 d
     }
     if (fl & 0x20) {
         if (LFLD(u16, data_02fe1534, 0x46) == m->unk_30) {
-            if (func_020595c4(data_02fe152c, 1, 0x301, id) == 1) {
+            if (DataRes_ReadById(data_02fe152c, 1, 0x301, id) == 1) {
                 m->unk_24 = 7;
             }
         } else {
-            if (func_020595c4(data_02fe152c, 1, 0x301, id) == 1) {
+            if (DataRes_ReadById(data_02fe152c, 1, 0x301, id) == 1) {
                 m->unk_24 = 0xb;
             } else {
                 m->unk_24 = 0xe;

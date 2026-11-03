@@ -32,8 +32,8 @@ void Robo021ca458_Move(Robo021ca458 *self, BOOL a, s32 b);
 BOOL History_SetState(void *st, s32 state, s32 x);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
-void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
+void Vec_RotateY(VecFx32 *out, const void *a, s32 b);
 s32 Rand_UpTo(s32 max);
 BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 mask, VecFx32 *ofs, void *rot, s32 r, s32 rr, s16 h, s32 i);
 u16 func_ov000_02198da8(void *body, u16 angle);
@@ -76,7 +76,7 @@ static inline BOOL IsIdle_021a3220(void) {
 
 #define Ba4Bit_021a3220(self) (LFLD(u8 *, self, 0xba4) != NULL && LFLD(Ba4_021a3220, LFLD(u8 *, self, 0xba4), 6).b5)
 
-void func_ov000_021a3220(Robo021ca458 *self) {
+void Robo021ca458_State16(Robo021ca458 *self) {
     Actor *tgt;
     BOOL hit;
     BOOL turned;
@@ -161,7 +161,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
                 v.y = self->height >> 2;
                 v.z = 0x1800;
                 v.x = 0;
-                func_01ffc9fc(&v, &v, self->moveYaw);
+                Vec_RotateY(&v, &v, self->moveYaw);
                 VEC_Add(&v, (VecFx32 *)((u8 *)self + 0x70), &v);
                 e2 = Effect_SpawnId(0x66, &v);
                 e2->SetRotXYZ(0xc000, self->moveYaw, 0);
@@ -169,7 +169,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
                 e2->speed = 0x1ccd;
             }
         }
-        self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
         Robo021ca458_Move(self, FALSE, 1);
         break;
     }
@@ -191,7 +191,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
             }
         } else {
             s32 f = 1;
-            self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+            self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
             if (self->unk_b2c_6) {
                 f = 0;
             }

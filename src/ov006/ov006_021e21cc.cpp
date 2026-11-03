@@ -11,7 +11,7 @@ void __cxa_vec_cleanup(void *arr, int count, u32 size, void *dtor);
 static inline void ov006_MarkerSet_Dtor(ov006_MarkerSet *self) {
     self->vtbl = &data_ov006_021ec2cc;
     OV006_DELETE_MODEL(self->model);
-    __cxa_vec_cleanup(self->markers, 4, sizeof(self->markers[0]), func_ov006_021e1f68);
+    __cxa_vec_cleanup(self->markers, 4, sizeof(self->markers[0]), ov006_Marker_Dtor);
 }
 
 ov006_MarkerSet *Ov006Vt_021ec2cc_Dtor(ov006_MarkerSet *self) {

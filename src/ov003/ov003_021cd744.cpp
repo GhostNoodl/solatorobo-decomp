@@ -126,7 +126,7 @@ void Ov003TaskVt_021f78f4_Draw(Ov003Menu2 *self) {
 // derived constructors each call the virtual at 0x28 (indirect, as in the ROM), gives 51: the result
 // and the res pointer swap registers (ROM res r8 / w r6). Written in place it is 44.
 // Round bgQ2: the case-10 miss is not an alias edge. The ROM reads unk44 after both alpha stores (the
-// plain `func_02041c5c(self->unk44, ...)` form), but that form is 48: the unk48 load and the pool load of
+// plain `TexObj_SetAllOamFuncs(self->unk44, ...)` form), but that form is 48: the unk48 load and the pool load of
 // the callback land in a different place. A `u8 a` cast, an fx32 temporary, a SetAlpha inline (per
 // sprite or for both) and an unk48 local all give 48; `int a` or a chained store give 420+.
 #include "nitro/fx.h"
@@ -198,8 +198,8 @@ s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 BOOL Interp_MoveTo(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
 s32 SndMgr_PlayPan(void *a, s32 b, s32 c);
 void func_02041c18(void *m, u16 c);
-void func_02041c20(void *m, u16 a, u16 b);
-void func_02041c5c(void *m, void *fn);
+void TexObj_SetOamFuncArg(void *m, u16 a, u16 b);
+void TexObj_SetAllOamFuncs(void *m, void *fn);
 void *Heap_Alloc(u32 size);
 void *MsgRes_GetString(void *a, int id);
 void Obj0215c1bc_SetText(void *a, int b, const void *c);
@@ -262,7 +262,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
         Ov003CdSprite *spr = self->unk44;
         self->unk48->alpha = a;
         self->unk4C->alpha = a;
-        func_02041c5c(spr, (void *)Ov003Oam_Offset);
+        TexObj_SetAllOamFuncs(spr, (void *)Ov003Oam_Offset);
         zero.x = 0;
         zero.y = 0;
         zero.z = 0;
@@ -300,7 +300,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
     }
     case 0x1e:
         if (self->unk68 != self->unk69) {
-            func_02041c20(self->unk44, self->unk5C, Ov003Cd_Color(self));
+            TexObj_SetOamFuncArg(self->unk44, self->unk5C, Ov003Cd_Color(self));
         }
         if (--self->timer < 0) {
             self->timer = 0x28;
@@ -309,7 +309,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
         break;
     case 0x1f:
         if (self->unk68 != self->unk69) {
-            func_02041c20(self->unk44, self->unk5C, Ov003Cd_Color(self));
+            TexObj_SetOamFuncArg(self->unk44, self->unk5C, Ov003Cd_Color(self));
         }
         if (--self->timer < 0) {
             self->timer = 0x28;

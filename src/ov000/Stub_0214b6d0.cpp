@@ -2,7 +2,7 @@
 
 extern "C" {
 
-u32 func_ov000_0214b6d0(Twl0214b570 *self) {
+u32 Twl0214b570_GetStatus(Twl0214b570 *self) {
     return self->unk_08;
 }
 

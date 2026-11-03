@@ -460,8 +460,8 @@ extern BOOL Ov003TickerSet_Init(void *p);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void HitSphere_Link(ActorSub48 *p);
-extern BOOL func_020621c4(void);
-extern void func_01ffc9fc(VecFx32 *a, const VecFx32 *b, u16 ang);
+extern BOOL Stage_UseScaledStats(void);
+extern void Vec_RotateY(VecFx32 *a, const VecFx32 *b, u16 ang);
 extern void Ov014_SelectTrackByHp(Ov003ScriptList *self, Ov003Actor *a);
 extern void Ov014_SelectTrackByHp_021fd43c(Ov003ScriptList *self, Ov003Actor *a);
 
@@ -505,7 +505,7 @@ void Ov014Act_021fd4d4_Start(Ov014Act_021fd4d4 *self) {
             if (o != NULL) {
                 o->unk_18 = i;
                 v = data_ov014_02216704[i];
-                func_01ffc9fc(&v, &v, self->rot_y);
+                Vec_RotateY(&v, &v, self->rot_y);
                 VEC_Add(&self->pos, &v, &v);
                 o->pos.x = v.x;
                 o->pos.y = v.y;
@@ -516,7 +516,7 @@ void Ov014Act_021fd4d4_Start(Ov014Act_021fd4d4 *self) {
     }
     case 1:
         self->unk_139 = 0;
-        func_01ffc9fc(&w, &data_ov014_02216564, self->rot_y);
+        Vec_RotateY(&w, &data_ov014_02216564, self->rot_y);
         VEC_Add(&self->pos, &w, &self->pos);
         self->unk_93_4 = 1;
         m = self->hit;
@@ -528,7 +528,7 @@ void Ov014Act_021fd4d4_Start(Ov014Act_021fd4d4 *self) {
         self->unk_12c.z = self->pos.z;
         break;
     }
-    if (func_020621c4()) {
+    if (Stage_UseScaledStats()) {
         Ov003Actor_ScaleStats(self, data_ov014_0221654c);
         self->unk_13a = 0x1800;
     }
@@ -1032,7 +1032,7 @@ extern void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
 extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern s32 Ov003_CountActorsOfKind(s32 kind);
-extern void func_01ffc9fc(VecFx32 *a, VecFx32 *b, u16 ang);
+extern void Vec_RotateY(VecFx32 *a, VecFx32 *b, u16 ang);
 
 static inline void Ov014_SpawnPart(Ov014Act_021fd4d4 *self, u16 kind, u8 bit, s16 n) {
     Actor *o;
@@ -1044,7 +1044,7 @@ static inline void Ov014_SpawnPart(Ov014Act_021fd4d4 *self, u16 kind, u8 bit, s1
         v.x = 0;
         v.y = 0;
         v.z = 0x9000;
-        func_01ffc9fc(&v, &v, self->rot_y);
+        Vec_RotateY(&v, &v, self->rot_y);
         VEC_Add(&self->pos, &v, &v);
         o->pos.x = v.x;
         o->pos.y = v.y;
@@ -1975,7 +1975,7 @@ extern void Actor_PitchToPos(Ov003Actor *self, VecFx32 *v, s32 a);
 extern void Field_ShakeCamera(s32 a, s32 b);
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDescA *d, VecFx32 *pos, void *rot, u16 a);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void func_01ffc9fc(VecFx32 *a, VecFx32 *b, u16 ang);
+extern void Vec_RotateY(VecFx32 *a, VecFx32 *b, u16 ang);
 
 static inline Ov003Actor *Ov014_FindById(u16 id) {
     return data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
@@ -2041,7 +2041,7 @@ void Ov014Act_0220011c_StateAttack(Ov014Act_0220011c *self) {
         self->unk_84.x = 0;
         self->unk_84.y = -0x5000;
         self->unk_84.z = 0x4000;
-        func_01ffc9fc(&self->unk_84, &self->unk_84, self->rot_y);
+        Vec_RotateY(&self->unk_84, &self->unk_84, self->rot_y);
         VEC_Add(&self->unk_84, &self->pos, &self->unk_84);
         self->fsm->timer = 0;
         self->fsm->st++;
@@ -2069,7 +2069,7 @@ void Ov014Act_0220011c_StateAttack(Ov014Act_0220011c *self) {
         self->unk_84.x = 0;
         self->unk_84.y = 0x1000;
         self->unk_84.z = 0x4000;
-        func_01ffc9fc(&self->unk_84, &self->unk_84, self->rot_y);
+        Vec_RotateY(&self->unk_84, &self->unk_84, self->rot_y);
         VEC_Add(&self->unk_84, &self->pos, &self->unk_84);
         Ov003FxList_Kill(self->unk_100, 0xff);
         self->fsm->st++;
@@ -2571,7 +2571,7 @@ extern BOOL Ov003TickerSet_Init(void *p);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern BOOL Model0218fe1c_SetRes(void *anim, void *res, s32 a, s32 b);
-extern BOOL func_020621c4(void);
+extern BOOL Stage_UseScaledStats(void);
 
 BOOL Ov014Act_02201b94_IsReady(Ov014Act_02201b94 *self) {
     BOOL r = Actor_IsReady(self);
@@ -2666,7 +2666,7 @@ void Ov014Act_02201b94_Start(Ov014Act_02201b94 *self) {
         self->unk_12e = Rand_UpTo(5);
         break;
     }
-    if (func_020621c4()) {
+    if (Stage_UseScaledStats()) {
         Ov003Actor_ScaleStats(self, data_ov014_02216554);
         self->unk_12c = 0x1800;
     }
@@ -3180,7 +3180,7 @@ void Ov014Act_02201b94_StateAttack(Ov014Act_02201b94 *self) {
 
 
 extern Ov003Actor *Actor_GetTarget(Actor *self);
-extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
+extern void Vec_RotateY(VecFx32 *out, const void *a, s32 b);
 extern void *SndMgr_PlayAt(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 
 #define OV014_SQRTCNT (*(volatile u16 *)0x40002b0)
@@ -3209,7 +3209,7 @@ void func_ov014_02202fe8(Ov014Act_02201b94 *self) {
         v.x = zero;
         v.y = 0x1800;
         v.z = 0x1000;
-        func_01ffc9fc(&v, &v, self->rot_y);
+        Vec_RotateY(&v, &v, self->rot_y);
         VEC_Add(&self->pos, &v, &v);
         self->speed = zero;
         self->velY = zero;
@@ -3272,7 +3272,7 @@ void func_ov014_02202fe8(Ov014Act_02201b94 *self) {
             v.z = 0x1000;
             v.x = zero;
             v.y = zero;
-            func_01ffc9fc(&v, &v, self->rot_y);
+            Vec_RotateY(&v, &v, self->rot_y);
             VEC_Add(&tp, &v, &v);
             diff.x = v.x - self->pos.x;
             diff.y = v.y - self->pos.y;
@@ -3962,7 +3962,7 @@ extern "C" {
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void *SndMgr_PlayAtPitch(void *a, s32 b, VecFx32 *c, s32 d);
 extern s32 Ov003_CountActorsOfKind(s32 a);
-extern void func_01ffc9fc(VecFx32 *a, VecFx32 *b, u16 ang);
+extern void Vec_RotateY(VecFx32 *a, VecFx32 *b, u16 ang);
 extern void Actor_PitchToPos(Ov003Actor *self, VecFx32 *v, s32 a);
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014eDesc *d, VecFx32 *pos, u16 *rot, u16 a);
 extern void func_ov000_0219bebc(Ov003Actor *a, s32 b);
@@ -4018,7 +4018,7 @@ static inline void Ov014e_Target(Ov003Actor *self, s32 n, VecFx32 &v) {
     v.y = 0x4719a - self->pos.y;
     v.z = 0xf000 - self->pos.z;
     v.y += 0x1000;
-    func_01ffc9fc(&v, &v, (u16)(Rand_PlusMinus(n) * 0xb6));
+    Vec_RotateY(&v, &v, (u16)(Rand_PlusMinus(n) * 0xb6));
     VEC_Add(&v, &self->pos, &v);
     self->unk_84 = v;
 }
@@ -4038,7 +4038,7 @@ static inline Ov003Actor *Ov014e_SpawnAt(Ov003Actor *self, u16 kind, const VecFx
     Ov014e_Spawn(&d, kind);
     VecFx32 w = *off;
     Ov014e_RotX2(&w, &w, self->rot_x);
-    func_01ffc9fc(&w, &w, self->rot_y);
+    Vec_RotateY(&w, &w, self->rot_y);
     VEC_Add(&self->pos, &w, &w);
     return Group_SpawnActor(data_ov000_021ccd64, &d, &w, &self->rot_x, 0xffff);
 }
@@ -4096,7 +4096,7 @@ void func_ov014_022049e8(Ov014Act_02201b94 *self) {
         r.y = self->rot_y;
         VecFx32 v = data_ov014_022165a0;
         Ov014e_RotX(&v, &v, self->rot_x);
-        func_01ffc9fc(&v, &v, self->rot_y);
+        Vec_RotateY(&v, &v, self->rot_y);
         EffectObj *e = Effect_SpawnId(0x66, &self->pos);
         e->SetRot(&r);
         e->AddPos(&v);
@@ -4124,7 +4124,7 @@ void func_ov014_022049e8(Ov014Act_02201b94 *self) {
             o.y = 0;
             o.z = -0x1800;
             Ov014e_RotX(&o, &o, self->rot_x);
-            func_01ffc9fc(&o, &o, self->rot_y);
+            Vec_RotateY(&o, &o, self->rot_y);
             VEC_Add(&self->pos, &o, &t);
         }
         self->unk_b8 = t;

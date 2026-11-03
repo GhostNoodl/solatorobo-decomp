@@ -11,8 +11,8 @@ extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
-void func_02041c5c(void *m, void *fn);
-void func_02041c20(void *m, s32 a, void *b);
+void TexObj_SetAllOamFuncs(void *m, void *fn);
+void TexObj_SetOamFuncArg(void *m, s32 a, void *b);
 void Obj02153c48_CreateText(void *node, void *a, s32 b, s32 c, s32 d);
 void func_ov000_0215a088(void *self);
 void *func_ov000_02159998(void *self, u16 *msg, void *arr, u16 *cnt);
@@ -98,9 +98,9 @@ void Lo021cb5a8_Setup(Lo021cb5a8 *self) {
     if (LoadModel9aac(self)) {
         TexObj_SelectImage(self->model, 0, 8);
         TexObj_SelectImage(self->model, 0, 2);
-        func_02041c5c(self->model, (void *)func_ov000_02159998);
-        func_02041c20(self->model, 8, self);
-        func_02041c20(self->model, 2, self);
+        TexObj_SetAllOamFuncs(self->model, (void *)func_ov000_02159998);
+        TexObj_SetOamFuncArg(self->model, 8, self);
+        TexObj_SetOamFuncArg(self->model, 2, self);
     }
     func_ov000_0215a088(self);
     fl = self->flags;

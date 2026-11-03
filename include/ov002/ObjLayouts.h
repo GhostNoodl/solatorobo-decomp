@@ -98,7 +98,7 @@ typedef struct Ov002Shape {
     u16 unk_6_10 : 6;
 } Ov002Shape;
 
-// Vtable data_ov002_021efeb8, the base of 021efe9c and 021efed4 (slot 0x08 func_ov002_021d7c04
+// Vtable data_ov002_021efeb8, the base of 021efe9c and 021efed4 (slot 0x08 Ov002Vt_021efeb8_Setup
 // fills 0x48..0x5c from the id at 0x48: kind, shape and its origin). The board (Obj021efe6c)
 // keeps its pieces in a list through next/prev.
 struct Obj021efeb8 : public VObj {

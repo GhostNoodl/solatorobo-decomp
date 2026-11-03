@@ -4,7 +4,7 @@
 
 extern "C" {
 
-BOOL func_01ffc4ec(VecFx32 *p, fx32 r, fx32 h) {
+BOOL Hit_PointInCylinder(VecFx32 *p, fx32 r, fx32 h) {
     BOOL ret = FALSE;
 
     if (HitInCylinder(p, r, h)) {
@@ -33,7 +33,7 @@ BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h) {
 
 // h is a const parameter: the read through the const lvalue is not copy-propagated to its
 // use, so h is loaded from the stack where the cylinder test starts, as in the target.
-BOOL func_01ffc624(VecFx32 *p, const VecFx32 *trans, u16 *rot, fx32 r, const fx32 h) {
+BOOL Hit_PointInRotCylinder(VecFx32 *p, const VecFx32 *trans, u16 *rot, fx32 r, const fx32 h) {
     MtxFx43 m;
     VecFx32 v;
     MtxFx43 tmp;

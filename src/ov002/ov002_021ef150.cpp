@@ -127,7 +127,7 @@ u32 func_ov002_021e4c30(int which);
 u32 Ov002LevelTable_GetLevel(Ov002LevelTable *self, s32 val);
 void func_ov000_021c3af4(Ov002RowList *self);
 void ListRow_Init(ListRow *self);
-void func_ov000_021c2bb0(ListRowGauge *self);
+void ListRowGauge_Init(ListRowGauge *self);
 void func_ov000_021c2c0c(ListRowGauge *self, void *a);
 void LoBase021ccb54_021ccbe0_AppendRow(void *list, void *item);
 BOOL func_ov002_021d2390(UiObj *self, ListRow *arg);
@@ -187,7 +187,7 @@ void Task021ef99c_Start(Task021ef99c *self) {
             *(VFunc **)q = data_ov002_021ef684;
             ListRow_Init(q);
             *(VFunc **)q = data_ov000_021cc9f8;
-            func_ov000_021c2bb0(q);
+            ListRowGauge_Init(q);
         }
         q->index = i;
         func_ov000_021c2c0c(q, self->unk_4c[i].label);
@@ -377,7 +377,7 @@ void Task021ef99c_Draw(Task021ef99c *self) {
     }
 }
 
-Task021ef91c *func_ov002_021d2f64(void) {
+Task021ef91c *Task021ef91c_New(void) {
     Task021ef91c *p = (Task021ef91c *)Heap_Alloc(0xd0);
     if (p != NULL) {
         TaskBase_ctor(p);
@@ -406,7 +406,7 @@ void Ov002StrTable_Load(Ov002StrTable *self, u8 *src);
 char *Ov002StrTable_GetLabel(Ov002StrTable *self, u32 idx);
 char *Ov002StrTable_GetDesc(Ov002StrTable *self, u32 idx);
 void ListRow_Init(ListRow *self);
-void func_ov000_021c37bc(ListRowText *self);
+void ListRowText_Init(ListRowText *self);
 void func_ov000_021c6140(TextList *self);
 void List021c6474_Append(TextList *self, ListRow *row);
 
@@ -484,7 +484,7 @@ void Task021ef91c_Start(Task021ef91c *self) {
             *(VFunc **)q = data_ov002_021ef684;
             ListRow_Init(q);
             *(VFunc **)q = data_ov000_021cca58;
-            func_ov000_021c37bc(q);
+            ListRowText_Init(q);
         }
         q->unk_38 = Ov002StrTable_GetLabel(&self->unk_ac, i);
         q->unk_34 = Ov002StrTable_GetDesc(&self->unk_ac, i);

@@ -81,7 +81,7 @@ void func_ov002_021cceb4(Unk021cceb4 *self) {
 void func_ov002_021cd068(void *self) {
 }
 
-Task021ef530 *func_ov002_021cd06c(void) {
+Task021ef530 *Task021ef530_New(void) {
     Task021ef530 *p = (Task021ef530 *)Heap_Alloc(sizeof(Task021ef530));
     if (p != NULL) {
         Task_021cd06c_ctor(p);
@@ -104,8 +104,8 @@ int Task021ef530_IsLoaded(void) {
 extern "C" {
 extern VFunc data_ov000_021cadcc[];
 extern VFunc data_ov000_021cb920[];
-void func_0204aab0(SndQueue *p);
-void func_ov000_021547e8(void *a, void *b, const char *c, int d);
+void SndQueue_Push_0204aab0(SndQueue *p);
+void UiList_SetMarkModel(void *a, void *b, const char *c, int d);
 BOOL func_020624d8(void);
 BOOL func_ov000_02188dfc(void);
 void Buffer0216f144_Init(void *p);
@@ -123,7 +123,7 @@ void Task021ef530_Start(Task021ef530 *self) {
             if (mm->unk_06 != 0xffff || mm->unk_04 != 13) {
                 if (mm->unk_02 != 10 && mm->unk_02 != 0) {
                     if (mm->unk_06 != 0xffff) {
-                        func_0204aab0(mm);
+                        SndQueue_Push_0204aab0(mm);
                     }
                     mm->unk_02 = 1;
                 } else {
@@ -195,7 +195,7 @@ void Task021ef530_Start(Task021ef530 *self) {
         VObj *mm = self->unk_40;
         mm->vfunc_a8(UiList_GetItemById(mm, self->unk_4c));
     }
-    func_ov000_021547e8(self->unk_40, data_0214b105, data_0208cb7c, 0xb);
+    UiList_SetMarkModel(self->unk_40, data_0214b105, data_0208cb7c, 0xb);
     self->unk_40->vfunc_08();
     self->unk_40->flags &= ~0x10;
     o = (UiObj *)Heap_Alloc(0x8c);

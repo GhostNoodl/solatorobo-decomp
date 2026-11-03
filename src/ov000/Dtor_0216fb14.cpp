@@ -45,7 +45,7 @@ void ListBuffer021cb940_Release(ListBuffer021cb940 *self) {
     HEAP_DELETE(VObj *, self->unk_70, p->vfunc_04());
     HEAP_DELETE(VObj *, self->unk_74, p->vfunc_04());
     HEAP_DELETE(Obj0216ad04 *, self->unk_78, func_ov000_0216ad34(p); Heap_Free(p));
-    HEAP_DELETE(LoTicker *, self->ticker, func_ov000_0216bf90(p); __cxa_vec_cleanup(p->res, 10, sizeof(LoTextHolder), (void (*)(void *))func_ov000_0217006c); Heap_Free(p));
+    HEAP_DELETE(LoTicker *, self->ticker, func_ov000_0216bf90(p); __cxa_vec_cleanup(p->res, 10, sizeof(LoTextHolder), (void (*)(void *))LoTextHolder_Dtor); Heap_Free(p));
     ListBuffer021cb940_Init(self);
 }
 

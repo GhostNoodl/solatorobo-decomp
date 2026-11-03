@@ -252,7 +252,7 @@ extern void *Ov003Vt_021f7cf4_Ctor(void *p);
 extern BOOL Ov003TickerSet_Init(void *p);
 extern BOOL Ov003StateMachine_Init(void *p);
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
-extern BOOL func_020621c4(void);
+extern BOOL Stage_UseScaledStats(void);
 
 static inline Ov010CamPreset *Ov010Cam_New(void) {
     Ov010CamPreset *o = (Ov010CamPreset *)Heap_Alloc(0x20);
@@ -352,7 +352,7 @@ void Ov010ActVt_02210154_Start(Ov010Obj02210154 *self) {
     Ov003StateMachine_AddState(self->unk_118, 1, self->unk_11c);
     self->model->visible = 0;
     self->target = ActorMgr_FindPlayer()->id;
-    if (func_020621c4()) {
+    if (Stage_UseScaledStats()) {
         Ov003Actor_ScaleStats(self, data_ov010_0220f0a0);
     }
     func_ov003_021cf400(1);
@@ -412,7 +412,7 @@ extern Robo021ca458 *ActorMgr_FindPlayer(void);
 extern void VEC_MultAdd(s32 a, const VecFx32 *b, const VecFx32 *c, VecFx32 *out);
 
 
-void func_ov010_02204b74(Ov010Cls *self) {
+void Ov010Obj02210154_RunState(Ov010Cls *self) {
     u32 i;
     Robo021ca458 *pl;
     s16 *p;
@@ -955,7 +955,7 @@ extern void Model0218fe1c_SetLoop(void *a);
 extern BOOL Model0218fe1c_IsAnimDone(void *p);
 extern void Actor_SendMsgU8(void *a, u16 b, s32 c);
 extern BOOL History_SetState(void *a, s32 b, s32 c);
-extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
+extern void Vec_RotateY(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *o);
 extern void func_ov010_0220de4c(void *p, u8 a);
 extern void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
@@ -988,7 +988,7 @@ void Ov010Obj02210154_StateShoot(Ov010Obj02210154 *self) {
         if (self->model->anim_state != 3) {
             return;
         }
-        res = func_02070558(self->kind);
+        res = Tbl_GetActorParam(self->kind);
         ent = res != NULL ? &res->spawn : NULL;
         if (ent == NULL || ent->id == 0xffff) {
             self->fsm->st = 4;
@@ -999,7 +999,7 @@ void Ov010Obj02210154_StateShoot(Ov010Obj02210154 *self) {
             v.x = ((s16)m->unk_c6) << 4;
             v.y = ((s16)m->unk_c8) << 4;
             v.z = ((s16)m->unk_ca) << 4;
-            func_01ffc9fc(&v, &v, self->rot_y);
+            Vec_RotateY(&v, &v, self->rot_y);
             VEC_Add(&v, &self->pos, &v);
             o = Ov003Actor_SpawnChild(self, 0x4818, &v, &self->rot_x, tgt);
             if (o != NULL) {
@@ -1540,7 +1540,7 @@ void Ov010Obj02210154_SetFlagsF1F2(Ov010Obj02210154 *self) {
     self->unk_f1 = 1;
 }
 
-void func_ov010_02206f64(Ov010Obj02210154 *self) {
+void Ov010Obj02210154_State28(Ov010Obj02210154 *self) {
     self->unk_f2 = 1;
     if (self->fsm->st != 0) {
         return;
@@ -1557,7 +1557,7 @@ static inline u16 Ov010_GetState(const ActorSub40 *state) {
     return state->st;
 }
 
-void func_ov010_02206fd0(Ov010Obj02210154 *self) {
+void Ov010Obj02210154_State29(Ov010Obj02210154 *self) {
     ActorSub40 *m = self->fsm;
     self->unk_f2 = 1;
     if (Ov010_GetState(m) != 0) {
@@ -1567,7 +1567,7 @@ void func_ov010_02206fd0(Ov010Obj02210154 *self) {
     Ov003StateMachine_Leave(self->unk_118);
 }
 
-void func_ov010_02207004(Ov010Obj02210154 *self) {
+void Ov010Obj02210154_State2a(Ov010Obj02210154 *self) {
     self->unk_f2 = 1;
     if (self->fsm->st == 0) {
         Ov010Coll_SetHandler(&self->coll, self->unk_114);
@@ -1579,7 +1579,7 @@ void func_ov010_02207004(Ov010Obj02210154 *self) {
     }
 }
 
-void func_ov010_02207064(Ov010Obj02210154 *self) {
+void Ov010Obj02210154_State2b(Ov010Obj02210154 *self) {
     ActorSub40 *m = self->fsm;
     switch (m->st) {
     case 0: {
@@ -1633,7 +1633,7 @@ static inline void Ov010e_PolarVec(VecFx32 *v, s32 r, u16 ang) {
     MTX_MultVec33(v, &m, v);
 }
 
-void func_ov010_022071a0(Ov010Obj02210154 *self) {
+void Ov010Obj02210154_State2c(Ov010Obj02210154 *self) {
     switch (self->fsm->st) {
     case 0:
         self->fsm->st = 0x10;

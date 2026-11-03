@@ -37,7 +37,7 @@ static inline BOOL IsB16(Obj0216a908 *o) {
     return (*(u32 *)&o->flags & 0x10000) ? TRUE : FALSE;
 }
 
-void func_ov000_0216a908(Obj0216a908 *o) {
+void Lo021cb744_PostUpdate(Obj0216a908 *o) {
     s32 t;
     s32 v;
     if (o->state == 1 || o->state == 8 || o->state == 3 || o->state == 10) {

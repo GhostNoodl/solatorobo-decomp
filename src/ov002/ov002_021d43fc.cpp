@@ -226,12 +226,12 @@ void *Ov002Vt_021ef684_Dtor(void *self) {
     return self;
 }
 
-void *func_ov002_021d4cd4(void *self) {
+void *Ov002Vt_021ef674_DtorDelete(void *self) {
     Heap_Free(self);
     return self;
 }
 
-Task021efba4 *func_ov002_021d4ce8(void) {
+Task021efba4 *Task021efba4_New(void) {
     Task021efba4 *p = (Task021efba4 *)Heap_Alloc(0x40);
     if (p != NULL) {
         TaskBase_ctor(p);
@@ -334,7 +334,7 @@ void Task021efba4_Draw(Task021efba4 *self) {
     func_ov002_021e2528(self->hud);
 }
 
-Task021efb24 *func_ov002_021d5070(void) {
+Task021efb24 *Task021efb24_New(void) {
     Task021efb24 *p = (Task021efb24 *)Heap_Alloc(0x3c);
     if (p != NULL) {
         TaskBase_ctor(p);
@@ -396,7 +396,7 @@ void Task021efb24_Draw(Task021efb24 *p) {
     }
 }
 
-Task021efc24 *func_ov002_021d5230(void) {
+Task021efc24 *Task021efc24_New(void) {
     Task021efc24 *p = (Task021efc24 *)Heap_Alloc(0x78);
     if (p != NULL) {
         TaskBase_ctor(p);
@@ -449,7 +449,7 @@ BOOL Task021efc24_List50OnCursor(UiList *self, UiListItem *ev) {
             ModelViewer_SetModel(owner->unk_58, info->def.name[0], info->def.name[1], data_ov002_021efae1,
                                 info->def.unk_1c, data_ov002_021efaeb, info->def.unk_18, 0x1000);
         }
-        func_ov000_021c95ac(owner->unk_60, id);
+        Obj021c95ac_Init_021c95ac(owner->unk_60, id);
         t = (Task021efba4 *)Task_FindById(0x1b);
         if (t != NULL) {
             if (t->hud != NULL) {

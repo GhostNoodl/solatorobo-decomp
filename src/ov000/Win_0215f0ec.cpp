@@ -9,7 +9,7 @@ extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
-void func_02041c20(void *model, s32 a, void *b);
+void TexObj_SetOamFuncArg(void *model, s32 a, void *b);
 
 static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
@@ -45,7 +45,7 @@ void UiLabel_SetText(UiLabel *self, u32 text) {
     }
     self->model->flags |= 2;
     TexObj_SelectImage((Model *)self->model, 0, e->part);
-    func_02041c20(self->model, e->part, self);
+    TexObj_SetOamFuncArg(self->model, e->part, self);
     win = TextWin_New();
     self->text = win;
     win->font = 4;

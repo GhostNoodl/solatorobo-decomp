@@ -15,7 +15,7 @@ void Obj0218c208_AddPoint(Group *self, const VecFx32 *v, u16 id) {
 }
 
 // Registers the field camera as this frame's view.
-void func_ov000_0218c25c(Group *self) {
+void Group_AddCamView(Group *self) {
     FieldCam *cam = &data_ov000_021ccd54->cam;
     VecFx32 v;
     u16 id;

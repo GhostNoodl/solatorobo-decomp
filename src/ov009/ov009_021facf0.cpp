@@ -82,7 +82,7 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *model, s16 a);
 extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
-extern void func_01ffc9fc(VecFx32 *out, VecFx32 *a, u16 b);
+extern void Vec_RotateY(VecFx32 *out, VecFx32 *a, u16 b);
 static inline Ov003Actor *Ov009_FindActor5(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
@@ -153,7 +153,7 @@ void Ov009ActVt_022164a0_StateAttack2(Ov009ActVt_022164a0 *self) {
                     v.x = 0;
                     v.y = 0x2000;
                     a = self->rot_y + 0xe800 + Rand_UpTo(0x3000);
-                    func_01ffc9fc(&v, &v, a);
+                    Vec_RotateY(&v, &v, a);
                     VEC_Add(&v, &self->pos, &v);
                     o->pos.x = v.x;
                     o->pos.y = v.y;

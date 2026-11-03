@@ -22,7 +22,7 @@ BOOL ResMgr_IsArchiveLoaded(LoFadeP *a, LoFadeP *b, s32 c);
 BOOL StageRes_IsAllLoaded(void *p);
 s32 func_ov000_02180838(void *a);
 void Obj0215fdfc_SetEntry(ObjBase021cac0c_021cb6f0 *self, s32 a, const void *b);
-void func_02041c5c(void *obj, void *value);
+void TexObj_SetAllOamFuncs(void *obj, void *value);
 void func_02041c18(void *obj, s32 value);
 u8 *Param_GetEntry(u16 id);
 
@@ -48,7 +48,7 @@ static inline BOOL LoResReady(void) {
 
 static inline u32 LoIdKind(u32 id) { return (id << 4) >> 16; }
 static inline u32 LoIdKind2(u16 id) { u32 r = (u32)(id << 4) >> 16; return r; }
-void func_ov000_0216906c(Lo021cb840 *self) {
+void Lo021cb840_PostUpdate(Lo021cb840 *self) {
     s32 s = self->unk_04;
     if (s == 1 || s == 8 || s == 3 || s == 0xa) {
         if (self->unk_0c_1 ? TRUE : FALSE) {

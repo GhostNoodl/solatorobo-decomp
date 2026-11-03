@@ -56,7 +56,7 @@ static inline void PlaySe021a2670(s32 id, void *pos) {
     }
 }
 
-void func_ov000_021a2670(Robo021ca458 *self) {
+void Robo021ca458_State03(Robo021ca458 *self) {
     u16 thr = 0;
     s32 kind;
     void *anm;

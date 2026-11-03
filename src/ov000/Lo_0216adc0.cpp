@@ -12,7 +12,7 @@ extern "C" {
 
 void *ActorMgr_FindPlayer(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
-s32 func_02043d84(void *a);
+s32 Gfx3DState_NextPolyIdB(void *a);
 
 void func_ov000_0216adc0(Obj0216ad04 *self, s32 a, s32 b) {
     if (self->kind == a) {

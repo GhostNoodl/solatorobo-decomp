@@ -58,24 +58,24 @@ void func_0206298c(void);
 SceneCmd *func_ov000_02188ba0(SceneCmd *self);
 void func_ov000_021b4eec(void);
 void ActorMgr_Create(void);
-void *func_ov000_0218bb34(void *p);
+void *Group_Init_0218bb34(void *p);
 void EffectMgr_Create(void);
 void func_ov000_021bc274(void);
 void MessageQueue_Init(void *p);
 void func_ov000_02171464(void *p);
-void func_02058d10(s32 a);
-void func_02058f2c(void);
-void func_0205983c(void);
+void DataRes1530_Create(s32 a);
+void DataRes152c_Create(void);
+void ObjPool_Create(void);
 void MsgRes_Create(void);
 void LangRes2_Create(void);
 void LangData_CreateRes(void);
-void func_0205b1b4(void);
+void StageRes_ResetSlots(void);
 void GfxSys_SetFadePlanes(s32 a, s32 b);
 void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 void func_0203fc54(void);
-void func_020598a8(void);
-void func_02058fe4(void);
-void func_02058e18(void);
+void ObjPool_Delete(void);
+void DataRes152c_Delete(void);
+void DataRes1530_Delete(void);
 void TaskHost_Destroy(void);
 void func_ov000_0214bc10(void);
 void MsgRes_Delete(void);
@@ -92,12 +92,12 @@ void EffectMgr_Delete(void);
 void *func_ov000_02189b14(FieldCam *self);
 void func_02062a24(void);
 s32 PauseNode_IsUpdatePaused(void *p, s32 a);
-void func_0205a358(void *p);
+void ObjPool_Update(void *p);
 void func_ov000_02182590(SceneStage *self);
-BOOL func_0205b4ac(void);
+BOOL StageRes_RunSlots(void);
 s32 func_ov000_021bc644(FieldFade *p);
 s32 func_ov000_02189194(SceneCmd *self);
-void func_ov000_0218c25c(void *p);
+void Group_AddCamView(void *p);
 void func_ov000_0218be54(void *p);
 void ActorMgr_Update(ActorMgr *p);
 void EffectMgr_Update(void *p);
@@ -130,7 +130,7 @@ void func_ov000_021814dc(void) {
     if (data_ov000_021ccd64 == NULL) {
         void *p = Heap_Alloc(0x48);
         if (p != NULL) {
-            p = func_ov000_0218bb34(p);
+            p = Group_Init_0218bb34(p);
         }
         data_ov000_021ccd64 = p;
     }
@@ -147,13 +147,13 @@ void func_ov000_021814dc(void) {
         }
         data_ov000_021ccd30 = obj;
     }
-    func_02058d10(0);
-    func_02058f2c();
-    func_0205983c();
+    DataRes1530_Create(0);
+    DataRes152c_Create();
+    ObjPool_Create();
     MsgRes_Create();
     LangRes2_Create();
     LangData_CreateRes();
-    func_0205b1b4();
+    StageRes_ResetSlots();
     GfxSys_SetFadePlanes(0x3f, -1);
     GfxSys_StartFadeOut(0, 1, -1);
 }
@@ -176,9 +176,9 @@ void func_ov000_02181624(void) {
     data_ov000_021ccd5c = (VoidFn)zero;
     data_ov000_021ccd58 = (VoidFn)zero;
     data_ov000_021ccd60 = (VoidFn)zero;
-    func_020598a8();
-    func_02058fe4();
-    func_02058e18();
+    ObjPool_Delete();
+    DataRes152c_Delete();
+    DataRes1530_Delete();
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     v = data_ov000_021ccd30;
@@ -242,9 +242,9 @@ void func_ov000_021817d4(void) {
     if (PauseNode_IsUpdatePaused(SceneCmd_Get()->pause, 1) != 0) {
         return;
     }
-    func_0205a358(data_02149f0c);
+    ObjPool_Update(data_02149f0c);
     func_ov000_02182590(&SceneCmd_Get()->stage);
-    func_0205b4ac();
+    StageRes_RunSlots();
     r = func_ov000_021bc644(data_ov000_021ccd70);
     if (func_ov000_02189194(SceneCmd_Get()) != 0 && r != 0) {
         SceneCmd_Get()->unk_06 = 0;
@@ -257,7 +257,7 @@ void func_ov000_021817d4(void) {
         if (data_ov000_021ccd6c != NULL) {
             FieldMgr_Update(data_ov000_021ccd6c);
         }
-        func_ov000_0218c25c(data_ov000_021ccd64);
+        Group_AddCamView(data_ov000_021ccd64);
         if (data_ov000_021ccd64 != NULL) {
             func_ov000_0218be54(data_ov000_021ccd64);
         }
@@ -277,7 +277,7 @@ void func_ov000_021817d4(void) {
 
 void func_ov000_0218190c(void) {
     if (data_ov000_021ccd6c != NULL) {
-        func_ov000_021b53a8(data_ov000_021ccd6c);
+        FieldMgr_DrawProps(data_ov000_021ccd6c);
     }
     if (data_ov000_021ccd68 != NULL) {
         ActorMgr_Draw(data_ov000_021ccd68);
@@ -551,7 +551,7 @@ typedef struct {
 extern "C" {
 
 extern Data02fe1534 data_02fe1534;
-s32 func_0205aa98(SceneScript *self, s32 a);
+s32 StageRes_Run(SceneScript *self, s32 a);
 
 s32 func_ov000_02181efc(SceneScript *self, s32 a) {
     s32 r;
@@ -560,7 +560,7 @@ s32 func_ov000_02181efc(SceneScript *self, s32 a) {
     d->unk_0a = self->unk_ca;
     d->unk_0c = self->unk_cc;
     d->unk_0e = self->unk_ce;
-    r = func_0205aa98(self, a);
+    r = StageRes_Run(self, a);
     self->unk_c8 = d->unk_08;
     self->unk_ca = d->unk_0a;
     self->unk_cc = d->unk_0c;
@@ -1283,8 +1283,8 @@ extern Obj02097e48 *data_02097e48;
 extern Dtcm02fe1534 data_02fe1534;
 extern void *data_02097e4c;
 
-void func_02058fe4(void);
-void func_02058f2c(void);
+void DataRes152c_Delete(void);
+void DataRes152c_Create(void);
 void *Heap_Alloc(u32 size);
 void Buffer0216f144_Init(Task *self);
 void ListBuffer021cb940_Init(Task *self);
@@ -1323,8 +1323,8 @@ s32 SceneCmd_Run02(SceneCmd *self) {
     switch (self->step) {
     case 0:
         if (mode == 1 || mode == 2 || !HasObj()) {
-            func_02058fe4();
-            func_02058f2c();
+            DataRes152c_Delete();
+            DataRes152c_Create();
         }
         self->step++;
         return 0;
@@ -1518,7 +1518,7 @@ void func_ov000_0214bb5c(void);
 void func_ov000_0214baa8(void);
 BOOL MessageQueue_GetById(MessageQueue *self, s32 id);
 BOOL ListBuffer021cb940_HasDialog(ListBuffer021cb940 *self);
-void func_ov000_02172390(void *mgr, s32 a, void *b);
+void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
@@ -1614,7 +1614,7 @@ void func_ov000_0214bb5c(void);
 void func_ov000_0214baa8(void);
 BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
-void func_ov000_02172390(void *mgr, s32 a, void *b);
+void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
@@ -1799,7 +1799,7 @@ void func_ov000_0214bb5c(void);
 void func_ov000_0214baa8(void);
 BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
-void func_ov000_02172390(void *mgr, s32 a, void *b);
+void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
@@ -2135,7 +2135,7 @@ void Group_RefreshAll(void *p);
 void ActorMgr_DestroyAll(ActorMgr *p);
 void MessageQueue_RemoveAll(Mgr021ccd30 *p, s32 a, s32 b, s32 c);
 void Ov003_LoadKindOverlay(void);
-void func_ov000_0218c25c(void *p);
+void Group_AddCamView(void *p);
 void func_ov000_0218be54(void *p);
 BOOL ActorMgr_IsReady(ActorMgr *p);
 void func_ov000_0216f844(Task118 *p, s32 a);
@@ -2310,7 +2310,7 @@ s32 SceneCmd_Run0a(SceneCmd *self) {
                 func_ov000_021b5dc0(data_ov000_021ccd6c);
                 func_ov000_021b628c(data_ov000_021ccd6c);
                 Ov003_LoadKindOverlay();
-                func_ov000_0218c25c(data_ov000_021ccd64);
+                Group_AddCamView(data_ov000_021ccd64);
                 if (data_ov000_021ccd64 != NULL) {
                     func_ov000_0218be54(data_ov000_021ccd64);
                 }
@@ -2433,7 +2433,7 @@ extern s32 data_02097d78[5];
 Robo021ca458 *ActorMgr_FindPlayer(void);
 VObj *Robo021ca458_Ctor(void *p);
 void *Heap_Alloc(u32 size);
-s32 func_0206ffa0(s32 a);
+s32 Tbl_GetText(s32 a);
 void Actor_JoinGroup(void *self, u16 id, u16 kind, s32 arg);
 BOOL func_ov000_0219c86c(Robo021ca458 *self);
 
@@ -2475,7 +2475,7 @@ s32 SceneCmd_Run0b(SceneCmd *self) {
             if (obj != NULL) {
                 obj = Robo021ca458_Ctor(obj);
             }
-            Actor_JoinGroup(obj, 0x1000, 0x1000, func_0206ffa0(0x1000));
+            Actor_JoinGroup(obj, 0x1000, 0x1000, Tbl_GetText(0x1000));
             obj->vfunc_04();
             Wake0219bf90();
         } else {
@@ -2552,7 +2552,7 @@ void func_ov000_0214bb5c(void);
 void func_ov000_0214baa8(void);
 BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
-void func_ov000_02172390(void *mgr, s32 a, void *b);
+void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
@@ -2658,7 +2658,7 @@ void func_ov000_0214bb5c(void);
 void func_ov000_0214baa8(void);
 BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
-void func_ov000_02172390(void *mgr, s32 a, void *b);
+void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
@@ -2757,7 +2757,7 @@ void func_ov000_0214bb5c(void);
 void func_ov000_0214baa8(void);
 BOOL MessageQueue_GetById(MessageQueue *self, s32 id);
 BOOL ListBuffer021cb940_HasDialog(ListBuffer021cb940 *self);
-void func_ov000_02172390(void *mgr, s32 a, void *b);
+void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
@@ -2802,7 +2802,7 @@ static inline BOOL MgrBusy(void) {
 s32 func_ov000_02184a1c(SceneCmd *self, s32 arg) {
     switch (self->step) {
     case 0:
-        func_ov000_02172390(data_ov000_021ccd30, 0, MsgRes_GetString(data_02149ef8, func_02061d54(0x25)));
+        MessageQueue021cb980_Push0f(data_ov000_021ccd30, 0, MsgRes_GetString(data_02149ef8, func_02061d54(0x25)));
         self->step++;
     case 1:
         if (MgrBusy()) {
@@ -2888,7 +2888,7 @@ void func_ov000_0214bb5c(void);
 void func_ov000_0214baa8(void);
 BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
-void func_ov000_02172390(void *mgr, s32 a, void *b);
+void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
@@ -3026,7 +3026,7 @@ void func_ov000_0214bb5c(void);
 void func_ov000_0214baa8(void);
 BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
-void func_ov000_02172390(void *mgr, s32 a, void *b);
+void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
@@ -3137,7 +3137,7 @@ void TaskHost_Create(s32 a, s32 b);
 void TaskHost_Destroy(void);
 u16 func_02061d54(s32 a);
 void *MsgRes_GetString(void *p, s32 a);
-void func_ov000_02172390(void *mgr, s32 a, void *b);
+void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
 u16 func_02062834(void);
@@ -3204,7 +3204,7 @@ s32 SceneCmd_Run10(SceneCmd *self) {
     case 2:
         switch (self->step) {
         case 0:
-            func_ov000_02172390(data_ov000_021ccd30, 0, MsgRes_GetString(data_02149ef8, func_02061d54(0x28)));
+            MessageQueue021cb980_Push0f(data_ov000_021ccd30, 0, MsgRes_GetString(data_02149ef8, func_02061d54(0x28)));
             self->step++;
             return 0;
         case 1:
@@ -3301,13 +3301,13 @@ void *Heap_Alloc(u32 size);
 void Buffer0216f144_Init(Task021854d4 *self);
 void ListBuffer021cb940_Init(Task021854d4 *self);
 void *MessageQueue_AddBuffer_0216f398(Mgr021854d4 *mgr, Task021854d4 *task, s32 a, Mgr021854d4 *b);
-void func_ov000_02172240(void *mgr, s32 a, s32 b);
+void MessageQueue021cb980_Push07(void *mgr, s32 a, s32 b);
 
 extern Mgr021854d4 *data_ov000_021ccd30;
-void func_ov000_02172218(Mgr021854d4 *p);
+void MessageQueue021cb980_Push06(Mgr021854d4 *p);
 
 void func_ov000_0218547c(void *state, u16 arg, void *res, u16 id) {
-    func_ov000_02172218(data_ov000_021ccd30);
+    MessageQueue021cb980_Push06(data_ov000_021ccd30);
     CmdObj_Push(SceneCmd_Get(), 0x11, 0);
 }
 
@@ -3325,7 +3325,7 @@ void SceneCmd_Push12(SceneCmd *self, s32 a, s32 b) {
         MessageQueue_AddBuffer_0216f398(mgr, task, 0x10000, mgr);
         mgr->unk_11c->unk_04 |= 0x10;
     }
-    func_ov000_02172240(data_ov000_021ccd30, a, b);
+    MessageQueue021cb980_Push07(data_ov000_021ccd30, a, b);
     CmdObj_Push(self, 0x12, 0);
 }
 
@@ -3637,7 +3637,7 @@ void func_ov000_021857e0(void);
 void func_ov000_021857ec(void);
 void func_ov000_021857f8(void);
 void func_ov002_021e8f04(s32 a);
-void func_0204a2a8(void *p, s32 a, s32 b);
+void SndMgr_SetStrmVolume_0204a2a8(void *p, s32 a, s32 b);
 
 static inline void ClearCallbacks(void) {
     if (data_ov000_021ccd5c != NULL) {
@@ -3807,7 +3807,7 @@ s32 SceneCmd_Run14to1a(SceneCmd *self) {
                         p->unk_80 = 0x88;
                         p->unk_7c = 0;
                     }
-                    func_0204a2a8(data_02097e4c, 0, 0);
+                    SndMgr_SetStrmVolume_0204a2a8(data_02097e4c, 0, 0);
                     t = 1;
                 }
             } else {
@@ -4205,7 +4205,7 @@ void func_020623e0(void);
 void func_ov000_02182590(SceneStage *self);
 u16 func_02061d54(s32 a);
 void *MsgRes_GetString(void *p, s32 a);
-void func_ov000_02172390(void *mgr, s32 a, void *b);
+void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 BOOL MessageQueue_GetById(Mgr021ccd30 *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
 u16 func_02062834(void);
@@ -4246,7 +4246,7 @@ s32 SceneCmd_Run1d(SceneCmd *self) {
             CmdObj_Done(self);
             return 1;
         }
-        func_ov000_02172390(data_ov000_021ccd30, 0, MsgRes_GetString(data_02149ef8, func_02061d54(0x19)));
+        MessageQueue021cb980_Push0f(data_ov000_021ccd30, 0, MsgRes_GetString(data_02149ef8, func_02061d54(0x19)));
         self->step++;
         break;
     case 2:
@@ -4575,7 +4575,7 @@ void func_ov000_0214bb5c(void);
 void func_ov000_0214baa8(void);
 BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
-void func_ov000_02172390(void *mgr, s32 a, void *b);
+void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
@@ -5030,7 +5030,7 @@ void func_ov000_0214bb5c(void);
 void func_ov000_0214baa8(void);
 BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
-void func_ov000_02172390(void *mgr, s32 a, void *b);
+void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
@@ -5238,7 +5238,7 @@ void func_ov000_0214bb5c(void);
 void func_ov000_0214baa8(void);
 BOOL MessageQueue_GetById(void *mgr, s32 a);
 BOOL ListBuffer021cb940_HasDialog(void *p);
-void func_ov000_02172390(void *mgr, s32 a, void *b);
+void MessageQueue021cb980_Push0f(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
@@ -5381,8 +5381,8 @@ void ActorMgr_DestroyAll(ActorMgr *p);
 void MessageQueue_FreeBuffer(Mgr021ccd30 *mgr, void *task);
 void func_0206222c(void);
 void SceneStage_FreeScripts(SceneStage *self);
-void func_0205b1b4(void);
-void func_02059974(void *p);
+void StageRes_ResetSlots(void);
+void ObjPool_Clear(void *p);
 void Scene_SetSubOverlay_0204b270(void *p, s32 a, s32 b);
 
 static inline BOOL IsIdle(s32 i) {
@@ -5534,8 +5534,8 @@ s32 SceneCmd_Run26(SceneCmd *self) {
             if (mode == 2) {
                 func_0206222c();
                 SceneStage_FreeScripts(&self->stage);
-                func_0205b1b4();
-                func_02059974(data_02149f0c);
+                StageRes_ResetSlots();
+                ObjPool_Clear(data_02149f0c);
                 Scene_SetSubOverlay_0204b270(data_02149ef0, -1, 0);
             }
             CmdObj_Done(self);

@@ -64,7 +64,7 @@ void NNS_G3dGeFlushBuffer(void);
 int G3X_GetBoxTestResult(s32 *in);
 void NNS_G3dDraw(void *obj);
 void NNS_G3dRenderObjSetInitFunc(void *obj, void *func);
-void func_02043578(void *light);
+void GfxLight_Apply_02043578(void *light);
 
 static inline void G3_Scale(s32 x, s32 y, s32 z) {
     s32 v[3];
@@ -160,7 +160,7 @@ BOOL Model021903b4_Draw(Model021903b4 *self) {
             NNSi_G3dModifyMatFlag(self->mdl, TRUE, 0x200);
             NNSi_G3dModifyMatFlag(self->mdl, TRUE, 0x400);
         }
-        func_02043578(&data_02097d48->unk_8b0[0x8c]);
+        GfxLight_Apply_02043578(&data_02097d48->unk_8b0[0x8c]);
     }
     return drawn;
 }

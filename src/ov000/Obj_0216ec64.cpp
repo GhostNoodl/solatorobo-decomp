@@ -46,11 +46,11 @@ VObj *Lo021cb744_DtorDelete(VObj *self) {
     return self;
 }
 
-BOOL func_ov000_0216ecb0(void) {
+BOOL Lo021cb744_IsLoaded(void) {
     return TRUE;
 }
 
-void func_ov000_0216ecb8(void) {
+void Lo021cb744_Load(void) {
 }
 
 VObj *Lo021cb744_Dtor(VObj *self) {
@@ -70,11 +70,11 @@ VObj *Lo021cb798_DtorDelete(VObj *self) {
     return self;
 }
 
-BOOL func_ov000_0216ed4c(void) {
+BOOL Lo021cb798_IsLoaded(void) {
     return TRUE;
 }
 
-void func_ov000_0216ed54(void) {
+void Lo021cb798_Load(void) {
 }
 
 VObj *Lo021cb798_Dtor(VObj *self) {
@@ -94,11 +94,11 @@ VObj *Lo021cb7ec_DtorDelete(VObj *self) {
     return self;
 }
 
-BOOL func_ov000_0216ede8(void) {
+BOOL Lo021cb7ec_IsLoaded(void) {
     return TRUE;
 }
 
-void func_ov000_0216edf0(void) {
+void Lo021cb7ec_Load(void) {
 }
 
 VObj *Lo021cb7ec_Dtor(VObj *self) {
@@ -118,11 +118,11 @@ VObj *Lo021cb840_DtorDelete(VObj *self) {
     return self;
 }
 
-BOOL func_ov000_0216ee84(void) {
+BOOL Lo021cb840_IsLoaded(void) {
     return TRUE;
 }
 
-void func_ov000_0216ee8c(void) {
+void Lo021cb840_Load(void) {
 }
 
 VObj *Lo021cb840_Dtor(VObj *self) {
@@ -142,11 +142,11 @@ VObj *Lo021cb894_DtorDelete(VObj *self) {
     return self;
 }
 
-BOOL func_ov000_0216ef20(void) {
+BOOL Lo021cb894_IsLoaded(void) {
     return TRUE;
 }
 
-void func_ov000_0216ef28(void) {
+void Lo021cb894_Load(void) {
 }
 
 VObj *Lo021cb894_Dtor(VObj *self) {
@@ -166,11 +166,11 @@ VObj *Lo021cb6f0_DtorDelete(VObj *self) {
     return self;
 }
 
-BOOL func_ov000_0216efbc(void) {
+BOOL Lo021cb6f0_IsLoaded(void) {
     return TRUE;
 }
 
-void func_ov000_0216efc4(void) {
+void Lo021cb6f0_Load(void) {
 }
 
 VObj *Lo021cb6f0_Dtor(VObj *self) {

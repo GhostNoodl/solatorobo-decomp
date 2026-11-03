@@ -52,7 +52,7 @@ void func_ov000_0214c6b4(void *a, s32 b, void *c, int d);
 u16 func_02061d54(s32 a);
 s32 MsgRes_GetString(void *p, s32 id);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
-void func_02041cb4(void *a, int b);
+void TexObj_TickAnim(void *a, int b);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
 
 extern char data_ov008_021d04a7[];
@@ -73,14 +73,14 @@ BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 BOOL Model0218fe1c_SetAnim(void *a, const char *b, s32 c, s32 d);
 void Model0218fe1c_SetLoop(void *a);
 Ov008MdlAnm *Model0218fe1c_GetAnimCtrl(void *a, s32 b);
-void func_02041cf8(void *a, int b);
+void TexObj_StartAnim(void *a, int b);
 void func_02041c18(void *a, void *b);
-void func_02041c34(void *a, int b, void *f, int c);
-void func_02041c5c(void *a, void *f);
+void TexObj_SetOamFunc(void *a, int b, void *f, int c);
+void TexObj_SetAllOamFuncs(void *a, void *f);
 BOOL StageRes_Bind(void *p);
 s32 func_ov000_0214bc94(void);
 void TextWin_Init(TextWin *win);
-void func_0204aab0(void *p);
+void SndQueue_Push_0204aab0(void *p);
 void Shared_ClearMark(void);
 void *func_ov008_021cd26c(void);
 void *func_ov008_021cd3dc(void);
@@ -165,11 +165,11 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     TexObj_SetRes(m->unk_e8, (void *)m->unk_e4->v10());
     TexObj_SelectImage(m->unk_e8, 2, 0xffff);
     TexObj_SelectImage(m->unk_e8, 0, 0xffff);
-    func_02041cf8(m->unk_e8, 0);
+    TexObj_StartAnim(m->unk_e8, 0);
     m->unk_e8->unk_085 &= (u8)~4;
     m->unk_e8->unk_085 &= (u8)~1;
     func_02041c18(m->unk_e8, m);
-    func_02041c34(m->unk_e8, 2, (void *)func_ov008_021cd26c, 0);
+    TexObj_SetOamFunc(m->unk_e8, 2, (void *)func_ov008_021cd26c, 0);
 
     {
     Model *q;
@@ -206,7 +206,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     }
     m->unk_f0->flags |= 0x80000;
     MODEL_FLAGS(m->unk_f0)->alpha = 0x1e;
-    func_02041c5c(m->unk_f0, (void *)func_ov008_021cd3dc);
+    TexObj_SetAllOamFuncs(m->unk_f0, (void *)func_ov008_021cd3dc);
 
     c = (Ov008Caption *)Heap_Alloc(0x54);
     if (c != NULL) {
@@ -258,7 +258,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
         if (g->b0 && !(g->unk_06 == 0xffff && g->unk_04 == 0xc)) {
             if (g->unk_02 != 10 && g->unk_02 != 0) {
                 if (g->unk_06 != 0xffff) {
-                    func_0204aab0(g);
+                    SndQueue_Push_0204aab0(g);
                 }
                 g->unk_02 = 1;
             } else {

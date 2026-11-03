@@ -420,7 +420,7 @@ BOOL Effect3D_Load(Effect3D *e) {
         e->mdlFile = ResList_FindType4(arc, e->mdlName);
         e->anmFiles = ResList_FindType6(arc, e->anmName);
         if (e->mdlFile != NULL) {
-            func_0203ed04(e->mdlName, e->mdlFile->data);
+            G3dRes_SetupVram(e->mdlName, e->mdlFile->data);
         }
         e->unk_2c = 100;
     case 100:

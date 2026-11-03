@@ -53,7 +53,7 @@ public:
 };
 SIZE_ASSERT(Task021ef4b0, 0x4c);
 
-// Vtable data_ov002_021ef530, 0x50 bytes (func_ov002_021cd06c); its own Init (0x58) and Release (0x5c).
+// Vtable data_ov002_021ef530, 0x50 bytes (Task021ef530_New); its own Init (0x58) and Release (0x5c).
 class Task021ef530 : public Task {
 public:
     Model *unk_3c;

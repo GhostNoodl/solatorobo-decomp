@@ -21,7 +21,7 @@ void func_02070b98(s32 a, LoFadeP *out, s32 b, s32 c);
 BOOL ResMgr_IsArchiveLoaded(LoFadeP *a, LoFadeP *b, s32 c);
 BOOL StageRes_IsAllLoaded(void *p);
 u32 func_ov000_02180838(void *a);
-void func_02041c5c(void *obj, void *value);
+void TexObj_SetAllOamFuncs(void *obj, void *value);
 void func_02041c18(void *obj, s32 value);
 u8 *Param_GetEntry(u16 id);
 

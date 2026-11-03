@@ -28,8 +28,8 @@ extern "C" {
 
 extern ov006_Net021e5604 *data_02097e40;
 
-BOOL func_020463c8(ov006_Net021e5604 *net);
-void func_02044a0c(ov006_NetParam021e5604 *param);
+BOOL WH_StateInEndScan_020463c8(ov006_Net021e5604 *net);
+void WH_CalcBufferSizes_02044a0c(ov006_NetParam021e5604 *param);
 BOOL func_020464e0(ov006_Net021e5604 *net, int a, ov006_MenuData *data);
 void func_02045094(ov006_Net021e5604 *net);
 int Wh_GetError(ov006_Net021e5604 *net);
@@ -59,7 +59,7 @@ void func_ov006_021e5604(ov006_Unk021ec888 *self) {
             return;
         }
         if (data_02097e40->state == 2) {
-            func_020463c8(data_02097e40);
+            WH_StateInEndScan_020463c8(data_02097e40);
         }
         self->stateTime = 10;
         return;
@@ -78,7 +78,7 @@ void func_ov006_021e5604(ov006_Unk021ec888 *self) {
         net->param.unkA = 0x20;
         net->param.unk8 = 0x74;
         net->param.unkC = 1;
-        func_02044a0c(&net->param);
+        WH_CalcBufferSizes_02044a0c(&net->param);
         MI_CpuFill8(data_02097e40->buf, 0, 0x200);
         menu = data_ov006_021ec888;
         for (i = 0; i < 4; i++) {

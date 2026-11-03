@@ -59,7 +59,7 @@ static inline void Obj021c95ac_InitKind(Obj021c95ac *self, u32 kind) {
     self->unk_12 = 0;
 }
 
-void func_ov000_021c95ac(Obj021c95ac *self, u16 a) {
+void Obj021c95ac_Init_021c95ac(Obj021c95ac *self, u16 a) {
     Obj021c95ac_Init(self, a);
 }
 

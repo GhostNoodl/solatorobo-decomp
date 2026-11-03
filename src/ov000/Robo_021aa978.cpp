@@ -27,12 +27,12 @@ u16 FX_Atan2(s32 a, s32 b);
 BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s16 i, s32 j);
 void Field_ShakeCamera(u8 a, u8 b);
 void Actor_SendMsgU8(Actor *o, u16 id, s32 m);
-s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
+s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
 BOOL History_SetState(void *s, s32 a, s32 b);
 BOOL Model0218fe1c_IsAnimDone(void *a);
 void Model0218fe1c_SetAnimDelay(void *a, u16 b, s32 c);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, u16 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, u16 b);
 
 static inline Actor *FindActor021aa978(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;
@@ -188,7 +188,7 @@ void func_ov000_021aa978(Robo021ca458 *self) {
                 t.y = a->pos.y;
                 t.z = a->pos.z;
             }
-            if (func_01ffbd6c((VecFx32 *)((u8 *)self + 0x70), &t, -1, 0, 0, -1) != -0x1000) {
+            if (Hit_CastSegment((VecFx32 *)((u8 *)self + 0x70), &t, -1, 0, 0, -1) != -0x1000) {
                 t.x -= self->pos.x;
                 t.y -= self->pos.y;
                 t.z -= self->pos.z;

@@ -23,7 +23,7 @@ static inline BOOL Cond2_02155c38(UiList *self) {
     return FALSE;
 }
 
-void func_ov000_02155c38(UiList *self) {
+void UiList_UpdateArrows(UiList *self) {
     if (++self->unk_c4 < 0x18) {
         self->unk_c8 += (s32)(((s64)(0x3000 - self->unk_c8) * (s64)0x148 + 0x800) >> 12);
     } else if (self->unk_c4 < 0x40) {

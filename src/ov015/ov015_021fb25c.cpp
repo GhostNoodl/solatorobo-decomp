@@ -11,7 +11,7 @@ static inline TexObjEntry *Src(TexObj *obj) {
     return &obj->entries[15];
 }
 
-// Glyph callback of entries 0xe/0xf (func_02041c34): writes the value of the stats block as digits.
+// Glyph callback of entries 0xe/0xf (TexObj_SetOamFunc): writes the value of the stats block as digits.
 Ov015Glyph *func_ov015_021fb25c(TexObj *obj, TexObjEntry *entry, Ov015Glyph *e, u16 *count) {
     Ov015Glyph *last;
     s32 val;

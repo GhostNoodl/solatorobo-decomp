@@ -30,7 +30,7 @@ struct Ov011KeyVal {
 };
 extern const Ov011KeyVal data_ov011_02207390[];
 
-void func_ov011_021fe9b8(Ov011Scene *self) {
+void Ov011Scene_State08_09(Ov011Scene *self) {
     Ov011Node *n;
     switch (self->seq.st) {
     case 0: {
@@ -69,8 +69,8 @@ void func_ov011_021fe9b8(Ov011Scene *self) {
             Ov011Npc *a = Ov011_FindNpc(n->id);
             if (Ov011Npc_IsTracking(a)) {
                 Actor *owner = self->actor;
-                if (Ov011Ent_Find(&self->ent, func_ov011_02201254(a)) != NULL) {
-                    Ov011PNode *p = Ov011Ent_Find(&self->ent, func_ov011_02201254(a));
+                if (Ov011Ent_Find(&self->ent, Ov011Npc_GetEntKey(a)) != NULL) {
+                    Ov011PNode *p = Ov011Ent_Find(&self->ent, Ov011Npc_GetEntKey(a));
                     VecFx32 r;
                     VecFx32 o;
                     VecFx32 v;

@@ -9,7 +9,7 @@ typedef struct BgmInfo {
 
 BgmInfo *func_0206ee58(u16 id);
 
-void func_0204aab0(SndQueue *p);
+void SndQueue_Push_0204aab0(SndQueue *p);
 
 BOOL func_ov002_021d0270(void *self, void *ev) {
     BgmInfo *info = func_0206ee58(FIELD(ev, 0x8, u32));
@@ -46,7 +46,7 @@ BOOL func_ov002_021d0270(void *self, void *ev) {
                     u16 st;
                     if (m->unk_02 != 10 && m->unk_02 != 0) {
                         if (m->unk_06 != 0xffff) {
-                            func_0204aab0(m);
+                            SndQueue_Push_0204aab0(m);
                         }
                         st = 1;
                     } else {

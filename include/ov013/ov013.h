@@ -258,7 +258,7 @@ s32 Rand_UpTo(s32 max);
 void Body_Update(void *a, s32 b, s32 c, s32 d);
 s32 Geom_SnapToGround(VecFx32 *v, s32 y, s32 b);
 BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *p);
-char *func_0207011c(s32 id);
+char *Tbl_GetResFile(s32 id);
 char *func_020701d4(s32 id);
 }
 extern "C" {

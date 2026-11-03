@@ -67,11 +67,11 @@ s32 SlidePanel_GetEdge_020548c8(SlidePanel *panel) {
     return SlidePanel_GetEdge(panel);
 }
 
-s32 func_02054ae8(Model *model, s32 idx) {
+s32 Model_GetWidth_02054ae8(Model *model, s32 idx) {
     return Model_GetWidth(model, idx);
 }
 
-BOOL func_02054b4c(int ch) {
+BOOL Gfx_IsFadeIdle_02054b4c(int ch) {
     return Gfx_IsFadeIdle(ch);
 }
 
@@ -107,7 +107,7 @@ static inline void *Model_GetPartTexR(Model *model, s32 idx, ModelRes *&res) {
 }
 
 static inline s32 Model_GetWidthR(Model *model, s32 idx, ModelRes *&res) {
-    return func_02041b10(model, Model_GetPartTexR(model, idx, res));
+    return TexObj_GetCellWidth(model, Model_GetPartTexR(model, idx, res));
 }
 
 static inline s32 SlidePanel_GetEdge3(SlidePanel *panel, ModelRes *&res) {

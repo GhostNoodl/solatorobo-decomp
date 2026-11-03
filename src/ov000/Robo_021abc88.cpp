@@ -12,7 +12,7 @@ extern void *data_02097e4c;
 BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 void Shared_ChangeFlags(s32 a, s32 b);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
-u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 rate, s32 a, s32 b);
 BOOL History_SetState(void *p, s32 a, s32 b);
 void Actor_TurnToPos(Actor *self, void *v, s32 a);
 void Actor_MoveToPos(Actor *self, const VecFx32 *target, s32 turn);
@@ -21,7 +21,7 @@ void Body_SetPos(void *body, VecFx32 *pos, u32 angle);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
 
-void func_ov000_021abc88(Robo021ca458 *self) {
+void Robo021ca458_State1a(Robo021ca458 *self) {
     if (self->unk_b2f == 0) {
         self->unk_b2f++;
     }
@@ -72,7 +72,7 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         if (s[1] < 0x10) {
             return;
         }
-        self->rot_y = func_01ffc128(self->unk_76e, self->rot_y, 0x800, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->unk_76e, self->rot_y, 0x800, 1, 0x8000);
         self->speed = 0;
         self->velY = 0;
         self->friction = 0;
@@ -107,7 +107,7 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         } else {
             VecFx32 d;
             s32 ty;
-            self->rot_y = func_01ffc128(self->unk_76e, self->rot_y, 0x59a, 1, 0x8000);
+            self->rot_y = Angle_Approach(self->unk_76e, self->rot_y, 0x59a, 1, 0x8000);
             ty = self->unk_75c.y + 0x119a;
             {
                 s32 tx = self->unk_75c.x;

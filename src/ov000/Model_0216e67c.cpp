@@ -10,7 +10,7 @@ extern const char *data_0208cb7c;
 extern const char *data_0208cc94;
 extern const char *data_0208cc88;
 void *Heap_Alloc(u32 size);
-void func_02041c34(void *model, s32 a, void *cb, void *arg);
+void TexObj_SetOamFunc(void *model, s32 a, void *cb, void *arg);
 void *func_ov000_0216d5b0(u8 *self, u16 *cmd, void *arr, u16 *count);
 
 void func_ov000_0216e67c(LoTimer *self) {
@@ -54,9 +54,9 @@ void func_ov000_0216e67c(LoTimer *self) {
         q->unk_14c = 0x800;
     }
     TexObj_SelectImage(self->unk_14, 0, 0x1e);
-    func_02041c34(self->unk_14, 0x1e, (void *)func_ov000_0216d5b0, self);
+    TexObj_SetOamFunc(self->unk_14, 0x1e, (void *)func_ov000_0216d5b0, self);
     TexObj_SelectImage(self->unk_14, 0, 0x1f);
-    func_02041c34(self->unk_14, 0x1f, (void *)func_ov000_0216d5b0, self);
+    TexObj_SetOamFunc(self->unk_14, 0x1f, (void *)func_ov000_0216d5b0, self);
     TexObj_SelectImage(self->unk_14, 0, 0x20);
     self->unk_14->flags |= 0x80000;
     MODEL_FLAGS(self->unk_14)->alpha = 0x1e;

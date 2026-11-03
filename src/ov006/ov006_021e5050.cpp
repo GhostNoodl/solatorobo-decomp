@@ -13,7 +13,7 @@ extern "C" {
 extern ov006_Net021e5050 *data_02097e40;
 extern u8 data_ov006_021eb840[];
 BOOL func_02046070(ov006_Net021e5050 *net, void *data, int a);
-BOOL func_020463c8(ov006_Net021e5050 *net);
+BOOL WH_StateInEndScan_020463c8(ov006_Net021e5050 *net);
 void ov006_Menu_PruneNodes(ov006_Unk021ec888 *self);
 void ov006_Menu_SortNodes(ov006_Unk021ec888 *self);
 
@@ -63,7 +63,7 @@ void func_ov006_021e5050(ov006_Unk021ec888 *self) {
         if (self->unk10 != 0) {
             return;
         }
-        func_020463c8(data_02097e40);
+        WH_StateInEndScan_020463c8(data_02097e40);
         self->unk2C = 0;
         self->unk28++;
         ov006_Menu_PruneNodes(self);

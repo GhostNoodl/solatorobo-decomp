@@ -41,11 +41,11 @@ char *MsgRes_GetString(MsgRes *res, s32 idx) {
     return res->strings + (res->entries[idx] & ~0xff000000);
 }
 
-BOOL func_0204c100(void) {
+BOOL MsgRes_LoadGlobal(void) {
     return MSG_RES->Load();
 }
 
-BOOL func_0204c120(void) {
+BOOL MsgRes_BindGlobal(void) {
     return MsgRes_Bind(MSG_RES);
 }
 

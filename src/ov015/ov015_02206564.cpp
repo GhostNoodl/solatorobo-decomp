@@ -150,7 +150,7 @@ BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
     }
     }
     if (r) {
-        func_ov000_0215d980(self->unk_40, self->unk_40->value - item->unk_0c, 0);
+        Lo021cae48_SetValue(self->unk_40, self->unk_40->value - item->unk_0c, 0);
         if (consume) {
             self->unk_3c->vfunc_70(item);
             Item_Set_0206f5e4(id, 1);

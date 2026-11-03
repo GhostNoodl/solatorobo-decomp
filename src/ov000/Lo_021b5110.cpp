@@ -16,7 +16,7 @@ BOOL PauseNode_IsUpdatePaused(PauseNode *node, s32 a);
 s32 func_ov000_021b7b50(FieldProp *n);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL Actor_IsDead(Robo021ca458 *pl);
-BOOL func_01ffc318(VecFx32 *a, FieldExit *item, VecFx32 *min, VecFx32 *max, Rot021b5110 *rot);
+BOOL Hit_PointInRotBox(VecFx32 *a, FieldExit *item, VecFx32 *min, VecFx32 *max, Rot021b5110 *rot);
 void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_ov000_02188ca0(FieldId *c, s32 a);
 
@@ -82,7 +82,7 @@ void FieldMgr_Update(FieldMgr *self) {
         min.y = -max.y;
         min.z = -max.z;
         SetRot(&rot, 0, item->rot, 0);
-        if (func_01ffc318(&self->playerPos, item, &min, &max, &rot)) {
+        if (Hit_PointInRotBox(&self->playerPos, item, &min, &max, &rot)) {
             hit = i;
             if (self->curExit == i) {
                 break;

@@ -9,8 +9,8 @@ extern "C" {
 
 extern const char *data_0208cc88;
 extern const char *data_0208cc94;
-void func_02041c5c(void *m, void *fn);
-void func_02041c20(void *m, s32 a, void *b);
+void TexObj_SetAllOamFuncs(void *m, void *fn);
+void TexObj_SetOamFuncArg(void *m, s32 a, void *b);
 BOOL Obj02152e5c_LoadModel(void *self);
 void func_ov000_0215ec44(UiPanel *self);
 void Obj0215e8b0_LoadModel(UiPanel *self);
@@ -62,8 +62,8 @@ void LoBase021ccb54_021ccbe0_Setup(LoBase021ccb54_021ccbe0 *self) {
         TexObj_SelectImage(self->model, 0, 2);
         TexObj_SelectImage(self->model, 0, 4);
         TexObj_SelectImage(self->model, 0, 6);
-        func_02041c5c(self->model, (void *)func_ov000_021c77bc);
-        func_02041c20(self->model, 2, self);
+        TexObj_SetAllOamFuncs(self->model, (void *)func_ov000_021c77bc);
+        TexObj_SetOamFuncArg(self->model, 2, self);
     }
     if (self->flags & 0x400000) {
         m = (Model *)Heap_Alloc(sizeof(Model));
@@ -80,11 +80,11 @@ void LoBase021ccb54_021ccbe0_Setup(LoBase021ccb54_021ccbe0 *self) {
         TexObj_SetRes(self->unk_84, ResList_FindType2(ResMgr_GetArcList(m->name), self->unk_84->unk_04c));
         self->unk_84->flags |= 2;
         TexObj_SelectImage(self->unk_84, 0, 6);
-        func_02041c20(self->unk_84, 6, self);
+        TexObj_SetOamFuncArg(self->unk_84, 6, self);
         if (self->flags & 0x800000) {
             TexObj_SelectImage(self->unk_84, 0, 7);
         }
-        func_02041c5c(self->unk_84, (void *)func_ov000_021c782c);
+        TexObj_SetAllOamFuncs(self->unk_84, (void *)func_ov000_021c782c);
     }
     if (self->unk_90 == NULL) {
         o = (UiPanel *)Heap_Alloc(sizeof(UiPanel));

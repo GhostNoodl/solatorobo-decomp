@@ -35,7 +35,7 @@ typedef struct {
 
 extern "C" {
 s32 Finder_CollectParts(Finder *self, Query *q, void **out, s32 max);
-BOOL func_01ffc624(void *o, const VecFx32 *pos, Rot0219a5c8 *rot, s32 r, s32 a);
+BOOL Hit_PointInRotCylinder(void *o, const VecFx32 *pos, Rot0219a5c8 *rot, s32 r, s32 a);
 
 s32 func_ov000_0219a5c8(Actor *self, u16 mask, const VecFx32 *pos, Rot0219a5c8 *rot, s32 r, s32 a, void **list) {
     s32 ret;
@@ -103,7 +103,7 @@ s32 func_ov000_0219a5c8(Actor *self, u16 mask, const VecFx32 *pos, Rot0219a5c8 *
             if (o != NULL) {
                 BOOL hit;
                 if (LFLD(Hit0219a5c8, o, 0x22).b0 == 1 && LFLD(Hit0219a5c8, o, 0x22).b1 == 1) {
-                    hit = func_01ffc624(o, pos, rot, r + LFLD(s32, o, 0x1c), a);
+                    hit = Hit_PointInRotCylinder(o, pos, rot, r + LFLD(s32, o, 0x1c), a);
                 } else {
                     hit = FALSE;
                 }

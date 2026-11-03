@@ -1,21 +1,21 @@
 #include "types.h"
 
-BOOL func_ov000_021601a4(void) {
+BOOL Ov000Vt_021cac0c_CanUpdate(void) {
     return TRUE;
 }
 
-void func_ov000_021601ac(void) {
+void Ov000Vt_021cac0c_Load(void) {
 }
 
-BOOL func_ov000_021601b0(void) {
+BOOL Ov000Vt_021cac0c_IsLoaded(void) {
     return TRUE;
 }
 
-void func_ov000_021601b8(void) {
+void Ov000Vt_021cac0c_Unload(void) {
 }
 
-void func_ov000_021601bc(void) {
+void Ov000Vt_021cac0c_Setup(void) {
 }
 
-void func_ov000_021601c0(void) {
+void Ov000Vt_021cac0c_UpdateTarget(void) {
 }

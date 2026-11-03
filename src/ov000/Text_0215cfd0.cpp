@@ -17,7 +17,7 @@ extern void *data_02149ef8;
 extern char data_ov000_021cabf6[];
 extern char data_ov000_021cabfb[];
 extern char data_ov000_021cac00[];
-char *func_0206ffa0(u16 id);
+char *Tbl_GetText(u16 id);
 char *Param_Get(u16 id);
 char *func_02062020(u16 id);
 void func_02040a98(char *buf, u16 id);
@@ -31,7 +31,7 @@ char *func_ov000_0215cfd0(Text0215cfd0 *self) {
 
     switch (self->unk_84 & 0xfc00) {
     case 0x1000:
-        return func_0206ffa0(self->unk_88);
+        return Tbl_GetText(self->unk_88);
     case 0x800:
         if (self->unk_88 & 0xf000) {
             s = Param_Get(self->unk_88);

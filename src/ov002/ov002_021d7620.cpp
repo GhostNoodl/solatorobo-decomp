@@ -36,7 +36,7 @@ void Ov002Mdl021efe3c_Load(Ov002Mdl021efe3c *self) {
     self->mdl = (NNSG3dResMdl *)ov002_findEntry((u8 *)NNS_G3dGetMdlSet(self->file->data), buf);
     name = self->name;
     if (self->file != NULL) {
-        name = (const char *)func_0203ed04(name, self->file->data);
+        name = (const char *)G3dRes_SetupVram(name, self->file->data);
     }
     self->texTask = func_0203ebf8(name);
     NNS_G3dRenderObjInit(self->renderObj, self->mdl);

@@ -4,7 +4,7 @@
 
 extern "C" {
 
-s32 func_ov000_0215fe60(ObjBase021cac0c_021cb6f0 *self) {
+s32 Ov000Vt_021cac0c_Update(ObjBase021cac0c_021cb6f0 *self) {
     s32 spd = 0x385;
     if (!self->vfunc_34()) {
         return 1;

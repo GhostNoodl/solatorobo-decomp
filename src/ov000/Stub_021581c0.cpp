@@ -2,7 +2,7 @@
 
 extern "C" {
 
-s32 func_ov000_021581c0(VObj *self, s32 a, s32 b) {
+s32 UiList021cb4a8_PageUp(VObj *self, s32 a, s32 b) {
     return self->vfunc_ac(a, b);
 }
 

@@ -3,7 +3,7 @@
 
 extern "C" {
 
-void func_ov000_021c60f4(ListRowLabel *self) {
+void ListRowLabel_Draw(ListRowLabel *self) {
     if (self->text == NULL) {
         return;
     }

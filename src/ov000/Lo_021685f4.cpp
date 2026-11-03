@@ -8,7 +8,7 @@ extern "C" {
 extern const char *data_0208cc94;
 extern const char *data_0208cc88;
 
-void func_ov000_021685f4(Lo021cb894 *self) {
+void Lo021cb894_Setup(Lo021cb894 *self) {
     void *res;
     Model *m;
     self->unk_28 = 0;

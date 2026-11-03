@@ -3,7 +3,7 @@
 extern "C" {
 
 // Sets the number of a number display; with both, the shown number jumps to it at once.
-void func_ov000_0215d980(Lo021cae48 *self, s32 value, BOOL both) {
+void Lo021cae48_SetValue(Lo021cae48 *self, s32 value, BOOL both) {
     if (both) {
         self->shown = value;
     }

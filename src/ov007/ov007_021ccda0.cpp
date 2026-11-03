@@ -540,7 +540,7 @@ void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 void TextWin_Init(TextWin *win);
 u32 Text_Measure(u32 font, u32 spacing, u32 str, u32 *outW, u32 *outH, BOOL d);
 void TextWin_RenderToVram(void *p);
-void func_0204aab0(Ov007SndQ *queue, u16 value);
+void SndQueue_Push_0204aab0(Ov007SndQ *queue, u16 value);
 void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_0204b924(void *p, s32 v);
 Ov007MdlAnm *Model0218fe1c_GetAnimCtrl(void *a, s32 b);
@@ -609,7 +609,7 @@ static inline void Ov007_RequestBgm(Ov007SndQ *queue, u16 bgm) {
     }
     if (queue->unk_02 != 10 && queue->unk_02 != 0) {
         if (queue->unk_06 != 0xffff) {
-            func_0204aab0(queue, queue->unk_06);
+            SndQueue_Push_0204aab0(queue, queue->unk_06);
         }
         queue->unk_02 = 1;
     } else {
@@ -1011,7 +1011,7 @@ extern "C" {
 
 void Movie_Load(Movie *a, int b, int c, BOOL d);
 void Movie_RequestStop(Movie *a);
-void func_02043db4(int a, int b, int c, u32 d);
+void Gfx3D_DrawPrimScaled(int a, int b, int c, u32 d);
 void func_ov007_021cf474(Ov007Scene *s);
 
 }
@@ -1083,7 +1083,7 @@ static inline void Ov007_SetupView(void) {
     v.x = 0;
     v.y = 0;
     NNS_G3dGeBufferOP_N(0x1c, (u32 *)&v, 3);
-    func_02043db4(1, 0x100000, 0xc0000, 0x7fff);
+    Gfx3D_DrawPrimScaled(1, 0x100000, 0xc0000, 0x7fff);
 }
 
 static inline void Ov007_SetupView1(void) {
@@ -1099,7 +1099,7 @@ static inline void Ov007_SetupView1(void) {
     v.x = 0;
     v.y = 0;
     NNS_G3dGeBufferOP_N(0x1c, (u32 *)&v, 3);
-    func_02043db4(1, 0x100000, 0xc0000, 0x7fff);
+    Gfx3D_DrawPrimScaled(1, 0x100000, 0xc0000, 0x7fff);
 }
 
 extern "C" {

@@ -42,7 +42,7 @@ extern "C" {
 // ov002's callers pass untyped FIELD() values, so these stay as they were.
 extern EffectFile *ResList_FindType4(void *arc, const char *name);
 extern EffectFile *ResList_FindType6(void *arc, const char *name);
-extern BOOL func_0203ed04(const char *name, void *data);
+extern BOOL G3dRes_SetupVram(const char *name, void *data);
 extern void Vram_FreeRes(void *data);
 
 #ifdef __cplusplus
@@ -249,13 +249,13 @@ void func_ov002_021e8f04(s32 id);
 bool func_ov002_021e90ac(void);
 extern VFunc data_ov002_021ef69c[];
 void Obj021c64b4_SetText(TextList *self, void *text);
-void func_ov000_021c7000(TextList *self);
+void TextList_Raise(TextList *self);
 void func_ov002_021d1f70(Task021ef69c *self);
 
 void GfxSys_StopFade(int a);
 void Movie_Load(void *a, s32 b, int c, int d);
 void Movie_RequestStop(void *a);
-void func_ov000_021c701c(TextList *self);
+void TextList_Lower(TextList *self);
 
 void func_ov002_021e4904(Ov002LevelTable *self);
 
@@ -332,7 +332,7 @@ extern VFunc data_ov000_021cac60[];
 void *func_0206ec8c(u32 id);
 Param0206ef10 *func_0206ef10(u32 id);
 void ModelViewer_SetModel(void *a, const char *mdlArc, const char *mdlName, const char *anmArc, const char *anmName, const char *anim, s32 frame, s16 speed);
-void func_ov000_021c95ac(void *a, u16 id);
+void Obj021c95ac_Init_021c95ac(void *a, u16 id);
 void Ov002Hud_SetInfo(Ov002Hud *self, u16 id);
 extern char data_ov002_021efaeb[];
 extern char data_ov002_021efae1[];
@@ -506,7 +506,7 @@ void Obj02153c48_CreateText(UiListItem *item, s32 font, BOOL show, BOOL center, 
 extern VFunc data_ov002_021efeb8[];
 extern VFunc data_ov002_021f0674[];
 void Ov002Stage_Release(Ov002Stage *self);
-void func_ov002_021e0420(NNSG3dRS *rs);
+void Ov002_ScaleAlphaMatCb(NNSG3dRS *rs);
 void func_ov000_021c524c(void *a, void *b, VecFx32 *pos, s32 d);
 
 extern VFunc data_ov000_021ccbe0[];

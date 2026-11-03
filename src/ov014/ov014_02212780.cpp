@@ -27,7 +27,7 @@ BOOL Ov014Act_0221267c_Draw(Ov014Act_0221267c *self) {
 
 extern char data_ov014_02217d9f[];
 extern char data_ov014_02217da0[];
-extern s32 func_ov000_021909a8(void *m, const char *a, const char *b);
+extern s32 Model_FindResIdxByName(void *m, const char *a, const char *b);
 extern void Ov014Part_StartCapture_0220f8e4(u8 *self);
 
 void Ov014Act_0221267c_Start(Ov014Act_0221267c *self) {
@@ -61,7 +61,7 @@ void Ov014Act_0221267c_Start(Ov014Act_0221267c *self) {
         n->unk_22_0 = 0;
         n->unk_22_1 = 0;
     }
-    self->unk_314.joint = func_ov000_021909a8(self->model, data_ov014_02217d9f, data_ov014_02217da0);
+    self->unk_314.joint = Model_FindResIdxByName(self->model, data_ov014_02217d9f, data_ov014_02217da0);
     MTX_Identity43_(&self->unk_314.mtx);
     m = self->model;
     NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)Ov014Part_StartCapture_0220f8e4);

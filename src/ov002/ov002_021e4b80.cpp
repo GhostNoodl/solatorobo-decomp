@@ -451,11 +451,11 @@ void *ResList_FindType4(void *a, void *b);
 void *ResList_FindType5(void *a, void *b);
 void *func_02035ccc(void *a);
 void func_02035cfc(void *a);
-void func_02039494(u32 a);
+void G3dRes_DropTexData(u32 a);
 void *NNS_G3dGetResDataByName(void *a, char *name);
 void NNSi_G3dModifyMatFlag(void *mdl, BOOL a, u32 flag);
 void *STD_ConcatenateString(char *dst, const char *src);
-BOOL func_0203ed04(const char *name, u32 res);
+BOOL G3dRes_SetupVram(const char *name, u32 res);
 u32 func_0203ebf8(void);
 BOOL NNS_G3dBindMdlTex(void *mdl, void *tex);
 BOOL NNS_G3dBindMdlPltt(void *mdl, void *tex);
@@ -528,7 +528,7 @@ BOOL func_ov002_021e534c(Ov002Obj021f07d4 *self) {
         STD_CopyLString(path, data_ov002_021f0640, sizeof(path));
         STD_ConcatenateString(path, (self->res.name));
         if (self->unk_5c != NULL) {
-            func_0203ed04(path, *self->unk_5c);
+            G3dRes_SetupVram(path, *self->unk_5c);
         }
         self->unk_bc = func_0203ebf8();
         NNSi_G3dModifyMatFlag(self->unk_60, FALSE, 0x40);
@@ -544,7 +544,7 @@ BOOL func_ov002_021e534c(Ov002Obj021f07d4 *self) {
         }
         break;
     case 13:
-        func_02039494(*self->unk_5c);
+        G3dRes_DropTexData(*self->unk_5c);
         for (s32 i = 0; i < self->linkCount; i++) {
             Ent021e534c *e = &((Ent021e534c *)((u8 *)self + 0xc0))[i];
             if (e->arc != NULL) {
@@ -622,11 +622,11 @@ BOOL func_ov002_021e534c(Ov002Obj021f07d4 *self) {
             tex = NNS_G3dGetTex((NNSG3dResFileHeader *)*ov002_021e534c_res(e));
             if (e->alt) {
                 if (e->res2 != NULL) {
-                    func_0203ed04(path, *e->res2);
+                    G3dRes_SetupVram(path, *e->res2);
                 }
             } else {
                 if (e->res != NULL) {
-                    func_0203ed04(path, *e->res);
+                    G3dRes_SetupVram(path, *e->res);
                 }
             }
             NNS_G3dBindMdlTex(self->unk_60, tex);
@@ -651,7 +651,7 @@ BOOL func_ov002_021e534c(Ov002Obj021f07d4 *self) {
         for (s32 i = 0; i < self->linkCount; i++) {
             Ent021e534c *e = &((Ent021e534c *)((u8 *)self + 0xc0))[i];
             if (e->task != 0) {
-                func_02039494(*(e->alt ? e->res2 : e->res));
+                G3dRes_DropTexData(*(e->alt ? e->res2 : e->res));
             }
             e->task = 0;
         }
@@ -1689,7 +1689,7 @@ void NNS_G3dGlbFlushP(void);
 
 void NNS_G3dGeBufferOP_N(int cmd, void *data, int n);
 
-void func_02043db4(int a, s32 b, s32 c, u16 d);
+void Gfx3D_DrawPrimScaled(int a, s32 b, s32 c, u16 d);
 
 extern VecFx32 data_ov002_021ef104;
 
@@ -1734,7 +1734,7 @@ void func_ov002_021e719c(Ov002Obj021f0784 *self) {
         w.x = 0x80000;
         w.y = 0x60000;
         NNS_G3dGeBufferOP_N(0x1c, &w, 3);
-        func_02043db4(0, 0x100000, 0xc0000, self->unk_50);
+        Gfx3D_DrawPrimScaled(0, 0x100000, 0xc0000, self->unk_50);
         t2 = 2;
         NNS_G3dGeBufferOP_N(0x10, &t2, 1);
         t3 = 1;
@@ -2395,7 +2395,7 @@ extern "C" {
 extern void *data_ov002_021f0104[];
 
 
-void func_02041c34(void *a, int b, void *c, int d);
+void TexObj_SetOamFunc(void *a, int b, void *c, int d);
 
 
 void func_0204a360(void *a, int b);
@@ -2428,7 +2428,7 @@ BOOL func_ov002_021e86a0(Ov002Stage *self) {
         TexObj_SetRes(self->unk_124, ResList_FindType2(res, tbl[2]));
         self->unk_124->flags |= 2;
         self->unk_124->unk_150 = -9;
-        func_02041c34(self->unk_124, 0, func_ov002_021e7ab8, 0);
+        TexObj_SetOamFunc(self->unk_124, 0, func_ov002_021e7ab8, 0);
         TexObj_SelectImage(self->unk_124, 0, 0);
         self->unk_124->flags |= 0x80000;
         self->unk_124->flags |= 0x200000;
@@ -2631,7 +2631,7 @@ extern "C" {
 
 void NNS_G3dGlbFlushP(void);
 void NNS_G3dGeBufferOP_N(int cmd, void *data, int n);
-void func_02043db4(int a, s32 b, s32 c, u16 d);
+void Gfx3D_DrawPrimScaled(int a, s32 b, s32 c, u16 d);
 void func_02041c18(void *a, int b);
 extern VecFx32 data_ov002_021ef104;
 extern VecFx32 data_ov002_021ef0bc;
@@ -2674,7 +2674,7 @@ void func_ov002_021e8cc4(Ov002Stage *self) {
     NNS_G3dGeBufferOP_N(0x1c, &w, 3);
     c = 0x3e1e08c0;
     NNS_G3dGeBufferOP_N(0x29, &c, 1);
-    func_02043db4(1, 0x100000, 0x2d000, 0);
+    Gfx3D_DrawPrimScaled(1, 0x100000, 0x2d000, 0);
     t2 = 2;
     NNS_G3dGeBufferOP_N(0x10, &t2, 1);
     t3 = 1;

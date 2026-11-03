@@ -62,7 +62,7 @@ void Ov014Act_0221267c_StateAttack3(Ov014Act_0221267c *self) {
         break;
     }
     case 11: {
-        self->rot_y = func_01ffc128(self->unk_34c, self->rot_y, 0x400, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->unk_34c, self->rot_y, 0x400, 1, 0x8000);
         s = self->fsm;
         if (ActorSub40_Timer(s) == 0) {
             Model0218fe1c_SetAnim(self->model, data_ov014_02217d4c, 0x19a, 0);

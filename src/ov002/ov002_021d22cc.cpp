@@ -2,7 +2,7 @@
 
 extern "C" {
 
-Task021ef99c *func_ov002_021d22cc(void) {
+Task021ef99c *Task021ef99c_New(void) {
     Task021ef99c *p = (Task021ef99c *)Heap_Alloc(0x118);
     if (p != NULL) {
         int i;

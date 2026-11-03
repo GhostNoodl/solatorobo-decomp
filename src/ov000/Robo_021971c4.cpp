@@ -21,7 +21,7 @@ void Target_Set(void *a, void *b);
 BOOL Target_MatchesId(void *a, u16 id);
 BOOL Model0218fe1c_IsAnimDone(void *a);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-u8 *func_020704b4(u16 id);
+u8 *Tbl_Elem_020704b4(u16 id);
 void Drop_SpawnWeighted(u16 *ids, u8 *rates, s32 n, void *pos, void *rot, u8 check);
 BOOL History_SetState(void *s, s32 a, s32 b);
 u16 LangData_GetIndex(u32 a, u32 b);
@@ -88,7 +88,7 @@ void ActorEx_State06(VObj *obj) {
             Actor_SendMsg(tgt, self->id, 3, 1, zero, (const void *)zero);
         }
         if (self->targetObj->unk_01 == 8) {
-            u8 *d = func_020704b4(self->kind);
+            u8 *d = Tbl_Elem_020704b4(self->kind);
             Drop_SpawnWeighted((u16 *)(d + 0x20), d + 0x24, 2, &self->pos, (u8 *)self + 0x7c, zero);
         }
         if (self->target != none) {

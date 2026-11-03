@@ -17,7 +17,7 @@ BOOL UiList_IsLoaded(UiList *self) {
     return r;
 }
 
-void func_ov000_02158120(UiList021cb4a8 *self, s32 delta, s32 arg) {
+void UiList021cb4a8_CursorUp(UiList021cb4a8 *self, s32 delta, s32 arg) {
     s8 sel = self->cursor;
     s32 off = 0;
     self->unk_b0 = sel;

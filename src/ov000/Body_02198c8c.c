@@ -56,7 +56,7 @@ typedef struct ActorMgr ActorMgr;
 extern ActorMgr *data_ov000_021ccd68;
 
 ActorC *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u32 angle);
+void Vec_RotateY(VecFx32 *out, const VecFx32 *in, u32 angle);
 void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *offset, u32 angle);
 
 static inline ActorC *FindActor(u16 id) {
@@ -222,7 +222,7 @@ void Body_SetPos(Body *self, VecFx32 *pos, u32 angle) {
     self->check.x = pos->x;
     self->check.y = pos->y;
     self->check.z = pos->z;
-    func_01ffc9fc(&tmp, &self->offset, angle);
+    Vec_RotateY(&tmp, &self->offset, angle);
     VEC_Add(pos, &tmp, &tmp);
     self->pos.x = tmp.x;
     self->pos.y = tmp.y;
@@ -248,7 +248,7 @@ u16 func_ov000_02198da8(Body *self, u16 angle) {
     return ret;
 }
 
-void func_ov000_02198e34(Body *self, u16 *rot, VecFx32 *v, BOOL flag) {
+void Body_CalcReflectRot(Body *self, u16 *rot, VecFx32 *v, BOOL flag) {
     VecFx32 dir;
     s32 t;
 

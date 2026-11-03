@@ -9,7 +9,7 @@ void HitMesh_Unlink_0203f920(void *p);
 void HitMesh_Detach(void *p);
 void Heap_Free(void *p);
 void Vram_FreeRes(void *p);
-FieldPropModel *func_ov000_021b700c(FieldPropModel *p);
+FieldPropModel *FieldPropModel_Dtor(FieldPropModel *p);
 void ResMgr_ReleaseByName(void *mgr, const char *name, s32 type, s32 force);
 
 FieldPropModel *func_ov000_021b6f94(FieldPropModel *p);
@@ -58,7 +58,7 @@ FieldProp *func_ov000_021b7a7c(FieldProp *self) {
         }
         data_02097dd0->cur = saved;
     }
-    func_ov000_021b700c(&self->model);
+    FieldPropModel_Dtor(&self->model);
     if (self->loader.mdl != NULL) {
         Vram_FreeRes(*self->loader.mdl);
     }

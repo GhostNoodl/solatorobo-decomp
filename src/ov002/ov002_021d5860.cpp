@@ -26,7 +26,7 @@ extern VFunc data_ov002_021efca4[];
 extern char data_ov002_021efaf1[];
 extern u8 data_ov002_021eef54[];
 void *func_02035de0(void *a, void *b);
-void func_ov000_021547e8(void *a, void *b, const char *c, int d);
+void UiList_SetMarkModel(void *a, void *b, const char *c, int d);
 void *ModelViewer_Ctor(void *p);
 void ModelViewer_InitCamera(void *p);
 void func_ov000_021c95fc(void *p);
@@ -92,7 +92,7 @@ void Task021efc24_Start(Task021efc24 *self) {
     TexObj_SelectImage((Model *)self->unk_3c, 0, 0);
     self->unk_3c->unk_150 = -0x1fe66;
     self->unk_3c->unk_158 = (void *)func_ov002_021d66b0;
-    func_02041c20((Model *)self->unk_3c, 0, (u8 *)self + 0x40);
+    TexObj_SetOamFuncArg((Model *)self->unk_3c, 0, (u8 *)self + 0x40);
     o = (UiObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
@@ -152,7 +152,7 @@ void Task021efc24_Start(Task021efc24 *self) {
         s->slideY = 0;
         s->slideZ = -0x199a;
     }
-    func_ov000_021547e8(self->unk_50, data_0214b105, data_0208cb7c, 0xb);
+    UiList_SetMarkModel(self->unk_50, data_0214b105, data_0208cb7c, 0xb);
     self->unk_50->flags &= ~0x400000;
     self->unk_50->flags &= ~0x80000;
     self->unk_50->flags |= 0x40000;

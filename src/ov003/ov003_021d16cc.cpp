@@ -34,7 +34,7 @@ extern void NNS_G3dRenderObjSetInitFunc(void *rob, void *func);
 extern void Ov003Obj_StartCapture(void *rs);
 extern u16 Actor_Draw(Ov003Actor *self);
 extern u16 Model021903b4_Draw(Model0218fe1c *m);
-extern void func_01ffc9fc(VecFx32 *out, VecFx32 *in, u16 ang);
+extern void Vec_RotateY(VecFx32 *out, VecFx32 *in, u16 ang);
 extern void ActorMarker_Draw(void *p);
 
 }
@@ -217,7 +217,7 @@ extern "C" u16 Ov003Actor_Draw(Ov003Actor *self) {
                         v.y = self->height >> 1;
                         v.x = 0xccd;
                         v.z = 0xccd;
-                        func_01ffc9fc(&v, &v, self->rot_y);
+                        Vec_RotateY(&v, &v, self->rot_y);
                         VEC_Add(&v, &self->pos, &v);
                         ((Ov003SdTgt *)sub)->unk_44 = v;
                     }

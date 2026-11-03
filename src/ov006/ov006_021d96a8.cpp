@@ -85,8 +85,8 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
                         g->unk_00c = g->unk_00c + n;
                     }
                 }
-                func_ov000_0215d980(self->unk18, 0, 0);
-                func_ov000_0215d980(self->unk1C, data_0214a424->unk_020, 0);
+                Lo021cae48_SetValue(self->unk18, 0, 0);
+                Lo021cae48_SetValue(self->unk1C, data_0214a424->unk_020, 0);
                 SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
                 self->unk34 = 0;
                 self->subState++;
@@ -98,8 +98,8 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
     case 3:
         if (self->unk1C->value != self->unk1C->shown || self->unk18->value != self->unk18->shown) {
             if ((data_02097dc8->trig & 1) || data_ov006_021ec888->state == 9) {
-                func_ov000_0215d980(self->unk18, 0, 1);
-                func_ov000_0215d980(self->unk1C, data_0214a424->unk_020, 1);
+                Lo021cae48_SetValue(self->unk18, 0, 1);
+                Lo021cae48_SetValue(self->unk1C, data_0214a424->unk_020, 1);
             } else {
                 if (++self->unk34 % 4 == 0) {
                     SndMgr_PlayVolume(data_02097e4c, 0x18, -1, -1, -1);

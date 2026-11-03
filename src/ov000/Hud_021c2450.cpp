@@ -14,7 +14,7 @@ extern char *data_0208cc94;
 extern char *data_0208cb7c;
 extern char data_0214b105[];
 extern char data_ov000_021cc9bc[];
-void func_02041c5c(Model *m, void *fn);
+void TexObj_SetAllOamFuncs(Model *m, void *fn);
 void *func_ov000_021c7608(u8 *self, u16 *cmd, void *arr, u16 *count);
 
 static inline BOOL Txt_IsVis021c2450(TextWin *t) {
@@ -64,8 +64,8 @@ void func_ov000_021c2450(Hud021cca10 *self) {
         TexObj_SetRes(self->unk_30, ResList_FindType2(ResMgr_GetArcList(m->name), self->unk_30->unk_04c));
         self->unk_30->flags |= 2;
         TexObj_SelectImage(self->unk_30, 0, 6);
-        func_02041c20(self->unk_30, 6, (void *)self->unk_3c);
-        func_02041c5c(self->unk_30, (void *)func_ov000_021c7608);
+        TexObj_SetOamFuncArg(self->unk_30, 6, (void *)self->unk_3c);
+        TexObj_SetAllOamFuncs(self->unk_30, (void *)func_ov000_021c7608);
         self->unk_30->flags |= 0x80000;
         ((MdlFlags021c2450 *)&self->unk_30->flags)->lay = 0x1e;
         self->unk_30->flags |= 0x100000;

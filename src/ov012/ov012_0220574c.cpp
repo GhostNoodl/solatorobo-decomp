@@ -175,7 +175,7 @@ void Ov012ActExVt_0220b1e8_StateThrown(Ov012ActExVt_0220b1e8 *self) {
     case 10: {
         s32 d;
         u16 a;
-        func_01ffc9fc(&v, &data_ov012_0220a84c[self->unk_d4], self->rot_y);
+        Vec_RotateY(&v, &data_ov012_0220a84c[self->unk_d4], self->rot_y);
         VEC_Add(&v, &self->pos, &self->unk_84);
         d = Ov012_Dist84(self);
         a = FX_Atan2(d, self->unk_84.y - self->pos.y);

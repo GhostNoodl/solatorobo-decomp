@@ -6,7 +6,7 @@ extern "C" {
 extern void *data_02097e4c;
 void *Actor_GetTargetSub44(Actor *self);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-void *func_ov000_02199d78(void *p);
+void *Target_GetKindMask(void *p);
 void *func_ov000_021b2f08(Robo021ca458 *self, void *a, void *b, BOOL c);
 void *SndMgr_PlayVolume(void *p, s32 id, s32 a, s32 b, s32 c);
 void *Obj021984c8_GetActor(void *p);
@@ -38,7 +38,7 @@ void func_ov000_021b2d48(Robo021ca458 *self) {
         Actor *a = FindActor021b2d48(self->unk_b1c);
         if (a != NULL && (sub = ((u8 *)a->targetObj)) != NULL) {
             if (sub[1] == 6) {
-                tgt = (Model0218fe1c *)func_ov000_02199d78(sub);
+                tgt = (Model0218fe1c *)Target_GetKindMask(sub);
             } else if (sub[1] == 1 || sub[1] == 5) {
                 flag = TRUE;
             }

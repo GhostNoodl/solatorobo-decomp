@@ -18,9 +18,9 @@ extern "C" {
 
 extern void *data_ov000_021ccd64;
 extern u16 Camera_GetYaw(Camera *cam);
-extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
+extern void Vec_RotateY(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
-extern Ov003BmInfo *func_020704b4(u16 id);
+extern Ov003BmInfo *Tbl_Elem_020704b4(u16 id);
 extern void Drop_SpawnWeighted(void *a, void *b, s32 c, VecFx32 *pos, Rot16 *rot, s32 d);
 extern void Group_UpdateActor(void *mgr, s32 a, void *obj);
 extern void *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *sc, s32 a, s32 b, s32 c, s32 d);
@@ -40,7 +40,7 @@ void Ov003ActVt_021f8480_State21(Ov003Bomb *self) {
             v.x = -0x2000;
             v.y = 0;
             v.z = 0x5000;
-            func_01ffc9fc(&v, &v, Camera_GetAngle(cam) + 0x8000);
+            Vec_RotateY(&v, &v, Camera_GetAngle(cam) + 0x8000);
             VEC_Add(&v, &self->pos, &v);
             fx = Effect_SpawnId(5, &v);
             fx->SetScaleXYZ(0x7800, 0x7800, 0x7800);
@@ -64,7 +64,7 @@ void Ov003ActVt_021f8480_State21(Ov003Bomb *self) {
         break;
     case 1:
         if (self->fsm->timer >= 0x120) {
-            Ov003BmInfo *inf = func_020704b4(self->kind);
+            Ov003BmInfo *inf = Tbl_Elem_020704b4(self->kind);
             Drop_SpawnWeighted(inf->unk_20, inf->unk_24, 2, &self->pos, &self->rot, 0);
             func_ov000_02197dec(self, 0xf, 4);
             Group_UpdateActor(data_ov000_021ccd64, 0, self);

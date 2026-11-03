@@ -6,9 +6,9 @@ extern char data_ov012_0220b324[];
 extern char data_ov012_0220b32e[];
 
 void Ov012Names_Fill(Ov012Names *self, u16 kind) {
-    char *a = func_0207011c(kind);
+    char *a = Tbl_GetResFile(kind);
     char *b = func_020701d4(kind);
-    TblActorParam *c = func_02070558(kind);
+    TblActorParam *c = Tbl_GetActorParam(kind);
     char *t;
     STD_CopyString(self->mdlDir, a);
     STD_CopyString(self->mdlName, b);

@@ -36,7 +36,7 @@ void Body_SetPos(void *body, VecFx32 *pos, u16 angle);
 void **func_02035edc(const char *a, const char *b);
 void *NNS_G3dGetAnmByIdx(void *p, s32 idx);
 void Camera_SetAnim(Camera *cam, void *anim);
-void func_ov000_021b7e60(FieldProp *n, s32 v);
+void FieldProp_SetViewScale(FieldProp *n, s32 v);
 
 static inline BOOL SameArea021b5dc0(void) {
     FieldState *g = data_ov000_021ccd54;
@@ -175,7 +175,7 @@ void func_ov000_021b5dc0(FieldMgr *self) {
     }
     for (n = self->head; n != NULL; n = n->next) {
         n->keepHit = 1;
-        func_ov000_021b7e60(n, 0x1ccd);
+        FieldProp_SetViewScale(n, 0x1ccd);
     }
 }
 

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021e3a18(Vec2 *out, int rot, Vec2 *a, Vec2 *b, Vec2 *c) {
+void Ov002_RotateAbout(Vec2 *out, int rot, Vec2 *a, Vec2 *b, Vec2 *c) {
     s32 m[4];
     s32 dx;
     s32 dy;

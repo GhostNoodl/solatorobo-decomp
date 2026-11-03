@@ -153,11 +153,11 @@ static inline void *Tbl_GetOffset(TblEntry *e, int i) {
 
 TblEntry *Tbl_FindEntry_0206fef8(s32 id);
 
-void *func_0206ffa0(s32 id);
+void *Tbl_GetText(s32 id);
 
 void *Tbl_GetEntryData(s32 id, int i);
 
-void *func_0207011c(s32 id);
+void *Tbl_GetResFile(s32 id);
 
 static inline u8 *Tbl_GetData(s32 id) {
     return Tbl_GetCat(id)->data;
@@ -175,11 +175,11 @@ u16 *func_02070410(s32 id) {
     TBL_ELEM_BODY(u16, id)
 }
 
-u8 *func_020704b4(s32 id) {
+u8 *Tbl_Elem_020704b4(s32 id) {
     return Tbl_Elem(id, 0x28);
 }
 
-TblActorParam *func_02070558(s32 id) {
+TblActorParam *Tbl_GetActorParam(s32 id) {
     return (TblActorParam *)Tbl_Elem(id, sizeof(TblActorParam));
 }
 
@@ -187,7 +187,7 @@ u8 *func_020705fc(s32 id) {
     TBL_ELEM_BODY(u8, id)
 }
 
-u8 *func_020706a0(s32 id) {
+u8 *Tbl_Elem_020706a0(s32 id) {
     return Tbl_Elem(id, 0xa);
 }
 

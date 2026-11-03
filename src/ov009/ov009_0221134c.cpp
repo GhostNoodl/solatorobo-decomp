@@ -79,7 +79,7 @@ void Ov009ActVt_02217aac_StateShoot(Ov009ActVt_02217aac *self) {
         }
         return;
     case 2:
-        self->rot_y = func_01ffc128((((u16 *)self->unk_104) + self->unk_fc * 3)[self->unk_fd - 1], self->rot_y, self->unk_b0->unk_02, 1, 0x8000);
+        self->rot_y = Angle_Approach((((u16 *)self->unk_104) + self->unk_fc * 3)[self->unk_fd - 1], self->rot_y, self->unk_b0->unk_02, 1, 0x8000);
         st = self->fsm;
         st->timer++;
         if (st->timer > 0x14) {

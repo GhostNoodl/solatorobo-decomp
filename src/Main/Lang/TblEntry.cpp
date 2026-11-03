@@ -50,7 +50,7 @@ TblEntry *Tbl_FindEntry_0206fef8(s32 id) {
     return Tbl_FindEntry(id);
 }
 
-void *func_0206ffa0(s32 id) {
+void *Tbl_GetText(s32 id) {
     return Tbl_GetOffset(Tbl_FindEntry(id), 0);
 }
 
@@ -60,7 +60,7 @@ void *Tbl_GetEntryData(s32 id, int i) {
     return o[i] != 0 ? (u8 *)e + o[i] : NULL;
 }
 
-void *func_0207011c(s32 id) {
+void *Tbl_GetResFile(s32 id) {
     return Tbl_GetOffset(Tbl_FindEntry(id), 3);
 }
 

@@ -68,7 +68,7 @@ BOOL func_ov002_021d178c(Task021ef71c *self) {
     return result;
 }
 
-Task021ef69c *func_ov002_021d184c(void) {
+Task021ef69c *Task021ef69c_New(void) {
     Task021ef69c *p = (Task021ef69c *)Heap_Alloc(0x68);
     if (p != NULL) {
         TaskBase_ctor(p);
@@ -100,7 +100,7 @@ BOOL func_ov002_021d18e8(TextList *self, ListRow021cca70 *ev) {
         if (ev->scale <= 0x99a) {
             SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             owner->unk_44 = ev;
-            func_ov000_021c7000(owner->unk_3c);
+            TextList_Raise(owner->unk_3c);
             ev->unk_6c = 1;
         }
     } else {

@@ -30,7 +30,7 @@ static inline BOOL PlayerIdle021a16b0(void) {
     return TRUE;
 }
 
-void func_ov000_021a16b0(Robo021ca458 *self) {
+void Robo021ca458_State01(Robo021ca458 *self) {
     switch (self->fsm->st) {
     case 0:
         self->fsm->timer = 0;

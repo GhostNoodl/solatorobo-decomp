@@ -13,9 +13,9 @@ void Robo021ca458_Move(Robo021ca458 *self, BOOL a, s32 b);
 u8 *Actor_GetTarget(Actor *self);
 u8 *Actor_GetTargetSub44(Actor *self);
 u16 Actor_YawToPos(Actor *self, void *target);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
-void func_ov000_021a98bc(Robo021ca458 *self) {
+void Robo021ca458_State10(Robo021ca458 *self) {
     u8 *t;
     ActorSub40 *s;
     Actor_GetTarget(self);
@@ -107,7 +107,7 @@ void func_ov000_021a98bc(Robo021ca458 *self) {
         }
         break;
     }
-    self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+    self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
     Robo021ca458_Move(self, FALSE, 1);
 }
 

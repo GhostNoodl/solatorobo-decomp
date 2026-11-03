@@ -8,14 +8,14 @@ s32 func_02224eb8(s32 a);
 
 #pragma force_active on
 
-void *func_ov000_0214b670(Twl0214b570 *self) {
+void *Twl0214b570_GetResult(Twl0214b570 *self) {
     if (self->state == 2 && self->unk_08 == -1) {
         return self->unk_0c;
     }
     return 0;
 }
 
-s32 func_ov000_0214b68c(Twl0214b570 *self) {
+s32 Twl0214b570_GetResultSize(Twl0214b570 *self) {
     s32 w = func_02224e44(4);
     s32 h = func_02224eb8(4);
     s32 size = w * h * 2;

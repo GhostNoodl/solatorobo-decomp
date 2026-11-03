@@ -21,7 +21,7 @@ extern Actor *ActorMgr_FindKind(ActorMgr *mgr, s32 a, s32 b);
 extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern u16 Camera_GetYaw(Camera *cam);
-extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
+extern void Vec_RotateY(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void Model0218fe1c_StopAnim(void *p);
 extern void *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 extern void Group_UpdateActor(void *mgr, s32 a, void *obj);
@@ -239,7 +239,7 @@ void Ov003ActExSeq_State22(Ov003ActExSeq *self) {
         v.x = 0x2c00;
         v.y = -0x1000;
         v.z = 0x4000;
-        func_01ffc9fc(&v, &v, Camera_GetAngle(cam));
+        Vec_RotateY(&v, &v, Camera_GetAngle(cam));
         VEC_Add(&self->pos, &v, &self->pos);
         self->rot_x = 0xfff0;
         Model0218fe1c_StopAnim(self->model);

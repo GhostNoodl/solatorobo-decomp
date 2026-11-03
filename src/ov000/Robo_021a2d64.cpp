@@ -43,7 +43,7 @@ static inline BOOL GIdle021a2d64(void) {
     return TRUE;
 }
 
-void func_ov000_021a2d64(Robo021ca458 *self) {
+void Robo021ca458_State17(Robo021ca458 *self) {
     BOOL idle = GIdle021a2d64();
     BOOL flag = FALSE;
     BOOL turned;

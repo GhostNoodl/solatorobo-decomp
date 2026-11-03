@@ -11,7 +11,7 @@ void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(u16 a);
 void func_ov000_02182590(void *p);
 BOOL StageRes_HasQueued(void);
-void func_0205c234(s32 a, s32 b);
+void StageRes_Push207(s32 a, s32 b);
 
 static inline Actor *FindActor021a09b8(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;
@@ -72,14 +72,14 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
             case 6:
                 if (self->unk_b24_1) {
                     r = 0;
-                    func_0205c234(0x64, 0);
+                    StageRes_Push207(0x64, 0);
                 }
                 break;
             case 0xc:
             case 0xd:
                 if (!self->unk_b24_1) {
                     r = 0;
-                    func_0205c234(0x65, 0);
+                    StageRes_Push207(0x65, 0);
                 }
                 break;
             }
@@ -106,7 +106,7 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
             self->unk_b2c_4 = 0;
         } else if (!self->unk_b24_1) {
             r = 0;
-            func_0205c234(0x65, 0);
+            StageRes_Push207(0x65, 0);
         }
         break;
     case 8:
@@ -126,7 +126,7 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
             r = 0;
         } else if (self->unk_b24_1) {
             r = 0;
-            func_0205c234(0x64, 0);
+            StageRes_Push207(0x64, 0);
         }
         break;
     case 0x10:
@@ -148,13 +148,13 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
             switch (sub->type) {
             case 8:
                 if (self->unk_b24_1) {
-                    func_0205c234(0x64, 0);
+                    StageRes_Push207(0x64, 0);
                     r = 0;
                 }
                 break;
             case 0x10:
                 if (!self->unk_b24_1) {
-                    func_0205c234(0x65, 0);
+                    StageRes_Push207(0x65, 0);
                     r = 0;
                 }
                 break;

@@ -112,7 +112,7 @@ extern void *data_ov000_021ccd64;
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern Actor *Target_Get(ActorSub4c *p);
 extern Actor *Actor_SpawnKind(s32 id, VecFx32 *pos, ActorRot *rot, u16 a, u16 b);
-extern BOOL func_020621c4(void);
+extern BOOL Stage_UseScaledStats(void);
 extern void func_ov000_0219bebc(Actor *p, s32 v);
 extern BOOL History_SetState(ActorSub40 *p, s32 a, s32 b);
 extern s32 Ov003CntSelf_CountLiving(ActorSub4c *p);
@@ -166,7 +166,7 @@ void Ov003ActVt_021f8a60_State0e(Ov003SpawnPt *self) {
         }
         p->unk_18 = type;
         self->spawnId = p->id;
-        if (func_020621c4() && (self->targetObj->target >> 12) == 5) {
+        if (Stage_UseScaledStats() && (self->targetObj->target >> 12) == 5) {
             func_ov000_0219bebc(p, 0x1800);
         }
     }
@@ -835,7 +835,7 @@ namespace m_021e2148 {
 extern "C" {
 
 extern void *data_ov000_021ccd64;
-extern char *func_0207011c(u16 id);
+extern char *Tbl_GetResFile(u16 id);
 extern char *Path_SkipDir(char *p);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 
@@ -846,7 +846,7 @@ void Ov003ActVt_021f8c28_Init(Ov003ActExRes *self) {
     def = self->param;
     if (def->unk_02_3 && def->unk_01 == 1) {
         char buf[0x18];
-        char *name = func_0207011c(self->kind);
+        char *name = Tbl_GetResFile(self->kind);
         STD_CopyString(buf, Path_SkipDir(name));
         STD_ConcatenateString(buf, "e");
         STD_CopyString(self->res.unk_88, name);
@@ -1194,7 +1194,7 @@ namespace m_021e2afc {
 extern "C" {
 
 extern void *data_ov000_021ccd64;
-extern char *func_0207011c(u16 id);
+extern char *Tbl_GetResFile(u16 id);
 extern char *Path_SkipDir(char *p);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 
@@ -1205,7 +1205,7 @@ void Ov003ActVt_021f89c8_Init(Ov003ActExRes *self) {
     def = self->param;
     if (def->unk_02_3 && def->unk_01 == 1) {
         char buf[0x18];
-        char *name = func_0207011c(self->kind);
+        char *name = Tbl_GetResFile(self->kind);
         STD_CopyString(buf, Path_SkipDir(name));
         STD_ConcatenateString(buf, "e");
         STD_CopyString(self->res.unk_88, name);
@@ -1307,7 +1307,7 @@ extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern Ov003LtField *data_ov000_021ccd6c;
 extern void *data_ov000_021ccd68;
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void func_ov000_021b6b4c(Ov003LtField *f, u16 id, VecFx32 *v);
+extern void FieldMgr_SetIdVec(Ov003LtField *f, u16 id, VecFx32 *v);
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
 
 #define OV003LT_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
@@ -1587,7 +1587,7 @@ void Ov003ActVt_021f89c8_StateIdle(Ov003ActExRes *self) {
                 d.x -= self->pos.x;
                 d.y -= self->pos.y;
                 d.z -= self->pos.z;
-                func_ov000_021b6b4c(data_ov000_021ccd6c, id, &d);
+                FieldMgr_SetIdVec(data_ov000_021ccd6c, id, &d);
             }
         }
         return;
@@ -1651,7 +1651,7 @@ extern "C" {
 
 extern void Model0218fe1c_SetLoop(Model0218fe1c *model);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *model, s32 v);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+extern u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern void func_ov000_021975b4(Actor *self);
 extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const void *name, s32 a, s32 b);
 
@@ -1673,7 +1673,7 @@ void Ov003ActVt_021f8800_Start(ActorEx *self) {
     }
 }
 
-void func_ov003_021e3900(ActorEx *self) {
+void Ov003ActVt_021f8800_State20(ActorEx *self) {
     s16 n;
     s16 lim;
     func_ov000_021975b4(self);
@@ -1767,12 +1767,12 @@ void Ov003ActVt_021f8fb8_StateIdle(ActorEx *self) {
             self->fsm->st++;
         }
         if (self->fsm->timer > 0x2d) {
-            self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x100, 1, 0x8000);
-            self->rot_x = func_01ffc128(0, self->rot_x, 0x400, 1, 0x8000);
+            self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x100, 1, 0x8000);
+            self->rot_x = Angle_Approach(0, self->rot_x, 0x400, 1, 0x8000);
         }
         break;
     case 11:
-        self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x100, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x100, 1, 0x8000);
         break;
     }
 }
@@ -1790,7 +1790,7 @@ extern BOOL History_SetState(ActorSub40 *p, s32 a, s32 b);
 extern void Group_UpdateActor(void *mgr, s32 a, Actor *obj);
 extern void Model0218fe1c_SetLoop(Model0218fe1c *model);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *model, s32 v);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+extern u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern void func_ov000_021975b4(Actor *self);
 extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const void *name, s32 a, s32 b);
 
@@ -1805,7 +1805,7 @@ extern void Field_ShakeCamera(s32 a, s32 b);
 extern void *Heap_Alloc(u32 size);
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
 
-void func_ov003_021e3c80(ActorEx *self) {
+void Ov003ActVt_021f8fb8_State20(ActorEx *self) {
     s16 n;
     func_ov000_021975b4(self);
     if (self->unk_18 >= self->unk_1a) {
@@ -1852,7 +1852,7 @@ void Ov003ActVt_021f8fb8_State0a(ActorEx *self) {
         v += (0x466 - v) >> 7;
         self->velY = v;
         self->pos.y += v;
-        self->rot_x = func_01ffc128(0, self->rot_x, 0x400, 1, 0x8000);
+        self->rot_x = Angle_Approach(0, self->rot_x, 0x400, 1, 0x8000);
         w = self->fsm;
         w->timer++;
         if (w->timer > 0xb4) {
@@ -2138,7 +2138,7 @@ extern BOOL Model0218fe1c_SetRes(Model0218fe1c *m, ActorRes *res, s32 a, s32 b);
 extern void Obj02190758_SetRot(Model0218fe1c *m, ActorRot *rot, s32 a);
 extern void NNSi_G3dModifyMatFlag(void *mdl, s32 on, u32 flag);
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 on, u32 mask);
-extern void func_01ffc9fc(VecFx32 *dst, const VecFx32 *src, u16 angle);
+extern void Vec_RotateY(VecFx32 *dst, const VecFx32 *src, u16 angle);
 extern void VEC_Add(VecFx32 *a, VecFx32 *b, VecFx32 *dst);
 extern void HitMesh_SetRes(Ov003HitMesh *o, u32 res);
 extern void MTX_Identity43_(Ov003BigMtx *m);
@@ -2211,7 +2211,7 @@ void Ov003ActVt_021f8af8_Start(Ov003ActExMesh *self) {
         u16 rz;
         u16 rx;
         u32 r;
-        func_01ffc9fc(&v, &e->v, self->rot_y);
+        Vec_RotateY(&v, &e->v, self->rot_y);
         VEC_Add(&v, &self->pos, &v);
         ry = self->rot_y + e->ang;
         r = Ov003Big_Res((ActorRes *)self->unk_34);
@@ -2334,7 +2334,7 @@ extern "C" {
 
 extern const s16 FX_SinCosTable_[];
 extern const Ov003BigEnt2 data_ov003_021f6230[][4];
-extern void func_01ffc9fc(VecFx32 *dst, const VecFx32 *src, u16 angle);
+extern void Vec_RotateY(VecFx32 *dst, const VecFx32 *src, u16 angle);
 extern void VEC_Add(VecFx32 *a, VecFx32 *b, VecFx32 *dst);
 extern void HitMesh_SetRes(Ov003HitMesh *o, u32 res);
 extern void MTX_Identity43_(Ov003BigMtx *m);
@@ -2352,7 +2352,7 @@ extern Actor *Obj021984c8_GetActor(Ov003BigHit *h);
 extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const char *name, s32 a, s32 b);
 extern void Actor_SendMsg(Actor *o, u16 id, s32 a, s32 b, s32 c, void *p);
 extern void VEC_MultAdd(s32 a, VecFx32 *v1, VecFx32 *v2, VecFx32 *dst);
-extern u16 func_01ffc128(u16 cur, u16 tgt, s32 step, s32 a, s32 b);
+extern u16 Angle_Approach(u16 cur, u16 tgt, s32 step, s32 a, s32 b);
 void Ov003ActExMesh_UpdateCopies(Ov003ActExMesh *self, u32 t);
 
 static inline void Ov003BigQuery_Init(Ov003BigQuery *q) {
@@ -2426,7 +2426,7 @@ static inline void Ov003Big_Approach(Ov003BigWarp *w, Actor *o, Ov003ActExMesh *
     w->rot[0] = o->rot_x;
     w->rot[1] = o->rot_y;
     w->rot[2] = o->rot_z;
-    w->rot[1] = func_01ffc128(self->rot_y, w->rot[1], 0x400, 1, 0x8000);
+    w->rot[1] = Angle_Approach(self->rot_y, w->rot[1], 0x400, 1, 0x8000);
 }
 
 void Ov003ActExMesh_StateIdle(Ov003ActExMesh *self) {
@@ -2627,7 +2627,7 @@ void Ov003ActExMesh_UpdateCopies(Ov003ActExMesh *self, u32 t) {
                 u16 rx;
                 u16 ry;
                 u32 r;
-                func_01ffc9fc(&v, &e->v, self->rot_y);
+                Vec_RotateY(&v, &e->v, self->rot_y);
                 VEC_Add(&v, &self->pos, &v);
                 self->copyPos[i].x = v.x;
                 self->copyPos[i].y = v.y;
@@ -2652,25 +2652,25 @@ void Ov003ActExMesh_UpdateCopies(Ov003ActExMesh *self, u32 t) {
         }
     } else {
         if (t <= 12 && data_ov003_021f6230[self->unk_b18][0].unk_00 >= 0) {
-            func_01ffc9fc(&v, &data_ov003_021f6230[self->unk_b18][0].v, self->rot_y);
+            Vec_RotateY(&v, &data_ov003_021f6230[self->unk_b18][0].v, self->rot_y);
             VEC_Add(&v, &self->pos, &self->copyPos[0]);
             self->copyScale[0] = (s32)(t << 12) / 12;
             self->copyAlpha[0] = (s32)(t * 31) / 12;
         }
         if (t >= 6 && t <= 18 && data_ov003_021f6230[self->unk_b18][1].unk_00 >= 0) {
-            func_01ffc9fc(&v, &data_ov003_021f6230[self->unk_b18][1].v, self->rot_y);
+            Vec_RotateY(&v, &data_ov003_021f6230[self->unk_b18][1].v, self->rot_y);
             VEC_Add(&v, &self->pos, &self->copyPos[1]);
             self->copyScale[1] = (s32)((t - 6) << 12) / 12;
             self->copyAlpha[1] = (s32)((t - 6) * 31) / 12;
         }
         if (t >= 12 && t <= 24 && data_ov003_021f6230[self->unk_b18][2].unk_00 >= 0) {
-            func_01ffc9fc(&v, &data_ov003_021f6230[self->unk_b18][2].v, self->rot_y);
+            Vec_RotateY(&v, &data_ov003_021f6230[self->unk_b18][2].v, self->rot_y);
             VEC_Add(&v, &self->pos, &self->copyPos[2]);
             self->copyScale[2] = (s32)((t - 12) << 12) / 12;
             self->copyAlpha[2] = (s32)((t - 12) * 31) / 12;
         }
         if (t >= 18 && t <= 30 && data_ov003_021f6230[self->unk_b18][3].unk_00 >= 0) {
-            func_01ffc9fc(&v, &data_ov003_021f6230[self->unk_b18][3].v, self->rot_y);
+            Vec_RotateY(&v, &data_ov003_021f6230[self->unk_b18][3].v, self->rot_y);
             VEC_Add(&v, &self->pos, &self->copyPos[3]);
             self->copyScale[3] = (s32)((t - 18) << 12) / 12;
             self->copyAlpha[3] = (s32)((t - 18) * 31) / 12;
@@ -2702,7 +2702,7 @@ extern void Body_Update(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 extern BOOL History_SetState(ActorSub40 *p, s32 a, s32 b);
 extern void Heap_Free(void *p);
 extern const char *const data_ov003_021f4c64[2];
-extern char *func_0207011c(u16 id);
+extern char *Tbl_GetResFile(u16 id);
 extern char *Path_SkipDir(char *p);
 extern BOOL OS_IsRunOnTwl(void);
 extern void *Heap_Alloc(u32 size);
@@ -2710,7 +2710,7 @@ extern BOOL ResSet_UpdateLoad(ActorRes *res);
 extern void ActorMarker_Draw(void *p);
 extern void *data_ov000_021ccd64;
 extern void *NNS_G3dGetTex(void *p);
-extern void *func_020394cc(void *a, void *b);
+extern void *G3dRes_QueueTexUpload(void *a, void *b);
 extern void *NNS_G3dGetMdlSet(void *p);
 extern BOOL NNS_G3dBindMdlSet(void *a, void *b);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
@@ -2793,7 +2793,7 @@ Ov003ActExTex *Ov003ActVt_021f8768_Dtor(Ov003ActExTex *self) {
     p = self->tex;
     if (p != NULL) {
         if (p != NULL) {
-            func_ov000_0214b598(p);
+            Twl0214b570_Dtor(p);
             Heap_Free(p);
         }
         self->tex = NULL;
@@ -2813,7 +2813,7 @@ Ov003ActExTex *Ov003ActVt_021f8768_DtorDelete(Ov003ActExTex *self) {
     p = self->tex;
     if (p != NULL) {
         if (p != NULL) {
-            func_ov000_0214b598(p);
+            Twl0214b570_Dtor(p);
             Heap_Free(p);
         }
         self->tex = NULL;
@@ -2835,7 +2835,7 @@ void Ov003ActVt_021f8768_Init(Ov003ActExTex *self) {
         if (self->unk_1c == 3) {
             id = 0x4053;
         }
-        STD_CopyString(buf, func_0207011c(id));
+        STD_CopyString(buf, Tbl_GetResFile(id));
         STD_ConcatenateString(buf, "c");
         r = Path_SkipDir(buf);
         STD_CopyString(self->res.unk_100, buf);
@@ -2856,7 +2856,7 @@ void Ov003ActVt_021f8768_Init(Ov003ActExTex *self) {
                         p = Twl0214b570_Init(p);
                     }
                     self->tex = p;
-                    func_ov000_0214b5e8(p, t);
+                    Twl0214b570_Start(p, t);
                 }
             }
         }
@@ -2872,12 +2872,12 @@ BOOL Ov003ActVt_021f8768_IsReady(Ov003ActExTex *self) {
             r = FALSE;
         }
         if (self->tex != NULL) {
-            if (func_ov000_0214b6d0(self->tex) == 2) {
+            if (Twl0214b570_GetStatus(self->tex) == 2) {
                 r = FALSE;
                 self->texFailed = 1;
             }
-            if (r && !func_ov000_0214b640(self->tex)) {
-                func_ov000_0214b5bc(self->tex);
+            if (r && !Twl0214b570_IsDone(self->tex)) {
+                Twl0214b570_Poll(self->tex);
                 r = FALSE;
             }
         }
@@ -2898,13 +2898,13 @@ void Ov003ActVt_021f8768_Start(Ov003ActExTex *self) {
         if (h != NULL) {
             if (self->unk_1c != 3) {
                 if (self->tex != NULL) {
-                    void *x = func_ov000_0214b670(self->tex);
+                    void *x = Twl0214b570_GetResult(self->tex);
                     if (x != NULL) {
-                        func_020394cc(*self->res.unk_fc, x);
+                        G3dRes_QueueTexUpload(*self->res.unk_fc, x);
                     }
                 }
             } else if (self->unk_60 != NULL) {
-                func_020394cc(*self->res.unk_fc, self->unk_60);
+                G3dRes_QueueTexUpload(*self->res.unk_fc, self->unk_60);
             }
             NNS_G3dBindMdlSet(NNS_G3dGetMdlSet(self->model->res->mdl_handle != NULL ? self->model->res->mdl_handle->unk_00 : NULL), h);
         }

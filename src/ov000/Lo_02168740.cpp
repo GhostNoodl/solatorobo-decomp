@@ -36,7 +36,7 @@ static inline s32 LoApproach(s32 cur, s32 target, s32 rate) {
     return cur + (s32)(((s64)(target - cur) * rate + 0x800) >> 12);
 }
 
-BOOL func_ov000_02168740(Lo021cb894 *self) {
+BOOL Lo021cb894_CanUpdate(Lo021cb894 *self) {
     if (!LoGIdle() || !LoD78Idle()) {
         self->unk_0c_1 = 1;
     }

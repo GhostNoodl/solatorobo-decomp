@@ -86,7 +86,7 @@ void Ov009ActVt_02217390_StateAttack(Ov009ActVt_02217390 *self) {
             self->rot_y = self->unk_f4;
             self->moveYaw = self->rot_y;
         } else {
-            self->rot_y = func_01ffc128(self->unk_f4, self->rot_y, 0x400, 1, 0x8000);
+            self->rot_y = Angle_Approach(self->unk_f4, self->rot_y, 0x400, 1, 0x8000);
         }
         if (f & 0x8000000) {
             Model0218fe1c_SetAnimDelay(self->model, 3, 0);

@@ -7,7 +7,7 @@ extern u8 data_ov006_021ec2cc[];
 
 ov006_MarkerSet *Ov006Vt_021ec2cc_Ctor(ov006_MarkerSet *self) {
     self->vtbl = data_ov006_021ec2cc;
-    __cxa_vec_ctor(self->markers, 4, sizeof(ov006_Marker), (void *)Ov006Vt_021ec2ec_Ctor, (void *)func_ov006_021e1f68);
+    __cxa_vec_ctor(self->markers, 4, sizeof(ov006_Marker), (void *)Ov006Vt_021ec2ec_Ctor, (void *)ov006_Marker_Dtor);
     self->unk4 = 0;
     self->unk8 = 0;
     self->unkC = 0;

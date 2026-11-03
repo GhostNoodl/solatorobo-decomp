@@ -13,7 +13,7 @@ extern u8 data_ov000_021c9b28[];
 extern u8 data_ov000_021c9b2e[];
 void Obj0215fdfc_SetEntry(ObjBase021cac0c_021cb6f0 *self, s32 a, const void *b);
 
-void func_ov000_02168ee0(Lo021cb840 *self) {
+void Lo021cb840_Setup(Lo021cb840 *self) {
     self->unk_28 = 0;
     self->unk_30 = 0xc000;
     self->unk_50 = 0x30;

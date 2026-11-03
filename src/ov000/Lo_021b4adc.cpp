@@ -48,7 +48,7 @@ extern "C" {
 
 Info021b4adc *Tbl_FindEntry_0206fef8(u16 id);
 Flags021b4adc *func_020705fc(u16 id);
-void *func_0207011c(u16 id);
+void *Tbl_GetResFile(u16 id);
 char *Tbl_GetEntryData(u16 id, s32 idx);
 void *Heap_Alloc(u32 size);
 Obj021b4adc *ResSet_Init(void *p);
@@ -70,7 +70,7 @@ void Ov000ActVt_021cc7cc_Init(Self021b4adc *self) {
     void *p;
     info = Tbl_FindEntry_0206fef8(self->id);
     self->flags = func_020705fc(self->id);
-    res = func_0207011c(self->id);
+    res = Tbl_GetResFile(self->id);
     p = Heap_Alloc(0x138);
     if (p != NULL) {
         p = ResSet_Init(p);

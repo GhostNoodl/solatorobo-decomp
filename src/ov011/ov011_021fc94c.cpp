@@ -146,7 +146,7 @@ static inline void Ov011_SendB(u16 id, s32 kind, s16 x, s16 y) {
 
 
 #pragma force_active on
-void func_ov011_021fc94c(Ov011Tut *self) {
+void Ov011Sub1b4_State02(Ov011Tut *self) {
     self->timer++;
     switch (self->state) {
     case 0:
@@ -174,7 +174,7 @@ void func_ov011_021fc94c(Ov011Tut *self) {
 }
 
 
-void func_ov011_021fcb84(Ov011Tut *self) {
+void Ov011Sub1b4_State03(Ov011Tut *self) {
     switch (self->state) {
     case 0: {
         Ov011_Msg(self->id, 1, 1);
@@ -191,7 +191,7 @@ void func_ov011_021fcb84(Ov011Tut *self) {
     }
 }
 
-void func_ov011_021fcd00(Ov011Tut *self) {
+void Ov011Sub1b4_State04(Ov011Tut *self) {
     switch (self->state) {
     case 0:
         Ov011_SendA(self->id, 3, 1);
@@ -229,7 +229,7 @@ static inline s32 Ov011_HpRatio(u16 id) {
     return r;
 }
 
-void func_ov011_021fce2c(Ov011Tut *self) {
+void Ov011Sub1b4_State05(Ov011Tut *self) {
     self->timer++;
     switch (self->state) {
     case 0:

@@ -38,7 +38,7 @@ void Actor_Move(Actor *self, s32 turn);
 s32 Geom_SnapToGround(void *pos, s32 up, s32 down);
 void *SndMgr_PlayAt(void *mgr, s32 id, void *pos, s32 a);
 void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
 static inline Actor *FindActor021aef50(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -57,7 +57,7 @@ static inline s32 Dist021aef50(s32 dx, s32 dz) {
     return (s32)(REG_SQRT_RESULT_021aef50 + 1) >> 1;
 }
 
-void func_ov000_021aef50(Robo021ca458 *self) {
+void Robo021ca458_State1d(Robo021ca458 *self) {
     u16 id;
     Actor *a;
     u8 *info;
@@ -149,7 +149,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
             History_SetState(((St_021aef50 *)self->fsm), 1, 0);
         } else {
             VecFx32 d;
-            self->rot_y = func_01ffc128(a->rot_y, self->rot_y, 0x800, 1, 0x8000);
+            self->rot_y = Angle_Approach(a->rot_y, self->rot_y, 0x800, 1, 0x8000);
             self->speed = 0;
             self->velY = 0;
             self->friction = 0;

@@ -37,7 +37,7 @@ BOOL ResMgr_IsArchiveLoaded(void *a, char *buf, s32 b);
 void **func_02035fe8(void *a, char *buf);
 Ent021b5578 *func_0206e1bc(LangBlockA *r);
 u16 LangData_GetIndex(u32 a, u32 b);
-u8 *func_020704b4(u16 id);
+u8 *Tbl_Elem_020704b4(u16 id);
 u8 *LangBlockA_GetData(LangBlockA *r);
 u8 *LangBlockA_GetData1(LangBlockA *r);
 void *ResMgr_Load(void *e, s32 a, s32 b);
@@ -46,9 +46,9 @@ void *ResMgr_GetArcList(void *e);
 void *Path_SkipDir(void *e);
 void **ResList_FindType5(void *m, void *k);
 void **ResList_FindType4(void *m, void *k);
-BOOL func_0203ed04(void *k, void *r);
+BOOL G3dRes_SetupVram(void *k, void *r);
 BOOL Vram_IsIdle(void);
-void func_02039494(void *r);
+void G3dRes_DropTexData(void *r);
 FieldExit *func_0206e230(LangBlockB *r);
 FieldPropDef *func_0206e2a4(LangBlockB *r);
 void *Heap_Alloc(u32 size);
@@ -158,7 +158,7 @@ BOOL FieldMgr_UpdateLoad(FieldMgr *self) {
                             u8 m_0;
                             m_0 = 0;
                             if ((e_0->id >> 12) == 4) {
-                                m_0 = func_020704b4(e_0->id)[0x18];
+                                m_0 = Tbl_Elem_020704b4(e_0->id)[0x18];
                             }
                             if (m_0 != 1 && m_0 != 2 && m_0 != 3 && m_0 != 4) {
                                 u8 f2 = e_0->flag;
@@ -250,12 +250,12 @@ BOOL FieldMgr_UpdateLoad(FieldMgr *self) {
                     void **r_1 = ResList_FindType5(m_1, k_1);
                     if (r_1 != NULL) {
                         if (r_1 != NULL) {
-                            func_0203ed04(k_1, *r_1);
+                            G3dRes_SetupVram(k_1, *r_1);
                         }
                     } else {
                         r_1 = ResList_FindType4(m_1, k_1);
                         if (r_1 != NULL) {
-                            func_0203ed04(k_1, *r_1);
+                            G3dRes_SetupVram(k_1, *r_1);
                         }
                     }
                 }
@@ -278,11 +278,11 @@ BOOL FieldMgr_UpdateLoad(FieldMgr *self) {
                     void *k_2 = Path_SkipDir(e_3);
                     void **r_2 = ResList_FindType5(m_2, k_2);
                     if (r_2 != NULL) {
-                        func_02039494(*r_2);
+                        G3dRes_DropTexData(*r_2);
                     } else {
                         r_2 = ResList_FindType4(m_2, k_2);
                         if (r_2 != NULL) {
-                            func_02039494(*r_2);
+                            G3dRes_DropTexData(*r_2);
                         }
                     }
                 }

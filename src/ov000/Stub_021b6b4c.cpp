@@ -4,7 +4,7 @@
 
 extern "C" {
 
-void func_ov000_021b6b4c(FieldMgr *self, u16 id, const VecFx32 *v) {
+void FieldMgr_SetIdVec(FieldMgr *self, u16 id, const VecFx32 *v) {
     s32 i;
     for (i = 0; i < 0x20; i++) {
         if (id == self->ids[i]) {

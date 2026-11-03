@@ -25,7 +25,7 @@ static inline void LoDrawPart(UiList *self, s32 px, s32 y, BOOL flip, u32 f, int
     Model_PlayPart(self->model, idx);
 }
 
-void func_ov000_02156d48(UiList *self, s32 unused, s32 *pos) {
+void UiList_DrawArrows(UiList *self, s32 unused, s32 *pos) {
     s16 z = self->posZ - 0x80;
     s32 py;
     s32 c8;

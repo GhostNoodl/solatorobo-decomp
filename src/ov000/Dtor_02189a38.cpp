@@ -6,7 +6,7 @@ extern "C" {
 extern u8 data_0208b318[];
 extern u8 data_0208bf54[];
 void StageRes_CancelSlots(void *ptr);
-void *func_0204b2c0(void *self);
+void *Camera_CtorBase(void *self);
 extern u8 data_ov000_021cc3a0[];
 extern u8 data_ov000_021c9d4c[];
 
@@ -41,7 +41,7 @@ VObj *Ov000Vt_021cc158_Dtor(VObj *self) {
 
 Obj02189a74 *Ov000Vt_021cc3a0_Ctor(Obj02189a74 *self) {
     VecFx32 v;
-    func_0204b2c0(self);
+    Camera_CtorBase(self);
     self->vtable = data_ov000_021cc3a0;
     v = self->unk_10;
     VEC_Add(&v, (const VecFx32 *)data_ov000_021c9d4c, &v);

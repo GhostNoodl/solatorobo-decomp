@@ -73,7 +73,7 @@ BOOL EffectEmitter_Load(EffectEmitter *em) {
         def = em->def;
         f = ResList_FindType4(em->arc, def->mdlName);
         if (f != NULL) {
-            func_0203ed04(def->mdlName, f->data);
+            G3dRes_SetupVram(def->mdlName, f->data);
         }
         em->file = f;
         em->tex = (EffectResTex *)NNS_G3dGetTex(f->data);

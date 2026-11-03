@@ -19,7 +19,7 @@ extern char data_0214b105[];
 extern u8 *data_0214a424;
 s32 MsgRes_GetString(void *p, s32 id);
 BOOL func_020624d8(void);
-void func_ov000_021547e8(void *list, const char *arc, const char *file, int part);
+void UiList_SetMarkModel(void *list, const char *arc, const char *file, int part);
 Ov008SaveEnt *DataRes_GetTable(void *res, u32 idx);
 u32 DataRes_GetCount(void *res, u32 idx);
 u16 DataRes_ReadBitsAt_02059544(void *res, void *block, Ov008SaveEnt *entries, int packed, u32 id);
@@ -121,7 +121,7 @@ void func_ov008_021cfa38(Ov008Mgr *m) {
         }
     }
     m->menu->v08();
-    func_ov000_021547e8(m->menu, data_0214b105, data_0208cb7c, 10);
+    UiList_SetMarkModel(m->menu, data_0214b105, data_0208cb7c, 10);
     base = data_02fe152c->unk_4c;
     ents = DataRes_GetTable(data_02fe152c, 1);
     cnt = DataRes_GetCount(data_02fe152c, 1);

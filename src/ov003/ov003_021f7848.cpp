@@ -144,7 +144,7 @@ extern s32 Actor_FindInRadius(Actor *self, s32 a, VecFx32 *pos, s32 b, s32 c, vo
 extern BOOL Obj021984c8_GetActor(void *p);
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
 extern const VecFx32 data_ov003_021f6b44[];
-extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
+extern void Vec_RotateY(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *p);
 
@@ -285,7 +285,7 @@ void Ov003ActVt_021f95d4_StateIdle(Ov003Cannon *self) {
         }
         // A 12-byte block copy (ldm/stm), as Ov003Blk12; a VecFx32 assignment copies word by word.
         *(Ov003Blk12 *)&v = *(const Ov003Blk12 *)&data_ov003_021f6b44[self->unk_ce_s8];
-        func_01ffc9fc(&v, &v, self->rot.y);
+        Vec_RotateY(&v, &v, self->rot.y);
         VEC_Add(&v, &self->pos, &v);
         SndMgr_PlayAt(data_02097e4c, 0x50, &v, 0);
         self->fsm->st++;
@@ -347,7 +347,7 @@ extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern BOOL Model0218fe1c_SetRes(Model0218fe1c *anim, void *res, s32 a, s32 b);
 extern BOOL History_SetState(ActorSub40 *p, s32 a, s32 b);
 extern void Obj02190758_SetRot(Model0218fe1c *anim, Rot16 *rot, s32 a);
-extern void func_01ffc9fc(VecFx32 *dst, const VecFx32 *src, u16 angle);
+extern void Vec_RotateY(VecFx32 *dst, const VecFx32 *src, u16 angle);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern BOOL Model021903b4_Draw(Model0218fe1c *anim);
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
@@ -453,7 +453,7 @@ BOOL Ov003ActVt_021f953c_Draw(Ov003ActExMdl *self) {
         rot.y += self->turnAngle;
         for (i = 0; i < self->count; i++) {
             Obj02190758_SetRot(&self->mdl, &rot, 0);
-            func_01ffc9fc(&v, &data_ov003_021f6afc, rot.y);
+            Vec_RotateY(&v, &data_ov003_021f6afc, rot.y);
             VEC_Add(&self->pos, &v, &v);
             self->mdl.trans.x = v.x;
             self->mdl.trans.y = v.y;
@@ -582,7 +582,7 @@ extern "C" {
 extern void *data_ov000_021ccd64;
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern BOOL History_SetState(ActorSub40 *p, s32 a, s32 b);
-extern void func_01ffc9fc(VecFx32 *dst, const VecFx32 *src, u16 angle);
+extern void Vec_RotateY(VecFx32 *dst, const VecFx32 *src, u16 angle);
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
 
 void Ov003ActVt_021f9374_Start(Ov003Swing *self) {
@@ -674,7 +674,7 @@ void Ov003ActVt_021f9374_StateIdle(Ov003Swing *self) {
     case 0: {
         EffectObj *fx = Effect_SpawnId(0x25a, &self->pos);
         fx->SetRot(&self->rot);
-        func_01ffc9fc(&self->fxOffset, &self->fxBase, self->rot.y);
+        Vec_RotateY(&self->fxOffset, &self->fxBase, self->rot.y);
         fx->AddPos(&self->fxOffset);
         fx->SetScale(&self->fxScale);
         self->unk_bc = fx->id;
@@ -722,7 +722,7 @@ void Ov003ActVt_021f9374_StateIdle(Ov003Swing *self) {
         if (fx != NULL) {
             fx->SetRot(&self->rot);
             fx->SetScale(&self->fxScale);
-            func_01ffc9fc(&self->fxOffset, &self->fxBase, self->rot.y);
+            Vec_RotateY(&self->fxOffset, &self->fxBase, self->rot.y);
         }
         if (ActorMgr_FindPlayer()->hp[0] == 0) {
             return;
@@ -1125,7 +1125,7 @@ extern void *data_ov000_021ccd64;
 extern const VecFx32 data_ov003_021f6b20;
 extern const Ov003FlyParam data_ov003_021f6b5c[];
 extern const s16 FX_SinCosTable_[];
-extern void func_01ffc9fc(VecFx32 *dst, const VecFx32 *src, u16 angle);
+extern void Vec_RotateY(VecFx32 *dst, const VecFx32 *src, u16 angle);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
@@ -1322,7 +1322,7 @@ void Ov003ActVt_021f940c_Start(Ov003Patrol *self) {
     VecFx32 v = {0, 0, 0};
     v.z = prm->dist;
     Ov003_RotX(&v, &v, self->rot_x);
-    func_01ffc9fc(&v, &v, self->rot_y);
+    Vec_RotateY(&v, &v, self->rot_y);
     VEC_Add(&v, &self->pos, &v);
     self->ends[1] = v;
     self->from = self->ends[0];
@@ -1384,7 +1384,7 @@ extern "C" {
 extern const Ov003FlyParam data_ov003_021f6b5c[];
 extern const VecFx32 data_ov003_021f6acc;
 extern const s16 FX_SinCosTable_[];
-extern void func_01ffc9fc(VecFx32 *dst, const VecFx32 *src, u16 angle);
+extern void Vec_RotateY(VecFx32 *dst, const VecFx32 *src, u16 angle);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *p, const char *name, s32 a, s32 b);
 extern void Model0218fe1c_SetLoop(Model0218fe1c *p);
@@ -1497,7 +1497,7 @@ void Ov003ActVt_021f940c_State06(Ov003Patrol *self) {
         d.x = self->unk_84.x - self->from.x;
         d.y = self->unk_84.y - self->from.y;
         d.z = self->unk_84.z - self->from.z;
-        func_01ffc9fc(&d, &d, -self->baseYaw);
+        Vec_RotateY(&d, &d, -self->baseYaw);
         VEC_Add(&d, &self->from, &d);
         Actor_TurnToPos(self, &d, 0x200);
         w = self->fsm;
@@ -1513,14 +1513,14 @@ void Ov003ActVt_021f940c_State06(Ov003Patrol *self) {
     v.y = prm->unk_08;
     Ov003_RotZ(&v, &v, self->rot_z);
     Ov003_RotX(&v, &v, self->rot_x);
-    func_01ffc9fc(&self->mdlOfs, &v, self->baseYaw);
+    Vec_RotateY(&self->mdlOfs, &v, self->baseYaw);
     if (ActorMgr_FindPlayer()->hp[0] != 0 && Ov003_GameIdle()) {
         VecFx32 save = self->pos;
         VecFx32 o = data_ov003_021f6acc;
         ActorSub4c *l;
         Ov003_RotZ2(&o, &o, self->rot_z);
         Ov003_RotX(&o, &o, self->rot_x);
-        func_01ffc9fc(&o, &o, self->baseYaw);
+        Vec_RotateY(&o, &o, self->baseYaw);
         VEC_Add(&o, &self->mdlOfs, &o);
         VEC_Add(&self->pos, &o, &self->pos);
         l = self->targetObj;

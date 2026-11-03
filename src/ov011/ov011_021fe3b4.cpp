@@ -159,7 +159,7 @@ static inline Ov011PNode *Ov011_NewPNode(const VecFx32 *v) {
     return n;
 }
 
-void func_ov011_021fe3b4(Ov011Scene *self) {
+void Ov011Scene_State07(Ov011Scene *self) {
     VecFx32 v;
     VecFx32 p;
     MtxFx33 m;
@@ -291,8 +291,8 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
         Ov011Npc *a = Ov011_FindNpc(n2->id);
         if (Ov011Npc_IsTracking(a)) {
             Actor *owner = self->actor;
-            if (Ov011Ent_Find(e, func_ov011_02201254(a)) != NULL) {
-                Ov011PNode *pp = Ov011Ent_Find(e, func_ov011_02201254(a));
+            if (Ov011Ent_Find(e, Ov011Npc_GetEntKey(a)) != NULL) {
+                Ov011PNode *pp = Ov011Ent_Find(e, Ov011Npc_GetEntKey(a));
                 w.x = pp->v.x;
                 w.y = pp->v.y;
                 w.z = pp->v.z;

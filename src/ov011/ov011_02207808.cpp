@@ -326,7 +326,7 @@ u32 Ov011Npc_IsTracking(Ov011Npc *self) {
     return self->unk_ce_0;
 }
 
-void *func_ov011_02201254(Ov011Npc *self) {
+void *Ov011Npc_GetEntKey(Ov011Npc *self) {
     return self->unk_d4;
 }
 
@@ -1269,7 +1269,7 @@ extern u8 data_ov011_022079b0[];
 extern u8 data_ov011_022074f8[];
 s32 func_0203db40(void *p);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
-BOOL func_020621c4(void);
+BOOL Stage_UseScaledStats(void);
 
 void func_ov011_02202a38(void) {
     data_ov011_02207f00 += 0x51e;
@@ -1533,7 +1533,7 @@ void Ov011Npc_StateMove(Ov003Actor *self) {
 
 void Ov011ActVt_02207b34_Start(Ov003Actor *self) {
     Ov003Actor_Start(self);
-    if (func_020621c4()) {
+    if (Stage_UseScaledStats()) {
         Ov003Actor_ScaleStats(self, data_ov011_022074f8);
     }
 }

@@ -561,7 +561,7 @@ extern void *Ov003Vt_021f7cd8_Ctor(void *p);
 extern BOOL Ov003Group_Init(void *p);
 extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void GroupNode_SetSpawnRange(void *u, s32 a, s32 b);
-extern BOOL func_020621c4(void);
+extern BOOL Stage_UseScaledStats(void);
 extern s32 SndMgr_StartSeqArc(void *mgr, s32 v);
 extern void SndMgr_SetSlotVolume_0204a058(void *mgr, u32 slot, s32 volume, s32 frames);
 
@@ -727,7 +727,7 @@ void Ov010ActVt_0220fccc_Start(Obj021fa860 *self) {
     }
     self->unk_c4 = 0;
     self->unk_93_4 = 1;
-    if (func_020621c4()) {
+    if (Stage_UseScaledStats()) {
         Ov003Actor_ScaleStats(self, data_ov010_0220ec02);
     }
     switch (self->unk_18) {
@@ -1689,7 +1689,7 @@ extern u32 Rand_UpTo(u32 max);
 extern void Ov010BeamSet_StopAll(Ov010BeamSet *p);
 extern void Model0218fe1c_SetAnimDelay(Model0218fe1c *a, u16 b, BOOL c);
 extern BOOL Ov003Sequence_HasEntries(void *p, void *tbl);
-extern u16 func_01ffc128(u16 a, u16 b, s32 c, u32 d, u16 e);
+extern u16 Angle_Approach(u16 a, u16 b, s32 c, u32 d, u16 e);
 extern char data_ov010_0220fc19[];
 extern char data_ov010_0220fc1f[];
 extern u8 data_ov010_0220edd4[];
@@ -1836,9 +1836,9 @@ void Ov010MovePath_StateDown(Obj021fa860 *self) {
             }
             self->fsm->st = 100;
         }
-        self->rot_x = func_01ffc128(0, self->rot_x, 0x148, 1, 0x8000);
-        self->rot_y = func_01ffc128(0xbfff, self->rot_y, 0x148, 1, 0x8000);
-        self->rot_z = func_01ffc128(0, self->rot_z, 0x148, 1, 0x8000);
+        self->rot_x = Angle_Approach(0, self->rot_x, 0x148, 1, 0x8000);
+        self->rot_y = Angle_Approach(0xbfff, self->rot_y, 0x148, 1, 0x8000);
+        self->rot_z = Angle_Approach(0, self->rot_z, 0x148, 1, 0x8000);
         break;
     case 100:
         History_SetState(self->fsm, 0x2b, 0);
@@ -1955,7 +1955,7 @@ void Ov010MovePath_StateDie(Obj021fa860 *self) {
         VEC_MultAdd(10, &data_ov010_0220ec44, &self->unk_120, &self->unk_120);
         Ov003Vec_ClampLen(&self->unk_120, &self->unk_120, 0x180);
         VEC_Add(&self->pos, &self->unk_120, &self->pos);
-        self->rot_y = func_01ffc128(Ov003Vec_Yaw(&data_ov010_0220ed04), self->rot_y, 0x80, 1, 0x8000);
+        self->rot_y = Angle_Approach(Ov003Vec_Yaw(&data_ov010_0220ed04), self->rot_y, 0x80, 1, 0x8000);
         if (self->fsm->timer > 0x28) {
             self->unk_93_4 = 0;
         }
@@ -2068,7 +2068,7 @@ static inline void Ov010_SetAnim(Obj021fa860 *self, void *model, const void *ani
     Model0218fe1c_SetAnim(model, anim, n, 0);
 }
 
-void func_ov010_021fe084(Obj021fa860 *self) {
+void Ov010MovePath_State29(Obj021fa860 *self) {
     VecFx32 pos;
     VecFx32 d;
     Ov010Cmd cmd;
@@ -2169,7 +2169,7 @@ static inline void Ov010h_Cmd(Obj021fa860 *self) {
     Ov003StateMachine_SendMessage(&self->sm, &cmd);
 }
 
-void func_ov010_021fe2a4(Obj021fa860 *self) {
+void Ov010MovePath_State2a(Obj021fa860 *self) {
     const VecFx32 *goal = &data_ov010_0220ecb0;
     BOOL flag = FALSE;
     s32 i;
@@ -2295,7 +2295,7 @@ void func_ov010_021fe2a4(Obj021fa860 *self) {
         break;
     case 100:
         flag = TRUE;
-        self->rot_y = func_01ffc128(self->target, self->rot_y, 0x180, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->target, self->rot_y, 0x180, 1, 0x8000);
         Ov003Sequence_Signal(&self->seq, 1);
         break;
     }
@@ -2331,7 +2331,7 @@ static inline void Ov010Cam_Start(Ov010Shake *cam) {
     }
 }
 
-void func_ov010_021fe928(Obj021fa860 *self) {
+void Ov010MovePath_State2b(Obj021fa860 *self) {
     u16 st = self->fsm->st;
     if (st == 0) {
         Ov010Wobble *o;
@@ -2351,14 +2351,14 @@ void func_ov010_021fe928(Obj021fa860 *self) {
     Ov010MovePath_StateMove(self);
 }
 
-void func_ov010_021fe9b4(void) {
+void Ov010MovePath_State27(void) {
 }
 
-void func_ov010_021fe9b8(Obj021fa860 *self) {
+void Ov010MovePath_State28(Obj021fa860 *self) {
     self->hp[5] = 5;
 }
 
-void func_ov010_021fe9c8(Obj021fa860 *self) {
+void Ov010MovePath_State2c(Obj021fa860 *self) {
     VecFx32 v;
     VecFx32 off;
     Ov010Cmd cmd;
@@ -2400,7 +2400,7 @@ void func_ov010_021fe9c8(Obj021fa860 *self) {
     }
 }
 
-void func_ov010_021febfc(Obj021fa860 *self) {
+void Ov010MovePath_State2d(Obj021fa860 *self) {
     Ov010Cmd cmd;
     ActorSub40 *st = self->fsm;
     if (*(const u16 *)st != 0) {
@@ -2424,7 +2424,7 @@ void func_ov010_021febfc(Obj021fa860 *self) {
     }
 }
 
-void func_ov010_021fecb0(Obj021fa860 *self) {
+void Ov010MovePath_State2e(Obj021fa860 *self) {
     u16 *c = self->unk_f8;
     c[0] = 0;
     c[1] = 0;
@@ -2443,7 +2443,7 @@ static inline Actor *Ov010List_Next(Actor *head, Actor *n) {
     return head;
 }
 
-void func_ov010_021fecec(Obj021fa860 *self) {
+void Ov010MovePath_State31(Obj021fa860 *self) {
     ActorGroup *list = ActorMgr_GetGroup(data_ov000_021ccd68, 0x4829);
     BOOL found = FALSE;
     Robo021ca458 *pl = ActorMgr_FindPlayer();
@@ -2471,7 +2471,7 @@ void Ov010Obj021fa860_ApplyVisible(Obj021fa860 *self) {
     }
 }
 
-void func_ov010_021fedc4(Obj021fa860 *self) {
+void Ov010MovePath_State30(Obj021fa860 *self) {
     self->unk_f0.b1 = 1;
 }
 
@@ -2753,19 +2753,19 @@ void Ov010Shake_Update(Ov010Shake *self) {
 void Ov010Wobble_Update(Ov010Wobble *o) {
     if (!o->b1) {
         if (o->b2) {
-            o->unk_08 = func_01ffc128(o->unk_06, o->unk_08, 0x148, 1, 0x8000);
+            o->unk_08 = Angle_Approach(o->unk_06, o->unk_08, 0x148, 1, 0x8000);
             o->b2 = 0;
             o->b3 = 1;
             o->unk_06 = 0;
         } else if (o->b3) {
-            o->unk_08 = func_01ffc128(0, o->unk_08, 0x148, 1, 0x8000);
+            o->unk_08 = Angle_Approach(0, o->unk_08, 0x148, 1, 0x8000);
             if (o->unk_08 < 0x200 || o->unk_08 >= 0xfdff) {
                 o->b3 = 0;
                 o->unk_0a = 0;
             }
         } else {
             o->unk_0a += 0x80;
-            o->unk_08 = func_01ffc128((u16)((s32)(((s64)OV010_SIN(o->unk_0a) * 0xc00000 + 0x800) >> 12) >> 12), o->unk_08, 0x100, 1, 0x8000);
+            o->unk_08 = Angle_Approach((u16)((s32)(((s64)OV010_SIN(o->unk_0a) * 0xc00000 + 0x800) >> 12) >> 12), o->unk_08, 0x100, 1, 0x8000);
         }
     }
     o->b1 = o->b0;

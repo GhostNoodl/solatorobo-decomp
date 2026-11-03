@@ -20,9 +20,9 @@ void GfxSys_SetFadeRange(s32 a, s32 b, s32 c);
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 s32 GfxSys_GetFadeTimer(s32 ch);
 s32 GfxSys_GetFadeLevel(s32 ch);
-void func_02042eac(s32 ch, s32 planes);
-void func_02042ebc(s32 ch, s32 duration, s32 start, s32 end);
-BOOL func_02042ef8(s32 ch);
+void Blend_SetPlanes(s32 ch, s32 planes);
+void Blend_Start(s32 ch, s32 duration, s32 start, s32 end);
+BOOL Blend_Tick(s32 ch);
 
 static inline BOOL StOk021b8994(FieldState *g) {
     s32 st = g->unk_98;
@@ -141,15 +141,15 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
         s32 v = GfxSys_GetFadeLevel(2);
         GfxSys_StartFadeIn(0x3c000, 1, 2);
         GfxSys_SetFadeRange(v, 0, 2);
-        func_02042eac(1, 1);
-        func_02042ebc(1, 0x1e, 0x10, 0);
+        Blend_SetPlanes(1, 1);
+        Blend_Start(1, 0x1e, 0x10, 0);
         self->unk_30->flags |= 0x80000;
         self->unk_28 = 0xe;
         break;
     }
     case 14: {
         BOOL ok;
-        if (func_02042ef8(1)) {
+        if (Blend_Tick(1)) {
             break;
         }
         ok = TRUE;

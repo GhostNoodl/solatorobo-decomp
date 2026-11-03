@@ -30,7 +30,7 @@ void ListRow_Unlink(ListRow *self) {
     }
 }
 
-void func_ov000_021c2334(Hud021cca10 *self) {
+void Hud021cca10_Init(Hud021cca10 *self) {
     self->height = 0xf;
     self->unk_30 = 0;
     self->unk_34 = 0;

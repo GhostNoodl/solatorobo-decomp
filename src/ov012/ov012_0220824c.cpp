@@ -47,7 +47,7 @@ void Ov012ActVt_0220b280_StateAttack2(Ov012ActVt_0220b280 *self) {
             self->fsm->timer = 0;
             self->fsm->st++;
         } else {
-            self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+            self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
         }
         break;
     case 2:
@@ -62,7 +62,7 @@ void Ov012ActVt_0220b280_StateAttack2(Ov012ActVt_0220b280 *self) {
         }
         t = self->unk_b8;
         Actor_MoveToPos(self, &t, 0);
-        self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
         break;
     case 3:
         Actor_TurnToActor(self, pl, 0x400);

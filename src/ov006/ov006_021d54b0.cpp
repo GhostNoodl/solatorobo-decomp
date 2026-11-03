@@ -60,7 +60,7 @@ void TaskHost_Destroy(void);
 void TaskHost_Create(int a, int b);
 bool TaskList_HasTasks_021735e8(void);
 void ListRow_Unlink(void *self);
-void func_0204aab0(ov006_Unk02097e48 *a);
+void SndQueue_Push_0204aab0(ov006_Unk02097e48 *a);
 
 ov006_Task0 *func_ov006_021d54b0(ov006_Task0 *self) {
     ov006_Task_Ctor(self);
@@ -95,7 +95,7 @@ BOOL Ov006Vt_021ebc98_Load(void) {
             u16 v;
             if (p->unk2 != 10 && p->unk2 != 0) {
                 if (p->unk6 != 0xffff) {
-                    func_0204aab0(p);
+                    SndQueue_Push_0204aab0(p);
                 }
                 v = 1;
             } else {
@@ -256,7 +256,7 @@ void *Ov006Vt_021ebc80_Dtor(void **self) {
     return self;
 }
 
-ov006_MsgBox *func_ov006_021d5ae4(ov006_MsgBox *self) {
+ov006_MsgBox *ov006_MsgBox_Dtor(ov006_MsgBox *self) {
     self->vtbl = &data_ov006_021ebc70;
     MsgBox_Release(self);
     return self;

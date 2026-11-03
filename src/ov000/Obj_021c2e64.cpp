@@ -14,7 +14,7 @@ static inline void Move2e64(TextWin *o, s32 x, s32 y, s32 h) {
 }
 extern "C" {
 
-void func_ov000_021c2e64(ListRowGauge *self) {
+void ListRowGauge_Draw(ListRowGauge *self) {
     s32 x;
     s32 z;
     if (self->built == 0) {

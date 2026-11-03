@@ -28,7 +28,7 @@ static inline void G3_Cmd1(int cmd, u32 value) {
     NNS_G3dGeBufferOP_N(cmd, &v, 1);
 }
 
-void func_ov000_02155e24(UiList *self, s32 t) {
+void UiList_DrawShade(UiList *self, s32 t) {
     GfxSys *g = data_02097d48;
     s16 z = self->posZ - 0x180;
     s32 alpha = (s32)(((s64)t * 0x14000 + 0x800) >> 12) >> 12 & 0xff;

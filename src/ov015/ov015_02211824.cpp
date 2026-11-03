@@ -10,7 +10,7 @@ extern const char *data_ov015_02213230[];
 extern const char *data_ov015_02213208[];
 s32 ResSet_UpdateLoad(void *a);
 
-void func_ov015_02211824(void) {
+void Ov015Vt_02213200_Dtor(void) {
 }
 
 void func_ov015_02211828(Ov015Info38 *self) {
@@ -30,10 +30,10 @@ void func_ov015_02211828(Ov015Info38 *self) {
     self->unk_34 = 0;
 }
 
-void func_ov015_02211878(Ov015Info38 *self) {
+void Ov015Info38_Dtor(Ov015Info38 *self) {
 }
 
-void *func_ov015_0221187c(Ov015Info38 *self) {
+void *Ov015Info38_DtorDelete(Ov015Info38 *self) {
     Heap_Free(self);
     return self;
 }
@@ -140,7 +140,7 @@ BOOL func_ov015_02211b00(Ov015Obj290 *self) {
 BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
 void Model0218fe1c_ClearLoop(void *a);
-s32 func_ov000_021909a8(void *a, const void *b, const void *c);
+s32 Model_FindResIdxByName(void *a, const void *b, const void *c);
 extern u8 data_ov015_02213280[];
 extern const char *data_ov015_02213210[];
 
@@ -155,7 +155,7 @@ BOOL func_ov015_02211b2c(Ov015Obj290 *self) {
     self->model.flags.clearInit = 0;
     self->model.flags.flushVP = 1;
     s32 r = data_ov015_02213368->unk_2c;
-    r = func_ov000_021909a8(&self->model, data_ov015_02213210[r], NULL);
+    r = Model_FindResIdxByName(&self->model, data_ov015_02213210[r], NULL);
     self->unk_0c = r;
     return TRUE;
 }

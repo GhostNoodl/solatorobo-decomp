@@ -27,7 +27,7 @@ extern Ov002SndCue data_ov002_021ef016[];
 
 extern u8 data_ov002_021efe30[];
 
-void func_ov000_0215d980(void *a, u16 b, int c);
+void Lo021cae48_SetValue(void *a, u16 b, int c);
 
 void Model0218fe1c_ClearReverse(void *a);
 
@@ -82,7 +82,7 @@ void func_ov002_021db750(Obj021eff50 *self) {
     s->slideZ = -0x1666;
     self->unk_24->slideMode = 1;
     self->unk_24->style = 3;
-    func_ov000_0215d980(self->unk_24, ((u16)self->board->unk_8a), 0);
+    Lo021cae48_SetValue(self->unk_24, ((u16)self->board->unk_8a), 0);
     self->unk_24->vfunc_08();
     self->unk_24->flags &= ~2;
     {

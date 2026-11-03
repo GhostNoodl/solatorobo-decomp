@@ -23,12 +23,12 @@ static inline BOOL Gfx_IsFadeDone(int ch) {
 
 
 
-void func_02055ff0(GameScene *scene, s32 x, s32 y) {
+void MainVt_0208bbc8_DrawQuad(GameScene *scene, s32 x, s32 y) {
     G3_Vec(0x1b, x << 12, y << 12, 0x1000);
     NNS_G3dGeSendDL(data_0208b3d0[0], data_020828f8[0]);
 }
 
-void func_02056044(GameScene *scene, s32 x, s32 y, u32 color, u16 color2) {
+void MainVt_0208bbc8_DrawGradient(GameScene *scene, s32 x, s32 y, u32 color, u16 color2) {
     G3_Vec(0x1b, x << 12, y << 12, 0x1000);
     G3_Cmd1(0x40, 1);
     G3_Cmd1(0x20, color);

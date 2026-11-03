@@ -4,16 +4,16 @@
 extern "C" {
 
 BOOL PauseNode_IsDrawPaused(PauseNode *self, s32 a);
-void func_ov000_021b7e34(FieldProp *n);
+void FieldProp_Draw(FieldProp *n);
 
-void func_ov000_021b53a8(FieldMgr *self) {
+void FieldMgr_DrawProps(FieldMgr *self) {
     FieldProp *n;
     if (PauseNode_IsDrawPaused(&self->pause, 1)) {
         return;
     }
     for (n = self->head; n != NULL; n = n->next) {
         if (n->visible) {
-            func_ov000_021b7e34(n);
+            FieldProp_Draw(n);
         }
     }
 }

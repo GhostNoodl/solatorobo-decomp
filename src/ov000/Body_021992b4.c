@@ -48,7 +48,7 @@ typedef struct ActorMgr ActorMgr;
 extern ActorMgr *data_ov000_021ccd68;
 
 ActorC *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u32 angle);
+void Vec_RotateY(VecFx32 *out, const VecFx32 *in, u32 angle);
 void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *offset, u32 angle);
 
 static inline ActorC *FindActor(u16 id) {

@@ -32,7 +32,7 @@ void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 u16 FX_Atan2(s32 a, s32 b);
 BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 void Actor_SendMsgU8(Actor *o, u16 id, s32 m);
-s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
+s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
 BOOL History_SetState(void *s, s32 a, s32 b);
 
@@ -165,7 +165,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
                 t.y = a->pos.y;
                 t.z = a->pos.z;
             }
-            if (func_01ffbd6c((VecFx32 *)((u8 *)self + 0x70), &t, -1, 0, 0, -1) != -0x1000) {
+            if (Hit_CastSegment((VecFx32 *)((u8 *)self + 0x70), &t, -1, 0, 0, -1) != -0x1000) {
                 t.x -= self->pos.x;
                 t.y -= self->pos.y;
                 t.z -= self->pos.z;

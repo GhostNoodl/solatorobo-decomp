@@ -30,11 +30,11 @@ extern "C" {
 
 extern ov006_Net021e51f8 *data_02097e40;
 
-BOOL func_020463c8(ov006_Net021e51f8 *net);
+BOOL WH_StateInEndScan_020463c8(ov006_Net021e51f8 *net);
 BOOL func_020455ac(ov006_Net021e51f8 *net);
 int Wh_GetError(ov006_Net021e51f8 *net);
 u16 Wh_SelectChannel(ov006_Net021e51f8 *net);
-void func_02044a0c(ov006_NetParam021e51f8 *param);
+void WH_CalcBufferSizes_02044a0c(ov006_NetParam021e51f8 *param);
 void Wh_SetGameInfo(ov006_Net021e51f8 *net, void *data, u32 size);
 void func_02045950(ov006_Net021e51f8 *net, void *data, u32 size);
 BOOL func_020459cc(ov006_Net021e51f8 *net, int a, u16 tgid, u16 b);
@@ -90,7 +90,7 @@ void func_ov006_021e51f8(ov006_Unk021ec888 *self) {
             return;
         }
         if (data_02097e40->state == 2) {
-            func_020463c8(data_02097e40);
+            WH_StateInEndScan_020463c8(data_02097e40);
         }
         ov006_Menu_Advance(self);
         return;
@@ -142,7 +142,7 @@ void func_ov006_021e51f8(ov006_Unk021ec888 *self) {
         net->param.unkA = 0x20;
         net->param.unk8 = 0x74;
         net->param.unkC = 1;
-        func_02044a0c(&net->param);
+        WH_CalcBufferSizes_02044a0c(&net->param);
         Wh_SetGameInfo(data_02097e40, self->unkF4, 0x66);
         MI_CpuFill8(data_02097e40->buf, 0, 0x200);
         menu = data_ov006_021ec888;

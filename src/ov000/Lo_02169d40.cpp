@@ -7,7 +7,7 @@ extern const s16 FX_SinCosTable_[];
 s32 FX_Div(s32 a, s32 b);
 u32 Rand_GetGlobal(void);
 
-void func_ov000_02169d40(Lo021cb798 *self) {
+void Lo021cb798_PostUpdate(Lo021cb798 *self) {
     s32 s = self->unk_04;
     s32 v;
     if (s == 1 || s == 8 || s == 3 || s == 0xa) {

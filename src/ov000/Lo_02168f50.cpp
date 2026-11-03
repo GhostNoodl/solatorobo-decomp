@@ -8,9 +8,9 @@ extern "C" {
 
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
-s32 func_02043d84(void *a);
+s32 Gfx3DState_NextPolyIdB(void *a);
 
-void func_ov000_02168f50(Lo021cb840 *self) {
+void Lo021cb840_UpdateTarget(Lo021cb840 *self) {
     Robo021ca458 *p = ActorMgr_FindPlayer();
     if (p == NULL) {
         return;

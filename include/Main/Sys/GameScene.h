@@ -6,7 +6,7 @@
 #include "Main/Gfx/GfxMgr.h"
 #include "nnsys/g3d.h"
 
-// Game scene with HUD state (the class of func_020534dc). The vtable stays in asm.
+// Game scene with HUD state (the class of MainVt_0208bbc8_Update). The vtable stays in asm.
 struct GameScene {
     /* 0x000 */ // vtable
     virtual void unk_vf00();
@@ -119,7 +119,7 @@ extern void GfxSys_SetFadePlanes(int a, int b);
 extern void GfxSys_StartFadeOut(int a, int b, int c);
 extern s32 Rand_UpTo(s32 max);
 extern void Gfx3D_SendDL(void *obj, int a);
-extern s32 func_02043d84(void *obj);
+extern s32 Gfx3DState_NextPolyIdB(void *obj);
 extern void func_02052fcc(GameScene *scene);
 extern s32 func_020572f8(GameScene *scene, void *p);
 extern void *func_0203972c(void *blocks, u32 count);

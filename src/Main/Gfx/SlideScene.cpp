@@ -24,7 +24,7 @@ struct SlideHud {
     /* 0x360 */ s32 t2;
 }; // size 0x364
 
-// Field scene with slide panels (the class of func_020534dc; same object as GameScene).
+// Field scene with slide panels (the class of MainVt_0208bbc8_Update; same object as GameScene).
 class SlideScene {
 public:
     virtual void vf00();
@@ -92,12 +92,12 @@ extern u16 Pad_GetRelease(void);
 extern void func_02051a34(SlideScene *scene);
 extern void *Heap_GetCurrent(void);
 extern void Heap_SetCurrentHi(void);
-extern Model *func_0204c9f8(Model *model);
+extern Model *Model_Dtor(Model *model);
 extern void Heap_SetCurrent(void *heap);
 extern BOOL func_0204e218(SlideScene *scene);
-extern Model *func_0204e238(void *model, const char *name, const char *file, int a);
+extern Model *Model_Init_0204e238(void *model, const char *name, const char *file, int a);
 extern char *Model_GetName(Model *model);
-extern void *func_0204e294(Model *model);
+extern void *Model_GetFileName(Model *model);
 extern void func_0204e29c(Model *model);
 extern void func_02054254(SlidePanel *panel);
 extern void Obj3DLayer_SetCur(SlidePanel *panel, u32 v);
@@ -107,20 +107,20 @@ extern void *ResMgr_GetArchiveList(const char *name, void *arcName, u16 id);
 extern void func_02054b70(Model *model);
 extern void func_02054b80(Model *model);
 extern void func_02050e94(Model *model);
-extern void *func_0204e278(void *pltt);
+extern void *PlttRes_Ctor(void *pltt);
 extern void PlttRes_Load(void *res, Model *src);
 extern u32 *func_02054b90(void *pltt);
 extern void func_02054b98(void *dst, u32 size);
 extern void func_02040dd8(PlttRes *res, int idx, bool load);
 extern void func_02054bac(Model *model, void *pltt);
 extern void func_02054bb4(SlidePanel *panel);
-extern BOOL func_02054b4c(int ch);
+extern BOOL Gfx_IsFadeIdle_02054b4c(int ch);
 extern BOOL Model_IsReady(Model *model, u32 idx);
 extern void func_02055068(SlidePanel *panel, SlidePanel *prev);
 extern void func_020554e4(SlidePanel *panel);
 extern void SlideCtrl_Lock(SlideScene *scene);
 extern void SlideCtrl_Unlock(SlideScene *scene);
-extern BOOL func_0204ffb0(int idx);
+extern BOOL TextWin_IsState4_0204ffb0(int idx);
 extern s32 FX_Div(s32 a, s32 b);
 extern void func_020556a0(SlideHud *hud, s8 *text);
 extern void func_02055bbc(SlideScene *scene);
@@ -128,20 +128,20 @@ extern void func_02055cbc(SlideScene *scene);
 extern void func_02052178(SlideScene *scene);
 extern BOOL FieldMsg_IsBusy(SlideScene *scene);
 extern BOOL func_02055aa4(SlideScene *scene);
-extern BOOL func_02055844(void);
+extern BOOL Field_HasEvent_02055844(void);
 extern void Field_ClearEvent(void);
 extern u16 Pad_GetTrig(void);
-extern BOOL func_02055898(void);
+extern BOOL Field_IsPlayerBusy_02055898(void);
 extern void func_0205592c(SlideHud *hud);
 extern BOOL func_020559c8(SlideHud *hud);
 extern BOOL Field_IsEventQueued(s32 id);
-extern BOOL func_02055a4c(void);
+extern BOOL Field_IsIdle_02055a4c(void);
 extern void func_02055a78(void);
 extern u8 *func_0204f354(void);
 extern void *func_02055a9c(u8 *p);
 extern void func_02055a90(void *p);
 
-BOOL func_020534dc(SlideScene *scene) {
+BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
     u16 pad;
     s32 i;
     SlidePanel *panel;
@@ -181,7 +181,7 @@ BOOL func_020534dc(SlideScene *scene) {
         model = scene->model;
         if (model != NULL) {
             if (model != NULL) {
-                func_0204c9f8(model);
+                Model_Dtor(model);
                 Heap_Free(model);
             }
             scene->model = NULL;
@@ -190,18 +190,18 @@ BOOL func_020534dc(SlideScene *scene) {
         if (func_0204e218(scene)) {
             model = (Model *)Heap_Alloc(sizeof(Model));
             if (model != NULL) {
-                model = func_0204e238(model, data_0208cc8c, data_0208cb84, 0);
+                model = Model_Init_0204e238(model, data_0208cc8c, data_0208cb84, 0);
             }
             scene->model = model;
         } else {
             model = (Model *)Heap_Alloc(sizeof(Model));
             if (model != NULL) {
-                model = func_0204e238(model, data_0208cca0, data_0208cb74, 0);
+                model = Model_Init_0204e238(model, data_0208cca0, data_0208cb74, 0);
             }
             scene->model = model;
         }
         res = ResMgr_GetArcList(Model_GetName(scene->model));
-        TexObj_SetRes(scene->model, ResList_FindType2(res, func_0204e294(scene->model)));
+        TexObj_SetRes(scene->model, ResList_FindType2(res, Model_GetFileName(scene->model)));
         func_0204e29c(scene->model);
         TexObj_SelectImage(scene->model, 0, 4);
         TexObj_SelectImage(scene->model, 0, 0);
@@ -220,18 +220,18 @@ BOOL func_020534dc(SlideScene *scene) {
                     break;
                 }
             }
-            if (!ResMgr_IsArchiveLoaded(Model_GetName(panel->nextModel), func_0204e294(panel->nextModel), 2)) {
+            if (!ResMgr_IsArchiveLoaded(Model_GetName(panel->nextModel), Model_GetFileName(panel->nextModel), 2)) {
                 goto check;
             }
             model = panel->nextModel2;
             if (model != NULL) {
-                if (!ResMgr_IsArchiveLoaded(Model_GetName(model), func_0204e294(model), 2)) {
+                if (!ResMgr_IsArchiveLoaded(Model_GetName(model), Model_GetFileName(model), 2)) {
                     goto check;
                 }
             }
-            res = ResMgr_GetArchiveList(Model_GetName(panel->nextModel), func_0204e294(panel->nextModel), 2);
+            res = ResMgr_GetArchiveList(Model_GetName(panel->nextModel), Model_GetFileName(panel->nextModel), 2);
             func_02054254(panel);
-            TexObj_SetRes(panel->nextModel, ResList_FindType2(res, func_0204e294(panel->nextModel)));
+            TexObj_SetRes(panel->nextModel, ResList_FindType2(res, Model_GetFileName(panel->nextModel)));
             if (panel->flag22) {
                 func_02054b70(panel->nextModel);
             }
@@ -245,7 +245,7 @@ BOOL func_020534dc(SlideScene *scene) {
                 u32 *buf;
                 void *pltt = Heap_Alloc(0x64);
                 if (pltt != NULL) {
-                    pltt = func_0204e278(pltt);
+                    pltt = PlttRes_Ctor(pltt);
                 }
                 panel->nextPltt = (PlttRes *)pltt;
                 PlttRes_Load(pltt, panel->nextModel);
@@ -257,8 +257,8 @@ BOOL func_020534dc(SlideScene *scene) {
             }
             model = panel->nextModel2;
             if (model != NULL) {
-                res = ResMgr_GetArchiveList(Model_GetName(model), func_0204e294(model), 2);
-                TexObj_SetRes(panel->nextModel2, ResList_FindType2(res, func_0204e294(panel->nextModel2)));
+                res = ResMgr_GetArchiveList(Model_GetName(model), Model_GetFileName(model), 2);
+                TexObj_SetRes(panel->nextModel2, ResList_FindType2(res, Model_GetFileName(panel->nextModel2)));
                 if (i == 3) {
                     func_02054b70(panel->nextModel2);
                 }
@@ -269,7 +269,7 @@ BOOL func_020534dc(SlideScene *scene) {
             panel->flag20 = 0;
             if (!scene->fading) {
                 scene->fading = 1;
-                if (func_02054b4c(0) && !scene->faded) {
+                if (Gfx_IsFadeIdle_02054b4c(0) && !scene->faded) {
                     SndMgr_PlayVolume(data_02097e4c, 0x27, 0x3c, -1, -1);
                 }
             }
@@ -315,7 +315,7 @@ BOOL func_020534dc(SlideScene *scene) {
                     SlideCtrl_Unlock(scene);
                 }
             }
-            if (func_0204ffb0(0)) { panel->frame = panel->frames; } else { panel->frame++; }
+            if (TextWin_IsState4_0204ffb0(0)) { panel->frame = panel->frames; } else { panel->frame++; }
             panel->unk_20 = FX_Div(panel->frame << 12, panel->frames << 12);
             if (panel->unk_20 >= 0x1000) {
                 panel->frame = 0;
@@ -410,7 +410,7 @@ BOOL func_020534dc(SlideScene *scene) {
         return TRUE;
     }
     if (!func_02055aa4(scene)) {
-        if (func_02055844()) {
+        if (Field_HasEvent_02055844()) {
             Field_ClearEvent();
         }
         return FALSE;
@@ -418,7 +418,7 @@ BOOL func_020534dc(SlideScene *scene) {
     if (!scene->busy && scene->waitInput) {
         pad2 = Pad_GetTrig();
         scene->frame++;
-        if (!func_02055898()) {
+        if (!Field_IsPlayerBusy_02055898()) {
             hit = FALSE;
             if (!scene->waitPage) {
                 if (pad2 & 0x81) {
@@ -475,7 +475,7 @@ BOOL func_020534dc(SlideScene *scene) {
     if (!scene->skip) {
         if (Field_IsEventQueued(0x20)) {
             scene->End();
-            if (!func_02055a4c()) {
+            if (!Field_IsIdle_02055a4c()) {
                 func_02055a78();
             }
             func_02055a90(func_02055a9c(func_0204f354()));
@@ -503,7 +503,7 @@ BOOL func_020534dc(SlideScene *scene) {
         if (!scene->flag6) {
             return TRUE;
         }
-        if (func_02055844()) {
+        if (Field_HasEvent_02055844()) {
             Field_ClearEvent();
         }
         return FALSE;

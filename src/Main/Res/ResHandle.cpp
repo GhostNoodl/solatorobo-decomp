@@ -356,7 +356,7 @@ extern G3dTex *NNS_G3dGetTex(void *res);
 extern u32 Heap_Resize(void *ptr, u32 size);
 extern void *Vram_QueueTransfer(int arg0, void *arg1, u32 arg2, u32 arg3, int arg4);
 
-void func_02039494(void *res) {
+void G3dRes_DropTexData(void *res) {
     G3dTex *tex = NNS_G3dGetTex(res);
     if (tex != NULL && tex->unk_14 != 0) {
         u32 size = (u8 *)tex + tex->unk_14 - (u8 *)res;
@@ -365,7 +365,7 @@ void func_02039494(void *res) {
     }
 }
 
-void *func_020394cc(void *res, void *arg) {
+void *G3dRes_QueueTexUpload(void *res, void *arg) {
     void *result = NULL;
     G3dTex *tex = NNS_G3dGetTex(res);
     if (tex != NULL) {

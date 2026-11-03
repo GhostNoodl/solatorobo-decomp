@@ -39,7 +39,7 @@ typedef struct {
 } Ov003PartSrc;
 
 // The Target object (Actor::targetObj, ActorSub4c) as Ov003ActExSway_StateDie refills it from the spawn
-// info record of func_020704b4: the first 0x18 bytes are copied as two records.
+// info record of Tbl_Elem_020704b4: the first 0x18 bytes are copied as two records.
 typedef struct {
     Ov003PartA a;
     Ov003PartB b;
@@ -107,10 +107,10 @@ extern void HitSphere_Unlink_0203f364(ActorSub48 *ctl);
 extern void Model0218fe1c_SetLoop(void *model);
 extern void Model0218fe1c_SetAnimSpeed(void *model, s32 a);
 extern s32 Rand_PlusMinus(s32 max);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 step, u32 a, u16 b);
+extern u16 Angle_Approach(u16 target, u16 cur, s32 step, u32 a, u16 b);
 extern char data_ov003_021f9983[];
 extern char data_ov003_021f9989[];
-extern s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 c, s32 d, s32 e, s32 f);
+extern s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, u32 c, s32 d, s32 e, s32 f);
 extern void Body_Update(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
 
@@ -164,7 +164,7 @@ extern void HitSphere_Link(ActorSub48 *ctl);
 extern void Ov003Pickup_Update(ActorEx *self, s32 a);
 extern const Ov003Ids data_ov003_021f6bcc;
 extern void Group_UpdateActor(void *mgr, s32 a, void *obj);
-extern Ov003PartSrc *func_020704b4(u16 id);
+extern Ov003PartSrc *Tbl_Elem_020704b4(u16 id);
 extern void func_020627b4(void);
 extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
@@ -248,7 +248,7 @@ void Ov003ActExSway_StateDie(Ov003ActExSway *self) {
         fx->AddPosXYZ(0, 0xccd, 0);
         Effect_SpawnId(0x44c, &self->pos)->AddPosXYZ(0, 0x2000, 0);
         SndMgr_PlayStrm(data_02097e4c, Rand_UpTo(1) + 0x7c);
-        src = func_020704b4(self->kind);
+        src = Tbl_Elem_020704b4(self->kind);
         p = (Ov003Part *)self->targetObj;
         Ov003PartA_Assign(&p->a, &src->a);
         Ov003PartB_Assign(&p->b, &src->b);

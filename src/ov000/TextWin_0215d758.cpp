@@ -14,7 +14,7 @@ extern void *data_0208cc94;
 extern void *data_02149ef8;
 void *ResMgr_GetArcList(void *a);
 void *ResList_FindType2(void *a, void *b);
-void func_02041c5c(void *model, void *fn);
+void TexObj_SetAllOamFuncs(void *model, void *fn);
 u32 MsgRes_GetString(void *a, s32 b);
 void *func_ov000_02154128(u8 *self, void *req, void *buf, u16 *count);
 
@@ -55,7 +55,7 @@ void Lo021cae48_Setup(Lo021cae48 *self) {
     if (self->style != 4) {
         TexObj_SelectImage(self->digits, 0, ent[0]);
     }
-    func_02041c5c((u8 *)self->digits, (void *)func_ov000_02154128);
+    TexObj_SetAllOamFuncs((u8 *)self->digits, (void *)func_ov000_02154128);
     res = data_02149ef8;
     win = TextWin_New();
     self->label = win;

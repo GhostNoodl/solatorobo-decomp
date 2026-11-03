@@ -25,18 +25,18 @@ int data_02097e0c[3];
 int data_02097e00[3];
 int data_02097e30[3];
 
-void func_02042eac(int ch, int planes) {
+void Blend_SetPlanes(int ch, int planes) {
     data_02097e24[ch] = planes;
 }
 
-void func_02042ebc(int ch, int duration, int start, int end) {
+void Blend_Start(int ch, int duration, int start, int end) {
     data_02097e18[ch] = 0;
     data_02097e0c[ch] = duration;
     data_02097e30[ch] = start;
     data_02097e00[ch] = end;
 }
 
-BOOL func_02042ef8(int ch) {
+BOOL Blend_Tick(int ch) {
     if (data_02097e24[ch] == 0) {
         return FALSE;
     }

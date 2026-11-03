@@ -16,7 +16,7 @@ void Actor_MoveToPos(Actor *self, const VecFx32 *target, s32 turn) {
     d.y = target->y - self->pos.y;
     d.z = target->z - self->pos.z;
     d.y = 0;
-    if (func_01ffc4ec(&d, self->speed, 0x2800)) {
+    if (Hit_PointInCylinder(&d, self->speed, 0x2800)) {
         self->pos.x = target->x;
         self->pos.z = target->z;
         return;

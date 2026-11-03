@@ -142,7 +142,7 @@ void Ov014Act_0221267c_StateAttack2(Ov014Act_0221267c *self) {
         break;
     }
     case 10:
-        self->rot_y = func_01ffc128(self->unk_34c, self->rot_y, 0x400, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->unk_34c, self->rot_y, 0x400, 1, 0x8000);
         s = self->fsm;
         if (ActorSub40_Timer(s) == 0) {
             Effect_SpawnId(0x5dd, (VecFx32 *)((u8 *)self + 0x33c))->SetScaleXYZ(0x2000, 0x2000, 0x2000);

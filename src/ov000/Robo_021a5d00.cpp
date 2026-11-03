@@ -18,7 +18,7 @@ extern char data_ov000_021cc660[];
 extern char data_ov000_021cc684[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 u16 FX_Atan2(s32 y, s32 x);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);
 BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 void Model0218fe1c_SetLoop(void *a);
@@ -75,7 +75,7 @@ static inline void Reset021a5d00(Robo021ca458 *self) {
     History_SetState((St_021a5d00 *)self->fsm, 1, 0);
 }
 
-void func_ov000_021a5d00(Robo021ca458 *self) {
+void Robo021ca458_State08(Robo021ca458 *self) {
     Actor *a;
     ActorSub4c *info;
     self->hit->unk_9a |= 0x20;
@@ -95,7 +95,7 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
             pos = self->pos;
             pos.y -= 0x1000;
             self->moveYaw = AngleTo021a5d00(self, a);
-            self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+            self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
             {
                 St_021a5d00 *st = (St_021a5d00 *)self->fsm;
                 st->timer++;

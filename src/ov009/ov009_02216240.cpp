@@ -39,7 +39,7 @@ extern "C" {
 extern const VecFx32 data_ov009_02215f74[];
 extern VecFx32 data_ov009_02215f78[];
 extern VecFx32 data_ov009_02215f7c[];
-extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
+extern void Vec_RotateY(VecFx32 *out, const void *a, s32 b);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 
 static inline void Ov009_SetPos(Ov009ActVt_02217640 *self, s32 x, s32 y, s32 z) {
@@ -63,7 +63,7 @@ void Ov009ActVt_02217640_Start(Ov009ActVt_02217640 *self) {
     case 0x580b: {
         ActorSub48 *p;
         self->unk_f7 = 1;
-        func_01ffc9fc(&self->unk_fc, &data_ov009_02215efc, (u16)(Rand_PlusMinus(0x3c) * 0xb6));
+        Vec_RotateY(&self->unk_fc, &data_ov009_02215efc, (u16)(Rand_PlusMinus(0x3c) * 0xb6));
         self->pos = self->unk_fc;
         self->unk_f2 = self->kind == 0x5809 ? 0x78 : 0xa0;
         p = self->hit;
@@ -146,7 +146,7 @@ void Ov009ActVt_02217640_Update(Ov009ActVt_02217640 *self) {
                 }
             }
         } else if (k != 0xf && k != 0x11) {
-            func_01ffc9fc(&d, data_ov009_02215f38, self->rot_y);
+            Vec_RotateY(&d, data_ov009_02215f38, self->rot_y);
             VEC_Add(&self->pos, &d, &d);
             Actor_PitchToPos(self, &d, 0x29);
         }
@@ -361,7 +361,7 @@ extern "C" {
 
 extern const VecFx32 data_ov009_02215f2c;
 extern const VecFx32 data_ov009_02215f44;
-extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
+extern void Vec_RotateY(VecFx32 *out, const void *a, s32 b);
 extern void Actor_PitchToPos(Actor *self, const VecFx32 *v, s32 a);
 extern void Actor_TurnToPos(Ov003Actor *self, const VecFx32 *v, s32 a);
 
@@ -416,7 +416,7 @@ void Ov009ActVt_02217640_StateAttack(Ov009ActVt_02217640 *self) {
         }
         o = Effect_SpawnId(0x130, &self->pos);
         *(Ov009Blk12 *)&a = *(const Ov009Blk12 *)&data_ov009_02215f08;
-        func_01ffc9fc(&a, &a, self->rot_y);
+        Vec_RotateY(&a, &a, self->rot_y);
         o->AddPos(&a);
         o->SetRotXYZ(0x4000, self->rot_y, self->rot_z);
         o->SetScaleAll(0xb33);
@@ -538,7 +538,7 @@ void Ov009ActVt_02217640_StateAttack3(Ov009ActVt_02217640 *self) {
         if (self->unk_f0 & 4) {
             *(Ov009Blk12 *)&t1 = *(const Ov009Blk12 *)&data_ov009_02215f2c;
             t1.y = self->unk_fc.y + 0x1000;
-            func_01ffc9fc(&t1, &t1, self->rot_y);
+            Vec_RotateY(&t1, &t1, self->rot_y);
             VEC_Add(&self->pos, &t1, &t1);
             self->unk_b8 = t1;
             self->fsm->st = 10;
@@ -580,7 +580,7 @@ void Ov009ActVt_02217640_StateAttack3(Ov009ActVt_02217640 *self) {
     case 11: {
         ActorSub40 *s;
         *(Ov009Blk12 *)&t2 = *(const Ov009Blk12 *)&data_ov009_02215f44;
-        func_01ffc9fc(&t2, &t2, self->rot_y);
+        Vec_RotateY(&t2, &t2, self->rot_y);
         VEC_Add(&self->pos, &t2, &t2);
         Actor_PitchToPos(self, &t2, 0x11f);
         s = self->fsm;
@@ -595,7 +595,7 @@ void Ov009ActVt_02217640_StateAttack3(Ov009ActVt_02217640 *self) {
         self->friction = 0;
         self->gravity = 0;
         self->speed = 0x333;
-        func_01ffc9fc(&self->unk_fc, &data_ov009_02215efc, (u16)(Rand_PlusMinus(0x3c) * 0xb6));
+        Vec_RotateY(&self->unk_fc, &data_ov009_02215efc, (u16)(Rand_PlusMinus(0x3c) * 0xb6));
         self->unk_b8 = self->unk_fc;
         Model0218fe1c_SetAnim(self->model, data_ov009_02215ee8, 0x111, 0);
         Model0218fe1c_SetLoop(self->model);
@@ -667,7 +667,7 @@ void Ov009ActVt_02217640_StateDie(Ov009ActVt_02217640 *self) {
     }
 }
 
-extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
+extern void Vec_RotateY(VecFx32 *out, const void *a, s32 b);
 
 void Ov009ActVt_022174e8_Start(Ov003Actor *self) {
     VecFx32 t;
@@ -676,7 +676,7 @@ void Ov009ActVt_022174e8_Start(Ov003Actor *self) {
     void *saved;
     Ov003Actor_Start(self);
     self->speed = 0x52;
-    func_01ffc9fc(&t, &data_ov009_02215f14, (u16)(Rand_PlusMinus(0x1e) * 0xb6));
+    Vec_RotateY(&t, &data_ov009_02215f14, (u16)(Rand_PlusMinus(0x1e) * 0xb6));
     VEC_Add(&self->pos, &t, &self->pos);
     a = ActorMgr_FindPlayer();
     {

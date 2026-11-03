@@ -12,12 +12,12 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021c9b28[];
 extern u8 data_ov000_021c9b2e[];
 
-void func_ov000_02168518(VObj *self) {
+void Lo021cb894_Release(VObj *self) {
     LO_FREE_M(self, 0x9c);
     self->vfunc_14();
 }
 
-void func_ov000_02168588(Lo021cb894 *self) {
+void Lo021cb894_Unload(Lo021cb894 *self) {
     LO_FREE_M(self, 0x9c);
     self->unk_0c_3 = 0;
 }

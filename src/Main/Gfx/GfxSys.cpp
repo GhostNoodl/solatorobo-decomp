@@ -93,9 +93,9 @@ extern void GX_SetBankForSubBG(int a);
 extern void GX_SetBankForSubOBJ(int a);
 extern void GfxMgr_FreeAll(GfxMgr *mgr, int state);
 extern u32 func_0203e8e0(u32 size, int is4x4, int opt);
-extern int func_0203ea00(u32 key);
+extern int Vram_FreeTex(u32 key);
 extern u32 func_0203ea6c(u32 size, int is4pltt, int opt);
-extern int func_0203eb8c(u32 key);
+extern int Vram_FreePltt(u32 key);
 extern void *NNS_GfdDefaultFuncAllocTexVram;
 extern void *NNS_GfdDefaultFuncFreeTexVram;
 extern void *NNS_GfdDefaultFuncAllocPlttVram;
@@ -121,9 +121,9 @@ static inline void GfxSys_InitPlttVram(GfxSys *sys, u32 size) {
 
 static inline void GfxSys_SetVramFuncs(void) {
     NNS_GfdDefaultFuncAllocTexVram = (void *)func_0203e8e0;
-    NNS_GfdDefaultFuncFreeTexVram = (void *)func_0203ea00;
+    NNS_GfdDefaultFuncFreeTexVram = (void *)Vram_FreeTex;
     NNS_GfdDefaultFuncAllocPlttVram = (void *)func_0203ea6c;
-    NNS_GfdDefaultFuncFreePlttVram = (void *)func_0203eb8c;
+    NNS_GfdDefaultFuncFreePlttVram = (void *)Vram_FreePltt;
 }
 
 static inline void GfxVramHeap_Init(GfxVramHeap *heap, u32 size) {
@@ -218,7 +218,7 @@ extern "C" {
 extern void GfxSys_DrawFadeQuad(int v);
 extern u8 Gfx3DState_NextPolyId(void *obj);
 extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
-extern void func_02043db4(int a, int b, int c, u32 d);
+extern void Gfx3D_DrawPrimScaled(int a, int b, int c, u32 d);
 
 static inline u32 G3_PackPolygonAttr(int light, int polyMode, int cullMode, int polygonID, int alpha, int misc) {
     return (u32)(light | (polyMode << 4) | (cullMode << 6) | misc | (polygonID << 24) | (alpha << 16));
@@ -993,7 +993,7 @@ void GfxSys_DrawFadeQuad(int v) {
     trans[1] = 0;
     trans[2] = -0x666;
     NNS_G3dGeBufferOP_N(0x1c, trans, 3);
-    func_02043db4(1, 0x100000, 0xc0000, v > 0 ? 0x7fff : 0);
+    Gfx3D_DrawPrimScaled(1, 0x100000, 0xc0000, v > 0 ? 0x7fff : 0);
 }
 
 // Blends two RGB555 colors; t is fx32 in [0, 0x1000].

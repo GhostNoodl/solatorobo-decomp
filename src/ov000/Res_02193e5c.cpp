@@ -43,8 +43,8 @@ extern "C" {
 
 extern char data_ov000_021cc454[];
 ResInfo02193e5c *Tbl_FindEntry_0206fef8(s32 id);
-ResParam02193e5c *func_020704b4(s32 id);
-char *func_0207011c(s32 id);
+ResParam02193e5c *Tbl_Elem_020704b4(s32 id);
+char *Tbl_GetResFile(s32 id);
 char *func_020701d4(s32 id);
 char *Tbl_GetEntryData(s32 id, s32 n);
 char *Path_SkipDir(const char *path);
@@ -57,11 +57,11 @@ void func_ov000_02193e5c(Res02193e5c *res, s32 id) {
     char *a;
     char *b;
     info = Tbl_FindEntry_0206fef8(id);
-    param = func_020704b4(id);
+    param = Tbl_Elem_020704b4(id);
     if (!info->flags.bit0 && !info->flags.bit1 && !param->flags.bit3) {
         return;
     }
-    name = func_0207011c(id);
+    name = Tbl_GetResFile(id);
     if (param->path != NULL) {
         char *alt;
         if (STD_SearchString(param->path, data_ov000_021cc454) != NULL) {

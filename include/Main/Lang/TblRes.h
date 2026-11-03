@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-// The actor parameter record (0x44 bytes): func_02070558 returns the record of an actor kind
+// The actor parameter record (0x44 bytes): Tbl_GetActorParam returns the record of an actor kind
 // (Actor::kind), from the table category kind >> 12. ov003's actors read it when they are built
 // (Ov003Res_SetNames, the Target set-up), when they choose a target, when they are knocked back
 // (the child spawn) and when they die (the drops); ov009, ov010 and ov012 read the same fields.
@@ -56,7 +56,7 @@ typedef struct TblActorParam {
 } TblActorParam;
 SIZE_ASSERT(TblActorParam, 0x44);
 
-TblActorParam *func_02070558(s32 id);
+TblActorParam *Tbl_GetActorParam(s32 id);
 
 #ifdef __cplusplus
 }

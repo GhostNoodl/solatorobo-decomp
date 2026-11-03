@@ -5,7 +5,7 @@
 
 extern "C" {
 
-void func_ov000_02155d8c(UiList *self) {
+void UiList_UpdateMarkBounce(UiList *self) {
     s32 n = ++self->unk_cc;
     s32 v;
     if (n < 0x14) {

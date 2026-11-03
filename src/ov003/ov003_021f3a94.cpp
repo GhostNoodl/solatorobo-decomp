@@ -15,7 +15,7 @@ extern void *Model0218fe1c_SetAnimFrame(Model0218fe1c *anim, s32 a);
 extern void *func_0203db40(void *p);
 extern void Model0218fe1c_UpdateAnim(void *a, void *b);
 extern BOOL Model021903b4_Draw(Model0218fe1c *anim);
-extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
+extern void Vec_RotateY(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void Shadow_Draw(ActorShadow *shadow, VecFx32 *pos);
 
 void Ov003ActVt_021fa5a0_Animate(Ov003Prop021fa5a0 *self) {

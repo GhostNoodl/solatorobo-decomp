@@ -10,7 +10,7 @@ static inline void Set(UiObj *p, s16 x, s16 y, s16 z) {
 
 extern "C" {
 
-void func_ov000_021c3aa0(ListRowText *self) {
+void ListRowText_Draw(ListRowText *self) {
     Lo021cb3a8 *win = self->win;
     if (win == NULL) {
         return;

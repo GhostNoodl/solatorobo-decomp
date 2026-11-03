@@ -80,7 +80,7 @@ void func_0203d4f8(Touch *tp) {
     tp->unk_2c = 0;
 }
 
-void func_0203d560(void) {
+void Touch_Create(void) {
     u8 calib[8];
     Touch *tp;
     if (data_02097dcc != NULL) {

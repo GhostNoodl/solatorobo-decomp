@@ -70,7 +70,7 @@ extern ov006_SlotManager *data_ov006_021ec884;
 void __cxa_vec_ctor(void *arr, int count, u32 size, void *ctor, void *dtor);
 void __cxa_vec_cleanup(void *arr, int count, u32 size, void *dtor);
 
-void func_ov006_021dab5c(ov006_Slot *self);
+void ov006_Slot_Dtor(ov006_Slot *self);
 ov006_Slot *Ov006Vt_021ec078_Ctor(ov006_Slot *self);
 
 #ifdef __cplusplus

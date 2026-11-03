@@ -109,13 +109,13 @@ void func_02055cbc(GameScene *scene) {
     scene->effect = 0;
 }
 
-void func_02055d80(GameScene *scene) {
+void MainVt_0208bbc8_Render(GameScene *scene) {
     BOOL busy = FALSE;
     GfxSys *sys = data_02097d48;
     s32 r;
     u16 n;
     Gfx3D_SendDL(sys->unk_8b0, 0);
-    func_02043d84(sys->unk_8b0);
+    Gfx3DState_NextPolyIdB(sys->unk_8b0);
     if (!scene->flag1 && scene->flag25) {
         busy = Field_IsPlayerBusy();
         if (!busy) {
@@ -139,7 +139,7 @@ void func_02055d80(GameScene *scene) {
     func_0203972c(scene->unk_0d0, n);
 }
 
-void func_02055ee0(GameScene *scene) {
+void MainVt_0208bbc8_DrawCursor(GameScene *scene) {
     s32 t;
     s32 sn;
     Model *model;

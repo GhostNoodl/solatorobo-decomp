@@ -13,7 +13,7 @@ void ActorMarker_Draw(ActorMarker *self) {
     }
 }
 
-void func_ov000_021bd7b8(ActorMarker *self) {
+void ActorMarker_FreeRes(ActorMarker *self) {
     s32 i;
     HEAP_DELETE_FN(self->res, ResSet_ReleaseAll);
     for (i = 0; i < 4; i++) {

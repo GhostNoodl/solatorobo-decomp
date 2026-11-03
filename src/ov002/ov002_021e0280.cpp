@@ -3,7 +3,7 @@
 extern "C" {
 
 void Ov002_CellXZToPos(s32 *out, s32 x, s32 z, s32 *origin);
-void func_ov002_021e3a18(Vec2 *out, int rot, Vec2 *a, Vec2 *b, Vec2 *c);
+void Ov002_RotateAbout(Vec2 *out, int rot, Vec2 *a, Vec2 *b, Vec2 *c);
 
 typedef struct Bits021e0280 {
     u16 lo : 8;
@@ -67,7 +67,7 @@ void func_ov002_021e0280(Obj021eff30 *self) {
             if (sh->grid[i * cols + j] == 1) {
                 v.x = j;
                 v.y = i;
-                func_ov002_021e3a18(&out, (u8)sh->rot, &v, &org, &pos);
+                Ov002_RotateAbout(&out, (u8)sh->rot, &v, &org, &pos);
                 Obj021efe8c *m = self->unk_14;
                 m->unk_74 = out.x;
                 m->unk_78 = out.y;

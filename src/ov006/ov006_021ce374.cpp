@@ -31,7 +31,7 @@ extern char *data_0208ccc0;
 void ov006_DrawSprite3D(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 void ov006_Emblem_LoadModels(ov006_Emblem *self);
 void TaskList_Insert(Task *self);
-void func_02041c20(Model *self, int a, void *b);
+void TexObj_SetOamFuncArg(Model *self, int a, void *b);
 BOOL Model_IsReady(Model *a, int b);
 
 void ov006_Emblem_Load(void) {
@@ -91,7 +91,7 @@ void ov006_Emblem_LoadModels(ov006_Emblem *self) {
     ov006_Model_SetPos(self->unk40, 0, 0, 0);
     self->unk40->unk_150 = 0xfffe019a;
     self->unk40->unk_158 = (void *)ov006_DrawSprite3D;
-    func_02041c20(self->unk40, 0, &self->unk48);
+    TexObj_SetOamFuncArg(self->unk40, 0, &self->unk48);
 }
 
 }
@@ -108,7 +108,7 @@ extern char *data_0208ccc0;
 void ov006_Emblem_LoadModels(ov006_Emblem *self);
 void ov006_DrawSprite3D(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 void TaskList_Insert(Task *self);
-void func_02041c20(Model *self, int a, void *b);
+void TexObj_SetOamFuncArg(Model *self, int a, void *b);
 BOOL Model_IsReady(Model *a, int b);
 
 void ov006_Emblem_PreUpdate(void) {
@@ -301,7 +301,7 @@ u8 ov006_SlotManager_CountItems(ov006_SlotManager *self);
 void ov006_InitOwnerSlot(void);
 ov006_Entry021cec68 *ov006_GetPriceEntry(u32 id);
 void ListRow_Init(void *self);
-void func_ov000_021c5fc4(void *self);
+void ListRowLabel_Init(void *self);
 void func_ov000_021c5fd0(void *self, const void *s);
 void ov006_CaptionPanel_PlayText(ov006_CaptionPanel *self, const void *s);
 BOOL func_ov006_021ce734(UiList *list, UiListItem *arg);
@@ -358,7 +358,7 @@ void ov006_TaskCE_Start(ov006_TaskCE *self) {
     self->unk44->flags &= ~0x80000;
     self->unk44->flags &= ~0x40000;
     self->unk44->flags &= ~0x10000;
-    func_ov000_021546ec(self->unk44, "menu/net", "wireless_on", 0xffff);
+    UiList_SetIconModel(self->unk44, "menu/net", "wireless_on", 0xffff);
     self->unk44->vfunc_74(MsgRes_GetString(res, 0x124), 0, 0xffff, 0xffff);
     self->unk44->vfunc_74(MsgRes_GetString(res, 0x126), 1, 0, 0xffff);
     self->unk44->vfunc_74(MsgRes_GetString(res, 0x140), 2, 0xffff, 0xffff);
@@ -399,7 +399,7 @@ void ov006_TaskCE_Start(ov006_TaskCE *self) {
                         *(void **)item = &data_ov006_021ebc80;
                         ListRow_Init(item);
                         *(void **)item = &data_ov000_021cca28;
-                        func_ov000_021c5fc4(item);
+                        ListRowLabel_Init(item);
                     }
                     func_ov000_021c5fd0(item, MsgRes_GetString(res, e->name));
                     LoBase021ccb54_021ccbe0_AppendRow(self->unk50, item);
@@ -939,7 +939,7 @@ void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
 ov006_MenuNode *ov006_Menu_FindNode(ov006_Unk021ec888 *self, int id);
 void *MsgRes_GetString(void *a, int id);
 void TaskList_Insert(Task *self);
-void func_02040b0c(void *dst, int *dstLen, const void *src, int *srcLen);
+void Str_Utf16ToUtf8Filtered(void *dst, int *dstLen, const void *src, int *srcLen);
 void ov006_TaskD0_RefreshList(ov006_TaskD0 *self);
 
 BOOL ov006_TaskD0_IsLoaded(ov006_TaskD0 *self) {
@@ -1165,7 +1165,7 @@ void ov006_TaskD0_RefreshList(ov006_TaskD0 *self) {
             ov006_MenuNode *menu = ov006_Menu_FindNode(data_ov006_021ec888, id);
             srcLen = 0xb;
             dstLen = 0x30;
-            func_02040b0c(self->names[j], &dstLen, (u8 *)menu + 0x60, &srcLen);
+            Str_Utf16ToUtf8Filtered(self->names[j], &dstLen, (u8 *)menu + 0x60, &srcLen);
             v = ((u8 *)menu)[0x77];
         } else {
             STD_CopyLString(self->names[j], data_ov006_021ebbac, 0x30);
@@ -1591,10 +1591,10 @@ extern const u16 data_ov006_021eb78c[];
 extern void *data_ov006_021ebec0;
 
 void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
-void func_02040b0c(void *dst, int *dstLen, const void *src, int *srcLen);
+void Str_Utf16ToUtf8Filtered(void *dst, int *dstLen, const void *src, int *srcLen);
 void *MsgRes_GetString(void *a, int id);
 void func_ov006_021d3498(ov006_TaskD1F *self, u16 id, BOOL dir);
-ov006_Unk020706a0 *func_020706a0(u16 id);
+ov006_Unk020706a0 *Tbl_Elem_020706a0(u16 id);
 void ov006_Gauge_SetRatio(ov006_Gauge *self, int a, int b, u8 c);
 ov006_TaskD1F *func_ov006_021d1f68(ov006_TaskD1F *self);
 
@@ -1628,7 +1628,7 @@ void ov006_TaskD0C_RefreshSlots(ov006_TaskD0C *self) {
         if (slot->active) {
             int srcLen = 0xb;
             int dstLen = 0x30;
-            func_02040b0c(self->names[i], &dstLen, slot->name, &srcLen);
+            Str_Utf16ToUtf8Filtered(self->names[i], &dstLen, slot->name, &srcLen);
             OV006_LISTNODE_SETTEXT(item, self->names[i]);
             item->unk_24 = data_ov006_021eb77c[i];
             Obj02153c48_CreateText(item, 8, 0, 1, 1);
@@ -1639,7 +1639,7 @@ void ov006_TaskD0C_RefreshSlots(ov006_TaskD0C *self) {
                     w->flags |= 0x2000000;
                 }
                 self->unk11C->vfunc_a8(item);
-                func_ov000_021548cc(self->unk11C, data_ov006_021eb6fe[i]);
+                UiList_SetPanelColor(self->unk11C, data_ov006_021eb6fe[i]);
                 {
                     const u8 *c = data_ov006_021eb710[i];
                     self->unk11C->color = c[0] | (c[1] << 5) | (c[2] << 10);
@@ -1680,7 +1680,7 @@ BOOL func_ov006_021d1df8(UiList *window, UiListItem *node) {
             t->unk5C->vfunc_70();
         }
         func_ov006_021d3498(t, id, old > id);
-        p = func_020706a0(id);
+        p = Tbl_Elem_020706a0(id);
         ov006_Gauge_SetRatio(t->gauges[0], p->unk4 << 12, 0xa000, 1);
         ov006_Gauge_SetRatio(t->gauges[1], p->unk5 << 12, 0xa000, 1);
         ov006_Gauge_SetRatio(t->gauges[2], p->unk6 << 12, 0xa000, 1);

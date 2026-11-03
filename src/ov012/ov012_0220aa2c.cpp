@@ -164,7 +164,7 @@ void Ov012ActExVt_0220b150_StateThrown(Ov012ActExVt_0220b150 *self) {
         s32 r;
         u16 a;
         Actor_GetTarget(self);
-        func_01ffc9fc(&v, &data_ov012_0220a810, self->rot_y);
+        Vec_RotateY(&v, &data_ov012_0220a810, self->rot_y);
         VEC_Add(&self->pos, &v, &self->unk_84);
         self->unk_84.y = 0;
         {
@@ -467,7 +467,7 @@ void Ov012ActEx_02207018_StateThrown(Ov012ActEx_02207018 *self) {
         g->color2 = 0x1f;
         g->blend = 0x12d;
         g->blendMax = 0x12c;
-        func_01ffc9fc(&off, &data_ov012_0220a81c, self->rot_y);
+        Vec_RotateY(&off, &data_ov012_0220a81c, self->rot_y);
         VEC_Add(&self->pos, &off, &d);
         d.y = 0;
         if (VEC_Distance(&self->pos, &d) < VEC_Distance(&self->pos, &self->unk_84)) {

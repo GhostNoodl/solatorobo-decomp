@@ -6,7 +6,7 @@ static inline bool isState5(void *p) {
     return FIELD(p, 0x4, s32) == 5;
 }
 
-void func_ov000_0215d980(void *a, u16 b, int c);
+void Lo021cae48_SetValue(void *a, u16 b, int c);
 
 
 void *func_ov002_021e3874(s32 *v, int a, int b);
@@ -30,7 +30,7 @@ void func_ov002_021dd130(Obj021eff10 *self) {
         u16 y = FIELD(((u8 *)self->unk_2c), 0xa8, u16);
         u16 x = ((u16)e->unk_8a);
         e->unk_8a = x > y ? x - y : 0;
-        func_ov000_0215d980(FIELD(((u8 *)self->owner), 0x24, void *), ((u16)e->unk_8a), 0);
+        Lo021cae48_SetValue(FIELD(((u8 *)self->owner), 0x24, void *), ((u16)e->unk_8a), 0);
         Obj021efe6c_RemovePiece(e, self->unk_2c, 1);
         SndMgr_PlayVolume(data_02097e4c, 0x6e, -1, -1, -1);
         SndMgr_PlayVolume(data_02097e4c, 0x44, -1, -1, -1);

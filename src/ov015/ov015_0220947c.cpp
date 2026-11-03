@@ -8,7 +8,7 @@ extern const Ov015ShipCfg data_ov015_02212db0;
 extern u8 data_ov015_02212e0d[];
 extern char data_ov015_02212e14[];
 extern char data_ov015_02212e15[];
-s32 func_ov000_021909a8(void *a, const void *b, const void *c);
+s32 Model_FindResIdxByName(void *a, const void *b, const void *c);
 // The object record Tbl_FindEntry_0206fef8 returns (Main/Lang/TblEntry.cpp; Main/Res/Stage.cpp reads height).
 typedef struct Ov015ObjInfo {
     u8 unk_00[0x10];
@@ -79,7 +79,7 @@ BOOL func_ov015_02209500(Ov015Fish *self) {
     self->model.flags.clearInit = 0;
     self->model.flags.flushVP = 1;
     self->model.renderObj.ptrUser = &self->rot2[0].x;
-    self->unk_3c = func_ov000_021909a8(&self->model, data_ov015_02212e14, data_ov015_02212e15);
+    self->unk_3c = Model_FindResIdxByName(&self->model, data_ov015_02212e14, data_ov015_02212e15);
     Model0218fe1c_SetRes(&self->model2, &self->res2, 0, 1);
     n = Tbl_FindEntry_0206fef8(self->id)->unk_12_5;
     if (n != 0) {

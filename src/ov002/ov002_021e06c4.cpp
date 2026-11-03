@@ -54,7 +54,7 @@ void *Ov002Vt_021eff50_DtorDelete(Obj021eff50 *self) {
     return self;
 }
 
-BOOL func_ov002_021e07e4(Obj021eff50 *self) {
+BOOL Ov002Vt_021eff50_IsDone(Obj021eff50 *self) {
     return self->unk_14 == 0x32;
 }
 
@@ -80,7 +80,7 @@ void *Ov002Vt_021eff74_DtorDelete(Obj021eff74 *self) {
     return self;
 }
 
-BOOL func_ov002_021e08c8(Obj021eff74 *self) {
+BOOL Ov002Vt_021eff74_IsDone(Obj021eff74 *self) {
     return self->unk_18 == 3;
 }
 

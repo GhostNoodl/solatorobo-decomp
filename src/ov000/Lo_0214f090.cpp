@@ -41,7 +41,7 @@ static inline BOOL LoD78Idle(void) {
     return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
 }
 
-void func_ov000_0214f090(Lo021caa44 *self, void *arg) {
+void Lo021caa44_Exit(Lo021caa44 *self, void *arg) {
     BOOL ok = TRUE;
     Lo021cb5a8 *q;
     if (self->unk_50 && !LoIsState5(self->unk_50)) {

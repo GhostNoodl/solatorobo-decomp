@@ -120,7 +120,7 @@ struct UiPanel {
         u32 flags;
         struct {
             u32 centered : 1; // x is the centre (x - width / 2)
-            u32 b1 : 2;     // the frame's colour table (func_ov000_0215ed18); set by func_ov000_021548cc
+            u32 b1 : 2;     // the frame's colour table (func_ov000_0215ed18); set by UiList_SetPanelColor
             u32 b3 : 1;     // draw only the model (part 0), not the frame
             u32 b4 : 1;     // use the first colour table whatever b1 is
             u32 rest : 27;
@@ -138,7 +138,7 @@ struct UiPanel {
     Model *model;       // 0x28 freed with LO_FREE_M
 };
 
-// A text label in a frame (0x2c bytes): reset by func_ov000_0215f514, released by
+// A text label in a frame (0x2c bytes): reset by UiLabel_Reset_0215f514, released by
 // UiLabel_Release, built by UiLabel_SetText (the frame model and the text window) and
 // drawn by UiLabel_Draw, which centres the text in width x height.
 struct UiLabel {
@@ -194,8 +194,8 @@ struct UiList : public UiObj {
     s8 unk_b2;
     s8 unk_b3;
     Model *unk_b4;
-    Model *unk_b8;      // 0xb8 func_ov000_021546ec
-    Model *unk_bc;      // 0xbc func_ov000_021547e8
+    Model *unk_b8;      // 0xb8 UiList_SetIconModel
+    Model *unk_bc;      // 0xbc UiList_SetMarkModel
     u8 unk_c0;
     s8 unk_c1;          // 0xc1 row height / 8 (func_ov000_02151fd8)
     s8 unk_c2;
@@ -243,7 +243,7 @@ static inline void UiLabel_Reset(UiLabel *self) {
 extern "C" {
 void UiLabel_SetText(UiLabel *self, u32 text);
 void UiLabel_Draw(UiLabel *self);
-void func_ov000_0215f514(UiLabel *self);
+void UiLabel_Reset_0215f514(UiLabel *self);
 void UiLabel_Release(UiLabel *self);
 void func_ov000_0215f618(UiLabel *self, s32 *pos);
 }

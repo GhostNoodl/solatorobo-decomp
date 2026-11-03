@@ -21,8 +21,8 @@ typedef struct {
 extern "C" {
 
 extern const s16 FX_SinCosTable_[];
-s32 func_02043d84(void *a);
-void func_ov000_02160534(Obj02169588 *self, s32 a, VecFx32 *pos, s32 c, s32 d);
+s32 Gfx3DState_NextPolyIdB(void *a);
+void Ov000Vt_021cac0c_DrawFrame(Obj02169588 *self, s32 a, VecFx32 *pos, s32 c, s32 d);
 
 static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
     ModelRes *res = model->res;
@@ -40,7 +40,7 @@ static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
     TexObj_DrawCell(model, anim, part, flag);
 }
 
-void func_ov000_02169588(Obj02169588 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
+void Lo021cb7ec_DrawFrame(Obj02169588 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
     s32 off;
     GfxSys *g;
     Model *m;
@@ -52,7 +52,7 @@ void func_ov000_02169588(Obj02169588 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
     s32 r;
     s32 x;
     s64 dd;
-    func_ov000_02160534(self, a, pos, c, d);
+    Ov000Vt_021cac0c_DrawFrame(self, a, pos, c, d);
     g = data_02097d48;
     dd = d;
     if (self->unk_a8 == 0) {
@@ -79,7 +79,7 @@ void func_ov000_02169588(Obj02169588 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
     MTX_Concat22(&mtx, (MtxFx22 *)((u8 *)m + 0x114), (MtxFx22 *)((u8 *)m + 0x114));
     MTX_ScaleApply22((MtxFx22 *)((u8 *)self->m0 + 0x114), (MtxFx22 *)((u8 *)self->m0 + 0x114), scl, scl);
     MODEL_FLAGS(self->m0)->alpha = (u8)(LO_FX_MUL(LO_FX_MUL(sin, dd), 0x1e000) >> 12);
-    MODEL_FLAGS(self->m0)->polygon_id = func_02043d84(g->unk_8b0);
+    MODEL_FLAGS(self->m0)->polygon_id = Gfx3DState_NextPolyIdB(g->unk_8b0);
     Model_PlayPartEx(self->m0, 1, 1);
 }
 

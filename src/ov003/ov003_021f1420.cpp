@@ -42,11 +42,11 @@ extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *p);
 extern void *Actor_Ctor(void *p);
 extern void Actor_JoinGroup(void *p, u16 a, u16 b, s32 c);
-extern s32 func_0206ffa0(u16 id);
+extern s32 Tbl_GetText(u16 id);
 extern void ActorMarker_Release(void *p);
 extern void *Actor_DtorBase(void *p);
 extern Ov003PropInfo *Tbl_FindEntry_0206fef8(u16 id);
-extern void *func_0207011c(s32 id);
+extern void *Tbl_GetResFile(s32 id);
 extern Ov003PropRes *ResSet_Init(void *p);
 extern Ov003PropShadow *Shadow_Ctor(void *p);
 extern void Shadow_Load(Ov003PropShadow *p);
@@ -60,7 +60,7 @@ Ov003Prop *Ov003Prop_New(Ov003PropDef *def) {
         p->unk_ac = NULL;
         p->unk_b0 = 0;
     }
-    Actor_JoinGroup(p, def->arg, def->id, func_0206ffa0(def->id));
+    Actor_JoinGroup(p, def->arg, def->id, Tbl_GetText(def->id));
     return p;
 }
 
@@ -95,7 +95,7 @@ Ov003Prop *Ov003ActVt_021fa1b8_DtorDelete(Ov003Prop *self) {
 
 void Ov003ActVt_021fa1b8_Init(Ov003Prop *self) {
     Ov003PropInfo *info = Tbl_FindEntry_0206fef8(self->id);
-    void *data = func_0207011c(self->id);
+    void *data = Tbl_GetResFile(self->id);
     Ov003PropRes *res;
     Ov003PropShadow *sh;
     if (data == NULL) {

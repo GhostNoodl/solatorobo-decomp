@@ -17,8 +17,8 @@ typedef struct GameSaveSlot {
     /* 0x0c */ u32 unk_0c_28 : 4;
 } GameSaveSlot; // size 0x10
 
-// Vtable data_0208ca9c, 0x4c bytes (ov000 func_ov000_021761a0 allocates one; data_0208ca18 is a
-// 0x4c variant that overrides slots 0x2c, 0x48 and 0x50, made by func_ov000_02176208).
+// Vtable data_0208ca9c, 0x4c bytes (ov000 GameSave_New allocates one; data_0208ca18 is a
+// 0x4c variant that overrides slots 0x2c, 0x48 and 0x50, made by MainVt_0208ca18_New).
 struct GameSave : public SaveBase {
     virtual void vf74();
     virtual void vf78();
@@ -61,7 +61,7 @@ extern u32 data_0208ca9c[];
 extern char data_0208cb18[];
 extern void SaveBase_AllocBuffers(SaveBase *s);
 extern void SaveBase_SetState_020473ac(SaveBase *s, s32 state);
-extern void func_02046cd0(SysCard *card);
+extern void SysCard_Reset_02046cd0(SysCard *card);
 extern void SaveBase_State7(SaveBase *s);
 extern void SaveBase_State10(SaveBase *s);
 extern void SaveBase_State13(SaveBase *s);

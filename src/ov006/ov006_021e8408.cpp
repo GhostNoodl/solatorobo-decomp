@@ -14,7 +14,7 @@ void Field_ShakeCamera(u8 a, u8 b);
 BOOL History_SetState(ActorSub40 *a, s32 b, s32 c);
 void Model0218fe1c_SetAnimSpeed(void *a, s32 b);
 s32 Rand_PlusMinus(s32 range);
-u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
+u16 Angle_Approach(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
 void Ov006Racer_Move(Ov006Racer *self);
 
 void Ov006Racer_StateCrash(Ov006Racer *self) {
@@ -63,12 +63,12 @@ void Ov006Racer_StateCrash(Ov006Racer *self) {
         }
         break;
     }
-    self->rot.x = func_01ffc128(0, self->rot.x, 0x200, 1, 0x8000);
-    self->rot.z = func_01ffc128(0, self->rot.z, 0x200, 1, 0x8000);
-    self->look.x = func_01ffc128(self->rot.x, self->look.x, 0x466, 1, 0x8000);
-    self->look2.x = func_01ffc128(self->rot.x, self->look2.x, 0x466, 1, 0x8000);
-    self->look.y = func_01ffc128(self->look2.y, self->look.y, 0x466, 1, 0x8000);
-    self->rot.y = func_01ffc128(self->look2.y, self->rot.y, 0x466, 1, 0x8000);
+    self->rot.x = Angle_Approach(0, self->rot.x, 0x200, 1, 0x8000);
+    self->rot.z = Angle_Approach(0, self->rot.z, 0x200, 1, 0x8000);
+    self->look.x = Angle_Approach(self->rot.x, self->look.x, 0x466, 1, 0x8000);
+    self->look2.x = Angle_Approach(self->rot.x, self->look2.x, 0x466, 1, 0x8000);
+    self->look.y = Angle_Approach(self->look2.y, self->look.y, 0x466, 1, 0x8000);
+    self->rot.y = Angle_Approach(self->look2.y, self->rot.y, 0x466, 1, 0x8000);
     Ov006Racer_Move(self);
     Model0218fe1c_SetAnimSpeed(self->model, (s16)(self->runSpeed + 0x333));
 }

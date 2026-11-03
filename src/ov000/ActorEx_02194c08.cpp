@@ -23,7 +23,7 @@ u8 *Tbl_FindEntry_0206fef8(u16 id);
 void Obj02190758_SetRot(void *a, void *b, s32 c);
 BOOL Model021903b4_Draw(void *a);
 void Shadow_Draw(void *a, void *b);
-void func_ov000_02191ec4(void *a, s32 b, u32 c);
+void Shadow_SetType(void *a, s32 b, u32 c);
 s32 FX_Div(s32 a, s32 b);
 
 static inline BOOL GBusy02194c08(FieldState *g) {
@@ -178,7 +178,7 @@ BOOL ActorEx_Draw(ActorEx *self) {
                 m = 2;
                 break;
             }
-            func_ov000_02191ec4(self->unk_3c, m, o->unk_54);
+            Shadow_SetType(self->unk_3c, m, o->unk_54);
             Shadow_Draw(self->unk_3c, (u8 *)self + 0x70);
         }
     }

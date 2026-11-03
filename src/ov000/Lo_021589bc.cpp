@@ -9,7 +9,7 @@ extern void *data_02fe152c;
 void Obj0215eab4_Draw(void *p);
 void DataRes_WriteEntry(void *a, s32 b, s32 c, u16 d, s32 e);
 
-void func_ov000_021589bc(UiList021cb4a8 *self, s32 unused, s32 *pos) {
+void UiList021cb4a8_DrawCursor(UiList021cb4a8 *self, s32 unused, s32 *pos) {
     s32 cur;
     s32 xoff;
     s32 h;

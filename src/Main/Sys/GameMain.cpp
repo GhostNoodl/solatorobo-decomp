@@ -10,11 +10,11 @@ extern void *data_02097e48;
 
 extern void func_0203d6b4(void);
 extern void func_0203d1b4(void);
-extern void func_0203d560(void);
+extern void Touch_Create(void);
 extern void ResMgr_Create(void);
 extern void GfxSys_Create(void);
 extern void func_02039750(void);
-extern void func_0204a87c(void);
+extern void Snd_Create(void);
 extern void Movie_Create(void);
 extern void func_02046c6c(void);
 extern void func_0203e3e8(void);
@@ -31,18 +31,18 @@ extern void func_0203d298(Pad *pad);
 extern void func_02043f70(Movie *movie);
 extern void func_0204aee8(void);
 extern void func_020364c0(ResMgr *mgr);
-extern void func_0204ab8c(void *queue);
-extern void func_0203dacc(UnkSys *sys);
+extern void SndQueue_Update(void *queue);
+extern void Sys_WaitFrame(UnkSys *sys);
 extern void GfxSys_SwapBuffers(GfxSys *sys);
 
 int main(void) {
     func_0203d6b4();
     func_0203d1b4();
-    func_0203d560();
+    Touch_Create();
     ResMgr_Create();
     GfxSys_Create();
     func_02039750();
-    func_0204a87c();
+    Snd_Create();
     Movie_Create();
     func_02046c6c();
     func_0203e3e8();
@@ -61,8 +61,8 @@ int main(void) {
         func_0204aee8();
         GfxSys_ApplyFade(2);
         func_020364c0(data_02097cdc);
-        func_0204ab8c(data_02097e48);
-        func_0203dacc(data_02097dd0);
+        SndQueue_Update(data_02097e48);
+        Sys_WaitFrame(data_02097dd0);
         GfxSys_SwapBuffers(data_02097d48);
     }
 }

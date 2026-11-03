@@ -64,9 +64,9 @@ extern Hang_021b209c data_ov000_021ca320[];
 extern Pad_021b209c data_02fe0f14;
 extern void *data_02097e4c;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
+s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 u16 FX_Atan2(s32 x, s32 z);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 void Actor_SendMsg(void *a, u16 id, s32 b, s32 c, s32 d, void *e);
 void *SndMgr_PlayAt(void *snd, s32 id, void *pos, s32 a);
 void Field_ShakeCamera(s32 a, s32 b);
@@ -74,7 +74,7 @@ BOOL Hit_ApplyInArea(void *a, void *b, s32 c, s32 d, s32 e, VecFx32 *f, void *g,
 void Actor_Move(Actor *self, s32 a);
 void Body_Update(void *a, s32 b, s32 c, s32 d);
 s32 SndMgr_StartSeqArc(void *snd, s32 se);
-void func_0204a0d4(void *snd, s32 h, s32 arg);
+void SndMgr_SetSlotSemitones(void *snd, s32 h, s32 arg);
 void SndMgr_StopSeqArc(void *snd, s32 h);
 void Actor_SendMsgU8(void *a, u16 id, s32 b);
 BOOL History_SetState(void *a, s32 b, s32 c);
@@ -120,12 +120,12 @@ void func_ov000_021b209c(Robo021ca458 *self) {
     to = from;
     to.x += Mul_021b209c(FX_SinCosTable_[((u16)(self->moveYaw + 0x1200) >> 4) * 2], 0x2333);
     to.z += Mul_021b209c(FX_SinCosTable_[((u16)(self->moveYaw + 0x1200) >> 4) * 2 + 1], 0x2333);
-    ret = func_01ffbd6c(&from, &to, 0x40000000, 0, 0, -1);
+    ret = Hit_CastSegment(&from, &to, 0x40000000, 0, 0, -1);
     if (ret == -0x1000) {
         to = from;
         to.x += Mul_021b209c(FX_SinCosTable_[((u16)(self->moveYaw - 0x1200) >> 4) * 2], 0x2333);
         to.z += Mul_021b209c(FX_SinCosTable_[((u16)(self->moveYaw - 0x1200) >> 4) * 2 + 1], 0x2333);
-        ret = func_01ffbd6c(&from, &to, 0x40000000, 0, 0, -1);
+        ret = Hit_CastSegment(&from, &to, 0x40000000, 0, 0, -1);
     }
     if (ret != -0x1000) {
         if (data_02fe0f14.keys & 0x200) {
@@ -162,7 +162,7 @@ void func_ov000_021b209c(Robo021ca458 *self) {
         if (!(self->hit->unk_54 & 0x20000000)) {
             self->gravity += 0x52;
         }
-        self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
         if (((s32)self->hit->unk_58) != 0) {
             self->speed >>= 4;
             self->velY = 0x200;
@@ -189,11 +189,11 @@ void func_ov000_021b209c(Robo021ca458 *self) {
                 body->unk_9a |= 0x20;
                 if (info->se0 >= 0 && self->seSlot < 0) {
                     self->seSlot = SndMgr_StartSeqArc(data_02097e4c, info->se0);
-                    func_0204a0d4(data_02097e4c, self->seSlot, info->se0arg);
+                    SndMgr_SetSlotSemitones(data_02097e4c, self->seSlot, info->se0arg);
                 }
                 if (info->se1 >= 0 && self->unk_b66 < 0) {
                     self->unk_b66 = SndMgr_StartSeqArc(data_02097e4c, info->se1);
-                    func_0204a0d4(data_02097e4c, self->unk_b66, info->se1arg);
+                    SndMgr_SetSlotSemitones(data_02097e4c, self->unk_b66, info->se1arg);
                 }
             }
             if ((self->hit->unk_50 & 0x400) && (data_ov000_021ccd68->frame & 0x1f)) {

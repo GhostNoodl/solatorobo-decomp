@@ -1,7 +1,7 @@
 #include "types.h"
 #include "ov000/Vec.h"
 
-s32 func_01ffbd6c(VecFx32 *from, VecFx32 *to, u32 mask, s32 a, s32 b, s32 c);
+s32 Hit_CastSegment(VecFx32 *from, VecFx32 *to, u32 mask, s32 a, s32 b, s32 c);
 
 void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *ofs, s32 angle) {
     s32 c;
@@ -45,7 +45,7 @@ s32 Geom_SnapToGround(VecFx32 *pos, s32 up, s32 down) {
     b.z = pos->z;
     a.y += up;
     b.y += down;
-    ret = func_01ffbd6c(&a, &b, 0x20000000, 0, 0, -1);
+    ret = Hit_CastSegment(&a, &b, 0x20000000, 0, 0, -1);
     if (ret != -0x1000) {
         pos->y = b.y;
     }
@@ -78,7 +78,7 @@ u16 func_ov000_0219a36c(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32
         z += FX_Mul(radius, c);
         b.x = x;
         b.z = z;
-        if (func_01ffbd6c(&a, &b, mask, 0, 0, -1) != -1 << 12) {
+        if (Hit_CastSegment(&a, &b, mask, 0, 0, -1) != -1 << 12) {
             if (flag != 0) {
                 result = angle;
                 break;

@@ -6,7 +6,7 @@
 extern "C" {
 
 
-void func_ov000_02158f30(Lo021cb3a8 *self, s32 n, s32 b) {
+void Lo021cb3a8_CursorDown(Lo021cb3a8 *self, s32 n, s32 b) {
     s8 old = self->cursor;
     s16 max = self->itemCount;
     s32 m = self->rows;
@@ -21,7 +21,7 @@ void func_ov000_02158f30(Lo021cb3a8 *self, s32 n, s32 b) {
     self->unk_a2 = 4;
 }
 
-void func_ov000_02158f98(Lo021cb3a8 *self, s32 n, s32 b) {
+void Lo021cb3a8_PageDown(Lo021cb3a8 *self, s32 n, s32 b) {
     s8 old = self->cursor;
     self->unk_b0 = old;
     if (self->flags & 0x20000) {

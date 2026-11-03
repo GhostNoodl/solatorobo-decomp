@@ -18,7 +18,7 @@ extern void *data_ov000_021ccd64;
 BOOL PauseNode_IsDrawPaused(void *node, BOOL recurse);
 BOOL MessageQueue_GetById(MessageQueue *mgr, s32 a);
 BOOL func_ov000_021705a0(ListBuffer021cb940 *self, s32 check);
-void func_02041c34(void *a, int b, void *c, void *d);
+void TexObj_SetOamFunc(void *a, int b, void *c, void *d);
 BOOL Model_IsReady(void *a, s32 b);
 void *func_ov000_0216c800(void);
 s32 FX_Div(s32 a, s32 b);
@@ -159,7 +159,7 @@ BOOL func_ov000_0216ca70(Obj0216c954 *self) {
                 TexObj_SelectImage(self->model, 0, self->part);
                 TexObj_SelectImage(self->model, 0, 6);
                 TexObj_SelectImage(self->model, 0, 8);
-                func_02041c34(self->model, 6, (void *)func_ov000_0216c800, self);
+                TexObj_SetOamFunc(self->model, 6, (void *)func_ov000_0216c800, self);
             }
             func_ov000_0216d474(self);
         }

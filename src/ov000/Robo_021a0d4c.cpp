@@ -21,7 +21,7 @@ extern "C" {
 extern Robo021a0d4cEntry data_ov000_021ca458[];
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern void *data_ov000_021ccd64;
-void func_ov000_021b06dc(u8 *self);
+void Robo021ca458_RunMode5State(u8 *self);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_021b3d78(u8 *self);
 void Obj0218c208_AddPoint(void *a, void *pos, u16 ang);
@@ -166,7 +166,7 @@ void Robo021ca458_RunState(Robo021ca458 *self) {
     s32 i;
 
     if (self->unk_b22_6 == 5) {
-        func_ov000_021b06dc((u8 *)self);
+        Robo021ca458_RunMode5State((u8 *)self);
         return;
     }
     self->unk_b29 = 0;

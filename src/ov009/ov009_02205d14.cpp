@@ -41,9 +41,9 @@ void Ov009ActVt_02216fd0_Update(Ov003Actor *self) {
 }
 
 void Ov009Names_Fill_02205d94(Ov009Names *self, u16 kind) {
-    char *a = func_0207011c(kind);
+    char *a = Tbl_GetResFile(kind);
     char *b = func_020701d4(kind);
-    TblActorParam *c = func_02070558(kind);
+    TblActorParam *c = Tbl_GetActorParam(kind);
     char *s;
     char *t;
     STD_CopyString(self->mdlDir, a);

@@ -10,7 +10,7 @@ void Obj0215fdfc_SetEntry(ObjBase021cac0c_021cb6f0 *self, s32 a, const void *b);
 extern u8 data_ov000_021c9aec[];
 extern u8 data_ov000_021c9af2[];
 
-void func_ov000_021680b4(Lo021cb6f0 *self) {
+void Lo021cb6f0_Setup(Lo021cb6f0 *self) {
     void *res = ResList_FindType2(ResMgr_GetArcList(data_0214b105), data_0208cb7c);
     Model *m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {

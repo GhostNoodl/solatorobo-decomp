@@ -28,7 +28,7 @@ extern u8 data_ov003_021fa338[];
 extern u8 data_ov003_021fa2e0[];
 void *Heap_Alloc(u32 size);
 Info021b4828 *func_020705fc(u16 id);
-s32 func_0206ffa0(u16 id);
+s32 Tbl_GetText(u16 id);
 void *Actor_Ctor(void *p);
 void *ResSet_Init(void *p);
 void *ResSet_ReleaseAll(void *p);
@@ -132,7 +132,7 @@ u8 *Factory_New6000(Spawn021b4828 *s) {
         NEW_BASIC(0xb0, data_ov003_021fa2e0);
         break;
     }
-    Actor_JoinGroup(p, s->sub, s->id, func_0206ffa0(s->id));
+    Actor_JoinGroup(p, s->sub, s->id, Tbl_GetText(s->id));
     return p;
 }
 

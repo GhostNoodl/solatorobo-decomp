@@ -6,7 +6,7 @@ extern "C" {
 extern char data_ov002_021effec[];
 extern char data_ov002_021efff8[];
 void *func_020360b8(void *a, void *b);
-void func_02041c5c(Model *m, void *fn);
+void TexObj_SetAllOamFuncs(Model *m, void *fn);
 void func_02041c18(Model *m, u8 a);
 void Obj021f002c_CreateText(Obj021f002c *self);
 void *func_ov002_021e2f04(Model *self, void *unused, u8 *entries, u16 *count);
@@ -36,7 +36,7 @@ void func_ov002_021e2fb4(Obj021f002c *self) {
             self->model->flags |= 0x80000;
             self->model->flags |= 0x100000;
             self->model->flags |= 0x200000;
-            func_02041c5c(self->model, (void *)func_ov002_021e2f04);
+            TexObj_SetAllOamFuncs(self->model, (void *)func_ov002_021e2f04);
             info = Param_GetEntry(self->id);
             self->part = func_02070dcc(info[1])->unk_4;
             func_02041c18(self->model, info[0]);

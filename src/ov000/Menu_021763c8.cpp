@@ -150,7 +150,7 @@ void Task_Exit(Task *self, void *arg) {
 extern "C" {
 
 VObj *data_ov000_021ccd48;       // shop script
-LoCreateFn data_ov000_021ccd4c;  // save-object factory (func_ov000_021761a0 / func_ov000_02176208)
+LoCreateFn data_ov000_021ccd4c;  // save-object factory (GameSave_New / MainVt_0208ca18_New)
 
 }
 
@@ -668,7 +668,7 @@ void *ResMgr_GetArcList(void *a);
 void *ResList_FindType2(void *a, void *b);
 void TexObj_SetRes(void *model, void *a);
 void TexObj_SelectImage(void *model, s32 a, s32 b);
-void func_02041c20(void *model, s32 a, void *b);
+void TexObj_SetOamFuncArg(void *model, s32 a, void *b);
 void *STD_CopyString(void *dst, void *src);
 void func_ov000_02173d9c(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);
 void TaskList_Insert(VObj *self);
@@ -696,7 +696,7 @@ void Task021cbce0_Start(Task021cbce0 *self) {
     self->unk_4c->flags |= 2;
     TexObj_SelectImage(self->unk_4c, 0, 0);
     self->unk_4c->unk_158 = (void *)func_ov000_02173d9c;
-    func_02041c20(self->unk_4c, 0, self);
+    TexObj_SetOamFuncArg(self->unk_4c, 0, self);
     self->unk_3c = -0xcd;
     TaskList_Insert(self);
 }
@@ -1396,7 +1396,7 @@ void TexObj_Init(void *p, void *name, u8 c);
 char *STD_CopyString(void *dst, void *src);
 void TexObj_SetRes(void *model, void *a);
 void TexObj_SelectImage(void *model, s32 a, u32 b);
-void func_02041c5c(void *model, int fn);
+void TexObj_SetAllOamFuncs(void *model, int fn);
 void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, const char *c, s32 *d, s32 *e, bool f);
 void TextWin_RenderToVram(void *p);
@@ -1575,7 +1575,7 @@ found:
     self->unk_5c->flags |= 0x80000;
     self->unk_5c->flags = (self->unk_5c->flags & ~0x7c) | 0x78;
     self->unk_5c->unk_150 = -0x1c9d;
-    func_02041c5c(self->unk_5c, (int)func_ov000_02174168);
+    TexObj_SetAllOamFuncs(self->unk_5c, (int)func_ov000_02174168);
     InitWin021743bc((u8 *)self + 0x60, MsgRes_GetString(g, 0xba));
     InitWin021743bc((u8 *)self + 0x118, MsgRes_GetString(g, 0x48));
     InitWin021743bc((u8 *)self + 0x1d0, MsgRes_GetString(g, 0x49));
@@ -1807,7 +1807,7 @@ extern const s16 FX_SinCosTable_[];
 BOOL Model_IsReady(void *p, s32 id);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 u8 Gfx3DState_NextPolyId(void *p);
-void func_02041c20(Model *m, s32 a, s32 b);
+void TexObj_SetOamFuncArg(Model *m, s32 a, s32 b);
 void func_02041c18(Model *m, s32 v);
 void func_ov000_021c95fc(void *p);
 
@@ -1921,7 +1921,7 @@ void func_ov000_0217558c(Task021cbbe0 *self) {
     TEXT(0x340)->Render();
     TEXT(0x3f8)->unk_vf20(xi + 0x92, 0x76);
     TEXT(0x3f8)->Render();
-    func_02041c20(((Model *)self->unk_5c), 6, 2);
+    TexObj_SetOamFuncArg(((Model *)self->unk_5c), 6, 2);
     x = xi + 0x5a;
     Model_SetPos(((Model *)self->unk_5c), x << 12, -0x18000);
     Model_PlayPart(((Model *)self->unk_5c), 9);
@@ -2183,7 +2183,7 @@ void Task021cbfe0_Draw(Task021cbfe0 *self) {
     }
 }
 
-GameSave *func_ov000_021761a0(void) {
+GameSave *GameSave_New(void) {
     GameSave *obj = (GameSave *)Heap_Alloc(0x4c);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_0208b614);
@@ -2203,10 +2203,10 @@ namespace m_Stub_021761f0 {
 
 extern "C" {
 
-GameSave *func_ov000_021761a0(void);
+GameSave *GameSave_New(void);
 
 void func_ov000_021761f0(void *self) {
-    data_ov000_021ccd4c = (LoCreateFn)func_ov000_021761a0;
+    data_ov000_021ccd4c = (LoCreateFn)GameSave_New;
 }
 
 }
@@ -2239,7 +2239,7 @@ static inline BOOL LoIsLoaded(void) {
     return r;
 }
 
-GameSave *func_ov000_02176208(void) {
+GameSave *MainVt_0208ca18_New(void) {
     GameSave *obj = (GameSave *)Heap_Alloc(0x4c);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_0208b614);
@@ -2262,11 +2262,11 @@ extern "C" {
 
 extern u8 data_ov000_021cbee0[];
 extern u8 data_ov000_021cc060[];
-GameSave *func_ov000_02176208(void);
+GameSave *MainVt_0208ca18_New(void);
 void *Heap_Alloc(u32 size);
 
 void func_ov000_02176264(void *self) {
-    data_ov000_021ccd4c = (LoCreateFn)func_ov000_02176208;
+    data_ov000_021ccd4c = (LoCreateFn)MainVt_0208ca18_New;
 }
 
 VObj *Task021cbee0_New(void) {
@@ -2352,7 +2352,7 @@ void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
 void Obj0215bb14_SetText(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
-void func_ov000_0215d980(void *a, s32 b, s32 c);
+void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
 void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
@@ -2471,7 +2471,7 @@ void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
 void Obj0215bb14_SetText(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
-void func_ov000_0215d980(void *a, s32 b, s32 c);
+void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
 void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
@@ -2563,12 +2563,12 @@ extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021cb2a8[];
 void *MsgRes_GetString(void *g, u32 id);
 BOOL StageRes_Bind(void *p);
-void func_ov000_0215d980(void *a, s32 b, s32 c);
+void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 void Obj0215d990_SetMsg(void *self, s32 a);
 void Obj0215bb14_SetText(void *o, void *s);
 void UiList021cb4a8_SetLabel(void *self, void *a);
 void UiList021cb4a8_SetCenteredLabel(void *self, void *arg);
-void func_ov000_021546ec(void *a, const void *b, const char *c, u16 d);
+void UiList_SetIconModel(void *a, const void *b, const char *c, u16 d);
 s32 func_ov000_02184a04(s32 x);
 u8 *DataRes_GetTable(void *a, s32 b);
 u32 DataRes_GetCount(void *a, s32 b);
@@ -2632,7 +2632,7 @@ void Task021cbee0_Start(Task021cbee0 *self) {
     ((Lo021cae48 *)o)->posX = 0x86;
     ((Lo021cae48 *)o)->posY = 0x78;
     ((Lo021cae48 *)o)->posZ = -0x1ccd;
-    func_ov000_0215d980(self->unk_40, data_0214a424->unk_020, 0);
+    Lo021cae48_SetValue(self->unk_40, data_0214a424->unk_020, 0);
     self->unk_40->slideMode = 1;
     {
         Lo021cae48 *s = self->unk_40;
@@ -2683,7 +2683,7 @@ void Task021cbee0_Start(Task021cbee0 *self) {
             s->posY = 0x78;
             s->posZ = -0x1ccd;
         }
-        func_ov000_0215d980(self->unk_44, 0, 0);
+        Lo021cae48_SetValue(self->unk_44, 0, 0);
         self->unk_44->slideMode = 1;
         {
             Lo021cae48 *s = self->unk_44;
@@ -2710,7 +2710,7 @@ void Task021cbee0_Start(Task021cbee0 *self) {
             s->posY = 0x83;
             s->posZ = -0x1ccd;
         }
-        func_ov000_0215d980(self->unk_48, 0, 0);
+        Lo021cae48_SetValue(self->unk_48, 0, 0);
         self->unk_48->slideMode = 1;
         {
             Lo021cae48 *s = self->unk_48;
@@ -2737,7 +2737,7 @@ void Task021cbee0_Start(Task021cbee0 *self) {
         self->unk_4c->vfunc_14(MsgRes_GetString(g, 0x99));
         UiList021cb4a8_SetLabel(self->unk_4c, MsgRes_GetString(g, 0xa1));
         UiList021cb4a8_SetCenteredLabel(self->unk_4c, MsgRes_GetString(g, 0x3e));
-        func_ov000_021546ec(self->unk_4c, data_0208ccc8, "cem3d1icn00", 0xffff);
+        UiList_SetIconModel(self->unk_4c, data_0208ccc8, "cem3d1icn00", 0xffff);
         break;
     case 1:
         o = (VObj *)Heap_Alloc(0xe0);
@@ -2788,7 +2788,7 @@ void Task021cbee0_Start(Task021cbee0 *self) {
         self->unk_4c->vfunc_14(MsgRes_GetString(g, 0x99));
         UiList021cb4a8_SetLabel(self->unk_4c, MsgRes_GetString(g, 0xa6));
         UiList021cb4a8_SetCenteredLabel(self->unk_4c, MsgRes_GetString(g, 0x3e));
-        func_ov000_021546ec(self->unk_4c, data_0208ccc8, "cem3d1icn00", 0xffff);
+        UiList_SetIconModel(self->unk_4c, data_0208ccc8, "cem3d1icn00", 0xffff);
         break;
     }
     data_02fe1534.unk_7a = self->param;
@@ -3102,7 +3102,7 @@ typedef struct {
 extern "C" {
 extern Data02fe1534 data_02fe1534;
 extern void *data_02097e4c;
-void func_ov000_0215d980(void *a, s32 b, s32 c);
+void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
@@ -3143,12 +3143,12 @@ s32 Task021cbee0_List4cOnCursor(UiList *self, UiListItem *item) {
             if (id & 0x2000) {
                 Lo021cae48 *b;
                 if (a != NULL) {
-                    func_ov000_0215d980(a, data_0214a424->items[(u16)(id & 0xfff)], 1);
+                    Lo021cae48_SetValue(a, data_0214a424->items[(u16)(id & 0xfff)], 1);
                     a->flags &= ~0x20;
                 }
                 b = o->unk_48;
                 if (b != NULL) {
-                    func_ov000_0215d980(b, StageFlags_CountEntries(data_0214a424, item->id), 1);
+                    Lo021cae48_SetValue(b, StageFlags_CountEntries(data_0214a424, item->id), 1);
                     b->flags &= ~0x20;
                 }
             } else {
@@ -3176,14 +3176,14 @@ s32 func_ov000_021777d4(Task021cbee0 *self, u16 id) {
     data_02fe1534.unk_72 = id;
     t = node->unk_0c;
     g->unk_020 = g->unk_020 > t ? g->unk_020 - t : 0;
-    func_ov000_0215d980(obj, data_0214a424->unk_020, 0);
+    Lo021cae48_SetValue(obj, data_0214a424->unk_020, 0);
     if (id & 0x2000) {
         if (self->unk_44 != NULL) {
-            func_ov000_0215d980(self->unk_44, data_0214a424->items[(u16)(id & 0xfff)], 1);
+            Lo021cae48_SetValue(self->unk_44, data_0214a424->items[(u16)(id & 0xfff)], 1);
         }
         void *o48 = self->unk_48;
         if (o48 != NULL) {
-            func_ov000_0215d980(o48, StageFlags_CountEntries(data_0214a424, id), 1);
+            Lo021cae48_SetValue(o48, StageFlags_CountEntries(data_0214a424, id), 1);
         }
     }
     SndMgr_PlayVolume(data_02097e4c, 0x31, -1, -1, -1);
@@ -3363,7 +3363,7 @@ void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
 void Obj0215bb14_SetText(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
-void func_ov000_0215d980(void *a, s32 b, s32 c);
+void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
 void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
@@ -3451,7 +3451,7 @@ void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
 void Obj0215bb14_SetText(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
-void func_ov000_0215d980(void *a, s32 b, s32 c);
+void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
 void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
@@ -3469,11 +3469,11 @@ BOOL Task021cbe60_List3cOnCursor(UiList *self, UiListItem *msg) {
         Obj0215bb14_SetText(p, (u8 *)o + 0x58);
         p->vfunc_70();
         if (LFLD(void *, o, 0x48) != NULL) {
-            func_ov000_0215d980(LFLD(void *, o, 0x48), data_0214a424->items[(u16)(msg->id & 0xfff)], 1);
+            Lo021cae48_SetValue(LFLD(void *, o, 0x48), data_0214a424->items[(u16)(msg->id & 0xfff)], 1);
         }
         o = LFLD(void *, o, 0x4c);
         if (o != NULL) {
-            func_ov000_0215d980(o, StageFlags_CountEntries(data_0214a424, msg->id), 1);
+            Lo021cae48_SetValue(o, StageFlags_CountEntries(data_0214a424, msg->id), 1);
         }
     }
     return TRUE;
@@ -3564,12 +3564,12 @@ extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021cb2a8[];
 void *MsgRes_GetString(void *g, u32 id);
 void Obj0215bb14_SetText(void *o, void *s);
-void func_ov000_0215d980(void *a, s32 b, s32 c);
+void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 void Obj0215d990_SetMsg(void *self, s32 a);
 void func_ov000_02160fc8(void *self);
 void UiList021cb4a8_SetLabel(void *self, void *a);
 void UiList021cb4a8_SetCenteredLabel(void *self, void *arg);
-void func_ov000_021546ec(void *a, const void *b, const char *c, u16 d);
+void UiList_SetIconModel(void *a, const void *b, const char *c, u16 d);
 s32 UiList_GetItemById(void *p, s32 a);
 s32 Param_Get(u16 id);
 s32 func_0206f080(u16 id);
@@ -3637,7 +3637,7 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
         s->slideZ = -0x199a;
     }
     self->unk_44->slideMode = 1;
-    func_ov000_0215d980(self->unk_44, data_0214a424->unk_020, 0);
+    Lo021cae48_SetValue(self->unk_44, data_0214a424->unk_020, 0);
     self->unk_44->vfunc_08();
     o = (VObj *)Heap_Alloc(0x98);
     if (o != NULL) {
@@ -3654,7 +3654,7 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
         s->posY = 0x78;
         s->posZ = -0x1ccd;
     }
-    func_ov000_0215d980(self->unk_48, 0, 0);
+    Lo021cae48_SetValue(self->unk_48, 0, 0);
     self->unk_48->slideMode = 1;
     {
         Lo021cae48 *s = self->unk_48;
@@ -3681,7 +3681,7 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
         s->posY = 0x83;
         s->posZ = -0x1ccd;
     }
-    func_ov000_0215d980(self->unk_4c, 0, 0);
+    Lo021cae48_SetValue(self->unk_4c, 0, 0);
     self->unk_4c->slideMode = 1;
     {
         Lo021cae48 *s = self->unk_4c;
@@ -3774,7 +3774,7 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     self->unk_3c->onDecide = (UiItemFn)Task021cbe60_List3cOnDecide;
     self->unk_3c->onCursor = (UiItemFn)Task021cbe60_List3cOnCursor;
     self->unk_3c->owner = self;
-    func_ov000_021546ec(self->unk_3c, data_0208ccc8, "cem3d1icn00", 0xffff);
+    UiList_SetIconModel(self->unk_3c, data_0208ccc8, "cem3d1icn00", 0xffff);
     for (i = 0; i < 0x53; i++) {
         id = i + 0x2000;
         if (data_0214a424->items[ItemIdx021782e0(id)] != 0) {
@@ -3816,7 +3816,7 @@ void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
 void Obj0215bb14_SetText(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
-void func_ov000_0215d980(void *a, s32 b, s32 c);
+void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
 void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
@@ -3828,7 +3828,7 @@ void Task021cbe60_UpdateActive(Task021cbe60 *self) {
     }
     v = data_02097dc8->trig;
     if (v & 1) {
-        func_ov000_0215d980(self->unk_44, self->unk_44->value, 1);
+        Lo021cae48_SetValue(self->unk_44, self->unk_44->value, 1);
         return;
     }
     if (!(v & 2)) {
@@ -3927,7 +3927,7 @@ void StageRes_Open(void *p, void *buf, const void *s);
 void *MsgRes_GetString(void *p, s32 a);
 void Obj0215bb14_SetText(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
-void func_ov000_0215d980(void *a, s32 b, s32 c);
+void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
 void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
@@ -3976,7 +3976,7 @@ void func_ov000_02178dcc(void *p, BOOL on) {
             }
         }
         node = NULL;
-        func_ov000_0215d980(self->unk_44, data_0214a424->unk_020, 0);
+        Lo021cae48_SetValue(self->unk_44, data_0214a424->unk_020, 0);
         SndMgr_PlayVolume(data_02097e4c, 0x30, -1, -1, -1);
         list = (UiListItem *)((u8 *)self->unk_3c->topItem);
         if (list != NULL) {
@@ -3996,10 +3996,10 @@ void func_ov000_02178dcc(void *p, BOOL on) {
             StageFlags_CountItems(data_0214a424);
         }
         if (self->unk_48 != NULL) {
-            func_ov000_0215d980(self->unk_48, data_0214a424->items[ItemIdx(node->id)], 1);
+            Lo021cae48_SetValue(self->unk_48, data_0214a424->items[ItemIdx(node->id)], 1);
         }
         if (self->unk_4c != NULL) {
-            func_ov000_0215d980(self->unk_4c, StageFlags_CountEntries(data_0214a424, node->id), 1);
+            Lo021cae48_SetValue(self->unk_4c, StageFlags_CountEntries(data_0214a424, node->id), 1);
         }
         if (rest <= 0) {
             self->unk_3c->vfunc_70(node);
@@ -4092,7 +4092,7 @@ BOOL MsgRes_Bind(void *p);
 void *MsgRes_GetString(void *g, s32 id);
 void func_ov000_021c3af4(void *self);
 void ListRow_Init(ListRow *self);
-void func_ov000_021c2334(Hud021cca10 *self);
+void Hud021cca10_Init(Hud021cca10 *self);
 void Hud021cca10_SetText(Hud021cca10 *self, char *str);
 void LoBase021ccb54_021ccbe0_AppendRow(LoBase021ccb54_021ccbe0 *list, ListRow *row);
 BOOL func_ov000_02179910(void);
@@ -4175,7 +4175,7 @@ void Task021cbde0_Start(Task021cbde0 *self) {
                     VOBJ_SET_VTABLE(it, data_ov000_021cbac8);
                     ListRow_Init(it);
                     VOBJ_SET_VTABLE(it, data_ov000_021cca10);
-                    func_ov000_021c2334(it);
+                    Hud021cca10_Init(it);
                 }
                 it->index = i;
                 it->unk_3c = i + 1;
@@ -4872,7 +4872,7 @@ namespace m_Lo_0217a1f8 {
 typedef enum { LO_TEXT_MASK_EMPTY = 0 } LoTextMask;
 
 extern "C" {
-GameSave *func_ov000_02176208(void);
+GameSave *MainVt_0208ca18_New(void);
 void func_ov000_0217a328(Task021cbc60 *self, s32 a, s32 b);
 void TaskList_Insert(VObj *self);
 
@@ -4888,7 +4888,7 @@ void Task021cbc60_Start(Task021cbc60 *self) {
     {
         LoCreateFn fn = data_ov000_021ccd4c;
         if (fn == NULL) {
-            data_ov000_021ccd4c = fn = (LoCreateFn)func_ov000_02176208;
+            data_ov000_021ccd4c = fn = (LoCreateFn)MainVt_0208ca18_New;
         }
         o = (GameSave *)fn();
     }
@@ -5339,7 +5339,7 @@ void *ResList_FindType2(void *a, void *b);
 void TexObj_SetRes(void *model, void *a);
 void TexObj_SelectImage(void *model, s32 a, s32 b);
 void *STD_CopyString(void *dst, void *src);
-GameSave *func_ov000_02176208(void);
+GameSave *MainVt_0208ca18_New(void);
 
 static inline void ModelInit(u8 *m, void *s, void *nm) {
     PlttRes_Init_02041218((struct PlttRes *)(m + 0x88));
@@ -5357,7 +5357,7 @@ void Task021cbb60_Start(Task021cbb60 *self) {
     {
         LoCreateFn fn = data_ov000_021ccd4c;
         if (fn == NULL) {
-            data_ov000_021ccd4c = fn = (LoCreateFn)func_ov000_02176208;
+            data_ov000_021ccd4c = fn = (LoCreateFn)MainVt_0208ca18_New;
         }
         o = (GameSave *)fn();
     }
@@ -5671,7 +5671,7 @@ char *func_02061df0(u16 lv);
 char *func_020620ac(u16 id);
 int func_0200779c(char *dst, const char *fmt, ...);
 void OS_GetOwnerInfo(OwnerInfo *info);
-void func_02040b0c(char *dst, s32 *dstLen, const u16 *src, s32 *srcLen);
+void Str_Utf16ToUtf8Filtered(char *dst, s32 *dstLen, const u16 *src, s32 *srcLen);
 BOOL OS_IsRunOnTwl(void);
 Item *func_ov000_0217b230(Self *self, const char *str, s32 a2);
 
@@ -5798,7 +5798,7 @@ void func_ov000_0217b324(Self *self, s32 idx) {
     OS_GetOwnerInfo(&info);
     max = 0x80;
     len = info.nickNameLength;
-    func_02040b0c(buf, &max, info.nickName, &len);
+    Str_Utf16ToUtf8Filtered(buf, &max, info.nickName, &len);
     self->slots[idx].p9c = (VObj *)func_ov000_0217b230(self, buf, 4);
     ((Item *)self->slots[idx].p9c)->unk_70 = -0x1c4d;
     self->count = 0;
@@ -6332,7 +6332,7 @@ void *Twl0214b6d8_Init(void *p);
 void Loader_Start(void *p, void *name);
 BOOL Loader_IsDone(void *p);
 u8 func_ov000_0214b8f4(void *p);
-s32 func_ov000_0214b6d0(void *p);
+s32 Twl0214b570_GetStatus(void *p);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
 static inline BOOL HasFlag0217cddc(Task021cbb60 *self, u32 bit) {
@@ -6404,7 +6404,7 @@ void func_ov000_0217cf10(Task021cbb60 *self) {
             break;
         }
         if (!func_ov000_0214b8f4(self->unk_6c)) {
-            if (func_ov000_0214b6d0((u8 *)self->unk_6c + 0x20) == 3) {
+            if (Twl0214b570_GetStatus((u8 *)self->unk_6c + 0x20) == 3) {
                 self->unk_48 = 3;
             } else {
                 self->unk_48 = 2;
@@ -7555,9 +7555,9 @@ void TexObj_Init(void *p, void *name, s32 c);
 void *STD_CopyString(void *dst, void *src);
 void TexObj_SetRes(void *model, void *a);
 void TexObj_SelectImage(void *model, s32 a, s32 b);
-void func_0204a2e0(void *mgr, s32 a);
+void SndMgr_StopAllSeq(void *mgr, s32 a);
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
-void func_0204aab0(void *p);
+void SndQueue_Push_0204aab0(void *p);
 void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 void SceneCmd_Push21(void *p, s32 a);
 void func_ov000_02182b0c(void *p);
@@ -7743,14 +7743,14 @@ void Task021cbae0_PostUpdate(Task021cbae0 *self) {
         TexObj_SetRes(self->unk_54, (void *)self->unk_50->vfunc_10());
         TexObj_SelectImage(self->unk_54, 0, 0xffff);
         self->unk_54->unk_150 = -0x1ccd;
-        func_0204a2e0(data_02097e4c, 0);
+        SndMgr_StopAllSeq(data_02097e4c, 0);
         GfxSys_StartFadeIn(0x3c000, 0, -1);
         p = data_02097e48;
         if (LFLD(SndBits, p, 0).b0) {
             if (LFLD(u16, p, 6) != 0xffff || LFLD(u16, p, 4) != 0x2f) {
                 if (LFLD(u16, p, 2) != 10 && LFLD(u16, p, 2) != 0) {
                     if (LFLD(u16, p, 6) != 0xffff) {
-                        func_0204aab0(p);
+                        SndQueue_Push_0204aab0(p);
                     }
                     LFLD(u16, p, 2) = 1;
                 } else {
@@ -8051,8 +8051,8 @@ void *Heap_Alloc(u32 size);
 void *MsgRes_GetString(void *g, u32 id);
 void Obj0215bb14_SetText(void *o, void *s);
 void TaskList_Insert(void *self);
-void func_ov000_021547e8(void *a, void *b, void *c, int d);
-void func_ov000_021546ec(void *a, const void *b, const char *c, u16 d);
+void UiList_SetMarkModel(void *a, void *b, void *c, int d);
+void UiList_SetIconModel(void *a, const void *b, const char *c, u16 d);
 s32 UiList_GetItemById(void *p, s32 a);
 s32 Param_Get(u16 id);
 s32 func_0206f080(u16 id);
@@ -8110,8 +8110,8 @@ void Task021cbf60_Start(Task021cbf60 *self) {
     self->unk_3c->flags |= 0x800000;
     self->unk_3c->unk_c0 = 0x80;
     self->unk_3c->unk_c1 = 3;
-    func_ov000_021547e8(self->unk_3c, data_0214b105, data_0208cb7c, 0xb);
-    func_ov000_021546ec(self->unk_3c, "menu/menu3d", "cem3d1icn00", 0xffff);
+    UiList_SetMarkModel(self->unk_3c, data_0214b105, data_0208cb7c, 0xb);
+    UiList_SetIconModel(self->unk_3c, "menu/menu3d", "cem3d1icn00", 0xffff);
     if (self->param != 0) {
         self->unk_5c = self->param;
     }
@@ -8324,7 +8324,7 @@ extern void *data_ov000_021ccd70;
 extern void *data_02149f0c;
 extern u8 data_ov000_021ccd50[];
 extern VObj *data_ov000_021ccd30;
-void func_ov000_021b53a8(void *p);
+void FieldMgr_DrawProps(void *p);
 void ActorMgr_Draw(void *p);
 void EffectMgr_Draw(void *p);
 void func_ov000_021bc6c0(void *p);

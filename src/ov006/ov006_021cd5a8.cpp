@@ -9,7 +9,7 @@ extern "C" {
 
 
 void *Param_Get(u32 id);
-void *func_0206ffa0(s32 id);
+void *Tbl_GetText(s32 id);
 void *DataRes_GetTable(ov006_DataRes *res, u32 idx);
 u32 DataRes_GetCount(ov006_DataRes *res, u32 idx);
 u16 DataRes_ReadBitsAt_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
@@ -61,7 +61,7 @@ void func_ov006_021cd5a8(int type, UiList *obj, int arg) {
         for (i = 0; i < n; i++) {
             id = i | 0x7000;
             if (DataRes_ReadBitsAt_02059544((ov006_DataRes *)data_02fe152c, base + 0x1d0, tbl, 1, i)) {
-                obj->vfunc_74(func_0206ffa0(id), id, 0xffff, 0xffff);
+                obj->vfunc_74(Tbl_GetText(id), id, 0xffff, 0xffff);
             }
         }
         break;

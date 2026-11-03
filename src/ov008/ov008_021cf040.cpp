@@ -59,7 +59,7 @@ extern const Ov008Tbl5 data_ov008_021d02e8;
 BOOL Model_IsReady(Model *a, u32 b);
 u8 Gfx3DState_NextPolyId(void *p);
 Ov008Item *UiList_GetItemById(void *a, u32 id);
-void func_02041c20(void *a, int b, int c);
+void TexObj_SetOamFuncArg(void *a, int b, int c);
 
 // One local holds first the sprite unk_e0 and then the panel unk_f8. Two typed locals
 // (or a typed alias) change the register allocation, so it stays void * with casts.
@@ -109,9 +109,9 @@ void func_ov008_021cf040(Ov008Mgr *m) {
         x = v.x;
         y = v.y;
         if (item != NULL) {
-            func_02041c20(m->unk_e8, 2, item->unk_32);
+            TexObj_SetOamFuncArg(m->unk_e8, 2, item->unk_32);
         } else {
-            func_02041c20(m->unk_e8, 2, 0);
+            TexObj_SetOamFuncArg(m->unk_e8, 2, 0);
         }
         Ov008_SetXY(m->unk_e8, x, y);
     }
@@ -139,7 +139,7 @@ void func_ov008_021cf040(Ov008Mgr *m) {
                 Ov008_SetXY(e, (t.v[i] + (x >> 12) - 3) << 12, ((y >> 12) + 0x2f) << 12);
                 Ov008_DrawModelIdx(m->unk_ec, 0xd);
                 Ov008_SetXY(m->unk_f0, (t.v[i] + (x >> 12)) << 12, ((y >> 12) + 0x28) << 12);
-                func_02041c20(m->unk_f0, 6, i + 1);
+                TexObj_SetOamFuncArg(m->unk_f0, 6, i + 1);
                 Ov008_DrawModelIdx(m->unk_f0, 6);
             }
         }

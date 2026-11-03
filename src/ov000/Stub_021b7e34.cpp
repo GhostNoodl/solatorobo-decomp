@@ -7,11 +7,11 @@ extern "C" {
 
 BOOL func_ov000_021b75e0(FieldPropModel *p);
 
-void func_ov000_021b7e34(FieldProp *self) {
+void FieldProp_Draw(FieldProp *self) {
     self->visible = func_ov000_021b75e0(&self->model);
 }
 
-void func_ov000_021b7e60(FieldProp *self, s32 x) {
+void FieldProp_SetViewScale(FieldProp *self, s32 x) {
     s32 a = FX_MUL(x, -0xc3000);
     s32 c;
     self->viewMin.y = FX_MUL(x, -0x4e000);

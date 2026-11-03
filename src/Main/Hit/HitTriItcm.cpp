@@ -4,7 +4,7 @@
 
 extern "C" {
 
-void func_01ffae08(HitTriRay *ray) {
+void HitTriRay_TestMesh(HitTriRay *ray) {
     HitTriRes *res = ray->owner->res;
     HitTriBlock *block;
     HitTri *tri;
@@ -18,7 +18,7 @@ void func_01ffae08(HitTriRay *ray) {
     fx32 t;
     s32 i;
 
-    func_01ff8330(ray);
+    HitBox_CalcWorld(ray);
     if (ray->owner->unk_84_1) {
         if (ray->min.x > res->max.x) {
             return;

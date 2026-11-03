@@ -305,7 +305,7 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
         if (Hit_DiffInCylinder(&self->pos, &v_1, self->speed, 0x5000)) {
             self->pos.x = v_1.x;
             self->pos.z = v_1.z;
-            self->rot_y = func_01ffc128(0, self->rot_y, self->unk_b0->unk_02, 1, 0x8000);
+            self->rot_y = Angle_Approach(0, self->rot_y, self->unk_b0->unk_02, 1, 0x8000);
             self->speed = 0;
             self->velY = -0xcd;
             Model0218fe1c_SetAnim(self->model, data_ov013_0220b5be, 0x155, 0);
@@ -319,7 +319,7 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
         break;
     case 0x64:
         if (self->pos.y > 0) {
-            self->rot_y = func_01ffc128(0, self->rot_y, self->unk_b0->unk_02, 1, 0x8000);
+            self->rot_y = Angle_Approach(0, self->rot_y, self->unk_b0->unk_02, 1, 0x8000);
             Actor_Move(self, 0);
             Ov013_Show(self);
         } else {

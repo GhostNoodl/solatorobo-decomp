@@ -2424,7 +2424,7 @@ static inline void Ov010_Dust(Obj0220a6b0 *self) {
     Effect_SpawnId(0x192, &p)->SetRotXYZ(rx, ry, 0);
 }
 
-void func_ov010_0220cba0(Obj0220a6b0 *self) {
+void Ov010ActVt_02210378_State01(Obj0220a6b0 *self) {
     switch (self->fsmB.st) {
     case 0:
     case 10: {
@@ -2554,7 +2554,7 @@ void func_ov010_0220cba0(Obj0220a6b0 *self) {
 }
 
 
-void func_ov010_0220d1c4(Obj0220a6b0 *self) {
+void Ov010ActVt_02210378_State02(Obj0220a6b0 *self) {
     switch (self->fsmB.st) {
     case 0: {
         Actor *t = Ov010_FindActorD(self->unk_d0);
@@ -2605,7 +2605,7 @@ void func_ov010_0220d1c4(Obj0220a6b0 *self) {
 
 extern s32 Rand_UpTo(s32 max);
 
-void func_ov010_0220d3d8(Obj0220a6b0 *self) {
+void Ov010ActVt_02210378_State03(Obj0220a6b0 *self) {
     switch (self->fsmB.st) {
     case 0:
         if (self->unk_d8 != 2) {

@@ -101,7 +101,7 @@ static inline BOOL IsState10(void *self) {
     return *(s32 *)((u8 *)self + 4) == 10 ? TRUE : FALSE;
 }
 
-bool func_ov000_02163704(void *self) {
+bool Ov000Vt_021cac0c_IsShown(void *self) {
     return IsState10(self);
 }
 

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov014_02213ce4(void) {
+void Ov014Watch_Dtor(void) {
 }
 
 void *Ov014Watch_DtorDelete(Ov014Watch *self) {

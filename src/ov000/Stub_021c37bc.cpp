@@ -5,7 +5,7 @@ extern "C" {
 
 extern char data_ov000_021cc9bc[];
 
-void func_ov000_021c37bc(ListRowText *self) {
+void ListRowText_Init(ListRowText *self) {
     self->width = 0xf4;
     self->height = 0xb8;
     self->win = 0;

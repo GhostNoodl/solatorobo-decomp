@@ -29,7 +29,7 @@ static inline void Ov011_FreeTwl(Twl0214b570 **slot) {
     if (*slot != NULL) {
         Twl0214b570 *p = *slot;
         if (p != NULL) {
-            func_ov000_0214b598(p);
+            Twl0214b570_Dtor(p);
             Heap_Free(p);
         }
         *slot = NULL;
@@ -67,13 +67,13 @@ void Ov011Act7da4_Init(Ov011Act7da4 *self) {
             p = Twl0214b570_Init(p);
         }
         self->unk_364 = p;
-        func_ov000_0214b5e8(p, (const char *)data_ov011_02207500[1]);
+        Twl0214b570_Start(p, (const char *)data_ov011_02207500[1]);
         p = (Twl0214b570 *)Heap_Alloc(sizeof(Twl0214b570));
         if (p != NULL) {
             p = Twl0214b570_Init(p);
         }
         self->unk_368 = p;
-        func_ov000_0214b5e8(p, (const char *)data_ov011_02207500[0]);
+        Twl0214b570_Start(p, (const char *)data_ov011_02207500[0]);
     }
     self->unk_398 = NULL;
     self->unk_394 = 0;
@@ -83,22 +83,22 @@ BOOL Ov011Act7da4_IsReady(Ov011Act7da4 *self) {
     BOOL r = Actor_IsReady(self);
     r = (r & ResMgr_IsLoaded(data_ov011_02207c35, 7)) ? TRUE : FALSE;
     if (self->unk_364 != NULL && self->unk_394 == 0) {
-        if (func_ov000_0214b6d0(self->unk_364) == 2) {
+        if (Twl0214b570_GetStatus(self->unk_364) == 2) {
             r = FALSE;
             self->unk_394 = 1;
         }
-        if (r && !func_ov000_0214b640(self->unk_364) && r && func_02036328()) {
-            func_ov000_0214b5bc(self->unk_364);
+        if (r && !Twl0214b570_IsDone(self->unk_364) && r && func_02036328()) {
+            Twl0214b570_Poll(self->unk_364);
             r = FALSE;
         }
     }
     if (self->unk_368 != NULL && self->unk_394 == 0) {
-        if (func_ov000_0214b6d0(self->unk_368) == 2) {
+        if (Twl0214b570_GetStatus(self->unk_368) == 2) {
             r = FALSE;
             self->unk_394 = 1;
         }
-        if (r && !func_ov000_0214b640(self->unk_368) && r && func_02036328()) {
-            func_ov000_0214b5bc(self->unk_368);
+        if (r && !Twl0214b570_IsDone(self->unk_368) && r && func_02036328()) {
+            Twl0214b570_Poll(self->unk_368);
             r = FALSE;
         }
     }

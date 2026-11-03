@@ -41,7 +41,7 @@ void ResMgr_LoadArchive(void *a, char *name, s32 b, s32 c);
 BOOL ResMgr_IsArchiveLoaded(void *a, char *name, s32 b);
 void *ResMgr_GetArchiveList(void *a, char *name, s32 b);
 Data02034f5c *ResList_FindType5(void *a, char *name);
-char *func_0203ed04(char *name, u32 a);
+char *G3dRes_SetupVram(char *name, u32 a);
 void *func_0203ebf8(char *name);
 Data0202aca0 *NNS_G3dGetTex(u32 a);
 BOOL Vram_IsTransferDone(void *a);
@@ -92,7 +92,7 @@ void func_ov000_0214b910(Loader *self) {
         entry = ResList_FindType5(data, self->unk_1c);
         name = self->unk_1c;
         if (entry != NULL) {
-            name = func_0203ed04(name, entry->unk_00);
+            name = G3dRes_SetupVram(name, entry->unk_00);
         }
         self->unk_14 = func_0203ebf8(name);
         self->unk_18 = NNS_G3dGetTex(entry->unk_00)->unk_08;

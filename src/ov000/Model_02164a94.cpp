@@ -17,7 +17,7 @@ extern char data_ov000_021cb909[];
 void *ResMgr_GetArcList(const char *a);
 void LangData_LocalizePath(char *dst, const char *src);
 void *ResList_FindType2(void *a, void *b);
-void func_02041c5c(void *model, void *fn);
+void TexObj_SetAllOamFuncs(void *model, void *fn);
 void func_02041c18(void *model, void *arg);
 void *func_ov000_021640fc(void *self, void *a, void *oam, u16 *cnt);
 
@@ -60,7 +60,7 @@ void func_ov000_02164a94(Lo021cb6b0 *self) {
     self->unk_24 = m;
     TexObj_SetRes(self->unk_24, ResList_FindType2(a, m->unk_04c));
     TexObj_SelectImage(self->unk_24, 2, 0xffff);
-    func_02041c5c(self->unk_24, (void *)func_ov000_021640fc);
+    TexObj_SetAllOamFuncs(self->unk_24, (void *)func_ov000_021640fc);
     func_02041c18(self->unk_24, self);
     *pp = saved;
 }
@@ -87,9 +87,9 @@ typedef struct {
 extern "C" {
 
 void *Heap_Alloc(u32 size);
-void func_02040be0(void *res, void *src);
-void func_02040d14(void *res, s32 a, s32 b);
-void func_02040d94(void *res, void *a, s32 b, s32 c);
+void PlttRes_SetSrc_02040be0(void *res, void *src);
+void PlttRes_SetData_02040d14(void *res, s32 a, s32 b);
+void PlttRes_Upload_02040d94(void *res, void *a, s32 b, s32 c);
 void func_02040dd8(void *res, s32 a, s32 b);
 struct Out_52e4;
 struct Def_52e4;
@@ -137,7 +137,7 @@ void func_ov000_02164c50(Lo021cb6b0 *self, u8 *arg) {
         PlttRes_Init_02041218(m);
     }
     p->pltt = m;
-    func_02040be0(m, self->unk_24);
+    PlttRes_SetSrc_02040be0(m, self->unk_24);
     buf = (u8 *)p->pltt->buf;
     p->unk_c94[0] = 2;
     p->unk_c94[1] = 4;
@@ -145,10 +145,10 @@ void func_ov000_02164c50(Lo021cb6b0 *self, u8 *arg) {
         PlttRes *r = p->pltt;
         r->count = 2;
         r->table = p->unk_c94;
-        func_02040d14(p->pltt, 0, r->count << 5);
+        PlttRes_SetData_02040d14(p->pltt, 0, r->count << 5);
     }
-    func_02040d94(p->pltt, buf + 0x40, 0, 0x20);
-    func_02040d94(p->pltt, buf + 0x80, 0x20, 0x20);
+    PlttRes_Upload_02040d94(p->pltt, buf + 0x40, 0, 0x20);
+    PlttRes_Upload_02040d94(p->pltt, buf + 0x80, 0x20, 0x20);
     func_02040dd8(p->pltt, 2, 1);
 
     cell = LoModelGetCell(self->unk_24, 2);

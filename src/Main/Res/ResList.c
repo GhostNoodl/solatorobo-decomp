@@ -13,7 +13,7 @@ ResList *ResList_Dtor(ResList *list) {
     while (node != NULL) {
         func_0203835c(&node->type);
         next = node->next;
-        func_020366d0(data_02097cdc, node);
+        ResMgr_FreeNode_020366d0(data_02097cdc, node);
         node = next;
     }
     return list;

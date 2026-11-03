@@ -8,7 +8,7 @@ void HitSphere_Unlink_0203f2b8(void *p);
 void *Shadow_DtorBase(void *p);
 void *Model0218fe1c_FreeAnims(void *p);
 void *ResSet_ReleaseAll(void *p);
-void func_ov015_0220900c(Ov015FishInfo *p);
+void Ov015FishInfo_Dtor(Ov015FishInfo *p);
 BOOL func_ov015_022121b4(Ov015Obj292c *self);
 void func_ov015_022123c4(Ov015Obj292c *self);
 void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
@@ -208,12 +208,12 @@ void *Ov015Fish_DtorDelete(Ov015Fish *self) {
     ResSet_ReleaseAll(&self->res2);
     Model0218fe1c_FreeAnims(&self->model);
     ResSet_ReleaseAll(&self->res);
-    func_ov015_0220900c(&self->info);
+    Ov015FishInfo_Dtor(&self->info);
     Heap_Free(self);
     return self;
 }
 
-void *func_ov015_021ff9d4(Ov015Shadow *self) {
+void *Ov015Shadow_Dtor(Ov015Shadow *self) {
     Shadow_DtorBase(self);
     return self;
 }

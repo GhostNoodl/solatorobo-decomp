@@ -5,7 +5,7 @@ extern "C" {
 
 extern void *const data_ov009_02215d0c[];
 extern void *data_02097e4c;
-extern void func_01ffc9fc(VecFx32 *dst, const VecFx32 *src, s32 angle);
+extern void Vec_RotateY(VecFx32 *dst, const VecFx32 *src, s32 angle);
 extern void HitSphere_Link(ActorSub48 *p);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
@@ -161,7 +161,7 @@ void Ov009ActVt_02216bc8_StateAttack2(Ov009ActVt_02216bc8 *self) {
         r.x = 0;
         r.y = 0;
         r.z = -0x800;
-        func_01ffc9fc(&r, &r, h);
+        Vec_RotateY(&r, &r, h);
         o->AddPos(&r);
         self->model->visible = 1;
         self->fsm->timer = 0;

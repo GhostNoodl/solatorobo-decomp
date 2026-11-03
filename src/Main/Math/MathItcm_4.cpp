@@ -4,7 +4,7 @@
 
 extern "C" {
 
-void func_01ffc9fc(VecFx32 *dst, VecFx32 *src, u16 angle) {
+void Vec_RotateY(VecFx32 *dst, VecFx32 *src, u16 angle) {
     fx32 x = 0;
     fx32 z = 0;
     fx32 s = FX_SinCosTable_[(angle >> 4) * 2];

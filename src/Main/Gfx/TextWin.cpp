@@ -69,9 +69,9 @@ u32 MsgRes_GetLines(MsgRes *res, s32 idx, char **out, s32 max);
 
 char *MsgRes_GetString(MsgRes *res, s32 idx);
 
-BOOL func_0204c100(void);
+BOOL MsgRes_LoadGlobal(void);
 
-BOOL func_0204c120(void);
+BOOL MsgRes_BindGlobal(void);
 
 void func_0204c138(void);
 
@@ -154,10 +154,10 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void Heap_Free(void *ptr);
 extern void Vram_CancelTransfer(void *ptr);
-extern void *func_02039828(VramBlock *block);
-extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
-extern s32 func_02040778(const char *s, int *len);
-extern int func_0205bef8(void *cmd);
+extern void *VramBlock_Free(VramBlock *block);
+extern VramBlock *VramBlock_AllocChar(u32 size, u32 arg, u32 c);
+extern s32 Str_ParseHex(const char *s, int *len);
+extern int StageRes_DispatchSlot(void *cmd);
 
 typedef u16 (*TextScanCharFn)(const char **s);
 
@@ -323,9 +323,9 @@ s32 Text_Measure(s32 font, s32 spacing, const char *str, s32 *outW, s32 *outH, b
 
 void TextWin_Init(TextWin *win);
 
-void func_0204c8a8(TextWin *win);
+void TextWin_Release(TextWin *win);
 
-Model *func_0204c9f8(Model *model);
+Model *Model_Dtor(Model *model);
 
 void TextWin_InitLines(TextWin *win, u32 n);
 
@@ -397,7 +397,7 @@ char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
-extern void func_0204aab0(SndQueue *queue, u16 value);
+extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
 static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
@@ -409,7 +409,7 @@ static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
     }
     if (queue->unk_02 != 10 && queue->unk_02 != 0) {
         if (queue->unk_06 != 0xffff) {
-            func_0204aab0(queue, queue->unk_06);
+            SndQueue_Push_0204aab0(queue, queue->unk_06);
         }
         queue->unk_02 = 1;
     } else {
@@ -427,16 +427,16 @@ static inline void SndQueue_StopBgm(SndQueue *queue, u16 fade) {
     }
 }
 
-void func_0204daf4(TextWin *win);
+void TextWin_PlayBgm(TextWin *win);
 
-void func_0204dbc8(TextWin *win);
+void TextWin_PlayStrm(TextWin *win);
 
-void func_0204dc04(TextWin *win);
+void TextWin_RunCode1a(TextWin *win);
 
 extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 extern void SndMgr_Stop(SndMgr *mgr, s32 id);
 
-void func_0204dc84(TextWin *win);
+void TextWin_PlaySe(TextWin *win);
 
 typedef struct PadState {
     /* 0x00 */ u8 unk_00[0x12];
@@ -445,11 +445,11 @@ typedef struct PadState {
 
 extern PadState *data_02097dc8;
 
-BOOL func_0204dccc(TextWin *win);
+BOOL TextWin_Update(TextWin *win);
 
 u16 Pad_GetTrig(void);
 
-void func_0204dd98(TextWin *win);
+void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
     GfxMgr *gfx = data_02097ce0;
@@ -457,7 +457,7 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
     gfx->unk_00e = y;
 }
 
-void func_0204dda8(TextWin *win);
+void TextWin_Render(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorX++;
@@ -474,7 +474,7 @@ static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorY++;
 }
 
-void func_0204de78(TextWin *win);
+void TextWin_Draw(TextWin *win);
 
 static inline BOOL TextWin_IsFlag31(TextWin *win) {
     return win->flag31 ? TRUE : FALSE;
@@ -518,15 +518,15 @@ static inline void Model_SetPos(Model *model, s32 x, s32 y) {
     model->y = y;
 }
 
-void func_0204dff8(TextWin *win);
+void TextWin_DrawCursor(TextWin *win);
 
-Model *func_0204e238(Model *model, const char *name, const char *file, int a);
+Model *Model_Init_0204e238(Model *model, const char *name, const char *file, int a);
 
-void *func_0204e278(void *pltt);
+void *PlttRes_Ctor(void *pltt);
 
 char *Model_GetName(Model *model);
 
-void *func_0204e294(Model *model);
+void *Model_GetFileName(Model *model);
 
 void func_0204e29c(Model *model);
 
@@ -570,24 +570,24 @@ static inline void TextWinEx_FreeBlocks(TextWinEx *win) {
     for (; i < 0x80; i++) {
         if (win->blocks[i] != NULL) {
             TextWin_ClearVram(win->blocks[i]);
-            func_02039828(win->blocks[i]);
+            VramBlock_Free(win->blocks[i]);
             win->blocks[i] = NULL;
             win->blockIds[i] = 0;
         }
     }
 }
 
-void func_0204f524(TextWinEx *win);
+void TextWinEx_Release(TextWinEx *win);
 
-BOOL func_0204f5bc(TextWinEx *win);
+BOOL TextWinEx_Update(TextWinEx *win);
 
-void func_0204f784(TextWinEx *win);
+void TextWinEx_Render(TextWinEx *win);
 
-BOOL func_0204ffb0(int idx);
+BOOL TextWin_IsState4_0204ffb0(int idx);
 
 TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
-void func_0205073c(TextWin *win, s32 x, s32 y);
+void TextWin_SetPos(TextWin *win, s32 x, s32 y);
 
 static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_00 = 0;
@@ -604,11 +604,11 @@ void func_02050748(TextBox *box);
 
 void func_020507d8(TextBox *box);
 
-void func_020508e4(TextWin *win);
+void TextWin_EnableAlpha(TextWin *win);
 
 void func_02050e94(Model *model);
 
-void func_02050ea4(Model *model, u32 v);
+void Model_SetAlpha(Model *model, u32 v);
 
 }
 
@@ -698,10 +698,10 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void Heap_Free(void *ptr);
 extern void Vram_CancelTransfer(void *ptr);
-extern void *func_02039828(VramBlock *block);
-extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
-extern s32 func_02040778(const char *s, int *len);
-extern int func_0205bef8(void *cmd);
+extern void *VramBlock_Free(VramBlock *block);
+extern VramBlock *VramBlock_AllocChar(u32 size, u32 arg, u32 c);
+extern s32 Str_ParseHex(const char *s, int *len);
+extern int StageRes_DispatchSlot(void *cmd);
 
 TextLayout *TextWin_Dtor(TextLayout *layout);
 
@@ -752,7 +752,7 @@ void TextWin_Init(TextWin *win) {
     win->text[0] = 0;
 }
 
-void func_0204c8a8(TextWin *win) {
+void TextWin_Release(TextWin *win) {
     void *saved;
     if (win->lines != NULL) {
         if (win->lines->buf != NULL) {
@@ -785,7 +785,7 @@ void func_0204c8a8(TextWin *win) {
     if (win->vram != NULL) {
         VramBlock *b = win->vram;
         MIi_CpuClearFast(0, (u8 *)(b->kind == 4 ? 0x6400000 : 0x6600000) + b->addr, b->size - b->pad);
-        func_02039828(win->vram);
+        VramBlock_Free(win->vram);
     }
     if (win->texVram != NULL) {
         NNS_GfdDefaultFuncFreeTexVram(win->texVram);
@@ -801,7 +801,7 @@ void func_0204c8a8(TextWin *win) {
     TextWin_Init(win);
 }
 
-Model *func_0204c9f8(Model *model) {
+Model *Model_Dtor(Model *model) {
     TexObj_Release(model);
     PlttRes_Release(&model->pltt);
     return model;
@@ -826,7 +826,7 @@ void TextWin_RenderToVram(TextWin *win) {
         win->Render();
         win->inRender = 0;
     } else {
-        win->vram = func_020397fc(win->width, win->height, 0);
+        win->vram = VramBlock_AllocChar(win->width, win->height, 0);
         win->vram->unk_10_29 = 0;
         win->Render();
         win->vram->unk_10_29 = 1;
@@ -866,7 +866,7 @@ void func_0204cb28(TextWin *win, u32 arg) {
         cmd.flags |= 0x100;
         break;
     }
-    func_0205bef8(&cmd);
+    StageRes_DispatchSlot(&cmd);
 }
 
 char *TextWin_ParseTag11(TextWin *win, char *p);
@@ -926,7 +926,7 @@ char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
-extern void func_0204aab0(SndQueue *queue, u16 value);
+extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
 static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
@@ -938,7 +938,7 @@ static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
     }
     if (queue->unk_02 != 10 && queue->unk_02 != 0) {
         if (queue->unk_06 != 0xffff) {
-            func_0204aab0(queue, queue->unk_06);
+            SndQueue_Push_0204aab0(queue, queue->unk_06);
         }
         queue->unk_02 = 1;
     } else {
@@ -956,16 +956,16 @@ static inline void SndQueue_StopBgm(SndQueue *queue, u16 fade) {
     }
 }
 
-void func_0204daf4(TextWin *win);
+void TextWin_PlayBgm(TextWin *win);
 
-void func_0204dbc8(TextWin *win);
+void TextWin_PlayStrm(TextWin *win);
 
-void func_0204dc04(TextWin *win);
+void TextWin_RunCode1a(TextWin *win);
 
 extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 extern void SndMgr_Stop(SndMgr *mgr, s32 id);
 
-void func_0204dc84(TextWin *win);
+void TextWin_PlaySe(TextWin *win);
 
 typedef struct PadState {
     /* 0x00 */ u8 unk_00[0x12];
@@ -974,11 +974,11 @@ typedef struct PadState {
 
 extern PadState *data_02097dc8;
 
-BOOL func_0204dccc(TextWin *win);
+BOOL TextWin_Update(TextWin *win);
 
 u16 Pad_GetTrig(void);
 
-void func_0204dd98(TextWin *win);
+void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
     GfxMgr *gfx = data_02097ce0;
@@ -986,7 +986,7 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
     gfx->unk_00e = y;
 }
 
-void func_0204dda8(TextWin *win);
+void TextWin_Render(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorX++;
@@ -1003,7 +1003,7 @@ static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorY++;
 }
 
-void func_0204de78(TextWin *win);
+void TextWin_Draw(TextWin *win);
 
 static inline BOOL TextWin_IsFlag31(TextWin *win) {
     return win->flag31 ? TRUE : FALSE;
@@ -1063,15 +1063,15 @@ static inline void Model_ApplyPart(Model *model, s32 idx) {
     TexObj_DrawCell(model, tex, part, 0);
 }
 
-void func_0204dff8(TextWin *win);
+void TextWin_DrawCursor(TextWin *win);
 
-Model *func_0204e238(Model *model, const char *name, const char *file, int a);
+Model *Model_Init_0204e238(Model *model, const char *name, const char *file, int a);
 
-void *func_0204e278(void *pltt);
+void *PlttRes_Ctor(void *pltt);
 
 char *Model_GetName(Model *model);
 
-void *func_0204e294(Model *model);
+void *Model_GetFileName(Model *model);
 
 void func_0204e29c(Model *model);
 
@@ -1115,24 +1115,24 @@ static inline void TextWinEx_FreeBlocks(TextWinEx *win) {
     for (; i < 0x80; i++) {
         if (win->blocks[i] != NULL) {
             TextWin_ClearVram(win->blocks[i]);
-            func_02039828(win->blocks[i]);
+            VramBlock_Free(win->blocks[i]);
             win->blocks[i] = NULL;
             win->blockIds[i] = 0;
         }
     }
 }
 
-void func_0204f524(TextWinEx *win);
+void TextWinEx_Release(TextWinEx *win);
 
-BOOL func_0204f5bc(TextWinEx *win);
+BOOL TextWinEx_Update(TextWinEx *win);
 
-void func_0204f784(TextWinEx *win);
+void TextWinEx_Render(TextWinEx *win);
 
-BOOL func_0204ffb0(int idx);
+BOOL TextWin_IsState4_0204ffb0(int idx);
 
 TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
-void func_0205073c(TextWin *win, s32 x, s32 y);
+void TextWin_SetPos(TextWin *win, s32 x, s32 y);
 
 static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_00 = 0;
@@ -1149,11 +1149,11 @@ void func_02050748(TextBox *box);
 
 void func_020507d8(TextBox *box);
 
-void func_020508e4(TextWin *win);
+void TextWin_EnableAlpha(TextWin *win);
 
 void func_02050e94(Model *model);
 
-void func_02050ea4(Model *model, u32 v);
+void Model_SetAlpha(Model *model, u32 v);
 
 BOOL TextWin_ParseTag(TextWin *win, char **pp) {
     char *p = *pp;
@@ -1249,18 +1249,18 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void Heap_Free(void *ptr);
 extern void Vram_CancelTransfer(void *ptr);
-extern void *func_02039828(VramBlock *block);
-extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
-extern s32 func_02040778(const char *s, int *len);
-extern int func_0205bef8(void *cmd);
+extern void *VramBlock_Free(VramBlock *block);
+extern VramBlock *VramBlock_AllocChar(u32 size, u32 arg, u32 c);
+extern s32 Str_ParseHex(const char *s, int *len);
+extern int StageRes_DispatchSlot(void *cmd);
 
 TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void TextWin_Init(TextWin *win);
 
-void func_0204c8a8(TextWin *win);
+void TextWin_Release(TextWin *win);
 
-Model *func_0204c9f8(Model *model);
+Model *Model_Dtor(Model *model);
 
 void TextWin_InitLines(TextWin *win, u32 n);
 
@@ -1287,14 +1287,14 @@ char *TextWin_ParseTag12(TextWin *win, char *p) {
         return win->ParseEscape(p + 1);
     }
     win->code = 0x12;
-    win->value = func_02040778(p, &len);
+    win->value = Str_ParseHex(p, &len);
     return p + len + 1;
 }
 
 char *TextWin_ParseTag13(TextWin *win, char *p) {
     int len;
     win->code = 0x13;
-    win->value = func_02040778(p, &len);
+    win->value = Str_ParseHex(p, &len);
     return p + len + 1;
 }
 
@@ -1303,11 +1303,11 @@ char *TextWin_ParseTag14(TextWin *win, char *p) {
     int i;
     p++;
     win->code = 0x14;
-    win->value = func_02040778(p, &len);
+    win->value = Str_ParseHex(p, &len);
     i = 0;
     p += len;
     while (*p == ',') {
-        win->args[i] = func_02040778(p + 1, &len);
+        win->args[i] = Str_ParseHex(p + 1, &len);
         i++;
         p += len + 1;
     }
@@ -1439,7 +1439,7 @@ char *TextWin_ParseTag05to0c(TextWin *win, char *p) {
     int len;
     s32 v;
     if (*p == 'd') {
-        v = func_02040778(p + 1, &len) & 0xff;
+        v = Str_ParseHex(p + 1, &len) & 0xff;
         win->value = v;
         if (v >= 20) {
             win->code = 0xc;
@@ -1450,7 +1450,7 @@ char *TextWin_ParseTag05to0c(TextWin *win, char *p) {
         }
         p++;
     } else if (*p == 'f') {
-        v = func_02040778(p + 1, &len) & 0xff;
+        v = Str_ParseHex(p + 1, &len) & 0xff;
         win->value = v;
         if (v >= 20) {
             win->code = 0xc;
@@ -1461,7 +1461,7 @@ char *TextWin_ParseTag05to0c(TextWin *win, char *p) {
         }
         p++;
     } else if (*p == 'b') {
-        v = func_02040778(p + 1, &len) & 0xff;
+        v = Str_ParseHex(p + 1, &len) & 0xff;
         win->value = v;
         if (v >= 20) {
             win->code = 0xc;
@@ -1473,7 +1473,7 @@ char *TextWin_ParseTag05to0c(TextWin *win, char *p) {
         p++;
     } else {
         s32 hi;
-        v = func_02040778(p, &len);
+        v = Str_ParseHex(p, &len);
         hi = (v >> 8) & 0xff;
         win->args[0] = v & 0xff;
         win->value = hi;
@@ -1492,7 +1492,7 @@ char *TextWin_ParseTag0d(TextWin *win, char *p) {
     int len;
     win->code = 0xd;
     if (*p == 'd') {
-        win->value = func_02040778(p + 1, &len);
+        win->value = Str_ParseHex(p + 1, &len);
         p += len;
     } else if (*p == 'l') {
         if (p[1] == 't') {
@@ -1567,7 +1567,7 @@ char *TextWin_ParseTag00(TextWin *win, char *p) {
     long i;
     char c;
     win->code = 0;
-    win->value = func_02040778(p, NULL);
+    win->value = Str_ParseHex(p, NULL);
     win->args[0] = 0;
     win->args[1] = 0;
     win->args[2] = 1;
@@ -1579,7 +1579,7 @@ char *TextWin_ParseTag00(TextWin *win, char *p) {
             win->args[0] = -1;
             p += 2;
         } else if (c == 'f') {
-            win->args[0] = func_02040778(q + 2, NULL);
+            win->args[0] = Str_ParseHex(q + 2, NULL);
             p += 4;
         } else if (c == 'o') {
             for (i = 2;; i++) {
@@ -1594,7 +1594,7 @@ char *TextWin_ParseTag00(TextWin *win, char *p) {
                     win->args[1] |= 2;
                 } else if (c == 't') {
                     i += TextWin_CopyParen(q + i, buf);
-                    win->args[2] = (u16)(func_02040778(buf, NULL) + 1);
+                    win->args[2] = (u16)(Str_ParseHex(buf, NULL) + 1);
                     win->args[1] |= 4;
                 }
             }
@@ -1627,7 +1627,7 @@ char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
-extern void func_0204aab0(SndQueue *queue, u16 value);
+extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
 static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
@@ -1639,7 +1639,7 @@ static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
     }
     if (queue->unk_02 != 10 && queue->unk_02 != 0) {
         if (queue->unk_06 != 0xffff) {
-            func_0204aab0(queue, queue->unk_06);
+            SndQueue_Push_0204aab0(queue, queue->unk_06);
         }
         queue->unk_02 = 1;
     } else {
@@ -1657,16 +1657,16 @@ static inline void SndQueue_StopBgm(SndQueue *queue, u16 fade) {
     }
 }
 
-void func_0204daf4(TextWin *win);
+void TextWin_PlayBgm(TextWin *win);
 
-void func_0204dbc8(TextWin *win);
+void TextWin_PlayStrm(TextWin *win);
 
-void func_0204dc04(TextWin *win);
+void TextWin_RunCode1a(TextWin *win);
 
 extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 extern void SndMgr_Stop(SndMgr *mgr, s32 id);
 
-void func_0204dc84(TextWin *win);
+void TextWin_PlaySe(TextWin *win);
 
 typedef struct PadState {
     /* 0x00 */ u8 unk_00[0x12];
@@ -1675,11 +1675,11 @@ typedef struct PadState {
 
 extern PadState *data_02097dc8;
 
-BOOL func_0204dccc(TextWin *win);
+BOOL TextWin_Update(TextWin *win);
 
 u16 Pad_GetTrig(void);
 
-void func_0204dd98(TextWin *win);
+void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
     GfxMgr *gfx = data_02097ce0;
@@ -1687,7 +1687,7 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
     gfx->unk_00e = y;
 }
 
-void func_0204dda8(TextWin *win);
+void TextWin_Render(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorX++;
@@ -1704,7 +1704,7 @@ static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorY++;
 }
 
-void func_0204de78(TextWin *win);
+void TextWin_Draw(TextWin *win);
 
 static inline BOOL TextWin_IsFlag31(TextWin *win) {
     return win->flag31 ? TRUE : FALSE;
@@ -1764,15 +1764,15 @@ static inline void Model_ApplyPart(Model *model, s32 idx) {
     TexObj_DrawCell(model, tex, part, 0);
 }
 
-void func_0204dff8(TextWin *win);
+void TextWin_DrawCursor(TextWin *win);
 
-Model *func_0204e238(Model *model, const char *name, const char *file, int a);
+Model *Model_Init_0204e238(Model *model, const char *name, const char *file, int a);
 
-void *func_0204e278(void *pltt);
+void *PlttRes_Ctor(void *pltt);
 
 char *Model_GetName(Model *model);
 
-void *func_0204e294(Model *model);
+void *Model_GetFileName(Model *model);
 
 void func_0204e29c(Model *model);
 
@@ -1816,24 +1816,24 @@ static inline void TextWinEx_FreeBlocks(TextWinEx *win) {
     for (; i < 0x80; i++) {
         if (win->blocks[i] != NULL) {
             TextWin_ClearVram(win->blocks[i]);
-            func_02039828(win->blocks[i]);
+            VramBlock_Free(win->blocks[i]);
             win->blocks[i] = NULL;
             win->blockIds[i] = 0;
         }
     }
 }
 
-void func_0204f524(TextWinEx *win);
+void TextWinEx_Release(TextWinEx *win);
 
-BOOL func_0204f5bc(TextWinEx *win);
+BOOL TextWinEx_Update(TextWinEx *win);
 
-void func_0204f784(TextWinEx *win);
+void TextWinEx_Render(TextWinEx *win);
 
-BOOL func_0204ffb0(int idx);
+BOOL TextWin_IsState4_0204ffb0(int idx);
 
 TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
-void func_0205073c(TextWin *win, s32 x, s32 y);
+void TextWin_SetPos(TextWin *win, s32 x, s32 y);
 
 static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_00 = 0;
@@ -1850,11 +1850,11 @@ void func_02050748(TextBox *box);
 
 void func_020507d8(TextBox *box);
 
-void func_020508e4(TextWin *win);
+void TextWin_EnableAlpha(TextWin *win);
 
 void func_02050e94(Model *model);
 
-void func_02050ea4(Model *model, u32 v);
+void Model_SetAlpha(Model *model, u32 v);
 
 }
 
@@ -1878,18 +1878,18 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void Heap_Free(void *ptr);
 extern void Vram_CancelTransfer(void *ptr);
-extern void *func_02039828(VramBlock *block);
-extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
-extern s32 func_02040778(const char *s, int *len);
-extern int func_0205bef8(void *cmd);
+extern void *VramBlock_Free(VramBlock *block);
+extern VramBlock *VramBlock_AllocChar(u32 size, u32 arg, u32 c);
+extern s32 Str_ParseHex(const char *s, int *len);
+extern int StageRes_DispatchSlot(void *cmd);
 
 TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void TextWin_Init(TextWin *win);
 
-void func_0204c8a8(TextWin *win);
+void TextWin_Release(TextWin *win);
 
-Model *func_0204c9f8(Model *model);
+Model *Model_Dtor(Model *model);
 
 void TextWin_InitLines(TextWin *win, u32 n);
 
@@ -1957,7 +1957,7 @@ char *TextWin_ParseTag16_17(TextWin *win, char *p) {
     } else {
         win->code = 0x17;
     }
-    win->value = func_02040778(p + 1, &len);
+    win->value = Str_ParseHex(p + 1, &len);
     p++;
     p += len;
     return p + 1;
@@ -1968,7 +1968,7 @@ char *TextWin_ParseTag18_19(TextWin *win, char *p) {
     s32 v;
     if (*p == 'p') {
         win->code = 0x18;
-        win->value = func_02040778(p + 1, &len);
+        win->value = Str_ParseHex(p + 1, &len);
     } else {
         win->code = 0x19;
         win->value = 0;
@@ -1981,7 +1981,7 @@ char *TextWin_ParseTag18_19(TextWin *win, char *p) {
 char *TextWin_ParseTag1a(TextWin *win, char *p) {
     int len;
     win->code = 0x1a;
-    win->value = func_02040778(p + 1, &len);
+    win->value = Str_ParseHex(p + 1, &len);
     p++;
     p += len;
     return p + 1;
@@ -1990,7 +1990,7 @@ char *TextWin_ParseTag1a(TextWin *win, char *p) {
 char *TextWin_ParseTag1c(TextWin *win, char *p) {
     int len;
     win->code = 0x1c;
-    win->value = func_02040778(p + 1, &len);
+    win->value = Str_ParseHex(p + 1, &len);
     p++;
     p += len;
     return p + 1;
@@ -2001,22 +2001,22 @@ char *TextWin_ParseTag1eto21(TextWin *win, char *p) {
     if (*p == 'e') {
         win->code = 0x1f;
         win->value = 0xfc;
-        win->args[0] = func_02040778(p + 1, &len);
+        win->args[0] = Str_ParseHex(p + 1, &len);
     } else if (*p == 'f') {
         win->code = 0x1f;
         win->value = 0xfd;
-        win->args[0] = func_02040778(p + 1, &len);
+        win->args[0] = Str_ParseHex(p + 1, &len);
     } else if (*p == 'a') {
         win->code = 0x20;
         win->value = 0xff;
-        win->args[0] = func_02040778(p + 1, &len);
+        win->args[0] = Str_ParseHex(p + 1, &len);
     } else if (*p == 'b') {
         win->code = 0x21;
         win->value = 0xfe;
-        win->args[0] = func_02040778(p + 1, &len);
+        win->args[0] = Str_ParseHex(p + 1, &len);
     } else {
         win->code = 0x1e;
-        win->value = func_02040778(p, &len);
+        win->value = Str_ParseHex(p, &len);
         win->args[0] = 0x1e;
     }
     p++;
@@ -2027,14 +2027,14 @@ char *TextWin_ParseTag1eto21(TextWin *win, char *p) {
 char *TextWin_ParseTag22(TextWin *win, char *p) {
     int len = 0;
     win->code = 0x22;
-    win->value = func_02040778(p, &len);
+    win->value = Str_ParseHex(p, &len);
     return p + len + 1;
 }
 
 char *TextWin_ParseTag23(TextWin *win, char *p) {
     int len = 0;
     win->code = 0x23;
-    win->value = func_02040778(p, &len);
+    win->value = Str_ParseHex(p, &len);
     return p + len + 1;
 }
 
@@ -2055,7 +2055,7 @@ char *TextWin_ParseTag25(TextWin *win, char *p) {
     } else if (*p == 'd') {
         win->value = 3;
     }
-    win->args[0] = func_02040778(p + 1, &len);
+    win->args[0] = Str_ParseHex(p + 1, &len);
     p++;
     p += len;
     return p + 1;
@@ -2063,7 +2063,7 @@ char *TextWin_ParseTag25(TextWin *win, char *p) {
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
-extern void func_0204aab0(SndQueue *queue, u16 value);
+extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
 static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
@@ -2075,7 +2075,7 @@ static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
     }
     if (queue->unk_02 != 10 && queue->unk_02 != 0) {
         if (queue->unk_06 != 0xffff) {
-            func_0204aab0(queue, queue->unk_06);
+            SndQueue_Push_0204aab0(queue, queue->unk_06);
         }
         queue->unk_02 = 1;
     } else {
@@ -2093,7 +2093,7 @@ static inline void SndQueue_StopBgm(SndQueue *queue, u16 fade) {
     }
 }
 
-void func_0204daf4(TextWin *win) {
+void TextWin_PlayBgm(TextWin *win) {
     if (win->code == 0x16) {
         SndQueue_RequestBgm(data_02097e48, win->value);
     } else {
@@ -2101,7 +2101,7 @@ void func_0204daf4(TextWin *win) {
     }
 }
 
-void func_0204dbc8(TextWin *win) {
+void TextWin_PlayStrm(TextWin *win) {
     if (win->code == 0x18) {
         SndMgr_PlayStrm(data_02097e4c, win->value);
     } else {
@@ -2109,7 +2109,7 @@ void func_0204dbc8(TextWin *win) {
     }
 }
 
-void func_0204dc04(TextWin *win) {
+void TextWin_RunCode1a(TextWin *win) {
     if (win->code == 0x1a) {
         SndQueue *queue = data_02097e48;
         u16 se = win->value;
@@ -2128,7 +2128,7 @@ void func_0204dc04(TextWin *win) {
 extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 extern void SndMgr_Stop(SndMgr *mgr, s32 id);
 
-void func_0204dc84(TextWin *win) {
+void TextWin_PlaySe(TextWin *win) {
     if (win->code == 0x1c) {
         SndMgr_PlayVolume(data_02097e4c, win->value, -1, -1, -1);
     } else {
@@ -2143,7 +2143,7 @@ typedef struct PadState {
 
 extern PadState *data_02097dc8;
 
-BOOL func_0204dccc(TextWin *win) {
+BOOL TextWin_Update(TextWin *win) {
     if (win->flag3) {
         return FALSE;
     }
@@ -2165,7 +2165,7 @@ u16 Pad_GetTrig(void) {
     return data_02097dc8->trig;
 }
 
-void func_0204dd98(TextWin *win) {
+void TextWin_OnSkip(TextWin *win) {
     win->flag3 = 1;
 }
 
@@ -2175,7 +2175,7 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
     gfx->unk_00e = y;
 }
 
-void func_0204dda8(TextWin *win) {
+void TextWin_Render(TextWin *win) {
     if (!win->rendering) {
         return;
     }
@@ -2211,7 +2211,7 @@ static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorY++;
 }
 
-void func_0204de78(TextWin *win) {
+void TextWin_Draw(TextWin *win) {
     if (win->noVram) {
         u16 color0 = win->color0;
         u16 color1 = win->color1;
@@ -2291,15 +2291,15 @@ static inline void Model_ApplyPart(Model *model, s32 idx) {
     TexObj_DrawCell(model, tex, part, 0);
 }
 
-void func_0204dff8(TextWin *win);
+void TextWin_DrawCursor(TextWin *win);
 
-Model *func_0204e238(Model *model, const char *name, const char *file, int a);
+Model *Model_Init_0204e238(Model *model, const char *name, const char *file, int a);
 
-void *func_0204e278(void *pltt);
+void *PlttRes_Ctor(void *pltt);
 
 char *Model_GetName(Model *model);
 
-void *func_0204e294(Model *model);
+void *Model_GetFileName(Model *model);
 
 void func_0204e29c(Model *model);
 
@@ -2343,24 +2343,24 @@ static inline void TextWinEx_FreeBlocks(TextWinEx *win) {
     for (; i < 0x80; i++) {
         if (win->blocks[i] != NULL) {
             TextWin_ClearVram(win->blocks[i]);
-            func_02039828(win->blocks[i]);
+            VramBlock_Free(win->blocks[i]);
             win->blocks[i] = NULL;
             win->blockIds[i] = 0;
         }
     }
 }
 
-void func_0204f524(TextWinEx *win);
+void TextWinEx_Release(TextWinEx *win);
 
-BOOL func_0204f5bc(TextWinEx *win);
+BOOL TextWinEx_Update(TextWinEx *win);
 
-void func_0204f784(TextWinEx *win);
+void TextWinEx_Render(TextWinEx *win);
 
-BOOL func_0204ffb0(int idx);
+BOOL TextWin_IsState4_0204ffb0(int idx);
 
 TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
-void func_0205073c(TextWin *win, s32 x, s32 y);
+void TextWin_SetPos(TextWin *win, s32 x, s32 y);
 
 static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_00 = 0;
@@ -2377,17 +2377,17 @@ void func_02050748(TextBox *box);
 
 void func_020507d8(TextBox *box);
 
-void func_020508e4(TextWin *win);
+void TextWin_EnableAlpha(TextWin *win);
 
 void func_02050e94(Model *model);
 
-void func_02050ea4(Model *model, u32 v);
+void Model_SetAlpha(Model *model, u32 v);
 
 }
 
 extern "C" {
 
-void func_0204dff8(TextWin *win) {
+void TextWin_DrawCursor(TextWin *win) {
     s16 t = win->unk_18;
     s32 r;
     s16 s;
@@ -2445,18 +2445,18 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void Heap_Free(void *ptr);
 extern void Vram_CancelTransfer(void *ptr);
-extern void *func_02039828(VramBlock *block);
-extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
-extern s32 func_02040778(const char *s, int *len);
-extern int func_0205bef8(void *cmd);
+extern void *VramBlock_Free(VramBlock *block);
+extern VramBlock *VramBlock_AllocChar(u32 size, u32 arg, u32 c);
+extern s32 Str_ParseHex(const char *s, int *len);
+extern int StageRes_DispatchSlot(void *cmd);
 
 TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void TextWin_Init(TextWin *win);
 
-void func_0204c8a8(TextWin *win);
+void TextWin_Release(TextWin *win);
 
-Model *func_0204c9f8(Model *model);
+Model *Model_Dtor(Model *model);
 
 void TextWin_InitLines(TextWin *win, u32 n);
 
@@ -2528,7 +2528,7 @@ char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
-extern void func_0204aab0(SndQueue *queue, u16 value);
+extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
 static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
@@ -2540,7 +2540,7 @@ static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
     }
     if (queue->unk_02 != 10 && queue->unk_02 != 0) {
         if (queue->unk_06 != 0xffff) {
-            func_0204aab0(queue, queue->unk_06);
+            SndQueue_Push_0204aab0(queue, queue->unk_06);
         }
         queue->unk_02 = 1;
     } else {
@@ -2558,16 +2558,16 @@ static inline void SndQueue_StopBgm(SndQueue *queue, u16 fade) {
     }
 }
 
-void func_0204daf4(TextWin *win);
+void TextWin_PlayBgm(TextWin *win);
 
-void func_0204dbc8(TextWin *win);
+void TextWin_PlayStrm(TextWin *win);
 
-void func_0204dc04(TextWin *win);
+void TextWin_RunCode1a(TextWin *win);
 
 extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 extern void SndMgr_Stop(SndMgr *mgr, s32 id);
 
-void func_0204dc84(TextWin *win);
+void TextWin_PlaySe(TextWin *win);
 
 typedef struct PadState {
     /* 0x00 */ u8 unk_00[0x12];
@@ -2576,11 +2576,11 @@ typedef struct PadState {
 
 extern PadState *data_02097dc8;
 
-BOOL func_0204dccc(TextWin *win);
+BOOL TextWin_Update(TextWin *win);
 
 u16 Pad_GetTrig(void);
 
-void func_0204dd98(TextWin *win);
+void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
     GfxMgr *gfx = data_02097ce0;
@@ -2588,7 +2588,7 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
     gfx->unk_00e = y;
 }
 
-void func_0204dda8(TextWin *win);
+void TextWin_Render(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorX++;
@@ -2605,7 +2605,7 @@ static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorY++;
 }
 
-void func_0204de78(TextWin *win);
+void TextWin_Draw(TextWin *win);
 
 static inline BOOL TextWin_IsFlag31(TextWin *win) {
     return win->flag31 ? TRUE : FALSE;
@@ -2667,16 +2667,16 @@ static inline void Model_ApplyPart(Model *model, s32 idx) {
     TexObj_DrawCell(model, tex, part, 0);
 }
 
-void func_0204dff8(TextWin *win);
+void TextWin_DrawCursor(TextWin *win);
 
-Model *func_0204e238(Model *model, const char *name, const char *file, int a) {
+Model *Model_Init_0204e238(Model *model, const char *name, const char *file, int a) {
     PlttRes_Init_02041218(&model->pltt);
     TexObj_Init(model, file, a);
     STD_CopyString(model->name, name);
     return model;
 }
 
-void *func_0204e278(void *pltt) {
+void *PlttRes_Ctor(void *pltt) {
     PlttRes_Init_02041218((PlttRes *)pltt);
     return pltt;
 }
@@ -2685,7 +2685,7 @@ char *Model_GetName(Model *model) {
     return model->name;
 }
 
-void *func_0204e294(Model *model) {
+void *Model_GetFileName(Model *model) {
     return model->unk_04c;
 }
 
@@ -2741,24 +2741,24 @@ static inline void TextWinEx_FreeBlocks(TextWinEx *win) {
     for (; i < 0x80; i++) {
         if (win->blocks[i] != NULL) {
             TextWin_ClearVram(win->blocks[i]);
-            func_02039828(win->blocks[i]);
+            VramBlock_Free(win->blocks[i]);
             win->blocks[i] = NULL;
             win->blockIds[i] = 0;
         }
     }
 }
 
-void func_0204f524(TextWinEx *win);
+void TextWinEx_Release(TextWinEx *win);
 
-BOOL func_0204f5bc(TextWinEx *win);
+BOOL TextWinEx_Update(TextWinEx *win);
 
-void func_0204f784(TextWinEx *win);
+void TextWinEx_Render(TextWinEx *win);
 
-BOOL func_0204ffb0(int idx);
+BOOL TextWin_IsState4_0204ffb0(int idx);
 
 TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
-void func_0205073c(TextWin *win, s32 x, s32 y);
+void TextWin_SetPos(TextWin *win, s32 x, s32 y);
 
 static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_00 = 0;
@@ -2775,11 +2775,11 @@ void func_02050748(TextBox *box);
 
 void func_020507d8(TextBox *box);
 
-void func_020508e4(TextWin *win);
+void TextWin_EnableAlpha(TextWin *win);
 
 void func_02050e94(Model *model);
 
-void func_02050ea4(Model *model, u32 v);
+void Model_SetAlpha(Model *model, u32 v);
 
 typedef u16 (*TextWinCharFn)(const char **s);
 
@@ -2809,7 +2809,7 @@ void func_0204e358(TextWin *win) {
     hi = win->unk_2c >> 4;
     color = win->unk_2c % 16 + 1;
     if (win->vram == NULL) {
-        win->vram = func_020397fc(win->width, win->height, 0);
+        win->vram = VramBlock_AllocChar(win->width, win->height, 0);
     }
     win->vram->unk_10_31 = win->flag5;
     if (win->lines != NULL) {
@@ -3166,7 +3166,7 @@ static inline BOOL TextWin_IsReady(TextWin *win) {
     }
     return TRUE;
 }
-void func_0204edd8(TextWin *win) {
+void TextWin_DrawTex(TextWin *win) {
     s32 w;
     s32 h;
     if (win->texVram == NULL) {
@@ -3288,18 +3288,18 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void Heap_Free(void *ptr);
 extern void Vram_CancelTransfer(void *ptr);
-extern void *func_02039828(VramBlock *block);
-extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
-extern s32 func_02040778(const char *s, int *len);
-extern int func_0205bef8(void *cmd);
+extern void *VramBlock_Free(VramBlock *block);
+extern VramBlock *VramBlock_AllocChar(u32 size, u32 arg, u32 c);
+extern s32 Str_ParseHex(const char *s, int *len);
+extern int StageRes_DispatchSlot(void *cmd);
 
 TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void TextWin_Init(TextWin *win);
 
-void func_0204c8a8(TextWin *win);
+void TextWin_Release(TextWin *win);
 
-Model *func_0204c9f8(Model *model);
+Model *Model_Dtor(Model *model);
 
 void TextWin_InitLines(TextWin *win, u32 n);
 
@@ -3371,7 +3371,7 @@ char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
-extern void func_0204aab0(SndQueue *queue, u16 value);
+extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
 static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
@@ -3383,7 +3383,7 @@ static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
     }
     if (queue->unk_02 != 10 && queue->unk_02 != 0) {
         if (queue->unk_06 != 0xffff) {
-            func_0204aab0(queue, queue->unk_06);
+            SndQueue_Push_0204aab0(queue, queue->unk_06);
         }
         queue->unk_02 = 1;
     } else {
@@ -3401,16 +3401,16 @@ static inline void SndQueue_StopBgm(SndQueue *queue, u16 fade) {
     }
 }
 
-void func_0204daf4(TextWin *win);
+void TextWin_PlayBgm(TextWin *win);
 
-void func_0204dbc8(TextWin *win);
+void TextWin_PlayStrm(TextWin *win);
 
-void func_0204dc04(TextWin *win);
+void TextWin_RunCode1a(TextWin *win);
 
 extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 extern void SndMgr_Stop(SndMgr *mgr, s32 id);
 
-void func_0204dc84(TextWin *win);
+void TextWin_PlaySe(TextWin *win);
 
 typedef struct PadState {
     /* 0x00 */ u8 unk_00[0x12];
@@ -3419,11 +3419,11 @@ typedef struct PadState {
 
 extern PadState *data_02097dc8;
 
-BOOL func_0204dccc(TextWin *win);
+BOOL TextWin_Update(TextWin *win);
 
 u16 Pad_GetTrig(void);
 
-void func_0204dd98(TextWin *win);
+void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
     GfxMgr *gfx = data_02097ce0;
@@ -3431,7 +3431,7 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
     gfx->unk_00e = y;
 }
 
-void func_0204dda8(TextWin *win);
+void TextWin_Render(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorX++;
@@ -3448,7 +3448,7 @@ static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorY++;
 }
 
-void func_0204de78(TextWin *win);
+void TextWin_Draw(TextWin *win);
 
 static inline BOOL TextWin_IsFlag31(TextWin *win) {
     return win->flag31 ? TRUE : FALSE;
@@ -3508,15 +3508,15 @@ static inline void Model_ApplyPart(Model *model, s32 idx) {
     TexObj_DrawCell(model, tex, part, 0);
 }
 
-void func_0204dff8(TextWin *win);
+void TextWin_DrawCursor(TextWin *win);
 
-Model *func_0204e238(Model *model, const char *name, const char *file, int a);
+Model *Model_Init_0204e238(Model *model, const char *name, const char *file, int a);
 
-void *func_0204e278(void *pltt);
+void *PlttRes_Ctor(void *pltt);
 
 char *Model_GetName(Model *model);
 
-void *func_0204e294(Model *model);
+void *Model_GetFileName(Model *model);
 
 void func_0204e29c(Model *model);
 
@@ -3608,24 +3608,24 @@ static inline void TextWinEx_FreeBlocks(TextWinEx *win) {
     for (; i < 0x80; i++) {
         if (win->blocks[i] != NULL) {
             TextWin_ClearVram(win->blocks[i]);
-            func_02039828(win->blocks[i]);
+            VramBlock_Free(win->blocks[i]);
             win->blocks[i] = NULL;
             win->blockIds[i] = 0;
         }
     }
 }
 
-void func_0204f524(TextWinEx *win);
+void TextWinEx_Release(TextWinEx *win);
 
-BOOL func_0204f5bc(TextWinEx *win);
+BOOL TextWinEx_Update(TextWinEx *win);
 
-void func_0204f784(TextWinEx *win);
+void TextWinEx_Render(TextWinEx *win);
 
-BOOL func_0204ffb0(int idx);
+BOOL TextWin_IsState4_0204ffb0(int idx);
 
 TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
-void func_0205073c(TextWin *win, s32 x, s32 y);
+void TextWin_SetPos(TextWin *win, s32 x, s32 y);
 
 static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_00 = 0;
@@ -3642,11 +3642,11 @@ void func_02050748(TextBox *box);
 
 void func_020507d8(TextBox *box);
 
-void func_020508e4(TextWin *win);
+void TextWin_EnableAlpha(TextWin *win);
 
 void func_02050e94(Model *model);
 
-void func_02050ea4(Model *model, u32 v);
+void Model_SetAlpha(Model *model, u32 v);
 
 }
 
@@ -3670,18 +3670,18 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void Heap_Free(void *ptr);
 extern void Vram_CancelTransfer(void *ptr);
-extern void *func_02039828(VramBlock *block);
-extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
-extern s32 func_02040778(const char *s, int *len);
-extern int func_0205bef8(void *cmd);
+extern void *VramBlock_Free(VramBlock *block);
+extern VramBlock *VramBlock_AllocChar(u32 size, u32 arg, u32 c);
+extern s32 Str_ParseHex(const char *s, int *len);
+extern int StageRes_DispatchSlot(void *cmd);
 
 TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void TextWin_Init(TextWin *win);
 
-void func_0204c8a8(TextWin *win);
+void TextWin_Release(TextWin *win);
 
-Model *func_0204c9f8(Model *model);
+Model *Model_Dtor(Model *model);
 
 void TextWin_InitLines(TextWin *win, u32 n);
 
@@ -3753,7 +3753,7 @@ char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
-extern void func_0204aab0(SndQueue *queue, u16 value);
+extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
 static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
@@ -3765,7 +3765,7 @@ static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
     }
     if (queue->unk_02 != 10 && queue->unk_02 != 0) {
         if (queue->unk_06 != 0xffff) {
-            func_0204aab0(queue, queue->unk_06);
+            SndQueue_Push_0204aab0(queue, queue->unk_06);
         }
         queue->unk_02 = 1;
     } else {
@@ -3783,16 +3783,16 @@ static inline void SndQueue_StopBgm(SndQueue *queue, u16 fade) {
     }
 }
 
-void func_0204daf4(TextWin *win);
+void TextWin_PlayBgm(TextWin *win);
 
-void func_0204dbc8(TextWin *win);
+void TextWin_PlayStrm(TextWin *win);
 
-void func_0204dc04(TextWin *win);
+void TextWin_RunCode1a(TextWin *win);
 
 extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 extern void SndMgr_Stop(SndMgr *mgr, s32 id);
 
-void func_0204dc84(TextWin *win);
+void TextWin_PlaySe(TextWin *win);
 
 typedef struct PadState {
     /* 0x00 */ u8 unk_00[0x12];
@@ -3801,11 +3801,11 @@ typedef struct PadState {
 
 extern PadState *data_02097dc8;
 
-BOOL func_0204dccc(TextWin *win);
+BOOL TextWin_Update(TextWin *win);
 
 u16 Pad_GetTrig(void);
 
-void func_0204dd98(TextWin *win);
+void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
     GfxMgr *gfx = data_02097ce0;
@@ -3813,7 +3813,7 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
     gfx->unk_00e = y;
 }
 
-void func_0204dda8(TextWin *win);
+void TextWin_Render(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorX++;
@@ -3830,7 +3830,7 @@ static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorY++;
 }
 
-void func_0204de78(TextWin *win);
+void TextWin_Draw(TextWin *win);
 
 static inline BOOL TextWin_IsFlag31(TextWin *win) {
     return win->flag31 ? TRUE : FALSE;
@@ -3890,15 +3890,15 @@ static inline void Model_ApplyPart(Model *model, s32 idx) {
     TexObj_DrawCell(model, tex, part, 0);
 }
 
-void func_0204dff8(TextWin *win);
+void TextWin_DrawCursor(TextWin *win);
 
-Model *func_0204e238(Model *model, const char *name, const char *file, int a);
+Model *Model_Init_0204e238(Model *model, const char *name, const char *file, int a);
 
-void *func_0204e278(void *pltt);
+void *PlttRes_Ctor(void *pltt);
 
 char *Model_GetName(Model *model);
 
-void *func_0204e294(Model *model);
+void *Model_GetFileName(Model *model);
 
 void func_0204e29c(Model *model);
 
@@ -3937,7 +3937,7 @@ static inline void TextWin_ClearVramAt(VramBlock *b, u8 *main, u8 *sub) {
     MIi_CpuClearFast(0, (b->kind == 4 ? main : sub) + b->addr, b->size - b->pad);
 }
 
-void func_0204f524(TextWinEx *win) {
+void TextWinEx_Release(TextWinEx *win) {
     long i;
     u8 *main;
     u8 *sub;
@@ -3948,7 +3948,7 @@ void func_0204f524(TextWinEx *win) {
     for (; i < 0x80; i++) {
         if (win->blocks[i] != NULL) {
             TextWin_ClearVramAt(win->blocks[i], main, sub);
-            func_02039828(win->blocks[i]);
+            VramBlock_Free(win->blocks[i]);
             win->blocks[i] = NULL;
             win->blockIds[i] = 0;
         }
@@ -3956,7 +3956,7 @@ void func_0204f524(TextWinEx *win) {
     func_0204f49c(win);
 }
 
-BOOL func_0204f5bc(TextWinEx *win) {
+BOOL TextWinEx_Update(TextWinEx *win) {
     long i;
     u8 *main;
     u8 *sub;
@@ -3989,7 +3989,7 @@ BOOL func_0204f5bc(TextWinEx *win) {
                 for (; i < 0x80; i++) {
                     if (win->blocks[i] != NULL) {
                         TextWin_ClearVramAt(win->blocks[i], main, sub);
-                        func_02039828(win->blocks[i]);
+                        VramBlock_Free(win->blocks[i]);
                         win->blocks[i] = NULL;
                         win->blockIds[i] = 0;
                     }
@@ -4003,7 +4003,7 @@ BOOL func_0204f5bc(TextWinEx *win) {
     return TRUE;
 }
 
-void func_0204f784(TextWinEx *win) {
+void TextWinEx_Render(TextWinEx *win) {
     s32 n;
     u16 count;
     if (!win->rendering) {
@@ -4118,7 +4118,7 @@ s32 func_0204f804(TextWinEx *win) {
                 }
                 widths = NNS_G2dFontGetCharWidthsFromIndex(font, idx);
                 glyph = font->pRes->pGlyph;
-                win->blocks[win->numBlocks] = func_020397fc(widths->left + glyph->cellWidth, glyph->cellHeight, 0);
+                win->blocks[win->numBlocks] = VramBlock_AllocChar(widths->left + glyph->cellWidth, glyph->cellHeight, 0);
             }
             func_0203a4dc(data_02097ce0, win->blocks[win->numBlocks]);
             TextWin_SetOrigin(win->cursorX, win->cursorY);
@@ -4162,11 +4162,11 @@ s32 func_0204f804(TextWinEx *win) {
     return n;
 }
 
-BOOL func_0204ffb0(int idx);
+BOOL TextWin_IsState4_0204ffb0(int idx);
 
 TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
-void func_0205073c(TextWin *win, s32 x, s32 y);
+void TextWin_SetPos(TextWin *win, s32 x, s32 y);
 
 static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_00 = 0;
@@ -4183,11 +4183,11 @@ void func_02050748(TextBox *box);
 
 void func_020507d8(TextBox *box);
 
-void func_020508e4(TextWin *win);
+void TextWin_EnableAlpha(TextWin *win);
 
 void func_02050e94(Model *model);
 
-void func_02050ea4(Model *model, u32 v);
+void Model_SetAlpha(Model *model, u32 v);
 
 }
 
@@ -4261,18 +4261,18 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void Heap_Free(void *ptr);
 extern void Vram_CancelTransfer(void *ptr);
-extern void *func_02039828(VramBlock *block);
-extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
-extern s32 func_02040778(const char *s, int *len);
-extern int func_0205bef8(void *cmd);
+extern void *VramBlock_Free(VramBlock *block);
+extern VramBlock *VramBlock_AllocChar(u32 size, u32 arg, u32 c);
+extern s32 Str_ParseHex(const char *s, int *len);
+extern int StageRes_DispatchSlot(void *cmd);
 
 TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void TextWin_Init(TextWin *win);
 
-void func_0204c8a8(TextWin *win);
+void TextWin_Release(TextWin *win);
 
-Model *func_0204c9f8(Model *model);
+Model *Model_Dtor(Model *model);
 
 void TextWin_InitLines(TextWin *win, u32 n);
 
@@ -4344,7 +4344,7 @@ char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
-extern void func_0204aab0(SndQueue *queue, u16 value);
+extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
 static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
@@ -4356,7 +4356,7 @@ static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
     }
     if (queue->unk_02 != 10 && queue->unk_02 != 0) {
         if (queue->unk_06 != 0xffff) {
-            func_0204aab0(queue, queue->unk_06);
+            SndQueue_Push_0204aab0(queue, queue->unk_06);
         }
         queue->unk_02 = 1;
     } else {
@@ -4374,16 +4374,16 @@ static inline void SndQueue_StopBgm(SndQueue *queue, u16 fade) {
     }
 }
 
-void func_0204daf4(TextWin *win);
+void TextWin_PlayBgm(TextWin *win);
 
-void func_0204dbc8(TextWin *win);
+void TextWin_PlayStrm(TextWin *win);
 
-void func_0204dc04(TextWin *win);
+void TextWin_RunCode1a(TextWin *win);
 
 extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 extern void SndMgr_Stop(SndMgr *mgr, s32 id);
 
-void func_0204dc84(TextWin *win);
+void TextWin_PlaySe(TextWin *win);
 
 typedef struct PadState {
     /* 0x00 */ u8 unk_00[0x12];
@@ -4392,11 +4392,11 @@ typedef struct PadState {
 
 extern PadState *data_02097dc8;
 
-BOOL func_0204dccc(TextWin *win);
+BOOL TextWin_Update(TextWin *win);
 
 u16 Pad_GetTrig(void);
 
-void func_0204dd98(TextWin *win);
+void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
     GfxMgr *gfx = data_02097ce0;
@@ -4404,7 +4404,7 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
     gfx->unk_00e = y;
 }
 
-void func_0204dda8(TextWin *win);
+void TextWin_Render(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorX++;
@@ -4421,7 +4421,7 @@ static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorY++;
 }
 
-void func_0204de78(TextWin *win);
+void TextWin_Draw(TextWin *win);
 
 static inline BOOL TextWin_IsFlag31(TextWin *win) {
     return win->flag31 ? TRUE : FALSE;
@@ -4481,15 +4481,15 @@ static inline void Model_ApplyPart(Model *model, s32 idx) {
     TexObj_DrawCell(model, tex, part, 0);
 }
 
-void func_0204dff8(TextWin *win);
+void TextWin_DrawCursor(TextWin *win);
 
-Model *func_0204e238(Model *model, const char *name, const char *file, int a);
+Model *Model_Init_0204e238(Model *model, const char *name, const char *file, int a);
 
-void *func_0204e278(void *pltt);
+void *PlttRes_Ctor(void *pltt);
 
 char *Model_GetName(Model *model);
 
-void *func_0204e294(Model *model);
+void *Model_GetFileName(Model *model);
 
 void func_0204e29c(Model *model);
 
@@ -4533,18 +4533,18 @@ static inline void TextWinEx_FreeBlocks(TextWinEx *win) {
     for (; i < 0x80; i++) {
         if (win->blocks[i] != NULL) {
             TextWin_ClearVram(win->blocks[i]);
-            func_02039828(win->blocks[i]);
+            VramBlock_Free(win->blocks[i]);
             win->blocks[i] = NULL;
             win->blockIds[i] = 0;
         }
     }
 }
 
-void func_0204f524(TextWinEx *win);
+void TextWinEx_Release(TextWinEx *win);
 
-BOOL func_0204f5bc(TextWinEx *win);
+BOOL TextWinEx_Update(TextWinEx *win);
 
-void func_0204f784(TextWinEx *win);
+void TextWinEx_Render(TextWinEx *win);
 
 typedef struct TextWinTitle {
     /* 0x000 */ u16 started : 1;
@@ -4651,13 +4651,13 @@ BOOL func_0204fd60(TextWinTitle *t) {
     return TRUE;
 }
 
-BOOL func_0204ffb0(int idx) {
+BOOL TextWin_IsState4_0204ffb0(int idx) {
     return TextWin_IsState4(idx);
 }
 
 TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
-void func_0205073c(TextWin *win, s32 x, s32 y);
+void TextWin_SetPos(TextWin *win, s32 x, s32 y);
 
 static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_00 = 0;
@@ -4674,14 +4674,14 @@ void func_02050748(TextBox *box);
 
 void func_020507d8(TextBox *box);
 
-void func_020508e4(TextWin *win);
+void TextWin_EnableAlpha(TextWin *win);
 
 void func_02050e94(Model *model);
 
-void func_02050ea4(Model *model, u32 v);
+void Model_SetAlpha(Model *model, u32 v);
 
 extern void Gfx3D_SendDL(void *obj, int a);
-extern void func_02043db4(int a, s32 b, s32 c, u16 d);
+extern void Gfx3D_DrawPrimScaled(int a, s32 b, s32 c, u16 d);
 extern BOOL Vram_IsTransferDone(void *id);
 extern u32 Text_Measure(u32 a, u32 b, u32 c, u32 *outW, u32 *outH, BOOL d);
 void func_020508f4(TextBox *box, u32 arg);
@@ -4758,7 +4758,7 @@ void func_0204ffdc(TextBox *box) {
     ready = TRUE;
     NNSi_G3dGePolygonAttr(0, 1, 3, 0x14, 0x1f, 0);
     G3i_Translate(0, 0, -0x10cd);
-    func_02043db4(1, 0x100000, 0xc0000, 0);
+    Gfx3D_DrawPrimScaled(1, 0x100000, 0xc0000, 0);
     win = (TextWin *)box->obj;
     if (win != NULL) {
         if (win->unk_6c != NULL) {
@@ -4841,7 +4841,7 @@ void func_0204ffdc(TextBox *box) {
                     win->Render();
                     win->inRender = 0;
                 } else {
-                    win->vram = func_020397fc(win->width, win->height, 0);
+                    win->vram = VramBlock_AllocChar(win->width, win->height, 0);
                     win->vram->unk_10_29 = 0;
                     win->Render();
                     win->vram->unk_10_29 = 1;
@@ -4928,18 +4928,18 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void Heap_Free(void *ptr);
 extern void Vram_CancelTransfer(void *ptr);
-extern void *func_02039828(VramBlock *block);
-extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
-extern s32 func_02040778(const char *s, int *len);
-extern int func_0205bef8(void *cmd);
+extern void *VramBlock_Free(VramBlock *block);
+extern VramBlock *VramBlock_AllocChar(u32 size, u32 arg, u32 c);
+extern s32 Str_ParseHex(const char *s, int *len);
+extern int StageRes_DispatchSlot(void *cmd);
 
 TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void TextWin_Init(TextWin *win);
 
-void func_0204c8a8(TextWin *win);
+void TextWin_Release(TextWin *win);
 
-Model *func_0204c9f8(Model *model);
+Model *Model_Dtor(Model *model);
 
 void TextWin_InitLines(TextWin *win, u32 n);
 
@@ -5011,7 +5011,7 @@ char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
-extern void func_0204aab0(SndQueue *queue, u16 value);
+extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
 static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
@@ -5023,7 +5023,7 @@ static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
     }
     if (queue->unk_02 != 10 && queue->unk_02 != 0) {
         if (queue->unk_06 != 0xffff) {
-            func_0204aab0(queue, queue->unk_06);
+            SndQueue_Push_0204aab0(queue, queue->unk_06);
         }
         queue->unk_02 = 1;
     } else {
@@ -5041,16 +5041,16 @@ static inline void SndQueue_StopBgm(SndQueue *queue, u16 fade) {
     }
 }
 
-void func_0204daf4(TextWin *win);
+void TextWin_PlayBgm(TextWin *win);
 
-void func_0204dbc8(TextWin *win);
+void TextWin_PlayStrm(TextWin *win);
 
-void func_0204dc04(TextWin *win);
+void TextWin_RunCode1a(TextWin *win);
 
 extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 extern void SndMgr_Stop(SndMgr *mgr, s32 id);
 
-void func_0204dc84(TextWin *win);
+void TextWin_PlaySe(TextWin *win);
 
 typedef struct PadState {
     /* 0x00 */ u8 unk_00[0x12];
@@ -5059,11 +5059,11 @@ typedef struct PadState {
 
 extern PadState *data_02097dc8;
 
-BOOL func_0204dccc(TextWin *win);
+BOOL TextWin_Update(TextWin *win);
 
 u16 Pad_GetTrig(void);
 
-void func_0204dd98(TextWin *win);
+void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
     GfxMgr *gfx = data_02097ce0;
@@ -5071,7 +5071,7 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
     gfx->unk_00e = y;
 }
 
-void func_0204dda8(TextWin *win);
+void TextWin_Render(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorX++;
@@ -5088,7 +5088,7 @@ static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorY++;
 }
 
-void func_0204de78(TextWin *win);
+void TextWin_Draw(TextWin *win);
 
 static inline BOOL TextWin_IsFlag31(TextWin *win) {
     return win->flag31 ? TRUE : FALSE;
@@ -5148,15 +5148,15 @@ static inline void Model_ApplyPart(Model *model, s32 idx) {
     TexObj_DrawCell(model, tex, part, 0);
 }
 
-void func_0204dff8(TextWin *win);
+void TextWin_DrawCursor(TextWin *win);
 
-Model *func_0204e238(Model *model, const char *name, const char *file, int a);
+Model *Model_Init_0204e238(Model *model, const char *name, const char *file, int a);
 
-void *func_0204e278(void *pltt);
+void *PlttRes_Ctor(void *pltt);
 
 char *Model_GetName(Model *model);
 
-void *func_0204e294(Model *model);
+void *Model_GetFileName(Model *model);
 
 void func_0204e29c(Model *model);
 
@@ -5200,20 +5200,20 @@ static inline void TextWinEx_FreeBlocks(TextWinEx *win) {
     for (; i < 0x80; i++) {
         if (win->blocks[i] != NULL) {
             TextWin_ClearVram(win->blocks[i]);
-            func_02039828(win->blocks[i]);
+            VramBlock_Free(win->blocks[i]);
             win->blocks[i] = NULL;
             win->blockIds[i] = 0;
         }
     }
 }
 
-void func_0204f524(TextWinEx *win);
+void TextWinEx_Release(TextWinEx *win);
 
-BOOL func_0204f5bc(TextWinEx *win);
+BOOL TextWinEx_Update(TextWinEx *win);
 
-void func_0204f784(TextWinEx *win);
+void TextWinEx_Render(TextWinEx *win);
 
-BOOL func_0204ffb0(int idx);
+BOOL TextWin_IsState4_0204ffb0(int idx);
 
 TextLayout *TextWin_DtorDelete(TextLayout *layout) {
     *(const u32 **)layout = data_0208ba70;
@@ -5222,7 +5222,7 @@ TextLayout *TextWin_DtorDelete(TextLayout *layout) {
     return layout;
 }
 
-void func_0205073c(TextWin *win, s32 x, s32 y) {
+void TextWin_SetPos(TextWin *win, s32 x, s32 y) {
     win->cursorX = x;
     win->cursorY = y;
 }
@@ -5264,11 +5264,11 @@ void func_02050748(TextBox *box) {
 
 void func_020507d8(TextBox *box);
 
-void func_020508e4(TextWin *win);
+void TextWin_EnableAlpha(TextWin *win);
 
 void func_02050e94(Model *model);
 
-void func_02050ea4(Model *model, u32 v);
+void Model_SetAlpha(Model *model, u32 v);
 
 }
 
@@ -5292,18 +5292,18 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void Heap_Free(void *ptr);
 extern void Vram_CancelTransfer(void *ptr);
-extern void *func_02039828(VramBlock *block);
-extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
-extern s32 func_02040778(const char *s, int *len);
-extern int func_0205bef8(void *cmd);
+extern void *VramBlock_Free(VramBlock *block);
+extern VramBlock *VramBlock_AllocChar(u32 size, u32 arg, u32 c);
+extern s32 Str_ParseHex(const char *s, int *len);
+extern int StageRes_DispatchSlot(void *cmd);
 
 TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void TextWin_Init(TextWin *win);
 
-void func_0204c8a8(TextWin *win);
+void TextWin_Release(TextWin *win);
 
-Model *func_0204c9f8(Model *model);
+Model *Model_Dtor(Model *model);
 
 void TextWin_InitLines(TextWin *win, u32 n);
 
@@ -5375,7 +5375,7 @@ char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
-extern void func_0204aab0(SndQueue *queue, u16 value);
+extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
 static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
@@ -5387,7 +5387,7 @@ static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
     }
     if (queue->unk_02 != 10 && queue->unk_02 != 0) {
         if (queue->unk_06 != 0xffff) {
-            func_0204aab0(queue, queue->unk_06);
+            SndQueue_Push_0204aab0(queue, queue->unk_06);
         }
         queue->unk_02 = 1;
     } else {
@@ -5405,16 +5405,16 @@ static inline void SndQueue_StopBgm(SndQueue *queue, u16 fade) {
     }
 }
 
-void func_0204daf4(TextWin *win);
+void TextWin_PlayBgm(TextWin *win);
 
-void func_0204dbc8(TextWin *win);
+void TextWin_PlayStrm(TextWin *win);
 
-void func_0204dc04(TextWin *win);
+void TextWin_RunCode1a(TextWin *win);
 
 extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 extern void SndMgr_Stop(SndMgr *mgr, s32 id);
 
-void func_0204dc84(TextWin *win);
+void TextWin_PlaySe(TextWin *win);
 
 typedef struct PadState {
     /* 0x00 */ u8 unk_00[0x12];
@@ -5423,11 +5423,11 @@ typedef struct PadState {
 
 extern PadState *data_02097dc8;
 
-BOOL func_0204dccc(TextWin *win);
+BOOL TextWin_Update(TextWin *win);
 
 u16 Pad_GetTrig(void);
 
-void func_0204dd98(TextWin *win);
+void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
     GfxMgr *gfx = data_02097ce0;
@@ -5435,7 +5435,7 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
     gfx->unk_00e = y;
 }
 
-void func_0204dda8(TextWin *win);
+void TextWin_Render(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorX++;
@@ -5452,7 +5452,7 @@ static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorY++;
 }
 
-void func_0204de78(TextWin *win);
+void TextWin_Draw(TextWin *win);
 
 static inline BOOL TextWin_IsFlag31(TextWin *win) {
     return win->flag31 ? TRUE : FALSE;
@@ -5512,15 +5512,15 @@ static inline void Model_ApplyPart(Model *model, s32 idx) {
     TexObj_DrawCell(model, tex, part, 0);
 }
 
-void func_0204dff8(TextWin *win);
+void TextWin_DrawCursor(TextWin *win);
 
-Model *func_0204e238(Model *model, const char *name, const char *file, int a);
+Model *Model_Init_0204e238(Model *model, const char *name, const char *file, int a);
 
-void *func_0204e278(void *pltt);
+void *PlttRes_Ctor(void *pltt);
 
 char *Model_GetName(Model *model);
 
-void *func_0204e294(Model *model);
+void *Model_GetFileName(Model *model);
 
 void func_0204e29c(Model *model);
 
@@ -5564,24 +5564,24 @@ static inline void TextWinEx_FreeBlocks(TextWinEx *win) {
     for (; i < 0x80; i++) {
         if (win->blocks[i] != NULL) {
             TextWin_ClearVram(win->blocks[i]);
-            func_02039828(win->blocks[i]);
+            VramBlock_Free(win->blocks[i]);
             win->blocks[i] = NULL;
             win->blockIds[i] = 0;
         }
     }
 }
 
-void func_0204f524(TextWinEx *win);
+void TextWinEx_Release(TextWinEx *win);
 
-BOOL func_0204f5bc(TextWinEx *win);
+BOOL TextWinEx_Update(TextWinEx *win);
 
-void func_0204f784(TextWinEx *win);
+void TextWinEx_Render(TextWinEx *win);
 
-BOOL func_0204ffb0(int idx);
+BOOL TextWin_IsState4_0204ffb0(int idx);
 
 TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
-void func_0205073c(TextWin *win, s32 x, s32 y);
+void TextWin_SetPos(TextWin *win, s32 x, s32 y);
 
 static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_00 = 0;
@@ -5642,13 +5642,13 @@ void func_020507d8(TextBox *box) {
     }
 }
 
-void func_020508e4(TextWin *win) {
+void TextWin_EnableAlpha(TextWin *win) {
     win->flag5 = 1;
 }
 
 void func_02050e94(Model *model);
 
-void func_02050ea4(Model *model, u32 v);
+void Model_SetAlpha(Model *model, u32 v);
 
 }
 
@@ -5798,18 +5798,18 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void Heap_Free(void *ptr);
 extern void Vram_CancelTransfer(void *ptr);
-extern void *func_02039828(VramBlock *block);
-extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
-extern s32 func_02040778(const char *s, int *len);
-extern int func_0205bef8(void *cmd);
+extern void *VramBlock_Free(VramBlock *block);
+extern VramBlock *VramBlock_AllocChar(u32 size, u32 arg, u32 c);
+extern s32 Str_ParseHex(const char *s, int *len);
+extern int StageRes_DispatchSlot(void *cmd);
 
 TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void TextWin_Init(TextWin *win);
 
-void func_0204c8a8(TextWin *win);
+void TextWin_Release(TextWin *win);
 
-Model *func_0204c9f8(Model *model);
+Model *Model_Dtor(Model *model);
 
 void TextWin_InitLines(TextWin *win, u32 n);
 
@@ -5881,7 +5881,7 @@ char *TextWin_ParseTag25(TextWin *win, char *p);
 
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
-extern void func_0204aab0(SndQueue *queue, u16 value);
+extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
 static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
@@ -5893,7 +5893,7 @@ static inline void SndQueue_RequestBgm(SndQueue *queue, u16 bgm) {
     }
     if (queue->unk_02 != 10 && queue->unk_02 != 0) {
         if (queue->unk_06 != 0xffff) {
-            func_0204aab0(queue, queue->unk_06);
+            SndQueue_Push_0204aab0(queue, queue->unk_06);
         }
         queue->unk_02 = 1;
     } else {
@@ -5911,16 +5911,16 @@ static inline void SndQueue_StopBgm(SndQueue *queue, u16 fade) {
     }
 }
 
-void func_0204daf4(TextWin *win);
+void TextWin_PlayBgm(TextWin *win);
 
-void func_0204dbc8(TextWin *win);
+void TextWin_PlayStrm(TextWin *win);
 
-void func_0204dc04(TextWin *win);
+void TextWin_RunCode1a(TextWin *win);
 
 extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 extern void SndMgr_Stop(SndMgr *mgr, s32 id);
 
-void func_0204dc84(TextWin *win);
+void TextWin_PlaySe(TextWin *win);
 
 typedef struct PadState {
     /* 0x00 */ u8 unk_00[0x12];
@@ -5929,11 +5929,11 @@ typedef struct PadState {
 
 extern PadState *data_02097dc8;
 
-BOOL func_0204dccc(TextWin *win);
+BOOL TextWin_Update(TextWin *win);
 
 u16 Pad_GetTrig(void);
 
-void func_0204dd98(TextWin *win);
+void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
     GfxMgr *gfx = data_02097ce0;
@@ -5941,7 +5941,7 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
     gfx->unk_00e = y;
 }
 
-void func_0204dda8(TextWin *win);
+void TextWin_Render(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorX++;
@@ -5958,7 +5958,7 @@ static inline void TextWin_RenderOutline(TextWin *win) {
     win->cursorY++;
 }
 
-void func_0204de78(TextWin *win);
+void TextWin_Draw(TextWin *win);
 
 static inline BOOL TextWin_IsFlag31(TextWin *win) {
     return win->flag31 ? TRUE : FALSE;
@@ -6018,15 +6018,15 @@ static inline void Model_ApplyPart(Model *model, s32 idx) {
     TexObj_DrawCell(model, tex, part, 0);
 }
 
-void func_0204dff8(TextWin *win);
+void TextWin_DrawCursor(TextWin *win);
 
-Model *func_0204e238(Model *model, const char *name, const char *file, int a);
+Model *Model_Init_0204e238(Model *model, const char *name, const char *file, int a);
 
-void *func_0204e278(void *pltt);
+void *PlttRes_Ctor(void *pltt);
 
 char *Model_GetName(Model *model);
 
-void *func_0204e294(Model *model);
+void *Model_GetFileName(Model *model);
 
 void func_0204e29c(Model *model);
 
@@ -6070,24 +6070,24 @@ static inline void TextWinEx_FreeBlocks(TextWinEx *win) {
     for (; i < 0x80; i++) {
         if (win->blocks[i] != NULL) {
             TextWin_ClearVram(win->blocks[i]);
-            func_02039828(win->blocks[i]);
+            VramBlock_Free(win->blocks[i]);
             win->blocks[i] = NULL;
             win->blockIds[i] = 0;
         }
     }
 }
 
-void func_0204f524(TextWinEx *win);
+void TextWinEx_Release(TextWinEx *win);
 
-BOOL func_0204f5bc(TextWinEx *win);
+BOOL TextWinEx_Update(TextWinEx *win);
 
-void func_0204f784(TextWinEx *win);
+void TextWinEx_Render(TextWinEx *win);
 
-BOOL func_0204ffb0(int idx);
+BOOL TextWin_IsState4_0204ffb0(int idx);
 
 TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
-void func_0205073c(TextWin *win, s32 x, s32 y);
+void TextWin_SetPos(TextWin *win, s32 x, s32 y);
 
 static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_00 = 0;
@@ -6104,11 +6104,11 @@ void func_02050748(TextBox *box);
 
 void func_020507d8(TextBox *box);
 
-void func_020508e4(TextWin *win);
+void TextWin_EnableAlpha(TextWin *win);
 
-void func_02050ea4(Model *model, u32 v);
-extern void func_02041c5c(Model *model, void *fn);
-extern void func_02041c20(Model *model, int a, void *arg);
+void Model_SetAlpha(Model *model, u32 v);
+extern void TexObj_SetAllOamFuncs(Model *model, void *fn);
+extern void TexObj_SetOamFuncArg(Model *model, int a, void *arg);
 extern void func_02041c18(Model *model, int a);
 extern void *func_0204fc4c(TextWin *win, const u16 *cmd, void *oam, u16 *count);
 
@@ -6129,8 +6129,8 @@ void func_02050b50(TextBox *box) {
         box->model->flags |= 2;
         TexObj_SelectImage(box->model, 0, 2);
         box->model->flags |= 0x80000;
-        func_02041c5c(box->model, (void *)func_0204fc4c);
-        func_02041c20(box->model, 2, box);
+        TexObj_SetAllOamFuncs(box->model, (void *)func_0204fc4c);
+        TexObj_SetOamFuncArg(box->model, 2, box);
         func_02041c18(box->model, 1);
         return;
     }
@@ -6178,7 +6178,7 @@ void func_02050e94(Model *model) {
     model->flags |= 0x80000;
 }
 
-void func_02050ea4(Model *model, u32 v) {
+void Model_SetAlpha(Model *model, u32 v) {
     model->flags = (model->flags & ~0x7c) | ((v << 27) >> 25);
 }
 
@@ -6210,7 +6210,7 @@ typedef struct NameOamInfo {
     /* 0x8 */ NameOwner *owner;
 } NameOamInfo;
 
-const char *func_0206ffa0(s32 id);
+const char *Tbl_GetText(s32 id);
 
 // Recolours the last 4 OAM entries of a name label when the owner is not
 // the default character (0x1000).
@@ -6230,7 +6230,7 @@ NameOam *func_02050ebc(void *self, NameOamInfo *info, NameOam *oam, u16 *num) {
         pal = last->cParam;
         oam = last - 3;
         n = 4;
-        str = func_0206ffa0(0x1000);
+        str = Tbl_GetText(0x1000);
         if (name != NULL) {
             if (STD_CompareString(name, str) != 0) {
                 pal++;
@@ -6429,12 +6429,12 @@ namespace m_SlideWin {
 extern "C" {
 
 extern StageResSlot *StageRes_PeekSlot(void);
-extern void func_0205b348(void);
+extern void StageRes_Pop_0205b348(void);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
 extern void *Model0218fe1c_FreeAnims(void *p);
 extern void *ResSet_ReleaseAll(void *p);
-extern void *func_02039828(VramBlock *block);
+extern void *VramBlock_Free(VramBlock *block);
 extern void TwScene_Init(SlideWin *win);
 
 #define SW_DELETE(field, dtor) SW_DELETE_T(void *, field, dtor)
@@ -6507,7 +6507,7 @@ extern void TwScene_Init(SlideWin *win);
 // inline's pointer result keeps them real variables), and `i` is a `long`:
 // together these give the target's register order and put both bases in the
 // entry block.
-void func_02051210(SlideWin *win) {
+void MainVt_0208bbc8_Release(SlideWin *win) {
     long i;
     int j;
     u8 *objBase;
@@ -6532,7 +6532,7 @@ void func_02051210(SlideWin *win) {
         if (win->blocks[i] != NULL) {
             VramBlock *b = win->blocks[i];
             MIi_CpuClearFast(0, (b->kind == 4 ? objBase : subObjBase) + b->addr, b->size - b->pad);
-            func_02039828(win->blocks[i]);
+            VramBlock_Free(win->blocks[i]);
         }
     }
     SW_ITEM_RELEASE(win->items[0])
@@ -6561,7 +6561,7 @@ static inline void SlidePanelItem_Close(SlidePanelItem *item) {
     }
 }
 
-void func_020518bc(SlideWin *win) {
+void MainVt_0208bbc8_OnSkip(SlideWin *win) {
     int i;
     if (win->mode == 2 || win->mode == 3) {
         if (win->unk_b8_24) {
@@ -6572,8 +6572,8 @@ void func_020518bc(SlideWin *win) {
         if (cmd != NULL && cmd->id == 0x371) {
             win->flag14 = 1;
             cmd->bits.flag8 = 1;
-            func_0205bef8(cmd);
-            func_0205b348();
+            StageRes_DispatchSlot(cmd);
+            StageRes_Pop_0205b348();
             for (i = 0; i < 5; i++) {
                 SlidePanelItem_Close(&win->panels[i].items[0]);
             }

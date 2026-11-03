@@ -129,7 +129,7 @@ void Ov011Mgr_Update(Ov011Mgr *self) {
     Ov003ActorSub40_ApplyFlags(&self->state);
 }
 
-void func_ov011_021fa9d8(Ov011Mgr *self) {
+void Ov011Mgr_State01(Ov011Mgr *self) {
     s32 j;
     Ov011Node *head;
     Ov011Node *n;
@@ -217,7 +217,7 @@ static inline void Ov011_Send(u16 id, s32 a, s32 b) {
     ActorMgr_SendMsg(id, 0xffff, 0xe, 1, 0xc, &m);
 }
 
-void func_ov011_021facc4(Ov011Mgr *self) {
+void Ov011Mgr_State03(Ov011Mgr *self) {
     VecFx32 v2;
     VecFx32 v1;
     Actor *actor;
@@ -300,7 +300,7 @@ static inline Ov011PNode *Ov011_NewPNode(const VecFx32 *v) {
     return n;
 }
 
-void func_ov011_021fb02c(Ov011Mgr *self) {
+void Ov011Mgr_State04(Ov011Mgr *self) {
     VecFx32 v;
     VecFx32 p;
     VecFx32 v2;

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_021a16ac(void) {
+void Robo021ca458_State09(void) {
 }
 
 }

@@ -88,7 +88,7 @@ extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern void Obj02190758_SetRot(void *m, u16 *rot, s32 a);
 extern BOOL Model021903b4_Draw(void *m);
 extern Ov013Prm data_ov013_0220b2ec;
-extern u8 *func_020704b4(s32 kind);
+extern u8 *Tbl_Elem_020704b4(s32 kind);
 
 static inline u16 Ov013_LockId(void) {
     return ((Robo021ca458 *)ActorMgr_FindPlayer())->unk_b1c;
@@ -194,7 +194,7 @@ void Ov013ActEx_02204454_SetSpeedScale(Ov013ActEx_02204454 *self, s16 v) {
         return;
     }
     self->unk_d4 = v;
-    p = func_020704b4(self->kind);
+    p = Tbl_Elem_020704b4(self->kind);
     t = *((Ov013Anim10 *)self->targetObj);
     t.speed = FX_Mul((s32)(FLD(u16, p, 4) << 12), (s32)v) >> 12;
     *(Ov013Anim10 *)self->targetObj = t;

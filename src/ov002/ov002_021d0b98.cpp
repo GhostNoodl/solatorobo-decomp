@@ -6,7 +6,7 @@ extern VFunc data_ov000_021cb5a8[];
 extern VFunc data_ov000_021cca10[];
 void func_ov000_021c3af4(void *self);
 void ListRow_Init(void *self);
-void func_ov000_021c2334(void *self);
+void Hud021cca10_Init(void *self);
 void Hud021cca10_SetText(void *self, void *a);
 void LoBase021ccb54_021ccbe0_AppendRow(void *list, void *item);
 void LoBase021ccb54_021ccbe0_Select(void *list, s32 a);
@@ -58,7 +58,7 @@ void func_ov002_021d0b98(Task021ef89c *self) {
                     *(VFunc **)q = data_ov002_021ef684;
                     ListRow_Init(q);
                     *(VFunc **)q = data_ov000_021cca10;
-                    func_ov000_021c2334(q);
+                    Hud021cca10_Init(q);
                 }
                 FIELD(q, 0x4, s32) = i;
                 FIELD(q, 0x3c, s32) = (u16)(i + 1);

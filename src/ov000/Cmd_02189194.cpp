@@ -76,7 +76,7 @@ BOOL func_ov000_021705a0(void *p, s32 a);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 void func_ov000_02188ed0(SceneCmd *self);
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
-void func_ov000_021721f4(void *p);
+void MessageQueue021cb980_Push05(void *p);
 BOOL func_ov000_02181d70(SceneStage *self, u16 id);
 void func_02062424(FieldId *id);
 void SndQueue_ResetNodes_0204aa10(void *p);
@@ -262,7 +262,7 @@ s32 func_ov000_02189194(SceneCmd *self) {
             if (p != NULL) {
                 u16 trg = data_02097dc8->trig;
                 if (trg & 0x400) {
-                    func_ov000_021721f4(data_ov000_021ccd30);
+                    MessageQueue021cb980_Push05(data_ov000_021ccd30);
                 } else if (trg & 8) {
                     SceneCmd *obj = data_ov000_021ccd50.obj;
                     if (!HasCmd(obj) && !HasEvent(obj)) {

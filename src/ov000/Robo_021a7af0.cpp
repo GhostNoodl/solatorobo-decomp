@@ -26,7 +26,7 @@ s32 Model0218fe1c_SetAnim(void *model, const char *name, s16 blend, u8 force);
 void *Model0218fe1c_SetAnimFrame(void *model, s32 frame);
 void Model0218fe1c_SetAnimSpeed(void *model, s16 speed);
 s32 History_SetState(void *history, u8 value, BOOL force);
-u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
+u16 Angle_Approach(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
 void Body_Update(void *body, u8 keep, VecFx32 *pos, const void *rot);
 BOOL Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);
 s32 **Model0218fe1c_GetAnimCtrl(void *model, u32 i);
@@ -152,7 +152,7 @@ static inline void Tail13_021a7af0(Robo021ca458 *self) {
     History_SetState(st, 3, 0);
 }
 
-void func_ov000_021a7af0(Robo021ca458 *self) {
+void Robo021ca458_State18(Robo021ca458 *self) {
     Actor *t;
     ActorSub4c *info;
     ActorHp *x50;
@@ -202,7 +202,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
             return;
         }
         self->moveYaw = AngleTo_021a7af0(self, t);
-        self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
         return;
     case 0x65:
         if (t != NULL) {
@@ -218,7 +218,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
             v = self->pos;
             v.y -= 0x1000;
             self->moveYaw = AngleTo_021a7af0(self, t);
-            self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+            self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
             f = FALSE;
             Body_Update(self->hit, 0, NULL, NULL);
             if (self->unk_b24_1 && (self->hit->unk_54 & 0x400)) {
@@ -294,7 +294,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
         if (!(self->hit->unk_50 & 0x20000000)) {
             self->speed = 0;
             self->moveYaw = AngleTo_021a7af0(self, t);
-            self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+            self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
             Robo021ca458_Move(self, FALSE, 1);
             Bump_021a7af0(self);
             {
@@ -318,7 +318,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
             return;
         }
         self->moveYaw = AngleTo_021a7af0(self, t);
-        self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
         v = self->pos;
         v.y -= 0x1000;
         r = self->radius + 0x1000;

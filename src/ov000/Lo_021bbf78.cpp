@@ -11,7 +11,7 @@ typedef struct {
 extern "C" {
 extern DLRef021bbf78 data_0208b3d0;
 extern DLRef021bbf78 data_020828f8;
-s32 func_02043d84(void *p);
+s32 Gfx3DState_NextPolyIdB(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
 
@@ -56,7 +56,7 @@ void func_ov000_021bbf78(Obj021bbf78 *self) {
     if (alpha == 0) {
         return;
     }
-    G3_Cmd1(0x29, (func_02043d84(g->unk_8b0) << 24) | 0xd0 | (alpha << 16));
+    G3_Cmd1(0x29, (Gfx3DState_NextPolyIdB(g->unk_8b0) << 24) | 0xd0 | (alpha << 16));
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, 0, 0, -0x91a);
     G3_Cmd1(0x20, 0);
@@ -66,7 +66,7 @@ void func_ov000_021bbf78(Obj021bbf78 *self) {
     G3_Cmd1(0x12, 1);
     MODEL_FLAGS(self->unk_58)->unk_19 = 1;
     MODEL_FLAGS(self->unk_58)->alpha = (u8)alpha;
-    MODEL_FLAGS(self->unk_58)->polygon_id = func_02043d84(g->unk_8b0);
+    MODEL_FLAGS(self->unk_58)->polygon_id = Gfx3DState_NextPolyIdB(g->unk_8b0);
     self->unk_58->unk_150 = -0x89a;
     Model_SetPos(self->unk_58, 0, 0);
     Model_PlayPart(self->unk_58, 0);

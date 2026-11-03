@@ -22,7 +22,7 @@ struct Obj021566c0 : public VObj {
     Model *unk_b8;
 };
 
-void func_ov000_021566c0(Obj021566c0 *self, u8 *info, s32 x, s32 y, u8 polyId, u8 front) {
+void UiList_DrawItemIcon(Obj021566c0 *self, u8 *info, s32 x, s32 y, u8 polyId, u8 front) {
     Model *m = self->unk_b8;
     if (m == NULL || LFLD(u16, info, 0x8) == 0xffff) {
         return;
@@ -45,7 +45,7 @@ void func_ov000_021566c0(Obj021566c0 *self, u8 *info, s32 x, s32 y, u8 polyId, u
     Model_PlayPart(self->unk_b8, LFLD(u16, info, 0x8));
 }
 
-void func_ov000_0215683c(UiList *self, u8 *info, s32 x, s32 y, u8 polyId) {
+void UiList_DrawItemMark(UiList *self, u8 *info, s32 x, s32 y, u8 polyId) {
     Model *m = self->unk_bc;
     if (m == NULL || LFLD(u16, info, 0xa) == 0xffff) {
         return;

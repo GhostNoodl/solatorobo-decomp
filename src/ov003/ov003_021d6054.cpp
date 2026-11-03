@@ -118,7 +118,7 @@ void Ov003Actor_StateDie(Ov003Actor *self) {
         if (e->sound >= 0 && self->hpObj->unk_04 != 0xffff) {
             SndMgr_PlayAt(data_02097e4c, e->sound, &v, 0);
         }
-        res = func_02070558(self->kind);
+        res = Tbl_GetActorParam(self->kind);
         Drop_SpawnWeighted(res->dropIds, res->dropRates, 2, &v, &self->rot_x, 1);
         func_ov000_0219b5dc(self->unk_b0->unk_06, &v, &self->rot_x);
         self->fsm->timer = 0;

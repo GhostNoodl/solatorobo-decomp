@@ -540,7 +540,7 @@ void SndMgr_MoveBgmVolume(SndMgr *mgr, int volume, int frames);
 
 void SndMgr_StopSeqNo(SndMgr *mgr, int playerNo, int fadeFrames);
 
-void func_0204a2a8(SndMgr *mgr, int b, u16 c);
+void SndMgr_SetStrmVolume_0204a2a8(SndMgr *mgr, int b, u16 c);
 
 BOOL func_ov002_021ede5c(Ov002StaffNode *self) {
     BOOL busy = FALSE;
@@ -570,7 +570,7 @@ BOOL func_ov002_021ede5c(Ov002StaffNode *self) {
         SndMgr_StopSeqNo(data_02097e4c, d->seq, d->unk_0e);
         break;
     case 2:
-        func_0204a2a8(data_02097e4c, 100, d->unk_0e);
+        SndMgr_SetStrmVolume_0204a2a8(data_02097e4c, 100, d->unk_0e);
         break;
     case 3:
         {

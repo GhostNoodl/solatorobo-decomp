@@ -9,7 +9,7 @@ extern void *data_0208cc94;
 void *MsgRes_GetString(void *a, s32 b);
 void *ResMgr_GetArcList(void *a);
 void *ResList_FindType2(void *a, void *b);
-void func_02041c5c(void *model, void *fn);
+void TexObj_SetAllOamFuncs(void *model, void *fn);
 void *func_ov000_021c5a0c(u8 *self, u16 *cmd, void *arr, u16 *count);
 
 void func_ov000_021c5bd4(Lo021cca40 *self) {
@@ -57,7 +57,7 @@ void func_ov000_021c5bd4(Lo021cca40 *self) {
     self->unk_34->flags |= 2;
     TexObj_SelectImage(self->unk_34, 0, 6);
     TexObj_SelectImage(self->unk_34, 0, 7);
-    func_02041c5c((u8 *)self->unk_34, (void *)func_ov000_021c5a0c);
+    TexObj_SetAllOamFuncs((u8 *)self->unk_34, (void *)func_ov000_021c5a0c);
     self->built = 1;
 }
 

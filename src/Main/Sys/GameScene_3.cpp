@@ -61,11 +61,11 @@ void func_02056d14(Model *model) {
     model->flags |= 0x100000;
 }
 
-u8 func_02056d24(Model *model) {
+u8 Model_GetAlpha(Model *model) {
     return (model->flags << 25) >> 27;
 }
 
-void func_02056d38(Model *model, u32 v) {
+void Model_SetPolyId(Model *model, u32 v) {
     model->flags = (model->flags & ~0x1f80) | ((v << 26) >> 19);
 }
 
@@ -73,7 +73,7 @@ void func_02056d50(Model *model) {
     model->flags &= ~0x100000;
 }
 
-void func_02056d60(GameScene *scene, s32 x, s32 y) {
+void MainVt_0208bbc8_DrawShape(GameScene *scene, s32 x, s32 y) {
     G3_Vec(0x1b, x << 12, y << 12, 0x1000);
     G3_Cmd1(0x40, 2);
     NNS_G3dGeVtx(0, 0x375, -0x9ba);

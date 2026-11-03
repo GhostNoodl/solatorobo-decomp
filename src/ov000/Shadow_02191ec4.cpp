@@ -68,7 +68,7 @@ void Vram_FreeRes(void *file);
 int ResMgr_IsLoaded(void *a, int b);
 void *ResMgr_Load(void *a, int b, int c);
 void ResMgr_ReleaseByName(void *a, void *b, int c, int d);
-char *func_0203ed04(void *name, void *file);
+char *G3dRes_SetupVram(void *name, void *file);
 void Heap_Free(void *ptr);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
 void NNS_G3dGlbSetBaseScale(VecFx32 *scale);
@@ -138,7 +138,7 @@ static inline void Shadow_Destroy(Shadow *self) {
     }
 }
 
-void func_ov000_02191ec4(Shadow *self, u8 type, u32 flags) {
+void Shadow_SetType(Shadow *self, u8 type, u32 flags) {
     switch (type) {
     case 1:
         if (flags & 0x10000) {

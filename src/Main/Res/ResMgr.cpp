@@ -13,7 +13,7 @@ extern void FS_Init(int arg);
 extern void MATHi_CRC16InitTableRev(u16 *table, u32 poly);
 extern ResLoader *ResLoader_Init(ResLoader *loader);
 extern void func_02035670(ResLoader *loader);
-extern void func_0203584c(ResLoader *loader);
+extern void ResLoader_Destroy(ResLoader *loader);
 extern void func_020363d8(ResMgr *mgr);
 extern void func_020381cc(ResMgr *mgr, ResNode *node);
 extern void *ResMgr_ReadFile(ResMgr *mgr, const char *path, u32 size, void *buf);
@@ -365,7 +365,7 @@ static inline void ResMgr_FreeNode(ResMgr *mgr, ResNode *node) {
     mgr->numNodes--;
 }
 
-void func_020366d0(ResMgr *mgr, ResNode *node) {
+void ResMgr_FreeNode_020366d0(ResMgr *mgr, ResNode *node) {
     ResMgr_FreeNode(mgr, node);
 }
 
@@ -377,7 +377,7 @@ static inline void ResMgr_StopLoading(ResMgr *mgr) {
         FS_CloseFile(&mgr->file);
     }
     mgr->loadStep = -1;
-    func_0203584c(mgr->loader);
+    ResLoader_Destroy(mgr->loader);
 }
 
 void ResMgr_ReleaseNode(ResMgr *mgr, ResNode *node, BOOL force) {
@@ -823,7 +823,7 @@ extern const char data_0208b3af[];
 extern ResList *ResList_Init(ResList *list);
 extern void func_02035094(ResList *list, ResRequest *req);
 extern BOOL func_02035740(ResLoader *loader, ResRequest *req);
-extern void func_0203581c(ResLoader *loader);
+extern void ResLoader_Sleep(ResLoader *loader);
 extern u8 *ResRing_GetReadPtr(ResRing *ring);
 extern u32 ResRing_GetReadSize(ResRing *ring);
 extern BOOL FS_SeekFile(FSFile *file, int offset, u32 whence);
@@ -1007,7 +1007,7 @@ BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
         if (mgr->loader->state != 3) {
             break;
         }
-        func_0203581c(mgr->loader);
+        ResLoader_Sleep(mgr->loader);
     case 41:
         func_02035094((ResList *)req->unk_00, req);
         req->data = NULL;

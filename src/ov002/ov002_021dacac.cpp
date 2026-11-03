@@ -132,7 +132,7 @@ void func_ov002_021dacac(Obj021eff74 *self) {
     w = self->board;
     if (data_0214a424->bits18.mode == 1) {
         func_ov000_021c9544(w->unk_76, w->pieces);
-        func_ov000_021c95ac(w->unk_76, data_0214a424->bits18.unk_3 | 0x8000);
+        Obj021c95ac_Init_021c95ac(w->unk_76, data_0214a424->bits18.unk_3 | 0x8000);
     } else {
         func_ov000_021c9544(w->unk_76, w->pieces);
     }

@@ -434,7 +434,7 @@ extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 extern void *SndMgr_PlayAtPitch(void *a, s32 b, VecFx32 *c, s32 d);
 extern Ov003Actor *Target_Get(void *p);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
-extern void func_01ffc9fc(VecFx32 *a, VecFx32 *b, u16 ang);
+extern void Vec_RotateY(VecFx32 *a, VecFx32 *b, u16 ang);
 extern void Ov014ActExVt_02217838_HitNearby(Ov014ActExVt_02217838 *self);
 extern void func_ov014_02206734(Ov014ActExVt_02217838 *self);
 
@@ -479,7 +479,7 @@ void Ov014ActExVt_02217838_StateThrown(Ov014ActExVt_02217838 *self) {
         s32 r;
         VecFx32 v = data_ov014_022169ec;
         v.y = (0x47000 - self->pos.y) / 6;
-        func_01ffc9fc(&v, &v, self->rot_y);
+        Vec_RotateY(&v, &v, self->rot_y);
         VEC_Add(&self->pos, &v, &v);
         self->unk_84.x = v.x;
         self->unk_84.y = v.y;
@@ -910,7 +910,7 @@ struct Ov014PlFlags {
 extern void *SndMgr_PlayAtPitch(void *a, s32 b, VecFx32 *c, s32 d);
 extern void Actor_MoveToPos(Actor *self, VecFx32 *v, s32 a);
 extern u8 *ActorMgr_FindPlayer(void);
-extern BOOL func_01ffc318(VecFx32 *a, VecFx32 *pos, VecFx32 *min, VecFx32 *max, u16 *rot);
+extern BOOL Hit_PointInRotBox(VecFx32 *a, VecFx32 *pos, VecFx32 *min, VecFx32 *max, u16 *rot);
 extern void func_ov000_0219b808(u16 id, VecFx32 *pos, Ov014HitBox *box, s32 a, s32 b);
 extern VecFx32 data_ov014_02216a34;
 extern VecFx32 data_ov014_02216a28;
@@ -1025,10 +1025,10 @@ void Ov014ActEx_02206c68_StateThrown(Ov014ActEx_02206c68 *self) {
             box.max.y = 0x800;
             box.max.z = 0x1000;
             v2 = ((Robo021ca458 *)pl)->unk_75c;
-            if (func_01ffc318(&v2, &self->pos, &data_ov014_02216a34, &data_ov014_02216a28, &self->rot_x)) {
+            if (Hit_PointInRotBox(&v2, &self->pos, &data_ov014_02216a34, &data_ov014_02216a28, &self->rot_x)) {
                 Ov014i_HitFrom(self, &box, &d, &v2, &v2);
             }
-            if (func_01ffc318(&p, &self->pos, &data_ov014_02216a34, &data_ov014_02216a28, &self->rot_x)) {
+            if (Hit_PointInRotBox(&p, &self->pos, &data_ov014_02216a34, &data_ov014_02216a28, &self->rot_x)) {
                 Ov014i_HitFrom(self, &box, &d, &p, &p);
             }
         }
@@ -1156,7 +1156,7 @@ extern void Field_ShakeCamera(s32 a, s32 b);
 extern BOOL func_ov000_0219aca8(Actor *a, Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern void func_ov014_0220840c(Ov014ActEx_0220774c *self);
 extern u8 *ActorMgr_FindPlayer(void);
-extern BOOL func_01ffc318(VecFx32 *a, VecFx32 *pos, VecFx32 *min, VecFx32 *max, u16 *rot);
+extern BOOL Hit_PointInRotBox(VecFx32 *a, VecFx32 *pos, VecFx32 *min, VecFx32 *max, u16 *rot);
 extern void func_ov000_0219b808(u16 id, VecFx32 *pos, Ov014HitBox *box, s32 a, s32 b);
 
 static inline void Ov014_HitFrom(Actor *self, Ov014HitBox *box, VecFx32 *d, VecFx32 *from, VecFx32 *at) {
@@ -1369,10 +1369,10 @@ void Ov014ActEx_0220774c_StateThrown(Ov014ActEx_0220774c *self) {
         box.max.y = 0x800;
         box.max.z = 0x1000;
         v2 = ((Robo021ca458 *)pl)->unk_75c;
-        if (func_01ffc318(&v2, &self->pos, &data_ov014_022169e0, &data_ov014_02216a10, &self->rot_x)) {
+        if (Hit_PointInRotBox(&v2, &self->pos, &data_ov014_022169e0, &data_ov014_02216a10, &self->rot_x)) {
             Ov014_HitFrom(self, &box, &d, &v2, &v2);
         }
-        if (func_01ffc318(&pos, &self->pos, &data_ov014_022169e0, &data_ov014_02216a10, &self->rot_x)) {
+        if (Hit_PointInRotBox(&pos, &self->pos, &data_ov014_022169e0, &data_ov014_02216a10, &self->rot_x)) {
             Ov014_HitFrom(self, &box, &d, &pos, &pos);
         }
     }

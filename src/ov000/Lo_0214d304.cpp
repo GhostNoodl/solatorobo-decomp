@@ -11,7 +11,7 @@ extern "C" {
 extern u8 data_02fe1534[];
 u8 Gfx3DState_NextPolyId(void *p);
 void func_02041774(void *a, int b);
-void func_02041c20(void *a, int b, int c);
+void TexObj_SetOamFuncArg(void *a, int b, int c);
 
 static inline void LoSetPos(void *m, s32 x, s32 y) {
     LFLD(s32, m, 0xfc) = x;
@@ -72,7 +72,7 @@ void func_ov000_0214d304(Obj0214d304 *self, s32 a, s32 *pos, s32 d) {
     MODEL_FLAGS(self->unk_88)->alpha = 0x1e;
     LoSetPos(self->unk_88, (x + 0x7e) << 12, (y + 3) << 12);
     self->unk_88->unk_150 = self->unk_68;
-    func_02041c20(self->unk_88, 6, LFLD(u16, data_02fe1534, 0x58));
+    TexObj_SetOamFuncArg(self->unk_88, 6, LFLD(u16, data_02fe1534, 0x58));
     s = self->unk_218;
     if (s != 0) {
         {

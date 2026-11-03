@@ -37,7 +37,7 @@ FieldPropModel *func_ov000_021b6f94(FieldPropModel *self) {
     self->flags = 0;
     return self;
 }
-FieldPropModel *func_ov000_021b700c(FieldPropModel *self) {
+FieldPropModel *FieldPropModel_Dtor(FieldPropModel *self) {
     FREE_FIELD(self->anm[0]);
     FREE_FIELD(self->anm[1]);
     FREE_FIELD(self->anm[2]);

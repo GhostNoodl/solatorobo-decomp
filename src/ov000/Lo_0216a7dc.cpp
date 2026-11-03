@@ -37,7 +37,7 @@ static inline s32 LoApproach(s32 cur, s32 target, s32 rate) {
 }
 BOOL Model_IsReady(void *a, s32 b);
 
-BOOL func_ov000_0216a7dc(Lo021cb744 *self) {
+BOOL Lo021cb744_CanUpdate(Lo021cb744 *self) {
     if (!LoGIdle() || !LoD78Idle()) {
         self->unk_0c_1 = 1;
     }

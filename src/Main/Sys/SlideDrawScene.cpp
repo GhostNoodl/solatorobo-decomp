@@ -81,15 +81,15 @@ void GfxGe_PushMtx(void);
 void GfxGe_Translate(s32 x, s32 y, s32 z);
 void GfxGe_Color(u32 color);
 void GfxGe_PopMtx(s32 num, ...);
-extern void func_020435e8(void *pltt, void *src, u32 size);
+extern void GfxPltt_ApplyFilter(void *pltt, void *src, u32 size);
 BOOL func_02056c48(void);
 s16 func_0204e2ac(s32 angle);
 s32 Text_FxMul(s32 a, s32 b);
 s32 func_020534c4(s32 x);
 s32 func_020534d4(SlideDrawScene *scene);
 u8 func_02056c94(u8 *p);
-int func_02043d84(void *st);
-s32 func_02054ae8(Model *model, s32 idx);
+int Gfx3DState_NextPolyIdB(void *st);
+s32 Model_GetWidth_02054ae8(Model *model, s32 idx);
 s32 func_02056148(SlideDrawScene *scene, SlidePanel *panel, SlidePanel *other);
 BOOL func_020554c8(SlidePanel *panel);
 BOOL SlidePanel_IsIdle(SlidePanel *panel);
@@ -98,7 +98,7 @@ s32 SlidePanel_GetTarget_02054894(SlidePanel *panel);
 s32 SlidePanel_GetEdge_020548c8(SlidePanel *panel);
 void Obj3DLayer_SetCur(SlidePanel *panel, u32 v);
 void func_020543bc(SlidePanel *panel);
-void func_02050ea4(Model *model, u32 v);
+void Model_SetAlpha(Model *model, u32 v);
 void func_02050e94(Model *model);
 void func_02056cb8(Model *model);
 void Model_SetPartPos(Model *model, int idx, ModelPos *pos);
@@ -108,8 +108,8 @@ void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 void Model_MovePos(Model *model, int idx, s32 dx, s32 dy);
 void func_02056d04(Model *model);
 void func_02056d14(Model *model);
-u8 func_02056d24(Model *model);
-void func_02056d38(Model *model, u32 v);
+u8 Model_GetAlpha(Model *model);
+void Model_SetPolyId(Model *model, u32 v);
 void func_02056d50(Model *model);
 
 void func_02056230(SlideDrawScene *scene, s32 i) {
@@ -142,7 +142,7 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
         return;
     }
     cols = data_020829c8;
-    func_020435e8(pltt, &cols, 6);
+    GfxPltt_ApplyFilter(pltt, &cols, 6);
     if (scene->mode == 4) {
         polyId = func_02056c48() ? 0x1f : 0x18;
         top = cols.c[1];
@@ -175,7 +175,7 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
     GfxGe_Color(0);
     scene->DrawBox(0x100, 4);
     GfxGe_PopMtx(1);
-    GfxGe_PolygonAttr(0, 1, 3, func_02043d84(gfx), polyId, 0);
+    GfxGe_PolygonAttr(0, 1, 3, Gfx3DState_NextPolyIdB(gfx), polyId, 0);
     GfxGe_PushMtx();
     GfxGe_Translate(sx + 0x80000, sy + (dy + 0x56000) - (lift << 12), -0xa9a);
     GfxGe_Scale(s, s, 0x1000);
@@ -187,7 +187,7 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
     i = 0;
     first = &scene->panels[0];
     if (first->unk_0a != 0 && first->model != NULL) {
-        if (func_02054ae8(first->model, i) > 0x40) {
+        if (Model_GetWidth_02054ae8(first->model, i) > 0x40) {
             for (panel = scene->panels; i <= 2; i++, panel++) {
                 if (i != 0 && panel->model != NULL) {
                     break;
@@ -204,7 +204,7 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
             }
         } else {
             for (panel = scene->panels; i <= 2; i++, panel++) {
-                if (i != 0 && panel->model != NULL && func_02054ae8(panel->model, 0) > 0x40) {
+                if (i != 0 && panel->model != NULL && Model_GetWidth_02054ae8(panel->model, 0) > 0x40) {
                     break;
                 }
             }
@@ -267,10 +267,10 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
                 panel->state = 0xf;
             }
             alpha = Text_FxMul(panel->unk_20, 0x1f000) >> 12;
-            func_02050ea4(panel->model, alpha);
+            Model_SetAlpha(panel->model, alpha);
             if (panel->model2 != NULL) {
                 func_02050e94(panel->model2);
-                func_02050ea4(panel->model2, alpha);
+                Model_SetAlpha(panel->model2, alpha);
             }
         } else if (panel->state == 3) {
             u8 alpha;
@@ -279,10 +279,10 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
                 panel->flag4 = 1;
             }
             alpha = 0x1f - (Text_FxMul(panel->unk_20, 0x1f000) >> 12);
-            func_02050ea4(panel->model, alpha);
+            Model_SetAlpha(panel->model, alpha);
             if (panel->model2 != NULL) {
                 func_02050e94(panel->model2);
-                func_02050ea4(panel->model2, alpha);
+                Model_SetAlpha(panel->model2, alpha);
             }
         } else {
             if (panel->state == 10) {
@@ -317,8 +317,8 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
             func_02056d04(panel->model2);
             func_02056d14(panel->model);
             func_02050e94(panel->model);
-            if (func_02056d24(panel->model) > 0x1e) {
-                func_02050ea4(panel->model, 0x1e);
+            if (Model_GetAlpha(panel->model) > 0x1e) {
+                Model_SetAlpha(panel->model, 0x1e);
             }
         } else if (scene->mode == 4) {
             if (i == 1) {
@@ -335,7 +335,7 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
             pos.x += off[i];
             pos.y += dy;
         }
-        func_02056d38(panel->model, func_02043d84(gfx));
+        Model_SetPolyId(panel->model, Gfx3DState_NextPolyIdB(gfx));
         Model_SetPartPos(panel->model, 0, &pos);
         func_0204e2dc(panel->model, -0x99a - y);
         Model_ApplyPart_0204e2e4(panel->model, 0);

@@ -64,11 +64,11 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {
             x = NULL;
             if (r & 1) {
                 if (self->unk_364 != NULL && self->unk_394 == 0) {
-                    x = func_ov000_0214b670(self->unk_364);
+                    x = Twl0214b570_GetResult(self->unk_364);
                 }
             } else {
                 if (self->unk_368 != NULL && self->unk_394 == 0) {
-                    x = func_ov000_0214b670(self->unk_368);
+                    x = Twl0214b570_GetResult(self->unk_368);
                 }
             }
             o->unk_60 = x;

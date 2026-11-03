@@ -58,7 +58,7 @@ void Obj021efe9c_Release(Obj021efe9c *self) {
     Vram_FreeRes((void *)*self->unk_78);
 }
 
-void func_ov002_021d7fb8(Obj021efe9c *self) {
+void Ov002Vt_021efe9c_Setup(Obj021efe9c *self) {
     func_ov002_021d7c04_inline(self);
     if (self->unk_ac != 2) {
         self->unk_ac = 2;
@@ -67,7 +67,7 @@ void func_ov002_021d7fb8(Obj021efe9c *self) {
     }
 }
 
-void func_ov002_021d802c(Obj021efe9c *self) {
+void Ov002Vt_021efe9c_Update(Obj021efe9c *self) {
     switch (self->unk_a0) {
     case 0:
         func_ov002_021d8148(self);

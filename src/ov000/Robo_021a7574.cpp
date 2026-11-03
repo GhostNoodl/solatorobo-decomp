@@ -19,7 +19,7 @@ void func_ov000_021b03c8(Robo021ca458 *self);
 Actor *Actor_GetTarget(Actor *self);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Actor_SendMsgU8(void *a, u16 id, s32 b);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
 static inline Actor *FindActor021a783c(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -50,7 +50,7 @@ extern void *data_02097e4c;
 void *Model0218fe1c_SetAnimFrame(void *a, s32 frame);
 void Model0218fe1c_SetReverse(void *a);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
-s32 func_01ffbd6c(void *a, void *b, s32 c, s32 d, s32 e, s32 f);
+s32 Hit_CastSegment(void *a, void *b, s32 c, s32 d, s32 e, s32 f);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 
 typedef struct {
@@ -60,7 +60,7 @@ typedef struct {
     s32 unk_14;
 } Msg021a70b0;
 
-void func_ov000_021a70b0(Robo021ca458 *self) {
+void Robo021ca458_State0c(Robo021ca458 *self) {
     switch (((ActorSub40 *)self->fsm)->st) {
     case 0:
         if (self->unk_b22_3) {
@@ -95,7 +95,7 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
                 ang = FieldCam_GetYaw(&data_ov000_021ccd54->cam) + self->padDir;
             }
         }
-        self->rot_y = func_01ffc128(ang, self->rot_y, 0x59a, 1, 0x8000);
+        self->rot_y = Angle_Approach(ang, self->rot_y, 0x59a, 1, 0x8000);
         if (self->unk_b24_5 != 0 &&
             (self->model->anim_state == 1 || self->unk_b22_3)) {
             Actor *a;
@@ -111,7 +111,7 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
                     } else {
                         v = a->pos;
                     }
-                    if (func_01ffbd6c(&self->pos, &v, -1, 0, 0, -1) != -0x1000) {
+                    if (Hit_CastSegment(&self->pos, &v, -1, 0, 0, -1) != -0x1000) {
                         v.x -= self->pos.x;
                         v.y -= self->pos.y;
                         v.z -= self->pos.z;
@@ -166,7 +166,7 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
     self->unk_b24_17 = 1;
 }
 
-void func_ov000_021a7574(Robo021ca458 *self) {
+void Robo021ca458_State0d(Robo021ca458 *self) {
     switch (self->fsm->st) {
     case 0:
         Model0218fe1c_SetAnim(self->model, data_ov000_021cc672, 0x800, 0);
@@ -242,7 +242,7 @@ void func_ov000_021a7574(Robo021ca458 *self) {
     self->unk_b24_17 = 1;
 }
 
-void func_ov000_021a783c(Robo021ca458 *self) {
+void Robo021ca458_State0e(Robo021ca458 *self) {
     if (self->unk_b24_12 == 3) {
         func_ov000_021b03c8(self);
         return;
@@ -268,7 +268,7 @@ void func_ov000_021a783c(Robo021ca458 *self) {
                 ang = FieldCam_GetYaw(&data_ov000_021ccd54->cam) + self->padDir;
             }
         }
-        self->rot_y = func_01ffc128(ang, self->rot_y, 0x8cd, 1, 0x8000);
+        self->rot_y = Angle_Approach(ang, self->rot_y, 0x8cd, 1, 0x8000);
         if (self->unk_b24_5 != 0 && self->model->anim_state == 1) {
             u8 *a = (u8 *)FindActor021a783c(self->unk_b1c);
             if (a != NULL) {

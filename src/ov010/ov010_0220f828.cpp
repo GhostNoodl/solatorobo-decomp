@@ -116,19 +116,19 @@ void Ov010Actor_Shoot2(Ov003Actor *self) {
 void func_ov010_02200030(void) {
 }
 
-void func_ov010_02200034(void) {
+void Ov010Vt_0220fcac_Dtor(void) {
 }
 
-void func_ov010_02200038(void) {
+void Ov010Vt_0220fc8c_Dtor(void) {
 }
 
-void func_ov010_0220003c(void) {
+void Ov010State3_Dtor(void) {
 }
 
-void func_ov010_02200040(void) {
+void Ov010Shake_Dtor(void) {
 }
 
-void func_ov010_02200044(void) {
+void Ov010Wobble_Dtor(void) {
 }
 
 BOOL Ov010FxObj_Init(Ov010FxObj *o, u16 a, u16 b, u8 c, u16 d) {

@@ -34,7 +34,7 @@ extern const Ov003Route data_ov003_021f484c[];
 extern u16 FX_Atan2(s32 x, s32 z);
 extern void VEC_MultAdd(s32 scale, const VecFx32 *dir, const VecFx32 *base, VecFx32 *out);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 a, u16 b);
+extern u16 Angle_Approach(u16 target, u16 cur, s32 rate, u32 a, u16 b);
 
 void Ov003ActVt_021f7c0c_State20(Ov003Act *self) {
     const char *run = "run00";
@@ -80,7 +80,7 @@ void Ov003ActVt_021f7c0c_State20(Ov003Act *self) {
         t.z = r->v[8] << 4;
         Model0218fe1c_SetAnim(self->model, "nut00", 0x2ab, 0);
         Model0218fe1c_SetLoop(self->model);
-        self->rot_y = func_01ffc128(FX_Atan2(t.x - self->pos.x, t.z - self->pos.z), self->rot_y, 0x200, 1, 0x8000);
+        self->rot_y = Angle_Approach(FX_Atan2(t.x - self->pos.x, t.z - self->pos.z), self->rot_y, 0x200, 1, 0x8000);
         w = self->fsm;
         w->timer++;
         if (w->timer <= 0x14) {

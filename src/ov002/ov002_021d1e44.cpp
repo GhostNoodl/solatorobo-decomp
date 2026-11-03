@@ -17,7 +17,7 @@ void Task021ef69c_UpdateActive(Task021ef69c *self) {
         }
         ev->unk_6c = 0;
         self->unk_44 = NULL;
-        func_ov000_021c701c(self->unk_3c);
+        TextList_Lower(self->unk_3c);
         SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
     } else {
         ListRow *m;
@@ -109,22 +109,22 @@ void func_ov002_021d1f70(Task021ef69c *self) {
     ov002_Model_PlayPart(m, 4);
     ov002_SetPos(self->unk_48, (x + 0x10) << 12, y << 12);
     self->unk_48->unk_150 = z;
-    func_02041c20(self->unk_48, 6, (void *)v44);
+    TexObj_SetOamFuncArg(self->unk_48, 6, (void *)v44);
     ov002_Model_PlayPart(self->unk_48, 6);
-    func_02041c20(self->unk_48, 6, (void *)0);
+    TexObj_SetOamFuncArg(self->unk_48, 6, (void *)0);
     bx = self->unk_50 + 0x50;
     fy = (self->unk_54 - 0x44) << 12;
     self->unk_48->unk_150 = self->unk_58 + 0x20;
     ov002_SetPos(self->unk_48, bx << 12, fy);
-    func_02041c20(self->unk_48, 6, (void *)(n - d));
+    TexObj_SetOamFuncArg(self->unk_48, 6, (void *)(n - d));
     ov002_Model_PlayPart(self->unk_48, 6);
     ov002_SetPos(self->unk_48, (bx + 10) << 12, fy);
     num = self->unk_48;
     ov002_Model_PlayPartR(num, 8, res);
     ov002_SetPos(self->unk_48, (bx + 0x14) << 12, fy);
-    func_02041c20(self->unk_48, 6, (void *)n);
+    TexObj_SetOamFuncArg(self->unk_48, 6, (void *)n);
     ov002_Model_PlayPart(self->unk_48, 6);
-    func_02041c20(self->unk_48, 6, (void *)0);
+    TexObj_SetOamFuncArg(self->unk_48, 6, (void *)0);
 }
 
 }

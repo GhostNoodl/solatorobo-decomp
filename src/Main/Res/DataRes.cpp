@@ -11,14 +11,14 @@ extern const u32 data_0208be94[];
 extern DataRes *data_02fe1530;
 extern DataRes *data_02fe152c;
 
-void func_02058b50(TextWin *win, s16 a, s16 b, s16 c) {
+void TextWin_SetModelPos(TextWin *win, s16 a, s16 b, s16 c) {
     win->modelX = a;
     win->flag28 = 1;
     win->modelY = b;
     win->unk_1e = c;
 }
 
-void func_02058b6c(TextWin *win) {
+void TextWin_DisableAlpha(TextWin *win) {
     win->flag5 = 0;
 }
 
@@ -26,7 +26,7 @@ static inline BOOL TextWin_IsFlag29(TextWin *win) {
     return win->flag29 == 1 ? TRUE : FALSE;
 }
 
-BOOL func_02058b7c(TextWin *win) {
+BOOL TextWin_WasSkipped(TextWin *win) {
     return TextWin_IsFlag29(win) ? TRUE : FALSE;
 }
 
@@ -56,7 +56,7 @@ TextWin *TextWinEx_DtorDelete(TextWin *win) {
     return win;
 }
 
-void func_02058c80(TextWinEx *win, s16 x, s16 y) {
+void TextWinEx_SetPos(TextWinEx *win, s16 x, s16 y) {
     win->originX = x;
     win->originY = y;
 }
@@ -118,6 +118,6 @@ static inline void DataRes_Open1530_18(const char *arcName, const char *name) {
     data_02fe1530->Open18(arc, file);
 }
 
-void func_02058d10(BOOL open18);
+void DataRes1530_Create(BOOL open18);
 
 }

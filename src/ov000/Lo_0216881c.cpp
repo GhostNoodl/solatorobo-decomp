@@ -11,7 +11,7 @@ u32 Rand_GetGlobal(void);
 extern const s16 FX_SinCosTable_[];
 typedef BOOL (*LoMsgFn)(void *, void *);
 
-void func_ov000_0216881c(Lo021cb894 *self) {
+void Lo021cb894_PostUpdate(Lo021cb894 *self) {
     s32 s = self->unk_04;
     if (s == 1 || s == 8 || s == 3 || s == 0xa) {
         if (self->unk_0c_1 ? TRUE : FALSE) {

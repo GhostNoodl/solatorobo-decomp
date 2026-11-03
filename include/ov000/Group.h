@@ -1,10 +1,10 @@
 #ifndef OV000_GROUP_H
 #define OV000_GROUP_H
 
-// The spawn groups (data_ov000_021ccd64, a Group of 0x48 bytes built by func_ov000_0218bb34).
+// The spawn groups (data_ov000_021ccd64, a Group of 0x48 bytes built by Group_Init_0218bb34).
 // Each GroupNode (0xa4 bytes, ctor func_ov000_0218a9d8, made by func_ov000_0218b9ec) spawns its
 // actor from `spawn` (Group_SpawnActor) once one of the views the field camera registered this
-// frame (func_ov000_0218c25c) is inside its spawn volume (func_ov000_0218adf0), and removes the
+// frame (Group_AddCamView) is inside its spawn volume (func_ov000_0218adf0), and removes the
 // actor again once every view has left its despawn volume (func_ov000_0218af9c). The spawned
 // actors are recorded in `entries` (GroupNode_UpdateEntry).
 
@@ -34,7 +34,7 @@ typedef struct GroupEntry {
     VecFx32 pos;
 } GroupEntry;
 
-// A camera view (func_ov000_0218c25c: the eye and FieldCam_GetYaw), the segment func_01ffc89c tests.
+// A camera view (Group_AddCamView: the eye and FieldCam_GetYaw), the segment HitVolume_TestSegment tests.
 typedef struct GroupView {
     VecFx32 from;
     VecFx32 to;
@@ -62,7 +62,7 @@ typedef struct GroupNode {
     GroupActorDesc spawn;
     FieldId fieldId; // the field the node spawns in (compared with FieldState::unk_ca)
     FieldId fieldFilter; // 0xff: any; GroupNode_Refresh drops the node once the field differs
-    VecFx32 spawnMin; // the spawn volume around pos (func_01ffc89c)
+    VecFx32 spawnMin; // the spawn volume around pos (HitVolume_TestSegment)
     VecFx32 spawnMax;
     VecFx32 despawnMin; // the volume the actor must leave to be removed (func_ov000_0218af9c)
     VecFx32 despawnMax;
@@ -120,9 +120,9 @@ void func_ov000_0218adf0(GroupNode *self);
 void Group_Add(Group *g, GroupNode *node);
 s32 Group_GetSpawnPositions(Group *g, s32 max, VecFx32 *out, s32 kind, u16 id);
 void Obj0218c208_AddPoint(Group *self, const VecFx32 *pos, u16 yaw);
-void func_ov000_0218c25c(Group *self);
+void Group_AddCamView(Group *self);
 void Group_RemoveNode(Group *g, GroupNode *node, BOOL notify);
-BOOL func_01ffc89c(GroupNode *node, GroupView *view);
+BOOL HitVolume_TestSegment(GroupNode *node, GroupView *view);
 s32 Geom_SnapToGround(VecFx32 *pos, s32 up, s32 down);
 
 #ifdef __cplusplus

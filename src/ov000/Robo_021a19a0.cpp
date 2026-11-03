@@ -14,7 +14,7 @@ BOOL History_SetState(void *st, s32 state, s32 x);
 void Robo021ca458_WalkByPad(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
 u16 FX_Atan2(s32 y, s32 x);
 
-void func_ov000_021a19a0(Robo021ca458 *self) {
+void Robo021ca458_State02(Robo021ca458 *self) {
     BOOL turned;
     s32 rate;
     char *name;

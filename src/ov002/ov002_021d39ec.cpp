@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0215d980(void *a, u32 b, int c);
+void Lo021cae48_SetValue(void *a, u32 b, int c);
 
 BOOL func_ov002_021d39ec(UiList *self, UiListItem *ev) {
     Task021ef81c *o;
@@ -25,7 +25,7 @@ BOOL func_ov002_021d39ec(UiList *self, UiListItem *ev) {
                 }
             }
             cost = c->value - item->unk_0c;
-            func_ov000_0215d980(c, cost, 0);
+            Lo021cae48_SetValue(c, cost, 0);
             { StageFlags *g = data_0214a424; if (cost > 9999) { cost = 9999; } g->unk_614 = cost; }
             list->vfunc_70(item);
             Item_Set_0206f5e4(item->id, 1);

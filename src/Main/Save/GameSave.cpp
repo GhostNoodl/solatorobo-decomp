@@ -12,7 +12,7 @@ void GameSave_ResetFlags(GameSave *s) {
     s->bits.flag13 = 0;
     s->bits.flag14 = 0;
     SaveBase_SetState_020473ac(s, 0);
-    func_02046cd0(data_02097e44);
+    SysCard_Reset_02046cd0(data_02097e44);
 }
 
 #ifdef NONMATCHING

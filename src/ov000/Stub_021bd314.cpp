@@ -11,7 +11,7 @@ BOOL ActorMarker_SetKind(ActorMarker *self, s32 x) {
         return TRUE;
     }
     if ((u32)(self->step - 7) <= 2) {
-        func_ov000_021bd7b8(self);
+        ActorMarker_FreeRes(self);
     }
     if (self->kind == x) {
         return TRUE;

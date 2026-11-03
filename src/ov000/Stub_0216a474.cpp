@@ -13,7 +13,7 @@ void func_ov000_0216a438(Lo021cb744 *self, s32 lo, s32 hi, u8 v) {
     self->unk_0c = (self->unk_0c & ~2) | 0x10000;
 }
 
-void func_ov000_0216a474(Lo021cb744 *self) {
+void Lo021cb744_Init(Lo021cb744 *self) {
     self->unk_9c = NULL;
     self->unk_a0 = NULL;
     self->unk_a4 = 0;

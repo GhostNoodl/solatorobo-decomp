@@ -168,7 +168,7 @@ void Ov013Act_02207968_StateIdle(Ov013Act_02207968 *self) {
             if (self->pos.y > y) {
                 self->pos.y = y;
             }
-            self->rot_x = func_01ffc128(0, self->rot_x, 0xcd, 1, 0x8000);
+            self->rot_x = Angle_Approach(0, self->rot_x, 0xcd, 1, 0x8000);
         }
         {
             ActorSub40 *st = self->fsm;
@@ -184,7 +184,7 @@ void Ov013Act_02207968_StateIdle(Ov013Act_02207968 *self) {
     }
     case 4:
         Actor_Move(self, 0);
-        self->rot_x = func_01ffc128(0, self->rot_x, 0xcd, 1, 0x8000);
+        self->rot_x = Angle_Approach(0, self->rot_x, 0xcd, 1, 0x8000);
         if (self->pos.y >= 0x9000) {
             self->pos.y = 0x9000;
             self->unk_f0 = 0;
@@ -427,7 +427,7 @@ void Ov013Act_02207968_StateAttack(Ov013Act_02207968 *self) {
         VecFx32 p;
         VecFx32 d;
         self->unk_94_1 = 0;
-        self->rot_x = func_01ffc128(0x271c, self->rot_x, 0xcd, 1, 0x8000);
+        self->rot_x = Angle_Approach(0x271c, self->rot_x, 0xcd, 1, 0x8000);
         Ov013_VecCopyR(&d, Ov003Vec_DirXZ(&data_ov013_0220b3b0, &self->pos));
         VEC_MultAdd(0x5000, &d, &self->pos, &p);
         Actor_TurnToPos(self, &p, 0x400);

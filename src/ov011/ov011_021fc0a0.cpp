@@ -56,7 +56,7 @@ static inline BOOL Ov011_NodeOk(Ov011Node *p) {
     return FALSE;
 }
 
-void func_ov011_021fbe08(Ov011Mgr3 *self) {
+void Ov011Mgr2_State03(Ov011Mgr3 *self) {
     Ov011Node *head = self->list->head;
     Actor *actor = self->list->actor;
     switch (self->state) {
@@ -287,7 +287,7 @@ static inline void Ov011_Act(Ov011Ctl *self, Ov011Npc *a, BOOL on) {
     func_ov011_022011fc(a, on);
     {
         Ov011Ent *ent = self->ent;
-        Ov011Ent_Remove(ent, func_ov011_02201254(a));
+        Ov011Ent_Remove(ent, Ov011Npc_GetEntKey(a));
     }
     func_ov011_02201214(a, NULL);
 }

@@ -19,11 +19,11 @@ extern u8 data_ov000_021cae48[];
 extern char data_ov015_02213100[];
 void *MsgRes_GetString(void *a, s32 b);
 void UiList021cb4a8_SetLabel(void *a, void *b);
-const char *func_0206ffa0(u16 id);
+const char *Tbl_GetText(u16 id);
 void func_ov000_021c3af4(void *p);
 void Lo021ccb54_ClearLabels(void *p);
 void ListRow_Init(void *p);
-void func_ov000_021c5bac(void *p);
+void Lo021cca40_Init(void *p);
 void *Param_Get(u16 id);
 Ov015ParamPrice *func_0206ee20(u16 id);
 void LoBase021ccb54_021ccbe0_AppendRow(void *a, void *b);
@@ -85,7 +85,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
         break;
     case 1:
         UiList021cb4a8_SetLabel(self->unk_04, MsgRes_GetString(res, 0xce));
-        STD_CopyLString(self->name, func_0206ffa0(sh->catchId), 0x40);
+        STD_CopyLString(self->name, Tbl_GetText(sh->catchId), 0x40);
         break;
     default:
         STD_CopyLString(self->name, data_ov015_02213100, 0x40);
@@ -126,7 +126,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
                 SET_VT(e, data_ov015_022131ac);
                 ListRow_Init(e);
                 SET_VT(e, data_ov000_021cca40);
-                func_ov000_021c5bac(e);
+                Lo021cca40_Init(e);
             }
             name = Param_Get(items[i].id);
             k = 0;
@@ -178,9 +178,9 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     self->unk_0c->unk_84 = 1;
     self->unk_0c->vfunc_08();
     if (mode == 1) {
-        func_ov000_0215d980(self->unk_0c, sh->total, 0);
+        Lo021cae48_SetValue(self->unk_0c, sh->total, 0);
     } else {
-        func_ov000_0215d980(self->unk_0c, 0, 0);
+        Lo021cae48_SetValue(self->unk_0c, 0, 0);
     }
     p = (UiObj *)Heap_Alloc(0x98);
     if (p != NULL) {
@@ -195,7 +195,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     self->unk_10->slideMode = 1;
     self->unk_10->unk_84 = 1;
     self->unk_10->vfunc_08();
-    func_ov000_0215d980(self->unk_10, data_0214a424->unk_618, 0);
+    Lo021cae48_SetValue(self->unk_10, data_0214a424->unk_618, 0);
 }
 
 void func_ov015_0220ec40(Ov015ResultPanel *self) {

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021e3aa0(Vec2 *out, const s32 *m, const Vec2 *a, const Vec2 *b, const Vec2 *c) {
+void Ov002_TransformAbout(Vec2 *out, const s32 *m, const Vec2 *a, const Vec2 *b, const Vec2 *c) {
     s32 dx;
     s32 dy;
     Vec2 t;

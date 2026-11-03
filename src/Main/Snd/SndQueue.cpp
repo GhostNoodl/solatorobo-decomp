@@ -19,7 +19,7 @@ typedef struct SndCmd {
     /* 0x4 */ s16 args[6];
 } SndCmd;
 
-void func_0204a3b8(SndMgr *mgr, SndCmd *cmd);
+void SndMgr_ExecCmd(SndMgr *mgr, SndCmd *cmd);
 
 }
 
@@ -56,7 +56,7 @@ extern BOOL OS_SetThreadPriority(void *thread, s32 prio);
 
 s32 SndMgr_PlayPan(SndMgr *mgr, s32 id, s32 pan);
 
-s32 func_02049c80(SndMgr *mgr, s32 id, s32 volume, s32 pan, s32 pitch, s32 useSlot, u32 slot);
+s32 SndMgr_PlaySeEx(SndMgr *mgr, s32 id, s32 volume, s32 pan, s32 pitch, s32 useSlot, u32 slot);
 
 static inline void SndMgr_StopSe(SndMgr *mgr, s32 id) {
     s32 seqArc;
@@ -90,7 +90,7 @@ static inline BOOL SndMgr_IsAreaAt(const u8 *p, u8 a, u8 b, u8 c) {
     return r;
 }
 
-s32 func_02049e20(SndMgr *mgr, const VecFx32 *pos) {
+s32 SndMgr_CalcAreaVolume(SndMgr *mgr, const VecFx32 *pos) {
     SndListener *listener = data_ov000_021ccd54;
     s32 *range = NULL;
     s32 i;
@@ -146,9 +146,9 @@ static inline void SndMgr_SetSlotVolume(SndMgr *mgr, u32 slot, s32 volume, s32 f
 
 void SndMgr_SetSlotVolume_0204a058(SndMgr *mgr, u32 slot, s32 volume, s32 frames);
 
-void func_0204a094(SndMgr *mgr, u32 slot, s32 pan);
+void SndMgr_SetSlotPitch(SndMgr *mgr, u32 slot, s32 pan);
 
-void func_0204a0d4(SndMgr *mgr, u32 slot, s32 pan);
+void SndMgr_SetSlotSemitones(SndMgr *mgr, u32 slot, s32 pan);
 
 BOOL func_0204a118(SndMgr *mgr, s32 id);
 
@@ -160,11 +160,11 @@ void SndMgr_PlayStrm(SndMgr *mgr, s32 strmNo);
 
 void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 arg);
 
-void func_0204a2a8(SndMgr *mgr, s32 volume, s32 frames);
+void SndMgr_SetStrmVolume_0204a2a8(SndMgr *mgr, s32 volume, s32 frames);
 
 s32 SndMgr_GetSeqVolume_0204a2c8(SndMgr *mgr, s32 seq);
 
-void func_0204a2e0(SndMgr *mgr, int fadeFrames);
+void SndMgr_StopAllSeq(SndMgr *mgr, int fadeFrames);
 
 void func_0204a2f0(SndMgr *mgr, s32 id);
 
@@ -173,7 +173,7 @@ void func_0204a360(SndMgr *self, s32 arg);
 
 
 }
-// @exclude func_0204a3b8
+// @exclude SndMgr_ExecCmd
 }  // namespace m_02049de8
 
 // ---- merged from SndMgr_6.cpp
@@ -215,7 +215,7 @@ extern BOOL OS_SetThreadPriority(void *thread, s32 prio);
 
 s32 SndMgr_PlayPan(SndMgr *mgr, s32 id, s32 pan);
 
-s32 func_02049c80(SndMgr *mgr, s32 id, s32 volume, s32 pan, s32 pitch, s32 useSlot, u32 slot);
+s32 SndMgr_PlaySeEx(SndMgr *mgr, s32 id, s32 volume, s32 pan, s32 pitch, s32 useSlot, u32 slot);
 
 static inline void SndMgr_StopSe(SndMgr *mgr, s32 id) {
     s32 seqArc;
@@ -232,7 +232,7 @@ static inline BOOL SndMgr_IsArea(SndListener *listener, u8 a, u8 b, u8 c) {
     return (listener->a == a && listener->b == b && listener->c == c) ? TRUE : FALSE;
 }
 
-s32 func_02049e20(SndMgr *mgr, const VecFx32 *pos);
+s32 SndMgr_CalcAreaVolume(SndMgr *mgr, const VecFx32 *pos);
 
 SndHandle *SndMgr_PlayAt(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch) {
     s32 seqArc;
@@ -244,7 +244,7 @@ SndHandle *SndMgr_PlayAt(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch) {
     if (id < 0) {
         return NULL;
     }
-    vol = func_02049e20(mgr, vec);
+    vol = SndMgr_CalcAreaVolume(mgr, vec);
     if (vol <= 0) {
         return NULL;
     }
@@ -298,7 +298,7 @@ void SndMgr_SetSlotVolume_0204a058(SndMgr *mgr, u32 slot, s32 volume, s32 frames
     SndMgr_SetSlotVolume(mgr, slot, volume, frames);
 }
 
-void func_0204a094(SndMgr *mgr, u32 slot, s32 pan) {
+void SndMgr_SetSlotPitch(SndMgr *mgr, u32 slot, s32 pan) {
     SndHandle *handle;
     if (pan < -0x8000 || pan > 0x7fff) {
         return;
@@ -310,7 +310,7 @@ void func_0204a094(SndMgr *mgr, u32 slot, s32 pan) {
     NNS_SndPlayerSetTrackPitch(handle, 1, pan);
 }
 
-void func_0204a0d4(SndMgr *mgr, u32 slot, s32 pan) {
+void SndMgr_SetSlotSemitones(SndMgr *mgr, u32 slot, s32 pan) {
     SndHandle *handle;
     if (pan < -0x200 || pan > 0x1ff) {
         return;
@@ -381,7 +381,7 @@ void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 arg) {
     SndMgr_StopStrm(mgr);
 }
 
-void func_0204a2a8(SndMgr *mgr, s32 volume, s32 frames) {
+void SndMgr_SetStrmVolume_0204a2a8(SndMgr *mgr, s32 volume, s32 frames) {
     SndMgr_SetStrmVolume(mgr, volume, frames);
 }
 
@@ -389,7 +389,7 @@ s32 SndMgr_GetSeqVolume_0204a2c8(SndMgr *mgr, s32 seq) {
     return SndMgr_GetSeqVolume(seq);
 }
 
-void func_0204a2e0(SndMgr *mgr, int fadeFrames) {
+void SndMgr_StopAllSeq(SndMgr *mgr, int fadeFrames) {
     NNS_SndPlayerStopSeqAll(fadeFrames);
 }
 
@@ -410,7 +410,7 @@ void func_0204a360(SndMgr *self, s32 arg) {
 }
 
 
-void func_0204a3b8(SndMgr *mgr, SndCmd *cmd) {
+void SndMgr_ExecCmd(SndMgr *mgr, SndCmd *cmd) {
     switch (cmd->type) {
     case 0:
         mgr->playAfterLoad = TRUE;
@@ -423,7 +423,7 @@ void func_0204a3b8(SndMgr *mgr, SndCmd *cmd) {
         NNS_SndPlayerStopSeqBySeqNo(cmd->args[0], cmd->args[2]);
         break;
     case 6:
-        func_02049c80(mgr, cmd->args[0], cmd->args[1], cmd->args[2], cmd->args[3], cmd->args[4], cmd->args[5]);
+        SndMgr_PlaySeEx(mgr, cmd->args[0], cmd->args[1], cmd->args[2], cmd->args[3], cmd->args[4], cmd->args[5]);
         break;
     case 7:
         if (cmd->args[2] == 1) {
@@ -487,7 +487,7 @@ static inline void SndMgr_TwlOpen(void) {
     FS_CloseFile(&file);
 }
 
-BOOL func_0204a598(SndMgr *mgr) {
+BOOL SndMgr_LoadFileBuf(SndMgr *mgr) {
     SndFile file;
     u32 status;
     s32 result;
@@ -562,7 +562,7 @@ void func_0204a768(SndMgr *mgr) {
     }
 }
 
-void func_0204a7dc(void) {
+void SndMgr_TwlOpen_0204a7dc(void) {
     SndMgr_TwlOpen();
 }
 
@@ -578,32 +578,32 @@ extern "C" {
 #define SND_MGR data_02097e4c
 
 extern void *Heap_Alloc(u32 size);
-extern SndMgr *func_020492e0(SndMgr *mgr);
-extern void func_02049344(SndMgr *mgr);
-void func_0204a924(SndQueue *queue);
+extern SndMgr *SndMgr_Ctor(SndMgr *mgr);
+extern void SndMgr_Init(SndMgr *mgr);
+void SndQueue_Init(SndQueue *queue);
 
 
-void func_0204a87c(void) {
+void Snd_Create(void) {
     if (SND_MGR == NULL) {
         SndMgr *mgr;
         data_02097dd0->cur = data_02097dd0->heapLo;
         mgr = (SndMgr *)Heap_Alloc(sizeof(SndMgr));
         if (mgr != NULL) {
-            mgr = func_020492e0(mgr);
+            mgr = SndMgr_Ctor(mgr);
         }
         SND_MGR = mgr;
         data_02097dd0->cur = data_02097dd0->heapHi;
-        func_02049344(SND_MGR);
+        SndMgr_Init(SND_MGR);
     }
     if (SND_QUEUE == NULL) {
         SND_QUEUE = (SndQueue *)Heap_AllocLo(sizeof(SndQueue), 4);
-        func_0204a924(SND_QUEUE);
+        SndQueue_Init(SND_QUEUE);
     }
 }
 
-void func_0204a904(void) {
+void Snd_Reset(void) {
     NNS_SndPlayerStopSeqAll(0);
-    func_0204a924(SND_QUEUE);
+    SndQueue_Init(SND_QUEUE);
 }
 
 static inline void SndQueue_Reset(SndQueue *queue) {
@@ -622,13 +622,13 @@ static inline void SndQueue_Reset(SndQueue *queue) {
     queue->cur = &queue->nodes[0];
 }
 
-void func_0204a924(SndQueue *queue);
+void SndQueue_Init(SndQueue *queue);
 
 void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 
 void SndQueue_Pop(SndQueue *queue);
 
-void func_0204aab0(SndQueue *queue, u16 value);
+void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 
 u16 SndQueue_Peek(SndQueue *queue);
 
@@ -649,7 +649,7 @@ static inline void SndQueue_Push(SndQueue *queue, u16 value) {
     queue->cur->value = value;
 }
 
-void func_0204ab8c(SndQueue *queue);
+void SndQueue_Update(SndQueue *queue);
 
 }
 
@@ -660,13 +660,13 @@ extern "C" {
 
 extern void *Heap_Alloc(u32 size);
 extern void *Heap_AllocLo(u32 size, int align);
-extern void *func_020492e0(SndMgr *mgr);
-extern void func_02049344(SndMgr *mgr);
+extern void *SndMgr_Ctor(SndMgr *mgr);
+extern void SndMgr_Init(SndMgr *mgr);
 
 
-void func_0204a87c(void);
+void Snd_Create(void);
 
-void func_0204a904(void);
+void Snd_Reset(void);
 
 // The neighbour links are byte offsets from the node array: the target computes i * 12 once
 // and adds -12 and +12 to it.
@@ -687,7 +687,7 @@ static inline void SndQueue_ResetNodes(SndQueue *queue) {
     queue->cur = &queue->nodes[0];
 }
 
-void func_0204a924(SndQueue *queue) {
+void SndQueue_Init(SndQueue *queue) {
     queue->flag0 = 1;
     queue->flag1 = 0;
     queue->flag2 = 0;
@@ -715,7 +715,7 @@ void SndQueue_Pop(SndQueue *queue) {
     queue->cur = queue->cur->next;
 }
 
-void func_0204aab0(SndQueue *queue, u16 value) {
+void SndQueue_Push_0204aab0(SndQueue *queue, u16 value) {
     queue->cur = queue->cur->prev;
     queue->cur->value = value;
 }
@@ -746,7 +746,7 @@ void SndQueue_Exec(SndQueue *queue, SndCmd *cmd) {
             queue->unk_04 = 0xffff;
             break;
     }
-    func_0204a3b8(SND_MGR, cmd);
+    SndMgr_ExecCmd(SND_MGR, cmd);
 }
 
 void SndQueue_StopSeqArcs(SndQueue *queue) {
@@ -768,7 +768,7 @@ static inline void SndQueue_Push(SndQueue *queue, u16 value) {
     queue->cur->value = value;
 }
 
-void func_0204ab8c(SndQueue *queue) {
+void SndQueue_Update(SndQueue *queue) {
     NNS_SndMain();
     if (queue->unk_06 != 0xffff) {
         switch (queue->unk_02) {

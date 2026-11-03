@@ -23,7 +23,7 @@ extern const char *data_ov003_021f7a38[2][2];
 extern char data_ov003_021f7a60[];
 extern char data_ov003_021f7a66[];
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void func_01ffc9fc(VecFx32 *out, VecFx32 *in, u16 ang);
+extern void Vec_RotateY(VecFx32 *out, VecFx32 *in, u16 ang);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern Actor *Actor_SpawnKind(u16 id, VecFx32 *pos, void *rot, u16 a, s32 b);
 extern void Actor_SendMsgU8(Actor *u, u16 a, s32 b);
@@ -65,7 +65,7 @@ void Ov003Actor_StateShoot(Ov003Actor *self) {
     case 10:
         if (self->model->anim_state >= 2) {
             VecFx32 v;
-            TblActorParam *rec = func_02070558(self->kind);
+            TblActorParam *rec = Tbl_GetActorParam(self->kind);
             TblActorSpawn *sp = NULL;
             u16 id;
             Actor *o;
@@ -79,7 +79,7 @@ void Ov003Actor_StateShoot(Ov003Actor *self) {
             v.x = self->model->unk_c6 << 4;
             v.y = self->model->unk_c8 << 4;
             v.z = self->model->unk_ca << 4;
-            func_01ffc9fc(&v, &v, self->rot_y);
+            Vec_RotateY(&v, &v, self->rot_y);
             VEC_Add(&v, &self->pos, &v);
             {
                 u16 b = 0xffff;
@@ -180,7 +180,7 @@ extern void func_ov000_02199f88(ActorHp *t, Ov003Actor *self);
 extern Ov003KbAnim *Model0218fe1c_GetAnimCtrl(void *model, s32 n);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *model, s16 v);
 extern BOOL Model0218fe1c_IsAnimDelayed(Model0218fe1c *model);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 step, u32 a, u16 b);
+extern u16 Angle_Approach(u16 target, u16 cur, s32 step, u32 a, u16 b);
 
 void Ov003Actor_StateHurt(Ov003Actor *self) {
     self->hit->unk_9a_5 = 1;
@@ -272,7 +272,7 @@ void Ov003Actor_StateHurt(Ov003Actor *self) {
     }
     }
     if (!self->unk_b0->unk_0a_11) {
-        self->rot_y = func_01ffc128(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
+        self->rot_y = Angle_Approach(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
     }
 }
 
@@ -307,7 +307,7 @@ void Ov003Actor_StateKnockBack(Ov003Actor *self) {
         self->unk_96 = Ov003Kb_Angle(self);
         self->moveYaw = self->unk_96 + 0x8000 + Rand_PlusMinus(0x2000);
         if (self->unk_b0->unk_0a_11) {
-            self->rot_y = func_01ffc128(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
+            self->rot_y = Angle_Approach(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
         }
         self->speed = 0;
         self->velY = 0;
@@ -376,7 +376,7 @@ void Ov003Actor_StateKnockBack(Ov003Actor *self) {
             }
         }
         if (!self->unk_b0->unk_0a_11) {
-            self->rot_y = func_01ffc128(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
+            self->rot_y = Angle_Approach(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
         }
         if (!Model0218fe1c_IsAnimDelayed(self->model) || self->unk_92 != 0) {
             Actor_Move(self, 0);
@@ -614,7 +614,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
         ActorSub40 *w;
         s32 a;
         if (!self->unk_b0->unk_0a_11) {
-            self->rot_y = func_01ffc128(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
+            self->rot_y = Angle_Approach(self->unk_96, self->rot_y, 0x8cd, 1, 0x8000);
         }
         if (self->velY <= 0 && !z) {
             self->gravity = self->targetObj->unk_1a * 0xd;
@@ -699,7 +699,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
                 self->unk_e4 = NULL;
             }
             self->targetObj->unk_1a = 0;
-            self->targetObj->type = func_02070558(self->kind)->target.type;
+            self->targetObj->type = Tbl_GetActorParam(self->kind)->target.type;
             self->speed = 0;
             self->velY = 0x266;
             self->friction = 0;

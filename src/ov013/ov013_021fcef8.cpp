@@ -31,7 +31,7 @@ void Ov013ActVt_0220b5e0_StateMove(Ov013ActVt_0220b5e0 *self) {
         self->gravity = 0;
         self->speed = 0x214;
         self->velY = 0xcd;
-        self->rot_y = func_01ffc128(0x8000, self->rot_y, 0x1000, 1, 0x8000);
+        self->rot_y = Angle_Approach(0x8000, self->rot_y, 0x1000, 1, 0x8000);
         self->moveYaw = self->rot_y;
         self->hp[2] = 0xffff;
         {

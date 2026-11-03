@@ -68,7 +68,7 @@ extern void SceneCmd_Push25(void *a, s32 b);
 extern void Field_ShakeCameraY(u8 a, u8 b);
 extern void Field_ShakeCamera(u8 a, u8 b);
 extern Ov003FvPlayer *ActorMgr_FindPlayer(void);
-extern void func_ov000_021b6b4c(Ov003FvCtx *ctx, u16 a, VecFx32 *v);
+extern void FieldMgr_SetIdVec(Ov003FvCtx *ctx, u16 a, VecFx32 *v);
 extern void Shared_SetEventActor(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
@@ -159,7 +159,7 @@ void Ov003ActVt_021f8220_State21(Ov003Fv *self) {
                     d.x -= self->pos.x;
                     d.y -= self->pos.y;
                     d.z -= self->pos.z;
-                    func_ov000_021b6b4c(data_ov000_021ccd6c, pl->unk_0c, &d);
+                    FieldMgr_SetIdVec(data_ov000_021ccd6c, pl->unk_0c, &d);
                 }
                 Shared_SetEventActor(self->unk_0e, self->unk_0c);
                 func_020627dc(4);
@@ -261,7 +261,7 @@ void Ov003ActVt_021f8220_State22(Ov003Fv *self) {
                     d.x -= self->pos.x;
                     d.y -= self->pos.y;
                     d.z -= self->pos.z;
-                    func_ov000_021b6b4c(data_ov000_021ccd6c, pl->unk_0c, &d);
+                    FieldMgr_SetIdVec(data_ov000_021ccd6c, pl->unk_0c, &d);
                 }
                 Shared_SetEventActor(self->unk_0e, self->unk_0c);
                 func_020627dc(4);

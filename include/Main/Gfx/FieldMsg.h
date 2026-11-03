@@ -53,7 +53,7 @@ extern void *Heap_Alloc(u32 size);
 extern void TextWin_Init(TextWin *win);
 extern u32 Text_Measure(u32 a, u32 b, u32 c, u32 *outW, u32 *outH, BOOL d);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void *func_02039828(VramBlock *block);
+extern void *VramBlock_Free(VramBlock *block);
 
 }
 

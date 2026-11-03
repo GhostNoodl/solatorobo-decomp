@@ -93,7 +93,7 @@ extern u8 data_ov013_0220bc80[];
 extern u8 data_ov013_0220bdd8[];
 extern u8 *data_ov000_021ccd54;
 void *Heap_Alloc(u32 size);
-s32 func_0206ffa0(u16 id);
+s32 Tbl_GetText(u16 id);
 s32 Ov003_OverlayForKind(Spawn021cfab4 *s);
 void *ResSet_Init(void *p);
 ResSet *ResSet_ReleaseAll(ResSet *p);
@@ -506,7 +506,7 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
         NEW_BASIC(0xfc, data_ov009_02217cb0);
         break;
     }
-    Actor_JoinGroup(p, s->sub, s->id, func_0206ffa0(s->id));
+    Actor_JoinGroup(p, s->sub, s->id, Tbl_GetText(s->id));
     *(Rgb021cfab4 *)(p + 0xac) = *(Rgb021cfab4 *)(data_ov000_021ccd54 + 0xca);
     return p;
 }

@@ -27,7 +27,7 @@ extern void SceneCmd_Push1e(FieldState *state);
 extern void SceneCmd_Push1f(FieldState *state);
 extern void func_ov000_0218547c(FieldState *state, u16 a, void *res, u16 id);
 extern void SceneCmd_Push12(FieldState *state, void *res, s32 id);
-extern void func_ov000_02172264(FieldPlayer *player, u32 v, s32 id, void *res);
+extern void MessageQueue021cb980_Push08(FieldPlayer *player, u32 v, s32 id, void *res);
 
 static inline BOOL Field_IsEventPending(FieldState *state) {
     return state->head != state->tail;
@@ -147,15 +147,15 @@ struct StagePlayer {
 extern void func_ov000_021b1110(StagePlayer *player, int a);
 extern StagePlayer *ActorMgr_FindPlayer(void);
 
-extern void func_ov000_02172288(FieldPlayer *player, int a, s32 b);
+extern void MessageQueue021cb980_Push09_0a(FieldPlayer *player, int a, s32 b);
 extern BOOL func_ov000_021705a0(FieldActor *actor, int a);
-extern void func_ov000_021722c4(FieldPlayer *player, int a, s32 b, s32 c, s32 d, s32 e);
+extern void MessageQueue021cb980_Push0b_0c(FieldPlayer *player, int a, s32 b, s32 c, s32 d, s32 e);
 extern void func_ov000_021705dc(FieldActor *actor, s32 a, s32 b);
-extern void func_ov000_02172338(FieldPlayer *player, int a, s32 b, s32 c, s32 d);
+extern void MessageQueue021cb980_Push0d_0e(FieldPlayer *player, int a, s32 b, s32 c, s32 d);
 extern bool func_ov000_021705ec(FieldActor *actor);
 extern void func_ov000_0216da78(FieldActorState *st);
 extern void *MsgRes_GetString(void *msg, u16 id);
-extern void func_ov000_02172390(FieldPlayer *player, s32 a, void *str);
+extern void MessageQueue021cb980_Push0f(FieldPlayer *player, s32 a, void *str);
 extern void SceneCmd_Push1b(FieldState *state, s32 a);
 extern void SceneCmd_Push1c(FieldState *state, s32 a);
 struct ActorMgr; // ov000/Actor.h

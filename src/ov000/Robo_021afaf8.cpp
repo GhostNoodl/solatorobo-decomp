@@ -113,7 +113,7 @@ static inline void FreeModels_021afaf8(Robo021ca458 *self) {
     }
 }
 
-void func_ov000_021afaf8(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
+void Robo021ca458_State1f(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
     Robo021ca458 *self = (Robo021ca458 *)self_;
     BOOL big;
     anm = NULL;

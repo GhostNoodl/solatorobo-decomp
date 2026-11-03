@@ -12,7 +12,7 @@ extern "C" {
 extern ov006_Unk02097e40 *data_02097e40;
 void func_02045094(ov006_Unk02097e40 *p);
 void func_02045498(ov006_Unk02097e40 *p, int a);
-BOOL func_02044c80(void);
+BOOL WH_IsStopped_02044c80(void);
 BOOL Wh_End(ov006_Unk02097e40 *p);
 
 static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
@@ -49,7 +49,7 @@ void func_ov006_021e4d38(ov006_Unk021ec888 *self) {
     switch (self->stateTime) {
     case 0:
         data_02097dd0->vblankFunc = NULL;
-        if (func_02044c80()) {
+        if (WH_IsStopped_02044c80()) {
             self->state = 1;
             self->stateTime = 0;
             return;

@@ -44,7 +44,7 @@ typedef struct {
 extern "C" {
 
 s32 FX_Div(s32 a, s32 b);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -93,7 +93,7 @@ u16 func_ov000_0218a5ec(const LerpAngle0218a5ec *self, s32 v) {
         }
     }
     if (r == 0) {
-        r = func_01ffc128(self->y1, self->y0, FX_Div(v - x0, x1 - x0), 1, 0x8000);
+        r = Angle_Approach(self->y1, self->y0, FX_Div(v - x0, x1 - x0), 1, 0x8000);
     }
     return r;
 }

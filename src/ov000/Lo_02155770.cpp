@@ -54,7 +54,7 @@ static inline BOOL Lo_Busy02155770(UiList *self) {
     return Lo_Settled02155770(self) ? FALSE : TRUE;
 }
 
-void func_ov000_02155770(UiList *self) {
+void UiList_HandleInput(UiList *self) {
     u16 cont;
     u16 trig;
     if (!Lo_Active02155770(self)) {

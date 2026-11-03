@@ -53,7 +53,7 @@ void Ov014Act_02209280_StateDie(Ov014Act_02209280 *self) {
         s32 t;
         s32 v;
         AnimCtrl *a;
-        self->rot_y = func_01ffc128(0, self->rot_y, self->unk_b0->unk_02, 1, 0x8000);
+        self->rot_y = Angle_Approach(0, self->rot_y, self->unk_b0->unk_02, 1, 0x8000);
         t = self->fsm->timer;
         v = 0;
         a = Model0218fe1c_GetAnimCtrl(self->model, 0);

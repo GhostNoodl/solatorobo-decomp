@@ -73,7 +73,7 @@ Ov003Scene *Ov003TaskVt_021f78f4_New(void) {
 }
 #pragma force_active reset
 
-void func_ov003_021cce1c(void) {
+void Ov003Vt_021f78e4_Dtor(void) {
 }
 
 Ov003OamEntry *Ov003Oam_Offset(Ov003OamOwner *owner, u16 *flip, Ov003OamEntry *oam, u16 *count) {

@@ -15,7 +15,7 @@ extern "C" {
 
 extern ov006_Bgm021d94e8 *data_02097e48;
 extern char data_ov006_021ec864[];
-void func_0204aab0(ov006_Bgm021d94e8 *a);
+void SndQueue_Push_0204aab0(ov006_Bgm021d94e8 *a);
 
 BOOL Ov006Vt_021ec040_Load(void) {
     ov006_Bgm021d94e8 *s = data_02097e48;
@@ -24,7 +24,7 @@ BOOL Ov006Vt_021ec040_Load(void) {
             u16 v;
             if (s->unk2 != 10 && s->unk2 != 0) {
                 if (s->unk6 != 0xffff) {
-                    func_0204aab0(s);
+                    SndQueue_Push_0204aab0(s);
                 }
                 v = 1;
             } else {

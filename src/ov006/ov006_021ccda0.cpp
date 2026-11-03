@@ -15,7 +15,7 @@ extern char data_ov006_021ec864[];
 extern ov006_StateFunc data_ov006_021eb6d8[];
 
 void ov006_Menu_Delete(void);
-int func_02044b20(void);
+int WH_Destroy_02044b20(void);
 void ov006_DeleteSlotManager(void);
 void Wh_Create(void);
 void ov006_Menu_Create(void);
@@ -76,7 +76,7 @@ static inline void ov006_Manager_Dtor(ov006_Manager *self) {
     ResMgr_ReleaseByName(data_02097cdc, data_0208cca0, 7, 0);
     ResMgr_ReleaseByName(data_02097cdc, data_ov006_021ebb88, 7, 0);
     ov006_Menu_Delete();
-    func_02044b20();
+    WH_Destroy_02044b20();
     ov006_DeleteSlotManager();
     func_0201bbfc(1);
 }
@@ -316,7 +316,7 @@ BOOL func_ov006_021cd4c0(ov006_Manager *self) {
         }
         break;
     case 2:
-        if (func_02044b20()) {
+        if (WH_Destroy_02044b20()) {
             result = TRUE;
             self->subState++;
         }

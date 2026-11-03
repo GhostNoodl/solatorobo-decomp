@@ -33,11 +33,11 @@ extern u8 data_ov000_021caac8[];
 void *MsgRes_GetString(void *g, u32 id);
 BOOL StageRes_Bind(void *p);
 void *ResList_FindType2(void *a, void *b);
-void func_02041c20(void *model, s32 a, void *b);
+void TexObj_SetOamFuncArg(void *model, s32 a, void *b);
 void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void UiList021cb4a8_SetLabel(UiList021cb4a8 *self, void *a);
-void func_ov000_021546ec(void *a, const char *b, const char *c, u16 d);
+void UiList_SetIconModel(void *a, const char *b, const char *c, u16 d);
 void *Task_FindById(s32 kind);
 u32 DataRes_GetCount(void *a, s32 b);
 u16 func_ov000_0214bcc4(u16 id, u16 index);
@@ -83,7 +83,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     self->unk_40->flags |= 2;
     TexObj_SelectImage(self->unk_40, 0, 1);
     self->unk_40->unk_158 = (void *)func_ov000_0214fcfc;
-    func_02041c20(self->unk_40, 1, self);
+    TexObj_SetOamFuncArg(self->unk_40, 1, self);
     self->unk_40->flags |= 0x80000;
     self->unk_40->flags |= 0x200000;
     self->unk_40->unk_150 = -0x1ccd;
@@ -165,7 +165,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     ((VObj *)self->unk_50)->vfunc_10(MsgRes_GetString(g, 0x10f));
     ((VObj *)self->unk_50)->vfunc_14(MsgRes_GetString(g, 0x110));
     UiList021cb4a8_SetLabel(self->unk_50, MsgRes_GetString(g, 0x111));
-    func_ov000_021546ec(self->unk_50, data_0208cca0, data_0208cb74, 0xb);
+    UiList_SetIconModel(self->unk_50, data_0208cca0, data_0208cb74, 0xb);
     self->unk_50->owner = self;
     self->unk_50->rows = 4;
     {

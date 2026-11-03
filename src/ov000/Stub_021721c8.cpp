@@ -13,24 +13,24 @@ void func_ov000_021721c8(MessageQueue021cb980 *self) {
     }
 }
 
-void func_ov000_021721f4(VObj *self) {
+void MessageQueue021cb980_Push05(VObj *self) {
     self->vfunc_0c(0, 5, 0, 0);
 }
 
-void func_ov000_02172218(VObj *self, s32 a, s32 b, s32 c) {
+void MessageQueue021cb980_Push06(VObj *self, s32 a, s32 b, s32 c) {
     self->vfunc_0c(0, 6, b, (a << 16) | c);
 }
 
-void func_ov000_02172240(VObj *self, s32 a, s32 b) {
+void MessageQueue021cb980_Push07(VObj *self, s32 a, s32 b) {
     self->vfunc_0c(0, 7, a, b);
 }
 
-void func_ov000_02172264(VObj *self, s32 a, s32 b, s32 c) {
+void MessageQueue021cb980_Push08(VObj *self, s32 a, s32 b, s32 c) {
     self->vfunc_0c(0, 8, c, (a << 16) | b);
 }
 
 
-void func_ov000_02172288(VObj *self, s32 flag, s32 a) {
+void MessageQueue021cb980_Push09_0a(VObj *self, s32 flag, s32 a) {
     if (flag) {
         self->vfunc_0c(0, 9, a, 0);
     } else {

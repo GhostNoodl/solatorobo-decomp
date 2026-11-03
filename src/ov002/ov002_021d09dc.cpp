@@ -14,7 +14,7 @@ void Task021efa1c_Draw(Task021efa1c *self) {
     }
 }
 
-Task021ef89c *func_ov002_021d0a1c(void) {
+Task021ef89c *Task021ef89c_New(void) {
     Task021ef89c *p = (Task021ef89c *)Heap_Alloc(0x44);
     if (p != NULL) {
         TaskBase_ctor(p);

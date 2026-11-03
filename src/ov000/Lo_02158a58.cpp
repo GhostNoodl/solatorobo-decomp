@@ -9,7 +9,7 @@ extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *data_02097e4c;
 BOOL func_ov000_02151664(UiList *p, UiListItem *msg);
 
-void func_ov000_02158a58(UiList021cb4a8 *self, s32 unused, s32 *pos) {
+void UiList021cb4a8_DrawLabels(UiList021cb4a8 *self, s32 unused, s32 *pos) {
     s32 px;
     s32 a;
     s32 y;

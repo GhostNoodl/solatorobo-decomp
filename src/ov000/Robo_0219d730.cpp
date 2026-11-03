@@ -10,7 +10,7 @@ extern "C" {
 s32 func_0203db40(void *p);
 void Model0218fe1c_UpdateAnim(void *p, s32 a);
 void Model0218fe1c_SetAnimDelay(void *p, u16 delay, BOOL force);
-void func_01ffc9fc(VecFx32 *out, void *a, u16 ang);
+void Vec_RotateY(VecFx32 *out, void *a, u16 ang);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 
 void Robo021ca458_Animate(Robo021ca458 *self) {
@@ -77,7 +77,7 @@ void Robo021ca458_Animate(Robo021ca458 *self) {
             r.y = self->unk_b5a + self->rot_y;
             r.z = self->unk_b5c + self->rot_z;
             o->SetRot(&r);
-            func_01ffc9fc(&w, (u8 *)self + 0xb4c, r.y);
+            Vec_RotateY(&w, (u8 *)self + 0xb4c, r.y);
             VEC_Add(&w, (VecFx32 *)((u8 *)self + 0x70), &w);
             o->SetPos(&w);
             s = o->scale;

@@ -59,7 +59,7 @@ static inline BOOL Field_HasEvent(void) {
     return data_ov000_021ccd54->event != 0 ? TRUE : FALSE;
 }
 
-BOOL func_02055844(void) {
+BOOL Field_HasEvent_02055844(void) {
     return Field_HasEvent() ? TRUE : FALSE;
 }
 
@@ -69,11 +69,11 @@ void Field_ClearEvent(void) {
     }
 }
 
-BOOL func_02055898(void) {
+BOOL Field_IsPlayerBusy_02055898(void) {
     return Field_IsPlayerBusy();
 }
 
-// Same VRAM-free loop as func_02051210: the OBJ VRAM bases are read with the
+// Same VRAM-free loop as MainVt_0208bbc8_Release: the OBJ VRAM bases are read with the
 // SDK getters into locals before the loop, and `i` is a `long`.
 void func_0205592c(GlyphCache *cache) {
     long i;
@@ -88,7 +88,7 @@ void func_0205592c(GlyphCache *cache) {
         if (cache->blocks[i] != NULL) {
             VramBlock *b = cache->blocks[i];
             MIi_CpuClearFast(0, (b->kind == 4 ? objBase : subObjBase) + b->addr, b->size - b->pad);
-            func_02039828(cache->blocks[i]);
+            VramBlock_Free(cache->blocks[i]);
             cache->blocks[i] = NULL;
             cache->ids[i] = 0;
         }

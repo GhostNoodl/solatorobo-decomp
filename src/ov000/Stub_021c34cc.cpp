@@ -8,7 +8,7 @@ extern "C" {
 BOOL Model_IsReady(void *p, s32 a);
 void func_ov000_021c34fc(ListRow021cca70 *self);
 
-void func_ov000_021c34cc(ListRow021cca70 *self) {
+void ListRow021cca70_Draw(ListRow021cca70 *self) {
     void *p = self->unk_38;
     if (p == NULL) {
         return;

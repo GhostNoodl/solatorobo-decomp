@@ -17,13 +17,13 @@ extern void *data_02149ef8;
 void *ResList_FindType2(void *a, void *b);
 void *ResMgr_GetArcList(void *a);
 void *ResMgr_GetArchiveList(void *a, void *b, s32 c);
-void func_02041c5c(void *m, void *fn);
-void func_02041c20(void *m, s32 a, void *b);
+void TexObj_SetAllOamFuncs(void *m, void *fn);
+void TexObj_SetOamFuncArg(void *m, s32 a, void *b);
 BOOL Obj02152e5c_LoadModel(void *self);
 void *func_ov000_0214c084(u8 *self, u16 *cmd, void *arr, u16 *count);
 void func_020708fc(s32 a, LoName16 *out);
 void func_02070b98(s32 a, LoName16 *out, s32 b, s32 c);
-s32 func_0206ffa0(s32 a);
+s32 Tbl_GetText(s32 a);
 s32 MsgRes_GetString(void *p, s32 a);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
 void TextWin_RenderToVram(void *win);
@@ -66,8 +66,8 @@ void Menu021ca94c_Setup(Menu021ca94c *self) {
     }
     self->unk_88->flags |= 2;
     TexObj_SelectImage(self->unk_88, 0, 6);
-    func_02041c5c(self->unk_88, (void *)func_ov000_0214c084);
-    func_02041c20(self->unk_88, 6, self);
+    TexObj_SetAllOamFuncs(self->unk_88, (void *)func_ov000_0214c084);
+    TexObj_SetOamFuncArg(self->unk_88, 6, self);
 
     func_020708fc(0x1000, &a);
     func_02070b98(0x1000, &b, 1, 2);
@@ -94,7 +94,7 @@ void Menu021ca94c_Setup(Menu021ca94c *self) {
 
     fnt = data_02149ef8;
     self->unk_b8 = 8;
-    self->unk_b4 = func_0206ffa0(0x1000);
+    self->unk_b4 = Tbl_GetText(0x1000);
     self->unk_dc = Text_Measure(self->unk_b8, self->unk_c8, self->unk_b4, (u8 *)self + 0xd4, (u8 *)self + 0xd8, self->unk_c7 != 0 ? 1 : 0);
     data_02097ce0->unk_004 = self->unk_b8;
     self->unk_104 = 0x7fff;

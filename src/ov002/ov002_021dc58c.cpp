@@ -25,7 +25,7 @@ static inline void updateModel(Obj021efe8c *m) {
 
 void func_ov002_021dc58c(Obj021eff10 *self, Obj021eff50 *ev) {
     if (self->unk_10 != NULL) {
-        func_02041c20(self->unk_10, 6, FIELD(((u8 *)ev->board), 0x6c, void *));
+        TexObj_SetOamFuncArg(self->unk_10, 6, FIELD(((u8 *)ev->board), 0x6c, void *));
         Model_PlayPart(self->unk_10, 6);
     }
     if (self->unk_18 != 20 && self->unk_18 / 10 != 0) {

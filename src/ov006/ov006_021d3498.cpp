@@ -32,9 +32,9 @@ extern const ov006_Vec32 data_ov006_021eb74c;
 extern const ov006_Vec32 data_ov006_021eb758;
 
 void VEC_Normalize(const ov006_Vec32 *src, ov006_Vec32 *dst);
-const char *func_0207011c(u16 id);
+const char *Tbl_GetResFile(u16 id);
 const char *func_020701d4(u16 id);
-s16 *func_020706a0(u16 id);
+s16 *Tbl_Elem_020706a0(u16 id);
 void ModelViewer_SetModel(ov006_Chr021d3498 *chr, const char *a, const char *b, const char *c, const char *d,
                          const char *e, int f, int g);
 
@@ -54,9 +54,9 @@ void func_ov006_021d3498(ov006_Task021d3498 *self, u16 id, BOOL flag) {
     if (self->unk58 == NULL) {
         return;
     }
-    a = func_0207011c(id);
+    a = Tbl_GetResFile(id);
     b = func_020701d4(id);
-    c = func_0207011c(id);
+    c = Tbl_GetResFile(id);
     d = func_020701d4(id);
     if (flag) {
         ov006_Vec32 v;
@@ -104,7 +104,7 @@ void func_ov006_021d3498(ov006_Task021d3498 *self, u16 id, BOOL flag) {
         }
     }
     {
-        s16 g = *func_020706a0(id);
+        s16 g = *Tbl_Elem_020706a0(id);
         ModelViewer_SetModel(self->unk58, a, b, c, d, "nut00", 0, g);
     }
 }
@@ -156,7 +156,7 @@ void func_0204b420(Camera *cam);
 Model0218fe1c *Model0218fe1c_FreeAnims(Model0218fe1c *self);
 ActorRes *ResSet_Init(ActorRes *self);
 void ResMgr_ReleaseArchive(const char *a, const char *b, int c);
-const char *func_0207011c(u16 id);
+const char *Tbl_GetResFile(u16 id);
 const char *func_020701d4(u16 id);
 int ResSet_UpdateLoad(ActorRes *self);
 
@@ -269,7 +269,7 @@ extern "C" {
 
 
 ActorRes *ResSet_Init(ActorRes *self);
-const char *func_0207011c(u16 id);
+const char *Tbl_GetResFile(u16 id);
 const char *func_020701d4(u16 id);
 
 static inline ActorRes *ov006_NewModel60(void) {
@@ -306,9 +306,9 @@ void ov006_TaskD37_Load(ov006_TaskD37 *self) {
     self->unk60->unk_00 = 0;
     self->unk68 = ov006_NewModel60();
     id = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC;
-    a = func_0207011c(id);
+    a = Tbl_GetResFile(id);
     b = func_020701d4(id);
-    c = func_0207011c(id);
+    c = Tbl_GetResFile(id);
     d = func_020701d4(id);
     ActorRes_SetName1(self->unk68, a, b);
     ActorRes_SetName2(self->unk68, c, d);
@@ -346,7 +346,7 @@ void func_0204b420(Camera *cam);
 Model0218fe1c *Model0218fe1c_FreeAnims(Model0218fe1c *self);
 ActorRes *ResSet_Init(ActorRes *self);
 void ResMgr_ReleaseArchive(const char *a, const char *b, int c);
-const char *func_0207011c(u16 id);
+const char *Tbl_GetResFile(u16 id);
 const char *func_020701d4(u16 id);
 int ResSet_UpdateLoad(ActorRes *self);
 
@@ -405,7 +405,7 @@ BOOL Model0218fe1c_SetAnim(void *a, const void *b, int c, int d);
 void Model0218fe1c_SetLoop(void *a);
 AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *a, int b);
 void Model0218fe1c_SetAnimSpeed(void *a, int b);
-ov006_Unk020706a0 *func_020706a0(u16 id);
+ov006_Unk020706a0 *Tbl_Elem_020706a0(u16 id);
 void ov006_TaskD37_PlayAnim(ov006_TaskD37 *self, const char *name, s16 speed, u8 loop);
 ov006_Caption *ov006_Caption_Ctor(ov006_Caption *self);
 void ov006_Caption_Init_021e0954(ov006_Caption *self);
@@ -506,7 +506,7 @@ void ov006_TaskD37_Start(ov006_TaskD37 *self) {
     none = OV006_CURSOR_NONE;
     ov006_Manager_DispatchMenuCb(5, self->unk50, 0);
     self->unk50->vfunc_08();
-    func_ov000_021548cc(self->unk50, data_ov006_021eb6fe[data_ov006_021ec884->unk5]);
+    UiList_SetPanelColor(self->unk50, data_ov006_021eb6fe[data_ov006_021ec884->unk5]);
     if (self->unk4A != none && self->param == 0) {
         UiList *w = self->unk50;
         w->vfunc_a8(UiList_GetItemById(w, self->unk4A));
@@ -548,7 +548,7 @@ void ov006_TaskD37_Start(ov006_TaskD37 *self) {
     Model0218fe1c_SetAnim(self->unk6C, "nut00", 0, 1);
     self->unk6C->actor_id = 0;
     Model0218fe1c_SetLoop(self->unk6C);
-    Model0218fe1c_SetAnimSpeed(self->unk6C, func_020706a0(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC)->unk0);
+    Model0218fe1c_SetAnimSpeed(self->unk6C, Tbl_Elem_020706a0(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC)->unk0);
     ov006_TaskD37_PlayAnim(self, "s00", 0x400, 1);
     {
         VecFx32 at = data_ov006_021eb764;

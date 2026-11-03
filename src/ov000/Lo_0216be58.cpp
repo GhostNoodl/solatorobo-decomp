@@ -9,7 +9,7 @@ extern "C" {
 
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
-s32 func_02043d84(void *a);
+s32 Gfx3DState_NextPolyIdB(void *a);
 
 void func_ov000_0216be58(LoTicker *self) {
     if (PauseNode_IsDrawPaused(data_ov000_021ccd54->pause, 1)) {
@@ -27,7 +27,7 @@ void func_ov000_0216be94(LoTicker *self) {
 }
 
 // Material callback of the effect slots (installed by func_ov000_0216bf18): caps the polygon alpha at
-// 30, sets the polygon ID from func_02043d84 and turns on translucent depth update.
+// 30, sets the polygon ID from Gfx3DState_NextPolyIdB and turns on translucent depth update.
 void func_ov000_0216bec8(NNSG3dRS *rs) {
     NNSG3dMatAnmResult *mat = rs->pMatAnmResult;
     GfxSys *g = data_02097d48;
@@ -36,7 +36,7 @@ void func_ov000_0216bec8(NNSG3dRS *rs) {
     if (alpha > 0x1e) {
         alpha = 0x1e;
     }
-    mat->prmPolygonAttr = (w & 0xc0e0f7ff) | (alpha << 16) | (func_02043d84(g->unk_8b0) << 24) | 0x800;
+    mat->prmPolygonAttr = (w & 0xc0e0f7ff) | (alpha << 16) | (Gfx3DState_NextPolyIdB(g->unk_8b0) << 24) | 0x800;
 }
 
 }

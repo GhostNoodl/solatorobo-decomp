@@ -235,8 +235,8 @@ void Ov011Act7da4_StateAttack2(Ov011Act7da4 *self) {
             v.z -= self->unk_84.z;
             VEC_Normalize(&v, &v);
             r = *(Ov011RotB *)&o->rot_x;
-            r.x = func_01ffc128(FX_Atan(-v.y), r.x, 0x21, 1, 0x8000);
-            r.y = func_01ffc128(FX_Atan2(v.x, v.z), r.y, 0x21, 1, 0x8000);
+            r.x = Angle_Approach(FX_Atan(-v.y), r.x, 0x21, 1, 0x8000);
+            r.y = Angle_Approach(FX_Atan2(v.x, v.z), r.y, 0x21, 1, 0x8000);
             *(Ov011RotB *)&o->rot_x = r;
         } else {
             self->target_id = 0xffff;

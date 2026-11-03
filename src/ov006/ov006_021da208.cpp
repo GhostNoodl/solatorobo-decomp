@@ -25,7 +25,7 @@ extern const ov006_Price021da208 data_ov006_021eb7c4[];
 extern const ov006_Price021da208 data_ov006_021eb7e4;
 
 void ListRow_Init(void *self);
-void func_ov000_021c5bac(void *self);
+void Lo021cca40_Init(void *self);
 BOOL ov006_ListCb_StoreIdOrCancel(UiList *self, UiListItem *item);
 
 static inline u8 ov006_SlotManager_GetItem(ov006_SlotManager *self, u8 i) {
@@ -60,7 +60,7 @@ static inline ov006_Entry021da208 *ov006_NewEntry(void) {
         e->vtbl = &data_ov006_021ebc80;
         ListRow_Init(e);
         e->vtbl = &data_ov000_021cca40;
-        func_ov000_021c5bac(e);
+        Lo021cca40_Init(e);
     }
     return e;
 }
@@ -150,14 +150,14 @@ void ov006_Task021ec040_BuildShopList(ov006_Task021ec040 *self) {
     ov006_Window_SetSlide(self->unk18, 0x100, 0, 0);
     self->unk18->slideMode = 1;
     self->unk18->vfunc_08();
-    func_ov000_0215d980(self->unk18, self->unk38, 1);
+    Lo021cae48_SetValue(self->unk18, self->unk38, 1);
 
     self->unk1C = ov006_NewLo021cae48();
     ov006_Window_SetPos(self->unk1C, 0x92, 0x96, -0x199a);
     ov006_Window_SetSlide(self->unk1C, 0x100, 0, 0);
     self->unk1C->slideMode = 1;
     self->unk1C->vfunc_08();
-    func_ov000_0215d980(self->unk1C, *(s32 *)((u8 *)data_0214a424 + 0x20), 1);
+    Lo021cae48_SetValue(self->unk1C, *(s32 *)((u8 *)data_0214a424 + 0x20), 1);
 
     self->unk20 = ov006_NewLo021cb5a8();
     self->unk20->flags |= 0x4000000;

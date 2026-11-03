@@ -2,7 +2,7 @@
 
 extern "C" {
 
-ListRow *func_ov000_021c4014(LoBase021ccb54_021ccbe0 *list, int idx);
+ListRow *LoBase021ccb54_021ccbe0_FindRow(LoBase021ccb54_021ccbe0 *list, int idx);
 void func_ov000_021c414c(LoBase021ccb54_021ccbe0 *list, ListRow *item);
 void LoBase021ccb54_021ccbe0_Select(LoBase021ccb54_021ccbe0 *list, int idx);
 void Obj021f002c_CreateText(Obj021f002c *self);
@@ -73,7 +73,7 @@ void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
             cnt[info[0]] += w[i];
         }
         for (i = 0; i < 5; i++) {
-            Obj021f002c *o = (Obj021f002c *)func_ov000_021c4014(self->unk_08, i);
+            Obj021f002c *o = (Obj021f002c *)LoBase021ccb54_021ccbe0_FindRow(self->unk_08, i);
             o->unk_44 = cnt[i] != 0 ? TRUE : FALSE;
             Obj021f002c_CreateText(o);
         }
