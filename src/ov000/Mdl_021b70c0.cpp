@@ -32,8 +32,8 @@ void func_ov000_021b70c0(FieldPropModel *self, FieldPropLoader *res, u8 *list, u
 // pass six) to fix the register order of mdl and tex; as a local the registers differ. This file is the function's
 // whole .text, so it has no delinks entry. The score is in docs/UNMATCHED.md;
 // the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+// Round mtA: tex declared in the anm block (25 to 21 / 0); mdl and tex still swap r7/r8.
 void func_ov000_021b70c0(FieldPropModel *self, FieldPropLoader *res, u8 *list, u8 count, u8 needMat, u8 nsub) {
-    NNSG3dResTex *tex;
     NNSG3dResMdlSet *set;
     NNSG3dResMdl *mdl;
     BOOL needJnt;
@@ -68,7 +68,7 @@ void func_ov000_021b70c0(FieldPropModel *self, FieldPropLoader *res, u8 *list, u
     NNS_G3dRenderObjInit(self->rob, mdl);
     needJnt = TRUE;
     if (res->anm != NULL) {
-        tex = NNS_G3dGetTex((NNSG3dResFileHeader *)*self->res->mdl);
+        NNSG3dResTex *tex = NNS_G3dGetTex((NNSG3dResFileHeader *)*self->res->mdl);
         LOADANM021b70c0(0, needJnt = FALSE)
         LOADANM021b70c0(1, needMat = FALSE)
         LOADANM021b70c0(2, needMat = FALSE)

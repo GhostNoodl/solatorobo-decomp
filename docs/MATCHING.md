@@ -9124,3 +9124,81 @@ Readability only; every function stays byte-identical, and only symbol names cha
 - **ov015 helpers** called from the `Ov015Game` slots: `Ov015Ship_*`, `Ov015Fish_*`, `Ov015Obj292c_*`, `Ov015Result_*`, `Ov015Obj34_Init/DtorBase`, `Ov015Hud_Draw` and `Ov015Hud_Dtor` (`Ov015Hud_vtbl` slot 0).
 
 **Left unnamed:** the WH functions (as in nmI), the `StageVars` (`data_02fe1534`) field setters, the shared UiList slots 0x24/0x88/0x90/0xa0 and actor slots 0x18/0x1c (no single role), the empty base slots of small ov003/ov010 objects, the four ov013 pointer-to-member constants that share one target (`<Function>_pmf` would be duplicated), `data_ov002_021eef8c` (the comparators), the Lang/Tbl lookups, and most single-caller helpers whose role is not clear from the code.
+
+## Round mtA: 7 of the 27 auA drafts re-matched honestly, 8111 -> 8118
+
+Goal: re-match the functions round auA demoted, without the tricks. Each match is back in its file with its
+`delinks.txt` range or entry as it was before auA (the reverse of auA's cut), and its `docs/UNMATCHED.md` row is
+gone. Gate: 0 FAILED, 19/19 ROM checks and `check symbols` OK, `ninja report` **8118** matched,
+`tools/check_drafts.py --score` exits 0, `tools/honesty_scan.py` exits 0 (no new allowlist entry).
+
+### Matched, and the lever
+
+| Function | File | auA score | Lever |
+|---|---|---|---|
+| `Camera_Apply` (`0204b43c`) | `src/Main/Gfx/Camera.cpp` | 5 / 0 | Inline expression. The sqrt result goes straight into the call: `ang = FX_Atan2(b.y - a.y, ((s32)REG_SQRT_RESULT + 1) >> 1);` after `Cam_SqrtStart(sq)`. The `root`/`q`/`ay`/`by` block locals made `q` share `root`'s register (the trick redefined `q` to keep them apart). With the locals gone the operands are codegen values and get the ROM's registers. This is the SDK `VEC_Mag` return shape. `(s32)(REG_SQRT_RESULT + 1) >> 1` matches as well. A `dy` local is fine too, but only when it is assigned after the sqrt start (`s32 dy = b.y - a.y;` before it gives 102). |
+| `func_ov002_021dedf0` | `src/ov002/ov002_021dedf0.cpp` | 34 / 0 | Reused local (honest_search's `reuse`/rule F, the idiom of the matched sibling `func_ov002_021e0280`). The row counter `i` first holds the shape kind: `i = Param_GetEntry(t->id)[1]; sh = ParamKind_GetShape(i);`. Its loop web is then a second web of a reused variable, and those are numbered in the low `@` band, where the fake parameter had put it (round scB's rule: a reused variable's later web is an `@` object, numbered below the named locals). |
+| `func_02056230` | `src/Main/Sys/SlideDrawScene.cpp` | 504 / 463 | Same lever. One `s32 i` holds the fade scale (`s` in the auA draft, used only before the panel loops) and is then the panel counter. 504 to 0. Found by `scratchpad mtA/reuse.py`, which merges into the fake-parameter local every same-typed local whose uses all come before (or all after) it. |
+| `Ov003TickerSet_Start` (`021d85c8`) | `src/ov003/ov003_021d85c8.cpp` | 91 / 42 | `#pragma push` / `opt_common_subs off` / `pop` around the function (the per-function optimizer pragma class of `ov006_021d16a0`, round ovfresh1; allowlisted as `src/ opt_`). With CSE off, the stack parameter `b2` is read from its stack slot for each of the three inlined `Ov003Ticker_Start` calls, which is what the auA-era `volatile bool b2` forced. |
+| `func_02042f40` (Blend) | `src/Main/Gfx/Blend.cpp` | 17 / 2 | `#pragma push` / `optimization_level 3` / `pop`. At level 4 the lerp and the `FX_SinIdx` index get other registers; the auA-era `volatile int` on `FX_SinIdx`'s parameter forced the same thing. |
+| `func_020554e4` (SlidePanel_2) | `src/Main/Gfx/SlidePanel_2.cpp` | 10 / 6 | `#pragma push` / `opt_propagation off` / `pop` (as `ResLoader.c`, `CARDi_InitResources`). The model's `x` is read before `y` as in the ROM; the volatile cast had forced that order. `opt_dead_assignments off` also gives 0. |
+| `Ov003TaskVt_021f78f4_Start` (`021cd1e4`) | `src/ov003/ov003_021cd1e4.cpp` | 79 / 76 | `#pragma push` / `opt_dead_assignments off` / `pop`. `name` and `file` then stay in callee-saved registers across `TexObj_Init`, which the always-true `if (name)` had forced. |
+
+How they were found: a pragma sweep over every remaining auA draft (`scratchpad mtA/psweep.py`: one function at a
+time, wrapped in `#pragma push` / `pop`, with `opt_common_subs`, `opt_propagation`, `opt_lifetimes`,
+`opt_dead_assignments`, `opt_strength_reduction`, `opt_loop_invariants`, `opt_dead_code`, `peephole`,
+`scheduling` off, `optimization_level` 1-3, and `psweep2.py` for pairs of these, `optimize_for_size` and
+`opt_unroll_loops`). Round cvA's sweep predates auA, so these drafts had never been swept. The four pragma matches
+come from that sweep (`Ov003TickerSet_Start` from a first, hand-run version of it). Every 0 from `match.py -q` was checked in the full build: `match.py` compares only the length
+of our code, so a short object can also score 0.
+
+**Rule (worth trying first on a demoted trick): a `volatile` or always-true test that only reorders a load or
+keeps a value in a register often stands in for a per-function optimizer pragma.** `volatile` reads behave like
+`opt_common_subs off` (each read stays) or `opt_propagation off` (no copy is folded into its use). An
+always-true test that keeps a value alive behaves like `opt_dead_assignments off`. And a fake parameter that
+"numbers below the temps" is often a reused local: its second web is a low-numbered `@` object, like a parameter.
+
+### Still unmatched (20): best honest attempt and what is left
+
+Scores are raw / masked with `tools/match.py` (the `docs/UNMATCHED.md` rows). All 20 were also run through the
+pragma sweep and its pairs. The only gains were `func_02056230` (`opt_dead_assignments off`: 504 to 179, before the
+reuse matched it) and the two `DrawFrame`s with `optimization_level 2` (256 / 248 to 250 / 232 and 211 / 193 to
+201 / 190). Those two are not kept: a few lines are no sign the function was built at level 2, and the stack-frame
+blocker stays.
+
+- `func_ov000_021b70c0` (25 / 0 to **21 / 0**, draft improved): `tex` declared in the `res->anm != NULL` block. The
+  remaining diff is the `mdl`/`tex` swap of `r7`/`r8`. 48 orders of the four other top-level declarations, with
+  `tex` initialised or assigned in the block, stay at 21.
+- `Ov002HudInfo_Draw` (2 / 2): the ROM issues `add r8, r5, #0x14` (`by`) before `mov r6, #0` (`i`). `for`
+  loops (29), `by` initialised before or after `i`, a declaration-order swap and the `by` local dropped (2-29),
+  `PlaceLine`/`PlaceLines` inlines (6-26). honest_search: nothing (1534 compiles).
+- `Ov006Racer_UpdateCheckpoint` (2 / 2): the ROM loads `a->pos.x` after the `dz` `smull`. All 16 operand-sign and
+  term orders of the two squares (2-15), `dx`/`dz` locals, SDK-style `CP_SetSqrt64`/`CP_WaitSqrt`/
+  `CP_GetSqrtResult32` and `Dist2D`/`DistXZ` inlines (2-20). honest_search: nothing (3753 compiles).
+- `func_ov015_0220ae90` (5 / 0): `acc` and `st` swap `lr`/`r4`. All 6 orders of `acc`/`dec`/`st`, `st` dropped,
+  `s16 acc`, a `const` `st`, and assignment instead of initialisation (5-9). honest_search: nothing.
+- `Ov003ActVt_021f7e7c_Start` (14 / 14): the honest code hoists the arms' common `ldrh; bic #1` above the
+  branch; the ROM keeps it in each arm. `!= 0` arms, bit-field expressions, a flag local, `?:`, a setter inline,
+  chained stores, `switch`, an early return and `p` read in each arm all give 14-31.
+- `Ov003ActExSway_StateDie` (11 / 11): the ROM makes the shared constant `1` (`r4`: `History_SetState`'s
+  argument, the `0x8001` base, the `stageFlags` store) after the `0x52` store constant, and ours makes it first.
+  `sfxOn` dropped, at the top, in the block, or assigned at eight places: all 11 (it is copy-propagated).
+  honest_search's best is 2 masked but 41 raw.
+- `ov006_UpdateNetSlots` (34 / 0): `i` and `slot` swap `sb`/`sl` in the first loop. `slot` and `p` as block locals
+  and `&mgr->slots[n]` give 34-202.
+- `Ov009ActVt_02217390_Update` (12 / 0), `Ov013ActVt_0220bdd8_Update` (22 / 0; also the `t->pos.z`-first load
+  order, round shared2's note), `func_ov000_021c194c` (14 / 5), `SndMgr_UpdateLoad` (10 / 0; round scB's
+  analysis stands), `Ov011Mgr2_State02` (38 / 0), `func_ov002_021dd9dc` (67 / 1), `Obj021efef0_Enter`
+  (127 / 0), `Obj021eff30_Enter` (114 / 1), `Robo021ca458_State1f` (44 / 0), `getMdlRot_` (15 / 1; 120
+  declaration orders): the fake-parameter colouring. `reuse.py` found no same-typed local to merge in any of them
+  (in `Obj021efef0_Enter` and `func_ov002_021dd9dc` the local is the first thing the function defines). For
+  `Obj021efef0_Enter`, `Ov009ActVt_02217390_Update` and `Robo021ca458_State1f`, the dispatchers pass only
+  `self`, so the extra parameters are not real.
+- `Ov000Vt_021cac0c_DrawFrame` (256 / 248), `Ov000Vt_021cca88_DrawFrame` (211 / 193), `Ov013Boss_StateAttack2`
+  (642 / 601): the fake parameters past the fourth were stack slots in the caller's frame. Honest locals give
+  another frame, so the diffs are mostly stack offsets.
+
+Scratch is in the session scratchpad `mtA/` (copied from `/home/claude/mt`): `vt.py FILE FUNC MOD ADDR VARIANTS.py`
+(scores each variant with `NONMATCHING` defined), `vshow.py ... NAME [apply]`, `psweep.py`/`psweep2.py` (the
+pragma sweeps, logs `psweep*.log`), `reuse.py FILE FUNC MOD ADDR X...` (merges locals into `X`), `unwrap.py` /
+`applyprag.py` / `restore.py` (undo an auA demotion), and the `v_*.py` variant sets named above.

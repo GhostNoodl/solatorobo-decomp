@@ -29,13 +29,7 @@ static inline void updateModel(Obj021efe8c *m) {
     }
 }
 
-void func_ov002_021dedf0(Obj021efef0 *self);
-
-#ifdef NONMATCHING
-// Status (round auA): demoted in the honesty audit. The match declared the loop counter i as an unused second
-// parameter (callers pass only self); as a local the registers differ. This file is the function's whole .text, so it
-// has no delinks entry. The score is in docs/UNMATCHED.md;
-// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+// One local `i` holds the shape kind and is then the row counter, as in func_ov002_021e0280 (round mtA).
 void func_ov002_021dedf0(Obj021efef0 *self) {
     s32 i;
     Ov002Shape *sh;
@@ -50,7 +44,8 @@ void func_ov002_021dedf0(Obj021efef0 *self) {
     sh = NULL;
     t = (Obj021f002c *)self->unk_0c->unk_a0;
     if (t != NULL) {
-        sh = ParamKind_GetShape(Param_GetEntry(t->id)[1]);
+        i = Param_GetEntry(t->id)[1];
+        sh = ParamKind_GetShape(i);
     }
     pos.x = self->unk_2c;
     pos.y = self->unk_30;
@@ -74,6 +69,5 @@ void func_ov002_021dedf0(Obj021efef0 *self) {
         }
     }
 }
-#endif
 
 }

@@ -127,14 +127,10 @@ static inline void Ov003Model_Load(Model *s, const char *file, const char *name)
     TexObj_SetRes(s, ResList_FindType2(ResMgr_GetArchiveList(file, name, 2), name));
 }
 
-void Ov003TaskVt_021f78f4_Start(Ov003Tl *self);
-
-#ifdef NONMATCHING
-// Status (round auA): demoted in the honesty audit. The match wrapped TexObj_Init in an always-true `if (name)` (name
-// is a string address) so name and file stay in callee-saved registers; unconditional, block, Ov003Model_Init and
-// swapped-order forms all differ. This file is the function's whole .text, so it has no delinks entry. The score is
-// in docs/UNMATCHED.md;
-// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+// Dead-assignment elimination is off for this function (round mtA); with it on, name and file are not kept
+// in callee-saved registers across the TexObj_Init call.
+#pragma push
+#pragma opt_dead_assignments off
 void Ov003TaskVt_021f78f4_Start(Ov003Tl *self) {
     Ov003TlLabel *l;
     void *res;
@@ -250,6 +246,6 @@ void Ov003TaskVt_021f78f4_Start(Ov003Tl *self) {
     }
     TaskList_Insert(self);
 }
-#endif
+#pragma pop
 
 }

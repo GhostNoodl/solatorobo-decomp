@@ -1,6 +1,6 @@
 # Unmatched functions
 
-This is the list of every code function that does not match yet, for anyone who picks one up. Matched: 8,111 of
+This is the list of every code function that does not match yet, for anyone who picks one up. Matched: 8,118 of
 8,216 entries in `ninja report`. The other entries are not on this list: the BIOS stubs in `_dsd_gap@main_0`
 (`CpuSet`, `Div`, `Sqrt`, ...), the data gaps (`data_...`), and `__sinit_ov002_021ef1f0`.
 
@@ -10,7 +10,7 @@ the file that already holds its neighbours. Round auA (the honesty audit) added 
 on a trick (fake parameters, `volatile` on ordinary memory, never-true pointer-bit tests, dead stores, a permuter
 reference alias), demoted to their honest form. Fifteen of them were the whole `.text` of their file, so the file
 keeps the draft and has no `delinks.txt` entry (it compiles to an empty object that is not linked). Their blocks
-start with `Status (round auA)`. The default build leaves the block out, and the function comes from the
+start with `Status (round auA)`. Round mtA re-matched seven of them honestly (`docs/MATCHING.md`, round mtA). The default build leaves the block out, and the function comes from the
 `dsd` gap (the original bytes), so the ROM still matches. Each block starts with a `Status (round drA)` comment:
 the score, the blocker and the rounds. Older notes from earlier rounds follow it. The full history is in
 `docs/MATCHING.md`. Search for the address (for example `0216715c`): each function appears in many rounds, and
@@ -54,15 +54,11 @@ its score here; if a draft gets better, update its row.
 | `0203a984` | main | 0x12c | `src/Main/Gfx/GfxMgr_3.cpp` | 10 / 0 | colouring of codegen temps only (the blocks[i] load and the (addr >> 5) >> shift temp); every order and type of the named locals stays at 10 | mainbig5, raC, rgB, nmA, mtA, cvA |
 | `0203b4ac` | main | 0x1f4 | `src/Main/Gfx/GfxMgrText_2.cpp` | 51 / 12 | prologue colouring (canvas/w/x/h/end/nx) and the stack slots of srcStride and j; ramerge does not reproduce the graph | rtG, qpA, pmC, mlA, cvA |
 | `020417e0` | main | 0x330 | `src/Main/Gfx/TexObj.cpp` | 38 / 31 | the NULL arm's zero is hoisted to the entry (move-constant-loads step 34 -> 5, block 5 pressure 6 vs 11) and SetData's data is numbered above Upload's size | mcA, hzS, hzT, qpE, nmA, cvA |
-| `02042f40` | main | 0x124 | `src/Main/Gfx/Blend.cpp` | 17 / 2 | honest form of a volatile match: FX_SinIdx takes a plain int (the match needed `volatile int idx`) | auA |
 | `02043100` | main | 0x3e0 | `src/Main/Gfx/Gfx3D.cpp` | 105 / 62 | the ROM loads attr01 three times (needs a join between the shape read and the x read); colouring of the rest | frD, qpE, pmC, bgQ2, mlA, cvA |
 | `02048e74` | main | 0x214 | `src/Main/Save/PlayTime.cpp` | 60 / 20 | the schedule of the second and third borrows (ROM movlo/movhs pair in the register of a->millis) | qpE, pmC, bgQ2, mlA, cvA |
 | `02049690` | main | 0x1cc | `src/Main/Snd/SndMgr_LoadStep.cpp` | 10 / 0 | honest form of a fake-parameter match: seq is a local (the match declared it as a second parameter and renamed the header prototype) | auA |
 | `02049c80` | main | 0x168 | `src/Main/Snd/SndMgr_4.cpp` | 60 / 42 | extended-block shape of the -1 returns: the slot-fail block must lie outside the zero's extended block, and no if/inline form gives both returns | bgW, svA, swA, cvA |
-| `0204b43c` | main | 0x4ac | `src/Main/Gfx/Camera.cpp` | 5 / 0 | honest form of a dead-store match: q is defined once (the match set it again to the same value under `if (root & 0x40000000)`) | auA |
 | `02053254` | main | 0x270 | `src/Main/Gfx/SceneDraw.cpp` | 37 / 4 | a cmp/add class tie in the tail and o's colour (r6 in the ROM) | qpE, qpF, bgQ2, nmA, cvA |
-| `020554e4` | main | 0x158 | `src/Main/Gfx/SlidePanel_2.cpp` | 10 / 6 | honest form of a volatile match: plain x/y reads of the model position (the match read x through a volatile cast to order it before y) | auA |
-| `02056230` | main | 0x9dc | `src/Main/Sys/SlideDrawScene.cpp` | 504 / 463 | honest form of a fake-parameter match: the loop counter i is a local (no declaration position of 17 matches) | auA |
 | `02069b3c` | main | 0x2c8 | `src/Main/Effect/Effect_10.cpp` | 44 / 4 | the param + key sum of the inlined Effect_GetTexImageParam (a codegen temp) is coloured and scheduled differently | mainfresh4, fresh6, mainJ, rgB, cvA |
 | `0206d43c` | main | 0xa0 | `src/Main/Save/GameSave.cpp` | 12 / 0 | register-only: the card pointer and the first sum swap registers; every wrong node is a backend temp | qpB, raC, raE, rgB, nmA, cvA |
 | `0206d99c` | main | 0x12c | `src/Main/Save/GameSave_2.cpp` | 19 / 0 | register-only: the first product and the card pointer swap registers; every wrong node is a backend temp | qpB, raC, rgB, cvA |
@@ -76,19 +72,16 @@ its score here; if a draft gets better, update its row.
 | `0216c310` | ov000 | 0x3ec | `src/ov000/Lo_0216bf30.cpp` | 65 / 22 | colouring order (the ROM pops y between next and self) plus the post-allocation CSE movne r0, ip; the 65 / 10 drafts need fake parameters | mcA, hzS, qpG, pmA, nmA, mtA, cvA |
 | `0218867c` | ov000 | 0x524 | `src/ov000/Lo_021814dc.cpp` | 45 / 32 | case 1 hoists data_02fe1534 to the case head (move-constant-loads 17 -> 12, refused in the ROM) and the entry order of arg / 0x64 | rtF, qpG, raF, raH, mlA, cvA |
 | `021afaf8` | ov000 | 0x8d0 | `src/ov000/Robo_021afaf8.cpp` | 44 / 0 | honest form of a fake-parameter match: anm and def are locals (the match declared them as parameters and set them to NULL) | auA |
-| `021b70c0` | ov000 | 0x520 | `src/ov000/Mdl_021b70c0.cpp` | 25 / 0 | honest form of a fake-parameter match: tex is a local (the match declared it as a seventh parameter; callers pass six) | auA |
+| `021b70c0` | ov000 | 0x520 | `src/ov000/Mdl_021b70c0.cpp` | 21 / 0 | honest form of a fake-parameter match: tex is a local (the match declared it as a seventh parameter; callers pass six). Round mtA: tex in the anm block (25 to 21); mdl and tex still swap r7/r8 | auA, mtA |
 | `021b9b14` | ov000 | 0x824 | `src/ov000/Stub_021b9a84.cpp` | 12 / 4 | colouring of the two bit-field stores' temporaries in section 4 (the ROM's and before the word load needs another dependence graph) | lfA, pmB, bgY, mlA, mtA, cvA |
 | `021c194c` | ov000 | 0x52c | `src/ov000/ov000_021c194c.cpp` | 14 / 5 | honest form of a fake-parameter match: flag and p are locals (the match declared them as two trailing parameters) | auA |
 | `021c7038` | ov000 | 0x3d4 | `src/ov000/Gauge_021c7038.cpp` | 211 / 193 | honest form of a fake-parameter match: h, w, i, step and alpha are locals, the signature is the slot's five parameters (round ovhimid6 put them in parameters) | auA |
 | `021dd9dc` | ov002 | 0x2e0 | `src/ov002/ov002_021dd9dc.cpp` | 67 / 1 | honest form of a fake-parameter match: w is a local (the match declared it as a second parameter so it numbers below the temps) | auA |
 | `021ddf18` | ov002 | 0x62c | `src/ov002/ov002_021ddf18.cpp` | 127 / 0 | honest form of a fake-parameter match: h and cam are locals (round jkE: the registers rotate) | auA |
-| `021dedf0` | ov002 | 0x1a8 | `src/ov002/ov002_021dedf0.cpp` | 34 / 0 | honest form of a fake-parameter match: the loop counter i is a local | auA |
 | `021df2ec` | ov002 | 0x4c8 | `src/ov002/ov002_021df2ec.cpp` | 114 / 1 | honest form of a fake-parameter match: y, x, id and w are locals | auA |
 | `021e0ff8` | ov002 | 0x150 | `src/ov002/ov002_021e0e78.cpp` | 2 / 2 | honest form of a pointer-bit match: the never-true `if ((u32)self & 3)` block is removed | auA |
 | `021eca14` | ov002 | 0x17c | `src/ov002/ov002_021ec6a8.cpp` | 6 / 3 | return TRUE's mov r0, #1 is scheduled into the ldrh stall; the ROM has return TRUE in a block of its own | bgV, bgX, rgB, mtA, cvA |
-| `021cd1e4` | ov003 | 0x468 | `src/ov003/ov003_021cd1e4.cpp` | 79 / 76 | honest form of an always-true-test match: TexObj_Init is unconditional (the match wrapped it in `if (name)` on a string address) | auA |
 | `021cd91c` | ov003 | 0x98c | `src/ov003/ov003_021cd744.cpp` | 44 / 35 | case 10's alpha register and state/timer stores, and pressure-mode picks in Ov003Cd_Color's 64-bit products (7 lines are Thumb bl/blx, link-time only) | pmB, bgW, bgY, bgQ2, mlA, cvA |
-| `021d85c8` | ov003 | 0x208 | `src/ov003/ov003_021d85c8.cpp` | 91 / 42 | honest form of a volatile match: b2 is a plain bool (the match declared the stack parameter volatile so it is reloaded per ticker) | auA |
 | `021ddce4` | ov003 | 0x64 | `src/ov003/ov003_021ddcb0.c` | 14 / 14 | honest form of a pointer-bit match: the never-true `if ((u32)self & 3)` block is removed | auA |
 | `021eb818` | ov003 | 0x23c | `src/ov003/ov003_021eba54.cpp` | 11 / 11 | honest form of a pointer-bit match: the never-true `if ((u32)self & 3)` block is removed | auA |
 | `021db258` | ov006 | 0x404 | `src/ov006/ov006_021db258.cpp` | 34 / 0 | honest form of a permuter match: slot->aid is written through slot (the match used a C++ reference alias `slotRef`) | auA |

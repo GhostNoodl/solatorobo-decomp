@@ -77,13 +77,10 @@ static inline void Ov003Ticker_Start(Ov003Ticker *t, s16 count, s16 interval, bo
     t->next = t->cur;
 }
 
-void Ov003TickerSet_Start(Ov003TickerSet *self, s16 count, s16 interval, bool loop, bool b2);
-
-#ifdef NONMATCHING
-// Status (round auA): demoted in the honesty audit. The match declared the stack parameter b2 `volatile` so that it
-// is reloaded for each ticker; plain bool/int/u8/BOOL types and a loop all load it once. The score is in
-// docs/UNMATCHED.md;
-// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+// Common-subexpression elimination is off for this function: b2 (a stack parameter) is read from the stack for
+// each ticker (round mtA).
+#pragma push
+#pragma opt_common_subs off
 void Ov003TickerSet_Start(Ov003TickerSet *self, s16 count, s16 interval, bool loop, bool b2) {
     if (!self->active) {
         return;
@@ -97,7 +94,7 @@ void Ov003TickerSet_Start(Ov003TickerSet *self, s16 count, s16 interval, bool lo
     Ov003Ticker_Start(&self->tickers[1], count, interval, loop, b2);
     Ov003Ticker_Start(&self->tickers[2], count, interval, loop, b2);
 }
-#endif
+#pragma pop
 
 
 void Ov003TickerSet_SetPaused(Ov003TickerSet *self, bool v) {

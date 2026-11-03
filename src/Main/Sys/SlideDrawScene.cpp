@@ -112,13 +112,7 @@ u8 Model_GetAlpha(Model *model);
 void Model_SetPolyId(Model *model, u32 v);
 void func_02056d50(Model *model);
 
-void func_02056230(SlideDrawScene *scene);
-
-#ifdef NONMATCHING
-// Status (round auA): demoted in the honesty audit. The match declared the loop counter i as an unused second
-// parameter; as a local at all 17 declaration positions the registers differ. This file is the function's whole
-// .text, so it has no delinks entry. The score is in docs/UNMATCHED.md;
-// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+// One local `i` holds the fade scale and is then the panel counter (round mtA).
 void func_02056230(SlideDrawScene *scene) {
     s32 i;
     s16 y;
@@ -134,7 +128,6 @@ void func_02056230(SlideDrawScene *scene) {
     u32 top;
     s32 sy;
     SlidePanel *first;
-    s32 s;
     SlidePanel *panel = NULL;
     s32 dy;
 
@@ -164,20 +157,20 @@ void func_02056230(SlideDrawScene *scene) {
     lift = func_020534d4(scene);
     GfxGe_PushMtx();
     if (scene->fadeOut) {
-        s = 0x1000 - func_0204e2ac((scene->fadeT << 14) >> 12);
+        i = 0x1000 - func_0204e2ac((scene->fadeT << 14) >> 12);
     } else {
-        s = func_0204e2ac((scene->fadeT << 14) >> 12);
+        i = func_0204e2ac((scene->fadeT << 14) >> 12);
     }
-    Text_FxMul(0x80000, s);
+    Text_FxMul(0x80000, i);
     GfxGe_PolygonAttr(0, 1, 3, func_02056c94(gfx), 0x12, 0);
     GfxGe_PushMtx();
-    GfxGe_Translate(sx + (Text_FxMul(0x110000, s) - 0x90000), sy + (dy + 0x35000) - (lift << 12), -0xa9a);
+    GfxGe_Translate(sx + (Text_FxMul(0x110000, i) - 0x90000), sy + (dy + 0x35000) - (lift << 12), -0xa9a);
     GfxGe_Scale(0x1000, 0x1000, 0x1000);
     GfxGe_Color(0);
     scene->DrawBox(0x100, 4);
     GfxGe_PopMtx(1);
     GfxGe_PushMtx();
-    GfxGe_Translate(sx + (Text_FxMul(-0x110000, s) + 0x190000), sy + (dy + 0x77000) - (lift << 12), -0xa9a);
+    GfxGe_Translate(sx + (Text_FxMul(-0x110000, i) + 0x190000), sy + (dy + 0x77000) - (lift << 12), -0xa9a);
     GfxGe_Scale(0x1000, 0x1000, 0x1000);
     GfxGe_Color(0);
     scene->DrawBox(0x100, 4);
@@ -185,7 +178,7 @@ void func_02056230(SlideDrawScene *scene) {
     GfxGe_PolygonAttr(0, 1, 3, Gfx3DState_NextPolyIdB(gfx), polyId, 0);
     GfxGe_PushMtx();
     GfxGe_Translate(sx + 0x80000, sy + (dy + 0x56000) - (lift << 12), -0xa9a);
-    GfxGe_Scale(s, s, 0x1000);
+    GfxGe_Scale(i, i, 0x1000);
     scene->DrawGrad(0x100, 0x3e, top, bottom);
     GfxGe_PopMtx(1);
     GfxGe_PopMtx(1);
@@ -350,6 +343,5 @@ void func_02056230(SlideDrawScene *scene) {
     }
     }
 }
-#endif
 
 }

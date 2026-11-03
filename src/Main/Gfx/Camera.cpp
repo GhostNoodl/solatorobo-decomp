@@ -119,13 +119,6 @@ static inline void Cam_SqrtStart(s64 v) {
     }
 }
 
-void Camera_Apply(Camera *cam);
-
-#ifdef NONMATCHING
-// Status (round auA): demoted in the honesty audit. The match defined q a second time to the same value under `if
-// (root & 0x40000000)` to keep q out of root's register; a single definition, an inline expression, u32 and a split
-// shift all differ. The score is in docs/UNMATCHED.md;
-// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
 void Camera_Apply(Camera *cam) {
     gGfxSys->nearClip = &cam->nearClip;
     if (cam->smooth && !cam->animated) {
@@ -207,18 +200,8 @@ void Camera_Apply(Camera *cam) {
                 dz = a.z - b.z;
                 sq = (s64)dx * dx;
                 sq += (s64)dz * dz;
-                {
-                    s32 root;
-                    s32 q;
-                    s32 ay;
-                    s32 by;
-                    Cam_SqrtStart(sq);
-                    by = b.y;
-                    root = (s32)REG_SQRT_RESULT;
-                    ay = a.y;
-                    q = root + 1;
-                    ang = FX_Atan2(by - ay, q >> 1);
-                }
+                Cam_SqrtStart(sq);
+                ang = FX_Atan2(b.y - a.y, ((s32)REG_SQRT_RESULT + 1) >> 1);
                 if (cam->smooth) {
                     cam->pitchTarget = ang;
                 } else {
@@ -246,7 +229,6 @@ void Camera_Apply(Camera *cam) {
     }
     cam->animated = 0;
 }
-#endif
 
 void Camera_SetAnim(Camera *cam, void *anim);
 

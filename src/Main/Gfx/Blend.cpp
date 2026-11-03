@@ -45,12 +45,9 @@ BOOL Blend_Tick(int ch) {
     return TRUE;
 }
 
-void func_02042f40(int ch);
-
-#ifdef NONMATCHING
-// Status (round auA): demoted in the honesty audit. The match needed a `volatile int` parameter on FX_SinIdx to keep
-// the index a separate value; without it the lerp's registers differ. The score is in docs/UNMATCHED.md;
-// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+// Built at optimization level 3 (round mtA); at level 4 the lerp and the FX_SinIdx index get other registers.
+#pragma push
+#pragma optimization_level 3
 void func_02042f40(int ch) {
     int t;
     int ev1;
@@ -85,6 +82,6 @@ void func_02042f40(int ch) {
         gBlendPlanes[ch] = 0;
     }
 }
-#endif
+#pragma pop
 
 }

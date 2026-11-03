@@ -70,13 +70,10 @@ BOOL func_020554c8(SlidePanel *panel) {
     return panel->state <= 3 ? TRUE : FALSE;
 }
 
-void func_020554e4(SlidePanel *panel);
-
-#ifdef NONMATCHING
-// Status (round auA): demoted in the honesty audit. The match read model->x through a `volatile s32 *` cast to order
-// the x load before y; plain reads, a Model local, y-first and direct arguments all differ. The score is in
-// docs/UNMATCHED.md;
-// the default build takes this function from the dsd gap. History: docs/MATCHING.md round auA.
+// Copy propagation is off for this function (round mtA); with it on, the x and y reads of each model are
+// scheduled differently.
+#pragma push
+#pragma opt_propagation off
 void func_020554e4(SlidePanel *panel) {
     if (panel->pltt != NULL) {
         void *saved = gSysState->cur;
@@ -146,6 +143,6 @@ void func_020554e4(SlidePanel *panel) {
     panel->nextPltt = NULL;
     panel->nextModel2 = NULL;
 }
-#endif
+#pragma pop
 
 }
