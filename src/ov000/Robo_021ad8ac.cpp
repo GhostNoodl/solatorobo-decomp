@@ -280,7 +280,7 @@ void Robo021ca458_State19(Robo021ca458 *self) {
                 } else if (f & 0x40) {
                     t -= 0x2000;
                 }
-                cam->unk_f8 = Angle_Approach(t, cur, 0x266, 1, 0x8000);
+                cam->unk_f8.x = Angle_Approach(t, cur, 0x266, 1, 0x8000);
                 cam->unk_da_4 = 1;
             }
         }
@@ -465,7 +465,7 @@ void Robo021ca458_State19(Robo021ca458 *self) {
                 self->unk_9a0 = Angle_Approach(0, self->unk_9a0, 0x10a, 1, 0x8000);
                 cur = Angle_Approach(0x200, cur, 0x2cd, 1, 0x8000);
             }
-            cam->unk_f8 = cur;
+            cam->unk_f8.x = cur;
             cam->unk_da_4 = 1;
             self->rot_x = Angle_Approach(self->unk_9a0, self->rot_x, 0x59a, 1, 0x8000);
             d = self->pos.y - self->unk_afc.y;

@@ -44,7 +44,6 @@ void Model0218fe1c_SetAnimDelay(void *a, s32 b, s32 c);
 u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 s32 Rand_UpTo(s32 max);
 void Field_ShakeCamera(s32 a, s32 b);
-void func_ov000_021899d8(VecFx32 *a, s32 b, s32 c, s32 d, s16 e, s16 f);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void Actor_SendMsgU8(void *o, u16 id, s32 c);
 s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
@@ -411,7 +410,7 @@ end:
             d.z = FxMul_021a6280(d.z, 0x733);
             d.y = self->height;
             VEC_Add(&d, (VecFx32 *)((u8 *)self + 0x70), &o);
-            func_ov000_021899d8(&o, 0, 0x8ccd, 1, 0x2333, 0x1000);
+            func_ov000_021899d8(&o, NULL, 0x8ccd, 1, 0x2333, 0x1000);
         }
     }
 }

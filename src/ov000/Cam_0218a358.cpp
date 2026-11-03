@@ -1,101 +1,64 @@
-#include "types.h"
-#include "nitro/fx.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u16 x;
-    u16 y;
-    u16 z;
-} Rot0218a358;
+#include "ov000/FieldCam.h"
 
 extern "C" {
 
-
-struct Obj0218a358 {
-    u8 unk_00[0x10];
-    VecFx32 unk_10;
-    u8 unk_1c[0x26];
-    Rot0218a358 unk_42;
-    s32 unk_48;
-    u8 unk_4c[0x70];
-    VecFx32 unk_bc;
-    u8 unk_c8[0x11];
-    u8 unk_d9;
-    u8 unk_da[0xe];
-    s32 unk_e8;
-    s32 unk_ec;
-    s32 unk_f0;
-    s32 unk_f4;
-    Rot0218a358 unk_f8;
-    s16 unk_fe;
-    s16 unk_100;
-    u8 unk_102[0x2];
-    s32 unk_104;
-    s32 unk_108;
-    s32 unk_10c;
-    s32 unk_110;
-    s32 unk_114;
-    s32 unk_118;
-    s32 unk_11c;
-};
-
-void func_ov000_0218a358(Obj0218a358 *self, const VecFx32 *pos, const Rot0218a358 *rot, s32 dist, u8 clamp, s16 a6, s16 a7, u8 a8) {
-    self->unk_d9 = a8;
+void func_ov000_0218a358(FieldCam *self, const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clamp, s16 a6, s16 a7, u8 a8) {
+    self->timer = a8;
     if (rot != NULL) {
         self->unk_f8 = *rot;
     } else {
-        self->unk_f8 = self->unk_42;
+        self->unk_f8 = self->base.rot;
     }
     if (dist != 0) {
         self->unk_f4 = dist;
     } else {
-        self->unk_f4 = self->unk_48;
+        self->unk_f4 = self->base.dist;
     }
     if (pos != NULL) {
-        LFLD(VecFx32, self, 0xe8) = *pos;
+        self->unk_e8 = *pos;
     } else {
-        self->unk_bc = self->unk_10;
+        self->unk_bc = self->base.at;
     }
     self->unk_fe = a6;
     self->unk_100 = a7;
     if (!clamp) {
         return;
     }
-    if (self->unk_f4 == self->unk_11c) {
-        if (self->unk_e8 < self->unk_104) {
-            self->unk_e8 = self->unk_104;
-        } else if (self->unk_e8 > self->unk_110) {
-            self->unk_e8 = self->unk_110;
+    if (self->unk_f4 == self->clampDist) {
+        if (self->unk_e8.x < self->clampMin.x) {
+            self->unk_e8.x = self->clampMin.x;
+        } else if (self->unk_e8.x > self->clampMax.x) {
+            self->unk_e8.x = self->clampMax.x;
         }
-        if (self->unk_ec < self->unk_108) {
-            self->unk_ec = self->unk_108;
-        } else if (self->unk_ec > self->unk_114) {
-            self->unk_ec = self->unk_114;
+        if (self->unk_e8.y < self->clampMin.y) {
+            self->unk_e8.y = self->clampMin.y;
+        } else if (self->unk_e8.y > self->clampMax.y) {
+            self->unk_e8.y = self->clampMax.y;
         }
-        if (self->unk_f0 < self->unk_10c) {
-            self->unk_f0 = self->unk_10c;
-        } else if (self->unk_f0 > self->unk_118) {
-            self->unk_f0 = self->unk_118;
+        if (self->unk_e8.z < self->clampMin.z) {
+            self->unk_e8.z = self->clampMin.z;
+        } else if (self->unk_e8.z > self->clampMax.z) {
+            self->unk_e8.z = self->clampMax.z;
         }
     } else {
-        s32 t = FX_Div(self->unk_f4, self->unk_11c);
+        s32 t = FX_Div(self->unk_f4, self->clampDist);
         if (t >= 0x1000) {
             t = 0x1000;
         }
-        if (self->unk_e8 < self->unk_104) {
-            self->unk_e8 += FX_Mul(self->unk_104 - self->unk_e8, t);
-        } else if (self->unk_e8 > self->unk_110) {
-            self->unk_e8 += FX_Mul(self->unk_110 - self->unk_e8, t);
+        if (self->unk_e8.x < self->clampMin.x) {
+            self->unk_e8.x += FX_Mul(self->clampMin.x - self->unk_e8.x, t);
+        } else if (self->unk_e8.x > self->clampMax.x) {
+            self->unk_e8.x += FX_Mul(self->clampMax.x - self->unk_e8.x, t);
         }
-        if (self->unk_ec < self->unk_108) {
-            self->unk_ec += FX_Mul(self->unk_108 - self->unk_ec, t);
-        } else if (self->unk_ec > self->unk_114) {
-            self->unk_ec += FX_Mul(self->unk_114 - self->unk_ec, t);
+        if (self->unk_e8.y < self->clampMin.y) {
+            self->unk_e8.y += FX_Mul(self->clampMin.y - self->unk_e8.y, t);
+        } else if (self->unk_e8.y > self->clampMax.y) {
+            self->unk_e8.y += FX_Mul(self->clampMax.y - self->unk_e8.y, t);
         }
-        if (self->unk_f0 < self->unk_10c) {
-            self->unk_f0 += FX_Mul(self->unk_10c - self->unk_f0, t);
-        } else if (self->unk_f0 > self->unk_118) {
-            self->unk_f0 += FX_Mul(self->unk_118 - self->unk_f0, t);
+        if (self->unk_e8.z < self->clampMin.z) {
+            self->unk_e8.z += FX_Mul(self->clampMin.z - self->unk_e8.z, t);
+        } else if (self->unk_e8.z > self->clampMax.z) {
+            self->unk_e8.z += FX_Mul(self->clampMax.z - self->unk_e8.z, t);
         }
     }
 }

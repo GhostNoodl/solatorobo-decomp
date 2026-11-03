@@ -1,14 +1,8 @@
 #include "ov002/ov002.h"
 #include "ov002/StaffRoll.h"
+#include "ov002/StaffPool.h"
 
 extern "C" {
-
-// The staff roll's .bss (0x021f0fa0..0x021f0fd0) is defined in ov002_021ecb90.cpp as separate
-// objects. The ROM reaches all of them from this file's functions through the 0x021f0fa0 pool
-// literal too, but this file is cut off from that TU by the unmatched func_ov002_021eca14, so
-// it still reads them through this array view: [0] head, [1] staff, [2] tail, [8] the kind-5
-// task list (data_ov002_021f0fac[5]).
-extern void *data_ov002_021f0fa0[];
 
 BOOL func_ov002_021ec6a8(void) {
     return TRUE;
@@ -38,11 +32,11 @@ void func_ov002_021ec6c4(Ov002StaffNode *self, s32 screen) {
 }
 
 void Ov002StaffNode_Link(Ov002StaffNode *node) {
-    Ov002StaffNode *p = (Ov002StaffNode *)data_ov002_021f0fa0[0];
+    Ov002StaffNode *p = data_ov002_021f0fa0.head;
     Ov002StaffNode *prev;
     if (p == NULL) {
-        data_ov002_021f0fa0[2] = node;
-        data_ov002_021f0fa0[0] = node;
+        data_ov002_021f0fa0.tail = node;
+        data_ov002_021f0fa0.head = node;
     } else {
         if (p != NULL) {
             s32 key = node->entry->time;
@@ -58,7 +52,7 @@ void Ov002StaffNode_Link(Ov002StaffNode *node) {
             node->prev = prev;
             node->next = NULL;
             prev->next = node;
-            data_ov002_021f0fa0[2] = node;
+            data_ov002_021f0fa0.tail = node;
         } else {
             node->prev = p->prev;
             node->next = p;
@@ -66,7 +60,7 @@ void Ov002StaffNode_Link(Ov002StaffNode *node) {
             if (node->prev != NULL) {
                 node->prev->next = node;
             } else {
-                data_ov002_021f0fa0[0] = node;
+                data_ov002_021f0fa0.head = node;
             }
         }
     }
@@ -93,7 +87,7 @@ void func_ov002_021ec7dc(void) {
 
 BOOL func_ov002_021ec7e0(Ov002StaffNode *self) {
     if (self->entry->kind == 3) {
-        ((Ov002Staff *)data_ov002_021f0fa0[1])->clock.flags.done = 1;
+        data_ov002_021f0fa0.staff->clock.flags.done = 1;
     }
     return FALSE;
 }
@@ -140,7 +134,7 @@ static inline BOOL func_ov002_021ec8d8_flag(Ov002StaffModel *t) {
 BOOL func_ov002_021ec8d8(void) {
     Ov002StaffModel *t;
     int n = 0;
-    for (t = (Ov002StaffModel *)data_ov002_021f0fa0[8]; t != NULL; t = (Ov002StaffModel *)t->link) {
+    for (t = (Ov002StaffModel *)data_ov002_021f0fa0.lists[5]; t != NULL; t = (Ov002StaffModel *)t->link) {
         if (func_ov002_021ec8d8_is5(t) || func_ov002_021ec8d8_flag(t)) {
             n++;
         }
@@ -181,7 +175,7 @@ BOOL func_ov002_021ec968(Ov002StaffModel *self) {
 // list is docs/UNMATCHED.md.
 // func_ov002_021eca14 (round bgX): 6 raw / 2 register-masked. Rebuilt from the ROM: no in-tree draft
 // existed (earlier rounds kept theirs in scratch). It is ec968's sibling: case 0 counts the flagged
-// tasks on data_ov002_021f0fa0[8] against data_ov002_021f0d88's limit and creates the model; case 1
+// tasks on data_ov002_021f0fa0.lists[5] against data_ov002_021f0d88's limit and creates the model; case 1
 // waits for it. This file's .text ends at 0x021eca14, so the function belongs here once it matches.
 // The ldrh value read into a local before the 0x49 store gives the ROM's ldrh / strb / str order (the
 // plain form stores 0x49 first). Left: `return TRUE`'s `mov r0, #1` is scheduled into the ldrh stall,
@@ -228,7 +222,7 @@ BOOL func_ov002_021eca14(StaffTask_eca14 *self) {
             StaffTask_eca14 *t;
             int n = 0;
             StaffModel_eca14 *m;
-            for (t = (StaffTask_eca14 *)data_ov002_021f0fa0[8]; t != NULL; t = t->next) {
+            for (t = (StaffTask_eca14 *)data_ov002_021f0fa0.lists[5]; t != NULL; t = t->next) {
                 if (func_ov002_021eca14_flag(t)) {
                     n++;
                 }

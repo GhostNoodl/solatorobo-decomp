@@ -200,7 +200,7 @@ struct Obj021efe6c : public VObj {
 };
 SIZE_ASSERT(Obj021efe6c, 0xc8);
 
-// Vtable Ov002Vt_021efe7c_vtbl, 0x14 bytes (Obj021efe7c_Create, kept in data_ov002_021f0f90[1]):
+// Vtable Ov002Vt_021efe7c_vtbl, 0x14 bytes (Obj021efe7c_Create, kept in data_ov002_021f0f90.top):
 // the board and its current mode object (func_ov002_021dab58 builds mode unk_0c: 021eff74, 021eff50, ...).
 struct Obj021efe7c : public VObj {
     Obj021efe6c *board;

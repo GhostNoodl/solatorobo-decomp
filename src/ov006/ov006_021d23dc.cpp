@@ -32,7 +32,7 @@ void ov006_Gauge_Load(ov006_Gauge *self);
 void ov006_Gauge_SetText(ov006_Gauge *self, void *text);
 void ov006_Gauge_SetRatio(ov006_Gauge *self, int a, int b, u8 c);
 void ov006_Slot_Pack(ov006_Slot *self, void *buf);
-void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
+void ov006_Menu_SetOwnEntry(ov006_Menu *self, u16 a, int b, const void *src, u32 size);
 void func_ov006_021d3498(ov006_TaskD1F *self, u16 id, BOOL dir);
 ov006_Unk020706a0 *Tbl_Elem_020706a0(u16 id);
 void Gfx3DState_SetDefaults(void *p);

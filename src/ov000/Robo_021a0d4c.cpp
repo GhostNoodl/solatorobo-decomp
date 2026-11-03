@@ -283,7 +283,7 @@ void Robo021ca458_RunState(Robo021ca458 *self) {
             self->unk_9b4->show = 1;
         } else {
             FieldCam *q = &gSceneCmd->cam;
-            if (q != NULL && q->unk_d6 - 1 == q->unk_d4) {
+            if (q != NULL && q->zoneCount - 1 == q->zoneIdx) {
                 ActorMarker_SetKind(self->unk_9b4, 9);
                 self->unk_9b4->show = 1;
             }

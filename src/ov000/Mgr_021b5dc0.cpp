@@ -27,7 +27,7 @@ extern char data_ov000_021cc83d[];
 void func_0206e660(LangBlockA *p);
 void func_0206e648(LangBlockB *p);
 void Gfx3DState_Apply(void *p);
-s32 func_0206e340(LangBlockB *r);
+u8 *func_0206e340(LangBlockB *r);
 Ent021b5dc0 *func_0206e2ec(LangBlockB *r);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
@@ -86,8 +86,8 @@ void func_ov000_021b5dc0(FieldMgr *self) {
     Gfx3DState_Apply(gGfxSys->unk_8b0);
     v = self->blockB->count4;
     cam = &gSceneCmd->cam;
-    cam->unk_c8 = func_0206e340(self->blockB);
-    cam->unk_d6 = v;
+    cam->zones = (const FieldCamZone *)func_0206e340(self->blockB);
+    cam->zoneCount = v;
     g = gSceneCmd;
     ents = func_0206e2ec(self->blockB);
     if (ents != NULL && (!SameArea021b5dc0() || gSceneCmd->unk_c9 != 0)) {

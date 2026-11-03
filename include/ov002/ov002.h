@@ -2,6 +2,8 @@
 #define OV002_OV002_H
 
 #include "types.h"
+#include "ov002/Session.h"
+#include "ov002/BoardRef.h"
 #include "nitro/fx.h"
 #include "nitro/gx.h"
 #include "nitro/mi.h"
@@ -63,13 +65,6 @@ typedef int (*VFunc)();
 void Heap_FreeArray(void *p);
 
 /* ---- */
-typedef struct Unk021f0f80 {
-    s32 unk_00;
-    s32 unk_04;
-    s8 unk_08;
-} Unk021f0f80;
-
-extern Unk021f0f80 *data_ov002_021f0f80;
 extern char data_0214b105[];
 
 
@@ -79,10 +74,6 @@ typedef struct {
     u32 rest : 30;
 } BitWord;
 
-typedef struct {
-    BitWord flags;
-    s32 state;
-} Unk021cceb4;
 
 typedef struct {
     u8 b0 : 4;
@@ -401,13 +392,6 @@ typedef struct Vec2 {
 } Vec2;
 
 void Ov002StageFile_Free(Ov002StageFile *self);
-// The board's selection (unk_00, an index into the mode menu) and its top object (Obj021efe7c_Create).
-typedef struct Ov002BoardRef {
-    u8 unk_00;
-    u8 unk_01[0x3];
-    Obj021efe7c *top;
-} Ov002BoardRef;
-extern Ov002BoardRef data_ov002_021f0f90;
 void Obj021eff30_Release(Obj021eff30 *self);
 
 typedef struct Bits16 {

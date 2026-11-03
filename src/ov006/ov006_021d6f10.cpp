@@ -19,7 +19,7 @@ void ov006_Unk021e0480_Draw(void *a);
 void ov006_Marks_Draw(void *a);
 void ov006_Unk021e1bb4_Draw(void *a);
 void ov006_MarkerSet_Draw(void *a);
-void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
+void ov006_Menu_ReleaseObj(ov006_Menu *self);
 
 void Ov006Vt_021ebfc0_Draw(ov006_Task021d6f10 *self) {
     if (self->state == 3) {

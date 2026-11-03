@@ -35,14 +35,14 @@ void func_02045094(ov006_Net021e5604 *net);
 int Wh_GetError(ov006_Net021e5604 *net);
 void ov006_Menu_VBlankB(void);
 
-static inline void ov006_Menu_Advance(ov006_Unk021ec888 *self) {
+static inline void ov006_Menu_Advance(ov006_Menu *self) {
     if (self->stateTime < 0xff) {
         self->stateTime++;
     }
 }
 
 static inline void ov006_Menu_Error(int code) {
-    ov006_Unk021ec888 *menu = data_ov006_021ec888;
+    ov006_Menu *menu = data_ov006_021ec888;
     if (menu->state == 9) {
         return;
     }
@@ -51,7 +51,7 @@ static inline void ov006_Menu_Error(int code) {
     menu->unk1C = code;
 }
 
-void func_ov006_021e5604(ov006_Unk021ec888 *self) {
+void func_ov006_021e5604(ov006_Menu *self) {
     switch (self->stateTime) {
     case 0:
         gSysState->vblankFunc = NULL;
@@ -65,7 +65,7 @@ void func_ov006_021e5604(ov006_Unk021ec888 *self) {
         return;
     case 10: {
         ov006_Net021e5604 *net = gWhMgr;
-        ov006_Unk021ec888 *menu;
+        ov006_Menu *menu;
         int i;
         if (net->state != 1) {
             return;

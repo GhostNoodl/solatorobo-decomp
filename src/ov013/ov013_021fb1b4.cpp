@@ -1,4 +1,5 @@
 #include "ov013/ov013.h"
+#include "ov000/FieldCam.h"
 
 struct Ov013SpawnDesc {
     u16 kind;
@@ -17,19 +18,13 @@ static inline void Ov013Spawn_Init(Ov013SpawnDesc *d, u16 k) {
     d->parent = -1;
 }
 
-struct Ov013Rot16 {
-    u16 x;
-    u16 y;
-    u16 z;
-};
-
 extern "C" {
 
 extern void *gSndMgr;
 extern char data_ov013_0220b5b8[];
 extern char data_ov013_0220b5be[];
 extern char data_ov013_0220b5ca[];
-extern const Ov013Rot16 data_ov013_0220ae48;
+extern const Rot16 data_ov013_0220ae48;
 extern const VecFx32 data_ov013_0220ae7c;
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
@@ -45,7 +40,6 @@ extern void HitSphere_Link(ActorSub48 *p);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, s32 r, s32 h);
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov013SpawnDesc *d, VecFx32 *pos, u16 *rot, u16 a);
-extern void func_ov000_0218a358(void *a, const VecFx32 *b, Ov013Rot16 *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 }
 
 static inline s32 Ov013_Sqrt64(s64 v) {
@@ -352,7 +346,7 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
         }
         {
             VecFx32 cp = data_ov013_0220ae7c;
-            Ov013Rot16 rot = data_ov013_0220ae48;
+            Rot16 rot = data_ov013_0220ae48;
             func_ov000_0218a358(cam, &cp, &rot, 0x13000, 1, 0x1000, 0x1000, 1);
         }
     }

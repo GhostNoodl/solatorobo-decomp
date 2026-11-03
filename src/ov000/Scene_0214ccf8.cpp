@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Res/StageVars.h"
 #include "nitro/fx.h"
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #include "ov000/HeapScope.h"
@@ -6,12 +7,6 @@
 
 extern "C" {
 
-typedef struct {
-    u8 unk_00[0x58];
-    u16 unk_58;
-    u16 unk_5a;
-} Pool0214ccf8;
-extern Pool0214ccf8 data_02fe1534;
 extern void *gSndMgr;
 extern VecFx32 data_ov000_021c9850;
 extern u8 UiObj_vtbl[];

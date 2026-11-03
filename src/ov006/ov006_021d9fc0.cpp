@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
+void ov006_Menu_ReleaseObj(ov006_Menu *self);
 
 void Ov006Vt_021ec040_Draw(ov006_Task021ec040 *self) {
     if (self->unk10 != NULL) {

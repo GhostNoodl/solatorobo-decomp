@@ -42,14 +42,14 @@ BOOL Wh_SetEntry(ov006_Net021e51f8 *net, BOOL enabled);
 u16 WM_GetNextTgid(void);
 void ov006_Menu_VBlankA(void);
 
-static inline void ov006_Menu_Advance(ov006_Unk021ec888 *self) {
+static inline void ov006_Menu_Advance(ov006_Menu *self) {
     if (self->stateTime < 0xff) {
         self->stateTime++;
     }
 }
 
 static inline void ov006_Menu_Error(int code) {
-    ov006_Unk021ec888 *menu = data_ov006_021ec888;
+    ov006_Menu *menu = data_ov006_021ec888;
     if (menu->state == 9) {
         return;
     }
@@ -63,12 +63,12 @@ static inline BOOL ov006_Net_StartParent(u16 channel) {
     return func_020459cc(gWhMgr, 3, tgid, channel);
 }
 
-static inline BOOL ov006_Menu_HasPeer(ov006_Unk021ec888 *menu) {
+static inline BOOL ov006_Menu_HasPeer(ov006_Menu *menu) {
     return menu->unk160 != 0 ? TRUE : FALSE;
 }
 
 /* func_ov006_021e4bec inlined: set whether the parent accepts entries. */
-static inline BOOL ov006_Menu_SetEntry(ov006_Unk021ec888 *self, u8 enabled) {
+static inline BOOL ov006_Menu_SetEntry(ov006_Menu *self, u8 enabled) {
     BOOL result;
     self->unk18 = enabled;
     result = Wh_SetEntry(gWhMgr, enabled);
@@ -82,7 +82,7 @@ static inline BOOL ov006_Menu_SetEntry(ov006_Unk021ec888 *self, u8 enabled) {
     return result;
 }
 
-void func_ov006_021e51f8(ov006_Unk021ec888 *self) {
+void func_ov006_021e51f8(ov006_Menu *self) {
     switch (self->stateTime) {
     case 0:
         gSysState->vblankFunc = NULL;
@@ -130,7 +130,7 @@ void func_ov006_021e51f8(ov006_Unk021ec888 *self) {
     }
     case 20: {
         ov006_Net021e51f8 *net;
-        ov006_Unk021ec888 *menu;
+        ov006_Menu *menu;
         int i;
         self->unk15A = Wh_SelectChannel(gWhMgr);
         net = gWhMgr;

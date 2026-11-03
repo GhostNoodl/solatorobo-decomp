@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Res/StageVars.h"
 #include "Main/Sys/FieldState.h"
 #include "Main/Gfx/Model.h"
 
@@ -64,7 +65,6 @@ void Lo021caac8_Setup(Obj0214dcc4 *self) {
 #include "ov000/SceneRes.h"
 
 extern "C" {
-extern u8 data_02fe1534[];
 extern void *gDataRes;
 void MsgEntry_Init(void *p);
 s32 MsgRes_GetLines(void *res, u16 id, s32 *out, s32 d);
@@ -190,14 +190,14 @@ Node0214dd3c *Lo021caac8_AddItem(List0214dd3c *self, s32 a, u16 id, u16 c, s32 d
     fl = func_ov000_0214bf2c(id);
     if (fl & 0x10) {
         m->unk_08 = 0xb;
-        if (LFLD(u16, data_02fe1534, 0x46) == m->unk_30) {
+        if (data_02fe1534.unk_46 == m->unk_30) {
             m->unk_24 = 4;
         } else {
             m->unk_24 = 0xd;
         }
     }
     if (fl & 0x20) {
-        if (LFLD(u16, data_02fe1534, 0x46) == m->unk_30) {
+        if (data_02fe1534.unk_46 == m->unk_30) {
             if (DataRes_ReadById(gDataRes, 1, 0x301, id) == 1) {
                 m->unk_24 = 7;
             }

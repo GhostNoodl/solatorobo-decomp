@@ -30,7 +30,7 @@ void func_ov000_021b53f4(FieldMgr *self) {
     GfxCamParam_Init(&pb->cam.base.nearClip);
     pb->cam.base.wallClip = 0;
     pb->cam.unk_da = 0;
-    pb->cam.unk_d9 = 0;
+    pb->cam.timer = 0;
     if (self->exits != NULL && self->exit != 0xff) {
         func_ov000_021b65ec(self);
     }
@@ -65,8 +65,8 @@ void func_ov000_021b53f4(FieldMgr *self) {
         ResMgr_ReleaseArchive(e->unk_08, buf, 0);
         {
             FieldCam *sub = &gSceneCmd->cam;
-            sub->unk_c8 = 0;
-            sub->unk_d6 = 0;
+            sub->zones = NULL;
+            sub->zoneCount = 0;
         }
         self->blockB = NULL;
     }

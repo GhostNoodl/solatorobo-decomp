@@ -1,14 +1,10 @@
 #include "types.h"
+#include "Main/Res/StageVars.h"
 
 typedef struct {
     u8 unk_00[0x6];
     u16 unk_06;
 } Msg0215e634;
-
-typedef struct {
-    u8 unk_00[0x7c];
-    u16 unk_7c;
-} Dtcm02fe1534;
 
 typedef struct Obj0215e5f8 {
     u8 unk_00[0x84];
@@ -19,7 +15,6 @@ typedef struct Obj0215e5f8 {
 
 extern void *gMsgRes;
 extern void *gSndMgr;
-extern Dtcm02fe1534 data_02fe1534;
 
 void *func_02061d54(s32 a);
 void *MsgRes_GetString(void *a, void *b);

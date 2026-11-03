@@ -1,11 +1,11 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageVars.h"
 #include "ov000/UiObj.h"
 
 extern "C" {
 
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *gSndMgr;
-extern u8 data_02fe1534[];
 void func_0206281c(void);
 u32 Rand_GetGlobal(void);
 extern const s16 FX_SinCosTable_[];
@@ -26,7 +26,7 @@ BOOL Lo021cb0b8_OnDecide(UiList *self, void *msg) {
         SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         return FALSE;
     }
-    LFLD(u16, data_02fe1534, 0x7c) = LFLD(u16, msg, 6);
+    data_02fe1534.unk_7c = LFLD(u16, msg, 6);
     SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
     return FALSE;
 }

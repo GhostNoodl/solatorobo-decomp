@@ -976,7 +976,7 @@ void Ov012Act_02202b10_StateAttack2(Ov012Act_02202b10 *self) {
         c.y = self->pos.y;
         cam->unk_dc = c;
         cam->unk_da_0 = 1;
-        cam->unk_f8 = 0xe39;
+        cam->unk_f8.x = 0xe39;
         cam->unk_da_4 = 1;
     }
 }

@@ -722,9 +722,9 @@ ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param) {
             e->unk_20 = 0;
         }
     }
-    e->r = data_02fe1534.r;
-    e->g = data_02fe1534.g;
-    e->b = data_02fe1534.b;
+    e->r = data_02fe1534.unk_46;
+    e->g = data_02fe1534.unk_48;
+    e->b = data_02fe1534.unk_4a;
     if (pool->head == NULL) {
         e->next = NULL;
     } else {
@@ -1130,7 +1130,7 @@ void ObjPool_Update(ObjPool *pool) {
     }
     do {
         next = e->next;
-        if (e->b != data_02fe1534.b || e->g != data_02fe1534.g || e->r != data_02fe1534.r) {
+        if (e->b != data_02fe1534.unk_4a || e->g != data_02fe1534.unk_48 || e->r != data_02fe1534.unk_46) {
             ObjPool_FreeEntry(pool, e);
         } else {
             ObjPoolPlayer *pl = ActorMgr_FindPlayer();
@@ -1984,13 +1984,13 @@ u16 StageRes_ExecCmd(StageRes *res, u16 *cmd) {
     case 0x100:
         len++;
         len += res->Eval(cmd + 2, 0, 0);
-        *(u16 *)data_02fe1534.unk_02 = StageRes_GetValue(res);
+        data_02fe1534.unk_02 = StageRes_GetValue(res);
         break;
     case 0x101:
         len++;
         len += res->Eval(cmd + 2, 0, 0);
-        *(u16 *)&data_02fe1534.unk_08[0] = StageRes_GetValue(res);
-        *(u16 *)&data_02fe1534.unk_08[2] = 0;
+        data_02fe1534.unk_08 = StageRes_GetValue(res);
+        data_02fe1534.unk_0a = 0;
         break;
     case 0x102:
         len += StageRes_EvalArgs(res, op, argc, cmd + 1);
@@ -2058,7 +2058,7 @@ u16 StageRes_ExecCmd(StageRes *res, u16 *cmd) {
     case 0x1f0:
         len++;
         len += res->Eval(cmd + 2, 0, 0);
-        *(u16 *)data_02fe1534.unk_7e = Rand_UpTo(StageRes_GetValue(res));
+        data_02fe1534.unk_7e = Rand_UpTo(StageRes_GetValue(res));
         break;
     case 0xf1:
         len++;
@@ -3417,9 +3417,9 @@ int StageCmd_Op3d(StageResSlot *slot) {
         param.key.raw = lo | ((u32)(type << 28) >> 16);
         param.mask.raw = ((u32)type << 28) >> 16;
     }
-    color[0] = data_02fe1534.r;
-    color[1] = data_02fe1534.g;
-    color[2] = data_02fe1534.b;
+    color[0] = data_02fe1534.unk_46;
+    color[1] = data_02fe1534.unk_48;
+    color[2] = data_02fe1534.unk_4a;
     color2[1] = color[1];
     color2[0] = color[0];
     color2[2] = slot->args[3] == 1 ? 0xff : color[2];
@@ -3461,7 +3461,7 @@ int StageCmd_Op3e(StageResSlot *slot) {
         }
     }
     {
-        void *obj = Group_FindById(gGroup, slot->args[0], data_02fe1534.b & 0xff);
+        void *obj = Group_FindById(gGroup, slot->args[0], data_02fe1534.unk_4a & 0xff);
         if (obj != NULL) {
             Group_RemoveNode(gGroup, obj, 1);
         } else {
@@ -3628,7 +3628,7 @@ int StageCmd_Op45(StageResSlot *slot) {
         l = (StageLightObj *)data_02149f00;
     } else if (slot->args[0] != 0) {
         o = Stage_FindObj3DPtr(slot->args[0]);
-        l = (StageLightObj *)Group_FindById(gGroup, slot->args[0], data_02fe1534.b & 0xff);
+        l = (StageLightObj *)Group_FindById(gGroup, slot->args[0], data_02fe1534.unk_4a & 0xff);
     } else {
         o = Stage_FindObj3DByIdx(slot->args[1]);
         l = Group_FindNode(gGroup, slot->args[1]);
@@ -3667,7 +3667,7 @@ int StageCmd_Op46(StageResSlot *slot) {
         l = (StageLightObj *)data_02149f00;
     } else if (slot->args[0] != 0) {
         o = Stage_FindObj3DPtr(slot->args[0]);
-        l = (StageLightObj *)Group_FindById(gGroup, slot->args[0], data_02fe1534.b & 0xff);
+        l = (StageLightObj *)Group_FindById(gGroup, slot->args[0], data_02fe1534.unk_4a & 0xff);
     } else if (slot->args[1] == 0xffff) {
         o = Stage_FindObj3DByIdx(data_02fe1534.unk_26);
         l = Group_FindNode(gGroup, data_02fe1534.unk_26);
@@ -3693,7 +3693,7 @@ int StageCmd_Op47(StageResSlot *slot) {
         l = (StageLightObj *)data_02149f00;
     } else if (slot->args[0] != 0) {
         o = Stage_FindObj3DPtr(slot->args[0]);
-        l = (StageLightObj *)Group_FindById(gGroup, slot->args[0], data_02fe1534.b & 0xff);
+        l = (StageLightObj *)Group_FindById(gGroup, slot->args[0], data_02fe1534.unk_4a & 0xff);
     } else if (slot->args[1] == 0xffff) {
         o = Stage_FindObj3DByIdx(data_02fe1534.unk_26);
         l = Group_FindNode(gGroup, data_02fe1534.unk_26);
@@ -4336,7 +4336,7 @@ int func_02060898(u16 id, u16 idx, int val) {
         l = (StageLightObj *)data_02149f00;
     } else if (id != 0) {
         o = Stage_FindObj3DPtr(id);
-        l = (StageLightObj *)Group_FindById(gGroup, id, data_02fe1534.b & 0xff);
+        l = (StageLightObj *)Group_FindById(gGroup, id, data_02fe1534.unk_4a & 0xff);
     } else {
         o = Stage_FindObj3DByIdx(idx);
         l = Group_FindNode(gGroup, idx);
@@ -4901,7 +4901,7 @@ int StageCmd_Op7f(StageResSlot *slot) {
 }
 
 int func_02061c8c(StageResSlot *slot) {
-    ObjPoolShared *shared = &data_02fe1534;
+    StageVars *shared = &data_02fe1534;
     switch (slot->args[0]) {
     case 0:
         shared->unk_80 = func_ov000_0214be8c();
@@ -5134,12 +5134,12 @@ BOOL func_020621f8(void) {
 }
 
 void func_0206222c(void) {
-    ObjPoolShared *shared = &data_02fe1534;
+    StageVars *shared = &data_02fe1534;
     MIi_CpuClear16(0, shared, 0x82);
     shared->unk_04 = 0;
-    shared->r = 0xffff;
-    shared->g = 0xffff;
-    shared->b = 0xffff;
+    shared->unk_46 = 0xffff;
+    shared->unk_48 = 0xffff;
+    shared->unk_4a = 0xffff;
     shared->unk_10 = 0xffff;
     shared->unk_12 = 0xffff;
     shared->unk_4c = 0xffff;
@@ -5170,8 +5170,8 @@ void func_0206228c(void) {
 
 int func_020622ec(u8 *buf, u32 size) {
     MI_CpuFill8(buf, 0, size);
-    buf[0] = data_02fe1534.unk_02[0];
-    buf[1] = data_02fe1534.unk_02[1];
+    buf[0] = data_02fe1534.unk_02_bytes[0];
+    buf[1] = data_02fe1534.unk_02_bytes[1];
     buf[2] = data_02fe1534.unk_52_bytes[0];
     buf[3] = data_02fe1534.unk_52_bytes[1];
     buf[4] = data_02fe1534.unk_52_bytes[2];
@@ -5186,8 +5186,8 @@ int func_020622ec(u8 *buf, u32 size) {
 }
 
 int func_02062370(u8 *buf) {
-    data_02fe1534.unk_02[0] = buf[0];
-    data_02fe1534.unk_02[1] = buf[1];
+    data_02fe1534.unk_02_bytes[0] = buf[0];
+    data_02fe1534.unk_02_bytes[1] = buf[1];
     data_02fe1534.unk_52_bytes[0] = buf[2];
     data_02fe1534.unk_52_bytes[1] = buf[3];
     data_02fe1534.unk_52_bytes[2] = buf[4];
@@ -5216,9 +5216,9 @@ void func_02062410(void) {
 
 void func_02062424(const StageColor *c) {
     data_02fe1534.unk_44 = 1;
-    data_02fe1534.r = c->r;
-    data_02fe1534.g = c->g;
-    data_02fe1534.b = c->b;
+    data_02fe1534.unk_46 = c->r;
+    data_02fe1534.unk_48 = c->g;
+    data_02fe1534.unk_4a = c->b;
     data_02fe1534.unk_68 = 0;
     data_02fe1534.unk_6a = 0;
     data_02fe1534.unk_6c = 0;

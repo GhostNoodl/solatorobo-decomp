@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ActorMgr.h"
 #include "Main/Sys/FieldState.h"
+#include "ov000/FieldCam.h"
 #include "Main/Math/Rot16.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
@@ -27,7 +28,6 @@ s32 SndMgr_PlayPan(void *a, s32 b, s32 c);
 void func_ov000_021aa978(u8 *self);
 void func_ov000_021aaf80(u8 *self);
 void func_ov000_021ab68c(u8 *self);
-void func_ov000_0218a358(FieldCam *self, const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clamp, s16 a6, s16 a7, u8 a8);
 BOOL History_SetState(void *s, s32 a, s32 b);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 

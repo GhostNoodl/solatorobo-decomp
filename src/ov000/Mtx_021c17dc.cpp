@@ -65,7 +65,7 @@ void func_ov000_021c17dc(ActorMarker3D *self) {
     p.x = self->work.x + o->x;
     p.y = self->work.y + o->y;
     p.z = self->work.z;
-    data_ov000_021ccd74.unk_00 = LO_FX_MUL(self->work.alpha, 0x1e000) >> 12;
+    data_ov000_021ccd74.alpha = LO_FX_MUL(self->work.alpha, 0x1e000) >> 12;
     self->unk_90->trans = p;
     SetScale021c17dc(self->unk_90, 0x1000, -0x1000, 0x1000);
     Model021903b4_Draw(self->unk_90);

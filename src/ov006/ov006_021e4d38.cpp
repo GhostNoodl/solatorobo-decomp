@@ -15,7 +15,7 @@ void func_02045498(ov006_Unk02097e40 *p, int a);
 BOOL WH_IsStopped_02044c80(void);
 BOOL Wh_End(ov006_Unk02097e40 *p);
 
-static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
+static inline void ov006_Menu_ClearNodes(ov006_Menu *self) {
     ov006_MenuNode *node = self->nodes;
     while (node != NULL) {
         void *saved;
@@ -43,7 +43,7 @@ static inline void ov006_MenuEntry_Clear(ov006_MenuEntry *e) {
     MI_CpuFill16(e->unk2, 0, sizeof(e->unk2));
 }
 
-void func_ov006_021e4d38(ov006_Unk021ec888 *self) {
+void func_ov006_021e4d38(ov006_Menu *self) {
     int i;
 
     switch (self->stateTime) {

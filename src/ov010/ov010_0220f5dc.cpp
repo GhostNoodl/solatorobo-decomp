@@ -1,6 +1,7 @@
 #include "ov010/ov010.h"
 #include "ov000/ActorMgr.h"
 #include "Main/Sys/FieldState.h"
+#include "ov000/FieldCam.h"
 #include "ov000/ObjLayouts.h"
 #include "nitro/std.h"
 #include "nitro/mi.h"
@@ -19,10 +20,9 @@ typedef s32 fx32;
 // 021fbda0 needs that for its shake parameters and the 0x0220fa64 vector (round dtA): with an
 // extern view its case 0x15 loads all of 0x0220fa64 before the stores; with the named objects it
 // loads z after them, as the ROM does.
-struct Ov010Rot { u16 x, y, z; };
 // The shake parameters Ov010Shake copies from 0x4c on.
 struct Ov010ShakeParam { VecFx32 dir; s16 lim; s16 acc; u16 dur; s16 k5e; s16 k60; s16 k62; s16 k64; s16 k66; };
-struct Ov010Rec { u16 v[8]; const char *name; Ov010Rot rot; VecFx32 a; VecFx32 b; };
+struct Ov010Rec { u16 v[8]; const char *name; Rot16 rot; VecFx32 a; VecFx32 b; };
 typedef void (*Ov010Fn)(void);
 
 struct Ov010Shake {
@@ -90,11 +90,11 @@ extern const char *const data_ov010_0220ebd4;
 extern const char *const data_ov010_0220ebd8;
 extern const char *const data_ov010_0220ebdc;
 extern const char *const data_ov010_0220ebe0;
-extern const Ov010Rot data_ov010_0220ebe4;
-extern const Ov010Rot data_ov010_0220ebea;
-extern const Ov010Rot data_ov010_0220ebf0;
-extern const Ov010Rot data_ov010_0220ebf6;
-extern const Ov010Rot data_ov010_0220ebfc;
+extern const Rot16 data_ov010_0220ebe4;
+extern const Rot16 data_ov010_0220ebea;
+extern const Rot16 data_ov010_0220ebf0;
+extern const Rot16 data_ov010_0220ebf6;
+extern const Rot16 data_ov010_0220ebfc;
 extern const s16 data_ov010_0220ec02[4];
 extern Ov010Fn const data_ov010_0220ec0c[2];
 extern const VecFx32 data_ov010_0220ec14;
@@ -121,7 +121,7 @@ extern const VecFx32 data_ov010_0220ed04;
 extern char data_ov010_0220fa2c[];
 extern char data_ov010_0220fa32[];
 extern char data_ov010_0220fa38[];
-extern const Ov010Rot data_ov010_0220fa3e;
+extern const Rot16 data_ov010_0220fa3e;
 extern char data_ov010_0220fa44[];
 extern char data_ov010_0220fa4a[];
 extern char data_ov010_0220fa50[];
@@ -143,7 +143,7 @@ extern const Ov010Rec data_ov010_0220fb9c;
 // the original computed them with an expression MWCC evaluates in __sinit and folds there. An
 // inline identity reproduces that.
 static inline fx32 K(fx32 v) { return v; }
-const Ov010Rot data_ov010_0220fa3e = data_ov010_0220ebe4;
+const Rot16 data_ov010_0220fa3e = data_ov010_0220ebe4;
 char data_ov010_0220fa2c[] = "nut00";
 char data_ov010_0220fa44[] = "nut01";
 char data_ov010_0220fa4a[] = "nut02";
@@ -171,11 +171,11 @@ const char *const data_ov010_0220ebd4 = data_ov010_0220fa5c;
 const char *const data_ov010_0220ebd8 = data_ov010_0220fa50;
 const char *const data_ov010_0220ebdc = data_ov010_0220fa44;
 const char *const data_ov010_0220ebe0 = data_ov010_0220fa2c;
-const Ov010Rot data_ov010_0220ebe4 = {0x0, 0x0, 0x0};
-const Ov010Rot data_ov010_0220ebea = {0xfe00, 0x0, 0x0};
-const Ov010Rot data_ov010_0220ebf0 = {0x0, 0xbfff, 0x0};
-const Ov010Rot data_ov010_0220ebf6 = {0xfc0d, 0x53f4, 0x0};
-const Ov010Rot data_ov010_0220ebfc = {0xfb19, 0x8000, 0x0};
+const Rot16 data_ov010_0220ebe4 = {0x0, 0x0, 0x0};
+const Rot16 data_ov010_0220ebea = {0xfe00, 0x0, 0x0};
+const Rot16 data_ov010_0220ebf0 = {0x0, 0xbfff, 0x0};
+const Rot16 data_ov010_0220ebf6 = {0xfc0d, 0x53f4, 0x0};
+const Rot16 data_ov010_0220ebfc = {0xfb19, 0x8000, 0x0};
 const s16 data_ov010_0220ec02[4] = {0x1800, 0x1800, 0x1800, 0x1800};
 Ov010Fn const data_ov010_0220ec0c[2] = {(Ov010Fn)Ov010Vt_0220ec0c_GetOffsetA, (Ov010Fn)Ov010Vt_0220ec0c_GetOffsetB};
 const VecFx32 data_ov010_0220ec14 = {0x0, -0x1000, 0x0};
@@ -214,7 +214,6 @@ extern void *gSndMgr;
 extern char data_ov010_0220fc13[];
 extern void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 extern void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
-extern void func_ov000_0218a358(void *a, const void *b, Ov010Rot *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
 extern u16 Ov003Vec_Yaw(const VecFx32 *v);
@@ -2642,7 +2641,7 @@ void Ov010State3_Update(Ov010State3 *self) {
     }
     VecFx32 d;
     Ov010_VecSub(&self->unk_0c, &pp, &d);
-    Ov010Rot r = data_ov010_0220ebea;
+    Rot16 r = data_ov010_0220ebea;
     r.y = Ov003Vec_Yaw(&d);
     s32 dist = VEC_Distance(&pp, &self->unk_0c);
     func_ov000_0218a358(&gSceneCmd->cam, &self->unk_0c, &r, self->unk_08 + dist + 0x10000, 0, 0x1000, 0x1000, 1);
@@ -2879,7 +2878,7 @@ static inline void Ov010_SetSky(void) {
 void Ov010Vt_0220fc8c_Update(Ov010Toggle *o) {
     if (o->b0) {
         VecFx32 v = data_ov010_0220ec80;
-        Ov010Rot r = data_ov010_0220ebfc;
+        Rot16 r = data_ov010_0220ebfc;
         func_ov000_0218a358(&gSceneCmd->cam, &v, &r, 0x17385, 0, 0x1000, 0x1000, 1);
     } else if (o->b1) {
         Ov010_SetSky();
@@ -2906,7 +2905,7 @@ void Ov010Vt_0220fcac_HandleMsg(Ov010Toggle *o, s32 *msg) {
 void Ov010Vt_0220fcac_Update(Ov010Toggle *o) {
     if (o->b0) {
         VecFx32 v = data_ov010_0220ec74;
-        Ov010Rot r = data_ov010_0220ebf6;
+        Rot16 r = data_ov010_0220ebf6;
         func_ov000_0218a358(&gSceneCmd->cam, &v, &r, 0xf000, 0, 0x1000, 0x1000, 1);
     } else if (o->b1) {
         Ov010_SetSky();

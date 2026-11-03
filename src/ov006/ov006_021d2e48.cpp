@@ -11,21 +11,21 @@ extern "C" {
 extern ov006_Unk02097e40 *gWhMgr;
 
 void ov006_Slot_Pack(const ov006_Slot *self, ov006_SlotPacked *buf);
-void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
+void ov006_Menu_SetOwnEntry(ov006_Menu *self, u16 a, int b, const void *src, u32 size);
 void ModelViewer_Update(ov006_Actor58 *self);
 void ModelViewer_Draw(ov006_Actor58 *self);
 void ov006_Caption_Update(ov006_Caption *self);
 void func_ov006_021e0b80(ov006_Caption *self);
 void ov006_Gauge_Update(ov006_Gauge *self);
 void ov006_Gauge_Draw(ov006_Gauge *self);
-void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
+void ov006_Menu_ReleaseObj(ov006_Menu *self);
 void ov006_Manager_DispatchMenuCb(int a, int b, int c);
 void func_ov006_021d2ff0(ov006_TaskD1F *self);
 void func_ov006_021d30d4(ov006_TaskD1F *self);
 void func_ov006_021d3224(ov006_TaskD1F *self);
 void ov006_UpdateNetSlots(void);
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
-void ov006_Menu_ShowObj(ov006_Unk021ec888 *self);
+void ov006_Menu_ShowObj(ov006_Menu *self);
 
 static inline void ov006_TaskD1F_Finish(ov006_TaskD1F *self) {
     self->unk54->flags |= 2;

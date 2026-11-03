@@ -25,14 +25,14 @@ void func_02046a78(ov006_Unk02097e40 *a, void *b, u32 c);
 void OS_GetOwnerInfo(void *a);
 int WM_GetLinkLevel(void);
 BOOL ov006_Menu_ReceiveData(const ov006_MenuData *data);
-void func_ov006_021e5050(ov006_Unk021ec888 *self);
-void func_ov006_021e5604(ov006_Unk021ec888 *self);
-void func_ov006_021e51f8(ov006_Unk021ec888 *self);
-void func_ov006_021e4d38(ov006_Unk021ec888 *self);
-void func_ov006_021e4ed4(ov006_Unk021ec888 *self);
-void func_ov006_021e58e4(ov006_Unk021ec888 *self);
+void func_ov006_021e5050(ov006_Menu *self);
+void func_ov006_021e5604(ov006_Menu *self);
+void func_ov006_021e51f8(ov006_Menu *self);
+void func_ov006_021e4d38(ov006_Menu *self);
+void func_ov006_021e4ed4(ov006_Menu *self);
+void func_ov006_021e58e4(ov006_Menu *self);
 
-static inline void ov006_Menu_SetState(ov006_Unk021ec888 *self, int state) {
+static inline void ov006_Menu_SetState(ov006_Menu *self, int state) {
     self->state = state;
     self->stateTime = 0;
 }
@@ -48,7 +48,7 @@ static inline BOOL ov006_Stateful_IsDone(UiObj *s) {
     return s->state == 5 ? TRUE : FALSE;
 }
 
-void ov006_Menu_Load(ov006_Unk021ec888 *self) {
+void ov006_Menu_Load(ov006_Menu *self) {
     ov006_ObjectHolder *h;
     switch (self->state) {
     case 0: {

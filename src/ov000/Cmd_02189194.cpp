@@ -1,4 +1,6 @@
 #include "ov000/SceneCmd.h"
+#include "Main/Snd/SndMgr.h"
+#include "ov000/SceneCmdPool.h"
 #include "ov000/ActorMgr.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/VObj.h"
@@ -14,27 +16,6 @@ typedef struct {
 } Bits0e;
 
 #define BITS0E(self) (*(Bits0e *)((u8 *)(self) + 0xe))
-
-typedef struct {
-    u8 pad_00[4];
-    SceneCmd *obj;
-} State021ccd50;
-
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 flag : 1;
-    u16 b4 : 12;
-    u16 unk_02;
-    u16 unk_04;
-    u16 unk_06;
-    u16 unk_08;
-    u8 pad_0a[0x66];
-    u16 unk_70;
-    u16 unk_72;
-    u16 unk_74;
-} Obj02097e48;
 
 typedef struct {
     u8 pad_00[0x28];
@@ -62,12 +43,9 @@ typedef struct {
 } CmdEntry;
 
 extern "C" {
-extern State021ccd50 data_ov000_021ccd50;
 extern Mgr021ccd30 *gMessageQueue;
 extern s32 gFadeState[];
 extern CmdEntry SceneCmd_Table[];
-extern void *gSndMgr;
-extern Obj02097e48 *gSndQueue;
 extern void *gGroup;
 
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
@@ -79,7 +57,7 @@ void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void MessageQueue021cb980_Push05(void *p);
 BOOL func_ov000_02181d70(SceneStage *self, u16 id);
 void func_02062424(FieldId *id);
-void SndQueue_ResetNodes_0204aa10(void *p);
+void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 void LoTicker_Clear(void *p);
 void func_ov000_021645a4(s32 a);
 void Group_RefreshAll(void *p);
@@ -235,15 +213,15 @@ s32 func_ov000_02189194(SceneCmd *self) {
         self->state = 3;
         SndMgr_LoadHeapState(gSndMgr, 1, 1);
         {
-            Obj02097e48 *p = gSndQueue;
-            if (p->flag) {
+            SndQueue *p = gSndQueue.queue;
+            if (p->flag3) {
                 p->unk_06 = 0x8000;
                 p->unk_08 = 0x1e;
                 p->unk_02 = 0;
             }
         }
         {
-            Obj02097e48 *p = gSndQueue;
+            SndQueue *p = gSndQueue.queue;
             p->unk_74 = 0x8000;
             p->unk_70 = 0;
         }
@@ -264,7 +242,7 @@ s32 func_ov000_02189194(SceneCmd *self) {
                 if (trg & 0x400) {
                     MessageQueue021cb980_Push05(gMessageQueue);
                 } else if (trg & 8) {
-                    SceneCmd *obj = data_ov000_021ccd50.obj;
+                    SceneCmd *obj = data_ov000_021ccd50.scene;
                     if (!HasCmd(obj) && !HasEvent(obj)) {
                         BOOL ok = FALSE;
                         if (p->vfunc_14() && !B2e(p)) {
@@ -273,7 +251,7 @@ s32 func_ov000_02189194(SceneCmd *self) {
                         if (ok) {
                             u16 n = 0;
                             SceneScript *it;
-                            for (it = data_ov000_021ccd50.obj->stage.scripts; it != NULL; it = it->next) {
+                            for (it = data_ov000_021ccd50.scene->stage.scripts; it != NULL; it = it->next) {
                                 if (n == 0) {
                                     break;
                                 }
@@ -313,8 +291,8 @@ s32 func_ov000_02189194(SceneCmd *self) {
             break;
         }
         func_02062424(&self->unk_cd);
-        SndQueue_ResetNodes_0204aa10(gSndQueue);
-        gSndQueue->b2 = 0;
+        SndQueue_ResetNodes_0204aa10(gSndQueue.queue);
+        gSndQueue.queue->flag2 = 0;
         self->unk_d0 = self->unk_ca;
         self->unk_ca = self->unk_cd;
         BITS0E(self).mode = 2;

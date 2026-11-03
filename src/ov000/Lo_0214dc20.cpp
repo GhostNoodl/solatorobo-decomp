@@ -1,9 +1,9 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageVars.h"
 #include "ov000/MsgEntry.h"
 
 extern "C" {
 
-extern u8 data_02fe1534[];
 extern void *gDataRes;
 void Obj0215eab4_Draw(void *p);
 void DataRes_WriteEntry(void *a, s32 b, s32 c, u16 d, s32 e);
@@ -15,7 +15,7 @@ void func_ov000_0214dc20(MsgEntryEx *self, s32 *msg) {
     switch (msg[1]) {
     case 0:
         self->vals[0] = msg[2];
-        if (msg[2] != LFLD(u16, data_02fe1534, 0x46)) {
+        if (msg[2] != data_02fe1534.unk_46) {
             self->unk_24 = 0xe;
             return;
         }

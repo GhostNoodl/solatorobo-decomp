@@ -1,10 +1,6 @@
 #include "ov000/VObj.h"
+#include "Main/Res/StageVars.h"
 #include "ov000/UiObj.h"
-
-typedef struct {
-    u8 unk_00[0x7c];
-    u16 unk_7c;
-} Dtcm02fe1534;
 
 extern "C" {
 
@@ -15,7 +11,6 @@ extern u8 UiObj_vtbl[];
 extern u8 Menu021ca94c_vtbl[];
 extern u8 TextWin_vtbl[];
 extern void *gSndMgr;
-extern Dtcm02fe1534 data_02fe1534;
 
 void func_0206281c(void);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);

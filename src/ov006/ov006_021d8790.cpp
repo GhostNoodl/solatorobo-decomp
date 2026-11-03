@@ -18,7 +18,7 @@ extern ov006_Fade021d8790 gFadeState;
 void GfxSys_StartFadeIn(s32 a, int b, int c);
 void GfxSys_StartFadeOut(s32 a, int b, int c);
 void GfxSys_UpdateFade(void);
-void ov006_Menu_ShowObj(ov006_Unk021ec888 *p);
+void ov006_Menu_ShowObj(ov006_Menu *p);
 
 static inline BOOL ov006_FadeIdle(void) {
     BOOL r;

@@ -103,11 +103,11 @@ void func_ov000_021b628c(FieldMgr *self) {
             cam->unk_da_1 = 1;
         }
         if (func_02062620()) {
-            cam->unk_f8 = func_02062588();
+            cam->unk_f8.x = func_02062588();
             cam->unk_da_4 = 1;
         }
         if (func_02062648()) {
-            cam->unk_fa = func_020625ac();
+            cam->unk_f8.y = func_020625ac();
             cam->unk_da_5 = 1;
         }
         if (func_02062670()) {

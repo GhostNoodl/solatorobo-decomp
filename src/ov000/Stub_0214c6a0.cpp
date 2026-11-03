@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Res/StageVars.h"
 
 typedef struct {
     const void *vtbl;
@@ -34,16 +35,10 @@ typedef struct {
     s32 unk_218;
 } Obj0214c668;
 
-typedef struct {
-    u8 unk_00[0x5a];
-    u16 unk_5a;
-} Shared02fe1534;
-
 extern "C" {
 
 extern const u8 TextWin_vtbl[];
 extern const u8 MainVt_0208bbc8_vtbl[];
-extern Shared02fe1534 data_02fe1534;
 
 void *Heap_Alloc(u32 size);
 void TextWin_Init(void *obj);

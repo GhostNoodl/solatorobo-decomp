@@ -1017,7 +1017,7 @@ void func_ov002_021e6290(Ov002Obj021f075c *self) {
         m = self->unk_6c;
     }
     t = self->unk_1c;
-    lim = (FIELD(m->resAnm, 4, u16) << 12) - 0x1000;
+    lim = (((NNSG3dResAnmCommon *)m->resAnm)->numFrame << 12) - 0x1000;
     self->unk_80 = lim;
     cur = gOv002Stage->unk_d0;
     if (t < 0) {
@@ -1076,7 +1076,7 @@ static inline s32 Ov002Anm_Frame(Ov002Obj021f075c *self) {
 
 extern "C" {
 
-void Ov002Obj021f075c_UpdateAnmFrame(Ov002Obj021f075c *self, void *out);
+void Ov002Obj021f075c_UpdateAnmFrame(Ov002Obj021f075c *self, NNSG3dAnmObj *out);
 
 extern void *NNS_G3dRS;
 
@@ -1128,22 +1128,22 @@ void Ov002Obj021f075c_UpdateAnims(Ov002Obj021f075c *self) {
     NNS_G3dRS = NULL;
 }
 
-void Ov002Obj021f075c_UpdateAnmFrame(Ov002Obj021f075c *self, void *out) {
-    s32 n = FIELD(FIELD(out, 0x8, u8 *), 0x4, u16) << 12;
+void Ov002Obj021f075c_UpdateAnmFrame(Ov002Obj021f075c *self, NNSG3dAnmObj *out) {
+    s32 n = ((NNSG3dResAnmCommon *)out->resAnm)->numFrame << 12;
     s32 f;
     f = Ov002Anm_Frame(self);
-    f = FX_MUL(f, FIELD(self, 0x88, s32));
+    f = FX_MUL(f, self->unk_88);
     if (self->unk_78 == 0) {
         if (f >= n - 0x1000) {
             f = n - 0x1000;
         }
-        FIELD(out, 0x0, s32) = f;
+        out->frame = f;
     } else if (self->unk_78 == 1) {
         if (self->unk_7c >= self->unk_8c && self->unk_8c >= 0) {
-            FIELD(out, 0x0, s32) = n - 0x1000;
+            out->frame = n - 0x1000;
             return;
         }
-        FIELD(out, 0x0, s32) = f % n;
+        out->frame = f % n;
     }
 }
 

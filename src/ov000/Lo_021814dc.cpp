@@ -21,6 +21,9 @@
 #include "nitro/mi.h"
 #include "Main/Res/ResArc.h"
 #include "Main/Sys/Pad.h"
+#include "Main/Res/StageVars.h"
+#include "ov002/Session.h"
+#include "ov002/StaffRoll.h"
 
 extern "C" {
 
@@ -540,22 +543,13 @@ BOOL func_ov000_02181d70(SceneStage *self, u16 id) {
 // ---- Stub_02181efc
 namespace m_Stub_02181efc {
 
-typedef struct {
-    u8 unk_00[0x8];
-    u16 unk_08;
-    u16 unk_0a;
-    u16 unk_0c;
-    u16 unk_0e;
-} Data02fe1534;
-
 extern "C" {
 
-extern Data02fe1534 data_02fe1534;
 s32 StageRes_Run(SceneScript *self, s32 a);
 
 s32 func_ov000_02181efc(SceneScript *self, s32 a) {
     s32 r;
-    Data02fe1534 *d = &data_02fe1534;
+    StageVars *d = &data_02fe1534;
     d->unk_08 = self->unk_c8;
     d->unk_0a = self->unk_ca;
     d->unk_0c = self->unk_cc;
@@ -630,14 +624,8 @@ void func_ov000_02181f54(SceneStage *self, u16 id, u16 a, u16 b, u16 c, u16 d) {
 // ---- Widget_021820bc
 namespace m_Widget_021820bc {
 
-typedef struct {
-    u8 pad_00[0x44];
-    u16 unk_44;
-} Dtcm02fe1534;
-
 extern "C" {
 
-extern Dtcm02fe1534 data_02fe1534;
 BOOL StageRes_IsAllLoaded(SceneScript *w);
 BOOL StageRes_Bind(SceneScript *w);
 
@@ -898,7 +886,6 @@ static inline BOOL IsActive(SceneRes *p) {
 
 extern "C" {
 extern void *data_02149efc;
-extern u8 data_02fe1534[];
 BOOL StageRes_FindSlot(s32 id);
 void func_0206228c(void);
 
@@ -947,7 +934,7 @@ void func_ov000_02182590(SceneStage *self) {
         return;
     }
     w = self->scripts;
-    if (LFLD(u16, data_02fe1534, 0x44) == 1) {
+    if (data_02fe1534.unk_44 == 1) {
         if (self->res != NULL) {
             self->res->vfunc_38(1);
             data_02149efc = NULL;
@@ -1266,12 +1253,6 @@ typedef struct {
     u16 unk_154;
 } Obj0214a424;
 
-typedef struct {
-    u16 unk_00;
-    u16 unk_02;
-    u16 unk_04;
-} Dtcm02fe1534;
-
 extern "C" {
 extern Obj0214a424 *gStageFlags;
 extern VObj *gDataRes;
@@ -1280,7 +1261,6 @@ extern u8 Ov000Vt_021cb6d0_vtbl[];
 extern u8 Ov000Vt_021cb940_vtbl[];
 extern u8 TimedBuffer021cb920_vtbl[];
 extern Obj02097e48 *gSndQueue;
-extern Dtcm02fe1534 data_02fe1534;
 extern void *gSndMgr;
 
 void DataRes152c_Delete(void);
@@ -1913,18 +1893,9 @@ typedef struct {
     u16 unk_0e;
 } Actor0218e640;
 
-typedef struct {
-    u8 pad_00[0x24];
-    u16 unk_24;
-    u16 unk_26;
-    u8 pad_28[0x1e];
-    u16 unk_46;
-} Dtcm02fe1534;
-
 extern "C" {
 extern s32 gFadeState[5];
 extern Obj02097e48 *gSndQueue;
-extern Dtcm02fe1534 data_02fe1534;
 extern void *gSndMgr;
 extern Mgr021ccd30 *gMessageQueue;
 Robo021ca458 *ActorMgr_FindPlayer(void);
@@ -4000,15 +3971,9 @@ typedef struct {
     s32 unk_14;
 } Ov006Obj021ec860;
 
-typedef struct {
-    u8 pad_00[0x78];
-    u16 unk_78;
-} Dtcm02fe1534;
-
 extern "C" {
 extern Ov015Obj02213320 *gOv015Globals;
 extern Ov006Obj021ec860 *gOv006Manager;
-extern Dtcm02fe1534 data_02fe1534;
 extern u8 *gSceneMgr;
 extern void *gSndMgr;
 extern Obj02097e48 *gSndQueue;
@@ -4105,21 +4070,17 @@ namespace m_Stub_021865bc {
 
 extern "C" {
 
-extern u8 data_ov002_021f0f80[];
-void func_ov002_021ccde4();
-void func_ov002_021cceb4(void *a);
-void func_ov002_021cd068(void *a);
 
 void func_ov000_021865bc(void) {
     func_ov002_021ccde4();
 }
 
 void func_ov000_021865c8(void) {
-    func_ov002_021cceb4(*(void **)(data_ov002_021f0f80 + 0x0));
+    func_ov002_021cceb4(data_ov002_021f0f80);
 }
 
 void func_ov000_021865e0(void) {
-    func_ov002_021cd068(*(void **)(data_ov002_021f0f80 + 0x0));
+    func_ov002_021cd068(data_ov002_021f0f80);
 }
 
 }
@@ -4303,23 +4264,17 @@ s32 SceneCmd_Run1d(SceneCmd *self) {
 namespace m_Lo_02186a24 {
 
 typedef struct {
-    u32 b0 : 1;
-} Ov002Obj021f0f80;
-
-typedef struct {
     u8 pad_00[4];
     s32 unk_04;
 } Ov008Obj021d0500;
 
 extern "C" {
-extern Ov002Obj021f0f80 *data_ov002_021f0f80;
 extern Ov008Obj021d0500 *gOv008Mgr;
 extern u8 *gSceneMgr;
 // Overlay ids, defined by the linker script.
 extern u8 OVERLAY_2_ID[];
 extern u8 OVERLAY_8_ID[];
 void Scene_SetSubOverlay_0204b270(void *p, s32 a, s32 b);
-void func_ov002_021ccda0(void);
 void func_ov008_021cd448(void);
 void func_ov000_021865bc(void);
 void func_ov000_021865c8(void);
@@ -4328,13 +4283,13 @@ void func_ov000_02186b74(void);
 void func_ov000_02186b80(void);
 void func_ov000_02186b98(void);
 
-static inline BOOL Ov002Flag(Ov002Obj021f0f80 *p) {
-    return p->b0 ? TRUE : FALSE;
+static inline BOOL Ov002Flag(Ov002Session *p) {
+    return p->done ? TRUE : FALSE;
 }
 
 static inline BOOL Ov002Done(void) {
     BOOL r;
-    Ov002Obj021f0f80 *p = data_ov002_021f0f80;
+    Ov002Session *p = data_ov002_021f0f80;
     if (p != NULL) {
         r = Ov002Flag(p) ? TRUE : FALSE;
     } else {
@@ -4452,23 +4407,17 @@ void SceneCmd_Push1f(SceneCmd *self) {
 namespace m_Lo_02186c88 {
 
 typedef struct {
-    u32 b0 : 1;
-} Ov002Obj021f0f80;
-
-typedef struct {
     u8 pad_00[4];
     s32 unk_04;
 } Ov008Obj021d0500;
 
 extern "C" {
-extern Ov002Obj021f0f80 *data_ov002_021f0f80;
 extern Ov008Obj021d0500 *gOv008Mgr;
 extern u8 *gSceneMgr;
 // Overlay ids, defined by the linker script.
 extern u8 OVERLAY_2_ID[];
 extern u8 OVERLAY_8_ID[];
 void Scene_SetSubOverlay_0204b270(void *p, s32 a, s32 b);
-void func_ov002_021ccda0(void);
 void func_ov008_021cd448(void);
 void func_ov000_021865bc(void);
 void func_ov000_021865c8(void);
@@ -4477,13 +4426,13 @@ void func_ov000_02186b74(void);
 void func_ov000_02186b80(void);
 void func_ov000_02186b98(void);
 
-static inline BOOL Ov002Flag(Ov002Obj021f0f80 *p) {
-    return p->b0 ? TRUE : FALSE;
+static inline BOOL Ov002Flag(Ov002Session *p) {
+    return p->done ? TRUE : FALSE;
 }
 
 static inline BOOL Ov002Done(void) {
     BOOL r;
-    Ov002Obj021f0f80 *p = data_ov002_021f0f80;
+    Ov002Session *p = data_ov002_021f0f80;
     if (p != NULL) {
         r = Ov002Flag(p) ? TRUE : FALSE;
     } else {
@@ -4643,7 +4592,6 @@ extern u8 OVERLAY_7_ID[];
 void Scene_SetSubOverlay_0204b270(void *p, s32 a, s32 b);
 Ov004Obj *func_ov004_021cce88(void);
 void func_ov004_021ccf10(void);
-void func_ov002_021ccda0(void);
 BOOL func_ov004_021ce2ec(u32 addr, s32 arg);
 BOOL func_ov004_021ce374(u32 addr, s32 arg);
 BOOL func_ov004_021ce3fc(u32 addr, s32 arg);
@@ -4873,13 +4821,8 @@ void SceneCmd_Push22(SceneCmd *self, s32 arg) {
 // ---- Lo_02187420
 namespace m_Lo_02187420 {
 
-typedef struct {
-    u8 pad_00[8];
-    s32 unk_08;
-} Ov002Obj021f0fa4;
-
 extern "C" {
-extern Ov002Obj021f0fa4 *data_ov002_021f0fa4;
+extern Ov002Staff *data_ov002_021f0fa4;
 extern u8 *gSceneMgr;
 // Overlay id, defined by the linker script.
 extern u8 OVERLAY_2_ID[];
@@ -4903,7 +4846,7 @@ s32 SceneCmd_Run22(SceneCmd *self) {
         return 0;
     }
     case 1:
-        if ((data_ov002_021f0fa4->unk_08 == 2 ? TRUE : FALSE)) {
+        if ((data_ov002_021f0fa4->clock.state == 2 ? TRUE : FALSE)) {
             gSndMgr[0x5b] = 0;
             if (data_ov000_021ccd5c != NULL) {
                 data_ov000_021ccd5c();
@@ -5344,20 +5287,12 @@ typedef struct {
     Task11c *unk_11c;
 } Mgr021ccd30;
 
-typedef struct {
-    u8 pad_00[0x46];
-    u16 unk_46;
-    u16 unk_48;
-    u16 unk_4a;
-} Dtcm02fe1534;
-
 extern "C" {
 extern Mgr021ccd30 *gMessageQueue;
 extern s32 gFadeState[5];
 extern u8 Ov000Vt_021cb6d0_vtbl[];
 extern u8 Ov000Vt_021cb940_vtbl[];
 extern u8 TimedBuffer021cb920_vtbl[];
-extern Dtcm02fe1534 data_02fe1534;
 extern Obj02097e48 *gSndQueue;
 extern void *gEffectMgr;
 extern void *gGroup;
@@ -5791,7 +5726,6 @@ typedef void (*Cb0218867c)(void);
 
 extern "C" {
 
-extern u8 data_02fe1534[];
 extern void *gDataRes;
 BOOL func_ov000_0214be28(u16 id);
 void func_ov000_021763c8(void);
@@ -5840,7 +5774,7 @@ s32 SceneCmd_Run29(SceneCmd *self) {
     s32 c2;
     switch (kind) {
     case 0: {
-        u8 *g_0 = data_02fe1534;
+        u8 *g_0 = (u8 *)&data_02fe1534;
         switch (self->step) {
         case 0:
             self->step++;
@@ -5869,7 +5803,7 @@ s32 SceneCmd_Run29(SceneCmd *self) {
                 }
             }
             {
-                u8 *g_1 = data_02fe1534;
+                u8 *g_1 = (u8 *)&data_02fe1534;
                 LFLD(u16, g_1, 0x80) = p != NULL ? 1 : 0;
             }
             self->step = 100;
@@ -5878,7 +5812,7 @@ s32 SceneCmd_Run29(SceneCmd *self) {
         }
         break;
     case 2: {
-        u8 *g_2 = data_02fe1534;
+        u8 *g_2 = (u8 *)&data_02fe1534;
         switch (self->step) {
         case 0:
             func_ov000_021763c8();
@@ -5923,7 +5857,7 @@ s32 SceneCmd_Run29(SceneCmd *self) {
         }
         break;
     case 4: {
-        u8 *g_3 = data_02fe1534;
+        u8 *g_3 = (u8 *)&data_02fe1534;
         switch (self->step) {
         case 0:
             self->step++;
@@ -5979,7 +5913,7 @@ s32 SceneCmd_Run29(SceneCmd *self) {
                 miss++;
             }
         }
-        LFLD(u16, data_02fe1534, 0x80) = (s32)(((s64)FX_Div(hit << 12, (n_1 - miss) << 12) * 0x64000 + 0x800) >> 12) >> 12;
+        LFLD(u16, &data_02fe1534, 0x80) = (s32)(((s64)FX_Div(hit << 12, (n_1 - miss) << 12) * 0x64000 + 0x800) >> 12) >> 12;
         self->step = 100;
     }
     if (self->step == 100) {

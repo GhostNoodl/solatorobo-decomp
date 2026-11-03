@@ -15,13 +15,13 @@ void *MsgRes_GetString(void *a, int id);
 void func_02045094(ov006_Net021e58e4 *net);
 BOOL Wh_End(ov006_Net021e58e4 *net);
 
-static inline void ov006_Menu_Advance(ov006_Unk021ec888 *self) {
+static inline void ov006_Menu_Advance(ov006_Menu *self) {
     if (self->stateTime < 0xff) {
         self->stateTime++;
     }
 }
 
-static inline void ov006_Menu_SetState(ov006_Unk021ec888 *self, int state) {
+static inline void ov006_Menu_SetState(ov006_Menu *self, int state) {
     self->state = state;
     self->stateTime = 0;
 }
@@ -38,7 +38,7 @@ static inline void ov006_MenuNode_Delete(ov006_MenuNode *node) {
     OV006_DELETE_OBJECT(node);
 }
 
-static inline void ov006_Menu_OpenDialog(ov006_Unk021ec888 *self) {
+static inline void ov006_Menu_OpenDialog(ov006_Menu *self) {
     ov006_ObjectHolder *h = self->unk1D8;
     ov006_ObjectHolder_Clear(h);
     h->obj = ov006_NewLo021cad50();
@@ -52,7 +52,7 @@ static inline void ov006_Menu_OpenDialog(ov006_Unk021ec888 *self) {
     func_02045094(gWhMgr);
 }
 
-static inline void ov006_Menu_WaitReady(ov006_Unk021ec888 *self) {
+static inline void ov006_Menu_WaitReady(ov006_Menu *self) {
     if (gWhMgr->state != 1) {
         return;
     }
@@ -62,7 +62,7 @@ static inline void ov006_Menu_WaitReady(ov006_Unk021ec888 *self) {
     ov006_Menu_Advance(self);
 }
 
-static inline void ov006_Menu_Close(ov006_Unk021ec888 *self) {
+static inline void ov006_Menu_Close(ov006_Menu *self) {
     BOOL done = TRUE;
     ov006_MenuNode *node;
     int i;
@@ -93,7 +93,7 @@ static inline void ov006_Menu_Close(ov006_Unk021ec888 *self) {
     self->unk1C = 0;
 }
 
-void func_ov006_021e58e4(ov006_Unk021ec888 *self) {
+void func_ov006_021e58e4(ov006_Menu *self) {
     switch (self->unk1C) {
     case 1:
     case 4:

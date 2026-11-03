@@ -1812,7 +1812,7 @@ void Ov012Lift_StateDie(Ov012Lift *self) {
         cam->unk_da_1 = 1;
         cam->unk_f4 = self->unk_114;
         cam->unk_da_2 = 2;
-        cam->unk_f8 = r + 0x5b0;
+        cam->unk_f8.x = r + 0x5b0;
         cam->unk_da_4 = 1;
     }
 }

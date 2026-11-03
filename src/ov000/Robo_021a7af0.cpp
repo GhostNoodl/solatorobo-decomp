@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/FieldCam.h"
 #include "ov000/ActorMgr.h"
 #include "ov000/MessageQueue.h"
 #include "Main/Res/StageFlags.h"
@@ -48,7 +49,6 @@ void Target_Set(void *a, void *b);
 u8 *Target_Get(void *p);
 u16 Actor_YawToPos(Actor *self, void *target);
 void *SndMgr_PlayAt(void *mgr, s32 id, void *pos, s32 pan);
-void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s16 d, s16 e);
 void func_ov000_02168490(Lo021cb894 *self, s32 a, s32 b, VecFx32 *p, VecFx32 *q);
 void Shared_ChangeFlags(u16 clear, u16 set);
 
@@ -675,7 +675,7 @@ void Robo021ca458_State18(Robo021ca458 *self) {
                     self->unk_b24_27 = 1;
                 }
                 VEC_Add(&v, (VecFx32 *)((u8 *)self + 0x70), &w);
-                func_ov000_021899d8(&w, 0, t->radius + 0x8ccd, 1, 0x2000, 0x1000);
+                func_ov000_021899d8(&w, NULL, t->radius + 0x8ccd, 1, 0x2000, 0x1000);
             }
             u.x = 0;
             u.y = -0x2000;

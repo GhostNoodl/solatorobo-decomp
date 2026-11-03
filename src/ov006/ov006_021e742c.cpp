@@ -43,7 +43,7 @@ void Ov006ActVt_021ec4f4_RunState(Ov006Racer *self) {
     self->unk_19c_13 = 0;
     if (self->idx == gOv006SlotManager->unk5) {
         FieldCam *cam = &gSceneCmd->cam;
-        if (cam->unk_d9 == 0) {
+        if (cam->timer == 0) {
             VecFx32 v = data_ov006_021eb8c8;
             cam->unk_dc = v;
             cam->unk_da_0 = 1;

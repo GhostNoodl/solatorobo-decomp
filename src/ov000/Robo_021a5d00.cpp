@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/FieldCam.h"
 #include "ov000/ActorMgr.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
@@ -24,7 +25,6 @@ BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 void Model0218fe1c_SetLoop(void *a);
 void Actor_Move(Actor *self, s32 turn);
 void Body_Update(void *a, s32 b, s32 c, s32 d);
-void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 BOOL Model0218fe1c_IsAnimDone(void *a);
 void Shared_ChangeFlags(s32 a, s32 b);
 void Shared_SetEventActor(u16 a, u16 b);
@@ -62,7 +62,7 @@ static inline void Fx021a5d00(Robo021ca458 *self, ActorSub4c *info) {
         VecFx32 v;
         v = self->pos;
         v.y += self->height;
-        func_ov000_021899d8(&v, 0, 0x8000, 1, 0x1000, 0x1000);
+        func_ov000_021899d8(&v, NULL, 0x8000, 1, 0x1000, 0x1000);
     }
     self->unk_44->unk_22_1 = 0;
 }

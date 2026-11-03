@@ -9,7 +9,7 @@ extern "C" {
 extern u8 ov006_MenuNode_vtbl[];
 extern u8 data_ov006_021eb840[];
 
-int ov006_Menu_NextUniqueId(ov006_Unk021ec888 *self);
+int ov006_Menu_NextUniqueId(ov006_Menu *self);
 
 static inline BOOL ov006_KeyEq(const u8 *a, const u8 *b) {
     BOOL e2;
@@ -60,7 +60,7 @@ static inline ov006_MenuNode *ov006_MenuNode_New(void) {
     return n;
 }
 
-BOOL ov006_Menu_UpdateNode(ov006_Unk021ec888 *self, ov006_MenuData *data) {
+BOOL ov006_Menu_UpdateNode(ov006_Menu *self, ov006_MenuData *data) {
     ov006_MenuNode *n;
     for (n = self->nodes; n != NULL; n = n->next) {
         if (ov006_KeyEq(n->data.key.b, data->key.b)) {

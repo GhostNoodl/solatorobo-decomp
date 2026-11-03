@@ -1,5 +1,6 @@
 #include "ov010/ov010.h"
 #include "Main/Sys/FieldState.h"
+#include "ov000/FieldCam.h"
 #include "ov000/ObjLayouts.h"
 
 struct Ov010Sw {
@@ -9,7 +10,8 @@ struct Ov010Sw {
     u8 b2 : 6;
     u8 unk_05[3];
     VecFx32 unk_08;
-    u16 unk_14[4];
+    Rot16 unk_14;
+    u16 unk_1a;
     s32 unk_1c;
 };
 
@@ -22,7 +24,6 @@ extern u8 Ov010Vt_0220ffc4_vtbl[];
 extern u8 Ov010ActVt_02210154_vtbl[];
 extern BOOL Ov003Sequence_HasEntries(void *p, void *d);
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
-extern void func_ov000_0218a358(void *a, const void *b, void *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern s32 FX_Div(s32 a, s32 b);
 extern void Ov010Obj02210154_Release(Ov010Obj02210154 *p);
 extern void *Ov003Vt_021f7cd8_Dtor(void *p);
@@ -109,7 +110,7 @@ void Ov010Sw_Update(Ov010Sw *self) {
     if (Ov010_PlayerBusy(p)) {
         return;
     }
-    func_ov000_0218a358(&gSceneCmd->cam, &self->unk_08, self->unk_14, self->unk_1c, 0, 0x1000, 0x1000, 1);
+    func_ov000_0218a358(&gSceneCmd->cam, &self->unk_08, &self->unk_14, self->unk_1c, 0, 0x1000, 0x1000, 1);
 }
 
 u16 Ov010_PhaseAngle(s32 a, s32 b) {

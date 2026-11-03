@@ -28,7 +28,7 @@ void func_ov000_021c1e78(Obj021c2114 *self) {
         return;
     }
     if (self->useOfs) {
-        data_ov000_021ccd74.unk_10 = &self->ofs;
+        data_ov000_021ccd74.jointTrans = &self->ofs;
     }
     if (self->rotate) {
         BOOL any;
@@ -61,7 +61,7 @@ void func_ov000_021c1e78(Obj021c2114 *self) {
                 MTX_RotZ33_(&m, tbl[(rz >> 4) * 2], tbl[(rz >> 4) * 2 + 1]);
             }
         }
-        data_ov000_021ccd74.unk_08 = pm;
+        data_ov000_021ccd74.jointRot = pm;
     }
     model = self->model;
     NNS_G3dRenderObjSetInitFunc(model->renderObj, (void *)func_ov000_021c2078);

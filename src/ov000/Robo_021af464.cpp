@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/FieldCam.h"
 #include "ov000/ActorMgr.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
@@ -32,7 +33,6 @@ Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Actor_MoveToPos(Actor *self, const void *target, s32 turn);
 void Actor_Move(Actor *self, s32 turn);
 s32 func_ov000_021b288c(void *self);
-void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 void HitSphere_Unlink_0203f364(void *obj);
 void *SndMgr_PlayAt(void *mgr, s32 id, void *pos, s32 a);
 u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
@@ -237,7 +237,7 @@ void Robo021ca458_State1e(Robo021ca458 *self) {
     {
         v = self->pos;
         v.y += self->centerY;
-        func_ov000_021899d8(&v, 0, 0x6ccd, 1, 0x1000, 0x1000);
+        func_ov000_021899d8(&v, NULL, 0x6ccd, 1, 0x1000, 0x1000);
     }
 }
 

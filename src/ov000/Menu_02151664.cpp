@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageVars.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "nitro/std.h"
@@ -7,7 +8,6 @@ extern "C" {
 
 extern u8 UiObj_vtbl[];
 extern u8 Lo021cad50_vtbl[];
-extern u8 data_02fe1534[];
 extern char data_ov000_021ca940[];
 extern void *gSndMgr;
 void Obj0215c1bc_SetMsg(Lo021cad50 *self, s32 id);
@@ -61,10 +61,10 @@ BOOL func_ov000_02151664(UiList *p, UiListItem *msg) {
     }
     if (msg->id == 0) {
         u8 *info = (u8 *)o->unk_54;
-        if (LFLD(u16, data_02fe1534, 0x46) != LFLD(u16, info, 0x30)) {
+        if (data_02fe1534.unk_46 != LFLD(u16, info, 0x30)) {
             Beep02151664();
             Show02151664(o, 0x68);
-        } else if (LFLD(u16, data_02fe1534, 0x58) < LFLD(u16, info, 0x34)) {
+        } else if (data_02fe1534.unk_58 < LFLD(u16, info, 0x34)) {
             Beep02151664();
             Show02151664(o, 0x69);
             o->unk_5c = 0x6a;

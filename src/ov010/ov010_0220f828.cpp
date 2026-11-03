@@ -50,7 +50,6 @@ extern "C" {
 
 extern const VecFx32 data_ov010_0220ec80;
 extern const VecFx32 data_ov010_0220ec74;
-extern void func_ov000_0218a358(void *a, const void *b, Ov010Rot *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern void Obj021984c8_UpdatePos(void *a, s32 b, s32 c);
 extern void ActorSub48_UpdatePos(void *a, s32 b, s32 c);
 

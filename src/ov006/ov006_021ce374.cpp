@@ -662,7 +662,7 @@ namespace m_021cf7c8 {
 
 extern "C" {
 
-BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *self);
+BOOL ov006_Menu_RequestShutdown(ov006_Menu *self);
 void ov006_TaskCE_ShowHelp(ov006_TaskCE *self, u16 id);
 
 void func_ov006_021cf7c8(ov006_TaskCE *self) {
@@ -904,7 +904,7 @@ namespace m_021d0188 {
 
 extern "C" {
 
-BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *self);
+BOOL ov006_Menu_RequestShutdown(ov006_Menu *self);
 
 void ov006_TaskD0_Load(void) {
     if (data_ov006_021ec888->state != 1) {
@@ -930,13 +930,13 @@ extern void *Lo021cadcc_vtbl;
 extern void *ov006_TaskD0C_vtbl;
 
 BOOL func_0201fd04(void);
-BOOL ov006_Menu_RequestStart(ov006_Unk021ec888 *self);
-BOOL func_ov006_021e4c84(ov006_Unk021ec888 *self);
-BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *self);
-BOOL func_ov006_021e4cb4(ov006_Unk021ec888 *self);
-BOOL func_ov006_021e4ce8(ov006_Unk021ec888 *self, ov006_MenuData *data);
-void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
-ov006_MenuNode *ov006_Menu_FindNode(ov006_Unk021ec888 *self, int id);
+BOOL ov006_Menu_RequestStart(ov006_Menu *self);
+BOOL func_ov006_021e4c84(ov006_Menu *self);
+BOOL ov006_Menu_RequestShutdown(ov006_Menu *self);
+BOOL func_ov006_021e4cb4(ov006_Menu *self);
+BOOL func_ov006_021e4ce8(ov006_Menu *self, ov006_MenuData *data);
+void ov006_Menu_ReleaseObj(ov006_Menu *self);
+ov006_MenuNode *ov006_Menu_FindNode(ov006_Menu *self, int id);
 void *MsgRes_GetString(void *a, int id);
 void TaskList_Insert(Task *self);
 void Str_Utf16ToUtf8Filtered(void *dst, int *dstLen, const void *src, int *srcLen);
@@ -1260,7 +1260,7 @@ void TaskList_Insert(Task *self);
 void ov006_SlotManager_Reset_021daea0(ov006_SlotManager *a);
 BOOL ov006_SlotManager_HasItem(ov006_SlotManager *a, int b);
 u32 ov006_CopyOwnerInfo(void *a, int b);
-void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
+void ov006_Menu_SetOwnEntry(ov006_Menu *self, u16 a, int b, const void *src, u32 size);
 
 static inline void ov006_SlotPacked_Clear(ov006_SlotPacked *self) {
     self->active = 0;
@@ -1356,7 +1356,7 @@ extern "C" {
 extern void *gMsgRes;
 
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
-void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
+void ov006_Menu_SetOwnEntry(ov006_Menu *self, u16 a, int b, const void *src, u32 size);
 void ov006_UpdateNetSlots(void);
 void ov006_TaskD0C_RefreshSlots(ov006_TaskD0C *self);
 void *MsgRes_GetString(void *a, int id);
@@ -1443,9 +1443,9 @@ extern void *gMsgRes;
 extern u8 gTaskSwitchPending;
 
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
-BOOL func_ov006_021e4bec(ov006_Unk021ec888 *self, int a);
-BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *self);
-void ov006_Menu_ShowObj(ov006_Unk021ec888 *self);
+BOOL func_ov006_021e4bec(ov006_Menu *self, int a);
+BOOL ov006_Menu_RequestShutdown(ov006_Menu *self);
+void ov006_Menu_ShowObj(ov006_Menu *self);
 void *MsgRes_GetString(void *a, int id);
 
 static inline void ov006_TaskD0C_ShowAll(ov006_TaskD0C *self) {
@@ -1590,7 +1590,7 @@ extern const u8 data_ov006_021eb710[][3];
 extern const u16 data_ov006_021eb78c[];
 extern void *ov006_TaskD1F_vtbl;
 
-void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
+void ov006_Menu_ReleaseObj(ov006_Menu *self);
 void Str_Utf16ToUtf8Filtered(void *dst, int *dstLen, const void *src, int *srcLen);
 void *MsgRes_GetString(void *a, int id);
 void func_ov006_021d3498(ov006_TaskD1F *self, u16 id, BOOL dir);

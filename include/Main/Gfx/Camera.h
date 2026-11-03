@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "nitro/fx.h"
+#include "Main/Math/Rot16.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,9 +26,14 @@ typedef struct Camera {
     /* 0x3c */ u8 unk_3c[2];
     /* 0x3e */ u8 projDirty;
     /* 0x40 */ u16 mode;
-    /* 0x42 */ u16 pitch;
-    /* 0x44 */ u16 yaw;
-    /* 0x46 */ u16 roll;
+    /* 0x42 */ union {
+        Rot16 rot; // the three angles as one (func_ov000_0218a358 copies them)
+        struct {
+            u16 pitch;
+            u16 yaw;
+            u16 roll;
+        };
+    };
     /* 0x48 */ s32 dist;
     /* 0x4c */ s32 distTarget;
     /* 0x50 */ s32 distRate;

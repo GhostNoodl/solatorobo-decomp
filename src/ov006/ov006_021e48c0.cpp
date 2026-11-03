@@ -13,9 +13,9 @@ extern u8 data_ov006_021eb840[];
 
 u16 func_02046ab4(ov006_Unk02097e40 *a);
 BOOL Wh_SetEntry(ov006_Unk02097e40 *a, BOOL enabled);
-int ov006_Menu_NextUniqueId(ov006_Unk021ec888 *self);
+int ov006_Menu_NextUniqueId(ov006_Menu *self);
 
-ov006_MenuNode *ov006_Menu_FindNode(ov006_Unk021ec888 *self, int id) {
+ov006_MenuNode *ov006_Menu_FindNode(ov006_Menu *self, int id) {
     ov006_MenuNode *node;
     for (node = self->nodes; node != NULL; node = node->next) {
         if (id == node->id) {
@@ -42,7 +42,7 @@ static inline void ov006_MenuNode_Delete(ov006_MenuNode *node) {
     OV006_DELETE_OBJECT(node);
 }
 
-static inline void ov006_Menu_Unlink(ov006_Unk021ec888 *self, ov006_MenuNode *n) {
+static inline void ov006_Menu_Unlink(ov006_Menu *self, ov006_MenuNode *n) {
     if (self->nodes == n) {
         self->nodes = n->next;
     }
@@ -54,7 +54,7 @@ static inline void ov006_Menu_Unlink(ov006_Unk021ec888 *self, ov006_MenuNode *n)
     }
 }
 
-void ov006_Menu_PruneNodes(ov006_Unk021ec888 *self) {
+void ov006_Menu_PruneNodes(ov006_Menu *self) {
     ov006_MenuNode *n = self->nodes;
     ov006_MenuNode *next;
     if (n == NULL) {

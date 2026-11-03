@@ -14,9 +14,9 @@ extern u8 data_ov006_021eb840[];
 
 u16 func_02046ab4(ov006_Unk02097e40 *a);
 BOOL Wh_SetEntry(ov006_Unk02097e40 *a, BOOL enabled);
-int ov006_Menu_NextUniqueId(ov006_Unk021ec888 *self);
+int ov006_Menu_NextUniqueId(ov006_Menu *self);
 
-void ov006_Menu_DrawHolder(ov006_Unk021ec888 *self) {
+void ov006_Menu_DrawHolder(ov006_Menu *self) {
     ov006_ModelHolder *holder;
 
     if (data_ov006_021ec888->state == 0 || (holder = self->unk1D4) == NULL) {
@@ -32,14 +32,14 @@ void ov006_Menu_DrawHolder(ov006_Unk021ec888 *self) {
     Model_PlayPart(holder->model, holder->unkC);
 }
 
-void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self) {
+void ov006_Menu_ReleaseObj(ov006_Menu *self) {
     Lo021cad50 *obj;
     if (data_ov006_021ec888->state != 0 && (obj = self->unk1D8->obj) != NULL) {
         obj->vfunc_20();
     }
 }
 
-int ov006_Menu_NextUniqueId(ov006_Unk021ec888 *self) {
+int ov006_Menu_NextUniqueId(ov006_Menu *self) {
     int id = self->unk30;
     BOOL unique;
     do {

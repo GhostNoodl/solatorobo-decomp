@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void ov006_Menu_SetEntryAt(ov006_Unk021ec888 *self, int idx, u16 a, int b, const void *src, u32 size);
+void ov006_Menu_SetEntryAt(ov006_Menu *self, int idx, u16 a, int b, const void *src, u32 size);
 
 static inline ov006_Slot *ov006_SlotManager_GetSlot(ov006_SlotManager *self, u32 idx) {
     if (idx >= 4) {

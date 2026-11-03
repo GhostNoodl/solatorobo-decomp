@@ -8,17 +8,12 @@ typedef struct {
 } LerpAngle0218a5ec;
 
 typedef struct {
-    u16 flags;
-} Obj02097e48;
-
-typedef struct {
     u8 a, b, c;
 } Rgb3;
 
 extern "C" {
 s32 FX_Div(s32 a, s32 b);
 u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
-extern Obj02097e48 *gSndQueue;
 void *STD_CopyString(void *a, const char *b);
 void *STD_ConcatenateString(void *a, const char *b);
 s32 NNS_G3dGetResDictIdxByName(void *dict, void *name);

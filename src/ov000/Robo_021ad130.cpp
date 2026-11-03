@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/FieldCam.h"
 #include "Main/Res/StageCmd.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
@@ -43,7 +44,6 @@ void func_02062410(void);
 void func_ov000_02182590(void *p);
 BOOL StageRes_FindSlotByIds(u16 *ids);
 void SceneCmd_Push20(void *g);
-void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 BOOL Model0218fe1c_IsAnimDone(void *a);
 BOOL History_SetState(void *st, s32 a, s32 b);
 void Body_Update(void *a, s32 b, s32 c, s32 d);
@@ -52,7 +52,7 @@ static inline void Fx021ad130(Robo021ca458 *self) {
     VecFx32 v;
     v = *(VecFx32 *)((u8 *)self + 0x70);
     v.y += self->height;
-    func_ov000_021899d8(&v, 0, 0x8ccd, 1, 0x1000, 0x1000);
+    func_ov000_021899d8(&v, NULL, 0x8ccd, 1, 0x1000, 0x1000);
 }
 
 static inline BOOL QHas021ad130(const s32 *w) {

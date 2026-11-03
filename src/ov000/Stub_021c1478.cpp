@@ -1,10 +1,10 @@
 #include "ov000/VObj.h"
 #include "nnsys/g3d.h"
 #include "Main/Gfx/GfxMgr.h"
+#include "ov000/Bss021ccd74.h"
 
 extern "C" {
 
-extern s8 data_ov000_021ccd74;
 u8 Gfx3DState_NextPolyId(void *p);
 
 void func_ov000_021c1478(NNSG3dRS *rs) {
@@ -15,8 +15,8 @@ void func_ov000_021c1478(NNSG3dRS *rs) {
     flags = sub->prmPolygonAttr;
     v = (flags & 0x1f0000) >> 16;
     p = gGfxSys;
-    if ((u32)data_ov000_021ccd74 < v) {
-        v = data_ov000_021ccd74;
+    if ((u32)data_ov000_021ccd74.alpha < v) {
+        v = data_ov000_021ccd74.alpha;
     }
     if (v >= 0x1e) {
         v = 0x1f;

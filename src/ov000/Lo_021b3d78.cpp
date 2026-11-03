@@ -19,7 +19,7 @@ void func_ov000_021b3d78(Mgr021b3d78 *self) {
     s32 dist;
     s32 v;
     s32 half;
-    if (p->cam.unk_d9 != 0) {
+    if (p->cam.timer != 0) {
         return;
     }
     p->cam.unk_bc.x = self->pos.x;

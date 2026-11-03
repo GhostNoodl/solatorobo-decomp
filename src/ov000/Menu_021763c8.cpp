@@ -5,6 +5,7 @@
 #pragma pool_strings on
 #pragma dont_reuse_strings off
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageVars.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/MessageQueue.h"
 #include "ov000/VObj.h"
@@ -2400,7 +2401,6 @@ namespace m_Stub_02176538 {
 
 extern "C" {
 
-extern u8 data_02fe1534[];
 s32 StageRes_IsAllLoaded(void *p);
 BOOL StageRes_Bind(void *p);
 
@@ -2419,9 +2419,9 @@ void func_ov000_02176560(void) {
 }
 
 void func_ov000_02176590(s16 v) {
-    *(s16 *)(data_02fe1534 + 0x7a) = v;
+    data_02fe1534.unk_7a = v;
     data_ov000_021ccd48->vfunc_38(1);
-    *(s16 *)(data_02fe1534 + 0x7a) = 0;
+    data_02fe1534.unk_7a = 0;
 }
 }
 
@@ -2516,14 +2516,8 @@ BOOL Task021cbee0_IsLoaded(void) {
 // ---- Lo_02176714
 namespace m_Lo_02176714 {
 
-typedef struct {
-    u8 unk_00[0x7a];
-    u16 unk_7a;
-} Shared02fe1534;
-
 extern "C" {
 extern void *gMsgRes;
-extern Shared02fe1534 data_02fe1534;
 extern void *data_0208ccc8;
 extern u8 UiObj_vtbl[];
 extern u8 UiList_vtbl[];
@@ -3061,13 +3055,7 @@ BOOL Task021cbee0_List4cOnDecide(Self021774a4 *self, BOOL ok) {
 // ---- Lo_02177698
 namespace m_Lo_02177698 {
 
-typedef struct {
-    u8 unk_00[0x72];
-    u16 unk_72;
-} Data02fe1534;
-
 extern "C" {
-extern Data02fe1534 data_02fe1534;
 void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
 
@@ -8227,7 +8215,6 @@ extern void *gActorMgr;
 extern void *gEffectMgr;
 extern void *gFieldFade;
 extern void *gStageObjPool;
-extern u8 data_ov000_021ccd50[];
 extern VObj *gMessageQueue;
 void FieldMgr_DrawProps(void *p);
 void ActorMgr_Draw(void *p);

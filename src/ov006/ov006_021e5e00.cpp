@@ -14,14 +14,14 @@ extern "C" {
 extern void *ov006_ObjectHolder_vtbl;
 extern ov006_Unk02097e40 *gWhMgr;
 
-BOOL ov006_Menu_UpdateNode(ov006_Unk021ec888 *self, const ov006_MenuData *data);
+BOOL ov006_Menu_UpdateNode(ov006_Menu *self, const ov006_MenuData *data);
 u16 func_02046ab4(ov006_Unk02097e40 *a);
 BOOL func_020469d4(ov006_Unk02097e40 *a, ov006_MenuEntry *entry);
 int Wh_GetError(ov006_Unk02097e40 *a);
 ov006_MenuEntry *Wh_GetSharedData(ov006_Unk02097e40 *a, int idx);
 void OS_GetOwnerInfo(void *a);
 
-void ov006_Menu_ShowObj(ov006_Unk021ec888 *self) {
+void ov006_Menu_ShowObj(ov006_Menu *self) {
     ov006_ObjectHolder *holder = self->unk1D8;
     Lo021cad50 *obj;
     if (holder != NULL && (obj = holder->obj) != NULL) {
@@ -52,12 +52,12 @@ BOOL ov006_Menu_ReceiveData(const ov006_MenuData *data) {
     return ov006_Menu_UpdateNode(data_ov006_021ec888, data);
 }
 
-static inline ov006_MenuEntry *ov006_Menu_GetEntry(ov006_Unk021ec888 *self, u32 idx) {
+static inline ov006_MenuEntry *ov006_Menu_GetEntry(ov006_Menu *self, u32 idx) {
     return idx < 4 ? &self->entries[idx] : NULL;
 }
 
 static inline void ov006_Menu_UpdateConnection(void) {
-    ov006_Unk021ec888 *menu = data_ov006_021ec888;
+    ov006_Menu *menu = data_ov006_021ec888;
     int status;
     if (menu->unk15F != 0) {
         return;

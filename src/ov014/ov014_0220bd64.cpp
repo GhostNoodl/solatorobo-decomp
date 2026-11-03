@@ -1,4 +1,5 @@
 #include "ov014/ov014.h"
+#include "ov000/FieldCam.h"
 
 extern "C" {
 
@@ -132,7 +133,6 @@ extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, VecFx32 *pos, 
 extern void Actor_SendMsgU8(Ov003Actor *a, u16 id, s32 msg);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern Ov003Actor *Target_Get(void *p);
-extern void func_ov000_0218a358(void *a, const VecFx32 *b, Rot16 *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
 extern EffectObj *Ov014_CreateEffect(s32 k, VecFx32 *pos);
 extern BOOL Hit_Apply(void *p, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *pos, s16 e, s32 f, s32 g);
@@ -161,11 +161,11 @@ static inline void Ov014e_Clr(ActorHp *q) {
     q->kind2 = 0;
 }
 
-static inline void Ov014e_Shake(u8 *g, u8 a, u8 b, u8 c) {
-    g[0x190] |= 0x1c;
-    g[0x18d] = a;
-    g[0x18e] = b;
-    g[0x18f] = c;
+static inline void Ov014e_Shake(FieldState *g, u8 a, u8 b, u8 c) {
+    g->cam.base.flags |= 0x1c; // shakeX | shakeY | shakeZ
+    g->cam.base.shakeTime = a;
+    g->cam.base.shakeLen = b;
+    g->cam.base.shakeCur = c;
 }
 
 void func_ov014_0220c09c(Ov014Act_02209280 *self) {
@@ -291,7 +291,7 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
     }
     case 0x14: {
         Ov003Actor *o;
-        u8 *g;
+        FieldState *g;
         Ov003Actor *pl;
         u16 t;
         s32 v0;
@@ -311,7 +311,7 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
             Model0218fe1c_SetAnimSpeed(self->model, 0x1000);
         }
         t = self->fsm->timer;
-        g = (u8 *)gSceneCmd;
+        g = gSceneCmd;
         if (t % 30 == 0) {
             if (t < 0x35) {
                 Effect_SpawnId(0x6c, &self->unk_84);
@@ -349,7 +349,7 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
             rot.y += 0x8000;
             rot.x = 0x200;
             rot.z = 0;
-            func_ov000_0218a358(g + 0xf4, &v, &rot, 0xe000, 0, 0xccd, 0x99a, 1);
+            func_ov000_0218a358(&g->cam, &v, &rot, 0xe000, 0, 0xccd, 0x99a, 1);
         }
         if ((s32)t == 0xa0) {
             SndMgr_PlayAt(gSndMgr, 0x38, &self->unk_84, 0);
@@ -455,9 +455,9 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
             }
         }
         if (t == 0x78) {
-            Ov014e_Shake((u8 *)gSceneCmd, 0x28, 0x3c, 0x3c);
+            Ov014e_Shake(gSceneCmd, 0x28, 0x3c, 0x3c);
         } else if (t == 0x3c) {
-            Ov014e_Shake((u8 *)gSceneCmd, 0x14, 0x3c, 0x3c);
+            Ov014e_Shake(gSceneCmd, 0x14, 0x3c, 0x3c);
         }
         {
             ActorSub40 *w = self->fsm;
@@ -551,7 +551,7 @@ void func_ov014_0220cd74(Ov014Act_02209280 *self) {
     case 12: {
         ActorSub40 *w;
         if (self->model->anim_state == 1) {
-            Ov014e_Shake((u8 *)gSceneCmd, 0x14, 10, 10);
+            Ov014e_Shake(gSceneCmd, 0x14, 10, 10);
         }
         w = self->fsm;
         if (w->timer != 0) {

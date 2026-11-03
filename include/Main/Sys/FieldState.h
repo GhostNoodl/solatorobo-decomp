@@ -4,6 +4,7 @@
 #include "types.h"
 #include "nitro/fx.h"
 #include "Main/Gfx/Camera.h"
+#include "Main/Math/Rot16.h"
 #include "Main/Sys/FieldId.h"
 
 #ifdef __cplusplus
@@ -11,24 +12,33 @@ extern "C" {
 #endif
 
 
+// A zone of the field camera (func_ov000_0218a670): the box the camera's point is tested
+// against, followed by `len` bytes of camera commands.
+typedef struct FieldCamZone {
+    /* 0x00 */ VecFx32 min;
+    /* 0x0c */ VecFx32 max;
+    /* 0x18 */ u32 len;
+} FieldCamZone;
+
 // The field camera (ctor Ov000Vt_021cc3a0_Ctor, vtable data_ov000_021cc3a0): a Camera with
 // an overlay 0 extension, 0x120 bytes.
 typedef struct FieldCam {
     /* 0x00 */ Camera base;
-    /* 0xbc */ VecFx32 unk_bc;
-    /* 0xc8 */ s32 unk_c8;
-    /* 0xcc */ s32 unk_cc;
-    /* 0xd0 */ u8 unk_d0[4];
-    /* 0xd4 */ u16 unk_d4;
-    /* 0xd6 */ u16 unk_d6;
+    /* 0xbc */ VecFx32 unk_bc; // the point tested against the zone boxes (func_ov000_02189b44)
+    /* 0xc8 */ const FieldCamZone *zones;
+    /* 0xcc */ const FieldCamZone *zone;    // the zone whose box held the point last
+    /* 0xd0 */ const u32 *zoneCode;   // that zone's commands
+    /* 0xd4 */ u16 zoneIdx;
+    /* 0xd6 */ u16 zoneCount;
     /* 0xd8 */ union {
         u8 unk_d8;
         struct {
             u8 unk_d8_0 : 1;
-            u8 unk_d8_1_f : 7;
+            u8 unk_d8_1 : 1;
+            u8 unk_d8_2_f : 6;
         };
     };
-    /* 0xd9 */ u8 unk_d9;
+    /* 0xd9 */ u8 timer; // frames left of the set view (func_ov000_0218a358), counted down by the update
     /* 0xda */ union {
         u8 unk_da;
         struct {
@@ -45,10 +55,15 @@ typedef struct FieldCam {
     /* 0xdc */ VecFx32 unk_dc;
     /* 0xe8 */ VecFx32 unk_e8;
     /* 0xf4 */ s32 unk_f4;
-    /* 0xf8 */ u16 unk_f8;
-    /* 0xfa */ u16 unk_fa;
-    /* 0xfc */ s16 unk_fc;
-    /* 0xfe */ u8 unk_fe[0x22];
+    /* 0xf8 */ Rot16 unk_f8;
+    /* 0xfe */ s16 unk_fe;
+    /* 0x100 */ s16 unk_100;
+    /* 0x102 */ u8 unk_102[2];
+    // func_ov000_0218a358 pulls unk_e8 into [clampMin, clampMax], fully when unk_f4 is clampDist
+    // and by unk_f4 / clampDist otherwise; the zone commands set the bounds.
+    /* 0x104 */ VecFx32 clampMin;
+    /* 0x110 */ VecFx32 clampMax;
+    /* 0x11c */ s32 clampDist;
 } FieldCam;
 SIZE_ASSERT(FieldCam, 0x120);
 

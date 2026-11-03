@@ -336,7 +336,7 @@ BOOL Ov006Vt_021ebfc0_IsLoaded(ov006_Task021d630c *self) {
                 cam->unk_d8 |= 2;
                 cam->unk_e8 = pos;
                 cam->unk_da |= 2;
-                *(Rot16 *)&cam->unk_f8 = rot;
+                cam->unk_f8 = rot;
                 cam->unk_f4 = 0xa000;
                 cam->unk_da = ((cam->unk_da | 0x70) & ~0xc) | 4;
                 cam->base.smooth = 0;
@@ -450,10 +450,10 @@ VecFx32021d6724 *Ov006Vt_021ec2ac_Ctor(void *p);
 void ov006_Unk021e279c_Load(VecFx32021d6724 *p);
 BOOL Vram_IsIdle(void);
 void func_02039518(void *p);
-void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
+void ov006_Menu_SetOwnEntry(ov006_Menu *self, u16 a, int b, const void *src, u32 size);
 u16 func_02046ab4(ov006_Unk02097e40 *a);
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
-void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self);
+void ov006_Menu_ClearEntries(ov006_Menu *self);
 
 static inline void ov006_Gauge_Init(ov006_Gauge021d6724 *g, int a, int b, int c) {
     if (g->unk1C != NULL) {

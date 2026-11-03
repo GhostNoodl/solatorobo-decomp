@@ -13,7 +13,7 @@ extern ov006_Unk02097e40 *gWhMgr;
 void func_02045094(ov006_Unk02097e40 *p);
 void func_02045498(ov006_Unk02097e40 *p, int a);
 
-static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
+static inline void ov006_Menu_ClearNodes(ov006_Menu *self) {
     ov006_MenuNode *node = self->nodes;
     while (node != NULL) {
         void *saved;
@@ -41,7 +41,7 @@ static inline void ov006_MenuEntry_Clear(ov006_MenuEntry *e) {
     MI_CpuFill16(e->unk2, 0, sizeof(e->unk2));
 }
 
-void func_ov006_021e4ed4(ov006_Unk021ec888 *self) {
+void func_ov006_021e4ed4(ov006_Menu *self) {
     int i;
 
     switch (self->stateTime) {

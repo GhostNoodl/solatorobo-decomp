@@ -1370,11 +1370,11 @@ void Ov014Act_021fd4d4_StateAttack3(Ov014Act_021fd4d4 *self) {
 
 
 static inline void Ov014Cam_SetY(FieldCam *cam, u16 x) {
-    cam->unk_fa = x;
+    cam->unk_f8.y = x;
     cam->unk_da_4 = 1;
 }
 static inline void Ov014Cam_SetX(FieldCam *cam, u16 x) {
-    cam->unk_f8 = x;
+    cam->unk_f8.x = x;
     cam->unk_da_5 = 1;
 }
 static inline BOOL Ov014_PlBusy(Ov003Actor *pl) {
@@ -3331,7 +3331,7 @@ void func_ov014_022033a8(Ov014Act_02201b94 *self) {
             self->fsm->st++;
         }
         cam = &gSceneCmd->cam;
-        cam->unk_f8 = 0xaab;
+        cam->unk_f8.x = 0xaab;
         cam->unk_da_4 = 1;
         break;
     }

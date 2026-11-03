@@ -1,26 +1,11 @@
 #include "ov000/SceneCmd.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Res/StageVars.h"
+#include "ov000/SceneCmdPool.h"
 #include "ov000/ObjLayouts.h"
 
-// The 0x021ccd50 pool of the scene command TU: gSceneCmd is four bytes in.
-typedef struct {
-    u8 unk_00[0x4];
-    SceneCmd *scene;
-} Data021ccd50;
-
-typedef struct {
-    u16 flags;
-} Obj02097e48;
-
-typedef struct {
-    u8 unk_00[0x52];
-    u16 unk_52;
-} Data02fe1534;
-
 extern "C" {
-extern Data021ccd50 data_ov000_021ccd50;
-extern Obj02097e48 *gSndQueue;
 extern void *gDataRes;
-extern Data02fe1534 data_02fe1534;
 Robo021ca458 *ActorMgr_FindPlayer(void);
 u16 DataRes_ReadEntry(void *a, int b, int c, int d);
 u32 DataRes_GetCount(void *a, int idx);
@@ -32,7 +17,7 @@ void func_ov000_02188d28(FieldId *id) {
     if (!ActorMgr_FindPlayer()) {
         CmdObj_Push(data_ov000_021ccd50.scene, 0xb, 0);
     }
-    gSndQueue->flags |= 2;
+    gSndQueue.queue->flag1 = 1;
     CmdObj_Push(data_ov000_021ccd50.scene, 0xa, 0);
     if (id != NULL) {
         data_ov000_021ccd50.scene->unk_cd = *id;

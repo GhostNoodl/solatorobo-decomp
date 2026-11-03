@@ -418,7 +418,7 @@ const void *Param_Get(u16 id);
 void ov006_Label_Set_021dbfb8(ov006_Label *a, const char *b, int c, int d);
 void ov006_Unk021e1ddc_SetLabel(ov006_Obj13C *a, const char *b, int c, int d);
 void ov006_Unk021e1e6c_PlayText(ov006_Obj13C *a, const void *b);
-void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self);
+void ov006_Menu_ClearEntries(ov006_Menu *self);
 void TaskList_Insert(Task *self);
 
 static inline Model0218fe1c *ov006_NewModel64(void) {
@@ -632,7 +632,7 @@ extern ov006_Unk02097e40 *gWhMgr;
 
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
 void ov006_Label_Close(ov006_Label *p);
-void ov006_Menu_ShowObj(ov006_Unk021ec888 *self);
+void ov006_Menu_ShowObj(ov006_Menu *self);
 BOOL Model0218fe1c_SetAnim(void *a, const void *b, int c, int d);
 AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *a, int b);
 void ov006_TaskD37_PlayAnim(ov006_TaskD37 *self, const char *name, s16 speed, u8 loop);
@@ -868,10 +868,10 @@ void ov006_Unk021e1bb4_Draw(ov006_Obj13C *a);
 void Model0218fe1c_UpdateAnim(Model0218fe1c *a, int b);
 BOOL Model021903b4_Draw(Model0218fe1c *a);
 BOOL ov006_TaskD37_ApplyAnim(ov006_TaskD37 *self, Model0218fe1c *obj);
-void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
+void ov006_Menu_SetOwnEntry(ov006_Menu *self, u16 a, int b, const void *src, u32 size);
 void ov006_Manager_DispatchMenuCb(int a, int b, int c);
-void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self);
-void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
+void ov006_Menu_ClearEntries(ov006_Menu *self);
+void ov006_Menu_ReleaseObj(ov006_Menu *self);
 int STD_TSNPrintf(char *dst, u32 size, const char *fmt, ...);
 
 // The camera's vtable (Camera_vtbl) holds Camera_Apply in slot 0x00.

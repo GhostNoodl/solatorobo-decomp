@@ -84,8 +84,9 @@ typedef struct ov006_MenuEntry {
     u8 unk2[0x1a];
 } ov006_MenuEntry;
 
-/* Singleton at data_ov006_021ec888 (0x1dc bytes). */
-typedef struct ov006_Unk021ec888 {
+/* The ov006 menu object (0x1dc bytes; vtable 021ec404, made by ov006_Menu_Create), the singleton
+ * data_ov006_021ec888. */
+typedef struct ov006_Menu {
     void *vtbl;
     void *vtbl2;
     int state;
@@ -110,10 +111,10 @@ typedef struct ov006_Unk021ec888 {
     ov006_MenuEntry entries[4];
     struct ov006_ModelHolder *unk1D4;
     ov006_ObjectHolder *unk1D8;
-} ov006_Unk021ec888;
+} ov006_Menu;
 
 extern ov006_Manager *gOv006Manager;
-extern ov006_Unk021ec888 *data_ov006_021ec888;
+extern ov006_Menu *data_ov006_021ec888;
 
 void *Heap_Alloc(u32 size);
 void Heap_Free(void *p);

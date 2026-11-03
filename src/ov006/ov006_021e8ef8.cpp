@@ -207,9 +207,9 @@ void Ov006Racer_UpdateSteer(Ov006Racer *self) {
     if (cam == NULL) {
         return;
     }
-    cam->unk_f8 = camv;
+    cam->unk_f8.x = camv;
     cam->unk_da |= 0x10;
-    cam->unk_fa = Angle_Approach(self->look.y, self->rot.y, 0xc00, 1, 0x8000);
+    cam->unk_f8.y = Angle_Approach(self->look.y, self->rot.y, 0xc00, 1, 0x8000);
     cam->unk_da |= 0x20;
 }
 

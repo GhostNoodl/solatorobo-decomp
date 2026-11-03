@@ -100,11 +100,11 @@ void func_ov002_021d8148(Obj021efe9c *self) {
         }
     }
     if (self->unk_88 != NULL) {
-        self->unk_98 = FIELD(self->unk_88->resAnm, 0x4, u16) << 12;
+        self->unk_98 = ((NNSG3dResAnmCommon *)self->unk_88->resAnm)->numFrame << 12;
     } else if (self->unk_8c != NULL) {
-        self->unk_98 = FIELD(self->unk_8c->resAnm, 0x4, u16) << 12;
+        self->unk_98 = ((NNSG3dResAnmCommon *)self->unk_8c->resAnm)->numFrame << 12;
     } else if (self->unk_90 != NULL) {
-        self->unk_98 = FIELD(FIELD(((u8 *)self->unk_90), 0x8, u8 *), 0x4, u16) << 12;
+        self->unk_98 = ((NNSG3dResAnmCommon *)((NNSG3dAnmObj *)self->unk_90)->resAnm)->numFrame << 12;
     }
 }
 

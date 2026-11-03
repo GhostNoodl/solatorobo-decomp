@@ -37,7 +37,7 @@ BOOL func_ov000_021b3e90(Robo021ca458 *self) {
     if (cam == NULL) {
         return ret;
     }
-    if (cam->unk_d6 - 1 != cam->unk_d4) {
+    if (cam->zoneCount - 1 != cam->zoneIdx) {
         cam->base.wallClip = 0;
         return ret;
     }
@@ -78,7 +78,7 @@ BOOL func_ov000_021b3e90(Robo021ca458 *self) {
                 } else if (dp > 0x2800) {
                     dp = 0x2800;
                 }
-                cam->unk_f8 = dp;
+                cam->unk_f8.x = dp;
                 cam->unk_da_4 = 1;
             }
             keys = self->padCur;
@@ -88,7 +88,7 @@ BOOL func_ov000_021b3e90(Robo021ca458 *self) {
                 dy = 0xc00;
             }
             if (dy != 0) {
-                cam->unk_fa = dy + FieldCam_GetYaw(cam);
+                cam->unk_f8.y = dy + FieldCam_GetYaw(cam);
                 cam->unk_da_5 = 1;
             }
         }
@@ -104,7 +104,7 @@ BOOL func_ov000_021b3e90(Robo021ca458 *self) {
                 } else {
                     ang = AngleTo(self, t);
                 }
-                cam->unk_fa = ang;
+                cam->unk_f8.y = ang;
                 cam->unk_da_5 = 1;
             }
         }
@@ -115,7 +115,7 @@ BOOL func_ov000_021b3e90(Robo021ca458 *self) {
             self->unk_b30 = 0;
             self->unk_b31 = 0;
         } else {
-            cam->unk_fa = self->rot_y;
+            cam->unk_f8.y = self->rot_y;
             cam->unk_da_5 = 1;
         }
         break;

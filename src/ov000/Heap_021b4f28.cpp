@@ -26,8 +26,8 @@ static inline void FieldMgr_Delete(FieldMgr *o) {
         ResMgr_ReleaseArchive(info->unk_08, buf, 0);
         {
             FieldCam *sub = &gSceneCmd->cam;
-            sub->unk_c8 = 0;
-            sub->unk_d6 = 0;
+            sub->zones = NULL;
+            sub->zoneCount = 0;
         }
         o->blockB = NULL;
     }

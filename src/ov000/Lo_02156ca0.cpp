@@ -4,7 +4,6 @@
 
 extern "C" {
 
-extern u8 data_02fe1534[];
 extern void *gDataRes;
 void Obj0215eab4_Draw(void *p);
 void DataRes_WriteEntry(void *a, s32 b, s32 c, u16 d, s32 e);

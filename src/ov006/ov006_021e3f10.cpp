@@ -9,7 +9,7 @@ extern void *Ov006Vt_021ec404_vtbl;
 extern void *Ov006Vt_021ec444_vtbl;
 extern u16 data_ov006_021eb840[];
 
-static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
+static inline void ov006_Menu_ClearNodes(ov006_Menu *self) {
     ov006_MenuNode *node = self->nodes;
     while (node != NULL) {
         ov006_MenuNode *next;
@@ -31,7 +31,7 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
     self->unk26 = 1;
 }
 
-ov006_Unk021ec888 *Ov006Vt_021ec404_Ctor(ov006_Unk021ec888 *self) {
+ov006_Menu *Ov006Vt_021ec404_Ctor(ov006_Menu *self) {
     int i;
     self->vtbl = &Ov006Vt_021ec404_vtbl;
     self->vtbl2 = &Ov006Vt_021ec444_vtbl;

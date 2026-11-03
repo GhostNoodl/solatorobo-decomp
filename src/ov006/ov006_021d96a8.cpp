@@ -7,9 +7,9 @@ extern "C" {
 extern u8 *gWhMgr;
 void *Wh_GetSharedData(void *a, int idx);
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
-BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *self);
-void ov006_Menu_ShowObj(ov006_Unk021ec888 *p);
-void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
+BOOL ov006_Menu_RequestShutdown(ov006_Menu *self);
+void ov006_Menu_ShowObj(ov006_Menu *p);
+void ov006_Menu_SetOwnEntry(ov006_Menu *self, u16 a, int b, const void *src, u32 size);
 
 static inline BOOL ov006_FadeIdle(void) {
     BOOL r;

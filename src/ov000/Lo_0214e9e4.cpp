@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Res/StageVars.h"
 #include "Main/Gfx/TextWin.h"
 #include "Main/Res/StageFlags.h"
 #include "ov000/ObjLayouts.h"
@@ -7,18 +8,8 @@
 #include "Main/Gfx/Model.h"
 #include "ov000/SceneRes.h"
 
-typedef struct {
-    u8 unk_00[0x68];
-    u16 unk_68;
-    u8 unk_6a[0x6];
-    u16 unk_70;
-    u8 unk_72[0x8];
-    u16 unk_7a;
-} Shared02fe1534;
-
 extern "C" {
 extern void *gMsgRes;
-extern Shared02fe1534 data_02fe1534;
 extern void *gDataRes;
 extern const char *data_ov000_021ca8d8[];
 extern u8 TextWin_vtbl[];

@@ -2,6 +2,7 @@
 #include "ov000/ActorMgr.h"
 #include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
+#include "ov000/FieldCam.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
@@ -58,7 +59,6 @@ void Target_Set(void *body, void *p);
 void Shared_ChangeFlags(s32 a, s32 b);
 void Shared_SetEventActor(u16 a, u16 b);
 void func_ov000_02182590(void *p);
-void func_ov000_021899d8(VecFx32 *a, s32 b, s32 c, s32 d, s16 e, s16 f);
 
 static inline BOOL IsBusy_021a4a6c(FieldState *g) {
     return g->head != g->tail;
@@ -521,7 +521,7 @@ end:
         if (c == 0) {
             return;
         }
-        func_ov000_021899d8(&o, 0, c, 1, e, 0x1000);
+        func_ov000_021899d8(&o, NULL, c, 1, e, 0x1000);
     }
 }
 

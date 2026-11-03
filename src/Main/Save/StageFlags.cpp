@@ -167,9 +167,9 @@ void func_0206c824(StageFlags *f) {
         f->bits18.unk_0 = 0;
     }
     f->unk_138 = 0xffff;
-    f->color2.r = data_02fe1534.r;
-    f->color2.g = data_02fe1534.g;
-    f->color2.b = data_02fe1534.b;
+    f->color2.r = data_02fe1534.unk_46;
+    f->color2.g = data_02fe1534.unk_48;
+    f->color2.b = data_02fe1534.unk_4a;
     f->frameCount = gSysState->frameCount;
 }
 

@@ -13,9 +13,9 @@ extern ov006_Unk02097e40 *gWhMgr;
 
 u16 func_02046ab4(ov006_Unk02097e40 *a);
 BOOL Wh_SetEntry(ov006_Unk02097e40 *a, BOOL enabled);
-int ov006_Menu_NextUniqueId(ov006_Unk021ec888 *self);
+int ov006_Menu_NextUniqueId(ov006_Menu *self);
 
-void ov006_Menu_SortNodes(ov006_Unk021ec888 *self) {
+void ov006_Menu_SortNodes(ov006_Menu *self) {
     ov006_MenuNode *head;
     ov006_MenuNode *cur;
     ov006_MenuNode *p;
@@ -78,11 +78,11 @@ static inline void ov006_MenuEntry_Set(ov006_MenuEntry *self, u16 a, int b, cons
     }
 }
 
-void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size) {
+void ov006_Menu_SetOwnEntry(ov006_Menu *self, u16 a, int b, const void *src, u32 size) {
     ov006_MenuEntry_Set(&self->entries[func_02046ab4(gWhMgr)], a, b, src, size);
 }
 
-void ov006_Menu_SetEntryAt(ov006_Unk021ec888 *self, int idx, u16 a, int b, const void *src, u32 size) {
+void ov006_Menu_SetEntryAt(ov006_Menu *self, int idx, u16 a, int b, const void *src, u32 size) {
     ov006_MenuEntry_Set(&self->entries[idx], a, b, src, size);
 }
 
@@ -92,14 +92,14 @@ static inline void ov006_MenuEntry_Clear(ov006_MenuEntry *self) {
     MIi_CpuClear16(0, self->unk2, sizeof(self->unk2));
 }
 
-void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self) {
+void ov006_Menu_ClearEntries(ov006_Menu *self) {
     int i;
     for (i = 0; i < 4; i++) {
         ov006_MenuEntry_Clear(&self->entries[i]);
     }
 }
 
-BOOL func_ov006_021e4bec(ov006_Unk021ec888 *self, u8 v) {
+BOOL func_ov006_021e4bec(ov006_Menu *self, u8 v) {
     BOOL result;
     self->unk18 = v;
     result = Wh_SetEntry(gWhMgr, v);
@@ -113,12 +113,12 @@ BOOL func_ov006_021e4bec(ov006_Unk021ec888 *self, u8 v) {
     return result;
 }
 
-static inline void ov006_Menu_SetState(ov006_Unk021ec888 *self, int state) {
+static inline void ov006_Menu_SetState(ov006_Menu *self, int state) {
     self->state = state;
     self->stateTime = 0;
 }
 
-BOOL ov006_Menu_RequestStart(ov006_Unk021ec888 *self) {
+BOOL ov006_Menu_RequestStart(ov006_Menu *self) {
     if (self->state != 1) {
         return FALSE;
     }
@@ -126,7 +126,7 @@ BOOL ov006_Menu_RequestStart(ov006_Unk021ec888 *self) {
     return TRUE;
 }
 
-BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *self) {
+BOOL ov006_Menu_RequestShutdown(ov006_Menu *self) {
     if (self->state == 1 || self->state == 7) {
         return FALSE;
     }
@@ -134,7 +134,7 @@ BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *self) {
     return TRUE;
 }
 
-BOOL func_ov006_021e4c84(ov006_Unk021ec888 *self) {
+BOOL func_ov006_021e4c84(ov006_Menu *self) {
     if (self->state == 4) {
         return TRUE;
     }
@@ -145,7 +145,7 @@ BOOL func_ov006_021e4c84(ov006_Unk021ec888 *self) {
     return TRUE;
 }
 
-BOOL func_ov006_021e4cb4(ov006_Unk021ec888 *self) {
+BOOL func_ov006_021e4cb4(ov006_Menu *self) {
     if (self->state == 6) {
         return TRUE;
     }
@@ -156,7 +156,7 @@ BOOL func_ov006_021e4cb4(ov006_Unk021ec888 *self) {
     return TRUE;
 }
 
-BOOL func_ov006_021e4ce8(ov006_Unk021ec888 *self, const void *src) {
+BOOL func_ov006_021e4ce8(ov006_Menu *self, const void *src) {
     if (self->state == 5) {
         return TRUE;
     }

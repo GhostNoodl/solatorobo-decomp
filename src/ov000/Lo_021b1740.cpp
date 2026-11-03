@@ -5,10 +5,6 @@
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
-    u16 flags;
-} Obj02097e48;
-
-typedef struct {
     u8 unk_00[0x18];
     u16 b0 : 1;
     u16 b1 : 2;
@@ -16,7 +12,6 @@ typedef struct {
 } Save0214a424;
 
 extern "C" {
-extern Obj02097e48 *gSndQueue;
 extern void *gSndMgr;
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 Robo021ca458 *ActorMgr_FindPlayer(void);

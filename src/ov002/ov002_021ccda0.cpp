@@ -3,14 +3,14 @@
 extern "C" {
 
 void func_ov002_021ccda0(void) {
-    Unk021f0f80 *p;
+    Ov002Session *p;
     if (data_ov002_021f0f80 != NULL) {
         return;
     }
-    p = (Unk021f0f80 *)Heap_Alloc(sizeof(Unk021f0f80));
+    p = (Ov002Session *)Heap_Alloc(sizeof(Ov002Session));
     if (p != NULL) {
         p->unk_00 = 0;
-        p->unk_04 = 0;
+        p->state = 0;
         p->unk_08 = -1;
     }
     data_ov002_021f0f80 = p;
@@ -18,7 +18,7 @@ void func_ov002_021ccda0(void) {
 
 void func_ov002_021ccde4(void) {
     void *saved;
-    Unk021f0f80 *p;
+    Ov002Session *p;
     if (data_ov002_021f0f80 == NULL) {
         return;
     }
@@ -26,7 +26,7 @@ void func_ov002_021ccde4(void) {
     p = data_ov002_021f0f80;
     if (p != NULL) {
         if (p != NULL) {
-            if (p->unk_04 >= 1) {
+            if (p->state >= 1) {
                 ResMgr_ReleaseByName(gResMgr, data_0208cca0, 7, 0);
                 ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0);
                 ResMgr_ReleaseByName(gResMgr, data_0214b105, 7, 0);
@@ -38,7 +38,7 @@ void func_ov002_021ccde4(void) {
     HEAP_POP(saved);
 }
 
-void func_ov002_021cceb4(Unk021cceb4 *self) {
+void func_ov002_021cceb4(Ov002Session *self) {
     switch (self->state) {
     case 0:
         if (DataRes_ReadEntry(gDataRes, 5, 1, 0) == 1) {
@@ -71,14 +71,14 @@ void func_ov002_021cceb4(Unk021cceb4 *self) {
         if (r) {
             TaskHost_Destroy();
             GfxSys_StartFadeOut(0x1e000, 2, -1);
-            self->flags.flag0 = 1;
+            self->done = 1;
             self->state = 4;
         }
         return;
     }
 }
 
-void func_ov002_021cd068(void *self) {
+void func_ov002_021cd068(Ov002Session *self) {
 }
 
 Task021ef530 *Task021ef530_New(void) {

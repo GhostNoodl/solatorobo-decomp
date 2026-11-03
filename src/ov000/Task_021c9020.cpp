@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "ov002/BoardRef.h"
 #include "nnsys/g3d.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Res/ResArc.h"
@@ -65,7 +66,6 @@ extern const char *data_0208cc94;
 extern char data_ov000_021ccc68[];
 extern char data_ov000_021ccc72[];
 extern char data_ov000_021ccc7e[];
-extern u8 data_ov002_021f0f90;
 void *Heap_Alloc(u32 size);
 void Gfx3DState_Init(void *p);
 void ResMgr_LoadArchive(void *p, void *q, s32 a, s32 b);
@@ -117,7 +117,7 @@ void Ov000TaskVt_021ccc94_Start(VObj *self) {
         return;
     }
     *(s32 *)((u8 *)self + 0x20) = 0x1000;
-    data_ov002_021f0f90 = 0;
+    data_ov002_021f0f90.unk_00 = 0;
     TaskList_Insert(self);
 }
 

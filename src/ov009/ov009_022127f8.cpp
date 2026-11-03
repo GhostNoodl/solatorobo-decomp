@@ -129,7 +129,7 @@ void Ov009ActSpin_StateDie(Ov009ActVt_02217a00 *self) {
             FieldCam *g = &gSceneCmd->cam;
             g->unk_f4 = 0xf000;
             g->unk_da_2 = 1;
-            g->unk_f8 = 0x1800;
+            g->unk_f8.x = 0x1800;
             g->unk_da_4 = 1;
             return;
         }

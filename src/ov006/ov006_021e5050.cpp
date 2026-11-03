@@ -14,10 +14,10 @@ extern ov006_Net021e5050 *gWhMgr;
 extern u8 data_ov006_021eb840[];
 BOOL func_02046070(ov006_Net021e5050 *net, void *data, int a);
 BOOL WH_StateInEndScan_020463c8(ov006_Net021e5050 *net);
-void ov006_Menu_PruneNodes(ov006_Unk021ec888 *self);
-void ov006_Menu_SortNodes(ov006_Unk021ec888 *self);
+void ov006_Menu_PruneNodes(ov006_Menu *self);
+void ov006_Menu_SortNodes(ov006_Menu *self);
 
-static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
+static inline void ov006_Menu_ClearNodes(ov006_Menu *self) {
     ov006_MenuNode *node = self->nodes;
     while (node != NULL) {
         ov006_MenuNode *next;
@@ -39,7 +39,7 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
     self->unk26 = 1;
 }
 
-void func_ov006_021e5050(ov006_Unk021ec888 *self) {
+void func_ov006_021e5050(ov006_Menu *self) {
     switch (self->stateTime) {
     case 0:
         self->unk28 = 0;
