@@ -21,6 +21,7 @@
 #include "Main/Sys/Pad.h"
 #include "ov000/Actor.h"
 #include "ov000/UiObj.h"
+#include "Main/Save/GameSave.h"
 
 extern "C" {
 
@@ -29,7 +30,7 @@ extern "C" {
 // (Task_Exit) already reads 021ccd34/3c/40/44 through the pool, so those are defined
 // before it, together with 021ccd35 and 021ccd38, which lie between them. Objects defined before
 // a TU's first function are not laid out in definition order; this order gives the ROM layout.
-// The shop script and its factory (021ccd48, 021ccd4c) are defined after Task_Exit.
+// The shop script and the save-object factory (021ccd48, 021ccd4c) are defined after Task_Exit.
 s32 data_ov000_021ccd38;         // id of the last task that finished
 u8 data_ov000_021ccd34;          // a task switch is pending
 void *data_ov000_021ccd3c;       // task list, sorted by priority (linked through +0x38)
@@ -149,7 +150,7 @@ void Task_Exit(Task *self, void *arg) {
 extern "C" {
 
 VObj *data_ov000_021ccd48;       // shop script
-LoCreateFn data_ov000_021ccd4c;  // shop task factory
+LoCreateFn data_ov000_021ccd4c;  // save-object factory (func_ov000_021761a0 / func_ov000_02176208)
 
 }
 
@@ -2182,13 +2183,13 @@ void Task021cbfe0_Draw(Task021cbfe0 *self) {
     }
 }
 
-VObj *func_ov000_021761a0(void) {
-    VObj *obj = (VObj *)Heap_Alloc(0x4c);
+GameSave *func_ov000_021761a0(void) {
+    GameSave *obj = (GameSave *)Heap_Alloc(0x4c);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_0208b614);
-        obj->vfunc_14();
+        obj->Init();
         VOBJ_SET_VTABLE(obj, data_0208ca9c);
-        obj->vfunc_14();
+        obj->Init();
     }
     return obj;
 }
@@ -2202,7 +2203,7 @@ namespace m_Stub_021761f0 {
 
 extern "C" {
 
-void *func_ov000_021761a0(void);
+GameSave *func_ov000_021761a0(void);
 
 void func_ov000_021761f0(void *self) {
     data_ov000_021ccd4c = (LoCreateFn)func_ov000_021761a0;
@@ -2238,13 +2239,13 @@ static inline BOOL LoIsLoaded(void) {
     return r;
 }
 
-VObj *func_ov000_02176208(void) {
-    VObj *obj = (VObj *)Heap_Alloc(0x4c);
+GameSave *func_ov000_02176208(void) {
+    GameSave *obj = (GameSave *)Heap_Alloc(0x4c);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_0208b614);
-        obj->vfunc_14();
+        obj->Init();
         VOBJ_SET_VTABLE(obj, data_0208ca9c);
-        obj->vfunc_14();
+        obj->Init();
         VOBJ_SET_VTABLE(obj, data_0208ca18);
     }
     return obj;
@@ -2261,7 +2262,7 @@ extern "C" {
 
 extern u8 data_ov000_021cbee0[];
 extern u8 data_ov000_021cc060[];
-void *func_ov000_02176208(void);
+GameSave *func_ov000_02176208(void);
 void *Heap_Alloc(u32 size);
 
 void func_ov000_02176264(void *self) {
@@ -2675,7 +2676,7 @@ void Task021cbee0_Start(Task021cbee0 *self) {
             o->vfunc_28();
         }
         self->unk_44 = (Lo021cae48 *)o;
-        ((Lo021cae48 *)o)->unk_84 = 4;
+        ((Lo021cae48 *)o)->style = 4;
         {
             Lo021cae48 *s = self->unk_44;
             s->posX = 0x1a;
@@ -2702,7 +2703,7 @@ void Task021cbee0_Start(Task021cbee0 *self) {
             o->vfunc_28();
         }
         self->unk_48 = (Lo021cae48 *)o;
-        ((Lo021cae48 *)o)->unk_84 = 4;
+        ((Lo021cae48 *)o)->style = 4;
         {
             Lo021cae48 *s = self->unk_48;
             s->posX = 0x1a;
@@ -3314,7 +3315,7 @@ s32 func_ov000_02177bd8(UiObj *self, UiListItem *item) {
         u32 cost = node->unk_0c;
         if (IsCost021778f0(cost)) {
             ShowMsg021778f0(o, 0x9f);
-        } else if (obj->unk_8c >= cost) {
+        } else if (obj->value >= cost) {
             if (func_ov000_021778f0(o, node)) {
                 SetBit021778f0(o->unk_3c);
                 SetBit021778f0(o->unk_40);
@@ -3413,13 +3414,13 @@ BOOL func_ov000_02177f40(UiList *self, UiListItem *msg) {
         v = data_0214a424->items[(u16)(id & 0xfff)];
         c = ((s32)msg->unk_0c);
         {
-            u16 *p = &o->unk_54->unk_8a;
+            u16 *p = &o->unk_54->max;
             *p = v > 1 ? v : 1;
         }
-        LFLD(s32, o->unk_54, 0x8c) = c;
+        o->unk_54->price = c;
         o->unk_54->flag2 = 0;
         o->unk_54->hidden = 0;
-        o->unk_54->unk_88 = 1;
+        o->unk_54->count = 1;
         o->unk_3c->flag2 = 1;
         SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
     }
@@ -3504,7 +3505,7 @@ s32 ResMgr_IsLoaded(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
 
-void func_ov000_02178100(UiList *self, BOOL add) {
+void func_ov000_02178100(Lo021cacd8 *self, BOOL add) {
     func_ov000_02178dcc(self->owner, add);
 }
 
@@ -3574,7 +3575,7 @@ s32 Param_Get(u16 id);
 s32 func_0206f080(u16 id);
 u32 Param_GetValue(u16 id);
 u8 *Param_GetEntry(u16 id);
-void func_ov000_02178100(void);
+void func_ov000_02178100(Lo021cacd8 *self, BOOL add);
 BOOL func_ov000_02177f40(void);
 BOOL func_ov000_02178010(void);
 
@@ -3646,7 +3647,7 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
         o->vfunc_28();
     }
     self->unk_48 = (Lo021cae48 *)o;
-    ((Lo021cae48 *)o)->unk_84 = 4;
+    ((Lo021cae48 *)o)->style = 4;
     {
         Lo021cae48 *s = self->unk_48;
         s->posX = 0x1a;
@@ -3673,7 +3674,7 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
         o->vfunc_28();
     }
     self->unk_4c = (Lo021cae48 *)o;
-    ((Lo021cae48 *)o)->unk_84 = 4;
+    ((Lo021cae48 *)o)->style = 4;
     {
         Lo021cae48 *s = self->unk_4c;
         s->posX = 0x1a;
@@ -3732,7 +3733,7 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     ((Lo021cacd8 *)o)->posY = 0x50;
     ((Lo021cacd8 *)o)->posZ = -0x1666;
     self->unk_54->owner = self;
-    LFLD(void *, self->unk_54, 0x90) = (void *)func_ov000_02178100;
+    self->unk_54->onDone = func_ov000_02178100;
     self->unk_54->vfunc_08();
     self->unk_54->flags |= 2;
     self->unk_54->flags |= 4;
@@ -3827,7 +3828,7 @@ void Task021cbe60_UpdateActive(Task021cbe60 *self) {
     }
     v = data_02097dc8->trig;
     if (v & 1) {
-        func_ov000_0215d980(self->unk_44, self->unk_44->unk_8c, 1);
+        func_ov000_0215d980(self->unk_44, self->unk_44->value, 1);
         return;
     }
     if (!(v & 2)) {
@@ -3964,7 +3965,7 @@ static inline u16 ItemIdx(u16 v) { return v & 0xfff; }
 void func_ov000_02178dcc(void *p, BOOL on) {
     Task021cbe60 *self = (Task021cbe60 *)p;
     u32 n;
-    if (on && (n = LFLD(u32, self->unk_54, 0x8c) * self->unk_54->unk_88) != 0) {
+    if (on && (n = self->unk_54->price * self->unk_54->count) != 0) {
         s32 rest;
         UiListItem *node;
         UiListItem *list;
@@ -3985,7 +3986,7 @@ void func_ov000_02178dcc(void *p, BOOL on) {
             }
             node = (UiListItem *)list;
         }
-        rest = self->unk_54->unk_8a - self->unk_54->unk_88;
+        rest = self->unk_54->max - self->unk_54->count;
         if (ItemKind(node->id) - 1 == 1) {
             s32 c = rest;
             if (c < 0) {
@@ -4871,12 +4872,12 @@ namespace m_Lo_0217a1f8 {
 typedef enum { LO_TEXT_MASK_EMPTY = 0 } LoTextMask;
 
 extern "C" {
-VObj *func_ov000_02176208(void);
+GameSave *func_ov000_02176208(void);
 void func_ov000_0217a328(Task021cbc60 *self, s32 a, s32 b);
 void TaskList_Insert(VObj *self);
 
 void Task021cbc60_Start(Task021cbc60 *self) {
-    VObj *o;
+    GameSave *o;
     LoTextMask mask;
     self->unk_04 &= ~2;
     if (self->vfunc_28() != 0) {
@@ -4889,10 +4890,10 @@ void Task021cbc60_Start(Task021cbc60 *self) {
         if (fn == NULL) {
             data_ov000_021ccd4c = fn = (LoCreateFn)func_ov000_02176208;
         }
-        o = (VObj *)fn();
+        o = (GameSave *)fn();
     }
     self->unk_44 = o;
-    o->vfunc_08();
+    o->Setup();
     TaskList_Insert(self);
 }
 
@@ -5014,12 +5015,12 @@ static inline u8 Lvl0217a480(StageFlags *g) {
     return Raw0217a480(g) & ~0xc0;
 }
 
-static inline BOOL IsB1_0217a480(VObj *p) {
-    return LBIT(p, 0x48).b1 ? TRUE : FALSE;
+static inline BOOL IsB1_0217a480(GameSave *p) {
+    return p->bits.flag1 ? TRUE : FALSE;
 }
 
-static inline BOOL IsB2_0217a480(VObj *p) {
-    return LBIT(p, 0x48).b2 ? TRUE : FALSE;
+static inline BOOL IsB2_0217a480(GameSave *p) {
+    return p->bits.flag2 ? TRUE : FALSE;
 }
 
 void Task021cbc60_PostUpdate(Task021cbc60 *self) {
@@ -5027,7 +5028,7 @@ void Task021cbc60_PostUpdate(Task021cbc60 *self) {
         LO_FREE_V(self, 0x48);
     }
     if (self->unk_44 != NULL) {
-        self->unk_44->vfunc_0c();
+        self->unk_44->Update();
     }
     switch (self->unk_3c) {
     case 0:
@@ -5065,19 +5066,19 @@ void Task021cbc60_PostUpdate(Task021cbc60 *self) {
         } else if (self->param == 1) {
             func_0206c670(data_0214a424);
         }
-        LBIT(self->unk_44, 0x48).b0 = TRUE;
-        LFLD(u32, self->unk_44, 0x48) |= 0x20;
+        self->unk_44->bits.active = TRUE;
+        self->unk_44->flags |= 0x20;
         g = data_0214a424;
         if (Lvl0217a480(g) > 0x14) {
             u16 n = g->unk_008;
-            u8 *q = (u8 *)self->unk_44;
-            LFLD(u32, q, 0x48) |= 0x210;
-            LFLD(s32, q, 0x40) = n;
+            GameSave *q = self->unk_44;
+            q->flags |= 0x210;
+            q->curSlot = n;
         } else {
             u16 n = g->unk_008;
-            u8 *q = (u8 *)self->unk_44;
-            LFLD(u32, q, 0x48) |= 0x200;
-            LFLD(s32, q, 0x40) = n;
+            GameSave *q = self->unk_44;
+            q->flags |= 0x200;
+            q->curSlot = n;
         }
         func_ov000_0217a328(self, 0x79, -1);
         self->unk_3c = 3;
@@ -5338,7 +5339,7 @@ void *ResList_FindType2(void *a, void *b);
 void TexObj_SetRes(void *model, void *a);
 void TexObj_SelectImage(void *model, s32 a, s32 b);
 void *STD_CopyString(void *dst, void *src);
-VObj *func_ov000_02176208(void);
+GameSave *func_ov000_02176208(void);
 
 static inline void ModelInit(u8 *m, void *s, void *nm) {
     PlttRes_Init_02041218((struct PlttRes *)(m + 0x88));
@@ -5348,7 +5349,7 @@ static inline void ModelInit(u8 *m, void *s, void *nm) {
 
 void Task021cbb60_Start(Task021cbb60 *self) {
     u8 *m;
-    VObj *o;
+    GameSave *o;
     self->unk_04 &= ~2;
     if (self->vfunc_28() != 0) {
         return;
@@ -5358,10 +5359,10 @@ void Task021cbb60_Start(Task021cbb60 *self) {
         if (fn == NULL) {
             data_ov000_021ccd4c = fn = (LoCreateFn)func_ov000_02176208;
         }
-        o = (VObj *)fn();
+        o = (GameSave *)fn();
     }
     self->unk_5c = o;
-    o->vfunc_08();
+    o->Setup();
     m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         ModelInit(m, data_0208cc9c, data_0208cb78);
@@ -5987,8 +5988,8 @@ static inline void Lo0217c008_SetMode(Task021cbb60 *self, s32 m) {
     }
 }
 
-static inline BOOL Lo0217c008_Flag(VObj *o) {
-    return LBIT(o, 0x48).b2 ? TRUE : FALSE;
+static inline BOOL Lo0217c008_Flag(GameSave *o) {
+    return o->bits.flag2 ? TRUE : FALSE;
 }
 
 void Task021cbb60_PostUpdate(Task021cbb60 *self) {
@@ -6045,11 +6046,11 @@ void Task021cbb60_PostUpdate(Task021cbb60 *self) {
         break;
     }
     if (self->unk_5c != NULL) {
-        self->unk_5c->vfunc_0c();
+        self->unk_5c->Update();
         if (Lo0217c008_Flag(self->unk_5c)) {
             Lo0217c008_SetMode(self, 7);
         } else if (self->unk_60 != NULL) {
-            self->unk_60->vfunc_0c();
+            self->unk_60->Update();
             if (Lo0217c008_Flag(self->unk_60)) {
                 Lo0217c008_SetMode(self, 7);
             }
@@ -6248,14 +6249,14 @@ void func_ov000_0217c7b8(Task021cbb60 *self) {
         self->unk_04 |= 0x10000000;
         self->unk_50 = 6;
     case 6: {
-        u8 *p = (u8 *)self->unk_5c;
-        LFLD(u32, p, 0x48) |= 0x4000;
-        LFLD(s32, p, 0x40) = 0;
+        GameSave *p = self->unk_5c;
+        p->flags |= 0x4000;
+        p->curSlot = 0;
         self->unk_50 = 7;
         break;
     }
     case 7:
-        if (!(LBIT((u8 *)self->unk_5c, 0x48).b1 ? TRUE : FALSE)) {
+        if (!(self->unk_5c->bits.flag1 ? TRUE : FALSE)) {
             return;
         }
         if (self->unk_58 == 1) {
@@ -6276,33 +6277,33 @@ void func_ov000_0217c7b8(Task021cbb60 *self) {
         Lo0217c7b8_Reset(self);
         break;
     case 9: {
-        VObj *o = (VObj *)Heap_Alloc(0x58);
+        GameSave0208c994 *o = (GameSave0208c994 *)Heap_Alloc(0x58);
         if (o != NULL) {
             VOBJ_SET_VTABLE(o, data_0208b614);
-            o->vfunc_14();
+            o->Init();
             VOBJ_SET_VTABLE(o, data_0208ca9c);
-            o->vfunc_14();
+            o->Init();
             VOBJ_SET_VTABLE(o, data_0208c994);
-            o->vfunc_14();
+            o->Init();
         }
         self->unk_60 = o;
-        o->vfunc_08();
-        LFLD(u32, self->unk_60, 0x48) |= 0x40;
-        LBIT((u8 *)self->unk_60, 0x48).b0 = 1;
+        o->Setup();
+        self->unk_60->flags |= 0x40;
+        self->unk_60->bits.active = 1;
         self->unk_50 = 10;
     }
     case 10: {
-        u8 *p = (u8 *)self->unk_60;
-        if (!(LBIT(p, 0x48).b7 ? TRUE : FALSE)) {
+        GameSave *p = self->unk_60;
+        if (!(p->bits.flag7 ? TRUE : FALSE)) {
             return;
         }
-        LFLD(u32, p, 0x48) |= 0x4000;
-        LFLD(s32, p, 0x40) = 0;
+        p->flags |= 0x4000;
+        p->curSlot = 0;
         self->unk_50 = 11;
         break;
     }
     case 11:
-        if (!(LBIT((u8 *)self->unk_60, 0x48).b1 ? TRUE : FALSE)) {
+        if (!(self->unk_60->bits.flag1 ? TRUE : FALSE)) {
             return;
         }
         if (Lo0217c3b0_Busy(self)) {
@@ -6351,7 +6352,7 @@ void func_ov000_0217cddc(Task021cbb60 *self) {
             }
         }
         self->unk_04 &= 0xc00fffff;
-        self->unk_5c->vfunc_74();
+        self->unk_5c->vf74();
         if (self->param == 1) {
             self->unk_04 |= 0x1000000;
         } else if (self->param == 2) {
@@ -6452,7 +6453,6 @@ namespace m_Lo_0217d0c4 {
 
 extern "C" {
 
-void SaveBase_SetState_020473ac(void *s, s32 state);
 void StageFlags_Reset(void *p);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
@@ -6481,11 +6481,11 @@ static inline BOOL Waiting0217d0c4(Task021cbb60 *self) {
     return self->unk_4c != 0 ? TRUE : FALSE;
 }
 
-static inline BOOL B7_0217d0c4(void *o) { return LBIT(o, 0x48).b7 ? TRUE : FALSE; }
-static inline BOOL B11_0217d0c4(void *o) { return LBIT(o, 0x48).b11 ? TRUE : FALSE; }
-static inline BOOL B1_0217d0c4(void *o) { return LBIT(o, 0x48).b1 ? TRUE : FALSE; }
-static inline BOOL B13_0217d0c4(void *o) { return LBIT(o, 0x48).b13 ? TRUE : FALSE; }
-static inline BOOL B3_0217d0c4(VObj *o) { return LBIT(o, 0x48).b3 ? TRUE : FALSE; }
+static inline BOOL B7_0217d0c4(GameSave *o) { return o->bits.flag7 ? TRUE : FALSE; }
+static inline BOOL B11_0217d0c4(GameSave *o) { return o->bits.flag11 ? TRUE : FALSE; }
+static inline BOOL B1_0217d0c4(GameSave *o) { return o->bits.flag1 ? TRUE : FALSE; }
+static inline BOOL B13_0217d0c4(GameSave *o) { return o->bits.flag13 ? TRUE : FALSE; }
+static inline BOOL B3_0217d0c4(GameSave *o) { return o->bits.flag3 ? TRUE : FALSE; }
 
 static inline void Exit0217d0c4(Task021cbb60 *self, s32 next) {
     if (self->unk_44 != 7) {
@@ -6498,19 +6498,19 @@ void func_ov000_0217d0c4(Task021cbb60 *self) {
     switch (self->unk_48) {
     case 0:
         SaveBase_SetState_020473ac(self->unk_5c, 1);
-        LFLD(u32, self->unk_5c, 0x48) |= 0x40;
-        LBIT(self->unk_5c, 0x48).b0 = 1;
+        self->unk_5c->flags |= 0x40;
+        self->unk_5c->bits.active = 1;
         self->unk_48 = 1;
         break;
     case 1: {
-        void *o = self->unk_5c;
-        void *q;
+        GameSave *o = self->unk_5c;
+        SaveHeader *q;
         u32 flags;
         u8 b;
         if (!B7_0217d0c4(o)) {
             return;
         }
-        q = LFLD(void *, o, 0x28);
+        q = o->header;
         if (B11_0217d0c4(o)) {
             self->unk_48 = 9;
             return;
@@ -6520,7 +6520,7 @@ void func_ov000_0217d0c4(Task021cbb60 *self) {
             self->unk_48 = 0x13;
             return;
         }
-        b = LFLD(u8, q, 0x15);
+        b = ((SaveSlot *)q->slots)->flags;
         if (!(b & 1)) {
             if (Flag0217d0c4(flags, 0x1000000)) {
                 self->unk_48 = 0x16;
@@ -6564,14 +6564,14 @@ void func_ov000_0217d0c4(Task021cbb60 *self) {
         Exit0217d0c4(self, 4);
         break;
     case 7: {
-        void *o = self->unk_5c;
-        LFLD(u32, o, 0x48) |= 0x400;
-        LFLD(s32, o, 0x40) = 0;
+        GameSave *o = self->unk_5c;
+        o->flags |= 0x400;
+        o->curSlot = 0;
         self->unk_48 = 8;
         break;
     }
     case 8: {
-        void *o = self->unk_5c;
+        GameSave *o = self->unk_5c;
         if (B1_0217d0c4(o)) {
             Exit0217d0c4(self, 4);
             return;
@@ -6592,11 +6592,11 @@ void func_ov000_0217d0c4(Task021cbb60 *self) {
         }
         break;
     case 11:
-        LFLD(u32, self->unk_5c, 0x48) |= 0x1000;
+        self->unk_5c->flags |= 0x1000;
         self->unk_48 = 0xc;
         break;
     case 12: {
-        void *o;
+        GameSave *o;
         if (Busy0217d0c4(self)) {
             return;
         }
@@ -6616,7 +6616,7 @@ void func_ov000_0217d0c4(Task021cbb60 *self) {
         Exit0217d0c4(self, 4);
         break;
     case 14:
-        self->unk_5c->vfunc_74();
+        self->unk_5c->vf74();
         SaveBase_SetState_020473ac(self->unk_5c, 4);
         self->unk_48 = 0xf;
         break;
@@ -6634,7 +6634,7 @@ void func_ov000_0217d0c4(Task021cbb60 *self) {
         Exit0217d0c4(self, 4);
         break;
     case 19:
-        if (!(LFLD(u8, self->unk_5c, 0x8) == 0 ? TRUE : FALSE)) {
+        if (!(self->unk_5c->formatted == 0 ? TRUE : FALSE)) {
             self->unk_48 = 0x14;
             return;
         }
@@ -6644,7 +6644,7 @@ void func_ov000_0217d0c4(Task021cbb60 *self) {
         if (!func_ov000_0217bd88(self, 0x8000, 0x6d)) {
             return;
         }
-        LFLD(u32, self->unk_5c, 0x48) |= 0x8;
+        self->unk_5c->flags |= 0x8;
         self->unk_48 = 0x15;
         break;
     case 21:
@@ -6687,7 +6687,6 @@ extern "C" {
 
 extern void *data_02097e4c;
 BOOL Vram_IsIdle(void);
-void SaveBase_SetState_020473ac(void *s, s32 state);
 void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_ov000_0217b324(void *self, s32 a);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
@@ -6743,7 +6742,7 @@ void func_ov000_0217d66c(Task021cbb60 *self) {
             }
             return;
         }
-        self->unk_5c->vfunc_74();
+        self->unk_5c->vf74();
         SaveBase_SetState_020473ac(self->unk_5c, 4);
         func_ov000_0217b324(self, 0);
         self->unk_48 = 1;
@@ -6941,7 +6940,7 @@ void func_ov000_0217dba4(Task021cbb60 *self) {
         }
         return;
     }
-    self->unk_5c->vfunc_74();
+    self->unk_5c->vf74();
     f = self->unk_04;
     if (f & 0x10000000) {
         if (self->unk_44 != 7) {
@@ -7009,9 +7008,9 @@ void func_ov000_0217ddd4(Task021cbb60 *self) {
     case 0: {
         u32 fl;
         s32 k;
-        self->unk_5c->vfunc_74();
+        self->unk_5c->vf74();
         if (self->unk_60 != NULL) {
-            self->unk_60->vfunc_74();
+            self->unk_60->vf74();
         }
         fl = self->unk_04;
         if (fl & 0x10000000) {

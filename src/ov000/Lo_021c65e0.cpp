@@ -1,27 +1,11 @@
-#include "types.h"
+#include "ov000/TextList.h"
 
 extern "C" {
 
-typedef struct Node021c65e0 {
-    u8 pad_00[4];
-    s32 key;
-    u8 pad_08[0x20];
-    struct Node021c65e0 *next;
-} Node021c65e0;
-
-struct Obj021c65e0 {
-    u8 unk_00[0x84];
-    Node021c65e0 *unk_84;
-    Node021c65e0 *unk_88;
-    u8 unk_8c[0x4];
-    s32 unk_90;
-    s32 unk_94;
-};
-
-static inline Node021c65e0 *At021c65e0(Obj021c65e0 *self, s32 i) {
-    Node021c65e0 *n;
+static inline ListRow *At021c65e0(TextList *self, s32 i) {
+    ListRow *n;
     s32 k = 0;
-    for (n = self->unk_84; n != NULL; n = n->next) {
+    for (n = self->rows; n != NULL; n = n->next) {
         if (k == i) {
             break;
         }
@@ -30,11 +14,11 @@ static inline Node021c65e0 *At021c65e0(Obj021c65e0 *self, s32 i) {
     return n;
 }
 
-static inline s32 IndexOf021c65e0(Obj021c65e0 *self, Node021c65e0 *node) {
-    Node021c65e0 *n;
+static inline s32 IndexOf021c65e0(TextList *self, ListRow *node) {
+    ListRow *n;
     s32 k;
     k = 0;
-    for (n = self->unk_84; n != NULL; n = n->next) {
+    for (n = self->rows; n != NULL; n = n->next) {
         if (n == node) {
             break;
         }
@@ -46,29 +30,29 @@ static inline s32 IndexOf021c65e0(Obj021c65e0 *self, Node021c65e0 *node) {
     return k;
 }
 
-static inline Node021c65e0 *Find021c65e0(Obj021c65e0 *self, s32 key) {
-    Node021c65e0 *n;
-    for (n = self->unk_84; n != NULL; n = n->next) {
-        if (key == n->key) {
+static inline ListRow *Find021c65e0(TextList *self, s32 key) {
+    ListRow *n;
+    for (n = self->rows; n != NULL; n = n->next) {
+        if (key == n->index) {
             break;
         }
     }
     return n;
 }
 
-static inline void Select021c65e0(Obj021c65e0 *self, s32 i) {
-    if (i >= self->unk_90) {
-        self->unk_94 = 0;
+static inline void Select021c65e0(TextList *self, s32 i) {
+    if (i >= self->count) {
+        self->index = 0;
         return;
     }
-    self->unk_94 = i;
-    self->unk_88 = At021c65e0(self, i);
+    self->index = i;
+    self->cur = At021c65e0(self, i);
 }
 
-static inline Node021c65e0 *At2_021c65e0(Obj021c65e0 *self, s32 i) {
+static inline ListRow *At2_021c65e0(TextList *self, s32 i) {
     s32 k = 0;
-    Node021c65e0 *n;
-    for (n = self->unk_84; n != NULL; n = n->next) {
+    ListRow *n;
+    for (n = self->rows; n != NULL; n = n->next) {
         if (k == i) {
             break;
         }
@@ -77,17 +61,17 @@ static inline Node021c65e0 *At2_021c65e0(Obj021c65e0 *self, s32 i) {
     return n;
 }
 
-static inline void Select2_021c65e0(Obj021c65e0 *self, s32 i) {
-    if (i >= self->unk_90) {
-        self->unk_94 = 0;
+static inline void Select2_021c65e0(TextList *self, s32 i) {
+    if (i >= self->count) {
+        self->index = 0;
         return;
     }
-    self->unk_94 = i;
-    self->unk_88 = At2_021c65e0(self, i);
+    self->index = i;
+    self->cur = At2_021c65e0(self, i);
 }
 
-void func_ov000_021c65e0(Obj021c65e0 *self, s32 key) {
-    Node021c65e0 *node = Find021c65e0(self, key);
+void func_ov000_021c65e0(TextList *self, s32 key) {
+    ListRow *node = Find021c65e0(self, key);
     s32 i;
     if (node != NULL) {
         i = IndexOf021c65e0(self, node);

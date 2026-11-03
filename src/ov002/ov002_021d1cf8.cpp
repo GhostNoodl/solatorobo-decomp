@@ -3,13 +3,11 @@
 #include "ov002/Ov002Task.h"
 
 extern "C" {
-typedef int (*VFunc)();
-#define FIELD(p, off, T) (*(T *)((u8 *)(p) + (off)))
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 extern const s16 FX_SinCosTable_[];
 
 void Task021ef69c_PreUpdate(Task021ef69c *self) {
-    void *o;
+    TextList *o;
     s32 bz;
     s32 by;
     s32 bx;
@@ -29,12 +27,12 @@ void Task021ef69c_PreUpdate(Task021ef69c *self) {
             SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
             break;
     }
-    ((void (*)(void *))(*(VFunc **)self->unk_3c)[7])(self->unk_3c);
-    ((void (*)(void *))(*(VFunc **)self->unk_40)[7])(self->unk_40);
+    self->unk_3c->vfunc_1c();
+    self->unk_40->vfunc_1c();
     o = self->unk_3c;
     bx = self->unk_5c;
-    k = 0x1000 - FX_SinCosTable_[((s32)(FIELD(o, 0x38, s32) << 14) >> 16) * 2];
-    y = FIELD(o, 0xc0, s32);
+    k = 0x1000 - FX_SinCosTable_[((s32)(o->openRatio << 14) >> 16) * 2];
+    y = o->lift;
     bz = self->unk_64;
     by = self->unk_60;
     x = FX_MUL(k, bx);

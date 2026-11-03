@@ -1,13 +1,13 @@
-#include "ov000/VObj.h"
+#include "ov000/TextList.h"
 
 extern "C" {
 
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021ccadc[];
 void Heap_Free(void *ptr);
-void Obj021c61a8_Release(void *ptr);
+void Obj021c61a8_Release(TextList *self);
 
-VObj *Ov000Vt_021ccadc_DtorDelete(VObj *self) {
+TextList *Ov000Vt_021ccadc_DtorDelete(TextList *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021ccadc);
     Obj021c61a8_Release(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cac60);
@@ -16,7 +16,7 @@ VObj *Ov000Vt_021ccadc_DtorDelete(VObj *self) {
     return self;
 }
 
-VObj *Ov000Vt_021ccadc_Dtor(VObj *self) {
+TextList *Ov000Vt_021ccadc_Dtor(TextList *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021ccadc);
     Obj021c61a8_Release(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cac60);

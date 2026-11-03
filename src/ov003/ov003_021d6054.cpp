@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Lang/TblRes.h"
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
 #include "ov003/Actor.h"
@@ -22,8 +23,7 @@ extern void HitSphere_Unlink_0203f364(ActorSub48 *c);
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 on, u32 mask);
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern EffectObj *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, u8 d);
-extern u8 *func_02070558(s32 id);
-extern void Drop_SpawnWeighted(u8 *a, u8 *b, s32 c, VecFx32 *pos, u16 *rot, s32 d);
+extern void Drop_SpawnWeighted(u16 *ids, u8 *rates, s32 n, VecFx32 *pos, u16 *rot, s32 d);
 extern void func_ov000_0219b5dc(u16 id, VecFx32 *pos, u16 *rot);
 
 void Ov003Actor_StateDie(Ov003Actor *self) {
@@ -94,7 +94,7 @@ void Ov003Actor_StateDie(Ov003Actor *self) {
         break;
     }
     case 10: {
-        u8 *res;
+        TblActorParam *res;
         v.x = self->pos.x;
         v.y = self->pos.y;
         v.z = self->pos.z;
@@ -119,7 +119,7 @@ void Ov003Actor_StateDie(Ov003Actor *self) {
             SndMgr_PlayAt(data_02097e4c, e->sound, &v, 0);
         }
         res = func_02070558(self->kind);
-        Drop_SpawnWeighted(res + 0x3e, res + 0x42, 2, &v, &self->rot_x, 1);
+        Drop_SpawnWeighted(res->dropIds, res->dropRates, 2, &v, &self->rot_x, 1);
         func_ov000_0219b5dc(self->unk_b0->unk_06, &v, &self->rot_x);
         self->fsm->timer = 0;
         self->fsm->st++;

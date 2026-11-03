@@ -381,7 +381,7 @@ void Ov012Act_02202b10_Update(Ov012Act_02202b10 *self) {
                         if (self->unk_e8 != 0) {
                             self->unk_e8 = 0;
                             self->targetObj->unk_1a = 0;
-                            self->targetObj->type = *func_02070558((void *)self->kind);
+                            self->targetObj->type = func_02070558(self->kind)->target.type;
                         }
                         self->unk_f0 = 0x400000;
                         self->fsm->flags |= 2;

@@ -1537,10 +1537,10 @@ void Ov009ActVt_0221707c_StateKnockBack(Ov009ActVt_0221707c *self) {
     Ov003Actor_StateKnockBack(self);
 }
 
-void Ov009Names_Fill_022026c8(Ov009Names *self, void *res) {
-    char *a = func_0207011c(res);
-    char *b = func_020701d4(res);
-    u8 *c = func_02070558(res);
+void Ov009Names_Fill_022026c8(Ov009Names *self, u16 kind) {
+    char *a = func_0207011c(kind);
+    char *b = func_020701d4(kind);
+    TblActorParam *c = func_02070558(kind);
     const char *s;
     char *t;
     STD_CopyString(self->mdlDir, a);
@@ -1550,7 +1550,7 @@ void Ov009Names_Fill_022026c8(Ov009Names *self, void *res) {
     STD_CopyString(self->anmDir, s);
     STD_CopyString(self->anmName, data_ov009_02215d14);
     self->ownAnm = 1;
-    t = FLD(char *, c, 0x28);
+    t = c->evName;
     if (t != NULL) {
         STD_CopyString(self->evDir, s);
         STD_CopyString(self->evName, t);
@@ -1605,7 +1605,7 @@ extern char data_ov009_02216b98[];
 extern Ov003Actor *Factory_New4000(void *desc);
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
-void Ov009Names_Fill_022026c8(Ov009Names *self, void *res);
+void Ov009Names_Fill_022026c8(Ov009Names *self, u16 kind);
 
 struct Ov009SpawnDesc {
     u16 kind;
@@ -1635,8 +1635,8 @@ void Ov009Act_02202788_Init(Ov009Act_02202788 *self) {
     }
     Ov003Actor_Init(self);
     kind = self->kind;
-    a = func_0207011c((void *)kind);
-    b = func_020701d4((void *)kind);
+    a = func_0207011c(kind);
+    b = func_020701d4(kind);
     n = ((Ov009Names *)self->unk_34);
     STD_CopyString(n->unk_88, a);
     STD_CopyString(n->unk_a8, b);
@@ -1722,7 +1722,7 @@ extern void HitMesh_SetScale(void *p, s32 v);
 extern s32 func_ov000_021909a8(Model0218fe1c *m, const char *a, const char *b);
 extern void NNS_G3dRenderObjSetInitFunc(void *p, void *cb);
 extern void Ov009Part_StartCapture(Ov003Actor *self);
-extern u8 *Tbl_FindEntry_0206fef8(void *res);
+extern u8 *Tbl_FindEntry_0206fef8(s32 id);
 extern void HitMesh_SetMtx(void *mesh, const void *mtx);
 struct Ov009Mtx43 {
     s32 m[9];
@@ -1741,7 +1741,7 @@ void Ov009Act_02202788_Start(Ov009Act_02202788 *self) {
         s48->offset.y = 0x1800;
         s48->offset.z = 0;
     }
-    self->joint.joint = func_ov000_021909a8(self->model, func_020701d4((void *)self->kind), data_ov009_02216ba7);
+    self->joint.joint = func_ov000_021909a8(self->model, func_020701d4(self->kind), data_ov009_02216ba7);
     MTX_Identity43_(&self->joint.mtx);
     m = self->model;
     NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)Ov009Part_StartCapture);
@@ -1754,7 +1754,7 @@ void Ov009Act_02202788_Start(Ov009Act_02202788 *self) {
         s44->unk_22_1 = 0;
     }
     self->unk_ea_6 = 1;
-    c = Tbl_FindEntry_0206fef8((void *)self->kind);
+    c = Tbl_FindEntry_0206fef8(self->kind);
     o = ((Ov009Names *)self->unk_34)->unk_84;
     v = o != NULL ? *o : 0;
     if (v != 0) {
@@ -1931,7 +1931,7 @@ void Ov009Act_02202788_StateShoot(Ov009Act_02202788 *self) {
     s32 lim;
     u16 id;
     EffectObj *e;
-    u8 *c;
+    TblActorParam *c;
     ActorSub40 *st;
     Ov003Actor *a;
     t = Ov009_FindActor(self->target);
@@ -1985,9 +1985,9 @@ void Ov009Act_02202788_StateShoot(Ov009Act_02202788 *self) {
         }
         break;
     case 3:
-        c = func_02070558((void *)self->kind);
+        c = func_02070558(self->kind);
         if (c != NULL) {
-            u16 *p = (u16 *)(c + 0x3a);
+            u16 *p = &c->spawn.id;
             if (p != NULL) {
                 u16 k = *p;
                 if (k != 0xffff) {
@@ -2079,7 +2079,7 @@ void Ov009Act_02202788_StateDie(Ov009Act_02202788 *self) {
     EffectObj *e;
     Ov003Actor *a;
     ActorSub40 *st;
-    u8 *c;
+    TblActorParam *c;
     if (self->hitMesh != NULL) {
         HitMesh_Unlink_0203f920(self->hitMesh);
     }
@@ -2156,8 +2156,8 @@ void Ov009Act_02202788_StateDie(Ov009Act_02202788 *self) {
         break;
     }
     case 10:
-        c = func_02070558((void *)self->kind);
-        Drop_SpawnWeighted(c + 0x3e, c + 0x42, 2, &self->pos, &self->rot_x, 1);
+        c = func_02070558(self->kind);
+        Drop_SpawnWeighted(c->dropIds, c->dropRates, 2, &self->pos, &self->rot_x, 1);
         func_ov000_0219b5dc(self->unk_b0->unk_06, &self->pos, &self->rot_x);
         self->fsm->timer = 0;
         self->fsm->st++;
@@ -2253,10 +2253,10 @@ extern void *data_02097e4c;
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(FieldState *g, s32 a);
 
-void Ov009Names_Fill_0220397c(Ov009Names *self, void *res) {
-    char *a = func_0207011c(res);
-    char *b = func_020701d4(res);
-    u8 *c = func_02070558(res);
+void Ov009Names_Fill_0220397c(Ov009Names *self, u16 kind) {
+    char *a = func_0207011c(kind);
+    char *b = func_020701d4(kind);
+    TblActorParam *c = func_02070558(kind);
     const char *s;
     char *t;
     STD_CopyString(self->mdlDir, a);
@@ -2266,7 +2266,7 @@ void Ov009Names_Fill_0220397c(Ov009Names *self, void *res) {
     STD_CopyString(self->anmDir, s);
     STD_CopyString(self->anmName, data_ov009_02215d40);
     self->ownAnm = 1;
-    t = FLD(char *, c, 0x28);
+    t = c->evName;
     if (t != NULL) {
         STD_CopyString(self->evDir, s);
         STD_CopyString(self->evName, t);
@@ -2497,7 +2497,7 @@ extern void *data_02097e4c;
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(FieldState *g, s32 a);
 
-void Ov009Names_Fill_0220397c(Ov009Names *self, void *res);
+void Ov009Names_Fill_0220397c(Ov009Names *self, u16 kind);
 
 void Ov009ActVt_02216bc8_Init(Ov009ActVt_02216bc8 *self) {
     GroupNode *p;

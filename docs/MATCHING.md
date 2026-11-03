@@ -8763,3 +8763,34 @@ Renames only; no code changed. 735 renames: ov000 340, ov002 205, ov015 49, Main
 - **ov002/ov015** names carry the module's class names or an `Ov002_`/`Ov015_` tag (e.g. `Ov002Staff_*`, `Ov002StaffLoader_Parse`, `Ov015CamPair_SetMode`, `Ov015Obj30_Free`).
 - **Main.** The macro-defined resource-list finders are `ResList_FindType0`..`6`. They are numbered, not named after the file extensions they compare, because those are ROM data. String-keyed table lookups (e.g. in `Stage.cpp`) are left unnamed for the same reason.
 - **Left unnamed:** ov000 939, ov002 288, ov015 251, Main 1055. Most are large one-caller helpers, or functions whose only evidence would be ROM strings.
+
+### Round acP (ov000 text list, number display, count selector and save objects typed; the `func_02070558` actor record shared in Main)
+
+Readability only; every function stays byte-identical. A baseline was built first at `0fdb1b49`, and again at `233edf36` after round nmG landed (the work was rebased onto it with `renames_nmG.txt` applied). Each step was compared function by function (code and relocations), and at the end all 1906 objects were compared again: 0 differ. Gate: 0 FAILED with 19/19 ROM checks and `check symbols` OK, `ninja report` at 8138 matched, and `check_drafts.py --score` exits 0 (30 drafts, all unchanged).
+
+**Counts** (`grep -o` over src + include of each overlay)
+
+| | before | after |
+|---|---|---|
+| ov000 `LFLD` | 483 | 443 |
+| ov000 `LBIT` | 36 | 22 |
+| ov000 `void *self` | 156 | 143 |
+| ov002 `FIELD(` / `void *self` | 302 / 59 | 290 / 54 |
+| ov015 `FLD(` | 42 | 42 |
+
+- **Text list (new untracked `include/ov000/TextList.h`).** `TextList : UiObj` (vtable `021ccadc`, 0xd4): `rows`/`cur`/`count`/`index`/`prevIndex`, the cursor `panel` (`UiPanel`) and its `panelText`, the slide `timer`/`dir`, the arrow `bounce`, `lift`, `TextListFlags` at 0xc4 (`wrap`, `showCursor`, `raise`) and the `onDecide`/`onCursor` callbacks. The family `Stub_021c6140` .. `Stub_021c7000` (init, dtor helper, start, append, select, update, input, place, draw, arrows), `Dtor_021c879c` and ov002's two lists (`Ov002TextList` is gone; `Task021ef69c::unk_44` is the raised `ListRow021cca70`, and `func_ov002_021d18d4`/`18e8` take typed arguments) use it.
+  - Why the 0xc4 widths disagreed: they never had to agree. Each view declared only the bits it touched. ov000's update (`021c6714`) needed bit 2, so it grouped bits 0..1 as one 2-bit field. ov002 stored 1 into bit 0 through an `s32 :1`, which emits the same `orr #1` as a `u32 :1`. With one flag type, every reader and writer still matches. That includes the word forms `unk_c4 |= 2` / `&= ~1` in ov002, which match as `listFlags.showCursor = 1` / `wrap = 0`.
+- **Rows.** `ListRow::unk_20_1` is `focus`, `unk_24` is `dir`. New `ListRowLabel` (vtable `021cca28`, 0x34: one `TextWin`). `Lo021cca40` now derives from `ListRow` (`text`, `built`); `Dtor_021c881c`'s `Task021cbac8` stand-in is gone.
+- **`UiPanel`** fields are `x`/`y`/`z`/`width`/`height`/`dx`/`dy` and `bits.centered`/`b4`. `Model_0215eab4`, `Lo_0215ec44` (the frame draw) and `Lo_021c4fdc` (now on `LoBase021ccb54_021ccbe0`) dropped their local views.
+- **Number display** `Lo021cae48`: `style`/`shown`/`value`/`digits`/`label` (`func_ov000_0215d980` typed). **Count selector** `Lo021cacd8` (0xa0): `count`/`max`/`price`/`onDone`/`upAlpha`/`downAlpha`; its init and methods (`Stub_02160fc8`, `Lo_02161280`, `Lo_02161798`, `Lo_02161994`) and the Menu shop callback `func_ov000_02178100` use it.
+- **Save objects (Menu GameSave fields).** `GameSave.h` mixed two classes. `GameSave` is now the 0x4c class (vtable `0208ca9c`, flags at 0x48; `0208ca18` is a 0x4c variant), and `GameSave0208c994` (0x58) adds the three callbacks (`GameSave_3.cpp` uses it). `Task021cbc60::unk_44` and `Task021cbb60::unk_5c` are `GameSave *`, and `unk_60` is `GameSave0208c994 *`. The save factories `021761a0`/`02176208` return `GameSave *`. The Menu functions use `flags`/`bits.flagN`/`curSlot`/`header`/`formatted` and `Setup`/`Init`/`Update`/`vf74` (the pmA `STD_CopyString`/`NNS_G3dGeBufferOP_N` views are untouched).
+- **`Mdl_021b70c0`** includes `nnsys/g3d.h`: `NNSG3dResMdlSet`/`NNSG3dResMdl` locals and `NNS_G3dGetMdlByIdx`, the `recMatAnm`/`recJntAnm` buffers sized by `info.numMat`/`numNode`, and the render-object flag bits by name.
+- **`func_02070558` record (new untracked `include/Main/Lang/TblRes.h`).** `TblActorParam` (0x44): `target` (the 0x10 bytes copied into the actor's Target; the pair at 0x08 keeps its nesting, because the copy only matches with it), `evName`, `aggro` (mode, kinds), `spawn` (child id and argument), and `dropIds`/`dropRates`. The ov003 (`021d0ba8`, `021d112c`, `021d1e8c`, `021d3008`, `021d4b68`, `021d6054`), ov009 (`02205d14`, `022161f8`, `02211da4`), ov010 (`0220f958`) and ov012 (`02207b7c`, `02207c40`, `0220a9e4`) views are gone. The name-fill callbacks take `u16 kind`, and the ov009/ov012/ov013/ov014 headers declare `func_0207011c`/`020701d4` with `s32 id`.
+- **TWL request (new untracked `include/ov000/TwlRequest.h`).** `Twl0214b570` (0x1c) replaces five copies of the local view; `func_ov000_0214b640`/`0214b654`/`0214b6d0` are typed.
+- **Left.**
+  - `Lo_021814dc`'s `data_02fe1534` views: several namespaces declare that symbol with different local types, and `0218867c` is a draft.
+  - The 0x3c event object of `ListBuffer021cb940::unk_50` (`Obj0216c954`/`Obj0216c9b0`/`Obj0216ca70`/`Stub_0216ca64`) and its effect (`ov000_021c194c`).
+  - The OAM, message and callback `void *self` signatures.
+  - ov003's `tex` and ov011's `unk_364` are `Twl0214b570` but stay `void *`, because they are outside this round's scope.
+  - ov015 `FLD(` (the fish names stay out).
+- **Renames:** none (types and fields only).

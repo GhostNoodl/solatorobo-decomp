@@ -12,7 +12,7 @@ extern void func_ov000_02187a20(void *p, s32 a);
 extern void *Ov003FxList_Dtor(void *p);
 extern void *SndMgr_PlayAtPitch(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *m, s32 a);
-void Ov009Names_Fill_02205d94(Ov009Names *self, void *res);
+void Ov009Names_Fill_02205d94(Ov009Names *self, u16 kind);
 
 struct Ov009Rot {
     s16 x;
@@ -40,10 +40,10 @@ void Ov009ActVt_02216fd0_Update(Ov003Actor *self) {
     Ov003Actor_Update(self);
 }
 
-void Ov009Names_Fill_02205d94(Ov009Names *self, void *res) {
-    char *a = func_0207011c(res);
-    char *b = func_020701d4(res);
-    u8 *c = func_02070558(res);
+void Ov009Names_Fill_02205d94(Ov009Names *self, u16 kind) {
+    char *a = func_0207011c(kind);
+    char *b = func_020701d4(kind);
+    TblActorParam *c = func_02070558(kind);
     char *s;
     char *t;
     STD_CopyString(self->mdlDir, a);
@@ -53,7 +53,7 @@ void Ov009Names_Fill_02205d94(Ov009Names *self, void *res) {
     STD_CopyString(self->anmDir, s);
     STD_CopyString(self->anmName, (char *)data_ov009_02215d0c[14]);
     self->ownAnm = 1;
-    t = FLD(char *, c, 0x28);
+    t = c->evName;
     if (t != NULL) {
         STD_CopyString(self->evDir, s);
         STD_CopyString(self->evName, t);

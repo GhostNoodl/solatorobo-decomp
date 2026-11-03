@@ -459,17 +459,23 @@ struct ObjBase021cac0c_021cb6f0 : public VObj {
 };
 SIZE_ASSERT(ObjBase021cac0c_021cb6f0, 0x9c);
 
-// Vtable data_ov000_021cacd8; methods in 5 files, Lo_02160ff8.cpp .. Lo_0216150c.cpp.
+// Vtable data_ov000_021cacd8 (0xa0 bytes, init func_ov000_02160fc8): a count selector; methods in
+// Lo_02160ff8.cpp .. Lo_0216150c.cpp, Lo_02161798.cpp (draws count / max), Lo_02161994.cpp (the arrows).
+// Slot 0x54 (func_ov000_02161280) steps count by 1 (up/down) or 10 (left/right) within 1..max and
+// calls onDone with TRUE for A and FALSE for B.
+struct Lo021cacd8;
+typedef void (*Lo021cacd8Fn)(Lo021cacd8 *self, BOOL ok);
 struct Lo021cacd8 : public UiObj {
-    Model *unk_84;
-    u16 unk_88;
-    u16 unk_8a;
-    u8 unk_8c[0x4];
-    u32 unk_90;  // bit fields, read through per-file views
-    s32 unk_94;
-    s32 unk_98;
-    s32 unk_9c;
+    Model *unk_84;  // the digits
+    u16 count;      // 0x88 (1 after the init)
+    u16 max;        // 0x8a (10 after the init)
+    s32 price;      // 0x8c per unit (the shop sells count of an item for price * count)
+    Lo021cacd8Fn onDone; // 0x90
+    s32 unk_94;     // arrow timer (func_ov000_02161994)
+    s32 upAlpha;    // 0x98 fades in while count < max
+    s32 downAlpha;  // 0x9c fades in while count > 1
 };
+SIZE_ASSERT(Lo021cacd8, 0xa0);
 
 // Vtable data_ov000_021cad50; methods in G3_0215d4b4.cpp, Lo_0215d30c.cpp, Lo_0215d3bc.cpp.
 struct Lo021cad50 : public UiObj {
@@ -487,13 +493,15 @@ struct Lo021cadcc : public UiObj {
     s32 unk_88;
 };
 
-// Vtable data_ov000_021cae48; methods in Lo_0215dae0.cpp, Lo_0215deb4.cpp, TextWin_0215d758.cpp, Win_0215db70.cpp.
+// Vtable data_ov000_021cae48: a number display (methods in Lo_0215dae0.cpp, Lo_0215deb4.cpp,
+// TextWin_0215d758.cpp, Win_0215db70.cpp). func_ov000_0215d980 sets value (and shown too when asked);
+// slot 0x0c (func_ov000_0215dae0) moves shown towards value, and the draw prints shown with the digits.
 struct Lo021cae48 : public UiObj {
-    s32 unk_84;
-    s32 unk_88;
-    s32 unk_8c;
-    Model *unk_90;
-    TextWin *unk_94;
+    s32 style;      // 0x84 index into data_ov000_021cabe0 (the label part and string); 4: no label
+    s32 shown;      // 0x88 the number drawn
+    s32 value;      // 0x8c the number shown counts towards
+    Model *digits;  // 0x90 the digits and the style's icon part
+    TextWin *label; // 0x94
 };
 
 
@@ -606,21 +614,19 @@ struct Lo021cb894 : public ObjBase021cac0c_021cb6f0 {
     s32 unk_b8;
 };
 
-// Vtable data_ov000_021cca40; methods in Lo_021c5bd4.cpp, Win_021c5d9c.cpp.
-struct Lo021cca40 {
-    u8 unk_00[0xc];
-    s32 unk_0c;
-    s32 unk_10;
-    s32 unk_14;
-    u8 unk_18[0x18];
-    TextWin *unk_30;
-    Model *unk_34;
-    void *unk_38;
-    u16 unk_3c;
+// Vtable data_ov000_021cca40 (0x48 bytes, init func_ov000_021c5bac; ov015 builds them): a list row with
+// a name, a count and a value. Slot 0x08 (func_ov000_021c5bd4) makes the text and the digit model once,
+// slot 0x0c (func_ov000_021c5d9c) draws the name and the two numbers.
+struct Lo021cca40 : public ListRow {
+    TextWin *text;  // 0x30 the name (unk_38, or a default string)
+    Model *unk_34;  // the digit model (parts 6 and 7)
+    void *unk_38;   // the name string (ov015: Param_Get of the item id)
+    u16 unk_3c;     // the count, drawn by func_02041c18
     u8 unk_3e[0x2];
-    u32 unk_40;
-    u8 unk_44;
+    u32 unk_40;     // the second number (ov015: count times the item's value)
+    u8 built;       // 0x44 set once slot 0x08 has made text and unk_34
 };
+SIZE_ASSERT(Lo021cca40, 0x48);
 
 // Row list: vtable data_ov000_021ccbe0 (0xf4 bytes; the constructor calls UiObj_Init through slot 0x28,
 // then func_ov000_021c3af4) over the base vtable data_ov000_021ccb54; ov002's subclass data_ov002_021f0044

@@ -1,4 +1,5 @@
 #include "ov010/ov010.h"
+#include "Main/Lang/TblRes.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
@@ -943,12 +944,6 @@ void Ov010Obj02210154_StateAttack3(Ov010Obj02210154 *self) {
 
 // ---- merged from ov010_02205c30.cpp
 namespace m_02205c30 {
-// The child spawn entry at 0x3a of the actor's func_02070558 record: none when unk_00 is 0xffff;
-// arg goes to the spawned actor's Actor::unk_18.
-struct Ov010ChildSpawn {
-    u16 unk_00;
-    s8 arg;
-};
 
 extern "C" {
 
@@ -960,7 +955,6 @@ extern void Model0218fe1c_SetLoop(void *a);
 extern BOOL Model0218fe1c_IsAnimDone(void *p);
 extern void Actor_SendMsgU8(void *a, u16 b, s32 c);
 extern BOOL History_SetState(void *a, s32 b, s32 c);
-extern u8 *func_02070558(u16 id);
 extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *o);
 extern void func_ov010_0220de4c(void *p, u8 a);
@@ -989,14 +983,14 @@ void Ov010Obj02210154_StateShoot(Ov010Obj02210154 *self) {
         }
         return;
     case 2: {
-        u8 *res;
-        Ov010ChildSpawn *ent;
+        TblActorParam *res;
+        TblActorSpawn *ent;
         if (self->model->anim_state != 3) {
             return;
         }
         res = func_02070558(self->kind);
-        ent = res != NULL ? (Ov010ChildSpawn *)(res + 0x3a) : NULL;
-        if (ent == NULL || ent->unk_00 == 0xffff) {
+        ent = res != NULL ? &res->spawn : NULL;
+        if (ent == NULL || ent->id == 0xffff) {
             self->fsm->st = 4;
         } else {
             VecFx32 v;

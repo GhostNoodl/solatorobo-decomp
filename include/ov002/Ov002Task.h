@@ -77,9 +77,9 @@ SIZE_ASSERT(Task021ef530, 0x50);
 // Vtable data_ov002_021ef69c, 0x68 bytes.
 class Task021ef69c : public Task {
 public:
-    Ov002TextList *unk_3c;
+    TextList *unk_3c;
     Lo021cb5a8 *unk_40;
-    VObj *unk_44;
+    ListRow021cca70 *unk_44; // the decided row while it is raised (func_ov002_021d18e8)
     Model *unk_48; // number drawing (func_ov002_021d1f70)
     Model *unk_4c;
     s32 unk_50;
@@ -166,7 +166,7 @@ SIZE_ASSERT(Ov002StrTable, 0x10);
 // Vtable data_ov002_021ef91c, 0xd0 bytes.
 class Task021ef91c : public Task {
 public:
-    Ov002TextList *unk_3c;
+    TextList *unk_3c;
     Lo021cb5a8 *unk_40;
     char unk_44[0x20];
     char unk_64[0x18];

@@ -407,8 +407,8 @@ char *Ov002StrTable_GetLabel(Ov002StrTable *self, u32 idx);
 char *Ov002StrTable_GetDesc(Ov002StrTable *self, u32 idx);
 void ListRow_Init(ListRow *self);
 void func_ov000_021c37bc(ListRowText *self);
-void func_ov000_021c6140(UiObj *self);
-void List021c6474_Append(void *list, void *item);
+void func_ov000_021c6140(TextList *self);
+void List021c6474_Append(TextList *self, ListRow *row);
 
 static inline bool ov002_IsActive(TimedBuffer021cb920 *p) {
     return p->unk_28 != 1 ? 0 : (s32)p->unk_30;
@@ -469,15 +469,15 @@ void Task021ef91c_Start(Task021ef91c *self) {
             *(VFunc **)p = data_ov000_021cac60;
             p->vfunc_28();
             *(VFunc **)p = data_ov000_021ccadc;
-            func_ov000_021c6140(p);
+            func_ov000_021c6140((TextList *)p);
         }
-        self->unk_3c = (Ov002TextList *)p;
+        self->unk_3c = (TextList *)p;
         p->vfunc_10(self->unk_94.label);
     }
     self->unk_3c->vfunc_14(self->unk_94.desc);
     self->unk_3c->posZ = -0x199a;
-    self->unk_3c->unk_c4 &= ~2;
-    self->unk_3c->unk_c4 &= ~1;
+    self->unk_3c->listFlags.showCursor = 0;
+    self->unk_3c->listFlags.wrap = 0;
     for (i = 0; i < ((u32)self->unk_c0); i++) {
         ListRowText *q = (ListRowText *)Heap_Alloc(sizeof(ListRowText));
         if (q != NULL) {
@@ -615,7 +615,7 @@ void Task021ef91c_PostUpdate(Task021ef91c *self) {
     }
     cnt = 0;
     if (self->unk_3c != NULL && self->unk_3c->vfunc_1c()) {
-        s32 n = self->unk_3c->unk_94 + self->unk_bc * 3;
+        s32 n = self->unk_3c->index + self->unk_bc * 3;
         cnt++;
         if (self->unk_cc != n) {
             func_ov002_021d36b8(self, n);

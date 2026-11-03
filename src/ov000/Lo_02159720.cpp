@@ -24,9 +24,9 @@ void func_ov000_02159720(Lo021cb3a8 *self, s32 unused, VecFx32 *pos) {
         return;
     }
     t = (UiPanel *)((u8 *)self->panel);
-    x = pos->x + ((((0x100 - (t->unk_10 >> 12)) >> 1) - self->posX) << 12);
+    x = pos->x + ((((0x100 - (t->width >> 12)) >> 1) - self->posX) << 12);
     y = pos->y - 0x14000;
-    SetVec((VecFx32 *)(&t->unk_04), x, y, self->posZ - 0xc0);
+    SetVec((VecFx32 *)(&t->x), x, y, self->posZ - 0xc0);
     Obj0215eab4_Draw(((u8 *)self->panel));
     e = self->text;
     if (e == NULL) {
@@ -35,7 +35,7 @@ void func_ov000_02159720(Lo021cb3a8 *self, s32 unused, VecFx32 *pos) {
     {
         s32 px;
         y = (y >> 12) + 2;
-        px = (self->panel->unk_10 >> 13) - ((s32)e->width >> 1) + (x >> 12);
+        px = (self->panel->width >> 13) - ((s32)e->width >> 1) + (x >> 12);
         e->posZ = self->posZ - 0x80;
         self->text->unk_vf20(px, y);
     }

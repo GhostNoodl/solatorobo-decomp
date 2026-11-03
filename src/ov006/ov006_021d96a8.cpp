@@ -96,7 +96,7 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
         }
         break;
     case 3:
-        if (self->unk1C->unk_8c != self->unk1C->unk_88 || self->unk18->unk_8c != self->unk18->unk_88) {
+        if (self->unk1C->value != self->unk1C->shown || self->unk18->value != self->unk18->shown) {
             if ((data_02097dc8->trig & 1) || data_ov006_021ec888->state == 9) {
                 func_ov000_0215d980(self->unk18, 0, 1);
                 func_ov000_0215d980(self->unk1C, data_0214a424->unk_020, 1);

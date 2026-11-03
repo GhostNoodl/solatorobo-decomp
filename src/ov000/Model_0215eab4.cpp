@@ -1,51 +1,35 @@
 #include "ov000/ModelPart.h"
+#include "ov000/UiObj.h"
 
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 1;
-    u32 b3 : 1;
-    u32 rest : 28;
-    s32 x;
-    s32 y;
-    s32 color;
-    s32 w;
-    s32 unk_14;
-    s32 unk_18;
-    s32 unk_1c;
-    s32 unk_20;
-    s32 unk_24;
-    Model *model;
-} Obj0215eab4;
 
 extern "C" {
 
 BOOL Model_IsReady(void *a, int b);
-void func_ov000_0215ed18(Obj0215eab4 *self);
+void func_ov000_0215ed18(UiPanel *self);
 
-void Obj0215eab4_Draw(Obj0215eab4 *self) {
+void Obj0215eab4_Draw(UiPanel *self) {
     s32 x;
     s32 y;
     if (!Model_IsReady(self->model, 0xffff)) {
         return;
     }
-    if (!self->b3) {
+    if (!self->bits.b3) {
         func_ov000_0215ed18(self);
     }
     x = self->x;
     y = self->y;
-    if (self->b0) {
-        x -= self->w >> 1;
+    if (self->bits.centered) {
+        x -= self->width >> 1;
     }
-    self->model->unk_150 = self->color;
-    if (self->b3) {
-        x -= (self->unk_18 << 12) + 0x80000 - self->unk_24;
+    self->model->unk_150 = self->z;
+    if (self->bits.b3) {
+        x -= (self->dx << 12) + 0x80000 - self->unk_24;
         y -= 0x60000;
         Model_SetPos(self->model, x, y);
         Model_PlayPart(self->model, 0);
     } else {
-        x += self->unk_18 << 12;
-        y += self->unk_1c << 12;
+        x += self->dx << 12;
+        y += self->dy << 12;
         Model_SetPos(self->model, x, y);
         Model_PlayPart(self->model, 5);
     }

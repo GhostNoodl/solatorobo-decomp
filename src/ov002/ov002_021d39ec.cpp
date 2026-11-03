@@ -24,7 +24,7 @@ BOOL func_ov002_021d39ec(UiList *self, UiListItem *ev) {
                     item = item->next;
                 }
             }
-            cost = c->unk_8c - item->unk_0c;
+            cost = c->value - item->unk_0c;
             func_ov000_0215d980(c, cost, 0);
             { StageFlags *g = data_0214a424; if (cost > 9999) { cost = 9999; } g->unk_614 = cost; }
             list->vfunc_70(item);
@@ -44,7 +44,7 @@ BOOL func_ov002_021d3b10(UiList *self, UiListItem *ev) {
     UiList021cb4a8 *a = o->unk_3c;
     Lo021cae48 *c = o->unk_44;
     if (ev != NULL) {
-        if (c->unk_8c >= ev->unk_0c) {
+        if (c->value >= ev->unk_0c) {
             func_ov000_02152294(a, 0xf5, 0x18, (EvCallback)func_ov002_021d39ec);
             SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
         } else {

@@ -34,8 +34,8 @@ static inline BOOL LoIsMode4(void) {
 void func_ov000_02161238(Lo021cacd8 *self) {
     switch (self->state) {
     case 0:
-        self->unk_98 = 0;
-        self->unk_9c = 0;
+        self->upAlpha = 0;
+        self->downAlpha = 0;
         break;
     case 1:
         break;

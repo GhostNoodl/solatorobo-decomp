@@ -35,7 +35,7 @@ void Lo021cb3a8_Setup(Lo021cb3a8 *self) {
         line++;
     } while (!done && *s != 0);
     UiList_Setup(self);
-    self->panel->unk_10 = (self->width - 0x10) << 12;
+    self->panel->width = (self->width - 0x10) << 12;
     for (n = self->items; n != NULL; n = (UiListItem *)((u8 *)n->next)) {
         if (n->id == 0) {
             break;

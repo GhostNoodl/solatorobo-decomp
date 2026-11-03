@@ -27,13 +27,13 @@ static inline void Ent02154c34_Dtor(UiListItem *e) {
 static inline void Sub02154c34_Dtor(UiPanel *s) {
     LO_FREE_M(s, 0x28);
     s->flags = 0;
-    s->unk_04 = 0;
-    s->unk_08 = 0;
-    s->unk_0c = 0;
-    s->unk_1c = 0;
-    s->unk_18 = 0;
-    s->unk_10 = 0x80000;
-    s->unk_14 = 0xf000;
+    s->x = 0;
+    s->y = 0;
+    s->z = 0;
+    s->dy = 0;
+    s->dx = 0;
+    s->width = 0x80000;
+    s->height = 0xf000;
     s->unk_20 = 0;
     s->unk_24 = 0;
     s->model = NULL;

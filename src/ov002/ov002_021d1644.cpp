@@ -89,19 +89,19 @@ Task021ef69c *func_ov002_021d184c(void) {
     return p;
 }
 
-BOOL func_ov002_021d18d4(void *self, void *arg) {
-    Obj021c64b4_SetText(self, FIELD(arg, 0x40, void *));
+BOOL func_ov002_021d18d4(TextList *self, ListRow021cca70 *row) {
+    Obj021c64b4_SetText(self, row->unk_40);
     return TRUE;
 }
 
-BOOL func_ov002_021d18e8(void *self, void *ev) {
-    void *owner = FIELD(self, 0x8, void *);
-    if (FIELD(ev, 0x52, u8) != 0) {
-        if (FIELD(ev, 0x58, s32) <= 0x99a) {
+BOOL func_ov002_021d18e8(TextList *self, ListRow021cca70 *ev) {
+    Task021ef69c *owner = (Task021ef69c *)self->owner;
+    if (ev->item.unk_0a != 0) {
+        if (ev->scale <= 0x99a) {
             SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
-            FIELD(owner, 0x44, void *) = ev;
-            func_ov000_021c7000(FIELD(owner, 0x3c, void *));
-            FIELD(ev, 0x6c, u8) = 1;
+            owner->unk_44 = ev;
+            func_ov000_021c7000(owner->unk_3c);
+            ev->unk_6c = 1;
         }
     } else {
         SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);

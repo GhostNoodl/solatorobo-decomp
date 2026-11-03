@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern u8 *Tbl_FindEntry_0206fef8(void *res);
+extern u8 *Tbl_FindEntry_0206fef8(s32 id);
 
 struct Ov009Bits16 {
     u16 b0 : 1;
@@ -10,10 +10,10 @@ struct Ov009Bits16 {
     u16 b2 : 14;
 };
 
-void Ov009Names_Fill_02211da4(Ov009Names *self, void *res) {
-    char *a = func_0207011c(res);
-    char *b = func_020701d4(res);
-    u8 *c = Tbl_FindEntry_0206fef8(res);
+void Ov009Names_Fill_02211da4(Ov009Names *self, u16 kind) {
+    char *a = func_0207011c(kind);
+    char *b = func_020701d4(kind);
+    u8 *c = Tbl_FindEntry_0206fef8(kind);
     if (FLD(Ov009Bits16, c, 0x12).b0) {
         STD_CopyString(self->mdlDir, a);
         STD_CopyString(self->mdlName, b);

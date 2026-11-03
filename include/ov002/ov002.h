@@ -248,14 +248,14 @@ void func_ov002_021e90dc(void);
 void func_ov002_021e8f04(s32 id);
 bool func_ov002_021e90ac(void);
 extern VFunc data_ov002_021ef69c[];
-void Obj021c64b4_SetText(void *a, void *b);
-void func_ov000_021c7000(void *a);
+void Obj021c64b4_SetText(TextList *self, void *text);
+void func_ov000_021c7000(TextList *self);
 void func_ov002_021d1f70(Task021ef69c *self);
 
 void func_0203caf8(int a);
 void Movie_Load(void *a, s32 b, int c, int d);
 void Movie_RequestStop(void *a);
-void func_ov000_021c701c(void *a);
+void func_ov000_021c701c(TextList *self);
 
 void func_ov002_021e4904(Ov002LevelTable *self);
 

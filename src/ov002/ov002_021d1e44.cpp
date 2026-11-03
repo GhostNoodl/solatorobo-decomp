@@ -7,15 +7,15 @@ void Task021ef69c_PostUpdate(void) {
 
 void Task021ef69c_UpdateActive(Task021ef69c *self) {
     u16 keys = data_02097dc8->trig;
-    void *ev = self->unk_44;
+    ListRow021cca70 *ev = self->unk_44;
     if (ev != NULL) {
         if (!(keys & 2)) {
             return;
         }
-        if (FIELD(ev, 0x58, s32) < 0x1000) {
+        if (ev->scale < 0x1000) {
             return;
         }
-        FIELD(ev, 0x6c, u8) = 0;
+        ev->unk_6c = 0;
         self->unk_44 = NULL;
         func_ov000_021c701c(self->unk_3c);
         SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
@@ -25,7 +25,7 @@ void Task021ef69c_UpdateActive(Task021ef69c *self) {
             return;
         }
         self->unk_3c->flags |= 4;
-        m = self->unk_3c->unk_88;
+        m = self->unk_3c->cur;
         if (m != NULL) {
             data_ov002_021f0f84[2] = m->index;
         }
@@ -96,7 +96,7 @@ void func_ov002_021d1f70(Task021ef69c *self) {
     Model *num;
     ModelRes *res;
     s32 fy;
-    o = (ListRow021cca70 *)self->unk_3c->unk_88;
+    o = (ListRow021cca70 *)self->unk_3c->cur;
     x = self->unk_50 - 0x6c;
     y = self->unk_54 - 0x44;
     v44 = o->unk_44;

@@ -11,7 +11,6 @@ extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 extern void *data_0208cb78;
 extern void *data_0208cc9c;
-VObj *func_ov000_02176208(void);
 
 void Lo021cadcc_Setup(Lo021cadcc *self) {
     self->height = self->vfunc_44();

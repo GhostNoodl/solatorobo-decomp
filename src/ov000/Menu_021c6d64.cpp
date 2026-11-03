@@ -1,25 +1,6 @@
 #include "ov000/ModelPart.h"
 #include "nitro/fx.h"
-
-
-typedef struct {
-    u32 b0 : 1;
-    u32 rest : 31;
-} Bits021c6d64;
-
-typedef struct {
-    u8 pad_00[0x10];
-    Model *model;
-    u8 pad_14[0x7c];
-    s32 count;
-    s32 cur;
-    u8 pad_98[0x18];
-    s32 unk_b0;
-    s32 unk_b4;
-    u8 pad_b8[8];
-    s32 unk_c0;
-    Bits021c6d64 unk_c4;
-} Obj021c6d64;
+#include "ov000/TextList.h"
 
 extern "C" {
 extern const s16 FX_SinCosTable_[];
@@ -41,41 +22,41 @@ static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
     TexObj_DrawCell(model, anim, part, flag);
 }
 
-void func_ov000_021c6d64(Obj021c6d64 *self, void *unused, VecFx32 *pos, s32 arg) {
+void func_ov000_021c6d64(TextList *self, void *unused, VecFx32 *pos, s32 arg) {
     s32 z = pos->z + 0x20;
-    if (self->count > 1 && (self->unk_c4.b0 || self->cur > 0)) {
+    if (self->count > 1 && (self->listFlags.wrap || self->index > 0)) {
         MtxFx22 m;
         Model *mdl;
-        s32 x = (pos->x >> 12) - self->unk_b4 / 2 - self->unk_b0;
+        s32 x = (pos->x >> 12) - self->rowWidth / 2 - self->bounce;
         s32 y;
-        x -= self->unk_c0 * 6;
+        x -= self->lift * 6;
         y = pos->y >> 12;
         Model_SetPos(self->model, x << 12, y << 12);
         self->model->unk_150 = z;
-        MTX_Identity22((MtxFx22 *)((u8 *)self->model + 0x114));
+        MTX_Identity22(self->model->mtx);
         mdl = self->model;
         MTX_Rot22(&m, FX_SinCosTable_[0x7fe], FX_SinCosTable_[0x7ff]);
-        MTX_Concat22(&m, (MtxFx22 *)((u8 *)mdl + 0x114), (MtxFx22 *)((u8 *)mdl + 0x114));
+        MTX_Concat22(&m, mdl->mtx, mdl->mtx);
         self->model->unk_158 = (void *)func_ov000_021c8408;
         Model_PlayPartEx(self->model, 4, 1);
         self->model->unk_158 = NULL;
     }
-    if (self->count > 1 && (self->unk_c4.b0 || self->cur < self->count - 1)) {
+    if (self->count > 1 && (self->listFlags.wrap || self->index < self->count - 1)) {
         MtxFx22 m;
         Model *mdl;
         s32 cx = pos->x >> 12;
         s32 x;
         s32 y;
-        cx += self->unk_b4 / 2;
-        x = cx + self->unk_b0;
-        x += self->unk_c0 * 6;
+        cx += self->rowWidth / 2;
+        x = cx + self->bounce;
+        x += self->lift * 6;
         y = pos->y >> 12;
         Model_SetPos(self->model, x << 12, y << 12);
         self->model->unk_150 = z;
-        MTX_Identity22((MtxFx22 *)((u8 *)self->model + 0x114));
+        MTX_Identity22(self->model->mtx);
         mdl = self->model;
         MTX_Rot22(&m, FX_SinCosTable_[0x17fe], FX_SinCosTable_[0x17ff]);
-        MTX_Concat22(&m, (MtxFx22 *)((u8 *)mdl + 0x114), (MtxFx22 *)((u8 *)mdl + 0x114));
+        MTX_Concat22(&m, mdl->mtx, mdl->mtx);
         self->model->unk_158 = (void *)func_ov000_021c8408;
         Model_PlayPartEx(self->model, 4, 1);
         self->model->unk_158 = NULL;

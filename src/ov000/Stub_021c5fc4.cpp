@@ -1,9 +1,9 @@
-#include "ov000/VObj.h"
+#include "ov000/ListRow.h"
 
 extern "C" {
 
-void func_ov000_021c5fc4(void *self) {
-    *(s32 *)((u8 *)self + 0x30) = 0x0;
+void func_ov000_021c5fc4(ListRowLabel *self) {
+    self->text = NULL;
 }
 
 }

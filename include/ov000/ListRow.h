@@ -33,11 +33,11 @@ struct ListRow : public VObj {
         u8 unk_20;
         struct {
             u8 shown : 1; // cleared while the row is scrolled out of the list
-            u8 unk_20_1 : 1;
+            u8 focus : 1; // the row under the cursor (func_ov000_021c4230, func_ov000_021c69e4)
             u8 unk_20_2 : 6;
         };
     };
-    s32 unk_24;
+    s32 dir; // 0x24 the text list's last move (-1 or 1), copied to its rows (func_ov000_021c69e4)
     ListRow *next; // 0x28
     ListRow *prev; // 0x2c
 };
@@ -78,6 +78,12 @@ struct ListRowText : public ListRow {
     s32 state; // 0x3c
     u16 unk_40; // id of the item selected when the window opens
     u8 unk_42[0x2];
+};
+
+// Vtable data_ov000_021cca28 (0x34 bytes, init func_ov000_021c5fc4; ov006 builds them): a row that is
+// one line of text (func_ov000_021c5fd0 sets it), drawn by slot 0x0c (func_ov000_021c60f4).
+struct ListRowLabel : public ListRow {
+    TextWin *text; // 0x30
 };
 
 // The item shown by a ListRow021cca70 (filled by func_ov000_021c308c from the item id).

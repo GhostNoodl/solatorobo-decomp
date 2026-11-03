@@ -93,7 +93,7 @@ void func_ov000_021c3d20(LoBase021ccb54_021ccbe0 *self) {
         }
         self->unk_90 = o;
         Obj0215e8b0_LoadModel(o);
-        self->unk_90->unk_10 = self->unk_b0 << 12;
+        self->unk_90->width = self->unk_b0 << 12;
         self->unk_90->model->flags &= ~0x200000;
     }
     self->busy = 1;

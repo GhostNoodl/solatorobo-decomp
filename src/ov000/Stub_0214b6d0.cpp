@@ -1,9 +1,9 @@
-#include "ov000/VObj.h"
+#include "ov000/TwlRequest.h"
 
 extern "C" {
 
-u32 func_ov000_0214b6d0(void *self) {
-    return *(u32 *)((u8 *)self + 0x8);
+u32 func_ov000_0214b6d0(Twl0214b570 *self) {
+    return self->unk_08;
 }
 
 }

@@ -5,10 +5,10 @@ extern "C" {
 extern char data_ov012_0220b324[];
 extern char data_ov012_0220b32e[];
 
-void Ov012Names_Fill(Ov012Names *self, void *res) {
-    char *a = func_0207011c(res);
-    char *b = func_020701d4(res);
-    u8 *c = func_02070558(res);
+void Ov012Names_Fill(Ov012Names *self, u16 kind) {
+    char *a = func_0207011c(kind);
+    char *b = func_020701d4(kind);
+    TblActorParam *c = func_02070558(kind);
     char *t;
     STD_CopyString(self->mdlDir, a);
     STD_CopyString(self->mdlName, b);
@@ -20,7 +20,7 @@ void Ov012Names_Fill(Ov012Names *self, void *res) {
             STD_CopyString(self->anmDir, s);
             STD_CopyString(self->anmName, u);
             self->ownAnm = 1;
-            t = FLD(char *, c, 0x28);
+            t = c->evName;
             if (t != NULL) {
                 STD_CopyString(self->evDir, s);
                 STD_CopyString(self->evName, t);

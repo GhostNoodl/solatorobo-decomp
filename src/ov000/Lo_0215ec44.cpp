@@ -9,13 +9,13 @@ extern "C" {
 
 static inline void LoInitEC44(UiPanel *self) {
     self->flags = 0;
-    self->unk_04 = 0;
-    self->unk_08 = 0;
-    self->unk_0c = 0;
-    self->unk_1c = 0;
-    self->unk_18 = 0;
-    self->unk_10 = 0x80000;
-    self->unk_14 = 0xf000;
+    self->x = 0;
+    self->y = 0;
+    self->z = 0;
+    self->dy = 0;
+    self->dx = 0;
+    self->width = 0x80000;
+    self->height = 0xf000;
     self->unk_20 = 0;
     self->unk_24 = 0;
     self->model = NULL;
@@ -38,27 +38,6 @@ typedef struct {
     u16 z;
 } V6_0215ed18;
 
-typedef struct {
-    u32 b0 : 1;
-    u32 col : 2;
-    u32 b3 : 1;
-    u32 b4 : 1;
-    u32 rest : 27;
-} Flags0215ed18;
-
-
-typedef struct {
-    Flags0215ed18 flags;
-    s32 x;
-    s32 y;
-    s32 z;
-    s32 w;
-    s32 h;
-    s32 dx;
-    s32 dy;
-    u8 pad20[8];
-    Model *model;
-} Obj0215ed18;
 
 extern "C" {
 extern V6_0215ed18 data_02fe01a0[];
@@ -102,7 +81,7 @@ static inline BOOL Flag21_0215ed18(Model *m) {
     return MODEL_FLAGS(m)->unk_21 ? TRUE : FALSE;
 }
 
-void func_ov000_0215ed18(Obj0215ed18 *self) {
+void func_ov000_0215ed18(UiPanel *self) {
     GfxSys *g;
     s32 y;
     s32 x;
@@ -128,11 +107,11 @@ void func_ov000_0215ed18(Obj0215ed18 *self) {
     if (Flag20_0215ed18(self->model)) {
         misc |= 0x4000;
     }
-    col = self->flags.col;
-    w = self->w - 0x10000;
+    col = self->bits.b1;
+    w = self->width - 0x10000;
     mode = 0xd0;
     vtx = data_02fe01a0;
-    if (self->flags.b4 ? TRUE : FALSE) {
+    if (self->bits.b4 ? TRUE : FALSE) {
         tbl = data_02fe014c;
     } else {
         if (col == 0) {
@@ -145,13 +124,13 @@ void func_ov000_0215ed18(Obj0215ed18 *self) {
             tbl = data_02fe017c;
         }
     }
-    if (self->flags.b0) {
-        x -= self->w >> 1;
+    if (self->bits.centered) {
+        x -= self->width >> 1;
     }
     G3_Cmd1(0x29, misc | mode | (Gfx3DState_NextPolyId(g->unk_8b0) << 24) | (alpha << 16));
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, x, y, z);
-    G3_Vec(0x1b, w, self->h + 0x2000, 0x1000);
+    G3_Vec(0x1b, w, self->height + 0x2000, 0x1000);
     G3_Cmd1(0x40, 2);
     G3_Cmd1(0x20, 0);
     for (i = 0; i < 6; i++) {
@@ -165,7 +144,7 @@ void func_ov000_0215ed18(Obj0215ed18 *self) {
     G3_Cmd1(0x29, misc | mode | (g->unk_8b0[1] << 24) | (alpha << 16));
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, x, y + 0x1000, self->z);
-    G3_Vec(0x1b, w, self->h, 0x1000);
+    G3_Vec(0x1b, w, self->height, 0x1000);
     G3_Cmd1(0x40, 2);
     for (i = 0; i < 6; i++) {
         G3_Cmd1(0x20, tbl[i]);

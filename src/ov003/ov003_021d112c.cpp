@@ -1,18 +1,10 @@
 #include "types.h"
+#include "Main/Lang/TblRes.h"
 #include "nitro/std.h"
 #include "ov003/Actor.h"
 #include "Main/Sys/FieldState.h"
 #include "Main/Gfx/PlttRes.h"
 #include "ov000/ActorMarker.h"
-
-typedef struct {
-    u16 a;
-    u16 b;
-} Ov003InPair;
-
-typedef struct {
-    Ov003InPair p;
-} Ov003InPairW;
 
 typedef struct {
     u8 pad00[0x12];
@@ -30,18 +22,7 @@ typedef struct {
     u8 unk_03;
     u16 unk_04;
     u16 unk_06;
-    Ov003InPairW unk_08;
-    u32 unk_0c;
-} Ov003InParam;
-
-typedef struct {
-    u8 unk_00;
-    u8 unk_01;
-    u8 unk_02;
-    u8 unk_03;
-    u16 unk_04;
-    u16 unk_06;
-    Ov003InPairW unk_08;
+    TblActorPair unk_08;
     u32 unk_0c;
     u8 pad10[8];
     u8 b0 : 1;
@@ -70,7 +51,6 @@ typedef struct {
 extern "C" {
 void *Heap_Alloc(u32 size);
 Ov003InInfo *Tbl_FindEntry_0206fef8(u16 id);
-Ov003InParam *func_02070558(u16 id);
 Model0218fe1c *Model0218fe1c_Init(void *p);
 void Model0218fe1c_Setup(Model0218fe1c *m, void *res, Ov003InInfo *info);
 ActorSub48 *ActorSub48_Init(void *p);
@@ -153,12 +133,12 @@ static inline Ov003InObj54 *Ov003In_NewObj54(void) {
 }
 
 extern "C" void Ov003Actor_Start(Ov003Actor *self) {
-    Ov003InParam *param;
+    TblActorTarget *param;
     Ov003InInfo *info;
     u8 n;
     s32 i;
     info = Tbl_FindEntry_0206fef8(self->kind);
-    param = func_02070558(self->kind);
+    param = &func_02070558(self->kind)->target;
     self->radius = info->unk_14 << 4;
     self->height = info->unk_16 << 4;
     self->centerY = self->height >> 1;
@@ -282,7 +262,7 @@ extern "C" void Ov003Actor_Start(Ov003Actor *self) {
     Ov003InObj4c *o4c = Ov003In_NewObj4c();
     self->targetObj = (ActorSub4c *)o4c;
     if (param != NULL) {
-        o4c->unk_00 = param->unk_00;
+        o4c->unk_00 = param->type;
         o4c->unk_01 = param->unk_01;
         o4c->unk_02 = param->unk_02;
         o4c->unk_03 = param->unk_03;

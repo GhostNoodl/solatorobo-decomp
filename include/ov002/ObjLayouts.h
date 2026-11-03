@@ -10,6 +10,7 @@
 #include "ov000/VObj.h"
 #include "ov000/UiObj.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/TextList.h"
 #include "nitro/fx.h"
 #include "nnsys/g3d.h"
 #include "Main/Gfx/Model.h"
@@ -23,31 +24,9 @@ struct Ov002RowList : public LoBase021ccb54_021ccbe0 {
 };
 SIZE_ASSERT(Ov002RowList, 0xf4);
 
-// Text list (0xd4 bytes; vtable data_ov000_021ccadc, init func_ov000_021c6140; rows are appended by
-// List021c6474_Append). onDecide gets the chosen row (func_ov002_021d18e8), onCursor the row under
+// The text lists of Task021ef69c_Start and Task021ef91c_Start are ov000's TextList
+// (ov000/TextList.h): onDecide gets the chosen row (func_ov002_021d18e8), onCursor the row under
 // the cursor (func_ov002_021d18d4).
-struct Ov002TextList : public UiObj {
-    ListRow *unk_84; // the first row (List021c6474_Append appends)
-    ListRow *unk_88; // the row under the cursor; Task021ef69c_Start's rows are ListRow021cca70s
-    u8 unk_8c[0x8];
-    s32 unk_94;   // index of the row under the cursor (Task021ef91c_PostUpdate)
-    u8 unk_98[0xc];
-    s32 unk_a4;
-    s32 unk_a8;
-    u8 unk_ac[0x18];
-    union {
-        u32 unk_c4;
-        struct {
-            s32 unk_c4_0 : 1;
-            u32 unk_c4_1 : 1;
-            u32 unk_c4_2 : 30;
-        };
-    };
-    void *onDecide;
-    void *onCursor;
-    s32 unk_d0;
-};
-SIZE_ASSERT(Ov002TextList, 0xd4);
 
 // Animated model (0x70, vtable data_ov002_021efe3c; Ov002Vt_021efe3c_Ctor, Ov002Vt_021efe3c_Dtor).
 // Ov002Mdl021efe3c_Load loads model file `name` and animation file `anmName` from archive `arc`;

@@ -81,7 +81,7 @@ void Task021ef81c_Start(Task021ef81c *self) {
         s->slideZ = -0x199a;
     }
     self->unk_44->slideMode = 1;
-    self->unk_44->unk_84 = 2;
+    self->unk_44->style = 2;
     func_ov000_0215d980(self->unk_44, ((s32)data_0214a424->unk_614), 0);
     self->unk_44->vfunc_08();
 

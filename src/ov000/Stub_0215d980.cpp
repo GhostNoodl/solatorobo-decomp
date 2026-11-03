@@ -1,12 +1,13 @@
-#include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
-void func_ov000_0215d980(void *self, s32 value, BOOL both) {
+// Sets the number of a number display; with both, the shown number jumps to it at once.
+void func_ov000_0215d980(Lo021cae48 *self, s32 value, BOOL both) {
     if (both) {
-        *(s32 *)((u8 *)self + 0x88) = value;
+        self->shown = value;
     }
-    *(s32 *)((u8 *)self + 0x8c) = value;
+    self->value = value;
 }
 
 }

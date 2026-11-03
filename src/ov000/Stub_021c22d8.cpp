@@ -18,7 +18,7 @@ void ListRow_Init(ListRow *self) {
     self->next = NULL;
     self->prev = NULL;
     self->unk_20 = 0;
-    self->unk_24 = 0;
+    self->dir = 0;
 }
 
 void ListRow_Unlink(ListRow *self) {

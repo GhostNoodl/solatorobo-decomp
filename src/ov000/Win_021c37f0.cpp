@@ -61,7 +61,7 @@ void func_ov000_021c37f0(ListRowText *self) {
         self->win->flags &= ~4;
         self->state++;
     case 21:
-        if (!self->unk_20_1) {
+        if (!self->focus) {
             UiListItem *o = self->win->topItem;
             s32 v = o != NULL ? o->index : 0;
             if (v < 0) {
@@ -79,7 +79,7 @@ void func_ov000_021c37f0(ListRowText *self) {
             HEAP_DELETE(Lo021cb3a8 *, self->win, p->vfunc_04());
             self->state = 0;
         }
-        if (self->unk_20_1) {
+        if (self->focus) {
             Lo021cb3a8_SetText(self->win, self->unk_38);
             self->state = 20;
         }

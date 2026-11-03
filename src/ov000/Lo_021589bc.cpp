@@ -38,10 +38,10 @@ void func_ov000_021589bc(UiList021cb4a8 *self, s32 unused, s32 *pos) {
     {
     s32 yy = h * cur + (py + (y << 12));
     t = self->panel;
-    t->unk_04 = px + xoff;
-    t->unk_08 = yy - 0x2000;
+    t->x = px + xoff;
+    t->y = yy - 0x2000;
     }
-    t->unk_0c = z;
+    t->z = z;
     Obj0215eab4_Draw(self->panel);
 }
 

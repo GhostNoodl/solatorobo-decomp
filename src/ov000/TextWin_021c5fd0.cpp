@@ -1,9 +1,5 @@
 #include "Main/Gfx/FieldMsg.h"
-
-typedef struct {
-    u8 pad_00[0x30];
-    TextWin *unk_30;
-} Obj021c5fd0;
+#include "ov000/ListRow.h"
 
 extern "C" {
 
@@ -16,32 +12,32 @@ static inline TextWin *TextWin_New(void) {
     return win;
 }
 
-void func_ov000_021c5fd0(Obj021c5fd0 *self, u32 text) {
+void func_ov000_021c5fd0(ListRowLabel *self, u32 text) {
     TextWin *win;
     {
         void *saved = data_02097dd0->cur;
         TextWin *p;
         data_02097dd0->cur = data_02097dd0->heapHi;
-        p = self->unk_30;
+        p = self->text;
         if (p != NULL) {
             if (p != NULL) {
                 p->unk_vf04();
             }
-            self->unk_30 = NULL;
+            self->text = NULL;
         }
         data_02097dd0->cur = saved;
     }
-    self->unk_30 = TextWin_New();
-    self->unk_30->font = 8;
-    win = self->unk_30;
+    self->text = TextWin_New();
+    self->text->font = 8;
+    win = self->text;
     win->str = text;
     win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
     data_02097ce0->unk_004 = win->font;
-    self->unk_30->unk_2c = 0;
-    self->unk_30->noVram = 1;
-    self->unk_30->flag24 = 1;
-    *(u32 *)((u8 *)self->unk_30 + 4) |= 0x400000; // bit 22 of the flags word
-    self->unk_30->rendering = 1;
+    self->text->unk_2c = 0;
+    self->text->noVram = 1;
+    self->text->flag24 = 1;
+    *(u32 *)((u8 *)self->text + 4) |= 0x400000; // bit 22 of the flags word
+    self->text->rendering = 1;
 }
 
 }

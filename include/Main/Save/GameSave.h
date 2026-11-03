@@ -17,6 +17,8 @@ typedef struct GameSaveSlot {
     /* 0x0c */ u32 unk_0c_28 : 4;
 } GameSaveSlot; // size 0x10
 
+// Vtable data_0208ca9c, 0x4c bytes (ov000 func_ov000_021761a0 allocates one; data_0208ca18 is a
+// 0x4c variant that overrides slots 0x2c, 0x48 and 0x50, made by func_ov000_02176208).
 struct GameSave : public SaveBase {
     virtual void vf74();
     virtual void vf78();
@@ -41,6 +43,10 @@ struct GameSave : public SaveBase {
             u32 unk_15 : 17;
         } bits;
     };
+};
+
+// Vtable data_0208c994 (0x58 bytes): a GameSave whose slot reset/save/load go through callbacks.
+struct GameSave0208c994 : public GameSave {
     /* 0x4c */ void (*onReset)(void *slot, void *dst, u32 size);
     /* 0x50 */ void (*onSave)(void *slot, void *dst, u32 size);
     /* 0x54 */ void (*onLoad)(void *slot, void *dst, u32 size);

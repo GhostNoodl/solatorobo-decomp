@@ -18,7 +18,7 @@ void func_ov000_02157c28(UiList021cb4a8 *self) {
     self->slideX = v + 0x10;
     self->slideY = 0;
     self->slideZ = 0;
-    self->panel->unk_10 = (v - 0x10) << 12;
+    self->panel->width = (v - 0x10) << 12;
 }
 
 void UiList021cb4a8_SetLabel(UiList021cb4a8 *self, u32 text) {

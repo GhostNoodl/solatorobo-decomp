@@ -1,21 +1,14 @@
-#include "ov000/VObj.h"
-
-typedef struct {
-    u8 unk_00[0xc];
-    s32 unk_0c;
-    s32 unk_10;
-    u8 unk_14[0x1c];
-    VObj *unk_30;
-} Obj021c60f4;
+#include "ov000/ListRow.h"
+#include "Main/Gfx/TextWin.h"
 
 extern "C" {
 
-void func_ov000_021c60f4(Obj021c60f4 *self) {
-    if (self->unk_30 == NULL) {
+void func_ov000_021c60f4(ListRowLabel *self) {
+    if (self->text == NULL) {
         return;
     }
-    self->unk_30->vfunc_20((self->unk_0c >> 12) + 10, (self->unk_10 >> 12) + 2);
-    self->unk_30->vfunc_90();
+    self->text->unk_vf20((self->x >> 12) + 10, (self->y >> 12) + 2);
+    self->text->Render();
 }
 
 }

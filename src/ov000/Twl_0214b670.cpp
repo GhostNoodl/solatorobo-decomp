@@ -1,14 +1,4 @@
-#include "types.h"
-
-typedef struct {
-    u16 unk_00;
-    s32 state;
-    s32 unk_08;
-    s32 unk_0c;
-    s32 unk_10;
-    s32 unk_14;
-    s32 unk_18;
-} Twl0214b570;
+#include "ov000/TwlRequest.h"
 
 extern "C" {
 

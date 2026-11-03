@@ -1,15 +1,6 @@
-#include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 #include "Main/Sys/SysState.h"
 #include "Main/Gfx/Model.h"
-
-class Task021cbac8 : public VObj {
-public:
-    u8 unk_04[0x24];
-    Task021cbac8 *next;
-    Task021cbac8 *prev;
-    VObj *unk_30;
-    Model *unk_34;
-};
 
 extern "C" {
 
@@ -18,7 +9,7 @@ extern u8 data_ov000_021cca28[];
 extern u8 data_ov000_021cca40[];
 void Heap_Free(void *ptr);
 
-static inline void Task021cbac8_Dtor(Task021cbac8 *self) {
+static inline void ListRow_Dtor(ListRow *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbac8);
     if (self->prev != NULL) {
         self->prev->next = self->next;
@@ -46,47 +37,47 @@ static inline void DeleteModel(Model **p) {
     data_02097dd0->cur = saved;
 }
 
-static inline void DeleteMember(VObj **p) {
+static inline void DeleteText(TextWin **p) {
     void *saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     if (*p != NULL) {
         if (*p != NULL) {
-            (*p)->vfunc_04();
+            (*p)->unk_vf04();
         }
         *p = NULL;
     }
     data_02097dd0->cur = saved;
 }
 
-Task021cbac8 *Ov000Vt_021cca28_DtorDelete(Task021cbac8 *self) {
+ListRowLabel *Ov000Vt_021cca28_DtorDelete(ListRowLabel *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cca28);
-    DeleteMember(&self->unk_30);
-    Task021cbac8_Dtor(self);
+    DeleteText(&self->text);
+    ListRow_Dtor(self);
     Heap_Free(self);
     return self;
 }
 
-Task021cbac8 *Ov000Vt_021cca28_Dtor(Task021cbac8 *self) {
+ListRowLabel *Ov000Vt_021cca28_Dtor(ListRowLabel *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cca28);
-    DeleteMember(&self->unk_30);
-    Task021cbac8_Dtor(self);
+    DeleteText(&self->text);
+    ListRow_Dtor(self);
     return self;
 }
 
-Task021cbac8 *Lo021cca40_DtorDelete(Task021cbac8 *self) {
+Lo021cca40 *Lo021cca40_DtorDelete(Lo021cca40 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cca40);
-    DeleteMember(&self->unk_30);
+    DeleteText(&self->text);
     DeleteModel(&self->unk_34);
-    Task021cbac8_Dtor(self);
+    ListRow_Dtor(self);
     Heap_Free(self);
     return self;
 }
 
-Task021cbac8 *Lo021cca40_Dtor(Task021cbac8 *self) {
+Lo021cca40 *Lo021cca40_Dtor(Lo021cca40 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cca40);
-    DeleteMember(&self->unk_30);
+    DeleteText(&self->text);
     DeleteModel(&self->unk_34);
-    Task021cbac8_Dtor(self);
+    ListRow_Dtor(self);
     return self;
 }
 

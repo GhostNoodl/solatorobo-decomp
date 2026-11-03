@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Lang/TblRes.h"
 #include "Main/Effect/Effect.h"
 #include "nitro/std.h"
 #include "ov003/Actor.h"
@@ -44,11 +45,6 @@ typedef struct {
 } Ov003ResInfo;
 
 typedef struct {
-    u8 unk_00[0x28];
-    char *unk_28;
-} Ov003ResParam;
-
-typedef struct {
     u16 unk_00;
     u8 unk_02;
     u8 unk_03;
@@ -64,7 +60,6 @@ typedef struct {
 } Ov003Res;
 
 extern Ov003ResInfo *Tbl_FindEntry_0206fef8(u16 id);
-extern Ov003ResParam *func_02070558(u16 id);
 extern char *func_0207011c(u16 id);
 extern char *func_020701d4(u16 id);
 extern char *Tbl_GetEntryData(u16 id, s32 n);
@@ -72,11 +67,11 @@ extern void ResSet_SetFile(Ov003Res *p, char *res, s32 a, s32 b, s32 c, s32 d);
 
 void Ov003Res_SetNames(Ov003Res *res, u16 id) {
     Ov003ResInfo *info = Tbl_FindEntry_0206fef8(id);
-    Ov003ResParam *param = func_02070558(id);
+    TblActorParam *param = func_02070558(id);
     char *name = func_0207011c(id);
     char *a;
     char *b;
-    if (param->unk_28 != NULL) {
+    if (param->evName != NULL) {
         char *alt = func_020701d4(id);
         if (info->flags.bit0) {
             STD_CopyString(res->unk_10, name);
@@ -88,7 +83,7 @@ void Ov003Res_SetNames(Ov003Res *res, u16 id) {
             STD_CopyString(res->unk_6c, alt);
             res->unk_03 |= 4;
         }
-        alt = param->unk_28;
+        alt = param->evName;
         STD_CopyString(res->unk_c4, name);
         STD_CopyString(res->unk_e4, alt);
         res->unk_03 |= 0x10;

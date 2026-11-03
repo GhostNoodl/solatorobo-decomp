@@ -6,17 +6,17 @@ extern VFunc data_ov000_021cb5a8[];
 extern VFunc data_ov000_021ccadc[];
 extern VFunc data_ov000_021cca70[];
 extern VFunc data_ov002_021ef674[];
-void func_ov000_021c6140(void *self);
+void func_ov000_021c6140(TextList *self);
 void ListRow_Init(void *self);
 void func_ov000_021c2208(void *self);
 void func_ov000_021c2f10(void *self);
 void func_ov000_021c308c(void *self, u16 id);
-void List021c6474_Append(void *list, void *item);
-void func_ov000_021c65e0(void *list, s32 a);
+void List021c6474_Append(TextList *self, ListRow *row);
+void func_ov000_021c65e0(TextList *self, s32 index);
 u16 func_0206f788(u16 id);
 void *func_0206eed0(u16 id);
-BOOL func_ov002_021d18d4(void *self, void *arg);
-BOOL func_ov002_021d18e8(void *self, void *ev);
+BOOL func_ov002_021d18d4(TextList *self, ListRow021cca70 *row);
+BOOL func_ov002_021d18e8(TextList *self, ListRow021cca70 *ev);
 
 typedef struct {
     u16 a;
@@ -36,15 +36,15 @@ void Task021ef69c_Start(Task021ef69c *self) {
         *(VFunc **)p = data_ov000_021cac60;
         p->vfunc_28();
         *(VFunc **)p = data_ov000_021ccadc;
-        func_ov000_021c6140(p);
+        func_ov000_021c6140((TextList *)p);
     }
-    self->unk_3c = (Ov002TextList *)p;
+    self->unk_3c = (TextList *)p;
     self->unk_3c->vfunc_10(MsgRes_GetString(g, 0xee));
     self->unk_3c->vfunc_14(MsgRes_GetString(g, 0xf0));
     self->unk_3c->posZ = -0x199a;
-    self->unk_3c->unk_c4 |= 2;
-    self->unk_3c->unk_c4_0 = 1;
-    self->unk_3c->unk_a4 = 0xf0;
+    self->unk_3c->listFlags.showCursor = 1;
+    self->unk_3c->listFlags.wrap = 1;
+    self->unk_3c->panelWidth = 0xf0;
     {
         u16 i;
         u16 id;
@@ -74,12 +74,12 @@ void Task021ef69c_Start(Task021ef69c *self) {
             }
         }
     }
-    self->unk_3c->onCursor = (void *)func_ov002_021d18d4;
-    self->unk_3c->onDecide = (void *)func_ov002_021d18e8;
+    self->unk_3c->onCursor = (TextListFn)func_ov002_021d18d4;
+    self->unk_3c->onDecide = (TextListFn)func_ov002_021d18e8;
     self->unk_3c->owner = self;
     self->unk_3c->vfunc_08();
     func_ov000_021c65e0(self->unk_3c, data_ov002_021f0f84[2]);
-    Obj021c64b4_SetText(self->unk_3c, ((ListRow021cca70 *)self->unk_3c->unk_88)->unk_40);
+    Obj021c64b4_SetText(self->unk_3c, ((ListRow021cca70 *)self->unk_3c->cur)->unk_40);
     p = (UiObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
         *(VFunc **)p = data_ov000_021cac60;

@@ -58,12 +58,12 @@ void func_ov000_021c4230(LoBase021ccb54_021ccbe0 *self) {
             break;
         }
         if (on) n->shown = 1; else n->shown = 0;
-        n->unk_20_1 = 0;
+        n->focus = 0;
         n->vfunc_08();
         i++;
     }
     if (self->unk_a0 != NULL) {
-        self->unk_a0->unk_20_1 = 1;
+        self->unk_a0->focus = 1;
     }
     func_ov000_021c4c10(self);
 }

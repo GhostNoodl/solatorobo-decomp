@@ -1,15 +1,16 @@
-#include "ov000/VObj.h"
+#include "ov000/TextList.h"
 
 extern "C" {
 
-void func_ov000_021c7000(void *self) {
-    *(u32 *)((u8 *)self + 0xc) |= 4;
-    *(u32 *)((u8 *)self + 0xc4) |= 4;
+// Raises the list (TextListFlags::raise) and stops its input (UiObj::flag2); func_ov000_021c701c undoes it.
+void func_ov000_021c7000(TextList *self) {
+    self->flag2 = 1;
+    self->listFlags.raise = 1;
 }
 
-void func_ov000_021c701c(void *self) {
-    *(u32 *)((u8 *)self + 0xc4) &= ~4;
-    *(u32 *)((u8 *)self + 0xc) &= ~4;
+void func_ov000_021c701c(TextList *self) {
+    self->listFlags.raise = 0;
+    self->flag2 = 0;
 }
 
 }

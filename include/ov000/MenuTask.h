@@ -12,6 +12,9 @@
 #include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
 
+struct GameSave;
+struct GameSave0208c994;
+
 // Vtable data_ov000_021cbae0, 0x58 bytes.
 class Task021cbae0 : public Task {
 public:
@@ -36,8 +39,8 @@ public:
     s32 unk_50;
     s32 unk_54;
     s32 unk_58;
-    VObj *unk_5c;
-    VObj *unk_60;
+    GameSave *unk_5c; // save object (data_ov000_021ccd4c)
+    GameSave0208c994 *unk_60;
     Lo021cad50 *unk_64; // message window (func_ov000_0217bd88)
     s32 unk_68; // frames before the message window can be closed
     void *unk_6c;
@@ -89,7 +92,7 @@ class Task021cbc60 : public Task {
 public:
     s32 unk_3c;
     s32 unk_40;
-    VObj *unk_44;
+    GameSave *unk_44; // save object (data_ov000_021ccd4c)
     Lo021cad50 *unk_48;
     s32 unk_4c;
 };

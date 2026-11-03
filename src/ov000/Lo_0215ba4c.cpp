@@ -17,16 +17,16 @@ void func_ov000_0215ba4c(LoBase021cafc0_021cb0b8 *self, s32 unused, s32 *pos) {
         z = self->posZ - 0x100;
         s32 y = hh + (pos[1] + (self->vfunc_34() << 12));
         o = (UiPanel *)((u8 *)self->panel);
-        o->unk_04 = pos[0] + ((self->width >> 1) << 12);
-        o->unk_08 = y + 0x6000;
+        o->x = pos[0] + ((self->width >> 1) << 12);
+        o->y = y + 0x6000;
     } else {
         z = self->posZ - 0x100;
         s32 y = hh + (pos[1] + (self->vfunc_34() << 12));
         o = (UiPanel *)((u8 *)self->panel);
-        o->unk_04 = pos[0] + ((self->width >> 1) << 12);
-        o->unk_08 = y - 0x2000;
+        o->x = pos[0] + ((self->width >> 1) << 12);
+        o->y = y - 0x2000;
     }
-    o->unk_0c = z;
+    o->z = z;
     Obj0215eab4_Draw(((u8 *)self->panel));
 }
 

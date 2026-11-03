@@ -34,7 +34,7 @@ static inline void SetText(TextWin *win, u32 text) {
 }
 
 void Lo021cae48_Setup(Lo021cae48 *self) {
-    u16 *ent = &data_ov000_021cabe0[self->unk_84 * 2];
+    u16 *ent = &data_ov000_021cabe0[self->style * 2];
     u8 *m;
     void *res;
     TextWin *win;
@@ -48,28 +48,28 @@ void Lo021cae48_Setup(Lo021cae48 *self) {
         TexObj_Init((Model *)m, (const char *)name_, 0);
         STD_CopyString((char *)m + 0x2c, (const char *)arc_);
     }
-    self->unk_90 = (Model *)(m);
-    TexObj_SetRes(self->unk_90, ResList_FindType2(ResMgr_GetArcList(m + 0x2c), (u8 *)self->unk_90 + 0x4c));
-    self->unk_90->flags |= 2;
-    TexObj_SelectImage(self->unk_90, 0, 6);
-    if (self->unk_84 != 4) {
-        TexObj_SelectImage(self->unk_90, 0, ent[0]);
+    self->digits = (Model *)(m);
+    TexObj_SetRes(self->digits, ResList_FindType2(ResMgr_GetArcList(m + 0x2c), (u8 *)self->digits + 0x4c));
+    self->digits->flags |= 2;
+    TexObj_SelectImage(self->digits, 0, 6);
+    if (self->style != 4) {
+        TexObj_SelectImage(self->digits, 0, ent[0]);
     }
-    func_02041c5c((u8 *)self->unk_90, (void *)func_ov000_02154128);
+    func_02041c5c((u8 *)self->digits, (void *)func_ov000_02154128);
     res = data_02149ef8;
     win = TextWin_New();
-    self->unk_94 = win;
+    self->label = win;
     win->font = 4;
-    SetText(self->unk_94, MsgRes_GetString(res, ent[1]));
-    self->unk_94->unk_2c = 0;
-    self->unk_94->color0 = 0x77df;
-    self->unk_94->color1 = 0x67e;
-    self->unk_94->noVram = 1;
-    self->unk_94->flag24 = 1;
-    *(u32 *)((u8 *)self->unk_94 + 4) |= 0x400000;
-    self->unk_94->unk_78 = 0x9000;
-    self->unk_94->unk_4_30 = 1;
-    self->unk_94->rendering = 1;
+    SetText(self->label, MsgRes_GetString(res, ent[1]));
+    self->label->unk_2c = 0;
+    self->label->color0 = 0x77df;
+    self->label->color1 = 0x67e;
+    self->label->noVram = 1;
+    self->label->flag24 = 1;
+    *(u32 *)((u8 *)self->label + 4) |= 0x400000;
+    self->label->unk_78 = 0x9000;
+    self->label->unk_4_30 = 1;
+    self->label->rendering = 1;
     self->color = 0x4cc2;
     self->width = 0x60;
     self->height = 0xe;

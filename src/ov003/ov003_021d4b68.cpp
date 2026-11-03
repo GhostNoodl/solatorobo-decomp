@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Lang/TblRes.h"
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
 #include "ov003/Actor.h"
@@ -15,11 +16,6 @@ typedef struct {
     s16 unk_112;
 } Ov003KbAnim;
 
-typedef struct {
-    u16 id;
-    s8 unk_02;
-} Ov003KbSpawn;
-
 extern "C" {
 
 extern void *data_ov000_021ccd68;
@@ -27,7 +23,6 @@ extern const char *data_ov003_021f7a38[2][2];
 extern char data_ov003_021f7a60[];
 extern char data_ov003_021f7a66[];
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern u8 *func_02070558(s32 id);
 extern void func_01ffc9fc(VecFx32 *out, VecFx32 *in, u16 ang);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern Actor *Actor_SpawnKind(u16 id, VecFx32 *pos, void *rot, u16 a, s32 b);
@@ -70,12 +65,12 @@ void Ov003Actor_StateShoot(Ov003Actor *self) {
     case 10:
         if (self->model->anim_state >= 2) {
             VecFx32 v;
-            u8 *rec = func_02070558(self->kind);
-            Ov003KbSpawn *sp = NULL;
+            TblActorParam *rec = func_02070558(self->kind);
+            TblActorSpawn *sp = NULL;
             u16 id;
             Actor *o;
             if (rec != NULL) {
-                sp = (Ov003KbSpawn *)(rec + 0x3a);
+                sp = &rec->spawn;
             }
             id = 0x4801;
             if (sp != NULL && sp->id != 0xffff) {
@@ -97,7 +92,7 @@ void Ov003Actor_StateShoot(Ov003Actor *self) {
                 self->target_id = o->id;
             }
             if (o != NULL && sp != NULL) {
-                o->unk_18 = sp->unk_02;
+                o->unk_18 = sp->arg;
             }
             self->fsm->st = 0x14;
         }
@@ -704,7 +699,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
                 self->unk_e4 = NULL;
             }
             self->targetObj->unk_1a = 0;
-            self->targetObj->type = *func_02070558(self->kind);
+            self->targetObj->type = func_02070558(self->kind)->target.type;
             self->speed = 0;
             self->velY = 0x266;
             self->friction = 0;

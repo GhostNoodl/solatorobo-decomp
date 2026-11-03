@@ -1,16 +1,11 @@
 #include "Main/Gfx/FieldMsg.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u8 pad_00[0xa0];
-    TextWin *unk_a0;
-} Obj021c628c;
+#include "ov000/TextList.h"
 
 extern "C" {
 extern char data_ov000_021cc9e9[];
 BOOL Obj02152e5c_LoadModel(void *self);
-void func_ov000_0215ec44(void *self);
-void Obj0215e8b0_LoadModel(void *self);
+void func_ov000_0215ec44(UiPanel *self);
+void Obj0215e8b0_LoadModel(UiPanel *self);
 
 static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
@@ -21,60 +16,38 @@ static inline TextWin *TextWin_New(void) {
     return win;
 }
 
-static inline void Obj021c628c_SetText(Obj021c628c *self, u32 text) {
+static inline void TextList_SetText(TextList *self, u32 text) {
     TextWin *win;
     {
         void *saved = data_02097dd0->cur;
         TextWin *p;
         data_02097dd0->cur = data_02097dd0->heapHi;
-        p = self->unk_a0;
+        p = self->panelText;
         if (p != NULL) {
             if (p != NULL) {
                 p->unk_vf04();
             }
-            self->unk_a0 = NULL;
+            self->panelText = NULL;
         }
         data_02097dd0->cur = saved;
     }
-    self->unk_a0 = TextWin_New();
-    self->unk_a0->font = 8;
-    win = self->unk_a0;
+    self->panelText = TextWin_New();
+    self->panelText->font = 8;
+    win = self->panelText;
     win->str = text;
     win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
     data_02097ce0->unk_004 = win->font;
-    self->unk_a0->noVram = 1;
-    self->unk_a0->unk_4_8 = 0x1e;
-    self->unk_a0->flag24 = 1;
-    *(u32 *)((u8 *)self->unk_a0 + 4) |= 0x400000; // bit 22 of the flags word
-    self->unk_a0->rendering = 1;
+    self->panelText->noVram = 1;
+    self->panelText->unk_4_8 = 0x1e;
+    self->panelText->flag24 = 1;
+    *(u32 *)((u8 *)self->panelText + 4) |= 0x400000; // bit 22 of the flags word
+    self->panelText->rendering = 1;
 }
 
-struct Obj021c628cS {
-    u8 unk_00[0x10];
-    Model *unk_10;
-    u8 unk_14[0x18];
-    s32 unk_2c;
-    u8 unk_30[0x28];
-    s32 unk_58;
-    s32 unk_5c;
-    s32 unk_60;
-    u8 unk_64[0x4];
-    s16 unk_68;
-    u8 unk_6a[0x1a];
-    u8 *unk_84;
-    u8 *unk_88;
-    u8 unk_8c[0x10];
-    u8 *unk_9c;
-    void *unk_a0;
-    s32 unk_a4;
-    u8 unk_a8[0xc];
-    s32 unk_b4;
-};
-
-static inline u8 *Obj021c628c_GetItem(Obj021c628cS *self, s32 n) {
-    u8 *p;
+static inline ListRow *TextList_GetRow(TextList *self, s32 n) {
+    ListRow *p;
     s32 i;
-    for (p = self->unk_84, i = 0; p != NULL; p = LFLD(u8 *, p, 0x28), i++) {
+    for (p = self->rows, i = 0; p != NULL; p = p->next, i++) {
         if (i == n) {
             break;
         }
@@ -82,39 +55,39 @@ static inline u8 *Obj021c628c_GetItem(Obj021c628cS *self, s32 n) {
     return p;
 }
 
-void Ov000Vt_021ccadc_Setup(Obj021c628cS *self) {
-    u8 *p;
-    u8 *o;
+void Ov000Vt_021ccadc_Setup(TextList *self) {
+    ListRow *p;
+    UiPanel *o;
 
-    self->unk_2c = 1;
+    self->slideMode = 1;
     {
-        s32 z = self->unk_68;
-        self->unk_58 = -0x100;
-        self->unk_5c = 0;
-        self->unk_60 = z;
+        s32 z = self->posZ;
+        self->slideX = -0x100;
+        self->slideY = 0;
+        self->slideZ = z;
     }
-    p = Obj021c628c_GetItem(self, 0);
-    self->unk_88 = p;
+    p = TextList_GetRow(self, 0);
+    self->cur = p;
     if (p != NULL) {
-        self->unk_b4 = LFLD(s32, p, 0x1c);
+        self->rowWidth = p->width;
     }
     if (Obj02152e5c_LoadModel(self)) {
-        TexObj_SelectImage(self->unk_10, 0, 4);
+        TexObj_SelectImage(self->model, 0, 4);
     }
-    self->unk_88 = self->unk_84;
-    o = (u8 *)Heap_Alloc(0x2c);
+    self->cur = self->rows;
+    o = (UiPanel *)Heap_Alloc(0x2c);
     if (o != NULL) {
         func_ov000_0215ec44(o);
     }
-    self->unk_9c = o;
-    LFLD(s32, o, 0x10) = self->unk_a4 << 12;
-    Obj0215e8b0_LoadModel(self->unk_9c);
-    if (self->unk_a0 != NULL) {
+    self->panel = o;
+    o->width = self->panelWidth << 12;
+    Obj0215e8b0_LoadModel(self->panel);
+    if (self->panelText != NULL) {
         return;
     }
     {
         u32 t = (u32)data_ov000_021cc9e9;
-        Obj021c628c_SetText((Obj021c628c *)self, t);
+        TextList_SetText(self, t);
     }
 }
 }

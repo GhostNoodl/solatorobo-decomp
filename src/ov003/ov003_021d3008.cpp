@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Lang/TblRes.h"
 #include "Main/Effect/Effect.h"
 #include "nitro/fx.h"
 #include "ov003/Actor.h"
@@ -42,7 +43,6 @@ extern "C" {
 
 extern const Ov003EnEntry data_ov003_021f4750[];
 extern Ov003Game30 *data_ov000_021ccd30;
-extern u8 *func_02070558(s32 id);
 extern void func_ov000_0219a088(void *p);
 extern void func_ov000_0219af3c(Ov003Actor *self, void *icon);
 extern void Geom_AddRotatedOffset(VecFx32 *v, const VecFx32 *a, s32 rot);
@@ -126,7 +126,7 @@ void Ov003Actor_RunState(Ov003Actor *self) {
     Dispatch(self, self->fsm->current);
     if (self->unk_e8 != 0 && *self->hp != 0 && self->fsm->current != 0x14) {
         self->unk_e8 = 0;
-        self->targetObj->type = *func_02070558(self->kind);
+        self->targetObj->type = func_02070558(self->kind)->target.type;
     }
     if (self->unk_e8 != 0) {
         self->unk_94_0 = 1;

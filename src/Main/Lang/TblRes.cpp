@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Main/Res/ResMgr.h"
+#include "Main/Lang/TblRes.h"
 
 extern "C" {
 
@@ -178,8 +179,8 @@ u8 *func_020704b4(s32 id) {
     return Tbl_Elem(id, 0x28);
 }
 
-u8 *func_02070558(s32 id) {
-    return Tbl_Elem(id, 0x44);
+TblActorParam *func_02070558(s32 id) {
+    return (TblActorParam *)Tbl_Elem(id, sizeof(TblActorParam));
 }
 
 u8 *func_020705fc(s32 id) {

@@ -1,24 +1,11 @@
-#include "ov000/VObj.h"
-
-typedef struct Node021c6474 {
-    u8 unk_00[0x28];
-    struct Node021c6474 *next;
-    struct Node021c6474 *prev;
-} Node021c6474;
-
-typedef struct {
-    u8 unk_00[0x84];
-    Node021c6474 *head;
-    u8 unk_88[0x8];
-    s32 count;
-} List021c6474;
+#include "ov000/TextList.h"
 
 extern "C" {
 
-void List021c6474_Append(List021c6474 *self, Node021c6474 *n) {
-    Node021c6474 *p = self->head;
+void List021c6474_Append(TextList *self, ListRow *n) {
+    ListRow *p = self->rows;
     if (p == NULL) {
-        self->head = n;
+        self->rows = n;
     } else {
         while (p != NULL) {
             if (p->next == NULL) {

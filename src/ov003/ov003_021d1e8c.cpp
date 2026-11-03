@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Lang/TblRes.h"
 #include "ov003/ActorApi.h"
 #include "ov003/Actor.h"
 #include "Main/Sys/FieldState.h"
@@ -14,13 +15,6 @@ typedef struct {
     u8 b;
     u8 c;
 } Ov003AgFlag;
-
-typedef struct {
-    u16 mode;
-    u16 ids[3];
-    u8 unk_08[2];
-    u16 unk_0a[2];
-} Ov003AgParam;
 
 typedef struct {
     u8 unk_00[0x88];
@@ -50,7 +44,6 @@ extern Ov003AgPl *ActorMgr_FindPlayer(void);
 extern BOOL func_ov000_021b4738(Ov003AgPl *pl);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Ov003AgUnit *Group_FindNode(void *mgr, u16 id);
-extern u8 *func_02070558(s32 id);
 extern BOOL History_HasState(ActorSub40 *w, u8 a, s32 b, s32 c);
 extern u32 Rand_UpTo(u32 max);
 extern u16 FX_Atan2(s32 x, s32 z);
@@ -134,7 +127,7 @@ static inline u16 Ov003Ag_Dec(Ov003Actor *self) {
 extern "C" void Ov003Actor_Update(Ov003Actor *self) {
     Ov003AgPl *pl;
     Ov003Actor *tgt;
-    Ov003AgParam *p;
+    TblActorAggro *p;
     s32 dist;
     s32 dist2;
     s32 range;
@@ -193,7 +186,7 @@ extern "C" void Ov003Actor_Update(Ov003Actor *self) {
             return;
         }
     }
-    p = (Ov003AgParam *)(func_02070558(self->kind) + 0x2c);
+    p = &func_02070558(self->kind)->aggro;
     dist = 0x7fffffff;
     dist2 = 0x7fffffff;
     range = 0x7fffffff;

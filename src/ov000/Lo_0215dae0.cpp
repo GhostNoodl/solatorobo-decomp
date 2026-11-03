@@ -17,12 +17,12 @@ void func_ov000_0215dae0(Lo021cae48 *self) {
     }
     self->openTime = self->openLen;
     self->openRatio = 0x1000;
-    d = LO_FX_MUL((self->unk_8c - self->unk_88) << 12, 0xf6);
+    d = LO_FX_MUL((self->value - self->shown) << 12, 0xf6);
     a = d < 0 ? -d : d;
     if (a < 0x1000) {
-        self->unk_88 = self->unk_8c;
+        self->shown = self->value;
     } else {
-        self->unk_88 += d >> 12;
+        self->shown += d >> 12;
     }
     if (((self->flags << 30) >> 31) == 1) {
         self->state = 1;

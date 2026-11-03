@@ -1,30 +1,17 @@
-#include "ov000/VObj.h"
+#include "ov000/TextList.h"
 #include "ov000/HeapScope.h"
-
-typedef struct Node021c61a8 : public VObj {
-    u8 pad_04[0x24];
-    struct Node021c61a8 *unk_28;
-} Node021c61a8;
-
-typedef struct {
-    u8 pad_00[0x84];
-    Node021c61a8 *unk_84;
-    u8 pad_88[0x14];
-    void *unk_9c;
-    VObj *unk_a0;
-} Obj021c61a8;
 
 extern "C" {
 
-void UiPanel_Release(void *p);
+void UiPanel_Release(UiPanel *p);
 
-void Obj021c61a8_Release(Obj021c61a8 *self) {
-    Node021c61a8 *node;
-    HEAP_DELETE_FN(self->unk_9c, UiPanel_Release);
-    HEAP_DELETE_VOBJ(self->unk_a0);
-    node = self->unk_84;
+void Obj021c61a8_Release(TextList *self) {
+    ListRow *node;
+    HEAP_DELETE(UiPanel *, self->panel, UiPanel_Release(p); Heap_Free(p));
+    HEAP_DELETE(TextWin *, self->panelText, p->unk_vf04());
+    node = self->rows;
     while (node != NULL) {
-        Node021c61a8 *next = node->unk_28;
+        ListRow *next = node->next;
         void *saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->heapHi;
         if (node != NULL) {

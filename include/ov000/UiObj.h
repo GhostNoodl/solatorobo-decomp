@@ -113,23 +113,26 @@ struct UiListItem {
 };
 
 // Highlight panel of a list (0x2c bytes, built by the list subclasses, freed by UiList_Release).
+// func_ov000_0215ec44 resets it, Obj0215eab4_Draw draws it: the frame (func_ov000_0215ed18) is a
+// width x height quad at (x, y, z) + (dx, dy) pixels, and the model is drawn at the same place.
 struct UiPanel {
     union {
         u32 flags;
         struct {
-            u32 b0 : 1;
-            u32 b1 : 2;     // set by func_ov000_021548cc
-            u32 b3 : 1;
-            u32 rest : 28;
+            u32 centered : 1; // x is the centre (x - width / 2)
+            u32 b1 : 2;     // the frame's colour table (func_ov000_0215ed18); set by func_ov000_021548cc
+            u32 b3 : 1;     // draw only the model (part 0), not the frame
+            u32 b4 : 1;     // use the first colour table whatever b1 is
+            u32 rest : 27;
         } bits;
     };
-    s32 unk_04;
-    s32 unk_08;
-    s32 unk_0c;
-    s32 unk_10;         // 0x80000
-    s32 unk_14;         // 0xf000
-    s32 unk_18;         // x offset
-    s32 unk_1c;         // y offset
+    s32 x;              // 0x04 position (fx32)
+    s32 y;
+    s32 z;
+    s32 width;          // 0x10 fx32 (0x80000 after the reset)
+    s32 height;         // 0x14 fx32 (0xf000)
+    s32 dx;             // 0x18 offset of the frame in pixels
+    s32 dy;
     s32 unk_20;
     s32 unk_24;
     Model *model;       // 0x28 freed with LO_FREE_M
