@@ -9202,3 +9202,102 @@ Scratch is in the session scratchpad `mtA/` (copied from `/home/claude/mt`): `vt
 (scores each variant with `NONMATCHING` defined), `vshow.py ... NAME [apply]`, `psweep.py`/`psweep2.py` (the
 pragma sweeps, logs `psweep*.log`), `reuse.py FILE FUNC MOD ADDR X...` (merges locals into `X`), `unwrap.py` /
 `applyprag.py` / `restore.py` (undo an auA demotion), and the `v_*.py` variant sets named above.
+
+### Round mtB (pragma sweep)
+
+A per-function optimizer-pragma sweep over every `NONMATCHING` draft in the tree: all 50 rows of
+`docs/UNMATCHED.md` (the 30 that predate round auA, the 20 auA rows that are still unmatched). There are no
+runtime drafts in the tree; `libs/runtime/ExceptionHandler_unwind.cpp` and `_unexp.cpp` were left out (owner
+decision pending), and `__sinit_ov002_021ef1f0` was not touched. **No new match, no source change.** Gate: 0 FAILED,
+19/19 ROM checks, `check symbols` OK, `ninja report` 8118 matched (8118 at start), `check_drafts.py --score` 0
+worse, `honesty_scan.py` exit 0. Scratch is in the session scratchpad `mtB/`: `sweep.py OUT.tsv PASS [ADDRS]`
+(pass 1 singles, 2 pairs, 3 triples), `show.py ADDR "PRAGMA+PRAGMA"` (ours against the ROM, line by line),
+`summ.py`, the results `s1.tsv`/`s2.tsv`/`s3.tsv` and `table.md`.
+
+- **Method.** Each draft function was wrapped in `#pragma push` / the pragmas / `pop` (inside the `NONMATCHING`
+  block, so a file's own pragmas such as `card_rom.c`'s `optimization_level 2` stay underneath), compiled with
+  the file's exact `build.ninja` command and `NONMATCHING` defined, and scored the way `check_drafts.py` counts,
+  raw and register-masked, but against the function's full ROM size from `UNMATCHED.md` (a short object is not a
+  0). That is why four large drafts read 1-3 higher below than in `UNMATCHED.md`.
+- **Pragmas.** The names come from the `dsi/1.3` `mwccarm.exe` strings, each checked with `-w all` for
+  "illegal #pragma". Accepted: `optimization_level` 0-4, `peephole`, `optimize_for_size`, `global_optimizer`
+  and 68 `opt_*` switches, the seven usual ones (`opt_common_subs`, `opt_propagation`, `opt_dead_assignments`,
+  `opt_lifetimes`, `opt_loop_invariants`, `opt_strength_reduction`, `opt_dead_code`) and the undocumented ones
+  (`opt_rotateloops`, `opt_reverseloops`, `opt_scalarize*`, `opt_movepostops`, `opt_rebuildconditionals`,
+  `opt_propagateequivalentscalartypes`, `opt_serializeassignments`, `opt_unroll_loops`, ...), each `on` and `off`,
+  plus `opt_unroll_count` 0/1, `opt_full_unroll_limit 0`, `opt_unroll_instr_count 0` and
+  `opt_pointer_analysis_mode addr`. **`scheduling` is not a pragma on this compiler** ("illegal #pragma"), which
+  is why rounds cvA and mtA saw it change nothing. `opt_pointer_analysis on`, `opt_generateconditionalassignments
+  on`, `opt_prelinearize off` and `opt_markcounterloops on` fail to compile some drafts.
+- **Coverage.** 153 single settings per draft (7650 compiles); then every pair of the settings that changed a
+  draft's code (one setting per distinct output, plus the usual set of levels 0-3, the seven switches off,
+  `peephole off` and `optimize_for_size on`; 1993 compiles); then every triple of those for the 18 drafts at
+  15 raw or less (816 compiles). 10409 settings in all.
+- **Result: no setting gives any draft an exact match**, and none brings a masked score to 0 that was not 0
+  already. The only drafts that get lower are the ones below, and none of them was kept:
+  - `0215e6f0` 11 / 0 -> 9 / 0 with `opt_common_subs off` (round cvA's finding; still register-only).
+  - `021b9b14` 12 / 4 -> 9 / 2 with `opt_propagateequivalentscalartypes on`: section 4's bit-field store
+    temporaries are still coloured the other way (`r4`/`r5` swapped). An undocumented switch that only
+    moves the colouring is no sign of how the function was built.
+  - `021c7038` 212 / 194 -> 194 / 179 (`opt_arithtransformation off` + `opt_lifetimes off`) and `02160534`
+    256 / 248 -> 246 / 232 (`opt_rotateloops off`): mtA's level-2 gain again. The stack-frame blocker of the
+    `DrawFrame`s stays.
+  - `021fb1b4` 643 / 602 -> 401 / 342 with `opt_reverseloops on`: our code is one instruction longer than the
+    ROM's early in the function, so every later conditional-branch target counts as a diff; the switch changes the loop
+    code so that most of that shift goes away, not the cause. The fake-parameter stack slots are unchanged.
+- **Table** (raw / masked; best = lowest raw that is not worse masked, with the full ROM size):
+
+| Draft | Default | Settings tried | Best | Setting |
+|---|---|---|---|---|
+| `0200d36c` func_0200d36c | 5 / 0 | 232 | 5 / 0 | — |
+| `0202b048` getMdlRot_ | 15 / 1 | 202 | 15 / 1 | — |
+| `0203a984` func_0203a984 | 10 / 0 | 407 | 10 / 0 | — |
+| `0203b4ac` func_0203b4ac | 51 / 12 | 194 | 51 / 12 | — |
+| `020417e0` TexObj_SetRes | 38 / 31 | 251 | 38 / 31 | — |
+| `02043100` func_02043100 | 105 / 62 | 237 | 105 / 62 | — |
+| `02048e74` func_02048e74 | 60 / 20 | 201 | 60 / 20 | — |
+| `02049690` SndMgr_UpdateLoad | 10 / 0 | 250 | 10 / 0 | — |
+| `02049c80` SndMgr_PlaySeEx | 60 / 42 | 161 | 60 / 42 | — |
+| `02053254` func_02053254 | 37 / 4 | 201 | 37 / 4 | — |
+| `02069b3c` EffectPtclCmd_TexImage | 44 / 4 | 182 | 44 / 4 | — |
+| `0206d43c` GameSave_Configure | 12 / 0 | 152 | 12 / 0 | — |
+| `0206d99c` MainVt_0208c994_Configure | 19 / 0 | 154 | 19 / 0 | — |
+| `0214dd3c` Lo021caac8_AddItem | 26 / 0 | 194 | 26 / 0 | — |
+| `021512b4` func_ov000_021512b4 | 23 / 0 | 177 | 23 / 0 | — |
+| `0215e6f0` func_ov000_0215e6f0 | 11 / 0 | 159 | 9 / 0 | `opt_common_subs off` |
+| `02160534` Ov000Vt_021cac0c_DrawFrame | 256 / 248 | 185 | 246 / 232 | `opt_rotateloops off` |
+| `021652e4` func_ov000_021652e4 | 81 / 36 | 194 | 81 / 36 | — |
+| `02166180` func_ov000_02166180 | 27 / 0 | 266 | 27 / 0 | — |
+| `0216715c` func_ov000_0216715c | 3 / 0 | 344 | 3 / 0 | — |
+| `0216c310` func_ov000_0216c310 | 65 / 22 | 185 | 65 / 22 | — |
+| `0218867c` SceneCmd_Run29 | 45 / 32 | 170 | 45 / 32 | — |
+| `021afaf8` Robo021ca458_State1f | 44 / 0 | 204 | 44 / 0 | — |
+| `021b70c0` func_ov000_021b70c0 | 21 / 0 | 177 | 21 / 0 | — |
+| `021b9b14` func_ov000_021b9b14 | 12 / 4 | 292 | 9 / 2 | `opt_propagateequivalentscalartypes on` |
+| `021c194c` func_ov000_021c194c | 14 / 5 | 264 | 14 / 5 | — |
+| `021c7038` Ov000Vt_021cca88_DrawFrame | 212 / 194 | 215 | 194 / 179 | `opt_arithtransformation off` + `opt_lifetimes off` |
+| `021dd9dc` func_ov002_021dd9dc | 67 / 1 | 197 | 67 / 1 | — |
+| `021ddf18` Obj021efef0_Enter | 127 / 0 | 177 | 127 / 0 | — |
+| `021df2ec` Obj021eff30_Enter | 114 / 1 | 177 | 114 / 1 | — |
+| `021e0ff8` Ov002HudInfo_Draw | 2 / 2 | 182 | 2 / 2 | — |
+| `021eca14` Ov002StaffModel_Setup | 6 / 3 | 162 | 6 / 3 | — |
+| `021cd91c` func_ov003_021cd91c | 44 / 35 | 191 | 44 / 35 | — |
+| `021ddce4` Ov003ActVt_021f7e7c_Start | 15 / 15 | 154 | 15 / 15 | — |
+| `021eb818` Ov003ActExSway_StateDie | 11 / 11 | 159 | 11 / 11 | — |
+| `021db258` ov006_UpdateNetSlots | 34 / 0 | 204 | 34 / 0 | — |
+| `021e7004` Ov006Racer_ReadKeys | 22 / 13 | 191 | 22 / 13 | — |
+| `021e9f80` Ov006Racer_UpdateCheckpoint | 2 / 2 | 229 | 2 / 2 | — |
+| `02204a10` Ov009ActVt_02216bc8_StateAttack | 298 / 286 | 224 | 298 / 286 | — |
+| `02206084` Ov009ActVt_02216dcc_Update | 7 / 7 | 217 | 7 / 7 | — |
+| `0220a128` Ov009ActVt_02217390_Update | 12 / 0 | 192 | 12 / 0 | — |
+| `0220acb8` Ov009ActVt_02217390_StateDie | 15 / 13 | 168 | 15 / 13 | — |
+| `02204030` Ov010_PickRingPoint | 26 / 23 | 227 | 26 / 23 | — |
+| `021fb9b8` Ov011Mgr2_State02 | 38 / 0 | 185 | 38 / 0 | — |
+| `021fc0b8` Ov011Ctl_Update | 26 / 17 | 251 | 26 / 17 | — |
+| `021fd638` Ov011Scene_Update | 56 / 34 | 227 | 56 / 34 | — |
+| `021ff24c` Ov011SceneActor_Update | 26 / 0 | 201 | 26 / 0 | — |
+| `021fb1b4` Ov013Boss_StateAttack2 | 643 / 602 | 282 | 401 / 342 | `opt_dead_assignments off` + `opt_reverseloops on` |
+| `02206764` Ov013ActVt_0220bdd8_Update | 22 / 0 | 170 | 22 / 0 | — |
+| `0220ae90` func_ov015_0220ae90 | 5 / 0 | 192 | 5 / 0 | — |
+
+- No new data. No renames.
