@@ -41,7 +41,7 @@ void Menu021ca94c_DrawBody(Obj0214cb44 *self, s32 a, s32 *pos, s32 d) {
         z = self->unk_68 - 0x110;
         x = (pos[0] + ((self->unk_24 - 0x80) + ((0x100 - self->unk_24) >> 1))) << 12;
         y = pos[1] + (((self->unk_28 >> 1) - 0x60) << 12);
-        MODEL_FLAGS(self->unk_84)->polygon_id = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
+        MODEL_FLAGS(self->unk_84)->polygon_id = Gfx3DState_NextPolyId(gGfxSys->unk_8b0);
         {
             Model *o = self->unk_84;
             o->x = x;

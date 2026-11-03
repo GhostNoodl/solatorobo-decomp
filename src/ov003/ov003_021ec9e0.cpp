@@ -92,7 +92,7 @@ void Ov003ActVt_021f99e8_StateHeld(Ov003Gimmick *self) {
             self->rotOfs.x = 0x4000;
             if (self->unk_bc != NULL) {
                 Ov003GmArg arg;
-                EffectMgr_Kill(data_0214a420, self->unk_bc);
+                EffectMgr_Kill(gEffectMgr, self->unk_bc);
                 self->unk_bc = NULL;
                 arg.a = self->unk_1c;
                 arg.b = 0;
@@ -115,7 +115,7 @@ void Ov003ActVt_021f99e8_StateDie(Ov003Gimmick *self) {
     }
     if (self->unk_ce_u == 0 && self->unk_cf_u == 1) {
         if (self->unk_bc != NULL) {
-            EffectMgr_Kill(data_0214a420, self->unk_bc);
+            EffectMgr_Kill(gEffectMgr, self->unk_bc);
             self->unk_bc = NULL;
         }
         ActorEx_StateDie(self);
@@ -127,7 +127,7 @@ void Ov003ActVt_021f99e8_StateDie(Ov003Gimmick *self) {
             s16 m;
             EffectObj *e;
             if (self->unk_bc != NULL) {
-                EffectMgr_Kill(data_0214a420, self->unk_bc);
+                EffectMgr_Kill(gEffectMgr, self->unk_bc);
                 self->unk_bc = NULL;
                 if (self->kind == 0x4064) {
                     arg.a = self->unk_1c;
@@ -146,8 +146,8 @@ void Ov003ActVt_021f99e8_StateDie(Ov003Gimmick *self) {
             e = Effect_SpawnId(4, &self->pos);
             e->SetScaleXYZ(self->radius + (self->radius >> 3), self->radius + (self->radius >> 3), self->radius + (self->radius >> 3));
             e->AddPosXYZ(0, self->centerY, 0);
-            SndMgr_PlayAt(data_02097e4c, 0x16, &self->pos, 0);
-            SndMgr_PlayAt(data_02097e4c, 0x19, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x16, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x19, &self->pos, 0);
         }
         {
             ActorSub48 *c = self->hit;
@@ -169,7 +169,7 @@ void Ov003ActVt_021f99e8_StateDie(Ov003Gimmick *self) {
             s->unk_22_1 = 1;
             Model0218fe1c_SetAnim(self->model, data_ov003_021f99d8, 0x1000, 0);
             Model0218fe1c_SetLoop(self->model);
-            SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x17, &self->pos, 0);
             Field_ShakeCamera(0xf, 0x14);
             self->velY = 0;
             self->fsm->st++;

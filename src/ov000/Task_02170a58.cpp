@@ -10,14 +10,14 @@
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_ov000_021cac0c[];
-extern u8 data_ov000_021cb798[];
-extern u8 data_ov000_021cb7ec[];
-extern u8 data_ov000_021cb744[];
-extern u8 data_ov000_021cb6f0[];
-extern u8 data_ov000_021cb840[];
-extern u8 data_ov000_021cb894[];
+extern u8 ResHandle_vtbl[];
+extern u8 Ov000Vt_021cac0c_vtbl[];
+extern u8 Lo021cb798_vtbl[];
+extern u8 Lo021cb7ec_vtbl[];
+extern u8 Lo021cb744_vtbl[];
+extern u8 Lo021cb6f0_vtbl[];
+extern u8 Lo021cb840_vtbl[];
+extern u8 Lo021cb894_vtbl[];
 void *Heap_Alloc(u32 size);
 void func_ov000_0216b474(Lo0216b474 *p);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
@@ -43,7 +43,7 @@ void func_ov000_021bb840(void *p);
 static inline VObj *NewObj2(u32 size, void *vt) {
     VObj *p = (VObj *)Heap_Alloc(size);
     if (p != NULL) {
-        *(void **)p = data_ov000_021cac0c;
+        *(void **)p = Ov000Vt_021cac0c_vtbl;
         p->vfunc_14();
         *(void **)p = vt;
         p->vfunc_14();
@@ -66,32 +66,32 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
         }
         p = (Lo021cb798 *)Heap_Alloc(sizeof(Lo021cb798));
         if (p != NULL) {
-            *(void **)p = data_ov000_021cac0c;
+            *(void **)p = Ov000Vt_021cac0c_vtbl;
             p->vfunc_14();
-            *(void **)p = data_ov000_021cb798;
+            *(void **)p = Lo021cb798_vtbl;
             p->vfunc_14();
             p->unk_9c = 0;
         }
         self->unk_58 = p;
         p = (Lo021cb798 *)Heap_Alloc(sizeof(Lo021cb798));
         if (p != NULL) {
-            *(void **)p = data_ov000_021cac0c;
+            *(void **)p = Ov000Vt_021cac0c_vtbl;
             p->vfunc_14();
-            *(void **)p = data_ov000_021cb798;
+            *(void **)p = Lo021cb798_vtbl;
             p->vfunc_14();
             p->unk_9c = 1;
         }
         self->unk_5c = p;
-        self->unk_60 = (Lo021cb7ec *)NewObj2(sizeof(Lo021cb7ec), data_ov000_021cb7ec);
+        self->unk_60 = (Lo021cb7ec *)NewObj2(sizeof(Lo021cb7ec), Lo021cb7ec_vtbl);
         r = (Lo0216b474 *)Heap_Alloc(sizeof(Lo0216b474));
         if (r != NULL) {
             func_ov000_0216b474(r);
         }
         self->unk_68 = r;
-        self->unk_64 = (Lo021cb744 *)NewObj2(sizeof(Lo021cb744), data_ov000_021cb744);
-        self->unk_6c = (Lo021cb6f0 *)NewObj2(sizeof(Lo021cb6f0), data_ov000_021cb6f0);
-        self->unk_70 = (Lo021cb840 *)NewObj2(sizeof(Lo021cb840), data_ov000_021cb840);
-        self->unk_74 = (Lo021cb894 *)NewObj2(sizeof(Lo021cb894), data_ov000_021cb894);
+        self->unk_64 = (Lo021cb744 *)NewObj2(sizeof(Lo021cb744), Lo021cb744_vtbl);
+        self->unk_6c = (Lo021cb6f0 *)NewObj2(sizeof(Lo021cb6f0), Lo021cb6f0_vtbl);
+        self->unk_70 = (Lo021cb840 *)NewObj2(sizeof(Lo021cb840), Lo021cb840_vtbl);
+        self->unk_74 = (Lo021cb894 *)NewObj2(sizeof(Lo021cb894), Lo021cb894_vtbl);
         q = (Obj0216ad04 *)Heap_Alloc(sizeof(Obj0216ad04));
         if (q != NULL) {
             func_ov000_0216ad04(q);
@@ -146,7 +146,7 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
         break;
     case 9:
         if (self->unk_44 != NULL && !func_ov000_021bb8dc(self->unk_44)) {
-            HEAP_DELETE(u8 *, (u8 *)self->unk_44, Obj021bbc68_Release(p); *(void **)(p + 4) = data_0208b318; ((VObj *)(p + 4))->vfunc_0c(); Heap_Free(p));
+            HEAP_DELETE(u8 *, (u8 *)self->unk_44, Obj021bbc68_Release(p); *(void **)(p + 4) = ResHandle_vtbl; ((VObj *)(p + 4))->vfunc_0c(); Heap_Free(p));
             self->state = 3;
         }
         break;

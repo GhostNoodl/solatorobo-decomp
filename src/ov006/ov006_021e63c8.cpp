@@ -5,7 +5,7 @@
 
 extern "C" {
 
-extern u8 data_ov006_021ec4f4[];
+extern u8 Ov006ActVt_021ec4f4_vtbl[];
 void *Actor_Ctor(void *self);
 void *Model0218fe1c_Init(void *p);
 u8 func_ov006_021d8d9c(void);
@@ -18,7 +18,7 @@ void *Actor_DtorBase(void *self);
 Ov006Racer *Ov006ActVt_021ec4f4_Ctor(Ov006Racer *self) {
     int i;
     Actor_Ctor(self);
-    *(void **)self = data_ov006_021ec4f4;
+    *(void **)self = Ov006ActVt_021ec4f4_vtbl;
     Model0218fe1c_Init(&self->mdl);
     self->prm = NULL;
     self->marker = NULL;
@@ -82,10 +82,10 @@ Ov006Racer *Ov006ActVt_021ec4f4_Ctor(Ov006Racer *self) {
 }
 
 static inline void Ov006Racer_Dtor(Ov006Racer *self) {
-    *(void **)self = data_ov006_021ec4f4;
+    *(void **)self = Ov006ActVt_021ec4f4_vtbl;
     OV006_DELETE_OBJECT(self->marker);
     if (self->seq > 0) {
-        SndMgr_StopSeqArc(data_02097e4c, self->seq);
+        SndMgr_StopSeqArc(gSndMgr, self->seq);
     }
     Model0218fe1c_FreeAnims(&self->mdl);
     Actor_DtorBase(self);

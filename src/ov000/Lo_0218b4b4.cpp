@@ -52,9 +52,9 @@ void GroupNode_UpdateEntry(GroupNode *self, s32 mode, Src0218b4b4 *src) {
             slot->rot.y = src->rot.y;
             slot->rot.z = src->rot.z;
             if (mode == 2) {
-                slot->fieldId = data_ov000_021ccd54->unk_d0;
+                slot->fieldId = gSceneCmd->unk_d0;
             } else {
-                slot->fieldId = data_ov000_021ccd54->unk_ca;
+                slot->fieldId = gSceneCmd->unk_ca;
             }
         }
         for (i = 0; i < 4; i++) {

@@ -13,11 +13,11 @@ void ov006_Window_PreUpdate(ov006_Unk021dba5c *self) {
     switch (self->state) {
     case 0:
         self->unk34 = 0x4000;
-        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
         break;
     case 1:
         self->unk34 = 0x4000;
-        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
         break;
     }
 }

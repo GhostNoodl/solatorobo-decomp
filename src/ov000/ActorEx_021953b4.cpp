@@ -9,7 +9,7 @@ typedef struct {
 
 extern "C" {
 
-extern const u8 data_ov000_021cc480[];
+extern const u8 ActorEx_vtbl[];
 
 void *Actor_Ctor(Actor *self);
 void *Actor_DtorBase(Actor *self);
@@ -34,7 +34,7 @@ static inline void ActorEx_CtorBody(ActorEx *self) {
     s32 i;
 
     Actor_Ctor(self);
-    *(const void **)self = data_ov000_021cc480;
+    *(const void **)self = ActorEx_vtbl;
     self->unk_ac = 0xff;
     self->unk_ad = 0xff;
     self->unk_ae = 0xff;
@@ -55,18 +55,18 @@ static inline void ActorEx_CtorBody(ActorEx *self) {
 static inline void ActorEx_Destroy(ActorEx *self) {
     s32 i;
 
-    *(const void **)self = data_ov000_021cc480;
+    *(const void **)self = ActorEx_vtbl;
     for (i = 0; i < 2; i++) {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (self->res[i] != NULL) {
             ResSet_Delete(self->res[i]);
             self->res[i] = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     if (self->unk_bc != NULL) {
-        EffectMgr_Kill(data_0214a420, self->unk_bc);
+        EffectMgr_Kill(gEffectMgr, self->unk_bc);
     }
     Actor_DtorBase(self);
 }

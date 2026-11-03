@@ -86,8 +86,8 @@ void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
         break;
     }
     case 2:
-        if (data_02097dc8->trig & 2) {
-            SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        if (gPad->trig & 2) {
+            SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
             self->unk_1c = 0x1e;
         } else if (self->unk_20) {
             self->unk_20 = 0;
@@ -144,7 +144,7 @@ void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
         if (self->unk_0c != NULL) {
             ov002_SetFlag1(self->unk_0c);
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
         self->unk_1c++;
     case 21: {
         Obj021eff30 *p;
@@ -156,7 +156,7 @@ void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
         }
         p = (Obj021eff30 *)Heap_Alloc(sizeof(Obj021eff30));
         if (p != NULL) {
-            *(VFunc **)p = data_ov002_021eff30;
+            *(VFunc **)p = Ov002Vt_021eff30_vtbl;
             p->owner = NULL;
             p->unk_08 = -1;
             p->unk_0c = NULL;
@@ -179,7 +179,7 @@ void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
         if (self->unk_0c != NULL) {
             ov002_SetFlag1(self->unk_0c);
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
         self->unk_1c++;
     case 31: {
         Obj021eff10 *p;
@@ -189,7 +189,7 @@ void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
         }
         p = (Obj021eff10 *)Heap_Alloc(sizeof(Obj021eff10));
         if (p != NULL) {
-            *(VFunc **)p = data_ov002_021eff10;
+            *(VFunc **)p = Ov002Vt_021eff10_vtbl;
             p->owner = NULL;
             p->unk_08 = NULL;
             p->unk_0c = NULL;

@@ -18,7 +18,7 @@ void Obj0215eab4_Draw(void *p);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 
 static inline Actor *FindA(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }

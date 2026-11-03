@@ -12,8 +12,8 @@ void func_ov000_021c216c(Obj021c2114 *self) {
     void *saved;
     void *p;
 
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     p = self->model;
     if (p != NULL) {
         if (p != NULL) {
@@ -22,10 +22,10 @@ void func_ov000_021c216c(Obj021c2114 *self) {
         }
         self->model = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     p = self->res;
     if (p != NULL) {
         if (p != NULL) {
@@ -34,7 +34,7 @@ void func_ov000_021c216c(Obj021c2114 *self) {
         }
         self->res = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 }

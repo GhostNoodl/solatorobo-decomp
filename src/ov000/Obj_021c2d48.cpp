@@ -2,8 +2,8 @@
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
-extern u8 data_ov000_021cac0c[];
-extern u8 data_ov000_021cca88[];
+extern u8 Ov000Vt_021cac0c_vtbl[];
+extern u8 Ov000Vt_021cca88_vtbl[];
 extern u8 data_ov000_021cc998[];
 extern u8 data_ov000_021cc99e[];
 void Obj0215fdfc_SetEntry(void *p, s32 i, void *d);
@@ -20,9 +20,9 @@ void ListRowGauge_Update(ListRowGauge *self) {
     if (self->built == 0) {
         ObjBase021cac0c_021cb6f0 *o = (ObjBase021cac0c_021cb6f0 *)Heap_Alloc(sizeof(ObjBase021cac0c_021cb6f0));
         if (o != NULL) {
-            VOBJ_SET_VTABLE(o, data_ov000_021cac0c);
+            VOBJ_SET_VTABLE(o, Ov000Vt_021cac0c_vtbl);
             o->vfunc_14();
-            VOBJ_SET_VTABLE(o, data_ov000_021cca88);
+            VOBJ_SET_VTABLE(o, Ov000Vt_021cca88_vtbl);
         }
         self->bar = o;
         o->unk_28 = 2;

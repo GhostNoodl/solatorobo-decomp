@@ -7,7 +7,7 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern char data_ov003_021f803c[];
 extern BOOL History_SetState(ActorSub40 *w, s32 a, s32 b);
 extern BOOL Model0218fe1c_SetAnim(void *model, const char *name, s32 a, s32 b);
@@ -28,7 +28,7 @@ void Ov003ActVt_021f7fac_State06(Ov003Switch *self) {
     case 0:
         if (self->unk_18 == 3) {
             if (self->targetObj->unk_0a != 0xffff) {
-                SndMgr_PlayAt(data_02097e4c, self->targetObj->unk_0a, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, self->targetObj->unk_0a, &self->pos, 0);
             }
             self->targetObj->target = 0xffff;
             History_SetState(self->fsm, 1, 0);
@@ -48,7 +48,7 @@ void Ov003ActVt_021f7fac_State06(Ov003Switch *self) {
             Model0218fe1c_SetAnimSpeed(self->model, frame);
         }
         if (self->targetObj->unk_08 != 0xffff) {
-            SndMgr_PlayAt(data_02097e4c, self->targetObj->unk_08, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, self->targetObj->unk_08, &self->pos, 0);
         }
         self->fsm->st++;
         break;
@@ -70,7 +70,7 @@ void Ov003ActVt_021f7fac_State06(Ov003Switch *self) {
         }
         if (self->targetObj->unk_02 == 5) {
             func_ov000_02197dec(self, 0xf, -1);
-            Group_UpdateActor(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();
         }
         self->fsm->st++;

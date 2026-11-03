@@ -2,10 +2,10 @@
 
 extern "C" {
 
-extern u8 data_ov006_021ec20c[];
+extern u8 Ov006Vt_021ec20c_vtbl[];
 
 static inline void ov006_Gauge_dtor(ov006_Gauge *self) {
-    self->vtbl = data_ov006_021ec20c;
+    self->vtbl = Ov006Vt_021ec20c_vtbl;
     OV006_DELETE_MODEL(self->model);
     OV006_DELETE_OBJECT(self->text);
 }

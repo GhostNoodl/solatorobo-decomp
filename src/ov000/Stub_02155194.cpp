@@ -19,7 +19,7 @@ typedef struct Node02155160 {
 } Node02155160;
 
 extern "C" {
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void Heap_Free(void *ptr);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 }
@@ -197,7 +197,7 @@ void UiList_Scroll(Obj02155160 *self, s32 n, s32 commit) {
             self->unk_0c |= 2;
         }
         if (!commit) {
-            SndMgr_PlayVolume(data_02097e4c, 0x1d, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1d, -1, -1, -1);
         }
         self->unk_b3++;
     } else {
@@ -212,15 +212,15 @@ void UiList_Scroll(Obj02155160 *self, s32 n, s32 commit) {
 
 
 static inline void Node02155160_DeleteObj(VObj **pp) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (*pp != NULL) {
         if (*pp != NULL) {
             (*pp)->vfunc_04();
         }
         *pp = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 static inline void Node02155160_Delete(Node02155160 *node) {
@@ -307,12 +307,12 @@ void UiList_FinishRemove(Obj02155160 *self) {
     if (self->vfunc_9c(q) == 0) {
         self->unk_0c |= 2;
     }
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (node != NULL) {
         Node02155160_Delete(node);
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     self->unk_0c &= ~0x300000;
     self->unk_a8 = NULL;
     self->unk_a0 = 0;

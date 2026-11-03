@@ -31,9 +31,9 @@ static inline BOOL PAD_DetectFold(void) {
 
 void func_0203d8e8(void) {
     if (PAD_DetectFold()) {
-        if (func_020472c4(data_02097e44) != 0 || data_02097dd0->unk_1f != 0 || data_02097dd0->unk_31 != 0) {
-            if (data_02097dd0->lcdOn == 1) {
-                data_02097dd0->lcdOn = 0;
+        if (func_020472c4(gSysCard) != 0 || gSysState->unk_1f != 0 || gSysState->unk_31 != 0) {
+            if (gSysState->lcdOn == 1) {
+                gSysState->lcdOn = 0;
                 GX_DispOff();
                 *(volatile u32 *)0x4001000 &= ~0x10000;
                 PM_SetLCDPower(FALSE);
@@ -41,12 +41,12 @@ void func_0203d8e8(void) {
         } else {
             PM_GoSleepMode(0xc, 0, 0);
         }
-    } else if (data_02097dd0->lcdOn == 0 && PM_SetLCDPower(TRUE)) {
+    } else if (gSysState->lcdOn == 0 && PM_SetLCDPower(TRUE)) {
         GX_DispOn();
         *(volatile u32 *)0x4001000 |= 0x10000;
-        data_02097dd0->lcdOn = 1;
+        gSysState->lcdOn = 1;
     }
-    data_02097dd0->unk_1f = 0;
+    gSysState->unk_1f = 0;
 }
 
 void func_0203d9e8(UnkSys *sys) {
@@ -66,7 +66,7 @@ void func_0203d9e8(UnkSys *sys) {
     sys->heapLo = NNS_FndCreateExpHeapEx(start, size, 0);
     sys->heapHi = NNS_FndCreateExpHeapEx(start + size, (u8 *)hi - (start + size), 0);
     sys->align = 4;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gSysState->cur = gSysState->heapHi;
     NamePool_CreateTex();
     NamePool_CreatePltt();
 }
@@ -145,53 +145,53 @@ BOOL PauseNode_IsDrawPaused(UnkSysNode *node, BOOL recurse) {
 #pragma pop
 void *Heap_Alloc(u32 size) {
     u32 irq = OS_DisableInterrupts();
-    void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->cur, size, data_02097dd0->align);
+    void *p = NNS_FndAllocFromExpHeapEx(gSysState->cur, size, gSysState->align);
     OS_RestoreInterrupts(irq);
     return p;
 }
 
 void *Heap_AllocArray(u32 size) {
     u32 irq = OS_DisableInterrupts();
-    void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->cur, size, data_02097dd0->align);
+    void *p = NNS_FndAllocFromExpHeapEx(gSysState->cur, size, gSysState->align);
     OS_RestoreInterrupts(irq);
     return p;
 }
 
 void Heap_Free(void *ptr) {
     u32 irq = OS_DisableInterrupts();
-    NNS_FndFreeToExpHeap(data_02097dd0->cur, ptr);
+    NNS_FndFreeToExpHeap(gSysState->cur, ptr);
     OS_RestoreInterrupts(irq);
 }
 
 void Heap_FreeArray(void *ptr) {
     u32 irq = OS_DisableInterrupts();
-    NNS_FndFreeToExpHeap(data_02097dd0->cur, ptr);
+    NNS_FndFreeToExpHeap(gSysState->cur, ptr);
     OS_RestoreInterrupts(irq);
 }
 
 void *Heap_AllocHi(u32 size, u32 align) {
     u32 irq = OS_DisableInterrupts();
-    void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->heapHi, size, align);
+    void *p = NNS_FndAllocFromExpHeapEx(gSysState->heapHi, size, align);
     OS_RestoreInterrupts(irq);
     return p;
 }
 
 void *Heap_AllocLo(u32 size, u32 align) {
     u32 irq = OS_DisableInterrupts();
-    void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->heapLo, size, align);
+    void *p = NNS_FndAllocFromExpHeapEx(gSysState->heapLo, size, align);
     OS_RestoreInterrupts(irq);
     return p;
 }
 
 void Heap_FreeHi(void *ptr) {
     u32 irq = OS_DisableInterrupts();
-    NNS_FndFreeToExpHeap(data_02097dd0->heapHi, ptr);
+    NNS_FndFreeToExpHeap(gSysState->heapHi, ptr);
     OS_RestoreInterrupts(irq);
 }
 
 void Heap_FreeLo(void *ptr) {
     u32 irq = OS_DisableInterrupts();
-    NNS_FndFreeToExpHeap(data_02097dd0->heapLo, ptr);
+    NNS_FndFreeToExpHeap(gSysState->heapLo, ptr);
     OS_RestoreInterrupts(irq);
 }
 

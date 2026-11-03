@@ -73,7 +73,7 @@ void Ov010Path_Update(Ov010Path *self) {
             if (self->timer < lim) {
                 return;
             }
-            EffectMgr_StopLoop(data_0214a420, self->fxHandle);
+            EffectMgr_StopLoop(gEffectMgr, self->fxHandle);
             self->fxHandle = 0;
             History_SetState(&self->sm, 4, 0);
         }
@@ -93,7 +93,7 @@ void Ov010Path_Update(Ov010Path *self) {
             self->fxHandle = e->id;
             self->sm.st++;
         }
-        fx = Effect_Find_020657b0(data_0214a420, self->fxHandle);
+        fx = Effect_Find_020657b0(gEffectMgr, self->fxHandle);
         if (fx != NULL) {
             VecFx32 q;
             q.x = self->owner->pos.x;

@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern u8 data_ov010_02210154[];
+extern u8 Ov010ActVt_02210154_vtbl[];
 extern char data_ov010_0220ff84[];
 extern char data_ov010_0220ff91[];
 extern char data_ov010_0220ffa1[];
@@ -19,7 +19,7 @@ extern BOOL SndMgr_IsLoadDone(SndMgr *a);
 
 void *Ov010ActVt_02210154_Ctor(Ov010Obj02210154 *self) {
     Ov003Actor_Ctor(self);
-    *(void * *)self = data_ov010_02210154;
+    *(void * *)self = Ov010ActVt_02210154_vtbl;
     Ov003Flag_Deactivate(&self->seq);
     Ov010Coll_Ctor(&self->coll);
     Ov003Vt_021f7d10_Ctor(&self->ticker);
@@ -34,7 +34,7 @@ void *Ov010ActVt_02210154_Ctor(Ov010Obj02210154 *self) {
 }
 
 static inline void Ov010_02204294_Body(Ov010Obj02210154 *self) {
-    *(void * *)self = data_ov010_02210154;
+    *(void * *)self = Ov010ActVt_02210154_vtbl;
     func_ov003_021cf3fc(0);
     Ov010Obj02210154_Release(self);
     Ov003Vt_021f7cd8_Dtor(&self->timer);
@@ -60,10 +60,10 @@ BOOL Ov010Obj02210154_IsReady(Ov010Obj02210154 *self) {
     if (self->unk_f0 == 0) {
         self->unk_f0 = 1;
         if (((VObj *)self)->vfunc_a8(&self->sndBank)) {
-            SndMgr_RequestLoad_02049678(data_02097e4c, 4, self->sndBank, -1);
+            SndMgr_RequestLoad_02049678(gSndMgr, 4, self->sndBank, -1);
         }
         r = FALSE;
-    } else if (SndMgr_IsLoadDone(data_02097e4c) == 0) {
+    } else if (SndMgr_IsLoadDone(gSndMgr) == 0) {
         r = FALSE;
     }
     return r;

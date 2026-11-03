@@ -46,8 +46,8 @@ FieldProp *func_ov000_021b7a7c(FieldProp *self) {
         void *saved;
         void *p;
         HitMesh_Unlink_0203f920(self->hitMesh);
-        saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         p = self->hitMesh;
         if (p != NULL) {
             if (p != NULL) {
@@ -56,7 +56,7 @@ FieldProp *func_ov000_021b7a7c(FieldProp *self) {
             }
             self->hitMesh = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     FieldPropModel_Dtor(&self->model);
     if (self->loader.mdl != NULL) {
@@ -66,7 +66,7 @@ FieldProp *func_ov000_021b7a7c(FieldProp *self) {
         Vram_FreeRes(*self->loader.tex);
     }
     if (self->loader.flag0 && self->loader.flag1) {
-        ResMgr_ReleaseByName(data_02097cdc, self->loader.path, 7, 0);
+        ResMgr_ReleaseByName(gResMgr, self->loader.path, 7, 0);
     }
     return self;
 }

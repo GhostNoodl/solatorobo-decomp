@@ -88,7 +88,7 @@ static inline BOOL Ov003Game_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -139,7 +139,7 @@ void Ov003ActVt_021f9ea8_State06(Ov003Lever *self) {
     case 2:
         if (self->unk_1c != 0 && self->unk_ce < 0x41) {
             if (!(self->unk_ce & 0x1f)) {
-                SndMgr_PlayAt(data_02097e4c, 0x84, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x84, &self->pos, 0);
             }
             self->unk_ce++;
         }
@@ -190,7 +190,7 @@ void Ov003Lever_SetState(Ov003Lever *self, s16 kind, BOOL notify, s32 sound) {
         Model0218fe1c_SetAnimSpeed(self->model, 0x4cd);
     }
     if (sound >= 0) {
-        SndMgr_PlayAt(data_02097e4c, sound, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, sound, &self->pos, 0);
     }
     self->unk_18 = kind;
     if (notify) {
@@ -219,7 +219,7 @@ void Ov003ActVt_021f9ce0_StateIdle(Ov003Lever *self) {
             if (pl != NULL && Hit_DiffInSphere(&pl->pos, &self->pos, pl->radius + 0xf000)) {
                 EffectObj *e = Effect_SpawnId(0x322, &self->pos);
                 e->SetScaleXYZ(0xe66, 0xe66, 0xe66);
-                SndMgr_PlayAt(data_02097e4c, Rand_UpTo(1) + 0x79, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, Rand_UpTo(1) + 0x79, &self->pos, 0);
                 self->fsm->st++;
                 self->fsm->timer = 0;
                 return;
@@ -256,7 +256,7 @@ void Ov003ActVt_021f9ce0_State06(Ov003Lever *self) {
         p = self->unk_44;
         p->unk_22_0 = 0;
         p->unk_22_1 = 0;
-        SndMgr_PlayAt(data_02097e4c, 0x6e, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x6e, &self->pos, 0);
         self->fsm->timer = 0x78;
         self->fsm->st++;
         break;

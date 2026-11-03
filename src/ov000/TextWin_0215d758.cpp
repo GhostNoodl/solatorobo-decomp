@@ -11,7 +11,7 @@ extern "C" {
 extern u16 data_ov000_021cabe0[];
 extern void *data_0208cc88;
 extern void *data_0208cc94;
-extern void *data_02149ef8;
+extern void *gMsgRes;
 void *ResMgr_GetArcList(void *a);
 void *ResList_FindType2(void *a, void *b);
 void TexObj_SetAllOamFuncs(void *model, void *fn);
@@ -21,7 +21,7 @@ void *func_ov000_02154128(u8 *self, void *req, void *buf, u16 *count);
 static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
-        *(const u32 **)win = data_0208ba70;
+        *(const u32 **)win = TextWin_vtbl;
         TextWin_Init(win);
     }
     return win;
@@ -30,7 +30,7 @@ static inline TextWin *TextWin_New(void) {
 static inline void SetText(TextWin *win, u32 text) {
     win->str = text;
     win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->font;
+    gGfxMgr->unk_004 = win->font;
 }
 
 void Lo021cae48_Setup(Lo021cae48 *self) {
@@ -56,7 +56,7 @@ void Lo021cae48_Setup(Lo021cae48 *self) {
         TexObj_SelectImage(self->digits, 0, ent[0]);
     }
     TexObj_SetAllOamFuncs((u8 *)self->digits, (void *)func_ov000_02154128);
-    res = data_02149ef8;
+    res = gMsgRes;
     win = TextWin_New();
     self->label = win;
     win->font = 4;

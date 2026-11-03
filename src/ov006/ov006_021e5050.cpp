@@ -10,7 +10,7 @@ typedef struct ov006_Net021e5050 {
 
 extern "C" {
 
-extern ov006_Net021e5050 *data_02097e40;
+extern ov006_Net021e5050 *gWhMgr;
 extern u8 data_ov006_021eb840[];
 BOOL func_02046070(ov006_Net021e5050 *net, void *data, int a);
 BOOL WH_StateInEndScan_020463c8(ov006_Net021e5050 *net);
@@ -23,15 +23,15 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
         ov006_MenuNode *next;
         void *saved;
         next = node->next;
-        saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (node != NULL) {
             if (node != NULL) {
                 node->vfunc_04();
             }
             node = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
         node = next;
     }
     self->nodes = NULL;
@@ -43,15 +43,15 @@ void func_ov006_021e5050(ov006_Unk021ec888 *self) {
     switch (self->stateTime) {
     case 0:
         self->unk28 = 0;
-        data_02097dd0->vblankFunc = NULL;
+        gSysState->vblankFunc = NULL;
         ov006_Menu_ClearNodes(self);
         self->stateTime = 10;
         break;
     case 10:
-        if (data_02097e40->unk2C != 1) {
+        if (gWhMgr->unk2C != 1) {
             return;
         }
-        func_02046070(data_02097e40, data_ov006_021eb840, 0);
+        func_02046070(gWhMgr, data_ov006_021eb840, 0);
         self->unk2C = 1;
         self->stateTime = 20;
         self->unk10 = 30;
@@ -63,7 +63,7 @@ void func_ov006_021e5050(ov006_Unk021ec888 *self) {
         if (self->unk10 != 0) {
             return;
         }
-        WH_StateInEndScan_020463c8(data_02097e40);
+        WH_StateInEndScan_020463c8(gWhMgr);
         self->unk2C = 0;
         self->unk28++;
         ov006_Menu_PruneNodes(self);

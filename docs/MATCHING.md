@@ -8922,3 +8922,34 @@ Readability only; every function stays byte-identical. A baseline was built firs
   - In ov002: `func_ov002_021e38f8` (the shape's `ox`/`oy` as bit fields change the code), the `(&FIELD(q, 8, u8))[...]++` count in `021dd434` (the array member changes the addressing), `Obj021efe7c`'s mode object `unk_08`, the task 0x16 fields of `021d0a80`.
   - `func_ov000_0214dc20`'s prototype in `Misc_0214dcc4.cpp` stays `void *` (its draft build has no `MsgEntryEx`).
 - **Renames:** none (types and fields only). No new headers.
+
+## Global data named: singletons, vtables, state tables and work areas: no new match (round nmJ)
+
+Readability only; every function stays byte-identical, and only symbol names change. The baseline was built at `82ac19c2` (after acR; the work was first done on `44602f34` and re-applied after the rebase). All 1906 objects were compared with the baseline section by section (code, data and relocations with the renames mapped, defined symbols; debug sections excluded): 0 differ. Gate: 0 FAILED, 19/19 ROM checks and `check symbols` OK, `ninja report` at 8138 matched, and `check_drafts.py --score` exits 0. There are 561 pairs in `renames_final.txt` (`old new`, one pair per line). Every old name is a `data_*` symbol, no new name was an existing name (no swaps or cycles), and every new name is fresh against all symbols.txt files and every identifier in src/include/libs. The configs refer to symbols by address only, so only symbols.txt and the sources changed.
+
+**Counts by module:**
+
+| main | dtcm | ov000 | ov002 | ov003 | ov004 | ov006 | ov007 | ov008 | ov009 | ov010 | ov011 | ov012 | ov013 | ov014 | ov015 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 93 | 18 | 81 | 63 | 83 | 1 | 48 | 1 | 2 | 46 | 24 | 15 | 10 | 14 | 19 | 43 |
+
+By kind: 436 vtables, 17 state and dispatch tables, 10 pointer-to-member constants, 12 SDK statics, 81 singletons and work areas, and 5 typed const tables.
+
+**Conventions:**
+- **Vtables** are `<Class>_vtbl`. `<Class>` is the prefix of the vtable's own destructor pair: slots 0x0/0x4 (`_Dtor`/`_DtorDelete`), or 0x20/0x24 for the actor family (slot 0x8 is `Actor_Remove`). A name was given only when both destructors carry the same prefix and appear in no other vtable, so a shared base dtor never names a derived vtable. Address-tagged classes keep their tag (`Ov003ActVt_021f7e7c_vtbl`, `Ov000Vt_021cac0c_vtbl`, `MainVt_0208bbc8_vtbl`), so the vtable greps together with its slot functions. Hand-named: `Actor_vtbl` (`021cc3b4`, slot 0x4 is empty), `ResHandle_vtbl` (`0208b318`, the address point inside `_ZTV9ResHandle`), `Camera_vtbl`, `ov006_ModelHolder_vtbl`, `Ov015Hud_vtbl`, and the five ov014 actor vtables whose data symbol is split mid-table: the head symbol is named and the tail stays `data_*`.
+- **State and dispatch tables** are `<Class>_StateTable` (pointer-to-member `{id, fn}` tables run by `<Class>_RunState`; e.g. `ActorEx_StateTable`, `Ov003Actor_StateTable`, `Robo021ca458_StateTable`/`Mode5StateTable`, `Ov011Mgr_StateTable`, `Ov011Chr_ModeTable`), `StageCmd_OpTable`, `SceneCmd_Table` and `Task_NewTable` (the task factories indexed by task id).
+- **Pointer-to-member constants** are `<Function>_pmf` (`EffectPtclCmd_Pos_pmf`, `EffectPartSet_Accel_pmf`). Only constants whose target is already named got one.
+- **Singletons and work areas** are `g<Type or role>`. Overlay globals carry the overlay tag (`gOv006SlotManager`, `gOv015Shared`, `gOv002Stage`). Examples:
+  - Main: `gGfxSys`, `gGfxMgr`, `gResMgr`, `gSysState`, `gPad`, `gTouch`, `gSndMgr`, `gSndQueue` (the queue pointer that other TUs read as `SndGlobal`), `gEffectMgr`, `gSceneMgr`, `gMsgRes`, `gDataRes`, `gStageFlags` (plus the saved copy `gStageFlagsSave`), `gWhMgr`, `gSysCard`, `gMovie`, `gRand`.
+  - ov000: `gActorMgr`, `gFieldMgr`, `gSceneCmd` (the `FieldState`), `gSceneResSet`, `gGroup`, `gMessageQueue`, `gFieldFade`, `gTaskHost`, `gTaskSwitchPending`, `gLastTaskId`, `gFinishingTask`.
+  - Parallel per-channel arrays are named by field: the GfxSys fade (`gFadeState`/`Timer`/`Duration`/`Start`/`End`/`Planes`, `gFadeFunc`/`gFadeFuncArg`) and Blend (`gBlendPlanes`/`Timer`/`Duration`/`Start`/`End`).
+  - DTCM: the hit work (`gHitSphereList`/`Count`, `gHitMeshList`/`Count`, `gHitList`/`gHitCount`, `gHitRayBest`, `gHitResult`, `gHitSphereNearest`/`Groups`) and the VRAM transfer queue (`gVramTransfers`, `gVramTransferQueue`, `gVramTransferNextId`, `gVramTransferSkip`).
+  - Const tables tied to a class are `<Class>_<Role>Table` (`ActorMarker_KindTable`, `Obj3D_AnimTable`, `UiLabel_StyleTable`, `Snd_AreaTable`, `ov006_CaptionTable`).
+- **SDK statics** get their SDK names only where the libs file already identified them and the name is free: `OSi_IdleThread`, `OSi_LauncherThread`, NNS sound `sCurrent`, `sPrioList`, `sSeqPlayer`, `sPlayer`, `sIsThreadCreated`, `sMesgQ`, `sCapParam`, and the char-canvas `VTABLE_OBJ2DRECT`/`VTABLE_OBJ1D`/`VTABLE_BG`. The redundant `// name` comments were dropped.
+- **Left unnamed:**
+  - The string pools, the lang/font data (`0x020823d4..0x02082bf8`, `data_02082254`) and everything in that range, including the display-list size table `data_020828f8` and, for symmetry, its pointer table `data_0208b3d0`. The Lang TU's work areas (`0214b0a8..0214b164`) and the name-table pools are left too.
+  - `sIsDispOn` and `sFreeList`: those names are macros in `gx.c`/`snd_command.c`.
+  - Globals with conflicting views or no clear role (`data_02fe1534`, `data_ov000_021ccd50`, `data_ov000_021ccd74`, `data_ov006_021ec888`, the ov002 `021f0f80..021f0fac` group, ov004).
+  - The one-use vector and parameter constants.
+  - Pointer-to-member constants whose target is still `func_*`.
+  - `data_ov000_021ccd3c` (task list): it is a TU definition with no symbols.txt entry.

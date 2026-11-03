@@ -8,9 +8,9 @@
 #include "Main/Gfx/Gfx3D.h"
 
 // Base of the ov002 stage objects (0x4c; ctor Ov002Obj_Init, dtor Ov002Obj_Detach).
-// The ctor appends the object to the list in data_ov002_021f0f9c (head at 0xdc, tail at 0xe0,
+// The ctor appends the object to the list in gOv002Stage (head at 0xdc, tail at 0xe0,
 // linked through next); an object can own up to eight others (children, each pointing back
-// through owner). Vtable data_ov002_021f0734: slot 0x08 func_ov002_021e8b28 (loaded: unk_0c >= 3),
+// through owner). Vtable Ov002Vt_021f0734_vtbl: slot 0x08 func_ov002_021e8b28 (loaded: unk_0c >= 3),
 // 0x0c..0x18 the load steps func_ov002_021e4dd4 runs while unk_0c goes 0..3.
 struct Ov002Obj : public VObj {
     s32 unk_04; // kind, -1 until set
@@ -27,7 +27,7 @@ struct Ov002Obj : public VObj {
 };
 SIZE_ASSERT(Ov002Obj, 0x4c);
 
-// Message reader (0x28, vtable data_ov002_021f0ce8; Ov002Vt_021f0ce8_Ctor, reset Ov002Msg021f0ce8_Init):
+// Message reader (0x28, vtable Ov002Vt_021f0ce8_vtbl; Ov002Vt_021f0ce8_Ctor, reset Ov002Msg021f0ce8_Init):
 // Ov002Msg021f0ce8_Load points it at a loaded message file, Ov002Msg021f0ce8_Next steps to the next record.
 // Each record is a 0xe-byte header (copied to unk_10) followed by a name and a text string.
 typedef struct Ov002MsgRes {
@@ -52,7 +52,7 @@ struct Ov002Msg021f0ce8 : public VObj {
 };
 SIZE_ASSERT(Ov002Msg021f0ce8, 0x28);
 
-// Sound command reader (0x18, vtable data_ov002_021f0cf8; Ov002Vt_021f0cf8_Ctor, reset
+// Sound command reader (0x18, vtable Ov002Vt_021f0cf8_vtbl; Ov002Vt_021f0cf8_Ctor, reset
 // Ov002Snd021f0cf8_Init): Ov002Snd021f0cf8_Load points it at a list of 0x10-byte commands,
 // Ov002Snd021f0cf8_Next steps to the next one.
 struct Ov002Snd021f0cf8 : public VObj {
@@ -89,7 +89,7 @@ typedef struct Ov002ObjLink {
     u32 *res2;
 } Ov002ObjLink;
 
-// Vtable data_ov002_021f07d4, 0x1f4 bytes (Ov002Obj021f07d4_New, ctor Ov002Obj021f07d4_Init).
+// Vtable Ov002Vt_021f07d4_vtbl, 0x1f4 bytes (Ov002Obj021f07d4_New, ctor Ov002Obj021f07d4_Init).
 struct Ov002Obj021f07d4 : public Ov002Obj {
     s32 unk_4c; // id matched against the link records
     Ov002ResName res; // its model
@@ -119,7 +119,7 @@ struct Ov002Obj021f07d4 : public Ov002Obj {
 };
 SIZE_ASSERT(Ov002Obj021f07d4, 0x1f4);
 
-// Vtable data_ov002_021f075c, 0xec bytes (Ov002Obj021f075c_New, ctor Ov002Obj021f075c_Init).
+// Vtable Ov002Vt_021f075c_vtbl, 0xec bytes (Ov002Obj021f075c_New, ctor Ov002Obj021f075c_Init).
 // Kind 2 while it animates its owner's model with up to five NNSG3dAnmObjs, kind 3 when it drives
 // a single joint animation (Ov002Obj021f075c_LoadAnim).
 struct Ov002Obj021f075c : public Ov002Obj {
@@ -151,7 +151,7 @@ struct Ov002Obj021f075c : public Ov002Obj {
 };
 SIZE_ASSERT(Ov002Obj021f075c, 0xec);
 
-// Vtable data_ov002_021f070c, 0x70 bytes (Ov002Obj021f070c_New).
+// Vtable Ov002Vt_021f070c_vtbl, 0x70 bytes (Ov002Obj021f070c_New).
 struct Ov002Obj021f070c : public Ov002Obj {
     s32 unk_4c;
     u8 unk_50[0x10];
@@ -162,7 +162,7 @@ struct Ov002Obj021f070c : public Ov002Obj {
 };
 SIZE_ASSERT(Ov002Obj021f070c, 0x70);
 
-// Vtable data_ov002_021f0784, 0x60 bytes (Ov002Obj021f0784_New).
+// Vtable Ov002Vt_021f0784_vtbl, 0x60 bytes (Ov002Obj021f0784_New).
 struct Ov002Obj021f0784 : public Ov002Obj {
     s32 unk_4c; // mode 0..2
     u16 unk_50;
@@ -173,7 +173,7 @@ struct Ov002Obj021f0784 : public Ov002Obj {
 };
 SIZE_ASSERT(Ov002Obj021f0784, 0x60);
 
-// Vtable data_ov002_021f06e4, 0x54 bytes (Ov002Obj021f06e4_New).
+// Vtable Ov002Vt_021f06e4_vtbl, 0x54 bytes (Ov002Obj021f06e4_New).
 struct Ov002Obj021f06e4 : public Ov002Obj {
     union {
         s16 unk_4c; // passed to func_0206e3a0 with unk_50
@@ -191,7 +191,7 @@ struct Ov002Obj021f06e4 : public Ov002Obj {
 };
 SIZE_ASSERT(Ov002Obj021f06e4, 0x54);
 
-// Vtable data_ov002_021f06bc, 0xac bytes (Ov002Obj021f06bc_New): plays the sound commands of a file.
+// Vtable Ov002Vt_021f06bc_vtbl, 0xac bytes (Ov002Obj021f06bc_New): plays the sound commands of a file.
 struct Ov002Obj021f06bc : public Ov002Obj {
     char unk_4c[0x20]; // archive
     char unk_6c[0x20]; // file name
@@ -203,7 +203,7 @@ SIZE_ASSERT(Ov002Obj021f06bc, 0xac);
 
 typedef s32 (*Ov002GetChar)(char **cursor);
 
-// Vtable data_ov002_021f07ac, 0x160 bytes (Ov002Obj021f07ac_New, ctor Ov002Obj021f07ac_Init): shows the
+// Vtable Ov002Vt_021f07ac_vtbl, 0x160 bytes (Ov002Obj021f07ac_New, ctor Ov002Obj021f07ac_Init): shows the
 // messages of a file, typing each text out into unk_c4 (Ov002Obj021f07ac_UpdateText).
 struct Ov002Obj021f07ac : public Ov002Obj {
     char unk_4c[0x20]; // archive
@@ -225,7 +225,7 @@ struct Ov002Obj021f07ac : public Ov002Obj {
 };
 SIZE_ASSERT(Ov002Obj021f07ac, 0x160);
 
-// Camera objects: vtable data_ov002_021f0854 (0xb4 bytes) with the eye/at/up block of a camera
+// Camera objects: vtable Ov002Vt_021f0854_vtbl (0xb4 bytes) with the eye/at/up block of a camera
 // (GfxCamPos_Init) and a projection matrix (MTX_Identity44_, MTX_OrthoW).
 struct Ov002Cam021f0854 : public Ov002Obj {
     s32 unk_4c;
@@ -236,13 +236,13 @@ struct Ov002Cam021f0854 : public Ov002Obj {
 };
 SIZE_ASSERT(Ov002Cam021f0854, 0xb4);
 
-// Vtable data_ov002_021f07fc, 0xb8 bytes (Ov002Cam021f07fc_New): orthographic.
+// Vtable Ov002Vt_021f07fc_vtbl, 0xb8 bytes (Ov002Cam021f07fc_New): orthographic.
 struct Ov002Cam021f07fc : public Ov002Cam021f0854 {
     struct Ov002Obj021f075c *unk_b4; // kind 3 child (func_ov002_021e7900)
 };
 SIZE_ASSERT(Ov002Cam021f07fc, 0xb8);
 
-// Vtable data_ov002_021f0828, 0xcc bytes (Ov002Cam021f0828_New): perspective.
+// Vtable Ov002Vt_021f0828_vtbl, 0xcc bytes (Ov002Cam021f0828_New): perspective.
 struct Ov002Cam021f0828 : public Ov002Cam021f0854 {
     s32 unk_b4;   // field of view in degrees (fx32, Ov002Cam021f0828_SetFovy)
     u16 unk_b8;   // as an angle; fovySin/fovyCos are of its half
@@ -273,7 +273,7 @@ typedef struct Ov002ResList {
     Ov002ResNode *head;
 } Ov002ResList;
 
-// Stage file reader (0x64, vtable data_ov002_021f0684; init Ov002StageFile_Init, release
+// Stage file reader (0x64, vtable Ov002Vt_021f0684_vtbl; init Ov002StageFile_Init, release
 // Ov002StageFile_Free), embedded in the stage context. Ov002StageFile_Open points it at a loaded
 // stage file and func_ov002_021eb964 finds the file's sections; func_ov002_021eaf20 builds the
 // stage objects from them.
@@ -306,7 +306,7 @@ struct Ov002StageFile : public VObj {
 };
 SIZE_ASSERT(Ov002StageFile, 0x64);
 
-// Stage context (0x2cc, vtable data_ov002_021f0674), data_ov002_021f0f9c, built by
+// Stage context (0x2cc, vtable Ov002Vt_021f0674_vtbl), gOv002Stage, built by
 // Ov002Stage_Create / func_ov002_021e8f04 (ctor Ov002Stage_Init, dtor Ov002Stage_Release).
 // It loads the stage file, runs the stage objects in its list and fades the screens in and out
 // (func_ov002_021e7ea8).
@@ -353,7 +353,7 @@ SIZE_ASSERT(Ov002Stage, 0x2cc);
 extern "C" {
 #endif
 
-extern Ov002Stage *data_ov002_021f0f9c;
+extern Ov002Stage *gOv002Stage;
 
 void Ov002Obj_Init(Ov002Obj *self);
 void Ov002Obj_Detach(Ov002Obj *self);

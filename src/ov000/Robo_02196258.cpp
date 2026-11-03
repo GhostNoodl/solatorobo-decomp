@@ -12,8 +12,8 @@ typedef struct {
 } Save02196258;
 
 extern "C" {
-extern void *data_ov000_021ccd64;
-extern Save02196258 *data_0214a424;
+extern void *gGroup;
+extern Save02196258 *gStageFlags;
 void HitSphere_Unlink_0203f364(void *a);
 void *Target_Get(void *p);
 void Ov003Pickup_Update(void *self, s32 a);
@@ -34,12 +34,12 @@ static inline void SetNibble02196258(s32 row, s32 idx, u32 value) {
     u32 *p;
 
     sh *= 4;
-    p = &data_0214a424->flags[row][idx / 8];
+    p = &gStageFlags->flags[row][idx / 8];
     *p = (*p & ~(0xf << sh)) | ((value & 0xf) << sh);
 }
 
 static inline int GetNibble02196258(s32 row, s32 idx) {
-    u32 v = data_0214a424->flags[row][idx / 8];
+    u32 v = gStageFlags->flags[row][idx / 8];
     return (v >> ((idx % 8) * 4)) & 0xf;
 }
 
@@ -63,7 +63,7 @@ static inline void Die02196258(VObj *obj) {
         Shared_ChangeFlags(0x3c0, 0x100);
         Shared_SetEventActor(self->unk_0e, self->unk_0c);
         {
-            FieldState *pl = data_ov000_021ccd54;
+            FieldState *pl = gSceneCmd;
             ((u8 *)pl)[0xac] = 1;
             func_ov000_02182590((u8 *)pl + 0xac);
         }
@@ -81,7 +81,7 @@ static inline void Die02196258(VObj *obj) {
         }
     }
     func_020627c8();
-    Group_UpdateActor(data_ov000_021ccd64, 0, self);
+    Group_UpdateActor(gGroup, 0, self);
     obj->vfunc_08();
 }
 

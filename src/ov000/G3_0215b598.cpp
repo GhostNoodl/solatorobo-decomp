@@ -61,7 +61,7 @@ void LoBase021cafc0_021cb0b8_DrawRectFrame(LoBase021cafc0_021cb0b8 *self, s32 a1
     MtxFx43 m;
     MtxFx43 tr;
     z = self->posZ - 0x100;
-    g = data_02097d48;
+    g = gGfxSys;
     G3_Cmd1(0x2a, 0x20000000);
     {
         s32 a = self->unk_54;

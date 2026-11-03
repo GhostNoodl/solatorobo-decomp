@@ -109,8 +109,8 @@ ActorMgr *ActorMgr_Init(ActorMgr *mgr) {
         mgr->msgs[i].unk_04 = i;
         mgr->msgs[i].type = 0;
     }
-    if (data_ov000_021ccd54 != NULL) {
-        mgr->pause.parent = (PauseNode *)data_ov000_021ccd54->pause;
+    if (gSceneCmd != NULL) {
+        mgr->pause.parent = (PauseNode *)gSceneCmd->pause;
     }
     for (key = 1; key < 9; key++) {
         group = (ActorGroup *)Heap_Alloc(sizeof(ActorGroup));
@@ -325,7 +325,7 @@ static inline ActorGroup *FindGroupX(ActorMgr *mgr, u16 id) {
 }
 
 void ActorMgr_BroadcastKind(void *self, u16 kind, s32 type) {
-    ActorGroup *group = FindGroupX(data_ov000_021ccd68, (u16)(kind & 0xf000));
+    ActorGroup *group = FindGroupX(gActorMgr, (u16)(kind & 0xf000));
     Actor *actor;
     if (group == NULL || (actor = group->head) == NULL) {
         return;

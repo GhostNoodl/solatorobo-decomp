@@ -85,7 +85,7 @@ void func_ov002_021e2528(Ov002Hud *self) {
 }
 
 void Ov002Hud_SetRow(Ov002Hud *self, u8 row, int force) {
-    void *res = data_02149ef8;
+    void *res = gMsgRes;
     u16 *ids = data_ov002_021ef058[row];
     s32 i;
     for (i = 0; i < 5; i++) {

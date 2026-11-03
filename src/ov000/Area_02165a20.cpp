@@ -92,7 +92,7 @@ void func_ov000_02165a20(Obj02165a20 *self, u8 *key) {
     if (w == NULL) {
         return;
     }
-    pl = data_ov000_021ccd54;
+    pl = gSceneCmd;
     if (((u8 *)pl)[0xca] != key[0]) {
         return;
     }

@@ -1,7 +1,7 @@
 #ifndef OV000_ACTORMGR_H
 #define OV000_ACTORMGR_H
 
-// The actor manager (data_ov000_021ccd68) and its groups, one per id group key (id & 0xf000).
+// The actor manager (gActorMgr) and its groups, one per id group key (id & 0xf000).
 // Kept apart from Actor.h so that files with their own actor prototypes can use the types.
 
 #include "ov000/ActorBase.h"
@@ -28,7 +28,7 @@ typedef struct ActorMgr {
 } ActorMgr;
 
 extern "C" {
-extern ActorMgr *data_ov000_021ccd68;
+extern ActorMgr *gActorMgr;
 }
 
 #endif

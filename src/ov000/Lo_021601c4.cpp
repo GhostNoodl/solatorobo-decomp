@@ -36,7 +36,7 @@ void Ov000Vt_021cac0c_Draw(ObjBase021cac0c_021cb6f0 *self) {
     if (!IsB3_021601c4(self)) {
         return;
     }
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     G3_Vec021601c4(0x1b, 0x1000, 0x1000, 0x1000);
     sn = FX_SinCosTable_[((self->unk_34 << 14) >> 16) * 2];
     pos.x = self->unk_74 << 12;

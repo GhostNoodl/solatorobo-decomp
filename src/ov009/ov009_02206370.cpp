@@ -2,8 +2,8 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
-extern void *data_ov009_0221707c;
+extern void *gSndMgr;
+extern void *Ov009ActVt_0221707c_vtbl;
 extern char data_ov009_02216bb4[];
 extern char data_ov009_02216bba[];
 extern void *Ov003FxList_Dtor(void *p);
@@ -13,7 +13,7 @@ extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *m, s32 a);
 static inline void Ov009_SpawnSparks(Ov009ActVt_02216dcc *self) {
     EffectObj *e;
     Rot16 r;
-    SndMgr_PlayAtPitch(data_02097e4c, 0x54, &self->pos, 3);
+    SndMgr_PlayAtPitch(gSndMgr, 0x54, &self->pos, 3);
     e = Effect_SpawnId(0x25d, &self->pos);
     e->AddPosXYZ(0, 0x1333, 0);
     e->SetScaleAll(0xb33);
@@ -103,9 +103,9 @@ void Ov009ActVt_02216dcc_StateKnockBack(Ov009ActVt_02216dcc *self) {
 
 Ov009ActVt_0221707c *Ov009ActVt_0221707c_DtorDelete(Ov009ActVt_0221707c *self) {
     void *saved;
-    *(void **)self = &data_ov009_0221707c;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    *(void **)self = &Ov009ActVt_0221707c_vtbl;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_104 != NULL) {
         void *p = self->unk_104;
         if (p != NULL) {
@@ -114,7 +114,7 @@ Ov009ActVt_0221707c *Ov009ActVt_0221707c_DtorDelete(Ov009ActVt_0221707c *self) {
         }
         self->unk_104 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     Ov003Actor_DtorBase(self);
     Heap_Free(self);
     return self;
@@ -122,9 +122,9 @@ Ov009ActVt_0221707c *Ov009ActVt_0221707c_DtorDelete(Ov009ActVt_0221707c *self) {
 
 Ov009ActVt_0221707c *Ov009ActVt_0221707c_Dtor(Ov009ActVt_0221707c *self) {
     void *saved;
-    *(void **)self = &data_ov009_0221707c;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    *(void **)self = &Ov009ActVt_0221707c_vtbl;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_104 != NULL) {
         void *p = self->unk_104;
         if (p != NULL) {
@@ -133,7 +133,7 @@ Ov009ActVt_0221707c *Ov009ActVt_0221707c_Dtor(Ov009ActVt_0221707c *self) {
         }
         self->unk_104 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     Ov003Actor_DtorBase(self);
     return self;
 }
@@ -241,8 +241,8 @@ void Ov009ActVt_022178f0_Start(Ov009ActVt_022178f0 *self) {
     self->unk_fc = self->unk_f0;
     self->pos.z += 0x18000;
     {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (self->hit != NULL) {
             void *q = self->hit;
             if (q != NULL) {
@@ -251,12 +251,12 @@ void Ov009ActVt_022178f0_Start(Ov009ActVt_022178f0 *self) {
             }
             self->hit = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     self->unk_108 = 0;
     self->unk_10a = 0;
     Ov009_VecSet3(&self->unk_44->unk_0c, 0x3800, self->centerY, 0);
-    p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    p = Group_FindNode(gGroup, self->unk_20);
     if (p != NULL) {
         p->flags.unk_0 = 0;
     }

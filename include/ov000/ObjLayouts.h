@@ -20,7 +20,7 @@ struct Lo021caac8;
 struct Lo021cad50;
 struct Menu021ca94c;
 
-// The ov000 actor with resources (ctor ActorEx_Ctor, vtable data_ov000_021cc480, 0xd0
+// The ov000 actor with resources (ctor ActorEx_Ctor, vtable ActorEx_vtbl, 0xd0
 // bytes); the ov003/ov009/ov012-ov014 actor classes in that vtable family derive from it.
 // Spawn parameters of an ActorEx (ActorEx::param). The bit fields at 0x02 are the union of
 // the splits the methods use.
@@ -125,8 +125,8 @@ typedef struct Param0206ef10 {
 } Param0206ef10;
 SIZE_ASSERT(Param0206ef10, 0x2c);
 
-// The robot actor (ctor Robo021ca458_Ctor, vtable data_ov000_021cc774, 0xbb0 bytes; its state
-// handlers are the pointer-to-member table data_ov000_021ca458). Methods in Robo_*.cpp and others.
+// The robot actor (ctor Robo021ca458_Ctor, vtable Robo021ca458_vtbl, 0xbb0 bytes; its state
+// handlers are the pointer-to-member table Robo021ca458_StateTable). Methods in Robo_*.cpp and others.
 // The bit fields at 0xae4 and 0xb22..0xb2c are the union of the members the methods use.
 struct Robo021ca458 : public Actor {
     // Built in place by Robo021ca458_Ctor: three models with their resources and two hit spheres.
@@ -328,7 +328,7 @@ struct Robo021ca458 : public Actor {
 };
 SIZE_ASSERT(Robo021ca458, 0xbb0);
 
-// Vtable data_ov000_021ca94c; methods in G3_0214cff4.cpp, Lo_0214cb44.cpp, Menu_0214c2d0.cpp.
+// Vtable Menu021ca94c_vtbl; methods in G3_0214cff4.cpp, Lo_0214cb44.cpp, Menu_0214c2d0.cpp.
 struct Menu021ca94c : public UiObj {
     Model *unk_84;
     Model *unk_88;
@@ -365,7 +365,7 @@ struct Menu021ca94c : public UiObj {
 };
 
 
-// Vtable data_ov000_021ca9c4; methods in 8 files, Lo_021501e4.cpp .. Lo_0215123c.cpp.
+// Vtable Lo021ca9c4_vtbl; methods in 8 files, Lo_021501e4.cpp .. Lo_0215123c.cpp.
 struct Lo021ca9c4 : public Task {
     VObj *unk_3c;
     u16 unk_40;
@@ -377,10 +377,10 @@ struct Lo021ca9c4 : public Task {
     struct MsgEntryEx *unk_54; // ov000/MsgEntry.h
     Lo021cad50 *unk_58;
     s32 unk_5c;
-    TextWin text[6]; // built in place by Lo021ca9c4_New (TextWin_Init, vtable data_0208ba70)
+    TextWin text[6]; // built in place by Lo021ca9c4_New (TextWin_Init, vtable TextWin_vtbl)
 };
 
-// Vtable data_ov000_021caa44; methods in 6 files, Lo_0214e7f0.cpp .. Lo_0214f9ec.cpp.
+// Vtable Lo021caa44_vtbl; methods in 6 files, Lo_0214e7f0.cpp .. Lo_0214f9ec.cpp.
 struct Lo021caa44 : public Task {
     VObj *unk_3c;
     Model *unk_40;
@@ -394,15 +394,15 @@ struct Lo021caa44 : public Task {
     u16 unk_64;
 };
 
-// Vtable data_ov000_021caac8; methods in Lo_0214e074.cpp, Lo_0214e3b4.cpp.
+// Vtable Lo021caac8_vtbl; methods in Lo_0214e074.cpp, Lo_0214e3b4.cpp.
 struct Lo021caac8 : public UiList021cb4a8 {
     Model *unk_e0; // cleared by slot 0x28, freed by slot 0x2c
 };
 
 
 
-// Bar display base (vtable data_ov000_021cac0c, 0x9c bytes; slot 0x14 Ov000Vt_021cac0c_Init clears
-// it). Subclass vtables data_ov000_021cb6f0, 021cb744, 021cb798, 021cb7ec, 021cb840, 021cb894
+// Bar display base (vtable Ov000Vt_021cac0c_vtbl, 0x9c bytes; slot 0x14 Ov000Vt_021cac0c_Init clears
+// it). Subclass vtables Lo021cb6f0_vtbl, 021cb744, 021cb798, 021cb7ec, 021cb840, 021cb894
 // (all built by func_ov000_02170a58) and 021cca88 (ListRowGauge_Update) keep its slots 0x08..0x10
 // and 0x40..0x44. Methods in Obj_0215fe60.cpp, Lo_021601c4.cpp, Obj_02160344.c, Obj_0215fdfc.c,
 // Cam_02160414.cpp, ov000_02160534.cpp, Lo_021609ec.cpp, Lo_02160c7c.cpp.
@@ -459,7 +459,7 @@ struct ObjBase021cac0c_021cb6f0 : public VObj {
 };
 SIZE_ASSERT(ObjBase021cac0c_021cb6f0, 0x9c);
 
-// Vtable data_ov000_021cacd8 (0xa0 bytes, init func_ov000_02160fc8): a count selector; methods in
+// Vtable Lo021cacd8_vtbl (0xa0 bytes, init func_ov000_02160fc8): a count selector; methods in
 // Lo_02160ff8.cpp .. Lo_0216150c.cpp, Lo_02161798.cpp (draws count / max), Lo_02161994.cpp (the arrows).
 // Slot 0x54 (Lo021cacd8_PostUpdate) steps count by 1 (up/down) or 10 (left/right) within 1..max and
 // calls onDone with TRUE for A and FALSE for B.
@@ -477,7 +477,7 @@ struct Lo021cacd8 : public UiObj {
 };
 SIZE_ASSERT(Lo021cacd8, 0xa0);
 
-// Vtable data_ov000_021cad50; methods in G3_0215d4b4.cpp, Lo_0215d30c.cpp, Lo_0215d3bc.cpp.
+// Vtable Lo021cad50_vtbl; methods in G3_0215d4b4.cpp, Lo_0215d30c.cpp, Lo_0215d3bc.cpp.
 struct Lo021cad50 : public UiObj {
     u32 unk_84;        // the flags of Obj0215c1bc_SetText / func_ov000_0215c744
     u16 unk_88;        // item id (func_ov000_0215c744)
@@ -487,13 +487,13 @@ struct Lo021cad50 : public UiObj {
     VObj *unk_98[12];  // freed by slot 0x2c; slot 0x70 sets bit 2 of each one's word 4
 };
 
-// Vtable data_ov000_021cadcc; methods in Lo_0215bd88.cpp, Lo_0215bf60.cpp, Lo_0215c05c.cpp, Lo_0215c0c4.cpp.
+// Vtable Lo021cadcc_vtbl; methods in Lo_0215bd88.cpp, Lo_0215bf60.cpp, Lo_0215c05c.cpp, Lo_0215c0c4.cpp.
 struct Lo021cadcc : public UiObj {
     VObj *unk_84;
     s32 unk_88;
 };
 
-// Vtable data_ov000_021cae48: a number display (methods in Lo_0215dae0.cpp, Lo_0215deb4.cpp,
+// Vtable Lo021cae48_vtbl: a number display (methods in Lo_0215dae0.cpp, Lo_0215deb4.cpp,
 // TextWin_0215d758.cpp, Win_0215db70.cpp). Lo021cae48_SetValue sets value (and shown too when asked);
 // slot 0x0c (Lo021cae48_PostUpdate) moves shown towards value, and the draw prints shown with the digits.
 struct Lo021cae48 : public UiObj {
@@ -506,12 +506,12 @@ struct Lo021cae48 : public UiObj {
 
 
 
-// Vtable data_ov000_021cafc0, data_ov000_021cb0b8, data_ov000_021cb1b0, data_ov006_021ec30c; methods in 6 files, G3_0215b2e4.cpp .. Text_0215b8f0.cpp.
+// Vtable Ov000Vt_021cafc0_vtbl, Ov000Vt_021cb0b8_vtbl, Ov000Vt_021cb1b0_vtbl, ov006_Window_vtbl; methods in 6 files, G3_0215b2e4.cpp .. Text_0215b8f0.cpp.
 struct LoBase021cafc0_021cb0b8 : public UiList {
     TextWin *title2; // second title line (slot 0x10 LoBase021cafc0_021cb0b8_SetTitle splits the title), freed by slot 0x2c
 };
 
-// Vtable data_ov000_021cb0b8 (0x1e4 bytes, base data_ov000_021cb1b0, slot 0x28 Lo021cb0b8_Init): a list
+// Vtable Ov000Vt_021cb0b8_vtbl (0x1e4 bytes, base Ov000Vt_021cb1b0_vtbl, slot 0x28 Lo021cb0b8_Init): a list
 // dialog whose title and lines are copied into buf; slot 0x08 Lo021cb0b8_Setup builds it from message msgId
 // (or text) and selects the item with id key.
 struct Lo021cb0b8 : public LoBase021cafc0_021cb0b8 {
@@ -523,7 +523,7 @@ struct Lo021cb0b8 : public LoBase021cafc0_021cb0b8 {
 };
 
 
-// Vtable data_ov000_021cb3a8; methods in 8 files, Hp_02158ed4.cpp .. Text_02158b48.cpp.
+// Vtable Lo021cb3a8_vtbl; methods in 8 files, Hp_02158ed4.cpp .. Text_02158b48.cpp.
 struct Lo021cb3a8 : public UiList021cb4a8 {
     char *srcStr;
     char *str;
@@ -531,14 +531,14 @@ struct Lo021cb3a8 : public UiList021cb4a8 {
     TextWin *text; // built from str by Lo021cb3a8_SetText
 };
 
-// Vtable data_ov000_021cb5a8; methods in 6 files, Lo_02159aac.cpp .. Lo_0215a7d8.cpp.
+// Vtable Lo021cb5a8_vtbl; methods in 6 files, Lo_02159aac.cpp .. Lo_0215a7d8.cpp.
 struct Lo021cb5a8 : public UiList {
     s32 unk_d4;
     void *dl;     // frame display list (func_ov000_0215a088, G3_BeginMakeDL), Heap_FreeHi'd by slot 0x2c
     u32 dlSize;
 };
 
-// Vtable data_ov000_021cb6b0; methods in Lo_021645b8.cpp, Lo_02164708.cpp.
+// Vtable Lo021cb6b0_vtbl; methods in Lo_021645b8.cpp, Lo_02164708.cpp.
 struct Lo021cb6b0 : public VObj {
     u8 unk_04[0x1c];
     s32 unk_20;
@@ -555,12 +555,12 @@ struct Lo021cb6b0 : public VObj {
     s32 unk_50;
 };
 
-// Vtable data_ov000_021cb6f0; methods in Lo_021680b4.cpp, Lo_021681c4.cpp, Lo_021681fc.cpp, Lo_021682fc.cpp.
+// Vtable Lo021cb6f0_vtbl; methods in Lo_021680b4.cpp, Lo_021681c4.cpp, Lo_021681fc.cpp, Lo_021682fc.cpp.
 struct Lo021cb6f0 : public ObjBase021cac0c_021cb6f0 {
     Model *unk_9c;
 };
 
-// Vtable data_ov000_021cb744; methods in Lo_0216a608.cpp, Lo_0216a7dc.cpp.
+// Vtable Lo021cb744_vtbl; methods in Lo_0216a608.cpp, Lo_0216a7dc.cpp.
 struct Lo021cb744 : public ObjBase021cac0c_021cb6f0 {
     Model *unk_9c;
     Model *unk_a0;
@@ -571,7 +571,7 @@ struct Lo021cb744 : public ObjBase021cac0c_021cb6f0 {
     u8 unk_ac; // func_ov000_0216a438
 };
 
-// Vtable data_ov000_021cb798; methods in Lo_021699f0.cpp, Lo_02169c14.cpp, Lo_02169d40.cpp.
+// Vtable Lo021cb798_vtbl; methods in Lo_021699f0.cpp, Lo_02169c14.cpp, Lo_02169d40.cpp.
 struct Lo021cb798 : public ObjBase021cac0c_021cb6f0 {
     s32 unk_9c;
     Model *unk_a0;
@@ -584,7 +584,7 @@ struct Lo021cb798 : public ObjBase021cac0c_021cb6f0 {
     s32 unk_b4;
 };
 
-// Vtable data_ov000_021cb7ec; methods in Lo_0216926c.cpp, Lo_021692e0.cpp, Lo_021694e0.cpp.
+// Vtable Lo021cb7ec_vtbl; methods in Lo_0216926c.cpp, Lo_021692e0.cpp, Lo_021694e0.cpp.
 struct Lo021cb7ec : public ObjBase021cac0c_021cb6f0 {
     Model *unk_9c;
     s32 unk_a0;
@@ -594,7 +594,7 @@ struct Lo021cb7ec : public ObjBase021cac0c_021cb6f0 {
     s32 unk_ac;
 };
 
-// Vtable data_ov000_021cb840; methods in Lo_02168ee0.cpp, Lo_02168f50.cpp, Lo_02168f90.cpp, Lo_0216906c.cpp.
+// Vtable Lo021cb840_vtbl; methods in Lo_02168ee0.cpp, Lo_02168f50.cpp, Lo_02168f90.cpp, Lo_0216906c.cpp.
 struct Lo021cb840 : public ObjBase021cac0c_021cb6f0 {
     s32 unk_9c;
     s32 unk_a0;
@@ -602,7 +602,7 @@ struct Lo021cb840 : public ObjBase021cac0c_021cb6f0 {
     s32 unk_a8;
 };
 
-// Vtable data_ov000_021cb894; methods in 5 files, Lo_021685f4.cpp .. Lo_021688c4.cpp.
+// Vtable Lo021cb894_vtbl; methods in 5 files, Lo_021685f4.cpp .. Lo_021688c4.cpp.
 struct Lo021cb894 : public ObjBase021cac0c_021cb6f0 {
     Model *unk_9c;
     s32 unk_a0;
@@ -614,7 +614,7 @@ struct Lo021cb894 : public ObjBase021cac0c_021cb6f0 {
     s32 unk_b8;
 };
 
-// Vtable data_ov000_021cca40 (0x48 bytes, init Lo021cca40_Init; ov015 builds them): a list row with
+// Vtable Lo021cca40_vtbl (0x48 bytes, init Lo021cca40_Init; ov015 builds them): a list row with
 // a name, a count and a value. Slot 0x08 (func_ov000_021c5bd4) makes the text and the digit model once,
 // slot 0x0c (func_ov000_021c5d9c) draws the name and the two numbers.
 struct Lo021cca40 : public ListRow {
@@ -628,8 +628,8 @@ struct Lo021cca40 : public ListRow {
 };
 SIZE_ASSERT(Lo021cca40, 0x48);
 
-// Row list: vtable data_ov000_021ccbe0 (0xf4 bytes; the constructor calls UiObj_Init through slot 0x28,
-// then func_ov000_021c3af4) over the base vtable data_ov000_021ccb54; ov002's subclass data_ov002_021f0044
+// Row list: vtable Ov000Vt_021ccbe0_vtbl (0xf4 bytes; the constructor calls UiObj_Init through slot 0x28,
+// then func_ov000_021c3af4) over the base vtable Ov000Vt_021ccb54_vtbl; ov002's subclass Ov002Vt_021f0044_vtbl
 // keeps the size. Both dtors release it with LoBase021ccb54_021ccbe0_Release. Methods in Lo_021c4d90.cpp, Lo_021c5028.cpp,
 // Lo_021c5128.cpp, Text_021c524c.cpp, Unit_021c3d20.cpp and the files of ListRowText_Draw .. 021c56c0.
 struct LoBase021ccb54_021ccbe0 : public UiObj {
@@ -673,7 +673,7 @@ struct LoBase021ccb54_021ccbe0 : public UiObj {
 };
 SIZE_ASSERT(LoBase021ccb54_021ccbe0, 0xf4);
 
-// Vtable data_ov000_021ccb54 (0x100 bytes; ov006 builds it): the row list with three labels, cleared by
+// Vtable Ov000Vt_021ccb54_vtbl (0x100 bytes; ov006 builds it): the row list with three labels, cleared by
 // Lo021ccb54_ClearLabels, ticked by slot 0x54 (Ov000Vt_021ccb54_PreUpdate) and released by Lo021ccb54_FreeLabels.
 struct Lo021ccb54 : public LoBase021ccb54_021ccbe0 {
     UiLabel *unk_f4;

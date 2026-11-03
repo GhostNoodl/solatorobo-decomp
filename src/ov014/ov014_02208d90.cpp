@@ -38,18 +38,18 @@ void Ov014ActEx_02208618_StateDie(Ov014ActEx_02208618 *self) {
         a->SetScaleAll(0x40);
         Ov003FxList_Add(((Ov003FxList *)self->unk_d8), 0xfe, a);
         Field_ShakeCamera(0xf, 0xf);
-        SndMgr_PlayAt(data_02097e4c, 0x7f, &self->pos, 0);
-        SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x7f, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x56, &self->pos, 0);
         self->fsm->st++;
         break;
     }
     case 1: {
         EffectObj *o;
-        o = Effect_Find_020657b0(data_0214a420, Ov003FxList_Get(((Ov003FxList *)self->unk_d8), 0xff));
+        o = Effect_Find_020657b0(gEffectMgr, Ov003FxList_Get(((Ov003FxList *)self->unk_d8), 0xff));
         if (o != NULL) {
             o->SetScaleAll(o->scale.x + 0x148);
         }
-        o = Effect_Find_020657b0(data_0214a420, Ov003FxList_Get(((Ov003FxList *)self->unk_d8), 0xfe));
+        o = Effect_Find_020657b0(gEffectMgr, Ov003FxList_Get(((Ov003FxList *)self->unk_d8), 0xfe));
         if (o != NULL) {
             o->SetScaleAll(o->scale.x + 0xcd);
         }
@@ -59,7 +59,7 @@ void Ov014ActEx_02208618_StateDie(Ov014ActEx_02208618 *self) {
         break;
     }
     case 2:
-        Group_UpdateActor(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(gGroup, 0, self);
         self->vfunc_08();
         break;
     }

@@ -4,7 +4,7 @@
 #include "types.h"
 
 // Resource handle holding a message (text) archive. The vtables stay in asm:
-// data_0208b318 (base resource handle) and data_0208ba30 (message resource).
+// ResHandle_vtbl (base resource handle) and MainVt_0208ba30_vtbl (message resource).
 struct MsgRes {
     /* 0x00 */ // vtable
     virtual void unk_vf00();
@@ -34,8 +34,8 @@ struct MsgRes {
 extern "C" {
 #endif
 
-extern const u32 data_0208b318[];
-extern const u32 data_0208ba30[];
+extern const u32 ResHandle_vtbl[];
+extern const u32 MainVt_0208ba30_vtbl[];
 
 #ifdef __cplusplus
 }

@@ -37,10 +37,10 @@ void Target_Set(void *a, void *b);
 void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
 
 static inline Actor *FindActor_021a4194(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Robo021ca458_State06(Robo021ca458 *self) {

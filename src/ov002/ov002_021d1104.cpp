@@ -18,7 +18,7 @@ Task021ef71c *Task021ef71c_New(void) {
     Task021ef71c *p = (Task021ef71c *)Heap_Alloc(0x70);
     if (p != NULL) {
         TaskBase_ctor(p);
-        *(VFunc **)p = data_ov002_021ef71c;
+        *(VFunc **)p = Ov002TaskVt_021ef71c_vtbl;
         MIi_CpuClear32(-1, (u8 *)p + 0x3c, 0x20);
         p->unk_5c = 0;
         p->unk_60 = -1;
@@ -31,14 +31,14 @@ Task021ef71c *Task021ef71c_New(void) {
 }
 
 Task021ef71c *Ov002TaskVt_021ef71c_Dtor(Task021ef71c *self) {
-    *(VFunc **)self = data_ov002_021ef71c;
+    *(VFunc **)self = Ov002TaskVt_021ef71c_vtbl;
     Ov002Stage_Delete_021e916c();
     TaskBase_dtor(self);
     return self;
 }
 
 Task021ef71c *Ov002TaskVt_021ef71c_DtorDelete(Task021ef71c *self) {
-    *(VFunc **)self = data_ov002_021ef71c;
+    *(VFunc **)self = Ov002TaskVt_021ef71c_vtbl;
     Ov002Stage_Delete_021e916c();
     TaskBase_dtor(self);
     Heap_Free(self);

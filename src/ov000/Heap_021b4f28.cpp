@@ -19,13 +19,13 @@ void func_0206e6c0(void);
 static inline void FieldMgr_Delete(FieldMgr *o) {
     FieldProp *node;
     if (o->blockB != NULL) {
-        FieldState *g = data_ov000_021ccd54;
+        FieldState *g = gSceneCmd;
         Info021b4f28 *info = Lang_GetGroup(g->unk_ca.c[0]);
         char buf[0x20];
         func_0206dfd4(buf, &g->unk_ca.c[0]);
         ResMgr_ReleaseArchive(info->unk_08, buf, 0);
         {
-            FieldCam *sub = &data_ov000_021ccd54->cam;
+            FieldCam *sub = &gSceneCmd->cam;
             sub->unk_c8 = 0;
             sub->unk_d6 = 0;
         }
@@ -58,16 +58,16 @@ static inline void FieldMgr_Delete(FieldMgr *o) {
 void func_ov000_021b4f28(void) {
     FieldMgr *p;
     void *saved;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
-    p = data_ov000_021ccd6c;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
+    p = gFieldMgr;
     if (p != NULL) {
         if (p != NULL) {
             FieldMgr_Delete(p);
         }
-        data_ov000_021ccd6c = NULL;
+        gFieldMgr = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     func_0206e6c0();
 }
 

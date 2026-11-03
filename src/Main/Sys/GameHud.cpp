@@ -77,7 +77,7 @@ extern void *func_02050ebc(void *self, void *info, void *oam, u16 *num);
 extern BOOL func_ov000_021705a0(FieldActor *actor, int a);
 
 static inline BOOL GameScene_IsPlayerActing(void) {
-    FieldPlayer *player = data_ov000_021ccd30;
+    FieldPlayer *player = gMessageQueue;
     if (player == NULL) {
         return FALSE;
     }
@@ -117,12 +117,12 @@ void func_02056e74(GameScene *scene, GameHud *hud) {
     G3_Cmd1(0x13, 0);
     NNS_G3dGeBufferOP_N(0x15, NULL, 0);
     G3_Vec(0x1b, 0x1000, 0x1000, 0x1000);
-    G3_Cmd1(0x29, 0x1600d0 | (Gfx3DState_NextPolyIdB(data_02097d48->unk_8b0) << 24));
+    G3_Cmd1(0x29, 0x1600d0 | (Gfx3DState_NextPolyIdB(gGfxSys->unk_8b0) << 24));
     G3_Cmd1(0x2a, 0x20000000);
     col = 0;
     y = 0x8c;
-    if (data_ov000_021ccd70->mode != 2) {
-        pltt = &data_02097d48->pltt;
+    if (gFieldFade->mode != 2) {
+        pltt = &gGfxSys->pltt;
         hud->unk_4 = 0xf;
         hud->unk_6 = 0x94;
         y <<= 12;
@@ -132,7 +132,7 @@ void func_02056e74(GameScene *scene, GameHud *hud) {
         s = !hud->flip ? FX_SinCosTable_[((hud->t << 14) >> 16) * 2] : 0x1000 - FX_SinCosTable_[((hud->t << 14) >> 16) * 2];
         G3_Vec(0x1b, s, s, 0x1000);
         if (!GameScene_IsPlayerActing()) {
-            if ((u8)(data_ov000_021ccd54->unk_ca.c[0] + 2) <= 1) {
+            if ((u8)(gSceneCmd->unk_ca.c[0] + 2) <= 1) {
                 col = 0xc63;
             }
         }

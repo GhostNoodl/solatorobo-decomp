@@ -4,8 +4,8 @@
 
 extern "C" {
 
-extern u8 data_ov010_0220fe1c[];
-extern u8 data_ov010_0220fe08[];
+extern u8 Ov010Vt_0220fe1c_vtbl[];
+extern u8 Ov010Vt_0220fe08_vtbl[];
 extern void *Ov003Pool_Dtor(void *p);
 extern void Ov003Pool_Release(void *p);
 extern Ov010TaskNode *Ov003Pool_Alloc(void *p);
@@ -47,7 +47,7 @@ void *Ov010Vt_0220fe08_DtorDelete(void *o) {
 Ov010Task *Ov010Vt_0220fe08_New(void) {
     Ov010Task *p = (Ov010Task *)Heap_Alloc(sizeof(Ov010Task));
     if (p != NULL) {
-        p->vtbl = data_ov010_0220fe08;
+        p->vtbl = Ov010Vt_0220fe08_vtbl;
         p->b0 = 0;
     }
     return p;

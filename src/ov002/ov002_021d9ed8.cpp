@@ -44,9 +44,9 @@ void Obj021efe6c_RemovePiece(Obj021efe6c *self, Obj021efeb8 *obj, bool del) {
             }
         }
     }
-    if (data_0214a424->bits18.mode == 1) {
+    if (gStageFlags->bits18.mode == 1) {
         func_ov000_021c9544(self->unk_76, self->pieces);
-        Obj021c95ac_Init_021c95ac(self->unk_76, data_0214a424->bits18.unk_3 | 0x8000);
+        Obj021c95ac_Init_021c95ac(self->unk_76, gStageFlags->bits18.unk_3 | 0x8000);
     } else {
         func_ov000_021c9544(self->unk_76, self->pieces);
     }

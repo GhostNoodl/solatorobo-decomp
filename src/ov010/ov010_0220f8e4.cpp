@@ -96,7 +96,7 @@ extern BOOL History_SetState(void *a, s32 b, s32 c);
 extern void HitSphere_Unlink_0203f364(void *p);
 extern int func_ov003_021cf330(void *p, void *d, s32 c);
 
-extern u8 data_ov010_0220fe6c[];
+extern u8 Ov010ActVt_0220fe6c_vtbl[];
 
 extern void *Ov003Vt_021f79a8_Ctor(void *p);
 extern void *Ov003Vt_021f79a8_Dtor(void *p);
@@ -118,7 +118,7 @@ static inline void Ov010_022020c8_Init(Obj022020c8 *self) {
 
 void *Ov010ActVt_0220fe6c_Ctor(Obj022020c8 *self) {
     ActorEx_Ctor(self);
-    *(void * *)self = data_ov010_0220fe6c;
+    *(void * *)self = Ov010ActVt_0220fe6c_vtbl;
     Ov003Vt_021f79a8_Ctor(&self->flagObj);
     Ov010_022020c8_Init(self);
     return self;
@@ -126,16 +126,16 @@ void *Ov010ActVt_0220fe6c_Ctor(Obj022020c8 *self) {
 
 static inline void Ov010_022020c8_Dtor(Obj022020c8 *self) {
     void *saved;
-    *(void **)self = data_ov010_0220fe6c;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    *(void **)self = Ov010ActVt_0220fe6c_vtbl;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_d8 != NULL) {
         Ov010Glow *s = self->unk_d8;
         if (s != NULL) {
             if (s->b0) {
                 s->b0 = 0;
-                EffectMgr_StopLoop(data_0214a420, s->keyA);
-                EffectMgr_StopLoop(data_0214a420, s->keyB);
+                EffectMgr_StopLoop(gEffectMgr, s->keyA);
+                EffectMgr_StopLoop(gEffectMgr, s->keyB);
                 s->keyA = 0;
                 s->keyB = 0;
             }
@@ -143,7 +143,7 @@ static inline void Ov010_022020c8_Dtor(Obj022020c8 *self) {
         }
         self->unk_d8 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     self->flagObj.vfunc_08();
     Ov010_022020c8_Init(self);
     Ov003Vt_021f79a8_Dtor(&self->flagObj);
@@ -240,7 +240,7 @@ static inline BOOL Ov010_GBusy(FieldState *g) {
 }
 
 static inline BOOL Ov010_GIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (Ov010_GBusy(g)) {
             return FALSE;
@@ -340,7 +340,7 @@ extern "C" {
 extern void VEC_MultAdd(s32 s, const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 extern void VEC_Add(VecFx32 *a, const VecFx32 *b, VecFx32 *c);
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern void HitSphere_Unlink_0203f364(void *p);
 extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 extern void Ov010_GrowFxCallback(EffectObj *fx);
@@ -381,7 +381,7 @@ void Ov010Obj022020c8_State21(Obj022020c8 *self) {
         m->blend = 2;
         m->blendMax = 1;
         self->model->alpha = 0x14;
-        SndMgr_PlayAt(data_02097e4c, 0x2b, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x2b, &self->pos, 0);
         break;
     }
     case 1: {
@@ -471,8 +471,8 @@ namespace m_02202d9c {
 typedef BOOL (*Ov010HitFn)(u16 id, const VecFx32 *a, const VecFx32 *b);
 
 extern "C" {
-extern void *data_02097e4c;
-extern void *data_ov000_021ccd68;
+extern void *gSndMgr;
+extern void *gActorMgr;
 extern BOOL History_SetState(void *a, s32 b, s32 c);
 extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 extern void *SndMgr_PlayAtPitch(void *mgr, s32 id, const VecFx32 *pos, s32 a);
@@ -520,7 +520,7 @@ void Ov010Obj022020c8_State23(Obj022020c8 *self) {
         s = self->unk_d8;
         if (s->b0) {
             if (s->b2) {
-                EffectMgr_StopLoop(data_0214a420, s->keyB);
+                EffectMgr_StopLoop(gEffectMgr, s->keyB);
                 s->keyB = 0;
             }
             s->b2 = 1;
@@ -528,7 +528,7 @@ void Ov010Obj022020c8_State23(Obj022020c8 *self) {
             s->b3 = 0;
         }
         self->fsm->st = 1;
-        SndMgr_PlayAt(data_02097e4c, 0x50, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x50, &self->pos, 0);
         break;
     }
     case 1:
@@ -538,7 +538,7 @@ void Ov010Obj022020c8_State23(Obj022020c8 *self) {
         if (self->fsm->timer > 0x46) {
             self->fsm->timer = 0;
             self->fsm->st = 10;
-            SndMgr_PlayAtPitch(data_02097e4c, 0x32, &self->pos, 8);
+            SndMgr_PlayAtPitch(gSndMgr, 0x32, &self->pos, 8);
         }
         break;
     case 10:
@@ -559,7 +559,7 @@ void Ov010Obj022020c8_State23(Obj022020c8 *self) {
         chk = TRUE;
         {
             u16 id = self->target;
-            tgt = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, id);
+            tgt = gActorMgr == NULL ? NULL : ActorMgr_GetActor(gActorMgr, id);
         }
         {
             ActorSub40 *st = self->fsm;
@@ -604,8 +604,8 @@ void Ov010Obj022020c8_State23(Obj022020c8 *self) {
         chk = TRUE;
         {
             u16 id = self->target;
-            if (data_ov000_021ccd68 != NULL) {
-                tgt = ActorMgr_GetActor(data_ov000_021ccd68, id);
+            if (gActorMgr != NULL) {
+                tgt = ActorMgr_GetActor(gActorMgr, id);
             }
         }
         self->unk_e0.x = Ov010t_FxMul64(self->unk_e0.x, 0xe80);
@@ -630,8 +630,8 @@ void Ov010Obj022020c8_State23(Obj022020c8 *self) {
         Model0218fe1c *m;
         {
             u16 id = self->target;
-            if (data_ov000_021ccd68 != NULL) {
-                tgt = ActorMgr_GetActor(data_ov000_021ccd68, id);
+            if (gActorMgr != NULL) {
+                tgt = ActorMgr_GetActor(gActorMgr, id);
             }
         }
         t = 0x19 - self->fsm->timer;
@@ -692,9 +692,9 @@ void Ov010Obj022020c8_State23(Obj022020c8 *self) {
 // ---- merged from ov010_022033d0.cpp
 namespace m_022033d0 {
 extern "C" {
-extern void *data_02097e4c;
-extern void *data_ov000_021ccd68;
-extern void *data_ov000_021ccd64;
+extern void *gSndMgr;
+extern void *gActorMgr;
+extern void *gGroup;
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, u16 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
 extern void Field_ShakeCamera(s32 a, s32 b);
@@ -705,10 +705,10 @@ extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void Group_UpdateActor(void *a, s32 b, void *c);
 
 static inline Actor *Ov010_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline s32 Ov010_TeamBit(u16 id) {
@@ -732,17 +732,17 @@ void Ov010Obj022020c8_StateDie(Obj022020c8 *self) {
         e = Effect_SpawnId(0x131, &self->pos);
         e->SetRotXYZ(0, Ov003Vec_Yaw(&data_ov010_0220fe38), 0);
         e->SetScaleAll(0x2000);
-        SndMgr_PlayAt(data_02097e4c, 0x1a, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x1a, &self->pos, 0);
         s = self->unk_d8;
         if (s->b0) {
             s->b1 = 0;
-            EffectMgr_Kill(data_0214a420, s->keyA);
+            EffectMgr_Kill(gEffectMgr, s->keyA);
             s->keyA = 0;
         }
         s = self->unk_d8;
         if (s->b0) {
             s->b2 = 0;
-            EffectMgr_Kill(data_0214a420, s->keyB);
+            EffectMgr_Kill(gEffectMgr, s->keyB);
             s->keyB = 0;
         }
         if (self->unk_44 != NULL) {
@@ -765,7 +765,7 @@ void Ov010Obj022020c8_StateDie(Obj022020c8 *self) {
         st->timer++;
         if (st->timer > 5) {
             func_ov000_02197dec(self, 0xf, 0x63);
-            Group_UpdateActor(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(gGroup, 0, self);
             ((VObj *)self)->vfunc_08();
         } else if (self->model != NULL) {
             self->model->alpha = 31 - self->fsm->timer * 4;
@@ -786,13 +786,13 @@ void Ov010Obj022020c8_StateHeld(Obj022020c8 *self) {
         Ov010Glow *s = self->unk_d8;
         if (s->b0) {
             s->b1 = 0;
-            EffectMgr_Kill(data_0214a420, s->keyA);
+            EffectMgr_Kill(gEffectMgr, s->keyA);
             s->keyA = 0;
         }
         s = self->unk_d8;
         if (s->b0) {
             s->b2 = 0;
-            EffectMgr_Kill(data_0214a420, s->keyB);
+            EffectMgr_Kill(gEffectMgr, s->keyB);
             s->keyB = 0;
         }
     }
@@ -821,7 +821,7 @@ void Ov010Obj022020c8_StateThrown(Obj022020c8 *self) {
     Ov010Glow_Update(self->unk_d8);
 }
 
-extern void *data_ov000_021ccd68;
+extern void *gActorMgr;
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *o);
@@ -837,10 +837,10 @@ extern u16 Ov003Vec_Pitch(VecFx32 *v);
 extern u16 Ov003Vec_Yaw(const VecFx32 *v);
 
 static inline Actor *Ov010_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Ov010Obj022020c8_StateFly(Obj022020c8 *self) {
@@ -976,7 +976,7 @@ extern s32 func_0203db40(void *p);
 extern void Model0218fe1c_UpdateAnim(void *p, s32 a);
 void Ov010_GrowFxCallback(EffectObj *fx);
 
-extern void *data_ov000_021ccd68;
+extern void *gActorMgr;
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *o);
 
@@ -1001,12 +1001,12 @@ void Ov010Glow_Update(Ov010Glow *self) {
     }
     {
         u16 id = self->id;
-        actor = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, id);
+        actor = gActorMgr == NULL ? NULL : ActorMgr_GetActor(gActorMgr, id);
     }
     if (actor == NULL) {
         self->id = 0xffff;
-        EffectMgr_StopLoop(data_0214a420, self->keyA);
-        EffectMgr_StopLoop(data_0214a420, self->keyB);
+        EffectMgr_StopLoop(gEffectMgr, self->keyA);
+        EffectMgr_StopLoop(gEffectMgr, self->keyB);
         self->keyA = 0;
         self->keyB = 0;
         return;
@@ -1036,7 +1036,7 @@ void Ov010Glow_Update(Ov010Glow *self) {
     rx = actor->rot_x;
     ry = actor->rot_y;
     if (self->keyA != 0) {
-        o = Effect_Find_020657b0(data_0214a420, self->keyA);
+        o = Effect_Find_020657b0(gEffectMgr, self->keyA);
         if (o == NULL) {
             self->keyA = 0;
             self->b1 = 0;
@@ -1052,7 +1052,7 @@ void Ov010Glow_Update(Ov010Glow *self) {
     if (self->keyB == 0) {
         return;
     }
-    o = Effect_Find_020657b0(data_0214a420, self->keyB);
+    o = Effect_Find_020657b0(gEffectMgr, self->keyB);
     if (o == NULL) {
         self->keyB = 0;
         self->b2 = 0;

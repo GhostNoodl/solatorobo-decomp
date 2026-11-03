@@ -4,14 +4,14 @@
 extern "C" {
 
 extern char data_ov013_0220b860[];
-extern void *data_ov013_0220b7d0[];
+extern void *Ov013ActExVt_0220b7d0_vtbl[];
 extern void Obj021984c8_UpdatePos(void *a, s32 b, s32 c);
 extern void ActorSub48_UpdatePos(ActorSub48 *a, VecFx32 *b, u16 *c);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 
 void Ov013ActVt_0220b5e0_StateDie(Ov013ActVt_0220b5e0 *self) {
     if (self->fsm->st == 0) {
-        EffectMgr_Kill(data_0214a420, self->unk_f4);
+        EffectMgr_Kill(gEffectMgr, self->unk_f4);
     }
     if (self->fsm->history[0] == 2) {
         Ov003Actor_Defeat(self, 1, 1, 1);
@@ -100,25 +100,25 @@ Ov013ActVt_0220b5e0 *Ov013ActVt_0220b5e0_DtorDelete(Ov013ActVt_0220b5e0 *self) {
 static inline void Ov013_StopHtr(Ov013ActExVt_0220b7d0 *self) {
     s32 i;
     for (i = 0; i < 2; i++) {
-        EffectObj *p = Effect_Find_020657b0(data_0214a420, self->unk_d0[i]);
+        EffectObj *p = Effect_Find_020657b0(gEffectMgr, self->unk_d0[i]);
         if (p != NULL) {
             p->state = 4;
         }
     }
     if (ResMgr_IsLoaded(data_ov013_0220b860, 7)) {
-        ResMgr_ReleaseByName(data_02097cdc, data_ov013_0220b860, 7, 0);
+        ResMgr_ReleaseByName(gResMgr, data_ov013_0220b860, 7, 0);
     }
 }
 
 Ov013ActExVt_0220b7d0 *Ov013ActExVt_0220b7d0_Dtor(Ov013ActExVt_0220b7d0 *self) {
-    *(void **)self = data_ov013_0220b7d0;
+    *(void **)self = Ov013ActExVt_0220b7d0_vtbl;
     Ov013_StopHtr(self);
     ActorEx_DtorBase(self);
     return self;
 }
 
 Ov013ActExVt_0220b7d0 *Ov013ActExVt_0220b7d0_DtorDelete(Ov013ActExVt_0220b7d0 *self) {
-    *(void **)self = data_ov013_0220b7d0;
+    *(void **)self = Ov013ActExVt_0220b7d0_vtbl;
     Ov013_StopHtr(self);
     ActorEx_DtorBase(self);
     Heap_Free(self);
@@ -180,10 +180,10 @@ struct Ov013HitBox {
 };
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline void Ov013_SetAlpha(EffectObj *o, s32 v) {
@@ -241,7 +241,7 @@ void Ov013ActExVt_0220b7d0_StateThrown(Ov013ActExVt_0220b7d0 *self) {
         break;
     }
     case 2: {
-        EffectObj *o = Effect_Find_020657b0(data_0214a420, self->unk_d0[0]);
+        EffectObj *o = Effect_Find_020657b0(gEffectMgr, self->unk_d0[0]);
         s32 v = 0;
         if (o != NULL) {
             EffectObj *o2;
@@ -253,7 +253,7 @@ void Ov013ActExVt_0220b7d0_StateThrown(Ov013ActExVt_0220b7d0 *self) {
                 v = 0;
             }
             Ov013_SetAlpha(o, v);
-            o2 = Effect_Find_020657b0(data_0214a420, self->unk_d0[1]);
+            o2 = Effect_Find_020657b0(gEffectMgr, self->unk_d0[1]);
             Ov013_SetAlpha(o2, v);
             if (o2->child != NULL) {
                 Ov013_SetAlpha(o2->child, v);
@@ -274,7 +274,7 @@ void Ov013ActExVt_0220b7d0_StateThrown(Ov013ActExVt_0220b7d0 *self) {
     }
     Actor_Move(self, 0);
     for (i = 0; i < 2; i++) {
-        EffectObj *o = Effect_Find_020657b0(data_0214a420, self->unk_d0[i]);
+        EffectObj *o = Effect_Find_020657b0(gEffectMgr, self->unk_d0[i]);
         if (o != NULL) {
             if (i == 0) {
                 o->SetScaleXYZ(self->unk_d8, FX_Mul(self->unk_d8, 0x1333), self->unk_d8);

@@ -12,7 +12,7 @@ void Obj021efe7c_Create(void) {
     }
     p = (Obj021efe7c *)Heap_Alloc(sizeof(Obj021efe7c));
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021efe7c;
+        *(VFunc **)p = Ov002Vt_021efe7c_vtbl;
         p->board = NULL;
         p->unk_08 = NULL;
         p->unk_0c = 0;
@@ -29,7 +29,7 @@ void Obj021efe7c_Delete(void) {
 }
 
 Obj021efe7c *Ov002Vt_021efe7c_DtorDelete(Obj021efe7c *self) {
-    *(VFunc **)self = data_ov002_021efe7c;
+    *(VFunc **)self = Ov002Vt_021efe7c_vtbl;
     Obj021efe7c_Release(self);
     Heap_Free(self);
     return self;

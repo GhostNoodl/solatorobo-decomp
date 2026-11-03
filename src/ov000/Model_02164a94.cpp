@@ -44,8 +44,8 @@ void func_ov000_02164a94(Lo021cb6b0 *self) {
     a = ResMgr_GetArcList(data_0208cca0);
     LangData_LocalizePath(buf, data_ov000_021cb8e0);
     b = ResMgr_GetArcList(buf);
-    self->unk_50 = ((s32)data_0214a424->unk_020);
-    pp = &data_02097d48->pltt.id;
+    self->unk_50 = ((s32)gStageFlags->unk_020);
+    pp = &gGfxSys->pltt.id;
     saved = *pp;
     *pp = -1;
     m = NewModel(data_ov000_021cb8f1);

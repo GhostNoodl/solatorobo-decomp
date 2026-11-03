@@ -36,7 +36,7 @@ static inline Ov003Actor *Ov013_ListNext(ActorGroup *list, Ov003Actor *a) {
 
 u32 Ov013_FindActorsNear(Ov003Actor **out, u32 max, u16 kind, const VecFx32 *pos, s32 dist) {
     u32 n = 0;
-    ActorGroup *list = ActorMgr_GetGroup(data_ov000_021ccd68, kind);
+    ActorGroup *list = ActorMgr_GetGroup(gActorMgr, kind);
     Ov003Actor *a = static_cast<Ov003Actor *>(list->head);
     for (; a != NULL; a = Ov013_ListNext(list, a)) {
         if (kind == a->kind && Hit_DiffInSphere(&a->pos, (VecFx32 *)pos, dist + a->radius)) {

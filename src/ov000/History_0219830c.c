@@ -23,7 +23,7 @@ typedef struct {
     u32 unk_2c;
 } ColState;
 
-extern ColState data_02fe0f14;
+extern ColState gHitResult;
 
 s32 Geom_SnapToGround(VecFx32 *pos, s32 height, s32 depth);
 
@@ -37,7 +37,7 @@ typedef struct {
 
 typedef struct ActorMgr ActorMgr;
 
-extern ActorMgr *data_ov000_021ccd68;
+extern ActorMgr *gActorMgr;
 
 ActorC *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Vec_RotateY(VecFx32 *out, const VecFx32 *in, u32 angle);
@@ -48,7 +48,7 @@ void HitSphere_Unlink_0203f364(ActorSub48 *self);
 void func_ov000_02198ad8(ActorSub48 *self, VecFx32 *pos, VecFx32 *offset);
 
 static inline ActorC *FindActor(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }

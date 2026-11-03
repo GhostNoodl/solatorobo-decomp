@@ -50,7 +50,7 @@ typedef struct Movie {
     /* 0x178 */ MovieSleepCb postSleep;
 } Movie; // size 0x188
 
-extern Movie *data_02097e3c;
+extern Movie *gMovie;
 
 #ifdef __cplusplus
 }

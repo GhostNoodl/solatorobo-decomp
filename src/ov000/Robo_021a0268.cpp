@@ -23,10 +23,10 @@ s32 func_ov000_021a09b8(u8 *self, s32 *list, s32 count);
 void Actor_DropStateMsgs(Actor *self, u8 arg);
 
 static inline Actor *GetObj021a0268(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline void Reset021a0268(Robo021ca458 *self) {
@@ -41,7 +41,7 @@ static inline BOOL GBusy021a0268(FieldState *g) {
 }
 
 static inline BOOL GIdle021a0268(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (GBusy021a0268(g)) {
             return FALSE;
@@ -70,12 +70,12 @@ void Robo021ca458_SelectState(Robo021ca458 *self) {
         if (self->unk_b24_5 == 2) {
             self->unk_b08 = 0x15c;
         } else {
-            self->unk_b08 = data_ov000_021ca00c[data_0214a424->bits18.mode];
+            self->unk_b08 = data_ov000_021ca00c[gStageFlags->bits18.mode];
         }
         if (self->unk_b22_3) {
             self->unk_b08 += 0x8f;
         }
-        self->unk_b08 += func_0206d37c(data_0214a424, 3) * 4;
+        self->unk_b08 += func_0206d37c(gStageFlags, 3) * 4;
     } else {
         self->model = (Model0218fe1c *)&self->mdl0;
         self->hit = (ActorSub48 *)&self->hit0;

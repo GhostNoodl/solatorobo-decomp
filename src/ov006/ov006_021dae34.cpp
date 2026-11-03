@@ -3,11 +3,11 @@
 extern "C" {
 
 void ov006_DeleteSlotManager(void) {
-    OV006_DELETE_OBJECT(data_ov006_021ec884);
+    OV006_DELETE_OBJECT(gOv006SlotManager);
 }
 
 ov006_SlotManager *ov006_GetSlotManager(void) {
-    return data_ov006_021ec884;
+    return gOv006SlotManager;
 }
 
 void ov006_SlotManager_Reset_021daea0(ov006_SlotManager *self) {

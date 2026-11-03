@@ -21,7 +21,7 @@ void Ov006ActVt_021ec4f4_Start(Ov006Racer *self) {
     s32 v;
     AnimCtrl *a;
     ov006_Slot *slot;
-    slot = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, self->idx);
+    slot = ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, self->idx);
     self->flags_0 = 1;
     info = (u8 *)Tbl_FindEntry_0206fef8(self->kind);
     self->radius = *(s16 *)(info + 0x14) << 4;

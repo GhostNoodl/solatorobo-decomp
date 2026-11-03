@@ -2,10 +2,10 @@
 
 extern "C" {
 
-extern u8 data_ov000_021cac0c[];
+extern u8 Ov000Vt_021cac0c_vtbl[];
 
 VObj *Ov000Vt_021cca88_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cac0c);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cac0c_vtbl);
     self->vfunc_18();
     return self;
 }

@@ -56,7 +56,7 @@ static inline s32 Cam_FxMul(s32 a, s32 b) {
 }
 
 static inline void Camera_Init(Camera *cam) {
-    cam->vtable = data_0208b8c0;
+    cam->vtable = Camera_vtbl;
     GfxCamPos_Init(&cam->eye);
     GfxCamParam_Init(&cam->nearClip);
     cam->mode = 1;
@@ -120,7 +120,7 @@ static inline void Cam_SqrtStart(s64 v) {
 }
 
 void Camera_Apply(Camera *cam) {
-    data_02097d48->nearClip = &cam->nearClip;
+    gGfxSys->nearClip = &cam->nearClip;
     if (cam->smooth && !cam->animated) {
         func_0204bcb0(cam);
     }

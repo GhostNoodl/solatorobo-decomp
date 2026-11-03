@@ -33,7 +33,7 @@ struct Ctr021675ec : Pos021675ec {
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 // In .rodata; declaring it const lets the 0x74 copy load both words before either store.
 extern const u8 data_ov000_021c9a9c[];
 Robo021ca458 *ActorMgr_FindPlayer(void);
@@ -117,22 +117,22 @@ void func_ov000_021675ec(Lo021cb6b0 *self, Ctx0216607c *w) {
     if (ActorMgr_FindPlayer() == NULL) {
         skip = TRUE;
     }
-    if (FieldState_HasCmd(data_ov000_021ccd54, 9) || FieldState_HasCmd(data_ov000_021ccd54, 10)) {
+    if (FieldState_HasCmd(gSceneCmd, 9) || FieldState_HasCmd(gSceneCmd, 10)) {
         skip = TRUE;
     }
     if (skip) {
         return;
     }
-    oam = GfxSys_GetOamMgr(data_02097d48, 1);
+    oam = GfxSys_GetOamMgr(gGfxSys, 1);
     pl = ActorMgr_FindPlayer();
     Ctr021675ec c(pl->pos.x, pl->pos.z);
     Pos021675ec m;
-    ents = (Ent021675ec *)data_0214a424->slots;
+    ents = (Ent021675ec *)gStageFlags->slots;
     w->markCount = 0;
     for (i = 0; i < 2; i++) {
         if (ents[i].kind == 2) {
             u16 id = ents[i].id;
-            if (Group_GetSpawnPositions(data_ov000_021ccd64, 1, &pos, id >> 12, id) && ToMap021675ec(&m, pos.x, pos.z, &c)) {
+            if (Group_GetSpawnPositions(gGroup, 1, &pos, id >> 12, id) && ToMap021675ec(&m, pos.x, pos.z, &c)) {
                 u8 n = w->markCount++;
                 MapOam *e = &w->marks[n];
                 e->w0.raw = w->unk_1c.w0.raw;
@@ -157,7 +157,7 @@ void func_ov000_021675ec(Lo021cb6b0 *self, Ctx0216607c *w) {
         Model_PlayPartF(self->unk_24, 3, 0);
         NNS_G2dEntryOamManagerOam(oam, &w->unk_14, 1);
     }
-    for (o = data_ov000_021ccd6c->head; o != NULL; o = o->next) {
+    for (o = gFieldMgr->head; o != NULL; o = o->next) {
         if (Vis021675ec(o)) {
             s32 ox = o->model.trans.x;
             s32 oz = o->model.trans.z;
@@ -180,7 +180,7 @@ void func_ov000_021675ec(Lo021cb6b0 *self, Ctx0216607c *w) {
             }
         }
     }
-    for (j = Group_GetSpawnPositions(data_ov000_021ccd64, 8, pts, 4, 0x406b) - 1; j >= 0; j--) {
+    for (j = Group_GetSpawnPositions(gGroup, 8, pts, 4, 0x406b) - 1; j >= 0; j--) {
         if (ToMap021675ec(&m, pts[j].x, pts[j].z, &c)) {
             LFLD(Pos021675ec, self->unk_24, 0x10c) = m;
             Model_PlayPartF(self->unk_24, 4, 0);

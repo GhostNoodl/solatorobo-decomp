@@ -55,7 +55,7 @@ typedef struct {
 } Mgr021ccd30;
 
 
-// One entry of the command table data_ov000_021cc1a0 (Ov000ScpEnt in ov000_021ca70c.cpp).
+// One entry of the command table SceneCmd_Table (Ov000ScpEnt in ov000_021ca70c.cpp).
 typedef struct {
     s32 key;
     CmdPmf fn;
@@ -63,12 +63,12 @@ typedef struct {
 
 extern "C" {
 extern State021ccd50 data_ov000_021ccd50;
-extern Mgr021ccd30 *data_ov000_021ccd30;
-extern s32 data_02097d78[];
-extern CmdEntry data_ov000_021cc1a0[];
-extern void *data_02097e4c;
-extern Obj02097e48 *data_02097e48;
-extern void *data_ov000_021ccd64;
+extern Mgr021ccd30 *gMessageQueue;
+extern s32 gFadeState[];
+extern CmdEntry SceneCmd_Table[];
+extern void *gSndMgr;
+extern Obj02097e48 *gSndQueue;
+extern void *gGroup;
 
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 BOOL MessageQueue_GetById(void *mgr, s32 a);
@@ -87,10 +87,10 @@ void ActorMgr_DestroyAll(ActorMgr *p);
 
 static inline BOOL IsMode(s32 m) {
     BOOL r;
-    if (data_02097d78[3] == m) {
+    if (gFadeState[3] == m) {
         r = TRUE;
     } else {
-        r = data_02097d78[0] == m;
+        r = gFadeState[0] == m;
     }
     return r;
 }
@@ -101,7 +101,7 @@ static inline BOOL HasCmd(CmdObj *self) {
 
 static inline BOOL Busy(void) {
     BOOL r;
-    Mgr021ccd30 *mgr = data_ov000_021ccd30;
+    Mgr021ccd30 *mgr = gMessageQueue;
     if (mgr == NULL) {
         r = FALSE;
     } else if (MessageQueue_GetById(mgr, 9)) {
@@ -117,7 +117,7 @@ static inline BOOL Busy(void) {
 }
 
 static inline BOOL Locked(void) {
-    return data_ov000_021ccd70->flag0 == 1 ? TRUE : FALSE;
+    return gFieldFade->flag0 == 1 ? TRUE : FALSE;
 }
 
 static inline void PlayerIdle(void) {
@@ -147,7 +147,7 @@ static inline BOOL TaskHasVal(Task118 *t) {
 
 // The handler table (ov000_021ca70c.cpp) is {key, handler} entries; this file reads it from the
 // handler of entry 0, four bytes in.
-#define CMD_ENTRIES data_ov000_021cc1a0
+#define CMD_ENTRIES SceneCmd_Table
 
 #define PMF_PTR(f) (*(void **)&(f))
 
@@ -233,9 +233,9 @@ s32 func_ov000_02189194(SceneCmd *self) {
     switch (self->state) {
     case 2:
         self->state = 3;
-        SndMgr_LoadHeapState(data_02097e4c, 1, 1);
+        SndMgr_LoadHeapState(gSndMgr, 1, 1);
         {
-            Obj02097e48 *p = data_02097e48;
+            Obj02097e48 *p = gSndQueue;
             if (p->flag) {
                 p->unk_06 = 0x8000;
                 p->unk_08 = 0x1e;
@@ -243,7 +243,7 @@ s32 func_ov000_02189194(SceneCmd *self) {
             }
         }
         {
-            Obj02097e48 *p = data_02097e48;
+            Obj02097e48 *p = gSndQueue;
             p->unk_74 = 0x8000;
             p->unk_70 = 0;
         }
@@ -260,9 +260,9 @@ s32 func_ov000_02189194(SceneCmd *self) {
         {
             Robo021ca458 *p = ActorMgr_FindPlayer();
             if (p != NULL) {
-                u16 trg = data_02097dc8->trig;
+                u16 trg = gPad->trig;
                 if (trg & 0x400) {
-                    MessageQueue021cb980_Push05(data_ov000_021ccd30);
+                    MessageQueue021cb980_Push05(gMessageQueue);
                 } else if (trg & 8) {
                     SceneCmd *obj = data_ov000_021ccd50.obj;
                     if (!HasCmd(obj) && !HasEvent(obj)) {
@@ -313,16 +313,16 @@ s32 func_ov000_02189194(SceneCmd *self) {
             break;
         }
         func_02062424(&self->unk_cd);
-        SndQueue_ResetNodes_0204aa10(data_02097e48);
-        data_02097e48->b2 = 0;
+        SndQueue_ResetNodes_0204aa10(gSndQueue);
+        gSndQueue->b2 = 0;
         self->unk_d0 = self->unk_ca;
         self->unk_ca = self->unk_cd;
         BITS0E(self).mode = 2;
-        if (data_ov000_021ccd30->unk_11c != NULL && data_ov000_021ccd30->unk_11c->unk_7c != NULL) {
-            LoTicker_Clear(data_ov000_021ccd30->unk_11c->unk_7c);
+        if (gMessageQueue->unk_11c != NULL && gMessageQueue->unk_11c->unk_7c != NULL) {
+            LoTicker_Clear(gMessageQueue->unk_11c->unk_7c);
         }
         {
-            Mgr021ccd30 *mgr = data_ov000_021ccd30;
+            Mgr021ccd30 *mgr = gMessageQueue;
             BOOL has;
             if (mgr->unk_118 == NULL) {
                 has = FALSE;
@@ -337,10 +337,10 @@ s32 func_ov000_02189194(SceneCmd *self) {
         self->cam.base.shakeTime = 0;
         self->cam.base.shakeLen = 0;
         self->cam.base.shakeCur = 0;
-        EffectMgr_FreeAll(data_0214a420);
-        func_ov000_021b53f4(data_ov000_021ccd6c);
-        Group_RefreshAll(data_ov000_021ccd64);
-        ActorMgr_DestroyAll(data_ov000_021ccd68);
+        EffectMgr_FreeAll(gEffectMgr);
+        func_ov000_021b53f4(gFieldMgr);
+        Group_RefreshAll(gGroup);
+        ActorMgr_DestroyAll(gActorMgr);
         {
             self->stage.pending = 1;
             self->unk_ca.c[0] = 0xff;
@@ -350,7 +350,7 @@ s32 func_ov000_02189194(SceneCmd *self) {
             self->unk_cd.c[1] = 0xff;
             self->unk_cd.c[2] = 0xff;
             if (self->stage.group == 0xfe ? TRUE : FALSE) {
-                GfxSys *d = data_02097d48;
+                GfxSys *d = gGfxSys;
                 d->unk_8b0_4 = 0;
                 d->unk_8b0_5 = 1;
                 *(vu16 *)0x4000060 &= 0xcfdf;

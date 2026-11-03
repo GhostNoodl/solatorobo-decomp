@@ -26,7 +26,7 @@ void Ov006Racer_StateCrash(Ov006Racer *self) {
         self->turnMode = 0;
         eff = Effect_SpawnId(0x322, &self->pos);
         if (eff != NULL) {
-            EffectObj *old = Effect_Find_020657b0(data_0214a420, self->unk_1e0);
+            EffectObj *old = Effect_Find_020657b0(gEffectMgr, self->unk_1e0);
             if (old != NULL) {
                 EffectObj_StopLoop(old);
                 old->state = 4;
@@ -34,8 +34,8 @@ void Ov006Racer_StateCrash(Ov006Racer *self) {
             self->unk_1e0 = eff->id;
             eff->speed = 0x1800;
         }
-        SndMgr_PlayAt(data_02097e4c, 0x79, &self->pos, 0);
-        if (self->idx == data_ov006_021ec884->unk5) {
+        SndMgr_PlayAt(gSndMgr, 0x79, &self->pos, 0);
+        if (self->idx == gOv006SlotManager->unk5) {
             Field_ShakeCamera(8, (u8)(self->unk_1f5 - 10));
         }
         self->fsm->st++;

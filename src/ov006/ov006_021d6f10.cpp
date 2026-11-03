@@ -1,6 +1,6 @@
 #include "ov006/Window.h"
 
-/* The task with vtable data_ov006_021ebfc0 (task type 1); this is its draw slot 0x1c. */
+/* The task with vtable Ov006Vt_021ebfc0_vtbl (task type 1); this is its draw slot 0x1c. */
 struct ov006_Task021d6f10 : public ov006_Task {
     u8 unk10[0xc];
     void *unk1C;

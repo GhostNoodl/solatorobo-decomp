@@ -22,8 +22,8 @@ struct Ov003Area {
 
 extern "C" {
 
-extern Ov003Save *data_0214a424;
-extern u8 data_ov003_021f7974[];
+extern Ov003Save *gStageFlags;
+extern u8 Ov003Vt_021f7974_vtbl[];
 extern s32 SndMgr_PlayPan(SndMgr *mgr, s32 a, s32 b);
 extern Ov003Area *func_0206ef10(u16 id);
 extern void Heap_Free(void *p);
@@ -31,26 +31,26 @@ extern s32 Rand_UpTo(s32 max);
 
 void Ov003_AddMeter_021cedf4(u16 add) {
     u16 c;
-    if (data_0214a424->mode != 1) {
+    if (gStageFlags->mode != 1) {
         return;
     }
-    c = data_0214a424->meter;
+    c = gStageFlags->meter;
     if (c < 0x2d0) {
         c += add;
         if (c >= 0x2d0) {
-            SndMgr_PlayPan(data_02097e4c, 0x44, 5);
+            SndMgr_PlayPan(gSndMgr, 0x44, 5);
             c = 0x2d0;
         }
     } else {
         c = 0x2d0;
     }
-    data_0214a424->meter = c;
+    gStageFlags->meter = c;
 }
 
 u8 Ov003_GetMaxCombo(void) {
     u8 r = 3;
-    if (data_0214a424->mode == 1) {
-        Ov003Area *area = func_0206ef10(data_0214a424->area | 0x8000);
+    if (gStageFlags->mode == 1) {
+        Ov003Area *area = func_0206ef10(gStageFlags->area | 0x8000);
         if (area != NULL) {
             r += area->bonus;
         }
@@ -67,7 +67,7 @@ void *Ov003Track_DtorDelete(Ov003Track *self) {
 }
 
 void Ov003ScriptList_Init(Ov003ScriptList *self) {
-    self->vtbl = data_ov003_021f7974;
+    self->vtbl = Ov003Vt_021f7974_vtbl;
     self->head = NULL;
     self->cur = NULL;
     self->count = 0;
@@ -82,26 +82,26 @@ static inline void Ov003ScriptList_Clear(Ov003ScriptList *self) {
         void *old;
         Ov003Track *next;
         next = s->next;
-        old = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        old = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (s != NULL) {
             if (s != NULL) {
                 s->Delete();
             }
         }
-        data_02097dd0->cur = old;
+        gSysState->cur = old;
         s = next;
     }
 }
 
 Ov003ScriptList *Ov003Vt_021f7974_Dtor(Ov003ScriptList *self) {
-    self->vtbl = data_ov003_021f7974;
+    self->vtbl = Ov003Vt_021f7974_vtbl;
     Ov003ScriptList_Clear(self);
     return self;
 }
 
 Ov003ScriptList *Ov003Vt_021f7974_DtorDelete(Ov003ScriptList *self) {
-    self->vtbl = data_ov003_021f7974;
+    self->vtbl = Ov003Vt_021f7974_vtbl;
     Ov003ScriptList_Clear(self);
     Heap_Free(self);
     return self;

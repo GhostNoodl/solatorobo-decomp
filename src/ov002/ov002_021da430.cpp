@@ -12,11 +12,11 @@ void Obj021efe7c_Release(Obj021efe7c *self) {
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->board);
     HEAP_POP(saved);
-    ResMgr_ReleaseByName(data_02097cdc, data_ov002_021efdf6, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_ov002_021efdf6, 7, 0);
     if (self->unk_10) {
-        EffectMgr_RestoreList(data_0214a420);
-        if (data_ov000_021ccd54 != NULL) {
-            *(u8 **)data_0214a420 = (u8 *)data_ov000_021ccd54 + 8;
+        EffectMgr_RestoreList(gEffectMgr);
+        if (gSceneCmd != NULL) {
+            *(u8 **)gEffectMgr = (u8 *)gSceneCmd + 8;
         }
     }
 }

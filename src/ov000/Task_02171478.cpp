@@ -14,12 +14,12 @@ extern "C" {
 extern u8 data_0214b105[];
 extern void *data_0208cca0;
 extern void *data_0208cc94;
-extern u8 data_0208b318[];
-extern u8 data_ov000_021cb6d0[];
-extern u8 data_ov000_021cb920[];
-extern u8 data_ov000_021cb940[];
-extern MessageQueue021cb980 *data_ov000_021ccd30;
-extern s32 data_02097d78[];
+extern u8 ResHandle_vtbl[];
+extern u8 Ov000Vt_021cb6d0_vtbl[];
+extern u8 TimedBuffer021cb920_vtbl[];
+extern u8 Ov000Vt_021cb940_vtbl[];
+extern MessageQueue021cb980 *gMessageQueue;
+extern s32 gFadeState[];
 void *Heap_Alloc(u32 size);
 void *ResMgr_Load(void *a, s32 b, s32 c);
 void ListBuffer_AddToList(ListBuffer *buf, BufferList *list);
@@ -42,7 +42,7 @@ void func_ov000_021bb2b0(void *p, u16 a, s32 b, BOOL c);
 }
 
 static inline void ListBuffer_Init02171478(ListBuffer *b) {
-    VOBJ_SET_VTABLE(b, data_ov000_021cb6d0);
+    VOBJ_SET_VTABLE(b, Ov000Vt_021cb6d0_vtbl);
     b->flags = 0;
     b->priority = 0;
     b->unk_0c = 0;
@@ -75,7 +75,7 @@ static inline ListBuffer *AddBuffer02171478(MessageQueue *self, ListBuffer *buf,
 }
 
 static inline BOOL IsMode0_02171478(void) {
-    if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[0] == 0) {
         return TRUE;
     }
     return FALSE;
@@ -103,7 +103,7 @@ static inline Message *FindById02171478(MessageQueue *self, s32 id) {
 }
 
 static inline BOOL QueueBusy02171478(void) {
-    MessageQueue021cb980 *q = data_ov000_021ccd30;
+    MessageQueue021cb980 *q = gMessageQueue;
     Message *m;
     if (q == NULL) {
         return FALSE;
@@ -257,7 +257,7 @@ static inline BOOL Task_Start44(ListBuffer021cb940 *t, u32 b) {
     x0 = b;
     p = Heap_Alloc(0x78);
     if (p != NULL) {
-        LFLD(void *, p, 4) = data_0208b318;
+        LFLD(void *, p, 4) = ResHandle_vtbl;
         ((VObj *)((u8 *)p + 4))->vfunc_08();
         func_ov000_021bbc68(p, x2, x1, x0);
     }
@@ -322,7 +322,7 @@ void func_ov000_02171478(MessageQueue021cb980 *self, s32 a, s32 kind, s32 b, s32
             TimedBuffer021cb920 *t = (TimedBuffer021cb920 *)Heap_Alloc(0x34);
             if (t != NULL) {
                 ListBuffer_Init02171478(t);
-                VOBJ_SET_VTABLE(t, data_ov000_021cb920);
+                VOBJ_SET_VTABLE(t, TimedBuffer021cb920_vtbl);
                 t->unk_20 = 0;
                 t->unk_24 = 0;
                 t->unk_28 = 0;
@@ -337,7 +337,7 @@ void func_ov000_02171478(MessageQueue021cb980 *self, s32 a, s32 kind, s32 b, s32
             ListBuffer021cb940 *t = (ListBuffer021cb940 *)Heap_Alloc(0x80);
             if (t != NULL) {
                 ListBuffer_Init02171478(t);
-                VOBJ_SET_VTABLE(t, data_ov000_021cb940);
+                VOBJ_SET_VTABLE(t, Ov000Vt_021cb940_vtbl);
                 ListBuffer021cb940_Init(t);
             }
             self->unk_11c = t;
@@ -355,10 +355,10 @@ void func_ov000_02171478(MessageQueue021cb980 *self, s32 a, s32 kind, s32 b, s32
         if (pl == NULL) {
             return;
         }
-        if (FieldState_HasPending(data_ov000_021ccd54)) {
+        if (FieldState_HasPending(gSceneCmd)) {
             return;
         }
-        if (FieldState_HasEvent(data_ov000_021ccd54)) {
+        if (FieldState_HasEvent(gSceneCmd)) {
             return;
         }
         ok = FALSE;
@@ -368,7 +368,7 @@ void func_ov000_02171478(MessageQueue021cb980 *self, s32 a, s32 kind, s32 b, s32
         if (!ok) {
             return;
         }
-        SceneCmd_Push0d(data_ov000_021ccd54);
+        SceneCmd_Push0d(gSceneCmd);
         break;
     }
     case 6:

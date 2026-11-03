@@ -6,14 +6,14 @@
 
 extern "C" {
 
-extern u8 data_ov000_021cc774[];
+extern u8 Robo021ca458_vtbl[];
 void *Model0218fe1c_FreeAnims(void *p);
 void *ResSet_ReleaseAll(void *p);
 void HitSphere_Unlink_0203f2b8(void *p);
 void *Actor_DtorBase(void *p);
 
 u8 *Robo021ca458_Dtor(Robo021ca458 *self) {
-    LFLD(void *, self, 0x00) = data_ov000_021cc774;
+    LFLD(void *, self, 0x00) = Robo021ca458_vtbl;
     HEAP_DELETE_FN(self->unk_998, Model0218fe1c_FreeAnims);
     HEAP_DELETE_FN(self->unk_99c, ResSet_ReleaseAll);
     HEAP_DELETE_MARKER(self->unk_9b0);
@@ -35,7 +35,7 @@ u8 *Robo021ca458_Dtor(Robo021ca458 *self) {
 }
 
 u8 *Robo021ca458_DtorDelete(Robo021ca458 *self) {
-    LFLD(void *, self, 0x00) = data_ov000_021cc774;
+    LFLD(void *, self, 0x00) = Robo021ca458_vtbl;
     HEAP_DELETE_FN(self->unk_998, Model0218fe1c_FreeAnims);
     HEAP_DELETE_FN(self->unk_99c, ResSet_ReleaseAll);
     HEAP_DELETE_MARKER(self->unk_9b0);

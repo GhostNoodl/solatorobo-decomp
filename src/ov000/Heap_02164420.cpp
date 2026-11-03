@@ -21,7 +21,7 @@ void func_ov000_02164420(Lo021cb6b0 *self) {
     if (self->unk_20 >= 1) {
         char buf[0x20];
         LangData_LocalizePath(buf, data_ov000_021cb8e0);
-        ResMgr_ReleaseByName(data_02097cdc, buf, 7, 0);
+        ResMgr_ReleaseByName(gResMgr, buf, 7, 0);
     }
     HEAP_DELETE_VOBJ(self->unk_40);
     HEAP_DELETE_MODEL(self->unk_24);

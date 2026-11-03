@@ -4,7 +4,7 @@
 #include "ov006/Model.h"
 #include "Main/Gfx/TextWin.h"
 
-/* A gauge (vtable data_ov006_021ec20c, 0x24 bytes, ctor Ov006Vt_021ec20c_Ctor; ov006_Gauge_Load
+/* A gauge (vtable Ov006Vt_021ec20c_vtbl, 0x24 bytes, ctor Ov006Vt_021ec20c_Ctor; ov006_Gauge_Load
    builds its model and text). ov006_Gauge_SetRatio sets its ratio unkC = a / b, ov006_Gauge_Update
    eases unk8 toward it (at once when unk5 is clear) and ov006_Gauge_Draw draws it at x, y. */
 typedef struct ov006_Gauge {

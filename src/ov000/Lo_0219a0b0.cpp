@@ -46,7 +46,7 @@ typedef struct {
 } Msg0219a0b0;
 
 extern "C" {
-extern Mgr0219a0b0 *data_ov000_021ccd30;
+extern Mgr0219a0b0 *gMessageQueue;
 void Actor_SendMsg(Actor0219a0b0 *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_02040a98(char *dst, int num);
 
@@ -55,7 +55,7 @@ static inline BOOL GBusy0219a0b0(FieldState *g) {
 }
 
 static inline BOOL GIdle0219a0b0(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (GBusy0219a0b0(g)) {
             return FALSE;
@@ -93,7 +93,7 @@ void func_ov000_0219a0b0(Obj0219a0b0 *self, Actor0219a0b0 *actor) {
     msg.value = self->value;
     Actor_SendMsg(actor, 0xffff, 10, 1, 2, &msg);
     func_02040a98(msg.str, self->value);
-    sub = data_ov000_021ccd30->unk_11c;
+    sub = gMessageQueue->unk_11c;
     if (sub == NULL || (log = sub->unk_7c) == NULL) {
         return;
     }

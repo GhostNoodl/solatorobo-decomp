@@ -4,7 +4,7 @@ extern "C" {
 
 Task021efc24 *Ov002TaskVt_021efc24_DtorDelete(Task021efc24 *self) {
     void *saved;
-    *(VFunc **)self = data_ov002_021efc24;
+    *(VFunc **)self = Ov002TaskVt_021efc24_vtbl;
     HEAP_PUSH(saved);
     Task_deleteModel(self);
     HEAP_POP(saved);

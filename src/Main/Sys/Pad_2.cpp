@@ -17,7 +17,7 @@ typedef struct Pad {
     /* 0x1a */ u8 useForced;
 } Pad; // size 0x1c
 
-extern Pad *data_02097dc8;
+extern Pad *gPad;
 extern const u16 data_02082864[16];
 extern void *Heap_Alloc(u32 size);
 

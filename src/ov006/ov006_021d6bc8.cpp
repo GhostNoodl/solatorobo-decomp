@@ -21,10 +21,10 @@ typedef struct ov006_Scene021d6bc8 {
 
 extern "C" {
 
-extern ov006_Game021d6bc8 *data_ov000_021ccd54;
-extern void *data_ov000_021ccd6c;
-extern void *data_ov000_021ccd64;
-extern void *data_ov000_021ccd68;
+extern ov006_Game021d6bc8 *gSceneCmd;
+extern void *gFieldMgr;
+extern void *gGroup;
+extern void *gActorMgr;
 
 u8 ov006_Scene_UpdateFade(ov006_Scene021d6bc8 *self);
 void ov006_SyncSlotEntries(void);
@@ -46,7 +46,7 @@ int Ov006Vt_021ebfc0_Update(ov006_Scene021d6bc8 *self) {
     int r = 0;
     u8 state = 0;
 
-    if (data_ov006_021ec860->unk1C) {
+    if (gOv006Manager->unk1C) {
         state = ov006_Scene_UpdateFade(self);
         if (state == 4) {
             return r;
@@ -67,25 +67,25 @@ int Ov006Vt_021ebfc0_Update(ov006_Scene021d6bc8 *self) {
         ov006_MarkerSet_Update(self->unk2C);
         ov006_Unk021e2878_Update(self->unk30);
         {
-            VObj *sub = &data_ov000_021ccd54->sub;
+            VObj *sub = &gSceneCmd->sub;
             if (sub != NULL) {
                 sub->vfunc_00();
             }
         }
-        if (data_ov000_021ccd6c != NULL) {
-            FieldMgr_Update(data_ov000_021ccd6c);
+        if (gFieldMgr != NULL) {
+            FieldMgr_Update(gFieldMgr);
         }
-        if (data_ov000_021ccd64 != NULL) {
-            func_ov000_0218be54(data_ov000_021ccd64);
+        if (gGroup != NULL) {
+            func_ov000_0218be54(gGroup);
         }
-        if (data_ov000_021ccd68 != NULL) {
-            ActorMgr_Update(data_ov000_021ccd68);
+        if (gActorMgr != NULL) {
+            ActorMgr_Update(gActorMgr);
         }
-        EffectMgr_Update(data_0214a420);
+        EffectMgr_Update(gEffectMgr);
     }
     r = ov006_Race_Update(self);
     if (state == 0 && data_ov006_021ec888->state != 9) {
-        void *obj = ActorMgr_GetGroup(data_ov000_021ccd68, 0x7000);
+        void *obj = ActorMgr_GetGroup(gActorMgr, 0x7000);
         if (obj != NULL) {
             func_ov000_0218e0bc(obj);
         }

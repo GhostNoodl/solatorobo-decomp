@@ -24,7 +24,7 @@ typedef struct {
 Spawned0219be1c *Group_SpawnActor(void *mgr, const GroupActorDesc *desc, const void *pos, const void *rot, u16 id);
 
 void ActorMgr_SendMsg(u16 target, u16 id, u8 type, BOOL notify, u32 size, const void *data) {
-    Actor *actor = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, target);
+    Actor *actor = gActorMgr == NULL ? NULL : ActorMgr_GetActor(gActorMgr, target);
     if (actor == NULL) {
         return;
     }
@@ -42,7 +42,7 @@ Spawned0219be1c *Actor_SpawnKind(u16 kind, const void *pos, const void *rot, u16
         desc.args[i] = 0;
     }
     desc.unk_0c = -1;
-    o = Group_SpawnActor(data_ov000_021ccd64, &desc, pos, rot, 0xffff);
+    o = Group_SpawnActor(gGroup, &desc, pos, rot, 0xffff);
     if (o != NULL) {
         o->unk_16_0 = 1;
         o->unk_90 = b;

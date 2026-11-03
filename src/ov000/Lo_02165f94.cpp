@@ -24,11 +24,11 @@ static inline BOOL LoAnimValid(LoAnimC *p) {
 
 u8 *func_ov000_02165f94(Lo021cb6b0 *self) {
     LoAnimC *p = self->unk_30->anim;
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (!LoAnimValid(p)) {
         return g->unk_ca.c;
     }
-    if (data_02097dc8->trig & 2) {
+    if (gPad->trig & 2) {
         p->timer = p->period;
         p->idx = 0;
     }
@@ -208,10 +208,10 @@ void func_ov000_02166180(Lo021cb6b0 *self) {
 
 
     p = self->unk_30;
-    tbl2 = (Ent6180 *)data_0214a424->slots;
+    tbl2 = (Ent6180 *)gStageFlags->slots;
     kind = p->cur->key;
     anim = &p->slots[kind];
-    g = data_ov000_021ccd54;
+    g = gSceneCmd;
     if (p->anim == NULL || p->anim->state == 0) {
         busy = FALSE;
     } else {
@@ -337,7 +337,7 @@ void func_ov000_02166180(Lo021cb6b0 *self) {
     }
     pl = ActorMgr_FindPlayer();
     if (pl != NULL && p->sel != NULL) {
-        cam = &data_ov000_021ccd54->cam;
+        cam = &gSceneCmd->cam;
         if (!p->sel->f3) {
             xx = p->unk_0c.w0.x;
             yy = p->unk_0c.w0.y;

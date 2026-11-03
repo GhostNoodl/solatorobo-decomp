@@ -30,7 +30,7 @@ u32 Ov002LevelTable_GetLevel(Ov002LevelTable *self, s32 val);
 
 void Obj0215c1bc_SetText(void *a, int b, void *c);
 
-extern VFunc data_ov000_021cad50[];
+extern VFunc Lo021cad50_vtbl[];
 
 extern void *data_ov002_021ef634[];
 
@@ -41,21 +41,21 @@ BOOL func_ov002_021d2410(UiObj *self, ListRow *ev) {
         s32 n = Ov002LevelTable_GetLevel(&owner->unk_4c[idx], func_ov002_021e4c30(idx));
         if (n <= 0) {
             UiObj *p;
-            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
             p = (UiObj *)Heap_Alloc(0xe8);
             if (p != NULL) {
-                *(VFunc **)p = data_ov000_021cac60;
+                *(VFunc **)p = UiObj_vtbl;
                 p->vfunc_28();
-                *(VFunc **)p = data_ov000_021cad50;
+                *(VFunc **)p = Lo021cad50_vtbl;
                 p->vfunc_28();
             }
             owner->unk_48 = p;
-            Obj0215c1bc_SetText(owner->unk_48, 0x11, MsgRes_GetString(data_02149ef8, 0xf6));
+            Obj0215c1bc_SetText(owner->unk_48, 0x11, MsgRes_GetString(gMsgRes, 0xf6));
             owner->unk_48->flags &= ~0x10000;
             owner->unk_48->vfunc_08();
             owner->unk_48->vfunc_70();
         } else {
-            Task021ef91c *w = (Task021ef91c *)TaskHost_RequestSwitch(data_ov000_021ccd44, 0x19, 0);
+            Task021ef91c *w = (Task021ef91c *)TaskHost_RequestSwitch(gTaskHost, 0x19, 0);
             if (idx < 7) {
                 int mode = LangData_GetLang();
                 func_ov002_021d4540(w->unk_44, 0x20, data_ov002_021ef5ac.param, data_ov002_021ef650, mode);
@@ -65,7 +65,7 @@ BOOL func_ov002_021d2410(UiObj *self, ListRow *ev) {
                 w->unk_c0 = (u16)n;
                 func_ov002_021d36b8(w, (u16)(idx * 3));
             }
-            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
         }
     }
     return TRUE;
@@ -97,7 +97,7 @@ void Task021ef99c_FreeWindows(Task021ef99c *self) {
     for (i = 0; i < 7; i++) {
         func_ov002_021e4904(&self->unk_4c[i]);
     }
-    ResMgr_ReleaseByName(data_02097cdc, self->unk_f4, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, self->unk_f4, 7, 0);
 }
 
 void Task021ef99c_Load(Task021ef99c *self) {
@@ -118,9 +118,9 @@ extern "C" {
 
 
 extern void *data_ov002_021ef634[];
-extern VFunc data_ov000_021cc9f8[];
-extern VFunc data_ov000_021cadcc[];
-extern VFunc data_ov000_021cb5a8[];
+extern VFunc Ov000Vt_021cc9f8_vtbl[];
+extern VFunc Lo021cadcc_vtbl[];
+extern VFunc Lo021cb5a8_vtbl[];
 void *func_02035d8c(void *a, void *b);
 void Ov002LevelTable_Load(Ov002LevelTable *self, u8 *src);
 u32 func_ov002_021e4c30(int which);
@@ -152,7 +152,7 @@ void Task021ef99c_Start(Task021ef99c *self) {
     if (self->vfunc_28()) {
         return;
     }
-    g = data_02149ef8;
+    g = gMsgRes;
     for (i = 0; i < 7; i++) {
         func_ov002_021d4540(buf, 0x18, data_ov002_021ef634[i], data_ov002_021ef5ac.hdExt, ((int (*)(void))LangData_GetLang)());
         Ov002LevelTable_Load(&self->unk_4c[i], *(u8 **)func_02035d8c(self->unk_f4, buf));
@@ -160,9 +160,9 @@ void Task021ef99c_Start(Task021ef99c *self) {
     {
         Ov002RowList *p = (Ov002RowList *)Heap_Alloc(sizeof(Ov002RowList));
         if (p != NULL) {
-            *(VFunc **)p = data_ov000_021cac60;
+            *(VFunc **)p = UiObj_vtbl;
             p->vfunc_28();
-            *(VFunc **)p = data_ov000_021ccbe0;
+            *(VFunc **)p = Ov000Vt_021ccbe0_vtbl;
             func_ov000_021c3af4(p);
         }
         self->unk_3c = p;
@@ -184,9 +184,9 @@ void Task021ef99c_Start(Task021ef99c *self) {
         ListRowGauge *q;
         q = (ListRowGauge *)Heap_Alloc(sizeof(ListRowGauge));
         if (q != NULL) {
-            *(VFunc **)q = data_ov002_021ef684;
+            *(VFunc **)q = Ov002Vt_021ef684_vtbl;
             ListRow_Init(q);
-            *(VFunc **)q = data_ov000_021cc9f8;
+            *(VFunc **)q = Ov000Vt_021cc9f8_vtbl;
             ListRowGauge_Init(q);
         }
         q->index = i;
@@ -214,9 +214,9 @@ void Task021ef99c_Start(Task021ef99c *self) {
     {
         Lo021cadcc *p = (Lo021cadcc *)Heap_Alloc(sizeof(Lo021cadcc));
         if (p != NULL) {
-            *(VFunc **)p = data_ov000_021cac60;
+            *(VFunc **)p = UiObj_vtbl;
             p->vfunc_28();
-            *(VFunc **)p = data_ov000_021cadcc;
+            *(VFunc **)p = Lo021cadcc_vtbl;
             p->vfunc_28();
         }
         self->unk_40 = p;
@@ -242,11 +242,11 @@ void Task021ef99c_Start(Task021ef99c *self) {
     {
         Lo021cb5a8 *p = (Lo021cb5a8 *)Heap_Alloc(sizeof(Lo021cb5a8));
         if (p != NULL) {
-            *(VFunc **)p = data_ov000_021cac60;
+            *(VFunc **)p = UiObj_vtbl;
             p->vfunc_28();
-            *(VFunc **)p = data_ov000_021caec8;
+            *(VFunc **)p = UiList_vtbl;
             p->vfunc_28();
-            *(VFunc **)p = data_ov000_021cb5a8;
+            *(VFunc **)p = Lo021cb5a8_vtbl;
             p->vfunc_28();
         }
         self->unk_44 = p;
@@ -275,13 +275,13 @@ namespace m_021d2c2c {
 extern "C" {
 
 void Task021ef99c_UpdateActive(Task021ef99c *self) {
-    if (!(data_02097dc8->trig & 2)) {
+    if (!(gPad->trig & 2)) {
         return;
     }
     if (self->unk_48 != 0) {
         self->unk_48->flags |= 2;
     }
-    SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
     self->vfunc_0c(0);
 }
 
@@ -303,7 +303,7 @@ static inline BOOL ov002_isDone2ca4(UiObj *o) {
 void Task021ef99c_PreUpdate(Task021ef99c *self) {
     switch (self->state) {
     case 8:
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         self->unk_3c->flags &= ~2;
         self->unk_40->flags &= ~2;
         self->unk_44->flags &= ~2;
@@ -317,14 +317,14 @@ void Task021ef99c_PreUpdate(Task021ef99c *self) {
         break;
     }
     case 10:
-        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
         self->unk_3c->flags |= 2;
         self->unk_40->flags |= 2;
         self->unk_44->flags |= 2;
         break;
     }
     if (self->unk_48 != NULL) {
-        data_ov000_021ccd34 = 1;
+        gTaskSwitchPending = 1;
         self->unk_3c->flags |= 4;
         self->unk_48->vfunc_1c();
         if (ov002_isDone2ca4(self->unk_48)) {
@@ -332,7 +332,7 @@ void Task021ef99c_PreUpdate(Task021ef99c *self) {
             HEAP_PUSH(saved);
             DELETE_VOBJ(self->unk_48);
             HEAP_POP(saved);
-            data_ov000_021ccd34 = 0;
+            gTaskSwitchPending = 0;
             self->unk_3c->flags &= ~4;
         }
     } else if (self->unk_3c != NULL) {
@@ -381,7 +381,7 @@ Task021ef91c *Task021ef91c_New(void) {
     Task021ef91c *p = (Task021ef91c *)Heap_Alloc(0xd0);
     if (p != NULL) {
         TaskBase_ctor(p);
-        *(VFunc **)p = data_ov002_021ef91c;
+        *(VFunc **)p = Ov002TaskVt_021ef91c_vtbl;
         Ov002LevelTable_Ctor(&p->unk_94);
         Ov002StrTable_Ctor(&p->unk_ac);
         p->vfunc_58();
@@ -397,9 +397,9 @@ Task021ef91c *Task021ef91c_New(void) {
 namespace m_021d2fdc {
 extern "C" {
 
-extern VFunc data_ov000_021cb5a8[];
-extern VFunc data_ov000_021ccadc[];
-extern VFunc data_ov000_021cca58[];
+extern VFunc Lo021cb5a8_vtbl[];
+extern VFunc Ov000Vt_021ccadc_vtbl[];
+extern VFunc Ov000Vt_021cca58_vtbl[];
 void *func_02035d8c(void *a, void *b);
 void Ov002LevelTable_Load(Ov002LevelTable *self, u8 *src);
 void Ov002StrTable_Load(Ov002StrTable *self, u8 *src);
@@ -430,17 +430,17 @@ void Task021ef91c_Start(Task021ef91c *self) {
     if (self->vfunc_28()) {
         return;
     }
-    g = data_02149ef8;
+    g = gMsgRes;
     Ov002LevelTable_Load(&self->unk_94, *(u8 **)func_02035d8c(self->unk_44, self->unk_7c));
     Ov002StrTable_Load(&self->unk_ac, *(u8 **)func_02035d8c(self->unk_44, self->unk_64));
     {
         p = (UiObj *)Heap_Alloc(0xe0);
         if (p != NULL) {
-            *(VFunc **)p = data_ov000_021cac60;
+            *(VFunc **)p = UiObj_vtbl;
             p->vfunc_28();
-            *(VFunc **)p = data_ov000_021caec8;
+            *(VFunc **)p = UiList_vtbl;
             p->vfunc_28();
-            *(VFunc **)p = data_ov000_021cb5a8;
+            *(VFunc **)p = Lo021cb5a8_vtbl;
             p->vfunc_28();
         }
         self->unk_40 = (Lo021cb5a8 *)p;
@@ -466,9 +466,9 @@ void Task021ef91c_Start(Task021ef91c *self) {
     {
         p = (UiObj *)Heap_Alloc(0xd4);
         if (p != NULL) {
-            *(VFunc **)p = data_ov000_021cac60;
+            *(VFunc **)p = UiObj_vtbl;
             p->vfunc_28();
-            *(VFunc **)p = data_ov000_021ccadc;
+            *(VFunc **)p = Ov000Vt_021ccadc_vtbl;
             func_ov000_021c6140((TextList *)p);
         }
         self->unk_3c = (TextList *)p;
@@ -481,9 +481,9 @@ void Task021ef91c_Start(Task021ef91c *self) {
     for (i = 0; i < ((u32)self->unk_c0); i++) {
         ListRowText *q = (ListRowText *)Heap_Alloc(sizeof(ListRowText));
         if (q != NULL) {
-            *(VFunc **)q = data_ov002_021ef684;
+            *(VFunc **)q = Ov002Vt_021ef684_vtbl;
             ListRow_Init(q);
-            *(VFunc **)q = data_ov000_021cca58;
+            *(VFunc **)q = Ov000Vt_021cca58_vtbl;
             ListRowText_Init(q);
         }
         q->unk_38 = Ov002StrTable_GetLabel(&self->unk_ac, i);
@@ -493,7 +493,7 @@ void Task021ef91c_Start(Task021ef91c *self) {
     self->unk_3c->vfunc_08();
     TaskList_Insert(self);
     {
-        FieldPlayer *t = data_ov000_021ccd30;
+        FieldPlayer *t = gMessageQueue;
         if (t != NULL) {
             if (ov002_HasActive(t) && t->unk_118 != NULL) {
                 // Read as a u32, so MWCC does not reuse the pointer load from the test above.
@@ -566,7 +566,7 @@ extern "C" {
 
 static inline bool func_ov002_021d3434_idle(void) {
     BOOL r;
-    if (data_02097d78[3] == 0 && data_02097d78[1] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[1] == 0) {
         r = TRUE;
     } else {
         r = FALSE;
@@ -575,13 +575,13 @@ static inline bool func_ov002_021d3434_idle(void) {
 }
 void Task021ef91c_UpdateActive(Task021ef91c *self) {
     FieldPlayer *t;
-    if (!(data_02097dc8->trig & 2) || self->unk_c4 == NULL) {
+    if (!(gPad->trig & 2) || self->unk_c4 == NULL) {
         return;
     }
     if (!func_ov002_021d3434_idle()) {
         return;
     }
-    SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
     if (self->unk_3c != NULL) {
         self->unk_3c->flags |= 2;
     }
@@ -589,7 +589,7 @@ void Task021ef91c_UpdateActive(Task021ef91c *self) {
         self->unk_40->flags |= 2;
     }
     self->unk_04_0 = 1;
-    t = data_ov000_021ccd30;
+    t = gMessageQueue;
     if (t != NULL && t->unk_118 != NULL) {
         func_ov000_0216f844(t->unk_118, 1);
     }

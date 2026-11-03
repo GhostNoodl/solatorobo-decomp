@@ -37,7 +37,7 @@ static inline Actor *Find0218d2e0(ActorMgr *mgr, u16 id) {
 // The unk_44 block of the actor's target.
 ActorSub44 *Actor_GetTargetSub44(Actor *self) {
     u16 id = self->target;
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     ActorSub44 *r = NULL;
     Actor *found;
     if (mgr != NULL) {

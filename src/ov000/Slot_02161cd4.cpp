@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern u8 data_ov000_021cabd8[];
+extern u8 Ov000Vt_021cabd8_vtbl[];
 void *ResSet_ReleaseAll(void *p);
 void ResSet_SetName0(void *p, s32 a, s32 b, s32 c, s32 d);
 void ResSet_SetName1(void *p, s32 a, s32 b, s32 c, s32 d);
@@ -22,7 +22,7 @@ static inline void StopSlot(u8 *self, u8 i) {
 }
 
 static inline void Dtor02161cd4(u8 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cabd8);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cabd8_vtbl);
     StopSlot(self, LFLD(u8, self, 5));
     StopSlot(self, (LFLD(u8, self, 5) & 1) ^ 1);
     __cxa_vec_cleanup(self + 0x2e8, 2, 0x138, (void (*)(void *))ResSet_ReleaseAll);

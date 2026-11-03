@@ -5,16 +5,16 @@
 
 extern "C" {
 
-extern ActorMgr *data_ov000_021ccd68;
+extern ActorMgr *gActorMgr;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 u16 Actor_YawToPos(Actor *self, void *target);
 u16 FX_Atan2(s32 y, s32 x);
 
 static inline Actor *FindActor021b3e90(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline u16 AngleTo(Robo021ca458 *self, Actor *other) {
@@ -33,7 +33,7 @@ BOOL func_ov000_021b3e90(Robo021ca458 *self) {
     u16 dy;
     FieldCam *cam;
     ret = FALSE;
-    cam = &data_ov000_021ccd54->cam;
+    cam = &gSceneCmd->cam;
     if (cam == NULL) {
         return ret;
     }

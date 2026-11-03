@@ -27,7 +27,7 @@ void Ov000Vt_021cc938_Dtor(Marker021be420 *self) {
     Model_SetPos(self->unk_8c, x << 12, y << 12);
     a = FX_MUL(self->work.alpha, 0x1f000) >> 12;
     MODEL_FLAGS(self->unk_8c)->unk_19 = 1;
-    MODEL_FLAGS(self->unk_8c)->polygon_id = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
+    MODEL_FLAGS(self->unk_8c)->polygon_id = Gfx3DState_NextPolyId(gGfxSys->unk_8b0);
     MODEL_FLAGS(self->unk_8c)->alpha = (u8)a;
     Model_PlayPart(self->unk_8c, 3);
 }

@@ -19,7 +19,7 @@ void Actor_TurnClamped(Actor *self, u16 angle, u16 center, u16 range, s32 step);
 void Actor_SendMsg(void *t, u16 id, s32 a, s32 b, s32 c, void *arg);
 
 static inline Actor *FindActor021b2b08(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }
@@ -51,7 +51,7 @@ void func_ov000_021b2b08(Robo021ca458 *self) {
         self->fsm->st = 0x64;
         return;
     }
-    cam = &data_ov000_021ccd54->cam;
+    cam = &gSceneCmd->cam;
     ang = FieldCam_GetYaw(cam);
     ry = self->rot_y;
     if (self->padCur & 0x20) {

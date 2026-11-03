@@ -4,7 +4,7 @@
 #include "ov000/UiObj.h"
 
 extern "C" {
-extern UiLabelStyle data_02fe0188[];
+extern UiLabelStyle UiLabel_StyleTable[];
 extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
@@ -14,7 +14,7 @@ void TexObj_SetOamFuncArg(void *model, s32 a, void *b);
 static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
-        *(const u32 **)win = data_0208ba70;
+        *(const u32 **)win = TextWin_vtbl;
         TextWin_Init(win);
     }
     return win;
@@ -23,7 +23,7 @@ static inline TextWin *TextWin_New(void) {
 static inline void SetText(TextWin *win, u32 text) {
     win->str = text;
     win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->font;
+    gGfxMgr->unk_004 = win->font;
 }
 
 void UiLabel_SetText(UiLabel *self, u32 text) {
@@ -32,7 +32,7 @@ void UiLabel_SetText(UiLabel *self, u32 text) {
     if (self->model != NULL) {
         return;
     }
-    e = &data_02fe0188[self->style];
+    e = &UiLabel_StyleTable[self->style];
     if (self->bits.altFrame ? TRUE : FALSE) {
         MODEL_NEW(self->model, data_0208cb84, data_0208cc8c);
     } else {

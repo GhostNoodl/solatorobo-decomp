@@ -50,7 +50,7 @@ void func_ov014_0220840c(Ov014ActEx_0220774c *self) {
                 e->SetRotXYZ(0, 0, 0x7fff);
                 e->SetScaleAll(0xb33);
                 MIi_CpuClear32(-1, (u8 *)e + 0x84, 0x40);
-                SndMgr_PlayAtPitch(data_02097e4c, 0x11, &self->pos, -10);
+                SndMgr_PlayAtPitch(gSndMgr, 0x11, &self->pos, -10);
                 Ov003FxList_Add(self->unk_d8, 0xfe, e);
             } else {
                 Ov003FxList_Place(self->unk_d8, 0xfe, &p, 0, 0, 0, 0);
@@ -64,13 +64,13 @@ void func_ov014_0220840c(Ov014ActEx_0220774c *self) {
 }
 
 
-extern u8 data_ov014_02217708[];
+extern u8 Ov014ActEx_02208618_vtbl[];
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 
 #pragma force_active on
 Ov014ActEx_02208618 *Ov014ActEx_02208618_Ctor(Ov014ActEx_02208618 *self) {
     ActorEx_Ctor(self);
-    *(void **)self = data_ov014_02217708;
+    *(void **)self = Ov014ActEx_02208618_vtbl;
     self->unk_d0 = 0;
     self->unk_d8 = NULL;
     self->unk_d4 = 0;
@@ -79,14 +79,14 @@ Ov014ActEx_02208618 *Ov014ActEx_02208618_Ctor(Ov014ActEx_02208618 *self) {
 #pragma force_active reset
 
 Ov014ActEx_02208618 *Ov014ActEx_02208618_Dtor(Ov014ActEx_02208618 *self) {
-    *(void **)self = data_ov014_02217708;
+    *(void **)self = Ov014ActEx_02208618_vtbl;
     Ov014_FreeFx(&self->unk_d8);
     ActorEx_DtorBase(self);
     return self;
 }
 
 Ov014ActEx_02208618 *Ov014ActEx_02208618_DtorDelete(Ov014ActEx_02208618 *self) {
-    *(void **)self = data_ov014_02217708;
+    *(void **)self = Ov014ActEx_02208618_vtbl;
     Ov014_FreeFx(&self->unk_d8);
     ActorEx_DtorBase(self);
     Heap_Free(self);

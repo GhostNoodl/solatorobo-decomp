@@ -26,7 +26,7 @@ static inline void Ov003Sl_RotX(VecFx32 *out, const VecFx32 *in, u16 ang) {
 }
 
 static inline EffectObj *Ov003Sl_GetFx(Ov003Beam *self, s32 i) {
-    return Effect_Find_020657b0(data_0214a420, self->layers[i]);
+    return Effect_Find_020657b0(gEffectMgr, self->layers[i]);
 }
 
 void Ov003Beam_UpdateLayer(Ov003Beam *self, s32 i, s32 mode) {

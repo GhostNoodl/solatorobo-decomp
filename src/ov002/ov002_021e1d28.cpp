@@ -53,7 +53,7 @@ void Ov002Hud_Release(Ov002Hud *self) {
     HEAP_POP(saved);
 }
 
-extern VFunc data_0208ba70[];
+extern VFunc TextWin_vtbl[];
 extern char data_ov002_021eff94[];
 extern char data_ov002_021effa4[];
 extern char data_ov002_021effb0[];
@@ -71,7 +71,7 @@ void *func_ov002_021e1988(void *a, void *b, void *c, u16 *d);
 static inline Ov002Text2 *ov002_Anim_New(void) {
     Ov002Text2 *anim = (Ov002Text2 *)Heap_Alloc(0xb8);
     if (anim != NULL) {
-        *(VFunc **)anim = data_0208ba70;
+        *(VFunc **)anim = TextWin_vtbl;
         TextWin_Init(anim);
     }
     return anim;
@@ -80,7 +80,7 @@ static inline Ov002Text2 *ov002_Anim_New(void) {
 static inline void ov002_Anim_Start(Ov002Text2 *s, s32 str) {
     s->str = str;
     s->unk_4c = Text_Measure(s->font, s->spacing, s->str, &s->width, &s->height, s->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = s->font;
+    gGfxMgr->unk_004 = s->font;
 }
 
 static inline Model *ov002_Model_New(char *name, char *file) {
@@ -96,7 +96,7 @@ static inline Model *ov002_Model_New(char *name, char *file) {
 static inline Ov002Caption *ov002_Caption_New(void) {
     Ov002Caption *c = (Ov002Caption *)Heap_Alloc(sizeof(Ov002Caption));
     if (c != NULL) {
-        *(VFunc **)c = data_ov002_021f001c;
+        *(VFunc **)c = Ov002Vt_021f001c_vtbl;
         c->anim = NULL;
         c->text = 0;
         c->y = 0;
@@ -114,7 +114,7 @@ static inline Ov002Caption *ov002_Caption_New(void) {
 }
 
 void Ov002Hud_Load(Ov002Hud *self) {
-    void *res = data_02149ef8;
+    void *res = gMsgRes;
     char buf[0x20];
     void *arc;
     void *data;

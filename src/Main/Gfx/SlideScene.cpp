@@ -270,7 +270,7 @@ BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
             if (!scene->fading) {
                 scene->fading = 1;
                 if (Gfx_IsFadeIdle_02054b4c(0) && !scene->faded) {
-                    SndMgr_PlayVolume(data_02097e4c, 0x27, 0x3c, -1, -1);
+                    SndMgr_PlayVolume(gSndMgr, 0x27, 0x3c, -1, -1);
                 }
             }
         }
@@ -349,7 +349,7 @@ BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
                 }
             }
         } else if (scene->skip == 1 && count == 0) {
-            SndMgr_PlayVolume(data_02097e4c, 0x28, 0x3c, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x28, 0x3c, -1, -1);
             scene->fadeTimer = 0;
             scene->faded = 0;
             scene->fadeOut = 1;
@@ -422,7 +422,7 @@ BOOL MainVt_0208bbc8_Update(SlideScene *scene) {
             hit = FALSE;
             if (!scene->waitPage) {
                 if (pad2 & 0x81) {
-                    SndMgr_PlayVolume(data_02097e4c, 0x24, 0x50, -1, -1);
+                    SndMgr_PlayVolume(gSndMgr, 0x24, 0x50, -1, -1);
                     scene->cancel = 1;
                     scene->pressed = 1;
                     hit = TRUE;

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern u8 data_ov014_02217dc0[];
+extern u8 Ov014Act_0221267c_vtbl[];
 extern char data_ov014_02217d8e[];
 extern char data_ov014_02217d95[];
 extern ResSet *ResSet_Init(ResSet *p);
@@ -34,8 +34,8 @@ void Ov014Act_0221267c_Start(Ov014Act_0221267c *self) {
     Model0218fe1c *m;
     Ov003Actor_Start(self);
     {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (self->unk_3c != NULL) {
             VObj *v = self->unk_3c;
             if (v != NULL) {
@@ -43,7 +43,7 @@ void Ov014Act_0221267c_Start(Ov014Act_0221267c *self) {
             }
             self->unk_3c = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     self->hit->unk_30 = 0;
     {

@@ -3,10 +3,10 @@
 
 extern "C" {
 
-extern u8 data_ov006_021ec28c[];
+extern u8 Ov006Vt_021ec28c_vtbl[];
 
 Ov006Marker *Ov006Vt_021ec28c_Ctor(Ov006Marker *self) {
-    self->vtbl = data_ov006_021ec28c;
+    self->vtbl = Ov006Vt_021ec28c_vtbl;
     self->active = 0;
     self->smooth = 0;
     self->alt = 0;

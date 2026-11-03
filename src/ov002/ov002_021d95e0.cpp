@@ -32,10 +32,10 @@ static inline void ov002_Hud_Set(Ov002Hud *hud, u8 k) {
 void func_ov002_021d95e0(Obj021efe6c *self) {
     void *cam;
     Task021efba4 *t;
-    if (data_0214a424->shapeId == 0x9000 && data_0214a424->bits18.mode != 0) {
-        func_0206ce78(data_0214a424, 0x9001);
+    if (gStageFlags->shapeId == 0x9000 && gStageFlags->bits18.mode != 0) {
+        func_0206ce78(gStageFlags, 0x9001);
     }
-    self->field->unk_68 = data_0214a424->shapeId;
+    self->field->unk_68 = gStageFlags->shapeId;
     func_ov002_021d7058(self->field);
     cam = Heap_Alloc(0x24);
     if (cam != NULL) {

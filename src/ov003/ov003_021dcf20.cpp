@@ -100,7 +100,7 @@ static inline void Ov003Sw_Next(Ov003Switch *self) {
 static inline void Ov003Sw_Sound(Ov003Switch *self) {
     if (self->param->unk_01 == 3) {
         Field_ShakeCamera(7, 0x14);
-        SndMgr_PlayAt(data_02097e4c, 0x47, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x47, &self->pos, 0);
     }
 }
 
@@ -145,7 +145,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
             break;
         }
         if (snd != 0xffff) {
-            SndMgr_PlayAt(data_02097e4c, snd, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, snd, &self->pos, 0);
         }
         break;
     case 4:
@@ -174,7 +174,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
             break;
         }
         if (snd != 0xffff) {
-            SndMgr_PlayAt(data_02097e4c, snd, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, snd, &self->pos, 0);
         }
         break;
     case 2:
@@ -263,7 +263,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
             break;
         }
         if (snd != 0xffff) {
-            SndMgr_PlayAt(data_02097e4c, snd, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, snd, &self->pos, 0);
         }
         break;
     }
@@ -294,7 +294,7 @@ void Ov003ActVt_021f7fac_Update(Ov003Switch *self) {
                 break;
             }
             if (snd != 0xffff) {
-                SndMgr_PlayAt(data_02097e4c, snd, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, snd, &self->pos, 0);
             }
             func_ov000_02197dec(self, self->unk_18, -1);
             self->unk_93_1 = (u8)(u16)self->unk_18;

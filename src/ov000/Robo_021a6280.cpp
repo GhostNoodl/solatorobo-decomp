@@ -27,7 +27,7 @@ extern char data_ov000_021cc68a[];
 extern char data_ov000_021cc690[];
 extern char data_ov000_021cc5e3[];
 extern Def_021a6280 data_ov000_021c9fe8;
-extern void *data_02097e4c;
+extern void *gSndMgr;
 Actor *Actor_GetTarget(Actor *self);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 u16 Actor_YawToPos(Actor *self, void *target);
@@ -54,10 +54,10 @@ u8 Ov003_GetMaxCombo(void);
 
 static inline Actor *FindActor_021a6280(u16 id) {
     Actor *r;
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    r = ActorMgr_GetActor(data_ov000_021ccd68, id);
+    r = ActorMgr_GetActor(gActorMgr, id);
     return r;
 }
 
@@ -176,7 +176,7 @@ void Robo021ca458_State0b(Robo021ca458 *self) {
                     self->unk_b2a_0 = true;
                 }
             }
-            SndMgr_PlayPan(data_02097e4c, 0x44, lvl);
+            SndMgr_PlayPan(gSndMgr, 0x44, lvl);
             e = Effect_SpawnId(se, &self->pos);
             e->speed = 0x1400;
             e->AddPosXYZ(0, self->centerY, 0);
@@ -187,7 +187,7 @@ void Robo021ca458_State0b(Robo021ca458 *self) {
                 }
                 e->SetScaleAll(sc);
             }
-            if (!self->unk_b22_3 && data_0214a424->bits18.mode == 1) {
+            if (!self->unk_b22_3 && gStageFlags->bits18.mode == 1) {
                 u16 n = 0xc;
                 if (sub != NULL) {
                     n += (u16)(sub->unk_1a << 1);
@@ -199,7 +199,7 @@ void Robo021ca458_State0b(Robo021ca458 *self) {
             }
         } else if (self->unk_b24_26) {
             Model0218fe1c_SetAnimDelay(self->model, 0x32, 0);
-            SndMgr_PlayVolume(data_02097e4c, 0x30c, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x30c, -1, -1, -1);
             EffectHud_New2716();
         }
         if (self->unk_b24_12 == 0) {
@@ -226,7 +226,7 @@ void Robo021ca458_State0b(Robo021ca458 *self) {
         } else if (self->unk_b24_12 == 0) {
             ang = self->rot_y;
             if (self->mode == 1 && (self->padCur & 0xf0)) {
-                ang = self->padDir + FieldCam_GetYaw(&data_ov000_021ccd54->cam);
+                ang = self->padDir + FieldCam_GetYaw(&gSceneCmd->cam);
             }
         } else {
             ang = self->rot_y;
@@ -251,7 +251,7 @@ void Robo021ca458_State0b(Robo021ca458 *self) {
             e->SetScaleAll(0x800);
             e->speed = 0x2800;
             Field_ShakeCamera(5, 6);
-            SndMgr_PlayVolume(data_02097e4c, 0x7a, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x7a, -1, -1, -1);
             self->unk_b2c_3_f = 1;
             self->unk_b2c_7++;
         }
@@ -347,11 +347,11 @@ void Robo021ca458_State0b(Robo021ca458 *self) {
                         se = self->unk_b24_26 ? 0x30d : 0x305;
                     }
                     if (se >= 0) {
-                        SndMgr_PlayVolume(data_02097e4c, se, -1, -1, -1);
+                        SndMgr_PlayVolume(gSndMgr, se, -1, -1, -1);
                     }
                     if (self->unk_b24_22 != 0 || self->unk_b24_26) {
-                        if (FieldId_Eq(&data_ov000_021ccd54->unk_ca, data_ov000_021c9fe8.rgb)) {
-                            SndMgr_PlayPan(data_02097e4c, 0x5e, Rand_UpTo(3));
+                        if (FieldId_Eq(&gSceneCmd->unk_ca, data_ov000_021c9fe8.rgb)) {
+                            SndMgr_PlayPan(gSndMgr, 0x5e, Rand_UpTo(3));
                         }
                     }
                 }

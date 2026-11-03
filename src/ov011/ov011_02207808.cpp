@@ -184,7 +184,7 @@ void Ov011Model2_Update(Ov011Model2 *self) {
 
 extern "C" {
 
-extern u8 data_ov011_022079f0[];
+extern u8 Ov011Npc_vtbl[];
 void *ActorEx_Ctor(void *p);
 void *ActorEx_DtorBase(void *p);
 void Ov003Ticker_Clear_021d7ca8(void *p);
@@ -193,7 +193,7 @@ void Ov003Ticker_Release_021d7ce0(void *p);
 
 void *Ov011Npc_Ctor(Ov011Npc *self) {
     ActorEx_Ctor(self);
-    *(void **)self = data_ov011_022079f0;
+    *(void **)self = Ov011Npc_vtbl;
     Ov003Ticker_Clear_021d7ca8(self->unk_d8);
     Ov003Ticker_Clear_021d7ca8(self->unk_e4);
     Ov003Ticker_Clear_021d7ca8(self->unk_f0);
@@ -205,7 +205,7 @@ void *Ov011Npc_Ctor(Ov011Npc *self) {
 }
 
 void *Ov011Npc_Dtor(Ov011Npc *self) {
-    *(void **)self = data_ov011_022079f0;
+    *(void **)self = Ov011Npc_vtbl;
     Ov003Ticker_Release_021d7d8c(self->unk_d8);
     Ov003Ticker_Release_021d7d8c(self->unk_e4);
     Ov003Ticker_Release_021d7d8c(self->unk_f0);
@@ -221,7 +221,7 @@ void *Ov011Npc_Dtor(Ov011Npc *self) {
 }
 
 void *Ov011Npc_DtorDelete(Ov011Npc *self) {
-    *(void **)self = data_ov011_022079f0;
+    *(void **)self = Ov011Npc_vtbl;
     Ov003Ticker_Release_021d7d8c(self->unk_d8);
     Ov003Ticker_Release_021d7d8c(self->unk_e4);
     Ov003Ticker_Release_021d7d8c(self->unk_f0);
@@ -510,8 +510,8 @@ BOOL Ov011Fx_Init(Ov011Fx *self) {
 }
 
 static inline void Ov011_FreeAnim(Ov011Fx *self) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->anim != NULL) {
         Ov011Anim *p = self->anim;
         if (p != NULL) {
@@ -520,12 +520,12 @@ static inline void Ov011_FreeAnim(Ov011Fx *self) {
         }
         self->anim = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 static inline void Ov011_FreeModel(Ov011Fx *self) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->model != NULL) {
         Model0218fe1c *p = self->model;
         if (p != NULL) {
@@ -534,7 +534,7 @@ static inline void Ov011_FreeModel(Ov011Fx *self) {
         }
         self->model = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 void Ov011Fx_Release(Ov011Fx *self) {
@@ -752,9 +752,9 @@ struct Ov011ChrEntry {
 
 extern "C" {
 
-extern u8 data_ov011_022079d0[];
-extern u8 data_ov011_022079b0[];
-extern const Ov011ChrEntry data_ov011_022074b0[];
+extern u8 Ov011Vt_022079d0_vtbl[];
+extern u8 Ov011Vt_022079b0_vtbl[];
+extern const Ov011ChrEntry Ov011Chr_ModeTable[];
 void Ov003Ticker_Clear_021d7ca8(void *p);
 void Ov003Ticker_Release_021d7ce0(void *p);
 void Ov003Ticker_Release_021d7d8c(void *p);
@@ -776,8 +776,8 @@ BOOL Model021903b4_Draw(void *p);
 }
 
 static inline void Ov011_FreeModelP(Model0218fe1c **pp) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (*pp != NULL) {
         Model0218fe1c *p = *pp;
         if (p != NULL) {
@@ -786,12 +786,12 @@ static inline void Ov011_FreeModelP(Model0218fe1c **pp) {
         }
         *pp = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 static inline void Ov011_FreeAnimP(Ov011Anim **pp) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (*pp != NULL) {
         Ov011Anim *p = *pp;
         if (p != NULL) {
@@ -800,13 +800,13 @@ static inline void Ov011_FreeAnimP(Ov011Anim **pp) {
         }
         *pp = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 static inline Actor *Ov011_FindActorN(u16 id) {
     Actor *a = NULL;
-    if (data_ov000_021ccd68 != NULL) {
-        a = (Actor *)ActorMgr_GetActor(data_ov000_021ccd68, id);
+    if (gActorMgr != NULL) {
+        a = (Actor *)ActorMgr_GetActor(gActorMgr, id);
     }
     return a;
 }
@@ -834,7 +834,7 @@ static inline void Ov011Chr_Reset(Ov011Chr *self) {
 }
 
 static inline void Ov011TwA_Ctor(void *obj) {
-    *(void **)obj = data_ov011_022079d0;
+    *(void **)obj = Ov011Vt_022079d0_vtbl;
     OV011_TW(obj)->b0 = 0;
 }
 
@@ -855,7 +855,7 @@ static inline void Ov011Tw_SetBoth(Ov011Tw *t, const VecFx32 *src) {
 
 static inline void Ov011TwB_Ctor(void *obj) {
     Ov011Tw *t;
-    *(void **)obj = data_ov011_022079b0;
+    *(void **)obj = Ov011Vt_022079b0_vtbl;
     t = OV011_TW(obj);
     t->b0 = 0;
     t->b1 = 0;
@@ -890,12 +890,12 @@ Ov011Chr *Ov011Chr_Ctor(Ov011Chr *self) {
 }
 
 static inline void Ov011TwB_Dtor(void *obj) {
-    *(void **)obj = data_ov011_022079b0;
+    *(void **)obj = Ov011Vt_022079b0_vtbl;
     OV011_TWV(obj)->v08();
 }
 
 static inline void Ov011TwA_Dtor(void *obj) {
-    *(void **)obj = data_ov011_022079d0;
+    *(void **)obj = Ov011Vt_022079d0_vtbl;
     OV011_TWV(obj)->v08();
 }
 
@@ -968,8 +968,8 @@ void Ov011Chr_Update(Ov011Chr *self) {
     }
     key = self->mode;
     for (i = 0; i < 6; i++) {
-        if (key == data_ov011_022074b0[i].key && *(s32 *)&data_ov011_022074b0[i].fn != 0) {
-            (self->*data_ov011_022074b0[i].fn)();
+        if (key == Ov011Chr_ModeTable[i].key && *(s32 *)&Ov011Chr_ModeTable[i].fn != 0) {
+            (self->*Ov011Chr_ModeTable[i].fn)();
             break;
         }
     }
@@ -1119,7 +1119,7 @@ void Ov011Chr_UpdateMode1(Ov011Chr *self) {
         break;
     }
     case 2:
-        if (!EffectMgr_Contains(data_0214a420, self->unk_24)) {
+        if (!EffectMgr_Contains(gEffectMgr, self->unk_24)) {
             self->mode = 0;
             self->unk_24 = NULL;
         }
@@ -1174,7 +1174,7 @@ void Ov011Chr_UpdateMode3(Ov011Chr *self) {
         break;
     }
     case 4: {
-        BOOL done = EffectMgr_Contains(data_0214a420, self->unk_24) ? FALSE : TRUE;
+        BOOL done = EffectMgr_Contains(gEffectMgr, self->unk_24) ? FALSE : TRUE;
         if (done) {
             done = Ov011Model2_Idle(&self->m28);
         }
@@ -1222,7 +1222,7 @@ void Ov011Chr_UpdateMode5(Ov011Chr *self) {
         break;
     }
     case 6:
-        if (!EffectMgr_Contains(data_0214a420, self->unk_24)) {
+        if (!EffectMgr_Contains(gEffectMgr, self->unk_24)) {
             self->mode = 0;
             self->unk_24 = NULL;
         }
@@ -1264,8 +1264,8 @@ struct Ov011TwB {
 extern "C" {
 
 extern u16 data_ov011_02207f00;
-extern u8 data_ov011_022079d0[];
-extern u8 data_ov011_022079b0[];
+extern u8 Ov011Vt_022079d0_vtbl[];
+extern u8 Ov011Vt_022079b0_vtbl[];
 extern u8 data_ov011_022074f8[];
 s32 func_0203db40(void *p);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
@@ -1276,19 +1276,19 @@ void func_ov011_02202a38(void) {
 }
 
 Ov011TwA *Ov011Vt_022079d0_Ctor(Ov011TwA *self) {
-    self->vt = (Ov011V *)data_ov011_022079d0;
+    self->vt = (Ov011V *)Ov011Vt_022079d0_vtbl;
     self->b0 = 0;
     return self;
 }
 
 Ov011TwA *Ov011Vt_022079d0_Dtor(Ov011TwA *self) {
-    self->vt = (Ov011V *)data_ov011_022079d0;
+    self->vt = (Ov011V *)Ov011Vt_022079d0_vtbl;
     ((Ov011V *)self)->v08();
     return self;
 }
 
 Ov011TwA *Ov011Vt_022079d0_DtorDelete(Ov011TwA *self) {
-    self->vt = (Ov011V *)data_ov011_022079d0;
+    self->vt = (Ov011V *)Ov011Vt_022079d0_vtbl;
     ((Ov011V *)self)->v08();
     Heap_Free(self);
     return self;
@@ -1362,7 +1362,7 @@ static inline void Ov011TwB_SetBoth(Ov011TwB *t, const VecFx32 *src) {
 }
 
 Ov011TwB *Ov011Vt_022079b0_Ctor(Ov011TwB *self) {
-    self->vt = (Ov011V *)data_ov011_022079b0;
+    self->vt = (Ov011V *)Ov011Vt_022079b0_vtbl;
     self->b0 = 0;
     self->b1 = 0;
     self->speed = 0;
@@ -1371,13 +1371,13 @@ Ov011TwB *Ov011Vt_022079b0_Ctor(Ov011TwB *self) {
 }
 
 Ov011TwB *Ov011Vt_022079b0_Dtor(Ov011TwB *self) {
-    self->vt = (Ov011V *)data_ov011_022079b0;
+    self->vt = (Ov011V *)Ov011Vt_022079b0_vtbl;
     ((Ov011V *)self)->v08();
     return self;
 }
 
 Ov011TwB *Ov011Vt_022079b0_DtorDelete(Ov011TwB *self) {
-    self->vt = (Ov011V *)data_ov011_022079b0;
+    self->vt = (Ov011V *)Ov011Vt_022079b0_vtbl;
     ((Ov011V *)self)->v08();
     Heap_Free(self);
     return self;

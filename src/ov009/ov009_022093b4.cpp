@@ -16,7 +16,7 @@ void Ov009ActVt_02217594_StateIdle(Ov009ActVt_02217594 *self) {
     self->fsm->st++;
 }
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov009_022172b5[];
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void HitSphere_Link(ActorSub48 *p);
@@ -58,7 +58,7 @@ void Ov009ActVt_02217594_StateAttack(Ov009ActVt_02217594 *self) {
                 Model0218fe1c_ClearReverse(self->model);
             }
             if (self->step == 1 || self->step == 5) {
-                SndMgr_PlayAt(data_02097e4c, 0x41, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x41, &self->pos, 0);
             }
             self->step++;
             self->fsm->timer = 0xc;
@@ -86,7 +86,7 @@ void Ov009ActVt_02217594_StateAttack(Ov009ActVt_02217594 *self) {
             if (self->unk_312 != 0) {
                 Shared_SetEventActor(self->kind, self->id);
                 func_020627dc(4);
-                data_ov000_021ccd54->stageFlags = 1;
+                gSceneCmd->stageFlags = 1;
                 self->unk_312 = 0;
             }
         }
@@ -156,7 +156,7 @@ void Ov009ActVt_02217594_StateAttack2(Ov009ActVt_02217594 *self) {
     }
     case 2:
         if (self->model->anim_state == 1) {
-            EffectObj *e = Effect_Find_020657b0(data_0214a420, self->unk_314);
+            EffectObj *e = Effect_Find_020657b0(gEffectMgr, self->unk_314);
             ActorSub44 *s44;
             ActorSub48 *s48;
             if (e != NULL) {
@@ -202,7 +202,7 @@ void Ov009ActVt_02217594_StateAttack2(Ov009ActVt_02217594 *self) {
         }
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
         self->unk_312 = 0;
         self->unk_b6 = 0xb4;
         break;

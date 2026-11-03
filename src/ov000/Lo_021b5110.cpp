@@ -11,7 +11,7 @@ typedef struct {
 extern "C" {
 
 extern void *data_02149efc;
-extern void *data_02097e4c;
+extern void *gSndMgr;
 BOOL PauseNode_IsUpdatePaused(PauseNode *node, s32 a);
 s32 func_ov000_021b7b50(FieldProp *n);
 Robo021ca458 *ActorMgr_FindPlayer(void);
@@ -27,13 +27,13 @@ static inline void SetRot(Rot021b5110 *r, u16 x, u16 y, u16 z) {
 }
 
 static inline BOOL QueueBusy(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     s32 t = g->tail;
     return g->head != t;
 }
 
 static inline void Push(s32 cmd, s32 arg) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     g->queue[g->tail] = cmd;
     g->queueArg[g->tail] = arg;
     if (++g->tail >= 0x10) {
@@ -95,13 +95,13 @@ void FieldMgr_Update(FieldMgr *self) {
                     busy = TRUE;
                 }
                 if (busy || QueueBusy()) {
-                    SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+                    SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
                 } else {
                     Push(0x1d, 0);
                 }
             } else {
                 FieldId c;
-                FieldState *gm = data_ov000_021ccd54;
+                FieldState *gm = gSceneCmd;
                 u8 r = item->dest.c[0];
                 u8 g = item->dest.c[1];
                 u8 b = item->dest.c[2];

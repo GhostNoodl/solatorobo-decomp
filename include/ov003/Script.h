@@ -1,7 +1,7 @@
 #ifndef OV003_SCRIPT_H
 #define OV003_SCRIPT_H
 
-// The ov003 behaviour script list (Ov003ScriptList_Init, vtable data_ov003_021f7974, 0x1c bytes),
+// The ov003 behaviour script list (Ov003ScriptList_Init, vtable Ov003Vt_021f7974_vtbl, 0x1c bytes),
 // embedded in the actors that pick their next move from a table: tracks of steps added with
 // Ov003ScriptList_AddTrack, chosen by id with Ov003ScriptList_SelectTrack and stepped by Ov003ScriptList_Step.
 
@@ -19,7 +19,7 @@ struct Ov003Step {
     u16 b;
 };
 
-// A track (vtable data_ov003_021f7984, 0x14 bytes, built by Ov003ScriptList_AddTrack): val is the
+// A track (vtable Ov003Track_vtbl, 0x14 bytes, built by Ov003ScriptList_AddTrack): val is the
 // current step, wrapping at max.
 class Ov003Track {
 public:

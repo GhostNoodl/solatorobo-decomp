@@ -3,14 +3,14 @@
 extern "C" {
 
 extern const u8 data_02082ba4[0x38];
-extern EffectPtclHandler data_0208c908;
-extern EffectPtclHandler data_0208c910;
-extern EffectPtclHandler data_0208c918;
-extern EffectPtclHandler data_0208c920;
-extern EffectPtclHandler data_0208c928;
-extern EffectPtclHandler data_0208c930;
-extern EffectPtclHandler data_0208c938;
-extern EffectPtclHandler data_0208c940;
+extern EffectPtclHandler EffectPtclCmd_Pos_pmf;
+extern EffectPtclHandler EffectPtclCmd_Scale_pmf;
+extern EffectPtclHandler EffectPtclCmd_Rot_pmf;
+extern EffectPtclHandler EffectPtclCmd_Alpha_pmf;
+extern EffectPtclHandler EffectPtclCmd_Pltt_pmf;
+extern EffectPtclHandler EffectPtclCmd_TexImage_pmf;
+extern EffectPtclHandler EffectPtclCmd_PlaySnd_pmf;
+extern EffectPtclHandler EffectPtclCmd_Color_pmf;
 
 void EffectPtcl_Init(EffectPtcl *p) {
     p->unk_58 = -1;

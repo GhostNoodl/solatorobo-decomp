@@ -16,7 +16,7 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov000_021cc62a[];
 extern char data_ov000_021cc71d[];
 extern char data_ov000_021cc723[];
@@ -38,10 +38,10 @@ void *SndMgr_PlayAt(void *mgr, s32 id, void *pos, s32 a);
 u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
 static inline Actor *FindActor021af464(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline s32 Dist021af464(s32 dx, s32 dz) {
@@ -63,7 +63,7 @@ static inline BOOL GBusy021af464(FieldState *g) {
 }
 
 static inline BOOL GIdle021af464(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (GBusy021af464(g)) {
             return FALSE;
@@ -77,11 +77,11 @@ static inline BOOL GIdle021af464(void) {
 }
 
 static inline BOOL GHasD4_021af464(void) {
-    return data_ov000_021ccd54->event != 0 ? TRUE : FALSE;
+    return gSceneCmd->event != 0 ? TRUE : FALSE;
 }
 
 static inline BOOL Ev19_021af464(void) {
-    LangBlockB *e = data_ov000_021ccd6c->blockB;
+    LangBlockB *e = gFieldMgr->blockB;
     if (e != NULL && e->unk_19_0) {
         return TRUE;
     }
@@ -130,7 +130,7 @@ void Robo021ca458_State1e(Robo021ca458 *self) {
             History_SetState(((St_021af464 *)self->fsm), 1, 0);
             break;
         }
-        SndMgr_PlayAt(data_02097e4c, 7, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 7, &self->pos, 0);
         Model0218fe1c_SetAnim(self->model, data_ov000_021cc62a, 0x800, 0);
         self->speed = Dist021af464(pos.x - self->pos.x, pos.z - self->pos.z) >> 4;
         self->velY = ((pos.y - self->pos.y) >> 4) + 0x185;
@@ -166,7 +166,7 @@ void Robo021ca458_State1e(Robo021ca458 *self) {
             self->rot_y = ang;
             self->moveYaw = ang;
             self->target = 0xffff;
-            SndMgr_PlayAt(data_02097e4c, 1, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 1, &self->pos, 0);
             ((St_021af464 *)self->fsm)->state++;
         } else {
             VecFx32 d;
@@ -198,7 +198,7 @@ void Robo021ca458_State1e(Robo021ca458 *self) {
             self->friction = 0;
             self->unk_b29 |= 2;
             Model0218fe1c_SetAnim(self->model, data_ov000_021cc62a, 0x800, 0);
-            SndMgr_PlayAt(data_02097e4c, 7, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 7, &self->pos, 0);
             ((St_021af464 *)self->fsm)->state = 10;
         } else if (self->velY == 0) {
             Model0218fe1c_SetAnimDelay(self->model, 1, 0);

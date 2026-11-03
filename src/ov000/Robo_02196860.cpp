@@ -27,7 +27,7 @@ void ActorEx_State0a(ActorEx *self) {
             BOOL done = FALSE;
             Robo021ca458 *p = ActorMgr_FindPlayer();
             if (p->id == self->targetObj->target) {
-                StageFlags *g = data_0214a424;
+                StageFlags *g = gStageFlags;
                 u32 n = g->unk_016 + 1;
                 if (n >= 0xffff) {
                     n = 0xffff;

@@ -170,7 +170,7 @@ void Ov003Bridge_StateIdle(Ov003Bridge *self) {
             Model0218fe1c_SetLoop(self->model);
             Model0218fe1c_SetAnimSpeed(self->model, 0x4cd);
         }
-        SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x17, &self->pos, 0);
         Field_ShakeCamera(5, 10);
         b = 0;
         Actor_SendMsg(found, self->id, 0xd, 1, 1, &b);
@@ -180,7 +180,7 @@ void Ov003Bridge_StateIdle(Ov003Bridge *self) {
             v.y = pl->pos.y;
             v.z = pl->pos.z;
             Effect_SpawnId(0x44f, &v)->AddPosXYZ(0, pl->height, 0);
-            SndMgr_PlayVolume(data_02097e4c, 0x4a, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x4a, -1, -1, -1);
         }
         self->fsm->st++;
         self->fsm->timer = 0;
@@ -235,7 +235,7 @@ void Ov003Bridge_StateIdle(Ov003Bridge *self) {
             }
             self->unk_93_1 = 1;
             if (self->hitMesh != NULL) {
-                SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x17, &self->pos, 0);
                 Field_ShakeCamera(5, 10);
             }
             self->fsm->st = 10;
@@ -270,7 +270,7 @@ void Ov003Bridge_StateIdle(Ov003Bridge *self) {
             func_020627dc(1);
             func_020627ec(id);
             {
-                u8 *ac = &data_ov000_021ccd54->stageFlags;
+                u8 *ac = &gSceneCmd->stageFlags;
                 *ac = 1;
                 func_ov000_02182590(ac);
             }

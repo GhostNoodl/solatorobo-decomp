@@ -4,8 +4,8 @@
 
 extern "C" {
 
-extern u8 data_ov010_0220fe1c[];
-extern u8 data_ov010_0220fe08[];
+extern u8 Ov010Vt_0220fe1c_vtbl[];
+extern u8 Ov010Vt_0220fe08_vtbl[];
 extern void *Ov003Pool_Dtor(void *p);
 extern void Ov003Pool_Release(void *p);
 extern Ov010TaskNode *Ov003Pool_Alloc(void *p);
@@ -98,8 +98,8 @@ void Ov010TaskList_Clear(Ov010TaskList *o) {
     }
     for (n = o->head; n != NULL; n = next) {
         next = n->next;
-        saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (n->obj != NULL) {
             VObj *p = n->obj;
             if (p != NULL) {
@@ -107,7 +107,7 @@ void Ov010TaskList_Clear(Ov010TaskList *o) {
             }
             n->obj = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
         Ov003Pool_Free(o->pool, n);
     }
     o->head = NULL;

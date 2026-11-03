@@ -42,7 +42,7 @@ Oam021640fc *func_ov000_021640fc(Obj021640fc *self, Arg021640fc *a, Oam021640fc 
     switch (a->kind) {
     case 0: {
         u32 t = e->tile;
-        u32 v = data_0214a424->unk_01a;
+        u32 v = gStageFlags->unk_01a;
         s32 x = e->x;
         if (x > 0xff) {
             x |= ~0xff;
@@ -66,7 +66,7 @@ Oam021640fc *func_ov000_021640fc(Obj021640fc *self, Arg021640fc *a, Oam021640fc 
         u32 *tbl = func_ov000_0219bf7c();
         u32 lim = func_ov000_0219bf88();
         u32 t = e->tile;
-        StageFlags *d = data_0214a424;
+        StageFlags *d = gStageFlags;
         u8 lv = d->unk_01a;
         BOOL started = FALSE;
         s32 xpos;

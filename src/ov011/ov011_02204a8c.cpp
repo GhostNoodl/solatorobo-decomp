@@ -11,7 +11,7 @@ void Ov011Act7c4c_StateDie(Ov011Act7c4c *self) {
     VecFx32 v;
     if (self->fsm->st == 0) {
         Field_ShakeCamera(0xf, 0x3c);
-        SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x56, -1, -1, -1);
         Effect_SpawnId(4, &self->pos)->SetScaleAll(0x3800);
     }
     Ov003Actor_StateDie(self);

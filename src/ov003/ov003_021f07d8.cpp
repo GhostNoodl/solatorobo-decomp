@@ -122,7 +122,7 @@ typedef struct {
     Ov003CntIds sub;
 } Ov003CntSelf;
 
-extern void *data_ov000_021ccd68;
+extern void *gActorMgr;
 extern Ov003CntGroup *ActorMgr_GetGroup(void *mgr, u16 key);
 
 s32 Ov003CntSelf_CountLiving(Ov003CntSelf *self) {
@@ -133,7 +133,7 @@ s32 Ov003CntSelf_CountLiving(Ov003CntSelf *self) {
     s32 total = 0;
     s32 n = 0;
     BOOL flag = FALSE;
-    g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000);
+    g = ActorMgr_GetGroup(gActorMgr, 0x4000);
     if (g != NULL && (a = g->head) != NULL) {
         for (; a != NULL; a = (a != NULL) ? a->next : g->head) {
             BOOL found = FALSE;

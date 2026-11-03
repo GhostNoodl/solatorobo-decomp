@@ -90,8 +90,8 @@ struct Ov011Sub1b4Entry {
 
 extern "C" {
 
-extern const Ov011TopEntry data_ov011_022073a0[];
-extern const Ov011Sub1b4Entry data_ov011_02207308[];
+extern const Ov011TopEntry Ov011Scene_StateTable[];
+extern const Ov011Sub1b4Entry Ov011Sub1b4_StateTable[];
 extern const VecFx32 data_ov011_02207284;
 
 void Ov011Scene_SelectState(Ov011Scene *self);
@@ -132,8 +132,8 @@ static inline void Ov011Sub1b4_Update(Ov011Sub1b4 *s) {
     }
     key = s->seq.current;
     for (i = 0; i < 5; i++) {
-        if (key == data_ov011_02207308[i].key && *(s32 *)&data_ov011_02207308[i].fn != 0) {
-            (s->*data_ov011_02207308[i].fn)();
+        if (key == Ov011Sub1b4_StateTable[i].key && *(s32 *)&Ov011Sub1b4_StateTable[i].fn != 0) {
+            (s->*Ov011Sub1b4_StateTable[i].fn)();
             break;
         }
     }
@@ -187,8 +187,8 @@ void Ov011Scene_Update(Ov011Scene *self) {
         u32 i;
         u8 key = self->seq.current;
         for (i = 0; i < 10; i++) {
-            if (key == data_ov011_022073a0[i].key && *(s32 *)&data_ov011_022073a0[i].fn != 0) {
-                (((Ov011Top *)self)->*data_ov011_022073a0[i].fn)();
+            if (key == Ov011Scene_StateTable[i].key && *(s32 *)&Ov011Scene_StateTable[i].fn != 0) {
+                (((Ov011Top *)self)->*Ov011Scene_StateTable[i].fn)();
                 break;
             }
         }

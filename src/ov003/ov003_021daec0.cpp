@@ -44,7 +44,7 @@ void Ov003Shot_Start(Ov003Shot *self) {
         VEC_Add(&self->pos, &data_02092a50, &self->pos);
     }
     if (self->def->sound >= 0) {
-        SndMgr_PlayAt(data_02097e4c, self->def->sound, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, self->def->sound, &self->pos, 0);
     }
     if (self->def->spawn.id != -1) {
         EffectObj *e = Effect_SpawnId(self->def->spawn.id, &self->pos);

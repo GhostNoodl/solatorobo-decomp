@@ -1,7 +1,7 @@
 #ifndef OV000_ACTORBASE_H
 #define OV000_ACTORBASE_H
 
-// The ov000 actor base class (ctor Actor_Ctor, vtable data_ov000_021cc3b4,
+// The ov000 actor base class (ctor Actor_Ctor, vtable Actor_vtbl,
 // 0xac bytes) and the small types its members use. Kept apart from Actor.h so that
 // headers with layouts can derive from Actor without Actor.h's prototypes.
 

@@ -12,10 +12,10 @@ BOOL func_ov002_021ddcbc(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev) {
     t = (u8 *)self->owner;
     if (ev->unk_44 != 0) {
         t[1] = 1;
-        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
     } else {
         t[1] = 0;
-        SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
     }
     return TRUE;
 }
@@ -25,7 +25,7 @@ BOOL func_ov002_021ddd30(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev) {
         return FALSE;
     }
     ((u8 *)self->owner)[0] = 1;
-    SndMgr_PlayVolume(data_02097e4c, 0x1d, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x1d, -1, -1, -1);
     return TRUE;
 }
 

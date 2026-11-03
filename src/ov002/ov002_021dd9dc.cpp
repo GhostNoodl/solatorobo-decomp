@@ -65,9 +65,9 @@ static inline void ov002_Board_Add(Obj021efe6c *self, Obj021efeb8 *node) {
         self->pieces = node;
     }
     func_ov002_021da184(self, node);
-    if (data_0214a424->bits18.mode == 1) {
+    if (gStageFlags->bits18.mode == 1) {
         func_ov000_021c9544(self->unk_76, self->pieces);
-        Obj021c95ac_Init_021c95ac(self->unk_76, data_0214a424->bits18.unk_3 | 0x8000);
+        Obj021c95ac_Init_021c95ac(self->unk_76, gStageFlags->bits18.unk_3 | 0x8000);
     } else {
         func_ov000_021c9544(self->unk_76, self->pieces);
     }
@@ -91,16 +91,16 @@ void func_ov002_021dd9dc(Obj021eff10 *self, Obj021efe6c *w) {
             a = next;
         } while (a != NULL);
     }
-    e = (Ent021dd9dc *)((u8 *)data_0214a424 + 0x8e);
+    e = (Ent021dd9dc *)((u8 *)gStageFlags + 0x8e);
     if (e->id != 0xffff) {
         do {
             u16 id = e->id | 0x2000;
             if (Param_GetEntry(id)[0] != 0x80) {
             a = (Obj021efe9c *)Heap_Alloc(sizeof(Obj021efe9c));
             if (a != NULL) {
-                *(VFunc **)a = data_ov002_021efeb8;
+                *(VFunc **)a = Ov002Vt_021efeb8_vtbl;
                 Obj021efeb8_Init(a);
-                *(VFunc **)a = data_ov002_021efe9c;
+                *(VFunc **)a = Ov002Vt_021efe9c_vtbl;
                 Obj021efe9c_Init(a);
             }
             a->unk_48 = id;
@@ -129,7 +129,7 @@ void func_ov002_021dd9dc(Obj021eff10 *self, Obj021efe6c *w) {
             }
         } while ((++e)->id != 0xffff);
     }
-    MI_CpuCopy8((u8 *)data_0214a424 + 0x2a, w->unk_08, sizeof(w->unk_08));
+    MI_CpuCopy8((u8 *)gStageFlags + 0x2a, w->unk_08, sizeof(w->unk_08));
 }
 
 }

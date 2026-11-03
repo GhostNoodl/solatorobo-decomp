@@ -9,7 +9,7 @@ extern "C" {
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 
 static inline Actor *FindActor0218c040(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }
@@ -17,7 +17,7 @@ static inline Actor *FindActor0218c040(u16 id) {
 }
 
 static inline BOOL IsHere0218c040(GroupNode *e) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     BOOL ret = FALSE;
     if (g->unk_ca.c[0] == e->fieldId.c[0] && g->unk_ca.c[1] == e->fieldId.c[1] && g->unk_ca.c[2] == e->fieldId.c[2]) {
         ret = TRUE;

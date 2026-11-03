@@ -6,8 +6,8 @@
 
 extern "C" {
 
-extern void *data_02fe152c;
-extern void *data_02097e4c;
+extern void *gDataRes;
+extern void *gSndMgr;
 void *DataRes_GetTable(void *a, s32 b);
 u32 DataRes_GetCount(void *a, s32 b);
 u32 func_ov000_0214bf2c(u16 a);
@@ -35,7 +35,7 @@ typedef struct {
 
 static inline BOOL LoIsLoaded24(void) {
     BOOL r = TRUE;
-    if (!StageRes_IsAllLoaded(data_ov000_021ccd24.unk_08)) {
+    if (!StageRes_IsAllLoaded(gSceneResSet.unk_08)) {
         r = FALSE;
     }
     return r;
@@ -182,8 +182,8 @@ void func_ov000_021512b4(LoStatusWin *self, s32 a, s32 *pos, s32 c) {
     self->unk_118.depth = -0x191a;
     self->unk_118.unk_vf20(bx + 0x19, y);
     self->unk_118.Render();
-    data_02097ce0->unk_004 = self->unk_118.unk_28;
-    h = self->unk_118.unk_38 + ((NNSG2dFont *)GfxMgr_GetFont(data_02097ce0))->pRes->pGlyph->cellHeight;
+    gGfxMgr->unk_004 = self->unk_118.unk_28;
+    h = self->unk_118.unk_38 + ((NNSG2dFont *)GfxMgr_GetFont(gGfxMgr))->pRes->pGlyph->cellHeight;
     y += h * 5 + 1;
     if (func_ov000_0214bf2c(LFLD(u16, self->unk_54, 6)) & 0x10) {
         self->unk_340.depth = -0x191a;

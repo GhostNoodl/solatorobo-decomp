@@ -12,15 +12,15 @@ void Obj021c61a8_Release(TextList *self) {
     node = self->rows;
     while (node != NULL) {
         ListRow *next = node->next;
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (node != NULL) {
             if (node != NULL) {
                 node->vfunc_04();
             }
             node = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
         node = next;
     }
 }

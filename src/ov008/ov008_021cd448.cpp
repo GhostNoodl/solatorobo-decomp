@@ -5,18 +5,18 @@
 
 extern "C" {
 
-extern Ov008Mgr *data_ov008_021d0500;
+extern Ov008Mgr *gOv008Mgr;
 void *Camera_Ctor(void *p);
 void func_0204b420(void *p);
 void func_ov008_021cd500(Ov008Mgr *m);
 void func_ov008_021cd584(Ov008Mgr *m);
 void func_ov000_0214bc10(void);
 void func_ov000_0214c210(void);
-extern void *data_0208b318;
+extern void *ResHandle_vtbl;
 
 void func_ov008_021cd448(void) {
     Ov008Mgr *p;
-    if (data_ov008_021d0500 != NULL) {
+    if (gOv008Mgr != NULL) {
         return;
     }
     p = (Ov008Mgr *)Heap_Alloc(0x120);
@@ -24,14 +24,14 @@ void func_ov008_021cd448(void) {
         Camera_Ctor(&p->cam);
         func_ov008_021cd500(p);
     }
-    data_ov008_021d0500 = p;
+    gOv008Mgr = p;
 }
 
 void Ov008Mgr_Delete(void) {
-    if (data_ov008_021d0500 == NULL) {
+    if (gOv008Mgr == NULL) {
         return;
     }
-    OV008_FREE(data_ov008_021d0500, Ov008Mgr *, (func_ov008_021cd584(p_), func_0204b420(&p_->cam), Heap_Free(p_)));
+    OV008_FREE(gOv008Mgr, Ov008Mgr *, (func_ov008_021cd584(p_), func_0204b420(&p_->cam), Heap_Free(p_)));
 }
 
 void func_ov008_021cd500(Ov008Mgr *m) {
@@ -72,40 +72,40 @@ void func_ov008_021cd584(Ov008Mgr *m) {
     OV008_FREE_M(m->unk_ec);
     OV008_FREE_M(m->unk_f0);
     {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (m->panel != NULL) {
             Ov008Panel *p = m->panel;
             if (p != NULL) {
                 p->pic.v0c();
                 OV008_FREE_M(p->sprite);
-                OV008_SET_VT(&p->pic, &data_0208b318);
+                OV008_SET_VT(&p->pic, &ResHandle_vtbl);
                 p->pic.v0c();
                 Heap_Free(p);
             }
             m->panel = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     OV008_FREE_D(m->unk_c4, ResSet_ReleaseAll);
     OV008_FREE_D(m->unk_cc, ResSet_ReleaseAll);
     OV008_FREE_V(m->unk_d4, v04);
     OV008_FREE_V(m->unk_dc, v04);
     OV008_FREE_V(m->unk_e4, v04);
-    OV008_FREE(m->caption, Ov008Caption *, (p_->pic.v0c(), OV008_SET_VT(&p_->pic, &data_0208b318), p_->pic.v0c(), Heap_Free(p_)));
+    OV008_FREE(m->caption, Ov008Caption *, (p_->pic.v0c(), OV008_SET_VT(&p_->pic, &ResHandle_vtbl), p_->pic.v0c(), Heap_Free(p_)));
     OV008_FREE_V(m->unk_fc, v04);
     OV008_FREE_V(m->menu, v04);
     OV008_FREE_V(m->dialog, v04);
     OV008_FREE_V(m->talk, v04);
-    ResMgr_ReleaseByName(data_02097cdc, data_0208cca0, 7, 0);
-    ResMgr_ReleaseByName(data_02097cdc, data_0208cc94, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_0208cca0, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0);
     func_ov000_0214bc10();
     func_ov000_0214c210();
 }
 
-extern void *data_ov000_021caec8;
-extern void *data_ov000_021cac60;
-extern void *data_0208bf54;
+extern void *UiList_vtbl;
+extern void *UiObj_vtbl;
+extern void *StageRes_vtbl;
 extern char data_ov008_021d0462[];
 extern char data_ov008_021d0470[];
 extern char data_ov008_021d047c[];
@@ -129,9 +129,9 @@ BOOL func_ov000_0214bc6c(void);
 BOOL func_ov000_0214c270(void);
 
 Ov008V *Ov008Menu_DtorDelete(Ov008V *self) {
-    OV008_SET_VT(self, &data_ov000_021caec8);
+    OV008_SET_VT(self, &UiList_vtbl);
     self->v2c();
-    OV008_SET_VT(self, &data_ov000_021cac60);
+    OV008_SET_VT(self, &UiObj_vtbl);
     self->v2c();
     Heap_Free(self);
     return self;
@@ -162,7 +162,7 @@ static inline Ov008Anim *Ov008_NewMsg(void) {
 static inline Ov008Pic *Ov008_NewText(void) {
     Ov008Pic *p = (Ov008Pic *)Heap_Alloc(0x4c);
     if (p != NULL) {
-        OV008_SET_VT(p, &data_0208b318);
+        OV008_SET_VT(p, &ResHandle_vtbl);
         p->v08();
     }
     return p;

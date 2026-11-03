@@ -33,7 +33,7 @@ void func_020627dc(s32 a);
 void func_ov000_02182590(u8 *p);
 s32 StageRes_HasQueued(void);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
-extern void *data_02097e4c;
+extern void *gSndMgr;
 
 void func_ov000_021974b0(Obj021975b4 *self) {
     Obj0219bf90 *p = ActorMgr_FindPlayer();
@@ -41,7 +41,7 @@ void func_ov000_021974b0(Obj021975b4 *self) {
     Shared_SetEventActor(self->unk_0e, self->unk_0c);
     func_020627dc(0x8002);
     {
-        FieldState *pl = data_ov000_021ccd54;
+        FieldState *pl = gSceneCmd;
         pl->stageFlags = 1;
         func_ov000_02182590(&pl->stageFlags);
     }
@@ -60,7 +60,7 @@ void func_ov000_021974b0(Obj021975b4 *self) {
         pos.z = p->unk_78;
         Effect_SpawnId(0x44f, &pos)->AddPosXYZ(0, p->unk_68, 0);
     }
-    SndMgr_PlayVolume(data_02097e4c, 0x88, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x88, -1, -1, -1);
 }
 
 void func_ov000_021975b4(Obj021975b4 *self) {
@@ -69,7 +69,7 @@ void func_ov000_021975b4(Obj021975b4 *self) {
     Shared_SetEventActor(self->unk_0e, self->unk_0c);
     func_020627dc(0x8003);
     {
-        FieldState *pl = data_ov000_021ccd54;
+        FieldState *pl = gSceneCmd;
         pl->stageFlags = 1;
         func_ov000_02182590(&pl->stageFlags);
     }

@@ -10,8 +10,8 @@ void func_02063374(Unk0214a418 *self) {
     Model *m;
     SysTaskVObj *v;
 
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     m = self->unk_14;
     if (m != NULL) {
         if (m != NULL) {
@@ -21,10 +21,10 @@ void func_02063374(Unk0214a418 *self) {
         }
         self->unk_14 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     v = self->unk_10;
     if (v != NULL) {
         if (v != NULL) {
@@ -32,10 +32,10 @@ void func_02063374(Unk0214a418 *self) {
         }
         self->unk_10 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     p = self->unk_0c;
     if (p != NULL) {
         if (p != NULL) {
@@ -44,10 +44,10 @@ void func_02063374(Unk0214a418 *self) {
         }
         self->unk_0c = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     p = self->unk_08;
     if (p != NULL) {
         if (p != NULL) {
@@ -56,7 +56,7 @@ void func_02063374(Unk0214a418 *self) {
         }
         self->unk_08 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     self->unk_04 = 0;
 }
 
@@ -96,7 +96,7 @@ extern void LangData_LocalizePath(char *dst, const char *src);
 extern char data_0208c1ac[];
 extern char data_0208c1b5[];
 extern char data_0208c1c1[];
-extern u32 data_0208b318[];
+extern u32 ResHandle_vtbl[];
 extern void *ResSet_Init(void *p);
 extern BOOL ResSet_UpdateLoad(void *p);
 
@@ -151,7 +151,7 @@ BOOL func_02063484(Unk0214a418 *self) {
             if (self->unk_10 == NULL) {
                 ld = (SysTaskLoader *)Heap_Alloc(0x4c);
                 if (ld != NULL) {
-                    *(u32 **)ld = data_0208b318;
+                    *(u32 **)ld = ResHandle_vtbl;
                     ld->Init();
                 }
                 self->unk_10 = (SysTaskVObj *)ld;

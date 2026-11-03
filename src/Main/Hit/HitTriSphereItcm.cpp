@@ -186,10 +186,10 @@ void HitTriSphere_TestTree(HitTriSphere *q, HitTriNode *root) {
                 }
             }
         found:
-            if (data_02fe0efc >= 24) {
-                info = &data_02fe0f50[23];
+            if (gHitCount >= 24) {
+                info = &gHitList[23];
             } else {
-                info = &data_02fe0f50[data_02fe0efc];
+                info = &gHitList[gHitCount];
             }
             if (block->flags & 2) {
                 VEC_MultAdd(block->mtx._00, &p, (VecFx32 *)block->mtx.m[3], &p);
@@ -228,9 +228,9 @@ void HitTriSphere_TestTree(HitTriSphere *q, HitTriNode *root) {
             info->n[2] = tri->n[2];
             if (info->distSq < q->best) {
                 q->best = info->distSq;
-                data_02fe0ef8 = info;
+                gHitRayBest = info;
             }
-            data_02fe0efc++;
+            gHitCount++;
         next:
             cnt--;
             tris++;
@@ -370,10 +370,10 @@ edges:
         }
     }
 found:
-    if (data_02fe0efc >= 24) {
-        info = &data_02fe0f50[23];
+    if (gHitCount >= 24) {
+        info = &gHitList[23];
     } else {
-        info = &data_02fe0f50[data_02fe0efc];
+        info = &gHitList[gHitCount];
     }
     if (block->flags & 2) {
         VEC_MultAdd(block->mtx._00, &p, (VecFx32 *)block->mtx.m[3], &p);
@@ -417,9 +417,9 @@ found:
     info->n[2] = tri->n[2];
     if (info->distSq < q->best) {
         q->best = info->distSq;
-        data_02fe0ef8 = info;
+        gHitRayBest = info;
     }
-    data_02fe0efc++;
+    gHitCount++;
 fail:
     return;
 }

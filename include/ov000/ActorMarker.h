@@ -9,7 +9,7 @@
 // It is allocated with 0xa8 bytes and set up by ActorMarker_Init; ActorMarker_Release releases it
 // before the free. ActorMarker_SetKind requests a kind; ActorMarker_Update loads the kind's models
 // (func_ov000_021bd8ac), waits for them and the fade out of the old kind, then installs the kind's
-// update / draw pair from the table data_ov000_021cc934. Each kind keeps its own fields after the
+// update / draw pair from the table ActorMarker_KindTable. Each kind keeps its own fields after the
 // common block, from 0x8c (see the kind's source file).
 
 struct ActorMarker;

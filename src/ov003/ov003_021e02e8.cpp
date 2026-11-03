@@ -13,7 +13,7 @@ typedef struct {
     s32 unk_14;
 } Ov003LampMsg;
 
-// The lamp (vtable data_ov003_021f80f0, 0x104 bytes: NEW_BASIC in Factory_New4000). Its
+// The lamp (vtable Ov003ActVt_021f80f0_vtbl, 0x104 bytes: NEW_BASIC in Factory_New4000). Its
 // model's render callback (Ov003Obj_StartLampCapture / 021e02e8) copies the matrix of node joint into
 // mtx; the actor of kind 0x404f is found and read the same way.
 class Ov003Lamp : public ActorEx {
@@ -102,10 +102,10 @@ void Ov003Obj_CaptureLampMtx(Ov003Obj *self) {
     Ov003Lamp *p;
     s32 id;
     u8 b;
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         p = NULL;
     } else {
-        p = ActorMgr_FindKind(data_ov000_021ccd68, 0x4000, 0x404f);
+        p = ActorMgr_FindKind(gActorMgr, 0x4000, 0x404f);
     }
     if (p == NULL || (b = p->joint) == 0xff) {
         return;
@@ -144,7 +144,7 @@ void Ov003ActVt_021f80f0_Start(Ov003Lamp *self) {
     self->model->flushVP = 1;
     Model0218fe1c_SetAnim(self->model, data_ov003_021f8525, 0x1000, 0);
     Model0218fe1c_SetLoop(self->model);
-    g = data_02097e48.queue;
+    g = gSndQueue.queue;
     if (g->flag0 != 1 || g->unk_74 != 0xffff || g->unk_72 != 0x4e) {
         g->unk_74 = 0x4e;
         g->unk_70 = 0;
@@ -162,10 +162,10 @@ void Ov003ActVt_021f80f0_StateIdle(Ov003Lamp *self) {
     Ov003LampMsg msg;
     MtxFx43 m2;
     u8 k;
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         p = NULL;
     } else {
-        p = ActorMgr_FindKind(data_ov000_021ccd68, 0x4000, 0x404e);
+        p = ActorMgr_FindKind(gActorMgr, 0x4000, 0x404e);
     }
     w = self->fsm;
     switch (w->st) {
@@ -247,7 +247,7 @@ void Ov003ActVt_021f80f0_State21(Ov003Lamp *self) {
         a = 0x131;
         break;
     case 0x30:
-        SndMgr_PlayAt(data_02097e4c, 0x35, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x35, &self->pos, 0);
         a = 3;
         b = 0x19;
         break;

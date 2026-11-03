@@ -3,11 +3,11 @@
 extern "C" {
 
 u16 Pad_GetCur(void) {
-    return data_02097dc8->cur;
+    return gPad->cur;
 }
 
 u16 Pad_GetRelease(void) {
-    return data_02097dc8->release;
+    return gPad->release;
 }
 
 void func_02054254(SlidePanel *panel) {
@@ -47,9 +47,9 @@ BOOL func_020544e4(SlidePanel *panel, BOOL sound) {
             panel->unk_20 = 0;
             if (sound && Gfx_IsFadeIdle(0)) {
                 if (panel->kind >= 3) {
-                    SndMgr_PlayVolume(data_02097e4c, 0x2f, -1, -1, -1);
+                    SndMgr_PlayVolume(gSndMgr, 0x2f, -1, -1, -1);
                 } else {
-                    SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+                    SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
                 }
             }
         }
@@ -159,7 +159,7 @@ void func_02054bb4(SlidePanel *panel) {
         panel->frame = 0;
         panel->unk_20 = 0;
         if (Gfx_IsFadeIdle(0) && panel->cur != 3) {
-            SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         }
     } else {
         panel->moving = 0;

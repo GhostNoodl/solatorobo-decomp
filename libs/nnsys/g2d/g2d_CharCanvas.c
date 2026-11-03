@@ -269,8 +269,8 @@ void ClearAreaLine(const NNSG2dCharCanvas * pCC, int cl, int x, int y, int w, in
 void ClearArea1D(const NNSG2dCharCanvas * pCC, int cl, int x, int y, int w, int h);
 
 // The vtables and lookup tables are in g2d_CharCanvas_rodata.c (main's read-only data is in .text).
-extern const NNSiG2dCharCanvasVTable data_0207566c; // VTABLE_BG
-extern const NNSiG2dCharCanvasVTable data_02075678; // VTABLE_OBJ1D
+extern const NNSiG2dCharCanvasVTable VTABLE_BG;
+extern const NNSiG2dCharCanvasVTable VTABLE_OBJ1D;
 extern const ObjectSize data_02075684[4][4];       // GetMaxObjectSize objs
 extern const GXOamShape data_020756a4[4][4];       // OBJSizeToShape shape
 
@@ -913,7 +913,7 @@ void NNS_G2dCharCanvasInitForBG (NNSG2dCharCanvas * pCC, void * charBase, int ar
     InitCharCanvas(
         pCC,
         charBase, areaWidth, areaHeight, colorMode,
-        &data_0207566c, (unsigned int)areaWidth
+        &VTABLE_BG, (unsigned int)areaWidth
         );
 }
 
@@ -928,7 +928,7 @@ void NNS_G2dCharCanvasInitForOBJ1D (NNSG2dCharCanvas * pCC, void * charBase, int
     InitCharCanvas(
         pCC,
         charBase, areaWidth, areaHeight, colorMode,
-        &data_02075678, p.packed
+        &VTABLE_OBJ1D, p.packed
         );
 }
 

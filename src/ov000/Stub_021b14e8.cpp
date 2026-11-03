@@ -9,16 +9,16 @@ typedef struct {
 
 extern "C" {
 
-extern Obj0214a424 *data_0214a424;
+extern Obj0214a424 *gStageFlags;
 void Shared_ChangeFlags(s32 a, s32 b);
 
 void func_ov000_021b14e8(void *player) {
-    data_0214a424->unk_18_9 = 1;
+    gStageFlags->unk_18_9 = 1;
     Shared_ChangeFlags(0xc, 4);
 }
 
 void func_ov000_021b1514(void *player) {
-    data_0214a424->unk_18_9 = 0;
+    gStageFlags->unk_18_9 = 0;
     Shared_ChangeFlags(0xc, 8);
 }
 

@@ -58,9 +58,9 @@ typedef struct ov006_Unk021dfce8 {
 
 extern "C" {
 
-extern u8 data_ov006_021ec27c[];
-extern u8 data_ov006_021ec2dc[];
-extern u8 data_ov006_021ec26c[];
+extern u8 Ov006Vt_021ec27c_vtbl[];
+extern u8 Ov006Vt_021ec2dc_vtbl[];
+extern u8 Ov006Vt_021ec26c_vtbl[];
 extern char data_0214b105[];
 void PlayTime_Clear(void *p);
 void TexObj_SetOamFunc(Model *m, int a, void *cb, int b);
@@ -82,7 +82,7 @@ void ov006_Unk021dfce8_Load(ov006_Unk021dfce8 *self) {
 
     item = (ov006_Item021dfce8 *)Heap_Alloc(sizeof(ov006_Item021dfce8));
     if (item != NULL) {
-        item->vtbl = data_ov006_021ec27c;
+        item->vtbl = Ov006Vt_021ec27c_vtbl;
         item->unk4 = 0;
         item->unk5 = 0;
         item->unk8.x = 0;
@@ -94,7 +94,7 @@ void ov006_Unk021dfce8_Load(ov006_Unk021dfce8 *self) {
     self->unk1C = item;
     icon = (ov006_Icon021dfce8 *)Heap_Alloc(sizeof(ov006_Icon021dfce8));
     if (icon != NULL) {
-        icon->vtbl = data_ov006_021ec2dc;
+        icon->vtbl = Ov006Vt_021ec2dc_vtbl;
         icon->unk4 = 0;
         PlayTime_Clear(icon->unk6);
         icon->unk1C = NULL;
@@ -136,7 +136,7 @@ void ov006_Unk021dfce8_Load(ov006_Unk021dfce8 *self) {
     ov006_Vec_Set021dfce8(&self->unk1C->unk8, 0x100000, 0xc0000, self->unk1C->unk8.z);
     panel = (ov006_Panel021dfce8 *)Heap_Alloc(sizeof(ov006_Panel021dfce8));
     if (panel != NULL) {
-        panel->vtbl = data_ov006_021ec26c;
+        panel->vtbl = Ov006Vt_021ec26c_vtbl;
         panel->unk4 = 0;
         panel->unk8 = 0;
         panel->unkC = 0;

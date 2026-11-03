@@ -29,7 +29,7 @@ static inline void G3_Cmd1(int cmd, u32 value) {
 }
 
 void UiList_DrawShade(UiList *self, s32 t) {
-    GfxSys *g = data_02097d48;
+    GfxSys *g = gGfxSys;
     s16 z = self->posZ - 0x180;
     s32 alpha = (s32)(((s64)t * 0x14000 + 0x800) >> 12) >> 12 & 0xff;
     if (alpha == 0) {

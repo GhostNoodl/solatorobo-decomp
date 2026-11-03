@@ -78,7 +78,7 @@ void Ov012ActVt_0220b280_StateAttack3(Ov012ActVt_0220b280 *self) {
         self->gravity = 0;
         self->fsm->st++;
         if (self->unk_1a == 0) {
-            SndMgr_PlayAt(data_02097e4c, 0x600, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x600, &self->pos, 0);
         }
     case 1: {
         Ov003Actor *list[0x20];
@@ -146,7 +146,7 @@ void Ov012ActVt_0220b280_StateAttack3(Ov012ActVt_0220b280 *self) {
                         }
                     }
                     Effect_SpawnId(0x69, &v)->SetScaleAll(0xccd);
-                    SndMgr_PlayAt(data_02097e4c, 0x2c, &self->pos, 0);
+                    SndMgr_PlayAt(gSndMgr, 0x2c, &self->pos, 0);
                 }
             }
         }
@@ -308,11 +308,11 @@ void Ov012ActVt_0220b280_StateDown(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0) {
         if (*self->hp == 0) {
             if (self->unk_1a == 0) {
-                SndMgr_PlayAt(data_02097e4c, 0x603, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x603, &self->pos, 0);
             }
         } else {
             if (self->unk_1a == 0) {
-                SndMgr_PlayAt(data_02097e4c, 0x602, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x602, &self->pos, 0);
             }
         }
     }
@@ -323,7 +323,7 @@ void Ov012ActVt_0220b280_StateDown(Ov012ActVt_0220b280 *self) {
 extern "C" {
 void Ov012ActVt_0220b280_StateHurt(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0 && self->unk_1a == 0) {
-        SndMgr_PlayAt(data_02097e4c, 0x602, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x602, &self->pos, 0);
     }
     Ov003Actor_StateHurt(self);
 }
@@ -332,7 +332,7 @@ void Ov012ActVt_0220b280_StateHurt(Ov012ActVt_0220b280 *self) {
 extern "C" {
 void Ov012ActVt_0220b280_StateKnockBack(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0 && self->unk_1a == 0) {
-        SndMgr_PlayAt(data_02097e4c, 0x603, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x603, &self->pos, 0);
     }
     Ov003Actor_StateKnockBack(self);
 }
@@ -342,7 +342,7 @@ extern "C" {
 void Ov012ActVt_0220b280_StateDie(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0) {
         EffectObj *e;
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x480e, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x480e, 0x15);
         e = Effect_SpawnId(0x69, &self->pos);
         if (e != NULL) {
             e->SetScaleAll(0x2400);
@@ -373,15 +373,15 @@ Ov012ActVt_0220b280 *Ov012ActVt_0220b280_DtorDelete(Ov012ActVt_0220b280 *self) {
 extern "C" {
 void Ov012ActVt_0220b35c_Init(Ov003Actor *self) {
     Ov003Actor_Init(self);
-    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
-    SndMgr_RequestLoad_02049678(data_02097e4c, 4, 7, -1);
+    SndMgr_LoadHeapState(gSndMgr, 1, 1);
+    SndMgr_RequestLoad_02049678(gSndMgr, 4, 7, -1);
 }
 }
 
 extern "C" {
 BOOL Ov012ActVt_0220b35c_IsReady(Ov003Actor *self) {
     BOOL r = Actor_IsReady(self);
-    if (r && !SndMgr_IsLoadDone(data_02097e4c)) {
+    if (r && !SndMgr_IsLoadDone(gSndMgr)) {
         r = FALSE;
     }
     return r;

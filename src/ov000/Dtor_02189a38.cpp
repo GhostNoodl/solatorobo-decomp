@@ -3,8 +3,8 @@
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208bf54[];
+extern u8 ResHandle_vtbl[];
+extern u8 StageRes_vtbl[];
 void StageRes_CancelSlots(void *ptr);
 void *Camera_CtorBase(void *self);
 extern u8 data_ov000_021cc3a0[];
@@ -32,9 +32,9 @@ typedef struct {
 } Obj02189a74;
 
 VObj *Ov000Vt_021cc158_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_0208bf54);
+    VOBJ_SET_VTABLE(self, StageRes_vtbl);
     StageRes_CancelSlots(self);
-    VOBJ_SET_VTABLE(self, data_0208b318);
+    VOBJ_SET_VTABLE(self, ResHandle_vtbl);
     self->vfunc_0c();
     return self;
 }

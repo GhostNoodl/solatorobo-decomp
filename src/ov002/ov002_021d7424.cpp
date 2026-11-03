@@ -3,11 +3,11 @@
 extern "C" {
 
 void Ov002_PlaySe(int se) {
-    SndMgr_PlayVolume(data_02097e4c, se, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, se, -1, -1, -1);
 }
 
 Ov002Mdl021efe3c *Ov002Vt_021efe3c_Ctor(Ov002Mdl021efe3c *self) {
-    *(VFunc **)self = data_ov002_021efe3c;
+    *(VFunc **)self = Ov002Vt_021efe3c_vtbl;
     self->arc = NULL;
     self->name = NULL;
     self->anmName = NULL;
@@ -31,7 +31,7 @@ Ov002Mdl021efe3c *Ov002Vt_021efe3c_Ctor(Ov002Mdl021efe3c *self) {
 }
 
 Ov002Mdl021efe3c *Ov002Vt_021efe3c_Dtor(Ov002Mdl021efe3c *self) {
-    *(VFunc **)self = data_ov002_021efe3c;
+    *(VFunc **)self = Ov002Vt_021efe3c_vtbl;
     {
         void *saved;
         HEAP_PUSH(saved);
@@ -58,7 +58,7 @@ Ov002Mdl021efe3c *Ov002Vt_021efe3c_Dtor(Ov002Mdl021efe3c *self) {
 }
 
 Ov002Mdl021efe3c *Ov002Vt_021efe3c_DtorDelete(Ov002Mdl021efe3c *self) {
-    *(VFunc **)self = data_ov002_021efe3c;
+    *(VFunc **)self = Ov002Vt_021efe3c_vtbl;
     {
         void *saved;
         HEAP_PUSH(saved);

@@ -2,19 +2,19 @@
 
 extern "C" {
 
-extern u8 data_ov000_021ccd34;
-extern void *data_02149ef8;
+extern u8 gTaskSwitchPending;
+extern void *gMsgRes;
 void *MsgRes_GetString(void *a, int id);
 u8 *func_0206f000(u16 id);
 BOOL Item_Give(u16 id, s32 n);
 BOOL Item_Set_0206f5e4(u16 id, s32 n);
 void Obj0215c1bc_SetText(void *a, s32 b, void *c);
-extern Ov015Globals data_ov015_02213320;
+extern Ov015Globals gOv015Globals;
 void TaskHost_Create(s32 a, s32 b);
 extern u8 data_ov015_02213360[];
 
 void Ov015Scene2b08_UpdateActive(Ov015Scene2b08 *self) {
-    Pad *pd = data_02097dc8;
+    Pad *pd = gPad;
     u16 pad = pd->trig;
     BOOL on = self->unk_4c->hidden ? TRUE : FALSE;
     if (!on) {
@@ -24,14 +24,14 @@ void Ov015Scene2b08_UpdateActive(Ov015Scene2b08 *self) {
     if (!(pad & 2)) {
         return;
     }
-    SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
     self->unk_54 = 0;
     self->unk_3c->flags |= 2;
     self->unk_44->flags |= 2;
     self->unk_40->flags |= 2;
     self->unk_48->flags |= 2;
     self->unk_50->flags |= 2;
-    TaskHost_RequestSwitch(data_ov000_021ccd44, 0x1f, self->param);
+    TaskHost_RequestSwitch(gTaskHost, 0x1f, self->param);
     self->unk_04 |= 6;
 }
 
@@ -45,17 +45,17 @@ static inline BOOL Ov015_IsFinished(UiObj *o) {
 void Ov015Scene2b08_PreUpdate(Ov015Scene2b08 *self) {
     switch (self->state) {
     case 8:
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         break;
     case 0xa:
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         break;
     }
     if (!Ov015_IsFinished(self->unk_4c) || !Ov015_IsFinished(self->unk_50)) {
-        data_ov000_021ccd34 = 1;
+        gTaskSwitchPending = 1;
         self->unk_3c->flags |= 4;
     } else {
-        data_ov000_021ccd34 = 0;
+        gTaskSwitchPending = 0;
         self->unk_3c->flags &= ~4;
     }
 
@@ -114,13 +114,13 @@ static inline UiListItem *Ov015_ListNth3(UiList *o) {
     return p;
 }
 static inline void Ov015_ShopMsg(Ov015Scene2b08 *self, s32 id) {
-    Obj0215c1bc_SetText(self->unk_50, 0x8000, MsgRes_GetString(data_02149ef8, id));
+    Obj0215c1bc_SetText(self->unk_50, 0x8000, MsgRes_GetString(gMsgRes, id));
     self->unk_50->flags &= ~2;
     self->unk_50->vfunc_70();
 }
 static inline void Ov015_SetMoney24(u16 v) {
     if (v > 9999) v = 9999;
-    data_0214a424->unk_024 = v;
+    gStageFlags->unk_024 = v;
 }
 BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
     UiListItem *item = Ov015_ListNth3(self->unk_3c);
@@ -134,7 +134,7 @@ BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
     }
     switch (def[0]) {
     case 0:
-        if (data_0214a424->itemTotal >= 100) {
+        if (gStageFlags->itemTotal >= 100) {
             if (self->unk_50 != NULL) Ov015_ShopMsg(self, 0x9e);
             r = FALSE;
         } else {
@@ -143,7 +143,7 @@ BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
         }
         break;
     case 1: {
-        u32 s = def[1] + data_0214a424->unk_024;
+        u32 s = def[1] + gStageFlags->unk_024;
         if (s > 9999) s = 9999;
         Ov015_SetMoney24(s);
         break;
@@ -156,7 +156,7 @@ BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
             Item_Set_0206f5e4(id, 1);
         }
         {
-            StageFlags *save = data_0214a424;
+            StageFlags *save = gStageFlags;
             u32 m = self->unk_40->value;
             if (m > 99999) m = 99999;
             save->unk_618 = m;
@@ -173,13 +173,13 @@ void func_ov015_02206aa0(Ov015SceneSeq *self) {
 }
 
 BOOL func_ov015_02206abc(void) {
-    TaskHost_Create(0x1e, data_ov015_02213320.mainSeq->unk_04);
+    TaskHost_Create(0x1e, gOv015Globals.mainSeq->unk_04);
     return TRUE;
 }
 
 BOOL func_ov015_02206ae0(void) {
     BOOL r = FALSE;
-    if (data_ov000_021ccd40 != NULL) {
+    if (gFinishingTask != NULL) {
         r = TRUE;
     }
     return r;
@@ -203,10 +203,10 @@ static inline bool Ov015Host_Flag1(TaskHost *t) {
 BOOL func_ov015_02206b1c(Ov015SceneSeq *self) {
     BOOL r;
     Task *t;
-    self->scene = data_ov000_021ccd40;
+    self->scene = gFinishingTask;
     r = TRUE;
     {
-        BOOL b = Ov015Host_Flag1(data_ov000_021ccd44);
+        BOOL b = Ov015Host_Flag1(gTaskHost);
         if (b) {
             r = FALSE;
         }

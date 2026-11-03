@@ -24,7 +24,7 @@ void Ov012ActVt_0220b35c_StateShoot(Ov003Actor *self) {
         self->velY = 0;
         self->friction = 0;
         self->gravity = 0;
-        SndMgr_PlayAt(data_02097e4c, 0x701, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x701, &self->pos, 0);
         if (self->unk_d0->target_id != 0xffff) {
             Model0218fe1c_SetAnim(self->model, data_ov012_0220b40c, 0x400, 0);
             self->fsm->st = 10;
@@ -79,7 +79,7 @@ void Ov012ActVt_0220b35c_StateShoot(Ov003Actor *self) {
                 }
                 self->unk_d0->target_id = 0xffff;
             }
-            SndMgr_PlayAt(data_02097e4c, 0x700, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x700, &self->pos, 0);
         }
         Model0218fe1c_SetAnim(self->model, data_ov012_0220b418, 0x19a, 0);
         Model0218fe1c_SetLoop(self->model);
@@ -113,7 +113,7 @@ void Ov012ActVt_0220b35c_State16(Ov003Actor *self) {
         self->velY = 0;
         self->friction = 0;
         self->gravity = 0;
-        SndMgr_PlayAt(data_02097e4c, 0x700, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x700, &self->pos, 0);
         self->fsm->st++;
         break;
     case 1:
@@ -158,7 +158,7 @@ void Ov012ActVt_0220b35c_StateDown(Ov003Actor *self) {
             self->unk_d0->target_id = 0xffff;
         }
         if (*self->hp == 0) {
-            SndMgr_PlayAt(data_02097e4c, 0x704, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x704, &self->pos, 0);
         }
     }
     Ov003Actor_StateDown(self);
@@ -169,8 +169,8 @@ extern "C" {
 void Ov012ActVt_0220b35c_StateDie(Ov003Actor *self) {
     if (self->fsm->st == 0) {
         EffectObj *e;
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4009, 0x15);
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4801, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x4009, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x4801, 0x15);
         e = Effect_SpawnId(0x69, &self->pos);
         if (e != NULL) {
             e->SetScaleAll(0x2400);
@@ -194,7 +194,7 @@ void Ov012ActVt_0220b35c_StateHurt(Ov003Actor *self) {
             }
             self->unk_d0->target_id = 0xffff;
         }
-        SndMgr_PlayAt(data_02097e4c, 0x703, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x703, &self->pos, 0);
     }
     Ov003Actor_StateHurt(self);
 }
@@ -213,7 +213,7 @@ void Ov012ActVt_0220b35c_StateKnockBack(Ov003Actor *self) {
             }
             self->unk_d0->target_id = 0xffff;
         }
-        SndMgr_PlayAt(data_02097e4c, 0x704, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x704, &self->pos, 0);
     }
     Ov003Actor_StateKnockBack(self);
 }

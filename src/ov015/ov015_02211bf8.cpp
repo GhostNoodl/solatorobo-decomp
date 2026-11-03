@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern Ov015Obj290 *data_ov015_0221336c;
+extern Ov015Obj290 *gOv015Obj290;
 BOOL Model021903b4_Draw(void *a);
 BOOL Model0218fe1c_IsAnimDone(void *p);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
@@ -42,14 +42,14 @@ BOOL func_ov015_02211c98(void) {
 
 void func_ov015_02211ca0(Ov015Obj290 *self) {
     self->unk_240 = self->unk_234;
-    data_ov015_0221336c = self;
+    gOv015Obj290 = self;
     self->model.trans = self->unk_27c;
     MI_Copy36B(&self->rot, &self->model.rot);
     self->model.scale.x = 0x1000;
     self->model.scale.y = 0x1000;
     self->model.scale.z = 0x1000;
     Model021903b4_Draw(&self->model);
-    data_ov015_0221336c = NULL;
+    gOv015Obj290 = NULL;
 }
 
 BOOL func_ov015_02211d14(Ov015Obj290 *self) {
@@ -80,7 +80,7 @@ BOOL func_ov015_02211d14(Ov015Obj290 *self) {
     self->unk_10 = (u16)(self->unk_10 + 1);
     Model0218fe1c_UpdateAnim(&self->model, 0x1000);
     if (Model0218fe1c_IsAnimDone(&self->model)) {
-        SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x56, -1, -1, -1);
         r = FALSE;
     }
     return r;

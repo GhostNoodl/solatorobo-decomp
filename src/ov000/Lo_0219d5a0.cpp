@@ -37,7 +37,7 @@ s32 func_ov000_0219d5a0(Robo021ca458 *self) {
     if (!self->unk_b24_1) {
         if (self->unk_b29_4 || busy) {
             result = 2;
-        } else if (!FieldId_Eq(&data_ov000_021ccd54->unk_ca, data_ov000_021c9fe8.rgb)) {
+        } else if (!FieldId_Eq(&gSceneCmd->unk_ca, data_ov000_021c9fe8.rgb)) {
             if (!(st & 0x20000000) || !self->unk_b24_4) {
                 result = 1;
             }

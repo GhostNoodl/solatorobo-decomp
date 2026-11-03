@@ -50,7 +50,7 @@ void Ov009ActVt_02217390_StateHeld(Ov009ActVt_02217390 *self) {
     if (!Ov009_GameIdle()) {
         return;
     }
-    if (Ov009Game_IsPaused(data_ov000_021ccd54)) {
+    if (Ov009Game_IsPaused(gSceneCmd)) {
         return;
     }
     self->unk_f0++;
@@ -105,7 +105,7 @@ void Ov009ActVt_02217390_StateAttack(Ov009ActVt_02217390 *self) {
             self->unk_f4 += 0x8000;
             Effect_SpawnId(0x2bc, &self->pos);
             Effect_SpawnId(0x2bd, &self->pos);
-            SndMgr_PlayVolume(data_02097e4c, 0x3d, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x3d, -1, -1, -1);
         }
         break;
     case 2:
@@ -185,7 +185,7 @@ void Ov009ActVt_02217390_StateAttack2(Ov009ActVt_02217390 *self) {
                 History_SetState(self->fsm, 1, 0);
                 Effect_SpawnId(0x2bc, &self->pos);
                 Effect_SpawnId(0x2bd, &self->pos);
-                SndMgr_PlayVolume(data_02097e4c, 0x3d, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x3d, -1, -1, -1);
                 self->model->visible = 0;
             }
             if (self->unk_f0++ > 0xf0) {

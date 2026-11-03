@@ -4,7 +4,7 @@
 
 extern "C" {
 
-extern u8 *data_02097e40;
+extern u8 *gWhMgr;
 void *Wh_GetSharedData(void *a, int idx);
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
 BOOL ov006_Menu_RequestShutdown(ov006_Unk021ec888 *self);
@@ -13,7 +13,7 @@ void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *s
 
 static inline BOOL ov006_FadeIdle(void) {
     BOOL r;
-    if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[0] == 0) {
         r = TRUE;
     } else {
         r = FALSE;
@@ -23,10 +23,10 @@ static inline BOOL ov006_FadeIdle(void) {
 
 static inline BOOL ov006_FadeDone(int ch) {
     BOOL r;
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         r = TRUE;
     } else {
-        r = data_02097d78[ch] == 4;
+        r = gFadeState[ch] == 4;
     }
     return r;
 }
@@ -48,9 +48,9 @@ static inline void ov006_HideAll(ov006_Task021ec040 *self) {
 BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
     BOOL ret = TRUE;
     BOOL send = FALSE;
-    if (data_ov006_021ec860->unk1C != 0 && data_ov006_021ec888->state != 9) {
+    if (gOv006Manager->unk1C != 0 && data_ov006_021ec888->state != 9) {
         send = TRUE;
-        Wh_GetSharedData(data_02097e40, 0);
+        Wh_GetSharedData(gWhMgr, 0);
     }
     switch (self->subState) {
     case 0:
@@ -69,16 +69,16 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
         break;
     case 2:
         if (self->unk34 >= 0x3c) {
-            if (data_02097dc8->trig & 1) {
+            if (gPad->trig & 1) {
                 {
-                    StageFlags *g = data_0214a424;
+                    StageFlags *g = gStageFlags;
                     if ((g->unk_020 += self->unk38) > 99999) {
                         g->unk_020 = 99999;
                     }
                 }
                 {
                     u32 n = self->unk38;
-                    StageFlags *g = data_0214a424;
+                    StageFlags *g = gStageFlags;
                     if (g->unk_00c + n >= 999999) {
                         g->unk_00c = 999999;
                     } else {
@@ -86,8 +86,8 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
                     }
                 }
                 Lo021cae48_SetValue(self->unk18, 0, 0);
-                Lo021cae48_SetValue(self->unk1C, data_0214a424->unk_020, 0);
-                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+                Lo021cae48_SetValue(self->unk1C, gStageFlags->unk_020, 0);
+                SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
                 self->unk34 = 0;
                 self->subState++;
             }
@@ -97,17 +97,17 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
         break;
     case 3:
         if (self->unk1C->value != self->unk1C->shown || self->unk18->value != self->unk18->shown) {
-            if ((data_02097dc8->trig & 1) || data_ov006_021ec888->state == 9) {
+            if ((gPad->trig & 1) || data_ov006_021ec888->state == 9) {
                 Lo021cae48_SetValue(self->unk18, 0, 1);
-                Lo021cae48_SetValue(self->unk1C, data_0214a424->unk_020, 1);
+                Lo021cae48_SetValue(self->unk1C, gStageFlags->unk_020, 1);
             } else {
                 if (++self->unk34 % 4 == 0) {
-                    SndMgr_PlayVolume(data_02097e4c, 0x18, -1, -1, -1);
+                    SndMgr_PlayVolume(gSndMgr, 0x18, -1, -1, -1);
                 }
                 break;
             }
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x4a, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x4a, -1, -1, -1);
         self->unk34 = 0;
         self->subState++;
         break;
@@ -115,8 +115,8 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
         if (self->unk34 >= 0x14) {
             if (data_ov006_021ec888->state == 9) {
                 self->subState = 0x32;
-            } else if (data_02097dc8->trig & 1) {
-                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+            } else if (gPad->trig & 1) {
+                SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
                 self->unk20->flags |= 2;
                 self->subState = 10;
             }
@@ -137,11 +137,11 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
                 if (send) {
                     ov006_Menu_RequestShutdown(data_ov006_021ec888);
                 }
-                data_ov006_021ec860->unk20 = 1;
+                gOv006Manager->unk20 = 1;
                 self->subState = 0x1e;
             } else if (!send) {
                 ov006_HideAll(self);
-                data_ov006_021ec860->unk20 = 2;
+                gOv006Manager->unk20 = 2;
                 self->subState = 0x1e;
             } else {
                 self->subState = 0x14;
@@ -165,8 +165,8 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
     case 0x16:
         if (data_ov006_021ec888->state == 9) {
             self->subState = 0x32;
-        } else if (ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->aid == 0) {
-            u16 k = *(u16 *)(data_02097e40 + 0x32);
+        } else if (ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5)->aid == 0) {
+            u16 k = *(u16 *)(gWhMgr + 0x32);
             if (k == ov006_Menu_GetEntryMask_021e60e8(10, k)) {
                 self->unk3C = 0xb;
                 self->subState++;
@@ -180,7 +180,7 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
             self->subState = 0x32;
         } else if (ov006_Menu_GetEntryMask_021e60e8(0xb, 1) != 0) {
             ov006_HideAll(self);
-            data_ov006_021ec860->unk20 = 2;
+            gOv006Manager->unk20 = 2;
             self->subState = 0x1e;
         }
         break;
@@ -193,7 +193,7 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
             self->subState = 0x32;
         } else if (ov006_FadeDone(0) && ov006_FadeDone(1)) {
             ret = FALSE;
-            data_ov006_021ec860->taskType = 0;
+            gOv006Manager->taskType = 0;
         }
         break;
     case 0x32:
@@ -213,8 +213,8 @@ BOOL Ov006Vt_021ec040_Update(ov006_Task021ec040 *self) {
         break;
     case 0x34:
         if (ov006_FadeDone(0) && ov006_FadeDone(1)) {
-            data_ov006_021ec860->unk20 = 1;
-            data_ov006_021ec860->taskType = 0;
+            gOv006Manager->unk20 = 1;
+            gOv006Manager->taskType = 0;
         }
         break;
     }

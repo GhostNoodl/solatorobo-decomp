@@ -6,7 +6,7 @@ extern "C" {
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 s32 Rand_PlusMinus(s32 max);
 extern const VecFx32 data_02092a50;
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 void Field_ShakeCamera(u8 a, u8 b);
 void *Spawn_ScatterEffect(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 kind, s32 chance);
@@ -71,7 +71,7 @@ void Ov011Act7da4_StateAttack(Ov011Act7da4 *self) {
         if (e != NULL) {
             e->SetScaleAll(0x2000);
         }
-        SndMgr_PlayAt(data_02097e4c, 0x5b, &v, 0);
+        SndMgr_PlayAt(gSndMgr, 0x5b, &v, 0);
         if (++self->unk_36e >= 3) {
             self->unk_36e = 0;
             self->fsm->st = 10;
@@ -168,7 +168,7 @@ void Ov011Act7da4_StateAttack2(Ov011Act7da4 *self) {
         if (e != NULL) {
             e->SetScaleAll(0x3000);
         }
-        SndMgr_PlayAtPitch(data_02097e4c, 0x5b, &v, -2);
+        SndMgr_PlayAtPitch(gSndMgr, 0x5b, &v, -2);
         self->fsm->st++;
         self->fsm->timer = 0x5a;
         break;
@@ -221,7 +221,7 @@ void Ov011Act7da4_StateAttack2(Ov011Act7da4 *self) {
             }
             Ov011_MulVec33(&self->unk_370[0], NNS_G3dGlbGetInvV(), &v);
             VEC_Add(&v, &data_02092a50, &v);
-            SndMgr_PlayAt(data_02097e4c, 0x5c, &v, 0);
+            SndMgr_PlayAt(gSndMgr, 0x5c, &v, 0);
         }
         o = (Ov003Actor *)Ov011_FindActor(self->target_id);
         if (o != NULL) {
@@ -260,8 +260,8 @@ void Ov011Act7da4_StateDie(Ov011Act7da4 *self) {
         p->unk_22_1 = 0;
         self->targetObj->target = 0xffff;
         Ov011_VecSet((VecFx32 *)&self->speed, Rand_PlusMinus(0x29), -0x71, Rand_PlusMinus(0x29));
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4804, 0x15);
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4805, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x4804, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x4805, 0x15);
         o = Ov011_FindActor(self->target_id);
         if (o != NULL) {
             o->unk_1a = 1;
@@ -275,7 +275,7 @@ void Ov011Act7da4_StateDie(Ov011Act7da4 *self) {
         if (t > 0x78) {
             EffectObj *e;
             Field_ShakeCamera(0xf, 0x3c);
-            SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x56, -1, -1, -1);
             e = Effect_SpawnId(0x322, &self->pos);
             e->SetScaleXYZ(0x5800, 0x5800, 0x5800);
             self->fsm->timer = 0x29;
@@ -290,7 +290,7 @@ void Ov011Act7da4_StateDie(Ov011Act7da4 *self) {
             switch (t & 0x3f) {
             case 0:
                 kind = 0x38a;
-                SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x35, -1, -1, -1);
                 Field_ShakeCamera(10, 0x14);
                 break;
             case 0x10:
@@ -298,7 +298,7 @@ void Ov011Act7da4_StateDie(Ov011Act7da4 *self) {
                 chance = 0x19;
                 break;
             case 0x20:
-                SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x35, -1, -1, -1);
                 Field_ShakeCamera(10, 0x14);
                 break;
             case 0x30:

@@ -7,7 +7,7 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
+extern void *gActorMgr;
 extern const char *data_ov003_021f7a48[][2];
 extern char data_ov003_021f7a60[];
 extern char data_ov003_021f7a66[];
@@ -39,7 +39,7 @@ static inline BOOL Ov003Kb_GameIsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003Kb_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003Kb_GameIsIdle(g);
     }
@@ -47,10 +47,10 @@ static inline BOOL Ov003Kb_GameIdle(void) {
 }
 
 static inline Actor *Ov003Kb_FindUnit(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Ov003Actor_StateAttack(Ov003Actor *self) {
@@ -121,7 +121,7 @@ void Ov003Actor_StateAttack(Ov003Actor *self) {
         if (c) {
             ActorHp *t;
             Field_ShakeCamera(0xc, 0x1e);
-            SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x17, &self->pos, 0);
             self->unk_ea_0 = self->unk_b0->unk_0a_7;
             self->unk_ec_0 = 1;
             self->unk_94_1 = self->unk_c4->unk_02_0;
@@ -209,7 +209,7 @@ void Ov003Actor_StateAttack(Ov003Actor *self) {
             if (ctl->unk_50 & 0x400) {
                 Effect_SpawnId(0x2bc, &self->pos);
                 Effect_SpawnId(0x2bd, &self->pos);
-                SndMgr_PlayAt(data_02097e4c, 0x3d, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x3d, &self->pos, 0);
                 self->gravity = 0;
                 self->speed = 0;
             }

@@ -6,14 +6,14 @@
 extern "C" {
 
 extern const char data_ov000_021cabf4[];
-extern void *data_02149ef8;
+extern void *gMsgRes;
 char *MsgRes_GetString(void *p, s32 id);
 void LoBase021cafc0_021cb0b8_Setup(LoBase021cafc0_021cb0b8 *self);
 
 static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
-        *(const u32 **)win = data_0208ba70;
+        *(const u32 **)win = TextWin_vtbl;
         TextWin_Init(win);
     }
     return win;
@@ -22,7 +22,7 @@ static inline TextWin *TextWin_New(void) {
 static inline void SetText(TextWin *win, u32 text) {
     win->str = text;
     win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->font;
+    gGfxMgr->unk_004 = win->font;
 }
 
 static inline char *FindSpace(Lo021cb0b8 *self, s32 need) {
@@ -89,7 +89,7 @@ void Lo021cb0b8_Setup(Lo021cb0b8 *self) {
     u16 key;
 
     {
-        void *d = data_02149ef8;
+        void *d = gMsgRes;
         char *t;
         self->posX = 0;
         self->posY = 0;

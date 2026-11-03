@@ -25,8 +25,8 @@ typedef struct Unk0214a418 {
 typedef s32 (*Unk02097d4cFunc)(s32 arg);
 
 extern Unk0214a418 *data_0214a418;
-extern Unk02097d4cFunc data_02097d4c;
-extern u32 data_02097d44;
+extern Unk02097d4cFunc gFadeFunc;
+extern u32 gFadeFuncArg;
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *ptr);
 extern void func_02063374(Unk0214a418 *p);

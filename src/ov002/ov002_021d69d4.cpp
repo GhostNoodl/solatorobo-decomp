@@ -4,7 +4,7 @@
 extern "C" {
 
 Task021efb24 *Ov002TaskVt_021efb24_DtorDelete(Task021efb24 *self) {
-    *(VFunc **)self = data_ov002_021efb24;
+    *(VFunc **)self = Ov002TaskVt_021efb24_vtbl;
     Obj021efe7c_Delete();
     TaskBase_dtor(self);
     Heap_Free(self);
@@ -12,7 +12,7 @@ Task021efb24 *Ov002TaskVt_021efb24_DtorDelete(Task021efb24 *self) {
 }
 
 Task021efb24 *Ov002TaskVt_021efb24_Dtor(Task021efb24 *self) {
-    *(VFunc **)self = data_ov002_021efb24;
+    *(VFunc **)self = Ov002TaskVt_021efb24_vtbl;
     Obj021efe7c_Delete();
     TaskBase_dtor(self);
     return self;
@@ -27,8 +27,8 @@ void Ov002UiObj_DrawItem(UiObj *self, void *arg, void *arg2) {
 
 int Ov002UiObj_GetLineHeight(UiObj *self) {
     s8 base;
-    data_02097ce0->unk_004 = self->font;
-    base = (*(s8 **)GfxMgr_GetFont(data_02097ce0))[1];
+    gGfxMgr->unk_004 = self->font;
+    base = (*(s8 **)GfxMgr_GetFont(gGfxMgr))[1];
     return base + self->vfunc_3c();
 }
 
@@ -171,21 +171,21 @@ BOOL Ov002RowList_IsLoaded(UiObj *self) {
 }
 
 Ov002Hud *Ov002Vt_021efb14_Dtor(Ov002Hud *self) {
-    *(VFunc **)self = data_ov002_021efb14;
+    *(VFunc **)self = Ov002Vt_021efb14_vtbl;
     Ov002Hud_Release(self);
     return self;
 }
 
 void *Ov002Vt_021efb04_Dtor(void *self) {
-    *(VFunc **)self = data_ov002_021efb04;
+    *(VFunc **)self = Ov002Vt_021efb04_vtbl;
     MsgBox_Release(self);
     return self;
 }
 
 VObj *Ov002Vt_021efca4_Dtor(VObj *self) {
-    *(VFunc **)self = data_ov000_021caec8;
+    *(VFunc **)self = UiList_vtbl;
     self->vfunc_2c();
-    *(VFunc **)self = data_ov000_021cac60;
+    *(VFunc **)self = UiObj_vtbl;
     self->vfunc_2c();
     return self;
 }

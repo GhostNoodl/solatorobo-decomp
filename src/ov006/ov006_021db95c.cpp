@@ -3,19 +3,19 @@
 
 extern "C" {
 
-extern u8 data_ov000_021cb0b8[];
-extern u8 data_ov000_021cb1b0[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cac60[];
+extern u8 Ov000Vt_021cb0b8_vtbl[];
+extern u8 Ov000Vt_021cb1b0_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 UiObj_vtbl[];
 
 static inline void ov006_ListWin_Release(ov006_ListWin *self) {
-    *(void **)self = data_ov000_021cb0b8;
+    *(void **)self = Ov000Vt_021cb0b8_vtbl;
     self->vfunc_2c();
-    *(void **)self = data_ov000_021cb1b0;
+    *(void **)self = Ov000Vt_021cb1b0_vtbl;
     self->vfunc_2c();
-    *(void **)self = data_ov000_021caec8;
+    *(void **)self = UiList_vtbl;
     self->vfunc_2c();
-    *(void **)self = data_ov000_021cac60;
+    *(void **)self = UiObj_vtbl;
     self->vfunc_2c();
 }
 

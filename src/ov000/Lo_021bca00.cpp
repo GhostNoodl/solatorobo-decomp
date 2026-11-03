@@ -14,8 +14,8 @@ typedef struct {
 extern "C" {
 extern const char *data_0208cc94;
 extern const char *data_0208cc88;
-extern const u32 data_0208ba70[];
-extern void *data_02149ef8;
+extern const u32 TextWin_vtbl[];
+extern void *gMsgRes;
 void *Heap_Alloc(u32 size);
 void TextWin_Init(void *p);
 u32 MsgRes_GetString(void *p, s32 a);
@@ -33,7 +33,7 @@ static inline s32 Lo_FxMul64(s32 a, s64 b) {
 static inline TextWin *Lo_TextWinNew(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
-        *(const u32 **)win = data_0208ba70;
+        *(const u32 **)win = TextWin_vtbl;
         TextWin_Init(win);
     }
     return win;
@@ -42,7 +42,7 @@ static inline TextWin *Lo_TextWinNew(void) {
 static inline void Lo_SetText(TextWin *win, u32 text) {
     win->str = text;
     win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->font;
+    gGfxMgr->unk_004 = win->font;
 }
 
 struct Obj021bca00 {
@@ -80,7 +80,7 @@ BOOL func_ov000_021bca00(Obj021bca00 *self) {
         TexObj_SelectImage(self->unk_14, 0, 0x1d);
         self->unk_10 = Lo_TextWinNew();
         self->unk_10->font = 4;
-        Lo_SetText(self->unk_10, MsgRes_GetString(data_02149ef8, 0x118));
+        Lo_SetText(self->unk_10, MsgRes_GetString(gMsgRes, 0x118));
         self->unk_10->color0 = 0x7fff;
         self->unk_10->color1 = 0x67f;
         self->unk_10->unk_78 = 0x7000;
@@ -91,7 +91,7 @@ BOOL func_ov000_021bca00(Obj021bca00 *self) {
         self->unk_10->unk_4_30 = 1;
         self->unk_10->rendering = 1;
         TextWin_RenderToVram(self->unk_10);
-        func_ov000_02184508(data_ov000_021ccd54);
+        func_ov000_02184508(gSceneCmd);
         self->unk_0c = 1;
         break;
     }

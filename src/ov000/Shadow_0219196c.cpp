@@ -55,7 +55,7 @@ typedef struct {
 
 extern "C" {
 
-extern const u8 data_ov000_021cc438[];
+extern const u8 Ov000Vt_021cc438_vtbl[];
 extern ShadowArc data_ov000_021c9d80;
 extern MtxFx33 data_020928b4;
 extern GxState NNS_G3dGlb;
@@ -112,7 +112,7 @@ static inline void *Res_GetMdl(void *file, u32 idx) {
 }
 
 static inline void Shadow_Init(Shadow *self) {
-    self->vtbl = data_ov000_021cc438;
+    self->vtbl = Ov000Vt_021cc438_vtbl;
     self->res = NULL;
     self->mdl = NULL;
     self->unk_0c = 0xa000;
@@ -126,12 +126,12 @@ static inline void Shadow_Init(Shadow *self) {
 }
 
 static inline void Shadow_Destroy(Shadow *self) {
-    self->vtbl = data_ov000_021cc438;
+    self->vtbl = Ov000Vt_021cc438_vtbl;
     if (self->res != NULL) {
         Vram_FreeRes(func_02035e34(data_ov000_021c9d80.file, data_ov000_021c9d80.name)->file);
     }
     if (self->state != 0) {
-        ResMgr_ReleaseByName(data_02097cdc, data_ov000_021c9d80.file, 7, 0);
+        ResMgr_ReleaseByName(gResMgr, data_ov000_021c9d80.file, 7, 0);
     }
 }
 
@@ -256,8 +256,8 @@ void Shadow_Draw(Shadow *self, VecFx32 *pos) {
         NNS_G3dMdlSetMdlCullMode(self->mdl, 0, 3);
         NNS_G3dDraw1Mat1Shp(self->mdl, 0, 0, 1);
     } else {
-        u8 id = data_02097d48->unk_8b0[1];
-        Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
+        u8 id = gGfxSys->unk_8b0[1];
+        Gfx3DState_NextPolyId(gGfxSys->unk_8b0);
         NNS_G3dMdlSetMdlPolygonID(self->mdl, 0, id);
         NNS_G3dDraw1Mat1Shp(self->mdl, 0, 0, 1);
     }

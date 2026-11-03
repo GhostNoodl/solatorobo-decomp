@@ -4,7 +4,7 @@
 #include "ov000/Group.h"
 
 extern "C" {
-extern Group *data_ov000_021ccd64;
+extern Group *gGroup;
 
 GroupNode *func_ov000_0218b9ec(GroupActorDesc *desc, const FieldId *c0, const FieldId *c1, VecFx32 *pos, Rot16 *rot) {
     GroupNode *obj = (GroupNode *)Heap_Alloc(sizeof(GroupNode));
@@ -12,12 +12,12 @@ GroupNode *func_ov000_0218b9ec(GroupActorDesc *desc, const FieldId *c0, const Fi
         obj = func_ov000_0218a9d8(obj);
     }
     if (obj != NULL) {
-        Group_Add(data_ov000_021ccd64, obj);
+        Group_Add(gGroup, obj);
         if (desc != NULL) {
             obj->spawn = *desc;
         }
         {
-            FieldState *g = data_ov000_021ccd54;
+            FieldState *g = gSceneCmd;
             if (c0 != NULL) {
                 obj->fieldId = *c0;
             } else {

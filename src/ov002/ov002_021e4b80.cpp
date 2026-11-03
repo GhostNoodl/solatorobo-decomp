@@ -8,7 +8,7 @@ extern "C" {
 // The TU's two .bss objects, reached through the 0x021f0f98 pool literal plus offsets. They are
 // defined before the first function, which already reads them that way.
 Ov002Obj021f07d4 *data_ov002_021f0f98;
-Ov002Stage *data_ov002_021f0f9c;
+Ov002Stage *gOv002Stage;
 
 }
 
@@ -48,25 +48,25 @@ u32 func_ov002_021e4c30(int which) {
     u32 r = 0;
     switch (which) {
     case 0:
-        r = data_02097dd0->frameCount / 3600;
+        r = gSysState->frameCount / 3600;
         break;
     case 1:
-        r = data_0214a424->unk_00a;
+        r = gStageFlags->unk_00a;
         break;
     case 2:
-        r = data_0214a424->unk_00c;
+        r = gStageFlags->unk_00c;
         break;
     case 3:
-        r = data_0214a424->unk_61c;
+        r = gStageFlags->unk_61c;
         break;
     case 4:
-        r = data_0214a424->unk_010;
+        r = gStageFlags->unk_010;
         break;
     case 5:
-        r = data_0214a424->unk_014;
+        r = gStageFlags->unk_014;
         break;
     case 6:
-        r = data_0214a424->unk_016;
+        r = gStageFlags->unk_016;
         break;
     }
     return r;
@@ -85,7 +85,7 @@ void Ov002Obj_Init(Ov002Obj *self) {
     self->next = NULL;
     MIi_CpuClear32(0, self->children, 0x20);
     self->owner = NULL;
-    ctx = data_ov002_021f0f9c;
+    ctx = gOv002Stage;
     if (ctx->tail == NULL) {
         ctx->head = self;
     } else {
@@ -150,7 +150,7 @@ BOOL func_ov002_021e4dd4(Ov002Obj *self) {
         }
         self->unk_0c = 3;
     case 3: {
-        u8 *g = (u8 *)data_ov002_021f0f9c;
+        u8 *g = (u8 *)gOv002Stage;
         s32 m;
         if (FIELD(g, 0x10, u8)) {
             break;
@@ -205,7 +205,7 @@ void func_ov002_021e4ee0(void) {
 Ov002Obj *Ov002Obj_FindChildKind(Ov002Obj *self, s32 kind, s32 min) {
     s32 limit;
     Ov002Obj *best = NULL;
-    limit = data_ov002_021f0f9c->unk_d0;
+    limit = gOv002Stage->unk_d0;
     int i;
     for (i = 0; i < 8; i++) {
         Ov002Obj *item = self->children[i];
@@ -413,7 +413,7 @@ void Ov002Obj021f07d4_Release(Ov002Obj021f07d4 *self) {
         if (self->res.arc != NULL) {
             ResMgr_ReleaseArchive(self->res.arc, self->res.name, 4);
         } else {
-            ResMgr_ReleaseByName(data_02097cdc, self->res.name, 4, 0);
+            ResMgr_ReleaseByName(gResMgr, self->res.name, 4, 0);
         }
     }
     for (i = 0; i < self->linkCount; i++) {
@@ -426,7 +426,7 @@ void Ov002Obj021f07d4_Release(Ov002Obj021f07d4 *self) {
                     ResMgr_ReleaseArchive(e->arc, e->name, 5);
                 }
             } else {
-                ResMgr_ReleaseByName(data_02097cdc, e->name, 5, 0);
+                ResMgr_ReleaseByName(gResMgr, e->name, 5, 0);
             }
         }
     }
@@ -689,7 +689,7 @@ BOOL func_ov002_021e5974(Ov002Obj021f07d4 *self) {
     } else {
         kind = OV002_OBJ_CAMERA;
     }
-    for (p = (data_ov002_021f0f9c->head); p != NULL; p = (p->next)) {
+    for (p = (gOv002Stage->head); p != NULL; p = (p->next)) {
         if (kind == p->unk_04) {
             s32 st = p->unk_08;
             switch (st) {
@@ -721,7 +721,7 @@ void func_ov002_021e5fe4(Ov002Obj021f075c *p);
 BOOL func_ov002_021e5a10(Ov002Obj021f07d4 *self) {
     Ov002Obj021f075c *n;
     Ov002Obj021f075c *c;
-    if (data_ov002_021f0f9c->unk_d0 > self->unk_1c) {
+    if (gOv002Stage->unk_d0 > self->unk_1c) {
         return FALSE;
     }
     n = NULL;
@@ -772,10 +772,10 @@ static inline void ov002_021e5b08_Scale(VecFx32 *out, const VecFx32 *in, s32 s) 
 
 void func_ov002_021e5b08(Ov002Obj021f07d4 *self) {
     VObj *o;
-    if (data_ov002_021f0f9c->unk_d0 <= self->unk_18) {
+    if (gOv002Stage->unk_d0 <= self->unk_18) {
         return;
     }
-    switch (data_ov002_021f0f9c->unk_0c) {
+    switch (gOv002Stage->unk_0c) {
     case 1:
         o = self->unk_1e0;
         break;
@@ -868,7 +868,7 @@ void Ov002Obj021f075c_FreeAnims(Ov002Obj021f075c *self) {
         if (self->res.arc != NULL) {
             ResMgr_ReleaseArchive(self->res.arc, self->res.name, 6);
         } else {
-            ResMgr_ReleaseByName(data_02097cdc, self->res.name, 6, 0);
+            ResMgr_ReleaseByName(gResMgr, self->res.name, 6, 0);
         }
     }
 }
@@ -918,7 +918,7 @@ BOOL func_ov002_021e5f2c(void) {
 
 BOOL func_ov002_021e5f34(Ov002Obj021f075c *self) {
     Bits8 *fl = &FIELD(self, 0xe8, Bits8);
-    s32 lim = data_ov002_021f0f9c->unk_d0;
+    s32 lim = gOv002Stage->unk_d0;
     if (fl->b2) {
         return FALSE;
     }
@@ -936,7 +936,7 @@ BOOL func_ov002_021e5f34(Ov002Obj021f075c *self) {
     }
     Ov002Obj021f075c_UpdateAnims(self);
     if (!self->done) {
-        self->unk_7c += data_ov002_021f0f9c->unk_d8;
+        self->unk_7c += gOv002Stage->unk_d8;
     }
     return TRUE;
 }
@@ -1019,7 +1019,7 @@ void func_ov002_021e6290(Ov002Obj021f075c *self) {
     t = self->unk_1c;
     lim = (FIELD(m->resAnm, 4, u16) << 12) - 0x1000;
     self->unk_80 = lim;
-    cur = data_ov002_021f0f9c->unk_d0;
+    cur = gOv002Stage->unk_d0;
     if (t < 0) {
         self->unk_8c = -1;
     } else if (self->unk_78 == 0) {
@@ -1171,7 +1171,7 @@ void func_ov002_021e6784(Ov002Obj021f070c *self);
 void Math_DirToAngles(void *out, VecFx32 *dir);
 
 static inline BOOL ov002_inWindow(s32 t) {
-    Ov002Stage *g = data_ov002_021f0f9c;
+    Ov002Stage *g = gOv002Stage;
     BOOL r = FALSE;
     if (t > g->unk_d4 && t <= g->unk_d0) {
         r = TRUE;
@@ -1180,7 +1180,7 @@ static inline BOOL ov002_inWindow(s32 t) {
 }
 
 BOOL func_ov002_021e65ac(Ov002Obj021f070c *self) {
-    Ov002Stage *g = data_ov002_021f0f9c;
+    Ov002Stage *g = gOv002Stage;
     s32 now = g->unk_d0;
     s32 i;
     if (now > self->unk_1c) {
@@ -1201,7 +1201,7 @@ BOOL func_ov002_021e65ac(Ov002Obj021f070c *self) {
         func_ov002_021e6784(self);
     }
     for (i = 0; i < 4; i++) {
-        EffectObj *o = Effect_Find_020657b0(data_0214a420, ((u32 *)((u8 *)self + 0x50))[i]);
+        EffectObj *o = Effect_Find_020657b0(gEffectMgr, ((u32 *)((u8 *)self + 0x50))[i]);
         if (o == NULL) {
             ((u32 *)((u8 *)self + 0x50))[i] = 0;
         } else {
@@ -1331,8 +1331,8 @@ extern "C" {
 BOOL func_ov002_021e69b0(Ov002Obj021f06bc *self) {
     s16 *p;
     s32 v;
-    while ((p = self->snd.cur) != NULL && data_ov002_021f0f9c->unk_d4 < (v = *p << 12) && v <= data_ov002_021f0f9c->unk_d0) {
-        SndQueue_Exec(data_02097e48.queue, (SndCmd *)p);
+    while ((p = self->snd.cur) != NULL && gOv002Stage->unk_d4 < (v = *p << 12) && v <= gOv002Stage->unk_d0) {
+        SndQueue_Exec(gSndQueue.queue, (SndCmd *)p);
         Ov002Snd021f0cf8_Next(&self->snd);
     }
     return TRUE;
@@ -1411,11 +1411,11 @@ BOOL func_ov002_021e6b54(Ov002Obj021f07ac *self) {
         self->unk_154 = 2;
         break;
     }
-    data_02097ce0->unk_004 = self->unk_150;
-    r = (s8 **)GfxMgr_GetFont(data_02097ce0);
+    gGfxMgr->unk_004 = self->unk_150;
+    r = (s8 **)GfxMgr_GetFont(gGfxMgr);
     self->unk_158 = r;
     self->unk_15c = (Ov002GetChar)r[1];
-    data_ov002_021f0f9c->unk_128 = self->unk_08;
+    gOv002Stage->unk_128 = self->unk_08;
     return TRUE;
 }
 
@@ -1433,7 +1433,7 @@ void Ov002Obj021f07ac_UpdateText(Ov002Obj021f07ac *self);
 static inline bool isVisible021e6c0c(Ov002Obj021f07ac *self) {
     BOOL in = FALSE;
     s32 idx = self->unk_b8;
-    if (idx >= 0 && idx < data_ov002_021f0f9c->unk_d0) {
+    if (idx >= 0 && idx < gOv002Stage->unk_d0) {
         in = TRUE;
     }
     return in;
@@ -1441,7 +1441,7 @@ static inline bool isVisible021e6c0c(Ov002Obj021f07ac *self) {
 
 BOOL func_ov002_021e6c0c(Ov002Obj021f07ac *self) {
     if (self->msg.count != 0) {
-        if (data_ov002_021f0f9c->unk_d4 < self->msg.unk_10 << 12 && self->msg.unk_10 << 12 <= data_ov002_021f0f9c->unk_d0) {
+        if (gOv002Stage->unk_d4 < self->msg.unk_10 << 12 && self->msg.unk_10 << 12 <= gOv002Stage->unk_d0) {
             BOOL has;
             char *s;
             self->unk_b4 = 0;
@@ -1472,7 +1472,7 @@ BOOL func_ov002_021e6c0c(Ov002Obj021f07ac *self) {
     if (isVisible021e6c0c(self)) {
         self->unk_148 = 0xff;
     }
-    data_ov002_021f0f9c->unk_12c = self->unk_148;
+    gOv002Stage->unk_12c = self->unk_148;
     return TRUE;
 }
 
@@ -1493,7 +1493,7 @@ static inline BOOL Ov002_IsValidIdx(s32 idx) {
     if (idx < 0) {
         return r;
     }
-    if (idx < data_ov002_021f0f9c->unk_d0) {
+    if (idx < gOv002Stage->unk_d0) {
         r = TRUE;
     }
     return r;
@@ -1520,22 +1520,22 @@ void func_ov002_021e6d4c(Ov002Obj021f07ac *self) {
         pal = 1;
         x = 10;
     }
-    data_02097ce0->unk_004 = self->unk_150;
-    data_02097ce0->unk_008 = 0;
-    Pos_Set((s16 *)((u8 *)data_02097ce0 + 0xc), x, y);
-    data_02097ce0->unk_010 = pal;
-    func_0203a4e4(data_02097ce0, self->unk_c4);
+    gGfxMgr->unk_004 = self->unk_150;
+    gGfxMgr->unk_008 = 0;
+    Pos_Set((s16 *)((u8 *)gGfxMgr + 0xc), x, y);
+    gGfxMgr->unk_010 = pal;
+    func_0203a4e4(gGfxMgr, self->unk_c4);
     if (self->unk_148 == 0xff) {
         return;
     }
     {
         void *txt = self->unk_14c;
-        void *font = GfxMgr_GetFont(data_02097ce0);
+        void *font = GfxMgr_GetFont(gGfxMgr);
         s32 w = NNSi_G2dFontGetTextWidth(font, 0, txt);
-        data_02097ce0->unk_004 = self->unk_154;
-        data_02097ce0->unk_008 = 0;
-        Pos_Set((s16 *)((u8 *)data_02097ce0 + 0xc), (0x60 - w) >> 1, 0x8d);
-        func_0203a4e4(data_02097ce0, self->unk_14c);
+        gGfxMgr->unk_004 = self->unk_154;
+        gGfxMgr->unk_008 = 0;
+        Pos_Set((s16 *)((u8 *)gGfxMgr + 0xc), (0x60 - w) >> 1, 0x8d);
+        func_0203a4e4(gGfxMgr, self->unk_14c);
     }
 }
 
@@ -1575,7 +1575,7 @@ void Ov002Obj021f07ac_UpdateText(Ov002Obj021f07ac *self) {
     if (s == NULL || s[0] == 0) {
         return;
     }
-    self->unk_b4 -= data_ov002_021f0f9c->unk_d8;
+    self->unk_b4 -= gOv002Stage->unk_d8;
     while (self->unk_b4 < 0 && self->unk_c0[0] != 0) {
         s32 ch = self->unk_15c(&self->unk_c0);
         switch (classifyChar(ch)) {
@@ -1664,7 +1664,7 @@ BOOL func_ov002_021e7120(Ov002Obj021f0784 *self) {
 }
 
 BOOL func_ov002_021e715c(Ov002Obj021f0784 *self) {
-    Ov002Stage *ctx = data_ov002_021f0f9c;
+    Ov002Stage *ctx = gOv002Stage;
     s32 v = ctx->unk_d0;
     if (v <= self->unk_18) {
         return TRUE;
@@ -1696,7 +1696,7 @@ extern VecFx32 data_ov002_021ef104;
 extern VecFx32 data_ov002_021ef0bc;
 
 void func_ov002_021e719c(Ov002Obj021f0784 *self) {
-    s32 now = data_ov002_021f0f9c->unk_d0;
+    s32 now = gOv002Stage->unk_d0;
     s32 a;
     if (now < self->unk_18) {
         return;
@@ -1715,7 +1715,7 @@ void func_ov002_021e719c(Ov002Obj021f0784 *self) {
         u32 c;
         s32 t2;
         s32 t3;
-        u8 *g2 = (u8 *)data_ov002_021f0f9c;
+        u8 *g2 = (u8 *)gOv002Stage;
         NNS_G3dGlb.camPos = zero;
         NNS_G3dGlb.camUp = up;
         NNS_G3dGlb.camTarget = at;
@@ -1949,12 +1949,12 @@ BOOL func_ov002_021e79b0(Ov002Obj021f06e4 *self) {
 }
 
 BOOL func_ov002_021e79c4(Ov002Obj021f06e4 *self) {
-    Ov002Stage *ctx = data_ov002_021f0f9c;
+    Ov002Stage *ctx = gOv002Stage;
     BOOL r = TRUE;
     if (self->unk_18 > ctx->unk_d4 && self->unk_18 <= ctx->unk_d0) {
         Gfx3DState *g;
         func_0206e3a0(&self->unk_4c, self->unk_50);
-        g = (Gfx3DState *)data_02097d48->unk_8b0;
+        g = (Gfx3DState *)gGfxSys->unk_8b0;
         if (!self->unk_4c_2) {
             g->edgeMarking = 0;
             g->unk_000_5 = 1;
@@ -1972,7 +1972,7 @@ BOOL func_ov002_021e79c4(Ov002Obj021f06e4 *self) {
 
 BOOL func_ov002_021e7a94(Ov002Obj *self) {
     BOOL r = TRUE;
-    if (data_ov002_021f0f9c->unk_d0 >= self->unk_1c) {
+    if (gOv002Stage->unk_d0 >= self->unk_1c) {
         r = FALSE;
     }
     return r;
@@ -1998,22 +1998,22 @@ void Ov002Stage_Create(void) {
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(*&data_ov002_021f0f9c);
+        DELETE_VOBJ(*&gOv002Stage);
         HEAP_POP(saved);
     }
     p = (Ov002Stage *)Heap_Alloc(0x2cc);
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021f0674;
-        *(VFunc **)&p->file = data_ov002_021f0684;
+        *(VFunc **)p = Ov002Vt_021f0674_vtbl;
+        *(VFunc **)&p->file = Ov002Vt_021f0684_vtbl;
         Ov002StageFile_Init(&p->file);
         Gfx3DState_Init(&p->unk_14c);
         Ov002Stage_Init(p);
     }
-    data_ov002_021f0f9c = p;
+    gOv002Stage = p;
 }
 
 void *Ov002Vt_021f0684_Dtor(Ov002StageFile *self) {
-    *(VFunc **)self = data_ov002_021f0684;
+    *(VFunc **)self = Ov002Vt_021f0684_vtbl;
     func_ov002_021eae3c(self);
     return self;
 }
@@ -2021,14 +2021,14 @@ void *Ov002Vt_021f0684_Dtor(Ov002StageFile *self) {
 void Ov002Stage_Delete(void) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(*&data_ov002_021f0f9c);
+    DELETE_VOBJ(*&gOv002Stage);
     HEAP_POP(saved);
 }
 
 void *Ov002Vt_021f0674_DtorDelete(Ov002Stage *self) {
-    *(VFunc **)self = data_ov002_021f0674;
+    *(VFunc **)self = Ov002Vt_021f0674_vtbl;
     Ov002Stage_Release(self);
-    *(VFunc **)&self->file = data_ov002_021f0684;
+    *(VFunc **)&self->file = Ov002Vt_021f0684_vtbl;
     func_ov002_021eae3c(&self->file);
     Heap_Free(self);
     return self;
@@ -2089,20 +2089,20 @@ void Ov002Stage_Release(Ov002Stage *self) {
         if (self->unk_20 != NULL) {
             ResMgr_ReleaseArchive((u8 *)self + 0x24, (u8 *)self + 0x48, 0);
         } else {
-            ResMgr_ReleaseByName(data_02097cdc, (char *)((u8 *)self + 0x48), 0, 0);
+            ResMgr_ReleaseByName(gResMgr, (char *)((u8 *)self + 0x48), 0, 0);
         }
     }
     ResMgr_ReleaseArchive(data_ov002_021f0104[1], data_ov002_021f0104[2], 2);
-    SndQueue_StopSeqArcs(data_02097e48.queue);
+    SndQueue_StopSeqArcs(gSndQueue.queue);
     if (self->unk_148) {
-        u8 *g = (u8 *)data_02097d48;
+        u8 *g = (u8 *)gGfxSys;
         MIi_CpuCopy32((u8 *)self + 0x14c, g + 0x8b0, 0x180);
         Gfx3DState_Apply(g + 0x8b0);
         self->unk_148 = 0;
     }
-    data_02097d48->nextState = 1;
-    data_0214a420->drawFilter = 0;
-    data_0214a420->useCamera = 0;
+    gGfxSys->nextState = 1;
+    gEffectMgr->drawFilter = 0;
+    gEffectMgr->useCamera = 0;
     GXx_SetMasterBrightness_(0x400006c, 0);
     GXx_SetMasterBrightness_(0x400106c, 0);
 }
@@ -2147,7 +2147,7 @@ BOOL func_ov002_021e7ea8(Ov002Stage *self) {
     int mode;
     u8 *g;
     s32 b;
-    self->unk_0c = data_02097d48->unk_a30_4 ? 1 : 2;
+    self->unk_0c = gGfxSys->unk_a30_4 ? 1 : 2;
     switch (self->state) {
     case 0: {
         b = 0;
@@ -2167,7 +2167,7 @@ BOOL func_ov002_021e7ea8(Ov002Stage *self) {
         self->unk_13c = b << 12;
         self->unk_140 = 0;
         self->unk_144 = 0;
-        gx = (Gfx3DState *)data_02097d48->unk_8b0;
+        gx = (Gfx3DState *)gGfxSys->unk_8b0;
         MIi_CpuCopy32(gx, (u8 *)self + 0x14c, 0x180);
         Gfx3DState_SetDefaults(gx);
         gx->edgeMarking = 0;
@@ -2179,9 +2179,9 @@ BOOL func_ov002_021e7ea8(Ov002Stage *self) {
         gx->light.emission = 0;
         Gfx3DState_Apply(gx);
         self->unk_148 = 1;
-        data_02097d48->nextState = 2;
-        data_0214a420->drawFilter = 1;
-        data_0214a420->useCamera = 1;
+        gGfxSys->nextState = 2;
+        gEffectMgr->drawFilter = 1;
+        gEffectMgr->useCamera = 1;
         ov002_SetState(self, 1);
         break;
     }
@@ -2247,16 +2247,16 @@ BOOL func_ov002_021e7ea8(Ov002Stage *self) {
         }
         if (done) {
             Ov002Stage_FreeObjs(self);
-            EffectMgr_FreeAll(data_0214a420);
-            data_0214a420->drawFilter = 0;
-            data_02097d48->nextState = 1;
+            EffectMgr_FreeAll(gEffectMgr);
+            gEffectMgr->drawFilter = 0;
+            gGfxSys->nextState = 1;
             ov002_SetState(self, 6);
         }
         break;
     }
     case 6: {
         ov002_SetBright(0);
-        g = (u8 *)data_02097d48;
+        g = (u8 *)gGfxSys;
         MIi_CpuCopy32((u8 *)self + 0x14c, g + 0x8b0, 0x180);
         Gfx3DState_Apply(g + 0x8b0);
         self->unk_148 = 0;
@@ -2308,7 +2308,7 @@ static inline void ov002_ResFree(Ov002Stage *self) {
     if (self->unk_20 != NULL) {
         ResMgr_ReleaseArchive((u8 *)self + 0x24, (u8 *)self + 0x48, 0);
     } else {
-        ResMgr_ReleaseByName(data_02097cdc, (char *)((u8 *)self + 0x48), 0, 0);
+        ResMgr_ReleaseByName(gResMgr, (char *)((u8 *)self + 0x48), 0, 0);
     }
 }
 
@@ -2433,16 +2433,16 @@ BOOL func_ov002_021e86a0(Ov002Stage *self) {
         self->unk_124->flags |= 0x80000;
         self->unk_124->flags |= 0x200000;
         self->unk_124->flags = (self->unk_124->flags & ~0x7c) | 0x78;
-        func_0204aad0(data_02097e48.queue);
+        func_0204aad0(gSndQueue.queue);
         if (self->unk_68 != NULL) {
             Ov002StageFile_Open(&self->file, *self->unk_68, self->unk_44, 1);
             func_ov002_021eaf20(&self->file);
         }
-        func_0204a360(data_02097e4c, -1);
+        func_0204a360(gSndMgr, -1);
         self->step = 10;
     }
     case 10:
-        if (SndMgr_IsLoadDone(data_02097e4c)) {
+        if (SndMgr_IsLoadDone(gSndMgr)) {
             self->step = 0x14;
         }
         break;
@@ -2477,7 +2477,7 @@ BOOL func_ov002_021e8828(Ov002Stage *self) {
     Ov002Obj *next;
     Ov002Obj *n;
     if (self->unk_1c != 0x5c && self->unk_1c != 0x1e) {
-        if ((data_02097dc8->trig & 8) && self->unk_1a != 0) {
+        if ((gPad->trig & 8) && self->unk_1a != 0) {
             ret = busy;
         }
     }
@@ -2488,10 +2488,10 @@ BOOL func_ov002_021e8828(Ov002Stage *self) {
             {
                 s32 *sv = (s32 *)((u8 *)n + 0x50);
                 s32 a0 = sv[0], a1 = sv[1], a2 = sv[2], a3 = sv[3], a4 = sv[4], a5 = sv[5], a6 = sv[6], a7 = sv[7], a8 = sv[8];
-                s32 *d = (s32 *)((u8 *)data_0214a420 + 0x38);
+                s32 *d = (s32 *)((u8 *)gEffectMgr + 0x38);
                 d[0] = a0; d[1] = a1; d[2] = a2; d[3] = a3; d[4] = a4; d[5] = a5; d[6] = a6; d[7] = a7; d[8] = a8;
             }
-            MI_Copy64B((u8 *)n + 0x74, (u8 *)data_0214a420 + 0x5c);
+            MI_Copy64B((u8 *)n + 0x74, (u8 *)gEffectMgr + 0x5c);
         }
         if (!r) {
             if (n->unk_04 == 9) {
@@ -2513,8 +2513,8 @@ BOOL func_ov002_021e8828(Ov002Stage *self) {
         }
     }
     in = ov002_inRange8828(self);
-    if (in && (self->unk_18 & data_02097dc8->trig)) {
-        Ov002Stage *ctx = data_ov002_021f0f9c;
+    if (in && (self->unk_18 & gPad->trig)) {
+        Ov002Stage *ctx = gOv002Stage;
         ctx->unk_14 = -1;
         ctx->unk_18 = 0;
     }
@@ -2523,11 +2523,11 @@ BOOL func_ov002_021e8828(Ov002Stage *self) {
             EffectObj *p;
             self->unk_d4 = self->unk_d0;
             self->unk_d0 = self->unk_d0 + self->unk_d8;
-            EffectMgr_Update(data_0214a420);
-            for (p = (data_0214a420->head); p != NULL; p = (p->drawNext)) {
+            EffectMgr_Update(gEffectMgr);
+            for (p = (gEffectMgr->head); p != NULL; p = (p->drawNext)) {
                 p->speed = self->unk_d8;
             }
-            data_0214a420->useCamera = 1;
+            gEffectMgr->useCamera = 1;
         }
         { BOOL v = TRUE; if (!busy && !ov002_inRange8828(self)) v = FALSE; self->unk_10 = v; }
     }
@@ -2542,7 +2542,7 @@ namespace m_021e8aac {
 extern "C" {
 
 void *Ov002Vt_021f0734_DtorDelete(Ov002Obj *self) {
-    *(VFunc **)self = data_ov002_021f0734;
+    *(VFunc **)self = Ov002Vt_021f0734_vtbl;
     func_ov002_021e4d4c_inline(self);
     Heap_Free(self);
     return self;
@@ -2705,7 +2705,7 @@ extern u8 data_ov002_021f087c[];
 extern u8 data_ov002_021f0880[];
 void func_ov002_021e9d7c(void *dst, u32 size, void *src, int mode, u8 idx);
 
-#define GAME ((u8 *)data_ov002_021f0f9c)
+#define GAME ((u8 *)gOv002Stage)
 
 void func_ov002_021e8f04(s32 idx) {
     Ov002Stage *p;
@@ -2718,13 +2718,13 @@ void func_ov002_021e8f04(s32 idx) {
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(*&data_ov002_021f0f9c);
+        DELETE_VOBJ(*&gOv002Stage);
         HEAP_POP(saved);
     }
     p = (Ov002Stage *)Heap_Alloc(0x2cc);
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021f0674;
-        *(VFunc **)&p->file = data_ov002_021f0684;
+        *(VFunc **)p = Ov002Vt_021f0674_vtbl;
+        *(VFunc **)&p->file = Ov002Vt_021f0684_vtbl;
         Ov002StageFile_Init(&p->file);
         Gfx3DState_Init(&p->unk_14c);
         Ov002Stage_Init(p);
@@ -2771,16 +2771,16 @@ extern "C" {
 
 bool func_ov002_021e90ac(void) {
     BOOL r;
-    if (data_ov002_021f0f9c == NULL) {
+    if (gOv002Stage == NULL) {
         r = FALSE;
     } else {
-        r = func_ov002_021e7ea8(data_ov002_021f0f9c);
+        r = func_ov002_021e7ea8(gOv002Stage);
     }
     return r;
 }
 
 void func_ov002_021e90dc(void) {
-    Ov002Stage *self = data_ov002_021f0f9c;
+    Ov002Stage *self = gOv002Stage;
     Ov002Obj *o;
     u32 mask;
     if (self == NULL) {
@@ -2803,7 +2803,7 @@ void func_ov002_021e90dc(void) {
 void Ov002Stage_Delete_021e916c(void) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(*&data_ov002_021f0f9c);
+    DELETE_VOBJ(*&gOv002Stage);
     HEAP_POP(saved);
 }
 
@@ -2820,7 +2820,7 @@ static inline void func_ov002_021e4cd8_inline5(Ov002Obj *self) {
     self->next = NULL;
     MIi_CpuClear32(0, self->children, 0x20);
     self->owner = NULL;
-    ctx = data_ov002_021f0f9c;
+    ctx = gOv002Stage;
     if (ctx->tail == NULL) {
         ctx->head = self;
     } else {
@@ -2831,9 +2831,9 @@ static inline void func_ov002_021e4cd8_inline5(Ov002Obj *self) {
 Ov002Obj *Ov002Obj021f07d4_New(s32 a, s32 b, s32 c, bool d, u8 e) {
     Ov002Obj021f07d4 *p = (Ov002Obj021f07d4 *)Heap_Alloc(0x1f4);
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021f0734;
+        *(VFunc **)p = Ov002Vt_021f0734_vtbl;
         func_ov002_021e4cd8_inline5(p);
-        *(VFunc **)p = data_ov002_021f07d4;
+        *(VFunc **)p = Ov002Vt_021f07d4_vtbl;
         Ov002Obj021f07d4_Init(p);
     }
     p->unk_18 = a;
@@ -2857,7 +2857,7 @@ static inline void func_ov002_021e4cd8_inline2(Ov002Obj *self) {
     self->next = NULL;
     MIi_CpuClear32(0, self->children, 0x20);
     self->owner = NULL;
-    ctx = data_ov002_021f0f9c;
+    ctx = gOv002Stage;
     if (ctx->tail == NULL) {
         ctx->head = self;
     } else {
@@ -2868,9 +2868,9 @@ static inline void func_ov002_021e4cd8_inline2(Ov002Obj *self) {
 Ov002Obj *Ov002Obj021f075c_New(s32 a, s32 b, s32 c, s32 d, s32 e) {
     Ov002Obj021f075c *p = (Ov002Obj021f075c *)Heap_Alloc(0xec);
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021f0734;
+        *(VFunc **)p = Ov002Vt_021f0734_vtbl;
         func_ov002_021e4cd8_inline2(p);
-        *(VFunc **)p = data_ov002_021f075c;
+        *(VFunc **)p = Ov002Vt_021f075c_vtbl;
         Ov002Obj021f075c_Init(p);
     }
     p->unk_18 = a;
@@ -2901,7 +2901,7 @@ static inline void func_ov002_021e4cd8_inline2(Ov002Obj *self) {
     self->next = NULL;
     MIi_CpuClear32(0, self->children, 0x20);
     self->owner = NULL;
-    ctx = data_ov002_021f0f9c;
+    ctx = gOv002Stage;
     if (ctx->tail == NULL) {
         ctx->head = self;
     } else {
@@ -2913,9 +2913,9 @@ static inline void func_ov002_021e4cd8_inline2(Ov002Obj *self) {
 Ov002Obj *Ov002Obj021f070c_New(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f) {
     Ov002Obj021f070c *p = (Ov002Obj021f070c *)Heap_Alloc(0x70);
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021f0734;
+        *(VFunc **)p = Ov002Vt_021f0734_vtbl;
         func_ov002_021e4cd8_inline2(p);
-        *(VFunc **)p = data_ov002_021f070c;
+        *(VFunc **)p = Ov002Vt_021f070c_vtbl;
         p->unk_4c = -1;
         MIi_CpuClear32(0, (u8 *)p + 0x50, 0x10);
         p->unk_68 = -1;
@@ -2930,14 +2930,14 @@ Ov002Obj *Ov002Obj021f070c_New(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f) {
     return p;
 }
 
-extern VFunc data_ov002_021f0784[];
+extern VFunc Ov002Vt_021f0784_vtbl[];
 
 Ov002Obj *Ov002Obj021f0784_New(s32 a, s32 b, s32 c, s32 d, u16 e, s32 mode, u8 f, u8 g) {
     Ov002Obj021f0784 *p = (Ov002Obj021f0784 *)Heap_Alloc(0x60);
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021f0734;
+        *(VFunc **)p = Ov002Vt_021f0734_vtbl;
         func_ov002_021e4cd8_inline2(p);
-        *(VFunc **)p = data_ov002_021f0784;
+        *(VFunc **)p = Ov002Vt_021f0784_vtbl;
         p->unk_04 = 6;
         p->unk_20 = -0x19a;
         p->unk_4c = 0;
@@ -2971,9 +2971,9 @@ void *GfxCamPos_Init(void *p);
 
 void MTX_Identity44_(void *p);
 
-extern VFunc data_ov002_021f0854[];
+extern VFunc Ov002Vt_021f0854_vtbl[];
 
-extern VFunc data_ov002_021f0828[];
+extern VFunc Ov002Vt_021f0828_vtbl[];
 
 extern const VecFx32 data_ov002_021ef0e0;
 
@@ -2985,14 +2985,14 @@ Ov002Obj *Ov002Cam021f0828_New(Ov002Obj *a, Ov002Obj *b) {
     s32 i;
     Ov002Cam021f0828 *p = (Ov002Cam021f0828 *)Heap_Alloc(0xcc);
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021f0734;
+        *(VFunc **)p = Ov002Vt_021f0734_vtbl;
         func_ov002_021e4cd8_inline2(p);
-        *(VFunc **)p = data_ov002_021f0854;
+        *(VFunc **)p = Ov002Vt_021f0854_vtbl;
         GfxCamPos_Init((u8 *)p + 0x50);
         p->unk_04 = 7;
         p->unk_4c = -1;
         MTX_Identity44_((u8 *)p + 0x74);
-        *(VFunc **)p = data_ov002_021f0828;
+        *(VFunc **)p = Ov002Vt_021f0828_vtbl;
         p->unk_04 = 7;
         {
             VecFx32 v = data_ov002_021ef0e0;
@@ -3041,20 +3041,20 @@ Ov002Obj *Ov002Cam021f0828_New(Ov002Obj *a, Ov002Obj *b) {
 
 void MTX_OrthoW(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, void *out);
 
-extern VFunc data_ov002_021f07fc[];
+extern VFunc Ov002Vt_021f07fc_vtbl[];
 
 Ov002Obj *Ov002Cam021f07fc_New(Ov002Obj *a, Ov002Obj *b) {
     s32 i;
     Ov002Cam021f07fc *p = (Ov002Cam021f07fc *)Heap_Alloc(0xb8);
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021f0734;
+        *(VFunc **)p = Ov002Vt_021f0734_vtbl;
         func_ov002_021e4cd8_inline2(p);
-        *(VFunc **)p = data_ov002_021f0854;
+        *(VFunc **)p = Ov002Vt_021f0854_vtbl;
         GfxCamPos_Init((u8 *)p + 0x50);
         p->unk_04 = 7;
         p->unk_4c = -1;
         MTX_Identity44_((u8 *)p + 0x74);
-        *(VFunc **)p = data_ov002_021f07fc;
+        *(VFunc **)p = Ov002Vt_021f07fc_vtbl;
         p->unk_04 = 8;
         MTX_OrthoW(0x60000, -0x60000, -0x80000, 0x80000, 0, 0x20000, 0x400000, (u8 *)p + 0x74);
         p->unk_b4 = NULL;
@@ -3103,7 +3103,7 @@ static inline void func_ov002_021e4cd8_inline4(Ov002Obj *self) {
     self->next = NULL;
     MIi_CpuClear32(0, self->children, 0x20);
     self->owner = NULL;
-    ctx = data_ov002_021f0f9c;
+    ctx = gOv002Stage;
     if (ctx->tail == NULL) {
         ctx->head = self;
     } else {
@@ -3114,9 +3114,9 @@ static inline void func_ov002_021e4cd8_inline4(Ov002Obj *self) {
 Ov002Obj *Ov002Obj021f06e4_New(s32 a, s32 b, s16 c, void *d) {
     Ov002Obj021f06e4 *p = (Ov002Obj021f06e4 *)Heap_Alloc(0x54);
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021f0734;
+        *(VFunc **)p = Ov002Vt_021f0734_vtbl;
         func_ov002_021e4cd8_inline4(p);
-        *(VFunc **)p = data_ov002_021f06e4;
+        *(VFunc **)p = Ov002Vt_021f06e4_vtbl;
         p->unk_04 = 10;
         p->unk_4c = 0;
         p->unk_50 = NULL;
@@ -3142,7 +3142,7 @@ static inline void func_ov002_021e4cd8_inline3(Ov002Obj *self) {
     self->next = NULL;
     MIi_CpuClear32(0, self->children, 0x20);
     self->owner = NULL;
-    ctx = data_ov002_021f0f9c;
+    ctx = gOv002Stage;
     if (ctx->tail == NULL) {
         ctx->head = self;
     } else {
@@ -3153,9 +3153,9 @@ static inline void func_ov002_021e4cd8_inline3(Ov002Obj *self) {
 Ov002Obj *Ov002Obj021f07ac_New(void *a, void *b) {
     Ov002Obj021f07ac *p = (Ov002Obj021f07ac *)Heap_Alloc(0x160);
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021f0734;
+        *(VFunc **)p = Ov002Vt_021f0734_vtbl;
         func_ov002_021e4cd8_inline3(p);
-        *(VFunc **)p = data_ov002_021f07ac;
+        *(VFunc **)p = Ov002Vt_021f07ac_vtbl;
         Ov002Vt_021f0ce8_Ctor(&p->msg);
         Ov002Obj021f07ac_Init(p);
     }
@@ -3177,7 +3177,7 @@ static inline void func_ov002_021e4cd8_inline(Ov002Obj *self) {
     self->next = NULL;
     MIi_CpuClear32(0, self->children, 0x20);
     self->owner = NULL;
-    ctx = data_ov002_021f0f9c;
+    ctx = gOv002Stage;
     if (ctx->tail == NULL) {
         ctx->head = self;
     } else {
@@ -3188,9 +3188,9 @@ static inline void func_ov002_021e4cd8_inline(Ov002Obj *self) {
 Ov002Obj *func_ov002_021e9b28(s32 end) {
     Ov002Obj *p = (Ov002Obj *)Heap_Alloc(0x4c);
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021f0734;
+        *(VFunc **)p = Ov002Vt_021f0734_vtbl;
         func_ov002_021e4cd8_inline(p);
-        *(VFunc **)p = data_ov002_021f0694;
+        *(VFunc **)p = Ov002Vt_021f0694_vtbl;
         p->unk_04 = 9;
     }
     p->unk_1c = end;
@@ -3217,7 +3217,7 @@ static inline void func_ov002_021e4cd8_inline2(Ov002Obj *self) {
     self->next = NULL;
     MIi_CpuClear32(0, self->children, 0x20);
     self->owner = NULL;
-    ctx = data_ov002_021f0f9c;
+    ctx = gOv002Stage;
     if (ctx->tail == NULL) {
         ctx->head = self;
     } else {
@@ -3226,7 +3226,7 @@ static inline void func_ov002_021e4cd8_inline2(Ov002Obj *self) {
     ctx->tail = self;
 }
 
-extern VFunc data_ov002_021f06bc[];
+extern VFunc Ov002Vt_021f06bc_vtbl[];
 
 void *Ov002Vt_021f0cf8_Ctor(Ov002Snd021f0cf8 *p);
 
@@ -3235,9 +3235,9 @@ void Ov002Snd021f0cf8_Init(Ov002Snd021f0cf8 *p);
 Ov002Obj *Ov002Obj021f06bc_New(void *a, void *b) {
     Ov002Obj021f06bc *p = (Ov002Obj021f06bc *)Heap_Alloc(0xac);
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021f0734;
+        *(VFunc **)p = Ov002Vt_021f0734_vtbl;
         func_ov002_021e4cd8_inline2(p);
-        *(VFunc **)p = data_ov002_021f06bc;
+        *(VFunc **)p = Ov002Vt_021f06bc_vtbl;
         Ov002Vt_021f0cf8_Ctor(&p->snd);
         p->unk_04 = 4;
         MI_CpuFill8((u8 *)p + 0x4c, 0, 0x20);
@@ -3318,7 +3318,7 @@ extern u8 data_ov002_021f087c[];
 extern u8 data_ov002_021f0880[];
 void func_ov002_021e9d7c(void *dst, u32 size, void *src, int mode, u8 idx);
 
-#define GAME ((u8 *)data_ov002_021f0f9c)
+#define GAME ((u8 *)gOv002Stage)
 void func_ov002_021e9e40(int idx) {
     void *name;
     Ov002Stage *g;
@@ -3326,7 +3326,7 @@ void func_ov002_021e9e40(int idx) {
     s32 v;
     float f;
     s32 off = idx * 0xc;
-    data_ov002_021f0f9c->unk_1c = idx;
+    gOv002Stage->unk_1c = idx;
     name = *(void **)(data_ov002_021f0878 + off);
     g = (Ov002Stage *)GAME;
     g->unk_20 = (char *)name;

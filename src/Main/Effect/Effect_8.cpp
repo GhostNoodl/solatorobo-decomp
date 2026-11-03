@@ -54,13 +54,13 @@ void EffectSetup_FindChunks(EffectSetup *setup) {
     }
 }
 
-extern u32 data_0208c290[];
-extern u32 data_0208c2e4[];
-extern u32 data_0208c354[];
-extern u32 data_0208c364[];
-extern u32 data_0208c850[];
-extern u32 data_0208c868[];
-extern u32 data_0208c8bc[];
+extern u32 MainVt_0208c290_vtbl[];
+extern u32 EffectObj_vtbl[];
+extern u32 MainVt_0208c354_vtbl[];
+extern u32 MainVt_0208c364_vtbl[];
+extern u32 MainVt_0208c850_vtbl[];
+extern u32 MainVt_0208c868_vtbl[];
+extern u32 MainVt_0208c8bc_vtbl[];
 extern void EffectObj_Register(EffectObj *obj);
 extern void Effect3D_Init(Effect3D *e);
 extern void EffectObj_AddSndCue(EffectObj *obj, s32 id, s32 frame);
@@ -92,9 +92,9 @@ EffectObj *EffectSetup_NewObj(EffectSetup *setup, EffectDef *def) {
     case 0: {
         Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
         if (e != NULL) {
-            *(u32 **)e = data_0208c2e4;
+            *(u32 **)e = EffectObj_vtbl;
             EffectObj_Register(e);
-            *(u32 **)e = data_0208c290;
+            *(u32 **)e = MainVt_0208c290_vtbl;
             Effect3D_Init(e);
         }
         ret = e;
@@ -110,13 +110,13 @@ EffectObj *EffectSetup_NewObj(EffectSetup *setup, EffectDef *def) {
         EffectEmitter *em = (EffectEmitter *)Heap_Alloc(0x1d8);
         EffectPartSet *parts;
         if (em != NULL) {
-            *(u32 **)em = data_0208c2e4;
+            *(u32 **)em = EffectObj_vtbl;
             EffectObj_Register(em);
-            *(u32 **)em = data_0208c868;
-            *(u32 **)&em->sub = data_0208c354;
+            *(u32 **)em = MainVt_0208c868_vtbl;
+            *(u32 **)&em->sub = MainVt_0208c354_vtbl;
             EffectEmitterSub_InitFuncs(&em->sub);
             EffectEmitter_Reset(em);
-            *(u32 **)em = data_0208c8bc;
+            *(u32 **)em = MainVt_0208c8bc_vtbl;
             EffectEmitter_ResetParams(em);
         }
         ret = em;
@@ -130,9 +130,9 @@ EffectObj *EffectSetup_NewObj(EffectSetup *setup, EffectDef *def) {
         func_02068ab8(setup, em, def->paramId);
         parts = (EffectPartSet *)Heap_Alloc(0x12c);
         if (parts != NULL) {
-            *(u32 **)parts = data_0208c364;
+            *(u32 **)parts = MainVt_0208c364_vtbl;
             EffectPartSet_Init(parts);
-            *(u32 **)parts = data_0208c850;
+            *(u32 **)parts = MainVt_0208c850_vtbl;
             EffectPartSet_Reset(parts);
         }
         func_02068b6c(setup, parts, def->partIds);
@@ -144,7 +144,7 @@ EffectObj *EffectSetup_NewObj(EffectSetup *setup, EffectDef *def) {
 }
 
 EffectEmitterSub *MainVt_0208c354_Dtor(EffectEmitterSub *sub) {
-    *(u32 **)sub = data_0208c354;
+    *(u32 **)sub = MainVt_0208c354_vtbl;
     func_02069248(sub);
     return sub;
 }
@@ -249,7 +249,7 @@ void EffectSetup_LoadSndCues(EffectSetup *setup, EffectObj *obj, s32 id) {
 }
 
 EffectPartSet *MainVt_0208c364_DtorDelete(EffectPartSet *parts) {
-    *(u32 **)parts = data_0208c364;
+    *(u32 **)parts = MainVt_0208c364_vtbl;
     func_0206a0d8(parts);
     Heap_Free(parts);
     return parts;
@@ -263,13 +263,13 @@ void func_02068d5c(EffectPartSet *parts) {
 }
 
 EffectPartSet *MainVt_0208c364_Dtor(EffectPartSet *parts) {
-    *(u32 **)parts = data_0208c364;
+    *(u32 **)parts = MainVt_0208c364_vtbl;
     func_0206a0d8(parts);
     return parts;
 }
 
 EffectEmitterSub *MainVt_0208c354_DtorDelete(EffectEmitterSub *sub) {
-    *(u32 **)sub = data_0208c354;
+    *(u32 **)sub = MainVt_0208c354_vtbl;
     func_02069248(sub);
     Heap_Free(sub);
     return sub;

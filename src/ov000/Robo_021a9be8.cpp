@@ -18,9 +18,9 @@ typedef struct {
 
 
 extern "C" {
-extern void *data_ov000_021ccd64;
-extern MessageQueue021cb980 *data_ov000_021ccd30;
-extern void *data_02097e4c;
+extern void *gGroup;
+extern MessageQueue021cb980 *gMessageQueue;
+extern void *gSndMgr;
 extern char data_ov000_021cc68a[];
 extern char data_ov000_021ca12c[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
@@ -44,10 +44,10 @@ void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
 void func_ov000_02168e18(void *self, s32 a, s32 b, VecFx32 *p);
 
 static inline Actor *FindActor_021a9be8(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline BOOL Both_021a9be8(ActorSub44 *c) {
@@ -168,15 +168,15 @@ void Robo021ca458_State0f(Robo021ca458 *self) {
         if (s->timer >= 0x20) {
             s32 i;
             self->fsm->timer = 0x20;
-            SndMgr_PlayAtPitch(data_02097e4c, 0x44, &self->pos, 2);
-            SndMgr_PlayAt(data_02097e4c, 0x78, &self->pos, 0);
+            SndMgr_PlayAtPitch(gSndMgr, 0x44, &self->pos, 2);
+            SndMgr_PlayAt(gSndMgr, 0x78, &self->pos, 0);
             desc.kind = 0x480c;
             desc.group = 0x4000;
             for (i = 0; i < 4; i++) {
                 desc.args[i] = 0;
             }
             desc.unk_0c = -1;
-            a = (Actor *)Group_SpawnActor(data_ov000_021ccd64, &desc, (u8 *)self + 0xa74, (u8 *)self + 0x7c, 0xffff);
+            a = (Actor *)Group_SpawnActor(gGroup, &desc, (u8 *)self + 0xa74, (u8 *)self + 0x7c, 0xffff);
             if (a != NULL) {
                 ActorSub4c *p;
                 a->flags_0 = 1;
@@ -261,7 +261,7 @@ void Robo021ca458_State0f(Robo021ca458 *self) {
             a->rot_z = 0;
             a->target = self->target;
             self->rot_y = Angle_Approach(ang, self->rot_y, 0x400, 1, 0x8000);
-            SndMgr_PlayAt(data_02097e4c, 0x5c, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x5c, &self->pos, 0);
         }
         self->unk_b1c = 0xffff;
         self->unk_b1e = 0xffff;
@@ -285,7 +285,7 @@ void Robo021ca458_State0f(Robo021ca458 *self) {
         return;
     }
     if (!self->unk_b24_17) {
-        u16 yaw = FieldCam_GetYaw(&data_ov000_021ccd54->cam);
+        u16 yaw = FieldCam_GetYaw(&gSceneCmd->cam);
         u16 ang;
         if (self->padCur & 0xf0) {
             self->speed = self->unk_b08 >> 2;
@@ -328,7 +328,7 @@ void Robo021ca458_State0f(Robo021ca458 *self) {
         z.x = 0;
         z.y = 0;
         z.z = 0;
-        p = (ActorSub4c *)data_ov000_021ccd30->unk_11c;
+        p = (ActorSub4c *)gMessageQueue->unk_11c;
         if (p == NULL) return;
         x = LFLD(u8 *, p, 0x70);
         if (x == NULL) return;

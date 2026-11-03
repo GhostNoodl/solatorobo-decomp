@@ -14,7 +14,7 @@ typedef struct { u32 a : 28; u32 k : 4; } LoW28;
 typedef struct { u32 a : 12; u32 k : 16; } LoW12;
 
 extern "C" {
-extern void *data_ov000_021ccd44;
+extern void *gTaskHost;
 extern u8 data_ov000_021c9b28[];
 void func_020708fc(s32 a, LoFadeP *out);
 void func_02070b98(s32 a, LoFadeP *out, s32 b, s32 c);
@@ -40,7 +40,7 @@ static inline BOOL LoFadeDone(void) {
 
 static inline BOOL LoResReady(void) {
     BOOL ret = TRUE;
-    if (!StageRes_IsAllLoaded(data_ov000_021ccd24.unk_08)) {
+    if (!StageRes_IsAllLoaded(gSceneResSet.unk_08)) {
         ret = FALSE;
     }
     return ret;

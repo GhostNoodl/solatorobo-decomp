@@ -8,7 +8,7 @@ void TextWin_InitLines(Ov002Text2 *a, int b);
 static inline void ov002_Anim1148_Start(Ov002Text2 *s, s32 str) {
     s->str = str;
     s->unk_4c = Text_Measure(s->font, s->spacing, s->str, &s->width, &s->height, s->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = s->font;
+    gGfxMgr->unk_004 = s->font;
 }
 
 static inline void ov002_Anim1148_Show(Ov002Text2 *a, s32 text, s32 font, s32 pal) {
@@ -46,9 +46,9 @@ void Ov002HudInfo_SetId(Ov002HudInfo *self, u16 id) {
         return;
     }
     info = func_0206ef10(id);
-    mgr = data_02149ef8;
+    mgr = gMsgRes;
     if (id == 0x8008) {
-        s32 text = (s32)MsgRes_GetString(data_02149ef8, 0x15f);
+        s32 text = (s32)MsgRes_GetString(gMsgRes, 0x15f);
         Ov002Text2 *a = self->lines[0];
         if (a != NULL) {
             ov002_Anim1148_Show(a, text, 3, 0);
@@ -56,7 +56,7 @@ void Ov002HudInfo_SetId(Ov002HudInfo *self, u16 id) {
     } else {
         s32 n = 0;
         if (info->unk_06_0) {
-            ov002_Slot1148(self, &n, (s32)MsgRes_GetString(data_02149ef8, 0x156));
+            ov002_Slot1148(self, &n, (s32)MsgRes_GetString(gMsgRes, 0x156));
         }
         if (info->unk_06_1) {
             ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x157));

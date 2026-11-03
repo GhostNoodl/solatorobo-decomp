@@ -11,7 +11,7 @@ void func_ov002_021d7320(Obj021efe4c *self, s32 t, s32 range) {
     if (self->unk_5d) {
         v = p->time << 12;
         while (v >= 0 && v < t) {
-            SndMgr_PlayVolume(data_02097e4c, p->id, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, p->id, -1, -1, -1);
             p = ++self->cue;
             v = p->time << 12;
         }
@@ -19,7 +19,7 @@ void func_ov002_021d7320(Obj021efe4c *self, s32 t, s32 range) {
         s32 lo = t - range;
         v = p->time << 12;
         while (v < t && v >= lo) {
-            SndMgr_PlayVolume(data_02097e4c, p->id, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, p->id, -1, -1, -1);
             if (self->cue == self->cues) {
                 return;
             }

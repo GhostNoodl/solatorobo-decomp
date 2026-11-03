@@ -85,7 +85,7 @@ typedef struct ResMgr {
     /* 0x7c00 */ u16 hashTable[0x100];
 } ResMgr; // size 0x7e00
 
-extern ResMgr *data_02097cdc;
+extern ResMgr *gResMgr;
 
 #define RES_MGR_HASH_TABLE(mgr) ((mgr)->hashTable)
 

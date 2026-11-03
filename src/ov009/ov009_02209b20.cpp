@@ -98,7 +98,7 @@ void Ov009ActVt_02217594_State22(Ov009ActVt_02217594 *self) {
                 v.y = self->height;
                 v.z = self->radius;
                 Spawn_ScatterEffect(&p, &v, 0x99a, 0x1333, 0x38b, 0x32);
-                SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x35, -1, -1, -1);
             }
             if (self->step > 0xd) {
                 self->fsm->st++;
@@ -111,8 +111,8 @@ void Ov009ActVt_02217594_State22(Ov009ActVt_02217594 *self) {
             if (Model0218fe1c_IsAnimDone(self->model)) {
                 Shared_SetEventActor(self->kind, self->id);
                 func_020627dc(4);
-                data_ov000_021ccd54->stageFlags = 1;
-                Group_UpdateActor(data_ov000_021ccd64, 0, self);
+                gSceneCmd->stageFlags = 1;
+                Group_UpdateActor(gGroup, 0, self);
                 self->vfunc_08();
             }
             break;
@@ -148,14 +148,14 @@ void Ov009ActVt_02217594_State22(Ov009ActVt_02217594 *self) {
                 v2.y = self->height * 2;
                 v2.z = self->radius;
                 Spawn_ScatterEffect(&p2, &v2, 0x99a, 0x1333, 0x38b, 0x32);
-                SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x35, -1, -1, -1);
             }
             if (Model0218fe1c_IsAnimDone(self->model)) {
                 Model0218fe1c_SetAnimSpeed(self->model, 0x1000);
                 Shared_SetEventActor(self->kind, self->id);
                 func_020627dc(4);
-                data_ov000_021ccd54->stageFlags = 1;
-                Group_UpdateActor(data_ov000_021ccd64, 0, self);
+                gSceneCmd->stageFlags = 1;
+                Group_UpdateActor(gGroup, 0, self);
                 self->vfunc_08();
             }
             break;

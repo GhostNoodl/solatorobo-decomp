@@ -195,13 +195,13 @@ void Ov009ActVt_02216348_Start(Ov009ActVt_02216348 *self) {
     s48->unk_9a_0 = 0;
     s48->unk_9a_3 = 0;
     HitSphere_Unlink_0203f364(s48);
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_44 != NULL) {
         Heap_Free(self->unk_44);
         self->unk_44 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     self->unk_ea_6 = 1;
 }
 
@@ -232,7 +232,7 @@ void Ov009ActVt_02216348_Update(Ov009ActVt_02216348 *self) {
             s32 m = p->fsm != NULL ? p->fsm->current : 0;
             if (m == 7 || m == 0x16 || m == 0x17 || (u8)(m + 0xf1) <= 2) {
                 self->fsm->flags |= 0x80000;
-                SndMgr_PlayAtPitch(data_02097e4c, 0x1e, &self->pos, 0xc);
+                SndMgr_PlayAtPitch(gSndMgr, 0x1e, &self->pos, 0xc);
                 self->unk_f0 = 0x3c;
             } else if (Ov009_GameIdle() && self->unk_f0 == 0) {
                 Ov009HitMsg msg;
@@ -257,7 +257,7 @@ void Ov009ActVt_02216348_Update(Ov009ActVt_02216348 *self) {
         }
     }
     if (self->model->anim_state == 1) {
-        SndMgr_PlayAtPitch(data_02097e4c, 0x1e, &self->pos, 0xc);
+        SndMgr_PlayAtPitch(gSndMgr, 0x1e, &self->pos, 0xc);
     }
 }
 

@@ -82,7 +82,7 @@ void func_0206ccb8(StageFlags *f, u16 id) {
                 item = STAGE_ITEM_NONE;
                 break;
             }
-            StageFlags_AddEntry(data_0214a424, item, x, y, 0, 0);
+            StageFlags_AddEntry(gStageFlags, item, x, y, 0, 0);
         }
     }
     f->shapeId = id;
@@ -110,9 +110,9 @@ void func_0206ce78(StageFlags *f, u16 id) {
             shape.rot = e->bits.c;
             used = e->bits.used ? TRUE : FALSE;
             if (func_ov002_021e3dac(&pos, newShape, &shape, NULL) == 0) {
-                StageFlags_AddEntry(data_0214a424, e->id, pos.x, pos.y, shape.rot, used);
+                StageFlags_AddEntry(gStageFlags, e->id, pos.x, pos.y, shape.rot, used);
             } else if (!used) {
-                func_0206d2ec(data_0214a424, e->id, 1);
+                func_0206d2ec(gStageFlags, e->id, 1);
             }
         }
     }

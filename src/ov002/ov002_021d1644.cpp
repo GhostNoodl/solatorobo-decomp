@@ -14,7 +14,7 @@ BOOL func_ov002_021d166c(Task021ef71c *self) {
     case 0:
         if (self->unk_5c < 8 && ((s32 *)((u8 *)self + 0x3c))[self->unk_5c] >= 0) {
             GfxSys_StopFade(-1);
-            Movie_Load(data_02097e3c, ((s32 *)((u8 *)self + 0x3c))[self->unk_5c], -1, 0);
+            Movie_Load(gMovie, ((s32 *)((u8 *)self + 0x3c))[self->unk_5c], -1, 0);
             self->unk_64 = 1;
         } else {
             GfxSys_StartFadeOut(0xa000, 2, 0);
@@ -22,10 +22,10 @@ BOOL func_ov002_021d166c(Task021ef71c *self) {
         }
         break;
     case 1:
-        if (data_02097dc8->trig & 0xa) {
-            Movie_RequestStop(data_02097e3c);
+        if (gPad->trig & 0xa) {
+            Movie_RequestStop(gMovie);
         }
-        if (data_02097e3c->state == 0) {
+        if (gMovie->state == 0) {
             self->unk_64 = 0;
             self->unk_5c++;
         }
@@ -51,8 +51,8 @@ BOOL func_ov002_021d178c(Task021ef71c *self) {
             break;
         }
     case 1:
-        if (data_02097dc8->trig & 2) {
-            func_ov002_021e9b28(data_ov002_021f0f9c->unk_d0);
+        if (gPad->trig & 2) {
+            func_ov002_021e9b28(gOv002Stage->unk_d0);
             self->unk_5c = 7;
         }
         if (!func_ov002_021e90ac()) {
@@ -72,7 +72,7 @@ Task021ef69c *Task021ef69c_New(void) {
     Task021ef69c *p = (Task021ef69c *)Heap_Alloc(0x68);
     if (p != NULL) {
         TaskBase_ctor(p);
-        *(VFunc **)p = data_ov002_021ef69c;
+        *(VFunc **)p = Ov002TaskVt_021ef69c_vtbl;
         p->unk_3c = NULL;
         p->unk_40 = NULL;
         p->unk_44 = NULL;
@@ -98,13 +98,13 @@ BOOL func_ov002_021d18e8(TextList *self, ListRow021cca70 *ev) {
     Task021ef69c *owner = (Task021ef69c *)self->owner;
     if (ev->item.unk_0a != 0) {
         if (ev->scale <= 0x99a) {
-            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
             owner->unk_44 = ev;
             TextList_Raise(owner->unk_3c);
             ev->unk_6c = 1;
         }
     } else {
-        SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
     }
     return TRUE;
 }

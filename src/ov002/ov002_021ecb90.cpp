@@ -160,7 +160,7 @@ void func_ov002_021eceb8(Ov002StaffModel *self) {
         }
     }
     // Two fields of the model's flags word: the polygon id and the alpha.
-    FIELD(self->model, 0x6c, Bits021eceb8).c = (u32)Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
+    FIELD(self->model, 0x6c, Bits021eceb8).c = (u32)Gfx3DState_NextPolyId(gGfxSys->unk_8b0);
     FIELD(self->model, 0x6c, Bits021eceb8).b = self->alpha;
     {
         Model *m = self->model;
@@ -288,7 +288,7 @@ void func_ov002_021ed1dc(Ov002StaffText *self) {
 
 extern "C" {
 
-extern VFunc data_0208ba70[];
+extern VFunc TextWin_vtbl[];
 void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void TextWin_RenderToVram(void *p);
@@ -297,13 +297,13 @@ char *Str_FindCharMb(char *s, int c);
 static inline Ov002Text2 *ov002_021ed270_newText(char *str) {
     Ov002Text2 *t = (Ov002Text2 *)Heap_Alloc(0xb8);
     if (t != NULL) {
-        *(VFunc **)t = data_0208ba70;
+        *(VFunc **)t = TextWin_vtbl;
         TextWin_Init(t);
     }
     t->font = 4;
     t->str = (s32)str;
     t->unk_4c = Text_Measure(t->font, t->spacing, t->str, &t->width, &t->height, t->unk_37 != 0);
-    data_02097ce0->unk_004 = t->font;
+    gGfxMgr->unk_004 = t->font;
     return t;
 }
 
@@ -492,7 +492,7 @@ void func_ov002_021edcec(Ov002StaffText *self, int mode) {
     if (mode == 1) {
         y += 0xc0;
     }
-    self->line[0].text->polyId = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
+    self->line[0].text->polyId = Gfx3DState_NextPolyId(gGfxSys->unk_8b0);
     self->line[0].text->alpha = self->alpha;
     self->line[0].text->vfunc_20(x, y);
     self->line[0].text->posZ = -0x1000;
@@ -505,7 +505,7 @@ void func_ov002_021edcec(Ov002StaffText *self, int mode) {
     if (mode == 1) {
         y += 0xc0;
     }
-    self->line[1].text->polyId = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
+    self->line[1].text->polyId = Gfx3DState_NextPolyId(gGfxSys->unk_8b0);
     self->line[1].text->alpha = self->alpha;
     self->line[1].text->vfunc_20(x, y);
     self->line[1].text->posZ = -0x1000;
@@ -548,7 +548,7 @@ BOOL func_ov002_021ede5c(Ov002StaffNode *self) {
     switch (d->unk_0c) {
     case 0:
         if (self->clock.sub == 0) {
-            SndMgr_LoadBgm(data_02097e4c, d->seq);
+            SndMgr_LoadBgm(gSndMgr, d->seq);
             self->clock.sub++;
         }
         if (self->entry->unk_0e != 0) {
@@ -558,23 +558,23 @@ BOOL func_ov002_021ede5c(Ov002StaffNode *self) {
             if (t >= 0x1000) {
                 t = 0x1000;
             }
-            tot = SndMgr_GetSeqVolume_0204a2c8(data_02097e4c, self->entry->seq);
+            tot = SndMgr_GetSeqVolume_0204a2c8(gSndMgr, self->entry->seq);
             cur = FX_MUL(tot << 12, FX_SINCOS_TABLE[((t << 14) >> 16) * 2]) >> 12;
-            SndMgr_MoveBgmVolume(data_02097e4c, cur, 0);
+            SndMgr_MoveBgmVolume(gSndMgr, cur, 0);
             if (cur != tot) {
                 busy = TRUE;
             }
         }
         break;
     case 1:
-        SndMgr_StopSeqNo(data_02097e4c, d->seq, d->unk_0e);
+        SndMgr_StopSeqNo(gSndMgr, d->seq, d->unk_0e);
         break;
     case 2:
-        SndMgr_SetStrmVolume_0204a2a8(data_02097e4c, 100, d->unk_0e);
+        SndMgr_SetStrmVolume_0204a2a8(gSndMgr, 100, d->unk_0e);
         break;
     case 3:
         {
-            SndQueue *g = data_02097e48.queue;
+            SndQueue *g = gSndQueue.queue;
             g->unk_80 = 0x8000;
             g->unk_7c = 0;
         }
@@ -640,7 +640,7 @@ void func_ov002_021ee024(void) {
     x = data_ov002_021f0fa4;
     if (x != NULL) {
         if (x != NULL) {
-            SndMgr_StopStrm_0204a284(data_02097e4c, -1);
+            SndMgr_StopStrm_0204a284(gSndMgr, -1);
             for (n = data_ov002_021f0fa0; n != NULL; n = next) {
                 s32 k = n->entry->kind;
                 Ov002StaffNode *c;
@@ -713,7 +713,7 @@ typedef struct ov002_Fade021ee1a8 {
 extern "C" {
 
 extern char data_ov002_021f0e06[];
-extern ov002_Disp021ee1a8 *data_ov000_021ccd54;
+extern ov002_Disp021ee1a8 *gSceneCmd;
 
 int func_0200779c(char *dst, const char *fmt, ...);
 void Tbl_Format_02070874(char *dst, const char *fmt, ...);
@@ -767,9 +767,9 @@ void func_ov002_021ee1a8(void) {
             s32 id;
             o = (Ov002StaffLoader *)Heap_Alloc(0x50);
             if (o != NULL) {
-                *(VFunc **)o = (VFunc *)data_0208b318;
+                *(VFunc **)o = (VFunc *)ResHandle_vtbl;
                 o->vfunc_08();
-                *(VFunc **)o = data_ov002_021f0f2c;
+                *(VFunc **)o = Ov002Vt_021f0f2c_vtbl;
                 o->vfunc_08();
             }
             s->loader = o;
@@ -793,7 +793,7 @@ void func_ov002_021ee1a8(void) {
     case 6:
         switch (s->clock.sub) {
         case 0:
-            data_ov000_021ccd54->mode = 2;
+            gSceneCmd->mode = 2;
             GfxSys_StartFadeIn(1, 2, -1);
             s->spawned = 0;
             s->clock.sub++;
@@ -802,7 +802,7 @@ void func_ov002_021ee1a8(void) {
                 s->spawned += 0x20;
                 break;
             }
-            ((ov002_Fade021ee1a8 *)data_02097d48)->mode = 2;
+            ((ov002_Fade021ee1a8 *)gGfxSys)->mode = 2;
             s->clock.sub++;
             break;
         case 5:
@@ -820,7 +820,7 @@ void func_ov002_021ee1a8(void) {
     case 8:
         switch (s->clock.sub) {
         case 0:
-            ((ov002_Fade021ee1a8 *)data_02097d48)->mode = 1;
+            ((ov002_Fade021ee1a8 *)gGfxSys)->mode = 1;
             s->clock.sub++;
             return;
         case 5:
@@ -844,7 +844,7 @@ extern "C" {
 
 void func_ov002_021ee4d0(void) {
     Ov002Staff *o4 = data_ov002_021f0fa4;
-    BOOL flag = data_02097d48->unk_a30_4 ? TRUE : FALSE;
+    BOOL flag = gGfxSys->unk_a30_4 ? TRUE : FALSE;
     Ov002StaffNode *v;
     if (o4->clock.state != 3 && o4->clock.state != 7) {
         return;
@@ -874,7 +874,7 @@ struct N3_55c {
     Ov002StaffEntry *e;
     static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     N3_55c() {
-        vt = data_ov002_021f0ef4;
+        vt = Ov002Vt_021f0ef4_vtbl;
         clock.bits = 0; clock.state = 0; clock.next = 0; clock.sub = 0; clock.timer = 0; clock.prevTimer = 0; clock.step = 0x1000;
         ((VObj *)this)->vfunc_10();
     }
@@ -884,22 +884,22 @@ struct N3b_55c : N3_55c { u8 pad[0x34 - 0x24]; };
 
 struct N4_55c : N3_55c {
     u8 pad[0x58 - 0x24];
-    N4_55c() { vt = data_ov002_021f0e84; ((VObj *)this)->vfunc_10(); }
+    N4_55c() { vt = Ov002Vt_021f0e84_vtbl; ((VObj *)this)->vfunc_10(); }
 };
 
 struct N5_55c : N3_55c {
     u8 pad[0x4c - 0x24];
-    N5_55c() { vt = data_ov002_021f0e4c; ((VObj *)this)->vfunc_10(); }
+    N5_55c() { vt = Ov002Vt_021f0e4c_vtbl; ((VObj *)this)->vfunc_10(); }
 };
 
 struct N6_55c : N5_55c {
     u8 pad6[0x50 - 0x4c];
-    N6_55c() { vt = data_ov002_021f0ebc; ((VObj *)this)->vfunc_10(); }
+    N6_55c() { vt = Ov002Vt_021f0ebc_vtbl; ((VObj *)this)->vfunc_10(); }
 };
 
 struct N7_55c : N3_55c {
     u8 pad[0x34 - 0x24];
-    N7_55c() { vt = data_ov002_021f0e14; ((VObj *)this)->vfunc_10(); }
+    N7_55c() { vt = Ov002Vt_021f0e14_vtbl; ((VObj *)this)->vfunc_10(); }
 };
 
 BOOL func_ov002_021ee55c(Ov002Staff *self, s32 start, s32 count) {
@@ -949,7 +949,7 @@ namespace m_021ee7c8 {
 extern "C" {
 
 VObj *Ov002Vt_021f0ef4_DtorDelete(VObj *self) {
-    *(VFunc **)self = data_ov002_021f0ef4;
+    *(VFunc **)self = Ov002Vt_021f0ef4_vtbl;
     self->vfunc_14();
     Heap_Free(self);
     return self;

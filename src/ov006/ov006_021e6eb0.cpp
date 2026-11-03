@@ -22,15 +22,15 @@ typedef struct ov006_Disp021e6eb0 {
 
 extern "C" {
 
-extern ov006_Disp021e6eb0 *data_0214a424;
+extern ov006_Disp021e6eb0 *gStageFlags;
 const ov006_Sub021e6eb0 *ov006_Slot_GetSub2C(ov006_Slot *self);
 ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 
 void Ov006ActVt_021ec4f4_UpdateMode1(Ov006Racer *self) {
     const ov006_Sub021e6eb0 *sub;
-    sub = ov006_Slot_GetSub2C(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, 0));
+    sub = ov006_Slot_GetSub2C(ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, 0));
     self->rank = (sub->bits >> (self->idx * 2)) & 3;
-    sub = ov006_Slot_GetSub2C(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, self->idx));
+    sub = ov006_Slot_GetSub2C(ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, self->idx));
     {
         u16 old = self->held;
         u16 cur = sub->buttons;
@@ -49,13 +49,13 @@ void Ov006ActVt_021ec4f4_UpdateMode1(Ov006Racer *self) {
         return;
     }
     self->toggle = (u16)(self->toggle == 0 ? 1 : 0);
-    if (self->idx != data_ov006_021ec884->unk5) {
+    if (self->idx != gOv006SlotManager->unk5) {
         return;
     }
     if (self->toggle) {
-        data_0214a424->unk18_10 = 1;
+        gStageFlags->unk18_10 = 1;
     } else {
-        data_0214a424->unk18_10 = 0;
+        gStageFlags->unk18_10 = 0;
     }
 }
 
@@ -178,7 +178,7 @@ void Ov006Racer_ReadKeys(Ov006Racer *self, u16 *keys) {
     }
     {
         over = FALSE;
-        if (self->unk_19f > data_ov006_021ec884->info->unkB) {
+        if (self->unk_19f > gOv006SlotManager->info->unkB) {
             over = TRUE;
         }
         if (over) {

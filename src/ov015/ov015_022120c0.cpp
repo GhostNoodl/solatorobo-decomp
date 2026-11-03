@@ -7,7 +7,7 @@ extern char data_ov015_022132ac[];
 extern char data_ov015_022132bb[];
 void func_ov015_02212430(Ov015Obj292c *self);
 s32 SndMgr_PlayPan(void *a, s32 b, s32 c);
-extern u8 data_ov015_022132e0[];
+extern u8 Ov015Obj290_vtbl[];
 void *Model0218fe1c_FreeAnims(void *a);
 void *ResSet_ReleaseAll(void *a);
 
@@ -29,7 +29,7 @@ void func_ov015_022120c0(Ov015Obj292c *self) {
 void func_ov015_022120fc(Ov015Obj292c *self) {
     void *saved;
     ActorMarker *o;
-    if (EffectMgr_Contains(data_0214a420, self->fx)) {
+    if (EffectMgr_Contains(gEffectMgr, self->fx)) {
         self->fx->state = 4;
         self->fx = NULL;
     }
@@ -118,7 +118,7 @@ void func_ov015_0221234c(Ov015Obj292c *self) {
     }
     ActorMarker_SetKind(o, 4);
     self->marker->show = 1;
-    SndMgr_PlayPan(data_02097e4c, 0xe, 5);
+    SndMgr_PlayPan(gSndMgr, 0xe, 5);
     if (self->fx != NULL) {
         self->fx->speed = 0x2000;
     }
@@ -133,14 +133,14 @@ void func_ov015_022123c4(Ov015Obj292c *self) {
         return;
     }
     o->show = 0;
-    SndMgr_PlayPan(data_02097e4c, 0x1f, -3);
+    SndMgr_PlayPan(gSndMgr, 0x1f, -3);
     if (self->fx != NULL) {
         self->fx->speed = 0x800;
     }
 }
 
 void func_ov015_02212430(Ov015Obj292c *self) {
-    u16 pad = data_02097dc8->cur;
+    u16 pad = gPad->cur;
     if (pad & 0x20) {
         self->pos.x -= self->unk_30;
         if (self->pos.x < -0x32000) self->pos.x = -0x32000;
@@ -162,7 +162,7 @@ BOOL func_ov015_022124e4(Ov015Obj290 *self) {
 }
 
 void *Ov015Obj290_Dtor(Ov015Obj290 *self) {
-    SET_VT(self, data_ov015_022132e0);
+    SET_VT(self, Ov015Obj290_vtbl);
     Model0218fe1c_FreeAnims(&self->model);
     ResSet_ReleaseAll(&self->res);
     return self;

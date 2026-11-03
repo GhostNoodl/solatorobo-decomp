@@ -67,10 +67,10 @@ extern char data_ov009_022179b4[];
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
 static inline Ov003Actor *Ov009_FindActor4(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Ov009ActVt_02217cb0_StateAttack(Ov009ActVt_02217cb0 *self) {

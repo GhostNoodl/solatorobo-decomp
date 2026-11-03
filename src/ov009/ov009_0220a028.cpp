@@ -84,7 +84,7 @@ void Ov009ActVt_02217390_Update(Ov009ActVt_02217390 *self, u8 st) {
     BOOL flag = Ov009_Skip(st, f);
     if (flag) {
         s->flags |= 0x200000;
-        SndMgr_PlayVolume(data_02097e4c, 0x6c, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x6c, -1, -1, -1);
         return;
     }
     Ov003Actor *pl = Actor_GetTarget(self);

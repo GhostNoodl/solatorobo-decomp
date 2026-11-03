@@ -19,13 +19,13 @@ void Lo021caac8_Init(Lo021caac8 *self) {
 }
 
 void Lo021caac8_Release(Lo021caac8 *self) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_e0 != NULL) {
         Obj0214e014_Delete(self->unk_e0);
         self->unk_e0 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 }

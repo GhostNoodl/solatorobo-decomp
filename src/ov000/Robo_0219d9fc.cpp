@@ -16,7 +16,7 @@ typedef struct {
 #define COS_0219d9fc(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
 extern "C" {
-extern MessageQueue021cb980 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *gMessageQueue;
 extern u8 data_ov000_021ca320[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Shadow_SetType(void *a, s32 b, u32 c);
@@ -31,10 +31,10 @@ void Shadow_Draw(void *shadow, void *pos);
 void func_ov000_02167fac(Lo021cb6f0 *self, s32 a, s32 b);
 
 static inline Actor *FindActor_0219d9fc(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline BOOL IsBusy_0219d9fc(FieldState *g) {
@@ -55,8 +55,8 @@ static inline BOOL IsIdle_0219d9fc(FieldState *g) {
 }
 
 static inline u8 Begin_0219d9fc(void) {
-    u8 a = LFLD(u8, data_02097d48, 0x8b3);
-    func_02043d9c(data_02097d48->unk_8b0);
+    u8 a = LFLD(u8, gGfxSys, 0x8b3);
+    func_02043d9c(gGfxSys->unk_8b0);
     return a;
 }
 
@@ -69,7 +69,7 @@ static inline BOOL HasD4B_0219d9fc(FieldState *g) {
 }
 
 static inline BOOL PadB9_0219d9fc(void) {
-    return data_0214a424->bits18.flag9 ? TRUE : FALSE;
+    return gStageFlags->bits18.flag9 ? TRUE : FALSE;
 }
 
 struct RgbEq_0219d9fcSelf {
@@ -159,8 +159,8 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
             cb = ca = 0x3def;
             lvl = 0x1e;
             n = 1;
-        } else if (self->unk_b22_3 && IsIdle_0219d9fc(data_ov000_021ccd54)) {
-            if (!(data_ov000_021ccd68->frame & 0x3f)) {
+        } else if (self->unk_b22_3 && IsIdle_0219d9fc(gSceneCmd)) {
+            if (!(gActorMgr->frame & 0x3f)) {
                 ca = 0x63fc;
                 cb = 0x5ad4;
                 n = 0x40;
@@ -266,7 +266,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
             func_ov000_021b4130(self, res != 0 ? TRUE : FALSE);
         }
     } else {
-        if (!PadB9_0219d9fc() && RgbEq_0219d9fc(data_ov000_021ccd54, (RgbEq_0219d9fcSelf *)self)) {
+        if (!PadB9_0219d9fc() && RgbEq_0219d9fc(gSceneCmd, (RgbEq_0219d9fcSelf *)self)) {
             self->mdl1.trans = self->unk_75c;
             Obj02190758_SetRot(&self->mdl1, (u8 *)self + 0x76c, 1);
             self->mdl1.alpha = 0x1f;
@@ -316,7 +316,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
         }
     }
     {
-        FieldState *g = data_ov000_021ccd54;
+        FieldState *g = gSceneCmd;
         if (IsIdle_0219d9fc(g) && !HasD4B_0219d9fc(g)) {
             ActorMarker_Draw(self->unk_5c);
             ActorMarker_Draw(self->unk_9b0);
@@ -381,7 +381,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
         }
         if (self->unk_9ac < self->unk_9ae) {
             if (self->unk_b24_1) {
-                ListBuffer021cb940 *o = data_ov000_021ccd30->unk_11c;
+                ListBuffer021cb940 *o = gMessageQueue->unk_11c;
                 if (o != NULL && o->unk_6c != NULL) {
                     func_ov000_02167fac(o->unk_6c, self->unk_9ac, self->unk_9ae);
                 }

@@ -81,8 +81,8 @@ typedef struct {
     u8 unk_93_4 : 1;
 } Ov003SwPlayer;
 
-extern void *data_ov000_021ccd68;
-extern Ov003SwObjList *data_ov000_021ccd64;
+extern void *gActorMgr;
+extern Ov003SwObjList *gGroup;
 extern Ov003SwGroup *ActorMgr_GetGroup(void *mgr, u16 key);
 extern Ov003SwPlayer *ActorMgr_FindPlayer(void);
 
@@ -97,7 +97,7 @@ BOOL Ov003Switch_AreTargetsDone(Ov003Switch *self, BOOL deep) {
             if ((u16)(id & 0xf000) == 0) {
                 id = (u16)(id << 12) | 0xfff;
             }
-            g = ActorMgr_GetGroup(data_ov000_021ccd68, id);
+            g = ActorMgr_GetGroup(gActorMgr, id);
             if (g != NULL) {
                 if ((id & 0xfff) != 0xfff) {
                     Ov003SwNode *head = g->head;
@@ -124,8 +124,8 @@ BOOL Ov003Switch_AreTargetsDone(Ov003Switch *self, BOOL deep) {
                         }
                     }
                     if (deep) {
-                        FieldState *game = data_ov000_021ccd54;
-                        Ov003SwObjList *list = data_ov000_021ccd64;
+                        FieldState *game = gSceneCmd;
+                        Ov003SwObjList *list = gGroup;
                         u16 key = id & 0xf000;
                         Ov003SwObj *n;
                         for (n = list->head; n != NULL; n = (n != NULL) ? n->next : list->head) {

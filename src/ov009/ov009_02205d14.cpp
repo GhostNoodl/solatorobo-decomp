@@ -2,9 +2,9 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern void *data_ov009_02215d0c[];
-extern void *data_ov009_0221707c;
+extern void *Ov009ActVt_0221707c_vtbl;
 extern char data_ov009_02216bb4[];
 extern char data_ov009_02216bba[];
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
@@ -29,8 +29,8 @@ void Ov009ActVt_02216bc8_StateDie(Ov009ActVt_02216bc8 *self) {
 
 void Ov009ActVt_02216fd0_Init(Ov003Actor *self) {
     Ov003Actor_Init(self);
-    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
-    SceneCmd_Push25(data_ov000_021ccd54, 0xe);
+    SndMgr_LoadHeapState(gSndMgr, 1, 1);
+    SceneCmd_Push25(gSceneCmd, 0xe);
 }
 
 void Ov009ActVt_02216fd0_Update(Ov003Actor *self) {
@@ -67,7 +67,7 @@ void Ov009ActVt_02216f24_Init(Ov003Actor *self) {
         self->unk_d8 = (void *)Ov009Names_Fill_02205d94;
     }
     Ov003Actor_Init(self);
-    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(gSndMgr, 1, 1);
     switch (self->kind) {
     case 0x5014:
     case 0x501e:
@@ -75,7 +75,7 @@ void Ov009ActVt_02216f24_Init(Ov003Actor *self) {
     case 0x502c:
     case 0x5034:
     case 0x5043:
-        SceneCmd_Push25(data_ov000_021ccd54, 0xd);
+        SceneCmd_Push25(gSceneCmd, 0xd);
         break;
     case 0x5019:
     case 0x501a:
@@ -85,7 +85,7 @@ void Ov009ActVt_02216f24_Init(Ov003Actor *self) {
     case 0x5052:
     case 0x505a:
     case 0x505b:
-        SceneCmd_Push25(data_ov000_021ccd54, 0xe);
+        SceneCmd_Push25(gSceneCmd, 0xe);
         break;
     }
     self->unk_ea_10 = 1;
@@ -101,8 +101,8 @@ void Ov009ActVt_02216f24_StateDie(Ov003Actor *self) {
 
 void Ov009ActVt_02216dcc_Init(Ov009ActVt_02216dcc *self) {
     Ov003Actor_Init(self);
-    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
-    SceneCmd_Push25(data_ov000_021ccd54, 0xd);
+    SndMgr_LoadHeapState(gSndMgr, 1, 1);
+    SceneCmd_Push25(gSceneCmd, 0xd);
     self->unk_b8 = self->pos;
     self->unk_ea_10 = 1;
     self->unk_f0 = 0;
@@ -111,7 +111,7 @@ void Ov009ActVt_02216dcc_Init(Ov009ActVt_02216dcc *self) {
 }
 
 #ifdef NONMATCHING
-// Ov009ActVt_02216dcc_Update (0x2ec bytes, update of the vtable data_ov009_02216dcc actor): 7 / 7 (raw / masked).
+// Ov009ActVt_02216dcc_Update (0x2ec bytes, update of the vtable Ov009ActVt_02216dcc_vtbl actor): 7 / 7 (raw / masked).
 // This file's .text ends at 0x02206084, so it goes here once it matches. Blocker: the ROM reads pl->id before the
 // unk_93 bit-field store; ours orders them the other way (the strh/strb pair has no memory edge, so list order
 // decides). History: docs/MATCHING.md rounds near7, bgV, nmA, mtA, cvA; docs/UNMATCHED.md.

@@ -61,7 +61,7 @@ Ov011LNode *Ov011LNode_Remove(Ov011LNode *head, Ov011LNode *item) {
     return head;
 }
 
-extern const Ov011MgrEntry data_ov011_02207344[];
+extern const Ov011MgrEntry Ov011Mgr_StateTable[];
 void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
 void *__cxa_vec_new(u32 count, u32 size, u32 hdr, void *ctor, void *dtor);
 void *Ov003Vt_021f7d2c_Dtor(void *p);
@@ -75,27 +75,27 @@ void Ov011Mgr_Release(Ov011Mgr *self) {
     if (!self->b0) {
         return;
     }
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->arr8 != NULL) {
         __cxa_vec_delete(self->arr8, 0x38, 8, Ov003Vt_021f7d2c_Dtor);
         self->arr8 = NULL;
     }
-    data_02097dd0->cur = saved;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gSysState->cur = saved;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->arrC != NULL) {
         __cxa_vec_delete(self->arrC, 0x30, 8, Ov011Vt_022079d0_Dtor);
         self->arrC = NULL;
     }
-    data_02097dd0->cur = saved;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gSysState->cur = saved;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->ids != NULL) {
         Heap_FreeArray(self->ids);
         self->ids = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     self->b0 = 0;
 }
 
@@ -111,8 +111,8 @@ void Ov011Mgr_Update(Ov011Mgr *self) {
     }
     key = self->unk_2f;
     for (i = 0; i < 5; i++) {
-        if (key == data_ov011_02207344[i].key && *(s32 *)&data_ov011_02207344[i].fn != 0) {
-            (self->*data_ov011_02207344[i].fn)();
+        if (key == Ov011Mgr_StateTable[i].key && *(s32 *)&Ov011Mgr_StateTable[i].fn != 0) {
+            (self->*Ov011Mgr_StateTable[i].fn)();
             break;
         }
     }
@@ -172,27 +172,27 @@ void Ov011Mgr_Reset(Ov011Mgr *self) {
     self->count = 0;
     self->b1 = 0;
     self->unk_04 = -1;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->arr8 != NULL) {
         __cxa_vec_delete(self->arr8, 0x38, 8, Ov003Vt_021f7d2c_Dtor);
         self->arr8 = NULL;
     }
-    data_02097dd0->cur = saved;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gSysState->cur = saved;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->arrC != NULL) {
         __cxa_vec_delete(self->arrC, 0x30, 8, Ov011Vt_022079d0_Dtor);
         self->arrC = NULL;
     }
-    data_02097dd0->cur = saved;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gSysState->cur = saved;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->ids != NULL) {
         Heap_FreeArray(self->ids);
         self->ids = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     Ov003ActorSub40_ForceState(&self->state, 0);
 }
 

@@ -24,7 +24,7 @@ extern char data_ov000_021cc630[];
 extern char data_ov000_021cc62a[];
 extern char data_ov000_021cc636[];
 extern char *const data_ov000_021ca030[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 u8 *Actor_GetTarget(u8 *self);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Robo021ca458_WalkByPad(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
@@ -42,7 +42,7 @@ void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const vo
 void Actor_SendMsgU8(void *o, u16 id, s32 c);
 
 static inline Actor *FindActor_021a3220(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }
@@ -61,7 +61,7 @@ static inline BOOL IsBusy_021a3220(FieldState *g) {
 }
 
 static inline BOOL IsIdle_021a3220(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (IsBusy_021a3220(g)) {
             return FALSE;
@@ -89,18 +89,18 @@ void Robo021ca458_State16(Robo021ca458 *self) {
         self->fsm->st++;
         if (self->unk_b2c_6) {
             self->fsm->timer = 5;
-            SndMgr_PlayAt(data_02097e4c, 0x79, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x79, &self->pos, 0);
         }
         if (self->velY == 0) {
             if (!self->unk_b2c_6) {
-                SndMgr_PlayAt(data_02097e4c, 7, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 7, &self->pos, 0);
             }
             if (!self->unk_93_4) {
                 s32 se = 0x300;
-                if (data_ov000_021ccd68->frame & 1) {
+                if (gActorMgr->frame & 1) {
                     se = 0x304;
                 }
-                SndMgr_PlayAt(data_02097e4c, se, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, se, &self->pos, 0);
             }
         }
         self->moveYaw = self->rot_y;
@@ -145,7 +145,7 @@ void Robo021ca458_State16(Robo021ca458 *self) {
             self->fsm->timer = 0;
             self->fsm->st++;
             if (self->padCur & 0xf0) {
-                u16 yaw = FieldCam_GetYaw(&data_ov000_021ccd54->cam);
+                u16 yaw = FieldCam_GetYaw(&gSceneCmd->cam);
                 self->moveYaw = yaw + self->padDir;
             }
             e = Effect_SpawnId(0x192, &self->pos);
@@ -232,9 +232,9 @@ void Robo021ca458_State16(Robo021ca458 *self) {
             Actor *a;
             LangBlockB *p;
             Model0218fe1c_SetAnim(self->model, data_ov000_021cc636, 0x1000, 1);
-            SndMgr_PlayAt(data_02097e4c, 8, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 8, &self->pos, 0);
             ok = TRUE;
-            p = data_ov000_021ccd6c->blockB;
+            p = gFieldMgr->blockB;
             if (p == NULL || !p->unk_19_1) {
                 ok = FALSE;
             }
@@ -272,7 +272,7 @@ void Robo021ca458_State16(Robo021ca458 *self) {
             self->unk_b2c_6 = 0;
             self->fsm->st = 10;
             self->fsm->timer = 0;
-        } else if (!IsIdle_021a3220() || self->mode == 3 || FieldMgr_FindExitAt(data_ov000_021ccd6c, &self->pos) != NULL) {
+        } else if (!IsIdle_021a3220() || self->mode == 3 || FieldMgr_FindExitAt(gFieldMgr, &self->pos) != NULL) {
             self->speed >>= 2;
             History_SetState(self->fsm, 4, 0);
         } else {
@@ -302,7 +302,7 @@ void Robo021ca458_State16(Robo021ca458 *self) {
         } else if (self->hit->unk_50 & 0x20000000) {
             Model0218fe1c_SetAnim(self->model, data_ov000_021cc630, 0x800, 0);
             self->friction = 0xe66;
-            SndMgr_PlayAt(data_02097e4c, 0x81, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x81, &self->pos, 0);
             Effect_SpawnId(0x12f, &self->pos)->SetScaleAll(0x800);
             self->fsm->timer = 0;
             self->fsm->st++;

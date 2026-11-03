@@ -45,14 +45,14 @@ typedef struct {
 
 typedef struct ActorMgr ActorMgr;
 
-extern ActorMgr *data_ov000_021ccd68;
+extern ActorMgr *gActorMgr;
 
 ActorC *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Vec_RotateY(VecFx32 *out, const VecFx32 *in, u32 angle);
 void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *offset, u32 angle);
 
 static inline ActorC *FindActor(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }
@@ -154,20 +154,20 @@ Part *Finder_NextPart(Finder *self, Query *q, Part *from) {
     if (from != NULL) {
         {
             u16 id = from->owner;
-            ActorMgr *mgr = data_ov000_021ccd68;
+            ActorMgr *mgr = gActorMgr;
             if (mgr != NULL) {
                 actor = (ActorL *)ActorMgr_GetActor(mgr, id);
             }
         }
         if (actor != NULL) {
-            group = ActorMgr_GetGroup(data_ov000_021ccd68, actor->id & 0xf000);
+            group = ActorMgr_GetGroup(gActorMgr, actor->id & 0xf000);
             actor = actor->next;
         }
         if (actor == NULL && group != NULL) {
             group = group->next;
         }
     } else {
-        group = ActorMgr_GetGroup(data_ov000_021ccd68, 0xf000);
+        group = ActorMgr_GetGroup(gActorMgr, 0xf000);
     }
     for (; group != NULL; group = group->next) {
         if (mask & (1 << (group->key >> 12))) {

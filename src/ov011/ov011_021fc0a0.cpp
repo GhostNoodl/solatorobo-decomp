@@ -32,7 +32,7 @@ extern "C" {
 
 void *Ov003Vt_021f7d2c_Ctor(void *p);
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern const VecFx32 data_ov011_022072b4;
 
 void Ov011Npc_SetVisible(void *o, s32 a);
@@ -43,7 +43,7 @@ void Ov011Chr_StartMode1(void *self);
 void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 
 static inline Ov011Npc *Ov011_Find(u16 id) {
-    return data_ov000_021ccd68 == NULL ? NULL : (Ov011Npc *)ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return gActorMgr == NULL ? NULL : (Ov011Npc *)ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline BOOL Ov011_NodeOk(Ov011Node *p) {
@@ -98,7 +98,7 @@ void Ov011Mgr2_State03(Ov011Mgr3 *self) {
         w.x = a->pos.x;
         w.y = a->pos.y;
         w.z = a->pos.z;
-        SndMgr_PlayAt(data_02097e4c, 0x44, &w, 0);
+        SndMgr_PlayAt(gSndMgr, 0x44, &w, 0);
         self->state = 1;
         break;
     }
@@ -337,7 +337,7 @@ void Ov011Ctl_Update(Ov011Ctl *self) {
                     Ov003Mover_SetSpeed(&self->slots[i].obj, 0x66);
                     Ov003Mover_SetMaxDist(&self->slots[i].obj, 0x948);
                     func_ov011_022011fc(a, 0);
-                    SndMgr_PlayAt(data_02097e4c, 0x2f, (VecFx32 *)self->slots[i].obj.v10(), 0);
+                    SndMgr_PlayAt(gSndMgr, 0x2f, (VecFx32 *)self->slots[i].obj.v10(), 0);
                     v.x = Rand_PlusMinus(0x1000);
                     v.z = Rand_PlusMinus(0x1000);
                 }
@@ -375,8 +375,8 @@ void Ov011Ctl_Update(Ov011Ctl *self) {
                 e = Effect_SpawnId(0x67, &p);
                 e->SetRotXYZ(0, ang, 0);
                 e->SetScaleXYZ(0x1ccd, 0x1ccd, 0x1ccd);
-                SndMgr_PlayAt(data_02097e4c, 0x1a, &p, 0);
-                q = &data_ov000_021ccd54->cam.base;
+                SndMgr_PlayAt(gSndMgr, 0x1a, &p, 0);
+                q = &gSceneCmd->cam.base;
                 if (q != NULL) {
                     q->shakeX = 1;
                     q->shakeY = 1;
@@ -450,7 +450,7 @@ void Ov011Ctl_Update(Ov011Ctl *self) {
             found->b0 = 1;
             Ov003Mover_Start(&found->obj, &pp, &c, 0x14, 0x11f, 1);
             self->state = 3;
-            SndMgr_PlayAt(data_02097e4c, 0x35, &c, 0);
+            SndMgr_PlayAt(gSndMgr, 0x35, &c, 0);
         }
         break;
     }

@@ -27,7 +27,7 @@ static const VecFx32 data_ov014_022171c4 = data_ov014_022164d0;
 namespace m_021fc220 {
 extern "C" {
 
-extern u8 data_ov014_0221722c[];
+extern u8 Ov014ActEx_021fc24c_vtbl[];
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 
 void Ov014ActEx_021fbd64_StateDie(Ov014ActEx_021fbd64 *self) {
@@ -40,7 +40,7 @@ void Ov014ActEx_021fbd64_StateDie(Ov014ActEx_021fbd64 *self) {
 #pragma force_active on
 Ov014ActEx_021fc24c *Ov014ActEx_021fc24c_Ctor(Ov014ActEx_021fc24c *self) {
     ActorEx_Ctor(self);
-    *(void **)self = data_ov014_0221722c;
+    *(void **)self = Ov014ActEx_021fc24c_vtbl;
     self->unk_f8 = 0;
     self->unk_100 = NULL;
     self->unk_f4 = 0;
@@ -50,8 +50,8 @@ Ov014ActEx_021fc24c *Ov014ActEx_021fc24c_Ctor(Ov014ActEx_021fc24c *self) {
 #pragma force_active reset
 
 static inline void Ov014_Free100(Ov014ActEx_021fc24c *self) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_100 != NULL) {
         Ov003FxList *p = self->unk_100;
         if (p != NULL) {
@@ -60,18 +60,18 @@ static inline void Ov014_Free100(Ov014ActEx_021fc24c *self) {
         }
         self->unk_100 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 Ov014ActEx_021fc24c *Ov014ActEx_021fc24c_Dtor(Ov014ActEx_021fc24c *self) {
-    *(void **)self = data_ov014_0221722c;
+    *(void **)self = Ov014ActEx_021fc24c_vtbl;
     Ov014_Free100(self);
     ActorEx_DtorBase(self);
     return self;
 }
 
 Ov014ActEx_021fc24c *Ov014ActEx_021fc24c_DtorDelete(Ov014ActEx_021fc24c *self) {
-    *(void **)self = data_ov014_0221722c;
+    *(void **)self = Ov014ActEx_021fc24c_vtbl;
     Ov014_Free100(self);
     ActorEx_DtorBase(self);
     Heap_Free(self);
@@ -207,7 +207,7 @@ void Ov014ActEx_021fc24c_StateIdle(Ov014ActEx_021fc24c *self) {
                 n->unk_22_0 = 0;
                 n->unk_22_1 = 0;
             }
-            t = data_ov000_021ccd68 != NULL ? ActorMgr_FindKind(data_ov000_021ccd68, 0x1000, 0x1000) : NULL;
+            t = gActorMgr != NULL ? ActorMgr_FindKind(gActorMgr, 0x1000, 0x1000) : NULL;
             self->unk_d0.x = t->pos.x;
             self->unk_d0.y = t->pos.y;
             self->unk_d0.z = t->pos.z;
@@ -227,8 +227,8 @@ void Ov014ActEx_021fc24c_StateIdle(Ov014ActEx_021fc24c *self) {
             self->speed = Ov014f_FxMul64(OV014_SIN(a), 0x4cd);
             self->velY = Ov014f_FxMul64(OV014_COS(a), 0x4cd);
             self->rot_x = FX_Atan2(self->pos.y - self->unk_d0.y, r);
-            SndMgr_PlayAt(data_02097e4c, 0x5b, &self->pos, 0);
-            SndMgr_PlayAt(data_02097e4c, 0x77, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x5b, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x77, &self->pos, 0);
             self->fsm->st++;
             break;
         }
@@ -321,9 +321,9 @@ void Ov014ActEx_021fc24c_StateThrown(Ov014ActEx_021fc24c *self) {
                 m->unk_54 = 0;
                 m->unk_58 = 0;
                 if (self->unk_fc != 0) {
-                    SndMgr_PlayAtPitch(data_02097e4c, 0x79, &self->pos, -10);
+                    SndMgr_PlayAtPitch(gSndMgr, 0x79, &self->pos, -10);
                 }
-                SndMgr_PlayAt(data_02097e4c, 0x32, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x32, &self->pos, 0);
                 self->unk_fe = 0;
                 self->fsm->st++;
             }
@@ -391,8 +391,8 @@ void Ov014ActEx_021fc24c_StateThrown(Ov014ActEx_021fc24c *self) {
                 e->unk_28 = 0;
                 MIi_CpuClear32(-1, (u8 *)e + 0x84, 0x40);
                 Ov003FxList_Add(self->unk_100, 0xfe, e);
-                SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
-                SndMgr_PlayAt(data_02097e4c, 0x5a, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x56, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x5a, &self->pos, 0);
                 {
                     VecFx32 b2 = data_ov014_022164c4;
                     VecFx32 lv;
@@ -412,7 +412,7 @@ void Ov014ActEx_021fc24c_StateThrown(Ov014ActEx_021fc24c *self) {
                     VecFx32 pp;
                     if (t != NULL) {
                         pp = t->pos;
-                        SndMgr_PlayAt(data_02097e4c, 0x10, &pp, 0);
+                        SndMgr_PlayAt(gSndMgr, 0x10, &pp, 0);
                     }
                 }
                 self->fsm->st++;

@@ -5,17 +5,17 @@ extern "C" {
 
 
 
-extern void *data_02149ef8;
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb4a8[];
-extern u8 data_ov000_021cb3a8[];
-extern u8 data_ov000_021ccbe0[];
-extern u8 data_ov000_021ccb54[];
-extern u8 data_ov015_022131ac[];
-extern u8 data_ov000_021cca40[];
-extern u8 data_ov000_021cb5a8[];
-extern u8 data_ov000_021cae48[];
+extern void *gMsgRes;
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 UiList021cb4a8_vtbl[];
+extern u8 Lo021cb3a8_vtbl[];
+extern u8 Ov000Vt_021ccbe0_vtbl[];
+extern u8 Ov000Vt_021ccb54_vtbl[];
+extern u8 Ov015Vt_022131ac_vtbl[];
+extern u8 Lo021cca40_vtbl[];
+extern u8 Lo021cb5a8_vtbl[];
+extern u8 Lo021cae48_vtbl[];
 extern char data_ov015_02213100[];
 void *MsgRes_GetString(void *a, s32 b);
 void UiList021cb4a8_SetLabel(void *a, void *b);
@@ -45,7 +45,7 @@ static inline void Ov015_SetUiSlide(UiObj *o, s32 x, s32 y, s32 z) {
 }
 
 static inline void *GetRes0220e634(void) {
-    return data_02149ef8;
+    return gMsgRes;
 }
 
 void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
@@ -55,17 +55,17 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     Ov015ItemEnt *items;
     void *res;
     res = GetRes0220e634();
-    sh = data_ov015_02213368;
+    sh = gOv015Shared;
     self->mode = mode;
     p = (UiObj *)Heap_Alloc(0xf0);
     if (p != NULL) {
-        SET_VT(p, data_ov000_021cac60);
+        SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021caec8);
+        SET_VT(p, UiList_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021cb4a8);
+        SET_VT(p, UiList021cb4a8_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021cb3a8);
+        SET_VT(p, Lo021cb3a8_vtbl);
         p->vfunc_28();
     }
     self->unk_04 = (Lo021cb3a8 *)p;
@@ -96,11 +96,11 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     items = sh->items;
     p = (UiObj *)Heap_Alloc(0x100);
     if (p != NULL) {
-        SET_VT(p, data_ov000_021cac60);
+        SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021ccbe0);
+        SET_VT(p, Ov000Vt_021ccbe0_vtbl);
         func_ov000_021c3af4(p);
-        SET_VT(p, data_ov000_021ccb54);
+        SET_VT(p, Ov000Vt_021ccb54_vtbl);
         Lo021ccb54_ClearLabels(p);
     }
     self->unk_08 = p;
@@ -123,9 +123,9 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
             }
             e = (Lo021cca40 *)Heap_Alloc(0x48);
             if (e != NULL) {
-                SET_VT(e, data_ov015_022131ac);
+                SET_VT(e, Ov015Vt_022131ac_vtbl);
                 ListRow_Init(e);
-                SET_VT(e, data_ov000_021cca40);
+                SET_VT(e, Lo021cca40_vtbl);
                 Lo021cca40_Init(e);
             }
             name = Param_Get(items[i].id);
@@ -148,11 +148,11 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     self->unk_08->flags |= 4;
     p = (UiObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
-        SET_VT(p, data_ov000_021cac60);
+        SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021caec8);
+        SET_VT(p, UiList_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021cb5a8);
+        SET_VT(p, Lo021cb5a8_vtbl);
         p->vfunc_28();
     }
     self->unk_14 = (UiList *)p;
@@ -166,9 +166,9 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     self->unk_14->flags |= 2;
     p = (UiObj *)Heap_Alloc(0x98);
     if (p != NULL) {
-        SET_VT(p, data_ov000_021cac60);
+        SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021cae48);
+        SET_VT(p, Lo021cae48_vtbl);
         p->vfunc_28();
     }
     self->unk_0c = (Ov015UiNum *)p;
@@ -184,9 +184,9 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     }
     p = (UiObj *)Heap_Alloc(0x98);
     if (p != NULL) {
-        SET_VT(p, data_ov000_021cac60);
+        SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021cae48);
+        SET_VT(p, Lo021cae48_vtbl);
         p->vfunc_28();
     }
     self->unk_10 = (Ov015UiNum *)p;
@@ -195,7 +195,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     self->unk_10->slideMode = 1;
     self->unk_10->unk_84 = 1;
     self->unk_10->vfunc_08();
-    Lo021cae48_SetValue(self->unk_10, data_0214a424->unk_618, 0);
+    Lo021cae48_SetValue(self->unk_10, gStageFlags->unk_618, 0);
 }
 
 void func_ov015_0220ec40(Ov015ResultPanel *self) {

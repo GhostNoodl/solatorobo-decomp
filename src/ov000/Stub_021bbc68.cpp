@@ -33,7 +33,7 @@ SIZE_ASSERT(Obj021bbc68, 0x78);
 
 extern "C" {
 
-extern Game021bbcac *data_ov000_021ccd30;
+extern Game021bbcac *gMessageQueue;
 void Lo021cb6b0_FreeAnim(void *p);
 
 void func_ov000_021bbc68(Obj021bbc68 *self, u8 a, u8 b, u8 c) {
@@ -53,7 +53,7 @@ void func_ov000_021bbc68(Obj021bbc68 *self, u8 a, u8 b, u8 c) {
 }
 
 static inline void *GetSub021bbcac(void) {
-    Sub021bbcac *q = data_ov000_021ccd30->unk_118;
+    Sub021bbcac *q = gMessageQueue->unk_118;
     if (q == NULL) {
         return NULL;
     }

@@ -63,7 +63,7 @@ typedef struct Ov002StaffClock {
     /* 0x18 */ s32 step;
 } Ov002StaffClock;
 
-// Resource handle (0x4c bytes, base vtable data_0208b318, whose leading layout DataRes shows).
+// Resource handle (0x4c bytes, base vtable ResHandle_vtbl, whose leading layout DataRes shows).
 struct Ov002StaffRes : public VObj {
     /* 0x04 */ char arcName[0x20];
     /* 0x24 */ char name[0x20];
@@ -71,7 +71,7 @@ struct Ov002StaffRes : public VObj {
     /* 0x48 */ u8 loaded;
 };
 
-// Base node (0x34 bytes, vtable data_ov002_021f0ef4; entry kind 3).
+// Base node (0x34 bytes, vtable Ov002Vt_021f0ef4_vtbl; entry kind 3).
 struct Ov002StaffNode : public VObj {
     /* 0x04 */ Ov002StaffClock clock;
     /* 0x20 */ Ov002StaffEntry *entry;
@@ -81,7 +81,7 @@ struct Ov002StaffNode : public VObj {
     /* 0x30 */ Ov002StaffNode *link; // per-kind list (data_ov002_021f0fac[kind])
 };
 
-// Model node (0x4c bytes, vtable data_ov002_021f0e4c; entry kind 5).
+// Model node (0x4c bytes, vtable Ov002Vt_021f0e4c_vtbl; entry kind 5).
 struct Ov002StaffModel : public Ov002StaffNode {
     /* 0x34 */ Ov002StaffRes *res; // holds the model file
     /* 0x38 */ Model *model;
@@ -92,7 +92,7 @@ struct Ov002StaffModel : public Ov002StaffNode {
     /* 0x49 */ u8 maxAlpha;
 };
 
-// Photo node (0x50 bytes, vtable data_ov002_021f0ebc over the model node's; entry kind 6).
+// Photo node (0x50 bytes, vtable Ov002Vt_021f0ebc_vtbl over the model node's; entry kind 6).
 struct Ov002StaffPhoto : public Ov002StaffModel {
     /* 0x4c */ void *photo; // built by Twl0214b6d8_Init (0x3c bytes)
 };
@@ -104,16 +104,16 @@ typedef struct Ov002StaffLine {
     /* 0x0c */ s32 z;
 } Ov002StaffLine;
 
-// Text node (0x58 bytes, vtable data_ov002_021f0e84; entry kind 4). A '/' in the entry's string
+// Text node (0x58 bytes, vtable Ov002Vt_021f0e84_vtbl; entry kind 4). A '/' in the entry's string
 // splits it into a second line.
 struct Ov002StaffText : public Ov002StaffNode {
     /* 0x34 */ Ov002StaffLine line[2];
     /* 0x54 */ u8 alpha;
 };
 
-// Sound node (0x34 bytes, vtable data_ov002_021f0e14; entry kind 7): the base node.
+// Sound node (0x34 bytes, vtable Ov002Vt_021f0e14_vtbl; entry kind 7): the base node.
 
-// The script file handle (0x50 bytes, vtable data_ov002_021f0f2c over data_0208b318).
+// The script file handle (0x50 bytes, vtable Ov002Vt_021f0f2c_vtbl over ResHandle_vtbl).
 struct Ov002StaffLoader : public Ov002StaffRes {
     /* 0x4c */ Ov002StaffScript *script;
 };

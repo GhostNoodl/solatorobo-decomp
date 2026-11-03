@@ -17,10 +17,10 @@ extern void Geom_AddRotatedOffset(VecFx32 *v, const void *a, u16 b);
 extern Ov003Actor *Actor_SpawnKind(u16 kind, const VecFx32 *pos, const void *rot, u16 id, u16 parent);
 
 static inline Ov003Actor *Ov009_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Ov009ActVt_02217d5c_StateShoot(Ov009ActVt_02217d5c *self) {
@@ -32,7 +32,7 @@ void Ov009ActVt_02217d5c_StateShoot(Ov009ActVt_02217d5c *self) {
     case 2:
     case 4: {
         ActorSub40 *st;
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4092, 6);
+        ActorMgr_BroadcastKind(gActorMgr, 0x4092, 6);
         st = self->fsm;
         st->timer++;
         if (st->timer > 0x1e) {

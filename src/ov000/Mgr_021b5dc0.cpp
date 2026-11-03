@@ -18,7 +18,7 @@ typedef struct {
 
 extern "C" {
 
-extern Group *data_ov000_021ccd64;
+extern Group *gGroup;
 extern const FieldMgrFn data_ov000_021cc81c;
 extern const FieldMgrFn data_ov000_021cc824;
 extern char data_ov000_021cc82c[];
@@ -39,7 +39,7 @@ void Camera_SetAnim(Camera *cam, void *anim);
 void FieldProp_SetViewScale(FieldProp *n, s32 v);
 
 static inline BOOL SameArea021b5dc0(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     BOOL r = FALSE;
     if (g->unk_ca.c[0] == g->unk_d0.c[0] && g->unk_ca.c[1] == g->unk_d0.c[1] && g->unk_ca.c[2] == g->unk_d0.c[2]) {
         r = TRUE;
@@ -83,14 +83,14 @@ void func_ov000_021b5dc0(FieldMgr *self) {
     if (self->blockB != NULL) {
         func_0206e648(self->blockB);
     }
-    Gfx3DState_Apply(data_02097d48->unk_8b0);
+    Gfx3DState_Apply(gGfxSys->unk_8b0);
     v = self->blockB->count4;
-    cam = &data_ov000_021ccd54->cam;
+    cam = &gSceneCmd->cam;
     cam->unk_c8 = func_0206e340(self->blockB);
     cam->unk_d6 = v;
-    g = data_ov000_021ccd54;
+    g = gSceneCmd;
     ents = func_0206e2ec(self->blockB);
-    if (ents != NULL && (!SameArea021b5dc0() || data_ov000_021ccd54->unk_c9 != 0)) {
+    if (ents != NULL && (!SameArea021b5dc0() || gSceneCmd->unk_c9 != 0)) {
         for (i = 0; i < self->blockB->count3; i++) {
             GroupNode *o;
             u16 kind;
@@ -124,7 +124,7 @@ void func_ov000_021b5dc0(FieldMgr *self) {
     }
     if (self->unk_1f0 != 0xffff) {
         pl = ActorMgr_FindPlayer();
-        if (Group_GetSpawnPositions(data_ov000_021ccd64, 1, &base, self->unk_1f0 >> 12, self->unk_1f0)) {
+        if (Group_GetSpawnPositions(gGroup, 1, &base, self->unk_1f0 >> 12, self->unk_1f0)) {
             for (i = 0; i < 0x20; i++) {
                 id = self->ids[i];
                 if (id == 0xffff) {
@@ -133,9 +133,9 @@ void func_ov000_021b5dc0(FieldMgr *self) {
                 if (pl != NULL && id == pl->id) {
                     VEC_Add(&base, &self->vecs[i], &out);
                     pl->unk_75c = out;
-                    pl->fieldId = data_ov000_021ccd54->unk_ca;
+                    pl->fieldId = gSceneCmd->unk_ca;
                 } else {
-                    a = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, id);
+                    a = gActorMgr == NULL ? NULL : ActorMgr_GetActor(gActorMgr, id);
                     if (a != NULL) {
                         VEC_Add(&base, &self->vecs[i], &out);
                         a->pos = out;

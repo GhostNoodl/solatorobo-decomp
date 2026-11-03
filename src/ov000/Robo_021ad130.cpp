@@ -21,7 +21,7 @@ extern "C" {
 extern u8 data_ov000_021cc6de[];
 extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc618[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern const u8 data_ov000_021c9fe8[3];
 extern const u8 data_ov000_021c9feb[3];
 extern const u8 data_ov000_021c9fee[3];
@@ -56,7 +56,7 @@ static inline void Fx021ad130(Robo021ca458 *self) {
 }
 
 static inline BOOL QHas021ad130(const s32 *w) {
-    FieldState *q = data_ov000_021ccd54;
+    FieldState *q = gSceneCmd;
     s32 i;
     for (i = q->head; i != q->tail;) {
         const s32 *p = w;
@@ -89,7 +89,7 @@ void Robo021ca458_State14(Robo021ca458 *self) {
     case 0: {
         s32 r;
         Model0218fe1c_SetAnim(self->model, data_ov000_021cc6de, 0x400, 0);
-        r = func_0206d204(data_0214a424, 1);
+        r = func_0206d204(gStageFlags, 1);
         if (r != 0) {
             u8 *p;
             ((St021ad130 *)self->fsm)->state = 10;
@@ -145,10 +145,10 @@ void Robo021ca458_State14(Robo021ca458 *self) {
                         s32 k = LFLD(s32, hit, 0x20);
                         if (k != 4) {
                             if (k == 0x322) {
-                                SndMgr_PlayAt(data_02097e4c, Rand_UpTo(2) + 0x78, (u8 *)self + 0x70, 0);
+                                SndMgr_PlayAt(gSndMgr, Rand_UpTo(2) + 0x78, (u8 *)self + 0x70, 0);
                             }
                         } else {
-                            SndMgr_PlayAtPitch(data_02097e4c, 0x35, (u8 *)self + 0x70, 8);
+                            SndMgr_PlayAtPitch(gSndMgr, 0x35, (u8 *)self + 0x70, 8);
                         }
                     }
                 }
@@ -171,7 +171,7 @@ void Robo021ca458_State14(Robo021ca458 *self) {
                         e->SetScaleAll(0x3000);
                     }
                 }
-                SndMgr_PlayAtPitch(data_02097e4c, 0x56, (u8 *)self + 0x70, -5);
+                SndMgr_PlayAtPitch(gSndMgr, 0x56, (u8 *)self + 0x70, -5);
                 Field_ShakeCamera(0x14, 0x3c);
                 self->model->visible = 0;
                 self->unk_3c->unk_19 = 0;
@@ -180,7 +180,7 @@ void Robo021ca458_State14(Robo021ca458 *self) {
         if (((St021ad130 *)self->fsm)->timer == 300) {
             func_02062410();
             {
-                FieldState *g = data_ov000_021ccd54;
+                FieldState *g = gSceneCmd;
                 g->stageFlags = 1;
                 func_ov000_02182590((u8 *)g + 0xac);
             }
@@ -188,7 +188,7 @@ void Robo021ca458_State14(Robo021ca458 *self) {
                 Ids021ad130 ids = data_ov000_021ca018;
                 Ids16_021ad130 ids16 = data_ov000_021c9ff2;
                 if (!QHas021ad130(ids.w) && !StageRes_FindSlotByIds(ids16.v)) {
-                    SceneCmd_Push20(data_ov000_021ccd54);
+                    SceneCmd_Push20(gSceneCmd);
                 }
             }
             ((St021ad130 *)self->fsm)->state++;

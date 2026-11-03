@@ -16,7 +16,7 @@ void MsgBox_Init(void *o);
 void MsgBox_Open(void *o, u16 id, const char *a, const char *b, int z);
 
 static inline BOOL ov002_isIdle637c(void) {
-    return FIELD(data_ov000_021ccd70, 4, void *) == NULL;
+    return FIELD(gFieldFade, 4, void *) == NULL;
 }
 
 static inline BOOL ov002_moving637c(UiList *g) {
@@ -39,7 +39,7 @@ static inline BOOL ov002_unsel637c(UiList *g) {
 static inline void *ov002_new637c(void) {
     void *o = Heap_Alloc(0x2c);
     if (o != NULL) {
-        *(VFunc **)o = data_ov002_021efb04;
+        *(VFunc **)o = Ov002Vt_021efb04_vtbl;
         MsgBox_Init(o);
     }
     return o;
@@ -68,10 +68,10 @@ void Task021efc24_UpdateActive(Task021efc24 *self) {
         }
     }
     g = self->unk_50;
-    keys = data_02097dc8->trig;
+    keys = gPad->trig;
     if (ov002_unsel637c(g) && (keys & 2)) {
         z = -1;
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, z, z, z);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, z, z, z);
         self->unk_4c->flags |= 2;
         self->unk_50->flags |= 2;
         self->unk_54->flags |= 2;

@@ -5,8 +5,8 @@
 
 extern "C" {
 
-extern void *data_ov000_021caec8;
-extern void *data_ov000_021cac60;
+extern void *UiList_vtbl;
+extern void *UiObj_vtbl;
 BOOL Model_IsReady(Model *a, u32 b);
 BOOL Vram_IsTransferDone(void *p);
 BOOL func_ov008_021d01b0(Ov008Menu *self);
@@ -59,8 +59,8 @@ void Ov008Menu_DrawItem(Ov008Menu *self, s32 arg, s32 b) {
 
 s32 Ov008Menu_GetLineHeight(Ov008Menu *self) {
     s32 a;
-    data_02097ce0->unk_004 = self->font;
-    a = (*(s8 **)GfxMgr_GetFont(data_02097ce0))[1];
+    gGfxMgr->unk_004 = self->font;
+    a = (*(s8 **)GfxMgr_GetFont(gGfxMgr))[1];
     return a + self->v3c();
 }
 

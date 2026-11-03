@@ -3,11 +3,11 @@
 extern "C" {
 
 static inline BOOL ov002_021d37f8_fade(void) {
-    return (data_02097d78[3] == 4 || data_02097d78[1] == 4) ? TRUE : FALSE;
+    return (gFadeState[3] == 4 || gFadeState[1] == 4) ? TRUE : FALSE;
 }
 static inline bool ov002_021d37f8_idle(void) {
     BOOL r;
-    if (data_02097d78[3] == 0 && data_02097d78[1] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[1] == 0) {
         r = TRUE;
     } else {
         r = FALSE;
@@ -53,8 +53,8 @@ void func_ov002_021d37f8(Task021ef91c *self) {
     if (!func_ov002_isMode4b() && !ov002_021d37f8_idle()) {
         return;
     }
-    if (data_ov000_021ccd30 != NULL && ov002_021d37f8_busy(data_ov000_021ccd30)) {
-        ov002_021d37f8_stop(data_ov000_021ccd30);
+    if (gMessageQueue != NULL && ov002_021d37f8_busy(gMessageQueue)) {
+        ov002_021d37f8_stop(gMessageQueue);
         return;
     }
     GfxSys_StartFadeOut(0, 0, 1);

@@ -12,11 +12,11 @@ int Ov006ActVt_021ec7ac_Draw(ActorEx *self) {
     Model0218fe1c *m;
     VecFx32 target;
     int r = 0;
-    if (data_ov006_021ec884->unk13D == 0) {
+    if (gOv006SlotManager->unk13D == 0) {
         m = self->model;
-        target.x = data_ov000_021ccd54->cam.base.eye.x;
-        target.y = data_ov000_021ccd54->cam.base.eye.y;
-        target.z = data_ov000_021ccd54->cam.base.eye.z;
+        target.x = gSceneCmd->cam.base.eye.x;
+        target.y = gSceneCmd->cam.base.eye.y;
+        target.z = gSceneCmd->cam.base.eye.z;
         if (Hit_DiffInSphere(&self->unk_84, &target, 0x190000)) {
             m->trans = self->unk_84;
             Obj02190758_SetRot(m, &self->rot, 1);

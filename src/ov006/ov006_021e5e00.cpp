@@ -11,8 +11,8 @@ typedef struct ov006_Unk02097e40 ov006_Unk02097e40;
 
 extern "C" {
 
-extern void *data_ov006_021ec414;
-extern ov006_Unk02097e40 *data_02097e40;
+extern void *ov006_ObjectHolder_vtbl;
+extern ov006_Unk02097e40 *gWhMgr;
 
 BOOL ov006_Menu_UpdateNode(ov006_Unk021ec888 *self, const ov006_MenuData *data);
 u16 func_02046ab4(ov006_Unk02097e40 *a);
@@ -30,7 +30,7 @@ void ov006_Menu_ShowObj(ov006_Unk021ec888 *self) {
 }
 
 static inline void ov006_ObjectHolder_Dtor(ov006_ObjectHolder *self) {
-    self->vtbl = &data_ov006_021ec414;
+    self->vtbl = &ov006_ObjectHolder_vtbl;
     OV006_DELETE_OBJECT(self->obj);
 }
 
@@ -62,10 +62,10 @@ static inline void ov006_Menu_UpdateConnection(void) {
     if (menu->unk15F != 0) {
         return;
     }
-    if (func_020469d4(data_02097e40, ov006_Menu_GetEntry(menu, func_02046ab4(data_02097e40)))) {
+    if (func_020469d4(gWhMgr, ov006_Menu_GetEntry(menu, func_02046ab4(gWhMgr)))) {
         status = 0;
     } else {
-        status = Wh_GetError(data_02097e40);
+        status = Wh_GetError(gWhMgr);
     }
     if (status == 0) {
         data_ov006_021ec888->unk15F = data_ov006_021ec888->unk15E;
@@ -78,12 +78,12 @@ static inline void ov006_Menu_UpdateConnection(void) {
 }
 
 void ov006_Menu_VBlankA(void) {
-    data_02097dd0->vblankFunc = ov006_Menu_VBlankA;
+    gSysState->vblankFunc = ov006_Menu_VBlankA;
     ov006_Menu_UpdateConnection();
 }
 
 void ov006_Menu_VBlankB(void) {
-    data_02097dd0->vblankFunc = ov006_Menu_VBlankB;
+    gSysState->vblankFunc = ov006_Menu_VBlankB;
     ov006_Menu_UpdateConnection();
 }
 
@@ -101,7 +101,7 @@ static inline u16 ov006_Menu_GetEntryMask(int type, u16 mask) {
         for (i = 0; i < 4; i++) {
             u16 bit = 1 << i;
             if (mask & bit) {
-                ov006_MenuEntry *entry = Wh_GetSharedData(data_02097e40, i);
+                ov006_MenuEntry *entry = Wh_GetSharedData(gWhMgr, i);
                 if (entry != NULL && type == entry->unk0_0) {
                     result |= bit;
                 }
@@ -118,7 +118,7 @@ u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask) {
         for (i = 0; i < 4; i++) {
             u16 bit = 1 << i;
             if (mask & bit) {
-                ov006_MenuEntry *entry = Wh_GetSharedData(data_02097e40, i);
+                ov006_MenuEntry *entry = Wh_GetSharedData(gWhMgr, i);
                 if (entry != NULL && type == entry->unk0_0) {
                     result |= bit;
                 }

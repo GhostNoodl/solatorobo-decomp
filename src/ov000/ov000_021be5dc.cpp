@@ -56,7 +56,7 @@ static inline s32 CalcDepth(VecFx32 *pos) {
     w = FxMulL(v.z, -0x1000);
     q = m[14] + FX_MUL(m[10], v.z);
     q = FX_Div(q + w, w * 2);
-    return DepthFromW((DepthCam021be5dc *)data_02097d48, FxMulL(q, 0x2000));
+    return DepthFromW((DepthCam021be5dc *)gGfxSys, FxMulL(q, 0x2000));
 }
 
 void Ov000Vt_021cc938_DtorDelete(Marker021be5dc *self) {

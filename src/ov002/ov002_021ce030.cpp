@@ -6,7 +6,7 @@ Task021ef430 *Task021ef430_New(void) {
     Task021ef430 *p = (Task021ef430 *)Heap_Alloc(0x50);
     if (p != NULL) {
         TaskBase_ctor(p);
-        *(VFunc **)p = data_ov002_021ef430;
+        *(VFunc **)p = Ov002TaskVt_021ef430_vtbl;
         p->unk_3c = NULL;
         p->unk_40 = NULL;
         p->unk_44 = NULL;

@@ -38,7 +38,7 @@ typedef struct Touch {
     /* 0x2c */ u32 unk_2c;
 } Touch; // size 0x30
 
-extern Touch *data_02097dcc;
+extern Touch *gTouch;
 extern void TP_Init(void);
 extern BOOL TP_GetUserInfo(void *calib);
 extern void TP_SetCalibrateParam(void *calib);
@@ -83,7 +83,7 @@ void func_0203d4f8(Touch *tp) {
 void Touch_Create(void) {
     u8 calib[8];
     Touch *tp;
-    if (data_02097dcc != NULL) {
+    if (gTouch != NULL) {
         return;
     }
     TP_Init();
@@ -91,7 +91,7 @@ void Touch_Create(void) {
     TP_SetCalibrateParam(calib);
     tp = (Touch *)Heap_AllocLo(sizeof(Touch), 4);
     func_0203d4f8(tp);
-    data_02097dcc = tp;
+    gTouch = tp;
 }
 
 void func_0203d5b8(void) {

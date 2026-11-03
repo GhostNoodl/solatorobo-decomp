@@ -102,7 +102,7 @@ void Ov012ActVt_0220b35c_Update(Ov003Actor *self) {
             self->unk_b6 = 0x78;
         }
     } else if (dist < 0xc000) {
-        void *m = ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000);
+        void *m = ActorMgr_GetGroup(gActorMgr, 0x4000);
         if (m == NULL || ActorGroup_CountKind(m, 0x4009) <= 2) {
             ActorSub4c *t = NULL;
             if (o != NULL) {
@@ -125,7 +125,7 @@ void Ov012ActVt_0220b35c_Update(Ov003Actor *self) {
 
 void Ov012ActVt_0220b35c_StateAttack(Ov003Actor *self) {
     if (self->fsm->st == 0) {
-        SndMgr_PlayAt(data_02097e4c, 0x701, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x701, &self->pos, 0);
     }
     Ov003Actor_StateAttack(self);
 }
@@ -147,7 +147,7 @@ void Ov012ActVt_0220b35c_StateAttack2(Ov003Actor *self) {
         self->fsm->st++;
         self->unk_94_1 = 1;
         self->unk_ea_0 = 3;
-        SndMgr_PlayAt(data_02097e4c, 0x702, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x702, &self->pos, 0);
         break;
     case 1:
         Actor_TurnToActor(self, pl, 0x400);
@@ -162,7 +162,7 @@ void Ov012ActVt_0220b35c_StateAttack2(Ov003Actor *self) {
             e->AddPosXYZ(0, 0x1333, 0);
             e->SetScaleAll(0x1333);
             e->SetRotXYZ(0, self->rot_y, 0);
-            SndMgr_PlayAt(data_02097e4c, 0x29, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x29, &self->pos, 0);
             self->fsm->timer = 0;
             self->fsm->st++;
         }
@@ -175,7 +175,7 @@ void Ov012ActVt_0220b35c_StateAttack2(Ov003Actor *self) {
             self->fsm->timer = 0;
             self->fsm->st++;
             self->unk_ea_0 = self->unk_b0->unk_0a_7;
-            SndMgr_PlayAt(data_02097e4c, 0x701, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x701, &self->pos, 0);
         }
         self->unk_94_1 = 1;
         break;
@@ -196,7 +196,7 @@ void Ov012ActVt_0220b35c_StateAttack2(Ov003Actor *self) {
         if (s->timer > 0x14) {
             EffectObj *e;
             Rot16 r;
-            SndMgr_PlayAtPitch(data_02097e4c, 0x54, &self->pos, 3);
+            SndMgr_PlayAtPitch(gSndMgr, 0x54, &self->pos, 3);
             e = Effect_SpawnId(0x25d, &self->pos);
             e->AddPosXYZ(0, 0x1333, 0);
             e->SetScaleAll(0xb33);

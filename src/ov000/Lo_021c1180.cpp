@@ -55,7 +55,7 @@ void func_ov000_021c1180(Marker021c1180 *self) {
         return;
     }
     p.x = self->work.x >> 12;
-    g = data_02097d48;
+    g = gGfxSys;
     p.y = self->work.y >> 12;
     a = LO_FX_MUL(self->work.alpha, 0x1e000) >> 12;
     hw = (Lo_GetWidth(self->unk_8c, self->unk_96) >> 1) - 10;
@@ -74,7 +74,7 @@ void func_ov000_021c1180(Marker021c1180 *self) {
         s32 w = self->unk_98;
         LFLD(s32, self->unk_90, 0x70) = self->work.z + 0x20;
         self->unk_90->vfunc_20(p.x - (w >> 1), p.y - 0x1c);
-        LFLD(Obj021c1180Bits, self->unk_90, 4).id = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
+        LFLD(Obj021c1180Bits, self->unk_90, 4).id = Gfx3DState_NextPolyId(gGfxSys->unk_8b0);
         self->unk_90->vfunc_90();
     }
     Model_SetPos(self->unk_8c, (p.x - 0x80) << 12, (p.y - 0x60) << 12);

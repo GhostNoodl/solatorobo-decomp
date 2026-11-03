@@ -46,7 +46,7 @@ BOOL Ov002RowList_GetPadLeft(void) {
 
 Obj021f002c *Ov002Vt_021f002c_DtorDelete(Obj021f002c *self) {
     void *saved;
-    *(VFunc **)self = data_ov002_021f002c;
+    *(VFunc **)self = Ov002Vt_021f002c_vtbl;
     HEAP_PUSH(saved);
     {
         Model *p = self->model;
@@ -63,7 +63,7 @@ Obj021f002c *Ov002Vt_021f002c_DtorDelete(Obj021f002c *self) {
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->text);
     HEAP_POP(saved);
-    *(VFunc **)self = data_ov002_021ef684;
+    *(VFunc **)self = Ov002Vt_021ef684_vtbl;
     ListRow_Unlink(self);
     Heap_Free(self);
     return self;
@@ -71,7 +71,7 @@ Obj021f002c *Ov002Vt_021f002c_DtorDelete(Obj021f002c *self) {
 
 Obj021f002c *Ov002Vt_021f002c_Dtor(Obj021f002c *self) {
     void *saved;
-    *(VFunc **)self = data_ov002_021f002c;
+    *(VFunc **)self = Ov002Vt_021f002c_vtbl;
     HEAP_PUSH(saved);
     {
         Model *p = self->model;
@@ -88,15 +88,15 @@ Obj021f002c *Ov002Vt_021f002c_Dtor(Obj021f002c *self) {
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->text);
     HEAP_POP(saved);
-    *(VFunc **)self = data_ov002_021ef684;
+    *(VFunc **)self = Ov002Vt_021ef684_vtbl;
     ListRow_Unlink(self);
     return self;
 }
 
 VObj *Ov002Vt_021f0044_Dtor(VObj *self) {
-    *(VFunc **)self = data_ov000_021ccbe0;
+    *(VFunc **)self = Ov000Vt_021ccbe0_vtbl;
     LoBase021ccb54_021ccbe0_Release(self);
-    *(VFunc **)self = data_ov000_021cac60;
+    *(VFunc **)self = UiObj_vtbl;
     self->vfunc_2c();
     return self;
 }

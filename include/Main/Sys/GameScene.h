@@ -113,7 +113,7 @@ typedef struct ShakeTable {
 } ShakeTable;
 
 extern const ShakeTable data_020829d0;
-extern s32 data_02097d78[5];
+extern s32 gFadeState[5];
 
 extern void GfxSys_SetFadePlanes(int a, int b);
 extern void GfxSys_StartFadeOut(int a, int b, int c);

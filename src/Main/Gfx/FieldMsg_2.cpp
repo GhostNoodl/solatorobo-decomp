@@ -17,7 +17,7 @@ BOOL func_020559c8(FieldMsg *msg) {
 }
 
 BOOL Field_IsEventQueued(s32 id) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     s32 i;
     for (i = state->head; i != state->tail;) {
         if (id == state->queue[i]) {
@@ -31,7 +31,7 @@ BOOL Field_IsEventQueued(s32 id) {
 }
 
 static inline BOOL Field_IsIdle(void) {
-    return data_ov000_021ccd70->state == 0 ? TRUE : FALSE;
+    return gFieldFade->state == 0 ? TRUE : FALSE;
 }
 
 BOOL Field_IsIdle_02055a4c(void) {
@@ -39,7 +39,7 @@ BOOL Field_IsIdle_02055a4c(void) {
 }
 
 void func_02055a78(void) {
-    func_ov000_021bc458(data_ov000_021ccd70);
+    func_ov000_021bc458(gFieldFade);
 }
 
 void func_02055a90(s32 *p) {

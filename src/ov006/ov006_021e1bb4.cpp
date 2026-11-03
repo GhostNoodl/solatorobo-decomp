@@ -24,7 +24,7 @@ void ov006_Label_Draw(ov006_Lbl021e1bb4 *self);
 
 static inline void ov006_Caption_Draw(ov006_Caption *self) {
     if (self->visible) {
-        const ov006_CaptionEntry *e = &data_ov006_021eb824[self->kind];
+        const ov006_CaptionEntry *e = &ov006_CaptionTable[self->kind];
         TextWin *anim = self->label;
         s32 x;
         s32 y;
@@ -64,8 +64,8 @@ void ov006_Unk021e1bb4_Draw(ov006_Unk021e1bb4 *self) {
     }
     {
         ov006_Caption *c = self->unk24;
-        int h = data_ov006_021eb824[c->kind].height / 2;
-        int w = data_ov006_021eb824[c->kind].width;
+        int h = ov006_CaptionTable[c->kind].height / 2;
+        int w = ov006_CaptionTable[c->kind].width;
         x = self->unk8;
         y = self->unkC;
         c->x = x - (w >> 1);

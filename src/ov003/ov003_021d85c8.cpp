@@ -45,8 +45,8 @@ static inline Ov003StateNode *Ov003StateMachine_Find(Ov003StateMachine *self, u8
 
 extern "C" {
 
-extern u32 data_ov003_021f7cf4;
-extern u32 data_ov003_021f7cd8;
+extern u32 Ov003Vt_021f7cf4_vtbl;
+extern u32 Ov003Vt_021f7cd8_vtbl;
 extern s16 Ov003Ticker_GetValue(Ov003Ticker *t);
 extern void Heap_Free(void *p);
 extern void *Heap_Alloc(u32 size);

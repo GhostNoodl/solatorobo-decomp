@@ -58,7 +58,7 @@ BOOL func_ov015_021fb5d4(Ov015Hud *self) {
     Ov015Stat *g;
     s32 t3;
     s32 t4;
-    if (!data_02097d48->unk_a30_4) {
+    if (!gGfxSys->unk_a30_4) {
         return TRUE;
     }
     self->frame++;

@@ -5,7 +5,7 @@
 #include "ov000/VObj.h"
 #include "nitro/std.h"
 
-// Main's base resource handle (vtable data_0208b318, 0x4c bytes): the head that DataRes and MsgRes
+// Main's base resource handle (vtable ResHandle_vtbl, 0x4c bytes): the head that DataRes and MsgRes
 // extend (Main/Res/DataRes.h). Slot 0x08 clears it, 0x0c unloads, 0x10 returns the data,
 // 0x1c/0x24 open a file and 0x2c tests that it is loaded.
 struct ov006_ResHandle : public VObj {
@@ -15,7 +15,7 @@ struct ov006_ResHandle : public VObj {
     u8 loaded;          // 0x48
 };
 
-// A file loader (vtable data_ov006_021ec25c, 0x98 bytes): ov006_ResLoader_Update opens arcName/name
+// A file loader (vtable Ov006Vt_021ec25c_vtbl, 0x98 bytes): ov006_ResLoader_Update opens arcName/name
 // through res once request is set.
 struct ov006_ResLoader : public VObj {
     u8 step;              // 0x04
@@ -25,7 +25,7 @@ struct ov006_ResLoader : public VObj {
     u8 request;           // 0x94
 };
 
-// A model part loaded from a file and slid into place (vtable data_ov006_021ec2fc, 0xec bytes,
+// A model part loaded from a file and slid into place (vtable Ov006Vt_021ec2fc_vtbl, 0xec bytes,
 // ctor Ov006Vt_021ec2fc_Ctor). ov006_Label_Set names the file and the part; ov006_Label_Update
 // runs it and ov006_Label_Draw draws the part at origin + pos.
 struct ov006_Label : public VObj {

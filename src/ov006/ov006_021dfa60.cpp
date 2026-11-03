@@ -12,26 +12,26 @@ typedef struct ov006_Unk021dfa60 {
 
 extern "C" {
 
-extern u8 data_ov006_021ec23c[];
+extern u8 Ov006Vt_021ec23c_vtbl[];
 
 static inline void ov006_Unk021dfa60_Kill(int id) {
     if (id != -1) {
-        EffectObj *o = Effect_Find_020657b0(data_0214a420, id);
+        EffectObj *o = Effect_Find_020657b0(gEffectMgr, id);
         if (o != NULL) {
-            void *saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->heapHi;
+            void *saved = gSysState->cur;
+            gSysState->cur = gSysState->heapHi;
             if (o != NULL) {
                 if (o != NULL) {
                     o->Delete();
                 }
             }
-            data_02097dd0->cur = saved;
+            gSysState->cur = saved;
         }
     }
 }
 
 static inline void ov006_Unk021dfa60_dtor(ov006_Unk021dfa60 *self) {
-    self->vtbl = data_ov006_021ec23c;
+    self->vtbl = Ov006Vt_021ec23c_vtbl;
     ov006_Unk021dfa60_Kill(self->unk14);
     ov006_Unk021dfa60_Kill(self->unk18);
     OV006_DELETE_OBJECT(self->unk1C);

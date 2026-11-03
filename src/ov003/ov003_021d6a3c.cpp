@@ -15,8 +15,8 @@ typedef struct {
 } Ov003Player;
 
 extern "C" {
-extern Ov003SaveData *data_0214a424;
-extern void *data_ov000_021ccd64;
+extern Ov003SaveData *gStageFlags;
+extern void *gGroup;
 
 u16 LangData_GetIndex(int a, int b);
 Ov003Player *ActorMgr_FindPlayer(void);
@@ -34,12 +34,12 @@ static inline void SaveData_SetNibble(s32 row, s32 idx, u32 value) {
     u32 *p;
 
     sh *= 4;
-    p = &data_0214a424->flags[row][idx / 8];
+    p = &gStageFlags->flags[row][idx / 8];
     *p = (*p & ~(0xf << sh)) | ((value & 0xf) << sh);
 }
 
 static inline int SaveData_GetNibble(s32 row, s32 idx) {
-    u32 w = data_0214a424->flags[row][idx / 8];
+    u32 w = gStageFlags->flags[row][idx / 8];
     return (w >> ((idx % 8) * 4)) & 0xf;
 }
 
@@ -63,7 +63,7 @@ extern "C" void Ov003Actor_Defeat(Ov003Actor *self, BOOL release, BOOL mark, BOO
             Shared_SetEventActor(self->kind, self->id);
             func_020627dc(2);
             {
-                FieldState *g = data_ov000_021ccd54;
+                FieldState *g = gSceneCmd;
                 g->stageFlags = 1;
                 func_ov000_02182590(&g->stageFlags);
             }
@@ -82,15 +82,15 @@ extern "C" void Ov003Actor_Defeat(Ov003Actor *self, BOOL release, BOOL mark, BOO
         if (self->hpObj->unk_04 == pl->unk_0c || self->hpObj->unk_04 == self->id) {
             u32 n;
             Ov003_AddExp(self->unk_b0->unk_04);
-            n = data_0214a424->unk_0a + 1;
+            n = gStageFlags->unk_0a + 1;
             if (n >= 0xffff) {
                 n = 0xffff;
             }
-            data_0214a424->unk_0a = n;
+            gStageFlags->unk_0a = n;
         }
     }
     if (release) {
-        Group_UpdateActor(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(gGroup, 0, self);
         self->vfunc_08();
     }
 }

@@ -157,7 +157,7 @@ void Robo021ca458_Start(Robo021ca458 *self) {
         o->unk_22_1 = 1;
     }
     self->fsm = (ActorSub40 *)NewObj40_0219d1a8();
-    n = data_0214a424->unk_01a * 100 + 500;
+    n = gStageFlags->unk_01a * 100 + 500;
     self->hp = (u16 *) NewGauge0219d1a8();
     ((Gauge0219d1a8 *)self->hp)->max = n;
     ((Gauge0219d1a8 *)self->hp)->cur = n;

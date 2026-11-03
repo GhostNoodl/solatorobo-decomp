@@ -11,10 +11,10 @@ extern void Actor_TurnClamped(Ov003Actor *self, u16 ang, u16 b, s32 c, s32 d);
 extern void HitSphere_Unlink_0203f2b8(void *p);
 
 static inline Ov003Actor *Ov009_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 extern char data_ov009_022172bb[];
@@ -195,7 +195,7 @@ BOOL Ov009ActVt_02217798_Draw(Ov003Actor *self) {
 void Ov009ActVt_02217798_Init(Ov003Actor *self) {
     GroupNode *p;
     Ov003Actor_Init(self);
-    p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    p = Group_FindNode(gGroup, self->unk_20);
     if (p != NULL) {
         GroupNodeFlags *b = &p->flags;
         b->unk_0 = 0;
@@ -211,17 +211,17 @@ void Ov009ActVt_02217798_Start(Ov003Actor *self) {
         v.x = self->pos.x;
         self->unk_84 = v;
     }
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_3c != NULL) {
         if (self->unk_3c != NULL) {
             self->unk_3c->vfunc_04();
         }
         self->unk_3c = NULL;
     }
-    data_02097dd0->cur = saved;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gSysState->cur = saved;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->hit != NULL) {
         ActorSub48 *p = self->hit;
         if (p != NULL) {
@@ -230,14 +230,14 @@ void Ov009ActVt_02217798_Start(Ov003Actor *self) {
         }
         self->hit = NULL;
     }
-    data_02097dd0->cur = saved;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gSysState->cur = saved;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_44 != NULL) {
         Heap_Free(self->unk_44);
         self->unk_44 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 

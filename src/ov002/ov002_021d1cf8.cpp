@@ -17,14 +17,14 @@ void Task021ef69c_PreUpdate(Task021ef69c *self) {
     s32 z;
     switch (self->state) {
         case 8:
-            SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
             self->unk_3c->flags &= ~2;
             self->unk_40->flags &= ~2;
             break;
         case 10:
             self->unk_3c->flags |= 2;
             self->unk_40->flags |= 2;
-            SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
             break;
     }
     self->unk_3c->vfunc_1c();

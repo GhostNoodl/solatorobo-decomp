@@ -10,7 +10,7 @@
 
 
 extern "C" {
-extern void *data_02097e4c;
+extern void *gSndMgr;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
@@ -24,10 +24,10 @@ void Shared_SetEventActor(u16 a, u16 b);
 void func_020627dc(s32 a);
 
 static inline Actor *FindActor_02191f18(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline void SetOfs_02191f18(Actor *a, s32 w, s32 x, s32 y, s32 z) {
@@ -60,9 +60,9 @@ s16 *AnimEvent_Exec(s16 *p, Model0218fe1c *m) {
             v.x = actor->pos.x;
             v.y = actor->pos.y;
             v.z = actor->pos.z;
-            SndMgr_PlayAt(data_02097e4c, (u16)p[0], &v, 0);
+            SndMgr_PlayAt(gSndMgr, (u16)p[0], &v, 0);
         } else {
-            SndMgr_PlayVolume(data_02097e4c, (u16)p[0], -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, (u16)p[0], -1, -1, -1);
         }
         p += 1;
         break;
@@ -79,9 +79,9 @@ s16 *AnimEvent_Exec(s16 *p, Model0218fe1c *m) {
             v.x = actor->pos.x;
             v.y = actor->pos.y;
             v.z = actor->pos.z;
-            SndMgr_PlayAt(data_02097e4c, id, &v, 0);
+            SndMgr_PlayAt(gSndMgr, id, &v, 0);
         } else {
-            SndMgr_PlayVolume(data_02097e4c, id, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, id, -1, -1, -1);
         }
         p += 2;
         break;
@@ -148,7 +148,7 @@ s16 *AnimEvent_Exec(s16 *p, Model0218fe1c *m) {
         break;
     case 23:
         if (actor != NULL) {
-            actor->moveYaw = (u16)p[0] + FieldCam_GetYaw(&data_ov000_021ccd54->cam);
+            actor->moveYaw = (u16)p[0] + FieldCam_GetYaw(&gSceneCmd->cam);
             SetOfs_02191f18(actor, p[1] << 4, p[2] << 4, p[3] << 4, p[4] << 4);
         }
         p += 5;
@@ -371,7 +371,7 @@ s16 *AnimEvent_Exec(s16 *p, Model0218fe1c *m) {
         if (actor != NULL) {
             Shared_SetEventActor(actor->kind, actor->id);
             func_020627dc(5);
-            data_ov000_021ccd54->stageFlags = 1;
+            gSceneCmd->stageFlags = 1;
         }
         break;
     }

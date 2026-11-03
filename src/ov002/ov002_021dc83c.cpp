@@ -37,14 +37,14 @@ static inline void ov002_CamMove(Obj021efe6c *c, s32 px, s32 py, s32 pz, s32 tx,
 }
 
 void func_ov002_021dc83c(Obj021eff10 *self) {
-    u16 trig = data_02097dc8->trig;
+    u16 trig = gPad->trig;
     Obj021efe6c *w = self->owner->board;
-    void *msg = data_02149ef8;
-    u16 rep = data_02097dc8->repeat;
+    void *msg = gMsgRes;
+    u16 rep = gPad->repeat;
     Ov002Cell *cell;
     if (trig & 2) {
         self->unk_18 = 0x46;
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         return;
     }
     if (trig & 1) {
@@ -53,10 +53,10 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
         case 1: {
             Obj021eff30 *p;
             self->unk_30 = (Obj021efe9c *)cell->obj;
-            SndMgr_PlayPan(data_02097e4c, 0x47, -5);
+            SndMgr_PlayPan(gSndMgr, 0x47, -5);
             p = (Obj021eff30 *)Heap_Alloc(0x30);
             if (p != NULL) {
-                *(VFunc **)p = data_ov002_021eff30;
+                *(VFunc **)p = Ov002Vt_021eff30_vtbl;
                 p->owner = NULL;
                 p->unk_08 = -1;
                 p->unk_0c = NULL;
@@ -80,12 +80,12 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
             Obj021efed4 *o = (Obj021efed4 *)cell->obj;
             if (((u16)w->unk_8a) >= o->unk_a8) {
                 self->unk_2c = o;
-                func_ov002_021dd6a4(self, (char *)MsgRes_GetString(data_02149ef8, 0x1f), 0x8d);
+                func_ov002_021dd6a4(self, (char *)MsgRes_GetString(gMsgRes, 0x1f), 0x8d);
                 self->unk_18 = 0x1e;
                 return;
             }
             ov002_ShowMsg(self, MsgRes_GetString(msg, 0x106));
-            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
             self->unk_20 = 1;
             return;
         }
@@ -98,13 +98,13 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
             }
             if (sum == 0) {
                 ov002_ShowMsg(self, MsgRes_GetString(msg, 0x107));
-                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
                 self->unk_20 = 1;
                 return;
             }
             p = (Obj021efef0 *)Heap_Alloc(sizeof(Obj021efef0));
             if (p != NULL) {
-                *(VFunc **)p = data_ov002_021efef0;
+                *(VFunc **)p = Ov002Vt_021efef0_vtbl;
                 Obj021efef0_Init(p);
             }
             {
@@ -112,7 +112,7 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
                 t->unk_10 = p;
                 t->unk_0c = 0x14;
             }
-            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
             return;
         }
         }
@@ -129,7 +129,7 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
             return;
         }
         self->unk_30 = (Obj021efe9c *)cell->obj;
-        func_ov002_021dd6a4(self, (char *)MsgRes_GetString(data_02149ef8, 0x21), 0x8d);
+        func_ov002_021dd6a4(self, (char *)MsgRes_GetString(gMsgRes, 0x21), 0x8d);
         self->unk_18 = 0x28;
         return;
     }
@@ -153,7 +153,7 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
             Obj021efe6c *c;
             s32 d;
             s32 px, py, pz, tz;
-            SndMgr_PlayVolume(data_02097e4c, 0x22, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x22, -1, -1, -1);
             old.x = self->unk_24;
             old.y = self->unk_28;
             func_ov002_021dd7f0(self, &np, &old, 0);
@@ -181,7 +181,7 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
         if (np.x < map->w) {
             return;
         }
-        SndMgr_PlayVolume(data_02097e4c, 0xe, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0xe, -1, -1, -1);
         {
             Obj021efe6c *c = self->owner->board;
             s32 py = *(s32 *)(data_ov002_021eef74 + 0x5c);

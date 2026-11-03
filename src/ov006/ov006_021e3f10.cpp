@@ -5,8 +5,8 @@
 
 extern "C" {
 
-extern void *data_ov006_021ec404;
-extern void *data_ov006_021ec444;
+extern void *Ov006Vt_021ec404_vtbl;
+extern void *Ov006Vt_021ec444_vtbl;
 extern u16 data_ov006_021eb840[];
 
 static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
@@ -15,15 +15,15 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
         ov006_MenuNode *next;
         void *saved;
         next = node->next;
-        saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (node != NULL) {
             if (node != NULL) {
                 node->vfunc_04();
             }
             node = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
         node = next;
     }
     self->nodes = NULL;
@@ -33,8 +33,8 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
 
 ov006_Unk021ec888 *Ov006Vt_021ec404_Ctor(ov006_Unk021ec888 *self) {
     int i;
-    self->vtbl = &data_ov006_021ec404;
-    self->vtbl2 = &data_ov006_021ec444;
+    self->vtbl = &Ov006Vt_021ec404_vtbl;
+    self->vtbl2 = &Ov006Vt_021ec444_vtbl;
     self->unk10 = 0;
     self->state = 0;
     self->stateTime = 0;

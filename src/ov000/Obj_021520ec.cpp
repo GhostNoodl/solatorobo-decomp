@@ -8,26 +8,26 @@ typedef struct {
 
 extern "C" {
 
-extern u8 data_ov000_021caac8[];
-extern u8 data_ov000_021cb4a8[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021ca94c[];
-extern u8 data_0208ba70[];
-extern void *data_02097e4c;
+extern u8 Lo021caac8_vtbl[];
+extern u8 UiList021cb4a8_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 UiObj_vtbl[];
+extern u8 Menu021ca94c_vtbl[];
+extern u8 TextWin_vtbl[];
+extern void *gSndMgr;
 extern Dtcm02fe1534 data_02fe1534;
 
 void func_0206281c(void);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 
 VObj *Lo021caac8_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021caac8);
+    VOBJ_SET_VTABLE(self, Lo021caac8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cb4a8);
+    VOBJ_SET_VTABLE(self, UiList021cb4a8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
@@ -41,13 +41,13 @@ BOOL UiObj_GetPadLeft(void) {
 }
 
 VObj *Menu021ca94c_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021ca94c);
+    VOBJ_SET_VTABLE(self, Menu021ca94c_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x148), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x148), TextWin_vtbl);
     VOBJ_AT(self, 0x148)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x90), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x90), TextWin_vtbl);
     VOBJ_AT(self, 0x90)->vfunc_08();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
@@ -57,15 +57,15 @@ VObj *Menu021ca94c_Dtor(VObj *self) {
 BOOL func_ov000_021521ec(UiList *self, UiListItem *item) {
     if (item == NULL) {
         func_0206281c();
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         return FALSE;
     }
     if (item->id == 0) {
         data_02fe1534.unk_7c = 1;
-        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
     } else if (item->id == 1) {
         data_02fe1534.unk_7c = 0;
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
     }
     return FALSE;
 }

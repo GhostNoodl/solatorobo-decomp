@@ -1,12 +1,12 @@
 #include "ov000/VObj.h"
 
-extern "C" void *data_ov000_021ccd40;
+extern "C" void *gFinishingTask;
 
-static inline BOOL IsCur_Inline(void *self) { return data_ov000_021ccd40 == self; }
+static inline BOOL IsCur_Inline(void *self) { return gFinishingTask == self; }
 
 extern "C" {
 
-extern u32 data_ov000_021ccd38;
+extern u32 gLastTaskId;
 
 void func_ov000_0214f188(void *a, s32 b);
 
@@ -14,12 +14,12 @@ void Task_ReleaseCurrent(VObj *self) {
     if (!self->vfunc_54()) {
         return;
     }
-    if (data_ov000_021ccd40 != NULL) {
-        data_ov000_021ccd38 = *(u32 *)((u8 *)data_ov000_021ccd40 + 0x14);
+    if (gFinishingTask != NULL) {
+        gLastTaskId = *(u32 *)((u8 *)gFinishingTask + 0x14);
     } else {
-        data_ov000_021ccd38 = 0;
+        gLastTaskId = 0;
     }
-    data_ov000_021ccd40 = NULL;
+    gFinishingTask = NULL;
 }
 
 bool Task_IsCurrent(void *self) {

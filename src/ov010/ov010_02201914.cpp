@@ -4,8 +4,8 @@
 
 extern "C" {
 
-extern u8 data_ov010_0220fe1c[];
-extern u8 data_ov010_0220fe08[];
+extern u8 Ov010Vt_0220fe1c_vtbl[];
+extern u8 Ov010Vt_0220fe08_vtbl[];
 extern void *Ov003Pool_Dtor(void *p);
 extern void Ov003Pool_Release(void *p);
 extern Ov010TaskNode *Ov003Pool_Alloc(void *p);
@@ -13,21 +13,21 @@ extern void Ov003Pool_Free(void *p, Ov010TaskNode *n);
 void Ov010TaskList_Clear(Ov010TaskList *o);
 
 Ov010TaskList *Ov010Vt_0220fe1c_Ctor(Ov010TaskList *o) {
-    o->vtbl = data_ov010_0220fe1c;
+    o->vtbl = Ov010Vt_0220fe1c_vtbl;
     Ov003Pool_Deactivate(o->pool);
     o->b0 = 0;
     return o;
 }
 
 Ov010TaskList *Ov010Vt_0220fe1c_Dtor(Ov010TaskList *o) {
-    o->vtbl = data_ov010_0220fe1c;
+    o->vtbl = Ov010Vt_0220fe1c_vtbl;
     ((VObj *)o)->vfunc_08();
     Ov003Pool_Dtor(o->pool);
     return o;
 }
 
 Ov010TaskList *Ov010Vt_0220fe1c_DtorDelete(Ov010TaskList *o) {
-    o->vtbl = data_ov010_0220fe1c;
+    o->vtbl = Ov010Vt_0220fe1c_vtbl;
     ((VObj *)o)->vfunc_08();
     Ov003Pool_Dtor(o->pool);
     Heap_Free(o);

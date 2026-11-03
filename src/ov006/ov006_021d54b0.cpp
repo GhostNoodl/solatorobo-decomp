@@ -43,15 +43,15 @@ struct ov006_Task1 : public ov006_Task {
 
 extern "C" {
 
-extern void *data_ov006_021ebc98;
-extern void *data_ov006_021ebe40;
-extern void *data_ov006_021ebc80;
-extern void *data_ov006_021ebc70;
-extern void *data_ov006_021ebfc0;
+extern void *Ov006Vt_021ebc98_vtbl;
+extern void *ov006_Emblem_vtbl;
+extern void *Ov006Vt_021ebc80_vtbl;
+extern void *ov006_MsgBox_vtbl;
+extern void *Ov006Vt_021ebfc0_vtbl;
 extern char data_ov006_021ec864[];
-extern ov006_Unk02097e48 *data_02097e48;
-extern Task *data_ov000_021ccd40;
-extern int data_ov000_021ccd38;
+extern ov006_Unk02097e48 *gSndQueue;
+extern Task *gFinishingTask;
+extern int gLastTaskId;
 
 void ov006_Task_Ctor(ov006_Task *self);
 void func_ov006_021ccddc(ov006_Task *self);
@@ -64,16 +64,16 @@ void SndQueue_Push_0204aab0(ov006_Unk02097e48 *a);
 
 ov006_Task0 *func_ov006_021d54b0(ov006_Task0 *self) {
     ov006_Task_Ctor(self);
-    *(void **)self = &data_ov006_021ebc98;
+    *(void **)self = &Ov006Vt_021ebc98_vtbl;
     self->unk10 = 1;
     return self;
 }
 
 static inline void ov006_Task0_Dtor(ov006_Task0 *self) {
-    *(void **)self = &data_ov006_021ebc98;
+    *(void **)self = &Ov006Vt_021ebc98_vtbl;
     TaskHost_Destroy();
-    ResMgr_ReleaseByName(data_02097cdc, data_0208cc94, 7, 0);
-    ResMgr_ReleaseByName(data_02097cdc, data_ov006_021ec864, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_ov006_021ec864, 7, 0);
     func_ov006_021ccddc(self);
 }
 
@@ -89,7 +89,7 @@ ov006_Task0 *Ov006Vt_021ebc98_DtorDelete(ov006_Task0 *self) {
 }
 
 BOOL Ov006Vt_021ebc98_Load(void) {
-    ov006_Unk02097e48 *p = data_02097e48;
+    ov006_Unk02097e48 *p = gSndQueue;
     if (p->active) {
         if (p->unk6 != 0xffff || p->unk4 != 0x25) {
             u16 v;
@@ -121,8 +121,8 @@ BOOL Ov006Vt_021ebc98_Start(ov006_Task0 *self) {
         TaskHost_Create(0x23, 0);
         self->subState++;
     case 1:
-        if (data_ov000_021ccd40 != NULL) {
-            data_ov000_021ccd40->vfunc_4c();
+        if (gFinishingTask != NULL) {
+            gFinishingTask->vfunc_4c();
             ov006_Manager_DispatchMenuCb(2, 0, 0);
             data_ov006_021ec888->unk15E = 2;
             return TRUE;
@@ -141,7 +141,7 @@ BOOL Ov006Vt_021ebc98_Update(void) {
 }
 
 BOOL Ov006Vt_021ebc98_Exit(void) {
-    data_ov006_021ec860->taskType = 3;
+    gOv006Manager->taskType = 3;
     return TRUE;
 }
 
@@ -149,12 +149,12 @@ void Ov006Vt_021ebc98_Draw(void) {
 }
 
 static inline void ov006_SetUnk021ccd40(Task *p) {
-    if (data_ov000_021ccd40 != NULL) {
-        data_ov000_021ccd38 = data_ov000_021ccd40->id;
+    if (gFinishingTask != NULL) {
+        gLastTaskId = gFinishingTask->id;
     } else {
-        data_ov000_021ccd38 = 0;
+        gLastTaskId = 0;
     }
-    data_ov000_021ccd40 = p;
+    gFinishingTask = p;
 }
 
 void Ov006Task_SetCurrent(Task *p) {
@@ -219,7 +219,7 @@ void ov006_Emblem_UpdateActive(void) {
 }
 
 static inline void ov006_Emblem_Dtor(ov006_Emblem *self) {
-    *(void **)self = &data_ov006_021ebe40;
+    *(void **)self = &ov006_Emblem_vtbl;
     OV006_DELETE_MODEL(self->unk3C);
     OV006_DELETE_MODEL(self->unk40);
     self->unk44 = 0;
@@ -238,7 +238,7 @@ ov006_Emblem *ov006_Emblem_Dtor_021d59b4(ov006_Emblem *self) {
 }
 
 void *Ov006Vt_021ebc80_DtorDelete(void **self) {
-    *self = &data_ov006_021ebc80;
+    *self = &Ov006Vt_021ebc80_vtbl;
     ListRow_Unlink(self);
     Heap_Free(self);
     return self;
@@ -251,13 +251,13 @@ void func_ov006_021d5ac0(void) {
 }
 
 void *Ov006Vt_021ebc80_Dtor(void **self) {
-    *self = &data_ov006_021ebc80;
+    *self = &Ov006Vt_021ebc80_vtbl;
     ListRow_Unlink(self);
     return self;
 }
 
 ov006_MsgBox *ov006_MsgBox_Dtor(ov006_MsgBox *self) {
-    self->vtbl = &data_ov006_021ebc70;
+    self->vtbl = &ov006_MsgBox_vtbl;
     MsgBox_Release(self);
     return self;
 }
@@ -265,7 +265,7 @@ ov006_MsgBox *ov006_MsgBox_Dtor(ov006_MsgBox *self) {
 ov006_Task1 *func_ov006_021d5b04(ov006_Task1 *self) {
     int i;
     ov006_Task_Ctor(self);
-    *(void **)self = &data_ov006_021ebfc0;
+    *(void **)self = &Ov006Vt_021ebfc0_vtbl;
     self->unk10 = 0;
     self->unk12 = 0;
     self->unk14 = 0;

@@ -3,9 +3,9 @@
 extern "C" {
 
 
-extern Ov015Globals data_ov015_02213320;
-extern u8 data_ov015_022127cc[];
-extern u8 data_ov015_0221280c[];
+extern Ov015Globals gOv015Globals;
+extern u8 Ov015Main_vtbl[];
+extern u8 Ov015Child_vtbl[];
 void Gfx3DState_SetDefaults(void *p);
 void Gfx3DState_Apply(void *p);
 void Ov015Main_Shutdown(Ov015Main *self);
@@ -20,11 +20,11 @@ void GXx_SetMasterBrightness_(u32 reg, s32 v);
 
 
 
-extern u8 data_ov015_022127fc[];
-extern u8 data_ov015_022129e0[];
-extern u8 data_ov015_0221296c[];
-extern u8 data_ov015_022127ec[];
-extern u8 data_ov015_022127dc[];
+extern u8 Ov015Vt_022127fc_vtbl[];
+extern u8 Ov015SceneSeq_vtbl[];
+extern u8 Ov015Game_vtbl[];
+extern u8 Ov015Obj30_vtbl[];
+extern u8 Ov015Obj34_vtbl[];
 void func_ov015_0221102c(void);
 void Ov015Obj30_Init(Ov015Obj30 *self);
 void func_ov015_0220015c(Ov015Obj34 *self);
@@ -44,7 +44,7 @@ static inline VObj *Ov015_NewChild(Ov015Main *self, s32 kind) {
         if (p != NULL) {
             p->state = 0;
             p->unk_08 = 0;
-            SET_VT(p, data_ov015_022129e0);
+            SET_VT(p, Ov015SceneSeq_vtbl);
             func_ov015_02206aa0(p);
         }
         c = (VObj *)p;
@@ -52,15 +52,15 @@ static inline VObj *Ov015_NewChild(Ov015Main *self, s32 kind) {
     }
     case 2: {
         Ov015Game *p;
-        data_ov015_02213368->unk_04 = self->unk_04;
+        gOv015Shared->unk_04 = self->unk_04;
         p = (Ov015Game *)Heap_Alloc(0xcc);
         if (p != NULL) {
             p->state = 0;
             p->unk_08 = 0;
-            SET_VT(p, data_ov015_0221296c);
-            SET_VT(&p->phase1, data_ov015_022127ec);
+            SET_VT(p, Ov015Game_vtbl);
+            SET_VT(&p->phase1, Ov015Obj30_vtbl);
             Ov015Obj30_Init(&p->phase1);
-            SET_VT(&p->phase2, data_ov015_022127dc);
+            SET_VT(&p->phase2, Ov015Obj34_vtbl);
             func_ov015_0220015c(&p->phase2);
             func_ov015_02211828(&p->info);
             func_ov015_02200f74(p);
@@ -116,7 +116,7 @@ void func_ov015_021fa6cc(Ov015Child *self) {
 }
 
 Ov015Fade *Ov015_GetFade(void) {
-    return data_ov015_02213320.fade;
+    return gOv015Globals.fade;
 }
 
 void Ov015Vt_022127fc_Dtor(void) {
@@ -162,41 +162,41 @@ void Ov015Fade_Reset(Ov015Fade *self) {
 
 void func_ov015_021fa77c(void) {
     Ov015Main *p;
-    if (data_ov015_02213320.mainSeq != NULL) {
+    if (gOv015Globals.mainSeq != NULL) {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_V(data_ov015_02213320.mainSeq);
+        DELETE_V(gOv015Globals.mainSeq);
         HEAP_POP(saved);
     }
     p = (Ov015Main *)Heap_Alloc(sizeof(Ov015Main));
     if (p != NULL) {
         GfxSys *sys;
-        SET_VT(p, data_ov015_022127cc);
+        SET_VT(p, Ov015Main_vtbl);
         p->unk_04 = 0;
         p->unk_08 = -1;
         p->unk_0c = 1;
         p->unk_10 = 0;
         p->unk_14 = 1;
         p->child = NULL;
-        sys = data_02097d48;
+        sys = gGfxSys;
         Gfx3DState_SetDefaults(sys->unk_8b0);
         sys->unk_8b0[0] |= 0x30;
         REG16(0x4000060) = (REG16(0x4000060) & ~0x3000) | 0x20;
         Gfx3DState_Apply(sys->unk_8b0);
     }
-    data_ov015_02213320.mainSeq = p;
+    gOv015Globals.mainSeq = p;
 }
 
 void func_ov015_021fa868(void) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_V(data_ov015_02213320.mainSeq);
+    DELETE_V(gOv015Globals.mainSeq);
     HEAP_POP(saved);
 }
 
 
 Ov015Main *Ov015Main_DtorDelete(Ov015Main *self) {
-    SET_VT(self, data_ov015_022127cc);
+    SET_VT(self, Ov015Main_vtbl);
     Ov015Main_Shutdown(self);
     Heap_Free(self);
     return self;
@@ -209,21 +209,21 @@ void Ov015Main_Shutdown(Ov015Main *self) {
     HEAP_POP(saved);
     func_ov015_022110f0();
     HEAP_PUSH(saved);
-    DELETE_V(data_ov015_02213320.fade);
+    DELETE_V(gOv015Globals.fade);
     HEAP_POP(saved);
-    ResMgr_ReleaseByName(data_02097cdc, data_0208cca0, 7, 0);
-    ResMgr_ReleaseByName(data_02097cdc, (char *)data_0208cc94, 7, 0);
-    ResMgr_ReleaseByName(data_02097cdc, (char *)data_0208ccc8, 7, 0);
-    ResMgr_ReleaseByName(data_02097cdc, data_0214b105, 7, 0);
-    if (data_ov000_021ccd54 != NULL) {
-        *(void **)data_0214a420->task = data_ov000_021ccd54->pause;
+    ResMgr_ReleaseByName(gResMgr, data_0208cca0, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, (char *)data_0208cc94, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, (char *)data_0208ccc8, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_0214b105, 7, 0);
+    if (gSceneCmd != NULL) {
+        *(void **)gEffectMgr->task = gSceneCmd->pause;
     }
     GXx_SetMasterBrightness_(0x400006c, 0);
     GXx_SetMasterBrightness_(0x400106c, 0);
 }
 
 void *Ov015Child_DtorDelete(Ov015Child *self) {
-    SET_VT(self, data_ov015_0221280c);
+    SET_VT(self, Ov015Child_vtbl);
     Heap_Free(self);
     return self;
 }
@@ -273,13 +273,13 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
         Ov015Fade *f;
         s32 kind;
         func_ov015_0221102c();
-        data_ov015_02213368->unk_2c = data_0214a424->bits18.mode ? 1 : 0;
+        gOv015Shared->unk_2c = gStageFlags->bits18.mode ? 1 : 0;
         HEAP_PUSH(saved);
-        DELETE_V(data_ov015_02213320.fade);
+        DELETE_V(gOv015Globals.fade);
         HEAP_POP(saved);
         f = (Ov015Fade *)Heap_Alloc(sizeof(Ov015Fade));
         if (f != NULL) {
-            SET_VT(f, data_ov015_022127fc);
+            SET_VT(f, Ov015Vt_022127fc_vtbl);
             f->posZ = -0x1000;
             f->alphaFrom = 0;
             f->alphaTo = 0;
@@ -288,7 +288,7 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
             f->time = 0;
             f->alpha = 0;
         }
-        data_ov015_02213320.fade = f;
+        gOv015Globals.fade = f;
         switch (self->unk_04) {
         case 3:
         case 4:
@@ -299,7 +299,7 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
             self->unk_14 = 1;
             break;
         }
-        *(void **)data_0214a420->task = NULL;
+        *(void **)gEffectMgr->task = NULL;
         kind = self->unk_14;
         {
             VObj *c = Ov015_NewChild(self, kind);
@@ -353,13 +353,13 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
                 self->child = n;
             }
         }
-        EffectMgr_Update(data_0214a420);
-        Ov015Fade_Update(data_ov015_02213320.fade);
+        EffectMgr_Update(gEffectMgr);
+        Ov015Fade_Update(gOv015Globals.fade);
         break;
     }
     case 4: {
         SndQueue *pad;
-        pad = data_02097e48.queue;
+        pad = gSndQueue.queue;
         if (pad->flag3) {
             pad->unk_06 = 0x8000;
             pad->unk_08 = 0x1e;
@@ -374,13 +374,13 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
 
 
 void *Ov015Obj30_Dtor(Ov015Obj30 *self) {
-    SET_VT(self, data_ov015_022127ec);
+    SET_VT(self, Ov015Obj30_vtbl);
     Ov015Obj30_Free(self);
     return self;
 }
 
 void *Ov015Obj34_Dtor(Ov015Obj34 *self) {
-    SET_VT(self, data_ov015_022127dc);
+    SET_VT(self, Ov015Obj34_vtbl);
     func_ov015_02200194(self);
     return self;
 }
@@ -400,18 +400,18 @@ void func_ov015_021fb088(Ov015Main *self) {
     if (c != NULL && c->state == 3) {
         c->vfunc_1c();
     }
-    fd = data_ov015_02213320.fade;
+    fd = gOv015Globals.fade;
     if (fd == NULL || fd->alpha == 0) {
         return;
     }
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     mtxMode = 2;
     NNS_G3dGeBufferOP_N(0x10, (unsigned int *)&mtxMode, 1);
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     NNS_G3dGeBufferOP_N(0x15, NULL, 0);
     texParam = 0;
     NNS_G3dGeBufferOP_N(0x2a, (unsigned int *)&texParam, 1);
-    polyAttr = G3_PackPolygonAttr(0, 0, 3, Gfx3DState_NextPolyId(data_02097d48->unk_8b0), fd->alpha, 0);
+    polyAttr = G3_PackPolygonAttr(0, 0, 3, Gfx3DState_NextPolyId(gGfxSys->unk_8b0), fd->alpha, 0);
     NNS_G3dGeBufferOP_N(0x29, &polyAttr, 1);
     trans[2] = fd->posZ;
     trans[0] = 0;
@@ -423,27 +423,27 @@ void func_ov015_021fb088(Ov015Main *self) {
 }
 
 void *Ov015Obj34_DtorDelete(Ov015Obj34 *self) {
-    SET_VT(self, data_ov015_022127dc);
+    SET_VT(self, Ov015Obj34_vtbl);
     func_ov015_02200194(self);
     Heap_Free(self);
     return self;
 }
 
 void *Ov015Obj30_DtorDelete(Ov015Obj30 *self) {
-    SET_VT(self, data_ov015_022127ec);
+    SET_VT(self, Ov015Obj30_vtbl);
     Ov015Obj30_Free(self);
     Heap_Free(self);
     return self;
 }
 
 Ov015Main *Ov015Main_Dtor(Ov015Main *self) {
-    SET_VT(self, data_ov015_022127cc);
+    SET_VT(self, Ov015Main_vtbl);
     Ov015Main_Shutdown(self);
     return self;
 }
 
 void *Ov015Child_Dtor(Ov015Child *self) {
-    SET_VT(self, data_ov015_0221280c);
+    SET_VT(self, Ov015Child_vtbl);
     return self;
 }
 

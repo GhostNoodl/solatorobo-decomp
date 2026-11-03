@@ -41,7 +41,7 @@ void func_ov000_0219b5dc(u16 amount, s32 a, s32 b) {
                 desc.args[i] = 0;
             }
             desc.unk_0c = -1;
-            o = Group_SpawnActor(data_ov000_021ccd64, &desc, a, b, 0xffff);
+            o = Group_SpawnActor(gGroup, &desc, a, b, 0xffff);
             if (o != NULL) {
                 o->flags_0 = 1;
             }

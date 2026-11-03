@@ -43,7 +43,7 @@ BOOL ActorEx_HandleMsg(ActorEx *self, ActorMsg *msg) {
                 if (!self->unk_cc_2) {
                     Actor *p = ActorMgr_FindPlayer();
                     if (p != NULL && msg->id == p->id) {
-                        StageFlags *g = data_0214a424;
+                        StageFlags *g = gStageFlags;
                         u32 n = g->unk_016 + 1;
                         if (n >= 0xffff) {
                             n = 0xffff;

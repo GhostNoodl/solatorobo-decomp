@@ -28,7 +28,7 @@ void func_ov000_021beaec(Marker021beaec *self) {
     a = FX_MUL(self->work.alpha, 0x1e000) >> 12;
     MODEL_FLAGS(self->unk_8c)->unk_19 = 1;
     MODEL_FLAGS(self->unk_8c)->unk_21 = 1;
-    MODEL_FLAGS(self->unk_8c)->polygon_id = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
+    MODEL_FLAGS(self->unk_8c)->polygon_id = Gfx3DState_NextPolyId(gGfxSys->unk_8b0);
     MODEL_FLAGS(self->unk_8c)->alpha = (u8)a;
     Model_PlayPart(self->unk_8c, 15);
 }

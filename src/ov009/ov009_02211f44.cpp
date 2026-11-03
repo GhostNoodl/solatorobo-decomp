@@ -64,8 +64,8 @@ void Ov009ActSpin_Start(Ov009ActSpin *self) {
     m->clearInit = 0;
     self->model->flushVP = 1;
     self->model->renderUser = &self->unk_f4;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->hit != NULL) {
         ActorSub48 *d = self->hit;
         if (d != NULL) {
@@ -74,7 +74,7 @@ void Ov009ActSpin_Start(Ov009ActSpin *self) {
         }
         self->hit = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     c = Tbl_FindEntry_0206fef8((void *)self->kind);
     o = ((Ov009Names *)self->unk_34)->unk_84;
     v = o != NULL ? *o : 0;
@@ -129,7 +129,7 @@ void Ov009ActSpin_Start(Ov009ActSpin *self) {
         }
         HitMesh_Link(self->hitMesh);
     }
-    p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    p = Group_FindNode(gGroup, self->unk_20);
     if (p != NULL) {
         p->flags.unk_0 = 0;
         GroupNode_SetSpawnRange(p, 0x3000, 0);

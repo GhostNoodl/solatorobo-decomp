@@ -10,7 +10,7 @@ typedef struct RandContext {
     /* 0x10 */ u64 add;
 } RandContext;
 
-RandContext data_02097de8;
+RandContext gRand;
 
 static inline void Rand_Init(RandContext *ctx, u64 seed) {
     ctx->x = seed;
@@ -27,27 +27,27 @@ static inline u32 Rand_Next(RandContext *ctx, u32 max) {
 }
 
 void Rand_Seed(u64 seed) {
-    Rand_Init(&data_02097de8, seed);
+    Rand_Init(&gRand, seed);
 }
 
 u32 Rand_Get(void) {
-    return Rand_Next(&data_02097de8, 0);
+    return Rand_Next(&gRand, 0);
 }
 
 u32 Rand_GetGlobal(void) {
-    return Rand_Next(&data_02097de8, 0);
+    return Rand_Next(&gRand, 0);
 }
 
 u32 Rand_UpTo(u32 max) {
-    return Rand_Next(&data_02097de8, max + 1);
+    return Rand_Next(&gRand, max + 1);
 }
 
 u32 Rand_Fx(void) {
-    return Rand_Next(&data_02097de8, 0x1001);
+    return Rand_Next(&gRand, 0x1001);
 }
 
 int Rand_PlusMinus(int range) {
-    return (int)Rand_Next(&data_02097de8, range * 2 + 1) - range;
+    return (int)Rand_Next(&gRand, range * 2 + 1) - range;
 }
 
 

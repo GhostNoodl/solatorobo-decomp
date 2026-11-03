@@ -10,7 +10,7 @@ static inline s32 Ov003Kind_Get(ActorSub40 *k) {
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
+extern void *gActorMgr;
 extern const VecFx32 data_ov003_021f4988;
 extern void *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(void *obj, u16 id);
@@ -46,7 +46,7 @@ void Ov003Vec_MultAdd(Ov003Vec *out, const Ov003Vec *dir, const Ov003Vec *base, 
 }
 
 s32 Ov003_CountActorsOfKind(u16 id) {
-    return ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, id), id);
+    return ActorGroup_CountKind(ActorMgr_GetGroup(gActorMgr, id), id);
 }
 
 void Ov003Vec_ToRot(Ov003Rot *out, const Ov003Vec *v) {
@@ -81,7 +81,7 @@ static inline BOOL Ov003Game_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }

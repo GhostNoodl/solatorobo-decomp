@@ -18,7 +18,7 @@ struct Ov003GmTable {
 
 extern "C" {
 
-extern u8 data_ov003_021f99e8[];
+extern u8 Ov003ActVt_021f99e8_vtbl[];
 extern char data_ov003_021f99d8[];
 extern const Ov003GmTable data_ov003_021f99c8;
 extern void Shared_SetEventActor(u16 a, u16 b);
@@ -42,7 +42,7 @@ extern void func_ov003_021ec9e0(Ov003Gimmick *self);
 static inline void Ov003Gimmick_Finish(Ov003Gimmick *self) {
     Shared_SetEventActor(self->kind, self->id);
     func_020627dc(4);
-    data_ov000_021ccd54->stageFlags = 1;
+    gSceneCmd->stageFlags = 1;
     History_SetState(self->fsm, 1, 0);
 }
 
@@ -62,7 +62,7 @@ void Ov003ActVt_021f9c48_State21(Ov003Gimmick *self) {
         v.z = 0x7800;
         Spawn_ScatterEffect(&pos, &v, 0x666, 0x1000, 0, 0x3c);
         Field_ShakeCamera(8, 8);
-        SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x35, -1, -1, -1);
     }
     if (t <= 0xf0) {
         return;
@@ -94,7 +94,7 @@ void Ov003ActVt_021f9bb0_State06(Ov003Gimmick *self) {
 
 Ov003Gimmick *Ov003ActVt_021f99e8_Ctor(Ov003Gimmick *self) {
     ActorEx_Ctor(self);
-    *(void **)self = data_ov003_021f99e8;
+    *(void **)self = Ov003ActVt_021f99e8_vtbl;
     ResSet_Init(&self->res);
     self->unk_ce_u = 1;
     self->unk_cf_u = 3;
@@ -227,7 +227,7 @@ static inline BOOL Ov003GmGlobal_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003Gm_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003GmGlobal_IsIdle(g);
     }
@@ -244,9 +244,9 @@ void func_ov003_021ec668(Ov003Gimmick *self) {
     Ov003GmSig sig0;
     Ov003GmSig sig1;
     EffectObj *fx;
-    if (!Ov003Gm_GameIdle() || Ov003GmGlobal_Flag(data_ov000_021ccd54)) {
+    if (!Ov003Gm_GameIdle() || Ov003GmGlobal_Flag(gSceneCmd)) {
         if (self->unk_bc != NULL) {
-            EffectMgr_Kill(data_0214a420, self->unk_bc);
+            EffectMgr_Kill(gEffectMgr, self->unk_bc);
             self->unk_bc = NULL;
         }
         return;
@@ -288,11 +288,11 @@ void func_ov003_021ec668(Ov003Gimmick *self) {
         sig0.idx = self->unk_1c;
         sig0.on = 1;
         ActorMgr_SendToKindOthers(0x4064, self->id, 0xe, 1, 2, &sig0);
-        SndMgr_PlayAtPitch(data_02097e4c, 0x54, &self->pos, 3);
+        SndMgr_PlayAtPitch(gSndMgr, 0x54, &self->pos, 3);
         break;
     }
     case 1:
-        fx = Effect_Find_020657b0(data_0214a420, self->unk_bc);
+        fx = Effect_Find_020657b0(gEffectMgr, self->unk_bc);
         if (fx != NULL) {
             s16 lim = self->unk_1e;
             ActorSub40 *w = self->fsm;

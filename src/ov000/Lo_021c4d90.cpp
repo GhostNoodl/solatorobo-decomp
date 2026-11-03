@@ -59,7 +59,7 @@ void LoBase021ccb54_021ccbe0_DrawFrame(LoBase021ccb54_021ccbe0 *self, s32 a1, s3
     s32 sy;
     V6 *v;
     z = self->posZ - 0x110;
-    g = data_02097d48;
+    g = gGfxSys;
     G3_Cmd1(0x2a, 0x20000000);
     G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, Gfx3DState_NextPolyId(g->unk_8b0), 0x14, 0x800));
     sx = self->width << 12;

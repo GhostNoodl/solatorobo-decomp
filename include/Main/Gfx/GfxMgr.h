@@ -144,8 +144,8 @@ typedef struct GfxMgr {
     /* 0x69c */ u8 unk_69c[4];
 } GfxMgr; // size 0x6a0
 
-extern GfxMgr *data_02097ce0;
-extern GfxSys *data_02097d48;
+extern GfxMgr *gGfxMgr;
+extern GfxSys *gGfxSys;
 extern const GfxFontEntry data_020827f8[9];
 
 void *GfxMgr_GetFont(GfxMgr *mgr); // the current font

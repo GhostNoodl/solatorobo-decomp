@@ -9,8 +9,8 @@ extern Ov003Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 
 void Ov009ActVt_02216a00_StateDie(Ov009ActVt_02216a00 *self) {
     if (self->fsm->st == 0) {
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5401, 0x15);
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x541f, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x5401, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x541f, 0x15);
         self->unk_ea_10 = 1;
     }
     Ov003Actor_StateDie(self);
@@ -22,10 +22,10 @@ void Ov009ActVt_02216954_Start(Ov003Actor *self) {
     if (self->unk_1a == 0) {
         return;
     }
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         a = NULL;
     } else {
-        a = ActorMgr_FindKind(data_ov000_021ccd68, 0x1000, 0x1001);
+        a = ActorMgr_FindKind(gActorMgr, 0x1000, 0x1001);
     }
     if (a != NULL) {
         self->target = a->id;
@@ -51,7 +51,7 @@ void Ov009ActVt_022164a0_State20(Ov009ActVt_022164a0 *self) {
         s44->unk_22_1 = 0;
         self->velY = -0x19a;
         self->gravity = 0x52;
-        SndMgr_PlayAt(data_02097e4c, 0x63, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x63, &self->pos, 0);
         self->fsm->st++;
     case 1:
         Actor_Move(self, 0);
@@ -71,7 +71,7 @@ void Ov009ActVt_022164a0_State20(Ov009ActVt_022164a0 *self) {
         if (st->timer > 0x2d) {
             Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
-            data_ov000_021ccd54->stageFlags = 1;
+            gSceneCmd->stageFlags = 1;
             History_SetState(self->fsm, 1, 0);
         }
         break;
@@ -84,10 +84,10 @@ extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g
 extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 extern void Vec_RotateY(VecFx32 *out, VecFx32 *a, u16 b);
 static inline Ov003Actor *Ov009_FindActor5(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Ov009ActVt_022164a0_StateAttack2(Ov009ActVt_022164a0 *self) {
@@ -143,7 +143,7 @@ void Ov009ActVt_022164a0_StateAttack2(Ov009ActVt_022164a0 *self) {
             Hit_ApplyInArea(self, self, self->unk_f0, 0x20, (u16)(1 << (t->id >> 12)), NULL, 0, 0x3400, 0x2800, 0x64, 0x1000);
         }
         Effect_SpawnId(0x66, &self->pos)->SetScaleAll(0x1c00);
-        g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+        g = ActorMgr_GetGroup(gActorMgr, 0x5000);
         if (g != NULL && g->count <= 3) {
             do {
                 Actor *o = Ov003Actor_SpawnAtSelf(self, 0x5404, 4);

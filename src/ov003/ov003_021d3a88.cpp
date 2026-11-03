@@ -33,9 +33,9 @@ void Ov003Actor_StateThrown(Ov003Actor *self) {
         self->fsm->st++;
         self->fsm->timer = 0;
         if (self->hp[0] == 0 || self->targetObj->unk_19 != 0) {
-            SndMgr_PlayAt(data_02097e4c, 0x32, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x32, &self->pos, 0);
         } else {
-            SndMgr_PlayAt(data_02097e4c, 0xb, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0xb, &self->pos, 0);
         }
         func_ov000_02199dc0(self->targetObj, self);
         self->moveYaw = self->rot_y;
@@ -43,7 +43,7 @@ void Ov003Actor_StateThrown(Ov003Actor *self) {
             return;
         }
         if (self->unk_e4 != NULL) {
-            EffectMgr_Kill(data_0214a420, self->unk_e4);
+            EffectMgr_Kill(gEffectMgr, self->unk_e4);
             self->unk_e4 = NULL;
         }
         if (self->unk_e4 == NULL) {

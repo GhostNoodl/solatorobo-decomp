@@ -14,7 +14,7 @@ typedef struct {
     u8 unk_b28_2 : 1;
 } Ov003Plr;
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern s32 Ov003CntSelf_CountLiving(void *p);
 extern void func_020627b4(void);
 extern s32 StageRes_HasQueued(void);
@@ -32,7 +32,7 @@ extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *m, s32 a);
 void Ov003ActVt_021f7f14_Init(Ov003Switch *self) {
     Ov003Unit *u;
     ActorEx_Init(self);
-    u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    u = Group_FindNode(gGroup, self->unk_20);
     if (u != NULL) {
         u->unk_a2_0 = 0;
     }
@@ -190,7 +190,7 @@ void Ov003ActVt_021f7f14_StateIdle(Ov003Switch *self) {
         if (self->hitMesh != NULL) {
             HitMesh_Link(self->hitMesh);
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x3e, -1, -1, -1);
         Field_ShakeCamera(2, 0x3c);
         self->fsm->timer = 0x50;
         self->fsm->st++;
@@ -222,7 +222,7 @@ void Ov003ActVt_021f7f14_StateIdle(Ov003Switch *self) {
                 HitMesh_Unlink_0203f920(self->hitMesh);
             }
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x3e, -1, -1, -1);
         Field_ShakeCamera(2, 0x3c);
         self->fsm->timer = 0x50;
         self->fsm->st++;

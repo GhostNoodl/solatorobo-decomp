@@ -3,7 +3,7 @@
 
 #include "nitro/fx.h"
 
-// The game's save flags block (data_0214a424); split out of StageCmd.h so that code which only
+// The game's save flags block (gStageFlags); split out of StageCmd.h so that code which only
 // reads the flags does not pull in the stage script declarations.
 
 #ifdef __cplusplus
@@ -104,7 +104,7 @@ typedef struct StageFlags {
     /* 0x63a */ u8 unk_63a[2];
 } StageFlags; // size 0x63c
 
-extern StageFlags *data_0214a424;
+extern StageFlags *gStageFlags;
 
 #ifdef __cplusplus
 }

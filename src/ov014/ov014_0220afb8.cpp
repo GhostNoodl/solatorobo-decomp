@@ -89,7 +89,7 @@ void Ov014Act_02209280_StateShoot(Ov014Act_02209280 *self) {
             e = Effect_SpawnId(0x648, &self->pos);
             e->SetScaleAll(0x3000);
             e->loopCount = 2;
-            SndMgr_PlayAt(data_02097e4c, 0xc00, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0xc00, &self->pos, 0);
         }
         if (self->model->anim_state != 1) {
             return;
@@ -98,8 +98,8 @@ void Ov014Act_02209280_StateShoot(Ov014Act_02209280 *self) {
         e->AddPosXYZ(0, 0x4000, 0);
         e->SetScaleAll(0x4000);
         e->SetRotXYZ(0x3fff, 0, 0);
-        SndMgr_PlayAt(data_02097e4c, 0xc06, &self->pos, 0);
-        g = data_ov000_021ccd54;
+        SndMgr_PlayAt(gSndMgr, 0xc06, &self->pos, 0);
+        g = gSceneCmd;
         g->cam.base.shakeX = 1;
         g->cam.base.shakeY = 1;
         g->cam.base.shakeZ = 1;
@@ -173,14 +173,14 @@ void Ov014Act_02209280_StateAttack2(Ov014Act_02209280 *self) {
         self->fsm->st++;
         break;
     case 1: {
-        FieldState *g = data_ov000_021ccd54;
+        FieldState *g = gSceneCmd;
         g->cam.base.shakeX = 1;
         g->cam.base.shakeY = 1;
         g->cam.base.shakeZ = 1;
         g->cam.base.shakeTime = 10;
         g->cam.base.shakeLen = 10;
         g->cam.base.shakeCur = 10;
-        SndMgr_PlayAt(data_02097e4c, 0xc03, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0xc03, &self->pos, 0);
         self->fsm->st++;
         self->fsm->timer = 0x28;
         break;
@@ -216,9 +216,9 @@ void Ov014Act_02209280_StateAttack2(Ov014Act_02209280 *self) {
         if (self->model->anim_state != 1) {
             break;
         }
-        SndMgr_PlayAt(data_02097e4c, 0xc04, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0xc04, &self->pos, 0);
         self->model->anim_state = 0;
-        g = data_ov000_021ccd54;
+        g = gSceneCmd;
         g->cam.base.shakeX = 1;
         g->cam.base.shakeY = 1;
         g->cam.base.shakeZ = 1;

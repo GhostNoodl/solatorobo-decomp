@@ -4,10 +4,10 @@
 #include "ov000/UiObj.h"
 
 extern "C" {
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb4a8[];
-extern u8 data_ov000_021cb3a8[];
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 UiList021cb4a8_vtbl[];
+extern u8 Lo021cb3a8_vtbl[];
 extern u8 data_ov000_021cc9e8[];
 void *Heap_Alloc(u32 size);
 void Lo021cb3a8_SetText(Lo021cb3a8 *w, void *a);
@@ -29,13 +29,13 @@ void ListRowText_Update(ListRowText *self) {
     case 10: {
         Lo021cb3a8 *p = (Lo021cb3a8 *)Heap_Alloc(sizeof(Lo021cb3a8));
         if (p != NULL) {
-            VOBJ_SET_VTABLE(p, data_ov000_021cac60);
+            VOBJ_SET_VTABLE(p, UiObj_vtbl);
             p->vfunc_28();
-            VOBJ_SET_VTABLE(p, data_ov000_021caec8);
+            VOBJ_SET_VTABLE(p, UiList_vtbl);
             p->vfunc_28();
-            VOBJ_SET_VTABLE(p, data_ov000_021cb4a8);
+            VOBJ_SET_VTABLE(p, UiList021cb4a8_vtbl);
             p->vfunc_28();
-            VOBJ_SET_VTABLE(p, data_ov000_021cb3a8);
+            VOBJ_SET_VTABLE(p, Lo021cb3a8_vtbl);
             p->vfunc_28();
         }
         self->win = p;

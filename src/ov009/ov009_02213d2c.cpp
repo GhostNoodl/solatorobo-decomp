@@ -12,10 +12,10 @@ extern s16 *Model0218fe1c_SetAnimFrame(Model0218fe1c *m, s32 a);
 extern void Actor_MoveToPos(Ov003Actor *self, VecFx32 *v, s32 a);
 
 static inline Ov003Actor *Ov009_FindActor3(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Ov009ActVt_02217cb0_StateAttack2(Ov009ActVt_02217cb0 *self) {
@@ -49,10 +49,10 @@ void Ov009ActVt_02217cb0_StateAttack2(Ov009ActVt_02217cb0 *self) {
             self->gravity = 0x52;
             self->fsm->st = 0x14;
             if (self->unk_1a == 0) {
-                SndMgr_PlayAt(data_02097e4c, 0xd02, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0xd02, &self->pos, 0);
                 self->fsm->timer = 200;
             } else {
-                SndMgr_PlayAt(data_02097e4c, 0xe02, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0xe02, &self->pos, 0);
                 self->fsm->timer = 0x96;
             }
         } else {

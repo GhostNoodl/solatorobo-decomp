@@ -81,8 +81,8 @@ int func_02043d9c(void *p);
 
 #pragma force_active on
 void Ov011Act7da4_Draw(Ov011Act7da4 *self) {
-    u8 v = data_02097d48->unk_8b0[3];
-    func_02043d9c(data_02097d48->unk_8b0);
+    u8 v = gGfxSys->unk_8b0[3];
+    func_02043d9c(gGfxSys->unk_8b0);
     self->model->polyId = v;
     Ov003Actor_Draw(self);
 }

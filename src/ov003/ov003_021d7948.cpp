@@ -18,8 +18,8 @@ struct Ov003Mover {
 
 extern "C" {
 
-extern u32 data_ov003_021f7d2c;
-extern void *data_ov000_021ccd68;
+extern u32 Ov003Vt_021f7d2c_vtbl;
+extern void *gActorMgr;
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *p);
 extern void *ActorMgr_GetActor(void *mgr, u16 id);
@@ -52,19 +52,19 @@ void Ov003Pool_Free(Ov003Pool *self, void *p) {
 }
 
 Ov003PoolOwner *Ov003Vt_021f7d2c_Ctor(Ov003PoolOwner *self) {
-    *(void **)self = &data_ov003_021f7d2c;
+    *(void **)self = &Ov003Vt_021f7d2c_vtbl;
     self->active = 0;
     return self;
 }
 
 Ov003PoolOwner *Ov003Vt_021f7d2c_Dtor(Ov003PoolOwner *self) {
-    *(void **)self = &data_ov003_021f7d2c;
+    *(void **)self = &Ov003Vt_021f7d2c_vtbl;
     self->Release();
     return self;
 }
 
 Ov003PoolOwner *Ov003Vt_021f7d2c_DtorDelete(Ov003PoolOwner *self) {
-    *(void **)self = &data_ov003_021f7d2c;
+    *(void **)self = &Ov003Vt_021f7d2c_vtbl;
     self->Release();
     Heap_Free(self);
     return self;

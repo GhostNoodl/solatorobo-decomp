@@ -7,7 +7,7 @@ extern "C" {
 
 typedef void (*VFunc)(void);
 
-extern VFunc data_0208ba70[];
+extern VFunc TextWin_vtbl[];
 void *func_02061d64(u16 idx);
 void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
@@ -67,7 +67,7 @@ s32 func_ov000_021ba92c(Obj021ba92c *self) {
     case 2:
         self->unk_04 = 4;
     case 4: {
-        s32 m = data_ov000_021ccd54->unk_98;
+        s32 m = gSceneCmd->unk_98;
         void *str;
         Ov000Text *t;
         if (!IsMode021ba92c(m) && (u32)(m - 0x11) > 2) {
@@ -76,7 +76,7 @@ s32 func_ov000_021ba92c(Obj021ba92c *self) {
         str = func_02061d64(self->unk_08);
         t = (Ov000Text *)Heap_Alloc(0xb8);
         if (t != NULL) {
-            t->vtbl = data_0208ba70;
+            t->vtbl = TextWin_vtbl;
             TextWin_Init(t);
         }
         self->unk_10 = t;
@@ -85,7 +85,7 @@ s32 func_ov000_021ba92c(Obj021ba92c *self) {
         t = self->unk_10;
         t->unk_24 = (s32)str;
         t->unk_4c = Text_Measure(t->unk_28, t->unk_38, t->unk_24, &t->unk_44, &t->unk_48, t->unk_37 != 0);
-        data_02097ce0->unk_004 = t->unk_28;
+        gGfxMgr->unk_004 = t->unk_28;
         ((VObj *)self->unk_10)->vfunc_14();
         self->unk_10->flags |= 0x40;
         self->unk_10->flags |= 0x1000000;

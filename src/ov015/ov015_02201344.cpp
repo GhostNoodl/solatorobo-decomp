@@ -3,8 +3,8 @@
 
 extern "C" {
 
-extern u8 data_ov015_0221294c[];
-extern u8 data_ov015_0221293c[];
+extern u8 Ov015Vt_0221294c_vtbl[];
+extern u8 Ov015Hud_vtbl[];
 extern char data_ov015_0221283b[];
 extern char data_ov015_02212830[];
 extern char data_ov015_02212851[];
@@ -37,10 +37,10 @@ BOOL func_ov015_02201344(Ov015Game *self) {
     }
     self->ship = s;
     func_ov015_02207858(s);
-    self->ship->modelIdx = data_ov015_02213368->unk_2c;
+    self->ship->modelIdx = gOv015Shared->unk_2c;
     o = (Ov015MdlSet *)Heap_Alloc(sizeof(Ov015MdlSet));
     if (o != NULL) {
-        SET_VT(o, data_ov015_0221294c);
+        SET_VT(o, Ov015Vt_0221294c_vtbl);
         ResSet_Init(&o->p[0].res);
         Model0218fe1c_Init(&o->p[0].mdl);
         ResSet_Init(&o->p[1].res);
@@ -108,7 +108,7 @@ BOOL func_ov015_02201344(Ov015Game *self) {
     }
     q = (Ov015Hud *)Heap_Alloc(0x30);
     if (q != NULL) {
-        SET_VT(q, data_ov015_0221293c);
+        SET_VT(q, Ov015Hud_vtbl);
         q->unk_04 = 0;
         q->frame = 0;
         q->unk_0c = 0;

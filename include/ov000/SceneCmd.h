@@ -8,10 +8,10 @@
 #include "Main/Sys/FieldState.h"
 #include "Main/Math/Rot16.h"
 
-// The C++ view of the scene command object data_ov000_021ccd54 (Main/Sys/FieldState.h is the C
+// The C++ view of the scene command object gSceneCmd (Main/Sys/FieldState.h is the C
 // view of the same 0x214 bytes: ctor func_ov000_02188ba0, allocated by func_ov000_021814dc, freed
 // by func_ov000_02181624). Its event runner is the CmdObj base, so the overlay 0 command
-// handlers (the pointer-to-member callbacks of data_ov000_021cc1a0) take it as `self`.
+// handlers (the pointer-to-member callbacks of SceneCmd_Table) take it as `self`.
 
 // The stage script block at SceneCmd 0xac (FieldState::stageFlags): cleared by
 // SceneStage_FreeScripts, saved/loaded by SceneStage_Serialize/02181c4c and stepped by
@@ -48,9 +48,9 @@ public:
 };
 SIZE_ASSERT(SceneCmd, 0x214);
 
-// data_ov000_021ccd54 (declared with its C type in Main/Sys/FieldState.h) as its C++ class.
+// gSceneCmd (declared with its C type in Main/Sys/FieldState.h) as its C++ class.
 static inline SceneCmd *SceneCmd_Get(void) {
-    return (SceneCmd *)data_ov000_021ccd54;
+    return (SceneCmd *)gSceneCmd;
 }
 
 #endif

@@ -2,9 +2,9 @@
 
 extern "C" {
 
-extern u32 data_0208c23c[];
-extern u32 data_0208c290[];
-extern u32 data_0208c2e4[];
+extern u32 EffectGroup_vtbl[];
+extern u32 MainVt_0208c290_vtbl[];
+extern u32 EffectObj_vtbl[];
 extern char data_0208c380[];
 extern char data_0208c4a8[];
 extern char data_0208c4af[];
@@ -38,7 +38,7 @@ extern void EffectObj_AddChild(EffectObj *obj, EffectObj *child);
 extern void EffectGroup_SetName(EffectGroup *g, const char *prefix, const char *name, const char *suffix);
 extern void EffectGroup_Reset(EffectGroup *g);
 extern void LangData_LocalizePath(char *dst, const char *src);
-extern u32 data_0208c1d8[];
+extern u32 EffectSetup_vtbl[];
 extern char data_0208c74d[];
 extern char data_0208c75f[];
 extern char data_0208c771[];
@@ -77,9 +77,9 @@ static inline void Effect_SetStr(char *dst, const char *src) {
 static inline Effect3D *Effect3D_New(void) {
     Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
-        *(u32 **)e = data_0208c2e4;
+        *(u32 **)e = EffectObj_vtbl;
         EffectObj_Register(e);
-        *(u32 **)e = data_0208c290;
+        *(u32 **)e = MainVt_0208c290_vtbl;
         Effect3D_Init(e);
     }
     return e;
@@ -88,9 +88,9 @@ static inline Effect3D *Effect3D_New(void) {
 static inline EffectGroup *EffectGroup_New(void) {
     EffectGroup *g = (EffectGroup *)Heap_Alloc(sizeof(EffectGroup));
     if (g != NULL) {
-        *(u32 **)g = data_0208c2e4;
+        *(u32 **)g = EffectObj_vtbl;
         EffectObj_Register(g);
-        *(u32 **)g = data_0208c23c;
+        *(u32 **)g = EffectGroup_vtbl;
         EffectGroup_Reset(g);
     }
     return g;
@@ -263,7 +263,7 @@ EffectGroup *Effect_SpawnGroup640(s32 id, const VecFx32 *pos) {
     file = Effect_GetFile(name);
     g = EffectGroup_New();
     g->SetPos(pos);
-    setup.vt = data_0208c1d8;
+    setup.vt = EffectSetup_vtbl;
     setup.data = (u8 *)file->data;
     setup.pos = *pos;
     setup.objChunk = NULL;
@@ -272,7 +272,7 @@ EffectGroup *Effect_SpawnGroup640(s32 id, const VecFx32 *pos) {
     setup.chunk20 = NULL;
     setup.chunk24 = NULL;
     EffectObj_AddChild(g, func_02068544((EffectSetup *)&setup));
-    setup.vt = data_0208c1d8;
+    setup.vt = EffectSetup_vtbl;
     g->unk_20 = id;
     for (c = g->child; c != NULL; c = c->child) {
         if (c->unk_14 == 2) {

@@ -27,9 +27,9 @@ void func_ov002_021ccde4(void) {
     if (p != NULL) {
         if (p != NULL) {
             if (p->unk_04 >= 1) {
-                ResMgr_ReleaseByName(data_02097cdc, data_0208cca0, 7, 0);
-                ResMgr_ReleaseByName(data_02097cdc, data_0208cc94, 7, 0);
-                ResMgr_ReleaseByName(data_02097cdc, data_0214b105, 7, 0);
+                ResMgr_ReleaseByName(gResMgr, data_0208cca0, 7, 0);
+                ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0);
+                ResMgr_ReleaseByName(gResMgr, data_0214b105, 7, 0);
             }
             Heap_Free(p);
         }
@@ -41,9 +41,9 @@ void func_ov002_021ccde4(void) {
 void func_ov002_021cceb4(Unk021cceb4 *self) {
     switch (self->state) {
     case 0:
-        if (DataRes_ReadEntry(data_02fe152c, 5, 1, 0) == 1) {
-            data_0214a424->bits18.flag8 = 0;
-            data_0214a424->bits18.flag9 = 0;
+        if (DataRes_ReadEntry(gDataRes, 5, 1, 0) == 1) {
+            gStageFlags->bits18.flag8 = 0;
+            gStageFlags->bits18.flag9 = 0;
         }
         ResMgr_Load(data_0208cca0, 7, 0);
         ResMgr_Load(data_0208cc94, 7, 0);
@@ -59,7 +59,7 @@ void func_ov002_021cceb4(Unk021cceb4 *self) {
     case 2:
         TaskHost_Create(0x10, 0);
         {
-            BitByte *b = (BitByte *)(data_02097d48->unk_8b0);
+            BitByte *b = (BitByte *)(gGfxSys->unk_8b0);
             b->b4 = 0;
             b->b5 = 1;
         }
@@ -102,8 +102,8 @@ int Task021ef530_IsLoaded(void) {
 }
 
 extern "C" {
-extern VFunc data_ov000_021cadcc[];
-extern VFunc data_ov000_021cb920[];
+extern VFunc Lo021cadcc_vtbl[];
+extern VFunc TimedBuffer021cb920_vtbl[];
 void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 void UiList_SetMarkModel(void *a, void *b, const char *c, int d);
 BOOL func_020624d8(void);
@@ -118,7 +118,7 @@ void Task021ef530_Start(Task021ef530 *self) {
     Model *m;
     UiObj *o;
     {
-        SndQueue *mm = data_02097e48.queue;
+        SndQueue *mm = gSndQueue.queue;
         if (mm->flag0) {
             if (mm->unk_06 != 0xffff || mm->unk_04 != 13) {
                 if (mm->unk_02 != 10 && mm->unk_02 != 0) {
@@ -138,7 +138,7 @@ void Task021ef530_Start(Task021ef530 *self) {
     if (self->vfunc_28()) {
         return;
     }
-    g = data_02149ef8;
+    g = gMsgRes;
     res = ResList_FindType2(ResMgr_GetArchiveList(data_ov002_021ef3e4, data_ov002_021ef3ec, 2), data_ov002_021ef3ec);
     m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
@@ -151,9 +151,9 @@ void Task021ef530_Start(Task021ef530 *self) {
     TexObj_SelectImage(self->unk_3c, 0, 0);
     o = (UiObj *)Heap_Alloc(0xd4);
     if (o != NULL) {
-        *(VFunc **)o = data_ov000_021cac60;
+        *(VFunc **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(VFunc **)o = data_ov000_021caec8;
+        *(VFunc **)o = UiList_vtbl;
         o->vfunc_28();
     }
     self->unk_40 = (UiList *)o;
@@ -200,9 +200,9 @@ void Task021ef530_Start(Task021ef530 *self) {
     self->unk_40->flags &= ~0x10;
     o = (UiObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
-        *(VFunc **)o = data_ov000_021cac60;
+        *(VFunc **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(VFunc **)o = data_ov000_021cadcc;
+        *(VFunc **)o = Lo021cadcc_vtbl;
         o->vfunc_28();
     }
     self->unk_44 = (Lo021cadcc *)o;
@@ -224,7 +224,7 @@ void Task021ef530_Start(Task021ef530 *self) {
     self->unk_44->vfunc_08();
     self->unk_48_1 = !func_020624d8();
     self->unk_48_0 = func_ov000_02188dfc() != 0;
-    if (DataRes_ReadEntry(data_02fe152c, 5, 1, 0) == 0) {
+    if (DataRes_ReadEntry(gDataRes, 5, 1, 0) == 0) {
         self->unk_48_2 = 1;
     }
     if (self->unk_48_0) {
@@ -238,22 +238,22 @@ void Task021ef530_Start(Task021ef530 *self) {
     }
     self->vfunc_78(self->unk_4c);
     {
-        FieldPlayer *t = data_ov000_021ccd30;
+        FieldPlayer *t = gMessageQueue;
         if (t != NULL) {
             if (t->unk_118 == NULL) {
                 TimedBuffer021cb920 *task = (TimedBuffer021cb920 *)Heap_Alloc(sizeof(TimedBuffer021cb920));
                 if (task != NULL) {
-                    *(VFunc **)task = data_ov002_021ef410;
+                    *(VFunc **)task = Ov002Vt_021ef410_vtbl;
                     Buffer0216f144_Init(task);
-                    *(VFunc **)task = data_ov000_021cb920;
+                    *(VFunc **)task = TimedBuffer021cb920_vtbl;
                     func_ov000_0216f828(task);
                 }
                 t->unk_118 = task;
                 MessageQueue_AddBuffer_0216f398(t, task, 0x10000, t);
                 t->unk_118->flags |= 0x10;
             }
-            if (data_ov000_021ccd30->unk_118 != NULL) {
-                func_ov000_0216f844(data_ov000_021ccd30->unk_118, 1);
+            if (gMessageQueue->unk_118 != NULL) {
+                func_ov000_0216f844(gMessageQueue->unk_118, 1);
             }
         }
     }

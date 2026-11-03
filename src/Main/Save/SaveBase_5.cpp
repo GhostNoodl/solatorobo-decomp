@@ -52,7 +52,7 @@ BOOL SaveBase_WriteBackup(SaveBase *s, SaveHeader *hdr) {
             }
             s->step = 101;
         case 101:
-            if (func_02047004(data_02097e44, SaveBase_BackupOffset(s, hdr->backupIdx), s->data, s->dataSize) != 1) {
+            if (func_02047004(gSysCard, SaveBase_BackupOffset(s, hdr->backupIdx), s->data, s->dataSize) != 1) {
                 s->step = 102;
             }
             break;

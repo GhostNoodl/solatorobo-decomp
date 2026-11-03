@@ -146,7 +146,7 @@ void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 kind) {
     desc.unk_04[1] = b;
     desc.unk_04[2] = 0x380;
     self->target_id = 0xffff;
-    o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, rot, 0xffff);
+    o = Group_SpawnActor(gGroup, &desc, &pos, rot, 0xffff);
     if (o == NULL) {
         return;
     }

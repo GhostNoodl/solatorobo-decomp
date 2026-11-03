@@ -20,7 +20,7 @@ void Lo021caa44_Release(Lo021caa44 *self) {
     LO_FREE_V(self, 0x44);
     LO_FREE_M(self, 0x40);
     LO_FREE_V(self, 0x3c);
-    LO_FREE_V(&data_ov000_021ccd24, 8);
+    LO_FREE_V(&gSceneResSet, 8);
     {
         LoFadeP0214f390 b;
         LoFadeP0214f390 a;
@@ -28,7 +28,7 @@ void Lo021caa44_Release(Lo021caa44 *self) {
         func_02070b98(0x1000, &b, 1, 2);
         ResMgr_ReleaseArchive(&a, &b, 2);
     }
-    data_ov000_021ccd24.unk_00 = 0;
+    gSceneResSet.unk_00 = 0;
 }
 
 }

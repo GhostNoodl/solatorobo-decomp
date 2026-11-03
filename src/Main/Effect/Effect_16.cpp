@@ -11,7 +11,7 @@ BOOL MainVt_0208c8bc_Loop(EffectEmitter *em) {
     return TRUE;
 }
 
-extern u32 data_0208c840[];
+extern u32 MainVt_0208c840_vtbl[];
 extern s32 Rand_PlusMinus(s32 range);
 extern void EffectPtcl_Init(EffectPtcl *p);
 extern void func_0206bab8(EffectEmitter *em, EffectPtcl *p);
@@ -91,7 +91,7 @@ EffectPtcl *func_0206b81c(EffectEmitter *em) {
     for (i = 0; i < n; i++) {
         p = (EffectPtcl *)Heap_Alloc(0xc4);
         if (p != NULL) {
-            *(u32 **)p = data_0208c840;
+            *(u32 **)p = MainVt_0208c840_vtbl;
             EffectPtcl_Init(p);
         }
         func_0206bab8(em, p);

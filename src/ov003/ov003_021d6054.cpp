@@ -72,8 +72,8 @@ void Ov003Actor_StateDie(Ov003Actor *self) {
         u16 t = self->fsm->timer;
         if (t >= 0x78) {
             Field_ShakeCamera(0x19, 0x78);
-            SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
-            SndMgr_PlayAt(data_02097e4c, 0x53, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x56, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x53, &self->pos, 0);
             self->fsm->st = 10;
             return;
         }
@@ -88,7 +88,7 @@ void Ov003Actor_StateDie(Ov003Actor *self) {
             r.z = self->radius + (self->radius >> 2);
             Spawn_ScatterEffect(&v, &r, 0x733, 0xccd, e->unk_02, 0x32);
             Field_ShakeCamera(8, 10);
-            SndMgr_PlayAt(data_02097e4c, 0x35, &v, 0);
+            SndMgr_PlayAt(gSndMgr, 0x35, &v, 0);
         }
         self->fsm->timer++;
         break;
@@ -116,7 +116,7 @@ void Ov003Actor_StateDie(Ov003Actor *self) {
             fx->SetScaleXYZ(sc, sc, sc);
         }
         if (e->sound >= 0 && self->hpObj->unk_04 != 0xffff) {
-            SndMgr_PlayAt(data_02097e4c, e->sound, &v, 0);
+            SndMgr_PlayAt(gSndMgr, e->sound, &v, 0);
         }
         res = Tbl_GetActorParam(self->kind);
         Drop_SpawnWeighted(res->dropIds, res->dropRates, 2, &v, &self->rot_x, 1);

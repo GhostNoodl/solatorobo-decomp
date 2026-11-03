@@ -10,10 +10,10 @@ typedef struct ov006_Unk021e14c8 {
 
 extern "C" {
 
-extern u8 data_ov006_021ec1fc[];
+extern u8 Ov006Vt_021ec1fc_vtbl[];
 
 static inline void ov006_Unk021e14c8_dtor(ov006_Unk021e14c8 *self) {
-    self->vtbl = data_ov006_021ec1fc;
+    self->vtbl = Ov006Vt_021ec1fc_vtbl;
     OV006_DELETE_OBJECT(self->unk24);
     OV006_DELETE_MODEL(self->unk28);
     OV006_DELETE_OBJECT(self->unk2C);

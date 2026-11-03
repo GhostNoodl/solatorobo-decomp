@@ -44,9 +44,9 @@ void Hud021cca10_Release(Hud021cca10 *self) {
     HEAP_DELETE_MODEL(self->unk_30);
     HEAP_DELETE_MODEL(self->unk_34);
     {
-        void *saved = data_02097dd0->cur;
+        void *saved = gSysState->cur;
         VObj *p;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        gSysState->cur = gSysState->heapHi;
         p = (VObj *)self->text;
         if (p != NULL) {
             if (p != NULL) {
@@ -54,7 +54,7 @@ void Hud021cca10_Release(Hud021cca10 *self) {
             }
             self->text = 0;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
 }
 

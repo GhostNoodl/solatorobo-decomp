@@ -5,7 +5,7 @@
 extern "C" {
 
 extern const VecFx32 data_ov003_021f6bd8;
-extern void *data_ov000_021ccd68;
+extern void *gActorMgr;
 extern Actor *Target_Get(ActorSub4c *t);
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
@@ -18,10 +18,10 @@ extern void Body_Update(ActorSub48 *a, s32 b, s32 c, s32 d);
 #define HM_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 static inline Actor *Ov003Hm_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline void Ov003Hm_Show(ActorSub48 *a) {

@@ -5,7 +5,7 @@
 
 extern "C" {
 
-extern UiLabelStyle data_02fe0188[];
+extern UiLabelStyle UiLabel_StyleTable[];
 extern u8 data_0208b3d0[];
 extern u8 data_020828f8[];
 u8 Gfx3DState_NextPolyId(void *p);
@@ -37,7 +37,7 @@ void func_ov000_0215f618(UiLabel *self, s32 *pos) {
     s32 sx;
     s32 sy;
     u8 shadow;
-    GfxSys *g = data_02097d48;
+    GfxSys *g = gGfxSys;
     u32 misc = 0;
     u32 alpha;
     s32 sw;
@@ -57,7 +57,7 @@ void func_ov000_0215f618(UiLabel *self, s32 *pos) {
     if (MODEL_FLAGS(self->model)->unk_20 ? TRUE : FALSE) {
         misc |= 0x4000;
     }
-    e = &data_02fe0188[self->style];
+    e = &UiLabel_StyleTable[self->style];
     if (self->style == 0) {
         sx = e->ofsX + (pos[0] << 12);
         sy = e->ofsY + (pos[1] << 12);

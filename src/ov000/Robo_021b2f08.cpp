@@ -124,7 +124,7 @@ Part_021b2f08 *func_ov000_021b2f08(Robo021ca458 *self, u16 tgt, void *sub, u8 fl
         flag = TRUE;
     }
     if (flag) {
-        FieldCam *cam = &data_ov000_021ccd54->cam;
+        FieldCam *cam = &gSceneCmd->cam;
         ang = FieldCam_GetYaw(cam);
         r += 0x18ccd;
         if (self->unk_b22_0 != 0) {

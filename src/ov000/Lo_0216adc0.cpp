@@ -32,15 +32,15 @@ void func_ov000_0216adc0(Obj0216ad04 *self, s32 a, s32 b) {
 }
 
 extern "C" {
-extern MessageQueue021cb980 *data_ov000_021ccd30;
-extern s32 data_02097d78[5];
+extern MessageQueue021cb980 *gMessageQueue;
+extern s32 gFadeState[5];
 extern const char *data_0208cc94;
 extern const char *data_0208cc88;
 BOOL Model_IsReady(void *m, s32 id);
 s32 FX_Div(s32 a, s32 b);
 
 static inline Lo021cb798 *GetObj0216adf8(void) {
-    ListBuffer021cb940 *o = data_ov000_021ccd30->unk_11c;
+    ListBuffer021cb940 *o = gMessageQueue->unk_11c;
     return o != NULL ? o->unk_58 : NULL;
 }
 
@@ -62,7 +62,7 @@ static inline BOOL Ready0216adf8(FieldState *p) {
 }
 
 static inline BOOL Idle0216adf8(void) {
-    return data_02097d78[3] == 0 && data_02097d78[0] == 0 ? TRUE : FALSE;
+    return gFadeState[3] == 0 && gFadeState[0] == 0 ? TRUE : FALSE;
 }
 
 static inline BOOL SubFlag0216adf8(Lo021cb798 *o) {
@@ -74,7 +74,7 @@ void func_ov000_0216adf8(Obj0216ad04 *self) {
     if (o == NULL) {
         return;
     }
-    if (!Ready0216adf8(data_ov000_021ccd54) || !Idle0216adf8()) {
+    if (!Ready0216adf8(gSceneCmd) || !Idle0216adf8()) {
         self->want = 0;
     }
     switch (self->state) {

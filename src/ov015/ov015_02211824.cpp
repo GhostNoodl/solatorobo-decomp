@@ -2,9 +2,9 @@
 
 extern "C" {
 
-extern u8 data_ov015_022132d0[];
+extern u8 Ov015Info38_vtbl[];
 u8 *func_0206ef88(u16 id);
-extern Ov015Obj290 *data_ov015_0221336c;
+extern Ov015Obj290 *gOv015Obj290;
 extern const char *data_ov015_02213228[];
 extern const char *data_ov015_02213230[];
 extern const char *data_ov015_02213208[];
@@ -14,7 +14,7 @@ void Ov015Vt_02213200_Dtor(void) {
 }
 
 void func_ov015_02211828(Ov015Info38 *self) {
-    SET_VT(self, data_ov015_022132d0);
+    SET_VT(self, Ov015Info38_vtbl);
     self->id = 0xffff;
     self->unk_08 = 0;
     self->unk_0c = 0;
@@ -65,7 +65,7 @@ struct Ov015Info30 {
     Ov015Vec v;
 };
 void func_ov015_02211954(NNSG3dRS *rs) {
-    Ov015Obj290 *g = data_ov015_0221336c;
+    Ov015Obj290 *g = gOv015Obj290;
     s32 k;
     Ov015Info30 info;
     if (g == NULL) {
@@ -122,7 +122,7 @@ static inline void Ov015_SetPairB(u8 *l, s32 i, const void *a, const void *b) {
     l[3] |= 2 << i;
 }
 void func_ov015_02211a74(Ov015Obj290 *self) {
-    s32 idx = data_ov015_02213368->unk_2c;
+    s32 idx = gOv015Shared->unk_2c;
     Ov015_SetPairB((u8 *)&self->res, 0, data_ov015_02213230[idx], data_ov015_02213228[idx]);
     Ov015_SetPairB((u8 *)&self->res, 1, data_ov015_02213230[idx], data_ov015_02213208[idx]);
     self->res.unk_00 = 0;
@@ -154,7 +154,7 @@ BOOL func_ov015_02211b2c(Ov015Obj290 *self) {
     NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->model.renderObj), func_ov015_022119d0);
     self->model.flags.clearInit = 0;
     self->model.flags.flushVP = 1;
-    s32 r = data_ov015_02213368->unk_2c;
+    s32 r = gOv015Shared->unk_2c;
     r = Model_FindResIdxByName(&self->model, data_ov015_02213210[r], NULL);
     self->unk_0c = r;
     return TRUE;

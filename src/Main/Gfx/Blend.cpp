@@ -19,29 +19,29 @@ static inline int Blend_Lerp(int a, int b, int t) {
     return a + (FX_Mul((b - a) << 12, t) >> 12);
 }
 
-int data_02097e24[3];
-int data_02097e18[3];
-int data_02097e0c[3];
-int data_02097e00[3];
-int data_02097e30[3];
+int gBlendPlanes[3];
+int gBlendTimer[3];
+int gBlendDuration[3];
+int gBlendEnd[3];
+int gBlendStart[3];
 
 void Blend_SetPlanes(int ch, int planes) {
-    data_02097e24[ch] = planes;
+    gBlendPlanes[ch] = planes;
 }
 
 void Blend_Start(int ch, int duration, int start, int end) {
-    data_02097e18[ch] = 0;
-    data_02097e0c[ch] = duration;
-    data_02097e30[ch] = start;
-    data_02097e00[ch] = end;
+    gBlendTimer[ch] = 0;
+    gBlendDuration[ch] = duration;
+    gBlendStart[ch] = start;
+    gBlendEnd[ch] = end;
 }
 
 BOOL Blend_Tick(int ch) {
-    if (data_02097e24[ch] == 0) {
+    if (gBlendPlanes[ch] == 0) {
         return FALSE;
     }
-    if (++data_02097e18[ch] >= data_02097e0c[ch]) {
-        data_02097e18[ch] = data_02097e0c[ch];
+    if (++gBlendTimer[ch] >= gBlendDuration[ch]) {
+        gBlendTimer[ch] = gBlendDuration[ch];
     }
     return TRUE;
 }
@@ -51,15 +51,15 @@ void func_02042f40(int ch) {
     int ev1;
     int ev2;
     BOOL done = FALSE;
-    if (data_02097e24[ch] == 0) {
+    if (gBlendPlanes[ch] == 0) {
         return;
     }
-    t = FX_Div(data_02097e18[ch] << 12, data_02097e0c[ch] << 12);
+    t = FX_Div(gBlendTimer[ch] << 12, gBlendDuration[ch] << 12);
     if (t >= 0x1000) {
         t = 0x1000;
         done = TRUE;
     }
-    ev1 = Blend_Lerp(data_02097e30[ch], data_02097e00[ch], FX_SinIdx((t << 14) >> 16));
+    ev1 = Blend_Lerp(gBlendStart[ch], gBlendEnd[ch], FX_SinIdx((t << 14) >> 16));
     ev2 = 16 - ev1;
     if (ev1 < 0) {
         ev1 = 0;
@@ -72,12 +72,12 @@ void func_02042f40(int ch) {
         ev2 = 16;
     }
     if (ch == 1) {
-        G2x_SetBlendAlpha_((volatile void *)0x4000050, 0, data_02097e24[ch], ev1, ev2);
+        G2x_SetBlendAlpha_((volatile void *)0x4000050, 0, gBlendPlanes[ch], ev1, ev2);
     } else {
-        G2x_SetBlendAlpha_((volatile void *)0x4001050, 0, data_02097e24[ch], ev1, ev2);
+        G2x_SetBlendAlpha_((volatile void *)0x4001050, 0, gBlendPlanes[ch], ev1, ev2);
     }
     if (done) {
-        data_02097e24[ch] = 0;
+        gBlendPlanes[ch] = 0;
     }
 }
 

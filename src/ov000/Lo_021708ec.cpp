@@ -3,14 +3,14 @@
 
 extern "C" {
 
-extern s32 data_02097d78[];
-extern MessageQueue *data_ov000_021ccd30;
+extern s32 gFadeState[];
+extern MessageQueue *gMessageQueue;
 void Obj021bb810_Init_021bb810(void *self, s32 a);
 void func_ov000_021bb840(void *self);
 
 static inline BOOL Lo_SysIdle(void) {
     BOOL r;
-    if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[0] == 0) {
         r = TRUE;
     } else {
         r = FALSE;
@@ -70,7 +70,7 @@ BOOL func_ov000_021708ec(Obj021708ec *self, s32 arg, s32 arg2) {
     if (!Lo_SysIdle()) {
         return FALSE;
     }
-    if (Lo_TalkBusy(data_ov000_021ccd30)) {
+    if (Lo_TalkBusy(gMessageQueue)) {
         return FALSE;
     }
     if (self->unk_4c != NULL) {

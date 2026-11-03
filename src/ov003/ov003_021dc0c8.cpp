@@ -39,7 +39,7 @@ void Ov003Shot_StateDie(Ov003Shot *self) {
 void Ov003Shot_StateHeld(Ov003Shot *self) {
     if (self->fsm->st == 0) {
         if (self->def->stopFly && self->unk_bc != NULL) {
-            EffectMgr_Kill(data_0214a420, self->unk_bc);
+            EffectMgr_Kill(gEffectMgr, self->unk_bc);
             self->unk_bc = NULL;
         }
         self->age = 0;
@@ -67,8 +67,8 @@ void Ov003ActVt_021f7d4c_Start(Ov003Beam *self) {
     self->unk_84.y = def->offset.y;
     self->unk_84.z = def->offset.z;
     if (def->sound >= 0) {
-        SndMgr_PlayAt(data_02097e4c, 0x5c, &self->pos, 0);
-        SndMgr_PlayAt(data_02097e4c, self->def->sound, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x5c, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, self->def->sound, &self->pos, 0);
     }
     History_SetState(self->fsm, 0xb, 0);
 }
@@ -96,7 +96,7 @@ void Ov003Beam_StateThrown(Ov003Beam *self) {
         Ov003Beam_UpdateLayer(self, 0, st);
         if (self->scales[1].x == 0 && self->scales[1].y == 0) {
             for (i = 0; i < 2; i++) {
-                EffectObj *fx = Effect_Find_020657b0(data_0214a420, self->layers[i]);
+                EffectObj *fx = Effect_Find_020657b0(gEffectMgr, self->layers[i]);
                 if (fx != NULL) {
                     fx->alpha = FX_Div(0, 0x1f000);
                     EffectObj_StopLoop(fx);
@@ -110,8 +110,8 @@ void Ov003Beam_StateThrown(Ov003Beam *self) {
 
 void Ov003Beam_StateDie(Ov003Beam *self) {
     if (self->fsm->st == 0) {
-        EffectMgr_Kill(data_0214a420, self->layers[1]);
-        EffectMgr_Kill(data_0214a420, self->layers[0]);
+        EffectMgr_Kill(gEffectMgr, self->layers[1]);
+        EffectMgr_Kill(gEffectMgr, self->layers[0]);
     }
     ActorEx_StateDie(self);
 }

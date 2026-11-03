@@ -12,7 +12,7 @@ s32 FX_Div(s32 a, s32 b);
 static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
-        *(const u32 **)win = data_0208ba70;
+        *(const u32 **)win = TextWin_vtbl;
         TextWin_Init(win);
     }
     return win;
@@ -21,7 +21,7 @@ static inline TextWin *TextWin_New(void) {
 static inline void SetText(TextWin *win, u32 text) {
     win->str = text;
     win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->font;
+    gGfxMgr->unk_004 = win->font;
 }
 
 struct Obj02167d64 {
@@ -33,13 +33,13 @@ struct Obj02167d64 {
 };
 
 void func_ov000_02167d64(Obj02167d64 *self) {
-    char *str = func_0206e200(data_ov000_021ccd6c->blockB);
+    char *str = func_0206e200(gFieldMgr->blockB);
     TextWin *win;
     switch (self->unk_44) {
     case 4:
         {
-            void *saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->heapHi;
+            void *saved = gSysState->cur;
+            gSysState->cur = gSysState->heapHi;
             if ((VObj *)self->unk_40 != NULL) {
                 VObj *p_ = (VObj *)self->unk_40;
                 if (p_ != NULL) {
@@ -47,7 +47,7 @@ void func_ov000_02167d64(Obj02167d64 *self) {
                 }
                 self->unk_40 = NULL;
             }
-            data_02097dd0->cur = saved;
+            gSysState->cur = saved;
         }
         self->unk_48 = 0;
         self->unk_4c = 0;

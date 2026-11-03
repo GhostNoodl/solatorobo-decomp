@@ -22,10 +22,10 @@ void Actor_SendMsgU8(void *a, u16 id, s32 b);
 u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
 static inline Actor *FindActor021a783c(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline u16 AngleTo(Robo021ca458 *self, Actor *other) {
@@ -46,7 +46,7 @@ extern u8 data_ov000_021cc64e[];
 extern u8 data_ov000_021cc68a[];
 extern u8 data_ov000_021cc690[];
 extern s16 data_ov000_021ca090[]; // animation event script (Model0218fe1c::evScript)
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void *Model0218fe1c_SetAnimFrame(void *a, s32 frame);
 void Model0218fe1c_SetReverse(void *a);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
@@ -92,14 +92,14 @@ void Robo021ca458_State0c(Robo021ca458 *self) {
         } else {
             ang = self->rot_y;
             if (self->mode == 1 && (self->padCur & 0xf0)) {
-                ang = FieldCam_GetYaw(&data_ov000_021ccd54->cam) + self->padDir;
+                ang = FieldCam_GetYaw(&gSceneCmd->cam) + self->padDir;
             }
         }
         self->rot_y = Angle_Approach(ang, self->rot_y, 0x59a, 1, 0x8000);
         if (self->unk_b24_5 != 0 &&
             (self->model->anim_state == 1 || self->unk_b22_3)) {
             Actor *a;
-            SndMgr_PlayVolume(data_02097e4c, 0x301, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x301, -1, -1, -1);
             a = FindActor021a783c(self->unk_b1c);
             if (a != NULL) {
                 Actor_SendMsgU8(a, self->id, 0xb);
@@ -265,7 +265,7 @@ void Robo021ca458_State0e(Robo021ca458 *self) {
         } else {
             ang = self->rot_y;
             if (self->mode == 1 && (self->padCur & 0xf0)) {
-                ang = FieldCam_GetYaw(&data_ov000_021ccd54->cam) + self->padDir;
+                ang = FieldCam_GetYaw(&gSceneCmd->cam) + self->padDir;
             }
         }
         self->rot_y = Angle_Approach(ang, self->rot_y, 0x8cd, 1, 0x8000);

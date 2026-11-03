@@ -94,13 +94,13 @@ void func_ov000_0219c8e0(Robo021ca458 *self) {
         self->unk_ae0 = Model_FindResIdxByName(&self->mdl1, base + 0x400, data_ov000_021cc60a);
         self->unk_ae2 = Model_FindResIdxByName(&self->mdl1, base + 0x400, data_ov000_021cc5fd);
     }
-    if (!self->unk_b22_3 && data_0214a424->bits18.mode != 2) {
+    if (!self->unk_b22_3 && gStageFlags->bits18.mode != 2) {
         Model0218fe1c *m2 = &self->mdl0;
         void *tex = self->mdl1.tex;
         NNS_G3dBindMdlSet(NNS_G3dGetMdlSet(m2->res->mdl_handle != NULL ? m2->res->mdl_handle->unk_00 : NULL), tex);
         self->mdl0.visible = 1;
     }
-    if (data_0214a424->bits18.mode == 2) {
+    if (gStageFlags->bits18.mode == 2) {
         self->mdl1.flushVP = 0;
     } else {
         self->mdl1.flushVP = 1;

@@ -28,12 +28,12 @@ public:
 
 extern "C" {
 
-extern void *data_ov000_021ccd40;
-extern u32 data_ov000_021ccd38;
-extern u8 data_0208ba70[];
-extern u8 data_ov000_021ca9c4[];
-extern u8 data_ov000_021caa44[];
-extern u8 data_ov000_021cc060[];
+extern void *gFinishingTask;
+extern u32 gLastTaskId;
+extern u8 TextWin_vtbl[];
+extern u8 Lo021ca9c4_vtbl[];
+extern u8 Lo021caa44_vtbl[];
+extern u8 Task_vtbl[];
 void Heap_Free(void *ptr);
 
 static inline BOOL IsState5(StateObj *obj) {
@@ -41,12 +41,12 @@ static inline BOOL IsState5(StateObj *obj) {
 }
 
 static inline void UpdateCurrent(void) {
-    if (data_ov000_021ccd40 != NULL) {
-        data_ov000_021ccd38 = *(u32 *)((u8 *)data_ov000_021ccd40 + 0x14);
+    if (gFinishingTask != NULL) {
+        gLastTaskId = *(u32 *)((u8 *)gFinishingTask + 0x14);
     } else {
-        data_ov000_021ccd38 = 0;
+        gLastTaskId = 0;
     }
-    data_ov000_021ccd40 = NULL;
+    gFinishingTask = NULL;
 }
 
 static inline BOOL FlagObj_TestMask(FlagObj *self, u32 mask) {
@@ -66,12 +66,12 @@ void Task_SetFlag7(FlagObj *self) {
 }
 
 void Task_SetCurrent(void *obj) {
-    if (data_ov000_021ccd40 != NULL) {
-        data_ov000_021ccd38 = *(u32 *)((u8 *)data_ov000_021ccd40 + 0x14);
+    if (gFinishingTask != NULL) {
+        gLastTaskId = *(u32 *)((u8 *)gFinishingTask + 0x14);
     } else {
-        data_ov000_021ccd38 = 0;
+        gLastTaskId = 0;
     }
-    data_ov000_021ccd40 = obj;
+    gFinishingTask = obj;
 }
 
 bool Task_TestFlags(FlagObj *self, u32 mask) {
@@ -111,21 +111,21 @@ BOOL Task_IsReady(void) {
 }
 
 Lo021ca9c4 *Lo021ca9c4_DtorDelete(Lo021ca9c4 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021ca9c4);
+    VOBJ_SET_VTABLE(self, Lo021ca9c4_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(&self->text[5], data_0208ba70);
+    VOBJ_SET_VTABLE(&self->text[5], TextWin_vtbl);
     self->text[5].unk_vf08();
-    VOBJ_SET_VTABLE(&self->text[4], data_0208ba70);
+    VOBJ_SET_VTABLE(&self->text[4], TextWin_vtbl);
     self->text[4].unk_vf08();
-    VOBJ_SET_VTABLE(&self->text[3], data_0208ba70);
+    VOBJ_SET_VTABLE(&self->text[3], TextWin_vtbl);
     self->text[3].unk_vf08();
-    VOBJ_SET_VTABLE(&self->text[2], data_0208ba70);
+    VOBJ_SET_VTABLE(&self->text[2], TextWin_vtbl);
     self->text[2].unk_vf08();
-    VOBJ_SET_VTABLE(&self->text[1], data_0208ba70);
+    VOBJ_SET_VTABLE(&self->text[1], TextWin_vtbl);
     self->text[1].unk_vf08();
-    VOBJ_SET_VTABLE(&self->text[0], data_0208ba70);
+    VOBJ_SET_VTABLE(&self->text[0], TextWin_vtbl);
     self->text[0].unk_vf08();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     Heap_Free(self);
     return self;
@@ -152,29 +152,29 @@ BOOL Lo021ca9c4_TryReleaseCurrent(StateOwner *self) {
 }
 
 Lo021ca9c4 *Lo021ca9c4_Dtor(Lo021ca9c4 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021ca9c4);
+    VOBJ_SET_VTABLE(self, Lo021ca9c4_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(&self->text[5], data_0208ba70);
+    VOBJ_SET_VTABLE(&self->text[5], TextWin_vtbl);
     self->text[5].unk_vf08();
-    VOBJ_SET_VTABLE(&self->text[4], data_0208ba70);
+    VOBJ_SET_VTABLE(&self->text[4], TextWin_vtbl);
     self->text[4].unk_vf08();
-    VOBJ_SET_VTABLE(&self->text[3], data_0208ba70);
+    VOBJ_SET_VTABLE(&self->text[3], TextWin_vtbl);
     self->text[3].unk_vf08();
-    VOBJ_SET_VTABLE(&self->text[2], data_0208ba70);
+    VOBJ_SET_VTABLE(&self->text[2], TextWin_vtbl);
     self->text[2].unk_vf08();
-    VOBJ_SET_VTABLE(&self->text[1], data_0208ba70);
+    VOBJ_SET_VTABLE(&self->text[1], TextWin_vtbl);
     self->text[1].unk_vf08();
-    VOBJ_SET_VTABLE(&self->text[0], data_0208ba70);
+    VOBJ_SET_VTABLE(&self->text[0], TextWin_vtbl);
     self->text[0].unk_vf08();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     return self;
 }
 
 VObj *Lo021caa44_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021caa44);
+    VOBJ_SET_VTABLE(self, Lo021caa44_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     Heap_Free(self);
     return self;

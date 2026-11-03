@@ -50,11 +50,11 @@ typedef struct ov006_Unk021ddcc0 {
 
 extern "C" {
 
-extern u8 data_ov006_021ec2bc[];
+extern u8 Ov006Vt_021ec2bc_vtbl[];
 void LoTimer_FreeModels(void *p);
 void LoTimer_Init(void *p);
-extern u8 data_ov006_021ec24c[];
-extern u8 data_ov006_021ec21c[];
+extern u8 Ov006Vt_021ec24c_vtbl[];
+extern u8 Ov006Vt_021ec21c_vtbl[];
 extern char data_ov006_021ec178[];
 extern char data_ov006_021ec185[];
 extern char data_ov006_021ec191[];
@@ -63,12 +63,12 @@ void ov006_Unk021dcf7c_Load(ov006_ObjA021de008 *p);
 void ov006_Unk021dd450_Load(ov006_ObjB021de008 *p);
 
 static inline void ov006_Unk021ddcc0_dtor(ov006_Unk021ddcc0 *self) {
-    self->vtbl = data_ov006_021ec2bc;
+    self->vtbl = Ov006Vt_021ec2bc_vtbl;
     OV006_DELETE_OBJECT(self->unk14);
     OV006_DELETE_OBJECT(self->unk18);
     {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (self->unk1C != NULL) {
             if (self->unk1C != NULL) {
                 void *p = self->unk1C;
@@ -77,7 +77,7 @@ static inline void ov006_Unk021ddcc0_dtor(ov006_Unk021ddcc0 *self) {
             }
             self->unk1C = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     OV006_DELETE_MODEL(self->unk20);
     OV006_DELETE_MODEL(self->unk24);
@@ -104,7 +104,7 @@ void ov006_Unk021ddcc0_Load(ov006_Unk021ddcc0 *self) {
 
     a = (ov006_ObjA021de008 *)Heap_Alloc(sizeof(ov006_ObjA021de008));
     if (a != NULL) {
-        a->vtbl = data_ov006_021ec24c;
+        a->vtbl = Ov006Vt_021ec24c_vtbl;
         a->unk4 = 0;
         a->unk5 = -1;
         a->unk6 = 4;
@@ -120,7 +120,7 @@ void ov006_Unk021ddcc0_Load(ov006_Unk021ddcc0 *self) {
     self->unk14->unk1C = -0x2000;
     b = (ov006_ObjB021de008 *)Heap_Alloc(sizeof(ov006_ObjB021de008));
     if (b != NULL) {
-        b->vtbl = data_ov006_021ec21c;
+        b->vtbl = Ov006Vt_021ec21c_vtbl;
         b->unk4 = 0;
         b->unk8 = 0;
         b->unk9 = 0;

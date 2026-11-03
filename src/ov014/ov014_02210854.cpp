@@ -75,7 +75,7 @@ Ov003Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
         desc.unk_04[i] = 0;
     }
     desc.parent = -1;
-    o = Group_SpawnActor(data_ov000_021ccd64, &desc, &v, &rot, 0xffff);
+    o = Group_SpawnActor(gGroup, &desc, &v, &rot, 0xffff);
     o->unk_60 = data_ov014_02216cb8;
     o->unk_84.x = px;
     o->unk_84.y = 0;
@@ -132,7 +132,7 @@ Ov003Actor *func_ov014_02210a78(Ov014Act_0220f9d0 *self) {
         desc.unk_04[i] = 0;
     }
     desc.parent = -1;
-    o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
+    o = Group_SpawnActor(gGroup, &desc, &pos, &rot, 0xffff);
     o->unk_84 = d;
     o->flags_0 = 1;
     if (o->targetObj != NULL) {

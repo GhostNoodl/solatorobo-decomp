@@ -68,9 +68,9 @@ static inline void ov002_AddNode(Obj021efe6c *self, Obj021efeb8 *node) {
         self->pieces = node;
     }
     func_ov002_021da184(self, node);
-    if (data_0214a424->bits18.mode == 1) {
+    if (gStageFlags->bits18.mode == 1) {
         func_ov000_021c9544(self->unk_76, self->pieces);
-        Obj021c95ac_Init_021c95ac(self->unk_76, data_0214a424->bits18.unk_3 | 0x8000);
+        Obj021c95ac_Init_021c95ac(self->unk_76, gStageFlags->bits18.unk_3 | 0x8000);
     } else {
         func_ov000_021c9544(self->unk_76, self->pieces);
     }
@@ -80,9 +80,9 @@ void func_ov002_021d98ac(Obj021efe6c *self) {
     int i;
     Obj021efe6c_FreePieces(self);
     func_ov002_021da054(self);
-    MI_CpuCopy8((u8 *)data_0214a424 + 0x2a, self->unk_08, sizeof(self->unk_08));
+    MI_CpuCopy8((u8 *)gStageFlags + 0x2a, self->unk_08, sizeof(self->unk_08));
     for (i = 0; i < 0x25; i++) {
-        Ent98ac *e = (Ent98ac *)((u8 *)data_0214a424 + 0x8e) + i;
+        Ent98ac *e = (Ent98ac *)((u8 *)gStageFlags + 0x8e) + i;
         u16 id = e->id;
         Obj021efeb8 *n;
         if (id == 0xffff) {
@@ -91,20 +91,20 @@ void func_ov002_021d98ac(Obj021efe6c *self) {
         if (Param_GetEntry(id)[0] == 0x80) {
             n = (Obj021efeb8 *)Heap_Alloc(sizeof(Obj021efed4));
             if (n != NULL) {
-                *(VFunc **)n = data_ov002_021efeb8;
+                *(VFunc **)n = Ov002Vt_021efeb8_vtbl;
                 Obj021efeb8_Init(n);
-                *(VFunc **)n = data_ov002_021efed4;
+                *(VFunc **)n = Ov002Vt_021efed4_vtbl;
                 Obj021efed4_Init((Obj021efed4 *)n);
             }
             n->unk_48 = id;
             n->vfunc_08();
-            ((Obj021efed4 *)n)->unk_ac = ((Obj021efed4 *)n)->unk_a8 <= data_0214a424->unk_024 ? 2 : 1;
+            ((Obj021efed4 *)n)->unk_ac = ((Obj021efed4 *)n)->unk_a8 <= gStageFlags->unk_024 ? 2 : 1;
         } else {
             n = (Obj021efeb8 *)Heap_Alloc(sizeof(Obj021efe9c));
             if (n != NULL) {
-                *(VFunc **)n = data_ov002_021efeb8;
+                *(VFunc **)n = Ov002Vt_021efeb8_vtbl;
                 Obj021efeb8_Init(n);
-                *(VFunc **)n = data_ov002_021efe9c;
+                *(VFunc **)n = Ov002Vt_021efe9c_vtbl;
                 Obj021efe9c_Init((Obj021efe9c *)n);
             }
             n->unk_48 = id;
@@ -130,10 +130,10 @@ void func_ov002_021d98ac(Obj021efe6c *self) {
         ov002_SetRot(n, e->info.rot);
         ov002_AddNode(self, n);
     }
-    self->unk_8a = data_0214a424->unk_024;
-    if (data_0214a424->bits18.mode == 1) {
+    self->unk_8a = gStageFlags->unk_024;
+    if (gStageFlags->bits18.mode == 1) {
         func_ov000_021c9544(self->unk_76, self->pieces);
-        Obj021c95ac_Init_021c95ac(self->unk_76, data_0214a424->bits18.unk_3 | 0x8000);
+        Obj021c95ac_Init_021c95ac(self->unk_76, gStageFlags->bits18.unk_3 | 0x8000);
     } else {
         func_ov000_021c9544(self->unk_76, self->pieces);
     }

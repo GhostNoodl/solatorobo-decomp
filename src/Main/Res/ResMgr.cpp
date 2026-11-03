@@ -64,10 +64,10 @@ extern void *ResList_FindType6(ResList *list, const char *name);
 
 ResList *func_02035934(const char *name) {
     ResList *result = NULL;
-    ResNode *node = ResMgr_Request(data_02097cdc, name, NULL, 7, 1);
+    ResNode *node = ResMgr_Request(gResMgr, name, NULL, 7, 1);
     ResMgr *mgr;
     if (node != NULL) {
-        mgr = data_02097cdc;
+        mgr = gResMgr;
         ResMgr_LoadNode(mgr, node);
         if (node->state != 7) {
             while (TRUE) {
@@ -75,7 +75,7 @@ ResList *func_02035934(const char *name) {
                 if (node->state == 5) {
                     break;
                 }
-                Sys_WaitVBlank(data_02097dd0);
+                Sys_WaitVBlank(gSysState);
             }
         }
         if (node->state != 7) {
@@ -86,11 +86,11 @@ ResList *func_02035934(const char *name) {
 }
 
 ResNode *ResMgr_Load(const char *name, int type, u8 toFront) {
-    return ResMgr_Request(data_02097cdc, name, NULL, type, toFront);
+    return ResMgr_Request(gResMgr, name, NULL, type, toFront);
 }
 
 void ResMgr_LoadArchive(const char *name, const char *arcName, u16 id, u8 toFront) {
-    ResNode *node = ResMgr_Request(data_02097cdc, name, arcName, id, toFront);
+    ResNode *node = ResMgr_Request(gResMgr, name, arcName, id, toFront);
     if (node == NULL) {
         return;
     }
@@ -109,7 +109,7 @@ void ResMgr_LoadArchive(const char *name, const char *arcName, u16 id, u8 toFron
 }
 
 void ResMgr_ReleaseList(ResList *list) {
-    ResMgr *mgr = data_02097cdc;
+    ResMgr *mgr = gResMgr;
     ResNode *node;
     for (node = mgr->head; node != NULL; node = node->next) {
         if (node->type == 7 && node->u.arc.list == list) {
@@ -122,15 +122,15 @@ void ResMgr_ReleaseList(ResList *list) {
 }
 
 void ResMgr_ReleaseArchive(const char *name, const char *arcName, u16 id) {
-    ResNode *node = ResMgr_FindArchive(data_02097cdc, name, arcName, id);
+    ResNode *node = ResMgr_FindArchive(gResMgr, name, arcName, id);
     if (node != NULL) {
-        ResMgr_ReleaseNode(data_02097cdc, node, 0);
+        ResMgr_ReleaseNode(gResMgr, node, 0);
     }
 }
 
 BOOL ResMgr_IsLoaded(const char *name, int type) {
     BOOL result = FALSE;
-    ResNode *node = ResMgr_Find(data_02097cdc, name, type);
+    ResNode *node = ResMgr_Find(gResMgr, name, type);
     if (node == NULL || node->state == 5) {
         result = TRUE;
     }
@@ -139,7 +139,7 @@ BOOL ResMgr_IsLoaded(const char *name, int type) {
 
 BOOL ResMgr_IsArchiveLoaded(const char *name, const char *arcName, u16 id) {
     BOOL result = FALSE;
-    ResNode *node = ResMgr_FindArchive(data_02097cdc, name, arcName, id);
+    ResNode *node = ResMgr_FindArchive(gResMgr, name, arcName, id);
     if (node == NULL || node->state == 5) {
         result = TRUE;
     }
@@ -149,7 +149,7 @@ BOOL ResMgr_IsArchiveLoaded(const char *name, const char *arcName, u16 id) {
 #define RES_MGR_GET_DATA(func, kind)                                \
     void *func(const char *name) {                                  \
         void *result = NULL;                                        \
-        ResNode *node = ResMgr_Find(data_02097cdc, name, kind);   \
+        ResNode *node = ResMgr_Find(gResMgr, name, kind);   \
         if (node != NULL) {                                         \
             result = node->u.data;                                  \
         }                                                           \
@@ -163,7 +163,7 @@ RES_MGR_GET_DATA(func_02035d2c, 6)
 
 ResList *ResMgr_GetArcList(const char *name) {
     ResList *result = NULL;
-    ResNode *node = ResMgr_Find(data_02097cdc, name, 7);
+    ResNode *node = ResMgr_Find(gResMgr, name, 7);
     if (node != NULL) {
         result = node->u.arc.list;
     }
@@ -174,7 +174,7 @@ ResList *ResMgr_GetArcList(const char *name) {
     void *func(const char *arcName, const char *name) {             \
         void *result = NULL;                                        \
         ResList *list = NULL;                                       \
-        ResNode *node = ResMgr_Find(data_02097cdc, arcName, 7);   \
+        ResNode *node = ResMgr_Find(gResMgr, arcName, 7);   \
         if (node != NULL) {                                         \
             list = node->u.arc.list;                                \
         }                                                           \
@@ -192,7 +192,7 @@ RES_MGR_GET_ARC_DATA(func_02035edc, ResList_FindType6)
 
 ResList *ResMgr_GetArchiveList(const char *name, const char *arcName, u16 id) {
     ResList *result = NULL;
-    ResNode *node = ResMgr_FindArchive(data_02097cdc, name, arcName, id);
+    ResNode *node = ResMgr_FindArchive(gResMgr, name, arcName, id);
     if (node != NULL) {
         result = node->u.arc.list;
     }
@@ -201,7 +201,7 @@ ResList *ResMgr_GetArchiveList(const char *name, const char *arcName, u16 id) {
 
 #define RES_MGR_GET_NAMED_ARC_DATA(func, findFunc, kind) \
     void *func(const char *name, const char *arcName) { \
-    ResMgr *mgr = data_02097cdc; \
+    ResMgr *mgr = gResMgr; \
     void *result = NULL; \
     u16 hash; \
     ResNode *node; \
@@ -236,7 +236,7 @@ RES_MGR_GET_NAMED_ARC_DATA(func_02036258, ResList_FindType6, 6)
 BOOL func_02036328(void) {
     BOOL result = FALSE;
     ResNode *node;
-    ResNode *list = data_02097cdc->head;
+    ResNode *list = gResMgr->head;
     for (node = list; node != NULL; node = node->next) {
         if (node->state == 2) {
             break;
@@ -256,11 +256,11 @@ BOOL func_02036328(void) {
 }
 
 void ResMgr_Create(void) {
-    if (data_02097cdc != NULL) {
+    if (gResMgr != NULL) {
         return;
     }
-    data_02097cdc = (ResMgr *)Heap_AllocLo(sizeof(ResMgr), 4);
-    func_020363d8(data_02097cdc);
+    gResMgr = (ResMgr *)Heap_AllocLo(sizeof(ResMgr), 4);
+    func_020363d8(gResMgr);
 }
 
 void func_020363d8(ResMgr *mgr) {
@@ -272,13 +272,13 @@ void func_020363d8(ResMgr *mgr) {
     size = FS_TryLoadTable(NULL, 0);
     mgr->unk_7bb4 = Heap_AllocLo(size, 4);
     FS_TryLoadTable(mgr->unk_7bb4, size);
-    data_02097dd0->cur = data_02097dd0->heapLo;
+    gSysState->cur = gSysState->heapLo;
     loader = (ResLoader *)Heap_Alloc(0x40c);
     if (loader != NULL) {
         loader = ResLoader_Init(loader);
     }
     mgr->loader = loader;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gSysState->cur = gSysState->heapHi;
     func_02035670(mgr->loader);
     for (i = 0; i < RES_MGR_NODE_COUNT; i++) {
         MI_CpuFill8(&mgr->pool[i], 0, sizeof(ResNode));
@@ -293,7 +293,7 @@ void func_020363d8(ResMgr *mgr) {
 
 void func_020364c0(ResMgr *mgr) {
     ResNode *node;
-    if (func_02046e28(data_02097e44)) {
+    if (func_02046e28(gSysCard)) {
         return;
     }
     node = ResMgr_FindState(mgr, 4);
@@ -426,7 +426,7 @@ ResNode *ResMgr_Request(ResMgr *mgr, const char *name, const char *arcName, int 
         node = ResMgr_Find(mgr, name, type);
     } else {
         hash = 0;
-        node = data_02097cdc->tail;
+        node = gResMgr->tail;
         while (node != NULL) {
             if (node->unk_2b_6 && node->type == 7 && node->u.arc.id == type) {
                 if (hash == 0) {

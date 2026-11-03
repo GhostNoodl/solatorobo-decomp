@@ -4,7 +4,7 @@
 extern "C" {
 void Ov012ActVt_0220b280_StateAttack(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0 && self->unk_1a == 0) {
-        SndMgr_PlayAt(data_02097e4c, 0x600, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x600, &self->pos, 0);
     }
     Ov003Actor_StateAttack(self);
 }
@@ -38,7 +38,7 @@ void Ov012ActVt_0220b280_StateAttack2(Ov012ActVt_0220b280 *self) {
         s->timer++;
         if (s->timer > 0x14) {
             EffectObj *e;
-            SndMgr_PlayAt(data_02097e4c, 0x29, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x29, &self->pos, 0);
             e = Effect_SpawnId(0x192, &self->pos);
             e->AddPosXYZ(0, 0x1333, 0);
             e->SetScaleAll(0x1333);
@@ -111,7 +111,7 @@ void Ov012ActVt_0220b280_StateAttack2(Ov012ActVt_0220b280 *self) {
         if (s->timer > 0x14) {
             EffectObj *e;
             Rot16 r;
-            SndMgr_PlayAtPitch(data_02097e4c, 0x54, &self->pos, 3);
+            SndMgr_PlayAtPitch(gSndMgr, 0x54, &self->pos, 3);
             e = Effect_SpawnId(0x25d, &self->pos);
             e->AddPosXYZ(0, 0x1333, 0);
             e->SetScaleAll(0xb33);

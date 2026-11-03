@@ -33,7 +33,7 @@ void func_ov000_021b6be4(FieldMgr *self) {
     if (self->unk_1f2 == 0) {
         return;
     }
-    m = data_ov000_021ccd54;
+    m = gSceneCmd;
     s = &m->cam.base;
     if (s == NULL) {
         return;

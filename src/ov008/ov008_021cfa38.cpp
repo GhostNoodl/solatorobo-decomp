@@ -5,18 +5,18 @@
 typedef struct Ov008Tag { u8 unk_00[0x30]; u16 id; u16 unk_32; u16 unk_34; u16 unk_36; } Ov008Tag;
 typedef struct Ov008SaveEnt { u16 unk_00; u16 id; } Ov008SaveEnt;
 extern "C" {
-extern Ov008Save *data_02fe152c;
+extern Ov008Save *gDataRes;
 Ov008Def *Lang_GetGroup(u8 id);
 u16 DataRes_ReadEntry(void *a, int b, int c, int d);
 Ov008Item *UiList_GetItemById(void *a, u32 id);
 BOOL func_ov008_021cf790(Ov008Menu *self, Ov008Sel *sel);
 BOOL func_ov008_021cf844(Ov008Menu *self, Ov008Sel *sel);
-extern void *data_02149ef8;
-extern void *data_ov000_021cac60;
-extern void *data_ov000_021caec8;
-extern void *data_ov008_021d0368;
+extern void *gMsgRes;
+extern void *UiObj_vtbl;
+extern void *UiList_vtbl;
+extern void *Ov008Menu_vtbl;
 extern char data_0214b105[];
-extern u8 *data_0214a424;
+extern u8 *gStageFlags;
 s32 MsgRes_GetString(void *p, s32 id);
 BOOL func_020624d8(void);
 void UiList_SetMarkModel(void *list, const char *arc, const char *file, int part);
@@ -36,7 +36,7 @@ static inline void Ov008_AddEntry(Ov008Mgr *m, u32 id) {
     Ov008Def *e = Lang_GetGroup(id);
     Ov008Item *p;
     m->menu->v74(e->unk_00, id, 0xffff, 0xffff);
-    if (!DataRes_ReadEntry(data_02fe152c, 0, 0x201, id)) {
+    if (!DataRes_ReadEntry(gDataRes, 0, 0x201, id)) {
         return;
     }
     p = UiList_GetItemById(m->menu, id);
@@ -72,14 +72,14 @@ void func_ov008_021cfa38(Ov008Mgr *m) {
     Ov008Tag tag;
     Ov008Item *e;
     Ov008SaveEnt *ents;
-    res = data_02149ef8;
+    res = gMsgRes;
     p = (Ov008Menu *)Heap_Alloc(0xd4);
     if (p != NULL) {
-        OV008_SET_VT(p, &data_ov000_021cac60);
+        OV008_SET_VT(p, &UiObj_vtbl);
         p->v28();
-        OV008_SET_VT(p, &data_ov000_021caec8);
+        OV008_SET_VT(p, &UiList_vtbl);
         p->v28();
-        OV008_SET_VT(p, &data_ov008_021d0368);
+        OV008_SET_VT(p, &Ov008Menu_vtbl);
     }
     m->menu = p;
     m->menu->v10(MsgRes_GetString(res, 0x96));
@@ -122,34 +122,34 @@ void func_ov008_021cfa38(Ov008Mgr *m) {
     }
     m->menu->v08();
     UiList_SetMarkModel(m->menu, data_0214b105, data_0208cb7c, 10);
-    base = data_02fe152c->unk_4c;
-    ents = DataRes_GetTable(data_02fe152c, 1);
-    cnt = DataRes_GetCount(data_02fe152c, 1);
+    base = gDataRes->unk_4c;
+    ents = DataRes_GetTable(gDataRes, 1);
+    cnt = DataRes_GetCount(gDataRes, 1);
     i = 0;
-    cur = SceneStage_GetScript((u8 *)data_ov000_021ccd54 + 0xac, 0);
+    cur = SceneStage_GetScript((u8 *)gSceneCmd + 0xac, 0);
     MsgEntry_Init(&tag);
     tag.id = 0;
     tag.unk_32 = 0;
     tag.unk_34 = 0;
     tag.unk_36 = 0;
-    func_ov000_0214c01c(data_0214a424[0x639]);
+    func_ov000_0214c01c(gStageFlags[0x639]);
     for (; i < cnt; i++) {
         flags = func_ov000_0214bf2c(ents[i].id);
         if (flags & 0x20) {
             ok = OV008_ENT_NEW;
         } else {
-            ok = (Ov008EntState)DataRes_ReadBitsAt_02059544(data_02fe152c, base + 0x30, ents, 0x301, i);
+            ok = (Ov008EntState)DataRes_ReadBitsAt_02059544(gDataRes, base + 0x30, ents, 0x301, i);
         }
         if (cur != NULL && cur->unk_c6 == ents[i].id) {
             ok = OV008_ENT_KNOWN;
         }
-        if (DataRes_ReadBitsAt_02059544(data_02fe152c, base + 0x30, ents, 1, i) == 1 && ok == OV008_ENT_NEW) {
+        if (DataRes_ReadBitsAt_02059544(gDataRes, base + 0x30, ents, 1, i) == 1 && ok == OV008_ENT_NEW) {
             tag.id = 0xffff;
             Text_ScanTags(func_ov000_0214c064(ents[i].id), 1, &tag, func_ov000_0214dc20);
             ok = OV008_ENT_NEW;
             if (tag.id != 0xffff) {
                 if (flags & 0x80) {
-                    if (DataRes_ReadEntry(data_02fe152c, 5, 1, 0x29)) {
+                    if (DataRes_ReadEntry(gDataRes, 5, 1, 0x29)) {
                         ok = OV008_ENT_KNOWN;
                     }
                 }
@@ -158,7 +158,7 @@ void func_ov008_021cfa38(Ov008Mgr *m) {
                     if (e != NULL) {
                         e->unk_32++;
                         if (!Ov008Entry_IsSet(e)) {
-                            if (DataRes_ReadBitsAt_02059544(data_02fe152c, base + 0x30, ents, 0x101, i) == 1 && e->unk_0a == 0xffff) {
+                            if (DataRes_ReadBitsAt_02059544(gDataRes, base + 0x30, ents, 0x101, i) == 1 && e->unk_0a == 0xffff) {
                                 e->flags.b0 = 1;
                             }
                         }

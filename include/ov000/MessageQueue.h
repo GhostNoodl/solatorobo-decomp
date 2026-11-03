@@ -28,7 +28,7 @@ public:
     u32 unk_2c;
 };
 
-// Vtable data_ov000_021cb920 (methods TimedBuffer021cb920_DtorDelete, 02172bb4, 02172be8): a timed buffer
+// Vtable TimedBuffer021cb920_vtbl (methods TimedBuffer021cb920_DtorDelete, 02172bb4, 02172be8): a timed buffer
 // that owns another buffer.
 class TimedBuffer021cb920 : public TimedBuffer {
 public:
@@ -70,8 +70,8 @@ struct Lo0216b474 {
     s32 ratio; // 0x18 fx32 slide position, 0..0x1000
 };
 
-// Vtable data_ov000_021cb940 (0x80 bytes; base vtable data_ov000_021cb6d0, init ListBuffer021cb940_Init,
-// dtor ListBuffer021cb940_Release): the field's sub-object holder, data_ov000_021ccd30's 0x11c buffer, made by
+// Vtable Ov000Vt_021cb940_vtbl (0x80 bytes; base vtable Ov000Vt_021cb6d0_vtbl, init ListBuffer021cb940_Init,
+// dtor ListBuffer021cb940_Release): the field's sub-object holder, gMessageQueue's 0x11c buffer, made by
 // func_ov000_02171478 / SceneCmd_Push12. func_ov000_02170a58 updates the object state selects (each
 // is deleted once it reports done) and draws the always-present ones; func_ov000_02171270 draws.
 class ListBuffer021cb940 : public ListBuffer {
@@ -129,8 +129,8 @@ public:
     u32 writeIndex;
 };
 
-// The field's message queue (vtable data_ov000_021cb980, 0x120 bytes, base MessageQueue with vtable
-// data_ov000_021cb9b0, init func_ov000_02171464): data_ov000_021ccd30, made by func_ov000_021814dc.
+// The field's message queue (vtable Ov000Vt_021cb980_vtbl, 0x120 bytes, base MessageQueue with vtable
+// Ov000Vt_021cb9b0_vtbl, init func_ov000_02171464): gMessageQueue, made by func_ov000_021814dc.
 // func_ov000_02171478 creates its two buffers. Main reads it as FieldPlayer (Main/Sys/Field.h).
 class MessageQueue021cb980 : public MessageQueue {
 public:

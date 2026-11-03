@@ -8,7 +8,7 @@ void Win021c4460_Update(struct Win021c4460 *self);
 void func_ov000_021c4b00(void *self);
 void func_ov000_0215f330(void *p);
 void func_ov000_021c4c10(void *self);
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void *SndMgr_PlayVolume(void *a, int b, int c, int d, int e);
 
 void LoBase021ccb54_021ccbe0_PreUpdate(LoBase021ccb54_021ccbe0 *self) {
@@ -18,7 +18,7 @@ void LoBase021ccb54_021ccbe0_PreUpdate(LoBase021ccb54_021ccbe0 *self) {
     switch (self->state) {
     case 0:
         if (self->flag4) {
-            SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         }
         break;
     case 2:
@@ -39,7 +39,7 @@ void LoBase021ccb54_021ccbe0_PreUpdate(LoBase021ccb54_021ccbe0 *self) {
         break;
     case 1:
         if (self->flag4) {
-            SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
         }
         break;
     }
@@ -111,7 +111,7 @@ typedef struct Win021c4460 {
 
 extern "C" {
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_ov000_021c47bc(Win021c4460 *self, s32 up, u8 *moved, u8 *scrolled);
 s32 func_ov000_021c4964(Win021c4460 *self, s32 n);
@@ -131,8 +131,8 @@ void Win021c4460_Update(Win021c4460 *self) {
     if (self->b1 || self->unk_de != 0) {
         return;
     }
-    cur = data_02097dc8->cur;
-    trig = data_02097dc8->trig;
+    cur = gPad->cur;
+    trig = gPad->trig;
     key = self->unk_dd == 0 ? cur : 0;
     done = FALSE;
     moved = 0;
@@ -168,7 +168,7 @@ void Win021c4460_Update(Win021c4460 *self) {
         if (self->unk_e8 != NULL) {
             self->unk_e8(self, self->unk_a0);
         } else if (self->b4) {
-            SndMgr_PlayVolume(data_02097e4c, 0x1d, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1d, -1, -1, -1);
         }
     }
     done = FALSE;
@@ -192,7 +192,7 @@ void Win021c4460_Update(Win021c4460 *self) {
         if (self->unk_e4 != NULL) {
             self->unk_e4(self, n);
         } else if (self->b4) {
-            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
         }
     }
     if (done) {

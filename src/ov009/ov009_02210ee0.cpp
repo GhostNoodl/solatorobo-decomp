@@ -14,7 +14,7 @@ void Ov009ActVt_02217aac_Start(Ov009ActVt_02217aac *self) {
     Ov003Actor *a;
     FieldState *g;
     Ov003Actor_Start(self);
-    p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    p = Group_FindNode(gGroup, self->unk_20);
     if (p != NULL) {
         p->flags.unk_0 = 0;
     }
@@ -34,7 +34,7 @@ void Ov009ActVt_02217aac_Start(Ov009ActVt_02217aac *self) {
     self->unk_ff = 0;
     self->unk_100 = data_ov009_02216148;
     self->unk_104 = data_ov009_02216058;
-    g = data_ov000_021ccd54;
+    g = gSceneCmd;
     if (g->unk_ca.c[0] == 0x11 && g->unk_ca.c[1] == 0 && g->unk_ca.c[2] == 0) {
         self->unk_ff = 1;
         self->unk_100 = data_ov009_02216188;

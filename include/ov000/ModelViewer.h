@@ -6,7 +6,7 @@
 #include "ov000/ActorParts.h"
 #include "ov000/Model0218fe1c.h"
 
-// The resource loader of a ModelViewer (0x558 bytes at ModelViewer::res, vtable data_ov000_021cabd8,
+// The resource loader of a ModelViewer (0x558 bytes at ModelViewer::res, vtable Ov000Vt_021cabd8_vtbl,
 // dtor Ov000Vt_021cabd8_Dtor). It keeps two pairs of resource blocks and loads the next pair
 // (cur ^ 1) from the names while the current one is shown (func_ov000_02161fac).
 typedef struct ModelViewerRes {
@@ -24,7 +24,7 @@ typedef struct ModelViewerRes {
 } ModelViewerRes;
 
 // A 3D model drawn with its own camera and projection (0x708 bytes, ctor ModelViewer_Ctor, vtable
-// data_ov000_021cabc8, dtors ModelViewer_Dtor / 0216251c). ModelViewer_SetModel requests new
+// ModelViewer_vtbl, dtors ModelViewer_Dtor / 0216251c). ModelViewer_SetModel requests new
 // resources, func_ov000_02162bd4 steps the state machine, ModelViewer_Draw draws.
 typedef struct ModelViewer {
     /* 0x000 */ void *vtbl;

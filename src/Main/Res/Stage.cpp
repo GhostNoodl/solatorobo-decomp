@@ -24,17 +24,17 @@ extern "C" {
 int StageRes_DispatchSlot(StageResSlot *slot);
 
 // .data
-int (*data_0208bde8)(StageResSlot *slot) = StageRes_DispatchSlot;
+int (*gStageResDispatchFn)(StageResSlot *slot) = StageRes_DispatchSlot;
 
 // .bss, laid out in reverse order of definition from 0x02149efc.
-s32 data_02149f14;
+s32 gStageResSlotHead;
 void *data_02149f10;
-ObjPool *data_02149f0c;
+ObjPool *gStageObjPool;
 u32 data_02149f08;
-s32 data_02149f04;
+s32 gStageResSlotTail;
 void *data_02149f00;
 u32 data_02149efc;
-StageResSlot data_02149f18[0x40];
+StageResSlot gStageResSlots[0x40];
 
 }
 
@@ -43,19 +43,19 @@ namespace m_DataRes_2 {
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
+extern const u32 TextWin_vtbl[];
 
-extern const u32 data_0208bbc8[];
+extern const u32 MainVt_0208bbc8_vtbl[];
 
-extern const u32 data_0208bb1c[];
+extern const u32 TextWinEx_vtbl[];
 
-extern const u32 data_0208bf14[];
+extern const u32 MainVt_0208bf14_vtbl[];
 
-extern const u32 data_0208be94[];
+extern const u32 MainVt_0208be94_vtbl[];
 
-extern DataRes *data_02fe1530;
+extern DataRes *gStageDataRes;
 
-extern DataRes *data_02fe152c;
+extern DataRes *gDataRes;
 
 int STD_TSPrintf(char *dst, const char *fmt, ...);
 
@@ -73,7 +73,7 @@ static inline void DataRes_Reset(DataRes *res) {
 static inline DataRes *DataRes_New(u32 size, const u32 *vtbl) {
     DataRes *res = (DataRes *)Heap_Alloc(size);
     if (res != NULL) {
-        *(const u32 **)res = data_0208b318;
+        *(const u32 **)res = ResHandle_vtbl;
         res->Clear();
         *(const u32 **)res = vtbl;
         res->Clear();
@@ -86,7 +86,7 @@ static inline void DataRes_Open152c(const char *arcName, const char *name) {
     char file[0x20];
     LangData_LocalizePath(arc, arcName);
     LangData_LocalizePath(file, name);
-    data_02fe152c->Open(arc, file);
+    gDataRes->Open(arc, file);
 }
 
 static inline void DataRes_Open1530(const char *arcName, const char *name) {
@@ -94,7 +94,7 @@ static inline void DataRes_Open1530(const char *arcName, const char *name) {
     char file[0x20];
     LangData_LocalizePath(arc, arcName);
     LangData_LocalizePath(file, name);
-    data_02fe1530->Open(arc, file);
+    gStageDataRes->Open(arc, file);
 }
 
 static inline void DataRes_Open1530_18(const char *arcName, const char *name) {
@@ -102,14 +102,14 @@ static inline void DataRes_Open1530_18(const char *arcName, const char *name) {
     char file[0x20];
     LangData_LocalizePath(arc, arcName);
     LangData_LocalizePath(file, name);
-    data_02fe1530->Open18(arc, file);
+    gStageDataRes->Open18(arc, file);
 }
 
 void DataRes1530_Create(BOOL flag) {
-    if (data_02fe1530 != NULL) {
+    if (gStageDataRes != NULL) {
         return;
     }
-    data_02fe1530 = DataRes_New(0x54, data_0208bf14);
+    gStageDataRes = DataRes_New(0x54, MainVt_0208bf14_vtbl);
     if (flag) {
         DataRes_Open1530_18("script/cmninfo", "str.ccstr");
     } else {
@@ -118,21 +118,21 @@ void DataRes1530_Create(BOOL flag) {
 }
 
 void DataRes1530_Delete(void) {
-    void *heap = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
-    if (data_02fe1530 != NULL) {
-        if (data_02fe1530 != NULL) {
-            data_02fe1530->DeletingDtor();
+    void *heap = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
+    if (gStageDataRes != NULL) {
+        if (gStageDataRes != NULL) {
+            gStageDataRes->DeletingDtor();
         }
-        data_02fe1530 = NULL;
+        gStageDataRes = NULL;
     }
-    data_02097dd0->cur = heap;
+    gSysState->cur = heap;
 }
 
 DataRes *MainVt_0208bf14_DtorDelete(DataRes *res) {
-    *(const u32 **)res = data_0208bf14;
+    *(const u32 **)res = MainVt_0208bf14_vtbl;
     res->Unload();
-    *(const u32 **)res = data_0208b318;
+    *(const u32 **)res = ResHandle_vtbl;
     res->Unload();
     Heap_Free(res);
     return res;
@@ -166,10 +166,10 @@ static void DataRes_FormatName(char *buf, const char *name, int idx) {
 }
 
 void DataRes152c_Create(void) {
-    if (data_02fe152c != NULL) {
+    if (gDataRes != NULL) {
         return;
     }
-    data_02fe152c = DataRes_New(0x50, data_0208be94);
+    gDataRes = DataRes_New(0x50, MainVt_0208be94_vtbl);
     DataRes_Open152c("script/cmninfo", "flg.ccflg");
 }
 
@@ -182,19 +182,19 @@ namespace m_DataRes_3 {
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
+extern const u32 TextWin_vtbl[];
 
-extern const u32 data_0208bbc8[];
+extern const u32 MainVt_0208bbc8_vtbl[];
 
-extern const u32 data_0208bb1c[];
+extern const u32 TextWinEx_vtbl[];
 
-extern const u32 data_0208bf14[];
+extern const u32 MainVt_0208bf14_vtbl[];
 
-extern const u32 data_0208be94[];
+extern const u32 MainVt_0208be94_vtbl[];
 
-extern DataRes *data_02fe1530;
+extern DataRes *gStageDataRes;
 
-extern DataRes *data_02fe152c;
+extern DataRes *gDataRes;
 
 static inline BOOL TextWin_IsFlag29(TextWin *win) {
     return win->flag29 == 1 ? TRUE : FALSE;
@@ -210,7 +210,7 @@ static inline void DataRes_Reset(DataRes *res) {
 static inline DataRes *DataRes_New(u32 size, const u32 *vtbl) {
     DataRes *res = (DataRes *)Heap_Alloc(size);
     if (res != NULL) {
-        *(const u32 **)res = data_0208b318;
+        *(const u32 **)res = ResHandle_vtbl;
         res->Clear();
         *(const u32 **)res = vtbl;
         res->Clear();
@@ -223,7 +223,7 @@ static inline void DataRes_Open152c(const char *arcName, const char *name) {
     char file[0x20];
     LangData_LocalizePath(arc, arcName);
     LangData_LocalizePath(file, name);
-    data_02fe152c->Open(arc, file);
+    gDataRes->Open(arc, file);
 }
 
 static inline void DataRes_Open1530(const char *arcName, const char *name) {
@@ -231,7 +231,7 @@ static inline void DataRes_Open1530(const char *arcName, const char *name) {
     char file[0x20];
     LangData_LocalizePath(arc, arcName);
     LangData_LocalizePath(file, name);
-    data_02fe1530->Open(arc, file);
+    gStageDataRes->Open(arc, file);
 }
 
 static inline void DataRes_Open1530_18(const char *arcName, const char *name) {
@@ -239,25 +239,25 @@ static inline void DataRes_Open1530_18(const char *arcName, const char *name) {
     char file[0x20];
     LangData_LocalizePath(arc, arcName);
     LangData_LocalizePath(file, name);
-    data_02fe1530->Open18(arc, file);
+    gStageDataRes->Open18(arc, file);
 }
 
 void DataRes152c_Delete(void) {
-    void *heap = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
-    if (data_02fe152c != NULL) {
-        if (data_02fe152c != NULL) {
-            data_02fe152c->DeletingDtor();
+    void *heap = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
+    if (gDataRes != NULL) {
+        if (gDataRes != NULL) {
+            gDataRes->DeletingDtor();
         }
-        data_02fe152c = NULL;
+        gDataRes = NULL;
     }
-    data_02097dd0->cur = heap;
+    gSysState->cur = heap;
 }
 
 DataRes *MainVt_0208be94_DtorDelete(DataRes *res) {
-    *(const u32 **)res = data_0208be94;
+    *(const u32 **)res = MainVt_0208be94_vtbl;
     res->Unload();
-    *(const u32 **)res = data_0208b318;
+    *(const u32 **)res = ResHandle_vtbl;
     res->Unload();
     Heap_Free(res);
     return res;
@@ -603,30 +603,30 @@ extern "C" {
 
 void ObjPool_Create(void) {
     ObjPool *pool;
-    if (data_02149f0c != NULL) {
+    if (gStageObjPool != NULL) {
         return;
     }
     pool = (ObjPool *)Heap_Alloc(sizeof(ObjPool));
     if (pool != NULL) {
         ObjPool_Init(pool);
     }
-    data_02149f0c = pool;
+    gStageObjPool = pool;
 }
 
 void ObjPool_Delete(void) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     {
-        ObjPool *p = data_02149f0c;
+        ObjPool *p = gStageObjPool;
         if (p != NULL) {
             if (p != NULL) {
                 ObjPool_Reset(p);
                 Heap_Free(p);
             }
-            data_02149f0c = NULL;
+            gStageObjPool = NULL;
         }
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 void ObjPool_Clear(ObjPool *pool) {
@@ -636,8 +636,8 @@ void ObjPool_Clear(ObjPool *pool) {
 void ObjPool_FreeEntry(ObjPool *pool, ObjPoolEntry *entry) {
     switch (entry->kind) {
     case 3: {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         {
             void *p = entry->obj;
             if (p != NULL) {
@@ -648,7 +648,7 @@ void ObjPool_FreeEntry(ObjPool *pool, ObjPoolEntry *entry) {
                 entry->obj = NULL;
             }
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
         break;
     }
     case 4: {
@@ -656,8 +656,8 @@ void ObjPool_FreeEntry(ObjPool *pool, ObjPoolEntry *entry) {
         if (((void **)entry->obj)[0x88 / 4] != NULL) {
             Heap_FreeHi(((void **)entry->obj)[0x88 / 4]);
         }
-        saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         {
             void *p = entry->obj;
             if (p != NULL) {
@@ -668,7 +668,7 @@ void ObjPool_FreeEntry(ObjPool *pool, ObjPoolEntry *entry) {
                 entry->obj = NULL;
             }
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
         break;
     }
     }
@@ -950,16 +950,16 @@ extern "C" {
 extern ObjPoolPlayer *ActorMgr_FindPlayer(void);
 extern void func_ov000_02182590(u8 *p);
 
-extern void *data_ov000_021ccd68;
-extern void *data_ov000_021ccd64;
+extern void *gActorMgr;
+extern void *gGroup;
 extern void *ActorMgr_FindKindNear(void *mgr, u16 kind, u16 id, s32 *pos, s32 r);
 extern s32 Group_GetSpawnPositions(void *mgr, s32 max, VecFx32 *out, int kind, u16 id);
 
 static inline void *ObjPool_FindObj(u16 kind, u16 id, s32 *pos, s32 r) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_FindKindNear(data_ov000_021ccd68, kind, id, pos, r);
+    return ActorMgr_FindKindNear(gActorMgr, kind, id, pos, r);
 }
 
 static inline void ObjPool_Trigger(ObjPool *pool, ObjPoolEntry *entry) {
@@ -971,7 +971,7 @@ static inline void ObjPool_Trigger(ObjPool *pool, ObjPoolEntry *entry) {
         ObjPool_FreeEntry(pool, entry);
         data_02fe1534.unk_10 = entry->id;
         {
-            u8 *p = &data_ov000_021ccd54->stageFlags;
+            u8 *p = &gSceneCmd->stageFlags;
             *p = TRUE;
             func_ov000_02182590(p);
         }
@@ -995,7 +995,7 @@ BOOL ObjPool_TestDistance(ObjPool *pool, ObjPoolEntry *entry) {
         if (ObjPool_FindObj(entry->unk_04 << 12, entry->unk_06, &entry->x, entry->unk_18) != NULL) {
             found = TRUE;
         } else {
-            s32 n = Group_GetSpawnPositions(data_ov000_021ccd64, 0x10, buf, entry->unk_04, entry->unk_06);
+            s32 n = Group_GetSpawnPositions(gGroup, 0x10, buf, entry->unk_04, entry->unk_06);
             s32 i;
             for (i = 0; i < n; i++) {
                 s32 dx = entry->x - buf[i].x;
@@ -1042,7 +1042,7 @@ BOOL ObjPool_TestPlayerFlags(ObjPool *pool, ObjPoolEntry *entry) {
     ObjPool_FreeEntry(pool, entry);
     data_02fe1534.unk_10 = entry->id;
     {
-        u8 *p = &data_ov000_021ccd54->stageFlags;
+        u8 *p = &gSceneCmd->stageFlags;
         *p = TRUE;
         func_ov000_02182590(p);
     }
@@ -1090,7 +1090,7 @@ static inline BOOL ObjPool_CheckBox(ObjPool *pool, ObjPoolEntry *entry) {
         }
     } else {
         VecFx32 buf[16];
-        s32 n = Group_GetSpawnPositions(data_ov000_021ccd64, 0x10, buf, entry->unk_06 >> 12, entry->unk_06);
+        s32 n = Group_GetSpawnPositions(gGroup, 0x10, buf, entry->unk_06 >> 12, entry->unk_06);
         s32 w;
         s32 z;
         s32 y;
@@ -1119,7 +1119,7 @@ static inline BOOL ObjPool_CheckBox(ObjPool *pool, ObjPoolEntry *entry) {
 void ObjPool_Update(ObjPool *pool) {
     ObjPoolEntry *next;
     ObjPoolEntry *e;
-    if (*(s32 *)data_ov000_021ccd54 != 3) {
+    if (*(s32 *)gSceneCmd != 3) {
         return;
     }
     data_02fe1534.unk_10 = 0xffff;
@@ -1193,11 +1193,11 @@ void StageRes_Init(StageRes *res) {
 void StageRes_CancelSlots(StageRes *res) {
     s32 end;
     s32 i;
-    i = data_02149f14;
-    end = data_02149f04;
+    i = gStageResSlotHead;
+    end = gStageResSlotTail;
     while (i != end) {
-        if (data_02149f18[i].res == res) {
-            data_02149f18[i].res = NULL;
+        if (gStageResSlots[i].res == res) {
+            gStageResSlots[i].res = NULL;
         }
         i++;
         if (i >= 0x40) {
@@ -1206,8 +1206,8 @@ void StageRes_CancelSlots(StageRes *res) {
     }
     ResHandle_Unload(res);
     if (res->posEv != NULL) {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         {
             PosEvRes *p = res->posEv;
             if (p != NULL) {
@@ -1217,11 +1217,11 @@ void StageRes_CancelSlots(StageRes *res) {
                 res->posEv = NULL;
             }
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     if (res->sub != NULL) {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         {
             DataRes *p = res->sub;
             if (p != NULL) {
@@ -1231,7 +1231,7 @@ void StageRes_CancelSlots(StageRes *res) {
                 res->sub = NULL;
             }
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     StageRes_Init(res);
 }
@@ -1242,7 +1242,7 @@ PosEvRes *PosEvRes_DtorDelete(PosEvRes *res) {
     res->pos = NULL;
     res->evCount = 0;
     res->ev = NULL;
-    *(const u32 **)res = data_0208b318;
+    *(const u32 **)res = ResHandle_vtbl;
     res->Unload();
     Heap_Free(res);
     return res;
@@ -1268,9 +1268,9 @@ void StageRes_Open(StageRes *res, const char *arcName, const char *name) {
         STD_CopyString(STD_SearchString(file, "."), ".ccmes");
         sub = (DataRes *)Heap_Alloc(0x58);
         if (sub != NULL) {
-            *(const u32 **)sub = data_0208b318;
+            *(const u32 **)sub = ResHandle_vtbl;
             sub->Clear();
-            *(const u32 **)sub = data_0208ba30;
+            *(const u32 **)sub = MainVt_0208ba30_vtbl;
             MsgRes_Reset_0204bfcc(sub);
         }
         res->sub = sub;
@@ -1282,9 +1282,9 @@ void StageRes_Open(StageRes *res, const char *arcName, const char *name) {
         STD_CopyString(STD_SearchString(file, "."), ".cctmp");
         posEv = (PosEvRes *)Heap_Alloc(0x5c);
         if (posEv != NULL) {
-            *(const u32 **)posEv = data_0208b318;
+            *(const u32 **)posEv = ResHandle_vtbl;
             posEv->Clear();
-            *(const u32 **)posEv = data_0208bed4;
+            *(const u32 **)posEv = PosEvRes_vtbl;
             posEv->type = 0;
             posEv->posCount = 0;
             posEv->pos = NULL;
@@ -1630,12 +1630,12 @@ u16 StageRes_Compare(StageRes *res, u16 *cmd, u16 val) {
 }
 
 void StageRes_ResetSlots(void) {
-    data_0208bde8 = StageRes_DispatchSlot;
-    data_02149f14 = 0;
-    data_02149f04 = 0;
+    gStageResDispatchFn = StageRes_DispatchSlot;
+    gStageResSlotHead = 0;
+    gStageResSlotTail = 0;
     data_02149f08 = 0;
     data_02149efc = 0;
-    MI_CpuFill8(data_02149f18, 0, sizeof(data_02149f18));
+    MI_CpuFill8(gStageResSlots, 0, sizeof(gStageResSlots));
 }
 
 }
@@ -1663,20 +1663,20 @@ BOOL StageRes_HasQueued(void) {
     if (StageRes_IsBusy()) {
         return FALSE;
     }
-    return data_02149f14 != data_02149f04;
+    return gStageResSlotHead != gStageResSlotTail;
 }
 
 StageResSlot *StageRes_FindSlot(u16 id) {
     s32 i;
     s32 end;
     StageResSlot *slot;
-    end = data_02149f04;
-    i = data_02149f14;
+    end = gStageResSlotTail;
+    i = gStageResSlotHead;
     if (i == end) {
         return NULL;
     }
     do {
-        slot = &data_02149f18[i];
+        slot = &gStageResSlots[i];
         if (slot->id == id) {
             return slot;
         }
@@ -1693,13 +1693,13 @@ StageResSlot *StageRes_FindSlotByIds(u16 *ids) {
     s32 i;
     s32 end;
     u16 *p;
-    end = data_02149f04;
-    i = data_02149f14;
-    if (i == data_02149f04) {
+    end = gStageResSlotTail;
+    i = gStageResSlotHead;
+    if (i == gStageResSlotTail) {
         return NULL;
     }
     do {
-        slot = &data_02149f18[i];
+        slot = &gStageResSlots[i];
         p = ids;
         while (*p != 0) {
             if (slot->id == *p++) {
@@ -1736,25 +1736,25 @@ static inline BOOL StageRes_IsBusy(void) {
 }
 
 StageResSlot *StageRes_PeekSlot(void) {
-    if (data_02149f14 == data_02149f04) {
+    if (gStageResSlotHead == gStageResSlotTail) {
         return NULL;
     }
-    return &data_02149f18[data_02149f14];
+    return &gStageResSlots[gStageResSlotHead];
 }
 
 void StageRes_Pop_0205b348(void) {
-    if (data_02149f14 == data_02149f04) {
+    if (gStageResSlotHead == gStageResSlotTail) {
         return;
     }
-    data_02149f14++;
-    if (data_02149f14 >= 0x40) {
-        data_02149f14 = 0;
+    gStageResSlotHead++;
+    if (gStageResSlotHead >= 0x40) {
+        gStageResSlotHead = 0;
     }
 }
 
 StageResSlot *StageRes_PeekBack(BOOL pop) {
-    s32 end = data_02149f04;
-    if (data_02149f14 == end) {
+    s32 end = gStageResSlotTail;
+    if (gStageResSlotHead == end) {
         return NULL;
     }
     if (pop) {
@@ -1762,14 +1762,14 @@ StageResSlot *StageRes_PeekBack(BOOL pop) {
         if (end < 0) {
             end += 0x40;
         }
-        data_02149f04 = end;
+        gStageResSlotTail = end;
     } else {
         end -= 1;
         if (end < 0) {
             end += 0x40;
         }
     }
-    return &data_02149f18[end];
+    return &gStageResSlots[end];
 }
 
 
@@ -1796,8 +1796,8 @@ BOOL StageRes_RunSlots(void) {
     }
     n = 1;
     while (n-- != 0) {
-        if (data_0208bde8 != NULL) {
-            int r = data_0208bde8(slot);
+        if (gStageResDispatchFn != NULL) {
+            int r = gStageResDispatchFn(slot);
             if (r == -0x62) {
                 n++;
             } else {
@@ -1847,7 +1847,7 @@ u16 StageRes_EvalCond(StageRes *res, u16 *cmd) {
         u16 val;
         u16 v = cmd[2];
         int n = v & 0xff;
-        val = DataRes_ReadBits(data_02fe152c, (v & 0xff00) >> 8, n, cmd[3]);
+        val = DataRes_ReadBits(gDataRes, (v & 0xff00) >> 8, n, cmd[3]);
         len += 2;
         return StageRes_Compare(res, cmd + len, val) + len;
     }
@@ -1885,7 +1885,7 @@ u16 StageRes_AccessVar(StageRes *res, u16 *cmd, BOOL set, u16 value) {
         case 2: {
             u16 v = cmd[2];
             int n = v & 0xff;
-            res->value = DataRes_ReadBits(data_02fe152c, (v & 0xff00) >> 8, n, cmd[3]);
+            res->value = DataRes_ReadBits(gDataRes, (v & 0xff00) >> 8, n, cmd[3]);
             len += 2;
             break;
         }
@@ -1914,7 +1914,7 @@ u16 StageRes_AccessVar(StageRes *res, u16 *cmd, BOOL set, u16 value) {
             if (STAGE_VARS[0] != 1) {
                 u16 v = cmd[2];
                 int n = v & 0xff;
-                DataRes_WriteBits(data_02fe152c, (v & 0xff00) >> 8, n, cmd[3], value);
+                DataRes_WriteBits(gDataRes, (v & 0xff00) >> 8, n, cmd[3], value);
             }
             len += 2;
             break;
@@ -2087,15 +2087,15 @@ namespace m_StageCmd_0 {
 
 extern "C" {
 
-extern void *data_ov008_021d0500;
+extern void *gOv008Mgr;
 extern void func_ov008_021cf9b8(void *m, u32 id);
 
 void func_0205beb0(void) {
-    data_ov000_021ccd54->unk_c8 = TRUE;
+    gSceneCmd->unk_c8 = TRUE;
 }
 
 void func_0205bec8(u16 id) {
-    func_ov008_021cf9b8(data_ov008_021d0500, id);
+    func_ov008_021cf9b8(gOv008Mgr, id);
 }
 
 }
@@ -2116,21 +2116,21 @@ int StageRes_DispatchSlot(StageResSlot *slot) {
     if (Field_HasEvent(0x15)) {
         return -0x63;
     }
-    return data_0208bf9c[cmd](slot);
+    return StageCmd_OpTable[cmd](slot);
 }
 
 int func_0205bf70(StageResSlot *slot) {
     u16 a = slot->args[0];
     if (a == 0xffff) {
-        data_0214a424->unk_518_8 = 0;
+        gStageFlags->unk_518_8 = 0;
     } else {
-        data_0214a424->unk_518_8 = (u16)((u16)(a & ~0x8000) + 1);
+        gStageFlags->unk_518_8 = (u16)((u16)(a & ~0x8000) + 1);
     }
     return 0;
 }
 
 int StageCmd_Op03(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -2139,7 +2139,7 @@ int StageCmd_Op03(StageResSlot *slot) {
 }
 
 int StageCmd_Op04(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -2148,7 +2148,7 @@ int StageCmd_Op04(StageResSlot *slot) {
 }
 
 int StageCmd_Op05(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -2157,13 +2157,13 @@ int StageCmd_Op05(StageResSlot *slot) {
         StageRes *res = slot->res;
         u16 id = a & ~0x8000;
         u16 g = (a >> 12) & 8;
-        func_ov000_0218547c(state, slot->args[0], g ? data_02149ef8 : (void *)res->sub, id);
+        func_ov000_0218547c(state, slot->args[0], g ? gMsgRes : (void *)res->sub, id);
     }
     return 0;
 }
 
 int StageCmd_Op06(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -2172,14 +2172,14 @@ int StageCmd_Op06(StageResSlot *slot) {
         StageRes *res = slot->res;
         u16 id = a & ~0x8000;
         u16 g = (a >> 12) & 8;
-        SceneCmd_Push12(state, g ? data_02149ef8 : (void *)res->sub, id);
+        SceneCmd_Push12(state, g ? gMsgRes : (void *)res->sub, id);
     }
     return 0;
 }
 
 int StageCmd_Op07(StageResSlot *slot) {
     u32 v;
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     v = !slot->bits.flag9 ? data_02082a28[slot->args[0]] : slot->args[0];
@@ -2188,24 +2188,24 @@ int StageCmd_Op07(StageResSlot *slot) {
         StageRes *res = slot->res;
         u16 id = a & ~0x8000;
         u16 g = (a >> 12) & 8;
-        MessageQueue021cb980_Push08(data_ov000_021ccd30, v, id, g ? data_02149ef8 : (void *)res->sub);
+        MessageQueue021cb980_Push08(gMessageQueue, v, id, g ? gMsgRes : (void *)res->sub);
     } else {
-        MessageQueue021cb980_Push08(data_ov000_021ccd30, v, slot->args[1], NULL);
+        MessageQueue021cb980_Push08(gMessageQueue, v, slot->args[1], NULL);
     }
-    Field_PushEvent(data_ov000_021ccd54, 0x13, 0);
+    Field_PushEvent(gSceneCmd, 0x13, 0);
     return 0;
 }
 
 void StageRes_Push207(u16 a, u16 b) {
     s32 end;
     StageResSlot *slot;
-    end = data_02149f04;
-    slot = &data_02149f18[end];
+    end = gStageResSlotTail;
+    slot = &gStageResSlots[end];
     end++;
-    data_02149f04 = end;
+    gStageResSlotTail = end;
     if (end >= 0x40) {
         end = 0;
-        data_02149f04 = end;
+        gStageResSlotTail = end;
     }
     Slot_Init(slot);
     slot->res = NULL;
@@ -2236,7 +2236,7 @@ int StageCmd_Op08(StageResSlot *slot) {
         return 1;
     case 1:
         if (!Item_Give(id, 1)) {
-            SceneCmd_Push10(data_ov000_021ccd54, id);
+            SceneCmd_Push10(gSceneCmd, id);
         }
         break;
     case 3:
@@ -2251,20 +2251,20 @@ int StageCmd_Op08(StageResSlot *slot) {
 int StageCmd_Op09(StageResSlot *slot) {
     if (slot == NULL) {
         if (StageRes_Last()->args[0] == 2) {
-            data_02fe1534.unk_70 = data_0214a424->unk_020;
-            if (data_02149f14 != data_02149f04) {
-                s32 end = data_02149f04 - 1;
+            data_02fe1534.unk_70 = gStageFlags->unk_020;
+            if (gStageResSlotHead != gStageResSlotTail) {
+                s32 end = gStageResSlotTail - 1;
                 if (end < 0) {
                     end += 0x40;
                 }
-                data_02149f04 = end;
+                gStageResSlotTail = end;
             }
         }
         return 1;
     }
     if (slot->args[0] == 0) {
         {
-            StageFlags *f = data_0214a424;
+            StageFlags *f = gStageFlags;
             f->unk_020 += slot->args[1];
             if (f->unk_020 > 99999) {
                 f->unk_020 = 99999;
@@ -2274,7 +2274,7 @@ int StageCmd_Op09(StageResSlot *slot) {
             u32 v;
             StageFlags *f;
             v = slot->args[1];
-            f = data_0214a424;
+            f = gStageFlags;
             if (f->unk_00c + v >= 999999) {
                 f->unk_00c = 999999;
             } else {
@@ -2283,7 +2283,7 @@ int StageCmd_Op09(StageResSlot *slot) {
         }
     } else if (slot->args[0] == 1) {
         u16 x = slot->args[1];
-        StageFlags *f = data_0214a424;
+        StageFlags *f = gStageFlags;
         f->unk_020 = f->unk_020 > x ? f->unk_020 - x : 0;
     }
     return 1;
@@ -2292,33 +2292,33 @@ int StageCmd_Op09(StageResSlot *slot) {
 int StageCmd_Op0a(StageResSlot *slot) {
     if (slot == NULL) {
         if (StageRes_Last()->args[0] == 2) {
-            data_02fe1534.unk_70 = data_0214a424->unk_024;
-            if (data_02149f14 != data_02149f04) {
-                s32 end = data_02149f04 - 1;
+            data_02fe1534.unk_70 = gStageFlags->unk_024;
+            if (gStageResSlotHead != gStageResSlotTail) {
+                s32 end = gStageResSlotTail - 1;
                 if (end < 0) {
                     end += 0x40;
                 }
-                data_02149f04 = end;
+                gStageResSlotTail = end;
             }
         }
         return 1;
     }
     if (slot->args[0] == 0) {
-        StageFlags *f = data_0214a424;
+        StageFlags *f = gStageFlags;
         f->unk_024 += slot->args[1];
         if (f->unk_024 > 9999) {
             f->unk_024 = 9999;
         }
     } else if (slot->args[0] == 1) {
         u16 x = slot->args[1];
-        StageFlags *f = data_0214a424;
+        StageFlags *f = gStageFlags;
         f->unk_024 = f->unk_024 > x ? f->unk_024 - x : 0;
     }
     return 1;
 }
 
 int StageCmd_Op0b(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -2332,7 +2332,7 @@ int StageCmd_Op0c(StageResSlot *slot) {
 }
 
 int StageCmd_Op0d(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -2425,8 +2425,8 @@ int StageCmd_Op13(StageResSlot *slot) {
         w = 0;
         z = 0;
     }
-    if (data_ov000_021ccd6c->destExit == 0xff) {
-        StageCamera *cam = (StageCamera *)((u8 *)data_ov000_021ccd54 + 0xf4);
+    if (gFieldMgr->destExit == 0xff) {
+        StageCamera *cam = (StageCamera *)((u8 *)gSceneCmd + 0xf4);
         cam->x = x;
         cam->y = y;
         cam->w = w;
@@ -2510,7 +2510,7 @@ int StageCmd_Op14(StageResSlot *slot) {
     u16 a;
     StageRes *res;
     StageFieldCamState *st;
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     a = slot->args[0];
@@ -2523,7 +2523,7 @@ int StageCmd_Op14(StageResSlot *slot) {
     info.rot.v[2] = 0;
     res = slot->res;
     if (a == 0x1000) {
-        StageVec *pp = &((StageFieldPlayerPos *)data_ov000_021ccd54)->pos;
+        StageVec *pp = &((StageFieldPlayerPos *)gSceneCmd)->pos;
         info.pos.x = pp->x;
         info.pos.y = pp->y;
         info.pos.z = pp->z;
@@ -2534,10 +2534,10 @@ int StageCmd_Op14(StageResSlot *slot) {
         info.pos.z = p->z << 4;
     } else {
         StageObj3D *obj;
-        if (data_ov000_021ccd68 == NULL) {
+        if (gActorMgr == NULL) {
             obj = NULL;
         } else {
-            obj = (StageObj3D *)ActorMgr_FindKind(data_ov000_021ccd68, a & 0xf000, a);
+            obj = (StageObj3D *)ActorMgr_FindKind(gActorMgr, a & 0xf000, a);
         }
         if (obj != NULL) {
             info.pos.x = obj->pos.x;
@@ -2555,7 +2555,7 @@ int StageCmd_Op14(StageResSlot *slot) {
         info.rot.v[2] = 0;
         dist = p->z << 4;
     }
-    st = (StageFieldCamState *)data_ov000_021ccd54;
+    st = (StageFieldCamState *)gSceneCmd;
     st->camSet = 1;
     st->camPos.x = info.pos.x;
     st->camPos.y = info.pos.y;
@@ -2588,11 +2588,11 @@ namespace m_StageCmd_3 {
 extern "C" {
 
 int StageCmd_Op15(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    state = data_ov000_021ccd54;
+    state = gSceneCmd;
     state->unk_d3 = 0;
     state->cam.base.smooth = 1;
     return 1;
@@ -2656,14 +2656,14 @@ int StageCmd_Op16(StageResSlot *slot) {
     res = slot->res;
     if (id == 0) {
         o = Stage_FindObj3DByIdx(slot->args[3]);
-        l = Group_FindNode(data_ov000_021ccd64, slot->args[3]);
+        l = Group_FindNode(gGroup, slot->args[3]);
     } else if (!(id & 0x8000)) {
         o = Stage_FindObj3DPtr(id);
-        l = (StageLightObj *)Group_FindById(data_ov000_021ccd64, slot->args[1], 0xff);
+        l = (StageLightObj *)Group_FindById(gGroup, slot->args[1], 0xff);
     }
     id = slot->args[1];
     if (id == 0x1000) {
-        pos = ((StageCamView *)data_ov000_021ccd54)->cur.pos;
+        pos = ((StageCamView *)gSceneCmd)->cur.pos;
     } else if (id == 0) {
         if (o != NULL) {
             pos = o->pos;
@@ -2677,7 +2677,7 @@ int StageCmd_Op16(StageResSlot *slot) {
         pos.z = p[2] << 4;
     } else {
         StageObjInfo *info = (StageObjInfo *)Tbl_FindEntry_0206fef8(id);
-        s32 n = Group_GetSpawnPositions(data_ov000_021ccd64, 0x20, list, id >> 12, id);
+        s32 n = Group_GetSpawnPositions(gGroup, 0x20, list, id >> 12, id);
         s32 hh = info->height << 4;
         s32 h;
         s32 i = 0;
@@ -2731,7 +2731,7 @@ int StageCmd_Op16(StageResSlot *slot) {
     {
         StageCamView *cam;
         s32 f = slot->args[4] != 0 ? (s16)slot->args[4] : 0x1000;
-        cam = (StageCamView *)data_ov000_021ccd54;
+        cam = (StageCamView *)gSceneCmd;
         cam->active = slot->args[0];
         cam->pos = pos;
         cam->ang = ang;
@@ -2746,7 +2746,7 @@ int StageCmd_Op17(StageResSlot *slot) {
 }
 
 int StageCmd_Op18(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -2769,7 +2769,7 @@ typedef struct FieldStateBits {
 } FieldStateBits;
 
 int StageCmd_Op19(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     FieldStateBits *b;
     u16 v;
     u16 a0;
@@ -2838,7 +2838,7 @@ extern void MessageQueue021cb980_Push15(FieldPlayer *player, u32 id, u8 *pos, BO
 extern void SceneCmd_Push07(FieldState *state, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f);
 
 int StageCmd_Op1a(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -2850,7 +2850,7 @@ int StageCmd_Op1a(StageResSlot *slot) {
 }
 
 int StageCmd_Op1b(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     data_02fe1534.unk_42 = 7;
@@ -2858,7 +2858,7 @@ int StageCmd_Op1b(StageResSlot *slot) {
     data_02fe1534.unk_80 = slot->args[1];
     StageRes_Pop();
     {
-        FieldState *state = data_ov000_021ccd54;
+        FieldState *state = gSceneCmd;
         state->stageFlags = TRUE;
         func_ov000_02182590(&state->stageFlags);
     }
@@ -2866,12 +2866,12 @@ int StageCmd_Op1b(StageResSlot *slot) {
 }
 
 int StageCmd_Op1c(StageResSlot *slot) {
-    SceneCmd_Push06(data_ov000_021ccd54, slot->args[0], slot->args[1], slot->args[2], slot->args[3], slot->args[4]);
+    SceneCmd_Push06(gSceneCmd, slot->args[0], slot->args[1], slot->args[2], slot->args[3], slot->args[4]);
     return 1;
 }
 
 int StageCmd_Op1d(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -2880,7 +2880,7 @@ int StageCmd_Op1d(StageResSlot *slot) {
 }
 
 int StageCmd_Op20(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -2889,12 +2889,12 @@ int StageCmd_Op20(StageResSlot *slot) {
 }
 
 int StageCmd_Op21(StageResSlot *slot) {
-    SceneCmd_Push07(data_ov000_021ccd54, slot->args[0], slot->args[1], slot->args[2], slot->args[3], slot->args[4], slot->args[5]);
+    SceneCmd_Push07(gSceneCmd, slot->args[0], slot->args[1], slot->args[2], slot->args[3], slot->args[4], slot->args[5]);
     return 1;
 }
 
 int StageCmd_Op22(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -2903,7 +2903,7 @@ int StageCmd_Op22(StageResSlot *slot) {
 }
 
 int StageCmd_Op23(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -2912,7 +2912,7 @@ int StageCmd_Op23(StageResSlot *slot) {
 }
 
 int StageCmd_Op27(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -2921,70 +2921,70 @@ int StageCmd_Op27(StageResSlot *slot) {
 }
 
 int StageCmd_Op28(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    MessageQueue021cb980_Push10(data_ov000_021ccd30, slot->args[0]);
-    Field_PushEvent(data_ov000_021ccd54, 0x14, 0);
+    MessageQueue021cb980_Push10(gMessageQueue, slot->args[0]);
+    Field_PushEvent(gSceneCmd, 0x14, 0);
     return 1;
 }
 
 int StageCmd_Op29(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    MessageQueue021cb980_Push11(data_ov000_021ccd30, slot->args[0]);
-    Field_PushEvent(data_ov000_021ccd54, 0x14, 0);
+    MessageQueue021cb980_Push11(gMessageQueue, slot->args[0]);
+    Field_PushEvent(gSceneCmd, 0x14, 0);
     return 1;
 }
 
 int StageCmd_Op2a(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    MessageQueue021cb980_Push12(data_ov000_021ccd30, slot->args[0], slot->args[1], slot->args[2]);
-    Field_PushEvent(data_ov000_021ccd54, 0x14, 0);
+    MessageQueue021cb980_Push12(gMessageQueue, slot->args[0], slot->args[1], slot->args[2]);
+    Field_PushEvent(gSceneCmd, 0x14, 0);
     return 1;
 }
 
 int StageCmd_Op1e(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    MessageQueue021cb980_Push13(data_ov000_021ccd30, 0, slot->args[0]);
-    Field_PushEvent(data_ov000_021ccd54, 0x14, 0);
+    MessageQueue021cb980_Push13(gMessageQueue, 0, slot->args[0]);
+    Field_PushEvent(gSceneCmd, 0x14, 0);
     return 1;
 }
 
 int StageCmd_Op1f(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    MessageQueue021cb980_Push13(data_ov000_021ccd30, 1, slot->args[0]);
-    Field_PushEvent(data_ov000_021ccd54, 0x14, 0);
+    MessageQueue021cb980_Push13(gMessageQueue, 1, slot->args[0]);
+    Field_PushEvent(gSceneCmd, 0x14, 0);
     return 1;
 }
 
 int StageCmd_Op24(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    MessageQueue021cb980_Push13(data_ov000_021ccd30, 2, slot->args[0]);
-    Field_PushEvent(data_ov000_021ccd54, 0x14, 0);
+    MessageQueue021cb980_Push13(gMessageQueue, 2, slot->args[0]);
+    Field_PushEvent(gSceneCmd, 0x14, 0);
     return 1;
 }
 
 int StageCmd_Op25(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    MessageQueue021cb980_Push13(data_ov000_021ccd30, 3, slot->args[0]);
-    Field_PushEvent(data_ov000_021ccd54, 0x14, 0);
+    MessageQueue021cb980_Push13(gMessageQueue, 3, slot->args[0]);
+    Field_PushEvent(gSceneCmd, 0x14, 0);
     return 1;
 }
 
 int StageCmd_Op26(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -2993,7 +2993,7 @@ int StageCmd_Op26(StageResSlot *slot) {
 }
 
 int StageCmd_Op2b(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -3002,7 +3002,7 @@ int StageCmd_Op2b(StageResSlot *slot) {
 }
 
 int StageCmd_Op2f(StageResSlot *slot) {
-    data_ov000_021ccd30->flag1 = slot->args[0];
+    gMessageQueue->flag1 = slot->args[0];
     if (slot->args[0] != 0) {
         StagePlayer *player = ActorMgr_FindPlayer();
         if (player != NULL) {
@@ -3015,16 +3015,16 @@ int StageCmd_Op2f(StageResSlot *slot) {
 
 
 int StageCmd_Op2c(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    MessageQueue021cb980_Push14(data_ov000_021ccd30, 0);
-    Field_PushEvent(data_ov000_021ccd54, 0x17, 0);
+    MessageQueue021cb980_Push14(gMessageQueue, 0);
+    Field_PushEvent(gSceneCmd, 0x17, 0);
     return 1;
 }
 
 int StageCmd_Op2d(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     {
@@ -3058,86 +3058,86 @@ int StageCmd_Op2d(StageResSlot *slot) {
         if (slot->args[1] & 0x8000) {
             pos = res->posEv->pos + (u16)(slot->args[1] & ~0x8000) * 6;
         }
-        MessageQueue021cb980_Push15(data_ov000_021ccd30, id, pos, flag);
+        MessageQueue021cb980_Push15(gMessageQueue, id, pos, flag);
     }
-    Field_PushEvent(data_ov000_021ccd54, 0x17, 0);
+    Field_PushEvent(gSceneCmd, 0x17, 0);
     return 1;
 }
 
 
 int StageCmd_Op2e(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     if (slot->args[0] != 0) {
         if (Field_IsPlayerActing()) {
-            MessageQueue021cb980_Push09_0a(data_ov000_021ccd30, 0, 0);
-            Field_PushEvent(data_ov000_021ccd54, 0x19, 0);
+            MessageQueue021cb980_Push09_0a(gMessageQueue, 0, 0);
+            Field_PushEvent(gSceneCmd, 0x19, 0);
             return -0x63;
         }
-        MessageQueue021cb980_Push09_0a(data_ov000_021ccd30, 1, slot->args[1]);
-        Field_PushEvent(data_ov000_021ccd54, 0x18, 0);
+        MessageQueue021cb980_Push09_0a(gMessageQueue, 1, slot->args[1]);
+        Field_PushEvent(gSceneCmd, 0x18, 0);
     } else {
-        MessageQueue021cb980_Push09_0a(data_ov000_021ccd30, 0, 0);
-        Field_PushEvent(data_ov000_021ccd54, 0x19, 0);
+        MessageQueue021cb980_Push09_0a(gMessageQueue, 0, 0);
+        Field_PushEvent(gSceneCmd, 0x19, 0);
     }
     return 1;
 }
 
 int StageCmd_Op30(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     data_02fe1534.unk_2e = slot->args[2];
     data_02fe1534.unk_30 = slot->args[3];
-    MessageQueue021cb980_Push0b_0c(data_ov000_021ccd30, 1, slot->args[0], slot->args[1], data_02fe1534.unk_2e, data_02fe1534.unk_30);
+    MessageQueue021cb980_Push0b_0c(gMessageQueue, 1, slot->args[0], slot->args[1], data_02fe1534.unk_2e, data_02fe1534.unk_30);
     return 1;
 }
 
 int StageCmd_Op31(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     data_02fe1534.unk_2e = 0;
     data_02fe1534.unk_30 = 0;
-    MessageQueue021cb980_Push0b_0c(data_ov000_021ccd30, 0, 0, 0, 0, 0);
+    MessageQueue021cb980_Push0b_0c(gMessageQueue, 0, 0, 0, 0, 0);
     return 1;
 }
 
 int StageCmd_Op32(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    Actor_SetDir(data_ov000_021ccd30->unk_11c, data_02fe1534.unk_2e, data_02fe1534.unk_30);
+    Actor_SetDir(gMessageQueue->unk_11c, data_02fe1534.unk_2e, data_02fe1534.unk_30);
     return 1;
 }
 
 int StageCmd_Op33(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    MessageQueue021cb980_Push0d_0e(data_ov000_021ccd30, 1, slot->args[0], slot->args[1] * 60, slot->args[2]);
+    MessageQueue021cb980_Push0d_0e(gMessageQueue, 1, slot->args[0], slot->args[1] * 60, slot->args[2]);
     return 1;
 }
 
 int StageCmd_Op34(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    MessageQueue021cb980_Push0d_0e(data_ov000_021ccd30, 0, 0, 0x7fffffff, 0);
+    MessageQueue021cb980_Push0d_0e(gMessageQueue, 0, 0, 0x7fffffff, 0);
     return 1;
 }
 
 int StageCmd_Op35(StageResSlot *slot) {
     FieldActorState *st;
-    if (!func_ov000_021705ec(data_ov000_021ccd30->unk_11c)) {
+    if (!func_ov000_021705ec(gMessageQueue->unk_11c)) {
         return -0x63;
     }
-    st = data_ov000_021ccd30->unk_11c->state;
+    st = gMessageQueue->unk_11c->state;
     if (st->bits.flag9 == 1 ? TRUE : FALSE) {
         return 1;
     }
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     switch (slot->args[0]) {
@@ -3167,10 +3167,10 @@ int StageCmd_Op36(StageResSlot *slot) {
         Slot_Push(slot->res, 0x135, slot->args[0]);
         return 1;
     }
-    if (!func_ov000_021705ec(data_ov000_021ccd30->unk_11c)) {
+    if (!func_ov000_021705ec(gMessageQueue->unk_11c)) {
         return -0x63;
     }
-    st = data_ov000_021ccd30->unk_11c->state;
+    st = gMessageQueue->unk_11c->state;
     if (st->bits.flag9 == 1 ? TRUE : FALSE) {
         return 1;
     }
@@ -3187,7 +3187,7 @@ int StageCmd_Op36(StageResSlot *slot) {
 }
 
 int StageCmd_Op37(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     {
@@ -3195,14 +3195,14 @@ int StageCmd_Op37(StageResSlot *slot) {
         StageRes *res = slot->res;
         u16 hi = (arg >> 12) & 8;
         u16 id = arg & ~0x8000;
-        MessageQueue021cb980_Push0f(data_ov000_021ccd30, slot->args[0], MsgRes_GetString(hi ? data_02149ef8 : (void *)res->sub, id));
+        MessageQueue021cb980_Push0f(gMessageQueue, slot->args[0], MsgRes_GetString(hi ? gMsgRes : (void *)res->sub, id));
     }
-    Field_PushEvent(data_ov000_021ccd54, 0x1a, 0);
+    Field_PushEvent(gSceneCmd, 0x1a, 0);
     return 1;
 }
 
 int StageCmd_Op38(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -3211,7 +3211,7 @@ int StageCmd_Op38(StageResSlot *slot) {
 }
 
 int StageCmd_Op39(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -3344,7 +3344,7 @@ extern "C" {
 extern void SceneCmd_Push0c(FieldState *state);
 
 int StageCmd_Op3c(StageResSlot *slot) {
-    SceneCmd_Push0c(data_ov000_021ccd54);
+    SceneCmd_Push0c(gSceneCmd);
     return 1;
 }
 
@@ -3461,9 +3461,9 @@ int StageCmd_Op3e(StageResSlot *slot) {
         }
     }
     {
-        void *obj = Group_FindById(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
+        void *obj = Group_FindById(gGroup, slot->args[0], data_02fe1534.b & 0xff);
         if (obj != NULL) {
-            Group_RemoveNode(data_ov000_021ccd64, obj, 1);
+            Group_RemoveNode(gGroup, obj, 1);
         } else {
             StageObj3D *o = Stage_FindObj3DPtr(slot->args[0]);
             if (o != NULL) {
@@ -3485,9 +3485,9 @@ int StageCmd_Op3f(StageResSlot *slot) {
         }
     }
     {
-        void *obj = Group_FindById(data_ov000_021ccd64, slot->args[0], slot->args[1] & 0xff);
+        void *obj = Group_FindById(gGroup, slot->args[0], slot->args[1] & 0xff);
         if (obj != NULL) {
-            Group_RemoveNode(data_ov000_021ccd64, obj, 1);
+            Group_RemoveNode(gGroup, obj, 1);
         } else {
             StageObj3D *o = Stage_FindObj3DPtr(slot->args[0]);
             if (o != NULL) {
@@ -3504,10 +3504,10 @@ int StageCmd_Op40(StageResSlot *slot) {
             return -0x63;
         }
     }
-    if (Group_FindNodeByKind(data_ov000_021ccd64, slot->args[0], slot->args[2] & 0xff) == NULL) {
-        void *obj = Group_FindById(data_ov000_021ccd64, slot->args[0], slot->args[1] & 0xff);
+    if (Group_FindNodeByKind(gGroup, slot->args[0], slot->args[2] & 0xff) == NULL) {
+        void *obj = Group_FindById(gGroup, slot->args[0], slot->args[1] & 0xff);
         if (obj != NULL) {
-            Group_RemoveNode(data_ov000_021ccd64, obj, 1);
+            Group_RemoveNode(gGroup, obj, 1);
         }
     }
     return 1;
@@ -3523,10 +3523,10 @@ int StageCmd_Op41(StageResSlot *slot) {
         u16 idx = slot->args[1];
         u16 kind = id & 0xf000;
         if (idx == 0xffff) {
-            if (data_ov000_021ccd68 == NULL) {
+            if (gActorMgr == NULL) {
                 o = NULL;
             } else {
-                o = (StageObj3D *)ActorMgr_FindKind(data_ov000_021ccd68, kind, id);
+                o = (StageObj3D *)ActorMgr_FindKind(gActorMgr, kind, id);
             }
         } else {
             StageArea *area = (StageArea *)(slot->res->posEv->ev + idx * 12);
@@ -3536,10 +3536,10 @@ int StageCmd_Op41(StageResSlot *slot) {
             pos.y = area->y << 4;
             pos.z = area->z << 4;
             r = area->w << 4;
-            if (data_ov000_021ccd68 == NULL) {
+            if (gActorMgr == NULL) {
                 o = NULL;
             } else {
-                o = ActorMgr_FindKindNear(data_ov000_021ccd68, kind, id, &pos, r);
+                o = ActorMgr_FindKindNear(gActorMgr, kind, id, &pos, r);
             }
         }
     }
@@ -3628,10 +3628,10 @@ int StageCmd_Op45(StageResSlot *slot) {
         l = (StageLightObj *)data_02149f00;
     } else if (slot->args[0] != 0) {
         o = Stage_FindObj3DPtr(slot->args[0]);
-        l = (StageLightObj *)Group_FindById(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
+        l = (StageLightObj *)Group_FindById(gGroup, slot->args[0], data_02fe1534.b & 0xff);
     } else {
         o = Stage_FindObj3DByIdx(slot->args[1]);
-        l = Group_FindNode(data_ov000_021ccd64, slot->args[1]);
+        l = Group_FindNode(gGroup, slot->args[1]);
     }
     if (o != NULL) {
         o->pos = pos;
@@ -3667,13 +3667,13 @@ int StageCmd_Op46(StageResSlot *slot) {
         l = (StageLightObj *)data_02149f00;
     } else if (slot->args[0] != 0) {
         o = Stage_FindObj3DPtr(slot->args[0]);
-        l = (StageLightObj *)Group_FindById(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
+        l = (StageLightObj *)Group_FindById(gGroup, slot->args[0], data_02fe1534.b & 0xff);
     } else if (slot->args[1] == 0xffff) {
         o = Stage_FindObj3DByIdx(data_02fe1534.unk_26);
-        l = Group_FindNode(data_ov000_021ccd64, data_02fe1534.unk_26);
+        l = Group_FindNode(gGroup, data_02fe1534.unk_26);
     } else {
         o = Stage_FindObj3DByIdx(slot->args[1]);
-        l = Group_FindNode(data_ov000_021ccd64, slot->args[1]);
+        l = Group_FindNode(gGroup, slot->args[1]);
     }
     if (o != NULL) {
         o->params[slot->args[2]] = slot->args[3];
@@ -3693,13 +3693,13 @@ int StageCmd_Op47(StageResSlot *slot) {
         l = (StageLightObj *)data_02149f00;
     } else if (slot->args[0] != 0) {
         o = Stage_FindObj3DPtr(slot->args[0]);
-        l = (StageLightObj *)Group_FindById(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
+        l = (StageLightObj *)Group_FindById(gGroup, slot->args[0], data_02fe1534.b & 0xff);
     } else if (slot->args[1] == 0xffff) {
         o = Stage_FindObj3DByIdx(data_02fe1534.unk_26);
-        l = Group_FindNode(data_ov000_021ccd64, data_02fe1534.unk_26);
+        l = Group_FindNode(gGroup, data_02fe1534.unk_26);
     } else {
         o = Stage_FindObj3DByIdx(slot->args[1]);
-        l = Group_FindNode(data_ov000_021ccd64, slot->args[1]);
+        l = Group_FindNode(gGroup, slot->args[1]);
     }
     if (o != NULL) {
         v = o->params[slot->args[2]];
@@ -3724,7 +3724,7 @@ int StageCmd_Op48(StageResSlot *slot) {
     if (id == 0xffff) {
         l = (StageObj3D *)data_02149f10;
     } else if (id != 0) {
-        o = ActorMgr_GetGroup(data_ov000_021ccd68, id & 0xf000);
+        o = ActorMgr_GetGroup(gActorMgr, id & 0xf000);
     } else if (slot->args[1] == 0xffff) {
         l = Stage_FindObj3DByIdx(data_02fe1534.unk_26);
     } else {
@@ -3767,7 +3767,7 @@ int func_0205f5c4(StageRes *res, u16 id, u16 idx, u16 posIdx, u16 mode) {
         o = Stage_FindObj3DByIdx(idx);
     }
     if (o != NULL && (pl = ActorMgr_FindPlayer()) != NULL) {
-        cur = &((StageCamView *)data_ov000_021ccd54)->cur;
+        cur = &((StageCamView *)gSceneCmd)->cur;
         if (posIdx != 0) {
             s16 *p = (s16 *)(res->posEv->pos + (u16)(posIdx & 0x7fff) * 6);
             // Written as s16 and read back as u16, which keeps ang on the stack.
@@ -3804,7 +3804,7 @@ int func_0205f5c4(StageRes *res, u16 id, u16 idx, u16 posIdx, u16 mode) {
             pos = o->pos;
             pos.y += o->unk_68;
         }
-        cam = (StageCamView *)data_ov000_021ccd54;
+        cam = (StageCamView *)gSceneCmd;
         cam->active = 0xffff;
         cam->pos = pos;
         cam->ang = ang;
@@ -3832,7 +3832,7 @@ int StageCmd_Op4a(StageResSlot *slot) {
 }
 
 int StageCmd_Op4b(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -3888,7 +3888,7 @@ int StageCmd_Op4e(StageResSlot *slot) {
             pos.y = p[1] << 4;
             pos.z = p[2] << 4;
         } else if (arg == 0xff) {
-            FieldMgr *mgr = data_ov000_021ccd6c;
+            FieldMgr *mgr = gFieldMgr;
             u8 i = mgr->exit;
             FieldExit *exits = mgr->exits;
             FieldExit *pt;
@@ -3914,7 +3914,7 @@ int StageCmd_Op4e(StageResSlot *slot) {
         player->unk_b08 = 0x252;
     }
     if (slot->args[1] != 0) {
-        Field_PushEvent(data_ov000_021ccd54, 0xb, 0);
+        Field_PushEvent(gSceneCmd, 0xb, 0);
     }
     return 1;
 }
@@ -3948,7 +3948,7 @@ void func_0205fc88(u32 flags) {
         }
     }
     if ((flags & 0x30) || (flags & 0xc00)) {
-        Field_PushEvent(data_ov000_021ccd54, 0xb, 0);
+        Field_PushEvent(gSceneCmd, 0xb, 0);
     }
 }
 
@@ -3996,39 +3996,39 @@ int StageCmd_Op50(StageResSlot *slot) {
         func_020600cc(slot, &pos, rot, &idx);
         if (idx == 0xfe) {
             data_02fe1534.unk_16 = 1;
-            data_ov000_021ccd6c->destExit = 0xff;
+            gFieldMgr->destExit = 0xff;
         } else if (idx == 0xffff) {
-            if (data_ov000_021ccd6c->destExit == 0xff && player != NULL) {
+            if (gFieldMgr->destExit == 0xff && player != NULL) {
                 Robo021ca458_SetPosRot(player, &pos, rot);
                 if (!(flags & 0x20)) {
                     player->unk_vf18();
                 }
                 {
-                    VecFx32 *v = &data_ov000_021ccd6c->playerPos;
+                    VecFx32 *v = &gFieldMgr->playerPos;
                     v->x = pos.x;
                     v->y = pos.y;
                     v->z = pos.z;
                 }
             }
             Stage_SetMark(&pos, rot[1], 1);
-            data_ov000_021ccd6c->destExit = 0xff;
+            gFieldMgr->destExit = 0xff;
             if (player != NULL && !Field_HasEvent(10)) {
                 data_02fe1534.unk_16 = 0;
             }
         } else {
-            data_ov000_021ccd6c->destExit = idx;
+            gFieldMgr->destExit = idx;
         }
-        data_ov000_021ccd6c->exit = 0xff;
+        gFieldMgr->exit = 0xff;
         if (flags == 0) {
             break;
         }
         slot->bits.unk_04_0 = 1;
     case 1:
-        if (!Stage_IsWirelessReady() || Field_IsEventPending(data_ov000_021ccd54)) {
+        if (!Stage_IsWirelessReady() || Field_IsEventPending(gSceneCmd)) {
             return -0x63;
         }
         if (player == NULL) {
-            SceneCmd_Push0b(data_ov000_021ccd54);
+            SceneCmd_Push0b(gSceneCmd);
             return -0x63;
         }
         func_0205fc88(flags);
@@ -4050,8 +4050,8 @@ extern void func_0205fc88(u32 flags);
 extern void SceneCmd_Push0b(FieldState *state);
 extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *ObjPool_AddBoxMesh(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
-extern SndQueue *data_02097e48;
-extern SndMgr *data_02097e4c;
+extern SndQueue *gSndQueue;
+extern SndMgr *gSndMgr;
 extern void SceneCmd_Push25(FieldState *state, u16 a);
 extern void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
@@ -4082,11 +4082,11 @@ u16 func_020600cc(StageResSlot *slot, StageVec *pos, u16 *rot, u16 *idx) {
 }
 
 int StageCmd_Op51(StageResSlot *slot) {
-    if (!Stage_IsWirelessReady() || Field_IsEventPending(data_ov000_021ccd54)) {
+    if (!Stage_IsWirelessReady() || Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     if (ActorMgr_FindPlayer() == NULL) {
-        SceneCmd_Push0b(data_ov000_021ccd54);
+        SceneCmd_Push0b(gSceneCmd);
         return -0x63;
     }
     func_0205fc88(slot->args[0]);
@@ -4121,8 +4121,8 @@ extern void func_0205fc88(u32 flags);
 extern void SceneCmd_Push0b(FieldState *state);
 extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *ObjPool_AddBoxMesh(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
-extern SndQueue *data_02097e48;
-extern SndMgr *data_02097e4c;
+extern SndQueue *gSndQueue;
+extern SndMgr *gSndMgr;
 extern void SceneCmd_Push25(FieldState *state, u16 a);
 extern void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
@@ -4161,7 +4161,7 @@ int StageCmd_Op53(StageResSlot *slot) {
 }
 
 int StageCmd_Op54(StageResSlot *slot) {
-    ObjPoolEntry *e = ObjPool_Add(data_02149f0c, slot->args[0], (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12));
+    ObjPoolEntry *e = ObjPool_Add(gStageObjPool, slot->args[0], (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12));
     e->active |= 2;
     return 1;
 }
@@ -4171,7 +4171,7 @@ int StageCmd_Op55(StageResSlot *slot) {
     ObjPoolEntry *e;
     ObjPoolParam *prm = (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12);
     a = slot->args[1];
-    e = ObjPool_Add(data_02149f0c, slot->args[0], prm);
+    e = ObjPool_Add(gStageObjPool, slot->args[0], prm);
     if ((u16)(a & 0xfff) == 0xfff) {
         e->unk_06 = 0xffff;
     } else {
@@ -4184,7 +4184,7 @@ int StageCmd_Op55(StageResSlot *slot) {
 
 int StageCmd_Op56(StageResSlot *slot) {
     u16 id = slot->args[0];
-    ObjPool *pool = data_02149f0c;
+    ObjPool *pool = gStageObjPool;
     ObjPoolEntry *e = pool->entries;
     int i;
     for (i = 0; i < 16; i++, e++) {
@@ -4208,7 +4208,7 @@ static inline BOOL ObjPoolParam_HasRot(ObjPoolParam *prm) {
 int StageCmd_Op57(StageResSlot *slot) {
     ObjPoolParam *prm = (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12);
     if (slot->args[1] == 0) {
-        ObjPool *pool = data_02149f0c;
+        ObjPool *pool = gStageObjPool;
         BOOL rot = ObjPoolParam_HasRot(prm);
         if (rot) {
             ObjPool_AddBoxMesh(pool, slot->args[0], prm, 0);
@@ -4233,7 +4233,7 @@ int StageCmd_Op57(StageResSlot *slot) {
             }
         }
     } else {
-        ObjPool *pool = data_02149f0c;
+        ObjPool *pool = gStageObjPool;
         BOOL rot = ObjPoolParam_HasRot(prm);
         if (rot) {
             ObjPool_AddBoxMesh(pool, slot->args[0], prm, 1);
@@ -4255,8 +4255,8 @@ extern void func_0205fc88(u32 flags);
 extern void SceneCmd_Push0b(FieldState *state);
 extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *ObjPool_AddBoxMesh(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
-extern SndQueue *data_02097e48;
-extern SndMgr *data_02097e4c;
+extern SndQueue *gSndQueue;
+extern SndMgr *gSndMgr;
 extern void SceneCmd_Push25(FieldState *state, u16 a);
 extern void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
@@ -4268,7 +4268,7 @@ int func_02060898(u16 id, u16 idx, int val);
 
 int StageCmd_Op58(StageResSlot *slot) {
     u16 id = slot->args[0];
-    ObjPool *pool = data_02149f0c;
+    ObjPool *pool = gStageObjPool;
     ObjPoolEntry *e = pool->entries;
     int i;
     for (i = 0; i < 16; i++, e++) {
@@ -4284,7 +4284,7 @@ int StageCmd_Op58(StageResSlot *slot) {
 
 int StageCmd_Op59(StageResSlot *slot) {
     u16 f = slot->args[1];
-    ObjPoolEntry *e = ObjPool_Add(data_02149f0c, slot->args[0], NULL);
+    ObjPoolEntry *e = ObjPool_Add(gStageObjPool, slot->args[0], NULL);
     e->kind = 5;
     e->active |= f;
     return 1;
@@ -4292,7 +4292,7 @@ int StageCmd_Op59(StageResSlot *slot) {
 
 int StageCmd_Op5a(StageResSlot *slot) {
     u16 id = slot->args[0];
-    ObjPool *pool = data_02149f0c;
+    ObjPool *pool = gStageObjPool;
     ObjPoolEntry *e = pool->entries;
     int i;
     for (i = 0; i < 16; i++, e++) {
@@ -4307,14 +4307,14 @@ int StageCmd_Op5a(StageResSlot *slot) {
 }
 
 int StageCmd_Op5b(StageResSlot *slot) {
-    ObjPoolEntry *e = ObjPool_Add(data_02149f0c, slot->args[0], (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12));
+    ObjPoolEntry *e = ObjPool_Add(gStageObjPool, slot->args[0], (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12));
     e->active |= 8;
     return 1;
 }
 
 int StageCmd_Op5c(StageResSlot *slot) {
     u16 id = slot->args[0];
-    ObjPool *pool = data_02149f0c;
+    ObjPool *pool = gStageObjPool;
     ObjPoolEntry *e = pool->entries;
     int i;
     for (i = 0; i < 16; i++, e++) {
@@ -4336,10 +4336,10 @@ int func_02060898(u16 id, u16 idx, int val) {
         l = (StageLightObj *)data_02149f00;
     } else if (id != 0) {
         o = Stage_FindObj3DPtr(id);
-        l = (StageLightObj *)Group_FindById(data_ov000_021ccd64, id, data_02fe1534.b & 0xff);
+        l = (StageLightObj *)Group_FindById(gGroup, id, data_02fe1534.b & 0xff);
     } else {
         o = Stage_FindObj3DByIdx(idx);
-        l = Group_FindNode(data_ov000_021ccd64, idx);
+        l = Group_FindNode(gGroup, idx);
     }
     if (o != NULL) {
         o->params[5] = val;
@@ -4373,7 +4373,7 @@ namespace m_Flags {
 extern "C" {
 
 static inline u32 *Flags_FindFreeSlot(void) {
-    StageFlags *flags = data_0214a424;
+    StageFlags *flags = gStageFlags;
     u32 i;
     for (i = 0; i < 2; i++) {
         if (flags->slots[i] == 0xffffffff) {
@@ -4397,7 +4397,7 @@ static inline void Flags_AddSlotArgs(StageResSlot *slot) {
 
 // Clears every slot whose key matches a:b:c, whatever its low byte.
 static inline void Flags_ClearSlot(u8 c, u8 b, u8 a) {
-    StageFlags *flags = data_0214a424;
+    StageFlags *flags = gStageFlags;
     u32 i;
     u32 key = ((a & 0xff) << 24) | ((b & 0xff) << 16) | ((c & 0xff) << 8);
     for (i = 0; i < 2; i++) {
@@ -4439,8 +4439,8 @@ extern void func_0205fc88(u32 flags);
 extern void SceneCmd_Push0b(FieldState *state);
 extern ObjPoolEntry *ObjPool_Add(ObjPool *pool, u16 id, ObjPoolParam *param);
 extern void *ObjPool_AddBoxMesh(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
-extern SndQueue *data_02097e48;
-extern SndMgr *data_02097e4c;
+extern SndQueue *gSndQueue;
+extern SndMgr *gSndMgr;
 extern void SceneCmd_Push25(FieldState *state, u16 a);
 extern void SndQueue_ResetNodes_0204aa10(SndQueue *queue);
 extern void SndMgr_LoadHeapState(SndMgr *mgr, int a, int b);
@@ -4451,7 +4451,7 @@ extern void SndQueue_Pop(SndQueue *queue);
 int func_02060898(u16 id, u16 idx, int val);
 
 int StageCmd_Op61(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -4465,22 +4465,22 @@ int StageCmd_Op62(StageResSlot *slot) {
     }
     switch (slot->args[0]) {
     case 0:
-        data_02097e48->flag0 = 0;
+        gSndQueue->flag0 = 0;
         break;
     case 1:
-        data_02097e48->flag0 = 1;
+        gSndQueue->flag0 = 1;
         break;
     case 2:
-        data_02097e48->flag2 = 0;
+        gSndQueue->flag2 = 0;
         break;
     case 3:
         if (Field_HasEvent(0xa)) {
             return -0x63;
         }
-        SndQueue_ResetNodes_0204aa10(data_02097e48);
-        data_02097e48->flag2 = 1;
+        SndQueue_ResetNodes_0204aa10(gSndQueue);
+        gSndQueue->flag2 = 1;
         {
-            SndQueue *q = data_02097e48;
+            SndQueue *q = gSndQueue;
             if (q->flag3) {
                 q->unk_06 = 0x8000;
                 q->unk_08 = 10;
@@ -4489,13 +4489,13 @@ int StageCmd_Op62(StageResSlot *slot) {
         }
         break;
     case 4:
-        data_02097e48->flag3 = 0;
+        gSndQueue->flag3 = 0;
         break;
     case 5:
-        data_02097e48->flag3 = 1;
+        gSndQueue->flag3 = 1;
         break;
     case 6:
-        SndMgr_LoadHeapState(data_02097e4c, 1, 1);
+        SndMgr_LoadHeapState(gSndMgr, 1, 1);
         break;
     }
     return 1;
@@ -4506,9 +4506,9 @@ int StageCmd_Op63(StageResSlot *slot) {
         return -0x63;
     }
     {
-        SndQueue *q = data_02097e48;
+        SndQueue *q = gSndQueue;
         if (q->unk_06 != 0xffff ? TRUE : FALSE) {
-            SceneCmd_Push27(data_ov000_021ccd54, 1, 0, 0);
+            SceneCmd_Push27(gSceneCmd, 1, 0, 0);
             return -0x63;
         }
         SndQueue_Push_0204aab0(q, slot->args[0]);
@@ -4522,7 +4522,7 @@ int StageCmd_Op64(StageResSlot *slot) {
     }
     {
         u16 id = slot->args[0];
-        SndQueue *q = data_02097e48;
+        SndQueue *q = gSndQueue;
         if (q->flag0) {
             if (!(q->unk_06 == 0xffff && q->unk_04 == id)) {
                 if (q->unk_02 != 10 && q->unk_02 != 0) {
@@ -4546,7 +4546,7 @@ int StageCmd_Op65(StageResSlot *slot) {
         return -0x63;
     }
     {
-        SndQueue *q = data_02097e48;
+        SndQueue *q = gSndQueue;
         if (q->flag0) {
             u16 cur = SndQueue_Peek(q);
             if (!(q->unk_06 == 0xffff && q->unk_04 == cur)) {
@@ -4569,19 +4569,19 @@ int StageCmd_Op65(StageResSlot *slot) {
 }
 
 int StageCmd_Op66(StageResSlot *slot) {
-    if (slot->args[1] == 0 && Field_IsEventPending(data_ov000_021ccd54)) {
+    if (slot->args[1] == 0 && Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     if (slot->args[0] != 0) {
         u16 n = slot->args[0];
-        SndQueue *q = data_02097e48;
+        SndQueue *q = gSndQueue;
         if (q->flag3) {
             q->unk_06 = 0x8000;
             q->unk_08 = n;
             q->unk_02 = 0;
         }
     } else {
-        SndQueue *q = data_02097e48;
+        SndQueue *q = gSndQueue;
         if (q->flag3) {
             q->unk_06 = 0x8000;
             q->unk_08 = 10;
@@ -4597,7 +4597,7 @@ int StageCmd_Op67(StageResSlot *slot) {
     }
     {
         u16 id = slot->args[0];
-        SndQueue *q = data_02097e48;
+        SndQueue *q = gSndQueue;
         if (!(q->flag0 == 1 && q->unk_74 == 0xffff && q->unk_72 == id)) {
             q->unk_74 = id;
             q->unk_70 = 0;
@@ -4607,11 +4607,11 @@ int StageCmd_Op67(StageResSlot *slot) {
 }
 
 int StageCmd_Op68(StageResSlot *slot) {
-    if (slot->args[1] == 0 && Field_IsEventPending(data_ov000_021ccd54)) {
+    if (slot->args[1] == 0 && Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     {
-        SndQueue *q = data_02097e48;
+        SndQueue *q = gSndQueue;
         q->unk_74 = 0x8000;
         q->unk_70 = 0;
     }
@@ -4627,7 +4627,7 @@ namespace m_StageCmd_13 {
 
 extern "C" {
 
-extern SndMgr *data_02097e4c;
+extern SndMgr *gSndMgr;
 extern SndHandle *SndMgr_PlayVolume(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 extern void SndMgr_Stop(SndMgr *mgr, u16 id);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, int a);
@@ -4646,7 +4646,7 @@ extern void func_ov000_021b1b88(StagePlayer *player, u16 a);
 extern void SceneCmd_Push29(FieldState *state, u16 a, u16 b);
 extern BOOL func_ov000_0214be8c(void);
 extern BOOL Actor_IsDead(StagePlayer *player);
-extern DataRes *data_02fe1530;
+extern DataRes *gStageDataRes;
 extern u16 DataRes_ReadEntry(DataRes *res, u32 idx, int packed, int sub);
 
 typedef struct StageTblChunk {
@@ -4664,7 +4664,7 @@ typedef struct StageTblHeader {
 
 
 static inline BOOL Stage_IsWirelessIdle(void) {
-    return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
+    return (gFadeState[3] == 0 && gFadeState[0] == 0) ? TRUE : FALSE;
 }
 
 static inline void Shared_SetFog(u16 r, u16 g, u16 b) {
@@ -4685,15 +4685,15 @@ int StageCmd_Op69(StageResSlot *slot) {
     if (Field_HasEvent(0x11) || Field_HasEvent(0x25)) {
         return -0x63;
     }
-    SndMgr_PlayVolume(data_02097e4c, slot->args[0], -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, slot->args[0], -1, -1, -1);
     return 1;
 }
 
 int StageCmd_Op6a(StageResSlot *slot) {
-    if (slot->args[1] == 0 && Field_IsEventPending(data_ov000_021ccd54)) {
+    if (slot->args[1] == 0 && Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    SndMgr_Stop(data_02097e4c, slot->args[0]);
+    SndMgr_Stop(gSndMgr, slot->args[0]);
     return 1;
 }
 
@@ -4701,49 +4701,49 @@ int StageCmd_Op6b(StageResSlot *slot) {
     if (Field_HasEvent(0x11) || Field_HasEvent(0x25)) {
         return -0x63;
     }
-    SndMgr_PlayStrm(data_02097e4c, slot->args[0]);
+    SndMgr_PlayStrm(gSndMgr, slot->args[0]);
     return 1;
 }
 
 int StageCmd_Op6c(StageResSlot *slot) {
-    if (slot->args[1] == 0 && Field_IsEventPending(data_ov000_021ccd54)) {
+    if (slot->args[1] == 0 && Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    SndMgr_StopStrm_0204a284(data_02097e4c, -1);
+    SndMgr_StopStrm_0204a284(gSndMgr, -1);
     return 1;
 }
 
 int StageCmd_Op6d(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    func_ov000_021bc3ec(data_ov000_021ccd70, slot->args[0], slot->args[1] << 12);
+    func_ov000_021bc3ec(gFieldFade, slot->args[0], slot->args[1] << 12);
     return 1;
 }
 
 int StageCmd_Op6e(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    func_ov000_021bc458(data_ov000_021ccd70);
+    func_ov000_021bc458(gFieldFade);
     return 1;
 }
 
 int StageCmd_Op6f(StageResSlot *slot) {
-    data_02097d48->pltt.id = slot->args[0];
+    gGfxSys->pltt.id = slot->args[0];
     return 1;
 }
 
 int StageCmd_Op70(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
-    data_02097d48->pltt.id = -1;
+    gGfxSys->pltt.id = -1;
     return 1;
 }
 
 int StageCmd_Op71(StageResSlot *slot) {
-    if (!slot->bits.flag8 && Field_IsEventPending(data_ov000_021ccd54)) {
+    if (!slot->bits.flag8 && Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     if (Stage_IsWirelessIdle()) {
@@ -4769,7 +4769,7 @@ int StageCmd_Op71(StageResSlot *slot) {
 }
 
 int StageCmd_Op72(StageResSlot *slot) {
-    if (!slot->bits.flag8 && Field_IsEventPending(data_ov000_021ccd54)) {
+    if (!slot->bits.flag8 && Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     if (Stage_IsWirelessReady()) {
@@ -4795,7 +4795,7 @@ int StageCmd_Op74(StageResSlot *slot) {
 }
 
 int StageCmd_Op75(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -4804,7 +4804,7 @@ int StageCmd_Op75(StageResSlot *slot) {
 }
 
 int StageCmd_Op76(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -4813,7 +4813,7 @@ int StageCmd_Op76(StageResSlot *slot) {
 }
 
 int StageCmd_Op77(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -4822,14 +4822,14 @@ int StageCmd_Op77(StageResSlot *slot) {
 }
 
 int StageCmd_Op78(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     return 1;
 }
 
 int StageCmd_Op79(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -4838,7 +4838,7 @@ int StageCmd_Op79(StageResSlot *slot) {
 }
 
 int StageCmd_Op7a(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -4847,7 +4847,7 @@ int StageCmd_Op7a(StageResSlot *slot) {
 }
 
 int StageCmd_Op7b(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -4856,7 +4856,7 @@ int StageCmd_Op7b(StageResSlot *slot) {
 }
 
 int StageCmd_Op7c(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -4865,25 +4865,25 @@ int StageCmd_Op7c(StageResSlot *slot) {
 }
 
 int StageCmd_Op7e(StageResSlot *slot) {
-    if (Field_IsEventPending(data_ov000_021ccd54)) {
+    if (Field_IsEventPending(gSceneCmd)) {
         return -0x63;
     }
     switch (slot->args[0]) {
     case 0:
         if (slot->args[1] == 0) {
-            data_0214a424->bits18.flag7 = 0;
+            gStageFlags->bits18.flag7 = 0;
         } else if (slot->args[1] == 1) {
-            data_0214a424->bits18.flag7 = 1;
+            gStageFlags->bits18.flag7 = 1;
         }
         break;
     case 1:
-        if (slot->args[1] != data_0214a424->bits18.mode) {
+        if (slot->args[1] != gStageFlags->bits18.mode) {
             StagePlayer *player = ActorMgr_FindPlayer();
             if (player != NULL) {
                 func_ov000_021b1b88(player, slot->args[1]);
-                Field_PushEvent(data_ov000_021ccd54, 0xb, 0);
+                Field_PushEvent(gSceneCmd, 0xb, 0);
             } else {
-                data_0214a424->bits18.mode = slot->args[1];
+                gStageFlags->bits18.mode = slot->args[1];
             }
         }
         break;
@@ -4892,7 +4892,7 @@ int StageCmd_Op7e(StageResSlot *slot) {
 }
 
 int StageCmd_Op7f(StageResSlot *slot) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
@@ -4942,7 +4942,7 @@ u16 func_02061d54(u16 a) {
 }
 
 void *func_02061d64(u16 idx) {
-    DataRes *res = data_02fe1530;
+    DataRes *res = gStageDataRes;
     const char *key = "SceneCondTbl";
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
@@ -4964,7 +4964,7 @@ found:
 }
 
 void *func_02061df0(u16 idx) {
-    DataRes *res = data_02fe1530;
+    DataRes *res = gStageDataRes;
     const char *key = "MissionNameTbl";
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
@@ -4986,7 +4986,7 @@ found:
 }
 
 void *func_02061e7c(u16 idx) {
-    DataRes *res = data_02fe1530;
+    DataRes *res = gStageDataRes;
     const char *key = "QuestNameTbl";
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
@@ -5008,7 +5008,7 @@ found:
 }
 
 void *func_02061f08(u16 idx) {
-    DataRes *res = data_02fe1530;
+    DataRes *res = gStageDataRes;
     const char *key = "QuestOptTbl";
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
@@ -5030,7 +5030,7 @@ found:
 }
 
 void *func_02061f94(u16 idx) {
-    DataRes *res = data_02fe1530;
+    DataRes *res = gStageDataRes;
     const char *key = "ImageTbl";
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
@@ -5052,7 +5052,7 @@ found:
 }
 
 void *func_02062020(u16 idx) {
-    DataRes *res = data_02fe1530;
+    DataRes *res = gStageDataRes;
     const char *key = "KeyItemNameTbl";
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
@@ -5074,7 +5074,7 @@ found:
 }
 
 void *func_020620ac(u16 idx) {
-    DataRes *res = data_02fe1530;
+    DataRes *res = gStageDataRes;
     const char *key = "SavePosTbl";
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
@@ -5096,7 +5096,7 @@ found:
 }
 
 void *func_02062138(u16 idx) {
-    DataRes *res = data_02fe1530;
+    DataRes *res = gStageDataRes;
     const char *key = "HelpNameTbl";
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
@@ -5119,7 +5119,7 @@ found:
 
 BOOL Stage_UseScaledStats(void) {
     BOOL r = TRUE;
-    if (DataRes_ReadEntry(data_02fe152c, 5, r, 8) == 0) {
+    if (DataRes_ReadEntry(gDataRes, 5, r, 8) == 0) {
         r = FALSE;
     }
     return r;
@@ -5127,7 +5127,7 @@ BOOL Stage_UseScaledStats(void) {
 
 BOOL func_020621f8(void) {
     BOOL r = TRUE;
-    if (DataRes_ReadEntry(data_02fe152c, 5, r, 9) == 0) {
+    if (DataRes_ReadEntry(gDataRes, 5, r, 9) == 0) {
         r = FALSE;
     }
     return r;
@@ -5223,7 +5223,7 @@ void func_02062424(const StageColor *c) {
     data_02fe1534.unk_6a = 0;
     data_02fe1534.unk_6c = 0;
     data_02fe1534.unk_6e = 0;
-    data_02fe1534.unk_80 = data_ov000_021ccd6c->destExit;
+    data_02fe1534.unk_80 = gFieldMgr->destExit;
 }
 
 void func_02062478(const StageColor *c) {
@@ -5231,7 +5231,7 @@ void func_02062478(const StageColor *c) {
     data_02fe1534.unk_4c = c->r;
     data_02fe1534.unk_4e = c->g;
     data_02fe1534.unk_50 = c->b;
-    data_02fe1534.unk_80 = data_ov000_021ccd6c->destExit;
+    data_02fe1534.unk_80 = gFieldMgr->destExit;
 }
 
 void func_020624b8(void) {

@@ -8,17 +8,17 @@ void ResMgr_ReleaseArchive(void *a, void *b, int c);
 void ResMgr_LoadArchive(void *a, void *b, int c, int d);
 int ResMgr_IsArchiveLoaded(void *a, void *b, int c);
 void *Ov015Msg_Ctor(Ov015Msg *self);
-extern u8 data_ov015_02213198[];
-extern u8 data_ov015_02213188[];
+extern u8 Ov015MsgMgr_vtbl[];
+extern u8 Ov015ResultPanel_vtbl[];
 void func_ov015_0220ec40(Ov015ResultPanel *self);
-extern u8 data_ov015_022131ac[];
+extern u8 Ov015Vt_022131ac_vtbl[];
 void ListRow_Unlink(Lo021cca40 *self); // the row base teardown (ctor ListRow_Init)
-extern u8 data_ov015_02213200[];
+extern u8 Ov015Vt_02213200_vtbl[];
 
 void func_ov015_02210a10(Ov015Msg *self) {
     self->label->flags |= 2;
     self->textBox->flags |= 2;
-    SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
 }
 
 static inline BOOL Ov015_IsState5(UiObj *o) {
@@ -189,7 +189,7 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, Ov015Stat *b, s32 msg) {
 
 void *Ov015MsgMgr_Dtor(Ov015MsgMgr *self) {
     void *saved;
-    SET_VT(self, data_ov015_02213198);
+    SET_VT(self, Ov015MsgMgr_vtbl);
     HEAP_PUSH(saved);
     DELETE_V(self->unk_04);
     HEAP_POP(saved);
@@ -200,13 +200,13 @@ void *Ov015MsgMgr_Dtor(Ov015MsgMgr *self) {
 }
 
 void *Ov015ResultPanel_Dtor(Ov015ResultPanel *self) {
-    SET_VT(self, data_ov015_02213188);
+    SET_VT(self, Ov015ResultPanel_vtbl);
     func_ov015_0220ec40(self);
     return self;
 }
 
 void *Ov015Vt_022131ac_DtorDelete(Lo021cca40 *self) {
-    SET_VT(self, data_ov015_022131ac);
+    SET_VT(self, Ov015Vt_022131ac_vtbl);
     ListRow_Unlink(self);
     Heap_Free(self);
     return self;
@@ -219,7 +219,7 @@ void func_ov015_02211008(void) {
 }
 
 void *Ov015Vt_022131ac_Dtor(Lo021cca40 *self) {
-    SET_VT(self, data_ov015_022131ac);
+    SET_VT(self, Ov015Vt_022131ac_vtbl);
     ListRow_Unlink(self);
 
     return self;
@@ -227,15 +227,15 @@ void *Ov015Vt_022131ac_Dtor(Lo021cca40 *self) {
 
 void func_ov015_0221102c(void) {
     Ov015Shared *p;
-    if (data_ov015_02213368 != NULL) {
+    if (gOv015Shared != NULL) {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_V(data_ov015_02213368);
+        DELETE_V(gOv015Shared);
         HEAP_POP(saved);
     }
     p = (Ov015Shared *)Heap_Alloc(sizeof(Ov015Shared));
     if (p != NULL) {
-        SET_VT(p, data_ov015_02213200);
+        SET_VT(p, Ov015Vt_02213200_vtbl);
         p->unk_04 = 0;
         p->unk_08 = 0xa000;
         p->unk_0a = 0xd000;
@@ -244,13 +244,13 @@ void func_ov015_0221102c(void) {
         p->total = 0;
         p->unk_2c = 0;
     }
-    data_ov015_02213368 = p;
+    gOv015Shared = p;
 }
 
 void func_ov015_022110f0(void) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_V(data_ov015_02213368);
+    DELETE_V(gOv015Shared);
     HEAP_POP(saved);
 }
 

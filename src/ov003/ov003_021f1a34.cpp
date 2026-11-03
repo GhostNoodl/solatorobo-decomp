@@ -80,7 +80,7 @@ static inline BOOL Ov003Game_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -92,7 +92,7 @@ static inline BOOL Ov003Game_HasEvent(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameHasD4(void) {
-    return Ov003Game_HasEvent(data_ov000_021ccd54) ? TRUE : FALSE;
+    return Ov003Game_HasEvent(gSceneCmd) ? TRUE : FALSE;
 }
 
 BOOL Ov003ActVt_021fa1b8_Draw(Ov003Pd *self) {
@@ -116,8 +116,8 @@ BOOL Ov003ActVt_021fa1b8_Draw(Ov003Pd *self) {
     return r;
 }
 
-extern Ov003PdMsg *data_ov000_021ccd30;
-extern void *data_ov000_021ccd64;
+extern Ov003PdMsg *gMessageQueue;
+extern void *gGroup;
 extern void *MessageQueue_GetById(Ov003PdMsg *mgr, s32 id);
 extern BOOL func_ov000_021700c4(void *p);
 extern void *Task_FindById(s32 id);
@@ -133,7 +133,7 @@ static inline void Ov003Icon_SetPos(Ov003PdIcon *ic, VecFx32 *v) {
 }
 
 static inline BOOL Ov003_MsgBusy(void) {
-    Ov003PdMsg *m = data_ov000_021ccd30;
+    Ov003PdMsg *m = gMessageQueue;
     if (m == NULL) {
         return FALSE;
     }
@@ -168,7 +168,7 @@ void Ov003ActVt_021fa1b8_RunState(Ov003Pd *self) {
         if (show && id != -1) {
             Ov003PdPlr *p = ActorMgr_FindPlayer();
             if (p != NULL && p->unk_16_2 && self->unk_0e != 0x2105) {
-                Group_UpdateActor(data_ov000_021ccd64, 0, self);
+                Group_UpdateActor(gGroup, 0, self);
                 ((Ov003PdV *)self)->Destroy();
                 return;
             }

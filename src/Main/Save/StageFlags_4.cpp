@@ -97,7 +97,7 @@ s32 func_0206d2ec(StageFlags *f, u16 id, u32 n) {
     if (*Param_GetEntry(id) == 0x80) {
         return -1;
     }
-    if (n + data_0214a424->itemTotal > 100) {
+    if (n + gStageFlags->itemTotal > 100) {
         return -1;
     }
     idx = id & 0xfff;

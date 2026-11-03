@@ -9,7 +9,7 @@ void *Heap_Alloc(u32 size);
 static inline TextWin *LoTextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
-        *(const u32 **)win = data_0208ba70;
+        *(const u32 **)win = TextWin_vtbl;
         TextWin_Init(win);
     }
     return win;
@@ -39,7 +39,7 @@ void func_ov000_0216bae4(LoTextHolder *self, void *text) {
     win->font = 4;
     win->str = (u32)text;
     win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->font;
+    gGfxMgr->unk_004 = win->font;
     win->color0 = 0x2b9f;
     win->color1 = 0xc7f;
     win->noVram = 1;

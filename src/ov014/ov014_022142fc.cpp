@@ -23,7 +23,7 @@ static inline s32 Ov014_Approach(s32 cur, s32 target) {
 }
 extern "C" {
 
-extern u8 data_ov014_02217fb0[];
+extern u8 Ov014ActEx_022142fc_vtbl[];
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern Ov003Actor *Target_Get(void *p);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
@@ -33,7 +33,7 @@ extern Ov003Actor *Obj021984c8_GetActor(Ov003Actor *p);
 #pragma force_active on
 Ov014ActEx_022142fc *Ov014ActEx_022142fc_Ctor(Ov014ActEx_022142fc *self) {
     ActorEx_Ctor(self);
-    *(void **)self = data_ov014_02217fb0;
+    *(void **)self = Ov014ActEx_022142fc_vtbl;
     self->unk_d0.x = 0;
     self->unk_d0.y = 0;
     self->unk_d0.z = 0;
@@ -185,7 +185,7 @@ void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
         self->speed = FX_Mul(self->speed, self->unk_dc);
         self->velY = FX_Mul(self->velY, self->unk_dc);
         self->friction = FX_Mul(self->friction, self->unk_dc);
-        SndMgr_PlayAt(data_02097e4c, 0x2b, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x2b, &self->pos, 0);
         self->fsm->st++;
         self->fsm->timer = 0x14;
         break;
@@ -200,7 +200,7 @@ void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
             }
             break;
         }
-        SndMgr_PlayAt(data_02097e4c, 0x50, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x50, &self->pos, 0);
         self->fsm->st = 10;
         self->fsm->timer = 0;
         break;
@@ -254,14 +254,14 @@ void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
         oldy = self->pos.y;
         VEC_Add((VecFx32 *)&self->speed, &self->pos, &self->pos);
         if (self->pos.y < 0xa000 && oldy >= 0xa000) {
-            SndMgr_PlayAt(data_02097e4c, 0x32, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x32, &self->pos, 0);
             EffectObj *e = Effect_SpawnId(0x4b0, &self->pos);
             e->SetScaleXYZ(0x59a, 0x1333, 0x59a);
             e->SetRotXYZ(0x3fff, 0, 0);
             self->unk_e0 = e->id;
         }
         {
-            EffectObj *e2 = Effect_Find_020657b0(data_0214a420, self->unk_e0);
+            EffectObj *e2 = Effect_Find_020657b0(gEffectMgr, self->unk_e0);
             if (e2 != NULL) {
                 e2->SetPos(&self->pos);
             }
@@ -313,7 +313,7 @@ void Ov014ActEx_022142fc_StateThrown(Ov014ActEx_022142fc *self) {
         w.y = self->hit->check.y;
         e = Effect3D_Create(data_ov014_02218040, data_ov014_0221804f, 0, &w);
         e->SetScaleXYZ(0x24cd, 0x299a, 0x24cd);
-        SndMgr_PlayAt(data_02097e4c, 0x56, &w, 0);
+        SndMgr_PlayAt(gSndMgr, 0x56, &w, 0);
         Field_ShakeCamera(0xc, 0x19);
         self->fsm->st++;
         self->fsm->timer = 0x14;

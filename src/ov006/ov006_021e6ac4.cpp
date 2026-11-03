@@ -42,20 +42,20 @@ BOOL Ov006ActVt_021ec4f4_HandleMsg(Ov006Racer *self, ActorMsg *msg) {
             if (self->unk_1fa < v) {
                 self->unk_1fa = v;
             }
-            if (self->idx == data_ov006_021ec884->unk5) {
+            if (self->idx == gOv006SlotManager->unk5) {
                 EffectObj *e = Effect_SpawnId(0x648, &self->pos);
                 if (e != NULL) {
                     EffectObj *old;
                     e->SetScaleAll(0x1800);
                     e->speed = 0x1800;
-                    old = Effect_Find_020657b0(data_0214a420, self->unk_1ec);
+                    old = Effect_Find_020657b0(gEffectMgr, self->unk_1ec);
                     if (old != NULL) {
                         EffectObj_StopLoop(old);
                         old->state = 4;
                     }
                     self->unk_1ec = e->id;
                 }
-                SndMgr_PlayAt(data_02097e4c, 0x41, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x41, &self->pos, 0);
             }
         }
         break;

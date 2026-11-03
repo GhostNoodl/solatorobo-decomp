@@ -17,9 +17,9 @@ extern s32 Ov003Vec_DistSq(const VecFx32 *a, const VecFx32 *b);
 static inline void Ov010Fx_Free(Ov010FxObj *s) {
     if (s->b0) {
         s->b0 = 0;
-        EffectMgr_Kill(data_0214a420, s->fx0);
-        EffectMgr_Kill(data_0214a420, s->fx1);
-        EffectMgr_Kill(data_0214a420, s->fx2);
+        EffectMgr_Kill(gEffectMgr, s->fx0);
+        EffectMgr_Kill(gEffectMgr, s->fx1);
+        EffectMgr_Kill(gEffectMgr, s->fx2);
         s->fx0 = 0;
         s->fx1 = 0;
         s->fx2 = 0;
@@ -75,9 +75,9 @@ void Ov010BeamSet_StopAll(Ov010BeamSet *o) {
             Ov003ActorSub40_ForceState(&n->beam.st, 0);
             History_SetState(&n->beam.st, 5, 0);
             if (n->beam.fx.b0) {
-                EffectMgr_Kill(data_0214a420, n->beam.fx.fx0);
-                EffectMgr_Kill(data_0214a420, n->beam.fx.fx1);
-                EffectMgr_Kill(data_0214a420, n->beam.fx.fx2);
+                EffectMgr_Kill(gEffectMgr, n->beam.fx.fx0);
+                EffectMgr_Kill(gEffectMgr, n->beam.fx.fx1);
+                EffectMgr_Kill(gEffectMgr, n->beam.fx.fx2);
                 n->beam.fx.fx0 = 0;
                 n->beam.fx.fx1 = 0;
                 n->beam.fx.fx2 = 0;

@@ -6,8 +6,8 @@
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
-extern u8 data_0208b318[];
-extern u8 data_0208bf54[];
+extern u8 ResHandle_vtbl[];
+extern u8 StageRes_vtbl[];
 extern char data_ov000_021ca8f7[];
 extern char data_ov000_021ca8ff[];
 extern char data_ov000_021ca917[];
@@ -28,21 +28,21 @@ void Lo021caa44_Load(Lo021caa44 *self) {
     func_020708fc(0x1000, a);
     func_02070b98(0x1000, b, 1, 2);
     ResMgr_LoadArchive(a, b, 2, 0);
-    data_ov000_021ccd24.unk_00 = 1;
+    gSceneResSet.unk_00 = 1;
     o = (VObj *)Heap_Alloc(0xc4);
     if (o != NULL) {
-        VOBJ_SET_VTABLE(o, data_0208b318);
+        VOBJ_SET_VTABLE(o, ResHandle_vtbl);
         o->vfunc_08();
-        VOBJ_SET_VTABLE(o, data_0208bf54);
+        VOBJ_SET_VTABLE(o, StageRes_vtbl);
         StageRes_Init(o);
     }
-    data_ov000_021ccd24.unk_08 = (SceneRes *)o;
+    gSceneResSet.unk_08 = (SceneRes *)o;
     STD_CopyString(name, data_ov000_021ca8f7);
     STD_ConcatenateString(name, data_ov000_021ca8ff);
-    StageRes_Open(data_ov000_021ccd24.unk_08, name, data_ov000_021ca917);
+    StageRes_Open(gSceneResSet.unk_08, name, data_ov000_021ca917);
     o = (VObj *)Heap_Alloc(0x4c);
     if (o != NULL) {
-        VOBJ_SET_VTABLE(o, data_0208b318);
+        VOBJ_SET_VTABLE(o, ResHandle_vtbl);
         o->vfunc_08();
     }
     self->unk_3c = o;

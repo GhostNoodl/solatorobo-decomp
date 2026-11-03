@@ -189,8 +189,8 @@ void Ov014Act_0220f9d0_StateAttack(Ov014Act_0220f9d0 *self) {
                 v.y = self->unk_f0.trans.y;
                 v.z = self->unk_f0.trans.z + 0x3000;
                 Effect3D_Create(data_ov014_02217d1d, data_ov014_02217d52, 0, &v)->SetScaleXYZ(0x3000, 0x3000, 0x3000);
-                SndMgr_PlayAt(data_02097e4c, 0x5b, (VecFx32 *)((u8 *)self + 0x118), 0);
-                SndMgr_PlayAt(data_02097e4c, 0x50, (VecFx32 *)((u8 *)self + 0x118), 0);
+                SndMgr_PlayAt(gSndMgr, 0x5b, (VecFx32 *)((u8 *)self + 0x118), 0);
+                SndMgr_PlayAt(gSndMgr, 0x50, (VecFx32 *)((u8 *)self + 0x118), 0);
             }
             Ov014_TimerTick(self->fsm);
         } else {
@@ -207,8 +207,8 @@ void Ov014Act_0220f9d0_StateAttack(Ov014Act_0220f9d0 *self) {
         }
         func_ov014_02210d9c(self);
         Effect3D_Create(data_ov014_02217d1d, data_ov014_02217d64, 0, (VecFx32 *)((u8 *)self + 0x118));
-        SndMgr_PlayAt(data_02097e4c, 0x1b, (VecFx32 *)((u8 *)self + 0x118), 0);
-        SndMgr_PlayAt(data_02097e4c, 0x3e, (VecFx32 *)((u8 *)self + 0x118), 0);
+        SndMgr_PlayAt(gSndMgr, 0x1b, (VecFx32 *)((u8 *)self + 0x118), 0);
+        SndMgr_PlayAt(gSndMgr, 0x3e, (VecFx32 *)((u8 *)self + 0x118), 0);
         self->model->anim_state = 0;
         self->fsm->st++;
         break;
@@ -247,7 +247,7 @@ void Ov014Act_0220f9d0_StateAttack2(Ov014Act_0220f9d0 *self) {
                 v.y = self->unk_f0.trans.y;
                 v.z = self->unk_f0.trans.z + 0x3000;
                 Effect_SpawnId(0x5dd, &v)->SetScaleXYZ(0x3000, 0x3000, 0x3000);
-                SndMgr_PlayAt(data_02097e4c, 0x5b, &v, 0);
+                SndMgr_PlayAt(gSndMgr, 0x5b, &v, 0);
             }
             if (self->fsm->timer == 0x5a) {
                 VecFx32 v;
@@ -255,7 +255,7 @@ void Ov014Act_0220f9d0_StateAttack2(Ov014Act_0220f9d0 *self) {
                 v.y = self->unk_f0.trans.y;
                 v.z = self->unk_f0.trans.z + 0x3000;
                 Effect_SpawnId(0x5dd, &v)->SetScaleXYZ(0x3000, 0x3000, 0x3000);
-                SndMgr_PlayAt(data_02097e4c, 0x5b, &v, 0);
+                SndMgr_PlayAt(gSndMgr, 0x5b, &v, 0);
             }
             if (self->fsm->timer == 0x28) {
                 VecFx32 v;
@@ -263,7 +263,7 @@ void Ov014Act_0220f9d0_StateAttack2(Ov014Act_0220f9d0 *self) {
                 v.y = self->unk_f0.trans.y;
                 v.z = self->unk_f0.trans.z + 0x3000;
                 Effect_SpawnId(0x196, &v)->SetScaleXYZ(0x2ccd, 0x2ccd, 0x2ccd);
-                SndMgr_PlayAt(data_02097e4c, 0x44, &v, 0);
+                SndMgr_PlayAt(gSndMgr, 0x44, &v, 0);
             }
             {
                 ActorSub40 *s = self->fsm;
@@ -304,7 +304,7 @@ void Ov014Act_0220f9d0_StateAttack2(Ov014Act_0220f9d0 *self) {
         rot.y = FX_Atan2(w.x, w.z);
         rot.z = 0;
         Ov014SpawnB_Init(&desc, 0x4838);
-        o = Group_SpawnActor(data_ov000_021ccd64, &desc, &p, &rot, 0xffff);
+        o = Group_SpawnActor(gGroup, &desc, &p, &rot, 0xffff);
         o->unk_60 = data_ov014_02216d30;
         o->target = self->target;
         if (o->targetObj != NULL) {
@@ -312,7 +312,7 @@ void Ov014Act_0220f9d0_StateAttack2(Ov014Act_0220f9d0 *self) {
         }
         o->flags_0 = 1;
         self->target_id = o->id;
-        g = data_ov000_021ccd54;
+        g = gSceneCmd;
         g->cam.base.flags |= 0x1c;
         g->cam.base.shakeTime = 0x1e;
         g->cam.base.shakeLen = 0x78;
@@ -331,7 +331,7 @@ void Ov014Act_0220f9d0_StateAttack2(Ov014Act_0220f9d0 *self) {
             s->timer--;
         }
         if (s->timer > 0x28 && s->timer % 40 == 0) {
-            SndMgr_PlayAt(data_02097e4c, 0x5c, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x5c, &self->pos, 0);
         }
         break;
     }
@@ -364,7 +364,7 @@ void Ov014Act_0220f9d0_StateAttack3(Ov014Act_0220f9d0 *self) {
                 v.y = self->unk_f0.trans.y;
                 v.z = self->unk_f0.trans.z + 0x3000;
                 Effect_SpawnId(0x5dd, &v)->SetScaleXYZ(0x3000, 0x3000, 0x3000);
-                SndMgr_PlayAt(data_02097e4c, 0x5b, &v, 0);
+                SndMgr_PlayAt(gSndMgr, 0x5b, &v, 0);
             }
             if (self->fsm->timer == 0x69) {
                 VecFx32 v;
@@ -372,7 +372,7 @@ void Ov014Act_0220f9d0_StateAttack3(Ov014Act_0220f9d0 *self) {
                 v.y = self->unk_f0.trans.y;
                 v.z = self->unk_f0.trans.z + 0x3000;
                 Effect_SpawnId(0x5dd, &v)->SetScaleXYZ(0x3000, 0x3000, 0x3000);
-                SndMgr_PlayAt(data_02097e4c, 0x5b, &v, 0);
+                SndMgr_PlayAt(gSndMgr, 0x5b, &v, 0);
             }
             if (self->fsm->timer == 0x37) {
                 VecFx32 v;
@@ -380,7 +380,7 @@ void Ov014Act_0220f9d0_StateAttack3(Ov014Act_0220f9d0 *self) {
                 v.y = self->unk_f0.trans.y;
                 v.z = self->unk_f0.trans.z + 0x3000;
                 Effect_SpawnId(0x196, &v)->SetScaleAll(0x2ccd);
-                SndMgr_PlayAt(data_02097e4c, 0x44, &v, 0);
+                SndMgr_PlayAt(gSndMgr, 0x44, &v, 0);
             }
             {
                 ActorSub40 *s = self->fsm;
@@ -449,7 +449,7 @@ void Ov014Act_0220f9d0_StateAttack3(Ov014Act_0220f9d0 *self) {
                 desc.unk_04[i] = 0;
             }
             desc.parent = -1;
-            o = Group_SpawnActor(data_ov000_021ccd64, &desc, &p, &rot, 0xffff);
+            o = Group_SpawnActor(gGroup, &desc, &p, &rot, 0xffff);
             o->unk_60 = data_ov014_02216d78;
             o->target = self->target;
             if (o->targetObj != NULL) {
@@ -458,7 +458,7 @@ void Ov014Act_0220f9d0_StateAttack3(Ov014Act_0220f9d0 *self) {
             o->flags_0 = 1;
             self->target_id = o->id;
             self->target_id = o != NULL ? o->id : 0xffff;
-            g = data_ov000_021ccd54;
+            g = gSceneCmd;
             g->cam.base.flags |= 0x1c;
             g->cam.base.shakeTime = 0x1e;
             g->cam.base.shakeLen = 0x2d;
@@ -466,7 +466,7 @@ void Ov014Act_0220f9d0_StateAttack3(Ov014Act_0220f9d0 *self) {
             e = Effect_SpawnId(0x579, &p);
             e->SetScaleAll(0x24cd);
             e->unk_50 = -0x64000;
-            SndMgr_PlayAt(data_02097e4c, 0x1b, &p, 0);
+            SndMgr_PlayAt(gSndMgr, 0x1b, &p, 0);
         }
         {
             ActorSub40 *s = self->fsm;
@@ -477,10 +477,10 @@ void Ov014Act_0220f9d0_StateAttack3(Ov014Act_0220f9d0 *self) {
             if (s->timer > 10) {
                 {
                     u16 id = self->target_id;
-                    if (data_ov000_021ccd68 == NULL) {
+                    if (gActorMgr == NULL) {
                         a = NULL;
                     } else {
-                        a = ActorMgr_GetActor(data_ov000_021ccd68, id);
+                        a = ActorMgr_GetActor(gActorMgr, id);
                     }
                 }
                 if (a == NULL) {

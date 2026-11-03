@@ -11,8 +11,8 @@ typedef struct {
 
 extern "C" {
 extern char data_ov000_021cc469[];
-extern void *data_ov000_021ccd64;
-extern Save021971c4 *data_0214a424;
+extern void *gGroup;
+extern Save021971c4 *gStageFlags;
 void *Target_Get(void *p);
 BOOL Model0218fe1c_SetAnim(void *a, const char *b, s32 c, s32 d);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
@@ -30,7 +30,7 @@ void Group_UpdateActor(void *a, s32 b, void *c);
 u16 Target_LerpToDest(void *a, void *pos, s32 b, s32 c);
 
 static inline Actor *FindActor021971c4(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }
@@ -42,12 +42,12 @@ static inline void SetNibble021971c4(s32 row, s32 idx, u32 value) {
     u32 *p;
 
     sh *= 4;
-    p = &data_0214a424->flags[row][idx / 8];
+    p = &gStageFlags->flags[row][idx / 8];
     *p = (*p & ~(0xf << sh)) | ((value & 0xf) << sh);
 }
 
 static inline int GetNibble021971c4(s32 row, s32 idx) {
-    u32 v = data_0214a424->flags[row][idx / 8];
+    u32 v = gStageFlags->flags[row][idx / 8];
     return (v >> ((idx % 8) * 4)) & 0xf;
 }
 
@@ -115,7 +115,7 @@ void ActorEx_State06(VObj *obj) {
                 }
             }
             func_020627c8();
-            Group_UpdateActor(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(gGroup, 0, self);
             obj->vfunc_08();
         }
         break;

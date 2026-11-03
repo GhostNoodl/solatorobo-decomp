@@ -11,8 +11,8 @@
 extern "C" {
 #endif
 
-extern s32 data_02097d78[5];
-extern SndMgr *data_02097e4c;
+extern s32 gFadeState[5];
+extern SndMgr *gSndMgr;
 
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *ptr);
@@ -119,7 +119,7 @@ static inline s32 Model_GetWidth(Model *model, s32 idx) {
 }
 
 static inline BOOL Gfx_IsFadeIdle(int ch) {
-    return (data_02097d78[3] == 0 && data_02097d78[ch] == 0) ? TRUE : FALSE;
+    return (gFadeState[3] == 0 && gFadeState[ch] == 0) ? TRUE : FALSE;
 }
 
 #define SLIDEPANEL_UNLOAD(panel) \
@@ -132,8 +132,8 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
         panel->unk_128 = 0; \
     } \
     { \
-        void *saved = data_02097dd0->cur; \
-        data_02097dd0->cur = data_02097dd0->heapHi; \
+        void *saved = gSysState->cur; \
+        gSysState->cur = gSysState->heapHi; \
         { \
             PlttRes *p = panel->pltt; \
             if (p != NULL) { \
@@ -144,11 +144,11 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
                 panel->pltt = NULL; \
             } \
         } \
-        data_02097dd0->cur = saved; \
+        gSysState->cur = saved; \
     } \
     { \
-        void *saved = data_02097dd0->cur; \
-        data_02097dd0->cur = data_02097dd0->heapHi; \
+        void *saved = gSysState->cur; \
+        gSysState->cur = gSysState->heapHi; \
         { \
             Model *p = panel->model; \
             if (p != NULL) { \
@@ -160,11 +160,11 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
                 panel->model = NULL; \
             } \
         } \
-        data_02097dd0->cur = saved; \
+        gSysState->cur = saved; \
     } \
     { \
-        void *saved = data_02097dd0->cur; \
-        data_02097dd0->cur = data_02097dd0->heapHi; \
+        void *saved = gSysState->cur; \
+        gSysState->cur = gSysState->heapHi; \
         { \
             Model *p = panel->model2; \
             if (p != NULL) { \
@@ -176,7 +176,7 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
                 panel->model2 = NULL; \
             } \
         } \
-        data_02097dd0->cur = saved; \
+        gSysState->cur = saved; \
     }
 
 static inline s32 SlidePanel_GetTarget(SlidePanel *panel) {

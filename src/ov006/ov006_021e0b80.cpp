@@ -6,7 +6,7 @@ extern "C" {
 // in the order that reproduces the target's scheduling.
 void func_ov006_021e0b80(ov006_Caption *self) {
     if (self->visible) {
-        const ov006_CaptionEntry *e = &data_ov006_021eb824[self->kind];
+        const ov006_CaptionEntry *e = &ov006_CaptionTable[self->kind];
         TextWin *anim = self->label;
         s32 x;
         s32 y;

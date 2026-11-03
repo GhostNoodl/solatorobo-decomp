@@ -5,11 +5,11 @@ namespace Dup { extern "C" Ov015Stat data_ov015_0221332c; }
 extern "C" {
 
 extern char data_ov015_022128c1[];
-extern Ov015Globals data_ov015_02213320;
-extern u8 data_ov015_0221291c[];
-extern u8 data_ov015_02213198[];
-extern u8 data_ov015_0221290c[];
-extern u8 data_ov015_0221295c[];
+extern Ov015Globals gOv015Globals;
+extern u8 Ov015Vt_0221291c_vtbl[];
+extern u8 Ov015MsgMgr_vtbl[];
+extern u8 Ov015List_vtbl[];
+extern u8 Ov015Node_vtbl[];
 void *Camera_Ctor(void *p);
 u8 *func_02070744(u16 id);
 void Ov015CamPair_Init(Ov015CamPair *self);
@@ -31,7 +31,7 @@ BOOL func_ov015_02201618(Ov015Game *self) {
     u32 i;
     o = (Ov015CamPair *)Heap_Alloc(0x1a0);
     if (o != NULL) {
-        SET_VT(o, data_ov015_0221291c);
+        SET_VT(o, Ov015Vt_0221291c_vtbl);
         Camera_Ctor(&o->cam0);
         Camera_Ctor(&o->cam1);
         o->mode = 1;
@@ -46,24 +46,24 @@ BOOL func_ov015_02201618(Ov015Game *self) {
     }
     self->cam = o;
     Ov015CamPair_Init(o);
-    if ((u32)(data_ov015_02213320.mainSeq->unk_04 - 1) <= 1) {
+    if ((u32)(gOv015Globals.mainSeq->unk_04 - 1) <= 1) {
         Ov015MsgMgr *p = (Ov015MsgMgr *)Heap_Alloc(sizeof(Ov015MsgMgr));
         if (p != NULL) {
-            SET_VT(p, data_ov015_02213198);
+            SET_VT(p, Ov015MsgMgr_vtbl);
             func_ov015_02210b3c(p);
         }
         self->unk_90 = p;
     }
     l = (Ov015List *)Heap_Alloc(0x10);
     if (l != NULL) {
-        SET_VT(l, data_ov015_0221290c);
+        SET_VT(l, Ov015List_vtbl);
         l->head = NULL;
         l->tail = NULL;
         l->count = 0;
     }
     self->fishList = l;
-    n = func_ov015_02211160(data_ov015_02213368, ids, 3);
-    func_ov015_02211890(&self->info, data_ov015_02213368->unk_08, self->ship->modelIdx);
+    n = func_ov015_02211160(gOv015Shared, ids, 3);
+    func_ov015_02211890(&self->info, gOv015Shared->unk_08, self->ship->modelIdx);
     for (i = 0; i < n; i++) {
         u16 id = ids[i];
         u8 *def = func_02070744(id);
@@ -79,7 +79,7 @@ BOOL func_ov015_02201618(Ov015Game *self) {
         L = self->fishList;
         nd = (Ov015Node *)Heap_Alloc(0x10);
         if (nd != NULL) {
-            SET_VT(nd, data_ov015_0221295c);
+            SET_VT(nd, Ov015Node_vtbl);
             nd->fish = e;
             nd->prev = NULL;
             nd->next = NULL;
@@ -96,7 +96,7 @@ BOOL func_ov015_02201618(Ov015Game *self) {
     }
     self->step = 10;
     {
-        SndQueue *pad = data_02097e48.queue;
+        SndQueue *pad = gSndQueue.queue;
         if (pad->flag3) {
             pad->unk_06 = 0x8000;
             pad->unk_08 = 0x1e;
@@ -133,7 +133,7 @@ BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
 void func_ov015_0220101c(Ov015Game *self);
 
 static inline BOOL Ov015_SysB4(void) {
-    return data_02097d48->unk_a30_4 ? TRUE : FALSE;
+    return gGfxSys->unk_a30_4 ? TRUE : FALSE;
 }
 
 static inline void Ov015_CamFovy(Ov015Cam *c) {
@@ -158,7 +158,7 @@ static inline void Ov015_CamUpdate(Ov015Game *self) {
 }
 
 static inline void Ov015_BgmFadeTo(u16 id) {
-    SndQueue *p = data_02097e48.queue;
+    SndQueue *p = gSndQueue.queue;
     if (p->flag0) {
         if (p->unk_06 != 0xffff || p->unk_04 != id) {
             if (p->unk_02 != 10 && p->unk_02 != 0) {
@@ -199,7 +199,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
     case 0:
         self->step = 10;
     case 10: {
-        GfxSys *sys = data_02097d48;
+        GfxSys *sys = gGfxSys;
         if (sys->state == 1) {
             Ov015SysMode v = OV015_SYS_MODE_2;
             sys->nextState = v;
@@ -290,17 +290,17 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         if (self->unk_90 != NULL) {
             func_ov015_02210c28();
         }
-        data_0214a420->drawFilter = 1;
+        gEffectMgr->drawFilter = 1;
         Ov015Fade_ToClear(Ov015_GetFade(), 0x1e000, 0);
         self->step = 0x28;
-        SndMgr_PlayVolume(data_02097e4c, 0x4f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x4f, -1, -1, -1);
         Ov015_BgmFadeTo(0x23);
         break;
     }
     case 0x28:
         Ov015_ModelsReset(self->unk_20);
         if (data_ov015_02213328 == 0) {
-            SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x3e, -1, -1, -1);
         }
         {
         Ov015MsgMgr *m = self->unk_90;
@@ -315,7 +315,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         }
         if (!func_ov015_021ff4a0(&self->phase1, self->ship, self->cam, self->fishList, &self->info)) {
             self->step = 0x32;
-            SndMgr_Stop(data_02097e4c, 0x4f);
+            SndMgr_Stop(gSndMgr, 0x4f);
         }
         {
         Ov015CamPair *cp = self->cam;
@@ -337,7 +337,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
                                      self->cam, &self->info)) {
                 self->step = 0x3c;
                 Ov015Fade_ToOpaque(Ov015_GetFade(), 0x1e000, 0x7fff);
-                data_ov015_02213320.mainSeq->unk_08 = Dup::data_ov015_0221332c.unk_30;
+                gOv015Globals.mainSeq->unk_08 = Dup::data_ov015_0221332c.unk_30;
                 if (Dup::data_ov015_0221332c.unk_30 == 2) {
                     Ov015Fade_ToClear(Ov015_GetFade(), 0x1000, 0x7fff);
                     self->step = 0x50;
@@ -355,7 +355,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         }
         self->step = 0x46;
         {
-            SndQueue *pad = data_02097e48.queue;
+            SndQueue *pad = gSndQueue.queue;
             if (pad->flag3) {
                 pad->unk_06 = 0x8000;
                 pad->unk_08 = 0x1e;
@@ -363,14 +363,14 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
             }
         }
         func_ov015_0220101c(self);
-        EffectMgr_FreeAll(data_0214a420);
+        EffectMgr_FreeAll(gEffectMgr);
         Ov015Fade_ToClear(Ov015_GetFade(), 0x1000, 0x7fff);
         {
-            u32 v = data_0214a424->unk_61c + 1;
+            u32 v = gStageFlags->unk_61c + 1;
             if (v >= 1000) {
                 v = 1000;
             }
-            data_0214a424->unk_61c = v;
+            gStageFlags->unk_61c = v;
         }
         break;
     }

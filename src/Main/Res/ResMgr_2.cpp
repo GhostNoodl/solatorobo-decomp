@@ -20,9 +20,9 @@ extern void Heap_FreeLo(void *ptr);
 
 void func_020381cc(ResMgr *mgr, ResNode *node) {
     if (node->type == 7) {
-        void *heap = data_02097dd0->cur;
+        void *heap = gSysState->cur;
         ResList *list;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        gSysState->cur = gSysState->heapHi;
         list = node->u.arc.list;
         if (list != NULL) {
             if (list != NULL) {
@@ -31,7 +31,7 @@ void func_020381cc(ResMgr *mgr, ResNode *node) {
             }
             node->u.arc.list = NULL;
         }
-        data_02097dd0->cur = heap;
+        gSysState->cur = heap;
         if (node->u.data[1] != NULL) {
             Heap_FreeLo(node->u.data[1]);
             node->u.data[1] = NULL;

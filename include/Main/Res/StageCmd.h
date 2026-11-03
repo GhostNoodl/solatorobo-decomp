@@ -11,8 +11,8 @@
 
 extern "C" {
 
-extern void *data_02149ef8;
-extern int (*const data_0208bf9c[])(StageResSlot *slot);
+extern void *gMsgRes;
+extern int (*const StageCmd_OpTable[])(StageResSlot *slot);
 extern const u32 data_02082a28[];
 extern BOOL Item_Give(u16 id, int a);
 extern BOOL Item_Set_0206f5e4(u16 id, int a);
@@ -43,7 +43,7 @@ static inline void Field_PushEvent(FieldState *state, s32 ev, s32 arg) {
 }
 
 static inline BOOL Field_HasEvent(s32 ev) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     s32 i;
     for (i = state->head; i != state->tail;) {
         if (state->queue[i] == ev) {
@@ -58,7 +58,7 @@ static inline BOOL Field_HasEvent(s32 ev) {
 }
 
 static inline BOOL Field_IsBusy(void) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     return state->head != state->tail;
 }
 
@@ -159,13 +159,13 @@ extern void MessageQueue021cb980_Push0f(FieldPlayer *player, s32 a, void *str);
 extern void SceneCmd_Push1b(FieldState *state, s32 a);
 extern void SceneCmd_Push1c(FieldState *state, s32 a);
 struct ActorMgr; // ov000/Actor.h
-extern struct ActorMgr *data_ov000_021ccd68;
-extern void *data_ov000_021ccd64;
+extern struct ActorMgr *gActorMgr;
+extern void *gGroup;
 extern void *ActorMgr_FindKind(void *mgr, u16 kind, u16 id);
 extern void *Group_FindById(void *mgr, u16 id, u8 a);
 
 static inline BOOL Field_IsPlayerActing(void) {
-    FieldPlayer *player = data_ov000_021ccd30;
+    FieldPlayer *player = gMessageQueue;
     if (player == NULL) {
         return FALSE;
     }
@@ -202,10 +202,10 @@ static inline void Slot_Push(StageRes *res, u16 id, u16 a0) {
 
 static inline void *Stage_FindObj3D(u16 id) {
     u16 kind = id & 0xf000;
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_FindKind(data_ov000_021ccd68, kind, id);
+    return ActorMgr_FindKind(gActorMgr, kind, id);
 }
 
 static inline void Stage_FindObj(u16 id, u16 b) {
@@ -213,7 +213,7 @@ static inline void Stage_FindObj(u16 id, u16 b) {
         return;
     }
     data_02149f10 = Stage_FindObj3D(id);
-    data_02149f00 = Group_FindById(data_ov000_021ccd64, id, b & 0xff);
+    data_02149f00 = Group_FindById(gGroup, id, b & 0xff);
 }
 
 struct StageObj3D {
@@ -263,32 +263,32 @@ extern void ActorGroup_BroadcastKind(void *p, u16 id, s32 m);
 extern void Actor_SendMsgU8(StageObj3D *o, u16 id, s32 m);
 
 static inline StageObj3D *Stage_FindObj3DByIdx(u16 idx) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, idx);
+    return ActorMgr_GetActor(gActorMgr, idx);
 }
 
 static inline StageObj3D *Stage_FindObj3DPtr(u16 id) {
     u16 kind = id & 0xf000;
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return (StageObj3D *)ActorMgr_FindKind(data_ov000_021ccd68, kind, id);
+    return (StageObj3D *)ActorMgr_FindKind(gActorMgr, kind, id);
 }
 
 static inline void *Stage_FindLight1(u16 id, u16 b) {
-    return Group_FindById(data_ov000_021ccd64, id, (u8)b);
+    return Group_FindById(gGroup, id, (u8)b);
 }
 
 static inline void *Stage_FindLight2(u16 id, u16 b) {
-    return Group_FindNodeByKind(data_ov000_021ccd64, id, (u8)b);
+    return Group_FindNodeByKind(gGroup, id, (u8)b);
 }
 
 struct FieldMgr; // ov000/FieldMgr.h
-extern struct FieldMgr *data_ov000_021ccd6c;
-extern s32 data_02097d78[5];
-// Camera request block inside the field state (data_ov000_021ccd54).
+extern struct FieldMgr *gFieldMgr;
+extern s32 gFadeState[5];
+// Camera request block inside the field state (gSceneCmd).
 typedef struct StageAng {
     u16 x;
     u16 y;
@@ -315,7 +315,7 @@ typedef struct StageCamView {
 } StageCamView;
 
 static inline BOOL StageCam_IsActive(void) {
-    StageCamView *cam = (StageCamView *)data_ov000_021ccd54;
+    StageCamView *cam = (StageCamView *)gSceneCmd;
     return cam->active != 0;
 }
 
@@ -332,10 +332,10 @@ extern void Robo021ca458_RestoreHp(StagePlayer *player);
 
 static inline BOOL Stage_IsWirelessReady(void) {
     BOOL r;
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         r = TRUE;
     } else {
-        r = data_02097d78[0] == 4;
+        r = gFadeState[0] == 4;
     }
     return r;
 }

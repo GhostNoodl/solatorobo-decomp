@@ -8,7 +8,7 @@ extern "C" {
 extern u8 data_ov000_021cc62a[];
 extern u8 data_ov000_021cc6c0[];
 extern u8 data_ov000_021cc5e3[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 void Shared_ChangeFlags(s32 a, s32 b);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
@@ -48,12 +48,12 @@ void Robo021ca458_State1a(Robo021ca458 *self) {
         self->gravity = 0x52;
         self->target = 0xffff;
         self->friction = 0;
-        SndMgr_PlayAt(data_02097e4c, 7, (u8 *)self + 0x70, 0);
+        SndMgr_PlayAt(gSndMgr, 7, (u8 *)self + 0x70, 0);
         self->fsm->st++;
         self->fsm->timer = 0;
-        data_0214a424->bits18.flag8 = 0;
+        gStageFlags->bits18.flag8 = 0;
         Shared_ChangeFlags(3, 1);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
         break;
     }
     case 1: {
@@ -102,7 +102,7 @@ void Robo021ca458_State1a(Robo021ca458 *self) {
                 p->playing = 0;
                 p->same = 0;
             }
-            SndMgr_PlayAt(data_02097e4c, 0xe, (u8 *)self + 0x70, 0);
+            SndMgr_PlayAt(gSndMgr, 0xe, (u8 *)self + 0x70, 0);
             History_SetState(self->fsm, 1, 0);
         } else {
             VecFx32 d;

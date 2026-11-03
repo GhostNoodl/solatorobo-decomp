@@ -100,7 +100,7 @@ static inline s32 Ov015B_FxMul64(s32 a, s64 b) {
 }
 
 void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b) {
-    Pad *pad = data_02097dc8;
+    Pad *pad = gPad;
     u16 trg = pad->trig;
     u16 cont = pad->cur;
     Ov015Stat *g = &data_ov015_0221332c;
@@ -117,7 +117,7 @@ void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b) {
         self->unk_10 = -0x3c;
     }
     if (self->unk_10 == 6) {
-        SndMgr_PlayVolume(data_02097e4c, 0, 0x7f, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0, 0x7f, -1, -1);
         // m[3] as a byte offset from the matrix: a field path folds to one constant and changes the code.
         Effect_SpawnId(0x6d, &FLD(Ov015Vec, &a->nodeMtx, 0x24))->SetScaleXYZ(0x800, 0x800, 0x800);
     }
@@ -215,7 +215,7 @@ void func_ov015_0220064c(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b) {
         g->unk_00 = nv;
         g->unk_04 = nv - cur;
         if (nv >= 0x2bc000 && (self->unk_0c >> 12) % 60 == 0) {
-            SndMgr_PlayVolume(data_02097e4c, 0x37, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x37, -1, -1, -1);
         }
     }
     g->unk_2c = self->unk_0c >> 12;

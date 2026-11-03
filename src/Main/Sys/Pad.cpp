@@ -17,7 +17,7 @@ typedef struct Pad {
     /* 0x1a */ u8 useForced;
 } Pad; // size 0x1c
 
-extern Pad *data_02097dc8;
+extern Pad *gPad;
 extern const u16 data_02082864[16];
 extern void *Heap_Alloc(u32 size);
 
@@ -37,10 +37,10 @@ static inline u16 Pad_ReadFiltered(void) {
 void func_0203d1b4(void) {
     Pad *pad;
     int i;
-    if (data_02097dc8 != NULL) {
+    if (gPad != NULL) {
         return;
     }
-    data_02097dd0->cur = data_02097dd0->heapLo;
+    gSysState->cur = gSysState->heapLo;
     pad = (Pad *)Heap_Alloc(sizeof(Pad));
     if (pad != NULL) {
         pad->repeatDelay = 12;
@@ -56,8 +56,8 @@ void func_0203d1b4(void) {
         pad->forced = 0;
         pad->useForced = 0;
     }
-    data_02097dc8 = pad;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gPad = pad;
+    gSysState->cur = gSysState->heapHi;
 }
 
 void func_0203d298(Pad *pad) {

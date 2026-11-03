@@ -55,7 +55,7 @@ static inline BOOL GBusy_021afaf8(FieldState *g) {
 }
 
 static inline BOOL GIdle_021afaf8(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (GBusy_021afaf8(g)) {
             return FALSE;
@@ -69,14 +69,14 @@ static inline BOOL GIdle_021afaf8(void) {
 }
 
 static inline Actor *FindActor_021afaf8(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline BOOL SameRoom_021afaf8(Robo021ca458 *self) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     BOOL r = FALSE;
     if (((u8 *)g)[0xca] == self->unk_772 && ((u8 *)g)[0xcb] == self->unk_773 && ((u8 *)g)[0xcc] == self->unk_774) {
         r = TRUE;
@@ -133,7 +133,7 @@ void Robo021ca458_State1f(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
         self->unk_b22_9 = 2;
         self->unk_b2c = 0;
         self->unk_93_5 = 0;
-        sv = data_0214a424;
+        sv = gStageFlags;
         big = FALSE;
         ofs = 0;
         mode = self->unk_b22_6;
@@ -214,7 +214,7 @@ void Robo021ca458_State1f(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
         }
         if (!big && self->unk_b22_0 != 0) {
             self->unk_b22_0 = 0;
-            data_ov000_021ccd54->cam.base.wallClip = 0;
+            gSceneCmd->cam.base.wallClip = 0;
             self->hit1.unk_4c = 0xa000;
             self->unk_3c->unk_0c = 0xa000;
             FreeModels_021afaf8(self);
@@ -224,7 +224,7 @@ void Robo021ca458_State1f(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
             const char *s2;
             u8 *r;
             self->unk_b22_0 = 1;
-            data_ov000_021ccd54->cam.base.wallClip = 1;
+            gSceneCmd->cam.base.wallClip = 1;
             self->hit1.unk_4c = 0x14000;
             self->unk_3c->unk_0c = 0x14000;
             FreeModels_021afaf8(self);
@@ -281,7 +281,7 @@ void Robo021ca458_State1f(VObj *self_, Param0206ef10 *anm, RoboDef *def) {
             self->unk_b24_7 = self->unk_b24_9;
             self->target = 0xffff;
             if (ofs != 0 && !self->unk_b22_13) {
-                if (self->unk_b24_1 || (!(data_0214a424->bits18.flag9 ? TRUE : FALSE) && SameRoom_021afaf8(self))) {
+                if (self->unk_b24_1 || (!(gStageFlags->bits18.flag9 ? TRUE : FALSE) && SameRoom_021afaf8(self))) {
                     if (!self->unk_b24_1) {
                         ofs = 0xccd;
                     }

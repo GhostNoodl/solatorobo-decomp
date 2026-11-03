@@ -5,8 +5,8 @@
 
 extern "C" {
 
-extern u32 data_ov003_021f7d2c;
-extern void *data_ov000_021ccd68;
+extern u32 Ov003Vt_021f7d2c_vtbl;
+extern void *gActorMgr;
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *p);
 extern void *ActorMgr_GetActor(void *mgr, u16 id);
@@ -50,10 +50,10 @@ void Ov003_FreeIfSet(void *p) {
 BOOL Ov003_ActorExists(u16 *self) {
     void *r;
     u16 id = *self;
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         r = NULL;
     } else {
-        r = ActorMgr_GetActor(data_ov000_021ccd68, id);
+        r = ActorMgr_GetActor(gActorMgr, id);
     }
     return r != NULL;
 }

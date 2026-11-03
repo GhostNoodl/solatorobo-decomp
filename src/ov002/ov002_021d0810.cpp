@@ -11,28 +11,28 @@ static inline BOOL ov002_isState5(UiObj *o) {
 void Task021efa1c_PreUpdate(Task021efa1c *self) {
     switch (self->state) {
     case 8:
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         self->unk_3c->flags &= ~2;
         self->unk_40->flags &= ~2;
         break;
     case 10:
         self->unk_3c->flags |= 2;
         self->unk_40->flags |= 2;
-        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
         break;
     case 11:
         if (ov002_isState5(self->unk_3c) && ov002_isState5(self->unk_40)) {
             {
-                SndQueue *m = data_02097e48.queue;
+                SndQueue *m = gSndQueue.queue;
                 m->unk_80 = 0x8000;
                 m->unk_7c = 0;
             }
             {
                 SndQueue *m;
                 u16 id;
-                data_02097e48.queue->flag0 = 1;
-                data_02097e48.queue->flag3 = 1;
-                m = data_02097e48.queue;
+                gSndQueue.queue->flag0 = 1;
+                gSndQueue.queue->flag3 = 1;
+                m = gSndQueue.queue;
                 id = 0xd;
                 if (m->flag0) {
                     if (m->unk_06 != 0xffff || m->unk_04 != id) {

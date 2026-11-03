@@ -10,7 +10,7 @@ extern "C" {
 #endif
 
 // Base save-data object: a header block with a slot table, followed by per-slot data blocks
-// and a ring of backup data blocks. Methods are dispatched through data_0208b614.
+// and a ring of backup data blocks. Methods are dispatched through SaveBase_vtbl.
 
 typedef struct SaveSlot {
     /* 0x00 */ u8 checksum;
@@ -38,7 +38,7 @@ typedef struct SaveData {
 #endif
 
 struct SaveBase {
-    /* 0x00 */ // vtable (data_0208b614)
+    /* 0x00 */ // vtable (SaveBase_vtbl)
     virtual void Dtor();
     virtual void DeletingDtor();
     virtual void Setup();
@@ -91,7 +91,7 @@ struct SaveBase {
 
 extern "C" {
 
-extern u32 data_0208b614[];
+extern u32 SaveBase_vtbl[];
 extern const char data_0208b5fd[];
 
 extern void *Heap_AllocHi(u32 size, u32 align);
@@ -115,11 +115,11 @@ static inline SaveSlot *SaveBase_GetSlot(SaveBase *s, s32 idx) {
 }
 
 static inline s32 SaveBase_ReadHeader(SaveBase *s, SaveHeader *hdr) {
-    return SysCard_Read(data_02097e44, hdr, s->baseOffset, s->headerSize);
+    return SysCard_Read(gSysCard, hdr, s->baseOffset, s->headerSize);
 }
 
 static inline s32 SaveBase_WriteHeader(SaveBase *s, SaveHeader *hdr) {
-    return func_02047004(data_02097e44, s->baseOffset, hdr, s->headerSize);
+    return func_02047004(gSysCard, s->baseOffset, hdr, s->headerSize);
 }
 
 static inline u32 SaveBase_DataOffset(SaveBase *s, s32 idx) {

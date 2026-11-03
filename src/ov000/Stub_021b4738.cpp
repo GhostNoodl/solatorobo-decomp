@@ -5,7 +5,7 @@
 extern "C" {
 
 extern char data_ov000_021cc5e3[];
-extern MessageQueue021cb980 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *gMessageQueue;
 BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 void func_ov000_021697dc(Lo021cb798 *self, u16 a, u16 b);
 BOOL History_SetState(void *a, s32 b, s32 c);
@@ -38,7 +38,7 @@ u8 func_0206d204(void *p, s32 a);
 
 BOOL Actor_IsDead(Actor *self) {
     BOOL r = FALSE;
-    s32 x = func_0206d204(data_0214a424, 0);
+    s32 x = func_0206d204(gStageFlags, 0);
     if (self->hp[0] == 0 && x == 0) {
         r = TRUE;
     }
@@ -55,7 +55,7 @@ void Robo021ca458_RestoreHp(Robo021ca458 *self) {
     p = self->hp;
     v = p[1];
     p[0] = v;
-    o = data_ov000_021ccd30->unk_11c;
+    o = gMessageQueue->unk_11c;
     if (o != NULL && o->unk_58 != NULL) {
         o->unk_58->unk_0c_7 = 0;
         func_ov000_021697dc(o->unk_58, v, v);

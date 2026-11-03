@@ -53,10 +53,10 @@ void func_ov000_0216da78(LoTimer *self) {
     if (self->b6 == 1) {
         FieldState *d;
         func_020627fc(4);
-        d = data_ov000_021ccd54;
+        d = gSceneCmd;
         d->stageFlags = 1;
         func_ov000_02182590((u8 *)d + 0xac);
-        SceneCmd_Push27(data_ov000_021ccd54, 0xffff, 0, 0);
+        SceneCmd_Push27(gSceneCmd, 0xffff, 0, 0);
     }
 }
 
@@ -65,7 +65,7 @@ void func_ov000_0216da78(LoTimer *self) {
 
 extern "C" {
 extern const s16 FX_SinCosTable_[];
-extern int data_02097d78[];
+extern int gFadeState[];
 bool TaskList_HasTasks_021735e8(void);
 BOOL Model_IsReady(void *a, s32 b);
 s32 FX_Div(s32 a, s32 b);
@@ -79,7 +79,7 @@ static inline BOOL GBusy0216dae4(FieldState *g) {
 }
 
 static inline BOOL GIdle0216dae4(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (GBusy0216dae4(g)) {
             return FALSE;
@@ -93,7 +93,7 @@ static inline BOOL GIdle0216dae4(void) {
 }
 
 static inline BOOL FadeIdle0216dae4(void) {
-    return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
+    return (gFadeState[3] == 0 && gFadeState[0] == 0) ? TRUE : FALSE;
 }
 
 static inline BOOL Ready0216dae4(LoTimer *self) {
@@ -113,10 +113,10 @@ static inline void Done0216dae4(LoTimer *self) {
     if (self->b6 == 1) {
         FieldState *d;
         func_020627fc(4);
-        d = data_ov000_021ccd54;
+        d = gSceneCmd;
         d->stageFlags = 1;
         func_ov000_02182590((u8 *)d + 0xac);
-        SceneCmd_Push27(data_ov000_021ccd54, 0xffff, 0, 0);
+        SceneCmd_Push27(gSceneCmd, 0xffff, 0, 0);
     }
 }
 

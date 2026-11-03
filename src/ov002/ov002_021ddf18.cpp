@@ -8,10 +8,10 @@ extern "C" const char data_ov002_021efe02[];
 
 extern "C" {
 
-extern VFunc data_ov000_021ccbe0[];
-extern VFunc data_ov002_021f0044[];
-extern VFunc data_ov002_021ef684[];
-extern VFunc data_ov002_021f002c[];
+extern VFunc Ov000Vt_021ccbe0_vtbl[];
+extern VFunc Ov002Vt_021f0044_vtbl[];
+extern VFunc Ov002Vt_021ef684_vtbl[];
+extern VFunc Ov002Vt_021f002c_vtbl[];
 void func_ov000_021c3af4(void *self);
 void ListRow_Init(void *self);
 void Obj021f002c_Init(Obj021f002c *self);
@@ -22,9 +22,9 @@ BOOL func_ov002_021ddd30(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev);
 static inline void ov002_AddItem(LoBase021ccb54_021ccbe0 *list, s32 k, void *str, void *desc) {
     Obj021f002c *q = (Obj021f002c *)Heap_Alloc(sizeof(Obj021f002c));
     if (q != NULL) {
-        *(VFunc **)q = data_ov002_021ef684;
+        *(VFunc **)q = Ov002Vt_021ef684_vtbl;
         ListRow_Init(q);
-        *(VFunc **)q = data_ov002_021f002c;
+        *(VFunc **)q = Ov002Vt_021f002c_vtbl;
         Obj021f002c_Init(q);
     }
     q->index = k;
@@ -37,7 +37,7 @@ static inline void ov002_AddItem(LoBase021ccb54_021ccbe0 *list, s32 k, void *str
 static inline Obj021efe8c *ov002_NewCursor(void) {
     Obj021efe8c *c = (Obj021efe8c *)Heap_Alloc(sizeof(Obj021efe8c));
     if (c != NULL) {
-        *(VFunc **)c = data_ov002_021efe8c;
+        *(VFunc **)c = Ov002Vt_021efe8c_vtbl;
         Ov002Vt_021efe3c_Ctor(&c->mdl);
         c->unk_78 = 0;
         c->unk_74 = 0;
@@ -85,7 +85,7 @@ static inline void ov002_CamMove(Obj021efe6c *c, const VecFx32 *pos, s32 tx, s32
     c->unk_bc.z = tz;
 }
 
-static inline void *GetMgr021ddf18(void) { return data_02149ef8; }
+static inline void *GetMgr021ddf18(void) { return gMsgRes; }
 
 // h and cam are locals passed as unused register parameters (the locals-as-parameters lever).
 // As user variables they number above every temp and the registers rotate (124-127 diffs, round jkE).
@@ -99,11 +99,11 @@ void func_ov002_021ddf18(Obj021efef0 *self, Obj021eff50 *owner, s32 h, Obj021efe
     g = GetMgr021ddf18();
     p = (UiObj *)Heap_Alloc(0xf4);
     if (p != NULL) {
-        *(VFunc **)p = data_ov000_021cac60;
+        *(VFunc **)p = UiObj_vtbl;
         p->vfunc_28();
-        *(VFunc **)p = data_ov000_021ccbe0;
+        *(VFunc **)p = Ov000Vt_021ccbe0_vtbl;
         func_ov000_021c3af4(p);
-        *(VFunc **)p = data_ov002_021f0044;
+        *(VFunc **)p = Ov002Vt_021f0044_vtbl;
     }
     self->unk_08 = (Ov002RowList *)p;
     p->rows = 5;

@@ -48,7 +48,7 @@ void func_ov000_0214d304(Obj0214d304 *self, s32 a, s32 *pos, s32 d) {
     s32 x;
     s32 py;
     s16 z;
-    g = data_02097d48;
+    g = gGfxSys;
     z = self->unk_68 - 0x110;
     x = (pos[0] >> 12) - 0x80;
     y = (pos[1] >> 12) - 0x51;

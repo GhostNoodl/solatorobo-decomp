@@ -4,10 +4,10 @@
 
 extern "C" {
 
-extern void *data_ov006_021ec20c;
+extern void *Ov006Vt_021ec20c_vtbl;
 
 ov006_Gauge *Ov006Vt_021ec20c_Ctor(ov006_Gauge *self) {
-    self->vtbl = &data_ov006_021ec20c;
+    self->vtbl = &Ov006Vt_021ec20c_vtbl;
     self->unk4 = 0;
     self->unk8 = 0;
     self->unkC = 0;

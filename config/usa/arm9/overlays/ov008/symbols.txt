@@ -46,7 +46,7 @@ data_ov008_021d02d0 kind:data(any) addr:0x021d02d0
 data_ov008_021d02dc kind:data(any) addr:0x021d02dc
 data_ov008_021d02e8 kind:data(any) addr:0x021d02e8
 data_ov008_021d02fc kind:data(any) addr:0x021d02fc
-data_ov008_021d0368 kind:data(any) addr:0x021d0368
+Ov008Menu_vtbl kind:data(any) addr:0x021d0368
 data_ov008_021d0458 kind:data(any) addr:0x021d0458
 data_ov008_021d0462 kind:data(any) addr:0x021d0462
 data_ov008_021d0470 kind:data(any) addr:0x021d0470
@@ -61,4 +61,4 @@ data_ov008_021d04d9 kind:data(any) addr:0x021d04d9
 data_ov008_021d04e1 kind:data(any) addr:0x021d04e1
 data_ov008_021d04f0 kind:data(any) addr:0x021d04f0
 data_ov008_021d04f4 kind:data(any) addr:0x021d04f4
-data_ov008_021d0500 kind:bss addr:0x021d0500
+gOv008Mgr kind:bss addr:0x021d0500

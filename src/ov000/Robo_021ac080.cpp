@@ -9,7 +9,7 @@ extern "C" {
 extern char data_ov000_021cc5e9[];
 extern char data_ov000_021cc6c0[];
 extern char data_ov000_021cc636[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void Shared_ChangeFlags(s32 a, s32 b);
 u16 func_ov000_0219a36c(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32 mask);
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
@@ -27,7 +27,7 @@ static inline BOOL GBusy021ac080(FieldState *g) {
 }
 
 static inline BOOL GIdle021ac080(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (GBusy021ac080(g)) {
             return FALSE;
@@ -50,13 +50,13 @@ void Robo021ca458_State1b(Robo021ca458 *self) {
         self->unk_b24_2 = 2;
         self->unk_b24_1 = 0;
         self->target = 0xffff;
-        self->fieldId = data_ov000_021ccd54->unk_ca;
-        data_0214a424->bits18.flag8 = 1;
-        data_0214a424->target = self->unk_75c;
-        data_0214a424->targetRotY = self->unk_76e;
-        SetRgb021ac080(data_0214a424, self->unk_772, self->unk_773, self->unk_774);
+        self->fieldId = gSceneCmd->unk_ca;
+        gStageFlags->bits18.flag8 = 1;
+        gStageFlags->target = self->unk_75c;
+        gStageFlags->targetRotY = self->unk_76e;
+        SetRgb021ac080(gStageFlags, self->unk_772, self->unk_773, self->unk_774);
         Shared_ChangeFlags(3, 2);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
         self->pos.y += 0x119a;
         Model0218fe1c_SetAnim(&self->mdl1, data_ov000_021cc5e9, 0x155, 0);
         Model0218fe1c_SetAnim(&self->mdl0, data_ov000_021cc6c0, 0x400, 0);
@@ -72,7 +72,7 @@ void Robo021ca458_State1b(Robo021ca458 *self) {
         v = self->pos;
         v.y += self->centerY - 0x119a;
         self->moveYaw = func_ov000_0219a36c(&v, 0x2000, self->rot_y, 4, 0, 0xffffffff);
-        SndMgr_PlayAt(data_02097e4c, 0xf, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0xf, &self->pos, 0);
         self->fsm->st++;
         break;
     }
@@ -113,7 +113,7 @@ typedef struct {
 } Msg021ac3ec;
 
 extern "C" {
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov000_021cc6c6[];
 extern char data_ov000_021cc6cc[];
 void Model0218fe1c_StopAnim(void *p);
@@ -131,10 +131,10 @@ BOOL History_SetState(void *s, s32 a, s32 b);
 u16 FX_Atan2(s32 x, s32 z);
 
 static inline Actor *GetObj021ac3ec(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline void Reset021ac3ec(Robo021ca458 *self) {
@@ -159,7 +159,7 @@ void Robo021ca458_State12(Robo021ca458 *self) {
                 Model0218fe1c_StopAnim(self->unk_998);
             }
             if (self->seSlot >= 0) {
-                SndMgr_StopSeqArc(data_02097e4c, self->seSlot);
+                SndMgr_StopSeqArc(gSndMgr, self->seSlot);
                 self->seSlot = -1;
             }
             if (self->unk_b22_0 > 1) {

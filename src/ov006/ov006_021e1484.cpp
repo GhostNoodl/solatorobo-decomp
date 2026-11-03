@@ -4,10 +4,10 @@
 
 extern "C" {
 
-extern u8 data_ov006_021ec1fc[];
+extern u8 Ov006Vt_021ec1fc_vtbl[];
 
 ov006_Obj13C *Ov006Vt_021ec1fc_Ctor(ov006_Obj13C *self) {
-    self->vtbl = data_ov006_021ec1fc;
+    self->vtbl = Ov006Vt_021ec1fc_vtbl;
     self->unk4 = 0;
     self->unk8 = 0;
     self->unkC = 0;

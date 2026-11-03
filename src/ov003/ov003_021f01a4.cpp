@@ -36,7 +36,7 @@ typedef struct {
     u8 unk_a2_5 : 1;
 } Ov003FxUnit;
 
-// A prop that moves along a path of waypoints (vtable data_ov003_021f9fe4, 0xe0 bytes: NEW_BASIC in
+// A prop that moves along a path of waypoints (vtable Ov003ActVt_021f9fe4_vtbl, 0xe0 bytes: NEW_BASIC in
 // Factory_New4000). Actor::unk_1a picks its data_ov003_021f6fc8 entry; unk_84 is the waypoint
 // it moves to, with vel per frame.
 class Ov003FxProp : public ActorEx {
@@ -49,7 +49,7 @@ SIZE_ASSERT(Ov003FxProp, 0xe0);
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern const Ov003FxEntry data_ov003_021f6fc8[];
 extern Ov003FxUnit *Group_FindNode(void *mgr, u16 id);
 extern const char data_ov003_021fa1aa[];
@@ -75,7 +75,7 @@ static inline BOOL Ov003FxGame_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003Fx_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003FxGame_IsIdle(g);
     }
@@ -87,7 +87,7 @@ void Ov003ActVt_021f9fe4_Start(Ov003FxProp *self) {
     const Ov003FxEntry *e;
     EffectObj *fx;
     ActorEx_Start(self);
-    u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    u = Group_FindNode(gGroup, self->unk_20);
     if (u != NULL) {
         u->unk_a2_5 = 1;
     }
@@ -136,9 +136,9 @@ void Ov003ActVt_021f9fe4_StateIdle(Ov003FxProp *self) {
                     vol += (s16)Rand_UpTo(e->volumeRand);
                 }
                 if (self->kind == 0x4048) {
-                    SndMgr_PlayPan(data_02097e4c, e->sound, vol);
+                    SndMgr_PlayPan(gSndMgr, e->sound, vol);
                 } else {
-                    SndMgr_PlayAtPitch(data_02097e4c, e->sound, &self->pos, vol);
+                    SndMgr_PlayAtPitch(gSndMgr, e->sound, &self->pos, vol);
                 }
             }
             self->fsm->st++;
@@ -164,7 +164,7 @@ void Ov003ActVt_021f9fe4_StateIdle(Ov003FxProp *self) {
                 }
             } else if (self->fsm->st == 12 && self->kind == 0x4048 && Ov003Fx_GameIdle()) {
                 if (self->fsm->timer % 120 == 30) {
-                    SndMgr_PlayVolume(data_02097e4c, 0x3e, 0x28, -1, -1);
+                    SndMgr_PlayVolume(gSndMgr, 0x3e, 0x28, -1, -1);
                 }
             }
             self->vel.x = (s32)(((s64)self->vel.x * 0x80 + 0x800) >> 12);
@@ -186,7 +186,7 @@ void Ov003ActVt_021f9fe4_StateIdle(Ov003FxProp *self) {
         shape.z = e->shape[2] << 4;
         if (Hit_ApplyInArea(self, self, e->unk_00, e->unk_02, 2, &shape, &rot, e->shape[3] << 4, e->shape[4] << 4, e->unk_18, e->unk_1a)) {
             if (e->unk_18 == 6) {
-                SndMgr_PlayAtPitch(data_02097e4c, 0x79, &self->pos, 5);
+                SndMgr_PlayAtPitch(gSndMgr, 0x79, &self->pos, 5);
             }
         }
     }

@@ -19,9 +19,9 @@ void Obj021eff50_Release(Obj021eff50 *self) {
 }
 
 
-extern VFunc data_ov000_021cadcc[];
+extern VFunc Lo021cadcc_vtbl[];
 
-extern VFunc data_ov000_021cae48[];
+extern VFunc Lo021cae48_vtbl[];
 
 extern Ov002SndCue data_ov002_021ef016[];
 
@@ -36,15 +36,15 @@ void *Model0218fe1c_GetAnimCtrl(void *a, int b);
 void func_ov002_021db750(Obj021eff50 *self) {
     UiObj *o;
     UiObj *o2;
-    void *g = data_02149ef8;
+    void *g = gMsgRes;
     UiObj *s;
     Ov002SndCue *e;
     Obj021efe4c *p;
     o = (UiObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
-        *(VFunc **)o = data_ov000_021cac60;
+        *(VFunc **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(VFunc **)o = data_ov000_021cadcc;
+        *(VFunc **)o = Lo021cadcc_vtbl;
         o->vfunc_28();
     }
     self->unk_20 = (Lo021cadcc *)o;
@@ -67,9 +67,9 @@ void func_ov002_021db750(Obj021eff50 *self) {
     self->unk_20->flags &= ~2;
     o2 = (UiObj *)Heap_Alloc(0x98);
     if (o2 != NULL) {
-        *(VFunc **)o2 = data_ov000_021cac60;
+        *(VFunc **)o2 = UiObj_vtbl;
         o2->vfunc_28();
-        *(VFunc **)o2 = data_ov000_021cae48;
+        *(VFunc **)o2 = Lo021cae48_vtbl;
         o2->vfunc_28();
     }
     self->unk_24 = (Lo021cae48 *)o2;

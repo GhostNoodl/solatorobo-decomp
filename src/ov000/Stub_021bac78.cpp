@@ -11,7 +11,7 @@ void func_ov000_021bac78(void *self) {
     if (state != 0xb && state != 0xc && state != 0xd) {
         return;
     }
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     func_ov000_021badd4(self);
 }
 

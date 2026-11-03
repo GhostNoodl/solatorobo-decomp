@@ -41,7 +41,7 @@ void Obj021efe7c_Setup(Obj021efe7c *self) {
     ResMgr_Load(data_ov002_021efdf6, 7, 0);
     p = (Obj021efe6c *)Heap_Alloc(sizeof(Obj021efe6c));
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021efe6c;
+        *(VFunc **)p = Ov002Vt_021efe6c_vtbl;
         Obj021efe6c_Init(p);
     }
     self->board = p;
@@ -64,7 +64,7 @@ void Obj021efe7c_Setup(Obj021efe7c *self) {
     Obj021efe6c_Init(p);
     q = (Obj021efe4c *)Heap_Alloc(sizeof(Obj021efe4c));
     if (q != NULL) {
-        *(VFunc **)q = data_ov002_021efe4c;
+        *(VFunc **)q = Ov002Vt_021efe4c_vtbl;
         Obj021efe4c_Init(q);
     }
     p->field = q;

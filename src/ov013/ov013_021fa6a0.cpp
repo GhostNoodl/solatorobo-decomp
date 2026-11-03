@@ -83,8 +83,8 @@ void Ov013Boss_Update(Ov013Boss *self) {
 
 void Ov013Boss_HandleMsg(Ov013Boss *self, Ov013Msg *msg) {
     if (msg->type == 9) {
-        SndMgr_PlayAt(data_02097e4c, 0x41, &self->pos, 0);
-        SndMgr_PlayAt(data_02097e4c, 0x40, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x41, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x40, &self->pos, 0);
     }
     Ov003Actor_HandleMsg(self, msg);
 }
@@ -124,7 +124,7 @@ void Ov013Boss_State20(Ov013Boss *self) {
         if (s->timer > 0x14) {
             Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
-            data_ov000_021ccd54->stageFlags = 1;
+            gSceneCmd->stageFlags = 1;
             History_SetState(self->fsm, 1, 0);
         }
         break;
@@ -162,10 +162,10 @@ extern void Actor_TurnToPos(Ov003Actor *self, VecFx32 *p, s32 a);
 extern void Actor_MoveToPos(Ov003Actor *self, VecFx32 *v, s32 a);
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline s32 Ov013_Sqrt64(s64 v) {

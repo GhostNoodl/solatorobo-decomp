@@ -6,7 +6,7 @@ void Task021ef69c_PostUpdate(void) {
 }
 
 void Task021ef69c_UpdateActive(Task021ef69c *self) {
-    u16 keys = data_02097dc8->trig;
+    u16 keys = gPad->trig;
     ListRow021cca70 *ev = self->unk_44;
     if (ev != NULL) {
         if (!(keys & 2)) {
@@ -18,7 +18,7 @@ void Task021ef69c_UpdateActive(Task021ef69c *self) {
         ev->unk_6c = 0;
         self->unk_44 = NULL;
         TextList_Lower(self->unk_3c);
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
     } else {
         ListRow *m;
         if (!(keys & 2)) {
@@ -29,7 +29,7 @@ void Task021ef69c_UpdateActive(Task021ef69c *self) {
         if (m != NULL) {
             data_ov002_021f0f84[2] = m->index;
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         self->vfunc_0c(0);
     }
 }

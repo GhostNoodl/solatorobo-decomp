@@ -25,8 +25,8 @@ extern void Vec_RotateY(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void Model0218fe1c_StopAnim(void *p);
 extern void *Spawn_ScatterEffect(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 extern void Group_UpdateActor(void *mgr, s32 a, void *obj);
-extern void *data_ov000_021ccd64;
-extern char data_ov003_021f8350[];
+extern void *gGroup;
+extern char Ov003ActVt_021f8350_vtbl[];
 extern void Heap_Free(void *p);
 extern void ActorMgr_BroadcastKind(ActorMgr *mgr, u16 a, s32 b);
 extern void Field_ShakeCamera(u8 a, u8 b);
@@ -41,7 +41,7 @@ void Ov003Prop_State22(ActorEx *self) {
         w->timer++;
         if (w->timer > 0x3c) {
             EffectObj *e;
-            ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4035, 0x15);
+            ActorMgr_BroadcastKind(gActorMgr, 0x4035, 0x15);
             Field_ShakeCamera(0x3c, 0x78);
             e = Effect_SpawnId(5, &self->pos);
             if (e != NULL) {
@@ -49,8 +49,8 @@ void Ov003Prop_State22(ActorEx *self) {
                 e->AddPosXYZ(0, -0x32000, 0x1e000);
                 ((Ov003DfEffectData *)e)->unk_3c = 0xccd;
             }
-            SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
-            SndMgr_PlayVolume(data_02097e4c, 0x53, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x56, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x53, -1, -1, -1);
             self->fsm->timer = 0;
             self->fsm->st++;
         } else {
@@ -62,7 +62,7 @@ void Ov003Prop_State22(ActorEx *self) {
             func_ov000_02197dec(self, 0xf, 4);
         }
         if (self->fsm->timer > 0x96) {
-            Group_UpdateActor(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();
             return;
         }
@@ -73,7 +73,7 @@ void Ov003Prop_State22(ActorEx *self) {
             s32 b = 100;
             switch (self->fsm->timer & 0x3f) {
             case 0:
-                SndMgr_PlayVolume(data_02097e4c, 0x19, a, a, a);
+                SndMgr_PlayVolume(gSndMgr, 0x19, a, a, a);
                 Field_ShakeCamera(0xf, 0x1e);
                 a = 3;
                 break;
@@ -84,7 +84,7 @@ void Ov003Prop_State22(ActorEx *self) {
                 b = 100;
                 break;
             case 0x20:
-                SndMgr_PlayVolume(data_02097e4c, 0x19, a, a, a);
+                SndMgr_PlayVolume(gSndMgr, 0x19, a, a, a);
                 Field_ShakeCamera(0xf, 0x1e);
                 break;
             }
@@ -106,18 +106,18 @@ void Ov003Prop_State22(ActorEx *self) {
 }
 
 Ov003ActExSeq *Ov003ActVt_021f8350_Dtor(Ov003ActExSeq *self) {
-    *(void **)self = data_ov003_021f8350;
+    *(void **)self = Ov003ActVt_021f8350_vtbl;
     if (self->seq >= 0) {
-        SndMgr_StopSeqArc(data_02097e4c, self->seq);
+        SndMgr_StopSeqArc(gSndMgr, self->seq);
     }
     ActorEx_DtorBase(self);
     return self;
 }
 
 Ov003ActExSeq *Ov003ActVt_021f8350_DtorDelete(Ov003ActExSeq *self) {
-    *(void **)self = data_ov003_021f8350;
+    *(void **)self = Ov003ActVt_021f8350_vtbl;
     if (self->seq >= 0) {
-        SndMgr_StopSeqArc(data_02097e4c, self->seq);
+        SndMgr_StopSeqArc(gSndMgr, self->seq);
     }
     ActorEx_DtorBase(self);
     Heap_Free(self);
@@ -138,12 +138,12 @@ void Ov003ActVt_021f8350_Start(Ov003ActExSeq *self) {
     self->unk_84.x = self->pos.x;
     self->unk_84.y = self->pos.y;
     self->unk_84.z = self->pos.z;
-    u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    u = Group_FindNode(gGroup, self->unk_20);
     if (u != NULL) {
         u->unk_a2_0 = 0;
         GroupNode_SetSpawnRange(u, 0x5000, 0);
     }
-    self->seq = SndMgr_StartSeqArc(data_02097e4c, 0x3f);
+    self->seq = SndMgr_StartSeqArc(gSndMgr, 0x3f);
 }
 
 void Ov003ActExSeq_Bob(Ov003ActExSeq *self) {
@@ -194,15 +194,15 @@ void Ov003ActExSeq_State21(Ov003ActExSeq *self) {
     }
     case 1: {
         Actor *a;
-        if (data_ov000_021ccd68 == NULL) {
+        if (gActorMgr == NULL) {
             a = NULL;
         } else {
-            a = ActorMgr_FindKind(data_ov000_021ccd68, 0x4000, 0x480b);
+            a = ActorMgr_FindKind(gActorMgr, 0x4000, 0x480b);
         }
         if (a != NULL && Ov003DfKind_Get(a->fsm) != 0x15) {
             goto end;
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x56, -1, -1, -1);
         if (a != NULL) {
             VecFx32 p;
             EffectObj *e;
@@ -218,7 +218,7 @@ void Ov003ActExSeq_State21(Ov003ActExSeq *self) {
         }
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
         self->fsm->st++;
         break;
     }
@@ -232,7 +232,7 @@ static inline u16 Camera_GetAngle(Camera *cam) {
 }
 
 void Ov003ActExSeq_State22(Ov003ActExSeq *self) {
-    Camera *cam = &data_ov000_021ccd54->cam.base;
+    Camera *cam = &gSceneCmd->cam.base;
     switch (self->fsm->st) {
     case 0: {
         VecFx32 v;
@@ -243,7 +243,7 @@ void Ov003ActExSeq_State22(Ov003ActExSeq *self) {
         VEC_Add(&self->pos, &v, &self->pos);
         self->rot_x = 0xfff0;
         Model0218fe1c_StopAnim(self->model);
-        SndMgr_StopSeqArc(data_02097e4c, self->seq);
+        SndMgr_StopSeqArc(gSndMgr, self->seq);
         self->seq = -1;
         self->fsm->st++;
     }
@@ -279,7 +279,7 @@ void Ov003ActExSeq_State22(Ov003ActExSeq *self) {
         }
         if (self->fsm->timer > 0x1c2) {
             func_ov000_02197dec(self, 0xf, 4);
-            Group_UpdateActor(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();
             return;
         }

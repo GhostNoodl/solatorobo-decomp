@@ -61,7 +61,7 @@ void Ov011Act7c4c_StateIdle(Ov011Act7c4c *self) {
             self->fsm->timer--;
         }
         if (self->unk_100 != 0) {
-            EffectObj *e = Effect_Find_020657b0(data_0214a420, self->unk_100);
+            EffectObj *e = Effect_Find_020657b0(gEffectMgr, self->unk_100);
             if (e != NULL) {
                 if (self->fsm->timer == 0) {
                     e->state = 4;
@@ -128,7 +128,7 @@ void Ov011Act7c4c_StateIdle(Ov011Act7c4c *self) {
             s->timer--;
         }
         if (s->timer == 0) {
-            Group_UpdateActor(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();
         }
         break;

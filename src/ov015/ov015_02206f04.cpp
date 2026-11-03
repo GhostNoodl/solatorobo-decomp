@@ -2,20 +2,20 @@
 
 extern "C" {
 
-extern u8 data_ov015_02212a88[];
-extern u8 data_ov015_02212a08[];
+extern u8 Ov015Scene2a88_vtbl[];
+extern u8 Ov015Scene2a08_vtbl[];
 void *GfxCamPos_Init(void *p);
 void GfxCamParam_Init(void *p);
-extern u8 data_ov015_02212c08[];
-extern u8 data_ov015_02212b88[];
-extern u8 data_ov015_02212b08[];
-extern u8 data_ov015_022129e0[];
-extern u8 data_ov015_0221280c[];
+extern u8 Ov015Scene2c08_vtbl[];
+extern u8 Ov015Scene2b88_vtbl[];
+extern u8 Ov015Scene2b08_vtbl[];
+extern u8 Ov015SceneSeq_vtbl[];
+extern u8 Ov015Child_vtbl[];
 void TaskHost_Destroy(void);
 void func_ov015_02205c7c(Ov015Scene2b08 *self);
 void func_ov015_02204110(Ov015Scene2c08 *self);
 void func_ov015_02203020(Ov015Scene2a08 *self);
-extern u8 data_ov015_022129c0[];
+extern u8 Ov015MsgBox_vtbl[];
 void MsgBox_Release(void *p);
 void *ResSet_Init(void *p);
 void *Model0218fe1c_Init(void *p);
@@ -31,7 +31,7 @@ void *func_ov015_02206f04(void) {
     Ov015Scene2a88 *p = (Ov015Scene2a88 *)Heap_Alloc(0x58);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
-        SET_VT(p, data_ov015_02212a88);
+        SET_VT(p, Ov015Scene2a88_vtbl);
         p->model = 0;
         p->unk_40 = 0;
         p->unk_44 = 0;
@@ -48,7 +48,7 @@ void *func_ov015_02206f7c(void) {
     Ov015Scene2a08 *p = (Ov015Scene2a08 *)Heap_Alloc(0xb0);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
-        SET_VT(p, data_ov015_02212a08);
+        SET_VT(p, Ov015Scene2a08_vtbl);
         GfxCamPos_Init(&p->camView.eye);
         GfxCamParam_Init(&p->camView.fovSin);
         p->ship = 0;
@@ -74,7 +74,7 @@ void *func_ov015_02207020(void) {
     Ov015Scene2c08 *p = (Ov015Scene2c08 *)Heap_Alloc(0x6c);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
-        SET_VT(p, data_ov015_02212c08);
+        SET_VT(p, Ov015Scene2c08_vtbl);
         p->unk_3c = 0;
         p->unk_40 = 0;
         p->unk_44 = 0;
@@ -97,7 +97,7 @@ void *func_ov015_022070b8(void) {
     Ov015Scene2b88 *p = (Ov015Scene2b88 *)Heap_Alloc(0x58);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
-        SET_VT(p, data_ov015_02212b88);
+        SET_VT(p, Ov015Scene2b88_vtbl);
         p->unk_3c = 0;
         p->unk_40 = 0;
         p->unk_44 = 0;
@@ -114,7 +114,7 @@ void *func_ov015_02207138(void) {
     Ov015Scene2b08 *p = (Ov015Scene2b08 *)Heap_Alloc(0x164);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
-        SET_VT(p, data_ov015_02212b08);
+        SET_VT(p, Ov015Scene2b08_vtbl);
         p->unk_3c = 0;
         p->unk_40 = 0;
         p->unk_44 = 0;
@@ -132,41 +132,41 @@ void *func_ov015_02207138(void) {
 }
 
 void *Ov015SceneSeq_DtorDelete(Ov015SceneSeq *self) {
-    SET_VT(self, data_ov015_022129e0);
+    SET_VT(self, Ov015SceneSeq_vtbl);
     TaskHost_Destroy();
-    SET_VT(self, data_ov015_0221280c);
+    SET_VT(self, Ov015Child_vtbl);
     func_ov015_021fa6cc(self);
     Heap_Free(self);
     return self;
 }
 
 void *Ov015SceneSeq_Dtor(Ov015SceneSeq *self) {
-    SET_VT(self, data_ov015_022129e0);
+    SET_VT(self, Ov015SceneSeq_vtbl);
     TaskHost_Destroy();
-    SET_VT(self, data_ov015_0221280c);
+    SET_VT(self, Ov015Child_vtbl);
     func_ov015_021fa6cc(self);
     return self;
 }
 
 void Ov015Task_SetCurrent(Task *self) {
-    if (data_ov000_021ccd40 != NULL) {
-        data_ov000_021ccd38 = data_ov000_021ccd40->id;
+    if (gFinishingTask != NULL) {
+        gLastTaskId = gFinishingTask->id;
     } else {
-        data_ov000_021ccd38 = 0;
+        gLastTaskId = 0;
     }
-    data_ov000_021ccd40 = self;
+    gFinishingTask = self;
 }
 
 void Ov015Task_ReleaseCurrent(Task *self) {
     if (self->vfunc_54() == 0) {
         return;
     }
-    if (data_ov000_021ccd40 != NULL) {
-        data_ov000_021ccd38 = data_ov000_021ccd40->id;
+    if (gFinishingTask != NULL) {
+        gLastTaskId = gFinishingTask->id;
     } else {
-        data_ov000_021ccd38 = 0;
+        gLastTaskId = 0;
     }
-    data_ov000_021ccd40 = NULL;
+    gFinishingTask = NULL;
 }
 
 static inline bool Ov015Task_Test(Task *t, u32 mask) {
@@ -225,7 +225,7 @@ s32 Ov015Task_IsReady(void) {
 }
 
 void *Ov015Scene2b08_DtorDelete(Ov015Scene2b08 *self) {
-    SET_VT(self, data_ov015_02212b08);
+    SET_VT(self, Ov015Scene2b08_vtbl);
     func_ov015_02205c7c(self);
     Ov015TaskBase_Dtor(self);
     Heap_Free(self);
@@ -233,7 +233,7 @@ void *Ov015Scene2b08_DtorDelete(Ov015Scene2b08 *self) {
 }
 
 void *Ov015Scene2b08_Dtor(Ov015Scene2b08 *self) {
-    SET_VT(self, data_ov015_02212b08);
+    SET_VT(self, Ov015Scene2b08_vtbl);
     func_ov015_02205c7c(self);
     Ov015TaskBase_Dtor(self);
 
@@ -241,7 +241,7 @@ void *Ov015Scene2b08_Dtor(Ov015Scene2b08 *self) {
 }
 
 void *Ov015Scene2c08_DtorDelete(Ov015Scene2c08 *self) {
-    SET_VT(self, data_ov015_02212c08);
+    SET_VT(self, Ov015Scene2c08_vtbl);
     func_ov015_02204110(self);
     Ov015TaskBase_Dtor(self);
     Heap_Free(self);
@@ -249,7 +249,7 @@ void *Ov015Scene2c08_DtorDelete(Ov015Scene2c08 *self) {
 }
 
 void *Ov015Scene2c08_Dtor(Ov015Scene2c08 *self) {
-    SET_VT(self, data_ov015_02212c08);
+    SET_VT(self, Ov015Scene2c08_vtbl);
     func_ov015_02204110(self);
     Ov015TaskBase_Dtor(self);
 
@@ -257,7 +257,7 @@ void *Ov015Scene2c08_Dtor(Ov015Scene2c08 *self) {
 }
 
 void *Ov015Scene2a08_DtorDelete(Ov015Scene2a08 *self) {
-    SET_VT(self, data_ov015_02212a08);
+    SET_VT(self, Ov015Scene2a08_vtbl);
     func_ov015_02203020(self);
     Ov015TaskBase_Dtor(self);
     Heap_Free(self);
@@ -265,7 +265,7 @@ void *Ov015Scene2a08_DtorDelete(Ov015Scene2a08 *self) {
 }
 
 void *Ov015Scene2a08_Dtor(Ov015Scene2a08 *self) {
-    SET_VT(self, data_ov015_02212a08);
+    SET_VT(self, Ov015Scene2a08_vtbl);
     func_ov015_02203020(self);
     Ov015TaskBase_Dtor(self);
 
@@ -277,7 +277,7 @@ void Ov015Scene2a88_UpdateActive(void) {
 
 void *Ov015Scene2a88_DtorDelete(Ov015Scene2a88 *self) {
     void *saved;
-    SET_VT(self, data_ov015_02212a88);
+    SET_VT(self, Ov015Scene2a88_vtbl);
     HEAP_PUSH(saved);
     {
         Model *p = self->model;
@@ -299,7 +299,7 @@ void *Ov015Scene2a88_DtorDelete(Ov015Scene2a88 *self) {
 
 void *Ov015Scene2a88_Dtor(Ov015Scene2a88 *self) {
     void *saved;
-    SET_VT(self, data_ov015_02212a88);
+    SET_VT(self, Ov015Scene2a88_vtbl);
     HEAP_PUSH(saved);
     {
         Model *p = self->model;
@@ -320,7 +320,7 @@ void *Ov015Scene2a88_Dtor(Ov015Scene2a88 *self) {
 }
 
 void *Ov015MsgBox_Dtor(Ov015MsgBox *self) {
-    SET_VT(self, data_ov015_022129c0);
+    SET_VT(self, Ov015MsgBox_vtbl);
     MsgBox_Release(self);
     return self;
 }
@@ -360,12 +360,12 @@ void *func_ov015_0220765c(Ov015Ship *self) {
 
 void *func_ov015_02207738(Ov015Ship *self) {
     void *saved;
-    if (EffectMgr_Contains(data_0214a420, self->fx) != 0) {
+    if (EffectMgr_Contains(gEffectMgr, self->fx) != 0) {
         HEAP_PUSH(saved);
         DELETE_V(self->fx);
         HEAP_POP(saved);
     }
-    if (EffectMgr_Contains(data_0214a420, self->fx2) != 0) {
+    if (EffectMgr_Contains(gEffectMgr, self->fx2) != 0) {
         HEAP_PUSH(saved);
         DELETE_V(self->fx2);
         HEAP_POP(saved);

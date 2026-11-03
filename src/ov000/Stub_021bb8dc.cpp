@@ -3,10 +3,10 @@
 #include "Main/Sys/Pad.h"
 
 extern "C" {
-extern MessageQueue021cb980 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *gMessageQueue;
 extern char *data_ov000_021cc858;
 extern char data_ov000_021cc894[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern const s16 FX_SinCosTable_[];
 void LangData_LocalizePath(char *dst, const char *src);
 void func_ov000_021bbd94(u8 *self);
@@ -18,7 +18,7 @@ BOOL func_ov000_02165df4(void *p);
 void Lo021cb6b0_FreeAnim(void *p);
 
 static inline void *Get021bb8dc(void) {
-    TimedBuffer021cb920 *p = data_ov000_021ccd30->unk_118;
+    TimedBuffer021cb920 *p = gMessageQueue->unk_118;
     if (p == NULL) {
         return NULL;
     }
@@ -90,8 +90,8 @@ BOOL func_ov000_021bb8dc(Obj021bb8dc *self) {
         self->unk_68 = FX_SinCosTable_[((t << 14) >> 16) * 2];
         break;
     case 11:
-        if (data_02097dc8->trig & 2) {
-            SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        if (gPad->trig & 2) {
+            SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
             self->unk_50 = 12;
             break;
         }

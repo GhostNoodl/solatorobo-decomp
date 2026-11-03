@@ -34,7 +34,7 @@ BOOL Robo021ca458_HandleMsg(Actor *self, ActorMsg *msg, FieldState *g) {
     case 9:
         callBase = FALSE;
         if (!s->unk_b29_0 && s->hpObj->unk_0a == 0) {
-            g = data_ov000_021ccd54;
+            g = gSceneCmd;
             if (g != NULL) {
                 ok = g->head != g->tail ? TRUE : FALSE;
                 if (ok) {
@@ -190,12 +190,12 @@ BOOL Robo021ca458_HandleMsg(Actor *self, ActorMsg *msg, FieldState *g) {
             s->gravity = v;
         } else if (v == 0) {
             if (s->unk_b24_1) {
-                if ((data_ov000_021ccd68->frame & 0x3f) >= 0x2a) {
+                if ((gActorMgr->frame & 0x3f) >= 0x2a) {
                     s->velY -= s->velY >> 2;
                 } else {
                     s->velY -= s->velY >> 3;
                 }
-            } else if ((data_ov000_021ccd68->frame & 0x3f) >= 0x2a) {
+            } else if ((gActorMgr->frame & 0x3f) >= 0x2a) {
                 if (s->velY < 0) {
                     s->velY -= s->velY >> 1;
                 }

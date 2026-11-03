@@ -2,16 +2,16 @@
 
 extern "C" {
 
-extern u8 data_ov006_021ec25c[];
-extern u8 data_0208b318[];
+extern u8 Ov006Vt_021ec25c_vtbl[];
+extern u8 ResHandle_vtbl[];
 
 ov006_ResLoader *Ov006Vt_021ec25c_Dtor(ov006_ResLoader *self) {
-    *(void **)self = data_ov006_021ec25c;
+    *(void **)self = Ov006Vt_021ec25c_vtbl;
     if (self->res.name[0] != 0 || self->res.arcName[0] != 0) {
         self->res.vfunc_0c();
     }
     self->res.vfunc_08();
-    *(void **)&self->res = data_0208b318;
+    *(void **)&self->res = ResHandle_vtbl;
     self->res.vfunc_0c();
     return self;
 }

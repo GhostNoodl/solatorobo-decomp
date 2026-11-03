@@ -31,7 +31,7 @@ void func_ov002_021d36b8(Task021ef91c *self, s32 n) {
     if (self->unk_c8 == NULL) {
         VObj *p = (VObj *)Heap_Alloc(0x4c);
         if (p != NULL) {
-            *(VFunc **)p = (VFunc *)data_0208b318;
+            *(VFunc **)p = (VFunc *)ResHandle_vtbl;
             p->vfunc_08();
         }
         self->unk_c8 = p;

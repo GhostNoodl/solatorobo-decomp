@@ -18,7 +18,7 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
+extern void *gActorMgr;
 extern const char *data_ov003_021f7a38[2][2];
 extern char data_ov003_021f7a60[];
 extern char data_ov003_021f7a66[];
@@ -35,10 +35,10 @@ extern void Body_Update(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const char *name, s16 a, u8 b);
 
 static inline Actor *Ov003Kb_FindUnit(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline BOOL Ov003KbCtl_Bit4(ActorSub48 *c) {
@@ -357,7 +357,7 @@ void Ov003Actor_StateKnockBack(Ov003Actor *self) {
             }
             if (self->hit->unk_50 & 0x20000000) {
                 if (self->unk_92 == 0 && self->hpObj != NULL) {
-                    SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
+                    SndMgr_PlayAt(gSndMgr, 0x17, &self->pos, 0);
                 }
                 if (++self->unk_92 <= 2) {
                     Model0218fe1c_SetAnim(self->model, data_ov003_021f7a9d, 0x400, 1);
@@ -481,7 +481,7 @@ static inline BOOL Ov003Kb_GameIsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003Kb_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003Kb_GameIsIdle(g);
     }
@@ -583,7 +583,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
             if (p != NULL && p->unk_b24_1) {
                 Shared_SetEventActor(self->kind, self->id);
                 func_020627dc(3);
-                data_ov000_021ccd54->stageFlags = 1;
+                gSceneCmd->stageFlags = 1;
             }
         }
         if (self->targetObj->type == 0x11) {
@@ -594,7 +594,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
         self->unk_b6 = 0;
         self->unk_ea_0 = self->unk_b0->unk_0a_7;
         if (self->unk_e4 != NULL) {
-            EffectMgr_Kill(data_0214a420, self->unk_e4);
+            EffectMgr_Kill(gEffectMgr, self->unk_e4);
             self->unk_e4 = NULL;
         }
         if (self->unk_e4 == NULL && !z) {
@@ -638,7 +638,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
             }
             if (self->hit->unk_50 & 0x20000000) {
                 if (self->unk_92 == 0) {
-                    SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
+                    SndMgr_PlayAt(gSndMgr, 0x17, &self->pos, 0);
                 }
                 if (++self->unk_92 <= 2 && self->targetObj->unk_1a <= 1) {
                     self->speed = self->speed - (self->speed >> 2);
@@ -658,7 +658,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
                     }
                 }
                 if (self->unk_e4 != NULL) {
-                    EffectObj *f = Effect_Find_020657b0(data_0214a420, self->unk_e4);
+                    EffectObj *f = Effect_Find_020657b0(gEffectMgr, self->unk_e4);
                     if (f != NULL && (f->unk_20 != 0x388 || self->hpObj->cur == 0)) {
                         f->state = 4;
                         self->unk_e4 = NULL;
@@ -695,7 +695,7 @@ void Ov003Actor_StateDown(Ov003Actor *self) {
         }
         if (self->unk_e8 == 0) {
             if (self->unk_e4 != NULL) {
-                EffectMgr_Kill(data_0214a420, self->unk_e4);
+                EffectMgr_Kill(gEffectMgr, self->unk_e4);
                 self->unk_e4 = NULL;
             }
             self->targetObj->unk_1a = 0;

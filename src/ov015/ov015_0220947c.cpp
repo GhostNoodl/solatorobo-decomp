@@ -32,14 +32,14 @@ void *Ov015FishState2c_Ctor(Ov015FishState2c *self);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
 void func_ov015_02209a50(Ov015Fish *self);
 int func_0203f3d0(void *a);
-extern u32 data_02fe0f04;
+extern u32 gHitSphereGroups;
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 void func_ov015_02209c90(Ov015Fish *self);
 void Ov015Shadow_DrawAt(Ov015Shadow *a, Ov015Vec *pos, s32 b, s32 c, s32 ang, s32 d);
 BOOL Model021903b4_Draw(void *a);
 s32 Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);
-extern u8 data_ov015_02212e94[];
-extern u8 data_ov015_02212eb0[];
+extern u8 Ov015FishState2c_vtbl[];
+extern u8 Ov015FishState_vtbl[];
 
 static inline BOOL Ov015_IsIdle567(Ov015Fish *self) {
     BOOL r = TRUE;
@@ -157,7 +157,7 @@ BOOL func_ov015_02209790(Ov015Fish *self, BOOL b) {
     self->hit.pos = self->pos;
     self->hit.radius = self->radius;
     func_0203f3d0(&self->hit);
-    self->hit.unk_44 = data_02fe0f04;
+    self->hit.unk_44 = gHitSphereGroups;
     return TRUE;
 }
 
@@ -297,7 +297,7 @@ void Ov015Fish_GetFrontPos(Ov015Fish *self, void *out) {
 }
 
 void *Ov015FishState2c_Ctor(Ov015FishState2c *self) {
-    SET_VT(self, data_ov015_02212e94);
+    SET_VT(self, Ov015FishState2c_vtbl);
     self->step = 0;
     self->unk_06 = 0;
     self->unk_08 = 0;
@@ -315,16 +315,16 @@ void *Ov015FishState2c_Ctor(Ov015FishState2c *self) {
 }
 
 void *Ov015FishState2c_Dtor(Ov015FishState2c *self) {
-    SET_VT(self, data_ov015_02212e94);
+    SET_VT(self, Ov015FishState2c_vtbl);
     self->vfunc_10(0);
-    SET_VT(self, data_ov015_02212eb0);
+    SET_VT(self, Ov015FishState_vtbl);
     return self;
 }
 
 void *Ov015FishState2c_DtorDelete(Ov015FishState2c *self) {
-    SET_VT(self, data_ov015_02212e94);
+    SET_VT(self, Ov015FishState2c_vtbl);
     self->vfunc_10(0);
-    SET_VT(self, data_ov015_02212eb0);
+    SET_VT(self, Ov015FishState_vtbl);
     Heap_Free(self);
     return self;
 }

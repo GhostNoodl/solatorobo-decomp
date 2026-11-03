@@ -70,7 +70,7 @@ void Ov013ActVt_0220b5e0_StateMove(Ov013ActVt_0220b5e0 *self) {
 
 void Ov013ActVt_0220b5e0_StateHeld(Ov013ActVt_0220b5e0 *self) {
     if (self->fsm->st == 0) {
-        EffectMgr_Kill(data_0214a420, self->unk_f4);
+        EffectMgr_Kill(gEffectMgr, self->unk_f4);
     }
     Ov003Actor_StateHeld(self);
 }
@@ -87,10 +87,10 @@ void Ov013ActVt_0220b5e0_StateFly(Ov013ActVt_0220b5e0 *self) {
     if (self->fsm->st == 0) {
         if (self->fsm->history[0] == 0xb) {
             Ov003Actor *a;
-            if (data_ov000_021ccd68 == NULL) {
+            if (gActorMgr == NULL) {
                 a = NULL;
             } else {
-                a = ActorMgr_FindKind(data_ov000_021ccd68, 0x5000, 0x5c0a);
+                a = ActorMgr_FindKind(gActorMgr, 0x5000, 0x5c0a);
             }
             if (a != NULL && a->unk_44->unk_22_0 == 1 && a->unk_44->unk_22_1 == 1) {
                 s32 ty = a->pos.y;

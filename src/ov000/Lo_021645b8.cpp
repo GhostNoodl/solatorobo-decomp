@@ -5,7 +5,7 @@
 
 extern "C" {
 extern u8 data_ov000_021cb8e0[];
-extern MessageQueue021cb980 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *gMessageQueue;
 void LangData_LocalizePath(char *buf, const void *s);
 void *ResMgr_Load(const char *name, s32 a, s32 b);
 BOOL ResMgr_IsLoaded(const char *name, s32 a);
@@ -24,7 +24,7 @@ void func_ov000_021645b8(Lo021cb6b0 *self) {
     case 1: {
         char buf[0x20];
         LangData_LocalizePath(buf, data_ov000_021cb8e0);
-        if (data_ov000_021ccd30->flag0) {
+        if (gMessageQueue->flag0) {
             return;
         }
         if (!ResMgr_IsLoaded(buf, 7)) {
@@ -38,7 +38,7 @@ void func_ov000_021645b8(Lo021cb6b0 *self) {
         self->unk_20 = 7;
         return;
     case 7: {
-        s32 t = ((s32)data_0214a424->unk_020);
+        s32 t = ((s32)gStageFlags->unk_020);
         s32 d = LO_FX_MUL((t - self->unk_50) << 12, 0xf6);
         if ((d < 0 ? -d : d) < 0x1000) {
             self->unk_50 = t;

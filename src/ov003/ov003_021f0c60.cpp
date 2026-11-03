@@ -74,10 +74,10 @@ typedef struct {
 } Ov003DataRes;
 
 extern "C" {
-extern Ov003Game30 *data_ov000_021ccd30;
-extern Ov003Save *data_0214a424;
-extern Ov003DataRes *data_02fe152c;
-extern void *data_02149ef8;
+extern Ov003Game30 *gMessageQueue;
+extern Ov003Save *gStageFlags;
+extern Ov003DataRes *gDataRes;
+extern void *gMsgRes;
 Ov003PkOwner *Target_Get(Ov003PkItem *item);
 BOOL Hit_ApplyInArea(Ov003Pickup *self, Ov003PkOwner *owner, u16 a, u8 b, u16 mask, VecFx32 *v, s32 c, s32 d, s32 e, s32 f, s32 g);
 void Actor_SendMsg(Ov003PkOwner *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
@@ -97,7 +97,7 @@ const char *MsgRes_GetString(void *a, s32 id);
 }
 
 static inline void Ov003Log_Push(s32 type, const char *s) {
-    Ov003LogOwner *o = data_ov000_021ccd30->unk_11c;
+    Ov003LogOwner *o = gMessageQueue->unk_11c;
     Ov003Log *log;
     if (o != NULL && (log = o->log) != NULL) {
         log->e[log->n].type = type;
@@ -113,7 +113,7 @@ static inline void Ov003Log_Push(s32 type, const char *s) {
 }
 
 static inline void Ov003Log_PushEmpty(s32 type) {
-    Ov003LogOwner *o = data_ov000_021ccd30->unk_11c;
+    Ov003LogOwner *o = gMessageQueue->unk_11c;
     Ov003Log *log;
     if (o != NULL && (log = o->log) != NULL) {
         log->e[log->n].type = type;
@@ -182,20 +182,20 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
     case 4: {
         char buf[0x20];
         {
-            Ov003Save *g = data_0214a424;
+            Ov003Save *g = gStageFlags;
             g->unk_20 += item->amount;
             if (g->unk_20 > 99999) {
                 g->unk_20 = 99999;
             }
         }
-        if (data_0214a424->money + item->amount >= 999999) {
-            data_0214a424->money = 999999;
+        if (gStageFlags->money + item->amount >= 999999) {
+            gStageFlags->money = 999999;
         } else {
-            data_0214a424->money += item->amount;
+            gStageFlags->money += item->amount;
         }
         func_02040a98(buf, item->amount);
         Ov003Log_Push(2, buf);
-        SndMgr_PlayVolume(data_02097e4c, 0x31, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x31, -1, -1, -1);
         break;
     }
     case 6:
@@ -203,14 +203,14 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
         break;
     case 5: {
         char buf[0x20];
-        Ov003Save *g = data_0214a424;
+        Ov003Save *g = gStageFlags;
         g->unk_24 += item->amount;
         if (g->unk_24 > 9999) {
             g->unk_24 = 9999;
         }
         func_02040a98(buf, item->amount);
         Ov003Log_Push(3, buf);
-        SndMgr_PlayPan(data_02097e4c, 0x21, 2);
+        SndMgr_PlayPan(gSndMgr, 0x21, 2);
         break;
     }
     case 9: {
@@ -220,26 +220,26 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
         if (n <= 0 || n > 9999) {
             n = 1;
         }
-        t = n + data_0214a424->unk_614;
+        t = n + gStageFlags->unk_614;
         if (t > 9999) {
             t = 9999;
         }
-        data_0214a424->unk_614 = t;
+        gStageFlags->unk_614 = t;
         func_02040a98(buf, n);
         Ov003Log_Push(4, buf);
-        SndMgr_PlayPan(data_02097e4c, 0x89, 5);
+        SndMgr_PlayPan(gSndMgr, 0x89, 5);
         {
             u8 *base;
             BOOL found;
             u32 i;
             u32 count;
             void *tbl;
-            count = DataRes_GetCount(data_02fe152c, 8);
-            base = data_02fe152c->unk_4c;
-            tbl = DataRes_GetTable(data_02fe152c, 8);
+            count = DataRes_GetCount(gDataRes, 8);
+            base = gDataRes->unk_4c;
+            tbl = DataRes_GetTable(gDataRes, 8);
             found = FALSE;
             for (i = 0; i < count; i++) {
-                if (DataRes_ReadBitsAt_02059544(data_02fe152c, base + 0x110, tbl, 1, (u16)i)) {
+                if (DataRes_ReadBitsAt_02059544(gDataRes, base + 0x110, tbl, 1, (u16)i)) {
                     found = TRUE;
                     break;
                 }
@@ -262,7 +262,7 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
             }
         }
         Item_Set_0206f5e4(id, 1);
-        SceneCmd_Push10Flag(data_ov000_021ccd54, id);
+        SceneCmd_Push10Flag(gSceneCmd, id);
         break;
     }
     case 8: {
@@ -276,17 +276,17 @@ extern "C" void Ov003Pickup_Update(Ov003Pickup *self, u16 mask) {
         if (Item_Give(id, 1)) {
             Ov003Log_Push(1, Param_Get(id));
         } else {
-            SceneCmd_Push10(data_ov000_021ccd54, id);
+            SceneCmd_Push10(gSceneCmd, id);
         }
         break;
     }
     case 10:
-        Ov003Log_Push(0, MsgRes_GetString(data_02149ef8, 0x63));
-        SndMgr_PlayPan(data_02097e4c, 0x1e, -5);
+        Ov003Log_Push(0, MsgRes_GetString(gMsgRes, 0x63));
+        SndMgr_PlayPan(gSndMgr, 0x1e, -5);
         break;
     case 11:
-        Ov003Log_Push(0, MsgRes_GetString(data_02149ef8, 0x63));
-        SndMgr_PlayPan(data_02097e4c, 0x1e, -5);
+        Ov003Log_Push(0, MsgRes_GetString(gMsgRes, 0x63));
+        SndMgr_PlayPan(gSndMgr, 0x1e, -5);
         break;
     }
 }

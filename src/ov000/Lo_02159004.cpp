@@ -19,7 +19,7 @@ typedef struct Node02155160 {
 } Node02155160;
 
 extern "C" {
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void Heap_Free(void *ptr);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 }
@@ -84,7 +84,7 @@ void Lo021cb3a8_Scroll(Obj02155160 *self, s32 n, s32 commit) {
             self->unk_0c |= 2;
         }
         if (!commit) {
-            SndMgr_PlayVolume(data_02097e4c, 0x1d, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1d, -1, -1, -1);
         }
         self->unk_b3++;
     } else {

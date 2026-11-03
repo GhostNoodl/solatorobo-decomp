@@ -5,8 +5,8 @@
 
 extern "C" {
 
-extern void *data_ov000_021caec8;
-extern void *data_ov000_021cac60;
+extern void *UiList_vtbl;
+extern void *UiObj_vtbl;
 BOOL Model_IsReady(Model *a, u32 b);
 BOOL Vram_IsTransferDone(void *p);
 BOOL func_ov008_021d01b0(Ov008Menu *self);
@@ -132,9 +132,9 @@ BOOL func_ov008_021d01b0(Ov008Menu *self) {
 }
 
 Ov008V *Ov008Menu_Dtor(Ov008Menu *self) {
-    OV008_SET_VT(self, &data_ov000_021caec8);
+    OV008_SET_VT(self, &UiList_vtbl);
     self->v2c();
-    OV008_SET_VT(self, &data_ov000_021cac60);
+    OV008_SET_VT(self, &UiObj_vtbl);
     self->v2c();
     return self;
 }

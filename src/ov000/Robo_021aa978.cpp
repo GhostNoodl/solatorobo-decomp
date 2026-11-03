@@ -16,7 +16,7 @@ typedef struct {
 } Msg021aa978;
 
 extern "C" {
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov000_021cc6ae[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL Model0218fe1c_IsAnimDelayed(void *a);
@@ -35,7 +35,7 @@ void Model0218fe1c_SetAnimDelay(void *a, u16 b, s32 c);
 u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, u16 b);
 
 static inline Actor *FindActor021aa978(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }
@@ -135,7 +135,7 @@ void func_ov000_021aa978(Robo021ca458 *self) {
             if (t != NULL) {
                 self->moveYaw = AngleTo021aa978((Actor *)self, t);
             } else if (self->padCur & 0xf0) {
-                self->moveYaw = FieldCam_GetYaw(&data_ov000_021ccd54->cam) + self->padDir;
+                self->moveYaw = FieldCam_GetYaw(&gSceneCmd->cam) + self->padDir;
             }
         }
         self->fsm->st++;
@@ -199,7 +199,7 @@ void func_ov000_021aa978(Robo021ca458 *self) {
                 Actor_SendMsg(a, self->id, 7, 1, sizeof(Msg021aa978), &m);
             }
         }
-        SndMgr_PlayAt(data_02097e4c, 0x32, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x32, &self->pos, 0);
         self->unk_b1c = 0xffff;
         self->unk_b1e = 0xffff;
         self->unk_b24_5 = 0;
@@ -238,7 +238,7 @@ void func_ov000_021aa978(Robo021ca458 *self) {
         return;
     }
     Field_ShakeCamera(8, 0xa);
-    SndMgr_PlayAt(data_02097e4c, 0x7d, &self->pos, 0);
+    SndMgr_PlayAt(gSndMgr, 0x7d, &self->pos, 0);
     Model0218fe1c_SetAnimDelay(self->model, 3, 0);
 }
 

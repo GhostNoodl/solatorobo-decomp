@@ -13,7 +13,7 @@ ResList *ResList_Dtor(ResList *list) {
     while (node != NULL) {
         func_0203835c(&node->type);
         next = node->next;
-        ResMgr_FreeNode_020366d0(data_02097cdc, node);
+        ResMgr_FreeNode_020366d0(gResMgr, node);
         node = next;
     }
     return list;
@@ -26,7 +26,7 @@ ResList *ResList_Dtor(ResList *list) {
         while (node != NULL) {                                    \
             if (node->type == kind) {                             \
                 if (hash == 0) {                                  \
-                    hash = ResMgr_Hash(data_02097cdc, str);       \
+                    hash = ResMgr_Hash(gResMgr, str);       \
                 }                                                 \
                 if (node->hash == hash && STD_CompareString(str, node->name) == 0) {  \
                     break;                                        \
@@ -123,7 +123,7 @@ void func_02035094(ResList *list, ResRequest *req) {
         }
     }
     if (node == NULL) {
-        node = func_0203662c(data_02097cdc);
+        node = func_0203662c(gResMgr);
         node->state = 6;
         if (list->head == NULL) {
             list->head = node;
@@ -139,7 +139,7 @@ void func_02035094(ResList *list, ResRequest *req) {
         } else {
             Str_CopyStem(node->name, entry->name, 0x18);
         }
-        node->hash = ResMgr_Hash(data_02097cdc, node->name);
+        node->hash = ResMgr_Hash(gResMgr, node->name);
         node->type = entry->type;
     }
     switch (node->type) {

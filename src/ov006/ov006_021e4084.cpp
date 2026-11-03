@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void *data_ov006_021ec404;
+extern void *Ov006Vt_021ec404_vtbl;
 
 ov006_Unk021ec888 *Ov006Vt_021ec404_Ctor(ov006_Unk021ec888 *self);
 
@@ -12,15 +12,15 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
         void *saved;
         ov006_MenuNode *next;
         next = node->next;
-        saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (node != NULL) {
             if (node != NULL) {
                 node->vfunc_04();
             }
             node = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
         node = next;
     }
     self->nodes = NULL;
@@ -29,8 +29,8 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
 }
 
 static inline void ov006_Menu_Dtor(ov006_Unk021ec888 *self) {
-    self->vtbl = &data_ov006_021ec404;
-    data_02097dd0->vblankFunc = NULL;
+    self->vtbl = &Ov006Vt_021ec404_vtbl;
+    gSysState->vblankFunc = NULL;
     ov006_Menu_ClearNodes(self);
     OV006_DELETE_OBJECT(self->unk1D4);
     OV006_DELETE_OBJECT(self->unk1D8);

@@ -56,16 +56,16 @@ void ov006_Unk021df44c_Update(ov006_Win021e000c *self);
 
 static inline void ov006_Unk021e000c_Kill(int id) {
     if (id != -1) {
-        VObj *o = (VObj *)Effect_Find_020657b0(data_0214a420, id);
+        VObj *o = (VObj *)Effect_Find_020657b0(gEffectMgr, id);
         if (o != NULL) {
-            void *saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->heapHi;
+            void *saved = gSysState->cur;
+            gSysState->cur = gSysState->heapHi;
             if (o != NULL) {
                 if (o != NULL) {
                     o->vfunc_04();
                 }
             }
-            data_02097dd0->cur = saved;
+            gSysState->cur = saved;
         }
     }
 }
@@ -146,11 +146,11 @@ void ov006_Unk021e000c_Update(ov006_Unk021e000c *self) {
         break;
     case 5: {
         fx32 t = (self->timer << 12) / 20;
-        EffectObj *o = Effect_Find_020657b0(data_0214a420, self->id1);
+        EffectObj *o = Effect_Find_020657b0(gEffectMgr, self->id1);
         if (o != NULL) {
             o->SetScaleXYZ(0x1000, FX_Mul(t, 0x800) + 0x1000, 0x1000);
         }
-        o = Effect_Find_020657b0(data_0214a420, self->id2);
+        o = Effect_Find_020657b0(gEffectMgr, self->id2);
         if (o != NULL) {
             o->SetPosXYZ(FX_Mul(t, -0x80000), 0, o->pos.z);
         }

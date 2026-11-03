@@ -35,11 +35,11 @@ void MainVt_0208c994_OnLoadData(GameSave0208c994 *s, void *dst, u32 size) {
 }
 
 static inline void GameSave_Dtor(GameSave0208c994 *s) {
-    *(u32 **)s = data_0208c994;
+    *(u32 **)s = MainVt_0208c994_vtbl;
     s->Finalize();
-    *(u32 **)s = data_0208ca9c;
+    *(u32 **)s = MainVt_0208ca9c_vtbl;
     s->Finalize();
-    *(u32 **)s = data_0208b614;
+    *(u32 **)s = SaveBase_vtbl;
     s->Finalize();
 }
 
@@ -55,9 +55,9 @@ GameSave0208c994 *MainVt_0208c994_Dtor(GameSave0208c994 *s) {
 }
 
 static inline void GameSaveBase_Dtor(GameSave *s) {
-    *(u32 **)s = data_0208ca9c;
+    *(u32 **)s = MainVt_0208ca9c_vtbl;
     s->Finalize();
-    *(u32 **)s = data_0208b614;
+    *(u32 **)s = SaveBase_vtbl;
     s->Finalize();
 }
 

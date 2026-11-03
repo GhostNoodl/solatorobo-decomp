@@ -32,10 +32,10 @@ extern char data_0208b8cc[], data_0208b8cd[], data_0208b8d9[], data_0208b8e5[], 
     data_0208b921[], data_0208b945[], data_0208b951[], data_0208b95d[], data_0208b969[], data_0208b975[],
     data_0208b981[], data_0208b98d[], data_0208b999[], data_0208b9a5[], data_0208b9b1[], data_0208b9bd[];
 
-extern const Obj3DAnimEnt data_0208bc80[];
+extern const Obj3DAnimEnt Obj3D_AnimTable[];
 
 // Entry 11 has no handler: MWCC copies `__ptmf_null` into it at startup (`__sinit_Obj3D_2.cpp`).
-const Obj3DAnimEnt data_0208bc80[] = {
+const Obj3DAnimEnt Obj3D_AnimTable[] = {
     {data_0208b9b1, 0, -0x24, {0x17}, &Obj3DAnimCls::func_02052628},
     {data_0208b945, 0, -0x24, {0x16}, &Obj3DAnimCls::func_02052628},
     {data_0208b951, 0, -0x24, {0x17}, &Obj3DAnimCls::func_02052628},

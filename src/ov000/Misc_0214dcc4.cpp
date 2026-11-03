@@ -38,7 +38,7 @@ void Lo021caac8_Setup(Obj0214dcc4 *self) {
 // Lo021caac8_AddItem (round tmA): 28 / 0 (register-only), honest. Now 26 / 0 (round raE, below). The old 28 / 0 draft
 // (ovlo12/d/dd3c/m2.cpp) read the game-state pointer through a one-element array g[1]; reading
 // it through a getter inline (GetG0214dd3c) numbers the two g temps the same way. Without either
-// (plain `u8 *g = data_ov000_021ccd54;`) it is 70 / 0. Left: key / Key(p) / insert-walk p colouring.
+// (plain `u8 *g = gSceneCmd;`) it is 70 / 0. Left: key / Key(p) / insert-walk p colouring.
 // Round raB: address accessors for the list head, next and unk_36, a for walk and O1-O3 give 28 or
 // worse; the ramerge colour model does not reproduce this graph (13 nodes differ).
 // Round qpH, all 28 / 0 unless noted: k and g in Key split into their own statements (declared first,
@@ -65,7 +65,7 @@ void Lo021caac8_Setup(Obj0214dcc4 *self) {
 
 extern "C" {
 extern u8 data_02fe1534[];
-extern void *data_02fe152c;
+extern void *gDataRes;
 void MsgEntry_Init(void *p);
 s32 MsgRes_GetLines(void *res, u16 id, s32 *out, s32 d);
 void Text_ScanTags(s32 a, s32 b, void *c, void *d);
@@ -100,7 +100,7 @@ struct Node0214dd3c {
 };
 
 static inline u8 *GetG0214dd3c(void) {
-    return (u8 *)data_ov000_021ccd54;
+    return (u8 *)gSceneCmd;
 }
 
 static inline u16 KeyR0214dd3c(Node0214dd3c *p, u8 *&g) {
@@ -152,7 +152,7 @@ Node0214dd3c *Lo021caac8_AddItem(List0214dd3c *self, s32 a, u16 id, u16 c, s32 d
     m->id = id;
     m->unk_08 = c;
     m->unk_0c = d;
-    Text_ScanTags(out, MsgRes_GetLines(LFLD(void *, data_ov000_021ccd24.unk_08, 0xbc), id, &out, 1), m, (void *)func_ov000_0214dc20);
+    Text_ScanTags(out, MsgRes_GetLines(LFLD(void *, gSceneResSet.unk_08, 0xbc), id, &out, 1), m, (void *)func_ov000_0214dc20);
     if (self->tail == NULL) {
         self->tail = m;
         self->head = m;
@@ -198,11 +198,11 @@ Node0214dd3c *Lo021caac8_AddItem(List0214dd3c *self, s32 a, u16 id, u16 c, s32 d
     }
     if (fl & 0x20) {
         if (LFLD(u16, data_02fe1534, 0x46) == m->unk_30) {
-            if (DataRes_ReadById(data_02fe152c, 1, 0x301, id) == 1) {
+            if (DataRes_ReadById(gDataRes, 1, 0x301, id) == 1) {
                 m->unk_24 = 7;
             }
         } else {
-            if (DataRes_ReadById(data_02fe152c, 1, 0x301, id) == 1) {
+            if (DataRes_ReadById(gDataRes, 1, 0x301, id) == 1) {
                 m->unk_24 = 0xb;
             } else {
                 m->unk_24 = 0xe;

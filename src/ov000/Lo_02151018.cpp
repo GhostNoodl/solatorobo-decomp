@@ -5,8 +5,8 @@
 
 extern "C" {
 
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021cad50[];
+extern u8 UiObj_vtbl[];
+extern u8 Lo021cad50_vtbl[];
 void Obj0215c1bc_SetMsg(Lo021cad50 *self, s32 id);
 
 void Lo021ca9c4_PostUpdate(Lo021ca9c4 *self) {
@@ -24,9 +24,9 @@ void Lo021ca9c4_PostUpdate(Lo021ca9c4 *self) {
                     if (self->unk_58 == NULL) {
                         VObj *p = (VObj *)Heap_Alloc(0xe8);
                         if (p) {
-                            VOBJ_SET_VTABLE(p, data_ov000_021cac60);
+                            VOBJ_SET_VTABLE(p, UiObj_vtbl);
                             p->vfunc_28();
-                            VOBJ_SET_VTABLE(p, data_ov000_021cad50);
+                            VOBJ_SET_VTABLE(p, Lo021cad50_vtbl);
                             p->vfunc_28();
                         }
                         self->unk_58 = (Lo021cad50 *)p;

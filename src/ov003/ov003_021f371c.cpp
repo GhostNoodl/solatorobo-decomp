@@ -14,7 +14,7 @@ typedef struct {
 extern char data_ov003_021fa652[];
 extern u32 data_ov003_021fa658;
 extern void ResSet_SetFile(ActorRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern const Ov003SVec data_ov003_021f7694[];
 extern BOOL ResSet_UpdateLoad(ActorRes *p);
 extern BOOL Model0218fe1c_SetRes(void *anim, ActorRes *res, s32 a, s32 b);
@@ -64,7 +64,7 @@ void Ov003ActVt_021fa5f8_Animate(Ov003PropResMdl *self) {
         pos.x = self->pos.x;
         pos.y = self->pos.y;
         pos.z = self->pos.z + 0xc000;
-        SndMgr_PlayAtPitch(data_02097e4c, 0x39, &pos, -5);
+        SndMgr_PlayAtPitch(gSndMgr, 0x39, &pos, -5);
     }
     if (self->kind == 0x6a01) {
         return;

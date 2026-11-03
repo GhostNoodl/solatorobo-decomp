@@ -14,7 +14,7 @@ typedef struct ov006_Scene021d8790 {
 
 extern "C" {
 
-extern ov006_Fade021d8790 data_02097d78;
+extern ov006_Fade021d8790 gFadeState;
 void GfxSys_StartFadeIn(s32 a, int b, int c);
 void GfxSys_StartFadeOut(s32 a, int b, int c);
 void GfxSys_UpdateFade(void);
@@ -22,7 +22,7 @@ void ov006_Menu_ShowObj(ov006_Unk021ec888 *p);
 
 static inline BOOL ov006_FadeIdle(void) {
     BOOL r;
-    if (data_02097d78.unkC == 0 && data_02097d78.unk0[0] == 0) {
+    if (gFadeState.unkC == 0 && gFadeState.unk0[0] == 0) {
         r = TRUE;
     } else {
         r = FALSE;
@@ -32,10 +32,10 @@ static inline BOOL ov006_FadeIdle(void) {
 
 static inline BOOL ov006_FadeDone(int ch) {
     BOOL r;
-    if (data_02097d78.unkC == 4) {
+    if (gFadeState.unkC == 4) {
         r = TRUE;
     } else {
-        r = data_02097d78.unk0[ch] == 4;
+        r = gFadeState.unk0[ch] == 4;
     }
     return r;
 }

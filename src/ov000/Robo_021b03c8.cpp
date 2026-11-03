@@ -4,7 +4,7 @@
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern VecFx32 data_ov000_021ca000;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Vec_RotateY(VecFx32 *out, const VecFx32 *in, u16 ang);
@@ -16,7 +16,7 @@ BOOL History_SetState(void *s, s32 a, s32 b);
 void func_ov000_021b2b08(Robo021ca458 *self);
 
 static inline Actor *FindActor021b03c8(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }
@@ -49,7 +49,7 @@ void func_ov000_021b03c8(Robo021ca458 *self) {
             sub = a->targetObj;
         }
         if (sub == NULL || sub->unk_1e == 0) {
-            SndMgr_PlayAtPitch(data_02097e4c, 0x48, &self->pos, -5);
+            SndMgr_PlayAtPitch(gSndMgr, 0x48, &self->pos, -5);
             Next021b03c8(self);
             return;
         }
@@ -65,7 +65,7 @@ void func_ov000_021b03c8(Robo021ca458 *self) {
         }
         sub->unk_1e--;
         Field_ShakeCamera(3, 6);
-        SndMgr_PlayAt(data_02097e4c, 0x66, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x66, &self->pos, 0);
         Next021b03c8(self);
         break;
     case 1:

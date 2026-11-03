@@ -5,7 +5,7 @@
 extern "C" {
 
 extern char data_ov006_021ec4a7[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 u8 ov006_CountFinished(void);
 BOOL Model0218fe1c_SetAnim(void *a, const void *b, int c, int d);
 void Model0218fe1c_SetLoop(void *a);
@@ -30,18 +30,18 @@ void Ov006Racer_UpdateRun(Ov006Racer *self) {
     Ov006Racer_UpdateSteer(self);
     Ov006Racer_Move(self);
     Model0218fe1c_SetAnimSpeed(self->model, (s16)(((s64)self->prm->unk_00 * (self->runSpeed + 0x333) + 0x800) >> 12));
-    if (self->idx != data_ov006_021ec884->unk5) {
+    if (self->idx != gOv006SlotManager->unk5) {
         return;
     }
     if (self->seq < 0) {
-        self->seq = SndMgr_StartSeqArc(data_02097e4c, self->prm->unk_02);
+        self->seq = SndMgr_StartSeqArc(gSndMgr, self->prm->unk_02);
         return;
     }
     if (self->trig & 3) {
-        SndMgr_StopSeqArc(data_02097e4c);
-        self->seq = SndMgr_StartSeqArc(data_02097e4c, self->prm->unk_02);
+        SndMgr_StopSeqArc(gSndMgr);
+        self->seq = SndMgr_StartSeqArc(gSndMgr, self->prm->unk_02);
     }
-    SndMgr_SetSlotPitch(data_02097e4c, self->seq, (self->runSpeed - 0xe66) >> 3);
+    SndMgr_SetSlotPitch(gSndMgr, self->seq, (self->runSpeed - 0xe66) >> 3);
 }
 
 }

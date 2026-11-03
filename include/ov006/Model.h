@@ -4,7 +4,7 @@
 #include "ov006/ov006.h"
 #include "ov000/ModelPart.h"
 
-/* Owns one model (vtable data_ov006_021ec424). */
+/* Owns one model (vtable ov006_ModelHolder_vtbl). */
 typedef struct ov006_ModelHolder {
     void *vtbl;
     Model *model;
@@ -34,8 +34,8 @@ static inline void ov006_Model_SetPos(Model *self, int idx, s32 x, s32 y) {
 
 #define OV006_DELETE_MODEL(obj)                                  \
     do {                                                         \
-        void *saved_ = data_02097dd0->cur;                       \
-        data_02097dd0->cur = data_02097dd0->heapHi;              \
+        void *saved_ = gSysState->cur;                       \
+        gSysState->cur = gSysState->heapHi;              \
         if ((obj) != NULL) {                                     \
             if ((obj) != NULL) {                                 \
                 Model *m_ = (obj);                               \
@@ -45,7 +45,7 @@ static inline void ov006_Model_SetPos(Model *self, int idx, s32 x, s32 y) {
             }                                                    \
             (obj) = NULL;                                        \
         }                                                        \
-        data_02097dd0->cur = saved_;                             \
+        gSysState->cur = saved_;                             \
     } while (0)
 
 #endif

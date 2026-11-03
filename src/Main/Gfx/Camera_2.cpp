@@ -56,7 +56,7 @@ static inline s32 Cam_FxMul(s32 a, s32 b) {
 }
 
 static inline void Camera_Init(Camera *cam) {
-    cam->vtable = data_0208b8c0;
+    cam->vtable = Camera_vtbl;
     GfxCamPos_Init(&cam->eye);
     GfxCamParam_Init(&cam->nearClip);
     cam->mode = 1;

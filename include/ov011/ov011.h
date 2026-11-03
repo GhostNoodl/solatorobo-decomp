@@ -219,7 +219,7 @@ static inline BOOL Ov011Game_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov011_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov011Game_IsIdle(g);
     }
@@ -336,7 +336,7 @@ struct Ov011Model2 {
 
 OV011_SIZE(Ov003Actor, 0xf0);
 
-// The ov011 NPC class (constructor Ov011Npc_Ctor, vtable data_ov011_022079f0),
+// The ov011 NPC class (constructor Ov011Npc_Ctor, vtable Ov011Npc_vtbl),
 // derived straight from the object base.
 class Ov011Npc : public Actor {
 public:
@@ -374,7 +374,7 @@ public:
     Ov011Node *head;
 };
 
-// A Ov011Ent-driven group mover (update Ov011Mgr_Update, table data_ov011_02207344).
+// A Ov011Ent-driven group mover (update Ov011Mgr_Update, table Ov011Mgr_StateTable).
 class Ov011Mgr {
 public:
     u8 b0 : 1;
@@ -415,7 +415,7 @@ struct Ov011Mov {
 };
 OV011_SIZE(Ov011Mov, 0x20);
 
-// Second group mover (update Ov011Mgr2_Update, table data_ov011_022072d8).
+// Second group mover (update Ov011Mgr2_Update, table Ov011Mgr2_StateTable).
 class Ov011Mgr2 {
 public:
     u8 b0 : 1;
@@ -473,7 +473,7 @@ struct Ov011Ring {
 
 class Ov011Scene;
 
-// Tutorial/message step runner (handlers in data_ov011_02207308).
+// Tutorial/message step runner (handlers in Ov011Sub1b4_StateTable).
 class Ov011Sub1b4 {
 public:
     u8 b0 : 1;
@@ -489,7 +489,7 @@ OV011_SIZE(Ov011Sub1b4, 0x20);
 
 // The 0x23c-byte scene state that the main ov011 actor owns at unk_100 (built by
 // Ov011SceneActor_Start, initialised by Ov011Scene_Init, updated by Ov011Scene_Update,
-// handlers in data_ov011_022073a0).
+// handlers in Ov011Scene_StateTable).
 class Ov011Scene : public Ov011List {
 public:
     Ov011Ring ring;
@@ -538,7 +538,7 @@ struct Ov011Sa10c {
 OV011_SIZE(Ov011Sa10c, 4);
 
 // The ov011 actor that owns the scene (constructor Ov011SceneActor_Ctor, vtable
-// data_ov011_022078f0, setup Ov011SceneActor_Start).
+// Ov011SceneActor_vtbl, setup Ov011SceneActor_Start).
 class Ov011SceneActor : public Ov003Actor {
 public:
     u8 unk_f0_0 : 1;
@@ -554,20 +554,20 @@ public:
 };
 
 // ov003-actor subclasses named after their vtables (only the fields ov011 reads).
-// vtable data_ov011_02207cf8: Ov011Act7cf8_Start, Ov011Act7cf8_StateIdle.
+// vtable Ov011Act7cf8_vtbl: Ov011Act7cf8_Start, Ov011Act7cf8_StateIdle.
 class Ov011Act7cf8 : public Ov003Actor {
 public:
     VecFx32 unk_f0;
 };
 
-// vtable data_ov011_02207e50: Ov011Act7e50_Start, Ov011Act7e50_SelectState, Ov011Act7e50_StateIdle.
+// vtable Ov011Act7e50_vtbl: Ov011Act7e50_Start, Ov011Act7e50_SelectState, Ov011Act7e50_StateIdle.
 class Ov011Act7e50 : public Ov003Actor {
 public:
     VecFx32 unk_f0;
     u16 unk_fc;
 };
 
-// vtable data_ov011_02207c4c: Ov011Act7c4c_Start, Ov011Act7c4c_SelectState, Ov011Act7c4c_StateIdle,
+// vtable Ov011Act7c4c_vtbl: Ov011Act7c4c_Start, Ov011Act7c4c_SelectState, Ov011Act7c4c_StateIdle,
 // Ov011Act7c4c_StateDie.
 class Ov011Act7c4c : public Ov003Actor {
 public:
@@ -580,7 +580,7 @@ public:
 
 class Ov011Bar;
 
-// vtable data_ov011_02207da4: Ov011Act7da4_Dtor .. Ov011Act7da4_StateDie (the photo/boss
+// vtable Ov011Act7da4_vtbl: Ov011Act7da4_Dtor .. Ov011Act7da4_StateDie (the photo/boss
 // actor of ov011_02204b94.cpp .. ov011_022071b4.cpp).
 class Ov011Act7da4 : public Ov003Actor {
 public:
@@ -614,10 +614,10 @@ struct Ov011ActMsg {
 };
 
 static inline Actor *Ov011_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return (Actor *)ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return (Actor *)ActorMgr_GetActor(gActorMgr, id);
 }
 
 // The scene node lists name Ov011Npc actors by id.

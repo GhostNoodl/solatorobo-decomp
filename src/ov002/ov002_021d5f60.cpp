@@ -34,11 +34,11 @@ void func_ov002_021d5f60(Task021efc24 *self) {
     func_ov002_021e3620(self->unk_50, self->unk_74, 4);
     Obj0215bb14_SetText(self->unk_4c, Param_Get(self->unk_74));
     self->unk_4c->vfunc_70();
-    data_0214a424->bits18.unk_3 = self->unk_74;
+    gStageFlags->bits18.unk_3 = self->unk_74;
     if (ActorMgr_FindPlayer()) {
         func_ov000_021b1d28();
     } else {
-        data_0214a424->bits18.mode = 1;
+        gStageFlags->bits18.mode = 1;
     }
     for (i = 0; i < 5; i++) {
         s16 v = self->unk_60[i] + self->unk_6a[i];
@@ -47,10 +47,10 @@ void func_ov002_021d5f60(Task021efc24 *self) {
         } else if (v > 99) {
             v = 99;
         }
-        func_0206d390(data_0214a424, i, (s8)v);
+        func_0206d390(gStageFlags, i, (s8)v);
     }
-    SndMgr_PlayPan(data_02097e4c, 0x2c, -5);
-    SndMgr_PlayVolume(data_02097e4c, 0x44, -1, -1, -1);
+    SndMgr_PlayPan(gSndMgr, 0x2c, -5);
+    SndMgr_PlayVolume(gSndMgr, 0x44, -1, -1, -1);
 }
 
 static inline bool isState5(UiObj *p) {

@@ -6,7 +6,7 @@ extern "C" {
 
 BOOL Model_IsReady(void *a, s32 b);
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void func_ov000_02152294(UiList *self, s32 a, s32 b, void *cb);
 BOOL func_ov000_02151664(UiList *p, UiListItem *msg);
 
@@ -24,7 +24,7 @@ void Lo021ca9c4_UpdateActive(Lo021ca9c4 *self) {
     if (!(p->busy ? FALSE : TRUE)) {
         return;
     }
-    k = data_02097dc8->trig;
+    k = gPad->trig;
     if (k & 1) {
         if (self->unk_42 == 0xffff) {
             return;
@@ -35,7 +35,7 @@ void Lo021ca9c4_UpdateActive(Lo021ca9c4 *self) {
     if (!(k & 2)) {
         return;
     }
-    SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
     self->vfunc_0c(0);
 }
 

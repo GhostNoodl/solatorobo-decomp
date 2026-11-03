@@ -44,8 +44,8 @@ static inline Ov003StateNode *Ov003StateMachine_Find(Ov003StateMachine *self, u8
 
 extern "C" {
 
-extern u32 data_ov003_021f7cf4;
-extern u32 data_ov003_021f7cd8;
+extern u32 Ov003Vt_021f7cf4_vtbl;
+extern u32 Ov003Vt_021f7cd8_vtbl;
 extern s16 Ov003Ticker_GetValue(Ov003Ticker *t);
 extern void Heap_Free(void *p);
 extern void *Heap_Alloc(u32 size);
@@ -63,19 +63,19 @@ void Ov003_ClearWords4(u32 *p) {
 }
 
 Ov003StateMachine *Ov003Vt_021f7cf4_Ctor(Ov003StateMachine *self) {
-    *(void **)self = &data_ov003_021f7cf4;
+    *(void **)self = &Ov003Vt_021f7cf4_vtbl;
     self->active = 0;
     return self;
 }
 
 Ov003StateMachine *Ov003Vt_021f7cf4_Dtor(Ov003StateMachine *self) {
-    *(void **)self = &data_ov003_021f7cf4;
+    *(void **)self = &Ov003Vt_021f7cf4_vtbl;
     self->Release();
     return self;
 }
 
 Ov003StateMachine *Ov003Vt_021f7cf4_DtorDelete(Ov003StateMachine *self) {
-    *(void **)self = &data_ov003_021f7cf4;
+    *(void **)self = &Ov003Vt_021f7cf4_vtbl;
     self->Release();
     Heap_Free(self);
     return self;
@@ -173,20 +173,20 @@ void Ov003StateMachine_SendMessage(Ov003StateMachine *self, void *arg) {
 }
 
 Ov003Timer *Ov003Vt_021f7cd8_Ctor(Ov003Timer *self) {
-    *(void **)self = &data_ov003_021f7cd8;
+    *(void **)self = &Ov003Vt_021f7cd8_vtbl;
     self->active = 0;
     History_Init(self->unk_0c);
     return self;
 }
 
 Ov003Timer *Ov003Vt_021f7cd8_Dtor(Ov003Timer *self) {
-    *(void **)self = &data_ov003_021f7cd8;
+    *(void **)self = &Ov003Vt_021f7cd8_vtbl;
     self->Release();
     return self;
 }
 
 Ov003Timer *Ov003Vt_021f7cd8_DtorDelete(Ov003Timer *self) {
-    *(void **)self = &data_ov003_021f7cd8;
+    *(void **)self = &Ov003Vt_021f7cd8_vtbl;
     self->Release();
     Heap_Free(self);
     return self;

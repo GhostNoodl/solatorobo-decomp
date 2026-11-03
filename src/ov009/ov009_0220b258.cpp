@@ -44,7 +44,7 @@ void Ov009ActVt_022172e4_StateAttack(Ov009ActVt_022172e4 *self) {
             self->unk_fc += 0x8000;
             Effect_SpawnId(0x2bc, &self->pos);
             Effect_SpawnId(0x2bd, &self->pos);
-            SndMgr_PlayAt(data_02097e4c, 0x3d, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x3d, &self->pos, 0);
         }
         break;
     case 2:

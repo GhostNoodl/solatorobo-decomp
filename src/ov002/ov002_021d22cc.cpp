@@ -7,7 +7,7 @@ Task021ef99c *Task021ef99c_New(void) {
     if (p != NULL) {
         int i;
         TaskBase_ctor(p);
-        *(VFunc **)p = data_ov002_021ef99c;
+        *(VFunc **)p = Ov002TaskVt_021ef99c_vtbl;
         __cxa_vec_ctor(p->unk_4c, 7, 0x18, (void (*)(void *))Ov002LevelTable_Ctor, (void (*)(void *))Ov002Vt_021f00fc_Dtor);
         p->unk_3c = NULL;
         p->unk_40 = NULL;
@@ -33,7 +33,7 @@ BOOL func_ov002_021d2390(UiObj *self, ListRow *arg) {
                 Obj0215bb14_SetText(owner->unk_40, str);
                 owner->unk_40->vfunc_70();
             }
-            SndMgr_PlayVolume(data_02097e4c, 0x1d, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1d, -1, -1, -1);
         }
     }
     return TRUE;

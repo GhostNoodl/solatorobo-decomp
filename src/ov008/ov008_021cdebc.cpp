@@ -31,13 +31,13 @@ struct Ov008Fade {
 
 extern "C" {
 
-extern Ov008Fade data_02097d78;
+extern Ov008Fade gFadeState;
 extern char data_ov008_021d04f4[];
-extern void *data_02149ef8;
-extern void *data_ov000_021caec8;
-extern void *data_ov000_021cb1b0;
-extern void *data_ov000_021cb0b8;
-extern void *data_02097e4c;
+extern void *gMsgRes;
+extern void *UiList_vtbl;
+extern void *Ov000Vt_021cb1b0_vtbl;
+extern void *Ov000Vt_021cb0b8_vtbl;
+extern void *gSndMgr;
 void func_ov008_021cdb00(Ov008Mgr *m);
 BOOL func_ov008_021cddc8(Ov008Mgr *m);
 void func_ov008_021cdebc(Ov008Mgr *m);
@@ -56,17 +56,17 @@ void TexObj_TickAnim(void *a, int b);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
 
 extern char data_ov008_021d04a7[];
-extern void *data_0208b318;
-extern void *data_ov000_021cac60;
+extern void *ResHandle_vtbl;
+extern void *UiObj_vtbl;
 
 extern const VecFx32 data_ov008_021d02d0;
 extern const VecFx32 data_ov008_021d02dc;
 extern const Ov008Rot3 data_ov008_021d02c8;
 extern char data_ov008_021d04f0[];
 extern char data_ov008_021d04c5[];
-extern void *data_ov000_021ca94c;
-extern void *data_0208ba70;
-extern Ov008Snd *data_02097e48;
+extern void *Menu021ca94c_vtbl;
+extern void *TextWin_vtbl;
+extern Ov008Snd *gSndQueue;
 
 void *Model0218fe1c_Init(void *p);
 BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
@@ -210,7 +210,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
 
     c = (Ov008Caption *)Heap_Alloc(0x54);
     if (c != NULL) {
-        OV008_SET_VT(&c->pic, &data_0208b318);
+        OV008_SET_VT(&c->pic, &ResHandle_vtbl);
         c->pic.v08();
         c->state = 0;
         c->pic.v08();
@@ -221,7 +221,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
 
     pn = (Ov008Panel *)Heap_Alloc(0x6c);
     if (pn != NULL) {
-        OV008_SET_VT(&pn->pic, &data_0208b318);
+        OV008_SET_VT(&pn->pic, &ResHandle_vtbl);
         pn->pic.v08();
         pn->state = 0;
         pn->pic.v08();
@@ -240,12 +240,12 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
 
     t = (Ov008Talk *)Heap_Alloc(0x21c);
     if (t != NULL) {
-        OV008_SET_VT(t, &data_ov000_021cac60);
+        OV008_SET_VT(t, &UiObj_vtbl);
         t->v28();
-        OV008_SET_VT(t, &data_ov000_021ca94c);
-        OV008_SET_VT(&t->win, &data_0208ba70);
+        OV008_SET_VT(t, &Menu021ca94c_vtbl);
+        OV008_SET_VT(&t->win, &TextWin_vtbl);
         TextWin_Init(&t->win);
-        OV008_SET_VT(&t->win2, &data_0208ba70);
+        OV008_SET_VT(&t->win2, &TextWin_vtbl);
         TextWin_Init(&t->win2);
         t->v28();
     }
@@ -254,7 +254,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     m->talk->unk_68 = -0x2000;
 
     {
-        Ov008Snd *g = data_02097e48;
+        Ov008Snd *g = gSndQueue;
         if (g->b0 && !(g->unk_06 == 0xffff && g->unk_04 == 0xc)) {
             if (g->unk_02 != 10 && g->unk_02 != 0) {
                 if (g->unk_06 != 0xffff) {
@@ -268,7 +268,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
             g->unk_08 = 10;
         }
     }
-    data_02097d48->unk_8b0[0] = (u8)(data_02097d48->unk_8b0[0] & ~0x10) | 0x20;
+    gGfxSys->unk_8b0[0] = (u8)(gGfxSys->unk_8b0[0] & ~0x10) | 0x20;
     *(vu16 *)0x4000060 &= 0xcfdf;
     Shared_ClearMark();
 }

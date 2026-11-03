@@ -50,7 +50,7 @@ typedef void *(*LoCreateFn)(void);
 extern "C" {
 #endif
 
-extern LoCreateFn data_ov000_021c9c6c[];
+extern LoCreateFn Task_NewTable[];
 void *Heap_Alloc(u32 size);
 void TaskList_Insert(void *self);
 void func_ov000_02178dcc(void *p, BOOL add);
@@ -61,10 +61,10 @@ void func_ov000_02178dcc(void *p, BOOL add);
 
 #define LO_HEAP_PUSH(saved)                          \
     do {                                             \
-        (saved) = (u32)data_02097dd0->cur;       \
-        data_02097dd0->cur = data_02097dd0->heapHi; \
+        (saved) = (u32)gSysState->cur;       \
+        gSysState->cur = gSysState->heapHi; \
     } while (0)
-#define LO_HEAP_POP(saved) (data_02097dd0->cur = (void *)(saved))
+#define LO_HEAP_POP(saved) (gSysState->cur = (void *)(saved))
 
 #define LO_FREE_V(self, off)                          \
     do {                                              \

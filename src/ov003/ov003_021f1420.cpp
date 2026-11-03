@@ -37,7 +37,7 @@ struct Ov003Prop {
 
 extern "C" {
 
-extern u8 data_ov003_021fa1b8[];
+extern u8 Ov003ActVt_021fa1b8_vtbl[];
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *p);
 extern void *Actor_Ctor(void *p);
@@ -56,7 +56,7 @@ Ov003Prop *Ov003Prop_New(Ov003PropDef *def) {
     Ov003Prop *p = (Ov003Prop *)Heap_Alloc(0xb4);
     if (p != NULL) {
         Actor_Ctor(p);
-        p->vtbl = data_ov003_021fa1b8;
+        p->vtbl = Ov003ActVt_021fa1b8_vtbl;
         p->unk_ac = NULL;
         p->unk_b0 = 0;
     }
@@ -67,9 +67,9 @@ Ov003Prop *Ov003Prop_New(Ov003PropDef *def) {
 static inline void Ov003Prop_Dtor(Ov003Prop *self) {
     void *p;
     void *old;
-    self->vtbl = data_ov003_021fa1b8;
-    old = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    self->vtbl = Ov003ActVt_021fa1b8_vtbl;
+    old = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     p = self->unk_ac;
     if (p != NULL) {
         if (p != NULL) {
@@ -78,7 +78,7 @@ static inline void Ov003Prop_Dtor(Ov003Prop *self) {
         }
         self->unk_ac = NULL;
     }
-    data_02097dd0->cur = old;
+    gSysState->cur = old;
     Actor_DtorBase(self);
 }
 

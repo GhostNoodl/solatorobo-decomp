@@ -16,12 +16,12 @@ typedef struct {
 } Fade021bc474;
 
 extern "C" {
-extern s32 data_02097d78[];
+extern s32 gFadeState[];
 s32 FX_Div(s32 a, s32 b);
 
 static inline BOOL Fade021bc474_Idle(void) {
     BOOL r;
-    if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[0] == 0) {
         r = TRUE;
     } else {
         r = FALSE;
@@ -30,10 +30,10 @@ static inline BOOL Fade021bc474_Idle(void) {
 }
 
 static inline BOOL Fade021bc474_Busy(void) {
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         return TRUE;
     }
-    return data_02097d78[0] == 4 ? TRUE : FALSE;
+    return gFadeState[0] == 4 ? TRUE : FALSE;
 }
 
 BOOL func_ov000_021bc474(Fade021bc474 *self) {

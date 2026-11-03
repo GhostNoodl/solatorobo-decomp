@@ -15,10 +15,10 @@ static inline void VecSet_021b4130(VecFx32 *v, s32 x, s32 y, s32 z) {
 }
 
 static inline Actor *FindActor_021b4130(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
@@ -44,7 +44,7 @@ void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
                 o->unk_18_0 = 0;
             }
             if (self->unk_b22_3) {
-                v.y -= (FX_SinCosTable_[((u16)(data_ov000_021ccd68->frame << 9) >> 4) * 2] + 0x1400) >> 2;
+                v.y -= (FX_SinCosTable_[((u16)(gActorMgr->frame << 9) >> 4) * 2] + 0x1400) >> 2;
                 v.x += FX_SinCosTable_[(self->rot_y >> 4) * 2] >> 1;
                 v.z += FX_SinCosTable_[(self->rot_y >> 4) * 2 + 1] >> 1;
             } else if (self->unk_b2c_1) {

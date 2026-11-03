@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern VFunc data_ov000_021cadcc[];
+extern VFunc Lo021cadcc_vtbl[];
 extern u8 data_ov002_021efe30[];
 int func_ov002_021dac8c(UiList *self, UiListItem *item);
 BOOL func_ov000_0219d5a0(void);
@@ -28,7 +28,7 @@ static inline void ov002_CamInit(Obj021efe6c *c, const VecFx32 *pos) {
 }
 
 void func_ov002_021dacac(Obj021eff74 *self) {
-    void *g = data_02149ef8;
+    void *g = gMsgRes;
     UiObj *o;
     VObj *m;
     UiObj *s;
@@ -36,9 +36,9 @@ void func_ov002_021dacac(Obj021eff74 *self) {
     Task021efba4 *t;
     o = (UiObj *)Heap_Alloc(0xd4);
     if (o != NULL) {
-        *(VFunc **)o = data_ov000_021cac60;
+        *(VFunc **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(VFunc **)o = data_ov000_021caec8;
+        *(VFunc **)o = UiList_vtbl;
         o->vfunc_28();
     }
     self->unk_0c = (UiList *)o;
@@ -62,7 +62,7 @@ void func_ov002_021dacac(Obj021eff74 *self) {
     self->unk_0c->owner = self;
     self->unk_0c->onDecide = (UiItemFn)func_ov002_021dac8c;
     self->unk_0c->vfunc_74(MsgRes_GetString(g, 0xbc), 0, 0xffff, 0xffff);
-    if (DataRes_ReadEntry(data_02fe152c, 5, 1, 1)) {
+    if (DataRes_ReadEntry(gDataRes, 5, 1, 1)) {
         UiListItem *e = (UiListItem *)self->unk_0c->vfunc_74(MsgRes_GetString(g, 0xbe), 1, 0xffff, 0xffff);
         if (ActorMgr_FindPlayer()) {
             if ((self->unk_20 = func_ov000_0219d5a0()) != 0) {
@@ -79,9 +79,9 @@ void func_ov002_021dacac(Obj021eff74 *self) {
     self->unk_0c->vfunc_08();
     o = (UiObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
-        *(VFunc **)o = data_ov000_021cac60;
+        *(VFunc **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(VFunc **)o = data_ov000_021cadcc;
+        *(VFunc **)o = Lo021cadcc_vtbl;
         o->vfunc_28();
     }
     self->unk_10 = (Lo021cadcc *)o;
@@ -101,7 +101,7 @@ void func_ov002_021dacac(Obj021eff74 *self) {
         u8 kind = data_ov002_021f0f90.unk_00;
         if (self->unk_10 != NULL) {
             void *str;
-            void *g2 = data_02149ef8;
+            void *g2 = gMsgRes;
             switch (kind) {
             case 0:
                 str = MsgRes_GetString(g2, 0xbd);
@@ -130,15 +130,15 @@ void func_ov002_021dacac(Obj021eff74 *self) {
         c->unk_75 = 1;
     }
     w = self->board;
-    if (data_0214a424->bits18.mode == 1) {
+    if (gStageFlags->bits18.mode == 1) {
         func_ov000_021c9544(w->unk_76, w->pieces);
-        Obj021c95ac_Init_021c95ac(w->unk_76, data_0214a424->bits18.unk_3 | 0x8000);
+        Obj021c95ac_Init_021c95ac(w->unk_76, gStageFlags->bits18.unk_3 | 0x8000);
     } else {
         func_ov000_021c9544(w->unk_76, w->pieces);
     }
     t = (Task021efba4 *)Task_FindById(0x1b);
-    if (t != NULL && data_0214a424->bits18.mode == 1) {
-        ov002_SetId(t->hud, data_0214a424->bits18.unk_3 | 0x8000);
+    if (t != NULL && gStageFlags->bits18.mode == 1) {
+        ov002_SetId(t->hud, gStageFlags->bits18.unk_3 | 0x8000);
     }
 }
 

@@ -10,7 +10,7 @@
 #include "Main/Res/ResArc.h"
 
 
-// The task host data_ov000_021ccd44 (0x58 bytes, built by TaskHost_Create and freed by
+// The task host gTaskHost (0x58 bytes, built by TaskHost_Create and freed by
 // TaskHost_Destroy, updated by func_ov000_02180900): a pending task switch and the task it
 // switches to. Its state (unk_04) runs the switch: 5 calls the task's vfunc_10, 6 waits for its
 // vfunc_14, 7 starts it once no task is finishing.
@@ -25,7 +25,7 @@ struct TaskHost {
         };
     };
     s32 unk_04;
-    VObj res; // vtable data_0208b318; its vfunc_1c loads (func_ov000_02180900)
+    VObj res; // vtable ResHandle_vtbl; its vfunc_1c loads (func_ov000_02180900)
     u8 unk_0c[0x40];
     s32 unk_4c; // inside res
     u8 unk_50[0x4];
@@ -36,9 +36,9 @@ SIZE_ASSERT(TaskHost, 0x58);
 extern "C" {
 
 extern void *data_ov000_021ccd3c;
-extern struct GfxSys *data_02097d48; // Main/Gfx/GfxMgr.h
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbce0[];
+extern struct GfxSys *gGfxSys; // Main/Gfx/GfxMgr.h
+extern u8 Task_vtbl[];
+extern u8 Task021cbce0_vtbl[];
 extern const char *data_0208cca0;
 extern void *data_0208ccc0;
 

@@ -70,18 +70,18 @@ void func_02039a34(GfxMgr *mgr) {
     mgr->unk_000 = -1;
     MI_CpuCopy8(data_02082798, data_02097ce4, 0x60);
     DC_FlushRange(data_02097ce4, 0x60);
-    mgr->plttSlots[0] = GfxSys_AllocSlots(data_02097d48, 3, 4);
+    mgr->plttSlots[0] = GfxSys_AllocSlots(gGfxSys, 3, 4);
     GX_LoadBGPltt(data_02082798, mgr->plttSlots[0] << 5, 0x60);
-    mgr->plttSlots[1] = GfxSys_AllocSlots(data_02097d48, 3, 5);
+    mgr->plttSlots[1] = GfxSys_AllocSlots(gGfxSys, 3, 5);
     GXS_LoadBGPltt(data_02082798, mgr->plttSlots[1] << 5, 0x60);
-    mgr->plttSlots[2] = GfxSys_AllocSlots(data_02097d48, 3, 0);
+    mgr->plttSlots[2] = GfxSys_AllocSlots(gGfxSys, 3, 0);
     GX_LoadOBJPltt(data_02082798, mgr->plttSlots[2] << 5, 0x60);
-    mgr->plttSlots[3] = GfxSys_AllocSlots(data_02097d48, 3, 2);
+    mgr->plttSlots[3] = GfxSys_AllocSlots(gGfxSys, 3, 2);
     GXS_LoadOBJPltt(data_02097ce4, mgr->plttSlots[3] << 5, 0x60);
     mgr->unk_658 = 0;
     mgr->unk_65c = 0;
-    mgr->unk_650 = GfxSys_AllocVram(data_02097d48, 0x4000, 0);
-    mgr->unk_654 = GfxSys_AllocVram(data_02097d48, 0x4000, 1);
+    mgr->unk_650 = GfxSys_AllocVram(gGfxSys, 0x4000, 0);
+    mgr->unk_654 = GfxSys_AllocVram(gGfxSys, 0x4000, 1);
 
     block = (VramBlock *)Heap_AllocLo(0x80 * sizeof(VramBlock), 4);
     MIi_CpuClearFast(0, block, 0x80 * sizeof(VramBlock));
@@ -138,18 +138,18 @@ void GfxMgr_FreeAll(GfxMgr *mgr, int mode) {
     }
     mgr->unk_680 = 0;
     DC_FlushRange(data_02097ce4, 0x60);
-    mgr->plttSlots[0] = GfxSys_AllocSlots(data_02097d48, 3, 4);
+    mgr->plttSlots[0] = GfxSys_AllocSlots(gGfxSys, 3, 4);
     GX_LoadBGPltt(data_02082798, mgr->plttSlots[0] << 5, 0x60);
-    mgr->plttSlots[1] = GfxSys_AllocSlots(data_02097d48, 3, 5);
+    mgr->plttSlots[1] = GfxSys_AllocSlots(gGfxSys, 3, 5);
     GXS_LoadBGPltt(data_02082798, mgr->plttSlots[1] << 5, 0x60);
-    mgr->plttSlots[2] = GfxSys_AllocSlots(data_02097d48, 3, 0);
+    mgr->plttSlots[2] = GfxSys_AllocSlots(gGfxSys, 3, 0);
     GX_LoadOBJPltt(data_02082798, mgr->plttSlots[2] << 5, 0x60);
-    mgr->plttSlots[3] = GfxSys_AllocSlots(data_02097d48, 3, 2);
+    mgr->plttSlots[3] = GfxSys_AllocSlots(gGfxSys, 3, 2);
     GXS_LoadOBJPltt(data_02097ce4, mgr->plttSlots[3] << 5, 0x60);
     mgr->unk_65c = 0;
     if (mode != 2) {
-        mgr->unk_650 = GfxSys_AllocVram(data_02097d48, 0x4000, 0);
-        mgr->unk_654 = GfxSys_AllocVram(data_02097d48, 0x4000, 1);
+        mgr->unk_650 = GfxSys_AllocVram(gGfxSys, 0x4000, 0);
+        mgr->unk_654 = GfxSys_AllocVram(gGfxSys, 0x4000, 1);
     }
     mgr->unk_650 = NULL;
     mgr->unk_654 = NULL;
@@ -179,7 +179,7 @@ void func_02039e0c(GfxMgr *mgr) {
     } while (block != NULL);
     mgr->pools[0].alignShift = ((int)(*(volatile u32 *)0x04000000 & 0x300010) >> 20) & 3;
     mgr->pools[1].alignShift = ((int)(*(volatile u32 *)0x04001000 & 0x300010) >> 20) & 3;
-    pltt = &data_02097d48->pltt;
+    pltt = &gGfxSys->pltt;
     id = pltt->id;
     if (mgr->unk_000 != id) {
         MI_CpuCopy8(data_02082798, data_02097ce4, 0x60);
@@ -223,7 +223,7 @@ void func_02039f84(GfxMgr *mgr) {
     } while (block != NULL);
     mgr->pools[0].alignShift = ((int)(*(volatile u32 *)0x04000000 & 0x300010) >> 20) & 3;
     mgr->pools[1].alignShift = ((int)(*(volatile u32 *)0x04001000 & 0x300010) >> 20) & 3;
-    pltt = &data_02097d48->pltt;
+    pltt = &gGfxSys->pltt;
     id = pltt->id;
     if (mgr->unk_000 != id) {
         MI_CpuCopy8(data_02082798, data_02097ce4, 0x60);
@@ -336,7 +336,7 @@ void func_0203a0cc(GfxMgr *mgr, VramBlock *block, GfxCell *canvas, int width, in
             oams[i].attr01 = (oams[i].attr01 & 0xc1ffe0ff) | a0;
             oams[i].attr2 = (oams[i].attr2 & ~0xfc00) | a2;
         }
-        NNS_G2dEntryOamManagerOam(GfxSys_GetOamMgr(data_02097d48, which), oams, n);
+        NNS_G2dEntryOamManagerOam(GfxSys_GetOamMgr(gGfxSys, which), oams, n);
     } else {
         GfxOam *oam = cache->oams;
         s32 dx;
@@ -358,7 +358,7 @@ void func_0203a0cc(GfxMgr *mgr, VramBlock *block, GfxCell *canvas, int width, in
             ((GfxOamBits *)oam)->pltt = pltt & 0xf;
         }
         {
-            void *om = GfxSys_GetOamMgr(data_02097d48, cache->which);
+            void *om = GfxSys_GetOamMgr(gGfxSys, cache->which);
             NNS_G2dEntryOamManagerOam(om, cache->oams, cache->count);
         }
     }

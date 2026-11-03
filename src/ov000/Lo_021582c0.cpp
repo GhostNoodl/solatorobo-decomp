@@ -60,7 +60,7 @@ void UiList021cb4a8_DrawFrame(UiList021cb4a8 *self, s32 a1, s32 *pos, s32 a3) {
     s32 alpha;
     V6 *v;
     z = self->posZ - 0x110;
-    g = data_02097d48;
+    g = gGfxSys;
     G3_Cmd1(0x2a, 0x20000000);
     alpha = self->unk_54;
     G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, Gfx3DState_NextPolyId(g->unk_8b0), alpha, 0x800));

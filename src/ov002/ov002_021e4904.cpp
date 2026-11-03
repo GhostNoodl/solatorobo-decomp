@@ -22,14 +22,14 @@ u32 Ov002LevelTable_GetLevel(Ov002LevelTable *self, s32 val) {
 }
 
 void Ov002StrTable_Ctor(Ov002StrTable *self) {
-    *(VFunc **)self = data_ov002_021f00ec;
+    *(VFunc **)self = Ov002Vt_021f00ec_vtbl;
     self->src = NULL;
     self->count = 0;
     self->pairs = NULL;
 }
 
 Ov002StrTable *Ov002Vt_021f00ec_Dtor(Ov002StrTable *self) {
-    *(VFunc **)self = data_ov002_021f00ec;
+    *(VFunc **)self = Ov002Vt_021f00ec_vtbl;
     {
         void *saved;
         HEAP_PUSH(saved);
@@ -43,7 +43,7 @@ Ov002StrTable *Ov002Vt_021f00ec_Dtor(Ov002StrTable *self) {
 }
 
 Ov002StrTable *Ov002Vt_021f00ec_DtorDelete(Ov002StrTable *self) {
-    *(VFunc **)self = data_ov002_021f00ec;
+    *(VFunc **)self = Ov002Vt_021f00ec_vtbl;
     {
         void *saved;
         HEAP_PUSH(saved);

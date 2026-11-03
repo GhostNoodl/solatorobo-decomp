@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd44;
+extern void *gTaskHost;
 void *TaskHost_RequestSwitch(void *a, int b, int c);
 void func_ov000_021736dc(void);
 void *Param_Get(u32 id);
@@ -15,7 +15,7 @@ void func_ov006_021cddf8(int type, UiList *obj, int arg) {
     switch (type) {
     case 2:
         ov006_SetupDefaultSlots();
-        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x29, 0);
+        TaskHost_RequestSwitch(gTaskHost, 0x29, 0);
         break;
     case 3:
         func_ov006_021cd5a8(type, obj);
@@ -24,7 +24,7 @@ void func_ov006_021cddf8(int type, UiList *obj, int arg) {
         break;
     case 4:
         if (obj != NULL) {
-            TaskHost_RequestSwitch(data_ov000_021ccd44, 0x2a, arg);
+            TaskHost_RequestSwitch(gTaskHost, 0x2a, arg);
         } else {
             func_ov000_021736dc();
         }

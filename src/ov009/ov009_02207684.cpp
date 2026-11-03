@@ -65,17 +65,17 @@ void Ov009ActVt_02217844_Start(Ov009ActVt_02217844 *self) {
     NNSi_G3dModifyMatFlag(self->modelObj.mdl, 1, 0x400);
     self->modelObj.unk_c2 |= 0x80;
     NNSi_G3dModifyPolygonAttrMask(self->modelObj.mdl, 1, 0x1f0000);
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_3c != NULL) {
         if (self->unk_3c != NULL) {
             self->unk_3c->vfunc_04();
         }
         self->unk_3c = NULL;
     }
-    data_02097dd0->cur = saved;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gSysState->cur = saved;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->hit != NULL) {
         ActorSub48 *p = self->hit;
         if (p != NULL) {
@@ -84,14 +84,14 @@ void Ov009ActVt_02217844_Start(Ov009ActVt_02217844 *self) {
         }
         self->hit = NULL;
     }
-    data_02097dd0->cur = saved;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gSysState->cur = saved;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_44 != NULL) {
         Heap_Free(self->unk_44);
         self->unk_44 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 }

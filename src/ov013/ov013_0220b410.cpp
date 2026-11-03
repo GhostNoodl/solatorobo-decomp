@@ -58,8 +58,8 @@ extern BOOL History_HasState(void *a, s32 b, s32 c, s32 d);
 
 s32 Ov013Boss_ChooseAttack(Ov013Boss *self) {
     s32 r = 0x10;
-    s32 a = ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000), 0x4823);
-    s32 b = ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000), 0x5c17);
+    s32 a = ActorGroup_CountKind(ActorMgr_GetGroup(gActorMgr, 0x4000), 0x4823);
+    s32 b = ActorGroup_CountKind(ActorMgr_GetGroup(gActorMgr, 0x5000), 0x5c17);
     if (b >= 2 || a >= 4 || History_HasState(self->fsm, r, 3, 1)) {
         s32 rnd = Rand_UpTo(0x63);
         u16 pct = self->hp[0] * 100 / self->hp[1];
@@ -97,13 +97,13 @@ void Ov013ActVt_0220b5e0_Start(Ov013ActVt_0220b5e0 *self) {
     m->unk_9a_5 = 0;
     self->unk_f0 = 0;
     self->unk_f4 = -1;
-    n = ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000), 0x5c17);
+    n = ActorGroup_CountKind(ActorMgr_GetGroup(gActorMgr, 0x5000), 0x5c17);
     self->unk_f8 = n % 2;
     if (n == 2) {
-        if (data_ov000_021ccd68 == NULL) {
+        if (gActorMgr == NULL) {
             a = NULL;
         } else {
-            a = ActorMgr_FindKind(data_ov000_021ccd68, 0x5000, 0x5c17);
+            a = ActorMgr_FindKind(gActorMgr, 0x5000, 0x5c17);
         }
         if (a != NULL && a == self) {
             self->unk_f8 = 1;
@@ -165,7 +165,7 @@ void Ov013ActVt_0220b5e0_StateIdle(Ov013ActVt_0220b5e0 *self) {
     }
 }
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern const VecFx32 data_ov013_0220ae64;
 extern u8 data_ov013_0220ae88[];
 extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
@@ -265,7 +265,7 @@ void Ov013ActVt_0220b5e0_StateAttack(Ov013ActVt_0220b5e0 *self) {
         o->speed = 0xb33;
         o->SetScaleXYZ(0x800, 0x800, 0x800);
         o->loopCount = -1;
-        SndMgr_PlayAt(data_02097e4c, 100, &self->pos, pitch);
+        SndMgr_PlayAt(gSndMgr, 100, &self->pos, pitch);
         self->fsm->st = 20;
         self->fsm->timer = 0;
         break;
@@ -279,7 +279,7 @@ void Ov013ActVt_0220b5e0_StateAttack(Ov013ActVt_0220b5e0 *self) {
             self->pos.y = 0x99a;
         }
         Hit_ApplyInArea(self, self, 0x1e, 0x20, 1 << (pl->id >> 12), data_ov013_0220ae88, NULL, self->radius, 0, 100, 0x1000);
-        o = (Ef13 *)Effect_Find_020657b0(data_0214a420, self->unk_f4);
+        o = (Ef13 *)Effect_Find_020657b0(gEffectMgr, self->unk_f4);
         if (o != NULL) {
             VecFx32 v;
             v.x = self->pos.x;
@@ -321,7 +321,7 @@ void Ov013ActVt_0220b5e0_StateAttack(Ov013ActVt_0220b5e0 *self) {
         }
         self->moveYaw = self->rot_y;
         Actor_Move(self, 0);
-        o = (Ef13 *)Effect_Find_020657b0(data_0214a420, self->unk_f4);
+        o = (Ef13 *)Effect_Find_020657b0(gEffectMgr, self->unk_f4);
         if (o != NULL) {
             VecFx32 v;
             v.x = self->pos.x;
@@ -337,7 +337,7 @@ void Ov013ActVt_0220b5e0_StateAttack(Ov013ActVt_0220b5e0 *self) {
         self->pos = tgt;
         Model0218fe1c_SetAnim(self->model, data_ov013_0220b5b8, 0x155, 0);
         Model0218fe1c_SetLoop(self->model);
-        EffectMgr_Kill(data_0214a420, self->unk_f4);
+        EffectMgr_Kill(gEffectMgr, self->unk_f4);
         self->fsm->st = 0x63;
         self->fsm->timer = 0;
         break;

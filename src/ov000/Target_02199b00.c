@@ -48,13 +48,13 @@ extern u16 data_ov000_021c9fd0[][5];
 
 u8 Ov003_GetMaxCombo(void);
 
-extern ActorMgr *data_ov000_021ccd68;
+extern ActorMgr *gActorMgr;
 
 ActorT *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
 
 static inline ActorT *FindActor(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }

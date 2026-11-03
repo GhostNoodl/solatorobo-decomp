@@ -61,7 +61,7 @@ typedef struct {
 
 extern "C" {
 
-extern Ov003FvCtx *data_ov000_021ccd6c;
+extern Ov003FvCtx *gFieldMgr;
 extern const s16 FX_SinCosTable_[];
 extern void SndMgr_LoadHeapState(SndMgr *a, s32 b, s32 c);
 extern void SceneCmd_Push25(void *a, s32 b);
@@ -128,8 +128,8 @@ void Ov003ActVt_021f8220_State21(Ov003Fv *self) {
     w = self->work;
     switch (w->state) {
     case 0:
-        SndMgr_LoadHeapState(data_02097e4c, 1, 1);
-        SceneCmd_Push25(data_ov000_021ccd54, 2);
+        SndMgr_LoadHeapState(gSndMgr, 1, 1);
+        SceneCmd_Push25(gSceneCmd, 2);
         self->unk_84.x = 0;
         self->unk_84.y = 0;
         self->unk_84.z = 0;
@@ -138,37 +138,37 @@ void Ov003ActVt_021f8220_State21(Ov003Fv *self) {
         self->work->state++;
         return;
     case 1:
-        if (Ov003Fv_HasEvent(data_ov000_021ccd54, 0x25)) {
+        if (Ov003Fv_HasEvent(gSceneCmd, 0x25)) {
             return;
         }
         Field_ShakeCamera(5, 0xf);
-        SndMgr_PlayVolume(data_02097e4c, 0x46, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x46, -1, -1, -1);
         self->work->state++;
         return;
     case 2:
         w->timer++;
         if (w->timer > 300 && self->unk_1a == 0) {
-            area = data_ov000_021ccd6c->area;
-            if (Ov003Fv_Level(data_ov000_021ccd6c->lv) >= 2) {
+            area = gFieldMgr->area;
+            if (Ov003Fv_Level(gFieldMgr->lv) >= 2) {
                 pl = ActorMgr_FindPlayer();
-                if (!(pl->unk_b24_1 ? TRUE : FALSE) && Ov003Fv_SameCol(&data_ov000_021ccd54->unk_ca, Ov003Fv_PlCol(pl))) {
-                    data_ov000_021ccd6c->unk_1f0 = self->unk_0e;
+                if (!(pl->unk_b24_1 ? TRUE : FALSE) && Ov003Fv_SameCol(&gSceneCmd->unk_ca, Ov003Fv_PlCol(pl))) {
+                    gFieldMgr->unk_1f0 = self->unk_0e;
                     d.x = pl->unk_75c.x;
                     d.y = pl->unk_75c.y;
                     d.z = pl->unk_75c.z;
                     d.x -= self->pos.x;
                     d.y -= self->pos.y;
                     d.z -= self->pos.z;
-                    FieldMgr_SetIdVec(data_ov000_021ccd6c, pl->unk_0c, &d);
+                    FieldMgr_SetIdVec(gFieldMgr, pl->unk_0c, &d);
                 }
                 Shared_SetEventActor(self->unk_0e, self->unk_0c);
                 func_020627dc(4);
-                data_ov000_021ccd54->stageFlags = 1;
+                gSceneCmd->stageFlags = 1;
                 r = area->col44.c[0];
                 g = area->col44.c[1];
                 b = area->col44.c[2];
                 {
-                    gm = data_ov000_021ccd54;
+                    gm = gSceneCmd;
                     if (r == 0xff) {
                         r = gm->unk_ca.c[0];
                     }
@@ -180,7 +180,7 @@ void Ov003ActVt_021f8220_State21(Ov003Fv *self) {
                     }
                 }
                 GfxSys_StartFadeOut(0x3c000, 2, 0);
-                SceneCmd_Push27(data_ov000_021ccd54, 1, 0, 0);
+                SceneCmd_Push27(gSceneCmd, 1, 0, 0);
                 col.c[0] = r;
                 col.c[1] = g;
                 col.c[2] = b;
@@ -189,10 +189,10 @@ void Ov003ActVt_021f8220_State21(Ov003Fv *self) {
             self->work->state++;
         }
         if (self->work->timer == 0x20) {
-            Ov003Fv_Bgm(data_02097e48.queue, 0x222);
+            Ov003Fv_Bgm(gSndQueue.queue, 0x222);
         }
         if (self->work->timer == 0x60) {
-            SndMgr_PlayVolume(data_02097e4c, 0x223, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x223, -1, -1, -1);
         }
         if ((self->work->timer & 0x3f) == 0) {
             Field_ShakeCameraY(3, 10);
@@ -230,8 +230,8 @@ void Ov003ActVt_021f8220_State22(Ov003Fv *self) {
     w = self->work;
     switch (w->state) {
     case 0:
-        SndMgr_LoadHeapState(data_02097e4c, 1, 1);
-        SceneCmd_Push25(data_ov000_021ccd54, 2);
+        SndMgr_LoadHeapState(gSndMgr, 1, 1);
+        SceneCmd_Push25(gSceneCmd, 2);
         self->unk_84.x = 0;
         self->unk_84.y = 0;
         self->unk_84.z = 0;
@@ -240,37 +240,37 @@ void Ov003ActVt_021f8220_State22(Ov003Fv *self) {
         self->work->state++;
         return;
     case 1:
-        if (Ov003Fv_HasEvent(data_ov000_021ccd54, 0x25)) {
+        if (Ov003Fv_HasEvent(gSceneCmd, 0x25)) {
             return;
         }
         Field_ShakeCameraY(5, 0xf);
-        SndMgr_PlayVolume(data_02097e4c, 0x46, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x46, -1, -1, -1);
         self->work->state++;
         return;
     case 2:
         w->timer++;
         if (w->timer > 300 && self->unk_1a == 0) {
-            area = data_ov000_021ccd6c->area;
-            if (Ov003Fv_Level(data_ov000_021ccd6c->lv) >= 3) {
+            area = gFieldMgr->area;
+            if (Ov003Fv_Level(gFieldMgr->lv) >= 3) {
                 pl = ActorMgr_FindPlayer();
-                if (!(pl->unk_b24_1 ? TRUE : FALSE) && Ov003Fv_SameCol(&data_ov000_021ccd54->unk_ca, Ov003Fv_PlCol(pl))) {
-                    data_ov000_021ccd6c->unk_1f0 = self->unk_0e;
+                if (!(pl->unk_b24_1 ? TRUE : FALSE) && Ov003Fv_SameCol(&gSceneCmd->unk_ca, Ov003Fv_PlCol(pl))) {
+                    gFieldMgr->unk_1f0 = self->unk_0e;
                     d.x = pl->unk_75c.x;
                     d.y = pl->unk_75c.y;
                     d.z = pl->unk_75c.z;
                     d.x -= self->pos.x;
                     d.y -= self->pos.y;
                     d.z -= self->pos.z;
-                    FieldMgr_SetIdVec(data_ov000_021ccd6c, pl->unk_0c, &d);
+                    FieldMgr_SetIdVec(gFieldMgr, pl->unk_0c, &d);
                 }
                 Shared_SetEventActor(self->unk_0e, self->unk_0c);
                 func_020627dc(4);
-                data_ov000_021ccd54->stageFlags = 1;
+                gSceneCmd->stageFlags = 1;
                 r = area->col.c[0];
                 g = area->col.c[1];
                 b = area->col.c[2];
                 {
-                    gm = data_ov000_021ccd54;
+                    gm = gSceneCmd;
                     if (r == 0xff) {
                         r = gm->unk_ca.c[0];
                     }
@@ -282,7 +282,7 @@ void Ov003ActVt_021f8220_State22(Ov003Fv *self) {
                     }
                 }
                 GfxSys_StartFadeOut(0x3c000, 2, 0);
-                SceneCmd_Push27(data_ov000_021ccd54, 1, 0, 0);
+                SceneCmd_Push27(gSceneCmd, 1, 0, 0);
                 col.c[0] = r;
                 col.c[1] = g;
                 col.c[2] = b;
@@ -291,10 +291,10 @@ void Ov003ActVt_021f8220_State22(Ov003Fv *self) {
             self->work->state++;
         }
         if (self->work->timer == 0x20) {
-            Ov003Fv_Bgm(data_02097e48.queue, 0x222);
+            Ov003Fv_Bgm(gSndQueue.queue, 0x222);
         }
         if (self->work->timer == 0x60) {
-            SndMgr_PlayVolume(data_02097e4c, 0x223, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x223, -1, -1, -1);
         }
         if ((self->work->timer & 0x3f) == 0) {
             Field_ShakeCameraY(3, 10);

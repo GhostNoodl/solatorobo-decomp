@@ -19,7 +19,7 @@ void func_ov000_021c078c(ActorMarker2D *self) {
     if (self->work.state != 10) {
         return;
     }
-    g = data_02097d48;
+    g = gGfxSys;
     x = ((LO_FX_MUL(0x1000 - self->work.alpha, 0x40000) + 0xce000) >> 12) - 0x80;
     self->unk_90->unk_150 = self->work.z;
     SetOfs(self->unk_90, x, 0);

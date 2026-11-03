@@ -21,8 +21,8 @@ typedef struct {
 extern "C" {
 
 Obj0219bf90 *ActorMgr_FindPlayer(void);
-extern void *data_02fe152c;
-extern s32 data_02097d78[];
+extern void *gDataRes;
+extern s32 gFadeState[];
 void func_ov000_021bb298(NNSG3dRS *self);
 u16 DataRes_ReadEntry(void *res, u32 idx, int packed, int sub);
 void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
@@ -53,7 +53,7 @@ void func_ov000_021bb2b0(Obj021bb2b0 *self, s32 a, s16 *v, u8 c) {
 
 
 static inline void Bgm021bb33c_Play(u16 id) {
-    SndQueue *q = data_02097e48.queue;
+    SndQueue *q = gSndQueue.queue;
     if (q->flag0) {
         if (!(q->unk_06 == 0xffff && q->unk_04 == id)) {
             if (q->unk_02 != 10 && q->unk_02 != 0) {
@@ -71,7 +71,7 @@ static inline void Bgm021bb33c_Play(u16 id) {
 }
 
 static inline void Bgm021bb33c_Resume(void) {
-    SndQueue *q = data_02097e48.queue;
+    SndQueue *q = gSndQueue.queue;
     if (q->flag0) {
         u16 cur = SndQueue_Peek(q);
         if (!(q->unk_06 == 0xffff && q->unk_04 == cur)) {
@@ -92,7 +92,7 @@ static inline void Bgm021bb33c_Resume(void) {
 }
 
 static inline void Bgm021bb33c_Start(void) {
-    if (DataRes_ReadEntry(data_02fe152c, 5, 1, 10) == 0) {
+    if (DataRes_ReadEntry(gDataRes, 5, 1, 10) == 0) {
         Bgm021bb33c_Play(0xb);
     } else {
         Bgm021bb33c_Play(0x47);
@@ -104,10 +104,10 @@ static inline BOOL Fx021bb33c_Ready(EffectObj *fx) {
 }
 
 static inline BOOL Game021bb33c_Is4(void) {
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         return TRUE;
     }
-    return data_02097d78[0] == 4 ? TRUE : FALSE;
+    return gFadeState[0] == 4 ? TRUE : FALSE;
 }
 
 BOOL func_ov000_021bb33c(Obj021bb2b0 *self) {
@@ -187,7 +187,7 @@ BOOL func_ov000_021bb33c(Obj021bb2b0 *self) {
         }
         break;
     }
-    if (EffectMgr_Contains(data_0214a420, self->fx)) {
+    if (EffectMgr_Contains(gEffectMgr, self->fx)) {
         return TRUE;
     }
     self->fx = NULL;

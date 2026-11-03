@@ -6,8 +6,8 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
-extern void *data_ov000_021ccd64;
+extern void *gSndMgr;
+extern void *gGroup;
 BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const char *name, s32 blend, s32 force);
 void Model0218fe1c_SetAnimSpeed(Model0218fe1c *model, s16 b);
 void Model0218fe1c_SetLoop(Model0218fe1c *model);
@@ -47,9 +47,9 @@ void Ov006ActVt_021ec714_StateIdle(ActorEx *self) {
             if (p != NULL) {
                 p->SetScaleAll(0x5000);
             }
-            SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x56, &self->pos, 0);
             Hit_ApplyInArea(self, self, 1, 0x11, 0x80, NULL, NULL, 0x7800, 0, -1, 0x1000);
-            Group_UpdateActor(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();
             return;
         }

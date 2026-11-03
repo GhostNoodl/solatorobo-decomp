@@ -12,9 +12,9 @@ typedef struct {
 } Obj0216f8b0;
 
 extern "C" {
-extern s32 data_02097d78[];
-extern u8 data_ov000_021cb6b0[];
-extern u8 data_ov000_021cb6d0[];
+extern s32 gFadeState[];
+extern u8 Lo021cb6b0_vtbl[];
+extern u8 Ov000Vt_021cb6d0_vtbl[];
 void *Heap_Alloc(u32 size);
 void ListBuffer_AddToList(ListBuffer *buf, BufferList *list);
 void GfxSys_SetFadePlanes(s32 a, s32 b);
@@ -25,7 +25,7 @@ void func_ov000_021643e8(void *self);
 
 static inline BOOL Fade0216f8b0_Idle(void) {
     BOOL r;
-    if (data_02097d78[3] == 0 && data_02097d78[1] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[1] == 0) {
         r = TRUE;
     } else {
         r = FALSE;
@@ -34,10 +34,10 @@ static inline BOOL Fade0216f8b0_Idle(void) {
 }
 
 static inline BOOL Fade0216f8b0_Busy(void) {
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         return TRUE;
     }
-    return data_02097d78[1] == 4 ? TRUE : FALSE;
+    return gFadeState[1] == 4 ? TRUE : FALSE;
 }
 
 static inline ListBuffer *MessageQueue_AddBuffer(MessageQueue *self, ListBuffer *buf, u32 priority, void *owner) {
@@ -47,7 +47,7 @@ static inline ListBuffer *MessageQueue_AddBuffer(MessageQueue *self, ListBuffer 
         allocated = TRUE;
         b = (ListBuffer *)Heap_Alloc(0x20);
         if (b != NULL) {
-            VOBJ_SET_VTABLE(b, data_ov000_021cb6d0);
+            VOBJ_SET_VTABLE(b, Ov000Vt_021cb6d0_vtbl);
             b->flags = 0;
             b->priority = 0;
             b->unk_0c = 0;
@@ -98,7 +98,7 @@ void func_ov000_0216f8b0(Obj0216f8b0 *self) {
             if (self->unk_2c == 1) {
                 ListBuffer *o = (ListBuffer *)Heap_Alloc(0x54);
                 if (o != NULL) {
-                    VOBJ_SET_VTABLE(o, data_ov000_021cb6d0);
+                    VOBJ_SET_VTABLE(o, Ov000Vt_021cb6d0_vtbl);
                     o->flags = 0;
                     o->priority = 0;
                     o->unk_0c = 0;
@@ -106,7 +106,7 @@ void func_ov000_0216f8b0(Obj0216f8b0 *self) {
                     o->unk_14 = 0;
                     o->prev = NULL;
                     o->next = NULL;
-                    VOBJ_SET_VTABLE(o, data_ov000_021cb6b0);
+                    VOBJ_SET_VTABLE(o, Lo021cb6b0_vtbl);
                     func_ov000_021643e8(o);
                 }
                 self->unk_30 = o;

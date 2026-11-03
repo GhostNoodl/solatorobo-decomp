@@ -48,19 +48,19 @@ typedef struct {
     u32 unk_2c;
 } HitInfo02198ad8;
 
-extern HitInfo02198ad8 data_02fe0f14;
+extern HitInfo02198ad8 gHitResult;
 s32 Geom_SnapToGround(VecFx32 *pos, s32 a, s32 b);
 
 typedef struct ActorMgr ActorMgr;
 
-extern ActorMgr *data_ov000_021ccd68;
+extern ActorMgr *gActorMgr;
 
 ActorC *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Vec_RotateY(VecFx32 *out, const VecFx32 *in, u32 angle);
 void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *offset, u32 angle);
 
 static inline ActorC *FindActor(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }
@@ -172,7 +172,7 @@ void func_ov000_02198ad8(Body *self, VecFx32 *pos, const VecFx32 *vel) {
             }
             if (hit) {
                 BOOL ok = TRUE;
-                if (!self->unk_9a_6 && (data_02fe0f14.unk_2c & 0x400)) {
+                if (!self->unk_9a_6 && (gHitResult.unk_2c & 0x400)) {
                     ok = FALSE;
                 }
                 if (ok) {
@@ -181,9 +181,9 @@ void func_ov000_02198ad8(Body *self, VecFx32 *pos, const VecFx32 *vel) {
                 if (self->unk_9a_7) {
                     pos->y += self->unk_38;
                 }
-                self->unk_50 |= data_02fe0f14.unk_2c;
+                self->unk_50 |= gHitResult.unk_2c;
             }
-            self->unk_54 |= data_02fe0f14.unk_2c;
+            self->unk_54 |= gHitResult.unk_2c;
         }
     }
     self->prev.x = self->pos.x;
@@ -337,13 +337,13 @@ ActorL *Finder_NextActor(Finder *self, Query *q, ActorL *from) {
     }
     actor = NULL;
     if (from != NULL) {
-        group = ActorMgr_GetGroup(data_ov000_021ccd68, from->id & 0xf000);
+        group = ActorMgr_GetGroup(gActorMgr, from->id & 0xf000);
         actor = from->next;
         if (actor == NULL && group != NULL) {
             group = group->next;
         }
     } else {
-        group = ActorMgr_GetGroup(data_ov000_021ccd68, 0xf000);
+        group = ActorMgr_GetGroup(gActorMgr, 0xf000);
     }
     for (; group != NULL; group = group->next) {
         if (mask & (1 << (group->key >> 12))) {

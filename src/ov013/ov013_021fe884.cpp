@@ -16,7 +16,7 @@ extern BOOL Ov003Vec_Equal(void *a, const Ov013Spot *b);
 
 void Ov013ActEx_021fdb70_StateDie(Ov013ActEx_021fdb70 *self) {
     if (self->fsm->st == 0) {
-        EffectObj *p = Effect_Find_020657b0(data_0214a420, self->unk_d0);
+        EffectObj *p = Effect_Find_020657b0(gEffectMgr, self->unk_d0);
         if (p != NULL) {
             p->state = 4;
             self->unk_d0 = -1;

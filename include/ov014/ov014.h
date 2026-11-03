@@ -269,7 +269,7 @@ static inline BOOL Ov014Game_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov014_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov014Game_IsIdle(g);
     }
@@ -301,8 +301,8 @@ void Model0218fe1c_UpdateAnim(void *a, s32 b);
 
 // Frees the effect list in *slot with the default heap selected.
 static inline void Ov014_FreeFx(Ov003FxList **slot) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (*slot != NULL) {
         Ov003FxList *p = *slot;
         if (p != NULL) {
@@ -311,7 +311,7 @@ static inline void Ov014_FreeFx(Ov003FxList **slot) {
         }
         *slot = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 static inline Ov003FxList *Ov014_NewFx(void) {
@@ -322,7 +322,7 @@ static inline Ov003FxList *Ov014_NewFx(void) {
     return p;
 }
 
-// Actor class of Ov014Act_021fa6a0_Ctor (vtable data_ov014_02217114).
+// Actor class of Ov014Act_021fa6a0_Ctor (vtable Ov014Act_021fa6a0_vtbl).
 class Ov014Act_021fa6a0 : public Ov003Actor {
 public:
     u8 unk_f0;
@@ -344,7 +344,7 @@ public:
 };
 SIZE_ASSERT(Ov014Act_021fa6a0, 0x368);
 
-// Actor class of Ov014Act_021fd4d4_Ctor (vtable data_ov014_02217588).
+// Actor class of Ov014Act_021fd4d4_Ctor (vtable Ov014Act_021fd4d4_vtbl).
 class Ov014Act_021fd4d4 : public Ov003Actor {
 public:
     s16 unk_f0;
@@ -366,7 +366,7 @@ public:
 };
 SIZE_ASSERT(Ov014Act_021fd4d4, 0x17c);
 
-// Actor class of Ov014Act_0220011c_Ctor (vtable data_ov014_022174dc).
+// Actor class of Ov014Act_0220011c_Ctor (vtable Ov014Act_0220011c_vtbl).
 class Ov014Act_0220011c : public Ov003Actor {
 public:
     s16 unk_f0;
@@ -384,7 +384,7 @@ public:
 };
 SIZE_ASSERT(Ov014Act_0220011c, 0x124);
 
-// Actor class of Ov014Act_02201b94_Ctor (vtable data_ov014_02217430).
+// Actor class of Ov014Act_02201b94_Ctor (vtable Ov014Act_02201b94_vtbl).
 class Ov014Act_02201b94 : public Ov003Actor {
 public:
     s16 unk_f0;
@@ -435,7 +435,7 @@ struct Ov014B4Save {
     VecFx32 unk_b8;
 };
 
-// Actor class of Ov014Act_0221267c_Ctor (vtable data_ov014_02217dc0).
+// Actor class of Ov014Act_0221267c_Ctor (vtable Ov014Act_0221267c_vtbl).
 class Ov014Act_0221267c : public Ov003Actor {
 public:
     Ov014Names unk_f0;
@@ -452,7 +452,7 @@ public:
 };
 SIZE_ASSERT(Ov014Act_0221267c, 0x358);
 
-// Actor class of Ov014Act_02209280_Ctor (vtable data_ov014_02217968).
+// Actor class of Ov014Act_02209280_Ctor (vtable Ov014Act_02209280_vtbl).
 class Ov014Act_02209280 : public Ov003Actor {
 public:
     const Ov003Step *step; // current step of scripts
@@ -496,7 +496,7 @@ public:
 };
 SIZE_ASSERT(Ov014Act_02209280, 0x1f8);
 
-// Watches two actors (vtable data_ov014_02217db0, 0x1c bytes, made by Ov014Act_0220f9d0's init and
+// Watches two actors (vtable Ov014Watch_vtbl, 0x1c bytes, made by Ov014Act_0220f9d0's init and
 // updated by Ov014Watch_CountAlive): ids are cleared to 0xffff as the actors go, count is how many are left.
 class Ov014Watch : public VObj {
 public:
@@ -511,7 +511,7 @@ public:
 };
 SIZE_ASSERT(Ov014Watch, 0x1c);
 
-// Actor class of Ov014Act_0220f9d0_Ctor (vtable data_ov014_02217e6c).
+// Actor class of Ov014Act_0220f9d0_Ctor (vtable Ov014Act_0220f9d0_vtbl).
 class Ov014Act_0220f9d0 : public Ov003Actor {
 public:
     Ov014JointMtx unk_f0; // the model's renderUser
@@ -534,7 +534,7 @@ public:
 };
 SIZE_ASSERT(Ov014Act_0220f9d0, 0x184);
 
-// Actor class of Ov014ActEx_02208618_Ctor (vtable data_ov014_02217708).
+// Actor class of Ov014ActEx_02208618_Ctor (vtable Ov014ActEx_02208618_vtbl).
 class Ov014ActEx_02208618 : public ActorEx {
 public:
     u32 unk_d0;
@@ -544,7 +544,7 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_02208618, 0xdc);
 
-// Actor class of Ov014ActEx_0220d70c_Ctor (vtable data_ov014_02217bdc).
+// Actor class of Ov014ActEx_0220d70c_Ctor (vtable Ov014ActEx_0220d70c_vtbl).
 class Ov014ActEx_0220d70c : public ActorEx {
 public:
     u32 unk_d0;
@@ -554,7 +554,7 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_0220d70c, 0xe0);
 
-// Actor class of Ov014ActEx_0220dcf4_Ctor (vtable data_ov014_02217b44).
+// Actor class of Ov014ActEx_0220dcf4_Ctor (vtable Ov014ActEx_0220dcf4_vtbl).
 class Ov014ActEx_0220dcf4 : public ActorEx {
 public:
     u32 unk_d0;
@@ -573,7 +573,7 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_021fbd64, 0xd4);
 
-// Actor class of Ov014ActEx_021fc24c_Ctor (vtable data_ov014_0221722c).
+// Actor class of Ov014ActEx_021fc24c_Ctor (vtable Ov014ActEx_021fc24c_vtbl).
 class Ov014ActEx_021fc24c : public ActorEx {
 public:
     VecFx32 unk_d0;
@@ -591,7 +591,7 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_021fc24c, 0x104);
 
-// Actor class of Ov014ActEx_02206c68_Ctor (vtable data_ov014_02217670).
+// Actor class of Ov014ActEx_02206c68_Ctor (vtable Ov014ActEx_02206c68_vtbl).
 class Ov014ActEx_02206c68 : public ActorEx {
 public:
     s32 unk_d0;
@@ -602,7 +602,7 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_02206c68, 0xe0);
 
-// Actor class of Ov014ActEx_0220774c_Ctor (vtable data_ov014_022177a0).
+// Actor class of Ov014ActEx_0220774c_Ctor (vtable Ov014ActEx_0220774c_vtbl).
 class Ov014ActEx_0220774c : public ActorEx {
 public:
     u32 unk_d0;
@@ -611,7 +611,7 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_0220774c, 0xdc);
 
-// Actor class of Ov014ActEx_0220eca0_Ctor (vtable data_ov014_02217aac).
+// Actor class of Ov014ActEx_0220eca0_Ctor (vtable Ov014ActEx_0220eca0_vtbl).
 class Ov014ActEx_0220eca0 : public ActorEx {
 public:
     s32 unk_d0;
@@ -627,7 +627,7 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_0220eca0, 0xf8);
 
-// Actor class of Ov014ActEx_022142fc_Ctor (vtable data_ov014_02217fb0).
+// Actor class of Ov014ActEx_022142fc_Ctor (vtable Ov014ActEx_022142fc_vtbl).
 class Ov014ActEx_022142fc : public ActorEx {
 public:
     VecFx32 unk_d0;
@@ -636,7 +636,7 @@ public:
 };
 SIZE_ASSERT(Ov014ActEx_022142fc, 0xe4);
 
-// Actor class of Ov014ActEx_022152e8_Ctor (vtable data_ov014_02217f18).
+// Actor class of Ov014ActEx_022152e8_Ctor (vtable Ov014ActEx_022152e8_vtbl).
 class Ov014ActEx_022152e8 : public ActorEx {
 public:
     VecFx32 unk_d0;

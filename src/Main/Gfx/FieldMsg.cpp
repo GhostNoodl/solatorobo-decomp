@@ -8,7 +8,7 @@ extern "C" {
 static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
-        *(const u32 **)win = data_0208ba70;
+        *(const u32 **)win = TextWin_vtbl;
         TextWin_Init(win);
     }
     return win;
@@ -26,7 +26,7 @@ void func_020556a0(FieldMsg *msg, const char *text) {
     win = msg->win;
     win->str = (u32)text;
     win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->font;
+    gGfxMgr->unk_004 = win->font;
     msg->win->unk_vf20(0, 0xc0);
     msg->win->noVram = 1;
     msg->win->flag24 = 1;
@@ -56,7 +56,7 @@ BOOL FieldMsg_IsBusy(FieldMsg *msg) {
 }
 
 static inline BOOL Field_HasEvent(void) {
-    return data_ov000_021ccd54->event != 0 ? TRUE : FALSE;
+    return gSceneCmd->event != 0 ? TRUE : FALSE;
 }
 
 BOOL Field_HasEvent_02055844(void) {
@@ -64,8 +64,8 @@ BOOL Field_HasEvent_02055844(void) {
 }
 
 void Field_ClearEvent(void) {
-    if (data_ov000_021ccd54->event != 0xffff) {
-        data_ov000_021ccd54->event = 0;
+    if (gSceneCmd->event != 0xffff) {
+        gSceneCmd->event = 0;
     }
 }
 

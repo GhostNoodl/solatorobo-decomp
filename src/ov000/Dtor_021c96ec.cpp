@@ -4,8 +4,8 @@
 
 extern "C" {
 
-extern u8 data_ov000_021ccc94[];
-extern u8 data_ov000_021cc060[];
+extern u8 Ov000TaskVt_021ccc94_vtbl[];
+extern u8 Task_vtbl[];
 extern const char *data_0208cc94;
 extern char data_ov000_021ccc68[];
 extern char data_ov000_021ccc72[];
@@ -14,11 +14,11 @@ void ResMgr_ReleaseArchive(void *a, void *b, s32 c);
 void Heap_Free(void *ptr);
 
 static inline void Obj021ccc94_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021ccc94);
-    ResMgr_ReleaseByName(data_02097cdc, data_0208cc94, 7, 0);
-    ResMgr_ReleaseByName(data_02097cdc, data_ov000_021ccc68, 7, 0);
+    VOBJ_SET_VTABLE(self, Ov000TaskVt_021ccc94_vtbl);
+    ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_ov000_021ccc68, 7, 0);
     ResMgr_ReleaseArchive(data_ov000_021ccc72, data_ov000_021ccc7e, 2);
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
 }
 

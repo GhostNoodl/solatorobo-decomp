@@ -5,8 +5,8 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
-extern void *data_02149ef8;
+extern void *gSndMgr;
+extern void *gMsgRes;
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL Model_IsReady(void *p, s32 a);
 u16 func_02061d54(u16 a);

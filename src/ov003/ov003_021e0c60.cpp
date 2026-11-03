@@ -33,7 +33,7 @@ void Ov003ActVt_021f82b8_State21(ActorEx *self) {
         }
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
         self->fsm->st = 0x7fff;
         break;
     }

@@ -27,8 +27,8 @@ typedef struct {
 
 extern "C" {
 extern void *data_ov000_021c9838;
-extern u8 data_0208b318[];
-extern u8 data_0208bf54[];
+extern u8 ResHandle_vtbl[];
+extern u8 StageRes_vtbl[];
 extern const char data_ov000_021ca8f7[];
 extern const char data_ov000_021ca8ff[];
 extern const char data_ov000_021ca907[];
@@ -114,9 +114,9 @@ void func_ov000_0214b910(Loader *self) {
 static inline SceneRes *CreateLoader(void) {
     SceneRes *obj = (SceneRes *)Heap_Alloc(sizeof(SceneRes));
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_0208b318);
+        VOBJ_SET_VTABLE(obj, ResHandle_vtbl);
         obj->vfunc_08();
-        VOBJ_SET_VTABLE(obj, data_0208bf54);
+        VOBJ_SET_VTABLE(obj, StageRes_vtbl);
         StageRes_Init(obj);
     }
     return obj;
@@ -124,78 +124,78 @@ static inline SceneRes *CreateLoader(void) {
 
 void func_ov000_0214ba18(void) {
     char path[0x20];
-    data_ov000_021ccd24.unk_04 = CreateLoader();
+    gSceneResSet.unk_04 = CreateLoader();
     STD_CopyString(path, data_ov000_021ca8f7);
     STD_ConcatenateString(path, data_ov000_021ca8ff);
-    StageRes_Open(data_ov000_021ccd24.unk_04, path, data_ov000_021ca907);
+    StageRes_Open(gSceneResSet.unk_04, path, data_ov000_021ca907);
 }
 
 void func_ov000_0214baa8(void) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
-    if (data_ov000_021ccd24.unk_04 != NULL) {
-        if (data_ov000_021ccd24.unk_04 != NULL) {
-            data_ov000_021ccd24.unk_04->vfunc_04();
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
+    if (gSceneResSet.unk_04 != NULL) {
+        if (gSceneResSet.unk_04 != NULL) {
+            gSceneResSet.unk_04->vfunc_04();
         }
-        data_ov000_021ccd24.unk_04 = NULL;
+        gSceneResSet.unk_04 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 BOOL func_ov000_0214bb04(void) {
     BOOL ret = TRUE;
-    if (!StageRes_IsAllLoaded(data_ov000_021ccd24.unk_04)) {
+    if (!StageRes_IsAllLoaded(gSceneResSet.unk_04)) {
         ret = FALSE;
     }
     return ret;
 }
 
 s32 func_ov000_0214bb2c(void) {
-    s32 ret = data_ov000_021ccd24.unk_04->vfunc_34();
+    s32 ret = gSceneResSet.unk_04->vfunc_34();
     if (ret != 0) {
         return ret;
     }
-    return StageRes_Bind(data_ov000_021ccd24.unk_04);
+    return StageRes_Bind(gSceneResSet.unk_04);
 }
 
 void func_ov000_0214bb5c(void) {
-    data_ov000_021ccd24.unk_04->vfunc_38(1);
+    gSceneResSet.unk_04->vfunc_38(1);
 }
 
 void func_ov000_0214bb80(void) {
     char path[0x20];
-    data_ov000_021ccd24.unk_08 = CreateLoader();
+    gSceneResSet.unk_08 = CreateLoader();
     STD_CopyString(path, data_ov000_021ca8f7);
     STD_ConcatenateString(path, data_ov000_021ca8ff);
-    StageRes_Open(data_ov000_021ccd24.unk_08, path, data_ov000_021ca917);
+    StageRes_Open(gSceneResSet.unk_08, path, data_ov000_021ca917);
 }
 
 void func_ov000_0214bc10(void) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
-    if (data_ov000_021ccd24.unk_08 != NULL) {
-        if (data_ov000_021ccd24.unk_08 != NULL) {
-            data_ov000_021ccd24.unk_08->vfunc_04();
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
+    if (gSceneResSet.unk_08 != NULL) {
+        if (gSceneResSet.unk_08 != NULL) {
+            gSceneResSet.unk_08->vfunc_04();
         }
-        data_ov000_021ccd24.unk_08 = NULL;
+        gSceneResSet.unk_08 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 BOOL func_ov000_0214bc6c(void) {
     BOOL ret = TRUE;
-    if (!StageRes_IsAllLoaded(data_ov000_021ccd24.unk_08)) {
+    if (!StageRes_IsAllLoaded(gSceneResSet.unk_08)) {
         ret = FALSE;
     }
     return ret;
 }
 
 s32 func_ov000_0214bc94(void) {
-    s32 ret = data_ov000_021ccd24.unk_08->vfunc_34();
+    s32 ret = gSceneResSet.unk_08->vfunc_34();
     if (ret != 0) {
         return ret;
     }
-    return StageRes_Bind(data_ov000_021ccd24.unk_08);
+    return StageRes_Bind(gSceneResSet.unk_08);
 }
 
 }

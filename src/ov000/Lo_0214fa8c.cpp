@@ -45,7 +45,7 @@ void func_ov000_0214fa8c(Obj0214fa8c *self) {
     if (self->src == NULL || self->model == NULL) {
         return;
     }
-    g = data_02097d48;
+    g = gGfxSys;
     scale = self->src->scale;
     self->model->flags |= 0x200000;
     MODEL_FLAGS(self->model)->polygon_id = Gfx3DState_NextPolyId(g->unk_8b0);

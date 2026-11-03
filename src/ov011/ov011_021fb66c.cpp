@@ -71,7 +71,7 @@ static inline void Ov011Ent_RestoreC(Ov011Ent *e, s32 to, s32 frames) {
 
 extern "C" {
 
-extern const Ov011Mgr2Entry data_ov011_022072d8[];
+extern const Ov011Mgr2Entry Ov011Mgr2_StateTable[];
 void *Ov003Vt_021f7d2c_Dtor(void *p);
 void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
 void Ov011Chr_Reset_0220205c(void *p);
@@ -89,13 +89,13 @@ static inline void Ov011Mgr2_Reset(Ov011Mgr2 *self) {
     self->b1 = 0;
     self->count = 0;
     self->unk_04 = -1;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->arr8 != NULL) {
         __cxa_vec_delete(self->arr8, 0x40, 8, Ov011E40_Dtor);
         self->arr8 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     Ov003ActorSub40_ForceState(&self->state, 0);
     Ov011Chr_Reset_0220205c(self->unk_28);
     Ov011Mov_Stop_02202fbc(&self->mov);
@@ -124,8 +124,8 @@ void Ov011Mgr2_Update(Ov011Mgr2 *self) {
     }
     key = self->unk_27;
     for (i = 0; i < 4; i++) {
-        if (key == data_ov011_022072d8[i].key && *(s32 *)&data_ov011_022072d8[i].fn != 0) {
-            (self->*data_ov011_022072d8[i].fn)();
+        if (key == Ov011Mgr2_StateTable[i].key && *(s32 *)&Ov011Mgr2_StateTable[i].fn != 0) {
+            (self->*Ov011Mgr2_StateTable[i].fn)();
             break;
         }
     }

@@ -58,12 +58,12 @@ typedef struct {
 
 typedef struct ActorMgr ActorMgr;
 
-extern ActorMgr *data_ov000_021ccd68;
-extern u32 data_02fe0f04;
-extern VecFx32 *data_02fe0f00;
-extern HitInfo021987b8 data_02fe0f14;
-extern s32 data_02fe0efc;
-extern HitInfo021987b8 data_02fe0f50[];
+extern ActorMgr *gActorMgr;
+extern u32 gHitSphereGroups;
+extern VecFx32 *gHitSphereNearest;
+extern HitInfo021987b8 gHitResult;
+extern s32 gHitCount;
+extern HitInfo021987b8 gHitList[];
 
 typedef struct {
     u8 unk_00[2];
@@ -86,7 +86,7 @@ static inline void VEC_Copy(VecFx32 *d, const VecFx32 *s) {
 }
 
 static inline ActorC *FindActor(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }
@@ -135,23 +135,23 @@ void Body_Update(Body *self, u8 keep, VecFx32 *pos, const Rot021987b8 *rot) {
     self->unk_25 = 1;
     hit = func_0203f3d0(self);
     if (hit != 0) {
-        if ((hit & 1) && data_02fe0f00 != NULL) {
-            self->unk_58 |= data_02fe0f04;
-            VEC_Copy(&self->target, data_02fe0f00);
+        if ((hit & 1) && gHitSphereNearest != NULL) {
+            self->unk_58 |= gHitSphereGroups;
+            VEC_Copy(&self->target, gHitSphereNearest);
         }
-        if ((hit & 2) && data_02fe0efc > 0) {
+        if ((hit & 2) && gHitCount > 0) {
             acc.x = 0;
             acc.y = 0;
             acc.z = 0;
-            for (i = 0; i < data_02fe0efc; i++) {
+            for (i = 0; i < gHitCount; i++) {
                 if (self->unk_9a_9) {
-                    self->unk_50 |= data_02fe0f50[i].flags;
+                    self->unk_50 |= gHitList[i].flags;
                 } else {
-                    self->unk_50 |= data_02fe0f50[i].flags & 0xff0f0f0f;
+                    self->unk_50 |= gHitList[i].flags & 0xff0f0f0f;
                 }
-                VEC_Add(&acc, &data_02fe0f50[i].b, &acc);
+                VEC_Add(&acc, &gHitList[i].b, &acc);
             }
-            VEC_Copy(&self->unk_74, &data_02fe0f14.a);
+            VEC_Copy(&self->unk_74, &gHitResult.a);
             VEC_Normalize(&acc, &self->normal);
         }
         VEC_Copy(&push, &self->unk_18);

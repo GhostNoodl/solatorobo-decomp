@@ -4,7 +4,7 @@ extern "C" {
 
 static inline void ov006_Caption_Draw(ov006_Caption *self) {
     if (self->visible) {
-        const ov006_CaptionEntry *e = &data_ov006_021eb824[self->kind];
+        const ov006_CaptionEntry *e = &ov006_CaptionTable[self->kind];
         TextWin *anim = self->label;
         s32 x;
         s32 y;
@@ -44,7 +44,7 @@ static inline void ov006_Caption_Draw2(ov006_Caption *self) {
         s32 bx;
         s32 by;
         s32 h;
-        e = &data_ov006_021eb824[self->kind];
+        e = &ov006_CaptionTable[self->kind];
         anim = self->label;
         x = self->x + self->ofsX;
         y = self->y + self->ofsY;
@@ -80,15 +80,15 @@ void ov006_CaptionPanel_Draw(ov006_CaptionPanel *self) {
     i = c->kind;
     x = self->unk8;
     y = self->unkC;
-    c->x = x - (data_ov006_021eb824[i].width >> 1);
-    c->y = y - ((data_ov006_021eb824[i].height / 2) + 0x20);
+    c->x = x - (ov006_CaptionTable[i].width >> 1);
+    c->y = y - ((ov006_CaptionTable[i].height / 2) + 0x20);
     ov006_Caption_Draw(self->title);
     for (i = 0; i < 3; i++) {
         c = self->captions[i];
         if (c == NULL) {
             continue;
         }
-        e = &data_ov006_021eb824[c->kind];
+        e = &ov006_CaptionTable[c->kind];
         {
             int h = e->height / 2;
             int w = e->width;

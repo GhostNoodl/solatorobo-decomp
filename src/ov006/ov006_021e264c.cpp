@@ -32,11 +32,11 @@ typedef struct ov006_Unk021e264c {
 
 extern "C" {
 
-extern u8 data_ov006_021ec2ac[];
+extern u8 Ov006Vt_021ec2ac_vtbl[];
 
 ov006_Unk021e264c *Ov006Vt_021ec2ac_Ctor(ov006_Unk021e264c *self) {
     int i;
-    self->vtbl = data_ov006_021ec2ac;
+    self->vtbl = Ov006Vt_021ec2ac_vtbl;
     self->unk4 = 0;
     self->unk8 = 0;
     self->unkC = 0;

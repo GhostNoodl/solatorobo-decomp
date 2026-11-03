@@ -79,7 +79,7 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern char data_ov003_021f995c[];
 extern char data_ov003_021f9967[];
 extern char data_ov003_021f996d[];
@@ -129,7 +129,7 @@ static inline BOOL Ov003Game_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -143,7 +143,7 @@ static inline BOOL Ov003_GameIdle(void) {
 
 
 static inline BOOL Ov003_GameIdle2(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         BOOL busy = FALSE;
         if (g->head != g->tail) {
@@ -247,7 +247,7 @@ void Ov003ActExSway_StateDie(Ov003ActExSway *self) {
         fx->SetScaleXYZ(0x1800, 0x1800, 0x1800);
         fx->AddPosXYZ(0, 0xccd, 0);
         Effect_SpawnId(0x44c, &self->pos)->AddPosXYZ(0, 0x2000, 0);
-        SndMgr_PlayStrm(data_02097e4c, Rand_UpTo(1) + 0x7c);
+        SndMgr_PlayStrm(gSndMgr, Rand_UpTo(1) + 0x7c);
         src = Tbl_Elem_020704b4(self->kind);
         p = (Ov003Part *)self->targetObj;
         Ov003PartA_Assign(&p->a, &src->a);
@@ -278,7 +278,7 @@ void Ov003ActExSway_StateDie(Ov003ActExSway *self) {
         if ((u32)self & 3) {
             sfxOn = 1;
         }
-        data_ov000_021ccd54->stageFlags = sfxOn;
+        gSceneCmd->stageFlags = sfxOn;
     } else {
         History_SetState(self->fsm, 4, 0);
     }
@@ -298,14 +298,14 @@ void Ov003ActExSway_State0a(Ov003ActExSway *self) {
 void Ov003ActExSway_StateHeld(Ov003ActExSway *self) {
     if (!self->hasModel && ++self->unk_30c == 30) {
         Ov003Ids ids = data_ov003_021f6bcc;
-        if (!Ov003Game_HasEvent(data_ov000_021ccd54, ids.v)) {
+        if (!Ov003Game_HasEvent(gSceneCmd, ids.v)) {
             if (self->unk_18 >= 0) {
                 Ov003Pickup_Update(self, 0);
             }
             func_ov000_02197dec(self, 0xf, 5);
-            SndMgr_PlayStrm(data_02097e4c, 0x7e);
+            SndMgr_PlayStrm(gSndMgr, 0x7e);
             Effect_SpawnId(0x12f, &self->pos)->SetScaleAll(0x800);
-            Group_UpdateActor(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();
         } else {
             self->unk_30c--;

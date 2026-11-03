@@ -14,7 +14,7 @@ extern "C" {
 
 extern const Ov007Lights data_ov007_021cfa3c;
 extern const u16 data_ov007_021cfa98[][0x20];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void *SndMgr_PlayVolume(void *a, int b, int c, int d, int e);
 BOOL Model021903b4_Draw(void *a);
 void *func_02070dcc(int kind);
@@ -78,7 +78,7 @@ void func_ov007_021cf474(Ov007Scene *s) {
     if (s->cam == NULL) {
         return;
     }
-    st = (Gfx3DState *)data_02097d48->unk_8b0;
+    st = (Gfx3DState *)gGfxSys->unk_8b0;
     {
         Ov007Lights l = data_ov007_021cfa3c;
         Ov007Light *v = &l.v[s->unk_4c - 1];
@@ -130,12 +130,12 @@ void func_ov007_021cf474(Ov007Scene *s) {
             if (snd == 1) {
                 if (!(s->unk_4f & (1 << i))) {
                     s->unk_4f |= (u8)(1 << i);
-                    SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+                    SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
                 }
             } else if (snd == 2) {
                 if (s->unk_4f & (1 << i)) {
                     s->unk_4f &= (u8)~(1 << i);
-                    SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+                    SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
                 }
             }
         }

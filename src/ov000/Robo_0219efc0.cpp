@@ -8,8 +8,8 @@
 #include "Main/Sys/Pad.h"
 
 extern "C" {
-extern MessageQueue021cb980 *data_ov000_021ccd30;
-extern void *data_02097e4c;
+extern MessageQueue021cb980 *gMessageQueue;
+extern void *gSndMgr;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 key);
 u16 Pad_LookupDir(void *pad, void *p);
@@ -24,10 +24,10 @@ BOOL func_ov000_021b3e90(Robo021ca458 *self);
 void func_ov000_021b1a54(Robo021ca458 *self, s32 a);
 
 static inline Actor *FindActor_0219efc0(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline BOOL IsBusy_0219efc0(FieldState *g) {
@@ -35,7 +35,7 @@ static inline BOOL IsBusy_0219efc0(FieldState *g) {
 }
 
 static inline BOOL IsIdle_0219efc0(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (IsBusy_0219efc0(g)) {
             return FALSE;
@@ -53,10 +53,10 @@ static inline BOOL HasD4_0219efc0(FieldState *g) {
 }
 
 static inline void TogglePad_0219efc0(void) {
-    if (data_0214a424->bits18.flag10) {
-        data_0214a424->bits18.flag10 = 0;
+    if (gStageFlags->bits18.flag10) {
+        gStageFlags->bits18.flag10 = 0;
     } else {
-        data_0214a424->bits18.flag10 = 1;
+        gStageFlags->bits18.flag10 = 1;
     }
 }
 
@@ -72,7 +72,7 @@ static inline void LockKeys_0219efc0(Robo021ca458 *self) {
 }
 
 static inline void Gauge_0219efc0(s32 a, s32 b, VecFx32 *p) {
-    ListBuffer021cb940 *o = data_ov000_021ccd30->unk_11c;
+    ListBuffer021cb940 *o = gMessageQueue->unk_11c;
     if (o == NULL) {
         return;
     }
@@ -112,11 +112,11 @@ static inline BOOL NotB1_0219efc0(Robo021ca458 *self) {
 }
 
 static inline BOOL PadB9_0219efc0(void) {
-    return data_0214a424->bits18.flag9 ? TRUE : FALSE;
+    return gStageFlags->bits18.flag9 ? TRUE : FALSE;
 }
 
 static inline BOOL CanMove_0219efc0(Robo021ca458 *self) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     BOOL r = IsIdleG_0219efc0(g);
     if (r) {
         r = !self->unk_b29_1;
@@ -161,7 +161,7 @@ void Robo021ca458_UpdateMode1(Robo021ca458 *self) {
     if (!IsIdle_0219efc0()) {
         return;
     }
-    if (HasD4_0219efc0(data_ov000_021ccd54)) {
+    if (HasD4_0219efc0(gSceneCmd)) {
         return;
     }
     if (self->unk_b24_0 || self->unk_b24_12 == 2) {
@@ -172,10 +172,10 @@ void Robo021ca458_UpdateMode1(Robo021ca458 *self) {
     }
     if (!self->unk_b29_1 && !self->unk_b28_2 && self->unk_b2e == 0 &&
         !self->unk_b29_3) {
-        self->padCur = data_02097dc8->cur;
-        self->padTrig = data_02097dc8->trig;
-        self->padRelease = data_02097dc8->release;
-        self->padDir = Pad_LookupDir(data_02097dc8, (u8 *)self + 0xb70);
+        self->padCur = gPad->cur;
+        self->padTrig = gPad->trig;
+        self->padRelease = gPad->release;
+        self->padDir = Pad_LookupDir(gPad, (u8 *)self + 0xb70);
     }
     if ((self->padCur & 1) && !self->unk_b24_18) {
         self->unk_b36++;
@@ -266,7 +266,7 @@ void Robo021ca458_UpdateMode1(Robo021ca458 *self) {
         self->unk_b2c_6 = 0;
         self->unk_93_5 = 0;
     }
-    if (self->unk_b22_3 && self->unk_b36 != 0 && data_0214a424->bits18.mode == 1 && self->unk_b1c == 0xffff &&
+    if (self->unk_b22_3 && self->unk_b36 != 0 && gStageFlags->bits18.mode == 1 && self->unk_b1c == 0xffff &&
         self->target == 0xffff && (u8)(self->fsm->current + 0xff) <= 1) {
         self->fsm->flags |= 0x80;
     }
@@ -394,7 +394,7 @@ void Robo021ca458_UpdateMode1(Robo021ca458 *self) {
             } else if (self->unk_b24_1) {
                 LockKeys_0219efc0(self);
             } else if (!(self->hit->unk_54 & 0x400)) {
-                if (self->unk_93_4 || ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000)->count != 0) {
+                if (self->unk_93_4 || ActorMgr_GetGroup(gActorMgr, 0x5000)->count != 0) {
                     self->fsm->flags |= 0x10000;
                 }
             }
@@ -436,11 +436,11 @@ void Robo021ca458_UpdateMode1(Robo021ca458 *self) {
             self->fsm->flags |= 0x4000000;
         }
     }
-    if ((self->padCur & 0x200) && (self->padTrig & 0x100) && data_0214a424->bits18.mode == 1 && !self->unk_b22_3 &&
+    if ((self->padCur & 0x200) && (self->padTrig & 0x100) && gStageFlags->bits18.mode == 1 && !self->unk_b22_3 &&
         self->unk_b22_9 == 0 && self->unk_b24_1 && self->unk_93_4 && !self->unk_b29_3 && self->unk_b22_0 == 0 &&
         self->unk_b24_12 == 0 && self->fsm->current != 0x11 && (self->fsm->current != 0xb || !self->unk_b24_26) &&
-        data_0214a424->unk_026 >= 0x2d0) {
-        SndMgr_PlayVolume(data_02097e4c, 0x30b, -1, -1, -1);
+        gStageFlags->unk_026 >= 0x2d0) {
+        SndMgr_PlayVolume(gSndMgr, 0x30b, -1, -1, -1);
         func_ov000_021b1814(self, 1, 0);
     }
     x = FALSE;
@@ -471,10 +471,10 @@ void Robo021ca458_UpdateMode1(Robo021ca458 *self) {
         return;
     }
     {
-        u16 v = data_0214a424->unk_026;
+        u16 v = gStageFlags->unk_026;
         if (v != 0) {
             v--;
-            data_0214a424->unk_026 = v;
+            gStageFlags->unk_026 = v;
         }
         if (v != 0 && self->unk_93_4) {
             return;

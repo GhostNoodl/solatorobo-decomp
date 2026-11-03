@@ -13,7 +13,7 @@ void func_ov015_02200a18(Ov015Obj34 *self, Ov015Stat *b) {
         spd = -0x666;
         if ((self->unk_0c >> 12) % 20 == 0) {
             EffectObj *e;
-            SndMgr_PlayVolume(data_02097e4c, 0x59, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x59, -1, -1, -1);
             // m[3] as a byte offset from the matrix: a field path folds to one constant and changes the code.
             e = Effect_SpawnId(0x325, &FLD(Ov015Vec, &self->ship->nodeMtx, 0x24));
             e->SetScaleXYZ(0x800, 0x800, 0x800);
@@ -34,12 +34,12 @@ void func_ov015_02200a18(Ov015Obj34 *self, Ov015Stat *b) {
     case 1:
         if (pos >= 0x64000 && b->unk_08 != 3) {
             b->unk_28 = 3;
-            SndMgr_PlayVolume(data_02097e4c, 0x1b, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1b, -1, -1, -1);
         } else if (pos < 0x46000) {
             b->unk_28 = 0;
         }
         if ((self->unk_0c >> 12) % 10 == 0) {
-            SndMgr_PlayVolume(data_02097e4c, 0x59, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x59, -1, -1, -1);
         }
         spd = func_ov015_02200bf4(self, b, spd);
         break;
@@ -149,12 +149,12 @@ s32 func_ov015_02200d50(Ov015Obj34 *self, Ov015Stat *g, s32 v) {
                 v = 0;
             }
             if ((self->unk_0c >> 12) % 20 == 0) {
-                SndMgr_PlayVolume(data_02097e4c, 0x48, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x48, -1, -1, -1);
             }
         } else {
             v += 0x7b;
             if ((self->unk_0c >> 12) % 5 == 0) {
-                SndMgr_PlayVolume(data_02097e4c, 2, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 2, -1, -1, -1);
             }
         }
         break;

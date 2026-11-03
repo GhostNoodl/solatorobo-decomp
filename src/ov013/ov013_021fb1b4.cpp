@@ -25,7 +25,7 @@ struct Ov013Rot16 {
 
 extern "C" {
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov013_0220b5b8[];
 extern char data_ov013_0220b5be[];
 extern char data_ov013_0220b5ca[];
@@ -122,7 +122,7 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
         self->unk_b8.y = 0x3000;
         self->unk_b8.z = self->pos.z - 0x2000;
         self->rot_y = 0;
-        a_0 = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+        a_0 = ActorMgr_GetGroup(gActorMgr, 0x5000);
         n_0 = ActorGroup_CountKind(a_0, 0x5c17);
         for (p_0 = a_0->head; p_0 != NULL && n_0 != 0; p_0 = p_0->next) {
             if (p_0->kind == 0x5c17) {
@@ -140,7 +140,7 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
         if (VEC_Distance(&self->pos, &v_1) == 0) {
             Model0218fe1c_SetAnim(self->model, data_ov013_0220b5ca, 0x89, 0);
             Model0218fe1c_SetLoop(self->model);
-            SndMgr_PlayVolume(data_02097e4c, 0x4f, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x4f, -1, -1, -1);
             range = 0xf000 - (self->radius << 3);
             z_0 = FX_Mul(Rand_PlusMinus(0x1000), range) - 0x7800;
             for (cnt_1 = 0, i = 0; i < 4; i++) {
@@ -264,7 +264,7 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
             self->fsm->st = 0x63;
             self->fsm->timer = 0;
         }
-        k = ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000), 0x4823);
+        k = ActorGroup_CountKind(ActorMgr_GetGroup(gActorMgr, 0x4000), 0x4823);
         if (k < 4) {
             s32 dx;
             if (self->pos.x >= POLE(self, k)->v.x) {
@@ -279,7 +279,7 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
                 Ov013Spawn_Init(&sd, 0x4823);
                 Ov013_VecCopy(&p_1, &POLE(self, k)->v);
                 p_1.y = self->pos.y + 0x1800;
-                o = (Ov013ActEx_021fdb70 *)Group_SpawnActor(data_ov000_021ccd64, &sd, &p_1, &self->rot_x, 0xffff);
+                o = (Ov013ActEx_021fdb70 *)Group_SpawnActor(gGroup, &sd, &p_1, &self->rot_x, 0xffff);
                 o->flags_0 = 1;
                 o->target = self->target;
                 if (POLE(self, k)->on) {
@@ -310,7 +310,7 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
             self->velY = -0xcd;
             Model0218fe1c_SetAnim(self->model, data_ov013_0220b5be, 0x155, 0);
             Model0218fe1c_SetLoop(self->model);
-            SndMgr_Stop(data_02097e4c, 0x4f);
+            SndMgr_Stop(gSndMgr, 0x4f);
             self->fsm->st = 0x64;
             self->fsm->timer = 0;
         } else {
@@ -338,7 +338,7 @@ void Ov013Boss_StateAttack2(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, 
         break;
     }
     if (shake) {
-        FieldCam *cam = &data_ov000_021ccd54->cam;
+        FieldCam *cam = &gSceneCmd->cam;
         Robo021ca458 *pl;
         if (cam == NULL) {
             return;

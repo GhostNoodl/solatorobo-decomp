@@ -6,19 +6,19 @@
 
 typedef struct {
     u8 unk_00[4];
-    SceneCmd *scene; // data_ov000_021ccd54, reached through the 0x021ccd50 pool
+    SceneCmd *scene; // gSceneCmd, reached through the 0x021ccd50 pool
 } Data021ccd50b;
 
 extern "C" {
 extern Data021ccd50b data_ov000_021ccd50;
-extern MessageQueue021cb980 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *gMessageQueue;
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL MessageQueue_GetById(MessageQueue *self, s32 id);
 BOOL func_ov000_021700c4(ListBuffer021cb940 *self);
 void func_ov000_0218a358(FieldCam *self, const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clamp, s16 a6, s16 a7, u8 a8);
 
 static inline BOOL IsBusy(void) {
-    MessageQueue021cb980 *c = data_ov000_021ccd30;
+    MessageQueue021cb980 *c = gMessageQueue;
     if (c == NULL) {
         return FALSE;
     }

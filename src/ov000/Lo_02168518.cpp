@@ -7,8 +7,8 @@ typedef struct {
     s32 v[3];
 } Lo3W;
 
-extern u8 data_ov000_021cacd8[];
-extern u8 data_ov000_021cac60[];
+extern u8 Lo021cacd8_vtbl[];
+extern u8 UiObj_vtbl[];
 extern u8 data_ov000_021c9b28[];
 extern u8 data_ov000_021c9b2e[];
 

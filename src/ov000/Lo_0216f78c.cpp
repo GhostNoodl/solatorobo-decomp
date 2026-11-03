@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0216f23c(void *p, s32 a);
 

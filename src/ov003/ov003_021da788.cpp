@@ -94,19 +94,19 @@ void Ov003Follow_Attach(Ov003Follow *p, Ov003Src *src, const Ov003Vec *offset) {
 }
 
 static inline void Ov003_HeapDelete(void *p) {
-    void *old = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *old = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (p != NULL) {
         Heap_Free(p);
     }
-    data_02097dd0->cur = old;
+    gSysState->cur = old;
 }
 
 Ov003FxList *Ov003FxList_Dtor(Ov003FxList *self) {
     Ov003FxNode *n = self->head;
     while (n != NULL) {
         Ov003FxNode *next = n->next;
-        EffectMgr_Kill(data_0214a420, n->handle);
+        EffectMgr_Kill(gEffectMgr, n->handle);
         Ov003_HeapDelete(n);
         n = next;
     }
@@ -154,7 +154,7 @@ void Ov003FxList_Kill(Ov003FxList *self, u8 id) {
     Ov003FxNode *n;
     for (n = self->head; n != NULL; n = n->next) {
         if (id == n->id) {
-            EffectMgr_Kill(data_0214a420, n->handle);
+            EffectMgr_Kill(gEffectMgr, n->handle);
         }
     }
 }
@@ -162,7 +162,7 @@ void Ov003FxList_Kill(Ov003FxList *self, u8 id) {
 void Ov003FxList_KillAll(Ov003FxList *self) {
     Ov003FxNode *n;
     for (n = self->head; n != NULL; n = n->next) {
-        EffectMgr_Kill(data_0214a420, n->handle);
+        EffectMgr_Kill(gEffectMgr, n->handle);
     }
 }
 
@@ -189,7 +189,7 @@ void Ov003FxList_Place(Ov003FxList *self, u8 id, const VecFx32 *pos, const Effec
     Ov003FxNode *n;
     for (n = self->head; n != NULL; n = n->next) {
         if (id == n->id) {
-            EffectObj *o = Effect_Find_020657b0(data_0214a420, n->handle);
+            EffectObj *o = Effect_Find_020657b0(gEffectMgr, n->handle);
             if (o != NULL) {
                 VecFx32 vp = data_ov003_021f4988;
                 if (ofs != NULL) {

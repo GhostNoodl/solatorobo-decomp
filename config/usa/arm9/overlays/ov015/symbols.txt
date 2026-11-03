@@ -410,11 +410,11 @@ __sinit_ov015_0221276c.cpp kind:function(arm,size=0x20) addr:0x0221276c local
 .p__sinit_ov015_0221274c.cpp kind:data(word) addr:0x022127a4 local
 .p__sinit_ov015_0221276c.cpp kind:data(word) addr:0x022127a8 local
 data_ov015_022127c0 kind:data(word) addr:0x022127c0 local
-data_ov015_022127cc kind:data(any) addr:0x022127cc
-data_ov015_022127dc kind:data(any) addr:0x022127dc
-data_ov015_022127ec kind:data(any) addr:0x022127ec
-data_ov015_022127fc kind:data(any) addr:0x022127fc
-data_ov015_0221280c kind:data(any) addr:0x0221280c
+Ov015Main_vtbl kind:data(any) addr:0x022127cc
+Ov015Obj34_vtbl kind:data(any) addr:0x022127dc
+Ov015Obj30_vtbl kind:data(any) addr:0x022127ec
+Ov015Vt_022127fc_vtbl kind:data(any) addr:0x022127fc
+Ov015Child_vtbl kind:data(any) addr:0x0221280c
 data_ov015_0221282c kind:data(word) addr:0x0221282c local
 data_ov015_02212830 kind:data(any) addr:0x02212830
 data_ov015_0221283b kind:data(any) addr:0x0221283b
@@ -430,27 +430,27 @@ data_ov015_022128ab kind:data(any) addr:0x022128ab
 data_ov015_022128b5 kind:data(any) addr:0x022128b5
 data_ov015_022128c1 kind:data(any) addr:0x022128c1
 data_ov015_022128d5 kind:data(any) addr:0x022128d5
-data_ov015_022128ec kind:data(any) addr:0x022128ec
-data_ov015_022128fc kind:data(any) addr:0x022128fc
-data_ov015_0221290c kind:data(any) addr:0x0221290c
-data_ov015_0221291c kind:data(any) addr:0x0221291c
-data_ov015_0221292c kind:data(any) addr:0x0221292c
-data_ov015_0221293c kind:data(any) addr:0x0221293c
-data_ov015_0221294c kind:data(any) addr:0x0221294c
-data_ov015_0221295c kind:data(any) addr:0x0221295c
-data_ov015_0221296c kind:data(any) addr:0x0221296c
+Ov015Result_vtbl kind:data(any) addr:0x022128ec
+Ov015Fish_vtbl kind:data(any) addr:0x022128fc
+Ov015List_vtbl kind:data(any) addr:0x0221290c
+Ov015Vt_0221291c_vtbl kind:data(any) addr:0x0221291c
+Ov015Obj292c_vtbl kind:data(any) addr:0x0221292c
+Ov015Hud_vtbl kind:data(any) addr:0x0221293c
+Ov015Vt_0221294c_vtbl kind:data(any) addr:0x0221294c
+Ov015Node_vtbl kind:data(any) addr:0x0221295c
+Ov015Game_vtbl kind:data(any) addr:0x0221296c
 data_ov015_0221298c kind:data(word) addr:0x0221298c local
 data_ov015_02212990 kind:data(any) addr:0x02212990
 data_ov015_0221299d kind:data(any) addr:0x0221299d
 data_ov015_022129ac kind:data(any) addr:0x022129ac
-data_ov015_022129c0 kind:data(any) addr:0x022129c0
-data_ov015_022129d0 kind:data(any) addr:0x022129d0
-data_ov015_022129e0 kind:data(any) addr:0x022129e0
-data_ov015_02212a08 kind:data(any) addr:0x02212a08
-data_ov015_02212a88 kind:data(any) addr:0x02212a88
-data_ov015_02212b08 kind:data(any) addr:0x02212b08
-data_ov015_02212b88 kind:data(any) addr:0x02212b88
-data_ov015_02212c08 kind:data(any) addr:0x02212c08
+Ov015MsgBox_vtbl kind:data(any) addr:0x022129c0
+Ov015Shadow_vtbl kind:data(any) addr:0x022129d0
+Ov015SceneSeq_vtbl kind:data(any) addr:0x022129e0
+Ov015Scene2a08_vtbl kind:data(any) addr:0x02212a08
+Ov015Scene2a88_vtbl kind:data(any) addr:0x02212a88
+Ov015Scene2b08_vtbl kind:data(any) addr:0x02212b08
+Ov015Scene2b88_vtbl kind:data(any) addr:0x02212b88
+Ov015Scene2c08_vtbl kind:data(any) addr:0x02212c08
 data_ov015_02212c80 kind:data(word) addr:0x02212c80 local
 data_ov015_02212c84 kind:data(any) addr:0x02212c84
 data_ov015_02212c8a kind:data(any) addr:0x02212c8a
@@ -470,7 +470,7 @@ data_ov015_02212cf4 kind:data(any) addr:0x02212cf4
 data_ov015_02212cfe kind:data(any) addr:0x02212cfe
 @stringBase0 kind:data(byte[0x28]) addr:0x02212d08 local
 data_ov015_02212d30 kind:data(word) addr:0x02212d30 local
-data_ov015_02212d3c kind:data(any) addr:0x02212d3c
+Ov015Vt_02212d3c_vtbl kind:data(any) addr:0x02212d3c
 data_ov015_02212db0 kind:data(any) addr:0x02212db0
 data_ov015_02212db8 kind:data(any) addr:0x02212db8
 data_ov015_02212dc0 kind:data(any) addr:0x02212dc0
@@ -491,15 +491,15 @@ data_ov015_02212e55 kind:data(any) addr:0x02212e55
 data_ov015_02212e61 kind:data(any) addr:0x02212e61
 data_ov015_02212e68 kind:data(any) addr:0x02212e68
 data_ov015_02212e74 kind:data(any) addr:0x02212e74
-data_ov015_02212e84 kind:data(any) addr:0x02212e84
-data_ov015_02212e94 kind:data(any) addr:0x02212e94
-data_ov015_02212eb0 kind:data(any) addr:0x02212eb0
-data_ov015_02212ecc kind:data(any) addr:0x02212ecc
-data_ov015_02212ee8 kind:data(any) addr:0x02212ee8
-data_ov015_02212f04 kind:data(any) addr:0x02212f04
-data_ov015_02212f20 kind:data(any) addr:0x02212f20
-data_ov015_02212f3c kind:data(any) addr:0x02212f3c
-data_ov015_02212f64 kind:data(any) addr:0x02212f64
+Ov015FishInfo_vtbl kind:data(any) addr:0x02212e84
+Ov015FishState2c_vtbl kind:data(any) addr:0x02212e94
+Ov015FishState_vtbl kind:data(any) addr:0x02212eb0
+Ov015FishState08_vtbl kind:data(any) addr:0x02212ecc
+Ov015FishState40_vtbl kind:data(any) addr:0x02212ee8
+Ov015FishState1c_vtbl kind:data(any) addr:0x02212f04
+Ov015FishState18_vtbl kind:data(any) addr:0x02212f20
+Ov015StageMdl_vtbl kind:data(any) addr:0x02212f3c
+Ov015Vt_02212f64_vtbl kind:data(any) addr:0x02212f64
 data_ov015_02212f84 kind:data(word) addr:0x02212f84 local
 data_ov015_02212f88 kind:data(any) addr:0x02212f88
 data_ov015_02212f8f kind:data(any) addr:0x02212f8f
@@ -536,12 +536,12 @@ data_ov015_0221314d kind:data(any) addr:0x0221314d
 data_ov015_02213158 kind:data(any) addr:0x02213158
 data_ov015_02213163 kind:data(any) addr:0x02213163
 data_ov015_02213170 kind:data(any) addr:0x02213170
-data_ov015_02213188 kind:data(any) addr:0x02213188
-data_ov015_02213198 kind:data(any) addr:0x02213198
-data_ov015_022131ac kind:data(any) addr:0x022131ac
-data_ov015_022131c4 kind:data(any) addr:0x022131c4
+Ov015ResultPanel_vtbl kind:data(any) addr:0x02213188
+Ov015MsgMgr_vtbl kind:data(any) addr:0x02213198
+Ov015Vt_022131ac_vtbl kind:data(any) addr:0x022131ac
+Ov015Msg_vtbl kind:data(any) addr:0x022131c4
 data_ov015_022131f4 kind:data(word) addr:0x022131f4 local
-data_ov015_02213200 kind:data(any) addr:0x02213200
+Ov015Vt_02213200_vtbl kind:data(any) addr:0x02213200
 data_ov015_02213208 kind:data(any) addr:0x02213208
 data_ov015_02213210 kind:data(any) addr:0x02213210
 data_ov015_02213218 kind:data(any) addr:0x02213218
@@ -558,12 +558,12 @@ data_ov015_0221329a kind:data(any) addr:0x0221329a
 data_ov015_022132a6 kind:data(any) addr:0x022132a6
 data_ov015_022132ac kind:data(any) addr:0x022132ac
 data_ov015_022132bb kind:data(any) addr:0x022132bb
-data_ov015_022132d0 kind:data(any) addr:0x022132d0
-data_ov015_022132e0 kind:data(any) addr:0x022132e0
-data_ov015_02213320 kind:bss addr:0x02213320
+Ov015Info38_vtbl kind:data(any) addr:0x022132d0
+Ov015Obj290_vtbl kind:data(any) addr:0x022132e0
+gOv015Globals kind:bss addr:0x02213320
 data_ov015_02213328 kind:bss addr:0x02213328
 data_ov015_0221332c kind:bss addr:0x0221332c
 data_ov015_02213360 kind:bss addr:0x02213360
-data_ov015_02213364 kind:bss addr:0x02213364
-data_ov015_02213368 kind:bss addr:0x02213368
-data_ov015_0221336c kind:bss addr:0x0221336c
+gOv015Ship kind:bss addr:0x02213364
+gOv015Shared kind:bss addr:0x02213368
+gOv015Obj290 kind:bss addr:0x0221336c

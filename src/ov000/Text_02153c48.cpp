@@ -9,8 +9,8 @@ typedef struct {
 } TwBits02153c48;
 
 extern "C" {
-extern u8 data_0208ba70[];
-extern void *data_02149ef8;
+extern u8 TextWin_vtbl[];
+extern void *gMsgRes;
 void TextWin_Init(void *p);
 s32 MsgRes_GetString(void *p, s32 a);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
@@ -19,7 +19,7 @@ void TextWin_RenderToVram(void *p);
 static inline TextWin *NewTw02153c48(void) {
     TextWin *o = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (o != NULL) {
-        VOBJ_SET_VTABLE(o, data_0208ba70);
+        VOBJ_SET_VTABLE(o, TextWin_vtbl);
         TextWin_Init(o);
     }
     return o;
@@ -49,7 +49,7 @@ void Obj02153c48_CreateText(Obj02153c48 *self, s32 a, BOOL show, BOOL center, u8
     w = self->unk_1c;
     w->str = self->unk_00;
     w->unk_4c = Text_Measure(w->font, w->spacing, w->str, &w->width, &w->height, (s8)w->unk_37 ? 1 : 0);
-    data_02097ce0->unk_004 = ((s32)w->font);
+    gGfxMgr->unk_004 = ((s32)w->font);
     self->unk_1c->unk_4_8 = 0x1e;
     if (center) {
         self->unk_1c->unk_36 = 1;
@@ -66,7 +66,7 @@ void Obj02153c48_CreateText(Obj02153c48 *self, s32 a, BOOL show, BOOL center, u8
         return;
     }
     {
-        void *fnt = data_02149ef8;
+        void *fnt = gMsgRes;
         w = NewTw02153c48();
         self->unk_20 = w;
         w->font = 4;
@@ -78,7 +78,7 @@ void Obj02153c48_CreateText(Obj02153c48 *self, s32 a, BOOL show, BOOL center, u8
         }
     }
     w->unk_4c = Text_Measure(w->font, w->spacing, w->str, &w->width, &w->height, (s8)w->unk_37 ? 1 : 0);
-    data_02097ce0->unk_004 = ((s32)w->font);
+    gGfxMgr->unk_004 = ((s32)w->font);
     self->unk_20->unk_4_8 = 0x1e;
     self->unk_20->flags |= 0x40;
     self->unk_20->flags |= 0x1000000;

@@ -4,7 +4,7 @@ extern "C" {
 
 void *Ov002Vt_021efe6c_DtorDelete(Obj021efe6c *self) {
     void *saved;
-    *(VFunc **)self = data_ov002_021efe6c;
+    *(VFunc **)self = Ov002Vt_021efe6c_vtbl;
     Obj021efe6c_FreePieces(self);
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->field);

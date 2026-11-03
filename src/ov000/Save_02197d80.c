@@ -28,8 +28,8 @@ typedef struct {
     u8 unk_ad;
 } Obj02197d80;
 
-extern Player021ccd54 *data_ov000_021ccd54;
-extern SaveData *data_0214a424;
+extern Player021ccd54 *gSceneCmd;
+extern SaveData *gStageFlags;
 
 u16 LangData_GetIndex(u32 a, u32 b);
 void *ActorMgr_FindPlayer(void);
@@ -40,13 +40,13 @@ void func_020627c8(void);
 void func_ov000_02182590(u8 *p);
 
 static inline void SaveData_SetNibble(s32 row, s32 idx, u32 value) {
-    u32 *p = &data_0214a424->flags[row][idx / 8];
+    u32 *p = &gStageFlags->flags[row][idx / 8];
     s32 sh = (idx % 8) * 4;
     *p = (*p & ~(0xf << sh)) | ((value & 0xf) << sh);
 }
 
 static inline int SaveData_GetNibble(s32 row, s32 idx) {
-    return (data_0214a424->flags[row][idx / 8] >> ((idx % 8) * 4)) & 0xf;
+    return (gStageFlags->flags[row][idx / 8] >> ((idx % 8) * 4)) & 0xf;
 }
 
 static inline void Obj_StoreValue(Obj02197d80 *self, u8 value) {
@@ -69,7 +69,7 @@ void Obj02197d80_LoadValue(Obj02197d80 *self) {
     if (idx == 0xff) {
         return;
     }
-    row = LangData_GetIndex(data_ov000_021ccd54->unk_ca, data_ov000_021ccd54->unk_cb);
+    row = LangData_GetIndex(gSceneCmd->unk_ca, gSceneCmd->unk_cb);
     self->value = SaveData_GetNibble(row, idx) & 7;
 }
 
@@ -79,7 +79,7 @@ void func_ov000_02197dec(Obj02197d80 *self, u8 value, s16 sfx) {
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(sfx);
         {
-            Player021ccd54 *pl = data_ov000_021ccd54;
+            Player021ccd54 *pl = gSceneCmd;
             pl->unk_ac = 1;
             func_ov000_02182590(&pl->unk_ac);
         }

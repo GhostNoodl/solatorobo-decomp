@@ -11,7 +11,7 @@ typedef struct ov006_Save0214a424 {
 
 extern "C" {
 
-extern ov006_Save0214a424 *data_0214a424;
+extern ov006_Save0214a424 *gStageFlags;
 void *Tbl_FindEntry_0206fef8(u16 id);
 Ov006RacerPrm *Tbl_Elem_020706a0(u16 id);
 int Tbl_GetResFile(u16 id);
@@ -31,8 +31,8 @@ void Ov006ActVt_021ec4f4_Init(Ov006Racer *self) {
     self->unk_34 = obj;
     ResSet_SetFile((ActorRes *)self->unk_34, res, 1, 1, 0, 0);
     ((ActorRes *)self->unk_34)->unk_00 = 0;
-    if (self->idx == data_ov006_021ec884->unk5) {
-        self->toggle = data_0214a424->unk18_10 ? TRUE : FALSE;
+    if (self->idx == gOv006SlotManager->unk5) {
+        self->toggle = gStageFlags->unk18_10 ? TRUE : FALSE;
         self->swap = self->toggle;
     }
     self->unk_1c0.x = self->pos.x;

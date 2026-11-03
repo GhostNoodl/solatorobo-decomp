@@ -51,7 +51,7 @@ void func_ov014_0220a2d0(Ov014Act_02209280 *self, u16 a) {
     Ov014Spawn_Init(&desc, 0x481d);
     desc.unk_04[0] = a;
     self->target_id = 0xffff;
-    o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
+    o = Group_SpawnActor(gGroup, &desc, &pos, &rot, 0xffff);
     if (o == NULL) {
         return;
     }
@@ -82,7 +82,7 @@ void func_ov014_0220a490(Ov014Act_02209280 *self, VecFx32 *vel, u16 a, u16 b, u1
     rot.y = 0;
     rot.z = 0;
     self->target_id = 0xffff;
-    o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
+    o = Group_SpawnActor(gGroup, &desc, &pos, &rot, 0xffff);
     if (o == NULL) {
         return;
     }
@@ -147,7 +147,7 @@ extern BOOL Interp_MoveTo(VecFx32 *out, s32 speed, const VecFx32 *from, const Ve
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
 static inline Ov003Actor *Ov014h_FindById(u16 id) {
-    return data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
+    return gActorMgr != NULL ? ActorMgr_GetActor(gActorMgr, id) : NULL;
 }
 
 void Ov014Act_02209280_StateMove(Ov014Act_02209280 *self) {

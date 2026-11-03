@@ -9,7 +9,7 @@ typedef struct ov002_Hdr021ec010 {
 extern "C" {
 
 void *Ov002Vt_021f0ce8_Ctor(Ov002Msg021f0ce8 *self) {
-    *(VFunc **)self = data_ov002_021f0ce8;
+    *(VFunc **)self = Ov002Vt_021f0ce8_vtbl;
     self->res = NULL;
     self->index = 0;
     self->count = 0;
@@ -27,7 +27,7 @@ void *Ov002Vt_021f0ce8_Ctor(Ov002Msg021f0ce8 *self) {
 }
 
 void *Ov002Vt_021f0ce8_Dtor(Ov002Msg021f0ce8 *self) {
-    *(VFunc **)self = data_ov002_021f0ce8;
+    *(VFunc **)self = Ov002Vt_021f0ce8_vtbl;
     self->res = NULL;
     self->index = 0;
     self->count = 0;
@@ -45,7 +45,7 @@ void *Ov002Vt_021f0ce8_Dtor(Ov002Msg021f0ce8 *self) {
 }
 
 void *Ov002Vt_021f0ce8_DtorDelete(Ov002Msg021f0ce8 *self) {
-    *(VFunc **)self = data_ov002_021f0ce8;
+    *(VFunc **)self = Ov002Vt_021f0ce8_vtbl;
     self->res = NULL;
     self->index = 0;
     self->count = 0;

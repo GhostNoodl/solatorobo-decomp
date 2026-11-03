@@ -28,11 +28,11 @@ static inline void G3_Cmd2(int cmd, u32 a, u32 b) {
 }
 
 void func_ov000_0214b1a0(const s32 *pos, const s32 *scale, s32 alpha, u32 tex) {
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     G3_Cmd1(0x30, 0xffff);
     G3_Cmd1(0x31, 0);
     G3_Cmd1(0x2a, 0x5e400000 | (tex >> 3));
-    G3_Cmd1(0x29, (u32)((1 << 4) | (3 << 6) | (Gfx3DState_NextPolyId(data_02097d48->unk_8b0) << 24) | (alpha << 16)));
+    G3_Cmd1(0x29, (u32)((1 << 4) | (3 << 6) | (Gfx3DState_NextPolyId(gGfxSys->unk_8b0) << 24) | (alpha << 16)));
     NNS_G3dGeBufferOP_N(0x11, 0, 0);
     G3_Cmd1(0x10, 3);
     NNS_G3dGeBufferOP_N(0x15, 0, 0);

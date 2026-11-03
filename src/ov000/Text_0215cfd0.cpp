@@ -13,7 +13,7 @@ typedef struct {
 } Text0215cfd0;
 
 extern "C" {
-extern void *data_02149ef8;
+extern void *gMsgRes;
 extern char data_ov000_021cabf6[];
 extern char data_ov000_021cabfb[];
 extern char data_ov000_021cac00[];
@@ -54,15 +54,15 @@ char *func_ov000_0215cfd0(Text0215cfd0 *self) {
     case 0x2000:
         func_02040a98(buf, self->unk_88);
         STD_ConcatenateString(buf, data_ov000_021cac00);
-        STD_ConcatenateString(buf, MsgRes_GetString(data_02149ef8, 0x3e));
+        STD_ConcatenateString(buf, MsgRes_GetString(gMsgRes, 0x3e));
         break;
     case 0x4000:
-        STD_CopyString(buf, MsgRes_GetString(data_02149ef8, 0x45));
+        STD_CopyString(buf, MsgRes_GetString(gMsgRes, 0x45));
         func_02040a98(tmp, self->unk_88);
         STD_ConcatenateString(buf, data_ov000_021cac00);
         STD_ConcatenateString(buf, tmp);
         STD_ConcatenateString(buf, data_ov000_021cac00);
-        STD_ConcatenateString(buf, MsgRes_GetString(data_02149ef8, 0x40));
+        STD_ConcatenateString(buf, MsgRes_GetString(gMsgRes, 0x40));
         break;
     default:
         return NULL;

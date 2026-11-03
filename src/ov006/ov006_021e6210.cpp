@@ -34,7 +34,7 @@ static inline void Ov006Racer_Commit(Ov006Racer *self, ov006_Slot *slot, ov006_S
 }
 
 void Ov006Racer_SyncSlot(Ov006Racer *self) {
-    ov006_Slot *slot = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, self->idx);
+    ov006_Slot *slot = ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, self->idx);
     ov006_SlotSubBits sub;
     sub.unk0 = 0;
     sub.unk2.raw = 0;
@@ -43,7 +43,7 @@ void Ov006Racer_SyncSlot(Ov006Racer *self) {
     sub.unk8 = 0;
     sub.unkC = 0;
     if (slot->type != 0) {
-        ov006_SlotManager *mgr = data_ov006_021ec884;
+        ov006_SlotManager *mgr = gOv006SlotManager;
         ov006_SlotManagerInfo *info;
         BOOL over;
         if (self->idx != mgr->unk5) {
@@ -59,11 +59,11 @@ void Ov006Racer_SyncSlot(Ov006Racer *self) {
                 Ov006Racer_ReadKeys(self, &sub);
             }
         } else {
-            sub.unk0 = data_02097dc8->cur;
+            sub.unk0 = gPad->cur;
         }
         Ov006Racer_Commit(self, slot, &sub);
     } else {
-        if (data_ov006_021ec884->unk5 != 0) {
+        if (gOv006SlotManager->unk5 != 0) {
             return;
         }
         Ov006Racer_ReadKeys(self, &sub);

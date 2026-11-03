@@ -13,7 +13,7 @@ extern char data_ov015_02213131[];
 extern char data_ov015_02213147[];
 extern char data_ov015_0221314d[];
 extern char data_ov015_02213158[];
-extern u8 data_ov015_022131c4[];
+extern u8 Ov015Msg_vtbl[];
 extern char data_ov015_02213163[];
 extern char data_ov015_02213170[];
 void MsgRes_Reset_0204bfcc(void *p);
@@ -21,8 +21,8 @@ void MsgRes_OpenLocalized(void *p, const void *a, const void *b);
 
 void func_ov015_0220f7a8(Ov015Result *self) {
     Ov015ResultPanel *o;
-    if (data_ov002_021f0f9c != NULL) {
-        func_ov002_021e8b3c(data_ov002_021f0f9c);
+    if (gOv002Stage != NULL) {
+        func_ov002_021e8b3c(gOv002Stage);
     }
     if (self->state < 0x14) {
         return;
@@ -31,7 +31,7 @@ void func_ov015_0220f7a8(Ov015Result *self) {
     if (o == NULL) {
         return;
     }
-    if (data_02097d48->unk_a30_4) {
+    if (gGfxSys->unk_a30_4) {
         return;
     }
     if (o->unk_04 != NULL) o->unk_04->vfunc_20();
@@ -46,7 +46,7 @@ struct Ov015ItemBitsF878 {
     u16 kind : 3;
     u16 hi : 8;
 };
-// File names of the result stage's objects, one per data_ov015_02213368->unk_2c.
+// File names of the result stage's objects, one per gOv015Shared->unk_2c.
 struct Ov015ResFile {
     char *arc;
     char *name;
@@ -65,7 +65,7 @@ void func_ov015_0220f878(Ov015Result *self) {
     Ov015StageMdl *o;
     u16 id;
     char *name;
-    switch (*(u16 *)func_02070744(data_ov015_02213368->catchId)) {
+    switch (*(u16 *)func_02070744(gOv015Shared->catchId)) {
     case 0:
         func_ov002_021e9e40(3);
         break;
@@ -84,7 +84,7 @@ void func_ov015_0220f878(Ov015Result *self) {
     o->unk_18 = 0;
     o->unk_1c = 0x96000;
     o->unk_08 = 3;
-    id = data_ov015_02213368->catchId;
+    id = gOv015Shared->catchId;
     name = Tbl_GetResFile(id);
     {
         u8 *info = Tbl_FindEntry_0206fef8(id);
@@ -112,7 +112,7 @@ void func_ov015_0220f878(Ov015Result *self) {
         *(Ov015ResNamePair *)d = data_ov015_02213088;
         *(Ov015ResNameOne *)&e = data_ov015_02212fb8;
         *(Ov015ResNameOne *)&f = data_ov015_02212fdc;
-        n = data_ov015_02213368->unk_2c;
+        n = gOv015Shared->unk_2c;
         p5 = (Ov002Obj021f07d4 *)Ov002Obj021f07d4_New(0, 0x96000, 3, 0, 0);
         p4 = (Ov002Obj021f07d4 *)Ov002Obj021f07d4_New(0, 0x96000, 3, 0, 0);
         p5->res.arc = a[n].arc;
@@ -158,7 +158,7 @@ void func_ov015_0220fb78(Ov015Result *self) {
     o->unk_18 = 0;
     o->unk_1c = 0x168000;
     o->unk_08 = 3;
-    id = data_ov015_02213368->catchId;
+    id = gOv015Shared->catchId;
     name = Tbl_GetResFile(id);
     {
         u8 *info = Tbl_FindEntry_0206fef8(id);
@@ -187,7 +187,7 @@ void func_ov015_0220fb78(Ov015Result *self) {
 }
 
 void *Ov015Msg_Ctor(Ov015Msg *self) {
-    SET_VT(self, data_ov015_022131c4);
+    SET_VT(self, Ov015Msg_vtbl);
     self->unk_04 = 0;
     self->msgIdx = 0;
     self->msgRes = NULL;
@@ -211,7 +211,7 @@ void *Ov015Msg_Ctor(Ov015Msg *self) {
 
 void *Ov015Msg_Dtor(Ov015Msg *self) {
     void *saved;
-    SET_VT(self, data_ov015_022131c4);
+    SET_VT(self, Ov015Msg_vtbl);
     HEAP_PUSH(saved);
     DELETE_V(self->msgRes);
     HEAP_POP(saved);
@@ -247,7 +247,7 @@ void *Ov015Msg_Dtor(Ov015Msg *self) {
 
 void *Ov015Msg_DtorDelete(Ov015Msg *self) {
     void *saved;
-    SET_VT(self, data_ov015_022131c4);
+    SET_VT(self, Ov015Msg_vtbl);
     HEAP_PUSH(saved);
     DELETE_V(self->msgRes);
     HEAP_POP(saved);
@@ -330,7 +330,7 @@ BOOL func_ov015_02210014(Ov015Msg *self) {
 
 void func_ov015_0221015c(Ov015Msg *self) {
     TextWin *p;
-    if (!data_02097d48->unk_a30_4) {
+    if (!gGfxSys->unk_a30_4) {
         return;
     }
     if (self->label != NULL) {
@@ -356,9 +356,9 @@ void func_ov015_0221015c(Ov015Msg *self) {
 void func_ov015_02210298(Ov015Msg *self) {
     MsgRes *p = (MsgRes *)Heap_Alloc(sizeof(MsgRes));
     if (p != NULL) {
-        SET_VT(p, data_0208b318);
+        SET_VT(p, ResHandle_vtbl);
         p->Clear();
-        SET_VT(p, data_0208ba30);
+        SET_VT(p, MainVt_0208ba30_vtbl);
         MsgRes_Reset_0204bfcc(p);
     }
     self->msgRes = p;
@@ -372,11 +372,11 @@ void func_ov015_022102fc(Ov015Msg *self) {
 
 extern void *data_0208cc88;
 extern void *data_0208cc94;
-extern void *data_02149ef8;
-extern u8 data_0208ba70[];
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021cadcc[];
-extern u8 data_ov015_02212d3c[];
+extern void *gMsgRes;
+extern u8 TextWin_vtbl[];
+extern u8 UiObj_vtbl[];
+extern u8 Lo021cadcc_vtbl[];
+extern u8 Ov015Vt_02212d3c_vtbl[];
 BOOL MsgRes_Bind(void *p);
 s32 MsgRes_GetLines(void *p, u16 id, void *buf, s32 n);
 void *func_02035de0(void *a, void *b);
@@ -422,17 +422,17 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
     {
         TextWin *w = (TextWin *)Heap_Alloc(0xb8);
         if (w != NULL) {
-            SET_VT(w, data_0208ba70);
+            SET_VT(w, TextWin_vtbl);
             TextWin_Init(w);
         }
         self->textWin = w;
         w->font = 4;
         {
-            void *t = MsgRes_GetString(data_02149ef8, 0x118);
+            void *t = MsgRes_GetString(gMsgRes, 0x118);
             w = self->textWin;
             w->str = (u32)t;
             w->unk_4c = Text_Measure(w->font, w->spacing, w->str, &w->width, &w->height, (s8)w->unk_37 != 0);
-            data_02097ce0->unk_004 = w->font;
+            gGfxMgr->unk_004 = w->font;
         }
     }
     self->textWin->color0 = 0x7fff;
@@ -447,9 +447,9 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
     TextWin_RenderToVram(self->textWin);
     p = (UiObj *)Heap_Alloc(0x8c);
     if (p != NULL) {
-        SET_VT(p, data_ov000_021cac60);
+        SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021cadcc);
+        SET_VT(p, Lo021cadcc_vtbl);
         p->vfunc_28();
     }
     self->label = (Lo021cadcc *)p;
@@ -462,9 +462,9 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
     self->label->vfunc_08();
     p = (UiObj *)Heap_Alloc(0xb4);
     if (p != NULL) {
-        SET_VT(p, data_ov000_021cac60);
+        SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov015_02212d3c);
+        SET_VT(p, Ov015Vt_02212d3c_vtbl);
         func_ov015_02208544((Ov015UiText *)p);
     }
     self->textBox = (Ov015UiText *)p;

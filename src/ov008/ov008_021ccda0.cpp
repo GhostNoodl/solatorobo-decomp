@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov008_021d0458[];
 extern char data_ov008_021d0462[];
 void MsgEntry_Init(void *p);
@@ -82,7 +82,7 @@ void func_ov008_021ccf44(Ov008Panel *o) {
         }
         break;
     case 0xf:
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
             PlttRes_Init_02041218(&m->pltt);
@@ -109,7 +109,7 @@ void func_ov008_021ccf44(Ov008Panel *o) {
         }
         break;
     case 0x11:
-        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
         o->state = 0x12;
     case 0x12:
         t = FX_Div(o->offset + 0x20000, 0x20000);

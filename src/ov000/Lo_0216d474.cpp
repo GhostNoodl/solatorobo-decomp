@@ -3,7 +3,7 @@
 #include "ov000/Obj0216c954.h"
 
 extern "C" {
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 s32 FX_Div(s32 a, s32 b);
 s32 Group_GetSpawnPositions(void *mgr, s32 max, VecFx32 *out, s32 kind, u16 id);
 
@@ -24,7 +24,7 @@ void func_ov000_0216d474(Obj0216c954 *self) {
         self->range = 0x7fffffff;
         return;
     }
-    n = Group_GetSpawnPositions(data_ov000_021ccd64, 0x20, pts, self->findKind >> 12, self->findKind);
+    n = Group_GetSpawnPositions(gGroup, 0x20, pts, self->findKind >> 12, self->findKind);
     if (n == 0) {
         return;
     }

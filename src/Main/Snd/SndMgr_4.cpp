@@ -21,7 +21,7 @@ typedef struct SndListener {
 } SndListener;
 
 extern s32 data_0208b700;
-extern SndAreaEntry data_0208b7c8[];
+extern SndAreaEntry Snd_AreaTable[];
 extern s32 data_0208b704;
 extern s32 data_0208b744[];
 

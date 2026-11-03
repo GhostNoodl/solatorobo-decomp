@@ -64,7 +64,7 @@ void UiObj_DrawTitle(UiObj *self, s32 ratio, VecFx32 *pos, s32 arg3) {
         return;
     }
     ratio = LO_FX_MUL(ratio, 0x20000);
-    g = data_02097d48;
+    g = gGfxSys;
     k = ratio >> 12;
     gp = g->unk_8b0;
     z = self->posZ - 0x70;

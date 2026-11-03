@@ -32,7 +32,7 @@ void ov006_Label_Draw(ov006_Label *self) {
     if (alpha <= 0) {
         return;
     }
-    ov006_Model_SetPolyId(self->model, Gfx3DState_NextPolyId(data_02097d48->unk_8b0));
+    ov006_Model_SetPolyId(self->model, Gfx3DState_NextPolyId(gGfxSys->unk_8b0));
     ov006_Model_SetAlpha(self->model, alpha);
     { int i = self->unkE0; Model *m = self->model; m->pos[i].x = x; m->pos[i].y = y; }
     self->model->unk_150 = self->origin.z;

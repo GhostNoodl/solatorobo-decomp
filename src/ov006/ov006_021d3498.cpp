@@ -142,7 +142,7 @@ typedef struct ov006_Info021daaa8 {
 
 extern "C" {
 
-extern void *data_ov006_021ebdc0;
+extern void *ov006_TaskD37_vtbl;
 
 ov006_Info021daaa8 *ov006_GetCourseInfo(u16 id);
 const void *func_0206ec8c(u16 id);
@@ -186,14 +186,14 @@ BOOL func_ov006_021d37d0(UiList *window, UiListItem *node) {
 
 ov006_TaskD37 *func_ov006_021d3874(ov006_TaskD37 *self) {
     OV006_TASKBASE_CTOR(self);
-    *(void **)self = &data_ov006_021ebdc0;
+    *(void **)self = &ov006_TaskD37_vtbl;
     Camera_Ctor(&self->cam);
     self->step = 0;
     self->unk44 = 0;
     self->unk46 = 0;
     self->unk48 = 0;
     self->unk3D = 1;
-    self->unk4C = self->unk4A = data_ov006_021ec884->unk6;
+    self->unk4C = self->unk4A = gOv006SlotManager->unk6;
     self->unk50 = NULL;
     self->unk54 = NULL;
     self->unk58 = NULL;
@@ -211,8 +211,8 @@ ov006_TaskD37 *func_ov006_021d3874(ov006_TaskD37 *self) {
 
 #define OV006_DELETE_WITH(T, obj, dtor)                          \
     do {                                                         \
-        void *saved_ = data_02097dd0->cur;                       \
-        data_02097dd0->cur = data_02097dd0->heapHi;              \
+        void *saved_ = gSysState->cur;                       \
+        gSysState->cur = gSysState->heapHi;              \
         if ((obj) != NULL) {                                     \
             if ((obj) != NULL) {                                 \
                 T *p_ = (obj);                                   \
@@ -221,11 +221,11 @@ ov006_TaskD37 *func_ov006_021d3874(ov006_TaskD37 *self) {
             }                                                    \
             (obj) = NULL;                                        \
         }                                                        \
-        data_02097dd0->cur = saved_;                             \
+        gSysState->cur = saved_;                             \
     } while (0)
 
 static inline void ov006_TaskD37_Dtor(ov006_TaskD37 *self) {
-    *(void **)self = &data_ov006_021ebdc0;
+    *(void **)self = &ov006_TaskD37_vtbl;
     OV006_DELETE_OBJECT(self->unk50);
     OV006_DELETE_OBJECT(self->unk54);
     OV006_DELETE_OBJECT(self->unk58);
@@ -305,7 +305,7 @@ void ov006_TaskD37_Load(ov006_TaskD37 *self) {
     ActorRes_SetName2(self->unk60, "menu/worldmap", "u3map1cld00");
     self->unk60->unk_00 = 0;
     self->unk68 = ov006_NewModel60();
-    id = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC;
+    id = ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5)->unkC;
     a = Tbl_GetResFile(id);
     b = func_020701d4(id);
     c = Tbl_GetResFile(id);
@@ -332,7 +332,7 @@ typedef struct ov006_Info021daaa8 {
 
 extern "C" {
 
-extern void *data_ov006_021ebdc0;
+extern void *ov006_TaskD37_vtbl;
 
 ov006_Info021daaa8 *ov006_GetCourseInfo(u16 id);
 const void *func_0206ec8c(u16 id);
@@ -382,7 +382,7 @@ typedef struct ov006_Unk020706a0 {
 
 extern "C" {
 
-extern void *data_02149ef8;
+extern void *gMsgRes;
 extern const u16 data_ov006_021eb6fc;
 extern const u8 data_ov006_021eb6fe[4];
 extern const Rot16 data_ov006_021eb702;
@@ -486,7 +486,7 @@ void ov006_TaskD37_Start(ov006_TaskD37 *self) {
     if (self->vfunc_28()) {
         return;
     }
-    res = data_02149ef8;
+    res = gMsgRes;
     self->unk50 = ov006_NewUiList();
     self->unk50->vfunc_10(MsgRes_GetString(res, 0x12a));
     body = OV006_MSG_D4118_BODY;
@@ -506,7 +506,7 @@ void ov006_TaskD37_Start(ov006_TaskD37 *self) {
     none = OV006_CURSOR_NONE;
     ov006_Manager_DispatchMenuCb(5, self->unk50, 0);
     self->unk50->vfunc_08();
-    UiList_SetPanelColor(self->unk50, data_ov006_021eb6fe[data_ov006_021ec884->unk5]);
+    UiList_SetPanelColor(self->unk50, data_ov006_021eb6fe[gOv006SlotManager->unk5]);
     if (self->unk4A != none && self->param == 0) {
         UiList *w = self->unk50;
         w->vfunc_a8(UiList_GetItemById(w, self->unk4A));
@@ -548,7 +548,7 @@ void ov006_TaskD37_Start(ov006_TaskD37 *self) {
     Model0218fe1c_SetAnim(self->unk6C, "nut00", 0, 1);
     self->unk6C->actor_id = 0;
     Model0218fe1c_SetLoop(self->unk6C);
-    Model0218fe1c_SetAnimSpeed(self->unk6C, Tbl_Elem_020706a0(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC)->unk0);
+    Model0218fe1c_SetAnimSpeed(self->unk6C, Tbl_Elem_020706a0(ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5)->unkC)->unk0);
     ov006_TaskD37_PlayAnim(self, "s00", 0x400, 1);
     {
         VecFx32 at = data_ov006_021eb764;
@@ -628,7 +628,7 @@ typedef struct ov006_Unk02097e40 {
 
 extern "C" {
 
-extern ov006_Unk02097e40 *data_02097e40;
+extern ov006_Unk02097e40 *gWhMgr;
 
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
 void ov006_Label_Close(ov006_Label *p);
@@ -679,7 +679,7 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
             if (self->param == 1) {
                 BOOL ok = ov006_IsUnlocked(5, 1);
                 if (!ok) {
-                    u16 m = data_02097e40->unk32;
+                    u16 m = gWhMgr->unk32;
                     if (m == ov006_Menu_GetEntryMask_021e60e8(4, m)) {
                         self->unk44 = 5;
                     }
@@ -714,10 +714,10 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
             self->step = 100;
             return;
         }
-        trg = data_02097dc8->trig;
+        trg = gPad->trig;
         if (trg & 2) {
             if (self->unk3D) {
-                SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
                 self->unk50->flags |= 2;
                 self->unk54->flags |= 2;
                 ov006_Label_Close(self->unk58);
@@ -727,10 +727,10 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
                 self->unk_04 |= 6;
                 self->step = 0x78;
             } else {
-                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
             }
         } else if (trg & 1) {
-            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
             self->step = 0x14;
         }
         break;
@@ -769,7 +769,7 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
         ov006_TaskD37_PlayAnim(self, "s01", 0x1000, 0);
         {
             ov006_Info021daaa8 *info = ov006_GetCourseInfo(self->unk4A);
-            ov006_SlotManager *m = data_ov006_021ec884;
+            ov006_SlotManager *m = gOv006SlotManager;
             m->unk6 = self->unk4A;
             m->info = (ov006_SlotManagerInfo *)info;
         }
@@ -785,9 +785,9 @@ void ov006_TaskD37_UpdateActive(ov006_TaskD37 *self) {
             int f = self->anm->frame;
             s16 len = self->animSpeed;
             if ((f >= 0x10000 && f < 0x10000 + len) || (f >= 0x1e000 && f < 0x1e000 + len)) {
-                SndMgr_PlayVolume(data_02097e4c, 0x32, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x32, -1, -1, -1);
             } else if (f >= 0xb000 && f < 0xb000 + len) {
-                SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x35, -1, -1, -1);
             }
         }
         if (self->anm->frame >= (self->anm->res->numFrame << 12) - 0x1000) {
@@ -850,7 +850,7 @@ typedef struct ov006_Unk02046a50 {
 
 extern "C" {
 
-extern void *data_02097e40;
+extern void *gWhMgr;
 
 ov006_Info021daaa8 *ov006_GetCourseInfo(u16 id);
 const void *func_0206ec8c(u16 id);
@@ -874,7 +874,7 @@ void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self);
 void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
 int STD_TSNPrintf(char *dst, u32 size, const char *fmt, ...);
 
-// The camera's vtable (data_0208b8c0) holds Camera_Apply in slot 0x00.
+// The camera's vtable (Camera_vtbl) holds Camera_Apply in slot 0x00.
 static inline void ov006_Camera_Apply(Camera *cam) {
     ((VObj *)cam)->vfunc_00();
 }
@@ -902,7 +902,7 @@ void ov006_TaskD37_PreUpdate(ov006_TaskD37 *self) {
     if (self->state == 0xd && self->param != 0 && data_ov006_021ec888->state != 9) {
         ov006_Unk02046a50 *p;
         done = TRUE;
-        p = Wh_GetSharedData(data_02097e40, 0);
+        p = Wh_GetSharedData(gWhMgr, 0);
         if (self->param == 2 && self->step == 0x28) {
             self->unk4C = p->unk4;
             if (self->unk4A != self->unk4C) {
@@ -943,7 +943,7 @@ void ov006_TaskD37_PostUpdate(ov006_TaskD37 *self) {
         self->step++;
         break;
     case 0x82:
-        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x26, 0);
+        TaskHost_RequestSwitch(gTaskHost, 0x26, 0);
         self->step++;
         break;
     }

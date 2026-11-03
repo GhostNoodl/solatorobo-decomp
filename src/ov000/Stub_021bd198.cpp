@@ -39,9 +39,9 @@ void ActorMarker_Release(ActorMarker *self) {
     }
     HEAP_DELETE_FN(self->res, ResSet_ReleaseAll);
     for (i = 4; i < 8; i++) {
-        void *saved = data_02097dd0->cur;
+        void *saved = gSysState->cur;
         void *p;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        gSysState->cur = gSysState->heapHi;
         p = self->mdl[(u32)i];
         if (p != NULL) {
             if (p != NULL) {
@@ -49,7 +49,7 @@ void ActorMarker_Release(ActorMarker *self) {
             }
             self->mdl[i] = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     ActorMarker_Init(self);
 }

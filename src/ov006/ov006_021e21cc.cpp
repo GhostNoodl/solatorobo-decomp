@@ -2,14 +2,14 @@
 
 extern "C" {
 
-extern void *data_ov006_021ec2cc;
+extern void *Ov006Vt_021ec2cc_vtbl;
 extern char data_ov006_021ec1a9[];
 extern char data_ov006_021ec864[];
 
 void __cxa_vec_cleanup(void *arr, int count, u32 size, void *dtor);
 
 static inline void ov006_MarkerSet_Dtor(ov006_MarkerSet *self) {
-    self->vtbl = &data_ov006_021ec2cc;
+    self->vtbl = &Ov006Vt_021ec2cc_vtbl;
     OV006_DELETE_MODEL(self->model);
     __cxa_vec_cleanup(self->markers, 4, sizeof(self->markers[0]), ov006_Marker_Dtor);
 }

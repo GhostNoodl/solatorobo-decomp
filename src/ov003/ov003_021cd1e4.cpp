@@ -100,8 +100,8 @@ public:
 
 extern "C" {
 
-extern void *data_ov000_021cac60[];
-extern void *data_ov000_021cadcc[];
+extern void *UiObj_vtbl[];
+extern void *Lo021cadcc_vtbl[];
 extern char data_ov003_021f78c4[];
 extern char data_ov003_021f78cd[];
 extern void *Heap_Alloc(u32 size);
@@ -135,9 +135,9 @@ void Ov003TaskVt_021f78f4_Start(Ov003Tl *self) {
     }
     l = (Ov003TlLabel *)Heap_Alloc(0x8c);
     if (l != NULL) {
-        *(void ***)l = data_ov000_021cac60;
+        *(void ***)l = UiObj_vtbl;
         l->v28();
-        *(void ***)l = data_ov000_021cadcc;
+        *(void ***)l = Lo021cadcc_vtbl;
         l->v28();
     }
     self->unk_3c = l;

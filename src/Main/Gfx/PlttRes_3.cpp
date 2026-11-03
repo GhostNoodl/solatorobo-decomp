@@ -41,12 +41,12 @@ void PlttRes_Release(PlttRes *res) {
             if (map[i] != -1) {
                 if (res->unk_28 == 0) {
                     if (res->fmt == 3) {
-                        GfxSys_FreeSlots(data_02097d48, (u16)map[i], 1, 0);
+                        GfxSys_FreeSlots(gGfxSys, (u16)map[i], 1, 0);
                     } else {
-                        GfxSys_FreeSlots(data_02097d48, (u16)map[i], 16, 0);
+                        GfxSys_FreeSlots(gGfxSys, (u16)map[i], 16, 0);
                     }
                 } else {
-                    GfxSys_FreeSlots(data_02097d48, (u16)map[i], 1, 1);
+                    GfxSys_FreeSlots(gGfxSys, (u16)map[i], 1, 1);
                 }
             }
         }
@@ -61,12 +61,12 @@ void PlttRes_Release(PlttRes *res) {
             if (map[i] != -1) {
                 if (res->unk_28 == 0) {
                     if (res->fmt == 3) {
-                        GfxSys_FreeSlots(data_02097d48, (u16)map[i], 1, 2);
+                        GfxSys_FreeSlots(gGfxSys, (u16)map[i], 1, 2);
                     } else {
-                        GfxSys_FreeSlots(data_02097d48, (u16)map[i], 16, 2);
+                        GfxSys_FreeSlots(gGfxSys, (u16)map[i], 16, 2);
                     }
                 } else {
-                    GfxSys_FreeSlots(data_02097d48, (u16)map[i], 1, 3);
+                    GfxSys_FreeSlots(gGfxSys, (u16)map[i], 1, 3);
                 }
             }
         }

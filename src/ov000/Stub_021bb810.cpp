@@ -40,16 +40,16 @@ void Obj021bb810_Init_021bb810(Obj021bb810 *self, s32 a) {
 }
 
 void func_ov000_021bb840(Obj021bb810 *self) {
-    if (EffectMgr_Contains(data_0214a420, self->unk_10)) {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+    if (EffectMgr_Contains(gEffectMgr, self->unk_10)) {
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (self->unk_10 != NULL) {
             if (self->unk_10 != NULL) {
                 self->unk_10->Delete();
             }
             self->unk_10 = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     Obj021bb810_Init(self, 0);
 }

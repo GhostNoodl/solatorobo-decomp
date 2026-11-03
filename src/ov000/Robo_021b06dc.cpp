@@ -14,12 +14,12 @@ typedef struct {
 
 extern "C" {
 
-extern Robo021b06dcEntry data_ov000_021ca1b0[];
+extern Robo021b06dcEntry Robo021ca458_Mode5StateTable[];
 void func_ov000_021697dc(Lo021cb798 *p, u16 a, u16 b);
 void Lo0216b474_Ask(Lo0216b474 *p, s32 want, BOOL part22);
 
 static inline BOOL PlayerIdle021b06dc(void) {
-    FieldState *pl = data_ov000_021ccd54;
+    FieldState *pl = gSceneCmd;
     if (pl != NULL) {
         if (pl->head != pl->tail ? TRUE : FALSE) {
             return FALSE;
@@ -33,8 +33,8 @@ static inline BOOL PlayerIdle021b06dc(void) {
 }
 
 static inline void SetGauge021b06dc(u16 a, u16 b) {
-    // data_ov000_021ccd30 is the field's MessageQueue021cb980 (Main/Sys/Field.h's view of it is FieldPlayer)
-    ListBuffer021cb940 *o = (ListBuffer021cb940 *)data_ov000_021ccd30->unk_11c;
+    // gMessageQueue is the field's MessageQueue021cb980 (Main/Sys/Field.h's view of it is FieldPlayer)
+    ListBuffer021cb940 *o = (ListBuffer021cb940 *)gMessageQueue->unk_11c;
     if (o != NULL && o->unk_58 != NULL) {
         func_ov000_021697dc(o->unk_58, a, b);
         o->unk_58->unk_0c |= 0x80;
@@ -50,8 +50,8 @@ void Robo021ca458_RunMode5State(Robo021ca458 *self) {
     }
     k = self->fsm->current;
     for (i = 0; i < 6; i++) {
-        if (k == *(s32 *)((u8 *)data_ov000_021ca1b0 + i * 12)) {
-            (((Robo021b06dcCls *)self)->*data_ov000_021ca1b0[i].fn)();
+        if (k == *(s32 *)((u8 *)Robo021ca458_Mode5StateTable + i * 12)) {
+            (((Robo021b06dcCls *)self)->*Robo021ca458_Mode5StateTable[i].fn)();
             break;
         }
     }
@@ -67,8 +67,8 @@ void Robo021ca458_RunMode5State(Robo021ca458 *self) {
         SetGauge021b06dc(self->hpObj->cur, self->hpObj->max);
     }
     {
-        BOOL f = data_0214a424->bits18.flag10 ? TRUE : FALSE;
-        ListBuffer021cb940 *o = (ListBuffer021cb940 *)data_ov000_021ccd30->unk_11c;
+        BOOL f = gStageFlags->bits18.flag10 ? TRUE : FALSE;
+        ListBuffer021cb940 *o = (ListBuffer021cb940 *)gMessageQueue->unk_11c;
         if (o != NULL) {
             Lo0216b474_Ask(o->unk_68, 1, f);
         }

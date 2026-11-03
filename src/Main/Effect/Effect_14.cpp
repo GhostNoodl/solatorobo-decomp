@@ -3,7 +3,7 @@
 extern "C" {
 
 extern char data_0208c980[];
-extern u32 data_0208c840[];
+extern u32 MainVt_0208c840_vtbl[];
 
 void EffectEmitter_Reset(EffectEmitter *em) {
     em->unk_14 = 2;
@@ -26,27 +26,27 @@ void EffectEmitter_Release(EffectEmitter *em) {
         Vram_FreeRes(em->file->data);
     }
     if (em->nameDef != NULL && em->unk_34) {
-        ResMgr_ReleaseByName(data_02097cdc, em->nameDef->arcName, 7, 0);
+        ResMgr_ReleaseByName(gResMgr, em->nameDef->arcName, 7, 0);
     }
     for (p = em->ptcls; p != NULL; p = next) {
         next = p->next;
         EFFECT_DELETE(p);
     }
     {
-        void *saved_ = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved_ = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (em->parts != NULL) {
             if (em->parts != NULL) {
                 em->parts->Delete();
             }
             em->parts = NULL;
         }
-        data_02097dd0->cur = saved_;
+        gSysState->cur = saved_;
     }
 }
 
 EffectPtcl *MainVt_0208c840_DtorDelete(EffectPtcl *p) {
-    *(u32 **)p = data_0208c840;
+    *(u32 **)p = MainVt_0208c840_vtbl;
     Heap_Free(p);
     return p;
 }
@@ -192,7 +192,7 @@ static inline void EffectEmitter_AddPtcl(EffectEmitter *em, EffectPtcl *p) {
 BOOL EffectEmitter_Loop(EffectEmitter *em) {
     EffectPtcl *p = (EffectPtcl *)Heap_Alloc(0xc4);
     if (p != NULL) {
-        *(u32 **)p = data_0208c840;
+        *(u32 **)p = MainVt_0208c840_vtbl;
         EffectPtcl_Init(p);
     }
     EffectPtcl_SetTex(p, em->tex);

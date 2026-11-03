@@ -26,7 +26,7 @@ typedef struct {
 
 extern "C" {
 
-extern Save021b5578 *data_0214a424;
+extern Save021b5578 *gStageFlags;
 
 Lang021b5578 *Lang_GetGroup(u8 id);
 void func_0206dde4(char *buf, u8 *ids);
@@ -61,12 +61,12 @@ static inline void SetNibble021b5578(s32 row, s32 idx, u32 value) {
     u32 *p;
 
     sh *= 4;
-    p = &data_0214a424->flags[row][idx / 8];
+    p = &gStageFlags->flags[row][idx / 8];
     *p = (*p & ~(0xf << sh)) | ((value & 0xf) << sh);
 }
 
 static inline int GetNibble021b5578(s32 row, s32 idx) {
-    u32 v = data_0214a424->flags[row][idx / 8];
+    u32 v = gStageFlags->flags[row][idx / 8];
     return (v >> ((idx % 8) * 4)) & 0xf;
 }
 
@@ -90,7 +90,7 @@ BOOL FieldMgr_UpdateLoad(FieldMgr *self) {
     u8 st;
     char buf[0x20];
     u16 kind;
-    u8 *ids = data_ov000_021ccd54->unk_ca.c;
+    u8 *ids = gSceneCmd->unk_ca.c;
     Lang021b5578 *t = Lang_GetGroup(ids[0]);
     switch (self->state) {
     case 0:

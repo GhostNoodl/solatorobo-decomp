@@ -15,7 +15,7 @@ typedef struct {
     s32 pos[3];
 } Ov003Prop;
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern void ActorEx_Start(void *p);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern void GroupNode_SetSpawnRange(Ov003Unit *u, s32 a, s32 b);
@@ -23,7 +23,7 @@ extern void GroupNode_SetSpawnRange(Ov003Unit *u, s32 a, s32 b);
 void Ov003ActVt_021f8188_Start(Ov003Prop *self) {
     Ov003Unit *u;
     ActorEx_Start(self);
-    u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    u = Group_FindNode(gGroup, self->unk_20);
     if (u == NULL) {
         return;
     }
@@ -51,7 +51,7 @@ void Ov003Prop_State21(Ov003Prop *self) {
         if (w->timer > 100) {
             Shared_SetEventActor(self->unk_0e, self->unk_0c);
             func_020627dc(4);
-            data_ov000_021ccd54->stageFlags = 1;
+            gSceneCmd->stageFlags = 1;
             self->work->timer = 0;
             self->work->st++;
         } else {

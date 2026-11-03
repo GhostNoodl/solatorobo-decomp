@@ -10,7 +10,7 @@ BOOL func_020459cc(WhMgr *wh, int mode, u16 tgid, u16 channel) {
     wh->recvSize = wh->cfg.parentRecvSize;
     wh->sendSize = wh->cfg.parentSendSize;
     wh->connectMode = mode;
-    *WH_SysState(data_02097e40) = 3;
+    *WH_SysState(gWhMgr) = 3;
     wh->parentParam.tgid = tgid;
     wh->parentParam.channel = channel;
     wh->parentParam.beaconPeriod = WM_GetDispersionBeaconPeriod();
@@ -25,11 +25,11 @@ BOOL func_020459cc(WhMgr *wh, int mode, u16 tgid, u16 channel) {
     case 1:
     case 3: {
         int result;
-        *WH_SysState(data_02097e40) = 3;
+        *WH_SysState(gWhMgr) = 3;
         result = WM_SetParentParameter((void (*)(void *))func_02045ab4, &wh->parentParam);
         if (result != 2) {
             WH_SetError(result);
-            *WH_SysState(data_02097e40) = 8;
+            *WH_SysState(gWhMgr) = 8;
             return FALSE;
         }
         return TRUE;
@@ -59,13 +59,13 @@ void func_02045ab4(WhCbArg *arg) {
         WH_ChangeSysState(8);
         return;
     }
-    if (!WH_StateInStartParent(data_02097e40)) {
+    if (!WH_StateInStartParent(gWhMgr)) {
         WH_ChangeSysState(8);
     }
 }
 
 static inline BOOL WH_StateInStartParentMP(void) {
-    WhMgr *wh = data_02097e40;
+    WhMgr *wh = gWhMgr;
     int result;
     if (wh->sysState == 4 || wh->sysState == 5) {
         return TRUE;
@@ -90,7 +90,7 @@ void func_02045b68(WhCbArg *arg) {
     case 2:
         break;
     case 7:
-        if (data_02097e40->judgeCb != NULL && !data_02097e40->judgeCb(arg)) {
+        if (gWhMgr->judgeCb != NULL && !gWhMgr->judgeCb(arg)) {
             int result = WM_Disconnect(NULL, arg->aid);
             if (result != 2) {
                 WH_SetError(result);
@@ -98,13 +98,13 @@ void func_02045b68(WhCbArg *arg) {
             }
             return;
         }
-        data_02097e40->childBitmap |= bit;
+        gWhMgr->childBitmap |= bit;
         break;
     case 9:
-        data_02097e40->childBitmap &= ~bit;
+        gWhMgr->childBitmap &= ~bit;
         break;
     case 0x1a:
-        data_02097e40->childBitmap &= ~bit;
+        gWhMgr->childBitmap &= ~bit;
         break;
     case 0:
         if (!WH_StateInStartParentMP()) {
@@ -131,7 +131,7 @@ void func_02045d98(void *p) {
     }
     switch (arg->state) {
     case 10: {
-        WhMgr *wh = data_02097e40;
+        WhMgr *wh = gWhMgr;
         if (wh->connectMode == 3) {
             int result = WM_StartDataSharing(wh->dsInfo, wh->cfg.dsPort, (u16)((1 << (wh->cfg.maxChildren + 1)) - 1), wh->cfg.dsDataSize, wh->cfg.doubleMode);
             if (result != 0) {
@@ -162,11 +162,11 @@ BOOL Wh_SetEntry(WhMgr *wh, BOOL enabled) {
 void func_02045ef8(WhCbArg *arg) {
     if (arg->errcode != 0) {
         WH_SetError(arg->errcode);
-        WH_Reset(data_02097e40, NULL);
+        WH_Reset(gWhMgr, NULL);
         return;
     }
     if (!WH_CheckResult(WM_EndParent((void (*)(void *))func_02045d58))) {
-        WH_Reset(data_02097e40, NULL);
+        WH_Reset(gWhMgr, NULL);
     }
 }
 

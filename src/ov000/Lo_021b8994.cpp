@@ -9,8 +9,8 @@ typedef struct {
 } Cnt021b8994;
 
 extern "C" {
-extern int data_02097d78[];
-extern u8 data_0208b318[];
+extern int gFadeState[];
+extern u8 ResHandle_vtbl[];
 extern char data_ov000_021cc885[];
 void LangData_LocalizePath(char *dst, const char *src);
 BOOL func_ov000_02184498(void *g);
@@ -33,15 +33,15 @@ static inline BOOL StOk021b8994(FieldState *g) {
 }
 
 static inline BOOL Fade2_021b8994(void) {
-    if (data_02097d78[3] == 2) {
+    if (gFadeState[3] == 2) {
         return TRUE;
     }
-    return data_02097d78[2] == 2 ? TRUE : FALSE;
+    return gFadeState[2] == 2 ? TRUE : FALSE;
 }
 
 static inline BOOL FadeIdle021b8994(void) {
     BOOL r;
-    if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[0] == 0) {
         r = TRUE;
     } else {
         r = FALSE;
@@ -64,7 +64,7 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
         char buf[0x20];
         VObj *p = (VObj *)Heap_Alloc(0x4c);
         if (p != NULL) {
-            *(void **)p = data_0208b318;
+            *(void **)p = ResHandle_vtbl;
             p->vfunc_08();
         }
         self->unk_24 = p;
@@ -80,7 +80,7 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
         }
         self->unk_28 = 4;
     case 3:
-        if (!func_ov000_02184498(data_ov000_021ccd54)) {
+        if (!func_ov000_02184498(gSceneCmd)) {
             break;
         }
         GfxSys_SetFadePlanes(0x21, 0);
@@ -90,10 +90,10 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
         break;
     case 4: {
         Model *p;
-        if (!StOk021b8994(data_ov000_021ccd54)) {
+        if (!StOk021b8994(gSceneCmd)) {
             break;
         }
-        if (!func_ov000_02184498(data_ov000_021ccd54)) {
+        if (!func_ov000_02184498(gSceneCmd)) {
             break;
         }
         p = (Model *)Heap_Alloc(sizeof(Model));
@@ -132,7 +132,7 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
         break;
     case 12:
         self->unk_00.cnt++;
-        if (self->unk_00.cnt <= 0x78 && !(data_02097dc8->trig & 3)) {
+        if (self->unk_00.cnt <= 0x78 && !(gPad->trig & 3)) {
             break;
         }
         self->unk_28 = 0xd;
@@ -153,7 +153,7 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
             break;
         }
         ok = TRUE;
-        if (data_02097d78[3] != 0 || data_02097d78[2] != 0) {
+        if (gFadeState[3] != 0 || gFadeState[2] != 0) {
             ok = FALSE;
         }
         if (!ok) {

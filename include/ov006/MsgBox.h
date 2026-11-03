@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-/* A message box object built by MsgBox_Init (vtable data_ov006_021ebc70, 0x2c bytes);
+/* A message box object built by MsgBox_Init (vtable ov006_MsgBox_vtbl, 0x2c bytes);
    MsgBox_Open opens a message of a script file in it, MsgBox_Update tests it and
    MsgBox_Release is its dtor. */
 typedef struct ov006_MsgBox {

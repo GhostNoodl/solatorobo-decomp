@@ -14,7 +14,7 @@ Task021efa1c *Task021efa1c_New(void) {
     Task021efa1c *p = (Task021efa1c *)Heap_Alloc(0x44);
     if (p != NULL) {
         TaskBase_ctor(p);
-        *(VFunc **)p = data_ov002_021efa1c;
+        *(VFunc **)p = Ov002TaskVt_021efa1c_vtbl;
         p->unk_3c = NULL;
         p->unk_40 = NULL;
     }

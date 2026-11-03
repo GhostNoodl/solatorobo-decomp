@@ -105,7 +105,7 @@ void Ov009ActVt_022165f8_StateAttack(Ov009ActVt_022165f8 *self) {
     if (!Ov009_GameIdle()) {
         return;
     }
-    tgt = Ov009_FindActor(data_ov000_021ccd68, self->target);
+    tgt = Ov009_FindActor(gActorMgr, self->target);
     if (tgt == NULL) {
         History_SetState(self->fsm, 1, 0);
         return;
@@ -124,7 +124,7 @@ void Ov009ActVt_022165f8_StateAttack(Ov009ActVt_022165f8 *self) {
             v.y = 0x1800;
             VEC_MultAdd(0x1000, &v, &self->pos, &v);
             self->unk_b8 = v;
-            SndMgr_PlayAtPitch(data_02097e4c, 0x71, &self->pos, -2);
+            SndMgr_PlayAtPitch(gSndMgr, 0x71, &self->pos, -2);
             self->fsm->st++;
             break;
         case 1:
@@ -181,7 +181,7 @@ void Ov009ActVt_022165f8_StateAttack(Ov009ActVt_022165f8 *self) {
             v.x = 0;
             v.z = 0;
             Hit_ApplyInArea(self, self, 0x1e, 0x20, 2, &v, 0, self->radius, 0, 100, 0x1000);
-            e = Effect_Find_020657b0(data_0214a420, self->unk_f8);
+            e = Effect_Find_020657b0(gEffectMgr, self->unk_f8);
             if (e == NULL) {
                 self->unk_f8 = 0;
                 return;
@@ -250,12 +250,12 @@ void Ov009ActVt_022165f8_StateAttack(Ov009ActVt_022165f8 *self) {
                 MIi_CpuClear32(-1, (u8 *)e + 0x84, 0x40);
             }
             self->unk_f8 = e->id;
-            SndMgr_PlayAt(data_02097e4c, 0x7a, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x7a, &self->pos, 0);
             self->fsm->st++;
             break;
         }
         case 2:
-            if (Effect_Find_020657b0(data_0214a420, self->unk_f8) != NULL) {
+            if (Effect_Find_020657b0(gEffectMgr, self->unk_f8) != NULL) {
                 return;
             }
             e = Effect_SpawnId(0x321, &self->pos);
@@ -264,11 +264,11 @@ void Ov009ActVt_022165f8_StateAttack(Ov009ActVt_022165f8 *self) {
             MIi_CpuClear32(-1, (u8 *)e + 0x84, 0x40);
             e->alpha = FX_Div(0x10000, 0x1f000);
             self->unk_f8 = e->id;
-            SndMgr_PlayAtPitch(data_02097e4c, 0x79, &self->pos, -10);
+            SndMgr_PlayAtPitch(gSndMgr, 0x79, &self->pos, -10);
             self->fsm->st++;
             break;
         case 3:
-            e = Effect_Find_020657b0(data_0214a420, self->unk_f8);
+            e = Effect_Find_020657b0(gEffectMgr, self->unk_f8);
             if (e != NULL) {
                 s32 s = e->scale.x;
                 e->SetScaleAll(s + 0x333);
@@ -286,7 +286,7 @@ void Ov009ActVt_022165f8_StateAttack(Ov009ActVt_022165f8 *self) {
         case 4:
             st->timer++;
             if (st->timer > 0x3c) {
-                EffectMgr_Kill(data_0214a420, self->unk_f8);
+                EffectMgr_Kill(gEffectMgr, self->unk_f8);
                 e = Effect_SpawnId(0x322, &self->pos);
                 e->AddPos(&data_ov009_02215cdc);
                 e->SetScaleAll(0xccd);
@@ -298,12 +298,12 @@ void Ov009ActVt_022165f8_StateAttack(Ov009ActVt_022165f8 *self) {
             if (Hit_ApplyInArea(self, self, 0x3c, 0x11, 2, &data_ov009_02215cd0, 0, 0x2800, 0, 0x322, 0xccd)) {
                 VecFx32 p;
                 p = ActorMgr_FindPlayer()->pos;
-                SndMgr_PlayAt(data_02097e4c, 0x77, &p, 0);
+                SndMgr_PlayAt(gSndMgr, 0x77, &p, 0);
             }
             self->unk_94_1 = 1;
             break;
         case 5:
-            if (Effect_Find_020657b0(data_0214a420, self->unk_f8) != NULL) {
+            if (Effect_Find_020657b0(gEffectMgr, self->unk_f8) != NULL) {
                 return;
             }
             self->unk_f8 = 0;

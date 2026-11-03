@@ -15,12 +15,12 @@ BOOL func_ov002_021d0270(void *self, void *ev) {
     BgmInfo *info = func_0206ee58(FIELD(ev, 0x8, u32));
     if (info != NULL) {
         {
-            SndQueue *m = data_02097e48.queue;
+            SndQueue *m = gSndQueue.queue;
             m->unk_80 = 0x8000;
             m->unk_7c = 0;
         }
         {
-            SndQueue *m = data_02097e48.queue;
+            SndQueue *m = gSndQueue.queue;
             if (m->flag3) {
                 m->unk_06 = 0x8000;
                 m->unk_08 = 0;
@@ -29,7 +29,7 @@ BOOL func_ov002_021d0270(void *self, void *ev) {
         }
         if (info->type == 0) {
             u16 id = info->id;
-            SndQueue *m = data_02097e48.queue;
+            SndQueue *m = gSndQueue.queue;
             if (m->unk_80 != 0xffff || m->unk_7e != id) {
                 m->unk_80 = id;
                 m->unk_7c = 0;
@@ -37,9 +37,9 @@ BOOL func_ov002_021d0270(void *self, void *ev) {
         } else if (info->type == 1) {
             SndQueue *m;
             u16 id;
-            data_02097e48.queue->flag0 = 1;
-            data_02097e48.queue->flag3 = 1;
-            m = data_02097e48.queue;
+            gSndQueue.queue->flag0 = 1;
+            gSndQueue.queue->flag3 = 1;
+            m = gSndQueue.queue;
             id = info->id;
             if (m->flag0) {
                 if (m->unk_06 != 0xffff || m->unk_04 != id) {

@@ -20,7 +20,7 @@ extern "C" {
 
 extern int Rand_PlusMinus(s32 max);
 extern s32 func_0200b184(s32 a, s32 b);
-extern u32 data_ov003_021f7d10;
+extern u32 Ov003Vt_021f7d10_vtbl;
 extern void Heap_Free(void *p);
 
 class Ov003TickerSet {
@@ -62,7 +62,7 @@ static inline void Ov003Ticker_Clear(Ov003Ticker *self) {
 }
 
 Ov003TickerSet *Ov003Vt_021f7d10_Ctor(Ov003TickerSet *self) {
-    *(void **)self = &data_ov003_021f7d10;
+    *(void **)self = &Ov003Vt_021f7d10_vtbl;
     Ov003Ticker_Clear(&self->tickers[0]);
     Ov003Ticker_Clear(&self->tickers[1]);
     Ov003Ticker_Clear(&self->tickers[2]);
@@ -71,7 +71,7 @@ Ov003TickerSet *Ov003Vt_021f7d10_Ctor(Ov003TickerSet *self) {
 }
 
 Ov003TickerSet *Ov003Vt_021f7d10_Dtor(Ov003TickerSet *self) {
-    *(void **)self = &data_ov003_021f7d10;
+    *(void **)self = &Ov003Vt_021f7d10_vtbl;
     self->Release();
     Ov003Ticker_Release(&self->tickers[2]);
     Ov003Ticker_Release(&self->tickers[1]);
@@ -80,7 +80,7 @@ Ov003TickerSet *Ov003Vt_021f7d10_Dtor(Ov003TickerSet *self) {
 }
 
 Ov003TickerSet *Ov003Vt_021f7d10_DtorDelete(Ov003TickerSet *self) {
-    *(void **)self = &data_ov003_021f7d10;
+    *(void **)self = &Ov003Vt_021f7d10_vtbl;
     self->Release();
     Ov003Ticker_Release(&self->tickers[2]);
     Ov003Ticker_Release(&self->tickers[1]);

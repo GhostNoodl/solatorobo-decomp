@@ -9,7 +9,7 @@ s32 **Model0218fe1c_GetAnimCtrl(Model0218fe1c *a, int b);
 extern Ov002SndCue data_ov002_021eeffc[];
 
 static inline Obj021eff10 *ov002_Step_ctor(Obj021eff10 *self) {
-    *(VFunc **)self = data_ov002_021eff10;
+    *(VFunc **)self = Ov002Vt_021eff10_vtbl;
     self->owner = NULL;
     self->unk_08 = NULL;
     self->unk_0c = NULL;

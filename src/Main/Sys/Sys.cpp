@@ -45,11 +45,11 @@ void func_0203d5c4(void) {
     OS_Init();
     OS_EnableITCM();
     OS_EnableDTCM();
-    if (data_02097dd0 != NULL) {
+    if (gSysState != NULL) {
         return;
     }
     sys = (UnkSys *)OS_AllocFromArenaLo(0, sizeof(UnkSys), 4);
-    data_02097dd0 = sys;
+    gSysState = sys;
     sys->cur = NULL;
     sys->heapLo = NULL;
     sys->heapHi = NULL;
@@ -68,8 +68,8 @@ void func_0203d5c4(void) {
     sys->node.unk_6_0 = 0;
     sys->node.unk_6_2 = 0;
     sys->node.unk_6_4 = 0;
-    func_0203d9e8(data_02097dd0);
-    sys = data_02097dd0;
+    func_0203d9e8(gSysState);
+    sys = gSysState;
     if (OS_IsRunOnTwl()) {
         func_0228f87c(0);
         sys->unk_20[0] = (u32)func_0203d80c;
@@ -119,21 +119,21 @@ void Sys_ResetVram(void) {
 }
 
 void func_0203d80c(void) {
-    data_02097dd0->unk_30 = 1;
+    gSysState->unk_30 = 1;
 }
 
 void func_0203d824(void) {
-    UnkSys *sys = data_02097dd0;
+    UnkSys *sys = gSysState;
     if (++sys->frameCount >= 0x1499700) {
         sys->frameCount = 0x1499700 - 1;
     }
-    sys = data_02097dd0;
+    sys = gSysState;
     if (sys->vblankFunc != NULL) {
         void (*func)(void) = sys->vblankFunc;
         sys->vblankFunc = NULL;
         func();
     }
-    sys = data_02097dd0;
+    sys = gSysState;
     if (sys->frameWait > sys->vcount) {
         sys->vcount++;
     }
@@ -142,7 +142,7 @@ void func_0203d824(void) {
 
 void func_0203d8b0(void) {
     if (OS_IsRunOnTwl()) {
-        UnkSys *sys = data_02097dd0;
+        UnkSys *sys = gSysState;
         if (sys->unk_30 == 1 && sys->unk_31 == 0) {
             func_0228f7bc();
         }

@@ -5,7 +5,7 @@
 #include "ov000/VObj.h"
 
 // A stage script resource as the scene reaches it: a StageRes (Main/Res/StageRes.h, 0xc4 bytes,
-// vtables data_0208b318 -> data_0208bf54), called through its vtable slots. The scene's resource
+// vtables ResHandle_vtbl -> StageRes_vtbl), called through its vtable slots. The scene's resource
 // group (SceneStage::res, func_ov000_02181d70) is one of these.
 class SceneRes : public VObj {
 public:
@@ -17,7 +17,7 @@ public:
 };
 SIZE_ASSERT(SceneRes, 0xc4);
 
-// A stage script (vtable data_ov000_021cc158, 0xd8 bytes): the StageRes plus its id, its four
+// A stage script (vtable Ov000Vt_021cc158_vtbl, 0xd8 bytes): the StageRes plus its id, its four
 // arguments and the list links. func_ov000_02181f54 makes the main one (SceneStage::main),
 // SceneStage_AddScript inserts the others into SceneStage::scripts by descending order.
 class SceneScript : public SceneRes {
@@ -33,7 +33,7 @@ public:
 };
 SIZE_ASSERT(SceneScript, 0xd8);
 
-// data_ov000_021ccd24 (0xc bytes of .bss): a flag and two stage script resources, unk_04 made by
+// gSceneResSet (0xc bytes of .bss): a flag and two stage script resources, unk_04 made by
 // func_ov000_0214ba18 and unk_08 by Lo021caa44_Load.
 typedef struct SceneResSet {
     /* 0x00 */ u8 unk_00;
@@ -44,7 +44,7 @@ typedef struct SceneResSet {
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern SceneResSet data_ov000_021ccd24;
+extern SceneResSet gSceneResSet;
 #ifdef __cplusplus
 }
 #endif

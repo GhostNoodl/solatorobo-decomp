@@ -5,7 +5,7 @@ extern "C" {
 
 Ov002HudInfo *Ov002Vt_021f000c_Dtor(Ov002HudInfo *self) {
     int i;
-    *(VFunc **)self = data_ov002_021f000c;
+    *(VFunc **)self = Ov002Vt_021f000c_vtbl;
     for (i = 0; i < 4; i++) {
         void *saved;
         HEAP_PUSH(saved);
@@ -23,7 +23,7 @@ Ov002HudInfo *Ov002Vt_021f000c_Dtor(Ov002HudInfo *self) {
 
 Ov002HudInfo *Ov002Vt_021f000c_DtorDelete(Ov002HudInfo *self) {
     int i;
-    *(VFunc **)self = data_ov002_021f000c;
+    *(VFunc **)self = Ov002Vt_021f000c_vtbl;
     for (i = 0; i < 4; i++) {
         void *saved;
         HEAP_PUSH(saved);

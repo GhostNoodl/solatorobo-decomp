@@ -97,7 +97,7 @@ void Ov014Act_0221267c_StateAttack(Ov014Act_0221267c *self) {
             Ov014SpawnDesc desc;
             Ov003Actor *o;
             Ov014Spawn_Init(&desc, 0x483a);
-            o = Group_SpawnActor(data_ov000_021ccd64, &desc, (u8 *)self + 0x33c, &self->rot_x, 0xffff);
+            o = Group_SpawnActor(gGroup, &desc, (u8 *)self + 0x33c, &self->rot_x, 0xffff);
             o->unk_60 = data_ov014_02216dc0;
             o->target = self->target;
             if (o->targetObj != NULL) {
@@ -166,7 +166,7 @@ void Ov014Act_0221267c_StateAttack2(Ov014Act_0221267c *self) {
             Ov014SpawnDesc desc;
             Ov003Actor *o;
             Ov014Spawn_Init(&desc, 0x483a);
-            o = Group_SpawnActor(data_ov000_021ccd64, &desc, (u8 *)self + 0x33c, &self->rot_x, 0xffff);
+            o = Group_SpawnActor(gGroup, &desc, (u8 *)self + 0x33c, &self->rot_x, 0xffff);
             o->unk_60 = data_ov014_02216dc0;
             o->target = self->target;
             if (o->targetObj != NULL) {
@@ -188,10 +188,10 @@ void Ov014Act_0221267c_StateAttack2(Ov014Act_0221267c *self) {
             self->unk_34c += self->unk_350;
             self->rot_y = self->unk_34c;
             id = self->target_id;
-            if (data_ov000_021ccd68 == NULL) {
+            if (gActorMgr == NULL) {
                 a = NULL;
             } else {
-                a = ActorMgr_GetActor(data_ov000_021ccd68, id);
+                a = ActorMgr_GetActor(gActorMgr, id);
             }
             if (a != NULL) {
                 a->pos = self->unk_314.trans;

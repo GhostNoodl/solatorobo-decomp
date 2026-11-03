@@ -5,7 +5,7 @@
 extern "C" {
 
 ov006_Caption *ov006_Caption_Ctor(ov006_Caption *self) {
-    self->vtbl = data_ov006_021ec22c;
+    self->vtbl = ov006_Caption_vtbl;
     self->visible = 0;
     self->x = 0;
     self->y = 0;

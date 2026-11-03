@@ -19,10 +19,10 @@ void Task021ef89c_PreUpdate(Task021ef89c *self) {
         if (self->unk_40 != NULL) {
             self->unk_40->flags &= ~2;
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         break;
     case 10:
-        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
         if (self->unk_3c != NULL) {
             self->unk_3c->flags |= 2;
         }

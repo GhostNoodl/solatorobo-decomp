@@ -19,7 +19,7 @@ void Ov014Act_02209280_State22(Ov014Act_02209280 *self) {
         ActorSub48 *q;
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(5);
-        g = (u8 *)data_ov000_021ccd54;
+        g = (u8 *)gSceneCmd;
         g[0xac] = 1;
         func_ov000_02182590(g + 0xac);
         Model0218fe1c_SetAnim(self->model, data_ov014_02217a4e, 0xcd, 0);
@@ -43,8 +43,8 @@ void Ov014Act_02209280_State22(Ov014Act_02209280 *self) {
         Model0218fe1c_SetAnimSpeed(self->model, 0x1000);
         Model0218fe1c_SetLoop(self->model);
         Model0218fe1c_SetAnimFrame(self->model, 0);
-        SndMgr_PlayAtPitch(data_02097e4c, 0x32, &self->pos, 4);
-        SndMgr_PlayAt(data_02097e4c, 0x52, &self->pos, 0);
+        SndMgr_PlayAtPitch(gSndMgr, 0x32, &self->pos, 4);
+        SndMgr_PlayAt(gSndMgr, 0x52, &self->pos, 0);
         Field_ShakeCamera(0xf, 0x3c);
         e = Effect_SpawnId(0x66, &self->pos);
         e->SetScaleXYZ(0x2800, 0x4800, 0x2800);
@@ -138,7 +138,7 @@ extern EffectObj *Ov014_CreateEffect(s32 k, VecFx32 *pos);
 extern BOOL Hit_Apply(void *p, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *pos, s16 e, s32 f, s32 g);
 
 static inline Ov003Actor *Ov014e_FindById(u16 id) {
-    return data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
+    return gActorMgr != NULL ? ActorMgr_GetActor(gActorMgr, id) : NULL;
 }
 
 static inline s32 Ov014e_FxMul64(s32 a, s64 b) {
@@ -183,8 +183,8 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
         e->SetScaleAll(0x3800);
         e->AddPosXYZ(0, 0x5000, 0);
         e->speed = 0x2000;
-        SndMgr_PlayAt(data_02097e4c, 0x5b, &self->pos, 0);
-        SndMgr_PlayAt(data_02097e4c, 0xc03, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x5b, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0xc03, &self->pos, 0);
         self->fsm->timer = 0x1e;
         self->fsm->st++;
     }
@@ -225,11 +225,11 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
         if (self->model->anim_state != 1) {
             return;
         }
-        SndMgr_PlayAt(data_02097e4c, 0xc02, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0xc02, &self->pos, 0);
         self->unk_84 = self->unk_12c;
         self->target_id = 0xffff;
         Ov014Spawn_Init(&desc, 0x481f);
-        o = Group_SpawnActor(data_ov000_021ccd64, &desc, &self->unk_84, &self->rot_x, 0xffff);
+        o = Group_SpawnActor(gGroup, &desc, &self->unk_84, &self->rot_x, 0xffff);
         if (o != NULL) {
             if (o->targetObj != NULL) {
                 o->targetObj->unk_18 |= 0x10;
@@ -311,7 +311,7 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
             Model0218fe1c_SetAnimSpeed(self->model, 0x1000);
         }
         t = self->fsm->timer;
-        g = (u8 *)data_ov000_021ccd54;
+        g = (u8 *)gSceneCmd;
         if (t % 30 == 0) {
             if (t < 0x35) {
                 Effect_SpawnId(0x6c, &self->unk_84);
@@ -352,9 +352,9 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
             func_ov000_0218a358(g + 0xf4, &v, &rot, 0xe000, 0, 0xccd, 0x99a, 1);
         }
         if ((s32)t == 0xa0) {
-            SndMgr_PlayAt(data_02097e4c, 0x38, &self->unk_84, 0);
+            SndMgr_PlayAt(gSndMgr, 0x38, &self->unk_84, 0);
         } else if ((s32)t == 0x50) {
-            SndMgr_PlayAt(data_02097e4c, 0xc09, &self->unk_84, 0);
+            SndMgr_PlayAt(gSndMgr, 0xc09, &self->unk_84, 0);
         }
         if (o != NULL && Target_Get(o->targetObj) == pl) {
             o->vfunc_08();
@@ -377,7 +377,7 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
             }
             VEC_MultAdd(0x99a, &d2, &w, &w);
             Ov014_VecCopy(&self->pos, &w);
-            SndMgr_Stop(data_02097e4c, 0x38);
+            SndMgr_Stop(gSndMgr, 0x38);
             return;
         }
         {
@@ -395,7 +395,7 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
         }
         self->fsm->st = 0x1e;
         Model0218fe1c_ResumeAnim(self->model);
-        SndMgr_Stop(data_02097e4c, 0x38);
+        SndMgr_Stop(gSndMgr, 0x38);
         self->unk_1f4 = o->targetObj->unk_08;
         self->unk_1f6 = o->targetObj->unk_0a;
         o->vfunc_08();
@@ -429,7 +429,7 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
             self->unk_1e4 = e->id;
             (Effect_SpawnId(0x69, &self->unk_84))->SetScaleAll(0x3000);
         } else {
-            EffectObj *e = Effect_Find_020657b0(data_0214a420, self->unk_1e4);
+            EffectObj *e = Effect_Find_020657b0(gEffectMgr, self->unk_1e4);
             if (e != NULL) {
                 e->SetScaleAll(r);
             }
@@ -455,9 +455,9 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
             }
         }
         if (t == 0x78) {
-            Ov014e_Shake((u8 *)data_ov000_021ccd54, 0x28, 0x3c, 0x3c);
+            Ov014e_Shake((u8 *)gSceneCmd, 0x28, 0x3c, 0x3c);
         } else if (t == 0x3c) {
-            Ov014e_Shake((u8 *)data_ov000_021ccd54, 0x14, 0x3c, 0x3c);
+            Ov014e_Shake((u8 *)gSceneCmd, 0x14, 0x3c, 0x3c);
         }
         {
             ActorSub40 *w = self->fsm;
@@ -494,9 +494,9 @@ void func_ov014_0220cd74(Ov014Act_02209280 *self) {
         Model0218fe1c_SetAnimFrame(self->model, 0);
         Model0218fe1c_ClearLoop(self->model);
         self->unk_fc = 1;
-        EffectMgr_StopLoop(data_0214a420, self->unk_1dc);
+        EffectMgr_StopLoop(gEffectMgr, self->unk_1dc);
         self->unk_1dc = NULL;
-        EffectMgr_StopLoop(data_0214a420, self->unk_1e0);
+        EffectMgr_StopLoop(gEffectMgr, self->unk_1e0);
         self->unk_1e0 = NULL;
         self->fsm->st++;
         self->fsm->timer = 0x14;
@@ -551,7 +551,7 @@ void func_ov014_0220cd74(Ov014Act_02209280 *self) {
     case 12: {
         ActorSub40 *w;
         if (self->model->anim_state == 1) {
-            Ov014e_Shake((u8 *)data_ov000_021ccd54, 0x14, 10, 10);
+            Ov014e_Shake((u8 *)gSceneCmd, 0x14, 10, 10);
         }
         w = self->fsm;
         if (w->timer != 0) {

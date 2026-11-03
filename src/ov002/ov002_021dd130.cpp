@@ -32,8 +32,8 @@ void func_ov002_021dd130(Obj021eff10 *self) {
         e->unk_8a = x > y ? x - y : 0;
         Lo021cae48_SetValue(self->owner->unk_24, ((u16)e->unk_8a), 0);
         Obj021efe6c_RemovePiece(e, self->unk_2c, 1);
-        SndMgr_PlayVolume(data_02097e4c, 0x6e, -1, -1, -1);
-        SndMgr_PlayVolume(data_02097e4c, 0x44, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x6e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x44, -1, -1, -1);
         a[0] = self->unk_2c->unk_54;
         a[1] = self->unk_2c->unk_58;
         b[0] = self->unk_2c->unk_64;
@@ -44,7 +44,7 @@ void func_ov002_021dd130(Obj021eff10 *self) {
         Effect_SpawnId(0x6d, (VecFx32 *)out); // out is s32[3]
         func_ov002_021dd7f0(self, (u8 *)self + 0x24, (u8 *)self + 0x24, 1);
     } else {
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
     }
     self->unk_18 = 10;
     self->unk_2c = NULL;
@@ -77,10 +77,10 @@ void func_ov002_021dd29c(Obj021eff10 *self) {
                 o->unk_ac = 8;
             }
             self->unk_18++;
-            SndMgr_PlayPan(data_02097e4c, 0x47, -5);
+            SndMgr_PlayPan(gSndMgr, 0x47, -5);
         } else {
             self->unk_18 += 2;
-            SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         }
         break;
     }
@@ -137,10 +137,10 @@ void func_ov002_021dd434(Obj021eff10 *self) {
             Obj0215bb14_SetText(m->unk_20, data_ov002_021efe30);
             m->unk_20->vfunc_70();
             self->unk_18++;
-            SndMgr_PlayPan(data_02097e4c, 0x5c, 5);
+            SndMgr_PlayPan(gSndMgr, 0x5c, 5);
         } else {
             self->unk_18 += 2;
-            SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         }
         break;
     }
@@ -178,9 +178,9 @@ void func_ov002_021dd434(Obj021eff10 *self) {
     }
 }
 
-extern VFunc data_ov000_021cb1b0[];
+extern VFunc Ov000Vt_021cb1b0_vtbl[];
 
-extern VFunc data_ov000_021cb0b8[];
+extern VFunc Ov000Vt_021cb0b8_vtbl[];
 
 BOOL func_ov002_021e046c(UiList *self, UiListItem *item);
 
@@ -194,13 +194,13 @@ void *func_ov002_021dd6a4(Obj021eff10 *self, char *text, u16 msgId) {
     }
     p = (Lo021cb0b8 *)Heap_Alloc(0x1e4);
     if (p != NULL) {
-        *(VFunc **)p = data_ov000_021cac60;
+        *(VFunc **)p = UiObj_vtbl;
         p->vfunc_28();
-        *(VFunc **)p = data_ov000_021caec8;
+        *(VFunc **)p = UiList_vtbl;
         p->vfunc_28();
-        *(VFunc **)p = data_ov000_021cb1b0;
+        *(VFunc **)p = Ov000Vt_021cb1b0_vtbl;
         p->vfunc_28();
-        *(VFunc **)p = data_ov000_021cb0b8;
+        *(VFunc **)p = Ov000Vt_021cb0b8_vtbl;
         p->vfunc_28();
     }
     self->unk_0c = p;

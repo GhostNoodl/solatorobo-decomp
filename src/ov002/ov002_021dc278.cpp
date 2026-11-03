@@ -62,7 +62,7 @@ void func_ov002_021dc278(Obj021eff10 *self, Obj021eff50 *other) {
         if (ov002_Msg_IsDone(self->unk_0c)) {
             s32 r = self->unk_1c;
             if (r == 1 || r == -1) {
-                SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
             } else if (r == 0) {
                 self->unk_18 = 0x46;
                 break;

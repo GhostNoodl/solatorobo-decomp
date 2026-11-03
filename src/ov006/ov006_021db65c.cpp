@@ -16,12 +16,12 @@ static inline void ov006_Slot_Setup(ov006_Slot *self, int unk8, const char *name
 void ov006_SetupDefaultSlots(void) {
     ov006_SlotManager *mgr;
     int i;
-    data_ov006_021ec884->unk5 = 0;
-    ov006_Slot_Setup(&data_ov006_021ec884->slots[0], 1, "PL", 0x7000);
-    ov006_Slot_Setup(&data_ov006_021ec884->slots[1], 0, "CPU1", 0x700a);
-    ov006_Slot_Setup(&data_ov006_021ec884->slots[2], 0, "CPU2", 0x7009);
-    ov006_Slot_Setup(&data_ov006_021ec884->slots[3], 0, "CPU3", 0x7008);
-    mgr = data_ov006_021ec884;
+    gOv006SlotManager->unk5 = 0;
+    ov006_Slot_Setup(&gOv006SlotManager->slots[0], 1, "PL", 0x7000);
+    ov006_Slot_Setup(&gOv006SlotManager->slots[1], 0, "CPU1", 0x700a);
+    ov006_Slot_Setup(&gOv006SlotManager->slots[2], 0, "CPU2", 0x7009);
+    ov006_Slot_Setup(&gOv006SlotManager->slots[3], 0, "CPU3", 0x7008);
+    mgr = gOv006SlotManager;
     mgr->numActive = 0;
     for (i = 0; i < 4; i++) {
         if (mgr->slots[i].active) {

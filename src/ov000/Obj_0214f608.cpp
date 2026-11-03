@@ -14,47 +14,47 @@ typedef struct {
 
 extern "C" {
 
-extern u8 data_0208ba70[];
-extern u8 data_ov000_021ca94c[];
-extern u8 data_ov000_021caac8[];
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb4a8[];
-extern u8 data_ov000_021cb5a8[];
+extern u8 TextWin_vtbl[];
+extern u8 Menu021ca94c_vtbl[];
+extern u8 Lo021caac8_vtbl[];
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 UiList021cb4a8_vtbl[];
+extern u8 Lo021cb5a8_vtbl[];
 void Heap_Free(void *ptr);
 
 VObj *Menu021ca94c_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021ca94c);
+    VOBJ_SET_VTABLE(self, Menu021ca94c_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x148), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x148), TextWin_vtbl);
     VOBJ_AT(self, 0x148)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x90), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x90), TextWin_vtbl);
     VOBJ_AT(self, 0x90)->vfunc_08();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     Heap_Free(self);
     return self;
 }
 
 VObj *Lo021cb5a8_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb5a8);
+    VOBJ_SET_VTABLE(self, Lo021cb5a8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     Heap_Free(self);
     return self;
 }
 
 VObj *Lo021caac8_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021caac8);
+    VOBJ_SET_VTABLE(self, Lo021caac8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cb4a8);
+    VOBJ_SET_VTABLE(self, UiList021cb4a8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     Heap_Free(self);
     return self;

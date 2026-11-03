@@ -127,14 +127,14 @@ void func_ov015_021fb758(Ov015Hud *self) {
     Ov015Model_PlayPart(self->mdl0, 0, 0);
     self->mdl0->unk_150 = -0x1fe0;
     Ov015Model_PlayPart(self->mdl0, 1, 0);
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 1);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 1);
     mtxMode = 2;
     NNS_G3dGeBufferOP_N(0x10, (unsigned int *)&mtxMode, 1);
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     NNS_G3dGeBufferOP_N(0x15, NULL, 0);
     texParam = 0x20000000;
     NNS_G3dGeBufferOP_N(0x2a, (unsigned int *)&texParam, 1);
-    polyAttr = 0x1f00c0 | (Gfx3DState_NextPolyId(data_02097d48->unk_8b0) << 24);
+    polyAttr = 0x1f00c0 | (Gfx3DState_NextPolyId(gGfxSys->unk_8b0) << 24);
     NNS_G3dGeBufferOP_N(0x29, &polyAttr, 1);
     trans[0] = 0;
     trans[1] = 0x97000;

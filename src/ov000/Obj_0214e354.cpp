@@ -17,8 +17,8 @@ s32 Lo021caac8_GetIconWidth(Obj0214e354 *self) {
 
 s32 UiObj_GetLineHeight(Obj0214e354 *self) {
     s32 base;
-    data_02097ce0->unk_004 = self->font;
-    base = ((NNSG2dFont *)GfxMgr_GetFont(data_02097ce0))->pRes->linefeed;
+    gGfxMgr->unk_004 = self->font;
+    base = ((NNSG2dFont *)GfxMgr_GetFont(gGfxMgr))->pRes->linefeed;
     return base + self->vfunc_3c();
 }
 

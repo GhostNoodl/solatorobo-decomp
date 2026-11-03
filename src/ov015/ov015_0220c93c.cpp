@@ -2,8 +2,8 @@
 
 extern "C" {
 
-extern u8 data_ov015_02212ee8[];
-extern u8 data_ov015_02212eb0[];
+extern u8 Ov015FishState40_vtbl[];
+extern u8 Ov015FishState_vtbl[];
 extern void *data_ov015_02212db8[];
 extern u8 data_ov015_02212e0d[];
 BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
@@ -12,7 +12,7 @@ s32 Rand_PlusMinus(s32 max);
 void HitSphere_Link(void *a);
 
 Ov015FishState40 *Ov015FishState40_Ctor(Ov015FishState40 *self) {
-    SET_VT(self, data_ov015_02212ee8);
+    SET_VT(self, Ov015FishState40_vtbl);
     self->step = 0;
     self->unk_08 = 0;
     self->unk_0c = 0x1000;
@@ -34,14 +34,14 @@ void *Ov015FishState40_Dtor(Ov015FishState40 *self) {
     s32 i;
     EffectObj *o;
     void *saved;
-    SET_VT(self, data_ov015_02212ee8);
+    SET_VT(self, Ov015FishState40_vtbl);
     for (i = 0; i < 1; i++) {
         if (data_ov015_02212db8[i] == self) {
             data_ov015_02212db8[i] = NULL;
             break;
         }
     }
-    o = Effect_Find_020657b0(data_0214a420, self->unk_08);
+    o = Effect_Find_020657b0(gEffectMgr, self->unk_08);
     if (o != NULL) {
         HEAP_PUSH(saved);
         if (o != NULL) {
@@ -51,7 +51,7 @@ void *Ov015FishState40_Dtor(Ov015FishState40 *self) {
         }
         HEAP_POP(saved);
     }
-    SET_VT(self, data_ov015_02212eb0);
+    SET_VT(self, Ov015FishState_vtbl);
 
     return self;
 }
@@ -60,14 +60,14 @@ void *Ov015FishState40_DtorDelete(Ov015FishState40 *self) {
     s32 i;
     EffectObj *o;
     void *saved;
-    SET_VT(self, data_ov015_02212ee8);
+    SET_VT(self, Ov015FishState40_vtbl);
     for (i = 0; i < 1; i++) {
         if (data_ov015_02212db8[i] == self) {
             data_ov015_02212db8[i] = NULL;
             break;
         }
     }
-    o = Effect_Find_020657b0(data_0214a420, self->unk_08);
+    o = Effect_Find_020657b0(gEffectMgr, self->unk_08);
     if (o != NULL) {
         HEAP_PUSH(saved);
         if (o != NULL) {
@@ -77,7 +77,7 @@ void *Ov015FishState40_DtorDelete(Ov015FishState40 *self) {
         }
         HEAP_POP(saved);
     }
-    SET_VT(self, data_ov015_02212eb0);
+    SET_VT(self, Ov015FishState_vtbl);
     Heap_Free(self);
     return self;
 }
@@ -260,7 +260,7 @@ clamp:
         }
         p->pos = v2;
         VEC_Normalize((&self->unk_1c), (&p->dir));
-        e = Effect_Find_020657b0(data_0214a420, self->unk_08);
+        e = Effect_Find_020657b0(gEffectMgr, self->unk_08);
         if (e == NULL) {
             e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &p->pos);
             e->unk_d4 = 3;
@@ -287,7 +287,7 @@ clamp:
             self->step = 0;
             self->unk_10 = self->unk_18 = p->info.unk_0e;
             p->drawMode = 1;
-            Ov015_DeleteFound(data_0214a420, self->unk_08);
+            Ov015_DeleteFound(gEffectMgr, self->unk_08);
             for (i = 0; i < 1; i++) {
                 if (data_ov015_02212db8[i] == self) {
                     data_ov015_02212db8[i] = NULL;

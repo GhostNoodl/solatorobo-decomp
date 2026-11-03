@@ -14,7 +14,7 @@ typedef struct {
 } Pose_021ac844;
 
 extern "C" {
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov000_021cc6cc[];
 extern char data_ov000_021cc6d2[];
 extern char data_ov000_021cc6d8[];
@@ -41,10 +41,10 @@ u8 func_0206d204(void *p, s32 a);
 void Robo021ca458_Move(Robo021ca458 *self, s32 a, s32 b);
 
 static inline Actor *FindActor_021ac844(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline BOOL GBusy_021ac844(FieldState *g) {
@@ -52,7 +52,7 @@ static inline BOOL GBusy_021ac844(FieldState *g) {
 }
 
 static inline BOOL GIdle_021ac844(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (GBusy_021ac844(g)) {
             return FALSE;
@@ -97,7 +97,7 @@ void Robo021ca458_State13(Robo021ca458 *self) {
                 Model0218fe1c_StopAnim(self->unk_998);
             }
             if (self->seSlot >= 0) {
-                SndMgr_StopSeqArc(data_02097e4c, self->seSlot);
+                SndMgr_StopSeqArc(gSndMgr, self->seSlot);
                 self->seSlot = -1;
             }
             if (self->unk_b22_0 > 1) {
@@ -115,7 +115,7 @@ void Robo021ca458_State13(Robo021ca458 *self) {
         if (!self->unk_b24_0) {
             self->hpObj->unk_0a = 0x96;
         } else {
-            SndMgr_PlayVolume(data_02097e4c, 0x30a, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x30a, -1, -1, -1);
         }
         Field_ShakeCamera(8, 0xc);
         a = FindActor_021ac844(self->unk_b1c);
@@ -233,7 +233,7 @@ void Robo021ca458_State13(Robo021ca458 *self) {
                     self->velY = -self->velY >> 1;
                     self->speed = self->speed - (self->speed >> 2);
                     stop = FALSE;
-                    r = func_0206d204(data_0214a424, 0);
+                    r = func_0206d204(gStageFlags, 0);
                     if (self->hpObj->cur == 0 && r == 0) {
                         stop = TRUE;
                     }

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern u8 data_ov014_02217f18[];
+extern u8 Ov014ActEx_022152e8_vtbl[];
 
 void Ov014ActEx_022142fc_StateDie(Ov014ActEx_022142fc *self) {
     self->vfunc_08();
@@ -11,7 +11,7 @@ void Ov014ActEx_022142fc_StateDie(Ov014ActEx_022142fc *self) {
 #pragma force_active on
 Ov014ActEx_022152e8 *Ov014ActEx_022152e8_Ctor(Ov014ActEx_022152e8 *self) {
     ActorEx_Ctor(self);
-    *(void **)self = data_ov014_02217f18;
+    *(void **)self = Ov014ActEx_022152e8_vtbl;
     self->unk_d0.x = 0;
     self->unk_d0.y = 0;
     self->unk_d0.z = 0;

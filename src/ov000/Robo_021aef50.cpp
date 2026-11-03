@@ -26,7 +26,7 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov000_021cc62a[];
 extern char data_ov000_021cc630[];
 BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
@@ -41,10 +41,10 @@ void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
 u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
 static inline Actor *FindActor021aef50(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline s32 Dist021aef50(s32 dx, s32 dz) {
@@ -81,7 +81,7 @@ void Robo021ca458_State1d(Robo021ca458 *self) {
             u8 k = info[2];
             if (k == 9) {
                 self->unk_b24_12 = 1;
-                data_ov000_021ccd54->cam.base.flags |= 0x20;
+                gSceneCmd->cam.base.flags |= 0x20;
             } else if (k == 10) {
                 self->unk_b24_12 = 2;
             } else if (k == 11) {
@@ -102,7 +102,7 @@ void Robo021ca458_State1d(Robo021ca458 *self) {
             self->friction = 0;
             self->gravity = 0x52;
         }
-        SndMgr_PlayAt(data_02097e4c, 7, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 7, &self->pos, 0);
         ((St_021aef50 *)self->fsm)->state++;
         break;
     case 1:
@@ -127,7 +127,7 @@ void Robo021ca458_State1d(Robo021ca458 *self) {
             e->SetScaleAll(0xb33);
             e->SetRotXYZ(0xf000, 0, 0);
         } else if (self->unk_b24_12 == 3) {
-            SndMgr_PlayAtPitch(data_02097e4c, 0xe, &self->pos, -5);
+            SndMgr_PlayAtPitch(gSndMgr, 0xe, &self->pos, -5);
         }
         break;
     case 2: {
@@ -165,7 +165,7 @@ void Robo021ca458_State1d(Robo021ca458 *self) {
         self->unk_b20 = 0xffff;
         self->unk_b24_12 = 0;
         self->rot_x = 0;
-        SndMgr_PlayAt(data_02097e4c, 7, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 7, &self->pos, 0);
         ((St_021aef50 *)self->fsm)->state++;
     case 101:
         self->unk_b29 |= 2;
@@ -176,7 +176,7 @@ void Robo021ca458_State1d(Robo021ca458 *self) {
         if (Geom_SnapToGround(&self->pos, self->height << 1, -0x66) == -0x1000) {
             break;
         }
-        data_ov000_021ccd54->cam.base.groundClip = 0;
+        gSceneCmd->cam.base.groundClip = 0;
         History_SetState(((St_021aef50 *)self->fsm), 4, 0);
         break;
     }

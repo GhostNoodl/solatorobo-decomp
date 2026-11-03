@@ -5,18 +5,18 @@
 
 extern "C" {
 
-extern Ov008Mgr *data_ov008_021d0500;
+extern Ov008Mgr *gOv008Mgr;
 void *Camera_Ctor(void *p);
 void func_0204b420(void *p);
 void func_ov008_021cd500(Ov008Mgr *m);
 void func_ov008_021cd584(Ov008Mgr *m);
 void func_ov000_0214bc10(void);
 void func_ov000_0214c210(void);
-extern void *data_0208b318;
+extern void *ResHandle_vtbl;
 
-extern void *data_ov000_021caec8;
-extern void *data_ov000_021cac60;
-extern void *data_0208bf54;
+extern void *UiList_vtbl;
+extern void *UiObj_vtbl;
+extern void *StageRes_vtbl;
 extern char data_ov008_021d0462[];
 extern char data_ov008_021d0470[];
 extern char data_ov008_021d047c[];
@@ -64,7 +64,7 @@ static inline Ov008Anim *Ov008_NewMsg(void) {
 static inline Ov008Pic *Ov008_NewText(void) {
     Ov008Pic *p = (Ov008Pic *)Heap_Alloc(0x4c);
     if (p != NULL) {
-        OV008_SET_VT(p, &data_0208b318);
+        OV008_SET_VT(p, &ResHandle_vtbl);
         p->v08();
     }
     return p;

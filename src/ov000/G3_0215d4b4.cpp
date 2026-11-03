@@ -60,7 +60,7 @@ void Lo021cad50_DrawFrame(Lo021cad50 *self, s32 a1, s32 *pos, s32 sc) {
         return;
     }
     z = self->posZ - 0x100;
-    g = data_02097d48;
+    g = gGfxSys;
     G3_Cmd1(0x2a, 0x20000000);
     G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g->unk_8b0) << 24) | 0x8d0 | (0x18 << 16));
     sx = self->width << 12;

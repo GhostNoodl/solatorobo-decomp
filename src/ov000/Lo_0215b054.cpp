@@ -48,7 +48,7 @@ static inline BOOL IsHidden0215b054(Obj0215b054 *self) {
 }
 
 void LoBase021cafc0_021cb0b8_DrawTitle(Obj0215b054 *self, s32 fade, s32 *pos) {
-    GfxSys *g = data_02097d48;
+    GfxSys *g = gGfxSys;
     s32 x = (self->width >> 1) + (pos[0] >> 12);
     s32 y = (pos[1] >> 12) + 4;
     u8 a;

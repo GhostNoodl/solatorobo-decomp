@@ -4,7 +4,7 @@
 extern "C" {
 
 extern StageFlags data_0214aa68;
-extern u8 data_0214a428[0x640];
+extern u8 gStageFlagsSave[0x640];
 extern void func_0206ccb8(StageFlags *f, u16 a);
 extern u16 StageFlags_CountItems(StageFlags *f);
 
@@ -20,16 +20,16 @@ extern const StageFlagsInit data_02082be4;
 
 static inline void StageFlags_LoadBuf(StageFlags *f) {
     s32 n = 0;
-    n += DataRes_Unpack(data_02fe152c, f->buf, 0);
+    n += DataRes_Unpack(gDataRes, f->buf, 0);
     n += func_02062370(f->buf + n);
-    SceneStage_Deserialize(&data_ov000_021ccd54->stageFlags, f->buf + n);
+    SceneStage_Deserialize(&gSceneCmd->stageFlags, f->buf + n);
     data_02fe1534.unk_04 = f->unk_518_16;
     data_02fe1534.unk_06 = f->unk_518_28;
 }
 
 void StageFlags_Restore(StageFlags *f) {
-    MI_CpuCopy8(data_0214a428, f, sizeof(StageFlags));
-    MI_CpuCopy8(data_0214a428, &data_0214aa68, 0x640);
+    MI_CpuCopy8(gStageFlagsSave, f, sizeof(StageFlags));
+    MI_CpuCopy8(gStageFlagsSave, &data_0214aa68, 0x640);
     StageFlags_LoadBuf(f);
 }
 
@@ -44,7 +44,7 @@ extern u32 DataRes_UnpackKeep(DataRes *res, u8 *buf);
 void func_0206cadc(StageFlags *f) {
     StageFlags tmp;
     u32 i;
-    MI_CpuCopy8(data_0214a428, &tmp, sizeof(StageFlags));
+    MI_CpuCopy8(gStageFlagsSave, &tmp, sizeof(StageFlags));
     StageFlags_Reset(f);
     f->frameCount = tmp.frameCount;
     f->unk_008 = tmp.unk_008;
@@ -67,7 +67,7 @@ void func_0206cadc(StageFlags *f) {
     MI_CpuCopy8(tmp.entries, f->entries, sizeof(f->entries));
     MI_CpuCopy8(tmp.unk_12c, f->unk_12c, sizeof(f->unk_12c));
     f->unk_518_28 = tmp.unk_518_28;
-    DataRes_UnpackKeep(data_02fe152c, tmp.buf);
+    DataRes_UnpackKeep(gDataRes, tmp.buf);
     data_02fe1534.unk_06 = f->unk_518_28;
     f->unk_614 = tmp.unk_614;
     f->unk_618 = tmp.unk_618;

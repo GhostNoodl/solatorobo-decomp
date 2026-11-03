@@ -13,12 +13,12 @@ typedef struct ov006_Bgm021d94e8 {
 
 extern "C" {
 
-extern ov006_Bgm021d94e8 *data_02097e48;
+extern ov006_Bgm021d94e8 *gSndQueue;
 extern char data_ov006_021ec864[];
 void SndQueue_Push_0204aab0(ov006_Bgm021d94e8 *a);
 
 BOOL Ov006Vt_021ec040_Load(void) {
-    ov006_Bgm021d94e8 *s = data_02097e48;
+    ov006_Bgm021d94e8 *s = gSndQueue;
     if (s->active) {
         if (s->unk6 != 0xffff || s->unk4 != 0x4b) {
             u16 v;

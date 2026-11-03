@@ -53,7 +53,7 @@ void Ov000Vt_021cac0c_DrawFrame(Obj02160534 *self, s32 pid, VecFx32 *pos, s32 c,
     s64 dd;
     s32 r;
     s32 i;
-    g = data_02097d48;
+    g = gGfxSys;
     {
         u32 n = self->unk_98;
         v = (s32)(n > 0 ? 0.5f + (float)(s32)(n << 12) : (float)(s32)(n << 12) - 0.5f);

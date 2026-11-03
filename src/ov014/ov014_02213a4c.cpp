@@ -80,7 +80,7 @@ void Ov014Act_0221267c_StateAttack3(Ov014Act_0221267c *self) {
             break;
         }
         Ov014Spawn_Init(&d, 0x483b);
-        o = Group_SpawnActor(data_ov000_021ccd64, &d, &self->unk_314.trans, &self->rot_x, 0xffff);
+        o = Group_SpawnActor(gGroup, &d, &self->unk_314.trans, &self->rot_x, 0xffff);
         o->unk_60 = data_ov014_02216e08;
         o->target = self->target;
         if (o->targetObj != NULL) {
@@ -129,7 +129,7 @@ void Ov014Act_0221267c_StateHurt(Ov014Act_0221267c *self) {
         Model0218fe1c_SetAnimFrame(self->model, 0);
         Model0218fe1c_ClearLoop(self->model);
         self->fsm->st++;
-        SndMgr_PlayAt(data_02097e4c, 0x67, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x67, &self->pos, 0);
         break;
     case 1:
         if (Model0218fe1c_IsAnimDone(self->model)) {
@@ -155,7 +155,7 @@ void Ov014Act_0221267c_StateDie(Ov014Act_0221267c *self) {
         c = 0x15;
         ActorMgr_SendToKindOthers(0x483a, self->id, 2, 1, 1, &c);
         ActorMgr_SendToKindOthers(0x483b, self->id, 2, 1, 1, &c);
-        SndMgr_PlayAt(data_02097e4c, 0x68, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x68, &self->pos, 0);
         break;
     }
     case 1: {
@@ -175,7 +175,7 @@ void Ov014Act_0221267c_StateDie(Ov014Act_0221267c *self) {
         break;
     }
     case 2:
-        Group_UpdateActor(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(gGroup, 0, self);
         self->vfunc_08();
         self->fsm->st = 0xffff;
         break;

@@ -44,8 +44,8 @@ void Ov013ActVt_0220bdd8_State20(Ov013ActVt_0220bdd8 *self) {
         if (w->timer <= 80) {
             return;
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x6a, -1, -1, -1);
-        SndMgr_PlayVolume(data_02097e4c, 0x53, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x6a, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x53, -1, -1, -1);
         Field_ShakeCamera(0x14, 0xf);
         self->fsm->st = 4;
         self->fsm->timer = 0;
@@ -76,7 +76,7 @@ void Ov013ActVt_0220bdd8_State20(Ov013ActVt_0220bdd8 *self) {
         }
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
         History_SetState(self->fsm, 1, 0);
         break;
     }

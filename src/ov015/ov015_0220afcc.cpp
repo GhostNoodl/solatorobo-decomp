@@ -14,7 +14,7 @@ void func_ov015_0220afcc(Ov015FishState2c *self) {
     Ov015Vec base;
     Ov015Vec sc;
     u16 ang;
-    EffectObj *e = Effect_Find_020657b0(data_0214a420, self->unk_24);
+    EffectObj *e = Effect_Find_020657b0(gEffectMgr, self->unk_24);
     if (e == NULL) {
         e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &self->fish->pos);
         e->unk_d4 = 1;
@@ -138,7 +138,7 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
         b = o->pos;
         b.y += 0x8000;
         b.z += FX_Mul(o->scale.x, 0xc000);
-        e = Effect_Find_020657b0(data_0214a420, self->unk_28);
+        e = Effect_Find_020657b0(gEffectMgr, self->unk_28);
         if (e == NULL) {
             e = Effect_SpawnId(0x325, &b);
             e->unk_d4 = 1;
@@ -150,7 +150,7 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
         }
         e->SetPos(&b);
     } else {
-        EffectMgr_StopLoop(data_0214a420, self->unk_28);
+        EffectMgr_StopLoop(gEffectMgr, self->unk_28);
     }
     if (((u8)self->unk_14)) {
         Model0218fe1c_SetAnim(&self->fish->model, data_ov015_02212e40, 0x19a, 0);

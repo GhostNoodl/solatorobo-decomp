@@ -20,12 +20,12 @@ Actor *Ov000ActVt_021cc7cc_DtorDelete(Actor *self) {
 }
 
 void func_ov000_021b4eec(void) {
-    if (data_ov000_021ccd6c == NULL) {
+    if (gFieldMgr == NULL) {
         FieldMgr *p = (FieldMgr *)Heap_Alloc(sizeof(FieldMgr));
         if (p != NULL) {
             p = func_ov000_021b5054(p);
         }
-        data_ov000_021ccd6c = p;
+        gFieldMgr = p;
     }
     func_0206e678();
 }

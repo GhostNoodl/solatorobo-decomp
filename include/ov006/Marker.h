@@ -4,7 +4,7 @@
 #include "ov006/Model.h"
 #include "nitro/fx.h"
 
-/* One slot marker (vtable data_ov006_021ec2ec, 0x24 bytes; ctor Ov006Vt_021ec2ec_Ctor,
+/* One slot marker (vtable ov006_Marker_vtbl, 0x24 bytes; ctor Ov006Vt_021ec2ec_Ctor,
    updated by ov006_Marker_Update). state 0 is idle; the update slides pos from slot unkA to
    slot unkB over 10 frames (timer) until unkA reaches unkC. */
 typedef struct ov006_Marker {
@@ -20,7 +20,7 @@ typedef struct ov006_Marker {
     VecFx32 pos;
 } ov006_Marker;
 
-/* Four markers drawn with one model (vtable data_ov006_021ec2cc, 0xa4 bytes; ctor
+/* Four markers drawn with one model (vtable Ov006Vt_021ec2cc_vtbl, 0xa4 bytes; ctor
    Ov006Vt_021ec2cc_Ctor, built by ov006_MarkerSet_Load, updated by ov006_MarkerSet_Update,
    drawn at (unk8, unkC) by ov006_MarkerSet_Draw). */
 typedef struct ov006_MarkerSet {

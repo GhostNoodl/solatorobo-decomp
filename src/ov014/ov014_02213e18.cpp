@@ -17,7 +17,7 @@ BOOL Ov014Watch_CountAlive(Ov014Watch *self) {
     BOOL r;
     for (i = 0; i < 2; i++) {
         u16 id = self->ids[i];
-        Ov003Actor *a = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, id);
+        Ov003Actor *a = gActorMgr == NULL ? NULL : ActorMgr_GetActor(gActorMgr, id);
         if (a != NULL) {
             n++;
         } else {
@@ -118,10 +118,10 @@ BOOL func_ov014_02213f74(Ov014Watch *self) {
             u16 id;
             ActorMgr_SendMsg(self->ids[0], 0xffff, 6, 0, 1, &b);
             id = self->ids[0];
-            if (data_ov000_021ccd68 == NULL) {
+            if (gActorMgr == NULL) {
                 o = NULL;
             } else {
-                o = ActorMgr_GetActor(data_ov000_021ccd68, id);
+                o = ActorMgr_GetActor(gActorMgr, id);
             }
             o->unk_84.x = 0;
             o->unk_84.y = 0;
@@ -143,10 +143,10 @@ BOOL func_ov014_02213f74(Ov014Watch *self) {
             u16 id;
             ActorMgr_SendMsg(self->ids[1], 0xffff, 6, 0, 1, &c);
             id = self->ids[1];
-            if (data_ov000_021ccd68 == NULL) {
+            if (gActorMgr == NULL) {
                 o = NULL;
             } else {
-                o = ActorMgr_GetActor(data_ov000_021ccd68, id);
+                o = ActorMgr_GetActor(gActorMgr, id);
             }
             o->unk_84.x = 0;
             o->unk_84.y = 0;
@@ -184,10 +184,10 @@ BOOL func_ov014_02214138(Ov014Watch *self) {
             u16 id;
             ActorMgr_SendMsg(self->ids[0], 0xffff, 6, 0, 1, &b);
             id = self->ids[0];
-            if (data_ov000_021ccd68 == NULL) {
+            if (gActorMgr == NULL) {
                 o = NULL;
             } else {
-                o = ActorMgr_GetActor(data_ov000_021ccd68, id);
+                o = ActorMgr_GetActor(gActorMgr, id);
             }
             o->unk_84.x = 0;
             o->unk_84.y = 0;
@@ -209,10 +209,10 @@ BOOL func_ov014_02214138(Ov014Watch *self) {
             u16 id;
             ActorMgr_SendMsg(self->ids[1], 0xffff, 6, 0, 1, &c);
             id = self->ids[1];
-            if (data_ov000_021ccd68 == NULL) {
+            if (gActorMgr == NULL) {
                 o = NULL;
             } else {
-                o = ActorMgr_GetActor(data_ov000_021ccd68, id);
+                o = ActorMgr_GetActor(gActorMgr, id);
             }
             o->unk_84.x = 0;
             o->unk_84.y = 0;

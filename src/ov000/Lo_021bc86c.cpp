@@ -28,7 +28,7 @@ static inline void G3_Cmd1(int cmd, u32 value) {
 }
 
 void func_ov000_021bc86c(void) {
-    GfxSys *g = data_02097d48;
+    GfxSys *g = gGfxSys;
     u32 size;
     Gfx3D_SendDL(g->unk_8b0, 0);
     G3_Cmd1(0x29, 0 | (1 << 4) | (3 << 6) | (1 << 11) | (Gfx3DState_NextPolyId(g->unk_8b0) << 24) | (0x1e << 16));

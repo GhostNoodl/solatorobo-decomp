@@ -64,7 +64,7 @@ void *func_ov004_021cce88(void) {
     o = (Ov004V *)Heap_Alloc(0xac);
     if (o != NULL) {
         Actor_Ctor(o);
-        *(u8 **)o = data_ov004_021cf808;
+        *(u8 **)o = Ov004ActVt_021cf808_vtbl;
     }
     data_ov004_021cf864 = o;
     k = *(u32 *)0x2fffc3c & 1;
@@ -81,8 +81,8 @@ void func_ov004_021ccf10(void) {
         data_ov004_021cf860(data_ov004_021cf864, 0x2010000);
     }
     data_ov004_021cf860 = NULL;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (data_ov004_021cf864 != NULL) {
         Ov004V *p = data_ov004_021cf864;
         if (p != NULL) {
@@ -90,7 +90,7 @@ void func_ov004_021ccf10(void) {
         }
         data_ov004_021cf864 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 void *Ov004ActVt_021cf808_DtorDelete(void *p) {

@@ -16,7 +16,7 @@ void GfxGe_Identity(void) {
 }
 
 BOOL func_02056c48(void) {
-    FieldPlayer *player = data_ov000_021ccd30;
+    FieldPlayer *player = gMessageQueue;
     if (player == NULL) {
         return FALSE;
     }

@@ -98,9 +98,9 @@ void func_02042720(TexObj *obj, int idx, TexObjOam *oam, void *cell, TexObjEntry
     int i;
     TexObj_CheckTransfer(obj, idx, e);
     if (idx == 1) {
-        mgr = (NNSG2dOamManagerInstance *)GfxSys_GetOamMgr(data_02097d48, 0);
+        mgr = (NNSG2dOamManagerInstance *)GfxSys_GetOamMgr(gGfxSys, 0);
     } else {
-        mgr = (NNSG2dOamManagerInstance *)GfxSys_GetOamMgr(data_02097d48, 1);
+        mgr = (NNSG2dOamManagerInstance *)GfxSys_GetOamMgr(gGfxSys, 1);
     }
     trans.a = obj->pairs[idx].a + 0x80000;
     trans.b = obj->pairs[idx].b + 0x60000;
@@ -235,7 +235,7 @@ void func_020429a0(TexObj *obj, TexObjOam *oam, void *cell, TexObjEntry *e, u8 a
     u32 plttBase;
     MtxFx43 mtx;
     TexObj_CheckTransfer(obj, 0, e);
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     NNS_G3dGeSendDL(data_0208288c, 0xc);
     if (obj->plttPtr->fmt == 4) {
         obj->unk_018 = 1;

@@ -11,8 +11,8 @@ typedef struct {
 
 
 extern "C" {
-extern u8 *data_ov000_021ccd30;
-extern void *data_02097e4c;
+extern u8 *gMessageQueue;
+extern void *gSndMgr;
 extern void *data_ov000_021ca030[];
 extern void *data_ov000_021ca040[];
 extern void *const data_ov000_021ca080[];
@@ -28,10 +28,10 @@ void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 u16 FX_Atan2(s32 x, s32 z);
 
 static inline Actor *GetObj021a2670(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline BOOL Jump021a2670(Robo021ca458 *self) {
@@ -52,7 +52,7 @@ static inline BOOL Jump021a2670(Robo021ca458 *self) {
 
 static inline void PlaySe021a2670(s32 id, void *pos) {
     if (id >= 0) {
-        SndMgr_PlayAt(data_02097e4c, id, pos, 0);
+        SndMgr_PlayAt(gSndMgr, id, pos, 0);
     }
 }
 
@@ -144,7 +144,7 @@ void Robo021ca458_State03(Robo021ca458 *self) {
                 self->unk_b5c = 0;
             }
             {
-                u8 *g = data_ov000_021ccd30;
+                u8 *g = gMessageQueue;
                 VecFx32 v;
                 v.x = 0;
                 v.y = 0;
@@ -204,7 +204,7 @@ void Robo021ca458_State03(Robo021ca458 *self) {
         PlaySe021a2670(snd, &self->pos);
         if (!self->unk_93_4) {
             s32 se = 0x300;
-            if (data_ov000_021ccd68->frame & 1) {
+            if (gActorMgr->frame & 1) {
                 se = 0x304;
             }
             PlaySe021a2670(se, &self->pos);

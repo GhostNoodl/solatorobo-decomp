@@ -61,7 +61,7 @@ void UiList021cb4a8_DrawItems(UiList021cb4a8 *self, s32 on, s32 *pos) {
     if (on == 0 || (it = (Item02158588 *)self->items) == NULL) {
         return;
     }
-    g = data_02097d48;
+    g = gGfxSys;
     lh = self->vfunc_40();
     col = Gfx3DState_NextPolyId(g->unk_8b0);
     s = self->unk_9e;

@@ -16,7 +16,7 @@ public:
 
 extern "C" {
 extern char data_ov000_021cc463[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 BOOL Model0218fe1c_SetAnim(void *a, const char *b, s32 c, s32 d);
 void Model0218fe1c_SetLoop(void *a);
 BOOL Model0218fe1c_IsAnimDone(void *a);
@@ -70,14 +70,14 @@ void ActorEx_StateFly(ActorEx *self) {
             self->unk_cc_6 = 1;
             self->speed = 0;
             self->unk_92 = 3;
-            SndMgr_PlayAt(data_02097e4c, 0x3d, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x3d, &self->pos, 0);
             o = Effect_SpawnId(0x2bd, &self->pos);
             if (self->radius > 0x1000) {
                 o->SetScaleAll(self->radius);
             }
             break;
         }
-        hit = FieldMgr_FindExitAt(data_ov000_021ccd6c, &self->pos);
+        hit = FieldMgr_FindExitAt(gFieldMgr, &self->pos);
         if (hit != NULL) {
             u16 ang = hit->dir;
             self->speed = FxMul02196c40(self->speed, 0x59a);
@@ -119,7 +119,7 @@ void ActorEx_StateFly(ActorEx *self) {
                 }
                 p = ActorMgr_FindPlayer();
                 if (p->id == self->targetObj->target) {
-                    StageFlags *g = data_0214a424;
+                    StageFlags *g = gStageFlags;
                     u32 n = g->unk_016 + 1;
                     if (n >= 0xffff) {
                         n = 0xffff;

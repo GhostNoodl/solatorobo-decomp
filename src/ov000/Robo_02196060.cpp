@@ -6,7 +6,7 @@
 
 extern "C" {
 extern char data_ov000_021cc456[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 BOOL Model0218fe1c_SetAnim(void *a, const char *b, s32 c, s32 d);
 void Model0218fe1c_SetLoop(void *a);
 void func_ov000_02199dc0(ActorSub4c *self, Actor *out);
@@ -30,7 +30,7 @@ void ActorEx_StateThrown(ActorEx *self) {
         Model0218fe1c_SetLoop(self->model);
         if (self->targetObj->unk_01 == 1) {
             func_ov000_02199dc0(self->targetObj, self);
-            SndMgr_PlayAt(data_02097e4c, 0xb, (u8 *)self + 0x70, 0);
+            SndMgr_PlayAt(gSndMgr, 0xb, (u8 *)self + 0x70, 0);
             self->fsm->st++;
         } else {
             SetVel02196060(self, 0x229, 0x27, 0);
@@ -60,7 +60,7 @@ void ActorEx_StateThrown(ActorEx *self) {
             self->velY = -0xcd;
         }
         {
-            FieldExit *o = FieldMgr_FindExitAt(data_ov000_021ccd6c, &self->pos);
+            FieldExit *o = FieldMgr_FindExitAt(gFieldMgr, &self->pos);
             if (o != NULL) {
                 u16 ang = (u64)o->dir;
                 self->speed = FX_Mul(self->speed, 0x59a);

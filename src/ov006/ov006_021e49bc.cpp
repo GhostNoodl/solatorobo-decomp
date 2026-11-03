@@ -7,9 +7,9 @@ typedef struct ov006_Unk02097e40 {
 
 extern "C" {
 
-extern void *data_ov006_021ec434;
+extern void *ov006_MenuNode_vtbl;
 extern u8 data_ov006_021eb840[];
-extern ov006_Unk02097e40 *data_02097e40;
+extern ov006_Unk02097e40 *gWhMgr;
 
 u16 func_02046ab4(ov006_Unk02097e40 *a);
 BOOL Wh_SetEntry(ov006_Unk02097e40 *a, BOOL enabled);
@@ -79,7 +79,7 @@ static inline void ov006_MenuEntry_Set(ov006_MenuEntry *self, u16 a, int b, cons
 }
 
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size) {
-    ov006_MenuEntry_Set(&self->entries[func_02046ab4(data_02097e40)], a, b, src, size);
+    ov006_MenuEntry_Set(&self->entries[func_02046ab4(gWhMgr)], a, b, src, size);
 }
 
 void ov006_Menu_SetEntryAt(ov006_Unk021ec888 *self, int idx, u16 a, int b, const void *src, u32 size) {
@@ -102,10 +102,10 @@ void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self) {
 BOOL func_ov006_021e4bec(ov006_Unk021ec888 *self, u8 v) {
     BOOL result;
     self->unk18 = v;
-    result = Wh_SetEntry(data_02097e40, v);
+    result = Wh_SetEntry(gWhMgr, v);
     if (result) {
         if (v == 0) {
-            self->unk15C = data_02097e40->unk32;
+            self->unk15C = gWhMgr->unk32;
         } else {
             self->unk15C = 0;
         }

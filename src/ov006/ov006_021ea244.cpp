@@ -17,7 +17,7 @@ void Ov006Racer_UpdateCpuItem(Ov006Racer *self) {
             self->unk_1ac = 0;
         }
     }
-    if (data_ov006_021ec884->unk13D != 0) {
+    if (gOv006SlotManager->unk13D != 0) {
         return;
     }
     if (++self->unk_21e[2] > 99) {
@@ -29,7 +29,7 @@ void Ov006Racer_UpdateCpuItem(Ov006Racer *self) {
             self->unk_1d0 = fx->id;
             fx->speed = 0x2800;
         }
-        SndMgr_PlayAt(data_02097e4c, 0x85, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x85, &self->pos, 0);
     }
 }
 

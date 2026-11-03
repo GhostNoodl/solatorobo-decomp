@@ -22,8 +22,8 @@ BOOL Obj021efe7c_IsLoaded(Obj021efe7c *self) {
 void Obj021efe7c_Start(Obj021efe7c *self) {
     func_ov002_021d95e0(self->board);
     func_ov002_021dab58(self, self->unk_0c);
-    EffectMgr_SaveList(data_0214a420);
-    *(s32 *)data_0214a420 = 0;
+    EffectMgr_SaveList(gEffectMgr);
+    *(s32 *)gEffectMgr = 0;
     self->unk_10 = 1;
 }
 
@@ -42,7 +42,7 @@ BOOL Obj021efe7c_Update(Obj021efe7c *self) {
     if (((void *)self->unk_08) == NULL) {
         r = FALSE;
     }
-    EffectMgr_Update(data_0214a420);
+    EffectMgr_Update(gEffectMgr);
     return r;
 }
 

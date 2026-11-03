@@ -41,8 +41,8 @@ typedef struct {
 
 extern "C" {
 
-extern const u8 data_0208ba70[];
-extern const u8 data_0208bbc8[];
+extern const u8 TextWin_vtbl[];
+extern const u8 MainVt_0208bbc8_vtbl[];
 extern Shared02fe1534 data_02fe1534;
 
 void *Heap_Alloc(u32 size);
@@ -76,9 +76,9 @@ void func_ov000_0214c6b4(Obj0214c668 *self, s32 a, s32 b, s32 c) {
     self->unk_204 = c;
     obj = (Obj0214c6b4 *)Heap_Alloc(0xb80);
     if (obj != NULL) {
-        obj->vtbl = data_0208ba70;
+        obj->vtbl = TextWin_vtbl;
         TextWin_Init(obj);
-        obj->vtbl = data_0208bbc8;
+        obj->vtbl = MainVt_0208bbc8_vtbl;
         TwScene_Init(obj);
     }
     self->unk_200 = obj;

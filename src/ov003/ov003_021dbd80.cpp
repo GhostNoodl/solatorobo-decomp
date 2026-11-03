@@ -99,7 +99,7 @@ BOOL Ov003Shot_CheckHits(Ov003Shot *self) {
     }
     if (hit != 0) {
         if (self->unk_bc != NULL) {
-            EffectMgr_Kill(data_0214a420, self->unk_bc);
+            EffectMgr_Kill(gEffectMgr, self->unk_bc);
             self->unk_bc = NULL;
         }
         if (hit == 2 && self->def->hitShakeA != 0 && self->def->hitShakeB != 0) {

@@ -27,7 +27,7 @@ BOOL func_ov015_022106f8(Ov015Msg *self) {
         }
         self->timer = 0;
         self->step++;
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
     }
     case 3: {
         s32 y = FX_Mul(FX_SinCosTable_[((self->timer * 0x3fff / 40) >> 4) * 2], 0x6000) - 0x46000;
@@ -59,7 +59,7 @@ BOOL func_ov015_02210860(Ov015Msg *self) {
     self->timer = (self->timer + 1) % 80;
     self->label->vfunc_1c();
     self->textBox->vfunc_1c();
-    if (self->label->vfunc_0c() && (data_02097dc8->trig & 1)) {
+    if (self->label->vfunc_0c() && (gPad->trig & 1)) {
         s32 n = ++self->page;
         if (n < self->pageCount) {
             if (self->label != NULL && self->pages[n] != NULL) {

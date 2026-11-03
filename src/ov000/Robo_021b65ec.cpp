@@ -5,8 +5,8 @@
 
 extern "C" {
 
-extern ActorMgr *data_ov000_021ccd68;
-extern void *data_02fe152c;
+extern ActorMgr *gActorMgr;
+extern void *gDataRes;
 Robo021ca458 *ActorMgr_FindPlayer(void);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_021b13cc(u8 *pl, s32 a);
@@ -15,10 +15,10 @@ u16 DataRes_ReadEntry(void *a, s32 b, s32 c, s32 d);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline Actor *FindActor021b65ec(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline void PlSetPos021b65ec(Robo021ca458 *pl, const VecFx32 *pos, s16 rx, s16 ry, s16 rz) {
@@ -56,7 +56,7 @@ void func_ov000_021b65ec(FieldMgr *self) {
         return;
     }
     item = &self->exits[self->exit];
-    g = data_ov000_021ccd54;
+    g = gSceneCmd;
     if (item->unk_1c_1 && pl->unk_b24_5) {
         Actor *a = FindActor021b65ec(pl->unk_b1c);
         if (a != NULL && a->targetObj != NULL) {
@@ -108,7 +108,7 @@ void func_ov000_021b65ec(FieldMgr *self) {
     }
     case 3: {
         FieldId c;
-        if (DataRes_ReadEntry(data_02fe152c, 5, 1, 0) != 1) {
+        if (DataRes_ReadEntry(gDataRes, 5, 1, 0) != 1) {
             return;
         }
         if (pl->unk_b24_1 ? TRUE : FALSE) {

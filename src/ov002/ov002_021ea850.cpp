@@ -4,9 +4,9 @@ extern "C" {
 
 void *Ov002Vt_021f070c_DtorDelete(Ov002Obj021f070c *self) {
     int i;
-    *(VFunc **)self = data_ov002_021f070c;
+    *(VFunc **)self = Ov002Vt_021f070c_vtbl;
     for (i = 0; i < 4; i++) {
-        EffectObj *o = Effect_Find_020657b0(data_0214a420, ((u32 *)((u8 *)self + 0x50))[i]);
+        EffectObj *o = Effect_Find_020657b0(gEffectMgr, ((u32 *)((u8 *)self + 0x50))[i]);
         void *saved;
         HEAP_PUSH(saved);
         if (o != NULL) {
@@ -16,7 +16,7 @@ void *Ov002Vt_021f070c_DtorDelete(Ov002Obj021f070c *self) {
         }
         HEAP_POP(saved);
     }
-    *(VFunc **)self = data_ov002_021f0734;
+    *(VFunc **)self = Ov002Vt_021f0734_vtbl;
     func_ov002_021e4d4c_inline(self);
     Heap_Free(self);
     return self;
@@ -24,9 +24,9 @@ void *Ov002Vt_021f070c_DtorDelete(Ov002Obj021f070c *self) {
 
 void *Ov002Vt_021f070c_Dtor(Ov002Obj021f070c *self) {
     int i;
-    *(VFunc **)self = data_ov002_021f070c;
+    *(VFunc **)self = Ov002Vt_021f070c_vtbl;
     for (i = 0; i < 4; i++) {
-        EffectObj *o = Effect_Find_020657b0(data_0214a420, ((u32 *)((u8 *)self + 0x50))[i]);
+        EffectObj *o = Effect_Find_020657b0(gEffectMgr, ((u32 *)((u8 *)self + 0x50))[i]);
         void *saved;
         HEAP_PUSH(saved);
         if (o != NULL) {
@@ -36,15 +36,15 @@ void *Ov002Vt_021f070c_Dtor(Ov002Obj021f070c *self) {
         }
         HEAP_POP(saved);
     }
-    *(VFunc **)self = data_ov002_021f0734;
+    *(VFunc **)self = Ov002Vt_021f0734_vtbl;
     func_ov002_021e4d4c_inline(self);
     return self;
 }
 
 void *Ov002Vt_021f075c_DtorDelete(Ov002Obj021f075c *self) {
-    *(VFunc **)self = data_ov002_021f075c;
+    *(VFunc **)self = Ov002Vt_021f075c_vtbl;
     Ov002Obj021f075c_FreeAnims(self);
-    *(VFunc **)self = data_ov002_021f0734;
+    *(VFunc **)self = Ov002Vt_021f0734_vtbl;
     func_ov002_021e4d4c_inline(self);
     Heap_Free(self);
     return self;
@@ -54,38 +54,38 @@ void func_ov002_021eaaa4(void) {
 }
 
 void *Ov002Vt_021f075c_Dtor(Ov002Obj021f075c *self) {
-    *(VFunc **)self = data_ov002_021f075c;
+    *(VFunc **)self = Ov002Vt_021f075c_vtbl;
     Ov002Obj021f075c_FreeAnims(self);
-    *(VFunc **)self = data_ov002_021f0734;
+    *(VFunc **)self = Ov002Vt_021f0734_vtbl;
     func_ov002_021e4d4c_inline(self);
     return self;
 }
 
 void *Ov002Vt_021f07d4_DtorDelete(Ov002Obj021f07d4 *self) {
-    *(VFunc **)self = data_ov002_021f07d4;
+    *(VFunc **)self = Ov002Vt_021f07d4_vtbl;
     Ov002Obj021f07d4_Release(self);
-    *(VFunc **)self = data_ov002_021f0734;
+    *(VFunc **)self = Ov002Vt_021f0734_vtbl;
     func_ov002_021e4d4c_inline(self);
     Heap_Free(self);
     return self;
 }
 
 void *Ov002Vt_021f07d4_Dtor(Ov002Obj021f07d4 *self) {
-    *(VFunc **)self = data_ov002_021f07d4;
+    *(VFunc **)self = Ov002Vt_021f07d4_vtbl;
     Ov002Obj021f07d4_Release(self);
-    *(VFunc **)self = data_ov002_021f0734;
+    *(VFunc **)self = Ov002Vt_021f0734_vtbl;
     func_ov002_021e4d4c_inline(self);
     return self;
 }
 
 void *Ov002Vt_021f0734_Dtor(Ov002Obj *self) {
-    *(VFunc **)self = data_ov002_021f0734;
+    *(VFunc **)self = Ov002Vt_021f0734_vtbl;
     func_ov002_021e4d4c_inline(self);
     return self;
 }
 
 void *Ov002Vt_021f0684_DtorDelete(Ov002StageFile *self) {
-    *(VFunc **)self = data_ov002_021f0684;
+    *(VFunc **)self = Ov002Vt_021f0684_vtbl;
     func_ov002_021eae3c(self);
     Heap_Free(self);
     return self;

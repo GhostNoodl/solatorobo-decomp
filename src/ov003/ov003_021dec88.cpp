@@ -35,14 +35,14 @@ void Ov003ActVt_021f83e8_State06(Ov003ActExSeq *self) {
             EffectObj *fx;
             Model0218fe1c_SetAnim(self->model, data_ov003_021f8510, 0x1000, 0);
             Model0218fe1c_SetAnimSpeed(self->model, 0x333);
-            ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5011, 0x15);
-            ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4801, 0x15);
-            ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5013, 0x15);
-            ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x400c, 0x15);
-            SndMgr_StopSeqArc(data_02097e4c, self->seq);
+            ActorMgr_BroadcastKind(gActorMgr, 0x5011, 0x15);
+            ActorMgr_BroadcastKind(gActorMgr, 0x4801, 0x15);
+            ActorMgr_BroadcastKind(gActorMgr, 0x5013, 0x15);
+            ActorMgr_BroadcastKind(gActorMgr, 0x400c, 0x15);
+            SndMgr_StopSeqArc(gSndMgr, self->seq);
             Field_ShakeCamera(0x19, 0x3c);
-            SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
-            SndMgr_PlayAt(data_02097e4c, 0x44, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x56, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x44, &self->pos, 0);
             fx = Effect_SpawnId(5, &self->pos);
             if (fx != NULL) {
                 fx->SetScaleAll(0x7800);

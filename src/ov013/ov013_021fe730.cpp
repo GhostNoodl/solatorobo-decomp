@@ -46,8 +46,8 @@ void Ov013ActEx_021fdb70_StateThrown(Ov013ActEx_021fdb70 *self) {
         Model0218fe1c_SetLoop(self->model);
         {
             u16 id = self->target;
-            if (data_ov000_021ccd68 != NULL) {
-                t = ActorMgr_GetActor(data_ov000_021ccd68, id);
+            if (gActorMgr != NULL) {
+                t = ActorMgr_GetActor(gActorMgr, id);
             }
         }
         if (t != NULL) {

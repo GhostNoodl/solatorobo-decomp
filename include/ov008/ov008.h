@@ -177,7 +177,7 @@ struct Ov008Model {
 };
 OV008_SIZE(Ov008Model, 0xe8);
 
-// The picture / text panel (0x4c bytes, vtable data_0208b318).
+// The picture / text panel (0x4c bytes, vtable ResHandle_vtbl).
 class Ov008Pic : public Ov008V {
 public:
     char file[0x20]; // file
@@ -187,7 +187,7 @@ public:
 };
 OV008_SIZE(Ov008Pic, 0x4c);
 
-// Picture subclass (0xc4 bytes, vtable data_0208bf54, StageRes_Init).
+// Picture subclass (0xc4 bytes, vtable StageRes_vtbl, StageRes_Init).
 class Ov008PicC4 : public Ov008Pic {
 public:
     u8 unk_4c[0x70];
@@ -286,8 +286,8 @@ struct Ov008Def {
 
 struct Ov008Mgr;
 
-// ov000 list menu (0xd4 bytes, vtable data_ov000_021caec8; ov008 derives its own with
-// vtable data_ov008_021d0368).
+// ov000 list menu (0xd4 bytes, vtable UiList_vtbl; ov008 derives its own with
+// vtable Ov008Menu_vtbl).
 class Ov008Menu : public Ov008V {
 public:
     s32 state; // state
@@ -326,7 +326,7 @@ public:
 };
 OV008_SIZE(Ov008Menu, 0xd4);
 
-// Yes/no dialog (0x1e4 bytes, vtables data_ov000_021caec8 -> data_ov000_021cb1b0 -> data_ov000_021cb0b8).
+// Yes/no dialog (0x1e4 bytes, vtables UiList_vtbl -> Ov000Vt_021cb1b0_vtbl -> Ov000Vt_021cb0b8_vtbl).
 class Ov008Dialog : public Ov008Menu {
 public:
     u8 unk_d4[0x108];
@@ -335,7 +335,7 @@ public:
 };
 OV008_SIZE(Ov008Dialog, 0x1e4);
 
-// Talking character (0x21c bytes, vtables data_ov000_021cac60 -> data_ov000_021ca94c), with
+// Talking character (0x21c bytes, vtables UiObj_vtbl -> Menu021ca94c_vtbl), with
 // two text windows.
 class Ov008Talk : public Ov008V {
 public:
@@ -344,7 +344,7 @@ public:
     u8 unk_10[0x58];
     s16 unk_68;
     u8 unk_6a[0x26];
-    TextWin win; // vtable data_0208ba70
+    TextWin win; // vtable TextWin_vtbl
     TextWin win2;
     void *unk_200;
     u8 unk_204[0x18];
@@ -366,7 +366,7 @@ struct Ov008Sel {
     u16 id;
 };
 
-// The save block at data_02fe152c.
+// The save block at gDataRes.
 struct Ov008Save {
     u8 unk_00[0x4c];
     u8 *unk_4c;
@@ -378,7 +378,7 @@ struct Ov008Chr {
     u16 unk_c6;
 };
 
-// The ov008 manager (0x120 bytes, data_ov008_021d0500).
+// The ov008 manager (0x120 bytes, gOv008Mgr).
 struct Ov008Mgr {
     union {
         u32 unk_00;
@@ -419,8 +419,8 @@ extern "C" {
 // Frees the object at field with the default heap selected.
 #define OV008_FREE(field, T, stmt)                      \
     {                                                   \
-        void *saved = data_02097dd0->cur;                 \
-        data_02097dd0->cur = data_02097dd0->heapHi;        \
+        void *saved = gSysState->cur;                 \
+        gSysState->cur = gSysState->heapHi;        \
         if ((field) != NULL) {                          \
             T p_ = (field);                             \
             if (p_ != NULL) {                           \
@@ -428,7 +428,7 @@ extern "C" {
             }                                           \
             (field) = NULL;                             \
         }                                               \
-        data_02097dd0->cur = saved;                     \
+        gSysState->cur = saved;                     \
     }
 
 #define OV008_FREE_V(field, slot) OV008_FREE(field, Ov008V *, p_->slot())

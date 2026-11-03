@@ -34,12 +34,12 @@ extern "C" {
 // before it, together with 021ccd35 and 021ccd38, which lie between them. Objects defined before
 // a TU's first function are not laid out in definition order; this order gives the ROM layout.
 // The shop script and the save-object factory (021ccd48, 021ccd4c) are defined after Task_Exit.
-s32 data_ov000_021ccd38;         // id of the last task that finished
-u8 data_ov000_021ccd34;          // a task switch is pending
+s32 gLastTaskId;         // id of the last task that finished
+u8 gTaskSwitchPending;          // a task switch is pending
 void *data_ov000_021ccd3c;       // task list, sorted by priority (linked through +0x38)
 s8 data_ov000_021ccd35;          // users of the shop script
-void *data_ov000_021ccd40;       // task that is finishing (its id is at +0x14)
-TaskHost *data_ov000_021ccd44;   // task host
+void *gFinishingTask;       // task that is finishing (its id is at +0x14)
+TaskHost *gTaskHost;   // task host
 
 }
 
@@ -68,15 +68,15 @@ static inline Task *LoFindTask(s32 kind) {
 }
 
 static inline Task *LoSwitchTaskC(s32 kind, s32 c) {
-    TaskHost *cur = data_ov000_021ccd44;
+    TaskHost *cur = gTaskHost;
     s32 st;
-    data_ov000_021ccd34 = 1;
+    gTaskSwitchPending = 1;
     cur->task = LoFindTask(kind);
     if (cur->task == NULL) {
-        LoCreateFn fn = data_ov000_021c9c6c[kind];
+        LoCreateFn fn = Task_NewTable[kind];
         cur->task = fn != NULL ? (Task *)fn() : NULL;
         cur->task->param = c;
-        cur->task->parent = (Task *)data_ov000_021ccd40;
+        cur->task->parent = (Task *)gFinishingTask;
         st = 1;
     } else {
         st = 2;
@@ -88,9 +88,9 @@ static inline Task *LoSwitchTaskC(s32 kind, s32 c) {
 }
 
 static inline void LoResumeTask(s32 kind) {
-    TaskHost *cur = data_ov000_021ccd44;
+    TaskHost *cur = gTaskHost;
     Task *t;
-    data_ov000_021ccd34 = 1;
+    gTaskSwitchPending = 1;
     t = LoFindTask(kind);
     if (t != NULL) {
         t->vfunc_50();
@@ -104,7 +104,7 @@ static inline Task *LoSwitchTask(s32 kind) {
 }
 
 static inline VObj *LoTaskObj(void) {
-    return &data_ov000_021ccd44->res;
+    return &gTaskHost->res;
 }
 
 // ---- Lo_02172f7c
@@ -113,7 +113,7 @@ namespace m_Lo_02172f7c {
 extern "C" {
 
 static inline TaskHost *GetCur02172f7c(void) {
-    return data_ov000_021ccd44;
+    return gTaskHost;
 }
 
 void Task_Exit(Task *self, void *arg) {
@@ -128,7 +128,7 @@ void Task_Exit(Task *self, void *arg) {
     } else if (arg == NULL) {
         s32 kind = self->id;
         TaskHost *cur = GetCur02172f7c();
-        data_ov000_021ccd34 = 1;
+        gTaskSwitchPending = 1;
         arg = LoFindTask(kind);
         if (arg != NULL) {
             ((Task *)arg)->vfunc_50();
@@ -140,8 +140,8 @@ void Task_Exit(Task *self, void *arg) {
         fl = FALSE;
     }
     if (fl) {
-        data_ov000_021ccd34 = 1;
-        data_ov000_021ccd44->unk_00_0 = 1;
+        gTaskSwitchPending = 1;
+        gTaskHost->unk_00_0 = 1;
     }
     self->parent = NULL;
 }
@@ -166,13 +166,13 @@ namespace m_Lo_021731a0 {
 
 extern "C" {
 
-extern u8 data_ov000_021cb920[];
-extern u8 data_ov000_021cb6d0[];
-extern u8 data_ov000_021cb9b0[];
+extern u8 TimedBuffer021cb920_vtbl[];
+extern u8 Ov000Vt_021cb6d0_vtbl[];
+extern u8 Ov000Vt_021cb9b0_vtbl[];
 void Heap_FreeHi(void *p);
 
 static inline void LoListBufferDtor(ListBuffer *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb6d0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb6d0_vtbl);
     if ((self->flags & 0x20) && self->unk_0c != 0) {
         Heap_FreeHi((void *)self->unk_0c);
     }
@@ -196,7 +196,7 @@ static inline void LoMQRemove(MessageQueue *self, ListBuffer *buf) {
 }
 
 static inline void LoTimedBufferDtor(LoTimedBufferDtorSelf *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb920);
+    VOBJ_SET_VTABLE(self, TimedBuffer021cb920_vtbl);
     if (self->unk_30 != NULL) {
         LoMQRemove((MessageQueue *)self->unk_0c, self->unk_30);
     }
@@ -211,7 +211,7 @@ static inline void LoTimedBufferDtor(LoTimedBufferDtorSelf *self) {
 static inline void LoMessageQueueDtor(MessageQueue *self) {
     ListBuffer *buf;
     u32 i;
-    VOBJ_SET_VTABLE(self, data_ov000_021cb9b0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb9b0_vtbl);
     buf = self->list.head;
     if (buf != NULL) {
         do {
@@ -277,13 +277,13 @@ namespace m_Lo_021731f8 {
 
 extern "C" {
 
-extern u8 data_ov000_021cb920[];
-extern u8 data_ov000_021cb6d0[];
-extern u8 data_ov000_021cb9b0[];
+extern u8 TimedBuffer021cb920_vtbl[];
+extern u8 Ov000Vt_021cb6d0_vtbl[];
+extern u8 Ov000Vt_021cb9b0_vtbl[];
 void Heap_FreeHi(void *p);
 
 static inline void LoListBufferDtor(ListBuffer *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb6d0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb6d0_vtbl);
     if ((self->flags & 0x20) && self->unk_0c != 0) {
         Heap_FreeHi((void *)self->unk_0c);
     }
@@ -307,7 +307,7 @@ static inline void LoMQRemove(MessageQueue *self, ListBuffer *buf) {
 }
 
 static inline void LoTimedBufferDtor(LoTimedBufferDtorSelf *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb920);
+    VOBJ_SET_VTABLE(self, TimedBuffer021cb920_vtbl);
     if (self->unk_30 != NULL) {
         LoMQRemove((MessageQueue *)self->unk_0c, self->unk_30);
     }
@@ -322,7 +322,7 @@ static inline void LoTimedBufferDtor(LoTimedBufferDtorSelf *self) {
 static inline void LoMessageQueueDtor(MessageQueue *self) {
     ListBuffer *buf;
     u32 i;
-    VOBJ_SET_VTABLE(self, data_ov000_021cb9b0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb9b0_vtbl);
     buf = self->list.head;
     if (buf != NULL) {
         do {
@@ -370,7 +370,7 @@ static inline BOOL Fade_IsOff(Task *self) {
 
 static inline BOOL Fade_IsIdle(Task *self) {
     BOOL r = FALSE;
-    if (data_ov000_021ccd34 == 0 && Fade_IsOff(self)) {
+    if (gTaskSwitchPending == 0 && Fade_IsOff(self)) {
         r = TRUE;
     }
     return r;
@@ -468,12 +468,12 @@ void Task_PreUpdate(void) {
 
 BOOL Task_TryReleaseCurrent(Task *self) {
     if (self->vfunc_54()) {
-        if (data_ov000_021ccd40 != NULL) {
-            data_ov000_021ccd38 = ((Task *)data_ov000_021ccd40)->id;
+        if (gFinishingTask != NULL) {
+            gLastTaskId = ((Task *)gFinishingTask)->id;
         } else {
-            data_ov000_021ccd38 = 0;
+            gLastTaskId = 0;
         }
-        data_ov000_021ccd40 = NULL;
+        gFinishingTask = NULL;
     }
     return TRUE;
 }
@@ -486,7 +486,7 @@ void Task_PostUpdate(void) {
 
 void Task_Draw(Task *self) {
     VecFx32 scale;
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     scale.x = 0x1000;
     scale.y = 0x1000;
     scale.z = 0x1000;
@@ -512,7 +512,7 @@ typedef struct {
 } Data021ccd30;
 
 extern "C" {
-extern Data021ccd30 *data_ov000_021ccd30;
+extern Data021ccd30 *gMessageQueue;
 }
 
 extern "C" {
@@ -570,24 +570,24 @@ void func_ov000_021736dc(void) {
     if (task != NULL) {
         do {
             next = task->next;
-            saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->heapHi;
+            saved = gSysState->cur;
+            gSysState->cur = gSysState->heapHi;
             if (task != NULL) {
                 if (task != NULL) {
                     task->vfunc_04();
                 }
             }
-            data_02097dd0->cur = saved;
+            gSysState->cur = saved;
             task = next;
         } while (task != NULL);
     }
-    data_ov000_021ccd34 = 0;
+    gTaskSwitchPending = 0;
     data_ov000_021ccd3c = NULL;
-    data_ov000_021ccd40 = NULL;
+    gFinishingTask = NULL;
 }
 
 VObj *Task_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     Heap_Free(self);
     return self;
@@ -614,14 +614,14 @@ void func_ov000_02173784(void) {
             }
             task->prev = NULL;
             task->next = NULL;
-            saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->heapHi;
+            saved = gSysState->cur;
+            gSysState->cur = gSysState->heapHi;
             if (task != NULL) {
                 if (task != NULL) {
                     task->vfunc_04();
                 }
             }
-            data_02097dd0->cur = saved;
+            gSysState->cur = saved;
         }
         task = next;
     } while (task != NULL);
@@ -631,9 +631,9 @@ void func_ov000_02173784(void) {
 VObj *Task021cbce0_New(void) {
     Task021cbce0 *obj = (Task021cbce0 *)Heap_Alloc(0x90);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
+        VOBJ_SET_VTABLE(obj, Task_vtbl);
         obj->vfunc_58();
-        VOBJ_SET_VTABLE(obj, data_ov000_021cbce0);
+        VOBJ_SET_VTABLE(obj, Task021cbce0_vtbl);
         obj->vfunc_58();
     }
     obj->vfunc_08(1, 0);
@@ -645,7 +645,7 @@ void Task021cbce0_Load(void *a) {
 }
 
 BOOL Task021cbce0_IsReady(void) {
-    Task *task = data_ov000_021ccd30->unk_11c->unk_54;
+    Task *task = gMessageQueue->unk_11c->unk_54;
     BOOL ret = TRUE;
     if (task != NULL && !(*(s32 *)((u8 *)task + 4) == 4 ? TRUE : FALSE)) {
         ret = FALSE;
@@ -729,8 +729,8 @@ void Task021cbce0_Release(Task021cbce0 *self) {
     void *saved;
     Model *model;
     func_ov000_0214c210();
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     model = self->unk_4c;
     if (model != NULL) {
         if (model != NULL) {
@@ -740,7 +740,7 @@ void Task021cbce0_Release(Task021cbce0 *self) {
         }
         self->unk_4c = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 }
@@ -759,8 +759,8 @@ typedef struct {
 
 extern "C" {
 
-extern Task *(*const data_ov000_021c9c6c[])(void);
-extern Player02173a5c *data_ov000_021ccd54;
+extern Task *(*const Task_NewTable[])(void);
+extern Player02173a5c *gSceneCmd;
 void Gfx3DState_Apply(void *p);
 
 static inline Task *TaskList_Find(s32 id) {
@@ -774,15 +774,15 @@ static inline Task *TaskList_Find(s32 id) {
 }
 
 static inline void TaskList_Start(s32 id, s32 arg) {
-    TaskHost *h = data_ov000_021ccd44;
+    TaskHost *h = gTaskHost;
     s32 mode;
-    data_ov000_021ccd34 = 1;
+    gTaskSwitchPending = 1;
     h->task = TaskList_Find(id);
     if (h->task == NULL) {
-        Task *(*fn)(void) = data_ov000_021c9c6c[id];
+        Task *(*fn)(void) = Task_NewTable[id];
         h->task = fn != NULL ? fn() : NULL;
         h->task->param = arg;
-        h->task->parent = (Task *)data_ov000_021ccd40;
+        h->task->parent = (Task *)gFinishingTask;
         mode = 1;
     } else {
         mode = 2;
@@ -795,19 +795,19 @@ static inline void TaskList_Start(s32 id, s32 arg) {
 void Task021cbce0_PreUpdate(Task021cbce0 *self) {
     switch (self->state) {
     case 8:
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
-        SndMgr_PauseAll(data_02097e4c);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
+        SndMgr_PauseAll(gSndMgr);
         break;
     case 10:
         self->unk_3c = -0xcd;
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
-        SndMgr_ResumeAll(data_02097e4c);
-        Gfx3DState_Apply(data_02097d48->unk_8b0);
-        data_ov000_021ccd54->b2 = 0;
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
+        SndMgr_ResumeAll(gSndMgr);
+        Gfx3DState_Apply(gGfxSys->unk_8b0);
+        gSceneCmd->b2 = 0;
         break;
     case 12:
         self->unk_3c = (s32)0xfffe019a;
-        data_ov000_021ccd54->b2 = 2;
+        gSceneCmd->b2 = 2;
         TaskList_Start(2, 0);
         self->vfunc_48();
         break;
@@ -877,7 +877,7 @@ void Task021cbce0_Draw(Task021cbce0 *self) {
     if (FindTask(0x1a) != NULL) {
         return;
     }
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     G3_Vec(0x1b, 0x1000, 0x1000, 0x1000);
     self->fadeSin = FX_SinCosTable_[((s32)(self->fadeRatio << 14) >> 16) * 2];
     {
@@ -1013,9 +1013,9 @@ namespace m_Lo_021740b0 {
 
 extern "C" {
 
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbbe0[];
-extern u8 data_0208ba70[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbbe0_vtbl[];
+extern u8 TextWin_vtbl[];
 extern const s16 FX_SinCosTable_[];
 void TextWin_Init(void *p);
 void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
@@ -1027,20 +1027,20 @@ void func_ov000_0217558c(Task021cbbe0 *self);
 VObj *Task021cbbe0_New(void) {
     Task021cbbe0 *obj = (Task021cbbe0 *)Heap_Alloc(0x4b0);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
+        VOBJ_SET_VTABLE(obj, Task_vtbl);
         obj->vfunc_58();
-        VOBJ_SET_VTABLE(obj, data_ov000_021cbbe0);
-        VOBJ_SET_VTABLE((u8 *)obj + 0x60, data_0208ba70);
+        VOBJ_SET_VTABLE(obj, Task021cbbe0_vtbl);
+        VOBJ_SET_VTABLE((u8 *)obj + 0x60, TextWin_vtbl);
         TextWin_Init((u8 *)obj + 0x60);
-        VOBJ_SET_VTABLE((u8 *)obj + 0x118, data_0208ba70);
+        VOBJ_SET_VTABLE((u8 *)obj + 0x118, TextWin_vtbl);
         TextWin_Init((u8 *)obj + 0x118);
-        VOBJ_SET_VTABLE((u8 *)obj + 0x1d0, data_0208ba70);
+        VOBJ_SET_VTABLE((u8 *)obj + 0x1d0, TextWin_vtbl);
         TextWin_Init((u8 *)obj + 0x1d0);
-        VOBJ_SET_VTABLE((u8 *)obj + 0x288, data_0208ba70);
+        VOBJ_SET_VTABLE((u8 *)obj + 0x288, TextWin_vtbl);
         TextWin_Init((u8 *)obj + 0x288);
-        VOBJ_SET_VTABLE((u8 *)obj + 0x340, data_0208ba70);
+        VOBJ_SET_VTABLE((u8 *)obj + 0x340, TextWin_vtbl);
         TextWin_Init((u8 *)obj + 0x340);
-        VOBJ_SET_VTABLE((u8 *)obj + 0x3f8, data_0208ba70);
+        VOBJ_SET_VTABLE((u8 *)obj + 0x3f8, TextWin_vtbl);
         TextWin_Init((u8 *)obj + 0x3f8);
         obj->vfunc_58();
     }
@@ -1164,12 +1164,12 @@ BOOL Task021cbbe0_List40OnDecide(Obj021742b4 *self, Msg021742c8 *msg) {
     if (msg->unk_06 != 0xffff) {
         if (msg->unk_24 != 0xe) {
             obj->vfunc_60(msg->unk_06, 1);
-            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
         } else {
-            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
         }
     } else {
-        SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
     }
     return TRUE;
 }
@@ -1214,7 +1214,7 @@ void Task021cbbe0_Load(void) {
 
 BOOL Task021cbbe0_IsLoaded(void) {
     BOOL ret = TRUE;
-    if (!data_ov000_021ccd44->res.vfunc_2c()) {
+    if (!gTaskHost->res.vfunc_2c()) {
         ret = FALSE;
     }
     if (!func_ov000_0214c270()) {
@@ -1360,19 +1360,19 @@ public:
 extern "C" {
 void *Heap_Alloc(u32 size);
 void TaskList_Insert(Task *self);
-extern void *data_02149ef8;
-extern u8 *data_ov000_021ccd54;
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb5a8[];
-extern u8 data_ov000_021ca94c[];
-extern u8 data_0208ba70[];
+extern void *gMsgRes;
+extern u8 *gSceneCmd;
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 Lo021cb5a8_vtbl[];
+extern u8 Menu021ca94c_vtbl[];
+extern u8 TextWin_vtbl[];
 extern u8 data_ov000_021c9c28[];
 extern void *data_0208ccc8;
 extern u8 data_ov000_021cba0c[];
 extern void *data_0208cc94;
 extern void *data_0208cc88;
-extern s32 data_02097d78[];
+extern s32 gFadeState[];
 void *MsgRes_GetString(void *g, s32 id);
 UiListItem *UiList_GetItemById(void *p, u16 a);
 u16 DataRes_ReadEntry(void *a, u32 b, s32 c, s32 d);
@@ -1397,10 +1397,10 @@ struct Glyph02174168 *func_ov000_02174168(TexObj *self, TexObjEntry *cmd, struct
 
 static inline BOOL IsMode4_021743bc(void) {
     BOOL r;
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         r = TRUE;
     } else {
-        r = data_02097d78[0] == 4;
+        r = gFadeState[0] == 4;
     }
     return r;
 }
@@ -1412,7 +1412,7 @@ static inline void InitWin021743bc(u8 *p, void *s) {
     W->str = (u32)s;
     W->font = 4;
     W->unk_4c = Text_Measure(W->font, W->spacing, (const char *)W->str, (s32 *)(p + 0x44), (s32 *)(p + 0x48), *(s8 *)&W->unk_37 != 0); // &width, &height; unk_37 read signed
-    data_02097ce0->unk_004 = W->font;
+    gGfxMgr->unk_004 = W->font;
     W->flags |= 0x40;
     W->flags |= 0x41000000;
     W->unk_78 = 0x8000;
@@ -1440,14 +1440,14 @@ void Task021cbbe0_Start(Task021cbbe0 *self) {
         return;
     }
     self->vfunc_3c();
-    g = data_02149ef8;
+    g = gMsgRes;
     o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021caec8;
+        *(void **)o = UiList_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cb5a8;
+        *(void **)o = Lo021cb5a8_vtbl;
         o->vfunc_28();
     }
     self->unk_44 = (Lo021cb5a8 *)o;
@@ -1471,9 +1471,9 @@ void Task021cbbe0_Start(Task021cbbe0 *self) {
     ((MenuBox021743bc *)self->unk_44)->Show();
     o = (VObj *)Heap_Alloc(0xd4);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021caec8;
+        *(void **)o = UiList_vtbl;
         o->vfunc_28();
     }
     self->unk_40 = (UiList *)o;
@@ -1498,17 +1498,17 @@ void Task021cbbe0_Start(Task021cbbe0 *self) {
     ((MenuList021743bc *)self->unk_40)->AddItem((const char *)MsgRes_GetString(g, 0xc2), 6, 0xffff, 0xffff);
     ((MenuList021743bc *)self->unk_40)->AddItem((const char *)MsgRes_GetString(g, 0x112), 0xf, 0xffff, 0xffff);
     ((MenuList021743bc *)self->unk_40)->AddItem((const char *)MsgRes_GetString(g, 0x118), 5, 0xffff, 0xffff);
-    if (DataRes_ReadEntry(data_02fe152c, 5, 1, 0) == 0) {
+    if (DataRes_ReadEntry(gDataRes, 5, 1, 0) == 0) {
         UiList_GetItemById(self->unk_40, 0x1a)->unk_24 = 0xe;
     }
-    if (SceneStage_GetScript(data_ov000_021ccd54 + 0xac, 0) == 0) {
+    if (SceneStage_GetScript(gSceneCmd + 0xac, 0) == 0) {
         UiList_GetItemById(self->unk_40, 0xf)->unk_24 = 0xe;
     }
-    sub = data_02fe152c->data;
-    a = DataRes_GetTable(data_02fe152c, 3);
-    n = DataRes_GetCount(data_02fe152c, 3);
+    sub = gDataRes->data;
+    a = DataRes_GetTable(gDataRes, 3);
+    n = DataRes_GetCount(gDataRes, 3);
     for (i = 0; i < n; i++) {
-        if (DataRes_ReadBitsAt_02059544(data_02fe152c, (u8 *)sub + 0x70, a, 1, i) != 0) {
+        if (DataRes_ReadBitsAt_02059544(gDataRes, (u8 *)sub + 0x70, a, 1, i) != 0) {
             has = TRUE;
             goto found;
         }
@@ -1520,11 +1520,11 @@ found:
     }
     {
         MenuList021743bc *t = (MenuList021743bc *)self->unk_40;
-        if (data_ov000_021ccd38 == 0) {
+        if (gLastTaskId == 0) {
             MenuItem021743bc id = MENU021743BC_ITEM_TOP;
             t->Select(UiList_GetItemById(t, id));
         } else {
-            t->Select(UiList_GetItemById(t, (u16)data_ov000_021ccd38));
+            t->Select(UiList_GetItemById(t, (u16)gLastTaskId));
         }
     }
     ((MenuList021743bc *)self->unk_40)->Show();
@@ -1574,12 +1574,12 @@ found:
     InitWin021743bc((u8 *)self + 0x3f8, MsgRes_GetString(g, 0x4c));
     o = (VObj *)Heap_Alloc(0x21c);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021ca94c;
-        LFLD(void *, (UiObj *)o, 0x90) = data_0208ba70;
+        *(void **)o = Menu021ca94c_vtbl;
+        LFLD(void *, (UiObj *)o, 0x90) = TextWin_vtbl;
         TextWin_Init((u8 *)o + 0x90);
-        LFLD(void *, (UiObj *)o, 0x148) = data_0208ba70;
+        LFLD(void *, (UiObj *)o, 0x148) = TextWin_vtbl;
         TextWin_Init((u8 *)o + 0x148);
         o->vfunc_28();
     }
@@ -1602,9 +1602,9 @@ namespace m_Lo_02174ea0 {
 
 extern "C" {
 
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbbe0[];
-extern u8 data_0208ba70[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbbe0_vtbl[];
+extern u8 TextWin_vtbl[];
 extern const s16 FX_SinCosTable_[];
 void TextWin_Init(void *p);
 void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
@@ -1656,7 +1656,7 @@ void Task021cbbe0_SwitchTo(Task021cbbe0 *self, s32 kind) {
         LoSwitchTaskC(kind, 0xffff);
         return;
     case 7:
-        data_0214a424->unk_009 = 0xff;
+        gStageFlags->unk_009 = 0xff;
     default:
         LoSwitchTask(kind);
         break;
@@ -1690,9 +1690,9 @@ namespace m_Lo_021752f0 {
 
 extern "C" {
 
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbbe0[];
-extern u8 data_0208ba70[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbbe0_vtbl[];
+extern u8 TextWin_vtbl[];
 extern const s16 FX_SinCosTable_[];
 void TextWin_Init(void *p);
 void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
@@ -1770,7 +1770,7 @@ void Task021cbbe0_Draw(Task021cbbe0 *self) {
     if (self->fadeRatio == 0) {
         return;
     }
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     scale[0] = 0x1000;
     scale[1] = 0x1000;
     scale[2] = 0x1000;
@@ -1892,7 +1892,7 @@ void func_ov000_0217558c(Task021cbbe0 *self) {
         return;
     }
     x = (s32)(((s64)(0x1000 - FX_SinCosTable_[((s32)(self->unk_54 << 14) >> 16) * 2]) * 0x80000 + 0x800) >> 12);
-    g = data_02097d48->unk_8b0;
+    g = gGfxSys->unk_8b0;
     Model_SetPos((Model *)self->unk_58, x & ~0xfff, 0);
     m = (Model *)self->unk_58;
     Model_PlayPart(m, 1);
@@ -1952,16 +1952,16 @@ namespace m_Dtor_02175e04 {
 
 extern "C" {
 
-extern u8 data_ov000_021cbfe0[];
-extern u8 data_ov000_021cc060[];
+extern u8 Task021cbfe0_vtbl[];
+extern u8 Task_vtbl[];
 void *Heap_Alloc(u32 size);
 
 VObj *Task021cbfe0_New(void) {
     Task021cbfe0 *obj = (Task021cbfe0 *)Heap_Alloc(0x48);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
+        VOBJ_SET_VTABLE(obj, Task_vtbl);
         obj->vfunc_58();
-        VOBJ_SET_VTABLE(obj, data_ov000_021cbfe0);
+        VOBJ_SET_VTABLE(obj, Task021cbfe0_vtbl);
         obj->vfunc_58();
     }
     obj->vfunc_08(0x3, 0x3e8);
@@ -1977,9 +1977,9 @@ namespace m_Lo_02175e6c {
 
 extern "C" {
 
-extern u8 data_0208b614[];
-extern u8 data_0208ca9c[];
-extern u8 data_0208ca18[];
+extern u8 SaveBase_vtbl[];
+extern u8 MainVt_0208ca9c_vtbl[];
+extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -2002,7 +2002,7 @@ BOOL func_ov000_02175e6c(UiList *self, UiListItem *msg) {
     s32 v;
     if (msg == NULL) {
         if (self->flags & 0x4000000) {
-            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
             return TRUE;
         }
         v = 0xff;
@@ -2011,10 +2011,10 @@ BOOL func_ov000_02175e6c(UiList *self, UiListItem *msg) {
     }
     o->unk_44 = v;
     if (o->callback(o, 2)) {
-        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
     } else {
         ((VObj *)o)->vfunc_0c(0);
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
     }
     return FALSE;
 }
@@ -2053,9 +2053,9 @@ namespace m_Lo_02175f94 {
 
 extern "C" {
 
-extern u8 data_0208b614[];
-extern u8 data_0208ca9c[];
-extern u8 data_0208ca18[];
+extern u8 SaveBase_vtbl[];
+extern u8 MainVt_0208ca9c_vtbl[];
+extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -2101,9 +2101,9 @@ namespace m_Lo_02176030 {
 
 extern "C" {
 
-extern u8 data_0208b614[];
-extern u8 data_0208ca9c[];
-extern u8 data_0208ca18[];
+extern u8 SaveBase_vtbl[];
+extern u8 MainVt_0208ca9c_vtbl[];
+extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -2170,9 +2170,9 @@ void Task021cbfe0_Draw(Task021cbfe0 *self) {
 GameSave *GameSave_New(void) {
     GameSave *obj = (GameSave *)Heap_Alloc(0x4c);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_0208b614);
+        VOBJ_SET_VTABLE(obj, SaveBase_vtbl);
         obj->Init();
-        VOBJ_SET_VTABLE(obj, data_0208ca9c);
+        VOBJ_SET_VTABLE(obj, MainVt_0208ca9c_vtbl);
         obj->Init();
     }
     return obj;
@@ -2202,9 +2202,9 @@ namespace m_Lo_02176208 {
 
 extern "C" {
 
-extern u8 data_0208b614[];
-extern u8 data_0208ca9c[];
-extern u8 data_0208ca18[];
+extern u8 SaveBase_vtbl[];
+extern u8 MainVt_0208ca9c_vtbl[];
+extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -2224,11 +2224,11 @@ static inline BOOL LoIsLoaded(void) {
 GameSave *MainVt_0208ca18_New(void) {
     GameSave *obj = (GameSave *)Heap_Alloc(0x4c);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_0208b614);
+        VOBJ_SET_VTABLE(obj, SaveBase_vtbl);
         obj->Init();
-        VOBJ_SET_VTABLE(obj, data_0208ca9c);
+        VOBJ_SET_VTABLE(obj, MainVt_0208ca9c_vtbl);
         obj->Init();
-        VOBJ_SET_VTABLE(obj, data_0208ca18);
+        VOBJ_SET_VTABLE(obj, MainVt_0208ca18_vtbl);
     }
     return obj;
 }
@@ -2242,8 +2242,8 @@ namespace m_Stub_02176264 {
 
 extern "C" {
 
-extern u8 data_ov000_021cbee0[];
-extern u8 data_ov000_021cc060[];
+extern u8 Task021cbee0_vtbl[];
+extern u8 Task_vtbl[];
 GameSave *MainVt_0208ca18_New(void);
 void *Heap_Alloc(u32 size);
 
@@ -2254,9 +2254,9 @@ void func_ov000_02176264(void *self) {
 VObj *Task021cbee0_New(void) {
     Task021cbee0 *obj = (Task021cbee0 *)Heap_Alloc(0x15c);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
+        VOBJ_SET_VTABLE(obj, Task_vtbl);
         obj->vfunc_58();
-        VOBJ_SET_VTABLE(obj, data_ov000_021cbee0);
+        VOBJ_SET_VTABLE(obj, Task021cbee0_vtbl);
         obj->vfunc_58();
     }
     obj->vfunc_08(0x4, 0xc8);
@@ -2272,9 +2272,9 @@ namespace m_Lo_021762e4 {
 
 extern "C" {
 
-extern u8 data_0208b614[];
-extern u8 data_0208ca9c[];
-extern u8 data_0208ca18[];
+extern u8 SaveBase_vtbl[];
+extern u8 MainVt_0208ca9c_vtbl[];
+extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -2317,11 +2317,11 @@ namespace m_Lo_021763c8 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208bf54[];
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbe60[];
-extern void *data_02149ef8;
+extern u8 ResHandle_vtbl[];
+extern u8 StageRes_vtbl[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbe60_vtbl[];
+extern void *gMsgRes;
 extern const s16 FX_SinCosTable_[];
 void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
@@ -2342,9 +2342,9 @@ void func_ov000_021763c8(void) {
         LO_FREE_VAR(data_ov000_021ccd48);
         obj = (VObj *)Heap_Alloc(0xc4);
         if (obj != NULL) {
-            VOBJ_SET_VTABLE(obj, data_0208b318);
+            VOBJ_SET_VTABLE(obj, ResHandle_vtbl);
             obj->vfunc_08();
-            VOBJ_SET_VTABLE(obj, data_0208bf54);
+            VOBJ_SET_VTABLE(obj, StageRes_vtbl);
             StageRes_Init(obj);
         }
         data_ov000_021ccd48 = obj;
@@ -2364,9 +2364,9 @@ namespace m_Lo_021764c4 {
 
 extern "C" {
 
-extern u8 data_0208b614[];
-extern u8 data_0208ca9c[];
-extern u8 data_0208ca18[];
+extern u8 SaveBase_vtbl[];
+extern u8 MainVt_0208ca9c_vtbl[];
+extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -2432,11 +2432,11 @@ namespace m_Lo_021765c8 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208bf54[];
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbe60[];
-extern void *data_02149ef8;
+extern u8 ResHandle_vtbl[];
+extern u8 StageRes_vtbl[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbe60_vtbl[];
+extern void *gMsgRes;
 extern const s16 FX_SinCosTable_[];
 void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
@@ -2457,9 +2457,9 @@ void Task021cbee0_Load(void) {
         LO_FREE_VAR(data_ov000_021ccd48);
         obj = (VObj *)Heap_Alloc(0xc4);
         if (obj != NULL) {
-            VOBJ_SET_VTABLE(obj, data_0208b318);
+            VOBJ_SET_VTABLE(obj, ResHandle_vtbl);
             obj->vfunc_08();
-            VOBJ_SET_VTABLE(obj, data_0208bf54);
+            VOBJ_SET_VTABLE(obj, StageRes_vtbl);
             StageRes_Init(obj);
         }
         data_ov000_021ccd48 = obj;
@@ -2479,9 +2479,9 @@ namespace m_Lo_021766c4 {
 
 extern "C" {
 
-extern u8 data_0208b614[];
-extern u8 data_0208ca9c[];
-extern u8 data_0208ca18[];
+extern u8 SaveBase_vtbl[];
+extern u8 MainVt_0208ca9c_vtbl[];
+extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -2522,16 +2522,16 @@ typedef struct {
 } Shared02fe1534;
 
 extern "C" {
-extern void *data_02149ef8;
+extern void *gMsgRes;
 extern Shared02fe1534 data_02fe1534;
 extern void *data_0208ccc8;
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb5a8[];
-extern u8 data_ov000_021cae48[];
-extern u8 data_ov000_021cadcc[];
-extern u8 data_ov000_021cb4a8[];
-extern u8 data_ov000_021cb2a8[];
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 Lo021cb5a8_vtbl[];
+extern u8 Lo021cae48_vtbl[];
+extern u8 Lo021cadcc_vtbl[];
+extern u8 UiList021cb4a8_vtbl[];
+extern u8 Ov000Vt_021cb2a8_vtbl[];
 void *MsgRes_GetString(void *g, u32 id);
 BOOL StageRes_Bind(void *p);
 void Lo021cae48_SetValue(void *a, s32 b, s32 c);
@@ -2563,14 +2563,14 @@ void Task021cbee0_Start(Task021cbee0 *self) {
     if (!data_ov000_021ccd48->vfunc_34()) {
         StageRes_Bind(data_ov000_021ccd48);
     }
-    g = data_02149ef8;
+    g = gMsgRes;
     o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021caec8;
+        *(void **)o = UiList_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cb5a8;
+        *(void **)o = Lo021cb5a8_vtbl;
         o->vfunc_28();
     }
     self->unk_3c = (Lo021cb5a8 *)o;
@@ -2594,16 +2594,16 @@ void Task021cbee0_Start(Task021cbee0 *self) {
     self->unk_3c->vfunc_08();
     o = (VObj *)Heap_Alloc(0x98);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cae48;
+        *(void **)o = Lo021cae48_vtbl;
         o->vfunc_28();
     }
     self->unk_40 = (Lo021cae48 *)o;
     ((Lo021cae48 *)o)->posX = 0x86;
     ((Lo021cae48 *)o)->posY = 0x78;
     ((Lo021cae48 *)o)->posZ = -0x1ccd;
-    Lo021cae48_SetValue(self->unk_40, data_0214a424->unk_020, 0);
+    Lo021cae48_SetValue(self->unk_40, gStageFlags->unk_020, 0);
     self->unk_40->slideMode = 1;
     {
         Lo021cae48 *s = self->unk_40;
@@ -2614,9 +2614,9 @@ void Task021cbee0_Start(Task021cbee0 *self) {
     self->unk_40->vfunc_08();
     o = (VObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cadcc;
+        *(void **)o = Lo021cadcc_vtbl;
         o->vfunc_28();
     }
     self->unk_50 = (Lo021cadcc *)o;
@@ -2641,9 +2641,9 @@ void Task021cbee0_Start(Task021cbee0 *self) {
     case 0:
         o = (VObj *)Heap_Alloc(0x98);
         if (o != NULL) {
-            *(void **)o = data_ov000_021cac60;
+            *(void **)o = UiObj_vtbl;
             o->vfunc_28();
-            *(void **)o = data_ov000_021cae48;
+            *(void **)o = Lo021cae48_vtbl;
             o->vfunc_28();
         }
         self->unk_44 = (Lo021cae48 *)o;
@@ -2668,9 +2668,9 @@ void Task021cbee0_Start(Task021cbee0 *self) {
         self->unk_44->height = 0x19;
         o = (VObj *)Heap_Alloc(0x98);
         if (o != NULL) {
-            *(void **)o = data_ov000_021cac60;
+            *(void **)o = UiObj_vtbl;
             o->vfunc_28();
-            *(void **)o = data_ov000_021cae48;
+            *(void **)o = Lo021cae48_vtbl;
             o->vfunc_28();
         }
         self->unk_48 = (Lo021cae48 *)o;
@@ -2695,13 +2695,13 @@ void Task021cbee0_Start(Task021cbee0 *self) {
         self->unk_48->height = 0;
         o = (VObj *)Heap_Alloc(0xe0);
         if (o != NULL) {
-            *(void **)o = data_ov000_021cac60;
+            *(void **)o = UiObj_vtbl;
             o->vfunc_28();
-            *(void **)o = data_ov000_021caec8;
+            *(void **)o = UiList_vtbl;
             o->vfunc_28();
-            *(void **)o = data_ov000_021cb4a8;
+            *(void **)o = UiList021cb4a8_vtbl;
             o->vfunc_28();
-            *(void **)o = data_ov000_021cb2a8;
+            *(void **)o = Ov000Vt_021cb2a8_vtbl;
         }
         self->unk_4c = (UiList021cb4a8 *)o;
         self->unk_4c->vfunc_10(MsgRes_GetString(g, 0x98));
@@ -2713,11 +2713,11 @@ void Task021cbee0_Start(Task021cbee0 *self) {
     case 1:
         o = (VObj *)Heap_Alloc(0xe0);
         if (o != NULL) {
-            *(void **)o = data_ov000_021cac60;
+            *(void **)o = UiObj_vtbl;
             o->vfunc_28();
-            *(void **)o = data_ov000_021caec8;
+            *(void **)o = UiList_vtbl;
             o->vfunc_28();
-            *(void **)o = data_ov000_021cb4a8;
+            *(void **)o = UiList021cb4a8_vtbl;
             o->vfunc_28();
         }
         self->unk_4c = (UiList021cb4a8 *)o;
@@ -2729,12 +2729,12 @@ void Task021cbee0_Start(Task021cbee0 *self) {
             u8 *base;
             u16 i;
             u32 n;
-            base = data_02fe152c->data + 0x130;
-            o = (VObj *)DataRes_GetTable(data_02fe152c, 9);
-            n = DataRes_GetCount(data_02fe152c, 9);
+            base = gDataRes->data + 0x130;
+            o = (VObj *)DataRes_GetTable(gDataRes, 9);
+            n = DataRes_GetCount(gDataRes, 9);
             for (i = 0; i < n; i++) {
-                BOOL a = DataRes_ReadBitsAt_02059544(data_02fe152c, base, o, 1, i) & 1 ? TRUE : FALSE;
-                BOOL b = DataRes_ReadBitsAt_02059544(data_02fe152c, base, o, 0x101, i) == 0 ? TRUE : FALSE;
+                BOOL a = DataRes_ReadBitsAt_02059544(gDataRes, base, o, 1, i) & 1 ? TRUE : FALSE;
+                BOOL b = DataRes_ReadBitsAt_02059544(gDataRes, base, o, 0x101, i) == 0 ? TRUE : FALSE;
                 if ((a & b) ? TRUE : FALSE) {
                     u16 id = ((Pair02176714 *)o)[i].b;
                     void *x = Param_Get(id);
@@ -2747,11 +2747,11 @@ void Task021cbee0_Start(Task021cbee0 *self) {
     case 3:
         o = (VObj *)Heap_Alloc(0xe0);
         if (o != NULL) {
-            *(void **)o = data_ov000_021cac60;
+            *(void **)o = UiObj_vtbl;
             o->vfunc_28();
-            *(void **)o = data_ov000_021caec8;
+            *(void **)o = UiList_vtbl;
             o->vfunc_28();
-            *(void **)o = data_ov000_021cb4a8;
+            *(void **)o = UiList021cb4a8_vtbl;
             o->vfunc_28();
         }
         self->unk_4c = (UiList021cb4a8 *)o;
@@ -2801,9 +2801,9 @@ namespace m_Lo_02176ff4 {
 
 extern "C" {
 
-extern u8 data_0208b614[];
-extern u8 data_0208ca9c[];
-extern u8 data_0208ca18[];
+extern u8 SaveBase_vtbl[];
+extern u8 MainVt_0208ca9c_vtbl[];
+extern u8 MainVt_0208ca18_vtbl[];
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -2940,7 +2940,7 @@ namespace m_Lo_021773cc {
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd54;
+extern u8 *gSceneCmd;
 Robo021ca458 *ActorMgr_FindPlayer(void);
 BOOL Actor_IsDead(void);
 void func_020627fc(u16 a);
@@ -2992,9 +2992,9 @@ typedef struct {
 } Self021774a4;
 
 extern "C" {
-extern void *data_02149ef8;
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021cad50[];
+extern void *gMsgRes;
+extern u8 UiObj_vtbl[];
+extern u8 Lo021cad50_vtbl[];
 void *Heap_Alloc(u32 size);
 s32 MsgRes_GetString(void *msg, s32 id);
 void Obj0215c1bc_SetText(void *p, s32 a, s32 b);
@@ -3021,7 +3021,7 @@ BOOL Task021cbee0_List4cOnDecide(Self021774a4 *self, BOOL ok) {
     UiListItem *item = List021774a4_Cur(m->unk_4c);
 
     if (!ok) {
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         SET_HIDE(m->unk_3c);
         SET_HIDE(m->unk_40);
         SET_HIDE(m->unk_44);
@@ -3035,9 +3035,9 @@ BOOL Task021cbee0_List4cOnDecide(Self021774a4 *self, BOOL ok) {
         if (m->unk_58 == NULL) {
             Lo021cad50 *o = (Lo021cad50 *)Heap_Alloc(0xe8);
             if (o != NULL) {
-                VOBJ_SET_VTABLE(o, data_ov000_021cac60);
+                VOBJ_SET_VTABLE(o, UiObj_vtbl);
                 o->vfunc_28();
-                VOBJ_SET_VTABLE(o, data_ov000_021cad50);
+                VOBJ_SET_VTABLE(o, Lo021cad50_vtbl);
                 o->vfunc_28();
             }
             m->unk_58 = o;
@@ -3045,7 +3045,7 @@ BOOL Task021cbee0_List4cOnDecide(Self021774a4 *self, BOOL ok) {
         m->unk_58->font = 4;
         m->unk_58->vfunc_08();
         m->unk_58->flags |= 0x20000;
-        Obj0215c1bc_SetText(m->unk_58, 0x8000, MsgRes_GetString(data_02149ef8, 0x9f));
+        Obj0215c1bc_SetText(m->unk_58, 0x8000, MsgRes_GetString(gMsgRes, 0x9f));
         m->unk_58->posZ = -0x199a;
         m->unk_58->vfunc_70();
     } else {
@@ -3087,7 +3087,7 @@ static inline UiListItem *GetNth(UiList *m) {
 }
 
 extern "C" {
-extern void *data_02149ef8;
+extern void *gMsgRes;
 void *MsgRes_GetString(void *p, s32 a);
 void Obj0215bb14_SetText(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
@@ -3108,12 +3108,12 @@ s32 Task021cbee0_List4cOnCursor(UiList *self, UiListItem *item) {
             if (id & 0x2000) {
                 Lo021cae48 *b;
                 if (a != NULL) {
-                    Lo021cae48_SetValue(a, data_0214a424->items[(u16)(id & 0xfff)], 1);
+                    Lo021cae48_SetValue(a, gStageFlags->items[(u16)(id & 0xfff)], 1);
                     a->flags &= ~0x20;
                 }
                 b = o->unk_48;
                 if (b != NULL) {
-                    Lo021cae48_SetValue(b, StageFlags_CountEntries(data_0214a424, item->id), 1);
+                    Lo021cae48_SetValue(b, StageFlags_CountEntries(gStageFlags, item->id), 1);
                     b->flags &= ~0x20;
                 }
             } else {
@@ -3125,7 +3125,7 @@ s32 Task021cbee0_List4cOnCursor(UiList *self, UiListItem *item) {
                 }
             }
         } else {
-            Obj0215bb14_SetText(t, MsgRes_GetString(data_02149ef8, 0x9d));
+            Obj0215bb14_SetText(t, MsgRes_GetString(gMsgRes, 0x9d));
             t->vfunc_70();
         }
     }
@@ -3136,29 +3136,29 @@ s32 func_ov000_021777d4(Task021cbee0 *self, u16 id) {
     UiList021cb4a8 *m = self->unk_4c;
     void *obj = self->unk_40;
     UiListItem *node = GetNth(m);
-    StageFlags *g = data_0214a424;
+    StageFlags *g = gStageFlags;
     u32 t;
     data_02fe1534.unk_72 = id;
     t = node->unk_0c;
     g->unk_020 = g->unk_020 > t ? g->unk_020 - t : 0;
-    Lo021cae48_SetValue(obj, data_0214a424->unk_020, 0);
+    Lo021cae48_SetValue(obj, gStageFlags->unk_020, 0);
     if (id & 0x2000) {
         if (self->unk_44 != NULL) {
-            Lo021cae48_SetValue(self->unk_44, data_0214a424->items[(u16)(id & 0xfff)], 1);
+            Lo021cae48_SetValue(self->unk_44, gStageFlags->items[(u16)(id & 0xfff)], 1);
         }
         void *o48 = self->unk_48;
         if (o48 != NULL) {
-            Lo021cae48_SetValue(o48, StageFlags_CountEntries(data_0214a424, id), 1);
+            Lo021cae48_SetValue(o48, StageFlags_CountEntries(gStageFlags, id), 1);
         }
     }
-    SndMgr_PlayVolume(data_02097e4c, 0x31, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x31, -1, -1, -1);
     return 0;
 }
 }
 
 extern "C" {
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021cad50[];
+extern u8 UiObj_vtbl[];
+extern u8 Lo021cad50_vtbl[];
 BOOL Item_Give(u16 a, s32 b);
 void Obj0215c1bc_SetText(Lo021cad50 *self, s32 id, void *v);
 void Obj02153c48_CreateText(UiListItem *self, s32 a, BOOL show, BOOL center, u8 d);
@@ -3167,9 +3167,9 @@ static inline void ShowMsg021778f0(Task021cbee0 *self, s32 msg) {
     if (self->unk_58 == NULL) {
         Lo021cad50 *o = (Lo021cad50 *)Heap_Alloc(0xe8);
         if (o != NULL) {
-            VOBJ_SET_VTABLE(o, data_ov000_021cac60);
+            VOBJ_SET_VTABLE(o, UiObj_vtbl);
             o->vfunc_28();
-            VOBJ_SET_VTABLE(o, data_ov000_021cad50);
+            VOBJ_SET_VTABLE(o, Lo021cad50_vtbl);
             o->vfunc_28();
         }
         self->unk_58 = o;
@@ -3177,7 +3177,7 @@ static inline void ShowMsg021778f0(Task021cbee0 *self, s32 msg) {
     self->unk_58->font = 4;
     self->unk_58->vfunc_08();
     self->unk_58->flags |= 0x20000;
-    Obj0215c1bc_SetText(self->unk_58, 0x8000, MsgRes_GetString(data_02149ef8, msg));
+    Obj0215c1bc_SetText(self->unk_58, 0x8000, MsgRes_GetString(gMsgRes, msg));
     self->unk_58->posZ = -0x199a;
     self->unk_58->vfunc_70();
 }
@@ -3187,7 +3187,7 @@ static inline BOOL IsCost021778f0(u32 c) {
 }
 
 static inline void Snd021778f0(s32 id) {
-    SndMgr_PlayVolume(data_02097e4c, id, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, id, -1, -1, -1);
 }
 
 static inline void SetBit021778f0(UiObj *p) {
@@ -3197,7 +3197,7 @@ static inline void SetBit021778f0(UiObj *p) {
 }
 
 static inline void AddCount021778f0(u16 n) {
-    StageFlags *g = data_0214a424;
+    StageFlags *g = gStageFlags;
     g->unk_024 += n;
     if (g->unk_024 > 9999) {
         g->unk_024 = 9999;
@@ -3313,11 +3313,11 @@ namespace m_Lo_02177ec4 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208bf54[];
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbe60[];
-extern void *data_02149ef8;
+extern u8 ResHandle_vtbl[];
+extern u8 StageRes_vtbl[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbe60_vtbl[];
+extern void *gMsgRes;
 extern const s16 FX_SinCosTable_[];
 void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
@@ -3334,9 +3334,9 @@ void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 VObj *Task021cbe60_New(void) {
     Task021cbe60 *obj = (Task021cbe60 *)Heap_Alloc(0x158);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
+        VOBJ_SET_VTABLE(obj, Task_vtbl);
         obj->vfunc_58();
-        VOBJ_SET_VTABLE(obj, data_ov000_021cbe60);
+        VOBJ_SET_VTABLE(obj, Task021cbe60_vtbl);
         obj->unk_3c = NULL;
         obj->unk_40 = NULL;
         obj->unk_44 = NULL;
@@ -3372,7 +3372,7 @@ BOOL Task021cbe60_List3cOnDecide(UiList *self, UiListItem *msg) {
     if (((u32)(id << 4) >> 16) - 1 == 1) {
         s32 c;
         u32 v;
-        v = data_0214a424->items[(u16)(id & 0xfff)];
+        v = gStageFlags->items[(u16)(id & 0xfff)];
         c = ((s32)msg->unk_0c);
         {
             u16 *p = &o->unk_54->max;
@@ -3383,7 +3383,7 @@ BOOL Task021cbe60_List3cOnDecide(UiList *self, UiListItem *msg) {
         o->unk_54->hidden = 0;
         o->unk_54->count = 1;
         o->unk_3c->flag2 = 1;
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
     }
     return TRUE;
 }
@@ -3397,11 +3397,11 @@ namespace m_Lo_02178010 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208bf54[];
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbe60[];
-extern void *data_02149ef8;
+extern u8 ResHandle_vtbl[];
+extern u8 StageRes_vtbl[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbe60_vtbl[];
+extern void *gMsgRes;
 extern const s16 FX_SinCosTable_[];
 void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
@@ -3420,7 +3420,7 @@ BOOL Task021cbe60_List3cOnCursor(UiList *self, UiListItem *msg) {
     Task021cbe60 *o = (Task021cbe60 *)self->owner;
     if (msg == NULL || msg->id == 0xffff) {
         Lo021cadcc *p = o->unk_40;
-        Obj0215bb14_SetText(p, MsgRes_GetString(data_02149ef8, 0x9d));
+        Obj0215bb14_SetText(p, MsgRes_GetString(gMsgRes, 0x9d));
         p->vfunc_70();
     } else {
         Lo021cadcc *p = o->unk_40;
@@ -3429,11 +3429,11 @@ BOOL Task021cbe60_List3cOnCursor(UiList *self, UiListItem *msg) {
         Obj0215bb14_SetText(p, o->unk_58);
         p->vfunc_70();
         if (o->unk_48 != NULL) {
-            Lo021cae48_SetValue(o->unk_48, data_0214a424->items[(u16)(msg->id & 0xfff)], 1);
+            Lo021cae48_SetValue(o->unk_48, gStageFlags->items[(u16)(msg->id & 0xfff)], 1);
         }
         n = o->unk_4c;
         if (n != NULL) {
-            Lo021cae48_SetValue(n, StageFlags_CountEntries(data_0214a424, msg->id), 1);
+            Lo021cae48_SetValue(n, StageFlags_CountEntries(gStageFlags, msg->id), 1);
         }
     }
     return TRUE;
@@ -3448,9 +3448,9 @@ namespace m_Lo_02178100 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbf60[];
+extern u8 ResHandle_vtbl[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbf60_vtbl[];
 extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
@@ -3498,7 +3498,7 @@ void Task021cbe60_Load(void) {
 }
 
 BOOL Task021cbe60_IsLoaded(void) {
-    VObj *obj = &data_ov000_021ccd44->res;
+    VObj *obj = &gTaskHost->res;
     return obj->vfunc_2c() ? TRUE : FALSE;
 }
 
@@ -3510,16 +3510,16 @@ BOOL Task021cbe60_IsLoaded(void) {
 namespace m_Lo_021782e0 {
 
 extern "C" {
-extern void *data_02149ef8;
+extern void *gMsgRes;
 extern void *data_0208ccc8;
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021cadcc[];
-extern u8 data_ov000_021cae48[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb5a8[];
-extern u8 data_ov000_021cacd8[];
-extern u8 data_ov000_021cb4a8[];
-extern u8 data_ov000_021cb2a8[];
+extern u8 UiObj_vtbl[];
+extern u8 Lo021cadcc_vtbl[];
+extern u8 Lo021cae48_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 Lo021cb5a8_vtbl[];
+extern u8 Lo021cacd8_vtbl[];
+extern u8 UiList021cb4a8_vtbl[];
+extern u8 Ov000Vt_021cb2a8_vtbl[];
 void *MsgRes_GetString(void *g, u32 id);
 void Obj0215bb14_SetText(void *o, void *s);
 void Lo021cae48_SetValue(void *a, s32 b, s32 c);
@@ -3548,13 +3548,13 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     u16 id;
     UiListItem *e;
     VObj *o;
-    g = data_02149ef8;
+    g = gMsgRes;
     TaskList_Insert(self);
     o = (VObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cadcc;
+        *(void **)o = Lo021cadcc_vtbl;
         o->vfunc_28();
     }
     self->unk_40 = (Lo021cadcc *)o;
@@ -3579,9 +3579,9 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     self->unk_40->vfunc_70();
     o = (VObj *)Heap_Alloc(0x98);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cae48;
+        *(void **)o = Lo021cae48_vtbl;
         o->vfunc_28();
     }
     self->unk_44 = (Lo021cae48 *)o;
@@ -3595,13 +3595,13 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
         s->slideZ = -0x199a;
     }
     self->unk_44->slideMode = 1;
-    Lo021cae48_SetValue(self->unk_44, data_0214a424->unk_020, 0);
+    Lo021cae48_SetValue(self->unk_44, gStageFlags->unk_020, 0);
     self->unk_44->vfunc_08();
     o = (VObj *)Heap_Alloc(0x98);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cae48;
+        *(void **)o = Lo021cae48_vtbl;
         o->vfunc_28();
     }
     self->unk_48 = (Lo021cae48 *)o;
@@ -3626,9 +3626,9 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     self->unk_48->height = 0x19;
     o = (VObj *)Heap_Alloc(0x98);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cae48;
+        *(void **)o = Lo021cae48_vtbl;
         o->vfunc_28();
     }
     self->unk_4c = (Lo021cae48 *)o;
@@ -3653,11 +3653,11 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     self->unk_4c->height = 0;
     o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021caec8;
+        *(void **)o = UiList_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cb5a8;
+        *(void **)o = Lo021cb5a8_vtbl;
         o->vfunc_28();
     }
     self->unk_50 = (Lo021cb5a8 *)o;
@@ -3681,9 +3681,9 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     self->unk_50->vfunc_08();
     o = (VObj *)Heap_Alloc(0xa0);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cacd8;
+        *(void **)o = Lo021cacd8_vtbl;
         func_ov000_02160fc8(o);
     }
     self->unk_54 = (Lo021cacd8 *)o;
@@ -3697,13 +3697,13 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     self->unk_54->flags |= 4;
     o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021caec8;
+        *(void **)o = UiList_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cb4a8;
+        *(void **)o = UiList021cb4a8_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cb2a8;
+        *(void **)o = Ov000Vt_021cb2a8_vtbl;
     }
     self->unk_3c = (UiList021cb4a8 *)o;
     self->unk_3c->vfunc_10(MsgRes_GetString(g, 0x11e));
@@ -3735,7 +3735,7 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     UiList_SetIconModel(self->unk_3c, data_0208ccc8, "cem3d1icn00", 0xffff);
     for (i = 0; i < 0x53; i++) {
         id = i + 0x2000;
-        if (data_0214a424->items[ItemIdx021782e0(id)] != 0) {
+        if (gStageFlags->items[ItemIdx021782e0(id)] != 0) {
             o = ((Task021cbe60 *)LoFindTask(10))->unk_3c;
             a = Param_Get(id);
             b = func_0206f080(id);
@@ -3759,11 +3759,11 @@ namespace m_Lo_02178a5c {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208bf54[];
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbe60[];
-extern void *data_02149ef8;
+extern u8 ResHandle_vtbl[];
+extern u8 StageRes_vtbl[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbe60_vtbl[];
+extern void *gMsgRes;
 extern const s16 FX_SinCosTable_[];
 void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
@@ -3782,7 +3782,7 @@ void Task021cbe60_UpdateActive(Task021cbe60 *self) {
     if (self->unk_54->state != 5) {
         return;
     }
-    v = data_02097dc8->trig;
+    v = gPad->trig;
     if (v & 1) {
         Lo021cae48_SetValue(self->unk_44, self->unk_44->value, 1);
         return;
@@ -3814,7 +3814,7 @@ extern "C" {
 void Task021cbe60_PreUpdate(Task021cbe60 *self) {
     switch (self->state) {
     case 8:
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         break;
     case 13: {
         bool done;
@@ -3841,7 +3841,7 @@ void Task021cbe60_PreUpdate(Task021cbe60 *self) {
         break;
     }
     case 10:
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         break;
     }
 }
@@ -3866,11 +3866,11 @@ namespace m_Lo_02178cd0 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208bf54[];
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbe60[];
-extern void *data_02149ef8;
+extern u8 ResHandle_vtbl[];
+extern u8 StageRes_vtbl[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbe60_vtbl[];
+extern void *gMsgRes;
 extern const s16 FX_SinCosTable_[];
 void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
@@ -3891,7 +3891,7 @@ void Task021cbe60_Draw(Task021cbe60 *self) {
     if (self->fadeRatio == 0) {
         return;
     }
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     scale[0] = 0x1000;
     scale[1] = 0x1000;
     scale[2] = 0x1000;
@@ -3922,14 +3922,14 @@ void func_ov000_02178dcc(void *p, BOOL on) {
         UiListItem *node;
         UiListItem *list;
         {
-            StageFlags *g = data_0214a424;
+            StageFlags *g = gStageFlags;
             if ((g->unk_020 += n) > 99999) {
                 g->unk_020 = 99999;
             }
         }
         node = NULL;
-        Lo021cae48_SetValue(self->unk_44, data_0214a424->unk_020, 0);
-        SndMgr_PlayVolume(data_02097e4c, 0x30, -1, -1, -1);
+        Lo021cae48_SetValue(self->unk_44, gStageFlags->unk_020, 0);
+        SndMgr_PlayVolume(gSndMgr, 0x30, -1, -1, -1);
         list = (UiListItem *)((u8 *)self->unk_3c->topItem);
         if (list != NULL) {
             s32 i = self->unk_3c->cursor;
@@ -3945,13 +3945,13 @@ void func_ov000_02178dcc(void *p, BOOL on) {
                 c = 0;
             }
             func_0206f3f0(node->id, c);
-            StageFlags_CountItems(data_0214a424);
+            StageFlags_CountItems(gStageFlags);
         }
         if (self->unk_48 != NULL) {
-            Lo021cae48_SetValue(self->unk_48, data_0214a424->items[ItemIdx(node->id)], 1);
+            Lo021cae48_SetValue(self->unk_48, gStageFlags->items[ItemIdx(node->id)], 1);
         }
         if (self->unk_4c != NULL) {
-            Lo021cae48_SetValue(self->unk_4c, StageFlags_CountEntries(data_0214a424, node->id), 1);
+            Lo021cae48_SetValue(self->unk_4c, StageFlags_CountEntries(gStageFlags, node->id), 1);
         }
         if (rest <= 0) {
             self->unk_3c->vfunc_70(node);
@@ -3971,16 +3971,16 @@ namespace m_Dtor_02178f70 {
 
 extern "C" {
 
-extern u8 data_ov000_021cbde0[];
-extern u8 data_ov000_021cc060[];
+extern u8 Task021cbde0_vtbl[];
+extern u8 Task_vtbl[];
 void *Heap_Alloc(u32 size);
 
 VObj *Task021cbde0_New(void) {
     Task021cbde0 *obj = (Task021cbde0 *)Heap_Alloc(0x54);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
+        VOBJ_SET_VTABLE(obj, Task_vtbl);
         obj->vfunc_58();
-        VOBJ_SET_VTABLE(obj, data_ov000_021cbde0);
+        VOBJ_SET_VTABLE(obj, Task021cbde0_vtbl);
         obj->vfunc_58();
     }
     obj->vfunc_08(0x5, 0xc8);
@@ -3996,8 +3996,8 @@ namespace m_Lo_02178fd8 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208ba30[];
+extern u8 ResHandle_vtbl[];
+extern u8 MainVt_0208ba30_vtbl[];
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
@@ -4007,9 +4007,9 @@ void Task021cbde0_Load(Task021cbde0 *self) {
     u8 buf[0x20];
     VObj *obj = (VObj *)Heap_Alloc(0x58);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_0208b318);
+        VOBJ_SET_VTABLE(obj, ResHandle_vtbl);
         obj->vfunc_08();
-        VOBJ_SET_VTABLE(obj, data_0208ba30);
+        VOBJ_SET_VTABLE(obj, MainVt_0208ba30_vtbl);
         MsgRes_Reset_0204bfcc(obj);
     }
     self->unk_3c = obj;
@@ -4029,13 +4029,13 @@ BOOL Task021cbde0_IsLoaded(Task021cbde0 *self) {
     return r;
 }
 
-extern void *data_02149ef8;
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb5a8[];
-extern u8 data_ov000_021ccbe0[];
-extern u8 data_ov000_021cbac8[];
-extern u8 data_ov000_021cca10[];
+extern void *gMsgRes;
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 Lo021cb5a8_vtbl[];
+extern u8 Ov000Vt_021ccbe0_vtbl[];
+extern u8 Ov000Vt_021cbac8_vtbl[];
+extern u8 Hud021cca10_vtbl[];
 void TaskList_Insert(Task *self);
 BOOL MsgRes_Bind(void *p);
 void *MsgRes_GetString(void *g, s32 id);
@@ -4061,14 +4061,14 @@ void Task021cbde0_Start(Task021cbde0 *self) {
     }
     TaskList_Insert(self);
     MsgRes_Bind(self->unk_3c);
-    g = data_02149ef8;
+    g = gMsgRes;
     p = (VObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
-        VOBJ_SET_VTABLE(p, data_ov000_021cac60);
+        VOBJ_SET_VTABLE(p, UiObj_vtbl);
         p->vfunc_28();
-        VOBJ_SET_VTABLE(p, data_ov000_021caec8);
+        VOBJ_SET_VTABLE(p, UiList_vtbl);
         p->vfunc_28();
-        VOBJ_SET_VTABLE(p, data_ov000_021cb5a8);
+        VOBJ_SET_VTABLE(p, Lo021cb5a8_vtbl);
         p->vfunc_28();
     }
     self->unk_40 = (Lo021cb5a8 *)p;
@@ -4089,9 +4089,9 @@ void Task021cbde0_Start(Task021cbde0 *self) {
     self->unk_40->vfunc_08();
     p = (VObj *)Heap_Alloc(0xf4);
     if (p != NULL) {
-        VOBJ_SET_VTABLE(p, data_ov000_021cac60);
+        VOBJ_SET_VTABLE(p, UiObj_vtbl);
         p->vfunc_28();
-        VOBJ_SET_VTABLE(p, data_ov000_021ccbe0);
+        VOBJ_SET_VTABLE(p, Ov000Vt_021ccbe0_vtbl);
         func_ov000_021c3af4(p);
     }
     self->unk_44 = (LoBase021ccb54_021ccbe0 *)p;
@@ -4106,14 +4106,14 @@ void Task021cbde0_Start(Task021cbde0 *self) {
     s->posZ = -0x1ccd;
     self->unk_44->onDecide = (void *)func_ov000_02179910;
     {
-        u8 *base = data_02fe152c->data;
+        u8 *base = gDataRes->data;
         u16 i;
-        SaveEntry *tbl = (SaveEntry *)DataRes_GetTable(data_02fe152c, 3);
-        u32 n = DataRes_GetCount(data_02fe152c, 3);
+        SaveEntry *tbl = (SaveEntry *)DataRes_GetTable(gDataRes, 3);
+        u32 n = DataRes_GetCount(gDataRes, 3);
         u16 used[0x40];
         MI_CpuFill8(used, 0, sizeof(used));
         for (i = 0; i < n; i++) {
-            if (DataRes_ReadBitsAt_02059544(data_02fe152c, base + 0x70, tbl, 1, i)) {
+            if (DataRes_ReadBitsAt_02059544(gDataRes, base + 0x70, tbl, 1, i)) {
                 used[tbl[i].id] = i + 1;
             }
         }
@@ -4121,9 +4121,9 @@ void Task021cbde0_Start(Task021cbde0 *self) {
             if (used[i] != 0) {
                 Hud021cca10 *it = (Hud021cca10 *)Heap_Alloc(sizeof(Hud021cca10));
                 if (it != NULL) {
-                    VOBJ_SET_VTABLE(it, data_ov000_021cbac8);
+                    VOBJ_SET_VTABLE(it, Ov000Vt_021cbac8_vtbl);
                     ListRow_Init(it);
-                    VOBJ_SET_VTABLE(it, data_ov000_021cca10);
+                    VOBJ_SET_VTABLE(it, Hud021cca10_vtbl);
                     Hud021cca10_Init(it);
                 }
                 it->index = i;
@@ -4145,8 +4145,8 @@ namespace m_Lo_0217942c {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208ba30[];
+extern u8 ResHandle_vtbl[];
+extern u8 MainVt_0208ba30_vtbl[];
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
@@ -4178,15 +4178,15 @@ namespace m_Dtor_02179560 {
 
 extern "C" {
 
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021ccbe0[];
+extern u8 UiObj_vtbl[];
+extern u8 Ov000Vt_021ccbe0_vtbl[];
 void Heap_Free(void *ptr);
 void LoBase021ccb54_021ccbe0_Release(void *ptr);
 
 VObj *Ov000Vt_021ccbe0_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021ccbe0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021ccbe0_vtbl);
     LoBase021ccb54_021ccbe0_Release(self);
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     Heap_Free(self);
     return self;
@@ -4201,8 +4201,8 @@ namespace m_Lo_021795a4 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208ba30[];
+extern u8 ResHandle_vtbl[];
+extern u8 MainVt_0208ba30_vtbl[];
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
@@ -4221,14 +4221,14 @@ void Task021cbde0_UpdateActive(Task021cbde0 *self) {
     if (self->unk_4c != 0xffff) {
         return;
     }
-    v = data_02097dc8->trig;
+    v = gPad->trig;
     if (v & 1) {
         return;
     }
     if (!(v & 2)) {
         return;
     }
-    SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
     if ((void *)self->unk_40 != NULL) {
         self->unk_40->hidden = 1;
     }
@@ -4257,8 +4257,8 @@ void Task021cbde0_PreUpdate(void) {
 namespace m_Win_02179684 {
 
 extern "C" {
-extern u8 data_0208ba70[];
-extern u8 data_0208bbc8[];
+extern u8 TextWin_vtbl[];
+extern u8 MainVt_0208bbc8_vtbl[];
 void *Heap_Alloc(u32 size);
 s32 MsgRes_GetLines(void *res, u16 id, s32 *out, s32 d);
 void TextWin_Init(void *p);
@@ -4283,9 +4283,9 @@ void Task021cbde0_PostUpdate(Task021cbde0 *self) {
                 s32 n = MsgRes_GetLines(self->unk_3c, self->unk_4c, &ofs, 1);
                 VObj *o = (VObj *)Heap_Alloc(0xb80);
                 if (o != NULL) {
-                    VOBJ_SET_VTABLE(o, data_0208ba70);
+                    VOBJ_SET_VTABLE(o, TextWin_vtbl);
                     TextWin_Init(o);
-                    VOBJ_SET_VTABLE(o, data_0208bbc8);
+                    VOBJ_SET_VTABLE(o, MainVt_0208bbc8_vtbl);
                     TwScene_Init(o);
                 }
                 self->unk_50 = o;
@@ -4373,7 +4373,7 @@ BOOL func_ov000_02179910(UiList *self, UiListItem *msg) {
     if (o->unk_44 != NULL) {
         o->unk_44->hidden = 1;
     }
-    SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
     return TRUE;
 }
 
@@ -4386,16 +4386,16 @@ namespace m_Dtor_0217997c {
 
 extern "C" {
 
-extern u8 data_ov000_021cbd60[];
-extern u8 data_ov000_021cc060[];
+extern u8 Task021cbd60_vtbl[];
+extern u8 Task_vtbl[];
 void *Heap_Alloc(u32 size);
 
 VObj *Task021cbd60_New(void) {
     Task021cbd60 *obj = (Task021cbd60 *)Heap_Alloc(0x48);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
+        VOBJ_SET_VTABLE(obj, Task_vtbl);
         obj->vfunc_58();
-        VOBJ_SET_VTABLE(obj, data_ov000_021cbd60);
+        VOBJ_SET_VTABLE(obj, Task021cbd60_vtbl);
         obj->vfunc_58();
     }
     obj->vfunc_08(0x6, 0xc8);
@@ -4411,8 +4411,8 @@ namespace m_Lo_021799e4 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208ba30[];
+extern u8 ResHandle_vtbl[];
+extern u8 MainVt_0208ba30_vtbl[];
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
@@ -4422,9 +4422,9 @@ void Task021cbd60_Load(Task021cbd60 *self) {
     u8 buf[0x20];
     VObj *obj = (VObj *)Heap_Alloc(0x58);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_0208b318);
+        VOBJ_SET_VTABLE(obj, ResHandle_vtbl);
         obj->vfunc_08();
-        VOBJ_SET_VTABLE(obj, data_0208ba30);
+        VOBJ_SET_VTABLE(obj, MainVt_0208ba30_vtbl);
         MsgRes_Reset_0204bfcc(obj);
     }
     self->unk_3c = obj;
@@ -4452,11 +4452,11 @@ BOOL Task021cbd60_IsLoaded(Task021cbd60 *self) {
 namespace m_Obj_02179ab8 {
 
 extern "C" {
-extern void *data_02149ef8;
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb5a8[];
-extern u8 data_ov000_021cadcc[];
+extern void *gMsgRes;
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 Lo021cb5a8_vtbl[];
+extern u8 Lo021cadcc_vtbl[];
 extern u8 data_ov000_021c9c46[];
 void *Heap_Alloc(u32 size);
 BOOL MsgRes_Bind(void *p);
@@ -4473,14 +4473,14 @@ void Task021cbd60_Start(Task021cbd60 *self) {
         return;
     }
     MsgRes_Bind(self->unk_3c);
-    g = data_02149ef8;
+    g = gMsgRes;
     o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021caec8;
+        *(void **)o = UiList_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cb5a8;
+        *(void **)o = Lo021cb5a8_vtbl;
         o->vfunc_28();
     }
     self->unk_44 = (Lo021cb5a8 *)o;
@@ -4504,9 +4504,9 @@ void Task021cbd60_Start(Task021cbd60 *self) {
     self->unk_44->vfunc_08();
     o = (VObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cadcc;
+        *(void **)o = Lo021cadcc_vtbl;
         o->vfunc_28();
     }
     self->unk_40 = (Lo021cadcc *)o;
@@ -4532,7 +4532,7 @@ void Task021cbd60_Start(Task021cbd60 *self) {
     self->unk_40->vfunc_14(MsgRes_GetString(g, 0xc3));
     self->unk_40->vfunc_08();
     self->unk_40->flags |= 0x80000;
-    n = data_0214a424->unk_518_8;
+    n = gStageFlags->unk_518_8;
     if (n != 0) {
         Obj0215bb14_SetText(self->unk_40, MsgRes_GetString(self->unk_3c, (u16)(n - 1)));
     }
@@ -4552,8 +4552,8 @@ namespace m_Lo_02179d78 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208ba30[];
+extern u8 ResHandle_vtbl[];
+extern u8 MainVt_0208ba30_vtbl[];
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
@@ -4573,10 +4573,10 @@ void Task021cbd60_Release(Task021cbd60 *self) {
 }
 
 void Task021cbd60_UpdateActive(Task021cbd60 *self) {
-    if (!(data_02097dc8->trig & 2)) {
+    if (!(gPad->trig & 2)) {
         return;
     }
-    SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
     if ((void *)self->unk_40 != NULL) {
         self->unk_40->hidden = 1;
     }
@@ -4607,8 +4607,8 @@ namespace m_Lo_02179ef4 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208ba30[];
+extern u8 ResHandle_vtbl[];
+extern u8 MainVt_0208ba30_vtbl[];
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
@@ -4660,16 +4660,16 @@ namespace m_Dtor_02179fcc {
 
 extern "C" {
 
-extern u8 data_ov000_021cbc60[];
-extern u8 data_ov000_021cc060[];
+extern u8 Task021cbc60_vtbl[];
+extern u8 Task_vtbl[];
 void *Heap_Alloc(u32 size);
 
 VObj *Task021cbc60_New(void) {
     Task021cbc60 *obj = (Task021cbc60 *)Heap_Alloc(0x50);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
+        VOBJ_SET_VTABLE(obj, Task_vtbl);
         obj->vfunc_58();
-        VOBJ_SET_VTABLE(obj, data_ov000_021cbc60);
+        VOBJ_SET_VTABLE(obj, Task021cbc60_vtbl);
         obj->vfunc_58();
     }
     obj->vfunc_08(0x7, 0xc8);
@@ -4717,11 +4717,11 @@ public:
 
 extern "C" {
 
-extern void *data_02149ef8;
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb1b0[];
-extern u8 data_ov000_021cb0b8[];
+extern void *gMsgRes;
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 Ov000Vt_021cb1b0_vtbl[];
+extern u8 Ov000Vt_021cb0b8_vtbl[];
 void *MsgRes_GetString(void *a, s32 b);
 void *Heap_Alloc(u32 size);
 void *UiList_GetItemById(Win0217a034 *w, s32 b);
@@ -4734,18 +4734,18 @@ BOOL Task021cbc60_Task3Callback(Obj0217a034 *self, s32 msg) {
     void *b;
     switch (msg) {
     case 0: {
-        void *res = data_02149ef8;
+        void *res = gMsgRes;
         a = MsgRes_GetString(res, 0x1b);
         b = MsgRes_GetString(res, 0x8d);
         w = (Win0217a034 *)Heap_Alloc(0x1e4);
         if (w != NULL) {
-            VOBJ_SET_VTABLE(w, data_ov000_021cac60);
+            VOBJ_SET_VTABLE(w, UiObj_vtbl);
             w->vfunc_28();
-            VOBJ_SET_VTABLE(w, data_ov000_021caec8);
+            VOBJ_SET_VTABLE(w, UiList_vtbl);
             w->vfunc_28();
-            VOBJ_SET_VTABLE(w, data_ov000_021cb1b0);
+            VOBJ_SET_VTABLE(w, Ov000Vt_021cb1b0_vtbl);
             w->vfunc_28();
-            VOBJ_SET_VTABLE(w, data_ov000_021cb0b8);
+            VOBJ_SET_VTABLE(w, Ov000Vt_021cb0b8_vtbl);
             w->vfunc_28();
         }
         self->win = w;
@@ -4782,8 +4782,8 @@ namespace m_Lo_0217a1d8 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208ba30[];
+extern u8 ResHandle_vtbl[];
+extern u8 MainVt_0208ba30_vtbl[];
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
@@ -4840,8 +4840,8 @@ namespace m_Lo_0217a26c {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208ba30[];
+extern u8 ResHandle_vtbl[];
+extern u8 MainVt_0208ba30_vtbl[];
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
@@ -4869,9 +4869,9 @@ void Task021cbc60_Release(Task021cbc60 *self) {
 namespace m_Lo_0217a328 {
 
 extern "C" {
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021cad50[];
-extern void *data_02149ef8;
+extern u8 UiObj_vtbl[];
+extern u8 Lo021cad50_vtbl[];
+extern void *gMsgRes;
 void *MsgRes_GetString(void *p, u16 a);
 void Obj0215c1bc_SetText(void *a, s32 b, void *c);
 void Obj0215c1bc_SetMsg(void *a, s32 b);
@@ -4880,9 +4880,9 @@ void func_ov000_0217a328(Task021cbc60 *self, s32 a, s32 b) {
     if (self->unk_48 == NULL) {
         VObj *o = (VObj *)Heap_Alloc(0xe8);
         if (o != NULL) {
-            VOBJ_SET_VTABLE(o, data_ov000_021cac60);
+            VOBJ_SET_VTABLE(o, UiObj_vtbl);
             o->vfunc_28();
-            VOBJ_SET_VTABLE(o, data_ov000_021cad50);
+            VOBJ_SET_VTABLE(o, Lo021cad50_vtbl);
             o->vfunc_28();
         }
         self->unk_48 = (Lo021cad50 *)o;
@@ -4903,7 +4903,7 @@ void func_ov000_0217a328(Task021cbc60 *self, s32 a, s32 b) {
     self->unk_48->font = 4;
     self->unk_48->vfunc_08();
     if (b != -1) {
-        Obj0215c1bc_SetText(self->unk_48, 0x8000, MsgRes_GetString(data_02149ef8, b));
+        Obj0215c1bc_SetText(self->unk_48, 0x8000, MsgRes_GetString(gMsgRes, b));
     } else {
         Obj0215c1bc_SetMsg(self->unk_48, a);
     }
@@ -4990,16 +4990,16 @@ void Task021cbc60_PostUpdate(Task021cbc60 *self) {
         break;
     case 2: {
         StageFlags *g;
-        data_02097dd0->unk_31 = 1;
+        gSysState->unk_31 = 1;
         self->unk_40 = 0;
         if (self->param == 0) {
-            func_0206c620(data_0214a424);
+            func_0206c620(gStageFlags);
         } else if (self->param == 1) {
-            func_0206c670(data_0214a424);
+            func_0206c670(gStageFlags);
         }
         self->unk_44->bits.active = TRUE;
         self->unk_44->flags |= 0x20;
-        g = data_0214a424;
+        g = gStageFlags;
         if (Lvl0217a480(g) > 0x14) {
             u16 n = g->unk_008;
             GameSave *q = self->unk_44;
@@ -5036,13 +5036,13 @@ void Task021cbc60_PostUpdate(Task021cbc60 *self) {
             return;
         }
         if (self->param == 0) {
-            SndMgr_PlayVolume(data_02097e4c, 0x85, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x85, -1, -1, -1);
             func_ov000_0217a328(self, 0x7a, -1);
         }
         self->unk_3c = 5;
         break;
     case 5:
-        data_02097dd0->unk_31 = 0;
+        gSysState->unk_31 = 0;
         if (self->unk_48 != NULL) {
             return;
         }
@@ -5061,8 +5061,8 @@ namespace m_Dtor_0217a88c {
 
 extern "C" {
 
-extern u8 data_ov000_021cbb60[];
-extern u8 data_ov000_021cc060[];
+extern u8 Task021cbb60_vtbl[];
+extern u8 Task_vtbl[];
 void *Heap_Alloc(u32 size);
 
 void Task021cbc60_Draw(Task021cbc60 *self) {
@@ -5075,9 +5075,9 @@ void Task021cbc60_Draw(Task021cbc60 *self) {
 VObj *Task021cbb60_New(void) {
     Task021cbb60 *obj = (Task021cbb60 *)Heap_Alloc(0xc4);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
+        VOBJ_SET_VTABLE(obj, Task_vtbl);
         obj->vfunc_58();
-        VOBJ_SET_VTABLE(obj, data_ov000_021cbb60);
+        VOBJ_SET_VTABLE(obj, Task021cbb60_vtbl);
         obj->vfunc_58();
     }
     obj->vfunc_08(0x8, 0xc8);
@@ -5130,11 +5130,11 @@ public:
 
 extern "C" {
 
-extern void *data_02149ef8;
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb1b0[];
-extern u8 data_ov000_021cb0b8[];
+extern void *gMsgRes;
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 Ov000Vt_021cb1b0_vtbl[];
+extern u8 Ov000Vt_021cb0b8_vtbl[];
 void *MsgRes_GetString(void *a, s32 b);
 void *Heap_Alloc(u32 size);
 BOOL func_ov000_02175e6c(void);
@@ -5157,18 +5157,18 @@ BOOL Task021cbb60_Task3Callback(Obj0217a8f4 *self, s32 msg) {
         case 4: if (hi == 0) id = 0x94; else id = 0x95; break;
         default: id = 0x8d; break;
         }
-        void *res = data_02149ef8;
+        void *res = gMsgRes;
         a = MsgRes_GetString(res, 0x18);
         b = MsgRes_GetString(res, id);
         w = (Win0217a8f4 *)Heap_Alloc(0x1e4);
         if (w != NULL) {
-            VOBJ_SET_VTABLE(w, data_ov000_021cac60);
+            VOBJ_SET_VTABLE(w, UiObj_vtbl);
             w->vfunc_28();
-            VOBJ_SET_VTABLE(w, data_ov000_021caec8);
+            VOBJ_SET_VTABLE(w, UiList_vtbl);
             w->vfunc_28();
-            VOBJ_SET_VTABLE(w, data_ov000_021cb1b0);
+            VOBJ_SET_VTABLE(w, Ov000Vt_021cb1b0_vtbl);
             w->vfunc_28();
-            VOBJ_SET_VTABLE(w, data_ov000_021cb0b8);
+            VOBJ_SET_VTABLE(w, Ov000Vt_021cb0b8_vtbl);
             w->vfunc_28();
         }
         self->win = w;
@@ -5212,9 +5212,9 @@ namespace m_Lo_0217ab30 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbf60[];
+extern u8 ResHandle_vtbl[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbf60_vtbl[];
 extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
@@ -5229,7 +5229,7 @@ BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 b);
 void Task021cbb60_Load(Task021cbb60 *self) {
     VObj *obj = (VObj *)Heap_Alloc(0x4c);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_0208b318);
+        VOBJ_SET_VTABLE(obj, ResHandle_vtbl);
         obj->vfunc_08();
     }
     self->unk_3c = obj;
@@ -5323,9 +5323,9 @@ namespace m_Lo_0217ad54 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbf60[];
+extern u8 ResHandle_vtbl[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbf60_vtbl[];
 extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
@@ -5481,8 +5481,8 @@ typedef struct {
 } Data02097ce0;
 
 extern "C" {
-extern u8 data_0208ba70[];
-extern Data02097ce0 *data_02097ce0;
+extern u8 TextWin_vtbl[];
+extern Data02097ce0 *gGfxMgr;
 void *Heap_Alloc(u32 size);
 void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
@@ -5491,14 +5491,14 @@ void TextWin_RenderToVram(void *p);
 Obj0217b230 *func_ov000_0217b230(void *unused, s32 a1, s32 a2) {
     Obj0217b230 *o = (Obj0217b230 *)Heap_Alloc(0xb8);
     if (o != NULL) {
-        VOBJ_SET_VTABLE(o, data_0208ba70);
+        VOBJ_SET_VTABLE(o, TextWin_vtbl);
         TextWin_Init(o);
     }
     o->unk_37 = 1;
     o->unk_28 = a2;
     o->unk_24 = a1;
     o->unk_4c = Text_Measure(o->unk_28, o->unk_38, o->unk_24, o->unk_44, o->unk_48, o->unk_37 ? 1 : 0);
-    data_02097ce0->unk_04 = o->unk_28;
+    gGfxMgr->unk_04 = o->unk_28;
     o->unk_70 = -0x1c8d;
     o->b8 = 0x1e;
     o->unk_74 = 0x7fff;
@@ -5588,7 +5588,7 @@ typedef struct {
 } Self;
 
 extern "C" {
-extern void *data_02149ef8;
+extern void *gMsgRes;
 char *MsgRes_GetString(void *msg, s32 id);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
@@ -5642,7 +5642,7 @@ void func_ov000_0217b324(Self *self, s32 idx) {
     s32 n;
     long i;
 
-    msg = data_02149ef8;
+    msg = gMsgRes;
     rec = (SaveRec *)(self->list->recs + (idx * self->list->stride + 0x14));
     flag = FALSE;
     FREE_SLOT(p74);
@@ -5760,9 +5760,9 @@ namespace m_Win_0217bd88 {
 
 extern "C" {
 
-extern void *data_02149ef8;
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021cad50[];
+extern void *gMsgRes;
+extern u8 UiObj_vtbl[];
+extern u8 Lo021cad50_vtbl[];
 void *MsgRes_GetString(void *a, u16 b);
 void *Heap_Alloc(u32 size);
 void Obj0215c1bc_SetText(Lo021cad50 *w, s32 a, void *b);
@@ -5790,9 +5790,9 @@ BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 id) {
     self->unk_68 = 0x3c;
     w = (Lo021cad50 *)Heap_Alloc(0xe8);
     if (w != NULL) {
-        VOBJ_SET_VTABLE(w, data_ov000_021cac60);
+        VOBJ_SET_VTABLE(w, UiObj_vtbl);
         w->vfunc_28();
-        VOBJ_SET_VTABLE(w, data_ov000_021cad50);
+        VOBJ_SET_VTABLE(w, Lo021cad50_vtbl);
         w->vfunc_28();
     }
     self->unk_64 = w;
@@ -5809,7 +5809,7 @@ BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 id) {
     self->unk_64->font = 4;
     self->unk_64->vfunc_08();
     if (id != -1) {
-        Obj0215c1bc_SetText(self->unk_64, 0x8000, MsgRes_GetString(data_02149ef8, id));
+        Obj0215c1bc_SetText(self->unk_64, 0x8000, MsgRes_GetString(gMsgRes, id));
     } else {
         Obj0215c1bc_SetMsg(self->unk_64, a);
     }
@@ -5891,9 +5891,9 @@ void func_ov000_0217d0c4(Task021cbb60 *self);
 void func_ov000_0217d66c(Task021cbb60 *self);
 void func_ov000_0217dba4(Task021cbb60 *self);
 void func_ov000_0217ddd4(Task021cbb60 *self);
-extern u8 data_0208b614[];
-extern u8 data_0208ca9c[];
-extern u8 data_0208c994[];
+extern u8 SaveBase_vtbl[];
+extern u8 MainVt_0208ca9c_vtbl[];
+extern u8 MainVt_0208c994_vtbl[];
 
 static inline BOOL Lo0217c3b0_Busy(Task021cbb60 *self) {
     Lo021cad50 *p = self->unk_64;
@@ -6172,7 +6172,7 @@ void func_ov000_0217c7b8(Task021cbb60 *self) {
         if (!func_ov000_0217bd88(self, 0x8000, 0x82)) {
             return;
         }
-        data_02097dd0->unk_31 = 1;
+        gSysState->unk_31 = 1;
         self->unk_04 |= 0x10000000;
         self->unk_50 = 6;
     case 6: {
@@ -6197,7 +6197,7 @@ void func_ov000_0217c7b8(Task021cbb60 *self) {
         self->unk_50 = 8;
         break;
     case 8:
-        data_02097dd0->unk_31 = 0;
+        gSysState->unk_31 = 0;
         if (!((self->unk_04 & 0x4000000) ? TRUE : FALSE)) {
             Lo0217c008_SetMode(self, 5);
         }
@@ -6206,11 +6206,11 @@ void func_ov000_0217c7b8(Task021cbb60 *self) {
     case 9: {
         GameSave0208c994 *o = (GameSave0208c994 *)Heap_Alloc(0x58);
         if (o != NULL) {
-            VOBJ_SET_VTABLE(o, data_0208b614);
+            VOBJ_SET_VTABLE(o, SaveBase_vtbl);
             o->Init();
-            VOBJ_SET_VTABLE(o, data_0208ca9c);
+            VOBJ_SET_VTABLE(o, MainVt_0208ca9c_vtbl);
             o->Init();
-            VOBJ_SET_VTABLE(o, data_0208c994);
+            VOBJ_SET_VTABLE(o, MainVt_0208c994_vtbl);
             o->Init();
         }
         self->unk_60 = o;
@@ -6481,13 +6481,13 @@ void func_ov000_0217d0c4(Task021cbb60 *self) {
         }
         o->flags |= 0x40000;
         self->unk_04 |= 0x100000;
-        StageFlags_Reset(data_0214a424);
+        StageFlags_Reset(gStageFlags);
         Exit0217d0c4(self, 5);
         break;
     }
     case 6:
         self->unk_04 |= 0x200000;
-        StageFlags_Reset(data_0214a424);
+        StageFlags_Reset(gStageFlags);
         Exit0217d0c4(self, 4);
         break;
     case 7: {
@@ -6642,7 +6642,7 @@ static inline BOOL Waiting0217d66c(Task021cbb60 *self) {
 }
 
 static inline void SePlay0217d66c(s32 id) {
-    SndMgr_PlayVolume(data_02097e4c, id, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, id, -1, -1, -1);
 }
 
 void func_ov000_0217d66c(Task021cbb60 *self) {
@@ -6694,7 +6694,7 @@ void func_ov000_0217d66c(Task021cbb60 *self) {
         if (Flag0217d66c(self->unk_04, 0x10000)) {
             return;
         }
-        pad = data_02097dc8;
+        pad = gPad;
         if ((pad->cur & 0x548) == 0x548) {
             self->unk_48 = 0xc;
             return;
@@ -6787,7 +6787,7 @@ void func_ov000_0217d66c(Task021cbb60 *self) {
         break;
     case 11:
         if (self->unk_64 != NULL && self->unk_64->vfunc_0c() &&
-            (data_02097dc8->cur & 0x548) == 0x548) {
+            (gPad->cur & 0x548) == 0x548) {
             self->unk_64->flags |= 0x40000;
             self->unk_48 = 0xc;
             return;
@@ -6822,7 +6822,7 @@ void func_ov000_0217d66c(Task021cbb60 *self) {
 namespace m_Lo_0217dba4 {
 
 extern "C" {
-extern void *data_ov000_021ccd54;
+extern void *gSceneCmd;
 void StageFlags_Restore(void *p);
 void SceneCmd_Push1c(void *p, s32 a);
 void SceneCmd_Push24(void *p, s32 a);
@@ -6877,25 +6877,25 @@ void func_ov000_0217dba4(Task021cbb60 *self) {
     if (!(f & 0x20000000)) {
         if (Bit(f, 0x1000000)) {
             if (!Bit(f, 0x200000)) {
-                StageFlags_Restore(data_0214a424);
+                StageFlags_Restore(gStageFlags);
             }
-            SceneCmd_Push1c(data_ov000_021ccd54, 0);
+            SceneCmd_Push1c(gSceneCmd, 0);
         } else if (Bit(f, 0x2000000)) {
             if (!Bit(f, 0x200000)) {
-                StageFlags_Restore(data_0214a424);
+                StageFlags_Restore(gStageFlags);
             }
-            SceneCmd_Push24(data_ov000_021ccd54, 0);
+            SceneCmd_Push24(gSceneCmd, 0);
         } else if (Bit(f, 0x8000000)) {
-            SceneCmd_Push23(data_ov000_021ccd54);
+            SceneCmd_Push23(gSceneCmd);
         } else if (Bit(f, 0x100000) || Bit(f, 0x200000)) {
-            func_ov000_0218283c(data_ov000_021ccd54, 0);
+            func_ov000_0218283c(gSceneCmd, 0);
         } else if (Bit(f, 0x400000)) {
-            func_ov000_02182920(data_ov000_021ccd54);
+            func_ov000_02182920(gSceneCmd);
         } else if (Bit(f, 0x800000)) {
-            func_ov000_021829f8(data_ov000_021ccd54);
+            func_ov000_021829f8(gSceneCmd);
         }
-        data_ov000_021ccd34 = 1;
-        data_ov000_021ccd44->unk_00_0 = 1;
+        gTaskSwitchPending = 1;
+        gTaskHost->unk_00_0 = 1;
     }
     self->vfunc_0c(0);
     if (self->unk_44 != 7) {
@@ -6912,9 +6912,9 @@ namespace m_Lo_0217ddd4 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbf60[];
+extern u8 ResHandle_vtbl[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbf60_vtbl[];
 extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
@@ -6949,7 +6949,7 @@ void func_ov000_0217ddd4(Task021cbb60 *self) {
         self->unk_48 = 1;
     }
     case 1:
-        data_02097dd0->unk_31 = 0;
+        gSysState->unk_31 = 0;
         break;
     }
 }
@@ -7023,7 +7023,7 @@ static inline void G3_Cmd1(int cmd, u32 value) {
 
 void func_ov000_0217df5c(Task021cbb60 *self, VecFx32 *pos) {
     VecFx32 v;
-    u8 *g = (u8 *)data_02097d48;
+    u8 *g = (u8 *)gGfxSys;
     u32 size;
     u8 i;
     MODEL_FLAGS(self->unk_a0)->unk_19 = 1;
@@ -7157,7 +7157,7 @@ static inline void Row0217e560(Task021cbb60 *self, int off, s32 x, s32 y) {
 }
 void func_ov000_0217e560(Task021cbb60 *self, s32 *pos) {
     s32 x = pos[0] >> 12;
-    u8 *g = (u8 *)data_02097d48;
+    u8 *g = (u8 *)gGfxSys;
     s32 step;
     s32 a;
     s32 s;
@@ -7235,16 +7235,16 @@ namespace m_Dtor_0217e9c8 {
 
 extern "C" {
 
-extern u8 data_ov000_021cbae0[];
-extern u8 data_ov000_021cc060[];
+extern u8 Task021cbae0_vtbl[];
+extern u8 Task_vtbl[];
 void *Heap_Alloc(u32 size);
 
 VObj *Task021cbae0_New(void) {
     Task021cbae0 *obj = (Task021cbae0 *)Heap_Alloc(0x58);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
+        VOBJ_SET_VTABLE(obj, Task_vtbl);
         obj->vfunc_58();
-        VOBJ_SET_VTABLE(obj, data_ov000_021cbae0);
+        VOBJ_SET_VTABLE(obj, Task021cbae0_vtbl);
         obj->vfunc_58();
     }
     obj->vfunc_08(0x9, 0xc8);
@@ -7264,12 +7264,12 @@ typedef struct {
 } Bits0217ea30;
 
 extern "C" {
-extern void *data_02149ef8;
-extern void *data_02fe152c;
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb1b0[];
-extern u8 data_ov000_021cb0b8[];
+extern void *gMsgRes;
+extern void *gDataRes;
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 Ov000Vt_021cb1b0_vtbl[];
+extern u8 Ov000Vt_021cb0b8_vtbl[];
 void *MsgRes_GetString(void *g, u32 id);
 BOOL StageFlags_IsValid(void);
 u16 DataRes_ReadBitRange(void *a, s32 b, s32 c, s32 d);
@@ -7280,13 +7280,13 @@ public:
     u8 data[0x1e4];
     static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     Obj0217ea30() {
-        *(void **)this = data_ov000_021cac60;
+        *(void **)this = UiObj_vtbl;
         ((VObj *)this)->vfunc_28();
-        *(void **)this = data_ov000_021caec8;
+        *(void **)this = UiList_vtbl;
         ((VObj *)this)->vfunc_28();
-        *(void **)this = data_ov000_021cb1b0;
+        *(void **)this = Ov000Vt_021cb1b0_vtbl;
         ((VObj *)this)->vfunc_28();
-        *(void **)this = data_ov000_021cb0b8;
+        *(void **)this = Ov000Vt_021cb0b8_vtbl;
         ((VObj *)this)->vfunc_28();
     }
 };
@@ -7306,7 +7306,7 @@ struct Lo0217ea30 : public VObj {
     u8 unk_08[0x24];
     u8 *unk_2c;
     u8 unk_30[0xc];
-    Lo021cb0b8 *unk_3c; // the message list (vtable data_ov000_021cb0b8)
+    Lo021cb0b8 *unk_3c; // the message list (vtable Ov000Vt_021cb0b8_vtbl)
     u8 unk_40[0x4];
     u16 unk_44;
 };
@@ -7319,15 +7319,15 @@ s32 Task021cbae0_Task3Callback(Lo0217ea30 *self, s32 msg) {
     switch (msg) {
     case 0:
         if (StageFlags_IsValid()) {
-            if (DataRes_ReadBitRange(data_02fe152c, 5, 1, 4)) {
-                g = data_02149ef8;
+            if (DataRes_ReadBitRange(gDataRes, 5, 1, 4)) {
+                g = gMsgRes;
                 text.desc = MsgRes_GetString(g, 0x1d);
                 text.title = MsgRes_GetString(g, 0x8d);
                 o = (Lo021cb0b8 *)new Obj0217ea30;
                 self->unk_3c = o;
                 o->vfunc_10(text.title);
             } else {
-                g = data_02149ef8;
+                g = gMsgRes;
                 text.desc = MsgRes_GetString(g, 0x1c);
                 text.title = MsgRes_GetString(g, 0x8d);
                 o = (Lo021cb0b8 *)new Obj0217ea30;
@@ -7335,7 +7335,7 @@ s32 Task021cbae0_Task3Callback(Lo0217ea30 *self, s32 msg) {
                 o->vfunc_10(text.title);
             }
         } else {
-            g = data_02149ef8;
+            g = gMsgRes;
             text.desc = MsgRes_GetString(g, 0x1e);
             text.title = MsgRes_GetString(g, 0x8d);
             o = (Lo021cb0b8 *)new Obj0217ea30;
@@ -7353,7 +7353,7 @@ s32 Task021cbae0_Task3Callback(Lo0217ea30 *self, s32 msg) {
         break;
     case 2:
         if (StageFlags_IsValid()) {
-            if (DataRes_ReadBitRange(data_02fe152c, 5, 1, 4)) {
+            if (DataRes_ReadBitRange(gDataRes, 5, 1, 4)) {
                 if (self->unk_44 == 0) {
                     LFLD(s32, p, 0x44) = 0;
                 } else if (self->unk_44 == 1) {
@@ -7388,9 +7388,9 @@ namespace m_Lo_0217ed94 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbf60[];
+extern u8 ResHandle_vtbl[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbf60_vtbl[];
 extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
@@ -7456,14 +7456,14 @@ namespace m_Lo_0217ef3c {
 
 extern "C" {
 
-extern s32 data_02097d78[];
-extern void *data_02fe152c;
-extern MessageQueue021cb980 *data_ov000_021ccd30;
-extern u8 *data_ov000_021ccd54;
-extern void *data_0214a420;
-extern void *data_ov000_021ccd68;
-extern u8 *data_ov000_021ccd64;
-extern u8 data_0208b318[];
+extern s32 gFadeState[];
+extern void *gDataRes;
+extern MessageQueue021cb980 *gMessageQueue;
+extern u8 *gSceneCmd;
+extern void *gEffectMgr;
+extern void *gActorMgr;
+extern u8 *gGroup;
+extern u8 ResHandle_vtbl[];
 u16 DataRes_ReadBitRange(void *p, s32 a, s32 b, s32 c);
 s32 Task021cbae0_Task3Callback(VObj *self, s32 msg);
 void MessageQueue_FreeBuffer(void *a, void *b);
@@ -7494,17 +7494,17 @@ typedef struct {
 } LoBits8;
 
 static inline BOOL FadeIs4(void) {
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         return TRUE;
     }
-    return data_02097d78[0] == 4 ? TRUE : FALSE;
+    return gFadeState[0] == 4 ? TRUE : FALSE;
 }
 
 static inline BOOL FadeIs3(void) {
     BOOL r = FALSE;
-    if (data_02097d78[3] == 3) {
+    if (gFadeState[3] == 3) {
         r = TRUE;
-    } else if (data_02097d78[0] == 3) {
+    } else if (gFadeState[0] == 3) {
         r = TRUE;
     }
     return r;
@@ -7512,7 +7512,7 @@ static inline BOOL FadeIs3(void) {
 
 static inline BOOL FadeIdle(void) {
     BOOL r;
-    if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[0] == 0) {
         r = TRUE;
     } else {
         r = FALSE;
@@ -7521,13 +7521,13 @@ static inline BOOL FadeIdle(void) {
 }
 
 static inline void SndStop(void) {
-    SndQueue *p = data_02097e48.queue;
+    SndQueue *p = gSndQueue.queue;
     if (p->flag3) {
         p->unk_06 = 0x8000;
         p->unk_08 = 0x3c;
         p->unk_02 = 0;
     }
-    p = data_02097e48.queue;
+    p = gSndQueue.queue;
     p->unk_74 = 0x8000;
     p->unk_70 = 0;
 }
@@ -7539,7 +7539,7 @@ static inline BOOL LoBit1(Task021cbae0 *self) {
 static inline VObj *NewLoader(void) {
     VObj *o = (VObj *)Heap_Alloc(0x4c);
     if (o != NULL) {
-        *(void **)o = data_0208b318;
+        *(void **)o = ResHandle_vtbl;
         o->vfunc_08();
     }
     return o;
@@ -7561,7 +7561,7 @@ void Task021cbae0_PostUpdate(Task021cbae0 *self) {
     char buf[0x20];
     switch (self->unk_3c) {
     case 0:
-        if (DataRes_ReadBitRange(data_02fe152c, 5, 1, 3)) {
+        if (DataRes_ReadBitRange(gDataRes, 5, 1, 3)) {
             LoSwitchTaskC(3, 0)->callback = (TaskCallback)Task021cbae0_Task3Callback;
             self->vfunc_48();
             self->unk_3c = 1;
@@ -7605,7 +7605,7 @@ void Task021cbae0_PostUpdate(Task021cbae0 *self) {
             return;
         }
         {
-            MessageQueue021cb980 **pmq = &data_ov000_021ccd30;
+            MessageQueue021cb980 **pmq = &gMessageQueue;
             MessageQueue021cb980 *mq = *pmq;
             MessageQueue_FreeBuffer(mq, mq->unk_11c);
             mq->unk_11c = NULL;
@@ -7613,10 +7613,10 @@ void Task021cbae0_PostUpdate(Task021cbae0 *self) {
             MessageQueue_FreeBuffer(mq, mq->unk_118);
             mq->unk_118 = NULL;
         }
-        LFLD(Bits0e, data_ov000_021ccd54, 0xe).b2 = 2;
-        EffectMgr_FreeAll(data_0214a420);
-        ActorMgr_ClearGroup(data_ov000_021ccd68, 0xf000);
-        LFLD(LoBits8, data_ov000_021ccd64, 0xc).b0 = 0; // Group::unk_0c.bits.flag_0 (ov000/Group.h)
+        LFLD(Bits0e, gSceneCmd, 0xe).b2 = 2;
+        EffectMgr_FreeAll(gEffectMgr);
+        ActorMgr_ClearGroup(gActorMgr, 0xf000);
+        LFLD(LoBits8, gGroup, 0xc).b0 = 0; // Group::unk_0c.bits.flag_0 (ov000/Group.h)
         LangData_LocalizePath(buf, "pic/title");
         o = NewLoader();
         self->unk_48 = o;
@@ -7654,9 +7654,9 @@ void Task021cbae0_PostUpdate(Task021cbae0 *self) {
         TexObj_SetRes(self->unk_54, (void *)self->unk_50->vfunc_10());
         TexObj_SelectImage(self->unk_54, 0, 0xffff);
         self->unk_54->unk_150 = -0x1ccd;
-        SndMgr_StopAllSeq(data_02097e4c, 0);
+        SndMgr_StopAllSeq(gSndMgr, 0);
         GfxSys_StartFadeIn(0x3c000, 0, -1);
-        p = data_02097e48.queue;
+        p = gSndQueue.queue;
         if (p->flag0) {
             if (p->unk_06 != 0xffff || p->unk_04 != 0x2f) {
                 if (p->unk_02 != 10 && p->unk_02 != 0) {
@@ -7678,7 +7678,7 @@ void Task021cbae0_PostUpdate(Task021cbae0 *self) {
             return;
         }
         if (++self->unk_40 <= 600) {
-            if (!(data_02097dc8->trig & 3)) {
+            if (!(gPad->trig & 3)) {
                 return;
             }
         }
@@ -7691,7 +7691,7 @@ void Task021cbae0_PostUpdate(Task021cbae0 *self) {
         }
         self->fadeLen = 0x1000;
         self->vfunc_0c(0);
-        SceneCmd_Push21(data_ov000_021ccd54, 0);
+        SceneCmd_Push21(gSceneCmd, 0);
         self->unk_3c = 12;
         return;
     case 8:
@@ -7704,7 +7704,7 @@ void Task021cbae0_PostUpdate(Task021cbae0 *self) {
         }
         self->fadeLen = 0x1000;
         self->vfunc_0c(0);
-        func_ov000_02182b0c(data_ov000_021ccd54);
+        func_ov000_02182b0c(gSceneCmd);
         self->unk_3c = 12;
         return;
     case 10:
@@ -7721,7 +7721,7 @@ void Task021cbae0_PostUpdate(Task021cbae0 *self) {
             Robo021ca458_RestoreHp();
         }
         func_020623fc();
-        { u8 *q = data_ov000_021ccd54; q[0xac] = 1;
+        { u8 *q = gSceneCmd; q[0xac] = 1;
         func_ov000_02182590(q + 0xac); }
         self->unk_3c = 12;
         break;
@@ -7753,7 +7753,7 @@ void Task021cbae0_Draw(Task021cbae0 *self) {
     if (self->fadeRatio == 0) {
         return;
     }
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     G3_Vec(0x1b, 0x1000, 0x1000, 0x1000);
     self->fadeSin = FX_SinCosTable_[((s32)(self->fadeRatio << 14) >> 16) * 2];
     m = self->unk_4c;
@@ -7777,9 +7777,9 @@ namespace m_Lo_0217f8d0 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbf60[];
+extern u8 ResHandle_vtbl[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbf60_vtbl[];
 extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
@@ -7794,9 +7794,9 @@ BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 b);
 VObj *Task021cbf60_New(void) {
     Task021cbf60 *obj = (Task021cbf60 *)Heap_Alloc(0x160);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
+        VOBJ_SET_VTABLE(obj, Task_vtbl);
         obj->vfunc_58();
-        VOBJ_SET_VTABLE(obj, data_ov000_021cbf60);
+        VOBJ_SET_VTABLE(obj, Task021cbf60_vtbl);
         obj->unk_3c = NULL;
         obj->unk_40 = NULL;
         obj->unk_44 = NULL;
@@ -7823,7 +7823,7 @@ BOOL Task021cbf60_List3cOnDecide(UiList *self, UiListItem *msg) {
         o->unk_44->flag2 = 0;
         p = o->unk_44;
         p->vfunc_a8(UiList_GetItemById(p, 1));
-        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
     }
     return TRUE;
 }
@@ -7867,11 +7867,11 @@ BOOL Task021cbf60_List44OnDecide(UiList *self, UiListItem *msg) {
         }
         o->unk_44->hidden = 1;
         o->unk_44->flag2 = 1;
-        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
     } else {
         o->unk_44->hidden = 1;
         o->unk_44->flag2 = 1;
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
     }
     return FALSE;
 }
@@ -7885,7 +7885,7 @@ namespace m_Heap_0217fb44 {
 
 extern "C" {
 
-extern void *data_02097cdc;
+extern void *gResMgr;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 void ResMgr_ReleaseByName(void *a, void *b, s32 c, s32 d);
@@ -7896,8 +7896,8 @@ void Task021cbf60_FreeWindows(Task021cbf60 *self) {
     HEAP_DELETE_VOBJ(self->unk_44);
     HEAP_DELETE_VOBJ(self->unk_48);
     HEAP_DELETE_MODEL(self->unk_4c);
-    ResMgr_ReleaseByName(data_02097cdc, data_0208cca0, 7, 0);
-    ResMgr_ReleaseByName(data_02097cdc, data_0208cc94, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_0208cca0, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0);
 }
 
 }
@@ -7909,9 +7909,9 @@ namespace m_Lo_0217fcc4 {
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021cbf60[];
+extern u8 ResHandle_vtbl[];
+extern u8 Task_vtbl[];
+extern u8 Task021cbf60_vtbl[];
 extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
@@ -7942,18 +7942,18 @@ BOOL Task021cbf60_IsLoaded(void) {
 namespace m_Lo_0217fd70 {
 
 extern "C" {
-extern void *data_02149ef8;
+extern void *gMsgRes;
 extern void *data_0208cb7c;
 extern u8 data_0214b105[];
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb4a8[];
-extern u8 data_ov000_021cb2a8[];
-extern u8 data_ov000_021cb5a8[];
-extern u8 data_ov000_021cadcc[];
-extern u8 data_ov000_021cb1b0[];
-extern u8 data_ov000_021cb0b8[];
-extern u8 data_ov000_021cafc0[];
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 UiList021cb4a8_vtbl[];
+extern u8 Ov000Vt_021cb2a8_vtbl[];
+extern u8 Lo021cb5a8_vtbl[];
+extern u8 Lo021cadcc_vtbl[];
+extern u8 Ov000Vt_021cb1b0_vtbl[];
+extern u8 Ov000Vt_021cb0b8_vtbl[];
+extern u8 Ov000Vt_021cafc0_vtbl[];
 void *Heap_Alloc(u32 size);
 void *MsgRes_GetString(void *g, u32 id);
 void Obj0215bb14_SetText(void *o, void *s);
@@ -7986,16 +7986,16 @@ void Task021cbf60_Start(Task021cbf60 *self) {
     if (self->vfunc_28()) {
         return;
     }
-    g = data_02149ef8;
+    g = gMsgRes;
     o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021caec8;
+        *(void **)o = UiList_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cb4a8;
+        *(void **)o = UiList021cb4a8_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cb2a8;
+        *(void **)o = Ov000Vt_021cb2a8_vtbl;
     }
     self->unk_3c = (UiList021cb4a8 *)o;
     self->unk_3c->vfunc_10(MsgRes_GetString(g, 0x11a));
@@ -8032,7 +8032,7 @@ void Task021cbf60_Start(Task021cbf60 *self) {
         e->unk_24 = 4;
     }
     {
-        base = data_0214a424->items;
+        base = gStageFlags->items;
         for (i = 0; i < 100; i++) {
             n = base[i];
             iid = i | 0x2000;
@@ -8055,9 +8055,9 @@ void Task021cbf60_Start(Task021cbf60 *self) {
     self->unk_3c->flags &= ~2;
     o = (VObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cadcc;
+        *(void **)o = Lo021cadcc_vtbl;
         o->vfunc_28();
     }
     self->unk_40 = (Lo021cadcc *)o;
@@ -8081,15 +8081,15 @@ void Task021cbf60_Start(Task021cbf60 *self) {
     self->unk_40->vfunc_08();
     o = (VObj *)Heap_Alloc(0x1e4);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021caec8;
+        *(void **)o = UiList_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cb1b0;
+        *(void **)o = Ov000Vt_021cb1b0_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cb0b8;
+        *(void **)o = Ov000Vt_021cb0b8_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cafc0;
+        *(void **)o = Ov000Vt_021cafc0_vtbl;
         o->vfunc_28();
     }
     self->unk_44 = (LoBase021cafc0_021cb0b8 *)o;
@@ -8102,11 +8102,11 @@ void Task021cbf60_Start(Task021cbf60 *self) {
     self->unk_44->flags |= 4;
     o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021caec8;
+        *(void **)o = UiList_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cb5a8;
+        *(void **)o = Lo021cb5a8_vtbl;
         o->vfunc_28();
     }
     self->unk_48 = (Lo021cb5a8 *)o;
@@ -8158,7 +8158,7 @@ extern "C" {
 
 void Task021cbf60_UpdateActive(Task021cbf60 *self) {
     Inner02180350 *in = (Inner02180350 *)self->unk_44;
-    u16 trig = data_02097dc8->trig;
+    u16 trig = gPad->trig;
     BOOL ok = FALSE;
     if (in->unk_0c_1 ? TRUE : FALSE) {
         if (in->unk_04 == 5 ? TRUE : FALSE) {
@@ -8174,7 +8174,7 @@ void Task021cbf60_UpdateActive(Task021cbf60 *self) {
         return;
     }
     if (trig & 2) {
-        SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
     }
 }
 
@@ -8222,13 +8222,13 @@ namespace m_Lo_02180524 {
 typedef void (*VoidFn)(void);
 typedef struct { u8 b0 : 1; u8 b1 : 1; u8 b2 : 1; u8 b3 : 5; } B8;
 extern "C" {
-extern void *data_ov000_021ccd6c;
-extern void *data_ov000_021ccd68;
-extern void *data_0214a420;
-extern void *data_ov000_021ccd70;
-extern void *data_02149f0c;
+extern void *gFieldMgr;
+extern void *gActorMgr;
+extern void *gEffectMgr;
+extern void *gFieldFade;
+extern void *gStageObjPool;
 extern u8 data_ov000_021ccd50[];
-extern VObj *data_ov000_021ccd30;
+extern VObj *gMessageQueue;
 void FieldMgr_DrawProps(void *p);
 void ActorMgr_Draw(void *p);
 void EffectMgr_Draw(void *p);
@@ -8285,8 +8285,8 @@ namespace m_TaskList_02180754 {
 
 extern "C" {
 
-extern const u32 data_0208b318[];
-extern Task *(*const data_ov000_021c9c6c[])(void);
+extern const u32 ResHandle_vtbl[];
+extern Task *(*const Task_NewTable[])(void);
 void *Heap_Alloc(u32 size);
 
 static inline Task *TaskList_Find02180754(s32 id) {
@@ -8303,20 +8303,20 @@ void TaskHost_Create(s32 id, s32 arg) {
     TaskHost *h = (TaskHost *)Heap_Alloc(sizeof(TaskHost));
     s32 mode;
     if (h != NULL) {
-        *(const u32 **)&h->res = data_0208b318;
+        *(const u32 **)&h->res = ResHandle_vtbl;
         h->res.vfunc_08();
         h->unk_00 = 0;
         h->unk_04 = 1;
         h->task = NULL;
     }
-    data_ov000_021ccd44 = h;
-    data_ov000_021ccd34 = 1;
+    gTaskHost = h;
+    gTaskSwitchPending = 1;
     h->task = TaskList_Find02180754(id);
     if (h->task == NULL) {
-        Task *(*fn)(void) = data_ov000_021c9c6c[id];
+        Task *(*fn)(void) = Task_NewTable[id];
         h->task = fn != NULL ? fn() : NULL;
         h->task->param = arg;
-        h->task->parent = (Task *)data_ov000_021ccd40;
+        h->task->parent = (Task *)gFinishingTask;
         mode = 1;
     } else {
         mode = 2;
@@ -8332,36 +8332,36 @@ void TaskHost_Destroy(void) {
     void *saved;
     void *saved2;
     TaskHost *p;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
-    p = data_ov000_021ccd44;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
+    p = gTaskHost;
     if (p != NULL) {
         if (p != NULL) {
             p->res.vfunc_0c();
             task = (Task *)data_ov000_021ccd3c;
             while (task != NULL) {
                 next = task->next;
-                saved2 = data_02097dd0->cur;
-                data_02097dd0->cur = data_02097dd0->heapHi;
+                saved2 = gSysState->cur;
+                gSysState->cur = gSysState->heapHi;
                 if (task != NULL) {
                     if (task != NULL) {
                         task->vfunc_04();
                     }
                     task = NULL;
                 }
-                data_02097dd0->cur = saved2;
+                gSysState->cur = saved2;
                 task = next;
             }
-            data_ov000_021ccd34 = 0;
+            gTaskSwitchPending = 0;
             data_ov000_021ccd3c = NULL;
-            data_ov000_021ccd40 = NULL;
-            *(const u32 **)&p->res = data_0208b318;
+            gFinishingTask = NULL;
+            *(const u32 **)&p->res = ResHandle_vtbl;
             p->res.vfunc_0c();
             Heap_Free(p);
         }
-        data_ov000_021ccd44 = NULL;
+        gTaskHost = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 }
@@ -8410,13 +8410,13 @@ BOOL History_SetState(void *a, s32 b, s32 c);
 
 void *TaskHost_RequestSwitch(TaskHost *cur, s32 kind, s32 c) {
     s32 st;
-    data_ov000_021ccd34 = 1;
+    gTaskSwitchPending = 1;
     cur->task = LoFindTask(kind);
     if (cur->task == NULL) {
-        LoCreateFn fn = data_ov000_021c9c6c[kind];
+        LoCreateFn fn = Task_NewTable[kind];
         cur->task = fn != NULL ? (Task *)fn() : NULL;
         cur->task->param = c;
-        cur->task->parent = (Task *)data_ov000_021ccd40;
+        cur->task->parent = (Task *)gFinishingTask;
         st = 1;
     } else {
         st = 2;
@@ -8446,14 +8446,14 @@ static inline Actor *MgrFind(ActorMgr *mgr, u16 id) {
 }
 
 static inline Actor *FindActor2(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     return mgr != NULL ? MgrFind(mgr, id) : NULL;
 }
 
 extern void *data_0208ccc8;
 
 static inline BOOL LoTakeMode(TaskHost *self) {
-    Task *cur = (Task *)data_ov000_021ccd40;
+    Task *cur = (Task *)gFinishingTask;
     if (self->mode != 0) {
         if (cur != NULL) {
             cur->unk_04 |= 2;
@@ -8477,7 +8477,7 @@ BOOL func_ov000_02180900(TaskHost *self) {
     if (self->unk_04 == 0) {
         return FALSE;
     }
-    cur = (VObj *)data_ov000_021ccd40;
+    cur = (VObj *)gFinishingTask;
     switch (self->unk_04) {
     case 1:
         self->unk_04 = 2;
@@ -8495,7 +8495,7 @@ BOOL func_ov000_02180900(TaskHost *self) {
                     cur->vfunc_0c(0);
                 }
             } else {
-                data_ov000_021ccd34 = 0;
+                gTaskSwitchPending = 0;
             }
         }
         break;
@@ -8541,7 +8541,7 @@ BOOL func_ov000_02180900(TaskHost *self) {
                 self->unk_04 = 12;
                 break;
             }
-            data_ov000_021ccd38 = 0;
+            gLastTaskId = 0;
             self->unk_04 = 0;
             self->unk_00_1 = 1;
             return FALSE;
@@ -8575,20 +8575,20 @@ public:
 
 extern "C" {
 
-extern u8 data_ov000_021cbae0[];
-extern u8 data_ov000_021cbb60[];
-extern u8 data_ov000_021cbc60[];
-extern u8 data_ov000_021cbd60[];
-extern u8 data_ov000_021cbde0[];
-extern u8 data_ov000_021cbe60[];
-extern u8 data_ov000_021cbee0[];
-extern u8 data_ov000_021cbf60[];
-extern u8 data_ov000_021cbfe0[];
-extern u8 data_ov000_021cc060[];
-extern u8 data_0208ba70[];
-extern u8 data_ov000_021cbac8[];
-extern u8 data_ov000_021cbbe0[];
-extern u8 data_ov000_021cbce0[];
+extern u8 Task021cbae0_vtbl[];
+extern u8 Task021cbb60_vtbl[];
+extern u8 Task021cbc60_vtbl[];
+extern u8 Task021cbd60_vtbl[];
+extern u8 Task021cbde0_vtbl[];
+extern u8 Task021cbe60_vtbl[];
+extern u8 Task021cbee0_vtbl[];
+extern u8 Task021cbf60_vtbl[];
+extern u8 Task021cbfe0_vtbl[];
+extern u8 Task_vtbl[];
+extern u8 TextWin_vtbl[];
+extern u8 Ov000Vt_021cbac8_vtbl[];
+extern u8 Task021cbbe0_vtbl[];
+extern u8 Task021cbce0_vtbl[];
 void ListRow_Unlink(void *ptr);
 
 void Heap_Free(void *ptr);
@@ -8619,145 +8619,145 @@ void func_ov000_02180bfc(Obj021810e8 *self) {
 }
 
 VObj *Task021cbf60_DtorDelete(Task021cbf60 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbf60);
+    VOBJ_SET_VTABLE(self, Task021cbf60_vtbl);
     Task021cbf60_FreeWindows(self);
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     Heap_Free(self);
     return self;
 }
 
 VObj *Task021cbf60_Dtor(Task021cbf60 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbf60);
+    VOBJ_SET_VTABLE(self, Task021cbf60_vtbl);
     Task021cbf60_FreeWindows(self);
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     return self;
 }
 
 VObj *Task021cbae0_DtorDelete(Task021cbae0 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbae0);
+    VOBJ_SET_VTABLE(self, Task021cbae0_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     Heap_Free(self);
     return self;
 }
 
 VObj *Task021cbae0_Dtor(Task021cbae0 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbae0);
+    VOBJ_SET_VTABLE(self, Task021cbae0_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     return self;
 }
 
 VObj *Task021cbb60_DtorDelete(Task021cbb60 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbb60);
+    VOBJ_SET_VTABLE(self, Task021cbb60_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     Heap_Free(self);
     return self;
 }
 
 VObj *Task021cbb60_Dtor(Task021cbb60 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbb60);
+    VOBJ_SET_VTABLE(self, Task021cbb60_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     return self;
 }
 
 VObj *Task021cbc60_DtorDelete(Task021cbc60 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbc60);
+    VOBJ_SET_VTABLE(self, Task021cbc60_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     Heap_Free(self);
     return self;
 }
 
 VObj *Task021cbc60_Dtor(Task021cbc60 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbc60);
+    VOBJ_SET_VTABLE(self, Task021cbc60_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     return self;
 }
 
 VObj *Task021cbd60_DtorDelete(Task021cbd60 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbd60);
+    VOBJ_SET_VTABLE(self, Task021cbd60_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     Heap_Free(self);
     return self;
 }
 
 VObj *Task021cbd60_Dtor(Task021cbd60 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbd60);
+    VOBJ_SET_VTABLE(self, Task021cbd60_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     return self;
 }
 
 VObj *Task021cbde0_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbde0);
+    VOBJ_SET_VTABLE(self, Task021cbde0_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     Heap_Free(self);
     return self;
 }
 
 VObj *Task021cbde0_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbde0);
+    VOBJ_SET_VTABLE(self, Task021cbde0_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     return self;
 }
 
 VObj *Task021cbe60_DtorDelete(Task021cbe60 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbe60);
+    VOBJ_SET_VTABLE(self, Task021cbe60_vtbl);
     Task021cbe60_FreeWindows(self);
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     Heap_Free(self);
     return self;
 }
 
 VObj *Task021cbe60_Dtor(Task021cbe60 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbe60);
+    VOBJ_SET_VTABLE(self, Task021cbe60_vtbl);
     Task021cbe60_FreeWindows(self);
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     return self;
 }
 
 VObj *Task021cbee0_DtorDelete(Task021cbee0 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbee0);
+    VOBJ_SET_VTABLE(self, Task021cbee0_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     Heap_Free(self);
     return self;
 }
 
 VObj *Task021cbee0_Dtor(Task021cbee0 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbee0);
+    VOBJ_SET_VTABLE(self, Task021cbee0_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     return self;
 }
 
 VObj *Task021cbfe0_DtorDelete(Task021cbfe0 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbfe0);
+    VOBJ_SET_VTABLE(self, Task021cbfe0_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     Heap_Free(self);
     return self;
@@ -8768,40 +8768,40 @@ BOOL Task021cbfe0_TryReleaseCurrent(Obj021810e8 *self) {
         return FALSE;
     }
     if (self->vfunc_54()) {
-        if (data_ov000_021ccd40 != NULL) {
-            data_ov000_021ccd38 = ((Task *)data_ov000_021ccd40)->id;
+        if (gFinishingTask != NULL) {
+            gLastTaskId = ((Task *)gFinishingTask)->id;
         } else {
-            data_ov000_021ccd38 = 0;
+            gLastTaskId = 0;
         }
-        data_ov000_021ccd40 = NULL;
+        gFinishingTask = NULL;
     }
     return TRUE;
 }
 
 VObj *Task021cbfe0_Dtor(Task021cbfe0 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbfe0);
+    VOBJ_SET_VTABLE(self, Task021cbfe0_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     return self;
 }
 
 VObj *Task021cbbe0_DtorDelete(Task021cbbe0 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbbe0);
+    VOBJ_SET_VTABLE(self, Task021cbbe0_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x3f8), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x3f8), TextWin_vtbl);
     VOBJ_AT(self, 0x3f8)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x340), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x340), TextWin_vtbl);
     VOBJ_AT(self, 0x340)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x288), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x288), TextWin_vtbl);
     VOBJ_AT(self, 0x288)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x1d0), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x1d0), TextWin_vtbl);
     VOBJ_AT(self, 0x1d0)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x118), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x118), TextWin_vtbl);
     VOBJ_AT(self, 0x118)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x60), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x60), TextWin_vtbl);
     VOBJ_AT(self, 0x60)->vfunc_08();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     Heap_Free(self);
     return self;
@@ -8822,55 +8822,55 @@ BOOL Task021cbbe0_TryReleaseCurrent(Obj021810e8 *self) {
         return FALSE;
     }
     if (self->vfunc_54()) {
-        if (data_ov000_021ccd40 != NULL) {
-            data_ov000_021ccd38 = ((Task *)data_ov000_021ccd40)->id;
+        if (gFinishingTask != NULL) {
+            gLastTaskId = ((Task *)gFinishingTask)->id;
         } else {
-            data_ov000_021ccd38 = 0;
+            gLastTaskId = 0;
         }
-        data_ov000_021ccd40 = NULL;
+        gFinishingTask = NULL;
     }
     return TRUE;
 }
 
 VObj *Task021cbbe0_Dtor(Task021cbbe0 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbbe0);
+    VOBJ_SET_VTABLE(self, Task021cbbe0_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x3f8), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x3f8), TextWin_vtbl);
     VOBJ_AT(self, 0x3f8)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x340), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x340), TextWin_vtbl);
     VOBJ_AT(self, 0x340)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x288), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x288), TextWin_vtbl);
     VOBJ_AT(self, 0x288)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x1d0), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x1d0), TextWin_vtbl);
     VOBJ_AT(self, 0x1d0)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x118), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x118), TextWin_vtbl);
     VOBJ_AT(self, 0x118)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x60), data_0208ba70);
+    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x60), TextWin_vtbl);
     VOBJ_AT(self, 0x60)->vfunc_08();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     return self;
 }
 
 VObj *Task021cbce0_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbce0);
+    VOBJ_SET_VTABLE(self, Task021cbce0_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     Heap_Free(self);
     return self;
 }
 
 VObj *Task021cbce0_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbce0);
+    VOBJ_SET_VTABLE(self, Task021cbce0_vtbl);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     return self;
 }
 
 VObj *Ov000Vt_021cbac8_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbac8);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cbac8_vtbl);
     ListRow_Unlink(self);
     Heap_Free(self);
     return self;
@@ -8883,13 +8883,13 @@ void func_ov000_02181490(void) {
 }
 
 VObj *Ov000Vt_021cbac8_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbac8);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cbac8_vtbl);
     ListRow_Unlink(self);
     return self;
 }
 
 VObj *Task_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cc060);
+    VOBJ_SET_VTABLE(self, Task_vtbl);
     self->vfunc_5c();
     return self;
 }

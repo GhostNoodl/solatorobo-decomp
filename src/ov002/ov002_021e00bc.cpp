@@ -3,12 +3,12 @@
 extern "C" {
 
 void func_ov002_021e00bc(Obj021eff30 *self) {
-    u16 k = data_02097dc8->trig;
+    u16 k = gPad->trig;
     Obj021eff50 *w;
     u8 *q;
     if (k & 1) {
         self->unk_18 = 0x28;
-        SndMgr_PlayVolume(data_02097e4c, 0xf, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0xf, -1, -1, -1);
         return;
     }
     if (!(k & 2) && !(k & 0x20)) {
@@ -25,7 +25,7 @@ void func_ov002_021e00bc(Obj021eff30 *self) {
     q[0x75] = 1;
     func_ov002_021e019c(self, self->unk_1c, self->unk_20);
     self->unk_18 = 0;
-    SndMgr_PlayVolume(data_02097e4c, 0xf, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0xf, -1, -1, -1);
 }
 
 }

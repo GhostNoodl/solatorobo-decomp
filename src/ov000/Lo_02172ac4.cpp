@@ -4,12 +4,12 @@
 
 extern "C" {
 
-extern u8 data_ov000_021cb920[];
-extern u8 data_ov000_021cb6d0[];
-extern u8 data_ov000_021cb9b0[];
+extern u8 TimedBuffer021cb920_vtbl[];
+extern u8 Ov000Vt_021cb6d0_vtbl[];
+extern u8 Ov000Vt_021cb9b0_vtbl[];
 
 static inline void LoListBufferDtor(ListBuffer *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb6d0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb6d0_vtbl);
     if ((self->flags & 0x20) && self->unk_0c != 0) {
         Heap_FreeHi((void *)self->unk_0c);
     }
@@ -33,7 +33,7 @@ static inline void LoMQRemove(MessageQueue *self, ListBuffer *buf) {
 }
 
 static inline void LoTimedBufferDtor(TimedBuffer021cb920 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb920);
+    VOBJ_SET_VTABLE(self, TimedBuffer021cb920_vtbl);
     if (self->unk_30 != NULL) {
         LoMQRemove((MessageQueue *)self->unk_0c, self->unk_30);
     }
@@ -48,7 +48,7 @@ static inline void LoTimedBufferDtor(TimedBuffer021cb920 *self) {
 static inline void LoMessageQueueDtor(MessageQueue *self) {
     ListBuffer *buf;
     u32 i;
-    VOBJ_SET_VTABLE(self, data_ov000_021cb9b0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb9b0_vtbl);
     buf = self->list.head;
     if (buf != NULL) {
         do {

@@ -5,7 +5,7 @@ extern "C" {
 
 static inline void ov006_CaptionPanel_Dtor(ov006_CaptionPanel *self) {
     int i;
-    self->vtbl = data_ov006_021ec29c;
+    self->vtbl = Ov006Vt_021ec29c_vtbl;
     OV006_DELETE_MODEL(self->model);
     OV006_DELETE_OBJECT(self->title);
     for (i = 0; i < 3; i++) {

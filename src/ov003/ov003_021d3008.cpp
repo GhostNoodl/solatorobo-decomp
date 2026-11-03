@@ -41,8 +41,8 @@ typedef struct {
 
 extern "C" {
 
-extern const Ov003EnEntry data_ov003_021f4750[];
-extern Ov003Game30 *data_ov000_021ccd30;
+extern const Ov003EnEntry Ov003Actor_StateTable[];
+extern Ov003Game30 *gMessageQueue;
 extern void func_ov000_0219a088(void *p);
 extern void func_ov000_0219af3c(Ov003Actor *self, void *icon);
 extern void Geom_AddRotatedOffset(VecFx32 *v, const VecFx32 *a, s32 rot);
@@ -66,7 +66,7 @@ static inline BOOL Ov003Game_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -81,14 +81,14 @@ static inline BOOL Ov003_GameIdleP(FieldState *g) {
 }
 
 static inline void Ov003_Call5c(u16 a, u16 b) {
-    Ov003Mgr11c *m = data_ov000_021ccd30->unk_11c;
+    Ov003Mgr11c *m = gMessageQueue->unk_11c;
     if (m != NULL && m->unk_5c != NULL) {
         func_ov000_021697dc(m->unk_5c, a, b);
     }
 }
 
 static inline void Ov003_Call60(u16 id, u16 a, u16 b, const VecFx32 *pos) {
-    Ov003Mgr11c *m = data_ov000_021ccd30->unk_11c;
+    Ov003Mgr11c *m = gMessageQueue->unk_11c;
     if (m != NULL && m->unk_60 != NULL) {
         func_ov000_0216912c(m->unk_60, id, 0, a, b, pos);
     }
@@ -97,10 +97,10 @@ static inline void Ov003_Call60(u16 id, u16 a, u16 b, const VecFx32 *pos) {
 static inline void Dispatch(Ov003Actor *self, u32 kind) {
     s32 i;
     for (i = 0; i < 0x15; i++) {
-        if (data_ov003_021f4750[i].kind != kind) {
+        if (Ov003Actor_StateTable[i].kind != kind) {
             continue;
         }
-        (self->*data_ov003_021f4750[i].fn)();
+        (self->*Ov003Actor_StateTable[i].fn)();
         return;
     }
 }
@@ -137,7 +137,7 @@ void Ov003Actor_RunState(Ov003Actor *self) {
     }
     func_ov000_0219a088(self->unk_54);
     if (self->unk_ea_13) {
-        if (self->unk_5c != NULL && Ov003_GameIdleP(data_ov000_021ccd54)) {
+        if (self->unk_5c != NULL && Ov003_GameIdleP(gSceneCmd)) {
             VecFx32 pos;
             s32 r;
             func_ov000_0219af3c(self, self->unk_5c);
@@ -192,7 +192,7 @@ void Ov003Actor_RunState(Ov003Actor *self) {
         }
     }
     if (self->unk_e4 != NULL) {
-        EffectObj *fx = Effect_Find_020657b0(data_0214a420, self->unk_e4);
+        EffectObj *fx = Effect_Find_020657b0(gEffectMgr, self->unk_e4);
         if (fx != NULL) {
             if (self->unk_e8 == 0 || (self->fsm->current != 0x14 && self->fsm->current != 0xb && self->fsm->current != 4)) {
                 fx->state = 4;
@@ -220,7 +220,7 @@ void Ov003Actor_RunState(Ov003Actor *self) {
         }
     }
     if (self->unk_e0 != NULL) {
-        EffectObj *fx = Effect_Find_020657b0(data_0214a420, self->unk_e0);
+        EffectObj *fx = Effect_Find_020657b0(gEffectMgr, self->unk_e0);
         if (fx == NULL) {
             self->unk_e0 = NULL;
         } else {

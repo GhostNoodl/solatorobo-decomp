@@ -15,7 +15,7 @@ typedef struct {
     s16 unk_0c;
 } Ov003SpawnInfo;
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern Actor *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, VecFx32 *pos, const void *rot, u16 a);
 extern void Actor_SendMsgU8(Actor *o, u16 a, u8 b);
 extern u32 Rand_UpTo(u32 n);
@@ -31,7 +31,7 @@ void Ov003ActVt_021f9b18_StateDie(ActorEx *self) {
             info.unk_04[i] = 0;
         }
         info.unk_0c = -1;
-        o = Group_SpawnActor(data_ov000_021ccd64, &info, &self->pos, &self->rot_x, 0xffff);
+        o = Group_SpawnActor(gGroup, &info, &self->pos, &self->rot_x, 0xffff);
         if (o != NULL) {
             o->flags_0 = 1;
             Actor_SendMsgU8(o, self->id, 4);

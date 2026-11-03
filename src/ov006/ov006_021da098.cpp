@@ -33,7 +33,7 @@ static inline const ov006_Price021da098 *ov006_GetItemPrice(u8 item) {
 }
 
 void ov006_Task021ec040_SetupPrices(ov006_Task021ec040 *self) {
-    u8 n = data_ov006_021ec884->lap;
+    u8 n = gOv006SlotManager->lap;
     u8 i;
     if (n < 1) {
         n = 1;
@@ -44,16 +44,16 @@ void ov006_Task021ec040_SetupPrices(ov006_Task021ec040 *self) {
         const ov006_Price021da098 *base = &data_ov006_021eb7b4[(u8)(n - 1)];
         self->unk38 = base->unk2;
     }
-    if (data_ov006_021ec860->unk1C) {
-        self->unk38 = data_ov006_021ec884->numActive * 100 + self->unk38;
+    if (gOv006Manager->unk1C) {
+        self->unk38 = gOv006SlotManager->numActive * 100 + self->unk38;
     }
     for (i = 0; i < 3; i++) {
-        u8 item = ov006_SlotManager_GetItem(data_ov006_021ec884, i);
+        u8 item = ov006_SlotManager_GetItem(gOv006SlotManager, i);
         const ov006_Price021da098 *p = ov006_GetItemPrice(item);
         if (p != NULL) {
             int cnt = 1;
             if (item < 8) {
-                cnt = ov006_SlotManager_GetItemCount(data_ov006_021ec884, i);
+                cnt = ov006_SlotManager_GetItemCount(gOv006SlotManager, i);
             }
             self->unk38 += p->unk2 * cnt;
         }

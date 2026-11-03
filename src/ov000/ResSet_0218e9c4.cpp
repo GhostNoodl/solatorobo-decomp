@@ -134,13 +134,13 @@ ResSet *ResSet_ReleaseAll(ResSet *self) {
         }
     }
     if (self->loaded_5) {
-        ResMgr_ReleaseByName(data_02097cdc, self->entries[4].name, 7, 0);
+        ResMgr_ReleaseByName(gResMgr, self->entries[4].name, 7, 0);
     }
     self->unk_08 = NULL;
     self->loaded_5 = 0;
     self->entries[4].handle = NULL;
     if (self->owned_0 && self->loaded_0) {
-        ResMgr_ReleaseByName(data_02097cdc, self->entries[0].name, 7, 0);
+        ResMgr_ReleaseByName(gResMgr, self->entries[0].name, 7, 0);
     }
     return self;
 }

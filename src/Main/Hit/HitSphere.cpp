@@ -3,8 +3,8 @@
 extern "C" {
 
 
-extern HitSphere *data_02fe0f10;
-extern int data_02fe0ef4;
+extern HitSphere *gHitSphereList;
+extern int gHitSphereCount;
 
 int Hit_FxMul(int a, int b) {
     return (int)(((s64)a * b + 0x800) >> 12);
@@ -37,16 +37,16 @@ static inline void HitSphere_Unlink(HitSphere *hit) {
         return;
     }
     hit->active = 0;
-    prev = data_02fe0f10;
+    prev = gHitSphereList;
     if (prev == hit) {
-        data_02fe0f10 = prev->next;
+        gHitSphereList = prev->next;
     } else {
         for (cur = prev->next; cur != hit; cur = cur->next) {
             prev = cur;
         }
         prev->next = hit->next;
     }
-    data_02fe0ef4--;
+    gHitSphereCount--;
 }
 
 void HitSphere_Unlink_0203f2b8(HitSphere *hit) {
@@ -58,9 +58,9 @@ void HitSphere_Link(HitSphere *hit) {
         return;
     }
     hit->active = 1;
-    hit->next = data_02fe0f10;
-    data_02fe0f10 = hit;
-    data_02fe0ef4++;
+    hit->next = gHitSphereList;
+    gHitSphereList = hit;
+    gHitSphereCount++;
 }
 
 void HitSphere_Unlink_0203f364(HitSphere *hit) {
@@ -77,11 +77,11 @@ typedef struct HitInfo {
     /* 0x24 */ int d[6];
 } HitInfo; // size 0x3c
 
-extern u32 data_02fe0f04;
-extern HitSphere *data_02fe0f00;
-extern HitInfo data_02fe0f14;
-extern int data_02fe0efc;
-extern HitInfo data_02fe0f50[];
+extern u32 gHitSphereGroups;
+extern HitSphere *gHitSphereNearest;
+extern HitInfo gHitResult;
+extern int gHitCount;
+extern HitInfo gHitList[];
 
 int func_0203fc78(VecFx32 *out, VecFx32 *pos, VecFx32 *prev, int radius, int a, int b);
 int func_0203fde8(VecFx32 *out, VecFx32 *pos, int radius, int a, int b);
@@ -103,9 +103,9 @@ int func_0203f3d0(HitSphere *self) {
     self->push.x = 0;
     self->push.y = 0;
     self->push.z = 0;
-    data_02fe0f04 = 0;
-    data_02fe0f00 = NULL;
-    if (self->active && (cur = data_02fe0f10) != NULL) {
+    gHitSphereGroups = 0;
+    gHitSphereNearest = NULL;
+    if (self->active && (cur = gHitSphereList) != NULL) {
         min.x = 0;
         min.y = 0;
         min.z = 0;
@@ -173,10 +173,10 @@ int func_0203f3d0(HitSphere *self) {
             } else if (max.z < d.z) {
                 max.z = d.z;
             }
-            data_02fe0f04 |= other->group;
+            gHitSphereGroups |= other->group;
             if (r < best) {
                 best = r;
-                data_02fe0f00 = other;
+                gHitSphereNearest = other;
             }
             result = 1;
         }
@@ -186,7 +186,7 @@ int func_0203f3d0(HitSphere *self) {
     if (self->unk_30 != 0) {
         flag = self->unk_25;
         d = self->pos;
-        if (data_02fe0f04 != 0) {
+        if (gHitSphereGroups != 0) {
             VEC_Add(&d, &self->push, &d);
             flag = 1;
         }
@@ -198,7 +198,7 @@ int func_0203f3d0(HitSphere *self) {
             if (func_0203fc78(&v, &d, &self->prev, self->radius, self->unk_30, self->unk_34) != -0x1000) {
                 VEC_Add(&self->push, &v, &self->push);
                 VEC_Add(&d, &v, &d);
-                info = data_02fe0f14;
+                info = gHitResult;
                 result |= 2;
                 flag = 1;
             }
@@ -207,8 +207,8 @@ int func_0203f3d0(HitSphere *self) {
             result |= 2;
         }
         if (flag) {
-            data_02fe0f50[data_02fe0efc] = info;
-            data_02fe0efc++;
+            gHitList[gHitCount] = info;
+            gHitCount++;
         }
     }
     return result;
@@ -266,8 +266,8 @@ typedef struct HitMesh {
     /* 0x94 */ struct HitMesh *next;
 } HitMesh;
 
-extern HitMesh *data_02fe0f08;
-extern int data_02fe0f0c;
+extern HitMesh *gHitMeshList;
+extern int gHitMeshCount;
 
 void HitMesh_CalcExtent(HitMesh *mesh);
 void func_0203fb08(HitMesh *mesh);
@@ -293,17 +293,17 @@ static inline void HitMesh_Unlink(HitMesh *mesh) {
     if (!mesh->active) {
         return;
     }
-    prev = data_02fe0f08;
+    prev = gHitMeshList;
     mesh->active = 0;
     if (prev == mesh) {
-        data_02fe0f08 = prev->next;
+        gHitMeshList = prev->next;
     } else {
         for (cur = prev->next; cur != mesh; cur = cur->next) {
             prev = cur;
         }
         prev->next = mesh->next;
     }
-    data_02fe0f0c--;
+    gHitMeshCount--;
 }
 
 void HitMesh_Detach(HitMesh *mesh) {
@@ -317,9 +317,9 @@ void HitMesh_Link(HitMesh *mesh) {
         return;
     }
     mesh->active = 1;
-    mesh->next = data_02fe0f08;
-    data_02fe0f08 = mesh;
-    data_02fe0f0c++;
+    mesh->next = gHitMeshList;
+    gHitMeshList = mesh;
+    gHitMeshCount++;
 }
 
 void HitMesh_Unlink_0203f920(HitMesh *mesh) {
@@ -427,10 +427,10 @@ void func_0203fb08(HitMesh *mesh) {
 }
 
 void Hit_ResetLists(void) {
-    data_02fe0ef4 = 0;
-    data_02fe0f10 = NULL;
-    data_02fe0f0c = 0;
-    data_02fe0f08 = NULL;
+    gHitSphereCount = 0;
+    gHitSphereList = NULL;
+    gHitMeshCount = 0;
+    gHitMeshList = NULL;
 }
 
 
@@ -471,7 +471,7 @@ int func_0203fc78(VecFx32 *out, VecFx32 *pos, VecFx32 *prev, int radius, int a, 
     r = Hit_CastSegment(prev, &p, a, b, 0, -1);
     if (r != -0x1000) {
         if (r > radius) {
-            VEC_MultAdd(-(radius + 0x10), &dir, &data_02fe0f14.a, &p);
+            VEC_MultAdd(-(radius + 0x10), &dir, &gHitResult.a, &p);
             HitVec_Sub(&p, pos, &p);
         } else {
             HitVec_Sub(prev, pos, &p);
@@ -496,7 +496,7 @@ int func_0203fde8(VecFx32 *out, VecFx32 *pos, int radius, int a, int b) {
     p.z = pos->z;
     r = Hit_CastSphere(&p, radius, a, b, 0, -1);
     if (r != -0x1000) {
-        n = data_02fe0efc;
+        n = gHitCount;
         if (n > 24) {
             n = 24;
         }
@@ -507,7 +507,7 @@ int func_0203fde8(VecFx32 *out, VecFx32 *pos, int radius, int a, int b) {
         max.y = 0;
         max.z = 0;
         for (i = 0; i < n; i++) {
-            info = &data_02fe0f50[i];
+            info = &gHitList[i];
             if (info->c1 == -1) {
                 continue;
             }

@@ -39,7 +39,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
         u32 f = self->hit->unk_50;
         if ((f & 0x20000000) && (!(f & 0x400) || st == 0x13) && self->targetObj->target == 0xffff) {
             s->flags |= 0x200000;
-            SndMgr_PlayAt(data_02097e4c, 0x6c, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x6c, &self->pos, 0);
             return;
         }
     }

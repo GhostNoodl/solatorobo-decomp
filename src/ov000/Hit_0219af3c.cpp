@@ -29,7 +29,7 @@ static inline s32 Cur0219af3c(Actor *self) {
 }
 
 static inline Actor *FindActor0219af3c(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }

@@ -8,7 +8,7 @@ void func_ov002_021dbd08(Obj021eff50 *self, VObj *a, s32 b) {
 }
 
 Obj021eff10 *Ov002Vt_021eff10_Ctor(Obj021eff10 *self) {
-    *(VFunc **)self = data_ov002_021eff10;
+    *(VFunc **)self = Ov002Vt_021eff10_vtbl;
     self->owner = NULL;
     self->unk_08 = NULL;
     self->unk_0c = NULL;

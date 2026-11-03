@@ -38,60 +38,60 @@ typedef struct {
 
 extern "C" {
 
-extern u8 data_ov003_021f7b60[];
-extern u8 data_ov003_021f7c0c[];
-extern u8 data_ov009_02216348[];
-extern u8 data_ov009_022163f4[];
-extern u8 data_ov009_022164a0[];
-extern u8 data_ov009_0221654c[];
-extern u8 data_ov009_022165f8[];
-extern u8 data_ov009_022166a4[];
-extern u8 data_ov009_02216750[];
-extern u8 data_ov009_022167fc[];
-extern u8 data_ov009_022168a8[];
-extern u8 data_ov009_02216954[];
-extern u8 data_ov009_02216a00[];
-extern u8 data_ov009_02216bc8[];
-extern u8 data_ov009_02216c74[];
-extern u8 data_ov009_02216dcc[];
-extern u8 data_ov009_02216f24[];
-extern u8 data_ov009_02216fd0[];
-extern u8 data_ov009_0221707c[];
-extern u8 data_ov009_02217128[];
-extern u8 data_ov009_022171d4[];
-extern u8 data_ov009_022172e4[];
-extern u8 data_ov009_02217390[];
-extern u8 data_ov009_0221743c[];
-extern u8 data_ov009_022174e8[];
-extern u8 data_ov009_02217594[];
-extern u8 data_ov009_02217640[];
-extern u8 data_ov009_022176ec[];
-extern u8 data_ov009_02217798[];
-extern u8 data_ov009_02217844[];
-extern u8 data_ov009_022178f0[];
-extern u8 data_ov009_02217a00[];
-extern u8 data_ov009_02217aac[];
-extern u8 data_ov009_02217b58[];
-extern u8 data_ov009_02217c04[];
-extern u8 data_ov009_02217cb0[];
-extern u8 data_ov009_02217d5c[];
-extern u8 data_ov009_02217e08[];
-extern u8 data_ov009_02217eb4[];
-extern u8 data_ov009_02217f60[];
-extern u8 data_ov010_0221009c[];
-extern u8 data_ov011_02207a88[];
-extern u8 data_ov011_02207b34[];
-extern u8 data_ov011_02207c4c[];
-extern u8 data_ov011_02207cf8[];
-extern char data_ov011_02207da4[];
-extern u8 data_ov011_02207e50[];
-extern u8 data_ov012_0220b280[];
-extern u8 data_ov012_0220b35c[];
-extern u8 data_ov013_0220b5e0[];
-extern u8 data_ov013_0220b68c[];
-extern u8 data_ov013_0220bc80[];
-extern u8 data_ov013_0220bdd8[];
-extern u8 *data_ov000_021ccd54;
+extern u8 Ov003ActVt_021f7b60_vtbl[];
+extern u8 Ov003ActVt_021f7c0c_vtbl[];
+extern u8 Ov009ActVt_02216348_vtbl[];
+extern u8 Ov009ActVt_022163f4_vtbl[];
+extern u8 Ov009ActVt_022164a0_vtbl[];
+extern u8 Ov009ActVt_0221654c_vtbl[];
+extern u8 Ov009ActVt_022165f8_vtbl[];
+extern u8 Ov009ActVt_022166a4_vtbl[];
+extern u8 Ov009ActVt_02216750_vtbl[];
+extern u8 Ov009ActVt_022167fc_vtbl[];
+extern u8 Ov009ActVt_022168a8_vtbl[];
+extern u8 Ov009ActVt_02216954_vtbl[];
+extern u8 Ov009ActVt_02216a00_vtbl[];
+extern u8 Ov009ActVt_02216bc8_vtbl[];
+extern u8 Ov009ActVt_02216c74_vtbl[];
+extern u8 Ov009ActVt_02216dcc_vtbl[];
+extern u8 Ov009ActVt_02216f24_vtbl[];
+extern u8 Ov009ActVt_02216fd0_vtbl[];
+extern u8 Ov009ActVt_0221707c_vtbl[];
+extern u8 Ov009ActVt_02217128_vtbl[];
+extern u8 Ov009ActVt_022171d4_vtbl[];
+extern u8 Ov009ActVt_022172e4_vtbl[];
+extern u8 Ov009ActVt_02217390_vtbl[];
+extern u8 Ov009Multi_vtbl[];
+extern u8 Ov009ActVt_022174e8_vtbl[];
+extern u8 Ov009ActVt_02217594_vtbl[];
+extern u8 Ov009ActVt_02217640_vtbl[];
+extern u8 Ov009ActVt_022176ec_vtbl[];
+extern u8 Ov009ActVt_02217798_vtbl[];
+extern u8 Ov009ActVt_02217844_vtbl[];
+extern u8 Ov009ActVt_022178f0_vtbl[];
+extern u8 Ov009ActSpin_vtbl[];
+extern u8 Ov009ActVt_02217aac_vtbl[];
+extern u8 Ov009ActPair110_vtbl[];
+extern u8 Ov009ActVt_02217c04_vtbl[];
+extern u8 Ov009ActVt_02217cb0_vtbl[];
+extern u8 Ov009ActVt_02217d5c_vtbl[];
+extern u8 Ov009ActVt_02217e08_vtbl[];
+extern u8 Ov009ActVt_02217eb4_vtbl[];
+extern u8 Ov009ActVt_02217f60_vtbl[];
+extern u8 Ov010ActVt_0221009c_vtbl[];
+extern u8 Ov011ActVt_02207a88_vtbl[];
+extern u8 Ov011ActVt_02207b34_vtbl[];
+extern u8 Ov011Act7c4c_vtbl[];
+extern u8 Ov011Act7cf8_vtbl[];
+extern char Ov011Act7da4_vtbl[];
+extern u8 Ov011Act7e50_vtbl[];
+extern u8 Ov012ActVt_0220b280_vtbl[];
+extern u8 Ov012ActVt_0220b35c_vtbl[];
+extern u8 Ov013ActVt_0220b5e0_vtbl[];
+extern u8 Ov013Boss_vtbl[];
+extern u8 Ov013ActVt_0220bc80_vtbl[];
+extern u8 Ov013ActVt_0220bdd8_vtbl[];
+extern u8 *gSceneCmd;
 void *Heap_Alloc(u32 size);
 s32 Tbl_GetText(u16 id);
 s32 Ov003_OverlayForKind(Spawn021cfab4 *s);
@@ -169,7 +169,7 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
             Gm10c021cfab4 *t = (Gm10c021cfab4 *)Heap_Alloc(0x10c);
             if (t != NULL) {
                 Base(t);
-                t->vtbl = data_ov009_0221707c;
+                t->vtbl = Ov009ActVt_0221707c_vtbl;
                 t->unk_104 = 0;
             }
             p = (u8 *)t;
@@ -184,18 +184,18 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
     case 0x504c:
     case 0x5053:
     case 0x5059:
-        NEW_BASIC(0xf4, data_ov009_02216c74);
+        NEW_BASIC(0xf4, Ov009ActVt_02216c74_vtbl);
         break;
     case 0x5027:
     case 0x503e:
     case 0x504d:
     case 0x5810:
     case 0x5811:
-        NEW_BASIC(0x148, data_ov009_02216bc8);
+        NEW_BASIC(0x148, Ov009ActVt_02216bc8_vtbl);
         break;
     case 0x504a:
     case 0x504b:
-        NEW_BASIC(0xf0, data_ov009_02216fd0);
+        NEW_BASIC(0xf0, Ov009ActVt_02216fd0_vtbl);
         break;
     case 0x5014:
     case 0x5019:
@@ -211,39 +211,39 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
     case 0x5052:
     case 0x505a:
     case 0x505b:
-        NEW_BASIC(0xf0, data_ov009_02216f24);
+        NEW_BASIC(0xf0, Ov009ActVt_02216f24_vtbl);
         break;
     case 0x5046:
-        NEW_BASIC(0xf8, data_ov009_02216dcc);
+        NEW_BASIC(0xf8, Ov009ActVt_02216dcc_vtbl);
         break;
     case 0x5021:
     case 0x5400:
     case 0x5422:
-        NEW_BASIC(0xf4, data_ov009_02216a00);
+        NEW_BASIC(0xf4, Ov009ActVt_02216a00_vtbl);
         break;
     case 0x541f:
-        NEW_BASIC(0xf0, data_ov009_02216954);
+        NEW_BASIC(0xf0, Ov009ActVt_02216954_vtbl);
         break;
     case 0x5032:
     case 0x5402:
-        NEW_BASIC(0xf4, data_ov009_022164a0);
+        NEW_BASIC(0xf4, Ov009ActVt_022164a0_vtbl);
         break;
     case 0x502f:
     case 0x5405:
-        NEW_BASIC(0xf0, data_ov009_022168a8);
+        NEW_BASIC(0xf0, Ov009ActVt_022168a8_vtbl);
         break;
     case 0x540e:
-        NEW_BASIC(0x100, data_ov009_022172e4);
+        NEW_BASIC(0x100, Ov009ActVt_022172e4_vtbl);
         break;
     case 0x5415:
-        NEW_BASIC(0xfc, data_ov009_022176ec);
+        NEW_BASIC(0xfc, Ov009ActVt_022176ec_vtbl);
         break;
     case 0x5414:
         {
             u8 *t = (u8 *)Heap_Alloc(0x310);
             if (t != NULL) {
                 Base(t);
-                ((GmHead021cfab4 *)t)->vtbl = data_ov009_02217844;
+                ((GmHead021cfab4 *)t)->vtbl = Ov009ActVt_02217844_vtbl;
                 ResSet_Init(t + 0xf0);
                 Model0218fe1c_Init(t + 0x228);
             }
@@ -254,11 +254,11 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
     case 0x540b:
     case 0x5417:
     case 0x5425:
-        NEW_BASIC(0x10c, data_ov009_022166a4);
+        NEW_BASIC(0x10c, Ov009ActVt_022166a4_vtbl);
         break;
     case 0x5031:
     case 0x5421:
-        NEW_BASIC(0x104, data_ov009_022171d4);
+        NEW_BASIC(0x104, Ov009ActVt_022171d4_vtbl);
         break;
     case 0x540f:
     case 0x5410:
@@ -266,51 +266,51 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
             u8 *t = (u8 *)Heap_Alloc(0x4ac);
             if (t != NULL) {
                 Base(t);
-                ((GmHead021cfab4 *)t)->vtbl = data_ov009_0221743c;
+                ((GmHead021cfab4 *)t)->vtbl = Ov009Multi_vtbl;
                 __cxa_vec_ctor(t + 0xf0, 4, 0xe8, (void (*)(void *))Model0218fe1c_Init, (void (*)(void *))Model0218fe1c_FreeAnims);
             }
             p = t;
         }
         break;
     case 0x5409:
-        NEW_BASIC(0xf8, data_ov009_022163f4);
+        NEW_BASIC(0xf8, Ov009ActVt_022163f4_vtbl);
         break;
     case 0x5418:
-        NEW_BASIC(0xf4, data_ov009_02216348);
+        NEW_BASIC(0xf4, Ov009ActVt_02216348_vtbl);
         break;
     case 0x5423:
     case 0x5424:
-        NEW_BASIC(0x110, data_ov009_02217128);
+        NEW_BASIC(0x110, Ov009ActVt_02217128_vtbl);
         break;
     case 0x5420:
-        NEW_BASIC(0xf0, data_ov009_02217798);
+        NEW_BASIC(0xf0, Ov009ActVt_02217798_vtbl);
         break;
     case 0x5030:
     case 0x5411:
         NEW_CTOR(0x12c, Ov009Act_02200b48_Ctor);
         break;
     case 0x5419:
-        NEW_BASIC(0x100, data_ov013_0220bdd8);
+        NEW_BASIC(0x100, Ov013ActVt_0220bdd8_vtbl);
         break;
     case 0x541c:
         NEW_CTOR(0x114, Ov013Act_02207968_Ctor);
         break;
     case 0x540c:
-        NEW_BASIC(0x10c, data_ov013_0220bc80);
+        NEW_BASIC(0x10c, Ov013ActVt_0220bc80_vtbl);
         break;
     case 0x5800:
     case 0x5815:
     case 0x5816:
-        NEW_BASIC(0xf0, data_ov003_021f7c0c);
+        NEW_BASIC(0xf0, Ov003ActVt_021f7c0c_vtbl);
         break;
     case 0x5802:
-        NEW_BASIC(0xf4, data_ov003_021f7b60);
+        NEW_BASIC(0xf4, Ov003ActVt_021f7b60_vtbl);
         break;
     case 0x5807:
-        NEW_BASIC(0xf0, data_ov011_02207a88);
+        NEW_BASIC(0xf0, Ov011ActVt_02207a88_vtbl);
         break;
     case 0x5801:
-        NEW_BASIC(0xf0, data_ov011_02207b34);
+        NEW_BASIC(0xf0, Ov011ActVt_02207b34_vtbl);
         break;
     case 0x5805:
         NEW_CTOR(0x110, Ov011SceneActor_Ctor);
@@ -324,32 +324,32 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
     case 0x5809:
     case 0x580a:
     case 0x580b:
-        NEW_BASIC(0x114, data_ov009_02217640);
+        NEW_BASIC(0x114, Ov009ActVt_02217640_vtbl);
         break;
     case 0x580f:
-        NEW_BASIC(0xf0, data_ov009_022174e8);
+        NEW_BASIC(0xf0, Ov009ActVt_022174e8_vtbl);
         break;
     case 0x5814:
-        NEW_BASIC(0x110, data_ov011_02207c4c);
+        NEW_BASIC(0x110, Ov011Act7c4c_vtbl);
         break;
     case 0x5813:
-        NEW_BASIC(0x100, data_ov011_02207e50);
+        NEW_BASIC(0x100, Ov011Act7e50_vtbl);
         break;
     case 0x5812:
-        NEW_BASIC(0xfc, data_ov011_02207cf8);
+        NEW_BASIC(0xfc, Ov011Act7cf8_vtbl);
         break;
     case 0x5c08:
         NEW_CTOR(0x160, Ov013Act_021fea8c_Ctor);
         break;
     case 0x5c0a:
-        NEW_BASIC(0x13c, data_ov013_0220b68c);
+        NEW_BASIC(0x13c, Ov013Boss_vtbl);
         break;
     case 0x5c17:
-        NEW_BASIC(0xfc, data_ov013_0220b5e0);
+        NEW_BASIC(0xfc, Ov013ActVt_0220b5e0_vtbl);
         break;
     case 0x5036:
     case 0x5c00:
-        NEW_BASIC(0xf0, data_ov012_0220b35c);
+        NEW_BASIC(0xf0, Ov012ActVt_0220b35c_vtbl);
         break;
     case 0x5c13:
         NEW_CTOR(0x108, Ov012Act_021fee1c_Ctor);
@@ -362,7 +362,7 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
             u8 *t = (u8 *)Heap_Alloc(0x22c);
             if (t != NULL) {
                 Base(t);
-                ((GmHead021cfab4 *)t)->vtbl = data_ov012_0220b280;
+                ((GmHead021cfab4 *)t)->vtbl = Ov012ActVt_0220b280_vtbl;
                 ResSet_Init(t + 0xf0);
             }
             p = t;
@@ -384,7 +384,7 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
         NEW_CTOR(0x204, Ov010ActVt_0220ffe4_Ctor);
         break;
     case 0x5c05:
-        NEW_DERIV(0x1fc, Ov010ActVt_02210154_Ctor, data_ov010_0221009c);
+        NEW_DERIV(0x1fc, Ov010ActVt_02210154_Ctor, Ov010ActVt_0221009c_vtbl);
         break;
     case 0x5c06:
         NEW_CTOR(0x1dc, Ov010ActVt_0220fccc_Ctor);
@@ -409,7 +409,7 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
             Gm39c021cfab4 *t = (Gm39c021cfab4 *)Heap_Alloc(0x39c);
             if (t != NULL) {
                 Base(t);
-                t->vtbl = data_ov011_02207da4;
+                t->vtbl = Ov011Act7da4_vtbl;
                 __cxa_vec_ctor(t->unk_f4, 2, 0x138, (void (*)(void *))ResSet_Init, (void (*)(void *))ResSet_ReleaseAll);
                 t->unk_364 = 0;
                 t->unk_368 = 0;
@@ -418,7 +418,7 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
         }
         break;
     case 0x5010:
-        NEW_BASIC(0x110, data_ov009_022178f0);
+        NEW_BASIC(0x110, Ov009ActVt_022178f0_vtbl);
         break;
     case 0x5000:
     case 0x5001:
@@ -443,35 +443,35 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
     case 0x503b:
     case 0x503c:
     case 0x503d:
-        NEW_BASIC(0xf0, data_ov009_022167fc);
+        NEW_BASIC(0xf0, Ov009ActVt_022167fc_vtbl);
         break;
     case 0x5012:
     case 0x5038:
     case 0x5044:
-        NEW_BASIC(0x108, data_ov009_02216750);
+        NEW_BASIC(0x108, Ov009ActVt_02216750_vtbl);
         break;
     case 0x5013:
     case 0x5045:
-        NEW_BASIC(0xfc, data_ov009_022165f8);
+        NEW_BASIC(0xfc, Ov009ActVt_022165f8_vtbl);
         break;
     case 0x5011:
-        NEW_BASIC(0xf0, data_ov009_0221654c);
+        NEW_BASIC(0xf0, Ov009ActVt_0221654c_vtbl);
         break;
     case 0x5016:
-        NEW_BASIC(0x110, data_ov009_02217f60);
+        NEW_BASIC(0x110, Ov009ActVt_02217f60_vtbl);
         break;
     case 0x5017:
-        NEW_BASIC(0x10c, data_ov009_02217eb4);
+        NEW_BASIC(0x10c, Ov009ActVt_02217eb4_vtbl);
         break;
     case 0x5018:
-        NEW_BASIC(0x110, data_ov009_02217b58);
+        NEW_BASIC(0x110, Ov009ActPair110_vtbl);
         break;
     case 0x541e:
         {
             u8 *t = (u8 *)Heap_Alloc(0x31c);
             if (t != NULL) {
                 Base(t);
-                ((GmHead021cfab4 *)t)->vtbl = data_ov009_02217594;
+                ((GmHead021cfab4 *)t)->vtbl = Ov009ActVt_02217594_vtbl;
                 ResSet_Init(t + 0xf0);
                 Model0218fe1c_Init(t + 0x228);
             }
@@ -479,35 +479,35 @@ u8 *Ov003_NewActor(Spawn021cfab4 *s) {
         }
         break;
     case 0x5416:
-        NEW_BASIC(0x104, data_ov009_02217390);
+        NEW_BASIC(0x104, Ov009ActVt_02217390_vtbl);
         break;
     case 0x5023:
     case 0x5408:
     case 0x541a:
-        NEW_BASIC(0xf4, data_ov009_02217e08);
+        NEW_BASIC(0xf4, Ov009ActVt_02217e08_vtbl);
         break;
     case 0x501c:
-        NEW_BASIC(0xfc, data_ov009_02217c04);
+        NEW_BASIC(0xfc, Ov009ActVt_02217c04_vtbl);
         break;
     case 0x501d:
     case 0x5058:
-        NEW_BASIC(0x108, data_ov009_02217aac);
+        NEW_BASIC(0x108, Ov009ActVt_02217aac_vtbl);
         break;
     case 0x504f:
-        NEW_BASIC(0x140, data_ov009_02217a00);
+        NEW_BASIC(0x140, Ov009ActSpin_vtbl);
         break;
     case 0x5050:
-        NEW_BASIC(0x140, data_ov009_02217d5c);
+        NEW_BASIC(0x140, Ov009ActVt_02217d5c_vtbl);
         break;
     case 0x501b:
     case 0x5037:
     case 0x504e:
     case 0x5056:
-        NEW_BASIC(0xfc, data_ov009_02217cb0);
+        NEW_BASIC(0xfc, Ov009ActVt_02217cb0_vtbl);
         break;
     }
     Actor_JoinGroup(p, s->sub, s->id, Tbl_GetText(s->id));
-    *(Rgb021cfab4 *)(p + 0xac) = *(Rgb021cfab4 *)(data_ov000_021ccd54 + 0xca);
+    *(Rgb021cfab4 *)(p + 0xac) = *(Rgb021cfab4 *)(gSceneCmd + 0xca);
     return p;
 }
 

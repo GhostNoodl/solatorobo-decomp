@@ -10,7 +10,7 @@ extern "C" {
 
 // Camera with an orbit (pitch/yaw/roll/distance) mode, shakes and animated paths.
 typedef struct Camera {
-    /* 0x00 */ const void *vtable; // data_0208b8c0
+    /* 0x00 */ const void *vtable; // Camera_vtbl
     /* 0x04 */ VecFx32 eye;
     /* 0x10 */ VecFx32 at;
     /* 0x1c */ VecFx32 up;
@@ -71,7 +71,7 @@ typedef struct Camera {
     /* 0xb9 */ u8 unk_b9;
 } Camera;
 
-extern const u32 data_0208b8c0[];
+extern const u32 Camera_vtbl[];
 
 #ifdef __cplusplus
 }

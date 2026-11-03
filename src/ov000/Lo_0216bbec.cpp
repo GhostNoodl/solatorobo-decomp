@@ -3,11 +3,11 @@
 
 extern "C" {
 
-extern void *data_02149ef8;
+extern void *gMsgRes;
 void *MsgRes_GetString(void *a, s32 b);
 
 void func_ov000_0216bbec(LoTicker *self) {
-    void *r = data_02149ef8;
+    void *r = gMsgRes;
     func_ov000_0216bae4(&self->res[1], MsgRes_GetString(r, 0x44));
     self->res[2].text = MsgRes_GetString(r, 0x45);
     self->res[3].text = MsgRes_GetString(r, 0x46);

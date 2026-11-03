@@ -17,7 +17,7 @@ void Ov002Msg021f0ce8_Next(Ov002Msg021f0ce8 *self) {
 }
 
 void *Ov002Vt_021f0cf8_Ctor(Ov002Snd021f0cf8 *self) {
-    *(VFunc **)self = data_ov002_021f0cf8;
+    *(VFunc **)self = Ov002Vt_021f0cf8_vtbl;
     self->src = NULL;
     self->index = 0;
     self->mask = 0;
@@ -27,7 +27,7 @@ void *Ov002Vt_021f0cf8_Ctor(Ov002Snd021f0cf8 *self) {
 }
 
 void *Ov002Vt_021f0cf8_Dtor(Ov002Snd021f0cf8 *self) {
-    *(VFunc **)self = data_ov002_021f0cf8;
+    *(VFunc **)self = Ov002Vt_021f0cf8_vtbl;
     self->src = NULL;
     self->index = 0;
     self->mask = 0;
@@ -37,7 +37,7 @@ void *Ov002Vt_021f0cf8_Dtor(Ov002Snd021f0cf8 *self) {
 }
 
 void *Ov002Vt_021f0cf8_DtorDelete(Ov002Snd021f0cf8 *self) {
-    *(VFunc **)self = data_ov002_021f0cf8;
+    *(VFunc **)self = Ov002Vt_021f0cf8_vtbl;
     self->src = NULL;
     self->index = 0;
     self->mask = 0;

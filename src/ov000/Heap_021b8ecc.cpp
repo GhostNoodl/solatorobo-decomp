@@ -64,12 +64,12 @@ typedef struct {
 extern "C" {
 void *Heap_Alloc(u32 size);
 extern char *data_ov000_021cc858[];
-extern void *data_02149ef8;
-extern u8 data_0208b318[];
-extern u8 data_0208ba70[];
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021ca94c[];
-extern void *data_02097e4c;
+extern void *gMsgRes;
+extern u8 ResHandle_vtbl[];
+extern u8 TextWin_vtbl[];
+extern u8 UiObj_vtbl[];
+extern u8 Menu021ca94c_vtbl[];
+extern void *gSndMgr;
 void LangData_LocalizePath(void *buf, const char *s);
 void func_ov000_0214bb80(void);
 void func_ov000_0214c1ac(void);
@@ -95,7 +95,7 @@ BOOL func_ov000_0214c6a0(void *o);
 static inline TextWin *NewTextWin_021b9010(void) {
     TextWin *p = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (p != NULL) {
-        VOBJ_SET_VTABLE(p, data_0208ba70);
+        VOBJ_SET_VTABLE(p, TextWin_vtbl);
         TextWin_Init(p);
     }
     return p;
@@ -104,7 +104,7 @@ static inline TextWin *NewTextWin_021b9010(void) {
 static inline void TextWinStart_021b9010(TextWin *w, void *text) {
     w->str = (u32)text;
     w->unk_4c = Text_Measure(w->font, w->spacing, w->str, &w->width, &w->height, (s8)w->unk_37 != 0);
-    data_02097ce0->unk_004 = ((s32)w->font);
+    gGfxMgr->unk_004 = ((s32)w->font);
 }
 
 static inline s32 Ease_021b9010(s32 t, s32 d) {
@@ -135,7 +135,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
     case 1: {
         VObj *p = (VObj *)Heap_Alloc(0x4c);
         if (p != NULL) {
-            VOBJ_SET_VTABLE(p, data_0208b318);
+            VOBJ_SET_VTABLE(p, ResHandle_vtbl);
             p->vfunc_08();
         }
         self->unk_04 = p;
@@ -159,7 +159,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         }
         self->state = 4;
     case 4: {
-        s32 v = data_ov000_021ccd54->unk_98;
+        s32 v = gSceneCmd->unk_98;
         void *text;
         void *text1;
         u8 *w;
@@ -173,7 +173,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         } else {
             text = func_02061d54(0x8b);
         }
-        text1 = MsgRes_GetString(data_02149ef8, text);
+        text1 = MsgRes_GetString(gMsgRes, text);
         self->unk_18 = NewTextWin_021b9010();
         self->unk_18->font = 4;
         self->unk_18->unk_2c = 0;
@@ -215,12 +215,12 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         func_ov000_0214bc94();
         o = (VObj *)Heap_Alloc(0x21c);
         if (o != NULL) {
-            VOBJ_SET_VTABLE(o, data_ov000_021cac60);
+            VOBJ_SET_VTABLE(o, UiObj_vtbl);
             o->vfunc_28();
-            VOBJ_SET_VTABLE(o, data_ov000_021ca94c);
-            VOBJ_SET_VTABLE((u8 *)o + 0x90, data_0208ba70);
+            VOBJ_SET_VTABLE(o, Menu021ca94c_vtbl);
+            VOBJ_SET_VTABLE((u8 *)o + 0x90, TextWin_vtbl);
             TextWin_Init((u8 *)o + 0x90);
-            VOBJ_SET_VTABLE((u8 *)o + 0x148, data_0208ba70);
+            VOBJ_SET_VTABLE((u8 *)o + 0x148, TextWin_vtbl);
             TextWin_Init((u8 *)o + 0x148);
             o->vfunc_28();
         }
@@ -241,7 +241,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         }
         if (self->mode == 0 || self->mode == 2) {
             if (self->timer == 0) {
-                SndMgr_PlayVolume(data_02097e4c, 0x25, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x25, -1, -1, -1);
             }
             if (++self->timer > 0xb4) {
                 self->timer = 0;
@@ -254,7 +254,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
             self->v34 = Ease_021b9010(self->timer - 0x5a, 0x5a000);
         } else {
             if (self->timer == 0) {
-                SndMgr_PlayVolume(data_02097e4c, 0x26, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x26, -1, -1, -1);
             }
             if (++self->timer > 0x78) {
                 self->timer = 0;

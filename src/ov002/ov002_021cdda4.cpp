@@ -7,10 +7,10 @@ void Task021ef530_PreUpdate(Task021ef530 *self) {
     case 8:
         self->unk_40->flags &= ~2;
         self->unk_44->flags &= ~2;
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         break;
     case 10:
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         self->unk_40->flags |= 2;
         self->unk_44->flags |= 2;
         break;
@@ -22,7 +22,7 @@ void Task021ef530_PreUpdate(Task021ef530 *self) {
         BOOL a = FALSE;
         BOOL b = FALSE;
         BOOL c = FALSE;
-        if (!data_ov000_021ccd34) {
+        if (!gTaskSwitchPending) {
             BOOL t = !self->unk_04_0;
             if (t) {
                 c = TRUE;

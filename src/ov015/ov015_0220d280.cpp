@@ -7,8 +7,8 @@ void HitSphere_Unlink_0203f364(void *a);
 extern char data_ov015_02212e20[];
 extern char data_ov015_02212e34[];
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
-extern u8 data_ov015_02212ecc[];
-extern u8 data_ov015_02212eb0[];
+extern u8 Ov015FishState08_vtbl[];
+extern u8 Ov015FishState_vtbl[];
 extern u8 data_ov015_02212e47[];
 BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
 void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
@@ -22,7 +22,7 @@ BOOL Ov015FishState40_Exit(Ov015FishState40 *self, Ov015Fish *p) {
     s32 i;
     p->drawMode = 0;
     HitSphere_Unlink_0203f364(&p->hit);
-    Ov015_DeleteFound(data_0214a420, self->unk_08);
+    Ov015_DeleteFound(gEffectMgr, self->unk_08);
     for (i = 0; i < 1; i++) {
         if (data_ov015_02212db8[i] == self) {
             data_ov015_02212db8[i] = NULL;
@@ -48,7 +48,7 @@ void func_ov015_0220d328(Ov015FishState40 *self, Ov015Fish *o) {
     if (p.y > 0) p.y = 0;
     o->pos = p;
     o->drawMode = 2;
-    e = Effect_Find_020657b0(data_0214a420, self->unk_08);
+    e = Effect_Find_020657b0(gEffectMgr, self->unk_08);
     if (e == NULL) {
         e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &o->pos);
         e->unk_d4 = 3;
@@ -64,8 +64,8 @@ void func_ov015_0220d328(Ov015FishState40 *self, Ov015Fish *o) {
     e->SetScale(&o->scale);
     e->SetRotXYZ(0, FX_Atan2(o->dir.x, o->dir.z), 0);
     if (self->unk_10 == 0x3c) {
-        SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
-        SndMgr_PlayVolume(data_02097e4c, 0x55, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x3e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x55, -1, -1, -1);
     }
 }
 
@@ -86,10 +86,10 @@ void func_ov015_0220d578(Ov015FishState40 *self, Ov015Fish *o) {
     o->pos = p;
     o->drawMode = 2;
     if (self->unk_10 == 0x3c) {
-        SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
-        SndMgr_PlayVolume(data_02097e4c, 0x55, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x3e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x55, -1, -1, -1);
     }
-    e = Effect_Find_020657b0(data_0214a420, self->unk_08);
+    e = Effect_Find_020657b0(gEffectMgr, self->unk_08);
     if (e == NULL) {
         e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e34, 0, &o->pos);
         e->unk_d4 = 3;
@@ -129,18 +129,18 @@ BOOL func_ov015_0220d7d0(Ov015FishState40 *self, Ov015Vec *out, Ov015Vec *pos) {
 }
 
 Ov015FishState08 *Ov015FishState08_Ctor(Ov015FishState08 *self) {
-    SET_VT(self, data_ov015_02212ecc);
+    SET_VT(self, Ov015FishState08_vtbl);
     self->step = 0;
     return self;
 }
 
 void *Ov015FishState08_Dtor(Ov015FishState08 *self) {
-    SET_VT(self, data_ov015_02212eb0);
+    SET_VT(self, Ov015FishState_vtbl);
     return self;
 }
 
 void *Ov015FishState08_DtorDelete(Ov015FishState08 *self) {
-    SET_VT(self, data_ov015_02212eb0);
+    SET_VT(self, Ov015FishState_vtbl);
     Heap_Free(self);
     return self;
 }
@@ -179,8 +179,8 @@ BOOL Ov015FishState08_Update(Ov015FishState08 *self, Ov015Fish *p) {
             o->unk_28 = 0;
             o->unk_50 = -0xc8000;
             o->speed = 0x800;
-            SndMgr_PlayVolume(data_02097e4c, 0x1b, -1, -1, -1);
-            SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1b, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x3e, -1, -1, -1);
         }
         if (Model0218fe1c_IsAnimDone(&p->model)) {
             Model0218fe1c_SetAnim(&p->model, data_ov015_02212e0d, 0x19a, 0);
@@ -317,7 +317,7 @@ void Ov015Shadow_DrawAt(Ov015Shadow *self, const Ov015Vec *pos, s32 sx, s32 sz, 
         NNS_G3dMdlSetMdlCullMode(self->mdl, 0, 3);
         NNS_G3dDraw1Mat1Shp(self->mdl, 0, 0, 1);
     } else {
-        NNS_G3dMdlSetMdlPolygonID(self->mdl, 0, Gfx3DState_NextPolyId(data_02097d48->unk_8b0));
+        NNS_G3dMdlSetMdlPolygonID(self->mdl, 0, Gfx3DState_NextPolyId(gGfxSys->unk_8b0));
         NNS_G3dDraw1Mat1Shp(self->mdl, 0, 0, 1);
     }
 }

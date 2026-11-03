@@ -47,7 +47,7 @@ typedef struct LangGame54 {
     LangCamera camera;
 } LangGame54;
 
-extern LangGame54 *data_ov000_021ccd54;
+extern LangGame54 *gSceneCmd;
 
 void G3X_SetClearColor(u16 color, int a, int b, u8 alpha, int c);
 void G3X_SetToonTable(const void *p);
@@ -78,7 +78,7 @@ static inline void LangCamera_SetAngle(LangCamera *cam, u16 angle) {
 }
 
 void func_0206e3a0(LangSecFlags *flags, const u8 *p) {
-    GfxEnv *env = (GfxEnv *)data_02097d48->unk_8b0;
+    GfxEnv *env = (GfxEnv *)gGfxSys->unk_8b0;
     if (flags->sec0) {
         u8 alpha = p[2];
         u16 color = *(const u16 *)p;
@@ -134,7 +134,7 @@ void func_0206e3a0(LangSecFlags *flags, const u8 *p) {
         p += 8;
     }
     if (flags->sec6) {
-        LangCamera *cam = &data_ov000_021ccd54->camera;
+        LangCamera *cam = &gSceneCmd->camera;
         LangCamera_SetPos(cam, *(const s32 *)p, *(const s32 *)(p + 4));
         LangCamera_SetDist(cam, *(const s16 *)(p + 0xa));
         LangCamera_SetAngle(cam, *(const u16 *)(p + 8));

@@ -3,13 +3,13 @@
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
-extern const u32 data_0208bbc8[];
-extern const u32 data_0208bb1c[];
-extern const u32 data_0208bf14[];
-extern const u32 data_0208be94[];
-extern DataRes *data_02fe1530;
-extern DataRes *data_02fe152c;
+extern const u32 TextWin_vtbl[];
+extern const u32 MainVt_0208bbc8_vtbl[];
+extern const u32 TextWinEx_vtbl[];
+extern const u32 MainVt_0208bf14_vtbl[];
+extern const u32 MainVt_0208be94_vtbl[];
+extern DataRes *gStageDataRes;
+extern DataRes *gDataRes;
 
 void TextWin_SetModelPos(TextWin *win, s16 a, s16 b, s16 c) {
     win->modelX = a;
@@ -31,26 +31,26 @@ BOOL TextWin_WasSkipped(TextWin *win) {
 }
 
 TextWin *MainVt_0208bbc8_DtorDelete(TextWin *win) {
-    *(const u32 **)win = data_0208bbc8;
+    *(const u32 **)win = MainVt_0208bbc8_vtbl;
     win->unk_vf08();
-    *(const u32 **)win = data_0208ba70;
+    *(const u32 **)win = TextWin_vtbl;
     win->unk_vf08();
     Heap_Free(win);
     return win;
 }
 
 TextWin *MainVt_0208bbc8_Dtor(TextWin *win) {
-    *(const u32 **)win = data_0208bbc8;
+    *(const u32 **)win = MainVt_0208bbc8_vtbl;
     win->unk_vf08();
-    *(const u32 **)win = data_0208ba70;
+    *(const u32 **)win = TextWin_vtbl;
     win->unk_vf08();
     return win;
 }
 
 TextWin *TextWinEx_DtorDelete(TextWin *win) {
-    *(const u32 **)win = data_0208bb1c;
+    *(const u32 **)win = TextWinEx_vtbl;
     win->unk_vf08();
-    *(const u32 **)win = data_0208ba70;
+    *(const u32 **)win = TextWin_vtbl;
     win->unk_vf08();
     Heap_Free(win);
     return win;
@@ -62,9 +62,9 @@ void TextWinEx_SetPos(TextWinEx *win, s16 x, s16 y) {
 }
 
 TextWin *TextWinEx_Dtor(TextWin *win) {
-    *(const u32 **)win = data_0208bb1c;
+    *(const u32 **)win = TextWinEx_vtbl;
     win->unk_vf08();
-    *(const u32 **)win = data_0208ba70;
+    *(const u32 **)win = TextWin_vtbl;
     win->unk_vf08();
     return win;
 }
@@ -78,7 +78,7 @@ static inline void DataRes_Reset(DataRes *res) {
 
 DataRes *MainVt_0208ba30_Dtor(DataRes *res) {
     DataRes_Reset(res);
-    *(const u32 **)res = data_0208b318;
+    *(const u32 **)res = ResHandle_vtbl;
     res->Unload();
     return res;
 }
@@ -86,7 +86,7 @@ DataRes *MainVt_0208ba30_Dtor(DataRes *res) {
 static inline DataRes *DataRes_New(u32 size, const u32 *vtbl) {
     DataRes *res = (DataRes *)Heap_Alloc(size);
     if (res != NULL) {
-        *(const u32 **)res = data_0208b318;
+        *(const u32 **)res = ResHandle_vtbl;
         res->Clear();
         *(const u32 **)res = vtbl;
         res->Clear();
@@ -99,7 +99,7 @@ static inline void DataRes_Open152c(const char *arcName, const char *name) {
     char file[0x20];
     LangData_LocalizePath(arc, arcName);
     LangData_LocalizePath(file, name);
-    data_02fe152c->Open(arc, file);
+    gDataRes->Open(arc, file);
 }
 
 static inline void DataRes_Open1530(const char *arcName, const char *name) {
@@ -107,7 +107,7 @@ static inline void DataRes_Open1530(const char *arcName, const char *name) {
     char file[0x20];
     LangData_LocalizePath(arc, arcName);
     LangData_LocalizePath(file, name);
-    data_02fe1530->Open(arc, file);
+    gStageDataRes->Open(arc, file);
 }
 
 static inline void DataRes_Open1530_18(const char *arcName, const char *name) {
@@ -115,7 +115,7 @@ static inline void DataRes_Open1530_18(const char *arcName, const char *name) {
     char file[0x20];
     LangData_LocalizePath(arc, arcName);
     LangData_LocalizePath(file, name);
-    data_02fe1530->Open18(arc, file);
+    gStageDataRes->Open18(arc, file);
 }
 
 void DataRes1530_Create(BOOL open18);

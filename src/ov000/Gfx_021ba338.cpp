@@ -38,7 +38,7 @@ struct Obj021ba338 {
 };
 
 void func_ov000_021ba338(Obj021ba338 *self) {
-    GfxSys *g = data_02097d48;
+    GfxSys *g = gGfxSys;
     s32 a = self->unk_2c;
     s32 b;
     s32 h;

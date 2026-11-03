@@ -10,13 +10,13 @@ extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecF
 void Ov009ActVt_02216750_Init(Ov009ActVt_02216750 *self) {
     GroupNode *p;
     Ov003Actor_Init(self);
-    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(gSndMgr, 1, 1);
     if (self->kind != 0x5038 && self->kind != 0x5044) {
         return;
     }
-    SceneCmd_Push25(data_ov000_021ccd54, 0xd);
+    SceneCmd_Push25(gSceneCmd, 0xd);
     self->unk_18 = 1;
-    p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    p = Group_FindNode(gGroup, self->unk_20);
     if (p != NULL) {
         p->flags.unk_5 = 1;
     }
@@ -24,7 +24,7 @@ void Ov009ActVt_02216750_Init(Ov009ActVt_02216750 *self) {
         return;
     }
     self->pos.y += 0x1000;
-    if (data_ov000_021ccd54->unk_ca.c[0] == 0x11) {
+    if (gSceneCmd->unk_ca.c[0] == 0x11) {
         self->pos.y += 0x1000;
     }
 }
@@ -34,7 +34,7 @@ void Ov009ActVt_02216750_Start(Ov009ActVt_02216750 *self) {
     Ov003Actor_Start(self);
     self->unk_f0 = self->pos;
     self->unk_fc = self->pos;
-    if (data_ov000_021ccd54->unk_ca.c[0] != 0x11) {
+    if (gSceneCmd->unk_ca.c[0] != 0x11) {
         s48 = self->hit;
         s48->unk_9a_1 = 0;
         s48->unk_9a_4 = 0;
@@ -86,7 +86,7 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
     if (!Ov009_GameIdle()) {
         return;
     }
-    if (Ov009Game_IsPaused(data_ov000_021ccd54)) {
+    if (Ov009Game_IsPaused(gSceneCmd)) {
         return;
     }
     self->unk_93_4 = 0;
@@ -134,13 +134,13 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
                 time = 0x1a4;
             } else {
                 time = 0x12c;
-                if (data_ov000_021ccd54->unk_ca.c[0] != 2) {
+                if (gSceneCmd->unk_ca.c[0] != 2) {
                     time = 0x5a;
                 }
             }
         }
         {
-            ActorGroup *o = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+            ActorGroup *o = ActorMgr_GetGroup(gActorMgr, 0x5000);
             if (o != NULL && o->count < max) {
                 VecFx32 ofs;
                 Actor *e;

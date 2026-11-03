@@ -22,7 +22,7 @@ extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
 static inline Ov003Actor *Ov014_FindById(u16 id) {
-    return data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
+    return gActorMgr != NULL ? ActorMgr_GetActor(gActorMgr, id) : NULL;
 }
 
 static inline BOOL Ov014_WaitB6(Ov003Actor *self) {

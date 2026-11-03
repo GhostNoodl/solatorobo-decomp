@@ -73,7 +73,7 @@ static inline s32 Ratio021c7038(s32 n, s32 d) {
 #define FLAGS(g) (*(Flags021c7038 *)&(g)->unk_0c)
 
 void Ov000Vt_021cca88_DrawFrame(Gauge021c7038 *self, s32 a, VecFx32 *pos, s32 h, s32 scale, s32 w, s32 i, s32 step) {
-    GfxSys *g = data_02097d48;
+    GfxSys *g = gGfxSys;
     u32 attr;
     s32 z;
 

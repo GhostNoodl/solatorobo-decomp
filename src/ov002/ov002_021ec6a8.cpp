@@ -156,7 +156,7 @@ BOOL func_ov002_021ec968(Ov002StaffModel *self) {
     case 0: {
         Ov002StaffRes *o = (Ov002StaffRes *)Heap_Alloc(0x4c);
         if (o != NULL) {
-            *(VFunc **)o = (VFunc *)data_0208b318;
+            *(VFunc **)o = (VFunc *)ResHandle_vtbl;
             o->vfunc_08();
         }
         self->res = o;

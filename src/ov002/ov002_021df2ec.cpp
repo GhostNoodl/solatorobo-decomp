@@ -76,9 +76,9 @@ void func_ov002_021df2ec(Obj021eff30 *self, Obj021eff50 *own, s32 y, s32 x, u16 
         y = own->unk_2c;
         o = (Obj021efe9c *)Heap_Alloc(sizeof(Obj021efe9c));
         if (o != NULL) {
-            *(VFunc **)o = data_ov002_021efeb8;
+            *(VFunc **)o = Ov002Vt_021efeb8_vtbl;
             Obj021efeb8_Init(o);
-            *(VFunc **)o = data_ov002_021efe9c;
+            *(VFunc **)o = Ov002Vt_021efe9c_vtbl;
             Obj021efe9c_Init(o);
         }
         self->unk_10 = o;
@@ -123,7 +123,7 @@ void func_ov002_021df2ec(Obj021eff30 *self, Obj021eff50 *own, s32 y, s32 x, u16 
     {
         c = (Obj021efe8c *)Heap_Alloc(sizeof(Obj021efe8c));
         if (c != NULL) {
-            *(VFunc **)c = data_ov002_021efe8c;
+            *(VFunc **)c = Ov002Vt_021efe8c_vtbl;
             Ov002Vt_021efe3c_Ctor(&c->mdl);
             c->unk_78 = 0;
             c->unk_74 = 0;
@@ -146,7 +146,7 @@ void func_ov002_021df2ec(Obj021eff30 *self, Obj021eff50 *own, s32 y, s32 x, u16 
     ov002_Cursor_SetMode(self->unk_14);
     m = (Obj021efe5c *)Heap_Alloc(sizeof(Obj021efe5c));
     if (m != NULL) {
-        *(VFunc **)m = data_ov002_021efe5c;
+        *(VFunc **)m = Ov002Vt_021efe5c_vtbl;
         Ov002Vt_021efe3c_Ctor(&m->mdl);
         PlttRes_Init_02041218(&m->model.pltt);
         TexObj_Init(&m->model, NULL, 0);

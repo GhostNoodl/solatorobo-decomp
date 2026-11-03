@@ -18,7 +18,7 @@ typedef struct {
 } Actor0219b400;
 
 extern "C" {
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 BOOL func_020621f8(void);
 s32 Rand_UpTo(s32 max);
 Actor0219b400 *Group_SpawnActor(void *mgr, GroupActorDesc *d, void *pos, void *rot, u16 a);
@@ -78,7 +78,7 @@ void Drop_SpawnWeighted(u16 *ids, u8 *rates, s32 n, void *pos, void *rot, u8 che
             acc += w[j];
             if (r >= lo && r < acc) {
                 Spawn0219b400_Init(&desc, ids[j]);
-                o = Group_SpawnActor(data_ov000_021ccd64, &desc, pos, rot, 0xffff);
+                o = Group_SpawnActor(gGroup, &desc, pos, rot, 0xffff);
                 if (o != NULL) {
                     o->unk_16.b0 = 1;
                     if (desc.group != 0x5000) {

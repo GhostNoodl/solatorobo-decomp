@@ -4,7 +4,7 @@ extern "C" {
 void Ov012ActEx_02207018_StateDie(Ov012ActEx_02207018 *self) {
     if (self->unk_d0 & 0x200000) {
         if (!Ov003FxList_Has(self->fxList, 0xfe) && !Ov003FxList_Has(self->fxList, 0xff)) {
-            Group_UpdateActor(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();
         }
         Ov003FxList_Prune(self->fxList);

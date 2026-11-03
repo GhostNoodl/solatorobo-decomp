@@ -67,11 +67,11 @@ void func_0206ecd4(int a, void *b, u16 c);
 void func_ov002_021e34fc(void *self, s32 (*cmp)(void *, void *));
 
 void func_ov002_021dec74(Obj021efef0 *self) {
-    u16 btn = data_02097dc8->trig;
+    u16 btn = gPad->trig;
     BOOL ch;
     if (btn & 2) {
         self->unk_24 = NULL;
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         self->unk_1c = 0;
         return;
     }
@@ -97,14 +97,14 @@ void func_ov002_021dec74(Obj021efef0 *self) {
     if (btn & 0x800) {
         ch = TRUE;
         self->unk_34 = (self->unk_34 + 1) % 2;
-        SndMgr_PlayVolume(data_02097e4c, 0x66, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x66, -1, -1, -1);
     }
     if (ch) {
         s32 k = self->unk_34;
         void *r;
         Obj021eff50 *w;
         func_ov002_021e34fc(self->unk_0c, data_ov002_021eef8c[k].fn);
-        r = MsgRes_GetString(data_02149ef8, data_ov002_021eef90[k].id);
+        r = MsgRes_GetString(gMsgRes, data_ov002_021eef90[k].id);
         w = self->owner;
         Obj0215bb14_SetText(((void *)w->unk_20), r);
         w->unk_20->vfunc_70();

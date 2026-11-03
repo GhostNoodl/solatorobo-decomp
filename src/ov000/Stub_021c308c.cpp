@@ -33,10 +33,10 @@ void func_ov000_021c308c(ListRow021cca70 *self, u32 id) {
             sub->count++;
         }
     }
-    layout = (SaveLayout *)data_02fe152c->data;
-    entries = DataRes_GetTable(data_02fe152c, 11);
-    DataRes_GetCount(data_02fe152c, 11);
-    sub->unk_0a = DataRes_ReadBitsById_02059688(data_02fe152c, &layout->blocks[11], entries, 0x101, id) != 0;
+    layout = (SaveLayout *)gDataRes->data;
+    entries = DataRes_GetTable(gDataRes, 11);
+    DataRes_GetCount(gDataRes, 11);
+    sub->unk_0a = DataRes_ReadBitsById_02059688(gDataRes, &layout->blocks[11], entries, 0x101, id) != 0;
 }
 
 }

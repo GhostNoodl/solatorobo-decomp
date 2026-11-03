@@ -16,7 +16,7 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern u16 Camera_GetYaw(Camera *cam);
 extern void Vec_RotateY(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
@@ -36,7 +36,7 @@ void Ov003ActVt_021f8480_State21(Ov003Bomb *self) {
         if (self->unk_1a == 0) {
             VecFx32 v;
             EffectObj *fx;
-            Camera *cam = &data_ov000_021ccd54->cam.base;
+            Camera *cam = &gSceneCmd->cam.base;
             v.x = -0x2000;
             v.y = 0;
             v.z = 0x5000;
@@ -54,11 +54,11 @@ void Ov003ActVt_021f8480_State21(Ov003Bomb *self) {
             cam->shakeTime = 0x19;
             cam->shakeLen = 0x32;
             cam->shakeCur = 0x32;
-            SndMgr_PlayAtPitch(data_02097e4c, 0x79, &self->pos, -0xf);
-            SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
+            SndMgr_PlayAtPitch(gSndMgr, 0x79, &self->pos, -0xf);
+            SndMgr_PlayAt(gSndMgr, 0x56, &self->pos, 0);
         }
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4030, 0x15);
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4031, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x4030, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x4031, 0x15);
         self->fsm->timer = 1;
         self->fsm->st++;
         break;
@@ -67,7 +67,7 @@ void Ov003ActVt_021f8480_State21(Ov003Bomb *self) {
             Ov003BmInfo *inf = Tbl_Elem_020704b4(self->kind);
             Drop_SpawnWeighted(inf->unk_20, inf->unk_24, 2, &self->pos, &self->rot, 0);
             func_ov000_02197dec(self, 0xf, 4);
-            Group_UpdateActor(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();
             return;
         }

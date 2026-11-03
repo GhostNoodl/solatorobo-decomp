@@ -8,7 +8,7 @@ typedef struct ov006_Unk02097e40 {
 
 extern "C" {
 
-extern void *data_ov006_021ec434;
+extern void *ov006_MenuNode_vtbl;
 extern u8 data_ov006_021eb840[];
 
 u16 func_02046ab4(ov006_Unk02097e40 *a);

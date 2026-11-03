@@ -4,7 +4,7 @@
 #include "ov006/Model.h"
 #include "ov000/Task.h"
 
-// The emblem task (vtable data_ov006_021ebe40, 0x5c bytes, created by ov006_Emblem_New):
+// The emblem task (vtable ov006_Emblem_vtbl, 0x5c bytes, created by ov006_Emblem_New):
 // ov006_Emblem_LoadModels builds its two models, ov006_Emblem_Draw plays them.
 struct ov006_Emblem : public Task {
     Model *unk3C;

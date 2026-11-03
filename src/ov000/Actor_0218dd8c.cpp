@@ -3,10 +3,10 @@
 extern "C" {
 
 void Actor_MoveByPad(Actor *self, u16 base, s32 turn, s32 range) {
-    if (!(data_02097dc8->cur & 0xf0)) {
+    if (!(gPad->cur & 0xf0)) {
         return;
     }
-    self->moveYaw = base + Pad_LookupDir(data_02097dc8, range);
+    self->moveYaw = base + Pad_LookupDir(gPad, range);
     Actor_Move(self, turn);
 }
 

@@ -7,7 +7,7 @@ extern "C" {
 extern char data_ov000_021cc5e3[];
 extern char data_ov000_021cc618[];
 extern char *data_ov000_021ca040[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 void Model0218fe1c_SetLoop(void *a);
 void Model0218fe1c_StopAnim(void *a);
@@ -17,7 +17,7 @@ void func_ov000_021b209c(u8 *self);
 void func_ov000_021b2b08(u8 *self);
 
 static inline BOOL PlayerIdle021a16b0(void) {
-    FieldState *pl = data_ov000_021ccd54;
+    FieldState *pl = gSceneCmd;
     if (pl != NULL) {
         if (pl->head != pl->tail ? TRUE : FALSE) {
             return FALSE;
@@ -40,7 +40,7 @@ void Robo021ca458_State01(Robo021ca458 *self) {
                 Model0218fe1c_StopAnim(self->unk_998);
             }
             if (self->seSlot >= 0) {
-                SndMgr_StopSeqArc(data_02097e4c, self->seSlot);
+                SndMgr_StopSeqArc(gSndMgr, self->seSlot);
                 self->seSlot = -1;
             }
             if (self->unk_b22_0 > 1) {

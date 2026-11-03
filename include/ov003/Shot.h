@@ -53,7 +53,7 @@ struct Ov003ShotDef {
     Ov003ShotStep *steps; // NULL: data_ov003_021f49c4
 };
 
-// The ov003 shot (vtable data_ov003_021f7de4, 0xf4 bytes): a projectile that flies by its def
+// The ov003 shot (vtable Ov003ActVt_021f7de4_vtbl, 0xf4 bytes): a projectile that flies by its def
 // record, drops trail effects and hits what it touches (start Ov003Shot_Start, update
 // Ov003Shot_StateThrown, hit test Ov003Shot_CheckHits, explosion Ov003Shot_StateDie).
 class Ov003Shot : public ActorEx {
@@ -71,7 +71,7 @@ public:
 };
 SIZE_ASSERT(Ov003Shot, 0xf4);
 
-// The homing shot (vtable data_ov003_021f9a80, def data_ov003_021f6c04, update
+// The homing shot (vtable Ov003ActVt_021f9a80_vtbl, def data_ov003_021f6c04, update
 // Ov003ActVt_021f9a80_StateThrown): flies after the actor Actor::target, and like Ov003Shot when the player
 // fired it.
 class Ov003HomingShot : public Ov003Shot {
@@ -106,7 +106,7 @@ struct Ov003BeamDef {
     s32 hitFxSize;
 };
 
-// The ov003 beam (vtable data_ov003_021f7d4c, 0xfc bytes): two growing effect layers along rot
+// The ov003 beam (vtable Ov003ActVt_021f7d4c_vtbl, 0xfc bytes): two growing effect layers along rot
 // and a hit test along them (start Ov003ActVt_021f7d4c_Start, update Ov003Beam_StateThrown, layers
 // Ov003Beam_UpdateLayer, hit test Ov003Beam_Fire).
 class Ov003Beam : public ActorEx {

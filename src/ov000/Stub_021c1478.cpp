@@ -14,7 +14,7 @@ void func_ov000_021c1478(NNSG3dRS *rs) {
     GfxSys *p;
     flags = sub->prmPolygonAttr;
     v = (flags & 0x1f0000) >> 16;
-    p = data_02097d48;
+    p = gGfxSys;
     if ((u32)data_ov000_021ccd74 < v) {
         v = data_ov000_021ccd74;
     }

@@ -170,7 +170,7 @@ typedef struct Obj3254Type {
     /* 0x0a */ u8 unk_0a[0xa];
 } Obj3254Type; // size 0x14
 
-extern Obj3254Type data_0208bc80[];
+extern Obj3254Type Obj3D_AnimTable[];
 extern s8 data_02149ef4;
 extern void Obj02190758_SetRot(Obj3254Model *model, u16 *rot, int a);
 extern BOOL Model021903b4_Draw(Obj3254Model *model);
@@ -218,7 +218,7 @@ void func_02053254(GameScene *scene, int a, void *obj, int b) {
         return;
     }
     type = part->type;
-    t = &data_0208bc80[type];
+    t = &Obj3D_AnimTable[type];
     dir = 1;
     if (type < 0xb) {
         off = NULL;

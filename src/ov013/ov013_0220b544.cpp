@@ -72,10 +72,10 @@ extern void func_ov000_02197dec(Actor *self, u8 value, s16 sfx);
 extern void ActorEx_StateDie(Actor *self);
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline u16 Ov013_FaceAngle(Actor *self, Actor *a) {
@@ -308,7 +308,7 @@ static inline BOOL Ov013_PrmB0(const Ov013ActEx_02204454 *self) {
 extern void *Target_Get(void *p);
 extern void Ov003Vec_RotateY(VecFx32 *out, u16 ang, const void *b);
 extern u16 Ov003Vec_Yaw(VecFx32 *v);
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 extern const u8 data_ov013_0220b2cc[];
 extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, s32 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
@@ -435,7 +435,7 @@ void func_ov013_02205098(Ov013ActEx_02204454 *self) {
     }
     case 30: {
         if (self->fsm->timer % 12 == 0) {
-            SndMgr_PlayAt(data_02097e4c, 100, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 100, &self->pos, 0);
         }
         if (!Ov013_PrmB0(self)) {
             s32 lim = Ov013_Dur(self) - 0x6e;
@@ -568,10 +568,10 @@ extern void func_ov000_02197dec(Actor *self, u8 value, s16 sfx);
 extern void ActorEx_StateDie(Actor *self);
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline u16 Ov013_FaceAngle(Actor *self, Actor *a) {
@@ -613,7 +613,7 @@ void func_ov013_02205760(Ov013ActEx_02204454 *self) {
 
 void func_ov013_022058d4(Ov013ActEx_02204454 *self) {
     func_ov000_02197dec(self, 0xf, 0x63);
-    Group_UpdateActor(data_ov000_021ccd64, 0, self);
+    Group_UpdateActor(gGroup, 0, self);
     self->vfunc_08();
 }
 
@@ -622,7 +622,7 @@ void Ov013ActEx_02204454_StateDie(Ov013ActEx_02204454 *self) {
     ActorEx_StateDie(self);
 }
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 
 static inline s32 Ov013_Clamp(s32 v, s32 lo, s32 hi) {
@@ -655,10 +655,10 @@ void func_ov013_02205928(Ov013ActEx_02204454 *self) {
         Ov013_SetAlpha(self->model, 31 - self->fsm->timer);
         if (self->fsm->timer % 10 == 0) {
             Ov003Actor_SpawnScatterFx(self, 0x2800, 0x38b, 0x1000, 0x1000);
-            SndMgr_PlayAt(data_02097e4c, 0x1a, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x1a, &self->pos, 0);
         }
         if (self->fsm->timer == 0) {
-            FieldState *g = data_ov000_021ccd54;
+            FieldState *g = gSceneCmd;
             g->cam.base.shakeX = 1;
             g->cam.base.shakeY = 1;
             g->cam.base.shakeZ = 1;
@@ -676,7 +676,7 @@ void func_ov013_02205928(Ov013ActEx_02204454 *self) {
     case 2:
         self->model->visible = 0;
         func_ov000_02197dec(self, 0xf, 0x63);
-        Group_UpdateActor(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(gGroup, 0, self);
         self->vfunc_08();
         break;
     }
@@ -739,10 +739,10 @@ extern void func_ov000_02197dec(Actor *self, u8 value, s16 sfx);
 extern void ActorEx_StateDie(Actor *self);
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline u16 Ov013_FaceAngle(Actor *self, Actor *a) {
@@ -756,8 +756,8 @@ static inline u16 Ov013_FaceAngle(Actor *self, Actor *a) {
 }
 
 extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
-extern void *data_02097e4c;
-extern void *data_ov013_0220ba88[];
+extern void *gSndMgr;
+extern void *Ov013ActEx_02205ae4_vtbl[];
 extern const u8 data_ov013_0220b2cc[];
 extern void Ov003Vec_RotateY(void *out, u16 rot, const void *v);
 extern void *Ov003Vt_021f79a8_Ctor(void *p);
@@ -766,7 +766,7 @@ extern void func_ov003_021cf33c(void *p, void *q);
 
 Ov013ActEx_02205ae4 *Ov013ActEx_02205ae4_Ctor(Ov013ActEx_02205ae4 *self) {
     ActorEx_Ctor(self);
-    *(void **)self = data_ov013_0220ba88;
+    *(void **)self = Ov013ActEx_02205ae4_vtbl;
     Ov003Vt_021f79a8_Ctor((u8 *)self + 0xe0);
     self->unk_ce_0 = 0;
     self->unk_ce_1 = 0;
@@ -777,7 +777,7 @@ Ov013ActEx_02205ae4 *Ov013ActEx_02205ae4_Ctor(Ov013ActEx_02205ae4 *self) {
 }
 
 Ov013ActEx_02205ae4 *Ov013ActEx_02205ae4_Dtor(Ov013ActEx_02205ae4 *self) {
-    *(void **)self = data_ov013_0220ba88;
+    *(void **)self = Ov013ActEx_02205ae4_vtbl;
     ((Ov013V *)((u8 *)self + 0xe0))->v08();
     Ov003Vt_021f79a8_Dtor((u8 *)self + 0xe0);
     ActorEx_DtorBase(self);
@@ -785,7 +785,7 @@ Ov013ActEx_02205ae4 *Ov013ActEx_02205ae4_Dtor(Ov013ActEx_02205ae4 *self) {
 }
 
 Ov013ActEx_02205ae4 *Ov013ActEx_02205ae4_DtorDelete(Ov013ActEx_02205ae4 *self) {
-    *(void **)self = data_ov013_0220ba88;
+    *(void **)self = Ov013ActEx_02205ae4_vtbl;
     ((Ov013V *)((u8 *)self + 0xe0))->v08();
     Ov003Vt_021f79a8_Dtor((u8 *)self + 0xe0);
     ActorEx_DtorBase(self);
@@ -868,10 +868,10 @@ extern void func_ov000_02197dec(Actor *self, u8 value, s16 sfx);
 extern void ActorEx_StateDie(Actor *self);
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline u16 Ov013_FaceAngle(Actor *self, Actor *a) {
@@ -999,7 +999,7 @@ void Ov013ActEx_02205ae4_State20(void) {
 }
 
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern const VecFx32 data_ov013_0220b2cc;
 extern void Ov003Vec_RotateY(VecFx32 *out, u16 rot, const VecFx32 *v);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
@@ -1096,7 +1096,7 @@ void Ov013ActEx_02205ae4_State0e(Ov013ActEx_02205ae4 *self) {
             ActorSub40 *q = self->fsm;
             q->timer++;
             if (q->timer % 20 == 0) {
-                SndMgr_PlayAtPitch(data_02097e4c, 9, &self->pos, -5);
+                SndMgr_PlayAtPitch(gSndMgr, 9, &self->pos, -5);
             }
         }
         break;
@@ -1134,7 +1134,7 @@ void Ov013ActEx_02205ae4_State0e(Ov013ActEx_02205ae4 *self) {
             ActorSub40 *q = self->fsm;
             q->timer++;
             if (q->timer % 20 == 0) {
-                SndMgr_PlayAtPitch(data_02097e4c, 9, &self->pos, -5);
+                SndMgr_PlayAtPitch(gSndMgr, 9, &self->pos, -5);
             }
         }
         break;

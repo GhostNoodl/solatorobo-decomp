@@ -8,7 +8,7 @@ struct Ov009Rot {
     u16 z;
 };
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern Ov003Actor *Actor_SpawnKind(u16 kind, const VecFx32 *pos, const void *rot, u16 id, u16 parent);
 extern void *SndMgr_PlayAt(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
@@ -28,7 +28,7 @@ void Ov009ActVt_02216750_StateShoot(Ov009ActVt_02216750 *self) {
     }
     o = Actor_SpawnKind(kind, &p, &self->rot_x, self->id, self->target);
     if (self->unk_18 == 1) {
-        SndMgr_PlayAt(data_02097e4c, 0xd02, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0xd02, &self->pos, 0);
         t = Actor_GetTarget(self);
         if (t != NULL) {
             VecFx32 tp;
@@ -69,9 +69,9 @@ static inline void Ov009_ReleaseFx(Ov009ActVt_02216750 *self) {
         id = 0x5045;
         break;
     }
-    ActorMgr_BroadcastKind(data_ov000_021ccd68, id, 0x15);
-    ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x483f, 0x15);
-    ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x482d, 0x15);
+    ActorMgr_BroadcastKind(gActorMgr, id, 0x15);
+    ActorMgr_BroadcastKind(gActorMgr, 0x483f, 0x15);
+    ActorMgr_BroadcastKind(gActorMgr, 0x482d, 0x15);
 }
 
 void Ov009ActVt_02216750_StateDie(Ov009ActVt_02216750 *self) {
@@ -92,7 +92,7 @@ void Ov009ActVt_02216750_StateDie(Ov009ActVt_02216750 *self) {
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
         self->targetObj->target = 0xffff;
-        if (data_ov000_021ccd54->unk_ca.c[0] == 0x11) {
+        if (gSceneCmd->unk_ca.c[0] == 0x11) {
             Ov009_VecSet((VecFx32 *)&self->speed, 0, 0, 0);
         } else {
             Ov009_VecSet((VecFx32 *)&self->speed, Rand_PlusMinus(0x29), -0x71, Rand_PlusMinus(0x29));
@@ -105,7 +105,7 @@ void Ov009ActVt_02216750_StateDie(Ov009ActVt_02216750 *self) {
     case 1:
         if (self->fsm->timer > 0x78) {
             Field_ShakeCamera(10, 0x28);
-            SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x56, -1, -1, -1);
             e = Effect_SpawnId(5, &self->pos);
             spd = 0x6000;
             if (self->kind != 0x5012) {

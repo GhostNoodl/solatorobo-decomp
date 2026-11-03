@@ -51,9 +51,9 @@ static inline s32 Ov003_Mod2(s32 v) {
 
 extern "C" {
 
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov003_021f78f4[];
-extern u8 data_ov003_021f78e4[];
+extern u8 Task_vtbl[];
+extern u8 Ov003TaskVt_021f78f4_vtbl[];
+extern u8 Ov003Vt_021f78e4_vtbl[];
 extern void *Heap_Alloc(u32 size);
 extern void func_ov000_021c2208(void *p);
 
@@ -61,10 +61,10 @@ extern void func_ov000_021c2208(void *p);
 Ov003Scene *Ov003TaskVt_021f78f4_New(void) {
     Ov003Scene *p = (Ov003Scene *)Heap_Alloc(0xcc);
     if (p != NULL) {
-        *(void **)p = data_ov000_021cc060;
+        *(void **)p = Task_vtbl;
         p->Reset();
-        *(void **)p = data_ov003_021f78f4;
-        *(void **)((u8 *)p + 0x60) = data_ov003_021f78e4;
+        *(void **)p = Ov003TaskVt_021f78f4_vtbl;
+        *(void **)((u8 *)p + 0x60) = Ov003Vt_021f78e4_vtbl;
         func_ov000_021c2208((u8 *)p + 0x60);
         p->Reset();
     }

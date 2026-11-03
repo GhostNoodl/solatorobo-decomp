@@ -8,8 +8,8 @@ typedef struct ov006_Net021e58e4 {
 
 extern "C" {
 
-extern ov006_Net021e58e4 *data_02097e40;
-extern void *data_02149ef8;
+extern ov006_Net021e58e4 *gWhMgr;
+extern void *gMsgRes;
 
 void *MsgRes_GetString(void *a, int id);
 void func_02045094(ov006_Net021e58e4 *net);
@@ -42,21 +42,21 @@ static inline void ov006_Menu_OpenDialog(ov006_Unk021ec888 *self) {
     ov006_ObjectHolder *h = self->unk1D8;
     ov006_ObjectHolder_Clear(h);
     h->obj = ov006_NewLo021cad50();
-    Obj0215c1bc_SetText(h->obj, 0x11, MsgRes_GetString(data_02149ef8, 0x172));
+    Obj0215c1bc_SetText(h->obj, 0x11, MsgRes_GetString(gMsgRes, 0x172));
     h->obj->posZ = -0x666;
     h->obj->vfunc_08();
     h->obj->flags |= 0x10000;
     h->obj->vfunc_70();
     ov006_Menu_Advance(self);
-    data_02097dd0->vblankFunc = NULL;
-    func_02045094(data_02097e40);
+    gSysState->vblankFunc = NULL;
+    func_02045094(gWhMgr);
 }
 
 static inline void ov006_Menu_WaitReady(ov006_Unk021ec888 *self) {
-    if (data_02097e40->state != 1) {
+    if (gWhMgr->state != 1) {
         return;
     }
-    if (!Wh_End(data_02097e40)) {
+    if (!Wh_End(gWhMgr)) {
         return;
     }
     ov006_Menu_Advance(self);

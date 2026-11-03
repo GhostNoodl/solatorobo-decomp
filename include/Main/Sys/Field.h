@@ -44,14 +44,14 @@ typedef struct FieldPlayer {
     /* 0x11c */ FieldActor *unk_11c;
 } FieldPlayer;
 
-extern FieldPlayer *data_ov000_021ccd30;
+extern FieldPlayer *gMessageQueue;
 extern BOOL MessageQueue_GetById(FieldPlayer *player, int id);
 extern BOOL func_ov000_02170568(void *p);
 extern void func_ov000_021bc458(FieldFade *fade);
 
 
 static inline BOOL Field_IsPlayerBusy(void) {
-    FieldPlayer *player = data_ov000_021ccd30;
+    FieldPlayer *player = gMessageQueue;
     if (player == NULL) {
         return FALSE;
     }

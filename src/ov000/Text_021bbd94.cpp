@@ -10,16 +10,16 @@ typedef struct {
 } Rgb021bbd94;
 
 extern "C" {
-extern void *data_02149ef8;
-extern MessageQueue021cb980 *data_ov000_021ccd30;
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb5a8[];
+extern void *gMsgRes;
+extern MessageQueue021cb980 *gMessageQueue;
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 Lo021cb5a8_vtbl[];
 char *MsgRes_GetString(void *msg, s32 id);
 void func_ov000_02165a20(s32 a, Rgb021bbd94 *c);
 
 static inline s32 Ccd30_Value(void) {
-    void *p = data_ov000_021ccd30->unk_118;
+    void *p = gMessageQueue->unk_118;
     s32 r = 0;
     if (p != NULL && LFLD(s32, p, 0x28) == 1) {
         r = LFLD(s32, p, 0x30);
@@ -47,18 +47,18 @@ struct Obj021bbd94 {
 };
 
 void func_ov000_021bbd94(Obj021bbd94 *self) {
-    void *msg = data_02149ef8;
+    void *msg = gMsgRes;
     Lo021cb5a8 *t;
     Model *m;
     Rgb021bbd94 c;
 
     t = (Lo021cb5a8 *)Heap_Alloc(sizeof(Lo021cb5a8));
     if (t != NULL) {
-        VOBJ_SET_VTABLE(t, data_ov000_021cac60);
+        VOBJ_SET_VTABLE(t, UiObj_vtbl);
         t->vfunc_28();
-        VOBJ_SET_VTABLE(t, data_ov000_021caec8);
+        VOBJ_SET_VTABLE(t, UiList_vtbl);
         t->vfunc_28();
-        VOBJ_SET_VTABLE(t, data_ov000_021cb5a8);
+        VOBJ_SET_VTABLE(t, Lo021cb5a8_vtbl);
         t->vfunc_28();
     }
     self->unk_5c = t;

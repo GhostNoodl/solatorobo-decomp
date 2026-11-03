@@ -28,7 +28,7 @@ void func_ov015_0220015c(Ov015Obj34 *self) {
 
 void func_ov015_02200194(Ov015Obj34 *self) {
     void *saved;
-    if (EffectMgr_Contains(data_0214a420, self->fx) == 0) {
+    if (EffectMgr_Contains(gEffectMgr, self->fx) == 0) {
         return;
     }
     HEAP_PUSH(saved);

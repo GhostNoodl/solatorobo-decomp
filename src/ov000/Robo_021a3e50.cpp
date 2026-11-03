@@ -11,7 +11,7 @@ typedef struct {
 } Msg021a3e50;
 
 extern "C" {
-extern u8 *data_ov000_021ccd30;
+extern u8 *gMessageQueue;
 extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc648[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
@@ -26,7 +26,7 @@ void *Task_FindById(s32 kind);
 BOOL History_SetState(void *p, s32 a, s32 b);
 
 static inline Actor *FindActor021a3e50(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }
@@ -35,7 +35,7 @@ static inline Actor *FindActor021a3e50(u16 id) {
 
 static inline BOOL IsBusy021a3e50(void) {
     BOOL r;
-    u8 *m = data_ov000_021ccd30;
+    u8 *m = gMessageQueue;
     if (m == NULL) {
         r = FALSE;
     } else if (MessageQueue_GetById(m, 6)) {
@@ -76,7 +76,7 @@ void Robo021ca458_State05(Robo021ca458 *self) {
                     StageFlags *g;
                     u32 n;
                     self->unk_bac = self->target;
-                    g = data_0214a424;
+                    g = gStageFlags;
                     n = g->unk_014 + 1;
                     if (n >= 0xffff) {
                         n = 0xffff;
@@ -109,7 +109,7 @@ void Robo021ca458_State05(Robo021ca458 *self) {
     case 10:
         if (t != NULL) {
             Shared_SetEventActor(t->kind, t->id);
-            data_ov000_021ccd54->stageFlags = 1;
+            gSceneCmd->stageFlags = 1;
         }
         self->fsm->st++;
         break;

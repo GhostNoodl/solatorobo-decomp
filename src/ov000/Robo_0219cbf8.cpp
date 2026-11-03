@@ -65,7 +65,7 @@ void Robo021ca458_SetPosRot(Robo021ca458 *self, VecFx32 *pos, u16 *rot) {
     self->hit1.unk_58 = 0;
     self->vfunc_44();
     self->unk_b24_20_f = 0;
-    if (data_ov000_021ccd6c->curExit == 0xff) {
+    if (gFieldMgr->curExit == 0xff) {
         self->unk_b22_13 = 1;
     }
 }
@@ -77,8 +77,8 @@ typedef struct {
 } H1_0219cdb8;
 
 extern "C" {
-extern MessageQueue021cb980 *data_ov000_021ccd30;
-extern void *data_02097e4c;
+extern MessageQueue021cb980 *gMessageQueue;
+extern void *gSndMgr;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Model0218fe1c_StopAnim(void *p);
 void SndMgr_StopSeqArc(void *mgr, s32 id);
@@ -90,10 +90,10 @@ void *NNS_G3dGetMdlSet(void *file);
 void NNS_G3dReleaseMdlSet(void *mdl);
 
 static inline Actor *GetObj0219cdb8(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline void Reset0219cdb8(Robo021ca458 *self) {
@@ -134,7 +134,7 @@ void Robo021ca458_Destroy(Robo021ca458 *self) {
             Model0218fe1c_StopAnim(self->unk_998);
         }
         if (self->seSlot >= 0) {
-            SndMgr_StopSeqArc(data_02097e4c, self->seSlot);
+            SndMgr_StopSeqArc(gSndMgr, self->seSlot);
             self->seSlot = -1;
         }
         if (self->unk_b22_0 > 1) {
@@ -161,12 +161,12 @@ void Robo021ca458_Destroy(Robo021ca458 *self) {
         v[1] = 0;
         v[2] = 0;
     }
-    if (data_ov000_021ccd54->unk_c9 != 0) {
+    if (gSceneCmd->unk_c9 != 0) {
         u16 *w = self->hp;
         ListBuffer021cb940 *a;
         u16 v;
         w[0] = v = w[1];
-        a = data_ov000_021ccd30->unk_11c;
+        a = gMessageQueue->unk_11c;
         if (a != NULL && a->unk_58 != NULL) {
             func_ov000_021697dc(a->unk_58, v, v);
             a->unk_58->unk_0c |= 0x80;
@@ -175,7 +175,7 @@ void Robo021ca458_Destroy(Robo021ca458 *self) {
         Reset0219cdb8(self);
     }
     {
-        ListBuffer021cb940 *a = data_ov000_021ccd30->unk_11c;
+        ListBuffer021cb940 *a = gMessageQueue->unk_11c;
         Lo021cb798 *m = a != NULL ? a->unk_58 : NULL;
         if (m != NULL) {
             m->unk_5c = m->unk_64;
@@ -183,7 +183,7 @@ void Robo021ca458_Destroy(Robo021ca458 *self) {
         }
     }
     if (self->unk_b22_12) {
-        FieldState *c = data_ov000_021ccd54;
+        FieldState *c = gSceneCmd;
         if (((u8 *)c)[0xca] != ((u8 *)c)[0xd0] || ((u8 *)c)[0xcb] != ((u8 *)c)[0xd1]) {
             s32 *t;
             void **res;
@@ -206,7 +206,7 @@ void Robo021ca458_Destroy(Robo021ca458 *self) {
             self->unk_b22_11 = 1;
         }
     }
-    if (data_ov000_021ccd6c->exit == 0xff) {
+    if (gFieldMgr->exit == 0xff) {
         self->unk_b22_13 = 1;
     }
 }

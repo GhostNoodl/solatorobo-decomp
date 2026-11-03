@@ -30,10 +30,10 @@ extern void Geom_AddRotatedOffset(VecFx32 *v, const VecFx32 *off, s32 rot);
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov013SpawnDesc *d, VecFx32 *pos, u16 *rot, u16 a);
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Ov013Boss_StateShoot(Ov013Boss *self) {
@@ -67,7 +67,7 @@ void Ov013Boss_StateShoot(Ov013Boss *self) {
         pos.z = self->pos.z;
         Geom_AddRotatedOffset(&pos, &data_ov013_0220ae70, self->rot_y);
         pos.y = 0;
-        o = Group_SpawnActor(data_ov000_021ccd64, &d, &pos, &self->rot_x, 0xffff);
+        o = Group_SpawnActor(gGroup, &d, &pos, &self->rot_x, 0xffff);
         o->flags_0 = 1;
         o->target = self->target;
         if (self->unk_f0 != 0) {
@@ -117,9 +117,9 @@ void Ov013Boss_StateDie(Ov013Boss *self) {
         ActorSub48 *m48;
         ActorSub44 *n;
         EffectObj *o;
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5c17, 0x15);
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4823, 0x15);
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4820, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x5c17, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x4823, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x4820, 0x15);
         Model0218fe1c_SetAnim(self->model, data_ov013_0220b5b8, 0x2ab, 0);
         Model0218fe1c_SetLoop(self->model);
         self->speed = 0;
@@ -146,7 +146,7 @@ void Ov013Boss_StateDie(Ov013Boss *self) {
             o->AddPosXYZ(0, self->height, 0);
             o->SetScaleAll(0x5000);
         }
-        SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x56, &self->pos, 0);
         Field_ShakeCamera(0xc, 0x28);
         self->fsm->st = 0x14;
         self->fsm->timer = 0;
@@ -164,7 +164,7 @@ void Ov013Boss_StateDie(Ov013Boss *self) {
                 v.z = self->radius;
                 Spawn_ScatterEffect(&self->pos, &v, 0x99a, 0x1333, 0x38b, 0x32);
                 Field_ShakeCamera(8, 8);
-                SndMgr_PlayAt(data_02097e4c, 0x35, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x35, &self->pos, 0);
             }
             if (t >= 0x12b) {
                 Field_ShakeCamera(0x14, 0x78);
@@ -174,10 +174,10 @@ void Ov013Boss_StateDie(Ov013Boss *self) {
             self->pos.y -= 0x66;
         } else {
             if (t % 25 == 0) {
-                SndMgr_PlayAt(data_02097e4c, 0x44, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x44, &self->pos, 0);
             }
             if (t == 0x6e) {
-                EffectMgr_StopLoop(data_0214a420, self->unk_f8);
+                EffectMgr_StopLoop(gEffectMgr, self->unk_f8);
                 self->unk_f8 = 0;
             }
         }
@@ -199,8 +199,8 @@ void Ov013Boss_StateDie(Ov013Boss *self) {
             o->SetScaleAll(0x5000);
             o->speed = 0xccd;
         }
-        SndMgr_PlayAtPitch(data_02097e4c, 0x56, &self->pos, -8);
-        SndMgr_PlayAtPitch(data_02097e4c, 0x41, &self->pos, 4);
+        SndMgr_PlayAtPitch(gSndMgr, 0x56, &self->pos, -8);
+        SndMgr_PlayAtPitch(gSndMgr, 0x41, &self->pos, 4);
         self->fsm->st = 0x64;
         self->fsm->timer = 0;
         break;

@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern char data_ov011_02207da4[];
+extern char Ov011Act7da4_vtbl[];
 extern char data_ov011_02207c35[];
 struct Ov011PhotoCfg {
     void *photo;
@@ -24,8 +24,8 @@ BOOL Actor_IsReady(void *self);
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);
 
 static inline void Ov011_FreeTwl(Twl0214b570 **slot) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (*slot != NULL) {
         Twl0214b570 *p = *slot;
         if (p != NULL) {
@@ -34,24 +34,24 @@ static inline void Ov011_FreeTwl(Twl0214b570 **slot) {
         }
         *slot = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 Ov003Actor *Ov011Act7da4_Dtor(Ov011Act7da4 *self) {
-    *(void **)self = data_ov011_02207da4;
+    *(void **)self = Ov011Act7da4_vtbl;
     Ov011_FreeTwl(&self->unk_364);
     Ov011_FreeTwl(&self->unk_368);
-    ResMgr_ReleaseByName(data_02097cdc, data_ov011_02207c35, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_ov011_02207c35, 7, 0);
     __cxa_vec_cleanup(self->unk_f4, 2, 0x138, (void *)ResSet_ReleaseAll);
     Ov003Actor_DtorBase(self);
     return self;
 }
 
 Ov003Actor *Ov011Act7da4_DtorDelete(Ov011Act7da4 *self) {
-    *(void **)self = data_ov011_02207da4;
+    *(void **)self = Ov011Act7da4_vtbl;
     Ov011_FreeTwl(&self->unk_364);
     Ov011_FreeTwl(&self->unk_368);
-    ResMgr_ReleaseByName(data_02097cdc, data_ov011_02207c35, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_ov011_02207c35, 7, 0);
     __cxa_vec_cleanup(self->unk_f4, 2, 0x138, (void *)ResSet_ReleaseAll);
     Ov003Actor_DtorBase(self);
     Heap_Free(self);
@@ -108,8 +108,8 @@ BOOL Ov011Act7da4_IsReady(Ov011Act7da4 *self) {
 void Ov011Act7da4_Start(Ov011Act7da4 *self) {
     Ov003Actor_Start(self);
     {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (self->hit != NULL) {
             void *p = self->hit;
             if (p != NULL) {
@@ -118,7 +118,7 @@ void Ov011Act7da4_Start(Ov011Act7da4 *self) {
             }
             self->hit = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     Ov011_VecSet(&self->unk_44->unk_0c, 0, 0x5000, 0x7800);
     {
@@ -131,7 +131,7 @@ void Ov011Act7da4_Start(Ov011Act7da4 *self) {
     self->unk_ea_9 = 1;
     self->unk_ea_6 = 1;
     self->unk_36c = 0xffff;
-    ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x400c, 0x15);
+    ActorMgr_BroadcastKind(gActorMgr, 0x400c, 0x15);
 }
 
 }

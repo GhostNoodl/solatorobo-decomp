@@ -19,7 +19,7 @@ extern "C" {
 
 extern const ov006_Ent021e9c5c data_ov006_021eb858[];
 extern u16 data_ov006_021eb894[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 
 s32 func_ov000_0219a5c8(Actor *self, u16 mask, const VecFx32 *pos, Rot16 *rot, s32 r, s32 a, void **list);
 Actor *Obj021984c8_GetActor(void *p);
@@ -83,7 +83,7 @@ void Ov006Racer_UseItem(Ov006Racer *self) {
             }
         }
         if (ent->se >= 0) {
-            SndMgr_PlayAt(data_02097e4c, ent->se, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, ent->se, &self->pos, 0);
         }
         break;
     }
@@ -98,7 +98,7 @@ void Ov006Racer_UseItem(Ov006Racer *self) {
             }
         }
         if (ent->se >= 0) {
-            SndMgr_PlayAt(data_02097e4c, ent->se, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, ent->se, &self->pos, 0);
         }
         self->phase = 0;
         {
@@ -110,7 +110,7 @@ void Ov006Racer_UseItem(Ov006Racer *self) {
         }
         break;
     case 3: {
-        void *obj = ActorMgr_GetGroup(data_ov000_021ccd68, self->id & 0xf000);
+        void *obj = ActorMgr_GetGroup(gActorMgr, self->id & 0xf000);
         EffectObj *e;
         if (obj != NULL) {
             ActorGroup_SendMsg(obj, self->id, 0xb, 1, 0, 0);
@@ -122,7 +122,7 @@ void Ov006Racer_UseItem(Ov006Racer *self) {
             e->speed = 0x3000;
         }
         if (ent->se >= 0) {
-            SndMgr_PlayAt(data_02097e4c, ent->se, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, ent->se, &self->pos, 0);
         }
         break;
     }

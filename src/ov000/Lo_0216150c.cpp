@@ -57,7 +57,7 @@ void Lo021cacd8_DrawFrame(Lo021cacd8 *self, s32 a1, s32 a2, s32 sy2) {
     s32 sx;
     s32 sy;
     V6 *v;
-    g = data_02097d48;
+    g = gGfxSys;
     G3_Cmd1(0x2a, 0x20000000);
     G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, Gfx3DState_NextPolyId(g->unk_8b0), 0x1c, 0x800));
     sx = self->width << 12;

@@ -86,11 +86,11 @@ void ActorEx_StateHeld(ActorEx *self) {
             }
             pl = ActorMgr_FindPlayer();
             if (pl->id == self->targetObj->target) {
-                u32 n = data_0214a424->unk_016 + 1;
+                u32 n = gStageFlags->unk_016 + 1;
                 if (n >= 0xffff) {
                     n = 0xffff;
                 }
-                data_0214a424->unk_016 = n;
+                gStageFlags->unk_016 = n;
                 if (self->unk_44 != NULL) {
                     ActorSub44 *q = self->unk_44;
                     q->unk_22_0 = 0;

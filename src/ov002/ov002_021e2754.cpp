@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern VFunc data_0208ba70[];
+extern VFunc TextWin_vtbl[];
 
 void TextWin_Init(void *p);
 
@@ -16,7 +16,7 @@ static inline void setVec3(VecFx32 *v, s32 x, s32 y, s32 z) {
 static inline Ov002HudInfo *ov002_HudInfo_New(void) {
     Ov002HudInfo *p = (Ov002HudInfo *)Heap_Alloc(sizeof(Ov002HudInfo));
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021f000c;
+        *(VFunc **)p = Ov002Vt_021f000c_vtbl;
         p->unk_04 = NULL;
         MIi_CpuClear32(0, p->lines, 0x10);
         p->pos.x = 0;
@@ -33,7 +33,7 @@ static inline Ov002HudInfo *ov002_HudInfo_New(void) {
 static inline Ov002Text2 *ov002_Text_New(void) {
     Ov002Text2 *q = (Ov002Text2 *)Heap_Alloc(0xb8);
     if (q != NULL) {
-        *(VFunc **)q = data_0208ba70;
+        *(VFunc **)q = TextWin_vtbl;
         TextWin_Init(q);
     }
     return q;

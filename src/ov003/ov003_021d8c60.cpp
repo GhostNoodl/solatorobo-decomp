@@ -46,8 +46,8 @@ static inline Ov003StateNode *Ov003StateMachine_Find(Ov003StateMachine *self, u8
 
 extern "C" {
 
-extern u32 data_ov003_021f7cf4;
-extern u32 data_ov003_021f7cd8;
+extern u32 Ov003Vt_021f7cf4_vtbl;
+extern u32 Ov003Vt_021f7cd8_vtbl;
 extern s16 Ov003Ticker_GetValue(Ov003Ticker *t);
 extern void Heap_Free(void *p);
 extern void *Heap_Alloc(u32 size);
@@ -116,7 +116,7 @@ void Ov003Timer_Update(Ov003Timer *self) {
         fx = Effect_SpawnId(5, &p);
         sc = self->unk_06 + 0x3800;
         fx->SetScaleXYZ(sc, sc, sc);
-        SndMgr_PlayAtPitch(data_02097e4c, 0x56, &p, -3);
+        SndMgr_PlayAtPitch(gSndMgr, 0x56, &p, -3);
         Field_ShakeCamera(0x10, 0x5a);
         self->state = 4;
         break;
@@ -136,7 +136,7 @@ void Ov003Timer_Update(Ov003Timer *self) {
         p.y = self->target->pos.y;
         p.z = self->target->pos.z;
         Field_ShakeCamera(8, 0xc);
-        SndMgr_PlayAt(data_02097e4c, 0x35, &p, 0);
+        SndMgr_PlayAt(gSndMgr, 0x35, &p, 0);
     }
 }
 

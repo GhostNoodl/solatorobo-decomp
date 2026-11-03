@@ -18,9 +18,9 @@ typedef struct {
 } Robo021a0d4cEntry;
 
 extern "C" {
-extern Robo021a0d4cEntry data_ov000_021ca458[];
-extern MessageQueue021cb980 *data_ov000_021ccd30;
-extern void *data_ov000_021ccd64;
+extern Robo021a0d4cEntry Robo021ca458_StateTable[];
+extern MessageQueue021cb980 *gMessageQueue;
+extern void *gGroup;
 void Robo021ca458_RunMode5State(u8 *self);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_021b3d78(u8 *self);
@@ -33,10 +33,10 @@ void func_ov000_021697dc(Lo021cb798 *self, u16 a, u16 b);
 void func_ov000_0216a438(Lo021cb744 *self, u16 a, s32 b, BOOL c);
 
 static inline Actor *GetObj021a0d4c(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline void Reset021a0d4c(Robo021ca458 *self) {
@@ -60,7 +60,7 @@ static inline Actor *Target021a0d4c(Robo021ca458 *self) {
 }
 
 static inline void Gauge021a0d4c(u16 v) {
-    ListBuffer021cb940 *g = data_ov000_021ccd30->unk_11c;
+    ListBuffer021cb940 *g = gMessageQueue->unk_11c;
     if (g != NULL && g->unk_78 != NULL) {
         func_ov000_0216adc0(g->unk_78, 1, v);
     }
@@ -71,7 +71,7 @@ static inline BOOL GBusy021a0d4c(FieldState *g) {
 }
 
 static inline BOOL GIdle021a0d4c(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (GBusy021a0d4c(g)) {
             return FALSE;
@@ -97,7 +97,7 @@ static inline BOOL NotB1_021a0d4c(Robo021ca458 *self) {
 }
 
 static inline BOOL G9_021a0d4c(void) {
-    return data_0214a424->bits18.flag9 ? TRUE : FALSE;
+    return gStageFlags->bits18.flag9 ? TRUE : FALSE;
 }
 
 static inline BOOL Ready021a0d4c(FieldState *g) {
@@ -112,7 +112,7 @@ static inline BOOL IdleG021a0d4c(FieldState *g) {
     return TRUE;
 }
 static inline BOOL Ok021a0d4c(Robo021ca458 *self) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     BOOL r = IdleG021a0d4c(g);
     if (r) {
         r = !self->unk_b29_1;
@@ -146,7 +146,7 @@ static inline BOOL Ok021a0d4c(Robo021ca458 *self) {
 }
 
 static inline void Bar021a0d4c(u16 a, u16 b) {
-    ListBuffer021cb940 *g = data_ov000_021ccd30->unk_11c;
+    ListBuffer021cb940 *g = gMessageQueue->unk_11c;
     if (g != NULL && g->unk_58 != NULL) {
         func_ov000_021697dc(g->unk_58, a, b);
         g->unk_58->unk_0c |= 0x80;
@@ -154,7 +154,7 @@ static inline void Bar021a0d4c(u16 a, u16 b) {
 }
 
 static inline void Mark021a0d4c(u16 a, s32 b, BOOL c) {
-    ListBuffer021cb940 *g = data_ov000_021ccd30->unk_11c;
+    ListBuffer021cb940 *g = gMessageQueue->unk_11c;
     if (g != NULL && g->unk_64 != NULL) {
         func_ov000_0216a438(g->unk_64, a, b, c);
     }
@@ -175,8 +175,8 @@ void Robo021ca458_RunState(Robo021ca458 *self) {
     }
     k = self->fsm->current;
     for (i = 0; i < 0x1d; i++) {
-        if (k == *(s32 *)((u8 *)data_ov000_021ca458 + i * 12)) {
-            (((Robo021a0d4cCls *)self)->*data_ov000_021ca458[i].fn)();
+        if (k == *(s32 *)((u8 *)Robo021ca458_StateTable + i * 12)) {
+            (((Robo021a0d4cCls *)self)->*Robo021ca458_StateTable[i].fn)();
             break;
         }
     }
@@ -237,15 +237,15 @@ void Robo021ca458_RunState(Robo021ca458 *self) {
         }
     }
     func_ov000_021b3d78((u8 *)self);
-    Obj0218c208_AddPoint(data_ov000_021ccd64, &self->pos, self->rot_y);
+    Obj0218c208_AddPoint(gGroup, &self->pos, self->rot_y);
     if (self->unk_b24_2 != 1) {
-        FieldMgr *c = data_ov000_021ccd6c;
+        FieldMgr *c = gFieldMgr;
         c->playerPos.x = self->pos.x;
         c->playerPos.y = self->pos.y;
         c->playerPos.z = self->pos.z;
     }
     {
-        ObjPool *c = data_02149f0c;
+        ObjPool *c = gStageObjPool;
         c->playerPos.x = self->pos.x;
         c->playerPos.y = self->pos.y;
         c->playerPos.z = self->pos.z;
@@ -272,8 +272,8 @@ void Robo021ca458_RunState(Robo021ca458 *self) {
     self->unk_9b4->show = 0;
     if (self->unk_b22_0 != 0 && Ok021a0d4c(self)) {
         if (self->unk_b24_1) {
-            BOOL f = data_0214a424->bits18.flag10 ? TRUE : FALSE;
-            ListBuffer021cb940 *g = data_ov000_021ccd30->unk_11c;
+            BOOL f = gStageFlags->bits18.flag10 ? TRUE : FALSE;
+            ListBuffer021cb940 *g = gMessageQueue->unk_11c;
             if (g != NULL) {
                 Lo0216b474_Ask(g->unk_68, 1, f);
             }
@@ -282,7 +282,7 @@ void Robo021ca458_RunState(Robo021ca458 *self) {
             ActorMarker_SetKind(self->unk_9b4, 8);
             self->unk_9b4->show = 1;
         } else {
-            FieldCam *q = &data_ov000_021ccd54->cam;
+            FieldCam *q = &gSceneCmd->cam;
             if (q != NULL && q->unk_d6 - 1 == q->unk_d4) {
                 ActorMarker_SetKind(self->unk_9b4, 9);
                 self->unk_9b4->show = 1;
@@ -308,7 +308,7 @@ void Robo021ca458_RunState(Robo021ca458 *self) {
         }
         if (GIdle021a0d4c() || self->unk_b34 < m) {
             Bar021a0d4c(self->hpObj->cur, m);
-            if (data_0214a424->bits18.mode == 1 && !self->unk_b22_4) {
+            if (gStageFlags->bits18.mode == 1 && !self->unk_b22_4) {
                 BOOL on;
                 if (!self->unk_b22_3 && self->unk_b22_9 == 0 &&
                     self->unk_b24_1 && self->unk_93_4 &&
@@ -319,7 +319,7 @@ void Robo021ca458_RunState(Robo021ca458 *self) {
                 } else {
                     on = FALSE;
                 }
-                Mark021a0d4c(data_0214a424->unk_026, 0x2d0, on);
+                Mark021a0d4c(gStageFlags->unk_026, 0x2d0, on);
             }
         }
     }

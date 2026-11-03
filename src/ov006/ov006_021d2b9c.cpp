@@ -28,23 +28,23 @@ void ov006_TaskD1F_UpdateActive(ov006_TaskD1F *self) {
     if (self->step != 0) {
         return;
     }
-    trg = data_02097dc8->trig;
+    trg = gPad->trig;
     if (trg & 2) {
         if (self->unk48) {
             if (self->param == 0) {
-                SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
             }
             self->step = 5;
             self->subStep = 0;
         } else {
-            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
         }
         return;
     }
     if (!(trg & 1)) {
         return;
     }
-    SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
     self->step = 1;
     self->subStep = 0;
 }
@@ -66,11 +66,11 @@ void ov006_TaskD1F_PreUpdate(ov006_TaskD1F *self) {
     int i;
     if (self->state == 0xd) {
         if (self->param != 0) {
-            ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC = self->unk4A;
-            ov006_Slot_Pack(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5), buf);
+            ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5)->unkC = self->unk4A;
+            ov006_Slot_Pack(ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5), buf);
             ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk49, 1, buf, 0x18);
         } else {
-            ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC = self->unk4A;
+            ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5)->unkC = self->unk4A;
         }
     }
     self->unk54->vfunc_1c();

@@ -30,17 +30,17 @@ static inline void MulVec33_021b0db0(const VecFx32 *v, const s32 *m, VecFx32 *ou
 }
 
 static inline BOOL Flip021b0db0(void) {
-    return data_0214a424->bits18.flag10 ? TRUE : FALSE;
+    return gStageFlags->bits18.flag10 ? TRUE : FALSE;
 }
 
 void func_ov000_021b0db0(Robo021ca458 *self, s32 spd) {
     u16 yaw;
     u16 tilt;
-    FieldCam *cam = &data_ov000_021ccd54->cam;
+    FieldCam *cam = &gSceneCmd->cam;
     yaw = FieldCam_GetYaw(cam);
     tilt = 0;
     if (spd > 0) {
-        u16 ang = Pad_LookupDir(data_02097dc8, 0) + 0x8000;
+        u16 ang = Pad_LookupDir(gPad, 0) + 0x8000;
         s32 idx = ang >> 4;
         s32 z;
         u16 keys;
@@ -52,7 +52,7 @@ void func_ov000_021b0db0(Robo021ca458 *self, s32 spd) {
             self->unk_af0.x = -0x6000;
         }
         z = (s32)(((s64)spd * FX_SinCosTable_[idx * 2 + 1] + 0x800) >> 12);
-        if (data_0214a424->bits18.flag10) {
+        if (gStageFlags->bits18.flag10) {
             z = -z;
         }
         self->unk_af0.y += z;
@@ -70,9 +70,9 @@ void func_ov000_021b0db0(Robo021ca458 *self, s32 spd) {
         } else if (keys & 0x10) {
             tilt = 0x800;
             anim = data_ov000_021cc757;
-        } else if (((keys & 0x40) && !Flip021b0db0()) || ((keys & 0x80) && data_0214a424->bits18.flag10)) {
+        } else if (((keys & 0x40) && !Flip021b0db0()) || ((keys & 0x80) && gStageFlags->bits18.flag10)) {
             anim = data_ov000_021cc75d;
-        } else if (((keys & 0x80) && !Flip021b0db0()) || ((keys & 0x40) && data_0214a424->bits18.flag10)) {
+        } else if (((keys & 0x80) && !Flip021b0db0()) || ((keys & 0x40) && gStageFlags->bits18.flag10)) {
             anim = data_ov000_021cc763;
         }
         Model0218fe1c_SetAnim(self->model, anim, 0xcd, 0);

@@ -84,9 +84,9 @@ typedef struct SndGlobal {
 
 // The sound TU defines these as two globals (queue, mgr); other TUs see them as one struct.
 #ifndef SND_DEFINE_GLOBALS
-extern SndGlobal data_02097e48;
+extern SndGlobal gSndQueue;
 #endif
-extern SndMgr *data_02097e4c; // data_02097e48.mgr, reached through its own symbol
+extern SndMgr *gSndMgr; // gSndQueue.mgr, reached through its own symbol
 extern const s8 data_0208b778[];
 extern const s32 data_0208b688[];
 

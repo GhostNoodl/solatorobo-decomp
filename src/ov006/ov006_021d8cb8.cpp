@@ -18,8 +18,8 @@ typedef struct ov006_PriceEntry {
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
-extern ov006_Unk021ccd6c *data_ov000_021ccd6c;
+extern void *gActorMgr;
+extern ov006_Unk021ccd6c *gFieldMgr;
 extern ov006_PriceEntry data_ov006_021eb7c4[];
 
 ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
@@ -30,14 +30,14 @@ u8 ov006_CountFinished(void) {
     u8 count;
     u8 i;
     u8 num;
-    num = data_ov006_021ec884->numActive;
+    num = gOv006SlotManager->numActive;
     if (num <= 1) {
         return 0x63;
     }
     count = 0;
     for (i = 0; i < num; i++) {
-        u16 id = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i)->actorId;
-        Ov006Racer *prop = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
+        u16 id = ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, i)->actorId;
+        Ov006Racer *prop = gActorMgr != NULL ? (Ov006Racer *)ActorMgr_GetActor(gActorMgr, id) : NULL;
         if (prop != NULL && Ov006Racer_IsFinished(prop)) {
             count++;
         }
@@ -58,24 +58,24 @@ static inline int ov006_GetPartyValue(ov006_Unk021ccd6c *self) {
 
 int func_ov006_021d8d4c(void) {
     int result = 0;
-    if (ov006_GetPartyCount(data_ov000_021ccd6c) > 5) {
-        result = ov006_GetPartyValue(data_ov000_021ccd6c) + 0x50;
+    if (ov006_GetPartyCount(gFieldMgr) > 5) {
+        result = ov006_GetPartyValue(gFieldMgr) + 0x50;
     }
     return result;
 }
 
 u8 func_ov006_021d8d9c(void) {
     u8 result = 0;
-    if (ov006_GetPartyCount(data_ov000_021ccd6c) > 5) {
-        result = ov006_GetPartyCount(data_ov000_021ccd6c) - 5;
+    if (ov006_GetPartyCount(gFieldMgr) > 5) {
+        result = ov006_GetPartyCount(gFieldMgr) - 5;
     }
     return result;
 }
 
 int func_ov006_021d8de0(void) {
     int result = 0;
-    if (ov006_GetPartyCount(data_ov000_021ccd6c) > 4) {
-        result = ov006_GetPartyValue(data_ov000_021ccd6c) + 0x40;
+    if (ov006_GetPartyCount(gFieldMgr) > 4) {
+        result = ov006_GetPartyValue(gFieldMgr) + 0x40;
     }
     return result;
 }

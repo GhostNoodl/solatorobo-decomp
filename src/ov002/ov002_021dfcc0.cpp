@@ -44,7 +44,7 @@ static inline BOOL ov002_TryMove(Obj021efe9c *g, s32 dx, s32 dy, Ov002Shape *map
             g->unk_a4 = 4;
             g->unk_a8 = 4;
             g->unk_ac = 4;
-            SndMgr_PlayVolume(data_02097e4c, 0x22, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x22, -1, -1, -1);
         }
         r = TRUE;
     }
@@ -55,13 +55,13 @@ extern "C" {
 
 static inline Obj021efe6c *GetUnit021dfcc0(Obj021eff30 *self) { return self->owner->board; }
 static inline Ov002Shape *GetMap021dfcc0(Obj021efe6c *unit) { return unit->field->map; }
-static inline void *GetMgr021dfcc0(void) { return data_02149ef8; }
+static inline void *GetMgr021dfcc0(void) { return gMsgRes; }
 
 void func_ov002_021dfcc0(Obj021eff30 *self) {
     Obj021efe6c *cam;
     void *mgr;
     Obj021efe9c *cur;
-    Pad *pad = data_02097dc8;
+    Pad *pad = gPad;
     s32 trg = pad->trig;
     u16 rep = pad->repeat;
     Obj021efe6c *unit = GetUnit021dfcc0(self);
@@ -72,7 +72,7 @@ void func_ov002_021dfcc0(Obj021eff30 *self) {
             return;
         }
         self->unk_18 = 0x1e;
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         return;
     }
     if (trg & 1) {
@@ -83,7 +83,7 @@ void func_ov002_021dfcc0(Obj021eff30 *self) {
             self->unk_18 = 0x14;
             return;
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
         return;
     }
     map = GetMap021dfcc0(unit);
@@ -125,7 +125,7 @@ void func_ov002_021dfcc0(Obj021eff30 *self) {
         cam = self->owner->board;
         { s32 a44 = *(s32 *)(data_ov002_021eef74 + 0x44); s32 a48 = *(s32 *)(data_ov002_021eef74 + 0x48); ov002_CamMove(cam, 0xb33, a44, a48, 0xb33, 0, 0xa4); }
         self->unk_18 = 10;
-        SndMgr_PlayVolume(data_02097e4c, 0xe, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0xe, -1, -1, -1);
         return;
     }
     if (!(trg & 0x300)) {
@@ -137,7 +137,7 @@ void func_ov002_021dfcc0(Obj021eff30 *self) {
         func_ov002_021d8c34(self->unk_10, 1, map);
     }
     ov002_SyncCursor(self);
-    SndMgr_PlayPan(data_02097e4c, 0x47, 6);
+    SndMgr_PlayPan(gSndMgr, 0x47, 6);
 }
 
 }

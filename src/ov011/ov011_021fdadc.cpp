@@ -91,13 +91,13 @@ void Ov011Scene_SelectState(Ov011Scene *self) {
         self->mgr2.count = 0;
         self->mgr2.unk_04 = -1;
         {
-            void *saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->heapHi;
+            void *saved = gSysState->cur;
+            gSysState->cur = gSysState->heapHi;
             if (self->mgr2.arr8 != NULL) {
                 __cxa_vec_delete(self->mgr2.arr8, 0x40, 8, Ov011E40_Dtor);
                 self->mgr2.arr8 = NULL;
             }
-            data_02097dd0->cur = saved;
+            gSysState->cur = saved;
         }
         Ov003ActorSub40_ForceState(&self->mgr2.state, 0);
         Ov011Chr_Reset_0220205c(self->mgr2.unk_28);

@@ -17,9 +17,9 @@ void ActorMgr_Destroy(void) {
     ActorMgr *mgr;
     ActorGroup *group;
     Actor *actor;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
-    mgr = data_ov000_021ccd68;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
+    mgr = gActorMgr;
     if (mgr != NULL) {
         if (mgr != NULL) {
             while (mgr->head != NULL) {
@@ -62,9 +62,9 @@ void ActorMgr_Destroy(void) {
             }
             Heap_Free(mgr);
         }
-        data_ov000_021ccd68 = NULL;
+        gActorMgr = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 }

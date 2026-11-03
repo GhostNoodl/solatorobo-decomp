@@ -41,11 +41,11 @@ void func_ov000_021b12c0(Robo021ca458 *self, BOOL flag) {
         anm->b1 = 0;
     }
     self->mdl0.unk_cc = -1;
-    data_0214a424->bits18.flag8 = 0;
-    data_0214a424->bits18.flag9 = 0;
+    gStageFlags->bits18.flag8 = 0;
+    gStageFlags->bits18.flag9 = 0;
     Shared_ChangeFlags(3, 1);
     if (flag) {
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
     }
 }
 }
@@ -64,14 +64,14 @@ extern "C" void func_ov000_021b13cc(Robo021ca458 *self, BOOL flag) {
     Model0218fe1c_UpdateAnim(&self->mdl1, 0x1000);
     self->mdl0.unk_cc = 0x320;
     if (self->unk_b24_1 == 1) {
-        self->fieldId = data_ov000_021ccd54->unk_ca;
+        self->fieldId = gSceneCmd->unk_ca;
     }
-    data_0214a424->bits18.flag8 = 1;
-    data_0214a424->target = self->unk_75c;
-    data_0214a424->targetRotY = self->unk_76e;
-    SetRgb(data_0214a424, self->unk_772, self->unk_773, self->unk_774);
+    gStageFlags->bits18.flag8 = 1;
+    gStageFlags->target = self->unk_75c;
+    gStageFlags->targetRotY = self->unk_76e;
+    SetRgb(gStageFlags, self->unk_772, self->unk_773, self->unk_774);
     Shared_ChangeFlags(3, 2);
     if (flag) {
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
     }
 }

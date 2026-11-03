@@ -7,7 +7,7 @@
 
 // Message box (0x2c bytes): opens one message of a message archive (MsgRes) and shows it in a
 // SlideWin. MsgBox_Init is its ctor (the vtable is set by the overlay that allocates it,
-// e.g. data_ov006_021ebc70), MsgBox_Open selects the message, MsgBox_Update steps
+// e.g. ov006_MsgBox_vtbl), MsgBox_Open selects the message, MsgBox_Update steps
 // it (load, show, fade) and returns FALSE once it is done, MsgBox_Release frees it.
 typedef struct MsgBox {
     /* 0x00 */ void *vtbl;

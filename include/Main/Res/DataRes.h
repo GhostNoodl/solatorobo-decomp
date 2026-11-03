@@ -4,7 +4,7 @@
 #include "types.h"
 #include "Main/Res/ResMgr.h"
 
-// Resource handle holding a raw data file (same base as MsgRes: vtable data_0208b318).
+// Resource handle holding a raw data file (same base as MsgRes: vtable ResHandle_vtbl).
 // The vtables stay in asm.
 struct DataRes {
     /* 0x00 */ // vtable
@@ -84,7 +84,7 @@ typedef struct SaveRef {
 
 extern "C" {
 
-extern const u32 data_0208b318[];
+extern const u32 ResHandle_vtbl[];
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *ptr);
 extern void LangData_LocalizePath(char *dst, const char *src);

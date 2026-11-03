@@ -51,7 +51,7 @@ typedef struct {
     Ov003Vec out;
 } Ov003Trail;
 
-extern Ov003Trail *data_ov003_021fa680;
+extern Ov003Trail *gOv003MultiMgr;
 extern void MTX_Copy33To43_(const Ov003Mtx33 *src, Ov003Mtx43 *dst);
 extern void NNSi_G3dModifyPolygonAttrMask(void *res, BOOL on, u32 mask);
 extern BOOL Model021903b4_Draw(Ov003TrailModel *model);
@@ -85,7 +85,7 @@ BOOL Ov003ActVt_021fa390_Draw(Ov003Trail *self) {
             mdl->alpha = 31;
             NNSi_G3dModifyPolygonAttrMask(mdl->res, TRUE, 0x1f0000);
         }
-        data_ov003_021fa680 = self;
+        gOv003MultiMgr = self;
         self->cur = idx;
         MI_Copy36B(&m, &mdl->rot);
         mdl->pos.x = m.t.x;

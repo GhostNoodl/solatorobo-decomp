@@ -115,7 +115,7 @@ void Ov011Act7cf8_StateIdle(Ov011Act7cf8 *self) {
             self->speed = 0xcd;
         }
         if (self->fsm->timer > 0x41) {
-            Group_UpdateActor(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();
         }
         break;

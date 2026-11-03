@@ -4,12 +4,12 @@
 
 
 extern "C" {
-extern u8 data_ov000_021cc3b4[];
+extern u8 Actor_vtbl[];
 void PauseNode_Init(void *p);
 
 Actor *Actor_Ctor(Actor *self) {
     s32 i;
-    VOBJ_SET_VTABLE(self, data_ov000_021cc3b4);
+    VOBJ_SET_VTABLE(self, Actor_vtbl);
     PauseNode_Init(&self->pause);
     self->prev = NULL;
     self->next = NULL;

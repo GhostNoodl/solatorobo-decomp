@@ -12,8 +12,8 @@ FieldMgr *func_ov000_021b5054(FieldMgr *self) {
 
     PauseNode_Init(&self->pause);
     HitMesh_Init(self->hitMesh);
-    if (data_ov000_021ccd54 != NULL) {
-        self->pause.parent = (PauseNode *)data_ov000_021ccd54->pause;
+    if (gSceneCmd != NULL) {
+        self->pause.parent = (PauseNode *)gSceneCmd->pause;
     }
     self->state = 0;
     self->unk_0c = NULL;

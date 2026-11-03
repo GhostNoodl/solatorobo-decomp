@@ -11,8 +11,8 @@ typedef struct {
 
 extern "C" {
 
-extern ActorMarkerKind data_ov000_021cc934[];
-extern ActorMarkerKind data_ov000_021cc938[]; // data_ov000_021cc934 + 4: its .update is the kind's draw
+extern ActorMarkerKind ActorMarker_KindTable[];
+extern ActorMarkerKind Ov000Vt_021cc938_vtbl[]; // ActorMarker_KindTable + 4: its .update is the kind's draw
 BOOL Vram_IsIdle(void);
 BOOL Model_IsReady(Model *p, u16 a);
 
@@ -70,8 +70,8 @@ void ActorMarker_Update(ActorMarker *self) {
         n = Norm021bd624(self->nextKind);
         self->kind = self->nextKind;
         self->nextKind = -1;
-        self->update = data_ov000_021cc934[n].update;
-        self->draw = data_ov000_021cc938[n].update;
+        self->update = ActorMarker_KindTable[n].update;
+        self->draw = Ov000Vt_021cc938_vtbl[n].update;
         if (self->update != NULL) {
             self->update(self);
         }

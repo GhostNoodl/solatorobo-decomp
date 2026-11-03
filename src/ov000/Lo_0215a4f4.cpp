@@ -63,7 +63,7 @@ void func_ov000_0215a4f4(Lo021cb5a8 *self, s32 enable, s32 *pos) {
         return;
     }
     z = self->posZ - 0x100;
-    g = data_02097d48;
+    g = gGfxSys;
     G3_Cmd1(0x2a, 0x20000000);
     G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, Gfx3DState_NextPolyId(g->unk_8b0), 0x1e, 0x800));
     sx = (self->width - 4) << 12;

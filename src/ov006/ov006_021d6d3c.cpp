@@ -35,12 +35,12 @@ typedef struct ov006_Scene021d6d3c {
 
 extern "C" {
 
-extern void *data_02097e4c;
-extern ov006_Game021d6d3c *data_ov000_021ccd54;
-extern void *data_ov000_021ccd64;
-extern void *data_ov000_021ccd68;
-extern void *data_ov000_021ccd6c;
-extern ov006_Fade021d6d3c data_02097d78;
+extern void *gSndMgr;
+extern ov006_Game021d6d3c *gSceneCmd;
+extern void *gGroup;
+extern void *gActorMgr;
+extern void *gFieldMgr;
+extern ov006_Fade021d6d3c gFadeState;
 void SndMgr_StopAll(void *a, int b);
 void Group_RefreshAll(void *p);
 void ActorMgr_DestroyAll(void *p);
@@ -53,18 +53,18 @@ void ov006_Manager_DispatchMenuCb(int a, void *b, int c);
 
 
 static inline void ov006_Game_SetColor(u8 r, u8 g, u8 b) {
-    ov006_Game021d6d3c *game = data_ov000_021ccd54;
+    ov006_Game021d6d3c *game = gSceneCmd;
     game->next.c[0] = r;
     game->next.c[1] = g;
     game->next.c[2] = b;
-    game = data_ov000_021ccd54;
+    game = gSceneCmd;
     game->prev = game->cur;
     game->cur = game->next;
 }
 
 static inline BOOL ov006_FadeIdle(void) {
     BOOL r;
-    if (data_02097d78.unkC == 0 && data_02097d78.unk0[0] == 0) {
+    if (gFadeState.unkC == 0 && gFadeState.unk0[0] == 0) {
         r = TRUE;
     } else {
         r = FALSE;
@@ -77,28 +77,28 @@ BOOL Ov006Vt_021ebfc0_Exit(ov006_Scene021d6d3c *self) {
 
     switch (self->unkC) {
     case 0:
-        SndMgr_StopAll(data_02097e4c, 0x1e);
+        SndMgr_StopAll(gSndMgr, 0x1e);
         ov006_Game_SetColor(0xff, 0xff, 0xff);
-        Group_RefreshAll(data_ov000_021ccd64);
-        ActorMgr_DestroyAll(data_ov000_021ccd68);
-        func_ov000_021b53f4(data_ov000_021ccd6c);
-        EffectMgr_FreeAll(data_0214a420);
+        Group_RefreshAll(gGroup);
+        ActorMgr_DestroyAll(gActorMgr);
+        func_ov000_021b53f4(gFieldMgr);
+        EffectMgr_FreeAll(gEffectMgr);
         {
-            ov006_Game021d6d3c *game = data_ov000_021ccd54;
+            ov006_Game021d6d3c *game = gSceneCmd;
             game->unk1CC_1 = 0;
             game->unk18C = 0;
             game->unk18D = 0;
             game->unk18E = 0;
             game->unk18F = 0;
         }
-        data_02097dd0->frameWait = 1;
+        gSysState->frameWait = 1;
         data_ov006_021ec888->unk15E = 2;
         if (ov006_FadeIdle()) {
             GfxSys_StartFadeOut(0x1000, 0, 0);
             GfxSys_StartFadeOut(0x1000, 0, 1);
         }
         GfxSys_UpdateFade();
-        if (func_ov006_021cd2a8(data_ov006_021ec860)) {
+        if (func_ov006_021cd2a8(gOv006Manager)) {
             self->unkC = 2;
         } else {
             self->unkC++;
@@ -108,7 +108,7 @@ BOOL Ov006Vt_021ebfc0_Exit(ov006_Scene021d6d3c *self) {
         self->unkC++;
         break;
     case 2:
-        data_ov006_021ec860->unk18++;
+        gOv006Manager->unk18++;
         ov006_Manager_DispatchMenuCb(8, ov006_GetSlotManager(), self->unk3C);
         r = TRUE;
         break;

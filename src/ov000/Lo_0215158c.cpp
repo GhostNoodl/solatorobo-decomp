@@ -4,8 +4,8 @@
 
 extern "C" {
 
-extern void *data_02fe152c;
-extern void *data_02097e4c;
+extern void *gDataRes;
+extern void *gSndMgr;
 void *DataRes_GetTable(void *a, s32 b);
 u32 DataRes_GetCount(void *a, s32 b);
 u32 func_ov000_0214bf2c(u16 a);
@@ -33,7 +33,7 @@ typedef struct {
 
 static inline BOOL LoIsLoaded24(void) {
     BOOL r = TRUE;
-    if (!StageRes_IsAllLoaded(data_ov000_021ccd24.unk_08)) {
+    if (!StageRes_IsAllLoaded(gSceneResSet.unk_08)) {
         r = FALSE;
     }
     return r;

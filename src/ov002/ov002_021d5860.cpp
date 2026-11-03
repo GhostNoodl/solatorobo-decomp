@@ -3,9 +3,9 @@
 extern "C" {
 
 VObj *Ov002Vt_021efca4_DtorDelete(VObj *self) {
-    *(VFunc **)self = data_ov000_021caec8;
+    *(VFunc **)self = UiList_vtbl;
     self->vfunc_2c();
-    *(VFunc **)self = data_ov000_021cac60;
+    *(VFunc **)self = UiObj_vtbl;
     self->vfunc_2c();
     Heap_Free(self);
     return self;
@@ -21,8 +21,8 @@ BOOL Task021efc24_IsLoaded(void) {
 }
 
 extern "C" {
-extern VFunc data_ov000_021cadcc[];
-extern VFunc data_ov002_021efca4[];
+extern VFunc Lo021cadcc_vtbl[];
+extern VFunc Ov002Vt_021efca4_vtbl[];
 extern char data_ov002_021efaf1[];
 extern u8 data_ov002_021eef54[];
 void *func_02035de0(void *a, void *b);
@@ -72,14 +72,14 @@ void Task021efc24_Start(Task021efc24 *self) {
     void *res;
     void *m;
     UiObj *o;
-    void *g = data_02149ef8;
+    void *g = gMsgRes;
     u8 *base;
     void *tbl;
     u16 i;
     u16 id;
     u32 count;
     UiListItem *e;
-    self->unk_74 = data_0214a424->bits18.unk_3 + 0x8000;
+    self->unk_74 = gStageFlags->bits18.unk_3 + 0x8000;
     res = func_02035de0(data_ov002_021efaf1, data_0208ccc0);
     m = Heap_Alloc(0x160);
     if (m != NULL) {
@@ -95,9 +95,9 @@ void Task021efc24_Start(Task021efc24 *self) {
     TexObj_SetOamFuncArg((Model *)self->unk_3c, 0, (u8 *)self + 0x40);
     o = (UiObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
-        *(VFunc **)o = data_ov000_021cac60;
+        *(VFunc **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(VFunc **)o = data_ov000_021cadcc;
+        *(VFunc **)o = Lo021cadcc_vtbl;
         o->vfunc_28();
     }
     self->unk_4c = (Lo021cadcc *)o;
@@ -128,11 +128,11 @@ void Task021efc24_Start(Task021efc24 *self) {
     self->unk_4c->vfunc_70();
     o = (UiObj *)Heap_Alloc(0xd4);
     if (o != NULL) {
-        *(VFunc **)o = data_ov000_021cac60;
+        *(VFunc **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(VFunc **)o = data_ov000_021caec8;
+        *(VFunc **)o = UiList_vtbl;
         o->vfunc_28();
-        *(VFunc **)o = data_ov002_021efca4;
+        *(VFunc **)o = Ov002Vt_021efca4_vtbl;
     }
     self->unk_50 = (UiList *)o;
     self->unk_50->vfunc_10(MsgRes_GetString(g, 0xbe));
@@ -159,11 +159,11 @@ void Task021efc24_Start(Task021efc24 *self) {
     self->unk_50->flags &= ~0x800000;
     self->unk_50->flags |= 0x10000;
     self->unk_50->vfunc_08();
-    base = data_02fe152c->data;
-    tbl = DataRes_GetTable(data_02fe152c, 12);
-    count = DataRes_GetCount(data_02fe152c, 12);
+    base = gDataRes->data;
+    tbl = DataRes_GetTable(gDataRes, 12);
+    count = DataRes_GetCount(gDataRes, 12);
     for (i = 0; i < count; i++) {
-        if (DataRes_ReadBitsAt_02059544(data_02fe152c, base + 0x190, tbl, 1, i)) {
+        if (DataRes_ReadBitsAt_02059544(gDataRes, base + 0x190, tbl, 1, i)) {
             id = i + 0x8000;
             e = (UiListItem *)self->unk_50->vfunc_74(Param_Get(id), id, 0xffff, 0xffff);
             if (self->unk_74 == id) {
@@ -180,9 +180,9 @@ void Task021efc24_Start(Task021efc24 *self) {
     }
     o = (UiObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
-        *(VFunc **)o = data_ov000_021cac60;
+        *(VFunc **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(VFunc **)o = data_ov000_021cadcc;
+        *(VFunc **)o = Lo021cadcc_vtbl;
         o->vfunc_28();
     }
     self->unk_54 = (Lo021cadcc *)o;

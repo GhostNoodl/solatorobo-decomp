@@ -4,7 +4,7 @@
 
 extern "C" {
 
-extern void *data_02149ef8;
+extern void *gMsgRes;
 void *MsgRes_GetString(void *a, s32 b);
 void Obj0215eab4_Draw(void *p);
 

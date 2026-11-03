@@ -9,7 +9,7 @@ extern u8 data_ov009_02216ab6[];
 extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
 
 static inline void Ov009_Notify(u16 id, u16 a, u16 b, const VecFx32 *pos) {
-    FieldActor *g = data_ov000_021ccd30->unk_11c;
+    FieldActor *g = gMessageQueue->unk_11c;
     if (g != NULL && g->unk_60 != NULL) {
         func_ov000_0216912c(g->unk_60, id, 0, a, b, pos);
     }
@@ -109,7 +109,7 @@ void Ov009ActVt_02216750_StateHurt(Ov009ActVt_02216750 *self) {
         if (self->unk_fc.y < self->unk_f0.y - 0x1000) {
             self->unk_fc.y = self->unk_f0.y - 0x1000;
         }
-        if (data_ov000_021ccd54->unk_ca.c[0] != 0x11) {
+        if (gSceneCmd->unk_ca.c[0] != 0x11) {
             p = Target_GetActor(self->hp);
             if (p != NULL) {
                 u16 a = Ov009_AngleTo(self, p);
@@ -118,7 +118,7 @@ void Ov009ActVt_02216750_StateHurt(Ov009ActVt_02216750 *self) {
             }
         }
         if (self->unk_18 == 1) {
-            SndMgr_PlayAt(data_02097e4c, 0xd03, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0xd03, &self->pos, 0);
         }
         self->fsm->st++;
     }

@@ -4,8 +4,8 @@
 
 extern "C" {
 
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021cad50[];
+extern u8 UiObj_vtbl[];
+extern u8 Lo021cad50_vtbl[];
 BOOL func_ov000_02184498(void *g);
 s32 MsgRes_GetLines(void *res, u16 id, s32 *out, s32 d);
 void func_02050748(void *p);
@@ -33,7 +33,7 @@ BOOL func_ov000_0217032c(Obj0217032c *self, void *res, u32 id) {
     s32 n;
     s32 v;
     u8 *p;
-    if ((u32)(data_ov000_021ccd54->unk_98 - 0x11) > 2) {
+    if ((u32)(gSceneCmd->unk_98 - 0x11) > 2) {
         return FALSE;
     }
     if (self->unk_24 != 3) {
@@ -42,7 +42,7 @@ BOOL func_ov000_0217032c(Obj0217032c *self, void *res, u32 id) {
     if (self->unk_2c) {
         return FALSE;
     }
-    if (EffectMgr_FindByKey(data_0214a420, 0x2712) || EffectMgr_FindByKey(data_0214a420, 0x2713) || EffectMgr_FindByKey(data_0214a420, 0x191)) {
+    if (EffectMgr_FindByKey(gEffectMgr, 0x2712) || EffectMgr_FindByKey(gEffectMgr, 0x2713) || EffectMgr_FindByKey(gEffectMgr, 0x191)) {
         return FALSE;
     }
     v = MsgRes_GetLines(res, (u16)id, &n, 1);
@@ -65,7 +65,7 @@ struct Obj02170448 {
 };
 
 BOOL func_ov000_02170448(Obj02170448 *self, void *res, u32 id) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     u32 hi;
     u16 lo;
     VObj *p;
@@ -85,9 +85,9 @@ BOOL func_ov000_02170448(Obj02170448 *self, void *res, u32 id) {
     lo = id;
     p = (VObj *)Heap_Alloc(0xe8);
     if (p) {
-        *(void **)p = data_ov000_021cac60;
+        *(void **)p = UiObj_vtbl;
         p->vfunc_28();
-        *(void **)p = data_ov000_021cad50;
+        *(void **)p = Lo021cad50_vtbl;
         p->vfunc_28();
     }
     self->unk_30 = p;

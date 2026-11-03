@@ -32,7 +32,7 @@ void ov006_InitOwnerSlot(void) {
     ov006_OwnerInfo info;
 
     {
-        ov006_SlotManager *g = data_ov006_021ec884;
+        ov006_SlotManager *g = gOv006SlotManager;
         for (i = 0; i < 3; i++) {
             g->items[i] = 0;
         }
@@ -42,14 +42,14 @@ void ov006_InitOwnerSlot(void) {
     RTC_GetDate(&date);
     if (date.month == info.month) {
         if (date.day == info.day) {
-            data_ov006_021ec884->items[n] = 9;
+            gOv006SlotManager->items[n] = 9;
             n++;
         } else {
-            data_ov006_021ec884->items[n] = 10;
+            gOv006SlotManager->items[n] = 10;
             n++;
         }
     } else {
-        data_ov006_021ec884->items[n] = n;
+        gOv006SlotManager->items[n] = n;
         n++;
     }
     OS_GetMacAddress(mac);
@@ -63,7 +63,7 @@ void ov006_InitOwnerSlot(void) {
     p = data_ov006_021eb7f0[sum];
     for (i = 0; i < 2; i++) {
         if (p[i] != 0) {
-            ov006_SlotManager *g = data_ov006_021ec884;
+            ov006_SlotManager *g = gOv006SlotManager;
             if (n < 3) {
                 g->items[n] = p[i];
             }

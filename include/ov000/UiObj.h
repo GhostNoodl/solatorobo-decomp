@@ -19,7 +19,7 @@ typedef void (*UiDrawItemFn)(void *arg, UiObj *self, void *arg2);
 typedef BOOL (*UiItemFn)(UiList *self, UiListItem *item);
 
 // ov000 UI object: windows, labels, number displays, list menus and dialogs (base vtable
-// data_ov000_021cac60, 0x84 bytes). Every subclass constructor stores this vtable and calls
+// UiObj_vtbl, 0x84 bytes). Every subclass constructor stores this vtable and calls
 // slot 0x28 (UiObj_Init, which sets the defaults below), then its own vtable and slot 0x28.
 // The overlays see the same object as Ov015Ui, ov006_Window, Ov008Menu and Ov007Player.
 struct UiObj : public VObj {
@@ -62,9 +62,9 @@ struct UiObj : public VObj {
         };
     };
     Model *model;       // 0x10 freed with LO_FREE_M
-    TextWin *title;     // 0x14 TextWin (vtable data_0208ba70); slot 0x10 (UiObj_SetTitle) builds it from a string, font 8
+    TextWin *title;     // 0x14 TextWin (vtable TextWin_vtbl); slot 0x10 (UiObj_SetTitle) builds it from a string, font 8
     TextWin *caption;   // 0x18 TextWin; slot 0x14 (UiObj_SetCaption): one line, font 4, scrolled by scrollPos
-    s32 font;           // 0x1c copied to data_02097ce0->unk_004
+    s32 font;           // 0x1c copied to gGfxMgr->unk_004
     s32 rows;           // 0x20
     s32 width;          // 0x24 G3 frame x scale (UiObj_DrawFrameEdge)
     s32 height;         // 0x28 G3 frame y scale
@@ -151,7 +151,7 @@ struct UiLabel {
             u32 rest : 27;
         } bits;
     };
-    s32 style;          // 0x04 index into data_02fe0188
+    s32 style;          // 0x04 index into UiLabel_StyleTable
     s32 x;              // 0x08 screen position
     s32 y;
     s32 z;
@@ -163,7 +163,7 @@ struct UiLabel {
     Model *model;       // 0x28 the frame
 };
 
-// The label styles (data_02fe0188, 0x18 bytes each).
+// The label styles (UiLabel_StyleTable, 0x18 bytes each).
 typedef struct UiLabelStyle {
     u16 part;           // frame model part
     u16 color0;         // gradient colours of the frame (func_ov000_0215f618)
@@ -174,7 +174,7 @@ typedef struct UiLabelStyle {
     s32 ofsY;
 } UiLabelStyle;
 
-// List menu (vtable data_ov000_021caec8, 0xd4 bytes, slot 0x28 UiList_Init).
+// List menu (vtable UiList_vtbl, 0xd4 bytes, slot 0x28 UiList_Init).
 struct UiList : public UiObj {
     UiItemFn onDecide;  // 0x84 slot 0x98
     UiItemFn onCursor;  // 0x88 slot 0x9c
@@ -206,8 +206,8 @@ struct UiList : public UiObj {
     s32 unk_d0;
 };
 
-// List subclass (vtable data_ov000_021cb4a8, 0xe0 bytes); data_ov000_021cb2a8 (0xe0), data_ov000_021caac8
-// (0xe4) and data_ov000_021cb3a8 (0xf0) derive from it.
+// List subclass (vtable UiList021cb4a8_vtbl, 0xe0 bytes); Ov000Vt_021cb2a8_vtbl (0xe0), Lo021caac8_vtbl
+// (0xe4) and Lo021cb3a8_vtbl (0xf0) derive from it.
 struct UiList021cb4a8 : public UiList {
     UiLabel *unk_d4;    // UiList021cb4a8_SetLabel
     UiLabel *unk_d8;    // UiList021cb4a8_SetCenteredLabel

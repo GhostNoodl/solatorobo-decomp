@@ -20,7 +20,7 @@ void Ov009ActVt_02217aac_State20(Ov009ActVt_02217aac *self) {
         self->pos = self->unk_f0;
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
         History_SetState(self->fsm, 1, 0);
     }
     d.x = self->unk_f0.x - self->pos.x;

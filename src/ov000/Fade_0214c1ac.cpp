@@ -20,7 +20,7 @@ void func_ov000_0214c1ac(void) {
     func_020708fc(0x1000, &a);
     func_02070b98(0x1000, &b, 1, 2);
     ResMgr_LoadArchive(&a, &b, 2, 0);
-    data_ov000_021ccd24.unk_00 = 1;
+    gSceneResSet.unk_00 = 1;
 }
 
 void func_ov000_0214c210(void) {
@@ -30,7 +30,7 @@ void func_ov000_0214c210(void) {
     func_020708fc(0x1000, &a);
     func_02070b98(0x1000, &b, 1, 2);
     ResMgr_ReleaseArchive(&a, &b, 2);
-    data_ov000_021ccd24.unk_00 = 0;
+    gSceneResSet.unk_00 = 0;
 }
 
 BOOL func_ov000_0214c270(void) {

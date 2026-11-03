@@ -2,20 +2,20 @@
 
 extern "C" {
 
-extern u32 data_0208c2e4[];
-extern u32 data_0208c354[];
-extern u32 data_0208c364[];
-extern u32 data_0208c840[];
-extern u32 data_0208c868[];
+extern u32 EffectObj_vtbl[];
+extern u32 MainVt_0208c354_vtbl[];
+extern u32 MainVt_0208c364_vtbl[];
+extern u32 MainVt_0208c840_vtbl[];
+extern u32 MainVt_0208c868_vtbl[];
 extern void EffectObj_Unregister(EffectObj *obj);
 extern void EffectEmitter_Release(EffectEmitter *em);
 extern void func_0206ab0c(EffectPartSet *s);
 
 static inline void EffectEmitter_Dtor(EffectEmitter *em) {
-    *(u32 **)em = data_0208c868;
+    *(u32 **)em = MainVt_0208c868_vtbl;
     EffectEmitter_Release(em);
-    *(u32 **)&em->sub = data_0208c354;
-    *(u32 **)em = data_0208c2e4;
+    *(u32 **)&em->sub = MainVt_0208c354_vtbl;
+    *(u32 **)em = EffectObj_vtbl;
     EffectObj_Unregister(em);
 }
 
@@ -46,7 +46,7 @@ EffectEmitter *MainVt_0208c868_Dtor(EffectEmitter *em) {
 }
 
 EffectPartSet *MainVt_0208c850_DtorDelete(EffectPartSet *s) {
-    *(u32 **)s = data_0208c364;
+    *(u32 **)s = MainVt_0208c364_vtbl;
     Heap_Free(s);
     return s;
 }
@@ -56,12 +56,12 @@ void func_0206c420(EffectPartSet *s) {
 }
 
 EffectPartSet *MainVt_0208c850_Dtor(EffectPartSet *s) {
-    *(u32 **)s = data_0208c364;
+    *(u32 **)s = MainVt_0208c364_vtbl;
     return s;
 }
 
 EffectPtcl *MainVt_0208c840_Dtor(EffectPtcl *p) {
-    *(u32 **)p = data_0208c840;
+    *(u32 **)p = MainVt_0208c840_vtbl;
     return p;
 }
 

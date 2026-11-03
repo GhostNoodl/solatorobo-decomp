@@ -32,12 +32,12 @@ extern "C" {
 
 void ov006_SlotManager_Create(void) {
     ov006_SlotManager *p;
-    OV006_DELETE_OBJECT(data_ov006_021ec884);
+    OV006_DELETE_OBJECT(gOv006SlotManager);
     p = (ov006_SlotManager *)Heap_Alloc(0x150);
     if (p != NULL) {
         u16 j;
         int i;
-        p->vtbl = &data_ov006_021ec068;
+        p->vtbl = &Ov006Vt_021ec068_vtbl;
         __cxa_vec_ctor(p->slots, 4, sizeof(ov006_Slot), (void *)Ov006Vt_021ec078_Ctor, (void *)ov006_Slot_Dtor);
         p->numActive = 0;
         p->unk5 = 0xff;
@@ -52,7 +52,7 @@ void ov006_SlotManager_Create(void) {
         }
         p->unk6 = 0xffff;
     }
-    data_ov006_021ec884 = p;
+    gOv006SlotManager = p;
 }
 
 }

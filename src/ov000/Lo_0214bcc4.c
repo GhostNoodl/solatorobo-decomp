@@ -5,7 +5,7 @@ typedef struct {
     u16 b;
 } Ent0214bcc4;
 
-extern void *data_02fe152c;
+extern void *gDataRes;
 Ent0214bcc4 *DataRes_GetTable(void *a, s32 b);
 s32 func_02061f08(u16 id);
 u32 func_ov000_0214bf2c(u16 a);
@@ -21,8 +21,8 @@ u16 func_ov000_0214bcc4(s32 kind, s32 idx) {
     u32 fl;
     Ent0214bcc4 *tbl;
 
-    base = *(u8 **)((u8 *)data_02fe152c + 0x4c);
-    tbl = DataRes_GetTable(data_02fe152c, 1);
+    base = *(u8 **)((u8 *)gDataRes + 0x4c);
+    tbl = DataRes_GetTable(gDataRes, 1);
     ret = 0xffff;
     x = func_02061f08(tbl[idx].b);
     fl = func_ov000_0214bf2c(tbl[idx].b);
@@ -34,7 +34,7 @@ u16 func_ov000_0214bcc4(s32 kind, s32 idx) {
         }
     }
     if (fl & 0x80) {
-        if (DataRes_ReadEntry(data_02fe152c, 5, 1, 0x29)) {
+        if (DataRes_ReadEntry(gDataRes, 5, 1, 0x29)) {
             return ret;
         }
     }
@@ -44,9 +44,9 @@ u16 func_ov000_0214bcc4(s32 kind, s32 idx) {
     } else {
         s32 slot = 0x30;
         slot += (s32)base;
-        got = DataRes_ReadBitsAt_02059544(data_02fe152c, (void *)slot, tbl, 0x301, idx);
+        got = DataRes_ReadBitsAt_02059544(gDataRes, (void *)slot, tbl, 0x301, idx);
     }
-    if (DataRes_ReadBitsAt_02059544(data_02fe152c, base + 0x30, tbl, 1, idx) == 1 && got == 0) {
+    if (DataRes_ReadBitsAt_02059544(gDataRes, base + 0x30, tbl, 1, idx) == 1 && got == 0) {
         id = 0x100e;
         if (x != 0) {
             if (fl & 2) {

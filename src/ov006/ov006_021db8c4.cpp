@@ -3,22 +3,22 @@
 
 extern "C" {
 
-extern u8 data_ov000_021cb0b8[];
-extern u8 data_ov000_021cb1b0[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov006_021ec30c[];
+extern u8 Ov000Vt_021cb0b8_vtbl[];
+extern u8 Ov000Vt_021cb1b0_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 UiObj_vtbl[];
+extern u8 ov006_Window_vtbl[];
 
 ov006_ListWin *ov006_Window_Ctor(ov006_ListWin *self) {
-    *(void **)self = data_ov000_021cac60;
+    *(void **)self = UiObj_vtbl;
     self->vfunc_28();
-    *(void **)self = data_ov000_021caec8;
+    *(void **)self = UiList_vtbl;
     self->vfunc_28();
-    *(void **)self = data_ov000_021cb1b0;
+    *(void **)self = Ov000Vt_021cb1b0_vtbl;
     self->vfunc_28();
-    *(void **)self = data_ov000_021cb0b8;
+    *(void **)self = Ov000Vt_021cb0b8_vtbl;
     self->vfunc_28();
-    *(void **)self = data_ov006_021ec30c;
+    *(void **)self = ov006_Window_vtbl;
     self->unk_1e2 = 0;
     self->unk_1e4 = 0;
     return self;

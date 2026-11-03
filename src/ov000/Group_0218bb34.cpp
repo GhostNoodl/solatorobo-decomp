@@ -19,7 +19,7 @@ typedef struct ActorMgr ActorMgr;
 
 extern "C" {
 
-extern ActorMgr *data_ov000_021ccd68;
+extern ActorMgr *gActorMgr;
 GroupActor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Heap_Free(void *p);
 void GroupNode_UpdateEntry(GroupNode *node, s32 a, GroupActor *actor);
@@ -100,7 +100,7 @@ void Group_RemoveNode(Group *g, GroupNode *node, BOOL notify) {
         for (i = 0; i < node->count; i++) {
                 GroupEntry *e = node->entries;
                 if (e[i].actor != 0xffff) {
-                    GroupActor *actor = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, e[i].actor);
+                    GroupActor *actor = gActorMgr == NULL ? NULL : ActorMgr_GetActor(gActorMgr, e[i].actor);
                     if (actor != NULL) actor->vfunc_08();
                 }
         }

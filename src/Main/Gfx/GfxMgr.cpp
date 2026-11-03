@@ -18,19 +18,19 @@ void *func_02039720(void) {
 }
 
 void *func_0203972c(void *arg1, void *arg2) {
-    return func_0203a984(data_02097ce0, arg1, arg2);
+    return func_0203a984(gGfxMgr, arg1, arg2);
 }
 
 void func_02039750(void) {
     GfxMgr *mgr;
     int j;
     int i;
-    if (data_02097ce0 != NULL) {
+    if (gGfxMgr != NULL) {
         return;
     }
-    data_02097ce0 = (GfxMgr *)Heap_AllocLo(sizeof(GfxMgr), 4);
-    func_02039a34(data_02097ce0);
-    mgr = data_02097ce0;
+    gGfxMgr = (GfxMgr *)Heap_AllocLo(sizeof(GfxMgr), 4);
+    func_02039a34(gGfxMgr);
+    mgr = gGfxMgr;
     for (i = 0; i < 10; i++) {
         mgr->fonts[i] = NULL;
         for (j = 0; j < 9; j++) {
@@ -43,11 +43,11 @@ void func_02039750(void) {
 }
 
 void *VramBlock_AllocChar(void *arg1, void *arg2, void *arg3) {
-    return GfxMgr_AllocCharBlock(data_02097ce0, arg1, arg2, arg3);
+    return GfxMgr_AllocCharBlock(gGfxMgr, arg1, arg2, arg3);
 }
 
 VramBlock *VramBlock_Free(VramBlock *block) {
-    return GfxMgr_FreeBlock(data_02097ce0, block);
+    return GfxMgr_FreeBlock(gGfxMgr, block);
 }
 
 VramBlock *func_02039844(GfxMgr *mgr, VramPool *pool, u32 size) {

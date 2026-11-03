@@ -4,7 +4,7 @@
 extern "C" {
 
 extern void *const data_ov009_02215d0c[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern void Vec_RotateY(VecFx32 *dst, const VecFx32 *src, s32 angle);
 extern void HitSphere_Link(ActorSub48 *p);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
@@ -42,7 +42,7 @@ void Ov009ActVt_02216bc8_StateAttack2(Ov009ActVt_02216bc8 *self) {
     if (!Ov009_GameIdle()) {
         return;
     }
-    if (Ov009Game_IsPaused(data_ov000_021ccd54)) {
+    if (Ov009Game_IsPaused(gSceneCmd)) {
         return;
     }
     pl = ActorMgr_FindPlayer();
@@ -92,12 +92,12 @@ void Ov009ActVt_02216bc8_StateAttack2(Ov009ActVt_02216bc8 *self) {
         s.z = s.x;
         if (s.x >= Ov009_MaxScale(self)->x) {
             s = *Ov009_MaxScale(self);
-            EffectMgr_Kill(data_0214a420, self->unk_f8);
+            EffectMgr_Kill(gEffectMgr, self->unk_f8);
             self->unk_f8 = 0;
             o = Effect_SpawnId(0x68, &self->pos);
             o->AddPosXYZ(0, 0x400, 0);
             o->alpha = FX_Div(0x1e000, 0x1f000);
-            SndMgr_PlayAt(data_02097e4c, 0x80, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x80, &self->pos, 0);
             s48 = self->hit;
             s48->unk_9a_0 = 1;
             s48->unk_9a_3 = 1;
@@ -157,7 +157,7 @@ void Ov009ActVt_02216bc8_StateAttack2(Ov009ActVt_02216bc8 *self) {
         VEC_Distance(&self->pos, &v2);
         o = Effect_SpawnId(0x389, &self->pos);
         o->SetScaleAll(0x3000);
-        h = FieldCam_GetYaw(&data_ov000_021ccd54->cam);
+        h = FieldCam_GetYaw(&gSceneCmd->cam);
         r.x = 0;
         r.y = 0;
         r.z = -0x800;
@@ -206,7 +206,7 @@ void Ov009ActVt_02216bc8_StateAttack2(Ov009ActVt_02216bc8 *self) {
             if (*ActorMgr_FindPlayer()->hp != 0) {
                 Hit_ApplyInArea(self, self, self->unk_f6, self->targetObj->unk_0a, 2, NULL, 0, 0x2333, 0, 6, 0x800);
             }
-            if (Effect_Find_020657b0(data_0214a420, self->unk_f8) == NULL) {
+            if (Effect_Find_020657b0(gEffectMgr, self->unk_f8) == NULL) {
                 self->unk_f8 = 0;
                 s44 = self->unk_44;
                 s44->unk_22_0 = 1;

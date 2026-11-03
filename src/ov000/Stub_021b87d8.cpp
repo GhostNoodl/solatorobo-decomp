@@ -38,13 +38,13 @@ void func_ov000_021b87d8(Obj021b87d8 *self, u16 a) {
 }
 
 void func_ov000_021b8800(Obj021b87d8 *self) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_4c != NULL) {
         Obj021b87d8_DeleteMember(self->unk_4c);
         self->unk_4c = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     self->unk_00 = 0;
     self->unk_44 = 1;
     self->unk_48 = 0;

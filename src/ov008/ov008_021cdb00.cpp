@@ -4,8 +4,8 @@
 #include "Main/Res/ArcName.h"
 
 extern "C" {
-extern void *data_0208b318;
-extern void *data_0208bf54;
+extern void *ResHandle_vtbl;
+extern void *StageRes_vtbl;
 extern char data_ov008_021d0462[];
 extern char data_ov008_021d0470[];
 extern char data_ov008_021d047c[];
@@ -47,7 +47,7 @@ static inline void Ov008_AnimSetB(Ov008Anim *p, const char *a, const char *b) {
 static inline Ov008Pic *Ov008_NewLoader(void) {
     Ov008Pic *p = (Ov008Pic *)Heap_Alloc(0x4c);
     if (p != NULL) {
-        OV008_SET_VT(p, &data_0208b318);
+        OV008_SET_VT(p, &ResHandle_vtbl);
         p->v08();
     }
     return p;
@@ -107,9 +107,9 @@ void func_ov008_021cdb00(Ov008Mgr *self) {
 
     q = (Ov008PicC4 *)Heap_Alloc(0xc4);
     if (q != NULL) {
-        OV008_SET_VT(q, &data_0208b318);
+        OV008_SET_VT(q, &ResHandle_vtbl);
         q->v08();
-        OV008_SET_VT(q, &data_0208bf54);
+        OV008_SET_VT(q, &StageRes_vtbl);
         StageRes_Init(q);
     }
     self->unk_fc = q;

@@ -61,8 +61,8 @@ public:
 
 extern "C" {
 extern Hang_021b209c data_ov000_021ca320[];
-extern Pad_021b209c data_02fe0f14;
-extern void *data_02097e4c;
+extern Pad_021b209c gHitResult;
+extern void *gSndMgr;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 s32 Hit_CastSegment(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 u16 FX_Atan2(s32 x, s32 z);
@@ -80,10 +80,10 @@ void Actor_SendMsgU8(void *a, u16 id, s32 b);
 BOOL History_SetState(void *a, s32 b, s32 c);
 
 static inline Actor *FindActor_021b209c(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline s32 Mul_021b209c(s32 a, s64 b) {
@@ -128,7 +128,7 @@ void func_ov000_021b209c(Robo021ca458 *self) {
         ret = Hit_CastSegment(&from, &to, 0x40000000, 0, 0, -1);
     }
     if (ret != -0x1000) {
-        if (data_02fe0f14.keys & 0x200) {
+        if (gHitResult.keys & 0x200) {
             grab = TRUE;
             if (info->mode == 1) {
                 ok = TRUE;
@@ -137,7 +137,7 @@ void func_ov000_021b209c(Robo021ca458 *self) {
             ok = TRUE;
         }
         if (ok) {
-            u16 ang = FX_Atan2(data_02fe0f14.tx, data_02fe0f14.tz);
+            u16 ang = FX_Atan2(gHitResult.tx, gHitResult.tz);
             if ((u16)(ang - self->moveYaw) < 0x8000) {
                 self->moveYaw = ang - 0x4000;
             } else {
@@ -170,7 +170,7 @@ void func_ov000_021b209c(Robo021ca458 *self) {
             arg.a = 0xa;
             arg.b = 1;
             Actor_SendMsg(self, self->id, 9, 0, 6, &arg);
-            SndMgr_PlayAt(data_02097e4c, 0x309, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x309, &self->pos, 0);
             Field_ShakeCamera(0xa, 0xf);
             v.y = self->centerY;
             v.x = 0;
@@ -188,24 +188,24 @@ void func_ov000_021b209c(Robo021ca458 *self) {
                 self->velY = -0x800;
                 body->unk_9a |= 0x20;
                 if (info->se0 >= 0 && self->seSlot < 0) {
-                    self->seSlot = SndMgr_StartSeqArc(data_02097e4c, info->se0);
-                    SndMgr_SetSlotSemitones(data_02097e4c, self->seSlot, info->se0arg);
+                    self->seSlot = SndMgr_StartSeqArc(gSndMgr, info->se0);
+                    SndMgr_SetSlotSemitones(gSndMgr, self->seSlot, info->se0arg);
                 }
                 if (info->se1 >= 0 && self->unk_b66 < 0) {
-                    self->unk_b66 = SndMgr_StartSeqArc(data_02097e4c, info->se1);
-                    SndMgr_SetSlotSemitones(data_02097e4c, self->unk_b66, info->se1arg);
+                    self->unk_b66 = SndMgr_StartSeqArc(gSndMgr, info->se1);
+                    SndMgr_SetSlotSemitones(gSndMgr, self->unk_b66, info->se1arg);
                 }
             }
-            if ((self->hit->unk_50 & 0x400) && (data_ov000_021ccd68->frame & 0x1f)) {
+            if ((self->hit->unk_50 & 0x400) && (gActorMgr->frame & 0x1f)) {
                 Effect_SpawnId(0x2bd, &self->pos);
             }
         } else {
             if (self->seSlot >= 0) {
-                SndMgr_StopSeqArc(data_02097e4c, self->seSlot);
+                SndMgr_StopSeqArc(gSndMgr, self->seSlot);
                 self->seSlot = -1;
             }
             if (self->unk_b66 >= 0) {
-                SndMgr_StopSeqArc(data_02097e4c, self->unk_b66);
+                SndMgr_StopSeqArc(gSndMgr, self->unk_b66);
                 self->unk_b66 = -1;
             }
         }
@@ -251,11 +251,11 @@ void func_ov000_021b209c(Robo021ca458 *self) {
         e->SetRotXYZ(0x2000, 0, 0);
     }
     if (self->seSlot >= 0) {
-        SndMgr_StopSeqArc(data_02097e4c, self->seSlot);
+        SndMgr_StopSeqArc(gSndMgr, self->seSlot);
         self->seSlot = -1;
     }
     if (self->unk_b66 >= 0) {
-        SndMgr_StopSeqArc(data_02097e4c, self->unk_b66);
+        SndMgr_StopSeqArc(gSndMgr, self->unk_b66);
         self->unk_b66 = -1;
     }
     self->unk_b29_1 = 1;

@@ -18,7 +18,7 @@ typedef struct {
 extern "C" {
 
 extern FieldId data_ov000_021c9fe8;
-extern void *data_02097e4c;
+extern void *gSndMgr;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 void Ov003_AddMeter_021cedf4(u16 n);
@@ -32,7 +32,7 @@ BOOL History_SetState(void *s, s32 a, s32 b);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline Actor *FindActor021aa5c8(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }
@@ -62,7 +62,7 @@ void Robo021ca458_State11(Robo021ca458 *self) {
     if (actor != NULL) {
         sub = (ActorSub4c *)((u8 *)actor->targetObj);
     }
-    g = data_ov000_021ccd54;
+    g = gSceneCmd;
     if (self->fsm->st == 0) {
         EffectObj *e = Effect_SpawnId(0x391, &self->pos);
         e->AddPosXYZ(0, self->height - (self->height >> 2), 0);
@@ -74,8 +74,8 @@ void Robo021ca458_State11(Robo021ca458 *self) {
         g->cam.base.shakeTime = 8;
         g->cam.base.shakeLen = 6;
         g->cam.base.shakeCur = 6;
-        SndMgr_PlayVolume(data_02097e4c, 0x44, -1, -1, -1);
-        SndMgr_PlayVolume(data_02097e4c, 0x30c, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x44, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x30c, -1, -1, -1);
         if (!self->unk_b22_3) {
             u16 n = 0x14;
             if (sub != NULL) {
@@ -86,8 +86,8 @@ void Robo021ca458_State11(Robo021ca458 *self) {
             }
             Ov003_AddMeter_021cedf4(n);
         }
-        if (FieldId_Eq(&data_ov000_021ccd54->unk_ca, data_ov000_021c9fe8)) {
-            SndMgr_PlayPan(data_02097e4c, 0x5e, Rand_UpTo(3));
+        if (FieldId_Eq(&gSceneCmd->unk_ca, data_ov000_021c9fe8)) {
+            SndMgr_PlayPan(gSndMgr, 0x5e, Rand_UpTo(3));
         }
     }
     if (self->unk_b2c_0) {

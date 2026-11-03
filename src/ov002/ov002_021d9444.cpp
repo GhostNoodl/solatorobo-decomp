@@ -30,7 +30,7 @@ void Obj021efe6c_Init(Obj021efe6c *self) {
 }
 
 void *Ov002Vt_021efe4c_DtorDelete(Obj021efe4c *self) {
-    *(VFunc **)self = data_ov002_021efe4c;
+    *(VFunc **)self = Ov002Vt_021efe4c_vtbl;
     Obj021efe4c_Release(self);
     Heap_Free(self);
     return self;

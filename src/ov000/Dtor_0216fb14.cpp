@@ -9,7 +9,7 @@
 
 extern "C" {
 
-extern u8 data_0208b318[];
+extern u8 ResHandle_vtbl[];
 void func_ov000_021bd09c(void);
 void ListBuffer021cb940_Init(ListBuffer021cb940 *self);
 void Obj021bbc68_Release(void *p);
@@ -32,7 +32,7 @@ void ListBuffer021cb940_Release(ListBuffer021cb940 *self) {
     HEAP_DELETE(Lo021cb0b8 *, self->dialog, p->vfunc_04());
     HEAP_DELETE_FN(self->unk_3c, Obj021b8ecc_Release);
     HEAP_DELETE_FN(self->unk_40, Obj021bacf4_Release);
-    HEAP_DELETE(u8 *, self->unk_44, Obj021bbc68_Release(p); *(void **)(p + 4) = data_0208b318; ((VObj *)(p + 4))->vfunc_0c(); Heap_Free(p));
+    HEAP_DELETE(u8 *, self->unk_44, Obj021bbc68_Release(p); *(void **)(p + 4) = ResHandle_vtbl; ((VObj *)(p + 4))->vfunc_0c(); Heap_Free(p));
     HEAP_DELETE_FN(self->unk_4c, func_ov000_021bb840);
     HEAP_DELETE(Obj0216c954 *, self->unk_50, Obj0216c9b0_Release(p); Heap_Free(p));
     HEAP_DELETE(LoTimer *, self->unk_54, LoTimer_FreeModels(p); Heap_Free(p));

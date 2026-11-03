@@ -2,12 +2,12 @@
 
 extern "C" {
 
-extern void *data_ov013_0220bd2c;
+extern void *Ov013Act_02207968_vtbl;
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 
 Ov013Act_02207968 *Ov013Act_02207968_Ctor(Ov013Act_02207968 *self) {
     Ov003Actor_Ctor(self);
-    *(void **)self = &data_ov013_0220bd2c;
+    *(void **)self = &Ov013Act_02207968_vtbl;
     self->unk_f0 = 0;
     self->unk_f4 = 0;
     self->unk_f1 = 0;

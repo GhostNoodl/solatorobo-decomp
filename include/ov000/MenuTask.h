@@ -7,7 +7,7 @@
 // vtable store and clears the class's fields, slot 0x5c (Release) is called by the Dtor at each
 // level and frees what the task owns. Slot 0x18 builds the task's windows and links the task
 // (TaskList_Insert). Fields are named by offset unless the code shows what they hold. The task kind
-// is the index of the class's New in the creator table data_ov000_021c9c6c (LoSwitchTaskC, LoFindTask).
+// is the index of the class's New in the creator table Task_NewTable (LoSwitchTaskC, LoFindTask).
 
 #include "ov000/TaskList.h"
 #include "ov000/ObjLayouts.h"
@@ -16,7 +16,7 @@
 struct GameSave;
 struct GameSave0208c994;
 
-// Vtable data_ov000_021cbae0, task kind 0x9 (data_ov000_021c9c6c[0x9] is its New), 0x58 bytes.
+// Vtable Task021cbae0_vtbl, task kind 0x9 (Task_NewTable[0x9] is its New), 0x58 bytes.
 class Task021cbae0 : public Task {
 public:
     s32 unk_3c;
@@ -29,7 +29,7 @@ public:
 };
 SIZE_ASSERT(Task021cbae0, 0x58);
 
-// Vtable data_ov000_021cbb60, task kind 0x8 (data_ov000_021c9c6c[0x8] is its New), 0xc4 bytes.
+// Vtable Task021cbb60_vtbl, task kind 0x8 (Task_NewTable[0x8] is its New), 0xc4 bytes.
 class Task021cbb60 : public Task {
 public:
     VObj *unk_3c;
@@ -69,8 +69,8 @@ public:
 };
 SIZE_ASSERT(Task021cbb60, 0xc4);
 
-// Vtable data_ov000_021cbbe0, task kind 0x2 (data_ov000_021c9c6c[0x2] is its New), 0x4b0 bytes. 0x60..0x4b0 holds six text windows of 0xb8 bytes
-// (vtable data_0208ba70, reset by the Dtor); unk_a4 is the first one's TextWin::width.
+// Vtable Task021cbbe0_vtbl, task kind 0x2 (Task_NewTable[0x2] is its New), 0x4b0 bytes. 0x60..0x4b0 holds six text windows of 0xb8 bytes
+// (vtable TextWin_vtbl, reset by the Dtor); unk_a4 is the first one's TextWin::width.
 class Task021cbbe0 : public Task {
 public:
     s32 unk_3c;
@@ -88,7 +88,7 @@ public:
 };
 SIZE_ASSERT(Task021cbbe0, 0x4b0);
 
-// Vtable data_ov000_021cbc60, task kind 0x7 (data_ov000_021c9c6c[0x7] is its New), 0x50 bytes.
+// Vtable Task021cbc60_vtbl, task kind 0x7 (Task_NewTable[0x7] is its New), 0x50 bytes.
 class Task021cbc60 : public Task {
 public:
     s32 unk_3c;
@@ -99,7 +99,7 @@ public:
 };
 SIZE_ASSERT(Task021cbc60, 0x50);
 
-// Vtable data_ov000_021cbce0, task kind 0x1 (data_ov000_021c9c6c[0x1] is its New), 0x90 bytes.
+// Vtable Task021cbce0_vtbl, task kind 0x1 (Task_NewTable[0x1] is its New), 0x90 bytes.
 class Task021cbce0 : public Task {
 public:
     s32 unk_3c;
@@ -111,7 +111,7 @@ public:
 };
 SIZE_ASSERT(Task021cbce0, 0x90);
 
-// Vtable data_ov000_021cbd60, task kind 0x6 (data_ov000_021c9c6c[0x6] is its New), 0x48 bytes.
+// Vtable Task021cbd60_vtbl, task kind 0x6 (Task_NewTable[0x6] is its New), 0x48 bytes.
 class Task021cbd60 : public Task {
 public:
     VObj *unk_3c;
@@ -120,7 +120,7 @@ public:
 };
 SIZE_ASSERT(Task021cbd60, 0x48);
 
-// Vtable data_ov000_021cbde0, task kind 0x5 (data_ov000_021c9c6c[0x5] is its New), 0x54 bytes.
+// Vtable Task021cbde0_vtbl, task kind 0x5 (Task_NewTable[0x5] is its New), 0x54 bytes.
 class Task021cbde0 : public Task {
 public:
     VObj *unk_3c;
@@ -133,7 +133,7 @@ public:
 };
 SIZE_ASSERT(Task021cbde0, 0x54);
 
-// Vtable data_ov000_021cbe60, task kind 0xa (data_ov000_021c9c6c[0xa] is its New), 0x158 bytes.
+// Vtable Task021cbe60_vtbl, task kind 0xa (Task_NewTable[0xa] is its New), 0x158 bytes.
 class Task021cbe60 : public Task {
 public:
     UiList021cb4a8 *unk_3c;
@@ -147,7 +147,7 @@ public:
 };
 SIZE_ASSERT(Task021cbe60, 0x158);
 
-// Vtable data_ov000_021cbee0, task kind 0x4 (data_ov000_021c9c6c[0x4] is its New), 0x15c bytes.
+// Vtable Task021cbee0_vtbl, task kind 0x4 (Task_NewTable[0x4] is its New), 0x15c bytes.
 class Task021cbee0 : public Task {
 public:
     Lo021cb5a8 *unk_3c;
@@ -157,12 +157,12 @@ public:
     UiList021cb4a8 *unk_4c;
     Lo021cadcc *unk_50;
     s32 unk_54;
-    Lo021cad50 *unk_58; // message window (vtable data_ov000_021cad50)
+    Lo021cad50 *unk_58; // message window (vtable Lo021cad50_vtbl)
     u8 unk_5c[0x100]; // text buffer, filled by func_0206ecd4(0x100, ...)
 };
 SIZE_ASSERT(Task021cbee0, 0x15c);
 
-// Vtable data_ov000_021cbf60, task kind 0xc (data_ov000_021c9c6c[0xc] is its New), 0x160 bytes.
+// Vtable Task021cbf60_vtbl, task kind 0xc (Task_NewTable[0xc] is its New), 0x160 bytes.
 class Task021cbf60 : public Task {
 public:
     UiList021cb4a8 *unk_3c;
@@ -180,7 +180,7 @@ public:
 };
 SIZE_ASSERT(Task021cbf60, 0x160);
 
-// Vtable data_ov000_021cbfe0, task kind 0x3 (data_ov000_021c9c6c[0x3] is its New), 0x48 bytes.
+// Vtable Task021cbfe0_vtbl, task kind 0x3 (Task_NewTable[0x3] is its New), 0x48 bytes.
 class Task021cbfe0 : public Task {
 public:
     VObj *unk_3c;

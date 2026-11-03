@@ -63,9 +63,9 @@ typedef struct ov006_SlotManager {
 extern "C" {
 #endif
 
-extern void *data_ov006_021ec078;
-extern void *data_ov006_021ec068;
-extern ov006_SlotManager *data_ov006_021ec884;
+extern void *ov006_Slot_vtbl;
+extern void *Ov006Vt_021ec068_vtbl;
+extern ov006_SlotManager *gOv006SlotManager;
 
 void __cxa_vec_ctor(void *arr, int count, u32 size, void *ctor, void *dtor);
 void __cxa_vec_cleanup(void *arr, int count, u32 size, void *dtor);

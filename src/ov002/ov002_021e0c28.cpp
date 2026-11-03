@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern VFunc data_0208ba70[];
+extern VFunc TextWin_vtbl[];
 
 void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
@@ -11,7 +11,7 @@ void TextWin_InitLines(Ov002Text2 *a, int b);
 static inline Ov002Text2 *ov002_Anim_New(void) {
     Ov002Text2 *anim = (Ov002Text2 *)Heap_Alloc(0xb8);
     if (anim != NULL) {
-        *(VFunc **)anim = data_0208ba70;
+        *(VFunc **)anim = TextWin_vtbl;
         TextWin_Init(anim);
     }
     return anim;
@@ -20,7 +20,7 @@ static inline Ov002Text2 *ov002_Anim_New(void) {
 static inline void ov002_Anim_Start(Ov002Text2 *s, s32 str) {
     s->str = str;
     s->unk_4c = Text_Measure(s->font, s->spacing, s->str, &s->width, &s->height, s->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = s->font;
+    gGfxMgr->unk_004 = s->font;
 }
 
 

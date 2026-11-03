@@ -5,26 +5,26 @@
 
 extern "C" {
 
-extern void *data_02149ef8;
+extern void *gMsgRes;
 void *MsgRes_GetString(void *a, s32 b);
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb1b0[];
-extern u8 data_ov000_021cb0b8[];
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 Ov000Vt_021cb1b0_vtbl[];
+extern u8 Ov000Vt_021cb0b8_vtbl[];
 BOOL func_ov000_021521ec(UiList *self, UiListItem *item);
 
 static inline void Lo_OpenSub02155770(UiList *self, u16 a, s32 b, UiItemFn c) {
-    void *res = data_02149ef8;
+    void *res = gMsgRes;
     Lo021cb0b8 *p;
     p = (Lo021cb0b8 *)Heap_Alloc(sizeof(Lo021cb0b8));
     if (p) {
-        *(void **)p = data_ov000_021cac60;
+        *(void **)p = UiObj_vtbl;
         p->vfunc_28();
-        *(void **)p = data_ov000_021caec8;
+        *(void **)p = UiList_vtbl;
         p->vfunc_28();
-        *(void **)p = data_ov000_021cb1b0;
+        *(void **)p = Ov000Vt_021cb1b0_vtbl;
         p->vfunc_28();
-        *(void **)p = data_ov000_021cb0b8;
+        *(void **)p = Ov000Vt_021cb0b8_vtbl;
         p->vfunc_28();
     }
     self->child = p;
@@ -71,8 +71,8 @@ void UiList_HandleInput(UiList *self) {
     if (self->hidden) {
         return;
     }
-    cont = data_02097dc8->cur;
-    trig = data_02097dc8->trig;
+    cont = gPad->cur;
+    trig = gPad->trig;
     if (self->items != NULL) {
         if (cont == 0) {
             self->unk_b3 = 0;

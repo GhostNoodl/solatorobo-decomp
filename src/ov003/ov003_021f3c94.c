@@ -64,7 +64,7 @@ typedef struct {
     u16 unk_1ec;
 } Ov003NmObj;
 
-extern Ov003NmSave *data_0214a424;
+extern Ov003NmSave *gStageFlags;
 extern Ov003NmPlayer *ActorMgr_FindPlayer(void);
 extern Ov003NmInfo *Tbl_FindEntry_0206fef8(u16 id);
 extern u8 *func_020705fc(s32 id);
@@ -121,6 +121,6 @@ void Ov003ActVt_021fa548_Init(Ov003NmObj *self) {
         self->unk_3c = p;
         Shadow_Load(p);
     }
-    self->unk_1ea = data_0214a424->unk_18_1;
-    self->unk_1ec = data_0214a424->unk_18_3;
+    self->unk_1ea = gStageFlags->unk_18_1;
+    self->unk_1ec = gStageFlags->unk_18_3;
 }

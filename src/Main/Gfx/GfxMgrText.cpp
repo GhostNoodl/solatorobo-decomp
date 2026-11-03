@@ -43,9 +43,9 @@ void func_0203aab0(GfxMgr *mgr, const char *str) {
     top = mgr->unk_00e >> 3;
     charNo = (s16)top * mgr->unk_678 + 1;
     rows = ((mgr->unk_00e + height + 7) >> 3) - top;
-    charBase = (u8 *)GfxSys_GetTextBgPtr(data_02097d48, FALSE);
+    charBase = (u8 *)GfxSys_GetTextBgPtr(gGfxSys, FALSE);
     NNS_G2dCharCanvasInitForBG(mgr->unk_684, charBase + charNo * 0x20, mgr->unk_678, rows, 4);
-    NNS_G2dMapScrToCharText(GfxSys_GetTextBgPtr(data_02097d48, TRUE), mgr->unk_678, rows, 0, top, 0x20, charNo, pal + mgr->plttSlots[1]);
+    NNS_G2dMapScrToCharText(GfxSys_GetTextBgPtr(gGfxSys, TRUE), mgr->unk_678, rows, 0, top, 0x20, charNo, pal + mgr->plttSlots[1]);
     func_0203b12c(mgr, str);
     func_0203b4ac(mgr, color);
     DC_FlushAll();
@@ -216,7 +216,7 @@ void func_0203acb8(GfxMgr *mgr, const char *str) {
         n++;
     }
     mgr->unk_00c = x;
-    NNS_G2dEntryOamManagerOam(GfxSys_GetOamMgr(data_02097d48, which), buf, n);
+    NNS_G2dEntryOamManagerOam(GfxSys_GetOamMgr(gGfxSys, which), buf, n);
 }
 
 }

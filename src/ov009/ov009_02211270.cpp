@@ -15,7 +15,7 @@ void Ov009ActVt_02217aac_StateIdle(Ov009ActVt_02217aac *self) {
     if (!Ov009_GameIdle()) {
         return;
     }
-    if (Ov009Game_IsPaused(data_ov000_021ccd54)) {
+    if (Ov009Game_IsPaused(gSceneCmd)) {
         return;
     }
     if (self->fsm->st == 0) {

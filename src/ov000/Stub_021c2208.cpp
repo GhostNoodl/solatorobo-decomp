@@ -38,10 +38,10 @@ void func_ov000_021c2224(Obj021c2208 *self, u32 id) {
             self->unk_08++;
         }
     }
-    layout = (SaveLayout *)data_02fe152c->data;
-    entries = DataRes_GetTable(data_02fe152c, 11);
-    DataRes_GetCount(data_02fe152c, 11);
-    self->unk_0a = DataRes_ReadBitsById_02059688(data_02fe152c, &layout->blocks[11], entries, 0x101, id) != 0;
+    layout = (SaveLayout *)gDataRes->data;
+    entries = DataRes_GetTable(gDataRes, 11);
+    DataRes_GetCount(gDataRes, 11);
+    self->unk_0a = DataRes_ReadBitsById_02059688(gDataRes, &layout->blocks[11], entries, 0x101, id) != 0;
 }
 
 }

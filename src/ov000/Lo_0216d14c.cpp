@@ -10,7 +10,7 @@ BOOL PauseNode_IsDrawPaused(void *p, s32 a);
 void func_ov000_0216d14c(Obj0216c954 *self) {
     Model *m;
     s32 x;
-    if (PauseNode_IsDrawPaused(data_ov000_021ccd54->pause, 1)) {
+    if (PauseNode_IsDrawPaused(gSceneCmd->pause, 1)) {
         return;
     }
     switch (self->state) {

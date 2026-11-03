@@ -9,7 +9,7 @@ void Hud021cca10_SetText(Hud021cca10 *self, char *arg) {
     if (self->text == NULL) {
         p = (TextWin *)Heap_Alloc(0xb8);
         if (p != NULL) {
-            VOBJ_SET_VTABLE(p, data_0208ba70);
+            VOBJ_SET_VTABLE(p, TextWin_vtbl);
             TextWin_Init(p);
         }
         self->text = p;
@@ -19,7 +19,7 @@ void Hud021cca10_SetText(Hud021cca10 *self, char *arg) {
     p = self->text;
     p->strPtr = arg;
     p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, (s8)p->unk_37 != 0);
-    data_02097ce0->unk_004 = p->font;
+    gGfxMgr->unk_004 = p->font;
     self->text->flags = (self->text->flags & ~0x1f00) | 0x1e00;
     self->text->unk_vf14();
     self->text->flags |= 0x40;

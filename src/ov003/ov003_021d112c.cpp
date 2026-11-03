@@ -292,7 +292,7 @@ extern "C" void Ov003Actor_Start(Ov003Actor *self) {
         ActorMarker_SetKind(p, 1);
         self->unk_5c->height = self->height;
     }
-    if (data_ov000_021ccd54->unk_ca.c[0] == 0x11) {
+    if (gSceneCmd->unk_ca.c[0] == 0x11) {
         self->unk_ea_14 = 1;
     }
 }

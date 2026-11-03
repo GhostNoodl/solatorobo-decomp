@@ -4,13 +4,13 @@
 
 extern "C" {
 
-extern u8 data_ov000_021cbac8[];
-extern u8 data_ov000_021cca28[];
-extern u8 data_ov000_021cca40[];
+extern u8 Ov000Vt_021cbac8_vtbl[];
+extern u8 Ov000Vt_021cca28_vtbl[];
+extern u8 Lo021cca40_vtbl[];
 void Heap_Free(void *ptr);
 
 static inline void ListRow_Dtor(ListRow *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cbac8);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cbac8_vtbl);
     if (self->prev != NULL) {
         self->prev->next = self->next;
     }
@@ -28,29 +28,29 @@ static inline void Obj02041558_Delete(Model *obj) {
 }
 
 static inline void DeleteModel(Model **p) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (*p != NULL) {
         Obj02041558_Delete(*p);
         *p = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 static inline void DeleteText(TextWin **p) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (*p != NULL) {
         if (*p != NULL) {
             (*p)->unk_vf04();
         }
         *p = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 ListRowLabel *Ov000Vt_021cca28_DtorDelete(ListRowLabel *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cca28);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cca28_vtbl);
     DeleteText(&self->text);
     ListRow_Dtor(self);
     Heap_Free(self);
@@ -58,14 +58,14 @@ ListRowLabel *Ov000Vt_021cca28_DtorDelete(ListRowLabel *self) {
 }
 
 ListRowLabel *Ov000Vt_021cca28_Dtor(ListRowLabel *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cca28);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cca28_vtbl);
     DeleteText(&self->text);
     ListRow_Dtor(self);
     return self;
 }
 
 Lo021cca40 *Lo021cca40_DtorDelete(Lo021cca40 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cca40);
+    VOBJ_SET_VTABLE(self, Lo021cca40_vtbl);
     DeleteText(&self->text);
     DeleteModel(&self->unk_34);
     ListRow_Dtor(self);
@@ -74,7 +74,7 @@ Lo021cca40 *Lo021cca40_DtorDelete(Lo021cca40 *self) {
 }
 
 Lo021cca40 *Lo021cca40_Dtor(Lo021cca40 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cca40);
+    VOBJ_SET_VTABLE(self, Lo021cca40_vtbl);
     DeleteText(&self->text);
     DeleteModel(&self->unk_34);
     ListRow_Dtor(self);

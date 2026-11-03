@@ -11,7 +11,7 @@ typedef struct {
 } Lim0216b880;
 
 extern "C" {
-extern MessageQueue021cb980 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *gMessageQueue;
 extern u8 data_ov000_021c9a9c[];
 
 static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
@@ -55,8 +55,8 @@ void func_ov000_0216b880(Lo0216b474 *self) {
     v = self->ratio;
     y = LO_FX_MUL(v, 0x40000) + 0x55000;
     y -= 0xb000;
-    a = GetA0216b880(data_ov000_021ccd30);
-    b = GetB0216b880(data_ov000_021ccd30);
+    a = GetA0216b880(gMessageQueue);
+    b = GetB0216b880(gMessageQueue);
     Lim0216b880 lim = LFLD(Lim0216b880, data_ov000_021c9a9c, 0x20);
     off = 0;
     if (b != NULL && IsShown(b) && (m = b->unk_9c) != NULL) {

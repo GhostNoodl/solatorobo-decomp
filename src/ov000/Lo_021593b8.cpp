@@ -50,7 +50,7 @@ void func_ov000_021593b8(Lo021cb3a8 *self, s32 on, s32 *pos) {
     if (on == 0 || (it = (UiListItem *)self->items) == NULL) {
         return;
     }
-    g = data_02097d48;
+    g = gGfxSys;
     k = 0;
     lh = self->vfunc_40();
     col = Gfx3DState_NextPolyId(g->unk_8b0);

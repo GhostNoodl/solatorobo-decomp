@@ -58,7 +58,7 @@ void Menu021ca94c_DrawFrame(Menu021ca94c *self, s32 a1, s32 *pos) {
     s16 z;
     s32 sy;
     u8 *g;
-    g = data_02097d48->unk_8b0;
+    g = gGfxSys->unk_8b0;
     z = self->posZ - 0x110;
     Gfx3D_SendDL(g, 0);
     G3_Cmd1(0x2a, 0x20000000);

@@ -18,8 +18,8 @@ extern "C" {
 extern u8 data_ov010_0220f220[];
 extern u8 data_ov010_0220f448[];
 extern u8 data_ov010_0220f298[];
-extern u8 data_ov010_0220ffc4[];
-extern u8 data_ov010_02210154[];
+extern u8 Ov010Vt_0220ffc4_vtbl[];
+extern u8 Ov010ActVt_02210154_vtbl[];
 extern BOOL Ov003Sequence_HasEntries(void *p, void *d);
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
 extern void func_ov000_0218a358(void *a, const void *b, void *c, s32 d, s32 e, s32 f, s32 g, s32 h);
@@ -67,13 +67,13 @@ struct Obj02208d60 {
 };
 
 void *Ov010Vt_0220ffc4_Dtor(Obj02208d60 *self) {
-    self->unk_00 = data_ov010_0220ffc4;
+    self->unk_00 = Ov010Vt_0220ffc4_vtbl;
     ((VObj *)self)->vfunc_0c();
     return self;
 }
 
 void *Ov010Vt_0220ffc4_DtorDelete(Obj02208d60 *self) {
-    self->unk_00 = data_ov010_0220ffc4;
+    self->unk_00 = Ov010Vt_0220ffc4_vtbl;
     ((VObj *)self)->vfunc_0c();
     Heap_Free(self);
     return self;
@@ -99,7 +99,7 @@ void Ov010Sw_Update(Ov010Sw *self) {
     if (!self->b0) {
         return;
     }
-    if (&data_ov000_021ccd54->cam == NULL) {
+    if (&gSceneCmd->cam == NULL) {
         return;
     }
     p = ActorMgr_FindPlayer();
@@ -109,7 +109,7 @@ void Ov010Sw_Update(Ov010Sw *self) {
     if (Ov010_PlayerBusy(p)) {
         return;
     }
-    func_ov000_0218a358(&data_ov000_021ccd54->cam, &self->unk_08, self->unk_14, self->unk_1c, 0, 0x1000, 0x1000, 1);
+    func_ov000_0218a358(&gSceneCmd->cam, &self->unk_08, self->unk_14, self->unk_1c, 0, 0x1000, 0x1000, 1);
 }
 
 u16 Ov010_PhaseAngle(s32 a, s32 b) {
@@ -124,7 +124,7 @@ u16 Ov010_PhaseAngle(s32 a, s32 b) {
 }
 
 static inline void Ov010_02208f14_Body(Ov010Obj02210154 *self) {
-    *(void **)self = data_ov010_02210154;
+    *(void **)self = Ov010ActVt_02210154_vtbl;
     func_ov003_021cf3fc(0);
     Ov010Obj02210154_Release(self);
     Ov003Vt_021f7cd8_Dtor(&self->timer);
@@ -164,7 +164,7 @@ void Ov010_DelayKillFxCallback(EffectObj *p) {
         p->unk_04--;
         return;
     }
-    EffectMgr_Kill(data_0214a420, p->id);
+    EffectMgr_Kill(gEffectMgr, p->id);
     p->onUpdate = NULL;
 }
 

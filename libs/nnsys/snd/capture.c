@@ -29,13 +29,13 @@ typedef struct CaptureParam {
     /* 0x50 */ int volume;
 } CaptureParam; // size 0x54
 
-extern volatile BOOL data_02096150;  // sIsThreadCreated
-extern OSMessageQueue data_02096158; // sMesgQ
-extern CaptureParam data_02096198;   // sCapParam
+extern volatile BOOL sIsThreadCreated;
+extern OSMessageQueue sMesgQ;
+extern CaptureParam sCapParam;
 
 void NNSi_SndCaptureInit(void) {
-    data_02096150 = FALSE;
-    data_02096198.activeFlag = FALSE;
+    sIsThreadCreated = FALSE;
+    sCapParam.activeFlag = FALSE;
 }
 
 void NNSi_SndCaptureMain(void) {
@@ -43,7 +43,7 @@ void NNSi_SndCaptureMain(void) {
     SndFader *fader;
     int volume;
 
-    cap = &data_02096198;
+    cap = &sCapParam;
 
     if (cap->activeFlag && cap->type == NNS_SND_CAPTURE_TYPE_REVERB) {
         fader = &cap->fader;
@@ -68,7 +68,7 @@ void NNSi_SndCaptureMain(void) {
 }
 
 void NNSi_SndCaptureStop(void) {
-    CaptureParam *cap = &data_02096198;
+    CaptureParam *cap = &sCapParam;
     u32 commandTag;
     BOOL useAlarm;
 
@@ -85,7 +85,7 @@ void NNSi_SndCaptureStop(void) {
         SND_FlushCommand(SND_CMD_FLAG_BLOCK);
         SND_WaitForCommandProc(commandTag);
 
-        while (OS_ReceiveMessage(&data_02096158, NULL, 0)) {
+        while (OS_ReceiveMessage(&sMesgQ, NULL, 0)) {
         }
     }
 
@@ -110,7 +110,7 @@ void NNSi_SndCaptureBeginSleep(void) {
     CaptureParam *cap;
     u32 commandTag;
 
-    cap = &data_02096198;
+    cap = &sCapParam;
 
     if (!cap->activeFlag) {
         return;
@@ -126,7 +126,7 @@ void NNSi_SndCaptureBeginSleep(void) {
 void NNSi_SndCaptureEndSleep(void) {
     CaptureParam *cap;
 
-    cap = &data_02096198;
+    cap = &sCapParam;
 
     if (!cap->activeFlag) {
         return;

@@ -57,7 +57,7 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {
             d.unk_04[2] = 3;
         }
         d.unk_04[3] = 1;
-        o = (Actor *)Group_SpawnActor(data_ov000_021ccd64, &d, &pos, &rot, 0xffff);
+        o = (Actor *)Group_SpawnActor(gGroup, &d, &pos, &rot, 0xffff);
         if (o != NULL) {
             void *x;
             o->flags_0 = 1;
@@ -93,7 +93,7 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {
         rot.z = 0;
         Ov011Spawn_Init(&d, 0x409e);
         d.unk_04[3] = 2;
-        o = (Actor *)Group_SpawnActor(data_ov000_021ccd64, &d, &pos, &rot, 0xffff);
+        o = (Actor *)Group_SpawnActor(gGroup, &d, &pos, &rot, 0xffff);
         if (o != NULL) {
             o->flags_0 = 1;
         }
@@ -116,7 +116,7 @@ void Ov011Act7da4_State21(Ov011Act7da4 *self) {
             FieldState *g;
             Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
-            g = data_ov000_021ccd54;
+            g = gSceneCmd;
             g->stageFlags = 1;
             func_ov000_02182590(&g->stageFlags);
             self->fsm->st++;
@@ -152,7 +152,7 @@ void Ov011Act7da4_State23(Ov011Act7da4 *self) {
         rot.z = 0;
         Ov011Spawn_Init(&d, 0x406a);
         d.unk_04[1] = 2;
-        o = (Actor *)Group_SpawnActor(data_ov000_021ccd64, &d, &v, &rot, 0xffff);
+        o = (Actor *)Group_SpawnActor(gGroup, &d, &v, &rot, 0xffff);
         if (o != NULL) {
             self->unk_36c = o->id;
             o->flags_0 = 1;
@@ -169,7 +169,7 @@ void Ov011Act7da4_State23(Ov011Act7da4 *self) {
             }
             Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
-            g = data_ov000_021ccd54;
+            g = gSceneCmd;
             g->stageFlags = 1;
             func_ov000_02182590(&g->stageFlags);
             self->fsm->st++;
@@ -220,7 +220,7 @@ void Ov011Act7da4_State24(Ov011Act7da4 *self) {
             FieldState *g;
             Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
-            g = data_ov000_021ccd54;
+            g = gSceneCmd;
             g->stageFlags = 1;
             func_ov000_02182590(&g->stageFlags);
             self->fsm->timer = 0;
@@ -279,7 +279,7 @@ void Ov011Act7da4_State22(Ov011Act7da4 *self) {
             FieldState *g;
             Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
-            g = data_ov000_021ccd54;
+            g = gSceneCmd;
             g->stageFlags = 1;
             func_ov000_02182590(&g->stageFlags);
             self->fsm->timer = 0;

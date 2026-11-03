@@ -3,13 +3,13 @@
 extern "C" {
 
 void func_ov000_0216f23c(BufferList *list, BOOL mode);
-extern void *data_ov000_021ccd44;
+extern void *gTaskHost;
 void func_ov000_02180bfc(void *p);
 
 void func_ov000_021721c8(MessageQueue021cb980 *self) {
     func_ov000_0216f23c(&self->list, 1);
-    if (data_ov000_021ccd44 != NULL) {
-        func_ov000_02180bfc(data_ov000_021ccd44);
+    if (gTaskHost != NULL) {
+        func_ov000_02180bfc(gTaskHost);
     }
 }
 

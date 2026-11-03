@@ -69,10 +69,10 @@ typedef struct StageResSlot {
 
 extern "C" {
 
-extern StageResSlot data_02149f18[0x40];
-extern const u32 data_0208b318[];
-extern const u32 data_0208ba30[];
-extern const u32 data_0208bed4[];
+extern StageResSlot gStageResSlots[0x40];
+extern const u32 ResHandle_vtbl[];
+extern const u32 MainVt_0208ba30_vtbl[];
+extern const u32 PosEvRes_vtbl[];
 extern void ResHandle_Unload(StageRes *res);
 extern void ResHandle_LoadFromArc(StageRes *res, char *arcName, char *name);
 extern void LangData_LocalizePath(char *dst, const char *src);
@@ -80,9 +80,9 @@ extern void MsgRes_Reset_0204bfcc(DataRes *res);
 extern void MsgRes_OpenLocalized(DataRes *res, const char *arcName, char *name);
 extern BOOL MsgRes_Bind(DataRes *res);
 extern BOOL PosEvRes_Parse(PosEvRes *res);
-extern int (*data_0208bde8)(StageResSlot *slot);
+extern int (*gStageResDispatchFn)(StageResSlot *slot);
 extern int StageRes_DispatchSlot(StageResSlot *slot);
-extern DataRes *data_02fe152c;
+extern DataRes *gDataRes;
 
 
 static inline void Slot_Init(StageResSlot *slot) {
@@ -96,43 +96,43 @@ static inline void Slot_Init(StageResSlot *slot) {
 }
 
 static inline StageResSlot *Slot_Alloc(void) {
-    s32 end = data_02149f04;
-    StageResSlot *slot = &data_02149f18[end];
-    data_02149f04 = end + 1;
-    if (data_02149f04 >= 0x40) {
-        data_02149f04 = 0;
+    s32 end = gStageResSlotTail;
+    StageResSlot *slot = &gStageResSlots[end];
+    gStageResSlotTail = end + 1;
+    if (gStageResSlotTail >= 0x40) {
+        gStageResSlotTail = 0;
     }
     Slot_Init(slot);
     return slot;
 }
 
 static inline StageResSlot *StageRes_Peek(void) {
-    if (data_02149f14 == data_02149f04) {
+    if (gStageResSlotHead == gStageResSlotTail) {
         return NULL;
     }
-    return &data_02149f18[data_02149f14];
+    return &gStageResSlots[gStageResSlotHead];
 }
 
 static inline void StageRes_Pop(void) {
-    if (data_02149f14 == data_02149f04) {
+    if (gStageResSlotHead == gStageResSlotTail) {
         return;
     }
-    data_02149f14++;
-    if (data_02149f14 >= 0x40) {
-        data_02149f14 = 0;
+    gStageResSlotHead++;
+    if (gStageResSlotHead >= 0x40) {
+        gStageResSlotHead = 0;
     }
 }
 
 static inline StageResSlot *StageRes_Last(void) {
-    s32 end = data_02149f04;
-    if (data_02149f14 == end) {
+    s32 end = gStageResSlotTail;
+    if (gStageResSlotHead == end) {
         return NULL;
     }
     end -= 1;
     if (end < 0) {
         end += 0x40;
     }
-    return &data_02149f18[end];
+    return &gStageResSlots[end];
 }
 
 }

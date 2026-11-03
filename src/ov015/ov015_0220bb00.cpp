@@ -5,7 +5,7 @@ extern "C" {
 extern char data_ov015_02212e20[];
 extern char data_ov015_02212e68[];
 extern char data_ov015_02212e55[];
-extern u8 data_ov015_02212eb0[];
+extern u8 Ov015FishState_vtbl[];
 extern u8 data_ov015_02212e0d[];
 BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
 void Model0218fe1c_SetLoop(void *a);
@@ -13,7 +13,7 @@ void Model0218fe1c_SetLoop(void *a);
 BOOL Ov015FishState18_Exit(Ov015FishState18 *self) {
     EffectObj *o;
     void *saved;
-    o = Effect_Find_020657b0(data_0214a420, self->fxKey);
+    o = Effect_Find_020657b0(gEffectMgr, self->fxKey);
     if (o != NULL) {
         HEAP_PUSH(saved);
         if (o != NULL) {
@@ -52,8 +52,8 @@ static inline void Ov015_Spawn0bb68(Ov015FishState18 *self, s32 s1, s32 s2) {
         b.z = FX_Mul(q->scale.z, k);
     }
     o->SetScale(&b);
-    SndMgr_PlayVolume(data_02097e4c, s1, -1, -1, -1);
-    SndMgr_PlayVolume(data_02097e4c, s2, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, s1, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, s2, -1, -1, -1);
 }
 void func_ov015_0220bb68(Ov015FishState18 *self, Ov015Fish *p) {
     Ov015Vec t(*(Ov015Vec *)&p->pos);
@@ -93,7 +93,7 @@ void func_ov015_0220be38(Ov015FishState18 *self, Ov015Fish *p) {
     a.x = q->pos.x;
     a.y = q->pos.y > 0 ? 0 : q->pos.y;
     a.z = q->pos.z;
-    e = Effect_Find_020657b0(data_0214a420, self->fxKey);
+    e = Effect_Find_020657b0(gEffectMgr, self->fxKey);
     if (e == NULL) {
         e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e55, 0, &self->fish->pos);
         e->unk_d4 = 1;
@@ -127,18 +127,18 @@ void func_ov015_0220be38(Ov015FishState18 *self, Ov015Fish *p) {
         d.z = FX_Mul(e->scale.z, s);
         e->SetScale(&d);
         if (self->timer == 1) {
-            SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x56, -1, -1, -1);
         }
     }
 }
 
 void *Ov015FishState1c_Dtor(Ov015FishState1c *self) {
-    SET_VT(self, data_ov015_02212eb0);
+    SET_VT(self, Ov015FishState_vtbl);
     return self;
 }
 
 void *Ov015FishState1c_DtorDelete(Ov015FishState1c *self) {
-    SET_VT(self, data_ov015_02212eb0);
+    SET_VT(self, Ov015FishState_vtbl);
     Heap_Free(self);
     return self;
 }
@@ -234,7 +234,7 @@ BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
             VEC_Normalize(&d2, (&p->dir));
         }
         if (self->timer == 0xf) {
-            SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x3e, -1, -1, -1);
         }
         if (self->timer <= 0) {
             s32 w;
@@ -264,7 +264,7 @@ BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
             VEC_Normalize(&d2, (&p->dir));
         }
         if (self->timer == 0xf) {
-            SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x3e, -1, -1, -1);
         }
         if (self->timer <= 0) {
             self->step = 2;

@@ -34,7 +34,7 @@ struct Marker021c0e30 : ActorMarker {
 
 extern "C" {
 
-extern VFunc data_0208ba70[];
+extern VFunc TextWin_vtbl[];
 void *Heap_Alloc(u32 size);
 void TextWin_Init(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
@@ -79,7 +79,7 @@ void func_ov000_021c0e30(Marker021c0e30 *self) {
             self->unk_94 = self->unk_28[0];
             t = (Ov000Text021c0e30 *)Heap_Alloc(0xb8);
             if (t != NULL) {
-                t->vtbl = data_0208ba70;
+                t->vtbl = TextWin_vtbl;
                 TextWin_Init(t);
             }
             self->unk_90 = t;
@@ -89,7 +89,7 @@ void func_ov000_021c0e30(Marker021c0e30 *self) {
             t = self->unk_90;
             t->unk_24 = (s32)str;
             t->unk_4c = Text_Measure(t->unk_28, t->unk_38, t->unk_24, &t->unk_44, &t->unk_48, t->unk_37 != 0);
-            data_02097ce0->unk_004 = t->unk_28;
+            gGfxMgr->unk_004 = t->unk_28;
             self->unk_90->flags |= 0x40;
             self->unk_90->flags |= 0x1000000;
             self->unk_90->flags |= 0x40000000;

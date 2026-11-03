@@ -20,7 +20,7 @@ extern "C" {
 
 extern int Rand_PlusMinus(s32 max);
 extern s32 func_0200b184(s32 a, s32 b);
-extern u32 data_ov003_021f7d10;
+extern u32 Ov003Vt_021f7d10_vtbl;
 extern void Heap_Free(void *p);
 
 class Ov003TickerSet {

@@ -50,7 +50,7 @@ static inline BOOL Ov003Game_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -92,7 +92,7 @@ typedef struct {
     s16 unk_0c;
 } Ov003BxSpawnInfo;
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern s32 Rand_PlusMinus(s32 n);
 extern u32 Rand_UpTo(u32 n);
 extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, s32 r, s32 h);
@@ -151,7 +151,7 @@ void Ov003ActVt_021fa07c_State20(ActorEx *self) {
                 v.y -= 0x4000;
                 if (Hit_DiffInCylinder(&pl->pos, &v, pl->radius + 0x8000, 0x8000)) {
                     Field_ShakeCamera(6, 0x16);
-                    SndMgr_PlayAt(data_02097e4c, 0x53, &self->pos, 0);
+                    SndMgr_PlayAt(gSndMgr, 0x53, &self->pos, 0);
                     if (self->unk_1a < 0) {
                         self->pos = pl->pos;
                     }
@@ -173,7 +173,7 @@ void Ov003ActVt_021fa07c_State20(ActorEx *self) {
         self->fsm->timer++;
         if (self->fsm->timer == 0x16) {
             Field_ShakeCamera(10, 0x19);
-            SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x17, &self->pos, 0);
             return;
         }
         if (self->fsm->timer <= 0x23) {
@@ -210,7 +210,7 @@ void Ov003ActVt_021fa07c_State20(ActorEx *self) {
             info.unk_04[1] = self->unk_1a - 1;
             info.unk_04[2] = self->unk_1c;
             info.unk_04[3] = 1;
-            o = Group_SpawnActor(data_ov000_021ccd64, &info, &self->unk_84, &self->rot, 0xffff);
+            o = Group_SpawnActor(gGroup, &info, &self->unk_84, &self->rot, 0xffff);
             if (o != NULL) {
                 o->flags_0 = true;
             }
@@ -249,7 +249,7 @@ void Ov003ActVt_021fa07c_StateFly(ActorEx *self) {
             self->unk_cc_6 = 1;
             self->speed = 0;
             self->unk_92 = 3;
-            SndMgr_PlayAt(data_02097e4c, 0x3d, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x3d, &self->pos, 0);
             e = Effect_SpawnId(0x2bd, &self->pos);
             if (self->radius > 0x1000) {
                 e->SetScaleAll(self->radius);
@@ -264,7 +264,7 @@ void Ov003ActVt_021fa07c_StateFly(ActorEx *self) {
                 self->velY = (3 - self->unk_92) * 0x133 + 0x266;
                 Field_ShakeCamera(8, 0xc);
                 Effect_SpawnId(0x12e, &self->pos)->SetScaleAll(self->radius);
-                SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x17, &self->pos, 0);
             }
             self->unk_92++;
         }
@@ -339,7 +339,7 @@ void Ov003ActVt_021fa114_StateIdle(ActorEx *self) {
     ActorSub40 *w;
     if (d > 0x20000) {
         if (self->unk_bc != NULL) {
-            EffectMgr_StopLoop(data_0214a420, self->unk_bc);
+            EffectMgr_StopLoop(gEffectMgr, self->unk_bc);
             self->unk_bc = NULL;
         }
         self->fsm->st = 0;
@@ -367,7 +367,7 @@ void Ov003ActVt_021fa114_StateIdle(ActorEx *self) {
                 snd = 0x80;
                 a = -0xc;
             }
-            SndMgr_PlayAtPitch(data_02097e4c, snd, &self->pos, a);
+            SndMgr_PlayAtPitch(gSndMgr, snd, &self->pos, a);
         }
         self->fsm->st++;
         return;
@@ -377,7 +377,7 @@ void Ov003ActVt_021fa114_StateIdle(ActorEx *self) {
         if (n > 0 && ++w->timer > n) {
             {
                 if (self->unk_bc != NULL) {
-                    EffectMgr_StopLoop(data_0214a420, self->unk_bc);
+                    EffectMgr_StopLoop(gEffectMgr, self->unk_bc);
                 }
                 self->unk_bc = NULL;
                 self->fsm->st++;

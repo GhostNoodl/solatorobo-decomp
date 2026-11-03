@@ -89,7 +89,7 @@ void Ov003ActVt_021f7c0c_State20(Ov003Act *self) {
         fx = Effect_SpawnId(0x192, &self->pos);
         fx->AddPosXYZ(0, self->centerY, 0);
         fx->SetRotXYZ(0, FX_Atan2(t.x - self->pos.x, t.z - self->pos.z), 0);
-        SndMgr_PlayAt(data_02097e4c, 0x57, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x57, &self->pos, 0);
         Model0218fe1c_SetAnim(self->model, run, 0x2ab, 0);
         Model0218fe1c_SetLoop(self->model);
         self->fsm->st++;
@@ -121,7 +121,7 @@ void Ov003ActVt_021f7c0c_StateDie(Ov003Act *self) {
         fx->speed = 0xc00;
         fx = Effect_SpawnId(0x69, &self->pos);
         fx->AddPosXYZ(0, self->centerY, 0);
-        SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x56, &self->pos, 0);
     }
     Ov003Actor_StateDie(self);
 }
@@ -213,7 +213,7 @@ void Ov003ActVt_021f7b60_StateDie(Ov003Act *self) {
             v.z = self->radius + (self->radius >> 2);
             Spawn_ScatterEffect(&p, &v, 0x733, 0xccd, 6, 100);
             Field_ShakeCamera(8, 10);
-            SndMgr_PlayAt(data_02097e4c, 0x35, &p, 0);
+            SndMgr_PlayAt(gSndMgr, 0x35, &p, 0);
         }
         self->fsm->timer++;
         if (self->fsm->timer <= 0x78) {
@@ -231,7 +231,7 @@ void Ov003ActVt_021f7b60_StateDie(Ov003Act *self) {
     }
     case 2: {
         ActorSub40 *w;
-        if (self->unk_1a == 0 && Effect_Find_020657b0(data_0214a420, self->unk_f0) == NULL) {
+        if (self->unk_1a == 0 && Effect_Find_020657b0(gEffectMgr, self->unk_f0) == NULL) {
             EffectObj *e = Effect_SpawnId(6, &self->pos);
             e->AddPosXYZ(0, self->centerY, 0);
             e->SetScaleAll(0x2000);
@@ -242,7 +242,7 @@ void Ov003ActVt_021f7b60_StateDie(Ov003Act *self) {
             e = Effect_SpawnId(0x57d, &self->pos);
             e->AddPosXYZ(0, self->centerY, 0);
             e->SetScaleAll(0x2000);
-            SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x56, &self->pos, 0);
             Field_ShakeCamera(0xc, 0x14);
             self->unk_1a = 1;
         }

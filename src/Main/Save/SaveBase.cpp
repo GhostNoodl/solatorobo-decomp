@@ -22,7 +22,7 @@ void SaveBase_SetState_020473ac(SaveBase *s, s32 state) {
 }
 
 BOOL SaveBase_Update(SaveBase *s) {
-    switch (data_02097e44->state) {
+    switch (gSysCard->state) {
         case 7:
         case 8:
             s->OnError();
@@ -72,7 +72,7 @@ void SaveBase_Init(SaveBase *s) {
     s->name = data_0208b5fd;
     s->formatted = 0;
     s->tmpBuf = NULL;
-    s->tmpSize = data_02097e44->sectorSize;
+    s->tmpSize = gSysCard->sectorSize;
     s->baseOffset = 0;
     s->state = 0;
     s->step = 0;
@@ -103,7 +103,7 @@ void SaveBase_FreeBuffers(SaveBase *s) {
         Heap_FreeHi(s->data);
         s->data = NULL;
     }
-    SysCard_Reset(data_02097e44);
+    SysCard_Reset(gSysCard);
 }
 
 void SaveBase_FillSlot(SaveBase *s, void *dst, u32 size) {}

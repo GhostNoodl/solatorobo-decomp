@@ -94,7 +94,7 @@ void Ov009ActVt_02217640_Start(Ov009ActVt_02217640 *self) {
 
 
 extern u8 data_ov009_02215f38[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern void Actor_PitchToPos(Actor *self, VecFx32 *v, s32 a);
 extern void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
@@ -131,7 +131,7 @@ void Ov009ActVt_02217640_Update(Ov009ActVt_02217640 *self) {
         if (!Ov009_GameIdle()) {
             return;
         }
-        if (Ov009Game_IsPausedB(data_ov000_021ccd54)) {
+        if (Ov009Game_IsPausedB(gSceneCmd)) {
             return;
         }
         if (k == 1) {
@@ -156,7 +156,7 @@ void Ov009ActVt_02217640_Update(Ov009ActVt_02217640 *self) {
         }
     }
     if ((self->msg_flags & 0x200) && *self->hp != 0) {
-        SndMgr_PlayAt(data_02097e4c, 0x40, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x40, &self->pos, 0);
     }
     if (self->pos.y <= -0x8000) {
         self->fsm->flags |= 0x200000;
@@ -186,7 +186,7 @@ void Ov009ActVt_02217640_State20(Ov009ActVt_02217640 *self) {
     if (!Ov009_GameIdle()) {
         return;
     }
-    if (Ov009Game_IsPaused3(data_ov000_021ccd54)) {
+    if (Ov009Game_IsPaused3(gSceneCmd)) {
         return;
     }
     switch (self->fsm->st) {
@@ -388,7 +388,7 @@ static inline s32 Ov009_DistXZc(const VecFx32 *a, const VecFx32 *b) {
     return Ov009_Sqrt64c(sq);
 }
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void HitSphere_Link(ActorSub48 *p);
@@ -438,7 +438,7 @@ void Ov009ActVt_02217640_StateAttack(Ov009ActVt_02217640 *self) {
         s48->unk_9a_3 = 0;
         HitSphere_Unlink_0203f364(s48);
     }
-        SndMgr_PlayAtPitch(data_02097e4c, 0x5b, &self->pos, 2);
+        SndMgr_PlayAtPitch(gSndMgr, 0x5b, &self->pos, 2);
         self->fsm->timer = 0;
         self->fsm->st++;
     case 1:
@@ -468,7 +468,7 @@ void Ov009ActVt_02217640_StateAttack(Ov009ActVt_02217640 *self) {
                 self->speed = FX_Mul(spd, sn);
                 self->velY = FX_Mul(spd, cs);
             }
-            SndMgr_PlayAtPitch(data_02097e4c, 0x32, &self->pos, 5);
+            SndMgr_PlayAtPitch(gSndMgr, 0x32, &self->pos, 5);
             self->moveYaw = self->rot_y;
             self->fsm->timer = 0;
             self->fsm->st++;
@@ -484,7 +484,7 @@ void Ov009ActVt_02217640_StateAttack(Ov009ActVt_02217640 *self) {
         }
         if (self->hit->unk_50 & 0x20000000) {
             Field_ShakeCamera(0xf, 0xf);
-            SndMgr_PlayAt(data_02097e4c, 0x52, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x52, &self->pos, 0);
             w = self->pos;
             w.y = 0;
             Effect_SpawnId(0x67, &w)->SetRotXYZ(0, (u16)(self->rot_y + 0x7fff), 0);
@@ -693,15 +693,15 @@ void Ov009ActVt_022174e8_Start(Ov003Actor *self) {
     s44 = self->unk_44;
     s44->unk_22_0 = 0;
     s44->unk_22_1 = 0;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_3c != NULL) {
         if (self->unk_3c != NULL) {
             self->unk_3c->vfunc_04();
         }
         self->unk_3c = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 }
@@ -777,7 +777,7 @@ void Ov009ActVt_022174e8_StateIdle(Ov003Actor *self) {
     Actor_Move(self, 0);
 }
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void *NNS_G3dGlbGetInvV(void);
 extern void *SndMgr_PlayAtPitch(void *mgr, s32 id, const VecFx32 *pos, s32 a);
@@ -839,7 +839,7 @@ void Ov009ActVt_022174e8_StateDie(Ov003Actor *self) {
                 }
                 self->fsm->timer = 5;
             }
-            SndMgr_PlayAtPitch(data_02097e4c, 0x2b, &v, -5);
+            SndMgr_PlayAtPitch(gSndMgr, 0x2b, &v, -5);
             self->unk_18 = n + 1;
         }
         if (*ActorMgr_FindPlayer()->hp == 0) {

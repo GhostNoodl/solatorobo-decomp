@@ -17,19 +17,19 @@ typedef struct {
 } Shared02fe1534;
 
 extern "C" {
-extern void *data_02149ef8;
+extern void *gMsgRes;
 extern Shared02fe1534 data_02fe1534;
-extern void *data_02fe152c;
+extern void *gDataRes;
 extern const char *data_ov000_021ca8d8[];
-extern u8 data_0208ba70[];
+extern u8 TextWin_vtbl[];
 extern const char *data_0208cca0;
 extern const char *data_0208cb74;
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb5a8[];
-extern u8 data_ov000_021ca94c[];
-extern u8 data_ov000_021cb4a8[];
-extern u8 data_ov000_021caac8[];
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 Lo021cb5a8_vtbl[];
+extern u8 Menu021ca94c_vtbl[];
+extern u8 UiList021cb4a8_vtbl[];
+extern u8 Lo021caac8_vtbl[];
 void *MsgRes_GetString(void *g, u32 id);
 BOOL StageRes_Bind(void *p);
 void *ResList_FindType2(void *a, void *b);
@@ -59,15 +59,15 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     void *s;
     u16 i;
     u16 id;
-    g = data_02149ef8;
-    if (!data_ov000_021ccd24.unk_08->vfunc_34()) {
-        StageRes_Bind(data_ov000_021ccd24.unk_08);
+    g = gMsgRes;
+    if (!gSceneResSet.unk_08->vfunc_34()) {
+        StageRes_Bind(gSceneResSet.unk_08);
     }
     {
-        u16 v = data_0214a424->unk_639;
+        u16 v = gStageFlags->unk_639;
         data_02fe1534.unk_70 = 1;
         data_02fe1534.unk_7a = v;
-        data_ov000_021ccd24.unk_08->vfunc_38(1);
+        gSceneResSet.unk_08->vfunc_38(1);
         data_02fe1534.unk_7a = 0;
     }
     m = (Model *)Heap_Alloc(sizeof(Model));
@@ -90,13 +90,13 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     s = MsgRes_GetString(g, 0x114);
     p = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (p != NULL) {
-        VOBJ_SET_VTABLE(p, data_0208ba70);
+        VOBJ_SET_VTABLE(p, TextWin_vtbl);
         TextWin_Init(p);
     }
     p->font = 8;
     p->str = (u32)s;
     p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, (s8)p->unk_37 != 0);
-    data_02097ce0->unk_004 = ((s32)p->font);
+    gGfxMgr->unk_004 = ((s32)p->font);
     p->unk_2c = 0;
     p->color0 = 0x77df;
     p->color1 = 0x67e;
@@ -109,11 +109,11 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     self->unk_44 = p;
     o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021caec8;
+        *(void **)o = UiList_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cb5a8;
+        *(void **)o = Lo021cb5a8_vtbl;
         o->vfunc_28();
     }
     self->unk_4c = (Lo021cb5a8 *)o;
@@ -138,12 +138,12 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     self->unk_4c->vfunc_08();
     o = (VObj *)Heap_Alloc(0x21c);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021ca94c;
-        VOBJ_SET_VTABLE((u8 *)o + 0x90, data_0208ba70);
+        *(void **)o = Menu021ca94c_vtbl;
+        VOBJ_SET_VTABLE((u8 *)o + 0x90, TextWin_vtbl);
         TextWin_Init((u8 *)o + 0x90);
-        VOBJ_SET_VTABLE((u8 *)o + 0x148, data_0208ba70);
+        VOBJ_SET_VTABLE((u8 *)o + 0x148, TextWin_vtbl);
         TextWin_Init((u8 *)o + 0x148);
         o->vfunc_28();
     }
@@ -152,13 +152,13 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     self->unk_60->posZ = -0x1bcd;
     o = (VObj *)Heap_Alloc(0xe4);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021caec8;
+        *(void **)o = UiList_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cb4a8;
+        *(void **)o = UiList021cb4a8_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021caac8;
+        *(void **)o = Lo021caac8_vtbl;
         o->vfunc_28();
     }
     self->unk_50 = (Lo021caac8 *)o;
@@ -183,9 +183,9 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     id = self->param;
     data_02fe1534.unk_70 = 0;
     data_02fe1534.unk_7a = id;
-    data_ov000_021ccd24.unk_08->vfunc_38(1);
+    gSceneResSet.unk_08->vfunc_38(1);
     data_02fe1534.unk_7a = 0;
-    n = DataRes_GetCount(data_02fe152c, 1);
+    n = DataRes_GetCount(gDataRes, 1);
     for (i = 0; i < n; i++) {
         k = func_ov000_0214bcc4(id, i);
         if (k != 0xffff) {

@@ -70,13 +70,13 @@ static inline BOOL AnimCtrl_IsReverse(AnimCtrl *ctrl) {
 }
 
 static inline void FreeOnHeap(AnimCtrl **ptr) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (*ptr != NULL) {
         Heap_Free(*ptr);
         *ptr = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 #define FX_SIN_IDX(idx) (FX_SinCosTable_[((idx) >> 4) * 2])

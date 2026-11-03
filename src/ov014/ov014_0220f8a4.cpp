@@ -10,7 +10,7 @@ extern char data_ov014_02217c9f[];
 extern char data_ov014_02217cb1[];
 extern char data_ov014_02217cbd[];
 extern char data_ov014_02217ccf[];
-extern u8 data_ov014_02217e6c[];
+extern u8 Ov014Act_0220f9d0_vtbl[];
 extern char data_ov014_02217d1d[];
 extern void *History_Init(void *p);
 extern BOOL Actor_IsReady(Ov003Actor *self);
@@ -18,7 +18,7 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern BOOL Ov003Actor_HandleMsg(Ov003Actor *self, Ov014Msg *msg);
 extern u8 data_ov014_02217d2c[];
 extern u8 data_ov014_02217d33[];
-extern u8 data_ov014_02217db0[];
+extern u8 Ov014Watch_vtbl[];
 extern const Ov003Step data_ov014_02216c80[];
 extern const Ov003Step data_ov014_02216e50[];
 extern const Ov003Step data_ov014_02216ea8[];
@@ -107,7 +107,7 @@ void Ov014_SelectTrackByHp_0220f8fc(Ov003ScriptList *self, Ov014Act_0220f9d0 *a)
 #pragma force_active on
 Ov003Actor *Ov014Act_0220f9d0_Ctor(Ov014Act_0220f9d0 *self) {
     Ov003Actor_Ctor(self);
-    *(void **)self = data_ov014_02217e6c;
+    *(void **)self = Ov014Act_0220f9d0_vtbl;
     Ov003ScriptList_Init(&self->scripts);
     self->unk_15c.unk_b4 = 0;
     self->unk_15c.unk_b6 = 0;
@@ -125,8 +125,8 @@ Ov003Actor *Ov014Act_0220f9d0_Ctor(Ov014Act_0220f9d0 *self) {
 #pragma force_active reset
 
 static inline void Ov014_Free154(Ov014Act_0220f9d0 *self) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_154 != NULL) {
         Ov014Watch *p = self->unk_154;
         if (p != NULL) {
@@ -134,17 +134,17 @@ static inline void Ov014_Free154(Ov014Act_0220f9d0 *self) {
         }
         self->unk_154 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 static inline void Ov014_StopSnd(void) {
     if (ResMgr_IsLoaded(data_ov014_02217d1d, 7)) {
-        ResMgr_ReleaseByName(data_02097cdc, data_ov014_02217d1d, 7, 0);
+        ResMgr_ReleaseByName(gResMgr, data_ov014_02217d1d, 7, 0);
     }
 }
 
 Ov014Act_0220f9d0 *Ov014Act_0220f9d0_Dtor(Ov014Act_0220f9d0 *self) {
-    *(void **)self = data_ov014_02217e6c;
+    *(void **)self = Ov014Act_0220f9d0_vtbl;
     Ov014_Free154(self);
     Ov014_StopSnd();
     Ov003Vt_021f7974_Dtor(&self->scripts);
@@ -153,7 +153,7 @@ Ov014Act_0220f9d0 *Ov014Act_0220f9d0_Dtor(Ov014Act_0220f9d0 *self) {
 }
 
 Ov014Act_0220f9d0 *Ov014Act_0220f9d0_DtorDelete(Ov014Act_0220f9d0 *self) {
-    *(void **)self = data_ov014_02217e6c;
+    *(void **)self = Ov014Act_0220f9d0_vtbl;
     Ov014_Free154(self);
     Ov014_StopSnd();
     Ov003Vt_021f7974_Dtor(&self->scripts);
@@ -177,10 +177,10 @@ void Ov014Act_0220f9d0_HandleMsg(Ov014Act_0220f9d0 *self, Ov014Msg *msg) {
         Ov003Actor *a;
         u16 id = msg->unk_0c;
         self->unk_14e = id;
-        if (data_ov000_021ccd68 == NULL) {
+        if (gActorMgr == NULL) {
             a = NULL;
         } else {
-            a = ActorMgr_GetActor(data_ov000_021ccd68, id);
+            a = ActorMgr_GetActor(gActorMgr, id);
         }
         self->unk_150 = a->kind;
     }
@@ -198,8 +198,8 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
     self->rot_y = 0;
     self->rot_z = 0;
     {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (self->unk_3c != NULL) {
             VObj *v = self->unk_3c;
             if (v != NULL) {
@@ -207,11 +207,11 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
             }
             self->unk_3c = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (self->hit != NULL) {
             ActorSub48 *q = self->hit;
             if (q != NULL) {
@@ -220,7 +220,7 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
             }
             self->hit = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     self->unk_44->unk_1c = 0x2000;
     {
@@ -238,7 +238,7 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
     self->model->boxTest = 0;
     p = (Ov014Watch *)Heap_Alloc(sizeof(Ov014Watch));
     if (p != NULL) {
-        *(void **)p = data_ov014_02217db0;
+        *(void **)p = Ov014Watch_vtbl;
         MIi_CpuClear16(0xffff, p->ids, sizeof(p->ids));
         p->count = 0;
         p->unk_0a = 0;
@@ -300,7 +300,7 @@ static inline void Ov014_SpawnPair(Ov014Act_0220f9d0 *self) {
             rot.x = 0;
             rot.y = 0;
             rot.z = 0;
-            o = Group_SpawnActor(data_ov000_021ccd64, &desc, &data_ov014_02216c18[i], &rot, 0xffff);
+            o = Group_SpawnActor(gGroup, &desc, &data_ov014_02216c18[i], &rot, 0xffff);
             o->flags_0 = 1;
             p->ids[i] = o->id;
         }
@@ -463,10 +463,10 @@ void Ov014Act_0220f9d0_Update(Ov014Act_0220f9d0 *self) {
     case 0x2a: {
         Ov003Actor *a;
         u16 id = self->target_id;
-        if (data_ov000_021ccd68 == NULL) {
+        if (gActorMgr == NULL) {
             a = NULL;
         } else {
-            a = ActorMgr_GetActor(data_ov000_021ccd68, id);
+            a = ActorMgr_GetActor(gActorMgr, id);
         }
         if (a == NULL) {
             self->unk_b4 = 10;

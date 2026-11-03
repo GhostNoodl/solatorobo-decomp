@@ -10,7 +10,7 @@ typedef struct ov006_Unk021dd450 {
 
 extern "C" {
 
-extern u8 data_ov000_021cac0c[];
+extern u8 Ov000Vt_021cac0c_vtbl[];
 extern const char data_ov006_021ec09a[];
 extern const char data_ov006_021ec0a0[];
 extern char data_ov006_021ec178[];
@@ -31,7 +31,7 @@ void ov006_Unk021dd450_Load(ov006_Unk021dd450 *self) {
 
     text = (ObjBase021cac0c_021cb6f0 *)Heap_Alloc(sizeof(ObjBase021cac0c_021cb6f0));
     if (text != NULL) {
-        *(void **)text = data_ov000_021cac0c;
+        *(void **)text = Ov000Vt_021cac0c_vtbl;
         text->vfunc_14();
     }
     self->unk18 = text;

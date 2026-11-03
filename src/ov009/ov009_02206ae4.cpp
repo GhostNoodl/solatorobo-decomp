@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern void HitSphere_Unlink_0203f2b8(void *p);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern s32 SndMgr_StartSeqArc(void *mgr, s32 id);
@@ -51,7 +51,7 @@ void Ov009ActVt_022178f0_State20(Ov009ActVt_022178f0 *self) {
     ActorSub40 *st = self->fsm;
     switch (st->st) {
     case 0:
-        self->unk_10c = SndMgr_StartSeqArc(data_02097e4c, 0x3f);
+        self->unk_10c = SndMgr_StartSeqArc(gSndMgr, 0x3f);
         self->fsm->st++;
         break;
     case 1:
@@ -101,8 +101,8 @@ void Ov009ActVt_022178f0_State21(Ov009ActVt_022178f0 *self) {
         }
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->stageFlags = 1;
-        SndMgr_SetSlotVolume_0204a058(data_02097e4c, self->unk_10c, 0x14, 0x1c2);
+        gSceneCmd->stageFlags = 1;
+        SndMgr_SetSlotVolume_0204a058(gSndMgr, self->unk_10c, 0x14, 0x1c2);
         History_SetState(self->fsm, 1, 0);
         break;
     }
@@ -124,8 +124,8 @@ void Ov009ActVt_022178f0_State22(Ov009ActVt_022178f0 *self) {
         if (st->timer > 0xf) {
             Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
-            data_ov000_021ccd54->stageFlags = 1;
-            SndMgr_StopSeqArc(data_02097e4c, self->unk_10c);
+            gSceneCmd->stageFlags = 1;
+            SndMgr_StopSeqArc(gSndMgr, self->unk_10c);
             self->fsm->timer = 0;
             self->fsm->st++;
         }
@@ -139,7 +139,7 @@ void Ov009ActVt_022178f0_State22(Ov009ActVt_022178f0 *self) {
         st = self->fsm;
         st->timer++;
         if (st->timer > 0x104) {
-            Group_UpdateActor(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();
         }
         break;
@@ -182,7 +182,7 @@ void Ov009ActVt_022178f0_StateIdle(Ov009ActVt_022178f0 *self) {
     if (a != NULL && !Actor_IsDead(a)) {
         return;
     }
-    SndMgr_StopSeqArc(data_02097e4c, self->unk_10c);
+    SndMgr_StopSeqArc(gSndMgr, self->unk_10c);
     self->unk_10c = -1;
 }
 
@@ -248,8 +248,8 @@ void Ov009ActVt_022178f0_StateHurt(Ov009ActVt_022178f0 *self) {
         *self->hp = data_ov009_02215ef0[self->unk_10a];
         self->unk_10a++;
         if (self->unk_10a > 2) {
-            ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x480b, 0x15);
-            SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
+            ActorMgr_BroadcastKind(gActorMgr, 0x480b, 0x15);
+            SndMgr_PlayAt(gSndMgr, 0x56, &self->pos, 0);
             if (self->unk_44 != NULL) {
                 ActorSub44 *s44 = self->unk_44;
                 s44->unk_22_0 = 0;
@@ -269,7 +269,7 @@ void Ov009ActVt_022178f0_StateHurt(Ov009ActVt_022178f0 *self) {
         st->timer++;
         if (st->timer > 0x3c) {
             if (self->unk_10a > 2) {
-                ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x480b, 0x15);
+                ActorMgr_BroadcastKind(gActorMgr, 0x480b, 0x15);
                 self->unk_93_4 = 0;
                 self->unk_ea_6 = 1;
                 self->fsm->timer = 0;

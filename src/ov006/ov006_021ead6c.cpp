@@ -14,8 +14,8 @@ typedef struct ov006_Msg021ead6c {
 
 extern "C" {
 
-extern void *data_02097e4c;
-extern void *data_ov000_021ccd64;
+extern void *gSndMgr;
+extern void *gGroup;
 void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
 BOOL Hit_ApplyInArea(Actor *a, Actor *b, u16 c, u8 d, u16 mask, const VecFx32 *ofs, Rot16 *rot,
                          s32 r, s32 rr, s16 h, s32 i);
@@ -25,10 +25,10 @@ BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 
 static inline Actor *GetTgt(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline void RotYXZ(MtxFx33 *m, const ActorRot *rot) {
@@ -128,9 +128,9 @@ void Ov006ActVt_021ec67c_StateIdle(ActorEx *self) {
         if (p != NULL) {
             p->SetScaleAll(0x5000);
         }
-        SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x56, &self->pos, 0);
         Hit_ApplyInArea(self, self, 1, 0x11, 0x80, NULL, NULL, 0x7800, 0, -1, 0x1000);
-        Group_UpdateActor(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(gGroup, 0, self);
         self->vfunc_08();
         break;
     }

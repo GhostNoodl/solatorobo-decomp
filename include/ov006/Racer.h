@@ -1,9 +1,9 @@
 #ifndef OV006_RACER_H
 #define OV006_RACER_H
 
-// The ov006 race actor (round acC): the racer class (vtable data_ov006_021ec4f4, ctor
+// The ov006 race actor (round acC): the racer class (vtable Ov006ActVt_021ec4f4_vtbl, ctor
 // Ov006ActVt_021ec4f4_Ctor, 0x228 bytes, allocated by Ov006Racer_New) and the marker it
-// keeps above itself (vtable data_ov006_021ec28c, ctor Ov006Vt_021ec28c_Ctor, 0x34 bytes).
+// keeps above itself (vtable Ov006Vt_021ec28c_vtbl, ctor Ov006Vt_021ec28c_Ctor, 0x34 bytes).
 
 #include "types.h"
 #include "ov000/ActorBase.h"
@@ -137,7 +137,7 @@ void Ov006Racer_SetFinished(Ov006Racer *self); // ends the racer's race
 // The racer has crossed the goal more often than the race counts.
 static inline BOOL Ov006Racer_IsOver(Ov006Racer *self) {
     BOOL result = FALSE;
-    if (self->unk_19f > data_ov006_021ec884->info->unkB) {
+    if (self->unk_19f > gOv006SlotManager->info->unkB) {
         result = TRUE;
     }
     return result;

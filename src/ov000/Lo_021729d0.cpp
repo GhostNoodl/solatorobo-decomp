@@ -8,9 +8,9 @@ extern "C" {
 extern char data_0214b105[];
 extern void *data_0208cca0;
 extern void *data_0208cc94;
-extern void *data_ov000_021ccd44;
-extern u8 data_ov000_021cb940[];
-extern u8 data_ov000_021cb6d0[];
+extern void *gTaskHost;
+extern u8 Ov000Vt_021cb940_vtbl[];
+extern u8 Ov000Vt_021cb6d0_vtbl[];
 void func_ov000_0216f23c(void *p, s32 a);
 BOOL func_ov000_02180900(void *p);
 void ListBuffer021cb940_Release(void *p);
@@ -18,9 +18,9 @@ void ListBuffer021cb940_Release(void *p);
 typedef struct { u32 lo : 4; } LoNib;
 
 void *Ov000Vt_021cb940_DtorDelete(ListBuffer *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb940);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb940_vtbl);
     ListBuffer021cb940_Release(self);
-    VOBJ_SET_VTABLE(self, data_ov000_021cb6d0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb6d0_vtbl);
     if ((self->flags & 0x20) && self->unk_0c != 0) {
         Heap_FreeHi((void *)self->unk_0c);
     }

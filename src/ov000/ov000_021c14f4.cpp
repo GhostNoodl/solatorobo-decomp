@@ -21,7 +21,7 @@ typedef struct {
 } Gfx_021c14f4;
 
 extern "C" {
-extern Gfx_021c14f4 *data_02097d48;
+extern Gfx_021c14f4 *gGfxSys;
 typedef struct G3dGlb14f4 {
     u32 cmd0;
     u32 mtxmode;
@@ -138,7 +138,7 @@ void func_ov000_021c14f4(ActorMarker3D *self) {
         a = Mul_021c14f4(out.z, -0x1000);
         b = LO_FX_MUL(LFLD(s32, proj, 0x28), out.z) + proj->_32;
         q = FX_Div(b + a, a << 1);
-        self->work.z = CalcSub_021c14f4(&data_02097d48->cam.sub, Mul_021c14f4(q, 0x2000));
+        self->work.z = CalcSub_021c14f4(&gGfxSys->cam.sub, Mul_021c14f4(q, 0x2000));
         Model0218fe1c_UpdateAnim(self->unk_90, 0x1000);
         break;
     }

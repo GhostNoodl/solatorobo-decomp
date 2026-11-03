@@ -26,7 +26,7 @@ void func_ov002_021dd7f0(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c) {
     Obj021efe6c *w = self->owner->board;
     Ov002Cell *cur = ov002_GetCell(w, b);
     Ov002Cell *nxt = ov002_GetCell(w, a);
-    void *msg = data_02149ef8;
+    void *msg = gMsgRes;
     switch (nxt->unk_2) {
     case 1:
         if (nxt->obj != cur->obj || c != 0 || self->unk_20 != 0) {

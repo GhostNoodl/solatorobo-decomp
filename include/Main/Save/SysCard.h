@@ -23,7 +23,7 @@ typedef struct SysCard {
     /* 0x20 */ s32 lockCount;
 } SysCard; // size 0x24
 
-extern SysCard *data_02097e44;
+extern SysCard *gSysCard;
 
 extern void *Heap_Alloc(u32 size);
 extern void CARD_Init(void);
@@ -83,12 +83,12 @@ static inline BOOL SysCard_IsBusy(void) {
     if (done) {
         done = CARD_TryWaitBackupAsync();
     }
-    SysCard_CheckError(data_02097e44, 11);
+    SysCard_CheckError(gSysCard, 11);
     return done ? FALSE : TRUE;
 }
 
 static inline void SysCard_EndAccess(void) {
-    SysCard *card = data_02097e44;
+    SysCard *card = gSysCard;
     if (card->state == 8) {
         return;
     }

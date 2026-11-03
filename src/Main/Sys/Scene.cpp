@@ -9,7 +9,7 @@
 extern "C" {
 
 
-extern SndMgr *data_02097e4c;
+extern SndMgr *gSndMgr;
 extern const char *data_0208cb28[];
 
 extern void G2x_SetBlendBrightness_(volatile void *reg, int a, int b);
@@ -31,12 +31,12 @@ extern void GX_DispOn(void);
 void func_0204af00(SceneMgr *mgr);
 
 void func_0204ae14(void) {
-    if (data_02149ef0 == NULL) {
+    if (gSceneMgr == NULL) {
         SceneMgr *mgr;
         Movie *movie;
         s32 i;
-        data_02149ef0 = (SceneMgr *)Heap_AllocLo(sizeof(SceneMgr), 4);
-        mgr = data_02149ef0;
+        gSceneMgr = (SceneMgr *)Heap_AllocLo(sizeof(SceneMgr), 4);
+        mgr = gSceneMgr;
         mgr->state = 4;
         mgr->changing = FALSE;
         mgr->noReset = FALSE;
@@ -55,7 +55,7 @@ void func_0204ae14(void) {
         }
         G2x_SetBlendBrightness_((volatile void *)0x4000050, 0x3f, 0x10);
         G2x_SetBlendBrightness_((volatile void *)0x4001050, 0x3f, 0x10);
-        movie = data_02097e3c;
+        movie = gMovie;
         movie->names = data_0208cb28;
         movie->unk_0e8 = 2;
     }
@@ -64,11 +64,11 @@ void func_0204ae14(void) {
 }
 
 void func_0204aee8(void) {
-    func_0204af00(data_02149ef0);
+    func_0204af00(gSceneMgr);
 }
 
 static inline void Scene_SetNext(SceneDesc *desc) {
-    SceneMgr *mgr = data_02149ef0;
+    SceneMgr *mgr = gSceneMgr;
     mgr->next = *desc;
     mgr->state = 1;
     mgr->changing = FALSE;
@@ -92,42 +92,42 @@ void func_0204af00(SceneMgr *mgr) {
     SceneEntry *entry;
     switch (mgr->state) {
         case 0:
-            if (mgr->cur.update != NULL && !PauseNode_IsUpdatePaused(&data_02097dd0->node, TRUE)) {
+            if (mgr->cur.update != NULL && !PauseNode_IsUpdatePaused(&gSysState->node, TRUE)) {
                 mgr->cur.update();
-                if (!mgr->noReset && mgr->changing != TRUE && (data_02097dc8->cur & 0x30c) == 0x30c) {
+                if (!mgr->noReset && mgr->changing != TRUE && (gPad->cur & 0x30c) == 0x30c) {
                     func_0201bbfc(1);
-                    data_02097dd0->frameWait = 1;
+                    gSysState->frameWait = 1;
                     GfxSys_StopFade(-1);
                     for (i = 0, entry = data_02082998; i < 2; i++, entry++) {
                         if (entry->valid == 1) {
                             Scene_SetNext(&entry->desc);
-                            data_02149ef0->changing = TRUE;
+                            gSceneMgr->changing = TRUE;
                             break;
                         }
                     }
-                    data_02149ef0->noReset = FALSE;
-                    StageFlags_Reset(data_0214a424);
+                    gSceneMgr->noReset = FALSE;
+                    StageFlags_Reset(gStageFlags);
                     Snd_Reset();
-                    func_02039e0c(data_02097ce0);
+                    func_02039e0c(gGfxMgr);
                 }
             }
-            if (mgr->state == 0 && mgr->cur.draw != NULL && !PauseNode_IsDrawPaused(&data_02097dd0->node, TRUE)) {
+            if (mgr->state == 0 && mgr->cur.draw != NULL && !PauseNode_IsDrawPaused(&gSysState->node, TRUE)) {
                 mgr->cur.draw();
             }
             break;
         case 1:
-            GfxSys_SetBackdrop(data_02097d48, 0);
-            GfxSys_SetBackdropSub(data_02097d48, 0);
-            Gfx3DState_SetDefaults(data_02097d48->unk_8b0);
+            GfxSys_SetBackdrop(gGfxSys, 0);
+            GfxSys_SetBackdropSub(gGfxSys, 0);
+            Gfx3DState_SetDefaults(gGfxSys->unk_8b0);
             if (mgr->cur.onExit != NULL) {
                 mgr->cur.onExit();
             }
             mgr->state = 2;
         case 2:
             if (!func_02046ac4()) {
-                data_02097d48->nextState = 1;
-                SndMgr_StopAllSeq(data_02097e4c, 0);
-                data_02097e4c->unk_5b = FALSE;
+                gGfxSys->nextState = 1;
+                SndMgr_StopAllSeq(gSndMgr, 0);
+                gSndMgr->unk_5b = FALSE;
                 Scene_SetSubOverlay(mgr, -1, 0);
                 Scene_SetSubOverlay(mgr, -1, 1);
                 mgr->state = 3;
@@ -159,7 +159,7 @@ void func_0204af00(SceneMgr *mgr) {
             for (i = 0, entry = data_02082998; i < 2; i++, entry++) {
                 if (entry->valid == 1) {
                     Scene_SetNext(&entry->desc);
-                    data_02149ef0->changing = TRUE;
+                    gSceneMgr->changing = TRUE;
                     break;
                 }
             }

@@ -2,11 +2,11 @@
 
 extern "C" {
 
-extern u32 data_0208c1d8[];
-extern u32 data_0208c1e8[];
-extern u32 data_0208c23c[];
-extern u32 data_0208c290[];
-extern u32 data_0208c2e4[];
+extern u32 EffectSetup_vtbl[];
+extern u32 MainVt_0208c1e8_vtbl[];
+extern u32 EffectGroup_vtbl[];
+extern u32 MainVt_0208c290_vtbl[];
+extern u32 EffectObj_vtbl[];
 extern char data_0208c374[];
 extern char data_0208c380[];
 extern char data_0208c38b[];
@@ -45,9 +45,9 @@ static inline void Effect_SetStr(char *dst, const char *src) {
 static inline Effect3D *Effect3D_New(void) {
     Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
-        *(u32 **)e = data_0208c2e4;
+        *(u32 **)e = EffectObj_vtbl;
         EffectObj_Register(e);
-        *(u32 **)e = data_0208c290;
+        *(u32 **)e = MainVt_0208c290_vtbl;
         Effect3D_Init(e);
     }
     return e;
@@ -56,11 +56,11 @@ static inline Effect3D *Effect3D_New(void) {
 static inline Effect3D *EffectHud3D_New(void) {
     Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
-        *(u32 **)e = data_0208c2e4;
+        *(u32 **)e = EffectObj_vtbl;
         EffectObj_Register(e);
-        *(u32 **)e = data_0208c290;
+        *(u32 **)e = MainVt_0208c290_vtbl;
         Effect3D_Init(e);
-        *(u32 **)e = data_0208c1e8;
+        *(u32 **)e = MainVt_0208c1e8_vtbl;
         EffectHud_Init(e);
     }
     return e;
@@ -78,11 +78,11 @@ Effect3D *Effect3D_Create(const char *arc, const char *mdl, const char *anm, con
 Effect3D *Effect3D_NewAt(const char *arc, const char *mdl, const char *anm, const VecFx32 *pos) {
     Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
-        *(u32 **)e = data_0208c2e4;
+        *(u32 **)e = EffectObj_vtbl;
         EffectObj_Register(e);
-        *(u32 **)e = data_0208c290;
+        *(u32 **)e = MainVt_0208c290_vtbl;
         Effect3D_Init(e);
-        *(u32 **)e = data_0208c1e8;
+        *(u32 **)e = MainVt_0208c1e8_vtbl;
         e->unk_14 = 1;
         e->unk_c4 = 0;
     }
@@ -96,9 +96,9 @@ Effect3D *Effect3D_NewAt(const char *arc, const char *mdl, const char *anm, cons
 EffectGroup *EffectGroup_Create(const char *arc, const char *name, const VecFx32 *pos) {
     EffectGroup *g = (EffectGroup *)Heap_Alloc(sizeof(EffectGroup));
     if (g != NULL) {
-        *(u32 **)g = data_0208c2e4;
+        *(u32 **)g = EffectObj_vtbl;
         EffectObj_Register(g);
-        *(u32 **)g = data_0208c23c;
+        *(u32 **)g = EffectGroup_vtbl;
         g->unk_14 = 4;
         g->arcName[0] = 0;
         g->name[0] = 0;
@@ -112,7 +112,7 @@ EffectGroup *EffectGroup_Create(const char *arc, const char *name, const VecFx32
 }
 
 struct EffectSetup *EffectSetup_Dtor(struct EffectSetup *setup) {
-    *(u32 **)setup = data_0208c1d8;
+    *(u32 **)setup = EffectSetup_vtbl;
     func_02068540(setup);
     return setup;
 }
@@ -139,7 +139,7 @@ void EffectObj_SetScaleXYZ(EffectObj *obj, s32 x, s32 y, s32 z) {
 
 static inline void EffectGroup_Dtor(EffectGroup *g) {
     EffectObj *c;
-    *(u32 **)g = data_0208c23c;
+    *(u32 **)g = EffectGroup_vtbl;
     for (c = g->child; c != NULL; c = c->child) {
         c->state = 4;
     }
@@ -148,7 +148,7 @@ static inline void EffectGroup_Dtor(EffectGroup *g) {
         g->arc = NULL;
         g->arcName[0] = 0;
     }
-    *(u32 **)g = data_0208c2e4;
+    *(u32 **)g = EffectObj_vtbl;
     EffectObj_Unregister(g);
 }
 
@@ -182,9 +182,9 @@ void EffectObj_SetPosXYZ(EffectObj *obj, s32 x, s32 y, s32 z) {
 }
 
 static inline void Effect3D_Dtor(Effect3D *e) {
-    *(u32 **)e = data_0208c290;
+    *(u32 **)e = MainVt_0208c290_vtbl;
     Effect3D_Release(e);
-    *(u32 **)e = data_0208c2e4;
+    *(u32 **)e = EffectObj_vtbl;
     EffectObj_Unregister(e);
 }
 
@@ -211,7 +211,7 @@ Effect3D *MainVt_0208c290_Dtor(Effect3D *e) {
 }
 
 EffectObj *EffectObj_Dtor(EffectObj *obj) {
-    *(u32 **)obj = data_0208c2e4;
+    *(u32 **)obj = EffectObj_vtbl;
     EffectObj_Unregister(obj);
     return obj;
 }

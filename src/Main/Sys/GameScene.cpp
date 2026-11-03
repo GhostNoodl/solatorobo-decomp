@@ -6,17 +6,17 @@
 extern "C" {
 
 static inline BOOL Gfx_IsFadeIdle2(int ch) {
-    if (data_02097d78[3] == 0 && data_02097d78[ch] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[ch] == 0) {
         return TRUE;
     }
     return FALSE;
 }
 
 static inline BOOL Gfx_IsFadeDone(int ch) {
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         return TRUE;
     }
-    return data_02097d78[ch] == 4 ? TRUE : FALSE;
+    return gFadeState[ch] == 4 ? TRUE : FALSE;
 }
 
 BOOL func_02055aa4(GameScene *scene) {
@@ -73,7 +73,7 @@ void func_02055cbc(GameScene *scene) {
     if (effect == 0) {
         return;
     }
-    state = data_ov000_021ccd54;
+    state = gSceneCmd;
     switch (effect) {
     case 5:
         state->cam.base.shakeRandom = 1;
@@ -111,7 +111,7 @@ void func_02055cbc(GameScene *scene) {
 
 void MainVt_0208bbc8_Render(GameScene *scene) {
     BOOL busy = FALSE;
-    GfxSys *sys = data_02097d48;
+    GfxSys *sys = gGfxSys;
     s32 r;
     u16 n;
     Gfx3D_SendDL(sys->unk_8b0, 0);

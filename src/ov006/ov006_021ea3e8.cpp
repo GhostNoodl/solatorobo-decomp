@@ -19,14 +19,14 @@ void Model0218fe1c_UpdateAnim(Model0218fe1c *a, void *b);
 
 BOOL Ov006Racer_IsFinished(Ov006Racer *self) {
     BOOL result = FALSE;
-    if (self->unk_19f > data_ov006_021ec884->info->unkB) {
+    if (self->unk_19f > gOv006SlotManager->info->unkB) {
         result = TRUE;
     }
     return result;
 }
 
 void Ov006Racer_SetFinished(Ov006Racer *self) {
-    self->unk_19f = data_ov006_021ec884->info->unkB + 1;
+    self->unk_19f = gOv006SlotManager->info->unkB + 1;
 }
 
 Ov006Racer *Ov006Racer_New(u32 id, u8 a, const ov006_Pos *pos, const u16 *rot) {

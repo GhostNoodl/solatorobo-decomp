@@ -16,9 +16,9 @@ void Task021ef430_PostUpdate(Task021ef430 *self) {
     if (!self->unk_04_2) {
         return;
     }
-    TaskHost_RequestSwitch(data_ov000_021ccd44, 0x10, 0)->parent = NULL;
-    data_ov000_021ccd34 = 1;
-    data_ov000_021ccd44->flag0 = 0;
+    TaskHost_RequestSwitch(gTaskHost, 0x10, 0)->parent = NULL;
+    gTaskSwitchPending = 1;
+    gTaskHost->flag0 = 0;
 }
 
 void Task021ef430_Draw(Task021ef430 *self) {
@@ -47,7 +47,7 @@ Task021ef4b0 *Task021ef4b0_New(void) {
     Task021ef4b0 *p = (Task021ef4b0 *)Heap_Alloc(0x4c);
     if (p != NULL) {
         TaskBase_ctor(p);
-        *(VFunc **)p = data_ov002_021ef4b0;
+        *(VFunc **)p = Ov002TaskVt_021ef4b0_vtbl;
         p->unk_3c = NULL;
         p->unk_40 = NULL;
         p->unk_44 = NULL;
@@ -58,7 +58,7 @@ Task021ef4b0 *Task021ef4b0_New(void) {
 }
 
 void Task021ef4b0_SwitchTo(Task021ef4b0 *self, int arg) {
-    TaskHost_RequestSwitch(data_ov000_021ccd44, arg, 0);
+    TaskHost_RequestSwitch(gTaskHost, arg, 0);
 }
 
 void Task021ef4b0_Start(Task021ef4b0 *self) {
@@ -105,7 +105,7 @@ void Task021ef4b0_FreeWindows(Task021ef4b0 *self) {
 }
 
 extern "C" {
-extern VFunc data_ov000_021cadcc[];
+extern VFunc Lo021cadcc_vtbl[];
 void UiList_SetMarkModel(void *a, void *b, const char *c, int d);
 
 typedef struct {
@@ -126,11 +126,11 @@ static inline BOOL ov002_021ce7b8_check(int idx, u32 arg) {
     BOOL ok;
     u16 i;
     ok = TRUE;
-    count = DataRes_GetCount(data_02fe152c, idx);
-    base = data_02fe152c->data + 0x10 + idx * 0x20;
-    tbl = DataRes_GetTable(data_02fe152c, idx);
+    count = DataRes_GetCount(gDataRes, idx);
+    base = gDataRes->data + 0x10 + idx * 0x20;
+    tbl = DataRes_GetTable(gDataRes, idx);
     for (i = 0; i < count; i++) {
-        if (DataRes_ReadBitsAt_02059544(data_02fe152c, base, tbl, arg, i)) {
+        if (DataRes_ReadBitsAt_02059544(gDataRes, base, tbl, arg, i)) {
             ok = FALSE;
             break;
         }
@@ -139,7 +139,7 @@ static inline BOOL ov002_021ce7b8_check(int idx, u32 arg) {
 }
 
 void func_ov002_021ce7b8(Task021ef4b0 *self) {
-    void *g = data_02149ef8;
+    void *g = gMsgRes;
     UiObj *o;
     UiListItem *e;
     BOOL ok = ov002_021ce7b8_check(8, 1);
@@ -149,12 +149,12 @@ void func_ov002_021ce7b8(Task021ef4b0 *self) {
     self->unk_48_0 = ok;
     self->unk_48_2 = ov002_021ce7b8_check(9, 0x101);
     self->unk_48_4 = ov002_021ce7b8_check(10, 1);
-    self->unk_48_6 = !DataRes_ReadEntry(data_02fe152c, 5, 1, 5);
+    self->unk_48_6 = !DataRes_ReadEntry(gDataRes, 5, 1, 5);
     o = (UiObj *)Heap_Alloc(0xd4);
     if (o != NULL) {
-        *(VFunc **)o = data_ov000_021cac60;
+        *(VFunc **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(VFunc **)o = data_ov000_021caec8;
+        *(VFunc **)o = UiList_vtbl;
         o->vfunc_28();
     }
     self->unk_3c = (UiList *)o;
@@ -215,9 +215,9 @@ void func_ov002_021ce7b8(Task021ef4b0 *self) {
     self->unk_3c->vfunc_08();
     o = (UiObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
-        *(VFunc **)o = data_ov000_021cac60;
+        *(VFunc **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(VFunc **)o = data_ov000_021cadcc;
+        *(VFunc **)o = Lo021cadcc_vtbl;
         o->vfunc_28();
     }
     self->unk_40 = (Lo021cadcc *)o;
@@ -258,7 +258,7 @@ static inline UiListItem *ov002_021cedec_getSelected(UiList *list) {
 void Task021ef4b0_UpdateActive(Task021ef4b0 *self) {
     u16 keys;
     u32 id;
-    keys = data_02097dc8->trig;
+    keys = gPad->trig;
     id = ov002_021cedec_getSelected(self->unk_3c)->id;
     if (self->unk_44 != id) {
         func_ov002_021cf280(self, id);
@@ -269,45 +269,45 @@ void Task021ef4b0_UpdateActive(Task021ef4b0 *self) {
         case 0:
             if (!self->unk_48_0) {
                 self->vfunc_60(0x13, 0);
-                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
             } else {
-                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
             }
             return;
         case 1:
             if (!self->unk_48_2) {
                 self->vfunc_60(0x15, 0);
-                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
             } else {
-                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
             }
             return;
         case 2:
             if (!self->unk_48_4) {
                 self->vfunc_60(0x17, 0);
-                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
             } else {
-                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
             }
             return;
         case 3:
             if (!self->unk_48_6) {
                 self->vfunc_60(0x18, 0);
-                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
             } else {
-                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
             }
             return;
         case 4:
             self->vfunc_0c(0);
             GfxSys_StartFadeOut(self->fadeLen, 2, -1);
-            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
             return;
         }
     } else if (keys & 2) {
         self->vfunc_0c(0);
         GfxSys_StartFadeOut(self->fadeLen, 2, -1);
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
     }
 }
 }

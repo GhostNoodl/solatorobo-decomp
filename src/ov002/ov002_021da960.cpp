@@ -56,7 +56,7 @@ void func_ov002_021dab58(Obj021efe7c *self, s32 mode) {
         Obj021eff74 *p = (Obj021eff74 *)Heap_Alloc(sizeof(Obj021eff74));
         if (p != NULL) {
             p->board = NULL;
-            *(VFunc **)p = data_ov002_021eff74;
+            *(VFunc **)p = Ov002Vt_021eff74_vtbl;
             p->unk_08 = 0;
             p->unk_0c = NULL;
             p->unk_10 = NULL;
@@ -74,7 +74,7 @@ void func_ov002_021dab58(Obj021efe7c *self, s32 mode) {
         Obj021eff50 *p = (Obj021eff50 *)Heap_Alloc(sizeof(Obj021eff50));
         if (p != NULL) {
             p->board = NULL;
-            *(VFunc **)p = data_ov002_021eff50;
+            *(VFunc **)p = Ov002Vt_021eff50_vtbl;
             p->unk_08 = 1;
             p->unk_0c = -1;
             p->unk_10 = NULL;

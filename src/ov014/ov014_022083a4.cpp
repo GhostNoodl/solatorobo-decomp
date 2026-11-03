@@ -9,12 +9,12 @@ void Ov014ActEx_0220774c_StateDie(Ov014ActEx_0220774c *self) {
         return;
     }
     Ov003FxList_KillAll(self->unk_d8);
-    g = data_ov000_021ccd54;
+    g = gSceneCmd;
     g->cam.base.shakeRandom = 0;
     g->cam.base.shakeTime = 0;
     g->cam.base.shakeLen = 0;
     g->cam.base.shakeCur = 0;
-    Group_UpdateActor(data_ov000_021ccd64, 0, self);
+    Group_UpdateActor(gGroup, 0, self);
     self->vfunc_08();
 }
 

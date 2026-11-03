@@ -21,8 +21,8 @@ typedef struct ov006_RaceInfo {
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
-extern ov006_Unk021ccd6c *data_ov000_021ccd6c;
+extern void *gActorMgr;
+extern ov006_Unk021ccd6c *gFieldMgr;
 
 ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 void *ActorMgr_GetActor(void *a, u16 id);
@@ -35,14 +35,14 @@ static inline u8 ov006_CountRemaining(void) {
     u8 count;
     u8 i;
     u8 num;
-    num = data_ov006_021ec884->numActive;
+    num = gOv006SlotManager->numActive;
     if (num <= 1) {
         return 0x63;
     }
     count = 0;
     for (i = 0; i < num; i++) {
-        u16 id = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i)->actorId;
-        Ov006Racer *prop = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
+        u16 id = ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, i)->actorId;
+        Ov006Racer *prop = gActorMgr != NULL ? (Ov006Racer *)ActorMgr_GetActor(gActorMgr, id) : NULL;
         if (prop != NULL && Ov006Racer_IsFinished(prop)) {
             count++;
         }
@@ -63,8 +63,8 @@ static inline int ov006_GetPartyValue(ov006_Unk021ccd6c *self) {
 
 static inline int ov006_GetCheckpoints(void) {
     int result = 0;
-    if (ov006_GetPartyCount(data_ov000_021ccd6c) > 5) {
-        result = ov006_GetPartyValue(data_ov000_021ccd6c) + 0x50;
+    if (ov006_GetPartyCount(gFieldMgr) > 5) {
+        result = ov006_GetPartyValue(gFieldMgr) + 0x50;
     }
     return result;
 }
@@ -84,15 +84,15 @@ void ov006_ComputeRanks(void) {
     VecFx32 pos[4];
     ov006_RaceInfo sub;
 
-    if (data_ov006_021ec884->unk5 != 0) {
+    if (gOv006SlotManager->unk5 != 0) {
         return;
     }
-    slot = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, 0);
-    num = data_ov006_021ec884->numActive;
+    slot = ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, 0);
+    num = gOv006SlotManager->numActive;
     remaining = ov006_CountRemaining();
     for (i = 0; i < num; i++) {
-        u16 id = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i)->actorId;
-        Ov006Racer *racer = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
+        u16 id = ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, i)->actorId;
+        Ov006Racer *racer = gActorMgr != NULL ? (Ov006Racer *)ActorMgr_GetActor(gActorMgr, id) : NULL;
         if ((racer != NULL && Ov006Racer_IsFinished(racer)) || remaining <= 1) {
             rank[i] = (ov006_Slot_GetSub2C(slot)->ranks >> (i * 2)) & 3;
             a[i] = 0xff;

@@ -130,8 +130,8 @@ void Ov006Racer_Move(Ov006Racer *self) {
             }
             self->runSpeed -= self->runSpeed * dd / 0x8000;
         }
-        if (data_ov006_021ec860->unk1C == 0 && self->idx != data_ov006_021ec884->unk5) {
-            if ((ov006_Slot_GetSub2C(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5))->unk3 & 3) < (u32)self->rank) {
+        if (gOv006Manager->unk1C == 0 && self->idx != gOv006SlotManager->unk5) {
+            if ((ov006_Slot_GetSub2C(ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5))->unk3 & 3) < (u32)self->rank) {
                 f = 0;
             }
         }
@@ -139,17 +139,17 @@ void Ov006Racer_Move(Ov006Racer *self) {
             self->runSpeed -= MUL(self->runSpeed, f);
         }
         if (self->unk_1f4 == 0) {
-            if (data_ov006_021ec884->unk13D == 0) {
+            if (gOv006SlotManager->unk13D == 0) {
                 if (++self->unk_21e[3] > 99) {
                     self->unk_21e[3] = 99;
                 }
             }
             if (self->unk_19c_0 & 1) {
                 BOOL c = FALSE;
-                if (self->unk_19f > data_ov006_021ec884->info->unkB) {
+                if (self->unk_19f > gOv006SlotManager->info->unkB) {
                     c = TRUE;
                 }
-                if (!c && data_ov006_021ec884->unk13D == 0) {
+                if (!c && gOv006SlotManager->unk13D == 0) {
                     ActorSub48 *col = self->hit;
                     s32 nx = col->unk_80;
                     s32 ny = col->unk_84;
@@ -162,16 +162,16 @@ void Ov006Racer_Move(Ov006Racer *self) {
                             e->SetRotXYZ(b.x, b.y, 0);
                             e->SetScaleAll(0x3ccd);
                         }
-                        if (self->idx == data_ov006_021ec884->unk5) {
-                            SndMgr_PlayAt(data_02097e4c, 0x35, &p, 0);
+                        if (self->idx == gOv006SlotManager->unk5) {
+                            SndMgr_PlayAt(gSndMgr, 0x35, &p, 0);
                         }
                     } else {
                         EffectObj *e = Effect_SpawnId(0x66, &p);
                         if (e != NULL) {
                             e->SetRotXYZ(FX_AcosIdx(ny), FX_Atan2(nx, nz), 0);
                         }
-                        if (self->idx == data_ov006_021ec884->unk5) {
-                            SndMgr_PlayAt(data_02097e4c, 0x52, &p, 0);
+                        if (self->idx == gOv006SlotManager->unk5) {
+                            SndMgr_PlayAt(gSndMgr, 0x52, &p, 0);
                         }
                     }
                 }

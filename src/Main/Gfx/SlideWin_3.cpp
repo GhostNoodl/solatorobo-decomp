@@ -127,7 +127,7 @@ static inline void SlideMsg_SetName(SlideMsg *msg, const char *name, u16 id) {
 static inline TextWin *SlideMsg_NewWin(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
-        *(const u32 **)win = data_0208ba70;
+        *(const u32 **)win = TextWin_vtbl;
         TextWin_Init(win);
     }
     return win;
@@ -145,7 +145,7 @@ static inline void SlideMsg_Show(SlideMsg *msg, const char *text) {
     win = msg->win;
     win->str = (u32)text;
     win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->font;
+    gGfxMgr->unk_004 = win->font;
     msg->win->unk_vf20(0, 0xc0);
     msg->win->noVram = 1;
     msg->win->flag24 = 1;
@@ -168,17 +168,17 @@ static inline BOOL SlideMsg_NameChanged(SlideMsg *msg) {
 }
 
 static inline BOOL Gfx_IsFadeIdle2(int ch) {
-    if (data_02097d78[3] == 0 && data_02097d78[ch] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[ch] == 0) {
         return TRUE;
     }
     return FALSE;
 }
 
 static inline BOOL Gfx_IsFadeDone(int ch) {
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         return TRUE;
     }
-    return data_02097d78[ch] == 4 ? TRUE : FALSE;
+    return gFadeState[ch] == 4 ? TRUE : FALSE;
 }
 
 static inline BOOL SlideWin_IsClosing(SlideWinX *win) {
@@ -254,9 +254,9 @@ static inline void SlidePanel_Open(SlidePanel *panel, BOOL sound) {
             panel->unk_20 = 0;
             if (sound && Gfx_IsFadeIdle(0)) {
                 if (panel->kind >= 3) {
-                    SndMgr_PlayVolume(data_02097e4c, 0x2f, -1, -1, -1);
+                    SndMgr_PlayVolume(gSndMgr, 0x2f, -1, -1, -1);
                 } else {
-                    SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+                    SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
                 }
             }
         }
@@ -302,10 +302,10 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
     SlideVram v4;
     SlideVram v6;
 
-    data_02097ce0->unk_004 = win->font;
+    gGfxMgr->unk_004 = win->font;
     panel = NULL;
     count = 0;
-    data_02097ce0->unk_012 = win->unk_34;
+    gGfxMgr->unk_012 = win->unk_34;
     c = 0;
     if (win->unk_b60 >= 0) {
         return 0;
@@ -322,7 +322,7 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
     if (*win->str == 0) {
         goto end;
     }
-    font = (NNSG2dFont *)GfxMgr_GetFont(data_02097ce0);
+    font = (NNSG2dFont *)GfxMgr_GetFont(gGfxMgr);
     adv = 0;
     fn = font->cbCharSpliter;
     msg = win->msgs;
@@ -640,17 +640,17 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
                 msg->blocks[msg->count] = VramBlock_AllocChar(cw->left + font->pRes->pGlyph->cellWidth,
                                                         font->pRes->pGlyph->cellHeight, 0);
             }
-            func_0203a4dc(data_02097ce0, msg->blocks[msg->count]);
-            GfxMgr_SetCursor(data_02097ce0, win->cursorX, win->cursorY - 1);
-            data_02097ce0->unk_008 = color;
-            func_0203a5a4(data_02097ce0, c);
+            func_0203a4dc(gGfxMgr, msg->blocks[msg->count]);
+            GfxMgr_SetCursor(gGfxMgr, win->cursorX, win->cursorY - 1);
+            gGfxMgr->unk_008 = color;
+            func_0203a5a4(gGfxMgr, c);
             count++;
             if (c < 0x80 || c > 0xaf) {
-                SndMgr_PlayVolume(data_02097e4c, 0x23, 0xe, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x23, 0xe, -1, -1);
             }
             {
                 u32 n;
-                win->cursorX = data_02097ce0->unk_00c;
+                win->cursorX = gGfxMgr->unk_00c;
                 win->unk_b6c++;
                 n = msg->count + 1;
                 if (n < 0x80) {

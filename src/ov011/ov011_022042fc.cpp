@@ -4,8 +4,8 @@ extern "C" {
 
 
 static inline void Ov011_FreeSub48(Ov003Actor *self) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->hit != NULL) {
         void *p = self->hit;
         if (p != NULL) {
@@ -14,7 +14,7 @@ static inline void Ov011_FreeSub48(Ov003Actor *self) {
         }
         self->hit = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 void Ov011Act7c4c_Start(Ov011Act7c4c *self) {

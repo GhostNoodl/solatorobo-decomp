@@ -13,7 +13,7 @@
 #include "ov006/Label.h"
 #include "ov006/Gauge.h"
 
-/* Task with vtable data_ov006_021ebd40 (0x58 bytes). */
+/* Task with vtable ov006_TaskCE_vtbl (0x58 bytes). */
 struct ov006_TaskCE : public ov006_TaskBase {
     UiList *unk44;
     Lo021cadcc *unk48;
@@ -22,7 +22,7 @@ struct ov006_TaskCE : public ov006_TaskBase {
     ov006_CaptionPanel *unk54;
 };
 
-/* Task with vtable data_ov006_021ebcc0 (0x114 bytes). */
+/* Task with vtable ov006_TaskD0_vtbl (0x114 bytes). */
 struct ov006_TaskD0 : public ov006_TaskBase {
     char names[4][0x30];
     UiList021cb4a8 *unk104;
@@ -31,7 +31,7 @@ struct ov006_TaskD0 : public ov006_TaskBase {
     u8 unk110;
 };
 
-/* Task with vtable data_ov006_021ebf40 (0x128 bytes). */
+/* Task with vtable ov006_TaskD0C_vtbl (0x128 bytes). */
 struct ov006_TaskD0C : public Task {
     u8 unk3C;
     u8 unk3D;
@@ -63,7 +63,7 @@ typedef struct ov006_Actor58 {
     ov006_Vec16 rot;
 } ov006_Actor58;
 
-/* Task with vtable data_ov006_021ebec0 (0x7c bytes). */
+/* Task with vtable ov006_TaskD1F_vtbl (0x7c bytes). */
 struct ov006_TaskD1F : public ov006_TaskBase {
     int unk44;
     u8 unk48;
@@ -80,7 +80,7 @@ struct ov006_TaskD1F : public ov006_TaskBase {
     ov006_Gauge *gauges[4];
 };
 
-/* Task with vtable data_ov006_021ec040 (0x44 bytes, ctor Ov006Vt_021ec040_Ctor), created by
+/* Task with vtable Ov006Vt_021ec040_vtbl (0x44 bytes, ctor Ov006Vt_021ec040_Ctor), created by
    ov006_Manager_SwitchTask for task type 2. ov006_Task021ec040_BuildShopList builds its windows, ov006_Task021ec040_SetupPrices
    sums unk38 from the price tables, Ov006Vt_021ec040_Update runs it and Ov006Vt_021ec040_Draw draws it. */
 struct ov006_Task021ec040 : public ov006_Task {
@@ -100,7 +100,7 @@ struct ov006_Task021ec040 : public ov006_Task {
     u16 unk3E[2];       // sent with unk3C by ov006_Menu_SetOwnEntry
 };
 
-/* Vtable data_ov006_021ec1fc (0x30 bytes, ctor Ov006Vt_021ec1fc_Ctor). */
+/* Vtable Ov006Vt_021ec1fc_vtbl (0x30 bytes, ctor Ov006Vt_021ec1fc_Ctor). */
 typedef struct ov006_Obj13C {
     void *vtbl;
     u8 unk4;
@@ -130,7 +130,7 @@ typedef struct ov006_Anm74 {
     u8 unk19;
 } ov006_Anm74;
 
-/* Task with vtable data_ov006_021ebdc0 (0x140 bytes). */
+/* Task with vtable ov006_TaskD37_vtbl (0x140 bytes). */
 struct ov006_TaskD37 : public Task {
     u8 step;
     u8 unk3D;
@@ -165,16 +165,16 @@ struct ov006_TaskD37 : public Task {
 extern "C" {
 #endif
 
-extern void *data_ov006_021ebc70;
+extern void *ov006_MsgBox_vtbl;
 extern char data_ov006_021ebbd1[];
 extern char data_ov006_021ebbde[];
 
 ov006_Slot *ov006_SlotManager_GetSlot_021db060(ov006_SlotManager *self, u32 idx);
 
-extern void *data_ov000_021ccd44;
-extern Task *data_ov000_021ccd40; // the task that is finishing
-extern s32 data_ov000_021ccd38;
-extern s32 data_02097d78[];
+extern void *gTaskHost;
+extern Task *gFinishingTask; // the task that is finishing
+extern s32 gLastTaskId;
+extern s32 gFadeState[];
 
 void *TaskHost_RequestSwitch(void *a, int b, int c);
 void GfxSys_StartFadeOut(int a, int b, int c);
@@ -198,37 +198,37 @@ static inline void ov006_TaskCE_HideMenus(ov006_TaskCE *self) {
 
 static inline BOOL ov006_IsMode4b(void) {
     BOOL r;
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         r = TRUE;
     } else {
-        r = data_02097d78[1] == 4;
+        r = gFadeState[1] == 4;
     }
     return r;
 }
 
 static inline BOOL ov006_IsMode4(void) {
     BOOL r;
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         r = TRUE;
     } else {
-        r = data_02097d78[0] == 4;
+        r = gFadeState[0] == 4;
     }
     return r;
 }
 
 static inline void ov006_SetCurrent021ccd40(Task *p) {
-    if (data_ov000_021ccd40 != NULL) {
-        data_ov000_021ccd38 = data_ov000_021ccd40->id;
+    if (gFinishingTask != NULL) {
+        gLastTaskId = gFinishingTask->id;
     } else {
-        data_ov000_021ccd38 = 0;
+        gLastTaskId = 0;
     }
-    data_ov000_021ccd40 = p;
+    gFinishingTask = p;
 }
 
 static inline ov006_MsgBox *ov006_MsgBox_New(void) {
     ov006_MsgBox *p = (ov006_MsgBox *)Heap_Alloc(sizeof(ov006_MsgBox));
     if (p != NULL) {
-        p->vtbl = &data_ov006_021ebc70;
+        p->vtbl = &ov006_MsgBox_vtbl;
         MsgBox_Init(p);
     }
     return p;

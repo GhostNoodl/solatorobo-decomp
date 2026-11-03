@@ -18,7 +18,7 @@ Task021ef89c *Task021ef89c_New(void) {
     Task021ef89c *p = (Task021ef89c *)Heap_Alloc(0x44);
     if (p != NULL) {
         TaskBase_ctor(p);
-        *(VFunc **)p = data_ov002_021ef89c;
+        *(VFunc **)p = Ov002TaskVt_021ef89c_vtbl;
         p->unk_3c = NULL;
         p->unk_40 = NULL;
     }
@@ -35,7 +35,7 @@ BOOL func_ov002_021d0a80(Ov002RowList *self, Hud021cca10 *arg) {
     int j;
     if (arg != NULL) {
         data_ov002_021f0f84[1] = self->unk_a8;
-        obj = (u8 *)TaskHost_RequestSwitch(data_ov000_021ccd44, 0x16, 0);
+        obj = (u8 *)TaskHost_RequestSwitch(gTaskHost, 0x16, 0);
         info = func_0206ee90((u16)arg->unk_08);
         if (!((Info0206ee90 *)info)->flag) {
             obj[0x68] = 0;

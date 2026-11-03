@@ -15,14 +15,14 @@ typedef struct {
 } Bits0215bb14;
 
 extern "C" {
-extern const u32 data_0208bb1c[];
+extern const u32 TextWinEx_vtbl[];
 void func_0204f49c(void *win);
 void TextWin_RenderToVram(TextWin *win);
 
 static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
-        *(const u32 **)win = data_0208ba70;
+        *(const u32 **)win = TextWin_vtbl;
         TextWin_Init(win);
     }
     return win;
@@ -31,9 +31,9 @@ static inline TextWin *TextWin_New(void) {
 static inline TextWinEx *TextWinEx_New(void) {
     TextWinEx *win = (TextWinEx *)Heap_Alloc(0x3dc);
     if (win != NULL) {
-        *(const u32 **)win = data_0208ba70;
+        *(const u32 **)win = TextWin_vtbl;
         TextWin_Init(win);
-        *(const u32 **)win = data_0208bb1c;
+        *(const u32 **)win = TextWinEx_vtbl;
         func_0204f49c(win);
     }
     return win;
@@ -42,7 +42,7 @@ static inline TextWinEx *TextWinEx_New(void) {
 static inline void SetText(TextWin *win, u32 text) {
     win->str = text;
     win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = win->font;
+    gGfxMgr->unk_004 = win->font;
 }
 
 static inline void SetPages(TextWinEx *win, u32 text) {
@@ -67,8 +67,8 @@ void Obj0215bb14_SetText(Obj0215bb14 *self, u32 text) {
     BOOL flag;
     self->unk_0c &= ~0x40000;
     {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if ((VObj *)self->unk_84 != NULL) {
             VObj *p_ = (VObj *)self->unk_84;
             if (p_ != NULL) {
@@ -76,7 +76,7 @@ void Obj0215bb14_SetText(Obj0215bb14 *self, u32 text) {
             }
             self->unk_84 = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     if (self->unk_0c & 0x80000) {
         TextWin *win = TextWin_New();

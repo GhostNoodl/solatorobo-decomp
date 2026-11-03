@@ -13,7 +13,7 @@ void *ov006_GetCourseInfo(u32 id) {
 }
 
 ov006_Slot *Ov006Vt_021ec078_Ctor(ov006_Slot *self) {
-    self->vtbl = &data_ov006_021ec078;
+    self->vtbl = &ov006_Slot_vtbl;
     ov006_Slot_Clear(self);
     self->unkC = 0xffff;
     return self;

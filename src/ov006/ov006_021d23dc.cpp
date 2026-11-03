@@ -63,7 +63,7 @@ void ov006_TaskD1F_Start(ov006_TaskD1F *self) {
     if (self->vfunc_28()) {
         return;
     }
-    res = data_02149ef8;
+    res = gMsgRes;
     self->unk54 = ov006_NewUiList();
     self->unk54->vfunc_10(MsgRes_GetString(res, 0x128));
     self->unk54->vfunc_14(MsgRes_GetString(res, 0x129));
@@ -80,7 +80,7 @@ void ov006_TaskD1F_Start(ov006_TaskD1F *self) {
     self->unk54->flags |= 0x10000;
     ov006_Manager_DispatchMenuCb(3, self->unk54, 0);
     self->unk54->vfunc_08();
-    UiList_SetPanelColor(self->unk54, data_ov006_021eb6fe[data_ov006_021ec884->unk5]);
+    UiList_SetPanelColor(self->unk54, data_ov006_021eb6fe[gOv006SlotManager->unk5]);
     if (self->unk4A != 0xffff) {
         UiList *w = self->unk54;
         w->vfunc_a8(UiList_GetItemById(w, self->unk4A));
@@ -151,14 +151,14 @@ void ov006_TaskD1F_Start(ov006_TaskD1F *self) {
     ov006_Gauge_SetText(self->gauges[3], MsgRes_GetString(res, 0x13e));
     {
         u8 buf[0x18];
-        ov006_Slot_Pack(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5), buf);
+        ov006_Slot_Pack(ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5), buf);
         ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk49, 1, buf, 0x18);
     }
     if (self->param != 0) {
         self->unk48 = 0;
     }
     {
-        GfxSys *g = data_02097d48;
+        GfxSys *g = gGfxSys;
         Gfx3DState_SetDefaults(g->unk_8b0);
         g->unk_8b0[0] |= 0x30;
         *(vu16 *)0x4000060 = (*(vu16 *)0x4000060 & ~0x3000) | 0x20;
@@ -170,7 +170,7 @@ void ov006_TaskD1F_Start(ov006_TaskD1F *self) {
         const void *str;
         ov006_Unk020706a0 *p;
         self->unk4A = id;
-        str = MsgRes_GetString(data_02149ef8, data_ov006_021eb78c[(u16)(id & 0xfff)]);
+        str = MsgRes_GetString(gMsgRes, data_ov006_021eb78c[(u16)(id & 0xfff)]);
         if (self->unk5C != NULL && str != NULL) {
             Obj0215bb14_SetText(self->unk5C, str);
             self->unk5C->vfunc_70();

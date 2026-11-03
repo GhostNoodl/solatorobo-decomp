@@ -38,11 +38,11 @@ static inline void Enter(Robo021ca458 *self, BOOL flag) {
         anm->b1 = 0;
     }
     self->mdl0.unk_cc = -1;
-    data_0214a424->bits18.flag8 = 0;
-    data_0214a424->bits18.flag9 = 0;
+    gStageFlags->bits18.flag8 = 0;
+    gStageFlags->bits18.flag9 = 0;
     Shared_ChangeFlags(3, 1);
     if (flag) {
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
     }
 }
 
@@ -57,7 +57,7 @@ void func_ov000_021b1540(Robo021ca458 *self, BOOL flag, s32 mode) {
     st = 1;
     if (mode == 1 || mode == 3) {
         st = mode;
-    } else if (data_0214a424->bits18.mode == 1) {
+    } else if (gStageFlags->bits18.mode == 1) {
         st = 3;
     }
     if (self->unk_b22_9 < 2) {
@@ -68,7 +68,7 @@ void func_ov000_021b1540(Robo021ca458 *self, BOOL flag, s32 mode) {
     }
     Shared_ChangeFlags(0x30, 0x20);
     if (flag) {
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
     }
 }
 

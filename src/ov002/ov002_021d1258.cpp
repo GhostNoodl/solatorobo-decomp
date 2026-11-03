@@ -31,7 +31,7 @@ static inline bool ov002_HasActive(FieldPlayer *t) {
 }
 
 static inline void ov002_PlayBgm(u16 id) {
-    SndQueue *m = data_02097e48.queue;
+    SndQueue *m = gSndQueue.queue;
     if (m->flag0) {
         if (m->unk_06 != 0xffff || m->unk_04 != id) {
             if (m->unk_02 != 10 && m->unk_02 != 0) {
@@ -66,17 +66,17 @@ void Task021ef71c_PreUpdate(Task021ef71c *self) {
         if (o != NULL) {
             o->unk_4d = 1;
         }
-        if (data_ov000_021ccd30 != NULL) {
-            self->unk_69 = ov002_HasActive(data_ov000_021ccd30);
-            if (self->unk_69 && data_ov000_021ccd30->unk_118 != NULL) {
-                func_ov000_0216f844(data_ov000_021ccd30->unk_118, 0);
+        if (gMessageQueue != NULL) {
+            self->unk_69 = ov002_HasActive(gMessageQueue);
+            if (self->unk_69 && gMessageQueue->unk_118 != NULL) {
+                func_ov000_0216f844(gMessageQueue->unk_118, 0);
             }
         }
         {
             SndQueue *m;
-            data_02097e48.queue->flag0 = 1;
-            data_02097e48.queue->flag3 = 1;
-            m = data_02097e48.queue;
+            gSndQueue.queue->flag0 = 1;
+            gSndQueue.queue->flag3 = 1;
+            m = gSndQueue.queue;
             if (m->flag3) {
                 m->unk_06 = 0x8000;
                 m->unk_08 = 10;
@@ -84,7 +84,7 @@ void Task021ef71c_PreUpdate(Task021ef71c *self) {
             }
         }
         {
-            SndQueue *m = data_02097e48.queue;
+            SndQueue *m = gSndQueue.queue;
             m->unk_80 = 0x8000;
             m->unk_7c = 0;
         }
@@ -124,8 +124,8 @@ void Task021ef71c_PreUpdate(Task021ef71c *self) {
         if (o != NULL) {
             o->unk_4c = 1;
         }
-        if (self->unk_69 && data_ov000_021ccd30->unk_118 != NULL) {
-            func_ov000_0216f844(data_ov000_021ccd30->unk_118, 1);
+        if (self->unk_69 && gMessageQueue->unk_118 != NULL) {
+            func_ov000_0216f844(gMessageQueue->unk_118, 1);
         }
         ov002_PlayBgm(0xd);
         break;

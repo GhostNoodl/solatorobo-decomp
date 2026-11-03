@@ -5,8 +5,8 @@
 
 
 extern "C" {
-extern int data_02097d78[];
-extern void *data_02097e4c;
+extern int gFadeState[];
+extern void *gSndMgr;
 extern char data_ov000_021cc879[];
 char *func_02061f94(u16 id);
 void ResMgr_LoadArchive(void *a, void *b, s32 c, s32 d);
@@ -21,7 +21,7 @@ s32 FX_Div(s32 a, s32 b);
 
 static inline BOOL FadeIdle021b8284(void) {
     BOOL r;
-    if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[0] == 0) {
         r = TRUE;
     } else {
         r = FALSE;
@@ -30,10 +30,10 @@ static inline BOOL FadeIdle021b8284(void) {
 }
 
 static inline BOOL Fade4_021b8284(void) {
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         return TRUE;
     }
-    return data_02097d78[0] == 4 ? TRUE : FALSE;
+    return gFadeState[0] == 4 ? TRUE : FALSE;
 }
 
 // ListBuffer021cb940::unk_34 (0x5c bytes, ctor func_ov000_021b87d8).
@@ -67,7 +67,7 @@ BOOL func_ov000_021b8284(Obj021b8284 *self) {
         STD_CopyString(self->fileName, c + 1);
         ResMgr_LoadArchive(self->arcName, self->fileName, 2, 0);
         {
-            GfxSys *g = data_02097d48;
+            GfxSys *g = gGfxSys;
             g->unk_8b0_4 = 0;
             g->unk_8b0_5 = 1;
         }
@@ -114,7 +114,7 @@ BOOL func_ov000_021b8284(Obj021b8284 *self) {
         if (Fade4_021b8284()) {
             self->unk_50 = 0x3e7000;
         } else {
-            SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
             self->unk_50 = 0;
         }
         self->unk_44 = 7;
@@ -137,7 +137,7 @@ BOOL func_ov000_021b8284(Obj021b8284 *self) {
         if (!FadeIdle021b8284()) {
             self->unk_50 = 0x3e7000;
         } else {
-            SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
             self->unk_50 = 0;
         }
         self->unk_44 = 0xd;

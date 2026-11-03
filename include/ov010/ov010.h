@@ -257,7 +257,7 @@ struct Ov010Ang3 {
 // ---- Sub-objects that ov010 classes embed. ov003 defines these on its own local types, so ov010
 // keeps these views; the ov003 helpers that take them are declared above with void *.
 
-// Ov003Mover (vtable data_ov003_021f7d2c, ctor Ov003Vt_021f7d2c_Ctor): moves a point from start
+// Ov003Mover (vtable Ov003Vt_021f7d2c_vtbl, ctor Ov003Vt_021f7d2c_Ctor): moves a point from start
 // toward target (Ov003Mover_Start); vfunc_08 stops it, vfunc_10 returns the point, vfunc_14 says
 // whether it arrived.
 class Ov010Mover : public VObj {
@@ -352,7 +352,7 @@ typedef struct Ov010Circle {
     fx32 radius;
 } Ov010Circle;
 
-// ---- The 0x4817 actor (vtable data_ov010_02210378, ctor Ov010ActVt_02210378_Ctor).
+// ---- The 0x4817 actor (vtable Ov010ActVt_02210378_vtbl, ctor Ov010ActVt_02210378_Ctor).
 // Spawned by Ov010Coll_Spawn and set up by Ov010Obj0220a6b0_SetArea. Its methods are in
 // ov010_0220f9b4.cpp (0220a6a0..0220d3d8). It is built by ActorEx_Ctor, but reads 0xcf as an
 // unsigned byte, where ActorEx::unk_cf is signed (a counter in ov013), so it derives from Actor and
@@ -423,14 +423,14 @@ struct Ov010B2 {
 
 extern "C" Ov010B2 Ov003Sequence_GetPair(void *p);
 
-// Ov003TickerSet (vtable data_ov003_021f7d10, Ov003TickerSet_Init).
+// Ov003TickerSet (vtable Ov003Vt_021f7d10_vtbl, Ov003TickerSet_Init).
 class Ov010TickerSet : public VObj {
 public:
     u8 unk_04[0x28];
 };
 SIZE_ASSERT(Ov010TickerSet, 0x2c);
 
-// Ov003Timer (vtable data_ov003_021f7cd8, Ov003Timer_Init / 021d8eac, Ov003Timer_IsStopped).
+// Ov003Timer (vtable Ov003Vt_021f7cd8_vtbl, Ov003Timer_Init / 021d8eac, Ov003Timer_IsStopped).
 class Ov010Timer : public VObj {
 public:
     u8 active : 1;
@@ -442,7 +442,7 @@ public:
 };
 SIZE_ASSERT(Ov010Timer, 0x20);
 
-// A camera preset (vtable data_ov010_0220ffc4, 0x20): position, angles and distance.
+// A camera preset (vtable Ov010Vt_0220ffc4_vtbl, 0x20): position, angles and distance.
 class Ov010CamPreset : public VObj {
 public:
     u8 b0 : 1;
@@ -467,8 +467,8 @@ struct Ov010Arena {
 };
 
 // ---- The 02210154 actors (ctor Ov010ActVt_02210154_Ctor, ov010_02204204.cpp; methods in
-// ov010_0220f958.cpp and ov010_02207520.cpp). Two subclasses: vtables data_ov010_0220ffe4 and
-// data_ov010_0221009c.
+// ov010_0220f958.cpp and ov010_02207520.cpp). Two subclasses: vtables Ov010ActVt_0220ffe4_vtbl and
+// Ov010ActVt_0221009c_vtbl.
 class Ov010Obj02210154 : public Ov003Actor {
 public:
     u8 unk_f0; // set once the sound bank load was requested (Ov010Obj02210154_IsReady)
@@ -519,14 +519,14 @@ void Ov010Obj02210154_MoveToDest(Ov010Obj02210154 *self);
 BOOL Ov010_FindActorInCone(Actor *self);
 }
 
-// ---- The Obj021fa860 actor (vtable data_ov010_0220fccc, ctor Ov010ActVt_0220fccc_Ctor; all its
+// ---- The Obj021fa860 actor (vtable Ov010ActVt_0220fccc_vtbl, ctor Ov010ActVt_0220fccc_Ctor; all its
 // methods are in ov010_0220f5dc.cpp, which defines the types it points to).
 
 struct Ov010MovePath;
 struct Ov010Shake;
 struct Ov010Wobble;
 
-// A list of timed tasks (vtable data_ov010_0220fe1c, 0x20; Ov010TaskList_Init,
+// A list of timed tasks (vtable Ov010Vt_0220fe1c_vtbl, 0x20; Ov010TaskList_Init,
 // ov010_02201914.cpp .. ov010_02201c34.cpp). pool is an Ov003Pool of nodes.
 struct Ov010TaskNode {
     VObj *obj;
@@ -579,7 +579,7 @@ struct Ov010Fade {
 };
 SIZE_ASSERT(Ov010Fade, 0x18);
 
-// Ov003FlagObj (vtable data_ov003_021f79a8, func_ov003_021cf330).
+// Ov003FlagObj (vtable Ov003Vt_021f79a8_vtbl, func_ov003_021cf330).
 class Ov010FlagObj : public VObj {
 public:
     u8 active : 1;
@@ -587,7 +587,7 @@ public:
 };
 SIZE_ASSERT(Ov010FlagObj, 0x10);
 
-// Ov003StateMachine (vtable data_ov003_021f7cf4, Ov003StateMachine_Init / _SendMessage / _Leave).
+// Ov003StateMachine (vtable Ov003Vt_021f7cf4_vtbl, Ov003StateMachine_Init / _SendMessage / _Leave).
 class Ov010StateMachine : public VObj {
 public:
     u8 active;
@@ -605,7 +605,7 @@ struct Ov010Group {
 };
 SIZE_ASSERT(Ov010Group, 0xc);
 
-// ---- The 0x4829 shot (vtable data_ov010_0220fe6c, ctor Ov010ActVt_0220fe6c_Ctor; methods in
+// ---- The 0x4829 shot (vtable Ov010ActVt_0220fe6c_vtbl, ctor Ov010ActVt_0220fe6c_Ctor; methods in
 // ov010_0220f8e4.cpp, spawned by the Ov010Task tasks of ov010_0220f870.cpp).
 
 // The two looping effects that follow an actor (0x20, allocated by the shot's Start, stepped by

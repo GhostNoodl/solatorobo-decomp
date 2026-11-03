@@ -8,7 +8,7 @@ typedef struct ov006_Unk02097e40 {
 
 extern "C" {
 
-extern ov006_Unk02097e40 *data_02097e40;
+extern ov006_Unk02097e40 *gWhMgr;
 
 void ov006_Slot_Pack(const ov006_Slot *self, ov006_SlotPacked *buf);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
@@ -136,7 +136,7 @@ void func_ov006_021d30d4(ov006_TaskD1F *self) {
         if (self->param == 1) {
             BOOL r = ov006_IsReady(3);
             if (!r) {
-                u16 v = data_02097e40->unk32;
+                u16 v = gWhMgr->unk32;
                 if (v == ov006_Menu_GetEntryMask_021e60e8(2, v)) {
                     self->unk49 = 3;
                 }
@@ -184,7 +184,7 @@ void func_ov006_021d3224(ov006_TaskD1F *self) {
             return;
         }
         ov006_TaskD1F_Finish(self);
-        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x26, 0);
+        TaskHost_RequestSwitch(gTaskHost, 0x26, 0);
         self->step = 6;
         self->subStep = 0;
         break;

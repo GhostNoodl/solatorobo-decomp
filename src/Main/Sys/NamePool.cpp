@@ -38,48 +38,48 @@ typedef struct NamePools {
 
 // mwcc lays out .bss in the order x(n-1) .. x1, xn of the definitions.
 u32 data_02097de0;
-u32 data_02097ddc;
-NamePool *data_02097dd8;
+u32 gTexTransferId;
+NamePool *gPlttNamePool;
 u32 data_02097dd4;
-NamePool *data_02097de4;
+NamePool *gTexNamePool;
 extern u32 OS_DisableInterrupts(void);
 extern u32 OS_RestoreInterrupts(u32 state);
 void func_0203e300(NamePool *pool, int count);
 
 static inline void *Sys_Alloc(u32 size) {
     u32 irq = OS_DisableInterrupts();
-    void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->cur, size, data_02097dd0->align);
+    void *p = NNS_FndAllocFromExpHeapEx(gSysState->cur, size, gSysState->align);
     OS_RestoreInterrupts(irq);
     return p;
 }
 
 static inline void *Sys_Alloc04(u32 size, u32 align) {
     u32 irq = OS_DisableInterrupts();
-    void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->heapLo, size, align);
+    void *p = NNS_FndAllocFromExpHeapEx(gSysState->heapLo, size, align);
     OS_RestoreInterrupts(irq);
     return p;
 }
 
 void NamePool_CreateTex(void) {
     NamePool *pool;
-    data_02097dd0->cur = data_02097dd0->heapLo;
+    gSysState->cur = gSysState->heapLo;
     pool = (NamePool *)Sys_Alloc(sizeof(NamePool));
     if (pool != NULL) {
         func_0203e300(pool, 0x60);
     }
-    data_02097de4 = pool;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gTexNamePool = pool;
+    gSysState->cur = gSysState->heapHi;
 }
 
 void NamePool_CreatePltt(void) {
     NamePool *pool;
-    data_02097dd0->cur = data_02097dd0->heapLo;
+    gSysState->cur = gSysState->heapLo;
     pool = (NamePool *)Sys_Alloc(sizeof(NamePool));
     if (pool != NULL) {
         func_0203e300(pool, 0x60);
     }
-    data_02097dd8 = pool;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gPlttNamePool = pool;
+    gSysState->cur = gSysState->heapHi;
 }
 
 static inline int NamePool_Hash(const char *name) {
@@ -100,7 +100,7 @@ static inline int NamePool_Hash(const char *name) {
 }
 
 void NamePool_SetTexKey(const char *name, u32 value) {
-    NamePool *pool = data_02097de4;
+    NamePool *pool = gTexNamePool;
     if (pool == NULL) {
         return;
     }
@@ -110,7 +110,7 @@ void NamePool_SetTexKey(const char *name, u32 value) {
 }
 
 void NamePool_SetPlttKey(const char *name, u32 value) {
-    NamePool *pool = data_02097dd8;
+    NamePool *pool = gPlttNamePool;
     if (pool == NULL) {
         return;
     }
@@ -225,10 +225,10 @@ typedef struct VramTransfer {
     /* 0x24 */ struct VramTransfer *next;
 } VramTransfer; // size 0x28
 
-extern u8 data_02fe04ec;
-extern VramTransfer *data_02fe04f0;
-extern VramTransfer data_02fe04f4[64];
-extern u32 data_02fe00e4;
+extern u8 gVramTransferSkip;
+extern VramTransfer *gVramTransferQueue;
+extern VramTransfer gVramTransfers[64];
+extern u32 gVramTransferNextId;
 extern void DC_FlushRange(u32 addr, u32 size);
 extern void GX_BeginLoadTex(void);
 extern void GX_LoadTex(u32 src, u32 dst, u32 size);
@@ -250,29 +250,29 @@ extern void GXS_EndLoadOBJExtPltt(void);
 void func_0203e3e8(void) {
     int i;
     for (i = 0; i < 64; i++) {
-        *(u32 *)&data_02fe04f4[i] = 0;
-        data_02fe04f4[i].type = -1;
-        data_02fe04f4[i].src = 0;
-        data_02fe04f4[i].dst = 0;
-        data_02fe04f4[i].size = 0;
-        data_02fe04f4[i].chunk = 0;
-        data_02fe04f4[i].progress = 0;
-        data_02fe04f4[i].id = 0;
+        *(u32 *)&gVramTransfers[i] = 0;
+        gVramTransfers[i].type = -1;
+        gVramTransfers[i].src = 0;
+        gVramTransfers[i].dst = 0;
+        gVramTransfers[i].size = 0;
+        gVramTransfers[i].chunk = 0;
+        gVramTransfers[i].progress = 0;
+        gVramTransfers[i].id = 0;
     }
-    data_02fe04f0 = NULL;
-    data_02fe00e4 = 1;
+    gVramTransferQueue = NULL;
+    gVramTransferNextId = 1;
 }
 
 u32 Vram_QueueTransfer(int type, u32 src, u32 dst, u32 size, u32 chunk) {
     VramTransfer *t;
     int i;
     VramTransfer *last;
-    for (i = 0, t = data_02fe04f4; i < 64; i++, t++) {
+    for (i = 0, t = gVramTransfers; i < 64; i++, t++) {
         if (t->src == src && t->dst == dst && t->size == size) {
             return 0;
         }
     }
-    for (i = 0, t = data_02fe04f4; i < 64; i++, t++) {
+    for (i = 0, t = gVramTransfers; i < 64; i++, t++) {
         if (!t->linked) {
             break;
         }
@@ -289,15 +289,15 @@ u32 Vram_QueueTransfer(int type, u32 src, u32 dst, u32 size, u32 chunk) {
     }
     t->chunk = chunk;
     t->progress = 0;
-    t->id = data_02fe00e4;
+    t->id = gVramTransferNextId;
     *(u32 *)t |= 2;
     t->prev = NULL;
-    data_02fe00e4++;
+    gVramTransferNextId++;
     t->next = NULL;
-    if (data_02fe04f0 == NULL) {
-        data_02fe04f0 = t;
+    if (gVramTransferQueue == NULL) {
+        gVramTransferQueue = t;
     } else {
-        last = data_02fe04f0;
+        last = gVramTransferQueue;
         while (last->next != NULL) {
             last = last->next;
         }
@@ -306,8 +306,8 @@ u32 Vram_QueueTransfer(int type, u32 src, u32 dst, u32 size, u32 chunk) {
     }
     t->linked = 1;
     DC_FlushRange(t->src, t->size);
-    if (data_02fe00e4 == 0) {
-        data_02fe00e4 = 1;
+    if (gVramTransferNextId == 0) {
+        gVramTransferNextId = 1;
     }
     return t->id;
 }
@@ -316,7 +316,7 @@ static inline void VramTransfer_Unlink(VramTransfer *t) {
     if (t->prev != NULL) {
         t->prev->next = t->next;
     } else {
-        data_02fe04f0 = t->next;
+        gVramTransferQueue = t->next;
     }
     if (t->next != NULL) {
         t->next->prev = t->prev;
@@ -340,7 +340,7 @@ void Vram_CancelTransfer(u32 id) {
     if (id == 0) {
         return;
     }
-    for (i = 0, t = data_02fe04f4; i < 64; i++, t++) {
+    for (i = 0, t = gVramTransfers; i < 64; i++, t++) {
         if (t->src != 0 && t->id == id) {
             VramTransfer_Release(t);
             return;
@@ -354,7 +354,7 @@ BOOL Vram_IsTransferDone(u32 id) {
     if (id == 0) {
         return TRUE;
     }
-    for (i = 0, t = data_02fe04f4; i < 64; i++, t++) {
+    for (i = 0, t = gVramTransfers; i < 64; i++, t++) {
         if (t->src != 0 && t->id == id) {
             return FALSE;
         }
@@ -365,7 +365,7 @@ BOOL Vram_IsTransferDone(u32 id) {
 BOOL Vram_IsIdle(void) {
     VramTransfer *t;
     int i;
-    for (i = 0, t = data_02fe04f4; i < 64; i++, t++) {
+    for (i = 0, t = gVramTransfers; i < 64; i++, t++) {
         if (t->src != 0) {
             return FALSE;
         }
@@ -382,11 +382,11 @@ void func_0203e6bc(void) {
     u32 n;
     int budget;
     int type;
-    if (data_02fe04ec) {
-        data_02fe04ec = 0;
+    if (gVramTransferSkip) {
+        gVramTransferSkip = 0;
         return;
     }
-    t = data_02fe04f0;
+    t = gVramTransferQueue;
     if (t == NULL) {
         return;
     }
@@ -477,7 +477,7 @@ static inline NameNode *NamePool_Lookup(NamePool *pool) {
 }
 
 u32 func_0203e8e0(u32 size, int is4x4, int opt) {
-    NamePool *pool = data_02097de4;
+    NamePool *pool = gTexNamePool;
     u32 key;
     if (pool != NULL) {
         NameNode *node = NamePool_Lookup(pool);
@@ -487,7 +487,7 @@ u32 func_0203e8e0(u32 size, int is4x4, int opt) {
     }
     key = NNS_GfdAllocLnkTexVram(size, is4x4, opt);
     if (key != 0) {
-        data_02097d48->unk_024 += ((key & 0x7fff0000) >> 16) << 4;
+        gGfxSys->unk_024 += ((key & 0x7fff0000) >> 16) << 4;
         if (pool != NULL) {
             func_0203e1d0(pool, key);
         }
@@ -497,19 +497,19 @@ u32 func_0203e8e0(u32 size, int is4x4, int opt) {
 
 int Vram_FreeTex(u32 key) {
     int r;
-    if (data_02097de4 != NULL && func_0203e25c(data_02097de4, key) != NULL) {
+    if (gTexNamePool != NULL && func_0203e25c(gTexNamePool, key) != NULL) {
         return 0;
     }
     r = NNS_GfdFreeLnkTexVram(key);
     if (r != 0) {
         return r;
     }
-    data_02097d48->unk_024 -= ((key & 0x7fff0000) >> 16) << 4;
+    gGfxSys->unk_024 -= ((key & 0x7fff0000) >> 16) << 4;
     return r;
 }
 
 u32 func_0203ea6c(u32 size, int is4pltt, int opt) {
-    NamePool *pool = data_02097dd8;
+    NamePool *pool = gPlttNamePool;
     u32 key;
     if (pool != NULL) {
         NameNode *node = NamePool_Lookup(pool);
@@ -519,7 +519,7 @@ u32 func_0203ea6c(u32 size, int is4pltt, int opt) {
     }
     key = NNS_GfdAllocLnkPlttVram(size, is4pltt, opt);
     if (key != 0) {
-        data_02097d48->unk_028 += ((key & 0xffff0000) >> 16) << 3;
+        gGfxSys->unk_028 += ((key & 0xffff0000) >> 16) << 3;
         if (pool != NULL) {
             func_0203e1d0(pool, key);
         }
@@ -529,19 +529,19 @@ u32 func_0203ea6c(u32 size, int is4pltt, int opt) {
 
 int Vram_FreePltt(u32 key) {
     int r;
-    if (data_02097dd8 != NULL && func_0203e25c(data_02097dd8, key) != NULL) {
+    if (gPlttNamePool != NULL && func_0203e25c(gPlttNamePool, key) != NULL) {
         return 0;
     }
     r = NNS_GfdFreeLnkPlttVram(key);
     if (r != 0) {
         return r;
     }
-    data_02097d48->unk_028 -= ((key & 0xffff0000) >> 16) << 3;
+    gGfxSys->unk_028 -= ((key & 0xffff0000) >> 16) << 3;
     return r;
 }
 
 u32 func_0203ebf8(void) {
-    return data_02097ddc;
+    return gTexTransferId;
 }
 
 typedef struct ResTexInfo {
@@ -579,7 +579,7 @@ void func_0203ec08(ResTex *tex) {
     if (!(tex->texInfo.flag & 1)) {
         size = (u32)tex->texInfo.sizeTex << 3;
         if (size != 0) {
-            data_02097ddc = Vram_QueueTransfer(0, (u32)tex + tex->texInfo.ofsTex, (tex->texInfo.vramKey & 0xffff) << 3, size, 0);
+            gTexTransferId = Vram_QueueTransfer(0, (u32)tex + tex->texInfo.ofsTex, (tex->texInfo.vramKey & 0xffff) << 3, size, 0);
             tex->texInfo.flag |= 1;
         }
     }
@@ -594,7 +594,7 @@ void func_0203ec08(ResTex *tex) {
     key = tex->tex4x4Info.vramKey;
     type = 0;
     addr = (key & 0xffff) << 3;
-    data_02097ddc = Vram_QueueTransfer(type, (u32)tex + tex->tex4x4Info.ofsTex, addr, sz, type);
+    gTexTransferId = Vram_QueueTransfer(type, (u32)tex + tex->tex4x4Info.ofsTex, addr, sz, type);
     data_02097de0 = Vram_QueueTransfer(type, (u32)tex + ofsPltt, ((addr & 0x1ffff) >> 1) + 0x20000 + ((addr & 0x40000) >> 2), sz >> 1, type);
     tex->tex4x4Info.flag |= 1;
 }
@@ -631,7 +631,7 @@ static inline void NamePool_SetName(NamePool *pool, const char *name, u32 value)
 }
 
 BOOL G3dRes_SetupVram(const char *name, u32 *res) {
-    NamePool *pool = data_02097de4;
+    NamePool *pool = gTexNamePool;
     if (pool != NULL) {
         NamePool_SetName(pool, name, 0);
         if (NamePool_Lookup(pool) != NULL) {
@@ -652,7 +652,7 @@ BOOL G3dRes_SetupVram(const char *name, u32 *res) {
                 tex->tex4x4Info.vramKey = NNS_GfdDefaultFuncAllocTexVram(tex4x4Size, 1, 0);
             }
             if (plttSize != 0) {
-                NamePool_SetName(data_02097dd8, name, 0);
+                NamePool_SetName(gPlttNamePool, name, 0);
                 tex->plttKey = NNS_GfdDefaultFuncAllocPlttVram(plttSize, tex->tex4x4Info.flag & 0x8000, 0);
             }
             func_0203ec08((ResTex *)tex);
@@ -663,7 +663,7 @@ BOOL G3dRes_SetupVram(const char *name, u32 *res) {
                     u32 key = tex->plttKey;
                     ofs = tex->ofsPlttData;
                     u32 addr = (key & 0xffff) << 3;
-                    GfxPltt_ApplyFilter(&data_02097d48->pltt, (u8 *)tex + ofs, size);
+                    GfxPltt_ApplyFilter(&gGfxSys->pltt, (u8 *)tex + ofs, size);
                     data_02097dd4 = Vram_QueueTransfer(1, (u32)tex + ofs, addr, size, 0);
                     tex->plttFlag |= 1;
                 }
@@ -704,8 +704,8 @@ void Vram_FreeRes(u32 *res) {
         texKey = tex->texInfo.vramKey;
         tex4x4Key = tex->tex4x4Info.vramKey;
         plttKey = tex->plttKey;
-        if (data_02097de4 != NULL) {
-            NameNode *node = NamePool_Find(data_02097de4, texKey);
+        if (gTexNamePool != NULL) {
+            NameNode *node = NamePool_Find(gTexNamePool, texKey);
             if (node != NULL) {
                 if ((u32)node->refCount > 1) {
                     node->refCount--;

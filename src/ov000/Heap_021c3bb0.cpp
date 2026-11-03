@@ -15,14 +15,14 @@ void LoBase021ccb54_021ccbe0_Release(LoBase021ccb54_021ccbe0 *self) {
     n = self->unk_94;
     while (n != NULL) {
         ListRow *next = n->next;
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (n != NULL) {
             if (n != NULL) {
                 n->vfunc_04();
             }
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
         n = next;
     }
     self->unk_94 = NULL;

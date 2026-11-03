@@ -16,7 +16,7 @@ typedef struct UnkSysNode {
     /* 0x6 */ u8 unk_6_6 : 2;
 } UnkSysNode;
 
-// System state at data_02097dd0: the heap selection (cur is the heap that new allocations come from),
+// System state at gSysState: the heap selection (cur is the heap that new allocations come from),
 // frame counters and the vblank hook.
 typedef struct UnkSys {
     /* 0x00 */ void *cur;
@@ -36,7 +36,7 @@ typedef struct UnkSys {
     /* 0x34 */ UnkSysNode node;
 } UnkSys; // size 0x3c
 
-extern UnkSys *data_02097dd0;
+extern UnkSys *gSysState;
 
 #ifdef __cplusplus
 }

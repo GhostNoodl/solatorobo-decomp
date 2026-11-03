@@ -1,6 +1,6 @@
 #include "ov000/SceneCmd.h"
 
-// The 0x021ccd50 pool of the scene command TU: data_ov000_021ccd54 is four bytes in.
+// The 0x021ccd50 pool of the scene command TU: gSceneCmd is four bytes in.
 typedef struct {
     u8 unk_00[0x4];
     SceneCmd *scene;
@@ -12,10 +12,10 @@ typedef struct {
 
 extern "C" {
 extern Data021ccd50 data_ov000_021ccd50;
-extern Obj02097e48 *data_02097e48;
+extern Obj02097e48 *gSndQueue;
 
 void func_ov000_02188ca0(FieldId *id, s32 arg) {
-    data_02097e48->flags |= 2;
+    gSndQueue->flags |= 2;
     CmdObj_Push(data_ov000_021ccd50.scene, 9, arg);
     if (id != NULL) {
         data_ov000_021ccd50.scene->unk_cd = *id;

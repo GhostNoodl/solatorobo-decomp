@@ -2,12 +2,12 @@
 
 extern "C" {
 
-extern EffectPartHandler data_0208c948;
+extern EffectPartHandler EffectPartSet_Accel_pmf;
 extern EffectPartHandler data_0208c950;
 extern EffectPartHandler data_0208c958;
 extern EffectPartHandler data_0208c960;
 extern EffectPartHandler data_0208c968;
-extern EffectPartHandler data_0208c970;
+extern EffectPartHandler EffectPartSet_AddSpeed_pmf;
 extern EffectPartHandler data_0208c978;
 
 
@@ -94,12 +94,12 @@ void EffectPartSet_Reset(EffectPartSet *s) {
     s->pos.x = 0;
     s->pos.y = 0;
     s->pos.z = 0;
-    s->funcs[0] = data_0208c948;
+    s->funcs[0] = EffectPartSet_Accel_pmf;
     s->funcs[1] = data_0208c950;
     s->funcs[2] = data_0208c958;
     s->funcs[3] = data_0208c960;
     s->funcs[4] = data_0208c968;
-    s->funcs[5] = data_0208c970;
+    s->funcs[5] = EffectPartSet_AddSpeed_pmf;
     s->funcs[6] = data_0208c978;
 }
 

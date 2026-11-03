@@ -43,7 +43,7 @@ void func_ov000_0216bf18(NNSG3dRS *rs);
 static inline TextWin *NewText0216c018(void) {
     TextWin *t = (TextWin *)Heap_Alloc(0xb8);
     if (t != NULL) {
-        *(const u32 **)t = data_0208ba70;
+        *(const u32 **)t = TextWin_vtbl;
         TextWin_Init(t);
     }
     return t;
@@ -52,7 +52,7 @@ static inline TextWin *NewText0216c018(void) {
 static inline void SetText0216c018(TextWin *t, char *str) {
     t->str = (u32)str;
     t->unk_4c = Text_Measure(t->font, t->spacing, t->str, &t->width, &t->height, (s8)t->unk_37 != 0);
-    data_02097ce0->unk_004 = t->font;
+    gGfxMgr->unk_004 = t->font;
 }
 
 static inline BOOL HasPending0216c018(LoTicker *self) {
@@ -241,7 +241,7 @@ void func_ov000_0216c310(LoTicker *self) {
             n->x = m >> 12;
             n->y = (0x24000 - y) >> 12;
             if (n->kind == 7 && n->eff != NULL) {
-                if (EffectMgr_Contains(data_0214a420, n->eff)) {
+                if (EffectMgr_Contains(gEffectMgr, n->eff)) {
                     n->eff->SetScaleXYZ(0x1000, 0x1000, 0x1000);
                     n->eff->SetPosXYZ((n->x << 12) - 0x51000, -((n->y << 12) - 0x5b000), -0x400);
                 } else {
@@ -264,7 +264,7 @@ void func_ov000_0216c310(LoTicker *self) {
                 n->flags = 0;
                 n->next = NULL;
                 HEAP_DELETE(TextWin *, n->text, p->unk_vf04());
-                if (n->eff != NULL && EffectMgr_Contains(data_0214a420, n->eff)) {
+                if (n->eff != NULL && EffectMgr_Contains(gEffectMgr, n->eff)) {
                     n->eff->state = 4;
                 }
                 n->eff = NULL;

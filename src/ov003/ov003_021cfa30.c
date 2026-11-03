@@ -17,7 +17,7 @@ typedef struct {
     Ov003Node *head;
 } Ov003NodeList;
 
-extern Ov003NodeList *data_ov000_021ccd64;
+extern Ov003NodeList *gGroup;
 extern u8 OVERLAY_9_ID[];
 extern u8 OVERLAY_10_ID[];
 extern u8 OVERLAY_11_ID[];
@@ -86,7 +86,7 @@ s32 Ov003_OverlayForKind(Ov003NodeSub *sub) {
         break;
     }
     if (r != -1) {
-        Scene_SetSubOverlay_0204b270(data_02149ef0, r, 1);
+        Scene_SetSubOverlay_0204b270(gSceneMgr, r, 1);
     }
     return r;
 }
@@ -95,7 +95,7 @@ static inline Ov003Node *Ov003_Next(Ov003NodeList *l, Ov003Node *n) { if (n != N
 void Ov003_LoadKindOverlay(void) {
     s32 r = -1;
     Ov003Node *n;
-    for (n = data_ov000_021ccd64->head; n != NULL; n = Ov003_Next(data_ov000_021ccd64, n)) {
+    for (n = gGroup->head; n != NULL; n = Ov003_Next(gGroup, n)) {
         if ((n->sub.unk_02 >> 12) == 5) {
             r = Ov003_OverlayForKind(&n->sub);
             if (r != -1) {
@@ -104,6 +104,6 @@ void Ov003_LoadKindOverlay(void) {
         }
     }
     if (r == -1) {
-        Scene_SetSubOverlay_0204b270(data_02149ef0, (s32)OVERLAY_9_ID, 1);
+        Scene_SetSubOverlay_0204b270(gSceneMgr, (s32)OVERLAY_9_ID, 1);
     }
 }

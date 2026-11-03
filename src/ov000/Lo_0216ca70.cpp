@@ -9,12 +9,12 @@
 
 extern "C" {
 
-extern MessageQueue021cb980 *data_ov000_021ccd30;
-extern s32 data_02097d78[5];
+extern MessageQueue021cb980 *gMessageQueue;
+extern s32 gFadeState[5];
 extern VecFx32 data_ov000_021c9af8;
 extern const char *data_0208cc94;
 extern const char *data_0208cc88;
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 BOOL PauseNode_IsDrawPaused(void *node, BOOL recurse);
 BOOL MessageQueue_GetById(MessageQueue *mgr, s32 a);
 BOOL func_ov000_021705a0(ListBuffer021cb940 *self, s32 check);
@@ -32,12 +32,12 @@ static inline BOOL LoGBusy(FieldState *g) {
 }
 
 static inline BOOL LoD78Idle(void) {
-    return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
+    return (gFadeState[3] == 0 && gFadeState[0] == 0) ? TRUE : FALSE;
 }
 
 static inline BOOL Busy(void) {
     BOOL r;
-    MessageQueue021cb980 *mgr = data_ov000_021ccd30;
+    MessageQueue021cb980 *mgr = gMessageQueue;
     if (mgr == NULL) {
         r = FALSE;
     } else if (MessageQueue_GetById(mgr, 9)) {
@@ -82,11 +82,11 @@ BOOL func_ov000_0216ca70(Obj0216c954 *self) {
     s32 z;
     u16 id;
 
-    if (PauseNode_IsDrawPaused(data_ov000_021ccd54->pause, TRUE)) {
+    if (PauseNode_IsDrawPaused(gSceneCmd->pause, TRUE)) {
         self->show = 0;
         self->idleFrames = 0;
         self->state = 4;
-    } else if (!self->stop && !LoGBusy(data_ov000_021ccd54) && !Busy() && LoD78Idle()) {
+    } else if (!self->stop && !LoGBusy(gSceneCmd) && !Busy() && LoD78Idle()) {
         if (self->idleFrames++ > 3) {
             self->idleFrames = 4;
             self->show = 1;
@@ -214,7 +214,7 @@ BOOL func_ov000_0216ca70(Obj0216c954 *self) {
                 c.y = pl->pos.y + LO_FX_MUL(pl->height, 0xc00);
                 c.z = pl->pos.z;
                 self->effect->pos = *(VecFx32 *)&c;
-                n = Group_GetSpawnPositions(data_ov000_021ccd64, 0x20, pts, self->findKind >> 12, self->findKind);
+                n = Group_GetSpawnPositions(gGroup, 0x20, pts, self->findKind >> 12, self->findKind);
                 if (n != 0) {
                     maxd = self->range;
                     for (i = 0, best = 0; i < n; i++) {

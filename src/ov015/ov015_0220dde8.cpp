@@ -2,8 +2,8 @@
 
 extern "C" {
 
-extern u8 data_ov015_02212f64[];
-extern u8 data_ov015_02212f3c[];
+extern u8 Ov015Vt_02212f64_vtbl[];
+extern u8 Ov015StageMdl_vtbl[];
 void *ResSet_Init(void *a);
 void *Model0218fe1c_Init(void *a);
 void *Model0218fe1c_FreeAnims(void *a);
@@ -11,9 +11,9 @@ void *ResSet_ReleaseAll(void *a);
 
 void *func_ov015_0220dde8(Ov015StageMdl *self) {
     s32 i;
-    SET_VT(self, data_ov015_02212f64);
+    SET_VT(self, Ov015Vt_02212f64_vtbl);
     Ov002Obj_Init(self);
-    SET_VT(self, data_ov015_02212f3c);
+    SET_VT(self, Ov015StageMdl_vtbl);
     ResSet_Init(&self->res0);
     Model0218fe1c_Init(&self->mdl0);
     ResSet_Init(&self->res1);
@@ -47,7 +47,7 @@ void *Ov015StageMdl_Dtor(Ov015StageMdl *self) {
     ResSet_ReleaseAll(&self->res1);
     Model0218fe1c_FreeAnims(&self->mdl0);
     ResSet_ReleaseAll(&self->res0);
-    SET_VT(self, data_ov015_02212f64);
+    SET_VT(self, Ov015Vt_02212f64_vtbl);
     Ov002Obj_Detach(self);
     return self;
 }
@@ -57,7 +57,7 @@ void *Ov015StageMdl_DtorDelete(Ov015StageMdl *self) {
     ResSet_ReleaseAll(&self->res1);
     Model0218fe1c_FreeAnims(&self->mdl0);
     ResSet_ReleaseAll(&self->res0);
-    SET_VT(self, data_ov015_02212f64);
+    SET_VT(self, Ov015Vt_02212f64_vtbl);
     Ov002Obj_Detach(self);
     Heap_Free(self);
     return self;

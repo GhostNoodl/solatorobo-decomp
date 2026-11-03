@@ -32,7 +32,7 @@ typedef struct {
 } Ov003Obj;
 
 extern Actor *Actor_Ctor(Actor *self);
-extern char data_ov003_021f7ab4[];
+extern char Ov003Actor_vtbl[];
 
 typedef struct {
     u16 bit0 : 1;
@@ -126,7 +126,7 @@ void Ov003Obj_StartCapture(Ov003Obj *self) {
 #define OV003_OBJ_CTOR(name)                 \
 Ov003Actor *name(Ov003Actor *self) {         \
     Actor_Ctor(self);                        \
-    *(void **)self = data_ov003_021f7ab4;    \
+    *(void **)self = Ov003Actor_vtbl;    \
     self->unk_b4 = 0;                        \
     self->unk_b6 = 0;                        \
     self->unk_ac = 0xff;                     \
@@ -158,12 +158,12 @@ extern void *Actor_DtorBase(Actor *self);
 
 static inline void Ov003Actor_DtorBody(Ov003Actor *self) {
     s32 i;
-    *(void **)self = data_ov003_021f7ab4;
+    *(void **)self = Ov003Actor_vtbl;
     if (self->unk_d0 != NULL) {
         for (i = 0; i < 2; i++) {
-            void *old = data_02097dd0->cur;
+            void *old = gSysState->cur;
             void *m;
-            data_02097dd0->cur = data_02097dd0->heapHi;
+            gSysState->cur = gSysState->heapHi;
             m = self->unk_d0->models[i];
             if (m != NULL) {
                 if (m != NULL) {
@@ -172,16 +172,16 @@ static inline void Ov003Actor_DtorBody(Ov003Actor *self) {
                 }
                 self->unk_d0->models[i] = NULL;
             }
-            data_02097dd0->cur = old;
+            gSysState->cur = old;
         }
         Heap_FreeHi(self->unk_d0);
     }
     if (self->unk_e4 != NULL) {
-        EffectMgr_Kill(data_0214a420, self->unk_e4);
+        EffectMgr_Kill(gEffectMgr, self->unk_e4);
         self->unk_e4 = NULL;
     }
     if (self->unk_e0 != NULL) {
-        EffectMgr_Kill(data_0214a420, self->unk_e0);
+        EffectMgr_Kill(gEffectMgr, self->unk_e0);
         self->unk_e0 = NULL;
     }
     Actor_DtorBase(self);

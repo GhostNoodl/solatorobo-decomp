@@ -24,7 +24,7 @@ void SndMgr_UpdateLoad(SndMgr *mgr, s32 seq) {
             return;
         case 1:
             NNS_SndHeapLoadState(mgr->heaps[0], mgr->heapLevels[0]);
-            if (NNS_SndArcLoadSeq(mgr->loadId, data_02097e48.mgr->heaps[0]) == TRUE) {
+            if (NNS_SndArcLoadSeq(mgr->loadId, gSndQueue.mgr->heaps[0]) == TRUE) {
                 if (mgr->playAfterLoad) {
                     seq = mgr->loadId;
                     SndMgr_StartBgm(mgr, seq, mgr->loadArg);
@@ -39,31 +39,31 @@ void SndMgr_UpdateLoad(SndMgr *mgr, s32 seq) {
             }
             break;
         case 2:
-            NNS_SndArcLoadSeqArc(mgr->loadId, data_02097e48.mgr->heaps[0]);
+            NNS_SndArcLoadSeqArc(mgr->loadId, gSndQueue.mgr->heaps[0]);
             break;
         case 3:
-            NNS_SndArcLoadBank(mgr->loadId, data_02097e48.mgr->heaps[0]);
+            NNS_SndArcLoadBank(mgr->loadId, gSndQueue.mgr->heaps[0]);
             break;
         case 4:
             if (mgr->loadId < 2 || mgr->loadId == 3) {
-                if (NNS_SndArcLoadGroup(mgr->loadId, data_02097e48.mgr->heaps[0]) == TRUE) {
+                if (NNS_SndArcLoadGroup(mgr->loadId, gSndQueue.mgr->heaps[0]) == TRUE) {
                     mgr->heapLevels[0] = NNS_SndHeapSaveState(mgr->heaps[0]);
                 }
             } else {
-                if (NNS_SndArcLoadGroup(mgr->loadId, data_02097e48.mgr->heaps[1]) == TRUE) {
+                if (NNS_SndArcLoadGroup(mgr->loadId, gSndQueue.mgr->heaps[1]) == TRUE) {
                     mgr->heapLevels[1] = NNS_SndHeapSaveState(mgr->heaps[1]);
                 }
             }
             break;
         case 5:
-            if (NNS_SndArcLoadSeqEx(mgr->loadId, 1, data_02097e48.mgr->heaps[0]) == TRUE) {
+            if (NNS_SndArcLoadSeqEx(mgr->loadId, 1, gSndQueue.mgr->heaps[0]) == TRUE) {
                 mgr->loadedSeqEx[mgr->loadArg] = mgr->loadId;
             }
             break;
     }
     mgr->loadType = 0;
-    NNS_SndHeapGetFreeSize(data_02097e48.mgr->heaps[0]);
-    NNS_SndHeapGetFreeSize(data_02097e48.mgr->heaps[1]);
+    NNS_SndHeapGetFreeSize(gSndQueue.mgr->heaps[0]);
+    NNS_SndHeapGetFreeSize(gSndQueue.mgr->heaps[1]);
 }
 
 }

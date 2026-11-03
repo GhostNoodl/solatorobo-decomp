@@ -37,7 +37,7 @@ typedef struct {
 extern "C" {
 
 extern u32 data_ov000_021c9880[];
-extern Entry0215f970 data_02fe0188[];
+extern Entry0215f970 UiLabel_StyleTable[];
 void Oam_GetSize(const Oam0215f970 *attr, u32 *w, u32 *h);
 void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 num);
 
@@ -89,7 +89,7 @@ void func_ov000_0215f970(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const Oam02
         return;
     }
     ctx = *(const Ctx0215f970 *const *)&ctx0;
-    e = &data_02fe0188[ctx->idx];
+    e = &UiLabel_StyleTable[ctx->idx];
     ox = oam->x;
     if (ox > 0xff) {
         ox |= ~0xff;

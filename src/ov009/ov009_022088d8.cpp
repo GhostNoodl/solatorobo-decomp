@@ -18,7 +18,7 @@ void Ov009ActVt_02217798_Update(Ov003Actor *self) {
     if (!Ov009_GameIdle()) {
         return;
     }
-    if (Ov009Game_IsPaused(data_ov000_021ccd54)) {
+    if (Ov009Game_IsPaused(gSceneCmd)) {
         return;
     }
     st = self->fsm;
@@ -36,7 +36,7 @@ void Ov009ActVt_02217798_Update(Ov003Actor *self) {
         Hit_ApplyInArea(self, self, 0x78, self->targetObj->unk_0a & 0xff, 2, 0, 0, 0x3000, 0x1b33, 0x64, 0x1000);
     }
     if (self->model->anim_state == 1) {
-        SndMgr_PlayAtPitch(data_02097e4c, 9, &self->pos, -3);
+        SndMgr_PlayAtPitch(gSndMgr, 9, &self->pos, -3);
     }
 }
 
@@ -148,7 +148,7 @@ void Ov009ActVt_02217798_StateAttack(Ov003Actor *self) {
         break;
     case 5:
         if (self->unk_18 == 2) {
-            GroupNode *o = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+            GroupNode *o = Group_FindNode(gGroup, self->unk_20);
             if (o != NULL) {
                 s32 off;
                 self->rot_y = o->rot.y;

@@ -8,7 +8,7 @@ void Ov009ActVt_022165f8_Start(Ov009ActVt_022165f8 *self) {
     Ov003Actor_Start(self);
     switch (self->unk_1a) {
     case 0: {
-        FieldCam *g = &data_ov000_021ccd54->cam;
+        FieldCam *g = &gSceneCmd->cam;
         u16 a = FieldCam_GetYaw(g) + Rand_PlusMinus(0x1000);
         s32 r = Rand_PlusMinus(0x1800) + 0x3800;
         self->pos = g->base.at;
@@ -48,7 +48,7 @@ void Ov009ActVt_022165f8_Start(Ov009ActVt_022165f8 *self) {
         self->unk_f2 = 0xc8;
         break;
     }
-    if (data_ov000_021ccd54->unk_ca.c[0] == 2) {
+    if (gSceneCmd->unk_ca.c[0] == 2) {
         self->unk_18 = 1;
     }
     self->unk_f8 = 0;
@@ -102,7 +102,7 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
             self->unk_b6 = 0;
         }
         {
-            FieldCam *g = &data_ov000_021ccd54->cam;
+            FieldCam *g = &gSceneCmd->cam;
             t = pl->pos;
             t.y += 0x1400;
             ang = FieldCam_GetYaw(g);
@@ -154,7 +154,7 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
         return;
     }
     if (self->unk_f8 != 0) {
-        EffectMgr_Kill(data_0214a420, self->unk_f8);
+        EffectMgr_Kill(gEffectMgr, self->unk_f8);
         self->unk_f8 = 0;
     }
     if (self->rot_x == 0) {

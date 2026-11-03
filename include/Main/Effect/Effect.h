@@ -144,7 +144,7 @@ typedef struct EffectMgr {
 } EffectMgr; // size 0x9c
 
 // The effect manager (Effect.cpp .bss).
-extern EffectMgr *data_0214a420;
+extern EffectMgr *gEffectMgr;
 
 
 // Effect API used by the overlays (defined in Effect.cpp, Effect_4.cpp and Effect_5.cpp).
@@ -177,14 +177,14 @@ void EffectObj_StopLoop(struct EffectObj *obj);
 
 #define EFFECT_DELETE(obj) \
     { \
-        void *saved_ = data_02097dd0->cur; \
-        data_02097dd0->cur = data_02097dd0->heapHi; \
+        void *saved_ = gSysState->cur; \
+        gSysState->cur = gSysState->heapHi; \
         if ((obj) != NULL) { \
             if ((obj) != NULL) { \
                 (obj)->Delete(); \
             } \
         } \
-        data_02097dd0->cur = saved_; \
+        gSysState->cur = saved_; \
     }
 
 static inline void Effect_Delete(EffectObj *o) {

@@ -25,7 +25,7 @@ void TextWin_InitLines(TextWin *win, u32 n);
 static inline void ov006_TextWin_Start(TextWin *s, int a) {
     s->str = a;
     s->unk_4c = Text_Measure(s->font, s->spacing, s->str, &s->width, &s->height, (s8)s->unk_37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = s->font;
+    gGfxMgr->unk_004 = s->font;
 }
 
 static inline void ov006_TextHolder_Play(ov006_TextHolder *self, int a, int b) {

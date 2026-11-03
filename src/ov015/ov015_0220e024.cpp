@@ -16,8 +16,8 @@ void Model0218fe1c_PauseAnim(void *a);
 void *Model0218fe1c_SetAnimFrame(void *a, s32 b);
 void Model0218fe1c_UpdateAnim(void *a, s32 b);
 BOOL Model021903b4_Draw(void *a);
-extern u8 data_ov015_02212eb0[];
-extern u8 data_ov015_02212f64[];
+extern u8 Ov015FishState_vtbl[];
+extern u8 Ov015Vt_02212f64_vtbl[];
 
 BOOL func_ov015_0220e024(Ov015StageMdl *self) {
     BOOL r = TRUE;
@@ -70,7 +70,7 @@ BOOL func_ov015_0220e074(Ov015StageMdl *self) {
         }
         self->unk_490 = self->slots[self->slot].speed;
     }
-    for (n = data_ov002_021f0f9c->head; n != NULL; n = n->next) {
+    for (n = gOv002Stage->head; n != NULL; n = n->next) {
         if (n->unk_04 == 7) {
             if (((Ov002Cam021f0854 *)n)->unk_4c == 2) {
                 self->unk_518 = (Ov002Cam021f0854 *)n;
@@ -95,7 +95,7 @@ BOOL func_ov015_0220e294(Ov015StageMdl *self) {
 
     Ov002Obj021f075c *found;
     Ov002Obj021f075c *o;
-    t = data_ov002_021f0f9c->unk_d0;
+    t = gOv002Stage->unk_d0;
     if (t >= self->unk_1c) return FALSE;
 
     cur = self->slot;
@@ -147,7 +147,7 @@ void func_ov015_0220e434(Ov015StageMdl *self) {
     if (self->vfunc_08() == 0) {
         return;
     }
-    c = data_ov002_021f0f9c->unk_0c;
+    c = gOv002Stage->unk_0c;
     if (c == 1 && self->unk_518 != NULL) {
         self->unk_518->vfunc_20();
     } else if (c == 2 && self->unk_51c != NULL) {
@@ -190,12 +190,12 @@ void Ov015StageMdl_QueueAnim(Ov015StageMdl *self, const char *anim, s32 endTime,
 }
 
 void *Ov015FishState_Dtor(Ov015FishState *self) {
-    SET_VT(self, data_ov015_02212eb0);
+    SET_VT(self, Ov015FishState_vtbl);
     return self;
 }
 
 void *Ov015Vt_02212f64_DtorDelete(Ov002Obj *self) {
-    SET_VT(self, data_ov015_02212f64);
+    SET_VT(self, Ov015Vt_02212f64_vtbl);
     Ov002Obj_Detach(self);
     Heap_Free(self);
     return self;
@@ -221,7 +221,7 @@ BOOL func_ov015_0220e60c(void) {
 }
 
 void *Ov015Vt_02212f64_Dtor(Ov002Obj *self) {
-    SET_VT(self, data_ov015_02212f64);
+    SET_VT(self, Ov015Vt_02212f64_vtbl);
     Ov002Obj_Detach(self);
     return self;
 }

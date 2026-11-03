@@ -2,7 +2,7 @@
 
 extern "C" {
 
-WhMgr *data_02097e40;
+WhMgr *gWhMgr;
 
 void WH_CalcBufferSizes_02044a0c(WhConfig *cfg) {
     WH_CalcBufferSizes(cfg);
@@ -10,12 +10,12 @@ void WH_CalcBufferSizes_02044a0c(WhConfig *cfg) {
 
 void func_02044a60(WhCbArg *arg) {
     if (arg->errcode == 8) {
-        data_02097e40->sysState = 8;
+        gWhMgr->sysState = 8;
     }
 }
 
 void func_02044a80(void) {
-    WhMgr *wh = data_02097e40;
+    WhMgr *wh = gWhMgr;
     WH_ChangeSysState(3);
     if (WM_End((void (*)(void *))func_02044fc0) != 2) {
         WH_ChangeSysState(8);
@@ -26,24 +26,24 @@ void func_02044a80(void) {
 
 void Wh_Create(void) {
     WhMgr *wh;
-    if (data_02097e40 != NULL) {
+    if (gWhMgr != NULL) {
         return;
     }
-    data_02097dd0->align = 0x20;
+    gSysState->align = 0x20;
     wh = (WhMgr *)Heap_Alloc(sizeof(WhMgr));
     if (wh != NULL) {
         func_02044cb8(wh);
     }
-    data_02097e40 = wh;
-    data_02097dd0->align = 4;
+    gWhMgr = wh;
+    gSysState->align = 4;
 }
 
 BOOL WH_Destroy_02044b20(void) {
-    return WH_Destroy(data_02097e40);
+    return WH_Destroy(gWhMgr);
 }
 
 BOOL WH_IsStopped_02044c80(void) {
-    return WH_IsStopped(data_02097e40);
+    return WH_IsStopped(gWhMgr);
 }
 
 void func_02044cb8(WhMgr *wh) {
@@ -155,7 +155,7 @@ void func_02044fc0(WhCbArg *arg) {
         return;
     }
     WH_ChangeSysState(0);
-    data_02097e40->busy = FALSE;
+    gWhMgr->busy = FALSE;
 }
 
 void func_02045004(WhCbArg *arg) {
@@ -165,7 +165,7 @@ void func_02045004(WhCbArg *arg) {
         WH_ChangeSysState(9);
         return;
     }
-    result = WM_SetIndCallback(data_02097e40->indicateCb);
+    result = WM_SetIndCallback(gWhMgr->indicateCb);
     if (result != 0) {
         WH_SetError(result);
         WH_ChangeSysState(9);
@@ -244,8 +244,8 @@ void func_02045530(WhCbArg *arg) {
     } else {
         WH_ChangeSysState(1);
     }
-    if (data_02097e40->resultCb != NULL) {
-        data_02097e40->resultCb(arg->errcode == 0 ? TRUE : FALSE);
+    if (gWhMgr->resultCb != NULL) {
+        gWhMgr->resultCb(arg->errcode == 0 ? TRUE : FALSE);
     }
 }
 
@@ -304,7 +304,7 @@ void func_02045770(WhCbArg *arg) {
         return;
     }
     busy = arg->unk_0a;
-    wh = data_02097e40;
+    wh = gWhMgr;
     channel = arg->unk_08;
     best = wh->bestBusyRatio;
     bitmap = wh->channelBitmap;
@@ -315,8 +315,8 @@ void func_02045770(WhCbArg *arg) {
         bitmap |= 1 << (channel - 1);
     }
     wh->bestBusyRatio = best;
-    data_02097e40->channelBitmap = bitmap;
-    result = func_02045674(data_02097e40, channel + 1);
+    gWhMgr->channelBitmap = bitmap;
+    result = func_02045674(gWhMgr, channel + 1);
     if (result == 0x18) {
         WH_ChangeSysState(6);
         return;

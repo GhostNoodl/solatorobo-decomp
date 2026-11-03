@@ -51,8 +51,8 @@ struct Ov011BarSnd {
 
 extern "C" {
 
-extern void *data_ov000_021cac60[];
-extern void *data_ov000_021cad50[];
+extern void *UiObj_vtbl[];
+extern void *Lo021cad50_vtbl[];
 extern void Obj0215c1bc_SetText(void *a, s32 b, const char *c);
 extern void SceneCmd_Push27(void *p, s32 a, s32 b, s32 c);
 void Shared_SetEventActor(u16 a, u16 b);
@@ -60,7 +60,7 @@ void func_020627dc(s32 a);
 void func_ov000_02182590(void *p);
 
 static inline BOOL Ov011Bar_FadeIdle(void) {
-    if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[0] == 0) {
         return TRUE;
     }
     return FALSE;
@@ -82,9 +82,9 @@ void Ov011Act7da4_State20(Ov011Act7da4 *self) {
         if (self->unk_398 == NULL) {
             b = (Ov011Bar *)Heap_Alloc(0xe8);
             if (b != NULL) {
-                *(void ***)b = data_ov000_021cac60;
+                *(void ***)b = UiObj_vtbl;
                 b->v28();
-                *(void ***)b = data_ov000_021cad50;
+                *(void ***)b = Lo021cad50_vtbl;
                 b->v28();
             }
             self->unk_398 = b;
@@ -93,10 +93,10 @@ void Ov011Act7da4_State20(Ov011Act7da4 *self) {
             self->unk_398->flags |= 0x20000;
             self->unk_398->unk_1c = 4;
             self->unk_398->v08();
-            Obj0215c1bc_SetText(self->unk_398, 0x8000, (char *)MsgRes_GetString(data_02149ef8, 0x76));
+            Obj0215c1bc_SetText(self->unk_398, 0x8000, (char *)MsgRes_GetString(gMsgRes, 0x76));
             self->unk_398->unk_68 = -0x299a;
             self->unk_398->v70();
-            SceneCmd_Push27(data_ov000_021ccd54, 0xffff, 0, 0);
+            SceneCmd_Push27(gSceneCmd, 0xffff, 0, 0);
         } else {
             self->unk_398->v1c();
             self->unk_398->v20();
@@ -105,7 +105,7 @@ void Ov011Act7da4_State20(Ov011Act7da4 *self) {
     }
     switch (self->fsm->st) {
     case 0:
-        if (((Ov011BarSnd *)ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000))->unk_16 > 1) {
+        if (((Ov011BarSnd *)ActorMgr_GetGroup(gActorMgr, 0x5000))->unk_16 > 1) {
             ActorSub40 *w = self->fsm;
             w->timer++;
             if (w->timer <= 900) {
@@ -116,7 +116,7 @@ void Ov011Act7da4_State20(Ov011Act7da4 *self) {
             FieldState *g;
             Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
-            g = data_ov000_021ccd54;
+            g = gSceneCmd;
             g->stageFlags = 1;
             func_ov000_02182590(&g->stageFlags);
             self->fsm->st++;

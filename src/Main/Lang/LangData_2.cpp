@@ -293,7 +293,7 @@ void LangData_LocalizePath(char *dst, const char *src);
 }
 
 struct LangRes {
-    /* 0x00 */ // vtable (data_0208b318)
+    /* 0x00 */ // vtable (ResHandle_vtbl)
     virtual void unk_vf00();
     virtual void DeletingDtor();
     virtual void Clear();
@@ -322,7 +322,7 @@ typedef struct LangMsgTbl {
 } LangMsgTbl;
 
 extern LangMsgTbl data_0214b128;
-extern const u32 data_0208b318[];
+extern const u32 ResHandle_vtbl[];
 extern const char *data_0208ccb0;
 extern const char *data_0208cca8;
 extern void *Heap_Alloc(u32 size);
@@ -331,7 +331,7 @@ void *NamedTable_Find(void *data, const char *name);
 static inline LangRes *LangRes_New(void) {
     LangRes *res = (LangRes *)Heap_Alloc(sizeof(LangRes));
     if (res != NULL) {
-        *(const u32 **)res = data_0208b318;
+        *(const u32 **)res = ResHandle_vtbl;
         res->Clear();
     }
     return res;

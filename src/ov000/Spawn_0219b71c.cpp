@@ -92,7 +92,7 @@ u16 func_ov000_0219b808(u16 id, void *a1, const Shape0219b808 *q, u16 *out, u32 
     if (q->mask & 2) {
         pl = ActorMgr_FindPlayer();
         if (pl != NULL && !(pl->unk_b24 << 30 >> 31 ? TRUE : FALSE) &&
-            SameId0219b808(&data_ov000_021ccd54->unk_ca, PlId0219b808(pl)) &&
+            SameId0219b808(&gSceneCmd->unk_ca, PlId0219b808(pl)) &&
             q->flags == (q->flags & pl->hit1.unk_50)) {
             p1.x = pl->unk_75c.x;
             p1.y = pl->unk_75c.y;
@@ -112,7 +112,7 @@ u16 func_ov000_0219b808(u16 id, void *a1, const Shape0219b808 *q, u16 *out, u32 
         if (!(q->mask & (1 << i))) {
             continue;
         }
-        grp = ActorMgr_GetGroup(data_ov000_021ccd68, i << 12);
+        grp = ActorMgr_GetGroup(gActorMgr, i << 12);
         if (grp == NULL || grp->count == 0 || (a = grp->head) == NULL) {
             continue;
         }

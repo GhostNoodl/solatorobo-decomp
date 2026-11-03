@@ -18,19 +18,19 @@ u16 func_02041040(int count);
 u16 func_02041060(int count);
 
 u16 func_02041000(int count) {
-    return GfxSys_AllocSlots(data_02097d48, count, 0);
+    return GfxSys_AllocSlots(gGfxSys, count, 0);
 }
 
 u16 func_02041020(int count) {
-    return GfxSys_AllocSlots(data_02097d48, count, 2);
+    return GfxSys_AllocSlots(gGfxSys, count, 2);
 }
 
 u16 func_02041040(int count) {
-    return GfxSys_AllocSlots(data_02097d48, count, 1);
+    return GfxSys_AllocSlots(gGfxSys, count, 1);
 }
 
 u16 func_02041060(int count) {
-    return GfxSys_AllocSlots(data_02097d48, count, 3);
+    return GfxSys_AllocSlots(gGfxSys, count, 3);
 }
 
 

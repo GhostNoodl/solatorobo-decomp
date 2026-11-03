@@ -10,19 +10,19 @@
    heap. */
 #define OV006_DELETE_OBJECT(obj)                                 \
     do {                                                         \
-        void *saved_ = data_02097dd0->cur;                       \
-        data_02097dd0->cur = data_02097dd0->heapHi;              \
+        void *saved_ = gSysState->cur;                       \
+        gSysState->cur = gSysState->heapHi;              \
         if ((obj) != NULL) {                                     \
             if ((obj) != NULL) {                                 \
                 ((VObj *)(obj))->vfunc_04();                     \
             }                                                    \
             (obj) = NULL;                                        \
         }                                                        \
-        data_02097dd0->cur = saved_;                             \
+        gSysState->cur = saved_;                             \
     } while (0)
 
-/* The overlay's task base (vtable data_ov006_021ebb58, ctor ov006_Task_Ctor, which sets type 3).
-   ov006_Manager_SwitchTask creates the task data_ov006_021ec860->taskType names and steps it through
+/* The overlay's task base (vtable ov006_Task_vtbl, ctor ov006_Task_Ctor, which sets type 3).
+   ov006_Manager_SwitchTask creates the task gOv006Manager->taskType names and steps it through
    slots 0x08, 0x0c, 0x10, 0x14 (while it returns TRUE) and 0x18; ov006_Manager_Draw calls slot
    0x1c once state reaches 3. */
 struct ov006_Task : public VObj {
@@ -58,7 +58,7 @@ typedef struct ov006_MenuData {
     u8 unk48[0x78];
 } ov006_MenuData;
 
-/* A menu entry node (vtable data_ov006_021ec434, ov006_Menu_UpdateNode). */
+/* A menu entry node (vtable ov006_MenuNode_vtbl, ov006_Menu_UpdateNode). */
 struct ov006_MenuNode : public VObj {
     int id;
     u32 count;
@@ -70,7 +70,7 @@ struct ov006_MenuNode : public VObj {
 
 struct Lo021cad50;
 
-/* Holds one dialog window (vtable data_ov006_021ec414; func_ov006_021e58e4 opens an ov000
+/* Holds one dialog window (vtable ov006_ObjectHolder_vtbl; func_ov006_021e58e4 opens an ov000
    Lo021cad50 in it). */
 typedef struct ov006_ObjectHolder {
     void *vtbl;
@@ -112,7 +112,7 @@ typedef struct ov006_Unk021ec888 {
     ov006_ObjectHolder *unk1D8;
 } ov006_Unk021ec888;
 
-extern ov006_Manager *data_ov006_021ec860;
+extern ov006_Manager *gOv006Manager;
 extern ov006_Unk021ec888 *data_ov006_021ec888;
 
 void *Heap_Alloc(u32 size);

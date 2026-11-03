@@ -18,80 +18,80 @@ typedef struct {
 
 extern "C" {
 
-extern u8 data_ov003_021f7d4c[];
-extern u8 data_ov003_021f7de4[];
-extern u8 data_ov003_021f7e7c[];
-extern u8 data_ov003_021f7f14[];
-extern u8 data_ov003_021f7fac[];
-extern u8 data_ov003_021f8058[];
-extern u8 data_ov003_021f80f0[];
-extern u8 data_ov003_021f8188[];
-extern u8 data_ov003_021f8220[];
-extern u8 data_ov003_021f82b8[];
-extern u8 data_ov003_021f8350[];
-extern u8 data_ov003_021f83e8[];
-extern u8 data_ov003_021f8480[];
-extern u8 data_ov003_021f8638[];
-extern u8 data_ov003_021f86d0[];
-extern u8 data_ov003_021f8768[];
-extern u8 data_ov003_021f8800[];
-extern u8 data_ov003_021f8898[];
-extern u8 data_ov003_021f8930[];
-extern u8 data_ov003_021f89c8[];
-extern u8 data_ov003_021f8a60[];
-extern u8 data_ov003_021f8af8[];
-extern u8 data_ov003_021f8b90[];
-extern u8 data_ov003_021f8c28[];
-extern u8 data_ov003_021f8cc0[];
-extern u8 data_ov003_021f8d58[];
-extern u8 data_ov003_021f8df0[];
-extern u8 data_ov003_021f8e88[];
-extern u8 data_ov003_021f8f20[];
-extern u8 data_ov003_021f8fb8[];
-extern u8 data_ov003_021f9050[];
-extern u8 data_ov003_021f9114[];
-extern u8 data_ov003_021f91ac[];
-extern u8 data_ov003_021f9244[];
-extern u8 data_ov003_021f92dc[];
-extern u8 data_ov003_021f9374[];
-extern u8 data_ov003_021f940c[];
-extern u8 data_ov003_021f94a4[];
-extern u8 data_ov003_021f953c[];
-extern u8 data_ov003_021f95d4[];
-extern u8 data_ov003_021f966c[];
-extern u8 data_ov003_021f9704[];
-extern u8 data_ov003_021f979c[];
-extern u8 data_ov003_021f9834[];
-extern u8 data_ov003_021f98cc[];
-extern u8 data_ov003_021f9a80[];
-extern u8 data_ov003_021f9b18[];
-extern u8 data_ov003_021f9bb0[];
-extern u8 data_ov003_021f9c48[];
-extern u8 data_ov003_021f9ce0[];
-extern u8 data_ov003_021f9d78[];
-extern u8 data_ov003_021f9e10[];
-extern u8 data_ov003_021f9ea8[];
-extern u8 data_ov003_021f9f40[];
-extern u8 data_ov003_021f9fe4[];
-extern u8 data_ov003_021fa07c[];
-extern u8 data_ov003_021fa114[];
-extern u8 data_ov006_021ec54c[];
-extern u8 data_ov006_021ec5e4[];
-extern u8 data_ov006_021ec67c[];
-extern u8 data_ov006_021ec714[];
-extern u8 data_ov006_021ec7ac[];
+extern u8 Ov003ActVt_021f7d4c_vtbl[];
+extern u8 Ov003ActVt_021f7de4_vtbl[];
+extern u8 Ov003ActVt_021f7e7c_vtbl[];
+extern u8 Ov003ActVt_021f7f14_vtbl[];
+extern u8 Ov003ActVt_021f7fac_vtbl[];
+extern u8 Ov003ActVt_021f8058_vtbl[];
+extern u8 Ov003ActVt_021f80f0_vtbl[];
+extern u8 Ov003ActVt_021f8188_vtbl[];
+extern u8 Ov003ActVt_021f8220_vtbl[];
+extern u8 Ov003ActVt_021f82b8_vtbl[];
+extern u8 Ov003ActVt_021f8350_vtbl[];
+extern u8 Ov003ActVt_021f83e8_vtbl[];
+extern u8 Ov003ActVt_021f8480_vtbl[];
+extern u8 Ov003ActVt_021f8638_vtbl[];
+extern u8 Ov003ActVt_021f86d0_vtbl[];
+extern u8 Ov003ActVt_021f8768_vtbl[];
+extern u8 Ov003ActVt_021f8800_vtbl[];
+extern u8 Ov003ActVt_021f8898_vtbl[];
+extern u8 Ov003ActVt_021f8930_vtbl[];
+extern u8 Ov003ActVt_021f89c8_vtbl[];
+extern u8 Ov003ActVt_021f8a60_vtbl[];
+extern u8 Ov003ActVt_021f8af8_vtbl[];
+extern u8 Ov003ActVt_021f8b90_vtbl[];
+extern u8 Ov003ActVt_021f8c28_vtbl[];
+extern u8 Ov003ActVt_021f8cc0_vtbl[];
+extern u8 Ov003ActVt_021f8d58_vtbl[];
+extern u8 Ov003ActVt_021f8df0_vtbl[];
+extern u8 Ov003ActVt_021f8e88_vtbl[];
+extern u8 Ov003ActVt_021f8f20_vtbl[];
+extern u8 Ov003ActVt_021f8fb8_vtbl[];
+extern u8 Ov003ActVt_021f9050_vtbl[];
+extern u8 Ov003ActVt_021f9114_vtbl[];
+extern u8 Ov003ActVt_021f91ac_vtbl[];
+extern u8 Ov003ActVt_021f9244_vtbl[];
+extern u8 Ov003ActVt_021f92dc_vtbl[];
+extern u8 Ov003ActVt_021f9374_vtbl[];
+extern u8 Ov003ActVt_021f940c_vtbl[];
+extern u8 Ov003ActVt_021f94a4_vtbl[];
+extern u8 Ov003ActVt_021f953c_vtbl[];
+extern u8 Ov003ActVt_021f95d4_vtbl[];
+extern u8 Ov003ActVt_021f966c_vtbl[];
+extern u8 Ov003ActVt_021f9704_vtbl[];
+extern u8 Ov003ActVt_021f979c_vtbl[];
+extern u8 Ov003ActVt_021f9834_vtbl[];
+extern u8 Ov003ActVt_021f98cc_vtbl[];
+extern u8 Ov003ActVt_021f9a80_vtbl[];
+extern u8 Ov003ActVt_021f9b18_vtbl[];
+extern u8 Ov003ActVt_021f9bb0_vtbl[];
+extern u8 Ov003ActVt_021f9c48_vtbl[];
+extern u8 Ov003ActVt_021f9ce0_vtbl[];
+extern u8 Ov003ActVt_021f9d78_vtbl[];
+extern u8 Ov003ActVt_021f9e10_vtbl[];
+extern u8 Ov003ActVt_021f9ea8_vtbl[];
+extern u8 Ov003ActVt_021f9f40_vtbl[];
+extern u8 Ov003ActVt_021f9fe4_vtbl[];
+extern u8 Ov003ActVt_021fa07c_vtbl[];
+extern u8 Ov003ActVt_021fa114_vtbl[];
+extern u8 Ov006ActVt_021ec54c_vtbl[];
+extern u8 Ov006ActVt_021ec5e4_vtbl[];
+extern u8 Ov006ActVt_021ec67c_vtbl[];
+extern u8 Ov006ActVt_021ec714_vtbl[];
+extern u8 Ov006ActVt_021ec7ac_vtbl[];
 extern u8 data_ov009_02217838[];
 extern u8 data_ov009_022178d0[];
-extern u8 data_ov009_0221802c[];
-extern u8 data_ov009_022180c4[];
-extern u8 data_ov009_0221815c[];
-extern u8 data_ov009_022181f4[];
-extern u8 data_ov009_0221828c[];
-extern u8 data_ov009_02218324[];
-extern u8 data_ov012_0220af10[];
-extern u8 data_ov012_0220b150[];
-extern u8 data_ov012_0220b1e8[];
-extern u8 data_ov013_0220b7d0[];
+extern u8 Ov009ActExVt_0221802c_vtbl[];
+extern u8 Ov009ActVt_022180c4_vtbl[];
+extern u8 Ov009ActVt_0221815c_vtbl[];
+extern u8 Ov009ActExVt_022181f4_vtbl[];
+extern u8 Ov009ActExVt_0221828c_vtbl[];
+extern u8 Ov009ActVt_02218324_vtbl[];
+extern u8 Ov012ActExVt_0220af10_vtbl[];
+extern u8 Ov012ActExVt_0220b150_vtbl[];
+extern u8 Ov012ActExVt_0220b1e8_vtbl[];
+extern u8 Ov013ActExVt_0220b7d0_vtbl[];
 void *Heap_Alloc(u32 size);
 Info02192b24 *Tbl_Elem_020704b4(u16 id);
 s32 Tbl_GetText(u16 id);
@@ -164,7 +164,7 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
                 u8 *t = (u8 *)Heap_Alloc(0x20c);
                 if (t != NULL) {
                     Base(t);
-                    VOBJ_SET_VTABLE(t, data_ov003_021f8a60);
+                    VOBJ_SET_VTABLE(t, Ov003ActVt_021f8a60_vtbl);
                     ResSet_Init(t + 0xd0);
                 }
                 p = t;
@@ -172,10 +172,10 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
             break;
         case 0x4012:
         case 0x4705:
-            NEW_BASIC(0xd0, data_ov003_021f8fb8);
+            NEW_BASIC(0xd0, Ov003ActVt_021f8fb8_vtbl);
             break;
         case 0x4013:
-            NEW_BASIC(0xd0, data_ov003_021f8cc0);
+            NEW_BASIC(0xd0, Ov003ActVt_021f8cc0_vtbl);
             break;
         case 0x483e:
             NEW_CTOR(0xfc, Ov013ActEx_02204454_Ctor);
@@ -188,7 +188,7 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
             NEW_CTOR(0xf8, Ov013ActEx_022065ac_Ctor);
             break;
         case 0x480f:
-            NEW_BASIC(0xe4, data_ov012_0220af10);
+            NEW_BASIC(0xe4, Ov012ActExVt_0220af10_vtbl);
             break;
         case 0x4811:
             NEW_CTOR(0xe0, Ov013ActEx_0220a4e0_Ctor);
@@ -221,7 +221,7 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
             NEW_CTOR(0x100, Ov010ActVt_022102e0_Ctor);
             break;
         case 0x4820:
-            NEW_BASIC(0xdc, data_ov013_0220b7d0);
+            NEW_BASIC(0xdc, Ov013ActExVt_0220b7d0_vtbl);
             break;
         case 0x4823:
             NEW_CTOR(0xd8, Ov013ActEx_021fdb70_Ctor);
@@ -237,7 +237,7 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
                 u8 *t = (u8 *)Heap_Alloc(0x2fc);
                 if (t != NULL) {
                     Base(t);
-                    VOBJ_SET_VTABLE(t, data_ov012_0220b1e8);
+                    VOBJ_SET_VTABLE(t, Ov012ActExVt_0220b1e8_vtbl);
                     ResSet_Init(t + 0xd8);
                     Model0218fe1c_Init(t + 0x210);
                 }
@@ -245,7 +245,7 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
             }
             break;
         case 0x4825:
-            NEW_BASIC(0xe8, data_ov012_0220b150);
+            NEW_BASIC(0xe8, Ov012ActExVt_0220b150_vtbl);
             break;
         case 0x4826:
             NEW_CTOR(0xd8, Ov012ActEx_02207018_Ctor);
@@ -269,40 +269,40 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
             NEW_CTOR(0x114, Ov010ActVt_0220fe6c_Ctor);
             break;
         case 0x482d:
-            NEW_BASIC(0xdc, data_ov009_0221802c);
+            NEW_BASIC(0xdc, Ov009ActExVt_0221802c_vtbl);
             break;
         case 0x401f:
-            NEW_BASIC(0xd0, data_ov003_021f8df0);
+            NEW_BASIC(0xd0, Ov003ActVt_021f8df0_vtbl);
             break;
         case 0x4032:
         case 0x4093:
-            NEW_BASIC(0xd0, data_ov003_021f8480);
+            NEW_BASIC(0xd0, Ov003ActVt_021f8480_vtbl);
             break;
         case 0x4029:
-            NEW_BASIC(0xd4, data_ov003_021f83e8);
+            NEW_BASIC(0xd4, Ov003ActVt_021f83e8_vtbl);
             break;
         case 0x4036:
-            NEW_BASIC(0xd0, data_ov003_021f8188);
+            NEW_BASIC(0xd0, Ov003ActVt_021f8188_vtbl);
             break;
         case 0x4037:
-            NEW_BASIC(0xd4, data_ov003_021f8350);
+            NEW_BASIC(0xd4, Ov003ActVt_021f8350_vtbl);
             break;
         case 0x4041:
-            NEW_BASIC(0xd0, data_ov003_021f8220);
+            NEW_BASIC(0xd0, Ov003ActVt_021f8220_vtbl);
             break;
         case 0x4040:
         case 0x4056:
-            NEW_BASIC(0xd0, data_ov003_021f8b90);
+            NEW_BASIC(0xd0, Ov003ActVt_021f8b90_vtbl);
             break;
         case 0x404a:
-            NEW_BASIC(0xd0, data_ov003_021f9ce0);
+            NEW_BASIC(0xd0, Ov003ActVt_021f9ce0_vtbl);
             break;
         case 0x4628:
             {
                 u8 *t = (u8 *)Heap_Alloc(0xb1c);
                 if (t != NULL) {
                     Base(t);
-                    VOBJ_SET_VTABLE(t, data_ov003_021f8af8);
+                    VOBJ_SET_VTABLE(t, Ov003ActVt_021f8af8_vtbl);
                     ResSet_Init(t + 0xd0);
                     ResSet_Init(t + 0x208);
                     Model0218fe1c_Init(t + 0x340);
@@ -316,29 +316,29 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
         case 0x404b:
         case 0x404c:
         case 0x404d:
-            NEW_BASIC(0xd0, data_ov003_021f8930);
+            NEW_BASIC(0xd0, Ov003ActVt_021f8930_vtbl);
             break;
         case 0x4055:
-            NEW_BASIC(0xd0, data_ov003_021f86d0);
+            NEW_BASIC(0xd0, Ov003ActVt_021f86d0_vtbl);
             break;
         case 0x406b:
-            NEW_BASIC(0xd0, data_ov003_021f966c);
+            NEW_BASIC(0xd0, Ov003ActVt_021f966c_vtbl);
             break;
         case 0x4078:
-            NEW_BASIC(0xd4, data_ov003_021f95d4);
+            NEW_BASIC(0xd4, Ov003ActVt_021f95d4_vtbl);
             break;
         case 0x4073:
-            NEW_BASIC(0xd0, data_ov003_021f9244);
+            NEW_BASIC(0xd0, Ov003ActVt_021f9244_vtbl);
             break;
         case 0x4071:
-            NEW_BASIC(0xd4, data_ov003_021f9114);
+            NEW_BASIC(0xd4, Ov003ActVt_021f9114_vtbl);
             break;
         case 0x4072:
             {
                 u8 *t = (u8 *)Heap_Alloc(0x1c0);
                 if (t != NULL) {
                     Base(t);
-                    VOBJ_SET_VTABLE(t, data_ov003_021f953c);
+                    VOBJ_SET_VTABLE(t, Ov003ActVt_021f953c_vtbl);
                     Model0218fe1c_Init(t + 0xd0);
                 }
                 p = t;
@@ -346,22 +346,22 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
             break;
         case 0x4076:
         case 0x4086:
-            NEW_BASIC(0xf0, data_ov003_021f9374);
+            NEW_BASIC(0xf0, Ov003ActVt_021f9374_vtbl);
             break;
         case 0x405c:
         case 0x407b:
         case 0x407c:
         case 0x407d:
-            NEW_BASIC(0xd4, data_ov003_021f91ac);
+            NEW_BASIC(0xd4, Ov003ActVt_021f91ac_vtbl);
             break;
         case 0x408b:
-            NEW_BASIC(0xdc, data_ov003_021f94a4);
+            NEW_BASIC(0xdc, Ov003ActVt_021f94a4_vtbl);
             break;
         case 0x408c:
-            NEW_BASIC(0x104, data_ov003_021f940c);
+            NEW_BASIC(0x104, Ov003ActVt_021f940c_vtbl);
             break;
         case 0x4074:
-            NEW_BASIC(0xd0, data_ov003_021f92dc);
+            NEW_BASIC(0xd0, Ov003ActVt_021f92dc_vtbl);
             break;
         case 0x4047:
         case 0x405d:
@@ -371,22 +371,22 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
         case 0x4080:
         case 0x4082:
         case 0x4090:
-            NEW_BASIC(0xd4, data_ov003_021f8f20);
+            NEW_BASIC(0xd4, Ov003ActVt_021f8f20_vtbl);
             break;
         case 0x4030:
-            NEW_BASIC(0xd0, data_ov003_021f8e88);
+            NEW_BASIC(0xd0, Ov003ActVt_021f8e88_vtbl);
             break;
         case 0x404f:
-            NEW_BASIC(0x104, data_ov003_021f80f0);
+            NEW_BASIC(0x104, Ov003ActVt_021f80f0_vtbl);
             break;
         case 0x409f:
-            NEW_BASIC(0xd0, data_ov003_021f8058);
+            NEW_BASIC(0xd0, Ov003ActVt_021f8058_vtbl);
             break;
         case 0x4084:
-            NEW_BASIC(0xd0, data_ov003_021f9c48);
+            NEW_BASIC(0xd0, Ov003ActVt_021f9c48_vtbl);
             break;
         case 0x4085:
-            NEW_BASIC(0xd0, data_ov003_021f9bb0);
+            NEW_BASIC(0xd0, Ov003ActVt_021f9bb0_vtbl);
             break;
         case 0x4063:
         case 0x4064:
@@ -395,59 +395,59 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
             NEW_CTOR(0x214, Ov003ActVt_021f99e8_Ctor);
             break;
         case 0x4075:
-            NEW_BASIC(0xd0, data_ov003_021f9b18);
+            NEW_BASIC(0xd0, Ov003ActVt_021f9b18_vtbl);
             break;
         case 0x482e:
         case 0x483f:
-            NEW_BASIC(0xf4, data_ov003_021f9a80);
+            NEW_BASIC(0xf4, Ov003ActVt_021f9a80_vtbl);
             break;
         case 0x4083:
         case 0x408f:
         case 0x4096:
-            NEW_BASIC(0xd4, data_ov009_0221828c);
+            NEW_BASIC(0xd4, Ov009ActExVt_0221828c_vtbl);
             break;
         case 0x4830:
-            NEW_BASIC(0xd0, data_ov009_02218324);
+            NEW_BASIC(0xd0, Ov009ActVt_02218324_vtbl);
             break;
         case 0x482f:
-            NEW_BASIC(0xd0, data_ov009_022180c4);
+            NEW_BASIC(0xd0, Ov009ActVt_022180c4_vtbl);
             break;
         case 0x4802:
-            NEW_BASIC(0xd4, data_ov009_022181f4);
+            NEW_BASIC(0xd4, Ov009ActExVt_022181f4_vtbl);
             break;
         case 0x4092:
-            NEW_BASIC(0xd0, data_ov009_0221815c);
+            NEW_BASIC(0xd0, Ov009ActVt_0221815c_vtbl);
             break;
         case 0x4f40:
-            NEW_BASIC(0xd0, data_ov006_021ec7ac);
+            NEW_BASIC(0xd0, Ov006ActVt_021ec7ac_vtbl);
             break;
         case 0x4f41:
-            NEW_BASIC(0xd0, data_ov006_021ec54c);
+            NEW_BASIC(0xd0, Ov006ActVt_021ec54c_vtbl);
             break;
         case 0x4f42:
         case 0x4f45:
-            NEW_BASIC(0xd0, data_ov006_021ec5e4);
+            NEW_BASIC(0xd0, Ov006ActVt_021ec5e4_vtbl);
             break;
         case 0x4f43:
-            NEW_BASIC(0xd0, data_ov006_021ec67c);
+            NEW_BASIC(0xd0, Ov006ActVt_021ec67c_vtbl);
             break;
         case 0x4f44:
-            NEW_BASIC(0xd0, data_ov006_021ec714);
+            NEW_BASIC(0xd0, Ov006ActVt_021ec714_vtbl);
             break;
         case 0x4044:
-            NEW_BASIC(0xd0, data_ov003_021f8d58);
+            NEW_BASIC(0xd0, Ov003ActVt_021f8d58_vtbl);
             break;
         }
         break;
     case 1:
-        NEW_BASIC(0xd0, data_ov003_021f98cc);
+        NEW_BASIC(0xd0, Ov003ActVt_021f98cc_vtbl);
         break;
     case 2:
         {
             u8 *t = (u8 *)Heap_Alloc(0x304);
             if (t != NULL) {
                 Base(t);
-                VOBJ_SET_VTABLE(t, data_ov003_021f9834);
+                VOBJ_SET_VTABLE(t, Ov003ActVt_021f9834_vtbl);
                 ResSet_Init(t + 0xd0);
                 Model0218fe1c_Init(t + 0x208);
             }
@@ -459,7 +459,7 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
             u8 *t = (u8 *)Heap_Alloc(0x314);
             if (t != NULL) {
                 Base(t);
-                VOBJ_SET_VTABLE(t, data_ov003_021f9704);
+                VOBJ_SET_VTABLE(t, Ov003ActVt_021f9704_vtbl);
                 ResSet_Init(t + 0xd0);
                 Model0218fe1c_Init(t + 0x208);
                 LFLD(u16, t, 0x2fc) = 0;
@@ -473,7 +473,7 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
             u8 *t = (u8 *)Heap_Alloc(0x304);
             if (t != NULL) {
                 Base(t);
-                VOBJ_SET_VTABLE(t, data_ov003_021f979c);
+                VOBJ_SET_VTABLE(t, Ov003ActVt_021f979c_vtbl);
                 ResSet_Init(t + 0xd0);
                 Model0218fe1c_Init(t + 0x208);
             }
@@ -481,52 +481,52 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
         }
         break;
     case 8:
-        NEW_BASIC(0xd0, data_ov003_021f9f40);
+        NEW_BASIC(0xd0, Ov003ActVt_021f9f40_vtbl);
         break;
     case 9:
-        NEW_BASIC(0xd0, data_ov003_021f9ea8);
+        NEW_BASIC(0xd0, Ov003ActVt_021f9ea8_vtbl);
         break;
     case 10:
-        NEW_BASIC(0xd4, data_ov003_021f9e10);
+        NEW_BASIC(0xd4, Ov003ActVt_021f9e10_vtbl);
         break;
     case 11:
-        NEW_BASIC(0xd0, data_ov003_021f9d78);
+        NEW_BASIC(0xd0, Ov003ActVt_021f9d78_vtbl);
         break;
     case 5:
-        NEW_BASIC(0xd0, data_ov003_021f7fac);
+        NEW_BASIC(0xd0, Ov003ActVt_021f7fac_vtbl);
         break;
     case 6:
-        NEW_BASIC(0xd0, data_ov003_021f7f14);
+        NEW_BASIC(0xd0, Ov003ActVt_021f7f14_vtbl);
         break;
     case 7:
-        NEW_BASIC(0xd0, data_ov003_021f7e7c);
+        NEW_BASIC(0xd0, Ov003ActVt_021f7e7c_vtbl);
         break;
     case 12:
-        NEW_BASIC(0xf4, data_ov003_021f7de4);
+        NEW_BASIC(0xf4, Ov003ActVt_021f7de4_vtbl);
         break;
     case 13:
-        NEW_BASIC(0xfc, data_ov003_021f7d4c);
+        NEW_BASIC(0xfc, Ov003ActVt_021f7d4c_vtbl);
         break;
     case 14:
         {
             u8 *t = (u8 *)Heap_Alloc(0x218);
             if (t != NULL) {
                 Base(t);
-                VOBJ_SET_VTABLE(t, data_ov003_021f8638);
+                VOBJ_SET_VTABLE(t, Ov003ActVt_021f8638_vtbl);
                 ResSet_Init(t + 0xd0);
             }
             p = t;
         }
         break;
     case 15:
-        NEW_BASIC(0xd0, data_ov003_021f9050);
+        NEW_BASIC(0xd0, Ov003ActVt_021f9050_vtbl);
         break;
     case 16:
         {
             u8 *t = (u8 *)Heap_Alloc(0x208);
             if (t != NULL) {
                 Base(t);
-                VOBJ_SET_VTABLE(t, data_ov003_021f8c28);
+                VOBJ_SET_VTABLE(t, Ov003ActVt_021f8c28_vtbl);
                 ResSet_Init(t + 0xd0);
             }
             p = t;
@@ -537,30 +537,30 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
             u8 *t = (u8 *)Heap_Alloc(0x208);
             if (t != NULL) {
                 Base(t);
-                VOBJ_SET_VTABLE(t, data_ov003_021f89c8);
+                VOBJ_SET_VTABLE(t, Ov003ActVt_021f89c8_vtbl);
                 ResSet_Init(t + 0xd0);
             }
             p = t;
         }
         break;
     case 18:
-        NEW_BASIC(0xd0, data_ov003_021f8800);
+        NEW_BASIC(0xd0, Ov003ActVt_021f8800_vtbl);
         break;
     case 19:
-        NEW_BASIC(0xd0, data_ov003_021fa07c);
+        NEW_BASIC(0xd0, Ov003ActVt_021fa07c_vtbl);
         break;
     case 20:
-        NEW_BASIC(0xd0, data_ov003_021fa114);
+        NEW_BASIC(0xd0, Ov003ActVt_021fa114_vtbl);
         break;
     case 21:
-        NEW_BASIC(0xe0, data_ov003_021f9fe4);
+        NEW_BASIC(0xe0, Ov003ActVt_021f9fe4_vtbl);
         break;
     case 22:
         {
             u8 *t = (u8 *)Heap_Alloc(0xe0);
             if (t != NULL) {
                 Base(t);
-                VOBJ_SET_VTABLE(t, data_ov003_021f8898);
+                VOBJ_SET_VTABLE(t, Ov003ActVt_021f8898_vtbl);
                 LFLD(u16, t, 0xd0) = 0;
                 LFLD(u16, t, 0xd2) = 0;
             }
@@ -572,7 +572,7 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
             u8 *t = (u8 *)Heap_Alloc(0x214);
             if (t != NULL) {
                 Base(t);
-                VOBJ_SET_VTABLE(t, data_ov003_021f8768);
+                VOBJ_SET_VTABLE(t, Ov003ActVt_021f8768_vtbl);
                 ResSet_Init(t + 0xd0);
                 LFLD(s32, t, 0x208) = 0;
             }
@@ -580,12 +580,12 @@ u8 *Factory_New4000(Spawn02192b24 *s) {
         }
         break;
     case 24:
-        NEW_BASIC(0xd0, data_ov003_021f82b8);
+        NEW_BASIC(0xd0, Ov003ActVt_021f82b8_vtbl);
         break;
     }
     if (p != NULL) {
         Actor_JoinGroup(p, s->sub, s->id, Tbl_GetText(s->id));
-        *(FieldId *)(p + 0xac) = data_ov000_021ccd54->unk_ca;
+        *(FieldId *)(p + 0xac) = gSceneCmd->unk_ca;
     }
     return p;
 }

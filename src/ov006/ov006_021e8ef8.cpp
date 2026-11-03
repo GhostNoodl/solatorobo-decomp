@@ -36,8 +36,8 @@ void Ov006Racer_UpdateSteer(Ov006Racer *self) {
     u16 base;
 
     cam = NULL;
-    if (self->idx == data_ov006_021ec884->unk5) {
-        cam = &data_ov000_021ccd54->cam;
+    if (self->idx == gOv006SlotManager->unk5) {
+        cam = &gSceneCmd->cam;
     }
     h = self->prm->unk_06;
     held = self->held;

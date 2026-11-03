@@ -72,8 +72,8 @@ BOOL func_020554c8(SlidePanel *panel) {
 
 void func_020554e4(SlidePanel *panel) {
     if (panel->pltt != NULL) {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         {
             PlttRes *p = panel->pltt;
             if (p != NULL) {
@@ -84,7 +84,7 @@ void func_020554e4(SlidePanel *panel) {
                 panel->pltt = NULL;
             }
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     if (panel->model != NULL) {
         {
@@ -94,8 +94,8 @@ void func_020554e4(SlidePanel *panel) {
             Model_SetPos(panel->nextModel, x, y);
         }
         {
-            void *saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->heapHi;
+            void *saved = gSysState->cur;
+            gSysState->cur = gSysState->heapHi;
             {
                 Model *p = panel->model;
                 if (p != NULL) {
@@ -107,7 +107,7 @@ void func_020554e4(SlidePanel *panel) {
                     panel->model = NULL;
                 }
             }
-            data_02097dd0->cur = saved;
+            gSysState->cur = saved;
         }
     }
     if (panel->model2 != NULL) {
@@ -118,8 +118,8 @@ void func_020554e4(SlidePanel *panel) {
             Model_SetPos(panel->nextModel2, x, y);
         }
         {
-            void *saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->heapHi;
+            void *saved = gSysState->cur;
+            gSysState->cur = gSysState->heapHi;
             {
                 Model *p = panel->model2;
                 if (p != NULL) {
@@ -131,7 +131,7 @@ void func_020554e4(SlidePanel *panel) {
                     panel->model2 = NULL;
                 }
             }
-            data_02097dd0->cur = saved;
+            gSysState->cur = saved;
         }
     }
     panel->model = panel->nextModel;

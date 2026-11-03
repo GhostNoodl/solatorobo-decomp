@@ -7,7 +7,7 @@
 #include "Main/Sys/FieldId.h"
 #include "ov000/ActorBase.h"
 
-// The field manager data_ov000_021ccd6c and the records it loads. Main/Res/StageCmd.h declares the
+// The field manager gFieldMgr and the records it loads. Main/Res/StageCmd.h declares the
 // same global with an incomplete FieldMgr; the Main stage code includes this header for the members.
 
 // The two data blocks of a field, as Main's Lang code reads them (LangBlockA / LangBlockB, declared
@@ -187,7 +187,7 @@ struct FieldMgr;
 typedef void (FieldMgr::*FieldMgrFn)();
 
 // The field manager (0x294 bytes, ctor func_ov000_021b5054, made by func_ov000_021b4eec, deleted by
-// func_ov000_021b4f28): data_ov000_021ccd6c. FieldMgr_UpdateLoad loads the field's blocks and props,
+// func_ov000_021b4f28): gFieldMgr. FieldMgr_UpdateLoad loads the field's blocks and props,
 // FieldMgr_Update updates them and tests the exits, FieldMgr_DrawProps draws,
 // func_ov000_021b53f4 unloads, func_ov000_021b628c places the player at the exit it arrives at.
 struct FieldMgr {
@@ -215,7 +215,7 @@ struct FieldMgr {
 extern "C" {
 #endif
 
-extern FieldMgr *data_ov000_021ccd6c;
+extern FieldMgr *gFieldMgr;
 
 void func_ov000_021b4eec(void);
 void func_ov000_021b4f28(void);

@@ -207,7 +207,7 @@ struct Ov007Rs {
     Ov007RsMat *unk_b0;
 };
 
-// The license / title picture (0x4c bytes, vtable data_0208b318).
+// The license / title picture (0x4c bytes, vtable ResHandle_vtbl).
 class Ov007Pic : public Ov007V {
 public:
     u8 unk_04[0x40];
@@ -226,7 +226,7 @@ struct Ov007MenuFlags {
     u32 rest : 24;
 };
 
-// The yes/no menu (0x58 bytes, vtables data_0208b614 -> data_0208ca9c -> data_0208c994).
+// The yes/no menu (0x58 bytes, vtables SaveBase_vtbl -> MainVt_0208ca9c_vtbl -> MainVt_0208c994_vtbl).
 class Ov007Menu : public Ov007V {
 public:
     u8 unk_04[0x4];
@@ -237,7 +237,7 @@ public:
 };
 OV007_SIZE(Ov007Menu, 0x58);
 
-// ov000 player object (0xe8 bytes, vtables data_ov000_021cac60 -> data_ov000_021cad50).
+// ov000 player object (0xe8 bytes, vtables UiObj_vtbl -> Lo021cad50_vtbl).
 class Ov007Player : public Ov007V {
 public:
     u8 unk_04[0x8];
@@ -306,8 +306,8 @@ extern "C" {
 
 #define OV007_FREE_V(field, slot)                       \
     {                                                   \
-        void *saved = data_02097dd0->cur;                 \
-        data_02097dd0->cur = data_02097dd0->heapHi;        \
+        void *saved = gSysState->cur;                 \
+        gSysState->cur = gSysState->heapHi;        \
         if ((field) != NULL) {                          \
             Ov007V *p_ = (field);                       \
             if (p_ != NULL) {                           \
@@ -315,13 +315,13 @@ extern "C" {
             }                                           \
             (field) = NULL;                             \
         }                                               \
-        data_02097dd0->cur = saved;                     \
+        gSysState->cur = saved;                     \
     }
 
 #define OV007_FREE_D(field, dtor)                       \
     {                                                   \
-        void *saved = data_02097dd0->cur;                 \
-        data_02097dd0->cur = data_02097dd0->heapHi;        \
+        void *saved = gSysState->cur;                 \
+        gSysState->cur = gSysState->heapHi;        \
         if ((field) != NULL) {                          \
             void *p_ = (field);                         \
             if (p_ != NULL) {                           \
@@ -330,13 +330,13 @@ extern "C" {
             }                                           \
             (field) = NULL;                             \
         }                                               \
-        data_02097dd0->cur = saved;                     \
+        gSysState->cur = saved;                     \
     }
 
 #define OV007_FREE_M(field)                             \
     {                                                   \
-        void *saved = data_02097dd0->cur;                 \
-        data_02097dd0->cur = data_02097dd0->heapHi;        \
+        void *saved = gSysState->cur;                 \
+        gSysState->cur = gSysState->heapHi;        \
         if ((field) != NULL) {                          \
             Model *p_ = (field);                  \
             if (p_ != NULL) {                           \
@@ -346,7 +346,7 @@ extern "C" {
             }                                           \
             (field) = NULL;                             \
         }                                               \
-        data_02097dd0->cur = saved;                     \
+        gSysState->cur = saved;                     \
     }
 
 struct Ov007Scene {
@@ -377,7 +377,7 @@ struct Ov007Scene {
     s32 unk_50;
     s32 unk_54;
     s32 unk_58;
-    TextWin *wins[2]; // vtable data_0208ba70
+    TextWin *wins[2]; // vtable TextWin_vtbl
     s8 unk_64;
     u8 unk_65;
     u16 unk_66;
@@ -387,9 +387,9 @@ OV007_SIZE(Ov007Scene, 0x6c);
 
 extern "C" {
 
-extern Ov007Scene *data_ov007_021cfc60;
-extern void *data_ov000_021cac60;
-extern void *data_ov000_021cad50;
+extern Ov007Scene *gOv007Scene;
+extern void *UiObj_vtbl;
+extern void *Lo021cad50_vtbl;
 
 void func_ov007_021cce28(Ov007Scene *s);
 void func_ov007_021ccec0(Ov007Scene *s);
@@ -439,9 +439,9 @@ void Obj0215c1bc_SetText(void *self, u32 flags, char *str);
         (field) = NULL;                                 \
     }
 #define OV007_PUSH(saved)                               \
-    saved = data_02097dd0->cur;                         \
-    data_02097dd0->cur = data_02097dd0->heapHi;
-#define OV007_POP(saved) data_02097dd0->cur = saved;
+    saved = gSysState->cur;                         \
+    gSysState->cur = gSysState->heapHi;
+#define OV007_POP(saved) gSysState->cur = saved;
 
 #define OV007_DEL2(field, stmt)                         \
     if ((field) != NULL) {                              \
@@ -471,7 +471,7 @@ struct Ov007Bits {
 
 extern "C" {
 
-extern Ov007Bits *data_ov000_021ccd44;
+extern Ov007Bits *gTaskHost;
 extern const Ov007Row data_ov007_021cfa50[];
 extern const Ov007Row data_ov007_021cfa54[];
 extern const Ov007Row data_ov007_021cfa58[];
@@ -488,7 +488,7 @@ Ov007Menu8 *Task_FindById(int id);
 
 static inline BOOL Ov007_FadeIdle(void) {
     BOOL r;
-    if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[0] == 0) {
         r = TRUE;
     } else {
         r = FALSE;
@@ -498,10 +498,10 @@ static inline BOOL Ov007_FadeIdle(void) {
 
 static inline BOOL Ov007_FadeDone(void) {
     BOOL r;
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         r = TRUE;
     } else {
-        r = data_02097d78[0] == 4;
+        r = gFadeState[0] == 4;
     }
     return r;
 }
@@ -523,7 +523,7 @@ static inline BOOL Ov007_Closed(Ov007Menu *p) {
 }
 
 static inline BOOL Ov007_MenuDone(void) {
-    return data_ov000_021ccd44->b1 ? TRUE : FALSE;
+    return gTaskHost->b1 ? TRUE : FALSE;
 }
 
 static inline BOOL Ov007_Busy(Ov007Player *p) {
@@ -533,9 +533,9 @@ static inline BOOL Ov007_Busy(Ov007Player *p) {
 static inline Ov007Player *Ov007_NewPlayer(Ov007Scene *s, s32 id) {
     Ov007Player *p = (Ov007Player *)Heap_Alloc(0xe8);
     if (p != NULL) {
-        OV007_SET_VT(p, &data_ov000_021cac60);
+        OV007_SET_VT(p, &UiObj_vtbl);
         p->v28();
-        OV007_SET_VT(p, &data_ov000_021cad50);
+        OV007_SET_VT(p, &Lo021cad50_vtbl);
         p->v28();
     }
     s->player = p;
@@ -547,7 +547,7 @@ static inline Ov007Player *Ov007_NewPlayer(Ov007Scene *s, s32 id) {
     s->player->flags |= 0x20000;
     s->player->unk_1c = 4;
     s->player->v08();
-    Obj0215c1bc_SetText(s->player, 0x8000, (char *)MsgRes_GetString(data_02149ef8, id));
+    Obj0215c1bc_SetText(s->player, 0x8000, (char *)MsgRes_GetString(gMsgRes, id));
     s->player->posZ = -0x299a;
     s->player->v70();
     return p;

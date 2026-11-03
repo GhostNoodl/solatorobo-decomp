@@ -7,12 +7,12 @@ void Ov012ActVt_0220b280_Init(Ov012ActVt_0220b280 *self) {
     Ov003Actor_Init(self);
     ResSet_SetFile(&self->unk_f0, Tbl_GetResFile(0x480e), 1, 0, 0, 0);
     self->unk_f0.unk_00 = 0;
-    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(gSndMgr, 1, 1);
     if (self->kind == 0x5029 || self->kind == 0x5057) {
         self->unk_1a = 1;
         return;
     }
-    SndMgr_RequestLoad_02049678(data_02097e4c, 4, 6, -1);
+    SndMgr_RequestLoad_02049678(gSndMgr, 4, 6, -1);
     self->unk_1a = 0;
 }
 }
@@ -23,7 +23,7 @@ BOOL Ov012ActVt_0220b280_IsReady(Ov012ActVt_0220b280 *self) {
     if (self->unk_f0.unk_00 >= 0 && !ResSet_UpdateLoad(&self->unk_f0)) {
         r = FALSE;
     }
-    if (r && !SndMgr_IsLoadDone(data_02097e4c)) {
+    if (r && !SndMgr_IsLoadDone(gSndMgr)) {
         r = FALSE;
     }
     return r;

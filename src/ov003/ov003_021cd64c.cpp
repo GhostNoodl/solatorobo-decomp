@@ -66,7 +66,7 @@ typedef struct {
 
 extern "C" {
 
-extern Ov003Sys *data_02fe152c;
+extern Ov003Sys *gDataRes;
 extern s32 DataRes_GetTable(Ov003Sys *sys, s32 a);
 extern void DataRes_WriteBitsById(Ov003Sys *sys, void *p, s32 a, s32 b, u16 c, s32 d);
 extern void func_ov003_021cd91c(Ov003Menu *self);
@@ -88,14 +88,14 @@ void Ov003TaskVt_021f78f4_UpdateActive(void) {
 void Ov003TaskVt_021f78f4_PreUpdate(Ov003Menu *self) {
     switch (self->state) {
     case 0xc:
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         break;
     case 0xa:
         if (self->unk_68 == self->unk_69) {
-            u8 *base = data_02fe152c->unk_4c;
-            s32 v = DataRes_GetTable(data_02fe152c, 0xb);
-            DataRes_WriteBitsById(data_02fe152c, base + 0x170, v, 1, self->unk_64, 1);
-            DataRes_WriteBitsById(data_02fe152c, base + 0x170, v, 0x101, self->unk_64, 1);
+            u8 *base = gDataRes->unk_4c;
+            s32 v = DataRes_GetTable(gDataRes, 0xb);
+            DataRes_WriteBitsById(gDataRes, base + 0x170, v, 1, self->unk_64, 1);
+            DataRes_WriteBitsById(gDataRes, base + 0x170, v, 0x101, self->unk_64, 1);
         }
         break;
     }

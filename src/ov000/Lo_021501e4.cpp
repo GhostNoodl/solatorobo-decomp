@@ -4,8 +4,8 @@
 
 extern "C" {
 
-extern u8 data_0208b318[];
-extern u8 data_0208bf54[];
+extern u8 ResHandle_vtbl[];
+extern u8 StageRes_vtbl[];
 extern char data_ov000_021ca8f7[];
 extern char data_ov000_021ca8ff[];
 extern u8 data_ov000_021ca917[];
@@ -19,19 +19,19 @@ void Lo021ca9c4_Load(Lo021ca9c4 *self) {
     if (self->unk_42 == 0xffff) {
         obj = (VObj *)Heap_Alloc(0xc4);
         if (obj != NULL) {
-            VOBJ_SET_VTABLE(obj, data_0208b318);
+            VOBJ_SET_VTABLE(obj, ResHandle_vtbl);
             obj->vfunc_08();
-            VOBJ_SET_VTABLE(obj, data_0208bf54);
+            VOBJ_SET_VTABLE(obj, StageRes_vtbl);
             StageRes_Init(obj);
         }
-        data_ov000_021ccd24.unk_08 = (SceneRes *)obj;
+        gSceneResSet.unk_08 = (SceneRes *)obj;
         STD_CopyString(buf, data_ov000_021ca8f7);
         STD_ConcatenateString(buf, data_ov000_021ca8ff);
-        StageRes_Open(data_ov000_021ccd24.unk_08, buf, data_ov000_021ca917);
+        StageRes_Open(gSceneResSet.unk_08, buf, data_ov000_021ca917);
     }
     obj = (VObj *)Heap_Alloc(0x4c);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_0208b318);
+        VOBJ_SET_VTABLE(obj, ResHandle_vtbl);
         obj->vfunc_08();
     }
     self->unk_3c = obj;

@@ -21,14 +21,14 @@ void func_ov000_02182590(u8 *p);
 
 static inline void ov006_SetInfo(u16 id) {
     ov006_SlotManagerInfo *info = ov006_GetCourseInfo(id);
-    ov006_SlotManager *m = data_ov006_021ec884;
+    ov006_SlotManager *m = gOv006SlotManager;
     m->unk6 = id;
     m->info = info;
 }
 
 static inline u32 ov006_RecordIdx(void) {
     u32 idx = 0xffff;
-    switch (data_ov006_021ec860->unk14) {
+    switch (gOv006Manager->unk14) {
     case 2:
         idx = 3;
         break;
@@ -50,8 +50,8 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
     ov006_Slot *slot;
     switch (type) {
     case 1:
-        data_ov006_021ec860->taskType = 1;
-        switch (data_ov006_021ec860->unk14) {
+        gOv006Manager->taskType = 1;
+        switch (gOv006Manager->unk14) {
         case 0:
         case 1:
         default:
@@ -59,32 +59,32 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
             ov006_SetInfo(0xb005);
             break;
         case 2:
-            ov006_SlotManager_InitSlot(data_ov006_021ec884, 0, 1, data_ov006_021ebb91, 0xff)->unkC = 0x7002;
-            data_ov006_021ec884->unk5 = 0;
-            ov006_SlotManager_CountActive(data_ov006_021ec884);
+            ov006_SlotManager_InitSlot(gOv006SlotManager, 0, 1, data_ov006_021ebb91, 0xff)->unkC = 0x7002;
+            gOv006SlotManager->unk5 = 0;
+            ov006_SlotManager_CountActive(gOv006SlotManager);
             ov006_SetInfo(0xb006);
             break;
         case 3:
-            ov006_SlotManager_InitSlot(data_ov006_021ec884, 0, 1, data_ov006_021ebb91, 0xff)->unkC = 0x7000;
-            ov006_SlotManager_InitSlot(data_ov006_021ec884, 1, 0, data_ov006_021ebb94, 0xff)->unkC = 0x7005;
-            data_ov006_021ec884->unk5 = 0;
-            ov006_SlotManager_CountActive(data_ov006_021ec884);
+            ov006_SlotManager_InitSlot(gOv006SlotManager, 0, 1, data_ov006_021ebb91, 0xff)->unkC = 0x7000;
+            ov006_SlotManager_InitSlot(gOv006SlotManager, 1, 0, data_ov006_021ebb94, 0xff)->unkC = 0x7005;
+            gOv006SlotManager->unk5 = 0;
+            ov006_SlotManager_CountActive(gOv006SlotManager);
             ov006_SetInfo(0xb007);
             break;
         case 4:
         case 5:
             ov006_SetupDefaultSlots();
-            slot = ov006_SlotManager_InitSlot(data_ov006_021ec884, 0, 1, data_ov006_021ebb91, 0xff);
-            slot->unkC = data_ov006_021ec860->unk14 == 4 ? 0x7003 : 0x7001;
-            slot = ov006_SlotManager_InitSlot(data_ov006_021ec884, 1, 0, data_ov006_021ebb9b, 0xff);
-            slot->unkC = data_ov006_021ec860->unk14 == 4 ? 0x700d : 0x700e;
+            slot = ov006_SlotManager_InitSlot(gOv006SlotManager, 0, 1, data_ov006_021ebb91, 0xff);
+            slot->unkC = gOv006Manager->unk14 == 4 ? 0x7003 : 0x7001;
+            slot = ov006_SlotManager_InitSlot(gOv006SlotManager, 1, 0, data_ov006_021ebb9b, 0xff);
+            slot->unkC = gOv006Manager->unk14 == 4 ? 0x700d : 0x700e;
             ov006_SetInfo(0xb008);
             break;
         case 6:
-            ov006_SlotManager_InitSlot(data_ov006_021ec884, 0, 1, data_ov006_021ebb91, 0xff)->unkC = 0x7000;
-            ov006_SlotManager_InitSlot(data_ov006_021ec884, 1, 0, data_ov006_021ebba0, 0xff)->unkC = 0x700c;
-            data_ov006_021ec884->unk5 = 0;
-            ov006_SlotManager_CountActive(data_ov006_021ec884);
+            ov006_SlotManager_InitSlot(gOv006SlotManager, 0, 1, data_ov006_021ebb91, 0xff)->unkC = 0x7000;
+            ov006_SlotManager_InitSlot(gOv006SlotManager, 1, 0, data_ov006_021ebba0, 0xff)->unkC = 0x700c;
+            gOv006SlotManager->unk5 = 0;
+            ov006_SlotManager_CountActive(gOv006SlotManager);
             ov006_SetInfo(0xb009);
             break;
         case 7:
@@ -96,46 +96,46 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
     case 7: {
         u32 idx = 0xffff;
         u16 v = 0x2a30;
-        switch (data_ov006_021ec860->unk14) {
+        switch (gOv006Manager->unk14) {
         case 2:
             idx = 3;
-            data_ov006_021ec884->unk13C = 0;
-            data_ov006_021ec884->time = 0;
+            gOv006SlotManager->unk13C = 0;
+            gOv006SlotManager->time = 0;
             break;
         case 4:
         case 5:
             idx = 2;
-            data_ov006_021ec884->unk13C = 0;
-            data_ov006_021ec884->time = 0;
+            gOv006SlotManager->unk13C = 0;
+            gOv006SlotManager->time = 0;
             break;
         case 6:
             idx = 5;
-            data_ov006_021ec884->unk13C = 0;
-            data_ov006_021ec884->time = 0;
+            gOv006SlotManager->unk13C = 0;
+            gOv006SlotManager->time = 0;
             break;
         case 7:
             idx = 6;
-            data_ov006_021ec884->unk13C = 0;
-            data_ov006_021ec884->time = 0;
+            gOv006SlotManager->unk13C = 0;
+            gOv006SlotManager->time = 0;
             break;
         default:
-            data_ov006_021ec884->unk13C = 0;
-            data_ov006_021ec884->time = 0;
+            gOv006SlotManager->unk13C = 0;
+            gOv006SlotManager->time = 0;
             break;
         }
         if (idx != 0xffff) {
-            v = DataRes_ReadEntry(data_02fe152c, 4, 0x10, idx);
+            v = DataRes_ReadEntry(gDataRes, 4, 0x10, idx);
         }
-        data_ov006_021ec884->unk144 = v;
+        gOv006SlotManager->unk144 = v;
         break;
     }
     case 8:
         if (arg == 2) {
             ov006_SlotSub sub;
             u8 i;
-            data_ov006_021ec860->taskType = 1;
-            data_ov006_021ec860->unk20 = 0;
-            data_ov006_021ec884->unk13D = 0;
+            gOv006Manager->taskType = 1;
+            gOv006Manager->unk20 = 0;
+            gOv006SlotManager->unk13D = 0;
             sub.unk0 = 0;
             sub.unk2 = 0;
             sub.unk3 = 0;
@@ -143,8 +143,8 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
             sub.unk8 = 0;
             sub.unkC = 0;
             for (i = 0; i < 4; i++) {
-                ov006_Slot_SetSub2C(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i), &sub);
-                ov006_Slot_SetSub3C(ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i), &sub);
+                ov006_Slot_SetSub2C(ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, i), &sub);
+                ov006_Slot_SetSub3C(ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, i), &sub);
             }
         } else {
             u8 b;
@@ -152,8 +152,8 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
             u8 c;
             u16 n16;
             ov006_SlotManager *m;
-            data_ov006_021ec860->taskType = 3;
-            m = data_ov006_021ec884;
+            gOv006Manager->taskType = 3;
+            m = gOv006SlotManager;
             n = m->time;
             b = m->unk148;
             c = m->lap;
@@ -164,13 +164,13 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
             if (b == 2) {
                 u32 idx = ov006_RecordIdx();
                 if (idx != 0xffff) {
-                    DataRes_WriteEntry(data_02fe152c, 4, 0x10, idx, n16);
+                    DataRes_WriteEntry(gDataRes, 4, 0x10, idx, n16);
                 }
             }
             func_020627fc(c);
             func_0206280c(n16);
             {
-                u8 *p = (u8 *)data_ov000_021ccd54 + 0xac;
+                u8 *p = (u8 *)gSceneCmd + 0xac;
                 *p = 1;
                 func_ov000_02182590(p);
             }

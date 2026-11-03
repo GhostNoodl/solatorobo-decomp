@@ -7,11 +7,11 @@ extern "C" {
 
 void func_ov000_0218af9c(GroupNode *self);
 
-extern Group *data_ov000_021ccd64;
+extern Group *gGroup;
 Actor *Group_SpawnActor(Group *g, const GroupActorDesc *desc, const VecFx32 *pos, const Rot16 *rot, u16 id);
 
 static inline BOOL GroupNode_InField(GroupNode *self) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     BOOL r = FALSE;
     if (g->unk_ca.c[0] == self->fieldId.c[0] && g->unk_ca.c[1] == self->fieldId.c[1] && g->unk_ca.c[2] == self->fieldId.c[2]) {
         r = TRUE;
@@ -49,7 +49,7 @@ void func_ov000_0218ac98(GroupNode *self) {
             self->state = 3;
             return;
         }
-        Group_RemoveNode(data_ov000_021ccd64, self, 0);
+        Group_RemoveNode(gGroup, self, 0);
         break;
     }
     case 3:
@@ -70,11 +70,11 @@ void func_ov000_0218adf0(GroupNode *self) {
     VecFx32 pos;
     u8 i;
     seg.from = self->pos;
-    for (i = 0; i < data_ov000_021ccd64->viewCount; i = (u8)(i + 1)) {
-        seg.to.x = data_ov000_021ccd64->viewPos[i].x;
-        seg.to.y = data_ov000_021ccd64->viewPos[i].y;
-        seg.to.z = data_ov000_021ccd64->viewPos[i].z;
-        seg.yaw = data_ov000_021ccd64->viewYaw[i];
+    for (i = 0; i < gGroup->viewCount; i = (u8)(i + 1)) {
+        seg.to.x = gGroup->viewPos[i].x;
+        seg.to.y = gGroup->viewPos[i].y;
+        seg.to.z = gGroup->viewPos[i].z;
+        seg.yaw = gGroup->viewYaw[i];
         if (HitVolume_TestSegment(self, &seg)) {
             BOOL done = FALSE;
             Actor *sp;
@@ -82,7 +82,7 @@ void func_ov000_0218adf0(GroupNode *self) {
             if (self->flags.toGround) {
                 Geom_SnapToGround(&pos, 0x5dc000, -0x1000);
             }
-            sp = Group_SpawnActor(data_ov000_021ccd64, &self->spawn, &pos, &self->rot, self->id);
+            sp = Group_SpawnActor(gGroup, &self->spawn, &pos, &self->rot, self->id);
             if (sp != NULL) {
                 GroupEntry *r;
                 done = TRUE;
@@ -95,7 +95,7 @@ void func_ov000_0218adf0(GroupNode *self) {
                 r->rot.x = self->rot.x;
                 r->rot.y = self->rot.y;
                 r->rot.z = self->rot.z;
-                r->fieldId = data_ov000_021ccd54->unk_ca;
+                r->fieldId = gSceneCmd->unk_ca;
                 self->count++;
             }
             if (done) {

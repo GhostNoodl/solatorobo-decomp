@@ -32,9 +32,9 @@ extern u32 NNS_SndArcGetGroupCount(void);
 extern u32 NNS_SndArcGetStrmCount(void);
 extern void NNS_SndPlayerSetPlayableSeqCount(int playerNo, int seqCount);
 void SndMgr_LoadNow(SndMgr *mgr, s32 type, s32 id);
-extern u8 data_020bbef0[];
-extern u8 data_02097ef0[];
-extern u8 data_02097e50[];
+extern u8 gSndHeapMain[];
+extern u8 gSndHeapStrm[];
+extern u8 gSndArc[];
 extern char data_0208b6cc[];
 
 void SndMgr_Init(SndMgr *mgr) {
@@ -47,15 +47,15 @@ void SndMgr_Init(SndMgr *mgr) {
     mgr->fileBuf = 0;
     mgr->fileSize = 0;
     NNS_SndInit();
-    heap = NNS_SndHeapCreate(data_020bbef0, 0x8e000);
+    heap = NNS_SndHeapCreate(gSndHeapMain, 0x8e000);
     if (heap != NULL) {
         mgr->heaps[0] = heap;
     }
-    heap = NNS_SndHeapCreate(data_02097ef0, 0x24000);
+    heap = NNS_SndHeapCreate(gSndHeapStrm, 0x24000);
     if (heap != NULL) {
         mgr->heaps[1] = heap;
     }
-    NNS_SndArcInit(data_02097e50, data_0208b6cc, mgr->heaps[0], FALSE);
+    NNS_SndArcInit(gSndArc, data_0208b6cc, mgr->heaps[0], FALSE);
     NNS_SndArcPlayerSetup(mgr->heaps[0]);
     NNS_SndHandleInit(&mgr->bgm);
     NNS_SndHandleInit(&mgr->se);
@@ -98,9 +98,9 @@ void SndMgr_Init(SndMgr *mgr) {
     }
     NNS_SndPlayerSetPlayerPriority(&mgr->voice, 0x40);
     NNS_SndPlayerSetPlayerPriority(&mgr->se, 0x40);
-    SndMgr_LoadNow(data_02097e48.mgr, 4, 0);
-    SndMgr_LoadNow(data_02097e48.mgr, 4, 1);
-    SndMgr_LoadNow(data_02097e48.mgr, 4, 3);
+    SndMgr_LoadNow(gSndQueue.mgr, 4, 0);
+    SndMgr_LoadNow(gSndQueue.mgr, 4, 1);
+    SndMgr_LoadNow(gSndQueue.mgr, 4, 3);
 }
 
 }

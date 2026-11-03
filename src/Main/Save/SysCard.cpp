@@ -2,7 +2,7 @@
 
 extern "C" {
 
-SysCard *data_02097e44;
+SysCard *gSysCard;
 
 static inline BOOL SysCard_Begin(SysCard *card) {
     if (card->state == 8) {
@@ -19,7 +19,7 @@ static inline void SysCard_End(SysCard *card) {
     if (card->state == 8) {
         return;
     }
-    SysCard_CheckError(data_02097e44, 11);
+    SysCard_CheckError(gSysCard, 11);
     SysCard_Unlock(card);
     SysCard_SetState(card, 1);
 }
@@ -30,7 +30,7 @@ static inline BOOL SysCard_IsReady(void) {
 
 void func_02046c6c(void) {
     SysCard *card;
-    if (data_02097e44 != NULL) {
+    if (gSysCard != NULL) {
         return;
     }
     card = (SysCard *)Heap_Alloc(sizeof(SysCard));
@@ -45,7 +45,7 @@ void func_02046c6c(void) {
         card->error = 0;
         card->lockCount = 0;
     }
-    data_02097e44 = card;
+    gSysCard = card;
     func_02046d1c(card);
 }
 
@@ -65,7 +65,7 @@ void func_02046d1c(SysCard *card) {
         SysCard_Lock(card);
     }
     if (!CARD_IdentifyBackup(0xd01)) {
-        SysCard_CheckError(data_02097e44, 11);
+        SysCard_CheckError(gSysCard, 11);
     }
     SysCard_Unlock(card);
     card->totalSize = CARD_GetBackupPageSize();
@@ -95,21 +95,21 @@ s32 SysCard_Read(SysCard *card, void *dst, u32 src, u32 len) {
     }
     SysCard_SetState(card, 3);
     if (!SysCard_IsReady()) {
-        SysCard_CheckError(data_02097e44, 8);
+        SysCard_CheckError(gSysCard, 8);
         SysCard_End(card);
         return 2;
     }
     CARDi_RequestStreamCommand(src, (u32)dst, len, func_02046fac, card, TRUE, 6, 1, 0);
-    SysCard_CheckError(data_02097e44, 11);
+    SysCard_CheckError(gSysCard, 11);
     return 0;
 }
 
 void func_02046fac(void *arg) {
-    SysCard_SetState(data_02097e44, 4);
-    if (data_02097e44->callback != NULL) {
-        data_02097e44->callback(data_02097e44->callbackArg);
+    SysCard_SetState(gSysCard, 4);
+    if (gSysCard->callback != NULL) {
+        gSysCard->callback(gSysCard->callbackArg);
     }
-    SysCard_SetState(data_02097e44, 2);
+    SysCard_SetState(gSysCard, 2);
 }
 
 s32 func_02047004(SysCard *card, u32 dst, const void *src, u32 len) {
@@ -121,25 +121,25 @@ s32 func_02047004(SysCard *card, u32 dst, const void *src, u32 len) {
     }
     SysCard_SetState(card, 5);
     if (dst + len > card->sectorSize) {
-        SysCard_CheckError(data_02097e44, 9);
+        SysCard_CheckError(gSysCard, 9);
         return 2;
     }
     if (!SysCard_IsReady()) {
-        SysCard_CheckError(data_02097e44, 8);
+        SysCard_CheckError(gSysCard, 8);
         SysCard_End(card);
         return 2;
     }
     CARDi_RequestStreamCommand((u32)src, dst, len, func_02047198, card, TRUE, 8, 10, 2);
-    SysCard_CheckError(data_02097e44, 11);
+    SysCard_CheckError(gSysCard, 11);
     return 0;
 }
 
 void func_02047198(void *arg) {
-    SysCard_SetState(data_02097e44, 6);
-    if (data_02097e44->callback != NULL) {
-        data_02097e44->callback(data_02097e44->callbackArg);
+    SysCard_SetState(gSysCard, 6);
+    if (gSysCard->callback != NULL) {
+        gSysCard->callback(gSysCard->callbackArg);
     }
-    SysCard_SetState(data_02097e44, 2);
+    SysCard_SetState(gSysCard, 2);
 }
 
 BOOL SysCard_CheckError(SysCard *card, s32 err) {

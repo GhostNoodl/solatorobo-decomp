@@ -5,7 +5,7 @@ extern "C" {
 ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 kind);
 
 void ActorMgr_SendToKindOthers(u16 kind, u16 id, u8 type, BOOL notify, u32 size, const void *data) {
-    ActorGroup *group = ActorMgr_GetGroup(data_ov000_021ccd68, kind);
+    ActorGroup *group = ActorMgr_GetGroup(gActorMgr, kind);
     Actor *actor;
     if (group == NULL || (actor = group->head) == NULL) {
         return;

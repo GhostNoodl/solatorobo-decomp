@@ -14,7 +14,7 @@ typedef struct ov006_Ofs021e76d8 {
 
 extern "C" {
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern ov006_Ofs021e76d8 data_ov006_021eb954[];
 AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *a, int b);
 void *SndMgr_PlayAt(void *a, s32 b, VecFx32 *c, s32 d);
@@ -40,7 +40,7 @@ void Ov006Racer_UpdateCamera(Ov006Racer *self) {
     if (self->unk_1f8 != 0) {
         self->unk_1f8--;
         if (self->unk_1f8 == 0) {
-            e = Effect_Find_020657b0(data_0214a420, self->unk_1e8);
+            e = Effect_Find_020657b0(gEffectMgr, self->unk_1e8);
             if (e != NULL) {
                 EffectObj_StopLoop(e);
                 e->state = 4;
@@ -92,7 +92,7 @@ void Ov006Racer_UpdateCamera(Ov006Racer *self) {
             }
         }
         if (self->unk_1e8 != 0) {
-            e = Effect_Find_020657b0(data_0214a420, self->unk_1e8);
+            e = Effect_Find_020657b0(gEffectMgr, self->unk_1e8);
             if (e == NULL) {
                 self->unk_1e8 = 0;
             } else {
@@ -107,7 +107,7 @@ void Ov006Racer_UpdateCamera(Ov006Racer *self) {
         }
         if (self->unk_1fa == 0 || self->unk_1f8 != 0) {
             self->unk_1fa = 0;
-            e = Effect_Find_020657b0(data_0214a420, self->unk_1ec);
+            e = Effect_Find_020657b0(gEffectMgr, self->unk_1ec);
             if (e != NULL) {
                 EffectObj_StopLoop(e);
                 self->unk_1ec = 0;
@@ -117,15 +117,15 @@ void Ov006Racer_UpdateCamera(Ov006Racer *self) {
                 if (e != NULL) {
                     e->SetScaleAll(0x1800);
                     self->unk_1ec = e->id;
-                    if (self->idx == data_ov006_021ec884->unk5) {
-                        SndMgr_PlayAt(data_02097e4c, 0x82, &self->pos, 0);
+                    if (self->idx == gOv006SlotManager->unk5) {
+                        SndMgr_PlayAt(gSndMgr, 0x82, &self->pos, 0);
                     }
                 }
             }
         } else if (self->unk_1ec == 0 && (self->unk_19c_0 & 1)) {
             e = Effect_SpawnId(0x38c, &self->pos);
             if (e != NULL) {
-                if (self->idx == data_ov006_021ec884->unk5) {
+                if (self->idx == gOv006SlotManager->unk5) {
                     e->SetScaleAll(0x1266);
                 } else {
                     e->SetScaleAll(0xa66);
@@ -136,7 +136,7 @@ void Ov006Racer_UpdateCamera(Ov006Racer *self) {
         }
     }
     if (self->unk_1ec != 0) {
-        e = Effect_Find_020657b0(data_0214a420, self->unk_1ec);
+        e = Effect_Find_020657b0(gEffectMgr, self->unk_1ec);
         if (e != NULL) {
             if (!(self->unk_19c_0 & 1)) {
                 e->state = 4;
@@ -149,7 +149,7 @@ void Ov006Racer_UpdateCamera(Ov006Racer *self) {
         }
     }
     if (self->unk_1d4 != 0) {
-        e = Effect_Find_020657b0(data_0214a420, self->unk_1d4);
+        e = Effect_Find_020657b0(gEffectMgr, self->unk_1d4);
         if (e == NULL) {
             self->unk_1d4 = 0;
         } else {
@@ -168,7 +168,7 @@ void Ov006Racer_UpdateCamera(Ov006Racer *self) {
     }
     if (self->unk_1d8 != 0 || self->unk_1dc != 0) {
         BOOL set;
-        u16 idx = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, self->idx)->unkC & 0xfff;
+        u16 idx = ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, self->idx)->unkC & 0xfff;
         u16 rz = self->rot.z;
         u16 ry = self->rot.y;
         u16 rx = self->rot.x;
@@ -199,7 +199,7 @@ void Ov006Racer_UpdateCamera(Ov006Racer *self) {
         r.y = Angle_Approach(self->rot.y, self->look2.y, 0x4cd, 1, 0x8000);
         r.z = self->rot.z;
         if (self->unk_1d8 != 0) {
-            e = Effect_Find_020657b0(data_0214a420, self->unk_1d8);
+            e = Effect_Find_020657b0(gEffectMgr, self->unk_1d8);
             if (e == NULL) {
                 self->unk_1d8 = 0;
             } else {
@@ -217,7 +217,7 @@ void Ov006Racer_UpdateCamera(Ov006Racer *self) {
             }
         }
         if (self->unk_1dc != 0) {
-            e = Effect_Find_020657b0(data_0214a420, self->unk_1dc);
+            e = Effect_Find_020657b0(gEffectMgr, self->unk_1dc);
             if (e == NULL) {
                 self->unk_1dc = 0;
             } else {
@@ -236,7 +236,7 @@ void Ov006Racer_UpdateCamera(Ov006Racer *self) {
         }
     }
     if (self->unk_1d0 != 0) {
-        e = Effect_Find_020657b0(data_0214a420, self->unk_1d0);
+        e = Effect_Find_020657b0(gEffectMgr, self->unk_1d0);
         if (e == NULL) {
             self->unk_1d0 = 0;
         } else {
@@ -244,7 +244,7 @@ void Ov006Racer_UpdateCamera(Ov006Racer *self) {
         }
     }
     if (self->unk_1e0 != 0) {
-        e = Effect_Find_020657b0(data_0214a420, self->unk_1e0);
+        e = Effect_Find_020657b0(gEffectMgr, self->unk_1e0);
         if (e == NULL) {
             self->unk_1e0 = 0;
         } else {
@@ -252,7 +252,7 @@ void Ov006Racer_UpdateCamera(Ov006Racer *self) {
         }
     }
     if (self->unk_1e4 != 0) {
-        e = Effect_Find_020657b0(data_0214a420, self->unk_1e4);
+        e = Effect_Find_020657b0(gEffectMgr, self->unk_1e4);
         if (e == NULL) {
             self->unk_1e4 = 0;
         } else {
@@ -260,7 +260,7 @@ void Ov006Racer_UpdateCamera(Ov006Racer *self) {
         }
     }
     if (self->unk_1f0 != 0) {
-        e = Effect_Find_020657b0(data_0214a420, self->unk_1f0);
+        e = Effect_Find_020657b0(gEffectMgr, self->unk_1f0);
         if (e != NULL) {
             if (self->unk_19c_14) {
             Camera *c;
@@ -268,7 +268,7 @@ void Ov006Racer_UpdateCamera(Ov006Racer *self) {
             p4 = self->pos;
             p4.y += 0x800;
             e->SetPos(&p4);
-            c = &data_ov000_021ccd54->cam.base;
+            c = &gSceneCmd->cam.base;
             cr.x = c->pitch;
             cr.y = c->yaw;
             cr.z = c->roll;

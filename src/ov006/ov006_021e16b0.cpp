@@ -11,9 +11,9 @@ typedef struct ov006_Unk021e16b0 {
 
 extern "C" {
 
-extern u8 data_ov006_021ec2fc[];
-extern u8 data_ov006_021ec25c[];
-extern u8 data_0208b318[];
+extern u8 Ov006Vt_021ec2fc_vtbl[];
+extern u8 Ov006Vt_021ec25c_vtbl[];
+extern u8 ResHandle_vtbl[];
 void TextWin_InitLines(TextWin *win, u32 n);
 
 static inline Model *ov006_NewModel021e16b0(void) {
@@ -42,7 +42,7 @@ static inline void ov006_Caption_ResetText(ov006_Caption *s, const char *str) {
     t = s->label;
     t->str = (u32)p;
     t->unk_4c = Text_Measure(t->font, t->spacing, t->str, &t->width, &t->height, (s8)t->unk_37 != 0);
-    data_02097ce0->unk_004 = t->font;
+    gGfxMgr->unk_004 = t->font;
     TextWin_InitLines(s->label, 0x10);
     s->label->flags |= 4;
 }
@@ -55,11 +55,11 @@ static inline void ov006_Caption_Build(ov006_Caption *s) {
         s->model->flags |= 2;
         s->model->flags &= ~0x80000;
         s->model->flags |= 0x400000;
-        TexObj_SelectImage(s->model, 2, data_ov006_021eb824[s->kind].part);
+        TexObj_SelectImage(s->model, 2, ov006_CaptionTable[s->kind].part);
     }
     t = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (t != NULL) {
-        *(const u32 **)t = data_0208ba70;
+        *(const u32 **)t = TextWin_vtbl;
         TextWin_Init(t);
     }
     s->label = t;
@@ -81,7 +81,7 @@ void ov006_Unk021e16b0_Load(ov006_Unk021e16b0 *self) {
     Model *model;
     s = (ov006_Caption *)Heap_Alloc(0x2c);
     if (s != NULL) {
-        s->vtbl = data_ov006_021ec22c;
+        s->vtbl = ov006_Caption_vtbl;
         s->visible = zero;
         s->x = zero;
         s->y = zero;
@@ -99,9 +99,9 @@ void ov006_Unk021e16b0_Load(ov006_Unk021e16b0 *self) {
     ov006_Caption_ResetText(self->unk24, data_ov006_021ec1b5);
     l = (ov006_Label *)Heap_Alloc(0xec);
     if (l != NULL) {
-        *(void **)l = data_ov006_021ec2fc;
-        *(void **)&l->loader = data_ov006_021ec25c;
-        *(void **)&l->loader.res = data_0208b318;
+        *(void **)l = Ov006Vt_021ec2fc_vtbl;
+        *(void **)&l->loader = Ov006Vt_021ec25c_vtbl;
+        *(void **)&l->loader.res = ResHandle_vtbl;
         l->loader.res.vfunc_08();
         l->loader.step = zero;
         l->loader.res.vfunc_08();

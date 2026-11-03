@@ -10,7 +10,7 @@ typedef struct ov006_CaptionEntry {
     u16 height;
 } ov006_CaptionEntry;
 
-/* 0x2c-byte object (vtable data_ov006_021ec22c): a model plus a text anim. */
+/* 0x2c-byte object (vtable ov006_Caption_vtbl): a model plus a text anim. */
 typedef struct ov006_Caption {
     void *vtbl;
     u8 visible;
@@ -25,7 +25,7 @@ typedef struct ov006_Caption {
     TextWin *label;
 } ov006_Caption;
 
-/* A model with a title caption and up to three captions (vtable data_ov006_021ec29c, 0x24 bytes;
+/* A model with a title caption and up to three captions (vtable Ov006Vt_021ec29c_vtbl, 0x24 bytes;
    ctor Ov006Vt_021ec29c_Ctor, built by ov006_CaptionPanel_Load; ov006_CaptionSet_SetText fills
    captions[idx], ov006_CaptionPanel_PlayText plays the title's text). */
 typedef struct ov006_CaptionPanel {
@@ -45,10 +45,10 @@ extern "C" {
 extern char data_ov006_021ec1a9[];
 extern char data_ov006_021ec1b5[];
 extern char data_ov006_021ec864[];
-extern const ov006_CaptionEntry data_ov006_021eb824[];
-extern const u32 data_0208ba70[];
-extern u8 data_ov006_021ec22c[];
-extern u8 data_ov006_021ec29c[];
+extern const ov006_CaptionEntry ov006_CaptionTable[];
+extern const u32 TextWin_vtbl[];
+extern u8 ov006_Caption_vtbl[];
+extern u8 Ov006Vt_021ec29c_vtbl[];
 
 ov006_CaptionPanel *Ov006Vt_021ec29c_Ctor(ov006_CaptionPanel *self);
 void ov006_CaptionPanel_Load(ov006_CaptionPanel *self);
@@ -61,7 +61,7 @@ void ov006_CaptionSet_SetText(ov006_CaptionPanel *self, const char *text, int id
 static inline TextWin *ov006_TextWin_New(void) {
     TextWin *anim = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (anim != NULL) {
-        *(const u32 **)anim = data_0208ba70;
+        *(const u32 **)anim = TextWin_vtbl;
         TextWin_Init(anim);
     }
     return anim;
@@ -70,7 +70,7 @@ static inline TextWin *ov006_TextWin_New(void) {
 static inline ov006_Caption *ov006_Caption_New(void) {
     ov006_Caption *c = (ov006_Caption *)Heap_Alloc(sizeof(ov006_Caption));
     if (c != NULL) {
-        c->vtbl = data_ov006_021ec22c;
+        c->vtbl = ov006_Caption_vtbl;
         c->visible = 0;
         c->x = 0;
         c->y = 0;
@@ -104,7 +104,7 @@ static inline void ov006_Caption_Init(ov006_Caption *self) {
         self->model->flags |= 2;
         self->model->flags &= ~0x80000;
         self->model->flags |= 0x400000;
-        TexObj_SelectImage(self->model, 2, data_ov006_021eb824[self->kind].part);
+        TexObj_SelectImage(self->model, 2, ov006_CaptionTable[self->kind].part);
     }
     self->label = ov006_TextWin_New();
     text = data_ov006_021ec1b5;

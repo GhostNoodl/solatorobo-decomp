@@ -29,7 +29,7 @@ void func_ov000_021b9a84(Obj021b9a84 *self) {
     case 11:
     case 12:
     case 13:
-        Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+        Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
         func_ov000_021b9b14(self);
         if (self->unk_0c == 1 || self->unk_0c == 3) {
             func_ov000_021ba338(self);
@@ -228,7 +228,7 @@ typedef enum { SPR_DEPTH_021b9b14 = -0x81a } SprDepth_021b9b14;
 void func_ov000_021b9b14(Obj021b9a84 *self) {
     u32 al;
     SprDepth_021b9b14 dp;
-    GfxSys *g = data_02097d48;
+    GfxSys *g = gGfxSys;
     s32 t;
     s32 h;
     s32 o;

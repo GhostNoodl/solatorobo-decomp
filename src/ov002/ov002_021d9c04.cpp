@@ -27,13 +27,13 @@ void func_ov002_021d9c04(Obj021efe6c *self) {
     u8 r;
     u8 c;
     Ov002Shape *shape;
-    for (func_0206d0a8(data_0214a424), n = self->pieces; n != NULL; n = n->next) {
-        StageFlags_AddEntry(data_0214a424, n->unk_48, n->unk_54, n->unk_58, n->shape.rot, 0);
+    for (func_0206d0a8(gStageFlags), n = self->pieces; n != NULL; n = n->next) {
+        StageFlags_AddEntry(gStageFlags, n->unk_48, n->unk_54, n->unk_58, n->shape.rot, 0);
     }
     for (i = 0; i < 0x53; i++) {
         p = (u8 *)self + i;
         id = i | 0x2000;
-        if (p[8] != 0 || StageFlags_CountEntries(data_0214a424, id)) {
+        if (p[8] != 0 || StageFlags_CountEntries(gStageFlags, id)) {
             func_0206f3f0(id, p[8]);
         }
     }
@@ -50,7 +50,7 @@ void func_ov002_021d9c04(Obj021efe6c *self) {
             for (c = 0; c < cols; c++) {
                 u16 k = c + r * cols;
                 if (shape->grid[k] == 0 && self->cells[k].unk_2 != 2) {
-                    func_0206d3ac(data_0214a424, 1, c, r, org);
+                    func_0206d3ac(gStageFlags, 1, c, r, org);
                 }
             }
         }
@@ -64,20 +64,20 @@ void func_ov002_021d9c04(Obj021efe6c *self) {
             } else if (v > 99) {
                 v = 99;
             }
-            func_0206d390(data_0214a424, j, (s8)v);
+            func_0206d390(gStageFlags, j, (s8)v);
         }
     }
     {
         u8 *g;
         u16 c;
         c = ((u16)self->unk_8a);
-        g = (u8 *)data_0214a424;
+        g = (u8 *)gStageFlags;
         if (c > 9999) {
             c = 9999;
         }
         FIELD(g, 0x24, u16) = c;
     }
-    StageFlags_CountItems(data_0214a424);
+    StageFlags_CountItems(gStageFlags);
 }
 
 }

@@ -3,7 +3,7 @@
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void *Actor_GetTargetSub44(Actor *self);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void *Target_GetKindMask(void *p);
@@ -15,7 +15,7 @@ void func_ov000_021b3bd8(void *self);
 void func_ov000_021b3738(Robo021ca458 *self, void *t);
 
 static inline Actor *FindActor021b2d48(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }
@@ -52,7 +52,7 @@ void func_ov000_021b2d48(Robo021ca458 *self) {
     }
     if (res != NULL) {
         if (self->target != LFLD(u16, res, 0x20)) {
-            SndMgr_PlayVolume(data_02097e4c, 0x22, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x22, -1, -1, -1);
             self->target = LFLD(u16, res, 0x20);
         }
         if ((LFLD(u16, res, 0x20) >> 12) == 4) {

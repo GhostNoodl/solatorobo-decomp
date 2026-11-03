@@ -14,7 +14,7 @@ BOOL StageRes_HasQueued(void);
 void StageRes_Push207(s32 a, s32 b);
 
 static inline Actor *FindActor021a09b8(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }
@@ -22,7 +22,7 @@ static inline Actor *FindActor021a09b8(u16 id) {
 }
 
 static inline void Ping021a09b8(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     g->stageFlags = 1;
     func_ov000_02182590((u8 *)g + 0xac);
 }

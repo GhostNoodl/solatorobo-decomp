@@ -34,8 +34,8 @@ typedef struct {
     s32 unk_d0;
 } Ov003Prop;
 
-extern void *data_02097e4c;
-extern char data_ov003_021f83e8[];
+extern void *gSndMgr;
+extern char Ov003ActVt_021f83e8_vtbl[];
 extern const char data_ov003_021f8510[];
 extern char data_ov003_021f8516[];
 extern void Heap_Free(void *p);
@@ -48,18 +48,18 @@ extern void *Model0218fe1c_SetAnimFrame(void *p, s32 v);
 extern void Model0218fe1c_SetLoop(void *p);
 
 Ov003Prop *Ov003ActVt_021f83e8_Dtor(Ov003Prop *self) {
-    self->vtbl = data_ov003_021f83e8;
+    self->vtbl = Ov003ActVt_021f83e8_vtbl;
     if (self->unk_d0 >= 0) {
-        SndMgr_StopSeqArc(data_02097e4c, self->unk_d0);
+        SndMgr_StopSeqArc(gSndMgr, self->unk_d0);
     }
     ActorEx_DtorBase(self);
     return self;
 }
 
 Ov003Prop *Ov003ActVt_021f83e8_DtorDelete(Ov003Prop *self) {
-    self->vtbl = data_ov003_021f83e8;
+    self->vtbl = Ov003ActVt_021f83e8_vtbl;
     if (self->unk_d0 >= 0) {
-        SndMgr_StopSeqArc(data_02097e4c, self->unk_d0);
+        SndMgr_StopSeqArc(gSndMgr, self->unk_d0);
     }
     ActorEx_DtorBase(self);
     Heap_Free(self);
@@ -78,7 +78,7 @@ void Ov003ActVt_021f83e8_Start(Ov003Prop *self) {
     self->unk_44->unk_22_2 = 2;
     self->unk_44->unk_10 = -0x3800;
     self->unk_48->unk_60 = -0x3800;
-    self->unk_d0 = SndMgr_StartSeqArc(data_02097e4c, 0x3f);
+    self->unk_d0 = SndMgr_StartSeqArc(gSndMgr, 0x3f);
 }
 
 extern void Field_ShakeCamera(u8 a, u8 b);

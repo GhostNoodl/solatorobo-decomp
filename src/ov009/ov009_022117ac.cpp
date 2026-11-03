@@ -37,7 +37,7 @@ void Ov009ActVt_02217aac_StateDie(Ov009ActVt_02217aac *self) {
         s48->unk_9a_3 = 0;
         HitSphere_Unlink_0203f364(s48);
         Target_SetActor(self->hp, ActorMgr_FindPlayer());
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4802, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x4802, 0x15);
         self->unk_93_4 = 0;
         self->fsm->st++;
         Model0218fe1c_SetAnimSpeed(self->model, 0x800);
@@ -52,8 +52,8 @@ void Ov009ActVt_02217aac_StateDie(Ov009ActVt_02217aac *self) {
                 return;
             }
             Field_ShakeCamera(0x19, 0x3c);
-            SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
-            SndMgr_PlayAt(data_02097e4c, 0x53, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x56, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x53, &self->pos, 0);
             e = Effect_SpawnId(5, &self->pos);
             e->AddPosXYZ(0, self->centerY + (self->centerY >> 1), 0);
             e->SetScaleXYZ((self->radius >> 1) + 0x3800, (self->radius >> 1) + 0x3800, (self->radius >> 1) + 0x3800);
@@ -86,7 +86,7 @@ void Ov009ActVt_02217aac_StateDie(Ov009ActVt_02217aac *self) {
         v.z = self->radius + (self->radius >> 1);
         Spawn_ScatterEffect(&p, &v, 0x800, 0xccd, 3, 0x32);
         Field_ShakeCamera(10, 0xf);
-        SndMgr_PlayAt(data_02097e4c, 0x35, &p, 0);
+        SndMgr_PlayAt(gSndMgr, 0x35, &p, 0);
         return;
     }
     case 2: {

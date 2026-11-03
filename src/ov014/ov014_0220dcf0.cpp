@@ -12,7 +12,7 @@ struct Ov014Mtx33 {
 
 extern "C" {
 
-extern u8 data_ov014_02217b44[];
+extern u8 Ov014ActEx_0220dcf4_vtbl[];
 extern void HitSphere_Unlink_0203f364(ActorSub48 *p);
 extern void Model0218fe1c_PauseAnim(Model0218fe1c *p);
 extern void Model0218fe1c_ClearLoop(Model0218fe1c *p);
@@ -23,7 +23,7 @@ void Ov014ActEx_0220d70c_StateThrown(void) {
 #pragma force_active on
 Ov014ActEx_0220dcf4 *Ov014ActEx_0220dcf4_Ctor(Ov014ActEx_0220dcf4 *self) {
     ActorEx_Ctor(self);
-    *(void **)self = data_ov014_02217b44;
+    *(void **)self = Ov014ActEx_0220dcf4_vtbl;
     self->unk_d0 = NULL;
     self->unk_d4 = 0;
     self->unk_d6 = 0;
@@ -34,15 +34,15 @@ Ov014ActEx_0220dcf4 *Ov014ActEx_0220dcf4_Ctor(Ov014ActEx_0220dcf4 *self) {
 #pragma force_active reset
 
 Ov014ActEx_0220dcf4 *Ov014ActEx_0220dcf4_Dtor(Ov014ActEx_0220dcf4 *self) {
-    *(void **)self = data_ov014_02217b44;
-    EffectMgr_Kill(data_0214a420, self->unk_d0);
+    *(void **)self = Ov014ActEx_0220dcf4_vtbl;
+    EffectMgr_Kill(gEffectMgr, self->unk_d0);
     ActorEx_DtorBase(self);
     return self;
 }
 
 Ov014ActEx_0220dcf4 *Ov014ActEx_0220dcf4_DtorDelete(Ov014ActEx_0220dcf4 *self) {
-    *(void **)self = data_ov014_02217b44;
-    EffectMgr_Kill(data_0214a420, self->unk_d0);
+    *(void **)self = Ov014ActEx_0220dcf4_vtbl;
+    EffectMgr_Kill(gEffectMgr, self->unk_d0);
     ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
@@ -132,12 +132,12 @@ void Ov014ActEx_0220dcf4_StateIdle(Ov014ActEx_0220dcf4 *self) {
         self->unk_d0 = Ov014_CreateEffect(0, &self->pos)->id;
         self->fsm->st++;
         self->fsm->timer = 0x1e;
-        SndMgr_PlayAt(data_02097e4c, 0x82, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x82, &self->pos, 0);
     }
     case 1: {
         EffectObj *e;
         self->pos.y -= 0xcd;
-        e = Effect_Find_020657b0(data_0214a420, self->unk_d0);
+        e = Effect_Find_020657b0(gEffectMgr, self->unk_d0);
         if (e != NULL) {
             s32 s = Interp_SinLerp(FX_Div(self->fsm->timer << 12, 0x1e000), 0x19a, 0x3000);
             e->SetPosXYZ(self->pos.x, self->pos.y - 0x1000, self->pos.z);
@@ -153,7 +153,7 @@ void Ov014ActEx_0220dcf4_StateIdle(Ov014ActEx_0220dcf4 *self) {
         if (st->timer != 0) {
             return;
         }
-        EffectMgr_Kill(data_0214a420, self->unk_d0);
+        EffectMgr_Kill(gEffectMgr, self->unk_d0);
         self->unk_d0 = NULL;
         self->fsm->st = 10;
         self->fsm->timer = 0x1e;
@@ -163,7 +163,7 @@ void Ov014ActEx_0220dcf4_StateIdle(Ov014ActEx_0220dcf4 *self) {
         EffectObj *q;
         self->pos.y += (0x1e - st->timer) * 0x7b;
         if (st->timer == 0xf) {
-            SndMgr_PlayAt(data_02097e4c, 0x50, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x50, &self->pos, 0);
         }
         st = self->fsm;
         if (st->timer != 0) {
@@ -205,14 +205,14 @@ void Ov014ActEx_0220dcf4_StateIdle(Ov014ActEx_0220dcf4 *self) {
         n.x = -dir.x;
         n.y = -dir.y;
         n.z = -dir.z;
-        e = Effect_Find_020657b0(data_0214a420, self->unk_d0);
+        e = Effect_Find_020657b0(gEffectMgr, self->unk_d0);
         if (e != NULL) {
             e->SetPos(&self->pos);
             Math_DirToAngles(ang, &n);
             e->SetRot((const EffectRot *)ang); // ang is u16[4]: Rot16 would shrink the frame
         }
         if (self->pos.y < 0x5000 && oldy >= 0x5000) {
-            SndMgr_PlayAt(data_02097e4c, 0x57, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x57, &self->pos, 0);
         }
         self->fsm->timer++;
         if (!(self->hit->unk_50 & 0x60000000)) {
@@ -221,8 +221,8 @@ void Ov014ActEx_0220dcf4_StateIdle(Ov014ActEx_0220dcf4 *self) {
         self->pos.y = self->height >> 3;
         Field_ShakeCamera(0x14, 0x14);
         Effect_SpawnId(5, &self->pos)->SetScaleAll(0x4000);
-        SndMgr_PlayAt(data_02097e4c, 0x19, &self->pos, 0);
-        EffectMgr_StopLoop(data_0214a420, self->unk_d0);
+        SndMgr_PlayAt(gSndMgr, 0x19, &self->pos, 0);
+        EffectMgr_StopLoop(gEffectMgr, self->unk_d0);
         self->unk_d0 = NULL;
         if (self->unk_d4 == 0) {
             ActorSub44 *q4;

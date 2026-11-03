@@ -104,7 +104,7 @@ void func_ov000_021b3738(Robo021ca458 *self, ActorSub44 *hit) {
         self->unk_5c->show = 1;
     } else if (self->unk_b24_12 == 3) {
         u16 id = self->unk_b20;
-        Actor *o = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, id);
+        Actor *o = gActorMgr == NULL ? NULL : ActorMgr_GetActor(gActorMgr, id);
         if (o == NULL) {
             goto end;
         }
@@ -138,7 +138,7 @@ end:
     self->unk_5c->height = r;
     self->unk_5c->unk_50 = pos;
     ActorMarker_Update(self->unk_5c);
-    if (self->unk_b24_4 && !IsShown_021b3738(self->unk_5c) && (data_ov000_021ccd68->frame & 0x3f) < 0x2c) {
+    if (self->unk_b24_4 && !IsShown_021b3738(self->unk_5c) && (gActorMgr->frame & 0x3f) < 0x2c) {
         self->unk_9b0->show = 1;
     } else {
         self->unk_9b0->show = 0;

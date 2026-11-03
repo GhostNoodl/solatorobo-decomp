@@ -8,9 +8,9 @@ extern "C" {
 extern char data_0214b105[];
 extern const char *data_0208cca0;
 extern const char *data_0208cc94;
-extern void *data_ov000_021ccd44;
-extern u8 data_ov000_021cb940[];
-extern u8 data_ov000_021cb6d0[];
+extern void *gTaskHost;
+extern u8 Ov000Vt_021cb940_vtbl[];
+extern u8 Ov000Vt_021cb6d0_vtbl[];
 void func_ov000_0216f23c(void *p, s32 a);
 BOOL func_ov000_02180900(void *p);
 void ListBuffer021cb940_Release(void *p);
@@ -48,8 +48,8 @@ void func_ov000_02172124(VObj *self) {
         self->vfunc_10(buf);
     }
     func_ov000_0216f23c((u8 *)self + 8, 0);
-    if (data_ov000_021ccd44 != NULL) {
-        func_ov000_02180900(data_ov000_021ccd44);
+    if (gTaskHost != NULL) {
+        func_ov000_02180900(gTaskHost);
     }
 }
 

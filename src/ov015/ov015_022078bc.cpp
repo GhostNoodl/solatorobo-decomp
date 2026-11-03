@@ -198,13 +198,13 @@ void func_ov015_02207c30(Ov015Ship *self) {
             }
         }
     } else {
-        if (EffectMgr_Contains(data_0214a420, self->fx)) {
+        if (EffectMgr_Contains(gEffectMgr, self->fx)) {
             void *saved;
             HEAP_PUSH(saved);
             DELETE_V(self->fx);
             HEAP_POP(saved);
         }
-        if (EffectMgr_Contains(data_0214a420, self->fx2)) {
+        if (EffectMgr_Contains(gEffectMgr, self->fx2)) {
             void *saved;
             HEAP_PUSH(saved);
             DELETE_V(self->fx2);

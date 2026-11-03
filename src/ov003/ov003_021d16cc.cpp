@@ -25,8 +25,8 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
-extern void *data_ov000_021ccd68;
+extern void *gGroup;
+extern void *gActorMgr;
 extern Ov003SdUnit *Group_FindNode(void *mgr, u16 id);
 extern Ov003SdObj *ActorMgr_GetActor(void *mgr, u16 id);
 extern s32 FX_Div(s32 a, s32 b);
@@ -86,7 +86,7 @@ static inline BOOL Ov003Game_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -98,14 +98,14 @@ static inline BOOL Ov003Game_HasEvent(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameHasD4(void) {
-    return Ov003Game_HasEvent(data_ov000_021ccd54) ? TRUE : FALSE;
+    return Ov003Game_HasEvent(gSceneCmd) ? TRUE : FALSE;
 }
 
 static inline Ov003SdObj *Ov003Sd_FindObj(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 extern "C" u16 Ov003Actor_Draw(Ov003Actor *self) {
@@ -132,10 +132,10 @@ extern "C" u16 Ov003Actor_Draw(Ov003Actor *self) {
     alpha = 0x1f;
     unit = NULL;
     if (!self->unk_ea_14) {
-        unit = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+        unit = Group_FindNode(gGroup, self->unk_20);
     }
     if (unit != NULL) {
-        FieldState *g = data_ov000_021ccd54;
+        FieldState *g = gSceneCmd;
         s32 dx = self->pos.x - g->cam.base.eye.x;
         s32 dz = self->pos.z - g->cam.base.eye.z;
         s64 sq = (s64)dx * dx;

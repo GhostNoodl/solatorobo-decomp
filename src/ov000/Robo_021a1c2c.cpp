@@ -20,7 +20,7 @@ extern char data_ov000_021cc618[];
 extern char data_ov000_021cc62a[];
 extern char data_ov000_021cc636[];
 extern char data_ov000_021cc5e3[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void Robo021ca458_WalkByPad(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
 void Actor_Move(Actor *self, s32 a);
 void Robo021ca458_Move(Robo021ca458 *self, BOOL a, s32 b);
@@ -102,7 +102,7 @@ void Robo021ca458_State04(Robo021ca458 *self) {
                     self->unk_b24_22 = 0;
                     Model0218fe1c_SetLoop(self->model);
                 }
-                SndMgr_PlayAt(data_02097e4c, 8, (u8 *)self + 0x70, 0);
+                SndMgr_PlayAt(gSndMgr, 8, (u8 *)self + 0x70, 0);
                 if (self->unk_b24_12 == 1) {
                     EffectObj *o = Effect_SpawnId(0x6d, &self->pos);
                     o->SetScaleAll(0x99a);
@@ -120,7 +120,7 @@ void Robo021ca458_State04(Robo021ca458 *self) {
             }
             Model0218fe1c_SetAnim(self->model, name, 0x1000, 0);
             if (se >= 0) {
-                SndMgr_PlayAt(data_02097e4c, se, (u8 *)self + 0x70, -5);
+                SndMgr_PlayAt(gSndMgr, se, (u8 *)self + 0x70, -5);
                 if ((self->hit->unk_50 & 0xf0f0f0) == 0xe0e000) {
                     p = self->pos;
                     p.y += 0xccd;
@@ -144,8 +144,8 @@ void Robo021ca458_State04(Robo021ca458 *self) {
         }
         if (!self->unk_b24_1) {
             if (self->unk_b2b >= 8 && self->unk_b2b <= 0x10) {
-                u16 yaw = FieldCam_GetYaw(&data_ov000_021ccd54->cam);
-                u16 ang = yaw + Pad_LookupDir(data_02097dc8, (u8 *)self + 0xb70);
+                u16 yaw = FieldCam_GetYaw(&gSceneCmd->cam);
+                u16 ang = yaw + Pad_LookupDir(gPad, (u8 *)self + 0xb70);
                 s32 h;
                 s32 r;
                 a = self->pos;
@@ -198,7 +198,7 @@ void Robo021ca458_State04(Robo021ca458 *self) {
             }
         }
         self->hpObj->unk_0a = 0xf0;
-        SndMgr_PlayAt(data_02097e4c, 0x34, (u8 *)self + 0x70, 0);
+        SndMgr_PlayAt(gSndMgr, 0x34, (u8 *)self + 0x70, 0);
         if (self->unk_b22_0) {
             if (!self->unk_b24_1) {
                 AnimCtrl *q;
@@ -219,10 +219,10 @@ void Robo021ca458_State04(Robo021ca458 *self) {
                     q->same = 0;
                 }
                 self->mdl0.unk_cc = -1;
-                data_0214a424->bits18.flag8 = 0;
-                data_0214a424->bits18.flag9 = 0;
+                gStageFlags->bits18.flag8 = 0;
+                gStageFlags->bits18.flag9 = 0;
                 Shared_ChangeFlags(3, 1);
-                data_ov000_021ccd54->stageFlags = 1;
+                gSceneCmd->stageFlags = 1;
             }
             if (self->unk_9ac < 0xb4) {
                 self->unk_9ac = 0xb4;

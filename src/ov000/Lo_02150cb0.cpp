@@ -21,7 +21,7 @@ void Lo021ca9c4_Release(Lo021ca9c4 *self) {
     HEAP_DELETE_MODEL(self->unk_44);
     HEAP_DELETE_VOBJ(self->unk_3c);
     if (self->unk_42 == 0xffff) {
-        LO_FREE_V(&data_ov000_021ccd24, 8);
+        LO_FREE_V(&gSceneResSet, 8);
     }
 }
 

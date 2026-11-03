@@ -16,7 +16,7 @@ typedef struct {
 } Msg021aaf80;
 
 extern "C" {
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov000_021cc6b4[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL Model0218fe1c_IsAnimDelayed(void *a);
@@ -35,7 +35,7 @@ void Robo021ca458_Move(Robo021ca458 *self, s32 a, s32 b);
 u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, u16 b);
 
 static inline Actor *FindActor021aaf80(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }
@@ -123,8 +123,8 @@ void func_ov000_021aaf80(Robo021ca458 *self) {
             p = a->pos;
             p.y = self->pos.y;
             Field_ShakeCameraY(0xe, 0x19);
-            SndMgr_PlayAt(data_02097e4c, 0x1b, &self->pos, 0);
-            SndMgr_PlayAt(data_02097e4c, 0x53, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x1b, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x53, &self->pos, 0);
             sc = a->radius;
             if (sc < 0xccd) {
                 sc = 0xccd;
@@ -204,7 +204,7 @@ void func_ov000_021aaf80(Robo021ca458 *self) {
     if (!Model0218fe1c_IsAnimDelayed(self->model)) {
         u16 ang = self->rot_y;
         if (self->mode == 1 && (self->padCur & 0xf0)) {
-            ang = FieldCam_GetYaw(&data_ov000_021ccd54->cam) + self->padDir;
+            ang = FieldCam_GetYaw(&gSceneCmd->cam) + self->padDir;
         }
         self->rot_y = Angle_Approach(ang, self->rot_y, 0x19a, 1, 0x8000);
     }

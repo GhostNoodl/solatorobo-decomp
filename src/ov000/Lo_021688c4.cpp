@@ -54,7 +54,7 @@ void Lo021cb894_DrawFrame(Lo021cb894 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
     s32 r;
     p.x = pos->x - 0x80000;
     p.y = pos->y - 0x60000;
-    g = data_02097d48;
+    g = gGfxSys;
     p.z = 0;
     VEC_Add(&p, (VecFx32 *)((u8 *)self + 0xac), &p);
     MODEL_FLAGS(self->unk_9c)->unk_20 = 0;

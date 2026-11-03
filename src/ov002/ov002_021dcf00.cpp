@@ -29,7 +29,7 @@ static inline void ov002_CamMove(Obj021efe6c *c, s32 px, s32 py, s32 pz, s32 tx,
 static inline Obj021efef0 *ov002_NewDcee0(void) {
     Obj021efef0 *p = (Obj021efef0 *)Heap_Alloc(sizeof(Obj021efef0));
     if (p != NULL) {
-        *(VFunc **)p = data_ov002_021efef0;
+        *(VFunc **)p = Ov002Vt_021efef0_vtbl;
         Obj021efef0_Init(p);
     }
     return p;
@@ -53,13 +53,13 @@ void func_ov002_021dcf00(Obj021eff10 *self) {
     s32 d;
     Obj021efe6c *w;
     void *msg;
-    trig = data_02097dc8->trig;
+    trig = gPad->trig;
     w = self->owner->board;
-    msg = data_02149ef8;
+    msg = gMsgRes;
     if (trig & 1) {
         if (sumItems(w) == 0) {
             ov002_ShowMsg(self, MsgRes_GetString(msg, 0x107));
-            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
             return;
         }
         {
@@ -73,7 +73,7 @@ void func_ov002_021dcf00(Obj021eff10 *self) {
             t->unk_10 = p;
             t->unk_0c = 0x14;
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
         return;
     }
     if ((trig & 0x20) || (trig & 2)) {
@@ -92,7 +92,7 @@ void func_ov002_021dcf00(Obj021eff10 *self) {
         ov002_CamMove(w, px, py, pz, 0, 0, tz);
         func_ov002_021dd7f0(self, (Vec2 *)((u8 *)self + 0x24), (Vec2 *)((u8 *)self + 0x24), 1);
         self->unk_18 = 10;
-        SndMgr_PlayVolume(data_02097e4c, 0xf, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0xf, -1, -1, -1);
     }
 }
 

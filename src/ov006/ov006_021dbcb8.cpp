@@ -2,9 +2,9 @@
 
 extern "C" {
 
-extern u8 data_ov006_021ec2fc[];
-extern u8 data_ov006_021ec25c[];
-extern u8 data_0208b318[];
+extern u8 Ov006Vt_021ec2fc_vtbl[];
+extern u8 Ov006Vt_021ec25c_vtbl[];
+extern u8 ResHandle_vtbl[];
 
 static inline void ov006_ResHandle_Close(ov006_ResHandle *res) {
     if (res->name[0] != 0 || res->arcName[0] != 0) {
@@ -14,23 +14,23 @@ static inline void ov006_ResHandle_Close(ov006_ResHandle *res) {
 }
 
 static inline void ov006_ResLoader_dtor(ov006_ResLoader *self) {
-    *(void **)self = data_ov006_021ec25c;
+    *(void **)self = Ov006Vt_021ec25c_vtbl;
     ov006_ResHandle_Close(&self->res);
-    *(void **)&self->res = data_0208b318;
+    *(void **)&self->res = ResHandle_vtbl;
     self->res.vfunc_0c();
 }
 
 static inline void ov006_Label_dtor(ov006_Label *self) {
-    *(void **)self = data_ov006_021ec2fc;
+    *(void **)self = Ov006Vt_021ec2fc_vtbl;
     ov006_ResHandle_Close(&self->loader.res);
     OV006_DELETE_MODEL(self->model);
     ov006_ResLoader_dtor(&self->loader);
 }
 
 ov006_Label *Ov006Vt_021ec2fc_Ctor(ov006_Label *self) {
-    *(void **)self = data_ov006_021ec2fc;
-    *(void **)&self->loader = data_ov006_021ec25c;
-    *(void **)&self->loader.res = data_0208b318;
+    *(void **)self = Ov006Vt_021ec2fc_vtbl;
+    *(void **)&self->loader = Ov006Vt_021ec25c_vtbl;
+    *(void **)&self->loader.res = ResHandle_vtbl;
     self->loader.res.vfunc_08();
     self->loader.step = 0;
     self->loader.res.vfunc_08();

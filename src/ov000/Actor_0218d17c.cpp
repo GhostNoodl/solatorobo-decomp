@@ -19,14 +19,14 @@ void Actor_Destroy(Actor *self) {
             u16 id = self->targetObj->target;
             // FindActor with an early `return NULL` for a missing manager: each arm sets its own
             // NULL, and the post-RA head merge lifts the shared `mov r1, #0` above the test.
-            if (data_ov000_021ccd68 == NULL) {
+            if (gActorMgr == NULL) {
                 ret = NULL;
             } else {
                 ret = NULL;
                 if (id != 0xffff) {
                     key = id & 0xf000;
                     g2 = NULL;
-                    group = data_ov000_021ccd68->head;
+                    group = gActorMgr->head;
                     if (key == 0xf000) {
                         g2 = group;
                     } else {
@@ -55,7 +55,7 @@ void Actor_Destroy(Actor *self) {
     if (busy) {
         return;
     }
-    Group_UpdateActor(data_ov000_021ccd64, 2, self);
+    Group_UpdateActor(gGroup, 2, self);
     group = ActorMgr_FindGroup(self->id & 0xf000);
     prev = self->prev;
     next = self->next;

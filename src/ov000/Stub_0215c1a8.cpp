@@ -56,7 +56,7 @@ void func_ov000_0215c1a8(s32 *font, s32 *tag) {
     }
 }
 
-extern VFunc0215c1bc data_0208ba70[];
+extern VFunc0215c1bc TextWin_vtbl[];
 extern char data_ov000_021cabf4[];
 void *Heap_Alloc(u32 size);
 void TextWin_Init(void *p);
@@ -153,7 +153,7 @@ void Obj0215c1bc_SetText(Lo021cad50 *self, u32 flags, char *str) {
     f = font;
     tt = (Text0215c1bc *)Heap_Alloc(0xb8);
     if (tt != NULL) {
-        tt->vtbl = data_0208ba70;
+        tt->vtbl = TextWin_vtbl;
         TextWin_Init(tt);
     }
     tt->unk_28 = self->font;
@@ -168,14 +168,14 @@ void Obj0215c1bc_SetText(Lo021cad50 *self, u32 flags, char *str) {
     Lo021cad50_Lines(self)[0] = tt;
     tt->str = str;
     tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
-    data_02097ce0->unk_004 = tt->unk_28;
+    gGfxMgr->unk_004 = tt->unk_28;
     for (i = 1; i < 12; i++) {
         if (lines[i] != NULL) {
             lines[i]++;
             f = font;
             tt = (Text0215c1bc *)Heap_Alloc(0xb8);
             if (tt != NULL) {
-                tt->vtbl = data_0208ba70;
+                tt->vtbl = TextWin_vtbl;
                 TextWin_Init(tt);
             }
             tt->unk_28 = self->font;
@@ -190,7 +190,7 @@ void Obj0215c1bc_SetText(Lo021cad50 *self, u32 flags, char *str) {
             Lo021cad50_Lines(self)[i] = tt;
             tt->str = lines[i];
             tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
-            data_02097ce0->unk_004 = tt->unk_28;
+            gGfxMgr->unk_004 = tt->unk_28;
         }
     }
     w = self->width - self->vfunc_30() * 2;
@@ -244,7 +244,7 @@ s32 Lo021cad50_GetPadTop(Obj0215c720 *self) {
     return Obj0215c720_TestBit3(self) ? 9 : 0xc;
 }
 
-extern void *data_02149ef8;
+extern void *gMsgRes;
 u16 func_02061d54(u16 a);
 char *MsgRes_GetString(void *p, s32 a);
 char *Str_FindCharMb(char *str, int c);
@@ -277,7 +277,7 @@ void func_ov000_0215c744(Lo021cad50 *self, u32 flags, u16 id) {
     self->unk_88 = id;
     self->unk_94 = 1;
     self->unk_84 = flags;
-    { void *msg = data_02149ef8; str = MsgRes_GetString(msg, func_02061d54(flags & 0x3ff)); }
+    { void *msg = gMsgRes; str = MsgRes_GetString(msg, func_02061d54(flags & 0x3ff)); }
     center = FALSE;
     star = FALSE;
     for (i = 0; i < 13; i++) {
@@ -346,7 +346,7 @@ void func_ov000_0215c744(Lo021cad50 *self, u32 flags, u16 id) {
     if (lines[0] != NULL) {
         tt = (Text0215c1bc *)Heap_Alloc(0xb8);
         if (tt != NULL) {
-            tt->vtbl = data_0208ba70;
+            tt->vtbl = TextWin_vtbl;
             TextWin_Init(tt);
         }
         tt->unk_28 = self->font;
@@ -361,14 +361,14 @@ void func_ov000_0215c744(Lo021cad50 *self, u32 flags, u16 id) {
         Lo021cad50_Lines(self)[0] = tt;
         tt->str = lines[0];
         tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
-        data_02097ce0->unk_004 = tt->unk_28;
+        gGfxMgr->unk_004 = tt->unk_28;
     }
     for (i = 1; i < 12; i++) {
         if (lines[i] != NULL) {
             lines[i]++;
             tt = (Text0215c1bc *)Heap_Alloc(0xb8);
             if (tt != NULL) {
-                tt->vtbl = data_0208ba70;
+                tt->vtbl = TextWin_vtbl;
                 TextWin_Init(tt);
             }
             tt->unk_28 = self->font;
@@ -383,7 +383,7 @@ void func_ov000_0215c744(Lo021cad50 *self, u32 flags, u16 id) {
             Lo021cad50_Lines(self)[i] = tt;
             tt->str = lines[i];
             tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
-            data_02097ce0->unk_004 = tt->unk_28;
+            gGfxMgr->unk_004 = tt->unk_28;
         }
     }
     w = self->width - self->vfunc_30() * 2;
@@ -466,7 +466,7 @@ void func_ov000_0215c744(Lo021cad50 *self, u32 flags, u16 id) {
     }
     v = self->unk_88;
     if (ItemKind_0215c744(v) - 1 == 1 && !ok) {
-        SceneCmd_Push10(data_ov000_021ccd54, v);
+        SceneCmd_Push10(gSceneCmd, v);
     }
 }
 

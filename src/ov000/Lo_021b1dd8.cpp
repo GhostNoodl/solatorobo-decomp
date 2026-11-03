@@ -23,7 +23,7 @@ void Robo021ca458_WalkByPad(Robo021ca458 *self, s32 target, s32 rate, s32 speed,
             return;
         }
         if (self->padCur & 0xf0) {
-            FieldCam *cam = &data_ov000_021ccd54->cam;
+            FieldCam *cam = &gSceneCmd->cam;
             u16 ang;
             ang = FieldCam_GetYaw(cam);
             self->speed += LO_FX_MUL(rate, target - self->speed);
@@ -49,11 +49,11 @@ void Robo021ca458_WalkByPad(Robo021ca458 *self, s32 target, s32 rate, s32 speed,
     if (ox != self->pos.x || oz != self->pos.y) {
         self->unk_ba8 += self->speed;
         if (self->unk_ba8 > 0x1000) {
-            u32 v = data_0214a424->unk_010 + ((u32)self->unk_ba8 >> 12);
+            u32 v = gStageFlags->unk_010 + ((u32)self->unk_ba8 >> 12);
             if (v >= 0xf423f) {
-                data_0214a424->unk_010 = 0xf423f;
+                gStageFlags->unk_010 = 0xf423f;
             } else {
-                data_0214a424->unk_010 = v;
+                gStageFlags->unk_010 = v;
             }
             self->unk_ba8 &= 0xfff;
         }

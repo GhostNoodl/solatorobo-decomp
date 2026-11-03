@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern u8 data_ov014_02217dc0[];
+extern u8 Ov014Act_0221267c_vtbl[];
 extern char data_ov014_02217d8e[];
 extern char data_ov014_02217d95[];
 extern void *ResSet_Init(void *p);
@@ -16,7 +16,7 @@ extern s32 Ov003Actor_HandleMsg(Ov003Actor *self, Ov014Msg *msg);
 #pragma force_active on
 Ov003Actor *Ov014Act_0221267c_Ctor(Ov014Act_0221267c *self) {
     Ov003Actor_Ctor(self);
-    *(void **)self = data_ov014_02217dc0;
+    *(void **)self = Ov014Act_0221267c_vtbl;
     ResSet_Init(&self->unk_f0);
     Model0218fe1c_Init(&self->mdl);
     self->unk_310 = 0;

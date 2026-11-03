@@ -18,7 +18,7 @@
 
 #ifdef __cplusplus
 
-// ov002's row list (vtable data_ov002_021f0044 over ov000's LoBase021ccb54_021ccbe0, the same 0xf4
+// ov002's row list (vtable Ov002Vt_021f0044_vtbl over ov000's LoBase021ccb54_021ccbe0, the same 0xf4
 // bytes). onDecide is func_ov002_021d2410 and onCursor func_ov002_021d2390 for the level list.
 struct Ov002RowList : public LoBase021ccb54_021ccbe0 {
 };
@@ -28,7 +28,7 @@ SIZE_ASSERT(Ov002RowList, 0xf4);
 // (ov000/TextList.h): onDecide gets the chosen row (func_ov002_021d18e8), onCursor the row under
 // the cursor (func_ov002_021d18d4).
 
-// Animated model (0x70, vtable data_ov002_021efe3c; Ov002Vt_021efe3c_Ctor, Ov002Vt_021efe3c_Dtor).
+// Animated model (0x70, vtable Ov002Vt_021efe3c_vtbl; Ov002Vt_021efe3c_Ctor, Ov002Vt_021efe3c_Dtor).
 // Ov002Mdl021efe3c_Load loads model file `name` and animation file `anmName` from archive `arc`;
 // each animation is bound to the render object, and frameCount is the first one's length.
 // The owners step frame by 0x1000 each tick (Obj021efe8c_SyncAnmFrame) and draw renderObj at
@@ -50,7 +50,7 @@ struct Ov002Mdl021efe3c : public VObj {
 };
 SIZE_ASSERT(Ov002Mdl021efe3c, 0x70);
 
-// Board cursor (0x8c, vtable data_ov002_021efe8c): an Ov002Mdl021efe3c placed on the map cell
+// Board cursor (0x8c, vtable Ov002Vt_021efe8c_vtbl): an Ov002Mdl021efe3c placed on the map cell
 // unk_74/unk_78 (Ov002_CellXZToPos), with the map size at unk_7c/unk_80 and its height at unk_84.
 // mode selects the model (0 or 1).
 struct Obj021efe8c : public VObj {
@@ -66,7 +66,7 @@ struct Obj021efe8c : public VObj {
 };
 SIZE_ASSERT(Obj021efe8c, 0x8c);
 
-// Vtable data_ov002_021efe5c, 0x1e8 bytes: an Ov002Mdl021efe3c and a 2D Model drawn over it
+// Vtable Ov002Vt_021efe5c_vtbl, 0x1e8 bytes: an Ov002Mdl021efe3c and a 2D Model drawn over it
 // (func_ov002_021d7988). unk_1d8 counts ticks (Obj021efe5c_SyncAnmFrame).
 struct Obj021efe5c : public VObj {
     Ov002Mdl021efe3c mdl;
@@ -98,7 +98,7 @@ typedef struct Ov002Shape {
     u16 unk_6_10 : 6;
 } Ov002Shape;
 
-// Vtable data_ov002_021efeb8, the base of 021efe9c and 021efed4 (slot 0x08 Ov002Vt_021efeb8_Setup
+// Vtable Ov002Vt_021efeb8_vtbl, the base of 021efe9c and 021efed4 (slot 0x08 Ov002Vt_021efeb8_Setup
 // fills 0x48..0x5c from the id at 0x48: kind, shape and its origin). The board (Obj021efe6c)
 // keeps its pieces in a list through next/prev.
 struct Obj021efeb8 : public VObj {
@@ -149,7 +149,7 @@ typedef struct Ov002SndCue {
     u16 id;
 } Ov002SndCue;
 
-// Vtable data_ov002_021efe4c, 0x70 bytes (ctor Obj021efe4c_Init, dtor Obj021efe4c_Release): the
+// Vtable Ov002Vt_021efe4c_vtbl, 0x70 bytes (ctor Obj021efe4c_Init, dtor Obj021efe4c_Release): the
 // board's field. func_ov002_021d7238 sets map to the shape of field id unk_68. func_ov002_021d7058
 // builds the two models unk_08/unk_10 from the resource blocks unk_0c/unk_14; Obj021efe7c_Draw
 // copies trans, rot and scale into both before drawing them while visible is set.
@@ -177,7 +177,7 @@ struct Obj021efe4c : public VObj {
 };
 SIZE_ASSERT(Obj021efe4c, 0x70);
 
-// Vtable data_ov002_021efe6c, 0xc8 bytes (ctor Obj021efe6c_Init): the board. pieces heads the
+// Vtable Ov002Vt_021efe6c_vtbl, 0xc8 bytes (ctor Obj021efe6c_Init): the board. pieces heads the
 // piece list, cells is the field's w x h cell array (func_ov002_021da054), unk_08 counts per item id.
 // unk_90.. move the camera from unk_98/unk_a4 to unk_b0/unk_bc.
 struct Obj021efe6c : public VObj {
@@ -200,7 +200,7 @@ struct Obj021efe6c : public VObj {
 };
 SIZE_ASSERT(Obj021efe6c, 0xc8);
 
-// Vtable data_ov002_021efe7c, 0x14 bytes (Obj021efe7c_Create, kept in data_ov002_021f0f90[1]):
+// Vtable Ov002Vt_021efe7c_vtbl, 0x14 bytes (Obj021efe7c_Create, kept in data_ov002_021f0f90[1]):
 // the board and its current mode object (func_ov002_021dab58 builds mode unk_0c: 021eff74, 021eff50, ...).
 struct Obj021efe7c : public VObj {
     Obj021efe6c *board;
@@ -211,7 +211,7 @@ struct Obj021efe7c : public VObj {
 };
 SIZE_ASSERT(Obj021efe7c, 0x14);
 
-// Vtable data_ov002_021efe9c, 0xd4 bytes.
+// Vtable Ov002Vt_021efe9c_vtbl, 0xd4 bytes.
 struct Obj021efe9c : public Obj021efeb8 {
     s32 unk_94;
     s32 unk_98;
@@ -230,7 +230,7 @@ struct Obj021efe9c : public Obj021efeb8 {
 };
 SIZE_ASSERT(Obj021efe9c, 0xd4);
 
-// Vtable data_ov002_021efed4, 0xb4 bytes.
+// Vtable Ov002Vt_021efed4_vtbl, 0xb4 bytes.
 struct Obj021efed4 : public Obj021efeb8 {
     u8 unk_94;
     u8 unk_95[0x3];
@@ -246,11 +246,11 @@ struct Obj021efed4 : public Obj021efeb8 {
 };
 SIZE_ASSERT(Obj021efed4, 0xb4);
 
-// Vtable data_ov002_021efef0, 0x138 bytes.
+// Vtable Ov002Vt_021efef0_vtbl, 0x138 bytes.
 struct Obj021efef0 : public VObj {
     struct Obj021eff50 *owner;
-    Ov002RowList *unk_08; // vtable data_ov002_021f0044
-    Ov002RowList *unk_0c; // vtable data_ov002_021f0044 (func_ov002_021def98)
+    Ov002RowList *unk_08; // vtable Ov002Vt_021f0044_vtbl
+    Ov002RowList *unk_0c; // vtable Ov002Vt_021f0044_vtbl (func_ov002_021def98)
     Obj021efe8c *unk_10;
     Obj021efe8c *unk_14;
     u16 unk_18;
@@ -269,7 +269,7 @@ struct Obj021efef0 : public VObj {
 };
 SIZE_ASSERT(Obj021efef0, 0x138);
 
-// Vtable data_ov002_021eff10, 0x134 bytes.
+// Vtable Ov002Vt_021eff10_vtbl, 0x134 bytes.
 struct Obj021eff10 : public VObj {
     struct Obj021eff50 *owner;
     Obj021efe5c *unk_08;
@@ -288,7 +288,7 @@ struct Obj021eff10 : public VObj {
 };
 SIZE_ASSERT(Obj021eff10, 0x134);
 
-// Vtable data_ov002_021eff30, 0x30 bytes.
+// Vtable Ov002Vt_021eff30_vtbl, 0x30 bytes.
 struct Obj021eff30 : public VObj {
     struct Obj021eff50 *owner;
     s32 unk_08;
@@ -305,7 +305,7 @@ struct Obj021eff30 : public VObj {
 };
 SIZE_ASSERT(Obj021eff30, 0x30);
 
-// Vtable data_ov002_021eff50, 0x38 bytes.
+// Vtable Ov002Vt_021eff50_vtbl, 0x38 bytes.
 struct Obj021eff50 : public VObj {
     Obj021efe6c *board;
     s32 unk_08;
@@ -324,7 +324,7 @@ struct Obj021eff50 : public VObj {
 };
 SIZE_ASSERT(Obj021eff50, 0x38);
 
-// Vtable data_ov002_021eff74, 0x24 bytes.
+// Vtable Ov002Vt_021eff74_vtbl, 0x24 bytes.
 struct Obj021eff74 : public VObj {
     Obj021efe6c *board;
     s32 unk_08;
@@ -338,7 +338,7 @@ struct Obj021eff74 : public VObj {
 };
 SIZE_ASSERT(Obj021eff74, 0x24);
 
-// Text window as ov002 uses it (vtable data_0208ba70, TextWin_Init; 0xb8 bytes). It is the
+// Text window as ov002 uses it (vtable TextWin_vtbl, TextWin_Init; 0xb8 bytes). It is the
 // object TextWin (Main/Gfx/TextWin.h) describes; this view keeps width and height signed, as
 // Text_Measure writes them and func_ov002_021ed270 and Ov002HudInfo_Draw halve them.
 struct Ov002Text2 : public VObj {
@@ -374,9 +374,9 @@ struct Ov002Text2 : public VObj {
 };
 
 // The rows of ov000's row lists are ov000/ListRow.h's ListRow classes; ov002 builds them over its own
-// copy of the row base vtable, data_ov002_021ef684.
+// copy of the row base vtable, Ov002Vt_021ef684_vtbl.
 
-// Board item row (vtable data_ov002_021f002c, 0x4c bytes; ctor Obj021f002c_Init, dtors
+// Board item row (vtable Ov002Vt_021f002c_vtbl, 0x4c bytes; ctor Obj021f002c_Init, dtors
 // Ov002Vt_021f002c_Dtor/DtorDelete). Slot 0x08 (func_ov002_021e2fb4) steps state: 0 builds the
 // item model (when hasModel is set) and the name text, 1 frees them once the row is hidden, 2 waits
 // to be shown again. Slot 0x0c (func_ov002_021e31fc) draws both at the row's position.
@@ -394,7 +394,7 @@ struct Obj021f002c : public ListRow {
 };
 SIZE_ASSERT(Obj021f002c, 0x4c);
 
-// Caption of the board HUD (vtable data_ov002_021f001c, 0x38 bytes): a text window that
+// Caption of the board HUD (vtable Ov002Vt_021f001c_vtbl, 0x38 bytes): a text window that
 // Ov002Caption_Update slides from (fromX, fromY) to (toX, toY) while timer counts down from 8.
 // Mode 3 slides it out, swaps in text and slides back to (nextX, nextY).
 struct Ov002Caption : public VObj {
@@ -415,7 +415,7 @@ struct Ov002Caption : public VObj {
 };
 SIZE_ASSERT(Ov002Caption, 0x38);
 
-// Info box of the board HUD (vtable data_ov002_021f000c, 0x2c bytes; built by
+// Info box of the board HUD (vtable Ov002Vt_021f000c_vtbl, 0x2c bytes; built by
 // Ov002Hud_SetInfo). Ov002HudInfo_SetId fills its texts for id, Ov002HudInfo_Draw draws it.
 struct Ov002HudInfo : public VObj {
     /* 0x04 */ Ov002Text2 *unk_04;
@@ -429,7 +429,7 @@ struct Ov002HudInfo : public VObj {
 };
 SIZE_ASSERT(Ov002HudInfo, 0x2c);
 
-// Board HUD of Task021efba4 (vtable data_ov002_021efb14, 0x44 bytes). Ov002Hud_Init clears
+// Board HUD of Task021efba4 (vtable Ov002Vt_021efb14_vtbl, 0x44 bytes). Ov002Hud_Init clears
 // it, Ov002Hud_Load builds its models and captions, Ov002Hud_Release frees them.
 struct Ov002Hud : public VObj {
     /* 0x04 */ Model *unk_04;

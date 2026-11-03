@@ -7,7 +7,7 @@
 #include "Main/Effect/Effect.h"
 
 extern "C" {
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov000_021cc630[];
 extern char data_ov000_021cc636[];
 extern char data_ov000_021cc6e4[];
@@ -44,7 +44,7 @@ static inline BOOL GBusy_021ad8ac(FieldState *g) {
 }
 
 static inline BOOL GIdle_021ad8ac(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (GBusy_021ad8ac(g)) {
             return FALSE;
@@ -62,7 +62,7 @@ static inline void Kill_021ad8ac(Robo021ca458 *self) {
         Model0218fe1c_StopAnim(self->unk_998);
     }
     if (self->seSlot >= 0) {
-        SndMgr_StopSeqArc(data_02097e4c, self->seSlot);
+        SndMgr_StopSeqArc(gSndMgr, self->seSlot);
         self->seSlot = -1;
     }
     if (self->unk_b22_0 > 1) {
@@ -80,21 +80,21 @@ static inline void Kill_021ad8ac(Robo021ca458 *self) {
 
 static inline void StopSnd_021ad8ac(Robo021ca458 *self) {
     if (self->seSlot >= 0) {
-        SndMgr_StopSeqArc(data_02097e4c, self->seSlot);
+        SndMgr_StopSeqArc(gSndMgr, self->seSlot);
         self->seSlot = -1;
     }
 }
 
 static inline void StartSnd_021ad8ac(Robo021ca458 *self) {
     if (self->seSlot < 0) {
-        self->seSlot = SndMgr_StartSeqArc(data_02097e4c, 0x33);
+        self->seSlot = SndMgr_StartSeqArc(gSndMgr, 0x33);
     }
 }
 
 void Robo021ca458_State19(Robo021ca458 *self) {
     u16 ang;
     BOOL turn;
-    FieldCam *cam = &data_ov000_021ccd54->cam;
+    FieldCam *cam = &gSceneCmd->cam;
 
     switch (self->fsm->st) {
     case 0:
@@ -102,7 +102,7 @@ void Robo021ca458_State19(Robo021ca458 *self) {
         Model0218fe1c_SetLoop(self->model);
         Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc6ea, 0x1000, 0);
         if ((self->padCur & 2) && self->unk_9ac != 0 && self->seSlot < 0) {
-            self->seSlot = SndMgr_StartSeqArc(data_02097e4c, 0x33);
+            self->seSlot = SndMgr_StartSeqArc(gSndMgr, 0x33);
         }
         if (self->velY >= 0) {
             self->velY = 0;
@@ -128,7 +128,7 @@ void Robo021ca458_State19(Robo021ca458 *self) {
             }
         }
         func_02062790(1);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
     case 1: {
         if (!GIdle_021ad8ac()) {
             self->speed = 0;
@@ -244,7 +244,7 @@ void Robo021ca458_State19(Robo021ca458 *self) {
             } else {
                 if (self->unk_9ac == 0) {
                     func_02062790(0);
-                    data_ov000_021ccd54->stageFlags = 1;
+                    gSceneCmd->stageFlags = 1;
                 }
                 Model0218fe1c_SetAnim(self->model, data_ov000_021cc636, 0xcd, 0);
                 Model0218fe1c_SetAnimSpeed(self->model, 0x800);
@@ -294,10 +294,10 @@ void Robo021ca458_State19(Robo021ca458 *self) {
             s32 r;
             Model0218fe1c_SetAnim(self->model, data_ov000_021cc630, 0x1000, 0);
             Kill_021ad8ac(self);
-            SndMgr_PlayAt(data_02097e4c, 8, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 8, &self->pos, 0);
             r = Ov003_SurfaceSoundId(self->hit->unk_50);
             if (r >= 0) {
-                SndMgr_PlayAtPitch(data_02097e4c, r, &self->pos, -5);
+                SndMgr_PlayAtPitch(gSndMgr, r, &self->pos, -5);
                 if ((self->hit->unk_50 & 0xf0f0f0) == 0xe0e000) {
                     VecFx32 p;
                     p.x = self->pos.x;
@@ -326,7 +326,7 @@ void Robo021ca458_State19(Robo021ca458 *self) {
         self->moveYaw = FX_Atan2(self->hit->unk_80, self->hit->unk_88);
         if (self->velY >= 0) {
             s32 a0;
-            SndMgr_PlayAt(data_02097e4c, 0x7c, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x7c, &self->pos, 0);
             self->unk_92 = 8;
             a0 = self->velY;
             if (a0 < 0) {
@@ -365,7 +365,7 @@ void Robo021ca458_State19(Robo021ca458 *self) {
         Model0218fe1c_SetAnim(self->model, data_ov000_021cc70b, 0x200, 1);
         Model0218fe1c_SetLoop(self->model);
         Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc6ea, 0x1000, 0);
-        SndMgr_PlayAt(data_02097e4c, 0x32, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x32, &self->pos, 0);
         StartSnd_021ad8ac(self);
         e = Effect_SpawnId(0x4b0, &self->pos);
         self->unk_b40 = e->id;
@@ -378,7 +378,7 @@ void Robo021ca458_State19(Robo021ca458 *self) {
         self->unk_9a2 = 0;
         self->unk_9a4 = 0;
         func_02062790(2);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
         self->fsm->st++;
     }
     case 11: {
@@ -404,7 +404,7 @@ void Robo021ca458_State19(Robo021ca458 *self) {
             self->unk_9ac = 0;
         }
         if (!Model0218fe1c_IsAnimDone(self->model)) {
-            s32 tgt = data_0214a424->bits18.mode == 1 ? 0x51f : 0x4cd;
+            s32 tgt = gStageFlags->bits18.mode == 1 ? 0x51f : 0x4cd;
             self->speed += LO_FX_MUL(tgt - self->speed, 0x200);
             self->rot_x = Angle_Approach(0, self->rot_x, 0x266, 1, 0x8000);
             self->rot_z = Angle_Approach(0, self->rot_z, 0x266, 1, 0x8000);
@@ -426,7 +426,7 @@ void Robo021ca458_State19(Robo021ca458 *self) {
             }
             Model0218fe1c_SetAnim(self->model, anim, 0x800, 1);
             Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc6ea, 0x1000, 0);
-            self->speed = data_0214a424->bits18.mode == 1 ? 0xd1f : 0xccd;
+            self->speed = gStageFlags->bits18.mode == 1 ? 0xd1f : 0xccd;
             self->unk_9a0 = 0;
             self->unk_9a2 = 0;
             self->unk_9a4 = 0;
@@ -446,7 +446,7 @@ void Robo021ca458_State19(Robo021ca458 *self) {
             Model0218fe1c_SetLoop(self->model);
             cur = cam->base.pitch;
             f = self->padCur;
-            if (data_0214a424->bits18.flag10) {
+            if (gStageFlags->bits18.flag10) {
                 if (f & 0x40) {
                     f = 0x80;
                 } else if (f & 0x80) {
@@ -487,7 +487,7 @@ void Robo021ca458_State19(Robo021ca458 *self) {
             self->moveYaw = self->moveYaw + self->unk_9a2;
             self->rot_y = Angle_Approach(self->moveYaw, self->rot_y, 0xcd, 1, 0x8000);
             self->rot_z = Angle_Approach(-((self->unk_9a2 << 5) + (self->unk_9a2 << 3)), self->rot_z, 0x59a, 1, 0x8000);
-            sp = data_0214a424->bits18.mode == 1 ? 0x51f : 0x4cd;
+            sp = gStageFlags->bits18.mode == 1 ? 0x51f : 0x4cd;
             if (self->padCur & 0xf0) {
                 sp -= sp >> 2;
             }
@@ -506,7 +506,7 @@ void Robo021ca458_State19(Robo021ca458 *self) {
         if (st->timer > 0xc) {
             st->st = 0;
             StopSnd_021ad8ac(self);
-            SndMgr_PlayAt(data_02097e4c, 0x35, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x35, &self->pos, 0);
         }
         if (Model0218fe1c_IsAnimDone(self->unk_998)) {
             Model0218fe1c_SetAnim(self->unk_998, data_ov000_021cc6ed, 0x1000, 0);
@@ -521,7 +521,7 @@ void Robo021ca458_State19(Robo021ca458 *self) {
         {
             u32 fl = self->hit->unk_50;
             if (fl & 0x20000000) {
-                SndMgr_PlayAt(data_02097e4c, 0x7c, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x7c, &self->pos, 0);
                 self->unk_92 = 8;
                 self->velY = 0x519;
                 self->speed = self->speed >> 1;
@@ -535,7 +535,7 @@ void Robo021ca458_State19(Robo021ca458 *self) {
         {
             u16 d;
             u16 h;
-            SndMgr_PlayAt(data_02097e4c, 0x7c, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x7c, &self->pos, 0);
             self->unk_92 = 8;
             d = FX_Atan2(self->hit->unk_80, self->hit->unk_88) - self->moveYaw;
             if (d <= 0x8000) {

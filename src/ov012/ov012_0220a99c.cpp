@@ -319,7 +319,7 @@ void Ov012ActExVt_0220af10_StateThrown(Ov012ActExVt_0220af10 *self) {
             VEC_Add(&self->unk_84, &r2, &self->unk_84);
         }
         self->hit->unk_9a |= 0x12;
-        SndMgr_PlayAt(data_02097e4c, 0x50, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x50, &self->pos, 0);
         self->fsm->st++;
         break;
     }
@@ -393,7 +393,7 @@ void Ov012ActExVt_0220af10_StateThrown(Ov012ActExVt_0220af10 *self) {
         }
         self->fsm->timer = 0xb4;
         Effect_SpawnId(4, &self->pos);
-        SndMgr_PlayAt(data_02097e4c, 0x78, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x78, &self->pos, 0);
         self->fsm->st++;
         break;
     case 7: {
@@ -417,7 +417,7 @@ void Ov012ActExVt_0220af10_StateThrown(Ov012ActExVt_0220af10 *self) {
             EffectObj *e = Effect_SpawnId(0x196, &self->pos);
             e->SetScaleAll(0x800);
             e->AddPosXYZ(0, 0x800, 0);
-            SndMgr_PlayAt(data_02097e4c, 0x44, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x44, &self->pos, 0);
         }
         if (t == 0) {
             self->fsm->st++;
@@ -429,7 +429,7 @@ void Ov012ActExVt_0220af10_StateThrown(Ov012ActExVt_0220af10 *self) {
         Effect_SpawnId(5, &self->pos)->SetScaleAll(0x4000);
         Effect_SpawnId(0x6d, &self->pos)->SetScaleAll(0x2000);
         Ov012_FxMid(self);
-        SndMgr_PlayAt(data_02097e4c, 0x1a, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x1a, &self->pos, 0);
         self->fsm->timer = 0;
         self->fsm->st++;
     }
@@ -445,7 +445,7 @@ void Ov012ActExVt_0220af10_StateThrown(Ov012ActExVt_0220af10 *self) {
             }
         }
         self->targetObj->target = 0xffff;
-        Group_UpdateActor(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(gGroup, 0, self);
         self->vfunc_08();
         break;
     }

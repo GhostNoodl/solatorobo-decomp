@@ -2,9 +2,9 @@
 
 extern "C" {
 
-extern u8 data_ov000_021ccd34;
+extern u8 gTaskSwitchPending;
 void GfxSys_StartFadeOut(int a, int b, int c);
-extern void *data_02149ef8;
+extern void *gMsgRes;
 void *MsgRes_GetString(void *a, int id);
 void Obj0215bb14_SetText(void *a, void *b);
 void func_ov015_02203ee0(Ov015Scene2a08 *self);
@@ -31,13 +31,13 @@ static inline UiListItem *Ov015_ListNth2(UiList *o) {
 void Ov015Scene2a08_UpdateActive(Ov015Scene2a08 *self) {
     u16 keys;
     if (self->unk_8c != NULL) return;
-    keys = data_02097dc8->trig;
+    keys = gPad->trig;
     if (self->unk_a4 != 0) {
         UiListItem *item = Ov015_ListNth2(self->unk_80);
         switch (item->id) {
         case 0:
             self->unk_94 = 1;
-            TaskHost_RequestSwitch(data_ov000_021ccd44, 0x20, self->param);
+            TaskHost_RequestSwitch(gTaskHost, 0x20, self->param);
             self->parent = 0;
             self->unk_04 |= 6;
             self->unk_80->flags |= 2;
@@ -46,7 +46,7 @@ void Ov015Scene2a08_UpdateActive(Ov015Scene2a08 *self) {
             break;
         case 1:
             self->unk_94 = 3;
-            TaskHost_RequestSwitch(data_ov000_021ccd44, 0x22, self->param);
+            TaskHost_RequestSwitch(gTaskHost, 0x22, self->param);
             self->parent = 0;
             self->unk_04 |= 6;
             self->unk_80->flags |= 2;
@@ -55,8 +55,8 @@ void Ov015Scene2a08_UpdateActive(Ov015Scene2a08 *self) {
             break;
         case 2:
             self->unk_94 = 5;
-            data_ov000_021ccd34 = 1;
-            data_ov000_021ccd44->unk_00_0 = 1;
+            gTaskSwitchPending = 1;
+            gTaskHost->unk_00_0 = 1;
             self->parent = 0;
             self->unk_04 |= 6;
             self->unk_80->flags |= 2;
@@ -67,7 +67,7 @@ void Ov015Scene2a08_UpdateActive(Ov015Scene2a08 *self) {
         }
     } else if (keys & 2) {
         UiList *o;
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         o = self->unk_80;
         o->vfunc_a8(UiList_GetItemById(o, 2));
     }
@@ -90,10 +90,10 @@ void Ov015Scene2a08_PreUpdate(Ov015Scene2a08 *self) {
     s32 k;
     switch (self->state) {
     case 8:
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         break;
     case 10:
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         break;
     case 13:
         func_ov015_02203ee0(self);
@@ -125,7 +125,7 @@ void Ov015Scene2a08_PreUpdate(Ov015Scene2a08 *self) {
         {
             UiListItem *item = Ov015_ListNth3(o);
             u16 n = item->id;
-            void *d = data_02149ef8;
+            void *d = gMsgRes;
             s32 id;
             t = (Ov015Scene2a08 *)o->owner;
             switch (n) {
@@ -200,7 +200,7 @@ void func_ov015_02203ee0(Ov015Scene2a08 *self) {
     o->rotY = a;
     o->rotZ = 0;
     }
-    pad = data_02097dc8->cur;
+    pad = gPad->cur;
     if (pad & 0x20) {
         self->ship->unk_d3a = 2;
         self->unk_ac = 0x3c;
@@ -242,16 +242,16 @@ BOOL Ov015Scene2c08_List3cOnDecide(UiList *self, UiListItem *item) {
     Ov015Scene2c08 *o = (Ov015Scene2c08 *)self->owner;
     if (item != NULL) {
         if (item->unk_10 == -1) {
-            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
-        } else if (item->unk_0c > data_0214a424->unk_020) {
-            void *s = MsgRes_GetString(data_02149ef8, 0x9b);
+            SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
+        } else if (item->unk_0c > gStageFlags->unk_020) {
+            void *s = MsgRes_GetString(gMsgRes, 0x9b);
             if (o->unk_40 != NULL) {
                 Obj0215bb14_SetText(o->unk_40, s);
                 o->unk_40->vfunc_70();
             }
-            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
         } else {
-            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
             o->unk_6a = 1;
             o->unk_68 = item->id;
             r = FALSE;
@@ -289,13 +289,13 @@ s32 Ov015Scene2c08_IsLoaded(void) {
     return 1;
 }
 
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb4a8[];
-extern u8 data_ov000_021cb5a8[];
-extern u8 data_ov000_021cadcc[];
-extern u8 data_ov000_021cae48[];
-extern u8 data_ov015_022129c0[];
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 UiList021cb4a8_vtbl[];
+extern u8 Lo021cb5a8_vtbl[];
+extern u8 Lo021cadcc_vtbl[];
+extern u8 Lo021cae48_vtbl[];
+extern u8 Ov015MsgBox_vtbl[];
 extern u8 data_ov015_02212990[];
 extern u8 data_ov015_0221299d[];
 extern u8 data_ov015_02213360[];
@@ -327,14 +327,14 @@ void Ov015Scene2c08_Start(Ov015Scene2c08 *self) {
     if (self->vfunc_28()) {
         return;
     }
-    res = data_02149ef8;
+    res = gMsgRes;
     p = (VObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
-        SET_VT(p, data_ov000_021cac60);
+        SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021caec8);
+        SET_VT(p, UiList_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021cb4a8);
+        SET_VT(p, UiList021cb4a8_vtbl);
         p->vfunc_28();
     }
     self->unk_3c = (UiList *)p;
@@ -384,9 +384,9 @@ void Ov015Scene2c08_Start(Ov015Scene2c08 *self) {
     self->unk_3c->vfunc_08();
     p = (VObj *)Heap_Alloc(0x8c);
     if (p != NULL) {
-        SET_VT(p, data_ov000_021cac60);
+        SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021cadcc);
+        SET_VT(p, Lo021cadcc_vtbl);
         p->vfunc_28();
     }
     self->unk_40 = (Lo021cadcc *)p;
@@ -405,11 +405,11 @@ void Ov015Scene2c08_Start(Ov015Scene2c08 *self) {
     self->unk_40->vfunc_08();
     p = (VObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
-        SET_VT(p, data_ov000_021cac60);
+        SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021caec8);
+        SET_VT(p, UiList_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021cb5a8);
+        SET_VT(p, Lo021cb5a8_vtbl);
         p->vfunc_28();
     }
     self->unk_44 = (UiList *)p;
@@ -423,21 +423,21 @@ void Ov015Scene2c08_Start(Ov015Scene2c08 *self) {
     self->unk_44->vfunc_08();
     p = (VObj *)Heap_Alloc(0x98);
     if (p != NULL) {
-        SET_VT(p, data_ov000_021cac60);
+        SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021cae48);
+        SET_VT(p, Lo021cae48_vtbl);
         p->vfunc_28();
     }
     self->unk_48 = (Ov015UiNum *)p;
     Ov015_SetUiPos(self->unk_48, 0x86, 0x87, -0xccd);
     Ov015_SetUiSlide(self->unk_48, 0x100, 0, -0xccd);
     self->unk_48->slideMode = 1;
-    Lo021cae48_SetValue(self->unk_48, data_0214a424->unk_020, 0);
+    Lo021cae48_SetValue(self->unk_48, gStageFlags->unk_020, 0);
     self->unk_48->vfunc_08();
     if (self->param == 1 && data_ov015_02213360[1] == 0) {
         p = (VObj *)Heap_Alloc(0x2c);
         if (p != NULL) {
-            SET_VT(p, data_ov015_022129c0);
+            SET_VT(p, Ov015MsgBox_vtbl);
             MsgBox_Init(p);
         }
         self->unk_50 = (Ov015MsgBox *)p;

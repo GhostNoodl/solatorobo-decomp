@@ -102,7 +102,7 @@ typedef struct WhMgr {
     /* 0x18e0 */ u8 unk_18e0[0x200];
 } WhMgr; // size 0x1ae0
 
-extern WhMgr *data_02097e40;
+extern WhMgr *gWhMgr;
 
 
 extern void *Heap_Alloc(u32 size);
@@ -142,14 +142,14 @@ typedef struct WhCbArg {
 } WhCbArg;
 
 static inline void WH_SetError(int code) {
-    WhMgr *wh = data_02097e40;
+    WhMgr *wh = gWhMgr;
     if (wh->sysState != 8 && wh->sysState != 9) {
         wh->errCode = code;
     }
 }
 
 static inline void WH_ChangeSysState(int state) {
-    data_02097e40->sysState = state;
+    gWhMgr->sysState = state;
 }
 
 // The API entry points (func_020459cc, func_02046070) write the state through this accessor. At O2 the
@@ -228,14 +228,14 @@ static inline BOOL WH_Destroy(WhMgr *wh) {
         return FALSE;
     }
     if (wh->sysState != 0) {
-        WhMgr *w = data_02097e40;
+        WhMgr *w = gWhMgr;
         w->busy = TRUE;
         WH_Reset(w, (void (*)(BOOL))func_02044a80);
         return FALSE;
     }
-    heap = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
-    wh = data_02097e40;
+    heap = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
+    wh = gWhMgr;
     if (wh != NULL) {
         if (wh != NULL) {
             if (wh->recvBufRaw != NULL) {
@@ -248,9 +248,9 @@ static inline BOOL WH_Destroy(WhMgr *wh) {
             }
             Heap_Free(wh);
         }
-        data_02097e40 = NULL;
+        gWhMgr = NULL;
     }
-    data_02097dd0->cur = heap;
+    gSysState->cur = heap;
     return TRUE;
 }
 

@@ -11,7 +11,7 @@ void Ov002Vt_021efe9c_Draw(Obj021efe9c *self) {
     }
     func_ov002_021d83f0(self);
     if (self->unk_9c != 0x1000) {
-        NNS_G3dMdlSetMdlPolygonIDAll(self->unk_7c, Gfx3DState_NextPolyId(data_02097d48->unk_8b0));
+        NNS_G3dMdlSetMdlPolygonIDAll(self->unk_7c, Gfx3DState_NextPolyId(gGfxSys->unk_8b0));
     }
     NNS_G3dGlbSetBaseTrans(&self->trans);
     MI_Copy36B(&self->rot, data_020928b4);

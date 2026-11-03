@@ -8,8 +8,8 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
-extern u8 data_ov003_021f9e10[];
+extern void *gGroup;
+extern u8 Ov003ActVt_021f9e10_vtbl[];
 extern char data_ov003_021f9fd6[];
 extern char data_ov003_021f9fd0[];
 extern void Heap_Free(void *p);
@@ -32,9 +32,9 @@ extern void Model0218fe1c_SetAnimSpeed(void *p, s32 a);
 static inline void Ov003Bridge_Dtor(Ov003Bridge *self) {
     Model0218fe1c *p;
     void *old;
-    *(void **)self = data_ov003_021f9e10;
-    old = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    *(void **)self = Ov003ActVt_021f9e10_vtbl;
+    old = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     p = self->anim;
     if (p != NULL) {
         if (p != NULL) {
@@ -43,7 +43,7 @@ static inline void Ov003Bridge_Dtor(Ov003Bridge *self) {
         }
         self->anim = NULL;
     }
-    data_02097dd0->cur = old;
+    gSysState->cur = old;
     ActorEx_DtorBase(self);
 }
 
@@ -61,7 +61,7 @@ Ov003Bridge *Ov003ActVt_021f9e10_DtorDelete(Ov003Bridge *self) {
 void Ov003ActVt_021f9e10_Init(Ov003Bridge *self) {
     Ov003Unit *u;
     ActorEx_Init(self);
-    u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    u = Group_FindNode(gGroup, self->unk_20);
     if (u != NULL) {
         u->unk_a2_0 = 0;
     }

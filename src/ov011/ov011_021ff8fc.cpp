@@ -12,7 +12,7 @@
 // F24c_CountBusy, the ring readers and F24c_GetRing), so their b0 tests are const reads, and the final
 // `F24c_SetState(..., 5)` reloads self->unk_100 instead of reusing `l`. Then SetState's plain b0 read is not CSE'd
 // with Count's const read across the count loop (jkF/jkG), the flag byte is re-read as in the ROM, `l` is not live
-// across the search loop, and the &data_ov000_021ccd68 pool load is hoisted into fp. All three are needed: a
+// across the search loop, and the &gActorMgr pool load is hoisted into fp. All three are needed: a
 // non-const Count, a plain GetRing read or `F24c_SetState(l, 5)` gives 360+ / 53+. `cnt` declared before `nd`.
 // Round raD moved the draft here from the end of ov011_021fef00.cpp: Ov011SceneActor_HandleMsg there needs a const view
 // of the 0x02207258 block (its name-pointer load is hoisted above the `s->a = 0` store; non-const gives 6 / 6),
@@ -337,7 +337,7 @@ void Ov011SceneActor_State20(Ov011SceneActor *self) {
     case 1: {
         EffectObj *p;
         if (++s->timer > 100) {
-            SndMgr_PlayVolume(data_02097e4c, 50, 100, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 50, 100, -1, -1);
             p = Effect_SpawnId(50 + 0x358, &self->pos);
             p->SetScaleXYZ(0x1666, 0x1666, 0x1666);
             p->AddPosXYZ(0, 0x1000, 0);
@@ -367,7 +367,7 @@ void Ov011SceneActor_State20(Ov011SceneActor *self) {
         if (++s->timer > 60) {
             Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
-            data_ov000_021ccd54->stageFlags = 1;
+            gSceneCmd->stageFlags = 1;
             self->model->alpha = 0x1f;
             History_SetState(self->fsm, 1, 0);
         } else if (self->fsm->timer > 30) {

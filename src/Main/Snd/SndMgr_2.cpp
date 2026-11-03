@@ -29,25 +29,25 @@ void SndMgr_LoadNow(SndMgr *mgr, s32 type, s32 id) {
             break;
         case 1:
             NNS_SndHeapLoadState(mgr->heaps[0], mgr->heapLevels[0]);
-            NNS_SndArcLoadSeq(id, data_02097e48.mgr->heaps[0]);
+            NNS_SndArcLoadSeq(id, gSndQueue.mgr->heaps[0]);
             break;
         case 2:
-            NNS_SndArcLoadSeqArc(id, data_02097e48.mgr->heaps[0]);
+            NNS_SndArcLoadSeqArc(id, gSndQueue.mgr->heaps[0]);
             break;
         case 3:
-            if (NNS_SndArcLoadBank(id, data_02097e48.mgr->heaps[0]) == TRUE) {
+            if (NNS_SndArcLoadBank(id, gSndQueue.mgr->heaps[0]) == TRUE) {
                 mgr->heapLevels[0] = NNS_SndHeapSaveState(mgr->heaps[0]);
             }
             break;
         case 4:
-            if (NNS_SndArcLoadGroup(id, data_02097e48.mgr->heaps[0]) == TRUE) {
+            if (NNS_SndArcLoadGroup(id, gSndQueue.mgr->heaps[0]) == TRUE) {
                 mgr->heapLevels[0] = NNS_SndHeapSaveState(mgr->heaps[0]);
             }
             break;
     }
     mgr->loadType = 0;
-    NNS_SndHeapGetFreeSize(data_02097e48.mgr->heaps[0]);
-    NNS_SndHeapGetFreeSize(data_02097e48.mgr->heaps[1]);
+    NNS_SndHeapGetFreeSize(gSndQueue.mgr->heaps[0]);
+    NNS_SndHeapGetFreeSize(gSndQueue.mgr->heaps[1]);
 }
 
 void SndMgr_RequestLoad_02049678(SndMgr *mgr, s32 type, s32 id, s32 arg) {

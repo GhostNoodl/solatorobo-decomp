@@ -13,9 +13,9 @@ typedef struct Ov006RacerEntry {
 
 extern "C" {
 
-extern const Ov006RacerEntry data_ov006_021eb930[];
+extern const Ov006RacerEntry Ov006Racer_StateTable[];
 extern const VecFx32 data_ov006_021eb8c8;
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern const MtxFx43 data_02092844;
 extern const MtxFx44 data_02092800;
 
@@ -27,10 +27,10 @@ void Obj0218c208_AddPoint(void *a, const VecFx32 *pos, u16 rot);
 static inline void Ov006Racer_Dispatch(Ov006Racer *self, u32 kind) {
     s32 i;
     for (i = 0; i < 3; i++) {
-        if (data_ov006_021eb930[i].kind != kind) {
+        if (Ov006Racer_StateTable[i].kind != kind) {
             continue;
         }
-        (self->*data_ov006_021eb930[i].fn)();
+        (self->*Ov006Racer_StateTable[i].fn)();
         return;
     }
 }
@@ -41,8 +41,8 @@ void Ov006ActVt_021ec4f4_RunState(Ov006Racer *self) {
     Ov006Racer_Dispatch(self, self->fsm->current);
     was = self->unk_19c_13;
     self->unk_19c_13 = 0;
-    if (self->idx == data_ov006_021ec884->unk5) {
-        FieldCam *cam = &data_ov000_021ccd54->cam;
+    if (self->idx == gOv006SlotManager->unk5) {
+        FieldCam *cam = &gSceneCmd->cam;
         if (cam->unk_d9 == 0) {
             VecFx32 v = data_ov006_021eb8c8;
             cam->unk_dc = v;
@@ -52,13 +52,13 @@ void Ov006ActVt_021ec4f4_RunState(Ov006Racer *self) {
             cam->unk_e8 = self->pos;
             cam->unk_da_1 = 1;
         }
-        if (data_ov006_021ec860->unk1C != 0 && data_ov006_021ec884->unk13D == 0 && !Ov006Racer_IsOver(self)) {
-            u16 k = data_ov000_021ccd68->frame & 0x7f;
+        if (gOv006Manager->unk1C != 0 && gOv006SlotManager->unk13D == 0 && !Ov006Racer_IsOver(self)) {
+            u16 k = gActorMgr->frame & 0x7f;
             if (k <= 0x3f && (k & 0xf) <= 0xc) {
                 self->unk_19c_13 = 1;
             }
         }
-    } else if (data_ov006_021ec884->unk13D == 0 && !Ov006Racer_IsOver(self)) {
+    } else if (gOv006SlotManager->unk13D == 0 && !Ov006Racer_IsOver(self)) {
         self->unk_19c_13 = 1;
     }
     if (self->unk_19c_13) {
@@ -76,7 +76,7 @@ void Ov006ActVt_021ec4f4_RunState(Ov006Racer *self) {
     Ov006Racer_UpdateCheckpoint(self);
     Ov006Racer_CheckItems(self);
     Ov006Racer_UpdateCamera(self);
-    Obj0218c208_AddPoint(data_ov000_021ccd64, &self->pos, self->rot_y);
+    Obj0218c208_AddPoint(gGroup, &self->pos, self->rot_y);
     {
         ActorSub40 *w = self->fsm;
         w->flags = 0;

@@ -34,7 +34,7 @@ void Ov009ActVt_02217aac_StateMove(Ov009ActVt_02217aac *self) {
     }
 }
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern u8 data_ov009_022160b8[];
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
@@ -90,7 +90,7 @@ void Ov009ActVt_02217aac_StateShoot(Ov009ActVt_02217aac *self) {
     case 3: {
         VecFx32 p;
         Ov003Actor *h;
-        SndMgr_PlayAt(data_02097e4c, 0x2b, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x2b, &self->pos, 0);
         p.x = self->pos.x;
         p.y = self->pos.y;
         p.z = self->pos.z;

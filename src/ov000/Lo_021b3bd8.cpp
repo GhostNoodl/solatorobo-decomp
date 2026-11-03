@@ -63,7 +63,7 @@ typedef struct {
 
 extern "C" {
 
-extern Cfg021b3bd8 *data_0214a424;
+extern Cfg021b3bd8 *gStageFlags;
 BOOL Hit_DiffInCylinder(void *a, VecFx32 *b, s32 c, s32 d);
 
 static inline void Fade_Set(Fade021b3bd8 *f) {
@@ -85,11 +85,11 @@ void func_ov000_021b3bd8(Mgr021b3bd8 *self) {
     if (self->flags.b1) {
         return;
     }
-    if (data_0214a424->b9 ? TRUE : FALSE) {
+    if (gStageFlags->b9 ? TRUE : FALSE) {
         return;
     }
     same = FALSE;
-    if (data_ov000_021ccd54->unk_ca.c[0] == self->ids[0] && data_ov000_021ccd54->unk_ca.c[1] == self->ids[1] && data_ov000_021ccd54->unk_ca.c[2] == self->ids[2]) {
+    if (gSceneCmd->unk_ca.c[0] == self->ids[0] && gSceneCmd->unk_ca.c[1] == self->ids[1] && gSceneCmd->unk_ca.c[2] == self->ids[2]) {
         same = TRUE;
     }
     if (!same) {

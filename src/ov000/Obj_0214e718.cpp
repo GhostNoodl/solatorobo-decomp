@@ -10,8 +10,8 @@ public:
 
 extern "C" {
 
-extern u8 data_ov000_021cc060[];
-extern u8 data_ov000_021caa44[];
+extern u8 Task_vtbl[];
+extern u8 Lo021caa44_vtbl[];
 
 void *Heap_Alloc(u32 size);
 Obj0214e718 *Task_FindById(s32 id);
@@ -29,9 +29,9 @@ s32 UiList_GetPadLeft(void) {
 VObj *Lo021caa44_New(void) {
     VObj *obj = (VObj *)Heap_Alloc(0x68);
     if (obj != NULL) {
-        VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
+        VOBJ_SET_VTABLE(obj, Task_vtbl);
         obj->vfunc_58();
-        VOBJ_SET_VTABLE(obj, data_ov000_021caa44);
+        VOBJ_SET_VTABLE(obj, Lo021caa44_vtbl);
         obj->vfunc_58();
     }
     obj->vfunc_08(0xe, 0xc8);

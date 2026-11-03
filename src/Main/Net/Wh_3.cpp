@@ -32,10 +32,10 @@ void func_02046418(WhCbArg *arg) {
         return;
     }
     WH_ChangeSysState(1);
-    if (data_02097e40->unk_46 == 0) {
+    if (gWhMgr->unk_46 == 0) {
         return;
     }
-    if (!WH_StateInStartChild(data_02097e40)) {
+    if (!WH_StateInStartChild(gWhMgr)) {
         WH_ChangeSysState(8);
     }
 }
@@ -59,7 +59,7 @@ BOOL func_020464e0(WhMgr *wh, int mode, const void *bssDesc) {
 static inline BOOL WH_StateInStartChildMP(void) {
     WhMgr *wh;
     WH_ChangeSysState(4);
-    wh = data_02097e40;
+    wh = gWhMgr;
     return WH_CheckResult(WM_StartMP((void (*)(void *))func_020467b4, wh->recvBuf, wh->recvSize, wh->sendBuf, wh->sendSize, wh->cfg.mpFreq));
 }
 
@@ -89,7 +89,7 @@ void func_020465c8(WhCbArg *arg) {
             WH_ChangeSysState(3);
             return;
         }
-        data_02097e40->unk_30 = arg->unk_0a;
+        gWhMgr->unk_30 = arg->unk_0a;
         return;
     case 6:
         return;
@@ -124,12 +124,12 @@ void func_020467b4(WhCbArg *arg) {
     }
     switch (arg->state) {
     case 10: {
-        WhMgr *wh = data_02097e40;
+        WhMgr *wh = gWhMgr;
         if (wh->connectMode == 4) {
             int result = WM_StartDataSharing(wh->dsInfo, wh->cfg.dsPort, (u16)((1 << (wh->cfg.maxChildren + 1)) - 1), wh->cfg.dsDataSize, wh->cfg.doubleMode);
             if (result != 0) {
                 WH_SetError(result);
-                func_02045094(data_02097e40);
+                func_02045094(gWhMgr);
                 return;
             }
             WH_ChangeSysState(5);
@@ -151,7 +151,7 @@ static inline BOOL WH_StateInEndChild(void) {
     result = WM_Disconnect((void (*)(void *))func_02046774, 0);
     if (result != 2) {
         WH_SetError(result);
-        WH_Reset(data_02097e40, NULL);
+        WH_Reset(gWhMgr, NULL);
         return FALSE;
     }
     return TRUE;
@@ -159,7 +159,7 @@ static inline BOOL WH_StateInEndChild(void) {
 
 void func_020468d0(WhCbArg *arg) {
     if (arg->errcode != 0) {
-        func_02045094(data_02097e40);
+        func_02045094(gWhMgr);
         return;
     }
     if (!WH_StateInEndChild()) {
@@ -208,7 +208,7 @@ int Wh_GetError(WhMgr *wh) {
 }
 
 BOOL func_02046ac4(void) {
-    WhMgr *wh = data_02097e40;
+    WhMgr *wh = gWhMgr;
     if (wh != NULL ? TRUE : FALSE) {
         if (WH_IsStopped(wh)) {
             WH_Destroy(wh);

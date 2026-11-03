@@ -24,7 +24,7 @@ void func_ov002_021d8860(Obj021efe9c *self) {
     if (t < 0x78) {
         self->unk_9c = FX_MUL(FX_SINCOS((((t * 0x444) % 0x7fff) >> 4) * 2), 0xb5c) + 0x429;
         if (t % 30 == 0) {
-            SndMgr_PlayVolume(data_02097e4c, 0x44, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x44, -1, -1, -1);
         }
     } else if (t == 0x78) {
         s32 org[2];
@@ -32,7 +32,7 @@ void func_ov002_021d8860(Obj021efe9c *self) {
         s32 out[3];
         u8 m[0x24];
         s32 v[3];
-        SndMgr_PlayVolume(data_02097e4c, 0x5c, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x5c, -1, -1, -1);
         pos[0] = self->unk_54;
         pos[1] = self->unk_58;
         org[0] = self->unk_64;

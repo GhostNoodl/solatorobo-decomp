@@ -53,7 +53,7 @@ void Lo021cb3a8_SetText(Lo021cb3a8 *self, s32 arg) {
     HEAP_DELETE(TextWin *, self->text, p->unk_vf04());
     p = (TextWin *)Heap_Alloc(0xb8);
     if (p != NULL) {
-        VOBJ_SET_VTABLE(p, data_0208ba70);
+        VOBJ_SET_VTABLE(p, TextWin_vtbl);
         TextWin_Init(p);
     }
     self->text = p;
@@ -61,7 +61,7 @@ void Lo021cb3a8_SetText(Lo021cb3a8 *self, s32 arg) {
     p = self->text;
     p->str = arg;
     p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, (s8)p->unk_37 != 0);
-    data_02097ce0->unk_004 = p->font;
+    gGfxMgr->unk_004 = p->font;
     self->text->flags |= 0x40;
     self->text->flags |= 0x1000000;
     self->text->flags |= 0x400000;

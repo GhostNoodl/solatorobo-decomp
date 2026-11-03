@@ -66,7 +66,7 @@ void Ov009ActVt_02216a00_Update(Ov009ActVt_02216a00 *self) {
         return;
     }
     {
-        ActorGroup *e = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+        ActorGroup *e = ActorMgr_GetGroup(gActorMgr, 0x5000);
         if (e != NULL && e->count <= 3) {
             if (self->unk_b6 != 0) {
                 self->unk_b6--;
@@ -88,10 +88,10 @@ extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *model, s16 a);
 extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern void Vec_RotateY(VecFx32 *out, VecFx32 *a, u16 b);
 static inline Ov003Actor *Ov009_FindActor5b(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Ov009ActVt_02216a00_StateAttack(Ov009ActVt_02216a00 *self) {
@@ -141,9 +141,9 @@ void Ov009ActVt_02216a00_StateAttack(Ov009ActVt_02216a00 *self) {
             Hit_ApplyInArea(self, self, self->unk_f0, 0x20, (u16)(1 << (t->id >> 12)), NULL, 0, 0x3400, 0x2800, 0x64, 0x1000);
         }
         Effect_SpawnId(0x66, &self->pos)->SetScaleAll(0x1c00);
-        g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+        g = ActorMgr_GetGroup(gActorMgr, 0x5000);
         lim = 4;
-        if (data_ov000_021ccd54->unk_ca.c[0] == 2) {
+        if (gSceneCmd->unk_ca.c[0] == 2) {
             lim = 3;
         }
         if (g != NULL && g->count < lim) {

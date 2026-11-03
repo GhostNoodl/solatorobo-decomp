@@ -26,7 +26,7 @@ void Ov009ActVt_022176ec_Update(Ov009ActVt_022176ec *self) {
     if (st->current != 0x15 && (self->hit->unk_50 & 0x20000000) && !(self->hit->unk_50 & 0x400) &&
         self->targetObj->target == 0xffff) {
         st->flags |= 0x200000;
-        SndMgr_PlayAt(data_02097e4c, 0x6c, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x6c, &self->pos, 0);
         return;
     }
     s48 = self->hit;

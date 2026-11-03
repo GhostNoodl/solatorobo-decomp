@@ -237,7 +237,7 @@ static inline BOOL Ov012Game_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov012_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov012Game_IsIdle(g);
     }
@@ -268,8 +268,8 @@ void Model0218fe1c_UpdateAnim(void *a, s32 b);
 
 // Frees the effect list in *slot with the default heap selected.
 static inline void Ov012_FreeFx(Ov003FxList **slot) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (*slot != NULL) {
         Ov003FxList *p = *slot;
         if (p != NULL) {
@@ -278,7 +278,7 @@ static inline void Ov012_FreeFx(Ov003FxList **slot) {
         }
         *slot = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 static inline Ov003FxList *Ov012_NewFx(void) {
@@ -291,7 +291,7 @@ static inline Ov003FxList *Ov012_NewFx(void) {
 
 
 extern "C" {
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern char data_ov012_0220aaf9[];
 extern void *ResSet_Init(void *p);
 extern void *Model0218fe1c_Init(void *p);
@@ -309,7 +309,7 @@ extern BOOL Model0218fe1c_SetRes(void *a, void *b, s32 c, s32 d);
 
 static inline void Ov012_StopSnd(void) {
     if (ResMgr_IsLoaded(data_ov012_0220aaf9, 7)) {
-        ResMgr_ReleaseByName(data_02097cdc, data_ov012_0220aaf9, 7, 0);
+        ResMgr_ReleaseByName(gResMgr, data_ov012_0220aaf9, 7, 0);
     }
 }
 
@@ -356,10 +356,10 @@ extern "C" {
 }
 
 static inline Ov003Actor *Ov012_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return (Ov003Actor *)ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return (Ov003Actor *)ActorMgr_GetActor(gActorMgr, id);
 }
 
 
@@ -415,7 +415,7 @@ extern "C" {
 }
 
 static inline void Ov012_ClearOwnerFlag(Ov003Actor *self) {
-    Ov003Unit *o = (Ov003Unit *)Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    Ov003Unit *o = (Ov003Unit *)Group_FindNode(gGroup, self->unk_20);
     if (o != NULL) {
         o->unk_a2_0 = 0;
     }
@@ -437,10 +437,10 @@ extern void func_020627dc(s32 a);
 
 
 static inline Ov003Actor *Ov012_FindRes(s32 a, s32 b) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return (Ov003Actor *)ActorMgr_FindKind(data_ov000_021ccd68, a, b);
+    return (Ov003Actor *)ActorMgr_FindKind(gActorMgr, a, b);
 }
 
 
@@ -546,7 +546,7 @@ static inline s32 Ov012_DistXZ(const VecFx32 *a, const VecFx32 *b) {
 extern "C" {
 }
 
-// Actor class of Ov012Act_021fee1c_Ctor (vtable data_ov012_0220abf0).
+// Actor class of Ov012Act_021fee1c_Ctor (vtable Ov012Act_021fee1c_vtbl).
 class Ov012Act_021fee1c : public Ov003Actor {
 public:
     VecFx32 unk_f0;
@@ -559,7 +559,7 @@ public:
 };
 SIZE_ASSERT(Ov012Act_021fee1c, 0x108);
 
-// Actor class of Ov012Act_021ffa68_Ctor (vtable data_ov012_0220ab44).
+// Actor class of Ov012Act_021ffa68_Ctor (vtable Ov012Act_021ffa68_vtbl).
 class Ov012Act_021ffa68 : public Ov003Actor {
 public:
     VecFx32 unk_f0;
@@ -572,7 +572,7 @@ public:
 };
 SIZE_ASSERT(Ov012Act_021ffa68, 0x10c);
 
-// Actor class of Ov012Act_02202b10_Ctor (vtable data_ov012_0220afe4).
+// Actor class of Ov012Act_02202b10_Ctor (vtable Ov012Act_02202b10_vtbl).
 class Ov012Act_02202b10 : public Ov003Actor {
 public:
     u32 unk_f0;
@@ -600,7 +600,7 @@ static inline void Ov012_ResetF0(Ov012Act_02202b10 *self) {
     self->unk_f8 = 0;
 }
 
-// Actor class of Ov012ActEx_02207018_Ctor (vtable data_ov012_0220b0b8).
+// Actor class of Ov012ActEx_02207018_Ctor (vtable Ov012ActEx_02207018_vtbl).
 class Ov012ActEx_02207018 : public ActorEx {
 public:
     u32 unk_d0;
@@ -608,7 +608,7 @@ public:
 };
 SIZE_ASSERT(Ov012ActEx_02207018, 0xd8);
 
-// The ov000-factory class with vtable data_ov012_0220af10 (0xe4 bytes).
+// The ov000-factory class with vtable Ov012ActExVt_0220af10_vtbl (0xe4 bytes).
 class Ov012ActExVt_0220af10 : public ActorEx {
 public:
     VecFx32 unk_d0;
@@ -620,7 +620,7 @@ public:
 };
 SIZE_ASSERT(Ov012ActExVt_0220af10, 0xe4);
 
-// The ov000-factory class with vtable data_ov012_0220b150 (0xe8 bytes).
+// The ov000-factory class with vtable Ov012ActExVt_0220b150_vtbl (0xe8 bytes).
 class Ov012ActExVt_0220b150 : public ActorEx {
 public:
     s32 unk_d0;
@@ -633,7 +633,7 @@ public:
 };
 SIZE_ASSERT(Ov012ActExVt_0220b150, 0xe8);
 
-// The ov000-factory class with vtable data_ov012_0220b1e8 (0x2fc bytes): an ActorEx with a second
+// The ov000-factory class with vtable Ov012ActExVt_0220b1e8_vtbl (0x2fc bytes): an ActorEx with a second
 // model and its resources, drawn at pos while unk_d0 bit 20 is clear.
 class Ov012ActExVt_0220b1e8 : public ActorEx {
 public:
@@ -647,7 +647,7 @@ public:
 };
 SIZE_ASSERT(Ov012ActExVt_0220b1e8, 0x2fc);
 
-// The ov003-factory class with vtable data_ov012_0220b280 (0x22c bytes, kinds 0x5029, 0x5039,
+// The ov003-factory class with vtable Ov012ActVt_0220b280_vtbl (0x22c bytes, kinds 0x5029, 0x5039,
 // 0x5057, 0x5c01): its own resource names at 0xf0, filled through nameFunc.
 class Ov012ActVt_0220b280 : public Ov003Actor {
 public:

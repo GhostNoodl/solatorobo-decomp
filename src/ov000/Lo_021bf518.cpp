@@ -38,7 +38,7 @@ void func_ov000_021bf518(ActorMarker2D *self) {
     if (self->work.state != 10) {
         return;
     }
-    g = data_02097d48;
+    g = gGfxSys;
     x = (self->work.x >> 12) - 0x80;
     y = (self->work.y >> 12) - 0x60;
     self->unk_8c->unk_150 = self->work.z;
@@ -74,7 +74,7 @@ void func_ov000_021bf794(ActorMarker2D *self) {
     if (self->work.state != 10) {
         return;
     }
-    g = data_02097d48;
+    g = gGfxSys;
     x = (self->work.x >> 12) - 0x80;
     y = (self->work.y >> 12) - 0x60;
     self->unk_8c->unk_150 = self->work.z;

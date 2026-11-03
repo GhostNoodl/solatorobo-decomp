@@ -2,14 +2,14 @@
 
 extern "C" {
 
-extern void *data_ov013_0220bb20;
+extern void *Ov013ActEx_022065ac_vtbl;
 extern char data_ov013_0220b360[];
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 extern BOOL Stage_UseScaledStats(void);
 
 Ov013ActEx_022065ac *Ov013ActEx_022065ac_Ctor(Ov013ActEx_022065ac *self) {
     ActorEx_Ctor(self);
-    *(void **)self = &data_ov013_0220bb20;
+    *(void **)self = &Ov013ActEx_022065ac_vtbl;
     self->unk_f4 = 0;
     self->unk_f6 = 0;
     return self;
@@ -31,7 +31,7 @@ void Ov013ActEx_022065ac_StateThrown(Ov013ActEx_022065ac *self) {
         self->rot_y = FX_Atan2(self->vel.x, self->vel.z);
     }
     if (self->unk_f4 != 0 && ((s32)self->unk_bc) != 0) {
-        EffectObj *p = Effect_Find_020657b0(data_0214a420, ((s32)self->unk_bc));
+        EffectObj *p = Effect_Find_020657b0(gEffectMgr, ((s32)self->unk_bc));
         if (p != NULL) {
             p->loopCount = -1;
         }
@@ -115,8 +115,8 @@ void Ov013ActVt_0220bdd8_Update(Ov013ActVt_0220bdd8 *self, Ov003Actor *b) {
     if (self->unk_b6 != 0) {
         return;
     }
-    a = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
-    b = ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000);
+    a = ActorMgr_GetGroup(gActorMgr, 0x5000);
+    b = ActorMgr_GetGroup(gActorMgr, 0x4000);
     ok = TRUE;
     if (a != NULL) {
         n = Rand_UpTo(9);

@@ -10,8 +10,8 @@
 
 
 extern "C" {
-extern MessageQueue021cb980 *data_ov000_021ccd30;
-extern void *data_02097e4c;
+extern MessageQueue021cb980 *gMessageQueue;
+extern void *gSndMgr;
 extern char data_ov000_021cc672[];
 extern char data_ov000_021cc5e3[];
 extern char data_ov000_021cc62a[];
@@ -53,10 +53,10 @@ void func_ov000_02168490(Lo021cb894 *self, s32 a, s32 b, VecFx32 *p, VecFx32 *q)
 void Shared_ChangeFlags(u16 clear, u16 set);
 
 static inline Actor *FindActor_021a7af0(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline u16 AngleTo_021a7af0(Robo021ca458 *self, Actor *other) {
@@ -84,7 +84,7 @@ static inline BOOL IsBusy_021a7af0(FieldState *g) {
 }
 
 static inline BOOL IsIdle_021a7af0(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (IsBusy_021a7af0(g)) {
             return FALSE;
@@ -102,7 +102,7 @@ static inline s32 SubKind_021a7af0(Actor *a) {
 }
 
 static inline void Gauge_021a7af0(s32 a, s32 b, VecFx32 *p, VecFx32 *q) {
-    ListBuffer021cb940 *o = data_ov000_021ccd30->unk_11c;
+    ListBuffer021cb940 *o = gMessageQueue->unk_11c;
     if (o == NULL) {
         return;
     }
@@ -287,7 +287,7 @@ void Robo021ca458_State18(Robo021ca458 *self) {
             o->AddPosXYZ(0, (self->height >> 1) + (self->height >> 3), 0);
             o->SetScaleAll(0x1333);
             o->speed = 0x2ccd;
-            SndMgr_PlayVolume(data_02097e4c, 0x44, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x44, -1, -1, -1);
             self->fsm->st = 0x64;
             return;
         }
@@ -480,11 +480,11 @@ void Robo021ca458_State18(Robo021ca458 *self) {
             m->color2 = 0x73ff;
             m->blend = 5;
             m->blendMax = 4;
-            SndMgr_PlayPan(data_02097e4c, 0x4a, -5);
+            SndMgr_PlayPan(gSndMgr, 0x4a, -5);
         } else {
             Field_ShakeCamera(6, 10);
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x45, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x45, -1, -1, -1);
         self->unk_b60 = Frame_021a7af0(self->model);
         self->unk_b1e = t->id;
         self->fsm->timer = 0;
@@ -520,7 +520,7 @@ void Robo021ca458_State18(Robo021ca458 *self) {
                         FieldState *g;
                         Shared_SetEventActor(t->kind, t->id);
                         func_020627dc(5);
-                        g = data_ov000_021ccd54;
+                        g = gSceneCmd;
                         g->stageFlags = stop;
                         func_ov000_02182590((u8 *)g + 0xac);
                     }
@@ -582,16 +582,16 @@ void Robo021ca458_State18(Robo021ca458 *self) {
             s16 n;
             self->fsm->timer = 0;
             Model0218fe1c_SetAnimFrame(self->model, self->unk_b60 + 0x3000);
-            SndMgr_PlayVolume(data_02097e4c, 0x2a, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x2a, -1, -1, -1);
             if (!self->unk_b22_3) {
                 EffectObj *o = Effect_SpawnId(0x44d, &self->pos);
                 s32 a = Rand_PlusMinus(0x4cd);
                 s32 b = Rand_UpTo(0x800);
                 s32 c = Rand_PlusMinus(0x4cd);
                 o->AddPosXYZ(a, b, c);
-                o->SetScaleAll((data_ov000_021ccd68->frame & 0xff) + 0xf00);
+                o->SetScaleAll((gActorMgr->frame & 0xff) + 0xf00);
             }
-            n = func_0206d37c(data_0214a424, 2);
+            n = func_0206d37c(gStageFlags, 2);
             if (self->unk_b22_3) {
                 n += 5;
             }
@@ -627,10 +627,10 @@ void Robo021ca458_State18(Robo021ca458 *self) {
                     self->target = 0xffff;
                     Actor_SendMsgU8(t, self->id, 9);
                     Target_Set(info, self);
-                    SndMgr_PlayVolume(data_02097e4c, 0x302, -1, -1, -1);
+                    SndMgr_PlayVolume(gSndMgr, 0x302, -1, -1, -1);
                     Model0218fe1c_SetAnimSpeed(self->model, 0x1000);
                 } else if (kind == 0x12) {
-                    SndMgr_PlayVolume(data_02097e4c, 0x302, -1, -1, -1);
+                    SndMgr_PlayVolume(gSndMgr, 0x302, -1, -1, -1);
                     History_SetState(self->fsm, 6, 0);
                 } else if (kind == 0x14) {
                     u8 *p;
@@ -645,8 +645,8 @@ void Robo021ca458_State18(Robo021ca458 *self) {
                         t->target = LFLD(u16, p, 0xc);
                     }
                     Target_Set(info, self);
-                    SndMgr_PlayVolume(data_02097e4c, 0x302, -1, -1, -1);
-                    SndMgr_PlayAt(data_02097e4c, 0x2c, &self->pos, 0);
+                    SndMgr_PlayVolume(gSndMgr, 0x302, -1, -1, -1);
+                    SndMgr_PlayAt(gSndMgr, 0x2c, &self->pos, 0);
                     Field_ShakeCamera(8, 0xc);
                     o = Effect_SpawnId(0x69, &self->pos);
                     if (o != NULL) {
@@ -658,7 +658,7 @@ void Robo021ca458_State18(Robo021ca458 *self) {
         }
         Actor_TurnToActor(self, t, 0x400);
         {
-            FieldMgr *g = data_ov000_021ccd6c;
+            FieldMgr *g = gFieldMgr;
             VecFx32 w;
             VecFx32 u;
             v = t->pos;
@@ -671,7 +671,7 @@ void Robo021ca458_State18(Robo021ca458 *self) {
             v.y += self->centerY;
             v.z = FxMul_021a7af0(v.z, 0x733);
             if (!Flag19_021a7af0(g) && !Info18b4_021a7af0(info) && !self->unk_b24_27) {
-                if (!IsIdle_021a7af0() || HasD4_021a7af0(data_ov000_021ccd54)) {
+                if (!IsIdle_021a7af0() || HasD4_021a7af0(gSceneCmd)) {
                     self->unk_b24_27 = 1;
                 }
                 VEC_Add(&v, (VecFx32 *)((u8 *)self + 0x70), &w);
@@ -693,8 +693,8 @@ void Robo021ca458_State18(Robo021ca458 *self) {
             }
             if (kind == 0xf) {
                 if (t != NULL && SubKind_021a7af0(t) == 0x14) {
-                    SndMgr_PlayAt(data_02097e4c, 0x29, &self->pos, 0);
-                    SndMgr_PlayVolume(data_02097e4c, self->unk_b3c > 0x28 ? 0x303 : 0x302, -1, -1, -1);
+                    SndMgr_PlayAt(gSndMgr, 0x29, &self->pos, 0);
+                    SndMgr_PlayVolume(gSndMgr, self->unk_b3c > 0x28 ? 0x303 : 0x302, -1, -1, -1);
                     Field_ShakeCamera(4, 5);
                 }
             } else if (kind == 0x13) {
@@ -702,7 +702,7 @@ void Robo021ca458_State18(Robo021ca458 *self) {
                     FieldState *g;
                     Shared_ChangeFlags(0x3c0, 0x200);
                     Shared_SetEventActor(t->kind, t->id);
-                    g = data_ov000_021ccd54;
+                    g = gSceneCmd;
                     g->stageFlags = 1;
                     func_ov000_02182590((u8 *)g + 0xac);
                 }
@@ -740,7 +740,7 @@ void Robo021ca458_State18(Robo021ca458 *self) {
         return;
     case 0x1e:
         Model0218fe1c_SetAnim(self->model, data_ov000_021cc636, 0x1000, 1);
-        SndMgr_PlayAt(data_02097e4c, 0x73, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x73, &self->pos, 0);
         self->unk_b1c = 0xffff;
         self->unk_b24_5 = 0;
         self->unk_b24_7 = self->unk_b24_9;
@@ -786,7 +786,7 @@ void Robo021ca458_State18(Robo021ca458 *self) {
         }
         Model0218fe1c_SetAnim(self->model, data_ov000_021cc630, 0x800, 0);
         self->friction = 0xe66;
-        SndMgr_PlayAt(data_02097e4c, 0x81, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x81, &self->pos, 0);
         Effect_SpawnId(0x12f, &self->pos)->SetScaleAll(0x800);
         self->fsm->timer = 0;
         self->fsm->st++;

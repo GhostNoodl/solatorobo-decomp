@@ -29,19 +29,19 @@ void Ov014Act_02209280_StateDie(Ov014Act_02209280 *self) {
     switch (self->fsm->st) {
     case 0:
         self->unk_fc = 0;
-        EffectMgr_StopLoop(data_0214a420, self->unk_1dc);
+        EffectMgr_StopLoop(gEffectMgr, self->unk_1dc);
         self->unk_1dc = NULL;
-        EffectMgr_StopLoop(data_0214a420, self->unk_1e0);
+        EffectMgr_StopLoop(gEffectMgr, self->unk_1e0);
         self->unk_1e0 = NULL;
-        EffectMgr_StopLoop(data_0214a420, self->unk_1e4);
+        EffectMgr_StopLoop(gEffectMgr, self->unk_1e4);
         self->unk_1e4 = 0;
         Model0218fe1c_SetAnim(self->model, data_ov014_02217a84, 0xcd, 0);
         Model0218fe1c_SetLoop(self->model);
         Model0218fe1c_SetAnimSpeed(self->model, 0x800);
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4819, 0x15);
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x481d, 0x15);
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x481e, 0x15);
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x481f, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x4819, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x481d, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x481e, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x481f, 0x15);
         self->fsm->st++;
         self->fsm->timer = 0xf0;
         break;
@@ -116,7 +116,7 @@ void Ov014Act_02209280_StateDie(Ov014Act_02209280 *self) {
         self->fsm->timer = 0x190;
         break;
     case 3: {
-        EffectObj *e = Effect_Find_020657b0(data_0214a420, self->unk_1f0);
+        EffectObj *e = Effect_Find_020657b0(gEffectMgr, self->unk_1f0);
         VecFx32 v;
         if (e == NULL) {
             break;
@@ -168,7 +168,7 @@ void Ov014Act_02209280_State21(Ov014Act_02209280 *self) {
             }
         }
         {
-            EffectObj *e = EffectMgr_FindByKey(data_0214a420, 0x390);
+            EffectObj *e = EffectMgr_FindByKey(gEffectMgr, 0x390);
             if (e != NULL) {
                 EffectObj_StopLoop(e);
             }
@@ -182,26 +182,26 @@ void Ov014Act_02209280_State21(Ov014Act_02209280 *self) {
         if (t == 0xd2) {
             VecFx32 p;
             EffectObj *e;
-            EffectMgr_StopLoop(data_0214a420, self->unk_1f0);
+            EffectMgr_StopLoop(gEffectMgr, self->unk_1f0);
             p = self->pos;
             p.y += 0x3800;
             e = Effect_SpawnId(0x391, &p);
             e->speed = 0x99a;
             e->loopCount = -2;
         } else if (t > 0xb4) {
-            EffectObj *e = EffectMgr_FindByKey(data_0214a420, 0x391);
+            EffectObj *e = EffectMgr_FindByKey(gEffectMgr, 0x391);
             if (e != NULL) {
                 s32 r = FX_Div((0xd2 - self->fsm->timer) << 12, 0x1e000);
                 e->SetScaleAll(Interp_QuadLerp(r, 0x1000, 0x3000));
             }
         } else if (t > 0x6e) {
-            EffectObj *e = EffectMgr_FindByKey(data_0214a420, 0x391);
+            EffectObj *e = EffectMgr_FindByKey(gEffectMgr, 0x391);
             if (e != NULL) {
                 s32 r = FX_Div((0xb4 - self->fsm->timer) << 12, 0x46000);
                 e->SetScaleAll(Interp_QuadLerp(r, 0x3000, 0x1e000));
             }
         } else if (t > 0x5a) {
-            EffectObj *e = EffectMgr_FindByKey(data_0214a420, 0x391);
+            EffectObj *e = EffectMgr_FindByKey(gEffectMgr, 0x391);
             if (e != NULL) {
                 s32 r = FX_Div((0x6e - self->fsm->timer) << 12, 0x14000);
                 u8 a = (Ov014b_Mul64(r, -0x1f000) + 0x1f000) >> 12;
@@ -210,16 +210,16 @@ void Ov014Act_02209280_State21(Ov014Act_02209280 *self) {
             }
         } else {
             if (t == 0x5a) {
-                EffectObj *e = EffectMgr_FindByKey(data_0214a420, 0x391);
+                EffectObj *e = EffectMgr_FindByKey(gEffectMgr, 0x391);
                 if (e != NULL) {
-                    void *saved = data_02097dd0->cur;
-                    data_02097dd0->cur = data_02097dd0->heapHi;
+                    void *saved = gSysState->cur;
+                    gSysState->cur = gSysState->heapHi;
                     if (e != NULL) {
                         if (e != NULL) {
                             e->Delete();
                         }
                     }
-                    data_02097dd0->cur = saved;
+                    gSysState->cur = saved;
                 }
             }
             if (t % 30 == 0) {

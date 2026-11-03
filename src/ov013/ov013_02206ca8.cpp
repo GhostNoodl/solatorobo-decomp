@@ -28,10 +28,10 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *p, s16 a);
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Ov013ActVt_0220bdd8_StateAttack(Ov013ActVt_0220bdd8 *self) {
@@ -84,7 +84,7 @@ struct Ov013Blk12 {
     s32 w[3];
 };
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov013_0220be88[];
 extern const Ov013Blk12 data_ov013_0220b3e0;
 extern ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 a);
@@ -110,7 +110,7 @@ void Ov013ActVt_0220bdd8_StateAttack2(Ov013ActVt_0220bdd8 *self) {
         break;
     case 5:
         if (self->model->anim_state == 1) {
-            mgr = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+            mgr = ActorMgr_GetGroup(gActorMgr, 0x5000);
             if (mgr != NULL) {
                 flip = Rand_UpTo(1);
                 if (ActorGroup_CountKind(mgr, 0x540c) < 2) {
@@ -144,7 +144,7 @@ void Ov013ActVt_0220bdd8_StateAttack2(Ov013ActVt_0220bdd8 *self) {
             }
         }
         if (self->model->anim_state == 2) {
-            SndMgr_PlayAtPitch(data_02097e4c, 0x54, &self->pos, 5);
+            SndMgr_PlayAtPitch(gSndMgr, 0x54, &self->pos, 5);
         }
         if (!Model0218fe1c_IsAnimDone(self->model)) {
             return;
@@ -208,7 +208,7 @@ void Ov013ActVt_0220bdd8_StateShoot(Ov013ActVt_0220bdd8 *self) {
             return;
         }
         self->fsm->st = 5;
-        SndMgr_PlayAt(data_02097e4c, 0x43, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x43, &self->pos, 0);
         break;
     case 5: {
         VecFx32 p;

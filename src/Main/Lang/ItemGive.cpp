@@ -38,8 +38,8 @@ static inline void Item_Notify(u16 id, u16 val) {
     if (ref.idx == -1) {
         return;
     }
-    DataRes_ReadRef(data_02fe152c, &ref, id);
-    DataRes_WriteRef(data_02fe152c, &ref, id, val);
+    DataRes_ReadRef(gDataRes, &ref, id);
+    DataRes_WriteRef(gDataRes, &ref, id, val);
 }
 
 static inline BOOL Item_Set(u16 id, u16 val) {
@@ -50,8 +50,8 @@ static inline BOOL Item_Set(u16 id, u16 val) {
     if (ref.idx == -1) {
         return FALSE;
     }
-    old = DataRes_ReadRef(data_02fe152c, &ref, id);
-    DataRes_WriteRef(data_02fe152c, &ref, id, val);
+    old = DataRes_ReadRef(gDataRes, &ref, id);
+    DataRes_WriteRef(gDataRes, &ref, id, val);
     ok = TRUE;
     if (old != 0) {
         ok = FALSE;
@@ -65,13 +65,13 @@ BOOL Item_Give(u16 id, int n) {
     case 1: {
         s32 v = -1;
         if (n != 0) {
-            if (data_0214a424->itemTotal >= 100) {
+            if (gStageFlags->itemTotal >= 100) {
                 ok = FALSE;
             } else {
-                v = func_0206d2ec(data_0214a424, id, 1);
+                v = func_0206d2ec(gStageFlags, id, 1);
             }
         } else {
-            v = func_0206d2ec(data_0214a424, id, -1);
+            v = func_0206d2ec(gStageFlags, id, -1);
         }
         if (v == -1) {
             break;
@@ -103,10 +103,10 @@ void func_0206f3f0(u16 id, int n) {
     if (n < 0) {
         n = 0;
     }
-    if (func_0206d2a4(data_0214a424, id, n) == -1) {
+    if (func_0206d2a4(gStageFlags, id, n) == -1) {
         return;
     }
-    if (data_0214a424->items[Item_Idx(id)] + StageFlags_CountEntries(data_0214a424, id) == 0) {
+    if (gStageFlags->items[Item_Idx(id)] + StageFlags_CountEntries(gStageFlags, id) == 0) {
         Item_Notify(id, 0);
     } else {
         Item_Notify(id, 1);
@@ -150,7 +150,7 @@ void func_0206f518(SaveRef *ref, u32 id) {
         ref->idx = -1;
         return;
     }
-    DataRes_InitRef(data_02fe152c, ref, idx, unk);
+    DataRes_InitRef(gDataRes, ref, idx, unk);
 }
 
 BOOL Item_Set_0206f5e4(u16 id, int n) {
@@ -164,7 +164,7 @@ BOOL func_0206f66c(u16 id) {
     if (ref.idx == -1) {
         return FALSE;
     }
-    ret = DataRes_ReadRef(data_02fe152c, &ref, id) ? TRUE : FALSE;
+    ret = DataRes_ReadRef(gDataRes, &ref, id) ? TRUE : FALSE;
     return ret ? TRUE : FALSE;
 }
 

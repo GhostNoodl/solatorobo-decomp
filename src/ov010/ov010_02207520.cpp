@@ -54,8 +54,8 @@ extern "C" {
 
 // Deletes the object a field points to (vfunc_04) and clears the field.
 template <class T> static inline void Ov010_FreeV(T **pp) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (*pp != NULL) {
         VObj *p = *pp;
         if (p != NULL) {
@@ -63,7 +63,7 @@ template <class T> static inline void Ov010_FreeV(T **pp) {
         }
         *pp = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 extern "C" {
@@ -108,18 +108,18 @@ void Ov010Obj02210154_Release(Ov010Obj02210154 *self) {
     Ov010_FreeV(&self->unk_118);
     Ov010_FreeV(&self->unk_11c);
     Ov010_FreeV(&self->unk_120);
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_124 != NULL) {
         Heap_Free(self->unk_124);
         self->unk_124 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     Ov003Flag_Stop_021d8fa8(&self->seq);
     Ov010Coll_Release(&self->coll);
     self->ticker.vfunc_08();
     self->timer.vfunc_08();
-    data_ov000_021ccd54->cam.unk_d8_0 = 0;
+    gSceneCmd->cam.unk_d8_0 = 0;
     Ov010Obj02210154_ClearFields(self);
     func_ov003_021cf400(0);
 }
@@ -211,8 +211,8 @@ BOOL Ov010_FindActorInCone(Actor *self) {
     return found;
 }
 
-extern u8 data_ov010_02210154[];
-extern u8 data_ov010_0220ffe4[];
+extern u8 Ov010ActVt_02210154_vtbl[];
+extern u8 Ov010ActVt_0220ffe4_vtbl[];
 extern char data_ov010_0220ff84[];
 extern char data_ov010_0220ff91[];
 extern char data_ov010_0220ffa1[];
@@ -223,7 +223,7 @@ extern void Ov010Obj02210154_ClearFields(Ov010Obj02210154 *self);
 
 static inline void Ov010_02204204_Body(Ov010Obj02210154 *self) {
     Ov003Actor_Ctor(self);
-    *(void * *)self = data_ov010_02210154;
+    *(void * *)self = Ov010ActVt_02210154_vtbl;
     Ov003Flag_Deactivate(&self->seq);
     Ov010Coll_Ctor(&self->coll);
     Ov003Vt_021f7d10_Ctor(&self->ticker);
@@ -248,7 +248,7 @@ void *Ov010ActVt_0220ffe4_Ctor(Ov010Obj0220ffe4 *self) {
     Ov010_02204204_Body(self);
     self->unk_1fc = 0;
     self->unk_200 = 0;
-    *(void * *)self = data_ov010_0220ffe4;
+    *(void * *)self = Ov010ActVt_0220ffe4_vtbl;
     return self;
 }
 
@@ -264,7 +264,7 @@ void Ov010ActVt_0220ffe4_HandleMsg(Ov010Obj0220ffe4 *self, ActorMsg *msg) {
     Ov010Obj02210154_HandleMsg(self, msg);
 }
 
-extern const Ov010StEnt data_ov010_0220f188[];
+extern const Ov010StEnt Ov010Obj02210154_StateTable[];
 extern const Ov010Blk12 data_ov010_0220f0b4;
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
 extern void VEC_MultAdd(s32 a, const VecFx32 *b, const VecFx32 *c, VecFx32 *out);
@@ -280,8 +280,8 @@ void Ov010ActVt_0220ffe4_RunState(Ov010Cls *self) {
     }
     key = self->fsm->current;
     for (i = 0; i < 6; i++) {
-        if (key == data_ov010_0220f188[i].key && *(s32 *)&data_ov010_0220f188[i].fn != 0) {
-            (self->*data_ov010_0220f188[i].fn)();
+        if (key == Ov010Obj02210154_StateTable[i].key && *(s32 *)&Ov010Obj02210154_StateTable[i].fn != 0) {
+            (self->*Ov010Obj02210154_StateTable[i].fn)();
             break;
         }
     }
@@ -310,7 +310,7 @@ void Ov010ActVt_0220ffe4_RunState(Ov010Cls *self) {
     }
 }
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern const VecFx32 data_ov010_0220f0fc;
 extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *a, const char *b, s16 c, u8 d);
 extern void Model0218fe1c_SetLoop(Model0218fe1c *a);
@@ -335,7 +335,7 @@ void Ov010ActVt_0220ffe4_State20(Ov010Obj0220ffe4 *self) {
             self->velY = 0;
             self->friction = 0;
             self->gravity = 0;
-            SndMgr_PlayAt(data_02097e4c, 0x51, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x51, &self->pos, 0);
             self->fsm->st = 1;
             return;
         case 1:
@@ -418,7 +418,7 @@ void Ov010ActVt_0220ffe4_State21(Ov010Obj0220ffe4 *self) {
         self->velY = 0;
         self->friction = 0;
         self->gravity = 0;
-        SndMgr_PlayAt(data_02097e4c, 0x29, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x29, &self->pos, 0);
         self->fsm->st++;
         return;
     }
@@ -426,7 +426,7 @@ void Ov010ActVt_0220ffe4_State21(Ov010Obj0220ffe4 *self) {
     if (self->speed == 0) {
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
         History_SetState(self->fsm, 1, 0);
     }
 }
@@ -465,13 +465,13 @@ void Ov010ActVt_0220ffe4_State22(Ov010Obj0220ffe4 *self) {
         self->velY = 0;
         self->friction = 0;
         self->gravity = 0;
-        g = data_ov000_021ccd54;
+        g = gSceneCmd;
         g->cam.base.flags |= 0x1c;
         g->cam.base.shakeTime = 0xf;
         g->cam.base.shakeLen = 0x28;
         g->cam.base.shakeCur = 0x28;
         Ov010_SpawnAimFx(self, 0, self->moveYaw)->SetScaleAll(0x2000);
-        SndMgr_PlayAt(data_02097e4c, 0x32, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x32, &self->pos, 0);
         self->fsm->st = 0x15;
     }
     case 0x15:
@@ -493,7 +493,7 @@ void Ov010ActVt_0220ffe4_State22(Ov010Obj0220ffe4 *self) {
         Effect_SpawnId(0x322, &data_ov010_0220f114)->SetScaleAll(0x1800);
         Effect_SpawnId(0x389, &data_ov010_0220f120)->SetScaleAll(0x2000);
         Effect_SpawnId(0x322, &data_ov010_0220f114)->SetScaleAll(0x1800);
-        SndMgr_PlayAt(data_02097e4c, 0x79, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x79, &self->pos, 0);
         self->fsm->st = 0x1f;
         self->fsm->timer = 0x28;
         return;
@@ -523,14 +523,14 @@ void Ov010ActVt_0220ffe4_State22(Ov010Obj0220ffe4 *self) {
         o->rot_z = r.v[2];
         Effect_SpawnId(0x579, &data_ov010_0220f114)->SetScaleAll(0x2000);
         Effect_SpawnId(0x579, &data_ov010_0220f120)->SetScaleAll(0x2000);
-        SndMgr_PlayAt(data_02097e4c, 0x5c, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x5c, &self->pos, 0);
         self->fsm->st = 0x64;
         return;
     }
     case 0x64:
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
         self->fsm->st = 0x65;
         self->unk_1fc = 1;
         return;

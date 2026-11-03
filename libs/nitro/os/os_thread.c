@@ -24,8 +24,8 @@ typedef struct OSiThreadStatics {
 extern OSiThreadStatics data_0208ec24;
 #define OSi_Thread data_0208ec24
 
-extern OSThread data_0208ec50; // OSi_IdleThread
-extern OSThread data_0208ed10; // OSi_LauncherThread
+extern OSThread OSi_IdleThread;
+extern OSThread OSi_LauncherThread;
 
 u32 OS_GetProcMode(void);
 void OS_Halt(void);
@@ -243,7 +243,7 @@ asm void OS_InitThread(void) {
     ldr r2, =data_0208ec44
     str r3, [r0, #0xc]
     str r2, [r0, #8]
-    ldr r1, =data_0208ed10
+    ldr r1, =OSi_LauncherThread
     mov r2, #0x10
     str r2, [r1, #0x70]
     mov r2, #0
@@ -265,7 +265,7 @@ asm void OS_InitThread(void) {
     ldr r0, =0x800
     add r2, r1, #0x3f80
     sub r2, r2, r0
-    ldr r1, =data_0208ed10
+    ldr r1, =OSi_LauncherThread
     mov r4, #0
     str r2, [r1, #0x94]
     str r3, [r1, #0x90]
@@ -285,7 +285,7 @@ asm void OS_InitThread(void) {
     mov r0, r4
     str r2, [r1, #0]
     bl OS_SetSwitchThreadCallback
-    ldr r5, =data_0208ec50
+    ldr r5, =OSi_IdleThread
     mov r12, #0xc8
     mov r2, r4
     ldr r1, =OSi_IdleThreadProc
@@ -563,7 +563,7 @@ BOOL OS_SetThreadPriority(OSThread *thread, u32 prio) {
         t = t->next;
     }
 
-    if (!t || t == &data_0208ec50) {
+    if (!t || t == &OSi_IdleThread) {
         (void)OS_RestoreInterrupts(enable);
         return FALSE;
     }

@@ -300,7 +300,7 @@ void LangData_LocalizePath(char *dst, const char *src) {
 }
 
 struct LangRes {
-    /* 0x00 */ // vtable (data_0208b318)
+    /* 0x00 */ // vtable (ResHandle_vtbl)
     virtual void unk_vf00();
     virtual void DeletingDtor();
     virtual void Clear();
@@ -329,7 +329,7 @@ typedef struct LangMsgTbl {
 } LangMsgTbl;
 
 extern LangMsgTbl data_0214b128;
-extern const u32 data_0208b318[];
+extern const u32 ResHandle_vtbl[];
 extern const char *data_0208ccb0;
 extern const char *data_0208cca8;
 extern void *Heap_Alloc(u32 size);
@@ -338,7 +338,7 @@ void *NamedTable_Find(void *data, const char *name);
 static inline LangRes *LangRes_New(void) {
     LangRes *res = (LangRes *)Heap_Alloc(sizeof(LangRes));
     if (res != NULL) {
-        *(const u32 **)res = data_0208b318;
+        *(const u32 **)res = ResHandle_vtbl;
         res->Clear();
     }
     return res;
@@ -356,15 +356,15 @@ void LangData_CreateRes(void) {
 }
 
 void LangData_DeleteRes(void) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (data_0214b128.res != NULL) {
         if (data_0214b128.res != NULL) {
             data_0214b128.res->DeletingDtor();
         }
         data_0214b128.res = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 BOOL func_0206ead8(void) {

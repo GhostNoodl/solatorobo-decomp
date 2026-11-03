@@ -2,7 +2,7 @@
 #define OV002_OV002TASK_H
 
 // The ov002 task classes. Each derives from the ov000 task base (ov000/Task.h); the class name is its
-// vtable, the size the allocation in its New. All share the base slots of data_ov000_021cc060 and the
+// vtable, the size the allocation in its New. All share the base slots of Task_vtbl and the
 // ov002 slots 0x1c (Ov002Task_IsReady), 0x20..0x44 (Ov002Task_SetFlag4 .. Ov002Task_TestFlags) and
 // 0x48..0x54, which only touch the base. Slot 0x18 (Start) builds the task's windows; the window members
 // are typed by the vtable their constructor stores (ov000/UiObj.h, ov000/ObjLayouts.h). Fields are named
@@ -17,7 +17,7 @@
 
 struct Model;
 
-// Vtable data_ov002_021ef430, 0x50 bytes.
+// Vtable Ov002TaskVt_021ef430_vtbl, 0x50 bytes.
 class Task021ef430 : public Task {
 public:
     Model *unk_3c;
@@ -31,7 +31,7 @@ public:
 };
 SIZE_ASSERT(Task021ef430, 0x50);
 
-// Vtable data_ov002_021ef4b0, 0x4c bytes.
+// Vtable Ov002TaskVt_021ef4b0_vtbl, 0x4c bytes.
 class Task021ef4b0 : public Task {
 public:
     UiList *unk_3c;
@@ -53,7 +53,7 @@ public:
 };
 SIZE_ASSERT(Task021ef4b0, 0x4c);
 
-// Vtable data_ov002_021ef530, 0x50 bytes (Task021ef530_New); its own Init (0x58) and Release (0x5c).
+// Vtable Ov002TaskVt_021ef530_vtbl, 0x50 bytes (Task021ef530_New); its own Init (0x58) and Release (0x5c).
 class Task021ef530 : public Task {
 public:
     Model *unk_3c;
@@ -74,7 +74,7 @@ public:
 };
 SIZE_ASSERT(Task021ef530, 0x50);
 
-// Vtable data_ov002_021ef69c, 0x68 bytes.
+// Vtable Ov002TaskVt_021ef69c_vtbl, 0x68 bytes.
 class Task021ef69c : public Task {
 public:
     TextList *unk_3c;
@@ -91,7 +91,7 @@ public:
 };
 SIZE_ASSERT(Task021ef69c, 0x68);
 
-// Vtable data_ov002_021ef71c, 0x70 bytes.
+// Vtable Ov002TaskVt_021ef71c_vtbl, 0x70 bytes.
 class Task021ef71c : public Task {
 public:
     u8 unk_3c[0x20];
@@ -105,7 +105,7 @@ public:
 };
 SIZE_ASSERT(Task021ef71c, 0x70);
 
-// Vtable data_ov002_021ef79c, 0x48 bytes.
+// Vtable Ov002TaskVt_021ef79c_vtbl, 0x48 bytes.
 class Task021ef79c : public Task {
 public:
     UiList *unk_3c;
@@ -115,7 +115,7 @@ public:
 };
 SIZE_ASSERT(Task021ef79c, 0x48);
 
-// Vtable data_ov002_021ef81c, 0x50 bytes.
+// Vtable Ov002TaskVt_021ef81c_vtbl, 0x50 bytes.
 class Task021ef81c : public Task {
 public:
     UiList021cb4a8 *unk_3c;
@@ -127,7 +127,7 @@ public:
 };
 SIZE_ASSERT(Task021ef81c, 0x50);
 
-// Vtable data_ov002_021ef89c, 0x44 bytes.
+// Vtable Ov002TaskVt_021ef89c_vtbl, 0x44 bytes.
 class Task021ef89c : public Task {
 public:
     Ov002RowList *unk_3c;
@@ -135,7 +135,7 @@ public:
 };
 SIZE_ASSERT(Task021ef89c, 0x44);
 
-// Level table read from a data file (0x18 bytes, vtable data_ov002_021f00fc; ctor
+// Level table read from a data file (0x18 bytes, vtable Ov002Vt_021f00fc_vtbl; ctor
 // Ov002LevelTable_Ctor, load Ov002LevelTable_Load, clear func_ov002_021e4904). The file holds a
 // count, `count` thresholds and two strings; Ov002LevelTable_GetLevel gives the level of a value.
 struct Ov002LevelTable : public VObj {
@@ -154,7 +154,7 @@ typedef struct Ov002StrPair {
     /* 0x08 */ char *desc; // in the file
 } Ov002StrPair;
 
-// String-pair table read from a data file (0x10 bytes, vtable data_ov002_021f00ec; ctor
+// String-pair table read from a data file (0x10 bytes, vtable Ov002Vt_021f00ec_vtbl; ctor
 // Ov002StrTable_Ctor, load Ov002StrTable_Load, clear Ov002StrTable_Clear).
 struct Ov002StrTable : public VObj {
     /* 0x04 */ u8 *src; // the file data
@@ -163,7 +163,7 @@ struct Ov002StrTable : public VObj {
 };
 SIZE_ASSERT(Ov002StrTable, 0x10);
 
-// Vtable data_ov002_021ef91c, 0xd0 bytes.
+// Vtable Ov002TaskVt_021ef91c_vtbl, 0xd0 bytes.
 class Task021ef91c : public Task {
 public:
     TextList *unk_3c;
@@ -181,20 +181,20 @@ public:
 };
 SIZE_ASSERT(Task021ef91c, 0xd0);
 
-// Vtable data_ov002_021ef99c, 0x118 bytes.
+// Vtable Ov002TaskVt_021ef99c_vtbl, 0x118 bytes.
 class Task021ef99c : public Task {
 public:
     Ov002RowList *unk_3c;
     Lo021cadcc *unk_40;
     Lo021cb5a8 *unk_44;
-    UiObj *unk_48; // vtable data_ov000_021cad50 (0xe8 bytes)
+    UiObj *unk_48; // vtable Lo021cad50_vtbl (0xe8 bytes)
     Ov002LevelTable unk_4c[7];
     char unk_f4[0x20];
     u8 unk_114;
 };
 SIZE_ASSERT(Task021ef99c, 0x118);
 
-// Vtable data_ov002_021efa1c, 0x44 bytes.
+// Vtable Ov002TaskVt_021efa1c_vtbl, 0x44 bytes.
 class Task021efa1c : public Task {
 public:
     Ov002RowList *unk_3c;
@@ -202,19 +202,19 @@ public:
 };
 SIZE_ASSERT(Task021efa1c, 0x44);
 
-// Vtable data_ov002_021efb24, 0x3c bytes (no fields of its own).
+// Vtable Ov002TaskVt_021efb24_vtbl, 0x3c bytes (no fields of its own).
 class Task021efb24 : public Task {
 };
 SIZE_ASSERT(Task021efb24, 0x3c);
 
-// Vtable data_ov002_021efba4, 0x40 bytes.
+// Vtable Ov002TaskVt_021efba4_vtbl, 0x40 bytes.
 class Task021efba4 : public Task {
 public:
     struct Ov002Hud *hud; // built by Task021efba4_Start (ov002/ObjLayouts.h)
 };
 SIZE_ASSERT(Task021efba4, 0x40);
 
-// Vtable data_ov002_021efc24, 0x78 bytes.
+// Vtable Ov002TaskVt_021efc24_vtbl, 0x78 bytes.
 class Task021efc24 : public Task {
 public:
     Model *unk_3c;
@@ -222,7 +222,7 @@ public:
     s32 unk_44;
     s32 unk_48;
     Lo021cadcc *unk_4c;
-    UiList *unk_50; // vtable data_ov002_021efca4
+    UiList *unk_50; // vtable Ov002Vt_021efca4_vtbl
     Lo021cadcc *unk_54;
     VObj *unk_58;
     VObj *unk_5c;

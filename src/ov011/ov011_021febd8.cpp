@@ -18,13 +18,13 @@ void Ov011Scene_State0a(Ov011Scene *self) {
     self->mgr2.count = 0;
     self->mgr2.unk_04 = -1;
     {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (self->mgr2.arr8 != NULL) {
             __cxa_vec_delete(self->mgr2.arr8, 0x40, 8, Ov011E40_Dtor);
             self->mgr2.arr8 = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     Ov003ActorSub40_ForceState(&self->mgr2.state, 0);
     Ov011Chr_Reset_0220205c(self->mgr2.unk_28);
@@ -56,7 +56,7 @@ void Ov011Scene_State0a(Ov011Scene *self) {
 }
 
 
-extern u8 data_ov011_022078f0[];
+extern u8 Ov011SceneActor_vtbl[];
 
 u32 Ov011TwB_IsActive(void *p);
 void Ov011Chr_Draw(void *p);
@@ -66,7 +66,7 @@ extern s32 data_ov011_02207258[];
 #pragma force_active on
 Ov011SceneActor *Ov011SceneActor_Ctor(Ov011SceneActor *self) {
     Ov003Actor_Ctor(self);
-    *(void **)self = data_ov011_022078f0;
+    *(void **)self = Ov011SceneActor_vtbl;
     self->unk_f0_0 = 0;
     self->unk_f0_1 = 0;
     self->unk_f2 = 0;
@@ -81,14 +81,14 @@ Ov011SceneActor *Ov011SceneActor_Ctor(Ov011SceneActor *self) {
 }
 
 void *Ov011SceneActor_Dtor(Ov011SceneActor *self) {
-    *(void **)self = data_ov011_022078f0;
+    *(void **)self = Ov011SceneActor_vtbl;
     func_ov011_0220068c(self);
     Ov003Actor_DtorBase(self);
     return self;
 }
 
 void *Ov011SceneActor_DtorDelete(Ov011SceneActor *self) {
-    *(void **)self = data_ov011_022078f0;
+    *(void **)self = Ov011SceneActor_vtbl;
     func_ov011_0220068c(self);
     Ov003Actor_DtorBase(self);
     Heap_Free(self);

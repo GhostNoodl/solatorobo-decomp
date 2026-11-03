@@ -96,14 +96,14 @@ static inline void Sub0218e9c4_Init(Sub0218e9c4 *entry) {
 
 void ActorMgr_Create(void) {
     ActorMgr *mgr;
-    if (data_ov000_021ccd68 != NULL) {
+    if (gActorMgr != NULL) {
         return;
     }
     mgr = (ActorMgr *)Heap_Alloc(sizeof(ActorMgr));
     if (mgr != NULL) {
         mgr = ActorMgr_Init(mgr);
     }
-    data_ov000_021ccd68 = mgr;
+    gActorMgr = mgr;
 }
 
 }

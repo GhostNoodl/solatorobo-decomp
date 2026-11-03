@@ -12,9 +12,9 @@ int Ov006ActVt_021ec67c_Draw(ActorEx *self) {
     Model0218fe1c *m = self->model;
     VecFx32 target;
     int r;
-    target.x = data_ov000_021ccd54->cam.base.eye.x;
-    target.y = data_ov000_021ccd54->cam.base.eye.y;
-    target.z = data_ov000_021ccd54->cam.base.eye.z;
+    target.x = gSceneCmd->cam.base.eye.x;
+    target.y = gSceneCmd->cam.base.eye.y;
+    target.z = gSceneCmd->cam.base.eye.z;
     r = 0;
     if (Hit_DiffInSphere(&self->pos, &target, 0x190000)) {
         m->trans = self->pos;

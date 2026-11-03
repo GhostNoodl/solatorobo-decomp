@@ -109,7 +109,7 @@ typedef struct {
 
 extern "C" {
 
-extern Ov003InHit data_02fe0f14;
+extern Ov003InHit gHitResult;
 extern FieldId data_ov003_021f7388;
 extern char data_ov003_021fa208[];
 extern Ov003InRes *Tbl_FindEntry_0206fef8(u16 id);
@@ -193,8 +193,8 @@ skip:
         if (self->unk_3c != NULL) {
             self->unk_3c->unk_14 = self->unk_64 * 3;
             if (Geom_SnapToGround(&self->pos, self->unk_68, -0x5000) != -0x1000) {
-                Shadow_SetType(self->unk_3c, 1, data_02fe0f14.unk_2c);
-                if (data_02fe0f14.unk_2c & 0x80000) {
+                Shadow_SetType(self->unk_3c, 1, gHitResult.unk_2c);
+                if (gHitResult.unk_2c & 0x80000) {
                     self->model->unk_bf = 0x13;
                 }
             }
@@ -221,7 +221,7 @@ skip:
             c->unk_9a_4 = 0;
             ActorSub48_UpdatePos(self->ctl, 0, 0);
         }
-        if (!Ov003In_SameField(&data_ov000_021ccd54->unk_ca, data_ov003_021f7388)) {
+        if (!Ov003In_SameField(&gSceneCmd->unk_ca, data_ov003_021f7388)) {
             Ov003InS44 *s = (Ov003InS44 *)Heap_Alloc(0x24);
             if (s != NULL) {
                 s = Obj021984c8_Init(s);

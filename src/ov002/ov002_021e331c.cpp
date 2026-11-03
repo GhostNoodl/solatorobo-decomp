@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern VFunc data_0208ba70[];
+extern VFunc TextWin_vtbl[];
 
 void TextWin_Init(void *p);
 
@@ -18,7 +18,7 @@ void Obj021f002c_CreateText(Obj021f002c *self) {
     }
     p = (Ov002Text2 *)Heap_Alloc(0xb8);
     if (p != NULL) {
-        *(VFunc **)p = data_0208ba70;
+        *(VFunc **)p = TextWin_vtbl;
         TextWin_Init(p);
     }
     self->text = p;
@@ -26,7 +26,7 @@ void Obj021f002c_CreateText(Obj021f002c *self) {
     p = self->text;
     p->str = (s32)self->str;
     p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, p->unk_37 != 0);
-    data_02097ce0->unk_004 = p->font;
+    gGfxMgr->unk_004 = p->font;
     self->text->flags = (self->text->flags & ~0x1f00) | 0x1e00;
     self->text->flags |= 0x40;
     self->text->vfunc_14();

@@ -47,8 +47,8 @@ struct Ov010Col {
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
-extern u8 data_ov010_0220fdf4[];
+extern void *gActorMgr;
+extern u8 Ov010Vt_0220fdf4_vtbl[];
 extern Actor *ActorMgr_GetActor(void *a, u16 b);
 extern void MTX_RotX33_(Ov010Mtx33 *m, s32 s, s32 c);
 extern void MTX_RotY33_(Ov010Mtx33 *m, s32 s, s32 c);
@@ -62,8 +62,8 @@ extern void Ov010Obj022020c8_SetHitTest(Obj022020c8 *e, BOOL (*fn)(u16 id, const
 extern BOOL Ov010_IsPlayerNear(u16 id, const VecFx32 *a, const VecFx32 *b);
 
 static inline Actor *Ov010_FindObjById(u16 id) {
-    if (data_ov000_021ccd68 != NULL) {
-        return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    if (gActorMgr != NULL) {
+        return ActorMgr_GetActor(gActorMgr, id);
     }
     return NULL;
 }
@@ -130,7 +130,7 @@ void *Ov010Vt_0220fdf4_DtorDelete(void *o) {
 Ov010Task *Ov010Vt_0220fdf4_New(void) {
     Ov010Task *p = (Ov010Task *)Heap_Alloc(sizeof(Ov010Task));
     if (p != NULL) {
-        p->vtbl = data_ov010_0220fdf4;
+        p->vtbl = Ov010Vt_0220fdf4_vtbl;
         p->b0 = 0;
     }
     return p;

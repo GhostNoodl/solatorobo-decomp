@@ -16,8 +16,8 @@ typedef struct {
 } Save0214a424;
 
 extern "C" {
-extern Obj02097e48 *data_02097e48;
-extern void *data_02097e4c;
+extern Obj02097e48 *gSndQueue;
+extern void *gSndMgr;
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 void Shared_ChangeFlags(s32 a, s32 b);
@@ -32,7 +32,7 @@ void func_ov000_021b1740(Robo021ca458 *self, BOOL flag) {
         return;
     }
     st = 0;
-    if (((Save0214a424 *)data_0214a424)->b1 == 1) {
+    if (((Save0214a424 *)gStageFlags)->b1 == 1) {
         st = 2;
     }
     if (self->unk_b22_9 < 2) {
@@ -43,7 +43,7 @@ void func_ov000_021b1740(Robo021ca458 *self, BOOL flag) {
     }
     Shared_ChangeFlags(0x30, 0x10);
     if (flag) {
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
     }
 }
 

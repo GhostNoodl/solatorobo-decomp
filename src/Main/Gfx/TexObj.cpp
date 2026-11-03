@@ -115,11 +115,11 @@ void TexObj_Release(TexObj *obj) {
     int slot;
     slot = NNS_G2dGetImageLocation(obj, 1);
     if (slot != -1 && !(obj->unk_084 & 2)) {
-        GfxSys_FreeVram(data_02097d48, slot, 0);
+        GfxSys_FreeVram(gGfxSys, slot, 0);
     }
     slot = NNS_G2dGetImageLocation(obj, 2);
     if (slot != -1 && !(obj->unk_084 & 4)) {
-        GfxSys_FreeVram(data_02097d48, slot, 1);
+        GfxSys_FreeVram(gGfxSys, slot, 1);
     }
     if (obj->texKey != 0) {
         NNS_GfdDefaultFuncFreeTexVram(obj->texKey);
@@ -138,7 +138,7 @@ void TexObj_Release(TexObj *obj) {
         if (obj->arcName[0] != 0) {
             ResMgr_ReleaseArchive(obj->arcName, obj->name, 2);
         } else {
-            ResMgr_ReleaseByName(data_02097cdc, obj->name, 2, 0);
+            ResMgr_ReleaseByName(gResMgr, obj->name, 2, 0);
         }
     }
     TexObj_Init(obj, NULL, 0);
@@ -152,10 +152,10 @@ void func_020416b4(TexObj *obj, int i) {
     }
     e = &obj->entries[i];
     if (e->slot0 != -1) {
-        GfxSys_FreeVram(data_02097d48, e->slot0, 0);
+        GfxSys_FreeVram(gGfxSys, e->slot0, 0);
     }
     if (e->slot1 != -1) {
-        GfxSys_FreeVram(data_02097d48, e->slot1, 1);
+        GfxSys_FreeVram(gGfxSys, e->slot1, 1);
     }
     if (e->key != -1) {
         NNS_GfdDefaultFuncFreeTexVram(e->key);
@@ -399,7 +399,7 @@ void TexObj_SetRes(TexObj *obj, const TexObjRes *res) {
         TexObj_SetupAnim(obj, i);
     }
     }
-    pltt = &data_02097d48->pltt;
+    pltt = &gGfxSys->pltt;
     if (pltt->id == -1) {
         PlttRes_SetSrc(&obj->pltt, (PlttResSrc *)obj);
     } else {

@@ -30,8 +30,8 @@ static inline void Item_Notify(u16 id, u16 val) {
     if (ref.idx == -1) {
         return;
     }
-    DataRes_ReadRef(data_02fe152c, &ref, id);
-    DataRes_WriteRef(data_02fe152c, &ref, id, val);
+    DataRes_ReadRef(gDataRes, &ref, id);
+    DataRes_WriteRef(gDataRes, &ref, id, val);
 }
 
 static inline BOOL Item_Set(u16 id, u16 val) {
@@ -42,8 +42,8 @@ static inline BOOL Item_Set(u16 id, u16 val) {
     if (ref.idx == -1) {
         return FALSE;
     }
-    old = DataRes_ReadRef(data_02fe152c, &ref, id);
-    DataRes_WriteRef(data_02fe152c, &ref, id, val);
+    old = DataRes_ReadRef(gDataRes, &ref, id);
+    DataRes_WriteRef(gDataRes, &ref, id, val);
     ok = TRUE;
     if (old != 0) {
         ok = FALSE;
@@ -75,13 +75,13 @@ u16 func_0206f788(u16 id) {
     s32 i;
     SaveEntry *entries;
     parts = ((ItemDef *)data_0208d268[(u16)(Item_Cat(id) - 1)])[Item_Idx(id)].parts;
-    data = data_02fe152c->data;
+    data = gDataRes->data;
     mask = 0;
-    entries = DataRes_GetTable(data_02fe152c, 10);
-    DataRes_GetCount(data_02fe152c, 10);
+    entries = DataRes_GetTable(gDataRes, 10);
+    DataRes_GetCount(gDataRes, 10);
     for (i = 0; i < 4; i++) {
         if (parts[i] >= 0) {
-            if (DataRes_ReadBitsAt_02059544(data_02fe152c, (SaveBlock *)(data + 0x150), entries, 1, Item_Idx(parts[i]))) {
+            if (DataRes_ReadBitsAt_02059544(gDataRes, (SaveBlock *)(data + 0x150), entries, 1, Item_Idx(parts[i]))) {
                 mask |= (u16)(1 << i);
             }
         }
@@ -98,9 +98,9 @@ BOOL func_0206f85c(u32 n) {
     SaveEntry *entries;
     u32 count;
     done = FALSE;
-    block = (SaveBlock *)(data_02fe152c->data + 0x10) + n;
-    entries = DataRes_GetTable(data_02fe152c, n);
-    count = DataRes_GetCount(data_02fe152c, n);
+    block = (SaveBlock *)(gDataRes->data + 0x10) + n;
+    entries = DataRes_GetTable(gDataRes, n);
+    count = DataRes_GetCount(gDataRes, n);
     a = 0;
     b = 0;
     switch (n) {
@@ -114,8 +114,8 @@ BOOL func_0206f85c(u32 n) {
         break;
     }
     for (i = 0; i < count; i++) {
-        BOOL x = (DataRes_ReadBitsAt_02059544(data_02fe152c, block, entries, a, i) & 1) ? TRUE : FALSE;
-        BOOL y = DataRes_ReadBitsAt_02059544(data_02fe152c, block, entries, b, i) == 0 ? TRUE : FALSE;
+        BOOL x = (DataRes_ReadBitsAt_02059544(gDataRes, block, entries, a, i) & 1) ? TRUE : FALSE;
+        BOOL y = DataRes_ReadBitsAt_02059544(gDataRes, block, entries, b, i) == 0 ? TRUE : FALSE;
         done = (x & y) ? TRUE : FALSE;
         if (done) {
             break;

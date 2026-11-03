@@ -27,10 +27,10 @@ void func_ov002_021eea74(Ov002Staff *self) {
     if (alpha == 0) {
         return;
     }
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     ov002_G3Vec(0x1b, 0x1000, 0x1000, 0x1000);
     ov002_G3Cmd1(0x2a, 0x20000000);
-    ov002_G3Cmd1(0x29, ((u32)Gfx3DState_NextPolyId(data_02097d48->unk_8b0) << 24) | 0xd0 | (alpha << 16));
+    ov002_G3Cmd1(0x29, ((u32)Gfx3DState_NextPolyId(gGfxSys->unk_8b0) << 24) | 0xd0 | (alpha << 16));
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     NNS_G3dGeBufferOP_N(0x15, NULL, 0);
     ov002_G3Vec(0x1c, 0, 0, -0x333);

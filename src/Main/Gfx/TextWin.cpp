@@ -90,9 +90,9 @@ void MsgRes_Create(void) {
     }
     res = (MsgRes *)Heap_Alloc(sizeof(MsgRes));
     if (res != NULL) {
-        *(const u32 **)res = data_0208b318;
+        *(const u32 **)res = ResHandle_vtbl;
         res->Clear();
-        *(const u32 **)res = data_0208ba30;
+        *(const u32 **)res = MainVt_0208ba30_vtbl;
         MsgRes_Reset(res);
     }
     MSG_RES = res;
@@ -100,35 +100,35 @@ void MsgRes_Create(void) {
 }
 
 void MsgRes_Delete(void) {
-    void *heap = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *heap = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (MSG_RES != NULL) {
         if (MSG_RES != NULL) {
             MSG_RES->DeletingDtor();
         }
         MSG_RES = NULL;
     }
-    data_02097dd0->cur = heap;
+    gSysState->cur = heap;
 }
 
 void *Heap_GetCurrent(void) {
-    return data_02097dd0->cur;
+    return gSysState->cur;
 }
 
 void Heap_SetCurrentHi(void) {
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gSysState->cur = gSysState->heapHi;
 }
 
 MsgRes *MainVt_0208ba30_DtorDelete(MsgRes *res) {
     MsgRes_Reset(res);
-    *(const u32 **)res = data_0208b318;
+    *(const u32 **)res = ResHandle_vtbl;
     res->Unload();
     Heap_Free(res);
     return res;
 }
 
 void Heap_SetCurrent(void *heap) {
-    data_02097dd0->cur = heap;
+    gSysState->cur = heap;
 }
 
 }
@@ -148,7 +148,7 @@ struct TextLayout {
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
+extern const u32 TextWin_vtbl[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
@@ -191,11 +191,11 @@ s32 func_0204c2f4(char *out, s32 outSize, const char *str) {
     if (str == NULL) {
         return 0;
     }
-    f = (NNSG2dFont *)GfxMgr_GetFont(data_02097ce0);
+    f = (NNSG2dFont *)GfxMgr_GetFont(gGfxMgr);
     fn = (TextScanCharFn)f->cbCharSpliter;
     len = 0;
     s = str;
-    p.vt = data_0208ba70;
+    p.vt = TextWin_vtbl;
     TextWin_Init((TextWin *)&p);
     maxW = 0;
     w = 0;
@@ -245,14 +245,14 @@ s32 func_0204c2f4(char *out, s32 outSize, const char *str) {
             break;
         }
     } while (*s != 0);
-    p.vt = data_0208ba70;
+    p.vt = TextWin_vtbl;
     ((TextLayout *)&p)->Clear();
     return w;
 }
 
 
 TextLayout *TextWin_Dtor(TextLayout *layout) {
-    *(const u32 **)layout = data_0208ba70;
+    *(const u32 **)layout = TextWin_vtbl;
     layout->Clear();
     return layout;
 }
@@ -269,11 +269,11 @@ s32 Text_Measure(s32 font, s32 spacing, const char *str, s32 *outW, s32 *outH, b
     TextScanCharFn fn;
     s32 maxW;
     s32 h;
-    data_02097ce0->unk_004 = font;
-    f = (NNSG2dFont *)GfxMgr_GetFont(data_02097ce0);
+    gGfxMgr->unk_004 = font;
+    f = (NNSG2dFont *)GfxMgr_GetFont(gGfxMgr);
     fn = (TextScanCharFn)f->cbCharSpliter;
     s = str;
-    p.vt = data_0208ba70;
+    p.vt = TextWin_vtbl;
     TextWin_Init((TextWin *)&p);
     n = 0;
     w = 0;
@@ -316,7 +316,7 @@ s32 Text_Measure(s32 font, s32 spacing, const char *str, s32 *outW, s32 *outH, b
     if (outH != NULL) {
         *outH = h;
     }
-    p.vt = data_0208ba70;
+    p.vt = TextWin_vtbl;
     ((TextLayout *)&p)->Clear();
     return n;
 }
@@ -395,8 +395,8 @@ char *TextWin_ParseTag24(TextWin *win, char *p);
 
 char *TextWin_ParseTag25(TextWin *win, char *p);
 
-extern SndQueue *data_02097e48;
-extern SndMgr *data_02097e4c;
+extern SndQueue *gSndQueue;
+extern SndMgr *gSndMgr;
 extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
@@ -443,7 +443,7 @@ typedef struct PadState {
     /* 0x12 */ u16 trig;
 } PadState;
 
-extern PadState *data_02097dc8;
+extern PadState *gPad;
 
 BOOL TextWin_Update(TextWin *win);
 
@@ -452,7 +452,7 @@ u16 Pad_GetTrig(void);
 void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
-    GfxMgr *gfx = data_02097ce0;
+    GfxMgr *gfx = gGfxMgr;
     gfx->unk_00c = x;
     gfx->unk_00e = y;
 }
@@ -540,7 +540,7 @@ void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
-extern s32 data_02097d78[];
+extern s32 gFadeState[];
 
 u8 *func_0204f354(void);
 
@@ -626,7 +626,7 @@ struct TextLayout {
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
+extern const u32 TextWin_vtbl[];
 
 typedef s32 (*TextScanCharFn)(const char **s);
 
@@ -648,11 +648,11 @@ void Text_ScanTags(const char *str, s32 maxLines, void *arg, void (*cb)(void *ar
     s32 n;
     TextScanCharFn fn;
     s32 c;
-    data_02097ce0->unk_004 = 3;
-    fn = *(TextScanCharFn *)((u8 *)GfxMgr_GetFont(data_02097ce0) + 4);
+    gGfxMgr->unk_004 = 3;
+    fn = *(TextScanCharFn *)((u8 *)GfxMgr_GetFont(gGfxMgr) + 4);
     s = str;
     n = 0;
-    p.vt = data_0208ba70;
+    p.vt = TextWin_vtbl;
     TextWin_Init((TextWin *)&p);
     while (*s != 0) {
         while ((c = fn(&s)) != 0) {
@@ -672,7 +672,7 @@ void Text_ScanTags(const char *str, s32 maxLines, void *arg, void (*cb)(void *ar
             }
         }
     }
-    p.vt = data_0208ba70;
+    p.vt = TextWin_vtbl;
     ((TextLayout *)&p)->Clear();
 }
 
@@ -692,7 +692,7 @@ struct TextLayout {
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
+extern const u32 TextWin_vtbl[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
@@ -768,8 +768,8 @@ void TextWin_Release(TextWin *win) {
         Heap_FreeHi(win->dl);
         win->dl = NULL;
     }
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     {
         Model *p = win->model;
         if (p != NULL) {
@@ -781,7 +781,7 @@ void TextWin_Release(TextWin *win) {
             win->model = NULL;
         }
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     if (win->vram != NULL) {
         VramBlock *b = win->vram;
         MIi_CpuClearFast(0, (u8 *)(b->kind == 4 ? 0x6400000 : 0x6600000) + b->addr, b->size - b->pad);
@@ -818,7 +818,7 @@ void TextWin_InitLines(TextWin *win, u32 n) {
 
 void TextWin_RenderToVram(TextWin *win) {
     u32 saved;
-    data_02097ce0->unk_004 = win->font;
+    gGfxMgr->unk_004 = win->font;
     saved = win->rendering;
     win->rendering = 1;
     if (win->noVram) {
@@ -924,8 +924,8 @@ char *TextWin_ParseTag24(TextWin *win, char *p);
 
 char *TextWin_ParseTag25(TextWin *win, char *p);
 
-extern SndQueue *data_02097e48;
-extern SndMgr *data_02097e4c;
+extern SndQueue *gSndQueue;
+extern SndMgr *gSndMgr;
 extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
@@ -972,7 +972,7 @@ typedef struct PadState {
     /* 0x12 */ u16 trig;
 } PadState;
 
-extern PadState *data_02097dc8;
+extern PadState *gPad;
 
 BOOL TextWin_Update(TextWin *win);
 
@@ -981,7 +981,7 @@ u16 Pad_GetTrig(void);
 void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
-    GfxMgr *gfx = data_02097ce0;
+    GfxMgr *gfx = gGfxMgr;
     gfx->unk_00c = x;
     gfx->unk_00e = y;
 }
@@ -1085,7 +1085,7 @@ void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
-extern s32 data_02097d78[];
+extern s32 gFadeState[];
 
 u8 *func_0204f354(void);
 
@@ -1243,7 +1243,7 @@ struct TextLayout {
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
+extern const u32 TextWin_vtbl[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
@@ -1625,8 +1625,8 @@ char *TextWin_ParseTag24(TextWin *win, char *p);
 
 char *TextWin_ParseTag25(TextWin *win, char *p);
 
-extern SndQueue *data_02097e48;
-extern SndMgr *data_02097e4c;
+extern SndQueue *gSndQueue;
+extern SndMgr *gSndMgr;
 extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
@@ -1673,7 +1673,7 @@ typedef struct PadState {
     /* 0x12 */ u16 trig;
 } PadState;
 
-extern PadState *data_02097dc8;
+extern PadState *gPad;
 
 BOOL TextWin_Update(TextWin *win);
 
@@ -1682,7 +1682,7 @@ u16 Pad_GetTrig(void);
 void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
-    GfxMgr *gfx = data_02097ce0;
+    GfxMgr *gfx = gGfxMgr;
     gfx->unk_00c = x;
     gfx->unk_00e = y;
 }
@@ -1786,7 +1786,7 @@ void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
-extern s32 data_02097d78[];
+extern s32 gFadeState[];
 
 u8 *func_0204f354(void);
 
@@ -1872,7 +1872,7 @@ struct TextLayout {
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
+extern const u32 TextWin_vtbl[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
@@ -2061,8 +2061,8 @@ char *TextWin_ParseTag25(TextWin *win, char *p) {
     return p + 1;
 }
 
-extern SndQueue *data_02097e48;
-extern SndMgr *data_02097e4c;
+extern SndQueue *gSndQueue;
+extern SndMgr *gSndMgr;
 extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
@@ -2095,23 +2095,23 @@ static inline void SndQueue_StopBgm(SndQueue *queue, u16 fade) {
 
 void TextWin_PlayBgm(TextWin *win) {
     if (win->code == 0x16) {
-        SndQueue_RequestBgm(data_02097e48, win->value);
+        SndQueue_RequestBgm(gSndQueue, win->value);
     } else {
-        SndQueue_StopBgm(data_02097e48, win->value);
+        SndQueue_StopBgm(gSndQueue, win->value);
     }
 }
 
 void TextWin_PlayStrm(TextWin *win) {
     if (win->code == 0x18) {
-        SndMgr_PlayStrm(data_02097e4c, win->value);
+        SndMgr_PlayStrm(gSndMgr, win->value);
     } else {
-        SndMgr_StopStrm_0204a284(data_02097e4c, -1);
+        SndMgr_StopStrm_0204a284(gSndMgr, -1);
     }
 }
 
 void TextWin_RunCode1a(TextWin *win) {
     if (win->code == 0x1a) {
-        SndQueue *queue = data_02097e48;
+        SndQueue *queue = gSndQueue;
         u16 se = win->value;
         if (queue->flag0 == 1 && queue->unk_74 == 0xffff && queue->unk_72 == se) {
             return;
@@ -2119,7 +2119,7 @@ void TextWin_RunCode1a(TextWin *win) {
         queue->unk_74 = se;
         queue->unk_70 = 0;
     } else {
-        SndQueue *queue = data_02097e48;
+        SndQueue *queue = gSndQueue;
         queue->unk_74 = 0x8000;
         queue->unk_70 = 0;
     }
@@ -2130,9 +2130,9 @@ extern void SndMgr_Stop(SndMgr *mgr, s32 id);
 
 void TextWin_PlaySe(TextWin *win) {
     if (win->code == 0x1c) {
-        SndMgr_PlayVolume(data_02097e4c, win->value, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, win->value, -1, -1, -1);
     } else {
-        SndMgr_Stop(data_02097e4c, win->value);
+        SndMgr_Stop(gSndMgr, win->value);
     }
 }
 
@@ -2141,7 +2141,7 @@ typedef struct PadState {
     /* 0x12 */ u16 trig;
 } PadState;
 
-extern PadState *data_02097dc8;
+extern PadState *gPad;
 
 BOOL TextWin_Update(TextWin *win) {
     if (win->flag3) {
@@ -2152,8 +2152,8 @@ BOOL TextWin_Update(TextWin *win) {
         if (win->unk_18 >= 0x280) {
             win->unk_18 = 0x258;
         }
-        if (win->unk_18 >= 10 && (data_02097dc8->trig & 1)) {
-            SndMgr_PlayVolume(data_02097e4c, 0x24, 0x50, -1, -1);
+        if (win->unk_18 >= 10 && (gPad->trig & 1)) {
+            SndMgr_PlayVolume(gSndMgr, 0x24, 0x50, -1, -1);
             win->flag29 = 1;
             win->OnSkip();
         }
@@ -2162,7 +2162,7 @@ BOOL TextWin_Update(TextWin *win) {
 }
 
 u16 Pad_GetTrig(void) {
-    return data_02097dc8->trig;
+    return gPad->trig;
 }
 
 void TextWin_OnSkip(TextWin *win) {
@@ -2170,7 +2170,7 @@ void TextWin_OnSkip(TextWin *win) {
 }
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
-    GfxMgr *gfx = data_02097ce0;
+    GfxMgr *gfx = gGfxMgr;
     gfx->unk_00c = x;
     gfx->unk_00e = y;
 }
@@ -2186,8 +2186,8 @@ void TextWin_Render(TextWin *win) {
         }
         win->unk_vf98();
     }
-    data_02097ce0->unk_004 = win->font;
-    data_02097ce0->unk_012 = win->unk_34;
+    gGfxMgr->unk_004 = win->font;
+    gGfxMgr->unk_012 = win->unk_34;
     TextWin_SetOrigin(win->cursorX, win->cursorY);
     if (win->noVram) {
         win->unk_vfa0();
@@ -2313,7 +2313,7 @@ void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
-extern s32 data_02097d78[];
+extern s32 gFadeState[];
 
 u8 *func_0204f354(void);
 
@@ -2439,7 +2439,7 @@ struct TextLayout {
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
+extern const u32 TextWin_vtbl[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
@@ -2526,8 +2526,8 @@ char *TextWin_ParseTag24(TextWin *win, char *p);
 
 char *TextWin_ParseTag25(TextWin *win, char *p);
 
-extern SndQueue *data_02097e48;
-extern SndMgr *data_02097e4c;
+extern SndQueue *gSndQueue;
+extern SndMgr *gSndMgr;
 extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
@@ -2574,7 +2574,7 @@ typedef struct PadState {
     /* 0x12 */ u16 trig;
 } PadState;
 
-extern PadState *data_02097dc8;
+extern PadState *gPad;
 
 BOOL TextWin_Update(TextWin *win);
 
@@ -2583,7 +2583,7 @@ u16 Pad_GetTrig(void);
 void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
-    GfxMgr *gfx = data_02097ce0;
+    GfxMgr *gfx = gGfxMgr;
     gfx->unk_00c = x;
     gfx->unk_00e = y;
 }
@@ -2711,7 +2711,7 @@ void Model_ApplyPart_0204e2e4(Model *model, s32 idx) {
 
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
-extern s32 data_02097d78[];
+extern s32 gFadeState[];
 
 u8 *func_0204f354(void);
 
@@ -2805,7 +2805,7 @@ void func_0204e358(TextWin *win) {
     GfxCell *cell;
     TextWinFont *font;
     s32 y;
-    cell = GfxMgr_NextCell(data_02097ce0);
+    cell = GfxMgr_NextCell(gGfxMgr);
     hi = win->unk_2c >> 4;
     color = win->unk_2c % 16 + 1;
     if (win->vram == NULL) {
@@ -2813,15 +2813,15 @@ void func_0204e358(TextWin *win) {
     }
     win->vram->unk_10_31 = win->flag5;
     if (win->lines != NULL) {
-        func_0203a4d4(data_02097ce0, win->lines);
+        func_0203a4d4(gGfxMgr, win->lines);
     }
-    func_0203a0cc(data_02097ce0, win->vram, cell, win->width, win->height, hi);
+    func_0203a0cc(gGfxMgr, win->vram, cell, win->width, win->height, hi);
     if (!win->vram->temporary) {
         if (win->vram->temporary || win->vram->unk_10_2) {
             return;
         }
     }
-    font = (TextWinFont *)GfxMgr_GetFont(data_02097ce0);
+    font = (TextWinFont *)GfxMgr_GetFont(gGfxMgr);
     fn = font->splitChar;
     s = (const char *)win->str;
     lineH = win->spacing + font->info[1];
@@ -2908,7 +2908,7 @@ void func_0204e5d4(TextWin *win) {
     win->texBuf = Heap_AllocHi(size, 4);
     bx = 0;
     MIi_CpuClearFast(0, win->texBuf, size);
-    font = (NNSG2dFont *)GfxMgr_GetFont(data_02097ce0);
+    font = (NNSG2dFont *)GfxMgr_GetFont(gGfxMgr);
     fn = font->cbCharSpliter;
     s = (const char *)win->str;
     color = win->unk_2c % 15 + 1;
@@ -3182,7 +3182,7 @@ void TextWin_DrawTex(TextWin *win) {
     if (win->inRender) {
         return;
     }
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     {
         int misc = 0;
         int id = (u8)win->unk_4_13;
@@ -3282,7 +3282,7 @@ struct TextLayout {
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
+extern const u32 TextWin_vtbl[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
@@ -3369,8 +3369,8 @@ char *TextWin_ParseTag24(TextWin *win, char *p);
 
 char *TextWin_ParseTag25(TextWin *win, char *p);
 
-extern SndQueue *data_02097e48;
-extern SndMgr *data_02097e4c;
+extern SndQueue *gSndQueue;
+extern SndMgr *gSndMgr;
 extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
@@ -3417,7 +3417,7 @@ typedef struct PadState {
     /* 0x12 */ u16 trig;
 } PadState;
 
-extern PadState *data_02097dc8;
+extern PadState *gPad;
 
 BOOL TextWin_Update(TextWin *win);
 
@@ -3426,7 +3426,7 @@ u16 Pad_GetTrig(void);
 void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
-    GfxMgr *gfx = data_02097ce0;
+    GfxMgr *gfx = gGfxMgr;
     gfx->unk_00c = x;
     gfx->unk_00e = y;
 }
@@ -3530,10 +3530,10 @@ void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
-extern s32 data_02097d78[];
+extern s32 gFadeState[];
 
 u8 *func_0204f354(void) {
-    return data_02097d48->unk_8b0;
+    return gGfxSys->unk_8b0;
 }
 
 void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc) {
@@ -3664,7 +3664,7 @@ struct TextLayout {
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
+extern const u32 TextWin_vtbl[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
@@ -3751,8 +3751,8 @@ char *TextWin_ParseTag24(TextWin *win, char *p);
 
 char *TextWin_ParseTag25(TextWin *win, char *p);
 
-extern SndQueue *data_02097e48;
-extern SndMgr *data_02097e4c;
+extern SndQueue *gSndQueue;
+extern SndMgr *gSndMgr;
 extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
@@ -3799,7 +3799,7 @@ typedef struct PadState {
     /* 0x12 */ u16 trig;
 } PadState;
 
-extern PadState *data_02097dc8;
+extern PadState *gPad;
 
 BOOL TextWin_Update(TextWin *win);
 
@@ -3808,7 +3808,7 @@ u16 Pad_GetTrig(void);
 void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
-    GfxMgr *gfx = data_02097ce0;
+    GfxMgr *gfx = gGfxMgr;
     gfx->unk_00c = x;
     gfx->unk_00e = y;
 }
@@ -3912,7 +3912,7 @@ void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
-extern s32 data_02097d78[];
+extern s32 gFadeState[];
 
 u8 *func_0204f354(void);
 
@@ -3974,9 +3974,9 @@ BOOL TextWinEx_Update(TextWinEx *win) {
         if (win->unk_18 >= 0x280) {
             win->unk_18 = 0x258;
         }
-        if (!win->flag26 || (data_02097dc8->trig & 1)) {
+        if (!win->flag26 || (gPad->trig & 1)) {
             if (win->flag26) {
-                SndMgr_PlayVolume(data_02097e4c, 0x24, 0x50, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x24, 0x50, -1, -1);
             }
             if (win->page >= win->numPages) {
                 win->flag29 = 1;
@@ -4037,8 +4037,8 @@ s32 func_0204f804(TextWinEx *win) {
     s32 pad;
     u16 c;
     NNSG2dFont *font;
-    data_02097ce0->unk_004 = win->font;
-    data_02097ce0->unk_012 = win->unk_34;
+    gGfxMgr->unk_004 = win->font;
+    gGfxMgr->unk_012 = win->unk_34;
     n = 0;
     if (win->unk_3c4 >= 0) {
         return n;
@@ -4048,7 +4048,7 @@ s32 func_0204f804(TextWinEx *win) {
         return 0;
     }
     if (*(char *)win->unk_3d8 != 0) {
-        font = (NNSG2dFont *)GfxMgr_GetFont(data_02097ce0);
+        font = (NNSG2dFont *)GfxMgr_GetFont(gGfxMgr);
         fn = font->cbCharSpliter;
         pad = 0;
         stop = FALSE;
@@ -4120,15 +4120,15 @@ s32 func_0204f804(TextWinEx *win) {
                 glyph = font->pRes->pGlyph;
                 win->blocks[win->numBlocks] = VramBlock_AllocChar(widths->left + glyph->cellWidth, glyph->cellHeight, 0);
             }
-            func_0203a4dc(data_02097ce0, win->blocks[win->numBlocks]);
+            func_0203a4dc(gGfxMgr, win->blocks[win->numBlocks]);
             TextWin_SetOrigin(win->cursorX, win->cursorY);
-            data_02097ce0->unk_008 = color;
-            func_0203a5a4(data_02097ce0, c);
+            gGfxMgr->unk_008 = color;
+            func_0203a5a4(gGfxMgr, c);
             n++;
             if (win->flag23 == 1 && (c < 0x80 || c > 0xaf)) {
-                SndMgr_PlayVolume(data_02097e4c, 0x23, 0xe, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x23, 0xe, -1, -1);
             }
-            win->cursorX = data_02097ce0->unk_00c;
+            win->cursorX = gGfxMgr->unk_00c;
             if (win->numBlocks + 1 < 0x80) {
                 win->numBlocks++;
             }
@@ -4255,7 +4255,7 @@ struct TextLayout {
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
+extern const u32 TextWin_vtbl[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
@@ -4342,8 +4342,8 @@ char *TextWin_ParseTag24(TextWin *win, char *p);
 
 char *TextWin_ParseTag25(TextWin *win, char *p);
 
-extern SndQueue *data_02097e48;
-extern SndMgr *data_02097e4c;
+extern SndQueue *gSndQueue;
+extern SndMgr *gSndMgr;
 extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
@@ -4390,7 +4390,7 @@ typedef struct PadState {
     /* 0x12 */ u16 trig;
 } PadState;
 
-extern PadState *data_02097dc8;
+extern PadState *gPad;
 
 BOOL TextWin_Update(TextWin *win);
 
@@ -4399,7 +4399,7 @@ u16 Pad_GetTrig(void);
 void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
-    GfxMgr *gfx = data_02097ce0;
+    GfxMgr *gfx = gGfxMgr;
     gfx->unk_00c = x;
     gfx->unk_00e = y;
 }
@@ -4503,7 +4503,7 @@ void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
-extern s32 data_02097d78[];
+extern s32 gFadeState[];
 
 u8 *func_0204f354(void);
 
@@ -4575,7 +4575,7 @@ typedef struct TextWinFieldDisp {
     /* 0xe */ u8 mode : 2;
 } TextWinFieldDisp;
 
-extern TextWinFieldDisp *data_ov000_021ccd54;
+extern TextWinFieldDisp *gSceneCmd;
 extern void GfxSys_SetFadePlanes(int value, int ch);
 extern void GfxSys_StartFadeIn(int duration, int mode, int ch);
 extern void GfxSys_StartFadeOut(int duration, int mode, int ch);
@@ -4584,10 +4584,10 @@ extern void SndMgr_LoadBgm(SndMgr *mgr, s32 seq);
 extern void SndMgr_MoveBgmVolume(SndMgr *mgr, int volume, int frames);
 
 static inline BOOL TextWin_IsState4(int idx) {
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         return TRUE;
     }
-    return data_02097d78[idx] == 4 ? TRUE : FALSE;
+    return gFadeState[idx] == 4 ? TRUE : FALSE;
 }
 
 BOOL func_0204fd60(TextWinTitle *t) {
@@ -4601,12 +4601,12 @@ BOOL func_0204fd60(TextWinTitle *t) {
         t->started = 1;
         t->timer = 0x78;
         GfxSys_StartFadeIn(0, 0, 0);
-        data_ov000_021ccd54->mode = 2;
+        gSceneCmd->mode = 2;
     }
     if (t->fading && TextWin_IsState4(0)) {
         t->fading = 0;
         t->done = 1;
-        data_ov000_021ccd54->mode = 0;
+        gSceneCmd->mode = 0;
         return FALSE;
     }
     t->timer--;
@@ -4622,7 +4622,7 @@ BOOL func_0204fd60(TextWinTitle *t) {
             if (t->waitCount > 0x5a) {
                 next = TRUE;
             }
-        } else if (data_02097dc8->trig & 1) {
+        } else if (gPad->trig & 1) {
             next = TRUE;
         }
         if (next) {
@@ -4636,10 +4636,10 @@ BOOL func_0204fd60(TextWinTitle *t) {
                 GfxSys_SetFadePlanes(0x3f, -1);
                 GfxSys_StartFadeOut(0x78000, 2, 0);
                 if (t->seq != -1) {
-                    s32 vol = SndMgr_GetSeqVolume_0204a2c8(data_02097e4c, t->seq);
-                    SndMgr_LoadBgm(data_02097e4c, t->seq);
-                    SndMgr_MoveBgmVolume(data_02097e4c, 0, 0);
-                    SndMgr_MoveBgmVolume(data_02097e4c, vol, 0xf0);
+                    s32 vol = SndMgr_GetSeqVolume_0204a2c8(gSndMgr, t->seq);
+                    SndMgr_LoadBgm(gSndMgr, t->seq);
+                    SndMgr_MoveBgmVolume(gSndMgr, 0, 0);
+                    SndMgr_MoveBgmVolume(gSndMgr, vol, 0xf0);
                 }
             }
         }
@@ -4688,8 +4688,8 @@ void func_020508f4(TextBox *box, u32 arg);
 void func_02050b50(TextBox *box);
 
 #define OBJ_DELETE_LINE(l) { \
-        void *saved_ = data_02097dd0->cur; \
-        data_02097dd0->cur = data_02097dd0->heapHi; \
+        void *saved_ = gSysState->cur; \
+        gSysState->cur = gSysState->heapHi; \
         { \
             TextBoxObj *p_ = (l)->obj; \
             if (p_ != NULL) { \
@@ -4699,13 +4699,13 @@ void func_02050b50(TextBox *box);
                 (l)->obj = NULL; \
             } \
         } \
-        data_02097dd0->cur = saved_; \
+        gSysState->cur = saved_; \
     }
 
 static inline TextWin *TextBox_NewWin(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
-        *(const u32 **)win = data_0208ba70;
+        *(const u32 **)win = TextWin_vtbl;
         TextWin_Init(win);
     }
     return win;
@@ -4753,7 +4753,7 @@ void func_0204ffdc(TextBox *box) {
         return;
     }
     busy = FALSE;
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     NNSi_G3dGeTexImageParam(0, 0, 0, 0, 0, 0, 1, 0);
     ready = TRUE;
     NNSi_G3dGePolygonAttr(0, 1, 3, 0x14, 0x1f, 0);
@@ -4796,10 +4796,10 @@ void func_0204ffdc(TextBox *box) {
                 GfxSys_SetFadePlanes(0x3f, -1);
                 GfxSys_StartFadeOut(0x78000, 2, 0);
                 if (box->unk_018 != -1) {
-                    s32 vol = SndMgr_GetSeqVolume_0204a2c8(data_02097e4c, box->unk_018);
-                    SndMgr_LoadBgm(data_02097e4c, box->unk_018);
-                    SndMgr_MoveBgmVolume(data_02097e4c, 0, 0);
-                    SndMgr_MoveBgmVolume(data_02097e4c, vol, 0xf0);
+                    s32 vol = SndMgr_GetSeqVolume_0204a2c8(gSndMgr, box->unk_018);
+                    SndMgr_LoadBgm(gSndMgr, box->unk_018);
+                    SndMgr_MoveBgmVolume(gSndMgr, 0, 0);
+                    SndMgr_MoveBgmVolume(gSndMgr, vol, 0xf0);
                 }
             }
         }
@@ -4823,7 +4823,7 @@ void func_0204ffdc(TextBox *box) {
                 win->font = box->pltt;
                 win->str = (u32)line;
                 win->unk_4c = Text_Measure(win->font, win->spacing, win->str, &win->width, &win->height, (s8)win->unk_37 != 0 ? TRUE : FALSE);
-                data_02097ce0->unk_004 = win->font;
+                gGfxMgr->unk_004 = win->font;
                 win->unk_2c = 0;
                 win->color0 = 0x77df;
                 win->color1 = 0x67e;
@@ -4833,7 +4833,7 @@ void func_0204ffdc(TextBox *box) {
                 win->unk_78 = 0x9000;
                 win->unk_vf14();
                 win->rendering = 1;
-                data_02097ce0->unk_004 = win->font;
+                gGfxMgr->unk_004 = win->font;
                 saved = win->rendering;
                 win->rendering = 1;
                 if (win->noVram) {
@@ -4922,7 +4922,7 @@ struct TextLayout {
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
+extern const u32 TextWin_vtbl[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
@@ -5009,8 +5009,8 @@ char *TextWin_ParseTag24(TextWin *win, char *p);
 
 char *TextWin_ParseTag25(TextWin *win, char *p);
 
-extern SndQueue *data_02097e48;
-extern SndMgr *data_02097e4c;
+extern SndQueue *gSndQueue;
+extern SndMgr *gSndMgr;
 extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
@@ -5057,7 +5057,7 @@ typedef struct PadState {
     /* 0x12 */ u16 trig;
 } PadState;
 
-extern PadState *data_02097dc8;
+extern PadState *gPad;
 
 BOOL TextWin_Update(TextWin *win);
 
@@ -5066,7 +5066,7 @@ u16 Pad_GetTrig(void);
 void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
-    GfxMgr *gfx = data_02097ce0;
+    GfxMgr *gfx = gGfxMgr;
     gfx->unk_00c = x;
     gfx->unk_00e = y;
 }
@@ -5170,7 +5170,7 @@ void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
-extern s32 data_02097d78[];
+extern s32 gFadeState[];
 
 u8 *func_0204f354(void);
 
@@ -5216,7 +5216,7 @@ void TextWinEx_Render(TextWinEx *win);
 BOOL TextWin_IsState4_0204ffb0(int idx);
 
 TextLayout *TextWin_DtorDelete(TextLayout *layout) {
-    *(const u32 **)layout = data_0208ba70;
+    *(const u32 **)layout = TextWin_vtbl;
     layout->Clear();
     Heap_Free(layout);
     return layout;
@@ -5286,7 +5286,7 @@ struct TextLayout {
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
+extern const u32 TextWin_vtbl[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
@@ -5373,8 +5373,8 @@ char *TextWin_ParseTag24(TextWin *win, char *p);
 
 char *TextWin_ParseTag25(TextWin *win, char *p);
 
-extern SndQueue *data_02097e48;
-extern SndMgr *data_02097e4c;
+extern SndQueue *gSndQueue;
+extern SndMgr *gSndMgr;
 extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
@@ -5421,7 +5421,7 @@ typedef struct PadState {
     /* 0x12 */ u16 trig;
 } PadState;
 
-extern PadState *data_02097dc8;
+extern PadState *gPad;
 
 BOOL TextWin_Update(TextWin *win);
 
@@ -5430,7 +5430,7 @@ u16 Pad_GetTrig(void);
 void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
-    GfxMgr *gfx = data_02097ce0;
+    GfxMgr *gfx = gGfxMgr;
     gfx->unk_00c = x;
     gfx->unk_00e = y;
 }
@@ -5534,7 +5534,7 @@ void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
-extern s32 data_02097d78[];
+extern s32 gFadeState[];
 
 u8 *func_0204f354(void);
 
@@ -5599,8 +5599,8 @@ void func_02050748(TextBox *box);
 void func_020507d8(TextBox *box) {
     void *saved;
     int i;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     {
         Model *p = box->model;
         if (p != NULL) {
@@ -5612,9 +5612,9 @@ void func_020507d8(TextBox *box) {
             box->model = NULL;
         }
     }
-    data_02097dd0->cur = saved;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gSysState->cur = saved;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     {
         TextBoxObj *p = box->obj;
         if (p != NULL) {
@@ -5624,10 +5624,10 @@ void func_020507d8(TextBox *box) {
             box->obj = NULL;
         }
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     for (i = 0; i < 3; i++) {
-        void *saved2 = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved2 = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         {
             TextBoxObj *p = box->lines[i].obj;
             if (p != NULL) {
@@ -5637,7 +5637,7 @@ void func_020507d8(TextBox *box) {
                 box->lines[i].obj = NULL;
             }
         }
-        data_02097dd0->cur = saved2;
+        gSysState->cur = saved2;
         TextBoxLine_Init(&box->lines[i]);
     }
 }
@@ -5666,7 +5666,7 @@ struct TextLayout {
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
+extern const u32 TextWin_vtbl[];
 
 typedef struct TextScanTag {
     s32 code;
@@ -5700,11 +5700,11 @@ void func_020508f4(TextBox *box, const char *str) {
     u32 n;
     s32 nLines;
     u32 i;
-    data_02097ce0->unk_004 = box->pltt;
-    font = (NNSG2dFont *)GfxMgr_GetFont(data_02097ce0);
+    gGfxMgr->unk_004 = box->pltt;
+    font = (NNSG2dFont *)GfxMgr_GetFont(gGfxMgr);
     fn = font->cbCharSpliter;
     s = str;
-    p.vt = data_0208ba70;
+    p.vt = TextWin_vtbl;
     line = &box->lines[0];
     TextWin_Init((TextWin *)&p);
     nLines = 0;
@@ -5772,7 +5772,7 @@ void func_020508f4(TextBox *box, const char *str) {
     } while (*s != 0);
     box->unk_204 = 0;
     box->unk_208 = nLines + 1;
-    p.vt = data_0208ba70;
+    p.vt = TextWin_vtbl;
     ((TextLayout *)&p)->Clear();
 }
 
@@ -5792,7 +5792,7 @@ struct TextLayout {
 
 extern "C" {
 
-extern const u32 data_0208ba70[];
+extern const u32 TextWin_vtbl[];
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
@@ -5879,8 +5879,8 @@ char *TextWin_ParseTag24(TextWin *win, char *p);
 
 char *TextWin_ParseTag25(TextWin *win, char *p);
 
-extern SndQueue *data_02097e48;
-extern SndMgr *data_02097e4c;
+extern SndQueue *gSndQueue;
+extern SndMgr *gSndMgr;
 extern void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 extern void SndMgr_StopStrm_0204a284(SndMgr *mgr, s32 fade);
 
@@ -5927,7 +5927,7 @@ typedef struct PadState {
     /* 0x12 */ u16 trig;
 } PadState;
 
-extern PadState *data_02097dc8;
+extern PadState *gPad;
 
 BOOL TextWin_Update(TextWin *win);
 
@@ -5936,7 +5936,7 @@ u16 Pad_GetTrig(void);
 void TextWin_OnSkip(TextWin *win);
 
 static inline void TextWin_SetOrigin(u16 x, u16 y) {
-    GfxMgr *gfx = data_02097ce0;
+    GfxMgr *gfx = gGfxMgr;
     gfx->unk_00c = x;
     gfx->unk_00e = y;
 }
@@ -6040,7 +6040,7 @@ void Model_ApplyPart_0204e2e4(Model *model, s32 idx);
 
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
-extern s32 data_02097d78[];
+extern s32 gFadeState[];
 
 u8 *func_0204f354(void);
 
@@ -6440,8 +6440,8 @@ extern void TwScene_Init(SlideWin *win);
 #define SW_DELETE(field, dtor) SW_DELETE_T(void *, field, dtor)
 #define SW_DELETE_T(T, field, dtor) \
     { \
-        void *saved = data_02097dd0->cur; \
-        data_02097dd0->cur = data_02097dd0->heapHi; \
+        void *saved = gSysState->cur; \
+        gSysState->cur = gSysState->heapHi; \
         { \
             T p = (field); \
             if (p != NULL) { \
@@ -6452,13 +6452,13 @@ extern void TwScene_Init(SlideWin *win);
                 (field) = NULL; \
             } \
         } \
-        data_02097dd0->cur = saved; \
+        gSysState->cur = saved; \
     }
 
 #define SW_DELETE_MODEL(field) \
     { \
-        void *saved = data_02097dd0->cur; \
-        data_02097dd0->cur = data_02097dd0->heapHi; \
+        void *saved = gSysState->cur; \
+        gSysState->cur = gSysState->heapHi; \
         { \
             Model *p = (field); \
             if (p != NULL) { \
@@ -6470,7 +6470,7 @@ extern void TwScene_Init(SlideWin *win);
                 (field) = NULL; \
             } \
         } \
-        data_02097dd0->cur = saved; \
+        gSysState->cur = saved; \
     }
 
 #define SW_ITEM_INIT(x) \
@@ -6515,8 +6515,8 @@ void MainVt_0208bbc8_Release(SlideWin *win) {
     objBase = (u8 *)G2_GetOBJCharPtr();
     subObjBase = (u8 *)G2S_GetOBJCharPtr();
     {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         {
             SlideObj *p = win->obj;
             if (p != NULL) {
@@ -6526,7 +6526,7 @@ void MainVt_0208bbc8_Release(SlideWin *win) {
                 win->obj = NULL;
             }
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     for (i = 0; i < 0x80; i++) {
         if (win->blocks[i] != NULL) {
@@ -6583,7 +6583,7 @@ void MainVt_0208bbc8_OnSkip(SlideWin *win) {
     win->flag3 = 1;
     SlidePanelItem_Close(&win->items[0]);
     SlidePanelItem_Close(&win->items[1]);
-    SndMgr_StopStrm_0204a284(data_02097e4c, -1);
+    SndMgr_StopStrm_0204a284(gSndMgr, -1);
 }
 
 }
@@ -6637,8 +6637,8 @@ void func_02051a34(SlideWin *win, SlideCharFn fn) {
     s32 line;
     const char *s;
     char file[0x20];
-    data_02097ce0->unk_004 = win->font;
-    font = (SlideFont *)GfxMgr_GetFont(data_02097ce0);
+    gGfxMgr->unk_004 = win->font;
+    font = (SlideFont *)GfxMgr_GetFont(gGfxMgr);
     panel = NULL;
     fn = font->splitChar;
     line = 0;
@@ -6803,7 +6803,7 @@ namespace m_SceneShake {
 extern "C" {
 
 void func_02051f70(GameScene *scene) {
-    FieldState *state = data_ov000_021ccd54;
+    FieldState *state = gSceneCmd;
     scene->shakeTime = 0;
     scene->shakePhase = -1;
     switch (scene->shakeType) {
@@ -6895,7 +6895,7 @@ void func_020520fc(Obj3DRender *render) {
     mtl = render->mtl;
     attr = mtl->polyAttr;
     alpha = (attr & 0x1f0000) >> 16;
-    sys = data_02097d48;
+    sys = gGfxSys;
     limit = data_02149ef4;
     if ((u32)limit < alpha) {
         alpha = limit;
@@ -6997,7 +6997,7 @@ typedef struct Obj3DAnimEnt {
     /* 0x0c */ Obj3DAnimHandler fn;
 } Obj3DAnimEnt; // size 0x14
 
-extern const Obj3DAnimEnt data_0208bc80[];
+extern const Obj3DAnimEnt Obj3D_AnimTable[];
 extern const char *data_0208cb80;
 
 extern void *Heap_Alloc(u32 size);
@@ -7076,8 +7076,8 @@ static inline s32 FxMulL(s32 a, s64 b) {
 
 static inline void AnimSlot_DeleteObj(Obj3DAnimSlot *slot) {
     Obj3DAnimObj *p;
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     {
         p = slot->obj;
         if (p != NULL) {
@@ -7088,13 +7088,13 @@ static inline void AnimSlot_DeleteObj(Obj3DAnimSlot *slot) {
             slot->obj = NULL;
         }
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 static inline void AnimSlot_DeleteMdl(Obj3DAnimSlot *slot) {
     Obj3DAnimMdl *p;
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     {
         p = slot->mdl;
         if (p != NULL) {
@@ -7105,7 +7105,7 @@ static inline void AnimSlot_DeleteMdl(Obj3DAnimSlot *slot) {
             slot->mdl = NULL;
         }
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 static inline void AnimSlot_SetupObj(Obj3DAnimSlot *slot) {
@@ -7153,13 +7153,13 @@ static inline void AnimSlot_SetupObjS00(Obj3DAnimSlot *slot) {
 
 
 static inline s32 AnimSlot_Call(Obj3DAnim *anim, Obj3DAnimSlot *slot, u16 id, s32 state) {
-    return (((Obj3DAnimCls *)anim)->*data_0208bc80[id].fn)(state, slot);
+    return (((Obj3DAnimCls *)anim)->*Obj3D_AnimTable[id].fn)(state, slot);
 }
 
 static inline void AnimSlot_DeleteOldObj(Obj3DAnimSlot *slot) {
     Obj3DAnimObj *p;
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     {
         p = slot->oldObj;
         if (p != NULL) {
@@ -7170,13 +7170,13 @@ static inline void AnimSlot_DeleteOldObj(Obj3DAnimSlot *slot) {
             slot->oldObj = NULL;
         }
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 static inline void AnimSlot_DeleteOldMdl(Obj3DAnimSlot *slot) {
     Obj3DAnimMdl *p;
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     {
         p = slot->oldMdl;
         if (p != NULL) {
@@ -7187,7 +7187,7 @@ static inline void AnimSlot_DeleteOldMdl(Obj3DAnimSlot *slot) {
             slot->oldMdl = NULL;
         }
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 static inline void AnimSlot_Start(Obj3DAnim *anim, Obj3DAnimSlot *slot) {
@@ -7236,7 +7236,7 @@ void func_0205221c(Obj3DAnim *anim, int kind, Obj3DAnimSlot *slot) {
     if (slot->oldObj == NULL) {
         return;
     }
-    slot->state = (((Obj3DAnimCls *)anim)->*data_0208bc80[slot->cur].fn)(slot->state, slot);
+    slot->state = (((Obj3DAnimCls *)anim)->*Obj3D_AnimTable[slot->cur].fn)(slot->state, slot);
     if (slot->state == 8) {
         AnimSlot_DeleteOldObj(slot);
         AnimSlot_DeleteOldMdl(slot);
@@ -7252,7 +7252,7 @@ s32 Obj3DAnimCls::func_02052628(s32 state, Obj3DAnimSlot *slot) {
     const char *name;
     switch (state) {
     case 5: {
-        const Obj3DAnimEnt *ent = &data_0208bc80[slot->next];
+        const Obj3DAnimEnt *ent = &Obj3D_AnimTable[slot->next];
         Obj3DAnimMdl *m;
         AnimSlot_DeleteObj(slot);
         AnimSlot_DeleteMdl(slot);
@@ -7294,7 +7294,7 @@ s32 Obj3DAnimCls::func_020528ec(s32 state, Obj3DAnimSlot *slot) {
     s32 r;
     switch (state) {
     case 5: {
-        const Obj3DAnimEnt *ent = &data_0208bc80[slot->next];
+        const Obj3DAnimEnt *ent = &Obj3D_AnimTable[slot->next];
         Obj3DAnimMdl *m;
         AnimSlot_DeleteObj(slot);
         AnimSlot_DeleteMdl(slot);
@@ -7385,11 +7385,11 @@ s32 Obj3DAnimCls::func_02052bec(s32 state, Obj3DAnimSlot *slot) {
     slot->ofsY = 0;
     slot->ofsZ = 0;
     if (is10) {
-        AnimSlot_CalcOfs(slot, &anim->sub.groups[slot->idx], &data_0208bc80[slot->cur]);
+        AnimSlot_CalcOfs(slot, &anim->sub.groups[slot->idx], &Obj3D_AnimTable[slot->cur]);
     }
     switch (state) {
     case 5: {
-        const Obj3DAnimEnt *ent = &data_0208bc80[slot->next];
+        const Obj3DAnimEnt *ent = &Obj3D_AnimTable[slot->next];
         Obj3DAnimMdl *m;
         AnimSlot_DeleteObj(slot);
         AnimSlot_DeleteMdl(slot);

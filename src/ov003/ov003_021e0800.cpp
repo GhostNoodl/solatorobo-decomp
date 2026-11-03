@@ -12,7 +12,7 @@ extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 void Ov003ActVt_021f8058_Start(ActorEx *self) {
     ActorEx_Start(self);
     self->model->visible = 0;
-    ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x400c, 0x15);
+    ActorMgr_BroadcastKind(gActorMgr, 0x400c, 0x15);
     self->pos.y -= 0x14000;
 }
 
@@ -82,7 +82,7 @@ void Ov003ActVt_021f8058_StateIdle(ActorEx *self) {
             FieldState *g;
             Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
-            g = data_ov000_021ccd54;
+            g = gSceneCmd;
             g->stageFlags = 1;
             func_ov000_02182590(&g->stageFlags);
             self->fsm->timer = 0;

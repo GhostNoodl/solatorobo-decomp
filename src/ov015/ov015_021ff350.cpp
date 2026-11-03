@@ -2,9 +2,9 @@
 
 extern "C" {
 
-extern u8 data_ov015_0221292c[];
+extern u8 Ov015Obj292c_vtbl[];
 void func_ov015_022120fc(Ov015Obj292c *self);
-extern u8 data_ov015_022132e0[];
+extern u8 Ov015Obj290_vtbl[];
 void func_ov015_02211a18(void);
 void *Model0218fe1c_FreeAnims(void *p);
 void *ResSet_ReleaseAll(void *p);
@@ -25,14 +25,14 @@ void Ov015Obj30_Free(Ov015Obj30 *self) {
 }
 
 void *Ov015Obj292c_DtorDelete(Ov015Obj292c *self) {
-    SET_VT(self, data_ov015_0221292c);
+    SET_VT(self, Ov015Obj292c_vtbl);
     func_ov015_022120fc(self);
     Heap_Free(self);
     return self;
 }
 
 void *Ov015Obj290_DtorDelete(Ov015Obj290 *self) {
-    SET_VT(self, data_ov015_022132e0);
+    SET_VT(self, Ov015Obj290_vtbl);
     func_ov015_02211a18();
     Model0218fe1c_FreeAnims(&self->model);
     ResSet_ReleaseAll(&self->res);

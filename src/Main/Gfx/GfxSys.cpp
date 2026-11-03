@@ -15,14 +15,14 @@ typedef struct GfxFadeCtx {
 
 typedef int (*GfxFadeFunc)(GfxFadeCtx *ctx);
 
-extern u32 data_02097d44;
-extern GfxFadeFunc data_02097d4c;
-extern int data_02097d50[5];
-extern int data_02097d64[5];
-extern int data_02097d78[5];
-extern int data_02097d8c[5];
-extern int data_02097da0[5];
-extern int data_02097db4[5];
+extern u32 gFadeFuncArg;
+extern GfxFadeFunc gFadeFunc;
+extern int gFadeEnd[5];
+extern int gFadeTimer[5];
+extern int gFadeState[5];
+extern int gFadeDuration[5];
+extern int gFadeStart[5];
+extern int gFadePlanes[5];
 extern void *Heap_Alloc(u32 size);
 extern void Gfx3DState_Init(void *obj);
 void GfxSys_Init(GfxSys *sys);
@@ -31,7 +31,7 @@ void GfxSys_Init(GfxSys *sys);
 
 extern "C" {
 
-extern u8 data_02fe01e8[];
+extern u8 gGeBuffer[];
 extern void G3X_Init(void);
 extern void DC_FlushAll(void);
 extern void GX_LoadBGPltt(const void *src, u32 offset, u32 size);
@@ -229,37 +229,37 @@ static inline u32 G3_PackPolygonAttr(int light, int polyMode, int cullMode, int 
 extern "C" {
 
 // The fade channels (indexed by screen) are this TU's own .bss objects, addressed through one
-// pool literal (0x02097d44) plus offsets. GfxSys_Create already reads data_02097d48 that way, so
+// pool literal (0x02097d44) plus offsets. GfxSys_Create already reads gGfxSys that way, so
 // the first two objects are defined before it. The rest are defined after it, which keeps
 // definition order: nine definitions before the first function come out in MWCC's own order
 // (d4c d48 d44, then the arrays from d8c). As TU objects in one pool their accesses stay in
 // source order against the context copy in GfxSys_RunFadeFunc, which is why that function needs no
 // volatile.
-u32 data_02097d44;
-GfxSys *data_02097d48;
+u32 gFadeFuncArg;
+GfxSys *gGfxSys;
 
 void GfxSys_Create(void) {
     GfxSys *sys;
-    if (data_02097d48 != NULL) {
+    if (gGfxSys != NULL) {
         return;
     }
-    data_02097dd0->cur = data_02097dd0->heapLo;
+    gSysState->cur = gSysState->heapLo;
     sys = (GfxSys *)Heap_Alloc(sizeof(GfxSys));
     if (sys != NULL) {
         Gfx3DState_Init(sys->unk_8b0);
         GfxSys_Init(sys);
     }
-    data_02097d48 = sys;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gGfxSys = sys;
+    gSysState->cur = gSysState->heapHi;
 }
 
-GfxFadeFunc data_02097d4c;
-int data_02097d50[5];
-int data_02097d64[5];
-int data_02097d78[5];
-int data_02097d8c[5];
-int data_02097da0[5];
-int data_02097db4[5];
+GfxFadeFunc gFadeFunc;
+int gFadeEnd[5];
+int gFadeTimer[5];
+int gFadeState[5];
+int gFadeDuration[5];
+int gFadeStart[5];
+int gFadePlanes[5];
 
 void GfxSys_Init(GfxSys *sys) {
     int i;
@@ -284,15 +284,15 @@ void GfxSys_Init(GfxSys *sys) {
     sys->nextState = 1;
     GfxSys_SetMode(sys, 1);
     for (i = 0; i < 5; i++) {
-        data_02097db4[i] = 0;
-        data_02097d78[i] = 0;
-        data_02097d64[i] = 0;
-        data_02097d8c[i] = 0;
-        data_02097da0[i] = 0;
-        data_02097d50[i] = 0;
+        gFadePlanes[i] = 0;
+        gFadeState[i] = 0;
+        gFadeTimer[i] = 0;
+        gFadeDuration[i] = 0;
+        gFadeStart[i] = 0;
+        gFadeEnd[i] = 0;
     }
-    data_02097d4c = 0;
-    data_02097d44 = 0;
+    gFadeFunc = 0;
+    gFadeFuncArg = 0;
     oam = sys->oams;
     for (i = 0; i < 12; i++) {
         // y is declared after the first store; declared above it, the zero and the clear-loop
@@ -304,7 +304,7 @@ void GfxSys_Init(GfxSys *sys) {
         oam->attr2 = (((y >> 3) << 5) + (x >> 3)) | 0xf000;
         oam++;
     }
-    NNS_G3dGeSetBuffer(data_02fe01e8);
+    NNS_G3dGeSetBuffer(gGeBuffer);
     NNS_G3dGeUseFastDma(1);
     sys->unk_a30_0 = 1;
     sys->unk_a30_1 = 0;
@@ -357,7 +357,7 @@ void GfxSys_EndFrame(GfxSys *sys) {
     NNS_G2dApplyAndResetOamManagerBuffer(sys->unk_048);
     G3X_Reset();
     Gfx3DState_Reset(sys->unk_8b0);
-    g = data_02097d48;
+    g = gGfxSys;
     if (g->unk_8b0_5) {
         REG32(0x4000000) = (REG32(0x4000000) & ~0xe000) | 0x2000;
         if (OS_IsRunOnTwl()) {
@@ -600,10 +600,10 @@ void GfxSys_SetMode(GfxSys *sys, int state) {
         for (i = 0; i < 6; i++) {
             sys->slotMasks[i] = 0;
         }
-        if (data_02097ce0 != NULL) {
+        if (gGfxMgr != NULL) {
             GfxMgr *mgr;
-            GfxMgr_FreeAll(data_02097ce0, state);
-            mgr = data_02097ce0;
+            GfxMgr_FreeAll(gGfxMgr, state);
+            mgr = gGfxMgr;
             mgr->unk_678 = 0x20;
             mgr->unk_67a = 0x18;
         }
@@ -662,10 +662,10 @@ void GfxSys_SetupVram(GfxSys *sys) {
     for (i = 0; i < 6; i++) {
         sys->slotMasks[i] = 0;
     }
-    if (data_02097ce0 != NULL) {
+    if (gGfxMgr != NULL) {
         GfxMgr *mgr;
-        GfxMgr_FreeAll(data_02097ce0, 1);
-        mgr = data_02097ce0;
+        GfxMgr_FreeAll(gGfxMgr, 1);
+        mgr = gGfxMgr;
         mgr->unk_678 = 0x14;
         mgr->unk_67a = 0x16;
     }
@@ -690,10 +690,10 @@ void GfxSys_SetupVramTwl(GfxSys *sys) {
     for (i = 0; i < 6; i++) {
         sys->slotMasks[i] = 0;
     }
-    if (data_02097ce0 != NULL) {
+    if (gGfxMgr != NULL) {
         GfxMgr *mgr;
-        GfxMgr_FreeAll(data_02097ce0, 1);
-        mgr = data_02097ce0;
+        GfxMgr_FreeAll(gGfxMgr, 1);
+        mgr = gGfxMgr;
         mgr->unk_678 = 0x14;
         mgr->unk_67a = 0x16;
     }
@@ -736,7 +736,7 @@ void GfxSys_SetFadePlanes(int value, int ch) {
         if (ch == 1) {
             value &= ~3;
         }
-        data_02097db4[ch] = value;
+        gFadePlanes[ch] = value;
     }
 }
 
@@ -750,31 +750,31 @@ void GfxSys_SetFadeRange(int start, int end_, int ch) {
     }
     for (; ch < end; ch++) {
         if (start != -1) {
-            data_02097da0[ch] = start;
+            gFadeStart[ch] = start;
         }
         if (end_ != -1) {
-            data_02097d50[ch] = end_;
+            gFadeEnd[ch] = end_;
         }
     }
 }
 
 int GfxSys_GetFadeTimer(int ch) {
-    return data_02097d64[ch];
+    return gFadeTimer[ch];
 }
 
 int GfxSys_GetFadeLevel(int ch) {
     int t;
     int start;
-    if (data_02097d8c[ch] == 0) {
+    if (gFadeDuration[ch] == 0) {
         t = 0x1000;
     } else {
-        t = FX_Div(data_02097d64[ch], data_02097d8c[ch]);
+        t = FX_Div(gFadeTimer[ch], gFadeDuration[ch]);
         if (t >= 0x1000) {
             t = 0x1000;
         }
     }
-    start = data_02097da0[ch];
-    return start + (FX_Mul((data_02097d50[ch] - start) << 12, t) >> 12);
+    start = gFadeStart[ch];
+    return start + (FX_Mul((gFadeEnd[ch] - start) << 12, t) >> 12);
 }
 
 void GfxSys_StopFade(int ch) {
@@ -786,11 +786,11 @@ void GfxSys_StopFade(int ch) {
         end = 5;
     }
     for (; ch < end; ch++) {
-        data_02097d78[ch] = 0;
+        gFadeState[ch] = 0;
         if (ch == 0) {
-            G2x_SetBlendBrightness_((volatile void *)0x4000050, data_02097db4[ch], 0);
+            G2x_SetBlendBrightness_((volatile void *)0x4000050, gFadePlanes[ch], 0);
         } else if (ch == 1) {
-            G2x_SetBlendBrightness_((volatile void *)0x4001050, data_02097db4[ch], 0);
+            G2x_SetBlendBrightness_((volatile void *)0x4001050, gFadePlanes[ch], 0);
         }
     }
 }
@@ -798,12 +798,12 @@ void GfxSys_StopFade(int ch) {
 void GfxSys_StartFadeIn(int duration, int mode, int ch) {
     int end;
     if (ch != -1) {
-        if ((ch == 0 || ch == 3) && data_02097d78[3] != 0) {
-            data_02097d78[3] = 1;
-            data_02097d64[3] = 0;
-            data_02097d8c[3] = duration;
-            data_02097da0[3] = 0;
-            data_02097d50[3] = 0;
+        if ((ch == 0 || ch == 3) && gFadeState[3] != 0) {
+            gFadeState[3] = 1;
+            gFadeTimer[3] = 0;
+            gFadeDuration[3] = duration;
+            gFadeStart[3] = 0;
+            gFadeEnd[3] = 0;
             return;
         }
         end = ch + 1;
@@ -812,17 +812,17 @@ void GfxSys_StartFadeIn(int duration, int mode, int ch) {
         end = 2;
     }
     for (; ch < end; ch++) {
-        data_02097d78[ch] = 1;
-        data_02097d64[ch] = 0;
-        data_02097d8c[ch] = duration;
+        gFadeState[ch] = 1;
+        gFadeTimer[ch] = 0;
+        gFadeDuration[ch] = duration;
         if (mode == 1) {
-            data_02097da0[ch] = 16;
+            gFadeStart[ch] = 16;
         } else if (mode == 2) {
-            data_02097da0[ch] = -16;
+            gFadeStart[ch] = -16;
         } else {
-            data_02097da0[ch] = data_02097d50[ch];
+            gFadeStart[ch] = gFadeEnd[ch];
         }
-        data_02097d50[ch] = 0;
+        gFadeEnd[ch] = 0;
     }
 }
 
@@ -830,11 +830,11 @@ void GfxSys_StartFadeOut(int duration, int mode, int ch) {
     int end;
     if (ch != -1) {
         if (ch == 3) {
-            data_02097d78[3] = 3;
-            data_02097d64[3] = 0;
-            data_02097d8c[3] = duration;
-            data_02097da0[3] = 0;
-            data_02097d50[3] = 0;
+            gFadeState[3] = 3;
+            gFadeTimer[3] = 0;
+            gFadeDuration[3] = duration;
+            gFadeStart[3] = 0;
+            gFadeEnd[3] = 0;
             return;
         }
         end = ch + 1;
@@ -843,15 +843,15 @@ void GfxSys_StartFadeOut(int duration, int mode, int ch) {
         end = 2;
     }
     for (; ch < end; ch++) {
-        data_02097d78[ch] = 3;
-        data_02097d64[ch] = 0;
-        data_02097d8c[ch] = duration;
+        gFadeState[ch] = 3;
+        gFadeTimer[ch] = 0;
+        gFadeDuration[ch] = duration;
         if (mode == 1) {
-            data_02097da0[ch] = 0;
-            data_02097d50[ch] = 16;
+            gFadeStart[ch] = 0;
+            gFadeEnd[ch] = 16;
         } else {
-            data_02097da0[ch] = 0;
-            data_02097d50[ch] = -16;
+            gFadeStart[ch] = 0;
+            gFadeEnd[ch] = -16;
         }
     }
 }
@@ -862,11 +862,11 @@ void GfxSys_UpdateFade(void) {
         return;
     }
     for (i = 0; i < 4; i++) {
-        int state = data_02097d78[i];
+        int state = gFadeState[i];
         if (state != 0 && state != 2 && state != 4) {
-            data_02097d64[i] += 0x1000;
-            if (data_02097d64[i] >= data_02097d8c[i]) {
-                data_02097d64[i] = data_02097d8c[i];
+            gFadeTimer[i] += 0x1000;
+            if (gFadeTimer[i] >= gFadeDuration[i]) {
+                gFadeTimer[i] = gFadeDuration[i];
             }
         }
     }
@@ -875,28 +875,28 @@ void GfxSys_UpdateFade(void) {
 void GfxSys_ApplyFade3D(void) {
     int t;
     int v;
-    if (data_02097d78[2] == 2 || data_02097d78[2] == 4) {
-        GfxSys_DrawFadeQuad(data_02097d50[2]);
+    if (gFadeState[2] == 2 || gFadeState[2] == 4) {
+        GfxSys_DrawFadeQuad(gFadeEnd[2]);
         return;
     }
-    if (data_02097d8c[2] == 0) {
+    if (gFadeDuration[2] == 0) {
         t = 0x1000;
     } else {
-        t = FX_Div(data_02097d64[2], data_02097d8c[2]);
+        t = FX_Div(gFadeTimer[2], gFadeDuration[2]);
         if (t >= 0x1000) {
             t = 0x1000;
         }
     }
-    v = data_02097da0[2] + (FX_Mul((data_02097d50[2] - data_02097da0[2]) << 12, t) >> 12);
+    v = gFadeStart[2] + (FX_Mul((gFadeEnd[2] - gFadeStart[2]) << 12, t) >> 12);
     if (v == 0) {
-        if (data_02097d78[2] == 1) {
-            data_02097d78[2] = 0;
+        if (gFadeState[2] == 1) {
+            gFadeState[2] = 0;
         }
-    } else if (v == data_02097d50[2]) {
-        if (data_02097d78[2] == 1) {
-            data_02097d78[2] = 2;
+    } else if (v == gFadeEnd[2]) {
+        if (gFadeState[2] == 1) {
+            gFadeState[2] = 2;
         } else {
-            data_02097d78[2] = 4;
+            gFadeState[2] = 4;
         }
     }
     GfxSys_DrawFadeQuad(v);
@@ -905,24 +905,24 @@ void GfxSys_ApplyFade3D(void) {
 // The context is copied out and back one word at a time.
 void GfxSys_RunFadeFunc(void) {
     GfxFadeCtx ctx;
-    GfxFadeFunc func = data_02097d4c;
+    GfxFadeFunc func = gFadeFunc;
     if (func == NULL) {
-        data_02097d78[3] = 0;
+        gFadeState[3] = 0;
         return;
     }
-    ctx.unk_00 = data_02097d44;
-    ctx.state = data_02097d78[3];
-    ctx.timer = data_02097d64[3];
-    ctx.duration = data_02097d8c[3];
-    ctx.start = data_02097da0[3];
-    ctx.end = data_02097d50[3];
-    data_02097d78[3] = func(&ctx);
-    data_02097d44 = ctx.unk_00;
-    data_02097d78[3] = ctx.state;
-    data_02097d64[3] = ctx.timer;
-    data_02097d8c[3] = ctx.duration;
-    data_02097da0[3] = ctx.start;
-    data_02097d50[3] = ctx.end;
+    ctx.unk_00 = gFadeFuncArg;
+    ctx.state = gFadeState[3];
+    ctx.timer = gFadeTimer[3];
+    ctx.duration = gFadeDuration[3];
+    ctx.start = gFadeStart[3];
+    ctx.end = gFadeEnd[3];
+    gFadeState[3] = func(&ctx);
+    gFadeFuncArg = ctx.unk_00;
+    gFadeState[3] = ctx.state;
+    gFadeTimer[3] = ctx.timer;
+    gFadeDuration[3] = ctx.duration;
+    gFadeStart[3] = ctx.start;
+    gFadeEnd[3] = ctx.end;
 }
 
 void GfxSys_ApplyFade(int mode) {
@@ -930,44 +930,44 @@ void GfxSys_ApplyFade(int mode) {
     int t;
     int v;
     if (mode != -1) {
-        if (data_02097d78[2] != 0) {
+        if (gFadeState[2] != 0) {
             GfxSys_ApplyFade3D();
         }
-        if (data_02097d78[3] != 0) {
+        if (gFadeState[3] != 0) {
             GfxSys_RunFadeFunc();
         }
         return;
     }
-    if (data_02097d78[4] != 0) {
-        G2x_SetBlendBrightness_((volatile void *)0x4000050, data_02097db4[4], data_02097da0[4]);
+    if (gFadeState[4] != 0) {
+        G2x_SetBlendBrightness_((volatile void *)0x4000050, gFadePlanes[4], gFadeStart[4]);
     }
     for (ch = 0; ch < 2; ch++) {
-        int state = data_02097d78[ch];
+        int state = gFadeState[ch];
         if (state != 0 && state != 2 && state != 4) {
-            if (data_02097d8c[ch] == 0) {
+            if (gFadeDuration[ch] == 0) {
                 t = 0x1000;
             } else {
-                t = FX_Div(data_02097d64[ch], data_02097d8c[ch]);
+                t = FX_Div(gFadeTimer[ch], gFadeDuration[ch]);
                 if (t >= 0x1000) {
                     t = 0x1000;
                 }
             }
-            v = data_02097da0[ch] + (FX_Mul((data_02097d50[ch] - data_02097da0[ch]) << 12, t) >> 12);
+            v = gFadeStart[ch] + (FX_Mul((gFadeEnd[ch] - gFadeStart[ch]) << 12, t) >> 12);
             if (v == 0) {
-                if (data_02097d78[ch] == 1) {
-                    data_02097d78[ch] = 0;
+                if (gFadeState[ch] == 1) {
+                    gFadeState[ch] = 0;
                 }
-            } else if (v == data_02097d50[ch]) {
-                if (data_02097d78[ch] == 1) {
-                    data_02097d78[ch] = 2;
+            } else if (v == gFadeEnd[ch]) {
+                if (gFadeState[ch] == 1) {
+                    gFadeState[ch] = 2;
                 } else {
-                    data_02097d78[ch] = 4;
+                    gFadeState[ch] = 4;
                 }
             }
             if (ch == 0) {
-                G2x_SetBlendBrightness_((volatile void *)0x4000050, data_02097db4[ch], v);
+                G2x_SetBlendBrightness_((volatile void *)0x4000050, gFadePlanes[ch], v);
             } else if (ch == 1) {
-                G2x_SetBlendBrightness_((volatile void *)0x4001050, data_02097db4[ch], v);
+                G2x_SetBlendBrightness_((volatile void *)0x4001050, gFadePlanes[ch], v);
             }
         }
     }
@@ -982,9 +982,9 @@ void GfxSys_DrawFadeQuad(int v) {
     if (v == 0) {
         return;
     }
-    sys = data_02097d48;
+    sys = gGfxSys;
     t = FX_Div((v < 0 ? -v : v) << 12, 16 << 12);
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     polyAttr = G3_PackPolygonAttr(0, 1, 3, Gfx3DState_NextPolyId(sys->unk_8b0), FX_Mul(t, 0x1f000) >> 12, 0);
     NNS_G3dGeBufferOP_N(0x29, &polyAttr, 1);
     texParam = 0x20000000;

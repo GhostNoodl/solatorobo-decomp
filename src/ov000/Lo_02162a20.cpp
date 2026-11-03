@@ -18,17 +18,17 @@ typedef struct {
     LoGlyphW w;
 } LoGlyph;
 
-extern s32 data_02097d78[5];
+extern s32 gFadeState[5];
 void func_ov000_02162bd4(ModelViewer *self);
 BOOL Model0218fe1c_GetAnimCtrl(void *p, s32 a);
 void Model0218fe1c_UpdateAnim(void *p, s32 a);
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 
 static inline BOOL LoIsMode4(void) {
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         return TRUE;
     }
-    return data_02097d78[1] == 4 ? TRUE : FALSE;
+    return gFadeState[1] == 4 ? TRUE : FALSE;
 }
 
 void ModelViewer_Update(ModelViewer *self) {

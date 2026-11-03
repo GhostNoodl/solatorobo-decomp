@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern Ov015Ship *data_ov015_02213364;
+extern Ov015Ship *gOv015Ship;
 extern void *data_0208cb74;
 void *ResMgr_GetArchiveList(void *a, void *b, int c);
 void TexObj_SetOamFunc(void *a, int b, void *cb, void *arg);
@@ -12,7 +12,7 @@ void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src);
 void func_ov015_02208a28(Ov015UiText *self, void *p);
 s32 TexObj_GetCellWidth(void *m, void *anim);
 s32 TexObj_GetCellHeight(void *m, void *anim);
-extern u8 data_0208ba70[];
+extern u8 TextWin_vtbl[];
 void TextWin_Init(void *p);
 u32 Text_Measure(u32 a, u32 b, u32 c, u32 *outW, u32 *outH, BOOL d);
 u8 Gfx3DState_NextPolyId(void *p);
@@ -21,16 +21,16 @@ s32 func_0201e950(const void *s, const void *t, s32 n);
 BOOL TextWin_ParseTag(void *p, const char **s);
 int Model_IsReady(void *a, int b);
 s32 Vram_IsTransferDone(void *p);
-extern u8 data_ov015_02212d3c[];
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov015_022128fc[];
-extern u8 data_ov015_02212e84[];
-extern u8 data_ov015_022129d0[];
+extern u8 Ov015Vt_02212d3c_vtbl[];
+extern u8 UiObj_vtbl[];
+extern u8 Ov015Fish_vtbl[];
+extern u8 Ov015FishInfo_vtbl[];
+extern u8 Ov015Shadow_vtbl[];
 void *ResSet_Init(void *a);
 void *Model0218fe1c_Init(void *a);
 void *Shadow_CtorBase(void *a);
 void HitSphere_Init(void *a);
-extern u8 data_ov015_02212eb0[];
+extern u8 Ov015FishState_vtbl[];
 
 void Shadow_Draw(void *a, void *b);
 void Obj02190758_SetRot(void *m, const void *rot, s32 c);
@@ -53,7 +53,7 @@ void func_ov015_02208070(Ov015Ship *self) {
     if (self->loadStep != 0x32) {
         return;
     }
-    data_ov015_02213364 = self;
+    gOv015Ship = self;
     if (self->unk_d41 != 0) {
         Shadow_Draw(&self->shadow, &self->pos);
     }
@@ -106,7 +106,7 @@ void func_ov015_02208070(Ov015Ship *self) {
         }
     }
     NNS_G3dGeFlushBuffer();
-    data_ov015_02213364 = NULL;
+    gOv015Ship = NULL;
     if (self->unk_d42 == 0) {
         return;
     }
@@ -128,7 +128,7 @@ void func_ov015_02208070(Ov015Ship *self) {
 }
 
 void func_ov015_02208424(NNSG3dRS *rs) {
-    Ov015ShipMtx *t = &data_ov015_02213364->nodeMtx;
+    Ov015ShipMtx *t = &gOv015Ship->nodeMtx;
     s32 id = (rs->flag & 0x10) ? rs->currentNodeDesc : -1;
     if (id != t->id) {
         return;
@@ -291,7 +291,7 @@ void func_ov015_02208a28(Ov015UiText *self, void *name) {
     HEAP_POP(saved);
     o = (TextWin *)Heap_Alloc(0xb8);
     if (o != NULL) {
-        SET_VT(o, data_0208ba70);
+        SET_VT(o, TextWin_vtbl);
         TextWin_Init(o);
     }
     self->unk_84 = o;
@@ -300,8 +300,8 @@ void func_ov015_02208a28(Ov015UiText *self, void *name) {
     p = self->unk_84;
     p->str = (u32)name;
     p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, (s8)p->unk_37 != 0);
-    data_02097ce0->unk_004 = p->font;
-    self->unk_84->unk_4_13 = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
+    gGfxMgr->unk_004 = p->font;
+    self->unk_84->unk_4_13 = Gfx3DState_NextPolyId(gGfxSys->unk_8b0);
     self->unk_84->flag24 = 1;
     self->unk_84->noVram = 1;
     self->unk_84->rendering = 1;
@@ -328,11 +328,11 @@ struct Ov015TagParser {
 };
 typedef s32 (*Ov015CharFn)(const char **s);
 void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src) {
-    Ov015CharFn fn = *(Ov015CharFn *)((u8 *)GfxMgr_GetFont(data_02097ce0) + 4);
+    Ov015CharFn fn = *(Ov015CharFn *)((u8 *)GfxMgr_GetFont(gGfxMgr) + 4);
     const char *s;
     Ov015TagParser p;
     s = src;
-    SET_VT(&p, data_0208ba70);
+    SET_VT(&p, TextWin_vtbl);
     TextWin_Init(&p);
     out[0] = 0;
     *outId = -1;
@@ -348,7 +348,7 @@ void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src) {
             }
         }
     }
-    SET_VT(&p, data_0208ba70);
+    SET_VT(&p, TextWin_vtbl);
     ((TextWin *)&p)->unk_vf08();
 }
 
@@ -403,8 +403,8 @@ s32 Ov015Vt_02212d3c_GetHeight(Ov015UiText *self) {
 
 s32 Ov015Vt_02212d3c_GetLineHeight(Ov015UiText *self) {
     s32 a;
-    data_02097ce0->unk_004 = self->font;
-    a = (*(s8 **)GfxMgr_GetFont(data_02097ce0))[1];
+    gGfxMgr->unk_004 = self->font;
+    a = (*(s8 **)GfxMgr_GetFont(gGfxMgr))[1];
     return a + self->vfunc_3c();
 }
 
@@ -430,11 +430,11 @@ s32 func_ov015_02208e60(Ov015UiText *self, s32 a, s32 b, s32 c) {
 
 void *Ov015Vt_02212d3c_DtorDelete(Ov015UiText *self) {
     void *saved;
-    SET_VT(self, data_ov015_02212d3c);
+    SET_VT(self, Ov015Vt_02212d3c_vtbl);
     HEAP_PUSH(saved);
     DELETE_V(self->unk_84);
     HEAP_POP(saved);
-    SET_VT(self, data_ov000_021cac60);
+    SET_VT(self, UiObj_vtbl);
     self->vfunc_2c();
     Heap_Free(self);
     return self;
@@ -442,11 +442,11 @@ void *Ov015Vt_02212d3c_DtorDelete(Ov015UiText *self) {
 
 void *Ov015Vt_02212d3c_Dtor(Ov015UiText *self) {
     void *saved;
-    SET_VT(self, data_ov015_02212d3c);
+    SET_VT(self, Ov015Vt_02212d3c_vtbl);
     HEAP_PUSH(saved);
     DELETE_V(self->unk_84);
     HEAP_POP(saved);
-    SET_VT(self, data_ov000_021cac60);
+    SET_VT(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
@@ -504,8 +504,8 @@ void func_ov015_022090fc(NNSG3dRS *rs) {
 }
 
 void *Ov015Fish_Ctor(Ov015Fish *self) {
-    SET_VT(self, data_ov015_022128fc);
-    SET_VT(&self->info, data_ov015_02212e84);
+    SET_VT(self, Ov015Fish_vtbl);
+    SET_VT(&self->info, Ov015FishInfo_vtbl);
     self->info.id = 0xffff;
     MIi_CpuClearFast(0, &self->info.unk_06, 0x14);
     self->info.unk_1c = 0;
@@ -517,7 +517,7 @@ void *Ov015Fish_Ctor(Ov015Fish *self) {
     ResSet_Init(&self->res2);
     Model0218fe1c_Init(&self->model2);
     Shadow_CtorBase(&self->shadow);
-    SET_VT(&self->shadow, data_ov015_022129d0);
+    SET_VT(&self->shadow, Ov015Shadow_vtbl);
     HitSphere_Init(&self->hit);
     self->id = 0xffff;
     self->unk_08 = 0;
@@ -571,7 +571,7 @@ void func_ov015_02209270(Ov015Fish *self) {
 }
 
 void *Ov015FishState_DtorDelete(Ov015FishState *self) {
-    SET_VT(self, data_ov015_02212eb0);
+    SET_VT(self, Ov015FishState_vtbl);
     Heap_Free(self);
     return self;
 }

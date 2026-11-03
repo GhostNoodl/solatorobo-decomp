@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern const char data_ov011_02207bd8[];
 u16 ActorGroup_CountKind(void *g, u16 id);
 void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
@@ -22,7 +22,7 @@ void Ov011ActVt_02207b34_Update(Ov003Actor *self) {
     }
     self->unk_93_4 = 1;
     ok = TRUE;
-    g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+    g = ActorMgr_GetGroup(gActorMgr, 0x5000);
     if (g != NULL && ActorGroup_CountKind(g, 0x5807) >= 1) {
         ok = FALSE;
     }
@@ -101,7 +101,7 @@ void Ov011ActVt_02207b34_State20(Ov003Actor *self) {
         if (++s->timer <= 120) {
             return;
         }
-        SndMgr_PlayVolume(data_02097e4c, 50, 100, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 50, 100, -1, -1);
         p = Effect_SpawnId(50 + 0x358, &self->pos);
         p->SetScaleXYZ(0x1666, 0x1666, 0x1666);
         p->AddPosXYZ(0, 0x1000, 0);
@@ -115,7 +115,7 @@ void Ov011ActVt_02207b34_State20(Ov003Actor *self) {
         if (++s->timer > 60) {
             Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
-            data_ov000_021ccd54->stageFlags = 1;
+            gSceneCmd->stageFlags = 1;
             self->model->alpha = 0x1f;
             History_SetState(self->fsm, 1, 0);
         } else if (self->fsm->timer > 30) {
@@ -142,8 +142,8 @@ void Ov011ActVt_02207b34_StateDown(Ov003Actor *self) {
         self->unk_3c->unk_14 = self->radius * 2;
         self->unk_3c->unk_19 = 0xff;
         if (*self->hp == 0) {
-            ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5807, 0x15);
-            ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4803, 0x15);
+            ActorMgr_BroadcastKind(gActorMgr, 0x5807, 0x15);
+            ActorMgr_BroadcastKind(gActorMgr, 0x4803, 0x15);
         }
     }
     Ov003Actor_StateDown(self);
@@ -179,7 +179,7 @@ void Ov011ActVt_02207a88_State20(Ov003Actor *self) {
         self->moveYaw = self->rot_y;
         Model0218fe1c_SetAnim(self->model, data_ov011_02207bd8, 0x1000, 0);
         Model0218fe1c_SetAnimSpeed(self->model, 0x2000);
-        SndMgr_PlayVolume(data_02097e4c, 0x29, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x29, -1, -1, -1);
         self->fsm->st++;
         break;
     case 1:
@@ -218,8 +218,8 @@ Ov003Actor *Ov011ActVt_02207a88_DtorDelete(Ov003Actor *self) {
 void Ov011Act7cf8_Start(Ov011Act7cf8 *self) {
     void *saved;
     Ov003Actor_Start(self);
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->hit != NULL) {
         void *p = self->hit;
         if (p != NULL) {
@@ -228,7 +228,7 @@ void Ov011Act7cf8_Start(Ov011Act7cf8 *self) {
         }
         self->hit = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     Ov011_VecSet(&self->unk_44->unk_0c, 0, -0x333, -self->radius >> 1);
     self->unk_f0.x = 0;
     self->unk_f0.y = 0;

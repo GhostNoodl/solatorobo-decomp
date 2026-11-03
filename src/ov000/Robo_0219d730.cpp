@@ -33,7 +33,7 @@ void Robo021ca458_Animate(Robo021ca458 *self) {
     }
     Model0218fe1c_UpdateAnim(&self->mdl1, t);
     if (self->unk_b40 != 0) {
-        o = Effect_Find_020657b0(data_0214a420, self->unk_b40);
+        o = Effect_Find_020657b0(gEffectMgr, self->unk_b40);
         if (o != NULL) {
             VecFx32 v;
             VecFx32 p;
@@ -56,7 +56,7 @@ void Robo021ca458_Animate(Robo021ca458 *self) {
         }
     }
     if (self->unk_b44 != 0) {
-        o = Effect_Find_020657b0(data_0214a420, self->unk_b44);
+        o = Effect_Find_020657b0(gEffectMgr, self->unk_b44);
         if (o == NULL) {
             self->unk_b44 = 0;
         } else {
@@ -64,7 +64,7 @@ void Robo021ca458_Animate(Robo021ca458 *self) {
         }
     }
     if (self->unk_b48 != 0) {
-        o = Effect_Find_020657b0(data_0214a420, self->unk_b48);
+        o = Effect_Find_020657b0(gEffectMgr, self->unk_b48);
         if (o == NULL) {
             self->unk_b48 = 0;
             return;

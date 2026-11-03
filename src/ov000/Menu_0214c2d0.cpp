@@ -13,7 +13,7 @@ extern "C" {
 
 extern const char *data_0208cc88;
 extern const char *data_0208cc94;
-extern void *data_02149ef8;
+extern void *gMsgRes;
 void *ResList_FindType2(void *a, void *b);
 void *ResMgr_GetArcList(void *a);
 void *ResMgr_GetArchiveList(void *a, void *b, s32 c);
@@ -92,11 +92,11 @@ void Menu021ca94c_Setup(Menu021ca94c *self) {
     self->slideY = self->height + 0x40;
     self->slideZ = 0;
 
-    fnt = data_02149ef8;
+    fnt = gMsgRes;
     self->unk_b8 = 8;
     self->unk_b4 = Tbl_GetText(0x1000);
     self->unk_dc = Text_Measure(self->unk_b8, self->unk_c8, self->unk_b4, (u8 *)self + 0xd4, (u8 *)self + 0xd8, self->unk_c7 != 0 ? 1 : 0);
-    data_02097ce0->unk_004 = self->unk_b8;
+    gGfxMgr->unk_004 = self->unk_b8;
     self->unk_104 = 0x7fff;
     self->unk_106 = 0x67f;
     self->unk_108 = 0x9000;
@@ -108,7 +108,7 @@ void Menu021ca94c_Setup(Menu021ca94c *self) {
     self->unk_170 = 4;
     self->unk_16c = MsgRes_GetString(fnt, 0x117);
     self->unk_194 = Text_Measure(self->unk_170, self->unk_180, self->unk_16c, (u8 *)self + 0x18c, (u8 *)self + 0x190, self->unk_17f != 0);
-    data_02097ce0->unk_004 = self->unk_170;
+    gGfxMgr->unk_004 = self->unk_170;
     self->unk_14c |= 0x40;
     self->unk_14c |= 0x1000000;
     self->unk_14c |= 0x40000004;

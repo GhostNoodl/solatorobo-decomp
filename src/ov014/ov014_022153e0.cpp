@@ -91,8 +91,8 @@ void Ov014ActEx_022152e8_StateThrown(Ov014ActEx_022152e8 *self) {
         }
         self->unk_f0 = f;
         Effect_SpawnId(0x69, &self->pos)->SetScaleAll(0x1800);
-        SndMgr_PlayAt(data_02097e4c, 0x82, &self->pos, 0);
-        SndMgr_PlayAt(data_02097e4c, 0x57, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x82, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x57, &self->pos, 0);
         self->fsm->timer = 0x3c;
         self->fsm->st++;
     }
@@ -125,14 +125,14 @@ void Ov014ActEx_022152e8_StateThrown(Ov014ActEx_022152e8 *self) {
             e2 = Effect_SpawnId(0x3ea, &self->pos);
             e2->SetScaleAll(0x3800);
             e2->SetRot(&self->rot);
-            g = data_ov000_021ccd54;
+            g = gSceneCmd;
             g->cam.base.shakeX = 1;
             g->cam.base.shakeY = 1;
             g->cam.base.shakeZ = 1;
             g->cam.base.shakeTime = 0x14;
             g->cam.base.shakeLen = 10;
             g->cam.base.shakeCur = 10;
-            SndMgr_PlayAt(data_02097e4c, 0x29, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x29, &self->pos, 0);
         }
         st = self->fsm;
         if (st->timer != 0) {
@@ -186,7 +186,7 @@ void Ov014ActEx_022152e8_StateThrown(Ov014ActEx_022152e8 *self) {
         if (self->pos.y >= self->unk_84.y + 0x2800) {
             break;
         }
-        SndMgr_PlayAt(data_02097e4c, 0x50, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x50, &self->pos, 0);
         self->fsm->st++;
         self->fsm->timer = 0;
         break;
@@ -266,7 +266,7 @@ void Ov014ActEx_022152e8_StateThrown(Ov014ActEx_022152e8 *self) {
             m38->scale.y = y;
             m38->scale.z = z;
         }
-        SndMgr_PlayAt(data_02097e4c, 0xf, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0xf, &self->pos, 0);
         self->fsm->st++;
         self->fsm->timer = 0x14;
     }

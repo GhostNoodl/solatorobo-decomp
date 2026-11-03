@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern u8 data_ov015_022128fc[];
+extern u8 Ov015Fish_vtbl[];
 void func_ov015_02209270(Ov015Fish *p);
 void HitSphere_Unlink_0203f2b8(void *p);
 void *Shadow_DtorBase(void *p);
@@ -16,8 +16,8 @@ BOOL func_ov015_02209790(Ov015Fish *self, s32 a);
 void Ov015Fish_SetNextState(Ov015Fish *self, s32 a, s32 b);
 Ov015FishState40 *Ov015FishState40_Ctor(Ov015FishState40 *self);
 
-extern u8 data_ov015_0221292c[];
-extern u8 data_ov015_022132e0[];
+extern u8 Ov015Obj292c_vtbl[];
+extern u8 Ov015Obj290_vtbl[];
 void func_ov015_022120c0(Ov015Obj292c *self);
 void func_ov015_02212180(Ov015Obj292c *self);
 int func_ov015_0221219c(Ov015Obj292c *self);
@@ -48,14 +48,14 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
         // One local for both allocations, as in the original.
         VObj *o = (VObj *)Heap_Alloc(0x34);
         if (o != NULL) {
-            SET_VT(o, data_ov015_0221292c);
+            SET_VT(o, Ov015Obj292c_vtbl);
             func_ov015_022120c0((Ov015Obj292c *)o);
         }
         self->unk_10 = (Ov015Obj292c *)o;
         func_ov015_02212180((Ov015Obj292c *)o);
         o = (VObj *)Heap_Alloc(0x290);
         if (o != NULL) {
-            SET_VT(o, data_ov015_022132e0);
+            SET_VT(o, Ov015Obj290_vtbl);
             ResSet_Init(&((Ov015Obj290 *)o)->res);
             Model0218fe1c_Init(&((Ov015Obj290 *)o)->model);
             func_ov015_022119e8((Ov015Obj290 *)o);
@@ -111,7 +111,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
                 q->pos.z = Ov015_FxMul64(t, -0x73000) - 0x37000;
             }
             data_ov015_0221332c.unk_00 = func_ov015_02209fb8((self->fish)->pos.z);
-            func_ov015_02211334(data_ov015_02213368, (self->fish)->info.id);
+            func_ov015_02211334(gOv015Shared, (self->fish)->info.id);
             n = self->fishList->head;
             while (n != NULL) {
                 obj = n->fish;
@@ -200,7 +200,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
 }
 
 void *Ov015Fish_DtorDelete(Ov015Fish *self) {
-    SET_VT(self, data_ov015_022128fc);
+    SET_VT(self, Ov015Fish_vtbl);
     func_ov015_02209270(self);
     HitSphere_Unlink_0203f2b8(&self->hit);
     Shadow_DtorBase(&self->shadow);
@@ -275,7 +275,7 @@ BOOL func_ov015_021ffb90(Ov015Obj30 *self) {
     Ov015Node *n;
     Ov015CamPair_SetMode(self->cam, 7, &self->unk_10->pos);
     if (self->unk_0c != 0) return r;
-    if (data_02097dc8->trig & 1) {
+    if (gPad->trig & 1) {
         Ov015Vec v = self->unk_10->pos;
         EffectObj *e;
         self->unk_14->vfunc_28(&v, r);
@@ -284,7 +284,7 @@ BOOL func_ov015_021ffb90(Ov015Obj30 *self) {
         // m[3] as a byte offset from the matrix: a field path folds to one constant and changes the code.
         e = Effect_SpawnId(0x325, &FLD(Ov015Vec, &self->ship->nodeMtx, 0x24));
         e->unk_d4 = 3;
-        SndMgr_PlayVolume(data_02097e4c, 0x19, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x19, -1, -1, -1);
     }
     found = NULL;
     n = self->fishList->head;

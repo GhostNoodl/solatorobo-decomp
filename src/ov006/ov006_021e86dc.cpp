@@ -44,10 +44,10 @@ void Ov006Racer_UpdateSpeed(Ov006Racer *self) {
             drain = 100 - self->prm->unk_07 * 4;
             if (self->trig & 2) {
                 drain = 1000 - self->prm->unk_07 * 8;
-                if ((self->unk_19c_0 & 1) && data_ov006_021ec884->unk13D == 0) {
-                    SndMgr_PlayAt(data_02097e4c, 0x32, &self->pos, 0);
+                if ((self->unk_19c_0 & 1) && gOv006SlotManager->unk13D == 0) {
+                    SndMgr_PlayAt(gSndMgr, 0x32, &self->pos, 0);
                     if (self->unk_1d4 != 0) {
-                        EffectObj *old = Effect_Find_020657b0(data_0214a420, self->unk_1d4);
+                        EffectObj *old = Effect_Find_020657b0(gEffectMgr, self->unk_1d4);
                         if (old != NULL) {
                             old->state = 4;
                             self->unk_1d4 = 0;
@@ -61,7 +61,7 @@ void Ov006Racer_UpdateSpeed(Ov006Racer *self) {
                         e->SetRot(&self->rot);
                     }
                 }
-            } else if (self->unk_1d4 == 0 && (self->unk_19c_0 & 1) && data_ov006_021ec884->unk13D == 0) {
+            } else if (self->unk_1d4 == 0 && (self->unk_19c_0 & 1) && gOv006SlotManager->unk13D == 0) {
                 e = Effect_SpawnId(0x4b0, &self->pos);
                 if (e != NULL) {
                     self->unk_1d4 = e->id;
@@ -70,7 +70,7 @@ void Ov006Racer_UpdateSpeed(Ov006Racer *self) {
                     e->alpha = FX_Div(0x15000, 0x1f000);
                 }
             }
-            if (self->rank >= data_ov006_021ec884->numActive - 1) {
+            if (self->rank >= gOv006SlotManager->numActive - 1) {
                 drain -= 15;
             }
             if (self->boost < drain) {
@@ -110,7 +110,7 @@ void Ov006Racer_UpdateSpeed(Ov006Racer *self) {
                         self->turnMode = data_ov006_021eb908[idx];
                     }
                 }
-            } else if (data_ov006_021ec884->unk13D == 0) {
+            } else if (gOv006SlotManager->unk13D == 0) {
                 if (self->unk_1d8 == 0 && (self->unk_19c_0 & 1)) {
                     EffectObj *e;
                     e = Effect3D_Create(data_ov006_021ec4ad, data_ov006_021ec4c8, data_ov006_021ec4c8, &self->pos);
@@ -129,8 +129,8 @@ void Ov006Racer_UpdateSpeed(Ov006Racer *self) {
                         e->SetScaleXYZ(0x1000, 0x1000, 0x2000);
                         e->unk_29 = 1;
                     }
-                    if (self->idx == data_ov006_021ec884->unk5) {
-                        SndMgr_PlayVolume(data_02097e4c, 0x51, -1, -1, -1);
+                    if (self->idx == gOv006SlotManager->unk5) {
+                        SndMgr_PlayVolume(gSndMgr, 0x51, -1, -1, -1);
                     }
                 }
                 if (++self->unk_227 > 30) {
@@ -146,11 +146,11 @@ void Ov006Racer_UpdateSpeed(Ov006Racer *self) {
         accel = self->prm->unk_04 * 5 + 0x10;
         max = (self->prm->unk_05 << 7) + (self->prm->unk_05 << 5) + 0xe66;
         if (self->unk_1cc >= 0x3c) {
-            if (self->rank >= data_ov006_021ec884->numActive - 1) {
+            if (self->rank >= gOv006SlotManager->numActive - 1) {
                 accel += 0x18;
             }
-            if (data_ov006_021ec860->unk1C == 0) {
-                ov006_SlotManager *mgr = data_ov006_021ec884;
+            if (gOv006Manager->unk1C == 0) {
+                ov006_SlotManager *mgr = gOv006SlotManager;
                 if (self->idx != mgr->unk5 && (ov006_Slot_GetSub2C(ov006_SlotManager_GetSlot_021db060(mgr, mgr->unk5))->unk3 & 3) < (u32)self->rank) {
                     accel += 0x60;
                 }
@@ -191,7 +191,7 @@ void Ov006Racer_UpdateSpeed(Ov006Racer *self) {
             } else {
                 self->runSpeed = max;
             }
-            if (data_ov006_021ec884->unk13D == 0) {
+            if (gOv006SlotManager->unk13D == 0) {
                 if (++self->unk_226 > 30) {
                     self->unk_226 = 0;
                     if (++self->unk_21e[4] > 99) {
@@ -203,7 +203,7 @@ void Ov006Racer_UpdateSpeed(Ov006Racer *self) {
             self->runSpeed += accel;
             if (self->runSpeed > max) {
                 self->runSpeed = max;
-                if (data_ov006_021ec884->unk13D == 0) {
+                if (gOv006SlotManager->unk13D == 0) {
                     if (++self->unk_226 > 30) {
                         self->unk_226 = 0;
                         if (++self->unk_21e[4] > 99) {
@@ -224,7 +224,7 @@ void Ov006Racer_UpdateSpeed(Ov006Racer *self) {
         if (!(self->unk_19c_0 & 1)) {
             return;
         }
-        if (data_ov006_021ec884->unk13D != 0) {
+        if (gOv006SlotManager->unk13D != 0) {
             return;
         }
         e = Effect3D_Create(data_ov006_021ec4ad, data_ov006_021ec4d4, data_ov006_021ec4d4, &self->pos);
@@ -250,7 +250,7 @@ void Ov006Racer_UpdateSpeed(Ov006Racer *self) {
         BOOL c;
         self->runSpeed -= 0x28;
         c = FALSE;
-        if (self->unk_19f > data_ov006_021ec884->info->unkB) {
+        if (self->unk_19f > gOv006SlotManager->info->unkB) {
             c = TRUE;
         }
         if (c) {

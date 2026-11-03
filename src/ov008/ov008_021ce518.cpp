@@ -21,15 +21,15 @@ struct Ov008Fade {
 
 extern "C" {
 
-extern Ov008Fade data_02097d78;
-extern Ov008Snd *data_02097e48;
-extern void *data_02097e4c;
-extern void *data_02149ef8;
+extern Ov008Fade gFadeState;
+extern Ov008Snd *gSndQueue;
+extern void *gSndMgr;
+extern void *gMsgRes;
 extern char data_ov008_021d04f4[];
-extern void *data_ov000_021cac60;
-extern void *data_ov000_021caec8;
-extern void *data_ov000_021cb1b0;
-extern void *data_ov000_021cb0b8;
+extern void *UiObj_vtbl;
+extern void *UiList_vtbl;
+extern void *Ov000Vt_021cb1b0_vtbl;
+extern void *Ov000Vt_021cb0b8_vtbl;
 void func_ov008_021cdb00(Ov008Mgr *m);
 BOOL func_ov008_021cddc8(Ov008Mgr *m);
 void func_ov008_021cdebc(Ov008Mgr *m);
@@ -53,10 +53,10 @@ Ov008MdlAnm *Model0218fe1c_GetAnimCtrl(void *a, s32 b);
 
 static inline BOOL Ov008_FadeDone(int ch) {
     BOOL r;
-    if (data_02097d78.unk_0c == 4) {
+    if (gFadeState.unk_0c == 4) {
         r = TRUE;
     } else {
-        r = (&data_02097d78.unk_00)[ch] == 4;
+        r = (&gFadeState.unk_00)[ch] == 4;
     }
     return r;
 }
@@ -155,17 +155,17 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
             m->state = 10;
             break;
         } else {
-            res = data_02149ef8;
+            res = gMsgRes;
             id = func_02061d54(0x1a);
             w = (Ov008Dialog *)Heap_Alloc(0x1e4);
             if (w != NULL) {
-                OV008_SET_VT(w, &data_ov000_021cac60);
+                OV008_SET_VT(w, &UiObj_vtbl);
                 w->v28();
-                OV008_SET_VT(w, &data_ov000_021caec8);
+                OV008_SET_VT(w, &UiList_vtbl);
                 w->v28();
-                OV008_SET_VT(w, &data_ov000_021cb1b0);
+                OV008_SET_VT(w, &Ov000Vt_021cb1b0_vtbl);
                 w->v28();
-                OV008_SET_VT(w, &data_ov000_021cb0b8);
+                OV008_SET_VT(w, &Ov000Vt_021cb0b8_vtbl);
                 w->v28();
             }
             m->dialog = w;
@@ -196,7 +196,7 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
             break;
         }
         {
-            Ov008Snd *g = data_02097e48;
+            Ov008Snd *g = gSndQueue;
             if (g->b3) {
                 g->unk_06 = 0x8000;
                 g->unk_08 = 0x14;
@@ -231,11 +231,11 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
     case 14:
         switch (++m->unk_114) {
         case 11:
-            SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x35, -1, -1, -1);
             break;
         case 16:
         case 30:
-            SndMgr_PlayVolume(data_02097e4c, 0x32, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x32, -1, -1, -1);
             break;
         case 20:
             if (m->panel != NULL) {
@@ -245,7 +245,7 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
         default:
             break;
         case 40: {
-            Ov008Snd *g = data_02097e48;
+            Ov008Snd *g = gSndQueue;
             if (g->b3) {
                 g->unk_06 = 0x8000;
                 g->unk_08 = 0x1e;

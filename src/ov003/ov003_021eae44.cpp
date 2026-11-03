@@ -35,7 +35,7 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern char data_ov003_021f995c[];
 extern char data_ov003_021f9967[];
 extern char data_ov003_021f996d[];
@@ -54,7 +54,7 @@ extern void Model0218fe1c_UpdateAnim(void *a, void *b);
 extern void Obj02190758_SetRot(Model0218fe1c *anim, Rot16 *rot, s32 a);
 extern BOOL Model021903b4_Draw(Model0218fe1c *anim);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
-extern Ov003Snd *data_02fe152c;
+extern Ov003Snd *gDataRes;
 extern s32 DataRes_GetTable(Ov003Snd *s, s32 a);
 extern u16 DataRes_ReadBitsAt_02059544(Ov003Snd *s, u8 *p, s32 a, s32 b, u16 c);
 extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *m, s32 a);
@@ -85,7 +85,7 @@ static inline BOOL Ov003Game_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -99,7 +99,7 @@ static inline BOOL Ov003_GameIdle(void) {
 
 
 static inline BOOL Ov003_GameIdle2(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         BOOL busy = FALSE;
         if (g->head != g->tail) {
@@ -153,7 +153,7 @@ void Ov003ActVt_021f9704_Init(Ov003ActExSway *self) {
         char *name;
         self->hasModel = 1;
         name = data_ov003_021f996d;
-        if (self->unk_1a == 3 || (self->unk_1a == 1 && (data_ov000_021ccd68->frame & 1))) {
+        if (self->unk_1a == 3 || (self->unk_1a == 1 && (gActorMgr->frame & 1))) {
             name = data_ov003_021f9978;
         }
         ResSet_SetFile(&self->res, name, 1, 0, 0, 0);
@@ -174,7 +174,7 @@ BOOL Ov003ActVt_021f9704_IsReady(Ov003ActExSway *self) {
     if (self->hasModel && self->res.unk_00 >= 0 && !ResSet_UpdateLoad(&self->res)) {
         r = FALSE;
     }
-    u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    u = Group_FindNode(gGroup, self->unk_20);
     if (u != NULL) {
         u->unk_a2_5 = 1;
         u->unk_a2_6 = 0;
@@ -209,8 +209,8 @@ void Ov003ActVt_021f9704_Start(Ov003ActExSway *self) {
         f = TRUE;
     }
     if (!f) {
-        x = data_02fe152c->unk_4c;
-        if (DataRes_ReadBitsAt_02059544(data_02fe152c, x + 0x150, DataRes_GetTable(data_02fe152c, 10), 1, v)) {
+        x = gDataRes->unk_4c;
+        if (DataRes_ReadBitsAt_02059544(gDataRes, x + 0x150, DataRes_GetTable(gDataRes, 10), 1, v)) {
             f = TRUE;
         }
     }
@@ -305,7 +305,7 @@ void Ov003ActExSway_StateIdle(Ov003ActExSway *self) {
     ActorEx_StateIdle(self);
     self->unk_93_0 = 0;
     if (self->hasModel) {
-        u16 n = 0x100 - (u8)data_ov000_021ccd68->frame;
+        u16 n = 0x100 - (u8)gActorMgr->frame;
         if (n < 0x60) {
             self->rotGoal.x = 0;
             self->rotGoal.z = 0;

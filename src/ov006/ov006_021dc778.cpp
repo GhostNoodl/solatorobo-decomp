@@ -3,10 +3,10 @@
 
 extern "C" {
 
-extern u8 data_ov006_021ec28c[];
+extern u8 Ov006Vt_021ec28c_vtbl[];
 
 static inline void Ov006Marker_Dtor(Ov006Marker *self) {
-    self->vtbl = data_ov006_021ec28c;
+    self->vtbl = Ov006Vt_021ec28c_vtbl;
     OV006_DELETE_MODEL(self->model);
     OV006_DELETE_MODEL(self->unk_30);
 }

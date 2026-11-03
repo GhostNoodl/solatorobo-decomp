@@ -8,10 +8,10 @@
 extern "C" {
 
 // The sound TU's two .bss objects. Every function of the TU reaches them through the 0x02097e48
-// pool literal plus an offset (func_0204a2f0 and func_0204a360 read data_02097e4c that way), so
+// pool literal plus an offset (func_0204a2f0 and func_0204a360 read gSndMgr that way), so
 // they are defined before the first function.
-SndQueue *data_02097e48;
-SndMgr *data_02097e4c;
+SndQueue *gSndQueue;
+SndMgr *gSndMgr;
 
 typedef struct SndCmd {
     /* 0x0 */ s16 unk_0;
@@ -44,8 +44,8 @@ typedef struct SndListener {
 } SndListener;
 
 extern s32 data_0208b700;
-extern SndListener *data_ov000_021ccd54;
-extern SndAreaEntry data_0208b7c8[];
+extern SndListener *gSceneCmd;
+extern SndAreaEntry Snd_AreaTable[];
 extern s32 data_0208b704;
 extern s32 data_0208b744[];
 
@@ -91,19 +91,19 @@ static inline BOOL SndMgr_IsAreaAt(const u8 *p, u8 a, u8 b, u8 c) {
 }
 
 s32 SndMgr_CalcAreaVolume(SndMgr *mgr, const VecFx32 *pos) {
-    SndListener *listener = data_ov000_021ccd54;
+    SndListener *listener = gSceneCmd;
     s32 *range = NULL;
     s32 i;
     VecFx32 vec;
     s32 dist;
     s32 vol;
     for (i = 0; i < data_0208b700; i++) {
-        SndAreaEntry *e = &data_0208b7c8[i];
+        SndAreaEntry *e = &Snd_AreaTable[i];
         u8 a = e->a;
         u8 b = e->b;
         u8 c = e->c;
         range = e->range;
-        if (SndMgr_IsAreaAt(&data_ov000_021ccd54->a, a, b, c)) {
+        if (SndMgr_IsAreaAt(&gSceneCmd->a, a, b, c)) {
             break;
         }
     }
@@ -203,8 +203,8 @@ typedef struct SndListener {
 } SndListener;
 
 extern s32 data_0208b700;
-extern SndListener *data_ov000_021ccd54;
-extern SndAreaEntry data_0208b7c8[];
+extern SndListener *gSceneCmd;
+extern SndAreaEntry Snd_AreaTable[];
 extern s32 data_0208b704;
 extern s32 data_0208b744[];
 
@@ -394,19 +394,19 @@ void SndMgr_StopAllSeq(SndMgr *mgr, int fadeFrames) {
 }
 
 void func_0204a2f0(SndMgr *mgr, s32 id) {
-    SndMgr_RequestLoad(data_02097e4c, 1, id, -1);
+    SndMgr_RequestLoad(gSndMgr, 1, id, -1);
     mgr->loadedSeqEx[0] = id;
-    SndMgr_RequestLoad(data_02097e4c, 5, 0x26, 1);
-    SndMgr_RequestLoad(data_02097e4c, 5, 0x24, 2);
+    SndMgr_RequestLoad(gSndMgr, 5, 0x26, 1);
+    SndMgr_RequestLoad(gSndMgr, 5, 0x24, 2);
 }
 
 void func_0204a360(SndMgr *self, s32 arg) {
-    SndMgr *mgr = data_02097e4c;
+    SndMgr *mgr = gSndMgr;
     if (mgr->heapLevels[1] >= 1) {
         NNS_SndHeapLoadState(mgr->heaps[1], 1);
         mgr->heapLevels[1] = 1;
     }
-    SndMgr_RequestLoad(data_02097e4c, 4, 2, -1);
+    SndMgr_RequestLoad(gSndMgr, 4, 2, -1);
 }
 
 
@@ -574,8 +574,8 @@ void SndMgr_TwlOpen_0204a7dc(void) {
 // ---- SndQueue.cpp
 extern "C" {
 
-#define SND_QUEUE data_02097e48
-#define SND_MGR data_02097e4c
+#define SND_QUEUE gSndQueue
+#define SND_MGR gSndMgr
 
 extern void *Heap_Alloc(u32 size);
 extern SndMgr *SndMgr_Ctor(SndMgr *mgr);
@@ -586,13 +586,13 @@ void SndQueue_Init(SndQueue *queue);
 void Snd_Create(void) {
     if (SND_MGR == NULL) {
         SndMgr *mgr;
-        data_02097dd0->cur = data_02097dd0->heapLo;
+        gSysState->cur = gSysState->heapLo;
         mgr = (SndMgr *)Heap_Alloc(sizeof(SndMgr));
         if (mgr != NULL) {
             mgr = SndMgr_Ctor(mgr);
         }
         SND_MGR = mgr;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        gSysState->cur = gSysState->heapHi;
         SndMgr_Init(SND_MGR);
     }
     if (SND_QUEUE == NULL) {

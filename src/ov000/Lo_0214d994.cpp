@@ -44,7 +44,7 @@ static inline void G3_Cmd1(int cmd, u32 value) {
 
 void func_ov000_0214d994(Obj0214d994 *self) {
     u8 *p = self->unk_200;
-    GfxSys *g = data_02097d48;
+    GfxSys *g = gGfxSys;
     s32 v;
     s32 alpha;
     v = LFLD(s32, p, 0xb30);

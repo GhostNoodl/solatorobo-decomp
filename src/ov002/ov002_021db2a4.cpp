@@ -48,7 +48,7 @@ void func_ov002_021db2a4(Obj021eff74 *self) {
     id = FIELD(ov002_Menu_GetSel(((u8 *)self->unk_0c)), 0x6, u16);
     if (self->unk_14 != id && self->unk_10 != NULL) {
         void *str;
-        void *g = data_02149ef8;
+        void *g = gMsgRes;
         switch (id) {
         case 0:
             str = MsgRes_GetString(g, 0xbd);
@@ -71,20 +71,20 @@ void func_ov002_021db2a4(Obj021eff74 *self) {
     if (flags & 1) {
         switch (id) {
         case 0:
-            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
             self->unk_08 = 1;
             ov002_Menu_Close(self);
             break;
         case 1:
             if (self->unk_20 == 0) {
-                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
                 self->unk_08 = 2;
                 ov002_Menu_Close(self);
             } else {
                 void *str;
                 void *g;
-                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
-                g = data_02149ef8;
+                SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
+                g = gMsgRes;
                 str = NULL;
                 if (self->unk_20 == 1) {
                     str = MsgRes_GetString(g, 0xc0);
@@ -98,13 +98,13 @@ void func_ov002_021db2a4(Obj021eff74 *self) {
             }
             break;
         case 2:
-            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
             self->unk_08 = 3;
             ov002_Menu_Close(self);
             break;
         }
     } else if (flags & 2) {
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         self->unk_08 = 3;
         ov002_Menu_Close(self);
     }

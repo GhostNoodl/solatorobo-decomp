@@ -2,9 +2,9 @@
 #include "ov000/MessageQueue.h"
 
 extern "C" {
-extern VObj *data_02fe152c;
-extern VObj *data_02fe1530;
-extern MessageQueue021cb980 *data_ov000_021ccd30;
+extern VObj *gDataRes;
+extern VObj *gStageDataRes;
+extern MessageQueue021cb980 *gMessageQueue;
 BOOL MsgRes_LoadGlobal(void);
 BOOL func_0206facc(void);
 BOOL func_0206ead8(void);
@@ -13,7 +13,7 @@ void func_0206faec(void);
 void func_0206eaf8(void);
 
 static inline BOOL HasMgr(void) {
-    return data_02fe152c != NULL ? TRUE : FALSE;
+    return gDataRes != NULL ? TRUE : FALSE;
 }
 
 static inline BOOL IsReady(MessageQueue021cb980 *c) {
@@ -38,13 +38,13 @@ BOOL func_ov000_02189068(void *self) {
     if (!HasMgr()) {
         return FALSE;
     }
-    if (!data_02fe1530->vfunc_2c()) {
+    if (!gStageDataRes->vfunc_2c()) {
         return FALSE;
     }
     if (!MsgRes_LoadGlobal()) {
         return FALSE;
     }
-    if (!IsReady(data_ov000_021ccd30)) {
+    if (!IsReady(gMessageQueue)) {
         return FALSE;
     }
     if (!func_0206facc()) {
@@ -53,8 +53,8 @@ BOOL func_ov000_02189068(void *self) {
     if (!func_0206ead8()) {
         return FALSE;
     }
-    data_02fe152c->vfunc_30();
-    data_02fe1530->vfunc_30();
+    gDataRes->vfunc_30();
+    gStageDataRes->vfunc_30();
     MsgRes_BindGlobal();
     func_0206faec();
     func_0206eaf8();

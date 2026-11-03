@@ -38,7 +38,7 @@ void Ov006ActVt_021ec54c_StateIdle(ActorEx *self) {
         void *hits[0x20];
         int i;
         int n;
-        if (data_ov006_021ec884->unk13D == 2) {
+        if (gOv006SlotManager->unk13D == 2) {
             return;
         }
         n = Actor_FindInRadius(self, 0x80, &self->pos, self->radius + 0x3000, 0, hits);

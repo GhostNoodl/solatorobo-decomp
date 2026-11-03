@@ -3,8 +3,8 @@
 
 extern "C" {
 
-extern u8 data_ov000_021cacd8[];
-extern u8 data_ov000_021cac60[];
+extern u8 Lo021cacd8_vtbl[];
+extern u8 UiObj_vtbl[];
 extern u8 data_ov000_021c9b28[];
 extern u8 data_ov000_021c9b2e[];
 void Obj0215fdfc_SetRange(ObjBase021cac0c_021cb6f0 *self, s32 a, s32 b);

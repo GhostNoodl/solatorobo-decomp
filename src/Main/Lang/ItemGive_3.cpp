@@ -30,8 +30,8 @@ static inline void Item_Notify(u16 id, u16 val) {
     if (ref.idx == -1) {
         return;
     }
-    DataRes_ReadRef(data_02fe152c, &ref, id);
-    DataRes_WriteRef(data_02fe152c, &ref, id, val);
+    DataRes_ReadRef(gDataRes, &ref, id);
+    DataRes_WriteRef(gDataRes, &ref, id, val);
 }
 
 static inline BOOL Item_Set(u16 id, u16 val) {
@@ -42,8 +42,8 @@ static inline BOOL Item_Set(u16 id, u16 val) {
     if (ref.idx == -1) {
         return FALSE;
     }
-    old = DataRes_ReadRef(data_02fe152c, &ref, id);
-    DataRes_WriteRef(data_02fe152c, &ref, id, val);
+    old = DataRes_ReadRef(gDataRes, &ref, id);
+    DataRes_WriteRef(gDataRes, &ref, id, val);
     ok = TRUE;
     if (old != 0) {
         ok = FALSE;

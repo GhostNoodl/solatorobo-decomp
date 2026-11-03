@@ -166,7 +166,7 @@ void Ov011Sub1b4_State02(Ov011Tut *self) {
                 pos.x = a->pos.x;
                 pos.y = a->pos.y;
                 pos.z = a->pos.z;
-                SndMgr_PlayAt(data_02097e4c, 0x5b, &pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x5b, &pos, 0);
             }
         }
         break;

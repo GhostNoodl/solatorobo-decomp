@@ -10,9 +10,9 @@ typedef struct ov006_Unk0203a4c0 {
 
 extern "C" {
 
-extern void *data_ov006_021ec424;
-extern void *data_ov006_021ec404;
-extern void *data_ov006_021ec444;
+extern void *ov006_ModelHolder_vtbl;
+extern void *Ov006Vt_021ec404_vtbl;
+extern void *Ov006Vt_021ec444_vtbl;
 extern u16 data_ov006_021eb840[];
 
 
@@ -29,8 +29,8 @@ void ov006_ListWin_DrawItem(ov006_ListWin *self, void *arg, void *arg2) {
 
 int ov006_ListWin_GetLineHeight(ov006_ListWin *self) {
     s8 base;
-    data_02097ce0->unk_004 = self->font;
-    base = ((ov006_Unk0203a4c0 *)GfxMgr_GetFont(data_02097ce0))->unk0[1];
+    gGfxMgr->unk_004 = self->font;
+    base = ((ov006_Unk0203a4c0 *)GfxMgr_GetFont(gGfxMgr))->unk0[1];
     return base + self->vfunc_3c();
 }
 
@@ -155,7 +155,7 @@ BOOL ov006_ListWin_IsReadyA(ov006_ListWin *self) {
 }
 
 static inline void ov006_ModelHolder_Dtor(ov006_ModelHolder *self) {
-    self->vtbl = &data_ov006_021ec424;
+    self->vtbl = &ov006_ModelHolder_vtbl;
     OV006_DELETE_MODEL(self->model);
 }
 

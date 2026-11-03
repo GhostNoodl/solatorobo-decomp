@@ -42,7 +42,7 @@ void Ov012ActExVt_0220b1e8_StateDie(Ov012ActExVt_0220b1e8 *self) {
             return;
         }
         self->model->visible = 0;
-        SndMgr_Stop(data_02097e4c, 0x4f);
+        SndMgr_Stop(gSndMgr, 0x4f);
         e = Effect_SpawnId(4, &self->pos);
         e->SetScaleAll(0xe66);
         EffectObj_AddSndCue(e, 0x56, 0);
@@ -51,7 +51,7 @@ void Ov012ActExVt_0220b1e8_StateDie(Ov012ActExVt_0220b1e8 *self) {
         e->SetScaleAll(0x1b33);
         EffectObj_AddSndCue(e, 0x79, 0);
         Field_ShakeCamera(10, 10);
-        Group_UpdateActor(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(gGroup, 0, self);
         self->vfunc_08();
         self->unk_1a = 1;
     } else {
@@ -67,7 +67,7 @@ void func_ov012_02206508(Ov012ActExVt_0220b1e8 *self) {
         Ov012SpawnDesc d;
         Ov003Actor *o;
         Ov012Spawn_Init(&d, 0x4824);
-        o = Group_SpawnActor(data_ov000_021ccd64, &d, &self->pos, &self->rot_x, 0xffff);
+        o = Group_SpawnActor(gGroup, &d, &self->pos, &self->rot_x, 0xffff);
         if (o != NULL) {
             void *p;
             o->flags_0 = 1;
@@ -235,7 +235,7 @@ void Ov012ActExVt_0220b150_StateThrown(Ov012ActExVt_0220b150 *self) {
         return;
     }
     case 11: {
-        EffectObj *e = Effect_Find_020657b0(data_0214a420, self->unk_e4);
+        EffectObj *e = Effect_Find_020657b0(gEffectMgr, self->unk_e4);
         ActorSub4c *p;
         if (e != NULL) {
             Rot16 r;
@@ -351,10 +351,10 @@ void Ov012ActExVt_0220b150_StateFly(Ov012ActExVt_0220b150 *self) {
 extern "C" {
 void Ov012ActExVt_0220b150_StateDie(Ov012ActExVt_0220b150 *self) {
     if (self->unk_dc & 0x200000) {
-        if (Effect_Find_020657b0(data_0214a420, self->unk_e4) != NULL) {
+        if (Effect_Find_020657b0(gEffectMgr, self->unk_e4) != NULL) {
             return;
         }
-        Group_UpdateActor(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(gGroup, 0, self);
         self->vfunc_08();
     } else {
         ActorEx_StateDie(self);
@@ -395,11 +395,11 @@ void Ov012ActExVt_0220b150_HitNearby(Ov012ActExVt_0220b150 *self) {
 }
 
 extern "C" {
-extern u8 data_ov012_0220b0b8[];
+extern u8 Ov012ActEx_02207018_vtbl[];
 #pragma force_active on
 Ov012ActEx_02207018 *Ov012ActEx_02207018_Ctor(Ov012ActEx_02207018 *self) {
     ActorEx_Ctor(self);
-    *(void **)self = data_ov012_0220b0b8;
+    *(void **)self = Ov012ActEx_02207018_vtbl;
     self->unk_d0 = 0;
     self->fxList = NULL;
     return self;
@@ -408,9 +408,9 @@ Ov012ActEx_02207018 *Ov012ActEx_02207018_Ctor(Ov012ActEx_02207018 *self) {
 }
 
 extern "C" {
-extern u8 data_ov012_0220b0b8[];
+extern u8 Ov012ActEx_02207018_vtbl[];
 Ov012ActEx_02207018 *Ov012ActEx_02207018_Dtor(Ov012ActEx_02207018 *self) {
-    *(void **)self = data_ov012_0220b0b8;
+    *(void **)self = Ov012ActEx_02207018_vtbl;
     Ov012_FreeFx(&self->fxList);
     ActorEx_DtorBase(self);
     return self;
@@ -418,9 +418,9 @@ Ov012ActEx_02207018 *Ov012ActEx_02207018_Dtor(Ov012ActEx_02207018 *self) {
 }
 
 extern "C" {
-extern u8 data_ov012_0220b0b8[];
+extern u8 Ov012ActEx_02207018_vtbl[];
 Ov012ActEx_02207018 *Ov012ActEx_02207018_DtorDelete(Ov012ActEx_02207018 *self) {
-    *(void **)self = data_ov012_0220b0b8;
+    *(void **)self = Ov012ActEx_02207018_vtbl;
     Ov012_FreeFx(&self->fxList);
     ActorEx_DtorBase(self);
     Heap_Free(self);
@@ -559,7 +559,7 @@ void Ov012ActEx_02207018_StateThrown(Ov012ActEx_02207018 *self) {
         u8 i;
         self->pos.y = 0;
         self->model->visible = 0;
-        SndMgr_PlayAt(data_02097e4c, 0x1b, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x1b, &self->pos, 0);
         Field_ShakeCamera(0x1e, 0x28);
         if (self->unk_18 == 0) {
             e = Effect_SpawnId(0x1f7, &self->pos);
@@ -609,7 +609,7 @@ void Ov012ActEx_02207018_StateThrown(Ov012ActEx_02207018 *self) {
         u8 i;
         Rot16 rr;
         func_ov000_0219aca8(self, self, self->targetObj->unk_08, self->targetObj->unk_0a, &c, 0, 0x4000, 0, 100, 0x1000);
-        o = Effect_Find_020657b0(data_0214a420, Ov003FxList_Get(self->fxList, 0xff));
+        o = Effect_Find_020657b0(gEffectMgr, Ov003FxList_Get(self->fxList, 0xff));
         if (o != NULL) {
             v = o->scale;
             v.x += 0x266;
@@ -623,7 +623,7 @@ void Ov012ActEx_02207018_StateThrown(Ov012ActEx_02207018 *self) {
             History_SetState(self->fsm, 0x15, 0);
         }
         for (i = 0; i < 3; i++) {
-            o = Effect_Find_020657b0(data_0214a420, Ov003FxList_Get(self->fxList, (u8)(0xfd - i)));
+            o = Effect_Find_020657b0(gEffectMgr, Ov003FxList_Get(self->fxList, (u8)(0xfd - i)));
             if (o != NULL) {
                 v = o->scale;
                 v.x += 0xcd;

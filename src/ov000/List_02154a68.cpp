@@ -66,9 +66,9 @@ s32 UiList_GetHeight(UiList *self) {
 }
 
 void UiList_SetIconModel(UiList *self, const char *name, void *a, u32 b) {
-    void *saved = data_02097dd0->cur;
+    void *saved = gSysState->cur;
     Model *model;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gSysState->cur = gSysState->heapHi;
     model = self->unk_b8;
     if (model != NULL) {
         if (model != NULL) {
@@ -78,7 +78,7 @@ void UiList_SetIconModel(UiList *self, const char *name, void *a, u32 b) {
         }
         self->unk_b8 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         PlttRes_Init_02041218(&model->pltt);
@@ -96,9 +96,9 @@ void UiList_SetIconModel(UiList *self, const char *name, void *a, u32 b) {
 }
 
 void UiList_SetMarkModel(UiList *self, const char *name, void *a, void *b) {
-    void *saved = data_02097dd0->cur;
+    void *saved = gSysState->cur;
     Model *model;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gSysState->cur = gSysState->heapHi;
     model = self->unk_bc;
     if (model != NULL) {
         if (model != NULL) {
@@ -108,7 +108,7 @@ void UiList_SetMarkModel(UiList *self, const char *name, void *a, void *b) {
         }
         self->unk_bc = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         PlttRes_Init_02041218(&model->pltt);
@@ -137,15 +137,15 @@ void UiList_RemoveItem(UiList *self, ListArg *arg) {
     self->unk_a8 = (void *)arg;
     self->unk_a0 = 0;
     arg->unk_00 = 0;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (arg->unk_1c != NULL) {
         if (arg->unk_1c != NULL) {
             arg->unk_1c->vfunc_04();
         }
         arg->unk_1c = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     if (self->itemCount > self->rows && index + self->rows >= self->itemCount) {
         self->flag21 = 1;
     } else {

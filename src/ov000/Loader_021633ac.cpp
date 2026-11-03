@@ -3,8 +3,8 @@
 #include "Main/Sys/FieldState.h"
 
 extern "C" {
-extern u8 data_0208ba70[];
-extern u8 data_0208bbc8[];
+extern u8 TextWin_vtbl[];
+extern u8 MainVt_0208bbc8_vtbl[];
 void func_ov000_021bc3ec(FieldFade *fade, s32 mode, s32 duration);
 void func_ov000_021bc458(FieldFade *fade);
 void MsgRes_Reset_0204bfcc(MsgRes *res);
@@ -15,15 +15,15 @@ void TextWin_Init(TextWin *win);
 void TwScene_Init(SlideWin *win);
 
 static inline BOOL Fade021633ac_Done(void) {
-    return data_ov000_021ccd70->state == 0 ? TRUE : FALSE;
+    return gFieldFade->state == 0 ? TRUE : FALSE;
 }
 
 static inline MsgRes *MsgRes_New(const char *arc, const char *name) {
     MsgRes *o = (MsgRes *)Heap_Alloc(sizeof(MsgRes));
     if (o != NULL) {
-        VOBJ_SET_VTABLE(o, data_0208b318);
+        VOBJ_SET_VTABLE(o, ResHandle_vtbl);
         o->Clear();
-        VOBJ_SET_VTABLE(o, data_0208ba30);
+        VOBJ_SET_VTABLE(o, MainVt_0208ba30_vtbl);
         MsgRes_Reset_0204bfcc(o);
     }
     MsgRes_OpenLocalized(o, arc, name);
@@ -35,7 +35,7 @@ BOOL MsgBox_Update(MsgBox *self) {
     SlideWin *o;
     switch (self->state) {
     case 0:
-        func_ov000_021bc3ec(data_ov000_021ccd70, 3, 0xa000);
+        func_ov000_021bc3ec(gFieldFade, 3, 0xa000);
         self->res = MsgRes_New(self->arcName, self->name);
         self->state = 1;
     case 1:
@@ -48,9 +48,9 @@ BOOL MsgBox_Update(MsgBox *self) {
         self->numLines = MsgRes_GetLines(self->res, self->msgId, &self->text, 1);
         o = (SlideWin *)Heap_Alloc(sizeof(SlideWin));
         if (o != NULL) {
-            VOBJ_SET_VTABLE(o, data_0208ba70);
+            VOBJ_SET_VTABLE(o, TextWin_vtbl);
             TextWin_Init(o);
-            VOBJ_SET_VTABLE(o, data_0208bbc8);
+            VOBJ_SET_VTABLE(o, MainVt_0208bbc8_vtbl);
             TwScene_Init(o);
         }
         self->win = o;
@@ -71,7 +71,7 @@ BOOL MsgBox_Update(MsgBox *self) {
         break;
     case 3:
         if (!self->win->unk_vf8c()) {
-            func_ov000_021bc458(data_ov000_021ccd70);
+            func_ov000_021bc458(gFieldFade);
             self->state = 4;
         }
         break;

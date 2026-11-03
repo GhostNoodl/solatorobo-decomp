@@ -2,23 +2,23 @@
 
 extern "C" {
 
-extern u8 data_ov015_02212f20[];
-extern u8 data_ov015_02212eb0[];
+extern u8 Ov015FishState18_vtbl[];
+extern u8 Ov015FishState_vtbl[];
 extern u8 data_ov015_02212e47[];
 BOOL Model0218fe1c_SetAnim(void *a, const void *b, s32 c, s32 d);
 void Model0218fe1c_ClearLoop(void *a);
 
 void *Ov015FishState18_Dtor(Ov015FishState18 *self) {
-    SET_VT(self, data_ov015_02212f20);
+    SET_VT(self, Ov015FishState18_vtbl);
     self->vfunc_10(0);
-    SET_VT(self, data_ov015_02212eb0);
+    SET_VT(self, Ov015FishState_vtbl);
     return self;
 }
 
 void *Ov015FishState18_DtorDelete(Ov015FishState18 *self) {
-    SET_VT(self, data_ov015_02212f20);
+    SET_VT(self, Ov015FishState18_vtbl);
     self->vfunc_10(0);
-    SET_VT(self, data_ov015_02212eb0);
+    SET_VT(self, Ov015FishState_vtbl);
     Heap_Free(self);
     return self;
 }
@@ -88,7 +88,7 @@ BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
         a.x = q->pos.x;
         a.y = q->pos.y > 0 ? 0 : q->pos.y;
         a.z = q->pos.z;
-        e = Effect_Find_020657b0(data_0214a420, self->fxKey);
+        e = Effect_Find_020657b0(gEffectMgr, self->fxKey);
         if (e == NULL) {
             e = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e55, 0, &self->fish->pos);
             e->unk_d4 = 1;
@@ -109,7 +109,7 @@ BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
         }
         e->SetScale(&b);
         if (self->timer % 50 == 0) {
-            SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x3e, -1, -1, -1);
         }
         if (self->timer <= 0) {
             p->animSpeed = 0x800;
@@ -118,7 +118,7 @@ BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
             Model0218fe1c_SetAnim(&p->model, data_ov015_02212e61, 0x19a, 0);
             Model0218fe1c_ClearLoop(&p->model);
             p->animSpeed = 0x800;
-            e = Effect_Find_020657b0(data_0214a420, self->fxKey);
+            e = Effect_Find_020657b0(gEffectMgr, self->fxKey);
             if (e != NULL) {
                 void *saved;
                 HEAP_PUSH(saved);

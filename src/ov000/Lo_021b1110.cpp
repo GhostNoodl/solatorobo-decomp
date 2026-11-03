@@ -4,7 +4,7 @@
 
 
 extern "C" {
-extern void *data_ov000_021ccd30;
+extern void *gMessageQueue;
 ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 id);
 void MessageQueue021cb980_Push14(void *p, s32 a);
 void func_ov000_021b1a54(Robo021ca458 *self, s32 a);
@@ -16,7 +16,7 @@ static inline Actor *GroupNext(Actor *head, Actor *cur) {
 void func_ov000_021b1110(Robo021ca458 *self, BOOL force) {
     u8 found = FALSE;
     {
-        ActorGroup *g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+        ActorGroup *g = ActorMgr_GetGroup(gActorMgr, 0x5000);
         Actor *head = g->head;
         Actor *cur;
         for (cur = head; cur != NULL; cur = GroupNext(head, cur)) {
@@ -27,7 +27,7 @@ void func_ov000_021b1110(Robo021ca458 *self, BOOL force) {
         }
     }
     if (!found) {
-        ActorGroup *g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000);
+        ActorGroup *g = ActorMgr_GetGroup(gActorMgr, 0x4000);
         Actor *head = g->head;
         Actor *cur;
         for (cur = head; cur != NULL; cur = GroupNext(head, cur)) {
@@ -45,11 +45,11 @@ void func_ov000_021b1110(Robo021ca458 *self, BOOL force) {
             return;
         }
         if (found) {
-            MessageQueue021cb980_Push14(data_ov000_021ccd30, 1);
+            MessageQueue021cb980_Push14(gMessageQueue, 1);
             self->unk_93_4 = found;
             self->unk_b2a = 0;
         } else {
-            MessageQueue021cb980_Push14(data_ov000_021ccd30, 2);
+            MessageQueue021cb980_Push14(gMessageQueue, 2);
             self->unk_93_4 = found;
         }
     } else {

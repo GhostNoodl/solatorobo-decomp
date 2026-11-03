@@ -54,7 +54,7 @@ void func_ov000_021c17dc(ActorMarker3D *self) {
         return;
     }
     cm = GetCam021c17dc();
-    g = data_02097d48->unk_8b0;
+    g = gGfxSys->unk_8b0;
     MI_Copy64B(data_02092800, proj);
     MI_Copy48B(cm, cam);
     SetProj021c17dc(g + 0x13c);

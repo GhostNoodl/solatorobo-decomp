@@ -50,7 +50,7 @@ void func_ov000_021bc6c0(Obj021bc6c0 *self) {
         u32 c20;
         u32 c2a;
         u32 c29;
-        GfxSys *g = data_02097d48;
+        GfxSys *g = gGfxSys;
         s32 alpha = LO_FX_MUL(FX_SinCosTable_[((self->unk_28 << 14) >> 16) * 2], 0xf000) >> 12;
         if (alpha == 0) {
             return;

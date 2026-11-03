@@ -55,12 +55,12 @@ extern void Obj021984c8_UpdatePos(void *a, s32 b, s32 c);
 extern void ActorSub48_UpdatePos(void *a, s32 b, s32 c);
 
 static inline void Ov010_SetSky(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     g->cam.unk_dc.x = 0;
     g->cam.unk_dc.y = 0x5580;
     g->cam.unk_dc.z = 0;
     g->cam.unk_da_0 = 1;
-    g = data_ov000_021ccd54;
+    g = gSceneCmd;
     g->cam.unk_f4 = 0x5c00;
     g->cam.unk_da_2 = 2;
 }
@@ -164,7 +164,7 @@ struct Ov010FxRot {
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
+extern void *gActorMgr;
 extern BOOL History_SetState(void *p, s32 a, s32 b);
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Actor *Obj021984c8_GetActor(void *hit);
@@ -176,10 +176,10 @@ static inline s32 Ov010g_FxMul(s32 a, s64 b) {
 }
 
 static inline Actor *Ov010g_Find(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline BOOL Ov010g_Idle(const Ov010FxObj *o) {
@@ -289,8 +289,8 @@ void Ov010FxObj_Update(Ov010FxObj *o) {
             o->unk_08 = Ov010g_FxMul(o->unk_08, 0xb33);
             if (o->unk_08 < 0x80) {
                 o->unk_08 = 0;
-                EffectMgr_Kill(data_0214a420, o->fx0);
-                EffectMgr_Kill(data_0214a420, o->fx1);
+                EffectMgr_Kill(gEffectMgr, o->fx0);
+                EffectMgr_Kill(gEffectMgr, o->fx1);
                 o->st.st = 0x14;
             }
             break;
@@ -304,14 +304,14 @@ void Ov010FxObj_Update(Ov010FxObj *o) {
             break;
         }
         case 0xb:
-            if (Effect_Find_020657b0(data_0214a420, o->fx2) == NULL) {
+            if (Effect_Find_020657b0(gEffectMgr, o->fx2) == NULL) {
                 o->st.st = 0x14;
             }
             break;
         case 0x14:
-            EffectMgr_StopLoop(data_0214a420, o->fx0);
-            EffectMgr_StopLoop(data_0214a420, o->fx1);
-            EffectMgr_StopLoop(data_0214a420, o->fx2);
+            EffectMgr_StopLoop(gEffectMgr, o->fx0);
+            EffectMgr_StopLoop(gEffectMgr, o->fx1);
+            EffectMgr_StopLoop(gEffectMgr, o->fx2);
             o->fx0 = 0;
             o->fx1 = 0;
             o->fx2 = 0;
@@ -325,7 +325,7 @@ void Ov010FxObj_Update(Ov010FxObj *o) {
     h[0] = o->fx0;
     h[1] = o->fx1;
     for (i = 0; i < 2; i++) {
-        EffectObj *e = Effect_Find_020657b0(data_0214a420, h[i]);
+        EffectObj *e = Effect_Find_020657b0(gEffectMgr, h[i]);
         if (e != NULL) {
             e->SetPos(&o->pos);
             e->SetScaleXYZ(o->unk_08, o->unk_08, o->unk_0a);
@@ -389,7 +389,7 @@ BOOL Ov010Beam_Init(Ov010Beam *o, u16 a, u16 b, u8 c, u16 d) {
     return TRUE;
 }
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern BOOL Ov010FxObj_Init(Ov010FxObj *o, u16 a, u16 b, u8 c, u16 d);
 extern BOOL Ov010Beam_FadeIn(Ov010Beam *o);
 extern void *SndMgr_PlayAtPitch(void *a, s32 b, void *c, s32 d);
@@ -416,9 +416,9 @@ void Ov010Beam_Update(Ov010Beam *o) {
     case 0:
         if (o->fx.b0) {
             o->fx.b0 = 0;
-            EffectMgr_Kill(data_0214a420, o->fx.fx0);
-            EffectMgr_Kill(data_0214a420, o->fx.fx1);
-            EffectMgr_Kill(data_0214a420, o->fx.fx2);
+            EffectMgr_Kill(gEffectMgr, o->fx.fx0);
+            EffectMgr_Kill(gEffectMgr, o->fx.fx1);
+            EffectMgr_Kill(gEffectMgr, o->fx.fx2);
             o->fx.fx0 = 0;
             o->fx.fx1 = 0;
             o->fx.fx2 = 0;
@@ -443,12 +443,12 @@ void Ov010Beam_Update(Ov010Beam *o) {
             o->mode = 1;
             Ov010FxObj_Start(&o->fx, &o->pos, o->rx, o->ry, o->unk_0c, o->len, 0, o->unk_0a);
             if (o->unk_01 != 0) {
-                FieldState *g = data_ov000_021ccd54;
+                FieldState *g = gSceneCmd;
                 g->cam.base.flags |= 0x1c;
                 g->cam.base.shakeTime = 0xf;
                 g->cam.base.shakeLen = 10;
                 g->cam.base.shakeCur = 10;
-                SndMgr_PlayAtPitch(data_02097e4c, 0x5c, &o->pos, 5);
+                SndMgr_PlayAtPitch(gSndMgr, 0x5c, &o->pos, 5);
             }
             o->st.st++;
         } else if (Ov010Beam_IsDone(&o->fx)) {
@@ -530,7 +530,7 @@ void Ov010Beam_Draw(Ov010Beam *self) {
     NNS_G3dGeMultMtx33(&rx);
     VEC_Set(&s, FX32_ONE, FX32_ONE, FX_Mul(self->len, 0xf000));
     NNS_G3dGeScaleVec(&s);
-    NNS_G3dGePolygonAttr(0, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, Gfx3DState_NextPolyId(data_02097d48->unk_8b0), alpha, 0);
+    NNS_G3dGePolygonAttr(0, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, Gfx3DState_NextPolyId(gGfxSys->unk_8b0), alpha, 0);
     NNS_G3dGeTexImageParam(GX_TEXFMT_NONE, GX_TEXGEN_NONE, GX_TEXSIZE_S8, GX_TEXSIZE_T8, GX_TEXREPEAT_NONE, GX_TEXFLIP_NONE, GX_TEXPLTTCOLOR0_TRNS, 0);
     NNS_G3dGeBegin(GX_BEGIN_TRIANGLES);
     NNS_G3dGeColor(GX_RGB(31, 0, 0));
@@ -707,9 +707,9 @@ extern s32 Ov003Vec_DistSq(const VecFx32 *a, const VecFx32 *b);
 static inline void Ov010Fx_Free(Ov010FxObj *s) {
     if (s->b0) {
         s->b0 = 0;
-        EffectMgr_Kill(data_0214a420, s->fx0);
-        EffectMgr_Kill(data_0214a420, s->fx1);
-        EffectMgr_Kill(data_0214a420, s->fx2);
+        EffectMgr_Kill(gEffectMgr, s->fx0);
+        EffectMgr_Kill(gEffectMgr, s->fx1);
+        EffectMgr_Kill(gEffectMgr, s->fx2);
         s->fx0 = 0;
         s->fx1 = 0;
         s->fx2 = 0;
@@ -733,8 +733,8 @@ void Ov010BeamSet_Release(Ov010BeamSet *o) {
         void *saved;
         next = n->next;
         Ov010Beam_Reset(&n->beam);
-        saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (n != NULL) {
             if (n != NULL) {
                 Ov010Beam_Reset(&n->beam);
@@ -742,7 +742,7 @@ void Ov010BeamSet_Release(Ov010BeamSet *o) {
                 Heap_Free(n);
             }
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     o->beams = NULL;
     o->flags.b0 = 0;

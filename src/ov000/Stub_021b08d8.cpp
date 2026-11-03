@@ -18,8 +18,8 @@ void Robo021ca458_Mode5_State02(Robo021ca458 *self) {
     func_ov000_021b0db0(self, 0x2cd);
 }
 
-extern void *data_02097e4c;
-extern MessageQueue021cb980 *data_ov000_021ccd30;
+extern void *gSndMgr;
+extern MessageQueue021cb980 *gMessageQueue;
 extern VecFx32 data_ov000_021ca024;
 extern u8 data_ov000_021ca2a8[];
 extern u8 data_ov000_021ca2e4[];
@@ -58,13 +58,13 @@ void Robo021ca458_Mode5_State0e(Robo021ca458 *self) {
                 break;
             }
             if (t == 0xc) {
-                SndMgr_PlayAtPitch(data_02097e4c, 0x5b, (u8 *)self + 0x70, 2);
+                SndMgr_PlayAtPitch(gSndMgr, 0x5b, (u8 *)self + 0x70, 2);
             } else if (t == 0x23) {
-                SndMgr_PlayAtPitch(data_02097e4c, 0x44, (u8 *)self + 0x70, 2);
-                SndMgr_PlayAt(data_02097e4c, 0x78, (u8 *)self + 0x70, 0);
+                SndMgr_PlayAtPitch(gSndMgr, 0x44, (u8 *)self + 0x70, 2);
+                SndMgr_PlayAt(gSndMgr, 0x78, (u8 *)self + 0x70, 0);
                 SetPal(self->model);
             } else if (t >= 0x41) {
-                SndMgr_PlayAt(data_02097e4c, 0x36, (u8 *)self + 0x70, 0);
+                SndMgr_PlayAt(gSndMgr, 0x36, (u8 *)self + 0x70, 0);
                 SetPal(self->model);
                 self->fsm->timer = 0x23;
             }
@@ -74,7 +74,7 @@ void Robo021ca458_Mode5_State0e(Robo021ca458 *self) {
             if (t > 0x23) {
                 t = 0x23;
             }
-            p = data_ov000_021ccd30->unk_11c;
+            p = gMessageQueue->unk_11c;
             if (p != NULL && p->unk_70 != NULL) {
                 func_ov000_02168e18(p->unk_70, t, 0x23, &ofs);
             }

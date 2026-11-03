@@ -44,18 +44,18 @@ void func_ov000_021b6994(FieldMgr *self, u8 arg) {
                     }
                 }
             }
-            ResMgr_ReleaseByName(data_02097cdc, e, 7, 0);
+            ResMgr_ReleaseByName(gResMgr, e, 7, 0);
         }
     }
     e = LangBlockA_GetData1(self->blockA);
     if (e != NULL) {
         for (i = 0; i < self->blockA->count1; i++, e += 0x18) {
-            ResMgr_ReleaseByName(data_02097cdc, e, 7, 0);
+            ResMgr_ReleaseByName(gResMgr, e, 7, 0);
         }
     }
-    p = data_ov000_021ccd54->unk_d0.c;
+    p = gSceneCmd->unk_d0.c;
     if (arg || p[0] == 0xff || p[1] == 0xff || p[2] == 0xff) {
-        p = data_ov000_021ccd54->unk_ca.c;
+        p = gSceneCmd->unk_ca.c;
     }
     t = Lang_GetGroup(p[0]);
     func_0206dedc(buf, p);

@@ -45,8 +45,8 @@ typedef struct GlyphCache {
     /* 0x210 */ u16 ids[0x80];
 } GlyphCache;
 
-extern GfxMgr *data_02097ce0;
-extern const u32 data_0208ba70[];
+extern GfxMgr *gGfxMgr;
+extern const u32 TextWin_vtbl[];
 extern const char data_0208ba20[];
 
 extern void *Heap_Alloc(u32 size);

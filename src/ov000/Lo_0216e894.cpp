@@ -12,7 +12,7 @@ void func_020627fc(u16 a);
 void func_0206280c(u16 a);
 void func_ov000_02182590(void *p);
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern void *data_02097e4c;
+extern void *gSndMgr;
 
 void LoTimer_Finish(LoTimer *self) {
     if (self->b13 == 1) {
@@ -38,7 +38,7 @@ void LoTimer_Finish(LoTimer *self) {
         }
         func_020627fc(self->result);
         func_0206280c(v);
-        g = data_ov000_021ccd54;
+        g = gSceneCmd;
         ((u8 *)g)[0xac] = 1;
         func_ov000_02182590((u8 *)g + 0xac);
     }
@@ -57,7 +57,7 @@ static inline void Bounce(LoTimer *self) {
 void func_ov000_0216e968(LoTimer *self) {
     s32 t;
     if (!self->b16) {
-        SndMgr_PlayVolume(data_02097e4c, 0x4a, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x4a, -1, -1, -1);
         self->b16 = 1;
     }
     self->unk_38 += 0x1000;

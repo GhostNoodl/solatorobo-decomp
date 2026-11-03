@@ -9,7 +9,7 @@ typedef struct ov006_Unk02097e40 {
 
 extern "C" {
 
-extern ov006_Unk02097e40 *data_02097e40;
+extern ov006_Unk02097e40 *gWhMgr;
 void func_02045094(ov006_Unk02097e40 *p);
 void func_02045498(ov006_Unk02097e40 *p, int a);
 BOOL WH_IsStopped_02044c80(void);
@@ -21,15 +21,15 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
         void *saved;
         ov006_MenuNode *next;
         next = node->next;
-        saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (node != NULL) {
             if (node != NULL) {
                 node->vfunc_04();
             }
             node = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
         node = next;
     }
     self->nodes = NULL;
@@ -48,30 +48,30 @@ void func_ov006_021e4d38(ov006_Unk021ec888 *self) {
 
     switch (self->stateTime) {
     case 0:
-        data_02097dd0->vblankFunc = NULL;
+        gSysState->vblankFunc = NULL;
         if (WH_IsStopped_02044c80()) {
             self->state = 1;
             self->stateTime = 0;
             return;
         }
-        func_02045094(data_02097e40);
+        func_02045094(gWhMgr);
         self->stateTime = 10;
         if (self->unk1D8 != NULL && self->unk1D8->obj != NULL) {
             self->unk1D8->obj->flags |= 2;
         }
     case 10:
-        if (data_02097e40->unk2C == 1) {
-            if (Wh_End(data_02097e40)) {
+        if (gWhMgr->unk2C == 1) {
+            if (Wh_End(gWhMgr)) {
                 self->stateTime = 20;
             }
         } else {
-            if (data_02097e40->unk2C == 8 || data_02097e40->unk2C == 9) {
-                func_02045498(data_02097e40, 0);
+            if (gWhMgr->unk2C == 8 || gWhMgr->unk2C == 9) {
+                func_02045498(gWhMgr, 0);
             }
             return;
         }
     case 20:
-        if (data_02097e40->unk2C != 0) {
+        if (gWhMgr->unk2C != 0) {
             return;
         }
         self->state = 1;

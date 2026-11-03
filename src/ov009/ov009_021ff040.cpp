@@ -27,7 +27,7 @@ void Ov009ActVt_022165f8_StateThrown(Ov009ActVt_022165f8 *self) {
 
 void Ov009ActVt_022165f8_StateDown(Ov009ActVt_022165f8 *self) {
     if (self->fsm->st == 0 && self->unk_f4 == 0x5045) {
-        EffectMgr_Kill(data_0214a420, self->unk_f8);
+        EffectMgr_Kill(gEffectMgr, self->unk_f8);
         self->unk_f8 = 0;
     }
     Ov003Actor_StateDown(self);
@@ -35,7 +35,7 @@ void Ov009ActVt_022165f8_StateDown(Ov009ActVt_022165f8 *self) {
 
 void Ov009ActVt_022165f8_StateDie(Ov009ActVt_022165f8 *self) {
     if (self->fsm->st == 0 && self->unk_f4 == 0x5045) {
-        EffectMgr_Kill(data_0214a420, self->unk_f8);
+        EffectMgr_Kill(gEffectMgr, self->unk_f8);
         self->unk_f8 = 0;
     }
     Ov003Actor_StateDie(self);
@@ -43,8 +43,8 @@ void Ov009ActVt_022165f8_StateDie(Ov009ActVt_022165f8 *self) {
 
 void Ov009ActVt_0221654c_Init(Ov003Actor *self) {
     Ov003Actor_Init(self);
-    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
-    SceneCmd_Push25(data_ov000_021ccd54, 0xe);
+    SndMgr_LoadHeapState(gSndMgr, 1, 1);
+    SceneCmd_Push25(gSceneCmd, 0xe);
     self->unk_ea_10 = 1;
 }
 

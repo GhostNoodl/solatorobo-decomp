@@ -12,7 +12,7 @@ void Ov009ActVt_022167fc_Start(Ov003Actor *self) {
         return;
     }
     self->pos.y += 0x4000;
-    p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    p = Group_FindNode(gGroup, self->unk_20);
     if (p != NULL) {
         p->flags.unk_0 = 0;
     }
@@ -57,7 +57,7 @@ void Ov009ActVt_022167fc_State21(Ov003Actor *self) {
         }
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
         m = self->model;
         m->visible = 1;
         Model0218fe1c_SetAnim(self->model, data_ov009_02216ac8, 0x400, 0);
@@ -68,7 +68,7 @@ void Ov009ActVt_022167fc_State21(Ov003Actor *self) {
     case 2:
         if (self->hit->unk_50 & 0x20000000) {
             Model0218fe1c_SetAnim(self->model, data_ov009_02216ab0, 0x800, 0);
-            SndMgr_PlayVolume(data_02097e4c, 8, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 8, -1, -1, -1);
             Field_ShakeCameraY(8, 0xa);
             self->speed = 0;
             self->velY = 0;
@@ -134,11 +134,11 @@ void Ov009ActVt_022167fc_StateDie(Ov003Actor *self) {
         }
         func_ov000_0219b5dc(self->unk_b0->unk_06, &p, &self->rot_x);
         Ov003_AddExp(self->unk_b0->unk_04);
-        n = data_0214a424->unk_00a + 1;
+        n = gStageFlags->unk_00a + 1;
         if (n >= 0xffff) {
             n = 0xffff;
         }
-        data_0214a424->unk_00a = n;
+        gStageFlags->unk_00a = n;
         self->hp[2] = 0xffff;
         self->fsm->timer = 0;
         self->fsm->st++;

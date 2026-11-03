@@ -16,7 +16,7 @@ typedef struct {
 } Mtx_02194c08;
 
 extern "C" {
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 u8 *Target_Get(void *p);
 GroupNode *Group_FindNode(void *mgr, u16 id);
 u8 *Tbl_FindEntry_0206fef8(u16 id);
@@ -31,7 +31,7 @@ static inline BOOL GBusy02194c08(FieldState *g) {
 }
 
 static inline BOOL GIdle02194c08(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (GBusy02194c08(g)) {
             return FALSE;
@@ -45,7 +45,7 @@ static inline BOOL GIdle02194c08(void) {
 }
 
 static inline BOOL GD4_02194c08(void) {
-    return data_ov000_021ccd54->event != 0 ? TRUE : FALSE;
+    return gSceneCmd->event != 0 ? TRUE : FALSE;
 }
 
 static inline BOOL GHasD4_02194c08(void) {
@@ -114,11 +114,11 @@ BOOL ActorEx_Draw(ActorEx *self) {
         }
         self->unk_93_0 = 0;
         alpha = 0x1f;
-        node = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+        node = Group_FindNode(gGroup, self->unk_20);
         if (node != NULL) {
             s32 dist;
             s32 r;
-            FieldState *g = data_ov000_021ccd54;
+            FieldState *g = gSceneCmd;
             Model0218fe1c *s = self->model;
             s32 dx = g->cam.base.eye.x - s->trans.x;
             s32 dz = g->cam.base.eye.z - s->trans.z;

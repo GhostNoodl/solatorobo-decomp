@@ -181,16 +181,16 @@ extern "C" {
 #endif
 
 // The effect TU's .bss: the polygon ID base and counter (Effect.cpp).
-extern u8 data_0214a41c;
-extern u8 data_0214a41d;
+extern u8 gEffectPolyIdBase;
+extern u8 gEffectPolyIdCount;
 
 static inline s32 Effect_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
 static inline u8 Effect_NextPolyId(void) {
-    u8 n = data_0214a41d++;
-    return data_0214a41c + (u8)((s32)n % 16);
+    u8 n = gEffectPolyIdCount++;
+    return gEffectPolyIdBase + (u8)((s32)n % 16);
 }
 
 extern EffectFile *ResList_FindType4(void *arc, const char *name);

@@ -27,7 +27,7 @@ static inline void SetText021c2450(Hud021cca10 *self, char *str0) {
     if (self->text == NULL) {
         t = (TextWin *)Heap_Alloc(0xb8);
         if (t != NULL) {
-            VOBJ_SET_VTABLE(t, data_0208ba70);
+            VOBJ_SET_VTABLE(t, TextWin_vtbl);
             TextWin_Init(t);
         }
         self->text = t;
@@ -37,7 +37,7 @@ static inline void SetText021c2450(Hud021cca10 *self, char *str0) {
     t = self->text;
     t->str = (u32)str;
     t->unk_4c = Text_Measure(t->font, t->spacing, t->str, &t->width, &t->height, (s8)t->unk_37 != 0);
-    data_02097ce0->unk_004 = t->font;
+    gGfxMgr->unk_004 = t->font;
     self->text->unk_4_8 = 0x1e;
     self->text->unk_vf14();
     self->text->flags |= 0x40;

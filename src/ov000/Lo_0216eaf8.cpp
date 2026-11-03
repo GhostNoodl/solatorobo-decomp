@@ -5,7 +5,7 @@
 extern "C" {
 
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern const s16 FX_SinCosTable_[];
 
 void func_ov000_0216eaf8(LoTimer *self) {
@@ -15,7 +15,7 @@ void func_ov000_0216eaf8(LoTimer *self) {
     }
     if (self->b10 == 1) {
         if (!self->b16) {
-            SndMgr_PlayVolume(data_02097e4c, 0x21, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x21, -1, -1, -1);
             self->b16 = 1;
         }
         self->unk_3c -= self->unk_38;

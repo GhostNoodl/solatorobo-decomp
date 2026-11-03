@@ -8,7 +8,7 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern char data_ov003_021f9fd0[];
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *p, const char *name, s16 a, u8 b);
@@ -77,7 +77,7 @@ void Ov003ActVt_021f9f40_Init(ActorEx *self) {
     Ov003Unit *unit;
     ActorEx_Init(self);
     self->unk_ce = 0;
-    unit = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    unit = Group_FindNode(gGroup, self->unk_20);
     if (unit != NULL) {
         unit->unk_a2_0 = 0;
     }

@@ -12,7 +12,7 @@ extern BOOL History_SetState(ActorSub40 *p, u8 a, BOOL b);
 extern void Model0218fe1c_StopAnim(void *p);
 
 void Ov003ActVt_021f8058_Draw(ActorEx *self) {
-    GfxSys *s = data_02097d48;
+    GfxSys *s = gGfxSys;
     u8 v = s->unk_8b0[3];
     func_02043d9c(s->unk_8b0);
     self->model->polyId = v;
@@ -50,7 +50,7 @@ void Ov003ActVt_021f82b8_State20(ActorEx *self) {
         }
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
         p = self->unk_44;
         if (p != NULL) {
             p->unk_22_0 = 1;

@@ -1,7 +1,7 @@
 #include "ov006/ov006.h"
 #include "ov000/ObjLayouts.h"
 
-// The ov006 item actors (vtables data_ov006_021ec54c, 5e4, 67c, 714, 7ac) are plain ActorEx
+// The ov006 item actors (vtables Ov006ActVt_021ec54c_vtbl, 5e4, 67c, 714, 7ac) are plain ActorEx
 // objects (0xd0 bytes, built by Factory_New4000).
 
 extern "C" {

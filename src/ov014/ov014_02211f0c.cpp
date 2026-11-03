@@ -58,8 +58,8 @@ extern AnimCtrl *Model0218fe1c_GetAnimCtrl(Model0218fe1c *self, u32 i);
 extern void ActorMgr_SendToKindOthers(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
 extern void Field_ShakeCamera(u8 a, u8 b);
 
-// *(&data_02097e4c) keeps the global's address in a saved register (r7) across the
-// switch, as in the target; a plain data_02097e4c reloads it from the pool each time.
+// *(&gSndMgr) keeps the global's address in a saved register (r7) across the
+// switch, as in the target; a plain gSndMgr reloads it from the pool each time.
 void Ov014Act_0220f9d0_StateDie(Ov014Act_0220f9d0 *self) {
     u16 t;
     VecFx32 v1;
@@ -72,7 +72,7 @@ void Ov014Act_0220f9d0_StateDie(Ov014Act_0220f9d0 *self) {
         EffectObj *e;
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(5);
-        g = data_ov000_021ccd54;
+        g = gSceneCmd;
         g->stageFlags = 1;
         func_ov000_02182590((u8 *)g + 0xac);
         Model0218fe1c_SetAnim(self->model, data_ov014_02217d88, 0x19a, 0);
@@ -95,7 +95,7 @@ void Ov014Act_0220f9d0_StateDie(Ov014Act_0220f9d0 *self) {
             e->AddPosXYZ(0, 0x6000, 0x4000);
             e->SetScaleAll(0x6000);
         }
-        SndMgr_PlayAt(data_02097e4c, 0x56, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x56, &self->pos, 0);
         Field_ShakeCamera(0xc, 0x5a);
         self->fsm->timer = 0x258;
         self->fsm->st++;
@@ -109,16 +109,16 @@ void Ov014Act_0220f9d0_StateDie(Ov014Act_0220f9d0 *self) {
             e->AddPosXYZ(0, 0x6000, 0x2000);
             e->SetScaleAll(0x3000);
             self->unk_158 = e->id;
-            SndMgr_PlayAt(*(&data_02097e4c), 0x44, &self->pos, 0);
+            SndMgr_PlayAt(*(&gSndMgr), 0x44, &self->pos, 0);
         }
         if (t == 0x1fe || t == 0x1e0 || t == 0x1c2 || t == 0x1a4) {
-            SndMgr_PlayAt(*(&data_02097e4c), 0x44, &self->pos, 0);
+            SndMgr_PlayAt(*(&gSndMgr), 0x44, &self->pos, 0);
         }
         if (t == 0x12c) {
-            EffectMgr_StopLoop(data_0214a420, self->unk_158);
+            EffectMgr_StopLoop(gEffectMgr, self->unk_158);
         }
         if (t == 0x140) {
-            FieldState *g = data_ov000_021ccd54;
+            FieldState *g = gSceneCmd;
             SndQueue *h;
             g->cam.base.shakeX = 1;
             g->cam.base.shakeY = 0;
@@ -127,7 +127,7 @@ void Ov014Act_0220f9d0_StateDie(Ov014Act_0220f9d0 *self) {
             g->cam.base.shakeLen = 0x1e;
             g->cam.base.shakeCur = 0x1e;
             g->cam.base.shakeRandom = 1;
-            h = data_02097e48.queue;
+            h = gSndQueue.queue;
             if (h->flag0 != 1 || h->unk_74 != 0xffff || h->unk_72 != 0x38) {
                 h->unk_74 = 0x38;
                 h->unk_70 = 0;
@@ -143,8 +143,8 @@ void Ov014Act_0220f9d0_StateDie(Ov014Act_0220f9d0 *self) {
             e = Effect_SpawnId(0x38f, &v1);
             r = Rand_UpTo(0x1000);
             e->SetScaleXYZ(r + 0x2800, r + 0x2800, r + 0x2800);
-            SndMgr_PlayAt(*(&data_02097e4c), 0x35, &v1, 0);
-            SndMgr_PlayAt(*(&data_02097e4c), 0x56, &v1, 0);
+            SndMgr_PlayAt(*(&gSndMgr), 0x35, &v1, 0);
+            SndMgr_PlayAt(*(&gSndMgr), 0x56, &v1, 0);
         }
         if (t > 0xfa) {
             s32 a = 0;
@@ -168,7 +168,7 @@ void Ov014Act_0220f9d0_StateDie(Ov014Act_0220f9d0 *self) {
         } else {
             FieldState *g;
             self->fsm->st++;
-            g = data_ov000_021ccd54;
+            g = gSceneCmd;
             g->cam.base.shakeRandom = 0;
             g->cam.base.shakeTime = 0;
             g->cam.base.shakeLen = 0;
@@ -195,8 +195,8 @@ void Ov014Act_0220f9d0_StateDie(Ov014Act_0220f9d0 *self) {
         v3.y = Rand_PlusMinus(0x3000) + 0x5000;
         v3.z += Rand_PlusMinus(0x1000) + 0x5000;
         Effect_SpawnId(0x38f, &v3)->SetScaleXYZ(0x2ccd, 0x2ccd, 0x2ccd);
-        SndMgr_PlayAtPitch(*(&data_02097e4c), 0x35, &v3, -(Rand_UpTo(5) + 2));
-        SndMgr_PlayAt(*(&data_02097e4c), 0x56, &v3, 0);
+        SndMgr_PlayAtPitch(*(&gSndMgr), 0x35, &v3, -(Rand_UpTo(5) + 2));
+        SndMgr_PlayAt(*(&gSndMgr), 0x56, &v3, 0);
         Field_ShakeCamera(10, 0x1e);
         break;
     }

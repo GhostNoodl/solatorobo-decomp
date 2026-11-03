@@ -63,7 +63,7 @@ GroupNode *func_ov000_0218a9d8(GroupNode *self) {
 }
 
 
-extern Group *data_ov000_021ccd64;
+extern Group *gGroup;
 Robo021ca458 *ActorMgr_FindPlayer(void);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 key);
@@ -72,10 +72,10 @@ void GroupNode_UpdateEntry(GroupNode *self, s32 mode, Actor *actor);
 
 static inline Actor *GetActor0218ab00(u16 id) {
     Actor *a;
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         a = NULL;
     } else {
-        a = ActorMgr_GetActor(data_ov000_021ccd68, id);
+        a = ActorMgr_GetActor(gActorMgr, id);
     }
     return a;
 }
@@ -89,7 +89,7 @@ void GroupNode_Refresh(GroupNode *self) {
     s32 i;
     u8 *base;
     Actor *a;
-    g = data_ov000_021ccd54;
+    g = gSceneCmd;
     changed = FALSE;
     if (self->fieldFilter.c[2] != 0xff && self->fieldFilter.c[2] != g->unk_ca.c[2]) {
         changed = TRUE;
@@ -125,14 +125,14 @@ void GroupNode_Refresh(GroupNode *self) {
         if (changed) {
             a->flags_0 = 1;
         }
-        if (self->flags.unk_6 && ctx != NULL && ENTRY(base)->actor == ctx->unk_b1c && data_ov000_021ccd54->unk_c9 == 0) {
+        if (self->flags.unk_6 && ctx != NULL && ENTRY(base)->actor == ctx->unk_b1c && gSceneCmd->unk_c9 == 0) {
             continue;
         }
         GroupNode_UpdateEntry(self, 2, a);
-        func_ov000_0218df68(ActorMgr_GetGroup(data_ov000_021ccd68, a->id & 0xf000), a);
+        func_ov000_0218df68(ActorMgr_GetGroup(gActorMgr, a->id & 0xf000), a);
     }
     if (changed) {
-        Group_RemoveNode(data_ov000_021ccd64, self, 0);
+        Group_RemoveNode(gGroup, self, 0);
     }
 }
 

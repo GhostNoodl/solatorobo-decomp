@@ -49,7 +49,7 @@ void Robo021ca458_Init(Robo021ca458 *self) {
     kind = self->unk_b22_6;
     e = &data_ov000_021ca398[kind];
     if ((u16)(kind + 0xfffe) <= 1) {
-        Param0206ef10 *x = func_0206ef10(data_0214a424->bits18.unk_3 | 0x8000);
+        Param0206ef10 *x = func_0206ef10(gStageFlags->bits18.unk_3 | 0x8000);
         if (x != NULL) {
             self->unk_ba4 = x;
             e = &x->def;

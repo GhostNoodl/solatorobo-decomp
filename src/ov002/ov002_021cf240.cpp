@@ -19,7 +19,7 @@ void func_ov002_021cf280(Task021ef4b0 *self, int kind) {
     if (self->unk_40 == NULL) {
         return;
     }
-    msg = data_02149ef8;
+    msg = gMsgRes;
     str = data_ov002_021ef3f8;
     switch (kind) {
     case 0:

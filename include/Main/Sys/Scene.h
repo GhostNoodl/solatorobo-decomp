@@ -31,7 +31,7 @@ typedef struct SceneMgr {
     /* 0x34 */ s32 frame;
 } SceneMgr; // size 0x38
 
-extern SceneMgr *data_02149ef0;
+extern SceneMgr *gSceneMgr;
 extern SceneEntry data_02082998[];
 
 // NitroSDK FS overlay load/unload

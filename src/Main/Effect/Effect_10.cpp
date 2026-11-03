@@ -3,24 +3,24 @@
 extern "C" {
 
 extern const u8 data_02082ba4[0x38];
-extern EffectPtclHandler data_0208c908;
-extern EffectPtclHandler data_0208c910;
-extern EffectPtclHandler data_0208c918;
-extern EffectPtclHandler data_0208c920;
-extern EffectPtclHandler data_0208c928;
-extern EffectPtclHandler data_0208c930;
-extern EffectPtclHandler data_0208c938;
-extern EffectPtclHandler data_0208c940;
+extern EffectPtclHandler EffectPtclCmd_Pos_pmf;
+extern EffectPtclHandler EffectPtclCmd_Scale_pmf;
+extern EffectPtclHandler EffectPtclCmd_Rot_pmf;
+extern EffectPtclHandler EffectPtclCmd_Alpha_pmf;
+extern EffectPtclHandler EffectPtclCmd_Pltt_pmf;
+extern EffectPtclHandler EffectPtclCmd_TexImage_pmf;
+extern EffectPtclHandler EffectPtclCmd_PlaySnd_pmf;
+extern EffectPtclHandler EffectPtclCmd_Color_pmf;
 
 void EffectEmitterSub_InitFuncs(EffectEmitterSub *sub) {
-    sub->funcs[0] = data_0208c908;
-    sub->funcs[1] = data_0208c910;
-    sub->funcs[2] = data_0208c918;
-    sub->funcs[3] = data_0208c920;
-    sub->funcs[4] = data_0208c928;
-    sub->funcs[5] = data_0208c930;
-    sub->funcs[6] = data_0208c938;
-    sub->funcs[7] = data_0208c940;
+    sub->funcs[0] = EffectPtclCmd_Pos_pmf;
+    sub->funcs[1] = EffectPtclCmd_Scale_pmf;
+    sub->funcs[2] = EffectPtclCmd_Rot_pmf;
+    sub->funcs[3] = EffectPtclCmd_Alpha_pmf;
+    sub->funcs[4] = EffectPtclCmd_Pltt_pmf;
+    sub->funcs[5] = EffectPtclCmd_TexImage_pmf;
+    sub->funcs[6] = EffectPtclCmd_PlaySnd_pmf;
+    sub->funcs[7] = EffectPtclCmd_Color_pmf;
 }
 
 void func_02069248(EffectEmitterSub *sub) {

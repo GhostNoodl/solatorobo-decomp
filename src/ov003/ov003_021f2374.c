@@ -58,7 +58,7 @@ typedef struct {
     u8 unk_0a[6];
 } Ov003MultiDef;
 
-extern Ov003MultiMgr *data_ov003_021fa680;
+extern Ov003MultiMgr *gOv003MultiMgr;
 extern const Ov003MultiDef data_ov003_021f7470[];
 
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
@@ -85,7 +85,7 @@ void Ov003Multi_StartCapture(Ov003Multi *self);
 #define OV003MU_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
 void Ov003Multi_CaptureMtx(Ov003Multi *self) {
-    Ov003MultiMgr *mgr = data_ov003_021fa680;
+    Ov003MultiMgr *mgr = gOv003MultiMgr;
     Ov003MultiTarget *t;
     s32 group;
     if (mgr == NULL) {

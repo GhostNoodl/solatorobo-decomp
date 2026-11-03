@@ -18,8 +18,8 @@ typedef struct ov006_Entry021da208 {
 
 extern "C" {
 
-extern void *data_ov000_021cca40;
-extern void *data_ov006_021ebc80;
+extern void *Lo021cca40_vtbl;
+extern void *Ov006Vt_021ebc80_vtbl;
 extern const ov006_Price021da208 data_ov006_021eb7b4[];
 extern const ov006_Price021da208 data_ov006_021eb7c4[];
 extern const ov006_Price021da208 data_ov006_021eb7e4;
@@ -51,15 +51,15 @@ static inline const ov006_Price021da208 *ov006_GetItemPrice(u8 item) {
 }
 
 static inline void *ov006_GetRes(void) {
-    return data_02149ef8;
+    return gMsgRes;
 }
 
 static inline ov006_Entry021da208 *ov006_NewEntry(void) {
     ov006_Entry021da208 *e = (ov006_Entry021da208 *)Heap_Alloc(0x48);
     if (e != NULL) {
-        e->vtbl = &data_ov006_021ebc80;
+        e->vtbl = &Ov006Vt_021ebc80_vtbl;
         ListRow_Init(e);
-        e->vtbl = &data_ov000_021cca40;
+        e->vtbl = &Lo021cca40_vtbl;
         Lo021cca40_Init(e);
     }
     return e;
@@ -74,7 +74,7 @@ static inline void ov006_Entry_Set(ov006_Entry021da208 *e, void *res, const ov00
 
 void ov006_Task021ec040_BuildShopList(ov006_Task021ec040 *self) {
     void *res = ov006_GetRes();
-    u8 n = data_ov006_021ec884->lap;
+    u8 n = gOv006SlotManager->lap;
     const ov006_Price021da208 *base;
     u8 i;
     if (n < 1) {
@@ -118,21 +118,21 @@ void ov006_Task021ec040_BuildShopList(ov006_Task021ec040 *self) {
     self->unk14->rows = 4;
     ov006_Window_SetPos(self->unk14, 2, 0x3b, -0x199a);
     ov006_Window_SetSlide(self->unk14, -0x100, 0, 0);
-    if (data_ov006_021ec860->unk1C) {
+    if (gOv006Manager->unk1C) {
         const ov006_Price021da208 *p = &data_ov006_021eb7e4;
         ov006_Entry021da208 *e = ov006_NewEntry();
-        ov006_Entry_Set(e, res, p, data_ov006_021ec884->numActive);
+        ov006_Entry_Set(e, res, p, gOv006SlotManager->numActive);
         e->unk14 = -0x199a;
         LoBase021ccb54_021ccbe0_AppendRow(self->unk14, e);
     }
     for (i = 0; i < 3; i++) {
-        u8 item = ov006_SlotManager_GetItem(data_ov006_021ec884, i);
+        u8 item = ov006_SlotManager_GetItem(gOv006SlotManager, i);
         const ov006_Price021da208 *p = ov006_GetItemPrice(item);
         if (p != NULL) {
             int cnt = 1;
             ov006_Entry021da208 *e;
             if (item < 8) {
-                cnt = ov006_SlotManager_GetItemCount(data_ov006_021ec884, i);
+                cnt = ov006_SlotManager_GetItemCount(gOv006SlotManager, i);
             }
             e = ov006_NewEntry();
             ov006_Entry_Set(e, res, p, cnt);
@@ -157,7 +157,7 @@ void ov006_Task021ec040_BuildShopList(ov006_Task021ec040 *self) {
     ov006_Window_SetSlide(self->unk1C, 0x100, 0, 0);
     self->unk1C->slideMode = 1;
     self->unk1C->vfunc_08();
-    Lo021cae48_SetValue(self->unk1C, *(s32 *)((u8 *)data_0214a424 + 0x20), 1);
+    Lo021cae48_SetValue(self->unk1C, *(s32 *)((u8 *)gStageFlags + 0x20), 1);
 
     self->unk20 = ov006_NewLo021cb5a8();
     self->unk20->flags |= 0x4000000;

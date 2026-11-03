@@ -2,8 +2,8 @@
 
 extern "C" {
 
-extern u8 data_ov014_02217bdc[];
-extern u8 data_ov014_02217b44[];
+extern u8 Ov014ActEx_0220d70c_vtbl[];
+extern u8 Ov014ActEx_0220dcf4_vtbl[];
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 
 extern char data_ov014_02217a4e[];
@@ -21,9 +21,9 @@ void func_ov014_0220d274(Ov014Act_02209280 *self) {
         Model0218fe1c_SetAnimFrame(self->model, 0);
         Model0218fe1c_SetLoop(self->model);
         self->unk_fc = 1;
-        EffectMgr_StopLoop(data_0214a420, self->unk_1dc);
+        EffectMgr_StopLoop(gEffectMgr, self->unk_1dc);
         self->unk_1dc = NULL;
-        EffectMgr_StopLoop(data_0214a420, self->unk_1e0);
+        EffectMgr_StopLoop(gEffectMgr, self->unk_1e0);
         self->unk_1e0 = NULL;
         self->fsm->st++;
         self->fsm->timer = 0x3c;
@@ -76,7 +76,7 @@ void func_ov014_0220d274(Ov014Act_02209280 *self) {
             break;
         }
         if (m->anim_state == 1) {
-            FieldState *g = data_ov000_021ccd54;
+            FieldState *g = gSceneCmd;
             g->cam.base.flags |= 0x1c;
             g->cam.base.shakeTime = 0x1e;
             g->cam.base.shakeLen = 10;
@@ -164,7 +164,7 @@ void Ov014Act_02209280_StateKnockBack(Ov014Act_02209280 *self) {
 #pragma force_active on
 Ov014ActEx_0220d70c *Ov014ActEx_0220d70c_Ctor(Ov014ActEx_0220d70c *self) {
     ActorEx_Ctor(self);
-    *(void **)self = data_ov014_02217bdc;
+    *(void **)self = Ov014ActEx_0220d70c_vtbl;
     self->unk_d0 = NULL;
     self->unk_d4 = NULL;
     self->unk_d8.x = 0;
@@ -175,24 +175,24 @@ Ov014ActEx_0220d70c *Ov014ActEx_0220d70c_Ctor(Ov014ActEx_0220d70c *self) {
 #pragma force_active reset
 
 Ov014ActEx_0220d70c *Ov014ActEx_0220d70c_Dtor(Ov014ActEx_0220d70c *self) {
-    *(void **)self = data_ov014_02217bdc;
+    *(void **)self = Ov014ActEx_0220d70c_vtbl;
     if (self->unk_d0 != NULL) {
-        EffectMgr_Kill(data_0214a420, self->unk_d0);
+        EffectMgr_Kill(gEffectMgr, self->unk_d0);
     }
     if (self->unk_d4 != NULL) {
-        EffectMgr_Kill(data_0214a420, self->unk_d4);
+        EffectMgr_Kill(gEffectMgr, self->unk_d4);
     }
     ActorEx_DtorBase(self);
     return self;
 }
 
 Ov014ActEx_0220d70c *Ov014ActEx_0220d70c_DtorDelete(Ov014ActEx_0220d70c *self) {
-    *(void **)self = data_ov014_02217bdc;
+    *(void **)self = Ov014ActEx_0220d70c_vtbl;
     if (self->unk_d0 != NULL) {
-        EffectMgr_Kill(data_0214a420, self->unk_d0);
+        EffectMgr_Kill(gEffectMgr, self->unk_d0);
     }
     if (self->unk_d4 != NULL) {
-        EffectMgr_Kill(data_0214a420, self->unk_d4);
+        EffectMgr_Kill(gEffectMgr, self->unk_d4);
     }
     ActorEx_DtorBase(self);
     Heap_Free(self);
@@ -268,7 +268,7 @@ void Ov014ActEx_0220d70c_StateIdle(Ov014ActEx_0220d70c *self) {
             o->SetScaleXYZ(0x1ccd, 0x1666, 0x1ccd);
             o->loopCount = -2;
             o->unk_50 = -0x64000;
-            SndMgr_PlayAt(data_02097e4c, 0x82, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x82, &self->pos, 0);
             self->unk_d0 = o->id;
         }
         self->fsm->st++;
@@ -277,7 +277,7 @@ void Ov014ActEx_0220d70c_StateIdle(Ov014ActEx_0220d70c *self) {
     }
     case 2:
         if (self->fsm->timer < 0x1e && self->unk_d0 != NULL) {
-            EffectMgr_StopLoop(data_0214a420, self->unk_d0);
+            EffectMgr_StopLoop(gEffectMgr, self->unk_d0);
             self->unk_d0 = NULL;
         }
         if (self->fsm->timer == 0) {
@@ -290,9 +290,9 @@ void Ov014ActEx_0220d70c_StateIdle(Ov014ActEx_0220d70c *self) {
                 e = Effect_SpawnId(0x66, &self->pos);
                 e->SetScaleAll(0x2400);
                 e->unk_50 = -0x64000;
-                SndMgr_PlayAt(data_02097e4c, 0x19, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x19, &self->pos, 0);
                 {
-                    FieldState *g = data_ov000_021ccd54;
+                    FieldState *g = gSceneCmd;
                     g->cam.base.flags |= 0x1c;
                     g->cam.base.shakeTime = 0x1e;
                     g->cam.base.shakeCur = g->cam.base.shakeLen = 10;
@@ -326,7 +326,7 @@ void Ov014ActEx_0220d70c_StateIdle(Ov014ActEx_0220d70c *self) {
         break;
     }
     case 4: {
-        EffectObj *o = Effect_Find_020657b0(data_0214a420, self->unk_d4);
+        EffectObj *o = Effect_Find_020657b0(gEffectMgr, self->unk_d4);
         ActorSub40 *s;
         if (o == NULL) {
             History_SetState(self->fsm, 0x15, 0);

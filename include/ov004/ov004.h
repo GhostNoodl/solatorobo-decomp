@@ -40,7 +40,7 @@ extern Ov004Cb data_ov004_021cf860;
 extern Ov004V *data_ov004_021cf864;
 extern s32 data_ov004_021cf868;
 extern void *data_ov004_021cf86c[2];
-extern u8 data_ov004_021cf808[];
+extern u8 Ov004ActVt_021cf808_vtbl[];
 void *Heap_Alloc(u32 size);
 void Heap_Free(void *p);
 s32 func_0203db40(void *p);

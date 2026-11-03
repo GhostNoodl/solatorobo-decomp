@@ -8,7 +8,7 @@ u8 Gfx3DState_NextPolyId(void *p);
 
 void func_ov000_021bb248(NNSG3dRS *rs) {
     NNSG3dMatAnmResult *sub = rs->pMatAnmResult;
-    GfxSys *p = data_02097d48;
+    GfxSys *p = gGfxSys;
     u32 flags = sub->prmPolygonAttr;
     u32 v = (flags & 0x1f0000) >> 16;
     if (v > 0x1e) {

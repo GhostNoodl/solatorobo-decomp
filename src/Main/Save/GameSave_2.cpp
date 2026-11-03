@@ -16,20 +16,20 @@ void GameSave_Finalize(GameSave *s) {
 
 void GameSave_FillSlot(GameSave *s, GameSaveSlot *slot) {
     slot->saveCount++;
-    slot->frameCount = data_0214a424->frameCount;
-    slot->unk_08 = data_0214a424->unk_020;
-    slot->unk_0c_0 = data_0214a424->unk_01a;
-    slot->unk_0c_8 = (u8)data_0214a424->unk_518_16;
-    slot->unk_0c_16 = data_0214a424->unk_009;
-    slot->unk_0c_28 = (u8)data_0214a424->unk_518_28;
+    slot->frameCount = gStageFlags->frameCount;
+    slot->unk_08 = gStageFlags->unk_020;
+    slot->unk_0c_0 = gStageFlags->unk_01a;
+    slot->unk_0c_8 = (u8)gStageFlags->unk_518_16;
+    slot->unk_0c_16 = gStageFlags->unk_009;
+    slot->unk_0c_28 = (u8)gStageFlags->unk_518_28;
 }
 
 void GameSave_FillData(GameSave *s, void *dst) {
-    MI_CpuCopy8(data_0214a428, dst, sizeof(data_0214a428));
+    MI_CpuCopy8(gStageFlagsSave, dst, sizeof(gStageFlagsSave));
 }
 
 void GameSave_OnLoadData(GameSave *s, const void *src) {
-    MI_CpuCopy8(src, data_0214a428, sizeof(data_0214a428));
+    MI_CpuCopy8(src, gStageFlagsSave, sizeof(gStageFlagsSave));
 }
 
 void GameSave_OnError(GameSave *s) {
@@ -202,13 +202,13 @@ void MainVt_0208ca18_State9(GameSave *s) {
 // gives it the rest of the card, rounded down to a page. The align-down written out as
 // `payload &= ~(totalSize - 1)` followed by `payload -= slotSize + 4` keeps both the sub and the add.
 // Register-only: the ROM gives the first product r1 and the card pointer r2 (ours r2/r1). Passing
-// the page size as an argument (`RoundUp(x, data_02097e44->totalSize)`) fixes that pair (18 / 0) but
+// the page size as an argument (`RoundUp(x, gSysCard->totalSize)`) fixes that pair (18 / 0) but
 // moves the `m` of the first align off the loaded register; honest_search finds nothing.
 // Round rgB: as in GameSave_Configure, tools/vnum.sh shows every object uncoloured (d, n, end, payload and the inline
 // temps are all propagated); the swapped values are backend temps, so no band lever applies.
 // Rounds x up to the card's page size (SysCard::totalSize).
 static inline u32 GameSave_AlignUp(u32 x) {
-    u32 m = data_02097e44->totalSize; m -= 1;
+    u32 m = gSysCard->totalSize; m -= 1;
     x += m;
     return x & ~m;
 }
@@ -221,7 +221,7 @@ void MainVt_0208c994_Configure(GameSave *s) {
     s->slotCount = 1;
     s->slotSize = 0x14;
     s->headerSize = GameSave_AlignUp(s->slotSize * s->slotCount + 0x14);
-    d = GameSave_AlignUp(sizeof(data_0214a428) + (int)(s->slotSize + 4));
+    d = GameSave_AlignUp(sizeof(gStageFlagsSave) + (int)(s->slotSize + 4));
     s->dataSize = d;
     {
         int n = s->headerSize + d * s->slotCount;
@@ -233,8 +233,8 @@ void MainVt_0208c994_Configure(GameSave *s) {
     s->slotCount = 1;
     s->slotSize = 0xc;
     s->headerSize = GameSave_AlignUp(s->slotSize * s->slotCount + 0x14);
-    payload = data_02097e44->sectorSize - end - s->headerSize;
-    payload &= ~(data_02097e44->totalSize - 1);
+    payload = gSysCard->sectorSize - end - s->headerSize;
+    payload &= ~(gSysCard->totalSize - 1);
     payload -= s->slotSize + 4;
     s->dataSize = GameSave_AlignUp(payload + (int)(s->slotSize + 4));
     s->baseOffset = end;

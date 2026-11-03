@@ -4,8 +4,8 @@
 extern "C" {
 
 void *data_02149ef4;
-MsgRes *data_02149ef8;
-#define MSG_RES data_02149ef8
+MsgRes *gMsgRes;
+#define MSG_RES gMsgRes
 
 extern const char data_0208b9dc[];
 extern const char data_0208b9e6[];

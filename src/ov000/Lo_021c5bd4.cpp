@@ -3,7 +3,7 @@
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
-extern void *data_02149ef8;
+extern void *gMsgRes;
 extern void *data_0208cc88;
 extern void *data_0208cc94;
 void *MsgRes_GetString(void *a, s32 b);
@@ -19,10 +19,10 @@ void func_ov000_021c5bd4(Lo021cca40 *self) {
     if (self->built != 0) {
         return;
     }
-    res = data_02149ef8;
+    res = gMsgRes;
     p = (TextWin *)Heap_Alloc(0xb8);
     if (p != NULL) {
-        VOBJ_SET_VTABLE(p, data_0208ba70);
+        VOBJ_SET_VTABLE(p, TextWin_vtbl);
         TextWin_Init(p);
     }
     self->text = p;
@@ -36,7 +36,7 @@ void func_ov000_021c5bd4(Lo021cca40 *self) {
         p->str = (u32)t;
     }
     p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, (s8)p->unk_37 != 0);
-    data_02097ce0->unk_004 = p->font;
+    gGfxMgr->unk_004 = p->font;
     self->text->unk_2c = 0;
     self->text->flags |= 0x40;
     self->text->flags |= 0x1000000;

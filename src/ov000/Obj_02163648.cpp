@@ -49,19 +49,19 @@ static inline BOOL Model_IsIdle(Model *model) {
 
 extern "C" {
 
-extern u8 data_ov000_021cac0c[];
-extern u8 data_ov000_021cad50[];
-extern u8 data_ov000_021cadcc[];
-extern u8 data_ov000_021cae48[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cafc0[];
-extern u8 data_ov000_021cb0b8[];
-extern u8 data_ov000_021cb1b0[];
-extern u8 data_ov000_021cb3a8[];
-extern u8 data_ov000_021cb4a8[];
-extern u8 data_ov000_021cb5a8[];
-extern u8 data_ov000_021cacd8[];
-extern u8 data_ov000_021cac60[];
+extern u8 Ov000Vt_021cac0c_vtbl[];
+extern u8 Lo021cad50_vtbl[];
+extern u8 Lo021cadcc_vtbl[];
+extern u8 Lo021cae48_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 Ov000Vt_021cafc0_vtbl[];
+extern u8 Ov000Vt_021cb0b8_vtbl[];
+extern u8 Ov000Vt_021cb1b0_vtbl[];
+extern u8 Lo021cb3a8_vtbl[];
+extern u8 UiList021cb4a8_vtbl[];
+extern u8 Lo021cb5a8_vtbl[];
+extern u8 Lo021cacd8_vtbl[];
+extern u8 UiObj_vtbl[];
 
 void Heap_Free(void *ptr);
 void TexObj_Release(Model *model);
@@ -72,9 +72,9 @@ BOOL Model_IsReady(void *a, u32 b);
 Obj02163648 *Lo021cacd8_Dtor(Obj02163648 *self) {
     void *saved;
     Model *model;
-    VOBJ_SET_VTABLE(self, data_ov000_021cacd8);
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    VOBJ_SET_VTABLE(self, Lo021cacd8_vtbl);
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     model = self->unk_84;
     if (model != NULL) {
         if (model != NULL) {
@@ -84,14 +84,14 @@ Obj02163648 *Lo021cacd8_Dtor(Obj02163648 *self) {
         }
         self->unk_84 = NULL;
     }
-    data_02097dd0->cur = saved;
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    gSysState->cur = saved;
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
 
 VObj *Ov000Vt_021cac0c_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cac0c);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cac0c_vtbl);
     self->vfunc_18();
     Heap_Free(self);
     return self;
@@ -106,7 +106,7 @@ bool Ov000Vt_021cac0c_IsShown(void *self) {
 }
 
 VObj *Ov000Vt_021cac0c_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cac0c);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cac0c_vtbl);
     self->vfunc_18();
     return self;
 }
@@ -129,50 +129,50 @@ s32 LoBase021cafc0_021cb0b8_IsLoaded(Obj02163648 *self) {
 }
 
 VObj *Ov000Vt_021cafc0_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cafc0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cafc0_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cb0b8);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb0b8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cb1b0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb1b0_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     Heap_Free(self);
     return self;
 }
 
 VObj *Ov000Vt_021cafc0_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cafc0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cafc0_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cb0b8);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb0b8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cb1b0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb1b0_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
 
 VObj *Ov000Vt_021cb0b8_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb0b8);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb0b8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cb1b0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb1b0_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
 
 VObj *Lo021cae48_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cae48);
+    VOBJ_SET_VTABLE(self, Lo021cae48_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     Heap_Free(self);
     return self;
@@ -199,9 +199,9 @@ BOOL Lo021cae48_IsLoaded(Obj02163648 *self) {
 }
 
 VObj *Lo021cae48_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cae48);
+    VOBJ_SET_VTABLE(self, Lo021cae48_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
@@ -211,17 +211,17 @@ s32 Lo021cad50_GetLineSpacing(void) {
 }
 
 VObj *Lo021cad50_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cad50);
+    VOBJ_SET_VTABLE(self, Lo021cad50_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
 
 VObj *Lo021cadcc_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cadcc);
+    VOBJ_SET_VTABLE(self, Lo021cadcc_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     Heap_Free(self);
     return self;
@@ -236,30 +236,30 @@ void func_ov000_02163b58(Obj02163648 *self) {
 }
 
 VObj *Lo021cadcc_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cadcc);
+    VOBJ_SET_VTABLE(self, Lo021cadcc_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
 
 VObj *Ov000Vt_021cb1b0_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb1b0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb1b0_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     Heap_Free(self);
     return self;
 }
 
 VObj *Ov000Vt_021cb1b0_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb1b0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb1b0_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
@@ -273,23 +273,23 @@ s32 Lo021cb5a8_GetPadBottom(void) {
 }
 
 VObj *Lo021cb5a8_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb5a8);
+    VOBJ_SET_VTABLE(self, Lo021cb5a8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
 
 VObj *Lo021cb3a8_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb3a8);
+    VOBJ_SET_VTABLE(self, Lo021cb3a8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cb4a8);
+    VOBJ_SET_VTABLE(self, UiList021cb4a8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     Heap_Free(self);
     return self;
@@ -314,42 +314,42 @@ s32 func_ov000_02163dc8(Obj02163648 *self) {
 }
 
 VObj *Lo021cb3a8_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb3a8);
+    VOBJ_SET_VTABLE(self, Lo021cb3a8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cb4a8);
+    VOBJ_SET_VTABLE(self, UiList021cb4a8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
 
 VObj *UiList021cb4a8_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb4a8);
+    VOBJ_SET_VTABLE(self, UiList021cb4a8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     Heap_Free(self);
     return self;
 }
 
 VObj *UiList021cb4a8_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb4a8);
+    VOBJ_SET_VTABLE(self, UiList021cb4a8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
 
 VObj *UiList_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     Heap_Free(self);
     return self;
@@ -360,15 +360,15 @@ s32 UiList_GetLineSpacing(void) {
 }
 
 VObj *UiList_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
 
 VObj *UiObj_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     Heap_Free(self);
     return self;
@@ -378,27 +378,27 @@ void UiObj_Setup(void) {
 }
 
 VObj *UiObj_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
 
 VObj *Ov000Vt_021cb2a8_Dtor(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb4a8);
+    VOBJ_SET_VTABLE(self, UiList021cb4a8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     return self;
 }
 
 VObj *Ov000Vt_021cb2a8_DtorDelete(VObj *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cb4a8);
+    VOBJ_SET_VTABLE(self, UiList021cb4a8_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021caec8);
+    VOBJ_SET_VTABLE(self, UiList_vtbl);
     self->vfunc_2c();
-    VOBJ_SET_VTABLE(self, data_ov000_021cac60);
+    VOBJ_SET_VTABLE(self, UiObj_vtbl);
     self->vfunc_2c();
     Heap_Free(self);
     return self;

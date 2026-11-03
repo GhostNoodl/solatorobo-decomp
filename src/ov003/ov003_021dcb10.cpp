@@ -6,7 +6,7 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern void *func_0203db40(PauseNode *p);
 extern void Model0218fe1c_UpdateAnim(Model0218fe1c *a, void *b);
 extern void Heap_Free(void *p);
@@ -60,7 +60,7 @@ ActorEx *Ov003ActVt_021f7d4c_Dtor(ActorEx *self) {
 void Ov003ActVt_021f7fac_Init(ActorEx *self) {
     Ov003Unit *unit;
     ActorEx_Init(self);
-    unit = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    unit = Group_FindNode(gGroup, self->unk_20);
     if (unit != NULL) {
         unit->unk_a2_0 = 0;
     }
@@ -132,7 +132,7 @@ void Ov003ActVt_021f7fac_Start(ActorEx *self) {
         m._31 = self->pos.y;
         m._32 = self->pos.z;
         HitMesh_SetMtx(obj, &m);
-        if (data_ov000_021ccd54->unk_ca.c[0] == 9) {
+        if (gSceneCmd->unk_ca.c[0] == 9) {
             HitMesh_SetScale(self->hitMesh, 0x1b33);
         }
     }

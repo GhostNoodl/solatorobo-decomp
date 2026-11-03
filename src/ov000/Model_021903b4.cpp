@@ -160,7 +160,7 @@ BOOL Model021903b4_Draw(Model021903b4 *self) {
             NNSi_G3dModifyMatFlag(self->mdl, TRUE, 0x200);
             NNSi_G3dModifyMatFlag(self->mdl, TRUE, 0x400);
         }
-        GfxLight_Apply_02043578(&data_02097d48->unk_8b0[0x8c]);
+        GfxLight_Apply_02043578(&gGfxSys->unk_8b0[0x8c]);
     }
     return drawn;
 }

@@ -4,8 +4,8 @@ extern "C" {
 
 Ov015Fade *Ov015_GetFade(void);
 void Ov015Fade_Start(Ov015Fade *self, u8 a, u8 b, s32 c, u16 d);
-extern u8 data_ov015_022128ec[];
-extern u8 data_ov015_02213188[];
+extern u8 Ov015Result_vtbl[];
+extern u8 Ov015ResultPanel_vtbl[];
 void func_ov015_0220ec40(Ov015ResultPanel *self);
 
 
@@ -51,12 +51,12 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
         }
         break;
     case 0x14: {
-        s32 n = data_ov015_02213368->total;
+        s32 n = gOv015Shared->total;
         if (n != 0) {
-            if (data_02097dc8->trig & 1) {
+            if (gPad->trig & 1) {
                 Lo021cae48_SetValue(self->unk_10, ((s32)self->unk_10->value) + n, 0);
                 Lo021cae48_SetValue(self->unk_0c, 0, 0);
-                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
                 self->state = 0x1e;
             }
         } else {
@@ -68,26 +68,26 @@ BOOL func_ov015_0220ed70(Ov015ResultPanel *self) {
     case 0x1e: {
         Ov015UiNum *a = self->unk_10;
         if ((s32)a->value != a->unk_88 || ((s32)self->unk_0c->value) != self->unk_0c->unk_88) {
-            if (data_02097dc8->trig & 1) {
+            if (gPad->trig & 1) {
                 Lo021cae48_SetValue(self->unk_10, ((s32)self->unk_10->value), 1);
                 Lo021cae48_SetValue(self->unk_0c, 0, 1);
             } else {
                 if (++self->timer % 4 == 0) {
-                    SndMgr_PlayVolume(data_02097e4c, 0x18, -1, -1, -1);
+                    SndMgr_PlayVolume(gSndMgr, 0x18, -1, -1, -1);
                 }
                 break;
             }
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x4a, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x4a, -1, -1, -1);
         self->state = 0x28;
         self->timer = 0;
         break;
     }
     case 0x28:
         if (self->timer >= 0x14000) {
-            if (data_02097dc8->trig & 1) {
-                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
-                Ov015_SetMoney2(data_0214a424, self->unk_10->value);
+            if (gPad->trig & 1) {
+                SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
+                Ov015_SetMoney2(gStageFlags, self->unk_10->value);
                 self->unk_04->flags |= 2;
                 self->unk_08->flags |= 2;
                 self->unk_0c->flags |= 2;
@@ -154,9 +154,9 @@ BOOL func_ov015_0220f1a4(Ov015ResultPanel *self) {
         break;
     case 10: {
         u32 t;
-        if (self->timer >= self->unk_14->openLen && (t = data_02097dc8->trig & 1) != 0) {
+        if (self->timer >= self->unk_14->openLen && (t = gPad->trig & 1) != 0) {
             if (t) {
-                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
             }
             self->unk_04->flags |= 2;
             self->unk_08->flags |= 2;
@@ -199,7 +199,7 @@ BOOL func_ov015_0220f1a4(Ov015ResultPanel *self) {
 }
 
 Ov015Result *Ov015Result_Ctor(Ov015Result *self) {
-    SET_VT(self, data_ov015_022128ec);
+    SET_VT(self, Ov015Result_vtbl);
     self->state = 0;
     self->mode = 1;
     self->unk_0c = 0;
@@ -210,7 +210,7 @@ Ov015Result *Ov015Result_Ctor(Ov015Result *self) {
 void func_ov015_0220f470(Ov015Result *self) {
     Ov015ResultPanel *p = (Ov015ResultPanel *)Heap_Alloc(0x64);
     if (p != NULL) {
-        SET_VT(p, data_ov015_02213188);
+        SET_VT(p, Ov015ResultPanel_vtbl);
         p->unk_04 = NULL;
         p->unk_08 = NULL;
         p->unk_0c = NULL;
@@ -229,25 +229,25 @@ void func_ov015_0220f4d4(Ov015Result *self) {
     HEAP_PUSH(saved);
     DELETE_V(self->panel);
     HEAP_POP(saved);
-    if (data_ov002_021f0f9c != NULL) {
+    if (gOv002Stage != NULL) {
         Ov002Stage_Delete();
     }
 }
 
 void *Ov015ResultPanel_DtorDelete(Ov015ResultPanel *self) {
-    SET_VT(self, data_ov015_02213188);
+    SET_VT(self, Ov015ResultPanel_vtbl);
     func_ov015_0220ec40(self);
     Heap_Free(self);
     return self;
 }
 
-extern Ov015Globals data_ov015_02213320;
+extern Ov015Globals gOv015Globals;
 void Ov015Fade_Reset(Ov015Fade *self);
 void func_ov015_0220f878(Ov015Result *self);
 void func_ov015_0220fb78(Ov015Result *self);
 void func_ov015_0220e634(Ov015ResultPanel *a, s32 b);
 static inline void Ov015_SetStageSkip(s32 v) {
-    Ov002Stage *g = data_ov002_021f0f9c;
+    Ov002Stage *g = gOv002Stage;
     g->unk_14 = v;
     g->unk_18 = 0;
 }
@@ -256,10 +256,10 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
     switch (self->state) {
     case 0:
         Ov002Stage_Create();
-        data_ov002_021f0f9c->unk_1a = 0;
-        data_ov002_021f0f9c->unk_130 = 1;
-        data_ov002_021f0f9c->unk_134 = 2;
-        self->mode = data_ov015_02213320.mainSeq->unk_08;
+        gOv002Stage->unk_1a = 0;
+        gOv002Stage->unk_130 = 1;
+        gOv002Stage->unk_134 = 2;
+        self->mode = gOv015Globals.mainSeq->unk_08;
         switch (self->mode) {
         case 1:
             func_ov015_0220f878(self);
@@ -278,16 +278,16 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
         }
         self->state = 10;
     case 10:
-        if (data_ov002_021f0f9c != NULL) func_ov002_021e7ea8(data_ov002_021f0f9c);
+        if (gOv002Stage != NULL) func_ov002_021e7ea8(gOv002Stage);
         {
             s32 v = self->unk_0c;
-            Ov002Stage *g = data_ov002_021f0f9c;
+            Ov002Stage *g = gOv002Stage;
             if (v <= g->unk_d4 || v > g->unk_d0) {
                 break;
             }
         }
         func_ov015_0220e634(self->panel, self->mode);
-        data_ov002_021f0f9c->unk_128 = 0;
+        gOv002Stage->unk_128 = 0;
         self->state = 0x14;
     case 0x14: {
         BOOL ok = TRUE;
@@ -308,18 +308,18 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
             DELETE_V(self->panel);
             HEAP_POP(saved);
             Ov015_SetStageSkip(-1);
-            func_ov002_021e9b28(data_ov002_021f0f9c->unk_d0);
+            func_ov002_021e9b28(gOv002Stage->unk_d0);
             self->state = 0x1e;
         }
-        if (data_ov002_021f0f9c != NULL) func_ov002_021e7ea8(data_ov002_021f0f9c);
+        if (gOv002Stage != NULL) func_ov002_021e7ea8(gOv002Stage);
         break;
     }
     case 0x1e: {
         BOOL busy;
-        if (data_ov002_021f0f9c == NULL) {
+        if (gOv002Stage == NULL) {
             busy = 0;
         } else {
-            busy = func_ov002_021e7ea8(data_ov002_021f0f9c);
+            busy = func_ov002_021e7ea8(gOv002Stage);
         }
         if (busy == 0) {
             Ov002Stage_Delete();

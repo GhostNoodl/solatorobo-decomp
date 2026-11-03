@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern u8 data_ov014_02217aac[];
+extern u8 Ov014ActEx_0220eca0_vtbl[];
 extern char data_ov014_02217c6c[];
 extern Ov003Actor *Target_Get(void *p);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
@@ -79,7 +79,7 @@ void Ov014ActEx_0220dcf4_StateThrown(Ov014ActEx_0220dcf4 *self) {
             m->unk_54 = 0;
             m->unk_58 = 0;
         }
-        EffectMgr_StopLoop(data_0214a420, self->unk_d0);
+        EffectMgr_StopLoop(gEffectMgr, self->unk_d0);
         self->unk_d0 = NULL;
         self->fsm->st++;
         break;
@@ -97,7 +97,7 @@ void Ov014ActEx_0220dcf4_StateThrown(Ov014ActEx_0220dcf4 *self) {
         v.z = self->pos.z - FLD(s32, self, 0x78);
         Hit_ApplyInArea(self, a, self->targetObj->unk_08, self->targetObj->unk_0a, 0x20, &v, 0,
                             0x4000, 0, 3, 0x1000);
-        SndMgr_PlayAt(data_02097e4c, 0x82, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x82, &self->pos, 0);
         self->targetObj->unk_02 = 0;
         History_SetState(self->fsm, 0x15, 0);
         break;
@@ -107,7 +107,7 @@ void Ov014ActEx_0220dcf4_StateThrown(Ov014ActEx_0220dcf4 *self) {
 
 void Ov014ActEx_0220dcf4_StateHeld(Ov014ActEx_0220dcf4 *self) {
     if (self->fsm->st == 0) {
-        EffectMgr_StopLoop(data_0214a420, self->unk_d0);
+        EffectMgr_StopLoop(gEffectMgr, self->unk_d0);
         self->unk_d0 = NULL;
     }
     ActorEx_StateHeld(self);
@@ -115,7 +115,7 @@ void Ov014ActEx_0220dcf4_StateHeld(Ov014ActEx_0220dcf4 *self) {
 
 void Ov014ActEx_0220dcf4_StateDie(Ov014ActEx_0220dcf4 *self) {
     if (self->fsm->st == 0) {
-        EffectMgr_StopLoop(data_0214a420, self->unk_d0);
+        EffectMgr_StopLoop(gEffectMgr, self->unk_d0);
         self->unk_d0 = NULL;
     }
     ActorEx_StateDie(self);

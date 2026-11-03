@@ -51,7 +51,7 @@ struct Ov003Hit {
 };
 
 struct Ov003Game30;
-extern "C" Ov003Game30 *data_ov000_021ccd30;
+extern "C" Ov003Game30 *gMessageQueue;
 
 struct Ov003Slot3 {
     MtxFx43 sub[3]; // current matrices captured during the draw
@@ -131,7 +131,7 @@ struct Ov003Hp {
 
 static inline void Ov003Log_Add(s32 type, const char *text) {
     Ov003Log *log;
-    if (data_ov000_021ccd30->hud != NULL && (log = data_ov000_021ccd30->hud->log) != NULL) {
+    if (gMessageQueue->hud != NULL && (log = gMessageQueue->hud->log) != NULL) {
         log->entries[log->idx].type = type;
         if (text == NULL) {
             log->entries[log->idx].text[0] = 0;
@@ -145,30 +145,30 @@ static inline void Ov003Log_Add(s32 type, const char *text) {
     }
 }
 
-extern "C" Ov003Save *data_0214a424;
+extern "C" Ov003Save *gStageFlags;
 extern "C" s32 SndMgr_PlayPan(void *mgr, s32 a, s32 b);
 
 static inline void Ov003_AddMeter(u16 add) {
     u16 c;
-    if (data_0214a424->mode != 1) {
+    if (gStageFlags->mode != 1) {
         return;
     }
-    c = data_0214a424->unk_26;
+    c = gStageFlags->unk_26;
     if (c < 0x2d0) {
         c += add;
         if (c >= 0x2d0) {
-            SndMgr_PlayPan(data_02097e4c, 0x44, 5);
+            SndMgr_PlayPan(gSndMgr, 0x44, 5);
             c = 0x2d0;
         }
     } else {
         c = 0x2d0;
     }
-    data_0214a424->unk_26 = c;
+    gStageFlags->unk_26 = c;
 }
 
 static inline void Ov003Log_AddEmpty(s32 type) {
     Ov003Log *log;
-    if (data_ov000_021ccd30->hud != NULL && (log = data_ov000_021ccd30->hud->log) != NULL) {
+    if (gMessageQueue->hud != NULL && (log = gMessageQueue->hud->log) != NULL) {
         log->entries[log->idx].type = type;
         log->entries[log->idx].text[0] = 0;
         log->idx++;
@@ -180,14 +180,14 @@ static inline void Ov003Log_AddEmpty(s32 type) {
 
 extern "C" {
 
-extern Ov003Save *data_0214a424;
+extern Ov003Save *gStageFlags;
 extern Ov003Player *ActorMgr_FindPlayer(void);
 extern s16 *AnimEvent_Exec(s16 *p, Ov003Hit *hit);
 extern s32 Ov003_SurfaceSoundId(u32 color);
 extern u8 func_0206d37c(Ov003Save *save, s32 a);
 extern u16 Ov003_ScaleDamage(u16 v);
 extern u8 data_ov000_021c9fe4;
-extern void *data_02149ef8;
+extern void *gMsgRes;
 extern BOOL func_020621f8(void);
 extern Ov003Area *func_0206ef10(u16 id);
 extern s32 SndMgr_PlayPan(void *mgr, s32 a, s32 b);
@@ -210,11 +210,11 @@ s16 *func_ov003_021ce630(s16 *p, Ov003Hit *hit) {
             Ov003Vec pos = pl->pos;
             s32 id;
             if (pl->hard) {
-                SndMgr_PlayAt(data_02097e4c, 0, &pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0, &pos, 0);
             }
             id = Ov003_SurfaceSoundId(color);
             if (id >= 0) {
-                SndMgr_PlayAtPitch(data_02097e4c, id, &pos, -5);
+                SndMgr_PlayAtPitch(gSndMgr, id, &pos, -5);
             }
         }
         hit->flags |= 2;
@@ -239,12 +239,12 @@ u16 Ov003_ScaleDamage(u16 v) {
         return v;
     }
     if (ActorMgr_FindPlayer()->hard) {
-        u16 a = func_0206d37c(data_0214a424, 0);
+        u16 a = func_0206d37c(gStageFlags, 0);
         v = a + v;
     }
-    n = (u8)data_0214a424->bonus;
+    n = (u8)gStageFlags->bonus;
     if (n != 0) {
-        u8 rank = data_0214a424->rank;
+        u8 rank = gStageFlags->rank;
         if ((u8)(rank & ~0xc0) > 0x14) {
             n--;
         }
@@ -285,14 +285,14 @@ u16 Ov003_ScaleReward(u16 v) {
     if (!hard) {
         v = v + (((u32)v << 15) >> 16);
     } else {
-        base = func_0206d37c(data_0214a424, 1);
-        if (data_0214a424->mode == 1 && pl->boosted) {
+        base = func_0206d37c(gStageFlags, 1);
+        if (gStageFlags->mode == 1 && pl->boosted) {
             base += 0x32;
         }
     }
-    n = (u8)data_0214a424->bonus;
+    n = (u8)gStageFlags->bonus;
     if (n != 0) {
-        u8 rank = data_0214a424->rank;
+        u8 rank = gStageFlags->rank;
         if ((u8)(rank & ~0xc0) > 0x14) {
             n--;
         }
@@ -347,8 +347,8 @@ void Ov003_AddExp(u16 exp) {
     }
     boosted = FALSE;
     bonus = 0;
-    if (data_0214a424->mode == 1) {
-        area = func_0206ef10(data_0214a424->area | 0x8000);
+    if (gStageFlags->mode == 1) {
+        area = func_0206ef10(gStageFlags->area | 0x8000);
         if (area != NULL) {
             Ov003Player *pl;
             bonus = area->bonus;
@@ -367,7 +367,7 @@ void Ov003_AddExp(u16 exp) {
     func_02040a98(buf, bonus);
     Ov003Log_Add(5, buf);
     {
-        Ov003Save *s = data_0214a424;
+        Ov003Save *s = gStageFlags;
         s->exp += bonus;
         if (s->exp > 99999) {
             s->exp = 99999;
@@ -375,8 +375,8 @@ void Ov003_AddExp(u16 exp) {
     }
     {
         u16 n = 0;
-        s32 lv = data_0214a424->level;
-        u32 e = data_0214a424->exp;
+        s32 lv = gStageFlags->level;
+        u32 e = gStageFlags->exp;
         u32 *tbl;
         if ((u32)lv < 1) {
             lv = 1;
@@ -398,7 +398,7 @@ void Ov003_AddLevels(s32 n) {
     if (n == 0) {
         return;
     }
-    lv = data_0214a424->level;
+    lv = gStageFlags->level;
     if (lv >= data_ov000_021c9fe4) {
         return;
     }
@@ -413,8 +413,8 @@ void Ov003_AddLevels(s32 n) {
         fx->SetScaleAll(0x1400);
         pl->unk_b44 = fx->id;
         Ov003Log_AddEmpty(7);
-        if (data_02149ef8 != NULL) {
-            Ov003Log_Add(0, MsgRes_GetString(data_02149ef8, 0x4e));
+        if (gMsgRes != NULL) {
+            Ov003Log_Add(0, MsgRes_GetString(gMsgRes, 0x4e));
         }
         hp = pl->hp;
         hp->unk_0a = 0x78;
@@ -429,10 +429,10 @@ void Ov003_AddLevels(s32 n) {
         }
     }
     lv += (u8)n;
-    data_0214a424->level = lv;
+    gStageFlags->level = lv;
     {
         u32 *tbl = func_ov000_0219bf7c();
-        Ov003Save *s = data_0214a424;
+        Ov003Save *s = gStageFlags;
         if (s->exp < tbl[lv - 1]) {
             s->exp = tbl[lv - 1];
         }

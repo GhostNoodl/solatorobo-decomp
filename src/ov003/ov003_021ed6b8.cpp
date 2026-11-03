@@ -201,7 +201,7 @@ static inline void Ov003Lf_Notify(Ov003Lift *self, Ov003LfTgt *t) {
         func_020627dc(self->kind);
         func_020627ec(id);
         {
-            u8 *ac = &data_ov000_021ccd54->stageFlags;
+            u8 *ac = &gSceneCmd->stageFlags;
             *ac = 1;
             func_ov000_02182590(ac);
         }
@@ -210,7 +210,7 @@ static inline void Ov003Lf_Notify(Ov003Lift *self, Ov003LfTgt *t) {
 
 static inline void Ov003Lf_Sound(Ov003Lift *self) {
     if (VEC_Distance(&self->pos, &ActorMgr_FindPlayer()->pos) <= 0x3800) {
-        SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x17, &self->pos, 0);
         Field_ShakeCamera(5, 10);
     }
 }
@@ -356,7 +356,7 @@ void Ov003ActVt_021f9f40_StateIdle(Ov003Lift *self) {
                     func_020627dc(0);
                     func_020627ec(0);
                     {
-                        u8 *ac = &data_ov000_021ccd54->stageFlags;
+                        u8 *ac = &gSceneCmd->stageFlags;
                         *ac = 1;
                         func_ov000_02182590(ac);
                     }
@@ -407,7 +407,7 @@ void Ov003ActVt_021f9f40_StateIdle(Ov003Lift *self) {
         if (!flag) {
             return;
         }
-        SndMgr_PlayAt(data_02097e4c, 0x18, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x18, &self->pos, 0);
         {
             VecFx32 v;
             Ov003LfTgt *pl = ActorMgr_FindPlayer();
@@ -418,7 +418,7 @@ void Ov003ActVt_021f9f40_StateIdle(Ov003Lift *self) {
             v.y = pl->pos.y;
             v.z = pl->pos.z;
             Effect_SpawnId(0x44f, &v)->AddPosXYZ(0, pl->unk_68, 0);
-            SndMgr_PlayVolume(data_02097e4c, 0x4a, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x4a, -1, -1, -1);
         }
         return;
     }

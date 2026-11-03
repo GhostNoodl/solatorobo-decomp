@@ -1,8 +1,8 @@
 #ifndef OV000_TEXTLIST_H
 #define OV000_TEXTLIST_H
 
-// The ov000 text list (vtable data_ov000_021ccadc, 0xd4 bytes). Its constructor stores the UiObj
-// vtable and calls UiObj_Init, then stores data_ov000_021ccadc and calls func_ov000_021c6140,
+// The ov000 text list (vtable Ov000Vt_021ccadc_vtbl, 0xd4 bytes). Its constructor stores the UiObj
+// vtable and calls UiObj_Init, then stores Ov000Vt_021ccadc_vtbl and calls func_ov000_021c6140,
 // which clears the fields below; the dtors free them with Obj021c61a8_Release. The list shows one
 // row at a time: left/right move to the previous or next row (func_ov000_021c67e4), sliding the
 // old row out and the new one in over 15 frames, and A decides.

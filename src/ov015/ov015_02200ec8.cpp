@@ -2,15 +2,15 @@
 
 extern "C" {
 
-extern u8 data_ov015_022128ec[];
+extern u8 Ov015Result_vtbl[];
 void *func_ov015_02207738(Ov015Ship *p);
-extern u8 data_ov015_0221294c[];
+extern u8 Ov015Vt_0221294c_vtbl[];
 void *Model0218fe1c_FreeAnims(void *p);
 void *ResSet_ReleaseAll(void *p);
-extern u8 data_ov015_0221293c[];
+extern u8 Ov015Hud_vtbl[];
 extern char data_ov015_022128ab[];
 void LangData_LocalizePath(char *buf, const char *name);
-extern u8 data_ov015_02213198[];
+extern u8 Ov015MsgMgr_vtbl[];
 void func_ov015_02210b58(void *p);
 
 s32 func_ov015_02200ec8(Ov015Obj34 *self, Ov015Stat *st, s32 base) {
@@ -36,7 +36,7 @@ s32 func_ov015_02200ec8(Ov015Obj34 *self, Ov015Stat *st, s32 base) {
             }
             if ((self->unk_0c >> 12) % 20 == 0) {
 
-                SndMgr_PlayVolume(data_02097e4c, 0x48, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x48, -1, -1, -1);
             }
         }
         break;
@@ -73,7 +73,7 @@ void func_ov015_02200f74(Ov015Game *self) {
 }
 
 void *Ov015Result_DtorDelete(Ov015Result *self) {
-    SET_VT(self, data_ov015_022128ec);
+    SET_VT(self, Ov015Result_vtbl);
     func_ov015_0220f4d4(self);
     Heap_Free(self);
     return self;
@@ -117,7 +117,7 @@ void func_ov015_0220101c(Ov015Game *self) {
 }
 
 void *Ov015Vt_0221294c_DtorDelete(u8 *self) {
-    SET_VT(self, data_ov015_0221294c);
+    SET_VT(self, Ov015Vt_0221294c_vtbl);
     Model0218fe1c_FreeAnims(self + 0x57c);
     ResSet_ReleaseAll(self + 0x444);
     Model0218fe1c_FreeAnims(self + 0x35c);
@@ -130,7 +130,7 @@ void *Ov015Vt_0221294c_DtorDelete(u8 *self) {
 
 void *Ov015Hud_DtorDelete(Ov015Hud *self) {
     char buf[0x20];
-    SET_VT(self, data_ov015_0221293c);
+    SET_VT(self, Ov015Hud_vtbl);
     {
         void *saved;
         HEAP_PUSH(saved);
@@ -164,13 +164,13 @@ void *Ov015Hud_DtorDelete(Ov015Hud *self) {
         HEAP_POP(saved);
     }
     LangData_LocalizePath(buf, data_ov015_022128ab);
-    ResMgr_ReleaseByName(data_02097cdc, buf, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, buf, 7, 0);
     Heap_Free(self);
     return self;
 }
 
 void *Ov015MsgMgr_DtorDelete(Ov015MsgMgr *self) {
-    SET_VT(self, data_ov015_02213198);
+    SET_VT(self, Ov015MsgMgr_vtbl);
     func_ov015_02210b58(self);
     Heap_Free(self);
     return self;

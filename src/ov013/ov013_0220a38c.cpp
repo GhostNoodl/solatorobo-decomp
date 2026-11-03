@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void *data_ov013_0220bf4c;
+extern void *Ov013ActEx_0220a4e0_vtbl;
 
 struct Ov013Pair89 {
     u8 a;
@@ -85,7 +85,7 @@ Ov013ActVt_0220bc80 *Ov013ActVt_0220bc80_DtorDelete(Ov013ActVt_0220bc80 *self) {
 
 Ov013ActEx_0220a4e0 *Ov013ActEx_0220a4e0_Ctor(Ov013ActEx_0220a4e0 *self) {
     ActorEx_Ctor(self);
-    *(void **)self = &data_ov013_0220bf4c;
+    *(void **)self = &Ov013ActEx_0220a4e0_vtbl;
     self->unk_ce = 0;
     self->unk_d0 = 0;
     self->unk_d4.x = 0;
@@ -101,7 +101,7 @@ void Ov013ActEx_0220a4e0_Start(Ov013ActEx_0220a4e0 *self) {
     self->hit->unk_48 = self->radius;
 }
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov013_0220bfdc[];
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void HitSphere_Link(void *p);
@@ -132,10 +132,10 @@ static inline s32 Ov013_DistXZ3(const VecFx32 *a, const VecFx32 *b) {
 }
 
 static inline Ov003Actor *Ov013_GetActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Ov013ActEx_0220a4e0_StateThrown(Ov013ActEx_0220a4e0 *self) {
@@ -203,7 +203,7 @@ void Ov013ActEx_0220a4e0_StateThrown(Ov013ActEx_0220a4e0 *self) {
                     a->unk_d4 = self->unk_d0;
                 }
             }
-            SndMgr_PlayAt(data_02097e4c, 0x35, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x35, &self->pos, 0);
             History_SetState(self->fsm, 10, 0);
             m = self->hit;
             m->unk_9a_1 = 0;

@@ -32,11 +32,11 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_02149ef8;
-extern Ov003Current *data_ov000_021ccd40;
-extern u32 data_ov000_021ccd38;
-extern u32 data_ov003_021f78f4;
-extern u32 data_ov000_021cc060;
+extern void *gMsgRes;
+extern Ov003Current *gFinishingTask;
+extern u32 gLastTaskId;
+extern u32 Ov003TaskVt_021f78f4_vtbl;
+extern u32 Task_vtbl;
 extern const char *MsgRes_GetString(void *mgr, s32 id);
 extern void Heap_Free(void *p);
 
@@ -46,7 +46,7 @@ void Ov003_FormatMsg(void *self, char *dst, u32 size, const char *arg) {
     u32 max;
     MI_CpuFill8(dst, 0, size);
     max = size - 1;
-    fmt = MsgRes_GetString(data_02149ef8, 0x5c);
+    fmt = MsgRes_GetString(gMsgRes, 0x5c);
     while (*fmt != 0 && n < max) {
         if (*fmt == '%') {
             while (*arg != 0 && n < max) {
@@ -63,39 +63,39 @@ void Ov003_FormatMsg(void *self, char *dst, u32 size, const char *arg) {
 }
 
 bool Ov003Task_IsCurrent(void *p) {
-    BOOL r = (data_ov000_021ccd40 == p);
+    BOOL r = (gFinishingTask == p);
     return r;
 }
 
 void Ov003Task_SetCurrent(Ov003Current *p) {
-    if (data_ov000_021ccd40 != NULL) {
-        data_ov000_021ccd38 = data_ov000_021ccd40->unk_14;
+    if (gFinishingTask != NULL) {
+        gLastTaskId = gFinishingTask->unk_14;
     } else {
-        data_ov000_021ccd38 = 0;
+        gLastTaskId = 0;
     }
-    data_ov000_021ccd40 = p;
+    gFinishingTask = p;
 }
 
 BOOL Ov003Task_TryReleaseCurrent(Ov003Scene *self) {
     if (self->IsDone()) {
-        if (data_ov000_021ccd40 != NULL) {
-            data_ov000_021ccd38 = data_ov000_021ccd40->unk_14;
+        if (gFinishingTask != NULL) {
+            gLastTaskId = gFinishingTask->unk_14;
         } else {
-            data_ov000_021ccd38 = 0;
+            gLastTaskId = 0;
         }
-        data_ov000_021ccd40 = NULL;
+        gFinishingTask = NULL;
     }
     return TRUE;
 }
 
 void Ov003Task_ReleaseCurrent(Ov003Scene *self) {
     if (self->IsDone()) {
-        if (data_ov000_021ccd40 != NULL) {
-            data_ov000_021ccd38 = data_ov000_021ccd40->unk_14;
+        if (gFinishingTask != NULL) {
+            gLastTaskId = gFinishingTask->unk_14;
         } else {
-            data_ov000_021ccd38 = 0;
+            gLastTaskId = 0;
         }
-        data_ov000_021ccd40 = NULL;
+        gFinishingTask = NULL;
     }
 }
 
@@ -143,23 +143,23 @@ BOOL Ov003Task_IsReady(void) {
 }
 
 Ov003Scene *Ov003TaskVt_021f78f4_DtorDelete(Ov003Scene *self) {
-    *(void **)self = &data_ov003_021f78f4;
+    *(void **)self = &Ov003TaskVt_021f78f4_vtbl;
     self->Release();
-    *(void **)self = &data_ov000_021cc060;
+    *(void **)self = &Task_vtbl;
     self->Release();
     Heap_Free(self);
     return self;
 }
 
 Ov003Scene *Ov003TaskVt_021f78f4_Dtor(Ov003Scene *self) {
-    *(void **)self = &data_ov003_021f78f4;
+    *(void **)self = &Ov003TaskVt_021f78f4_vtbl;
     self->Release();
-    *(void **)self = &data_ov000_021cc060;
+    *(void **)self = &Task_vtbl;
     self->Release();
     return self;
 }
 
-// The deleting destructor (slot 0x04) of the object at 0x60 of Ov003Scene (vtable data_ov003_021f78e4).
+// The deleting destructor (slot 0x04) of the object at 0x60 of Ov003Scene (vtable Ov003Vt_021f78e4_vtbl).
 void *Ov003Vt_021f78e4_DtorDelete(VObj *self) {
     Heap_Free(self);
     return self;

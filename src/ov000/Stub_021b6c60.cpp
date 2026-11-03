@@ -14,7 +14,7 @@ void func_ov000_021b6c60(FieldMgr *self) {
     if (pl == NULL || (r = self->blockB) == NULL) {
         return;
     }
-    cam = &data_ov000_021ccd54->cam;
+    cam = &gSceneCmd->cam;
     if (cam != NULL) {
         s32 d = pl->pos.x - cam->base.at.x;
         s32 q;

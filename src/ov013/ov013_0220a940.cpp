@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void *data_ov013_0220beb4;
+extern void *Ov013ActEx_0220a9a8_vtbl;
 extern VecFx32 data_ov013_0220b3f8;
 extern VecFx32 data_ov013_0220b404;
 extern Ov003Actor *ActorMgr_FindPlayer(void);
@@ -30,7 +30,7 @@ void Ov013ActEx_0220a4e0_State0a(Ov013ActEx_0220a4e0 *self) {
 #pragma force_active on
 Ov013ActEx_0220a9a8 *Ov013ActEx_0220a9a8_Ctor(Ov013ActEx_0220a9a8 *self) {
     ActorEx_Ctor(self);
-    *(void **)self = &data_ov013_0220beb4;
+    *(void **)self = &Ov013ActEx_0220a9a8_vtbl;
     self->unk_ce = 0;
     self->unk_d0 = 0;
     self->unk_d4 = 0;
@@ -65,10 +65,10 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern BOOL Hit_ApplyInArea(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 
 static inline Ov003Actor *Ov013_FindActorA(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Ov013ActEx_0220a9a8_StateIdle(Ov013ActEx_0220a9a8 *self) {
@@ -80,7 +80,7 @@ void Ov013ActEx_0220a9a8_StateIdle(Ov013ActEx_0220a9a8 *self) {
             s32 k = 0x1b33;
             self->hit->radius = FX_Mul(self->unk_d4, k);
             self->unk_d0 = FX_Mul(self->unk_d4, 0x1000);
-            fx = Effect_Find_020657b0(data_0214a420, self->unk_bc);
+            fx = Effect_Find_020657b0(gEffectMgr, self->unk_bc);
             if (fx != NULL) {
                 VecFx32 v;
                 s32 d = self->unk_d4;

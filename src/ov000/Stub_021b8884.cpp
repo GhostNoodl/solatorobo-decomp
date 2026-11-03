@@ -52,8 +52,8 @@ void func_ov000_021b88d8(Obj021b88d8 *self) {
     GfxSys_StopFade(0);
     GfxSys_StopFade(2);
 
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     p = self->unk_30;
     if (p != NULL) {
         if (p != NULL) {
@@ -63,17 +63,17 @@ void func_ov000_021b88d8(Obj021b88d8 *self) {
         }
         self->unk_30 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_24 != NULL) {
         if (self->unk_24 != NULL) {
             self->unk_24->vfunc_04();
         }
         self->unk_24 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 
     GfxSys_SetFadePlanes(0x3f, 0);
 }

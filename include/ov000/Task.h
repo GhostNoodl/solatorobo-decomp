@@ -5,7 +5,7 @@
 
 #ifdef __cplusplus
 
-// The ov000 task base (vtable data_ov000_021cc060, 0x3c bytes; Task_Init clears it).
+// The ov000 task base (vtable Task_vtbl, 0x3c bytes; Task_Init clears it).
 // Tasks are kept in a list sorted by priority (data_ov000_021ccd3c, TaskList_Insert) and
 // looked up by id (Task_FindById). The shared update (slot 0x68, Task_Update) runs the
 // fade state machine below. The menu task classes derived from it are in ov000/MenuTask.h.

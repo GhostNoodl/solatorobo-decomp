@@ -4,8 +4,8 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
-extern s32 data_02097d78[5];
+extern void *gSndMgr;
+extern s32 gFadeState[5];
 BOOL Model_IsReady(void *a, s32 b);
 
 typedef struct {
@@ -18,7 +18,7 @@ static inline BOOL LoGBusy(FieldState *g) {
 }
 
 static inline BOOL LoGIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (LoGBusy(g)) {
             return FALSE;
@@ -32,7 +32,7 @@ static inline BOOL LoGIdle(void) {
 }
 
 static inline BOOL LoD78Idle(void) {
-    return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
+    return (gFadeState[3] == 0 && gFadeState[0] == 0) ? TRUE : FALSE;
 }
 
 BOOL Lo021cb6f0_CanUpdate(Lo021cb6f0 *self) {

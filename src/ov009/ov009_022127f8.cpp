@@ -44,7 +44,7 @@ void Ov009ActSpin_StateHurt(Ov009ActSpin *self) {
 }
 
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern void HitMesh_Unlink_0203f920(void *mesh);
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_02184508(void *g);
@@ -58,10 +58,10 @@ extern void Field_ShakeCamera(u8 a, u8 b);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
 
 static inline void *Ov009_FindActorD68(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Ov009ActSpin_StateDie(Ov009ActVt_02217a00 *self) {
@@ -81,7 +81,7 @@ void Ov009ActSpin_StateDie(Ov009ActVt_02217a00 *self) {
             self->speed = 0;
             self->velY = -0x71;
             self->friction = 0;
-            func_ov000_02184508(data_ov000_021ccd54);
+            func_ov000_02184508(gSceneCmd);
         }
         *self->hp = 0;
         s44 = self->unk_44;
@@ -89,7 +89,7 @@ void Ov009ActSpin_StateDie(Ov009ActVt_02217a00 *self) {
             s44->unk_22_0 = 0;
             s44->unk_22_1 = 0;
         }
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x483f, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x483f, 0x15);
         o = Ov009_FindActorD68(self->unk_f0);
         if (o != NULL) {
             Actor_SendMsgU8(o, self->unk_f0, 0x15);
@@ -105,10 +105,10 @@ void Ov009ActSpin_StateDie(Ov009ActVt_02217a00 *self) {
         if (t > 0xb4) {
             HitMesh_Unlink_0203f920(self->hitMesh);
             if (self->unk_1a == 0) {
-                func_ov000_02184548(data_ov000_021ccd54);
+                func_ov000_02184548(gSceneCmd);
             }
             Field_ShakeCamera(10, 0x28);
-            SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x56, -1, -1, -1);
             Effect_SpawnId(5, &self->pos)->SetScaleXYZ(0x7800, 0x7800, 0x7800);
             self->fsm->timer = 0x29;
             self->fsm->st++;
@@ -122,11 +122,11 @@ void Ov009ActSpin_StateDie(Ov009ActVt_02217a00 *self) {
             w.z = 0x5800;
             Spawn_ScatterEffect(&v, &w, 0x666, 0x1000, 3, 0x46);
             Field_ShakeCamera(8, 8);
-            SndMgr_PlayVolume(data_02097e4c, 0x35, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x35, -1, -1, -1);
         }
         VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
         if (self->unk_1a == 0) {
-            FieldCam *g = &data_ov000_021ccd54->cam;
+            FieldCam *g = &gSceneCmd->cam;
             g->unk_f4 = 0xf000;
             g->unk_da_2 = 1;
             g->unk_f8 = 0x1800;

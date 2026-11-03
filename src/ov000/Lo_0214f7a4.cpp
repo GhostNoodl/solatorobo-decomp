@@ -28,8 +28,8 @@ typedef struct {
 
 extern "C" {
 
-extern const u8 data_0208ba70[];
-extern const u8 data_0208bbc8[];
+extern const u8 TextWin_vtbl[];
+extern const u8 MainVt_0208bbc8_vtbl[];
 void TextWin_Init(void *obj);
 void TwScene_Init(void *obj);
 s32 MsgRes_GetLines(void *a, u16 b, s32 *out, s32 c);
@@ -63,14 +63,14 @@ void Lo021caa44_PostUpdate(Lo021caa44 *self) {
                     Obj0214c668 *w;
                     Obj0214c6b4 *obj;
                     s32 b;
-                    b = MsgRes_GetLines(data_ov000_021ccd24.unk_08->sub, self->unk_64, &a, 1);
+                    b = MsgRes_GetLines(gSceneResSet.unk_08->sub, self->unk_64, &a, 1);
                     w = (Obj0214c668 *)self->unk_60;
                     w->unk_204 = 0x1e;
                     obj = (Obj0214c6b4 *)Heap_Alloc(0xb80);
                     if (obj != NULL) {
-                        obj->vtbl = data_0208ba70;
+                        obj->vtbl = TextWin_vtbl;
                         TextWin_Init(obj);
-                        obj->vtbl = data_0208bbc8;
+                        obj->vtbl = MainVt_0208bbc8_vtbl;
                         TwScene_Init(obj);
                     }
                     w->unk_200 = obj;

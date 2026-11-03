@@ -43,8 +43,8 @@ void func_ov000_021597dc(Lo021cb3a8 *self) {
     if (self->hidden) {
         return;
     }
-    cont = data_02097dc8->cur;
-    trig = data_02097dc8->trig;
+    cont = gPad->cur;
+    trig = gPad->trig;
     if (cont == 0) {
         self->unk_b3 = 0;
     }

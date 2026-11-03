@@ -7,9 +7,9 @@ extern "C" {
 // 0x0214a41c pool literal plus offsets. They are defined before the first function, which
 // already reads them that way; MWCC lays out same-size definitions made before the first
 // function in reverse, so the counter is written first.
-u8 data_0214a41d;
-u8 data_0214a41c;
-EffectMgr *data_0214a420;
+u8 gEffectPolyIdCount;
+u8 gEffectPolyIdBase;
+EffectMgr *gEffectMgr;
 
 u8 Effect_NextPolyId_0206379c(void) {
     return Effect_NextPolyId();
@@ -135,7 +135,7 @@ void EffectObj_StopLoop(EffectObj *obj) {
 }
 
 void EffectObj_Register(EffectObj *obj) {
-    EffectMgr *mgr = data_0214a420;
+    EffectMgr *mgr = gEffectMgr;
     u32 id;
     do {
         if (mgr->nextId == 0) {
@@ -191,7 +191,7 @@ void EffectObj_Register(EffectObj *obj) {
     obj->parent = NULL;
     obj->child = NULL;
     obj->unk_d4 = 2;
-    mgr = data_0214a420;
+    mgr = gEffectMgr;
     if (mgr->head != NULL) {
         obj->next = mgr->head;
     } else {
@@ -203,7 +203,7 @@ void EffectObj_Register(EffectObj *obj) {
 
 void EffectObj_Unregister(EffectObj *obj) {
     EffectObj *prev;
-    EffectMgr *mgr = data_0214a420;
+    EffectMgr *mgr = gEffectMgr;
     EffectObj *cur;
     s32 i;
     s32 id;
@@ -230,8 +230,8 @@ void EffectObj_Unregister(EffectObj *obj) {
         if (id < 0) {
             return;
         }
-        if (func_0204a118(data_02097e4c, id)) {
-            SndMgr_Stop(data_02097e4c, id);
+        if (func_0204a118(gSndMgr, id)) {
+            SndMgr_Stop(gSndMgr, id);
         }
     }
 }
@@ -266,11 +266,11 @@ void EffectObj_UpdateSndCues(EffectObj *obj) {
         }
         if (Effect_CueHit(obj, cue->frame)) {
             if (obj->unk_c4) {
-                SndMgr_PlayAt(data_02097e4c, id, &obj->pos, 0);
+                SndMgr_PlayAt(gSndMgr, id, &obj->pos, 0);
             } else {
-                SndMgr_PlayVolume(data_02097e4c, id, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, id, -1, -1, -1);
             }
-            if (func_0204a118(data_02097e4c, id)) {
+            if (func_0204a118(gSndMgr, id)) {
                 cue->frame = 0x30000;
             }
         }
@@ -388,7 +388,7 @@ void Effect3D_Release(Effect3D *e) {
         e->anmObjs[4] = NULL;
     }
     if (e->unk_34) {
-        ResMgr_ReleaseByName(data_02097cdc, e->arcName, 7, 0);
+        ResMgr_ReleaseByName(gResMgr, e->arcName, 7, 0);
     }
     Effect3D_Init(e);
 }
@@ -760,8 +760,8 @@ extern EffectFile *ResList_FindType0(void *arc, const char *name);
 extern void EffectSetup_Init(struct EffectSetup *setup, void *data, VecFx32 *pos);
 extern EffectObj *func_02068544(struct EffectSetup *setup);
 extern void func_02068540(struct EffectSetup *setup);
-extern u32 data_0208c1d8[];
-extern u32 data_0208c2e4[];
+extern u32 EffectSetup_vtbl[];
+extern u32 EffectObj_vtbl[];
 
 void EffectObj_AddChild(EffectObj *obj, EffectObj *child) {
     EffectObj *p = obj->child;
@@ -840,7 +840,7 @@ BOOL EffectGroup_Setup(EffectGroup *g) {
         file = ResList_FindType0(g->arc, g->name);
         setup = (EffectSetup *)Heap_Alloc(0x28);
         if (setup != NULL) {
-            *(u32 **)setup = data_0208c1d8;
+            *(u32 **)setup = EffectSetup_vtbl;
         }
         g->setup = setup;
         EffectSetup_Init(setup, file->data, &g->pos);
@@ -870,15 +870,15 @@ BOOL EffectGroup_Setup(EffectGroup *g) {
         }
         g->child = first;
         first->parent = g;
-        saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (g->setup != NULL) {
             if (g->setup != NULL) {
                 g->setup->Delete();
             }
             g->setup = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     return TRUE;
 }
@@ -900,7 +900,7 @@ void EffectObj_SetParam(EffectObj *obj, s32 param) {
 }
 
 EffectSetup *EffectSetup_DtorDelete(EffectSetup *setup) {
-    *(u32 **)setup = data_0208c1d8;
+    *(u32 **)setup = EffectSetup_vtbl;
     func_02068540(setup);
     Heap_Free(setup);
     return setup;
@@ -1035,7 +1035,7 @@ static inline void EffectMgr_Reset(EffectMgr *m) {
 
 void EffectMgr_Create(void) {
     EffectMgr *m;
-    if (data_0214a420 != NULL) {
+    if (gEffectMgr != NULL) {
         return;
     }
     m = (EffectMgr *)Heap_Alloc(sizeof(EffectMgr));
@@ -1044,7 +1044,7 @@ void EffectMgr_Create(void) {
         GfxCamPos_Init(&m->camera);
         EffectMgr_Reset(m);
     }
-    data_0214a420 = m;
+    gEffectMgr = m;
 }
 
 static inline void EffectMgr_Clear2(EffectMgr *m) {
@@ -1061,23 +1061,23 @@ static inline void EffectMgr_Clear2(EffectMgr *m) {
 static inline void EffectMgr_Dtor(EffectMgr *m) {
     EffectMgr_Clear(m);
     EffectMgr_Clear2(m);
-    ResMgr_ReleaseByName(data_02097cdc, data_0208c330, 7, 0);
-    ResMgr_ReleaseByName(data_02097cdc, data_0208c33c, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_0208c330, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_0208c33c, 7, 0);
     EffectMgr_Reset(m);
 }
 
 void EffectMgr_Delete(void) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
-    if (data_0214a420 != NULL) {
-        EffectMgr *m = data_0214a420;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
+    if (gEffectMgr != NULL) {
+        EffectMgr *m = gEffectMgr;
         if (m != NULL) {
             EffectMgr_Dtor(m);
             Heap_Free(m);
         }
-        data_0214a420 = NULL;
+        gEffectMgr = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 void EffectMgr_FreeAll(EffectMgr *m) {
@@ -1094,7 +1094,7 @@ void EffectMgr_FreeAll(EffectMgr *m) {
 void EffectObj_Unregister(EffectObj *obj);
 
 EffectObj *EffectObj_DtorDelete(EffectObj *obj) {
-    *(u32 **)obj = data_0208c2e4;
+    *(u32 **)obj = EffectObj_vtbl;
     EffectObj_Unregister(obj);
     Heap_Free(obj);
     return obj;
@@ -1302,8 +1302,8 @@ void EffectMgr_Draw(EffectMgr *m) {
     s32 *cam;
     u32 n;
     if (!PauseNode_IsDrawPaused(m, TRUE) && m->state == 3) {
-        data_0214a41c = data_02097d48->unk_8b0[1];
-        data_0214a41d = 0;
+        gEffectPolyIdBase = gGfxSys->unk_8b0[1];
+        gEffectPolyIdCount = 0;
     } else {
         return;
     }
@@ -1335,7 +1335,7 @@ void EffectMgr_Draw(EffectMgr *m) {
             func_02063954(o);
         }
     } else {
-        mask = data_02097d48->unk_a30_4 ? 1 : 2;
+        mask = gGfxSys->unk_a30_4 ? 1 : 2;
         for (; o != NULL;) {
             EffectObj *n2 = o->drawNext;
             if (mask & (u8)o->unk_d4) {
@@ -1351,12 +1351,12 @@ void EffectMgr_Draw(EffectMgr *m) {
         Effect_GlbLookAt(&camPos, &camTarget, &camUp);
         Effect_GlbSetProj(&m->proj);
     }
-    n = data_0214a41d;
+    n = gEffectPolyIdCount;
     if (n >= 0x10) {
         n = 0x10;
-        data_0214a41d = n;
+        gEffectPolyIdCount = n;
     }
-    Gfx3DState_TakePolyIds(data_02097d48->unk_8b0, (u8)n);
+    Gfx3DState_TakePolyIds(gGfxSys->unk_8b0, (u8)n);
 }
 
 }

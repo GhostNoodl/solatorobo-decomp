@@ -134,14 +134,14 @@ struct Ov003FollowTgt {
     Rot16 rot;
 };
 
-extern void *data_ov000_021ccd68;
+extern void *gActorMgr;
 extern Ov003FollowTgt *ActorMgr_GetActor(void *mgr, u16 id);
 
 static inline Ov003FollowTgt *Ov003_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline void Ov003_RotY(Ov003Vec *out, s32 angle, const Ov003Vec *in) {

@@ -108,7 +108,7 @@ void Lo021cb798_DrawFrame(Obj02169e64 *self, s32 a, VecFx32 *pos, s32 c, s32 d) 
         pos->y += LO_FX_MUL(tbl.e[idx].y, k);
     }
     Ov000Vt_021cac0c_DrawFrame(self, a, pos, c, d);
-    g = data_02097d48;
+    g = gGfxSys;
     x = pos->x - 0x81000;
     y = pos->y - 0x61000;
     self->m0->unk_150 = pos->z;

@@ -70,8 +70,8 @@ void Ov009ActVt_02217aac_State21(Ov009ActVt_02217aac *self) {
         if (st->timer > 0x3c) {
             Shared_SetEventActor(self->kind, self->id);
             func_020627dc(4);
-            data_ov000_021ccd54->stageFlags = 1;
-            Group_UpdateActor(data_ov000_021ccd64, 0, self);
+            gSceneCmd->stageFlags = 1;
+            Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();
         }
         break;

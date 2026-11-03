@@ -10,7 +10,7 @@ extern "C" {
 void Ov003ActVt_021f8d58_Start(ActorEx *self) {
     FieldState *g;
     ActorEx_Start(self);
-    g = data_ov000_021ccd54;
+    g = gSceneCmd;
     if (g->unk_ca.c[0] == 9 && g->unk_ca.c[1] == 2 && g->unk_ca.c[2] == 1) {
         self->pos.x = -0x10000;
         self->pos.y = 0;

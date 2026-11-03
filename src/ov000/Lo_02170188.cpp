@@ -7,8 +7,8 @@
 
 extern "C" {
 
-extern u8 data_0208ba70[];
-extern u8 data_0208bbc8[];
+extern u8 TextWin_vtbl[];
+extern u8 MainVt_0208bbc8_vtbl[];
 BOOL func_ov000_02184498(FieldState *p);
 s32 MsgRes_GetLines(MsgRes *res, u16 id, char **out, s32 max);
 void *Heap_Alloc(u32 size);
@@ -22,7 +22,7 @@ static inline void SlideWin_SetText(SlideWin *e, char *text, s32 numLines) {
 }
 
 static inline BOOL IsFlag(void) {
-    return data_ov000_021ccd70->flag0 == 1 ? TRUE : FALSE;
+    return gFieldFade->flag0 == 1 ? TRUE : FALSE;
 }
 
 BOOL func_ov000_02170188(ListBuffer021cb940 *self, MsgRes *msg, u32 arg) {
@@ -31,7 +31,7 @@ BOOL func_ov000_02170188(ListBuffer021cb940 *self, MsgRes *msg, u32 arg) {
     u16 hi;
     s32 numLines;
     SlideWin *e;
-    p = data_ov000_021ccd54;
+    p = gSceneCmd;
     if ((u32)(p->unk_98 - 0x11) > 2) {
         return FALSE;
     }
@@ -44,7 +44,7 @@ BOOL func_ov000_02170188(ListBuffer021cb940 *self, MsgRes *msg, u32 arg) {
     if (!func_ov000_02184498(p)) {
         return FALSE;
     }
-    if (EffectMgr_FindByKey(data_0214a420, 0x2712) || EffectMgr_FindByKey(data_0214a420, 0x2713) || EffectMgr_FindByKey(data_0214a420, 0x191)) {
+    if (EffectMgr_FindByKey(gEffectMgr, 0x2712) || EffectMgr_FindByKey(gEffectMgr, 0x2713) || EffectMgr_FindByKey(gEffectMgr, 0x191)) {
         return FALSE;
     }
     if (IsFlag()) {
@@ -54,9 +54,9 @@ BOOL func_ov000_02170188(ListBuffer021cb940 *self, MsgRes *msg, u32 arg) {
     numLines = MsgRes_GetLines(msg, arg, &text, 1);
     e = (SlideWin *)Heap_Alloc(sizeof(SlideWin));
     if (e != NULL) {
-        VOBJ_SET_VTABLE(e, data_0208ba70);
+        VOBJ_SET_VTABLE(e, TextWin_vtbl);
         TextWin_Init(e);
-        VOBJ_SET_VTABLE(e, data_0208bbc8);
+        VOBJ_SET_VTABLE(e, MainVt_0208bbc8_vtbl);
         TwScene_Init(e);
     }
     self->win = e;

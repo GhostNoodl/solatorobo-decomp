@@ -7,7 +7,7 @@ struct Ov014A {
 
 extern "C" {
 
-extern u8 data_ov014_02217114[];
+extern u8 Ov014Act_021fa6a0_vtbl[];
 extern const VecFx32 data_ov014_02216468[];
 extern char data_ov014_022170d8[];
 extern char data_ov014_022170e7[];
@@ -24,7 +24,7 @@ extern void SceneCmd_Push25(void *a, s32 b);
 Ov003Actor *Ov014Act_021fa6a0_Ctor(Ov014Act_021fa6a0 *self) {
     u8 i;
     Ov003Actor_Ctor(self);
-    *(void **)self = data_ov014_02217114;
+    *(void **)self = Ov014Act_021fa6a0_vtbl;
     ResSet_Init(&self->unk_124);
     Model0218fe1c_Init(&self->mdl);
     Ov003ScriptList_Init(&self->scripts);
@@ -43,12 +43,12 @@ Ov003Actor *Ov014Act_021fa6a0_Ctor(Ov014Act_021fa6a0 *self) {
 
 static inline void Ov014_StopSnd(void) {
     if (ResMgr_IsLoaded(data_ov014_022170d8, 7)) {
-        ResMgr_ReleaseByName(data_02097cdc, data_ov014_022170d8, 7, 0);
+        ResMgr_ReleaseByName(gResMgr, data_ov014_022170d8, 7, 0);
     }
 }
 
 Ov014Act_021fa6a0 *Ov014Act_021fa6a0_Dtor(Ov014Act_021fa6a0 *self) {
-    *(void **)self = data_ov014_02217114;
+    *(void **)self = Ov014Act_021fa6a0_vtbl;
     Ov014_StopSnd();
     Ov003Vt_021f7974_Dtor(&self->scripts);
     Model0218fe1c_FreeAnims(&self->mdl);
@@ -58,7 +58,7 @@ Ov014Act_021fa6a0 *Ov014Act_021fa6a0_Dtor(Ov014Act_021fa6a0 *self) {
 }
 
 Ov014Act_021fa6a0 *Ov014Act_021fa6a0_DtorDelete(Ov014Act_021fa6a0 *self) {
-    *(void **)self = data_ov014_02217114;
+    *(void **)self = Ov014Act_021fa6a0_vtbl;
     Ov014_StopSnd();
     Ov003Vt_021f7974_Dtor(&self->scripts);
     Model0218fe1c_FreeAnims(&self->mdl);

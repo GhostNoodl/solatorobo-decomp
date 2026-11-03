@@ -12,7 +12,7 @@ void Task021ef430_PreUpdate(Task021ef430 *self) {
     case 8:
         break;
     case 0xc:
-        TaskHost_RequestSwitch(*(void **)&data_ov000_021ccd44, 0x12, 0);
+        TaskHost_RequestSwitch(*(void **)&gTaskHost, 0x12, 0);
         self->vfunc_4c();
         break;
     }

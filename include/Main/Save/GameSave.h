@@ -17,7 +17,7 @@ typedef struct GameSaveSlot {
     /* 0x0c */ u32 unk_0c_28 : 4;
 } GameSaveSlot; // size 0x10
 
-// Vtable data_0208ca9c, 0x4c bytes (ov000 GameSave_New allocates one; data_0208ca18 is a
+// Vtable MainVt_0208ca9c_vtbl, 0x4c bytes (ov000 GameSave_New allocates one; MainVt_0208ca18_vtbl is a
 // 0x4c variant that overrides slots 0x2c, 0x48 and 0x50, made by MainVt_0208ca18_New).
 struct GameSave : public SaveBase {
     virtual void vf74();
@@ -45,7 +45,7 @@ struct GameSave : public SaveBase {
     };
 };
 
-// Vtable data_0208c994 (0x58 bytes): a GameSave whose slot reset/save/load go through callbacks.
+// Vtable MainVt_0208c994_vtbl (0x58 bytes): a GameSave whose slot reset/save/load go through callbacks.
 struct GameSave0208c994 : public GameSave {
     /* 0x4c */ void (*onReset)(void *slot, void *dst, u32 size);
     /* 0x50 */ void (*onSave)(void *slot, void *dst, u32 size);
@@ -54,10 +54,10 @@ struct GameSave0208c994 : public GameSave {
 
 extern "C" {
 
-extern u8 data_0214a428[0x640];
-extern u32 data_0208b614[];
-extern u32 data_0208c994[];
-extern u32 data_0208ca9c[];
+extern u8 gStageFlagsSave[0x640];
+extern u32 SaveBase_vtbl[];
+extern u32 MainVt_0208c994_vtbl[];
+extern u32 MainVt_0208ca9c_vtbl[];
 extern char data_0208cb18[];
 extern void SaveBase_AllocBuffers(SaveBase *s);
 extern void SaveBase_SetState_020473ac(SaveBase *s, s32 state);

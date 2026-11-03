@@ -68,7 +68,7 @@ extern BOOL FS_OpenFileEx(void *file, const char *path, u32 mode);
 extern BOOL FS_SeekFile(void *file, int offset, int origin); // FS_SeekFile
 extern int FS_ReadFile(void *file, void *buf, u32 size);     // FS_ReadFile
 
-extern NNSSndArc *data_020961ec; // sCurrent
+extern NNSSndArc *sCurrent;
 
 static void InfoDisposeCallback(void *mem, u32 size, u32 data1, u32 data2);
 static void FatDisposeCallback(void *mem, u32 size, u32 data1, u32 data2);
@@ -121,7 +121,7 @@ void NNS_SndArcInit(NNSSndArc *arc, const char *filePath, NNSSndHeap *heap, BOOL
         return;
     }
 
-    data_020961ec = arc;
+    sCurrent = arc;
 }
 
 BOOL NNS_SndArcSetup(NNSSndArc *arc, NNSSndHeap *heap, BOOL symbolLoadFlag) {
@@ -186,18 +186,18 @@ BOOL NNS_SndArcSetup(NNSSndArc *arc, NNSSndHeap *heap, BOOL symbolLoadFlag) {
 }
 
 NNSSndArc *NNS_SndArcSetCurrent(NNSSndArc *arc) {
-    NNSSndArc *oldArc = data_020961ec;
-    data_020961ec = arc;
+    NNSSndArc *oldArc = sCurrent;
+    sCurrent = arc;
     return oldArc;
 }
 
 NNSSndArc *NNS_SndArcGetCurrent(void) {
-    return data_020961ec;
+    return sCurrent;
 }
 
 #define DEFINE_GET_INFO(name, type, field)                                                                             \
     type *name(int no) {                                                                                         \
-        NNSSndArc *arc = data_020961ec;                                                                                \
+        NNSSndArc *arc = sCurrent;                                                                                \
         const SndArcOffsetTable *table;                                                                                \
                                                                                                                        \
         table = GetOffsetTable(arc->info, arc->info->field);                                                           \
@@ -226,7 +226,7 @@ DEFINE_GET_INFO(NNS_SndArcGetGroupInfo, NNSSndArcGroupInfo, groupInfoOffset)
 
 #define DEFINE_GET_COUNT(name, field)                                                                                  \
     u32 name(void) {                                                                                                   \
-        NNSSndArc *arc = data_020961ec;                                                                                \
+        NNSSndArc *arc = sCurrent;                                                                                \
         const SndArcOffsetTable *table;                                                                                \
                                                                                                                        \
         table = GetOffsetTable(arc->info, arc->info->field);                                                           \
@@ -245,7 +245,7 @@ DEFINE_GET_COUNT(NNS_SndArcGetStrmCount, strmOffset)
 DEFINE_GET_COUNT(NNS_SndArcGetGroupCount, groupInfoOffset)
 
 u32 NNS_SndArcGetFileOffset(u32 fileId) {
-    NNSSndArc *arc = data_020961ec;
+    NNSSndArc *arc = sCurrent;
 
     if (fileId >= arc->fat->count) {
         return 0;
@@ -254,7 +254,7 @@ u32 NNS_SndArcGetFileOffset(u32 fileId) {
 }
 
 u32 NNS_SndArcGetFileSize(u32 fileId) {
-    NNSSndArc *arc = data_020961ec;
+    NNSSndArc *arc = sCurrent;
 
     if (fileId >= arc->fat->count) {
         return 0;
@@ -263,7 +263,7 @@ u32 NNS_SndArcGetFileSize(u32 fileId) {
 }
 
 s32 NNS_SndArcReadFile(u32 fileId, void *buffer, s32 size, s32 offset) {
-    NNSSndArc *arc = data_020961ec;
+    NNSSndArc *arc = sCurrent;
     const SndArcFileInfo *file;
     s32 totalReadSize;
     s32 readSize;
@@ -315,13 +315,13 @@ s32 NNS_SndArcReadFile(u32 fileId, void *buffer, s32 size, s32 offset) {
 }
 
 FSFileID NNS_SndArcGetFileID(void) {
-    NNSSndArc *arc = data_020961ec;
+    NNSSndArc *arc = sCurrent;
 
     return arc->fileId;
 }
 
 void *NNS_SndArcGetFileAddress(u32 fileId) {
-    NNSSndArc *arc = data_020961ec;
+    NNSSndArc *arc = sCurrent;
 
     if (fileId >= arc->fat->count) {
         return NULL;
@@ -330,25 +330,25 @@ void *NNS_SndArcGetFileAddress(u32 fileId) {
 }
 
 void NNS_SndArcSetFileAddress(u32 fileId, void *address) {
-    NNSSndArc *arc = data_020961ec;
+    NNSSndArc *arc = sCurrent;
 
     arc->fat->files[fileId].mem = address;
 }
 
 const char *func_020304dc(void) {
-    NNSSndArc *arc = data_020961ec;
+    NNSSndArc *arc = sCurrent;
 
     return arc->altPath;
 }
 
 u32 func_020304f0(void) {
-    NNSSndArc *arc = data_020961ec;
+    NNSSndArc *arc = sCurrent;
 
     return arc->altTop;
 }
 
 u32 func_02030504(void) {
-    NNSSndArc *arc = data_020961ec;
+    NNSSndArc *arc = sCurrent;
 
     return arc->altBottom;
 }

@@ -53,7 +53,7 @@ void Lo021cb7ec_DrawFrame(Obj02169588 *self, s32 a, VecFx32 *pos, s32 c, s32 d) 
     s32 x;
     s64 dd;
     Ov000Vt_021cac0c_DrawFrame(self, a, pos, c, d);
-    g = data_02097d48;
+    g = gGfxSys;
     dd = d;
     if (self->unk_a8 == 0) {
         return;

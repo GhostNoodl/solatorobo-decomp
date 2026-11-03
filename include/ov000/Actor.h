@@ -30,7 +30,7 @@ static inline ActorGroup *ActorMgr_FindGroupIn(ActorMgr *mgr, u16 id) {
 static inline ActorGroup *ActorMgr_FindGroup(u16 id) {
     ActorGroup *found = NULL;
     u16 key = id & 0xf000;
-    ActorGroup *group = data_ov000_021ccd68->head;
+    ActorGroup *group = gActorMgr->head;
     if (key == 0xf000) {
         found = group;
     } else {
@@ -48,7 +48,7 @@ static inline Actor *ActorMgr_FindActor(u16 id) {
     ActorGroup *group;
     Actor *actor;
     Actor *ret = NULL;
-    if (data_ov000_021ccd68 != NULL && id != 0xffff) {
+    if (gActorMgr != NULL && id != 0xffff) {
         group = ActorMgr_FindGroup(id);
         if (group != NULL) {
             for (actor = group->head; actor != NULL; actor = actor->next) {
@@ -168,7 +168,7 @@ BOOL Hit_PointInCylinder(VecFx32 *v, s32 speed, s32 b);
 u16 Pad_LookupDir(void *rng, s32 range);
 void Actor_Move(Actor *self, s32 turn);
 void Group_UpdateActor(void *a, s32 b, Actor *actor);
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 BOOL Hit_DiffInSphere(VecFx32 *pos, VecFx32 *target, fx32 dist);
 u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, u16 b);
 }

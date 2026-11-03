@@ -50,7 +50,7 @@ s32 func_ov000_021b7b50(FieldProp *self) {
             HitMesh_Link(self->hitMesh);
         }
         {
-            VecFx32 *g = &data_ov000_021ccd54->cam.base.eye;
+            VecFx32 *g = &gSceneCmd->cam.base.eye;
             s32 gx = g->x, gy = g->y, gz = g->z;
             d.x = self->model.trans.x;
             d.y = self->model.trans.y;

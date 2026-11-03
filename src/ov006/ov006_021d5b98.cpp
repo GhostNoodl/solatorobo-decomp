@@ -11,7 +11,7 @@
 #include "ov000/Group.h"
 #include "Main/Math/Rot16.h"
 
-/* The task with vtable data_ov006_021ebfc0 (func_ov006_021d5b04, task type 1). */
+/* The task with vtable Ov006Vt_021ebfc0_vtbl (func_ov006_021d5b04, task type 1). */
 struct ov006_Unk021d5b98 : public ov006_Task {
     u8 unk10[0xc];
     VObj *unk1C;
@@ -27,7 +27,7 @@ struct ov006_Unk021d5b98 : public ov006_Task {
 
 extern "C" {
 
-extern u8 data_ov006_021ebfc0[];
+extern u8 Ov006Vt_021ebfc0_vtbl[];
 extern char data_0214b105[];
 extern char data_ov006_021ec864[];
 void LangData_LocalizePath(char *dst, const char *src);
@@ -37,7 +37,7 @@ void func_ov006_021ccddc(ov006_Task *self);
 static inline void ov006_Unk021d5b98_dtor(ov006_Unk021d5b98 *self) {
     char buf[0x20];
     int i;
-    *(void **)self = data_ov006_021ebfc0;
+    *(void **)self = Ov006Vt_021ebfc0_vtbl;
     OV006_DELETE_OBJECT(self->unk1C);
     OV006_DELETE_OBJECT(self->unk20);
     OV006_DELETE_MODEL(self->unk24);
@@ -45,21 +45,21 @@ static inline void ov006_Unk021d5b98_dtor(ov006_Unk021d5b98 *self) {
     OV006_DELETE_OBJECT(self->unk2C);
     OV006_DELETE_OBJECT(self->unk30);
     OV006_DELETE_OBJECT(self->unk34);
-    ResMgr_ReleaseByName(data_02097cdc, data_0214b105, 7, 0);
-    ResMgr_ReleaseByName(data_02097cdc, data_0208cc94, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_0214b105, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0);
     LangData_LocalizePath(buf, "menu/skyrace");
-    ResMgr_ReleaseByName(data_02097cdc, buf, 7, 0);
-    ResMgr_ReleaseByName(data_02097cdc, data_ov006_021ec864, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, buf, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_ov006_021ec864, 7, 0);
     {
         // The name in a local makes the literal load come before the manager load.
         const char *s = "ef/effect3darc";
-        ResMgr_ReleaseByName(data_02097cdc, s, 7, 0);
+        ResMgr_ReleaseByName(gResMgr, s, 7, 0);
     }
-    ResMgr_ReleaseByName(data_02097cdc, "ef/effect3dtri", 7, 0);
+    ResMgr_ReleaseByName(gResMgr, "ef/effect3dtri", 7, 0);
     i = 0;
     for (; i < 6; i++) {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (self->unk70[i] != NULL) {
             if (self->unk70[i] != NULL) {
                 void *p = self->unk70[i];
@@ -68,7 +68,7 @@ static inline void ov006_Unk021d5b98_dtor(ov006_Unk021d5b98 *self) {
             }
             self->unk70[i] = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     func_ov006_021ccddc(self);
 }
@@ -111,7 +111,7 @@ struct ov006_Task021d6140 : public ov006_Task {
 extern "C" {
 
 extern const u16 data_ov006_021eb7a8[];
-extern ov006_Unk02097e48 *data_02097e48;
+extern ov006_Unk02097e48 *gSndQueue;
 
 void LangData_LocalizePath(char *dst, const char *src);
 void *ResSet_Init(void *p);
@@ -122,9 +122,9 @@ void GfxSys_UpdateFade(void);
 static inline void ov006_Game_SetColor(u8 r, u8 g, u8 b) {
     // The aggregate initializer keeps c in memory; its stores are dead but still emitted.
     FieldId c = {r, g, b};
-    FieldState *game = data_ov000_021ccd54;
+    FieldState *game = gSceneCmd;
     game->unk_cd = c;
-    game = data_ov000_021ccd54;
+    game = gSceneCmd;
     game->unk_d0 = game->unk_ca;
     game->unk_ca = game->unk_cd;
 }
@@ -148,14 +148,14 @@ BOOL Ov006Vt_021ebfc0_Load(ov006_Task021d6140 *self) {
         func_ov000_02193e5c(p, data_ov006_021eb7a8[i]);
     }
     {
-        ov006_Info021d6140 *info = (ov006_Info021d6140 *)data_ov006_021ec884->info;
+        ov006_Info021d6140 *info = (ov006_Info021d6140 *)gOv006SlotManager->info;
         ov006_Game_SetColor(0x12, info->lo, info->hi);
     }
     GfxSys_StartFadeOut(0x1000, 0, 0);
     GfxSys_StartFadeOut(0x1000, 0, 1);
     GfxSys_UpdateFade();
     {
-        ov006_Unk02097e48 *p = data_02097e48;
+        ov006_Unk02097e48 *p = gSndQueue;
         if (p->active) {
             p->unk6 = 0x8000;
             p->unk8 = 0xf0;
@@ -204,10 +204,10 @@ struct ov006_Task021d630c : public ov006_Task {
 
 extern "C" {
 
-extern Group *data_ov000_021ccd64;
-extern void *data_ov000_021ccd68;
-extern ov006_Unk021ccd6c *data_ov000_021ccd6c;
-extern void *data_02097e4c;
+extern Group *gGroup;
+extern void *gActorMgr;
+extern ov006_Unk021ccd6c *gFieldMgr;
+extern void *gSndMgr;
 
 void Group_RefreshAll(Group *self);
 void func_ov000_0218be54(Group *self);
@@ -240,11 +240,11 @@ BOOL Ov006Vt_021ebfc0_IsLoaded(ov006_Task021d630c *self) {
     zero = i;
     switch (self->subState) {
     case 0:
-        EffectMgr_FreeAll(data_0214a420);
-        data_ov000_021ccd64->unk_0c.bits.flag_0 = 1;
-        Group_RefreshAll(data_ov000_021ccd64);
-        ActorMgr_DestroyAll(data_ov000_021ccd68);
-        func_ov000_021b53f4(data_ov000_021ccd6c);
+        EffectMgr_FreeAll(gEffectMgr);
+        gGroup->unk_0c.bits.flag_0 = 1;
+        Group_RefreshAll(gGroup);
+        ActorMgr_DestroyAll(gActorMgr);
+        func_ov000_021b53f4(gFieldMgr);
         self->subState++;
         break;
     case 1: {
@@ -288,22 +288,22 @@ BOOL Ov006Vt_021ebfc0_IsLoaded(ov006_Task021d630c *self) {
         self->subState++;
         break;
     case 4:
-        if (data_0214a420->state >= 3) {
+        if (gEffectMgr->state >= 3) {
             self->subState++;
             break;
         }
-        EffectMgr_Update(data_0214a420);
+        EffectMgr_Update(gEffectMgr);
         break;
     case 5: {
         ov006_PartyEntry *tbl;
         u8 j;
         u8 n;
-        if (!FieldMgr_UpdateLoad(data_ov000_021ccd6c)) {
+        if (!FieldMgr_UpdateLoad(gFieldMgr)) {
             break;
         }
-        func_ov000_021b5dc0(data_ov000_021ccd6c);
-        tbl = (ov006_PartyEntry *)ov006_GetPartyValue(data_ov000_021ccd6c);
-        n = data_ov006_021ec884->numActive;
+        func_ov000_021b5dc0(gFieldMgr);
+        tbl = (ov006_PartyEntry *)ov006_GetPartyValue(gFieldMgr);
+        n = gOv006SlotManager->numActive;
         for (j = 0; j < n; j++) {
             VecFx32 pos;
             Rot16 rot;
@@ -323,16 +323,16 @@ BOOL Ov006Vt_021ebfc0_IsLoaded(ov006_Task021d630c *self) {
                 rot.y = zero;
                 rot.z = zero;
             }
-            slot = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, j);
+            slot = ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, j);
             if (slot->active) {
                 Ov006Racer *prop = Ov006Racer_New(slot->unkC, j, &pos, &rot);
                 if (prop != NULL) {
                     slot->actorId = prop->id;
-                    Obj0218c208_AddPoint(data_ov000_021ccd64, &pos, rot.y);
+                    Obj0218c208_AddPoint(gGroup, &pos, rot.y);
                 }
             }
-            if (j == data_ov006_021ec884->unk5) {
-                FieldCam *cam = &data_ov000_021ccd54->cam;
+            if (j == gOv006SlotManager->unk5) {
+                FieldCam *cam = &gSceneCmd->cam;
                 cam->unk_d8 |= 2;
                 cam->unk_e8 = pos;
                 cam->unk_da |= 2;
@@ -344,21 +344,21 @@ BOOL Ov006Vt_021ebfc0_IsLoaded(ov006_Task021d630c *self) {
                 cam->base.smooth = 1;
             }
         }
-        if (data_ov000_021ccd64 != NULL) {
-            func_ov000_0218be54(data_ov000_021ccd64);
+        if (gGroup != NULL) {
+            func_ov000_0218be54(gGroup);
         }
         self->subState++;
         break;
     }
     case 6:
-        if (!ActorMgr_IsReady(data_ov000_021ccd68)) {
+        if (!ActorMgr_IsReady(gActorMgr)) {
             break;
         }
-        func_0204a2f0(data_02097e4c, ((ov006_Info021d630c *)data_ov006_021ec884->info)->unk8);
+        func_0204a2f0(gSndMgr, ((ov006_Info021d630c *)gOv006SlotManager->info)->unk8);
         self->subState++;
         break;
     case 7:
-        if (SndMgr_IsLoadDone(data_02097e4c)) {
+        if (SndMgr_IsLoadDone(gSndMgr)) {
             self->subState = i - 1;
             result = TRUE;
         }
@@ -432,7 +432,7 @@ typedef struct ov006_Unk02097e40 {
 
 extern "C" {
 
-extern ov006_Unk02097e40 *data_02097e40;
+extern ov006_Unk02097e40 *gWhMgr;
 
 ov006_SlotManager *ov006_GetSlotManager(void);
 void ov006_Manager_DispatchMenuCb(int a, void *b, int c);
@@ -490,8 +490,8 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
         }
         self->unk1C = g;
         ov006_Unk021ddcc0_Load(g);
-        ov006_Gauge_Init(self->unk1C, data_ov006_021ec884->unk13C ? 2 : 1, data_ov006_021ec884->time, data_ov006_021ec884->unk144);
-        ov006_Gauge_Set(data_ov006_021ec884->info->unkB, self->unk1C);
+        ov006_Gauge_Init(self->unk1C, gOv006SlotManager->unk13C ? 2 : 1, gOv006SlotManager->time, gOv006SlotManager->unk144);
+        ov006_Gauge_Set(gOv006SlotManager->info->unkB, self->unk1C);
         model = (Model *)Heap_Alloc(sizeof(Model));
         if (model != NULL) {
             const char *name = "cefly1pic00";
@@ -504,14 +504,14 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
         self->unk24->flags |= 2;
         self->unk24->flags |= 0x400000;
         TexObj_SelectImage(self->unk24, 2, 0xffff);
-        info = (ov006_Info021d6724 *)data_ov006_021ec884->info;
+        info = (ov006_Info021d6724 *)gOv006SlotManager->info;
         p = (VecFx32021d6724 *)Heap_Alloc(0x30);
         if (p != NULL) {
             p = Ov006Vt_021ec1fc_Ctor(p);
         }
         self->unk28 = p;
         ov006_Unk021e16b0_Load(p);
-        ov006_Unk021e1e6c_PlayText(self->unk28, Param_Get(data_ov006_021ec884->unk6));
+        ov006_Unk021e1e6c_PlayText(self->unk28, Param_Get(gOv006SlotManager->unk6));
         ov006_Unk021e1ddc_SetLabel(self->unk28, "menu/skyrace_map", info->unk4, zero);
         VecFx32_SetXY(self->unk28, -0x2c, 0xc);
         p = (VecFx32021d6724 *)Heap_Alloc(0xa4);
@@ -530,8 +530,8 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
         VecFx32_SetXY(self->unk30, -0x2d, 9);
         self->unk30->unk50 = (info->unkC << 12) / 100;
         VecFx32_Set3(self->unk30, info->unkE << 12, zero, info->unk10 << 12);
-        ((ov006_Bits0e *)&data_ov000_021ccd54->pause[6])->b2 = 0;
-        data_02097dd0->frameWait = 2;
+        ((ov006_Bits0e *)&gSceneCmd->pause[6])->b2 = 0;
+        gSysState->frameWait = 2;
         data_ov006_021ec888->unk15E = 1;
         self->subState++;
         break;
@@ -545,7 +545,7 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
         self->subState = 10;
         break;
     case 10:
-        if (data_ov006_021ec860->unk1C != 0 && data_ov006_021ec888->state != 9) {
+        if (gOv006Manager->unk1C != 0 && data_ov006_021ec888->state != 9) {
             ov006_Msg021d6724 msg;
             msg.unk0 = 0;
             msg.unk2 = 0;
@@ -554,7 +554,7 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
             msg.unk8 = 0;
             msg.unkC = 0;
             ov006_Menu_SetOwnEntry(data_ov006_021ec888, 7, 3, &msg, 0x10);
-            if (func_02046ab4(data_02097e40) == 0) {
+            if (func_02046ab4(gWhMgr) == 0) {
                 self->subState = 20;
             } else {
                 self->subState = 30;
@@ -569,7 +569,7 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
             self->subState = 40;
             break;
         }
-        mask = data_02097e40->unk32;
+        mask = gWhMgr->unk32;
         if (mask == ov006_Menu_GetEntryMask_021e60e8(7, mask)) {
             ov006_Msg021d6724 msg;
             msg.unk0 = 0;
@@ -592,7 +592,7 @@ BOOL Ov006Vt_021ebfc0_Start(ov006_Task021d6724 *self) {
             self->subState = 40;
             break;
         }
-        mask = data_02097e40->unk32;
+        mask = gWhMgr->unk32;
         if (mask != ov006_Menu_GetEntryMask_021e60e8(8, mask)) {
             break;
         }

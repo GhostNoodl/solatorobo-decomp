@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov013_0220b88d[];
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void HitSphere_Link(ActorSub48 *p);
@@ -12,10 +12,10 @@ extern void Field_ShakeCamera(u8 a, u8 b);
 extern void Obj021984c8_UpdatePos(void *a, s32 b, s32 c);
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Ov013ActEx_021fdb70_State20(Ov013ActEx_021fdb70 *self) {
@@ -44,7 +44,7 @@ void Ov013ActEx_021fdb70_State20(Ov013ActEx_021fdb70 *self) {
         n->unk_22_0 = 0;
         n->unk_22_1 = 0;
         self->unk_94_1 = 1;
-        SndMgr_PlayAt(data_02097e4c, 0x34, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x34, &self->pos, 0);
         self->fsm->st++;
         self->fsm->timer = 0;
     }
@@ -59,7 +59,7 @@ void Ov013ActEx_021fdb70_State20(Ov013ActEx_021fdb70 *self) {
         u16 w = self->targetObj->unk_08 * 0.8f;
         Hit_ApplyInArea(self, self, w, 0x20, 1 << (t->id >> 12), NULL, NULL, self->radius + 0x1000, 0xccd, 100, 0x1000);
         Effect_SpawnId(0x66, &self->pos);
-        SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x17, &self->pos, 0);
         Field_ShakeCamera(0xc, 0x14);
         n = self->unk_44;
         n->unk_22_0 = 1;
@@ -209,7 +209,7 @@ void Ov013ActEx_021fdb70_StateIdle(Ov013ActEx_021fdb70 *self) {
         v.z = self->pos.z;
         v.y += 0x1000;
         Effect_SpawnId(0x12c, &v)->SetScaleXYZ(0x1800, 0x1800, 0x1800);
-        SndMgr_PlayAt(data_02097e4c, 0x11, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x11, &self->pos, 0);
         self->fsm->st = 0x1e;
         self->fsm->timer = 0;
         break;
@@ -227,7 +227,7 @@ void Ov013ActEx_021fdb70_StateIdle(Ov013ActEx_021fdb70 *self) {
         v.y = self->pos.y;
         v.z = self->pos.z;
         v.y += 0xccd;
-        o = Group_SpawnActor(data_ov000_021ccd64, &desc, &v, &self->rot_x, 0xffff);
+        o = Group_SpawnActor(gGroup, &desc, &v, &self->rot_x, 0xffff);
         o->flags_0 = 1;
         o->target = self->target;
         if (o->targetObj != NULL) {
@@ -245,7 +245,7 @@ void Ov013ActEx_021fdb70_StateIdle(Ov013ActEx_021fdb70 *self) {
         if (q->timer <= 0x5a) {
             break;
         }
-        p = Effect_Find_020657b0(data_0214a420, self->unk_d0);
+        p = Effect_Find_020657b0(gEffectMgr, self->unk_d0);
         if (p != NULL) {
             p->state = 4;
             self->unk_d0 = -1;
@@ -255,7 +255,7 @@ void Ov013ActEx_021fdb70_StateIdle(Ov013ActEx_021fdb70 *self) {
         v.z = self->pos.z;
         v.y += 0x666;
         o = Effect_SpawnId(0x196, &v);
-        SndMgr_PlayAt(data_02097e4c, 0x44, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x44, &self->pos, 0);
         o->SetScaleXYZ(0x800, 0x800, 0x800);
         self->unk_94_1 = 1;
         self->fsm->st = 0x29;
@@ -277,7 +277,7 @@ void Ov013ActEx_021fdb70_StateIdle(Ov013ActEx_021fdb70 *self) {
         v.z = self->pos.z;
         v.y += 0x666;
         Effect_SpawnId(5, &v)->SetScaleXYZ(0x3000, 0x3000, 0x3000);
-        SndMgr_PlayAt(data_02097e4c, 0x19, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x19, &self->pos, 0);
         Field_ShakeCamera(0xa, 0xf);
         self->fsm->st = 0x33;
         self->fsm->timer = 0;

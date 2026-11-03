@@ -34,7 +34,7 @@ extern char data_ov000_021cc66c[];
 extern char data_ov000_021cc61e[];
 extern char data_ov000_021cc672[];
 extern char data_ov000_021cc5e3[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Robo021ca458_Move(Robo021ca458 *self, BOOL a, s32 b);
 void Robo021ca458_WalkByPad(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
@@ -65,7 +65,7 @@ static inline BOOL IsBusy_021a4a6c(FieldState *g) {
 }
 
 static inline BOOL IsIdle_021a4a6c(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (IsBusy_021a4a6c(g)) {
             return FALSE;
@@ -79,16 +79,16 @@ static inline BOOL IsIdle_021a4a6c(void) {
 }
 
 static inline Actor *FindActor_021a4a6c(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline u8 *FindActor2_021a4a6c(u16 id) {
     u8 *a = NULL;
-    if (data_ov000_021ccd68 != NULL) {
-        a = (u8 *)ActorMgr_GetActor(data_ov000_021ccd68, id);
+    if (gActorMgr != NULL) {
+        a = (u8 *)ActorMgr_GetActor(gActorMgr, id);
     }
     return a;
 }
@@ -151,7 +151,7 @@ void Robo021ca458_State07(Robo021ca458 *self) {
             e->AddPosXYZ(0, (self->height >> 1) + (self->height >> 3), 0);
             e->SetScaleAll(0x1333);
             e->speed = 0x2ccd;
-            SndMgr_PlayVolume(data_02097e4c, 0x44, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x44, -1, -1, -1);
             self->speed = 0;
             self->friction = 0;
         } else if (self->unk_b22_3) {
@@ -318,7 +318,7 @@ void Robo021ca458_State07(Robo021ca458 *self) {
                 }
                 if (hit) {
                     u16 id;
-                    SndMgr_PlayAt(data_02097e4c, 0xc, &self->pos, 0);
+                    SndMgr_PlayAt(gSndMgr, 0xc, &self->pos, 0);
                     if (self->unk_b24_22 == 0) {
                         Model0218fe1c_SetAnimDelay(self->model, 4, 0);
                     }
@@ -338,7 +338,7 @@ void Robo021ca458_State07(Robo021ca458 *self) {
                         self->unk_b24_5 = 1;
                     }
                     if (self->unk_b24_5 == 2 && self->unk_b24_22 == 0) {
-                        SndMgr_PlayVolume(data_02097e4c, 0x302, -1, -1, -1);
+                        SndMgr_PlayVolume(gSndMgr, 0x302, -1, -1, -1);
                     }
                     id = self->target;
                     self->unk_b1c = id;
@@ -348,7 +348,7 @@ void Robo021ca458_State07(Robo021ca458 *self) {
                     if (sub->unk_18_1) {
                         Shared_ChangeFlags(0x3c0, 0x200);
                         Shared_SetEventActor(t->kind, t->id);
-                        FieldState *g = data_ov000_021ccd54;
+                        FieldState *g = gSceneCmd;
                         g->stageFlags = 1;
                         func_ov000_02182590((u8 *)g + 0xac);
                     }
@@ -356,7 +356,7 @@ void Robo021ca458_State07(Robo021ca458 *self) {
                     break;
                 }
             }
-        } else if (self->unk_b24_22 == 0 && self->unk_b22_3 && data_0214a424->bits18.mode == 1 && self->unk_b36 >= 6) {
+        } else if (self->unk_b24_22 == 0 && self->unk_b22_3 && gStageFlags->bits18.mode == 1 && self->unk_b36 >= 6) {
             History_SetState(self->fsm, 0xf, 0);
             break;
         }

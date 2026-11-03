@@ -7,7 +7,7 @@ struct Ov014Slot {
 
 extern "C" {
 
-extern u8 data_ov014_02217968[];
+extern u8 Ov014Act_02209280_vtbl[];
 extern char data_ov014_02217a0c[];
 extern Ov003Actor *Target_Get(void *p);
 extern s32 Actor_FindInRadius(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
@@ -131,7 +131,7 @@ void Ov014_SelectTrackByHp_022091ec(Ov003ScriptList *self, Ov003Actor *a) {
 Ov003Actor *Ov014Act_02209280_Ctor(Ov014Act_02209280 *self) {
     s32 i;
     Ov003Actor_Ctor(self);
-    *(void **)self = data_ov014_02217968;
+    *(void **)self = Ov014Act_02209280_vtbl;
     Ov003ScriptList_Init(&self->scripts);
     self->step = 0;
     self->unk_f4 = 0;
@@ -163,31 +163,31 @@ Ov003Actor *Ov014Act_02209280_Ctor(Ov014Act_02209280 *self) {
 
 static inline void Ov014_Kill1f0(Ov014Act_02209280 *self) {
     EffectObj *o;
-    if (data_0214a420 != NULL && (o = Effect_Find_020657b0(data_0214a420, self->unk_1f0)) != NULL) {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+    if (gEffectMgr != NULL && (o = Effect_Find_020657b0(gEffectMgr, self->unk_1f0)) != NULL) {
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (o != NULL) {
             if (o != NULL) {
                 o->Delete();
             }
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
 }
 
 Ov014Act_02209280 *Ov014Act_02209280_Dtor(Ov014Act_02209280 *self) {
-    *(void **)self = data_ov014_02217968;
+    *(void **)self = Ov014Act_02209280_vtbl;
     Ov014_Kill1f0(self);
-    ResMgr_ReleaseByName(data_02097cdc, data_ov014_02217a0c, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_ov014_02217a0c, 7, 0);
     Ov003Vt_021f7974_Dtor(&self->scripts);
     Ov003Actor_DtorBase(self);
     return self;
 }
 
 Ov014Act_02209280 *Ov014Act_02209280_DtorDelete(Ov014Act_02209280 *self) {
-    *(void **)self = data_ov014_02217968;
+    *(void **)self = Ov014Act_02209280_vtbl;
     Ov014_Kill1f0(self);
-    ResMgr_ReleaseByName(data_02097cdc, data_ov014_02217a0c, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_ov014_02217a0c, 7, 0);
     Ov003Vt_021f7974_Dtor(&self->scripts);
     Ov003Actor_DtorBase(self);
     Heap_Free(self);
@@ -197,14 +197,14 @@ Ov014Act_02209280 *Ov014Act_02209280_DtorDelete(Ov014Act_02209280 *self) {
 void Ov014Act_02209280_Init(Ov014Act_02209280 *self) {
     Ov003Actor_Init(self);
     ResMgr_Load(data_ov014_02217a0c, 7, 0);
-    SndMgr_RequestLoad_02049678(data_02097e4c, 4, 0xc, -1);
+    SndMgr_RequestLoad_02049678(gSndMgr, 4, 0xc, -1);
 }
 
 BOOL Ov014Act_02209280_IsReady(Ov014Act_02209280 *self) {
     BOOL r = TRUE;
     r = (r & Actor_IsReady(self)) ? TRUE : FALSE;
     r = (r & ResMgr_IsLoaded(data_ov014_02217a0c, 7)) ? TRUE : FALSE;
-    return (r & SndMgr_IsLoadDone(data_02097e4c)) ? TRUE : FALSE;
+    return (r & SndMgr_IsLoadDone(gSndMgr)) ? TRUE : FALSE;
 }
 
 void Ov014Act_02209280_HandleMsg(Ov014Act_02209280 *self, Ov014Msg *msg) {
@@ -293,11 +293,11 @@ void Ov014Act_02209280_Update(Ov014Act_02209280 *self) {
     }
     if (self->msg_flags != 0 && (self->msg_flags & 0x200)) {
         self->unk_fc = 0;
-        EffectMgr_StopLoop(data_0214a420, self->unk_1dc);
+        EffectMgr_StopLoop(gEffectMgr, self->unk_1dc);
         self->unk_1dc = NULL;
-        EffectMgr_StopLoop(data_0214a420, self->unk_1e0);
+        EffectMgr_StopLoop(gEffectMgr, self->unk_1e0);
         self->unk_1e0 = NULL;
-        EffectMgr_StopLoop(data_0214a420, self->unk_1e4);
+        EffectMgr_StopLoop(gEffectMgr, self->unk_1e4);
         self->unk_1e4 = 0;
     }
     switch (self->unk_b4) {

@@ -2,7 +2,7 @@
 #define OV003_PROP_H
 
 // The actors Factory_New6000 builds for ov003 (round acC): an ov000 Actor with one more word
-// (vtable data_ov000_021cc7cc, 0xb0 bytes, methods Ov000ActVt_021cc7cc_*), and the ov003
+// (vtable Ov000ActVt_021cc7cc_vtbl, 0xb0 bytes, methods Ov000ActVt_021cc7cc_*), and the ov003
 // subclasses whose members the factory constructs in place. Their dtors destroy those members and
 // then call the Actor dtor Actor_DtorBase. The subclasses without members only add words
 // (vtables 021fa4f0 and 021fa498: 0xb4, 021fa440: 0xb8, 021fa3e8: 0xc0; 021fa338 and 021fa2e0

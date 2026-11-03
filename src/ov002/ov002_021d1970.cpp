@@ -2,10 +2,10 @@
 
 extern "C" {
 
-extern VFunc data_ov000_021cb5a8[];
-extern VFunc data_ov000_021ccadc[];
-extern VFunc data_ov000_021cca70[];
-extern VFunc data_ov002_021ef674[];
+extern VFunc Lo021cb5a8_vtbl[];
+extern VFunc Ov000Vt_021ccadc_vtbl[];
+extern VFunc Ov000Vt_021cca70_vtbl[];
+extern VFunc Ov002Vt_021ef674_vtbl[];
 void func_ov000_021c6140(TextList *self);
 void ListRow_Init(void *self);
 void func_ov000_021c2208(void *self);
@@ -30,12 +30,12 @@ void Task021ef69c_Start(Task021ef69c *self) {
     if (self->vfunc_28()) {
         return;
     }
-    g = data_02149ef8;
+    g = gMsgRes;
     p = (UiObj *)Heap_Alloc(0xd4);
     if (p != NULL) {
-        *(VFunc **)p = data_ov000_021cac60;
+        *(VFunc **)p = UiObj_vtbl;
         p->vfunc_28();
-        *(VFunc **)p = data_ov000_021ccadc;
+        *(VFunc **)p = Ov000Vt_021ccadc_vtbl;
         func_ov000_021c6140((TextList *)p);
     }
     self->unk_3c = (TextList *)p;
@@ -51,18 +51,18 @@ void Task021ef69c_Start(Task021ef69c *self) {
         ListRow021cca70 *q;
         Pair021d1970 *tbl;
         u32 count;
-        tbl = (Pair021d1970 *)DataRes_GetTable(data_02fe152c, 11);
-        count = DataRes_GetCount(data_02fe152c, 11);
+        tbl = (Pair021d1970 *)DataRes_GetTable(gDataRes, 11);
+        count = DataRes_GetCount(gDataRes, 11);
         for (i = 0; i < count; i++) {
             id = tbl[i].b;
             if (func_0206f788(id)) {
                 func_0206eed0(id);
                 q = (ListRow021cca70 *)Heap_Alloc(sizeof(ListRow021cca70));
                 if (q != NULL) {
-                    *(VFunc **)q = data_ov002_021ef684;
+                    *(VFunc **)q = Ov002Vt_021ef684_vtbl;
                     ListRow_Init(q);
-                    *(VFunc **)q = data_ov000_021cca70;
-                    *(VFunc **)&q->item = data_ov002_021ef674;
+                    *(VFunc **)q = Ov000Vt_021cca70_vtbl;
+                    *(VFunc **)&q->item = Ov002Vt_021ef674_vtbl;
                     func_ov000_021c2208(&q->item);
                     func_ov000_021c2f10(q);
                 }
@@ -82,11 +82,11 @@ void Task021ef69c_Start(Task021ef69c *self) {
     Obj021c64b4_SetText(self->unk_3c, ((ListRow021cca70 *)self->unk_3c->cur)->unk_40);
     p = (UiObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
-        *(VFunc **)p = data_ov000_021cac60;
+        *(VFunc **)p = UiObj_vtbl;
         p->vfunc_28();
-        *(VFunc **)p = data_ov000_021caec8;
+        *(VFunc **)p = UiList_vtbl;
         p->vfunc_28();
-        *(VFunc **)p = data_ov000_021cb5a8;
+        *(VFunc **)p = Lo021cb5a8_vtbl;
         p->vfunc_28();
     }
     self->unk_40 = (Lo021cb5a8 *)p;

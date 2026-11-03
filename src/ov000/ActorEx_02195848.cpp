@@ -6,7 +6,7 @@
 #define SC(r) FX_SinCosTable_[((r) >> 4) * 2], FX_SinCosTable_[((r) >> 4) * 2 + 1]
 
 extern "C" {
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern u8 data_ov000_021cc456[];
 BOOL Model0218fe1c_SetAnim(void *a, void *b, s32 c, s32 d);
 void Model0218fe1c_SetLoop(void *a);
@@ -20,7 +20,7 @@ void Body_Update(void *p, s32 a, s32 b, s32 c);
 void HitMesh_SetMtx(void *p, MtxFx43 *m);
 
 static inline BOOL PlayerIdle02195848(void) {
-    FieldState *pl = data_ov000_021ccd54;
+    FieldState *pl = gSceneCmd;
     if (pl != NULL) {
         if (pl->head != pl->tail ? TRUE : FALSE) {
             return FALSE;
@@ -97,7 +97,7 @@ void ActorEx_StateIdle(VObj *obj) {
                 st->timer++;
                 if ((s32)st->timer > 0x1fe) {
                     if ((s32)st->timer > 0x258) {
-                        Group_UpdateActor(data_ov000_021ccd64, 0, self);
+                        Group_UpdateActor(gGroup, 0, self);
                         obj->vfunc_08();
                         break;
                     }

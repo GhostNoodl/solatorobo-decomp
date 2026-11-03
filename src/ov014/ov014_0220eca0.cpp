@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern u8 data_ov014_02217aac[];
+extern u8 Ov014ActEx_0220eca0_vtbl[];
 extern char data_ov014_02217c6c[];
 extern Ov003Actor *Target_Get(void *p);
 extern Ov003Actor *ActorMgr_FindPlayer(void);
@@ -21,7 +21,7 @@ extern void Model0218fe1c_ResumeAnim(Model0218fe1c *p);
 #pragma force_active on
 Ov014ActEx_0220eca0 *Ov014ActEx_0220eca0_Ctor(Ov014ActEx_0220eca0 *self) {
     ActorEx_Ctor(self);
-    *(void **)self = data_ov014_02217aac;
+    *(void **)self = Ov014ActEx_0220eca0_vtbl;
     self->unk_ce = 0;
     self->unk_d0 = 0x1000;
     self->unk_d4 = 0x1000;
@@ -39,22 +39,22 @@ Ov014ActEx_0220eca0 *Ov014ActEx_0220eca0_Ctor(Ov014ActEx_0220eca0 *self) {
 #pragma force_active reset
 
 Ov014ActEx_0220eca0 *Ov014ActEx_0220eca0_Dtor(Ov014ActEx_0220eca0 *self) {
-    *(void **)self = data_ov014_02217aac;
-    SndMgr_Stop(data_02097e4c, 0x38);
+    *(void **)self = Ov014ActEx_0220eca0_vtbl;
+    SndMgr_Stop(gSndMgr, 0x38);
     ActorEx_DtorBase(self);
     return self;
 }
 
 Ov014ActEx_0220eca0 *Ov014ActEx_0220eca0_DtorDelete(Ov014ActEx_0220eca0 *self) {
-    *(void **)self = data_ov014_02217aac;
-    SndMgr_Stop(data_02097e4c, 0x38);
+    *(void **)self = Ov014ActEx_0220eca0_vtbl;
+    SndMgr_Stop(gSndMgr, 0x38);
     ActorEx_DtorBase(self);
     Heap_Free(self);
     return self;
 }
 
 void Ov014ActEx_0220eca0_Draw(Ov014ActEx_0220eca0 *self) {
-    self->model->polyId = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
+    self->model->polyId = Gfx3DState_NextPolyId(gGfxSys->unk_8b0);
     ActorEx_Draw(self);
 }
 
@@ -81,7 +81,7 @@ extern BOOL Actor_IsDead(Ov003Actor *p);
 extern void func_ov014_0220f20c(Actor *self, void *a, void *b, void *c);
 
 static inline void Ov014_Flash(u8 c) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     g->cam.base.shakeX = 0;
     g->cam.base.shakeY = 1;
     g->cam.base.shakeZ = 0;
@@ -106,7 +106,7 @@ void Ov014ActEx_0220eca0_StateIdle(Ov014ActEx_0220eca0 *self) {
     case 0:
         self->fsm->timer = 0x1e;
         self->fsm->st++;
-        SndMgr_PlayAt(data_02097e4c, 0x82, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x82, &self->pos, 0);
     case 1: {
         ActorSub40 *w = self->fsm;
         if (w->timer != 0) {
@@ -115,8 +115,8 @@ void Ov014ActEx_0220eca0_StateIdle(Ov014ActEx_0220eca0 *self) {
         if (w->timer == 0 && self->model->anim_state == 1) {
             Ov014_Release(self);
             Ov014_Flash(0x28);
-            SndMgr_PlayAt(data_02097e4c, 0x1b, &self->pos, 0);
-            SndMgr_PlayAt(data_02097e4c, 0x38, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x1b, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x38, &self->pos, 0);
             self->fsm->timer = self->unk_ce;
             self->fsm->st++;
         }
@@ -128,7 +128,7 @@ void Ov014ActEx_0220eca0_StateIdle(Ov014ActEx_0220eca0 *self) {
         ActorSub40 *w;
         if (pl == NULL || Actor_IsDead(pl)) {
             self->fsm->timer = 0;
-            SndMgr_Stop(data_02097e4c, 0x38);
+            SndMgr_Stop(gSndMgr, 0x38);
         }
         t = self->fsm->timer;
         if (t % 4 == 1) {
@@ -154,7 +154,7 @@ void Ov014ActEx_0220eca0_StateIdle(Ov014ActEx_0220eca0 *self) {
         }
         if (w->timer == 0 && self->model->anim_state == 2) {
             Ov014_Release(self);
-            SndMgr_Stop(data_02097e4c, 0x38);
+            SndMgr_Stop(gSndMgr, 0x38);
             self->fsm->st++;
         }
         break;
@@ -166,7 +166,7 @@ void Ov014ActEx_0220eca0_StateIdle(Ov014ActEx_0220eca0 *self) {
             done = TRUE;
         }
         if (Model0218fe1c_IsAnimDone(self->model) || done) {
-            SndMgr_Stop(data_02097e4c, 0x38);
+            SndMgr_Stop(gSndMgr, 0x38);
             self->model->visible = 0;
             History_SetState(self->fsm, 0x15, 0);
             self->fsm->st++;

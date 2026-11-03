@@ -7,7 +7,7 @@
 
 extern "C" {
 
-extern Ov008Mgr *data_ov008_021d0500;
+extern Ov008Mgr *gOv008Mgr;
 void func_02062524(void);
 void SceneCmd_Push26(void *p);
 Ov008Def *Lang_GetGroup(u8 id);
@@ -25,8 +25,8 @@ s32 Ov008Menu_GetPadBottom(void) {
 BOOL func_ov008_021cf790(Ov008Menu *self, Ov008Sel *sel) {
     Ov008Mgr *m;
     if (sel == NULL) {
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
-        m = data_ov008_021d0500;
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
+        m = gOv008Mgr;
         if (!m->flags.b4) {
             m->flags.b4 = 1;
             m->unk_11c = 0x2000;
@@ -37,11 +37,11 @@ BOOL func_ov008_021cf790(Ov008Menu *self, Ov008Sel *sel) {
         if (m->talk != NULL) {
             m->talk->flags |= 2;
         }
-        SceneCmd_Push1e(data_ov000_021ccd54);
+        SceneCmd_Push1e(gSceneCmd);
         return FALSE;
     }
-    data_ov008_021d0500->sel = sel;
-    data_ov008_021d0500->state = 0xb;
+    gOv008Mgr->sel = sel;
+    gOv008Mgr->state = 0xb;
     return TRUE;
 }
 
@@ -51,7 +51,7 @@ BOOL func_ov008_021cf844(Ov008Menu *self, Ov008Sel *sel) {
     if (sel == NULL) {
         return TRUE;
     }
-    m = data_ov008_021d0500;
+    m = gOv008Mgr;
     id = sel->id;
     m->caption->next = id;
     m->unk_112 = id;
@@ -61,15 +61,15 @@ BOOL func_ov008_021cf844(Ov008Menu *self, Ov008Sel *sel) {
 BOOL func_ov008_021cf878(Ov008Menu *self, Ov008Sel *sel) {
     u16 id;
     if (sel == NULL) {
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         return FALSE;
     }
     id = sel->id;
     if (id == 0) {
         BOOL b;
         data_02fe1534.unk_44 = 2;
-        data_02fe1534.unk_68 = data_ov008_021d0500->sel->id;
-        data_ov008_021d0500->unk_fc->v38(1);
+        data_02fe1534.unk_68 = gOv008Mgr->sel->id;
+        gOv008Mgr->unk_fc->v38(1);
         data_02fe1534.unk_44 = 0;
         data_02fe1534.unk_68 = 0;
         b = TRUE;
@@ -78,18 +78,18 @@ BOOL func_ov008_021cf878(Ov008Menu *self, Ov008Sel *sel) {
         }
         if (b) {
             func_02062524();
-            SceneCmd_Push26(data_ov000_021ccd54);
-            data_ov008_021d0500->flags.b1 = 1;
-            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+            SceneCmd_Push26(gSceneCmd);
+            gOv008Mgr->flags.b1 = 1;
+            SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
         } else {
-            SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         }
         return FALSE;
     }
     if (id != 1) {
         return TRUE;
     }
-    SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
     return FALSE;
 }
 
@@ -98,7 +98,7 @@ void func_ov008_021cf9b8(Ov008Mgr *m, u32 id) {
     Ov008Def *e = Lang_GetGroup(id);
     Ov008Item *p;
     m->menu->v74(e->unk_00, id, 0xffff, 0xffff);
-    if (!DataRes_ReadEntry(data_02fe152c, 0, 0x201, id)) {
+    if (!DataRes_ReadEntry(gDataRes, 0, 0x201, id)) {
         return;
     }
     p = UiList_GetItemById(m->menu, id);

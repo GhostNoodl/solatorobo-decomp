@@ -16,12 +16,12 @@ typedef struct {
 
 extern "C" {
 
-extern Obj021ccd70 *data_ov000_021ccd70;
+extern Obj021ccd70 *gFieldFade;
 void *Heap_Alloc(u32 size);
 
 void func_ov000_021bc274(void) {
     Obj021ccd70 *p;
-    if (data_ov000_021ccd70 != NULL) {
+    if (gFieldFade != NULL) {
         return;
     }
     p = (Obj021ccd70 *)Heap_Alloc(sizeof(Obj021ccd70));
@@ -38,7 +38,7 @@ void func_ov000_021bc274(void) {
         p->unk_24 = 0;
         p->unk_28 = 0;
     }
-    data_ov000_021ccd70 = p;
+    gFieldFade = p;
 }
 
 }

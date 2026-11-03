@@ -40,11 +40,11 @@ static inline void Reset12c0(Robo021ca458 *self, BOOL flag) {
         anm->b1 = 0;
     }
     self->mdl0.unk_cc = -1;
-    data_0214a424->bits18.flag8 = 0;
-    data_0214a424->bits18.flag9 = 0;
+    gStageFlags->bits18.flag8 = 0;
+    gStageFlags->bits18.flag9 = 0;
     Shared_ChangeFlags(3, 1);
     if (flag) {
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
     }
 }
 
@@ -58,8 +58,8 @@ void func_ov000_021b1814(Robo021ca458 *self, BOOL flag, BOOL mode) {
     if (!self->unk_b24_1) {
         Reset12c0(self, flag);
     }
-    if (data_0214a424->bits18.mode == 2) {
-        data_0214a424->bits18.mode = 1;
+    if (gStageFlags->bits18.mode == 2) {
+        gStageFlags->bits18.mode = 1;
     }
     if (mode) {
         self->unk_b22_4 = 1;
@@ -80,7 +80,7 @@ void func_ov000_021b1814(Robo021ca458 *self, BOOL flag, BOOL mode) {
     }
     Shared_ChangeFlags(0xc00, 0x800);
     if (flag) {
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
     }
 }
 
@@ -102,7 +102,7 @@ void func_ov000_021b1a54(Robo021ca458 *self, BOOL flag) {
         return;
     }
     st = 0;
-    if (data_0214a424->bits18.mode == 1) {
+    if (gStageFlags->bits18.mode == 1) {
         if (self->unk_b22_5) {
             st = 3;
         } else {
@@ -119,7 +119,7 @@ void func_ov000_021b1a54(Robo021ca458 *self, BOOL flag) {
     SetSt(self, st);
     Shared_ChangeFlags(0xc00, 0x400);
     if (flag) {
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
     }
 }
 
@@ -152,8 +152,8 @@ void func_ov000_021b1b88(Robo021ca458 *self, s32 mode) {
                 anm->b1 = 0;
             }
             self->mdl0.unk_cc = -1;
-            data_0214a424->bits18.flag8 = 0;
-            data_0214a424->bits18.flag9 = 0;
+            gStageFlags->bits18.flag8 = 0;
+            gStageFlags->bits18.flag9 = 0;
             Shared_ChangeFlags(3, 1);
         }
         st = 5;

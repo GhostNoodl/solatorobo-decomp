@@ -24,9 +24,9 @@ void Ov014Act_021fa6a0_Init(Ov014Act_021fa6a0 *self) {
         }
         n->unk_00 = 0;
     }
-    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
-    SceneCmd_Push25(data_ov000_021ccd54, 9);
-    SceneCmd_Push25(data_ov000_021ccd54, 10);
+    SndMgr_LoadHeapState(gSndMgr, 1, 1);
+    SceneCmd_Push25(gSceneCmd, 9);
+    SceneCmd_Push25(gSceneCmd, 10);
     ResMgr_Load(data_ov014_022170d8, 7, 0);
 }
 

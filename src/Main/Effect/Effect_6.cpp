@@ -22,8 +22,8 @@ extern char data_0208c49c[];
 extern char data_0208c4a2[];
 extern char data_0208c4a8[];
 extern char data_0208c4af[];
-extern u32 data_0208c23c[];
-extern u32 data_0208c2e4[];
+extern u32 EffectGroup_vtbl[];
+extern u32 EffectObj_vtbl[];
 extern void EffectObj_Register(EffectObj *obj);
 extern void EffectGroup_Reset(EffectGroup *g);
 extern void EffectGroup_SetName(EffectGroup *g, const char *prefix, const char *name, const char *suffix);
@@ -52,7 +52,7 @@ extern char data_0208c5b5[];
 extern char data_0208c5c1[];
 extern char data_0208c5cd[];
 extern char data_0208c5d9[];
-extern u32 data_0208c290[];
+extern u32 MainVt_0208c290_vtbl[];
 extern void Effect3D_Init(Effect3D *e);
 extern char data_0208c427[];
 extern char data_0208c436[];
@@ -70,9 +70,9 @@ EffectGroup *EffectGroup_New2717(const VecFx32 *pos) {
 static inline EffectGroup *Effect6_GroupNew(void) {
     EffectGroup *g = (EffectGroup *)Heap_Alloc(sizeof(EffectGroup));
     if (g != NULL) {
-        *(u32 **)g = data_0208c2e4;
+        *(u32 **)g = EffectObj_vtbl;
         EffectObj_Register(g);
-        *(u32 **)g = data_0208c23c;
+        *(u32 **)g = EffectGroup_vtbl;
         EffectGroup_Reset(g);
     }
     return g;
@@ -180,9 +180,9 @@ EffectGroup *Effect_SpawnGroupById(s32 id, const VecFx32 *pos) {
 static inline Effect3D *Effect6_3DNew(void) {
     Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
-        *(u32 **)e = data_0208c2e4;
+        *(u32 **)e = EffectObj_vtbl;
         EffectObj_Register(e);
-        *(u32 **)e = data_0208c290;
+        *(u32 **)e = MainVt_0208c290_vtbl;
         Effect3D_Init(e);
     }
     return e;

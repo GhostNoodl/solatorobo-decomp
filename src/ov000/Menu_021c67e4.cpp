@@ -5,7 +5,7 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 
 static inline ListRow *At021c67e4(TextList *self, s32 i) {
@@ -35,8 +35,8 @@ static inline void Body(TextList *self) {
     }
     d = zero;
     cur = d;
-    trg = data_02097dc8->trig;
-    rep = data_02097dc8->repeat;
+    trg = gPad->trig;
+    rep = gPad->repeat;
     if (trg & 1) {
         if (self->onDecide != NULL) {
             self->onDecide(self, self->cur);
@@ -84,7 +84,7 @@ static inline void Body(TextList *self) {
     }
     if (cur) {
         ListRow *node;
-        SndMgr_PlayVolume(data_02097e4c, 0x1d, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1d, -1, -1, -1);
         node = At021c67e4(self, self->index);
         self->cur = node;
         if (node != NULL) {

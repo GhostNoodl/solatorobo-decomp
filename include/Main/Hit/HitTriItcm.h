@@ -115,9 +115,9 @@ typedef struct HitTriNode {
     /* 0x28 */ HitTri *tris[1];
 } HitTriNode;
 
-extern s32 data_02fe0efc;
-extern HitTriInfo *data_02fe0ef8;
-extern HitTriInfo data_02fe0f50[];
+extern s32 gHitCount;
+extern HitTriInfo *gHitRayBest;
+extern HitTriInfo gHitList[];
 
 extern void HitBox_CalcWorld(HitTriRay *ray);
 extern void HitSegLocal_Transform(VecFx32 *box, HitTriBlock *block);

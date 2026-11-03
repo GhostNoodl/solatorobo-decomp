@@ -48,7 +48,7 @@ static inline void Hide2_0219e498(Robo021ca458 *s, u32 off) {
 }
 
 static inline BOOL G9_0219e498(void) {
-    return data_0214a424->bits18.flag9 ? TRUE : FALSE;
+    return gStageFlags->bits18.flag9 ? TRUE : FALSE;
 }
 
 static inline BOOL RgbEq0219e498(FieldId *a, FieldId *b) {
@@ -93,7 +93,7 @@ void Robo021ca458_UpdateHit(Robo021ca458 *self) {
         ActorSub48_UpdatePos(&self->hit0, NULL, NULL);
         return;
     }
-    if (!G9_0219e498() && RgbEq0219e498(&data_ov000_021ccd54->unk_ca, &self->fieldId)) {
+    if (!G9_0219e498() && RgbEq0219e498(&gSceneCmd->unk_ca, &self->fieldId)) {
         self->hit1.radius = self->radius >> 1;
         self->hit1.offset.y = self->centerY >> 1;
         Show0219e498((u8 *)self, 0x6c0);

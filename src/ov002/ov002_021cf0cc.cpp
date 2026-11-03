@@ -14,7 +14,7 @@ void Task021ef4b0_PreUpdate(Task021ef4b0 *self) {
             self->unk_40->flags &= ~2;
             func_ov002_021cf280(self, FIELD(self, 0x44, void *));
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         break;
     case 10:
         if (self->unk_3c != NULL) {
@@ -23,14 +23,14 @@ void Task021ef4b0_PreUpdate(Task021ef4b0 *self) {
         if (self->unk_40 != NULL) {
             self->unk_40->flags |= 2;
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         break;
     }
     if (self->unk_3c != NULL) {
         BOOL a = FALSE;
         BOOL b = FALSE;
         BOOL c = FALSE;
-        if (!data_ov000_021ccd34) {
+        if (!gTaskSwitchPending) {
             BOOL t = !self->unk_04_0;
             if (t) {
                 c = TRUE;

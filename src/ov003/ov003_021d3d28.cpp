@@ -80,7 +80,7 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
                     if (self->targetObj->unk_19 < 2) {
                         ActorSub4c *t;
                         c = 0;
-                        SndMgr_PlayAt(data_02097e4c, 0x66, &self->pos, 0);
+                        SndMgr_PlayAt(gSndMgr, 0x66, &self->pos, 0);
                         t = self->targetObj;
                         t->unk_19 = 0;
                         t->unk_1b = 0;
@@ -122,10 +122,10 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
                 if (self->targetObj->unk_19 != 0) {
                     s32 n = self->targetObj->unk_1a + 1;
                     Field_ShakeCamera(n + 8, n * 2 + 0x14);
-                    SndMgr_PlayAt(data_02097e4c, 0x1a, &self->pos, 0);
+                    SndMgr_PlayAt(gSndMgr, 0x1a, &self->pos, 0);
                 } else {
                     Field_ShakeCamera(6, 10);
-                    SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
+                    SndMgr_PlayAt(gSndMgr, 0x17, &self->pos, 0);
                 }
                 if (self->targetObj->unk_03 == 1) {
                     VecFx32 ofs;
@@ -204,7 +204,7 @@ void Ov003Actor_StateFly(Ov003Actor *self) {
                         fx = Effect_SpawnId(0x12e, &self->pos);
                         fx->SetScaleAll(0x1400);
                     }
-                    SndMgr_PlayAt(data_02097e4c, se, &self->pos, 0);
+                    SndMgr_PlayAt(gSndMgr, se, &self->pos, 0);
                 }
                 self->fsm->st++;
                 self->fsm->timer = 0;

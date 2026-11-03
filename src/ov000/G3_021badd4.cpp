@@ -45,7 +45,7 @@ static inline void G3_Cmd1(int cmd, u32 value) {
 }
 
 void func_ov000_021badd4(Self021badd4 *self) {
-    GfxSys *g = data_02097d48;
+    GfxSys *g = gGfxSys;
     s32 a;
     s32 b;
     s32 x;

@@ -2,8 +2,8 @@
 
 extern "C" {
 
-extern VFunc data_ov000_021cb5a8[];
-extern VFunc data_ov000_021cca10[];
+extern VFunc Lo021cb5a8_vtbl[];
+extern VFunc Hud021cca10_vtbl[];
 void func_ov000_021c3af4(void *self);
 void ListRow_Init(void *self);
 void Hud021cca10_Init(void *self);
@@ -18,14 +18,14 @@ typedef struct {
 } Pair021d0b98;
 
 void func_ov002_021d0b98(Task021ef89c *self) {
-    void *g = data_02149ef8;
+    void *g = gMsgRes;
     UiObj *p;
     {
         p = (UiObj *)Heap_Alloc(0xf4);
         if (p != NULL) {
-            *(VFunc **)p = data_ov000_021cac60;
+            *(VFunc **)p = UiObj_vtbl;
             p->vfunc_28();
-            *(VFunc **)p = data_ov000_021ccbe0;
+            *(VFunc **)p = Ov000Vt_021ccbe0_vtbl;
             func_ov000_021c3af4(p);
         }
         self->unk_3c = (Ov002RowList *)p;
@@ -48,21 +48,21 @@ void func_ov002_021d0b98(Task021ef89c *self) {
         u16 id;
         Hud021cca10 *q;
         u32 count;
-        base = data_02fe152c->data + 0x10 + 9 * 0x20;
-        tbl = DataRes_GetTable(data_02fe152c, 9);
-        count = DataRes_GetCount(data_02fe152c, 9);
+        base = gDataRes->data + 0x10 + 9 * 0x20;
+        tbl = DataRes_GetTable(gDataRes, 9);
+        count = DataRes_GetCount(gDataRes, 9);
         for (i = 0; i < count; i++) {
-            if (DataRes_ReadBitsAt_02059544(data_02fe152c, base, tbl, 0x101, i)) {
+            if (DataRes_ReadBitsAt_02059544(gDataRes, base, tbl, 0x101, i)) {
                 q = (Hud021cca10 *)Heap_Alloc(sizeof(Hud021cca10));
                 if (q != NULL) {
-                    *(VFunc **)q = data_ov002_021ef684;
+                    *(VFunc **)q = Ov002Vt_021ef684_vtbl;
                     ListRow_Init(q);
-                    *(VFunc **)q = data_ov000_021cca10;
+                    *(VFunc **)q = Hud021cca10_vtbl;
                     Hud021cca10_Init(q);
                 }
                 q->index = i;
                 q->unk_3c = (u16)(i + 1);
-                id = ((Pair021d0b98 *)DataRes_GetTable(data_02fe152c, 9))[i].b | 0x5000;
+                id = ((Pair021d0b98 *)DataRes_GetTable(gDataRes, 9))[i].b | 0x5000;
                 Hud021cca10_SetText(q, Param_Get(id));
                 q->unk_08 = id;
                 LoBase021ccb54_021ccbe0_AppendRow(self->unk_3c, q);
@@ -76,11 +76,11 @@ void func_ov002_021d0b98(Task021ef89c *self) {
     {
         p = (UiObj *)Heap_Alloc(0xe0);
         if (p != NULL) {
-            *(VFunc **)p = data_ov000_021cac60;
+            *(VFunc **)p = UiObj_vtbl;
             p->vfunc_28();
-            *(VFunc **)p = data_ov000_021caec8;
+            *(VFunc **)p = UiList_vtbl;
             p->vfunc_28();
-            *(VFunc **)p = data_ov000_021cb5a8;
+            *(VFunc **)p = Lo021cb5a8_vtbl;
             p->vfunc_28();
         }
         self->unk_40 = (Lo021cb5a8 *)p;

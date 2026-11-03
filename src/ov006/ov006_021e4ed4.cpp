@@ -9,7 +9,7 @@ typedef struct ov006_Unk02097e40 {
 
 extern "C" {
 
-extern ov006_Unk02097e40 *data_02097e40;
+extern ov006_Unk02097e40 *gWhMgr;
 void func_02045094(ov006_Unk02097e40 *p);
 void func_02045498(ov006_Unk02097e40 *p, int a);
 
@@ -19,15 +19,15 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
         void *saved;
         ov006_MenuNode *next;
         next = node->next;
-        saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (node != NULL) {
             if (node != NULL) {
                 node->vfunc_04();
             }
             node = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
         node = next;
     }
     self->nodes = NULL;
@@ -46,8 +46,8 @@ void func_ov006_021e4ed4(ov006_Unk021ec888 *self) {
 
     switch (self->stateTime) {
     case 0:
-        data_02097dd0->vblankFunc = NULL;
-        func_02045094(data_02097e40);
+        gSysState->vblankFunc = NULL;
+        func_02045094(gWhMgr);
         if (self->stateTime < 0xff) {
             self->stateTime++;
         }
@@ -55,12 +55,12 @@ void func_ov006_021e4ed4(ov006_Unk021ec888 *self) {
             self->unk1D8->obj->flags |= 2;
         }
     case 1:
-        if (data_02097e40->unk2C == 1) {
+        if (gWhMgr->unk2C == 1) {
             if (self->stateTime < 0xff) {
                 self->stateTime++;
             }
-        } else if (data_02097e40->unk2C == 8 || data_02097e40->unk2C == 9) {
-            func_02045498(data_02097e40, 0);
+        } else if (gWhMgr->unk2C == 8 || gWhMgr->unk2C == 9) {
+            func_02045498(gWhMgr, 0);
         }
         break;
     case 2:

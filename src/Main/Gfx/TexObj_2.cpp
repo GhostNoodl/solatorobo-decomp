@@ -260,13 +260,13 @@ void func_02041e74(TexObj *obj, int idx) {
             type = 2;
             slot = NNS_G2dGetImageLocation(obj, 1);
             if (slot == -1) {
-                slot = GfxSys_AllocVram(data_02097d48, img->size, 0);
+                slot = GfxSys_AllocVram(gGfxSys, img->size, 0);
             }
         } else {
             type = 5;
             slot = NNS_G2dGetImageLocation(obj, 2);
             if (slot == -1) {
-                slot = GfxSys_AllocVram(data_02097d48, img->size, 1);
+                slot = GfxSys_AllocVram(gGfxSys, img->size, 1);
             }
         }
         if ((obj->unk_06c << 30) >> 31) {
@@ -416,10 +416,10 @@ void func_0204205c(TexObj *obj, int idx, int value) {
         if ((&e->key)[idx] == -1) {
             if (idx == 1) {
                 type = 2;
-                slot = GfxSys_AllocVram(data_02097d48, total, 0);
+                slot = GfxSys_AllocVram(gGfxSys, total, 0);
             } else {
                 type = 5;
-                slot = GfxSys_AllocVram(data_02097d48, total, 1);
+                slot = GfxSys_AllocVram(gGfxSys, total, 1);
             }
             (&e->key)[idx] = slot;
         }

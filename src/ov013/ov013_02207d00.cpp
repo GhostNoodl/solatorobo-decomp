@@ -37,7 +37,7 @@ void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
             FieldState *g;
             Shared_SetEventActor(self->kind, self->id);
             func_020627dc(5);
-            g = data_ov000_021ccd54;
+            g = gSceneCmd;
             g->stageFlags = 1;
             func_ov000_02182590(&g->stageFlags);
             Ov003_AddExp(self->unk_b0->unk_04);
@@ -101,7 +101,7 @@ void Ov013Act_02207968_State20(Ov013Act_02207968 *self) {
             VEC_MultAdd(0x52, &v, &self->pos, &self->pos);
             return;
         }
-        SndMgr_PlayAtPitch(data_02097e4c, 0x39, &self->pos, 2);
+        SndMgr_PlayAtPitch(gSndMgr, 0x39, &self->pos, 2);
         {
             ActorSub44 *n = self->unk_44;
             n->unk_22_0 = 1;
@@ -118,7 +118,7 @@ void Ov013Act_02207968_State20(Ov013Act_02207968 *self) {
         }
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
         {
             ActorSub44 *n = self->unk_44;
             n->unk_22_0 = 1;
@@ -142,7 +142,7 @@ void Ov013Act_02207968_StateIdle(Ov013Act_02207968 *self) {
     }
     switch (self->unk_f0) {
     case 1:
-        if (ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000), 0x4813) != 0) {
+        if (ActorGroup_CountKind(ActorMgr_GetGroup(gActorMgr, 0x4000), 0x4813) != 0) {
             return;
         }
         self->fsm->flags |= 0x10000;
@@ -201,10 +201,10 @@ extern void Actor_MoveToPos(Ov003Actor *self, VecFx32 *v, s32 a);
 extern VecFx32 data_ov013_0220b3b0;
 
 static inline Ov003Actor *Ov013_GetActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline void Ov013_VecCopyR(VecFx32 *d, const VecFx32 &s) {
@@ -272,7 +272,7 @@ void Ov013Act_02207968_StateMove(Ov013Act_02207968 *self) {
         self->fsm->st = 7;
         self->fsm->timer = 0;
         self->hit->unk_30 = 0;
-        SndMgr_PlayAtPitch(data_02097e4c, 0x39, &self->pos, 2);
+        SndMgr_PlayAtPitch(gSndMgr, 0x39, &self->pos, 2);
     }
     v = self->unk_b8;
     Actor_TurnToActor(self, t, self->unk_b0->unk_02);
@@ -357,7 +357,7 @@ void Ov013Act_02207968_StateAttack(Ov013Act_02207968 *self) {
         self->gravity = 0;
         self->speed = FX_Div(Ov013_DistXZ3(&self->pos, &v), 0x3c000);
         self->velY = -0xcd;
-        SndMgr_PlayAtPitch(data_02097e4c, 0x39, &self->pos, 2);
+        SndMgr_PlayAtPitch(gSndMgr, 0x39, &self->pos, 2);
         self->fsm->st = 2;
         self->fsm->timer = 0;
         break;
@@ -409,7 +409,7 @@ void Ov013Act_02207968_StateAttack(Ov013Act_02207968 *self) {
         VEC_MultAdd(0xf000, &d, &data_ov013_0220b3b0, &p);
         Actor_TurnToPos(self, &p, 0x400);
         if (self->model->anim_state == 3) {
-            SndMgr_PlayAtPitch(data_02097e4c, 0x39, &self->pos, 2);
+            SndMgr_PlayAtPitch(gSndMgr, 0x39, &self->pos, 2);
         }
         if (self->model->anim_state != 2) {
             return;
@@ -442,7 +442,7 @@ void Ov013Act_02207968_StateAttack(Ov013Act_02207968 *self) {
             if (self->pos.y < 0x1b33) {
                 self->pos.y = 0x1b33;
                 Field_ShakeCamera(5, 0x1e);
-                SndMgr_PlayAt(data_02097e4c, 0x17, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x17, &self->pos, 0);
             }
         }
         {
@@ -454,7 +454,7 @@ void Ov013Act_02207968_StateAttack(Ov013Act_02207968 *self) {
         }
         Model0218fe1c_SetAnim(self->model, data_ov013_0220be82, 0x155, 0);
         Model0218fe1c_SetAnimFrame(self->model, 0x96000);
-        SndMgr_PlayAtPitch(data_02097e4c, 0x39, &self->pos, 2);
+        SndMgr_PlayAtPitch(gSndMgr, 0x39, &self->pos, 2);
         self->unk_f0 = 2;
         History_SetState(self->fsm, 1, 0);
         self->fsm->st = 7;
@@ -537,8 +537,8 @@ void Ov013Act_02207968_StateShoot(Ov013Act_02207968 *self) {
         if (self->model->anim_state != 2) {
             return;
         }
-        SndMgr_PlayAt(data_02097e4c, 0x6b, &self->pos, 0);
-        SndMgr_PlayAt(data_02097e4c, 0x67, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x6b, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x67, &self->pos, 0);
         *(Ov013Blk12 *)&p = *(Ov013Blk12 *)&self->pos;
         Geom_AddRotatedOffset(&p, &data_ov013_0220b398, self->rot_y);
         a = (Ov013ActEx_0220a4e0 *)Actor_SpawnKind(0x4811, &p, &self->rot_x, self->id, self->target);
@@ -582,7 +582,7 @@ void Ov013Act_02207968_StateShoot(Ov013Act_02207968 *self) {
         if (st->timer <= 0x1e) {
             return;
         }
-        SndMgr_PlayAtPitch(data_02097e4c, 0x39, &self->pos, 2);
+        SndMgr_PlayAtPitch(gSndMgr, 0x39, &self->pos, 2);
         History_SetState(self->fsm, 1, 0);
         break;
     }
@@ -658,8 +658,8 @@ void Ov013Act_02207968_StateAttack2(Ov013Act_02207968 *self) {
         if (self->model->anim_state != 2) {
             return;
         }
-        SndMgr_PlayAt(data_02097e4c, 0x6b, &self->pos, 0);
-        SndMgr_PlayAt(data_02097e4c, 0x67, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x6b, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x67, &self->pos, 0);
         p = self->pos;
         Geom_AddRotatedOffset(&p, &data_ov013_0220b398, self->rot_y);
         a = (Ov013ActEx_0220a4e0 *)Actor_SpawnKind(0x4811, &p, &self->rot_x, self->id, self->target);
@@ -698,7 +698,7 @@ void Ov013Act_02207968_StateAttack2(Ov013Act_02207968 *self) {
         Model0218fe1c_SetLoop(self->model);
         self->fsm->st = 7;
         self->fsm->timer = 0;
-        SndMgr_PlayAtPitch(data_02097e4c, 0x39, &self->pos, 2);
+        SndMgr_PlayAtPitch(gSndMgr, 0x39, &self->pos, 2);
         break;
     case 7:
         st->timer++;

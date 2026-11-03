@@ -5,8 +5,8 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
-extern void *data_02149ef8;
+extern void *gSndMgr;
+extern void *gMsgRes;
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL Model_IsReady(void *p, s32 a);
 u16 func_02061d54(u16 a);
@@ -29,12 +29,12 @@ void Obj0215d990_SetMsg(Obj0215d990 *self, s32 a) {
         return;
     }
     {
-        s32 v = MsgRes_GetString(data_02149ef8, a);
+        s32 v = MsgRes_GetString(gMsgRes, a);
         p = self->unk_94;
         p->str = v;
     }
     p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, (s8)p->unk_37 != 0 ? 1 : 0);
-    data_02097ce0->unk_004 = ((s32)p->font);
+    gGfxMgr->unk_004 = ((s32)p->font);
 }
 
 }

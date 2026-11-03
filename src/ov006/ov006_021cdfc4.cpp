@@ -3,13 +3,13 @@
 
 extern "C" {
 
-extern void *data_ov006_021ebe40;
+extern void *ov006_Emblem_vtbl;
 
 ov006_Emblem *ov006_Emblem_New(void) {
     ov006_Emblem *self = (ov006_Emblem *)Heap_Alloc(sizeof(ov006_Emblem));
     if (self != NULL) {
         OV006_TASKBASE_CTOR(self);
-        *(void **)self = &data_ov006_021ebe40;
+        *(void **)self = &ov006_Emblem_vtbl;
         self->unk3C = NULL;
         self->unk40 = NULL;
         self->unk44 = 0;

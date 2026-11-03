@@ -14,9 +14,9 @@ typedef struct ov006_Unk02097e40 {
 
 extern "C" {
 
-extern void *data_ov006_021ec424;
-extern void *data_ov006_021ec414;
-extern ov006_Unk02097e40 *data_02097e40;
+extern void *ov006_ModelHolder_vtbl;
+extern void *ov006_ObjectHolder_vtbl;
+extern ov006_Unk02097e40 *gWhMgr;
 
 void ov006_ModelHolder_Load(ov006_ModelHolder *self, int a);
 BOOL func_02044e38(ov006_Unk02097e40 *a, int b);
@@ -55,7 +55,7 @@ void ov006_Menu_Load(ov006_Unk021ec888 *self) {
         ov006_ModelHolder *mh = (ov006_ModelHolder *)Heap_Alloc(sizeof(ov006_ModelHolder));
         ov006_ObjectHolder *oh;
         if (mh != NULL) {
-            mh->vtbl = &data_ov006_021ec424;
+            mh->vtbl = &ov006_ModelHolder_vtbl;
             mh->model = NULL;
             mh->unk8 = 1;
             mh->unkC = 0;
@@ -64,7 +64,7 @@ void ov006_Menu_Load(ov006_Unk021ec888 *self) {
         ov006_ModelHolder_Load(self->unk1D4, 2);
         oh = (ov006_ObjectHolder *)Heap_Alloc(sizeof(ov006_ObjectHolder));
         if (oh != NULL) {
-            oh->vtbl = &data_ov006_021ec414;
+            oh->vtbl = &ov006_ObjectHolder_vtbl;
             oh->obj = NULL;
         }
         self->unk1D8 = oh;
@@ -72,11 +72,11 @@ void ov006_Menu_Load(ov006_Unk021ec888 *self) {
         break;
     }
     case 2:
-        func_02044e38(data_02097e40, 0);
-        Wh_SetGgid(data_02097e40, 0x401336);
-        func_02046a78(data_02097e40, self->unkF4, ov006_GetOwnerName(self->unkF4, 0x16));
-        data_02097e40->unk80 = (void *)ov006_Menu_ReceiveData;
-        data_02097dd0->vblankFunc = NULL;
+        func_02044e38(gWhMgr, 0);
+        Wh_SetGgid(gWhMgr, 0x401336);
+        func_02046a78(gWhMgr, self->unkF4, ov006_GetOwnerName(self->unkF4, 0x16));
+        gWhMgr->unk80 = (void *)ov006_Menu_ReceiveData;
+        gSysState->vblankFunc = NULL;
         ov006_Menu_SetState(self, 3);
         break;
     case 4:

@@ -11,7 +11,7 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov000_021cc67e[];
 extern char data_ov000_021cc61e[];
 extern char data_ov000_021cc660[];
@@ -36,10 +36,10 @@ void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 BOOL History_SetState(St_021a5d00 *st, s32 state, s32 x);
 
 static inline Actor *FindActor021a5d00(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline u16 AngleTo021a5d00(Robo021ca458 *self, Actor *a) {
@@ -50,7 +50,7 @@ static inline u16 AngleTo021a5d00(Robo021ca458 *self, Actor *a) {
 }
 
 static inline BOOL Ev19_021a5d00(void) {
-    LangBlockB *e = data_ov000_021ccd6c->blockB;
+    LangBlockB *e = gFieldMgr->blockB;
     if (e != NULL && e->unk_19_0) {
         return TRUE;
     }
@@ -136,7 +136,7 @@ void Robo021ca458_State08(Robo021ca458 *self) {
                 FieldState *g;
                 Shared_ChangeFlags(0x3c0, 0x80);
                 Shared_SetEventActor(a->kind, a->id);
-                g = data_ov000_021ccd54;
+                g = gSceneCmd;
                 g->stageFlags = 1;
                 func_ov000_02182590((u8 *)g + 0xac);
                 if (StageRes_HasQueued()) {
@@ -155,7 +155,7 @@ void Robo021ca458_State08(Robo021ca458 *self) {
                     Target_Set(info, self);
                     info->unk_01 = 9;
                     if (info->unk_03 != 10 && info->unk_03 != 11) {
-                        SndMgr_PlayVolume(data_02097e4c, 0x4a, -1, -1, -1);
+                        SndMgr_PlayVolume(gSndMgr, 0x4a, -1, -1, -1);
                     }
                     Model0218fe1c_SetAnim(self->model, data_ov000_021cc684, 0x1000, 0);
                     ((St_021a5d00 *)self->fsm)->state++;

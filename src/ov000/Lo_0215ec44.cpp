@@ -94,7 +94,7 @@ void func_ov000_0215ed18(UiPanel *self) {
     u16 *tbl;
     s32 w;
     s32 i;
-    g = data_02097d48;
+    g = gGfxSys;
     x = self->x;
     x += 0x8000;
     y = self->y;

@@ -60,7 +60,7 @@ void LoBase021cafc0_021cb0b8_DrawFrame(LoBase021cafc0_021cb0b8 *self, s32 a1, s3
     s32 sx;
     s32 sy;
     z = self->posZ - 0x100;
-    g = data_02097d48;
+    g = gGfxSys;
     G3_Cmd1(0x2a, 0x20000000);
     G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g->unk_8b0) << 24) | 0x8d0 | (0x18 << 16));
     sx = self->width << 12;

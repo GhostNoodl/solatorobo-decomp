@@ -59,7 +59,7 @@ void func_02035670(ResLoader *loader) {
     numBlocks = 3;
     if (!OS_IsRunOnTwl()) {
         blockSize = 0x1540;
-        buf = OS_AllocFromHeap(OS_ARENA_MAIN, (OSHeapHandle)data_02097dd0->osHeap, 0x3fc0);
+        buf = OS_AllocFromHeap(OS_ARENA_MAIN, (OSHeapHandle)gSysState->osHeap, 0x3fc0);
     } else {
         buf = Heap_AllocLo(0x6000, 4);
     }

@@ -15,17 +15,17 @@ typedef struct {
 
 extern "C" {
 
-extern u8 data_ov000_021cc7cc[];
-extern u8 data_ov003_021fa5f8[];
-extern u8 data_ov003_021fa5a0[];
-extern u8 data_ov003_021fa548[];
-extern u8 data_ov003_021fa4f0[];
-extern u8 data_ov003_021fa498[];
-extern u8 data_ov003_021fa390[];
-extern u8 data_ov003_021fa440[];
-extern u8 data_ov003_021fa3e8[];
-extern u8 data_ov003_021fa338[];
-extern u8 data_ov003_021fa2e0[];
+extern u8 Ov000ActVt_021cc7cc_vtbl[];
+extern u8 Ov003ActVt_021fa5f8_vtbl[];
+extern u8 Ov003ActVt_021fa5a0_vtbl[];
+extern u8 Ov003ActVt_021fa548_vtbl[];
+extern u8 Ov003ActVt_021fa4f0_vtbl[];
+extern u8 Ov003ActVt_021fa498_vtbl[];
+extern u8 Ov003ActVt_021fa390_vtbl[];
+extern u8 Ov003ActVt_021fa440_vtbl[];
+extern u8 Ov003ActVt_021fa3e8_vtbl[];
+extern u8 Ov003ActVt_021fa338_vtbl[];
+extern u8 Ov003ActVt_021fa2e0_vtbl[];
 void *Heap_Alloc(u32 size);
 Info021b4828 *func_020705fc(u16 id);
 s32 Tbl_GetText(u16 id);
@@ -39,13 +39,13 @@ void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dto
 
 static inline void Base021b4828_Init(u8 *p) {
     Actor_Ctor(p);
-    VOBJ_SET_VTABLE(p, data_ov000_021cc7cc);
+    VOBJ_SET_VTABLE(p, Ov000ActVt_021cc7cc_vtbl);
     LFLD(s32, p, 0xac) = 0;
 }
 
 static inline void Init6b021b4828(u8 *p) {
     Base021b4828_Init(p);
-    VOBJ_SET_VTABLE(p, data_ov003_021fa5a0);
+    VOBJ_SET_VTABLE(p, Ov003ActVt_021fa5a0_vtbl);
     ResSet_Init(p + 0xb0);
     Model0218fe1c_Init(p + 0x1e8);
 }
@@ -64,7 +64,7 @@ static inline u8 *Create021b4828(u16 id) {
         p = (u8 *)Heap_Alloc(0x2d0);
         if (p != NULL) {
             Base021b4828_Init(p);
-            VOBJ_SET_VTABLE(p, data_ov003_021fa5f8);
+            VOBJ_SET_VTABLE(p, Ov003ActVt_021fa5f8_vtbl);
             ResSet_Init(p + 0xb0);
             Model0218fe1c_Init(p + 0x1e8);
         }
@@ -73,7 +73,7 @@ static inline u8 *Create021b4828(u16 id) {
         p = (u8 *)Heap_Alloc(0x2d4);
         if (p != NULL) {
             Base021b4828_Init(p);
-            VOBJ_SET_VTABLE(p, data_ov003_021fa5a0);
+            VOBJ_SET_VTABLE(p, Ov003ActVt_021fa5a0_vtbl);
             ResSet_Init(p + 0xb0);
             Model0218fe1c_Init(p + 0x1e8);
         }
@@ -82,7 +82,7 @@ static inline u8 *Create021b4828(u16 id) {
         p = (u8 *)Heap_Alloc(0x1f0);
         if (p != NULL) {
             Base021b4828_Init(p);
-            VOBJ_SET_VTABLE(p, data_ov003_021fa548);
+            VOBJ_SET_VTABLE(p, Ov003ActVt_021fa548_vtbl);
             ResSet_Init(p + 0xb0);
         }
         return p;
@@ -105,31 +105,31 @@ u8 *Factory_New6000(Spawn021b4828 *s) {
         p = Create021b4828(s->id);
         break;
     case 1:
-        NEW_BASIC(0xb4, data_ov003_021fa4f0);
+        NEW_BASIC(0xb4, Ov003ActVt_021fa4f0_vtbl);
         break;
     case 2:
-        NEW_BASIC(0xb4, data_ov003_021fa498);
+        NEW_BASIC(0xb4, Ov003ActVt_021fa498_vtbl);
         break;
     case 3:
         p = (u8 *)Heap_Alloc(0x1158);
         if (p != NULL) {
             Base021b4828_Init(p);
-            VOBJ_SET_VTABLE(p, data_ov003_021fa390);
+            VOBJ_SET_VTABLE(p, Ov003ActVt_021fa390_vtbl);
             __cxa_vec_ctor(p + 0xb0, 8, 0x138, (void (*)(void *))ResSet_Init, (void (*)(void *))ResSet_ReleaseAll);
             __cxa_vec_ctor(p + 0xa70, 6, 0xe8, (void (*)(void *))Model0218fe1c_Init, (void (*)(void *))Model0218fe1c_FreeAnims);
         }
         break;
     case 4:
-        NEW_BASIC(0xb8, data_ov003_021fa440);
+        NEW_BASIC(0xb8, Ov003ActVt_021fa440_vtbl);
         break;
     case 5:
-        NEW_BASIC(0xc0, data_ov003_021fa3e8);
+        NEW_BASIC(0xc0, Ov003ActVt_021fa3e8_vtbl);
         break;
     case 6:
-        NEW_BASIC(0xb0, data_ov003_021fa338);
+        NEW_BASIC(0xb0, Ov003ActVt_021fa338_vtbl);
         break;
     case 7:
-        NEW_BASIC(0xb0, data_ov003_021fa2e0);
+        NEW_BASIC(0xb0, Ov003ActVt_021fa2e0_vtbl);
         break;
     }
     Actor_JoinGroup(p, s->sub, s->id, Tbl_GetText(s->id));

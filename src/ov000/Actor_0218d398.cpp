@@ -7,7 +7,7 @@ void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const vo
     ActorMsg *msg = NULL;
     s32 i;
     ActorMsg *tail;
-    for (i = 0, it = data_ov000_021ccd68->msgs; i < 0x80; i++, it++) {
+    for (i = 0, it = gActorMgr->msgs; i < 0x80; i++, it++) {
         if (it->type == 0) {
             msg = it;
             break;
@@ -212,7 +212,7 @@ void Actor_DropStateMsgs(Actor *self, u8 arg) {
 
 BOOL Actor_DespawnIfFar(Actor *self) {
     BOOL ret = FALSE;
-    Camera *cam = &data_ov000_021ccd54->cam.base;
+    Camera *cam = &gSceneCmd->cam.base;
     if (cam != NULL) {
         s32 dx = cam->eye.x;
         s32 dy = cam->eye.y;
@@ -222,7 +222,7 @@ BOOL Actor_DespawnIfFar(Actor *self) {
         dz = self->pos.z - dz;
         if (ABS(dx) > 0x39000 || ABS(dy) > 0x39000 || ABS(dz) > 0x39000) {
             ret = TRUE;
-            Group_UpdateActor(data_ov000_021ccd64, 1, self);
+            Group_UpdateActor(gGroup, 1, self);
             self->vfunc_08();
         }
     }

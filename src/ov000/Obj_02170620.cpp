@@ -8,22 +8,22 @@
     do {                                                   \
         o = (Lo021cb0b8 *)Heap_Alloc(sizeof(Lo021cb0b8)); \
         if (o != NULL) {                                   \
-            *(void **)o = data_ov000_021cac60;             \
+            *(void **)o = UiObj_vtbl;             \
             o->vfunc_28();                                 \
-            *(void **)o = data_ov000_021caec8;             \
+            *(void **)o = UiList_vtbl;             \
             o->vfunc_28();                                 \
-            *(void **)o = data_ov000_021cb1b0;             \
+            *(void **)o = Ov000Vt_021cb1b0_vtbl;             \
             o->vfunc_28();                                 \
-            *(void **)o = data_ov000_021cb0b8;             \
+            *(void **)o = Ov000Vt_021cb0b8_vtbl;             \
             o->vfunc_28();                                 \
         }                                                  \
     } while (0)
 
 extern "C" {
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb1b0[];
-extern u8 data_ov000_021cb0b8[];
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 Ov000Vt_021cb1b0_vtbl[];
+extern u8 Ov000Vt_021cb0b8_vtbl[];
 void *Heap_Alloc(u32 size);
 BOOL func_ov000_02184498(FieldState *p);
 
@@ -32,7 +32,7 @@ BOOL func_ov000_02170620(ListBuffer021cb940 *self, s32 kind, char *text) {
     if (self->dialog != NULL) {
         return FALSE;
     }
-    if (!func_ov000_02184498(data_ov000_021ccd54)) {
+    if (!func_ov000_02184498(gSceneCmd)) {
         return FALSE;
     }
     switch (kind) {

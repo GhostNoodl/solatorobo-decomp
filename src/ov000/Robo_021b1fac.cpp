@@ -24,7 +24,7 @@ void Robo021ca458_Move(Robo021ca458 *self, BOOL a, s32 b) {
         s32 t = self->unk_ba8 + self->speed;
         self->unk_ba8 = t;
         if (t > 0x1000) {
-            StageFlags *g = data_0214a424;
+            StageFlags *g = gStageFlags;
             u32 v = g->unk_010 + ((u32)t >> 12);
             if (v >= 999999) {
                 g->unk_010 = 999999;

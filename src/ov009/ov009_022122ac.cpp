@@ -9,7 +9,7 @@ extern void func_ov000_02184508(void *g);
 extern void func_ov000_0216912c(void *o, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
 
 static inline void Ov009_Notify(u16 id, u16 b, u16 c, const VecFx32 *pos) {
-    FieldActor *o = data_ov000_021ccd30->unk_11c;
+    FieldActor *o = gMessageQueue->unk_11c;
     void *q;
     if (o != NULL && (q = o->unk_60) != NULL) {
         func_ov000_0216912c(q, id, 0, b, c, pos);
@@ -17,10 +17,10 @@ static inline void Ov009_Notify(u16 id, u16 b, u16 c, const VecFx32 *pos) {
 }
 
 static inline Ov003Actor *Ov009_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline s32 Ov009_Mode(Ov003Actor *a) {
@@ -38,7 +38,7 @@ void Ov009ActSpin_RunState(Ov009ActVt_02217a00 *self) {
     u8 mtx[0x30];
     Ov003Actor *a;
     if (self->unk_ea_13) {
-        FieldCam *p = &data_ov000_021ccd54->cam;
+        FieldCam *p = &gSceneCmd->cam;
         s32 px = p->base.eye.x;
         s32 pz = p->base.eye.z;
         s32 ang = FieldCam_GetYaw(p);
@@ -55,7 +55,7 @@ void Ov009ActSpin_RunState(Ov009ActVt_02217a00 *self) {
     a = Ov009_FindActor(self->unk_f0);
     if (self->fsm->current != 0x15 && (a == NULL || Ov009_Mode(a) == 9)) {
         History_SetState(self->fsm, 0x15, 0);
-        func_ov000_02184508(data_ov000_021ccd54);
+        func_ov000_02184508(gSceneCmd);
     }
     if (a == NULL) {
         return;

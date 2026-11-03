@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern Ov015Globals data_ov015_02213320;
+extern Ov015Globals gOv015Globals;
 void func_ov015_02208070(Ov015Ship *p);
 void func_ov015_02209b8c(Ov015Fish *self);
 void func_ov015_02210d04(Ov015MsgMgr *self);
@@ -10,32 +10,32 @@ void func_ov015_02212264(Ov015Obj292c *self);
 BOOL Model021903b4_Draw(void *a);
 void func_ov015_0220101c(Ov015Game *self);
 void Ov015Info38_Dtor(Ov015Info38 *p);
-extern u8 data_ov015_0221296c[];
-extern u8 data_ov015_0221280c[];
-extern u8 data_ov015_022127dc[];
-extern u8 data_ov015_022127ec[];
+extern u8 Ov015Game_vtbl[];
+extern u8 Ov015Child_vtbl[];
+extern u8 Ov015Obj34_vtbl[];
+extern u8 Ov015Obj30_vtbl[];
 extern char data_ov015_022128c1[];
-extern u8 data_ov015_0221293c[];
+extern u8 Ov015Hud_vtbl[];
 extern char data_ov015_022128ab[];
 void LangData_LocalizePath(char *buf, const char *name);
-extern u8 data_ov015_0221294c[];
+extern u8 Ov015Vt_0221294c_vtbl[];
 void *Model0218fe1c_FreeAnims(void *a);
 void *ResSet_ReleaseAll(void *a);
-extern u8 data_ov015_022128ec[];
-extern u8 data_ov015_022128fc[];
+extern u8 Ov015Result_vtbl[];
+extern u8 Ov015Fish_vtbl[];
 void func_ov015_02209270(Ov015Fish *p);
 void HitSphere_Unlink_0203f2b8(void *p);
 void *Shadow_DtorBase(void *p);
 void *Model0218fe1c_FreeAnims(void *p);
 void *ResSet_ReleaseAll(void *p);
 void Ov015FishInfo_Dtor(Ov015FishInfo *p);
-extern u8 data_ov015_0221292c[];
+extern u8 Ov015Obj292c_vtbl[];
 void func_ov015_022120fc(Ov015Obj292c *self);
-extern u8 data_ov015_0221290c[];
-extern u8 data_ov015_0221295c[];
+extern u8 Ov015List_vtbl[];
+extern u8 Ov015Node_vtbl[];
 
 s32 func_ov015_02202268(void) {
-    switch (data_ov015_02213320.mainSeq->unk_04) {
+    switch (gOv015Globals.mainSeq->unk_04) {
     case 1:
     case 2:
     case 3:
@@ -67,7 +67,7 @@ void func_ov015_022022ac(Ov015Game *self) {
         break;
 
     case 0x28:
-        if (self->phase1.step > 2 && data_02097d48->unk_a30_4) {
+        if (self->phase1.step > 2 && gGfxSys->unk_a30_4) {
             if (self->phase1.unk_10 != NULL) func_ov015_02212264(self->phase1.unk_10);
             if (self->phase1.unk_14 != NULL) self->phase1.unk_14->vfunc_1c();
         }
@@ -78,7 +78,7 @@ void func_ov015_022022ac(Ov015Game *self) {
         break;
     case 0x32:
     case 0x3c:
-        if (data_02097d48->unk_a30_4) {
+        if (gGfxSys->unk_a30_4) {
             func_ov015_021fb758(self->hud);
         }
         Ov015_022022ac_Draw(self);
@@ -93,23 +93,23 @@ void func_ov015_022022ac(Ov015Game *self) {
 
 void *Ov015Game_DtorDelete(Ov015Game *self) {
     void *saved;
-    SET_VT(self, data_ov015_0221296c);
+    SET_VT(self, Ov015Game_vtbl);
     func_ov015_0220101c(self);
-    ResMgr_ReleaseByName(data_02097cdc, data_ov015_022128c1, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_ov015_022128c1, 7, 0);
     HEAP_PUSH(saved);
     DELETE_V(self->result);
     HEAP_POP(saved);
-    EffectMgr_FreeAll(data_0214a420);
-    data_0214a420->drawFilter = 0;
-    data_02097d48->nextState = 1;
+    EffectMgr_FreeAll(gEffectMgr);
+    gEffectMgr->drawFilter = 0;
+    gGfxSys->nextState = 1;
     Ov015Info38_Dtor(&self->info);
-    SET_VT(&self->phase2, data_ov015_022127dc);
-    if (EffectMgr_Contains(data_0214a420, self->phase2.fx)) {
+    SET_VT(&self->phase2, Ov015Obj34_vtbl);
+    if (EffectMgr_Contains(gEffectMgr, self->phase2.fx)) {
         HEAP_PUSH(saved);
         DELETE_V(self->phase2.fx);
         HEAP_POP(saved);
     }
-    SET_VT(&self->phase1, data_ov015_022127ec);
+    SET_VT(&self->phase1, Ov015Obj30_vtbl);
     HEAP_PUSH(saved);
     DELETE_V(self->phase1.unk_10);
     HEAP_POP(saved);
@@ -126,7 +126,7 @@ void *Ov015Game_DtorDelete(Ov015Game *self) {
     self->phase1.cam = 0;
     self->phase1.fishList = 0;
     self->phase1.info = 0;
-    SET_VT(self, data_ov015_0221280c);
+    SET_VT(self, Ov015Child_vtbl);
     func_ov015_021fa6cc(self);
     Heap_Free(self);
     return self;
@@ -134,23 +134,23 @@ void *Ov015Game_DtorDelete(Ov015Game *self) {
 
 void *Ov015Game_Dtor(Ov015Game *self) {
     void *saved;
-    SET_VT(self, data_ov015_0221296c);
+    SET_VT(self, Ov015Game_vtbl);
     func_ov015_0220101c(self);
-    ResMgr_ReleaseByName(data_02097cdc, data_ov015_022128c1, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_ov015_022128c1, 7, 0);
     HEAP_PUSH(saved);
     DELETE_V(self->result);
     HEAP_POP(saved);
-    EffectMgr_FreeAll(data_0214a420);
-    data_0214a420->drawFilter = 0;
-    data_02097d48->nextState = 1;
+    EffectMgr_FreeAll(gEffectMgr);
+    gEffectMgr->drawFilter = 0;
+    gGfxSys->nextState = 1;
     Ov015Info38_Dtor(&self->info);
-    SET_VT(&self->phase2, data_ov015_022127dc);
-    if (EffectMgr_Contains(data_0214a420, self->phase2.fx)) {
+    SET_VT(&self->phase2, Ov015Obj34_vtbl);
+    if (EffectMgr_Contains(gEffectMgr, self->phase2.fx)) {
         HEAP_PUSH(saved);
         DELETE_V(self->phase2.fx);
         HEAP_POP(saved);
     }
-    SET_VT(&self->phase1, data_ov015_022127ec);
+    SET_VT(&self->phase1, Ov015Obj30_vtbl);
     HEAP_PUSH(saved);
     DELETE_V(self->phase1.unk_10);
     HEAP_POP(saved);
@@ -167,14 +167,14 @@ void *Ov015Game_Dtor(Ov015Game *self) {
     self->phase1.cam = 0;
     self->phase1.fishList = 0;
     self->phase1.info = 0;
-    SET_VT(self, data_ov015_0221280c);
+    SET_VT(self, Ov015Child_vtbl);
     func_ov015_021fa6cc(self);
     return self;
 }
 
 void *func_ov015_022027e8(Ov015Hud *self) {
     char buf[0x20];
-    SET_VT(self, data_ov015_0221293c);
+    SET_VT(self, Ov015Hud_vtbl);
     {
         void *saved;
         HEAP_PUSH(saved);
@@ -208,13 +208,13 @@ void *func_ov015_022027e8(Ov015Hud *self) {
         HEAP_POP(saved);
     }
     LangData_LocalizePath(buf, data_ov015_022128ab);
-    ResMgr_ReleaseByName(data_02097cdc, buf, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, buf, 7, 0);
 
     return self;
 }
 
 void *Ov015Vt_0221294c_Dtor(u8 *self) {
-    SET_VT(self, data_ov015_0221294c);
+    SET_VT(self, Ov015Vt_0221294c_vtbl);
     Model0218fe1c_FreeAnims(self + 0x57c);
     ResSet_ReleaseAll(self + 0x444);
     Model0218fe1c_FreeAnims(self + 0x35c);
@@ -225,13 +225,13 @@ void *Ov015Vt_0221294c_Dtor(u8 *self) {
 }
 
 void *Ov015Result_Dtor(Ov015Result *self) {
-    SET_VT(self, data_ov015_022128ec);
+    SET_VT(self, Ov015Result_vtbl);
     func_ov015_0220f4d4(self);
     return self;
 }
 
 void *Ov015Fish_Dtor(Ov015Fish *self) {
-    SET_VT(self, data_ov015_022128fc);
+    SET_VT(self, Ov015Fish_vtbl);
     func_ov015_02209270(self);
     HitSphere_Unlink_0203f2b8(&self->hit);
     Shadow_DtorBase(&self->shadow);
@@ -244,7 +244,7 @@ void *Ov015Fish_Dtor(Ov015Fish *self) {
 }
 
 void *Ov015Obj292c_Dtor(Ov015Obj292c *self) {
-    SET_VT(self, data_ov015_0221292c);
+    SET_VT(self, Ov015Obj292c_vtbl);
     func_ov015_022120fc(self);
     return self;
 }
@@ -277,7 +277,7 @@ void func_ov015_022029d4(Ov015List *self, Ov015Fish *fish) {
 
 Ov015List *Ov015List_DtorDelete(Ov015List *self) {
     Ov015Node *n;
-    SET_VT(self, data_ov015_0221290c);
+    SET_VT(self, Ov015List_vtbl);
     n = self->head;
     while (n != NULL) {
         Ov015Node *next = n->next;
@@ -293,7 +293,7 @@ Ov015List *Ov015List_DtorDelete(Ov015List *self) {
 }
 
 Ov015Node *Ov015Node_DtorDelete(Ov015Node *self) {
-    SET_VT(self, data_ov015_0221295c);
+    SET_VT(self, Ov015Node_vtbl);
     if (self->prev != NULL) {
         self->prev->next = self->next;
     }
@@ -306,7 +306,7 @@ Ov015Node *Ov015Node_DtorDelete(Ov015Node *self) {
 
 Ov015List *Ov015List_Dtor(Ov015List *self) {
     Ov015Node *n;
-    SET_VT(self, data_ov015_0221290c);
+    SET_VT(self, Ov015List_vtbl);
     n = self->head;
     while (n != NULL) {
         Ov015Node *next = n->next;
@@ -321,7 +321,7 @@ Ov015List *Ov015List_Dtor(Ov015List *self) {
 }
 
 Ov015Node *Ov015Node_Dtor(Ov015Node *self) {
-    SET_VT(self, data_ov015_0221295c);
+    SET_VT(self, Ov015Node_vtbl);
     if (self->prev != NULL) {
         self->prev->next = self->next;
     }
@@ -341,7 +341,7 @@ s32 Ov015Scene2a88_IsLoaded(void) {
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void func_ov015_02206bf0(s32 idx, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 void Ov015Scene2a88_Start(Ov015Scene2a88 *self) {
-    SndQueue *p = data_02097e48.queue;
+    SndQueue *p = gSndQueue.queue;
     void *name;
     void *file;
     Model *l;

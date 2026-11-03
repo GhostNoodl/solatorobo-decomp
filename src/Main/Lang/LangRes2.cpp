@@ -4,7 +4,7 @@
 #include "Main/Res/ResMgr.h"
 
 struct LangRes2 {
-    /* 0x00 */ // vtable (data_0208b318)
+    /* 0x00 */ // vtable (ResHandle_vtbl)
     virtual void unk_vf00();
     virtual void DeletingDtor();
     virtual void Clear();
@@ -45,7 +45,7 @@ typedef struct LangTbl2 {
 } LangTbl2;
 
 extern LangTbl2 data_0214b160;
-extern const u32 data_0208b318[];
+extern const u32 ResHandle_vtbl[];
 extern const char *data_0208ccb0;
 extern const char *data_0208cca4;
 extern void *Heap_Alloc(u32 size);
@@ -67,7 +67,7 @@ static inline void *LangTbl_Find(void **data, const char *name) {
 static inline LangRes2 *LangRes2_New(void) {
     LangRes2 *res = (LangRes2 *)Heap_Alloc(sizeof(LangRes2));
     if (res != NULL) {
-        *(const u32 **)res = data_0208b318;
+        *(const u32 **)res = ResHandle_vtbl;
         res->Clear();
     }
     return res;
@@ -85,15 +85,15 @@ void LangRes2_Create(void) {
 }
 
 void LangRes2_Delete(void) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (data_0214b160.res != NULL) {
         if (data_0214b160.res != NULL) {
             data_0214b160.res->DeletingDtor();
         }
         data_0214b160.res = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 BOOL func_0206facc(void) {

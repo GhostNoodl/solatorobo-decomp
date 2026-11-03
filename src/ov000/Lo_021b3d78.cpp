@@ -15,7 +15,7 @@ extern "C" {
 #define FXM(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 void func_ov000_021b3d78(Mgr021b3d78 *self) {
-    FieldState *p = data_ov000_021ccd54;
+    FieldState *p = gSceneCmd;
     s32 dist;
     s32 v;
     s32 half;

@@ -50,7 +50,7 @@ void ResHandle_Unload(ResHandle *handle) {
     }
     if (handle->name[0] != '\0') {
         if (handle->arcName[0] != '\0') {
-            ResMgr *mgr = data_02097cdc;
+            ResMgr *mgr = gResMgr;
             u16 hash = 0;
             ResNode *node = mgr->tail;
             while (node != NULL) {
@@ -65,10 +65,10 @@ void ResHandle_Unload(ResHandle *handle) {
                 node = node->prev;
             }
             if (node != NULL) {
-                ResMgr_ReleaseNode(data_02097cdc, node, FALSE);
+                ResMgr_ReleaseNode(gResMgr, node, FALSE);
             }
         } else {
-            ResMgr *mgr = data_02097cdc;
+            ResMgr *mgr = gResMgr;
             ResNode *node = ResMgr_Find(mgr, handle->name, type);
             if (node != NULL) {
                 ResMgr_ReleaseNode(mgr, node, FALSE);
@@ -81,7 +81,7 @@ void ResHandle_Unload(ResHandle *handle) {
 
 #define RES_HANDLE_LOAD_SYNC(kind)                                          \
     {                                                                       \
-        ResMgr *mgr = data_02097cdc;                                        \
+        ResMgr *mgr = gResMgr;                                        \
         ResNode *node = ResMgr_Request(mgr, handle->name, NULL, kind, TRUE); \
         if (node == NULL) {                                                 \
             return;                                                         \
@@ -95,7 +95,7 @@ void ResHandle_Unload(ResHandle *handle) {
             if (node->state == 5) {                                         \
                 return;                                                     \
             }                                                               \
-            Sys_WaitVBlank(data_02097dd0);                                   \
+            Sys_WaitVBlank(gSysState);                                   \
         }                                                                   \
     }
 
@@ -124,12 +124,12 @@ void ResHandle_LoadSync(ResHandle *handle, const char *name) {
         RES_HANDLE_LOAD_SYNC(6);
         break;
     case 7: {
-        ResNode *node = ResMgr_Request(data_02097cdc, handle->name, NULL, 7, TRUE);
+        ResNode *node = ResMgr_Request(gResMgr, handle->name, NULL, 7, TRUE);
         ResMgr *mgr;
         if (node == NULL) {
             return;
         }
-        mgr = data_02097cdc;
+        mgr = gResMgr;
         ResMgr_LoadNode(mgr, node);
         if (node->state == 7) {
             return;
@@ -139,14 +139,14 @@ void ResHandle_LoadSync(ResHandle *handle, const char *name) {
             if (node->state == 5) {
                 return;
             }
-            Sys_WaitVBlank(data_02097dd0);
+            Sys_WaitVBlank(gSysState);
         }
     }
     }
 }
 
 static inline ResNode *ResHandle_LoadArchive(ResHandle *handle, const char *name, const char *arcName, int id, u8 toFront) {
-    ResNode *node = ResMgr_Request(data_02097cdc, name, arcName, id, toFront);
+    ResNode *node = ResMgr_Request(gResMgr, name, arcName, id, toFront);
     if (node == NULL) {
         return node;
     }
@@ -165,7 +165,7 @@ void ResHandle_OpenInArc(ResHandle *handle, const char *arcName, const char *nam
     STD_CopyString(handle->arcName, arcName);
     STD_CopyString(handle->name, name);
     id = handle->type;
-    node = ResMgr_Request(data_02097cdc, handle->arcName, handle->name, id, TRUE);
+    node = ResMgr_Request(gResMgr, handle->arcName, handle->name, id, TRUE);
     if (node == NULL) {
         return;
     }
@@ -174,7 +174,7 @@ void ResHandle_OpenInArc(ResHandle *handle, const char *arcName, const char *nam
         node->u.arc.id = id;
         STD_CopyString(node->u.arc.name, handle->name);
     }
-    mgr = data_02097cdc;
+    mgr = gResMgr;
     ResMgr_LoadNode(mgr, node);
     if (node->state == 7) {
         return;
@@ -184,18 +184,18 @@ void ResHandle_OpenInArc(ResHandle *handle, const char *arcName, const char *nam
         if (node->state == 5) {
             return;
         }
-        Sys_WaitVBlank(data_02097dd0);
+        Sys_WaitVBlank(gSysState);
     }
 }
 
 void ResHandle_Request(ResHandle *handle, const char *name) {
     STD_CopyString(handle->name, name);
-    ResMgr_Request(data_02097cdc, handle->name, NULL, handle->type, FALSE);
+    ResMgr_Request(gResMgr, handle->name, NULL, handle->type, FALSE);
 }
 
 void ResHandle_RequestFlag(ResHandle *handle, const char *name) {
     STD_CopyString(handle->name, name);
-    ResMgr_Request(data_02097cdc, handle->name, NULL, handle->type, TRUE);
+    ResMgr_Request(gResMgr, handle->name, NULL, handle->type, TRUE);
 }
 
 void ResHandle_LoadFromArc(ResHandle *handle, const char *arcName, const char *name) {
@@ -218,7 +218,7 @@ BOOL ResHandle_IsLoaded(ResHandle *handle) {
     BOOL done;
     if (handle->arcName[0] != '\0') {
         done = FALSE;
-        mgr = data_02097cdc;
+        mgr = gResMgr;
         hash = 0;
         node = mgr->tail;
         type = handle->type;
@@ -241,7 +241,7 @@ BOOL ResHandle_IsLoaded(ResHandle *handle) {
         }
     } else {
         BOOL done2 = FALSE;
-        ResNode *node2 = ResMgr_Find(data_02097cdc, handle->name, handle->type);
+        ResNode *node2 = ResMgr_Find(gResMgr, handle->name, handle->type);
         if (node2 == NULL || node2->state == 5) {
             done2 = TRUE;
         }
@@ -255,7 +255,7 @@ BOOL ResHandle_IsLoaded(ResHandle *handle) {
 
 #define RES_HANDLE_GET_ARC_DATA(kind, findFunc)                                                         \
     {                                                                                                   \
-        ResMgr *mgr = data_02097cdc;                                                                    \
+        ResMgr *mgr = gResMgr;                                                                    \
         ResList *list;                                                                                  \
         ResNode *node;                                                                                  \
         u16 hash;                                                                                       \
@@ -286,7 +286,7 @@ BOOL ResHandle_IsLoaded(ResHandle *handle) {
 #define RES_HANDLE_GET_DATA(kind)                                           \
     {                                                                       \
         void *result = NULL;                                                \
-        ResNode *node = ResMgr_Find(data_02097cdc, handle->name, kind);   \
+        ResNode *node = ResMgr_Find(gResMgr, handle->name, kind);   \
         if (node != NULL) {                                                 \
             result = node->u.data;                                          \
         }                                                                   \
@@ -332,7 +332,7 @@ void *ResHandle_GetData(ResHandle *handle) {
             RES_HANDLE_GET_DATA(6);
         case 7: {
             ResList *result = NULL;
-            ResNode *node = ResMgr_Find(data_02097cdc, handle->name, 7);
+            ResNode *node = ResMgr_Find(gResMgr, handle->name, 7);
             if (node != NULL) {
                 result = node->u.arc.list;
             }
@@ -463,12 +463,12 @@ const char *Path_SkipDir(const char *path) {
     return path;
 }
 
-extern const void *data_0208b318[];
+extern const void *ResHandle_vtbl[];
 extern void Heap_Free(void *ptr);
 
 // ResHandle::~ResHandle (deleting).
 ResHandle *_ZN9ResHandleD0Ev(ResHandle *handle) {
-    *(const void ***)handle = data_0208b318;
+    *(const void ***)handle = ResHandle_vtbl;
     handle->Unload();
     Heap_Free(handle);
     return handle;
@@ -485,7 +485,7 @@ BOOL ResHandle_OnLoad(ResHandle *handle) {
 
 // ResHandle::~ResHandle (complete); LangHandle.cpp registers it as the global handle's destructor.
 ResHandle *_ZN9ResHandleD1Ev(ResHandle *handle) {
-    *(const void ***)handle = data_0208b318;
+    *(const void ***)handle = ResHandle_vtbl;
     handle->Unload();
     return handle;
 }

@@ -17,7 +17,7 @@ void Ov009ActVt_02216348_StateFly(Ov009ActVt_02216348 *self) {
         if (self->velY < 0) {
             if (self->hit->unk_50 & 0x20000000) {
                 if (self->velY < -0xcd) {
-                    SndMgr_PlayAtPitch(data_02097e4c, 0x1e, &self->pos, 0xc);
+                    SndMgr_PlayAtPitch(gSndMgr, 0x1e, &self->pos, 0xc);
                 }
                 History_SetState(self->fsm, 1, 0);
                 self->velY = 0;

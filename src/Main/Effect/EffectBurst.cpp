@@ -2,9 +2,9 @@
 
 extern "C" {
 
-extern u32 data_0208c23c[];
-extern u32 data_0208c290[];
-extern u32 data_0208c2e4[];
+extern u32 EffectGroup_vtbl[];
+extern u32 MainVt_0208c290_vtbl[];
+extern u32 EffectObj_vtbl[];
 extern char data_0208c4da[];
 extern void EffectObj_Register(EffectObj *obj);
 extern void Effect3D_Init(Effect3D *e);
@@ -62,9 +62,9 @@ static inline void Effect_SetStr(char *dst, const char *src) {
 static inline Effect3D *Effect3D_New(void) {
     Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
-        *(u32 **)e = data_0208c2e4;
+        *(u32 **)e = EffectObj_vtbl;
         EffectObj_Register(e);
-        *(u32 **)e = data_0208c290;
+        *(u32 **)e = MainVt_0208c290_vtbl;
         Effect3D_Init(e);
     }
     return e;
@@ -73,9 +73,9 @@ static inline Effect3D *Effect3D_New(void) {
 static inline EffectGroup *EffectGroup_New(void) {
     EffectGroup *g = (EffectGroup *)Heap_Alloc(sizeof(EffectGroup));
     if (g != NULL) {
-        *(u32 **)g = data_0208c2e4;
+        *(u32 **)g = EffectObj_vtbl;
         EffectObj_Register(g);
-        *(u32 **)g = data_0208c23c;
+        *(u32 **)g = EffectGroup_vtbl;
         EffectGroup_Reset(g);
     }
     return g;

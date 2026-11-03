@@ -25,7 +25,7 @@ static inline void ov006_SlotSub_Copy(ov006_SlotSub *dst, const ov006_SlotSub *s
 
 void ov006_SyncSlotEntries(void) {
     u8 i;
-    if (data_ov006_021ec860->unk1C) {
+    if (gOv006Manager->unk1C) {
         if (data_ov006_021ec888 == NULL) {
             return;
         }
@@ -34,10 +34,10 @@ void ov006_SyncSlotEntries(void) {
         }
     }
     for (i = 0; i < 4; i++) {
-        ov006_Slot *slot = ov006_SlotManager_GetSlot(data_ov006_021ec884, i);
+        ov006_Slot *slot = ov006_SlotManager_GetSlot(gOv006SlotManager, i);
         if (slot != NULL && slot->active) {
             if (slot->aid != 0xff) {
-                ov006_Save02046a50 *p = Wh_GetSharedData(data_02097e40, slot->aid);
+                ov006_Save02046a50 *p = Wh_GetSharedData(gWhMgr, slot->aid);
                 if (p != NULL) {
                     ov006_SlotSub_Copy(&slot->sub2C, (ov006_SlotSub *)p->unk2);
                 }

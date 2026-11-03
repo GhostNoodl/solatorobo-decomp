@@ -238,7 +238,7 @@ void Ov011Scene_State07(Ov011Scene *self) {
                 rot.x = 0;
                 rot.y = 0;
                 rot.z = 0;
-                ob = (Ov011Npc *)Group_SpawnActor(data_ov000_021ccd64, &d, &p, &rot, 0xffff);
+                ob = (Ov011Npc *)Group_SpawnActor(gGroup, &d, &p, &rot, 0xffff);
                 func_ov011_022011c0(ob, self->actor->id);
                 Ov011Npc_SetTracking(ob, 1);
                 ob->targetObj->target = self->actor->id;

@@ -44,19 +44,19 @@ typedef struct {
 
 extern "C" {
 
-extern u32 data_ov003_021f79a8;
+extern u32 Ov003Vt_021f79a8_vtbl;
 extern void *Heap_AllocArray(u32 size);
 extern void Heap_Free(void *p);
 void Ov003Group_Sweep(Ov003Group *self);
 
-extern u8 data_ov003_021f7984[];
+extern u8 Ov003Track_vtbl[];
 extern void *Heap_Alloc(u32 size);
 
 void Ov003ScriptList_AddTrack(Ov003ScriptList *self, u16 id, u16 max, const Ov003Step *steps) {
     Ov003Track *e = (Ov003Track *)Heap_Alloc(sizeof(Ov003Track));
     Ov003Track *p;
     if (e != NULL) {
-        *(void **)e = data_ov003_021f7984;
+        *(void **)e = Ov003Track_vtbl;
         e->id = id;
         e->max = max;
         e->val = 0;
@@ -96,19 +96,19 @@ Ov003Track *Ov003ScriptList_SelectTrack(Ov003ScriptList *self, u16 id, u16 val) 
 }
 
 Ov003FlagObj *Ov003Vt_021f79a8_Ctor(Ov003FlagObj *self) {
-    *(void **)self = &data_ov003_021f79a8;
+    *(void **)self = &Ov003Vt_021f79a8_vtbl;
     self->active = 0;
     return self;
 }
 
 Ov003FlagObj *Ov003Vt_021f79a8_Dtor(Ov003FlagObj *self) {
-    *(void **)self = &data_ov003_021f79a8;
+    *(void **)self = &Ov003Vt_021f79a8_vtbl;
     self->Release();
     return self;
 }
 
 Ov003FlagObj *Ov003Vt_021f79a8_DtorDelete(Ov003FlagObj *self) {
-    *(void **)self = &data_ov003_021f79a8;
+    *(void **)self = &Ov003Vt_021f79a8_vtbl;
     self->Release();
     Heap_Free(self);
     return self;
@@ -125,22 +125,22 @@ void func_ov003_021cf33c(Ov003FlagObj *self, void *arg) {
 }
 
 void Ov003_DupString(const char *str) {
-    void *old = data_02097dd0->cur;
+    void *old = gSysState->cur;
     char *buf;
     u32 n;
-    data_02097dd0->cur = data_02097dd0->heapHi;
-    data_02097dd0->cur = old;
+    gSysState->cur = gSysState->heapHi;
+    gSysState->cur = old;
     n = STD_GetStringLength(str) + 1;
     buf = (char *)Heap_AllocArray(n * 2 - n);
     STD_CopyLString(buf, str, STD_GetStringLength(str) + 1);
 }
 
 void Ov003_DupString2(void *self, const char *str) {
-    void *old = data_02097dd0->cur;
+    void *old = gSysState->cur;
     char *buf;
     u32 n;
-    data_02097dd0->cur = data_02097dd0->heapHi;
-    data_02097dd0->cur = old;
+    gSysState->cur = gSysState->heapHi;
+    gSysState->cur = old;
     n = STD_GetStringLength(str) + 1;
     buf = (char *)Heap_AllocArray(n * 2 - n);
     STD_CopyLString(buf, str, STD_GetStringLength(str) + 1);
@@ -254,8 +254,8 @@ void Ov003Group_Sweep(Ov003Group *self) {
         void *old;
         next = l->next;
         if (l->item->flag) {
-            old = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->heapHi;
+            old = gSysState->cur;
+            gSysState->cur = gSysState->heapHi;
             if (l->item->obj != NULL) {
                 Ov003RelObj *o = (Ov003RelObj *)l->item->obj;
                 if (o != NULL) {
@@ -263,15 +263,15 @@ void Ov003Group_Sweep(Ov003Group *self) {
                 }
                 l->item->obj = NULL;
             }
-            data_02097dd0->cur = old;
+            gSysState->cur = old;
         }
-        old = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        old = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (l->item != NULL) {
             Heap_Free(l->item);
             l->item = NULL;
         }
-        data_02097dd0->cur = old;
+        gSysState->cur = old;
         Heap_Free(l);
     }
     self->list4 = NULL;

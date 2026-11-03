@@ -81,7 +81,7 @@ data_ov004_021cf7bc kind:data(any) addr:0x021cf7bc
 data_ov004_021cf7d4 kind:data(any) addr:0x021cf7d4
 data_ov004_021cf7d8 kind:data(any) addr:0x021cf7d8
 data_ov004_021cf7dc kind:data(any) addr:0x021cf7dc
-data_ov004_021cf808 kind:data(any) addr:0x021cf808
+Ov004ActVt_021cf808_vtbl kind:data(any) addr:0x021cf808
 data_ov004_021cf860 kind:bss addr:0x021cf860
 data_ov004_021cf864 kind:bss addr:0x021cf864
 data_ov004_021cf868 kind:bss addr:0x021cf868

@@ -11,7 +11,7 @@ void func_0206298c(void) {
     if (data_0214a418 != NULL) {
         return;
     }
-    data_02097dd0->cur = data_02097dd0->heapLo;
+    gSysState->cur = gSysState->heapLo;
     p = (Unk0214a418 *)Heap_Alloc(sizeof(Unk0214a418));
     if (p != NULL) {
         p->unk_00 = 0;
@@ -22,9 +22,9 @@ void func_0206298c(void) {
         p->unk_14 = NULL;
     }
     data_0214a418 = p;
-    data_02097dd0->cur = data_02097dd0->heapHi;
-    data_02097d4c = func_02062aa0;
-    data_02097d44 = 0;
+    gSysState->cur = gSysState->heapHi;
+    gFadeFunc = func_02062aa0;
+    gFadeFuncArg = 0;
 }
 
 static inline void Unk0214a418_Dtor(Unk0214a418 *p) {
@@ -38,9 +38,9 @@ static inline void Unk0214a418_Dtor(Unk0214a418 *p) {
 }
 
 void func_02062a24(void) {
-    void *saved = data_02097dd0->cur;
+    void *saved = gSysState->cur;
     Unk0214a418 *p;
-    data_02097dd0->cur = data_02097dd0->heapLo;
+    gSysState->cur = gSysState->heapLo;
     p = data_0214a418;
     if (p != NULL) {
         if (p != NULL) {
@@ -49,7 +49,7 @@ void func_02062a24(void) {
         }
         data_0214a418 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 s32 func_02062aa0(s32 arg) {
@@ -134,7 +134,7 @@ static inline void ST_Draw(Unk0214a418 *p, u32 size) {
     int scale[3];
     u32 c;
     u32 one;
-    Gfx3D_SendDL(data_02097d48->unk_8b0, 0);
+    Gfx3D_SendDL(gGfxSys->unk_8b0, 0);
     s.x = 0x1000;
     s.y = 0x1000;
     s.z = 0x1000;

@@ -5,7 +5,7 @@ typedef struct ActorMgr ActorMgr;
 extern "C" {
 
 extern u8 data_ov000_021ca1f8[];
-extern ActorMgr *data_ov000_021ccd68;
+extern ActorMgr *gActorMgr;
 
 void *ActorMgr_FindKind(ActorMgr *mgr, u16 id, u16 kind);
 
@@ -18,7 +18,7 @@ s32 func_ov000_0219bf88(void) {
 }
 
 void *ActorMgr_FindPlayer(void) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }

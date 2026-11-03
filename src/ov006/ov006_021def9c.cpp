@@ -29,8 +29,8 @@ typedef struct ov006_Unk021def9c {
 
 extern "C" {
 
-extern u8 data_ov006_021ec26c[];
-extern u8 data_ov006_021ec2dc[];
+extern u8 Ov006Vt_021ec26c_vtbl[];
+extern u8 Ov006Vt_021ec2dc_vtbl[];
 extern char data_0214b105[];
 void PlayTime_Clear(void *p);
 void TexObj_SetOamFunc(Model *m, int a, void *cb, int b);
@@ -38,7 +38,7 @@ void *ov006_OamCb_TimeDigits(void *self, u16 *flag, void *oam, u16 *count);
 void *ov006_Counter_OamCb(void *self, const u16 *mode, void *oam, u16 *count);
 
 static inline void ov006_Unk021def9c_dtor(ov006_Unk021def9c *self) {
-    self->vtbl = data_ov006_021ec26c;
+    self->vtbl = Ov006Vt_021ec26c_vtbl;
     OV006_DELETE_OBJECT(self->unk88);
     OV006_DELETE_MODEL(self->unk8C);
     OV006_DELETE_MODEL(self->unk90);
@@ -64,7 +64,7 @@ void ov006_Unk021def9c_Load(ov006_Unk021def9c *self) {
 
     icon = (ov006_Icon021df19c *)Heap_Alloc(sizeof(ov006_Icon021df19c));
     if (icon != NULL) {
-        icon->vtbl = data_ov006_021ec2dc;
+        icon->vtbl = Ov006Vt_021ec2dc_vtbl;
         icon->unk4 = 0;
         PlayTime_Clear(icon->unk6);
         icon->unk1C = NULL;

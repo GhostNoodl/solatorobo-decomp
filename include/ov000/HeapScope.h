@@ -24,9 +24,9 @@ void PlttRes_Release(struct PlttRes *res);
 // `dtor` (a statement using `p`), clears it, then restores the heap.
 #define HEAP_DELETE(T, field, dtor)                       \
     {                                                     \
-        void *saved = data_02097dd0->cur;             \
+        void *saved = gSysState->cur;             \
         T p;                                              \
-        data_02097dd0->cur = data_02097dd0->heapHi;   \
+        gSysState->cur = gSysState->heapHi;   \
         p = (T)(field);                                   \
         if (p != NULL) {                                  \
             if (p != NULL) {                              \
@@ -34,7 +34,7 @@ void PlttRes_Release(struct PlttRes *res);
             }                                             \
             (field) = 0;                                  \
         }                                                 \
-        data_02097dd0->cur = saved;                   \
+        gSysState->cur = saved;                   \
     }
 
 #define MODEL_DELETE(p)                \

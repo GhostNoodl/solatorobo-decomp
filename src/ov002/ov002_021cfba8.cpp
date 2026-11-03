@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern VFunc data_ov000_021cadcc[];
+extern VFunc Lo021cadcc_vtbl[];
 
 void Task021ef79c_Start(Task021ef79c *self) {
     UiObj *o;
@@ -17,12 +17,12 @@ void Task021ef79c_Start(Task021ef79c *self) {
         self->unk_44 = 0;
         return;
     }
-    g = data_02149ef8;
+    g = gMsgRes;
     o = (UiObj *)Heap_Alloc(0xd4);
     if (o != NULL) {
-        *(VFunc **)o = data_ov000_021cac60;
+        *(VFunc **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(VFunc **)o = data_ov000_021caec8;
+        *(VFunc **)o = UiList_vtbl;
         o->vfunc_28();
     }
     self->unk_3c = (UiList *)o;
@@ -44,9 +44,9 @@ void Task021ef79c_Start(Task021ef79c *self) {
     m->vfunc_a8(UiList_GetItemById(m, 0xb));
     o2 = (UiObj *)Heap_Alloc(0x8c);
     if (o2 != NULL) {
-        *(VFunc **)o2 = data_ov000_021cac60;
+        *(VFunc **)o2 = UiObj_vtbl;
         o2->vfunc_28();
-        *(VFunc **)o2 = data_ov000_021cadcc;
+        *(VFunc **)o2 = Lo021cadcc_vtbl;
         o2->vfunc_28();
     }
     self->unk_40 = (Lo021cadcc *)o2;
@@ -74,7 +74,7 @@ void Task021ef79c_PreUpdate(Task021ef79c *self) {
     void *s2;
     UiListItem *e2;
     if (self->state == 8) {
-        mgr = data_02149ef8;
+        mgr = gMsgRes;
         e = UiList_GetItemById(self->unk_3c, 0xb);
         e->name = NULL;
         {

@@ -1,20 +1,20 @@
 #include "ov000/UiObj.h"
 
-// The 0xe0-byte list subclasses (data_ov000_021cb4a8 and below).
+// The 0xe0-byte list subclasses (UiList021cb4a8_vtbl and below).
 
 extern "C" {
 
-extern u8 data_ov000_021caa44[];
-extern u8 data_ov000_021cc060[];
+extern u8 Lo021caa44_vtbl[];
+extern u8 Task_vtbl[];
 
 static inline BOOL IsState2(UiObj *self) {
     return self->state == 2 ? TRUE : FALSE;
 }
 
 VObj *Lo021caa44_Dtor(VObj *self) {
-    *(void **)self = data_ov000_021caa44;
+    *(void **)self = Lo021caa44_vtbl;
     self->vfunc_5c();
-    *(void **)self = data_ov000_021cc060;
+    *(void **)self = Task_vtbl;
     self->vfunc_5c();
     return self;
 }

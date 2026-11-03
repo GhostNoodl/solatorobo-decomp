@@ -240,7 +240,7 @@ static inline BOOL Ov013Game_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov013_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov013Game_IsIdle(g);
     }
@@ -277,7 +277,7 @@ void Model0218fe1c_UpdateAnim(void *a, s32 b);
 }
 
 
-// Actor class of Ov013_DtorDc (vtable data_ov013_0220bbb8).
+// Actor class of Ov013_DtorDc (vtable Ov013ActEx_02204454_vtbl).
 class Ov013Cls;
 typedef void (Ov013Cls::*Ov013Pmf)();
 
@@ -317,7 +317,7 @@ public:
 };
 SIZE_ASSERT(Ov013ActEx_02204454, 0xfc);
 
-// Actor class of Ov013ActEx_021fdb70_Ctor (vtable data_ov013_0220b738).
+// Actor class of Ov013ActEx_021fdb70_Ctor (vtable Ov013ActEx_021fdb70_vtbl).
 class Ov013ActEx_021fdb70 : public ActorEx {
 public:
     s32 unk_d0;
@@ -326,7 +326,7 @@ public:
 };
 SIZE_ASSERT(Ov013ActEx_021fdb70, 0xd8);
 
-// Actor class of Ov013Act_021fea8c_Ctor (vtable data_ov013_0220b9a0).
+// Actor class of Ov013Act_021fea8c_Ctor (vtable Ov013Act_021fea8c_vtbl).
 class Ov013Act_021fea8c : public Ov003Actor {
 public:
     Ov013Flags8 unk_f0;
@@ -352,7 +352,7 @@ public:
 };
 SIZE_ASSERT(Ov013Act_021fea8c, 0x160);
 
-// Actor class of Ov013ActEx_02205ae4_Ctor (vtable data_ov013_0220ba88).
+// Actor class of Ov013ActEx_02205ae4_Ctor (vtable Ov013ActEx_02205ae4_vtbl).
 class Ov013ActEx_02205ae4 : public ActorEx {
 public:
     u16 unk_d0;
@@ -362,7 +362,7 @@ public:
 };
 SIZE_ASSERT(Ov013ActEx_02205ae4, 0xf0);
 
-// Actor class of Ov013ActEx_022065ac_Ctor (vtable data_ov013_0220bb20): an ov003 shot that
+// Actor class of Ov013ActEx_022065ac_Ctor (vtable Ov013ActEx_022065ac_vtbl): an ov003 shot that
 // turns along its velocity.
 class Ov013ActEx_022065ac : public Ov003Shot {
 public:
@@ -372,7 +372,7 @@ public:
 };
 SIZE_ASSERT(Ov013ActEx_022065ac, 0xf8);
 
-// Actor class of Ov013Act_02207968_Ctor (vtable data_ov013_0220bd2c).
+// Actor class of Ov013Act_02207968_Ctor (vtable Ov013Act_02207968_vtbl).
 class Ov013Act_02207968 : public Ov003Actor {
 public:
     u8 unk_f0;
@@ -388,7 +388,7 @@ public:
 };
 SIZE_ASSERT(Ov013Act_02207968, 0x114);
 
-// Actor class of Ov013ActEx_0220a4e0_Ctor (vtable data_ov013_0220bf4c).
+// Actor class of Ov013ActEx_0220a4e0_Ctor (vtable Ov013ActEx_0220a4e0_vtbl).
 class Ov013ActEx_0220a4e0 : public ActorEx {
 public:
     s32 unk_d0;
@@ -396,7 +396,7 @@ public:
 };
 SIZE_ASSERT(Ov013ActEx_0220a4e0, 0xe0);
 
-// Actor class of Ov013ActEx_0220a9a8_Ctor (vtable data_ov013_0220beb4).
+// Actor class of Ov013ActEx_0220a9a8_Ctor (vtable Ov013ActEx_0220a9a8_vtbl).
 class Ov013ActEx_0220a9a8 : public ActorEx {
 public:
     s32 unk_d0;
@@ -404,7 +404,7 @@ public:
 };
 SIZE_ASSERT(Ov013ActEx_0220a9a8, 0xd8);
 
-// The ov000-factory class with vtable data_ov013_0220b7d0 (0xdc bytes).
+// The ov000-factory class with vtable Ov013ActExVt_0220b7d0_vtbl (0xdc bytes).
 class Ov013ActExVt_0220b7d0 : public ActorEx {
 public:
     s32 unk_d0[2]; // effect handles (Effect_Find_020657b0)
@@ -412,7 +412,7 @@ public:
 };
 SIZE_ASSERT(Ov013ActExVt_0220b7d0, 0xdc);
 
-// Actor class with vtable data_ov013_0220b5e0 (built inline by the ov003 factory).
+// Actor class with vtable Ov013ActVt_0220b5e0_vtbl (built inline by the ov003 factory).
 class Ov013ActVt_0220b5e0 : public Ov003Actor {
 public:
     u8 unk_f0;
@@ -423,7 +423,7 @@ public:
 };
 SIZE_ASSERT(Ov013ActVt_0220b5e0, 0xfc);
 
-// Actor class with vtable data_ov013_0220bc80 (built inline by the ov003 factory).
+// Actor class with vtable Ov013ActVt_0220bc80_vtbl (built inline by the ov003 factory).
 class Ov013ActVt_0220bc80 : public Ov003Actor {
 public:
     u16 unk_f0;
@@ -433,7 +433,7 @@ public:
 };
 SIZE_ASSERT(Ov013ActVt_0220bc80, 0x10c);
 
-// Actor class with vtable data_ov013_0220bdd8 (built inline by the ov003 factory).
+// Actor class with vtable Ov013ActVt_0220bdd8_vtbl (built inline by the ov003 factory).
 class Ov013ActVt_0220bdd8 : public Ov003Actor {
 public:
     VecFx32 unk_f0;
@@ -449,7 +449,7 @@ struct Ov013Pole {
     u8 pad[3];
 };
 
-// The ov003-factory class with vtable data_ov013_0220b68c (0x13c bytes).
+// The ov003-factory class with vtable Ov013Boss_vtbl (0x13c bytes).
 class Ov013Boss : public Ov003Actor {
 public:
     u8 unk_f0;

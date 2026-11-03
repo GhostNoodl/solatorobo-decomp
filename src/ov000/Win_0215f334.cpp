@@ -7,7 +7,7 @@
 
 extern "C" {
 
-extern UiLabelStyle data_02fe0188[];
+extern UiLabelStyle UiLabel_StyleTable[];
 BOOL Model_IsReady(void *model, u32 id);
 void func_ov000_0215f970(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx0);
 
@@ -19,7 +19,7 @@ void UiLabel_Draw(UiLabel *self) {
     if (!Model_IsReady(self->model, 0xffff)) {
         return;
     }
-    e = &data_02fe0188[self->style];
+    e = &UiLabel_StyleTable[self->style];
     pos[0] = self->x;
     pos[1] = self->y;
     pos[2] = self->z;

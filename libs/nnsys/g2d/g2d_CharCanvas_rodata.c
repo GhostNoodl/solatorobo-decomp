@@ -54,10 +54,10 @@ typedef struct ObjectSize {
 #pragma define_section rodata_text ".text" ".bss" ".text" abs32 R
 #pragma section rodata_text begin
 
-const NNSiG2dCharCanvasVTable data_02075660 = { DrawGlyphLine, ClearLine, ClearAreaLine };       // VTABLE_OBJ2DRECT
+const NNSiG2dCharCanvasVTable VTABLE_OBJ2DRECT = { DrawGlyphLine, ClearLine, ClearAreaLine };
 // MWCC emits these two in the opposite order to their definitions.
-const NNSiG2dCharCanvasVTable data_02075678 = { DrawGlyph1D, ClearContinuous, ClearArea1D };     // VTABLE_OBJ1D
-const NNSiG2dCharCanvasVTable data_0207566c = { DrawGlyphLine, ClearContinuous, ClearAreaLine }; // VTABLE_BG
+const NNSiG2dCharCanvasVTable VTABLE_OBJ1D = { DrawGlyph1D, ClearContinuous, ClearArea1D };
+const NNSiG2dCharCanvasVTable VTABLE_BG = { DrawGlyphLine, ClearContinuous, ClearAreaLine };
 
 // [log2 height][log2 width] in characters: the widest, then tallest, OBJ no larger than the area
 const ObjectSize data_02075684[4][4] = {

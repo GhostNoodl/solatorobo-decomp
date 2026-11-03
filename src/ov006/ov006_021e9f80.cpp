@@ -29,7 +29,7 @@ void Ov006Racer_UpdateCheckpoint(Ov006Racer *self) {
     ov006_SlotManagerInfo *info;
     VecFx32 min = data_ov006_021eb8a4;
     VecFx32 max = data_ov006_021eb8b0;
-    info = data_ov006_021ec884->info;
+    info = gOv006SlotManager->info;
     p = &self->pts[self->nextPt];
 
     if (p != NULL) {
@@ -85,7 +85,7 @@ void Ov006Racer_UpdateCheckpoint(Ov006Racer *self) {
         if (Hit_PointInRotBox(&self->pos, &self->goal->pos, &min, &max, &rot)) {
             if (!self->unk_19c_7) {
                 self->unk_19f++;
-                if (self->idx == data_ov006_021ec884->unk5 && data_ov006_021ec884->unk13D == 0 && info->unkB != 0) {
+                if (self->idx == gOv006SlotManager->unk5 && gOv006SlotManager->unk13D == 0 && info->unkB != 0) {
                     u8 n = self->unk_19f;
                     if (n > 1 && n <= info->unkB) {
                         VecFx32 v;

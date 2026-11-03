@@ -26,7 +26,7 @@ typedef struct ov006_Net021e5604 {
 
 extern "C" {
 
-extern ov006_Net021e5604 *data_02097e40;
+extern ov006_Net021e5604 *gWhMgr;
 
 BOOL WH_StateInEndScan_020463c8(ov006_Net021e5604 *net);
 void WH_CalcBufferSizes_02044a0c(ov006_NetParam021e5604 *param);
@@ -54,17 +54,17 @@ static inline void ov006_Menu_Error(int code) {
 void func_ov006_021e5604(ov006_Unk021ec888 *self) {
     switch (self->stateTime) {
     case 0:
-        data_02097dd0->vblankFunc = NULL;
-        if (data_02097e40->state == 3) {
+        gSysState->vblankFunc = NULL;
+        if (gWhMgr->state == 3) {
             return;
         }
-        if (data_02097e40->state == 2) {
-            WH_StateInEndScan_020463c8(data_02097e40);
+        if (gWhMgr->state == 2) {
+            WH_StateInEndScan_020463c8(gWhMgr);
         }
         self->stateTime = 10;
         return;
     case 10: {
-        ov006_Net021e5604 *net = data_02097e40;
+        ov006_Net021e5604 *net = gWhMgr;
         ov006_Unk021ec888 *menu;
         int i;
         if (net->state != 1) {
@@ -79,7 +79,7 @@ void func_ov006_021e5604(ov006_Unk021ec888 *self) {
         net->param.unk8 = 0x74;
         net->param.unkC = 1;
         WH_CalcBufferSizes_02044a0c(&net->param);
-        MI_CpuFill8(data_02097e40->buf, 0, 0x200);
+        MI_CpuFill8(gWhMgr->buf, 0, 0x200);
         menu = data_ov006_021ec888;
         for (i = 0; i < 4; i++) {
             ov006_MenuEntry *e = &menu->entries[i];
@@ -91,31 +91,31 @@ void func_ov006_021e5604(ov006_Unk021ec888 *self) {
         return;
     }
     case 11:
-        if (func_020464e0(data_02097e40, 4, &self->unk34)) {
+        if (func_020464e0(gWhMgr, 4, &self->unk34)) {
             ov006_Menu_Advance(self);
         } else {
-            func_02045094(data_02097e40);
+            func_02045094(gWhMgr);
             self->stateTime = 10;
             return;
         }
     case 12:
-        if (data_02097e40->state == 5) {
-            data_02097dd0->vblankFunc = ov006_Menu_VBlankB;
+        if (gWhMgr->state == 5) {
+            gSysState->vblankFunc = ov006_Menu_VBlankB;
             self->stateTime = 0x1e;
-        } else if (data_02097e40->state == 8) {
-            Wh_GetError(data_02097e40);
+        } else if (gWhMgr->state == 8) {
+            Wh_GetError(gWhMgr);
             ov006_Menu_Error(3);
             return;
-        } else if (data_02097e40->state == 7) {
-            Wh_GetError(data_02097e40);
+        } else if (gWhMgr->state == 7) {
+            Wh_GetError(gWhMgr);
             ov006_Menu_Error(3);
             return;
         } else {
             return;
         }
     case 0x1e:
-        if (data_02097e40->state == 8) {
-            Wh_GetError(data_02097e40);
+        if (gWhMgr->state == 8) {
+            Wh_GetError(gWhMgr);
             ov006_Menu_Error(3);
         }
         if (self->unk18 != 0) {
@@ -124,8 +124,8 @@ void func_ov006_021e5604(ov006_Unk021ec888 *self) {
         ov006_Menu_Advance(self);
         return;
     case 0x1f:
-        if (data_02097e40->state == 8) {
-            Wh_GetError(data_02097e40);
+        if (gWhMgr->state == 8) {
+            Wh_GetError(gWhMgr);
             ov006_Menu_Error(4);
         }
         return;

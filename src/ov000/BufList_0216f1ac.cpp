@@ -3,8 +3,8 @@
 
 extern "C" {
 
-extern u8 data_ov000_021cb6d0[];
-extern u8 data_ov000_021cb960[];
+extern u8 Ov000Vt_021cb6d0_vtbl[];
+extern u8 Ov000Vt_021cb960_vtbl[];
 
 void *Heap_Alloc(u32 size);
 void ListBuffer_AddToList(ListBuffer *buf, BufferList *list);
@@ -18,7 +18,7 @@ static inline ListBuffer *MessageQueue_AddBuffer(MessageQueue *self, ListBuffer 
         allocated = TRUE;
         b = (ListBuffer *)Heap_Alloc(0x20);
         if (b != NULL) {
-            VOBJ_SET_VTABLE(b, data_ov000_021cb6d0);
+            VOBJ_SET_VTABLE(b, Ov000Vt_021cb6d0_vtbl);
             b->flags = 0;
             b->priority = 0;
             b->unk_0c = 0;
@@ -103,14 +103,14 @@ void func_ov000_0216f23c(BufferList *list, BOOL mode) {
         if (buf->flags & 4) {
             next = BufferList_Remove(list, buf);
             if (buf->flags & 0x10) {
-                void *saved = data_02097dd0->cur;
-                data_02097dd0->cur = data_02097dd0->heapHi;
+                void *saved = gSysState->cur;
+                gSysState->cur = gSysState->heapHi;
                 if (buf != NULL) {
                     if (buf != NULL) {
                         buf->vfunc_04();
                     }
                 }
-                data_02097dd0->cur = saved;
+                gSysState->cur = saved;
             }
         } else {
             next = buf->next;
@@ -164,7 +164,7 @@ void MessageQueue_AddTimed(MessageQueue *self, u32 a, u32 b, u32 c, u32 d) {
         buf->unk_14 = 0;
         buf->prev = NULL;
         buf->next = NULL;
-        VOBJ_SET_VTABLE(buf, data_ov000_021cb960);
+        VOBJ_SET_VTABLE(buf, Ov000Vt_021cb960_vtbl);
     }
     MessageQueue_AddBuffer(self, buf, 0, self);
     buf->unk_20 = a;

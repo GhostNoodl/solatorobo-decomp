@@ -1,7 +1,7 @@
 #ifndef OV000_GROUP_H
 #define OV000_GROUP_H
 
-// The spawn groups (data_ov000_021ccd64, a Group of 0x48 bytes built by Group_Init_0218bb34).
+// The spawn groups (gGroup, a Group of 0x48 bytes built by Group_Init_0218bb34).
 // Each GroupNode (0xa4 bytes, ctor func_ov000_0218a9d8, made by func_ov000_0218b9ec) spawns its
 // actor from `spawn` (Group_SpawnActor) once one of the views the field camera registered this
 // frame (Group_AddCamView) is inside its spawn volume (func_ov000_0218adf0), and removes the

@@ -15,7 +15,7 @@ typedef struct {
     VecFx32 pos;
 } Ov003LiftPlayer;
 
-// The lift (vtable data_ov003_021f979c). Actor::unk_1a selects the one with a model; unk_302
+// The lift (vtable Ov003ActVt_021f979c_vtbl). Actor::unk_1a selects the one with a model; unk_302
 // counts frames.
 typedef Ov003ActExHome Ov003Lift;
 
@@ -77,8 +77,8 @@ void Ov003ActVt_021f979c_Start(Ov003Lift *self) {
         self->fxOffset.z = 0x1800;
     } else {
         void *p;
-        void *old = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *old = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         p = self->hit;
         if (p != NULL) {
             if (p != NULL) {
@@ -87,7 +87,7 @@ void Ov003ActVt_021f979c_Start(Ov003Lift *self) {
             }
             self->hit = NULL;
         }
-        data_02097dd0->cur = old;
+        gSysState->cur = old;
         self->fxOffset.x = 0;
         self->fxOffset.y = 0x1800;
         self->fxOffset.z = 0x800;
@@ -99,7 +99,7 @@ void Ov003ActVt_021f979c_Start(Ov003Lift *self) {
 void Ov003ActVt_021f979c_Animate(Ov003Lift *self) {
     if (self->unk_cc_7) {
         if (self->unk_bc != NULL) {
-            EffectMgr_Kill(data_0214a420, self->unk_bc);
+            EffectMgr_Kill(gEffectMgr, self->unk_bc);
             self->unk_bc = NULL;
         }
         if (self->model != NULL) {
@@ -137,7 +137,7 @@ static inline BOOL Ov003Game_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -149,7 +149,7 @@ static inline BOOL Ov003Game_HasEvent(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameHasD4(void) {
-    return Ov003Game_HasEvent(data_ov000_021ccd54) ? TRUE : FALSE;
+    return Ov003Game_HasEvent(gSceneCmd) ? TRUE : FALSE;
 }
 
 BOOL Ov003ActVt_021f979c_Draw(Ov003Lift *self) {

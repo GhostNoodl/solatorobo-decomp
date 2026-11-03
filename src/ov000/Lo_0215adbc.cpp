@@ -7,8 +7,8 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
-extern void *data_02149ef8;
+extern void *gSndMgr;
+extern void *gMsgRes;
 void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL Model_IsReady(void *p, s32 a);
 u16 func_02061d54(u16 a);
@@ -29,11 +29,11 @@ void LoBase021cafc0_021cb0b8_PreUpdate(UiList *self) {
     switch (self->state) {
     case 0:
         self->openLen = 0x8000;
-        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
         break;
     case 1:
         self->openLen = 0x8000;
-        SndMgr_PlayVolume(data_02097e4c, 0x28, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x28, -1, -1, -1);
         break;
     }
 }

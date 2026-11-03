@@ -78,7 +78,7 @@ void Robo021ca458_UpdateMode3(Robo021ca458 *self) {
         return;
     }
     if (self->unk_b1e != 0xffff) {
-        Actor *a = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, self->unk_b1e);
+        Actor *a = gActorMgr == NULL ? NULL : ActorMgr_GetActor(gActorMgr, self->unk_b1e);
         if (a == NULL) {
             self->unk_b1e = 0xffff;
         }

@@ -32,7 +32,7 @@ static inline BOOL GBusy02197ee0(FieldState *g) {
 }
 
 static inline BOOL GIdle02197ee0(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (GBusy02197ee0(g)) {
             return FALSE;
@@ -123,7 +123,7 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
             return;
         }
         p = obj->pos;
-        o = FieldMgr_FindExitAt(data_ov000_021ccd6c, &self->pos);
+        o = FieldMgr_FindExitAt(gFieldMgr, &self->pos);
         if (o != NULL) {
             ang = o->dir;
         } else {

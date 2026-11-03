@@ -9,19 +9,19 @@ extern "C" {
 extern void Heap_Free(void *p);
 
 static inline void Ov003_HeapDelete(void *p) {
-    void *old = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    void *old = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (p != NULL) {
         Heap_Free(p);
     }
-    data_02097dd0->cur = old;
+    gSysState->cur = old;
 }
 
 void Ov003FxList_Prune(Ov003FxList *self) {
     Ov003FxNode *n = self->head;
     Ov003FxNode *prev = NULL;
     while (n != NULL) {
-        if (Effect_Find_020657b0(data_0214a420, n->handle) == NULL) {
+        if (Effect_Find_020657b0(gEffectMgr, n->handle) == NULL) {
             if (prev == NULL) {
                 self->head = n->next;
                 Ov003_HeapDelete(n);

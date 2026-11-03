@@ -4,8 +4,8 @@
 
 extern "C" {
 
-extern u8 data_ov000_021cabc8[];
-extern u8 data_ov000_021cabd8[];
+extern u8 ModelViewer_vtbl[];
+extern u8 Ov000Vt_021cabd8_vtbl[];
 extern const char data_ov000_021cac02[];
 void *ResSet_Init(void *p);
 void *ResSet_ReleaseAll(void *p);
@@ -14,8 +14,8 @@ void *Model0218fe1c_Init(void *p);
 void *GfxCamPos_Init(void *p);
 
 u8 *ModelViewer_Ctor(ModelViewer *self) {
-    self->vtbl = data_ov000_021cabc8;
-    self->res.vtbl = data_ov000_021cabd8;
+    self->vtbl = ModelViewer_vtbl;
+    self->res.vtbl = Ov000Vt_021cabd8_vtbl;
     __cxa_vec_ctor(self->res.a, 2, sizeof(ActorRes), (void (*)(void *))ResSet_Init, (void (*)(void *))ResSet_ReleaseAll);
     __cxa_vec_ctor(self->res.b, 2, sizeof(ActorRes), (void (*)(void *))ResSet_Init, (void (*)(void *))ResSet_ReleaseAll);
     self->res.state = 20;
@@ -75,7 +75,7 @@ static inline void StopSlot02162294(u8 *self, u8 i) {
 }
 
 static inline void SlotDtor02162294(u8 *self) {
-    VOBJ_SET_VTABLE(self, data_ov000_021cabd8);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cabd8_vtbl);
     StopSlot02162294(self, LFLD(u8, self, 5));
     StopSlot02162294(self, (LFLD(u8, self, 5) & 1) ^ 1);
     __cxa_vec_cleanup(self + 0x2e8, 2, 0x138, (void (*)(void *))ResSet_ReleaseAll);
@@ -84,7 +84,7 @@ static inline void SlotDtor02162294(u8 *self) {
 
 static inline void CamDtor02162294(u8 *self) {
     u8 *sub;
-    VOBJ_SET_VTABLE(self, data_ov000_021cabc8);
+    VOBJ_SET_VTABLE(self, ModelViewer_vtbl);
     StopSlot02162294(self + 4, LFLD(u8, self + 4, 5));
     StopSlot02162294(self + 4, (LFLD(u8, self + 4, 5) & 1) ^ 1);
     Model0218fe1c_FreeAnims(self + 0x55c);

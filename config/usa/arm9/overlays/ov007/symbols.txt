@@ -31,4 +31,4 @@ data_ov007_021cfbb4 kind:data(any) addr:0x021cfbb4
 data_ov007_021cfbc0 kind:data(any) addr:0x021cfbc0
 data_ov007_021cfbcc kind:data(any) addr:0x021cfbcc
 @stringBase0 kind:data(byte[0x87]) addr:0x021cfbd8 local
-data_ov007_021cfc60 kind:bss addr:0x021cfc60
+gOv007Scene kind:bss addr:0x021cfc60

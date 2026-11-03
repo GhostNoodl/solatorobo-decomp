@@ -190,10 +190,10 @@ struct Ov003CdTask : public VObj {
 
 extern "C" {
 
-extern Ov003CdPad *data_02097dc8;
-extern void *data_02149ef8;
-extern void *data_ov000_021cac60;
-extern void *data_ov000_021cad50;
+extern Ov003CdPad *gPad;
+extern void *gMsgRes;
+extern void *UiObj_vtbl;
+extern void *Lo021cad50_vtbl;
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 BOOL Interp_MoveTo(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
 s32 SndMgr_PlayPan(void *a, s32 b, s32 c);
@@ -230,7 +230,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
     VecFx32 v1;
     VecFx32 zero;
     VecFx32 v2;
-    u16 trig = data_02097dc8->trig;
+    u16 trig = gPad->trig;
     self->pos.x = Interp_SinLerp(self->unk3C->unk38, 0xff000, 0);
     self->pos.y = -0xe000;
     self->pos.z = 0;
@@ -243,7 +243,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
         self->ofs.y = self->unk5C >= 2 ? -0x30000 : 0x30000;
         self->ofs.z = 0;
         self->timer = 0x3c;
-        SndMgr_PlayPan(data_02097e4c, 0x87, 5);
+        SndMgr_PlayPan(gSndMgr, 0x87, 5);
         self->state++;
     case 1:
         Ov003Cd_SetSprite(self->unk48, &self->pos, 0x99a, 0);
@@ -273,7 +273,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
             } else {
                 self->state = 0x14;
                 self->timer = 0x14;
-                SndMgr_PlayPan(data_02097e4c, 0x26, -2);
+                SndMgr_PlayPan(gSndMgr, 0x26, -2);
             }
         }
         s = Interp_SinLerp(t, 0x99a, 0x1000);
@@ -327,12 +327,12 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
         break;
     case 0x28: {
         Ov003CdWin *w;
-        void *res = data_02149ef8;
+        void *res = gMsgRes;
         w = (Ov003CdWin *)Heap_Alloc(0xe8);
         if (w != NULL) {
-            *(void **)w = &data_ov000_021cac60;
+            *(void **)w = &UiObj_vtbl;
             w->vfunc_28();
-            *(void **)w = &data_ov000_021cad50;
+            *(void **)w = &Lo021cad50_vtbl;
             w->vfunc_28();
         }
         self->unk40 = w;
@@ -351,21 +351,21 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
             break;
         }
         {
-            void *saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->heapHi;
+            void *saved = gSysState->cur;
+            gSysState->cur = gSysState->heapHi;
             if (self->unk40 != NULL) {
                 if (self->unk40 != NULL) {
                     self->unk40->vfunc_04();
                 }
                 self->unk40 = NULL;
             }
-            data_02097dd0->cur = saved;
+            gSysState->cur = saved;
         }
         self->state = 0x32;
         break;
     case 0x32:
         self->unk3C->flags |= 2;
-        SndMgr_PlayVolume(data_02097e4c, 0x27, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x27, -1, -1, -1);
         self->vfunc_0c(0);
         self->state++;
     case 0x33:

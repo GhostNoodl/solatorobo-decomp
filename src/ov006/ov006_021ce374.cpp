@@ -151,13 +151,13 @@ namespace m_021ce6bc {
 
 extern "C" {
 
-extern void *data_ov006_021ebd40;
+extern void *ov006_TaskCE_vtbl;
 
 void ov006_TaskCE_ShowHelp(ov006_TaskCE *self, u16 a);
 
 static inline void ov006_TaskCE_Init(ov006_TaskCE *self) {
     OV006_TASKBASE_CTOR(self);
-    *(void **)self = &data_ov006_021ebd40;
+    *(void **)self = &ov006_TaskCE_vtbl;
     self->step = 0;
     self->subStep = 0;
     self->unk44 = NULL;
@@ -188,7 +188,7 @@ BOOL func_ov006_021ce734(UiList *list, UiListItem *arg) {
     ov006_TaskCE *self = (ov006_TaskCE *)list->owner;
     if (arg != NULL) {
         u16 id;
-        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
         id = arg->id;
         if (self->step == 3) {
             switch (id) {
@@ -228,7 +228,7 @@ BOOL func_ov006_021ce954(UiList *list, UiListItem *arg) {
 }
 
 static inline void ov006_TaskCE_Dtor(ov006_TaskCE *self) {
-    *(void **)self = &data_ov006_021ebd40;
+    *(void **)self = &ov006_TaskCE_vtbl;
     OV006_DELETE_OBJECT(self->unk44);
     OV006_DELETE_OBJECT(self->unk48);
     OV006_DELETE_OBJECT(self->unk4C);
@@ -243,7 +243,7 @@ ov006_TaskCE *ov006_TaskCE_Dtor_021ce974(ov006_TaskCE *self) {
 }
 
 ov006_MsgBox *ov006_MsgBox_DtorDelete(ov006_MsgBox *self) {
-    self->vtbl = &data_ov006_021ebc70;
+    self->vtbl = &ov006_MsgBox_vtbl;
     MsgBox_Release(self);
     Heap_Free(self);
     return self;
@@ -283,14 +283,14 @@ typedef struct ov006_Entry021cec68 {
 
 extern "C" {
 
-extern void *data_02149ef8;
-extern void *data_ov000_021cac60;
-extern void *data_ov000_021caec8;
-extern void *data_ov000_021cadcc;
-extern void *data_ov000_021ccbe0;
-extern void *data_ov000_021ccb54;
-extern void *data_ov000_021cca28;
-extern void *data_ov006_021ebc80;
+extern void *gMsgRes;
+extern void *UiObj_vtbl;
+extern void *UiList_vtbl;
+extern void *Lo021cadcc_vtbl;
+extern void *Ov000Vt_021ccbe0_vtbl;
+extern void *Ov000Vt_021ccb54_vtbl;
+extern void *Ov000Vt_021cca28_vtbl;
+extern void *Ov006Vt_021ebc80_vtbl;
 
 void *MsgRes_GetString(void *a, int id);
 void Gfx3DState_SetDefaults(void *p);
@@ -331,7 +331,7 @@ void ov006_TaskCE_Start(ov006_TaskCE *self) {
         return;
     }
     {
-        g = data_02097d48;
+        g = gGfxSys;
         Gfx3DState_SetDefaults(g->unk_8b0);
         g->unk_8b0_4 = 1;
         g->unk_8b0_5 = 1;
@@ -339,10 +339,10 @@ void ov006_TaskCE_Start(ov006_TaskCE *self) {
         Gfx3DState_Apply(g->unk_8b0);
     }
     self->unk_04 &= ~2;
-    ov006_SlotManager_Reset_021daea0(data_ov006_021ec884);
+    ov006_SlotManager_Reset_021daea0(gOv006SlotManager);
     self->fadeLen = 0x19000;
     self->vfunc_3c();
-    void *res = data_02149ef8;
+    void *res = gMsgRes;
     self->unk44 = ov006_NewUiList();
     self->unk44->vfunc_10(MsgRes_GetString(res, 0x122));
     self->unk44->vfunc_14(MsgRes_GetString(res, 0x123));
@@ -383,22 +383,22 @@ void ov006_TaskCE_Start(ov006_TaskCE *self) {
     self->unk48->flags |= 4;
     ov006_TaskCE_ShowMenus(self);
     ov006_InitOwnerSlot();
-    n = ov006_SlotManager_CountItems(data_ov006_021ec884);
+    n = ov006_SlotManager_CountItems(gOv006SlotManager);
     if (n != 0) {
-        if (data_ov006_021ec884->unk149 == 0) {
+        if (gOv006SlotManager->unk149 == 0) {
             self->unk50 = ov006_NewHudList();
             Obj021c55e8_SetLabel1(self->unk50, MsgRes_GetString(res, 0x183));
             self->unk50->rows = (n == 1) ? 2 : n;
             self->unk50->width = 0xc0;
             ov006_Window_SetPos(self->unk50, 0x20, 0x3c, -0x1ccd);
             for (i = 0; i < 3; i++) {
-                e = ov006_GetPriceEntry(ov006_SlotManager_Get14A(data_ov006_021ec884, i));
+                e = ov006_GetPriceEntry(ov006_SlotManager_Get14A(gOv006SlotManager, i));
                 if (e != NULL) {
                     item = Heap_Alloc(0x34);
                     if (item != NULL) {
-                        *(void **)item = &data_ov006_021ebc80;
+                        *(void **)item = &Ov006Vt_021ebc80_vtbl;
                         ListRow_Init(item);
-                        *(void **)item = &data_ov000_021cca28;
+                        *(void **)item = &Ov000Vt_021cca28_vtbl;
                         ListRowLabel_Init(item);
                     }
                     func_ov000_021c5fd0(item, MsgRes_GetString(res, e->name));
@@ -423,7 +423,7 @@ void ov006_TaskCE_Start(ov006_TaskCE *self) {
         {
             k = 0;
             for (i = 0; i < 3; i++) {
-                e = ov006_GetPriceEntry(ov006_SlotManager_Get14A(data_ov006_021ec884, i));
+                e = ov006_GetPriceEntry(ov006_SlotManager_Get14A(gOv006SlotManager, i));
                 if (e != NULL) {
                     ov006_CaptionSet_SetText(self->unk54, (const char *)MsgRes_GetString(res, e->name), k);
                     k++;
@@ -431,7 +431,7 @@ void ov006_TaskCE_Start(ov006_TaskCE *self) {
             }
         }
     }
-    data_ov006_021ec884->unk149 = 1;
+    gOv006SlotManager->unk149 = 1;
     self->step = 0;
     self->subStep = 0;
     GfxSys_StartFadeIn(0x14000, 0, 0);
@@ -464,8 +464,8 @@ typedef struct ov006_DataRes {
 
 extern "C" {
 
-extern void *data_02149ef8;
-extern ov006_DataRes *data_02fe152c;
+extern void *gMsgRes;
+extern ov006_DataRes *gDataRes;
 
 void *MsgRes_GetString(void *a, int id);
 void func_ov006_021cf7c8(ov006_TaskCE *self);
@@ -481,7 +481,7 @@ void ov006_Unk021e2f3c_Update(ov006_CaptionPanel *a);
 
 void ov006_TaskCE_ShowHelp(ov006_TaskCE *self, u16 id) {
     const void *str;
-    void *res = data_02149ef8;
+    void *res = gMsgRes;
     switch (id) {
     case 0:
         str = MsgRes_GetString(res, 0x125);
@@ -542,7 +542,7 @@ typedef struct ov006_DataRes {
 
 extern "C" {
 
-extern ov006_DataRes *data_02fe152c;
+extern ov006_DataRes *gDataRes;
 void func_ov006_021cf7c8(ov006_TaskCE *self);
 void func_ov006_021cf89c(ov006_TaskCE *self);
 void func_ov006_021cfa80(ov006_TaskCE *self);
@@ -600,17 +600,17 @@ void ov006_TaskCE_PreUpdate(ov006_TaskCE *self) {
         break;
     case 4: {
         ov006_SetupDefaultSlots();
-        block = data_02fe152c->unk4C + 0x1d0;
-        ent = DataRes_GetTable(data_02fe152c, 0xe);
-        n = DataRes_GetCount(data_02fe152c, 0xe);
+        block = gDataRes->unk4C + 0x1d0;
+        ent = DataRes_GetTable(gDataRes, 0xe);
+        n = DataRes_GetCount(gDataRes, 0xe);
         for (i = 0; i < n; i++) {
-            if (DataRes_ReadBitsAt_02059544(data_02fe152c, block, ent, 1, i)) {
-                ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC = i | 0x7000;
+            if (DataRes_ReadBitsAt_02059544(gDataRes, block, ent, 1, i)) {
+                ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5)->unkC = i | 0x7000;
                 break;
             }
         }
-        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x29, 0);
-        data_ov006_021ec860->unk1C = 0;
+        TaskHost_RequestSwitch(gTaskHost, 0x29, 0);
+        gOv006Manager->unk1C = 0;
         self->unk44->flags |= 4;
         self->unk44->flags |= 2;
         self->unk48->flags |= 2;
@@ -620,8 +620,8 @@ void ov006_TaskCE_PreUpdate(ov006_TaskCE *self) {
         break;
     }
     case 5:
-        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x27, TRUE);
-        data_ov006_021ec860->unk1C = TRUE;
+        TaskHost_RequestSwitch(gTaskHost, 0x27, TRUE);
+        gOv006Manager->unk1C = TRUE;
         self->unk44->flags |= 4;
         self->unk44->flags |= 2;
         self->unk48->flags |= 2;
@@ -677,8 +677,8 @@ void func_ov006_021cf7c8(ov006_TaskCE *self) {
         }
         break;
     case 2:
-        if (!data_0214a424->unk_620_0) {
-            data_0214a424->unk_620_0 = 1;
+        if (!gStageFlags->unk_620_0) {
+            gStageFlags->unk_620_0 = 1;
             self->step = 1;
             self->subStep = 0;
         } else if (self->unk50 == NULL) {
@@ -700,17 +700,17 @@ void func_ov006_021cf89c(ov006_TaskCE *self) {
         self->unk44->flags |= 2;
         self->unk48->flags |= 2;
         self->unk50->flags &= ~2;
-        SndMgr_PlayVolume(data_02097e4c, 0x26, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x26, -1, -1, -1);
         self->subStep++;
         break;
     case 1:
         if (!self->unk50->vfunc_0c()) {
             return;
         }
-        if (!(data_02097dc8->trig & 1)) {
+        if (!(gPad->trig & 1)) {
             return;
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
         self->unk50->flags |= 2;
         self->subStep++;
         break;
@@ -746,10 +746,10 @@ void func_ov006_021cfa80(ov006_TaskCE *self) {
             self->subStep++;
             return;
         }
-        if (!(data_02097dc8->trig & 2)) {
+        if (!(gPad->trig & 2)) {
             return;
         }
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         {
             UiList *w = self->unk44;
             w->vfunc_a8(UiList_GetItemById(w, 5));
@@ -781,7 +781,7 @@ void func_ov006_021cfc60(ov006_TaskCE *self) {
         if (!ov006_Window_IsState5(self->unk48)) {
             return;
         }
-        TaskHost_RequestSwitch(data_ov000_021ccd44, 7, 1);
+        TaskHost_RequestSwitch(gTaskHost, 7, 1);
         self->vfunc_4c();
         self->subStep++;
         break;
@@ -804,7 +804,7 @@ void func_ov006_021cfc60(ov006_TaskCE *self) {
         if (!ov006_IsMode4()) {
             return;
         }
-        data_ov006_021ec860->taskType = 3;
+        gOv006Manager->taskType = 3;
         self->step = 7;
         self->subStep = 0;
         break;
@@ -819,7 +819,7 @@ BOOL Ov006Task_TryReleaseCurrent(ov006_TaskCE *self) {
 }
 
 static inline BOOL ov006_IsCurrent(void *p) {
-    return data_ov000_021ccd40 == p;
+    return gFinishingTask == p;
 }
 
 BOOL Ov006Task_IsCurrent(void *p) {
@@ -834,7 +834,7 @@ namespace m_021cfe84 {
 
 extern "C" {
 
-extern void *data_ov006_021ebcc0;
+extern void *ov006_TaskD0_vtbl;
 
 void ov006_CaptionPanel_Draw(ov006_CaptionPanel *a);
 
@@ -858,7 +858,7 @@ void ov006_TaskCE_Draw(ov006_TaskCE *self) {
 
 static inline void ov006_TaskD0_Init(ov006_TaskD0 *self) {
     OV006_TASKBASE_CTOR(self);
-    *(void **)self = &data_ov006_021ebcc0;
+    *(void **)self = &ov006_TaskD0_vtbl;
     self->step = 0;
     self->subStep = 0;
     MI_CpuFill8(self->names, 0, sizeof(self->names));
@@ -878,7 +878,7 @@ ov006_TaskD0 *ov006_TaskD0_New(void) {
 }
 
 static inline void ov006_TaskD0_Dtor(ov006_TaskD0 *self) {
-    *(void **)self = &data_ov006_021ebcc0;
+    *(void **)self = &ov006_TaskD0_vtbl;
     OV006_DELETE_OBJECT(self->unk104);
     OV006_DELETE_OBJECT(self->unk108);
     OV006_DELETE_OBJECT(self->unk10C);
@@ -921,13 +921,13 @@ namespace m_021d01ac {
 
 extern "C" {
 
-extern void *data_02149ef8;
-extern void *data_ov000_021cac60;
-extern void *data_ov000_021cad50;
-extern void *data_ov000_021caec8;
-extern void *data_ov000_021cb4a8;
-extern void *data_ov000_021cadcc;
-extern void *data_ov006_021ebf40;
+extern void *gMsgRes;
+extern void *UiObj_vtbl;
+extern void *Lo021cad50_vtbl;
+extern void *UiList_vtbl;
+extern void *UiList021cb4a8_vtbl;
+extern void *Lo021cadcc_vtbl;
+extern void *ov006_TaskD0C_vtbl;
 
 BOOL func_0201fd04(void);
 BOOL ov006_Menu_RequestStart(ov006_Unk021ec888 *self);
@@ -975,7 +975,7 @@ void ov006_TaskD0_Start(ov006_TaskD0 *self) {
     if (self->vfunc_28()) {
         return;
     }
-    res = data_02149ef8;
+    res = gMsgRes;
     if (self->unk110) {
         self->unk10C = ov006_NewLo021cad50();
         self->unk10C->vfunc_08();
@@ -1043,7 +1043,7 @@ static inline void ov006_TaskD0_Close(ov006_TaskD0 *self) {
 }
 
 void ov006_TaskD0_UpdateActive(ov006_TaskD0 *self) {
-    u16 trg = data_02097dc8->trig;
+    u16 trg = gPad->trig;
     if (self->unk110) {
         if (trg & 1) {
             ov006_TaskD0_Close(self);
@@ -1061,26 +1061,26 @@ void ov006_TaskD0_UpdateActive(ov006_TaskD0 *self) {
             if (node->id == 4) {
                 func_ov006_021e4cb4(data_ov006_021ec888);
                 data_ov006_021ec888->unk15E = 2;
-                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
                 ov006_TaskD0_Close(self);
                 self->subStep = 2;
                 ov006_TaskD0_HideWindows(self);
             } else {
-                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
             }
         } else if (node->unk_0c >= 4) {
-            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
         } else {
             ov006_MenuNode *menu = ov006_Menu_FindNode(data_ov006_021ec888, node->unk_10);
             if (menu != NULL) {
                 func_ov006_021e4ce8(data_ov006_021ec888, &menu->data);
                 data_ov006_021ec888->unk15E = 2;
-                SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
                 self->subStep = 1;
                 ov006_TaskD0_Close(self);
                 ov006_TaskD0_HideWindows(self);
             } else {
-                SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+                SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
                 ov006_TaskD0_RefreshList(self);
             }
         }
@@ -1109,13 +1109,13 @@ void ov006_TaskD0_PostUpdate(ov006_TaskD0 *self) {
     }
     switch (self->subStep) {
     case 0:
-        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x26, 0);
+        TaskHost_RequestSwitch(gTaskHost, 0x26, 0);
         break;
     case 1:
-        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x28, 2);
+        TaskHost_RequestSwitch(gTaskHost, 0x28, 2);
         break;
     case 2:
-        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x28, 1);
+        TaskHost_RequestSwitch(gTaskHost, 0x28, 1);
         break;
     }
     self->subStep = 3;
@@ -1192,7 +1192,7 @@ static inline void ov006_SlotPacked_Clear(ov006_SlotPacked *self) {
 
 static inline void ov006_TaskD0C_Init(ov006_TaskD0C *self) {
     OV006_TASKBASE_CTOR(self);
-    *(void **)self = &data_ov006_021ebf40;
+    *(void **)self = &ov006_TaskD0C_vtbl;
     self->unk3C = 0;
     self->unk3D = 0;
     self->unk40 = 0;
@@ -1214,7 +1214,7 @@ ov006_TaskD0C *ov006_TaskD0C_New(void) {
 }
 
 static inline void ov006_TaskD0C_Dtor(ov006_TaskD0C *self) {
-    *(void **)self = &data_ov006_021ebf40;
+    *(void **)self = &ov006_TaskD0C_vtbl;
     OV006_DELETE_OBJECT(self->unk11C);
     OV006_DELETE_OBJECT(self->unk120);
     OV006_DELETE_OBJECT(self->unk124);
@@ -1247,13 +1247,13 @@ BOOL ov006_TaskD0C_IsLoaded(void) {
     return TRUE;
 }
 
-extern void *data_02149ef8;
-extern void *data_ov000_021cac60;
-extern void *data_ov000_021cad50;
-extern void *data_ov000_021caec8;
-extern void *data_ov000_021cb4a8;
-extern void *data_ov000_021cadcc;
-extern u8 *data_02097e40;
+extern void *gMsgRes;
+extern void *UiObj_vtbl;
+extern void *Lo021cad50_vtbl;
+extern void *UiList_vtbl;
+extern void *UiList021cb4a8_vtbl;
+extern void *Lo021cadcc_vtbl;
+extern u8 *gWhMgr;
 
 void *MsgRes_GetString(void *a, int id);
 void TaskList_Insert(Task *self);
@@ -1272,7 +1272,7 @@ static inline void ov006_SlotPacked_Clear(ov006_SlotPacked *self) {
 }
 
 static inline void *ov006_GetRes(void) {
-    return data_02149ef8;
+    return gMsgRes;
 }
 
 void ov006_TaskD0C_Start(ov006_TaskD0C *self) {
@@ -1320,18 +1320,18 @@ void ov006_TaskD0C_Start(ov006_TaskD0C *self) {
     self->unk124->flags |= 0x20000;
     self->unk124->flags |= 2;
     Obj0215c1bc_SetText(self->unk124, 0x8000, MsgRes_GetString(res, 0x198));
-    ov006_SlotManager_Reset_021daea0(data_ov006_021ec884);
-    data_ov006_021ec860->unk1C = 1;
-    MI_CpuFill8(data_02097e40 + 0x18e0, 0, 0x200);
+    ov006_SlotManager_Reset_021daea0(gOv006SlotManager);
+    gOv006Manager->unk1C = 1;
+    MI_CpuFill8(gWhMgr + 0x18e0, 0, 0x200);
     ov006_SlotPacked_Clear(&self->unk102);
     ov006_CopyOwnerInfo(self->unk102.name, sizeof(self->unk102.name));
     self->unk102.active = 1;
     self->unk102.isType1 = 1;
     self->unk102.unkC = 0;
     self->unk102.unk10 = 0;
-    if (ov006_SlotManager_HasItem(data_ov006_021ec884, 9)) {
+    if (ov006_SlotManager_HasItem(gOv006SlotManager, 9)) {
         self->unk102.unk10 = 1;
-    } else if (ov006_SlotManager_HasItem(data_ov006_021ec884, 10)) {
+    } else if (ov006_SlotManager_HasItem(gOv006SlotManager, 10)) {
         self->unk102.unk10 = 2;
     }
     ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk101, 1, &self->unk102, 0x18);
@@ -1353,7 +1353,7 @@ namespace m_021d1490 {
 
 extern "C" {
 
-extern void *data_02149ef8;
+extern void *gMsgRes;
 
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
@@ -1362,7 +1362,7 @@ void ov006_TaskD0C_RefreshSlots(ov006_TaskD0C *self);
 void *MsgRes_GetString(void *a, int id);
 
 void ov006_TaskD0C_UpdateActive(ov006_TaskD0C *self) {
-    u16 trg = data_02097dc8->trig;
+    u16 trg = gPad->trig;
     if (self->unk3C) {
         return;
     }
@@ -1382,11 +1382,11 @@ void ov006_TaskD0C_UpdateActive(ov006_TaskD0C *self) {
     if (self->unk40 < 2) {
         return;
     }
-    if (data_ov006_021ec884->numActive >= 2) {
+    if (gOv006SlotManager->numActive >= 2) {
         self->unk3C = 5;
         return;
     }
-    SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
 }
 
 void ov006_TaskD0C_PreUpdate(ov006_TaskD0C *self) {
@@ -1395,11 +1395,11 @@ void ov006_TaskD0C_PreUpdate(ov006_TaskD0C *self) {
             u8 n;
             ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk101, 1, &self->unk102, 0x18);
             ov006_UpdateNetSlots();
-            n = data_ov006_021ec884->numActive;
+            n = gOv006SlotManager->numActive;
             if (self->unk40 != n) {
                 ov006_TaskD0C_RefreshSlots(self);
                 if (self->param == 1) {
-                    void *res = data_02149ef8;
+                    void *res = gMsgRes;
                     if (self->unk40 <= 1 && n >= 2) {
                         Obj0215bb14_SetText(self->unk120, MsgRes_GetString(res, 0x137));
                         self->unk120->vfunc_70();
@@ -1439,8 +1439,8 @@ namespace m_021d16a0 {
 
 extern "C" {
 
-extern void *data_02149ef8;
-extern u8 data_ov000_021ccd34;
+extern void *gMsgRes;
+extern u8 gTaskSwitchPending;
 
 u16 ov006_Menu_GetEntryMask_021e60e8(int type, u16 mask);
 BOOL func_ov006_021e4bec(ov006_Unk021ec888 *self, int a);
@@ -1459,8 +1459,8 @@ static inline u8 ov006_SlotManager_MinUnk10(void) {
     u8 i;
     u8 mn;
     mn = 0;
-    for (i = 0; i < data_ov006_021ec884->numActive; i++) {
-        ov006_Slot *slot = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i);
+    for (i = 0; i < gOv006SlotManager->numActive; i++) {
+        ov006_Slot *slot = ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, i);
         u8 v;
         if (slot == NULL) {
             continue;
@@ -1476,13 +1476,13 @@ static inline u8 ov006_SlotManager_MinUnk10(void) {
     return mn;
 }
 
-// The original reloads data_ov006_021ec884 after every block, so this function is built without CSE
+// The original reloads gOv006SlotManager after every block, so this function is built without CSE
 #pragma opt_common_subs off
 void func_ov006_021d16a0(ov006_TaskD0C *self) {
     switch (self->unk3C) {
     case 0:
         if (data_ov006_021ec888->state == 9) {
-            data_ov000_021ccd34 = 1;
+            gTaskSwitchPending = 1;
             self->unk11C->flags |= 4;
             self->unk120->flags |= 4;
             self->unk3C = 30;
@@ -1507,15 +1507,15 @@ void func_ov006_021d16a0(ov006_TaskD0C *self) {
             return;
         }
         if (mn == 1) {
-            data_ov006_021ec884->items[0] = 9;
+            gOv006SlotManager->items[0] = 9;
         } else if (mn == 2) {
-            data_ov006_021ec884->items[0] = 10;
-            Obj0215c1bc_SetText(self->unk124, 0x8000, MsgRes_GetString(data_02149ef8, 0x199));
+            gOv006SlotManager->items[0] = 10;
+            Obj0215c1bc_SetText(self->unk124, 0x8000, MsgRes_GetString(gMsgRes, 0x199));
         }
         self->unk124->vfunc_70();
         self->unk124->flags &= ~2;
         *(u16 *)self->unk3E = 0;
-        SndMgr_PlayVolume(data_02097e4c, 0x26, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x26, -1, -1, -1);
         self->unk3C++;
         break;
     }
@@ -1553,14 +1553,14 @@ void func_ov006_021d16a0(ov006_TaskD0C *self) {
     case 50:
         ov006_TaskD0C_ShowAll(self);
         self->unk_04 |= 6;
-        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x26, 0);
+        TaskHost_RequestSwitch(gTaskHost, 0x26, 0);
         ov006_Menu_RequestShutdown(data_ov006_021ec888);
         self->unk3C = 70;
         break;
     case 60:
         ov006_TaskD0C_ShowAll(self);
         self->unk_04 |= 6;
-        TaskHost_RequestSwitch(data_ov000_021ccd44, 0x29, self->param);
+        TaskHost_RequestSwitch(gTaskHost, 0x29, self->param);
         self->unk3C = 70;
         break;
     }
@@ -1583,12 +1583,12 @@ typedef struct ov006_Unk020706a0 {
 
 extern "C" {
 
-extern void *data_02149ef8;
+extern void *gMsgRes;
 extern const int data_ov006_021eb77c[];
 extern const u8 data_ov006_021eb6fe[4];
 extern const u8 data_ov006_021eb710[][3];
 extern const u16 data_ov006_021eb78c[];
-extern void *data_ov006_021ebec0;
+extern void *ov006_TaskD1F_vtbl;
 
 void ov006_Menu_ReleaseObj(ov006_Unk021ec888 *self);
 void Str_Utf16ToUtf8Filtered(void *dst, int *dstLen, const void *src, int *srcLen);
@@ -1623,7 +1623,7 @@ void ov006_TaskD0C_RefreshSlots(ov006_TaskD0C *self) {
     ov006_Slot *slot;
     UiListItem *item;
     for (i = 0; i < 4; i++) {
-        slot = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, i);
+        slot = ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, i);
         item = (UiListItem *)UiList_GetItemById(self->unk11C, i);
         if (slot->active) {
             int srcLen = 0xb;
@@ -1633,7 +1633,7 @@ void ov006_TaskD0C_RefreshSlots(ov006_TaskD0C *self) {
             item->unk_24 = data_ov006_021eb77c[i];
             Obj02153c48_CreateText(item, 8, 0, 1, 1);
             item->unk_0c = (u16)(i + 1);
-            if (i == data_ov006_021ec884->unk5) {
+            if (i == gOv006SlotManager->unk5) {
                 UiList *w = self->unk11C;
                 if (!(ov006_Window_IsBit1(w) ? TRUE : FALSE)) {
                     w->flags |= 0x2000000;
@@ -1674,7 +1674,7 @@ BOOL func_ov006_021d1df8(UiList *window, UiListItem *node) {
         t = (ov006_TaskD1F *)window->owner;
         old = t->unk4A;
         t->unk4A = id;
-        str = MsgRes_GetString(data_02149ef8, data_ov006_021eb78c[(u16)(id & 0xfff)]);
+        str = MsgRes_GetString(gMsgRes, data_ov006_021eb78c[(u16)(id & 0xfff)]);
         if (t->unk5C != NULL && str != NULL) {
             Obj0215bb14_SetText(t->unk5C, str);
             t->unk5C->vfunc_70();
@@ -1692,10 +1692,10 @@ BOOL func_ov006_021d1df8(UiList *window, UiListItem *node) {
 BOOL ov006_ListCb_StoreId(UiList *window, UiListItem *node) {
     int *out = (int *)window->owner;
     if (node != NULL) {
-        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
         *out = node->id;
     } else {
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         *out = -1;
     }
     return FALSE;
@@ -1704,14 +1704,14 @@ BOOL ov006_ListCb_StoreId(UiList *window, UiListItem *node) {
 ov006_TaskD1F *func_ov006_021d1f68(ov006_TaskD1F *self) {
     ov006_Slot *slot;
     OV006_TASKBASE_CTOR(self);
-    *(void **)self = &data_ov006_021ebec0;
+    *(void **)self = &ov006_TaskD1F_vtbl;
     self->step = 0;
     self->subStep = 0;
     self->unk44 = 0;
     self->unk48 = 1;
     self->unk49 = 0;
     self->unk4A = 0xffff;
-    slot = ov006_SlotManager_GetSlot_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5);
+    slot = ov006_SlotManager_GetSlot_021db060(gOv006SlotManager, gOv006SlotManager->unk5);
     if (slot != NULL) {
         self->unk4A = slot->unkC;
     }
@@ -1727,7 +1727,7 @@ ov006_TaskD1F *func_ov006_021d1f68(ov006_TaskD1F *self) {
 
 static inline void ov006_TaskD1F_Dtor(ov006_TaskD1F *self) {
     int i;
-    *(void **)self = &data_ov006_021ebec0;
+    *(void **)self = &ov006_TaskD1F_vtbl;
     OV006_DELETE_OBJECT(self->unk54);
     OV006_DELETE_OBJECT(self->unk58);
     OV006_DELETE_OBJECT(self->unk5C);

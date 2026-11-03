@@ -63,10 +63,10 @@ typedef struct HitSphereQuery {
     /* 0x0f8 */ s32 best;
 } HitSphereQuery; // size 0xfc
 
-extern s32 data_02fe0efc;
-extern HitRayInfo *data_02fe0ef8;
-extern HitRayMesh *data_02fe0f08;
-extern HitRayInfo data_02fe0f14;
+extern s32 gHitCount;
+extern HitRayInfo *gHitRayBest;
+extern HitRayMesh *gHitMeshList;
+extern HitRayInfo gHitResult;
 extern void HitSegQuery_CalcBox(HitRayQuery *q);
 extern BOOL HitAabb_Overlap(VecFx32 *aMin, VecFx32 *aMax, VecFx32 *bMin, VecFx32 *bMax);
 extern void HitTriRay_TestTreeMesh(HitRayMesh **ray);
@@ -78,11 +78,11 @@ s32 Hit_CastSegment(VecFx32 *from, VecFx32 *to, u32 mask, s32 a, s32 b, s32 c) {
     HitRayQuery q;
     HitRayMesh *mesh;
     HitRayInfo *hit;
-    data_02fe0efc = 0;
-    data_02fe0ef8 = NULL;
+    gHitCount = 0;
+    gHitRayBest = NULL;
     q.from2 = *from;
     q.to2 = *to;
-    mesh = data_02fe0f08;
+    mesh = gHitMeshList;
     q.mask = mask;
     q.arg4 = b;
     q.arg3 = a;
@@ -104,22 +104,22 @@ s32 Hit_CastSegment(VecFx32 *from, VecFx32 *to, u32 mask, s32 a, s32 b, s32 c) {
             HitTriRay_TestMesh(&q.mesh);
         }
     }
-    hit = data_02fe0ef8;
+    hit = gHitRayBest;
     if (hit == NULL) {
         return -0x1000;
     }
-    data_02fe0f14 = *hit;
-    *to = data_02fe0f14.pos;
-    return FX_Sqrt(data_02fe0f14.distSq);
+    gHitResult = *hit;
+    *to = gHitResult.pos;
+    return FX_Sqrt(gHitResult.distSq);
 }
 
 s32 Hit_CastSphere(VecFx32 *pos, s32 radius, u32 mask, s32 a, s32 b, s32 c) {
     HitSphereQuery q;
     HitRayMesh *mesh;
     HitRayInfo *hit;
-    data_02fe0efc = 0;
-    data_02fe0ef8 = NULL;
-    mesh = data_02fe0f08;
+    gHitCount = 0;
+    gHitRayBest = NULL;
+    mesh = gHitMeshList;
     q.mask = mask;
     q.arg4 = b;
     q.arg3 = a;
@@ -148,13 +148,13 @@ s32 Hit_CastSphere(VecFx32 *pos, s32 radius, u32 mask, s32 a, s32 b, s32 c) {
             HitTriSphere_TestMesh(&q.mesh);
         }
     }
-    hit = data_02fe0ef8;
+    hit = gHitRayBest;
     if (hit == NULL) {
         return -0x1000;
     }
-    data_02fe0f14 = *hit;
-    *pos = data_02fe0f14.pos;
-    return data_02fe0f14.distSq;
+    gHitResult = *hit;
+    *pos = gHitResult.pos;
+    return gHitResult.distSq;
 }
 
 }

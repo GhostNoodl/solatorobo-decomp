@@ -42,21 +42,21 @@ typedef struct {
 
 #define OV003_DELETE_V(p)                              \
     {                                                  \
-        void *old = data_02097dd0->cur;                \
-        data_02097dd0->cur = data_02097dd0->heapHi;    \
+        void *old = gSysState->cur;                \
+        gSysState->cur = gSysState->heapHi;    \
         if ((p) != NULL) {                             \
             if ((p) != NULL) {                         \
                 (p)->Delete();                         \
             }                                          \
             (p) = NULL;                                \
         }                                              \
-        data_02097dd0->cur = old;                      \
+        gSysState->cur = old;                      \
     }
 
 #define OV003_DELETE_RES(p)                            \
     {                                                  \
-        void *old = data_02097dd0->cur;                \
-        data_02097dd0->cur = data_02097dd0->heapHi;    \
+        void *old = gSysState->cur;                \
+        gSysState->cur = gSysState->heapHi;    \
         if ((p) != NULL) {                             \
             Model *res = (p);                          \
             if (res != NULL) {                         \
@@ -66,7 +66,7 @@ typedef struct {
             }                                          \
             (p) = NULL;                                \
         }                                              \
-        data_02097dd0->cur = old;                      \
+        gSysState->cur = old;                      \
     }
 
 extern "C" {

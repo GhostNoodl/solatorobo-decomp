@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern void *data_ov013_0220bbb8[];
+extern void *Ov013ActEx_02204454_vtbl[];
 extern char data_ov013_0220ba58[];
 extern char data_ov013_0220ba60[];
 extern void Ov003Vec_RotateY(VecFx32 *out, u16 rot, const VecFx32 *v);
@@ -29,10 +29,10 @@ static inline void Ov013_InitDc(Ov013ActEx_02204454 *self) {
 
 static inline void Ov013_DtorDc(Ov013ActEx_02204454 *self) {
     void *saved;
-    *(void **)self = data_ov013_0220bbb8;
+    *(void **)self = Ov013ActEx_02204454_vtbl;
     ((Ov013V *)(self->unk_ec))->v08();
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_dc != NULL) {
         Ov013Names *p = self->unk_dc;
         if (p != NULL) {
@@ -41,9 +41,9 @@ static inline void Ov013_DtorDc(Ov013ActEx_02204454 *self) {
         }
         self->unk_dc = NULL;
     }
-    data_02097dd0->cur = saved;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    gSysState->cur = saved;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     if (self->unk_e0 != NULL) {
         Model0218fe1c *p = self->unk_e0;
         if (p != NULL) {
@@ -52,7 +52,7 @@ static inline void Ov013_DtorDc(Ov013ActEx_02204454 *self) {
         }
         self->unk_e0 = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
     Ov013_InitDc(self);
     Ov003Vt_021f79a8_Dtor(self->unk_ec);
     ActorEx_DtorBase(self);
@@ -107,7 +107,7 @@ static inline void Ov013_SetShadow(Ov013Shadow *s, u8 a, u8 b, u8 c, u8 d, u16 s
 
 Ov013ActEx_02204454 *Ov013ActEx_02204454_Ctor(Ov013ActEx_02204454 *self) {
     ActorEx_Ctor(self);
-    *(void **)self = data_ov013_0220bbb8;
+    *(void **)self = Ov013ActEx_02204454_vtbl;
     Ov003Vt_021f79a8_Ctor(self->unk_ec);
     Ov013_InitDc(self);
     return self;

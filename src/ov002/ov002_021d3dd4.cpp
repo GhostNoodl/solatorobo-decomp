@@ -8,7 +8,7 @@ void Task021ef81c_Load(Task021ef81c *self) {
 
 bool Task021ef81c_IsLoaded(void) {
     bool a = func_ov000_02176538() & 1;
-    return a & func_ov000_02180838(data_ov000_021ccd44);
+    return a & func_ov000_02180838(gTaskHost);
 }
 
 }

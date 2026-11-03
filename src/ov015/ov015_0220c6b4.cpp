@@ -22,8 +22,8 @@ void func_ov015_0220c6c8(Ov015FishState1c *self, Ov015Fish *p) {
     if (self->timer == 0x5a) {
         EffectObj *o;
         Ov015Vec v;
-        SndMgr_PlayVolume(data_02097e4c, 0x19, -1, -1, -1);
-        SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x19, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x3e, -1, -1, -1);
         o = Effect3D_Create(data_ov015_02212e20, data_ov015_02212e68, 0, &self->fish->pos);
         o->unk_d4 = 1;
         o->unk_28 = 1;
@@ -33,7 +33,7 @@ void func_ov015_0220c6c8(Ov015FishState1c *self, Ov015Fish *p) {
         o->SetPos(&v);
         o->SetScale(&self->fish->scale);
     } else if (self->timer == 1) {
-        SndMgr_PlayVolume(data_02097e4c, 0x56, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x56, -1, -1, -1);
     }
 }
 

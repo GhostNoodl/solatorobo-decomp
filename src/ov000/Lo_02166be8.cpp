@@ -14,7 +14,7 @@ typedef struct {
 extern "C" {
 
 extern u8 data_ov000_021c9a9c[];
-extern s32 data_02097d78[5];
+extern s32 gFadeState[5];
 Robo021ca458 *ActorMgr_FindPlayer(void);
 void Lo021cb6b0_FreeSlots(Lo021cb6b0 *self);
 u8 *func_ov000_02165f94(Lo021cb6b0 *self);
@@ -37,17 +37,17 @@ static inline BOOL FieldState_HasCmd(FieldState *q, s32 kind) {
 }
 
 static inline BOOL IsMode0_02166be8(void) {
-    if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[0] == 0) {
         return TRUE;
     }
     return FALSE;
 }
 
 static inline BOOL IsMode1_02166be8(void) {
-    if (data_02097d78[3] == 1) {
+    if (gFadeState[3] == 1) {
         return TRUE;
     }
-    return data_02097d78[0] == 1 ? TRUE : FALSE;
+    return gFadeState[0] == 1 ? TRUE : FALSE;
 }
 
 static inline s32 FxMulS64_02166be8(s32 a, s64 b) {
@@ -59,7 +59,7 @@ static inline BOOL Skip02166be8(void) {
     if (ActorMgr_FindPlayer() == NULL) {
         skip = TRUE;
     }
-    if (FieldState_HasCmd(data_ov000_021ccd54, 9) || FieldState_HasCmd(data_ov000_021ccd54, 10)) {
+    if (FieldState_HasCmd(gSceneCmd, 9) || FieldState_HasCmd(gSceneCmd, 10)) {
         skip = TRUE;
     }
     return skip;
@@ -75,7 +75,7 @@ void func_ov000_02166be8(Lo021cb6b0 *self) {
     s32 dx;
     s32 dz;
     s32 ox;
-    FieldMgr *ctx = data_ov000_021ccd6c;
+    FieldMgr *ctx = gFieldMgr;
     Item0216607c *e;
     tgt = (u8 *)ctx->unk_0c;
     Pos02166be8 c = LFLD(Pos02166be8, data_ov000_021c9a9c, 0x28);
@@ -165,7 +165,7 @@ void func_ov000_02166be8(Lo021cb6b0 *self) {
             e = func_ov000_02165e2c(self, area);
             if (e != w->cur) {
                 if (e == NULL || w->cur == NULL) {
-                    if (!FieldState_HasCmd(data_ov000_021ccd54, 0x14)) {
+                    if (!FieldState_HasCmd(gSceneCmd, 0x14)) {
                         k = 0x1000;
                     }
                 }
@@ -386,8 +386,8 @@ void func_ov000_0216715c(Lo021cb6b0 *self, Work715c *p) {
     kind = p->cur[0x14];
     anim = p->anim + kind;
     Oam715c oam = p->oam;
-    g = data_ov000_021ccd54;
-    mgr = GfxSys_GetOamMgr(data_02097d48, 1);
+    g = gSceneCmd;
+    mgr = GfxSys_GetOamMgr(gGfxSys, 1);
     ox = p->ox;
     oy = p->oy;
     oam.w1.pal = p->palMap[oam.w1.pal];

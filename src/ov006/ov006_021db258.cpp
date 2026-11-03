@@ -14,7 +14,7 @@ typedef struct ov006_WhState {
 
 extern "C" {
 
-extern ov006_WhState *data_02097e40;
+extern ov006_WhState *gWhMgr;
 ov006_NetSlot *Wh_GetSharedData(ov006_WhState *a, int idx);
 u16 func_02046ab4(ov006_WhState *a);
 
@@ -37,16 +37,16 @@ void ov006_UpdateNetSlots(void) {
     int k;
     u8 i2;
     u8 i;
-    if (!data_ov006_021ec860->unk1C || data_ov006_021ec888 == NULL) {
+    if (!gOv006Manager->unk1C || data_ov006_021ec888 == NULL) {
         return;
     }
-    if (data_02097e40->state != 5) {
+    if (gWhMgr->state != 5) {
         return;
     }
     // Writing unk12 through a reference to `slot` gives the target's
     // register assignment for `i` and `slot` in the first loop (permuter).
     ov006_Slot *&slotRef = slot;
-    mgr = data_ov006_021ec884;
+    mgr = gOv006SlotManager;
     mgr->numActive = 0;
     mgr->unk5 = 0xff;
     for (j = 0; j < 4; j++) {
@@ -54,25 +54,25 @@ void ov006_UpdateNetSlots(void) {
     }
     n = 0;
     for (i = 0; i < 4; i++) {
-        p = Wh_GetSharedData(data_02097e40, i);
+        p = Wh_GetSharedData(gWhMgr, i);
         if (p != NULL && p->kind == 1 && p->packed.active && p->packed.isType1 == 1) {
-            slot = &data_ov006_021ec884->slots[n];
+            slot = &gOv006SlotManager->slots[n];
             ov006_Slot_Clear(slot);
             slot->active = 1;
             slot->type = 1;
             MI_CpuCopy8(p->packed.name, slot->name, sizeof(slot->name));
             slotRef->aid = i;
             ov006_Slot_Unpack(slot, &p->packed);
-            if (i == func_02046ab4(data_02097e40)) {
-                data_ov006_021ec884->unk5 = n;
+            if (i == func_02046ab4(gWhMgr)) {
+                gOv006SlotManager->unk5 = n;
             }
             n++;
         }
     }
     for (i2 = 0; i2 < 4; i2++) {
-        p2 = Wh_GetSharedData(data_02097e40, i2);
+        p2 = Wh_GetSharedData(gWhMgr, i2);
         if (p2 != NULL && p2->kind == 1 && p2->packed.active && p2->packed.isType1 == 0) {
-            slot2 = &data_ov006_021ec884->slots[n++];
+            slot2 = &gOv006SlotManager->slots[n++];
             ov006_Slot_Clear(slot2);
             slot2->active = 1;
             slot2->type = 0;
@@ -81,7 +81,7 @@ void ov006_UpdateNetSlots(void) {
             ov006_Slot_Unpack(slot2, &p2->packed);
         }
     }
-    mgr = data_ov006_021ec884;
+    mgr = gOv006SlotManager;
     mgr->numActive = 0;
     for (k = 0; k < 4; k++) {
         if (mgr->slots[k].active) {

@@ -23,10 +23,10 @@ typedef struct {
 } Ent0219763c;
 
 extern "C" {
-extern void *data_ov000_021ccd64;
-extern Save0219763c *data_0214a424;
+extern void *gGroup;
+extern Save0219763c *gStageFlags;
 extern Ent0219763c data_ov000_021c9ecc[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void HitSphere_Unlink_0203f364(void *a);
 void Group_UpdateActor(void *a, s32 b, void *c);
 void Shared_SetEventActor(u16 kind, u16 id);
@@ -47,12 +47,12 @@ static inline void SetNibble0219763c(s32 row, s32 idx, u32 value) {
     u32 *p;
 
     sh *= 4;
-    p = &data_0214a424->flags[row][idx / 8];
+    p = &gStageFlags->flags[row][idx / 8];
     *p = (*p & ~(0xf << sh)) | ((value & 0xf) << sh);
 }
 
 static inline int GetNibble0219763c(s32 row, s32 idx) {
-    u32 v = data_0214a424->flags[row][idx / 8];
+    u32 v = gStageFlags->flags[row][idx / 8];
     return (v >> ((idx % 8) * 4)) & 0xf;
 }
 
@@ -85,13 +85,13 @@ static inline void Die0219763c(VObj *obj) {
         Shared_SetEventActor(self->unk_0e, self->unk_0c);
         func_020627dc(0x63);
         {
-            FieldState *pl = data_ov000_021ccd54;
+            FieldState *pl = gSceneCmd;
             ((u8 *)pl)[0xac] = 1;
             func_ov000_02182590((u8 *)pl + 0xac);
         }
     }
     func_020627c8();
-    Group_UpdateActor(data_ov000_021ccd64, 0, self);
+    Group_UpdateActor(gGroup, 0, self);
     obj->vfunc_08();
 }
 
@@ -139,7 +139,7 @@ void ActorEx_StateDie(VObj *obj) {
                 Spawn0219763c(self, e->fx1, &e->scale1, &p);
             }
             if (e->snd >= 0 && self->unk_cc_5) {
-                SndMgr_PlayAt(data_02097e4c, e->snd, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, e->snd, &self->pos, 0);
             }
             if (e->a != 0 && e->b != 0) {
                 Field_ShakeCamera(e->a, e->b);

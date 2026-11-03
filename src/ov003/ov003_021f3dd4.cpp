@@ -71,7 +71,7 @@ extern ActorShadow *Shadow_Ctor(void *p);
 extern void Shadow_Load(ActorShadow *p);
 extern BOOL Shadow_UpdateLoad(ActorShadow *p);
 extern BOOL ResSet_UpdateLoad(ActorRes *p);
-extern Ov003Save *data_0214a424;
+extern Ov003Save *gStageFlags;
 extern char data_ov003_021fa662[];
 extern BOOL Model0218fe1c_SetAnim(void *model, const char *name, s32 a, s32 b);
 extern void Model0218fe1c_BindAnim3Res(void *model, ActorRes *res);
@@ -165,7 +165,7 @@ void Ov003ActVt_021fa548_Start(Ov003Prop021fa548 *self) {
 }
 
 void Ov003ActVt_021fa548_RunState(Ov003Prop021fa548 *self) {
-    Ov003Save *save = data_0214a424;
+    Ov003Save *save = gStageFlags;
     u16 a = save->unk_18_3;
     u16 b = save->unk_18_1;
     switch (self->fsm->st) {

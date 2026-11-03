@@ -22,7 +22,7 @@ void func_ov000_0215b8f0(LoBase021cafc0_021cb0b8 *self, s32 unused, VecFx32 *pos
     s32 x0;
     s32 y0;
     s32 lh;
-    g = data_02097d48;
+    g = gGfxSys;
     node = self->items;
     i = 0;
     lh = self->vfunc_40();

@@ -51,19 +51,19 @@ void func_0203a4e4(GfxMgr *mgr, void *arg) {
     case 0:
         break;
     case 1:
-        if (data_02097d48->state == 2 && !GfxSys_IsFlag(data_02097d48)) {
+        if (gGfxSys->state == 2 && !GfxSys_IsFlag(gGfxSys)) {
             break;
         }
         func_0203aab0(mgr, arg);
         break;
     case 2:
-        if (data_02097d48->state == 2 && !data_02097d48->unk_a30_4) {
+        if (gGfxSys->state == 2 && !gGfxSys->unk_a30_4) {
             func_0203aab0(mgr, arg);
         }
         break;
     case 3:
     case 4:
-        if (data_02097d48->state == 1) {
+        if (gGfxSys->state == 1) {
             func_0203acb8(mgr, arg);
         }
         break;
@@ -185,7 +185,7 @@ void func_0203a5a4(GfxMgr *mgr, u16 c) {
         block->unk_10_6 = mgr->unk_00c;
         block->unk_10_14 = mgr->unk_00e;
     }
-    NNS_G2dEntryOamManagerOam(GfxSys_GetOamMgr(data_02097d48, which), &oam, 1);
+    NNS_G2dEntryOamManagerOam(GfxSys_GetOamMgr(gGfxSys, which), &oam, 1);
     idx = NNS_G2dFontFindGlyphIndex(font, c);
     if (idx == 0xffff) {
         idx = font->pRes->alterCharIndex;
@@ -238,7 +238,7 @@ void func_0203a984(GfxMgr *mgr, VramBlock **blocks, u16 n) {
         buf[i].attr01 = b->unk_14 | (oy & 0xff) | ((u32)(ox << 23) >> 7);
         buf[i].attr2 = nm | (pal << 12);
     }
-    NNS_G2dEntryOamManagerOam(GfxSys_GetOamMgr(data_02097d48, which), buf, n);
+    NNS_G2dEntryOamManagerOam(GfxSys_GetOamMgr(gGfxSys, which), buf, n);
 }
 #endif
 

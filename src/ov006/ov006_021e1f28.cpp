@@ -2,10 +2,10 @@
 
 extern "C" {
 
-extern void *data_ov006_021ec2ec;
+extern void *ov006_Marker_vtbl;
 
 ov006_Marker *Ov006Vt_021ec2ec_Ctor(ov006_Marker *self) {
-    self->vtbl = &data_ov006_021ec2ec;
+    self->vtbl = &ov006_Marker_vtbl;
     self->state = 0;
     self->unk6 = 0;
     self->timer = 0;

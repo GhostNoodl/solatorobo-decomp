@@ -5,11 +5,11 @@
 
 extern "C" {
 
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021cad50[];
+extern u8 UiObj_vtbl[];
+extern u8 Lo021cad50_vtbl[];
 extern u8 data_02fe1534[];
 extern char data_ov000_021ca940[];
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void Obj0215c1bc_SetMsg(Lo021cad50 *self, s32 id);
 void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 Robo021ca458 *ActorMgr_FindPlayer(void);
@@ -19,16 +19,16 @@ int func_02060898(u16 a, s32 b, s32 c);
 void SceneCmd_Push07(void *p, u16 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 
 static inline void Beep02151664(void) {
-    SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
 }
 
 static inline void Show02151664(Lo021ca9c4 *self, s32 id) {
     if (self->unk_58 == NULL) {
         VObj *p = (VObj *)Heap_Alloc(0xe8);
         if (p) {
-            VOBJ_SET_VTABLE(p, data_ov000_021cac60);
+            VOBJ_SET_VTABLE(p, UiObj_vtbl);
             p->vfunc_28();
-            VOBJ_SET_VTABLE(p, data_ov000_021cad50);
+            VOBJ_SET_VTABLE(p, Lo021cad50_vtbl);
             p->vfunc_28();
         }
         self->unk_58 = (Lo021cad50 *)p;
@@ -77,7 +77,7 @@ BOOL func_ov000_02151664(UiList *p, UiListItem *msg) {
                 Robo021ca458_RestoreHp(pl);
             }
             func_02060898(o->unk_40, 0, -1);
-            SceneCmd_Push07(data_ov000_021ccd54, LFLD(u16, o->unk_54, 6), 10, 0, 0, 0, 0);
+            SceneCmd_Push07(gSceneCmd, LFLD(u16, o->unk_54, 6), 10, 0, 0, 0, 0);
             if (o->unk_4c != NULL) {
                 o->unk_4c->flags |= 2;
             }

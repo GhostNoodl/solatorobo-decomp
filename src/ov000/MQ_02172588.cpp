@@ -12,8 +12,8 @@ public:
 
 extern "C" {
 
-extern u8 data_ov000_021cb980[];
-extern u8 data_ov000_021cb9b0[];
+extern u8 Ov000Vt_021cb980_vtbl[];
+extern u8 Ov000Vt_021cb9b0_vtbl[];
 extern const char *data_0208cc94;
 extern const char *data_0208cca0;
 extern char data_0214b105[];
@@ -22,7 +22,7 @@ void func_ov000_021bd09c(void);
 static inline void LoMessageQueueDtor(MessageQueue *self) {
     ListBuffer *buf;
     u32 i;
-    VOBJ_SET_VTABLE(self, data_ov000_021cb9b0);
+    VOBJ_SET_VTABLE(self, Ov000Vt_021cb9b0_vtbl);
     buf = self->list.head;
     if (buf != NULL) {
         do {
@@ -51,7 +51,7 @@ static inline void LoMessageQueueDtor(MessageQueue *self) {
 
 #define DTOR_021727B0(self) \
     do { \
-        VOBJ_SET_VTABLE(self, data_ov000_021cb980); \
+        VOBJ_SET_VTABLE(self, Ov000Vt_021cb980_vtbl); \
         if (self->unk_11c != NULL) { \
             ListBuffer *b = self->unk_11c; \
             BufferList_Remove(&self->list, b); \
@@ -69,9 +69,9 @@ static inline void LoMessageQueueDtor(MessageQueue *self) {
         } \
         self->unk_118 = NULL; \
         func_ov000_021bd09c(); \
-        ResMgr_ReleaseByName(data_02097cdc, data_0208cc94, 7, 0); \
-        ResMgr_ReleaseByName(data_02097cdc, data_0208cca0, 7, 0); \
-        ResMgr_ReleaseByName(data_02097cdc, data_0214b105, 7, 0); \
+        ResMgr_ReleaseByName(gResMgr, data_0208cc94, 7, 0); \
+        ResMgr_ReleaseByName(gResMgr, data_0208cca0, 7, 0); \
+        ResMgr_ReleaseByName(gResMgr, data_0214b105, 7, 0); \
         LoMessageQueueDtor(self); \
     } while (0)
 

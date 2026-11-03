@@ -84,13 +84,13 @@ BOOL Ov011SceneActor_HandleMsg(Ov011SceneActor *self, Ov011ActMsg *msg) {
                 st = &self->unk_104->seq;
                 if (st->current == 0) {
                     st->flags |= 2;
-                    SndMgr_PlayAtPitch(data_02097e4c, 9, &self->pos, -2);
+                    SndMgr_PlayAtPitch(gSndMgr, 9, &self->pos, -2);
                 }
             } else if (sub == 1) {
                 st = &self->unk_104->seq;
                 if (st->current == 1) {
                     st->flags |= 4;
-                    SndMgr_PlayAt(data_02097e4c, 0x5b, &self->pos, 0);
+                    SndMgr_PlayAt(gSndMgr, 0x5b, &self->pos, 0);
                 }
             } else if (sub == 2) {
                 st = &self->unk_104->seq;

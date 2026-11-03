@@ -115,9 +115,9 @@ typedef struct {
 
 extern const Ov003MultiDef data_ov003_021f7470[];
 extern char data_ov003_021fa2ce[];
-extern u8 *data_ov000_021ccd54;
-extern void *data_ov000_021ccd68;
-extern Ov003MCtx *data_ov000_021ccd6c;
+extern u8 *gSceneCmd;
+extern void *gActorMgr;
+extern Ov003MCtx *gFieldMgr;
 
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern u16 Angle_Approach(u16 target, u16 cur, s32 rate, u32 a, u16 b);
@@ -208,7 +208,7 @@ void Ov003ActVt_021fa390_RunState(Ov003Multi *self) {
         VEC_Add(&self->unk_1140, &v, &self->unk_114c);
         self->unk_9c = 0;
         if (self->unk_1119 == 0 || self->unk_1119 == 3) {
-            SndMgr_PlayVolume(data_02097e4c, 0x51, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x51, -1, -1, -1);
         }
     }
     self->unk_9c += def->speed;
@@ -221,7 +221,7 @@ void Ov003ActVt_021fa390_RunState(Ov003Multi *self) {
     w.z = v.z - self->pos.z;
     VEC_MultAdd(0x800, &w, &self->pos, &self->pos);
 
-    cam = (Ov003MCam *)(data_ov000_021ccd54 + 0xf4);
+    cam = (Ov003MCam *)(gSceneCmd + 0xf4);
     if (cam != NULL) {
         rx = cam->unk_42;
         ry = cam->unk_44;
@@ -252,20 +252,20 @@ void Ov003ActVt_021fa390_RunState(Ov003Multi *self) {
         }
     }
 
-    a = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+    a = ActorMgr_GetGroup(gActorMgr, 0x5000);
     if (a != NULL && a->unk_16 != 0) {
         return;
     }
-    mgr = data_ov000_021ccd68;
+    mgr = gActorMgr;
     if ((mgr == NULL ? NULL : ActorMgr_FindKind(mgr, 0x4000, 0x400c)) != NULL) {
         return;
     }
-    ctx = data_ov000_021ccd6c;
+    ctx = gFieldMgr;
     area = ctx->area;
     if (Ov003M_Level(ctx->lv) < 1) {
         return;
     }
-    gm = (Ov003MGame *)data_ov000_021ccd54;
+    gm = (Ov003MGame *)gSceneCmd;
     if (Ov003M_Busy(gm)) {
         return;
     }
@@ -283,7 +283,7 @@ void Ov003ActVt_021fa390_RunState(Ov003Multi *self) {
     }
     ctx->unk_0a = area->unk_47;
     GfxSys_StartFadeOut(0x3c000, 2, 0);
-    SceneCmd_Push27(data_ov000_021ccd54, 1, 0, 0);
+    SceneCmd_Push27(gSceneCmd, 1, 0, 0);
     col.r = cr;
     col.g = cg;
     col.b = cb;

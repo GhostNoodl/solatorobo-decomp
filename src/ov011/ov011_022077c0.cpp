@@ -34,7 +34,7 @@ namespace m_021ffb58 {
 
 extern "C" {
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void *SndMgr_PlayAt(void *a, s32 b, void *c, s32 d);
 
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);
@@ -108,14 +108,14 @@ void Ov011SceneActor_StateDown(Ov011SceneActor *self) {
             Ov003ActorSub40_ForceState(o, 0);
             o->tw.v08();
             if (o->unk_38 != 0) {
-                EffectMgr_Kill(data_0214a420, o->unk_38);
+                EffectMgr_Kill(gEffectMgr, o->unk_38);
                 o->unk_38 = 0;
             }
         }
         self->unk_3c->unk_14 = self->radius << 1;
         self->unk_3c->unk_19 = 0xff;
         if (*self->hp == 0) {
-            ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4812, 0x15);
+            ActorMgr_BroadcastKind(gActorMgr, 0x4812, 0x15);
         }
     }
     Ov003Actor_StateDown(self);
@@ -123,14 +123,14 @@ void Ov011SceneActor_StateDown(Ov011SceneActor *self) {
 
 void Ov011SceneActor_StateHurt(Ov011SceneActor *self) {
     if (self->fsm->st == 0) {
-        SndMgr_PlayAt(data_02097e4c, 0x42, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x42, &self->pos, 0);
     }
     Ov003Actor_StateHurt(self);
 }
 
 void Ov011SceneActor_StateKnockBack(Ov011SceneActor *self) {
     if (self->fsm->st == 0) {
-        SndMgr_PlayAt(data_02097e4c, 0x42, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x42, &self->pos, 0);
     }
     Ov003Actor_StateKnockBack(self);
 }
@@ -139,13 +139,13 @@ void Ov011SceneActor_StateDie(Ov011SceneActor *self) {
     if (self->fsm->st == 0) {
         Ov011Sa104 *o;
         EffectObj *v;
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4812, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x4812, 0x15);
         o = self->unk_104;
         if (o != NULL) {
             Ov003ActorSub40_ForceState(o, 0);
             o->tw.v08();
             if (o->unk_38 != 0) {
-                EffectMgr_Kill(data_0214a420, o->unk_38);
+                EffectMgr_Kill(gEffectMgr, o->unk_38);
                 o->unk_38 = 0;
             }
         }
@@ -216,7 +216,7 @@ void func_ov011_021fff38(Ov011SceneActor *self) {
             g->loopCount = -1;
         }
         if (self->unk_104->unk_38 != 0) {
-            EffectObj *e = Effect_Find_020657b0(data_0214a420, self->unk_104->unk_38);
+            EffectObj *e = Effect_Find_020657b0(gEffectMgr, self->unk_104->unk_38);
             if (e != NULL) {
                 effPos = self->hit->check;
                 e->SetPos(&effPos);
@@ -230,7 +230,7 @@ void func_ov011_021fff38(Ov011SceneActor *self) {
             Ov011TwB_Start(&self->unk_104->tw, home, &t, 0x19a);
             self->unk_104->seq.st++;
             if (self->unk_104->unk_38 != 0) {
-                EffectMgr_StopLoop(data_0214a420, self->unk_104->unk_38);
+                EffectMgr_StopLoop(gEffectMgr, self->unk_104->unk_38);
                 self->unk_104->unk_38 = 0;
             }
             self->unk_f0_0 = 0;
@@ -302,7 +302,7 @@ struct Ov011Tbl6 {
 };
 
 extern const Ov011Tbl6 data_ov011_022072c0;
-extern void *data_02097e4c;
+extern void *gSndMgr;
 void Model0218fe1c_ClearLoop(void *a);
 u16 Ov003Vec_YawTo(VecFx32 *a, VecFx32 *b);
 void *SndMgr_PlayAt(void *mgr, s32 id, const VecFx32 *pos, s32 a);
@@ -367,7 +367,7 @@ void func_ov011_02200310(Ov011SceneActor *self) {
             e = Effect_SpawnId(0x192, &self->pos);
             e->SetRotXYZ(0, r, 0);
             e->SetScaleXYZ(0x4000, 0x4000, 0x4000);
-            SndMgr_PlayAt(data_02097e4c, 0x32, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x32, &self->pos, 0);
         } else if (p->b1 == 1) {
             self->hit->unk_9a_5 = 1;
             self->unk_10c->b2 = 0;
@@ -431,13 +431,13 @@ void *Ov011Vt_022079b0_Dtor(void *p);
 
 static inline void Ov011B_FreeBuf(Ov011Scene *b) {
     if (b->ring.b0) {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (b->ring.buf != NULL) {
             Heap_FreeArray(b->ring.buf);
             b->ring.buf = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
         b->ring.b0 = 0;
     }
 }
@@ -446,13 +446,13 @@ static inline void Ov011B_FreeVec(Ov011Scene *b) {
     if (b->mgr2.b0) {
         b->mgr2.b0 = 0;
         {
-            void *saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->heapHi;
+            void *saved = gSysState->cur;
+            gSysState->cur = gSysState->heapHi;
             if (b->mgr2.arr8 != NULL) {
                 __cxa_vec_delete(b->mgr2.arr8, 0x40, 8, Ov011E40_Dtor);
                 b->mgr2.arr8 = NULL;
             }
-            data_02097dd0->cur = saved;
+            gSysState->cur = saved;
         }
         Ov011Chr_Reset_0220205c(b->mgr2.unk_28);
         Ov011Mov_Stop_02202fbc(&b->mgr2.mov);
@@ -516,7 +516,7 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
         Ov003ActorSub40_ForceState(a, 0);
         a->tw.v08();
         if (a->unk_38 != 0) {
-            EffectMgr_Kill(data_0214a420, a->unk_38);
+            EffectMgr_Kill(gEffectMgr, a->unk_38);
             a->unk_38 = 0;
         }
     }
@@ -528,8 +528,8 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
         q->unk_04 = 0x1000;
     }
     {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (self->scene != NULL) {
             Ov011Scene *b = self->scene;
             if (b != NULL) {
@@ -538,11 +538,11 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
             }
             self->scene = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (self->unk_104 != NULL) {
             Ov011Sa104 *b = self->unk_104;
             if (b != NULL) {
@@ -551,25 +551,25 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
             }
             self->unk_104 = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (self->unk_108 != NULL) {
             Heap_Free(self->unk_108);
             self->unk_108 = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     {
-        void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        void *saved = gSysState->cur;
+        gSysState->cur = gSysState->heapHi;
         if (self->unk_10c != NULL) {
             Heap_Free(self->unk_10c);
             self->unk_10c = NULL;
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
     self->unk_f0_0 = 0;
     self->unk_f0_1 = 0;

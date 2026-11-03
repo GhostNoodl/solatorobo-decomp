@@ -10,7 +10,7 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov000_021cc62a[];
 extern char data_ov000_021cc63c[];
 extern char data_ov000_021cc642[];
@@ -36,7 +36,7 @@ static inline BOOL GReady(FieldState *g) {
     return TRUE;
 }
 static inline BOOL GIdle021a2d64(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return GReady(g);
     }
@@ -72,7 +72,7 @@ void Robo021ca458_State17(Robo021ca458 *self) {
                 EffectObj *e = Effect_SpawnId(0x2bd, &self->pos);
                 e->speed = 0x2000;
                 e->SetScaleAll(0x159a);
-                SndMgr_PlayAt(data_02097e4c, 0x35, (u8 *)self + 0x70, 0);
+                SndMgr_PlayAt(gSndMgr, 0x35, (u8 *)self + 0x70, 0);
             }
             ((St_021a2d64 *)self->fsm)->sub = 2;
             ((St_021a2d64 *)self->fsm)->state++;
@@ -94,7 +94,7 @@ void Robo021ca458_State17(Robo021ca458 *self) {
             prev = self->rot_y;
             self->rot_y = prev + 0xe00;
             if (prev > 0x8000 && self->rot_y < 0x8000) {
-                SndMgr_PlayAt(data_02097e4c, 0x35, (u8 *)self + 0x70, 0);
+                SndMgr_PlayAt(gSndMgr, 0x35, (u8 *)self + 0x70, 0);
             }
             ((St_021a2d64 *)self->fsm)->sub = 2;
         } else if (((St_021a2d64 *)self->fsm)->sub == 0) {

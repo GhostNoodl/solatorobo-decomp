@@ -93,13 +93,13 @@ void Ov006Racer_CheckItems(Ov006Racer *self) {
                 eff->unk_28 = 0;
                 eff->speed = 0x2000;
             }
-            if (self->idx == data_ov006_021ec884->unk5) {
-                SndMgr_PlayPan(data_02097e4c, 0x44, 5);
+            if (self->idx == gOv006SlotManager->unk5) {
+                SndMgr_PlayPan(gSndMgr, 0x44, 5);
             }
         } else {
             self->unk_1fc++;
-            if ((self->unk_1fc & 0xf) == 0 && self->idx == data_ov006_021ec884->unk5) {
-                SndMgr_PlayPan(data_02097e4c, 0x11, 0xc);
+            if ((self->unk_1fc & 0xf) == 0 && self->idx == gOv006SlotManager->unk5) {
+                SndMgr_PlayPan(gSndMgr, 0x11, 0xc);
             }
         }
     } else {

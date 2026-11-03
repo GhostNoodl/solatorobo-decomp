@@ -6,17 +6,17 @@
 extern "C" {
 
 static inline BOOL Gfx_IsFadeIdle2(int ch) {
-    if (data_02097d78[3] == 0 && data_02097d78[ch] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[ch] == 0) {
         return TRUE;
     }
     return FALSE;
 }
 
 static inline BOOL Gfx_IsFadeDone(int ch) {
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         return TRUE;
     }
-    return data_02097d78[ch] == 4 ? TRUE : FALSE;
+    return gFadeState[ch] == 4 ? TRUE : FALSE;
 }
 
 

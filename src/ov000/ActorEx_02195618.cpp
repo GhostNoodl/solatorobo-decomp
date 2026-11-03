@@ -15,14 +15,14 @@ typedef struct {
 
 extern "C" {
 
-extern Act02195618Entry data_ov000_021c9e18[];
+extern Act02195618Entry ActorEx_StateTable[];
 void HitMesh_Unlink_0203f920(void *p);
 void func_ov000_0219af3c(u8 *self, void *p);
 void Geom_AddRotatedOffset(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline BOOL PlayerIdle02195618(void) {
-    FieldState *pl = data_ov000_021ccd54;
+    FieldState *pl = gSceneCmd;
     if (pl != NULL) {
         if (pl->head != pl->tail ? TRUE : FALSE) {
             return FALSE;
@@ -48,8 +48,8 @@ void ActorEx_RunState(ActorEx *self) {
     }
     k = self->fsm->current;
     for (i = 0; i < 15; i++) {
-        if (k == *(s32 *)((u8 *)data_ov000_021c9e18 + i * 12)) {
-            (((Act02195618Cls *)self)->*data_ov000_021c9e18[i].fn)();
+        if (k == *(s32 *)((u8 *)ActorEx_StateTable + i * 12)) {
+            (((Act02195618Cls *)self)->*ActorEx_StateTable[i].fn)();
             break;
         }
     }
@@ -94,7 +94,7 @@ void ActorEx_RunState(ActorEx *self) {
     if (self->unk_bc == NULL) {
         return;
     }
-    o = Effect_Find_020657b0(data_0214a420, self->unk_bc);
+    o = Effect_Find_020657b0(gEffectMgr, self->unk_bc);
     if (o == NULL) {
         self->unk_bc = NULL;
         return;

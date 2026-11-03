@@ -52,7 +52,7 @@ Ov003Actor *func_ov014_02210c5c(Ov014Act_0220f9d0 *self) {
     rot.y = self->rot_y;
     rot.z = self->rot_z;
     Ov014Spawn_Init(&desc, 0x4814);
-    o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
+    o = Group_SpawnActor(gGroup, &desc, &pos, &rot, 0xffff);
     o->target = ActorMgr_FindPlayer()->id;
     o->flags_0 = 1;
     if (o->targetObj != NULL) {
@@ -68,10 +68,10 @@ Ov003Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self) {
     Ov014Vec16 rot;
     Ov003Actor *o;
     u16 id = self->target_id;
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         o = NULL;
     } else {
-        o = ActorMgr_GetActor(data_ov000_021ccd68, id);
+        o = ActorMgr_GetActor(gActorMgr, id);
     }
     if (o != NULL) {
         return NULL;
@@ -85,7 +85,7 @@ Ov003Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self) {
     rot.y = self->rot_y;
     rot.z = self->rot_z;
     rot.x = 0x2c00;
-    o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
+    o = Group_SpawnActor(gGroup, &desc, &pos, &rot, 0xffff);
     if (o == NULL) {
         return NULL;
     }

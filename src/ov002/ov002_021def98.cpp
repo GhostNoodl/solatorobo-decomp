@@ -14,7 +14,7 @@ typedef struct Id021def98 {
 
 extern Fn021def98 data_ov002_021eef8c[];
 extern Id021def98 data_ov002_021eef90[];
-extern VFunc data_ov002_021f0044[];
+extern VFunc Ov002Vt_021f0044_vtbl[];
 
 void func_ov000_021c3af4(void *self);
 void ListRow_Init(void *self);
@@ -34,11 +34,11 @@ Ov002RowList *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
     u8 *counts;
     p = (Ov002RowList *)Heap_Alloc(sizeof(Ov002RowList));
     if (p != NULL) {
-        *(VFunc **)p = data_ov000_021cac60;
+        *(VFunc **)p = UiObj_vtbl;
         p->vfunc_28();
-        *(VFunc **)p = data_ov000_021ccbe0;
+        *(VFunc **)p = Ov000Vt_021ccbe0_vtbl;
         func_ov000_021c3af4(p);
-        *(VFunc **)p = data_ov002_021f0044;
+        *(VFunc **)p = Ov002Vt_021f0044_vtbl;
     }
     p->rows = 6;
     p->width = 0x8c;
@@ -54,9 +54,9 @@ Ov002RowList *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
             for (j = 0; j < n; j++) {
                 q = (Obj021f002c *)Heap_Alloc(sizeof(Obj021f002c));
                 if (q != NULL) {
-                    *(VFunc **)q = data_ov002_021ef684;
+                    *(VFunc **)q = Ov002Vt_021ef684_vtbl;
                     ListRow_Init(q);
-                    *(VFunc **)q = data_ov002_021f002c;
+                    *(VFunc **)q = Ov002Vt_021f002c_vtbl;
                     Obj021f002c_Init(q);
                 }
                 q->id = id;
@@ -80,7 +80,7 @@ Ov002RowList *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
         void *r;
         Obj021eff50 *w;
         func_ov002_021e34fc(p, data_ov002_021eef8c[k].fn);
-        r = MsgRes_GetString(data_02149ef8, data_ov002_021eef90[k].id);
+        r = MsgRes_GetString(gMsgRes, data_ov002_021eef90[k].id);
         w = self->owner;
         Obj0215bb14_SetText(((void *)w->unk_20), r);
         w->unk_20->vfunc_70();

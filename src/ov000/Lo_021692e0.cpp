@@ -6,7 +6,7 @@
 
 extern "C" {
 
-extern s32 data_02097d78[5];
+extern s32 gFadeState[5];
 BOOL Model_IsReady(void *a, s32 b);
 extern const char *data_0208cc94;
 extern const char *data_0208cc88;
@@ -29,7 +29,7 @@ static inline BOOL LoGBusy(FieldState *g) {
 }
 
 static inline BOOL LoGIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (LoGBusy(g)) {
             return FALSE;
@@ -43,7 +43,7 @@ static inline BOOL LoGIdle(void) {
 }
 
 static inline BOOL LoD78Idle(void) {
-    return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
+    return (gFadeState[3] == 0 && gFadeState[0] == 0) ? TRUE : FALSE;
 }
 
 void Lo021cb7ec_Setup(Lo021cb7ec *self) {

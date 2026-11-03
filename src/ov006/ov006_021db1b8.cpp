@@ -13,11 +13,11 @@ static inline ov006_Slot *ov006_SlotManager_GetSlot(ov006_SlotManager *self, u32
 
 void ov006_BroadcastSlotEntries(u16 a) {
     u8 i;
-    if (!data_ov006_021ec860->unk1C) {
+    if (!gOv006Manager->unk1C) {
         return;
     }
     for (i = 0; i < 4; i++) {
-        ov006_Slot *slot = ov006_SlotManager_GetSlot(data_ov006_021ec884, i);
+        ov006_Slot *slot = ov006_SlotManager_GetSlot(gOv006SlotManager, i);
         if (slot != NULL && slot->aid != 0xff) {
             ov006_Menu_SetEntryAt(data_ov006_021ec888, slot->aid, a, 3, &slot->sub3C, 0x10);
         }

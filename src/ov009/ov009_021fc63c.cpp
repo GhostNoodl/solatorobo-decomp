@@ -7,7 +7,7 @@ extern void SndMgr_LoadHeapState(SndMgr *mgr, s32 a, s32 b);
 extern void SceneCmd_Push25(void *p, s32 a);
 void Ov009ActVt_022167fc_Init(Ov003Actor *self) {
     Ov003Actor_Init(self);
-    SndMgr_LoadHeapState(data_02097e4c, 1, 1);
+    SndMgr_LoadHeapState(gSndMgr, 1, 1);
     switch (self->kind) {
     case 0x5000:
     case 0x5001:
@@ -22,7 +22,7 @@ void Ov009ActVt_022167fc_Init(Ov003Actor *self) {
     case 0x500f:
     case 0x501f:
     case 0x503c:
-        SceneCmd_Push25(data_ov000_021ccd54, 0xd);
+        SceneCmd_Push25(gSceneCmd, 0xd);
         break;
     case 0x5003:
     case 0x5006:
@@ -32,11 +32,11 @@ void Ov009ActVt_022167fc_Init(Ov003Actor *self) {
     case 0x503a:
     case 0x503b:
     case 0x503d:
-        SceneCmd_Push25(data_ov000_021ccd54, 0xe);
+        SceneCmd_Push25(gSceneCmd, 0xe);
         break;
     case 0x502a:
     case 0x502d:
-        SceneCmd_Push25(data_ov000_021ccd54, 0xf);
+        SceneCmd_Push25(gSceneCmd, 0xf);
         break;
     }
 }

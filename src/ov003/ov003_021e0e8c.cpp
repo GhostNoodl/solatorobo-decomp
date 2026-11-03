@@ -108,7 +108,7 @@ typedef struct {
     u8 unk_00[0x34];
 } Ov003Table34;
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern Actor *Target_Get(ActorSub4c *p);
 extern Actor *Actor_SpawnKind(s32 id, VecFx32 *pos, ActorRot *rot, u16 a, u16 b);
@@ -196,7 +196,7 @@ void Ov003ActVt_021f8a60_StateThrown(Ov003SpawnPt *self) {
 void Ov003ActVt_021f9050_Init(ActorEx *self) {
     Ov003Unit *unit;
     ActorEx_Init(self);
-    unit = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    unit = Group_FindNode(gGroup, self->unk_20);
     if (unit != NULL) {
         unit->unk_a2_0 = 0;
     }
@@ -295,7 +295,7 @@ void Ov003ActVt_021f8638_Init(Ov003Spawner *self) {
             Ov003Res_SetNames(&self->res, id);
         }
     }
-    unit = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    unit = Group_FindNode(gGroup, self->unk_20);
     if (unit != NULL) {
         unit->unk_a2_0 = 0;
     }
@@ -320,7 +320,7 @@ typedef struct {
     u8 unk_00[0x34];
 } Ov003Table34;
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
 
 extern BOOL ResSet_UpdateLoad(ActorRes *p);
@@ -345,7 +345,7 @@ void Ov003ActVt_021f8638_Start(Ov003Spawner *self) {
     self->fsm->timer = self->table->steps[self->unk_18].delays[0];
 }
 
-extern void *data_ov000_021ccd68;
+extern void *gActorMgr;
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Ov003EvGroup *ActorMgr_GetGroup(void *mgr, u16 key);
 extern BOOL Hit_DiffInBox(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max);
@@ -354,10 +354,10 @@ extern void Group_UpdateActor(void *mgr, s32 a, Actor *obj);
 extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline Actor *Ov003Ev_GetUnit(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline BOOL Ov003Ev_IsBusy(FieldState *g) {
@@ -375,7 +375,7 @@ static inline BOOL Ov003Ev_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003Ev_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003Ev_IsIdle(g);
     }
@@ -422,7 +422,7 @@ void Ov003ActVt_021f8638_StateIdle(Ov003Spawner *self) {
     }
     alive = cnt;
     if (e->group != 0) {
-        Ov003EvGroup *g = ActorMgr_GetGroup(data_ov000_021ccd68, (u16)(e->group << 12));
+        Ov003EvGroup *g = ActorMgr_GetGroup(gActorMgr, (u16)(e->group << 12));
         if (g != NULL) {
             alive = g->unk_16;
         }
@@ -466,7 +466,7 @@ void Ov003ActVt_021f8638_StateIdle(Ov003Spawner *self) {
             desc.unk_0c = -1;
             desc.args[1] = e->args[self->slot];
             VEC_Add(&self->pos, &self->table->ofs, &pos);
-            u = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &self->rot, 0xffff);
+            u = Group_SpawnActor(gGroup, &desc, &pos, &self->rot, 0xffff);
             if (u == NULL) {
                 return;
             }
@@ -542,7 +542,7 @@ void Ov003ActVt_021f8638_StateIdle(Ov003Spawner *self) {
         }
     case 0x15:
         func_ov000_02197dec(self, 0xf, 1);
-        Group_UpdateActor(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(gGroup, 0, self);
         self->vfunc_08();
         return;
     }
@@ -576,7 +576,7 @@ typedef struct {
     s32 unk_14;
 } Ov003SpotMsg;
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern const Ov003SpotDef data_ov003_021f6428[];
 extern BOOL History_SetState(ActorSub40 *p, s32 a, s32 b);
 extern void Shared_SetEventActor(u16 a, u16 b);
@@ -591,7 +591,7 @@ void Ov003ActVt_021f8638_State21(ActorEx *self) {
     History_SetState(self->fsm, 1, 0);
     Shared_SetEventActor(self->kind, self->id);
     func_020627dc(4);
-    data_ov000_021ccd54->stageFlags = 1;
+    gSceneCmd->stageFlags = 1;
 }
 
 void Ov003ActVt_021f8df0_Init(ActorEx *self) {
@@ -618,7 +618,7 @@ void Ov003ActVt_021f8df0_Init(ActorEx *self) {
 void Ov003ActVt_021f8df0_Start(ActorEx *self) {
     Ov003Unit *u;
     ActorEx_Start(self);
-    u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    u = Group_FindNode(gGroup, self->unk_20);
     if (u != NULL) {
         u->unk_a2_5 = 1;
     }
@@ -629,7 +629,7 @@ void Ov003ActVt_021f8df0_Start(ActorEx *self) {
     self->model->visible = 0;
 }
 
-extern void *data_ov000_021ccd68;
+extern void *gActorMgr;
 extern void VEC_Normalize(const VecFx32 *a, VecFx32 *out);
 extern Actor *Group_SpawnActor(void *mgr, GroupActorDesc *desc, VecFx32 *pos, Rot16 *rot, u16 a);
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
@@ -656,7 +656,7 @@ static inline BOOL Ov003Spot_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003Spot_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003Spot_IsIdle(g);
     }
@@ -664,10 +664,10 @@ static inline BOOL Ov003Spot_GameIdle(void) {
 }
 
 static inline Actor *Ov003Spot_GetUnit(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline BOOL Ov003Spot_IsLocked(Actor *u) {
@@ -718,7 +718,7 @@ void Ov003ActVt_021f8df0_StateIdle(ActorEx *self) {
             rot.x = 0;
             rot.y = def->unk_40;
             rot.z = 0;
-            u = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
+            u = Group_SpawnActor(gGroup, &desc, &pos, &rot, 0xffff);
             if (u == NULL) {
                 return;
             }
@@ -747,7 +747,7 @@ void Ov003ActVt_021f8df0_StateIdle(ActorEx *self) {
         Ov003SpotMsg msg;
         VEC_Add(&self->unk_84, &def->unk_24, &v);
         if (Hit_DiffInSphere(&self->pos, &v, def->speed + 0x19a + self->radius)) {
-            SndMgr_PlayAt(data_02097e4c, 0x47, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x47, &self->pos, 0);
             Field_ShakeCamera(6, 0xc);
             self->fsm->st++;
         }
@@ -787,7 +787,7 @@ void Ov003ActVt_021f8df0_StateIdle(ActorEx *self) {
             HitMesh_Unlink_0203f920(self->hitMesh);
         }
         Model0218fe1c_SetAnim(self->model, "act00", 0x19a, 0);
-        SndMgr_PlayAt(data_02097e4c, 0xe, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0xe, &self->pos, 0);
         self->fsm->timer = 0;
         self->fsm->st++;
         return;
@@ -810,8 +810,8 @@ void Ov003ActVt_021f8df0_StateIdle(ActorEx *self) {
             self->vel.z = (s32)(((s64)self->vel.z * spd + 0x800) >> 12);
         }
         Model0218fe1c_SetAnim(self->model, "nut00", 0x111, 0);
-        SndMgr_PlayAt(data_02097e4c, 0xf, &self->pos, 0);
-        Group_UpdateActor(data_ov000_021ccd64, 0, self);
+        SndMgr_PlayAt(gSndMgr, 0xf, &self->pos, 0);
+        Group_UpdateActor(gGroup, 0, self);
         self->fsm->timer = 0;
         self->fsm->st++;
         return;
@@ -834,7 +834,7 @@ void Ov003ActVt_021f8df0_StateIdle(ActorEx *self) {
 namespace m_021e2148 {
 extern "C" {
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern char *Tbl_GetResFile(u16 id);
 extern char *Path_SkipDir(char *p);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
@@ -854,7 +854,7 @@ void Ov003ActVt_021f8c28_Init(Ov003ActExRes *self) {
         self->res.unk_03_3 = 1;
         self->res.unk_00 = 0;
     }
-    u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    u = Group_FindNode(gGroup, self->unk_20);
     if (u != NULL) {
         u->unk_a2_5 = 1;
     }
@@ -1064,7 +1064,7 @@ void Ov003ActVt_021f8c28_StateIdle(Ov003ActExRes *self) {
             Field_ShakeCamera(5, 0xf);
         }
         if (def->fx0 >= 0) {
-            SndMgr_PlayAtPitch(data_02097e4c, def->fx0, &self->pos, def->fx0arg);
+            SndMgr_PlayAtPitch(gSndMgr, def->fx0, &self->pos, def->fx0arg);
         }
         self->fsm->st++;
     case 2: {
@@ -1076,7 +1076,7 @@ void Ov003ActVt_021f8c28_StateIdle(Ov003ActExRes *self) {
             }
             if (ww->timer == 0) {
                 self->fsm->timer = 0x3c;
-                SndMgr_PlayAtPitch(data_02097e4c, 0x27, &self->pos, -8);
+                SndMgr_PlayAtPitch(gSndMgr, 0x27, &self->pos, -8);
             }
         }
         v.x = self->unk_84.x;
@@ -1093,7 +1093,7 @@ void Ov003ActVt_021f8c28_StateIdle(Ov003ActExRes *self) {
                 Field_ShakeCamera(5, 0xf);
             }
             if (def->fx1 >= 0) {
-                SndMgr_PlayAtPitch(data_02097e4c, def->fx1, &self->pos, def->fx1arg);
+                SndMgr_PlayAtPitch(gSndMgr, def->fx1, &self->pos, def->fx1arg);
             }
             self->vel.x = v.x - self->pos.x;
             self->vel.y = v.y - self->pos.y;
@@ -1193,7 +1193,7 @@ void Ov003ActVt_021f8c28_StateIdle(Ov003ActExRes *self) {
 namespace m_021e2afc {
 extern "C" {
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern char *Tbl_GetResFile(u16 id);
 extern char *Path_SkipDir(char *p);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
@@ -1213,7 +1213,7 @@ void Ov003ActVt_021f89c8_Init(Ov003ActExRes *self) {
         self->res.unk_03_3 = 1;
         self->res.unk_00 = 0;
     }
-    u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    u = Group_FindNode(gGroup, self->unk_20);
     if (u != NULL) {
         u->unk_a2_5 = 1;
     }
@@ -1304,8 +1304,8 @@ extern BOOL History_SetState(ActorSub40 *p, s32 a, s32 b);
 extern BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *model);
 extern void Field_ShakeCamera(s32 a, s32 b);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
-extern Ov003LtField *data_ov000_021ccd6c;
-extern void *data_ov000_021ccd68;
+extern Ov003LtField *gFieldMgr;
+extern void *gActorMgr;
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void FieldMgr_SetIdVec(Ov003LtField *f, u16 id, VecFx32 *v);
 extern Robo021ca458 *ActorMgr_FindPlayer(void);
@@ -1478,10 +1478,10 @@ void Ov003ActVt_021f89c8_Start(Ov003ActExRes *self) {
     }
 
 static inline Actor *Ov003Lt_GetUnit(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Ov003ActVt_021f89c8_StateIdle(Ov003ActExRes *self) {
@@ -1544,7 +1544,7 @@ void Ov003ActVt_021f89c8_StateIdle(Ov003ActExRes *self) {
             Field_ShakeCamera(5, 0xf);
         }
         if (def->fx0 >= 0) {
-            SndMgr_PlayAtPitch(data_02097e4c, def->fx0, &self->pos, def->fx0arg);
+            SndMgr_PlayAtPitch(gSndMgr, def->fx0, &self->pos, def->fx0arg);
         }
         self->fsm->st++;
         return;
@@ -1564,7 +1564,7 @@ void Ov003ActVt_021f89c8_StateIdle(Ov003ActExRes *self) {
         if (n == 0) {
             return;
         }
-        data_ov000_021ccd6c->unk_1f0 = self->kind;
+        gFieldMgr->unk_1f0 = self->kind;
         pl = ActorMgr_FindPlayer();
         if (n > sizeof(ids) / sizeof(ids[0])) {
             n = 0x20;
@@ -1587,7 +1587,7 @@ void Ov003ActVt_021f89c8_StateIdle(Ov003ActExRes *self) {
                 d.x -= self->pos.x;
                 d.y -= self->pos.y;
                 d.z -= self->pos.z;
-                FieldMgr_SetIdVec(data_ov000_021ccd6c, id, &d);
+                FieldMgr_SetIdVec(gFieldMgr, id, &d);
             }
         }
         return;
@@ -1599,7 +1599,7 @@ void Ov003ActVt_021f89c8_StateIdle(Ov003ActExRes *self) {
                 Field_ShakeCamera(5, 0xf);
             }
             if (def->fx1 >= 0) {
-                SndMgr_PlayAtPitch(data_02097e4c, def->fx1, &self->pos, def->fx1arg);
+                SndMgr_PlayAtPitch(gSndMgr, def->fx1, &self->pos, def->fx1arg);
             }
             self->vel.x = self->unk_84.x - self->pos.x;
             self->vel.y = self->unk_84.y - self->pos.y;
@@ -1716,10 +1716,10 @@ void Ov003ActVt_021f8800_State20(ActorEx *self) {
         if (self->targetObj != NULL) {
             self->targetObj->unk_1e = self->unk_1c;
         }
-        SndMgr_PlayAt(data_02097e4c, 0x73, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x73, &self->pos, 0);
         break;
     case 6:
-        SndMgr_PlayAtPitch(data_02097e4c, 8, &self->pos, -5);
+        SndMgr_PlayAtPitch(gSndMgr, 8, &self->pos, -5);
         break;
     }
 }
@@ -1785,7 +1785,7 @@ namespace m_021e3d34 {
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern BOOL History_SetState(ActorSub40 *p, s32 a, s32 b);
 extern void Group_UpdateActor(void *mgr, s32 a, Actor *obj);
 extern void Model0218fe1c_SetLoop(Model0218fe1c *model);
@@ -1794,7 +1794,7 @@ extern u16 Angle_Approach(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern void func_ov000_021975b4(Actor *self);
 extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const void *name, s32 a, s32 b);
 
-extern void *data_ov000_021ccd68;
+extern void *gActorMgr;
 extern void *Model0218fe1c_SetAnimFrame(Model0218fe1c *m, s32 a);
 extern void Model0218fe1c_PauseAnim(Model0218fe1c *model);
 extern BOOL Model0218fe1c_IsAnimDone(Model0218fe1c *model);
@@ -1857,7 +1857,7 @@ void Ov003ActVt_021f8fb8_State0a(ActorEx *self) {
         w->timer++;
         if (w->timer > 0xb4) {
             func_ov000_02197dec(self, 0xf, -1);
-            Group_UpdateActor(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();
         }
         break;
@@ -1927,7 +1927,7 @@ void Ov003ActVt_021f8cc0_StateIdle(ActorEx *self) {
             s = self->unk_44;
             s->unk_22_0 = 0;
             s->unk_22_1 = 0;
-            ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x540b, 0x15);
+            ActorMgr_BroadcastKind(gActorMgr, 0x540b, 0x15);
             self->fsm->st++;
         } else {
             Model0218fe1c_SetAnim(self->model, "nut00", 0x1000, 0);
@@ -1977,7 +1977,7 @@ void Ov003ActVt_021f8cc0_State06(ActorEx *self) {
     }
     self->unk_18 = n;
     Model0218fe1c_SetAnim(self->model, "act00", 0x1000, 0);
-    SndMgr_PlayAt(data_02097e4c, 0x6a, &self->pos, 0);
+    SndMgr_PlayAt(gSndMgr, 0x6a, &self->pos, 0);
     Field_ShakeCamera(8, 0xf);
     History_SetState(self->fsm, 1, 0);
 }
@@ -2001,7 +2001,7 @@ void Ov003ActVt_021f8b90_StateHurt(ActorEx *self) {
         ActorSub44 *s;
         Model0218fe1c_SetAnim(self->model, "dmg00", 0x333, 0);
         Model0218fe1c_SetAnimSpeed(self->model, 0x800);
-        SndMgr_PlayAt(data_02097e4c, 0x41, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x41, &self->pos, 0);
         s16 n;
         s16 lim;
         lim = self->unk_1a;
@@ -2050,7 +2050,7 @@ void Ov003ActVt_021f8b90_StateHurt(ActorEx *self) {
                 p.x = self->unk_44->pos.x;
                 p.y = self->unk_44->pos.y;
                 p.z = self->unk_44->pos.z;
-                o = Group_SpawnActor(data_ov000_021ccd64, &desc, &p, &self->rot, 0xffff);
+                o = Group_SpawnActor(gGroup, &desc, &p, &self->rot, 0xffff);
                 if (o != NULL) {
                     o->flags_0 = 1;
                 }
@@ -2070,11 +2070,11 @@ void Ov003ActVt_021f8b90_StateHurt(ActorEx *self) {
             p.z = self->unk_44->pos.z;
             Spawn_ScatterEffect(&p, &sc, 0x99a, 0x1000, 0x38b, 0x32);
             Field_ShakeCamera(5, 10);
-            SndMgr_PlayAt(data_02097e4c, 0x3b, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x3b, &self->pos, 0);
             if (Rand_UpTo(1)) {
-                SndMgr_PlayAt(data_02097e4c, 0x3c, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x3c, &self->pos, 0);
             } else {
-                SndMgr_PlayAt(data_02097e4c, 0x3d, &self->pos, 0);
+                SndMgr_PlayAt(gSndMgr, 0x3d, &self->pos, 0);
             }
         }
         self->fsm->timer++;
@@ -2496,7 +2496,7 @@ void Ov003ActExMesh_StateIdle(Ov003ActExMesh *self) {
         if (self->unk_93_1 != kind) {
             if (kind != 0 && self->unk_93_1 == 0) {
                 Model0218fe1c_SetAnim(self->model, "on00", 0x1000, 0);
-                SndMgr_PlayAtPitch(data_02097e4c, 0xd, &self->pos, -0xf);
+                SndMgr_PlayAtPitch(gSndMgr, 0xd, &self->pos, -0xf);
                 self->target = found->id;
                 self->unk_93_1 = kind;
                 self->unk_18 = kind;
@@ -2506,7 +2506,7 @@ void Ov003ActExMesh_StateIdle(Ov003ActExMesh *self) {
                 self->fsm->st = 10;
             } else {
                 Model0218fe1c_SetAnim(self->model, "off00", 0x1000, 0);
-                SndMgr_PlayAtPitch(data_02097e4c, 0xd, &self->pos, -0xf);
+                SndMgr_PlayAtPitch(gSndMgr, 0xd, &self->pos, -0xf);
                 self->unk_18 = 0;
                 self->unk_93_1 = 0;
                 self->target = 0xffff;
@@ -2693,8 +2693,8 @@ typedef struct {
 
 extern "C" {
 
-extern Ov003ColState data_02fe0f14;
-extern char data_ov003_021f8768[];
+extern Ov003ColState gHitResult;
+extern char Ov003ActVt_021f8768_vtbl[];
 extern s32 Geom_SnapToGround(VecFx32 *pos, s32 a, s32 b);
 extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const char *name, s32 a, s32 b);
 extern void Model0218fe1c_SetLoop(Model0218fe1c *model);
@@ -2708,7 +2708,7 @@ extern BOOL OS_IsRunOnTwl(void);
 extern void *Heap_Alloc(u32 size);
 extern BOOL ResSet_UpdateLoad(ActorRes *res);
 extern void ActorMarker_Draw(void *p);
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern void *NNS_G3dGetTex(void *p);
 extern void *G3dRes_QueueTexUpload(void *a, void *b);
 extern void *NNS_G3dGetMdlSet(void *p);
@@ -2731,7 +2731,7 @@ static inline BOOL Ov003Game_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -2743,7 +2743,7 @@ static inline BOOL Ov003Game_HasEvent(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameHasD4(void) {
-    return Ov003Game_HasEvent(data_ov000_021ccd54) ? TRUE : FALSE;
+    return Ov003Game_HasEvent(gSceneCmd) ? TRUE : FALSE;
 }
 
 void Ov003ActVt_021f8930_Start(ActorEx *self) {
@@ -2751,7 +2751,7 @@ void Ov003ActVt_021f8930_Start(ActorEx *self) {
     if (Geom_SnapToGround(&self->pos, 0x1000, -0xa000) == -0x1000) {
         return;
     }
-    self->hit->unk_54 |= data_02fe0f14.unk_2c;
+    self->hit->unk_54 |= gHitResult.unk_2c;
 }
 
 void Ov003ActVt_021f8898_Update(Ov003ActExWalk *self) {
@@ -2787,9 +2787,9 @@ void Ov003ActExWalk_StateMove(Ov003ActExWalk *self) {
 Ov003ActExTex *Ov003ActVt_021f8768_Dtor(Ov003ActExTex *self) {
     void *old;
     Twl0214b570 *p;
-    *(void **)self = data_ov003_021f8768;
-    old = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    *(void **)self = Ov003ActVt_021f8768_vtbl;
+    old = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     p = self->tex;
     if (p != NULL) {
         if (p != NULL) {
@@ -2798,7 +2798,7 @@ Ov003ActExTex *Ov003ActVt_021f8768_Dtor(Ov003ActExTex *self) {
         }
         self->tex = NULL;
     }
-    data_02097dd0->cur = old;
+    gSysState->cur = old;
     ResSet_ReleaseAll(&self->res);
     ActorEx_DtorBase(self);
     return self;
@@ -2807,9 +2807,9 @@ Ov003ActExTex *Ov003ActVt_021f8768_Dtor(Ov003ActExTex *self) {
 Ov003ActExTex *Ov003ActVt_021f8768_DtorDelete(Ov003ActExTex *self) {
     void *old;
     Twl0214b570 *p;
-    *(void **)self = data_ov003_021f8768;
-    old = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
+    *(void **)self = Ov003ActVt_021f8768_vtbl;
+    old = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
     p = self->tex;
     if (p != NULL) {
         if (p != NULL) {
@@ -2818,7 +2818,7 @@ Ov003ActExTex *Ov003ActVt_021f8768_DtorDelete(Ov003ActExTex *self) {
         }
         self->tex = NULL;
     }
-    data_02097dd0->cur = old;
+    gSysState->cur = old;
     ResSet_ReleaseAll(&self->res);
     ActorEx_DtorBase(self);
     Heap_Free(self);
@@ -2909,7 +2909,7 @@ void Ov003ActVt_021f8768_Start(Ov003ActExTex *self) {
             NNS_G3dBindMdlSet(NNS_G3dGetMdlSet(self->model->res->mdl_handle != NULL ? self->model->res->mdl_handle->unk_00 : NULL), h);
         }
     }
-    u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    u = Group_FindNode(gGroup, self->unk_20);
     if (u != NULL) {
         u->unk_a2_0 = 0;
     }
@@ -2919,13 +2919,13 @@ void Ov003ActVt_021f8768_Start(Ov003ActExTex *self) {
         s32 y;
         s32 z;
         if (self->unk_44 != NULL) {
-            void *old = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->heapHi;
+            void *old = gSysState->cur;
+            gSysState->cur = gSysState->heapHi;
             if (self->unk_44 != NULL) {
                 Heap_Free(self->unk_44);
                 self->unk_44 = NULL;
             }
-            data_02097dd0->cur = old;
+            gSysState->cur = old;
         }
         if (self->unk_1e == 2) {
             y = Rand_PlusMinus(0x4000) - 0x2000;
@@ -2948,7 +2948,7 @@ void Ov003ActVt_021f8768_Start(Ov003ActExTex *self) {
         History_SetState(self->fsm, 6, 0);
         self->unk_93_1 = (u8)self->unk_18;
     }
-    if (self->kind == 0x406a && data_ov000_021ccd54->unk_ca.c[0] == 0x10) {
+    if (self->kind == 0x406a && gSceneCmd->unk_ca.c[0] == 0x10) {
         Model0218fe1c *m = self->model;
         m->scale.x = 0x1800;
         m->scale.y = 0x1800;
@@ -2981,11 +2981,11 @@ typedef struct {
 
 extern "C" {
 
-extern int data_02097d78[];
-extern void *data_ov000_021cac60[];
-extern void *data_ov000_021cad50[];
-extern void *data_02149ef8;
-extern void *data_ov000_021ccd68;
+extern int gFadeState[];
+extern void *UiObj_vtbl[];
+extern void *Lo021cad50_vtbl[];
+extern void *gMsgRes;
+extern void *gActorMgr;
 extern const VecFx32 data_02092a50;
 extern void *Heap_Alloc(u32 size);
 extern const char *MsgRes_GetString(void *mgr, s32 id);
@@ -2997,7 +2997,7 @@ extern Ov003BarMtx *NNS_G3dGlbGetInvV(void);
 extern void VEC_Add(VecFx32 *a, VecFx32 *b, VecFx32 *dst);
 
 static inline BOOL Ov003Bar_FadeIdle(void) {
-    if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {
+    if (gFadeState[3] == 0 && gFadeState[0] == 0) {
         return TRUE;
     }
     return FALSE;
@@ -3018,9 +3018,9 @@ void Ov003ActVt_021f8768_StateIdle(Ov003ActExTex *self) {
         if (self->msgWin == NULL) {
             b = (Lo021cad50 *)Heap_Alloc(0xe8);
             if (b != NULL) {
-                *(void ***)b = data_ov000_021cac60;
+                *(void ***)b = UiObj_vtbl;
                 b->vfunc_28();
-                *(void ***)b = data_ov000_021cad50;
+                *(void ***)b = Lo021cad50_vtbl;
                 b->vfunc_28();
             }
             self->msgWin = b;
@@ -3029,10 +3029,10 @@ void Ov003ActVt_021f8768_StateIdle(Ov003ActExTex *self) {
             self->msgWin->flags |= 0x20000;
             self->msgWin->font = 4;
             self->msgWin->vfunc_08();
-            Obj0215c1bc_SetText(self->msgWin, 0x8000, MsgRes_GetString(data_02149ef8, 0x76));
+            Obj0215c1bc_SetText(self->msgWin, 0x8000, MsgRes_GetString(gMsgRes, 0x76));
             self->msgWin->posZ = -0x299a;
             self->msgWin->vfunc_70();
-            SceneCmd_Push27(data_ov000_021ccd54, 0xffff, 0, 0);
+            SceneCmd_Push27(gSceneCmd, 0xffff, 0, 0);
         } else {
             self->msgWin->vfunc_1c();
             self->msgWin->vfunc_20();
@@ -3047,7 +3047,7 @@ void Ov003ActVt_021f8768_StateIdle(Ov003ActExTex *self) {
             if (self->unk_44 == NULL) {
                 return;
             }
-            s = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+            s = ActorMgr_GetGroup(gActorMgr, 0x5000);
             if (s == NULL) {
                 return;
             }
@@ -3114,7 +3114,7 @@ namespace m_021e6274 {
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern Actor *Target_Get(ActorSub4c *p);
 extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const char *name, s32 a, s32 b);
 extern void Model0218fe1c_SetAnimByIndex(Model0218fe1c *model, s32 a, s32 b, s32 c);
@@ -3163,7 +3163,7 @@ void Ov003ActVt_021f8768_State06(ActorEx *self) {
             } else {
                 Model0218fe1c_ClearLoop(self->model);
             }
-            SndMgr_PlayAtPitch(data_02097e4c, 0x85, &self->pos, -0xf);
+            SndMgr_PlayAtPitch(gSndMgr, 0x85, &self->pos, -0xf);
         } else {
             n = self->unk_18 - 1;
             Model0218fe1c_SetAnimByIndex(self->model, n, 0x1000, 0);
@@ -3188,7 +3188,7 @@ void Ov003ActVt_021f8768_State06(ActorEx *self) {
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         func_020627ec(self->unk_93_1);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
         self->fsm->st++;
         break;
     case 2:
@@ -3230,7 +3230,7 @@ void Ov003ActVt_021f8768_State21(ActorEx *self) {
         }
         func_020627ec(100);
         func_ov000_02197dec(self, 0xf, 4);
-        Group_UpdateActor(data_ov000_021ccd64, 0, self);
+        Group_UpdateActor(gGroup, 0, self);
         self->vfunc_08();
         break;
     }
@@ -3246,7 +3246,7 @@ void Ov003ActVt_021f86d0_Start(ActorEx *self) {
 void Ov003ActVt_021f86d0_State20(ActorEx *self) {
     switch (self->fsm->st) {
     case 0:
-        SndMgr_PlayAtPitch(data_02097e4c, 0x25, &self->pos, -0xf);
+        SndMgr_PlayAtPitch(gSndMgr, 0x25, &self->pos, -0xf);
         self->fsm->st++;
     case 1: {
         ActorSub40 *w = self->fsm;
@@ -3262,7 +3262,7 @@ void Ov003ActVt_021f86d0_State20(ActorEx *self) {
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         func_020627ec(1);
-        data_ov000_021ccd54->stageFlags = 1;
+        gSceneCmd->stageFlags = 1;
         History_SetState(self->fsm, 1, 0);
         break;
     }
@@ -3305,8 +3305,8 @@ void Ov003ActVt_021f86d0_State21(ActorEx *self) {
         Shared_SetEventActor(self->kind, self->id);
         func_020627dc(4);
         func_020627ec(100);
-        data_ov000_021ccd54->stageFlags = 1;
-        Group_UpdateActor(data_ov000_021ccd64, 0, self);
+        gSceneCmd->stageFlags = 1;
+        Group_UpdateActor(gGroup, 0, self);
         self->vfunc_08();
         break;
     }
@@ -3330,7 +3330,7 @@ typedef struct {
     s8 next;
 } Ov003PathPt;
 
-extern void *data_ov000_021ccd64;
+extern void *gGroup;
 extern Ov003PathPt *data_ov003_021f85c0[];
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 
@@ -3338,7 +3338,7 @@ void Ov003ActVt_021f8f20_Start(Ov003ActExPath *self) {
     Ov003Unit *u;
     Ov003PathPt *p;
     ActorEx_Start(self);
-    u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    u = Group_FindNode(gGroup, self->unk_20);
     if (u != NULL) {
         u->unk_a2_5 = 1;
         u->unk_a2_0 = 0;
@@ -3472,8 +3472,8 @@ namespace m_021e6cb8 {
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
-extern void *data_ov000_021ccd68;
+extern void *gGroup;
+extern void *gActorMgr;
 extern BOOL Model0218fe1c_SetAnim(Model0218fe1c *model, const char *name, s32 a, s32 b);
 extern void Model0218fe1c_SetLoop(Model0218fe1c *model);
 extern void Model0218fe1c_SetAnimSpeed(Model0218fe1c *model, s32 a);
@@ -3493,10 +3493,10 @@ static inline void ActorSub44_Set(ActorSub44 *s) {
 }
 
 static inline Actor *Ov003_FindObj(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 void Ov003ActVt_021f8f20_State0a(Ov003ActExPath *self) {
@@ -3553,7 +3553,7 @@ void Ov003ActVt_021f8f20_StateHeld(Ov003ActExPath *self) {
         if (self->unk_1c == 1) {
             Effect_SpawnId(0x12f, &self->pos)->SetScaleAll(0xa66);
             func_ov000_02197dec(self, 0xf, -1);
-            Group_UpdateActor(data_ov000_021ccd64, 0, self);
+            Group_UpdateActor(gGroup, 0, self);
             self->vfunc_08();
             return;
         }
@@ -3563,7 +3563,7 @@ void Ov003ActVt_021f8f20_StateHeld(Ov003ActExPath *self) {
             k = p->fsm->current;
         }
         if (k == 0 || k == 1 || k == 2 || k == 4) {
-            SndMgr_PlayAt(data_02097e4c, 0x83, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x83, &self->pos, 0);
             History_SetState(self->fsm, 10, 0);
         }
         return;
@@ -3641,7 +3641,7 @@ void Ov003ActVt_021f8e88_State0a(ActorEx *self) {
         Robo021ca458 *p;
         self->unk_cc_8 = 0;
         p = ActorMgr_FindPlayer();
-        if (p != NULL && !Ov003MapId_Equal(&data_ov000_021ccd54->unk_ca, &p->fieldId)) {
+        if (p != NULL && !Ov003MapId_Equal(&gSceneCmd->unk_ca, &p->fieldId)) {
             VecFx32 v;
             Actor *list[32];
             s32 n;

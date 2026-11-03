@@ -17,8 +17,8 @@ typedef struct Obj0215e5f8 {
     void *unk_1dc;
 } Obj0215e5f8;
 
-extern void *data_02149ef8;
-extern void *data_02097e4c;
+extern void *gMsgRes;
+extern void *gSndMgr;
 extern Dtcm02fe1534 data_02fe1534;
 
 void *func_02061d54(s32 a);
@@ -28,7 +28,7 @@ void func_0206281c(void);
 void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 
 void Ov000Vt_021cafc0_Setup(Obj0215e5f8 *self) {
-    self->unk_1dc = MsgRes_GetString(data_02149ef8, func_02061d54(0x18));
+    self->unk_1dc = MsgRes_GetString(gMsgRes, func_02061d54(0x18));
     Lo021cb0b8_Setup(self);
 }
 
@@ -44,15 +44,15 @@ BOOL Ov000Vt_021cafc0_OnDecide(Obj0215e5f8 *self, Msg0215e634 *msg) {
     }
     if (msg == NULL) {
         func_0206281c();
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
         return FALSE;
     }
     if (msg->unk_06 == 0) {
         data_02fe1534.unk_7c = 1;
-        SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
     } else if (msg->unk_06 == 1) {
         data_02fe1534.unk_7c = 0;
-        SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
+        SndMgr_PlayVolume(gSndMgr, 0x1f, -1, -1, -1);
     }
     return FALSE;
 }

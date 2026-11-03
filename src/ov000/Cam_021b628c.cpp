@@ -85,7 +85,7 @@ void func_ov000_021b628c(FieldMgr *self) {
         SetRot021b628c(rot, 0, 0, 0);
     }
     Shared_ClearMark();
-    cam = &data_ov000_021ccd54->cam;
+    cam = &gSceneCmd->cam;
     if (cam != NULL) {
         cam->unk_da = 0;
         cam->base.pitch = rot[0];

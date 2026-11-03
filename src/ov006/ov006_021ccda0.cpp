@@ -7,8 +7,8 @@ extern "C" {
 
 typedef void (*ov006_StateFunc)(int a, int b, int c);
 
-extern void *data_ov006_021ebb58;
-extern void *data_ov006_021ebb48;
+extern void *ov006_Task_vtbl;
+extern void *Ov006Vt_021ebb48_vtbl;
 extern char data_ov006_021ebb88[];
 extern char data_ov006_021ebb78[];
 extern char data_ov006_021ec864[];
@@ -30,7 +30,7 @@ int ov006_Manager_SwitchTask(ov006_Manager *self);
 int func_ov006_021cd4c0(ov006_Manager *self);
 
 void ov006_Task_Ctor(ov006_Task *self) {
-    *(void **)self = &data_ov006_021ebb58;
+    *(void **)self = &ov006_Task_vtbl;
     self->type = 3;
     self->state = 0;
     self->subState = 0;
@@ -71,10 +71,10 @@ void ov006_Task_Draw(void) {
 }
 
 static inline void ov006_Manager_Dtor(ov006_Manager *self) {
-    self->vtbl = &data_ov006_021ebb48;
+    self->vtbl = &Ov006Vt_021ebb48_vtbl;
     OV006_DELETE_OBJECT(self->task);
-    ResMgr_ReleaseByName(data_02097cdc, data_0208cca0, 7, 0);
-    ResMgr_ReleaseByName(data_02097cdc, data_ov006_021ebb88, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_0208cca0, 7, 0);
+    ResMgr_ReleaseByName(gResMgr, data_ov006_021ebb88, 7, 0);
     ov006_Menu_Delete();
     WH_Destroy_02044b20();
     ov006_DeleteSlotManager();
@@ -94,10 +94,10 @@ ov006_Manager *Ov006Vt_021ebb48_DtorDelete(ov006_Manager *self) {
 
 void ov006_Manager_Create(void) {
     ov006_Manager *obj;
-    OV006_DELETE_OBJECT(data_ov006_021ec860);
+    OV006_DELETE_OBJECT(gOv006Manager);
     obj = (ov006_Manager *)Heap_Alloc(sizeof(ov006_Manager));
     if (obj != NULL) {
-        obj->vtbl = &data_ov006_021ebb48;
+        obj->vtbl = &Ov006Vt_021ebb48_vtbl;
         func_0201bbfc(0);
         LangData_LocalizePath(data_ov006_021ec864, data_ov006_021ebb78);
         obj->state = 0;
@@ -109,13 +109,13 @@ void ov006_Manager_Create(void) {
         obj->unk1C = 0;
         obj->unk20 = 0;
     }
-    data_ov006_021ec860 = obj;
+    gOv006Manager = obj;
 }
 
 // Only referenced from overlay 0 through an ambiguous relocation, so keep it from being dead-stripped.
 #pragma force_active on
 void ov006_Manager_Delete(void) {
-    OV006_DELETE_OBJECT(data_ov006_021ec860);
+    OV006_DELETE_OBJECT(gOv006Manager);
 }
 #pragma force_active reset
 
@@ -155,7 +155,7 @@ int ov006_Manager_LoadRes(ov006_Manager *self) {
             if (data_ov006_021ec888->state == 0) {
                 break;
             }
-            data_ov006_021eb6d8[data_ov006_021ec860->unk14](1, done, done);
+            data_ov006_021eb6d8[gOv006Manager->unk14](1, done, done);
             self->subState++;
         case 2:
             done = TRUE;
@@ -183,7 +183,7 @@ int ov006_Manager_LoadRes(ov006_Manager *self) {
         break;
     }
     if (data_ov006_021ec888 != NULL && data_ov006_021ec888->state != 0 && data_ov006_021ec888->state != 1) {
-        data_02097dd0->unk_1f = one;
+        gSysState->unk_1f = one;
     }
     return result;
 }
@@ -326,7 +326,7 @@ BOOL func_ov006_021cd4c0(ov006_Manager *self) {
 }
 
 void ov006_Manager_DispatchMenuCb(int a, int b, int c) {
-    data_ov006_021eb6d8[data_ov006_021ec860->unk14](a, b, c);
+    data_ov006_021eb6d8[gOv006Manager->unk14](a, b, c);
 }
 
 }

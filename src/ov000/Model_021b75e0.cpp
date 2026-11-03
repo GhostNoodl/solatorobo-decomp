@@ -93,8 +93,8 @@ BOOL func_ov000_021b75e0(Model021b75e0 *self) {
         NNSi_G3dModifyPolygonAttrMask(mdl, FALSE, 0x1f0000);
         NNSi_G3dModifyPolygonAttrMask(mdl, FALSE, 0xc0);
         NNSi_G3dModifyPolygonAttrMask(mdl, FALSE, 0x3f000000);
-        id = data_02097d48->unk_8b0[1];
-        Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
+        id = gGfxSys->unk_8b0[1];
+        Gfx3DState_NextPolyId(gGfxSys->unk_8b0);
         NNS_G3dGlbPolygonAttr(0, 0, 2, id, self->alpha, 0x1000);
     } else {
         NNS_G3dGlbPolygonAttr(0, 0, 3, 0x14, 0x1f, 0x1000);

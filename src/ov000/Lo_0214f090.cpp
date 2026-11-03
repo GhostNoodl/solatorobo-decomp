@@ -6,8 +6,8 @@ extern "C" {
 
 void Task_Exit(Task *self, void *arg);
 extern void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern void *data_02097e4c;
-extern s32 data_02097d78[5];
+extern void *gSndMgr;
+extern s32 gFadeState[5];
 BOOL Model_IsReady(void *a, s32 b);
 
 typedef struct {
@@ -24,7 +24,7 @@ static inline BOOL LoGBusy(FieldState *g) {
 }
 
 static inline BOOL LoGIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (LoGBusy(g)) {
             return FALSE;
@@ -38,7 +38,7 @@ static inline BOOL LoGIdle(void) {
 }
 
 static inline BOOL LoD78Idle(void) {
-    return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
+    return (gFadeState[3] == 0 && gFadeState[0] == 0) ? TRUE : FALSE;
 }
 
 void Lo021caa44_Exit(Lo021caa44 *self, void *arg) {

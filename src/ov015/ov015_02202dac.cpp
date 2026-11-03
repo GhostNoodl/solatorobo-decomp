@@ -2,14 +2,14 @@
 
 extern "C" {
 
-extern void *data_02149ef8;
+extern void *gMsgRes;
 void *MsgRes_GetString(void *a, s32 b);
 void Obj0215bb14_SetText(void *a, void *b);
 void *func_ov015_02207738(Ov015Ship *p);
-extern u8 data_ov015_022129c0[];
+extern u8 Ov015MsgBox_vtbl[];
 void MsgBox_Release(void *p);
 void *Shadow_DtorBase(void *p);
-extern u8 data_ov015_022129d0[];
+extern u8 Ov015Shadow_vtbl[];
 void *func_ov015_0220765c(Ov015Ship *p);
 void func_ov015_02207858(Ov015Ship *p);
 void *Shadow_CtorBase(void *p);
@@ -34,25 +34,25 @@ void Ov015Scene2a88_PreUpdate(Task *self) {
     if (self->state != 0xc) {
         return;
     }
-    o = TaskHost_RequestSwitch(data_ov000_021ccd44, 0x1f, 0);
+    o = TaskHost_RequestSwitch(gTaskHost, 0x1f, 0);
     o->param = self->param;
     self->vfunc_4c();
 }
 
 BOOL Ov015Task_TryReleaseCurrent(Task *self) {
     if (self->vfunc_54()) {
-        if (data_ov000_021ccd40 != NULL) {
-            data_ov000_021ccd38 = data_ov000_021ccd40->id;
+        if (gFinishingTask != NULL) {
+            gLastTaskId = gFinishingTask->id;
         } else {
-            data_ov000_021ccd38 = 0;
+            gLastTaskId = 0;
         }
-        data_ov000_021ccd40 = NULL;
+        gFinishingTask = NULL;
     }
     return TRUE;
 }
 
 static inline bool Ov015_IsCurrent(void *p) {
-    return data_ov000_021ccd40 == p;
+    return gFinishingTask == p;
 }
 
 bool Ov015Task_IsCurrent(Task *self) {
@@ -100,9 +100,9 @@ BOOL Ov015Scene2a08_List80OnDecide(UiList *self, UiListItem *ev) {
     if (ev != NULL) {
         if (ev->unk_10 != -1) {
             ((Ov015Scene2a08 *)self->owner)->unk_a4 = 1;
-            SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x1e, -1, -1, -1);
         } else {
-            SndMgr_PlayVolume(data_02097e4c, 0x20, -1, -1, -1);
+            SndMgr_PlayVolume(gSndMgr, 0x20, -1, -1, -1);
         }
     }
     return TRUE;
@@ -110,7 +110,7 @@ BOOL Ov015Scene2a08_List80OnDecide(UiList *self, UiListItem *ev) {
 
 BOOL Ov015Scene2a08_List80OnCursor(UiList *self, UiListItem *ev) {
     Ov015Scene2a08 *o = (Ov015Scene2a08 *)self->owner;
-    void *d = data_02149ef8;
+    void *d = gMsgRes;
     void *m;
     switch (ev->id) {
     case 0:
@@ -162,7 +162,7 @@ void func_ov015_02203020(Ov015Scene2a08 *self) {
 }
 
 void *Ov015MsgBox_DtorDelete(Ov015MsgBox *self) {
-    SET_VT(self, data_ov015_022129c0);
+    SET_VT(self, Ov015MsgBox_vtbl);
     MsgBox_Release(self);
     Heap_Free(self);
     return self;
@@ -183,11 +183,11 @@ void Ov015Scene2a08_Load(Ov015Scene2a08 *self) {
     }
     self->ship = p;
     func_ov015_02207858(p);
-    ((Ov015Ship *)self->ship)->modelIdx = data_ov015_02213368->unk_2c;
+    ((Ov015Ship *)self->ship)->modelIdx = gOv015Shared->unk_2c;
     q = Heap_Alloc(0x1c);
     if (q != NULL) {
         Shadow_CtorBase(q);
-        SET_VT(q, data_ov015_022129d0);
+        SET_VT(q, Ov015Shadow_vtbl);
     }
     self->shadow = (Ov015Shadow *)q;
     Shadow_Load(q);
@@ -206,10 +206,10 @@ BOOL Ov015Scene2a08_IsLoaded(Ov015Scene2a08 *self) {
     return r;
 }
 
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb5a8[];
-extern u8 data_ov000_021cadcc[];
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 Lo021cb5a8_vtbl[];
+extern u8 Lo021cadcc_vtbl[];
 extern u8 data_ov015_02212990[];
 extern u8 data_ov015_0221299d[];
 extern u8 data_ov015_02213360;
@@ -239,7 +239,7 @@ void Ov015Scene2a08_Start(Ov015Scene2a08 *self) {
     if (self->vfunc_28()) {
         return;
     }
-    res = data_02149ef8;
+    res = gMsgRes;
     self->ship->unk_d3c = 2;
     func_ov015_02207adc(self->ship);
     {
@@ -270,11 +270,11 @@ void Ov015Scene2a08_Start(Ov015Scene2a08 *self) {
     GfxCamParam_Init(&self->camView.fovSin);
     p = (VObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
-        SET_VT(p, data_ov000_021cac60);
+        SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021caec8);
+        SET_VT(p, UiList_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021cb5a8);
+        SET_VT(p, Lo021cb5a8_vtbl);
         p->vfunc_28();
     }
     self->unk_88 = (UiList *)p;
@@ -287,9 +287,9 @@ void Ov015Scene2a08_Start(Ov015Scene2a08 *self) {
     self->unk_88->vfunc_08();
     p = (VObj *)Heap_Alloc(0xd4);
     if (p != NULL) {
-        SET_VT(p, data_ov000_021cac60);
+        SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021caec8);
+        SET_VT(p, UiList_vtbl);
         p->vfunc_28();
     }
     self->unk_80 = (UiList *)p;
@@ -319,9 +319,9 @@ void Ov015Scene2a08_Start(Ov015Scene2a08 *self) {
     self->unk_80->vfunc_08();
     p = (VObj *)Heap_Alloc(0x8c);
     if (p != NULL) {
-        SET_VT(p, data_ov000_021cac60);
+        SET_VT(p, UiObj_vtbl);
         p->vfunc_28();
-        SET_VT(p, data_ov000_021cadcc);
+        SET_VT(p, Lo021cadcc_vtbl);
         p->vfunc_28();
     }
     self->unk_84 = (Lo021cadcc *)p;
@@ -338,7 +338,7 @@ void Ov015Scene2a08_Start(Ov015Scene2a08 *self) {
         if (data_ov015_02213360 == 0) {
             p = (VObj *)Heap_Alloc(0x2c);
             if (p != NULL) {
-                SET_VT(p, data_ov015_022129c0);
+                SET_VT(p, Ov015MsgBox_vtbl);
                 MsgBox_Init(p);
             }
             self->unk_8c = (Ov015MsgBox *)p;
@@ -359,7 +359,7 @@ void Ov015Scene2a08_Start(Ov015Scene2a08 *self) {
     }
     }
     {
-        GfxSys *g = data_02097d48;
+        GfxSys *g = gGfxSys;
         Gfx3DState_SetDefaults(g->unk_8b0);
         g->unk_8b0[0] |= 0x30;
         REG16(0x4000060) = (REG16(0x4000060) & ~0x3000) | 0x20;

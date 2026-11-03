@@ -6,7 +6,7 @@
 #include "ov000/Group.h"
 
 extern "C" {
-extern Group *data_ov000_021ccd64;
+extern Group *gGroup;
 Robo021ca458 *ActorMgr_FindPlayer(void);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL Hit_DiffInBox(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max);
@@ -19,7 +19,7 @@ static inline BOOL GBusy0218af9c(FieldState *g) {
 }
 
 static inline s16 GIdle0218af9c(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         if (GBusy0218af9c(g)) {
             return FALSE;
@@ -55,27 +55,27 @@ void func_ov000_0218af9c(GroupNode *self) {
     pl = ActorMgr_FindPlayer();
     on = FALSE;
     fl = &self->flags;
-    if (self->flags.unk_0 && data_ov000_021ccd64->unk_0c.bits.flag_1) {
+    if (self->flags.unk_0 && gGroup->unk_0c.bits.flag_1) {
         on = TRUE;
     }
     if (on && pl != NULL) {
         on = GIdle0218af9c();
     }
-    for (i = 0; i < data_ov000_021ccd64->viewCount; i++) {
-        seg.to.x = data_ov000_021ccd64->viewPos[i].x;
-        seg.to.y = data_ov000_021ccd64->viewPos[i].y;
-        seg.to.z = data_ov000_021ccd64->viewPos[i].z;
-        seg.yaw = data_ov000_021ccd64->viewYaw[i];
+    for (i = 0; i < gGroup->viewCount; i++) {
+        seg.to.x = gGroup->viewPos[i].x;
+        seg.to.y = gGroup->viewPos[i].y;
+        seg.to.z = gGroup->viewPos[i].z;
+        seg.yaw = gGroup->viewYaw[i];
         if (mode == 3 || mode == 1) {
             continue;
         }
         if (self->entries[0].actor != 0xffff && (u16)(self->entries[0].actor & 0xfff) != 0) {
             tgt = best;
             if (best == NULL) {
-                if (data_ov000_021ccd68 == NULL) {
+                if (gActorMgr == NULL) {
                     tgt = NULL;
                 } else {
-                    tgt = ActorMgr_GetActor(data_ov000_021ccd68, self->entries[0].actor);
+                    tgt = ActorMgr_GetActor(gActorMgr, self->entries[0].actor);
                 }
             }
             if (tgt != NULL) {
@@ -140,7 +140,7 @@ void func_ov000_0218af9c(GroupNode *self) {
                 self->entries[0].kind = 0xffff;
             }
         } else if (self->entries[0].kind != 0xffff) {
-            FieldState *g = data_ov000_021ccd54;
+            FieldState *g = gSceneCmd;
             BOOL same;
             any = TRUE;
             same = FALSE;
@@ -171,7 +171,7 @@ void func_ov000_0218af9c(GroupNode *self) {
                 d.args[j] = self->entries[0].args[j];
             }
             d.unk_0c = self->entries[0].unk_0c;
-            o = Group_SpawnActor(data_ov000_021ccd64, &d, &self->entries[0].pos, &self->entries[0].rot, kind);
+            o = Group_SpawnActor(gGroup, &d, &self->entries[0].pos, &self->entries[0].rot, kind);
             if (o != NULL) {
                 self->entries[0].actor = o->id;
             }

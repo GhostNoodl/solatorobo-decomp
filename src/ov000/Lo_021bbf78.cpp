@@ -52,7 +52,7 @@ void func_ov000_021bbf78(Obj021bbf78 *self) {
     s32 d;
     s32 v;
     alpha = LO_FX_MUL(self->unk_68, 0x14000) >> 12;
-    g = data_02097d48;
+    g = gGfxSys;
     if (alpha == 0) {
         return;
     }

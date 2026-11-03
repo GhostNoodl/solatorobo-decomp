@@ -9,8 +9,8 @@
 
 extern "C" {
 
-extern void *data_02fe152c;
-extern void *data_02097e4c;
+extern void *gDataRes;
+extern void *gSndMgr;
 void *DataRes_GetTable(void *a, s32 b);
 u32 DataRes_GetCount(void *a, s32 b);
 u32 func_ov000_0214bf2c(u16 a);
@@ -38,7 +38,7 @@ typedef struct {
 
 static inline BOOL LoIsLoaded24(void) {
     BOOL r = TRUE;
-    if (!StageRes_IsAllLoaded(data_ov000_021ccd24.unk_08)) {
+    if (!StageRes_IsAllLoaded(gSceneResSet.unk_08)) {
         r = FALSE;
     }
     return r;
@@ -61,15 +61,15 @@ BOOL Lo021ca9c4_IsLoaded(Lo021ca9c4 *self) {
 
 
 extern "C" {
-extern void *data_02149ef8;
+extern void *gMsgRes;
 extern const char *data_ov000_021ca8d8[];
 extern const char *data_0208cca0;
 extern const char *data_0208cb74;
-extern u8 data_ov000_021cac60[];
-extern u8 data_ov000_021caec8[];
-extern u8 data_ov000_021cb5a8[];
-extern u8 data_ov000_021cb4a8[];
-extern u8 data_ov000_021caac8[];
+extern u8 UiObj_vtbl[];
+extern u8 UiList_vtbl[];
+extern u8 Lo021cb5a8_vtbl[];
+extern u8 UiList021cb4a8_vtbl[];
+extern u8 Lo021caac8_vtbl[];
 extern char data_ov000_021ca93e[];
 void *MsgRes_GetString(void *g, u32 id);
 BOOL StageRes_Bind(void *p);
@@ -87,7 +87,7 @@ void func_ov000_0215158c(void *self);
 
 static inline void LoTextInit(TextWin *t) {
     t->unk_4c = Text_Measure(t->font, t->spacing, t->str, &t->width, &t->height, (s8)t->unk_37 != 0);
-    data_02097ce0->unk_004 = t->font;
+    gGfxMgr->unk_004 = t->font;
 }
 
 void Lo021ca9c4_Start(Lo021ca9c4 *self) {
@@ -105,8 +105,8 @@ void Lo021ca9c4_Start(Lo021ca9c4 *self) {
     }
     TaskList_Insert(self);
     if (self->unk_42 == 0xffff) {
-        if (!data_ov000_021ccd24.unk_08->vfunc_34()) {
-            StageRes_Bind(data_ov000_021ccd24.unk_08);
+        if (!gSceneResSet.unk_08->vfunc_34()) {
+            StageRes_Bind(gSceneResSet.unk_08);
         }
     }
     m = (Model *)Heap_Alloc(sizeof(Model));
@@ -133,15 +133,15 @@ void Lo021ca9c4_Start(Lo021ca9c4 *self) {
     TexObj_SetRes(self->unk_48, ResList_FindType2(ResMgr_GetArcList(m->name), self->unk_48->unk_04c));
     self->unk_48->flags |= 2;
     TexObj_SelectImage(self->unk_48, 0, 0xb);
-    g = data_02149ef8;
+    g = gMsgRes;
     if (self->unk_42 == 0xffff) {
         o = (VObj *)Heap_Alloc(0xe0);
         if (o != NULL) {
-            *(void **)o = data_ov000_021cac60;
+            *(void **)o = UiObj_vtbl;
             o->vfunc_28();
-            *(void **)o = data_ov000_021caec8;
+            *(void **)o = UiList_vtbl;
             o->vfunc_28();
-            *(void **)o = data_ov000_021cb5a8;
+            *(void **)o = Lo021cb5a8_vtbl;
             o->vfunc_28();
         }
         self->unk_4c = (Lo021cb5a8 *)o;
@@ -167,13 +167,13 @@ void Lo021ca9c4_Start(Lo021ca9c4 *self) {
     }
     o = (VObj *)Heap_Alloc(0xe4);
     if (o != NULL) {
-        *(void **)o = data_ov000_021cac60;
+        *(void **)o = UiObj_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021caec8;
+        *(void **)o = UiList_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021cb4a8;
+        *(void **)o = UiList021cb4a8_vtbl;
         o->vfunc_28();
-        *(void **)o = data_ov000_021caac8;
+        *(void **)o = Lo021caac8_vtbl;
         o->vfunc_28();
     }
     self->unk_50 = (Lo021caac8 *)o;
@@ -216,7 +216,7 @@ void Lo021ca9c4_Start(Lo021ca9c4 *self) {
         self->unk_54->id = SceneStage_GetScript(&SceneCmd_Get()->stage, 0)->id;
     }
     {
-        void *r = MsgRes_GetLines(data_ov000_021ccd24.unk_08->sub, self->unk_54->id, out, 2);
+        void *r = MsgRes_GetLines(gSceneResSet.unk_08->sub, self->unk_54->id, out, 2);
         Text_ScanTags(out[0], r, self->unk_54, (void *)func_ov000_0214dc20);
     }
 
@@ -233,7 +233,7 @@ void Lo021ca9c4_Start(Lo021ca9c4 *self) {
 
     self->text[1].spacing = 3;
     self->text[1].font = 8;
-    self->text[1].str = (u32)MsgRes_GetString(data_ov000_021ccd24.unk_08->sub, self->unk_54->id);
+    self->text[1].str = (u32)MsgRes_GetString(gSceneResSet.unk_08->sub, self->unk_54->id);
     LoTextInit(&self->text[1]);
     self->text[1].flags |= 0x40;
     self->text[1].flags |= 0x1000000;

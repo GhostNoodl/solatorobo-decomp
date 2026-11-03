@@ -9,8 +9,8 @@ void func_ov015_0220ac40(Ov015FishState2c *self, Ov015Fish *p);
 void func_ov015_0220ad68(Ov015FishState2c *self, Ov015Fish *p);
 BOOL func_ov015_0220ae90(Ov015FishState2c *self);
 s32 Rand_UpTo(s32 max);
-extern u8 data_ov015_02212f20[];
-extern u8 data_ov015_02212f04[];
+extern u8 Ov015FishState18_vtbl[];
+extern u8 Ov015FishState1c_vtbl[];
 
 static inline s32 Ov015_FxMul64(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
@@ -19,7 +19,7 @@ static inline s32 Ov015_FxMul64(s32 a, s64 b) {
 static inline VObj *Ov015_NewTask18(void) {
     Ov015FishState18 *t = (Ov015FishState18 *)Heap_Alloc(0x18);
     if (t != NULL) {
-        SET_VT(t, data_ov015_02212f20);
+        SET_VT(t, Ov015FishState18_vtbl);
         t->fish = 0;
         t->step = 0;
         t->timer = 0;
@@ -32,7 +32,7 @@ static inline VObj *Ov015_NewTask18(void) {
 static inline VObj *Ov015_NewTask1c(void) {
     Ov015FishState1c *t = (Ov015FishState1c *)Heap_Alloc(0x1c);
     if (t != NULL) {
-        SET_VT(t, data_ov015_02212f04);
+        SET_VT(t, Ov015FishState1c_vtbl);
         t->step = 0;
         t->timer = 0;
         t->unk_0c = 0;
@@ -43,8 +43,8 @@ static inline VObj *Ov015_NewTask1c(void) {
 }
 
 static inline void Ov015_Sounds(void) {
-    SndMgr_PlayVolume(data_02097e4c, 0x55, -1, -1, -1);
-    SndMgr_PlayVolume(data_02097e4c, 0x3e, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x55, -1, -1, -1);
+    SndMgr_PlayVolume(gSndMgr, 0x3e, -1, -1, -1);
 }
 
 static inline s32 Ov015_Speed(Ov015FishState2c *self) {

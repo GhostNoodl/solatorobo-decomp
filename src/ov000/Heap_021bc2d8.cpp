@@ -17,7 +17,7 @@ typedef struct {
 
 extern "C" {
 
-extern Obj021bc2d8 *data_ov000_021ccd70;
+extern Obj021bc2d8 *gFieldFade;
 
 static inline void Obj021bc2d8_Delete(Obj021bc2d8 *o) {
     HEAP_DELETE_VOBJ(o->unk_10);
@@ -39,16 +39,16 @@ static inline void Obj021bc2d8_Delete(Obj021bc2d8 *o) {
 void func_ov000_021bc2d8(void) {
     Obj021bc2d8 *p;
     void *saved;
-    saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
-    p = data_ov000_021ccd70;
+    saved = gSysState->cur;
+    gSysState->cur = gSysState->heapHi;
+    p = gFieldFade;
     if (p != NULL) {
         if (p != NULL) {
             Obj021bc2d8_Delete(p);
         }
-        data_ov000_021ccd70 = NULL;
+        gFieldFade = NULL;
     }
-    data_02097dd0->cur = saved;
+    gSysState->cur = saved;
 }
 
 }

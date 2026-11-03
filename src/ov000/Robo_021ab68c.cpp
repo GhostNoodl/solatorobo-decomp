@@ -21,7 +21,7 @@ typedef struct {
 } Msg021ab68c;
 
 extern "C" {
-extern void *data_02097e4c;
+extern void *gSndMgr;
 extern char data_ov000_021cc6ba[];
 extern char data_ov000_021cc5e3[];
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
@@ -37,7 +37,7 @@ void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
 BOOL History_SetState(void *s, s32 a, s32 b);
 
 static inline Actor *FindActor021ab68c(u16 id) {
-    ActorMgr *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = gActorMgr;
     if (mgr == NULL) {
         return NULL;
     }
@@ -120,7 +120,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
             hit = FALSE;
         }
         Field_ShakeCameraY(0x14, 0x28);
-        SndMgr_PlayAt(data_02097e4c, 0x52, &self->pos, 0);
+        SndMgr_PlayAt(gSndMgr, 0x52, &self->pos, 0);
         if (!hit) {
             VecFx32 p;
             EffectObj *o;

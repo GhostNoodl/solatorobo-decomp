@@ -5,7 +5,7 @@
 extern "C" {
 
 extern StageFlags data_0214aa68;
-extern u8 data_0214a428[0x640];
+extern u8 gStageFlagsSave[0x640];
 extern void func_0206ccb8(StageFlags *f, u16 a);
 extern u16 StageFlags_CountItems(StageFlags *f);
 
@@ -21,11 +21,11 @@ extern const StageFlagsInit data_02082be4;
 
 void StageFlags_Create(void) {
     StageFlags *f;
-    if (data_0214a424 != NULL) {
+    if (gStageFlags != NULL) {
         return;
     }
     f = (StageFlags *)Heap_AllocLo(sizeof(StageFlags), 4);
-    data_0214a424 = f;
+    gStageFlags = f;
     MIi_CpuClearFast(0, f, sizeof(StageFlags));
     f->magic = STAGE_FLAGS_MAGIC;
 }
@@ -47,7 +47,7 @@ void StageFlags_Reset(StageFlags *f) {
     u32 i;
     MIi_CpuClearFast(0, f, sizeof(StageFlags));
     f->magic = STAGE_FLAGS_MAGIC;
-    MIi_CpuClearFast(0, data_0214a428, sizeof(data_0214a428));
+    MIi_CpuClearFast(0, gStageFlagsSave, sizeof(gStageFlagsSave));
     MIi_CpuClearFast(0, &data_0214aa68, 0x640);
     f->unk_01a = 1;
     f->color2.r = 0xfe;
@@ -55,7 +55,7 @@ void StageFlags_Reset(StageFlags *f) {
     f->color2.b = 0xfe;
     f->unk_024 = 0;
     MI_CpuFill8(f->items, 0, sizeof(f->items));
-    StageFlags_ClearEntries(data_0214a424);
+    StageFlags_ClearEntries(gStageFlags);
     MI_CpuFill8(f->bits, 0, sizeof(f->bits));
     func_0206ccb8(f, 0x9000);
     MI_CpuFill8(f->unk_12c, 0, sizeof(f->unk_12c));
@@ -92,15 +92,15 @@ void func_0206c620(StageFlags *f) {
         f->color2.g = p[5];
         f->color2.b = p[6];
     }
-    MI_CpuCopy8(f, data_0214a428, sizeof(StageFlags));
+    MI_CpuCopy8(f, gStageFlagsSave, sizeof(StageFlags));
 }
 
 static inline void StageFlags_SaveBuf(StageFlags *f) {
     s32 n = 0;
     u16 v;
-    n += DataRes_Pack(data_02fe152c, f->buf, sizeof(f->buf));
+    n += DataRes_Pack(gDataRes, f->buf, sizeof(f->buf));
     n += func_020622ec(f->buf + n, sizeof(f->buf) - n);
-    SceneStage_Serialize(&data_ov000_021ccd54->stageFlags, f->buf + n, sizeof(f->buf) - n);
+    SceneStage_Serialize(&gSceneCmd->stageFlags, f->buf + n, sizeof(f->buf) - n);
     f->unk_518_16 = data_02fe1534.unk_04;
     v = data_02fe1534.unk_06;
     if (v >= 4) {
@@ -111,7 +111,7 @@ static inline void StageFlags_SaveBuf(StageFlags *f) {
 
 void func_0206c670(StageFlags *f) {
     StageFlags_SaveBuf(f);
-    MI_CpuCopy8(f, data_0214a428, sizeof(StageFlags));
+    MI_CpuCopy8(f, gStageFlagsSave, sizeof(StageFlags));
 }
 
 void func_0206c72c(StageFlags *f, StageColor *rgb) {
@@ -123,7 +123,7 @@ void func_0206c72c(StageFlags *f, StageColor *rgb) {
         f->color2.b = rgb->b;
     }
     {
-        u8 v = data_ov000_021ccd6c->destExit;
+        u8 v = gFieldMgr->destExit;
         if (v != 0xff) {
             f->unk_138 = v;
         }
@@ -170,7 +170,7 @@ void func_0206c824(StageFlags *f) {
     f->color2.r = data_02fe1534.r;
     f->color2.g = data_02fe1534.g;
     f->color2.b = data_02fe1534.b;
-    f->frameCount = data_02097dd0->frameCount;
+    f->frameCount = gSysState->frameCount;
 }
 
 }

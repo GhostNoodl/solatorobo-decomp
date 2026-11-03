@@ -1,7 +1,7 @@
 #include "types.h"
 
 extern "C" {
-extern s32 data_02097d78[];
+extern s32 gFadeState[];
 
 typedef struct {
     u32 a : 1;
@@ -20,10 +20,10 @@ typedef struct {
 
 static inline BOOL IsMode4(void) {
     BOOL r;
-    if (data_02097d78[3] == 4) {
+    if (gFadeState[3] == 4) {
         r = TRUE;
     } else {
-        r = data_02097d78[0] == 4;
+        r = gFadeState[0] == 4;
     }
     return r;
 }

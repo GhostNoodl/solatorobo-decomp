@@ -36,7 +36,7 @@ void Ov010ActVt_0221009c_State20(Ov003Actor *self) {
             self->gravity = 0;
             self->speed = 0x200;
             anim = TRUE;
-            SndMgr_PlayAt(data_02097e4c, 0x51, &self->pos, 0);
+            SndMgr_PlayAt(gSndMgr, 0x51, &self->pos, 0);
             self->fsm->st++;
         } else {
             const VecFx32 *t = &data_ov010_0220f144;

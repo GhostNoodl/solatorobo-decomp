@@ -80,10 +80,10 @@ void HitTriRay_TestMesh(HitTriRay *ray) {
                 HIT_EDGE(0, next)
                 HIT_EDGE(1, next)
                 HIT_EDGE(2, next)
-                if (data_02fe0efc >= 24) {
-                    info = &data_02fe0f50[23];
+                if (gHitCount >= 24) {
+                    info = &gHitList[23];
                 } else {
-                    info = &data_02fe0f50[data_02fe0efc];
+                    info = &gHitList[gHitCount];
                 }
                 if (block->flags & 2) {
                     VEC_MultAdd(block->mtx._00, &p, (VecFx32 *)block->mtx.m[3], &p);
@@ -124,9 +124,9 @@ void HitTriRay_TestMesh(HitTriRay *ray) {
                 info->n[2] = tri->n[2];
                 if (info->distSq < ray->best) {
                     ray->best = info->distSq;
-                    data_02fe0ef8 = info;
+                    gHitRayBest = info;
                 }
-                data_02fe0efc++;
+                gHitCount++;
             next:
                 cnt--;
                 tri++;

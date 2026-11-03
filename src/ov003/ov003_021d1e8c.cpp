@@ -36,8 +36,8 @@ typedef struct {
 extern "C" {
 
 extern Ov003AgRangeB data_ov003_021f45e8[];
-extern void *data_ov000_021ccd64;
-extern void *data_ov000_021ccd68;
+extern void *gGroup;
+extern void *gActorMgr;
 extern const Ov003AgFlag data_ov003_021f4466[];
 extern const s16 FX_SinCosTable_[];
 extern Ov003AgPl *ActorMgr_FindPlayer(void);
@@ -67,7 +67,7 @@ static inline BOOL Ov003Game_IsIdle(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    FieldState *g = data_ov000_021ccd54;
+    FieldState *g = gSceneCmd;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -79,7 +79,7 @@ static inline BOOL Ov003Game_HasEvent(FieldState *g) {
 }
 
 static inline BOOL Ov003_GameHasD4(void) {
-    return Ov003Game_HasEvent(data_ov000_021ccd54);
+    return Ov003Game_HasEvent(gSceneCmd);
 }
 
 static inline BOOL Ov003AgPl_Bit2(Ov003AgPl *pl) {
@@ -87,10 +87,10 @@ static inline BOOL Ov003AgPl_Bit2(Ov003AgPl *pl) {
 }
 
 static inline Ov003Actor *Ov003Ag_FindObj(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 
 static inline s32 Ov003Ag_Dist(s64 sq) {
@@ -225,7 +225,7 @@ extern "C" void Ov003Actor_Update(Ov003Actor *self) {
     }
     for (i = 0; i < 3; i++) {
         if (p->ids[i] == 0x1003) {
-            Ov003AgUnit *u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+            Ov003AgUnit *u = Group_FindNode(gGroup, self->unk_20);
             s32 ez;
             s32 ex;
             s64 sq;
@@ -353,7 +353,7 @@ extern "C" void Ov003Actor_Update(Ov003Actor *self) {
         pos.x += (s32)(((s64)r * FX_SinCosTable_[(ang >> 4) * 2] + 0x800) >> 12);
         pos.z += (s32)(((s64)r * FX_SinCosTable_[(ang >> 4) * 2 + 1] + 0x800) >> 12);
         if (self->unk_c4->type == 6) {
-            Ov003AgUnit *u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+            Ov003AgUnit *u = Group_FindNode(gGroup, self->unk_20);
             if (u != NULL) {
                 pos = u->pos;
             }

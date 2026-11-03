@@ -163,8 +163,8 @@ void Ov012ActExVt_0220b1e8_StateThrown(Ov012ActExVt_0220b1e8 *self) {
             o->SetScaleAll(0x2000);
             o = Effect_SpawnId(0x6b, &self->pos);
             o->SetScaleAll(0x2000);
-            SndMgr_PlayAt(data_02097e4c, 0x1a, &self->pos, 0);
-            SndMgr_PlayVolume(data_02097e4c, 0x4f, 0x6e, -1, -1);
+            SndMgr_PlayAt(gSndMgr, 0x1a, &self->pos, 0);
+            SndMgr_PlayVolume(gSndMgr, 0x4f, 0x6e, -1, -1);
             func_ov012_02206508(self);
             self->fsm->st = 10;
         }
@@ -212,7 +212,7 @@ void Ov012ActExVt_0220b1e8_StateThrown(Ov012ActExVt_0220b1e8 *self) {
         a = FX_Atan2(d, pp.y - self->pos.y);
         self->speed = Ov012_FxMul64d(OV012_SIN(a), 0x333);
         self->velY = Ov012_FxMul64d(OV012_COS(a), 0x333);
-        SndMgr_Stop(data_02097e4c, 0x4f);
+        SndMgr_Stop(gSndMgr, 0x4f);
         self->fsm->st++;
         break;
     }

@@ -62,16 +62,16 @@ void func_ov000_02159e40(Owner02159e40 *self, Node02159e40 *node) {
     }
     self->count--;
     {
-        void *saved = data_02097dd0->cur;
+        void *saved = gSysState->cur;
         Node02159e40 *p;
-        data_02097dd0->cur = data_02097dd0->heapHi;
+        gSysState->cur = gSysState->heapHi;
         p = node;
         if (p != NULL) {
             if (p != NULL) {
                 Node02159e40_Delete(p);
             }
         }
-        data_02097dd0->cur = saved;
+        gSysState->cur = saved;
     }
 }
 

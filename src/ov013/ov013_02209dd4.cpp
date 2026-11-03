@@ -8,10 +8,10 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *t, s32 a);
 
 static inline Ov003Actor *Ov013_FindActor(u16 id) {
-    if (data_ov000_021ccd68 == NULL) {
+    if (gActorMgr == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(gActorMgr, id);
 }
 extern char data_ov013_0220bea0[];
 extern char data_ov013_0220bea6[];
@@ -30,7 +30,7 @@ s32 Ov013Act_02207968_ChooseAttack(Ov013Act_02207968 *self) {
     u32 n;
     rnd = Rand_UpTo(0x63);
     pct = self->hp[0] * 100 / self->hp[1];
-    n = ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000), 0x4813);
+    n = ActorGroup_CountKind(ActorMgr_GetGroup(gActorMgr, 0x4000), 0x4813);
     st = 0xe;
     if ((self->unk_f2 == 2 && rnd % 2 == 0) || self->unk_f2 == 3) {
         st = 0xf;

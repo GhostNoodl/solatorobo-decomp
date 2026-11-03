@@ -8,7 +8,7 @@ extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 
 void Ov009ActVt_022164a0_StateDown(Ov009ActVt_022164a0 *self) {
     if (self->fsm->st == 0 && *self->hp == 0) {
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5404, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x5404, 0x15);
     }
     Ov003Actor_StateDown(self);
 }
@@ -23,10 +23,10 @@ void Ov009ActVt_022168a8_StateAttack(Ov003Actor *self) {
     }
     Field_ShakeCamera(0xc, 0x19);
     range = 0xa000;
-    if (data_ov000_021ccd54->unk_ca.c[0] == 0x11) {
+    if (gSceneCmd->unk_ca.c[0] == 0x11) {
         range = 0x5000;
     }
-    g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+    g = ActorMgr_GetGroup(gActorMgr, 0x5000);
     if (g == NULL) {
         return;
     }
@@ -47,7 +47,7 @@ void Ov009ActVt_022168a8_StateAttack(Ov003Actor *self) {
 
 void Ov009ActVt_022168a8_StateDown(Ov003Actor *self) {
     if (self->fsm->st == 0 && *self->hp == 0) {
-        ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x5407, 0x15);
+        ActorMgr_BroadcastKind(gActorMgr, 0x5407, 0x15);
     }
     Ov003Actor_StateDown(self);
 }

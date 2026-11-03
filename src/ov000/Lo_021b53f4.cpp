@@ -23,10 +23,10 @@ void func_ov000_021b53f4(FieldMgr *self) {
     FieldProp *prev;
     FieldProp *next;
     FieldProp *n;
-    GfxSys *d48 = data_02097d48;
+    GfxSys *d48 = gGfxSys;
     Gfx3DState_SetDefaults(d48->unk_8b0);
     Gfx3DState_Apply(d48->unk_8b0);
-    pb = data_ov000_021ccd54;
+    pb = gSceneCmd;
     GfxCamParam_Init(&pb->cam.base.nearClip);
     pb->cam.base.wallClip = 0;
     pb->cam.unk_da = 0;
@@ -53,7 +53,7 @@ void func_ov000_021b53f4(FieldMgr *self) {
         }
     }
     if (self->blockB != NULL) {
-        FieldState *p = data_ov000_021ccd54;
+        FieldState *p = gSceneCmd;
         u8 *ids = p->unk_d0.c;
         Ent021b53f4 *e;
         char buf[0x20];
@@ -64,7 +64,7 @@ void func_ov000_021b53f4(FieldMgr *self) {
         func_0206dfd4(buf, ids);
         ResMgr_ReleaseArchive(e->unk_08, buf, 0);
         {
-            FieldCam *sub = &data_ov000_021ccd54->cam;
+            FieldCam *sub = &gSceneCmd->cam;
             sub->unk_c8 = 0;
             sub->unk_d6 = 0;
         }
@@ -72,7 +72,7 @@ void func_ov000_021b53f4(FieldMgr *self) {
     }
     self->exits = NULL;
     {
-        FieldState *p = data_ov000_021ccd54;
+        FieldState *p = gSceneCmd;
         if (p->unk_ca.c[0] != p->unk_d0.c[0] || p->unk_ca.c[1] != p->unk_d0.c[1] || p->unk_c9 != 0) {
             func_ov000_021b6994(self, 0);
         }

@@ -23,7 +23,7 @@ BOOL Ov006ActVt_021ec4f4_Draw(Ov006Racer *self) {
     const Camera *cam;
     self->unk_19c_0 = 0;
     ret = FALSE;
-    cam = &data_ov000_021ccd54->cam.base;
+    cam = &gSceneCmd->cam.base;
     {
         fx32 cx = cam->eye.x;
         fx32 cy = cam->eye.y;

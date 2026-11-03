@@ -4,8 +4,8 @@
 
 extern "C" {
 
-extern void *data_02fe152c;
-extern void *data_02097e4c;
+extern void *gDataRes;
+extern void *gSndMgr;
 void *DataRes_GetTable(void *a, s32 b);
 u32 DataRes_GetCount(void *a, s32 b);
 u32 func_ov000_0214bf2c(u16 a);
@@ -33,21 +33,21 @@ typedef struct {
 
 static inline BOOL LoIsLoaded24(void) {
     BOOL r = TRUE;
-    if (!StageRes_IsAllLoaded(data_ov000_021ccd24.unk_08)) {
+    if (!StageRes_IsAllLoaded(gSceneResSet.unk_08)) {
         r = FALSE;
     }
     return r;
 }
 
 BOOL func_ov000_0214be8c(void) {
-    void *p = LFLD(void *, data_02fe152c, 0x4c);
-    u8 *tbl = (u8 *)DataRes_GetTable(data_02fe152c, 1);
-    u32 n = DataRes_GetCount(data_02fe152c, 1);
+    void *p = LFLD(void *, gDataRes, 0x4c);
+    u8 *tbl = (u8 *)DataRes_GetTable(gDataRes, 1);
+    u32 n = DataRes_GetCount(gDataRes, 1);
     u16 i;
     for (i = 0; i < n; i++) {
         u32 fl = func_ov000_0214bf2c(LFLD(u16, tbl + i * 4, 2));
         if (!(fl & 0x100) && !(fl & 0x40)) {
-            if (!DataRes_ReadBitsAt_02059544(data_02fe152c, (u8 *)p + 0x30, tbl, 0x301, i)) {
+            if (!DataRes_ReadBitsAt_02059544(gDataRes, (u8 *)p + 0x30, tbl, 0x301, i)) {
                 return FALSE;
             }
         }
