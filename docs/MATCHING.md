@@ -9322,3 +9322,49 @@ Readability only; every function stays byte-identical, and only symbol names cha
 - **Globals:** `gOv006Menu`, `gUnk0214a418`, `gOv002Staff`, `gOv002Session`, `gOv002StaffPool`, `gOv002BoardRef` (singletons, each with a typed declaration).
 
 **Left unnamed:** the SDK statics (card, PM, FS, WM, CTRDG, NNS snd: identity not certain), the Lang/Tbl/Param lookups (`func_020701d4` and friends), the WH functions, the `StageVars` setters, the shared UiList and actor slots (as in nmK), the `LoBase021ccb54_021ccbe0` slots 0x78/0x7c, the ov010 `Obj022020c8` handler table, ov004, and the many single-caller helpers (hit tests, `Group*`, `FieldProp*`, `TexObj*`, `NNSG3dRS` callbacks) whose role the code does not make clear.
+## Round rwA (clean-room unwinder): `NextAction`, `UnwindStack` and `HandleUnexpected` rewritten as drafts, 8111 -> 8108
+
+The earlier versions of `libs/runtime/ExceptionHandler_unwind.cpp` and `ExceptionHandler_unexp.cpp` were removed and
+written again without looking at them. Procedure: the worker did not read the old files (not in git history, other
+clones, the main repo or any scratchpad), did not read the earlier notes on these functions, and did not search the
+web. The sources are only the target disassembly of the two `delinks.txt` ranges, the rest of `libs/runtime` (the
+callers and `ExceptionHandler.h`), and general compiler notes in this file. Struct, variable and action names are
+new. One known exposure: a `grep` for `opt_propagation` over this file printed a single line of the earlier
+unwinder section (that the pragma keeps early computations early). The worker had already seen the folded
+`flags & 0x20` and tested the pragma, which is documented in round smallsweep1.
+
+Result: none of the three functions matches honestly, so both files are whole-file `NONMATCHING` drafts with no
+`delinks.txt` entry, and the ROM bytes come from the dsd gap (listed in `docs/UNMATCHED.md`).
+
+- **What the target code says.** An action starts with a byte: bits 0-4 are the kind, bit 7 ends the list, bit 5
+  (and bit 6 for a condition) says the operand is a saved-register number instead of a frame offset. Kinds 2-19
+  decode packed numbers with `DecodeSignedNumber` / `DecodeUnsignedNumber` and read raw words (function addresses)
+  byte by byte. `NextAction` skips one action (moving to the caller's frame when the list ends) and then follows
+  branch actions. `UnwindStack` runs destructors and delete functions until it reaches the catcher's action.
+- **Stack layout of the operands.** Every action kind has its own stack slots, in case order from the highest
+  address down. Block-scoped locals in the cases do not give this: MWCC places objects over 8 bytes before the small
+  ones, so the three- and four-operand records move to the top. Scalars declared in one `static inline` per kind
+  do: inline locals get slots in expansion order, with the last-declared local highest. `NextAction` with these
+  inlines matches every instruction except the stack offsets.
+- **`#pragma opt_propagation off`.** Without it MWCC folds `inReg = flags & 0x20` into its use after the decode
+  calls, and computes `next = p + 4` after the destructor call. The target does both first, into callee-saved
+  registers. The operand read is a macro (`FRAME_WORD`), because an inline parameter loads the offset once and the
+  target loads it in both arms of the conditional.
+- **Blocker: an unused slot at `sp+0x30`.** Between the operands of action 15 (`sp+0x34..0x3c`) and action 16
+  (`sp+0x24..0x2c`) both functions have a 4-byte slot that no instruction touches. With propagation off, MWCC keeps
+  such a slot for a local whose address is stored in a pointer local (`u32 *pw = &word; *pw = ReadWord(p);`) or
+  bound to a C++ reference. Both then match `NextAction` exactly, and the address word of action 16 still stays in a
+  register in `UnwindStack`. Neither is plausible source, so they are not used. No other form reserves it: an
+  unused local, an inline parameter or reference parameter, a nested inline writing through a pointer, an inline
+  returning a one-word struct, one-element arrays, `const T &` temporaries, or a two-field struct (which also
+  stores the word). Every `dsi/*` compiler gives the same 38 for `NextAction`.
+- **`UnwindStack`** also differs in scheduling in the array-destroy cases and in which copy of the shared
+  `actionPointer = next` store the cross-jumping keeps (the target keeps the first case's copy).
+- **`HandleUnexpected`** stays at 2 / 0: the target sets up `r2` for `UnwindStack` before it saves `r0`. Parameter
+  types, the callee's return type, opt_* pragmas, optimization levels, `exceptions on`, compiling as C,
+  `UnwindStack` in the same file with and without `ipa file`, and cxxperm (21673 compiles) leave it at 2.
+- `RestoreSavedRegisters` in `ExceptionHandler.h` now takes `ExceptionInfo *`. `UnwindStack` passes its
+  `ExceptionInfo` there, and the function never reads the argument.
+
+Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` **8108** matched (8111 before; these three
+functions were counted as matches). `tools/check_drafts.py --score` and `tools/honesty_scan.py` exit 0.

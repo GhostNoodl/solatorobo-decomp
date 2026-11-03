@@ -55,7 +55,7 @@ typedef struct ActionIterator {
     ThrowContext context;
 } ActionIterator;
 
-u32 RestoreSavedRegisters(ThrowContext *ctx, ActionIterator *iter);
+u32 RestoreSavedRegisters(ThrowContext *ctx, ExceptionInfo *info);
 void SetupFrameInfo(ThrowContext *ctx, ExceptionInfo *info);
 int GetExceptionTable(ExceptionInfo *info, u32 pc);
 u8 *SkipFrameInfo(u8 *p);

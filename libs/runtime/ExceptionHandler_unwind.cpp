@@ -1,116 +1,189 @@
-// NextAction and UnwindStack. UnwindStack runs the cleanup actions of each frame up to the catcher's action.
-// The original was C++ with exceptions on and : that stops MWCC from
-// cross-jumping the destructor calls of different actions. With opt_propagation off the action flags
-// and the advanced action pointer are computed early, as in the target. Every decoded number lives in
-// one Ops struct, which fixes the stack layout (including the unused word at sp+0x30).
-#pragma exceptions on
-extern "C" {
-#pragma opt_propagation off
 #pragma unsigned_char on
+extern "C" {
 #include "ExceptionHandler.h"
+}
+
+// C++ exception unwinder: NextAction (0x02008a20) and UnwindStack (0x02008cdc).
+#ifdef NONMATCHING
+// Status (round rwA): clean-room rewrite from the target assembly. Neither function matches, so this file has no
+// delinks.txt entry and both come from the dsd gap.
+// - NextAction: 38 / 38. Every instruction matches except the stack offsets. The target has a 4-byte slot at
+//   sp+0x30, between the operands of action 15 (sp+0x34..0x3c) and action 16 (sp+0x24..0x2c), that no
+//   instruction reads or writes. This draft has no such slot, so every operand below it is 4 bytes lower and the
+//   frame is 0x9c instead of 0xa0. No plain source shape found makes MWCC reserve an unused slot there (an unused
+//   local, an unused struct field, a reference parameter, an inline returning a struct, an array). Only a pointer
+//   local holding &word does, which is not plausible source.
+// - UnwindStack: same slot, plus scheduling and register differences in the array-destroy cases and different
+//   cross-jump targets for the shared `actionPointer = next` stores (463 / 460, most of it the shifted offsets).
+// The operand locals live in one static inline per action kind: MWCC gives inline locals stack slots in expansion
+// order with the last-declared local highest, which is the target's layout. Block-scoped locals of the cases
+// themselves would split into two size classes (records over 8 bytes first), which the target does not do.
+
+// Keeps the operand flags and the next-action pointer in their own variables, computed before the decode calls as
+// in the target.
+#pragma opt_propagation off
+
+// The action list of a function's exception record. Each action starts with a byte: bits 0-4 are
+// the action kind, bit 7 marks the last action of the list, and bits 5 and 6 say whether a
+// frame-relative operand lives in a saved register instead of in the frame. The operands that
+// follow are packed numbers (DecodeSignedNumber / DecodeUnsignedNumber) and raw 32-bit words
+// (function addresses).
+enum {
+    ACT_END_OF_LIST = 0,
+    ACT_BRANCH = 1,
+    ACT_DESTROY_LOCAL = 2,
+    ACT_DESTROY_LOCAL_COND = 3,
+    ACT_DESTROY_LOCAL_POINTER = 4,
+    ACT_DESTROY_LOCAL_ARRAY = 5,
+    ACT_DESTROY_BASE = 6,
+    ACT_DESTROY_MEMBER = 7,
+    ACT_DESTROY_MEMBER_COND = 8,
+    ACT_DESTROY_MEMBER_ARRAY = 9,
+    ACT_DELETE_POINTER = 10,
+    ACT_DELETE_POINTER_COND = 11,
+    ACT_CATCH_BLOCK = 12,
+    ACT_ACTIVE_CATCH_BLOCK = 13,
+    ACT_TERMINATE = 14,
+    ACT_SPECIFICATION = 15,
+    ACT_CALL_MEMBER = 16,
+    ACT_CALL_MEMBER_PAIR = 17,
+    ACT_DESTROY_SIZED_ARRAY = 18,
+    ACT_NOP = 19,
+};
+
+#define ACT_KIND(b) ((b) & 0x1f)
+#define ACT_LAST 0x80
+#define ACT_IN_REG 0x20     // the object operand is a register number
+#define ACT_COND_IN_REG 0x40 // the condition operand is a register number
 
 typedef void (*DtorFn)(void *obj, int flag);
-typedef void (*DelFn)(void *obj);
-typedef void (*Dtor2Fn)(void *obj, void *arg);
+typedef void (*DeleteFn)(void *obj);
+typedef void (*PairFn)(void *a, void *b);
 
-#define CFA(ctx) ((u8 *)(ctx)->cfa)
-#define REG(ctx, i) ((ctx)->state.regs[i])
+// A word operand of an object: either a saved register or a frame slot.
+#define FRAME_WORD(ctx, inReg, where) ((inReg) ? (ctx)->state.regs[where] : *(u32 *)((ctx)->cfa + (where)))
 
-typedef struct Ops {
-    s32 c19_x;
-    s32 c18_a;
-    s32 c18_b;
-    u32 c18_elementSize;
-    s32 c17_a;
-    s32 c17_c;
-    s32 c17_b;
-    s32 c17_d;
-    s32 c16_objectPointer;
-    s32 c16_offset;
-    s32 c16_offset2;
-    s32 unused;
-    u32 c15_specs;
-    u32 c15_pcOffset;
-    s32 c15_cinfoRef;
-    s32 c13_cinfoRef;
-    u32 c12_catchPCOffset;
-    s32 c12_cinfoRef;
-    s32 c11_cond;
-    s32 c11_pointerObject;
-    s32 c10_pointerObject;
-    s32 c9_objectPointer;
-    s32 c9_offset;
-    u32 c9_elements;
-    u32 c9_elementSize;
-    s32 c8_cond;
-    s32 c8_objectPointer;
-    s32 c8_offset;
-    s32 c7_objectPointer;
-    s32 c7_offset;
-    s32 c6_objectPointer;
-    s32 c6_offset;
-    s32 c5_array;
-    u32 c5_elements;
-    u32 c5_elementSize;
-    s32 c4_pointer;
-    s32 c3_cond;
-    s32 c3_local;
-    s32 c2_local;
-    s32 c1_offset;
-} Ops;
+// Skipping an action: decode its operands to find where the next one starts.
+static inline u8 *SkipLocal(u8 *p) {
+    s32 local;
+    return DecodeSignedNumber(p + 1, &local) + 4;
+}
 
-// NextAction skips the same records; its numbers are decoded into the same layout, without the branch offset.
-typedef struct IterOps {
-    s32 c19_x;
-    s32 c18_a;
-    s32 c18_b;
-    u32 c18_elementSize;
-    s32 c17_a;
-    s32 c17_c;
-    s32 c17_b;
-    s32 c17_d;
-    s32 c16_objectPointer;
-    s32 c16_offset;
-    s32 c16_offset2;
-    s32 unused;
-    u32 c15_specs;
-    u32 c15_pcOffset;
-    s32 c15_cinfoRef;
-    s32 c13_cinfoRef;
-    u32 c12_catchPCOffset;
-    s32 c12_cinfoRef;
-    s32 c11_cond;
-    s32 c11_pointerObject;
-    s32 c10_pointerObject;
-    s32 c9_objectPointer;
-    s32 c9_offset;
-    u32 c9_elements;
-    u32 c9_elementSize;
-    s32 c8_cond;
-    s32 c8_objectPointer;
-    s32 c8_offset;
-    s32 c7_objectPointer;
-    s32 c7_offset;
-    s32 c6_objectPointer;
-    s32 c6_offset;
-    s32 c5_array;
-    u32 c5_elements;
-    u32 c5_elementSize;
-    s32 c4_pointer;
-    s32 c3_cond;
-    s32 c3_local;
-    s32 c2_local;
-} IterOps;
+static inline u8 *SkipLocalCond(u8 *p) {
+    s32 cond, local;
+    p = DecodeSignedNumber(p + 1, &cond);
+    return DecodeSignedNumber(p, &local) + 4;
+}
+
+static inline u8 *SkipLocalArray(u8 *p) {
+    s32 local;
+    u32 count, size;
+    p = DecodeSignedNumber(p + 1, &local);
+    p = DecodeUnsignedNumber(p, &count);
+    return DecodeUnsignedNumber(p, &size) + 4;
+}
+
+static inline u8 *SkipMember(u8 *p) {
+    s32 object, offset;
+    p = DecodeSignedNumber(p + 1, &object);
+    return DecodeSignedNumber(p, &offset) + 4;
+}
+
+static inline u8 *SkipMemberCond(u8 *p) {
+    s32 cond, object, offset;
+    p = DecodeSignedNumber(p + 1, &cond);
+    p = DecodeSignedNumber(p, &object);
+    return DecodeSignedNumber(p, &offset) + 4;
+}
+
+static inline u8 *SkipMemberArray(u8 *p) {
+    s32 object, offset;
+    u32 count, size;
+    p = DecodeSignedNumber(p + 1, &object);
+    p = DecodeSignedNumber(p, &offset);
+    p = DecodeUnsignedNumber(p, &count);
+    return DecodeUnsignedNumber(p, &size) + 4;
+}
+
+static inline u8 *SkipPointerCond(u8 *p) {
+    s32 cond, pointer;
+    p = DecodeSignedNumber(p + 1, &cond);
+    return DecodeSignedNumber(p, &pointer) + 4;
+}
+
+static inline u8 *SkipCatch(u8 *p) {
+    u32 handler;
+    s32 info;
+    p = DecodeUnsignedNumber(p + 5, &handler);
+    return DecodeSignedNumber(p, &info);
+}
+
+static inline u8 *SkipActiveCatch(u8 *p) {
+    s32 info;
+    return DecodeSignedNumber(p + 1, &info);
+}
+
+static inline u8 *SkipSpecification(u8 *p) {
+    u32 count, handler;
+    s32 info;
+    p = DecodeUnsignedNumber(p + 1, &count);
+    p = DecodeUnsignedNumber(p, &handler);
+    return DecodeSignedNumber(p, &info) + count * 4;
+}
+
+static inline u8 *TakeWord(u8 *p, u32 *out) {
+    *out = ReadWord(p);
+    return p + 4;
+}
+
+static inline u8 *SkipCallMember(u8 *p) {
+    s32 object, offset, argOffset;
+    u32 base;
+    p = DecodeSignedNumber(p + 1, &object);
+    p = DecodeSignedNumber(p, &offset);
+    p = TakeWord(p, &base);
+    return DecodeSignedNumber(p, &argOffset) + 4;
+}
+
+static inline u8 *SkipCallMemberPair(u8 *p) {
+    s32 object, object2, offset, offset2;
+    p = DecodeSignedNumber(p + 1, &object);
+    p = DecodeSignedNumber(p, &offset);
+    p = DecodeSignedNumber(p + 1, &object2);
+    return DecodeSignedNumber(p, &offset2) + 4;
+}
+
+static inline u8 *SkipSizedArray(u8 *p) {
+    s32 object, bytes;
+    u32 size;
+    p = DecodeSignedNumber(p + 1, &object);
+    p = DecodeSignedNumber(p + 1, &bytes);
+    return DecodeUnsignedNumber(p, &size) + 4;
+}
+
+static inline u8 *SkipNop(u8 *p) {
+    s32 value;
+    return DecodeSignedNumber(p + 1, &value);
+}
+
+// Follows branch actions; returns the kind of the action it stops at.
+static inline u8 FollowBranches(ExceptionInfo *info) {
+    u8 *p = info->actionPointer;
+    u8 kind;
+    s32 offset;
+    while ((kind = ACT_KIND(*p)) == ACT_BRANCH) {
+        DecodeSignedNumber(p + 1, &offset);
+        p = info->actionPointer += offset;
+    }
+    return kind;
+}
 
 u8 NextAction(ActionIterator *iter) {
-    u8 *p;
-    u8 action;
-    s32 offset;
-    IterOps o;
+    u8 *ap;
     for (;;) {
-        p = iter->info.actionPointer;
-        if (p == NULL || ((action = *p) & 0x80)) {
-            FindExceptionRecord(RestoreSavedRegisters(&iter->context, iter), &iter->info);
+        ap = iter->info.actionPointer;
+        if (ap == NULL || (*ap & ACT_LAST)) {
+            FindExceptionRecord(RestoreSavedRegisters(&iter->context, &iter->info), &iter->info);
             if (iter->info.exceptionRecord == NULL) {
                 return 0xff;
             }
@@ -120,439 +193,356 @@ u8 NextAction(ActionIterator *iter) {
             }
             break;
         }
-        switch (action & 0x1f) {
-        case 2:
-            iter->info.actionPointer = DecodeSignedNumber(p + 1, &o.c2_local) + 4;
+        switch (ACT_KIND(*ap)) {
+        case ACT_DESTROY_LOCAL:
+            iter->info.actionPointer = SkipLocal(ap);
             break;
-        case 3:
-            p = DecodeSignedNumber(p + 1, &o.c3_cond);
-            iter->info.actionPointer = DecodeSignedNumber(p, &o.c3_local) + 4;
+        case ACT_DESTROY_LOCAL_COND:
+            iter->info.actionPointer = SkipLocalCond(ap);
             break;
-        case 4:
-            iter->info.actionPointer = DecodeSignedNumber(p + 1, &o.c4_pointer) + 4;
+        case ACT_DESTROY_LOCAL_POINTER:
+            iter->info.actionPointer = SkipLocal(ap);
             break;
-        case 5:
-            p = DecodeSignedNumber(p + 1, &o.c5_array);
-            p = DecodeUnsignedNumber(p, &o.c5_elements);
-            iter->info.actionPointer = DecodeUnsignedNumber(p, &o.c5_elementSize) + 4;
+        case ACT_DESTROY_LOCAL_ARRAY:
+            iter->info.actionPointer = SkipLocalArray(ap);
             break;
-        case 6:
-            p = DecodeSignedNumber(p + 1, &o.c6_objectPointer);
-            iter->info.actionPointer = DecodeSignedNumber(p, &o.c6_offset) + 4;
+        case ACT_DESTROY_BASE:
+            iter->info.actionPointer = SkipMember(ap);
             break;
-        case 7:
-            p = DecodeSignedNumber(p + 1, &o.c7_objectPointer);
-            iter->info.actionPointer = DecodeSignedNumber(p, &o.c7_offset) + 4;
+        case ACT_DESTROY_MEMBER:
+            iter->info.actionPointer = SkipMember(ap);
             break;
-        case 8:
-            p = DecodeSignedNumber(p + 1, &o.c8_cond);
-            p = DecodeSignedNumber(p, &o.c8_objectPointer);
-            iter->info.actionPointer = DecodeSignedNumber(p, &o.c8_offset) + 4;
+        case ACT_DESTROY_MEMBER_COND:
+            iter->info.actionPointer = SkipMemberCond(ap);
             break;
-        case 9:
-            p = DecodeSignedNumber(p + 1, &o.c9_objectPointer);
-            p = DecodeSignedNumber(p, &o.c9_offset);
-            p = DecodeUnsignedNumber(p, &o.c9_elements);
-            iter->info.actionPointer = DecodeUnsignedNumber(p, &o.c9_elementSize) + 4;
+        case ACT_DESTROY_MEMBER_ARRAY:
+            iter->info.actionPointer = SkipMemberArray(ap);
             break;
-        case 10:
-            iter->info.actionPointer = DecodeSignedNumber(p + 1, &o.c10_pointerObject) + 4;
+        case ACT_DELETE_POINTER:
+            iter->info.actionPointer = SkipLocal(ap);
             break;
-        case 11:
-            p = DecodeSignedNumber(p + 1, &o.c11_cond);
-            iter->info.actionPointer = DecodeSignedNumber(p, &o.c11_pointerObject) + 4;
+        case ACT_DELETE_POINTER_COND:
+            iter->info.actionPointer = SkipPointerCond(ap);
             break;
-        case 12:
-            p = DecodeUnsignedNumber(p + 5, &o.c12_catchPCOffset);
-            iter->info.actionPointer = DecodeSignedNumber(p, &o.c12_cinfoRef);
+        case ACT_CATCH_BLOCK:
+            iter->info.actionPointer = SkipCatch(ap);
             break;
-        case 13:
-            iter->info.actionPointer = DecodeSignedNumber(p + 1, &o.c13_cinfoRef);
+        case ACT_ACTIVE_CATCH_BLOCK:
+            iter->info.actionPointer = SkipActiveCatch(ap);
             break;
-        case 15:
-            p = DecodeUnsignedNumber(p + 1, &o.c15_specs);
-            p = DecodeUnsignedNumber(p, &o.c15_pcOffset);
-            iter->info.actionPointer = DecodeSignedNumber(p, &o.c15_cinfoRef) + o.c15_specs * 4;
+        case ACT_SPECIFICATION:
+            iter->info.actionPointer = SkipSpecification(ap);
             break;
-        case 16:
-            p = DecodeSignedNumber(p + 1, &o.c16_objectPointer);
-            p = DecodeSignedNumber(p, &o.c16_offset);
-            p = DecodeSignedNumber(p + 4, &o.c16_offset2);
-            iter->info.actionPointer = p + 4;
+        case ACT_CALL_MEMBER:
+            iter->info.actionPointer = SkipCallMember(ap);
             break;
-        case 17:
-            p = DecodeSignedNumber(p + 1, &o.c17_a);
-            p = DecodeSignedNumber(p, &o.c17_b);
-            p = DecodeSignedNumber(p + 1, &o.c17_c);
-            iter->info.actionPointer = DecodeSignedNumber(p, &o.c17_d) + 4;
+        case ACT_CALL_MEMBER_PAIR:
+            iter->info.actionPointer = SkipCallMemberPair(ap);
             break;
-        case 18:
-            p = DecodeSignedNumber(p + 1, &o.c18_a);
-            p = DecodeSignedNumber(p + 1, &o.c18_b);
-            iter->info.actionPointer = DecodeUnsignedNumber(p, &o.c18_elementSize) + 4;
+        case ACT_DESTROY_SIZED_ARRAY:
+            iter->info.actionPointer = SkipSizedArray(ap);
             break;
-        case 19:
-            iter->info.actionPointer = DecodeSignedNumber(p + 1, &o.c19_x);
+        case ACT_NOP:
+            iter->info.actionPointer = SkipNop(ap);
             break;
         default:
             return 0xff;
         }
         break;
     }
-    while ((action = *iter->info.actionPointer & 0x1f) == 1) {
-        DecodeSignedNumber(iter->info.actionPointer + 1, &offset);
-        iter->info.actionPointer += offset;
-    }
-    return action;
+    return FollowBranches(&iter->info);
 }
 
+// Running an action: decode its operands, destroy what it names, return where the next one starts.
+// inReg says whether the object operand is a register number (ACT_IN_REG).
+static inline u8 *DestroyLocal(ThrowContext *ctx, u8 *p) {
+    s32 local;
+    p = DecodeSignedNumber(p + 1, &local);
+    ((DtorFn)ReadWord(p))((void *)(ctx->cfa + local), -1);
+    return p + 4;
+}
 
-void UnwindStack(ThrowContext *context, ExceptionInfo *info, u8 *catcher) {
-#pragma exception_terminate
-    u8 *p;
-    u8 action;
-    Ops o;
+static inline u8 *DestroyLocalCond(ThrowContext *ctx, u8 flags, u8 *p) {
+    int condInReg = flags & ACT_COND_IN_REG;
+    s32 cond, local;
+    DtorFn dtor;
+    u8 alive;
+    p = DecodeSignedNumber(p + 1, &cond);
+    p = DecodeSignedNumber(p, &local);
+    dtor = (DtorFn)ReadWord(p);
+    p += 4;
+    alive = condInReg ? (u8)ctx->state.regs[cond] : *(u8 *)(ctx->cfa + cond);
+    if (alive) {
+        dtor((void *)(ctx->cfa + local), -1);
+    }
+    return p;
+}
 
+static inline u8 *DestroyLocalPointer(ThrowContext *ctx, u8 flags, u8 *p) {
+    int inReg = flags & ACT_IN_REG;
+    s32 pointer;
+    DtorFn dtor;
+    p = DecodeSignedNumber(p + 1, &pointer);
+    dtor = (DtorFn)ReadWord(p);
+    p += 4;
+    dtor((void *)FRAME_WORD(ctx, inReg, pointer), -1);
+    return p;
+}
+
+static inline u8 *DestroyLocalArray(ThrowContext *ctx, u8 *p) {
+    s32 local;
+    u32 count, size, i;
+    DtorFn dtor;
+    u8 *obj;
+    p = DecodeSignedNumber(p + 1, &local);
+    p = DecodeUnsignedNumber(p, &count);
+    p = DecodeUnsignedNumber(p, &size);
+    obj = (u8 *)(ctx->cfa + local) + count * size;
+    dtor = (DtorFn)ReadWord(p);
+    p += 4;
+    for (i = count; i != 0; i--) {
+        obj -= size;
+        dtor(obj, -1);
+    }
+    return p;
+}
+
+static inline u8 *DestroyMember(ThrowContext *ctx, u8 flags, u8 *p, int flag) {
+    int inReg = flags & ACT_IN_REG;
+    s32 object, offset;
+    DtorFn dtor;
+    p = DecodeSignedNumber(p + 1, &object);
+    p = DecodeSignedNumber(p, &offset);
+    dtor = (DtorFn)ReadWord(p);
+    p += 4;
+    dtor((void *)(FRAME_WORD(ctx, inReg, object) + offset), flag);
+    return p;
+}
+
+static inline u8 *DestroyMemberCond(ThrowContext *ctx, u8 flags, u8 *p) {
+    int inReg = flags & ACT_IN_REG;
+    s32 cond, object, offset;
+    DtorFn dtor;
+    s16 alive;
+    p = DecodeSignedNumber(p + 1, &cond);
+    p = DecodeSignedNumber(p, &object);
+    p = DecodeSignedNumber(p, &offset);
+    dtor = (DtorFn)ReadWord(p);
+    p += 4;
+    alive = (flags & ACT_COND_IN_REG) ? (s16)ctx->state.regs[cond] : *(s16 *)(ctx->cfa + cond);
+    if (alive) {
+        dtor((void *)(FRAME_WORD(ctx, inReg, object) + offset), -1);
+    }
+    return p;
+}
+
+static inline u8 *DestroyMemberArray(ThrowContext *ctx, u8 flags, u8 *p) {
+    int inReg = flags & ACT_IN_REG;
+    s32 object, offset;
+    u32 count, size, i;
+    DtorFn dtor;
+    u8 *obj;
+    p = DecodeSignedNumber(p + 1, &object);
+    p = DecodeSignedNumber(p, &offset);
+    p = DecodeUnsignedNumber(p, &count);
+    p = DecodeUnsignedNumber(p, &size);
+    dtor = (DtorFn)ReadWord(p);
+    p += 4;
+    obj = (u8 *)(FRAME_WORD(ctx, inReg, object) + offset) + count * size;
+    for (i = count; i != 0; i--) {
+        obj -= size;
+        dtor(obj, -1);
+    }
+    return p;
+}
+
+static inline u8 *DeletePointer(ThrowContext *ctx, u8 flags, u8 *p) {
+    int inReg = flags & ACT_IN_REG;
+    s32 pointer;
+    DeleteFn del;
+    p = DecodeSignedNumber(p + 1, &pointer);
+    del = (DeleteFn)ReadWord(p);
+    p += 4;
+    del((void *)FRAME_WORD(ctx, inReg, pointer));
+    return p;
+}
+
+static inline u8 *DeletePointerCond(ThrowContext *ctx, u8 flags, u8 *p) {
+    int inReg = flags & ACT_IN_REG;
+    s32 cond, pointer;
+    DeleteFn del;
+    u8 alive;
+    p = DecodeSignedNumber(p + 1, &cond);
+    p = DecodeSignedNumber(p, &pointer);
+    del = (DeleteFn)ReadWord(p);
+    p += 4;
+    alive = (flags & ACT_COND_IN_REG) ? (u8)ctx->state.regs[cond] : *(u8 *)(ctx->cfa + cond);
+    if (alive) {
+        del((void *)FRAME_WORD(ctx, inReg, pointer));
+    }
+    return p;
+}
+
+static inline u8 *EndActiveCatch(ThrowContext *ctx, u8 *p) {
+    s32 info;
+    CatchInfo *record;
+    p = DecodeSignedNumber(p + 1, &info);
+    record = (CatchInfo *)(ctx->cfa + info);
+    if (record->dtor != NULL) {
+        if (record->location == ctx->location) {
+            ctx->dtor = (void *)record->dtor;
+        } else {
+            record->dtor(record->location, -1);
+        }
+    }
+    return p;
+}
+
+static inline u8 *CallMember(ThrowContext *ctx, u8 flags, u8 *p) {
+    int inReg = flags & ACT_IN_REG;
+    s32 object, offset, argOffset;
+    u32 arg;
+    PairFn fn;
+    p = DecodeSignedNumber(p + 1, &object);
+    p = DecodeSignedNumber(p, &offset);
+    arg = ReadWord(p);
+    p = DecodeSignedNumber(p + 4, &argOffset);
+    fn = (PairFn)ReadWord(p);
+    p += 4;
+    fn((void *)(FRAME_WORD(ctx, inReg, object) + offset), (void *)(arg + argOffset));
+    return p;
+}
+
+static inline u8 *CallMemberPair(ThrowContext *ctx, u8 flags, u8 *p) {
+    int inReg = flags & ACT_IN_REG;
+    int inReg2;
+    s32 object, object2, offset, offset2;
+    PairFn fn;
+    p = DecodeSignedNumber(p + 1, &object);
+    p = DecodeSignedNumber(p, &offset);
+    inReg2 = *p++ & ACT_IN_REG;
+    p = DecodeSignedNumber(p, &object2);
+    p = DecodeSignedNumber(p, &offset2);
+    fn = (PairFn)ReadWord(p);
+    p += 4;
+    fn((void *)(FRAME_WORD(ctx, inReg, object) + offset), (void *)(FRAME_WORD(ctx, inReg2, object2) + offset2));
+    return p;
+}
+
+static inline u8 *DestroySizedArray(ThrowContext *ctx, u8 flags, u8 *p) {
+    int inReg = flags & ACT_IN_REG;
+    int inReg2;
+    s32 object, bytes;
+    u32 size, i, total;
+    DtorFn dtor;
+    u8 *obj;
+    p = DecodeSignedNumber(p + 1, &object);
+    inReg2 = *p++ & ACT_IN_REG;
+    p = DecodeSignedNumber(p, &bytes);
+    p = DecodeUnsignedNumber(p, &size);
+    dtor = (DtorFn)ReadWord(p);
+    p += 4;
+    obj = (u8 *)FRAME_WORD(ctx, inReg, object);
+    total = FRAME_WORD(ctx, inReg2, bytes);
+    obj += total;
+    for (i = total / size; i != 0; i--) {
+        obj -= size;
+        dtor(obj, -1);
+    }
+    return p;
+}
+
+static inline void TakeBranch(ExceptionInfo *info, u8 *p) {
+    s32 offset;
+    DecodeSignedNumber(p + 1, &offset);
+    info->actionPointer += offset;
+}
+
+void UnwindStack(ThrowContext *ctx, ExceptionInfo *info, u8 *catcher) {
+    u8 *ap;
+    u8 flags;
     for (;;) {
-        p = info->actionPointer;
-        if (p == NULL) {
-            FindExceptionRecord(RestoreSavedRegisters(context, (ActionIterator *)info), info);
+        if (info->actionPointer == NULL) {
+            FindExceptionRecord(RestoreSavedRegisters(ctx, info), info);
             if (info->exceptionRecord == NULL) {
                 _ZSt9terminatev();
             }
-            SetupFrameInfo(context, info);
-            p = info->actionPointer;
-            if (p == NULL) {
+            SetupFrameInfo(ctx, info);
+            if (info->actionPointer == NULL) {
                 continue;
             }
         }
-        action = *p;
-        switch (action & 0x1f) {
-        case 1: {
-            DecodeSignedNumber(p + 1, &o.c1_offset);
-            info->actionPointer += o.c1_offset;
+        ap = info->actionPointer;
+        flags = *ap;
+        switch (ACT_KIND(flags)) {
+        case ACT_BRANCH:
+            TakeBranch(info, ap);
             break;
-        }
-        case 2: {
-            DtorFn dtor;
-            u8 *obj;
-            p = DecodeSignedNumber(p + 1, &o.c2_local);
-            obj = CFA(context) + o.c2_local;
-            dtor = (DtorFn)ReadWord(p);
-            dtor(obj, -1);
-            info->actionPointer = p + 4;
+        case ACT_DESTROY_LOCAL:
+            info->actionPointer = DestroyLocal(ctx, ap);
             break;
-        }
-        case 3: {
-            DtorFn dtor;
-            u8 c;
-            s32 isReg;
-            isReg = action & 0x40;
-            p = DecodeSignedNumber(p + 1, &o.c3_cond);
-            p = DecodeSignedNumber(p, &o.c3_local);
-            dtor = (DtorFn)ReadWord(p);
-            p += 4;
-            if (isReg) {
-                c = REG(context, o.c3_cond);
-            } else {
-                c = *(u8 *)(CFA(context) + o.c3_cond);
-            }
-            if (c) {
-                dtor(CFA(context) + o.c3_local, -1);
-            }
-            info->actionPointer = p;
+        case ACT_DESTROY_LOCAL_COND:
+            info->actionPointer = DestroyLocalCond(ctx, flags, ap);
             break;
-        }
-        case 4: {
-            DtorFn dtor;
-            void *obj;
-            s32 isReg;
-            isReg = action & 0x20;
-            p = DecodeSignedNumber(p + 1, &o.c4_pointer);
-            dtor = (DtorFn)ReadWord(p);
-            p += 4;
-            if (isReg) {
-                obj = (void *)REG(context, o.c4_pointer);
-            } else {
-                obj = *(void **)(CFA(context) + o.c4_pointer);
-            }
-            dtor(obj, -1);
-            info->actionPointer = p;
+        case ACT_DESTROY_LOCAL_POINTER:
+            info->actionPointer = DestroyLocalPointer(ctx, flags, ap);
             break;
-        }
-        case 5: {
-            u8 *ptr;
-            DtorFn dtor;
-            u32 n;
-            p = DecodeSignedNumber(p + 1, &o.c5_array);
-            p = DecodeUnsignedNumber(p, &o.c5_elements);
-            p = DecodeUnsignedNumber(p, &o.c5_elementSize);
-            dtor = (DtorFn)ReadWord(p);
-            p += 4;
-            ptr = CFA(context) + o.c5_array + o.c5_elements * o.c5_elementSize;
-            for (n = o.c5_elements; n != 0; n--) {
-                ptr -= o.c5_elementSize;
-                dtor(ptr, -1);
-            }
-            info->actionPointer = p;
+        case ACT_DESTROY_LOCAL_ARRAY:
+            info->actionPointer = DestroyLocalArray(ctx, ap);
             break;
-        }
-        case 6: {
-            DtorFn dtor;
-            u8 *obj;
-            s32 isReg;
-            isReg = action & 0x20;
-            p = DecodeSignedNumber(p + 1, &o.c6_objectPointer);
-            p = DecodeSignedNumber(p, &o.c6_offset);
-            dtor = (DtorFn)ReadWord(p);
-            p += 4;
-            if (isReg) {
-                obj = (u8 *)REG(context, o.c6_objectPointer);
-            } else {
-                obj = *(u8 **)(CFA(context) + o.c6_objectPointer);
-            }
-            dtor(obj + o.c6_offset, 0);
-            info->actionPointer = p;
+        case ACT_DESTROY_BASE:
+            info->actionPointer = DestroyMember(ctx, flags, ap, 0);
             break;
-        }
-        case 7: {
-            DtorFn dtor;
-            u8 *obj;
-            s32 isReg;
-            isReg = action & 0x20;
-            p = DecodeSignedNumber(p + 1, &o.c7_objectPointer);
-            p = DecodeSignedNumber(p, &o.c7_offset);
-            dtor = (DtorFn)ReadWord(p);
-            p += 4;
-            if (isReg) {
-                obj = (u8 *)REG(context, o.c7_objectPointer);
-            } else {
-                obj = *(u8 **)(CFA(context) + o.c7_objectPointer);
-            }
-            dtor(obj + o.c7_offset, -1);
-            info->actionPointer = p;
+        case ACT_DESTROY_MEMBER:
+            info->actionPointer = DestroyMember(ctx, flags, ap, -1);
             break;
-        }
-        case 8: {
-            DtorFn dtor;
-            s16 c;
-            u8 *obj;
-            s32 isReg;
-            isReg = action & 0x20;
-            p = DecodeSignedNumber(p + 1, &o.c8_cond);
-            p = DecodeSignedNumber(p, &o.c8_objectPointer);
-            p = DecodeSignedNumber(p, &o.c8_offset);
-            dtor = (DtorFn)ReadWord(p);
-            p += 4;
-            if (action & 0x40) {
-                c = REG(context, o.c8_cond);
-            } else {
-                c = *(s16 *)(CFA(context) + o.c8_cond);
-            }
-            if (c) {
-                if (isReg) {
-                    obj = (u8 *)REG(context, o.c8_objectPointer);
-                } else {
-                    obj = *(u8 **)(CFA(context) + o.c8_objectPointer);
-                }
-                dtor(obj + o.c8_offset, -1);
-            }
-            info->actionPointer = p;
+        case ACT_DESTROY_MEMBER_COND:
+            info->actionPointer = DestroyMemberCond(ctx, flags, ap);
             break;
-        }
-        case 9: {
-            u8 *ptr;
-            DtorFn dtor;
-            u32 n;
-            s32 isReg;
-            isReg = action & 0x20;
-            p = DecodeSignedNumber(p + 1, &o.c9_objectPointer);
-            p = DecodeSignedNumber(p, &o.c9_offset);
-            p = DecodeUnsignedNumber(p, &o.c9_elements);
-            p = DecodeUnsignedNumber(p, &o.c9_elementSize);
-            dtor = (DtorFn)ReadWord(p);
-            p += 4;
-            if (isReg) {
-                ptr = (u8 *)REG(context, o.c9_objectPointer) + o.c9_offset;
-            } else {
-                ptr = *(u8 **)(CFA(context) + o.c9_objectPointer) + o.c9_offset;
-            }
-            ptr += o.c9_elements * o.c9_elementSize;
-            for (n = o.c9_elements; n != 0; n--) {
-                ptr -= o.c9_elementSize;
-                dtor(ptr, -1);
-            }
-            info->actionPointer = p;
+        case ACT_DESTROY_MEMBER_ARRAY:
+            info->actionPointer = DestroyMemberArray(ctx, flags, ap);
             break;
-        }
-        case 10: {
-            DelFn del;
-            void *obj;
-            s32 isReg;
-            isReg = action & 0x20;
-            p = DecodeSignedNumber(p + 1, &o.c10_pointerObject);
-            del = (DelFn)ReadWord(p);
-            p += 4;
-            if (isReg) {
-                obj = (void *)REG(context, o.c10_pointerObject);
-            } else {
-                obj = *(void **)(CFA(context) + o.c10_pointerObject);
-            }
-            del(obj);
-            info->actionPointer = p;
+        case ACT_DELETE_POINTER:
+            info->actionPointer = DeletePointer(ctx, flags, ap);
             break;
-        }
-        case 11: {
-            DelFn del;
-            u8 c;
-            void *obj;
-            s32 isReg;
-            isReg = action & 0x20;
-            p = DecodeSignedNumber(p + 1, &o.c11_cond);
-            p = DecodeSignedNumber(p, &o.c11_pointerObject);
-            del = (DelFn)ReadWord(p);
-            p += 4;
-            if (action & 0x40) {
-                c = REG(context, o.c11_cond);
-            } else {
-                c = *(u8 *)(CFA(context) + o.c11_cond);
-            }
-            if (c) {
-                if (isReg) {
-                    obj = (void *)REG(context, o.c11_pointerObject);
-                } else {
-                    obj = *(void **)(CFA(context) + o.c11_pointerObject);
-                }
-                del(obj);
-            }
-            info->actionPointer = p;
+        case ACT_DELETE_POINTER_COND:
+            info->actionPointer = DeletePointerCond(ctx, flags, ap);
             break;
-        }
-        case 12: {
-            if (catcher == p) {
+        case ACT_CATCH_BLOCK:
+            if (ap == catcher) {
                 return;
             }
-            p = DecodeUnsignedNumber(p + 5, &o.c12_catchPCOffset);
-            info->actionPointer = DecodeSignedNumber(p, &o.c12_cinfoRef);
+            info->actionPointer = SkipCatch(ap);
             break;
-        }
-        case 13: {
-            CatchInfo *catchinfo;
-            p = DecodeSignedNumber(p + 1, &o.c13_cinfoRef);
-            catchinfo = (CatchInfo *)(CFA(context) + o.c13_cinfoRef);
-            if (catchinfo->dtor != NULL) {
-                if (context->location == catchinfo->location) {
-                    context->dtor = catchinfo->dtor;
-                } else {
-                    catchinfo->dtor(catchinfo->location, -1);
-                }
-            }
-            info->actionPointer = p;
+        case ACT_ACTIVE_CATCH_BLOCK:
+            info->actionPointer = EndActiveCatch(ctx, ap);
             break;
-        }
-        case 15: {
-            if (catcher == p) {
+        case ACT_SPECIFICATION:
+            if (ap == catcher) {
                 return;
             }
-            p = DecodeUnsignedNumber(p + 1, &o.c15_specs);
-            p = DecodeUnsignedNumber(p, &o.c15_pcOffset);
-            p = DecodeSignedNumber(p, &o.c15_cinfoRef);
-            info->actionPointer = p + o.c15_specs * 4;
+            info->actionPointer = SkipSpecification(ap);
             break;
-        }
-        case 16: {
-            u8 *fn;
-            Dtor2Fn dtor;
-            u8 *obj;
-            s32 isReg;
-            isReg = action & 0x20;
-            p = DecodeSignedNumber(p + 1, &o.c16_objectPointer);
-            p = DecodeSignedNumber(p, &o.c16_offset);
-            fn = (u8 *)ReadWord(p);
-            p = DecodeSignedNumber(p + 4, &o.c16_offset2);
-            dtor = (Dtor2Fn)ReadWord(p);
-            p += 4;
-            if (isReg) {
-                obj = (u8 *)REG(context, o.c16_objectPointer);
-            } else {
-                obj = *(u8 **)(CFA(context) + o.c16_objectPointer);
-            }
-            dtor(obj + o.c16_offset, fn + o.c16_offset2);
-            info->actionPointer = p;
+        case ACT_CALL_MEMBER:
+            info->actionPointer = CallMember(ctx, flags, ap);
             break;
-        }
-        case 17: {
-            s32 flag;
-            Dtor2Fn dtor;
-            u8 *obj1;
-            u8 *obj2;
-            s32 isReg;
-            isReg = action & 0x20;
-            p = DecodeSignedNumber(p + 1, &o.c17_a);
-            p = DecodeSignedNumber(p, &o.c17_b);
-            flag = *p++ & 0x20;
-            p = DecodeSignedNumber(p, &o.c17_c);
-            p = DecodeSignedNumber(p, &o.c17_d);
-            dtor = (Dtor2Fn)ReadWord(p);
-            p += 4;
-            if (isReg) {
-                obj1 = (u8 *)REG(context, o.c17_a);
-            } else {
-                obj1 = *(u8 **)(CFA(context) + o.c17_a);
-            }
-            if (flag) {
-                obj2 = (u8 *)REG(context, o.c17_c);
-            } else {
-                obj2 = *(u8 **)(CFA(context) + o.c17_c);
-            }
-            dtor(obj1 + o.c17_b, obj2 + o.c17_d);
-            info->actionPointer = p;
+        case ACT_CALL_MEMBER_PAIR:
+            info->actionPointer = CallMemberPair(ctx, flags, ap);
             break;
-        }
-        case 18: {
-            s32 flag;
-            u8 *ptr;
-            DtorFn dtor;
-            u32 size;
-            u32 n;
-            s32 isReg;
-            isReg = action & 0x20;
-            p = DecodeSignedNumber(p + 1, &o.c18_a);
-            flag = *p++ & 0x20;
-            p = DecodeSignedNumber(p, &o.c18_b);
-            p = DecodeUnsignedNumber(p, &o.c18_elementSize);
-            dtor = (DtorFn)ReadWord(p);
-            p += 4;
-            if (isReg) {
-                ptr = (u8 *)REG(context, o.c18_a);
-            } else {
-                ptr = *(u8 **)(CFA(context) + o.c18_a);
-            }
-            if (flag) {
-                size = REG(context, o.c18_b);
-            } else {
-                size = *(u32 *)(CFA(context) + o.c18_b);
-            }
-            ptr += size;
-            for (n = size / o.c18_elementSize; n != 0; n--) {
-                ptr -= o.c18_elementSize;
-                dtor(ptr, -1);
-            }
-            info->actionPointer = p;
+        case ACT_DESTROY_SIZED_ARRAY:
+            info->actionPointer = DestroySizedArray(ctx, flags, ap);
             break;
-        }
-        case 19: {
-            info->actionPointer = DecodeSignedNumber(p + 1, &o.c19_x);
+        case ACT_NOP:
+            info->actionPointer = SkipNop(ap);
             break;
-        }
         default:
             _ZSt9terminatev();
             break;
         }
-        if (action & 0x80) {
+        if (flags & ACT_LAST) {
             info->actionPointer = NULL;
         }
     }
 }
 
-}
+#endif // NONMATCHING

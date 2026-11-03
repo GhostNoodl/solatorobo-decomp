@@ -1,6 +1,6 @@
 # Unmatched functions
 
-This is the list of every code function that does not match yet, for anyone who picks one up. Matched: 8,118 of
+This is the list of every code function that does not match yet, for anyone who picks one up. Matched: 8,115 of
 8,216 entries in `ninja report`. The other entries are not on this list: the BIOS stubs in `_dsd_gap@main_0`
 (`CpuSet`, `Div`, `Sqrt`, ...), the data gaps (`data_...`), and `__sinit_ov002_021ef1f0`.
 
@@ -49,6 +49,9 @@ its score here; if a draft gets better, update its row.
 
 | Address | Module | Size | File | Raw / masked | Blocker | Main rounds |
 |---|---|---|---|---|---|---|
+| `02008a20` | main | 0x2bc | `libs/runtime/ExceptionHandler_unwind.cpp` | 38 / 38 | NextAction, clean-room rewrite (whole-file draft, no delinks entry): every instruction matches but the stack offsets; the target reserves an unused 4-byte slot at sp+0x30 between the action-15 and action-16 operands, and no plausible source shape reserves it | rwA |
+| `02008cdc` | main | 0x834 | `libs/runtime/ExceptionHandler_unwind.cpp` | 463 / 460 | UnwindStack, clean-room rewrite (whole-file draft): the same unused sp+0x30 slot shifts every lower operand (most of the count), plus scheduling in the array-destroy cases and different cross-jump targets for the shared next-action stores | rwA |
+| `020096e4` | main | 0x60 | `libs/runtime/ExceptionHandler_unexp.cpp` | 2 / 0 | HandleUnexpected, clean-room rewrite (whole-file draft): the target sets up r2 for UnwindStack before it saves r0; no parameter type, pragma, compiler or permuter result moves it | smallsweep1, rwA |
 | `0200d36c` | main | 0x11c | `libs/nitro/card/card_rom.c` | 5 / 0 | CARDi_ReadRomWithCPU (SDK, -O2 + opt_propagation off): the read loop's word/data/ctrl get r1/r0/r2, the ROM r3/r1/r2; data is a codegen temp, so no object lever reaches it | raB, raC, raE, rgB, cvA |
 | `0202b048` | main | 0x180 | `libs/nnsys/g3d/nsbca.c` | 15 / 1 | honest form of a fake-parameter match: A, B and pNd are locals again (the match declared them as trailing parameters) | auA |
 | `0203a984` | main | 0x12c | `src/Main/Gfx/GfxMgr_3.cpp` | 10 / 0 | colouring of codegen temps only (the blocks[i] load and the (addr >> 5) >> shift temp); every order and type of the named locals stays at 10 | mainbig5, raC, rgB, nmA, mtA, cvA |
