@@ -61,9 +61,9 @@ void func_ov002_021dfcc0(Obj021eff30 *self) {
     Obj021efe6c *cam;
     void *mgr;
     Obj021efe9c *cur;
-    u8 *pad = (u8 *)data_02097dc8;
-    s32 trg = FIELD(pad, 0x12, u16);
-    u16 rep = FIELD(pad, 0x16, u16);
+    Pad *pad = data_02097dc8;
+    s32 trg = pad->trig;
+    u16 rep = pad->repeat;
     Obj021efe6c *unit = GetUnit021dfcc0(self);
     mgr = GetMgr021dfcc0();
     Ov002Shape *map;

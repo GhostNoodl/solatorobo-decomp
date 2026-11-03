@@ -3,7 +3,7 @@
 
 extern "C" {
 extern char data_ov000_021cc9e9[];
-BOOL Obj02152e5c_LoadModel(void *self);
+BOOL Obj02152e5c_LoadModel(UiObj *self);
 void func_ov000_0215ec44(UiPanel *self);
 void Obj0215e8b0_LoadModel(UiPanel *self);
 

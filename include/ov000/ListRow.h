@@ -23,7 +23,7 @@ struct ObjBase021cac0c_021cb6f0;
 // 0x30 bytes.
 struct ListRow : public VObj {
     s32 index; // 0x04 set by the creator; LoBase021ccb54_021ccbe0_FindRow looks a row up by it
-    u8 unk_08[0x4];
+    s32 unk_08; // ov002's lists keep the row's Param id here (Task021efa1c_Start)
     s32 x; // 0x0c draw position (fx32), set by func_ov000_021c5028 before the draw slot
     s32 y;
     s32 z;

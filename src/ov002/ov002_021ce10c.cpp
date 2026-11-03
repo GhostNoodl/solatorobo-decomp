@@ -23,9 +23,9 @@ void Task021ef430_Start(Task021ef430 *self) {
     self->unk_3c->flags |= 2;
     TexObj_SelectImage((Model *)self->unk_3c, 0, 0);
     {
-        void *p = self->unk_3c;
-        FIELD(p, 0xfc, s32) = 0;
-        FIELD(p, 0x100, s32) = 0;
+        Model *p = self->unk_3c;
+        p->x = 0;
+        p->y = 0;
     }
     self->unk_3c->unk_150 = -0x1fe66;
     self->parent = NULL;

@@ -5,15 +5,15 @@ extern "C" {
 void Task021efa1c_UpdateActive(Task021efa1c *self) {
     u16 k = data_02097dc8->trig;
     if (k & 0x800) {
-        u8 *g = (u8 *)data_02097e48.queue;
-        if (FIELD(g, 0, Bits16).b3) {
-            FIELD(g, 0x6, u16) = 0x8000;
-            FIELD(g, 0x8, u16) = 10;
-            FIELD(g, 0x2, u16) = 0;
+        SndQueue *g = data_02097e48.queue;
+        if (g->flag3) {
+            g->unk_06 = 0x8000;
+            g->unk_08 = 10;
+            g->unk_02 = 0;
         }
-        g = (u8 *)data_02097e48.queue;
-        FIELD(g, 0x80, u16) = 0x8000;
-        FIELD(g, 0x7c, u16) = 0;
+        g = data_02097e48.queue;
+        g->unk_80 = 0x8000;
+        g->unk_7c = 0;
     }
     if (!(k & 2)) {
         return;

@@ -2,14 +2,16 @@
 
 extern "C" {
 
-int func_ov002_021e4674(void *a, void *b) {
+// Row comparators of the item list (data_ov002_021eef8c, func_ov002_021e34fc): by the item's
+// Param entry byte 2, then by id.
+int func_ov002_021e4674(Obj021f002c *a, Obj021f002c *b) {
     u8 ca;
     u16 ia;
     u16 ib;
     u8 cb;
     int r;
-    ia = FIELD(a, 0x38, u16);
-    ib = FIELD(b, 0x38, u16);
+    ia = a->id;
+    ib = b->id;
     ca = Param_GetEntry(ia)[2];
     cb = Param_GetEntry(ib)[2];
     if (ca == cb) {
@@ -28,14 +30,14 @@ int func_ov002_021e4674(void *a, void *b) {
     return r;
 }
 
-int func_ov002_021e46c4(void *a, void *b) {
+int func_ov002_021e46c4(Obj021f002c *a, Obj021f002c *b) {
     u8 ca;
     u16 ia;
     u16 ib;
     u8 cb;
     int r;
-    ia = FIELD(a, 0x38, u16);
-    ib = FIELD(b, 0x38, u16);
+    ia = a->id;
+    ib = b->id;
     ca = Param_GetEntry(ia)[2];
     cb = Param_GetEntry(ib)[2];
     if (ca == cb) {

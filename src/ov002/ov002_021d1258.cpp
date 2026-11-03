@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void SndQueue_Push_0204aab0(SndQueue *p);
+void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 void Task021ef4b0_FreeWindows(Task021ef4b0 *p);
 void func_ov002_021ce660(Task021ef4b0 *p, u32 a);
 BOOL func_ov002_021d166c(Task021ef71c *self);
@@ -36,7 +36,7 @@ static inline void ov002_PlayBgm(u16 id) {
         if (m->unk_06 != 0xffff || m->unk_04 != id) {
             if (m->unk_02 != 10 && m->unk_02 != 0) {
                 if (m->unk_06 != 0xffff) {
-                    SndQueue_Push_0204aab0(m);
+                    SndQueue_Push_0204aab0(m, m->unk_06);
                 }
                 m->unk_02 = 1;
             } else {

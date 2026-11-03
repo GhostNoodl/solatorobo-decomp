@@ -2,11 +2,11 @@
 
 extern "C" {
 
-static inline bool isState5(void *p) {
-    return FIELD(p, 0x4, s32) == 5;
+static inline bool isState5(UiObj *p) {
+    return p->state == 5;
 }
 
-void Lo021cae48_SetValue(void *a, u16 b, int c);
+void Lo021cae48_SetValue(Lo021cae48 *self, s32 value, BOOL both);
 
 
 void *func_ov002_021e3874(s32 *v, int a, int b);
@@ -27,17 +27,17 @@ void func_ov002_021dd130(Obj021eff10 *self) {
     }
     e = self->owner->board;
     if (self->unk_1c == 0) {
-        u16 y = FIELD(((u8 *)self->unk_2c), 0xa8, u16);
+        u16 y = self->unk_2c->unk_a8;
         u16 x = ((u16)e->unk_8a);
         e->unk_8a = x > y ? x - y : 0;
-        Lo021cae48_SetValue(FIELD(((u8 *)self->owner), 0x24, void *), ((u16)e->unk_8a), 0);
+        Lo021cae48_SetValue(self->owner->unk_24, ((u16)e->unk_8a), 0);
         Obj021efe6c_RemovePiece(e, self->unk_2c, 1);
         SndMgr_PlayVolume(data_02097e4c, 0x6e, -1, -1, -1);
         SndMgr_PlayVolume(data_02097e4c, 0x44, -1, -1, -1);
-        a[0] = FIELD(((u8 *)self->unk_2c), 0x54, s32);
-        a[1] = FIELD(((u8 *)self->unk_2c), 0x58, s32);
-        b[0] = FIELD(((u8 *)self->unk_2c), 0x64, s32);
-        b[1] = FIELD(((u8 *)self->unk_2c), 0x68, s32);
+        a[0] = self->unk_2c->unk_54;
+        a[1] = self->unk_2c->unk_58;
+        b[0] = self->unk_2c->unk_64;
+        b[1] = self->unk_2c->unk_68;
         Ov002_CellToPos(out, a, b);
         out[1] = 0x266;
         func_ov002_021e3874(out, 0x80, 1);
@@ -50,8 +50,8 @@ void func_ov002_021dd130(Obj021eff10 *self) {
     self->unk_2c = NULL;
 }
 
-static inline bool ov002_flag1(void *p) {
-    return FIELD(p, 0xc, Bits32).b1;
+static inline bool ov002_flag1(UiObj *p) {
+    return p->hidden;
 }
 
 
@@ -184,15 +184,15 @@ extern VFunc data_ov000_021cb0b8[];
 
 BOOL func_ov002_021e046c(UiList *self, UiListItem *item);
 
-void *func_ov002_021dd6a4(Obj021eff10 *self, s32 a, u16 b) {
-    UiObj *p;
+void *func_ov002_021dd6a4(Obj021eff10 *self, char *text, u16 msgId) {
+    Lo021cb0b8 *p;
     {
         void *saved;
         HEAP_PUSH(saved);
         DELETE_VOBJ(self->unk_0c);
         HEAP_POP(saved);
     }
-    p = (UiObj *)Heap_Alloc(0x1e4);
+    p = (Lo021cb0b8 *)Heap_Alloc(0x1e4);
     if (p != NULL) {
         *(VFunc **)p = data_ov000_021cac60;
         p->vfunc_28();
@@ -203,10 +203,10 @@ void *func_ov002_021dd6a4(Obj021eff10 *self, s32 a, u16 b) {
         *(VFunc **)p = data_ov000_021cb0b8;
         p->vfunc_28();
     }
-    self->unk_0c = (LoBase021cafc0_021cb0b8 *)p;
-    FIELD(p, 0x1d8, u16) = b;
-    FIELD(self->unk_0c, 0x1dc, s32) = a;
-    FIELD(self->unk_0c, 0x1e0, u16) = 1;
+    self->unk_0c = p;
+    p->msgId = msgId;
+    self->unk_0c->text = text;
+    self->unk_0c->key = 1;
     self->unk_0c->onDecide = func_ov002_021e046c;
     self->unk_0c->owner = (u8 *)self + 0x1c;
     self->unk_0c->vfunc_08();

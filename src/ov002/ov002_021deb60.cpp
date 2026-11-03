@@ -6,8 +6,8 @@ void func_ov002_021dedf0(Obj021efef0 *self);
 
 void Ov002_CellXZToPos(s32 *out, s32 x, s32 z, s32 *origin);
 
-static inline bool isState5(void *p) {
-    return FIELD(p, 0x4, s32) == 5;
+static inline bool isState5(UiObj *p) {
+    return p->state == 5;
 }
 
 static inline void updateModel(Obj021efe8c *m) {
@@ -29,7 +29,7 @@ static inline void updateModel(Obj021efe8c *m) {
 }
 
 void func_ov002_021deb60(Obj021efef0 *self, Obj021eff50 *a) {
-    VObj *c;
+    Ov002RowList *c;
     Obj021efe8c *m;
     self->owner = a;
     self->unk_08->vfunc_20();
@@ -70,24 +70,24 @@ void func_ov002_021dec74(Obj021efef0 *self) {
     u16 btn = data_02097dc8->trig;
     BOOL ch;
     if (btn & 2) {
-        self->unk_24 = 0;
+        self->unk_24 = NULL;
         SndMgr_PlayVolume(data_02097e4c, 0x1f, -1, -1, -1);
         self->unk_1c = 0;
         return;
     }
     if (self->unk_23) {
-        self->unk_24 = FIELD(self->unk_0c, 0xa4, s32);
+        self->unk_24 = self->unk_0c->unk_a4;
         self->unk_23 = 0;
         self->unk_1c = 0x14;
         return;
     }
     if (self->unk_22) {
-        void *t = ((void *)self->unk_0c->unk_a0);
+        Obj021f002c *t = (Obj021f002c *)self->unk_0c->unk_a0;
         if (t != NULL) {
             Obj021eff50 *w;
-            func_0206ecd4(0x100, (u8 *)self + 0x38, FIELD(t, 0x38, u16));
+            func_0206ecd4(0x100, self->unk_38, t->id);
             w = self->owner;
-            Obj0215bb14_SetText(((void *)w->unk_20), (u8 *)self + 0x38);
+            Obj0215bb14_SetText(w->unk_20, self->unk_38);
             w->unk_20->vfunc_70();
         }
         self->unk_22 = 0;

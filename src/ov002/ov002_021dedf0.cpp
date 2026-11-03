@@ -36,15 +36,15 @@ void func_ov002_021dedf0(Obj021efef0 *self, s32 i) {
     s32 j;
     s32 rows;
     s32 cols;
-    u8 *t;
+    Obj021f002c *t;
     Vec2 pos;
     Vec2 org;
     Vec2 v;
     Vec2 out;
     sh = NULL;
-    t = FIELD(((u8 *)self->unk_0c), 0xa0, u8 *);
+    t = (Obj021f002c *)self->unk_0c->unk_a0;
     if (t != NULL) {
-        sh = func_02070dcc(Param_GetEntry(FIELD(t, 0x38, u16))[1]);
+        sh = func_02070dcc(Param_GetEntry(t->id)[1]);
     }
     pos.x = self->unk_2c;
     pos.y = self->unk_30;

@@ -53,8 +53,8 @@ void func_ov002_021d5f60(Task021efc24 *self) {
     SndMgr_PlayVolume(data_02097e4c, 0x44, -1, -1, -1);
 }
 
-static inline bool isState5(void *p) {
-    return FIELD(p, 0x4, s32) == 5;
+static inline bool isState5(UiObj *p) {
+    return p->state == 5;
 }
 
 void func_ov000_021c95fc(void *p);
@@ -63,18 +63,6 @@ BOOL MsgBox_Update(void *p);
 
 void ModelViewer_Update(void *p);
 
-static inline void *ov002_cursor60dc(void *g) {
-    u8 *p = FIELD(g, 0x98, u8 *);
-    if (p == NULL) {
-        p = NULL;
-    } else {
-        s32 n = FIELD(g, 0xb1, s8);
-        while (n-- != 0) {
-            p = FIELD(p, 0x2c, u8 *);
-        }
-    }
-    return p;
-}
 
 void Task021efc24_PreUpdate(Task021efc24 *self) {
     switch (self->state) {
@@ -111,7 +99,6 @@ void Task021efc24_PreUpdate(Task021efc24 *self) {
     }
     ModelViewer_Update(self->unk_58);
     if (self->unk_5c != NULL && !MsgBox_Update(self->unk_5c)) {
-        u8 *p;
         u16 id;
         Task021efba4 *x;
         {
@@ -124,8 +111,7 @@ void Task021efc24_PreUpdate(Task021efc24 *self) {
         self->unk_54->flags &= ~4;
         self->unk_54->flags &= ~2;
         self->unk_54->vfunc_1c();
-        p = (u8 *)ov002_cursor60dc(self->unk_50);
-        id = FIELD(p, 6, u16);
+        id = UiList_GetCurrent(self->unk_50)->id;
         if (self->unk_54 != NULL) {
             Obj0215bb14_SetText(self->unk_54, func_0206ec8c(id));
             self->unk_54->vfunc_70();

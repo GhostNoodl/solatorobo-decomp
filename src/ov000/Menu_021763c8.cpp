@@ -22,6 +22,9 @@
 #include "ov000/Actor.h"
 #include "ov000/UiObj.h"
 #include "Main/Save/GameSave.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Gfx/TexObj.h"
+#include "Main/Res/StageRes.h"
 
 extern "C" {
 
@@ -757,11 +760,7 @@ typedef struct {
 extern "C" {
 
 extern Task *(*const data_ov000_021c9c6c[])(void);
-extern void *data_02097e4c;
 extern Player02173a5c *data_ov000_021ccd54;
-void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
-void SndMgr_PauseAll(void *a);
-void SndMgr_ResumeAll(void *a);
 void Gfx3DState_Apply(void *p);
 
 static inline Task *TaskList_Find(s32 id) {
@@ -1023,7 +1022,7 @@ void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 s32 FX_Div(s32 a, s32 b);
 void Gfx3D_SendDL(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
-void func_ov000_0217558c(void *self);
+void func_ov000_0217558c(Task021cbbe0 *self);
 
 VObj *Task021cbbe0_New(void) {
     Task021cbbe0 *obj = (Task021cbbe0 *)Heap_Alloc(0x4b0);
@@ -1069,15 +1068,12 @@ typedef struct {
 
 extern "C" {
 
-struct Lo02174168 {
-    u8 unk_00[0x70];
-    u32 unk_70;
-};
-
-Glyph02174168 *func_ov000_02174168(Lo02174168 *self, u16 *cmd, Glyph02174168 *arr, u16 *count) {
+// The OAM callback of Task021cbbe0_Start's model (TexObj_SetAllOamFuncs sets it on every entry):
+// entry 6 draws the model's unk_070 as entry->unk_08 digits.
+Glyph02174168 *func_ov000_02174168(TexObj *self, TexObjEntry *cmd, Glyph02174168 *arr, u16 *count) {
     u16 n = *count;
     Glyph02174168 *last = &arr[n - 1];
-    if (*cmd == 6) {
+    if (cmd->index == 6) {
         u32 base;
         u32 v;
         BOOL started;
@@ -1086,12 +1082,12 @@ Glyph02174168 *func_ov000_02174168(Lo02174168 *self, u16 *cmd, Glyph02174168 *ar
         s32 digits;
         s32 i;
         u32 d;
-        digits = LFLD(s32, cmd, 0x8);
+        digits = cmd->unk_08;
         started = FALSE;
         x = started;
         n = started;
         base = last->chr;
-        v = self->unk_70;
+        v = self->unk_070;
         div = 1;
         for (i = started; i < digits - 1; i++) {
             div *= 10;
@@ -1149,9 +1145,7 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_02097e4c;
 
-void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 BOOL func_ov000_0214c270(void);
 
 void Task021cbbe0_List40OnState(Obj021742b4 *self) {
@@ -1212,9 +1206,7 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_02097e4c;
 
-void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 BOOL func_ov000_0214c270(void);
 
 void Task021cbbe0_Load(void) {
@@ -1367,11 +1359,9 @@ public:
 
 extern "C" {
 void *Heap_Alloc(u32 size);
-void TaskList_Insert(void *self);
+void TaskList_Insert(Task *self);
 extern void *data_02149ef8;
-extern void *data_02fe152c;
 extern u8 *data_ov000_021ccd54;
-extern u8 *data_02097ce0;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb5a8[];
@@ -1384,7 +1374,7 @@ extern void *data_0208cc94;
 extern void *data_0208cc88;
 extern s32 data_02097d78[];
 void *MsgRes_GetString(void *g, s32 id);
-void *UiList_GetItemById(void *p, u16 a);
+UiListItem *UiList_GetItemById(void *p, u16 a);
 u16 DataRes_ReadEntry(void *a, u32 b, s32 c, s32 d);
 void *SceneStage_GetScript(void *a, u16 b);
 void *DataRes_GetTable(void *a, u32 b);
@@ -1403,7 +1393,7 @@ void TextWin_RenderToVram(void *p);
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
 void Task021cbbe0_List40OnState(Obj021742b4 *self);
 BOOL Task021cbbe0_List40OnDecide(Obj021742b4 *self, Msg021742c8 *msg);
-struct Glyph02174168 *func_ov000_02174168(u8 *self, u16 *cmd, struct Glyph02174168 *arr, u16 *count);
+struct Glyph02174168 *func_ov000_02174168(TexObj *self, TexObjEntry *cmd, struct Glyph02174168 *arr, u16 *count);
 
 static inline BOOL IsMode4_021743bc(void) {
     BOOL r;
@@ -1422,7 +1412,7 @@ static inline void InitWin021743bc(u8 *p, void *s) {
     W->str = (u32)s;
     W->font = 4;
     W->unk_4c = Text_Measure(W->font, W->spacing, (const char *)W->str, (s32 *)(p + 0x44), (s32 *)(p + 0x48), *(s8 *)&W->unk_37 != 0); // &width, &height; unk_37 read signed
-    LFLD(s32, data_02097ce0, 0x4) = W->font;
+    data_02097ce0->unk_004 = W->font;
     W->flags |= 0x40;
     W->flags |= 0x41000000;
     W->unk_78 = 0x8000;
@@ -1509,12 +1499,12 @@ void Task021cbbe0_Start(Task021cbbe0 *self) {
     ((MenuList021743bc *)self->unk_40)->AddItem((const char *)MsgRes_GetString(g, 0x112), 0xf, 0xffff, 0xffff);
     ((MenuList021743bc *)self->unk_40)->AddItem((const char *)MsgRes_GetString(g, 0x118), 5, 0xffff, 0xffff);
     if (DataRes_ReadEntry(data_02fe152c, 5, 1, 0) == 0) {
-        LFLD(s32, UiList_GetItemById(self->unk_40, 0x1a), 0x24) = 0xe;
+        UiList_GetItemById(self->unk_40, 0x1a)->unk_24 = 0xe;
     }
     if (SceneStage_GetScript(data_ov000_021ccd54 + 0xac, 0) == 0) {
-        LFLD(s32, UiList_GetItemById(self->unk_40, 0xf), 0x24) = 0xe;
+        UiList_GetItemById(self->unk_40, 0xf)->unk_24 = 0xe;
     }
-    sub = LFLD(void *, data_02fe152c, 0x4c);
+    sub = data_02fe152c->data;
     a = DataRes_GetTable(data_02fe152c, 3);
     n = DataRes_GetCount(data_02fe152c, 3);
     for (i = 0; i < n; i++) {
@@ -1526,7 +1516,7 @@ void Task021cbbe0_Start(Task021cbbe0 *self) {
     has = FALSE;
 found:
     if (!has) {
-        LFLD(s32, UiList_GetItemById(self->unk_40, 5), 0x24) = 0xe;
+        UiList_GetItemById(self->unk_40, 5)->unk_24 = 0xe;
     }
     {
         MenuList021743bc *t = (MenuList021743bc *)self->unk_40;
@@ -1990,8 +1980,6 @@ extern "C" {
 extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -2068,8 +2056,6 @@ extern "C" {
 extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -2118,8 +2104,6 @@ extern "C" {
 extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -2221,8 +2205,6 @@ extern "C" {
 extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -2293,8 +2275,6 @@ extern "C" {
 extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -2312,21 +2292,21 @@ static inline BOOL LoIsLoaded(void) {
 }
 
 void func_ov000_021762e4(void *a, s32 mode) {
-    Task *t = LoFindTask(4);
-    VObj *m;
-    void *r;
+    Task021cbee0 *t = (Task021cbee0 *)LoFindTask(4);
+    UiList021cb4a8 *m;
+    UiListItem *r;
     if (mode == 1 && func_0206f66c(a)) {
         return;
     }
-    m = LFLD(VObj *, t, 0x4c);
-    r = (void *)m->vfunc_74(Param_Get(a), a, (u16)func_0206f080(a), Param_GetValue(a));
+    m = t->unk_4c;
+    r = (UiListItem *)m->vfunc_74(Param_Get(a), a, (u16)func_0206f080(a), Param_GetValue(a));
     if (mode == 1 && func_0206f66c(a)) {
         mode = 0;
-        LFLD(s32, r, 0x10) = mode;
-        LFLD(s32, r, 0xc) = -1;
-        LFLD(s32, r, 0x24) = 0xe;
+        r->unk_10 = mode;
+        r->unk_0c = -1;
+        r->unk_24 = 0xe;
     }
-    LFLD(s32, r, 0x10) = mode;
+    r->unk_10 = mode;
 }
 
 }
@@ -2342,9 +2322,7 @@ extern u8 data_0208bf54[];
 extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
-extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
@@ -2389,8 +2367,6 @@ extern "C" {
 extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -2461,9 +2437,7 @@ extern u8 data_0208bf54[];
 extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
-extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
@@ -2508,8 +2482,6 @@ extern "C" {
 extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -2551,7 +2523,6 @@ typedef struct {
 
 extern "C" {
 extern void *data_02149ef8;
-extern void *data_02fe152c;
 extern Shared02fe1534 data_02fe1534;
 extern void *data_0208ccc8;
 extern u8 data_ov000_021cac60[];
@@ -2566,8 +2537,8 @@ BOOL StageRes_Bind(void *p);
 void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 void Obj0215d990_SetMsg(void *self, s32 a);
 void Obj0215bb14_SetText(void *o, void *s);
-void UiList021cb4a8_SetLabel(void *self, void *a);
-void UiList021cb4a8_SetCenteredLabel(void *self, void *arg);
+void UiList021cb4a8_SetLabel(UiList021cb4a8 *self, void *a);
+void UiList021cb4a8_SetCenteredLabel(UiList021cb4a8 *self, void *arg);
 void UiList_SetIconModel(void *a, const void *b, const char *c, u16 d);
 s32 func_ov000_02184a04(s32 x);
 u8 *DataRes_GetTable(void *a, s32 b);
@@ -2758,7 +2729,7 @@ void Task021cbee0_Start(Task021cbee0 *self) {
             u8 *base;
             u16 i;
             u32 n;
-            base = LFLD(u8 *, data_02fe152c, 0x4c) + 0x130;
+            base = data_02fe152c->data + 0x130;
             o = (VObj *)DataRes_GetTable(data_02fe152c, 9);
             n = DataRes_GetCount(data_02fe152c, 9);
             for (i = 0; i < n; i++) {
@@ -2808,7 +2779,7 @@ void Task021cbee0_Start(Task021cbee0 *self) {
     self->unk_4c->onCursor = (UiItemFn)Task021cbee0_List4cOnCursor;
     {
         UiList021cb4a8 *t = self->unk_4c;
-        t->vfunc_a8(LFLD(s32, t, 0x98));
+        t->vfunc_a8(t->topItem);
     }
     self->unk_4c->vfunc_08();
     if ((void *)self->unk_50 == NULL) {
@@ -2833,8 +2804,6 @@ extern "C" {
 extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0206f66c(void *p);
 s32 Param_Get(void *p);
@@ -3023,12 +2992,10 @@ typedef struct {
 } Self021774a4;
 
 extern "C" {
-extern void *data_02097e4c;
 extern void *data_02149ef8;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
 void *Heap_Alloc(u32 size);
-void *SndMgr_PlayVolume(void *a, s32 b, s32 c, s32 d, s32 e);
 s32 MsgRes_GetString(void *msg, s32 id);
 void Obj0215c1bc_SetText(void *p, s32 a, s32 b);
 void func_ov000_02152294(void *self, s32 a, s32 b, void *cb);
@@ -3101,10 +3068,8 @@ typedef struct {
 
 extern "C" {
 extern Data02fe1534 data_02fe1534;
-extern void *data_02097e4c;
 void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 u8 StageFlags_CountEntries(void *a, u16 b);
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 static inline UiListItem *GetNth(UiList *m) {
     UiListItem *p = m->topItem;
@@ -3195,7 +3160,7 @@ extern "C" {
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
 BOOL Item_Give(u16 a, s32 b);
-void Obj0215c1bc_SetText(void *self, s32 id, void *v);
+void Obj0215c1bc_SetText(Lo021cad50 *self, s32 id, void *v);
 void Obj02153c48_CreateText(UiListItem *self, s32 a, BOOL show, BOOL center, u8 d);
 
 static inline void ShowMsg021778f0(Task021cbee0 *self, s32 msg) {
@@ -3353,9 +3318,7 @@ extern u8 data_0208bf54[];
 extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
-extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
@@ -3396,8 +3359,6 @@ namespace m_Lo_02177f40 {
 
 extern "C" {
 
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 
 BOOL Task021cbe60_List3cOnDecide(UiList *self, UiListItem *msg) {
@@ -3441,9 +3402,7 @@ extern u8 data_0208bf54[];
 extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
-extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
@@ -3458,22 +3417,23 @@ void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
 
 BOOL Task021cbe60_List3cOnCursor(UiList *self, UiListItem *msg) {
-    void *o = (Task021cbe60 *)self->owner; // reused below for the 0x4c window
+    Task021cbe60 *o = (Task021cbe60 *)self->owner;
     if (msg == NULL || msg->id == 0xffff) {
-        VObj *p = LFLD(VObj *, o, 0x40);
+        Lo021cadcc *p = o->unk_40;
         Obj0215bb14_SetText(p, MsgRes_GetString(data_02149ef8, 0x9d));
         p->vfunc_70();
     } else {
-        VObj *p = LFLD(VObj *, o, 0x40);
-        func_0206ecd4(0x100, (u8 *)o + 0x58, msg->id);
-        Obj0215bb14_SetText(p, (u8 *)o + 0x58);
+        Lo021cadcc *p = o->unk_40;
+        Lo021cae48 *n;
+        func_0206ecd4(0x100, o->unk_58, msg->id);
+        Obj0215bb14_SetText(p, o->unk_58);
         p->vfunc_70();
-        if (LFLD(void *, o, 0x48) != NULL) {
-            Lo021cae48_SetValue(LFLD(void *, o, 0x48), data_0214a424->items[(u16)(msg->id & 0xfff)], 1);
+        if (o->unk_48 != NULL) {
+            Lo021cae48_SetValue(o->unk_48, data_0214a424->items[(u16)(msg->id & 0xfff)], 1);
         }
-        o = LFLD(void *, o, 0x4c);
-        if (o != NULL) {
-            Lo021cae48_SetValue(o, StageFlags_CountEntries(data_0214a424, msg->id), 1);
+        n = o->unk_4c;
+        if (n != NULL) {
+            Lo021cae48_SetValue(n, StageFlags_CountEntries(data_0214a424, msg->id), 1);
         }
     }
     return TRUE;
@@ -3494,15 +3454,13 @@ extern u8 data_ov000_021cbf60[];
 extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 UiList_GetItemById(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void Obj0215bb14_SetText(void *a, void *b);
 BOOL Item_Give(u16 a, s32 b);
 void *ResMgr_Load(void *a, s32 b, s32 c);
 s32 ResMgr_IsLoaded(void *a, s32 b);
-BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
+BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 b);
 
 
 void func_ov000_02178100(Lo021cacd8 *self, BOOL add) {
@@ -3567,8 +3525,8 @@ void Obj0215bb14_SetText(void *o, void *s);
 void Lo021cae48_SetValue(void *a, s32 b, s32 c);
 void Obj0215d990_SetMsg(void *self, s32 a);
 void func_ov000_02160fc8(void *self);
-void UiList021cb4a8_SetLabel(void *self, void *a);
-void UiList021cb4a8_SetCenteredLabel(void *self, void *arg);
+void UiList021cb4a8_SetLabel(UiList021cb4a8 *self, void *a);
+void UiList021cb4a8_SetCenteredLabel(UiList021cb4a8 *self, void *arg);
 void UiList_SetIconModel(void *a, const void *b, const char *c, u16 d);
 s32 UiList_GetItemById(void *p, s32 a);
 s32 Param_Get(u16 id);
@@ -3588,7 +3546,7 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     s32 a;
     s32 b;
     u16 id;
-    u8 *e;
+    UiListItem *e;
     VObj *o;
     g = data_02149ef8;
     TaskList_Insert(self);
@@ -3778,11 +3736,11 @@ void Task021cbe60_Start(Task021cbe60 *self, void *g) {
     for (i = 0; i < 0x53; i++) {
         id = i + 0x2000;
         if (data_0214a424->items[ItemIdx021782e0(id)] != 0) {
-            o = LFLD(VObj *, LoFindTask(10), 0x3c);
+            o = ((Task021cbe60 *)LoFindTask(10))->unk_3c;
             a = Param_Get(id);
             b = func_0206f080(id);
-            e = (u8 *)o->vfunc_74(a, id, (u16)b, Param_GetValue(id) >> 2);
-            LFLD(s32, e, 0x10) = *Param_GetEntry(id);
+            e = (UiListItem *)o->vfunc_74(a, id, (u16)b, Param_GetValue(id) >> 2);
+            e->unk_10 = *Param_GetEntry(id);
         }
     }
     {
@@ -3806,9 +3764,7 @@ extern u8 data_0208bf54[];
 extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
-extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
@@ -3854,8 +3810,6 @@ void Task021cbe60_UpdateActive(Task021cbe60 *self) {
 namespace m_Lo_02178b10 {
 
 extern "C" {
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 id, s32 a, s32 b, s32 c);
 
 void Task021cbe60_PreUpdate(Task021cbe60 *self) {
     switch (self->state) {
@@ -3917,9 +3871,7 @@ extern u8 data_0208bf54[];
 extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbe60[];
 extern void *data_02149ef8;
-extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 void StageRes_Init(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
@@ -4046,12 +3998,10 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern void *data_02097e4c;
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void Task021cbde0_Load(Task021cbde0 *self) {
     u8 buf[0x20];
@@ -4080,14 +4030,13 @@ BOOL Task021cbde0_IsLoaded(Task021cbde0 *self) {
 }
 
 extern void *data_02149ef8;
-extern u8 *data_02fe152c;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb5a8[];
 extern u8 data_ov000_021ccbe0[];
 extern u8 data_ov000_021cbac8[];
 extern u8 data_ov000_021cca10[];
-void TaskList_Insert(void *self);
+void TaskList_Insert(Task *self);
 BOOL MsgRes_Bind(void *p);
 void *MsgRes_GetString(void *g, s32 id);
 void func_ov000_021c3af4(void *self);
@@ -4157,15 +4106,15 @@ void Task021cbde0_Start(Task021cbde0 *self) {
     s->posZ = -0x1ccd;
     self->unk_44->onDecide = (void *)func_ov000_02179910;
     {
-        u8 *base = LFLD(u8 *, data_02fe152c, 0x4c);
+        u8 *base = data_02fe152c->data;
         u16 i;
-        u8 *tbl = (u8 *)DataRes_GetTable(data_02fe152c, 3);
+        SaveEntry *tbl = (SaveEntry *)DataRes_GetTable(data_02fe152c, 3);
         u32 n = DataRes_GetCount(data_02fe152c, 3);
         u16 used[0x40];
         MI_CpuFill8(used, 0, sizeof(used));
         for (i = 0; i < n; i++) {
             if (DataRes_ReadBitsAt_02059544(data_02fe152c, base + 0x70, tbl, 1, i)) {
-                used[LFLD(u16, tbl + i * 4, 2)] = i + 1;
+                used[tbl[i].id] = i + 1;
             }
         }
         for (i = 0; i < 0x40; i++) {
@@ -4198,12 +4147,10 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern void *data_02097e4c;
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void Task021cbde0_Init(Task021cbde0 *self) {
     self->fadeLen = 0x1000;
@@ -4256,12 +4203,10 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern void *data_02097e4c;
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void Task021cbde0_UpdateActive(Task021cbde0 *self) {
     LoBase021ccb54_021ccbe0 *p = self->unk_44;
@@ -4352,7 +4297,7 @@ void Task021cbde0_PostUpdate(Task021cbde0 *self) {
                     p->numLines = n;
                 }
                 ((SlideWin *)self->unk_50)->mode = 4;
-                LFLD(u32, self->unk_50, 0xbc) |= 0x80;
+                ((SlideWin *)self->unk_50)->unk_bc_7 = 1;
                 ((SlideWin *)self->unk_50)->flags |= 4;
                 self->unk_4c = 0xffff;
                 self->unk_48 = 1;
@@ -4388,8 +4333,6 @@ namespace m_Lo_0217987c {
 
 extern "C" {
 
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0216f23c(void *p, s32 a);
 
 void Task021cbde0_Draw(Task021cbde0 *self) {
@@ -4423,7 +4366,7 @@ BOOL func_ov000_02179910(UiList *self, UiListItem *msg) {
     if (msg == NULL) {
         return FALSE;
     }
-    o->unk_4c = LFLD(s32, msg, 4);
+    o->unk_4c = LFLD(s32, msg, 4); // the item's index and id as one word, truncated to the index
     if (o->unk_40 != NULL) {
         o->unk_40->hidden = 1;
     }
@@ -4470,12 +4413,10 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern void *data_02097e4c;
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void Task021cbd60_Load(Task021cbd60 *self) {
     u8 buf[0x20];
@@ -4521,7 +4462,7 @@ void *Heap_Alloc(u32 size);
 BOOL MsgRes_Bind(void *p);
 void *MsgRes_GetString(void *g, u32 id);
 void Obj0215bb14_SetText(void *o, void *s);
-void TaskList_Insert(void *self);
+void TaskList_Insert(Task *self);
 
 void Task021cbd60_Start(Task021cbd60 *self) {
     VObj *o;
@@ -4613,12 +4554,10 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern void *data_02097e4c;
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void Task021cbd60_Init(Task021cbd60 *self) {
     self->fadeLen = 0x1000;
@@ -4670,12 +4609,10 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern void *data_02097e4c;
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void Task021cbd60_PostUpdate(Task021cbd60 *self) {
     s32 n;
@@ -4847,12 +4784,10 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern void *data_02097e4c;
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void Task021cbc60_IsLoaded(void) {
     LoTaskObj()->vfunc_2c();
@@ -4907,12 +4842,10 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
-extern void *data_02097e4c;
 void MsgRes_Reset_0204bfcc(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void MsgRes_OpenLocalized(void *p, void *buf, const void *s);
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void Task021cbc60_Init(Task021cbc60 *self) {
     self->fadeLen = 0x1000;
@@ -5000,12 +4933,10 @@ void Task021cbc60_PreUpdate(void) {
 namespace m_Lo_0217a480 {
 
 extern "C" {
-extern void *data_02097e4c;
 void func_0206c620(void *p);
 void func_0206c670(void *p);
 void func_ov000_0217a328(Task021cbc60 *self, s32 a, s32 b);
 BOOL Task021cbc60_Task3Callback(void *self, s32 msg);
-void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 
 static inline u8 Raw0217a480(StageFlags *g) {
     return g->unk_518_16;
@@ -5287,15 +5218,13 @@ extern u8 data_ov000_021cbf60[];
 extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 UiList_GetItemById(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void Obj0215bb14_SetText(void *a, void *b);
 BOOL Item_Give(u16 a, s32 b);
 void *ResMgr_Load(void *a, s32 b, s32 c);
 s32 ResMgr_IsLoaded(void *a, s32 b);
-BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
+BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 b);
 
 void Task021cbb60_Load(Task021cbb60 *self) {
     VObj *obj = (VObj *)Heap_Alloc(0x4c);
@@ -5400,15 +5329,13 @@ extern u8 data_ov000_021cbf60[];
 extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 UiList_GetItemById(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void Obj0215bb14_SetText(void *a, void *b);
 BOOL Item_Give(u16 a, s32 b);
 void *ResMgr_Load(void *a, s32 b, s32 c);
 s32 ResMgr_IsLoaded(void *a, s32 b);
-BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
+BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 b);
 
 void Task021cbb60_Init(Task021cbb60 *self) {
     s32 i;
@@ -5904,7 +5831,7 @@ extern "C" {
 u32 Rand_GetGlobal(void);
 void Obj0215fdfc_SetRange(void *self, s32 a, s32 b);
 void func_ov000_021c216c(void *p);
-void func_ov000_0216c954(void *self, u16 a, s32 b);
+void func_ov000_0216c954(Obj0216c954 *self, u16 a, s32 b);
 
 BOOL func_ov000_0217bf34(Task021cbb60 *self) {
     VObj *o = self->unk_64;
@@ -5952,7 +5879,7 @@ void Task021cbb60_PreUpdate(void) {
 namespace m_Lo_0217c008 {
 
 extern "C" {
-BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
+BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 b);
 BOOL Task021cbb60_Task3Callback(void);
 BOOL func_ov000_0217bf34(Task021cbb60 *self);
 void func_ov000_0217c3b0(Task021cbb60 *self);
@@ -6333,7 +6260,7 @@ void Loader_Start(void *p, void *name);
 BOOL Loader_IsDone(void *p);
 u8 func_ov000_0214b8f4(void *p);
 s32 Twl0214b570_GetStatus(void *p);
-BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
+BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 b);
 
 static inline BOOL HasFlag0217cddc(Task021cbb60 *self, u32 bit) {
     return (self->unk_04 & bit) ? TRUE : FALSE;
@@ -6454,7 +6381,7 @@ namespace m_Lo_0217d0c4 {
 extern "C" {
 
 void StageFlags_Reset(void *p);
-BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
+BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 b);
 
 static inline BOOL Ready0217d0c4(Lo021cad50 *o) {
     return (o->flags & 0x10000) ? FALSE : TRUE;
@@ -6685,11 +6612,9 @@ namespace m_Lo_0217d66c {
 
 extern "C" {
 
-extern void *data_02097e4c;
 BOOL Vram_IsIdle(void);
-void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_ov000_0217b324(void *self, s32 a);
-BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
+BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 b);
 
 static inline BOOL Ready0217d66c(Lo021cad50 *o) {
     return (o->flags & 0x10000) ? FALSE : TRUE;
@@ -6993,15 +6918,13 @@ extern u8 data_ov000_021cbf60[];
 extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 UiList_GetItemById(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void Obj0215bb14_SetText(void *a, void *b);
 BOOL Item_Give(u16 a, s32 b);
 void *ResMgr_Load(void *a, s32 b, s32 c);
 s32 ResMgr_IsLoaded(void *a, s32 b);
-BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
+BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 b);
 
 void func_ov000_0217ddd4(Task021cbb60 *self) {
     switch (self->unk_48) {
@@ -7383,7 +7306,7 @@ struct Lo0217ea30 : public VObj {
     u8 unk_08[0x24];
     u8 *unk_2c;
     u8 unk_30[0xc];
-    VObj *unk_3c;
+    Lo021cb0b8 *unk_3c; // the message list (vtable data_ov000_021cb0b8)
     u8 unk_40[0x4];
     u16 unk_44;
 };
@@ -7391,7 +7314,7 @@ struct Lo0217ea30 : public VObj {
 s32 Task021cbae0_Task3Callback(Lo0217ea30 *self, s32 msg) {
     u8 *p = self->unk_2c;
     void *g;
-    VObj *o;
+    Lo021cb0b8 *o;
     struct Text0217ea30 text;
     switch (msg) {
     case 0:
@@ -7400,14 +7323,14 @@ s32 Task021cbae0_Task3Callback(Lo0217ea30 *self, s32 msg) {
                 g = data_02149ef8;
                 text.desc = MsgRes_GetString(g, 0x1d);
                 text.title = MsgRes_GetString(g, 0x8d);
-                o = (VObj *)new Obj0217ea30;
+                o = (Lo021cb0b8 *)new Obj0217ea30;
                 self->unk_3c = o;
                 o->vfunc_10(text.title);
             } else {
                 g = data_02149ef8;
                 text.desc = MsgRes_GetString(g, 0x1c);
                 text.title = MsgRes_GetString(g, 0x8d);
-                o = (VObj *)new Obj0217ea30;
+                o = (Lo021cb0b8 *)new Obj0217ea30;
                 self->unk_3c = o;
                 o->vfunc_10(text.title);
             }
@@ -7415,18 +7338,18 @@ s32 Task021cbae0_Task3Callback(Lo0217ea30 *self, s32 msg) {
             g = data_02149ef8;
             text.desc = MsgRes_GetString(g, 0x1e);
             text.title = MsgRes_GetString(g, 0x8d);
-            o = (VObj *)new Obj0217ea30;
+            o = (Lo021cb0b8 *)new Obj0217ea30;
             self->unk_3c = o;
             o->vfunc_10(text.title);
         }
-        LFLD(void *, self->unk_3c, 0x1dc) = text.desc;
-        LFLD(s16, self->unk_3c, 0x1e0) = 0;
-        LFLD(void *, self->unk_3c, 0x8) = self;
-        LFLD(void *, self->unk_3c, 0x84) = (void *)func_ov000_02175e6c;
+        self->unk_3c->text = (char *)text.desc;
+        self->unk_3c->key = 0;
+        self->unk_3c->owner = self;
+        self->unk_3c->onDecide = (UiItemFn)func_ov000_02175e6c;
         self->unk_3c->vfunc_08();
-        LFLD(s16, self->unk_3c, 0x68) = -0x1666;
+        self->unk_3c->posZ = -0x1666;
         self->unk_04.b0 = true;
-        LFLD(u32, self->unk_3c, 0xc) |= 0x4000000;
+        self->unk_3c->flags |= 0x4000000;
         break;
     case 2:
         if (StageFlags_IsValid()) {
@@ -7471,15 +7394,13 @@ extern u8 data_ov000_021cbf60[];
 extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 UiList_GetItemById(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void Obj0215bb14_SetText(void *a, void *b);
 BOOL Item_Give(u16 a, s32 b);
 void *ResMgr_Load(void *a, s32 b, s32 c);
 s32 ResMgr_IsLoaded(void *a, s32 b);
-BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
+BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 b);
 
 void Task021cbae0_IsLoaded(void) {
     LoTaskObj()->vfunc_2c();
@@ -7536,15 +7457,13 @@ namespace m_Lo_0217ef3c {
 extern "C" {
 
 extern s32 data_02097d78[];
-extern u8 *data_02097e48;
 extern void *data_02fe152c;
-extern u8 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern u8 *data_ov000_021ccd54;
 extern void *data_0214a420;
 extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd64;
 extern u8 data_0208b318[];
-extern void *data_02097e4c;
 u16 DataRes_ReadBitRange(void *p, s32 a, s32 b, s32 c);
 s32 Task021cbae0_Task3Callback(VObj *self, s32 msg);
 void MessageQueue_FreeBuffer(void *a, void *b);
@@ -7555,9 +7474,8 @@ void TexObj_Init(void *p, void *name, s32 c);
 void *STD_CopyString(void *dst, void *src);
 void TexObj_SetRes(void *model, void *a);
 void TexObj_SelectImage(void *model, s32 a, s32 b);
-void SndMgr_StopAllSeq(void *mgr, s32 a);
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);
-void SndQueue_Push_0204aab0(void *p);
+void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 void GfxSys_StartFadeOut(s32 a, s32 b, s32 c);
 void SceneCmd_Push21(void *p, s32 a);
 void func_ov000_02182b0c(void *p);
@@ -7565,13 +7483,6 @@ Robo021ca458 *ActorMgr_FindPlayer(void);
 void Robo021ca458_RestoreHp(void);
 void func_020623fc(void);
 void func_ov000_02182590(void *p);
-
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-} SndBits;
 
 typedef struct {
     u8 b0 : 2;
@@ -7610,15 +7521,15 @@ static inline BOOL FadeIdle(void) {
 }
 
 static inline void SndStop(void) {
-    u8 *p = data_02097e48;
-    if (LFLD(SndBits, p, 0).b3) {
-        LFLD(u16, p, 6) = 0x8000;
-        LFLD(u16, p, 8) = 0x3c;
-        LFLD(u16, p, 2) = 0;
+    SndQueue *p = data_02097e48.queue;
+    if (p->flag3) {
+        p->unk_06 = 0x8000;
+        p->unk_08 = 0x3c;
+        p->unk_02 = 0;
     }
-    p = data_02097e48;
-    LFLD(u16, p, 0x74) = 0x8000;
-    LFLD(u16, p, 0x70) = 0;
+    p = data_02097e48.queue;
+    p->unk_74 = 0x8000;
+    p->unk_70 = 0;
 }
 
 static inline BOOL LoBit1(Task021cbae0 *self) {
@@ -7694,18 +7605,18 @@ void Task021cbae0_PostUpdate(Task021cbae0 *self) {
             return;
         }
         {
-            u8 **pmq = &data_ov000_021ccd30;
-            u8 *mq = *pmq;
-            MessageQueue_FreeBuffer(mq, LFLD(void *, mq, 0x11c));
-            LFLD(void *, mq, 0x11c) = NULL;
+            MessageQueue021cb980 **pmq = &data_ov000_021ccd30;
+            MessageQueue021cb980 *mq = *pmq;
+            MessageQueue_FreeBuffer(mq, mq->unk_11c);
+            mq->unk_11c = NULL;
             mq = *pmq;
-            MessageQueue_FreeBuffer(mq, LFLD(void *, mq, 0x118));
-            LFLD(void *, mq, 0x118) = NULL;
+            MessageQueue_FreeBuffer(mq, mq->unk_118);
+            mq->unk_118 = NULL;
         }
         LFLD(Bits0e, data_ov000_021ccd54, 0xe).b2 = 2;
         EffectMgr_FreeAll(data_0214a420);
         ActorMgr_ClearGroup(data_ov000_021ccd68, 0xf000);
-        LFLD(LoBits8, data_ov000_021ccd64, 0xc).b0 = 0;
+        LFLD(LoBits8, data_ov000_021ccd64, 0xc).b0 = 0; // Group::unk_0c.bits.flag_0 (ov000/Group.h)
         LangData_LocalizePath(buf, "pic/title");
         o = NewLoader();
         self->unk_48 = o;
@@ -7720,7 +7631,7 @@ void Task021cbae0_PostUpdate(Task021cbae0 *self) {
     case 5: {
         BOOL ok = TRUE;
         u8 *m;
-        u8 *p;
+        SndQueue *p;
         if (!self->unk_48->vfunc_2c()) {
             ok = FALSE;
         }
@@ -7745,19 +7656,19 @@ void Task021cbae0_PostUpdate(Task021cbae0 *self) {
         self->unk_54->unk_150 = -0x1ccd;
         SndMgr_StopAllSeq(data_02097e4c, 0);
         GfxSys_StartFadeIn(0x3c000, 0, -1);
-        p = data_02097e48;
-        if (LFLD(SndBits, p, 0).b0) {
-            if (LFLD(u16, p, 6) != 0xffff || LFLD(u16, p, 4) != 0x2f) {
-                if (LFLD(u16, p, 2) != 10 && LFLD(u16, p, 2) != 0) {
-                    if (LFLD(u16, p, 6) != 0xffff) {
-                        SndQueue_Push_0204aab0(p);
+        p = data_02097e48.queue;
+        if (p->flag0) {
+            if (p->unk_06 != 0xffff || p->unk_04 != 0x2f) {
+                if (p->unk_02 != 10 && p->unk_02 != 0) {
+                    if (p->unk_06 != 0xffff) {
+                        SndQueue_Push_0204aab0(p, p->unk_06);
                     }
-                    LFLD(u16, p, 2) = 1;
+                    p->unk_02 = 1;
                 } else {
-                    LFLD(u16, p, 2) = 0;
+                    p->unk_02 = 0;
                 }
-                LFLD(u16, p, 6) = 0x2f;
-                LFLD(u16, p, 8) = 10;
+                p->unk_06 = 0x2f;
+                p->unk_08 = 10;
             }
         }
         self->unk_3c = 6;
@@ -7872,15 +7783,13 @@ extern u8 data_ov000_021cbf60[];
 extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 UiList_GetItemById(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void Obj0215bb14_SetText(void *a, void *b);
 BOOL Item_Give(u16 a, s32 b);
 void *ResMgr_Load(void *a, s32 b, s32 c);
 s32 ResMgr_IsLoaded(void *a, s32 b);
-BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
+BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 b);
 
 VObj *Task021cbf60_New(void) {
     Task021cbf60 *obj = (Task021cbf60 *)Heap_Alloc(0x160);
@@ -8006,15 +7915,13 @@ extern u8 data_ov000_021cbf60[];
 extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 UiList_GetItemById(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void Obj0215bb14_SetText(void *a, void *b);
 BOOL Item_Give(u16 a, s32 b);
 void *ResMgr_Load(void *a, s32 b, s32 c);
 s32 ResMgr_IsLoaded(void *a, s32 b);
-BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
+BOOL func_ov000_0217bd88(Task021cbb60 *self, s32 a, s32 b);
 
 void Task021cbf60_Load(void) {
     ResMgr_Load(data_0208cca0, 7, 0);
@@ -8050,7 +7957,7 @@ extern u8 data_ov000_021cafc0[];
 void *Heap_Alloc(u32 size);
 void *MsgRes_GetString(void *g, u32 id);
 void Obj0215bb14_SetText(void *o, void *s);
-void TaskList_Insert(void *self);
+void TaskList_Insert(Task *self);
 void UiList_SetMarkModel(void *a, void *b, void *c, int d);
 void UiList_SetIconModel(void *a, const void *b, const char *c, u16 d);
 s32 UiList_GetItemById(void *p, s32 a);
@@ -8066,7 +7973,7 @@ static inline s32 ItemCat0217fd70(u16 id) {
 }
 
 void Task021cbf60_Start(Task021cbf60 *self) {
-    u8 *e;
+    UiListItem *e;
     s32 i;
     s32 b;
     s32 n;
@@ -8119,10 +8026,10 @@ void Task021cbf60_Start(Task021cbf60 *self) {
     if (ItemCat0217fd70(id) == 1) {
         a = Param_Get(id);
         b = func_0206f080(id);
-        e = (u8 *)self->unk_3c->vfunc_74(a, id, (u16)b, 1);
-        LFLD(s32, e, 0x10) = *Param_GetEntry(self->unk_5c);
-        LFLD(s16, e, 0xa) = 0xb;
-        LFLD(s32, e, 0x24) = 4;
+        e = (UiListItem *)self->unk_3c->vfunc_74(a, id, (u16)b, 1);
+        e->unk_10 = *Param_GetEntry(self->unk_5c);
+        e->unk_0a = 0xb;
+        e->unk_24 = 4;
     }
     {
         base = data_0214a424->items;
@@ -8132,8 +8039,8 @@ void Task021cbf60_Start(Task021cbf60 *self) {
             if (n > 0) {
                 a = Param_Get(iid);
                 b = func_0206f080(iid);
-                e = (u8 *)self->unk_3c->vfunc_74(a, iid, (u16)b, n);
-                LFLD(s32, e, 0x10) = *Param_GetEntry(self->unk_5c);
+                e = (UiListItem *)self->unk_3c->vfunc_74(a, iid, (u16)b, n);
+                e->unk_10 = *Param_GetEntry(self->unk_5c);
             }
         }
     }
@@ -8231,8 +8138,6 @@ void Task021cbf60_Start(Task021cbf60 *self) {
 namespace m_Stub_02180350 {
 
 extern "C" {
-extern void *data_02097e4c;
-void *SndMgr_PlayVolume(void *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 }
 
 typedef struct {
@@ -8545,13 +8450,13 @@ static inline Actor *FindActor2(u16 id) {
     return mgr != NULL ? MgrFind(mgr, id) : NULL;
 }
 
-extern u8 data_0208ccc8[];
+extern void *data_0208ccc8;
 
 static inline BOOL LoTakeMode(TaskHost *self) {
-    VObj *cur = (VObj *)data_ov000_021ccd40;
+    Task *cur = (Task *)data_ov000_021ccd40;
     if (self->mode != 0) {
         if (cur != NULL) {
-            LFLD(u32, cur, 4) |= 2;
+            cur->unk_04 |= 2;
         }
         if (self->mode == 1) {
             self->unk_04 = 5;
@@ -8580,7 +8485,7 @@ BOOL func_ov000_02180900(TaskHost *self) {
         self->unk_04 = 3;
     case 3:
         self->unk_4c = 7;
-        self->res.vfunc_1c(LFLD(void *, data_0208ccc8, 0));
+        self->res.vfunc_1c(data_0208ccc8);
         self->unk_04 = 12;
         break;
     case 12:

@@ -4,7 +4,7 @@ extern "C" {
 
 extern VFunc data_ov000_021cadcc[];
 extern u8 data_ov002_021efe30[];
-int func_ov002_021dac8c(void *self, void *arg);
+int func_ov002_021dac8c(UiList *self, UiListItem *item);
 BOOL func_ov000_0219d5a0(void);
 void *ListOwner_GetNth(void *a, u8 b);
 

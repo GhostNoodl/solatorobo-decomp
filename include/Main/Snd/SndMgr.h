@@ -102,6 +102,9 @@ SndHandle *SndMgr_PlayAt(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch);
 SndHandle *SndMgr_PlayAtPitch(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch);
 BOOL func_0204a118(SndMgr *mgr, s32 id);
 void SndMgr_Stop(SndMgr *mgr, s32 id);
+void SndMgr_PauseAll(SndMgr *mgr);
+void SndMgr_ResumeAll(SndMgr *mgr);
+void SndMgr_StopAllSeq(SndMgr *mgr, int fadeFrames);
 
 static inline s32 SndMgr_GetSeqVolume(s32 seq) {
     return (u32)seq >= 0x4f ? 0 : data_0208b778[seq];

@@ -108,7 +108,7 @@ extern char data_ov002_021ef3f8[];
 void ResMgr_ReleaseArchive(void *a, void *b, u16 c);
 void ResMgr_LoadArchive(void *a, void *b, u16 c, u8 d);
 int ResMgr_IsArchiveLoaded(void *a, void *b, u16 c);
-void *TaskHost_RequestSwitch(void *a, int b, int c);
+Task *TaskHost_RequestSwitch(void *a, int b, int c);
 void Obj0215bb14_SetText(void *a, void *b);
 
 

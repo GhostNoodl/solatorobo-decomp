@@ -3,10 +3,10 @@
 extern "C" {
 
 void func_ov002_021deb2c(Obj021efef0 *self, Obj021eff50 *dst) {
-    void *node = FIELD(self, 0x24, void *);
+    Obj021f002c *node = (Obj021f002c *)self->unk_24;
     u16 id;
     if (node != NULL) {
-        id = FIELD(node, 0x38, u16);
+        id = node->id;
     } else {
         id = 0xffff;
     }

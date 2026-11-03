@@ -20,8 +20,8 @@ typedef struct {
 } LoGlyph;
 
 extern s32 data_02097d78[5];
-void func_ov000_02161798(void *self, s32 a, s32 b, s32 c);
-void func_ov000_02161994(void *self, s32 a, s32 b, s32 c);
+void func_ov000_02161798(Lo021cacd8 *self, s32 a, s32 b, s32 c);
+void func_ov000_02161994(Lo021cacd8 *self, s32 a, s32 b, s32 c);
 BOOL Model0218fe1c_GetAnimCtrl(void *p, s32 a);
 void Model0218fe1c_UpdateAnim(void *p, s32 a);
 void GfxSys_StartFadeIn(s32 a, s32 b, s32 c);

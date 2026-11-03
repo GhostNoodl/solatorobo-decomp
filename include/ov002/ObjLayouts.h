@@ -260,7 +260,7 @@ struct Obj021efef0 : public VObj {
     u8 unk_21;
     u8 unk_22;
     u8 unk_23;
-    s32 unk_24;
+    ListRow *unk_24; // the row taken from unk_0c->unk_a4 (func_ov002_021deb2c reads its id)
     s32 unk_28;
     s32 unk_2c;
     s32 unk_30;
@@ -273,7 +273,7 @@ SIZE_ASSERT(Obj021efef0, 0x138);
 struct Obj021eff10 : public VObj {
     struct Obj021eff50 *owner;
     Obj021efe5c *unk_08;
-    LoBase021cafc0_021cb0b8 *unk_0c; // vtable data_ov000_021cb0b8
+    Lo021cb0b8 *unk_0c; // the message list (func_ov002_021dd6a4)
     Model *unk_10;
     Obj021efe8c *unk_14;
     s32 unk_18;

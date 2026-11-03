@@ -48,11 +48,11 @@ void Obj021efe6c_Update(Obj021efe6c *self) {
     }
     {
         s32 f = FX_Div((self->unk_94 - self->unk_90) << 12, self->unk_94 << 12);
-        Interp_SinLerpVec(&a, f, (u8 *)self + 0x98, (u8 *)self + 0xb0);
-        Interp_SinLerpVec(&b, f, (u8 *)self + 0xa4, (u8 *)self + 0xbc);
+        Interp_SinLerpVec(&a, f, &self->unk_98, &self->unk_b0);
+        Interp_SinLerpVec(&b, f, &self->unk_a4, &self->unk_bc);
     }
-    FIELD(self, 0x8c, VecFx32 *)[0] = a;
-    FIELD(self, 0x8c, VecFx32 *)[1] = b;
+    self->cam->eye = a;
+    self->cam->at = b;
     self->unk_90--;
 }
 

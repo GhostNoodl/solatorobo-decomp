@@ -104,7 +104,7 @@ int Task021ef530_IsLoaded(void) {
 extern "C" {
 extern VFunc data_ov000_021cadcc[];
 extern VFunc data_ov000_021cb920[];
-void SndQueue_Push_0204aab0(SndQueue *p);
+void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 void UiList_SetMarkModel(void *a, void *b, const char *c, int d);
 BOOL func_020624d8(void);
 BOOL func_ov000_02188dfc(void);
@@ -123,7 +123,7 @@ void Task021ef530_Start(Task021ef530 *self) {
             if (mm->unk_06 != 0xffff || mm->unk_04 != 13) {
                 if (mm->unk_02 != 10 && mm->unk_02 != 0) {
                     if (mm->unk_06 != 0xffff) {
-                        SndQueue_Push_0204aab0(mm);
+                        SndQueue_Push_0204aab0(mm, mm->unk_06);
                     }
                     mm->unk_02 = 1;
                 } else {

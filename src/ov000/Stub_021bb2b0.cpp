@@ -23,7 +23,7 @@ extern "C" {
 Obj0219bf90 *ActorMgr_FindPlayer(void);
 extern void *data_02fe152c;
 extern s32 data_02097d78[];
-void func_ov000_021bb298(void *self);
+void func_ov000_021bb298(NNSG3dRS *self);
 u16 DataRes_ReadEntry(void *res, u32 idx, int packed, int sub);
 void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 u16 SndQueue_Peek(SndQueue *queue);

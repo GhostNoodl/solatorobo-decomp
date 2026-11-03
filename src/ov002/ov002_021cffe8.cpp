@@ -2,26 +2,14 @@
 
 extern "C" {
 
-static inline u8 *ov002_getSelected(void *list) {
-    u8 *item = FIELD(list, 0x98, u8 *);
-    if (item == NULL) {
-        item = NULL;
-    } else {
-        s32 n = FIELD(list, 0xb1, s8);
-        while (n-- != 0) {
-            item = FIELD(item, 0x2c, u8 *);
-        }
-    }
-    return item;
-}
 
 void Task021ef79c_UpdateActive(Task021ef79c *self) {
     u16 keys;
     u16 id;
-    u8 *item;
+    UiListItem *item;
     keys = data_02097dc8->trig;
-    item = ov002_getSelected(self->unk_3c);
-    id = FIELD(item, 0x6, u16);
+    item = UiList_GetCurrent(self->unk_3c);
+    id = item->id;
     if (id != self->unk_44) {
         void *s;
         switch (id) {
@@ -44,9 +32,9 @@ void Task021ef79c_UpdateActive(Task021ef79c *self) {
         return;
     }
     if (keys & 1) {
-        item = ov002_getSelected(self->unk_3c);
-        if (FIELD(item, 0x10, s32) >= 0) {
-            TaskHost_RequestSwitch(data_ov000_021ccd44, FIELD(item, 0x6, u16), (int)self->param);
+        item = UiList_GetCurrent(self->unk_3c);
+        if ((s32)item->unk_10 >= 0) {
+            TaskHost_RequestSwitch(data_ov000_021ccd44, item->id, (int)self->param);
             SndMgr_PlayVolume(data_02097e4c, 0x1e, -1, -1, -1);
             self->unk_3c->flags |= 2;
             self->unk_40->flags |= 2;

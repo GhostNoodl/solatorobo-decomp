@@ -9,7 +9,7 @@
 extern "C" {
 
 void func_02041c18(void *m, int a);
-void func_ov000_0216d9dc(void *self, s32 unused, u16 *msg);
+void func_ov000_0216d9dc(MtxFx43 *self, s32 unused, u16 *msg);
 
 static inline void LoPlace(LoTimer *self, s32 x, s32 y) {
     MODEL_FLAGS(self->unk_10)->unk_21 = 1;

@@ -105,25 +105,12 @@ typedef struct {
     u32 rest : 29;
 } Flags021cd9c0;
 
-static inline u8 *ov002_021cd9c0_getSelected(void *list) {
-    u8 *item = FIELD(list, 0x98, u8 *);
-    if (item == NULL) {
-        item = NULL;
-    } else {
-        s32 n = FIELD(list, 0xb1, s8);
-        while (n-- != 0) {
-            item = FIELD(item, 0x2c, u8 *);
-        }
-    }
-    return item;
-}
-
 void Task021ef530_UpdateActive(Task021ef530 *self) {
     u16 keys;
     s8 sel;
     s8 v;
     keys = data_02097dc8->trig;
-    sel = (s8)FIELD(ov002_021cd9c0_getSelected(self->unk_40), 0x6, u16);
+    sel = (s8)UiList_GetCurrent(self->unk_40)->id;
     v = data_ov002_021f0f80->unk_08;
     if (v != -1) {
         self->unk_4c = -1;
@@ -148,10 +135,10 @@ void Task021ef530_UpdateActive(Task021ef530 *self) {
             break;
         case 1:
             if (!self->unk_48_2) {
-                void *o;
+                Task *o;
                 data_ov002_021f0f80->unk_08 = 1;
                 o = TaskHost_RequestSwitch(data_ov000_021ccd44, 0x1a, 0);
-                FIELD(o, 0x2c, s32) = 0;
+                o->parent = NULL;
                 FIELD(o, 0x3c, s32) = self->id;
                 self->vfunc_50();
                 self->unk_04 |= 6;
@@ -174,7 +161,7 @@ void Task021ef530_UpdateActive(Task021ef530 *self) {
             break;
         case 4:
             data_ov002_021f0f80->unk_08 = 4;
-            FIELD(TaskHost_RequestSwitch(data_ov000_021ccd44, 0x11, 0), 0x2c, s32) = 0;
+            TaskHost_RequestSwitch(data_ov000_021ccd44, 0x11, 0)->parent = NULL;
             data_ov000_021ccd34 = 1;
             data_ov000_021ccd44->flag0 = 0;
             self->vfunc_50();

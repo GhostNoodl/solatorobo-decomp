@@ -24,8 +24,8 @@ static inline void ov002_Anim_Tick(Ov002Mdl021efe3c *mdl) {
     mdl->frame = (mdl->frame + 0x1000) % mdl->frameCount;
 }
 
-static inline BOOL ov002_Msg_IsDone(void *m) {
-    return FIELD(m, 4, s32) == 5;
+static inline BOOL ov002_Msg_IsDone(UiObj *m) {
+    return m->state == 5;
 }
 
 void func_ov002_021dc278(Obj021eff10 *self, Obj021eff50 *other) {
@@ -75,28 +75,28 @@ void func_ov002_021dc278(Obj021eff10 *self, Obj021eff50 *other) {
         }
         break;
     case 70: {
-        u8 *o4 = ((u8 *)self->owner->board);
+        Obj021efe6c *board = self->owner->board;
         s32 row = self->unk_28;
-        void *q = FIELD(o4, 4, void *);
+        Obj021efe4c *q = board->field;
         s32 col = self->unk_24;
-        u8 *base;
-        u8 *e;
-        if (q == NULL || (base = FIELD(o4, 0x70, u8 *)) == NULL) {
+        Ov002Cell *base;
+        Ov002Cell *e;
+        if (q == NULL || (base = board->cells) == NULL) {
             e = NULL;
         } else {
-            e = base + (row * FIELD(FIELD(q, 0x6c, u8 *), 4, Nibbles16).n3 + col) * 0xc;
+            e = &base[row * q->map->h + col];
         }
-        if (e[2] == 1) {
-            u8 *t = FIELD(e, 8, u8 *);
-            FIELD(t, 0xcd, u8) = 0;
-            FIELD(t, 0x9c, s32) = 0xf85;
-        } else if (e[2] == 2) {
-            FIELD(FIELD(e, 8, u8 *), 0x9c, u8) = 0;
+        if (e->unk_2 == 1) {
+            Obj021efe9c *t = (Obj021efe9c *)e->obj;
+            t->unk_cd = 0;
+            t->unk_9c = 0xf85;
+        } else if (e->unk_2 == 2) {
+            ((Obj021efed4 *)e->obj)->unk_9c = 0;
         }
         {
-            void *o = self->owner;
-            FIELD(o, 0x10, s32) = 0;
-            FIELD(o, 0xc, s32) = 0x28;
+            Obj021eff50 *o = self->owner;
+            o->unk_10 = NULL;
+            o->unk_0c = 0x28;
         }
         self->unk_18 = 0x50;
         break;

@@ -2,13 +2,15 @@
 
 extern "C" {
 
-int func_ov002_021dac8c(void *self, void *arg) {
-    void *p = FIELD(self, 0x8, void *);
-    if (arg == NULL) {
-        FIELD(p, 0x1c, u32) |= 2;
+// The onDecide callback of Obj021eff74's list (func_ov002_021dacac; the list's owner is the
+// Obj021eff74): sets bit 1 of its unk_1c when called without an item, bit 0 with one.
+int func_ov002_021dac8c(UiList *self, UiListItem *item) {
+    Obj021eff74 *p = (Obj021eff74 *)self->owner;
+    if (item == NULL) {
+        p->unk_1c |= 2;
         return 1;
     }
-    FIELD(p, 0x1c, u32) |= 1;
+    p->unk_1c |= 1;
     return 1;
 }
 

@@ -19,7 +19,7 @@ void *ResMgr_GetArcList(void *a);
 void *ResMgr_GetArchiveList(void *a, void *b, s32 c);
 void TexObj_SetAllOamFuncs(void *m, void *fn);
 void TexObj_SetOamFuncArg(void *m, s32 a, void *b);
-BOOL Obj02152e5c_LoadModel(void *self);
+BOOL Obj02152e5c_LoadModel(UiObj *self);
 void *func_ov000_0214c084(u8 *self, u16 *cmd, void *arr, u16 *count);
 void func_020708fc(s32 a, LoName16 *out);
 void func_02070b98(s32 a, LoName16 *out, s32 b, s32 c);

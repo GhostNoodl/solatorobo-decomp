@@ -2,10 +2,10 @@
 
 extern "C" {
 
-void SndQueue_Push_0204aab0(SndQueue *p);
+void SndQueue_Push_0204aab0(SndQueue *queue, u16 value);
 
-static inline BOOL ov002_isState5(void *o) {
-    return FIELD(o, 0x4, s32) == 5 ? TRUE : FALSE;
+static inline BOOL ov002_isState5(UiObj *o) {
+    return o->state == 5 ? TRUE : FALSE;
 }
 
 void Task021efa1c_PreUpdate(Task021efa1c *self) {
@@ -39,7 +39,7 @@ void Task021efa1c_PreUpdate(Task021efa1c *self) {
                         u16 st;
                         if (m->unk_02 != 10 && m->unk_02 != 0) {
                             if (m->unk_06 != 0xffff) {
-                                SndQueue_Push_0204aab0(m);
+                                SndQueue_Push_0204aab0(m, m->unk_06);
                             }
                             st = 1;
                         } else {

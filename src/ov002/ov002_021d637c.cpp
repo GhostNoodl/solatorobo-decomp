@@ -19,34 +19,22 @@ static inline BOOL ov002_isIdle637c(void) {
     return FIELD(data_ov000_021ccd70, 4, void *) == NULL;
 }
 
-static inline BOOL ov002_moving637c(void *g) {
-    return !(FIELD(g, 0x98, s32) == FIELD(g, 0xa4, s32) && FIELD(g, 0xb3, s8) == 0);
+static inline BOOL ov002_moving637c(UiList *g) {
+    return !((void *)g->topItem == g->unk_a4 && g->unk_b3 == 0);
 }
 
-static inline BOOL ov002_has74_637c(void *g) {
-    return FIELD(g, 0x74, void *) != NULL;
+static inline BOOL ov002_has74_637c(UiList *g) {
+    return g->child != NULL;
 }
 
-static inline BOOL ov002_busy637c(void *g) {
+static inline BOOL ov002_busy637c(UiList *g) {
     return ov002_has74_637c(g) != FALSE;
 }
 
-static inline BOOL ov002_unsel637c(void *g) {
-    return FIELD(g, 0xc, Bits32).b0 == 0;
+static inline BOOL ov002_unsel637c(UiList *g) {
+    return g->busy == 0;
 }
 
-static inline void *ov002_cursor637c(void *g) {
-    u8 *p = FIELD(g, 0x98, u8 *);
-    if (p == NULL) {
-        p = NULL;
-    } else {
-        s32 n = FIELD(g, 0xb1, s8);
-        while (n-- != 0) {
-            p = FIELD(p, 0x2c, u8 *);
-        }
-    }
-    return p;
-}
 
 static inline void *ov002_new637c(void) {
     void *o = Heap_Alloc(0x2c);
@@ -59,9 +47,9 @@ static inline void *ov002_new637c(void) {
 
 void Task021efc24_UpdateActive(Task021efc24 *self) {
     s32 z = 0;
-    void *g;
+    UiList *g;
     u16 keys;
-    u8 *p;
+    UiListItem *p;
     void *o;
     Task021efba4 *x;
     if (self->unk_5c != NULL) {
@@ -75,7 +63,7 @@ void Task021efc24_UpdateActive(Task021efc24 *self) {
         if (ov002_moving637c(g)) {
             return;
         }
-        if (!((VObj *)g)->vfunc_0c()) {
+        if (!g->vfunc_0c()) {
             return;
         }
     }
@@ -97,12 +85,12 @@ void Task021efc24_UpdateActive(Task021efc24 *self) {
     if (ov002_busy637c(g)) {
         return;
     }
-    p = (u8 *)ov002_cursor637c(g);
+    p = UiList_GetCurrent(g);
     if (p == NULL) {
         return;
     }
     self->unk_5c = (VObj *)(ov002_new637c());
-    MsgBox_Open(self->unk_5c, FIELD(p, 6, u16) & 0xfff, data_ov002_021efa94.a, data_ov002_021efa94.b, z);
+    MsgBox_Open(self->unk_5c, p->id & 0xfff, data_ov002_021efa94.a, data_ov002_021efa94.b, z);
     self->unk_50->flags |= 4;
     self->unk_54->flags |= 4;
     self->unk_54->flags |= 2;

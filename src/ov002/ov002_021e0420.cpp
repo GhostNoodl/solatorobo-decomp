@@ -1,4 +1,5 @@
 #include "ov002/ov002.h"
+#include "Main/Gfx/TexObj.h"
 
 typedef struct Oam0488A01 {
     u32 y : 8;
@@ -53,19 +54,21 @@ static inline void SetV0488(s32 *v, s32 x, s32 y, s32 z) {
     v[2] = z;
 }
 
-Oam0488 *func_ov002_021e0488(void *ctx, u16 *cell, Oam0488 *oam, u16 *num) {
+// The OAM callback of entry 6 of Obj021eff10::unk_10 (func_ov002_021dbec8): the entry argument is a
+// piece list; each kind 2 piece gets its unk_a8 drawn as up to two digits over its cell.
+Oam0488 *func_ov002_021e0488(TexObj *ctx, TexObjEntry *cell, Oam0488 *oam, u16 *num) {
     u16 n = *num;
     Oam0488 *last = &oam[n - 1];
     u32 chr = last->a23.chr;
     Oam0488 tmpl = *last;
-    if (*cell == 6) {
+    if (cell->index == 6) {
         s32 mtx[16];
-        u8 *o;
+        Obj021efeb8 *o;
         n = 0;
         MTX_Copy43To44_((MtxFx43 *)data_02092844, (MtxFx44 *)mtx);
         MTX_Concat44((MtxFx44 *)mtx, (MtxFx44 *)data_02092800, (MtxFx44 *)mtx);
-        for (o = FIELD(cell, 0x8, u8 *); o != NULL; o = FIELD(o, 0x70, u8 *)) {
-            if (FIELD(o, 0x4a, u8) == 2) {
+        for (o = (Obj021efeb8 *)cell->unk_08; o != NULL; o = o->next) {
+            if (o->unk_4a == 2) {
                 u32 y;
                 u32 val;
                 BOOL shown;
@@ -74,13 +77,13 @@ Oam0488 *func_ov002_021e0488(void *ctx, u16 *cell, Oam0488 *oam, u16 *num) {
                 s32 x;
                 s32 out[2];
                 u32 div;
-                s32 px = FIELD(o, 0x54, s32);
-                s32 pz = FIELD(o, 0x58, s32);
-                s32 ox = FIELD(o, 0x64, s32);
-                s32 oz = FIELD(o, 0x68, s32);
+                s32 px = o->unk_54;
+                s32 pz = o->unk_58;
+                s32 ox = o->unk_64;
+                s32 oz = o->unk_68;
                 SetV0488(v, (px - ox) * 0x28f - 0xa3, 0, (pz - oz) * 0x28f - 0xa3);
                 Ov002_ProjectToScreen(out, v, mtx);
-                val = FIELD(o, 0xa8, u16);
+                val = ((Obj021efed4 *)o)->unk_a8;
                 div = 1;
                 for (k = 1; k < 2; k++) {
                     div *= 10;

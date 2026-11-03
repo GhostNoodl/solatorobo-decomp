@@ -16,7 +16,7 @@ void Task021ef430_PostUpdate(Task021ef430 *self) {
     if (!self->unk_04_2) {
         return;
     }
-    FIELD(TaskHost_RequestSwitch(data_ov000_021ccd44, 0x10, 0), 0x2c, s32) = 0;
+    TaskHost_RequestSwitch(data_ov000_021ccd44, 0x10, 0)->parent = NULL;
     data_ov000_021ccd34 = 1;
     data_ov000_021ccd44->flag0 = 0;
 }

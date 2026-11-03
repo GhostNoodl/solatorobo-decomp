@@ -4,7 +4,7 @@ extern "C" {
 
 void func_ov002_021e00bc(Obj021eff30 *self) {
     u16 k = data_02097dc8->trig;
-    void *w;
+    Obj021eff50 *w;
     u8 *q;
     if (k & 1) {
         self->unk_18 = 0x28;
@@ -17,8 +17,8 @@ void func_ov002_021e00bc(Obj021eff30 *self) {
     {
         void *r = Param_Get(self->unk_10->unk_48);
         w = self->owner;
-        Obj0215bb14_SetText(FIELD(w, 0x20, void *), r);
-        FIELD(w, 0x20, VObj *)->vfunc_70();
+        Obj0215bb14_SetText(w->unk_20, r);
+        w->unk_20->vfunc_70();
     }
     q = ((u8 *)self->owner->board);
     q[0x74] = 7;

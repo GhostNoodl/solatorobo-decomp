@@ -10,7 +10,7 @@ extern u8 data_ov000_021cad50[];
 extern u8 data_02fe1534[];
 extern char data_ov000_021ca940[];
 extern void *data_02097e4c;
-void Obj0215c1bc_SetMsg(void *self, s32 id);
+void Obj0215c1bc_SetMsg(Lo021cad50 *self, s32 id);
 void *SndMgr_PlayVolume(void *mgr, s32 id, s32 a, s32 b, s32 c);
 Robo021ca458 *ActorMgr_FindPlayer(void);
 void Robo021ca458_RestoreHp(void *p);

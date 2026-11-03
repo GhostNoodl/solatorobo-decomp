@@ -291,12 +291,12 @@ void Ov015Scene2b08_Start(Ov015Scene2b08 *self) {
             case 0: {
                 u16 k = FLD(u16, e, 2);
                 void *a = Param_Get(k);
-                FLD(s32, self->unk_3c->vfunc_74(a, k, (u16)func_0206f080(k), FLD(u16, e, 4)), 0x10) = id;
+                ((UiListItem *)self->unk_3c->vfunc_74(a, k, (u16)func_0206f080(k), FLD(u16, e, 4)))->unk_10 = id;
                 break;
             }
             case 1: {
                 void *a = Param_Get(id);
-                FLD(s32, self->unk_3c->vfunc_74(a, id, (u16)func_0206f080(id), FLD(u16, e, 4)), 0x10) = id;
+                ((UiListItem *)self->unk_3c->vfunc_74(a, id, (u16)func_0206f080(id), FLD(u16, e, 4)))->unk_10 = id;
                 break;
             }
             }

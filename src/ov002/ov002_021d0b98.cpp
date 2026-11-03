@@ -10,7 +10,7 @@ void Hud021cca10_Init(void *self);
 void Hud021cca10_SetText(void *self, void *a);
 void LoBase021ccb54_021ccbe0_AppendRow(void *list, void *item);
 void LoBase021ccb54_021ccbe0_Select(void *list, s32 a);
-BOOL func_ov002_021d0a80(void *self, void *arg);
+BOOL func_ov002_021d0a80(Ov002RowList *self, Hud021cca10 *arg);
 
 typedef struct {
     u16 a;
@@ -46,25 +46,25 @@ void func_ov002_021d0b98(Task021ef89c *self) {
         u8 *base;
         void *tbl;
         u16 id;
-        u8 *q;
+        Hud021cca10 *q;
         u32 count;
         base = data_02fe152c->data + 0x10 + 9 * 0x20;
         tbl = DataRes_GetTable(data_02fe152c, 9);
         count = DataRes_GetCount(data_02fe152c, 9);
         for (i = 0; i < count; i++) {
             if (DataRes_ReadBitsAt_02059544(data_02fe152c, base, tbl, 0x101, i)) {
-                q = (u8 *)Heap_Alloc(0x48);
+                q = (Hud021cca10 *)Heap_Alloc(sizeof(Hud021cca10));
                 if (q != NULL) {
                     *(VFunc **)q = data_ov002_021ef684;
                     ListRow_Init(q);
                     *(VFunc **)q = data_ov000_021cca10;
                     Hud021cca10_Init(q);
                 }
-                FIELD(q, 0x4, s32) = i;
-                FIELD(q, 0x3c, s32) = (u16)(i + 1);
+                q->index = i;
+                q->unk_3c = (u16)(i + 1);
                 id = ((Pair021d0b98 *)DataRes_GetTable(data_02fe152c, 9))[i].b | 0x5000;
                 Hud021cca10_SetText(q, Param_Get(id));
-                FIELD(q, 0x8, s32) = id;
+                q->unk_08 = id;
                 LoBase021ccb54_021ccbe0_AppendRow(self->unk_3c, q);
             }
         }

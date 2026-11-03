@@ -11,7 +11,7 @@ extern const char *data_0208cc88;
 extern const char *data_0208cc94;
 void TexObj_SetAllOamFuncs(void *m, void *fn);
 void TexObj_SetOamFuncArg(void *m, s32 a, void *b);
-BOOL Obj02152e5c_LoadModel(void *self);
+BOOL Obj02152e5c_LoadModel(UiObj *self);
 void func_ov000_0215ec44(UiPanel *self);
 void Obj0215e8b0_LoadModel(UiPanel *self);
 void *func_ov000_021c77bc(u8 *self, u16 *cmd, void *arr, u16 *count);

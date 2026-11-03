@@ -1,13 +1,14 @@
 #include "ov002/ov002.h"
+#include "Main/Gfx/TexObj.h"
 
 extern "C" {
 
-void *func_ov002_021e2f04(Model *self, void *unused, u8 *entries, u16 *count) {
+void *func_ov002_021e2f04(TexObj *self, void *unused, u8 *entries, u16 *count) {
     u16 n = *count;
     int i;
     for (i = 0; i < n; i++) {
         Bits021e2f04 *e = (Bits021e2f04 *)(entries + i * 8 + 4);
-        e->nib = FIELD(self, 0x70, s32) + e->nib;
+        e->nib = self->unk_070 + e->nib;
     }
     *count = n;
     return entries;

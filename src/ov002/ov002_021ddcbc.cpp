@@ -42,7 +42,7 @@ void Obj021efef0_Init(Obj021efef0 *self) {
     self->unk_23 = 0;
     self->unk_30 = 0;
     self->unk_2c = 0;
-    self->unk_24 = 0;
+    self->unk_24 = NULL;
     self->unk_28 = 0;
     self->unk_34 = 0;
     self->unk_38[0] = 0;

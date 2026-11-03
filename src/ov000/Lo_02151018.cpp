@@ -7,7 +7,7 @@ extern "C" {
 
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
-void Obj0215c1bc_SetMsg(void *self, s32 id);
+void Obj0215c1bc_SetMsg(Lo021cad50 *self, s32 id);
 
 void Lo021ca9c4_PostUpdate(Lo021ca9c4 *self) {
     switch (self->state) {

@@ -5,15 +5,15 @@ extern "C" {
 BOOL Obj021efe7c_IsLoaded(Obj021efe7c *self) {
     BOOL a = ResMgr_IsLoaded(data_ov002_021efdf6, 7) != 0 ? TRUE : FALSE;
     BOOL b;
-    u8 *d = FIELD(((u8 *)self->board), 4, u8 *);
+    Obj021efe4c *d = self->board->field;
     b = TRUE;
-    if (*FIELD(d, 4, s16 *) >= 0 && !ResSet_UpdateLoad(FIELD(d, 4, s16 *))) {
+    if (d->unk_04->unk_00 >= 0 && !ResSet_UpdateLoad(d->unk_04)) {
         b = FALSE;
     }
-    if (*FIELD(d, 0xc, s16 *) >= 0 && !ResSet_UpdateLoad(FIELD(d, 0xc, s16 *))) {
+    if (d->unk_0c->unk_00 >= 0 && !ResSet_UpdateLoad(d->unk_0c)) {
         b = FALSE;
     }
-    if (*FIELD(d, 0x14, s16 *) >= 0 && !ResSet_UpdateLoad(FIELD(d, 0x14, s16 *))) {
+    if (d->unk_14->unk_00 >= 0 && !ResSet_UpdateLoad(d->unk_14)) {
         b = FALSE;
     }
     return (a & b) ? TRUE : FALSE;

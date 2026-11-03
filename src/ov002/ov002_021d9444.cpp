@@ -37,9 +37,9 @@ void *Ov002Vt_021efe4c_DtorDelete(Obj021efe4c *self) {
 }
 
 void Obj021efe6c_FreePieces(Obj021efe6c *self) {
-    VObj *o = self->pieces;
+    Obj021efeb8 *o = self->pieces;
     while (o != NULL) {
-        VObj *next = FIELD(o, 0x70, VObj *);
+        Obj021efeb8 *next = o->next;
         void *saved;
         HEAP_PUSH(saved);
         if (o != NULL) {

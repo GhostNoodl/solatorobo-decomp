@@ -26,16 +26,17 @@ Task021ef89c *Task021ef89c_New(void) {
     return p;
 }
 
-BOOL func_ov002_021d0a80(void *self, void *arg) {
+// The onDecide callback of Task021ef89c's row list (func_ov002_021d0b98); arg is the chosen row.
+BOOL func_ov002_021d0a80(Ov002RowList *self, Hud021cca10 *arg) {
     u8 *obj;
     s16 *info;
     int i;
     s16 v;
     int j;
     if (arg != NULL) {
-        data_ov002_021f0f84[1] = FIELD(self, 0xa8, s32);
+        data_ov002_021f0f84[1] = self->unk_a8;
         obj = (u8 *)TaskHost_RequestSwitch(data_ov000_021ccd44, 0x16, 0);
-        info = func_0206ee90((u16)FIELD(arg, 0x8, u32));
+        info = func_0206ee90((u16)arg->unk_08);
         if (!((Info0206ee90 *)info)->flag) {
             obj[0x68] = 0;
         } else {

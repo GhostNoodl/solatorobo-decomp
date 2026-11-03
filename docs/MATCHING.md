@@ -8886,3 +8886,39 @@ Readability only; every function stays byte-identical, and only symbol names cha
 - Actor slots 0x18/0x1c (`func_ov000_0218d190`).
 - `func_ov003_021f3508`, because `Ov003Actor_RunState` is taken.
 - The slot-0 functions of vtables whose slot 4 is not a `Heap_Free` dtor (`0208b2ac`, `021cc3a0`, `021cf7a4`, `021eb6d8`).
+
+### Round acR (Menu sound queue on the shared Main headers, Menu_021763c8 records typed; ov002 board cells, OAM/list callbacks, task parent; prototypes typed)
+
+Readability only; every function stays byte-identical. A baseline was built first at `4cc21d97`, and again at `44602f34` after round nmI landed (the work was rebased onto it with `renames_nmI.txt` applied to the changed files). Each step was compared function by function (code and relocations), and at the end all 1906 objects were compared again: 0 differ. Gate: 0 FAILED with 19/19 ROM checks and `check symbols` OK, `ninja report` at 8138 matched, and `check_drafts.py --score` exits 0 (30 drafts, all unchanged).
+
+**Counts** (`grep -o` over src + include of each overlay)
+
+| | before | after |
+|---|---|---|
+| ov000 `LFLD` (of which `Menu_021763c8.cpp`) | 404 (81) | 349 (26) |
+| ov000 `void *self` | 124 | 93 |
+| ov002 `FIELD(` / `void *self` | 222 / 51 | 103 / 47 |
+| ov015 `FLD(` | 35 | 33 |
+
+- **Menu sound queue.** `Menu_021763c8.cpp` includes `Main/Snd/SndMgr.h`; its 41 local `extern void *data_02097e4c` and 40 local `SndMgr_PlayVolume` declarations are gone, and `data_02097e48` is the shared `SndGlobal` (the `u8 *` view and `SndBits` are gone: `SndStop` and the title BGM request use `SndQueue::flag0`/`flag3`/`unk_02`..`unk_08`/`unk_70`/`unk_74`). `SndMgr.h` now declares `SndMgr_PauseAll`, `SndMgr_ResumeAll` and `SndMgr_StopAllSeq` as `SndQueue.cpp` defines them. `SndQueue_Push_0204aab0` is called with its second argument (`q->unk_06`) in Menu and in ov002's `021ccda0`/`021d0270`/`021d0810`/`021d1258`; the one-argument views were fake signatures that matched only because r1 already held the value.
+- **Menu_021763c8 records.**
+  - Task kinds: the creator table `data_ov000_021c9c6c` gives each kind's class (`MenuTask.h` now notes the kind of each class): `LoFindTask(4)` is `Task021cbee0` (its list `unk_4c`), `LoFindTask(10)` is `Task021cbe60` (`unk_3c`). The rows returned by the list `AddItem` slot (`vfunc_74`) and `UiList_GetItemById` are `UiListItem *` (`unk_0a`/`unk_0c`/`unk_10`/`unk_24`).
+  - `func_ov000_02174168` is the OAM callback (`TexObj *`, `TexObjEntry *`) Task021cbbe0_Start sets on its model: entry 6 draws the model's `unk_070` with `entry->unk_08` digits.
+  - `data_02fe152c` is the shared `DataRes *` (`StageRes.h`): `->data` replaces the `0x4c` reads, and the save table is read as `SaveEntry` (`tbl[i].id`). `data_02097ce0->unk_004` is the GfxMgr font.
+  - `Task021cbe60_List3cOnCursor` reads its owner as `Task021cbe60` (`unk_40`/`unk_48`/`unk_4c`/`unk_58`). `Lo0217ea30::unk_3c` is the `Lo021cb0b8` message list (`text`, `key`, `owner`, `onDecide`, `posZ`, `flags`). The field message queue is `MessageQueue021cb980` (`unk_118`/`unk_11c`). The SlideWin bit at 0xbc is `unk_bc_7`. The finishing task of `LoTakeMode` is a `Task` (`unk_04`).
+  - Prototypes typed from their definitions: `TaskList_Insert(Task *)`, `func_ov000_0217bd88(Task021cbb60 *)`, `UiList021cb4a8_SetLabel`/`SetCenteredLabel(UiList021cb4a8 *)`, `func_ov000_0217558c(Task021cbbe0 *)`, `Obj0215c1bc_SetText(Lo021cad50 *)`, `func_ov000_0216c954(Obj0216c954 *)`.
+  - The pmA `STD_CopyString`/`NNS_G3dGeBufferOP_N` views are untouched.
+- **ov000 elsewhere.** `void *self` prototypes typed where the definition's class is visible and the code stays identical: `Obj02152e5c_LoadModel(UiObj *)` (3 files), `Obj0215c1bc_SetMsg(Lo021cad50 *)` (2), `func_ov000_02161798`/`02161994(Lo021cacd8 *)`, `func_ov000_021bb298(NNSG3dRS *)`, `func_ov000_0216d9dc`. `ListRow::unk_08` is an `s32` (ov002's lists keep the row's Param id there).
+- **ov002.**
+  - Board cells (`021dc278`, `021dc510`): the cell lookup reads `board->field->map->h` and `board->cells` as `Ov002Cell`; the piece on a kind 1 cell is an `Obj021efe9c` (`unk_cd`, `unk_9c`), on a kind 2 cell an `Obj021efed4` (`unk_9c`); the owner's next state is `unk_10`/`unk_0c`. `021dd130` reads the kind 2 piece's `unk_54`/`unk_58`/`unk_64`/`unk_68`/`unk_a8` and the owner's `Lo021cae48` (`unk_24`).
+  - `Obj021eff10::unk_0c` is the `Lo021cb0b8` message list built by `func_ov002_021dd6a4` (now `(self, char *text, u16 msgId)`: `msgId`, `text`, `key`). `Obj021efef0::unk_24` is the row taken from `unk_0c->unk_a4` (`ListRow *`); the item rows are `Obj021f002c` (`id`) in `021deb2c`, `021deb60`, `021dedf0` and the row comparators `021e4674`/`021e46c4`.
+  - OAM callbacks typed (`TexObj`/`Model`, `TexObjEntry`): `021e0488` (the board's piece list, entry 6, set by `021dc58c` as `board->pieces`), `021d8d00` (the `Obj021efed4` piece's `unk_a8` at the model's `x`/`y`), `021e2f04` (`unk_070`).
+  - List callbacks: `021dac8c` is a `UiItemFn` on the `Obj021eff74` owner (`unk_1c`); `021d0a80` is the row list's onDecide (`Ov002RowList`, `Hud021cca10`: `unk_a8`, the row's `unk_08`). `Task021efa1c_Start`/`021d0b98` build `Hud021cca10` rows by name.
+  - `UiList_GetCurrent` replaces four copies of the cursor walk (`021cd7bc`, `021cffe8`, `021d5f60`, `021d637c`); the `== 5` state tests take `UiObj *`. `TaskHost_RequestSwitch` returns `Task *` in `ov002.h`, and its callers clear `parent` (0x2c) by name.
+  - Also: `Obj021efe6c::cam->eye/at` (`021d9728`), the piece list walk of `Obj021efe6c_FreePieces`, the field's resource blocks in `Obj021efe7c_IsLoaded` (`ActorRes::unk_00`), the pad's `trig`/`repeat` (`021dfcc0`), the title model's `x`/`y` (`021ce10c`, `021ce204`) and the sound queue in `Task021efa1c_UpdateActive`.
+- **ov015.** `0220566c`'s added items are `UiListItem` (`unk_10`).
+- **Left.**
+  - In Menu: the `LoTextWin` view of `func_ov000_0217e560` (Task021cbb60's text window fields 0x74..0xb4 are still `s32`; `TextWin::width` is unsigned and the halved widths need it signed), the 0x4c resource handles' `type` at 0x44 (no shared class for the `data_0208b318` handle), the kind 0x1a task's 0x3c field (class untyped), `Group::unk_0c` (`Group.h` clashes with Menu's prototypes; noted at the use), the `0x4` word read of `func_ov000_02179910` (a `UiListItem::index` read changes the load), the pause-node bit of `data_ov000_021ccd54`, `data_0208b3d0`.
+  - In ov002: `func_ov002_021e38f8` (the shape's `ox`/`oy` as bit fields change the code), the `(&FIELD(q, 8, u8))[...]++` count in `021dd434` (the array member changes the addressing), `Obj021efe7c`'s mode object `unk_08`, the task 0x16 fields of `021d0a80`.
+  - `func_ov000_0214dc20`'s prototype in `Misc_0214dcc4.cpp` stays `void *` (its draft build has no `MsgEntryEx`).
+- **Renames:** none (types and fields only). No new headers.

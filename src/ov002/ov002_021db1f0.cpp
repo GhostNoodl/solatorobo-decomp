@@ -2,8 +2,8 @@
 
 extern "C" {
 
-static inline BOOL func_ov002_021db1f0_is5(void *t) {
-    return FIELD(t, 4, s32) == 5 ? TRUE : FALSE;
+static inline BOOL func_ov002_021db1f0_is5(UiObj *t) {
+    return t->state == 5 ? TRUE : FALSE;
 }
 void func_ov002_021db1f0(Obj021eff74 *self) {
     switch (self->unk_18) {

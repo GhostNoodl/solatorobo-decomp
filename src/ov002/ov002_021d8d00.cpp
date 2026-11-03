@@ -1,4 +1,5 @@
 #include "ov002/ov002.h"
+#include "Main/Gfx/TexObj.h"
 
 typedef struct Oam8d00 {
     u32 y : 8;
@@ -11,12 +12,13 @@ typedef struct Oam8d00 {
 
 extern "C" {
 
-// OAM callback that draws a two-digit number. The locals' declaration order sets their colours
+// OAM callback that draws a two-digit number: entry 6 of an Obj021efed4's model (func_ov002_021d91d8
+// registers it with the piece as the entry argument) shows the piece's unk_a8 at the model's x/y. The locals' declaration order sets their colours
 // (reverse-declaration node numbers, round frB); it used to need fake div/x/chr/k parameters.
-Oam8d00 *func_ov002_021d8d00(void *m, u16 *cell, Oam8d00 *oam, u16 *num) {
+Oam8d00 *func_ov002_021d8d00(Model *m, TexObjEntry *cell, Oam8d00 *oam, u16 *num) {
     u16 n = *num;
     Oam8d00 *last = &oam[n - 1];
-    if (*cell == 6) {
+    if (cell->index == 6) {
         u32 chr;
         u32 val;
         BOOL shown = FALSE;
@@ -25,14 +27,14 @@ Oam8d00 *func_ov002_021d8d00(void *m, u16 *cell, Oam8d00 *oam, u16 *num) {
         s32 y;
         u32 div;
         chr = last->chr;
-        val = FIELD(FIELD(cell, 0x8, u8 *), 0xa8, u16);
+        val = ((Obj021efed4 *)cell->unk_08)->unk_a8;
         div = 1;
         for (k = 1; k < 2; k++) {
             div *= 10;
         }
         n = 0;
-        y = FIELD(m, 0x100, s32);
-        x = FIELD(m, 0xfc, s32);
+        y = m->y;
+        x = m->x;
         if (val >= 100) {
             val = 99;
         }
